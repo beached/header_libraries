@@ -6,9 +6,10 @@ set(CLANG_CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -O3 -Weverything -Wn
 set(GCC_CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -O3 -Wall" )
 
 if(CMAKE_CXX_COMPILER_ID EQUAL "Clang")
-	set( CMAKE_CXX_FLAGS "{$CLANG_CMAKE_CXX_FLAGS}" )
+	set( CMAKE_CXX_FLAGS "${CLANG_CMAKE_CXX_FLAGS}" )
 elseif(CMAKE_CXX_COMPILER_ID EQUAL "GNU")
-	set( CMAKE_CXX_FLAGS "{$GCC_CMAKE_CXX_FLAGS}" )
+	message( STATUS "Found compiler GNU" )
+	set( CMAKE_CXX_FLAGS "${GCC_CMAKE_CXX_FLAGS}" )
 endif( )
 
 find_package(Boost 1.55.0 COMPONENTS system filesystem unit_test_framework REQUIRED)
