@@ -15,7 +15,7 @@ else( )
 	message( STATUS "Using Other Compiler -> ${CMAKE_CXX_COMPILER_ID}" )
 endif( )
 
-find_package(Boost 1.55.0 COMPONENTS system filesystem unit_test_framework REQUIRED)
+find_package(Boost 1.55.0 COMPONENTS system filesystem iostreams unit_test_framework REQUIRED)
 
 set(HEADER_PREFIXES
 		algorithm
