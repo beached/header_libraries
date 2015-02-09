@@ -56,6 +56,11 @@ namespace daw {
 			return std::find( std::begin( container ), std::end( container ), value );
 		}
 
+		template<typename Container, typename Value>
+		bool binary_search( Container const & container, Value const & value ) {
+			return std::binary_search( std::begin( container ), std::end( container ), value );
+		}
+
 		template<typename Container, typename UnaryPredicate>
 		auto find_if( Container const & container, UnaryPredicate pred ) -> decltype(end( container )) {
 			return std::find_if( std::begin( container ), std::end( container ), pred );
