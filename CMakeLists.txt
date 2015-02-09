@@ -2,8 +2,14 @@ cmake_minimum_required(VERSION 2.8.0)
 
 project(header_libraries)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -O3 -Weverything -Wno-c++98-compat  -Wfatal-errors -Wno-covered-switch-default -Wno-padded -Wno-exit-time-destructors -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-missing-noreturn -Wno-missing-prototypes -Wno-global-constructors")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -O3 -Wall -pedantic")
+set(CLANG_CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -O3 -Weverything -Wno-c++98-compat  -Wfatal-errors -Wno-covered-switch-default -Wno-padded -Wno-exit-time-destructors -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-missing-noreturn -Wno-missing-prototypes")
+set(GCC_CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -O3 -Wall" )
+
+if(CMAKE_CXX_COMPILER_ID "Clang")
+	set( CMAKE_CXX_FLAGS "{$CLANG_CMAKE_CXX_FLAGS}" )
+elseif(CMAKE_CXX_COMPILER_ID "GNU")
+	set( CMAKE_CXX_FLAGS "{$GCC_CMAKE_CXX_FLAGS}" )
+endif( )
 
 find_package(Boost 1.55.0 COMPONENTS system filesystem unit_test_framework REQUIRED)
 
@@ -33,5 +39,6 @@ foreach( CUR_PREFIX ${HEADER_PREFIXES} )
 	install( FILES header_libraries/${CUR_PREFIX}.h DESTINATION include/header_libaries )
 	add_test( ${CUR_PREFIX}_test, ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
+
 
 
