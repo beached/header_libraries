@@ -38,9 +38,9 @@ enable_testing( )
 ADD_DEFINITIONS(-DBOOST_TEST_DYN_LINK) 
 
 foreach( CUR_PREFIX ${HEADER_PREFIXES} )
-	add_executable( ${CUR_PREFIX}_test_bin header_libraries/${CUR_PREFIX}.h header_libraries/${CUR_PREFIX}_test.cpp header_libraries/header_libraries_test/test_main.cpp )
+	add_executable( ${CUR_PREFIX}_test_bin ${CUR_PREFIX}.h ${CUR_PREFIX}_test.cpp header_libraries_test/test_main.cpp )
 	target_link_libraries( ${CUR_PREFIX}_test_bin ${Boost_LIBRARIES} )
-	install( FILES header_libraries/${CUR_PREFIX}.h DESTINATION include/header_libaries )
+	install( FILES ${CUR_PREFIX}.h DESTINATION include/header_libaries )
 	add_test( ${CUR_PREFIX}_test, ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
 
