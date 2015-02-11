@@ -143,6 +143,6 @@ namespace daw {
 			}
 		}
 	};	// class Expected
+	static_assert(traits::is_regular<Expected<int>>::value, "Expected isn't regular");
 }	// namespace daw
 
-static_assert(daw::traits::is_regular<daw::Expected<int>>::value, "Excepted isn't regular");
