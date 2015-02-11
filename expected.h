@@ -134,7 +134,7 @@ namespace daw {
 			return ExpectedSource::exception == m_source;
 		}
 
-			template<class FunctionType>
+		template<class FunctionType>
 		static Expected from_code( FunctionType func ) {
 			try {
 				return Expected( func( ) );
