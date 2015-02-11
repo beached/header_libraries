@@ -45,7 +45,7 @@ namespace daw {
 		Expected& operator=(Expected const & rhs) = default;
 
 		Expected( Expected&& other ) noexcept:
-		m_value( std::move( other.m_value ) ),
+			m_value( std::move( other.m_value ) ),
 			m_exception( std::move( other.m_exception ) ),
 			m_source( std::move( other.m_source ) ) { }
 
@@ -64,10 +64,10 @@ namespace daw {
 			return rhs.m_value == m_value && rhs.m_exception == m_exception && rhs.m_source == m_source;
 		}
 
-			//////////////////////////////////////////////////////////////////////////
-			/// Summary: With value
-			//////////////////////////////////////////////////////////////////////////
-			Expected( ValueType value ) noexcept: m_value( std::move( value ) ), m_exception( ), m_source( ExpectedSource::value ) { }
+		//////////////////////////////////////////////////////////////////////////
+		/// Summary: With value
+		//////////////////////////////////////////////////////////////////////////
+		Expected( ValueType value ) noexcept: m_value( std::move( value ) ), m_exception( ), m_source( ExpectedSource::value ) { }
 
 		template<class ExceptionType>
 		static Expected<ValueType> from_exception( ExceptionType const & exception ) {
@@ -93,7 +93,8 @@ namespace daw {
 			return ExpectedSource::value == m_source;
 		}
 
-			ValueType& get( ) {
+		ValueType& get( ) {
+			assert( ExpectedSource::none != m_source );
 			if( has_exception( ) ) {
 				std::rethrow_exception( m_exception );
 			}
@@ -101,11 +102,22 @@ namespace daw {
 		}
 
 		ValueType const & get( ) const {
+			assert( ExpectedSource::none != m_source );
 			if( has_exception( ) ) {
 				std::rethrow_exception( m_exception );
 			}
 			return m_value;
 		}
+
+		ValueType move_out( ) {
+			assert( ExpectedSource::none != m_source );
+			if( has_exception( ) ) {
+				std::rethrow_exception( m_exception );
+			}
+			m_source = ExpectedSource::none;
+			return std::move( m_value );
+
+
 
 		std::string get_exception_message( ) const {
 			std::string result;
