@@ -116,8 +116,7 @@ namespace daw {
 			}
 			m_source = ExpectedSource::none;
 			return std::move( m_value );
-
-
+		}
 
 		std::string get_exception_message( ) const {
 			std::string result;
