@@ -19,16 +19,18 @@ ENDIF( )
 
 set(HEADER_PREFIXES
 		concurrent_queue
+		daw_algorithm
 		daw_common_mixins
-		daw_range
 		daw_exception
+		daw_expected		
+		daw_range	
 		daw_string
 		daw_traits
 		daw_utility
 		make_unique
 		range_algorithm
 		scope_guard
-		expected
+		
 )
 
 enable_testing( )
