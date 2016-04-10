@@ -28,6 +28,7 @@ set(HEADER_PREFIXES
 		make_unique
 		range_algorithm
 		scope_guard
+		expected
 )
 
 enable_testing( )
