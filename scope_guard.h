@@ -55,7 +55,7 @@ namespace daw {
 
 #define SCOPE_EXIT \
 	auto ANONYMOUS_VARIABLE( SCOPE_EXIT_STATE ) \
-	= ::daw::scope_guard::detail::ScopeGuardOnExit( ) + [&]( )
+	= ::daw::detail::ScopeGuardOnExit( ) + [&]( )
 
 #define CONCATENATE_IMPL(s1, s2) s1##s2
 #define CONCATENATE(s1, s2) CONCATENATE_IMPL(s1, s2)
