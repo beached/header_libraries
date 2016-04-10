@@ -27,7 +27,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "algorithm.h"
+#include "daw_algorithm.h"
 
 BOOST_AUTO_TEST_CASE( daw_algorithm_none_yet ) {
 }
