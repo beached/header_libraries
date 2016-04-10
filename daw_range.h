@@ -1,4 +1,3 @@
-#pragma once
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2015 Darrell Wright
@@ -21,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#pragma once
 
 #include <iterator>
 
@@ -29,89 +29,146 @@
 namespace daw {
 	namespace range {
 		template<typename Iterator>
-		struct Range {
-			Iterator first;
-			Iterator last;
+		class Range {
+			Iterator m_begin;
+			Iterator m_end;
+		public:
 			using value_type = typename std::iterator_traits<Iterator>::value_type;
 			using reference = typename std::iterator_traits<Iterator>::reference;
 			using const_reference = const reference;
 			using iterator = Iterator;
 			using const_iterator = const iterator;
+			using difference_type = typename std::iterator_traits<Iterator>::difference_type;
+			Range( ) = default;
+			Range( Range const & ) = default;
+			Range( Range && ) = default;
+			~Range( ) = default;
+			Range & operator=( Range const & ) = default;
+			Range & operator=( Range && ) = default;
 
-			Range( ) :
-				first( nullptr ),
-				last( nullptr ) { }
-
-			Range( Iterator First, Iterator Last ) :
-				first( First ),
-				last( Last ) { }
+			Range( Iterator First, Iterator Last ):				
+				m_begin( First ),
+				m_end( Last ) { 
+			}
 
 			Range& move_next( ) {
-				assert( first != last );
-				++first;
+				assert( m_begin != m_end );
+				++m_begin;
 				return *this;
 			}
 
 			Range& move_back( ) {
-				--first;
+				--m_begin;
 				return *this;
 			}
 
 			Range& move_back( Iterator start ) {
-				assert( first > start );
-				--first;
+				assert( m_begin > start );
+				--m_begin;
 				return *this;
 			}
 
 			bool at_end( ) const {
-				return first == last;
+				return !(m_begin != m_end);
 			}
 
 			bool empty( ) const {
-				return first == last;
+				return !(m_begin != m_end);
 			}
 
 			iterator begin( ) {
-				return first;
+				return m_begin;
+			}
+
+			void advance( difference_type n ) {
+				std::advance( m_begin, n );
+			}
+
+			void set_begin( iterator i ) {
+				m_begin = i;
 			}
 
 			iterator end( ) {
-				return last;
+				return m_end;
+			}
+
+			void set_end( iterator i ) {
+				m_end = i;
+			}
+
+			void set( iterator First, iterator Last ) {
+				m_begin = First;
+				m_end = Last;
 			}
 
 			const_iterator begin( ) const {
-				return first;
+				return m_begin;
 			}
 
 			const_iterator end( ) const {
-				return last;
+				return m_end;
 			}
 
 			const_iterator cbegin( ) const {
-				return first;
+				return m_begin;
 			}
 
 			const_iterator cend( ) const {
-				return last;
+				return m_end;
 			}
 
 			reference front( ) {
-				return *first;
+				return *m_begin;
 			}
 
 			const_reference front( ) const {
-				return *first;
+				return *m_begin;
+			}
+
+			reference back( ) {
+				auto it = m_begin;
+				std::advance( it, size( ) -1 );
+				return *it; 
+			}
+
+			const_reference back( ) const {
+				auto it = m_begin;
+				std::advance( it, size( ) -1 );
+				return *it; 
+			}
+
+			reference operator*( ) {
+				return *m_begin;
+			}
+
+			const_reference operator*( ) const {
+				return *m_begin;
 			}
 
 			size_t size( ) const {
-				return std::distance( first, last );
+				return static_cast<size_t>( std::distance( m_begin, m_end ) );
 			}
-		};	// struct Range
+
+			reference operator[]( size_t pos ) {
+				return *(m_begin + pos);
+			}
+
+			const_reference operator[]( size_t pos ) const {
+				return *(m_begin + pos);
+			}
+
+			bool operator==( Range const & other ) const {
+				return std::equal( m_begin, m_end, other.m_begin );
+			}
+
+			bool operator!=( Range const & other ) const {
+				return !std::equal( m_begin, m_end, other.m_begin );
+			}
+		};	// class Range
 
 		template<typename Iterator>
 		Range<Iterator> make_range( Iterator first, Iterator last ) {
-			assert( std::distance( first, last ) >= 0 );
-			return Range < Iterator > { first, last };
+			return Range<Iterator> { first, last };
 		}
 
 		template<typename Container, typename std::enable_if<daw::traits::is_container_not_string<Container>::value, long>::type = 0>
@@ -129,21 +186,21 @@ namespace daw {
 		template<typename Iterator>
 		void safe_advance( Range<Iterator> & range, typename std::iterator_traits<Iterator>::difference_type count ) {
 			assert( 0 <= count );
-			if( std::distance( range.first, range.last ) >= count ) {
-				range.first += count;
+			if( std::distance( range.begin( ), range.end( ) )>= count ) {
+				range.advance( count );
 			} else {
-				range.first = range.last;
+				range.set_begin( range.end( ) );
 			}
 		}
 
 		template<typename Iterator>
 		bool contains( Range<Iterator> const & range, typename std::iterator_traits<Iterator>::value_type const & key ) {
-			return std::find( range.first, range.last, key ) != range.last;
+			return std::find( range.begin( ), range.end( ), key ) != range.end( );
 		}
 
 		template<typename Iterator>
 		bool at_end( Range<Iterator> const & range ) {
-			return range.first == range.last;
+			return range.begin( ) == range.end( );
 		}
 	}	// namespace range
 }	// namespace daw

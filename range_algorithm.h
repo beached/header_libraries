@@ -1,4 +1,3 @@
-#pragma once
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2015 Darrell Wright
@@ -21,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#pragma once
 
 #include <algorithm>
 #include <numeric>
@@ -54,11 +54,6 @@ namespace daw {
 		template<typename Container, typename Value>
 		auto find( Container const & container, Value const & value ) -> decltype(end( container )) {
 			return std::find( std::begin( container ), std::end( container ), value );
-		}
-
-		template<typename Container, typename Value>
-		bool binary_search( Container const & container, Value const & value ) {
-			return std::binary_search( std::begin( container ), std::end( container ), value );
 		}
 
 		template<typename Container, typename UnaryPredicate>
@@ -97,8 +92,8 @@ namespace daw {
 		}
 
 		template<typename ContainerIn, typename UnaryOperator>
-		auto map( ContainerIn const & in, UnaryOperator oper ) -> std::vector < decltype(oper( std::declval<typename std::iterator_traits<decltype(std::begin( in ))>::value_type>( ) )) > {
-			using result_t = std::vector < decltype(oper( std::declval<typename std::iterator_traits<decltype(std::begin( in ))>::value_type>( ) )) > ;
+		auto map( ContainerIn const & in, UnaryOperator oper ) -> std::vector <decltype(oper( std::declval<typename std::iterator_traits<decltype(std::begin( in ))>::value_type>( ) ))> {
+			using result_t = std::vector <decltype(oper( std::declval<typename std::iterator_traits<decltype(std::begin( in ))>::value_type>( ) ))> ;
 			result_t result;
 			std::transform( std::begin( in ), std::end( in ), std::back_inserter( result ), oper );
 			return result;
@@ -118,7 +113,7 @@ namespace daw {
 		}
 
 		template<typename ContainerType, typename Predicate>
-		auto where( ContainerType& container, Predicate pred ) -> std::vector < std::reference_wrapper<typename ContainerType::value_type> > {
+		auto where( ContainerType& container, Predicate pred ) -> std::vector <std::reference_wrapper<typename ContainerType::value_type>> {
 			using ValueType = typename ContainerType::value_type;
 			std::vector<std::reference_wrapper<ValueType>> result;
 

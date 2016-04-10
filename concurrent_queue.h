@@ -25,7 +25,7 @@ namespace daw {
 			m_condition( ),
 			m_forced_exit( false ) { }
 
-		void push( Data const& data ) {
+		void push( Data const & data ) {
 			std::unique_lock<std::mutex> lock( m_mutex );
 			m_queue.push( data );
 			lock.unlock( );

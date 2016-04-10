@@ -22,11 +22,6 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <cstdint>
-#include <string>
-#include <unordered_map>
-#include <vector>
-
 #include "concurrent_queue.h"
 
 BOOST_AUTO_TEST_CASE( concurrent_queue_none_yet ) { }

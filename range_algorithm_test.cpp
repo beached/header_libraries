@@ -61,3 +61,4 @@ BOOST_AUTO_TEST_CASE( range_algorithm_map ) {
 
 	BOOST_REQUIRE_MESSAGE( sum2 == 2 * sum1, "The result should have double the sum of the test_vec" );
 }
+

@@ -1,4 +1,3 @@
-#pragma once
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2015 Darrell Wright
@@ -21,13 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#pragma once
 
 #include <boost/lexical_cast.hpp>
 #include <boost/spirit/include/qi_numeric.hpp>
-#include <boost/spirit/include/qi_parse.hpp>
 #include <iomanip>
-#include <iostream>
-#include <locale>
 #include <regex>
 #include <sstream>
 #include <stdexcept>
@@ -36,7 +33,7 @@
 #include <vector>
 
 #ifdef _MSC_VER
-#	if _MSC_VER < 1800
+#	if _MSC_VER <1800
 #		error Only Visual C++ 2013 and greater is supported
 #	elif _MSC_VER == 1800
 #		ifndef noexcept
@@ -98,13 +95,13 @@ namespace daw {
 		}
 
 		template<typename Arg>
-		details::string_t to_string( Arg const& arg ) {
+		details::string_t to_string( Arg const & arg ) {
 			return boost::lexical_cast<details::string_t>(arg);
 		}
 
 		namespace {
 			template<typename Arg>
-			std::string string_join( Arg const & arg ) {
+			auto string_join( Arg const & arg ) -> decltype(to_string( arg )) {
 				return to_string( arg );
 			}
 		}
@@ -119,21 +116,21 @@ namespace daw {
 			return string_join( string_join( arg1, arg2 ), string_join( args... ) );
 		}
 
-		template < typename StringType >
+		template <typename StringType>
 		struct ends_with_t {
 			ends_with_t( ) noexcept { }
 			~ends_with_t( ) = default;
 			ends_with_t( ends_with_t const & ) noexcept { }
-				ends_with_t( ends_with_t&& ) noexcept { }
-			ends_with_t& operator=(ends_with_t) const noexcept { return *this; }
-			bool operator==(ends_with_t const &) const noexcept { return true; }
-			bool operator<(ends_with_t const &) const noexcept { return false; }
+			ends_with_t( ends_with_t&& ) noexcept { }
+			ends_with_t& operator=( ends_with_t ) const noexcept { return *this; }
+			bool operator==( ends_with_t const & ) const noexcept { return true; }
+			bool operator<( ends_with_t const & ) const noexcept { return false; }
 
-				bool operator()( StringType const & src, const char ending ) const noexcept {
-				return 0 < src.size( ) && ending == src[src.size( ) - 1];
+			bool operator()( StringType const & src, const char ending ) const noexcept {
+				return 0 <src.size( ) && ending == src[src.size( ) - 1];
 			}
 
-				bool operator()( StringType const & src, StringType const & ending ) const noexcept {
+			bool operator()( StringType const & src, StringType const & ending ) const noexcept {
 				auto pos = src.find_last_of( ending );
 				return details::string_t::npos != pos && pos == src.size( ) - 1;
 			}
@@ -156,25 +153,25 @@ namespace daw {
 			std::smatch sm;
 			while( std::regex_search( format, sm, reg ) ) {
 				auto const & prefix = sm.prefix( ).str( );
-				ss << prefix;
+				ss <<prefix;
 				if( ends_with( prefix, "{" ) ) {
-					ss << sm[0].str( );
+					ss <<sm[0].str( );
 				} else {
 					auto delims = split( sm[1].str( ), ':' );
-					if( 1 >= delims.size( ) ) {
-						ss << arguments[boost::lexical_cast<size_t>(sm[1].str( ))];
+					if( 1>= delims.size( ) ) {
+						ss <<arguments[boost::lexical_cast<size_t>(sm[1].str( ))];
 					} else if( 2 == delims.size( ) ) {
 						// Assumes the argument at pos is a double.  If not, will crash
 						size_t pos = boost::lexical_cast<size_t>(delims[0]);
 						int precision = boost::lexical_cast<int>(delims[1]);
-						ss << std::fixed << std::setprecision( precision ) << boost::lexical_cast<double>(arguments[pos]);
+						ss <<std::fixed <<std::setprecision( precision ) <<boost::lexical_cast<double>(arguments[pos]);
 					} else {
 						throw std::out_of_range( string_format( "Unknown string format.  Too many colons(", delims.size( ), "): ", sm[1].str( ) ) );
 					}
 				}
 				format = sm.suffix( ).str( );
 			}
-			ss << format;
+			ss <<format;
 			return ss.str( );
 		}
 
@@ -272,9 +269,9 @@ namespace daw {
 		// 			#pragma message( "Use non-locale version" )
 		// 			static std::stringstream ss;
 		// 			clear( ss );
-		// 			ss << from;
+		// 			ss <<from;
 		// 			ss.imbue( std::locale( locale_str ) );
-		// 			ss >> to;
+		// 			ss>> to;
 		// 		}
 		//
 

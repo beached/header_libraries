@@ -35,7 +35,6 @@ BOOST_AUTO_TEST_CASE( daw_traits_is_equality_comparable ) {
 	{
 		struct NotEqual {
 			int x;
-		private:
 		};
 		BOOST_REQUIRE_MESSAGE( false == daw::traits::is_equality_comparable<NotEqual>::value, "3. NotEqual struct should not report as being equality comparable" );
 	}
@@ -45,7 +44,7 @@ BOOST_AUTO_TEST_CASE( daw_traits_is_equality_comparable ) {
 			int x;
 			std::vector<int> y;
 		public:
-			NotEqual2( int, std::vector<int> ) { }
+			NotEqual2( int, std::vector<int> ):x( 0 ), y( ) { }
 		};
 		BOOST_REQUIRE_MESSAGE( false == daw::traits::is_equality_comparable<NotEqual2>::value, "4. NotEqual2 struct should not report as being equality comparable" );
 	}
@@ -55,9 +54,14 @@ BOOST_AUTO_TEST_CASE( daw_traits_is_regular ) {
 	BOOST_REQUIRE_MESSAGE( true == daw::traits::is_regular<std::string>::value, "1. std::string should report as being regular" );
 	struct NotRegular {
 		int x;
-		NotRegular( int );
+		NotRegular( int ):x( ) { }
 		NotRegular( ) = delete;
+		~NotRegular( ) = default;
 		NotRegular( NotRegular const & ) = delete;
+		NotRegular & operator=( NotRegular const & ) = delete;
+		NotRegular( NotRegular && ) = delete;
+		NotRegular & operator=( NotRegular && ) = delete;
+
 	};
 	BOOST_REQUIRE_MESSAGE( false == daw::traits::is_regular<NotRegular>::value, "2. struct NotRegular should report as being regular" );
 }
@@ -178,19 +182,19 @@ BOOST_AUTO_TEST_CASE( daw_traits_enable_if_all ) {
 
 BOOST_AUTO_TEST_CASE( daw_traits_is_one_of ) {
 	{
-		auto result = daw::traits::is_one_of < std::string, std::string, std::string, int, std::vector<std::string>>::value;
+		auto result = daw::traits::is_one_of <std::string, std::string, std::string, int, std::vector<std::string>>::value;
 		BOOST_REQUIRE_MESSAGE( true == result, "1. Is one of should report true when at least one matches" );
 	}
 	{
-		auto result = daw::traits::is_one_of < std::string, int, int, double, std::vector<std::string>>::value;
+		auto result = daw::traits::is_one_of <std::string, int, int, double, std::vector<std::string>>::value;
 		BOOST_REQUIRE_MESSAGE( false == result, "2. Is one of should report false when none matches" );
 	}
 	{
-		auto result = daw::traits::is_one_of < std::string, std::string>::value;
+		auto result = daw::traits::is_one_of <std::string, std::string>::value;
 		BOOST_REQUIRE_MESSAGE( true == result, "3. Is one of should report true with a single param and it matches" );
 	}
 	{
-		auto result = daw::traits::is_one_of < std::string, int>::value;
+		auto result = daw::traits::is_one_of <std::string, int>::value;
 		BOOST_REQUIRE_MESSAGE( false == result, "4. Is one of should report false with a single param and it does not match" );
 	}
 }
@@ -199,7 +203,7 @@ BOOST_AUTO_TEST_CASE( daw_traits_has_begin_member ) {
 	BOOST_REQUIRE_MESSAGE( true == daw::traits::has_begin_member<std::string>::value, "1. std::string should have a begin( ) method" );
 	BOOST_REQUIRE_MESSAGE( true == daw::traits::has_begin_member<std::vector<int>>::value, "2. std::vector should have a begin( ) method" );
 	{
-		using test_t = std::unordered_map < std::string, int > ;// Macro's and comma parameters
+		using test_t = std::unordered_map <std::string, int>;// Macro's and comma parameters
 		BOOST_REQUIRE_MESSAGE( true == daw::traits::has_begin_member<test_t>::value, "3. std::unordered should have a begin( ) method" );
 	}
 	{
@@ -214,7 +218,7 @@ BOOST_AUTO_TEST_CASE( daw_traits_has_substr_member ) {
 	BOOST_REQUIRE_MESSAGE( true == daw::traits::has_substr_member<std::string>::value, "1. std::string should have a substr method" );
 	BOOST_REQUIRE_MESSAGE( false == daw::traits::has_substr_member<std::vector<int>>::value, "2. std::vector should not have a substr method" );
 	{
-		using test_t = std::unordered_map < std::string, int > ;// Macro's and comma parameters
+		using test_t = std::unordered_map <std::string, int>;// Macro's and comma parameters
 		BOOST_REQUIRE_MESSAGE( false == daw::traits::has_substr_member<test_t>::value, "3. std::unordered should not have a substr method" );
 	}
 	{
@@ -238,7 +242,7 @@ BOOST_AUTO_TEST_CASE( daw_traits_has_value_type_member ) {
 BOOST_AUTO_TEST_CASE( daw_traits_is_container_like ) {
 	BOOST_REQUIRE_MESSAGE( true == daw::traits::is_container_like<std::string>::value, "1. std::string should be container like" );
 	BOOST_REQUIRE_MESSAGE( true == daw::traits::is_container_like<std::vector<std::string>>::value, "2. std::vector<std::string> should be container like" );
-	using map_t = std::unordered_map < std::string, int > ;
+	using map_t = std::unordered_map <std::string, int>;
 	BOOST_REQUIRE_MESSAGE( true == daw::traits::is_container_like<map_t>::value, "3. std::unordered_map<std::string, int> should be container like" );
 	struct T {
 		int x;
@@ -271,16 +275,16 @@ BOOST_AUTO_TEST_CASE( daw_traits_isnt_string ) {
 
 struct TestNoOS {
 	int x;
-	TestNoOS( ) : x( 1 ) { }
+	TestNoOS( ): x( 1 ) { }
 };
 
 struct TestYesOS {
 	int x;
-	TestYesOS( ) : x( 1 ) { }
+	TestYesOS( ): x( 1 ) { }
 };
 
-std::ostream& operator<<(std::ostream &os, TestYesOS const & t) {
-	os << t.x;
+std::ostream& operator<<( std::ostream &os, TestYesOS const & t ) {
+	os <<t.x;
 	return os;
 }
 
@@ -294,22 +298,13 @@ BOOST_AUTO_TEST_CASE( daw_traits_is_streamable ) {
 
 namespace daw_traits_is_mixed_from_ns {
 	template<typename Derived> struct Base { Base( ) = default; };
-	struct Derived: public Base < Derived > { Derived( ) = default; };
+	struct Derived: public Base <Derived> { Derived( ) = default; };
 	struct NonDerived { NonDerived( ) = default; };
 }
 BOOST_AUTO_TEST_CASE( daw_traits_is_mixed_from ) {
-	auto test1 = daw::traits::is_mixed_from< daw_traits_is_mixed_from_ns::Base, daw_traits_is_mixed_from_ns::Derived>::value;
+	auto test1 = daw::traits::is_mixed_from<daw_traits_is_mixed_from_ns::Base, daw_traits_is_mixed_from_ns::Derived>::value;
 	BOOST_REQUIRE_MESSAGE( true == test1, "1. Base<Child> should be a base for Child" );
 	auto test2 = daw::traits::is_mixed_from<daw_traits_is_mixed_from_ns::Base, daw_traits_is_mixed_from_ns::NonDerived>::value;
 	BOOST_REQUIRE_MESSAGE( false == test2, "2. Base<NonDerived> should not be a base for NonDerived" );
 }
 
-namespace daw_traits_function_exists_ns {
-	void test( int, int ) { }
-	CREATE_FUNCTION_EXISTS( test, test );
-
-	BOOST_AUTO_TEST_CASE( daw_traits_function_exists ) {
-		auto test1 = test_exists<void, int, int>::value;
-		BOOST_REQUIRE_MESSAGE( true == test1, "1. void test(int, int) should report as exists" );
-	}
-}

@@ -1,4 +1,3 @@
-#pragma once
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2015 Darrell Wright
@@ -21,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#pragma once
 
 namespace daw {
 	namespace mixins {
@@ -87,8 +87,8 @@ namespace daw {
 		///				Requires a member in Derived called container( ) that
 		///				returns the container
 		template<typename Derived, typename container_type>
-		class VectorLikeProxy: public ContainerProxy < Derived, container_type > {
-			using base_t = ContainerProxy < Derived, container_type > ;
+		class VectorLikeProxy: public ContainerProxy <Derived, container_type> {
+			using base_t = ContainerProxy <Derived, container_type> ;
 		public:
 			void push_back( typename base_t::value_type && value ) {
 				this->insert( this->end( ), value );
@@ -119,8 +119,8 @@ namespace daw {
 		///				returns the container, find( ) that searches
 		///				for a key and key_type and mapped_type
 		template<typename Derived, typename MapType>
-		class MapLikeProxy: public ContainerProxy < Derived, MapType > {
-			using base_t = ContainerProxy < Derived, MapType > ;
+		class MapLikeProxy: public ContainerProxy <Derived, MapType> {
+			using base_t = ContainerProxy <Derived, MapType> ;
 		public:
 			using key_type = typename MapType::key_type;
 			using mapped_type = typename MapType::mapped_type;

@@ -22,11 +22,6 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <cstdint>
-#include <string>
-#include <unordered_map>
-#include <vector>
-
 #include "daw_range.h"
 
 BOOST_AUTO_TEST_CASE( daw_range_none_yet ) {

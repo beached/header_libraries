@@ -53,13 +53,17 @@ namespace daw {
 		}
 	}	// namespace detail
 
-#define SCOPE_EXIT auto ANONYMOUS_VARIABLE( SCOPE_EXIT_STATE ) = ::daw::detail::ScopeGuardOnExit( ) + [&]( )
+#define SCOPE_EXIT \
+	auto ANONYMOUS_VARIABLE( SCOPE_EXIT_STATE ) \
+	= ::daw::scope_guard::detail::ScopeGuardOnExit( ) + [&]( )
 
 #define CONCATENATE_IMPL(s1, s2) s1##s2
 #define CONCATENATE(s1, s2) CONCATENATE_IMPL(s1, s2)
-#ifndef __COUNTER__
-#error "The compiler must support the __COUNTER__ macro.  Most compilers do"
+#ifdef __COUNTER__
+#define ANONYMOUS_VARIABLE(str) \
+	CONCATENATE( str, __COUNTER__ )
+#else
+#define ANONYMOUS_VARIABLE(str) \
+	CONCATENATE( str, __LINE__ )
 #endif
-
-#define ANONYMOUS_VARIABLE(str) CONCATENATE( str, __COUNTER__ )
 }	// namespace daw

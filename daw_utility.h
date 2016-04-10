@@ -1,4 +1,3 @@
-#pragma once
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2015 Darrell Wright
@@ -21,6 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#pragma once
+#ifdef max
+#undef max
+#endif	//max
 
 #include <boost/utility/string_ref.hpp>
 #include <cassert>
@@ -29,6 +32,7 @@
 #include <memory>
 #include <string>
 #include <type_traits>
+#include <cmath>
 #include <vector>
 
 namespace daw {
@@ -76,21 +80,17 @@ namespace daw {
 
 	namespace impl {
 		template<typename T>
-		class EqualToImpl {
+		class EqualToImpl final {
 			T m_value;
 		public:
+			EqualToImpl( T value ):m_value( value ) { }
 			EqualToImpl( ) = delete;
 			~EqualToImpl( ) = default;
 			EqualToImpl( EqualToImpl const & ) = default;
-			EqualToImpl& operator=(EqualToImpl const &) = default;
-			EqualToImpl( EqualToImpl && other ) : m_value( std::move( other.m_value ) ) { }
-			EqualToImpl& operator=(EqualToImpl && rhs) {
-				if( this != &rhs ) {
-					m_value = std::move( rhs.m_value );
-				}
-				return *this;
-			}
-			EqualToImpl( T value ) :m_value( value ) { }
+			EqualToImpl& operator=( EqualToImpl const & ) = default;
+			EqualToImpl( EqualToImpl && ) = default;
+			EqualToImpl& operator=( EqualToImpl && ) = default;
+ 
 			bool operator()( T const & value ) {
 				return m_value == value;
 			}
@@ -102,19 +102,16 @@ namespace daw {
 	}
 
 	template<typename T>
-	class equal_to_last {
+	class equal_to_last final {
 		T* m_value;
 	public:
-		equal_to_last( ) : m_value( nullptr ) { }
+		equal_to_last( ): m_value( nullptr ) { }
 		~equal_to_last( ) = default;
-		equal_to_last& operator=(equal_to_last const &) = default;
-		equal_to_last( equal_to_last && other ) : m_value( std::move( other.m_value ) ) { }
-		equal_to_last& operator=(equal_to_last && rhs) {
-			if( this != &rhs ) {
-				m_value = std::move( rhs.m_value );
-			}
-			return *this;
-		}
+		equal_to_last( equal_to_last const & ) = default;
+		equal_to_last( equal_to_last && ) = default;
+		equal_to_last& operator=( equal_to_last const & ) = default;
+		equal_to_last& operator=( equal_to_last && ) = default;
+
 		bool operator()( T const & value ) {
 			bool result = false;
 			if( m_value ) {
@@ -127,19 +124,14 @@ namespace daw {
 
 	namespace impl {
 		template<typename Function>
-		class NotImpl {
+		class NotImpl final {
 			Function m_function;
 		public:
-			NotImpl( Function func ) : m_function( func ) { }
+			NotImpl( Function func ): m_function( func ) { }
 			~NotImpl( ) = default;
-			NotImpl& operator=(NotImpl const &) = default;
-			NotImpl( NotImpl && other ) : m_function( std::move( other.m_function ) ) { }
-			NotImpl& operator=(NotImpl && rhs) {
-				if( this != &rhs ) {
-					m_function = std::move( rhs.m_function );
-				}
-				return *this;
-			}
+			NotImpl( NotImpl && ) = default;
+			NotImpl& operator=( NotImpl const & ) = default;
+			NotImpl& operator=( NotImpl && ) = default;
 
 			template<typename...Args>
 			bool operator()( Args&&... args ) {
@@ -155,29 +147,29 @@ namespace daw {
 
 	// For generic types that are functors, delegate to its 'operator()'
 	template <typename T>
-	struct function_traits: public function_traits < decltype(&T::operator()) > { };
+	struct function_traits: public function_traits <decltype(&T::operator())> { };
 
 	// for pointers to member function(const version)
 	template <typename ClassType, typename ReturnType, typename... Args>
-	struct function_traits < ReturnType( ClassType::* )(Args...) const > {
+	struct function_traits <ReturnType( ClassType::* )(Args...) const> {
 		enum { arity = sizeof...(Args) };
-		using type = std::function < ReturnType( Args... ) > ;
+		using type = std::function <ReturnType( Args... )>;
 		using result_type = ReturnType;
 	};
 
 	// for pointers to member function
 	template <typename ClassType, typename ReturnType, typename... Args>
-	struct function_traits < ReturnType( ClassType::* )(Args...) > {
+	struct function_traits <ReturnType( ClassType::* )(Args...)> {
 		enum { arity = sizeof...(Args) };
-		using type = std::function < ReturnType( Args... ) > ;
+		using type = std::function <ReturnType( Args... )>;
 		using result_type = ReturnType;
 	};
 
 	// for function pointers
 	template <typename ReturnType, typename... Args>
-	struct function_traits < ReturnType( *)(Args...) > {
+	struct function_traits <ReturnType( *)(Args...)> {
 		enum { arity = sizeof...(Args) };
-		using type = std::function < ReturnType( Args... ) > ;
+		using type = std::function <ReturnType( Args... )>;
 		using result_type = ReturnType;
 	};
 
@@ -189,19 +181,19 @@ namespace daw {
 
 	//handles bind & multiple function call operator()'s
 	template<typename ReturnType, typename... Args, class T>
-	auto make_function( T&& t )	-> std::function < decltype(ReturnType( t( std::declval<Args>( )... ) ))(Args...) > {
+	auto make_function( T&& t )	-> std::function <decltype(ReturnType( t( std::declval<Args>( )... ) ))(Args...)> {
 		return { std::forward<T>( t ) };
 	}
 
 	//handles explicit overloads
 	template<typename ReturnType, typename... Args>
-	auto make_function( ReturnType( *p )(Args...) )	-> std::function < ReturnType( Args... ) > {
+	auto make_function( ReturnType( *p )(Args...) )	-> std::function <ReturnType( Args... )> {
 		return { p };
 	}
 
 	//handles explicit overloads
 	template<typename ReturnType, typename... Args, typename ClassType>
-	auto make_function( ReturnType( ClassType::*p )(Args...) )	-> std::function < ReturnType( Args... ) > {
+	auto make_function( ReturnType( ClassType::*p )(Args...) )	-> std::function <ReturnType( Args... )> {
 		return { p };
 	}
 
@@ -222,12 +214,12 @@ namespace daw {
 	template<typename T>
 	void copy_vect_and_set( std::vector<T> & source, std::vector<T> & destination, size_t num_items, T const & replacement_value ) {
 		using item_size_t = typename std::vector<T>::difference_type;
-		assert( num_items < static_cast<size_t>(std::numeric_limits<item_size_t>::max( )) );
+		assert( num_items <std::numeric_limits<item_size_t>::max( ) );
 		auto first = std::begin( source );
 		auto last = std::end( source );
 		auto max_dist = std::distance( first, last );
 		auto items = static_cast<item_size_t>(num_items);
-		if( items < max_dist ) {
+		if( items <max_dist ) {
 			last = first + items;
 		}
 
@@ -241,7 +233,7 @@ namespace daw {
 	T round_to_nearest( const T& value, const U& rnd_by ) {
 		static_assert(std::is_arithmetic<T>::value, "First template parameter must be an arithmetic type");
 		static_assert(std::is_floating_point<U>::value, "Second template parameter must be a floating point type");
-		const auto rnd = round( static_cast<U>(value) / rnd_by );
+		const auto rnd = std::round( static_cast<U>(value) / rnd_by );
 		const auto ret = rnd*rnd_by;
 		return static_cast<T>(ret);
 	}
@@ -250,7 +242,7 @@ namespace daw {
 	T floor_by( const T& value, const U& rnd_by ) {
 		static_assert(std::is_arithmetic<T>::value, "First template parameter must be an arithmetic type");
 		static_assert(std::is_floating_point<U>::value, "Second template parameter must be a floating point type");
-		const auto rnd = floor( static_cast<U>(value) / rnd_by );
+		const auto rnd = std::floor( static_cast<U>(value) / rnd_by );
 		const auto ret = rnd*rnd_by;
 		assert( ret <= value );// , __func__": Error, return value should always be less than or equal to value supplied" );
 		return static_cast<T>(ret);
@@ -260,21 +252,21 @@ namespace daw {
 	T ceil_by( const T& value, const U& rnd_by ) {
 		static_assert(std::is_arithmetic<T>::value, "First template parameter must be an arithmetic type");
 		static_assert(std::is_floating_point<U>::value, "Second template parameter must be a floating point type");
-		const auto rnd = ceil( static_cast<U>(value) / rnd_by );
+		const auto rnd = std::ceil( static_cast<U>(value) / rnd_by );
 		const auto ret = rnd*rnd_by;
-		assert( ret >= value ); // , __func__": Error, return value should always be greater than or equal to value supplied" );
+		assert( ret>= value ); // , __func__": Error, return value should always be greater than or equal to value supplied" );
 		return static_cast<T>(ret);
 	}
 
 	template<typename T>
 	void copy_vect_and_set( std::shared_ptr<std::vector<T>> & source, std::shared_ptr<std::vector<T>> & destination, size_t num_items, T const & replacement_value ) {
 		using item_size_t = typename std::vector<T>::difference_type;
-		assert( num_items < static_cast<size_t>(std::numeric_limits<item_size_t>::max( )) );
+		assert( num_items <std::numeric_limits<item_size_t>::max( ) );
 		auto first = std::begin( *source );
 		auto last = std::end( *source );
 		auto max_dist = std::distance( first, last );
 		auto items = static_cast<item_size_t>(num_items);
-		if( items < max_dist ) {
+		if( items <max_dist ) {
 			last = first + items;
 		}
 
@@ -289,7 +281,7 @@ namespace daw {
 	}
 
 	template<typename Iterator, typename Pred>
-	auto find_all_where( Iterator first, Iterator last, Pred predicate ) -> std::vector < Iterator > {
+	auto find_all_where( Iterator first, Iterator last, Pred predicate ) -> std::vector <Iterator> {
 		std::vector<Iterator> results;
 		for( auto it = first; it != last; ++it ) {
 			if( predicate( *it ) ) {
@@ -300,14 +292,14 @@ namespace daw {
 	}
 
 	template<typename T, typename Pred>
-	auto find_all_where( T const & values, Pred predicate ) -> std::vector < decltype(std::begin( values )) > {
+	auto find_all_where( T const & values, Pred predicate ) -> std::vector <decltype(std::begin( values ))> {
 		return find_all_where( std::begin( values ), std::end( values ), predicate );
 	}
 
 	template<typename Iterator>
 	Iterator advance( Iterator it, Iterator last, typename Iterator::difference_type how_far ) {
 		auto result = it;
-		while( result != last && std::distance( it, result ) < how_far ) { ++it; }
+		while( result != last && std::distance( it, result ) <how_far ) { ++it; }
 		return it;
 	}
 
@@ -357,7 +349,7 @@ namespace daw {
 		if( static_cast<size_t>(std::distance( first, last )) != upper_value.size( ) ) {
 			return false;
 		}
-		for( size_t off = 0; off < upper_value.size( ); ++off ) {
+		for( size_t off = 0; off <upper_value.size( ); ++off ) {
 			auto const & left = upper_value[off];
 			auto const & right = daw::AsciiUpper( *(first + static_cast<std::ptrdiff_t>(off)) );
 			if( left != right ) {
@@ -371,20 +363,24 @@ namespace daw {
 	/// Summary:	Use this to move a value into a lambda capture by copy
 	///				capture without incurring a copy
 	template<typename T>
-	class MoveCapture {
+	class MoveCapture final {
 		mutable T m_value;
 	public:
 		MoveCapture( ) = delete;
-		MoveCapture( T && val ) : m_value( std::move( val ) ) { }
+		~MoveCapture( ) = default;
+		MoveCapture( T && val ): m_value( std::move( val ) ) { }
+		MoveCapture( MoveCapture && ) = default;		
+		MoveCapture & operator=( MoveCapture && ) = default;
 
-		MoveCapture( MoveCapture const & other ) : m_value( std::move( other.m_value ) ) { }
+		MoveCapture( MoveCapture const & other ): m_value( std::move( other.m_value ) ) { }
 
-		MoveCapture& operator=(MoveCapture const & rhs) {
+		MoveCapture& operator=( MoveCapture const & rhs ) {
 			if( this != &rhs ) {
 				m_value = std::move( rhs.m_value );
 			}
 			return *this;
 		}
+
 
 		T& value( ) {
 			return m_value;
@@ -394,19 +390,17 @@ namespace daw {
 			return m_value;
 		}
 
-		T& operator*() {
-			return m_value.operator*();
+		T& operator*( ) {
+			return m_value.operator*( );
 		}
 
-		T const & operator*() const {
-			return m_value.operator*();
+		T const & operator*( ) const {
+			return m_value.operator*( );
 		}
 
-		T const * operator->() const {
-			return m_value.operator->();
+		T const * operator->( ) const {
+			return m_value.operator->( );
 		}
-
-		~MoveCapture( ) = default;
 
 		T move_out( ) {
 			auto result = std::move( m_value );
