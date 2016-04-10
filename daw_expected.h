@@ -26,7 +26,6 @@
 #include <string>
 #include <utility>
 #include "daw_traits.h"
-#include "workarounds.h"
 
 namespace daw {
 	template<class ValueType>
