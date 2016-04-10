@@ -21,8 +21,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "string.h"
-#include "exception.h"
+#include "daw_string.h"
+#include "daw_exception.h"
 
 #include <algorithm>
 #include <boost/date_time/posix_time/posix_time.hpp>
