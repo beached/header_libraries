@@ -298,7 +298,7 @@ namespace daw {
 		struct enum_class_hash {
 			template<typename T>
 			auto operator( )( T value ) {
-				return static_cast<hash_result_type>(t);
+				return static_cast<hash_result_type>(value);
 			}
 		};	// struct enum_class_has
 		using enum_class_hash_t = enum_class_hash<std::size_t>;
