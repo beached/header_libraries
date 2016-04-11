@@ -294,6 +294,13 @@ namespace daw {
 			return first_out;
 		}
 
+		template<typename hash_result_type=std::size_t>
+		struct enum_class_hash {
+			template<typename T>
+			auto operator( )( T value ) {
+				return static_cast<hash_result_type>(t);
+			}
+		};	// struct enum_class_has
 	}	// namespace algorithm
 }	// namespace daw
 
