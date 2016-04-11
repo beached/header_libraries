@@ -256,7 +256,7 @@ namespace daw {
 			return std::make_pair( start, finish );
 		}
 
-		template< class T >
+		template<typename T>
 		constexpr bool is_const_v = std::is_const<T>::value;
 
 		template<typename InputIt1,typename InputIt2, typename OutputIt, typename Func>
