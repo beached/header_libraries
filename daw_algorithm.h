@@ -256,21 +256,42 @@ namespace daw {
 			return std::make_pair( start, finish );
 		}
 
+		template< class T >
+		constexpr bool is_const_v = std::is_const<T>::value;
 
-// 		template<typename InputIt1, typename InputIt2, typename OutputIt, typename UnaryOperation>
-// 		OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, OutputIt d_first, UnaryOperation unary_op ) {
-// 			while( first1 != last1 ) {
-// 				*d_first++ = unary_op( *first1++, *first2++ );
-// 			}
-// 			return d_first;
-// 		}
-
-		template<typename InputIt1, typename OutputIt, typename UnaryOperation, typename ...InputIt2>
-		OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2... additional_inputs, OutputIt d_first, UnaryOperation unary_op ) {
+		template<typename InputIt1,typename InputIt2, typename OutputIt, typename Func>
+		OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, OutputIt first_out, Func func ) {
+			static_assert( !is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data" );
 			while( first1 != last1 ) {
-				*d_first++ = unary_op( *first1++, (*additional_inputs++)... );
+				*first_out++ = func( *first1++, *first2++ );
 			}
-			return d_first;
+			return first_out;
+		}
+
+		template<typename InputIt1, typename InputIt2, typename InputIt3, typename OutputIt, typename Func>
+		OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt3 first3, OutputIt first_out, Func func ) {
+			static_assert( !is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data" );
+			while( first1 != last1 ) {
+				*first_out++ = func( *first1++, *first2++, *first3++ );
+			}
+			return first_out;
+		}
+
+		template<typename InputIt1, typename InputIt2, typename InputIt3, typename InputIt4, typename OutputIt, typename Func>
+		OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt3 first3, InputIt4 first4, OutputIt first_out, Func func ) {
+			static_assert( !is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data" );
+			while( first1 != last1 ) {
+				*first_out++ = func( *first1++, *first2++, *first3++, *first4++ );
+			}
+			return first_out;
+		}
+		template<typename InputIt1, typename InputIt2, typename InputIt3, typename InputIt4, typename InputIt5, typename OutputIt, typename Func>
+		OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt3 first3, InputIt4 first4, InputIt4 first5, OutputIt first_out, Func func ) {
+			static_assert( !is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data" );
+			while( first1 != last1 ) {
+				*first_out++ = func( *first1++, *first2++, *first3++, *first4++, *first5++ );
+			}
+			return first_out;
 		}
 
 	}	// namespace algorithm
