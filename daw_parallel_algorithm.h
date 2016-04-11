@@ -25,6 +25,7 @@
 #include <daw_algorithm.h>
 #include <thread>
 #include <vector>
+#include <sp_parrallel_algorith.h>
 
 namespace daw {
 	namespace algorithm {

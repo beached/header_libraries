@@ -23,6 +23,7 @@ set(HEADER_PREFIXES
 		daw_common_mixins
 		daw_exception
 		daw_expected		
+		daw_parallel_algorithm
 		daw_range	
 		daw_string
 		daw_traits
