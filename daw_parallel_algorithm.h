@@ -45,7 +45,7 @@ namespace daw {
 				}
 			}
 
-			template<typename InputIt1, typename InputIt2, typename OutputIt, typename Func>
+			template<typename InputIt1, typename OutputIt, typename Func>
 			OutputIt transform( InputIt1 first_in1, InputIt1 last_in1, OutputIt first_out, Func func ) {
 				static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
 				auto const dist = std::distance( first_in1, last_in1 );
