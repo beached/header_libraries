@@ -46,6 +46,17 @@ namespace daw {
 			}
 
 			template<typename InputIt1, typename InputIt2, typename OutputIt, typename Func>
+			OutputIt transform( InputIt1 first_in1, InputIt1 last_in1, OutputIt first_out, Func func ) {
+				static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
+				auto const dist = std::distance( first_in1, last_in1 );
+				for_each( 0, dist, [&]( size_t n ) {
+					*(first_out + n) = func( *(first_in1 + n) );
+				} );
+				return first_out;
+			}
+
+
+			template<typename InputIt1, typename InputIt2, typename OutputIt, typename Func>
 			OutputIt transform_many( InputIt1 first_in1, InputIt1 last_in1, InputIt2 first_in2, OutputIt first_out, Func func ) {
 				static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
 				auto const dist = std::distance( first_in1, last_in1 );
