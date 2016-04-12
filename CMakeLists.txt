@@ -24,6 +24,7 @@ endif( )
 set(HEADER_PREFIXES
 		concurrent_queue
 		daw_algorithm
+		daw_array
 		daw_common_mixins
 		daw_exception
 		daw_expected		
@@ -35,7 +36,6 @@ set(HEADER_PREFIXES
 		make_unique
 		range_algorithm
 		scope_guard
-		
 )
 
 enable_testing( )
