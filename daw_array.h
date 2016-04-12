@@ -48,7 +48,7 @@ namespace daw {
 		size_t m_size;
 
 	public:
-		friend void swap( array & first, array & second ) noexcept;
+		friend void swap( array<T> & first, array<T> & second ) noexcept;
 
 		array( ) noexcept: m_begin( nullptr ), m_end( nullptr ), m_size( 0 ) { }
 
