@@ -72,7 +72,7 @@ namespace daw {
 		array( array const & other ):  m_begin( nullptr ), m_end( nullptr ), m_size( other.m_size ) {
 			m_begin = new value_type[m_size];
 			m_end = m_begin + m_size;
-			std::copy( m_begin, m_end, other.m_begin );
+			std::copy( other.m_begin, other.m_end, m_begin );
 		}
 
 		array & operator=( array rhs ) noexcept {
@@ -80,6 +80,12 @@ namespace daw {
 				swap( *this, rhs );	
 			}
 			return *this;
+		}
+
+		array( iterator arry, size_t count ): m_begin( nullptr ), m_end( nullptr ), m_size( count ) {
+			m_begin = new value_type[m_size];
+			m_end = m_begin + m_size;
+			std::copy( arry, arry + count, m_begin );
 		}
 
 		~array( ) {
@@ -90,6 +96,10 @@ namespace daw {
 				m_size = 0;
 				delete[] tmp;
 			}
+		}
+
+		explicit operator bool( ) const noexcept {
+			return nullptr == m_begin;
 		}
 
 		size_t size( ) const noexcept {
