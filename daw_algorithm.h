@@ -265,7 +265,7 @@ namespace daw {
 // 			return d_first;
 // 		}
 
-		template<typename InputIt1, typename OutputIt, typename UnaryOperation, typename InputIt2...>
+		template<typename InputIt1, typename OutputIt, typename UnaryOperation, typename ...InputIt2>
 		OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 additional_inputs..., OutputIt d_first, UnaryOperation unary_op ) {
 			while( first1 != last1 ) {
 				*d_first++ = unary_op( *first1++, (*additional_inputs++)... );
