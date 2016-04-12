@@ -25,7 +25,6 @@
 #include "daw_algorithm.h"
 #include <thread>
 #include <vector>
-#include "sp_parallel_task.h"
 #include <future>
 
 namespace daw {
@@ -53,7 +52,7 @@ namespace daw {
 					auto const chunk_sz = sz / nthreads;
 
 					std::vector<std::future<void>> workers;
-					for( size_t n = 0; n < ; n < sz; n += chunk_sz ) {
+					for( size_t n = 0; n < sz; n += chunk_sz ) {
 						workers.emplace_back( std::launch::async, [first, start = n, finish = std::min( n + chunk_sz, last ), func]( ) mutable {
 							for( auto i = start; i < finish; ++i ) {
 								func( first + i );

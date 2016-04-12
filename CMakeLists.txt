@@ -17,6 +17,10 @@ ELSEIF( ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" )
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -g -O3 -Wall -Wno-deprecated-declarations")
 ENDIF( )
 
+if(THREADS_HAVE_PTHREAD_ARG)
+	set(COMPILER_SPECIFIC_LIBS, "-lpthread" )
+endif( )
+
 set(HEADER_PREFIXES
 		concurrent_queue
 		daw_algorithm
@@ -43,7 +47,7 @@ LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 
 foreach( CUR_PREFIX ${HEADER_PREFIXES} )
 	add_executable( ${CUR_PREFIX}_test_bin ${CUR_PREFIX}.h ${CUR_PREFIX}_test.cpp header_libraries_test/test_main.cpp )
-	target_link_libraries( ${CUR_PREFIX}_test_bin ${Boost_LIBS} )
+	target_link_libraries( ${CUR_PREFIX}_test_bin ${Boost_LIBS} ${COMPILER_SPECIFIC_LIBS} )
 	add_test( ${CUR_PREFIX}_test, ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
 
