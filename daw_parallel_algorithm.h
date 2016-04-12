@@ -30,7 +30,9 @@
 namespace daw {
 	namespace algorithm {
 		namespace parallel {
-
+			namespace non {
+				using namespace daw::algorithm;
+			}
 			template<typename Func>
 			void for_each( size_t first, size_t last, Func func ) {
 				auto const nthreads = std::thread::hardware_concurrency( );
