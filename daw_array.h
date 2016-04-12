@@ -48,7 +48,7 @@ namespace daw {
 		size_t m_size;
 
 	public:
-		friend void swap( array<T> & first, array<T> & second ) noexcept;
+		template<class U> friend void swap( array<U> & first, array<U> & second ) noexcept;
 
 		array( ) noexcept: m_begin( nullptr ), m_end( nullptr ), m_size( 0 ) { }
 
