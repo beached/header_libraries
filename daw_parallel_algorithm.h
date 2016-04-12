@@ -50,7 +50,11 @@ namespace daw {
 				static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
 				auto const dist = std::distance( first_in1, last_in1 );
 				for_each( 0, dist, [&]( size_t n ) {
-					*(first_out + n) = func( *(first_in1 + n) );
+					auto res_it = first_out;
+					auto in_it1 = first_in1;
+					std::advance( res_it, n );
+					std::advance( in_it1, n );
+					*res_it = func( *in_it1 );
 				} );
 				return first_out;
 			}
@@ -60,7 +64,13 @@ namespace daw {
 				static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
 				auto const dist = std::distance( first_in1, last_in1 );
 				for_each( 0, dist, [&]( size_t n ) {
-					*(first_out + n) = func( *(first_in1 + n), *(first_in2 + n) );
+					auto res_it = first_out;
+					auto in_it1 = first_in1;
+					auto in_it2 = first_in2;
+					std::advance( res_it, n );
+					std::advance( in_it1, n );
+					std::advance( in_it2, n );
+					*res_it = func( *in_it1, *in_it2 );
 				} );
 				return first_out;
 			}
