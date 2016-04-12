@@ -34,6 +34,7 @@ namespace daw {
 				using namespace daw::algorithm;
 				using std::transform;
 			}
+			
 			template<typename Func>
 			void for_each( size_t first, size_t last, Func func ) {
 				auto const nthreads = std::thread::hardware_concurrency( );
@@ -48,10 +49,32 @@ namespace daw {
 				}
 			}
 
+			template<typename IterFirst, typename IterLast, typename Func>
+			void for_each_it( IterFirst first, IterLast IterLast, Func func ) {
+				auto const nthreads = std::thread::hardware_concurrency( );
+				auto const rng_sz = std::distance( first, last );
+				auto const chunk_sz =  rng_sz / nthreads;
+				std::vector<std::future<void>> workers;
+				size_t count = 0;
+				size_t next_chunk_sz = count + chunk_sz <= rng_sz ? chunk_sz : rng_sz - count;
+				auto it = first;
+				while( it != last ) {
+					next_chunk_sz = count + chunk_sz <= rng_sz ? chunk_sz : rng_sz - count;
+					auto next_pos = it;
+					std::advance( next_pos, next_chunk_sz );
+					workers.push_back( std::async( std::launch::async, [start = it, finish = next_pos, func]( ) {
+						for( auto i = start; i != finish; ++i ) {
+							func( *i );
+						}
+					} ) );
+					it = next_pos;
+				}
+			}
+
 			template<typename InputIt1, typename OutputIt, typename Func>
 			OutputIt transform( InputIt1 first_in1, InputIt1 last_in1, OutputIt first_out, Func func ) {
 				auto const dist = std::distance( first_in1, last_in1 );
-				for_each( 0, dist, [&]( size_t n ) {
+				for_each_it( 0, dist, [&]( size_t n ) {
 					auto res_it = first_out;
 					auto in_it1 = first_in1;
 					std::advance( res_it, n );
@@ -137,3 +160,4 @@ namespace daw {
 		}	// namespace parallel	
 	}	// namespace algorithm
 }	// namespace daw
+
