@@ -32,6 +32,7 @@ namespace daw {
 		namespace parallel {
 			namespace non {
 				using namespace daw::algorithm;
+				using std::transform;
 			}
 			template<typename Func>
 			void for_each( size_t first, size_t last, Func func ) {
