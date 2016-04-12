@@ -81,7 +81,15 @@ namespace daw {
 				static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
 				auto const dist = std::distance( first_in1, last_in1 );
 				for_each( 0, dist, [&]( size_t n ) {
-					*(first_out + n) = func( *(first_in1 + n), *(first_in2 + n), *(first_in3 + n) );
+					auto res_it = first_out;
+					auto in_it1 = first_in1;
+					auto in_it2 = first_in2;
+					auto in_it3 = first_in3;
+					std::advance( res_it, n );
+					std::advance( in_it1, n );
+					std::advance( in_it2, n );
+					std::advance( in_it3, n );
+					*res_it = func( *in_it1, *in_it2, *in_it3 );
 				} );
 				return first_out;
 			}
@@ -91,7 +99,17 @@ namespace daw {
 				static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
 				auto const dist = std::distance( first_in1, last_in1 );
 				for_each( 0, dist, [&]( size_t n ) {
-					*(first_out + n) = func( *(first_in1 + n), *(first_in2 + n), *(first_in3 + n), *(first_in4 + n) );
+					auto res_it = first_out;
+					auto in_it1 = first_in1;
+					auto in_it2 = first_in2;
+					auto in_it3 = first_in3;
+					auto in_it4 = first_in4;
+					std::advance( res_it, n );
+					std::advance( in_it1, n );
+					std::advance( in_it2, n );
+					std::advance( in_it3, n );
+					std::advance( in_it4, n );
+					*res_it = func( *in_it1, *in_it2, *in_it3, *in_it4 );
 				} );
 				return first_out;
 			}
@@ -101,7 +119,19 @@ namespace daw {
 				static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
 				auto const dist = std::distance( first_in1, last_in1 );
 				for_each( 0, dist, [&]( size_t n ) {
-					*(first_out + n) = func( *(first_in1 + n), *(first_in2 + n), *(first_in3 + n), *(first_in4 + n), *(first_in5 + n) );
+					auto res_it = first_out;
+					auto in_it1 = first_in1;
+					auto in_it2 = first_in2;
+					auto in_it3 = first_in3;
+					auto in_it4 = first_in4;
+					auto in_it5 = first_in5;
+					std::advance( res_it, n );
+					std::advance( in_it1, n );
+					std::advance( in_it2, n );
+					std::advance( in_it3, n );
+					std::advance( in_it4, n );
+					std::advance( in_it5, n );
+					*res_it = func( *in_it1, *in_it2, *in_it3, *in_it4, *in_it5 );
 				} );
 				return first_out;
 			}
