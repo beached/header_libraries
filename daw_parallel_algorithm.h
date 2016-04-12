@@ -50,7 +50,7 @@ namespace daw {
 			}
 
 			template<typename IterFirst, typename IterLast, typename Func>
-			void for_each_it( IterFirst first, IterLast IterLast, Func func ) {
+			void for_each_it( IterFirst first, IterLast last, Func func ) {
 				auto const nthreads = std::thread::hardware_concurrency( );
 				auto const rng_sz = std::distance( first, last );
 				auto const chunk_sz =  rng_sz / nthreads;
