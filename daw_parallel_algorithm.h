@@ -37,7 +37,7 @@ namespace daw {
 				auto const chunk_sz = (last - first) / nthreads;
 				std::vector<std::future<void>> workers;
 				for( auto n = first; n < last; n += chunk_sz ) {
-					workers.push_back( std::async( std::launch::async, [start = n, finish = std::min( n + chunk_sz, last ), func]( ) mutable {
+					workers.push_back( std::async( std::launch::async, [start = n, finish = std::min( n + chunk_sz, last ), func]( ) {
 						for( auto i = start; i < finish; ++i ) {
 							func( i );
 						}
