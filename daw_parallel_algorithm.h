@@ -57,7 +57,11 @@ namespace daw {
 //
 //
 			template< class InputIt, class OutputIt, class UnaryOperation >
-			using transform = std::transform;
+			OutputIt transform( InputIt it_begin, InputIt it_end, OutputIt oit_begin, UnaryOperation op ) {
+				return std::transform( it_begin, it_end, oit_begin, op );
+			}
+
+
 			template<typename InputIt1, typename InputIt2, typename OutputIt, typename Func>
 			OutputIt transform_many( InputIt1 first_in1, InputIt1 last_in1, InputIt2 first_in2, OutputIt first_out, Func func ) {
 				static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
