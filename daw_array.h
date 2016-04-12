@@ -22,11 +22,13 @@
 
 #pragma once
 
+#include <stdexcept>
+
 namespace daw {
 	template<typename T> struct array;
 	
 	template<typename T>
-	void swap( array<T> & first, array<T> & second ) nothrow {
+	void swap( array<T> & first, array<T> & second ) noexcept {
         using std::swap;
 		swap( first.m_begin, second.m_begin );
 		swap( first.m_end, second.m_end );
@@ -46,34 +48,34 @@ namespace daw {
 		size_t m_size;
 
 	public:
-		friend void swap( array & first, array & second ) nothrow;
+		friend void swap( array & first, array & second ) noexcept;
 
-		array( ): m_begin( nullptr ), m_end( nullptr ), m_size( 0 ) { }
+		array( ) noexcept: m_begin( nullptr ), m_end( nullptr ), m_size( 0 ) { }
 
 		array( size_t count ): m_begin( nullptr ), m_end( nullptr ), m_size( count ) {
-			m_begin = new value_type[count];
-			m_end = m_begin + count;
+			m_begin = new value_type[m_size];
+			m_end = m_begin + m_size;
 		}
 
 		array( size_t count, value_type def_value ): m_begin( nullptr ), m_end( nullptr ), m_size( count ) {
-			m_begin = new value_type[count];
-			m_end = m_begin + count;
+			m_begin = new value_type[m_size];
+			m_end = m_begin + m_size;
 
 			for( auto it = m_begin; it != m_end; ++it ) {
 				*it = def_value;
 			}
 		}
 
-		array( array && ) = default;
-		array & operator=( array && ) = default;
+		array( array && ) noexcept = default;
+		array & operator=( array && ) noexcept = default;
 
-		arary( array const & other ):  m_begin( nullptr ), m_end( nullptr ), m_size( other.m_size ) {
-			m_begin = new value_type[count];
-			m_end = m_begin + count;
+		array( array const & other ):  m_begin( nullptr ), m_end( nullptr ), m_size( other.m_size ) {
+			m_begin = new value_type[m_size];
+			m_end = m_begin + m_size;
 			std::copy( m_begin, m_end, other.m_begin );
 		}
 
-		array & operator=( array rhs ) {
+		array & operator=( array rhs ) noexcept {
 			if( this != &rhs ) {
 				swap( *this, rhs );	
 			}
@@ -85,32 +87,32 @@ namespace daw {
 				auto tmp = m_begin;
 				m_begin = nullptr;
 				m_end = nullptr;
-				count = 0;
+				m_size = 0;
 				delete[] tmp;
 			}
 		}
 
-		size_t size( ) const {
+		size_t size( ) const noexcept {
 			return m_size;
 		}
 
-		bool empty( ) const {
+		bool empty( ) const noexcept {
 			return 0 == m_size;
 		}
 	
-		iterator begin( ) {
+		iterator begin( ) noexcept {
 			return m_begin;
 		}
 
-		const_iterator begin( ) const {
+		const_iterator begin( ) const noexcept {
 			return m_begin;
 		}
 
-		iterator end( ) {
+		iterator end( ) noexcept {
 			return m_end;
 		}
 
-		const_iterator end( ) const {
+		const_iterator end( ) const noexcept {
 			return m_end;
 		}
 
@@ -124,14 +126,14 @@ namespace daw {
 
 		reference at( size_t pos ) {
 			if( !(pos < m_size) ) {
-				throw std::out_out_range( "position is beyond end of array" );
+				throw std::out_of_range( "position is beyond end of array" );
 			}
 			return *(m_begin + pos);
 		}
 
 		const_reference at( size_t pos ) const {
 			if( !(pos < m_size) ) {
-				throw std::out_out_range( "position is beyond end of array" );
+				throw std::out_of_range( "position is beyond end of array" );
 			}
 			return *(m_begin + pos);
 		}
