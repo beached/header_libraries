@@ -255,6 +255,15 @@ namespace daw {
 			auto finish = std::stable_partition( target, last, predicate );
 			return std::make_pair( start, finish );
 		}
+
+
+		template<typename InputIt1, typename InputIt2, typename OutputIt, typename UnaryOperation>
+		OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, OutputIt d_first, UnaryOperation unary_op ) {
+			while( first1 != last1 ) {
+				*d_first++ = unary_op( *first1++, *first2++ );
+			}
+			return d_first;
+		}
 	}	// namespace algorithm
 }	// namespace daw
 
