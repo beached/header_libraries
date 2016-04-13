@@ -30,77 +30,77 @@
 namespace daw {
 	namespace algorithm {
 		namespace parallel {
-			
-				template<typename Func>
-				void for_each( size_t first, size_t last, Func func ) {
-					auto const nthreads = std::thread::hardware_concurrency( );
-					auto const chunk_sz = (last - first) / nthreads;
-					std::vector<std::future<void>> workers;
-					for( auto n = first; n < last; n += chunk_sz ) {
-						workers.emplace_back( std::launch::async, [start = n, finish = std::min( n + chunk_sz, last ), func]( ) mutable {
-							for( auto i = start; i < finish; ++i ) {
-								func( i );
-							}
-						} );
-					}
-				}
 
-				template<typename Iterator, typename Func>
-				void for_each( Iterator first, Iterator last, Func func ) {
-					auto const nthreads = std::thread::hardware_concurrency( );
-					auto const sz = std::distance( first, last );
-					auto const chunk_sz = sz / nthreads;
-
-					std::vector<std::future<void>> workers;
-					for( size_t n = 0; n < sz; n += chunk_sz ) {
-						workers.emplace_back( std::launch::async, [first, start = n, finish = std::min( n + chunk_sz, last ), func]( ) mutable {
-							for( auto i = start; i < finish; ++i ) {
-								func( *(first + i) );
-							}
-						} );
-					}
-				}
-
-				template<typename InputIt1, typename InputIt2, typename OutputIt, typename Func>
-				OutputIt transform_many( InputIt1 first_in1, InputIt1 last1, InputIt2 first_in2, OutputIt first_out, Func func ) {
-					static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
-					auto const dist = std::distance( first_in1, first_out );
-					for_each( 0, dist, [&]( size_t n ) { 
-						*(first_out + n) = func( *(first_in1 + n), *(first_in2 + n) );
+			template<typename Func>
+			void for_each( size_t first, size_t last, Func func ) {
+				auto const nthreads = std::thread::hardware_concurrency( );
+				auto const chunk_sz = (last - first) / nthreads;
+				std::vector<std::future<void>> workers;
+				for( auto n = first; n < last; n += chunk_sz ) {
+					workers.emplace_back( std::launch::async, [start = n, finish = std::min( n + chunk_sz, last ), func]( ) mutable {
+						for( auto i = start; i < finish; ++i ) {
+							func( i );
+						}
 					} );
-					return first_out;
 				}
+			}
 
+			template<typename Iterator, typename Func>
+			void for_each( Iterator first, Iterator last, Func func ) {
+				auto const nthreads = std::thread::hardware_concurrency( );
+				auto const sz = std::distance( first, last );
+				auto const chunk_sz = sz / nthreads;
 
-				template<typename InputIt1, typename InputIt2, typename InputIt3, typename OutputIt, typename Func>
-				OutputIt transform_many( InputIt1 first_in1, InputIt1 last1, InputIt2 first_in2, InputIt3 first_in3, OutputIt first_out, Func func ) {
-					static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
-					auto const dist = std::distance( first_in1, first_out );
-					for_each( 0, dist, [&]( size_t n ) {
-						*(first_out + n) = func( *(first_in1 + n), *(first_in2 + n), *(first_in3 + n) );
+				std::vector<std::future<void>> workers;
+				for( size_t n = 0; n < sz; n += chunk_sz ) {
+					workers.emplace_back( std::launch::async, [first, start = n, finish = std::min( n + chunk_sz, last ), func]( ) mutable {
+						for( auto i = start; i < finish; ++i ) {
+							func( *(first + i) );
+						}
 					} );
-					return first_out;
 				}
+			}
 
-				template<typename InputIt1, typename InputIt2, typename InputIt3, typename InputIt4, typename OutputIt, typename Func>
-				OutputIt transform_many( InputIt1 first_in1, InputIt1 last1, InputIt2 first_in2, InputIt3 first_in3, InputIt4 first_in4, OutputIt first_out, Func func ) {
-					static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
-					auto const dist = std::distance( first_in1, first_out );
-					for_each( 0, dist, [&]( size_t n ) {
-						*(first_out + n) = func( *(first_in1 + n), *(first_in2 + n), *(first_in3 + n), *(first_in4 + n) );
-					} );
-					return first_out;
-				}
+			template<typename InputIt1, typename InputIt2, typename OutputIt, typename Func>
+			OutputIt transform_many( InputIt1 first_in1, InputIt1 last_in1, InputIt2 first_in2, OutputIt first_out, Func func ) {
+				static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
+				auto const dist = std::distance( first_in1, last_in1 );
+				for_each( 0, dist, [&]( size_t n ) {
+					*(first_out + n) = func( *(first_in1 + n), *(first_in2 + n) );
+				} );
+				return first_out;
+			}
 
-				template<typename InputIt1, typename InputIt2, typename InputIt3, typename InputIt4, typename InputIt5, typename OutputIt, typename Func>
-				OutputIt transform_many( InputIt1 first_in1, InputIt1 last1, InputIt2 first_in2, InputIt3 first_in3, InputIt4 first_in4, InputIt4 first_in5, OutputIt first_out, Func func ) {
-					static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
-					auto const dist = std::distance( first_in1, first_out );
-					for_each( 0, dist, [&]( size_t n ) {
-						*(first_out + n) = func( *(first_in1 + n), *(first_in2 + n), *(first_in3 + n), *(first_in4 + n), *(first_in5 + n) );
-					} );
-					return first_out;
-				}
+
+			template<typename InputIt1, typename InputIt2, typename InputIt3, typename OutputIt, typename Func>
+			OutputIt transform_many( InputIt1 first_in1, InputIt1 last_in1, InputIt2 first_in2, InputIt3 first_in3, OutputIt first_out, Func func ) {
+				static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
+				auto const dist = std::distance( first_in1, last_in1 );
+				for_each( 0, dist, [&]( size_t n ) {
+					*(first_out + n) = func( *(first_in1 + n), *(first_in2 + n), *(first_in3 + n) );
+				} );
+				return first_out;
+			}
+
+			template<typename InputIt1, typename InputIt2, typename InputIt3, typename InputIt4, typename OutputIt, typename Func>
+			OutputIt transform_many( InputIt1 first_in1, InputIt1 last_in1, InputIt2 first_in2, InputIt3 first_in3, InputIt4 first_in4, OutputIt first_out, Func func ) {
+				static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
+				auto const dist = std::distance( first_in1, last_in1 );
+				for_each( 0, dist, [&]( size_t n ) {
+					*(first_out + n) = func( *(first_in1 + n), *(first_in2 + n), *(first_in3 + n), *(first_in4 + n) );
+				} );
+				return first_out;
+			}
+
+			template<typename InputIt1, typename InputIt2, typename InputIt3, typename InputIt4, typename InputIt5, typename OutputIt, typename Func>
+			OutputIt transform_many( InputIt1 first_in1, InputIt1 last_in1, InputIt2 first_in2, InputIt3 first_in3, InputIt4 first_in4, InputIt4 first_in5, OutputIt first_out, Func func ) {
+				static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
+				auto const dist = std::distance( first_in1, last_in1 );
+				for_each( 0, dist, [&]( size_t n ) {
+					*(first_out + n) = func( *(first_in1 + n), *(first_in2 + n), *(first_in3 + n), *(first_in4 + n), *(first_in5 + n) );
+				} );
+				return first_out;
+			}
 
 		}	// namespace parallel	
 	}	// namespace algorithm
