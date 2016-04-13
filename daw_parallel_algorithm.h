@@ -45,22 +45,6 @@ namespace daw {
 				}
 			}
 
-			template<typename Iterator, typename Func>
-			void for_each( Iterator first, Iterator last, Func func ) {
-				auto const nthreads = std::thread::hardware_concurrency( );
-				auto const sz = std::distance( first, last );
-				auto const chunk_sz = sz / nthreads;
-
-				std::vector<std::future<void>> workers;
-				for( size_t n = 0; n < sz; n += chunk_sz ) {
-					workers.emplace_back( std::launch::async, [first, start = n, finish = std::min( n + chunk_sz, last ), func]( ) mutable {
-						for( auto i = start; i < finish; ++i ) {
-							func( *(first + i) );
-						}
-					} );
-				}
-			}
-
 			template<typename InputIt1, typename InputIt2, typename OutputIt, typename Func>
 			OutputIt transform_many( InputIt1 first_in1, InputIt1 last_in1, InputIt2 first_in2, OutputIt first_out, Func func ) {
 				static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
