@@ -62,42 +62,42 @@ namespace daw {
 				}
 
 				template<typename InputIt1, typename InputIt2, typename OutputIt, typename Func>
-				OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, OutputIt first_out, Func func ) {
+				OutputIt transform_many( InputIt1 first_in1, InputIt1 last1, InputIt2 first_in2, OutputIt first_out, Func func ) {
 					static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
-					auto const dist = std::distance( first, last );
+					auto const dist = std::distance( first_in1, first_out );
 					for_each( 0, dist, [&]( size_t n ) { 
-						*(first_out + n) = func( *(first1 + n), *(first2 + n) );
+						*(first_out + n) = func( *(first_in1 + n), *(first_in2 + n) );
 					} );
 					return first_out;
 				}
 
 
 				template<typename InputIt1, typename InputIt2, typename InputIt3, typename OutputIt, typename Func>
-				OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt3 first3, OutputIt first_out, Func func ) {
+				OutputIt transform_many( InputIt1 first_in1, InputIt1 last1, InputIt2 first_in2, InputIt3 first_in3, OutputIt first_out, Func func ) {
 					static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
-					auto const dist = std::distance( first, last );
+					auto const dist = std::distance( first_in1, first_out );
 					for_each( 0, dist, [&]( size_t n ) {
-						*(first_out + n) = func( *(first1 + n), *(first2 + n), *(first3 + n) );
+						*(first_out + n) = func( *(first_in1 + n), *(first_in2 + n), *(first_in3 + n) );
 					} );
 					return first_out;
 				}
 
 				template<typename InputIt1, typename InputIt2, typename InputIt3, typename InputIt4, typename OutputIt, typename Func>
-				OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt3 first3, InputIt4 first4, OutputIt first_out, Func func ) {
+				OutputIt transform_many( InputIt1 first_in1, InputIt1 last1, InputIt2 first_in2, InputIt3 first_in3, InputIt4 first_in4, OutputIt first_out, Func func ) {
 					static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
-					auto const dist = std::distance( first, last );
+					auto const dist = std::distance( first_in1, first_out );
 					for_each( 0, dist, [&]( size_t n ) {
-						*(first_out + n) = func( *(first1 + n), *(first2 + n), *(first3 + n), *(first4 + n) );
+						*(first_out + n) = func( *(first_in1 + n), *(first_in2 + n), *(first_in3 + n), *(first_in4 + n) );
 					} );
 					return first_out;
 				}
 
 				template<typename InputIt1, typename InputIt2, typename InputIt3, typename InputIt4, typename InputIt5, typename OutputIt, typename Func>
-				OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt3 first3, InputIt4 first4, InputIt4 first5, OutputIt first_out, Func func ) {
+				OutputIt transform_many( InputIt1 first_in1, InputIt1 last1, InputIt2 first_in2, InputIt3 first_in3, InputIt4 first_in4, InputIt4 first_in5, OutputIt first_out, Func func ) {
 					static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
-					auto const dist = std::distance( first, last );
+					auto const dist = std::distance( first_in1, first_out );
 					for_each( 0, dist, [&]( size_t n ) {
-						*(first_out + n) = func( *(first1 + n), *(first2 + n), *(first3 + n), *(first4 + n), *(first5 + n) );
+						*(first_out + n) = func( *(first_in1 + n), *(first_in2 + n), *(first_in3 + n), *(first_in4 + n), *(first_in5 + n) );
 					} );
 					return first_out;
 				}
