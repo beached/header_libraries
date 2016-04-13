@@ -76,7 +76,7 @@ namespace daw {
 				for_each_it( first_in1, last_in1, [&]( auto val ) {
 					auto res_it = first_out;
 					auto in_it1 = first_in1;
-					std::advance( res_it, n );
+					std::advance( res_it,  );
 					std::advance( in_it1, n );
 					*res_it = func( *in_it1 );
 				} );

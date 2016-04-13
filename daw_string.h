@@ -145,7 +145,7 @@ namespace daw {
 		//////////////////////////////////////////////////////////////////////////
 		// Summary: takes a format string like "{0} {1} {2}" and in this case 3 parameters
 		template<typename Arg, typename... Args>
-		details::string_t string_format( details::string_t format, Arg arg, Args... args ) {
+		details::string_t fmt( details::string_t format, Arg arg, Args... args ) {
 			std::regex const reg( R"^(\{(\d+(:\d)*)\})^" );
 			static std::stringstream ss;
 			clear( ss );
@@ -166,7 +166,7 @@ namespace daw {
 						int precision = boost::lexical_cast<int>(delims[1]);
 						ss <<std::fixed <<std::setprecision( precision ) <<boost::lexical_cast<double>(arguments[pos]);
 					} else {
-						throw std::out_of_range( string_format( "Unknown string format.  Too many colons(", delims.size( ), "): ", sm[1].str( ) ) );
+						throw std::out_of_range( fmt( "Unknown string format.  Too many colons(", delims.size( ), "): ", sm[1].str( ) ) );
 					}
 				}
 				format = sm.suffix( ).str( );

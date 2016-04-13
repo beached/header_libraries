@@ -33,6 +33,8 @@ set(HEADER_PREFIXES
 		daw_string
 		daw_traits
 		daw_utility
+		daw_zipcontainer
+		daw_zipiter
 		make_unique
 		range_algorithm
 		scope_guard
