@@ -21,19 +21,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw_zipcontainer.h"
+#include "daw_zipiter.h"
 
 namespace daw {
 	template<typename... Containers>
 	struct ZipContainer {
-		using iterator = typename ZipIter<Containers::iterator...>;
-		using const_iterator = typename ZipIter<Containers::const_iterator...>;
+		using iterator = typename ZipIter<decltype(std::declval<Containers>( ).begin( ))...>;
+		using const_iterator = typename ZipIter<decltype(std::declval<std::add_const_t<Containers>>( ).begin( ))...>;
 		private:
 			iterator m_begin;
 			iterator m_end;
 
 		public:
-		ZipContainer( Containers... containers ): m_begin( make_zipiter( std::begin( containers )... ), m_end( std::end( containers )... ) { }
+		ZipContainer( Containers... containers ): m_begin( make_zipiter( std::begin( containers )... ) ), m_end( make_zipiter( std::end( containers )... ) ) { }
 
 		iterator begin( ) {
 			return m_begin;
@@ -59,5 +59,10 @@ namespace daw {
 			return m_end;
 		}
 	};	// struct ZipContainer
+
+	template<typename... Containers>
+	ZipContainer<Containers...> make_zipcontainer( Containers... args ) {
+		return ZipContainer<Containers...>( args... );
+	}
 }	// namespace daw
 
