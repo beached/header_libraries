@@ -300,6 +300,15 @@ namespace daw {
 				return static_cast<size_t>(value);
 			}
 		};	// struct enum_class_hash
+
+
+		template<typename T>
+		T clamp( T const & value, T const & max_value ) {
+			if( value > max_value ) {
+				return max_value;
+			}
+			return value;
+		}
 	}	// namespace algorithm
 }	// namespace daw
 
