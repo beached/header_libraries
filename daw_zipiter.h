@@ -63,11 +63,7 @@ namespace daw {
 		template <class... Ts, std::size_t... Is>
 		void advance( std::tuple<Ts...>& tpl, std::index_sequence<Is...>, intmax_t n ) {
 			using expander = int[];
-			expander { 0,
-				(void(
-				std::advance( std::get<Is>( tpl ), n );
-			), 0)...
-			};
+			expander { 0, (void( std::advance( std::get<Is>( tpl ), n ) ), 0)... };
 		}
 
 		template <class... Ts>
