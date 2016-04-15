@@ -126,7 +126,6 @@ namespace daw {
 				size_t pos = 0;
 				auto it_begin = first; 
 				auto next_last = clamp( pos + max_chunk_sz, sz );
-				auto last_pos = pos;
 				auto it_end = it_begin;
 				std::advance( it_end, next_last );
 				std::vector<std::future<void( )>> tasks;
@@ -149,7 +148,9 @@ namespace daw {
 			template<typename... ForwardIterator, typename Func>
 			void for_each_it( ZipIter<ForwardIterator...> z_fwdit, Func func ) {
 				static_assert(ZipIter<ForwardIterator...>::size( ) >= 3, "Must supply parameters like {out, begin1, end1, ..., beginn, endn}");
-				size_t const sz = std::distance( z_fwdit.get<0>( ), z_fwdit.get<1>( ) );
+				auto i1 = z_fwdit.get<0>( );
+				auto i2 = z_fwdit.get<1>( );
+				size_t const sz = std::distance( i1, i2 );
 				assert( sz >= 0 );
 				auto const max_chunk_sz = sz / std_task_manager( ).max_concurrent( );
 				size_t pos = 0;

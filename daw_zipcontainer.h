@@ -26,8 +26,8 @@
 namespace daw {
 	template<typename... Containers>
 	struct ZipContainer {
-		using iterator = typename ZipIter<decltype(std::declval<Containers>( ).begin( ))...>;
-		using const_iterator = typename ZipIter<decltype(std::declval<std::add_const_t<Containers>>( ).begin( ))...>;
+		using iterator = ZipIter<decltype(std::declval<Containers...>( ).begin( ))>;
+		using const_iterator = ZipIter<decltype(std::declval<std::add_const_t<Containers>>( ).begin( ))...>;
 		private:
 			iterator m_begin;
 			iterator m_end;
