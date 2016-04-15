@@ -25,6 +25,7 @@
 #include "daw_algorithm.h"
 #include <thread>
 #include <vector>
+#include <list>
 #include <future>
 #include "daw_zipcontainer.h"
 
@@ -54,7 +55,7 @@ namespace daw {
 			template<typename task_t>
 			class task_manager {
 				size_t m_threads;
-				std::vector<std::future<void>> m_workers;
+				std::list<std::future<void>> m_workers;
 				std::vector<task_t> m_tasks;
 				std::atomic<bool> m_continue;
 
