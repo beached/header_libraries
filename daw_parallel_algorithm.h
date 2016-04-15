@@ -26,6 +26,7 @@
 #include <thread>
 #include <vector>
 #include <future>
+#include "daw_zipcontainer.h"
 
 namespace daw {
 	namespace algorithm {
@@ -64,7 +65,7 @@ namespace daw {
 					std::advance( next_pos, next_chunk_sz );
 					workers.push_back( std::async( std::launch::async, [start = it, finish = next_pos, func]( ) {
 						for( auto i = start; i != finish; ++i ) {
-							func( *i );
+							func( i );
 						}
 					} ) );
 					it = next_pos;
@@ -73,7 +74,8 @@ namespace daw {
 
 			template<typename InputIt1, typename OutputIt, typename Func>
 			OutputIt transform( InputIt1 first_in1, InputIt1 last_in1, OutputIt first_out, Func func ) {
-				for_each_it( first_in1, last_in1, [&]( auto val ) {
+				//auto z = daw::make_
+				for_each_it( first_in1, last_in1, [&]( auto it ) {
 					auto res_it = first_out;
 					auto in_it1 = first_in1;
 					std::advance( res_it,  );

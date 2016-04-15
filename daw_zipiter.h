@@ -116,7 +116,7 @@ namespace daw {
 			return tmp;
 		}	
 
-		advance( intmax_t n ) {
+		void advance( intmax_t n ) {
 			advance( m_values, n );
 		}
 
