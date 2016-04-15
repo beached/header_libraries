@@ -40,16 +40,15 @@ namespace daw {
 			template<typename task_t> class task_manager;
 
 			template<typename task_t=std_task_t>
-			std::shared_ptr<task_manager<task_t>> & get_task_manager( ) {
+			std::shared_ptr<task_manager<task_t>> get_task_manager( ) {
 				static const size_t number_of_workers = std::thread::hardware_concurrency( ) > 0 ? std::thread::hardware_concurrency( ) + 1 : 2;
-				static auto tsk = new task_manager<task_t>( number_of_workers );
-				static auto manager = std::shared_ptr<task_manager<task_t>>( tsk );
+				static auto manager = std::shared_ptr<task_manager<task_t>>( new task_manager<task_t>( number_of_workers ) );
 
 				return manager; 
 			}
 
-			auto & std_task_manager( ) {
-				return *get_task_manager<std_task_t>( );
+			auto std_task_manager( ) {
+				return get_task_manager<std_task_t>( );
 			}
 
 			template<typename task_t>
@@ -74,7 +73,7 @@ namespace daw {
 				task_manager( size_t number_of_workers ):m_threads( number_of_workers ), m_workers( number_of_workers, std::async( std::launch::async, [&] { job_loop( ); } ) ), m_tasks( ), m_continue( true ) { }
 			public:
 				template<typename T>
-				friend std::shared_ptr<task_manager<T>> & get_task_manager( );
+				friend std::shared_ptr<task_manager<T>> get_task_manager( );
 
 				void stop( ) {
 					m_continue = false;
@@ -122,7 +121,7 @@ namespace daw {
 			void for_each_it( ForwardIteratorFirst first, ForwardIteratorLast last, Func func ) {
 				size_t const sz = std::distance( first, last );
 				assert( sz >= 0 );
-				auto const max_chunk_sz = sz/std_task_manager( ).max_concurrent( );
+				auto const max_chunk_sz = sz/std_task_manager( )->max_concurrent( );
 				size_t pos = 0;
 				auto it_begin = first; 
 				auto next_last = clamp( pos + max_chunk_sz, sz );
@@ -148,15 +147,12 @@ namespace daw {
 			template<typename... ForwardIterator, typename Func>
 			void for_each_it( ZipIter<ForwardIterator...> z_fwdit, Func func ) {
 				static_assert(ZipIter<ForwardIterator...>::size( ) >= 3, "Must supply parameters like {out, begin1, end1, ..., beginn, endn}");
-				auto i1 = z_fwdit.get<0>( );
-				auto i2 = z_fwdit.get<1>( );
-				size_t const sz = std::distance( i1, i2 );
+				auto it_begin = std::get<0>( z_fwdit.as_tuple( ) );
+				size_t const sz = std::distance( it_begin, std::get<1>( z_fwdit.as_tuple( ) ) );
 				assert( sz >= 0 );
-				auto const max_chunk_sz = sz / std_task_manager( ).max_concurrent( );
+				auto const max_chunk_sz = sz / std_task_manager( )->max_concurrent( );
 				size_t pos = 0;
-				auto it_begin = z_fwdit.get<0>( );
 				auto next_last = clamp( pos + max_chunk_sz, sz );
-				auto last_pos = pos;
 				auto it_end = it_begin;
 				std::advance( it_end, next_last );
 				std::vector<std::future<void( )>> tasks;
@@ -177,7 +173,7 @@ namespace daw {
 			OutputIt transform( InputIt1 first_in1, InputIt1 last_in1, OutputIt first_out, Func func ) {
 				auto zit = make_zipiter( first_out, first_in1, last_in1 );
 				for_each_it( zit, []( auto it ) {
-					*get<2>( it ) == *get<0>( it );
+					*std::get<2>( it ) == *std::get<0>( it );
 				} );
 				return first_out;
 			}

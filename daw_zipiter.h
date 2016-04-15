@@ -117,12 +117,7 @@ namespace daw {
 		}
 
 		template<size_t pos>
-		auto & get( ) {
-			return std::get<pos>( m_values );
-		}
-
-		template<size_t pos>
-		auto const & get( ) const {
+		auto & get( ) noexcept {
 			return std::get<pos>( m_values );
 		}
 

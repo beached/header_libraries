@@ -309,6 +309,27 @@ namespace daw {
 			}
 			return value;
 		}
+
+		template<std::size_t N>
+		struct tuple_functor {
+			template<typename T, typename F>
+			static void run( std::size_t i, T&& t, F&& f ) {
+				const std::size_t I = (N - 1);
+				switch( i ) {
+				case I:
+					std::forward<F>( f )( std::get<I>(std::forward<T>( t ) ) );
+					break;
+				default:
+					tuple_functor<I>::run( i, std::forward<T>( t ), std::forward<F>( f ) );
+				}
+			}
+		};	// struct tuple_functor
+
+		template<>
+		struct tuple_functor<0> {
+			template<typename T, typename F>
+			static void run( std::size_t, T, F ) { }
+		};	// struct tuple_functor
 	}	// namespace algorithm
 }	// namespace daw
 
