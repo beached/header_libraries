@@ -413,3 +413,4 @@ namespace daw {
 		return MoveCapture<T>( std::move( val ) );
 	}
 }	// namespace daw
+

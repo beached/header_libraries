@@ -25,9 +25,5 @@
 #include "daw_parallel_algorithm.h"
 
 BOOST_AUTO_TEST_CASE( daw_parallel_algorithm_none_yet ) {
-	
-}
-
-BOOST_AUTO_TEST_CASE( daw_parallel_algorithm_none_yet ) {
 }
 
