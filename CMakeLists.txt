@@ -30,13 +30,13 @@ set(HEADER_PREFIXES
 		daw_expected		
 		daw_parallel_algorithm
 		daw_range	
+		daw_range_algorithm
 		daw_string
 		daw_traits
 		daw_utility
 		daw_zipcontainer
 		daw_zipiter
 		make_unique
-		range_algorithm
 		scope_guard
 )
 
