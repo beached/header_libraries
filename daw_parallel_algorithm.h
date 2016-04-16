@@ -104,20 +104,20 @@ namespace daw {
 //
 //			};	// struct task_manager
 //		
-//			template<typename Func>
-//			void for_each( size_t first, size_t last, Func func ) {
-//				auto const nthreads = std::thread::hardware_concurrency( );
-//				auto const chunk_sz = (last - first) / nthreads;
-//				std::vector<std::future<void>> workers;
-//				for( auto n = first; n < last; n += chunk_sz ) {
-//					workers.push_back( std::async( std::launch::async, [start = n, finish = std::min( n + chunk_sz, last ), func]( ) {
-//						for( auto i = start; i != finish; ++i ) {
-//							func( i );
-//						}
-//					} ) );
-//				}
-//			}
-//
+			template<typename Func>
+			void for_each( size_t first, size_t last, Func func ) {
+				auto const nthreads = std::thread::hardware_concurrency( );
+				auto const chunk_sz = (last - first) / nthreads;
+				std::vector<std::future<void>> workers;
+				for( auto n = first; n < last; n += chunk_sz ) {
+					workers.push_back( std::async( std::launch::async, [start = n, finish = std::min( n + chunk_sz, last ), func]( ) {
+						for( auto i = start; i != finish; ++i ) {
+							func( i );
+						}
+					} ) );
+				}
+			}
+
 //			template<typename ForwardIteratorFirst, typename ForwardIteratorLast, typename Func>
 //			void for_each_it( ForwardIteratorFirst first, ForwardIteratorLast last, Func func ) {
 //				size_t const sz = std::distance( first, last );
