@@ -106,12 +106,14 @@ namespace daw {
 //		
 			template<typename Func>
 			void for_each( size_t first, size_t last, Func func ) {
-				auto const nthreads = std::thread::hardware_concurrency( );
+				static size_t const nthreads = std::thread::hardware_concurrency( ) > 0 ? std::thread::hardware_concurrency( ) : 1; 
 				auto const chunk_sz = (last - first) / nthreads;
 				std::vector<std::future<void>> workers;
-				for( auto n = first; n < last; n += chunk_sz ) {
-					workers.push_back( std::async( std::launch::async, [start = n, finish = std::min( n + chunk_sz, last ), func]( ) {
-						for( auto i = start; i != finish; ++i ) {
+				for( size_t n = 0; n<nthreads; ++n ) {
+					workers.push_back( std::async( std::launch::async, [=]( ) {
+						auto const start = first + n*chunk_sz;
+						auto const finish = start + chunk_sz <= last ? start + chunk_sz : last; 
+						for( auto i = start; i < finish; ++i ) {
 							func( i );
 						}
 					} ) );
