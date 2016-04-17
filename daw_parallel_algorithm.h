@@ -42,7 +42,9 @@ namespace daw {
 			template<typename task_t=std_task_t>
 			std::shared_ptr<task_manager<task_t>> & get_task_manager( ) {
 				static const size_t number_of_workers = std::thread::hardware_concurrency( ) > 0 ? std::thread::hardware_concurrency( ) + 1 : 2;
-				static auto manager = std::make_shared<task_manager<task_t>>( number_of_workers );
+				static auto tsk = new task_manager<task_t>( number_of_workers );
+				static auto manager = std::shared_ptr<task_manager<task_t>>( tsk );
+
 				return manager; 
 			}
 
@@ -69,9 +71,11 @@ namespace daw {
 					return result;
 				}
 
-				task_manager( size_t number_of_workers ):m_threads( number_of_workers ), m_workers( number_of_workers, job_loop ), m_tasks( ), m_continue( true ) { }
+				task_manager( size_t number_of_workers ):m_threads( number_of_workers ), m_workers( number_of_workers, std::async( std::launch::async, [&] { job_loop( ); } ) ), m_tasks( ), m_continue( true ) { }
 			public:
-				template<typename T> friend task_manager<T> & get_task_manager( size_t );
+				template<typename T>
+				friend std::shared_ptr<task_manager<T>> & get_task_manager( );
+
 				void stop( ) {
 					m_continue = false;
 				}
@@ -114,7 +118,6 @@ namespace daw {
 				}
 			}
 
-<<<<<<< HEAD
 			template<typename ForwardIteratorFirst, typename ForwardIteratorLast, typename Func>
 			void for_each_it( ForwardIteratorFirst first, ForwardIteratorLast last, Func func ) {
 				size_t const sz = std::distance( first, last );
@@ -126,30 +129,13 @@ namespace daw {
 				auto last_pos = pos;
 				auto it_end = it_begin;
 				std::advance( it_end, next_last );
+				std::vector<std::future<void( )>> tasks;
 				while( pos < sz ) {
-					std_task_manager( ).add_task( [start = it_begin, finish = it_end, func]( ) {
+					tasks.push_back( std::async( std::launch::async, [start = it_begin, finish = it_end, func]( ) {
 						for( auto it = start; it != finish; ++it ) {
 							func( it );
-=======
-			template<typename IterFirst, typename IterLast, typename Func>
-			void for_each_it( IterFirst first, IterLast last, Func func ) {
-				auto const nthreads = std::thread::hardware_concurrency( );
-				auto const rng_sz = std::distance( first, last );
-				auto const chunk_sz =  rng_sz / nthreads;
-				std::vector<std::future<void>> workers;
-				size_t count = 0;
-				size_t next_chunk_sz = count + chunk_sz <= rng_sz ? chunk_sz : rng_sz - count;
-				auto it = first;
-				while( it != last ) {
-					next_chunk_sz = count + chunk_sz <= rng_sz ? chunk_sz : rng_sz - count;
-					auto next_pos = it;
-					std::advance( next_pos, next_chunk_sz );
-					workers.push_back( std::async( std::launch::async, [start = it, finish = next_pos, func]( ) {
-						for( auto i = start; i != finish; ++i ) {
-							func( i );
->>>>>>> 286cc670885efd0d4251444626d793dcb9dc1b9f
 						}
-					} );
+					} ) );
 					it_begin = it_end;
 					pos += next_last;
 					next_last = clamp( pos + max_chunk_sz, sz );
@@ -159,18 +145,8 @@ namespace daw {
 
 			template<typename InputIt1, typename OutputIt, typename Func>
 			OutputIt transform( InputIt1 first_in1, InputIt1 last_in1, OutputIt first_out, Func func ) {
-<<<<<<< HEAD
 				for_each_it( first_in1, last_in1, []( auto it ) {
 					*first_out++ = func( *it );
-=======
-				//auto z = daw::make_
-				for_each_it( first_in1, last_in1, [&]( auto it ) {
-					auto res_it = first_out;
-					auto in_it1 = first_in1;
-					std::advance( res_it,  );
-					std::advance( in_it1, n );
-					*res_it = func( *in_it1 );
->>>>>>> 286cc670885efd0d4251444626d793dcb9dc1b9f
 				} );
 				return first_out;
 			}
