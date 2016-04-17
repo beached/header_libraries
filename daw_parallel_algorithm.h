@@ -143,15 +143,17 @@ namespace daw {
 				}
 			}
 
-			template<typename ForwardIteratorsFirst, typename ForwardIteratorsLast, typename Func>
-			void for_each_it( ZipIter<ForwardIteratorsFirst...> z_begin, ZipIter<ForwardIteratorsLast...> z_end, Func func ) {
-				assert( z_begin.size( ) > 0 );
-				assert( z_end.size( ) > 0 );
-				size_t const sz = std::distance( z_begin.get<0>( ), z_end.get<0>( ) );
+			//////////////////////////////////////////////////////////////////////////
+			/// Summary: Iterate over provided iterators.  Assumes that iterator
+			/// 0 is start and 1 is finish.  
+			template<typename... ForwardIterator, typename Func>
+			void for_each_it( ZipIter<ForwardIterator...> z_fwdit, Func func ) {
+				static_assert(ZipIter<ForwardIterator...>::size( ) >= 3, "Must supply parameters like {out, begin1, end1, ..., beginn, endn}");
+				size_t const sz = std::distance( z_fwdit.get<0>( ), z_fwdit.get<1>( ) );
 				assert( sz >= 0 );
 				auto const max_chunk_sz = sz / std_task_manager( ).max_concurrent( );
 				size_t pos = 0;
-				auto it_begin = first;
+				auto it_begin = z_fwdit.get<0>( );
 				auto next_last = clamp( pos + max_chunk_sz, sz );
 				auto last_pos = pos;
 				auto it_end = it_begin;
@@ -172,9 +174,9 @@ namespace daw {
 
 			template<typename InputIt1, typename OutputIt, typename Func>
 			OutputIt transform( InputIt1 first_in1, InputIt1 last_in1, OutputIt first_out, Func func ) {
-				
-				for_each_it( first_in1, last_in1, []( auto it ) {
-					*first_out++ = func( *it );
+				auto zit = make_zipiter( first_out, first_in1, last_in1 );
+				for_each_it( zit, []( auto it ) {
+					*get<2>( it ) == *get<0>( it );
 				} );
 				return first_out;
 			}
