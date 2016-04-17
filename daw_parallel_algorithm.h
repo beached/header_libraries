@@ -143,8 +143,36 @@ namespace daw {
 				}
 			}
 
+			template<typename ForwardIteratorsFirst, typename ForwardIteratorsLast, typename Func>
+			void for_each_it( ZipIter<ForwardIteratorsFirst...> z_begin, ZipIter<ForwardIteratorsLast...> z_end, Func func ) {
+				assert( z_begin.size( ) > 0 );
+				assert( z_end.size( ) > 0 );
+				size_t const sz = std::distance( z_begin.get<0>( ), z_end.get<0>( ) );
+				assert( sz >= 0 );
+				auto const max_chunk_sz = sz / std_task_manager( ).max_concurrent( );
+				size_t pos = 0;
+				auto it_begin = first;
+				auto next_last = clamp( pos + max_chunk_sz, sz );
+				auto last_pos = pos;
+				auto it_end = it_begin;
+				std::advance( it_end, next_last );
+				std::vector<std::future<void( )>> tasks;
+				while( pos < sz ) {
+					tasks.push_back( std::async( std::launch::async, [start = it_begin, finish = it_end, func]( ) {
+						for( auto it = start; it != finish; ++it ) {
+							func( it );
+						}
+					} ) );
+					it_begin = it_end;
+					pos += next_last;
+					next_last = clamp( pos + max_chunk_sz, sz );
+					std::advance( it_end, next_last );
+				}
+			}
+
 			template<typename InputIt1, typename OutputIt, typename Func>
 			OutputIt transform( InputIt1 first_in1, InputIt1 last_in1, OutputIt first_out, Func func ) {
+				
 				for_each_it( first_in1, last_in1, []( auto it ) {
 					*first_out++ = func( *it );
 				} );

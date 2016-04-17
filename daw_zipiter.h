@@ -33,10 +33,10 @@ namespace daw {
 		template <class... Ts, std::size_t... Is>
 		void increment( std::tuple<Ts...>& tpl, std::index_sequence<Is...> ) {
 			using expander = int[];
-			expander{0,
-				( void( 
-					++std::get<Is>( tpl )
-				 ), 0 )...
+			expander { 0,
+				(void(
+				++std::get<Is>( tpl )
+				), 0)...
 			};
 		}
 
@@ -48,10 +48,10 @@ namespace daw {
 		template <class... Ts, std::size_t... Is>
 		void decrement( std::tuple<Ts...>& tpl, std::index_sequence<Is...> ) {
 			using expander = int[];
-			expander{0,
-				( void( 
-					--std::get<Is>( tpl )
-				 ), 0 )...
+			expander { 0,
+				(void(
+				--std::get<Is>( tpl )
+				), 0)...
 			};
 		}
 
@@ -63,10 +63,10 @@ namespace daw {
 		template <class... Ts, std::size_t... Is>
 		void advance( std::tuple<Ts...>& tpl, std::index_sequence<Is...>, intmax_t n ) {
 			using expander = int[];
-			expander{0,
-				( void( 
-					std::advance( std::get<Is>( tpl ), n );
-				 ), 0 )...
+			expander { 0,
+				(void(
+				std::advance( std::get<Is>( tpl ), n );
+			), 0)...
 			};
 		}
 
@@ -93,34 +93,47 @@ namespace daw {
 		types_t const & as_tuple( ) const {
 			return m_values;
 		}
-		
+
 		ZipIter & operator++( ) {
 			increment( m_values );
 			return *this;
-		}	
+		}
 
 		ZipIter operator++( int ) {
 			auto tmp = *this;
-			++( *this );
+			++(*this);
 			return tmp;
-		}	
+		}
 
 		ZipIter & operator--( ) {
 			decrement( m_values );
 			return *this;
-		}	
+		}
 
 		ZipIter operator--( int ) {
 			auto tmp = *this;
-			--( *this );
+			--(*this);
 			return tmp;
-		}	
+		}
 
 		void advance( intmax_t n ) {
 			advance( m_values, n );
 		}
 
-	};	// class ZipIter
+		template<size_t pos>
+		auto & get( ) {
+			return std::get<pos>( m_values );
+		}
+
+		template<size_t pos>
+		auto const & get( ) const {
+			return std::get<pos>( m_values );
+		}
+
+		constexpr static size_t size( ) {
+			return std::tuple_size<T...>::value;
+		}
+	};	// struct ZipIter
 
 	template<typename... T>
 	bool operator==( ZipIter<T...> const & lhs, ZipIter<T...> const & rhs ) {
