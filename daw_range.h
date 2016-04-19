@@ -29,7 +29,19 @@
 
 namespace daw {
 	namespace range {
-	template<typename Iterator>
+		namespace impl {
+			template<typename Iterator>
+			auto to_refvec( Iterator first, Iterator last ) {
+				using value_type = typename ::std::iterator_traits<Iterator>::value_type;
+				::std::vector<::std::reference_wrapper<value_type>> result; 
+				for( auto it = first; it != last; ++it ) {
+					result.push_back( std::ref( *it ) );
+				}
+				return result;
+			}
+		}	// namespace impl
+
+		template<typename Iterator>
 		struct ReferenceRange {
 			using value_type = typename ::std::iterator_traits<Iterator>::value_type;
 			using reference = typename ::std::iterator_traits<Iterator>::reference;
@@ -38,8 +50,7 @@ namespace daw {
 			using const_iterator = const iterator;
 			using difference_type = typename ::std::iterator_traits<Iterator>::difference_type;
 		private:
-			iterator m_begin;
-			iterator m_end;
+			::std::vector<::std::reference_wrapper<value_type>> m_values;
 		public:
 			ReferenceRange( ) = default;
 			ReferenceRange( ReferenceRange const & ) = default;
@@ -48,198 +59,163 @@ namespace daw {
 			ReferenceRange & operator=( ReferenceRange const & ) = default;
 			ReferenceRange & operator=( ReferenceRange && ) = default;
 
-			ReferenceRange( Iterator First, Iterator Last ):				
-				m_begin( First ),
-				m_end( Last ) { 
-			}
-
-			ReferenceRange& move_next( ) {
-				assert( m_begin != m_end );
-				++m_begin;
-				return *this;
-			}
-
-			ReferenceRange& move_back( ) {
-				--m_begin;
-				return *this;
-			}
-
-			ReferenceRange& move_back( Iterator start ) {
-				assert( m_begin > start );
-				--m_begin;
-				return *this;
-			}
+			ReferenceRange( Iterator First, Iterator Last ): m_values( impl::to_refvec( First, Last ) ) { } 
 
 			bool at_end( ) const {
-				return !(m_begin != m_end);
+				return begin( ) == end( );
 			}
-
+			
 			bool empty( ) const {
-				return !(m_begin != m_end);
+				return !(begin( ) != end( ));
 			}
 
 			iterator begin( ) {
-				return m_begin;
-			}
-
-			void advance( difference_type n ) {
-				::std::advance( m_begin, n );
-			}
-
-			void set_begin( iterator i ) {
-				m_begin = i;
+				return m_values.begin( );
 			}
 
 			iterator end( ) {
-				return m_end;
-			}
-
-			void set_end( iterator i ) {
-				m_end = i;
-			}
-
-			void set( iterator First, iterator Last ) {
-				m_begin = First;
-				m_end = Last;
+				return m_values.end( );
 			}
 
 			const_iterator begin( ) const {
-				return m_begin;
+				return m_values.begin( );
 			}
 
 			const_iterator end( ) const {
-				return m_end;
+				return m_values.end( );
 			}
 
 			const_iterator cbegin( ) const {
-				return m_begin;
+				return m_values.cbegin( );
+			}
 			}
 
 			const_iterator cend( ) const {
-				return m_end;
+				return m_values.cend( );
 			}
 
 			reference front( ) {
-				return *m_begin;
+				return m_values.front( );
 			}
 
 			const_reference front( ) const {
-				return *m_begin;
+				return m_values.front( );
 			}
 
 			reference back( ) {
-				auto it = m_begin;
-				::std::advance( it, size( ) -1 );
-				return *it; 
+				return m_values.back( );
 			}
 
 			const_reference back( ) const {
-				auto it = m_begin;
-				::std::advance( it, size( ) -1 );
-				return *it; 
-			}
-
-			reference operator*( ) {
-				return *m_begin;
-			}
-
-			const_reference operator*( ) const {
-				return *m_begin;
+				return m_values.back( );
 			}
 
 			size_t size( ) const {
-				return static_cast<size_t>( ::std::distance( m_begin, m_end ) );
+				return m_values.size( );
 			}
 
 			reference operator[]( size_t pos ) {
-				return *(m_begin + pos);
+				return m_values[pos].get( );
 			}
 
 			const_reference operator[]( size_t pos ) const {
-				return *(m_begin + pos);
+				return m_values[pos].get( );
 			}
 
 			bool operator==( ReferenceRange const & other ) const {
-				return ::std::equal( m_begin, m_end, other.m_begin );
+				return ::std::equal( begin( ), end( ), other.begin( ) );
 			}
 
 			bool operator!=( ReferenceRange const & other ) const {
-				return !::std::equal( m_begin, m_end, other.m_begin );
+				return !::std::equal( begin( ), end( ), other.begin( ) );
 			}
 
-			ReferenceRange<ReferenceRange> sort( ) {
-				ReferenceRange<ReferenceRange> result( *this );
+			ReferenceRange sort( ) {
+				ReferenceRange result( *this );
 				::std::sort( ::std::begin( result ), ::std::end( result ) );
 				return result;
 			}
 
 			template<typename UnaryPredicate>
-			ReferenceRange<ReferenceRange> sort( UnaryPredicate && predicate ) {
-				ReferenceRange<ReferenceRange> result( *this );
+			ReferenceRange sort( UnaryPredicate && predicate ) {
+				ReferenceRange result( *this );
 				::std::sort( ::std::begin( result ), ::std::end( result ), ::std::forward<UnaryPredicate>( predicate ) );
 				return result;
 			}
 
-			ReferenceRange<ReferenceRange> stable_sort( ) {
-				ReferenceRange<ReferenceRange> result( *this );
+			ReferenceRange stable_sort( ) {
+				ReferenceRange result( *this );
 				::std::stable_sort( ::std::begin( result ), ::std::end( result ) );
 				return result;
 			}
 
 			template<typename UnaryPredicate>
-			ReferenceRange<ReferenceRange> stable_sort( UnaryPredicate && predicate ) {
-				ReferenceRange<ReferenceRange> result( *this );
+			ReferenceRange stable_sort( UnaryPredicate && predicate ) {
+				ReferenceRange result( *this );
 				::std::stable_sort( ::std::begin( result ), ::std::end( result ), ::std::forward<UnaryPredicate>( predicate ) );
+				return result;
+			}
+
+			ReferenceRange unique( ) {
+				ReferenceRange result( *this );
+				::std::unique( ::std::begin( result ), ::std::end( result ) );
+				return result;
+			}
+
+			template<typename UnaryPredicate>
+			ReferenceRange unique( UnaryPredicate && predicate ) {
+				ReferenceRange result( *this );
+				::std::unique( ::std::begin( result ), ::std::end( result ), ::std::forward<UnaryPredicate>( predicate ) );
 				return result;
 			}
 
 			template<typename Value>
 			iterator find( Value const & value ) const {
-					return ::std::find( m_begin, m_end, value );
+					return ::std::find( begin( ), end( ), value );
 			}
 
 			template<typename UnaryPredicate>
 			iterator find_if( UnaryPredicate pred ) const {
-					return ::std::find_if( m_begin, m_end, pred );
+					return ::std::find_if( begin( ), end( ), pred );
 			}
 
 			template<typename Value>
-			auto erase_remove( Value const & value ) {
-				ReferenceRange<ReferenceRange> result( *this );
+			auto select( Value const & value ) {
+				ReferenceRange result( *this );
 				return result.erase( ::std::remove( ::std::begin( result ), ::std::end( result ), value ), ::std::end( result ) );
 			}
 
 			template<typename UnaryPredicate>
-			auto erase_remove_if( UnaryPredicate pred ) {
-				ReferenceRange<ReferenceRange> result( *this );
+			auto select_if( UnaryPredicate pred ) {
+				ReferenceRange result( *this );
 				return result.erase( ::std::remove_if( ::std::begin( result ), ::std::end( result ), pred ), ::std::end( result ) );
 			}
 
 			template<typename UnaryPredicate>
 			auto partition( UnaryPredicate pred ) {
-				ReferenceRange<ReferenceRange> result( *this );
+				ReferenceRange result( *this );
 				return ::std::partition( ::std::begin( result ), ::std::end( result ), pred );
 			}
 
 			template<typename UnaryPredicate>
 			auto stable_partition( UnaryPredicate pred ) {
-				ReferenceRange<ReferenceRange> result( *this );
+				ReferenceRange result( *this );
 				return ::std::stable_partition( ::std::begin( result ), ::std::end( result ), pred );
 			}
 
 			template<typename T>
 			T accumulate( T && init ) {
-				return ::std::accumulate( m_begin, m_end, ::std::forward<T>( init ) );
+				return ::std::accumulate( begin( ), end( ), ::std::forward<T>( init ) );
 			}
 
 			template<typename T, typename BinaryOperator>
 			T accumulate( T && init, BinaryOperator oper ) {
-				return ::std::accumulate( m_begin, m_end, ::std::forward<T>( init ), oper );
+				return ::std::accumulate( begin( ), end( ), ::std::forward<T>( init ), oper );
 			}
 
 			template<typename UnaryOperator>
 			auto map( UnaryOperator oper ) {
-				ReferenceRange<ReferenceRange> in( *this );
+				ReferenceRange in( *this );
 				using result_t = ::std::vector <decltype(oper( ::std::declval<typename ::std::iterator_traits<decltype(::std::begin( in ))>::value_type>( ) ))> ;
 				result_t result;
 				::std::transform( ::std::begin( in ), ::std::end( in ), ::std::back_inserter( result ), oper );
@@ -248,7 +224,7 @@ namespace daw {
 
 			template<typename Value>
 			bool contains( Value const & value ) const {
-				return ::std::find( m_begin, m_end, value ) != m_end;
+				return ::std::find( begin( ), end( ), value ) != end( );
 			}
 
 			template<typename Value, typename UnaryPredicate>
@@ -256,7 +232,7 @@ namespace daw {
 				auto pred2 = [&value, &pred]( Value const & val ) {
 						return pred( value, val );
 				};
-				return ::std::find_if( m_begin, m_end, pred2 ) != m_end;
+				return ::std::find_if( begin( ), end( ), pred2 ) != end( );
 			}
 
 			template<typename UnaryPredicate>
@@ -269,6 +245,19 @@ namespace daw {
 				}
 				return result;
 			}
+
+			template<typename Container>
+			auto as( ) const {
+				Container result;
+				for( auto const & v : *this ) {
+					result.push_back( v.get( ) );		
+				}
+			}
+
+			auto as_vector( ) const {
+				return as<std::vector<value_type>>( );
+			}
+			
 		};	// struct ReferenceRange
 
 
@@ -447,13 +436,13 @@ namespace daw {
 			}
 
 			template<typename Value>
-			auto erase_remove( Value const & value ) {
+			auto select( Value const & value ) {
 				ReferenceRange<Range> result( *this );
 				return result.erase( ::std::remove( ::std::begin( result ), ::std::end( result ), value ), ::std::end( result ) );
 			}
 
 			template<typename UnaryPredicate>
-			auto erase_remove_if( UnaryPredicate pred ) {
+			auto select_if( UnaryPredicate pred ) {
 				ReferenceRange<Range> result( *this );
 				return result.erase( ::std::remove_if( ::std::begin( result ), ::std::end( result ), pred ), ::std::end( result ) );
 			}
