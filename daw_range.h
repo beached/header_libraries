@@ -159,14 +159,16 @@ namespace daw {
 
 			ReferenceRange unique( ) {
 				ReferenceRange result( *this );
-				::std::unique( ::std::begin( result ), ::std::end( result ) );
+				auto & vals = result.m_values;
+				vals.erase( ::std::unique( vals.begin( ), vals.end( ) ), vals.end( ) );
 				return result;
 			}
 
 			template<typename UnaryPredicate>
-			ReferenceRange unique( UnaryPredicate && predicate ) {
+			ReferenceRange unique( UnaryPredicate predicate ) {
 				ReferenceRange result( *this );
-				::std::unique( ::std::begin( result ), ::std::end( result ), ::std::forward<UnaryPredicate>( predicate ) );
+				auto & vals = result.m_values;
+				vals.erase( ::std::unique( vals.begin( ), vals.end( ), predicate ), vals.end( ) );
 				return result;
 			}
 
@@ -436,6 +438,15 @@ namespace daw {
 			template<typename UnaryPredicate>
 			auto sort( UnaryPredicate predicate ) {
 				return make_ref_range( *this ).sort( predicate );
+			}
+
+			auto unique( ) {
+				return make_ref_range( *this ).unique( );
+			}
+
+			template<typename UnaryPredicate>
+			auto unique( UnaryPredicate predicate ) {
+				return make_ref_range( *this ).unique( predicate );
 			}
 
 			auto stable_sort( ) {
