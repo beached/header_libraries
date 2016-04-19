@@ -29,25 +29,25 @@
 namespace daw {
 	namespace algorithm {
 		template<typename Container>
-		Container& sort( Container& container ) {
+		void sort( Container& container ) {
 			std::sort( std::begin( container ), std::end( container ) );
 			return container;
 		}
 
 		template<typename Container, typename UnaryPredicate>
-		Container& sort( Container& container, UnaryPredicate pred ) {
+		void sort( Container& container, UnaryPredicate pred ) {
 			std::sort( std::begin( container ), std::end( container ), pred );
 			return container;
 		}
 
 		template<typename Container>
-		Container& stable_sort( Container& container ) {
+		void stable_sort( Container& container ) {
 			std::stable_sort( std::begin( container ), std::end( container ) );
 			return container;
 		}
 
 		template<typename Container, typename UnaryPredicate>
-		Container& stable_sort( Container& container, UnaryPredicate pred ) {
+		void stable_sort( Container& container, UnaryPredicate pred ) {
 			std::stable_sort( std::begin( container ), std::end( container ), pred );
 			return container;
 		}
@@ -130,7 +130,6 @@ namespace daw {
 			auto rng = make_range( first, last );
 			return where( rng, predicate );
 		}
-
 	}	// namespace algorithm
 }	// namespace daw
 
