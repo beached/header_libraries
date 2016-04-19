@@ -258,17 +258,25 @@ namespace daw {
 			}
 
 			template<typename Container>
-			Container as( ) const {
+			auto as( ) const {
 				Container result;
 				for( auto const & v : *this ) {
 					result.push_back( v.get( ) );		
 				}
+				return result;
 			}
 
-			std::vector<referenced_value_type> as_vector( ) const {
+			auto as_vector( ) const {
 				return as<std::vector<referenced_value_type>>( );
 			}
-			
+
+			template<typename Function>
+			ReferenceRange for_each( Function function ) const {
+				for( auto const & v : m_values ) {
+					function( v.get( ) );
+				}
+				return *this;
+			}
 		};	// class ReferenceRange
 
 		template<typename Container, typename ::std::enable_if<daw::traits::is_container_not_string<Container>::value, long>::type = 0>
