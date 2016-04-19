@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_CASE( daw_range_test01 ) {
 	auto rng = make_range( t );
 	auto result = rng.sort( )
 		.unique( )
-		.select( []( auto v ) { return 0 == v%2; } )
+		.where( []( auto v ) { return 0 == v%2; } )
 		.as_vector( );
 }
 

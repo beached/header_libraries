@@ -141,13 +141,6 @@ namespace daw {
 			return last;
 		}
 
-		template<class Container, class Value>
-		bool contains( const Container& container, const Value& value ) {
-			using std::begin;
-			using std::end;
-			return std::find( begin( container ), end( container ), value ) != end( container );
-		}
-
 		template<class Container>
 		auto rbegin2( Container& container ) -> decltype(container.rbegin( )) {
 			return container.rbegin( );
@@ -330,6 +323,134 @@ namespace daw {
 			template<typename T, typename F>
 			static void run( std::size_t, T, F ) { }
 		};	// struct tuple_functor
+	
+	namespace detail {
+		template <class T>
+		struct is_reference_wrapper : std::false_type {};
+		template <class U>
+		struct is_reference_wrapper<std::reference_wrapper<U>> : std::true_type {};
+		template <class T>
+		constexpr bool is_reference_wrapper_v = is_reference_wrapper<T>::value;
+		 
+		template <class Base, class T, class Derived, class... Args>
+		auto INVOKE(T Base::*pmf, Derived&& ref, Args&&... args)
+			noexcept(noexcept((std::forward<Derived>(ref).*pmf)(std::forward<Args>(args)...)))
+		 -> std::enable_if_t<std::is_function<T>::value &&
+							 std::is_base_of<Base, std::decay_t<Derived>>::value,
+			decltype((std::forward<Derived>(ref).*pmf)(std::forward<Args>(args)...))>
+		{
+			  return (std::forward<Derived>(ref).*pmf)(std::forward<Args>(args)...);
+		}
+		 
+		template <class Base, class T, class RefWrap, class... Args>
+		auto INVOKE(T Base::*pmf, RefWrap&& ref, Args&&... args)
+			noexcept(noexcept((ref.get().*pmf)(std::forward<Args>(args)...)))
+		 -> std::enable_if_t<std::is_function<T>::value &&
+							 is_reference_wrapper<std::decay_t<RefWrap>>::value,
+			decltype((ref.get().*pmf)(std::forward<Args>(args)...))>
+		 
+		{
+			  return (ref.get().*pmf)(std::forward<Args>(args)...);
+		}
+		 
+		template <class Base, class T, class Pointer, class... Args>
+		auto INVOKE(T Base::*pmf, Pointer&& ptr, Args&&... args)
+			noexcept(noexcept(((*std::forward<Pointer>(ptr)).*pmf)(std::forward<Args>(args)...)))
+		 -> std::enable_if_t<std::is_function<T>::value &&
+							 !is_reference_wrapper<std::decay_t<Pointer>>::value &&
+							 !std::is_base_of<Base, std::decay_t<Pointer>>::value,
+			decltype(((*std::forward<Pointer>(ptr)).*pmf)(std::forward<Args>(args)...))>
+		{
+			  return ((*std::forward<Pointer>(ptr)).*pmf)(std::forward<Args>(args)...);
+		}
+		 
+		template <class Base, class T, class Derived>
+		auto INVOKE(T Base::*pmd, Derived&& ref)
+			noexcept(noexcept(std::forward<Derived>(ref).*pmd))
+		 -> std::enable_if_t<!std::is_function<T>::value &&
+							 std::is_base_of<Base, std::decay_t<Derived>>::value,
+			decltype(std::forward<Derived>(ref).*pmd)>
+		{
+			  return std::forward<Derived>(ref).*pmd;
+		}
+		 
+		template <class Base, class T, class RefWrap>
+		auto INVOKE(T Base::*pmd, RefWrap&& ref)
+			noexcept(noexcept(ref.get().*pmd))
+		 -> std::enable_if_t<!std::is_function<T>::type &&
+							 is_reference_wrapper<std::decay_t<RefWrap>>::value,
+			decltype(ref.get().*pmd)>
+		{
+			  return ref.get().*pmd;
+		}
+		 
+		template <class Base, class T, class Pointer>
+		auto INVOKE(T Base::*pmd, Pointer&& ptr)
+			noexcept(noexcept((*std::forward<Pointer>(ptr)).*pmd))
+		 -> std::enable_if_t<!std::is_function<T>::type &&
+							 !is_reference_wrapper<std::decay_t<Pointer>>::value &&
+							 !std::is_base_of<Base, std::decay_t<Pointer>>::value,
+			decltype((*std::forward<Pointer>(ptr)).*pmd)>
+		{
+			  return (*std::forward<Pointer>(ptr)).*pmd;
+		}
+		 
+		template <class F, class... Args>
+		auto INVOKE(F&& f, Args&&... args)
+			noexcept(noexcept(std::forward<F>(f)(std::forward<Args>(args)...)))
+		 -> std::enable_if_t<!std::is_member_pointer<std::decay_t<F>>::value,
+			decltype(std::forward<F>(f)(std::forward<Args>(args)...))>
+		{
+			  return std::forward<F>(f)(std::forward<Args>(args)...);
+		}
+	} // namespace detail
+		 
+	template< class F, class... ArgTypes >
+	auto invoke(F&& f, ArgTypes&&... args)
+		// exception specification for QoI
+		noexcept(noexcept(detail::INVOKE(std::forward<F>(f), std::forward<ArgTypes>(args)...)))
+	 -> decltype(detail::INVOKE(std::forward<F>(f), std::forward<ArgTypes>(args)...))
+	{
+		return detail::INVOKE(std::forward<F>(f), std::forward<ArgTypes>(args)...);
+	}
+
+	namespace detail {
+		template<class F>
+		struct not_fn_t {
+			F f;
+			template<class... Args>
+			auto operator()(Args&&... args)
+				noexcept(noexcept(!invoke(f, std::forward<Args>(args)...)))
+				-> decltype(!invoke(f, std::forward<Args>(args)...)) {
+				return !invoke(f, std::forward<Args>(args)...);
+			}
+	 
+			// cv-qualified overload for QoI
+			template<class... Args>
+			auto operator()(Args&&... args) const
+				noexcept(noexcept(!invoke(f, std::forward<Args>(args)...)))
+				-> decltype(!invoke(f, std::forward<Args>(args)...)) {
+				return !invoke(f, std::forward<Args>(args)...);
+			}
+	 
+			template<class... Args>
+			auto operator()(Args&&... args) volatile
+				noexcept(noexcept(!invoke(f, std::forward<Args>(args)...)))
+				-> decltype(!invoke(f, std::forward<Args>(args)...)) {
+				return !invoke(f, std::forward<Args>(args)...);
+			}
+			template<class... Args>
+			auto operator()(Args&&... args) const volatile
+				noexcept(noexcept(!invoke(f, std::forward<Args>(args)...)))
+				-> decltype(!invoke(f, std::forward<Args>(args)...)) {
+				return !invoke(f, std::forward<Args>(args)...);
+			}
+		};
+	}
+	 
+	template<class F>
+	detail::not_fn_t<std::decay_t<F>> not_fn(F&& f) { return { std::forward<F>(f) }; }
+
 	}	// namespace algorithm
 }	// namespace daw
 
