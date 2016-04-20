@@ -258,14 +258,14 @@ namespace daw {
 			}
 
 			template<typename Container>
-			auto as( ) const {
+			Container as( ) const {
 				Container result;
 				for( auto const & v : *this ) {
 					result.push_back( v.get( ) );		
 				}
 			}
 
-			auto as_vector( ) const {
+			std::vector<referenced_value_type> as_vector( ) const {
 				return as<std::vector<referenced_value_type>>( );
 			}
 			
