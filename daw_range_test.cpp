@@ -31,9 +31,13 @@ BOOST_AUTO_TEST_CASE( daw_range_test01 ) {
 	auto result = rng.where( []( auto v ) { return 0 == v%2; } )
 		.sort( )
 		.unique( )
-		.for_each( []( auto const & v ) {
-			std::cout << v << " ";
-		}).as_vector( );
-		std::cout << "\n";
+		.map( []( auto const & v ) {
+			return v * 10;
+		} );
+		
+	for( auto const & v : result ) {
+		std::cout << v << " ";
+	}
+	std::cout << "\n";
 }
 

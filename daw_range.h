@@ -207,10 +207,12 @@ namespace daw {
 
 			template<typename UnaryOperator>
 			auto map( UnaryOperator oper ) {	// TODO verify result shouldn't be ref range
-				using v_t = decltype(oper( *begin( ) ));
+				using v_t = decltype(oper( front( ).get( ) ));
 				using result_t = ::std::vector<v_t>;
 				result_t result;
-				::std::transform( begin( ), end( ), ::std::back_inserter( result ), oper );
+				::std::transform( begin( ), end( ), ::std::back_inserter( result ), [oper]( auto const & v ) {
+					return oper( v.get( ) );
+				} );
 				return result;
 			}
 
