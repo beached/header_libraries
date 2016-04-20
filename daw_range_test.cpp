@@ -23,22 +23,24 @@
 #include <boost/test/unit_test.hpp>
 
 #include "daw_range.h"
-#include "daw_reference_range.h"
+#include "daw_range_operators.h"
 
 BOOST_AUTO_TEST_CASE( daw_range_test01 ) {
 	std::vector<int32_t> t = { 4, -1, 1000, 4, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	using namespace daw::range;
 	auto rng = make_range( t );
-	auto result = rng.where( []( auto v ) { return 0 == v%2; } )
-		.sort( )
-		.unique( )
-		.transform( []( auto const & v ) {
-			return v * 10;
-		} );
-		
-	for( auto const & v : result ) {
-		std::cout << v << " ";
-	}
-	std::cout << "\n";
+//	auto result = rng.where( []( auto v ) { return 0 == v%2; } )
+//		.sort( )
+//		.unique( )
+//		.transform( []( auto const & v ) {
+//			return v * 10;
+//		} );
+
+	using namespace ::daw::range;
+	auto result = rng 
+					<< where( []( auto const & v ) { return 0 == v%2; } )
+					<< where( []( auto const & v ) { return 0 <= v; } );
+	
+	std::cout << result << std::endl;
 }
 

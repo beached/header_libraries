@@ -201,6 +201,7 @@ namespace daw {
 		GENERATE_HAS_MEMBER_TYPE_TRAIT( value_type );
 		GENERATE_HAS_MEMBER_TYPE_TRAIT( mapped_type );
 		GENERATE_HAS_MEMBER_TYPE_TRAIT( iterator );
+		GENERATE_HAS_MEMBER_TYPE_TRAIT( get );
 
 		template<typename T> using is_string = std::is_convertible < T, std::string>;
 		template<typename T> using is_string_t = typename is_string<T>::type;
