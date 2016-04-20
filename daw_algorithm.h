@@ -182,7 +182,7 @@ namespace daw {
 			template<class Fwd>
 			struct Reverser_generic {
 				Fwd &fwd;
-				Reverser_generic( Fwd& fwd_ ) : fwd( fwd_ ) { }
+				Reverser_generic( Fwd& fwd_ ): fwd( fwd_ ) { }
 				typedef std::reverse_iterator<typename Fwd::iterator> reverse_iterator;
 				reverse_iterator begin( ) { return reverse_iterator( std::end( fwd ) ); }
 				reverse_iterator end( ) { return reverse_iterator( std::begin( fwd ) ); }
@@ -191,7 +191,7 @@ namespace daw {
 			template<class Fwd >
 			struct Reverser_special {
 				Fwd &fwd;
-				Reverser_special( Fwd& fwd_ ) : fwd( fwd_ ) { }
+				Reverser_special( Fwd& fwd_ ): fwd( fwd_ ) { }
 				auto begin( ) -> decltype(fwd.rbegin( )) { return fwd.rbegin( ); }
 				auto end( ) ->decltype(fwd.rbegin( )) { return fwd.rend( ); }
 			};
@@ -252,9 +252,9 @@ namespace daw {
 		template<typename T>
 		constexpr bool is_const_v = std::is_const<T>::value;
 
-		template<typename InputIt1,typename InputIt2, typename OutputIt, typename Func>
+		template<typename InputIt1, typename InputIt2, typename OutputIt, typename Func>
 		OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, OutputIt first_out, Func func ) {
-			static_assert( !is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data" );
+			static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
 			while( first1 != last1 ) {
 				*first_out++ = func( *first1++, *first2++ );
 			}
@@ -263,7 +263,7 @@ namespace daw {
 
 		template<typename InputIt1, typename InputIt2, typename InputIt3, typename OutputIt, typename Func>
 		OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt3 first3, OutputIt first_out, Func func ) {
-			static_assert( !is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data" );
+			static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
 			while( first1 != last1 ) {
 				*first_out++ = func( *first1++, *first2++, *first3++ );
 			}
@@ -272,7 +272,7 @@ namespace daw {
 
 		template<typename InputIt1, typename InputIt2, typename InputIt3, typename InputIt4, typename OutputIt, typename Func>
 		OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt3 first3, InputIt4 first4, OutputIt first_out, Func func ) {
-			static_assert( !is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data" );
+			static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
 			while( first1 != last1 ) {
 				*first_out++ = func( *first1++, *first2++, *first3++, *first4++ );
 			}
@@ -280,7 +280,7 @@ namespace daw {
 		}
 		template<typename InputIt1, typename InputIt2, typename InputIt3, typename InputIt4, typename InputIt5, typename OutputIt, typename Func>
 		OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt3 first3, InputIt4 first4, InputIt4 first5, OutputIt first_out, Func func ) {
-			static_assert( !is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data" );
+			static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");
 			while( first1 != last1 ) {
 				*first_out++ = func( *first1++, *first2++, *first3++, *first4++, *first5++ );
 			}
@@ -310,7 +310,7 @@ namespace daw {
 				const std::size_t I = (N - 1);
 				switch( i ) {
 				case I:
-					std::forward<F>( f )( std::get<I>(std::forward<T>( t ) ) );
+					std::forward<F>( f )(std::get<I>( std::forward<T>( t ) ));
 					break;
 				default:
 					tuple_functor<I>::run( i, std::forward<T>( t ), std::forward<F>( f ) );
@@ -323,133 +323,6 @@ namespace daw {
 			template<typename T, typename F>
 			static void run( std::size_t, T, F ) { }
 		};	// struct tuple_functor
-	
-	namespace detail {
-		template <class T>
-		struct is_reference_wrapper : std::false_type {};
-		template <class U>
-		struct is_reference_wrapper<std::reference_wrapper<U>> : std::true_type {};
-		template <class T>
-		constexpr bool is_reference_wrapper_v = is_reference_wrapper<T>::value;
-		 
-		template <class Base, class T, class Derived, class... Args>
-		auto INVOKE(T Base::*pmf, Derived&& ref, Args&&... args)
-			noexcept(noexcept((std::forward<Derived>(ref).*pmf)(std::forward<Args>(args)...)))
-		 -> std::enable_if_t<std::is_function<T>::value &&
-							 std::is_base_of<Base, std::decay_t<Derived>>::value,
-			decltype((std::forward<Derived>(ref).*pmf)(std::forward<Args>(args)...))>
-		{
-			  return (std::forward<Derived>(ref).*pmf)(std::forward<Args>(args)...);
-		}
-		 
-		template <class Base, class T, class RefWrap, class... Args>
-		auto INVOKE(T Base::*pmf, RefWrap&& ref, Args&&... args)
-			noexcept(noexcept((ref.get().*pmf)(std::forward<Args>(args)...)))
-		 -> std::enable_if_t<std::is_function<T>::value &&
-							 is_reference_wrapper<std::decay_t<RefWrap>>::value,
-			decltype((ref.get().*pmf)(std::forward<Args>(args)...))>
-		 
-		{
-			  return (ref.get().*pmf)(std::forward<Args>(args)...);
-		}
-		 
-		template <class Base, class T, class Pointer, class... Args>
-		auto INVOKE(T Base::*pmf, Pointer&& ptr, Args&&... args)
-			noexcept(noexcept(((*std::forward<Pointer>(ptr)).*pmf)(std::forward<Args>(args)...)))
-		 -> std::enable_if_t<std::is_function<T>::value &&
-							 !is_reference_wrapper<std::decay_t<Pointer>>::value &&
-							 !std::is_base_of<Base, std::decay_t<Pointer>>::value,
-			decltype(((*std::forward<Pointer>(ptr)).*pmf)(std::forward<Args>(args)...))>
-		{
-			  return ((*std::forward<Pointer>(ptr)).*pmf)(std::forward<Args>(args)...);
-		}
-		 
-		template <class Base, class T, class Derived>
-		auto INVOKE(T Base::*pmd, Derived&& ref)
-			noexcept(noexcept(std::forward<Derived>(ref).*pmd))
-		 -> std::enable_if_t<!std::is_function<T>::value &&
-							 std::is_base_of<Base, std::decay_t<Derived>>::value,
-			decltype(std::forward<Derived>(ref).*pmd)>
-		{
-			  return std::forward<Derived>(ref).*pmd;
-		}
-		 
-		template <class Base, class T, class RefWrap>
-		auto INVOKE(T Base::*pmd, RefWrap&& ref)
-			noexcept(noexcept(ref.get().*pmd))
-		 -> std::enable_if_t<!std::is_function<T>::type &&
-							 is_reference_wrapper<std::decay_t<RefWrap>>::value,
-			decltype(ref.get().*pmd)>
-		{
-			  return ref.get().*pmd;
-		}
-		 
-		template <class Base, class T, class Pointer>
-		auto INVOKE(T Base::*pmd, Pointer&& ptr)
-			noexcept(noexcept((*std::forward<Pointer>(ptr)).*pmd))
-		 -> std::enable_if_t<!std::is_function<T>::type &&
-							 !is_reference_wrapper<std::decay_t<Pointer>>::value &&
-							 !std::is_base_of<Base, std::decay_t<Pointer>>::value,
-			decltype((*std::forward<Pointer>(ptr)).*pmd)>
-		{
-			  return (*std::forward<Pointer>(ptr)).*pmd;
-		}
-		 
-		template <class F, class... Args>
-		auto INVOKE(F&& f, Args&&... args)
-			noexcept(noexcept(std::forward<F>(f)(std::forward<Args>(args)...)))
-		 -> std::enable_if_t<!std::is_member_pointer<std::decay_t<F>>::value,
-			decltype(std::forward<F>(f)(std::forward<Args>(args)...))>
-		{
-			  return std::forward<F>(f)(std::forward<Args>(args)...);
-		}
-	} // namespace detail
-		 
-	template< class F, class... ArgTypes >
-	auto invoke(F&& f, ArgTypes&&... args)
-		// exception specification for QoI
-		noexcept(noexcept(detail::INVOKE(std::forward<F>(f), std::forward<ArgTypes>(args)...)))
-	 -> decltype(detail::INVOKE(std::forward<F>(f), std::forward<ArgTypes>(args)...))
-	{
-		return detail::INVOKE(std::forward<F>(f), std::forward<ArgTypes>(args)...);
-	}
-
-	namespace detail {
-		template<class F>
-		struct not_fn_t {
-			F f;
-			template<class... Args>
-			auto operator()(Args&&... args)
-				noexcept(noexcept(!invoke(f, std::forward<Args>(args)...)))
-				-> decltype(!invoke(f, std::forward<Args>(args)...)) {
-				return !invoke(f, std::forward<Args>(args)...);
-			}
-	 
-			// cv-qualified overload for QoI
-			template<class... Args>
-			auto operator()(Args&&... args) const
-				noexcept(noexcept(!invoke(f, std::forward<Args>(args)...)))
-				-> decltype(!invoke(f, std::forward<Args>(args)...)) {
-				return !invoke(f, std::forward<Args>(args)...);
-			}
-	 
-			template<class... Args>
-			auto operator()(Args&&... args) volatile
-				noexcept(noexcept(!invoke(f, std::forward<Args>(args)...)))
-				-> decltype(!invoke(f, std::forward<Args>(args)...)) {
-				return !invoke(f, std::forward<Args>(args)...);
-			}
-			template<class... Args>
-			auto operator()(Args&&... args) const volatile
-				noexcept(noexcept(!invoke(f, std::forward<Args>(args)...)))
-				-> decltype(!invoke(f, std::forward<Args>(args)...)) {
-				return !invoke(f, std::forward<Args>(args)...);
-			}
-		};
-	}
-	 
-	template<class F>
-	detail::not_fn_t<std::decay_t<F>> not_fn(F&& f) { return { std::forward<F>(f) }; }
 
 	}	// namespace algorithm
 }	// namespace daw

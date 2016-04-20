@@ -35,7 +35,7 @@ namespace daw {
 			template<typename Iterator>
 			auto to_refvec( Iterator first, Iterator last ) {
 				using value_type = typename ::std::iterator_traits<Iterator>::value_type;
-				::std::vector<::std::reference_wrapper<value_type>> result; 
+				::std::vector<::std::reference_wrapper<value_type>> result;
 				for( auto it = first; it != last; ++it ) {
 					result.push_back( std::ref( *it ) );
 				}
@@ -48,8 +48,8 @@ namespace daw {
 			using referenced_value_type = typename ::std::iterator_traits<Iterator>::value_type;
 			::std::vector<::std::reference_wrapper<referenced_value_type>> m_values;
 		public:
-			using value_type = decltype( m_values.front( ).get( ) );
-			using reference = decltype( m_values.front( ) );
+			using value_type = decltype(m_values.front( ).get( ));
+			using reference = decltype(m_values.front( ));
 			using const_reference = const reference;
 			using iterator = Iterator;
 			using const_iterator = const iterator;
@@ -61,12 +61,12 @@ namespace daw {
 			ReferenceRange & operator=( ReferenceRange const & ) = default;
 			ReferenceRange & operator=( ReferenceRange && ) = default;
 
-			ReferenceRange( Iterator First, Iterator Last ): m_values( impl::to_refvec( First, Last ) ) { } 
+			ReferenceRange( Iterator First, Iterator Last ): m_values( impl::to_refvec( First, Last ) ) { }
 
 			bool at_end( ) const {
 				return begin( ) == end( );
 			}
-			
+
 			bool empty( ) const {
 				return !(begin( ) != end( ));
 			}
@@ -174,12 +174,12 @@ namespace daw {
 
 			template<typename Value>
 			auto find( Value const & value ) const {
-					return ::std::find( begin( ), end( ), value );
+				return ::std::find( begin( ), end( ), value );
 			}
 
 			template<typename UnaryPredicate>
 			auto find_if( UnaryPredicate predicate ) const {
-					return ::std::find_if( begin( ), end( ), predicate );
+				return ::std::find_if( begin( ), end( ), predicate );
 			}
 
 			template<typename UnaryPredicate>
@@ -207,7 +207,7 @@ namespace daw {
 			template<typename UnaryOperator>
 			auto map( UnaryOperator oper ) {	// TODO verify result shouldn't be ref range
 				ReferenceRange in( *this );
-				using v_t = decltype( oper( *::std::begin( in ) ) );
+				using v_t = decltype(oper( *::std::begin( in ) ));
 				using result_t = ::std::vector<v_t>;
 				result_t result;
 				::std::transform( ::std::begin( in ), ::std::end( in ), ::std::back_inserter( result ), oper );
@@ -222,7 +222,7 @@ namespace daw {
 			template<typename Value, typename UnaryPredicate>
 			bool contains( Value const & value, UnaryPredicate predicate ) {
 				auto pred2 = [&value, &predicate]( Value const & val ) {
-						return predicate( value, val );
+					return predicate( value, val );
 				};
 				return ::std::find_if( begin( ), end( ), pred2 ) != end( );
 			}
@@ -249,7 +249,9 @@ namespace daw {
 
 			template<typename UnaryPredicate>
 			auto where( UnaryPredicate predicate ) {
-				return erase( daw::algorithm::not_fn( predicate ) );
+				return erase( [predicate]( auto const & v ) {
+					return !predicate( v );
+				} );
 			}
 
 			template<typename Value>
@@ -263,7 +265,7 @@ namespace daw {
 			auto as( ) const {
 				Container result;
 				for( auto const & v : *this ) {
-					result.push_back( v.get( ) );		
+					result.push_back( v.get( ) );
 				}
 				return result;
 			}
@@ -312,10 +314,9 @@ namespace daw {
 			Range & operator=( Range const & ) = default;
 			Range & operator=( Range && ) = default;
 
-			Range( Iterator First, Iterator Last ):				
+			Range( Iterator First, Iterator Last ):
 				m_begin( First ),
-				m_end( Last ) { 
-			}
+				m_end( Last ) { }
 
 			Range& move_next( ) {
 				assert( m_begin != m_end );
@@ -393,14 +394,14 @@ namespace daw {
 
 			reference back( ) {
 				auto it = m_begin;
-				::std::advance( it, size( ) -1 );
-				return *it; 
+				::std::advance( it, size( ) - 1 );
+				return *it;
 			}
 
 			const_reference back( ) const {
 				auto it = m_begin;
-				::std::advance( it, size( ) -1 );
-				return *it; 
+				::std::advance( it, size( ) - 1 );
+				return *it;
 			}
 
 			reference operator*( ) {
@@ -412,7 +413,7 @@ namespace daw {
 			}
 
 			size_t size( ) const {
-				return static_cast<size_t>( ::std::distance( m_begin, m_end ) );
+				return static_cast<size_t>(::std::distance( m_begin, m_end ));
 			}
 
 			reference operator[]( size_t pos ) {
@@ -460,12 +461,12 @@ namespace daw {
 
 			template<typename Value>
 			iterator find( Value const & value ) const {
-					return ::std::find( m_begin, m_end, value );
+				return ::std::find( m_begin, m_end, value );
 			}
 
 			template<typename UnaryPredicate>
 			iterator find_if( UnaryPredicate predicate ) const {
-					return ::std::find_if( m_begin, m_end, predicate );
+				return ::std::find_if( m_begin, m_end, predicate );
 			}
 
 			template<typename Value>
@@ -510,7 +511,7 @@ namespace daw {
 
 			template<typename UnaryOperator>
 			auto map( UnaryOperator oper ) {	// TODO verify result shouldn't be ref range
-				using v_t = decltype( oper( *begin( ) ) );
+				using v_t = decltype(oper( *begin( ) ));
 				using result_t = ::std::vector<v_t>;
 				result_t result;
 				::std::transform( begin( ), end( ), ::std::back_inserter( result ), oper );
@@ -551,7 +552,7 @@ namespace daw {
 		template<typename Iterator>
 		void safe_advance( Range<Iterator> & range, typename ::std::iterator_traits<Iterator>::difference_type count ) {
 			assert( 0 <= count );
-			if( ::std::distance( range.begin( ), range.end( ) )>= count ) {
+			if( ::std::distance( range.begin( ), range.end( ) ) >= count ) {
 				range.advance( count );
 			} else {
 				range.set_begin( range.end( ) );
