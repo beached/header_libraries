@@ -359,6 +359,7 @@ namespace daw {
 			CollectionRange & operator=( CollectionRange const & ) = default;
 			CollectionRange & operator=( CollectionRange && ) = default;
 
+			CollectionRange( ::std::vector<value_type> && collection ): m_values( std::move( collection ) ) { }
 			CollectionRange( Collection const & collection ): m_values( impl::to_vector( collection ) ) { }
 			
 			template<typename IteratorF, typename IteratorL>
