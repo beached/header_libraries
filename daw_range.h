@@ -26,6 +26,7 @@
 #include <algorithm>
 #include <numeric>
 #include <vector>
+#include <random>
 #include "daw_traits.h"
 #include "daw_algorithm.h"
 
@@ -280,6 +281,22 @@ namespace daw {
 				}
 				return *this;
 			}
+
+			
+			ReferenceRange shuffle( ) {
+				static std::random_device rd;
+				static std::mt19937 g( rd( ) );
+				ReferenceRange result( *this );
+				::std::shuffle( result.begin( ), result.end( ), g );
+				return result;
+			}
+
+			template<typename  UniformRandomNumberGenerator>
+			ReferenceRange shuffle( UniformRandomNumberGenerator && urng ) {
+				ReferenceRange result( *this );
+				::std::shuffle( result.begin( ), result.end( ), std::forward<UniformRandomNumberGenerator>( urng ) );
+				return result;
+			}
 		};	// class ReferenceRange
 
 		template<typename Container, typename ::std::enable_if<daw::traits::is_container_not_string<Container>::value, long>::type = 0>
@@ -529,6 +546,16 @@ namespace daw {
 				};
 				return ::std::find_if( m_begin, m_end, predicate2 ) != m_end;
 			}
+
+			auto shuffle( ) {
+				return make_ref_range( *this ).shuffle( );
+			}
+
+			template<typename  UniformRandomNumberGenerator>
+			auto shuffle( UniformRandomNumberGenerator && urng ) {
+				return make_ref_range( *this ).shuffle( std::forward<UniformRandomNumberGenerator>( urng ) );
+			}
+
 		};	// struct Range
 
 		template<typename Iterator>
