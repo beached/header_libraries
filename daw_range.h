@@ -206,11 +206,10 @@ namespace daw {
 
 			template<typename UnaryOperator>
 			auto map( UnaryOperator oper ) {	// TODO verify result shouldn't be ref range
-				ReferenceRange in( *this );
-				using v_t = decltype(oper( *::std::begin( in ) ));
+				using v_t = decltype(oper( *begin( ) ));
 				using result_t = ::std::vector<v_t>;
 				result_t result;
-				::std::transform( ::std::begin( in ), ::std::end( in ), ::std::back_inserter( result ), oper );
+				::std::transform( begin( ), end( ), ::std::back_inserter( result ), oper );
 				return result;
 			}
 
