@@ -44,7 +44,12 @@ namespace daw {
 			}
 		}	// namespace impl
 
-		template<typename Collection> struct CollectionRange;
+		template<typename T> struct CollectionRange;
+
+		template<typename... Args> auto make_collection_range( Args && ... args ) {
+			using value_type = ::std::decay_t<decltype( CollectionRange<value_type>( ::std::forward<Args>( args )... ) )>;
+			return CollectionRange<value_type>( ::std::forward<Args>( args )... );
+		}
 
 		template<typename Iterator>
 		class ReferenceRange {
@@ -141,7 +146,7 @@ namespace daw {
 			}
 
 			auto sort( ) && {
-				CollectionRange<value_type> result( *this );
+				auto result = make_collection_range( *this );
 				::std::sort( ::std::begin( result ), ::std::end( result ) );
 				return result;
 			}
@@ -214,9 +219,9 @@ namespace daw {
 			}
 
 			template<typename UnaryOperator>
-			auto map( UnaryOperator oper ) {	// TODO verify result shouldn't be ref range
+			auto transform( UnaryOperator oper ) {	// TODO verify result shouldn't be ref range
 				using v_t = decltype(oper( *begin( ) ));
-				CollectionRange<v_t> result;
+				auto result = make_collection_range<v_t>( );
 				::std::transform( begin( ), end( ), ::std::back_inserter( result ), oper );
 				return result;
 			}
@@ -309,19 +314,19 @@ namespace daw {
 		template<typename Container, typename ::std::enable_if<daw::traits::is_container_not_string<Container>::value, long>::type = 0>
 		auto make_ref_range( Container & container ) {
 			using iterator = decltype(::std::begin( container ));
-			return auto( ::std::begin( container ), ::std::end( container ) );
+			return ReferenceRange<iterator>( ::std::begin( container ), ::std::end( container ) );
 		}
 
 		template<typename Container, typename ::std::enable_if<daw::traits::is_container_not_string<Container>::value, long>::type = 0>
 		auto make_cref_range( Container const & container ) {
 			using iterator = decltype(::std::begin( container ));
-			return auto( ::std::begin( container ), ::std::end( container ) );
+			return ReferenceRange<iterator>( ::std::begin( container ), ::std::end( container ) );
 		}
 
 		namespace impl {
 			template<typename Collection>
 			auto to_vector( Collection const & collection ) {
-				using value_type = typename Collection::value_type;
+				using value_type = ::std::decay_t<typename Collection::value_type>;
 				::std::vector<value_type> result;
 				::std::copy( ::std::begin( collection ), ::std::end( collection ), ::std::back_inserter( result ) );
 				return result;
@@ -339,29 +344,39 @@ namespace daw {
 
 		template<typename T>
 		struct CollectionRange {
-			using value_type = typename T;
+			using value_type = ::std::decay_t<T>;
 			using values_type = ::std::vector<value_type>;
 		private:
 			values_type m_values;
-		public:
-			using reference = values_type::reference;
-			using const_reference = values_type::const_reference;
-			using iterator = values_type::iterator;
-			using const_iterator = values_type::const_iterator;
-			using difference_type = typename ::std::iterator_traits<iterator>:difference_type;
-
 			CollectionRange( ) = default;
+			CollectionRange( values_type && collection ): m_values( std::move( collection ) ) { }
+
+			CollectionRange( values_type const & collection ): m_values( collection.size( ) ) {
+				std::copy( ::std::begin( collection ), ::std::end( collection ), ::std::back_inserter( m_values ) );
+			}
+
+			template<typename Collection>
+			CollectionRange( Collection const & collection ): m_values( impl::to_vector( collection ) ) { }
+			
+			template<typename IteratorF, typename IteratorL>
+			CollectionRange( IteratorF first, IteratorL last ): m_values( impl::to_vector( first, last ) ) { }
+
+
+		public:
+			using reference = typename values_type::reference;
+			using const_reference = typename values_type::const_reference;
+			using iterator = typename values_type::iterator;
+			using const_iterator = typename values_type::const_iterator;
+			using difference_type = typename ::std::iterator_traits<iterator>::difference_type;
+
+			template<typename... Args>
+			friend auto make_collection_range( Args && ... args ) {
+
 			CollectionRange( CollectionRange const & ) = default;
 			CollectionRange( CollectionRange && ) = default;
 			~CollectionRange( ) = default;
 			CollectionRange & operator=( CollectionRange const & ) = default;
 			CollectionRange & operator=( CollectionRange && ) = default;
-
-			CollectionRange( ::std::vector<value_type> && collection ): m_values( std::move( collection ) ) { }
-			CollectionRange( Collection const & collection ): m_values( impl::to_vector( collection ) ) { }
-			
-			template<typename IteratorF, typename IteratorL>
-			CollectionRange( IteratorF first, IteratorL last ): m_values( impl::to_vector( first, last ) ) { }
 
 			bool at_end( ) const {
 				return begin( ) == end( );
@@ -431,6 +446,11 @@ namespace daw {
 				return !::std::equal( begin( ), end( ), other.begin( ) );
 			}
 
+			template<typename... Args>
+			auto push_back( Args &&... args ) {
+				return m_values.push_back( std::forward<Args>( args )... );
+			}
+
 			template<typename Value>
 			auto find( Value const & value ) const {
 				return ::std::find( begin( ), end( ), value );
@@ -441,14 +461,14 @@ namespace daw {
 				return ::std::find_if( begin( ), end( ), predicate );
 			}
 
-			template<typename T>
-			auto accumulate( T && init ) {
-				return ::std::accumulate( begin( ), end( ), ::std::forward<T>( init ) );
+			template<typename U>
+			auto accumulate( U && init ) {
+				return ::std::accumulate( begin( ), end( ), ::std::forward<U>( init ) );
 			}
 
-			template<typename T, typename BinaryOperator>
-			auto accumulate( T && init, BinaryOperator oper ) {
-				return ::std::accumulate( begin( ), end( ), ::std::forward<T>( init ), oper );
+			template<typename U, typename BinaryOperator>
+			auto accumulate( U && init, BinaryOperator oper ) {
+				return ::std::accumulate( begin( ), end( ), ::std::forward<U>( init ), oper );
 			}
 
 			template<typename Value>
@@ -566,11 +586,10 @@ namespace daw {
 			}
 
 			template<typename UnaryOperator>
-			CollectionRange map( UnaryOperator oper ) {
-				using v_t = decltype(oper( *begin( ) ));
-				using result_t = ::std::vector<v_t>;
-				CollectionRange<result_t> result;
-				::std::transform( begin( ), end( ), ::std::back_inserter( result ), oper );
+			CollectionRange transform( UnaryOperator oper ) {
+				using v_t = ::std::decay_t<decltype(oper( front( ) ))>;
+				auto result = make_collection_range<v_t>( );
+				::std::transform( ::std::begin( m_values ), ::std::end( m_values ), ::std::back_inserter( result ), oper );
 				return result;
 			}
 
@@ -613,14 +632,14 @@ namespace daw {
 			template<typename Container>
 			auto as( ) const {
 				Container result;
-				for( auto const & v : *this ) {
-					result.push_back( v.get( ) );
-				}
+				::std::transform( begin( ), end( ), ::std::back_inserter( result ), []( auto const & rv ) {
+					return rv.get( );
+				} );
 				return result;
 			}
 
 			auto as_vector( ) const {
-				return as<std::vector<referenced_value_type>>( );
+				return as<values_type>( );
 			}
 
 			template<typename Function>
