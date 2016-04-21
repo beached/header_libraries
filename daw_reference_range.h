@@ -79,7 +79,6 @@ namespace daw {
 			return result;
 		}
 
-
 		template<typename Iterator>
 		class ReferenceRange {
 			using referenced_value_type = typename ::std::iterator_traits<Iterator>::value_type;
@@ -340,15 +339,21 @@ namespace daw {
 			}
 		};	// class ReferenceRange
 
-		template<typename Container, typename ::std::enable_if<daw::traits::is_container_not_string<Container>::value, long>::type = 0>
+		template<typename Container, typename=void>
 		auto make_ref_range( Container const & container ) {
 			using iterator = decltype(::std::begin( container ));
 			return ReferenceRange<iterator>( ::std::begin( container ), ::std::end( container ) );
 		}
 
+		template<typename IteratorF, typename IteratorL>
+		auto make_ref_range( IteratorF first, IteratorL last ) {
+			return ReferenceRange<IteratorF>( first, last );
+		}
+
+
 		template<typename Iterator>
-		auto make_ref_range( ReferenceRange<Iterator> const & container ) {
-			return ReferenceRange<Iterator>( container );
+		auto make_ref_range( ReferenceRange<Iterator> container ) {
+			return container;
 		}
 
 		namespace impl {

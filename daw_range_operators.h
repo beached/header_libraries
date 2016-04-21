@@ -37,7 +37,7 @@ namespace daw {
 	namespace range {
 		template<typename... Args>
 		auto from( Args&&... args ) {
-			return make_range( std::forward<Args>( args )... );
+			return make_ref_range( std::forward<Args>( args )... );
 		}
 
 		namespace details {
