@@ -43,29 +43,38 @@ namespace daw {
 				}
 				return result;
 			}
+			
+			template<typename T>
+			using cleanup_t = ::std::remove_cv_t<::std::remove_reference_t<T>>;
+
 		}	// namespace impl
 
-		template<typename T> struct CollectionRange;
+		template<typename ValueType> struct CollectionRange;
 
 		template<typename ValueType>
-		auto make_collection_range( ) {
-			return CollectionRange<ValueType>( );
+		CollectionRange<ValueType> make_collection_range( ) {
+			return CollectionRange<ValueType>{ };
 		}
 
-		template<typename Collection>
-		auto make_collection_range( Collection const & collection ) {
-			using value_type = ::std::decay_t<typename Collection::value_type>;
-			return CollectionRange<value_type>( collection );
+		template<typename Collection, typename ValueType=impl::cleanup_t<typename ::std::iterator_traits<typename Collection::iterator>::ValueType>>
+		CollectionRange<ValueType> make_collection_range( Collection const & collection ) {
+			return CollectionRange<ValueType>( collection );
 		}
 
-		template<typename IteratorF, typename IteratorL>
-		auto make_collection_range( IteratorF first, IteratorL last ) {
-			using value_type = ::std::decay_t<typename ::std::iterator_traits<IteratorF>::value_type>;
-			return CollectionRange<value_type>( first, last );
+		template<typename IteratorF, typename IteratorL, typename ValueType=impl::cleanup_t<typename ::std::iterator_traits<IteratorF>::ValueType>>
+		CollectionRange<ValueType> make_collection_range( IteratorF first, IteratorL last ) {
+			return CollectionRange<ValueType>( first, last );
 		}
 
-		template<typename Iterator>	
-		auto make_collection_range( ReferenceRange<Iterator> const & collection ) -> CollectionRange<::std::decay_t<typename ReferenceRange<Iterator>::value_type>>;
+		template<typename Iterator, typename ValueType=impl::cleanup_t<typename ::std::iterator_traits<Iterator>::ValueType>>
+		CollectionRange<ValueType> make_collection_range( ReferenceRange<Iterator> const & collection ) {
+			CollectionRange<ValueType> result;
+			std::transform( ::std::begin( collection ), ::std::end( collection ), ::std::back_inserter( result ), []( auto const & rv ) {
+				return rv.get( );
+			} );
+			return result;
+		}
+
 
 		template<typename Iterator>
 		class ReferenceRange {
@@ -337,16 +346,6 @@ namespace daw {
 			}
 			os << " }";
 			return os;
-		}
-
-		template<typename Iterator>
-		auto make_collection_range( ReferenceRange<Iterator> const & collection ) {
-			using value_type = ::std::decay_t<typename ReferenceRange<Iterator>::value_type>;
-			CollectionRange<value_type> result;
-			std::transform( ::std::begin( collection ), ::std::end( collection ), ::std::back_inserter( result ), []( auto const & rv ) {
-				return rv.get( );
-			} );
-			return result;
 		}
 
 		template<typename Container, typename ::std::enable_if<daw::traits::is_container_not_string<Container>::value, long>::type = 0>

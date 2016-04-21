@@ -72,6 +72,16 @@ namespace daw {\
 					return collection.clause_name( std::forward<ClauseArgs>( clause_args )... );\
 				}\
 				\
+				template<typename Collection, typename... ClauseArgs>\
+				static auto clause_name##_helper( Collection const & collection, ClauseArgs&&... clause_args ) {\
+					return from( collection ).clause_name( std::forward<ClauseArgs>( clause_args )... );\
+				}\
+				\
+				template<typename T, typename... ClauseArgs>\
+				static auto clause_name##_helper( ::daw::range::CollectionRange<T> const & collection, ClauseArgs&&... clause_args ) {\
+					return collection.clause_name( std::forward<ClauseArgs>( clause_args )... );\
+				}\
+				\
 				template<typename Collection>\
 				auto delayed_dispatch( Collection const & collection ) const {\
 					return call_##clause_name( collection, typename gens<sizeof...(Args)>::type( ) );\
