@@ -28,15 +28,7 @@
 BOOST_AUTO_TEST_CASE( daw_range_test01 ) {
 	std::vector<int32_t> t = { -400, 4, -1, 1000, 4, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	using namespace daw::range;
-	auto rng = make_range( t );
-//	auto result = rng.where( []( auto v ) { return 0 == v%2; } )
-//		.sort( )
-//		.unique( )
-//		.transform( []( auto const & v ) {
-//			return v * 10;
-//		} );
 
-	using namespace ::daw::range;
 	auto result = from( t ) 
 					<< where( []( auto v ) { return 0 == v%2; } )
 					<< where( []( auto v ) { return 0 <= v; } )
