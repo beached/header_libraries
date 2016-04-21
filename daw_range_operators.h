@@ -31,6 +31,7 @@
 #include "daw_traits.h"
 #include "daw_algorithm.h"
 #include "daw_reference_range.h"
+#include <typeinfo>
 
 namespace daw {
 	namespace range {
@@ -78,13 +79,13 @@ namespace daw {\
 				}\
 				\
 				template<typename Collection>\
-				auto delayed_dispatch( Collection const & collection ) const {\
-					return call_##clause_name( collection, typename gens<sizeof...(Args)>::type( ) );\
+				auto delayed_dispatch( Collection && collection ) const {\
+					return call_##clause_name( std::forward<Collection>( collection ), typename gens<sizeof...(Args)>::type( ) );\
 				}\
 				\
 				template<typename Collection, int ...S>\
-				auto call_##clause_name( Collection const & collection, seq<S...> ) const {\
-					return clause_name##_helper( collection, std::get<S>( clause_name##_args )... );\
+				auto call_##clause_name( Collection && collection, seq<S...> ) const {\
+					return clause_name##_helper( std::forward<Collection>( collection ), std::get<S>( clause_name##_args )... );\
 				}\
 				\
 				template<typename Iterator, int ...S>\
@@ -93,11 +94,11 @@ namespace daw {\
 				}\
 				\
 			public:\
-				clause_name##_t( ::std::tuple<Args...>&& args ): clause_name##_args( ::std::forward<::std::tuple<Args>>( clause_name##_args )... ) { }\
+				clause_name##_t( ::std::tuple<Args...>&& args ): clause_name##_args( ::std::forward<::std::tuple<Args>>( args )... ) { }\
 				\
 				template<typename Collection>\
-				auto operator()( Collection const & collection ) const {\
-					return delayed_dispatch( collection );\
+				auto operator()( Collection && collection ) const {\
+					return delayed_dispatch( std::forward<Collection>( collection ) );\
 				}\
 			};\
 		}\
@@ -109,13 +110,17 @@ namespace daw {\
 		}\
 	}\
 }\
-template<typename Collection, typename... Args>\
-auto operator<<( Collection const & collection, ::daw::range::details::clause_name##_t<Args...> const & predicate ) {\
-	return predicate( collection );\
+template<typename Collection, typename... Args, typename=void>\
+auto operator<<( Collection && collection, ::daw::range::details::clause_name##_t<Args...> const & predicate ) {\
+	return predicate( std::forward<Collection>( collection ) );\
+}\
+template<typename T, typename... Args>\
+auto operator<<( ::daw::range::CollectionRange<T> && collection, ::daw::range::details::clause_name##_t<Args...> const & predicate ) {\
+	return predicate( std::forward<::daw::range::CollectionRange<T>>( collection ) );\
 }\
 template<typename Iterator, typename... Args>\
-auto operator<<( ::daw::range::ReferenceRange<Iterator> collection, ::daw::range::details::clause_name##_t<Args...> const & predicate ) {\
-	return predicate( collection );\
+auto operator<<( ::daw::range::ReferenceRange<Iterator> && collection, ::daw::range::details::clause_name##_t<Args...> const & predicate ) {\
+	return predicate( std::forward<::daw::range::ReferenceRange<Iterator>>( collection ) );\
 }
 
 
