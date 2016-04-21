@@ -34,17 +34,7 @@
 namespace daw {
 	namespace range {
 		namespace impl {
-			template<typename Iterator, typename = std::enable_if_t<::daw::traits::has_get_member<typename ::std::iterator_traits<Iterator>::value_type>::value>>
-			auto to_refvec( Iterator first, Iterator last ) {
-				using value_type = typename ::std::iterator_traits<Iterator>::value_type;
-				::std::vector<::std::reference_wrapper<value_type>> result;
-				for( auto it = first; it != last; ++it ) {
-					result.push_back( it->get( ) );
-				}
-				return result;
-			}
-
-			template<typename Iterator, typename = std::enable_if_t<::daw::traits::has_get_member<typename ::std::iterator_traits<Iterator>::value_type>::value>>
+			template<typename Iterator>
 			auto to_refvec( Iterator first, Iterator last ) {
 				using value_type = typename ::std::iterator_traits<Iterator>::value_type;
 				::std::vector<::std::reference_wrapper<value_type>> result;

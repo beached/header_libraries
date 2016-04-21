@@ -186,18 +186,19 @@ namespace daw {
 																																																																																																																																																																																																																																																																												}; /*struct has_##MemberName##_member_impl*/ \
 																																																																																																																																																																																																																																																																											} /* namespace impl */ \
 			template<typename T> using has_##MemberName##_member = std::integral_constant<bool, impl::has_##MemberName##_member_impl<T>::value>; \
+			template<typename T> using has_##MemberName##_member_v = typename has_##MemberName##_member<T>::value;	\
 			template<typename T> using has_##MemberName##_member_t = typename has_##MemberName##_member<T>::type;
 
 #define GENERATE_HAS_MEMBER_TYPE_TRAIT( TypeName ) \
 			template<typename T, typename=void> struct has_##TypeName##_member: std::false_type { }; \
 			template<typename T> struct has_##TypeName##_member<T, details::type_sink_t<typename T::TypeName>>: std::true_type { }; \
+			template<typename T> using has_##TypeName##_member_v = typename has_##TypeName##_member<T>::value;	\
 			template<typename T> using has_##TypeName##_member_t = typename has_##TypeName##_member<T>::type;
 
 		GENERATE_HAS_MEMBER_FUNCTION_TRAIT( begin );
 		GENERATE_HAS_MEMBER_FUNCTION_TRAIT( end );
 		GENERATE_HAS_MEMBER_FUNCTION_TRAIT( substr );
 		GENERATE_HAS_MEMBER_FUNCTION_TRAIT( push_back );
-		GENERATE_HAS_MEMBER_FUNCTION_TRAIT( get );
 
 		GENERATE_HAS_MEMBER_TYPE_TRAIT( type );
 		GENERATE_HAS_MEMBER_TYPE_TRAIT( value_type );
