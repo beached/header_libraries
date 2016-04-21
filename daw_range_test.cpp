@@ -26,10 +26,10 @@
 
 BOOST_AUTO_TEST_CASE( daw_range_test01 ) {
 	using namespace daw::range;
-	std::vector<int32_t> t = { -400, 4, -1, 1000, 4, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-	auto result = from( t ) 
-				<< stable_partition( []( auto v ) { return v%2 == 0; } )
-				<< as_vector( );
+	std::vector<int32_t> const t = { -400, 4, -1, 1000, 4, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	auto result = (from( t ) 
+				<< stable_partition( []( auto v ) { return v%2 == 0; } ))
+				.as_vector( );
 
 	std::cout << "{";
 	for( auto v: result ) {

@@ -125,7 +125,7 @@ auto operator<<( ::daw::range::ReferenceRange<Iterator> && collection, ::daw::ra
 
 
 DAW_RANGE_GENERATE_VCLAUSE( accumulate );
-DAW_RANGE_GENERATE_VCLAUSE( as_vector );
+//DAW_RANGE_GENERATE_VCLAUSE( as_vector );
 DAW_RANGE_GENERATE_VCLAUSE( erase );
 DAW_RANGE_GENERATE_VCLAUSE( erase_where_equal_to );
 DAW_RANGE_GENERATE_VCLAUSE( find );

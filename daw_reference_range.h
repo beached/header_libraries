@@ -34,19 +34,87 @@
 namespace daw {
 	namespace range {
 		namespace impl {
-			template<typename Iterator>
-			auto to_refvec( Iterator first, Iterator last ) {
-				using value_type = typename ::std::iterator_traits<Iterator>::value_type;
-				::std::vector<::std::reference_wrapper<value_type>> result;
-				for( auto it = first; it != last; ++it ) {
-					result.push_back( std::ref( *it ) );
-				}
-				return result;
-			}
-
 			template<typename T>
 			using cleanup_t = ::std::remove_cv_t<::std::remove_reference_t<T>>;
 
+			template<typename T>
+			struct Reference {
+				T * const ptr;
+				Reference( ) = delete;
+				Reference( T & value ): ptr( &value ) { }
+				Reference( T const & value ): ptr( &value ) { }
+				~Reference( ) { }
+
+				Reference( Reference const & ) = default;
+				Reference( Reference && ) = default;
+				Reference & operator=( Reference const & ) = default;
+				Reference & operator=( Reference && ) = default;
+				
+				T & operator*( ) {
+					return *ptr;
+				}
+
+				T const & operator*( ) const {
+					return *ptr;
+				}
+
+				T & get( ) {
+					return *ptr;
+				}
+
+				T const & get( ) const {
+					return *ptr;
+				}
+			};	// struct Reference
+
+			template<typename T>
+			bool operator==( Reference<T> const & lhs, Reference<T> const & rhs ) {
+				return lhs( ) == rhs( ); 
+			}
+
+			template<typename T>
+			bool operator!=( Reference<T> const & lhs, Reference<T> const & rhs ) {
+				return lhs( ) != rhs( ); 
+			}
+
+			template<typename T>
+			bool operator<( Reference<T> const & lhs, Reference<T> const & rhs ) {
+				return lhs( ) < rhs( ); 
+			}
+
+			template<typename T>
+			bool operator<=( Reference<T> const & lhs, Reference<T> const & rhs ) {
+				return lhs( ) <= rhs( ); 
+			}
+
+			template<typename T>
+			bool operator>( Reference<T> const & lhs, Reference<T> const & rhs ) {
+				return lhs( ) > rhs( ); 
+			}
+
+			template<typename T>
+			bool operator>=( Reference<T> const & lhs, Reference<T> const & rhs ) {
+				return lhs( ) >= rhs( ); 
+			}
+
+			template<typename T, typename=void>
+			auto ref( T && value ) {
+				return Reference<T>( std::forward<T>( value ) );
+			}
+
+			template<typename Iterator>
+			auto to_refvec( Iterator first, Iterator last ) {
+				using value_type = ::std::remove_reference_t<typename ::std::iterator_traits<Iterator>::value_type>;
+				using values_type = ::std::vector<::daw::range::impl::Reference<value_type>>;
+				values_type result;
+				for( auto it = first; it != last; ++it ) {
+					auto v =  ::daw::range::impl::ref( *it );
+					result.push_back( v );
+				}
+				return result;
+			}
+			
+	
 		}	// namespace impl
 
 		template<typename ValueType> struct CollectionRange;
@@ -82,7 +150,8 @@ namespace daw {
 		template<typename Iterator>
 		class ReferenceRange {
 			using referenced_value_type = typename ::std::iterator_traits<Iterator>::value_type;
-			::std::vector<::std::reference_wrapper<referenced_value_type>> m_values;
+			using values_type = ::std::vector<::daw::range::impl::Reference<referenced_value_type>>;
+			values_type m_values;
 		public:
 			using value_type = decltype(m_values.front( ).get( ));
 			using reference = decltype(m_values.front( ));
@@ -227,13 +296,30 @@ namespace daw {
 			template<typename UnaryPredicate>
 			auto partition( UnaryPredicate predicate ) {
 				ReferenceRange result( *this );
-				return ::std::partition( ::std::begin( result ), ::std::end( result ), predicate );
+				::std::partition( ::std::begin( result ), ::std::end( result ), predicate );
+				return result;
 			}
+
+			template<typename UnaryPredicate>
+			auto partition_it( UnaryPredicate predicate ) {
+				ReferenceRange result( *this );
+				auto mid = ::std::partition( ::std::begin( result ), ::std::end( result ), predicate );
+				return ::std::make_pair( mid, result );
+			}
+
 
 			template<typename UnaryPredicate>
 			auto stable_partition( UnaryPredicate predicate ) const {
 				ReferenceRange result( *this );
-				return ::std::stable_partition( ::std::begin( result ), ::std::end( result ), predicate );
+				::std::stable_partition( ::std::begin( result ), ::std::end( result ), predicate );
+				return result;
+			}
+
+			template<typename UnaryPredicate>
+			auto stable_partition_it( UnaryPredicate predicate ) const {
+				ReferenceRange result( *this );
+				auto mid = ::std::stable_partition( ::std::begin( result ), ::std::end( result ), predicate );
+				return ::std::make_pair( mid, result );
 			}
 
 			template<typename T>
@@ -340,7 +426,7 @@ namespace daw {
 		};	// class ReferenceRange
 
 		template<typename Container, typename = decltype(::std::begin( Container{ } ) ) >
-		auto make_ref_range( Container const & container ) {
+		auto make_ref_range( Container & container ) {
 			using iterator = decltype(::std::begin( container ));
 			return ReferenceRange<iterator>( ::std::begin( container ), ::std::end( container ) );
 		}
