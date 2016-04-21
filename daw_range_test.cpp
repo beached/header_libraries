@@ -32,8 +32,18 @@ BOOST_AUTO_TEST_CASE( daw_range_test01 ) {
 	auto result = from( t ) 
 					<< where( []( auto v ) { return 0 == v%2; } )
 					<< where( []( auto v ) { return 0 <= v; } )
-					<< sort( ) << unique( );
-	
+					<< sort( ) 
+					<< unique( )
+					<< shuffle( )
+					<< as_vector( );
+
+	result.push_back( 42545 );
+	result.push_back( 45453 );
+	result.push_back( -1345 );
+	result.push_back( 12345 );
+
+	result = from( result ) << sort( );
+
 	std::cout << result << std::endl;
 }
 

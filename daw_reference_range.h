@@ -52,15 +52,20 @@ namespace daw {
 			return CollectionRange<ValueType>( );
 		}
 
-		template<typename Collection> auto make_collection_range( Collection && collection ) {
+		template<typename Collection>
+		auto make_collection_range( Collection const & collection ) {
 			using value_type = ::std::decay_t<typename Collection::value_type>;
-			return CollectionRange<value_type>( ::std::forward<Collection>( collection ) );
+			return CollectionRange<value_type>( collection );
 		}
 
-		template<typename IteratorF, typename IteratorL> auto make_collection_range( IteratorF first, IteratorL last ) {
+		template<typename IteratorF, typename IteratorL>
+		auto make_collection_range( IteratorF first, IteratorL last ) {
 			using value_type = ::std::decay_t<typename ::std::iterator_traits<IteratorF>::value_type>;
 			return CollectionRange<value_type>( first, last );
 		}
+
+		template<typename Iterator>	
+		auto make_collection_range( ReferenceRange<Iterator> const & collection ) -> CollectionRange<::std::decay_t<typename ReferenceRange<Iterator>::value_type>>;
 
 		template<typename Iterator>
 		class ReferenceRange {
@@ -334,7 +339,15 @@ namespace daw {
 			return os;
 		}
 
-		
+		template<typename Iterator>
+		auto make_collection_range( ReferenceRange<Iterator> const & collection ) {
+			using value_type = ::std::decay_t<typename ReferenceRange<Iterator>::value_type>;
+			CollectionRange<value_type> result;
+			std::transform( ::std::begin( collection ), ::std::end( collection ), ::std::back_inserter( result ), []( auto const & rv ) {
+				return rv.get( );
+			} );
+			return result;
+		}
 
 		template<typename Container, typename ::std::enable_if<daw::traits::is_container_not_string<Container>::value, long>::type = 0>
 		auto make_ref_range( Container const & container ) {
@@ -379,8 +392,6 @@ namespace daw {
 			
 			template<typename IteratorF, typename IteratorL>
 			CollectionRange( IteratorF first, IteratorL last ): m_values( impl::to_vector( first, last ) ) { }
-
-
 		public:
 			using reference = typename values_type::reference;
 			using const_reference = typename values_type::const_reference;
@@ -389,10 +400,14 @@ namespace daw {
 			using difference_type = typename ::std::iterator_traits<iterator>::difference_type;
 
 			template<typename Collection>
-			friend auto make_collection_range( Collection && collection );
-			
+			friend auto make_collection_range( Collection const & collection );
+
 			template<typename ValueType>
 			friend auto make_collection_range( );
+
+
+			template<typename Iterator>
+			friend auto make_collection_range( ReferenceRange<Iterator> const & collection );
 
 			template<typename IteratorF, typename IteratorL>
 			friend auto make_collection_range( IteratorF, IteratorL );
