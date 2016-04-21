@@ -337,15 +337,14 @@ namespace daw {
 		
 
 		template<typename Container, typename ::std::enable_if<daw::traits::is_container_not_string<Container>::value, long>::type = 0>
-		auto make_ref_range( Container & container ) {
+		auto make_ref_range( Container const & container ) {
 			using iterator = decltype(::std::begin( container ));
 			return ReferenceRange<iterator>( ::std::begin( container ), ::std::end( container ) );
 		}
 
-		template<typename Container, typename ::std::enable_if<daw::traits::is_container_not_string<Container>::value, long>::type = 0>
-		auto make_cref_range( Container const & container ) {
-			using iterator = decltype(::std::begin( container ));
-			return ReferenceRange<iterator>( ::std::begin( container ), ::std::end( container ) );
+		template<typename Iterator>
+		auto make_ref_range( ReferenceRange<Iterator> const & container ) {
+			return ReferenceRange<Iterator>( container );
 		}
 
 		namespace impl {

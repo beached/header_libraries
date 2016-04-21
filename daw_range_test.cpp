@@ -37,9 +37,10 @@ BOOST_AUTO_TEST_CASE( daw_range_test01 ) {
 //		} );
 
 	using namespace ::daw::range;
-	auto result = rng 
-					<< where( []( auto const & v ) { return 0 == v%2; } )
-					<< where( []( auto const & v ) { return 0 > v; } );
+	auto result = from( t ) 
+					<< where( []( auto v ) { return 0 == v%2; } )
+					<< where( []( auto v ) { return 0 <= v; } )
+					<< sort( ) << unique( );
 	
 	std::cout << result << std::endl;
 }
