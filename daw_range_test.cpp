@@ -42,8 +42,8 @@ BOOST_AUTO_TEST_CASE( daw_range_test01 ) {
 	result.push_back( -1345 );
 	result.push_back( 12345 );
 
-	result = from( result ) << sort( );
+	auto result2 = from( result ) << sort( );
 
-	std::cout << result << std::endl;
+	std::cout << result2 << std::endl;
 }
 

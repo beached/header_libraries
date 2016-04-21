@@ -57,18 +57,21 @@ namespace daw {
 			return CollectionRange<ValueType>{ };
 		}
 
-		template<typename Collection, typename ValueType=impl::cleanup_t<typename ::std::iterator_traits<typename Collection::iterator>::ValueType>>
-		CollectionRange<ValueType> make_collection_range( Collection const & collection ) {
+		template<typename Collection, typename=void>
+		auto make_collection_range( Collection const & collection ) {
+			using ValueType = impl::cleanup_t<typename ::std::iterator_traits<typename Collection::iterator>::value_type>;
 			return CollectionRange<ValueType>( collection );
 		}
 
-		template<typename IteratorF, typename IteratorL, typename ValueType=impl::cleanup_t<typename ::std::iterator_traits<IteratorF>::ValueType>>
-		CollectionRange<ValueType> make_collection_range( IteratorF first, IteratorL last ) {
+		template<typename IteratorF, typename IteratorL>
+		auto make_collection_range( IteratorF first, IteratorL last ) {
+			using ValueType = impl::cleanup_t<typename ::std::iterator_traits<IteratorF>::value_type>;
 			return CollectionRange<ValueType>( first, last );
 		}
 
-		template<typename Iterator, typename ValueType=impl::cleanup_t<typename ::std::iterator_traits<Iterator>::ValueType>>
-		CollectionRange<ValueType> make_collection_range( ReferenceRange<Iterator> const & collection ) {
+		template<typename Iterator>
+		auto make_collection_range( ReferenceRange<Iterator> const & collection ) {
+			using ValueType = impl::cleanup_t<typename ::std::iterator_traits<Iterator>::value_type>;
 			CollectionRange<ValueType> result;
 			std::transform( ::std::begin( collection ), ::std::end( collection ), ::std::back_inserter( result ), []( auto const & rv ) {
 				return rv.get( );
@@ -171,7 +174,7 @@ namespace daw {
 				return result;
 			}
 
-			auto sort( ) && {
+			auto sort( ) const && {
 				auto result = make_collection_range( *this );
 				::std::sort( ::std::begin( result ), ::std::end( result ) );
 				return result;
@@ -337,18 +340,6 @@ namespace daw {
 			}
 		};	// class ReferenceRange
 
-		template<typename Iterator>
-		::std::ostream & operator<<( ::std::ostream& os, ReferenceRange<Iterator> const & rng ) {
-			os << "{";
-			if( !rng.empty( ) ) {
-				for( auto it = rng.cbegin( ); it != rng.cend( ); ++it ) {
-					os << " " << it->get( );
-				}
-			}
-			os << " }";
-			return os;
-		}
-
 		template<typename Container, typename ::std::enable_if<daw::traits::is_container_not_string<Container>::value, long>::type = 0>
 		auto make_ref_range( Container const & container ) {
 			using iterator = decltype(::std::begin( container ));
@@ -385,13 +376,6 @@ namespace daw {
 			using values_type = ::std::vector<value_type>;
 		private:
 			values_type m_values;
-			CollectionRange( ) = default;
-
-			template<typename Collection>
-			CollectionRange( Collection const & collection ): m_values( impl::to_vector( collection ) ) { }
-			
-			template<typename IteratorF, typename IteratorL>
-			CollectionRange( IteratorF first, IteratorL last ): m_values( impl::to_vector( first, last ) ) { }
 		public:
 			using reference = typename values_type::reference;
 			using const_reference = typename values_type::const_reference;
@@ -399,18 +383,13 @@ namespace daw {
 			using const_iterator = typename values_type::const_iterator;
 			using difference_type = typename ::std::iterator_traits<iterator>::difference_type;
 
+			CollectionRange( ) = default;
+
 			template<typename Collection>
-			friend auto make_collection_range( Collection const & collection );
-
-			template<typename ValueType>
-			friend auto make_collection_range( );
-
-
-			template<typename Iterator>
-			friend auto make_collection_range( ReferenceRange<Iterator> const & collection );
-
+			CollectionRange( Collection const & collection ): m_values( impl::to_vector( collection ) ) { }
+			
 			template<typename IteratorF, typename IteratorL>
-			friend auto make_collection_range( IteratorF, IteratorL );
+			CollectionRange( IteratorF first, IteratorL last ): m_values( impl::to_vector( first, last ) ) { }
 
 			CollectionRange( CollectionRange const & ) = default;
 			CollectionRange( CollectionRange && ) = default;
@@ -705,5 +684,34 @@ namespace daw {
 				return result;
 			}
 		};	// struct CollectionRange
+
+
+
+
 	}	// namespace range
 }	// namespace daw
+template<typename Iterator>
+::std::ostream & operator<<( ::std::ostream& os, ::daw::range::ReferenceRange<Iterator> const & rng ) {
+	os << "{";
+	if( !rng.empty( ) ) {
+		for( auto it = rng.cbegin( ); it != rng.cend( ); ++it ) {
+			os << " " << it->get( );
+		}
+	}
+	os << " }";
+	return os;
+}
+
+template<typename T>
+::std::ostream & operator<<( ::std::ostream& os, ::daw::range::CollectionRange<T> const & rng ) {
+	os << "{";
+	if( !rng.empty( ) ) {
+		for( auto it = rng.cbegin( ); it != rng.cend( ); ++it ) {
+			os << " " << *it;
+		}
+	}
+	os << " }";
+	return os;
+}
+
+
