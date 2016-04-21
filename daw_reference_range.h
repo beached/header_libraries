@@ -140,9 +140,8 @@ namespace daw {
 				return result;
 			}
 
-			CollectionRange sort( ) && {
-				CollectionRange result( 
-				ReferenceRange result( *this );
+			auto sort( ) && {
+				CollectionRange<value_type> result( *this );
 				::std::sort( ::std::begin( result ), ::std::end( result ) );
 				return result;
 			}
@@ -217,8 +216,7 @@ namespace daw {
 			template<typename UnaryOperator>
 			auto map( UnaryOperator oper ) {	// TODO verify result shouldn't be ref range
 				using v_t = decltype(oper( *begin( ) ));
-				using result_t = ::std::vector<v_t>;
-				CollectionRange<result_t> result;
+				CollectionRange<v_t> result;
 				::std::transform( begin( ), end( ), ::std::back_inserter( result ), oper );
 				return result;
 			}
@@ -311,13 +309,13 @@ namespace daw {
 		template<typename Container, typename ::std::enable_if<daw::traits::is_container_not_string<Container>::value, long>::type = 0>
 		auto make_ref_range( Container & container ) {
 			using iterator = decltype(::std::begin( container ));
-			return ReferenceRange<iterator>( ::std::begin( container ), ::std::end( container ) );
+			return auto( ::std::begin( container ), ::std::end( container ) );
 		}
 
 		template<typename Container, typename ::std::enable_if<daw::traits::is_container_not_string<Container>::value, long>::type = 0>
 		auto make_cref_range( Container const & container ) {
 			using iterator = decltype(::std::begin( container ));
-			return ReferenceRange<iterator>( ::std::begin( container ), ::std::end( container ) );
+			return auto( ::std::begin( container ), ::std::end( container ) );
 		}
 
 		namespace impl {
@@ -339,9 +337,9 @@ namespace daw {
 
 		}	// namespace impl
 
-		template<typename Collection>
+		template<typename T>
 		struct CollectionRange {
-			using value_type = typename Collection::value_type;
+			using value_type = typename T;
 			using values_type = ::std::vector<value_type>;
 		private:
 			values_type m_values;
@@ -467,8 +465,7 @@ namespace daw {
 			}
 
 
-
-			ReferenceRange sort( ) & {
+			auto sort( ) & {
 				auto result = make_ref_range( *this );
 				::std::sort( ::std::begin( result ), ::std::end( result ) );
 				return result;
@@ -480,7 +477,7 @@ namespace daw {
 			}
 
 			template<typename UnaryPredicate>
-			ReferenceRange sort( UnaryPredicate predicate ) & {
+			auto sort( UnaryPredicate predicate ) & {
 				auto result = make_ref_range( *this );
 				::std::sort( ::std::begin( result ), ::std::end( result ), ::std::forward<UnaryPredicate>( predicate ) );
 				return result;
@@ -492,7 +489,7 @@ namespace daw {
 				return ::std::move( *this );
 			}
 
-			ReferenceRange stable_sort( ) & {
+			auto stable_sort( ) & {
 				auto result = make_ref_range( *this );
 				::std::stable_sort( ::std::begin( result ), ::std::end( result ) );
 				return result;
@@ -504,7 +501,7 @@ namespace daw {
 			}
 
 			template<typename UnaryPredicate>
-			ReferenceRange stable_sort( UnaryPredicate predicate ) & {
+			auto stable_sort( UnaryPredicate predicate ) & {
 				auto result = make_ref_range( *this );
 				::std::stable_sort( ::std::begin( result ), ::std::end( result ), ::std::forward<UnaryPredicate>( predicate ) );
 				return result;
@@ -516,7 +513,7 @@ namespace daw {
 				return ::std::move( *this );
 			}
 
-			ReferenceRange unique( ) & {
+			auto unique( ) & {
 				auto result = make_ref_range( *this );
 				auto & vals = result.m_values;
 				vals.erase( ::std::unique( vals.begin( ), vals.end( ) ), vals.end( ) );
@@ -524,12 +521,12 @@ namespace daw {
 			}
 
 			CollectionRange unique( ) && {
-				vals.erase( ::std::unique( begin( ), end( ) ), end( ) );
+				m_values.erase( ::std::unique( m_values.begin( ), m_values.end( ) ), m_values.end( ) );
 				return ::std::move( *this );
 			}
 
 			template<typename UnaryPredicate>
-			ReferenceRange unique( UnaryPredicate predicate ) & {
+			auto unique( UnaryPredicate predicate ) & {
 				auto result = make_ref_range( *this );
 				auto & vals = result.m_values;
 				vals.erase( ::std::unique( vals.begin( ), vals.end( ), predicate ), vals.end( ) );
@@ -538,12 +535,12 @@ namespace daw {
 
 			template<typename UnaryPredicate>
 			CollectionRange unique( UnaryPredicate predicate ) && {
-				vals.erase( ::std::unique( begin( ), end( ), predicate ), end( ) );
+				m_values.erase( ::std::unique( m_values.begin( ), m_values.end( ), predicate ), m_values.end( ) );
 				return ::std::move( *this );
 			}
 
 			template<typename UnaryPredicate>
-			ReferenceRange partition( UnaryPredicate predicate ) & {
+			auto partition( UnaryPredicate predicate ) & {
 				auto result = make_ref_range( *this );
 				::std::partition( ::std::begin( result ), ::std::end( result ), predicate );
 				return result;
@@ -556,7 +553,7 @@ namespace daw {
 			}
 
 			template<typename UnaryPredicate>
-			ReferenceRange stable_partition( UnaryPredicate predicate ) & {
+			auto stable_partition( UnaryPredicate predicate ) & {
 				auto result = make_ref_range( *this );
 				::std::stable_partition( ::std::begin( result ), ::std::end( result ), predicate );
 				return result;

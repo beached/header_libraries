@@ -23,6 +23,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include "daw_range.h"
+#include "daw_reference_range.h"
 
 BOOST_AUTO_TEST_CASE( daw_range_test01 ) {
 	std::vector<int32_t> t = { 4, -1, 1000, 4, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
