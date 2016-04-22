@@ -43,7 +43,7 @@ namespace daw {
 				}
 				return result;
 			}
-			
+
 			template<typename T>
 			using cleanup_t = ::std::remove_cv_t<::std::remove_reference_t<T>>;
 
@@ -51,16 +51,16 @@ namespace daw {
 
 		template<typename ValueType> struct CollectionRange;
 		template<typename Iterator> class ReferenceRange;
-		
+
 		template<typename ValueType>
 		CollectionRange<ValueType> make_collection_range( ) {
 			return CollectionRange<ValueType>{ };
 		}
 
-		template<typename Collection, typename=void>
-		auto make_collection_range( Collection const & collection ) {
-			using ValueType = impl::cleanup_t<typename ::std::iterator_traits<typename Collection::iterator>::value_type>;
-			return CollectionRange<ValueType>( collection );
+		template<typename Container, typename = decltype(::std::begin( Container { } ))>
+		auto make_collection_range( Container const & container ) {
+			using ValueType = impl::cleanup_t<typename ::std::iterator_traits<typename Container::iterator>::value_type>;
+			return CollectionRange<ValueType>( container );
 		}
 
 		template<typename IteratorF, typename IteratorL>
@@ -322,7 +322,7 @@ namespace daw {
 				return *this;
 			}
 
-			
+
 			ReferenceRange shuffle( ) const {
 				static std::random_device rd;
 				static std::mt19937 g( rd( ) );
@@ -339,7 +339,7 @@ namespace daw {
 			}
 		};	// class ReferenceRange
 
-		template<typename Container, typename=void>
+		template<typename Container, typename = decltype(::std::begin( Container{ } ) ) >
 		auto make_ref_range( Container const & container ) {
 			using iterator = decltype(::std::begin( container ));
 			return ReferenceRange<iterator>( ::std::begin( container ), ::std::end( container ) );

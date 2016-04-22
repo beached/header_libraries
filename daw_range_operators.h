@@ -63,7 +63,7 @@ namespace daw {\
 			class clause_name##_t {\
 				::std::tuple<Args...> clause_name##_args;\
 				\
-				template<typename Container, typename... ClauseArgs, typename = void>\
+				template<typename Container, typename... ClauseArgs, typename = decltype( ::std::begin( Container{ } ) )>\
 				static auto clause_name##_helper( Container const & container, ClauseArgs&&... clause_args ) {\
 					return from( container ).clause_name( std::forward<ClauseArgs>( clause_args )... );\
 				}\
@@ -110,9 +110,9 @@ namespace daw {\
 		}\
 	}\
 }\
-template<typename Collection, typename... Args, typename=void>\
-auto operator<<( Collection && collection, ::daw::range::details::clause_name##_t<Args...> const & predicate ) {\
-	return predicate( std::forward<Collection>( collection ) );\
+template<typename Container, typename... Args, typename=decltype( ::std::begin( Container{ } ) )>\
+auto operator<<( Container && container, ::daw::range::details::clause_name##_t<Args...> const & predicate ) {\
+	return predicate( std::forward<Container>( container ) );\
 }\
 template<typename T, typename... Args>\
 auto operator<<( ::daw::range::CollectionRange<T> && collection, ::daw::range::details::clause_name##_t<Args...> const & predicate ) {\
