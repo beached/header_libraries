@@ -50,7 +50,8 @@ namespace daw {
 		}	// namespace impl
 
 		template<typename ValueType> struct CollectionRange;
-
+		template<typename Iterator> class ReferenceRange;
+		
 		template<typename ValueType>
 		CollectionRange<ValueType> make_collection_range( ) {
 			return CollectionRange<ValueType>{ };

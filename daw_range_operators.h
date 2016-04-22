@@ -62,7 +62,7 @@ namespace daw {\
 			class clause_name##_t {\
 				::std::tuple<Args...> clause_name##_args;\
 				\
-				template<typename Container, typename... ClauseArgs>\
+				template<typename Container, typename... ClauseArgs, typename = ::std::enable_if_t<!::std::is_same<::daw::range::ReferenceRange<Container>, Container>>>\
 				static auto clause_name##_helper( Container const & container, ClauseArgs&&... clause_args ) {\
 					return make_ref_range( container ).clause_name( std::forward<ClauseArgs>( clause_args )... );\
 				}\
