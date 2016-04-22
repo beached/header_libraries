@@ -187,7 +187,7 @@ namespace daw {
 			struct where_t {
 				::std::tuple<Args...> where_args;
 
-				where_t( Args&&... args ): where_args( ::std::forward<Args>( where_args )... ) { }
+				where_t( ::std::tuple<Args...>&& args ): where_args( ::std::forward<::std::tuple<Args...>>( where_args )... ) { }
 
 				template<typename Collection>
 				auto operator()( Collection const & collection ) const {
@@ -219,7 +219,8 @@ namespace daw {
 		
 		template<typename... Args>
 		auto where( Args&&... where_args ) {
-			return ::daw::range::details::where_t<Args...>( ::std::forward<Args>( where_args )... );
+			std::tuple<Args...> param = ::std::forward_as_tuple( where_args... );
+			return ::daw::range::details::where_t<Args...>( param );
 		}
 	}
 }
