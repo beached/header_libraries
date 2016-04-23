@@ -252,6 +252,9 @@ namespace daw {
 		template<typename T>
 		constexpr bool is_const_v = std::is_const<T>::value;
 
+		template<typename T>
+		using is_const_t = typename std::is_const<T>::type;
+
 		template<typename InputIt1, typename InputIt2, typename OutputIt, typename Func>
 		OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, OutputIt first_out, Func func ) {
 			static_assert(!is_const_v<decltype(*first_out)>, "Output iterator cannot point to const data");

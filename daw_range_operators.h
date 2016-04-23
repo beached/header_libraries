@@ -35,9 +35,21 @@
 
 namespace daw {
 	namespace range {
-		template<typename... Args>
-		auto from( Args&&... args ) {
-			return make_ref_range( std::forward<Args>( args )... );
+		namespace impl {
+			template<typename Arg, typename... Args>
+			auto from( std::true_type, Arg && arg, Args&&... args ) {
+				return make_ref_range( std::forward<Arg>( arg ), std::forward<Args>( args )... );
+			}
+
+			template<typename Arg, typename... Args>
+			auto from( std::false_type, Arg && arg, Args&&... args ) {
+				return make_collection_range( std::forward<Arg>( arg ), std::forward<Args>( args )... );
+			}
+
+		}	// namespace impl
+		template<typename Arg, typename... Args>
+		auto from( Arg && arg, Args&&... args ) {
+			return impl::from( ::std::is_const<Arg>( ), std::forward<Arg>( arg ), std::forward<Args>( args )... );
 		}
 
 		namespace details {
