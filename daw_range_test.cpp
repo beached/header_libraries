@@ -22,7 +22,6 @@
 
 #include <boost/test/unit_test.hpp>
 #include "daw_range.h"
-#include "daw_range_operators.h"
 
 BOOST_AUTO_TEST_CASE( daw_range_test01 ) {
 	using namespace daw::range;
