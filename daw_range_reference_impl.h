@@ -114,12 +114,12 @@ namespace daw {
 		}
 
 		template<typename Iterator>
-		bool ReferenceRange<Iterator>::operator==( ReferenceRange const & other ) const {
+		bool ReferenceRange<Iterator>::operator==( ReferenceRange<Iterator> const & other ) const {
 			return m_values == other.m_values;
 		}
 
 		template<typename Iterator>
-		bool ReferenceRange<Iterator>::operator!=( ReferenceRange const & other ) const {
+		bool ReferenceRange<Iterator>::operator!=( ReferenceRange<Iterator> const & other ) const {
 			return m_values != other.m_values;
 		}
 
@@ -146,30 +146,32 @@ namespace daw {
 			return copy( ).sort( );
 		}
 
+		template<typename Iterator>
 		template<typename UnaryPredicate>
-		ReferenceRange &  sort( UnaryPredicate predicate ) {
+		ReferenceRange<Iterator> & sort( UnaryPredicate predicate ) {
 			::std::sort( begin( ), end( ), [&predicate]( auto const & v ) {
 				return predicate( v.get( ) );
 			} );
 			return *this;
 		}
 
+		template<typename Iterator>
 		template<typename UnaryPredicate>
-		ReferenceRange sort( UnaryPredicate predicate ) const {
+		ReferenceRange<Iterator> & sort( UnaryPredicate predicate ) const {
 			return copy( ).sort( predicate );
 		}
 
-		ReferenceRange stable_sort( ) {
+		ReferenceRange<Iterator> stable_sort( ) {
 			::std::stable_sort( begin( ), end( ) );
 			return *this;
 		}
 
-		ReferenceRange stable_sort( ) const {
+		ReferenceRange<Iterator> stable_sort( ) const {
 			return copy( ).stable_sort( );
 		}
 
 		template<typename UnaryPredicate>
-		ReferenceRange stable_sort( UnaryPredicate predicate ) {
+		ReferenceRange<Iterator> stable_sort( UnaryPredicate predicate ) {
 			::std::stable_sort( begin( ), end( ), [&predicate]( auto const & v ) {
 				return predicate( v.get( ) );
 			} );
@@ -177,21 +179,21 @@ namespace daw {
 		}
 
 		template<typename UnaryPredicate>
-		ReferenceRange stable_sort( UnaryPredicate predicate ) const {
+		ReferenceRange<Iterator> stable_sort( UnaryPredicate predicate ) const {
 			return copy( ).sort( predicate );
 		}
 
-		ReferenceRange unique( ) {
+		ReferenceRange<Iterator> unique( ) {
 			erase( ::std::unique( begin( ), end( ) ), end( ) );
 			return *this;
 		}
 
-		ReferenceRange unique( ) const {
+		ReferenceRange<Iterator> unique( ) const {
 			return copy( ).unique( );
 		}
 
 		template<typename UnaryPredicate>
-		ReferenceRange unique( UnaryPredicate predicate ) {
+		ReferenceRange<Iterator> unique( UnaryPredicate predicate ) {
 			erase( ::std::unique( begin( ), end( ), [&predicate]( auto const & v ) {
 				return predicate( v.get( ) );
 			} ), end( ) );
@@ -199,7 +201,7 @@ namespace daw {
 		}
 
 		template<typename UnaryPredicate>
-		ReferenceRange unique( UnaryPredicate predicate ) const {
+		ReferenceRange<Iterator> unique( UnaryPredicate predicate ) const {
 			return copy( ).unique( predicate );
 		}
 
@@ -358,14 +360,14 @@ namespace daw {
 		}
 
 		template<typename Function>
-		ReferenceRange for_each( Function function ) const {
+		ReferenceRange<Iterator> for_each( Function function ) const {
 			for( auto const & v : m_values ) {
 				function( v.get( ) );
 			}
 			return *this;
 		}
 
-		ReferenceRange shuffle( ) {
+		ReferenceRange<Iterator> shuffle( ) {
 			static std::random_device rd;
 			static std::mt19937 g( rd( ) );
 			::std::shuffle( begin( ), end( ), g );
@@ -373,18 +375,18 @@ namespace daw {
 		}
 
 
-		ReferenceRange shuffle( ) const {
+		ReferenceRange<Iterator> shuffle( ) const {
 			return copy( ).shuffle( );
 		}
 
 		template<typename UniformRandomNumberGenerator>
-		ReferenceRange shuffle( UniformRandomNumberGenerator && urng ) {
+		ReferenceRange<Iterator> shuffle( UniformRandomNumberGenerator && urng ) {
 			::std::shuffle( begin( ), end( ), std::forward<UniformRandomNumberGenerator>( urng ) );
 			return *this;
 		}
 
 		template<typename UniformRandomNumberGenerator>
-		ReferenceRange shuffle( UniformRandomNumberGenerator && urng ) const {
+		ReferenceRange<Iterator> shuffle( UniformRandomNumberGenerator && urng ) const {
 			return copy( ).shuffle( std::forward<UniformRandomNumberGenerator>( urng ) );
 		}
 		};	// class ReferenceRange
