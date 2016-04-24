@@ -52,6 +52,12 @@ namespace daw {
 			return impl::from( ::std::is_const<Arg>( ), std::forward<Arg>( arg ), std::forward<Args>( args )... );
 		}
 
+		template<typename Arg, typename... Args>
+		auto from_mutable( Arg && arg, Args&&... args ) {
+			return impl::from( std::false_type( ), std::forward<Arg>( arg ), std::forward<Args>( args )... );
+		}
+
+
 		namespace details {
 			template<int ...>
 			struct seq { };
@@ -137,7 +143,7 @@ auto operator<<( ::daw::range::ReferenceRange<Iterator> && collection, ::daw::ra
 
 
 DAW_RANGE_GENERATE_VCLAUSE( accumulate );
-//DAW_RANGE_GENERATE_VCLAUSE( as_vector );
+DAW_RANGE_GENERATE_VCLAUSE( as_vector );
 DAW_RANGE_GENERATE_VCLAUSE( erase );
 DAW_RANGE_GENERATE_VCLAUSE( erase_where_equal_to );
 DAW_RANGE_GENERATE_VCLAUSE( find );
@@ -150,6 +156,7 @@ DAW_RANGE_GENERATE_VCLAUSE( stable_sort );
 DAW_RANGE_GENERATE_VCLAUSE( transform );
 DAW_RANGE_GENERATE_VCLAUSE( unique );
 DAW_RANGE_GENERATE_VCLAUSE( where );
+DAW_RANGE_GENERATE_VCLAUSE( for_each );
 
 #undef DAW_RANGE_GENERATE_VCLAUSE
 
