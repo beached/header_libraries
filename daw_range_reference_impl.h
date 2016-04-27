@@ -143,7 +143,7 @@ namespace daw {
 
 		template<typename Iterator>
 		auto ReferenceRange<Iterator>::sort( ) const {
-			return ReferenceRange( *this ).sort( );
+			return copy( ).sort( );
 		}
 
 		template<typename UnaryPredicate>
@@ -156,7 +156,7 @@ namespace daw {
 
 		template<typename UnaryPredicate>
 		ReferenceRange sort( UnaryPredicate predicate ) const {
-			return ReferenceRange( *this ).sort( predicate );
+			return copy( ).sort( predicate );
 		}
 
 		ReferenceRange stable_sort( ) {
@@ -165,7 +165,7 @@ namespace daw {
 		}
 
 		ReferenceRange stable_sort( ) const {
-			return ReferenceRange( *this ).stable_sort( );
+			return copy( ).stable_sort( );
 		}
 
 		template<typename UnaryPredicate>
@@ -178,7 +178,7 @@ namespace daw {
 
 		template<typename UnaryPredicate>
 		ReferenceRange stable_sort( UnaryPredicate predicate ) const {
-			return ReferenceRange( *this ).sort( predicate );
+			return copy( ).sort( predicate );
 		}
 
 		ReferenceRange unique( ) {
@@ -187,7 +187,7 @@ namespace daw {
 		}
 
 		ReferenceRange unique( ) const {
-			return ReferenceRange( *this ).unique( );
+			return copy( ).unique( );
 		}
 
 		template<typename UnaryPredicate>
@@ -200,7 +200,7 @@ namespace daw {
 
 		template<typename UnaryPredicate>
 		ReferenceRange unique( UnaryPredicate predicate ) const {
-			return ReferenceRange( *this ).unique( predicate );
+			return copy( ).unique( predicate );
 		}
 
 		template<typename UnaryPredicate>
@@ -213,7 +213,7 @@ namespace daw {
 
 		template<typename UnaryPredicate>
 		auto partition( UnaryPredicate predicate ) const {
-			return ReferenceRange( *this ).partition( predicate );
+			return copy( ).partition( predicate );
 		}
 
 		template<typename UnaryPredicate>
@@ -224,7 +224,7 @@ namespace daw {
 
 		template<typename UnaryPredicate>
 		auto partition_it( UnaryPredicate predicate ) const {
-			return ReferenceRange( *this ).partition_it( predicate );
+			return copy( ).partition_it( predicate );
 		}
 
 		template<typename UnaryPredicate>
@@ -237,7 +237,7 @@ namespace daw {
 
 		template<typename UnaryPredicate>
 		auto stable_partition( UnaryPredicate predicate ) const {
-			return ReferenceRange( *this ).stable_partition( predicate );
+			return copy( ).stable_partition( predicate );
 		}
 
 		template<typename UnaryPredicate>
@@ -250,7 +250,7 @@ namespace daw {
 
 		template<typename UnaryPredicate>
 		auto stable_partition_it( UnaryPredicate predicate ) const {
-			return ReferenceRange( *this ).partition_it( predicate );
+			return copy( ).partition_it( predicate );
 		}
 
 		template<typename T>
@@ -299,7 +299,7 @@ namespace daw {
 
 		template<typename UnaryPredicate>
 		auto erase( UnaryPredicate predicate ) const {
-			return ReferenceRange( *this ).erase( predicate );
+			return copy( ).erase( predicate );
 		}
 
 		template<typename Value>
@@ -374,7 +374,7 @@ namespace daw {
 
 
 		ReferenceRange shuffle( ) const {
-			return ReferenceRange( *this ).shuffle( );
+			return copy( ).shuffle( );
 		}
 
 		template<typename UniformRandomNumberGenerator>
@@ -385,7 +385,7 @@ namespace daw {
 
 		template<typename UniformRandomNumberGenerator>
 		ReferenceRange shuffle( UniformRandomNumberGenerator && urng ) const {
-			return ReferenceRange( *this ).shuffle( std::forward<UniformRandomNumberGenerator>( urng ) );
+			return copy( ).shuffle( std::forward<UniformRandomNumberGenerator>( urng ) );
 		}
 		};	// class ReferenceRange
 
