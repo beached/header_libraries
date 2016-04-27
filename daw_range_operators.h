@@ -61,10 +61,10 @@ namespace daw {
 		namespace details {
 			template<int ...>
 			struct seq { };
-			
+
 			template<int N, int ...S>
-			struct gens: gens<N-1, N-1, S...> { };
-			
+			struct gens: gens<N - 1, N - 1, S...> { };
+
 			template<int ...S>
 			struct gens<0, S...> {
 				typedef seq<S...> type;
@@ -159,5 +159,3 @@ DAW_RANGE_GENERATE_VCLAUSE( where );
 DAW_RANGE_GENERATE_VCLAUSE( for_each );
 
 #undef DAW_RANGE_GENERATE_VCLAUSE
-
-

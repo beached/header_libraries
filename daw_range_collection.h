@@ -55,7 +55,7 @@ namespace daw {
 
 			template<typename Collection>
 			CollectionRange( Collection const & collection ): m_values( impl::to_vector( collection ) ) { }
-			
+
 			template<typename IteratorF, typename IteratorL>
 			CollectionRange( IteratorF first, IteratorL last ): m_values( impl::to_vector( first, last ) ) { }
 
@@ -362,7 +362,7 @@ namespace daw {
 				static std::mt19937 g( rd( ) );
 				return shuffle( g );
 			}
-			
+
 			auto shuffle( ) const & {
 				return make_ref_range( *this ).shuffle( );
 			}
@@ -373,7 +373,7 @@ namespace daw {
 			return CollectionRange<ValueType>{ };
 		}
 
-		template<typename Container, typename ValueType = impl::cleanup_t<typename ::std::iterator_traits<typename Container::iterator>::value_type>, typename=void>
+		template<typename Container, typename ValueType = impl::cleanup_t<typename ::std::iterator_traits<typename Container::iterator>::value_type>, typename = void>
 		CollectionRange<ValueType> make_collection_range( Container const & container ) {
 			return CollectionRange<ValueType>( container );
 		}
@@ -405,5 +405,3 @@ template<typename T>
 	os << " }";
 	return os;
 }
-
-
