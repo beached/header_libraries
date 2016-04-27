@@ -38,12 +38,12 @@ namespace daw {
 		namespace impl {
 			template<typename Arg, typename... Args>
 			auto from( std::true_type, Arg && arg, Args&&... args ) {
-				return make_ref_range( std::forward<Arg>( arg ), std::forward<Args>( args )... );
+				return make_range_reference( std::forward<Arg>( arg ), std::forward<Args>( args )... );
 			}
 
 			template<typename Arg, typename... Args>
 			auto from( std::false_type, Arg && arg, Args&&... args ) {
-				return make_collection_range( std::forward<Arg>( arg ), std::forward<Args>( args )... );
+				return make_range_collection( std::forward<Arg>( arg ), std::forward<Args>( args )... );
 			}
 
 		}	// namespace impl
