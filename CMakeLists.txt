@@ -32,6 +32,8 @@ set(HEADER_PREFIXES
 		daw_range	
 		daw_range_algorithm
 		daw_range_operators
+		daw_range_reference
+		daw_range_collection
 		daw_string
 		daw_traits
 		daw_utility
