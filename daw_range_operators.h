@@ -58,8 +58,6 @@ namespace daw {
 				return impl::from( std::false_type( ), std::forward<Arg>( arg ), std::forward<Args>( args )... );
 			}
 
-
-<<<<<<< HEAD
 			namespace details {
 				template<int ...>
 				struct seq { };
@@ -73,21 +71,6 @@ namespace daw {
 				};
 			}	// namespace details
 		}	// namespace operators
-=======
-
-		namespace details {
-			template<int ...>
-			struct seq { };
-
-			template<int N, int ...S>
-			struct gens: gens<N - 1, N - 1, S...> { };
-
-			template<int ...S>
-			struct gens<0, S...> {
-				typedef seq<S...> type;
-			};
-		}	// namespace details
->>>>>>> feb17b476b2e6059f11ab40b44a0b2726db59edf
 	}	// namespace range
 }	// namespace daw
 
