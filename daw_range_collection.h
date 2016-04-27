@@ -31,8 +31,8 @@
 #include "daw_traits.h"
 #include "daw_algorithm.h"
 #include "daw_reference.h"
-#include "daw_range_reference.h"
 #include "daw_range_common.h"
+#include "daw_range_reference.h"
 
 namespace daw {
 	namespace range {
@@ -368,29 +368,41 @@ namespace daw {
 			}
 		};	// struct CollectionRange
 
-		template<typename ValueType>
-		CollectionRange<ValueType> make_range_collection( ) {
-			return CollectionRange<ValueType>{ };
+		namespace impl {
+			template<typename ValueType>
+			CollectionRange<ValueType> make_range_collection( ) {
+				return CollectionRange<ValueType>{ };
+			}
+
+			template<typename Container, typename=void>
+			auto make_range_collection( Container const & container ) {
+				using ValueType = impl::cleanup_t<typename ::std::iterator_traits<typename Container::iterator>::value_type>;
+				return CollectionRange<ValueType>( container );
+			}
+
+			template<typename IteratorF, typename IteratorL>
+			auto make_range_collection( IteratorF first, IteratorL last ) {
+				using ValueType = impl::cleanup_t<typename ::std::iterator_traits<IteratorF>::value_type>;
+				return CollectionRange<ValueType>( first, last );
+			}
+
+			template<typename Iterator>
+			auto make_range_collection( ::daw::range::ReferenceRange<Iterator> const & collection ) {
+				using ValueType = impl::cleanup_t<typename ::std::iterator_traits<Iterator>::value_type>;
+				CollectionRange<ValueType> result;
+				std::transform( ::std::begin( collection ), ::std::end( collection ), ::std::back_inserter( result ), []( auto const & rv ) {
+					return rv.get( );
+				} );
+				return result;
+			}
+		}	// namespace impl
+
+		template<typename Arg, typename... Args>
+		auto make_range_collection( Arg && arg, Args&&... args ) {
+			return ::daw::range::impl::make_range_collection( ::std::forward<Arg>( arg ), ::std::forward<Args>( args )... );	
 		}
 
-		template<typename Container, typename ValueType = impl::cleanup_t<typename ::std::iterator_traits<typename Container::iterator>::value_type>, typename=void>
-		CollectionRange<ValueType> make_range_collection( Container const & container ) {
-			return CollectionRange<ValueType>( container );
-		}
 
-		template<typename IteratorF, typename IteratorL, typename ValueType = impl::cleanup_t<typename ::std::iterator_traits<IteratorF>::value_type>>
-		CollectionRange<ValueType> make_range_collection( IteratorF first, IteratorL last ) {
-			return CollectionRange<ValueType>( first, last );
-		}
-
-		template<typename Iterator, typename ValueType = impl::cleanup_t<typename ::std::iterator_traits<Iterator>::value_type>>
-		CollectionRange<ValueType> make_range_collection( ReferenceRange<Iterator> const & collection ) {
-			CollectionRange<ValueType> result;
-			std::transform( ::std::begin( collection ), ::std::end( collection ), ::std::back_inserter( result ), []( auto const & rv ) {
-				return rv.get( );
-			} );
-			return result;
-		}
 	}	// namespace range
 }	// namespace daw
 

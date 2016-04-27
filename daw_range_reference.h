@@ -31,11 +31,11 @@
 #include "daw_traits.h"
 #include "daw_algorithm.h"
 #include "daw_reference.h"
+#include "daw_range_common.h"
 #include "daw_range_collection.h"
 
 namespace daw {
 	namespace range {
-		template<typename ValueType> struct CollectionRange;
 		
 		template<typename Iterator>
 		class ReferenceRange {
@@ -396,24 +396,32 @@ namespace daw {
 				return copy( ).shuffle( std::forward<UniformRandomNumberGenerator>( urng ) );
 			}
 		};	// classs ReferenceRange
+		
+		namespace impl {
+			template<typename Container, typename = void>
+			auto make_range_reference( Container & container ) {
+				using iterator = ::std::remove_const_t<decltype(::std::begin( container ))>;
+				return ReferenceRange<iterator>( ::std::begin( container ), ::std::end( container ) );
+			}
 
-		template<typename Container, typename = void>
-		auto make_range_reference( Container & container ) {
-			using iterator = ::std::remove_const_t<decltype(::std::begin( container ))>;
-			return ReferenceRange<iterator>( ::std::begin( container ), ::std::end( container ) );
+			template<typename IteratorF, typename IteratorL>
+			auto make_range_reference( IteratorF first, IteratorL last ) {
+				using iterator = typename ::std::remove_const_t<IteratorF>;
+				return ReferenceRange<iterator>( first, last );
+			}
+
+			template<typename Iterator>
+			auto make_range_reference( ::daw::range::ReferenceRange<Iterator> const & container ) {
+				using iterator = typename ::std::remove_const_t<Iterator>;
+				return ReferenceRange<iterator>( container.begin( ), container.end( ) );
+			}
+		}
+		template<typename Arg, typename... Args>
+		auto make_range_reference( Arg && arg, Args&&... args ) {
+			return ::daw::range::impl::make_range_reference( ::std::forward<Arg>( arg ), ::std::forward<Args>( args )... );
 		}
 
-		template<typename IteratorF, typename IteratorL>
-		auto make_range_reference( IteratorF first, IteratorL last ) {
-			using iterator = typename ::std::remove_const_t<IteratorF>;
-			return ReferenceRange<iterator>( first, last );
-		}
 
-		template<typename Iterator>
-		auto make_range_reference( ::daw::range::ReferenceRange<Iterator> const & container ) {
-			using iterator = typename ::std::remove_const_t<Iterator>;
-			return ReferenceRange<iterator>( container.begin( ), container.end( ) );
-		}
 	}	// namespace range
 }	// namespace daw
 

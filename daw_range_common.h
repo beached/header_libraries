@@ -45,6 +45,9 @@ namespace daw {
 			using cleanup_t = ::std::remove_cv_t<::std::remove_reference_t<T>>;
 
 		}	// namespace impl
+
+		template<typename Arg, typename... Args> auto make_range_reference( Arg && arg, Args&&... args );
+		template<typename Arg, typename... Args> auto make_range_collection( Arg && arg, Args&&... args );
 	}	// namespace range
 }	// namespace daw
 
