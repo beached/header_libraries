@@ -272,7 +272,7 @@ namespace daw {
 			template<typename UnaryOperator>
 			auto transform( UnaryOperator oper ) const {
 				using v_t = decltype(oper( *begin( ) ));
-				auto result = make_range_collection<v_t>( );
+				auto result = ::daw::range::make_range_collection<v_t>( );
 				::std::transform( begin( ), end( ), ::std::back_inserter( result ), [&oper]( auto const & v ) {
 					return oper( v.get( ) );
 				} );
