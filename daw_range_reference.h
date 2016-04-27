@@ -272,7 +272,7 @@ namespace daw {
 			template<typename UnaryOperator>
 			auto transform( UnaryOperator oper ) const {
 				using v_t = decltype(oper( *begin( ) ));
-				auto result = make_collection_range<v_t>( );
+				auto result = make_range_collection<v_t>( );
 				::std::transform( begin( ), end( ), ::std::back_inserter( result ), [&oper]( auto const & v ) {
 					return oper( v.get( ) );
 				} );
@@ -398,19 +398,19 @@ namespace daw {
 		};	// classs ReferenceRange
 
 		template<typename Container, typename = void>
-		auto make_ref_range( Container & container ) {
+		auto make_range_reference( Container & container ) {
 			using iterator = ::std::remove_const_t<decltype(::std::begin( container ))>;
 			return ReferenceRange<iterator>( ::std::begin( container ), ::std::end( container ) );
 		}
 
 		template<typename IteratorF, typename IteratorL>
-		auto make_ref_range( IteratorF first, IteratorL last ) {
+		auto make_range_reference( IteratorF first, IteratorL last ) {
 			using iterator = typename ::std::remove_const_t<IteratorF>;
 			return ReferenceRange<iterator>( first, last );
 		}
 
 		template<typename Iterator>
-		auto make_ref_range( ::daw::range::ReferenceRange<Iterator> const & container ) {
+		auto make_range_reference( ::daw::range::ReferenceRange<Iterator> const & container ) {
 			using iterator = typename ::std::remove_const_t<Iterator>;
 			return ReferenceRange<iterator>( container.begin( ), container.end( ) );
 		}

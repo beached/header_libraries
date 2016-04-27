@@ -170,30 +170,30 @@ namespace daw {
 			}
 
 			auto sort( ) {
-				return make_ref_range( *this ).sort( );
+				return make_range_reference( *this ).sort( );
 			}
 
 			template<typename UnaryPredicate>
 			auto sort( UnaryPredicate predicate ) {
-				return make_ref_range( *this ).sort( predicate );
+				return make_range_reference( *this ).sort( predicate );
 			}
 
 			auto unique( ) {
-				return make_ref_range( *this ).unique( );
+				return make_range_reference( *this ).unique( );
 			}
 
 			template<typename UnaryPredicate>
 			auto unique( UnaryPredicate predicate ) {
-				return make_ref_range( *this ).unique( predicate );
+				return make_range_reference( *this ).unique( predicate );
 			}
 
 			auto stable_sort( ) {
-				return make_ref_range( *this ).stable_sort( );
+				return make_range_reference( *this ).stable_sort( );
 			}
 
 			template<typename UnaryPredicate>
 			auto stable_sort( UnaryPredicate predicate ) {
-				return make_ref_range( *this ).stable_sort( predicate );
+				return make_range_reference( *this ).stable_sort( predicate );
 			}
 
 			template<typename Value>
@@ -208,32 +208,32 @@ namespace daw {
 
 			template<typename Value>
 			auto where_equal_to( Value const & value ) {
-				return make_ref_range( *this ).where_equal_to( value );
+				return make_range_reference( *this ).where_equal_to( value );
 			}
 
 			template<typename UnaryPredicate>
 			auto where( UnaryPredicate predicate ) {
-				return make_ref_range( *this ).where( predicate );
+				return make_range_reference( *this ).where( predicate );
 			}
 
 			template<typename Value>
 			auto erase_where_equal_to( Value const & value ) {
-				return make_ref_range( *this ).erase_equal_to( value );
+				return make_range_reference( *this ).erase_equal_to( value );
 			}
 
 			template<typename UnaryPredicate>
 			auto erase( UnaryPredicate predicate ) {
-				return make_ref_range( *this ).erase( predicate );
+				return make_range_reference( *this ).erase( predicate );
 			}
 
 			template<typename UnaryPredicate>
 			auto partition( UnaryPredicate predicate ) {
-				return make_ref_range( *this ).partition( predicate );
+				return make_range_reference( *this ).partition( predicate );
 			}
 
 			template<typename UnaryPredicate>
 			auto stable_partition( UnaryPredicate predicate ) {
-				return make_ref_range( *this ).stable_partition( predicate );
+				return make_range_reference( *this ).stable_partition( predicate );
 			}
 
 			template<typename T>
@@ -269,12 +269,12 @@ namespace daw {
 			}
 
 			auto shuffle( ) {
-				return make_ref_range( *this ).shuffle( );
+				return make_range_reference( *this ).shuffle( );
 			}
 
 			template<typename  UniformRandomNumberGenerator>
 			auto shuffle( UniformRandomNumberGenerator && urng ) {
-				return make_ref_range( *this ).shuffle( std::forward<UniformRandomNumberGenerator>( urng ) );
+				return make_range_reference( *this ).shuffle( std::forward<UniformRandomNumberGenerator>( urng ) );
 			}
 
 		};	// struct Range
