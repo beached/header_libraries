@@ -57,28 +57,25 @@ namespace daw {
 
 		}	// namespace impl
 
-		template<typename T> struct CollectionRange;
+		template<typename ValueType> struct CollectionRange;
 
 		template<typename ValueType>
 		CollectionRange<ValueType> make_collection_range( ) {
 			return CollectionRange<ValueType>{ };
 		}
 
-		template<typename Container, typename = decltype(::std::begin( Container { } ))>
-		auto make_collection_range( Container const & container ) {
-			using ValueType = impl::cleanup_t<typename ::std::iterator_traits<typename Container::iterator>::value_type>;
+		template<typename Container, typename ValueType = impl::cleanup_t<typename ::std::iterator_traits<typename Container::iterator>::value_type>, typename=void>
+		CollectionRange<ValueType> make_collection_range( Container const & container ) {
 			return CollectionRange<ValueType>( container );
 		}
 
-		template<typename IteratorF, typename IteratorL>
-		auto make_collection_range( IteratorF first, IteratorL last ) {
-			using ValueType = impl::cleanup_t<typename ::std::iterator_traits<IteratorF>::value_type>;
+		template<typename IteratorF, typename IteratorL, typename ValueType = impl::cleanup_t<typename ::std::iterator_traits<IteratorF>::value_type>>
+		CollectionRange<ValueType> make_collection_range( IteratorF first, IteratorL last ) {
 			return CollectionRange<ValueType>( first, last );
 		}
 
-		template<typename Iterator>
-		auto make_collection_range( ReferenceRange<Iterator> const & collection ) {
-			using ValueType = impl::cleanup_t<typename ::std::iterator_traits<Iterator>::value_type>;
+		template<typename Iterator, typename ValueType = impl::cleanup_t<typename ::std::iterator_traits<Iterator>::value_type>>
+		CollectionRange<ValueType> make_collection_range( ReferenceRange<Iterator> const & collection ) {
 			CollectionRange<ValueType> result;
 			std::transform( ::std::begin( collection ), ::std::end( collection ), ::std::back_inserter( result ), []( auto const & rv ) {
 				return rv.get( );

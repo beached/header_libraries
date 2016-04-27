@@ -136,13 +136,18 @@ namespace daw {
 		}
 
 		template<typename Iterator>
-		auto & ReferenceRange<Iterator>::sort( ) {
+		ReferenceRange<Iterator> ReferenceRange<Iterator>::copy( ) const {
+			return ReferenceRange<Iterator>( *this );
+		}
+
+		template<typename Iterator>
+		ReferenceRange<Iterator> & ReferenceRange<Iterator>::sort( ) {
 			::std::sort( begin( ), end( ) );
 			return *this;
 		}
 
 		template<typename Iterator>
-		auto ReferenceRange<Iterator>::sort( ) const {
+		ReferenceRange<Iterator> ReferenceRange<Iterator>::sort( ) const {
 			return copy( ).sort( );
 		}
 
@@ -157,118 +162,137 @@ namespace daw {
 
 		template<typename Iterator>
 		template<typename UnaryPredicate>
-		ReferenceRange<Iterator> & sort( UnaryPredicate predicate ) const {
+		ReferenceRange<Iterator> sort( UnaryPredicate predicate ) const {
 			return copy( ).sort( predicate );
 		}
 
-		ReferenceRange<Iterator> stable_sort( ) {
+		template<typename Iterator>
+		ReferenceRange<Iterator> & ReferenceRange<Iterator>::stable_sort( ) {
 			::std::stable_sort( begin( ), end( ) );
 			return *this;
 		}
 
-		ReferenceRange<Iterator> stable_sort( ) const {
+		template<typename Iterator>
+		ReferenceRange<Iterator> ReferenceRange<Iterator>::stable_sort( ) const {
 			return copy( ).stable_sort( );
 		}
 
+		template<typename Iterator>
 		template<typename UnaryPredicate>
-		ReferenceRange<Iterator> stable_sort( UnaryPredicate predicate ) {
+		ReferenceRange<Iterator> & ReferenceRange<Iterator>::stable_sort( UnaryPredicate predicate ) {
 			::std::stable_sort( begin( ), end( ), [&predicate]( auto const & v ) {
 				return predicate( v.get( ) );
 			} );
 			return *this;
 		}
 
+		template<typename Iterator>
 		template<typename UnaryPredicate>
-		ReferenceRange<Iterator> stable_sort( UnaryPredicate predicate ) const {
+		ReferenceRange<Iterator> ReferenceRange<Iterator>::stable_sort( UnaryPredicate predicate ) const {
 			return copy( ).sort( predicate );
 		}
 
-		ReferenceRange<Iterator> unique( ) {
+		template<typename Iterator>
+		ReferenceRange<Iterator> & ReferenceRange<Iterator>::unique( ) {
 			erase( ::std::unique( begin( ), end( ) ), end( ) );
 			return *this;
 		}
 
-		ReferenceRange<Iterator> unique( ) const {
+		template<typename Iterator>
+		ReferenceRange<Iterator> ReferenceRange<Iterator>::unique( ) const {
 			return copy( ).unique( );
 		}
 
+		template<typename Iterator>
 		template<typename UnaryPredicate>
-		ReferenceRange<Iterator> unique( UnaryPredicate predicate ) {
+		ReferenceRange<Iterator> & ReferenceRange<Iterator>::unique( UnaryPredicate predicate ) {
 			erase( ::std::unique( begin( ), end( ), [&predicate]( auto const & v ) {
 				return predicate( v.get( ) );
 			} ), end( ) );
 			return *this;
 		}
 
+		template<typename Iterator>
 		template<typename UnaryPredicate>
-		ReferenceRange<Iterator> unique( UnaryPredicate predicate ) const {
+		ReferenceRange<Iterator> ReferenceRange<Iterator>::unique( UnaryPredicate predicate ) const {
 			return copy( ).unique( predicate );
 		}
 
+		template<typename Iterator>
 		template<typename UnaryPredicate>
-		auto partition( UnaryPredicate predicate ) {
+		ReferenceRange<Iterator> & ReferenceRange<Iterator>::partition( UnaryPredicate predicate ) {
 			::std::partition( begin( ), end( ), [&predicate]( auto const & v ) {
 				return predicate( v.get( ) );
 			} );
 			return *this;
 		}
 
+		template<typename Iterator>
 		template<typename UnaryPredicate>
-		auto partition( UnaryPredicate predicate ) const {
+		ReferenceRange<Iterator> ReferenceRange<Iterator>::partition( UnaryPredicate predicate ) const {
 			return copy( ).partition( predicate );
 		}
 
+		template<typename Iterator>
 		template<typename UnaryPredicate>
-		auto partition_it( UnaryPredicate predicate ) {
+		auto ReferenceRange<Iterator>::partition_it( UnaryPredicate predicate ) {
 			auto mid = ::std::partition( begin( ), end( ), predicate );
 			return ::std::make_pair( mid, *this );
 		}
 
+		template<typename Iterator>
 		template<typename UnaryPredicate>
-		auto partition_it( UnaryPredicate predicate ) const {
+		auto ReferenceRange<Iterator>::partition_it( UnaryPredicate predicate ) const {
 			return copy( ).partition_it( predicate );
 		}
 
+		template<typename Iterator>
 		template<typename UnaryPredicate>
-		auto stable_partition( UnaryPredicate predicate ) {
+		ReferenceRange<Iterator> & ReferenceRange<Iterator>::stable_partition( UnaryPredicate predicate ) {
 			::std::stable_partition( m_values.begin( ), m_values.end( ), [&predicate]( auto const & v ) {
 				return predicate( v.get( ) );
 			} );
 			return *this;
 		}
 
+		template<typename Iterator>
 		template<typename UnaryPredicate>
-		auto stable_partition( UnaryPredicate predicate ) const {
+		ReferenceRange<Iterator> ReferenceRange<Iterator>::stable_partition( UnaryPredicate predicate ) const {
 			return copy( ).stable_partition( predicate );
 		}
 
+		template<typename Iterator>
 		template<typename UnaryPredicate>
-		auto stable_partition_it( UnaryPredicate predicate ) {
+		auto ReferenceRange<Iterator>::stable_partition_it( UnaryPredicate predicate ) {
 			auto mid = ::std::stable_partition( begin( ), end( ), [&predicate]( auto const & v ) {
 				return predicate( v.get( ) );
 			} );
 			return ::std::make_pair( mid, *this );
 		}
 
+		template<typename Iterator>
 		template<typename UnaryPredicate>
-		auto stable_partition_it( UnaryPredicate predicate ) const {
+		auto ReferenceRange<Iterator>::stable_partition_it( UnaryPredicate predicate ) const {
 			return copy( ).partition_it( predicate );
 		}
 
+		template<typename Iterator>
 		template<typename T>
-		auto accumulate( T && init ) const {
+		auto ReferenceRange<Iterator>::accumulate( T && init ) const {
 			return ::std::accumulate( begin( ), end( ), ::std::forward<T>( init ) );
 		}
 
+		template<typename Iterator>
 		template<typename T, typename BinaryOperator>
-		auto accumulate( T && init, BinaryOperator oper ) const {
+		auto ReferenceRange<Iterator>::accumulate( T && init, BinaryOperator oper ) const {
 			return ::std::accumulate( begin( ), end( ), ::std::forward<T>( init ), [&oper]( auto const & a, auto const & b ) {
 				return oper( a.get( ), b.get( ) );
 			} );
 		}
 
+		template<typename Iterator>
 		template<typename UnaryOperator>
-		auto transform( UnaryOperator oper ) const {	// TODO verify result shouldn't be ref range
+		auto ReferenceRange<Iterator>::transform( UnaryOperator oper ) const {
 			using v_t = decltype(oper( *begin( ) ));
 			auto result = make_collection_range<v_t>( );
 			::std::transform( begin( ), end( ), ::std::back_inserter( result ), [&oper]( auto const & v ) {
@@ -277,77 +301,87 @@ namespace daw {
 			return result;
 		}
 
+		template<typename Iterator>
 		template<typename Value>
-		bool contains( Value const & value ) const {
+		bool ReferenceRange<Iterator>::contains( Value const & value ) const {
 			return ::std::find( begin( ), end( ), value ) != end( );
 		}
 
+		template<typename Iterator>
 		template<typename Value, typename UnaryPredicate>
-		bool contains( Value const & value, UnaryPredicate predicate ) const {
+		bool ReferenceRange<Iterator>::contains( Value const & value, UnaryPredicate predicate ) const {
 			auto pred2 = [&value, &predicate]( Value const & val ) {
 				return predicate( value, val );
 			};
 			return ::std::find_if( begin( ), end( ), pred2 ) != end( );
 		}
 
-	public:
+		template<typename Iterator>
 		template<typename UnaryPredicate>
-		auto erase( UnaryPredicate predicate ) {
+		ReferenceRange<Iterator> & ReferenceRange<Iterator>::erase( UnaryPredicate predicate ) {
 			m_values.erase( ::std::remove_if( m_values.begin( ), m_values.end( ), [&predicate]( auto const & v ) {
 				return predicate( v.get( ) );
 			} ), m_values.end( ) );
 			return *this;
 		}
 
+		template<typename Iterator>
 		template<typename UnaryPredicate>
-		auto erase( UnaryPredicate predicate ) const {
+		ReferenceRange<Iterator> ReferenceRange<Iterator>::predicate ) const {
 			return copy( ).erase( predicate );
 		}
 
+		template<typename Iterator>
 		template<typename Value>
-		auto erase_where_equal_to( Value const & value ) const {
+		ReferenceRange<Iterator> ReferenceRange<Iterator>::erase_where_equal_to( Value const & value ) const {
 			return erase( [&value]( auto const & current_value ) {
 				return value == current_value;
 			} );
 		}
 
+		template<typename Iterator>
 		template<typename Value>
-		auto erase_where_equal_to( Value const & value ) {
+		ReferenceRange<Iterator> & ReferenceRange<Iterator>::erase_where_equal_to( Value const & value ) {
 			return erase( [&value]( auto const & current_value ) {
 				return value == current_value;
 			} );
 		}
 
+		template<typename Iterator>
 		template<typename UnaryPredicate>
-		auto where( UnaryPredicate predicate ) const {
+		ReferenceRange<Iterator> ReferenceRange<Iterator>::where( UnaryPredicate predicate ) const {
 			return erase( [predicate]( auto const & v ) {
 				return !predicate( v );
 			} );
 		}
 
+		template<typename Iterator>
 		template<typename UnaryPredicate>
-		auto where( UnaryPredicate predicate ) {
+		ReferenceRange<Iterator> & ReferenceRange<Iterator>::where( UnaryPredicate predicate ) {
 			return erase( [predicate]( auto const & v ) {
 				return !predicate( v );
 			} );
 		}
 
+		template<typename Iterator>
 		template<typename Value>
-		auto where_equal_to( Value const & value ) const {
+		ReferenceRange<Iterator> where_equal_to( Value const & value ) const {
 			return where( [&value]( auto const & current_value ) {
 				return value == current_value;
 			} );
 		}
 
+		template<typename Iterator>
 		template<typename Value>
-		auto where_equal_to( Value const & value ) {
+		ReferenceRange<Iterator> & ReferenceRange<Iterator>::where_equal_to( Value const & value ) {
 			return where( [&value]( auto const & current_value ) {
 				return value == current_value;
 			} );
 		}
 
+		template<typename Iterator>
 		template<typename Container>
-		auto as( ) const {
+		auto ReferenceRange<Iterator>::as( ) const {
 			Container result;
 			for( auto const & v : *this ) {
 				result.push_back( v.get( ) );
@@ -355,19 +389,28 @@ namespace daw {
 			return result;
 		}
 
-		auto as_vector( ) const {
+		template<typename Iterator>
+		auto ReferenceRange<Iterator>::as_vector( ) const {
 			return as<std::vector<referenced_value_type>>( );
 		}
 
+		template<typename Iterator>
 		template<typename Function>
-		ReferenceRange<Iterator> for_each( Function function ) const {
+		ReferenceRange<Iterator> ReferenceRange<Iterator>::for_each( Function function ) {
 			for( auto const & v : m_values ) {
 				function( v.get( ) );
 			}
 			return *this;
 		}
 
-		ReferenceRange<Iterator> shuffle( ) {
+		template<typename Iterator>
+		template<typename Function>
+		ReferenceRange<Iterator> ReferenceRange<Iterator>::for_each( Function function ) const {
+			return copy( ).for_each( function );
+		}
+
+		template<typename Iterator>
+		ReferenceRange<Iterator> & ReferenceRange<Iterator>::shuffle( ) {
 			static std::random_device rd;
 			static std::mt19937 g( rd( ) );
 			::std::shuffle( begin( ), end( ), g );
@@ -375,21 +418,23 @@ namespace daw {
 		}
 
 
-		ReferenceRange<Iterator> shuffle( ) const {
+		template<typename Iterator>
+		ReferenceRange<Iterator> ReferenceRange<Iterator>::shuffle( ) const {
 			return copy( ).shuffle( );
 		}
 
+		template<typename Iterator>
 		template<typename UniformRandomNumberGenerator>
-		ReferenceRange<Iterator> shuffle( UniformRandomNumberGenerator && urng ) {
+		ReferenceRange<Iterator> & ReferenceRange<Iterator>::shuffle( UniformRandomNumberGenerator && urng ) {
 			::std::shuffle( begin( ), end( ), std::forward<UniformRandomNumberGenerator>( urng ) );
 			return *this;
 		}
 
+		template<typename Iterator>
 		template<typename UniformRandomNumberGenerator>
-		ReferenceRange<Iterator> shuffle( UniformRandomNumberGenerator && urng ) const {
+		ReferenceRange<Iterator> ReferenceRange<Iterator>::shuffle( UniformRandomNumberGenerator && urng ) const {
 			return copy( ).shuffle( std::forward<UniformRandomNumberGenerator>( urng ) );
 		}
-		};	// class ReferenceRange
 
 		template<typename Container, typename = void>
 		auto make_ref_range( Container & container ) {
