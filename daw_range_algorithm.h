@@ -29,25 +29,25 @@
 namespace daw {
 	namespace algorithm {
 		template<typename Container>
-		void sort( Container& container ) {
+		auto & sort( Container & container ) {
 			std::sort( std::begin( container ), std::end( container ) );
 			return container;
 		}
 
 		template<typename Container, typename UnaryPredicate>
-		void sort( Container& container, UnaryPredicate pred ) {
+		auto & sort( Container& container, UnaryPredicate pred ) {
 			std::sort( std::begin( container ), std::end( container ), pred );
 			return container;
 		}
 
 		template<typename Container>
-		void stable_sort( Container& container ) {
+		auto & stable_sort( Container & container ) {
 			std::stable_sort( std::begin( container ), std::end( container ) );
 			return container;
 		}
 
 		template<typename Container, typename UnaryPredicate>
-		void stable_sort( Container& container, UnaryPredicate pred ) {
+		auto & stable_sort( Container & container, UnaryPredicate pred ) {
 			std::stable_sort( std::begin( container ), std::end( container ), pred );
 			return container;
 		}
@@ -94,7 +94,7 @@ namespace daw {
 
 		template<typename ContainerIn, typename UnaryOperator>
 		auto map( ContainerIn const & in, UnaryOperator oper ) -> std::vector <decltype(oper( std::declval<typename std::iterator_traits<decltype(std::begin( in ))>::value_type>( ) ))> {
-			using result_t = std::vector <decltype(oper( std::declval<typename std::iterator_traits<decltype(std::begin( in ))>::value_type>( ) ))> ;
+			using result_t = std::vector <decltype(oper( std::declval<typename std::iterator_traits<decltype(std::begin( in ))>::value_type>( ) ))>;
 			result_t result;
 			std::transform( std::begin( in ), std::end( in ), std::back_inserter( result ), oper );
 			return result;
@@ -115,7 +115,7 @@ namespace daw {
 
 		template<typename Container, typename UnaryPredicate>
 		auto where( Container & container, UnaryPredicate predicate ) {
-			using value_type = typename std::iterator_traits<decltype( std::begin( container ) )>::value_type; 
+			using value_type = typename std::iterator_traits<decltype(std::begin( container ))>::value_type;
 			std::vector<std::reference_wrapper<value_type>> result;
 			for( auto & v : container ) {
 				if( predicate( v ) ) {
