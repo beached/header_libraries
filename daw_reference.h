@@ -95,7 +95,7 @@ namespace daw {
 	}
 
 	template<typename Iterator>
-	auto to_refvec( Iterator first, Iterator last ) {
+	auto to_reference_vector( Iterator first, Iterator last ) {
 		using value_type = ::std::remove_const_t<::std::remove_reference_t<decltype(*first)>>;
 		using values_type = ::std::vector<::daw::Reference<value_type>>;
 		values_type result;

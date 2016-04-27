@@ -22,8 +22,30 @@
 
 #pragma once
 
-#include "daw_range_type.h"
-#include "daw_range_reference.h"
-#include "daw_range_collection.h"
-#include "daw_range_operators.h"
+namespace daw {
+	namespace range {
+		namespace impl {
+			template<typename Collection>
+			auto to_vector( Collection const & collection ) {
+				using value_type = ::std::decay_t<typename Collection::value_type>;
+				::std::vector<value_type> result;
+				::std::copy( ::std::begin( collection ), ::std::end( collection ), ::std::back_inserter( result ) );
+				return result;
+			}
+
+			template<typename IteratorF, typename IteratorL>
+			auto to_vector( IteratorF first, IteratorL last ) {
+				using value_type = typename ::std::iterator_traits<IteratorF>::value_type;
+				::std::vector<value_type> result;
+				::std::copy( first, last, ::std::back_inserter( result ) );
+				return result;
+			}
+
+			template<typename T>
+			using cleanup_t = ::std::remove_cv_t<::std::remove_reference_t<T>>;
+
+		}	// namespace impl
+	}	// namespace range
+}	// namespace daw
+
 
