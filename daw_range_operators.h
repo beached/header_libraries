@@ -59,6 +59,7 @@ namespace daw {
 			}
 
 
+<<<<<<< HEAD
 			namespace details {
 				template<int ...>
 				struct seq { };
@@ -72,6 +73,21 @@ namespace daw {
 				};
 			}	// namespace details
 		}	// namespace operators
+=======
+
+		namespace details {
+			template<int ...>
+			struct seq { };
+
+			template<int N, int ...S>
+			struct gens: gens<N - 1, N - 1, S...> { };
+
+			template<int ...S>
+			struct gens<0, S...> {
+				typedef seq<S...> type;
+			};
+		}	// namespace details
+>>>>>>> feb17b476b2e6059f11ab40b44a0b2726db59edf
 	}	// namespace range
 }	// namespace daw
 
@@ -163,5 +179,3 @@ DAW_RANGE_GENERATE_VCLAUSE( where );
 DAW_RANGE_GENERATE_VCLAUSE( for_each );
 
 #undef DAW_RANGE_GENERATE_VCLAUSE
-
-

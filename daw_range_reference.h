@@ -36,7 +36,7 @@
 
 namespace daw {
 	namespace range {
-		
+
 		template<typename Iterator>
 		class ReferenceRange {
 			using referenced_value_type = ::std::remove_cv_t<typename ::std::iterator_traits<Iterator>::value_type>;
@@ -395,7 +395,7 @@ namespace daw {
 			ReferenceRange shuffle( UniformRandomNumberGenerator && urng ) const {
 				return copy( ).shuffle( std::forward<UniformRandomNumberGenerator>( urng ) );
 			}
-		};	// classs ReferenceRange
+		};	// class ReferenceRange
 		
 		namespace impl {
 			template<typename Container, typename = void>
