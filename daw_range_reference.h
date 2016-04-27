@@ -57,7 +57,7 @@ namespace daw {
 			ReferenceRange & operator=( ReferenceRange const & ) = default;
 			ReferenceRange & operator=( ReferenceRange && ) = default;
 
-			ReferenceRange( iterator first, iterator last ): m_values( impl::to_refvec( first, last ) ) { }
+			ReferenceRange( iterator first, iterator last ): m_values( ::daw::to_reference_vector( first, last ) ) { }
 
 			bool at_end( ) const {
 				return begin( ) == end( );
@@ -410,7 +410,7 @@ namespace daw {
 		}
 
 		template<typename Iterator>
-		auto make_ref_range( ::daw::range::ReferenceRange const & container ) {
+		auto make_ref_range( ::daw::range::ReferenceRange<Iterator> const & container ) {
 			using iterator = typename ::std::remove_const_t<Iterator>;
 			return ReferenceRange<iterator>( container.begin( ), container.end( ) );
 		}
@@ -419,7 +419,7 @@ namespace daw {
 
 
 template<typename Iterator>
-::std::ostream & operator<<( ::std::ostream& os, ::daw::range::ReferenceRange const & rng ) {
+::std::ostream & operator<<( ::std::ostream& os, ::daw::range::ReferenceRange<Iterator> const & rng ) {
 	os << "{";
 	if( !rng.empty( ) ) {
 		for( auto it = rng.cbegin( ); it != rng.cend( ); ++it ) {

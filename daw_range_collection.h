@@ -36,7 +36,7 @@
 
 namespace daw {
 	namespace range {
-		template<typename Iterator> struct ReferenceRange;
+		template<typename Iterator> class ReferenceRange;
 
 		template<typename T>
 		struct CollectionRange {
