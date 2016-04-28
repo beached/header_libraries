@@ -412,5 +412,29 @@ namespace daw {
 	MoveCapture<T> as_move_capture( T&& val ) {
 		return MoveCapture<T>( std::move( val ) );
 	}
+
+
+	namespace details {
+		template<typename T>
+		struct RunIfValid {
+			::std::weak_ptr<T> m_link;
+			RunIfValid( std::weak_ptr<T> w_ptr ): m_link( w_ptr ) { }
+		
+			template<typename Function>
+			bool operator( )( Function func ) { 
+				if( auto s_ptr = m_link.lock( ) ) {
+					func( s_ptr );
+					return true;
+				} else {
+					return false;
+				}
+			}
+		};
+	}	// namespace details
+
+	template<typename T>
+	auto RunIfValid( ::std::weak_ptr<T> w_ptr ) {
+		return details::RunIfValid<T>( w_ptr );  
+	}
 }	// namespace daw
 
