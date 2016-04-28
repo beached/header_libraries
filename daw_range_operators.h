@@ -84,17 +84,17 @@ namespace daw {\
 				class clause_name##_t {\
 					::std::tuple<Args...> clause_name##_args;\
 					\
-					template<typename Container, typename... ClauseArgs, typename = ::std::enable_if_t<!::daw::range::is_range_reference_v<Container> || !::daw::range::is_range_collection_v<Container>>, typename=void>\
+					template<typename Container, typename... ClauseArgs, typename ::std::enable_if_t<!::daw::range::is_range_reference_v<Container> && !::daw::range::is_range_collection_v<Container>>* = nullptr, typename=void>\
 					static auto clause_name##_helper( Container const & container, ClauseArgs&&... clause_args ) {\
 						return from( container ).clause_name( std::forward<ClauseArgs>( clause_args )... );\
 					}\
 					\
-					template<typename Container, typename... ClauseArgs, typename = ::std::enable_if_t<::daw::range::is_range_reference_v<Container>>>\
+					template<typename Container, typename... ClauseArgs, typename ::std::enable_if_t<::daw::range::is_range_reference_v<Container>>* = nullptr>\
 					static auto clause_name##_helper( Container container, ClauseArgs&&... clause_args ) {\
 						return container.clause_name( std::forward<ClauseArgs>( clause_args )... );\
 					}\
 					\
-					template<typename Container, typename... ClauseArgs, typename = ::std::enable_if_t<::daw::range::is_range_collection_v<Container>>>\
+					template<typename Container, typename... ClauseArgs, typename ::std::enable_if_t<::daw::range::is_range_collection_v<Container>>* = nullptr>\
 					static auto clause_name##_helper( Container const & container, ClauseArgs&&... clause_args ) {\
 						return container.clause_name( std::forward<ClauseArgs>( clause_args )... );\
 					}\
@@ -132,15 +132,15 @@ namespace daw {\
 		}\
 	}\
 }\
-template<typename Container, typename... Args, typename = ::std::enable_if_t<!::daw::range::is_range_reference_v<Container> || !::daw::range::is_range_collection_v<Container>>, typename=void>\
+template<typename Container, typename... Args, typename ::std::enable_if_t<!::daw::range::is_range_reference_v<Container> && !::daw::range::is_range_collection_v<Container>>* = nullptr, typename=void>\
 auto operator<<( Container && container, ::daw::range::operators::details::clause_name##_t<Args...> const & predicate ) {\
 	return predicate( std::forward<Container>( container ) );\
 }\
-template<typename Container, typename... Args, typename = ::std::enable_if_t<::daw::range::is_range_collection_v<Container>>>\
+template<typename Container, typename... Args, typename ::std::enable_if_t<::daw::range::is_range_collection_v<Container>>* = nullptr>\
 auto operator<<( Container && container, ::daw::range::operators::details::clause_name##_t<Args...> const & predicate ) {\
 	return predicate( std::forward<Container>( container ) );\
 }\
-template<typename Container, typename... Args, typename = ::std::enable_if_t<::daw::range::is_range_reference_v<Container>>>\
+template<typename Container, typename... Args, typename ::std::enable_if_t<::daw::range::is_range_reference_v<Container>>* = nullptr>\
 auto operator<<( Container && container, ::daw::range::operators::details::clause_name##_t<Args...> const & predicate ) {\
 	return predicate( std::forward<Container>( container ) );\
 }
