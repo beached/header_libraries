@@ -31,6 +31,7 @@
 #include "daw_traits.h"
 #include "daw_algorithm.h"
 #include "daw_range_reference.h"
+#include "daw_range_collection.h"
 #include <typeinfo>
 
 namespace daw {
