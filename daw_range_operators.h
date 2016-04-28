@@ -146,7 +146,6 @@ auto operator<<( Container && container, ::daw::range::operators::details::claus
 }
 
 
-/*
 DAW_RANGE_GENERATE_VCLAUSE( accumulate );
 DAW_RANGE_GENERATE_VCLAUSE( as_vector );
 DAW_RANGE_GENERATE_VCLAUSE( erase );
@@ -156,13 +155,11 @@ DAW_RANGE_GENERATE_VCLAUSE( find_if );
 DAW_RANGE_GENERATE_VCLAUSE( partition );
 DAW_RANGE_GENERATE_VCLAUSE( shuffle );
 DAW_RANGE_GENERATE_VCLAUSE( sort );
-*/
 DAW_RANGE_GENERATE_VCLAUSE( stable_partition );
-/*
 DAW_RANGE_GENERATE_VCLAUSE( stable_sort );
 DAW_RANGE_GENERATE_VCLAUSE( transform );
 DAW_RANGE_GENERATE_VCLAUSE( unique );
 DAW_RANGE_GENERATE_VCLAUSE( where );
 DAW_RANGE_GENERATE_VCLAUSE( for_each );
-*/
+
 #undef DAW_RANGE_GENERATE_VCLAUSE
