@@ -104,14 +104,14 @@ namespace daw {
 		/// Summary:	Are all template parameters the same type
 		///
 		template<typename T, typename... Rest>
-		struct are_same_types:::std::false_type { };
+		struct are_same_types: ::std::false_type { };
 
 		template<typename T, typename First>
-		struct are_same_types<T, First>:::std::is_same < T, First> { };
+		struct are_same_types<T, First>: ::std::is_same < T, First> { };
 
 		template<typename T, typename First, typename... Rest>
 		struct are_same_types<T, First, Rest...>
-			:::std::integral_constant < bool,::std::is_same<T, First>::value || are_same_types<T, Rest...>::value> { };
+			: ::std::integral_constant < bool,::std::is_same<T, First>::value || are_same_types<T, Rest...>::value> { };
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	A sequence of bool values
@@ -149,13 +149,13 @@ namespace daw {
 		/// Summary:	Is type T on of the other types
 		///
 		template<typename T, typename... Types>
-		struct is_one_of:::std::false_type { };
+		struct is_one_of: ::std::false_type { };
 
 		template<typename T, typename Type>
-		struct is_one_of<T, Type>:::std::is_same < T, Type> { };
+		struct is_one_of<T, Type>: ::std::is_same < T, Type> { };
 
 		template<typename T, typename Type, typename... Types>
-		struct is_one_of<T, Type, Types...>:::std::integral_constant < bool,::std::is_same<T, Type>::value || is_one_of<T, Types...>::value> { };
+		struct is_one_of<T, Type, Types...>: ::std::integral_constant < bool,::std::is_same<T, Type>::value || is_one_of<T, Types...>::value> { };
 
 		namespace details {
 			template<typename> struct type_sink { typedef void type; }; // consumes a type, and makes it `void`
@@ -190,8 +190,8 @@ namespace daw {
 			template<typename T> using has_##MemberName##_member_t = typename has_##MemberName##_member<T>::type;
 
 #define GENERATE_HAS_MEMBER_TYPE_TRAIT( TypeName ) \
-			template<typename T, typename=void> struct has_##TypeName##_member:::std::false_type { }; \
-			template<typename T> struct has_##TypeName##_member<T, details::type_sink_t<typename T::TypeName>>:::std::true_type { }; \
+			template<typename T, typename=void> struct has_##TypeName##_member: ::std::false_type { }; \
+			template<typename T> struct has_##TypeName##_member<T, details::type_sink_t<typename T::TypeName>>: ::std::true_type { }; \
 			template<typename T> using has_##TypeName##_member_v = typename has_##TypeName##_member<T>::value;	\
 			template<typename T> using has_##TypeName##_member_t = typename has_##TypeName##_member<T>::type;
 
