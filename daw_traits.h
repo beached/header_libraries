@@ -213,6 +213,7 @@ namespace daw {
 
 		template<typename T> using is_container_like = std::integral_constant < bool, has_begin_member<T>::value && has_end_member<T>::value>;
 		template<typename T> using is_container_like_t = typename is_container_like<T>::type;
+		template<typename T> constexpr bool is_container_like_v = is_container_like<T>::value;
 
 		template<typename T> using is_container_not_string = std::integral_constant < bool, isnt_string<T>::value && is_container_like<T>::value>;
 		template<typename T> using is_container_not_string_t = typename is_container_not_string<T>::type;

@@ -40,6 +40,7 @@ namespace daw {
 
 		template<typename T>
 		struct CollectionRange {
+			using is_range_collection = std::true_type;
 			using value_type = ::std::decay_t<T>;
 			using values_type = ::std::vector<value_type>;
 		private:
@@ -402,6 +403,20 @@ namespace daw {
 			return ::daw::range::impl::make_range_collection( ::std::forward<Arg>( arg ), ::std::forward<Args>( args )... );	
 		}
 
+		namespace details {
+			template<typename T>
+			std::false_type is_range_collection_impl( T const &, long );
+
+			template<typename T>
+			auto is_range_collection_impl( T const & value, int ) -> typename T::is_range_collection;
+		}   // namespace details
+
+		template<typename T>
+		struct is_range_collection: decltype(details::is_range_collection_impl( std::declval<T const &>( ), 1 )) {};
+
+		template<typename T> using is_range_collection_t = typename is_range_collection<T>::type;
+		template<typename T> constexpr bool is_range_collection_v = is_range_collection<T>::value;
+ 
 
 	}	// namespace range
 }	// namespace daw

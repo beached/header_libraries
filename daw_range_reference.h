@@ -39,6 +39,7 @@ namespace daw {
 
 		template<typename Iterator>
 		class ReferenceRange {
+			using is_range_reference = std::true_type;
 			using referenced_value_type = ::std::remove_cv_t<typename ::std::iterator_traits<Iterator>::value_type>;
 			using values_type = ::std::vector<::daw::Reference<referenced_value_type>>;
 			values_type mutable m_values;
@@ -421,7 +422,21 @@ namespace daw {
 			return ::daw::range::impl::make_range_reference( ::std::forward<Arg>( arg ), ::std::forward<Args>( args )... );
 		}
 
+		namespace details {
+			template<typename T>
+			std::false_type is_range_reference_impl( T const &, long );
 
+			template<typename T>
+			auto is_range_reference_impl( T const & value, int ) -> typename T::is_range_reference;
+		}   // namespace details
+
+		template<typename T>
+		struct is_range_reference: decltype(details::is_range_reference_impl( std::declval<T const &>( ), 1 )) {};
+
+		template<typename T> using is_range_reference_t = typename is_range_reference<T>::type;
+		template<typename T> constexpr bool is_range_reference_v = is_range_reference<T>::value;
+ 
+	
 	}	// namespace range
 }	// namespace daw
 
