@@ -21,28 +21,32 @@ if( THREADS_HAVE_PTHREAD_ARG )
 endif( )
 
 set( HEADER_PREFIXES
-		concurrent_queue
-		daw_algorithm
-		daw_array
-		daw_common_mixins
-		daw_exception
-		daw_expected		
-		daw_parallel_algorithm
-		daw_range	
-		daw_range_algorithm
-		daw_range_operators
-		daw_range_reference
-		daw_range_collection
-		daw_string
-		daw_traits
-		daw_utility
-		daw_zipcontainer
-		daw_zipiter
-		make_unique
-		scope_guard
+	concurrent_queue
+	daw_algorithm
+	daw_array
+	daw_common_mixins
+	daw_exception
+	daw_expected
+	daw_parallel_algorithm
+	daw_range_algorithm
+	daw_range_collection
+	daw_range
+	daw_range_operators
+	daw_range_reference
+	daw_string
+	daw_traits
+	daw_utility
+	daw_zipcontainer
+	daw_zipiter
+	make_unique
+	scope_guard
  )
 
-#enable_testing( )
+set( HEADER_FILES
+	daw_range_common.h
+	daw_range_type.h
+	daw_reference.h
+)
 
 add_definitions( -DBOOST_TEST_DYN_LINK ) 
 include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
@@ -54,4 +58,9 @@ foreach( CUR_PREFIX ${HEADER_PREFIXES} )
 	target_link_libraries( ${CUR_PREFIX}_test_bin ${Boost_LIBS} ${COMPILER_SPECIFIC_LIBS} )
 	add_test( ${CUR_PREFIX}_test, ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
+
+foreach( CUR_PREFIX ${HEADER_FILES} )
+	install( FILES "${CUR_PREFIX}" DESTINATION include/daw )
+endforeach( CUR_PREFIX )
+
 
