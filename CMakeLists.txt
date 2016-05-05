@@ -43,7 +43,7 @@ set(HEADER_PREFIXES
 		scope_guard
 )
 
-enable_testing( )
+#enable_testing( )
 
 #add_definitions( -DBOOST_TEST_MAIN )
 ADD_DEFINITIONS(-DBOOST_TEST_DYN_LINK) 
