@@ -21,31 +21,31 @@ if( THREADS_HAVE_PTHREAD_ARG )
 endif( )
 
 set( HEADER_PREFIXES
-	concurrent_queue
 	daw_algorithm
-	daw_array
-	daw_common_mixins
-	daw_exception
-	daw_expected
-	daw_parallel_algorithm
 	daw_range_algorithm
-	daw_range_collection
 	daw_range
-	daw_range_operators
-	daw_range_reference
-	daw_string
 	daw_traits
 	daw_utility
-	daw_zipcontainer
-	daw_zipiter
-	make_unique
-	scope_guard
  )
 
 set( HEADER_FILES
+	concurrent_queue.h
+	daw_array.h
+	daw_common_mixins.h
+	daw_exception.h
+	daw_expected.h
+	daw_parallel_algorithm.h
+	daw_range_collection.h
 	daw_range_common.h
+	daw_range_operators.h
+	daw_range_reference.h
 	daw_range_type.h
 	daw_reference.h
+	daw_string.h
+	daw_zipcontainer.h
+	daw_zipiter.h
+	make_unique.h
+	scope_guard.h
 )
 
 add_definitions( -DBOOST_TEST_DYN_LINK ) 
