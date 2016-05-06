@@ -20,7 +20,7 @@ if( THREADS_HAVE_PTHREAD_ARG )
 	set( COMPILER_SPECIFIC_LIBS, "-lpthread" )
 endif( )
 
-set( HEADER_PREFIXES
+set( TESTED_HEADERS_PREFIXES
 	daw_algorithm
 	daw_range_algorithm
 	daw_range
@@ -28,7 +28,7 @@ set( HEADER_PREFIXES
 	daw_utility
  )
 
-set( HEADER_FILES
+set( UNTESTED_HEADER_FILES
 	concurrent_queue.h
 	daw_array.h
 	daw_common_mixins.h
@@ -52,14 +52,14 @@ add_definitions( -DBOOST_TEST_DYN_LINK )
 include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
 link_directories( ${Boost_LIBRARY_DIRS} )
 
-foreach( CUR_PREFIX ${HEADER_PREFIXES} )
+foreach( CUR_PREFIX ${TESTED_HEADER_PREFIXES} )
 	install( FILES "${CUR_PREFIX}.h" DESTINATION include/daw )
 	add_executable( ${CUR_PREFIX}_test_bin ${CUR_PREFIX}.h ${CUR_PREFIX}_test.cpp header_libraries_test/test_main.cpp )
 	target_link_libraries( ${CUR_PREFIX}_test_bin ${Boost_LIBS} ${COMPILER_SPECIFIC_LIBS} )
 	add_test( ${CUR_PREFIX}_test, ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
 
-foreach( CUR_PREFIX ${HEADER_FILES} )
+foreach( CUR_PREFIX ${UNTESTED_HEADER_FILES} )
 	install( FILES "${CUR_PREFIX}" DESTINATION include/daw )
 endforeach( CUR_PREFIX )
 
