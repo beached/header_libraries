@@ -52,7 +52,7 @@ add_definitions( -DBOOST_TEST_DYN_LINK )
 include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
 link_directories( ${Boost_LIBRARY_DIRS} )
 
-foreach( CUR_PREFIX ${TESTED_HEADER_PREFIXES} )
+foreach( CUR_PREFIX ${TESTED_HEADERS_PREFIXES} )
 	install( FILES "${CUR_PREFIX}.h" DESTINATION include/daw )
 	add_executable( ${CUR_PREFIX}_test_bin ${CUR_PREFIX}.h ${CUR_PREFIX}_test.cpp header_libraries_test/test_main.cpp )
 	target_link_libraries( ${CUR_PREFIX}_test_bin ${Boost_LIBS} ${COMPILER_SPECIFIC_LIBS} )
