@@ -3,7 +3,8 @@ cmake_minimum_required( VERSION 2.8.0 )
 project( header_libraries )
 
 find_package( Boost 1.59.0 COMPONENTS system filesystem regex unit_test_framework REQUIRED )
-set( Boost_LIBS -lboost_system -lboost_filesystem -lboost_regex -lboost_unit_test_framework )
+#set( Boost_LIBS -lboost_system -lboost_filesystem -lboost_regex -lboost_unit_test_framework )
+set( Boost_LIBS ${Boost_LIBRARIES} )
 
 if( ${CMAKE_CXX_COMPILER_ID} STREQUAL 'MSVC' )
 	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_WIN32_WINNT=0x0601" )
