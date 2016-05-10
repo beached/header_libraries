@@ -127,11 +127,11 @@ namespace daw {
 			}
 
 			bool operator==( CollectionRange const & other ) const {
-				return ::std::equal( begin( ), end( ), other.begin( ) );
+				return ::std::equal( begin( ), end( ), other.begin( ), other.end( ) );
 			}
 
 			bool operator!=( CollectionRange const & other ) const {
-				return !::std::equal( begin( ), end( ), other.begin( ) );
+				return !::std::equal( begin( ), end( ), other.begin( ), other.end( ) );
 			}
 
 			template<typename... Args>

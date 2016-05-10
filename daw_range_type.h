@@ -162,11 +162,11 @@ namespace daw {
 			}
 
 			bool operator==( Range const & other ) const {
-				return ::std::equal( m_begin, m_end, other.m_begin );
+				return ::std::equal( m_begin, m_end, other.m_begin, other.m_end );
 			}
 
 			bool operator!=( Range const & other ) const {
-				return !::std::equal( m_begin, m_end, other.m_begin );
+				return !::std::equal( m_begin, m_end, other.m_begin, other.m_end );
 			}
 
 			auto sort( ) {
