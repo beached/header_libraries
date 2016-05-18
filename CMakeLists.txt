@@ -33,7 +33,7 @@ set( UNTESTED_HEADER_FILES
 	daw_cstring.h
 	daw_exception.h
 	daw_expected.h
-	daw_memory_mapped_files.h
+	daw_memory_mapped_file.h
 	daw_newhelper.h
 	daw_parallel_algorithm.h
 	daw_range_collection.h
