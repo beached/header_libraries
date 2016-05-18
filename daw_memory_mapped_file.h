@@ -22,8 +22,12 @@
 
 #pragma once
 
+#include <iostream>
 #include <memory>
 #include <string>
+#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/path.hpp>
+#include <boost/iostreams/device/mapped_file.hpp>
 
 namespace daw {
 	namespace filesystem {
