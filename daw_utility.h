@@ -436,5 +436,12 @@ namespace daw {
 	auto RunIfValid( ::std::weak_ptr<T> w_ptr ) {
 		return details::RunIfValid<T>( w_ptr );  
 	}
+
+	template<typename T>
+	auto copy_ptr_value( T * original ) {
+		using result_t = typename ::std::decay_t<T>;
+		return new result_t( *original );
+	}
+
 }	// namespace daw
 

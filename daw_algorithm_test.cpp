@@ -29,9 +29,6 @@
 
 #include "daw_algorithm.h"
 
-BOOST_AUTO_TEST_CASE( daw_algorithm_none_yet ) {
-}
-
 BOOST_AUTO_TEST_CASE( daw_transform_many ) {
 	std::vector<uint32_t> in1 = { 1, 3, 5, 7, 9 };
 	std::vector<uint32_t> in2 = { 0, 2, 4, 6, 8 };

@@ -26,68 +26,109 @@
 #include <list>
 #include <utility>
 #include <vector>
+#include "daw_utility.h"
 
 namespace daw {
+	namespace impl {
+		template<typename ValueType, typename = void>
+		class hash_table_item;
 
-	template<typename Value, double ResizeRatio=1.15>
+
+		template<typename ValueType>
+		class hash_table_item<ValueType, ::std::enable_if_t<(sizeof( ValueType ) <= sizeof( ValueType * ))>> {
+			using value_type = typename ::std::decay_t<ValueType>;
+			using reference = value_type &;
+			using const_reference = value_type const &;
+			bool m_occupied;	// If I find out there is a sentinal value in std::hash's(probably not) I need this
+			::std::size_t m_hash;
+			value_type m_value;
+		public:	
+			reference operator( )( ) noexcept {
+				return m_value;
+			}
+
+			const_reference operator( )( ) const noexcept {
+				return m_value;
+			}
+
+			hash_table_item( ): m_occupied{ false }, m_hash{ 0 }, m_value{ } { }
+
+			hash_table_item( ::std::size_t hash, value_type value, bool occupied = true ): m_occupied{ occupied }, m_hash{ hash }, m_value{ ::std::move( value ) } { }
+
+			~hash_table_item( ) = default;
+			hash_table_item( hash_table_item const & ) = default;
+			hash_table_item( hash_table_item && ) = default;
+			hash_table_item & operator=( hash_table_item const & ) = default;
+			hash_table_item & operator=( hash_table_item && ) = default;
+
+			friend void swap( hash_table_item & lhs, hash_table_item & rhs ) noexcept {
+				using ::std::swap;
+				swap( lhs.m_occupied, rhs.m_occupied );
+				swap( lhs.m_hash, rhs.m_hash );
+				swap( lhs.m_value, rhs.m_value );
+			}
+		};	// class hash_table_item
+
+		template<typename ValueType>
+		class hash_table_item<ValueType, ::std::enable_if_t<(sizeof( ValueType ) > sizeof( ValueType * ))>> {
+			using value_type = typename ::std::decay_t<ValueType>;
+			using reference = value_type &;
+			using const_reference = value_type const &;
+			bool m_occupied;	// If I find out there is a sentinal value in std::hash's(probably not) I need this
+			::std::size_t m_hash;
+			value_type * m_value;
+		public:	
+			reference operator( )( ) noexcept {
+				return *m_value;
+			}
+
+			const_reference operator( )( ) const noexcept {
+				return *m_value;
+			}
+
+			hash_table_item( ) noexcept: m_occupied{ false }, m_hash{ 0 }, m_value{ nullptr } { }
+
+			hash_table_item( ::std::size_t hash, value_type value, bool occupied = true ): m_occupied{ occupied }, m_hash{ hash }, m_value{ new value_type( ::std::move( value ) ) } { }
+			
+			~hash_table_item( ) {
+				if( nullptr != m_value ) {
+					delete m_value;
+				}
+			}
+
+			hash_table_item( hash_table_item const & other ): m_occupied{ other.m_occupied }, m_hash{ other.m_hash }, m_value{ ::daw::copy_ptr_value( other.m_value ) } { }
+
+			friend void swap( hash_table_item & lhs, hash_table_item & rhs ) noexcept {
+				using ::std::swap;
+				swap( lhs.m_occupied, rhs.m_occupied );
+				swap( lhs.m_hash, rhs.m_hash );
+				swap( lhs.m_value, rhs.m_value );
+			}
+
+			hash_table_item & operator=( hash_table_item rhs ) noexcept {
+				swap( *this, rhs );
+				return *this;
+			}
+
+			hash_table_item( hash_table_item && other ) noexcept: hash_table_item{ } {
+				swap( *this, other );
+			}
+		};	// class hash_table_item
+	}	// namespace impl
+
+	template<typename Value, typename Hash = ::std::hash<::std::decay_t<Value>>>
 	struct hash_table {
+		const double ResizeRatio=1.15;
 		using value_type = typename ::std::decay_t<Value>;
 		using reference = value_type &;
 		using const_reference = value_type const &;
 	private:
-		struct hash_table_item {
-			bool m_occupied;
-			::std::size_t m_hash;
-			using ptr_t = value_type *;
-			ptr_t m_pos;
-	public:	
-			auto operator( )( ) -> ::std::enable_if_t<sizeof(value_type) <= sizeof( ptr_t ), reference> {
-				return reinterpret_cast<value_type>( m_pos )
-			}
-
-			auto operator( )( ) -> ::std::enable_if_t<sizeof(value_type) <= sizeof( ptr_t ), const_reference> const {
-				return reinterpret_cast<value_type>( m_pos )
-			}
-
-			auto operator( )( ) -> ::std::enable_if_t<sizeof(value_type) > sizeof( ptr_t ), reference> {
-				return *m_pos;
-			}
-
-			auto operator( )( ) -> ::std::enable_if_t<sizeof(value_type) > sizeof( ptr_t ), const_reference> const {
-				return *m_pos;
-			}
-
-			hash_table_item( ): m_occupied{ false }, m_hash{ 0 }, m_pos{ nullptr } { }
-
-			template<typename = ::std::enable_if_t<sizeof(value_type) <= sizeof( ptr_t ), void>
-			hash_table_item( ::std::size_t hash, value_type const & value, bool occupied = true ): m_occupied{ occupied }, m_hash{ hash }, pos{ reinterpret_cast<ptr_t>( v ) } { }
-
-			template<typename = ::std::enable_if_t<sizeof(value_type) > sizeof( ptr_t ), void>
-			hash_table_item( ::std::size_t hash, value_type value, bool occupied = true ): m_occupied{ occupied }, m_hash{ hash }, pos{ new value_type( ::std::move( v ) ) } { }
-			
-			template<typename = ::std::enable_if_t<sizeof(value_type) <= sizeof( ptr_t ), void>
-			~hash_table_item( ) {
-				reinterpret_cast<value_type>( m_pos ).~value_type( );	
-			}
-
-			template<typename = ::std::enable_if_t<sizeof(value_type) > sizeof( ptr_t ), void>
-			~hash_table_item( ) {
-				if( nullptr != m_pos ) {
-					delete m_pos;
-				}
-			}
-
-			hash_table_item( hash_table_item && ) = default;
-			hash_table_item & operator=( hash_table_item && ) = default;
-
-		};	// struct hash_table_item
-
-		using values_type = ::std::vector<hash_table_item>;
-		using iterator = values_type::iterator;
+		using values_type = ::std::vector<impl::hash_table_item<value_type>>;
+		using iterator = typename values_type::iterator;
 		values_type m_values;
-
+		Hash m_hash;
 	public:
-		hash_table( ): m_values{ 1000 } }, m_hash{ } { }
+		hash_table( ): m_values{ 1000 }, m_hash{ } { }
 
 		~hash_table( ) = default;
 		hash_table( hash_table && ) = default;
@@ -117,11 +158,13 @@ namespace daw {
 			return tbl.end( );
 		}
 
+		static iterator itsert_into( value_type item, values_type & tbl );
+
 		static void resize_table( values_type & old_table ) {
-			values_type new_hash_table{ static_cast<size_t>( static_cast<double>( m_hash_table.size( ) ) * ResizeRatio ) };
+			values_type new_hash_table{ static_cast<size_t>( static_cast<double>( m_values.size( ) ) * ResizeRatio ) };
 			for( auto & current_item: m_table ) {
 				auto value = current_item
-				insert_into( current_item. 
+				insert_into( current_item.m_value, new_hash_table );
 			}
 		}
 
