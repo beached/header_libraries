@@ -33,24 +33,14 @@ namespace daw {
 		template<typename ValueType, typename = void>
 		class hash_table_item;
 
-
 		template<typename ValueType>
 		class hash_table_item<ValueType, ::std::enable_if_t<(sizeof( ValueType ) <= sizeof( ValueType * ))>> {
 			using value_type = typename ::std::decay_t<ValueType>;
-			using reference = value_type &;
-			using const_reference = value_type const &;
+
 			bool m_occupied;	// If I find out there is a sentinal value in std::hash's(probably not) I need this
 			::std::size_t m_hash;
 			value_type m_value;
 		public:	
-			reference operator( )( ) noexcept {
-				return m_value;
-			}
-
-			const_reference operator( )( ) const noexcept {
-				return m_value;
-			}
-
 			hash_table_item( ): m_occupied{ false }, m_hash{ 0 }, m_value{ } { }
 
 			hash_table_item( ::std::size_t hash, value_type value, bool occupied = true ): m_occupied{ occupied }, m_hash{ hash }, m_value{ ::std::move( value ) } { }
@@ -67,25 +57,44 @@ namespace daw {
 				swap( lhs.m_hash, rhs.m_hash );
 				swap( lhs.m_value, rhs.m_value );
 			}
+			
+			bool & occupied( ) noexcept {
+				return m_occupied;
+			}
+
+			bool const & occupied( ) const noexcept {
+				return m_occupied;
+			}
+
+			::std::size_t & hash( ) noexcept {
+				return m_hash;
+			}
+
+			::std::size_t const & hash( ) const noexcept {
+				return m_hash;
+			}
+
+			value_type value( ) noexcept {
+				return m_value;
+			}
+
+			value_type value( ) const noexcept {
+				return m_value;
+			}
+
+			explicit operator bool( ) {
+				return m_occupied;
+			}
 		};	// class hash_table_item
 
 		template<typename ValueType>
 		class hash_table_item<ValueType, ::std::enable_if_t<(sizeof( ValueType ) > sizeof( ValueType * ))>> {
 			using value_type = typename ::std::decay_t<ValueType>;
-			using reference = value_type &;
-			using const_reference = value_type const &;
+
 			bool m_occupied;	// If I find out there is a sentinal value in std::hash's(probably not) I need this
 			::std::size_t m_hash;
 			value_type * m_value;
 		public:	
-			reference operator( )( ) noexcept {
-				return *m_value;
-			}
-
-			const_reference operator( )( ) const noexcept {
-				return *m_value;
-			}
-
 			hash_table_item( ) noexcept: m_occupied{ false }, m_hash{ 0 }, m_value{ nullptr } { }
 
 			hash_table_item( ::std::size_t hash, value_type value, bool occupied = true ): m_occupied{ occupied }, m_hash{ hash }, m_value{ new value_type( ::std::move( value ) ) } { }
@@ -113,12 +122,40 @@ namespace daw {
 			hash_table_item( hash_table_item && other ) noexcept: hash_table_item{ } {
 				swap( *this, other );
 			}
+			
+			bool & occupied( ) noexcept {
+				return m_occupied;
+			}
+
+			bool const & occupied( ) const noexcept {
+				return m_occupied;
+			}
+
+			::std::size_t & hash( ) noexcept {
+				return m_hash;
+			}
+
+			::std::size_t const & hash( ) const noexcept {
+				return m_hash;
+			}
+
+			value_type value( ) noexcept {
+				return *m_value;
+			}
+
+			value_type value( ) const noexcept {
+				return *m_value;
+			}
+
+			explicit operator bool( ) {
+				return m_occupied;
+			}
 		};	// class hash_table_item
 	}	// namespace impl
 
-	template<typename Value, typename Hash = ::std::hash<::std::decay_t<Value>>>
+	template<typename Value>
 	struct hash_table {
-		const double ResizeRatio=1.15;
+		static constexpr const double ResizeRatio=1.15;
 		using value_type = typename ::std::decay_t<Value>;
 		using reference = value_type &;
 		using const_reference = value_type const &;
@@ -126,9 +163,8 @@ namespace daw {
 		using values_type = ::std::vector<impl::hash_table_item<value_type>>;
 		using iterator = typename values_type::iterator;
 		values_type m_values;
-		Hash m_hash;
 	public:
-		hash_table( ): m_values{ 1000 }, m_hash{ } { }
+		hash_table( ): m_values{ 1000 } { }
 
 		~hash_table( ) = default;
 		hash_table( hash_table && ) = default;
@@ -138,16 +174,20 @@ namespace daw {
 
 	private:
 		template<typename Key>
-		static iterator find_item( Key const & key, values_type const & tbl ) {
-			static constexpr auto const hash = ::std::hash<Key>{ }; 
-			auto hash_value = hash( key );
-			auto hash_it = tbl.begin( ) + (hash_value % tbl.size( ));	
+		static ::std::size_t hash_fn( Key && key ) {
+			using ::std::hash;
+			static hash<Key> s_hash; 
+			return s_hash( ::std::forward<Key>( key ) );
+		}
+
+		static iterator find_item_by_hash( ::std::size_t hash, values_type const & tbl ) {
+			auto hash_it = tbl.begin( ) + (hash % tbl.size( ));	
 			auto count = tbl.size( );
 			// loop through all values until an empty spot is found(at end start at beginning)
 			while( count-- > 0 ) {	
-				if( !hash_it->occupied ) {
+				if( !hash_it->occupied( ) ) {
 					return hash_it;
-				} else if( hash_it->hash == hash_value ) {
+				} else if( hash_it->hash( ) == hash ) {
 					return hash_it;
 				}
 				if( tbl.end( ) == ++hash_it ) {
@@ -158,59 +198,61 @@ namespace daw {
 			return tbl.end( );
 		}
 
-		static iterator itsert_into( value_type item, values_type & tbl );
-
-		static void resize_table( values_type & old_table ) {
-			values_type new_hash_table{ static_cast<size_t>( static_cast<double>( m_values.size( ) ) * ResizeRatio ) };
-			for( auto & current_item: m_table ) {
-				auto value = current_item
+		static void grow_table( values_type & old_table ) {
+			values_type new_hash_table{ static_cast<size_t>( static_cast<double>( old_table.size( ) ) * ResizeRatio ) };
+			for( auto & current_item: old_table ) {
+				auto value = current_item;
 				insert_into( current_item.m_value, new_hash_table );
 			}
+			old_table = new_hash_table;
 		}
 
-
-		static iterator itsert_into( value_type item, values_type & tbl ) {
-			auto item_it = find_item( item.first, tbl );
-			if( tbl.end( ) == item_it ) {
-				// resize table
-			}
-			auto hash_it = m_values.begin( ) + (hash( key ) % m_values.size( ));	
-			while( !hash_it->occupied ) {
-				++hash_it;
-				if( m_values.end( ) == hash_it ) {
-
-
-			if( tbl.end( ) != item_it ) {
-				item.occupied = true;
-
-			}
-			return item_it;
-		}
-
-		static iterator_out insert_into( key_type key, value_item_type value, values_type & tbl ) {
-			auto item = find_item( key );
-			if( tbl.end( ) != item ) {
-				item.occupied = true;
-				item.value = value_type( ::std::move( key ), ::std::move( value ) );
-			}
+		static auto insert_into( iterator item, value_type value, values_type & tbl ) {
+			assert( tbl.end( ) != item );
+			assert( item->occupied( ) == true );
+			item->value( ) = ::std:move( value );
 			return item; 
 		}
 
-	public:
-		iterator insert( key_type key, value_item_type value ) {
-			auto result = insert_into( std::move( key ), std::move( value ), m_table );
-			if( m_table.end( ) == result ) {
-				resize_table( );
-				result = insert_at( hash_pos, std::move( key ), std::move( value ), m_table );
-
-				if( m_table.end( ) == result ) {
-					// Should not happen, probably out of memory
-					throw ::std::runtime_error( "Unknown error while increases hash table size.  Likely out of memory" );
-				}
-			}
-			return &result.value;
+		static auto insert_into( ::std::size_t hash, value_type value, values_type & tbl ) {
+			return insert_into( find_item_by_hash( hash ), ::std::move( value ), tbl );
 		}
 
+	public:
+		template<typename Key>
+		auto insert( Key const & key, value_type value ) {
+			return values.end( ) == insert_into( hash_fn( key ), std::move( value ), m_values );
+		}
+
+		template<typename Key>
+		auto & operator[]( Key const & key ) {
+			auto hash = hash_fn( key );
+			auto pos = find_item_by_hash( hash );
+			if( m_values.end( ) == pos ) {
+				grow_table( m_values );
+				pos = find_item_by_hash( hash );
+				assert( m_values.end( ) != pos );
+			}
+			pos->hash = hash;
+			pos->occupied = true;
+			return pos->value;
+		}
+
+		template<typename Key>
+		auto const & operator[]( Key const & key ) const {
+			auto hash = hash_fn( key );
+			auto pos = find_item_by_hash( hash );
+			if( m_values.end( ) == pos ) {
+				grow_table( m_values );
+				pos = find_item_by_hash( hash );
+				assert( m_values.end( ) != pos );
+			}
+			pos->hash = hash;
+			if( !pos->occupied ) {
+				throw std::out_of_range( "Key does not already exist" );
+			}
+			return pos->value;
+		}
 	};	// struct hash_table
 
 }	// namespace daw
