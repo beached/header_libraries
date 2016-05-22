@@ -38,12 +38,12 @@ namespace daw {
 			using value_type = typename ::std::decay_t<ValueType>;
 
 			bool m_occupied;	// If I find out there is a sentinal value in std::hash's(probably not) I need this
-			::std::size_t m_hash;
+			size_t m_hash;
 			value_type m_value;
 		public:	
 			hash_table_item( ): m_occupied{ false }, m_hash{ 0 }, m_value{ } { }
 
-			hash_table_item( ::std::size_t hash, value_type value, bool occupied = true ): m_occupied{ occupied }, m_hash{ hash }, m_value{ ::std::move( value ) } { }
+			hash_table_item( size_t hash, value_type value, bool occupied = true ): m_occupied{ occupied }, m_hash{ hash }, m_value{ ::std::move( value ) } { }
 
 			~hash_table_item( ) = default;
 			hash_table_item( hash_table_item const & ) = default;
@@ -66,11 +66,11 @@ namespace daw {
 				return m_occupied;
 			}
 
-			::std::size_t & hash( ) noexcept {
+			size_t & hash( ) noexcept {
 				return m_hash;
 			}
 
-			::std::size_t const & hash( ) const noexcept {
+			size_t const & hash( ) const noexcept {
 				return m_hash;
 			}
 
@@ -92,12 +92,12 @@ namespace daw {
 			using value_type = typename ::std::decay_t<ValueType>;
 
 			bool m_occupied;	// If I find out there is a sentinal value in std::hash's(probably not) I need this
-			::std::size_t m_hash;
+			size_t m_hash;
 			value_type * m_value;
 		public:	
 			hash_table_item( ) noexcept: m_occupied{ false }, m_hash{ 0 }, m_value{ nullptr } { }
 
-			hash_table_item( ::std::size_t hash, value_type value, bool occupied = true ): m_occupied{ occupied }, m_hash{ hash }, m_value{ new value_type( ::std::move( value ) ) } { }
+			hash_table_item( size_t hash, value_type value, bool occupied = true ): m_occupied{ occupied }, m_hash{ hash }, m_value{ new value_type( ::std::move( value ) ) } { }
 			
 			~hash_table_item( ) {
 				if( nullptr != m_value ) {
@@ -131,11 +131,11 @@ namespace daw {
 				return m_occupied;
 			}
 
-			::std::size_t & hash( ) noexcept {
+			size_t & hash( ) noexcept {
 				return m_hash;
 			}
 
-			::std::size_t const & hash( ) const noexcept {
+			size_t const & hash( ) const noexcept {
 				return m_hash;
 			}
 
@@ -174,14 +174,20 @@ namespace daw {
 
 	private:
 		template<typename Key>
-		static ::std::size_t hash_fn( Key && key ) {
+		static size_t hash_fn( Key && key ) {
 			using ::std::hash;
 			static hash<Key> s_hash; 
 			return s_hash( ::std::forward<Key>( key ) );
 		}
 
-		static iterator find_item_by_hash( ::std::size_t hash, values_type const & tbl ) {
-			auto hash_it = tbl.begin( ) + (hash % tbl.size( ));	
+		static auto scale_hash( size_t hash, size_t table_size ) {
+			static const size_t prime_a = 18446744073709551557u;
+			static const size_t prime_b = 18446744073709551533u;
+			return (hash*prime_a + prime_b) % table_size;
+		}
+
+		static iterator find_item_by_hash( size_t hash, values_type const & tbl ) {
+			auto hash_it = tbl.begin( ) + scale_hash( hash, tbl.size( ) );	
 			auto count = tbl.size( );
 			// loop through all values until an empty spot is found(at end start at beginning)
 			while( count-- > 0 ) {	
@@ -210,18 +216,18 @@ namespace daw {
 		static auto insert_into( iterator item, value_type value, values_type & tbl ) {
 			assert( tbl.end( ) != item );
 			assert( item->occupied( ) == true );
-			item->value( ) = ::std:move( value );
+			item->value( ) = ::std::move( value );
 			return item; 
 		}
 
-		static auto insert_into( ::std::size_t hash, value_type value, values_type & tbl ) {
+		static auto insert_into( size_t hash, value_type value, values_type & tbl ) {
 			return insert_into( find_item_by_hash( hash ), ::std::move( value ), tbl );
 		}
 
 	public:
 		template<typename Key>
 		auto insert( Key const & key, value_type value ) {
-			return values.end( ) == insert_into( hash_fn( key ), std::move( value ), m_values );
+			return m_values.end( ) == insert_into( hash_fn( key ), std::move( value ), m_values );
 		}
 
 		template<typename Key>
