@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE( daw_traits_is_equality_comparable ) {
 			int x;
 			std::vector<int> y;
 		public:
-			NotEqual2( int, std::vector<int> ):x( 0 ), y( ) { }
+			NotEqual2( int, std::vector<int> ):x( 0 ), y( ) { x += 1; }
 		};
 		NotEqual2 ne2( 2, { 2, 2 } );
 		BOOST_REQUIRE_MESSAGE( false == daw::traits::is_equality_comparable<NotEqual2>::value, "4. NotEqual2 struct should not report as being equality comparable" );
@@ -57,13 +57,12 @@ BOOST_AUTO_TEST_CASE( daw_traits_is_regular ) {
 		int x;
 		NotRegular( int ):x( ) { }
 		NotRegular( ) = delete;
-		~NotRegular( ) = default;
 		NotRegular( NotRegular const & ) = delete;
 		NotRegular & operator=( NotRegular const & ) = delete;
 		NotRegular( NotRegular && ) = delete;
 		NotRegular & operator=( NotRegular && ) = delete;
 	};
-	NotRegular x( 5 );
+	NotRegular x{ 5 };
 	BOOST_REQUIRE_MESSAGE( false == daw::traits::is_regular<NotRegular>::value, "2. struct NotRegular should report as being regular" );
 }
 
@@ -227,6 +226,8 @@ BOOST_AUTO_TEST_CASE( daw_traits_has_substr_member ) {
 			int x;
 			bool substr( ) { return true; }
 		};
+		T t = { 5 };
+		t.substr( );
 		BOOST_REQUIRE_MESSAGE( true == daw::traits::has_substr_member<T>::value, "4. struct T should have a substr method" );
 	}
 }
