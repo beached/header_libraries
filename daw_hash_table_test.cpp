@@ -23,6 +23,7 @@
 #include <boost/test/unit_test.hpp>
 #include <cstdint>
 #include "daw_hash_table.h"
+#include <iostream>
 
 BOOST_AUTO_TEST_CASE( daw_hash_table_testing ) {
 	daw::hash_table<int> testing1;
@@ -32,5 +33,10 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing ) {
 		uint64_t c;
 	};
 	daw::hash_table<big> testing2;
+
+	testing1["hello"] = 5;
+	testing1[454] = 6;
+	testing2["blah"] = { 5, 6, 7 };
+	std::cout << testing1["hello"] << " " << testing1[454] << " " << testing2["blah"].b << std::endl;
 }
 
