@@ -295,7 +295,7 @@ namespace daw {
 
 		void shrink_to_fit( ) {
 			auto count = std::accumulate( m_values.begin( ), m_values.end( ), 0u, []( auto const & a, auto const & b ) {
-				return a + b ? 1 : 0;
+				return a + (b ? 1 : 0);
 			} );
 			grow_table( m_values, count );
 		}
