@@ -22,9 +22,9 @@
 
 #pragma once
 
-#include <algorithm>
 #include <functional>
 #include <list>
+#include <numeric>
 #include <utility>
 #include <string>
 #include <vector>
@@ -63,7 +63,7 @@ namespace daw {
 			
 			void clear( ) {
 				m_hash = 0;
-				m_value = 0;
+				m_value = value_type { };
 			}
 
 			bool occupied( ) const noexcept {
@@ -218,6 +218,7 @@ namespace daw {
 			// loop through all values until an empty spot is found(at end start at beginning)
 			while( count-- > 0 ) {	
 				if( !hash_it->occupied( ) ) {
+					hash_it->hash( ) = hash;
 					return hash_it;
 				} else if( hash_it->hash( ) == hash ) {
 					return hash_it;
@@ -230,7 +231,26 @@ namespace daw {
 			return tbl.end( );
 		}
 
-		static void grow_table( values_type & old_table, size_t new_size ) {
+		template<typename TableType>
+		static auto insert_into( impl::hash_table_item<value_type> && item, TableType & tbl ) {
+			auto hash_it = tbl.begin( ) + static_cast<ptrdiff_t>(scale_hash( item.hash( ), tbl.size( ) ));	// scaled hashes are never 0 and never >= ptrdiff_t max
+			auto count = tbl.size( );
+			// loop through all values until an empty spot is found(at end start at beginning)
+			while( count-- > 0 ) {
+				if( !hash_it->occupied( ) || hash_it->hash( ) == hash ) {
+					*hash_it = std::move( item );
+					return hash_it;				
+				}
+				if( tbl.end( ) == ++hash_it ) {
+					hash_it = tbl.begin( );
+				}
+			}
+			// Full
+			tbl.grow_table( );
+			return insert_into( std::move( item ), tbl );
+		}
+
+		static void resize_table( values_type & old_table, size_t new_size ) {
 			values_type new_hash_table{ new_size };
 			for( auto & current_item: old_table ) {
 				if( current_item ) {
@@ -251,6 +271,10 @@ namespace daw {
 			return insert_into( find_item_by_hash( hash, tbl ), ::std::move( value ), tbl );
 		}
 
+		void grow_table( ) {
+			resize_table( m_values, static_cast<size_t>(static_cast<double>(m_values.size( )) * ResizeRatio) );
+		}
+
 	public:
 		template<typename Key>
 		auto insert( Key const & key, value_type value ) {
@@ -262,7 +286,7 @@ namespace daw {
 			auto hash = hash_fn( key );
 			auto pos = find_item_by_hash( hash, m_values );
 			if( m_values.end( ) == pos ) {
-				grow_table( m_values, static_cast<size_t>( static_cast<double>( m_values.size( ) ) * ResizeRatio ) );
+				grow_table( );
 				pos = find_item_by_hash( hash, m_values );
 				assert( m_values.end( ) != pos );
 			}
@@ -274,12 +298,7 @@ namespace daw {
 		auto const & operator[]( Key const & key ) const {
 			auto hash = hash_fn( key );
 			auto pos = find_item_by_hash( hash, m_values );
-			if( m_values.end( ) == pos ) {
-				grow_table( m_values, static_cast<size_t>(static_cast<double>(m_values.size( )) * ResizeRatio) );
-				pos = find_item_by_hash( hash, m_values );
-				assert( m_values.end( ) != pos );
-			}
-			if( !pos->occupied( ) ) {
+			if( m_values.end( ) == pos || !pos->occupied( ) ) {
 				throw std::out_of_range( "Key does not already exist" );
 			}
 			return pos->value( );
@@ -297,7 +316,7 @@ namespace daw {
 			auto count = std::accumulate( m_values.begin( ), m_values.end( ), 0u, []( auto const & a, auto const & b ) {
 				return a + (b ? 1 : 0);
 			} );
-			grow_table( m_values, count );
+			resize_table( m_values, count );
 		}
 	};	// struct hash_table
 
