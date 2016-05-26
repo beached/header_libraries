@@ -100,12 +100,16 @@ namespace daw {
 			size_t m_hash;	// 0 is the sentinel to mark unused
 			value_type * m_value;
 		public:	
-			hash_table_item( ) noexcept: m_hash{ 0 }, m_value{ nullptr } { }
+			hash_table_item( ) noexcept: m_hash{ 0 }, m_value{ new value_type } { }
 
 			hash_table_item( size_t hash, value_type value ): m_hash{ hash }, m_value{ new value_type( ::std::move( value ) ) } { }
 			
 			~hash_table_item( ) {
-				clear( );
+				auto tmp = m_value;
+				m_value = nullptr;
+				if( nullptr != tmp ) {
+					delete tmp;
+				}
 			}
 
 			hash_table_item( hash_table_item const & other ): m_hash{ other.m_hash }, m_value{ ::daw::copy_ptr_value( other.m_value ) } { }
@@ -131,6 +135,7 @@ namespace daw {
 				m_value = nullptr;
 				if( nullptr != tmp ) {
 					delete tmp;
+					tmp = new value_type;
 				}
 			}
 
