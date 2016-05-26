@@ -28,9 +28,9 @@
 BOOST_AUTO_TEST_CASE( daw_hash_table_testing ) {
 	daw::hash_table<int> testing1;
 	struct big {
-		uint64_t a;
-		uint64_t b;
-		uint64_t c;
+		uint32_t a;
+		uint32_t b;
+		uint16_t c;
 	};
 	daw::hash_table<big> testing2;
 
@@ -38,6 +38,9 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing ) {
 	testing1[454] = 6;
 	testing1.shrink_to_fit( );
 	testing2["hello"] = { 5, 6, 7 };
+	testing2.shrink_to_fit( );
+	auto a = sizeof( big );
+	auto b = sizeof( big * );
 	std::cout << testing1["hello"] << " " << testing1[454] << " " << testing2["hello"].b << std::endl;
 }
 
