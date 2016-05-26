@@ -276,6 +276,14 @@ namespace daw {
 			}
 			return pos->value( );
 		}
+
+		template<typename Key>
+		size_t erase( Key && key ) {
+			auto hash = hash_fn( key );
+			auto pos = find_item_by_hash( hash, m_values );
+			pos->clear( );
+			return 1;
+		}
 	};	// struct hash_table
 
 }	// namespace daw
