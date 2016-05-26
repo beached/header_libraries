@@ -34,7 +34,7 @@ namespace daw {
 		template<typename ValueType, typename = void>
 		struct hash_table_item;
 
-		// Small value optimized version.
+		// Small value optimized version
 		template<typename ValueType>
 		struct hash_table_item<ValueType, ::std::enable_if_t<(sizeof( ValueType ) <= sizeof( ValueType * ))>> {
 			using value_type = typename ::std::decay_t<ValueType>;
@@ -66,7 +66,7 @@ namespace daw {
 			}
 
 			bool occupied( ) const noexcept {
-				return 0 == m_hash;
+				return 0 != m_hash;
 			}
 
 			size_t & hash( ) noexcept {
@@ -135,7 +135,7 @@ namespace daw {
 			}
 
 			bool occupied( ) const noexcept {
-				return 0 == m_hash;
+				return 0 != m_hash;
 			}
 
 			size_t & hash( ) noexcept {
@@ -171,7 +171,7 @@ namespace daw {
 		using iterator = typename values_type::iterator;
 		values_type m_values;
 	public:
-		hash_table( ): m_values{ 1000 } { }
+		hash_table( ): m_values{ 11 } { }
 
 		~hash_table( ) = default;
 		hash_table( hash_table && ) = default;
@@ -227,7 +227,9 @@ namespace daw {
 		static void grow_table( values_type & old_table, size_t new_size ) {
 			values_type new_hash_table{ new_size };
 			for( auto & current_item: old_table ) {
-				insert_into( current_item.hash( ), current_item.value( ), new_hash_table );
+				if( current_item ) {
+					insert_into( current_item.hash( ), current_item.value( ), new_hash_table );
+				}
 			}
 			old_table = new_hash_table;
 		}
