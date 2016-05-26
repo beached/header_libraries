@@ -25,13 +25,14 @@
 #include <functional>
 #include <list>
 #include <utility>
+#include <string>
 #include <vector>
 #include "daw_utility.h"
 
 namespace daw {
 	namespace impl {
 		template<typename ValueType, typename = void>
-		class hash_table_item;
+		struct hash_table_item;
 
 		// Small value optimized version.
 		template<typename ValueType>
@@ -181,18 +182,23 @@ namespace daw {
 	private:
 		template<typename Key>
 		static size_t hash_fn( Key && key ) {
-			using ::std::hash;
 			static const auto s_hash = []( auto && k ) {
-				static hash<Key> h_func;
-				return (h_func( ::std::forward<Key>( k ) ) % (std::numeric_limits<size_t>::max( ) - 1)) + 1;	// Guarantee we cannot be zero
+				using k_type = std::decay_t<Key>;
+				static std::hash<k_type> h_func;
+				return (h_func( ::std::forward<Key>( k ) ) % (static_cast<size_t>(std::numeric_limits<ptrdiff_t>::max( )) - 1)) + 1;	// Guarantee we cannot be zero
 			};			
 			return s_hash( ::std::forward<Key>( key ) );
 		}
+		
+		static size_t hash_fn( char const * c_str ) {
+			std::string value = c_str;
+			return hash_fn( value );	
+		}
 
-		static auto scale_hash( size_t hash, size_t table_size ) {
+		static size_t scale_hash( size_t hash, size_t table_size ) {
 			// Scale value to capacity using MAD(Multiply-Add-Divide) compression
 			// Use the two largest Prime's that fit in a 64bit unsigned integral
-			assert( table_size < std::numeric_limits<size_t>::max( ) );	// Table size must be less than max of size_t as we use the value 0 as a sentinel.  This should be rare
+			assert( table_size < std::numeric_limits<ptrdiff_t>::max( ) );	// Table size must be less than max of ptrdiff_t as we use the value 0 as a sentinel.  This should be rare
 			assert( hash != 0 );	// zero is a sentinel for no value
 			static const size_t prime_a = 18446744073709551557u;
 			static const size_t prime_b = 18446744073709551533u;
@@ -201,7 +207,7 @@ namespace daw {
 
 		template<typename TableType>
 		static auto find_item_by_hash( size_t hash, TableType & tbl ) {
-			auto hash_it = tbl.begin( ) + scale_hash( hash, tbl.size( ) ) - 1;	// scaled hashes are never 0
+			auto hash_it = tbl.begin( ) + static_cast<ptrdiff_t>( scale_hash( hash, tbl.size( ) ) );	// scaled hashes are never 0 and never >= ptrdiff_t max
 			auto count = tbl.size( );
 			// loop through all values until an empty spot is found(at end start at beginning)
 			while( count-- > 0 ) {	
@@ -221,7 +227,6 @@ namespace daw {
 		static void grow_table( values_type & old_table, size_t new_size ) {
 			values_type new_hash_table{ new_size };
 			for( auto & current_item: old_table ) {
-				auto value = current_item;
 				insert_into( current_item.hash( ), current_item.value( ), new_hash_table );
 			}
 			old_table = new_hash_table;
