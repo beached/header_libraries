@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include <functional>
 #include <list>
 #include <utility>
@@ -290,6 +291,13 @@ namespace daw {
 			auto pos = find_item_by_hash( hash, m_values );
 			pos->clear( );
 			return 1;
+		}
+
+		void shrink_to_fit( ) {
+			auto count = std::accumulate( m_values.begin( ), m_values.end( ), 0u, []( auto const & a, auto const & b ) {
+				return a + b ? 1 : 0;
+			} );
+			grow_table( m_values, count );
 		}
 	};	// struct hash_table
 
