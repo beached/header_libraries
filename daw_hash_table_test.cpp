@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing ) {
 
 	testing1["hello"] = 5;
 	testing1[454] = 6;
-	testing2["blah"] = { 5, 6, 7 };
-	std::cout << testing1["hello"] << " " << testing1[454] << " " << testing2["blah"].b << std::endl;
+	testing2["hello"] = { 5, 6, 7 };
+	std::cout << testing1["hello"] << " " << testing1[454] << " " << testing2["hello"].b << std::endl;
 }
 
