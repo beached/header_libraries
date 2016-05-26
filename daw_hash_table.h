@@ -33,17 +33,17 @@ namespace daw {
 		template<typename ValueType, typename = void>
 		class hash_table_item;
 
+		// Small value optimized version.
 		template<typename ValueType>
 		class hash_table_item<ValueType, ::std::enable_if_t<(sizeof( ValueType ) <= sizeof( ValueType * ))>> {
 			using value_type = typename ::std::decay_t<ValueType>;
 
-			bool m_occupied;	// If I find out there is a sentinal value in std::hash's(probably not) I need this
-			size_t m_hash;
+			size_t m_hash;	// 0 is the sentinel to mark unused
 			value_type m_value;
 		public:	
-			hash_table_item( ): m_occupied{ false }, m_hash{ 0 }, m_value{ } { }
+			hash_table_item( ): m_hash{ 0 }, m_value{ } { }
 
-			hash_table_item( size_t hash, value_type value, bool occupied = true ): m_occupied{ occupied }, m_hash{ hash }, m_value{ ::std::move( value ) } { }
+			hash_table_item( size_t hash, value_type value, bool occupied = true ): m_hash{ hash }, m_value{ ::std::move( value ) } { }
 
 			~hash_table_item( ) = default;
 			hash_table_item( hash_table_item const & ) = default;
@@ -53,17 +53,17 @@ namespace daw {
 
 			friend void swap( hash_table_item & lhs, hash_table_item & rhs ) noexcept {
 				using ::std::swap;
-				swap( lhs.m_occupied, rhs.m_occupied );
 				swap( lhs.m_hash, rhs.m_hash );
 				swap( lhs.m_value, rhs.m_value );
 			}
 			
-			bool & occupied( ) noexcept {
-				return m_occupied;
+			void clear( ) {
+				m_hash = 0;
+				m_value = 0;
 			}
 
-			bool const & occupied( ) const noexcept {
-				return m_occupied;
+			bool occupied( ) const noexcept {
+				return 0 == m_hash;
 			}
 
 			size_t & hash( ) noexcept {
@@ -82,34 +82,31 @@ namespace daw {
 				return m_value;
 			}
 
-			explicit operator bool( ) {
-				return m_occupied;
+			explicit operator bool( ) const {
+				return occupied( );
 			}
 		};	// class hash_table_item
 
+		// Values that are larger than the pointer size(e.g. 32bit/64bit) are heap allocated.
 		template<typename ValueType>
 		class hash_table_item<ValueType, ::std::enable_if_t<(sizeof( ValueType ) > sizeof( ValueType * ))>> {
 			using value_type = typename ::std::decay_t<ValueType>;
 
-			bool m_occupied;	// If I find out there is a sentinal value in std::hash's(probably not) I need this
-			size_t m_hash;
+			size_t m_hash;	// 0 is the sentinel to mark unused
 			value_type * m_value;
 		public:	
-			hash_table_item( ) noexcept: m_occupied{ false }, m_hash{ 0 }, m_value{ nullptr } { }
+			hash_table_item( ) noexcept: m_hash{ 0 }, m_value{ nullptr } { }
 
-			hash_table_item( size_t hash, value_type value, bool occupied = true ): m_occupied{ occupied }, m_hash{ hash }, m_value{ new value_type( ::std::move( value ) ) } { }
+			hash_table_item( size_t hash, value_type value ): m_hash{ hash }, m_value{ new value_type( ::std::move( value ) ) } { }
 			
 			~hash_table_item( ) {
-				if( nullptr != m_value ) {
-					delete m_value;
-				}
+				clear( );
 			}
 
 			hash_table_item( hash_table_item const & other ): m_occupied{ other.m_occupied }, m_hash{ other.m_hash }, m_value{ ::daw::copy_ptr_value( other.m_value ) } { }
 
 			friend void swap( hash_table_item & lhs, hash_table_item & rhs ) noexcept {
 				using ::std::swap;
-				swap( lhs.m_occupied, rhs.m_occupied );
 				swap( lhs.m_hash, rhs.m_hash );
 				swap( lhs.m_value, rhs.m_value );
 			}
@@ -123,12 +120,17 @@ namespace daw {
 				swap( *this, other );
 			}
 			
-			bool & occupied( ) noexcept {
-				return m_occupied;
+			void clear( ) {
+				m_hash = 0;
+				auto tmp = m_value;
+				m_value = nullptr;
+				if( nullptr != tmp ) {
+					delete tmp;
+				}
 			}
 
-			bool const & occupied( ) const noexcept {
-				return m_occupied;
+			bool occupied( ) const noexcept {
+				return 0 == m_hash;
 			}
 
 			size_t & hash( ) noexcept {
@@ -147,8 +149,8 @@ namespace daw {
 				return *m_value;
 			}
 
-			explicit operator bool( ) {
-				return m_occupied;
+			explicit operator bool( ) const {
+				return occupied( );
 			}
 		};	// class hash_table_item
 	}	// namespace impl
@@ -181,13 +183,16 @@ namespace daw {
 		}
 
 		static auto scale_hash( size_t hash, size_t table_size ) {
+			// Scale value to capacity using MAD(Multiply-Add-Divide) compression
+			// Use the two largest Prime's that fit in a 64bit unsigned integral
+			assert( table_size < std::numeric_limits<size_t>::max( ) );	// Table size must be less than max of size_t as we use the value 0 as a sentinel.  This should be rare
 			static const size_t prime_a = 18446744073709551557u;
 			static const size_t prime_b = 18446744073709551533u;
-			return (hash*prime_a + prime_b) % table_size;
+			return ((hash*prime_a + prime_b) % table_size) + 1;	// Can never be zero, that is the sentinel for no value			
 		}
 
 		static iterator find_item_by_hash( size_t hash, values_type const & tbl ) {
-			auto hash_it = tbl.begin( ) + scale_hash( hash, tbl.size( ) );	
+			auto hash_it = tbl.begin( ) + scale_hash( hash, tbl.size( ) ) - 1;	// scaled hashes are never 0
 			auto count = tbl.size( );
 			// loop through all values until an empty spot is found(at end start at beginning)
 			while( count-- > 0 ) {	
@@ -204,11 +209,11 @@ namespace daw {
 			return tbl.end( );
 		}
 
-		static void grow_table( values_type & old_table ) {
-			values_type new_hash_table{ static_cast<size_t>( static_cast<double>( old_table.size( ) ) * ResizeRatio ) };
+		static void grow_table( values_type & old_table, size_t new_size ) {
+			values_type new_hash_table{ new_size };
 			for( auto & current_item: old_table ) {
 				auto value = current_item;
-				insert_into( current_item.m_value, new_hash_table );
+				insert_into( current_item.m_hash, current_item.m_value, new_hash_table );
 			}
 			old_table = new_hash_table;
 		}
