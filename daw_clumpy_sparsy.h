@@ -72,6 +72,27 @@ namespace daw {
 		using const_iterator = clumpy_sparsy_const_iterator<T>;
 	private:
 		values_type m_items;	
+
+		auto lb_find( size_t pos, size_t low, size_t high ) const {
+			if( low >= high ) {
+				return high;
+			}
+			// return first start pos >= searched for pos
+			auto mid = (low + high)/2;
+			auto const & c_pos = m_items[mid].start( );
+			if( c_pos < pos ) {
+				auto res = lb_find( pos, mid + 1, high );
+				if( res <= pos ) {
+					return res;
+				}
+			}
+			return mid;
+		}
+
+		auto bfind( size_t pos ) {
+			auto item_pos = lb_find( pos, 0, m_items.size( ) );
+				
+		}
 	public:
 		size_t size( ) const {
 			return m_items.back( ).end( );
