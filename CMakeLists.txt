@@ -20,6 +20,7 @@ endif( )
 
 set( TESTED_HEADERS_PREFIXES
 	daw_algorithm
+	daw_clumpy_sparsy
 	daw_hash_table
 	daw_memory_mapped_file
 	daw_range_algorithm

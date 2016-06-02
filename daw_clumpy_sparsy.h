@@ -24,65 +24,144 @@
 
 #include <cstdint>
 #include <vector>
+#include <boost/iterator/iterator_facade.hpp>
 
 namespace daw {
+	template<typename T> class clumpy_sparsy_iterator;
+
+	template<typename T>
+	using clumpy_sparsy_const_iterator = clumpy_sparsy_iterator<T const>;
+
 	// Provide a vector like structure that assumes that the sparseness has clumps
 	template<typename T>
-	class ClumpySparsy {
+	class clumpy_sparsy {
 		class Chunk {
 			size_t m_start;
-			size_t m_end;
 			std::vector<T> m_items;
 		public:
+			size_t size( ) const {
+				return m_items.size( );
+			}
+
 			size_t & start( ) {
-				assert( m_end >= m_start );
 				return m_start;
 			}
 			
 			size_t const & start( ) const {
-				assert( m_end >= m_start );
 				return m_start;
 			}
 
-			size_t & end( ) {
-				assert( m_end >= m_start );
-				return m_end;
-			}
-			
-			size_t const & end( ) const {
-				assert( m_end >= m_start );
-				return m_end;
+			size_t end( ) const {
+				return m_start + size( );
 			}
 
-			size_t size( ) const {
-				assert( m_end >= m_start );
-				auto result = m_items.size( );
-				assert( (m_end - m_start) == result );
-				return result;
+			std::vector<T> & items( ) {
+				return m_items;
 			}
 
+			std::vector<T> const & items( ) const {
+				return m_items;
+			}
 		};	// class Chunk
 	public:
 		using values_type = ::std::vector<Chunk>;
+		using value_type = typename values_type::value_type;
+		using reference = typename values_type::reference;
+		using const_reference = typename values_type::reference;
+		using iterator = clumpy_sparsy_iterator<T>;
+		using const_iterator = clumpy_sparsy_const_iterator<T>;
 	private:
 		values_type m_items;	
 	public:
-		using value_type = values_type::value_type;
-		using reference = values_type::reference;
-		using const_reference = values_type::reference;
-
-		size_t size( ) qconst {
-			return std::accumulate( m_items.begin( ), m_items.end( ), static_cast<size_t>( 0 ), []( auto const & prev, auto const & current ) {
-				return prev + current.size( );
-			}
+		size_t size( ) const {
+			return m_items.back( ).end( );
 		}
 		
 		reference operator[]( size_t pos ) {
-			size_t count = 0;
-			
+			auto last_it = m_items.begin( );		
 		}
 		
+		iterator begin( ) {
+			return clumpy_sparsy_iterator<T>( this );
+		}
 
-	};
+		const_iterator begin( ) const {
+			return clumpy_sparsy_const_iterator<T>( this );
+		}
+
+		const_iterator cbegin( ) const {
+			return clumpy_sparsy_const_iterator<T>( this );
+		}
+
+		iterator end( ) {
+			return clumpy_sparsy_iterator<T>( this, size( ) );
+		}
+
+		const_iterator end( ) const {
+			return clumpy_sparsy_const_iterator<T>( this, size( ) );
+		}
+
+		const_iterator cend( ) const {
+			return clumpy_sparsy_const_iterator<T>( this, size( ) );
+		}
+
+	};	// class clumpy_sparsy
+
+
+	template<typename T>
+	class clumpy_sparsy_iterator: public boost::iterator_facade<clumpy_sparsy_iterator<T>, T, boost::random_access_traversal_tag> {
+		size_t m_position;
+		clumpy_sparsy<T> * m_items;
+
+		auto as_tuple( ) {
+			return std::tie( m_position, m_items );
+		}
+
+		friend class boost::iterator_core_access;
+		void increment( ) {
+			if( m_items->size( ) == m_position ) {
+				return;
+			}
+			++m_position;
+		}
+
+		void decrement( ) {
+			if( 0 == m_position ) {
+				return;
+			}
+			--m_position;
+		}
+
+		bool equal( clumpy_sparsy_iterator const & other ) {
+			return as_tuple( ) == other.as_tuple( );
+		}
+
+		auto & dereference( ) const {
+			return (*m_items)[m_position];
+		}
+
+		void advance( ptrdiff_t n ) {
+			if( 0 > n ) {
+				n *= -1;
+				if( n >= m_position ) {
+					m_position = 0;
+				} else {
+					m_position -= n;
+				}
+			} else {
+				m_position += n;
+				{
+					auto sz = m_items->size( );
+					if( sz < m_position ) {
+						m_position = sz;
+					}
+				}
+			}
+		}
+	public:
+		clumpy_sparsy_iterator( ): m_position( std::numeric_limits<size_t>::max( ) ), m_items( nullptr ) { }
+		clumpy_sparsy_iterator( clumpy_sparsy<T> * items, size_t position = 0 ): m_position( position ), m_items( items ) { }
+	};	// class clumpy_sparsy_iterator
+
 }	// namespace daw
 
