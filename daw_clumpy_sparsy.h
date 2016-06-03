@@ -25,6 +25,7 @@
 #include <cstdint>
 #include <vector>
 #include <boost/iterator/iterator_facade.hpp>
+#include "daw_algorithm.h"
 
 namespace daw {
 	template<typename T> class clumpy_sparsy_iterator;
@@ -39,6 +40,12 @@ namespace daw {
 			size_t m_start;
 			std::vector<T> m_items;
 		public:
+			Chunk( ) = default;
+			~Chunk( ) = default;
+			Chunk( Chunk const & ) = default;
+			Chunk( Chunk && ) = default;
+			Chunk & operator=( Chunk const & ) = default;
+			Chunk & operator=( Chunk && ) = default;
 			size_t size( ) const {
 				return m_items.size( );
 			}
@@ -73,25 +80,26 @@ namespace daw {
 	private:
 		values_type m_items;	
 
-		auto lb_find( size_t pos, size_t low, size_t high ) const {
-			if( low >= high ) {
-				return high;
-			}
-			// return first start pos >= searched for pos
-			auto mid = (low + high)/2;
-			auto const & c_pos = m_items[mid].start( );
-			if( c_pos < pos ) {
-				auto res = lb_find( pos, mid + 1, high );
-				if( res <= pos ) {
-					return res;
+
+		auto lfind( size_t pos ) {
+			auto item_pos = daw::algorithm::find_last_of( m_items.begin( ), m_items.end( ), [pos]( auto const & item ) {
+				return pos >= item.start( );
+			} );
+			if( m_items.end( ) == item_pos ) {
+				m_items.emplace_back( );
+				item_pos = (m_items.begin( ) + m_items.size( ));
+				item_pos->start( ) = pos;
+				item_pos->items( ).emplace_back( );
+			} else {
+				auto offset = pos - item_pos->start( );
+				if( offset > item_pos->size( ) + 1 ) {
+					++item_pos;
+					item_pos = m_items.emplace( item_pos );
+					item_pos->start( ) = pos;
+					item_pos->items( ).emplace_back( );
 				}
 			}
-			return mid;
-		}
-
-		auto bfind( size_t pos ) {
-			auto item_pos = lb_find( pos, 0, m_items.size( ) );
-				
+			return item_pos;
 		}
 	public:
 		size_t size( ) const {
@@ -99,7 +107,7 @@ namespace daw {
 		}
 		
 		reference operator[]( size_t pos ) {
-			auto last_it = m_items.begin( );		
+			return lfind( pos );
 		}
 		
 		iterator begin( ) {

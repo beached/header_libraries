@@ -327,6 +327,19 @@ namespace daw {
 			static void run( std::size_t, T, F ) { }
 		};	// struct tuple_functor
 
+		template<typename Iterator, typename UnaryPredicate>
+		auto find_last_of( Iterator first, Iterator last, UnaryPredicate pred ) {
+			auto prev = last;
+			while( first != last ) {
+				if( !pred( *first ) ) {
+					break;
+				}
+				prev = first;
+				++first;
+			}
+			return prev;
+		}
+
 	}	// namespace algorithm
 }	// namespace daw
 
