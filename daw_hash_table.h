@@ -237,7 +237,7 @@ namespace daw {
 			auto count = tbl.size( );
 			// loop through all values until an empty spot is found(at end start at beginning)
 			while( count-- > 0 ) {
-				if( !hash_it->occupied( ) || hash_it->hash( ) == hash ) {
+				if( !hash_it->occupied( ) || hash_it->hash( ) == item.hash( ) ) {
 					*hash_it = std::move( item );
 					return hash_it;				
 				}
