@@ -85,12 +85,8 @@ namespace daw {
 			auto item_pos = daw::algorithm::find_last_of( m_items.begin( ), m_items.end( ), [pos]( auto const & item ) {
 				return pos >= item.start( );
 			} );
-			if( m_items.end( ) == item_pos ) {
-				m_items.emplace_back( );
-				item_pos = (m_items.begin( ) + m_items.size( ));
-				item_pos->start( ) = pos;
-				item_pos->items( ).emplace_back( );
-			} else {
+			if( m_items.end( ) != item_pos ) {
+				// We are within the max size of the container.  Feel free to add it
 				auto offset = pos - item_pos->start( );
 				if( offset > item_pos->size( ) + 1 ) {
 					++item_pos;
@@ -107,7 +103,8 @@ namespace daw {
 		}
 		
 		reference operator[]( size_t pos ) {
-			return lfind( pos );
+			auto item = lfind( pos );
+
 		}
 		
 		iterator begin( ) {
