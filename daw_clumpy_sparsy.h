@@ -69,6 +69,10 @@ namespace daw {
 			std::vector<T> const & items( ) const {
 				return m_items;
 			}
+
+			bool operator<( Chunk const & rhs ) {
+				return start( ) < rhs.start( );
+			}
 		};	// class Chunk
 	public:
 		using values_type = ::std::vector<Chunk>;
@@ -78,14 +82,18 @@ namespace daw {
 		using iterator = clumpy_sparsy_iterator<T>;
 		using const_iterator = clumpy_sparsy_const_iterator<T>;
 	private:
-		values_type m_items;	
-
+		// Must be mutable as we hide our size and expand the values < size to fit as needed
+		values_type mutable m_items;	
+		size_t m_size;
 
 		auto lfind( size_t pos ) {
+			if( pos >= size( ) ) {
+				return size( );
+			}
 			auto item_pos = daw::algorithm::find_last_of( m_items.begin( ), m_items.end( ), [pos]( auto const & item ) {
 				return pos >= item.start( );
 			} );
-			if( m_items.end( ) != item_pos ) {
+			if( item_pos < size( ) ) {
 				// We are within the max size of the container.  Feel free to add it
 				auto offset = pos - item_pos->start( );
 				if( offset > item_pos->size( ) + 1 ) {
@@ -99,7 +107,7 @@ namespace daw {
 		}
 	public:
 		size_t size( ) const {
-			return m_items.back( ).end( );
+			return m_size;
 		}
 		
 		reference operator[]( size_t pos ) {

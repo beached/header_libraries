@@ -228,7 +228,6 @@ namespace daw {
 			return are_equal( v1, v2 ) && are_equal( others... );
 		}
 
-
 		template<typename Iterator>
 		std::pair<Iterator, Iterator> slide( Iterator first, Iterator last, Iterator target ) {
 			if( target < first ) {
@@ -338,6 +337,25 @@ namespace daw {
 				++first;
 			}
 			return prev;
+		}
+
+		template<typename Iterator, typename UnaryPredicate>
+		auto find_first_of( Iterator first, Iterator last, UnaryPredicate pred ) {
+			while( first != last ) {
+				if( pred( *first ) ) {
+					break;
+				}
+				++first;
+			}
+			return first;
+		}
+
+		template<typename Iterator, typename UnaryPredicate>
+		auto find_first_range_of( Iterator first, Iterator last, UnaryPredicate pred ) {
+			first = find_first_of( first, last, pred );
+			last = find_last_of( first, last, pred );
+			++last;
+			return std::make_pair( first, last );
 		}
 
 	}	// namespace algorithm
