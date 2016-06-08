@@ -113,6 +113,9 @@ namespace daw {
 		struct are_same_types<T, First, Rest...>
 			: ::std::integral_constant < bool,::std::is_same<T, First>::value || are_same_types<T, Rest...>::value> { };
 
+		template<typename T, typename... Rest>
+		using are_same_types_t = are_same_types<T, Rest...>::type;
+
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	A sequence of bool values
 		///
