@@ -1,22 +1,23 @@
-cmake_minimum_required( VERSION 2.8.0 )
+cmake_minimum_required( VERSION 2.8.12 )
 
 project( header_libraries )
 
 find_package( Boost 1.59.0 COMPONENTS system filesystem regex unit_test_framework iostreams REQUIRED )
 
-if( ${CMAKE_CXX_COMPILER_ID} STREQUAL 'MSVC' )
-	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_WIN32_WINNT=0x0601" )
-elseif( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" )
+IF( ${CMAKE_CXX_COMPILER_ID} STREQUAL 'MSVC' )
+	add_compile_options( -D_WIN32_WINNT=0x0601 ) 
+ELSE( )
 	find_package( Threads REQUIRED )
-	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -stdlib=libc++ -g -O3 -Weverything -Wno-c++98-compat  -Wfatal-errors -Wno-covered-switch-default -Wno-padded -Wno-exit-time-destructors -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-missing-noreturn -Wno-missing-prototypes -Wno-disabled-macro-expansion -Wno-global-constructors" )
-elseif( ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" )
-	find_package( Threads REQUIRED )
-	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -g -O3 -Wall -Wno-deprecated-declarations" )
-endif( )
+	if( THREADS_HAVE_PTHREAD_ARG )
+		set( COMPILER_SPECIFIC_LIBS, "-lpthread" )
+	endif()
 
-if( THREADS_HAVE_PTHREAD_ARG )
-	set( COMPILER_SPECIFIC_LIBS, "-lpthread" )
-endif( )
+	IF( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" )
+		add_compile_options(-std=c++14 -stdlib=libc++ -Weverything -Wno-c++98-compat -Wfatal-errors -Wno-covered-switch-default -Wno-padded -Wno-exit-time-destructors -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-missing-noreturn -Wno-missing-prototypes -Wno-disabled-macro-expansion)		
+	ELSEIF( ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" )
+		add_compile_options(-std=c++14 -Wall -Wno-deprecated-declarations)
+	ENDIF()
+ENDIF()
 
 set( TESTED_HEADERS_PREFIXES
 	daw_algorithm
