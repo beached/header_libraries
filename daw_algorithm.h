@@ -117,13 +117,13 @@ namespace daw {
 		template<class IteratorType, class ValueType, class Comp>
 		IteratorType binary_search( const IteratorType first, const IteratorType last, const ValueType& value, Comp less_than ) {
 			auto midpoint = []( const IteratorType& a, const IteratorType& b ) {
-				dbg_throw_on_false( a <= b, string_join( __func__, ": Cannot find a midpoint unless the first parameter is <= the second" ) );
+				daw::exception::dbg_throw_on_false( a <= b, daw::string::string_join( __func__, ": Cannot find a midpoint unless the first parameter is <= the second" ) );
 				const auto mid = std::distance( a, b ) / 2;
 				auto result = a;
 				std::advance( result, mid );
 				return result;
 			};
-			dbg_throw_on_false( first < last, string_join( __func__, ": First position must be less than second" ) );
+			daw::exception::dbg_throw_on_false( first < last, daw::string::string_join( __func__, ": First position must be less than second" ) );
 			IteratorType it_first( first );
 			IteratorType it_last( last );
 
