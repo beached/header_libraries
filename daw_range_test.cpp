@@ -21,9 +21,7 @@
 // SOFTWARE.
 
 #include <boost/test/unit_test.hpp>
-#ifndef WIN32	// Fails on MSVC 2015.2
 #include "daw_range.h"
-#endif	//WIN32
 
 BOOST_AUTO_TEST_CASE( daw_range_test01 ) {
 #ifndef WIN32	// Fails on MSVC 2015.2

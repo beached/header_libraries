@@ -25,5 +25,7 @@
 #include "daw_range_type.h"
 #include "daw_range_reference.h"
 #include "daw_range_collection.h"
-#include "daw_range_operators.h"
 
+#ifndef WIN32	// Fails on MSVC 2015.3
+#include "daw_range_operators.h"
+#endif	//WIN32
