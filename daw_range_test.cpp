@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE( daw_range_test01 ) {
 	std::cout << result << std::endl;
 
 	std::cout << "{";
-	for( auto v : result ) {
+	for( auto const & v : result ) {
 		std::cout << " " << v;
 	}
 	std::cout << " }\n";
@@ -45,9 +45,11 @@ BOOST_AUTO_TEST_CASE( daw_range_test01 ) {
 #endif	//WIN32
 
 BOOST_AUTO_TEST_CASE( daw_range_test02 ) {
-	std::vector<int32_t> const t = { -400, 4, -1, 1000, 4, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+//	using daw::range::make_range_reference;
+	using namespace daw::range::operators;
 
-	auto result = daw::range::make_range_reference( t )
+	std::vector<int32_t> const t = { -400, 4, -1, 1000, 4, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	auto result = from( t )
 		.shuffle( )
 		.sort( )
 		.where( []( auto v ) { return v > 0; } ) 

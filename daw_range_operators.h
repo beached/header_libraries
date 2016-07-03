@@ -51,7 +51,7 @@ namespace daw {
 			}	// namespace impl
 			template<typename Arg, typename... Args>
 			auto from( Arg && arg, Args&&... args ) {
-				return impl::from( ::std::is_const<Arg>( ), std::forward<Arg>( arg ), std::forward<Args>( args )... );
+				return impl::from( typename ::std::is_const<Arg>::type{ }, std::forward<Arg>( arg ), std::forward<Args>( args )... );
 			}
 
 			template<typename Arg, typename... Args>
@@ -75,6 +75,7 @@ namespace daw {
 	}	// namespace range
 }	// namespace daw
 
+#ifndef WIN32	// internal compiler error on at least <= MSVC 2015.3
 #define DAW_RANGE_GENERATE_VCLAUSE( clause_name )\
 namespace daw {\
 	namespace range {\
@@ -163,3 +164,4 @@ DAW_RANGE_GENERATE_VCLAUSE( where );
 DAW_RANGE_GENERATE_VCLAUSE( for_each );
 
 #undef DAW_RANGE_GENERATE_VCLAUSE
+#endif	//	WIN32

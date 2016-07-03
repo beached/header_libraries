@@ -363,7 +363,7 @@ namespace daw {
 				static std::mt19937 g( rd( ) );
 				return shuffle( g );
 			}
-			
+
 			auto shuffle( ) const & {
 				return make_range_reference( *this ).shuffle( );
 			}
