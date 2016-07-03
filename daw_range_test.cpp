@@ -23,15 +23,17 @@
 #include <boost/test/unit_test.hpp>
 #include "daw_range.h"
 
-BOOST_AUTO_TEST_CASE( daw_range_test01 ) {
-	std::vector<int32_t> const t = { -400, 4, -1, 1000, 4, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 #ifndef WIN32	// Fails on MSVC 2015.2
+BOOST_AUTO_TEST_CASE( daw_range_test01 ) {
 	using namespace daw::range::operators;
-	auto result = from( t )
-		<< stable_partition( []( auto v ) { return v % 2 == 0; } )
-		<< sort( )
-		<< shuffle( );
 
+	std::vector<int32_t> const t = { -400, 4, -1, 1000, 4, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	auto result = from( t )
+		<< shuffle( )
+		<< sort( )
+		<< where( []( auto v ) { return v > 0; } ) 
+		<< stable_partition( []( auto v ) { return v % 2 == 0; } );
+	std::cout << "Test 001\n";
 	std::cout << result << std::endl;
 
 	std::cout << "{";
@@ -39,17 +41,23 @@ BOOST_AUTO_TEST_CASE( daw_range_test01 ) {
 		std::cout << " " << v;
 	}
 	std::cout << " }\n";
-
+}
 #endif	//WIN32
-	auto result2 = daw::range::make_range_reference( t )
-		.stable_partition( []( auto v ) { return v % 2 == 0; } )
-		.sort( )
-		.shuffle( );
 
-	std::cout << result2 << std::endl;
+BOOST_AUTO_TEST_CASE( daw_range_test02 ) {
+	std::vector<int32_t> const t = { -400, 4, -1, 1000, 4, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+	auto result = daw::range::make_range( t )
+		.shuffle( )
+		.sort( )
+		.where( []( auto v ) { return v > 0; } ) 
+		.stable_partition( []( auto v ) { return v % 2 == 0; } );
+
+	std::cout << "Test 002\n";
+	std::cout << result << std::endl;
 
 	std::cout << "{";
-	for( auto v : result2 ) {
+	for( auto v : result ) {
 		std::cout << " " << v;
 	}
 	std::cout << " }\n";
