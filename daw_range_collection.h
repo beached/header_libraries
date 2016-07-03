@@ -172,90 +172,90 @@ namespace daw {
 				return ::std::find_if( begin( ), end( ), pred2 ) != end( );
 			}
 
-			auto sort( ) const & {
+			auto sort( ) const {
 				return make_range_reference( *this ).sort( );
 			}
 
-			CollectionRange sort( ) && {
+			CollectionRange & sort( ) {
 				::std::sort( begin( ), end( ) );
-				return ::std::move( *this );
+				return *this;
 			}
 
 			template<typename UnaryPredicate>
-			auto sort( UnaryPredicate predicate ) const & {
+			auto sort( UnaryPredicate predicate ) const {
 				return make_range_reference( *this ).sort( predicate );
 			}
 
 			template<typename UnaryPredicate>
-			CollectionRange sort( UnaryPredicate predicate ) && {
+			CollectionRange & sort( UnaryPredicate predicate ) {
 				::std::sort( begin( ), end( ), predicate );
-				return ::std::move( *this );
+				return *this;
 			}
 
-			auto stable_sort( ) const & {
+			auto stable_sort( ) const {
 				return make_range_reference( *this ).stable_sort( );
 			}
 
-			CollectionRange stable_sort( ) && {
+			CollectionRange & stable_sort( ) {
 				::std::stable_sort( begin( ), end( ) );
-				return ::std::move( *this );
+				return *this;
 			}
 
 			template<typename UnaryPredicate>
-			auto stable_sort( UnaryPredicate predicate ) const & {
+			auto stable_sort( UnaryPredicate predicate ) const {
 				return make_range_reference( *this ).stable_sort( predicate );
 			}
 
 			template<typename UnaryPredicate>
-			CollectionRange stable_sort( UnaryPredicate predicate ) && {
+			CollectionRange & stable_sort( UnaryPredicate predicate ) {
 				::std::stable_sort( begin( ), end( ), predicate );
-				return ::std::move( *this );
+				return *this;
 			}
 
-			auto unique( ) const & {
+			auto unique( ) const {
 				return make_range_reference( *this ).unique( );
 			}
 
-			CollectionRange unique( ) && {
+			CollectionRange & unique( ) {
 				m_values.erase( ::std::unique( m_values.begin( ), m_values.end( ) ), m_values.end( ) );
-				return ::std::move( *this );
+				return *this;
 			}
 
 			template<typename UnaryPredicate>
-			auto unique( UnaryPredicate predicate ) const & {
+			auto unique( UnaryPredicate predicate ) const {
 				return make_range_reference( *this ).unique( predicate );
 			}
 
 			template<typename UnaryPredicate>
-			CollectionRange unique( UnaryPredicate predicate ) && {
+			CollectionRange & unique( UnaryPredicate predicate ) {
 				m_values.erase( ::std::unique( m_values.begin( ), m_values.end( ), predicate ), m_values.end( ) );
-				return ::std::move( *this );
+				return *this;
 			}
 
 			template<typename UnaryPredicate>
-			auto partition( UnaryPredicate predicate ) const & {
+			auto partition( UnaryPredicate predicate ) const {
 				return make_range_reference( *this ).partition( predicate );
 			}
 
 			template<typename UnaryPredicate>
-			CollectionRange partition( UnaryPredicate predicate ) && {
+			CollectionRange & partition( UnaryPredicate predicate ) {
 				::std::partition( begin( ), end( ), predicate );
-				return ::std::move( *this );
+				return *this;
 			}
 
 			template<typename UnaryPredicate>
-			auto stable_partition( UnaryPredicate predicate ) const & {
+			auto stable_partition( UnaryPredicate predicate ) const {
 				return make_range_reference( *this ).stable_partition( predicate );
 			}
 
 			template<typename UnaryPredicate>
-			CollectionRange stable_partition( UnaryPredicate predicate ) && {
+			CollectionRange & stable_partition( UnaryPredicate predicate ) {
 				::std::stable_partition( begin( ), end( ), predicate );
-				return ::std::move( *this );
+				return *this;
 			}
 
 			template<typename UnaryOperator>
-			CollectionRange & transform( UnaryOperator oper ) const & {
+			CollectionRange & transform( UnaryOperator oper ) const {
 				using v_t = ::std::decay_t<decltype(oper( front( ) ))>;
 				auto result = CollectionRange<v_t>( );
 				::std::transform( ::std::begin( m_values ), ::std::end( m_values ), ::std::back_inserter( result ), oper );
@@ -263,49 +263,49 @@ namespace daw {
 			}
 
 			template<typename UnaryPredicate>
-			CollectionRange erase( UnaryPredicate predicate ) && {
+			CollectionRange & erase( UnaryPredicate predicate ) {
 				m_values.erase( ::std::remove_if( m_values.begin( ), m_values.end( ), predicate ), m_values.end( ) );
-				return ::std::move( *this );
+				return *this;
 			}
 
 			template<typename UnaryPredicate>
-			auto erase( UnaryPredicate predicate ) const & {
+			auto erase( UnaryPredicate predicate ) const {
 				return make_range_reference( *this ).erase( predicate );
 			}
 
 			template<typename Value>
-			auto erase_where_equal_to( Value const & value ) && {
+			auto & erase_where_equal_to( Value const & value ) {
 				return erase( [&value]( auto const & current_value ) {
 					return value == current_value;
 				} );
 			}
 
 			template<typename Value>
-			auto erase_where_equal_to( Value const & value ) const & {
+			auto erase_where_equal_to( Value const & value ) const {
 				return make_range_reference( *this ).erase_where_equal_to( value );
 			}
 
 			template<typename UnaryPredicate>
-			auto where( UnaryPredicate predicate ) && {
+			auto & where( UnaryPredicate predicate ) {
 				return erase( [predicate]( auto const & v ) {
 					return !predicate( v );
 				} );
 			}
 
 			template<typename UnaryPredicate>
-			auto where( UnaryPredicate predicate ) const & {
+			auto where( UnaryPredicate predicate ) const {
 				return make_range_reference( *this ).where( predicate );
 			}
 
 			template<typename Value>
-			auto where_equal_to( Value const & value ) && {
+			auto & where_equal_to( Value const & value ) {
 				return where( [&value]( auto const & current_value ) {
 					return value == current_value;
 				} );
 			}
 
 			template<typename Value>
-			auto where_equal_to( Value const & value ) const & {
+			auto where_equal_to( Value const & value ) const {
 				return make_range_reference( *this ).where_equal_to( value );
 			}
 
@@ -323,7 +323,7 @@ namespace daw {
 			}
 
 			template<typename Function>
-			CollectionRange & for_each( Function function ) const & {
+			CollectionRange & for_each( Function function ) const {
 				for( auto const & v : m_values ) {
 					function( v );
 				}
@@ -331,40 +331,31 @@ namespace daw {
 			}
 
 			template<typename Function>
-			CollectionRange & for_each( Function function ) & {
+			CollectionRange & for_each( Function function ) {
 				for( auto & v : m_values ) {
 					function( v );
 				}
 				return *this;
 			}
 
-
-			template<typename Function>
-			CollectionRange for_each( Function function ) && {
-				for( auto & v : m_values ) {
-					function( v );
-				}
-				return ::std::move( *this );
-			}
-
 			template<typename UniformRandomNumberGenerator>
-			CollectionRange shuffle( UniformRandomNumberGenerator && urng ) && {
+			CollectionRange & shuffle( UniformRandomNumberGenerator && urng ) {
 				::std::shuffle( begin( ), end( ), std::forward<UniformRandomNumberGenerator>( urng ) );
-				return ::std::move( *this );
+				return *this;
 			}
 
 			template<typename UniformRandomNumberGenerator>
-			auto shuffle( UniformRandomNumberGenerator && urng ) const & {
+			auto shuffle( UniformRandomNumberGenerator && urng ) const {
 				return make_range_reference( *this ).shuffle( std::forward<UniformRandomNumberGenerator>( urng ) );
 			}
 
-			CollectionRange & shuffle( ) && {
+			CollectionRange & shuffle( ) {
 				static std::random_device rd;
 				static std::mt19937 g( rd( ) );
 				return shuffle( g );
 			}
 
-			auto shuffle( ) const & {
+			auto shuffle( ) const {
 				return make_range_reference( *this ).shuffle( );
 			}
 		};	// struct CollectionRange
