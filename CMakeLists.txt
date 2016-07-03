@@ -25,6 +25,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_hash_table
 	daw_memory_mapped_file
 	daw_range_algorithm
+	daw_range_parallel_collection
 	daw_range
 	daw_traits
 	daw_utility
