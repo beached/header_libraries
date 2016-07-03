@@ -34,31 +34,11 @@
 #include "daw_range_collection.h"
 #include <typeinfo>
 
+#ifndef WIN32	// internal compiler error on at least <= MSVC 2015.3
+
 namespace daw {
 	namespace range {
 		namespace operators {
-			namespace impl {
-				template<typename Arg, typename... Args>
-				auto from( std::true_type, Arg && arg, Args&&... args ) {
-					return make_range_reference( std::forward<Arg>( arg ), std::forward<Args>( args )... );
-				}
-
-				template<typename Arg, typename... Args>
-				auto from( std::false_type, Arg && arg, Args&&... args ) {
-					return make_range_collection( std::forward<Arg>( arg ), std::forward<Args>( args )... );
-				}
-
-			}	// namespace impl
-			template<typename Arg, typename... Args>
-			auto from( Arg && arg, Args&&... args ) {
-				return impl::from( typename ::std::is_const<Arg>::type{ }, std::forward<Arg>( arg ), std::forward<Args>( args )... );
-			}
-
-			template<typename Arg, typename... Args>
-			auto from_mutable( Arg && arg, Args&&... args ) {
-				return impl::from( std::false_type( ), std::forward<Arg>( arg ), std::forward<Args>( args )... );
-			}
-
 			namespace details {
 				template<int ...>
 				struct seq { };
@@ -75,7 +55,6 @@ namespace daw {
 	}	// namespace range
 }	// namespace daw
 
-#ifndef WIN32	// internal compiler error on at least <= MSVC 2015.3
 #define DAW_RANGE_GENERATE_VCLAUSE( clause_name )\
 namespace daw {\
 	namespace range {\

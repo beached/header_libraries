@@ -26,6 +26,7 @@
 #ifndef WIN32	// Fails on MSVC 2015.2
 BOOST_AUTO_TEST_CASE( daw_range_test01 ) {
 	using namespace daw::range::operators;
+	using daw::range::from;
 
 	std::vector<int32_t> const t = { -400, 4, -1, 1000, 4, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto result = from( t )
@@ -45,7 +46,7 @@ BOOST_AUTO_TEST_CASE( daw_range_test01 ) {
 #endif	//WIN32
 
 BOOST_AUTO_TEST_CASE( daw_range_test02 ) {
-	using daw::range::operators::from;
+	using daw::range::from;
 
 	std::vector<int32_t> const t = { -400, 4, -1, 1000, 4, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto result = from( t )
