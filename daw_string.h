@@ -353,8 +353,9 @@ namespace daw {
 
 			};	// BasicString
 		}
-		using String = impl::BasicString<char>;
-		using WString = impl::BasicString<wchar_t>;	
-
 	}	// namespace string
+
+	using String = impl::BasicString<char>;
+	using WString = impl::BasicString<wchar_t>;	
+
 }	// namespace daw
