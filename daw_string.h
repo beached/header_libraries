@@ -194,11 +194,28 @@ namespace daw {
 		}
 
 		template<typename CharT = char, typename Traits = std::char_traits<CharT>, typename Allocator = std::allocator<CharT>>
+		void trim_right( std::basic_string<CharT, Traits, Allocator> & str, std::basic_string<CharT, Traits, Allocator> const & delimiters = impl::standard_split_delimiters( CharT{ } ) ) {
+			if( str.empty( ) ) {
+				return;
+			}
+			str = str.substr( 0, str.find_last_not_of( delimiters ) + 1 );
+		}
+
+
+		template<typename CharT = char, typename Traits = std::char_traits<CharT>, typename Allocator = std::allocator<CharT>>
 		auto trim_left_copy( std::basic_string<CharT, Traits, Allocator> const & str, std::basic_string<CharT, Traits, Allocator> const & delimiters = impl::standard_split_delimiters( CharT{ } ) ) {
 			if( str.empty( ) ) {
 				return str;
 			}
 			return str.substr( str.find_first_not_of( delimiters ) );
+		}
+
+		template<typename CharT = char, typename Traits = std::char_traits<CharT>, typename Allocator = std::allocator<CharT>>
+		void trim_left( std::basic_string<CharT, Traits, Allocator> & str, std::basic_string<CharT, Traits, Allocator> const & delimiters = impl::standard_split_delimiters( CharT{ } ) ) {
+			if( str.empty( ) ) {
+				return;
+			}
+			str = str.substr( str.find_first_not_of( delimiters ) );
 		}
 
 		template<class StringElementType, class StringType>
@@ -207,7 +224,7 @@ namespace daw {
 		}
 
 		template<typename CharT = char, typename Traits = std::char_traits<CharT>, typename Allocator = std::allocator<CharT>>
-		auto trim_nocopy( std::basic_string<CharT, Traits, Allocator> & str, std::basic_string<CharT, Traits, Allocator> const & delimiters = impl::standard_split_delimiters( CharT{ } ) ) {
+		void trim( std::basic_string<CharT, Traits, Allocator> & str, std::basic_string<CharT, Traits, Allocator> const & delimiters = impl::standard_split_delimiters( CharT{ } ) ) {
 			auto const start = str.find_first_not_of( delimiters );
 			if( std::basic_string<CharT, Traits, Allocator>::npos == start ) {
 				str.clear( );
@@ -219,7 +236,7 @@ namespace daw {
 		}
 
 		template<typename CharT = char, typename Traits = std::char_traits<CharT>, typename Allocator = std::allocator<CharT>>
-		auto trim_nocopy( std::basic_string<CharT, Traits, Allocator> str, std::basic_string<CharT, Traits, Allocator> const & delimiters = impl::standard_split_delimiters( CharT{ } ) ) {
+		auto trim_copy( std::basic_string<CharT, Traits, Allocator> str, std::basic_string<CharT, Traits, Allocator> const & delimiters = impl::standard_split_delimiters( CharT{ } ) ) {
 			trim_nocopy( str, delimiters );
 			return str;
 		}
@@ -278,5 +295,55 @@ namespace daw {
 		bool contains( std::basic_string<CharT, Traits, Allocator> const & str, std::basic_string<CharT, Traits, Allocator> const & match ) {
 			return str.find( match ) != std::basic_string<CharT, Traits, Allocator>::npos;
 		}
+
+		template<typename CharT = char, typename traits = std::char_traits<CharT>, typename Alloc = std::allocator<CharT>>
+		void search_replace( std::basic_string<CharT, traits, Alloc> & in_str, CharT const * search_for, CharT const * replace_with ) {
+			size_t pos = 0u;
+			auto const search_for_len = str_size( search_for );
+			auto const replace_with_len = str_size( replace_with );
+
+			while( (pos = in_str.find( search_for, pos )) != std::basic_string<CharT, traits, Alloc>::npos ) {
+				in_str.replace( pos, search_for_len, replace_with );
+				pos += replace_with_len;
+			}
+		}
+
+		template<typename CharT = char, typename traits = std::char_traits<CharT>, typename Alloc = std::allocator<CharT>>
+		auto search_replace_copy( std::basic_string<CharT, traits, Alloc> in_str, CharT const * search_for, CharT const * replace_with ) {
+			search_replace( in_str, search_for, replace_with );	
+			return in_str;
+		}
+
+		template<typename CharT = char, typename Traits = std::char_traits<CharT>, typename Allocator = std::allocator<CharT>>
+		struct BasicString: public std::basic_string<CharT, Traits, Allocator> {
+
+			template<typename... Args>
+			BasicString( Args... args ): std::basic_string<CharT, Traits, Allocator>( args... ) { }
+
+			BasicString & search_replace( CharT const * search_for, CharT const * replace_with ) {
+				search_replace( *this, search_for, replace_with );
+				return *this;
+			}
+			
+			BasicString & trim_left( std::basic_string<CharT, Traits, Allocator> const & delimiters = impl::standard_split_delimiters( CharT{ } ) ) {
+				trim_left( *this, delimiters );
+				return *this;
+			}
+
+			BasicString & trim_right( std::basic_string<CharT, Traits, Allocator> const & delimiters = impl::standard_split_delimiters( CharT{ } ) ) {
+				trim_right( *this, delimiters );
+				return *this;
+			}
+
+			BasicString & trim( std::basic_string<CharT, Traits, Allocator> const & delimiters = impl::standard_split_delimiters( CharT{ } ) ) {
+				trim( *this, delimiters );
+				return *this;
+			}
+
+		};	// BasicString
+
+		using String = BasicString<char>;
+		using WString = BasicString<wchar_t>;	
+
 	}	// namespace string
 }	// namespace daw
