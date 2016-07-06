@@ -330,6 +330,13 @@ namespace daw {
 
 				template<typename... Args>
 				BasicString( Args&& ... args ): ::std::basic_string<CharT, Traits, Allocator>( ::std::forward<Args>( args )... ) { }
+				
+				
+				BasicString( BasicString const & ) = default;
+				BasicString( BasicString && ) = default;
+				~BasicString( ) = default;
+				BasicString & operator=( BasicString const & ) = default;
+				BasicString & operator=( BasicString && ) = default;
 
 				BasicString & search_replace( CharT const * search_for, CharT const * replace_with ) {
 					daw::string::search_replace( *this, search_for, replace_with );
