@@ -329,7 +329,7 @@ namespace daw {
 			struct BasicString: public std::basic_string<CharT, Traits, Allocator> {
 
 				template<typename... Args>
-				BasicString( Args... args ): std::basic_string<CharT, Traits, Allocator>( args... ) { }
+				BasicString( Args&& ... args ): std::basic_string<CharT, Traits, Allocator>( std::forward<Args>( args )... ) { }
 
 				BasicString & search_replace( CharT const * search_for, CharT const * replace_with ) {
 					daw::string::search_replace( *this, search_for, replace_with );
