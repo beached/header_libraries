@@ -314,36 +314,37 @@ namespace daw {
 			return in_str;
 		}
 
-		template<typename CharT = char, typename Traits = std::char_traits<CharT>, typename Allocator = std::allocator<CharT>>
-		struct BasicString: public std::basic_string<CharT, Traits, Allocator> {
+		namespace impl {
+			template<typename CharT = char, typename Traits = std::char_traits<CharT>, typename Allocator = std::allocator<CharT>>
+			struct BasicString: public std::basic_string<CharT, Traits, Allocator> {
 
-			template<typename... Args>
-			BasicString( Args... args ): std::basic_string<CharT, Traits, Allocator>( args... ) { }
+				template<typename... Args>
+				BasicString( Args... args ): std::basic_string<CharT, Traits, Allocator>( args... ) { }
 
-			BasicString & search_replace( CharT const * search_for, CharT const * replace_with ) {
-				search_replace( *this, search_for, replace_with );
-				return *this;
-			}
-			
-			BasicString & trim_left( std::basic_string<CharT, Traits, Allocator> const & delimiters = impl::standard_split_delimiters( CharT{ } ) ) {
-				trim_left( *this, delimiters );
-				return *this;
-			}
+				BasicString & search_replace( CharT const * search_for, CharT const * replace_with ) {
+					daw::string::search_replace( *this, search_for, replace_with );
+					return *this;
+				}
+				
+				BasicString & trim_left( std::basic_string<CharT, Traits, Allocator> const & delimiters = impl::standard_split_delimiters( CharT{ } ) ) {
+					daw::string::trim_left( *this, delimiters );
+					return *this;
+				}
 
-			BasicString & trim_right( std::basic_string<CharT, Traits, Allocator> const & delimiters = impl::standard_split_delimiters( CharT{ } ) ) {
-				trim_right( *this, delimiters );
-				return *this;
-			}
+				BasicString & trim_right( std::basic_string<CharT, Traits, Allocator> const & delimiters = impl::standard_split_delimiters( CharT{ } ) ) {
+					daw::string::trim_right( *this, delimiters );
+					return *this;
+				}
 
-			BasicString & trim( std::basic_string<CharT, Traits, Allocator> const & delimiters = impl::standard_split_delimiters( CharT{ } ) ) {
-				trim( *this, delimiters );
-				return *this;
-			}
+				BasicString & trim( std::basic_string<CharT, Traits, Allocator> const & delimiters = impl::standard_split_delimiters( CharT{ } ) ) {
+					daw::string::trim( *this, delimiters );
+					return *this;
+				}
 
-		};	// BasicString
-
-		using String = BasicString<char>;
-		using WString = BasicString<wchar_t>;	
+			};	// BasicString
+		}
+		using String = impl::BasicString<char>;
+		using WString = impl::BasicString<wchar_t>;	
 
 	}	// namespace string
 }	// namespace daw
