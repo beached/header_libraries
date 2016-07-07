@@ -297,11 +297,11 @@ namespace daw {
 		}
 
 		namespace impl {
-			auto str_size( wchar_t const * str ) {
+			inline auto str_size( wchar_t const * str ) {
 				return wcslen( str );
 			}
 
-			auto str_size( char const * str ) {
+			inline auto str_size( char const * str ) {
 				return strlen( str );
 			}
 		}	// namespace impl
