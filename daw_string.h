@@ -296,21 +296,20 @@ namespace daw {
 			return str.find( match ) != ::std::basic_string<CharT, Traits, Allocator>::npos;
 		}
 
-		namespace impl {
-			inline auto str_size( wchar_t const * str ) {
-				return wcslen( str );
-			}
-
-			inline auto str_size( char const * str ) {
-				return strlen( str );
-			}
-		}	// namespace impl
-
 		template<typename CharT = char, typename traits = ::std::char_traits<CharT>, typename Alloc = ::std::allocator<CharT>>
 		void search_replace( ::std::basic_string<CharT, traits, Alloc> & in_str, CharT const * search_for, CharT const * replace_with ) {
+			struct {
+				inline auto operator( )( wchar_t const * str ) const {
+					return wcslen( str );
+				}
+				inline auto str_size( char const * str ) const {
+					return strlen( str );
+				}
+			} str_size;
+
 			size_t pos = 0u;
-			auto const search_for_len = impl::str_size( search_for );
-			auto const replace_with_len = impl::str_size( replace_with );
+			auto const search_for_len = str_size( search_for );
+			auto const replace_with_len = str_size( replace_with );
 
 			while( (pos = in_str.find( search_for, pos )) != ::std::basic_string<CharT, traits, Alloc>::npos ) {
 				in_str.replace( pos, search_for_len, replace_with );
