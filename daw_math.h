@@ -104,20 +104,23 @@ namespace daw {
 			}
 
 			// Based on the triple-angle formula: sin 3x = 3 sin x - 4 sin ^3 x
-			constexpr double sin_helper( double x ) {
-				return x < constants::tol ? x : 3.0*(sin_helper( x/3.0 )) - 4.0*cube( sin_helper( x/3.0 ) );
+			template<typename R>
+			constexpr R sin_helper( R x ) {
+				return x < constants::tol ? x : static_cast<R>(3.0)*(sin_helper( x/static_cast<R>(3.0) )) - static_cast<R>(4.0)*cube( sin_helper( x/static_cast<R>(3.0) ) );
 			}
 		}
 
-		constexpr double sin( double x ) {
-			return impl::sin_helper( x < 0 ? PI<double> - x: x );
+		template<typename R>
+		constexpr R sin( R x ) {
+			return impl::sin_helper( x < 0 ? PI<R> - x: x );
 		}
 
-		constexpr double cos( double x ) { 
+		template<typename R>
+		constexpr R cos( R x ) { 
 			if( 0.0 == x ) {
 				return 1.0;
 			}
-			return sin( (PI<double>/2.0) - x );
+			return sin( (PI<R>/2.0) - x );
 		}
 	}	// namespace math
 }	// namespace daw
