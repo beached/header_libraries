@@ -68,29 +68,40 @@ namespace daw {
 			return static_cast<T>(ret);
 		}
 
-		constexpr uintmax_t factorial( uintmax_t t ) {
-			if( 0 == t ) {
-				return 1;
+		namespace impl {
+			template<typename T>
+			constexpr T abs( T t ) {
+				return t >= 0 ? t : -t;
 			}
-			uintmax_t result = t--;
-			for( ; t > 0; --t ) {
-				result *= t;	
+
+			template<typename T>
+			constexpr uintmax_t factorial_impl( T t ) {
+				return t <= 1 ? 1 : factorial_impl( t - 1 );
 			}
-			return result;
-		}
+
+		}	// namespace impl
+
 		
-		constexpr double pow( double base, size_t exponent ) {
-			if( 0.0 == base ) {
-				return 0.0;
-			}
-			if( exponent > 0 ) {
-				for( size_t k = 0; k<exponent; ++k ) {
+		template<typename T>
+		constexpr uintmax_t factorial( T t ) {			
+			return t == 0 ? 1 : t < 0 ? factorial( static_cast<uintmax_t>( impl::abs( t ) ) ) : impl::factorial_impl( t );
+		}
+
+		namespace impl {
+			template<typename T>
+			constexpr T pow_impl( T base, size_t exponent ) {
+				for( size_t k = 0; k < exponent; ++k ) {
 					base *= base;
 				}
-			} else {
-				base = 1.0;
+				return base;
 			}
-			return base;
+
+		}	// namespace impl
+
+
+		template<typename T>
+		constexpr T pow( T base, size_t exponent ) {
+			return base == 0 ? 0 : exponent > 0 ? impl::pow_impl( base, exponent ) : 1;
 		}	
 
 		namespace impl {
