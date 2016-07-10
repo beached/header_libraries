@@ -54,27 +54,5 @@ BOOST_AUTO_TEST_CASE( daw_math_factorial ) {
 	BOOST_REQUIRE_MESSAGE( daw::math::factorial( 5 ) == 120, "1. factorial of 5 should be 120" );
 	std::cout << "factorial( 0 ) = " << daw::math::factorial( 0 ) << "\n";
 	BOOST_REQUIRE_MESSAGE( daw::math::factorial( 0 ) == 1, "2. factorial of 0 should return 1" );
-
-
-	const double rad_conv = daw::math::PI<double>/180.0;
-
-	show( "Angle" ); show( "Library" ); show( "Const_COS" ); show( "Diff" ); show( "Diff %" );
-	std::cout << "\n";
-	double avg_err_pc = 0.0;
-	for( size_t angle = 0; angle < 90; ++angle ) {
-		auto rad = static_cast<double>(angle)*rad_conv;	
-		auto lib = cos( rad );
-		auto tst = daw::math::const_cos( rad );
-		auto diff = lib - tst;
-		auto pc = (diff/lib)*100.0;
-		avg_err_pc += fabs( pc );
-		show( angle );
-		show( lib );
-		show( tst );
-		show( diff );
-		show( pc );
-		std::cout << "%\n";
-	}
-	std::cout << "Average error% " << (avg_err_pc/90.0) << std::endl;
 }
 

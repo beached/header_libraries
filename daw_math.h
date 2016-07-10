@@ -79,7 +79,7 @@ namespace daw {
 			return result;
 		}
 		
-		constexpr double pow_DI( double base, size_t exponent ) {
+		constexpr double pow( double base, size_t exponent ) {
 			if( 0.0 == base ) {
 				return 0.0;
 			}
@@ -94,38 +94,30 @@ namespace daw {
 		}	
 
 		namespace impl {
-			struct is_64bit {
-				using type = bool;
-				constexpr static const bool value = sizeof( size_t ) == 2*sizeof( uint32_t );
+			struct constants {
+				constexpr static double const tol = 0.001;
 			};
+
+			template<typename T>
+			constexpr auto cube( T x ) { 
+				return x*x*x;
+			}
+
+			// Based on the triple-angle formula: sin 3x = 3 sin x - 4 sin ^3 x
+			constexpr double sin_helper( double x ) {
+				return x < constants::tol ? x : 3.0*(sin_helper( x/3.0 )) - 4.0*cube( sin_helper( x/3.0 ) );
+			}
 		}
 
-		constexpr double const_cos( double rad ) {
-			if( rad < -PI<double>/2.0 || rad > PI<double>/2.0 ) {
-				if( rad < 0.0 ) {
-					return -const_cos( rad + PI<double> );
-				}
-				return -const_cos( rad - PI<double> );
+		constexpr double sin( double x ) {
+			return impl::sin_helper( x < 0 ? PI<double> - x: x );
+		}
+
+		constexpr double cos( double x ) { 
+			if( 0.0 == x ) {
+				return 1.0;
 			}
-			double rad_sqr = rad*rad;
-			double numerator = rad_sqr ;
-			double denominator = 2.0;	
-			uintmax_t factorial = 2;
-			double sum = 1.0 - (numerator/denominator);
-			numerator *= rad_sqr;
-			denominator *= static_cast<double>(factorial+1) * static_cast<double>(factorial+2);
-			factorial += 2;
-			sum = sum + (numerator/denominator);
-			for( size_t n=0; n<4; ++n ) {
-				numerator *= rad_sqr;
-				denominator *= static_cast<double>(factorial+1) * static_cast<double>(factorial+2);
-				sum = sum - (numerator/denominator);
-				numerator *= rad_sqr;
-				denominator *= static_cast<double>(factorial+1) * static_cast<double>(factorial+2);
-				factorial += 2;
-				sum = sum + (numerator/denominator);
-			}
-			return sum;
+			return sin( (PI<double>/2.0) - x );
 		}
 	}	// namespace math
 }	// namespace daw
