@@ -38,8 +38,11 @@ namespace daw {
 		memory & operator=( memory const & ) = default;
 		memory & operator=( memory && ) = default;
 
-		memory( address_t location ): m_ptr( reinterpret_cast<value_t*>(location) ) { }
-
+#if defined(__clang__) || defined(__GNUC__) 
+		constexpr memory( address_t location ) noexcept: m_ptr( __builtin_constant_p((value_t*)location) ? (value_t*)location : (value_t*)location ) { }
+#else
+		memory( address_t location ) noexcept: m_ptr( reinterpret_cast<value_t*>(location) ) { }
+#endif
 		friend void swap( memory & lhs, memory & rhs ) noexcept {
 			using std::swap;
 			swap( lhs.m_ptr, rhs.m_ptr );
