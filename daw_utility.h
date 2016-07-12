@@ -442,5 +442,77 @@ namespace daw {
 		return new result_t( *original );
 	}
 
+
+	// Acts like a reference, but has a strong no-null guarantee
+	// Non-owning
+	template<typename T>
+	class not_null {
+		T * m_ptr;	
+	public:
+		not_null( ) = delete;
+		~not_null( ) = default;
+		not_null( not_null const & ) noexcept = default;
+		not_null( not_null && ) = default;
+		not_null & operator=( not_null const & ) noexcept = default;
+		not_null & operator=( not_null && ) noexcept = default;
+
+		not_null( T * ptr ): m_ptr( ptr ) {
+			if( nullptr == ptr ) {
+				throw std::invalid_argument( "ptr" );
+			}
+		}
+
+		friend void swap( not_null & lhs, not_null & rhs ) noexcept {
+			using std::swap;
+			swap( lhs.m_ptr, rhs.m_ptr );
+		}
+
+		explicit operator bool( ) const noexcept {
+			return true;
+		}
+
+		T * operator->( ) noexcept {
+			return m_ptr;
+		}
+
+		T const * operator->( ) const noexcept {
+			return m_ptr;
+		}
+
+
+		T * get( ) noexcept {
+			return m_ptr;
+		}
+
+		T const * get( ) const noexcept {
+			return m_ptr;
+		}
+
+		friend bool operator==( not_null const & lhs, not_null const & rhs ) noexcept {
+			return std::equal_to<void*>( )( lhs.m_ptr, rhs.m_ptr );
+		}
+
+		friend bool operator!=( not_null const & lhs, not_null const & rhs ) noexcept {
+			return !std::equal_to<void*>( )( lhs.m_ptr, rhs.m_ptr );
+		}
+
+		friend bool operator<( not_null const & lhs, not_null const & rhs ) noexcept {
+			return std::less<void*>( )( lhs.m_ptr, rhs.m_ptr );
+		}
+
+		friend bool operator>( not_null const & lhs, not_null const & rhs ) noexcept {
+			return std::greater<void*>( )( lhs.m_ptr, rhs.m_ptr );
+		}
+
+		friend bool operator<=( not_null const & lhs, not_null const & rhs ) noexcept {
+			return std::less_equal<void*>( )( lhs.m_ptr, rhs.m_ptr );
+		}
+
+		friend bool operator>=( not_null const & lhs, not_null const & rhs ) noexcept {
+			return std::greater_equal<void*>( )( lhs.m_ptr, rhs.m_ptr );
+		}
+
+	};	// not_null
+
 }	// namespace daw
 
