@@ -471,14 +471,13 @@ namespace daw {
 			return true;
 		}
 
-		T * operator->( ) noexcept {
-			return m_ptr;
+		T & operator->( ) noexcept {
+			return *m_ptr;
 		}
 
-		T const * operator->( ) const noexcept {
-			return m_ptr;
+		T const & operator->( ) const noexcept {
+			return *m_ptr;
 		}
-
 
 		T * get( ) noexcept {
 			return m_ptr;
