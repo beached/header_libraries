@@ -32,7 +32,7 @@ namespace daw {
 	template<typename Value, typename AddressType=size_t>
 	struct memory {
 		static_assert( std::is_integral<AddressType>::value, "address_t must be an integral type" );
-		using value_type = typename std::add_volatile_t<std::remove_volatile_t<Value>>;
+		using value_type = typename std::add_volatile<typename std::remove_volatile<Value>::type>::type;
 		using reference = value_type &;
 		using const_reference = value_type const &;
 		using pointer = value_type *;
@@ -41,7 +41,7 @@ namespace daw {
 	private:
 		uintptr_t m_ptr;
 
-		constexpr pointer get( ) noexcept {
+		pointer get( ) noexcept {
 			return reinterpret_cast<pointer>(m_ptr);
 		}
 
@@ -55,7 +55,7 @@ namespace daw {
 		
 		constexpr memory( memory const & other ) noexcept: m_ptr{ other.m_ptr } { }
 		
-		constexpr memory( memory && other ) noexcept : m_ptr{ std::exchange( other.m_ptr, 0 ) } { }
+		constexpr memory( memory && other ) noexcept : m_ptr{ std::move( other.m_ptr ) } { }
 		
 		constexpr memory & operator=( memory const & rhs ) noexcept {
 			if( this != &rhs ) {
@@ -86,7 +86,7 @@ namespace daw {
 			return 0 != m_ptr;
 		}
 
-		constexpr reference operator->( ) noexcept {
+		reference operator->( ) noexcept {
 			return *get( );
 		}
 
@@ -94,7 +94,7 @@ namespace daw {
 			return *get( );
 		}
 
-		constexpr pointer data( ) noexcept {
+		pointer data( ) noexcept {
 			return get( );
 		}
 
@@ -106,11 +106,11 @@ namespace daw {
 			return *get( );
 		}
 
-		constexpr reference operator()( ) noexcept {
+		reference operator()( ) noexcept {
 			return *get( );
 		}
 
-		constexpr reference operator[]( size_type offset ) noexcept {
+		reference operator[]( size_type offset ) noexcept {
 			return *(get( ) + offset);
 		}
 
@@ -119,29 +119,28 @@ namespace daw {
 		}
 
 		constexpr friend bool operator==( memory const & lhs, memory const & rhs ) noexcept {
-			return std::equal_to<>( )( lhs.m_ptr, rhs.m_ptr );
+			return std::equal_to<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
 		constexpr friend bool operator!=( memory const & lhs, memory const & rhs ) noexcept {
-			return !std::equal_to<>( )( lhs.m_ptr, rhs.m_ptr );
+			return !std::equal_to<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
 		constexpr friend bool operator<( memory const & lhs, memory const & rhs ) noexcept {
-			return std::less<>( )( lhs.m_ptr, rhs.m_ptr );
+			return std::less<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
 		constexpr friend bool operator>( memory const & lhs, memory const & rhs ) noexcept {
-			return std::greater<>( )( lhs.m_ptr, rhs.m_ptr );
+			return std::greater<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
 		constexpr friend bool operator<=( memory const & lhs, memory const & rhs ) noexcept {
-			return std::less_equal<>( )( lhs.m_ptr, rhs.m_ptr );
+			return std::less_equal<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
 		constexpr friend bool operator>=( memory const & lhs, memory const & rhs ) noexcept {
-			return std::greater_equal<>( )( lhs.m_ptr, rhs.m_ptr );
+			return std::greater_equal<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
 		}
-
-
-	};
+	};	// memory
 }
+
