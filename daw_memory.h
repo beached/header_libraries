@@ -28,14 +28,14 @@
 namespace daw {
 	template<typename Value, typename AddressType=size_t>
 	struct memory {
+		static_assert( std::is_integral<AddressType>::value, "address_t must be an integral type" );
 		using value_type = typename std::add_volatile_t<std::decay_t<Value>>;
 		using reference = value_type &;
 		using const_reference = value_type const &;
 		using pointer = value_type *;
 		using const_pointer = value_type const *;
-		using size_type = typename AddressType;
+		using size_type = AddressType;
 	private:
-		static_assert( std::is_integral<size_type>::value, "address_t must be an integral type" );
 		pointer m_ptr;
 	public:
 		
