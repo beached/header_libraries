@@ -36,7 +36,15 @@ namespace daw {
 		using const_pointer = value_type const *;
 		using size_type = AddressType;
 	private:
-		pointer m_ptr;
+		uintptr_t m_ptr;
+
+		constexpr pointer get( ) noexcept {
+			return reinterpret_cast<pointer>(m_ptr);
+		}
+
+		constexpr const_pointer get( ) const noexcept {
+			return reinterpret_cast<const_pointer>(m_ptr);
+		}
 	public:
 		
 		memory( ) = delete;
@@ -44,7 +52,7 @@ namespace daw {
 		
 		constexpr memory( memory const & other ) noexcept: m_ptr{ other.m_ptr } { }
 		
-		constexpr memory( memory && other ) noexcept : m_ptr{ std::exchange( other.m_ptr, nullptr ) } { }
+		constexpr memory( memory && other ) noexcept : m_ptr{ std::exchange( other.m_ptr, 0 ) } { }
 		
 		constexpr memory & operator=( memory const & rhs ) noexcept {
 			if( this != &rhs ) {
@@ -64,75 +72,77 @@ namespace daw {
 			return *this;
 		}
 
-#if defined(__clang__) || defined(__GNUC__)
-		constexpr memory( size_type location ) noexcept: m_ptr( __builtin_constant_p(reinterpret_cast<value_type*>(location)) ? reinterpret_cast<value_type*>(location) : reinterpret_cast<value_type*>(location)) { }
-#else
-#pragma message( "WARNING: Could not use contexpr constructor" )
-		memory( size_type location ) noexcept: m_ptr( reinterpret_cast<value_type*>(location) ) { }
-#endif
+//#if defined(__clang__) || defined(__GNUC__)
+//		constexpr memory( size_type location ) noexcept: m_ptr( __builtin_constant_p(reinterpret_cast<value_type*>(location)) ? reinterpret_cast<value_type*>(location) : reinterpret_cast<value_type*>(location)) { }
+//#else
+//#pragma message( "WARNING: Could not use contexpr constructor" )
+//		memory( size_type location ) noexcept: m_ptr( reinterpret_cast<value_type*>(location) ) { }
+//#endif
+		constexpr memory( uintptr_t location ): m_ptr{ location } { }
+
 		friend void swap( memory & lhs, memory & rhs ) noexcept {
 			using std::swap;
 			swap( lhs.m_ptr, rhs.m_ptr );
 		}
 
 		constexpr explicit operator bool( ) const noexcept {
-			return nullptr != m_ptr;
+			return 0 != m_ptr;
 		}
 
 		constexpr reference operator->( ) noexcept {
-			return *m_ptr;
+			return *get( );
 		}
 
 		constexpr const_reference operator->( ) const noexcept {
-			return *m_ptr;
+			return *get( );
 		}
 
 		constexpr pointer data( ) noexcept {
-			return m_ptr;
+			return get( );
 		}
 
 		constexpr const_pointer data( ) const noexcept {
-			return m_ptr;
+			return get( );
 		}
 		
 		constexpr const_reference operator()( ) const noexcept {
-			return *m_ptr;
+			return *get( );
 		}
 
 		constexpr reference operator()( ) noexcept {
-			return *m_ptr;
+			return *get( );
 		}
 
 		constexpr reference operator[]( size_type offset ) noexcept {
-			return *(m_ptr + offset);
+			return *(get( ) + offset);
 		}
 
 		constexpr const_reference operator[]( size_type offset ) const noexcept {
-			return *(m_ptr + offset);
+			return *(get( ) + offset);
 		}
 
 		constexpr friend bool operator==( memory const & lhs, memory const & rhs ) noexcept {
-			return std::equal_to<void volatile *>( )( lhs.m_ptr, rhs.m_ptr );
+			return std::equal_to<>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
 		constexpr friend bool operator!=( memory const & lhs, memory const & rhs ) noexcept {
-			return !std::equal_to<void volatile *>( )( lhs.m_ptr, rhs.m_ptr );
+			return !std::equal_to<>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
 		constexpr friend bool operator<( memory const & lhs, memory const & rhs ) noexcept {
-			return std::less<void volatile *>( )( lhs.m_ptr, rhs.m_ptr );
+			return std::less<>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
 		constexpr friend bool operator>( memory const & lhs, memory const & rhs ) noexcept {
-			return std::greater<void volatile *>( )( lhs.m_ptr, rhs.m_ptr );
+			return std::greater<>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
 		constexpr friend bool operator<=( memory const & lhs, memory const & rhs ) noexcept {
-			return std::less_equal<void volatile *>( )( lhs.m_ptr, rhs.m_ptr );
+			return std::less_equal<>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
 		constexpr friend bool operator>=( memory const & lhs, memory const & rhs ) noexcept {
-			return std::greater_equal<void volatile *>( )( lhs.m_ptr, rhs.m_ptr );
+			return std::greater_equal<>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
 
