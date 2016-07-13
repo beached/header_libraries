@@ -288,5 +288,23 @@ namespace daw {
 		template<typename T>
 		constexpr bool is_integral_v = ::std::is_integral<T>::value;
 
+
+		namespace impl {
+			template<typename L, typename R>
+			using comparability = decltype(std::declval<L>() == std::declval<R>());
+		}
+
+		template<typename L, typename R, class = void>
+		struct is_comparable : std::false_type {};
+
+		template<typename L, typename R>
+		struct is_comparable<L,R,void_t<impl::comparability<L,R>>> : std::true_type{};
+
+		template<typename L, typename R>
+		using is_comparable_t = is_comparable<L, R>::type;
+
+		
+		template<typename L, typename R>
+		constexpr bool is_comparable_v = is_comparable<L, R>::value;
 	}	// namespace traits
 }	// namespace daw
