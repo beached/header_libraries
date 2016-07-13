@@ -1,4 +1,4 @@
-// value_the MIvalue_t License (MIvalue_t)
+// The MIT License (MIT)
 //
 // Copyright (c) 2014-2015 Darrell Wright
 //
@@ -9,16 +9,16 @@
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// value_the above copyright notice and this permission notice shall be included in all
+// The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
 //
-// value_tHE SOFvalue_tWARE IS PROVIDED "AS IS", WIvalue_tHOUvalue_t WARRANvalue_tY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUvalue_t NOvalue_t LIMIvalue_tED value_tO value_tHE WARRANvalue_tIES OF MERCHANvalue_tABILIvalue_tY,
-// FIvalue_tNESS FOR A PARvalue_tICULAR PURPOSE AND NONINFRINGEMENvalue_t.IN NO EVENvalue_t SHALL value_tHE
-// AUvalue_tHORS OR COPYRIGHvalue_t HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR Ovalue_tHER
-// LIABILIvalue_tY, WHEvalue_tHER IN AN ACvalue_tION OF CONvalue_tRACvalue_t, value_tORvalue_t OR Ovalue_tHERWISE, ARISING FROM,
-// OUvalue_t OF OR IN CONNECvalue_tION WIvalue_tH value_tHE SOFvalue_tWARE OR value_tHE USE OR Ovalue_tHER DEALINGS IN value_tHE
-// SOFvalue_tWARE.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 
 #pragma once
 
