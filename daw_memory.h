@@ -38,9 +38,10 @@ namespace daw {
 		memory & operator=( memory const & ) = default;
 		memory & operator=( memory && ) = default;
 
-#if defined(__clang__) || defined(__GNUC__) 
+#if defined(__clang__) || defined(__GNUC__)
 		constexpr memory( address_t location ) noexcept: m_ptr( __builtin_constant_p((value_t*)location) ? (value_t*)location : (value_t*)location ) { }
 #else
+#warning Could not use contexpr constructor
 		memory( address_t location ) noexcept: m_ptr( reinterpret_cast<value_t*>(location) ) { }
 #endif
 		friend void swap( memory & lhs, memory & rhs ) noexcept {
@@ -69,11 +70,11 @@ namespace daw {
 		}
 		
 		value_t & operator[]( address_t offset ) {
-			return &(m_ptr + offset);
+			return *(m_ptr + offset);
 		}
 
 		value_t const & operator[]( address_t offset ) const {
-			return &(m_ptr + offset);
+			return *(m_ptr + offset);
 		}
 
 		friend bool operator==( memory const & lhs, memory const & rhs ) noexcept {

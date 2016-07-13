@@ -21,13 +21,18 @@
 // SOFTWARE.
 
 #include <boost/test/unit_test.hpp>
-
+#include <iostream>
 #include "daw_memory.h"
 
 BOOST_AUTO_TEST_CASE( daw_memory_001 ) {
-	daw::memory<intmax_t> test1( 1024 );
-	daw::memory<intmax_t> test2( 2048 );
+	constexpr daw::memory<uint8_t> test1( 1024 );
+	constexpr daw::memory<uint8_t> test2( 2048 );
 
+	for( size_t n=0; n<1024; ++n ) {
+
+		std::cout << (int)test1[n] << std::endl;
+	}
+	
 	BOOST_REQUIRE( test1 < test2 );
 	
 }
