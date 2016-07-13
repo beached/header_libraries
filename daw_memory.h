@@ -24,6 +24,9 @@
 
 #include <cstdint>
 #include <type_traits>
+#include <cstdlib>
+#include <utility>
+#include <functional>
 
 namespace daw {
 	template<typename Value, typename AddressType=size_t>
