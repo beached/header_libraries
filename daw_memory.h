@@ -75,12 +75,6 @@ namespace daw {
 			return *this;
 		}
 
-//#if defined(__clang__) || defined(__GNUC__)
-//		constexpr memory( size_type location ) noexcept: m_ptr( __builtin_constant_p(reinterpret_cast<value_type*>(location)) ? reinterpret_cast<value_type*>(location) : reinterpret_cast<value_type*>(location)) { }
-//#else
-//#pragma message( "WARNING: Could not use contexpr constructor" )
-//		memory( size_type location ) noexcept: m_ptr( reinterpret_cast<value_type*>(location) ) { }
-//#endif
 		constexpr memory( uintptr_t location ): m_ptr{ location } { }
 
 		friend void swap( memory & lhs, memory & rhs ) noexcept {
