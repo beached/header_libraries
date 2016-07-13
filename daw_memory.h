@@ -29,7 +29,7 @@ namespace daw {
 	template<typename value_t, typename address_t=size_t>
 	class memory {
 		static_assert( std::is_integral<address_t>::value, "address_t must be an integral type" );
-		value_t * m_ptr;
+		value_t volatile * m_ptr;
 	public:
 		memory( ) = delete;
 		~memory( ) = default;
@@ -39,7 +39,7 @@ namespace daw {
 		memory & operator=( memory && ) = default;
 
 #if defined(__clang__) || defined(__GNUC__)
-		constexpr memory( address_t location ) noexcept: m_ptr( __builtin_constant_p((value_t*)location) ? (value_t*)location : (value_t*)location ) { }
+		constexpr memory( address_t location ) noexcept: m_ptr( __builtin_constant_p(reinterpret_cast<value_t*>(location)) ? reinterpret_cast<value_t*>(location) : reinterpret_cast<value_t*>(location)) { }
 #else
 #warning Could not use contexpr constructor
 		memory( address_t location ) noexcept: m_ptr( reinterpret_cast<value_t*>(location) ) { }
@@ -78,27 +78,27 @@ namespace daw {
 		}
 
 		friend bool operator==( memory const & lhs, memory const & rhs ) noexcept {
-			return std::equal_to<void*>( )( lhs.m_ptr, rhs.m_ptr );
+			return std::equal_to<void volatile *>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
 		friend bool operator!=( memory const & lhs, memory const & rhs ) noexcept {
-			return !std::equal_to<void*>( )( lhs.m_ptr, rhs.m_ptr );
+			return !std::equal_to<void volatile *>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
 		friend bool operator<( memory const & lhs, memory const & rhs ) noexcept {
-			return std::less<void*>( )( lhs.m_ptr, rhs.m_ptr );
+			return std::less<void volatile *>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
 		friend bool operator>( memory const & lhs, memory const & rhs ) noexcept {
-			return std::greater<void*>( )( lhs.m_ptr, rhs.m_ptr );
+			return std::greater<void volatile *>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
 		friend bool operator<=( memory const & lhs, memory const & rhs ) noexcept {
-			return std::less_equal<void*>( )( lhs.m_ptr, rhs.m_ptr );
+			return std::less_equal<void volatile *>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
 		friend bool operator>=( memory const & lhs, memory const & rhs ) noexcept {
-			return std::greater_equal<void*>( )( lhs.m_ptr, rhs.m_ptr );
+			return std::greater_equal<void volatile *>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
 

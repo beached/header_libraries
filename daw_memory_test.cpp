@@ -28,11 +28,6 @@ BOOST_AUTO_TEST_CASE( daw_memory_001 ) {
 	constexpr daw::memory<uint8_t> test1( 1024 );
 	constexpr daw::memory<uint8_t> test2( 2048 );
 
-	for( size_t n=0; n<1024; ++n ) {
-
-		std::cout << (int)test1[n] << std::endl;
-	}
-	
 	BOOST_REQUIRE( test1 < test2 );
 	
 }
