@@ -41,10 +41,28 @@ namespace daw {
 		
 		memory( ) = delete;
 		~memory( ) = default;
-		memory( memory const & ) = default;
-		memory( memory && ) = default;
-		memory & operator=( memory const & ) = default;
-		memory & operator=( memory && ) = default;
+		
+		constexpr memory( memory const & other ) noexcept: m_ptr{ other.m_ptr } { }
+		
+		constexpr memory( memory && other ) noexcept : m_ptr{ std::exchange( other.m_ptr, nullptr ) } { }
+		
+		constexpr memory & operator=( memory const & rhs ) noexcept {
+			if( this != &rhs ) {
+				memory tmp( rhs );
+				using std::swap;
+				swap( *this, tmp );
+			}
+			return *this;
+		}
+
+		constexpr memory & operator=( memory && rhs ) noexcept {
+			if( this != &rhs ) {
+				memory tmp( std::move( rhs ) );
+				using std::swap;
+				swap( *this, tmp );
+			}
+			return *this;
+		}
 
 #if defined(__clang__) || defined(__GNUC__)
 		constexpr memory( size_type location ) noexcept: m_ptr( __builtin_constant_p(reinterpret_cast<value_type*>(location)) ? reinterpret_cast<value_type*>(location) : reinterpret_cast<value_type*>(location)) { }
@@ -57,55 +75,63 @@ namespace daw {
 			swap( lhs.m_ptr, rhs.m_ptr );
 		}
 
-		explicit operator bool( ) const noexcept {
-			return true;
+		constexpr explicit operator bool( ) const noexcept {
+			return nullptr != m_ptr;
 		}
 
-		reference operator->( ) noexcept {
+		constexpr reference operator->( ) noexcept {
 			return *m_ptr;
 		}
 
-		const_reference operator->( ) const noexcept {
+		constexpr const_reference operator->( ) const noexcept {
 			return *m_ptr;
 		}
 
-		pointer data( ) noexcept {
+		constexpr pointer data( ) noexcept {
 			return m_ptr;
 		}
 
-		const_pointer data( ) const noexcept {
+		constexpr const_pointer data( ) const noexcept {
 			return m_ptr;
 		}
 		
-		reference operator[]( size_type offset ) {
+		constexpr const_reference operator()( ) const noexcept {
+			return *m_ptr;
+		}
+
+		constexpr reference operator()( ) noexcept {
+			return *m_ptr;
+		}
+
+		constexpr reference operator[]( size_type offset ) noexcept {
 			return *(m_ptr + offset);
 		}
 
-		const_reference operator[]( size_type offset ) const {
+		constexpr const_reference operator[]( size_type offset ) const noexcept {
 			return *(m_ptr + offset);
 		}
 
-		friend bool operator==( memory const & lhs, memory const & rhs ) noexcept {
+		constexpr friend bool operator==( memory const & lhs, memory const & rhs ) noexcept {
 			return std::equal_to<void volatile *>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
-		friend bool operator!=( memory const & lhs, memory const & rhs ) noexcept {
+		constexpr friend bool operator!=( memory const & lhs, memory const & rhs ) noexcept {
 			return !std::equal_to<void volatile *>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
-		friend bool operator<( memory const & lhs, memory const & rhs ) noexcept {
+		constexpr friend bool operator<( memory const & lhs, memory const & rhs ) noexcept {
 			return std::less<void volatile *>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
-		friend bool operator>( memory const & lhs, memory const & rhs ) noexcept {
+		constexpr friend bool operator>( memory const & lhs, memory const & rhs ) noexcept {
 			return std::greater<void volatile *>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
-		friend bool operator<=( memory const & lhs, memory const & rhs ) noexcept {
+		constexpr friend bool operator<=( memory const & lhs, memory const & rhs ) noexcept {
 			return std::less_equal<void volatile *>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
-		friend bool operator>=( memory const & lhs, memory const & rhs ) noexcept {
+		constexpr friend bool operator>=( memory const & lhs, memory const & rhs ) noexcept {
 			return std::greater_equal<void volatile *>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 

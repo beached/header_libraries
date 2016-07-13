@@ -24,6 +24,12 @@
 #include <iostream>
 #include "daw_memory.h"
 
+struct test3 {
+	constexpr static daw::memory<uint32_t> const reg2{ 0x1000u };
+};
+
+
+
 BOOST_AUTO_TEST_CASE( daw_memory_001 ) {
 #if defined(__clang__) || defined(__GNUC__)
 	constexpr daw::memory<uint8_t> test1( 0x0000000000000400u );
@@ -33,7 +39,9 @@ BOOST_AUTO_TEST_CASE( daw_memory_001 ) {
 	daw::memory<uint8_t> test2( 0x0000000000000800u );
 #endif
 	BOOST_REQUIRE( test1 < test2 );
-	
+
+	constexpr static daw::memory<uint8_t> const reg1( 0x1000u );
+
 #if false
 	// This will probably fail on most OS's
 	for( size_t n = 0; n < 0x400; ++n ) {
