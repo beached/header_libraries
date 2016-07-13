@@ -41,7 +41,7 @@ namespace daw {
 #if defined(__clang__) || defined(__GNUC__)
 		constexpr memory( address_t location ) noexcept: m_ptr( __builtin_constant_p(reinterpret_cast<value_t*>(location)) ? reinterpret_cast<value_t*>(location) : reinterpret_cast<value_t*>(location)) { }
 #else
-#warning Could not use contexpr constructor
+#pragma message( "WARNING: Could not use contexpr constructor" )
 		memory( address_t location ) noexcept: m_ptr( reinterpret_cast<value_t*>(location) ) { }
 #endif
 		friend void swap( memory & lhs, memory & rhs ) noexcept {

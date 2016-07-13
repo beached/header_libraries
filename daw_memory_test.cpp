@@ -25,9 +25,13 @@
 #include "daw_memory.h"
 
 BOOST_AUTO_TEST_CASE( daw_memory_001 ) {
-	constexpr daw::memory<uint8_t> test1( 1024 );
-	constexpr daw::memory<uint8_t> test2( 2048 );
-
+#if defined(__clang__) || defined(__GNUC__)
+	constexpr daw::memory<uint8_t> test1( 0x0000000000000400u );
+	constexpr daw::memory<uint8_t> test2( 0x0000000000000800u );
+#else
+	daw::memory<uint8_t> test1( 0x0000000000000400u );
+	daw::memory<uint8_t> test2( 0x0000000000000800u );
+#endif
 	BOOST_REQUIRE( test1 < test2 );
 	
 }
