@@ -36,10 +36,11 @@ BOOST_AUTO_TEST_CASE( daw_memory_001 ) {
 	constexpr daw::memory<uint8_t> test1( 0x0000000000000400u );
 	constexpr daw::memory<uint8_t> test2( 0x0000000000000800u );
 	constexpr static daw::memory<uint8_t> const reg1( 0x1000u );
-#else
-	daw::memory<uint8_t> test1( 0x0000000000000400u );
-	daw::memory<uint8_t> test2( 0x0000000000000800u );
 #endif
+
+	daw::memory<uint8_t> test3( 0x0000000000000400u );
+	daw::memory<uint8_t> test4( 0x0000000000000800u );
+
 	BOOST_REQUIRE( test1 < test2 );
 
 
