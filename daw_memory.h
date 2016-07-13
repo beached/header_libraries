@@ -118,29 +118,36 @@ namespace daw {
 			return *(get( ) + offset);
 		}
 
-		constexpr friend bool operator==( memory const & lhs, memory const & rhs ) noexcept {
+		template<typename T, typename U, typename S = size_type>
+		constexpr friend bool operator==( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept {
 			return std::equal_to<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
-		constexpr friend bool operator!=( memory const & lhs, memory const & rhs ) noexcept {
+		template<typename T, typename U, typename S = size_type>
+		constexpr friend bool operator!=( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept {
 			return !std::equal_to<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
-		constexpr friend bool operator<( memory const & lhs, memory const & rhs ) noexcept {
+		template<typename T, typename U, typename S = size_type>
+		constexpr friend bool operator<( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept {
 			return std::less<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
-		constexpr friend bool operator>( memory const & lhs, memory const & rhs ) noexcept {
+		template<typename T, typename U, typename S = size_type>
+		constexpr friend bool operator>( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept {
 			return std::greater<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
-		constexpr friend bool operator<=( memory const & lhs, memory const & rhs ) noexcept {
+		template<typename T, typename U, typename S = size_type>
+		constexpr friend bool operator<=( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept {
 			return std::less_equal<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 
-		constexpr friend bool operator>=( memory const & lhs, memory const & rhs ) noexcept {
+		template<typename T, typename U, typename S = size_type>
+		constexpr friend bool operator>=( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept {
 			return std::greater_equal<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
 		}
 	};	// memory
+
 }
 
