@@ -24,23 +24,24 @@
 #include <iostream>
 #include "daw_memory.h"
 
+#if defined(__clang__) 
 struct test3 {
 	constexpr static daw::memory<uint32_t> const reg2{ 0x1000u };
 };
-
+#endif
 
 
 BOOST_AUTO_TEST_CASE( daw_memory_001 ) {
-#if defined(__clang__) || defined(__GNUC__)
+#if defined(__clang__) 
 	constexpr daw::memory<uint8_t> test1( 0x0000000000000400u );
 	constexpr daw::memory<uint8_t> test2( 0x0000000000000800u );
+	constexpr static daw::memory<uint8_t> const reg1( 0x1000u );
 #else
 	daw::memory<uint8_t> test1( 0x0000000000000400u );
 	daw::memory<uint8_t> test2( 0x0000000000000800u );
 #endif
 	BOOST_REQUIRE( test1 < test2 );
 
-	constexpr static daw::memory<uint8_t> const reg1( 0x1000u );
 
 #if false
 	// This will probably fail on most OS's
