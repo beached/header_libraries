@@ -29,6 +29,38 @@
 #include <functional>
 
 namespace daw {
+	template<typename Value, typename AddressType> struct memory;
+
+	template<typename T, typename U, typename S>
+	constexpr bool operator==( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept {
+		return std::equal_to<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
+	}
+
+	template<typename T, typename U, typename S>
+	constexpr bool operator!=( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept {
+		return !std::equal_to<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
+	}
+
+	template<typename T, typename U, typename S>
+	constexpr bool operator<( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept {
+		return std::less<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
+	}
+
+	template<typename T, typename U, typename S>
+	constexpr bool operator>( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept {
+		return std::greater<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
+	}
+
+	template<typename T, typename U, typename S>
+	constexpr bool operator<=( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept {
+		return std::less_equal<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
+	}
+
+	template<typename T, typename U, typename S>
+	constexpr bool operator>=( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept {
+		return std::greater_equal<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
+	}
+
 	template<typename Value, typename AddressType=size_t>
 	struct memory {
 		static_assert( std::is_integral<AddressType>::value, "address_t must be an integral type" );
@@ -118,35 +150,23 @@ namespace daw {
 			return *(get( ) + offset);
 		}
 
-		template<typename T, typename U, typename S = size_type>
-		constexpr friend bool operator==( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept {
-			return std::equal_to<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
-		}
+		template<typename T, typename U, typename S>
+		constexpr friend bool operator==( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept;
 
-		template<typename T, typename U, typename S = size_type>
-		constexpr friend bool operator!=( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept {
-			return !std::equal_to<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
-		}
+		template<typename T, typename U, typename S>
+		constexpr friend bool operator!=( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept;
 
-		template<typename T, typename U, typename S = size_type>
-		constexpr friend bool operator<( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept {
-			return std::less<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
-		}
+		template<typename T, typename U, typename S>
+		constexpr friend bool operator<( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept;
 
-		template<typename T, typename U, typename S = size_type>
-		constexpr friend bool operator>( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept {
-			return std::greater<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
-		}
+		template<typename T, typename U, typename S>
+		constexpr friend bool operator>( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept;
 
-		template<typename T, typename U, typename S = size_type>
-		constexpr friend bool operator<=( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept {
-			return std::less_equal<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
-		}
+		template<typename T, typename U, typename S>
+		constexpr friend bool operator<=( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept;
 
-		template<typename T, typename U, typename S = size_type>
-		constexpr friend bool operator>=( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept {
-			return std::greater_equal<uintptr_t>( )( lhs.m_ptr, rhs.m_ptr );
-		}
+		template<typename T, typename U, typename S>
+		constexpr friend bool operator>=( memory<T, S> const & lhs, memory<U, S> const & rhs ) noexcept;
 	};	// memory
 
 }
