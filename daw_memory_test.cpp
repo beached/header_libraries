@@ -33,13 +33,13 @@ struct test3 {
 
 BOOST_AUTO_TEST_CASE( daw_memory_001 ) {
 #if defined(__clang__) 
-	constexpr daw::memory<uint8_t> test1( 0x0000000000000400u );
-	constexpr daw::memory<uint8_t> test2( 0x0000000000000800u );
+	constexpr daw::memory<uint8_t> test1( 0x00000400u );
+	constexpr daw::memory<uint8_t> test2( 0x00000800u );
 	constexpr static daw::memory<uint8_t> const reg1( 0x1000u );
 #endif
 
-	daw::memory<uint8_t const> test3( 0x0000000000000400u );
-	daw::memory<uint8_t> test4( 0x0000000000000800u );
+	daw::memory<uint8_t const> test3( 0x00000400u );
+	daw::memory<uint8_t> test4( 0x00000800u );
 
 	BOOST_REQUIRE( test3 < test4 );
 
@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE( daw_memory_001 ) {
 #if false
 	// This will probably fail on most OS's
 	for( size_t n = 0; n < 0x400; ++n ) {
-		std::cout << (int)test1[n] << " ";
+		std::cout << (int)test3[n] << " ";
 	}
 #endif
  
