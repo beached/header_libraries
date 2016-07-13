@@ -34,5 +34,12 @@ BOOST_AUTO_TEST_CASE( daw_memory_001 ) {
 #endif
 	BOOST_REQUIRE( test1 < test2 );
 	
+#if false
+	// This will probably fail on most OS's
+	for( size_t n = 0; n < 0x400; ++n ) {
+		std::cout << (int)test1[n] << " ";
+	}
+#endif
+ 
 }
 

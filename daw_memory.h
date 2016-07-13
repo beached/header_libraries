@@ -26,11 +26,19 @@
 #include <type_traits>
 
 namespace daw {
-	template<typename value_t, typename address_t=size_t>
-	class memory {
-		static_assert( std::is_integral<address_t>::value, "address_t must be an integral type" );
-		value_t volatile * m_ptr;
+	template<typename Value, typename AddressType=size_t>
+	struct memory {
+		using value_type = typename std::add_volatile_t<std::decay_t<Value>>;
+		using reference = value_type &;
+		using const_reference = value_type const &;
+		using pointer = value_type *;
+		using const_pointer = value_type const *;
+		using size_type = typename AddressType;
+	private:
+		static_assert( std::is_integral<size_type>::value, "address_t must be an integral type" );
+		pointer m_ptr;
 	public:
+		
 		memory( ) = delete;
 		~memory( ) = default;
 		memory( memory const & ) = default;
@@ -39,10 +47,10 @@ namespace daw {
 		memory & operator=( memory && ) = default;
 
 #if defined(__clang__) || defined(__GNUC__)
-		constexpr memory( address_t location ) noexcept: m_ptr( __builtin_constant_p(reinterpret_cast<value_t*>(location)) ? reinterpret_cast<value_t*>(location) : reinterpret_cast<value_t*>(location)) { }
+		constexpr memory( size_type location ) noexcept: m_ptr( __builtin_constant_p(reinterpret_cast<value_type*>(location)) ? reinterpret_cast<value_type*>(location) : reinterpret_cast<value_type*>(location)) { }
 #else
 #pragma message( "WARNING: Could not use contexpr constructor" )
-		memory( address_t location ) noexcept: m_ptr( reinterpret_cast<value_t*>(location) ) { }
+		memory( size_type location ) noexcept: m_ptr( reinterpret_cast<value_type*>(location) ) { }
 #endif
 		friend void swap( memory & lhs, memory & rhs ) noexcept {
 			using std::swap;
@@ -53,27 +61,27 @@ namespace daw {
 			return true;
 		}
 
-		value_t & operator->( ) noexcept {
+		reference operator->( ) noexcept {
 			return *m_ptr;
 		}
 
-		value_t const & operator->( ) const noexcept {
+		const_reference operator->( ) const noexcept {
 			return *m_ptr;
 		}
 
-		value_t * data( ) noexcept {
+		pointer data( ) noexcept {
 			return m_ptr;
 		}
 
-		value_t const * data( ) const noexcept {
+		const_pointer data( ) const noexcept {
 			return m_ptr;
 		}
 		
-		value_t & operator[]( address_t offset ) {
+		reference operator[]( size_type offset ) {
 			return *(m_ptr + offset);
 		}
 
-		value_t const & operator[]( address_t offset ) const {
+		const_reference operator[]( size_type offset ) const {
 			return *(m_ptr + offset);
 		}
 
