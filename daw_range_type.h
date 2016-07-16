@@ -283,12 +283,27 @@ namespace daw {
 				return Range{ next( m_begin, first_pos ), next( m_begin, size( ) ) };
 			}
 
+			auto slice( size_t first_pos ) const { 
+				using std::next;
+				return Range{ next( m_begin, first_pos ), next( m_begin, size( ) ) };
+			}
+
 			auto slice( size_t first_pos, size_t last_pos ) { 
 				using std::next;
 				return Range{ next( m_begin, first_pos ), next( m_begin, last_pos ) };
 			}
 
+			auto slice( size_t first_pos, size_t last_pos ) const { 
+				using std::next;
+				return Range{ next( m_begin, first_pos ), next( m_begin, last_pos ) };
+			}
+
 			auto shrink( size_t new_size ) {
+				using std::next;
+				return Range( m_begin, next( m_begin, new_size + 1 ) );
+			}
+
+			auto shrink( size_t new_size ) const {
 				using std::next;
 				return Range( m_begin, next( m_begin, new_size + 1 ) );
 			}
