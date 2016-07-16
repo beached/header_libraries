@@ -277,6 +277,11 @@ namespace daw {
 				return make_range_reference( *this ).shuffle( std::forward<UniformRandomNumberGenerator>( urng ) );
 			}
 
+
+			auto slice( size_t first_pos, size_t last_pos = m_end ) {
+				using std::next;
+				return Range{ next( m_begin, first_pos ), next( m_begin, last_pos ) };
+			}
 		};	// struct Range
 
 		template<typename Iterator>
