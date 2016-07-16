@@ -315,5 +315,12 @@ namespace daw {
 		bool at_end( Range<Iterator> const & range ) {
 			return range.begin( ) == range.end( );
 		}
+
+
+		template<typename Iterator>
+		auto next( Range<Iterator> rng, size_t n = 1 ) {
+			rng.advance( n );
+			return rng;
+		}
 	}	// namespace range
 }	// namespace daw
