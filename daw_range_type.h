@@ -278,9 +278,14 @@ namespace daw {
 			}
 
 
-			auto slice( size_t first_pos, size_t last_pos = m_end ) {
+			auto slice( size_t first_pos, size_t last_pos = m_end ) { 
 				using std::next;
 				return Range{ next( m_begin, first_pos ), next( m_begin, last_pos ) };
+			}
+
+			auto shrink( size_t new_size ) {
+				using std::next;
+				return Range( m_begin, next( m_begin, new_size + 1 ) );
 			}
 		};	// struct Range
 
