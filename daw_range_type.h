@@ -278,7 +278,12 @@ namespace daw {
 			}
 
 
-			auto slice( size_t first_pos, size_t last_pos = m_end ) { 
+			auto slice( size_t first_pos ) { 
+				using std::next;
+				return Range{ next( m_begin, first_pos ), next( m_begin, size( ) ) };
+			}
+
+			auto slice( size_t first_pos, size_t last_pos ) { 
 				using std::next;
 				return Range{ next( m_begin, first_pos ), next( m_begin, last_pos ) };
 			}
