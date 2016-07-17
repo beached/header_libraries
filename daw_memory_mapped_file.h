@@ -120,19 +120,19 @@ namespace daw {
 			}
 
 			iterator begin( ) {
-				return m_mf_file.begin( );
+				return reinterpret_cast<iterator>( m_mf_file.begin( ) );
 			}
 
 			const_iterator begin( ) const {
-				return m_mf_file.begin( );
+				return reinterpret_cast<const_iterator>( m_mf_file.begin( ) );
 			}
 
 			iterator end( ) {
-				return m_mf_file.end( );
+				return reinterpret_cast<iterator>( m_mf_file.end( ) );
 			}
 
 			const_iterator end( ) const {
-				return m_mf_file.end( );
+				return reinterpret_cast<const_iterator>( m_mf_file.end( ) );
 			}
 
 			const_iterator cbegin( ) const {
