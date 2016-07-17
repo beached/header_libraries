@@ -28,6 +28,7 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/iostreams/device/mapped_file.hpp>
+#include <type_traits>
 
 namespace daw {
 	namespace filesystem {
@@ -42,8 +43,8 @@ namespace daw {
 			using value_type = typename std::decay_t<T>;
 			using iterator = value_type *;
 			using const_iterator = value_type const *;
-			using reference = std::add_reference_t<value_type>;
-			using const_reference = std::add_reference_t<std::add_const_t<value_type>>;
+			using reference = value_type &;
+			using const_reference = std::add_const_t<value_type> &;
 
 			MemoryMappedFile( std::string const & filename, bool const readonly = true ) : m_file_path( filename ), m_mf_params( filename ) {
 				m_mf_params.flags = boost::iostreams::mapped_file::mapmode::readwrite;
