@@ -2,7 +2,7 @@ cmake_minimum_required( VERSION 2.8.12 )
 
 project( header_libraries )
 
-find_package( Boost 1.59.0 COMPONENTS system filesystem regex unit_test_framework iostreams REQUIRED )
+find_package( Boost 1.54.0 COMPONENTS system filesystem regex unit_test_framework iostreams REQUIRED )
 
 IF( ${CMAKE_CXX_COMPILER_ID} STREQUAL 'MSVC' )
 	add_compile_options( -D_WIN32_WINNT=0x0601 ) 
