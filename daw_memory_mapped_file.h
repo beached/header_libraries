@@ -39,11 +39,11 @@ namespace daw {
 			boost::iostreams::mapped_file_params m_mf_params;
 			boost::iostreams::mapped_file m_mf_file;
 		public:
-			using iterator = T *;
-			using const_iterator = T const *;
-			using value_type = T;
-			using reference = T &;
-			using const_reference = T const &;
+			using value_type = typename std::decay_t<T>;
+			using iterator = value_type *;
+			using const_iterator = value_type const *;
+			using reference = std::add_reference_t<value_type>;
+			using const_reference = std::add_reference_t<std::add_const_t<value_type>>;
 
 			MemoryMappedFile( std::string const & filename, bool const readonly = true ) : m_file_path( filename ), m_mf_params( filename ) {
 				m_mf_params.flags = boost::iostreams::mapped_file::mapmode::readwrite;
