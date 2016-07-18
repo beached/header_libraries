@@ -360,7 +360,7 @@ namespace daw {
 		
 		template<typename Container>
 		auto copy_out_values( Container const & c, size_t first, size_t last ) {
-			using value_type = typname std::decay_t<decltype( *c.begin( ) )>;
+			using value_type = typename std::decay_t<decltype( *c.begin( ) )>;
 			std::vector<T> result;
 			
 
