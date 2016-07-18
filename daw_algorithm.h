@@ -361,9 +361,8 @@ namespace daw {
 		template<typename Container>
 		auto copy_out_values( Container const & c, size_t first, size_t last ) {
 			using value_type = typename std::decay_t<decltype( *c.begin( ) )>;
-			std::vector<T> result;
-			
-
+			std::vector<Container> result;
+			std::copy( std::begin( c ), std::end( c ), std::back_inserter( result );	
 			return result;
 		}
 
