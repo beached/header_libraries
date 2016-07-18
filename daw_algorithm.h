@@ -362,7 +362,10 @@ namespace daw {
 		auto copy_out_values( Container const & c, size_t first, size_t last ) {
 			using value_type = typename std::decay_t<decltype( *c.begin( ) )>;
 			std::vector<Container> result;
-			std::copy( std::begin( c ), std::end( c ), std::back_inserter( result );	
+			auto it_b = std::next( std::begin( c ), first );
+			auto it_e = std::next( std::begin( c ), last );
+			
+			std::copy( it_b, it_e, std::back_inserter( result ) );	
 			return result;
 		}
 
