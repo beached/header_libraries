@@ -357,6 +357,15 @@ namespace daw {
 			++last;
 			return std::make_pair( first, last );
 		}
+		
+		template<typename Container>
+		auto copy_out_values( Container const & c, size_t first, size_t last ) {
+			using value_type = typname std::decay_t<decltype( *c.begin( ) )>;
+			std::vector<T> result;
+			
+
+			return result;
+		}
 
 	}	// namespace algorithm
 }	// namespace daw

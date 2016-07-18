@@ -307,6 +307,12 @@ namespace daw {
 				using std::next;
 				return Range( m_begin, next( m_begin, new_size + 1 ) );
 			}
+			
+			auto as_vector( ) const {
+				std::vector<value_type> result;
+				std::copy( m_begin, m_end, std::back_inserter( result ) );
+				return result;
+			}
 		};	// struct Range
 
 		template<typename Iterator>
