@@ -318,6 +318,7 @@ namespace daw {
 			auto to_hex_string( ) const {
 				std::string result;
 				boost::algorithm::hex( m_begin, m_end, std::back_inserter( result ) );
+				return result;
 			}
 		};	// struct Range
 
