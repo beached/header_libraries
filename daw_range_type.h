@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <boost/algorithm/hex.hpp>
 #include <iterator>
 #include <algorithm>
 #include <numeric>
@@ -312,6 +313,11 @@ namespace daw {
 				std::vector<value_type> result;
 				std::copy( m_begin, m_end, std::back_inserter( result ) );
 				return result;
+			}
+
+			auto to_hex_string( ) const {
+				std::string result;
+				boost::algorithm::hex( m_begin, m_end, std::back_inserter( result ) );
 			}
 		};	// struct Range
 
