@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <boost/algorithm/hex.hpp>
 #include <iterator>
 #include <algorithm>
 #include <numeric>
@@ -277,22 +278,65 @@ namespace daw {
 				return make_range_reference( *this ).shuffle( std::forward<UniformRandomNumberGenerator>( urng ) );
 			}
 
+
+			auto slice( size_t first_pos ) { 
+				using std::next;
+				return Range{ next( m_begin, first_pos ), next( m_begin, size( ) ) };
+			}
+
+			auto slice( size_t first_pos ) const { 
+				using std::next;
+				return Range{ next( m_begin, first_pos ), next( m_begin, size( ) ) };
+			}
+
+			auto slice( size_t first_pos, size_t last_pos ) { 
+				using std::next;
+				return Range{ next( m_begin, first_pos ), next( m_begin, last_pos ) };
+			}
+
+			auto slice( size_t first_pos, size_t last_pos ) const { 
+				using std::next;
+				return Range{ next( m_begin, first_pos ), next( m_begin, last_pos ) };
+			}
+
+			auto shrink( size_t new_size ) {
+				using std::next;
+				return Range( m_begin, next( m_begin, new_size + 1 ) );
+			}
+
+			auto shrink( size_t new_size ) const {
+				using std::next;
+				return Range( m_begin, next( m_begin, new_size + 1 ) );
+			}
+			
+			auto as_vector( ) const {
+				std::vector<value_type> result;
+				std::copy( m_begin, m_end, std::back_inserter( result ) );
+				return result;
+			}
+
+			auto to_hex_string( ) const {
+				std::string result;
+				boost::algorithm::hex( m_begin, m_end, std::back_inserter( result ) );
+				return result;
+			}
 		};	// struct Range
 
 		template<typename Iterator>
 		Range<Iterator> make_range( Iterator first, Iterator last ) {
-			return Range<Iterator> { first, last };
+			using iterator = typename std::decay_t<Iterator>;
+			return Range<iterator> { first, last };
 		}
 
 		template<typename Container, typename ::std::enable_if<daw::traits::is_container_not_string<Container>::value, long>::type = 0>
 		auto make_range( Container & container ) {
-			using Iterator = decltype(::std::begin( container ));
+			using Iterator = std::decay_t<decltype(::std::begin( container ))>;
 			return Range<Iterator>( ::std::begin( container ), ::std::end( container ) );
 		}
 
 		template<typename Container, typename ::std::enable_if<daw::traits::is_container_not_string<Container>::value, long>::type = 0>
 		auto make_crange( Container const & container ) {
-			using Iterator = decltype(::std::begin( container ));
+			using Iterator = std::decay_t<decltype(::std::begin( container ))>;
 			return Range<Iterator>( ::std::begin( container ), ::std::end( container ) );
 		}
 
@@ -315,5 +359,13 @@ namespace daw {
 		bool at_end( Range<Iterator> const & range ) {
 			return range.begin( ) == range.end( );
 		}
+
+
+		template<typename Iterator>
+		auto next( Range<Iterator> rng, size_t n = 1 ) {
+			rng.advance( n );
+			return rng;
+		}
 	}	// namespace range
 }	// namespace daw
+
