@@ -33,8 +33,7 @@ namespace daw {
 				template<typename MsgType> \
 				struct EXCEPTION_TYPE final { \
 					MsgType message; \
-					EXCEPTION_TYPE( std::string msg ): message( std::move( msg ) ) { } \
-					EXCEPTION_TYPE( char const * msg ): message( msg ) { } \
+					EXCEPTION_TYPE( std::string msg ): message{ std::move( msg ) } { } \
 					EXCEPTION_TYPE( ) = delete; \
 					~EXCEPTION_TYPE( ) = default; \
 					EXCEPTION_TYPE( EXCEPTION_TYPE const & ) = default; \
@@ -44,7 +43,7 @@ namespace daw {
 					std::string const & what( ) { return message; } \
 					}; \
 				} \
-				using EXCEPTION_TYPE = impl::EXCEPTION_TYPE<std::string>;
+				using EXCEPTION_TYPE = ::daw::exception::impl::EXCEPTION_TYPE<std::string>;
 
 		MAKE_DAW_EXCEPTION( NotImplemented );
 		MAKE_DAW_EXCEPTION( FatalError );
@@ -69,7 +68,7 @@ namespace daw {
 		}
 
 		template<typename ExceptionType = NullPtrAccessException, typename ValueType, typename StringType>
-		void dbg_throw_on_null( ValueType* value, StringType const & msg ) {
+		void dbg_throw_on_null( ValueType const * const value, StringType const & msg ) {
 			if( nullptr == value ) {
 				debug_throw<ExceptionType>( msg );
 			}
@@ -145,7 +144,7 @@ namespace daw {
 
 
 		template<typename ExceptionType = NullPtrAccessException, typename ValueType, typename StringType>
-		void daw_throw_on_null( ValueType* value, StringType const & msg ) {
+		void daw_throw_on_null( ValueType const * const value, StringType const & msg ) {
 			if( nullptr == value ) {
 				daw_throw<ExceptionType>( msg );
 			}
