@@ -12,7 +12,7 @@ ELSE( )
 		set( COMPILER_SPECIFIC_LIBS, "-lpthread" )
 	endif()
 
-	IF( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" )
+	if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang" )
 		add_compile_options(-std=c++14 -stdlib=libc++ -Weverything -Wno-c++98-compat -Wfatal-errors -Wno-covered-switch-default -Wno-padded -Wno-exit-time-destructors -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-missing-noreturn -Wno-missing-prototypes -Wno-disabled-macro-expansion)		
 	ELSEIF( ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" )
 		add_compile_options(-std=c++14 -Wall -Wno-deprecated-declarations)
