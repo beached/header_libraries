@@ -133,6 +133,13 @@ namespace daw {
 			}
 			return sin( (PI<R>/2.0) - x );
 		}
+		
+		template<class T>
+		auto sqr( T const & value ) {
+			static_assert( std::is_arithmetic<T>::value, "Template parameter must be an arithmetic type" );
+			return value*value;
+		}
+
 	}	// namespace math
 }	// namespace daw
 
