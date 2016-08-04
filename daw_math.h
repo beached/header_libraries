@@ -140,6 +140,17 @@ namespace daw {
 			return value*value;
 		}
 
+		///
+		/// <summary>Set the minimum value allowed</summary>
+		///
+		template<typename T, typename U> 
+		auto value_or_min( T const & value, U const & min_value ) {
+			if( min_value > value ) {
+				return min_value;
+			}
+			return value;
+		}
+
 	}	// namespace math
 }	// namespace daw
 
