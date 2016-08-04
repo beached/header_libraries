@@ -92,7 +92,7 @@ namespace daw {
 			return ExpectedSource::value == m_source;
 		}
 
-		ValueType& get( ) {
+		ValueType & get( ) {
 			assert( ExpectedSource::none != m_source );
 			if( has_exception( ) ) {
 				std::rethrow_exception( m_exception );
