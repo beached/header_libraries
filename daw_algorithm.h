@@ -35,9 +35,7 @@ namespace daw {
 	namespace algorithm {
 		template<typename Container, typename UnaryPredicate>
 		auto find_if( Container& container, UnaryPredicate predicate ) -> decltype(std::find_if( begin( container ), end( container ), predicate )) {
-			using std::begin;
-			using std::end;
-			return std::find_if( begin( container ), end( container ), predicate );
+			return std::find_if( std::begin( container ), std::end( container ), predicate );
 		}
 
 		template<typename Container, typename InputIterator>
@@ -45,16 +43,14 @@ namespace daw {
 			if( 0 == distance ) {
 				return;
 			}
-			using std::begin;
-			using std::end;
-			const auto it_pos = std::distance( begin( container ), it );
+			auto const it_pos = std::distance( std::begin( container ), it );
 
-			if( 0 < distance ) {
-				const auto size_of_container = std::distance( begin( container ), end( container ) );
+			if( distance > 0 ) {
+				auto const size_of_container = std::distance( std::begin( container ), std::end( container ) );
 				if( size_of_container <= static_cast<ptrdiff_t>(distance + it_pos) ) {
 					distance = size_of_container - it_pos;
 				}
-			} else if( 0 < distance + it_pos ) {
+			} else if( distance + it_pos > 0 ) {
 				distance = it_pos;
 			}
 			std::advance( it, distance );
@@ -62,9 +58,7 @@ namespace daw {
 
 		template<typename Container>
 		auto begin_at( Container& container, size_t distance ) -> decltype(std::begin( container )) {
-			using std::begin;
-			using std::end;
-			auto result = begin( container );
+			auto result = std::begin( container );
 			safe_advance( container, result, static_cast<ptrdiff_t>(distance) );
 			return result;
 		}
@@ -75,10 +69,8 @@ namespace daw {
 		///
 		template<typename Container>
 		void for_each_subset( Container& container, size_t first_inclusive, size_t last_exclusive, const std::function<void( decltype(container), size_t )> func ) {
-			using std::begin;
-
 			auto it = begin_at( container, first_inclusive );
-			const auto last_it = begin_at( container, last_exclusive );
+			auto const last_it = begin_at( container, last_exclusive );
 
 			auto& row = first_inclusive;
 			for( ; it != last_it; ++it ) {
@@ -92,20 +84,17 @@ namespace daw {
 		///
 		template<typename Container, typename FunctionType>
 		void for_each_with_pos( Container& container, size_t first_inclusive, size_t last_exclusive, FunctionType func ) {
-			using std::begin;
-
 			auto it = begin_at( container, first_inclusive );
-			const auto last_it = begin_at( container, last_exclusive );
+			auto const last_it = begin_at( container, last_exclusive );
 
 			for( ; it != last_it; ++it ) {
-				auto row = std::distance( begin( container ), it );
-				auto& current_value = *it;
-				func( current_value, row );
+				auto row = std::distance( std::begin( container ), it );
+				func( *it, row );
 			}
 		}
 
 		template<typename Container, typename FunctionType>
-		void for_each_with_pos( Container& container, const FunctionType func ) {
+		void for_each_with_pos( Container & container, FunctionType const func ) {
 			for_each_with_pos( container, 0, static_cast<size_t>(container.size( )), func );
 		}
 
@@ -118,7 +107,7 @@ namespace daw {
 		IteratorType binary_search( const IteratorType first, const IteratorType last, const ValueType& value, Comp less_than ) {
 			auto midpoint = []( const IteratorType& a, const IteratorType& b ) {
 				daw::exception::dbg_throw_on_false( a <= b, daw::string::string_join( __func__, ": Cannot find a midpoint unless the first parameter is <= the second" ) );
-				const auto mid = std::distance( a, b ) / 2;
+				auto const mid = std::distance( a, b ) / 2;
 				auto result = a;
 				std::advance( result, mid );
 				return result;
