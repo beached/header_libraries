@@ -24,6 +24,7 @@
 
 #include <boost/lexical_cast.hpp>
 #include <boost/spirit/include/qi_numeric.hpp>
+#include <boost/utility/string_ref.hpp>
 #include <iomanip>
 #include <regex>
 #include <sstream>
@@ -358,7 +359,27 @@ namespace daw {
 				}
 
 			};	// BasicString
+		}	// namespace impl
+
+
+		template<typename Iterator, typename Value>
+		auto split( boost::string_ref str, Value const & value ) {
+			std::vector<boost::string_ref> result;
+
+			auto last_pos = str.begin( );
+
+			for( auto pos = str.begin( ); pos != str.end( ); ++pos ) {
+				if( value == *pos ) {
+					result.push_back( boost::string_ref{ last_pos, pos } );
+					last_pos = pos;
+				}
+			}
+			if( pos != last_pos ) {
+				result.push_back( boost::string_ref{ last_pos, pos } );
+			}
+			return result;
 		}
+
 	}	// namespace string
 
 	using String = ::daw::string::impl::BasicString<char>;

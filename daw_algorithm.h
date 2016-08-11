@@ -361,7 +361,7 @@ namespace daw {
 				}
 			}
 			return result;
-
+		}
 	}	// namespace algorithm
 }	// namespace daw
 
