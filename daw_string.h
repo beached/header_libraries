@@ -364,18 +364,18 @@ namespace daw {
 
 		template<typename Iterator, typename Value>
 		auto split( boost::string_ref str, Value const & value ) {
-			std::vector<boost::string_ref> result;
+			std::vector<std::string> result;
 
 			auto last_pos = str.begin( );
 
 			for( auto pos = str.begin( ); pos != str.end( ); ++pos ) {
 				if( value == *pos ) {
-					result.push_back( boost::string_ref{ last_pos, pos } );
+					result.push_back( std::string{ last_pos, pos } );
 					last_pos = pos;
 				}
 			}
 			if( pos != last_pos ) {
-				result.push_back( boost::string_ref{ last_pos, pos } );
+				result.push_back( std::string{ last_pos, pos } );
 			}
 			return result;
 		}
