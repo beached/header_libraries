@@ -362,7 +362,7 @@ namespace daw {
 		}	// namespace impl
 
 
-		template<typename Iterator, typename Value>
+		template<typename Value>
 		auto split( boost::string_ref str, Value const & value ) {
 			std::vector<std::string> result;
 
@@ -378,6 +378,21 @@ namespace daw {
 				result.push_back( std::string{ last_pos, pos } );
 			}
 			return result;
+		}
+
+		template<typename StrArray, typename Char>
+		auto combine( StrArray const & strings, Char chr ) {
+			std::stringstream ss;
+			bool is_first = true;
+			for( auto const & str: strings ) {
+				if( !is_first ) {
+					ss << chr;
+				} else {
+					is_first = false;
+				}
+				ss << str; 
+			}
+			return ss.str( );
 		}
 
 	}	// namespace string
