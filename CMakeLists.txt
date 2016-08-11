@@ -4,6 +4,8 @@ project( header_libraries )
 
 find_package( Boost 1.58.0 COMPONENTS system filesystem regex unit_test_framework iostreams REQUIRED )
 
+find_package( Threads )
+
 if( ${CMAKE_CXX_COMPILER_ID} STREQUAL 'MSVC' )
 	add_compile_options( -D_WIN32_WINNT=0x0601 ) 
 else( )
@@ -56,7 +58,7 @@ link_directories( ${Boost_LIBRARY_DIRS} )
 foreach( CUR_PREFIX ${TESTED_HEADERS_PREFIXES} )
 	install( FILES "${CUR_PREFIX}.h" DESTINATION include/daw )
 	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${CUR_PREFIX}.h ${CUR_PREFIX}_test.cpp header_libraries_test/test_main.cpp )
-	target_link_libraries( ${CUR_PREFIX}_test_bin ${Boost_LIBRARIES} ${COMPILER_SPECIFIC_LIBS} )
+	target_link_libraries( ${CUR_PREFIX}_test_bin ${Boost_LIBRARIES} ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
 	add_test( ${CUR_PREFIX}_test, ${CUR_PREFIX}_test_bin )
 	list( APPEND test_bins ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
