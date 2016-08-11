@@ -347,6 +347,21 @@ namespace daw {
 			return std::make_pair( first, last );
 		}
 
+		template<typename Iterator, typename Value>
+		auto split( Iterator first, Iterator last, Value const & value ) {
+			using value_type = std::decay_t<decltype(*first)>;
+			std::vector<std::vector<value_type>> result;
+			std::vector<value_type> temp;
+			for( auto it=first; it !=last; ++it ) {
+				if( value == *it ) {
+					result.push_back( std::move( temp ) );
+					temp = std::vector<value_type>{ };
+				} else {
+					temp.push_back( *it );
+				}
+			}
+			return result;
+
 	}	// namespace algorithm
 }	// namespace daw
 
