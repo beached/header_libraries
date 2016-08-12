@@ -368,7 +368,8 @@ namespace daw {
 
 			auto last_pos = str.begin( );
 
-			for( auto pos = str.begin( ); pos != str.end( ); ++pos ) {
+			auto pos = str.begin( );
+			for( ; pos != str.end( ); ++pos ) {
 				if( value == *pos ) {
 					result.push_back( std::string{ last_pos, pos } );
 					last_pos = pos;
