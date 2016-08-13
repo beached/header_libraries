@@ -364,19 +364,36 @@ namespace daw {
 		}
 
 		template<typename Value, typename UnaryFunction>
-		bool satisfies( Value value, UnaryFunction func ) {
+		bool satisfies_one( Value value, UnaryFunction func ) {
 			return func( value );
 		}
 
 		template<typename Value, typename UnaryFunction, typename... UnaryFunctions>
-		bool satisfies( Value value, UnaryFunction func, UnaryFunctions... funcs ) {
+		bool satisfies_one( Value value, UnaryFunction func, UnaryFunctions... funcs ) {
 			return func( value ) || satisfies( value, funcs... );
 		}
 			
 		template<typename Iterator, typename UnaryFunction, typename... UnaryFunctions>
-		bool satisfies( Iterator first, Iterator last, UnaryFunction func, UnaryFunctions... funcs ) {
+		bool satisfies_one( Iterator first, Iterator last, UnaryFunction func, UnaryFunctions... funcs ) {
 			for( auto it=first; it != last; ++it ) {
 				return satisfies( *it, func, funcs... );	
+			}
+		}
+	
+		template<typename Value, typename UnaryFunction>
+		bool satisfies_all( Value value, UnaryFunction func ) {
+			return func( value );
+		}
+
+		template<typename Value, typename UnaryFunction, typename... UnaryFunctions>
+		bool satisfies_all( Value value, UnaryFunction func, UnaryFunctions... funcs ) {
+			return func( value ) && satisfies( value, funcs... );
+		}
+			
+		template<typename Iterator, typename UnaryFunction, typename... UnaryFunctions>
+		bool satisfies_all( Iterator first, Iterator last, UnaryFunction func, UnaryFunctions... funcs ) {
+			for( auto it=first; it != last; ++it ) {
+				return satisfies_all( *it, func, funcs... );	
 			}
 		}
 		
