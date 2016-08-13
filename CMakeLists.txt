@@ -2,6 +2,8 @@ cmake_minimum_required( VERSION 2.8.12 )
 
 project( header_libraries )
 
+enable_testing( )
+
 find_package( Boost 1.58.0 COMPONENTS system filesystem regex unit_test_framework iostreams REQUIRED )
 
 find_package( Threads )

@@ -362,6 +362,67 @@ namespace daw {
 			}
 			return result;
 		}
+
+		template<typename Value, typename UnaryFunction>
+		bool satisfies( Value value, UnaryFunction func ) {
+			return func( value );
+		}
+
+		template<typename Value, typename UnaryFunction, typename... UnaryFunctions>
+		bool satisfies( Value value, UnaryFunction func, UnaryFunctions... funcs ) {
+			return func( value ) || satisfies( value, funcs... );
+		}
+			
+		template<typename Iterator, typename UnaryFunction, typename... UnaryFunctions>
+		bool satisfies( Iterator first, Iterator last, UnaryFunction func, UnaryFunctions... funcs ) {
+			for( auto it=first; it != last; ++it ) {
+				return satisfies( *it, func, funcs... );	
+			}
+		}
+		
+		namespace impl {
+			template<typename Lower, typename Upper>
+			class in_range {
+				Lower m_lower;
+				Upper m_upper;
+			public:
+				in_range( Lower lower, Upper upper ): 
+						m_lower{ std::move( lower ) },
+						m_upper{ std::move( upper ) } {
+				
+					assert( lower <= upper );
+				}
+			
+				template<typename T>
+				bool operator( )( T && value ) const {
+					return m_lower <= value && value <= m_upper;
+				}
+			};	// in_range
+		
+			template<typename Value>
+			class equal_to {
+				Value m_value;
+			public:
+				equal_to( Value value ):
+						m_value{ std::move( value ) } { }
+
+				template<typename T>
+				bool operator( )( T && value ) const {
+					return value == m_value;
+				}
+			};	// equal_to
+		}	// namespace impl
+
+		template<typename Lower, typename Upper>
+		auto in_range( Lower && lower, Upper && upper ) {
+			return impl::in_range<Lower, Upper>{ std::forward<Lower>( lower ), std::forward<Upper>( upper ) };
+		}
+
+		template<typename Value>
+		auto equal_to( Value && value ) {
+			return impl::equal_to<Value>{ std::forward<Value>( value ) };
+		}
+
 	}	// namespace algorithm
 }	// namespace daw
 
