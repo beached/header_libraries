@@ -411,6 +411,58 @@ namespace daw {
 					return value == m_value;
 				}
 			};	// equal_to
+
+			template<typename Value>
+			class less_than {
+				Value m_value;
+			public:
+				less_than( Value value ):
+						m_value{ std::move( value ) } { }
+
+				template<typename T>
+				bool operator( )( T && value ) const {
+					return value == m_value;
+				}
+			};	// less_than
+
+			template<typename Value>
+			class greater_than {
+				Value m_value;
+			public:
+				greater_than( Value value ):
+						m_value{ std::move( value ) } { }
+
+				template<typename T>
+				bool operator( )( T && value ) const {
+					return value == m_value;
+				}
+			};	// greater_than
+
+			template<typename Value>
+			class greater_than_or_equal_to {
+				Value m_value;
+			public:
+				greater_than_or_equal_to( Value value ):
+						m_value{ std::move( value ) } { }
+
+				template<typename T>
+				bool operatthan_or( )( T && value ) const {
+					return value >= m_value;
+				}
+			};	// greater_than_or_equal_to
+
+			template<typename Value>
+			class less_than_or_equal_to {
+				Value m_value;
+			public:
+				less_than_or_equal_to( Value value ):
+						m_value{ std::move( value ) } { }
+
+				template<typename T>
+				bool operatthan_or( )( T && value ) const {
+					return value <= m_value;
+				}
+			};	// less_than_or_equal_to
 		}	// namespace impl
 
 		template<typename Lower, typename Upper>
@@ -422,6 +474,27 @@ namespace daw {
 		auto equal_to( Value && value ) {
 			return impl::equal_to<Value>{ std::forward<Value>( value ) };
 		}
+
+		template<typename Value>
+		auto greater_than( Value && value ) {
+			return impl::greater_than<Value>{ std::forward<Value>( value ) };
+		}
+
+		template<typename Value>
+		auto greater_than_or_equal_to( Value && value ) {
+			return impl::greater_than_or_equal_to<Value>{ std::forward<Value>( value ) };
+		}
+
+		template<typename Value>
+		auto less_than( Value && value ) {
+			return impl::less_than<Value>{ std::forward<Value>( value ) };
+		}
+
+		template<typename Value>
+		auto less_than_or_equal_to( Value && value ) {
+			return impl::less_than_or_equal_to<Value>{ std::forward<Value>( value ) };
+		}
+
 
 	}	// namespace algorithm
 }	// namespace daw
