@@ -370,13 +370,13 @@ namespace daw {
 
 		template<typename Value, typename UnaryFunction, typename... UnaryFunctions>
 		bool satisfies_one( Value value, UnaryFunction func, UnaryFunctions... funcs ) {
-			return func( value ) || satisfies( value, funcs... );
+			return func( value ) || satisfies_one( value, funcs... );
 		}
 			
 		template<typename Iterator, typename UnaryFunction, typename... UnaryFunctions>
 		bool satisfies_one( Iterator first, Iterator last, UnaryFunction func, UnaryFunctions... funcs ) {
 			for( auto it=first; it != last; ++it ) {
-				return satisfies( *it, func, funcs... );	
+				return satisfies_one( *it, func, funcs... );	
 			}
 		}
 	
@@ -387,7 +387,7 @@ namespace daw {
 
 		template<typename Value, typename UnaryFunction, typename... UnaryFunctions>
 		bool satisfies_all( Value value, UnaryFunction func, UnaryFunctions... funcs ) {
-			return func( value ) && satisfies( value, funcs... );
+			return func( value ) && satisfies_all( value, funcs... );
 		}
 			
 		template<typename Iterator, typename UnaryFunction, typename... UnaryFunctions>
