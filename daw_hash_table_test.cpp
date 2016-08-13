@@ -41,6 +41,6 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing ) {
 	testing2.shrink_to_fit( );
 	auto a = sizeof( big );
 	auto b = sizeof( big * );
-	std::cout << testing1["hello"] << " " << testing1[454] << " " << testing2["hello"].b << std::endl;
+	std::cout << a << b << testing1["hello"] << " " << testing1[454] << " " << testing2["hello"].b << std::endl;
 }
 

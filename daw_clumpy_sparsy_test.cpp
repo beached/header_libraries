@@ -24,7 +24,8 @@
 #include "daw_clumpy_sparsy.h"
 
 BOOST_AUTO_TEST_CASE( clumpy_sparsy_test_001 ) {
-	daw::clumpy_sparsy<int> t;
+/*	daw::clumpy_sparsy<int> t;
 	auto b = t.begin( );
+	b == b;*/
 }
 

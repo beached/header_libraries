@@ -446,7 +446,7 @@ namespace daw {
 						m_value{ std::move( value ) } { }
 
 				template<typename T>
-				bool operatthan_or( )( T && value ) const {
+				bool operator( )( T && value ) const {
 					return value >= m_value;
 				}
 			};	// greater_than_or_equal_to
@@ -459,7 +459,7 @@ namespace daw {
 						m_value{ std::move( value ) } { }
 
 				template<typename T>
-				bool operatthan_or( )( T && value ) const {
+				bool operator( )( T && value ) const {
 					return value <= m_value;
 				}
 			};	// less_than_or_equal_to
