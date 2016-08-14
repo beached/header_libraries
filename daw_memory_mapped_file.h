@@ -28,6 +28,7 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/iostreams/device/mapped_file.hpp>
+#include <boost/utility/string_ref.hpp>
 
 namespace daw {
 	namespace filesystem {
@@ -45,7 +46,10 @@ namespace daw {
 			using reference = T &;
 			using const_reference = T const &;
 
-			MemoryMappedFile( std::string const & filename, bool const readonly = true ) : m_file_path( filename ), m_mf_params( filename ) {
+			MemoryMappedFile( boost::string_ref filename, bool const readonly = true ) : 
+					m_file_path{ filename.data( ) }, 
+					m_mf_params{ filename.data( ) } {
+
 				m_mf_params.flags = boost::iostreams::mapped_file::mapmode::readwrite;
 				if( readonly ) {
 					//FIXME: seems to crash	m_mf_params.flags = boost::iostreams::mapped_file::mapmode::readonly;
