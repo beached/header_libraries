@@ -57,7 +57,7 @@ namespace daw {
 				m_mf_params.offset = 0;
 				try {
 					m_mf_file.open( m_mf_params );
-				} catch( const std::exception& ex ) {
+				} catch( std::exception const & ex ) {
 					std::cerr << "Error Opening memory mapped file '" << filename << "': " << ex.what( ) << std::endl;
 					throw ex;
 				}
@@ -65,22 +65,11 @@ namespace daw {
 
 			MemoryMappedFile( ) = delete;
 
-			MemoryMappedFile( MemoryMappedFile&& other ) :
-				m_file_path( std::move( other.m_file_path ) ),
-				m_mf_params( std::move( other.m_mf_params ) ),
-				m_mf_file( std::move( other.m_mf_file ) ) { }
+			MemoryMappedFile( MemoryMappedFile && ) noexcept = default;
+			MemoryMappedFile& operator=(MemoryMappedFile && ) noexcept = default;
 
-			MemoryMappedFile& operator=(MemoryMappedFile&& rhs) {
-				if( &rhs != this ) {
-					m_file_path = std::move( rhs.m_file_path );
-					m_mf_params = std::move( rhs.m_mf_params );
-					m_mf_file = std::move( rhs.m_mf_file );
-				}
-				return *this;
-			}
-
-			MemoryMappedFile( const MemoryMappedFile& ) = delete;
-			MemoryMappedFile& operator=(const MemoryMappedFile&) = delete;
+			MemoryMappedFile( MemoryMappedFile const & ) = delete;
+			MemoryMappedFile& operator=( MemoryMappedFile const & ) = delete;
 
 			void close( ) {
 				if( m_mf_file.is_open( ) ) {
@@ -88,7 +77,7 @@ namespace daw {
 				}
 			}
 
-			~MemoryMappedFile( ) {
+			virtual ~MemoryMappedFile( ) {
 				try {
 					close( );
 				} catch( ... ) {
@@ -100,22 +89,23 @@ namespace daw {
 				return m_mf_file.is_open( );
 			}
 
-			reference operator[]( size_t const & position ) {
+			reference operator[]( size_t position ) {
 				return m_mf_file.data( )[position];
 			}
 
-			const_reference operator[]( size_t const & position ) const {
+			const_reference operator[]( size_t position ) const {
 				return m_mf_file.data( )[position];
 			}
 
-			const_iterator data( size_t const & position = 0 ) const {
+			const_iterator data( size_t position = 0 ) const {
 				return m_mf_file.data( ) + static_cast<boost::iostreams::stream_offset>(position);
 			}
 
-			void swap( MemoryMappedFile& other ) {
+			friend void swap( MemoryMappedFile & lhs, MemoryMappedFile & rhs ) noexcept {
 				using std::swap;
-				swap( m_mf_params, other.m_mf_params );
-				swap( m_mf_file, other.m_mf_file );
+				swap( lhs.m_file_path, rhs.m_file_path );
+				swap( lhs.m_mf_params, rhs.m_mf_params );
+				swap( lhs.m_mf_file, rhs.m_mf_file );
 			}
 
 			size_t size( ) const {
@@ -149,10 +139,18 @@ namespace daw {
 		};
 
 		template<typename T>
-		void swap( MemoryMappedFile<T>& lhs, MemoryMappedFile<T>& rhs ) noexcept {
-			lhs.swap( rhs );
+		std::ostream & operator<<( std::ostream & os, MemoryMappedFile<T> const & mmf ) {
+			std::ostream_iterator<T> out_it{ os };
+			std::copy( mmf.cbegin( ), mmf.cend( ), out_it );
+			return os;
 		}
 
+		template<typename T>
+		std::ostream & operator<<( std::ostream & os, MemoryMappedFile<T> const && mmf ) {
+			std::ostream_iterator<T> out_it{ os };
+			std::copy( mmf.cbegin( ), mmf.cend( ), out_it );
+			return os;
+		}
 	}	// namespace filesystem
 }	// namespace daw
 
