@@ -115,7 +115,7 @@ namespace daw {
 		}
 
 		bool full( ) const {
-			return !can_pop( );
+			return size( ) == capacity( );
 		}
 
 		value_type pop_front( size_t num_nibbles = sizeof( value_type ) * 2 ) {
