@@ -34,6 +34,8 @@ set( TESTED_HEADERS_PREFIXES
 set( UNTESTED_HEADER_FILES
 	concurrent_queue.h
 	daw_array.h
+	daw_bit.h
+	daw_bit_queues.h
 	daw_common_mixins.h
 	daw_cstring.h
 	daw_exception.h
