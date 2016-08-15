@@ -238,7 +238,7 @@ namespace daw {
 
 		template<typename CharT = char, typename Traits = ::std::char_traits<CharT>, typename Allocator = ::std::allocator<CharT>>
 		auto trim_copy( ::std::basic_string<CharT, Traits, Allocator> str, ::std::basic_string<CharT, Traits, Allocator> const & delimiters = impl::standard_split_delimiters( CharT{ } ) ) {
-			trim_nocopy( str, delimiters );
+			trim( str, delimiters );
 			return str;
 		}
 
