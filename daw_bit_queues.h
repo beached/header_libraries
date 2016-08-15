@@ -114,6 +114,10 @@ namespace daw {
 			return m_queue.can_pop( num_nibbles * 4 );
 		}
 
+		bool full( ) const {
+			return !can_pop( );
+		}
+
 		value_type pop_front( size_t num_nibbles = sizeof( value_type ) * 2 ) {
 			return m_queue.pop_front( num_nibbles * 4 );
 		}
