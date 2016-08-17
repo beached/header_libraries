@@ -116,11 +116,11 @@ namespace daw {
 		}
 
 		reference operator->( ) {
-			return m_value;
+			return *m_value;
 		}
 
 		const_reference operator->( ) const {
-			return m_value;
+			return *m_value;
 		}
 
 		value_type move_out( ) {
