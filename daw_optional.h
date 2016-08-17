@@ -77,9 +77,10 @@ namespace daw {
 		}
 
 		~optional( ) {
-			if( nullptr != m_value ) {
-				auto tmp = std::exchange( m_value, nullptr );
-				delete tmp;
+			try {
+				reset( );
+			} catch(...) {
+				// Nothing to be done
 			}
 		}
 
@@ -126,6 +127,14 @@ namespace daw {
 			assert( nullptr != m_value );
 			return *std::exchange( m_value, nullptr );
 		}
+
+		void reset( ) {
+			if( nullptr != m_value ) {
+				auto tmp = std::exchange( m_value, nullptr );
+				delete tmp;
+			}
+		}
+		
 	};    // class optional
 
 	template<typename T>
