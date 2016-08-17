@@ -30,7 +30,7 @@
 
 namespace daw {
 	template<class ValueType>
-	struct Optional {
+	struct optional {
 		using value_type = std::decay_t<std::remove_reference_t<ValueType>>;
 		using reference = ValueType &;
 		using const_reference = ValueType const &;
@@ -38,12 +38,12 @@ namespace daw {
 	private:
 		pointer m_value;
 	public:
-		Optional( ):
+		optional( ):
 			m_value{ nullptr } { }
 
-		Optional( Optional const & other ): m_value{ new value_type( *other.m_value ) } { }
+		optional( optional const & other ): m_value{ new value_type( *other.m_value ) } { }
 
-		Optional & operator=( Optional const & rhs ) {
+		optional & operator=( optional const & rhs ) {
 			if( this != &rhs ) {
 				using std::swap;
 				Option tmp{ rhs };
@@ -52,36 +52,36 @@ namespace daw {
 			return *this;
 		}
 
-		Optional( Optional&& other ): 
+		optional( optional&& other ): 
 				m_value{ std::exchange( other.m_value, nullptr ) { }
 
-		Optional & operator=( Optional && rhs ) {
+		optional & operator=( optional && rhs ) {
 			if( this != &rhs ) {
-				Optional tmp{ std::move( rhs ) };
+				optional tmp{ std::move( rhs ) };
 				using std::swap;
 				swap( *this, tmp );
 			}
 			return *this;
 		}
 
-		~Optional( ) = default;
+		~optional( ) = default;
 
-		friend void swap( Optional & lhs, Optional & rhs ) noexcept {
+		friend void swap( optional & lhs, optional & rhs ) noexcept {
 			using std::swap;
 			swap( lhs.m_value, rhs.m_value );
 		}
 
-		bool operator==( Optional const & rhs ) const noexcept {
+		bool operator==( optional const & rhs ) const noexcept {
 			return rhs.m_value == m_value;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////
-		Optional( value_type value ):
+		optional( value_type value ):
 				m_value{ new value_type( std::move( value ) ) } { }
 
-		Optional & operator=( value_type value ) {
+		optional & operator=( value_type value ) {
 			Option tmp{ std::move( value ) };
 			using std::swap;
 			swap( *this, tmp );
@@ -128,7 +128,7 @@ namespace daw {
 			m_value = nullptr;
 			return tmp;
 		}
-	};	// class Optional
-	static_assert(::daw::traits::is_regular<Optional<int>>::value, "Optional isn't regular");
+	};	// class optional
+	static_assert(::daw::traits::is_regular<optional<int>>::value, "optional isn't regular");
 }	// namespace daw
 
