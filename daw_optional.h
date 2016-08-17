@@ -111,7 +111,15 @@ namespace daw {
 			return get( );
 		}
 
+		const_reference operator*( ) const {
+			return get( );
+		}
+
 		pointer operator->( ) {
+			return m_value;
+		}
+
+		pointer_const operator->( ) const {
 			return m_value;
 		}
 
