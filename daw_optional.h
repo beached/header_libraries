@@ -1,7 +1,6 @@
-#pragma once
 // The MIT License (MIT)
 //
-// Copyright (c) 2013-2016 Darrell Wright
+// Copyright (c) 2016 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to deal
@@ -21,6 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#pragma once
+
 #include <exception>
 #include <stdexcept>
 #include <string>
@@ -29,117 +30,103 @@
 
 namespace daw {
 	template<class ValueType>
-	class Optional {
-		enum class OptionalSource { value, exception, none };
-		ValueType * m_value;
-		std::exception_ptr m_exception;
-		OptionalSource m_source;
+	struct Optional {
+		using value_type = std::decay_t<std::remove_reference_t<ValueType>>;
+		using reference = ValueType &;
+		using const_reference = ValueType const &;
+		using pointer = ValueType *;
+	private:
+		pointer m_value;
 	public:
-		//////////////////////////////////////////////////////////////////////////
-		/// Summary: No value, aka null
-		//////////////////////////////////////////////////////////////////////////
-		Optional( ) : m_value( ), m_exception( ), m_source( OptionalSource::none ) { }
+		Optional( ):
+			m_value{ nullptr } { }
 
-		Optional( Optional const & other ) = default;
-		Optional& operator=(Optional const & rhs) = default;
+		Optional( Optional const & other ): m_value{ new value_type( *other.m_value ) } { }
 
-		Optional( Optional&& other ) noexcept:
-			m_value( std::move( other.m_value ) ),
-			m_exception( std::move( other.m_exception ) ),
-			m_source( std::move( other.m_source ) ) { }
-
-		Optional& operator=(Optional && rhs) noexcept {
+		Optional & operator=( Optional const & rhs ) {
 			if( this != &rhs ) {
-				m_value = std::move( rhs.m_value );
-				m_exception = std::move( rhs.m_exception );
-				m_source = std::move( rhs.m_source );
+				using std::swap;
+				Option tmp{ rhs };
+				swap( *this, tmp );
+			}
+			return *this;
+		}
+
+		Optional( Optional&& other ): 
+				m_value{ std::exchange( other.m_value, nullptr ) { }
+
+		Optional & operator=( Optional && rhs ) {
+			if( this != &rhs ) {
+				Optional tmp{ std::move( rhs ) };
+				using std::swap;
+				swap( *this, tmp );
 			}
 			return *this;
 		}
 
 		~Optional( ) = default;
 
-		bool operator==(Optional const & rhs) const noexcept {
-			return rhs.m_value == m_value && rhs.m_exception == m_exception && rhs.m_source == m_source;
+		friend void swap( Optional & lhs, Optional & rhs ) noexcept {
+			using std::swap;
+			swap( lhs.m_value, rhs.m_value );
+		}
+
+		bool operator==( Optional const & rhs ) const noexcept {
+			return rhs.m_value == m_value;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////
-		Optional( ValueType value ) noexcept: m_value( std::move( value ) ), m_exception( ), m_source( OptionalSource::value ) { }
+		Optional( value_type value ):
+				m_value{ new value_type( std::move( value ) ) } { }
 
-		template<class ExceptionType>
-		static Optional<ValueType> from_exception( ExceptionType const & exception ) {
-			if( typeid(exception) != typeid(ExceptionType) ) {
-				throw std::invalid_argument( "slicing detected" );
-			}
-			return from_exception( std::make_exception_ptr( exception ) );
-		}
-
-		static Optional<ValueType>
-			from_exception( std::exception_ptr except_ptr ) {
-			Optional<ValueType> result;
-			result.m_source = Optional<ValueType>::OptionalSource::exception;
-			new(&result.m_exception) std::exception_ptr( std::move( except_ptr ) );
-			return result;
-		}
-
-		static Optional<ValueType> from_exception( ) {
-			return from_exception( std::current_exception( ) );
+		Optional & operator=( value_type value ) {
+			Option tmp{ std::move( value ) };
+			using std::swap;
+			swap( *this, tmp );
+			return *this;
 		}
 
 		bool has_value( ) const noexcept {
-			return OptionalSource::value == m_source;
+			return nullptr != m_value;
 		}
 
-		ValueType& get( ) {
-			assert( OptionalSource::none != m_source );
-			if( has_exception( ) ) {
-				std::rethrow_exception( m_exception );
-			}
-			return m_value;
+		explicit operator bool( ) const noexcept {
+			return has_value( );
 		}
 
-		ValueType const & get( ) const {
-			assert( OptionalSource::none != m_source );
-			if( has_exception( ) ) {
-				std::rethrow_exception( m_exception );
-			}
-			return m_value;
+		reference get( ) {
+			assert( nullptr != m_value );
+			return *m_value;
 		}
 
-		ValueType move_out( ) {
-			assert( OptionalSource::none != m_source );
-			if( has_exception( ) ) {
-				std::rethrow_exception( m_exception );
-			}
-			m_source = OptionalSource::none;
-			return std::move( m_value );
+		const_reference get( ) const {
+			assert( nullptr != m_value );
+			return *m_value;
 		}
 
-		std::string get_exception_message( ) const {
-			std::string result;
-			try {
-				if( m_exception ) {
-					std::rethrow_exception( m_exception );
-				}
-			} catch( std::exception const & e ) {
-				result = e.what( );
-			}
-			return result;
+		reference operator*( ) {
+			return *get( );
 		}
 
-		bool has_exception( ) const noexcept {
-			return OptionalSource::exception == m_source;
+		const_reference operator*( ) const {
+			return *get( );
 		}
 
-		template<class FunctionType>
-		static Optional from_code( FunctionType func ) {
-			try {
-				return Optional( func( ) );
-			} catch( ... ) {
-				return from_exception( );
-			}
+		reference operator->( ) {
+			return *get( );
+		}
+
+		const_reference operator->( ) const {
+			return *get( );
+		}
+
+		value_type move_out( ) {
+			assert( nullptr != m_value );
+			value_type tmp = std::move( *m_value );
+			m_value = nullptr;
+			return tmp;
 		}
 	};	// class Optional
 	static_assert(::daw::traits::is_regular<Optional<int>>::value, "Optional isn't regular");
