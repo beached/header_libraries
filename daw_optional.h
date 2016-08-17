@@ -53,7 +53,7 @@ namespace daw {
 
 		optional &operator=( optional const &rhs ) {
 			if( this != &rhs ) {
-				using std::swap;
+				reset( );
 				optional tmp{ rhs };
 				swap( *this, tmp );
 			}
@@ -62,8 +62,8 @@ namespace daw {
 
 		optional &operator=( optional &&rhs ) {
 			if( this != &rhs ) {
+				reset( );
 				optional tmp{ std::move( rhs ) };
-				using std::swap;
 				swap( *this, tmp );
 			}
 			return *this;
@@ -71,7 +71,7 @@ namespace daw {
 
 		optional &operator=( value_type value ) {
 			optional tmp{ std::move( value ) };
-			using std::swap;
+			reset( );
 			swap( *this, tmp );
 			return *this;
 		}
