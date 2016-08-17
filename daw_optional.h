@@ -35,27 +35,32 @@ namespace daw {
 		using reference = ValueType &;
 		using const_reference = ValueType const &;
 		using pointer = ValueType *;
+		using pointer_const = ValueType const *;
 	private:
 		pointer m_value;
 	public:
 		optional( ):
-			m_value{ nullptr } { }
+				m_value{ nullptr } { }
 
-		optional( optional const & other ): m_value{ new value_type( *other.m_value ) } { }
+		optional( optional const &other ):
+				m_value{ new value_type( *other.m_value ) } { }
 
-		optional & operator=( optional const & rhs ) {
+		optional( optional &&other ):
+				m_value{ std::exchange( other.m_value, nullptr ) } { }
+
+		optional( value_type value ):
+				m_value{ new value_type( std::move( value )) } { }
+
+		optional &operator=( optional const &rhs ) {
 			if( this != &rhs ) {
 				using std::swap;
-				Option tmp{ rhs };
+				optional tmp{ rhs };
 				swap( *this, tmp );
 			}
 			return *this;
 		}
 
-		optional( optional&& other ): 
-				m_value{ std::exchange( other.m_value, nullptr ) { }
-
-		optional & operator=( optional && rhs ) {
+		optional &operator=( optional &&rhs ) {
 			if( this != &rhs ) {
 				optional tmp{ std::move( rhs ) };
 				using std::swap;
@@ -64,28 +69,23 @@ namespace daw {
 			return *this;
 		}
 
-		~optional( ) = default;
-
-		friend void swap( optional & lhs, optional & rhs ) noexcept {
-			using std::swap;
-			swap( lhs.m_value, rhs.m_value );
-		}
-
-		bool operator==( optional const & rhs ) const noexcept {
-			return rhs.m_value == m_value;
-		}
-
-		//////////////////////////////////////////////////////////////////////////
-		/// Summary: With value
-		//////////////////////////////////////////////////////////////////////////
-		optional( value_type value ):
-				m_value{ new value_type( std::move( value ) ) } { }
-
-		optional & operator=( value_type value ) {
-			Option tmp{ std::move( value ) };
+		optional &operator=( value_type value ) {
+			optional tmp{ std::move( value ) };
 			using std::swap;
 			swap( *this, tmp );
 			return *this;
+		}
+
+		~optional( ) {
+			if( nullptr != m_value ) {
+				auto tmp = std::exchange( m_value, nullptr );
+				delete tmp;
+			}
+		}
+
+		friend void swap( optional &lhs, optional &rhs ) noexcept {
+			using std::swap;
+			swap( lhs.m_value, rhs.m_value );
 		}
 
 		bool has_value( ) const noexcept {
@@ -107,28 +107,104 @@ namespace daw {
 		}
 
 		reference operator*( ) {
-			return *get( );
+			return get( );
 		}
 
 		const_reference operator*( ) const {
-			return *get( );
+			return get( );
 		}
 
-		reference operator->( ) {
-			return *get( );
+		pointer operator->( ) {
+			return m_value;
 		}
 
-		const_reference operator->( ) const {
-			return *get( );
+		pointer_const operator->( ) const {
+			return m_value;
 		}
 
 		value_type move_out( ) {
 			assert( nullptr != m_value );
-			value_type tmp = std::move( *m_value );
-			m_value = nullptr;
-			return tmp;
+			return *std::exchange( m_value, nullptr );
 		}
-	};	// class optional
-	static_assert(::daw::traits::is_regular<optional<int>>::value, "optional isn't regular");
-}	// namespace daw
+	};    // class optional
+
+	template<typename T>
+	bool operator==( daw::optional<T> const &lhs, daw::optional<T> const &rhs ) {
+		if( lhs ) {
+			if( rhs ) {
+				return *lhs == *rhs;
+			}
+			return false;
+		} else if( rhs ) {
+			return false;
+		}
+		return true;
+	}
+
+	template<typename T>
+	bool operator!=( daw::optional<T> const &lhs, daw::optional<T> const &rhs ) {
+		if( lhs ) {
+			if( rhs ) {
+				return *lhs != *rhs;
+			}
+			return true;
+		} else if( rhs ) {
+			return true;
+		}
+		return false;
+	}
+
+	template<typename T>
+	bool operator<( daw::optional<T> const &lhs, daw::optional<T> const &rhs ) {
+		if( lhs ) {
+			if( rhs ) {
+				return *lhs < *rhs;
+			}
+			return false;
+		} else if( rhs ) {
+			return false;
+		}
+		return true;
+	}
+
+	template<typename T>
+	bool operator<=( daw::optional<T> const &lhs, daw::optional<T> const &rhs ) {
+		if( lhs ) {
+			if( rhs ) {
+				return *lhs <= *rhs;
+			}
+			return false;
+		} else if( rhs ) {
+			return false;
+		}
+		return true;
+	}
+
+	template<typename T>
+	bool operator>( daw::optional<T> const &lhs, daw::optional<T> const &rhs ) {
+		if( lhs ) {
+			if( rhs ) {
+				return *lhs > *rhs;
+			}
+			return true;
+		} else if( rhs ) {
+			return true;
+		}
+		return false;
+	}
+
+	template<typename T>
+	bool operator>=( daw::optional<T> const &lhs, daw::optional<T> const &rhs ) {
+		if( lhs ) {
+			if( rhs ) {
+				return *lhs >= *rhs;
+			}
+			return true;
+		} else if( rhs ) {
+			return true;
+		}
+		return false;
+	}
+
+}    // namespace daw
 
