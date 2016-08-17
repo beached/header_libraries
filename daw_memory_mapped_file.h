@@ -65,8 +65,8 @@ namespace daw {
 
 			MemoryMappedFile( ) = delete;
 
-			MemoryMappedFile( MemoryMappedFile && ) noexcept = default;
-			MemoryMappedFile& operator=(MemoryMappedFile && ) noexcept = default;
+			MemoryMappedFile( MemoryMappedFile && ) = default;
+			MemoryMappedFile& operator=(MemoryMappedFile && ) = default;
 
 			MemoryMappedFile( MemoryMappedFile const & ) = delete;
 			MemoryMappedFile& operator=( MemoryMappedFile const & ) = delete;
