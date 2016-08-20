@@ -36,85 +36,107 @@
 namespace daw {
 	namespace traits {
 		template<typename ...>
-		using void_t = void;
+			using void_t = void;
 
 		namespace details {
 			template<typename T>
-			std::false_type is_equality_comparable_impl( T const &, long );
+				std::false_type is_equality_comparable_impl( T const &, long );
 
 			template<typename T>
-			auto is_equality_comparable_impl( T const & value, int ) -> typename::std::is_convertible<decltype(value == value), bool>::type;
+				auto is_equality_comparable_impl( T const & value, int ) -> typename::std::is_convertible<decltype(value == value), bool>::type;
 		}	// namespace details
 		template<typename T>
-		struct is_equality_comparable: decltype(details::is_equality_comparable_impl(::std::declval<T const &>( ), 1 )) {};
+			struct is_equality_comparable: decltype(details::is_equality_comparable_impl(::std::declval<T const &>( ), 1 )) {};
+
+		namespace impl {
+			template<class ...>
+				using void_t = void;
+
+			template<typename L, typename R>
+				using comparability = decltype( std::declval<L>( ) == std::declval<R>( ) );
+
+		}
+
+		template<typename L, typename R, class = void>
+			struct is_comparable: std::false_type { };
+
+
+		template<typename L, typename R>
+			struct is_comparable<L, R, impl::void_t<impl::comparability<L, R>>>: std::true_type { };
+
+		template<typename L, typename R>
+		constexpr auto is_comparable_v = is_comparable<L, R>::value;
+
+		template<typename L, typename R>
+		using is_comparable_t = typename is_comparable<L, R>::type;
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: is like a regular type see http://www.stepanovpapers.com/DeSt98.pdf
 		template<typename T>
-		using is_regular =::std::integral_constant < bool,::std::is_default_constructible<T>::value &&
+			using is_regular =::std::integral_constant < bool,::std::is_default_constructible<T>::value &&
 			std::is_copy_constructible<T>::value &&::std::is_move_constructible<T>::value &&
 			std::is_copy_assignable<T>::value &&::std::is_move_assignable<T>::value &&
 			is_equality_comparable<T>::value>;
 
 		template <typename... Args>
-		struct max_sizeof;
+			struct max_sizeof;
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	Return the largest sizeof in list of types.  Used to pad
 		///				unions and small value optimization
 		///
 		template <typename First>
-		struct max_sizeof < First> {
-			typedef First type;
-			static const size_t value = sizeof( type );
-		};
+			struct max_sizeof < First> {
+				typedef First type;
+				static const size_t value = sizeof( type );
+			};
 
 		//the biggest of everything in Args and First
 		template <typename First, typename... Args>
-		struct max_sizeof < First, Args...> {
-			typedef typename max_sizeof<Args...>::type next;
-			typedef typename::std::conditional<sizeof( First )>= sizeof( next ), First, next>::type type;
-			static const size_t value = sizeof( type );
-		};
+			struct max_sizeof < First, Args...> {
+				typedef typename max_sizeof<Args...>::type next;
+				typedef typename::std::conditional<sizeof( First )>= sizeof( next ), First, next>::type type;
+				static const size_t value = sizeof( type );
+			};
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	Returns true if all values passed are true
 		///
 		template<typename BoolType, typename::std::enable_if<!std::is_integral<BoolType>::value, long>::type = 0>
-		bool are_true( BoolType b1 ) {
-			return b1 == true;
-		}
+			bool are_true( BoolType b1 ) {
+				return b1 == true;
+			}
 
 		template<typename IntLike, typename::std::enable_if<::std::is_integral<IntLike>::value, long>::type = 0>
-		bool are_true( IntLike b1 ) {
-			return b1 != 0;
-		}
+			bool are_true( IntLike b1 ) {
+				return b1 != 0;
+			}
 
 		template<typename BoolType1, typename BoolType2>
-		bool are_true( BoolType1 b1, BoolType2 b2 ) {
-			return are_true( b1 ) && are_true( b2 );
-		}
+			bool are_true( BoolType1 b1, BoolType2 b2 ) {
+				return are_true( b1 ) && are_true( b2 );
+			}
 
 		template<typename BoolType1, typename BoolType2, typename ...Booleans>
-		bool are_true( BoolType1 b1, BoolType2 b2, Booleans... others ) {
-			return are_true( b1, b2 ) && are_true( others... );
-		}
+			bool are_true( BoolType1 b1, BoolType2 b2, Booleans... others ) {
+				return are_true( b1, b2 ) && are_true( others... );
+			}
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	Are all template parameters the same type
 		///
 		template<typename T, typename... Rest>
-		struct are_same_types: ::std::false_type { };
+			struct are_same_types: ::std::false_type { };
 
 		template<typename T, typename First>
-		struct are_same_types<T, First>: ::std::is_same < T, First> { };
+			struct are_same_types<T, First>: ::std::is_same < T, First> { };
 
 		template<typename T, typename First, typename... Rest>
-		struct are_same_types<T, First, Rest...>
+			struct are_same_types<T, First, Rest...>
 			: ::std::integral_constant < bool,::std::is_same<T, First>::value || are_same_types<T, Rest...>::value> { };
 
 		template<typename T, typename... Rest>
-		using are_same_types_t = typename are_same_types<T, Rest...>::type;
+			using are_same_types_t = typename are_same_types<T, Rest...>::type;
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	A sequence of bool values
@@ -125,40 +147,40 @@ namespace daw {
 		/// Summary:	Integral constant with result of and'ing all bool's supplied
 		///
 		template<bool... Bools>
-		using bool_and =::std::is_same < bool_sequence< Bools...>,
-			bool_sequence< (Bools || true)...>>;
+			using bool_and =::std::is_same < bool_sequence< Bools...>,
+				  bool_sequence< (Bools || true)...>>;
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	Integral constant with result of or'ing all bool's supplied
 		///
 		template<bool... Bools>
-		using bool_or =::std::integral_constant < bool, (!bool_and< !Bools...>::value)>;
+			using bool_or =::std::integral_constant < bool, (!bool_and< !Bools...>::value)>;
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	Similar to enable_if but enabled when any of the
 		///				parameters is true
 		///
 		template< typename R, bool... Bs>
-		using enable_if_any =::std::enable_if < bool_or< Bs...>::value, R>;
+			using enable_if_any =::std::enable_if < bool_or< Bs...>::value, R>;
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	Similar to enable_if but enabled when all of the
 		///				parameters is true
 		///
 		template< typename R, bool... Bs>
-		using enable_if_all =::std::enable_if < bool_and< Bs...>::value, R>;
+			using enable_if_all =::std::enable_if < bool_and< Bs...>::value, R>;
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	Is type T on of the other types
 		///
 		template<typename T, typename... Types>
-		struct is_one_of: ::std::false_type { };
+			struct is_one_of: ::std::false_type { };
 
 		template<typename T, typename Type>
-		struct is_one_of<T, Type>: ::std::is_same < T, Type> { };
+			struct is_one_of<T, Type>: ::std::is_same < T, Type> { };
 
 		template<typename T, typename Type, typename... Types>
-		struct is_one_of<T, Type, Types...>: ::std::integral_constant < bool,::std::is_same<T, Type>::value || is_one_of<T, Types...>::value> { };
+			struct is_one_of<T, Type, Types...>: ::std::integral_constant < bool,::std::is_same<T, Type>::value || is_one_of<T, Types...>::value> { };
 
 		namespace details {
 			template<typename> struct type_sink { typedef void type; }; // consumes a type, and makes it `void`
@@ -166,37 +188,37 @@ namespace daw {
 		}
 
 #define GENERATE_HAS_MEMBER_FUNCTION_TRAIT(MemberName) \
-			namespace impl { \
+		namespace impl { \
 			template<typename T, typename = void> \
 			class has_##MemberName##_member_impl: public::std::false_type {}; \
-		template<typename T> \
-		class has_##MemberName##_member_impl< T, typename::std::enable_if<::std::is_class<T>::value>::type> { \
-					struct Fallback { \
-						int MemberName; \
-																																																																																																																																																																																																																																																																																																																																																																																																																																																													}; \
-					struct Derived : T, Fallback { }; \
-					\
-					template<typename U, U> struct Check; \
-					\
-					using ArrayOfOne = char[1]; \
-					using ArrayOfTwo = char[2]; \
-					\
-					template<typename U> static ArrayOfOne & func(Check<int Fallback::*, &U::MemberName> *); \
-					template<typename U> static ArrayOfTwo & func(...); \
-				  public: \
-					typedef has_##MemberName##_member_impl type; \
-					enum { value = sizeof(func<Derived>(0)) == 2 }; \
-																																																																																																																																																																																																																																																																												}; /*struct has_##MemberName##_member_impl*/ \
-																																																																																																																																																																																																																																																																											} /* namespace impl */ \
-			template<typename T> using has_##MemberName##_member =::std::integral_constant<bool, impl::has_##MemberName##_member_impl<T>::value>; \
-			template<typename T> using has_##MemberName##_member_v = typename has_##MemberName##_member<T>::value;	\
-			template<typename T> using has_##MemberName##_member_t = typename has_##MemberName##_member<T>::type;
+			template<typename T> \
+			class has_##MemberName##_member_impl< T, typename::std::enable_if<::std::is_class<T>::value>::type> { \
+				struct Fallback { \
+					int MemberName; \
+				}; \
+				struct Derived : T, Fallback { }; \
+				\
+				template<typename U, U> struct Check; \
+				\
+				using ArrayOfOne = char[1]; \
+				using ArrayOfTwo = char[2]; \
+				\
+				template<typename U> static ArrayOfOne & func(Check<int Fallback::*, &U::MemberName> *); \
+				template<typename U> static ArrayOfTwo & func(...); \
+				public: \
+						typedef has_##MemberName##_member_impl type; \
+				enum { value = sizeof(func<Derived>(0)) == 2 }; \
+			}; /*struct has_##MemberName##_member_impl*/ \
+		} /* namespace impl */ \
+		template<typename T> using has_##MemberName##_member =::std::integral_constant<bool, impl::has_##MemberName##_member_impl<T>::value>; \
+		template<typename T> using has_##MemberName##_member_v = typename has_##MemberName##_member<T>::value;	\
+		template<typename T> using has_##MemberName##_member_t = typename has_##MemberName##_member<T>::type;
 
 #define GENERATE_HAS_MEMBER_TYPE_TRAIT( TypeName ) \
-			template<typename T, typename=void> struct has_##TypeName##_member: ::std::false_type { }; \
-			template<typename T> struct has_##TypeName##_member<T, details::type_sink_t<typename T::TypeName>>: ::std::true_type { }; \
-			template<typename T> using has_##TypeName##_member_v = typename has_##TypeName##_member<T>::value;	\
-			template<typename T> using has_##TypeName##_member_t = typename has_##TypeName##_member<T>::type;
+		template<typename T, typename=void> struct has_##TypeName##_member: ::std::false_type { }; \
+		template<typename T> struct has_##TypeName##_member<T, details::type_sink_t<typename T::TypeName>>: ::std::true_type { }; \
+		template<typename T> using has_##TypeName##_member_v = typename has_##TypeName##_member<T>::value;	\
+		template<typename T> using has_##TypeName##_member_t = typename has_##TypeName##_member<T>::type;
 
 		GENERATE_HAS_MEMBER_FUNCTION_TRAIT( begin );
 		GENERATE_HAS_MEMBER_FUNCTION_TRAIT( end );
@@ -274,19 +296,19 @@ namespace daw {
 		template<typename T> using is_container_or_array_t = typename is_container_or_array<T>::type;
 
 		template<typename T>
-		using is_streamable =::std::integral_constant < bool, boost::has_left_shift<::std::ostream&, T const &,::std::ostream&>::value>;
+			using is_streamable =::std::integral_constant < bool, boost::has_left_shift<::std::ostream&, T const &,::std::ostream&>::value>;
 
 		template<typename T>
-		using is_streamable_t = typename is_streamable<T>::type;
+			using is_streamable_t = typename is_streamable<T>::type;
 
 		template<template<class> class Base, typename Derived>
-		using is_mixed_from =::std::integral_constant < bool,::std::is_base_of<Base<Derived>, Derived>::value>;
+			using is_mixed_from =::std::integral_constant < bool,::std::is_base_of<Base<Derived>, Derived>::value>;
 
 		template<template<class> class Base, typename Derived>
-		using is_mixed_from_t = typename is_mixed_from<Base, Derived>::type;
+			using is_mixed_from_t = typename is_mixed_from<Base, Derived>::type;
 
 		template<typename T>
-		constexpr bool is_integral_v = ::std::is_integral<T>::value;
+			constexpr bool is_integral_v = ::std::is_integral<T>::value;
 
 	}	// namespace traits
 }	// namespace daw
