@@ -53,7 +53,7 @@ namespace daw {
 				using void_t = void;
 
 			template<typename L, typename R>
-				using comparability = decltype( std::declval<L>( ) == std::declval<R>( ) );
+				using comparability = decltype( std::declval<R>( ) == std::declval<L>( ) && std::declval<L>( ) == std::declval<R>( ) );
 
 		}
 
