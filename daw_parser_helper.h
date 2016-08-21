@@ -248,7 +248,7 @@ namespace daw {
 				if( throw_if_end_reached && !finish ) {
 					throw ParserException{ };
 				}
-				return from_to;
+				return make_find_result( start.first, finish.last, true );
 			}
 
 		template<typename ForwardIterator, typename Predicate>
