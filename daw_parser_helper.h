@@ -151,6 +151,13 @@ namespace daw {
 						}) == std::end( container );
 			}
 
+		template<typename T, typename U, size_t N>
+			bool value_in( T && value, U (&container)[N] ) { 
+				return std::find_if( container, container + N, [&]( auto const & v ) {
+						return is_a( value, v );
+						}) == std::end( container );
+			}
+
 		template<typename Container>
 			class in_t {
 				Container container;
