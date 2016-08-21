@@ -118,8 +118,8 @@ namespace daw {
 		};	// one_of
 
 		template<typename... Arg>
-		auto on_of( Arg&&... args ) {
-			return on_of_t<Arg>{ std::forward<Arg>(args)... };
+		auto one_of( Arg&&... args ) {
+			return one_of_t<Arg>{ std::forward<Arg>(args)... };
 		}
 
 		template<typename T, typename Arg, typename... Args>
