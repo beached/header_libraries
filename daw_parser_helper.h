@@ -260,7 +260,7 @@ namespace daw {
 			}
 
 		template<typename ForwardIterator, typename StartFrom, typename GoUntil>
-			auto from_to( ForwardIterator first, ForwardIterator last, StartFrom && start_from, GoUntil && go_until, bool throw_if_end_reached = false )
+			auto from_to( ForwardIterator first, ForwardIterator last, StartFrom && start_from, GoUntil && go_until, bool throw_if_end_reached = false ) ->
 					std::enable_if_t<daw::traits::is_comparable_v<decltype(*first), StartFrom> &&
 						daw::traits::is_comparable_v<decltype(*first), GoUntil>, 
 						find_result_t<ForwardIterator>> {
@@ -277,8 +277,8 @@ namespace daw {
 			}
 
 		template<typename ForwardIterator, typename Predicate>
-			auto from_to( ForwardIterator first, ForwardIterator last, Predicate is_first, Predicate is_last, bool throw_if_end_reached = false )
-					-> std::enable_if_t<daw::traits::is_callable_v<Predicate, decltype( *first )>, find_result_t<ForwardIterator>> {
+			auto from_to( ForwardIterator first, ForwardIterator last, Predicate is_first, Predicate is_last, bool throw_if_end_reached = false ) ->
+					std::enable_if_t<daw::traits::is_callable_v<Predicate, decltype( *first )>, find_result_t<ForwardIterator>> {
 
 				auto start = until( first, last, is_first );
 				if( !start ) {
