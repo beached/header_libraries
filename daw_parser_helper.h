@@ -31,6 +31,7 @@
 
 namespace daw {
 	namespace parser {
+
 		template<typename T, typename Iterator>
 			struct parser_result {
 				T result;
@@ -83,7 +84,8 @@ namespace daw {
 				return find_result_t<ForwardIterator>{ first, last, result };
 			}
 
-		template<typename ForwardIterator, typename Predicate, typename = std::enable_if_t<daw::traits::is_callable_v<Predicate, typename std::iterator_traits<ForwardIterator>::value_type>>>
+
+		template<typename ForwardIterator, typename Predicate, typename = std::enable_if_t<daw::traits::is_callable_v<Predicate, typename std::decay_t<std::remove_reference_t<std::iterator_traits<ForwardIterator>::value_type>>>>>
 			find_result_t<ForwardIterator> until( ForwardIterator first, ForwardIterator last, Predicate is_last ) {
 				auto result = make_find_result( first, last );
 				for( auto it = first; it != last; ++it ) {
@@ -177,16 +179,14 @@ namespace daw {
 				}
 				return result;
 			}
-
-		template<typename T, typename UnaryFunction>
-			bool is_true( T && value, UnaryFunction && func ) {
-				return func( value );
+		template<typename T, typename Predicate, typename = std::enable_if_t<daw::traits::is_callable_v<Predicate, T>>>
+			bool is_true( T && value, Predicate && predicate ) {
+				return predicate( value );
 			}
 
-		template<typename T, typename UnaryFunction, typename... UnaryFunctions>
-			bool is_true( T && value, UnaryFunction && func, UnaryFunctions && ... funcs ) {
-				return func( value ) ||
-					   is_true( std::forward<T>( value ), std::forward<UnaryFunctions>( funcs )... );
+		template<typename T, typename Predicate, typename... Predicates>
+			bool is_true( T && value, Prediate && predicate, Predicates && ... predicates ) {
+				return is_true( std::forward<Predicate>(predicate), std::forward<T>(value) ) || is_true( std::forward<T>( value ), std::forward<Predicates>( predicates )... );
 			}
 
 		template<typename T, typename U, typename... Args>
@@ -196,9 +196,9 @@ namespace daw {
 				}
 			}
 
-		template<typename T, typename UnaryFunction, typename... UnaryFunctions>
-			void expect_true( T && value, UnaryFunction && func, UnaryFunctions && ... funcs ) {
-				if( !is_true( std::forward<T>( value ), std::forward<UnaryFunction>( func ), std::forward<UnaryFunctions>( funcs )... ) ) {
+		template<typename T, typename Predicate, typename... Predicates>
+			void expect_true( T && value, Predicate && predicate, Predicates && ... predicates ) {
+				if( !is_true( std::forward<T>( value ), std::forward<Predicate>( predicate ), std::forward<Predicates>( predicates )... ) ) {
 					throw ParserException{ };
 				}
 			}
@@ -264,7 +264,7 @@ namespace daw {
 				if( !start ) {
 					throw ParserException{ };
 				}
-				auto finish = until( start.last, last, std::forward<GoUntil>( go_until ) );
+				auto finish = until_value( start.last, last, std::forward<GoUntil>( go_until ) );
 				if( throw_if_end_reached && !finish ) {
 					throw ParserException{ };
 				}
