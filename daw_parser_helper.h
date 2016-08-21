@@ -23,9 +23,9 @@
 #pragma once
 
 #include <exception>
+#include <list>
 
-#include <daw/daw_traits.h>
-#include <daw/daw_array.h>
+#include "daw_traits.h"
 
 namespace daw {
 	namespace parser {
