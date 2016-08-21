@@ -435,7 +435,7 @@ namespace daw {
 			struct matcher_t {
 				using value_t = daw::traits::root_type_t<T>;
 			private:
-				std::vector<value_T> m_to_match;
+				std::vector<value_t> m_to_match;
 			public:
 				matcher_t( std::vector<value_t> to_match ):
 						m_to_match{ std::move( to_match ) } { }
