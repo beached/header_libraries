@@ -183,7 +183,7 @@ namespace daw {
 				std::vector<value_t> values;
 				std::copy_n( std::begin( container ), N, std::back_inserter( values ) );
 
-				return in_t<values_t>{ std::move( values ) };
+				return in_t<value_t>{ std::move( values ) };
 			}
 
 		template<typename Container>
@@ -192,7 +192,7 @@ namespace daw {
 				std::vector<value_t> values;
 				std::copy( std::begin( container ), std::end( container ), std::back_inserter( values ) );
 
-				return in_t<values_t>{ std::move( values ) };
+				return in_t<value_t>{ std::move( values ) };
 			}
 
 		template<typename T, size_t N>
