@@ -26,6 +26,7 @@
 #include <exception>
 #include <list>
 #include <vector>
+#include <utility>
 
 #include "daw_traits.h"
 
