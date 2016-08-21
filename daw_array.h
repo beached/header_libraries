@@ -52,40 +52,64 @@ namespace daw {
 
 		array( ) noexcept: m_begin( nullptr ), m_end( nullptr ), m_size( 0 ) { }
 
-		array( size_t count ): m_begin( nullptr ), m_end( nullptr ), m_size( count ) {
-			m_begin = new value_type[m_size];
-			m_end = m_begin + m_size;
+		array( size_t count ):
+				m_begin{ new value_type[m_size] }, 
+				m_end{ m_begin + count }, 
+				m_size{ count } { }
+
+		array( size_t count, value_type def_value ): 
+				m_begin{ new value_type[m_size] }, 
+				m_end{ m_begin + count }, 
+				m_size{ count } {
+			
+			std::fill( m_begin, m_end, def_value );	
 		}
 
-		array( size_t count, value_type def_value ): m_begin( nullptr ), m_end( nullptr ), m_size( count ) {
-			m_begin = new value_type[m_size];
-			m_end = m_begin + m_size;
+		array( array && other ) noexcept: 
+				m_begin{ std::exchange( other.m_begin, nullptr ) },
+				m_end{ std::exchange( other.m_end, nullptr ) },
+				m_size{ std::exchange( other.m_size, 0 ) } { }
 
-			for( auto it = m_begin; it != m_end; ++it ) {
-				*it = def_value;
-			}
+		friend void swap( array & lhs, array & rhs ) noexcept {
+			using std::swap;
+			swap( lhs.m_begin, rhs.m_begin );
+			swap( lhs.m_end, rhs.m_end );
+			swap( lhs.m_size, rhs.m_size );
 		}
 
-		array( array && ) noexcept = default;
-		array & operator=( array && ) noexcept = default;
 
-		array( array const & other ):  m_begin( nullptr ), m_end( nullptr ), m_size( other.m_size ) {
-			m_begin = new value_type[m_size];
-			m_end = m_begin + m_size;
-			std::copy( other.m_begin, other.m_end, m_begin );
-		}
-
-		array & operator=( array rhs ) noexcept {
+		array & operator=( array && rhs ) noexcept {
 			if( this != &rhs ) {
-				swap( *this, rhs );	
+				array tmp{ std::move( rhs ) };
+				using std::swap;
+				swap( *this, tmp );
 			}
 			return *this;
 		}
 
-		array( iterator arry, size_t count ): m_begin( nullptr ), m_end( nullptr ), m_size( count ) {
-			m_begin = new value_type[m_size];
-			m_end = m_begin + m_size;
-			std::copy( arry, arry + count, m_begin );
+		array( array const & other ):  
+				m_begin{ new value_type[other.m_size] }, 
+				m_end{ m_begin + other.m_size }, 
+				m_size{ other.m_size } {
+			
+			std::copy_n( other.m_begin, m_size, m_begin );
+		}
+
+		array & operator=( array const & rhs ) {
+			if( this != &rhs ) {
+				array tmp{ rhs };
+				using std::swap;
+				swap( *this, tmp );
+			}
+			return *this;
+		}
+
+		array( iterator arry, size_t count ): 
+				m_begin{ new value_type[count] }, 
+				m_end{ m_begin + count }, 
+				m_size{ count } {
+
+			std::copy_n( arry, count, m_begin );
 		}
 
 		~array( ) {
