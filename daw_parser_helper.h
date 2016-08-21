@@ -177,7 +177,7 @@ namespace daw {
 			}
 
 		template<typename T, size_t N>
-			auto in( T const (&values)[N] ) {
+			auto in( T (&values)[N] ) {
 				using values_t = std::array<daw::traits::root_type_t<T>, N>;
 				values_t container;
 				std::copy_n( values, N, container.data( ) );
