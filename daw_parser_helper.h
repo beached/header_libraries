@@ -100,7 +100,7 @@ namespace daw {
 
 		template<typename T, typename Arg>
 			bool is_a( T && value, Arg && tst ) {
-				static_assert( daw::traits::is_comparable_v<T, Arg>, "value is not comparable to tst" );
+				//static_assert( daw::traits::is_comparable_v<T, Arg>, "value is not comparable to tst" );
 				using val_t = typename daw::traits::max_sizeof<T, Arg>::type;
 				return static_cast<val_t>(value) == static_cast<val_t>(tst);
 			}
