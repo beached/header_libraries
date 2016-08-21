@@ -227,7 +227,6 @@ namespace daw {
 
 		template<typename Iterator>
 			constexpr void assert_not_empty( Iterator first, Iterator last ) {
-				static_assert( daw::taits::is_comparable_v<T, U>, "lhs is not comparable to rhs" );
 				if( lhs == rhs ) {
 					throw ParserEmptyException{ };
 				}
