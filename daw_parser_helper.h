@@ -454,11 +454,6 @@ namespace daw {
 					}
 					return result;
 				}
-
-				template<typename T, size_t N>
-				auto operator( )( T (&container)[N] ) {
-					return operator( )( container, container + N );
-				}
 			};		// matcher_t
 
 			template<typename Container>
