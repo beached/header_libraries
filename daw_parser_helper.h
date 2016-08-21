@@ -113,7 +113,7 @@ namespace daw {
 				for( auto it = first; it != last; ++it ) {
 					if( is_a( *it, std::forward<Value>( value ), std::forward<Values>( values )... ) ) {
 						result.last = it;
-						result.fond = true;
+						result.found = true;
 						break;
 					}
 				}
