@@ -53,9 +53,9 @@ namespace daw {
 				bool found;
 
 				find_result_t( ForwardIterator First, ForwardIterator Last, bool Found ):
-						first{ First },
-						last{ Last },
-						found{ Found } { }
+					first{ First },
+					last{ Last },
+					found{ Found } { }
 
 				explicit operator bool( ) const {
 					return found;
@@ -111,23 +111,23 @@ namespace daw {
 
 
 		template<typename Arg>
-		class one_of_t {
-			std::vector<Arg> m_args;
+			class one_of_t {
+				std::vector<Arg> m_args;
 
-		public:
-			one_of_t( std::initializer_list<Arg> args ):
-				m_args{ args } { }
+				public:
+				one_of_t( std::initializer_list<Arg> args ):
+					m_args{ args } { }
 
-			template<typename T>
-			bool operator( )( T && value ) const {
-				return value_in( std::forward<T>(value), m_args );
-			}
-		};	// one_of
+				template<typename T>
+					bool operator( )( T && value ) const {
+						return value_in( std::forward<T>(value), m_args );
+					}
+			};	// one_of
 
 		template<typename... Arg>
-		auto one_of( Arg&&... args ) {
-			return one_of_t<Arg...>{ std::forward<Arg>(args)... };
-		}
+			auto one_of( Arg&&... args ) {
+				return one_of_t<Arg...>{ std::forward<Arg>(args)... };
+			}
 
 		template<typename ForwardIterator, typename Value, typename... Values>
 			find_result_t<ForwardIterator> until_value( ForwardIterator first, ForwardIterator last, Value && value, Values && ... values ) {
@@ -143,29 +143,29 @@ namespace daw {
 			}
 
 		template<typename T, typename Container>
-		    auto value_in( T && value, Container && container ) ->
-					decltype( std::begin( container ) == std::end( container ) ) {
+			auto value_in( T && value, Container && container ) ->
+			decltype( std::begin( container ) == std::end( container ) ) {
 
 				return std::find_if( std::begin( container ), std::end( container ), [&]( auto const & v ) {
-					return is_a( value, v );
-				}) == std::end( container );
+						return is_a( value, v );
+						}) == std::end( container );
 			}
 
-		template<typename Container, typename = decltype( std::begin( std::declval<Container>{ } ) == std::end( std::declval<Container>{ } ) )>
-		    class in_t {
+		template<typename Container, typename = decltype( std::begin( std::declval<Container>( ) ) == std::end( std::declval<Container>( ) ) )>
+			class in_t {
 				Container container;
-			public:
+				public:
 				in_t( Container values ):
 					container{ std::move( values ) } { }
 
 				template<typename T>
-				bool operator( )( T const & value ) const {
-					return value_in( value, container );
-				}
+					bool operator( )( T const & value ) const {
+						return value_in( value, container );
+					}
 			};	// in_t
 
 		template<typename Container>
-		    auto in( Container container ) {
+			auto in( Container container ) {
 				return in_t<Container>{ std::move( container ) };
 			}
 
@@ -262,9 +262,9 @@ namespace daw {
 
 		template<typename ForwardIterator, typename StartFrom, typename GoUntil>
 			auto from_to( ForwardIterator first, ForwardIterator last, StartFrom && start_from, GoUntil && go_until, bool throw_if_end_reached = false ) ->
-					std::enable_if_t<daw::traits::is_comparable_v<decltype(*first), StartFrom> &&
-						daw::traits::is_comparable_v<decltype(*first), GoUntil>, 
-						find_result_t<ForwardIterator>> {
+			std::enable_if_t<daw::traits::is_comparable_v<decltype(*first), StartFrom> &&
+			daw::traits::is_comparable_v<decltype(*first), GoUntil>, 
+			find_result_t<ForwardIterator>> {
 
 				auto start = until_value( first, last, std::forward<StartFrom>( start_from ) );
 				if( !start ) {
@@ -305,8 +305,8 @@ namespace daw {
 			};
 
 		template<typename ForwardIterator>
-		auto split_if( ForwardIterator first, ForwardIterator last, std::function<bool(daw::traits::root_type_t<decltype(*first)>)> is_divider ) {
-			std::vector<ForwardIterator> endings;
+			auto split_if( ForwardIterator first, ForwardIterator last, std::function<bool(daw::traits::root_type_t<decltype(*first)>)> is_divider ) {
+				std::vector<ForwardIterator> endings;
 				auto result = until( first, last, is_divider );
 				while( result ) {
 					endings.push_back( result.last );
@@ -316,7 +316,7 @@ namespace daw {
 					endings.push_back( result.last );
 				}
 				return endings;
-		}
+			}
 
 		template<typename T> constexpr bool pred_true( T const & ) noexcept {
 			return true;
@@ -362,10 +362,10 @@ namespace daw {
 					return result;
 				}
 
-			public:
+				public:
 				is_crlf( size_t count = 1 ):
-						m_last_values{ },
-						m_count{ count } { }
+					m_last_values{ },
+					m_count{ count } { }
 
 				bool operator( )( value_type const & v ) {
 					m_last_values.push_back( std::move( v ) );
@@ -380,9 +380,9 @@ namespace daw {
 			template<typename Predicate>
 				class negate_t {
 					Predicate predicate;
-				public:
+					public:
 					negate_t( Predicate pred ):
-							predicate{ std::move( pred ) } { }
+						predicate{ std::move( pred ) } { }
 
 					template<typename... Args>
 						bool operator( )( Args && ... args ) const {
@@ -397,7 +397,7 @@ namespace daw {
 		}    // namespace impl
 
 		template<typename Predicate>
-		    auto negate( Predicate predicate ) {
+			auto negate( Predicate predicate ) {
 				return impl::negate_t<Predicate>{ std::move( predicate ) };
 			}
 	}    // namespace parser
