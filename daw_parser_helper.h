@@ -437,20 +437,22 @@ namespace daw {
 						m_to_match{ std::move( to_match ) } { }
 
 				template<typename ForwardIterator>
-					bool operator( )( ForwardIterator first, ForwardIterator last ) const {
-					auto m_first = m_to_match.cbegin( );
-					while( first != last && m_first != m_last ) {
-						if( !is_a( *fist, *m_first ) ) {
-							return false;
-						}
-						++first;
-						++m_first;
+					find_result_t<ForwardIterator> operator( )( ForwardIterator first, ForwardIterator last ) const {
+					auto result = make_find_result( first, last );
+
+					auto pos = std::search( result.first, result.last, m_to_match.begin( ), m_to_match.end( ), []( auto const & lhs, auto const & rhs ) {
+						return is_a( lhs, rhs );
+					} );
+
+					if( pos != result.last ) {
+						result.last = pos;
+						result.found = true;
 					}
-					return m_first == m_to_watch.end( );
+					return result;
 				}
 
 				template<typename T, size_t N>
-				bool operator( )( T (&container)[N] ) {
+				auto operator( )( T (&container)[N] ) {
 					return operator( )( container, container + N );
 				}
 			};		// matcher_t
