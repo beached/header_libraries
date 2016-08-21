@@ -158,22 +158,41 @@ namespace daw {
 						}) == std::end( container );
 			}
 
-		template<typename Container>
+		template<typename T>
 			class in_t {
-				Container container;
+				std::vector<T> container;
 				public:
-				in_t( Container values ):
+				template<typename Container>
+				in_t( std::vector<T> values ):
 					container{ std::move( values ) } { }
 
-				template<typename T>
-					bool operator( )( T const & value ) const {
+				template<typename U>
+					bool operator( )( U const & value ) const {
 						return value_in( value, container );
 					}
 			};	// in_t
 
+		template<typename T>
+			auto in( std::vector<T> container ) {
+				return in_t<T>{ std::move( container ) };
+			}
+
+		template<typename T, int N>
+			auto in( T (&container)[N] ) {
+				using value_t = daw::traits::root_type_t<T>;
+				std::vector<value_t> values;
+				std::copy_n( std::begin( container ), N, std::back_inserter( values ) );
+
+				return in_t<values_t>{ std::move( values ) };
+			}
+
 		template<typename Container>
 			auto in( Container container ) {
-				return in_t<Container>{ std::move( container ) };
+				using value_t = daw::traits::root_type_t<decltype( container[0] )>;
+				std::vector<value_t> values;
+				std::copy( std::begin( container ), std::end( container ), std::back_inserter( values ) );
+
+				return in_t<values_t>{ std::move( values ) };
 			}
 
 		template<typename T, size_t N>
@@ -389,7 +408,7 @@ namespace daw {
 					}
 					return match( );
 				}
-			};    // struct is_cr
+			};    // is_cr
 
 		namespace impl {
 			template<typename Predicate>
