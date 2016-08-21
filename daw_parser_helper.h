@@ -288,13 +288,13 @@ namespace daw {
 				return finish;
 			}
 
-		template<typename ForwardIterator, typename... Dividers>
-			auto split( ForwardIterator first, ForwardIterator last, Dividers && ... dividers ) {
+		template<typename ForwardIterator, typename Divider, typename... Dividers>
+			auto split_on( ForwardIterator first, ForwardIterator last, Divider && divider, Dividers && ... dividers ) {
 				std::vector<ForwardIterator> endings;
-				auto result = until_value( first, last, std::forward<Dividers>( dividers )... );
+				auto result = until_value( first, last, std::forward<Divider>(divider), std::forward<Dividers>( dividers )... );
 				while( result ) {
 					endings.push_back( result.last );
-					result = until_value( result.last, last, std::forward<Dividers>( dividers )... );
+					result = until_value( result.last, last, std::forward<Divider>(divider), std::forward<Dividers>( dividers )... );
 				}
 				if( result.first != result.last ) {
 					endings.push_back( result.last );
@@ -303,7 +303,7 @@ namespace daw {
 			};
 
 		template<typename ForwardIterator>
-		auto split( ForwardIterator first, ForwardIterator last, std::function<bool(decltype(*first))> is_divider ) {
+		auto split_if( ForwardIterator first, ForwardIterator last, std::function<bool(decltype(*first))> is_divider ) {
 			std::vector<ForwardIterator> endings;
 				auto result = until( first, last, is_divider );
 				while( result ) {
