@@ -227,7 +227,7 @@ namespace daw {
 
 		template<typename Iterator>
 			constexpr void assert_not_empty( Iterator first, Iterator last ) {
-				if( lhs == rhs ) {
+				if( first == last ) {
 					throw ParserEmptyException{ };
 				}
 			}
