@@ -161,8 +161,7 @@ namespace daw {
 		template<typename T>
 			class in_t {
 				std::vector<T> container;
-				public:
-				template<typename Container>
+			public:
 				in_t( std::vector<T> values ):
 					container{ std::move( values ) } { }
 
