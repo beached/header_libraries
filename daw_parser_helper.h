@@ -343,7 +343,8 @@ namespace daw {
 
 		template<typename T>
 			class is_crlf {
-				std::list<T> m_last_values;
+				using value_type = daw::traits::root_type_t<T>;
+				std::list<value_type> m_last_values;
 				size_t m_count;
 
 				bool match( ) const {
@@ -364,7 +365,7 @@ namespace daw {
 						m_last_values{ },
 						m_count{ count } { }
 
-				bool operator( )( T v ) {
+				bool operator( )( value_type const & v ) {
 					m_last_values.push_back( std::move( v ) );
 					while( m_last_values.size( ) > 4 ) {
 						m_last_values.pop_front( );
