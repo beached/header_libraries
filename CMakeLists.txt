@@ -44,6 +44,7 @@ set( UNTESTED_HEADER_FILES
 	daw_expected.h
 	daw_newhelper.h
 	daw_parallel_algorithm.h
+	daw_parser_helper.h
 	daw_range_collection.h
 	daw_range_common.h
 	daw_range_operators.h
