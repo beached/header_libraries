@@ -308,7 +308,7 @@ namespace daw {
 				size_t m_count;
 
 				bool match( ) const {
-					if( m_last_values.size( ) != 2*count ) {
+					if( m_last_values.size( ) != 2*m_count ) {
 						return false;
 					}
 					bool result = true;
@@ -322,7 +322,7 @@ namespace daw {
 
 			public:
 				is_crlf( size_t count = 1 ):
-						m_last_value{ },
+						m_last_values{ },
 						m_count{ count } { }
 
 				constexpr bool operator( )( T const & v ) const noexcept {
