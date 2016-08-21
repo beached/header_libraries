@@ -32,7 +32,6 @@
 
 namespace daw {
 	namespace parser {
-
 		template<typename T, typename Iterator>
 			struct parser_result {
 				T result;
@@ -302,6 +301,20 @@ namespace daw {
 				}
 				return endings;
 			};
+
+		template<typename ForwardIterator>
+		auto split( ForwardIterator first, ForwardIterator last, std::function<bool(decltype(*first))> is_divider ) {
+			std::vector<ForwardIterator> endings;
+				auto result = until( first, last, is_divider );
+				while( result ) {
+					endings.push_back( result.last );
+					result = until( result.last, last, is_divider );
+				}
+				if( result.first != result.last ) {
+					endings.push_back( result.last );
+				}
+				return endings;
+		}
 
 		template<typename T> constexpr bool pred_true( T const & ) noexcept {
 			return true;
