@@ -326,8 +326,8 @@ namespace daw {
 						m_last_values{ },
 						m_count{ count } { }
 
-				constexpr bool operator( )( T const & v ) const noexcept {
-					m_last_values.push_back( v );
+				bool operator( )( T v ) {
+					m_last_values.push_back( std::move( v ) );
 					while( m_last_values.size( ) > 4 ) {
 						m_last_values.pop_front( );
 					}
