@@ -84,8 +84,6 @@ namespace daw {
 				return find_result_t<ForwardIterator>{ first, last, result };
 			}
 
-
-		//std::enable_if_t<daw::traits::is_callable_v<Predicate, typename std::decay_t<std::remove_reference_t<std::iterator_traits<ForwardIterator>::value_type>>>>>
 		template<typename ForwardIterator, typename Predicate>
 			auto until( ForwardIterator first, ForwardIterator last, Predicate is_last ) 
 					-> std::enable_if_t<daw::traits::is_callable_v<Predicate, decltype( *first )>, find_result_t<ForwardIterator>> {

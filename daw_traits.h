@@ -35,6 +35,9 @@
 
 namespace daw {
 	namespace traits {
+		template<typename T>
+		using root_type_t = std::decay_t<std::remove_reference_t<T>>;
+		
 		template<typename ...>
 			using void_t = void;
 
@@ -53,7 +56,7 @@ namespace daw {
 				using void_t = void;
 
 			template<typename L, typename R>
-				using comparability = decltype( std::declval<R>( ) == std::declval<L>( ) && std::declval<L>( ) == std::declval<R>( ) );
+				using comparability = decltype( (std::declval<root_type_t<R>>( ) == std::declval<root_type_t<L>>( )) && (std::declval<root_type_t<L>>( ) == std::declval<root_type_t<R>>( )) );
 
 		}
 
