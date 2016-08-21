@@ -460,7 +460,7 @@ namespace daw {
 			auto matcher( Container const & container ) {
 				using value_t = daw::traits::root_type_t<decltype(*container.begin( ))>;
 				std::vector<value_t> values;
-				std::copy( container.begin( ), container.end( ), std::backinserter( values ) );
+				std::copy( container.begin( ), container.end( ), std::back_inserter( values ) );
 				return matcher_t<value_t>{ std::move( values ) };
 			}
 
