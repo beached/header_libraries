@@ -188,7 +188,7 @@ namespace daw {
 			}
 
 		template<typename T, typename Predicate, typename... Predicates>
-			bool is_true( T && value, Prediate && predicate, Predicates && ... predicates ) {
+			bool is_true( T && value, Predicate && predicate, Predicates && ... predicates ) {
 				return is_true( std::forward<Predicate>(predicate), std::forward<T>(value) ) || is_true( std::forward<T>( value ), std::forward<Predicates>( predicates )... );
 			}
 
