@@ -85,7 +85,7 @@ namespace daw {
 			}
 
 		template<typename ForwardIterator>
-			auto until( ForwardIterator first, ForwardIterator last, std::function<bool(daw::traits::root_type_t<decltype(*first))>> is_last ) {
+			auto until( ForwardIterator first, ForwardIterator last, std::function<bool(daw::traits::root_type_t<decltype(*first)>)> is_last ) {
 
 				auto result = make_find_result( first, last );
 				for( auto it = first; it != last; ++it ) {
@@ -180,7 +180,7 @@ namespace daw {
 				return result;
 			}
 		template<typename T>
-			bool is_true( T && value, std::function<bool( T )> predicate ) {
+			bool is_true( T && value, std::function<bool( daw::traits::root_type_t<T> )> predicate ) {
 				return predicate( value );
 			}
 
@@ -276,7 +276,7 @@ namespace daw {
 			}
 
 		template<typename ForwardIterator>
-			auto from_to( ForwardIterator first, ForwardIterator last, std::function<bool(daw::traits::root_type_t<decltype(*first))>> is_first, std::function<bool(daw::traits::root_type_t<decltype(*first))>> is_last, bool throw_if_end_reached = false ) {
+			auto from_to( ForwardIterator first, ForwardIterator last, std::function<bool(daw::traits::root_type_t<decltype(*first)>)> is_first, std::function<bool(daw::traits::root_type_t<decltype(*first)>)> is_last, bool throw_if_end_reached = false ) {
 				auto start = until( first, last, is_first );
 				if( !start ) {
 					throw ParserException{ };
@@ -303,7 +303,7 @@ namespace daw {
 			};
 
 		template<typename ForwardIterator>
-		auto split_if( ForwardIterator first, ForwardIterator last, std::function<bool(daw::traits::root_type_t<decltype(*first))>> is_divider ) {
+		auto split_if( ForwardIterator first, ForwardIterator last, std::function<bool(daw::traits::root_type_t<decltype(*first)>)> is_divider ) {
 			std::vector<ForwardIterator> endings;
 				auto result = until( first, last, is_divider );
 				while( result ) {
