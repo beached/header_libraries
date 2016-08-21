@@ -84,9 +84,8 @@ namespace daw {
 				return find_result_t<ForwardIterator>{ first, last, result };
 			}
 
-		template<typename ForwardIterator, typename Predicate>
-			auto until( ForwardIterator first, ForwardIterator last, Predicate is_last ) 
-					-> std::enable_if_t<std::is_same<decltype( is_last( *first ) ), decltype( is_last( *first ) )>::value, find_result_t<ForwardIterator>> {
+		template<typename ForwardIterator>
+			auto until( ForwardIterator first, ForwardIterator last, std::function<bool(decltype(*first))> is_last ) {
 
 				auto result = make_find_result( first, last );
 				for( auto it = first; it != last; ++it ) {
@@ -103,6 +102,11 @@ namespace daw {
 				static_assert( daw::traits::is_comparable_v<T, Arg>, "value is not comparable to tst" );
 				using val_t = typename daw::traits::max_sizeof<T, Arg>::type;
 				return static_cast<val_t>(value) == static_cast<val_t>(tst);
+			}
+
+		template<typename T, typename Arg, typename... Args>
+			bool is_a( T && value, Arg && tst, Args && ... tsts ) {
+				return is_a( std::forward<T>( value ), std::forward<Arg>( tst ) ) || is_a( std::forward<T>( value ), std::forward<Args>( tsts )... );
 			}
 
 
@@ -124,11 +128,6 @@ namespace daw {
 		auto one_of( Arg&&... args ) {
 			return one_of_t<Arg...>{ std::forward<Arg>(args)... };
 		}
-
-		template<typename T, typename Arg, typename... Args>
-			bool is_a( T && value, Arg && tst, Args && ... tsts ) {
-				return is_a( std::forward<T>( value ), std::forward<Arg>( tst ) ) || is_a( std::forward<T>( value ), std::forward<Args>( tsts )... );
-			}
 
 		template<typename ForwardIterator, typename Value, typename... Values>
 			find_result_t<ForwardIterator> until_value( ForwardIterator first, ForwardIterator last, Value && value, Values && ... values ) {
@@ -180,8 +179,8 @@ namespace daw {
 				}
 				return result;
 			}
-		template<typename T, typename Predicate, typename = std::enable_if_t<daw::traits::is_callable_v<Predicate, T>>>
-			bool is_true( T && value, Predicate && predicate ) {
+		template<typename T>
+			bool is_true( T && value, std::function<bool( T )> predicate ) {
 				return predicate( value );
 			}
 
@@ -276,10 +275,8 @@ namespace daw {
 				return make_find_result( start.first, finish.last, true );
 			}
 
-		template<typename ForwardIterator, typename Predicate>
-			auto from_to( ForwardIterator first, ForwardIterator last, Predicate is_first, Predicate is_last, bool throw_if_end_reached = false ) ->
-					std::enable_if_t<daw::traits::is_callable_v<Predicate, decltype( *first )>, find_result_t<ForwardIterator>> {
-
+		template<typename ForwardIterator>
+			auto from_to( ForwardIterator first, ForwardIterator last, std::function<bool(decltype(*first))> is_first, std::function<bool(decltype(*first))> is_last, bool throw_if_end_reached = false ) {
 				auto start = until( first, last, is_first );
 				if( !start ) {
 					throw ParserException{ };
