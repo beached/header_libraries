@@ -25,6 +25,7 @@
 #include <algorithm>
 #include <exception>
 #include <list>
+#include <vector>
 
 #include "daw_traits.h"
 
@@ -102,6 +103,25 @@ namespace daw {
 			}
 
 
+		template<typename Arg>
+		class one_of_t {
+			std::vector<Arg> m_args;
+
+		public:
+			one_of_t( std::initializer_list<Arg> args ):
+				m_args{ args } { }
+
+			template<typename T>
+			bool operator( )( T && value ) const {
+				return value_in( std::forward<T>(value), m_args );
+			}
+		};	// one_of
+
+		template<typename... Arg>
+		auto on_of( Arg&&... args ) {
+			return on_of_t<Arg>{ std::forward<Arg>(args)... };
+		}
+
 		template<typename T, typename Arg, typename... Args>
 			bool is_a( T && value, Arg && tst, Args && ... tsts ) {
 				return is_a( std::forward<T>( value ), std::forward<Arg>( tst ) ) || is_a( std::forward<T>( value ), std::forward<Args>( tsts )... );
@@ -136,7 +156,7 @@ namespace daw {
 
 				template<typename T>
 				bool operator( )( T const & value ) const {
-					return in( value, container );
+					return value_in( value, container );
 				}
 			};	// in_t
 
