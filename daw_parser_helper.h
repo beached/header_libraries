@@ -151,7 +151,7 @@ namespace daw {
 				}) == std::end( container );
 			}
 
-		template<typename Container>
+		template<typename Container, typename = decltype( std::begin( std::declval<Container>{ } ) == std::end( std::declval<Container>{ } ) )>
 		    class in_t {
 				Container container;
 			public:
