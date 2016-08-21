@@ -143,7 +143,9 @@ namespace daw {
 			}
 
 		template<typename T, typename Container>
-		    bool value_in( T && value, Container && container ) {
+		    auto value_in( T && value, Container && container ) ->
+					decltype( std::begin( container ) == std::end( container ) ) {
+
 				return std::find_if( std::begin( container ), std::end( container ), [&]( auto const & v ) {
 					return is_a( value, v );
 				}) == std::end( container );
