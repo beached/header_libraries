@@ -195,14 +195,6 @@ namespace daw {
 				return in_t<value_t>{ std::move( values ) };
 			}
 
-		template<size_t N>
-			auto in( char (&values)[N] ) {
-				using values_t = std::array<daw::traits::root_type_t<T>, N>;
-				values_t container;
-				std::copy_n( values, N, container.data( ) );
-				return in_t<values_t>{ std::move( values ) };
-			}
-
 		template<typename ForwardIterator, typename Container>
 			find_result_t<ForwardIterator> until_values( ForwardIterator first, ForwardIterator last, Container && container ) {
 				auto result = make_find_result( first, last );
