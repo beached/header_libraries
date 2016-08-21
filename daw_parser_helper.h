@@ -110,7 +110,7 @@ namespace daw {
 			find_result_t<ForwardIterator> until_value( ForwardIterator first, ForwardIterator last, Value && value, Values && ... values ) {
 				auto result = make_find_result( first, last );
 				for( auto it = first; it != last; ++it ) {
-					if( is_a( *it, std::forwarad<Value>( value ), std::forward<Values>( values )... ) ) {
+					if( is_a( *it, std::forward<Value>( value ), std::forward<Values>( values )... ) ) {
 						result.last = it;
 						result.fond = true;
 						break;
@@ -141,7 +141,7 @@ namespace daw {
 
 		template<typename Container>
 		    auto in( Container container ) {
-				return in_t{ std::move( container ) };
+				return in_t<Container>{ std::move( container ) };
 			}
 
 		template<typename ForwardIterator, typename Container>
@@ -151,7 +151,7 @@ namespace daw {
 					if( value_in( *it, container ) ) {
 						result.last = it;
 						result.found = true;
-						result result;
+						return result;
 					}
 				}
 				return result;
@@ -184,18 +184,18 @@ namespace daw {
 
 		template<typename T>
 			constexpr bool is_alpha( T && value ) noexcept {
-				using val_t = daw::traits::max_sizeof<T, decltype( 'a' )>::type;
-				constexpr auto const a = constexpr_cast<val_t>( 'a' );
-				constexpr auto const A = constexpr_cast<val_t>( 'A' );
-				constexpr auto const z = constexpr_cast<val_t>( 'z' );
-				constexpr auto const Z = constexpr_cast<val_t>( 'Z' );
+				using val_t = typename daw::traits::max_sizeof<T, decltype( 'a' )>::type;
+				constexpr auto const a = static_cast<val_t>( 'a' );
+				constexpr auto const A = static_cast<val_t>( 'A' );
+				constexpr auto const z = static_cast<val_t>( 'z' );
+				constexpr auto const Z = static_cast<val_t>( 'Z' );
 				auto const tmp = static_cast<val_t>( value );
 				return (a <= tmp && tmp <= z) || (A <= tmp && tmp <= Z);
 			}
 
 		template<typename T, typename Min, typename Max>
 			constexpr bool in_range( T && value, Min && min_value, Max && max_value ) noexcept {
-				using val_t = daw::traits::max_sizeof<T, Min, Max>::type;
+				using val_t = typename daw::traits::max_sizeof<T, Min, Max>::type;
 				return static_cast<val_t>(min_value) <= static_cast<val_t>(value) && static_cast<val_t>(value) <= static_cast<val_t>(max_value);
 			}
 
@@ -211,7 +211,7 @@ namespace daw {
 
 		template<typename T, typename U>
 			constexpr void assert_not_equal( T && lhs, U && rhs ) {
-				static_assert( daw::is_comparable_v<T, U>, "lhs is not comparable to rhs" );
+				static_assert( daw::traits::is_comparable_v<T, U>, "lhs is not comparable to rhs" );
 				if( lhs != rhs ) {
 					throw ParserException{ };
 				}
@@ -219,21 +219,21 @@ namespace daw {
 
 		template<typename T, typename U>
 			constexpr void assert_equal( T && lhs, U && rhs ) {
-				static_assert( daw::is_comparable_v<T, U>, "lhs is not comparable to rhs" );
+				static_assert( daw::traits::is_comparable_v<T, U>, "lhs is not comparable to rhs" );
 				if( lhs == rhs ) {
 					throw ParserException{ };
 				}
 			}
 
-		template<Iterator>
+		template<typename Iterator>
 			constexpr void assert_not_empty( Iterator first, Iterator last ) {
-				static_assert( daw::is_comparable_v<T, U>, "lhs is not comparable to rhs" );
+				static_assert( daw::taits::is_comparable_v<T, U>, "lhs is not comparable to rhs" );
 				if( lhs == rhs ) {
 					throw ParserEmptyException{ };
 				}
 			}
 
-		template<Iterator>
+		template<typename Iterator>
 			constexpr void assert_empty( Iterator first, Iterator last ) {
 				assert_equal( first, last );
 			}
