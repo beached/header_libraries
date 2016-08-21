@@ -244,7 +244,7 @@ namespace daw {
 				if( !start ) {
 					throw ParserException{ };
 				}
-				auto finish = until_value( start.last, last, std::forward<GoUntil>( go_until ) );
+				auto finish = until( start.last, last, std::forward<GoUntil>( go_until ) );
 				if( throw_if_end_reached && !finish ) {
 					throw ParserException{ };
 				}
@@ -257,7 +257,7 @@ namespace daw {
 				if( !start ) {
 					throw ParserException{ };
 				}
-				auto finish = until_value( std::next( start.last ), last, is_last );
+				auto finish = until( std::next( start.last ), last, is_last );
 				if( throw_if_end_reached && !finish ) {
 					throw ParserException{ };
 				}
