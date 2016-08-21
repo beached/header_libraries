@@ -77,6 +77,10 @@ namespace daw {
 						std::copy( first, last, std::back_inserter( result ) );
 						return result;
 					}
+
+				std::string as_string( ) const {
+					return as<std::string>( );
+				}
 			};    // find_result_t
 
 		template<typename ForwardIterator>
