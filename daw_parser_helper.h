@@ -176,7 +176,7 @@ namespace daw {
 				return in_t<T>{ std::move( container ) };
 			}
 
-		template<typename T, int N>
+		template<typename T, size_t N>
 			auto in( T (&container)[N] ) {
 				using value_t = daw::traits::root_type_t<T>;
 				std::vector<value_t> values;
@@ -424,6 +424,51 @@ namespace daw {
 		template<typename Predicate>
 			auto negate( Predicate predicate ) {
 				return impl::negate_t<Predicate>{ std::move( predicate ) };
+			}
+
+
+		template<typename T>
+			struct matcher_t {
+				using value_t = daw::traits::root_type_t<T>;
+			private:
+				std::vector<value_T> m_to_match;
+			public:
+				matcher_t( std::vector<value_t> to_match ):
+						m_to_match{ std::move( to_match ) } { }
+
+				template<typename ForwardIterator>
+					bool operator( )( ForwardIterator first, ForwardIterator last ) const {
+					auto m_first = m_to_match.cbegin( );
+					while( first != last && m_first != m_last ) {
+						if( !is_a( *fist, *m_first ) ) {
+							return false;
+						}
+						++first;
+						++m_first;
+					}
+					return m_first == m_to_watch.end( );
+				}
+
+				template<typename T, size_t N>
+				bool operator( )( T (&container)[N] ) {
+					return operator( )( container, container + N );
+				}
+			};		// matcher_t
+
+			template<typename Container>
+			auto matcher( Container const & container ) {
+				using value_t = daw::traits::root_type_t<decltype(*container.begin( ))>;
+				std::vector<value_t> values;
+				std::copy( container.begin( ), container.end( ), std::backinserter( values ) );
+				return matcher_t<value_t>{ std::move( values ) };
+			}
+
+			template<typename T, size_t N>
+			auto matcher( T (&container)[N] ) {
+				using value_t = daw::traits::root_type_t<T>;
+				std::vector<value_t> values;
+				std::copy_n( container, container + N, std::backinserter( values ) );
+				return matcher_t<value_t>{ std::move( values ) };
 			}
 	}    // namespace parser
 }    // namespace daw
