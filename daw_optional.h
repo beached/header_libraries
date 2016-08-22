@@ -43,7 +43,7 @@ namespace daw {
 				m_value{ nullptr } { }
 
 		optional( optional const &other ):
-				m_value{ new value_type( *other.m_value ) } { }
+				m_value{ other.m_value ? new value_type( *other.m_value ) : nullptr } { }
 
 		optional( optional &&other ):
 				m_value{ std::exchange( other.m_value, nullptr ) } { }
