@@ -492,10 +492,11 @@ namespace daw {
 				static_assert( std::numeric_limits<Result>::is_signed, "Use to_uint for unsigned types or a signed type for to_int" );
 				result = 0;
 				size_t count = std::numeric_limits<Result>::digits10;
-				for( auto it = first; it != last && count > 0; ++it, --count ) {
+				auto it = first;
+				for( ; it != last && count > 0; ++it, --count ) {
 					result = (result * static_cast<Result>(10)) + static_cast<Result>(*it - '0');
 				}
-				if( first != last ) {
+				if( it != last ) {
 					throw ParserOverflowException{ };
 				}
 				if( '-' == *first ) {
