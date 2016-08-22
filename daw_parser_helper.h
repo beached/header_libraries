@@ -476,7 +476,7 @@ namespace daw {
 			}
 
 			template<typename ForwardIterator, typename Result>
-			void to_uint( ForwardIterator first, ForwardIterator last, Result result ) {
+			void to_uint( ForwardIterator first, ForwardIterator last, Result & result ) {
 				result = 0;
 				size_t count = std::numeric_limits<Result>::digits10;
 				for( ; first != last && count > 0; ++first, --count ) {
@@ -488,7 +488,7 @@ namespace daw {
 			}
 
 			template<typename ForwardIterator, typename Result>
-			void to_int( ForwardIterator first, ForwardIterator last, Result result ) {
+			void to_int( ForwardIterator first, ForwardIterator last, Result & result ) {
 				static_assert( std::numeric_limits<Result>::is_signed, "Use to_uint for unsigned types or a signed type for to_int" );
 				result = 0;
 				size_t count = std::numeric_limits<Result>::digits10;

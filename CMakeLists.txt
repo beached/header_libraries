@@ -27,6 +27,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_memory
 	daw_memory_mapped_file
 	daw_optional
+	daw_parser_helper
 	daw_range_algorithm
 	daw_range
 	daw_traits
@@ -44,7 +45,6 @@ set( UNTESTED_HEADER_FILES
 	daw_expected.h
 	daw_newhelper.h
 	daw_parallel_algorithm.h
-	daw_parser_helper.h
 	daw_range_collection.h
 	daw_range_common.h
 	daw_range_operators.h
