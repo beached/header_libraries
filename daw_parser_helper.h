@@ -46,6 +46,9 @@ namespace daw {
 		struct ParserEmptyException: public ParserException {
 		};
 
+		struct ParserOverflowException: public ParserException {
+		};
+
 		template<typename ForwardIterator>
 			struct find_result_t {
 				ForwardIterator first;
@@ -471,6 +474,37 @@ namespace daw {
 				std::copy_n( container, N, std::back_inserter( values ) );
 				return matcher_t<value_t>{ std::move( values ) };
 			}
+
+			template<typename ForwardIterator, typename Result>
+			void to_uint( ForwardIterator first, ForwardIterator last, Result result ) {
+				result = 0;
+				size_t count = std::numeric_limits<Result>::digits10;
+				for( ; first != last && count > 0; ++first, --count ) {
+					result = (result * static_cast<Result>(10)) + static_cast<Result>(*first - '0');
+				}
+				if( first != last ) {
+					throw ParserOverflowException{ };
+				}
+			}
+
+			template<typename ForwardIterator, typename Result>
+			void to_int( ForwardIterator first, ForwardIterator last, Result result ) {
+				static_assert( std::numeric_limits<Result>::is_signed, "Use to_uint for unsigned types or a signed type for to_int" );
+				result = 0;
+				size_t count = std::numeric_limits<Result>::digits10;
+				for( auto it = first; it != last && count > 0; ++it, --count ) {
+					result = (result * static_cast<Result>(10)) + static_cast<Result>(*it - '0');
+				}
+				if( first != last ) {
+					throw ParserOverflowException{ };
+				}
+				if( '-' == *first ) {
+					result *- static_cast<Result>(-1);
+				}
+			}
+
+
+
 	}    // namespace parser
 }    // namespace daw
 
