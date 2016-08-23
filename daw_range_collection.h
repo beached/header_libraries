@@ -28,11 +28,12 @@
 #include <vector>
 #include <random>
 #include <iostream>
-#include "daw_traits.h"
+
 #include "daw_algorithm.h"
-#include "daw_reference.h"
 #include "daw_range_common.h"
 #include "daw_range_reference.h"
+#include "daw_reference.h"
+#include "daw_traits.h"
 
 namespace daw {
 	namespace range {
@@ -64,7 +65,7 @@ namespace daw {
 		template<typename T>
 		struct CollectionRange {
 			using is_range_collection = std::true_type;
-			using value_type = ::std::decay_t<T>;
+			using value_type = daw::traits::root_type_t<T>;
 			using values_type = ::std::vector<value_type>;
 		private:
 			values_type m_values;
@@ -279,7 +280,7 @@ namespace daw {
 
 			template<typename UnaryOperator>
 			CollectionRange & transform( UnaryOperator oper ) const {
-				using v_t = ::std::decay_t<decltype(oper( front( ) ))>;
+				using v_t = daw::traits::root_type_t<decltype(oper( front( ) ))>;
 				auto result = CollectionRange<v_t>( );
 				::std::transform( ::std::begin( m_values ), ::std::end( m_values ), ::std::back_inserter( result ), oper );
 				return result;

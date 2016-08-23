@@ -21,15 +21,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw_string.h"
-#include "daw_exception.h"
-
 #include <algorithm>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <functional>
 #include <iterator>
 #include <type_traits>
 #include <vector>
+
+#include "daw_string.h"
+#include "daw_exception.h"
+#include "daw_traits.h"
 
 namespace daw {
 	namespace algorithm {
@@ -349,7 +350,7 @@ namespace daw {
 
 		template<typename Iterator, typename Value>
 		auto split( Iterator first, Iterator last, Value const & value ) {
-			using value_type = std::decay_t<decltype(*first)>;
+			using value_type = daw::traits::root_type_t<decltype(*first)>;
 			std::vector<std::vector<value_type>> result;
 			std::vector<value_type> temp;
 			for( auto it=first; it !=last; ++it ) {

@@ -28,7 +28,9 @@
 #include <utility>
 #include <string>
 #include <vector>
+
 #include "daw_utility.h"
+#include "daw_traits.h"
 
 namespace daw {
 	namespace impl {
@@ -38,7 +40,7 @@ namespace daw {
 		// Small value optimized version
 		template<typename ValueType>
 		struct hash_table_item<ValueType, ::std::enable_if_t<(sizeof( ValueType ) <= sizeof( ValueType * ))>> {
-			using value_type = typename ::std::decay_t<ValueType>;
+			using value_type = typename daw::traits::root_type_t<ValueType>;
 			using reference = value_type &;
 			using const_reference = value_type const &;
 		private:
@@ -94,7 +96,7 @@ namespace daw {
 		// Values that are larger than the pointer size(e.g. 32bit/64bit) are heap allocated.
 		template<typename ValueType>
 		struct hash_table_item<ValueType, ::std::enable_if_t<(sizeof( ValueType ) > sizeof( ValueType * ))>> {
-			using value_type = typename ::std::decay_t<ValueType>;
+			using value_type = typename daw::traits::root_type_t<ValueType>;
 			using reference = value_type &;
 			using const_reference = value_type const &;
 		private:
