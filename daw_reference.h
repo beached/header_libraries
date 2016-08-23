@@ -34,7 +34,7 @@
 namespace daw {
 	template<typename T>
 	struct Reference {
-		using ptr_type = ::std::decay_t<::std::remove_reference_t<T>>;
+		using ptr_type = daw::traits::root_type_t<T>;
 		ptr_type const * ptr;
 		Reference( ) = delete;
 		Reference( T const & value ): ptr( &value ) { }
@@ -96,7 +96,7 @@ namespace daw {
 
 	template<typename Iterator>
 	auto to_reference_vector( Iterator first, Iterator last ) {
-		using value_type = ::std::remove_const_t<::std::remove_reference_t<decltype(*first)>>;
+		using value_type = daw::traits::root_type_t<decltype(*first)>;
 		using values_type = ::std::vector<::daw::Reference<value_type>>;
 		values_type result;
 		for( auto it = first; it != last; ++it ) {

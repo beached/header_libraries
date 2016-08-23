@@ -27,7 +27,7 @@ namespace daw {
 		namespace impl {
 			template<typename Collection>
 			auto to_vector( Collection const & collection ) {
-				using value_type = ::std::decay_t<typename Collection::value_type>;
+				using value_type = daw::traits::root_type_t<typename Collection::value_type>;
 				::std::vector<value_type> result;
 				::std::copy( ::std::begin( collection ), ::std::end( collection ), ::std::back_inserter( result ) );
 				return result;
@@ -42,7 +42,7 @@ namespace daw {
 			}
 
 			template<typename T>
-			using cleanup_t = ::std::remove_cv_t<::std::remove_reference_t<T>>;
+			using cleanup_t = daw::traits::root_type_t<T>;
 
 		}	// namespace impl
 

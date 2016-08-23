@@ -31,7 +31,7 @@
 namespace daw {
 	template<class ValueType>
 	struct optional {
-		using value_type = std::decay_t<std::remove_reference_t<ValueType>>;
+		using value_type = daw::traits::root_type_t<ValueType>;
 		using reference = ValueType &;
 		using const_reference = ValueType const &;
 		using pointer = ValueType *;
