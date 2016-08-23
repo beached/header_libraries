@@ -35,7 +35,13 @@ BOOST_AUTO_TEST_CASE( daw_parser_helper001 ) {
 	BOOST_REQUIRE_MESSAGE( 43453 == ui32, "Value did not parse correctly" );
 	std::cout << std::endl;
 	daw::parser::to_int( uint_test.begin( ), uint_test.end( ), i32 );
-	std::cout << "to_uint: uint32 parser test from: '" << uint_test << "' to " << i32 << '\n';
+	std::cout << "to_int: int32 parser test from: '" << uint_test << "' to " << i32 << '\n';
 	BOOST_REQUIRE_MESSAGE( 43453 == i32, "Value did not parse correctly" );
+
+	static std::string int_test = "-34534";
+	i32 = 0;
+	daw::parser::to_int( int_test.begin( ), int_test.end( ), i32 );
+	std::cout << "to_int: int32 parser test from: '" << int_test << "' to " << i32 << '\n';
+	BOOST_REQUIRE_MESSAGE( -34534 == i32, "Value did not parse correctly" );
 }
 

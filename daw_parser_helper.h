@@ -39,15 +39,9 @@ namespace daw {
 				Iterator last;
 			};    // parser_result
 
-		struct ParserException: public std::exception {
-			virtual ~ParserException( ) = default;
-		};    // ParserException
-
-		struct ParserEmptyException: public ParserException {
-		};
-
-		struct ParserOverflowException: public ParserException {
-		};
+		struct ParserException: public std::exception { };
+		struct ParserEmptyException: public ParserException { };
+		struct ParserOverflowException: public ParserException { };
 
 		template<typename ForwardIterator>
 			struct find_result_t {
@@ -492,15 +486,19 @@ namespace daw {
 				static_assert( std::numeric_limits<Result>::is_signed, "Use to_uint for unsigned types or a signed type for to_int" );
 				result = 0;
 				size_t count = std::numeric_limits<Result>::digits10;
-				auto it = first;
-				for( ; it != last && count > 0; ++it, --count ) {
-					result = (result * static_cast<Result>(10)) + static_cast<Result>(*it - '0');
+				bool is_neg = false;
+				if( '-' == *first ) {
+					is_neg = true;
+					++first;
 				}
-				if( it != last ) {
+				for( ; first != last && count > 0; ++first, --count ) {
+					result = (result * static_cast<Result>(10)) + static_cast<Result>(*first - '0');
+				}
+				if( first != last ) {
 					throw ParserOverflowException{ };
 				}
-				if( '-' == *first ) {
-					result *- static_cast<Result>(-1);
+				if( is_neg ) {
+					result *= static_cast<Result>(-1);
 				}
 			}
 
