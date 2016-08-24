@@ -42,6 +42,12 @@ namespace daw {
 		struct ParserException: public std::exception { };
 		struct ParserEmptyException: public ParserException { };
 		struct ParserOverflowException: public ParserException { };
+		struct ParserOutOfRangeException: public ParserException, public std::out_of_range {
+			template<typename String>
+			ParserOutOfRangeException( String && arg ):
+				ParserException{ },
+				std::out_of_range{ std::forward<String>( arg ) } { }
+		};
 
 		template<typename ForwardIterator>
 			struct find_result_t {
@@ -473,11 +479,14 @@ namespace daw {
 			void to_uint( ForwardIterator first, ForwardIterator last, Result & result ) {
 				result = 0;
 				size_t count = std::numeric_limits<Result>::digits10;
+				if( '-' == *first ) {
+					throw ParserOutOfRangeException{ "Negative values are unsupported" };
+				}
 				for( ; first != last && count > 0; ++first, --count ) {
 					result = (result * static_cast<Result>(10)) + static_cast<Result>(*first - '0');
 				}
 				if( first != last ) {
-					throw ParserOverflowException{ };
+					throw ParserOutOfRangeException{ "Not enough room to store unsigned integer" };
 				}
 			}
 
@@ -488,6 +497,9 @@ namespace daw {
 				size_t count = std::numeric_limits<Result>::digits10;
 				bool is_neg = false;
 				if( '-' == *first ) {
+					if( !std::numeric_limits<Result>::is_signed ) {
+						throw ParserOutOfRangeException{ "Negative values are unsupported with unsigned Result" };
+					}
 					is_neg = true;
 					++first;
 				}
@@ -495,7 +507,7 @@ namespace daw {
 					result = (result * static_cast<Result>(10)) + static_cast<Result>(*first - '0');
 				}
 				if( first != last ) {
-					throw ParserOverflowException{ };
+					throw ParserOutOfRangeException{ "Not enough room to store signed integer" };
 				}
 				if( is_neg ) {
 					result *= static_cast<Result>(-1);
