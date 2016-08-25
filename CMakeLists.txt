@@ -15,7 +15,7 @@ else( )
 		#add_compile_options(-std=c++14 -stdlib=libc++ -Weverything -Wno-c++98-compat -Wfatal-errors -Wno-covered-switch-default -Wno-padded -Wno-exit-time-destructors -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-missing-noreturn -Wno-missing-prototypes -Wno-disabled-macro-expansion)		
 		add_compile_options(-std=c++14 -Weverything -Wno-c++98-compat -Wfatal-errors -Wno-covered-switch-default -Wno-padded -Wno-exit-time-destructors -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-missing-noreturn -Wno-missing-prototypes -Wno-disabled-macro-expansion)		
 	elseif( ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" )
-		add_compile_options(-std=c++14 -Wall -Wno-deprecated-declarations)
+		add_compile_options(-std=c++14 -O3 -g -Wall -Wno-deprecated-declarations)
 	endif()
 endif()
 
@@ -72,7 +72,6 @@ endforeach( CUR_PREFIX )
 
 add_custom_target( tests )
 add_dependencies( tests ${test_bins} )
-
 
 foreach( CUR_PREFIX ${UNTESTED_HEADER_FILES} )
 	install( FILES "${CUR_PREFIX}" DESTINATION include/daw )

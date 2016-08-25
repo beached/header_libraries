@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <exception>
+#include <functional>
 #include <list>
 #include <vector>
 #include <utility>
@@ -477,13 +478,16 @@ namespace daw {
 
 			template<typename ForwardIterator, typename Result>
 			void to_uint( ForwardIterator first, ForwardIterator last, Result & result ) {
-				result = 0;
 				size_t count = std::numeric_limits<Result>::digits10;
+
 				if( '-' == *first ) {
 					throw ParserOutOfRangeException{ "Negative values are unsupported" };
 				}
+				result = 0;
 				for( ; first != last && count > 0; ++first, --count ) {
-					result = (result * static_cast<Result>(10)) + static_cast<Result>(*first - '0');
+					result *= static_cast<Result>(10);
+					Result val = *first - '0';
+					result += val; 
 				}
 				if( first != last ) {
 					throw ParserOutOfRangeException{ "Not enough room to store unsigned integer" };
@@ -492,9 +496,8 @@ namespace daw {
 
 			template<typename ForwardIterator, typename Result>
 			void to_int( ForwardIterator first, ForwardIterator last, Result & result ) {
-				static_assert( std::numeric_limits<Result>::is_signed, "Use to_uint for unsigned types or a signed type for to_int" );
-				result = 0;
 				size_t count = std::numeric_limits<Result>::digits10;
+				result = 0;
 				bool is_neg = false;
 				if( '-' == *first ) {
 					if( !std::numeric_limits<Result>::is_signed ) {
@@ -504,7 +507,9 @@ namespace daw {
 					++first;
 				}
 				for( ; first != last && count > 0; ++first, --count ) {
-					result = (result * static_cast<Result>(10)) + static_cast<Result>(*first - '0');
+					result *= static_cast<Result>(10);
+					Result val = *first - '0';
+					result += val; 
 				}
 				if( first != last ) {
 					throw ParserOutOfRangeException{ "Not enough room to store signed integer" };
