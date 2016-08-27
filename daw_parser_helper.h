@@ -316,7 +316,7 @@ namespace daw {
 				if( !start ) {
 					throw ParserException{ };
 				}
-				auto finish = until( std::next( start.last ), last, is_last );
+				auto finish = until( start.last, last, is_last );
 				if( throw_if_end_reached && !finish ) {
 					throw ParserException{ };
 				}
@@ -365,16 +365,85 @@ namespace daw {
 			}
 
 		template<typename T>
+		constexpr bool is_unicode_whitespace( T val ) {
+			switch( static_cast<uint32_t>(val) ) {
+				case 0x00000009:	// CHARACTER TABULATION
+				case 0x0000000A:	// LINE FEED
+				case 0x0000000B:	// LINE TABULATION
+				case 0x0000000C:	// FORM FEED
+				case 0x0000000D:	// CARRIAGE RETURN
+				case 0x00000020:	// SPACE
+				case 0x00000085:	// NEXT LINE
+				case 0x000000A0:	// NO-BREAK SPACE
+				case 0x00001680:	// OGHAM SPACE MARK
+				case 0x00002000:	// EN QUAD
+				case 0x00002001:	// EM QUAD
+				case 0x00002002:	// EN SPACE
+				case 0x00002003:	// EM SPACE
+				case 0x00002004:	// THREE-PER-EM SPACE
+				case 0x00002005:	// FOUR-PER-EM SPACE
+				case 0x00002006:	// SIX-PER-EM SPACE
+				case 0x00002007:	// FIGURE SPACE 
+				case 0x00002008:	// PUNCTUATION SPACE
+				case 0x00002009:	// THIN SPACE
+				case 0x0000200A:	// HAIR SPACE
+				case 0x00002028:	// LINE SEPARATOR
+				case 0x00002029:	// PARAGRAPH SEPARATOR
+				case 0x0000202F:	// NARROW NO-BREAK SPACE 
+				case 0x0000205F:	// MEDIUM MATHEMATICAL SPACE
+				case 0x00003000:	// IDEOGRAPHIC SPACE
+					return true;
+				default:
+					return false;
+			}
+		}
+
+		template<typename T>
+		constexpr bool not_unicode_whitespace( T val ) {
+			return !is_unicode_whitespace( val );
+		}
+
+		template<typename ForwardIterator>
+			auto trim_left( ForwardIterator first, ForwardIterator last ) {
+				using val_t = daw::traits::root_type_t<decltype(*first)>; 
+				auto start = until( first, last, &not_unicode_whitespace<val_t> );
+				if( !start ) {
+					return make_find_result( first, last );
+				}
+				return make_find_result( start.last, last );
+			}
+
+		template<typename ForwardIterator>
+			auto trim_right( ForwardIterator first, ForwardIterator last ) {
+				// Cannot start from right most index in unicode.  Must parse
+				// left to right.  So that sucks for perf, try not to just right trim
+				//
+				using val_t = daw::traits::root_type_t<decltype(*first)>; 
+				auto start = until( first, last, &not_unicode_whitespace<val_t> );
+				if( !start ) {
+					return make_find_result( first, last, false );
+				}
+				auto finish = until( start.last, last, &is_unicode_whitespace<val_t> );
+				return make_find_result( first, finish.last, true );
+			}
+
+
+		template<typename ForwardIterator>
+			auto trim( ForwardIterator first, ForwardIterator last ) {
+				auto start = trim_left( first, last );
+				auto finish = trim_right( start.first, last );
+				return make_find_result( start.first, finish.last, static_cast<bool>( start ) || static_cast<bool>( finish ) );
+			}
+
+		template<typename T>
 			constexpr bool is_space( T const & value ) noexcept {
 				return is_a( value, ' ' );
 			}
 
 		template<typename T>
 			constexpr bool not_space( T const & value ) noexcept {
-				return !is_a( value, ' ' );
+				return !is_space( value );
 			}
-
-
 
 		template<typename T>
 			class is_crlf {

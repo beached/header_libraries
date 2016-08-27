@@ -43,5 +43,34 @@ BOOST_AUTO_TEST_CASE( daw_parser_helper001 ) {
 	daw::parser::to_int( int_test.begin( ), int_test.end( ), i32 );
 	std::cout << "to_int: int32 parser test from: '" << int_test << "' to " << i32 << '\n';
 	BOOST_REQUIRE_MESSAGE( -34534 == i32, "Value did not parse correctly" );
+
+	static std::string tr_test = "  hello  ";
+	std::cout << "Test trimming '" << tr_test << "'\n";
+
+	auto tr_left = daw::parser::trim_left( tr_test.begin( ), tr_test.end( ) ).as_string( );
+	std::cout << "Left only '" << tr_left << "'\n";
+	BOOST_REQUIRE_MESSAGE( tr_left == "hello  ", "Trim left did not work" );
+
+	auto tr_right = daw::parser::trim_right( tr_test.begin( ), tr_test.end( ) ).as_string( );
+	std::cout << "Right only '" << tr_right << "'\n";
+	BOOST_REQUIRE_MESSAGE( tr_right == "  hello", "Trim right did not work" );
+
+	auto tr_full = daw::parser::trim( tr_test.begin( ), tr_test.end( ) ).as_string( );
+	std::cout << "Full trim '" << tr_full << "'\n";
+	BOOST_REQUIRE_MESSAGE( tr_full == "hello", "Trim did not work" );
+	
+	static std::string empty;
+	auto empty_left = daw::parser::trim_left( empty.begin( ), empty.end( ) ).as_string( );
+	std::cout << "Empty Left only '" << empty_left << "'\n";
+	BOOST_REQUIRE_MESSAGE( empty_left == "", "Trim left did not work" );
+
+	auto empty_right = daw::parser::trim_right( empty.begin( ), empty.end( ) ).as_string( );
+	std::cout << "Empty Right only '" << empty_right << "'\n";
+	BOOST_REQUIRE_MESSAGE( empty_right == "", "Trim right did not work" );
+
+	auto empty_full = daw::parser::trim( empty.begin( ), empty.end( ) ).as_string( );
+	std::cout << "Empty full trim '" << empty_full << "'\n";
+	BOOST_REQUIRE_MESSAGE( empty_full == "", "Trim did not work" );
+
 }
 
