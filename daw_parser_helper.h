@@ -588,7 +588,25 @@ namespace daw {
 				}
 			}
 
+			template<typename ForwardIterator>
+			constexpr find_result_t<ForwardIterator> find_numeric( ForwardIterator first, ForwardIterator last ) {
+				using namespace daw::parser;
+				auto is_first = []( auto const & v ) {
+					return is_a( '-', v ) || is_number( v );
+				};
 
+				bool has_decimal = false;
+				auto is_last = [&has_decimal]( auto const & v ) {
+					if( is_a( '.', v ) ) {
+						if( has_decimal ) {
+							return true;
+						}
+						has_decimal = true;
+					}
+					return is_number( v );
+				};
+				return from_to( first, last, is_first, is_last );
+			}
 
 	}    // namespace parser
 }    // namespace daw
