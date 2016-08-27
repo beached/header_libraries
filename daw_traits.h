@@ -191,6 +191,14 @@ namespace daw {
 		template<typename T, typename Type, typename... Types>
 			struct is_one_of<T, Type, Types...>: ::std::integral_constant < bool,::std::is_same<T, Type>::value || is_one_of<T, Types...>::value> { };
 
+		template<typename... Types>
+		using is_one_of_t = typename is_one_of<Types...>::type;
+
+		template<typename... Types>
+		constexpr auto const is_one_of_v = is_one_of<Types...>::value;
+
+
+		
 		namespace details {
 			template<typename> struct type_sink { typedef void type; }; // consumes a type, and makes it `void`
 			template<typename T> using type_sink_t = typename type_sink<T>::type;
