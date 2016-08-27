@@ -83,11 +83,11 @@ namespace daw {
 		}
 
 		template<typename ExceptionType = AssertException, typename ValueType, typename StringType>
-		ValueType& dbg_throw_on_false_or_return( ValueType& value, bool test, StringType const & msg ) {
+		ValueType& dbg_throw_on_false_or_return( ValueType&& value, bool test, StringType const & msg ) {
 			if( !test ) {
 				debug_throw<ExceptionType>( msg );
 			}
-			return value;
+			return std::forward<ValueType>( value );
 		}
 
 		template<typename ExceptionType = AssertException, typename StringType>
@@ -198,7 +198,7 @@ namespace daw {
 		}
 
 		template<typename ExceptionType = AssertException, typename BoolType, typename StringType>
-		void daw_throw_on_false( const BoolType& test, StringType const & msg ) {
+		void daw_throw_on_false( BoolType const & test, StringType const & msg ) {
 			if( !test ) {
 				daw_throw<ExceptionType>( msg );
 			}
