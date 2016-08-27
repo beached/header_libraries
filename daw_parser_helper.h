@@ -307,7 +307,9 @@ namespace daw {
 				if( throw_if_end_reached && !finish ) {
 					throw ParserException{ };
 				}
-				return make_find_result( start.first, finish.last, true );
+				auto result = make_find_result( start.first, finish.last );
+				result.found = !result.empty( );
+				return result;
 			}
 
 		template<typename ForwardIterator>
