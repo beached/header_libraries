@@ -81,26 +81,32 @@ namespace daw {
 			std::is_copy_assignable<T>::value &&::std::is_move_assignable<T>::value &&
 			is_equality_comparable<T>::value>;
 
-		template <typename... Args>
-			struct max_sizeof;
-
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	Return the largest sizeof in list of types.  Used to pad
 		///				unions and small value optimization
 		///
+		template <typename... Args>
+			struct max_sizeof;
+
 		template <typename First>
-			struct max_sizeof < First> {
+			struct max_sizeof<First> {
 				typedef First type;
 				static const size_t value = sizeof( type );
 			};
 
 		//the biggest of everything in Args and First
-		template <typename First, typename... Args>
-			struct max_sizeof < First, Args...> {
+		template<typename First, typename... Args>
+			struct max_sizeof< First, Args...> {
 				typedef typename max_sizeof<Args...>::type next;
 				typedef typename::std::conditional<sizeof( First )>= sizeof( next ), First, next>::type type;
 				static const size_t value = sizeof( type );
 			};
+
+		template<typename... Types>
+		using max_sizeof_t = typename max_sizeof<Types...>::type;
+
+		template<typename... Types>
+		constexpr auto const max_sizeof_v = max_sizeof<Types...>::value;
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	Returns true if all values passed are true
