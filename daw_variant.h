@@ -133,6 +133,9 @@ namespace daw {
 		}
 	};	// generate_variant_helper_funcs_t
 
+	template<typename... Stuff>
+		void do_nothing(Stuff...) { }
+
 	template<typename... Types>
 	auto get_variant_helpers( ) {
 		static_assert( sizeof...(Types) > 0, "Must supply at least one type" );
@@ -141,6 +144,8 @@ namespace daw {
 		generate_variant_helper_funcs_t<Types...> generate_variant_helper_funcs;
 
 		auto list = { ((void)(results[get_type_index<Types>( )] = generate_variant_helper_funcs.template generate<Types>( )), 0)... };
+
+		do_nothing( list );
 
 		return results;
 	}
@@ -166,7 +171,7 @@ namespace daw {
 			daw_throw_on_true<bad_variant_t_access>( empty( ), "Attempt to access an empty value" );
 			daw_throw_on_false<bad_variant_t_access>( is_same_type<value_type>( ), "Attempt to access a value of another type" );
 			static_assert( sizeof(value_type) <= BUFFER_SIZE, "This should never happen.  sizeof(T) does not fit into m_buffer" );
-			return reinterpret_cast<value_type *>(m_buffer.data( ));
+			return reinterpret_cast<value_type *>(static_cast<void*>(m_buffer.data( )));
 		}
 
 		template<typename T, typename Result = std::enable_if_t<is_valid_type<T>, std::remove_cv_t<T>>>
@@ -176,7 +181,7 @@ namespace daw {
 			daw_throw_on_true<bad_variant_t_access>( empty( ), "Attempt to access an empty value" );
 			daw_throw_on_false<bad_variant_t_access>( is_same_type<value_type>( ), "Attempt to access a value of another type" );
 			static_assert( sizeof(value_type) <= BUFFER_SIZE, "This should never happen.  sizeof(T) does not fit into m_buffer" );
-			return reinterpret_cast<value_type const *>(m_buffer.data( ));	
+			return reinterpret_cast<value_type const *>(static_cast<void const *>(m_buffer.data( )));
 		}
 
 		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
