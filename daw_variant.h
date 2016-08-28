@@ -229,6 +229,37 @@ namespace daw {
 			return *this;
 		}
 
+		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
+		T & get( ) {
+			return *ptr<T>( );
+		}
+
+		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
+		T const & get( ) const {
+			return *ptr<T>( );
+		}
+
+		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
+		explicit operator T const &( ) const {
+			return get<T>( );
+		}
+
+		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
+		explicit operator T &( ) {
+			return get<T>( );
+		}
+
+		std::string to_string( ) const {
+			if( empty( ) ) {
+				return "";
+			}
+			return get_helper_funcs( *m_stored_type ).to_string( *this );
+		}
+
+		std::string operator*( ) const {
+			return to_string( );
+		}
+
 		auto compare( variant_t const & rhs ) const {
 			return get_helper_funcs( *m_stored_type ).compare( *this, rhs );
 		}
@@ -290,33 +321,6 @@ namespace daw {
 		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
 		friend bool operator>=( variant_t const & lhs, T const & rhs ) {
 			return lhs.compare( rhs ) >= 0;
-		}
-
-		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-		T & get( ) {
-			return *ptr<T>( );
-		}
-
-		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-		T const & get( ) const {
-			return *ptr<T>( );
-		}
-
-		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-		explicit operator T const &( ) const {
-			return get<T>( );
-		}
-
-		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-		explicit operator T &( ) {
-			return get<T>( );
-		}
-
-		std::string to_string( ) const {
-			if( empty( ) ) {
-				return "";
-			}
-			return get_helper_funcs( *m_stored_type ).to_string( *this );
 		}
 
 	};	// variant_t

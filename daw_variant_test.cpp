@@ -40,6 +40,7 @@ BOOST_AUTO_TEST_CASE( daw_parser_helper001 ) {
 	BOOST_REQUIRE_MESSAGE( t == 5, "Value not there" );
 	BOOST_REQUIRE_MESSAGE( t.to_string( ) == "5", "too string not functioning" );
 	BOOST_REQUIRE_MESSAGE( (t == u), "Type change" );
+	BOOST_REQUIRE_MESSAGE( *t == "5", "operator* conversion" );
 	BOOST_REQUIRE_MESSAGE( (t = 5.54f) == 5.54f, "Type change" );
 
 
