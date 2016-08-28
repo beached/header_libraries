@@ -46,7 +46,7 @@ namespace daw {
 
 	template<typename T>
 	static auto get_type_index( ) {
-		using value_type = daw::traits::root_type_t<T>;
+		using value_type = std::remove_cv_t<T>;
 		return std::type_index( typeid( value_type ) );
 	}
 
@@ -135,7 +135,7 @@ namespace daw {
 	struct variant_t {
 		static constexpr size_t BUFFER_SIZE = daw::traits::max_sizeof_v<Type,Types...>;
 		template<typename T>
-		static constexpr bool is_valid_type = daw::traits::is_one_of_v<daw::traits::root_type_t<T>, daw::traits::root_type_t<Type>, daw::traits::root_type_t<Types>...>;
+		static constexpr bool is_valid_type = daw::traits::is_one_of_v<std::remove_cv_t<T>, std::remove_cv_t<Type>, std::remove_cv_t<Types>...>;
 	private:
 		std::array<uint8_t, BUFFER_SIZE> m_buffer;
 		boost::optional<std::type_index> m_stored_type;
@@ -145,20 +145,20 @@ namespace daw {
 			return func_map[idx];
 		}
 
-		template<typename T, typename Result = std::enable_if_t<is_valid_type<T>, daw::traits::root_type_t<T>>>
+		template<typename T, typename Result = std::enable_if_t<is_valid_type<T>, std::remove_cv_t<T>>>
 		Result * ptr( ) {
 			using namespace daw::exception;
-			using value_type = daw::traits::root_type_t<T>;
+			using value_type = std::remove_cv_t<T>;
 			daw_throw_on_true<bad_variant_t_access>( empty( ), "Attempt to access an empty value" );
 			daw_throw_on_false<bad_variant_t_access>( is_same_type<value_type>( ), "Attempt to access a value of another type" );
 			static_assert( sizeof(value_type) <= BUFFER_SIZE, "This should never happen.  sizeof(T) does not fit into m_buffer" );
 			return reinterpret_cast<value_type *>(m_buffer.data( ));
 		}
 
-		template<typename T, typename Result = std::enable_if_t<is_valid_type<T>, daw::traits::root_type_t<T>>>
+		template<typename T, typename Result = std::enable_if_t<is_valid_type<T>, std::remove_cv_t<T>>>
 		Result const * ptr( ) const {
 			using namespace daw::exception;
-			using value_type = daw::traits::root_type_t<T>;
+			using value_type = std::remove_cv_t<T>;
 			daw_throw_on_true<bad_variant_t_access>( empty( ), "Attempt to access an empty value" );
 			daw_throw_on_false<bad_variant_t_access>( is_same_type<value_type>( ), "Attempt to access a value of another type" );
 			static_assert( sizeof(value_type) <= BUFFER_SIZE, "This should never happen.  sizeof(T) does not fit into m_buffer" );
