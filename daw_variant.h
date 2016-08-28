@@ -51,21 +51,34 @@ namespace daw {
 	}
 
 	template<typename Type, typename... Types> struct variant_t;
+}	// namespace daw
 
-	template<typename T, typename... Types>	auto & get( variant_t<Types...> const & value );
+template<typename T, typename... Types>  const T & get( daw::variant_t<Types...> const & value );
 
-	template<typename CharT = char, typename Traits = ::std::char_traits<CharT>, typename Allocator = ::std::allocator<CharT>>
-	auto to_string( ::std::basic_string<CharT, Traits, Allocator> const & s ) {
-		return s;
-	}
+namespace daw {
+	namespace tostrings {
+		template<typename CharT = char, typename Traits = ::std::char_traits<CharT>, typename Allocator = ::std::allocator<CharT>>
+		auto to_string( ::std::basic_string<CharT, Traits, Allocator> const & s ) {
+			return s;
+		}
 
+		template<typename T>
+		std::string to_string( T const * ptr ) {
+			if( nullptr == ptr ) {
+				return "";
+			}
+			using std::to_string;
+			using daw::tostrings::to_string;
+			return to_string( *ptr );
+		}
+	}	// namespace tostrings
 	template<typename... Types>
 	struct generate_to_strings_t {
 		template<typename T>
 		auto generate( ) const {
 			return []( variant_t<Types...> const & value ) {
 				using std::to_string;
-				using daw::to_string;
+				using daw::tostrings::to_string;
 				return to_string( get<T>( value ) );
 			};
 		}
@@ -325,11 +338,6 @@ namespace daw {
 
 	};	// variant_t
 
-	template<typename T, typename... Types>
-	auto & get( variant_t<Types...> const & value ) {
-		return value.template get<T>( );
-	}
-
 	template<typename... Args>
 	std::string to_string( variant_t<Args...> const & value ) {
 		return value.to_string( );
@@ -347,4 +355,9 @@ namespace daw {
 		return variant_t<Type, Types...>{ }.store( value );
 	};
 }	// namespace daw
+
+template<typename T, typename... Types>
+T const & get( daw::variant_t<Types...> const & value ) {
+	return value.template get<T>( );
+}
 

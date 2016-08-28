@@ -28,7 +28,7 @@
 
 BOOST_AUTO_TEST_CASE( daw_parser_helper001 ) {
 	using namespace std::literals::string_literals;
-	using v_t = daw::variant_t<int, float, std::string>;
+	using v_t = daw::variant_t<int, float, std::string, int*>;
 	std::cout << "size of variant is: " << sizeof( v_t ) << '\n';
 	v_t s;
 	v_t t = 5;
@@ -43,6 +43,11 @@ BOOST_AUTO_TEST_CASE( daw_parser_helper001 ) {
 	BOOST_REQUIRE_MESSAGE( *t == "5", "operator* conversion" );
 	BOOST_REQUIRE_MESSAGE( (t = 5.54f) == 5.54f, "Type change" );
 
+	int * test_ptr = new int;
+	*test_ptr = 1234;
+	
+	t = test_ptr;
+	BOOST_REQUIRE_MESSAGE( get<int*>( t ) == test_ptr, "Pointer" );
 
 }
 
