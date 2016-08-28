@@ -79,6 +79,7 @@ namespace daw {
 			return []( variant_t<Types...> const & value ) {
 				using std::to_string;
 				using daw::tostrings::to_string;
+				static_assert( sizeof( decltype( to_string( std::declval<T>( ) ) ) ) != 0, "to_string must be defined for type" );
 				return to_string( get<T>( value ) );
 			};
 		}
