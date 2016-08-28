@@ -36,8 +36,8 @@
 namespace daw {
 	namespace traits {
 		template<typename T>
-		using root_type_t = std::decay_t<std::remove_reference_t<T>>;
-		
+			using root_type_t = std::decay_t<std::remove_reference_t<T>>;
+
 		template<typename ...>
 			using void_t = void;
 
@@ -103,10 +103,10 @@ namespace daw {
 			};
 
 		template<typename... Types>
-		using max_sizeof_t = typename max_sizeof<Types...>::type;
+			using max_sizeof_t = typename max_sizeof<Types...>::type;
 
 		template<typename... Types>
-		constexpr auto const max_sizeof_v = max_sizeof<Types...>::value;
+			constexpr auto const max_sizeof_v = max_sizeof<Types...>::value;
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	Returns true if all values passed are true
@@ -183,20 +183,20 @@ namespace daw {
 		/// Summary:	Is type T on of the other types
 		///
 		template<typename T, typename... Types>
-		struct is_one_of: public ::std::false_type { };
+			struct is_one_of: public ::std::false_type { };
 
 		template<typename T, typename Type>
-		struct is_one_of<T, Type>: public ::std::is_same < T, Type> { };
+			struct is_one_of<T, Type>: public ::std::is_same < T, Type> { };
 
 		template<typename T, typename Type, typename... Types>
-		struct is_one_of<T, Type, Types...>: public ::std::integral_constant<bool,::std::is_same<T, Type>::value || is_one_of<T, Types...>::value> { };
+			struct is_one_of<T, Type, Types...>: public ::std::integral_constant<bool,::std::is_same<T, Type>::value || is_one_of<T, Types...>::value> { };
 
 		template<typename... Types>
-		using is_one_of_t = typename is_one_of<Types...>::type;
+			using is_one_of_t = typename is_one_of<Types...>::type;
 
 		template<typename... Types>
-		constexpr auto const is_one_of_v = is_one_of<Types...>::value;
-		
+			constexpr auto const is_one_of_v = is_one_of<Types...>::value;
+
 		namespace details {
 			template<typename> struct type_sink { typedef void type; }; // consumes a type, and makes it `void`
 			template<typename T> using type_sink_t = typename type_sink<T>::type;
@@ -328,21 +328,35 @@ namespace daw {
 		namespace impl {
 			template<typename F, typename...Args>
 				struct is_callable_impl {
-				template<class U> static auto test(U* p) -> decltype((*p)(std::declval<Args>()...), void(), std::true_type());
-				template<class U> static auto test(...) -> decltype(std::false_type());
+					template<class U> static auto test(U* p) -> decltype((*p)(std::declval<Args>()...), void(), std::true_type());
+					template<class U> static auto test(...) -> decltype(std::false_type());
 
-				static constexpr bool value = decltype(test<F>(0))::value;
-			};	// is_callable
+					static constexpr bool value = decltype(test<F>(0))::value;
+				};	// is_callable
 		}	// namespace impl
 
 		template<typename F, typename...Args>
-		using is_callable = std::integral_constant<bool, impl::is_callable_impl<F, Args...>::value>;
+			using is_callable = std::integral_constant<bool, impl::is_callable_impl<F, Args...>::value>;
 
 		template<typename F, typename...Args>
-		using is_callable_t = typename is_callable<F, Args...>::type;
+			using is_callable_t = typename is_callable<F, Args...>::type;
 
 		template<typename F, typename...Args>
-		constexpr auto is_callable_v = impl::is_callable_impl<F, Args...>::value;
+			constexpr auto is_callable_v = impl::is_callable_impl<F, Args...>::value;
+
+		template<std::size_t I, typename T, typename ...Ts>
+		struct nth_element_impl {
+			using type = typename nth_element_impl<I-1, Ts...>::type;
+		};
+
+		template <typename T, typename ...Ts>
+		struct nth_element_impl<0, T, Ts...> {
+			using type = T;
+		};
+
+		template <std::size_t I, typename ...Ts>
+		using nth_element = typename nth_element_impl<I, Ts...>::type;
+
 	}	// namespace traits
 }	// namespace daw
 

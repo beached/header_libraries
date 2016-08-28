@@ -29,6 +29,7 @@
 #include <string>
 #include <typeindex>
 #include <typeinfo>
+#include <unordered_map>
 
 #include "daw_algorithm.h"
 #include "daw_exception.h"
@@ -43,6 +44,93 @@ namespace daw {
 		~bad_variant_t_access( ) = default;
 	};
 
+	template<typename T>
+	static auto get_type_index( ) {
+		using value_type = daw::traits::root_type_t<T>;
+		return std::type_index( typeid( value_type ) );
+	}
+
+	template<typename Type, typename... Types> struct variant_t;
+
+	template<typename T, typename... Types>	auto & get( variant_t<Types...> const & value );
+
+	template<typename CharT = char, typename Traits = ::std::char_traits<CharT>, typename Allocator = ::std::allocator<CharT>>
+	auto to_string( ::std::basic_string<CharT, Traits, Allocator> const & s ) {
+		return s;
+	}
+
+	template<typename... Types>
+	struct generate_to_strings_t {
+		template<typename T>
+		auto generate( ) const {
+			return []( variant_t<Types...> const & value ) {
+				using std::to_string;
+				using daw::to_string;
+				return to_string( get<T>( value ) );
+			};
+		}
+	};	// generate_to_strings_t
+
+	template<typename... Types>
+	struct generate_compare_t {
+		template<typename T>
+		auto generate( ) const {
+			return []( variant_t<Types...> const & lhs, variant_t<Types...> const & rhs ) {
+				if( lhs.type_index( ) == rhs.type_index( )) {
+					auto const & a = lhs.get<T>( );
+					auto const & b = rhs.get<T>( );
+					if( a == b ) {
+						return 0;
+					} else if( a < b ) {
+						return -1;
+					}
+					return 1;
+				}
+				return lhs.to_string( ).compare( rhs.to_string( ) );
+			};
+		}
+	};	// generate_compare_t
+
+	template<typename... Types>
+	struct variant_helper_funcs_t {
+		using to_string_t = std::function<std::string( variant_t<Types...> const & )>;
+		using compare_t = std::function<int( variant_t<Types...> const &, variant_t<Types...> const & )>;
+		to_string_t to_string;	
+		compare_t compare;	
+		
+		variant_helper_funcs_t( ):
+			to_string{ },
+			compare{ } { }
+
+		template<typename ToString, typename Compare>
+		variant_helper_funcs_t( ToString a, Compare b ):
+			to_string{ a },
+			compare{ b } { }
+	};	// variant_helper_funcs_t
+
+	template<typename... Types>
+	struct generate_variant_helper_funcs_t {
+		generate_to_strings_t<Types...> generate_to_strings;
+		generate_compare_t<Types...> generate_compares;
+
+		template<typename T>
+		auto generate( ) const {
+			return variant_helper_funcs_t<Types...>{ generate_to_strings. template generate<T>( ), generate_compares. template generate<T>( ) };
+		}
+	};	// generate_variant_helper_funcs_t
+
+	template<typename... Types>
+	auto get_variant_helpers( ) {
+		static_assert( sizeof...(Types) > 0, "Must supply at least one type" );
+
+		std::unordered_map<std::type_index, variant_helper_funcs_t<Types...>> results;
+		generate_variant_helper_funcs_t<Types...> generate_variant_helper_funcs;
+
+		auto list = { ((void)(results[get_type_index<Types>( )] = generate_variant_helper_funcs.template generate<Types>( )), 0)... };
+
+		return results;
+	}
+
 	template<typename Type, typename... Types>
 	struct variant_t {
 		static constexpr size_t BUFFER_SIZE = daw::traits::max_sizeof_v<Type,Types...>;
@@ -51,7 +139,11 @@ namespace daw {
 	private:
 		std::array<uint8_t, BUFFER_SIZE> m_buffer;
 		boost::optional<std::type_index> m_stored_type;
-		std::function<std::string( )> m_to_string;
+
+		static auto get_helper_funcs( std::type_index idx ) {
+			static auto func_map = get_variant_helpers<Type, Types...>( );
+			return func_map[idx];
+		}
 
 		template<typename T, typename Result = std::enable_if_t<is_valid_type<T>, daw::traits::root_type_t<T>>>
 		Result * ptr( ) {
@@ -73,19 +165,9 @@ namespace daw {
 			return reinterpret_cast<value_type const *>(m_buffer.data( ));	
 		}
 
-		template<typename T>
-		static auto get_type_index( ) {
-			using value_type = daw::traits::root_type_t<T>;
-			return std::type_index( typeid( value_type ) );
-		}
-
 		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
 		void set_type( ) {
 			m_stored_type = get_type_index<T>( );
-			m_to_string = [&]( ) {
-				using std::to_string;
-				return to_string( *ptr<T>( ) );
-			};
 		}
 
 	public:
@@ -131,7 +213,6 @@ namespace daw {
 
 		void reset( ) {
 			m_stored_type = boost::optional<std::type_index>{ };
-			m_to_string = nullptr;
 		}
 
 		template<typename T>
@@ -149,24 +230,12 @@ namespace daw {
 		}
 
 		auto compare( variant_t const & rhs ) const {
-			if( this->equal( rhs ) ) {
-				return 0;
-			}
-			return this->m_to_string( ).compare( rhs.m_to_string( ) );
+			return get_helper_funcs( *m_stored_type ).compare( *this, rhs );
 		}
 
 		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
 		auto compare( T const & rhs ) const {
 			return get<T>( ) - rhs;	
-		}
-
-		bool equal( variant_t const & rhs ) const {
-			return std::tie( this->m_stored_type, this->m_buffer ) == std::tie( rhs.m_stored_type, rhs.m_buffer );
-		}
-
-		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-		auto eqaul( T const & rhs ) const {
-			return this->get<T>( ) == rhs;	
 		}
 
 		friend bool operator==( variant_t const & lhs, variant_t const & rhs ) {
@@ -243,17 +312,27 @@ namespace daw {
 			return get<T>( );
 		}
 
-		template<typename... Args>
-		friend std::string to_string( variant_t<Args...> const & );
+		std::string to_string( ) const {
+			if( empty( ) ) {
+				return "";
+			}
+			return get_helper_funcs( *m_stored_type ).to_string( *this );
+		}
+
 	};	// variant_t
 
-	template<typename... Args>
-	std::string to_string( variant_t<Args...> const & value ) {
-		return value.m_to_string( );
+	template<typename T, typename... Types>
+	auto & get( variant_t<Types...> const & value ) {
+		return value.template get<T>( );
 	}
 
 	template<typename... Args>
-	std::ostream operator>>( std::ostream & os, variant_t<Args...> const & value ) {
+	std::string to_string( variant_t<Args...> const & value ) {
+		return value.to_string( );
+	}
+
+	template<typename... Args>
+	std::ostream & operator>>( std::ostream & os, variant_t<Args...> const & value ) {
 		using std::to_string;
 		os << to_string( value );
 		return os;
@@ -263,6 +342,5 @@ namespace daw {
 	auto as_variant_t( Type const & value ) {
 		return variant_t<Type, Types...>{ }.store( value );
 	};
-
 }	// namespace daw
 

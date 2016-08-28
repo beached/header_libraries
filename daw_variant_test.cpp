@@ -27,13 +27,19 @@
 #include "daw_variant.h"
 
 BOOST_AUTO_TEST_CASE( daw_parser_helper001 ) {
-	using v_t = daw::variant_t<int, float>;
+	using namespace std::literals::string_literals;
+	using v_t = daw::variant_t<int, float, std::string>;
+	std::cout << "size of variant is: " << sizeof( v_t ) << '\n';
 	v_t s;
 	v_t t = 5;
+	std::string five = "5"s;
+	v_t u = five; 
 	BOOST_REQUIRE_MESSAGE( s.empty( ), "Default value should be empty" );
 	BOOST_REQUIRE_MESSAGE( t.get<int>( ) == 5, "Value not there" );
 	BOOST_REQUIRE_MESSAGE( static_cast<int>(t) == 5, "Value not there" );
 	BOOST_REQUIRE_MESSAGE( t == 5, "Value not there" );
+	BOOST_REQUIRE_MESSAGE( t.to_string( ) == "5", "too string not functioning" );
+	BOOST_REQUIRE_MESSAGE( (t == u), "Type change" );
 	BOOST_REQUIRE_MESSAGE( (t = 5.54f) == 5.54f, "Type change" );
 
 
