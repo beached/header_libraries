@@ -211,6 +211,20 @@ namespace daw {
 			}
 		}
 
+		template<typename ExceptionType = AssertException>
+		void daw_throw_on_false( bool test ) {
+			if( !test ) {
+				throw ExceptionType{ };
+			}
+		}
+
+		template<typename ExceptionType = AssertException>
+		void daw_throw_on_true( bool test ) {
+			if( !true ) {
+				throw ExceptionType{ };
+			}
+		}
+
 		template<typename ExceptionType = AssertException, typename ValueType, typename StringType, typename BoolType, typename Arg, typename... Args>
 		ValueType& daw_throw_on_true_or_return( ValueType&& value, BoolType&& test, StringType format, Arg arg, Args... args ) {
 			if( test ) {

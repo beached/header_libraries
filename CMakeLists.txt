@@ -32,6 +32,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_range
 	daw_traits
 	daw_utility
+	daw_variant
  )
 
 set( UNTESTED_HEADER_FILES

@@ -183,21 +183,19 @@ namespace daw {
 		/// Summary:	Is type T on of the other types
 		///
 		template<typename T, typename... Types>
-			struct is_one_of: ::std::false_type { };
+		struct is_one_of: public ::std::false_type { };
 
 		template<typename T, typename Type>
-			struct is_one_of<T, Type>: ::std::is_same < T, Type> { };
+		struct is_one_of<T, Type>: public ::std::is_same < T, Type> { };
 
 		template<typename T, typename Type, typename... Types>
-			struct is_one_of<T, Type, Types...>: ::std::integral_constant < bool,::std::is_same<T, Type>::value || is_one_of<T, Types...>::value> { };
+		struct is_one_of<T, Type, Types...>: public ::std::integral_constant<bool,::std::is_same<T, Type>::value || is_one_of<T, Types...>::value> { };
 
 		template<typename... Types>
 		using is_one_of_t = typename is_one_of<Types...>::type;
 
 		template<typename... Types>
 		constexpr auto const is_one_of_v = is_one_of<Types...>::value;
-
-
 		
 		namespace details {
 			template<typename> struct type_sink { typedef void type; }; // consumes a type, and makes it `void`

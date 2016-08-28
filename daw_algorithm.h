@@ -25,6 +25,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <functional>
 #include <iterator>
+#include <stdexcept>
 #include <type_traits>
 #include <vector>
 
@@ -513,7 +514,24 @@ namespace daw {
 			return impl::less_than_or_equal_to<Value>{ std::forward<Value>( value ) };
 		}
 
-
+		template<typename ForwardIterator1, typename ForwardIterator2>
+		auto lexicographical_compare( ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2, ForwardIterator2 last2 ) {
+			decltype( *first1 - *first2 ) tmp;
+			for( ; first1 != last1 && first2 != last2; ++first1, ++first2 ) {
+				if( (tmp = *first1 - *first2 ) != 0 ) {
+					return tmp;
+				}
+			}
+			if( first1 == last1 ) {
+				if( first2 == last2 ) {
+					return 0;
+				}
+				return 1;
+			} else if( first2 == last2 ) {
+				return -1;
+			}
+			throw std::logic_error( "This case should have been handled within the loop" );
+		}
 	}	// namespace algorithm
 }	// namespace daw
 
