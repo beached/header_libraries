@@ -45,8 +45,8 @@ namespace daw {
 		struct ParserOverflowException: public ParserException { };
 		struct ParserOutOfRangeException: public ParserException, public std::out_of_range {
 			template<typename String>
-			ParserOutOfRangeException( String && arg ):
-				ParserException{ },
+				ParserOutOfRangeException( String && arg ):
+					ParserException{ },
 				std::out_of_range{ std::forward<String>( arg ) } { }
 		};
 
@@ -169,7 +169,7 @@ namespace daw {
 		template<typename T>
 			class in_t {
 				std::vector<T> container;
-			public:
+				public:
 				in_t( std::vector<T> values ):
 					container{ std::move( values ) } { }
 
@@ -367,43 +367,43 @@ namespace daw {
 			}
 
 		template<typename T>
-		constexpr bool is_unicode_whitespace( T val ) {
-			switch( static_cast<uint32_t>(val) ) {
-				case 0x00000009:	// CHARACTER TABULATION
-				case 0x0000000A:	// LINE FEED
-				case 0x0000000B:	// LINE TABULATION
-				case 0x0000000C:	// FORM FEED
-				case 0x0000000D:	// CARRIAGE RETURN
-				case 0x00000020:	// SPACE
-				case 0x00000085:	// NEXT LINE
-				case 0x000000A0:	// NO-BREAK SPACE
-				case 0x00001680:	// OGHAM SPACE MARK
-				case 0x00002000:	// EN QUAD
-				case 0x00002001:	// EM QUAD
-				case 0x00002002:	// EN SPACE
-				case 0x00002003:	// EM SPACE
-				case 0x00002004:	// THREE-PER-EM SPACE
-				case 0x00002005:	// FOUR-PER-EM SPACE
-				case 0x00002006:	// SIX-PER-EM SPACE
-				case 0x00002007:	// FIGURE SPACE 
-				case 0x00002008:	// PUNCTUATION SPACE
-				case 0x00002009:	// THIN SPACE
-				case 0x0000200A:	// HAIR SPACE
-				case 0x00002028:	// LINE SEPARATOR
-				case 0x00002029:	// PARAGRAPH SEPARATOR
-				case 0x0000202F:	// NARROW NO-BREAK SPACE 
-				case 0x0000205F:	// MEDIUM MATHEMATICAL SPACE
-				case 0x00003000:	// IDEOGRAPHIC SPACE
-					return true;
-				default:
-					return false;
+			constexpr bool is_unicode_whitespace( T val ) {
+				switch( static_cast<uint32_t>(val) ) {
+					case 0x00000009:	// CHARACTER TABULATION
+					case 0x0000000A:	// LINE FEED
+					case 0x0000000B:	// LINE TABULATION
+					case 0x0000000C:	// FORM FEED
+					case 0x0000000D:	// CARRIAGE RETURN
+					case 0x00000020:	// SPACE
+					case 0x00000085:	// NEXT LINE
+					case 0x000000A0:	// NO-BREAK SPACE
+					case 0x00001680:	// OGHAM SPACE MARK
+					case 0x00002000:	// EN QUAD
+					case 0x00002001:	// EM QUAD
+					case 0x00002002:	// EN SPACE
+					case 0x00002003:	// EM SPACE
+					case 0x00002004:	// THREE-PER-EM SPACE
+					case 0x00002005:	// FOUR-PER-EM SPACE
+					case 0x00002006:	// SIX-PER-EM SPACE
+					case 0x00002007:	// FIGURE SPACE 
+					case 0x00002008:	// PUNCTUATION SPACE
+					case 0x00002009:	// THIN SPACE
+					case 0x0000200A:	// HAIR SPACE
+					case 0x00002028:	// LINE SEPARATOR
+					case 0x00002029:	// PARAGRAPH SEPARATOR
+					case 0x0000202F:	// NARROW NO-BREAK SPACE 
+					case 0x0000205F:	// MEDIUM MATHEMATICAL SPACE
+					case 0x00003000:	// IDEOGRAPHIC SPACE
+						return true;
+					default:
+						return false;
+				}
 			}
-		}
 
 		template<typename T>
-		constexpr bool not_unicode_whitespace( T val ) {
-			return !is_unicode_whitespace( val );
-		}
+			constexpr bool not_unicode_whitespace( T val ) {
+				return !is_unicode_whitespace( val );
+			}
 
 		template<typename ForwardIterator>
 			auto trim_left( ForwardIterator first, ForwardIterator last ) {
@@ -509,29 +509,29 @@ namespace daw {
 		template<typename T>
 			struct matcher_t {
 				using value_t = daw::traits::root_type_t<T>;
-			private:
+				private:
 				std::vector<value_t> m_to_match;
-			public:
+				public:
 				matcher_t( std::vector<value_t> to_match ):
-						m_to_match{ std::move( to_match ) } { }
+					m_to_match{ std::move( to_match ) } { }
 
 				template<typename ForwardIterator>
 					find_result_t<ForwardIterator> operator( )( ForwardIterator first, ForwardIterator last ) const {
-					auto result = make_find_result( first, last );
+						auto result = make_find_result( first, last );
 
-					auto pos = std::search( result.first, result.last, m_to_match.begin( ), m_to_match.end( ), []( auto const & lhs, auto const & rhs ) {
-						return is_a( lhs, rhs );
-					} );
+						auto pos = std::search( result.first, result.last, m_to_match.begin( ), m_to_match.end( ), []( auto const & lhs, auto const & rhs ) {
+								return is_a( lhs, rhs );
+								} );
 
-					if( pos != result.last ) {
-						result.last = pos;
-						result.found = true;
+						if( pos != result.last ) {
+							result.last = pos;
+							result.found = true;
+						}
+						return result;
 					}
-					return result;
-				}
 			};		// matcher_t
 
-			template<typename Container>
+		template<typename Container>
 			auto matcher( Container const & container ) {
 				using value_t = daw::traits::root_type_t<decltype(*container.begin( ))>;
 				std::vector<value_t> values;
@@ -539,7 +539,7 @@ namespace daw {
 				return matcher_t<value_t>{ std::move( values ) };
 			}
 
-			template<typename T, size_t N>
+		template<typename T, size_t N>
 			auto matcher( T (&container)[N] ) {
 				using value_t = daw::traits::root_type_t<T>;
 				std::vector<value_t> values;
@@ -547,7 +547,7 @@ namespace daw {
 				return matcher_t<value_t>{ std::move( values ) };
 			}
 
-			template<typename ForwardIterator, typename Result>
+		template<typename ForwardIterator, typename Result>
 			void to_uint( ForwardIterator first, ForwardIterator last, Result & result ) {
 				size_t count = std::numeric_limits<Result>::digits10;
 
@@ -565,7 +565,7 @@ namespace daw {
 				}
 			}
 
-			template<typename ForwardIterator, typename Result>
+		template<typename ForwardIterator, typename Result>
 			void to_int( ForwardIterator first, ForwardIterator last, Result & result ) {
 				size_t count = std::numeric_limits<Result>::digits10;
 				result = 0;
@@ -590,7 +590,7 @@ namespace daw {
 				}
 			}
 
-			template<typename ForwardIterator>
+		template<typename ForwardIterator>
 			constexpr find_result_t<ForwardIterator> find_numeric( ForwardIterator first, ForwardIterator last ) {
 				using namespace daw::parser;
 				auto is_first = []( auto const & v ) {
@@ -610,6 +610,15 @@ namespace daw {
 				return from_to( first, last, is_first, is_last );
 			}
 
+		template<typename ForwardIterator1, typename ForwardIterator2, typename BinaryPredicate>
+			bool starts_with( ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2, ForwardIterator2 last2, BinaryPredicate pred ) {
+				while( first1 != last1 && first2 != last2 ) {
+					if( !pred( *first1, *first2 ) ) {
+						return false;
+					}
+				}
+				return first2 == last2;
+			}
 	}    // namespace parser
 }    // namespace daw
 
