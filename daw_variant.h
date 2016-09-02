@@ -106,30 +106,46 @@ namespace daw {
 	};	// generate_compare_t
 
 	template<typename... Types>
+	struct generate_destruct_t {
+		template<typename T>
+		auto generate( ) const {
+			return []( variant_t<Types...> & value ) {
+				value.template get<T>( ).~T( );
+			};
+		}
+	};	// generate_compare_t
+
+
+	template<typename... Types>
 	struct variant_helper_funcs_t {
 		using to_string_t = std::function<std::string( variant_t<Types...> const & )>;
 		using compare_t = std::function<int( variant_t<Types...> const &, variant_t<Types...> const & )>;
+		using destruct_t = std::function<void( variant_t<Types...> & )>;
 		to_string_t to_string;	
 		compare_t compare;	
-		
+		destruct_t destruct;
+
 		variant_helper_funcs_t( ):
 			to_string{ },
-			compare{ } { }
+			compare{ },
+			destruct{ } { }
 
-		template<typename ToString, typename Compare>
-		variant_helper_funcs_t( ToString a, Compare b ):
+		template<typename ToString, typename Compare, typename Destruct>
+		variant_helper_funcs_t( ToString a, Compare b, Destruct c ):
 			to_string{ a },
-			compare{ b } { }
+			compare{ b },
+			destruct{ c } { }
 	};	// variant_helper_funcs_t
 
 	template<typename... Types>
 	struct generate_variant_helper_funcs_t {
 		generate_to_strings_t<Types...> generate_to_strings;
 		generate_compare_t<Types...> generate_compares;
+		generate_destruct_t<Types...> generate_destructs;
 
 		template<typename T>
 		auto generate( ) const {
-			return variant_helper_funcs_t<Types...>{ generate_to_strings. template generate<T>( ), generate_compares. template generate<T>( ) };
+			return variant_helper_funcs_t<Types...>{ generate_to_strings. template generate<T>( ), generate_compares. template generate<T>( ), generate_destructs. template generate<T>( ) };
 		}
 	};	// generate_variant_helper_funcs_t
 
@@ -184,9 +200,24 @@ namespace daw {
 			return reinterpret_cast<value_type const *>(static_cast<void const *>(m_buffer.data( )));
 		}
 
+		void * raw_ptr( ) {
+			return static_cast<void *>(m_buffer.data( ));
+		}
+
 		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
 		void set_type( ) {
 			m_stored_type = get_type_index<T>( );
+			new(raw_ptr( )) T{ }; 
+		}
+
+		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
+		void set_type( T value ) {
+			if( !is_same_type<T>() ) {
+				reset( );
+			}
+			m_stored_type = get_type_index<T>( );
+			void * p = raw_ptr( );
+			new (p) T{std::move( value )}; 
 		}
 
 	public:
@@ -195,21 +226,26 @@ namespace daw {
 				m_stored_type{ } { }
 
 		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-		variant_t( T const & value ):
+		variant_t( T value ):
 				variant_t{ } {
 
-			store( value );
+			store( std::move( value ) );
 		}
 
-		~variant_t( ) = default;
+		~variant_t( ) {
+			if( m_stored_type ) {
+				get_helper_funcs( *m_stored_type ).destruct( *this );
+			}
+		}
+
 		variant_t( variant_t const & ) = default;
 		variant_t & operator=( variant_t const & ) = default;
 		variant_t( variant_t && ) = default;
 		variant_t & operator=( variant_t && ) = default;
 
 		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-		variant_t & operator=( T const & value ) {
-			store( value );
+		variant_t & operator=( T value ) {
+			store( std::move( value ) );
 			return *this;
 		}
 
@@ -231,6 +267,9 @@ namespace daw {
 		}
 
 		void reset( ) {
+			if( m_stored_type ) {
+				get_helper_funcs( *m_stored_type ).destruct( *this );
+			}
 			m_stored_type = boost::optional<std::type_index>{ };
 		}
 
@@ -241,9 +280,7 @@ namespace daw {
 
 		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
 		variant_t & store( T const & value ) {
-			if( !is_same_type<T>() ) {
-				set_type<T>( );
-			}
+			set_type<T>( );
 			get<T>( ) = value;
 			return *this;
 		}
