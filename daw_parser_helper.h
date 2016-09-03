@@ -561,69 +561,6 @@ namespace daw {
 				return matcher_t<value_t>{ std::move( values ) };
 			}
 
-		template<typename ForwardIterator, typename Result>
-			void to_uint( ForwardIterator first, ForwardIterator last, Result & result ) {
-				size_t count = std::numeric_limits<Result>::digits10;
-
-				if( '-' == *first ) {
-					throw ParserOutOfRangeException{ "Negative values are unsupported" };
-				}
-				result = 0;
-				for( ; first != last && count > 0; ++first, --count ) {
-					result *= static_cast<Result>(10);
-					Result val = *first - '0';
-					result += val; 
-				}
-				if( first != last ) {
-					throw ParserOutOfRangeException{ "Not enough room to store unsigned integer" };
-				}
-			}
-
-		template<typename ForwardIterator, typename Result>
-			void to_int( ForwardIterator first, ForwardIterator last, Result & result ) {
-				size_t count = std::numeric_limits<Result>::digits10;
-				result = 0;
-				bool is_neg = false;
-				if( '-' == *first ) {
-					if( !std::numeric_limits<Result>::is_signed ) {
-						throw ParserOutOfRangeException{ "Negative values are unsupported with unsigned Result" };
-					}
-					is_neg = true;
-					++first;
-				}
-				for( ; first != last && count > 0; ++first, --count ) {
-					result *= static_cast<Result>(10);
-					Result val = *first - '0';
-					result += val; 
-				}
-				if( first != last ) {
-					throw ParserOutOfRangeException{ "Not enough room to store signed integer" };
-				}
-				if( is_neg ) {
-					result *= static_cast<Result>(-1);
-				}
-			}
-
-		template<typename ForwardIterator>
-			constexpr find_result_t<ForwardIterator> find_numeric( ForwardIterator first, ForwardIterator last ) {
-				using namespace daw::parser;
-				auto is_first = []( auto const & v ) {
-					return is_a( '-', v ) || is_number( v );
-				};
-
-				bool has_decimal = false;
-				auto is_last = [&has_decimal]( auto const & v ) {
-					if( is_a( '.', v ) ) {
-						if( has_decimal ) {
-							return true;
-						}
-						has_decimal = true;
-					}
-					return is_number( v );
-				};
-				return from_to( first, last, is_first, is_last );
-			}
-
 		template<typename ForwardIterator1, typename ForwardIterator2, typename BinaryPredicate>
 			bool starts_with( ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2, ForwardIterator2 last2, BinaryPredicate pred ) {
 				while( first1 != last1 && first2 != last2 ) {

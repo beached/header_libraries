@@ -38,6 +38,7 @@ set( TESTED_HEADERS_PREFIXES
 set( UNTESTED_HEADER_FILES
 	concurrent_queue.h
 	daw_array.h
+	daw_benchmark.h
 	daw_bit.h
 	daw_bit_queues.h
 	daw_common_mixins.h
@@ -46,6 +47,7 @@ set( UNTESTED_HEADER_FILES
 	daw_expected.h
 	daw_newhelper.h
 	daw_parallel_algorithm.h
+	daw_parser_addons.h
 	daw_range_collection.h
 	daw_range_common.h
 	daw_range_operators.h
