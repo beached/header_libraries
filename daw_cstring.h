@@ -55,12 +55,16 @@ namespace daw {
 					m_cstr{ nullptr },
 					m_local_string{ true } { }
 
-				CString copy( ) const {
-					return CString{ m_cstr, true, };
-				}
+				CString( const CString& value ):
+					CString{ value.m_cstr, true } { }
 
-				CString( const CString& value ) = delete;
-				CString& operator=(const CString& rhs) = delete;
+				CString& operator=(const CString& rhs) {
+					if( this != &rhs ) {
+						CString tmp{ rhs };
+						tmp.swap( *this );
+					}
+					return *this;
+				}
 
 				CString( CString&& value ) noexcept: 
 					m_cstr{ std::exchange( value.m_cstr, nullptr ) },
