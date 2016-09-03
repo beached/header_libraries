@@ -35,7 +35,7 @@ namespace daw {
 			struct CString {
 				CharType const* m_cstr;
 				bool m_local_string;
-			public:
+				public:
 				CString( CharType const* c_str, bool do_copy = false, const size_t length = 0 ) :m_cstr( c_str ), m_local_string( do_copy ) {
 					if( do_copy ) {
 						size_t len = length;
@@ -88,8 +88,6 @@ namespace daw {
 					}
 				}
 
-				bool operator==(const CString& rhs) const = delete;
-
 				CharType const& operator[]( size_t pos ) const {
 					return m_cstr[pos];
 				}
@@ -124,12 +122,20 @@ namespace daw {
 					return nullptr == m_cstr;
 				}
 
+				explicit operator bool( ) const noexcept {
+					return !is_null( );
+				}
+
 				bool is_local_string( ) const noexcept {
 					return m_local_string;
 				}
 
 				void take_ownership_of_data( ) noexcept {
 					m_local_string = true;
+				}
+
+				auto compare( CString const & rhs ) {
+					return strcmp( m_cstr, rhs.m_cstr );
 				}
 			};	// CString
 
@@ -139,6 +145,42 @@ namespace daw {
 			}
 
 		// TODO		static_assert(daw::traits::is_regular<CString<char>>::value, "CString isn't regular");
+
+		template<typename Char>
+			std::string to_string( CString<Char> const & str ) {
+				return str.to_string( );
+			}
+
+		template<typename Char>
+			bool operator==( CString<Char> const & lhs, CString<Char> const & rhs ) {
+				return lhs.compare( rhs ) == 0;
+			}
+
+		template<typename Char>
+			bool operator!=( CString<Char> const & lhs, CString<Char> const & rhs ) {
+				return lhs.compare( rhs ) != 0;
+			}
+
+		template<typename Char>
+			bool operator<( CString<Char> const & lhs, CString<Char> const & rhs ) {
+				return lhs.compare( rhs ) < 0;
+			}
+
+		template<typename Char>
+			bool operator<=( CString<Char> const & lhs, CString<Char> const & rhs ) {
+				return lhs.compare( rhs ) <= 0;
+			}			
+
+		template<typename Char>
+			bool operator>( CString<Char> const & lhs, CString<Char> const & rhs ) {
+				return lhs.compare( rhs ) > 0;
+			}
+
+		template<typename Char>
+			bool operator>=( CString<Char> const & lhs, CString<Char> const & rhs ) {
+				return lhs.compare( rhs ) >= 0;
+			}
+
 
 		using cstring = CString<char> ;
 	}	// namespace data
