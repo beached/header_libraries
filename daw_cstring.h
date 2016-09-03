@@ -55,6 +55,10 @@ namespace daw {
 					m_cstr{ nullptr },
 					m_local_string{ true } { }
 
+				CString copy( ) const {
+					return CString{ m_cstr, true, };
+				}
+
 				CString( const CString& value ) = delete;
 				CString& operator=(const CString& rhs) = delete;
 
