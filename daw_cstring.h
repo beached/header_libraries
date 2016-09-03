@@ -134,7 +134,7 @@ namespace daw {
 					m_local_string = true;
 				}
 
-				auto compare( CString const & rhs ) {
+				auto compare( CString const & rhs ) const {
 					return strcmp( m_cstr, rhs.m_cstr );
 				}
 			};	// CString
