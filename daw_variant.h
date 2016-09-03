@@ -91,8 +91,8 @@ namespace daw {
 		auto generate( ) const {
 			return []( variant_t<Types...> const & lhs, variant_t<Types...> const & rhs ) {
 				if( lhs.type_index( ) == rhs.type_index( )) {
-					auto const & a = lhs.get<T>( );
-					auto const & b = rhs.get<T>( );
+					auto const & a = lhs.template get<T>( );
+					auto const & b = rhs.template get<T>( );
 					if( a == b ) {
 						return 0;
 					} else if( a < b ) {
