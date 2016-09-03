@@ -105,6 +105,20 @@ namespace daw {
 				return result;
 			}
 
+		template<typename ForwardIterator>
+			auto until_false( ForwardIterator first, ForwardIterator last, std::function<bool(daw::traits::root_type_t<decltype(*first)>)> is_last ) {
+
+				auto result = make_find_result( first, last );
+				for( auto it = first; it != last; ++it ) {
+					if( (result.found = !is_last( *it )) ) {
+						result.last = it;
+						return result;
+					}
+				}
+				return result;
+			}
+
+
 		template<typename T, typename Arg>
 			bool is_a( T && value, Arg && tst ) {
 				//static_assert( daw::traits::is_comparable_v<T, Arg>, "value is not comparable to tst" );
