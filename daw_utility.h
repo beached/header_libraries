@@ -21,18 +21,19 @@
 // SOFTWARE.
 
 #pragma once
+
 #ifdef max
 #undef max
 #endif	//max
 
 #include <boost/utility/string_ref.hpp>
 #include <cassert>
+#include <cmath>
 #include <functional>
 #include <limits>
 #include <memory>
 #include <string>
 #include <type_traits>
-#include <cmath>
 #include <vector>
 
 namespace daw {
