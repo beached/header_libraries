@@ -29,6 +29,7 @@
 #include <string>
 #include <typeindex>
 #include <typeinfo>
+#include <type_traits>
 #include <unordered_map>
 
 #include "daw_algorithm.h"
@@ -401,6 +402,11 @@ namespace daw {
 
 template<typename T, typename... Types>
 T const & get( daw::variant_t<Types...> const & value ) {
+	return value.template get<T>( );
+}
+
+template<typename T, typename... Types>
+T & get( daw::variant_t<Types...> & value ) {
 	return value.template get<T>( );
 }
 
