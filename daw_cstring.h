@@ -25,40 +25,43 @@
 #include <string>
 #include <cstdint>
 
-#include <daw/scope_guard.h>
-#include <daw/daw_traits.h>
-#include <daw/daw_newhelper.h>
+#include "scope_guard.h"
+#include "daw_traits.h"
+#include "daw_newhelper.h"
 
 namespace daw {
 	namespace data {
 		template<typename CharType = char>
-			struct CString {
+			class CString {
 				CharType const* m_cstr;
 				bool m_local_string;
 				public:
-				CString( CharType const* c_str, bool do_copy = false, const size_t length = 0 ) :m_cstr( c_str ), m_local_string( do_copy ) {
-					if( do_copy ) {
-						size_t len = length;
-						if( 0 == len ) {
-							len = strlen( c_str );
+				CString( CharType const* c_str, bool do_copy = false, const size_t length = 0 ):
+					m_cstr{ c_str },
+					m_local_string{ do_copy } {
+
+						if( do_copy ) {
+							size_t len = length;
+							if( 0 == len ) {
+								len = strlen( c_str );
+							}
+							CharType* tmp = nullptr;
+							SCOPE_EXIT {
+								m_cstr = tmp;
+							};
+							tmp = new_array_throw<CharType>( len + 1 );
+							memcpy( tmp, c_str, len + 1 );
 						}
-						CharType* tmp = nullptr;
-						SCOPE_EXIT {
-							m_cstr = tmp;
-						};
-						tmp = new_array_throw<CharType>( len + 1 );
-						memcpy( tmp, c_str, len + 1 );
 					}
-				}
 
 				CString( ) noexcept:
 					m_cstr{ nullptr },
 					m_local_string{ true } { }
 
-				CString( const CString& value ):
+				CString( CString const & value ):
 					CString{ value.m_cstr, true } { }
 
-				CString& operator=(const CString& rhs) {
+				CString & operator=(CString const & rhs) {
 					if( this != &rhs ) {
 						CString tmp{ rhs };
 						tmp.swap( *this );
@@ -66,7 +69,7 @@ namespace daw {
 					return *this;
 				}
 
-				CString( CString&& value ) noexcept: 
+				CString( CString && value ) noexcept: 
 					m_cstr{ std::exchange( value.m_cstr, nullptr ) },
 					m_local_string{ std::exchange( value.m_local_string, false ) } { }
 
@@ -76,7 +79,7 @@ namespace daw {
 					swap( m_local_string, rhs.m_local_string );
 				}
 
-				CString& operator=(CString&& rhs) noexcept {
+				CString & operator=(CString && rhs) noexcept {
 					if( this != &rhs ) {
 						CString tmp{ std::move( rhs ) };
 						tmp.swap( *this );
@@ -87,12 +90,12 @@ namespace daw {
 				~CString( ) noexcept {
 					if( m_local_string && nullptr != m_cstr ) {
 						auto tmp = m_cstr;
-						nullify( );
 						delete[] tmp;
 					}
+					nullify( );
 				}
 
-				CharType const& operator[]( size_t pos ) const {
+				CharType const & operator[]( size_t pos ) const {
 					return m_cstr[pos];
 				}
 
@@ -126,8 +129,12 @@ namespace daw {
 					return nullptr == m_cstr;
 				}
 
+				bool empty( ) const noexcept {
+					return nullptr == m_cstr;
+				}
+
 				explicit operator bool( ) const noexcept {
-					return !is_null( );
+					return !empty( );
 				}
 
 				bool is_local_string( ) const noexcept {
@@ -184,7 +191,6 @@ namespace daw {
 			bool operator>=( CString<Char> const & lhs, CString<Char> const & rhs ) {
 				return lhs.compare( rhs ) >= 0;
 			}
-
 
 		using cstring = CString<char> ;
 	}	// namespace data
