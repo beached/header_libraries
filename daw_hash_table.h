@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2013-2016 Darrell Wright
+// Copyright (c) 2016 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to deal
@@ -25,8 +25,8 @@
 #include <functional>
 #include <list>
 #include <numeric>
-#include <utility>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "daw_utility.h"
@@ -171,7 +171,7 @@ namespace daw {
 	template<typename Value>
 	struct hash_table {
 		static constexpr const double ResizeRatio=1.15;
-		using value_type = typename ::std::decay_t<Value>;
+		using value_type = daw::traits::root_type_t<Value>;
 		using reference = value_type &;
 		using const_reference = value_type const &;
 	private:
