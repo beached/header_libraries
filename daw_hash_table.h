@@ -72,6 +72,8 @@ namespace daw {
 		struct hash_table {
 			static constexpr const double ResizeRatio=2.00;	// This will leave the hash at 2/3 full
 			using value_type = daw::traits::root_type_t<Value>;
+			using mapped_type = daw::traits::root_type_t<Value>;
+			using size_type = size_t;
 			using reference = value_type &;
 			using const_reference = value_type const &;
 		private:
@@ -208,8 +210,12 @@ namespace daw {
 			}
 
 			template<typename Key>
-				auto insert( Key const & key, value_type value ) {
-				}
+			auto insert( Key const & key, value_type value ) {
+				auto hash = hash_fn( key );
+				auto pos = find_item_by_hash_or_create( hash, *this );
+				pos->first = std::move( value );
+				return &pos->first;
+			}
 
 			template<typename Key>
 				auto & operator[]( Key const & key ) {
@@ -220,41 +226,130 @@ namespace daw {
 
 			template<typename Key>
 				auto const & operator[]( Key const & key ) const {
-					auto hash = hash_fn( key );
-					auto pos = find_item_by_hash( hash, *this );
-					if( m_values.end( ) == pos ) {
-						throw std::out_of_range( "Key does not already exist" );
-					}
-					return pos->value;
+					return at( key );
 				}
+
+			template<typename Key>
+			auto const & at( Key const & key ) const {
+				auto hash = hash_fn( key );
+				auto pos = find_item_by_hash( hash, *this );
+				if( m_values.end( ) == pos ) {
+					throw std::out_of_range( "Key does not already exist" );
+				}
+				return pos->value;
+			}
+
+			template<typename Key>
+			auto & at( Key const & key ) {
+				auto hash = hash_fn( key );
+				auto pos = find_item_by_hash( hash, *this );
+				if( m_values.end( ) == pos ) {
+					throw std::out_of_range( "Key does not already exist" );
+				}
+				return pos->value;
+			}
 
 			template<typename Key>
 				size_t erase( Key && key ) {
 					auto hash = hash_fn( key );
 					auto pos = find_item_by_hash( hash, m_values );
-					pos->clear( );
-					return 1;
+					if( pos != m_values.end( ) ) {
+						pos->clear( );
+						--m_occupancy;
+						return 1;
+					}
+					return 0;
 				}
 
 			void shrink_to_fit( ) {
-				auto count = std::accumulate( m_values.begin( ), m_values.end( ), 0u, []( auto const & a, auto const & b ) {
-					return a + (b.empty( ) ? 0 : 1);
-				} );
-				resize_table( m_values, count );
+				resize_table( m_values, m_occupancy );
 			}
 
-			size_t count_occupied( ) const {
-				m_occupancy = std::accumulate( m_values.begin( ), m_values.end( ), static_cast<size_t>(0), []( auto const & result, auto const & cur_val ) {
-					return result + (cur_val.empty( ) ? 0 : 1 );
-				});
-
+			size_t occupied( ) const {
 				return m_occupancy;
 			}
 
 			size_t capacity( ) const {
 				return m_values.size( );
 			}
+
+			bool empty( ) const {
+				return 0 == m_occupancy;
+			}
+
+			void clear( ) {
+				m_values.clear( );
+				m_occupancy = 0;
+			}
+
+			void swap( hash_table & rhs ) noexcept {
+				using std::swap;
+				swap( m_values, rhs.m_values );
+				swap( m_occupancy, rhs.m_occupancy );
+			}
+		
+			template<typename Key>
+			bool key_exists( Key const & key ) const {
+				auto hash = hash_fn( key );
+				auto pos = find_item_by_hash( hash, m_values );
+				return pos != m_values.end( );
+			}
+
+			template<typename Key>
+			auto & find( Key const & key ) {
+				auto hash = hash_fn( key );
+				auto pos = find_item_by_hash( hash, m_values );
+				return pos->value;
+			}
+
+			template<typename Key>
+			auto const & find( Key const & key ) const {
+				auto hash = hash_fn( key );
+				auto pos = find_item_by_hash( hash, m_values );
+				return pos->value;
+			}
+
+			template<typename Key>
+			size_t count( Key const & key ) const {
+				return key_exists( key ) ? 1 : 0;
+			}
+
+		private:
+			bool hash_exists( size_t hash ) const {
+				auto pos = find_item_by_hash( hash, m_values );
+				return pos != m_values.end( );
+			}
+		public:
+			friend void operator==( hash_table const & lhs, hash_table const & rhs ) {
+				if( lhs.m_occupancy == rhs.m_occupancy ) {
+					for( auto const & value: lhs.m_values ) {
+						if( !rhs.hash_exists( value.hash ) ) {
+							return false;
+						}
+					}
+					return true;
+				}
+				return false;
+			}
+
+			friend void operator!=( hash_table const & lhs, hash_table const & rhs ) {
+				if( lhs.m_occupancy == rhs.m_occupancy ) {
+					for( auto const & value: lhs.m_values ) {
+						if( !rhs.hash_exists( value.hash ) ) {
+							return true;
+						}
+					}
+					return false;
+				}
+				return true;
+			}
+
 		};	// struct hash_table
 
+
+		template<typename T>
+		void swap( hash_table<T> & lhs, hash_table<T> & rhs ) noexcept {
+			lhs.swap( rhs );
+		}
 }	// namespace daw
 
