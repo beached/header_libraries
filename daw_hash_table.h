@@ -238,6 +238,7 @@ namespace daw {
 			using priv_iterator = typename values_type::iterator;
 			values_type m_values;
 			size_t m_occupancy;
+			size_t m_growth_counter;
 
 			auto priv_begin( ) {
 				return m_values.begin( );
@@ -257,7 +258,8 @@ namespace daw {
 		public:
 			hash_table( ): 
 				m_values{ 7 },
-				m_occupancy{ 0 } { }
+				m_occupancy{ 0 },
+				m_growth_counter{ 0 } { }
 
 			~hash_table( ) = default;
 			hash_table( hash_table && ) = default;
@@ -389,6 +391,7 @@ namespace daw {
 
 			void grow_table( ) {
 				m_occupancy = resize_table( m_values, static_cast<size_t>(static_cast<double>(m_values.size( )) * ResizeRatio) );
+				++m_growth_counter;
 			}
 
 		public:
@@ -458,6 +461,7 @@ namespace daw {
 			}
 			void shrink_to_fit( ) {
 				resize_table( m_values, m_occupancy );
+				++m_growth_counter;
 			}
 
 			size_t occupied( ) const {
@@ -475,6 +479,11 @@ namespace daw {
 			void clear( ) {
 				m_values.clear( );
 				m_occupancy = 0;
+				++m_growth_counter;
+			}
+
+			size_t growth_counter( ) const {
+				return m_growth_counter;
 			}
 
 			void swap( hash_table & rhs ) noexcept {
