@@ -29,6 +29,7 @@
 
 #include "daw_hash_table.h"
 #include "daw_benchmark.h"
+#include "daw_tuple_math.h"
 
 using namespace std::literals::string_literals;
 
@@ -157,7 +158,9 @@ double items_per_second( double t, size_t count ) {
 }
 
 auto items_per_second( std::tuple<double, double, double> ts, size_t count ) {
-	return std::make_tuple( items_per_second( std::get<0>(ts), count ),items_per_second( std::get<0>(ts), count ), items_per_second( std::get<0>(ts), count ) );
+	using namespace daw::tuple;
+	return ts / static_cast<double>(count);
+//	return std::make_tuple( items_per_second( std::get<0>(ts), count ),items_per_second( std::get<0>(ts), count ), items_per_second( std::get<0>(ts), count ) );
 }
 
 void do_testing( size_t count ) {
