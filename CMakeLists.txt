@@ -60,7 +60,7 @@ set( UNTESTED_HEADER_FILES
 )
 
 add_definitions( -DBOOST_TEST_DYN_LINK ) 
-include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
+include_directories( SYSTEM ${Boost_INCLUDE_DIRS} /home/dwright/github/other_ppl/sparsehash/src )
 link_directories( ${Boost_LIBRARY_DIRS} )
 
 foreach( CUR_PREFIX ${TESTED_HEADERS_PREFIXES} )

@@ -440,7 +440,7 @@ namespace daw {
 				size_t erase( Key && key ) {
 					auto hash = hash_fn( key );
 					auto pos = find_item_by_hash( hash, m_values );
-					if( pos != m_values.priv_end( ) ) {
+					if( pos != m_values.end( ) ) {
 						pos->clear( );
 						--m_occupancy;
 						return 1;

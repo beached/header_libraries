@@ -24,6 +24,7 @@
 #include <boost/unordered_map.hpp>
 #include <cstdint>
 #include <iostream>
+#include <google/dense_hash_map>
 #include <string>
 
 #include "daw_hash_table.h"
@@ -81,7 +82,7 @@ template<typename HashSet, typename Keys>
 	};
 
 template<typename HashSet, typename Keys>
-std::pair<double, double> time_once( Keys const & keys) {
+std::tuple<double, double, double> time_once( Keys const & keys) {
 	HashSet set;
 	auto ins = daw::benchmark( [&set, &keys]( ) {
 		do_test<HashSet>( set, keys );
@@ -92,21 +93,27 @@ std::pair<double, double> time_once( Keys const & keys) {
 			assert( set[key] == key );
 		}
 	});
-	return std::make_pair( ins, f );
+
+	auto e = daw::benchmark( [&set, &keys]( ) {
+		for( auto const & key: keys ) {
+			set.erase( key );
+		}
+	});
+	return std::make_tuple( ins, f, e );
 }
 
-auto min( std::tuple<double, double> a, std::tuple<double, double> b ) {
-	return std::make_tuple( std::min( std::get<0>( a ), std::get<0>( b ) ), std::min( std::get<1>( a ), std::get<1>( b ) ) );
+auto min( std::tuple<double, double, double> a, std::tuple<double, double, double> b ) {
+	return std::make_tuple( std::min( std::get<0>( a ), std::get<0>( b ) ), std::min( std::get<1>( a ), std::get<1>( b ) ), std::min( std::get<2>( a ), std::get<2>( b ) ) );
 }
 
-std::ostream & operator<<( std::ostream & os, std::tuple<double, double> const & v ) {
-	os << "{ " << std::get<0>( v ) << ", " << std::get<1>( v ) << " }";
+std::ostream & operator<<( std::ostream & os, std::tuple<double, double, double> const & v ) {
+	os << "{ " << std::get<0>( v ) << ", " << std::get<1>( v ) << ", " << std::get<2>( v ) << " }";
 	return os;
 }
 
 template<typename HashSet, typename Keys>
 auto best_of_many(const Keys& keys) {
-	auto best_time = std::make_tuple( std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity() );
+	auto best_time = std::make_tuple( std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity( ) );
 
 	for (size_t i = 0; i < 10; ++i) {
 		best_time = min(best_time, time_once<HashSet>(keys));
@@ -151,14 +158,12 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing_perf ) {
 		std::cout << "Starting benchmark" << std::endl;
 		std::cout << keys.size( ) << " int keys std::unorderd_map " << best_of_many<std::unordered_map<size_t, size_t>>( keys ) << " seconds\n";
 		std::cout << keys.size( ) << " int keys hash_table " << best_of_many<daw::hash_table<size_t>>( keys ) << " seconds\n";
-		std::cout << keys.size( ) << " int keys boost::unordered_map " << best_of_many<boost::unordered_map<size_t, size_t>>( keys ) << " seconds\n";
 	}
 	{
 		auto const keys = stringKeys( );
 		std::cout << "Starting benchmark" << std::endl;
 		std::cout << keys.size( ) << " string keys std::unorderd_map " << best_of_many<std::unordered_map<std::string, std::string>>( keys ) << " seconds\n";
 		std::cout << keys.size( ) << " string keys hash_table " << best_of_many<daw::hash_table<std::string>>( keys ) << " seconds\n";
-		std::cout << keys.size( ) << " string keys boost::unorderd_map " << best_of_many<boost::unordered_map<std::string, std::string>>( keys ) << " seconds\n";
 	}
 
 
