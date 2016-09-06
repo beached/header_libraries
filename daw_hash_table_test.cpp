@@ -151,20 +151,29 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing_correctness ) {
 	
 }
 
+double items_per_second( double t, size_t count ) {
+	return static_cast<double>(count)/t;
+
+}
+
+auto items_per_second( std::tuple<double, double, double> ts, size_t count ) {
+	return std::make_tuple( items_per_second( std::get<0>(ts), count ),items_per_second( std::get<0>(ts), count ), items_per_second( std::get<0>(ts), count ) );
+}
+
 void do_testing( size_t count ) {
 	{
 		std::cout << "Generating Keys" << std::endl;
 		auto const keys = integerKeys( count );
 		std::cout << "Starting benchmark" << std::endl;
-		std::cout << keys.size( ) << " int keys std::unorderd_map " << best_of_many<std::unordered_map<size_t, size_t>>( keys ) << " seconds\n";
-		std::cout << keys.size( ) << " int keys hash_table " << best_of_many<daw::hash_table<size_t>>( keys ) << " seconds\n";
+		std::cout << keys.size( ) << " int keys std::unorderd_map " <<  items_per_second( best_of_many<std::unordered_map<size_t, size_t>>( keys ), count ) << " seconds\n";
+		std::cout << keys.size( ) << " int keys hash_table " << items_per_second( best_of_many<daw::hash_table<size_t>>( keys ), count ) << " seconds\n";
 	}
 	{
 		std::cout << "Generating Keys" << std::endl;
 		auto const keys = stringKeys( count );
 		std::cout << "Starting benchmark" << std::endl;
-		std::cout << keys.size( ) << " string keys std::unorderd_map " << best_of_many<std::unordered_map<std::string, std::string>>( keys ) << " seconds\n";
-		std::cout << keys.size( ) << " string keys hash_table " << best_of_many<daw::hash_table<std::string>>( keys ) << " seconds\n";
+		std::cout << keys.size( ) << " string keys std::unorderd_map " << items_per_second( best_of_many<std::unordered_map<std::string, std::string>>( keys ), count ) << " seconds\n";
+		std::cout << keys.size( ) << " string keys hash_table " << items_per_second( best_of_many<daw::hash_table<std::string>>( keys ), count ) << " seconds\n";
 	}
 
 }
@@ -174,7 +183,5 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing_perf ) {
 	do_testing( 10000 );
 	do_testing( 100000 );
 	do_testing( 1000000 );
-	do_testing( 10000000 );
-
 }
 
