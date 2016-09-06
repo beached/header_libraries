@@ -25,35 +25,178 @@
 #include <exception>
 #include <stdexcept>
 #include <string>
+#include <type_traits>
 #include <utility>
+
 #include "daw_traits.h"
 
 namespace daw {
+	namespace impl {
+		template<typename T>
+		struct value_storage {
+			using value_type = typename std::remove_cv_t<std::remove_reference_t<T>>;
+			using pointer = value_type *;
+			using const_pointer = value_type const *;
+			using reference = value_type &;
+			using const_reference = value_type const &;
+		private:
+			bool m_occupied;
+			alignas( value_type ) std::array<uint8_t, sizeof( value_type )> m_data;
+
+			void * raw_ptr( ) {
+				return static_cast<void *>( m_data.data( ) );
+			}
+			
+			void const * raw_ptr( ) const {
+				return static_cast<void const *>( m_data.data( ) );
+			}
+				
+			pointer ptr( ) {
+				return static_cast<pointer>(raw_ptr( ));
+			}
+
+			const_pointer ptr( ) const {
+				return static_cast<const_pointer>(raw_ptr( ));
+			}
+
+			reference ref( ) {
+				return *ptr( );
+			}
+
+			const_reference ref( ) const {
+				return *ptr( );
+			}
+
+			void store( value_type value ) {
+				if( m_occupied ) {
+					*ptr( ) = std::move( value );
+				} else {
+					m_occupied = true;	
+					new(raw_ptr( )) value_type{ std::move( value ) };
+				}
+			}
+
+		public:
+			value_storage( ): 
+					m_occupied{ false }, 
+					m_data{ } {
+				
+				std::fill( m_data.begin( ), m_data.end( ), static_cast<uint8_t>(0) );		
+			}
+
+			value_storage( value_type value ):
+					m_occupied{ true }, 
+					m_data{ } { 
+				
+				store( std::move( value ) );
+			}
+
+			value_storage( value_storage const & other ):
+					m_occupied{ other.m_occupied },
+					m_data{ other.m_data } { }
+
+			value_storage( value_storage && other ):
+					m_occupied{ std::exchange( other.m_occupied, false ) },
+					m_data{ std::move( other.m_data ) } { }
+
+			void swap( value_storage & rhs ) noexcept {
+				using std::swap;
+				swap( m_occupied, rhs.m_occupied );
+				swap( m_data, rhs.m_data );
+			}
+
+			value_storage & operator=( value_storage const & rhs ) {
+				if( this != &rhs ) {
+					value_storage tmp{ rhs };
+					using std::swap;
+					swap( *this, rhs );
+				}
+				return *this;
+			}
+
+			value_storage & operator=( value_storage && rhs ) {
+				if( this != &rhs ) {
+					value_storage tmp{ std::move( rhs ) };
+					using std::swap;
+					swap( *this, rhs );
+				}
+				return *this;
+			}
+		
+			value_storage & operator=( value_type value ) {
+				if( m_occupied ) {
+					*ptr( ) = std::move( value );
+				} else {
+					store( std::move( value ) );
+					m_occupied = true;
+				}
+				return *this;
+			}
+
+			~value_storage( ) {
+				reset( );
+			}
+
+			void reset( ) {
+				if( m_occupied ) {
+					m_occupied = false;
+					ref( ).~value_type( );
+				}
+			}
+
+			bool empty( ) const noexcept {
+				return !m_occupied;
+			}
+					
+			explicit operator bool( ) const noexcept {
+				return m_occupied;
+			}
+
+			reference operator*( ) {
+				if( empty( ) ) {
+					throw std::runtime_error( "Attempt to access an empty value" );
+				}
+				return ref( );
+			}
+
+			const_reference operator*( ) const {
+				if( empty( ) ) {
+					throw std::runtime_error( "Attempt to access an empty value" );
+				}
+				return ref( );
+			}
+		};	// value_storage
+
+		template<typename T>
+		void swap( value_storage<T> & lhs, value_storage<T> & rhs ) noexcept {
+			lhs.swap( rhs );
+		}
+	}	// namespace impl
+
 	template<class ValueType>
 	struct optional {
-		using value_type = daw::traits::root_type_t<ValueType>;
-		using reference = ValueType &;
-		using const_reference = ValueType const &;
-		using pointer = ValueType *;
-		using pointer_const = ValueType const *;
+		using value_type = std::remove_cv_t<std::remove_reference_t<ValueType>>;
+		using reference = value_type &;
+		using const_reference = value_type const &;
+		using pointer = value_type *;
+		using pointer_const = value_type const *;
 	private:
-		pointer m_value;
+		impl::value_storage<value_type> m_value;
 	public:
 		optional( ):
-				m_value{ nullptr } { }
+				m_value{ } { }
 
-		optional( optional const &other ):
-				m_value{ other.m_value ? new value_type( *other.m_value ) : nullptr } { }
+		optional( optional const & other ):
+				m_value{ other.m_value } { }
 
-		optional( optional &&other ):
-				m_value{ std::exchange( other.m_value, nullptr ) } { }
+		optional( optional && other ):
+				m_value{ std::move( other.m_value ) } { }
 
 		optional( value_type value ):
-				m_value{ new value_type( std::move( value )) } { }
+				m_value{ std::move( value ) } { }
 
-		optional &operator=( optional const &rhs ) {
+		optional &operator=( optional const & rhs ) {
 			if( this != &rhs ) {
-				reset( );
 				optional tmp{ rhs };
 				swap( *this, tmp );
 			}
@@ -62,7 +205,6 @@ namespace daw {
 
 		optional &operator=( optional &&rhs ) {
 			if( this != &rhs ) {
-				reset( );
 				optional tmp{ std::move( rhs ) };
 				swap( *this, tmp );
 			}
@@ -70,27 +212,23 @@ namespace daw {
 		}
 
 		optional &operator=( value_type value ) {
-			optional tmp{ std::move( value ) };
-			reset( );
-			swap( *this, tmp );
+			m_value = std::move( value );
 			return *this;
 		}
 
-		~optional( ) {
-			try {
-				reset( );
-			} catch(...) {
-				// Nothing to be done
-			}
-		}
+		~optional( ) = default;
 
 		friend void swap( optional &lhs, optional &rhs ) noexcept {
 			using std::swap;
 			swap( lhs.m_value, rhs.m_value );
 		}
 
+		bool empty( ) const noexcept {
+			return m_value.empty( );
+		}
+
 		bool has_value( ) const noexcept {
-			return nullptr != m_value;
+			return static_cast<bool>( m_value );
 		}
 
 		explicit operator bool( ) const noexcept {
@@ -98,12 +236,10 @@ namespace daw {
 		}
 
 		reference get( ) {
-			assert( nullptr != m_value );
 			return *m_value;
 		}
 
 		const_reference get( ) const {
-			assert( nullptr != m_value );
 			return *m_value;
 		}
 
@@ -123,18 +259,10 @@ namespace daw {
 			return m_value;
 		}
 
-		value_type move_out( ) {
-			assert( nullptr != m_value );
-			return *std::exchange( m_value, nullptr );
+		void reset( ) {
+			m_value.reset( );
 		}
 
-		void reset( ) {
-			if( nullptr != m_value ) {
-				auto tmp = std::exchange( m_value, nullptr );
-				delete tmp;
-			}
-		}
-		
 	};    // class optional
 
 	template<typename T>
@@ -171,7 +299,7 @@ namespace daw {
 			}
 			return false;
 		} else if( rhs ) {
-			return false;
+			return true;
 		}
 		return true;
 	}
@@ -184,7 +312,7 @@ namespace daw {
 			}
 			return false;
 		} else if( rhs ) {
-			return false;
+			return true;
 		}
 		return true;
 	}
@@ -197,7 +325,7 @@ namespace daw {
 			}
 			return true;
 		} else if( rhs ) {
-			return true;
+			return false;
 		}
 		return false;
 	}
@@ -210,7 +338,7 @@ namespace daw {
 			}
 			return true;
 		} else if( rhs ) {
-			return true;
+			return false;
 		}
 		return false;
 	}

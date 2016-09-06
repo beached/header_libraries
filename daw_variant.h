@@ -173,7 +173,7 @@ namespace daw {
 		template<typename T>
 		static constexpr bool is_valid_type = daw::traits::is_one_of_v<std::remove_cv_t<T>, std::remove_cv_t<Type>, std::remove_cv_t<Types>...>;
 	private:
-		alignas(16) std::array<uint8_t, BUFFER_SIZE> m_buffer;
+		alignas(daw::traits::max_sizeof_t<Type,Types...>) std::array<uint8_t, BUFFER_SIZE> m_buffer;
 		boost::optional<std::type_index> m_stored_type;
 
 		static auto get_helper_funcs( std::type_index idx ) {

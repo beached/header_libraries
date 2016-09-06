@@ -22,305 +22,239 @@
 
 #pragma once
 
+#include <algorithm>
 #include <functional>
 #include <list>
 #include <numeric>
 #include <string>
 #include <utility>
-#include <vector>
 
+#include "daw_array.h"
+#include "daw_exception.h"
 #include "daw_utility.h"
 #include "daw_traits.h"
 
 namespace daw {
 	namespace impl {
-		template<typename ValueType, typename = void>
-		struct hash_table_item;
-
-		// Small value optimized version
 		template<typename ValueType>
-		struct hash_table_item<ValueType, ::std::enable_if_t<(sizeof( ValueType ) <= sizeof( ValueType * ))>> {
-			using value_type = typename daw::traits::root_type_t<ValueType>;
-			using reference = value_type &;
-			using const_reference = value_type const &;
-		private:
-			size_t m_hash;	// 0 is the sentinel to mark unused
-			value_type m_value;
-		public:	
-			hash_table_item( ): m_hash{ 0 }, m_value{ } { }
+			struct hash_table_item {
+				using value_type = typename daw::traits::root_type_t<ValueType>;
+				size_t hash;	// 0 is the sentinel to mark unused
+				value_type value;
 
-			hash_table_item( size_t hash, value_type value, bool occupied = true ): m_hash{ hash }, m_value{ ::std::move( value ) } { }
-
-			~hash_table_item( ) = default;
-			hash_table_item( hash_table_item const & ) = default;
-			hash_table_item( hash_table_item && ) = default;
-			hash_table_item & operator=( hash_table_item const & ) = default;
-			hash_table_item & operator=( hash_table_item && ) = default;
-
-			friend void swap( hash_table_item & lhs, hash_table_item & rhs ) noexcept {
-				using ::std::swap;
-				swap( lhs.m_hash, rhs.m_hash );
-				swap( lhs.m_value, rhs.m_value );
-			}
-			
-			void clear( ) {
-				m_hash = 0;
-				m_value = value_type { };
-			}
-
-			bool occupied( ) const noexcept {
-				return 0 != m_hash;
-			}
-
-			size_t & hash( ) noexcept {
-				return m_hash;
-			}
-
-			size_t const & hash( ) const noexcept {
-				return m_hash;
-			}
-
-			reference value( ) noexcept {
-				return m_value;
-			}
-
-			const_reference value( ) const noexcept {
-				return m_value;
-			}
-
-			explicit operator bool( ) const {
-				return occupied( );
-			}
-		};	// struct hash_table_item
-
-		// Values that are larger than the pointer size(e.g. 32bit/64bit) are heap allocated.
-		template<typename ValueType>
-		struct hash_table_item<ValueType, ::std::enable_if_t<(sizeof( ValueType ) > sizeof( ValueType * ))>> {
-			using value_type = typename daw::traits::root_type_t<ValueType>;
-			using reference = value_type &;
-			using const_reference = value_type const &;
-		private:
-			size_t m_hash;	// 0 is the sentinel to mark unused
-			value_type * m_value;
-		public:	
-			hash_table_item( ) noexcept: m_hash{ 0 }, m_value{ new value_type } { }
-
-			hash_table_item( size_t hash, value_type value ): m_hash{ hash }, m_value{ new value_type( ::std::move( value ) ) } { }
-			
-			~hash_table_item( ) {
-				auto tmp = m_value;
-				m_value = nullptr;
-				if( nullptr != tmp ) {
-					delete tmp;
+				void clear( ) {
+					hash = 0;
+					value = value_type{ };
 				}
-			}
 
-			hash_table_item( hash_table_item const & other ): m_hash{ other.m_hash }, m_value{ ::daw::copy_ptr_value( other.m_value ) } { }
-
-			friend void swap( hash_table_item & lhs, hash_table_item & rhs ) noexcept {
-				using ::std::swap;
-				swap( lhs.m_hash, rhs.m_hash );
-				swap( lhs.m_value, rhs.m_value );
-			}
-
-			hash_table_item & operator=( hash_table_item rhs ) noexcept {
-				swap( *this, rhs );
-				return *this;
-			}
-
-			hash_table_item( hash_table_item && other ) noexcept: hash_table_item{ } {
-				swap( *this, other );
-			}
-			
-			void clear( ) {
-				m_hash = 0;
-				auto tmp = m_value;
-				m_value = nullptr;
-				if( nullptr != tmp ) {
-					delete tmp;
-					tmp = new value_type;
+				bool empty( ) const noexcept {
+					return 0 == hash;
 				}
-			}
 
-			bool occupied( ) const noexcept {
-				return 0 != m_hash;
-			}
+				explicit operator bool( ) const {
+					return 0 != hash;
+				}
 
-			size_t & hash( ) noexcept {
-				return m_hash;
-			}
+				hash_table_item( ):
+					hash{ 0 },
+					value{ } { }
 
-			size_t const & hash( ) const noexcept {
-				return m_hash;
-			}
+				~hash_table_item( ) = default;
+				hash_table_item( hash_table_item const & ) = default;
+				hash_table_item( hash_table_item && ) = default;
+				hash_table_item & operator=( hash_table_item const & ) = default;
+				hash_table_item & operator=( hash_table_item && ) = default;
+			};	// struct hash_table_item
 
-			reference value( ) noexcept {
-				return *m_value;
-			}
-
-			const_reference value( ) const noexcept {
-				return *m_value;
-			}
-
-			explicit operator bool( ) const {
-				return occupied( );
-			}
-		};	// struct hash_table_item
 	}	// namespace impl
 
 	template<typename Value>
-	struct hash_table {
-		static constexpr const double ResizeRatio=1.15;
-		using value_type = daw::traits::root_type_t<Value>;
-		using reference = value_type &;
-		using const_reference = value_type const &;
-	private:
-		using values_type = ::std::vector<impl::hash_table_item<value_type>>;
-		using iterator = typename values_type::iterator;
-		values_type m_values;
-	public:
-		hash_table( ): m_values{ 11 } { }
+		struct hash_table {
+			static constexpr const double ResizeRatio=1.50;	// This will leave the hash at 2/3 full
+			using value_type = daw::traits::root_type_t<Value>;
+			using reference = value_type &;
+			using const_reference = value_type const &;
+		private:
+			using values_type = daw::array<impl::hash_table_item<value_type>>;
+			using iterator = typename values_type::iterator;
+			values_type m_values;
+			size_t m_occupancy;
 
-		~hash_table( ) = default;
-		hash_table( hash_table && ) = default;
-		hash_table( hash_table const & ) = default;
-		hash_table & operator=( hash_table && ) = default;
-		hash_table & operator=( hash_table const & ) = default;
-
-	private:
-		template<typename Key>
-		static size_t hash_fn( Key && key ) {
-			static const auto s_hash = []( auto && k ) {
-				using k_type = std::decay_t<Key>;
-				static std::hash<k_type> h_func;
-				return (h_func( ::std::forward<Key>( k ) ) % (static_cast<size_t>(std::numeric_limits<ptrdiff_t>::max( )) - 1)) + 1;	// Guarantee we cannot be zero
-			};			
-			return s_hash( ::std::forward<Key>( key ) );
-		}
-		
-		static size_t hash_fn( char const * c_str ) {
-			std::string value = c_str;
-			return hash_fn( value );	
-		}
-
-		static size_t scale_hash( size_t hash, size_t table_size ) {
-			// Scale value to capacity using MAD(Multiply-Add-Divide) compression
-			// Use the two largest Prime's that fit in a 64bit unsigned integral
-			assert( table_size < static_cast<size_t>( std::numeric_limits<ptrdiff_t>::max( )) );	// Table size must be less than max of ptrdiff_t as we use the value 0 as a sentinel.  This should be rare
-			assert( hash != 0 );	// zero is a sentinel for no value
-			static const size_t prime_a = 18446744073709551557u;
-			static const size_t prime_b = 18446744073709551533u;
-			return ((hash*prime_a + prime_b) % table_size);
-		}
-
-		template<typename TableType>
-		static auto find_item_by_hash( size_t hash, TableType & tbl ) {
-			auto hash_it = tbl.begin( ) + static_cast<ptrdiff_t>( scale_hash( hash, tbl.size( ) ) );	// scaled hashes are never 0 and never >= ptrdiff_t max
-			auto count = tbl.size( );
-			// loop through all values until an empty spot is found(at end start at beginning)
-			while( count-- > 0 ) {	
-				if( !hash_it->occupied( ) ) {
-					hash_it->hash( ) = hash;
-					return hash_it;
-				} else if( hash_it->hash( ) == hash ) {
-					return hash_it;
-				}
-				if( tbl.end( ) == ++hash_it ) {
-					hash_it = tbl.begin( );
-				}
+			auto begin( ) {
+				return m_values.begin( );
 			}
-			// Full
-			return tbl.end( );
-		}
 
-		template<typename TableType>
-		static auto insert_into( impl::hash_table_item<value_type> && item, TableType & tbl ) {
-			auto hash_it = tbl.begin( ) + static_cast<ptrdiff_t>(scale_hash( item.hash( ), tbl.size( ) ));	// scaled hashes are never 0 and never >= ptrdiff_t max
-			auto count = tbl.size( );
-			// loop through all values until an empty spot is found(at end start at beginning)
-			while( count-- > 0 ) {
-				if( !hash_it->occupied( ) || hash_it->hash( ) == item.hash( ) ) {
-					*hash_it = std::move( item );
-					return hash_it;				
+			auto begin( ) const {
+				return m_values.begin( );
+			}
+
+			auto end( ) {
+				return m_values.end( );
+			}
+
+			auto end( ) const {
+				return m_values.end( );
+			}
+		public:
+			hash_table( ): 
+				m_values{ 11 },
+				m_occupancy{ 0 } { }
+
+			~hash_table( ) = default;
+			hash_table( hash_table && ) = default;
+			hash_table( hash_table const & ) = default;
+			hash_table & operator=( hash_table && ) = default;
+			hash_table & operator=( hash_table const & ) = default;
+
+		private:
+			template<typename KeyType>
+				static size_t hash_fn( KeyType && key ) {
+					static const auto s_hash = []( auto && k ) {
+						using k_type = daw::traits::root_type_t<KeyType>;
+						static std::hash<k_type> h_func;
+						return (h_func( ::std::forward<KeyType>( k ) ) % max_size( )) + 1;	// Guarantee we cannot be zero
+					};
+					return s_hash( ::std::forward<KeyType>( key ) );
 				}
-				if( tbl.end( ) == ++hash_it ) {
-					hash_it = tbl.begin( );
+
+			static size_t hash_fn( char const * c_str ) {
+				std::string value = c_str;
+				return hash_fn( value );
+			}
+
+			static size_t scale_hash( size_t hash, size_t table_size ) {
+				// Scale value to capacity using MAD(Multiply-Add-Divide) compression
+				// Use the two largest Prime's that fit in a 64bit unsigned integral
+				assert( table_size < max_size( ) );	// Table size must be less than max of ptrdiff_t as we use the value 0 as a sentinel.  This should be rare
+				assert( hash != 0 );	// zero is a sentinel for no value
+				static const size_t prime_a = 18446744073709551557u;
+				static const size_t prime_b = 18446744073709551533u;
+				return ((hash*prime_a + prime_b) % table_size);
+			}
+
+			static size_t resize_table( values_type & old_table, size_t new_size ) {
+				values_type new_hash_table{ new_size };
+				size_t occupancy = 0;
+				for( auto && current_item: old_table ) {
+					if( current_item ) {
+						++occupancy;
+						auto pos = find_item_by_hash( current_item.hash, new_hash_table );
+						assert( pos != new_hash_table.end( ) );
+						using std::swap;
+						swap( *pos, current_item );
+					}
 				}
+				old_table = std::move( new_hash_table );
+				return occupancy;
 			}
-			// Full
-			tbl.grow_table( );
-			return insert_into( std::move( item ), tbl );
-		}
 
-		static void resize_table( values_type & old_table, size_t new_size ) {
-			values_type new_hash_table{ new_size };
-			for( auto & current_item: old_table ) {
-				if( current_item ) {
-					insert_into( current_item.hash( ), current_item.value( ), new_hash_table );
+			static auto find_item_by_hash( size_t hash, values_type const & tbl ) {
+				auto const scaled_hash = static_cast<ptrdiff_t>(scale_hash( hash, tbl.size( ) ));
+				auto const start_it = std::next( tbl.begin( ), scaled_hash );
+				// loop through all values until an empty spot is found(at end start at beginning)
+				auto const is_here = [hash]( auto const & item ) {
+					return item.empty( ) || hash == item.hash;
+				};
+				auto pos = std::find_if( start_it, tbl.end( ), is_here );
+				if( tbl.end( ) == pos ) {
+					pos = std::find_if( tbl.begin( ), start_it, is_here );
+					if( start_it == pos ) {
+						pos = tbl.end( );
+					}
 				}
+				return const_cast<iterator>( pos );
 			}
-			old_table = new_hash_table;
-		}
 
-		static auto insert_into( iterator item, value_type value, values_type & tbl ) {
-			assert( tbl.end( ) != item );
-			assert( item->occupied( ) == true );
-			item->value( ) = ::std::move( value );
-			return item; 
-		}
-
-		static auto insert_into( size_t hash, value_type value, values_type & tbl ) {
-			return insert_into( find_item_by_hash( hash, tbl ), ::std::move( value ), tbl );
-		}
-
-		void grow_table( ) {
-			resize_table( m_values, static_cast<size_t>(static_cast<double>(m_values.size( )) * ResizeRatio) );
-		}
-
-	public:
-		template<typename Key>
-		auto insert( Key const & key, value_type value ) {
-			return m_values.end( ) == insert_into( hash_fn( key ), std::move( value ), m_values );
-		}
-
-		template<typename Key>
-		auto & operator[]( Key const & key ) {
-			auto hash = hash_fn( key );
-			auto pos = find_item_by_hash( hash, m_values );
-			if( m_values.end( ) == pos ) {
-				grow_table( );
-				pos = find_item_by_hash( hash, m_values );
-				assert( m_values.end( ) != pos );
+			static auto find_item_by_hash( size_t hash, hash_table const & tbl ) {
+				return find_item_by_hash( hash, tbl.m_values );
 			}
-			pos->hash( ) = hash;
-			return pos->value( );
-		}
 
-		template<typename Key>
-		auto const & operator[]( Key const & key ) const {
-			auto hash = hash_fn( key );
-			auto pos = find_item_by_hash( hash, m_values );
-			if( m_values.end( ) == pos || !pos->occupied( ) ) {
-				throw std::out_of_range( "Key does not already exist" );
+			static iterator find_item_by_hash_or_create( size_t hash, hash_table & tbl ) {
+				if( ((tbl.m_occupancy*100)/tbl.m_values.size( )) > 60 ) {
+					tbl.grow_table();
+				}
+				auto pos = find_item_by_hash( hash, tbl.m_values );
+				if( pos == tbl.end( ) ) {
+					tbl.grow_table( );
+					pos = find_item_by_hash( hash, tbl );
+					daw::exception::daw_throw_on_true( pos == tbl.end( ) );
+					// This is a WAG.  It be wrong but I had to pick something
+					// without evidence to support it.
+				}
+				if( pos->empty( ) ) {
+					++tbl.m_occupancy;
+					pos->hash = hash;
+				}
+				return pos;
 			}
-			return pos->value( );
-		}
 
-		template<typename Key>
-		size_t erase( Key && key ) {
-			auto hash = hash_fn( key );
-			auto pos = find_item_by_hash( hash, m_values );
-			pos->clear( );
-			return 1;
-		}
+			static auto insert_into( impl::hash_table_item<value_type> && item, hash_table & tbl ) {
+				auto pos = find_item_by_hash_or_create( item.hash, tbl );
+				*pos == std::move( item );
+			}
 
-		void shrink_to_fit( ) {
-			auto count = std::accumulate( m_values.begin( ), m_values.end( ), 0u, []( auto const & a, auto const & b ) {
-				return a + (b ? 1 : 0);
-			} );
-			resize_table( m_values, count );
-		}
-	};	// struct hash_table
+			static auto insert_into( size_t hash, value_type value, hash_table & tbl ) {
+				auto pos = find_item_by_hash_or_create( hash, tbl );
+				pos->value = std::move( value );
+			}
+
+			void grow_table( ) {
+				m_occupancy = resize_table( m_values, static_cast<size_t>(static_cast<double>(m_values.size( )) * ResizeRatio) );
+			}
+
+		public:
+			static size_t max_size( ) {
+				return static_cast<size_t>(std::numeric_limits<ptrdiff_t>::max( ) - 1);
+			}
+
+			template<typename Key>
+				auto insert( Key const & key, value_type value ) {
+				}
+
+			template<typename Key>
+				auto & operator[]( Key const & key ) {
+					auto hash = hash_fn( key );
+					auto pos = find_item_by_hash_or_create( hash, *this );
+					return pos->value;
+				}
+
+			template<typename Key>
+				auto const & operator[]( Key const & key ) const {
+					auto hash = hash_fn( key );
+					auto pos = find_item_by_hash( hash, *this );
+					if( m_values.end( ) == pos ) {
+						throw std::out_of_range( "Key does not already exist" );
+					}
+					return pos->value;
+				}
+
+			template<typename Key>
+				size_t erase( Key && key ) {
+					auto hash = hash_fn( key );
+					auto pos = find_item_by_hash( hash, m_values );
+					pos->clear( );
+					return 1;
+				}
+
+			void shrink_to_fit( ) {
+				auto count = std::accumulate( m_values.begin( ), m_values.end( ), 0u, []( auto const & a, auto const & b ) {
+					return a + (b.empty( ) ? 0 : 1);
+				} );
+				resize_table( m_values, count );
+			}
+
+			size_t count_occupied( ) const {
+				m_occupancy = std::accumulate( m_values.begin( ), m_values.end( ), static_cast<size_t>(0), []( auto const & result, auto const & cur_val ) {
+					return result + (cur_val.empty( ) ? 0 : 1 );
+				});
+
+				return m_occupancy;
+			}
+
+			size_t capacity( ) const {
+				return m_values.size( );
+			}
+		};	// struct hash_table
 
 }	// namespace daw
 

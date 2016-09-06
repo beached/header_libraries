@@ -90,15 +90,15 @@ namespace daw {
 
 		template <typename First>
 			struct max_sizeof<First> {
-				typedef First type;
+				using type = First;
 				static const size_t value = sizeof( type );
 			};
 
 		//the biggest of everything in Args and First
 		template<typename First, typename... Args>
 			struct max_sizeof< First, Args...> {
-				typedef typename max_sizeof<Args...>::type next;
-				typedef typename::std::conditional<sizeof( First )>= sizeof( next ), First, next>::type type;
+				using next = typename max_sizeof<Args...>::type;
+				using type = typename std::conditional<sizeof( First ) >= sizeof( next ), First, next>::type;
 				static const size_t value = sizeof( type );
 			};
 

@@ -34,7 +34,7 @@ namespace daw {
 				struct EXCEPTION_TYPE final { \
 					MsgType message; \
 					EXCEPTION_TYPE( std::string msg ): message{ std::move( msg ) } { } \
-					EXCEPTION_TYPE( ) = delete; \
+					EXCEPTION_TYPE( ) = default; \
 					~EXCEPTION_TYPE( ) = default; \
 					EXCEPTION_TYPE( EXCEPTION_TYPE const & ) = default; \
 					EXCEPTION_TYPE( EXCEPTION_TYPE && ) = default; \

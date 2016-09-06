@@ -25,16 +25,6 @@
 #include <stdexcept>
 
 namespace daw {
-	template<typename T> struct array;
-	
-	template<typename T>
-	void swap( array<T> & first, array<T> & second ) noexcept {
-        using std::swap;
-		swap( first.m_begin, second.m_begin );
-		swap( first.m_end, second.m_end );
-		swap( first.m_size, second.m_size );
-    }
-
 	template<typename T>
 	struct array {
 		using value_type = T;
@@ -48,19 +38,20 @@ namespace daw {
 		size_t m_size;
 
 	public:
-		template<class U> friend void swap( array<U> & first, array<U> & second ) noexcept;
+		array( ) noexcept: 
+				m_begin{ nullptr }, 
+				m_end{ nullptr }, 
+				m_size{ 0 } { }
 
-		array( ) noexcept: m_begin( nullptr ), m_end( nullptr ), m_size( 0 ) { }
+		array( size_t Size ):
+				m_begin{ new value_type[Size] }, 
+				m_end{ m_begin + Size }, 
+				m_size{ Size } { }
 
-		array( size_t count ):
-				m_begin{ new value_type[m_size] }, 
-				m_end{ m_begin + count }, 
-				m_size{ count } { }
-
-		array( size_t count, value_type def_value ): 
-				m_begin{ new value_type[m_size] }, 
-				m_end{ m_begin + count }, 
-				m_size{ count } {
+		array( size_t Size, value_type def_value ): 
+				m_begin{ new value_type[Size] }, 
+				m_end{ m_begin + Size }, 
+				m_size{ Size } {
 			
 			std::fill( m_begin, m_end, def_value );	
 		}
@@ -70,19 +61,17 @@ namespace daw {
 				m_end{ std::exchange( other.m_end, nullptr ) },
 				m_size{ std::exchange( other.m_size, 0 ) } { }
 
-		friend void swap( array & lhs, array & rhs ) noexcept {
+		void swap( array & rhs ) noexcept {
 			using std::swap;
-			swap( lhs.m_begin, rhs.m_begin );
-			swap( lhs.m_end, rhs.m_end );
-			swap( lhs.m_size, rhs.m_size );
+			swap( m_begin, rhs.m_begin );
+			swap( m_end, rhs.m_end );
+			swap( m_size, rhs.m_size );
 		}
-
 
 		array & operator=( array && rhs ) noexcept {
 			if( this != &rhs ) {
 				array tmp{ std::move( rhs ) };
-				using std::swap;
-				swap( *this, tmp );
+				tmp.swap( *this );
 			}
 			return *this;
 		}
@@ -98,22 +87,21 @@ namespace daw {
 		array & operator=( array const & rhs ) {
 			if( this != &rhs ) {
 				array tmp{ rhs };
-				using std::swap;
-				swap( *this, tmp );
+				tmp.swap( *this );
 			}
 			return *this;
 		}
 
-		array( iterator arry, size_t count ): 
-				m_begin{ new value_type[count] }, 
-				m_end{ m_begin + count }, 
-				m_size{ count } {
+		array( iterator arry, size_t Size ): 
+				m_begin{ new value_type[Size] }, 
+				m_end{ m_begin + Size }, 
+				m_size{ Size } {
 
-			std::copy_n( arry, count, m_begin );
+			std::copy_n( arry, Size, m_begin );
 		}
 
 		~array( ) {
-			if( m_begin ) {
+			if( nullptr != m_begin ) {
 				auto tmp = m_begin;
 				m_begin = nullptr;
 				m_end = nullptr;
@@ -131,7 +119,7 @@ namespace daw {
 		}
 
 		bool empty( ) const noexcept {
-			return 0 == m_size;
+			return m_begin == m_end;
 		}
 	
 		iterator begin( ) noexcept {
@@ -162,14 +150,14 @@ namespace daw {
 			if( !(pos < m_size) ) {
 				throw std::out_of_range( "position is beyond end of array" );
 			}
-			return *(m_begin + pos);
+			return operator[]( pos );
 		}
 
 		const_reference at( size_t pos ) const {
 			if( !(pos < m_size) ) {
 				throw std::out_of_range( "position is beyond end of array" );
 			}
-			return *(m_begin + pos);
+			return operator[]( pos );
 		}
 
 		reference front( ) {
@@ -192,5 +180,10 @@ namespace daw {
 			return *tmp;
 		}
 	};	// struct array
+
+	template<typename T>
+	void swap( daw::array<T> & lhs, daw::array<T> & rhs ) noexcept {
+		lhs.swap( rhs );
+	}
 }	// namespace daw
 
