@@ -53,21 +53,21 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing ) {
 
 #define TEST_SIZE 1000000
 
-auto integerKeys( ) {
+auto integerKeys( size_t count = TEST_SIZE ) {
 	std::mt19937_64 rd( 0 );
 
 	std::vector<uint64_t> numbers;
-	for( size_t i = 0; i < TEST_SIZE; ++i ) {
+	for( size_t i = 0; i < count; ++i ) {
 		numbers.push_back(rd());
 	}
 	return numbers;
 }
 
-auto stringKeys( ) {
+auto stringKeys( size_t count = TEST_SIZE ) {
 	std::mt19937_64 rd( 0 );
 
 	std::vector<std::string> words;
-	for( size_t i = 0; i < TEST_SIZE; ++i ) {
+	for( size_t i = 0; i < count; ++i ) {
 		size_t val = rd( );
 		std::string item = "key: " + std::to_string( val );
 		words.push_back( item );
@@ -151,21 +151,30 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing_correctness ) {
 	
 }
 
-BOOST_AUTO_TEST_CASE( daw_hash_table_testing_perf ) {
-	std::cout << "Generating Keys" << std::endl;
+void do_testing( size_t count ) {
 	{
-		auto const keys = integerKeys( );
+		std::cout << "Generating Keys" << std::endl;
+		auto const keys = integerKeys( count );
 		std::cout << "Starting benchmark" << std::endl;
 		std::cout << keys.size( ) << " int keys std::unorderd_map " << best_of_many<std::unordered_map<size_t, size_t>>( keys ) << " seconds\n";
 		std::cout << keys.size( ) << " int keys hash_table " << best_of_many<daw::hash_table<size_t>>( keys ) << " seconds\n";
 	}
 	{
-		auto const keys = stringKeys( );
+		std::cout << "Generating Keys" << std::endl;
+		auto const keys = stringKeys( count );
 		std::cout << "Starting benchmark" << std::endl;
 		std::cout << keys.size( ) << " string keys std::unorderd_map " << best_of_many<std::unordered_map<std::string, std::string>>( keys ) << " seconds\n";
 		std::cout << keys.size( ) << " string keys hash_table " << best_of_many<daw::hash_table<std::string>>( keys ) << " seconds\n";
 	}
 
+}
+
+BOOST_AUTO_TEST_CASE( daw_hash_table_testing_perf ) {
+	do_testing( 1000 );
+	do_testing( 10000 );
+	do_testing( 100000 );
+	do_testing( 1000000 );
+	do_testing( 10000000 );
 
 }
 
