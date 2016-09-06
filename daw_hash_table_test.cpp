@@ -109,7 +109,21 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing_correctness ) {
 	for( auto const & key: keys ) {
 		assert( key == set[key] );
 	}
+
+	BOOST_REQUIRE( set.begin( ).valid( ) );
+
+	decltype(keys) values;
+	
+	std::copy( set.begin( ), set.end( ), std::back_inserter( values ) );
+
+	std::sort( keys.begin( ), keys.end( ) );
+	std::sort( values.begin( ), values.end( ) );
+
+	BOOST_REQUIRE( keys == values );
+
 	std::cout << "Done" << std::endl;
+
+	
 }
 
 BOOST_AUTO_TEST_CASE( daw_hash_table_testing_perf ) {
@@ -129,3 +143,4 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing_perf ) {
 
 
 }
+

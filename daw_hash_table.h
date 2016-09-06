@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <functional>
+#include <iterator>
 #include <list>
 #include <numeric>
 #include <string>
@@ -36,6 +37,9 @@
 
 namespace daw {
 	namespace impl {
+		template<typename ValueType> struct hash_table;
+		template<typename ValueType> struct hash_table_item;
+
 		template<typename ValueType>
 			struct hash_table_item {
 				using value_type = typename daw::traits::root_type_t<ValueType>;
@@ -64,9 +68,160 @@ namespace daw {
 				hash_table_item( hash_table_item && ) = default;
 				hash_table_item & operator=( hash_table_item const & ) = default;
 				hash_table_item & operator=( hash_table_item && ) = default;
-			};	// struct hash_table_item
+			};	// hash_table_item
 
 	}	// namespace impl
+
+	template<typename ValueType>
+	struct hash_table_item_iterator: public std::iterator< std::bidirectional_iterator_tag, typename impl::hash_table_item<ValueType>::value_type, std::ptrdiff_t, impl::hash_table_item<ValueType>*, typename impl::hash_table_item<ValueType>::value_type &> {
+		using pointer = impl::hash_table_item<ValueType> *; 
+	private:
+		pointer m_begin;
+		pointer m_position;
+		pointer m_end;
+	
+	public:
+		hash_table_item_iterator( pointer first, pointer position, pointer last ):
+			m_begin{ first },
+			m_position{ position },
+			m_end{ last } { }
+
+		template<typename T, typename = std::enable_if_t<std::is_convertible<T, pointer>::value>>
+		hash_table_item_iterator( hash_table_item_iterator<T> const & other ):
+			m_begin( other.m_begin ),
+			m_position( other.m_position ),
+			m_end( other.m_end ) { }
+
+		template<typename T, typename = std::enable_if_t<std::is_convertible<T, pointer>::value>>
+		hash_table_item_iterator & operator=( hash_table_item_iterator<T> const & rhs ) {
+			if( this != rhs ) {
+				hash_table_item_iterator tmp{ rhs };
+				using std::swap;
+				swap( *this, tmp );
+			}
+			return *this;
+		}
+
+		void swap( hash_table_item_iterator & rhs ) noexcept {
+			using std::swap;
+			swap( m_begin, rhs.m_begin );
+			swap( m_position, rhs.m_position );
+			swap( m_end, rhs.m_end );
+		}
+
+		hash_table_item_iterator( ) = delete;
+		~hash_table_item_iterator( ) = default;
+		hash_table_item_iterator( hash_table_item_iterator const & other ) noexcept:
+				m_begin{ other.m_begin },
+				m_position{ other.m_position },
+				m_end{ other.m_end } { }
+
+		hash_table_item_iterator( hash_table_item_iterator && other ) noexcept:
+				m_begin{ std::move( other.m_begin ) },
+				m_position{ std::move( other.m_position ) },
+				m_end{ std::move( other.m_end ) } { }
+
+		hash_table_item_iterator & operator=( hash_table_item_iterator const & rhs ) noexcept {
+			if( this != &rhs ) {
+				m_begin = rhs.m_begin;
+				m_position = rhs.m_position;
+				m_end = rhs.m_end;
+			}
+			return *this;
+		}
+
+		hash_table_item_iterator & operator=( hash_table_item_iterator && rhs ) noexcept {
+			if( this != &rhs ) {
+				m_begin = std::move( rhs.m_begin );
+				m_position = std::move( rhs.m_position );
+				m_end = std::move( rhs.m_end );
+			}
+			return *this;
+		}
+
+		hash_table_item_iterator & operator++( ) {
+			if( m_position != m_end ) {
+				++m_position;
+			}
+			m_position = std::find_if( m_position, m_end, []( auto const & val ) { return !val.empty( ); } );
+			return *this;	
+
+		}
+
+		bool at_end( ) const {
+			return m_position != m_end;
+		}
+
+		bool valid( ) const {
+			return at_end( ) || !m_position->empty( );
+		}
+
+		hash_table_item_iterator operator++( int ) {
+			hash_table_item_iterator result{ *this };
+			++(*this);
+			return result;
+		}
+
+		hash_table_item_iterator & operator--( ) {
+			if( m_position != m_begin ) {
+				--m_position;
+			}
+			while( m_position != m_begin && m_position->empty( ) ) {
+				--m_position;
+			}	
+			return *this;	
+
+		}
+
+		hash_table_item_iterator operator--( int ) {
+			hash_table_item_iterator result{ *this };
+			--(*this);
+			return result;
+		}
+		
+		template<typename T, typename U>
+		friend bool operator==( hash_table_item_iterator<T> & lhs, hash_table_item_iterator<U> & rhs ) {
+			return lhs.m_position == rhs.m_position;
+		}
+		
+		template<typename T, typename U>
+		friend bool operator!=( hash_table_item_iterator<T> & lhs, hash_table_item_iterator<U> & rhs ) {
+			return lhs.m_position != rhs.m_position;
+		}
+		
+		template<typename T, typename U>
+		friend bool operator>( hash_table_item_iterator<T> & lhs, hash_table_item_iterator<U> & rhs ) {
+			return lhs.m_position > rhs.m_position;
+		}
+		
+		template<typename T, typename U>
+		friend bool operator>=( hash_table_item_iterator<T> & lhs, hash_table_item_iterator<U> & rhs ) {
+			return lhs.m_position >= rhs.m_position;
+		}
+
+		template<typename T, typename U>
+		friend bool operator<( hash_table_item_iterator<T> & lhs, hash_table_item_iterator<U> & rhs ) {
+			return lhs.m_position < rhs.m_position;
+		}
+		
+		template<typename T, typename U>
+		friend bool operator<=( hash_table_item_iterator<T> & lhs, hash_table_item_iterator<U> & rhs ) {
+			return lhs.m_position <= rhs.m_position;
+		}
+
+		auto operator*( ) {
+			return m_position->value;
+		}
+
+		auto const & operator*( ) const {
+			return m_position->value;
+		}
+	};	// hash_table_item_iterator
+
+	template<typename T>
+	void swap( hash_table_item_iterator<T> & lhs, hash_table_item_iterator<T> & rhs ) noexcept {
+		lhs.swap( rhs );
+	}
 
 	template<typename Value>
 		struct hash_table {
@@ -76,25 +231,27 @@ namespace daw {
 			using size_type = size_t;
 			using reference = value_type &;
 			using const_reference = value_type const &;
+			using iterator = hash_table_item_iterator<value_type>;
+			using const_iterator = hash_table_item_iterator<value_type const>;
 		private:
 			using values_type = daw::array<impl::hash_table_item<value_type>>;
-			using iterator = typename values_type::iterator;
+			using priv_iterator = typename values_type::iterator;
 			values_type m_values;
 			size_t m_occupancy;
 
-			auto begin( ) {
+			auto priv_begin( ) {
 				return m_values.begin( );
 			}
 
-			auto begin( ) const {
+			auto priv_begin( ) const {
 				return m_values.begin( );
 			}
 
-			auto end( ) {
+			auto priv_end( ) {
 				return m_values.end( );
 			}
 
-			auto end( ) const {
+			auto priv_end( ) const {
 				return m_values.end( );
 			}
 		public:
@@ -107,6 +264,36 @@ namespace daw {
 			hash_table( hash_table const & ) = default;
 			hash_table & operator=( hash_table && ) = default;
 			hash_table & operator=( hash_table const & ) = default;
+			
+			iterator begin( ) {
+				auto result = iterator{ priv_begin( ), priv_begin( ), priv_end( ) };
+				++result;
+				return result;
+			}
+
+			const_iterator begin( ) const {
+				auto result = const_iterator{ priv_begin( ), priv_begin( ), priv_end( ) };
+				++result;
+				return result;
+			}
+
+			const_iterator cbegin( ) const {
+				auto result = const_iterator{ priv_begin( ), priv_begin( ), priv_end( ) };
+				++result;
+				return result;
+			}
+
+			iterator end( ) {
+				return iterator{ priv_begin( ), priv_end( ), priv_end( ) };
+			}
+
+			const_iterator end( ) const {
+				return iterator{ priv_begin( ), priv_end( ), priv_end( ) };
+			}
+
+			const_iterator cend( ) const {
+				return iterator{ priv_begin( ), priv_end( ), priv_end( ) };
+			}
 
 		private:
 			template<typename KeyType>
@@ -164,22 +351,22 @@ namespace daw {
 						pos = tbl.end( );
 					}
 				}
-				return const_cast<iterator>( pos );
+				return const_cast<priv_iterator>( pos );
 			}
 
 			static auto find_item_by_hash( size_t hash, hash_table const & tbl ) {
 				return find_item_by_hash( hash, tbl.m_values );
 			}
 
-			static iterator find_item_by_hash_or_create( size_t hash, hash_table & tbl ) {
+			static priv_iterator find_item_by_hash_or_create( size_t hash, hash_table & tbl ) {
 				if( ((tbl.m_occupancy*100)/tbl.m_values.size( )) > 70 ) {
 					tbl.grow_table();
 				}
 				auto pos = find_item_by_hash( hash, tbl.m_values );
-				if( pos == tbl.end( ) ) {
+				if( pos == tbl.priv_end( ) ) {
 					tbl.grow_table( );
 					pos = find_item_by_hash( hash, tbl );
-					daw::exception::daw_throw_on_true( pos == tbl.end( ) );
+					daw::exception::daw_throw_on_true( pos == tbl.priv_end( ) );
 					// This is a WAG.  It be wrong but I had to pick something
 					// without evidence to support it.
 				}
@@ -233,7 +420,7 @@ namespace daw {
 			auto const & at( Key const & key ) const {
 				auto hash = hash_fn( key );
 				auto pos = find_item_by_hash( hash, *this );
-				if( m_values.end( ) == pos ) {
+				if( m_values.priv_end( ) == pos ) {
 					throw std::out_of_range( "Key does not already exist" );
 				}
 				return pos->value;
@@ -243,7 +430,7 @@ namespace daw {
 			auto & at( Key const & key ) {
 				auto hash = hash_fn( key );
 				auto pos = find_item_by_hash( hash, *this );
-				if( m_values.end( ) == pos ) {
+				if( m_values.priv_end( ) == pos ) {
 					throw std::out_of_range( "Key does not already exist" );
 				}
 				return pos->value;
@@ -253,7 +440,7 @@ namespace daw {
 				size_t erase( Key && key ) {
 					auto hash = hash_fn( key );
 					auto pos = find_item_by_hash( hash, m_values );
-					if( pos != m_values.end( ) ) {
+					if( pos != m_values.priv_end( ) ) {
 						pos->clear( );
 						--m_occupancy;
 						return 1;
@@ -261,6 +448,14 @@ namespace daw {
 					return 0;
 				}
 
+			size_t erase( iterator it ) {
+				if( !it.at_end( ) ) {
+					it->clear( );
+					--m_occupancy;
+					return 1;
+				}
+				return 0;
+			}
 			void shrink_to_fit( ) {
 				resize_table( m_values, m_occupancy );
 			}
@@ -292,21 +487,21 @@ namespace daw {
 			bool key_exists( Key const & key ) const {
 				auto hash = hash_fn( key );
 				auto pos = find_item_by_hash( hash, m_values );
-				return pos != m_values.end( );
+				return pos != m_values.priv_end( );
 			}
 
 			template<typename Key>
-			auto & find( Key const & key ) {
+			iterator find( Key const & key ) {
 				auto hash = hash_fn( key );
 				auto pos = find_item_by_hash( hash, m_values );
-				return pos->value;
+				return iterator{ priv_begin( ), pos, priv_end( ) };
 			}
 
 			template<typename Key>
-			auto const & find( Key const & key ) const {
+			const_iterator find( Key const & key ) const {
 				auto hash = hash_fn( key );
 				auto pos = find_item_by_hash( hash, m_values );
-				return pos->value;
+				return const_iterator{ priv_begin( ), pos, priv_end( ) };
 			}
 
 			template<typename Key>
@@ -317,10 +512,10 @@ namespace daw {
 		private:
 			bool hash_exists( size_t hash ) const {
 				auto pos = find_item_by_hash( hash, m_values );
-				return pos != m_values.end( );
+				return pos != m_values.priv_end( );
 			}
 		public:
-			friend void operator==( hash_table const & lhs, hash_table const & rhs ) {
+			friend bool operator==( hash_table const & lhs, hash_table const & rhs ) {
 				if( lhs.m_occupancy == rhs.m_occupancy ) {
 					for( auto const & value: lhs.m_values ) {
 						if( !rhs.hash_exists( value.hash ) ) {
@@ -332,7 +527,7 @@ namespace daw {
 				return false;
 			}
 
-			friend void operator!=( hash_table const & lhs, hash_table const & rhs ) {
+			friend bool operator!=( hash_table const & lhs, hash_table const & rhs ) {
 				if( lhs.m_occupancy == rhs.m_occupancy ) {
 					for( auto const & value: lhs.m_values ) {
 						if( !rhs.hash_exists( value.hash ) ) {
@@ -351,5 +546,6 @@ namespace daw {
 		void swap( hash_table<T> & lhs, hash_table<T> & rhs ) noexcept {
 			lhs.swap( rhs );
 		}
+
 }	// namespace daw
 
