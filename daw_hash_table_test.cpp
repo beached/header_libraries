@@ -51,17 +51,17 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing ) {
 
 #define TEST_SIZE 1000000
 
-std::vector<uint32_t> integerKeys( ) {
+auto integerKeys( ) {
 	std::mt19937_64 rd( 0 );
 
-	std::vector<uint32_t> numbers;
+	std::vector<uint64_t> numbers;
 	for( size_t i = 0; i < TEST_SIZE; ++i ) {
 		numbers.push_back(rd());
 	}
 	return numbers;
 }
 
-std::vector<std::string> stringKeys( ) {
+auto stringKeys( ) {
 	std::mt19937_64 rd( 0 );
 
 	std::vector<std::string> words;

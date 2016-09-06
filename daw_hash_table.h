@@ -97,7 +97,7 @@ namespace daw {
 			}
 		public:
 			hash_table( ): 
-				m_values{ 11 },
+				m_values{ 7 },
 				m_occupancy{ 0 } { }
 
 			~hash_table( ) = default;
