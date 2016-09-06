@@ -261,11 +261,6 @@ namespace daw {
 				m_occupancy{ 0 },
 				m_growth_counter{ 0 } { }
 
-			hash_table( size_t initial_capacity ):
-				m_values{ initial_capacity },
-				m_occupancy{ 0 },
-				m_growth_counter{ 0 } { }
-
 			~hash_table( ) = default;
 			hash_table( hash_table && ) = default;
 			hash_table( hash_table const & ) = default;
@@ -328,16 +323,20 @@ namespace daw {
 				return ((hash*prime_a + prime_b) % table_size);
 			}
 
-			static void resize_table( hash_table & old_table, size_t new_size ) {
-				assert( new_size >= old_table.m_occupancy );
-				hash_table tmp{ new_size };
-				for( auto && item : old_table.m_values ) {
-					if( item ) {
-						assert( insert_into( std::move( item ), tmp ) != tmp.priv_end( ) ); 
+			static size_t resize_table( values_type & old_table, size_t new_size ) {
+				values_type new_hash_table{ new_size };
+				size_t occupancy = 0;
+				for( auto && current_item: old_table ) {
+					if( current_item ) {
+						++occupancy;
+						auto pos = find_item_by_hash( current_item.hash, new_hash_table );
+						assert( pos != new_hash_table.end( ) );
+						using std::swap;
+						swap( *pos, current_item );
 					}
 				}
-				tmp.m_growth_counter = ++old_table.m_growth_counter;
-				old_table.swap( tmp );
+				old_table = std::move( new_hash_table );
+				return occupancy;
 			}
 
 			static auto find_item_by_hash( size_t hash, values_type const & tbl ) {
@@ -382,8 +381,7 @@ namespace daw {
 
 			static auto insert_into( impl::hash_table_item<value_type> && item, hash_table & tbl ) {
 				auto pos = find_item_by_hash_or_create( item.hash, tbl );
-				*pos = std::move( item );
-				return pos;
+				*pos == std::move( item );
 			}
 
 			static auto insert_into( size_t hash, value_type value, hash_table & tbl ) {
@@ -392,7 +390,8 @@ namespace daw {
 			}
 
 			void grow_table( ) {
-				resize_table( *this, static_cast<size_t>(static_cast<double>(m_values.size( )) * ResizeRatio) );
+				m_occupancy = resize_table( m_values, static_cast<size_t>(static_cast<double>(m_values.size( )) * ResizeRatio) );
+				++m_growth_counter;
 			}
 
 		public:
@@ -460,9 +459,9 @@ namespace daw {
 				}
 				return 0;
 			}
-
 			void shrink_to_fit( ) {
-				resize_table( *this, m_occupancy );
+				resize_table( m_values, m_occupancy );
+				++m_growth_counter;
 			}
 
 			size_t occupied( ) const {
@@ -558,4 +557,3 @@ namespace daw {
 		}
 
 }	// namespace daw
-
