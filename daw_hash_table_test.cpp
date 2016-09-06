@@ -90,7 +90,7 @@ double time_once( Keys const & keys) {
 template<typename HashSet, typename Keys>
 double best_of_many(const Keys& keys) {
 	double best_time = std::numeric_limits<double>::infinity();
-	for (size_t i = 0; i < 1; ++i) {
+	for (size_t i = 0; i < 10; ++i) {
 		best_time = std::min(best_time, time_once<HashSet>(keys));
 	}
 	return best_time;

@@ -70,7 +70,7 @@ namespace daw {
 
 	template<typename Value>
 		struct hash_table {
-			static constexpr const double ResizeRatio=1.50;	// This will leave the hash at 2/3 full
+			static constexpr const double ResizeRatio=2.00;	// This will leave the hash at 2/3 full
 			using value_type = daw::traits::root_type_t<Value>;
 			using reference = value_type &;
 			using const_reference = value_type const &;
@@ -170,7 +170,7 @@ namespace daw {
 			}
 
 			static iterator find_item_by_hash_or_create( size_t hash, hash_table & tbl ) {
-				if( ((tbl.m_occupancy*100)/tbl.m_values.size( )) > 60 ) {
+				if( ((tbl.m_occupancy*100)/tbl.m_values.size( )) > 70 ) {
 					tbl.grow_table();
 				}
 				auto pos = find_item_by_hash( hash, tbl.m_values );
