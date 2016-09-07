@@ -31,6 +31,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_range_algorithm
 	daw_range
 	daw_traits
+	daw_tuple_math
 	daw_utility
 	daw_variant
  )
@@ -54,7 +55,6 @@ set( UNTESTED_HEADER_FILES
 	daw_range_type.h
 	daw_reference.h
 	daw_string.h
-	daw_tuple_math.h
 	daw_zipcontainer.h
 	daw_zipiter.h
 	scope_guard.h

@@ -107,10 +107,6 @@ auto min( std::tuple<double, double, double> a, std::tuple<double, double, doubl
 	return std::make_tuple( std::min( std::get<0>( a ), std::get<0>( b ) ), std::min( std::get<1>( a ), std::get<1>( b ) ), std::min( std::get<2>( a ), std::get<2>( b ) ) );
 }
 
-std::ostream & operator<<( std::ostream & os, std::tuple<double, double, double> const & v ) {
-	os << "{ " << std::get<0>( v ) << ", " << std::get<1>( v ) << ", " << std::get<2>( v ) << " }";
-	return os;
-}
 
 template<typename HashSet, typename Keys>
 auto best_of_many(const Keys& keys) {
@@ -152,31 +148,40 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing_correctness ) {
 	
 }
 
-double items_per_second( double t, size_t count ) {
-	return static_cast<double>(count)/t;
 
-}
-
-auto items_per_second( std::tuple<double, double, double> ts, size_t count ) {
-	using namespace daw::tuple;
-	return ts / static_cast<double>(count);
-//	return std::make_tuple( items_per_second( std::get<0>(ts), count ),items_per_second( std::get<0>(ts), count ), items_per_second( std::get<0>(ts), count ) );
+template<typename... Ts>
+auto items_per_second( std::tuple<Ts...> ts, size_t count ) {
+	using namespace daw::tuple::operators;
+	return static_cast<double>(count)/ts;
 }
 
 void do_testing( size_t count ) {
+	using namespace daw::tuple::operators;
+	using namespace daw::tuple;
 	{
-		std::cout << "Generating Keys" << std::endl;
+		std::cout << "Generating Keys: " << count << std::endl;
 		auto const keys = integerKeys( count );
 		std::cout << "Starting benchmark" << std::endl;
-		std::cout << keys.size( ) << " int keys std::unorderd_map " <<  items_per_second( best_of_many<std::unordered_map<size_t, size_t>>( keys ), count ) << " seconds\n";
-		std::cout << keys.size( ) << " int keys hash_table " << items_per_second( best_of_many<daw::hash_table<size_t>>( keys ), count ) << " seconds\n";
+		auto a = best_of_many<std::unordered_map<size_t, size_t>>( keys );
+		auto b = best_of_many<daw::hash_table<size_t>>( keys );
+		auto perf_std = items_per_second( a, count );
+		auto perf = items_per_second( b, count );
+		std::cout << " int keys std::unorderd_map " << perf_std << " ops per seconds\n";
+		std::cout << " int keys hash_table " << perf << " seconds\n";
+		std::cout << " ratio " << ((perf * 100.0) / perf_std) << std::endl;
 	}
 	{
 		std::cout << "Generating Keys" << std::endl;
 		auto const keys = stringKeys( count );
 		std::cout << "Starting benchmark" << std::endl;
-		std::cout << keys.size( ) << " string keys std::unorderd_map " << items_per_second( best_of_many<std::unordered_map<std::string, std::string>>( keys ), count ) << " seconds\n";
-		std::cout << keys.size( ) << " string keys hash_table " << items_per_second( best_of_many<daw::hash_table<std::string>>( keys ), count ) << " seconds\n";
+		auto a = best_of_many<std::unordered_map<std::string, std::string>>( keys );
+		auto b = best_of_many<daw::hash_table<std::string>>( keys );
+		auto perf_std = items_per_second( a, count );
+		auto perf = items_per_second( b, count );
+		std::cout << " string keys std::unorderd_map " << perf_std << " ops per seconds\n";
+		std::cout << " string keys hash_table " << perf << " seconds\n";
+		std::cout << " ratio " << ((perf * 100.0) / perf_std) << std::endl;
+
 	}
 
 }
