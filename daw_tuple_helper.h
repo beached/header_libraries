@@ -105,8 +105,9 @@ namespace daw {
 						result = lhs+rhs;
 					}
 
-					constexpr static add_t get( ) {
-						return add_t{ };
+					static add_t const & get( ) {
+						add_t result{ };
+						return result;
 					}
 				};	// add_t
 
@@ -116,8 +117,9 @@ namespace daw {
 						result = lhs-rhs;
 					}
 
-					constexpr static sub_t get( ) {
-						return sub_t{ };
+					static sub_t const & get( ) {
+						sub_t result{ };
+						return result;
 					}
 				};	// sub_t
 
@@ -127,8 +129,9 @@ namespace daw {
 						result = lhs*rhs;
 					}
 
-					constexpr static mul_t get( ) {
-						return mul_t{ };
+					static mul_t const & get( ) {
+						mul_t result{ };
+						return result;
 					}
 				};	// mul_t
 
@@ -138,8 +141,9 @@ namespace daw {
 						result = lhs/rhs;
 					}
 
-					constexpr static div_t get( ) {
-						return div_t{ };
+					static div_t const & get( ) {
+						div_t result{ };
+						return result;
 					}
 				};	// div_t
 			}	// namespace detail

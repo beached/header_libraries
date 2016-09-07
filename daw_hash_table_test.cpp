@@ -24,6 +24,7 @@
 #include <boost/unordered_map.hpp>
 #include <cstdint>
 #include <iostream>
+#include <random>
 #include <string>
 
 #include "daw_tuple_helper.h"
@@ -51,9 +52,7 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing ) {
 	std::cout << a << b << testing1["hello"] << " " << testing1[454] << " " << testing2["hello"].b << std::endl;
 }
 
-#define TEST_SIZE 1000000
-
-auto integerKeys( size_t count = TEST_SIZE ) {
+auto integerKeys( size_t count = 10000 ) {
 	std::mt19937_64 rd( 0 );
 
 	std::vector<uint64_t> numbers;
@@ -63,7 +62,7 @@ auto integerKeys( size_t count = TEST_SIZE ) {
 	return numbers;
 }
 
-auto stringKeys( size_t count = TEST_SIZE ) {
+auto stringKeys( size_t count = 10000 ) {
 	std::mt19937_64 rd( 0 );
 
 	std::vector<std::string> words;
