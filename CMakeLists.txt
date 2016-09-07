@@ -12,9 +12,9 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL 'MSVC' )
 	add_compile_options( -D_WIN32_WINNT=0x0601 ) 
 else( )
 	if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang" )
-		add_compile_options(-std=c++14 -g -O3 -Weverything -Wno-c++98-compat -Wfatal-errors -Wno-covered-switch-default -Wno-padded -Wno-exit-time-destructors -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-missing-noreturn -Wno-missing-prototypes -Wno-disabled-macro-expansion)		
+		add_compile_options(-std=c++14 -g -Weverything -Wno-c++98-compat -Wfatal-errors -Wno-covered-switch-default -Wno-padded -Wno-exit-time-destructors -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-missing-noreturn -Wno-missing-prototypes -Wno-disabled-macro-expansion)		
 	elseif( ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" )
-		add_compile_options(-std=c++14 -g -O3 -Wall -Wno-deprecated-declarations)
+		add_compile_options(-std=c++14 -g -Wall -Wno-deprecated-declarations)
 	endif()
 endif()
 
@@ -61,7 +61,7 @@ set( UNTESTED_HEADER_FILES
 )
 
 add_definitions( -DBOOST_TEST_DYN_LINK ) 
-include_directories( SYSTEM ${Boost_INCLUDE_DIRS} /home/dwright/github/other_ppl/sparsehash/src )
+include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
 link_directories( ${Boost_LIBRARY_DIRS} )
 
 foreach( CUR_PREFIX ${TESTED_HEADERS_PREFIXES} )

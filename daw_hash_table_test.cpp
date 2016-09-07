@@ -24,12 +24,11 @@
 #include <boost/unordered_map.hpp>
 #include <cstdint>
 #include <iostream>
-#include <google/dense_hash_map>
 #include <string>
 
+#include "daw_tuple_helper.h"
 #include "daw_hash_table.h"
 #include "daw_benchmark.h"
-#include "daw_tuple_helper.h"
 
 using namespace std::literals::string_literals;
 
@@ -76,30 +75,30 @@ auto stringKeys( size_t count = TEST_SIZE ) {
 	return words;
 }
 template<typename HashSet, typename Keys>
-    void do_test( HashSet & set, Keys const & keys) {
-		for( auto const & key: keys ) {
-			set[key] = key;
-		}
-	};
+void do_test( HashSet & set, Keys const & keys) {
+	for( auto const & key: keys ) {
+		set[key] = key;
+	}
+};
 
 template<typename HashSet, typename Keys>
 std::tuple<double, double, double> time_once( Keys const & keys) {
 	HashSet set;
 	auto ins = daw::benchmark( [&set, &keys]( ) {
-		do_test<HashSet>( set, keys );
-	} );
+			do_test<HashSet>( set, keys );
+			} );
 
 	auto f = daw::benchmark( [&set, &keys]( ) {
-		for( auto const & key: keys ) {
+			for( auto const & key: keys ) {
 			assert( set[key] == key );
-		}
-	});
+			}
+			});
 
 	auto e = daw::benchmark( [&set, &keys]( ) {
-		for( auto const & key: keys ) {
+			for( auto const & key: keys ) {
 			set.erase( key );
-		}
-	});
+			}
+			});
 	return std::make_tuple( ins, f, e );
 }
 
@@ -135,7 +134,7 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing_correctness ) {
 	BOOST_REQUIRE( set.begin( ).valid( ) );
 
 	decltype(keys) values;
-	
+
 	std::copy( set.begin( ), set.end( ), std::back_inserter( values ) );
 
 	std::sort( keys.begin( ), keys.end( ) );
@@ -145,7 +144,7 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing_correctness ) {
 
 	std::cout << "Done" << std::endl;
 
-	
+
 }
 
 
@@ -162,8 +161,8 @@ void do_testing( size_t count ) {
 		std::cout << "Generating Keys: " << count << std::endl;
 		auto const keys = integerKeys( count );
 		std::cout << "Starting benchmark" << std::endl;
-		auto a = best_of_many<std::unordered_map<size_t, size_t>>( keys );
 		auto b = best_of_many<daw::hash_table<size_t>>( keys );
+		auto a = best_of_many<std::unordered_map<size_t, size_t>>( keys );
 		auto perf_std = items_per_second( a, count );
 		auto perf = items_per_second( b, count );
 		std::cout << " int keys std::unorderd_map " << perf_std << " ops per seconds, " << a*1000000.0 << " µs\n";
@@ -174,8 +173,8 @@ void do_testing( size_t count ) {
 		std::cout << "Generating Keys" << std::endl;
 		auto const keys = stringKeys( count );
 		std::cout << "Starting benchmark" << std::endl;
-		auto a = best_of_many<std::unordered_map<std::string, std::string>>( keys );
 		auto b = best_of_many<daw::hash_table<std::string>>( keys );
+		auto a = best_of_many<std::unordered_map<std::string, std::string>>( keys );
 		auto perf_std = items_per_second( a, count );
 		auto perf = items_per_second( b, count );
 		std::cout << " string keys std::unorderd_map " << perf_std << " ops per seconds, " << a*1000000.0 << " µs\n";
