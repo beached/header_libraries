@@ -119,7 +119,7 @@ auto best_of_many(const Keys& keys) {
 BOOST_AUTO_TEST_CASE( daw_hash_table_testing_correctness ) {
 	std::cout << "Testing that all values entered exist afterwards" << std::endl;
 	std::cout << "Generating Keys" << std::endl;
-	auto keys = integerKeys( );
+	auto keys = integerKeys( 10 );
 	std::cout << "Entering keys" << std::endl;
 	daw::hash_table<decltype(keys[0])> set;
 	for( auto const & key: keys ) {
@@ -139,7 +139,7 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing_correctness ) {
 	std::sort( keys.begin( ), keys.end( ) );
 	std::sort( values.begin( ), values.end( ) );
 
-	BOOST_REQUIRE( keys == values );
+	BOOST_REQUIRE( std::equal( keys.begin( ), keys.end( ), values.begin( ), values.end( ) ) );
 
 	std::cout << "Done" << std::endl;
 
@@ -148,14 +148,21 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing_correctness ) {
 
 
 template<typename... Ts>
-auto items_per_second( std::tuple<Ts...> ts, size_t count ) {
+auto items_per_second( std::tuple<Ts...> const & ts, size_t count ) {
 	using namespace daw::tuple::operators;
 	return static_cast<double>(count)/ts;
+}
+
+template<typename... Ts>
+auto sec_to_microsec_each( std::tuple<Ts...> const & ts, size_t count ) {
+	using namespace daw::tuple::operators;
+	return (ts/static_cast<double>(count))*1000000.0;
 }
 
 void do_testing( size_t count ) {
 	using namespace daw::tuple::operators;
 	using namespace daw::tuple;
+	std::cout << "Testing { inserts, queries, removes }\n";
 	{
 		std::cout << "Generating Keys: " << count << std::endl;
 		auto const keys = integerKeys( count );
@@ -164,9 +171,10 @@ void do_testing( size_t count ) {
 		auto a = best_of_many<std::unordered_map<size_t, size_t>>( keys );
 		auto perf_std = items_per_second( a, count );
 		auto perf = items_per_second( b, count );
-		std::cout << " int keys std::unorderd_map " << perf_std << " ops per seconds, " << a*1000000.0 << " µs\n";
-		std::cout << " int keys hash_table " << perf << " ops per seconds, " << b*1000000.0 << " µs\n";
-		std::cout << " ratio " << ((a * 100.0) / b) << std::endl;
+		std::cout << "size_t keys/values\n";
+		std::cout << "-->std::unorderd_map " << perf_std << " ops per seconds, " << sec_to_microsec_each( a, count ) << " µs each\n";
+		std::cout << "-->daw::hash_table " << perf << " ops per seconds, " << sec_to_microsec_each( b, count ) << " µs each\n";
+		std::cout << "ratio " << ((a * 100.0) / b) << " % perf of std" << std::endl;
 	}
 	{
 		std::cout << "Generating Keys" << std::endl;
@@ -176,10 +184,10 @@ void do_testing( size_t count ) {
 		auto a = best_of_many<std::unordered_map<std::string, std::string>>( keys );
 		auto perf_std = items_per_second( a, count );
 		auto perf = items_per_second( b, count );
-		std::cout << " string keys std::unorderd_map " << perf_std << " ops per seconds, " << a*1000000.0 << " µs\n";
-		std::cout << " string keys hash_table " << perf << " ops per seconds, " << b*1000000.0 << " µs\n";
-		std::cout << " ratio " << ((a * 100.0) / b) << std::endl;
-
+		std::cout << "string keys/values\n";
+		std::cout << "-->std::unorderd_map " << perf_std << " ops per seconds, " << sec_to_microsec_each( a, count ) << " µs each\n";
+		std::cout << "-->daw::hash_table " << perf << " ops per seconds, " << sec_to_microsec_each( b, count ) << " µs each\n";
+		std::cout << "ratio " << ((a * 100.0) / b) << " % perf of std" << std::endl;
 	}
 
 }

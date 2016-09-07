@@ -1,3 +1,4 @@
+#pragma once
 // The MIT License (MIT)
 //
 // Copyright (c) 2016 Darrell Wright
@@ -20,7 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
 
 #include <algorithm>
 #include <functional>
@@ -185,34 +185,22 @@ namespace daw {
 		}
 
 		template<typename T, typename U>
-		friend bool operator==( hash_table_item_iterator<T> const & lhs, hash_table_item_iterator<U> const & rhs ) {
-			return lhs.m_position == rhs.m_position;
-		}
+		friend bool operator==( hash_table_item_iterator<T> const & lhs, hash_table_item_iterator<U> const & rhs );
 
 		template<typename T, typename U>
-		friend bool operator!=( hash_table_item_iterator<T> const & lhs, hash_table_item_iterator<U> const & rhs ) {
-			return lhs.m_position != rhs.m_position;
-		}
+		friend bool operator!=( hash_table_item_iterator<T> const & lhs, hash_table_item_iterator<U> const & rhs );
 
 		template<typename T, typename U>
-		friend bool operator>( hash_table_item_iterator<T> const & lhs, hash_table_item_iterator<U> const & rhs ) {
-			return lhs.m_position > rhs.m_position;
-		}
+		friend bool operator>( hash_table_item_iterator<T> const & lhs, hash_table_item_iterator<U> const & rhs );
 
 		template<typename T, typename U>
-		friend bool operator>=( hash_table_item_iterator<T> const & lhs, hash_table_item_iterator<U> const & rhs ) {
-			return lhs.m_position >= rhs.m_position;
-		}
+		friend bool operator>=( hash_table_item_iterator<T> const & lhs, hash_table_item_iterator<U> const & rhs );
 
 		template<typename T, typename U>
-		friend bool operator<( hash_table_item_iterator<T> const & lhs, hash_table_item_iterator<U> const & rhs ) {
-			return lhs.m_position < rhs.m_position;
-		}
+		friend bool operator<( hash_table_item_iterator<T> const & lhs, hash_table_item_iterator<U> const & rhs );
 
 		template<typename T, typename U>
-		friend bool operator<=( hash_table_item_iterator<T> const & lhs, hash_table_item_iterator<U> const & rhs ) {
-			return lhs.m_position <= rhs.m_position;
-		}
+		friend bool operator<=( hash_table_item_iterator<T> const & lhs, hash_table_item_iterator<U> const & rhs );
 
 		auto operator*( ) {
 			return m_position->value;
@@ -223,6 +211,36 @@ namespace daw {
 		}
 	};	// hash_table_item_iterator
 
+	template<typename T, typename U>
+	bool operator==( hash_table_item_iterator<T> const & lhs, hash_table_item_iterator<U> const & rhs ) {
+		return lhs.m_position == rhs.m_position;
+	}
+
+	template<typename T, typename U>
+	bool operator!=( hash_table_item_iterator<T> const & lhs, hash_table_item_iterator<U> const & rhs ) {
+		return lhs.m_position != rhs.m_position;
+	}
+
+	template<typename T, typename U>
+	bool operator>( hash_table_item_iterator<T> const & lhs, hash_table_item_iterator<U> const & rhs ) {
+		return lhs.m_position > rhs.m_position;
+	}
+
+	template<typename T, typename U>
+	bool operator>=( hash_table_item_iterator<T> const & lhs, hash_table_item_iterator<U> const & rhs ) {
+		return lhs.m_position >= rhs.m_position;
+	}
+
+	template<typename T, typename U>
+	bool operator<( hash_table_item_iterator<T> const & lhs, hash_table_item_iterator<U> const & rhs ) {
+		return lhs.m_position < rhs.m_position;
+	}
+
+	template<typename T, typename U>
+	bool operator<=( hash_table_item_iterator<T> const & lhs, hash_table_item_iterator<U> const & rhs ) {
+		return lhs.m_position <= rhs.m_position;
+	}
+
 	template<typename T>
 	void swap( hash_table_item_iterator<T> & lhs, hash_table_item_iterator<T> & rhs ) noexcept {
 		lhs.swap( rhs );
@@ -230,8 +248,8 @@ namespace daw {
 
 	template<typename Value>
 	struct hash_table {
-		static constexpr const double m_resize_ratio=2.00;
-		static constexpr const size_t m_max_load = 70;
+		static constexpr double const m_resize_ratio = 2.00;
+		static constexpr size_t const m_max_load = 70;
 		using value_type = daw::traits::root_type_t<Value>;
 		using mapped_type = daw::traits::root_type_t<Value>;
 		using size_type = size_t;
@@ -331,7 +349,7 @@ namespace daw {
 			assert( hash != 0 );	// zero is a sentinel for no value
 			static const size_t prime_a = 18446744073709551557u;
 			static const size_t prime_b = 18446744073709551533u;
-			return ((hash*prime_a + prime_b) % (table_size+impl::hash_table_item<value_type>::SentinalsSize)) - impl::hash_table_item<value_type>::SentinalsSize;
+			return (hash*prime_a + prime_b) % table_size;
 		}
 
 		static size_t resize_table( values_type & old_table, size_t new_size ) {
@@ -346,7 +364,8 @@ namespace daw {
 					swap( *pos, current_item );
 				}
 			}
-			old_table = std::move( new_hash_table );
+			using std::swap;
+			swap( old_table, new_hash_table );
 			return load;
 		}
 
