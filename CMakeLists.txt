@@ -31,7 +31,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_range_algorithm
 	daw_range
 	daw_traits
-	daw_tuple_math
+	daw_tuple_helper
 	daw_utility
 	daw_variant
  )

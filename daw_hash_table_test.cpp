@@ -29,7 +29,7 @@
 
 #include "daw_hash_table.h"
 #include "daw_benchmark.h"
-#include "daw_tuple_math.h"
+#include "daw_tuple_helper.h"
 
 using namespace std::literals::string_literals;
 
@@ -166,9 +166,9 @@ void do_testing( size_t count ) {
 		auto b = best_of_many<daw::hash_table<size_t>>( keys );
 		auto perf_std = items_per_second( a, count );
 		auto perf = items_per_second( b, count );
-		std::cout << " int keys std::unorderd_map " << perf_std << " ops per seconds\n";
-		std::cout << " int keys hash_table " << perf << " seconds\n";
-		std::cout << " ratio " << ((perf * 100.0) / perf_std) << std::endl;
+		std::cout << " int keys std::unorderd_map " << perf_std << " ops per seconds, " << a*1000000.0 << " µs\n";
+		std::cout << " int keys hash_table " << perf << " ops per seconds, " << b*1000000.0 << " µs\n";
+		std::cout << " ratio " << ((a * 100.0) / b) << std::endl;
 	}
 	{
 		std::cout << "Generating Keys" << std::endl;
@@ -178,9 +178,9 @@ void do_testing( size_t count ) {
 		auto b = best_of_many<daw::hash_table<std::string>>( keys );
 		auto perf_std = items_per_second( a, count );
 		auto perf = items_per_second( b, count );
-		std::cout << " string keys std::unorderd_map " << perf_std << " ops per seconds\n";
-		std::cout << " string keys hash_table " << perf << " seconds\n";
-		std::cout << " ratio " << ((perf * 100.0) / perf_std) << std::endl;
+		std::cout << " string keys std::unorderd_map " << perf_std << " ops per seconds, " << a*1000000.0 << " µs\n";
+		std::cout << " string keys hash_table " << perf << " ops per seconds, " << b*1000000.0 << " µs\n";
+		std::cout << " ratio " << ((a * 100.0) / b) << std::endl;
 
 	}
 
