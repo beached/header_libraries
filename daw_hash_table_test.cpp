@@ -81,7 +81,7 @@ void do_test( HashSet & set, Keys const & keys) {
 };
 
 template<typename HashSet, typename Keys>
-std::tuple<double, double, double> time_once( Keys const & keys) {
+auto time_once( Keys const & keys) {
 	HashSet set;
 	auto ins = daw::benchmark( [&set, &keys]( ) {
 			do_test<HashSet>( set, keys );

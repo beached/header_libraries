@@ -24,7 +24,8 @@
 
 #include <tuple>
 #include <utility>
-#include <iostream>
+#include <ostream>
+#include <string>
 
 namespace daw {
 	namespace tuple {
@@ -42,20 +43,72 @@ namespace daw {
 			struct gen_seq<0, Is...> : seq<Is...> { };
 
 			template<typename T1, typename F, int... Is>
-			constexpr void for_each( T1 && t1, F f, seq<Is...>) {
+			constexpr void for_each( T1 && t1, F && f, seq<Is...>) {
 				auto l = { (f( std::get<Is>(t1) ), 0)... };
 				do_nothing( l );
 			}
+
+			struct min_t {
+				template<typename Result, typename A, typename B>
+				constexpr void operator( )( Result & result, A const & a, B const & b ) const {
+					using std::min;
+					result = min( a, b );
+				}
+
+				static min_t const & get( ) {
+					static min_t result{ };
+					return result;
+				}
+			};	// min_t
+
+			struct max_t {
+				template<typename Result, typename A, typename B>
+				constexpr void operator( )( Result & result, A const & a, B const & b ) const {
+					using std::max;
+					result = max( a, b );
+				}
+
+				static max_t const & get( ) {
+					static max_t result{ };
+					return result;
+				}
+			};	// max_t
+
+			using namespace std::literals::string_literals;
+
+			class print_t {
+				bool m_is_first;
+				char m_separator;
+				std::ostream & m_os;
+			public:
+				constexpr print_t( std::ostream & os, char separator = ',' ):
+					m_is_first{ true },
+					m_separator{ std::move( separator ) },
+					m_os{ os } { }
+
+				void reset( ) {
+					m_is_first = true;
+				}
+				template<typename T>
+				constexpr void operator( )( T const & v ) {
+					if( !m_is_first ) {
+						m_os << m_separator;
+					} else {
+						m_is_first = false;
+					}
+					m_os << " " << v;
+				}
+			};	// print_t
 		}	// namespace detail
 
 		template<typename... Ts, typename F>
-		constexpr void for_each( std::tuple<Ts...> const & t1, F f ) {
-			detail::for_each( t1, f, detail::gen_seq<sizeof...(Ts)>());
+		constexpr void for_each( std::tuple<Ts...> const & t1, F && f ) {
+			detail::for_each( t1, std::forward<F>( f ), detail::gen_seq<sizeof...(Ts)>());
 		}
 
 		template<typename... Ts, typename F>
-		constexpr void apply( std::tuple<Ts...> & t1, F f ) {
-			detail::for_each( t1, f, detail::gen_seq<sizeof...(Ts)>());
+		constexpr void apply( std::tuple<Ts...> & t1, F && f ) {
+			detail::for_each( t1, std::forward<F>( f ), detail::gen_seq<sizeof...(Ts)>());
 		}
 
 		namespace operators {
@@ -106,7 +159,7 @@ namespace daw {
 					}
 
 					static add_t const & get( ) {
-						add_t result{ };
+						static add_t result{ };
 						return result;
 					}
 				};	// add_t
@@ -118,7 +171,7 @@ namespace daw {
 					}
 
 					static sub_t const & get( ) {
-						sub_t result{ };
+						static sub_t result{ };
 						return result;
 					}
 				};	// sub_t
@@ -130,7 +183,7 @@ namespace daw {
 					}
 
 					static mul_t const & get( ) {
-						mul_t result{ };
+						static mul_t result{ };
 						return result;
 					}
 				};	// mul_t
@@ -142,7 +195,7 @@ namespace daw {
 					}
 
 					static div_t const & get( ) {
-						div_t result{ };
+						static div_t result{ };
 						return result;
 					}
 				};	// div_t
@@ -213,18 +266,21 @@ namespace daw {
 		template<typename... Ts>
 		constexpr std::ostream & operator<<( std::ostream & os, std::tuple<Ts...> const & t ) {
 			os << "{";
-			bool is_first = true;
-			for_each( t, [&is_first, &os]( auto const & v ) {
-				if( is_first ) {
-					os << " " << v;
-					is_first = false;
-				} else {
-					os << ", " << v;
-				}
-			} );	
+			for_each( t, detail::print_t{ os } );
 			os << " }";
 			return os;
 		}
+
+		template<typename... Ts>
+		constexpr auto min( std::tuple<Ts...> const & a, std::tuple<Ts...> const & b ) {
+			return operators::detail::apply_tuple_tuple( a, b, daw::tuple::detail::min_t::get( ) );
+		}
+
+		template<typename... Ts>
+		constexpr auto max( std::tuple<Ts...> const & a, std::tuple<Ts...> const & b ) {
+			return operators::detail::apply_tuple_tuple( a, b, daw::tuple::detail::max_t::get( ) );
+		}
+
 	}	// namespace tuple
 }    // namespace daw
 

@@ -30,7 +30,7 @@
 using namespace daw::tuple::operators;
 using namespace daw::tuple;
 
-BOOST_AUTO_TEST_CASE( daw_tuple_math001 ) {
+BOOST_AUTO_TEST_CASE( daw_tuple_operators001 ) {
 	auto t1 = std::make_tuple( 1.0, 2.0, 3.0 );
 	auto res1 = t1 * 2.0;
 	auto res2 = 2.0 * t1;
@@ -84,3 +84,15 @@ BOOST_AUTO_TEST_CASE( daw_tuple_math001 ) {
 	BOOST_REQUIRE( res3 == std::make_tuple( 0.25, 1.0, 3.0 ) ); 
 }
 
+BOOST_AUTO_TEST_CASE( daw_tuple_helpers_001 ) {
+	using namespace daw::tuple;
+	auto t1 = std::make_tuple( 5, 4, 3, 1 );
+	auto t2 = std::make_tuple( 1, 2, 4, 8 );
+
+	auto t_min = min( t1, t2 ); 
+	auto t_max = max( t1, t2 ); 
+	std::cout << "min of " << t1 << " and " << t2 << " is " << t_min << std::endl;
+	std::cout << "max of " << t1 << " and " << t2 << " is " << t_max << std::endl;
+	BOOST_REQUIRE( t_min == std::make_tuple( 1, 2, 3, 1 ) );
+	BOOST_REQUIRE( t_max == std::make_tuple( 5, 4, 4, 8 ) );
+}
