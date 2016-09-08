@@ -229,14 +229,14 @@ auto best_of_many_dhs(const Keys& keys, size_t count, size_t max_load, double re
 auto do_testing_dhs( size_t max_load, double resize_ratio ) {
 	using namespace daw::tuple::operators;
 	using namespace daw::tuple;
-	const size_t count = 100000;
+	const size_t count = 1000000;
 	std::tuple<double, double, double> result;
 	std::cout << "Testing { inserts, queries, removes } with a max_load_factor of " << max_load << "% and a growth ratio of " << resize_ratio << "X\n";
 	{
 		std::cout << "Generating Keys: " << count << std::endl;
 		auto const keys = integerKeys( count );
 		std::cout << "Starting benchmark" << std::endl;
-		auto a = best_of_many_dhs( keys, 10, max_load, resize_ratio );
+		auto a = best_of_many_dhs( keys, 15, max_load, resize_ratio );
 		result = a;
 		auto perf = items_per_second( a, count );
 		std::cout << "size_t keys/values\n";
@@ -246,7 +246,7 @@ auto do_testing_dhs( size_t max_load, double resize_ratio ) {
 		std::cout << "Generating Keys" << std::endl;
 		auto const keys = stringKeys( count );
 		std::cout << "Starting benchmark" << std::endl;
-		auto a = best_of_many_dhs( keys, 10, max_load, resize_ratio );
+		auto a = best_of_many_dhs( keys, 15, max_load, resize_ratio );
 		result = min( a, result );
 		auto perf = items_per_second( a, count );
 		std::cout << "string keys/values\n";
