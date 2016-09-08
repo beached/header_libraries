@@ -88,10 +88,10 @@ auto time_once( Keys const & keys) {
 			} );
 
 	auto f = daw::benchmark( [&set, &keys]( ) {
-			for( auto const & key: keys ) {
+		for( auto const & key: keys ) {
 			assert( set[key] == key );
-			}
-			});
+		}
+	});
 
 	auto e = daw::benchmark( [&set, &keys]( ) {
 			for( auto const & key: keys ) {
@@ -101,17 +101,12 @@ auto time_once( Keys const & keys) {
 	return std::make_tuple( ins, f, e );
 }
 
-auto min( std::tuple<double, double, double> a, std::tuple<double, double, double> b ) {
-	return std::make_tuple( std::min( std::get<0>( a ), std::get<0>( b ) ), std::min( std::get<1>( a ), std::get<1>( b ) ), std::min( std::get<2>( a ), std::get<2>( b ) ) );
-}
-
-
 template<typename HashSet, typename Keys>
-auto best_of_many(const Keys& keys) {
+auto best_of_many(const Keys& keys, size_t count = 10 ) {
 	auto best_time = std::make_tuple( std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity( ) );
 
-	for (size_t i = 0; i < 10; ++i) {
-		best_time = min(best_time, time_once<HashSet>(keys));
+	for (size_t i = 0; i < count; ++i) {
+		best_time = daw::tuple::min(best_time, time_once<HashSet>(keys));
 	}
 	return best_time;
 }
@@ -199,3 +194,87 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing_perf ) {
 	do_testing( 1000000 );
 }
 
+template<typename Keys>
+auto time_once_dhs( Keys const & keys, size_t load_factor, double resize_ratio ) {
+	using value_type = decltype( *std::begin( keys ) );
+	daw::hash_table<value_type> set{ 7, resize_ratio, load_factor };
+	auto insert = daw::benchmark( [&set, &keys]( ) {
+		do_test( set, keys );
+	} );
+
+	auto query = daw::benchmark( [&set, &keys]( ) {
+		for( auto const & key: keys ) {
+			assert( set[key] == key );
+		}
+	});
+
+	auto erase = daw::benchmark( [&set, &keys]( ) {
+		for( auto const & key: keys ) {
+			set.erase( key );
+		}
+	});
+	return std::make_tuple( insert, query, erase );
+}
+
+template<typename Keys>
+auto best_of_many_dhs(const Keys& keys, size_t count, size_t max_load, double resize_ratio ) {
+	auto best_time = std::make_tuple( std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity( ) );
+
+	for (size_t i = 0; i < count; ++i) {
+		best_time = daw::tuple::min(best_time, time_once_dhs(keys, max_load, resize_ratio));
+	}
+	return best_time;
+}
+
+auto do_testing_dhs( size_t max_load, double resize_ratio ) {
+	using namespace daw::tuple::operators;
+	using namespace daw::tuple;
+	const size_t count = 100000;
+	std::tuple<double, double, double> result;
+	std::cout << "Testing { inserts, queries, removes } with a max_load_factor of " << max_load << "% and a growth ratio of " << resize_ratio << "X\n";
+	{
+		std::cout << "Generating Keys: " << count << std::endl;
+		auto const keys = integerKeys( count );
+		std::cout << "Starting benchmark" << std::endl;
+		auto a = best_of_many_dhs( keys, 10, max_load, resize_ratio );
+		result = a;
+		auto perf = items_per_second( a, count );
+		std::cout << "size_t keys/values\n";
+		std::cout << "-->daw::hash_table " << perf << " ops per seconds, " << sec_to_microsec_each( a, count ) << " µs each\n";
+	}
+	{
+		std::cout << "Generating Keys" << std::endl;
+		auto const keys = stringKeys( count );
+		std::cout << "Starting benchmark" << std::endl;
+		auto a = best_of_many_dhs( keys, 10, max_load, resize_ratio );
+		result = min( a, result );
+		auto perf = items_per_second( a, count );
+		std::cout << "string keys/values\n";
+		std::cout << "-->daw::hash_table " << perf << " ops per seconds, " << sec_to_microsec_each( a, count ) << " µs each\n";
+	}
+
+	return result;
+}
+
+
+
+BOOST_AUTO_TEST_CASE( daw_hash_table_size_perf ) {
+	std::cout << "\n\nTuning Parameters\n\n";
+	using namespace daw::tuple::operators;
+	using namespace daw::tuple;
+	auto best = std::make_tuple( 10000.0, 10000.0, 1000.0 );
+	size_t best_factor = 50;
+	double best_ratio = 2.0;
+	for( double ratio=1.20; ratio<3.0; ratio += 0.05 ) {
+		for( size_t f=50; f<100; f+=5 ) {
+			auto r = do_testing_dhs( f, ratio );
+			if( std::get<1>( r ) <= std::get<1>( best ) ) {
+				best = r;
+				best_factor = f;
+				best_ratio = ratio;
+			}
+		}
+	}
+	std::cout << "\n\nBest query perf was found with a load factor of " << best_factor << ", resize ratio of " << best_ratio << " with results of " << best << '\n';
+}
+	

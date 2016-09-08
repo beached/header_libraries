@@ -248,8 +248,6 @@ namespace daw {
 
 	template<typename Value>
 	struct hash_table {
-		static constexpr double const m_resize_ratio = 2.00;
-		static constexpr size_t const m_max_load = 70;
 		using value_type = daw::traits::root_type_t<Value>;
 		using mapped_type = daw::traits::root_type_t<Value>;
 		using size_type = size_t;
@@ -263,6 +261,8 @@ namespace daw {
 		values_type m_values;
 		size_t m_load;
 		size_t m_growth_counter;
+		double m_resize_ratio; 
+		size_t m_max_load;
 
 		auto priv_begin( ) {
 			return m_values.begin( );
@@ -280,10 +280,18 @@ namespace daw {
 			return m_values.end( );
 		}
 	public:
-		hash_table( ): 
-				m_values{ 7 },
+		hash_table( size_t start_size, double resize_ratio = 2.0, size_t max_load_percent = 70 ):
+				m_values{ start_size },
 				m_load{ 0 },
-				m_growth_counter{ 0 } { }
+				m_growth_counter{ 0 },
+				m_resize_ratio{ resize_ratio },
+				m_max_load{ max_load_percent } { 
+				
+			assert( start_size > 0 );
+		}
+
+		hash_table( ): 
+				hash_table( 7, 2.2, 50 ) { }
 
 		~hash_table( ) = default;
 
@@ -391,7 +399,7 @@ namespace daw {
 		}
 
 		static priv_iterator find_item_by_hash_or_create( size_t hash, hash_table & tbl ) {
-			if( ((tbl.m_load*100)/tbl.m_values.size( )) > m_max_load ) {
+			if( ((tbl.m_load*100)/tbl.m_values.size( )) > tbl.m_max_load ) {
 				tbl.grow_table();
 			}
 			auto pos = find_item_by_hash( hash, tbl.m_values );
@@ -420,7 +428,7 @@ namespace daw {
 		}
 
 		void grow_table( ) {
-			m_load = resize_table( m_values, static_cast<size_t>(static_cast<double>(m_values.size( )) * m_resize_ratio) );
+			m_load = resize_table( m_values, static_cast<size_t>(std::ceil( static_cast<double>(m_values.size( )) * m_resize_ratio)) );
 			++m_growth_counter;
 		}
 
