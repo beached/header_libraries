@@ -561,14 +561,19 @@ namespace daw {
 				return matcher_t<value_t>{ std::move( values ) };
 			}
 
+		///
+		// Does the first range (first1, last1] start with the second range (first2, last2]
+		//
 		template<typename ForwardIterator1, typename ForwardIterator2, typename BinaryPredicate>
 			bool starts_with( ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2, ForwardIterator2 last2, BinaryPredicate pred ) {
 				while( first1 != last1 && first2 != last2 ) {
 					if( !pred( *first1, *first2 ) ) {
 						return false;
 					}
+					++first1;
+					++first2;
 				}
-				return first2 == last2;
+				return first2 == last2;	// end of second item
 			}
 	}    // namespace parser
 }    // namespace daw
