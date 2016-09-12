@@ -109,11 +109,11 @@ namespace daw {
 		}
 
 		pointer operator->( ) {
-			return m_value;
+			return m_value.get( );
 		}
 
 		pointer_const operator->( ) const {
-			return m_value;
+			return m_value.get( );
 		}
 
 		void reset( ) {

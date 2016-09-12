@@ -70,3 +70,15 @@ BOOST_AUTO_TEST_CASE( daw_optional_test_01 ) {
 	BOOST_REQUIRE( test_15 );
 	BOOST_REQUIRE( test_16 );
 }
+
+BOOST_AUTO_TEST_CASE( daw_optional_test_02 ) {
+	struct test_t {
+		int8_t a;
+	};
+
+	daw::optional_heap<test_t> tmp = test_t{ };
+	tmp->a = 5;
+	
+
+
+}
