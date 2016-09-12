@@ -41,7 +41,7 @@ namespace daw {
 			using const_reference = value_type const &;
 		private:
 			bool m_occupied;
-			alignas( value_type ) std::array<uint8_t, sizeof( value_type )> m_data;
+			alignas( value_type ) std::array<uint8_t, sizeof( T )> m_data;
 
 			void * raw_ptr( ) {
 				return static_cast<void *>( m_data.data( ) );

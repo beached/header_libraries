@@ -115,8 +115,9 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing_correctness ) {
 	std::cout << "Testing that all values entered exist afterwards" << std::endl;
 	std::cout << "Generating Keys" << std::endl;
 	auto keys = integerKeys( 10 );
+	using value_type = daw::traits::root_type_t <decltype( *std::begin( keys ) )>;
 	std::cout << "Entering keys" << std::endl;
-	daw::hash_table<decltype(keys[0])> set;
+	daw::hash_table<value_type> set;
 	for( auto const & key: keys ) {
 		set[key] = key;
 	}
@@ -127,7 +128,7 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing_correctness ) {
 
 	BOOST_REQUIRE( set.begin( ).valid( ) );
 
-	decltype(keys) values;
+	std::vector<value_type> values;
 
 	std::copy( set.begin( ), set.end( ), std::back_inserter( values ) );
 
@@ -257,7 +258,7 @@ auto do_testing_dhs( size_t max_load, double resize_ratio ) {
 }
 
 
-
+/*
 BOOST_AUTO_TEST_CASE( daw_hash_table_size_perf ) {
 	std::cout << "\n\nTuning Parameters\n\n";
 	using namespace daw::tuple::operators;
@@ -277,4 +278,5 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_size_perf ) {
 	}
 	std::cout << "\n\nBest query perf was found with a load factor of " << best_factor << ", resize ratio of " << best_ratio << " with results of " << best << '\n';
 }
-	
+*/
+

@@ -70,15 +70,16 @@ namespace daw {
 
 		array & operator=( array && rhs ) noexcept {
 			if( this != &rhs ) {
-				array tmp{ std::move( rhs ) };
-				tmp.swap( *this );
+				m_begin = std::exchange( rhs.m_begin, nullptr );
+				m_end = std::exchange( rhs.m_end, nullptr ); 
+				m_size = std::exchange( rhs.m_size, 0 ); 
 			}
 			return *this;
 		}
 
 		array( array const & other ):  
-				m_begin{ new value_type[other.m_size] }, 
-				m_end{ m_begin + other.m_size }, 
+				m_begin{ other.m_size == 0 ? nullptr : new value_type[other.m_size] }, 
+				m_end{ other.m_size == 0 ? nullptr : m_begin + other.m_size }, 
 				m_size{ other.m_size } {
 			
 			std::copy_n( other.m_begin, m_size, m_begin );
@@ -130,11 +131,19 @@ namespace daw {
 			return m_begin;
 		}
 
+		const_iterator cbegin( ) const noexcept {
+			return m_begin;
+		}
+
 		iterator end( ) noexcept {
 			return m_end;
 		}
 
 		const_iterator end( ) const noexcept {
+			return m_end;
+		}
+
+		const_iterator cend( ) const noexcept {
 			return m_end;
 		}
 

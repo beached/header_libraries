@@ -42,37 +42,66 @@ namespace daw {
 
 		template<typename ValueType>
 		struct hash_table_item {
-			enum Sentinals { sentinal_empty = 0, sentinal_removed = 1, SentinalsSize = 2 };
+			enum Sentinals: size_t {
+				sentinal_empty,	// empty, nothing there
+				sentinal_removed, // has been removed so when looking for a hash just skip and don't treat as unfound
+				SentinalsSize	// must be last.  Marker to get number of Sentinals
+			};
 			using value_type = typename daw::traits::root_type_t<ValueType>;
 			size_t hash;	// 0 is the sentinel to mark unused
 			value_type value;
 
 			void clear( ) {
-				hash = 0;
+				hash = Sentinals::sentinal_removed;
 				value = value_type{ };
 			}
 
 			bool empty( ) const noexcept {
-				return sentinal_empty == hash;
+				return Sentinals::sentinal_empty == hash;
 			}
 
 			bool removed( ) const noexcept {
-				return sentinal_removed == hash;
+				return Sentinals::sentinal_removed == hash;
+			}
+
+			bool good( ) const noexcept {
+				return hash >= Sentinals::SentinalsSize;
 			}
 
 			explicit operator bool( ) const {
-				return hash >= SentinalsSize;
+				return hash >= Sentinals::SentinalsSize;
 			}
 
 			hash_table_item( ):
-				hash{ 0 },
+				hash{ Sentinals::sentinal_empty },
 				value{ } { }
 
 			~hash_table_item( ) = default;
-			hash_table_item( hash_table_item const & ) = default;
-			hash_table_item( hash_table_item && ) = default;
-			hash_table_item & operator=( hash_table_item const & ) = default;
-			hash_table_item & operator=( hash_table_item && ) = default;
+
+			hash_table_item( hash_table_item const & other ):
+				hash{ (other.hash == Sentinals::sentinal_removed) ? Sentinals::sentinal_empty : other.hash },
+				value{ other.value } { }
+
+			hash_table_item( hash_table_item && other ) noexcept:
+				hash{ std::move( other.hash ) },
+				value{ std::move( other.value ) } { }
+
+			hash_table_item & operator=( hash_table_item const & rhs ) {
+				if( this != &rhs ) {
+					hash = (rhs.hash == Sentinals::sentinal_removed) ? Sentinals::sentinal_empty : rhs.hash;
+					hash = rhs.hash;
+					value = rhs.value;
+				}
+				return *this;
+			}
+
+			hash_table_item & operator=( hash_table_item && rhs ) noexcept {
+				if( this != &rhs ) {
+					hash = std::exchange( rhs.hash, Sentinals::sentinal_empty );
+					value = std::move( rhs.value );
+				}
+				return *this;
+			}
 		};	// hash_table_item
 	}	// namespace impl
 
@@ -146,10 +175,8 @@ namespace daw {
 		}
 
 		hash_table_item_iterator & operator++( ) {
-			if( m_position != m_end ) {
-				++m_position;
-			}
-			m_position = std::find_if( m_position, m_end, []( auto const & val ) { return !val.empty( ); } );
+			++m_position;
+			m_position = std::find_if( m_position, m_end, []( auto const & val ) { return val.good( ); } );
 			return *this;	
 		}
 
@@ -168,10 +195,8 @@ namespace daw {
 		}
 
 		hash_table_item_iterator & operator--( ) {
-			if( m_position != m_begin ) {
-				--m_position;
-			}
-			while( m_position != m_begin && m_position->empty( ) ) {
+			--m_position;
+			while( m_position > m_begin && !m_position->good( ) ) {
 				--m_position;
 			}	
 			return *this;	
@@ -291,7 +316,7 @@ namespace daw {
 		}
 
 		hash_table( ): 
-				hash_table( 7, 2.2, 50 ) { }
+				hash_table( 7, 2.6, 50 ) { }
 
 		~hash_table( ) = default;
 
@@ -367,7 +392,7 @@ namespace daw {
 				if( current_item ) {
 					++load;
 					auto pos = find_item_by_hash( current_item.hash, new_hash_table );
-					assert( pos != new_hash_table.end( ) );
+					assert( pos != new_hash_table.cend( ) );
 					using std::swap;
 					swap( *pos, current_item );
 				}
@@ -382,13 +407,21 @@ namespace daw {
 			auto const start_it = std::next( tbl.begin( ), scaled_hash );
 			// loop through all values until an empty spot is found(at end start at beginning)
 			auto const is_here = [skip_removed, hash]( auto const & item ) {
-				return (!skip_removed && item.removed( )) || item.empty( ) || hash == item.hash;
+				// hash can be empty, removed or have a value.
+				if( hash == item.hash ) {
+					return true;
+				}
+				if( item.empty( ) ) {
+					return true;
+				}
+				// Only option left is that item is removed
+				return !skip_removed;
 			};
-			auto pos = std::find_if( start_it, tbl.end( ), is_here );
-			if( tbl.end( ) == pos ) {
+			auto pos = std::find_if( start_it, tbl.cend( ), is_here );
+			if( tbl.cend( ) == pos ) {
 				pos = std::find_if( tbl.begin( ), start_it, is_here );
 				if( start_it == pos ) {
-					pos = tbl.end( );
+					pos = tbl.cend( );
 				}
 			}
 			return const_cast<priv_iterator>( pos );
@@ -399,18 +432,21 @@ namespace daw {
 		}
 
 		static priv_iterator find_item_by_hash_or_create( size_t hash, hash_table & tbl ) {
-			if( ((tbl.m_load*100)/tbl.m_values.size( )) > tbl.m_max_load ) {
+			if( tbl.empty( ) || ((tbl.m_load*100)/tbl.m_values.size( )) > tbl.m_max_load ) {
 				tbl.grow_table();
 			}
 			auto pos = find_item_by_hash( hash, tbl.m_values );
 			if( pos == tbl.priv_end( ) ) {
-				tbl.grow_table( );
-				pos = find_item_by_hash( hash, tbl );
-				daw::exception::daw_throw_on_true( pos == tbl.priv_end( ) );
-				// This is a WAG.  It be wrong but I had to pick something
-				// without evidence to support it.
+				pos = find_item_by_hash( hash, tbl.m_values, false );
+				if( pos == tbl.priv_end( ) ) {
+					tbl.grow_table( );
+					pos = find_item_by_hash( hash, tbl );
+					daw::exception::daw_throw_on_true( pos == tbl.priv_end( ) );
+					// This is a WAG.  It be wrong but I had to pick something
+					// without evidence to support it.
+				}
 			}
-			if( pos->empty( ) ) {
+			if( !pos ) {
 				++tbl.m_load;
 				pos->hash = hash;
 			}
@@ -481,7 +517,7 @@ namespace daw {
 		size_t erase( Key && key ) {
 			auto hash = hash_fn( key );
 			auto pos = find_item_by_hash( hash, m_values );
-			if( pos != m_values.end( ) ) {
+			if( pos != m_values.cend( ) ) {
 				pos->clear( );
 				--m_load;
 				return 1;
@@ -529,6 +565,9 @@ namespace daw {
 			using std::swap;
 			swap( m_values, rhs.m_values );
 			swap( m_load, rhs.m_load );
+			swap( m_growth_counter, rhs.m_growth_counter );
+			swap( m_resize_ratio, rhs.m_resize_ratio );
+			swap( m_max_load, rhs.m_max_load );
 		}
 
 		template<typename Key>
