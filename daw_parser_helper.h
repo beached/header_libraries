@@ -91,6 +91,14 @@ namespace daw {
 				std::string to_string( ) const {
 					return as<std::string>( );
 				}
+
+				auto begin( ) {
+					return first;
+				}
+
+				auto end( ) {
+					return last;
+				}
 			};    // find_result_t
 
 		template<typename ForwardIterator>
