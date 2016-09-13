@@ -82,7 +82,13 @@ namespace daw {
 						return result;
 					}
 
+				///
+				// Depreciated, use to_string
 				std::string as_string( ) const {
+					return as<std::string>( );
+				}
+
+				std::string to_string( ) const {
 					return as<std::string>( );
 				}
 			};    // find_result_t
