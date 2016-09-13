@@ -278,7 +278,7 @@ namespace daw {
 			}
 
 		template<typename T, typename Min, typename Max>
-			constexpr bool in_range( T && value, Min && min_value, Max && max_value ) noexcept {
+			constexpr bool in_range( T value, Min min_value, Max max_value ) noexcept {
 				using val_t = typename daw::traits::max_sizeof<T, Min, Max>::type;
 				return static_cast<val_t>(min_value) <= static_cast<val_t>(value) && static_cast<val_t>(value) <= static_cast<val_t>(max_value);
 			}
