@@ -589,6 +589,22 @@ namespace daw {
 				}
 				return first2 == last2;	// end of second item
 			}
+
+
+		template<typename ForwardIterator, typename Value>
+		find_result_t<ForwardIterator> until_last_of( ForwardIterator first, ForwardIterator last, Value const & value ) {
+			auto result = until_value( first, last, value );
+			bool found = static_cast<bool>( result );
+			while( result && result.end( ) != last ) {
+				auto tmp = until_value( std::next( result.end( ) ), last, value );
+				result.found = static_cast<bool>( tmp );
+				if( tmp ) {
+					result.last = tmp.end( );
+				}
+			}
+			result.found = found;
+			return result;
+		}
 	}    // namespace parser
 }    // namespace daw
 
