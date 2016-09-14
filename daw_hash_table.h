@@ -318,6 +318,15 @@ namespace daw {
 		hash_table( ): 
 				hash_table( 7, 2.6, 50 ) { }
 
+		template<typename Key>
+		hash_table( std::initializer_list<std::pair<Key, value_type>> values ):
+				hash_table( ) {
+
+			for( auto const value : values ) {
+				insert( value.first, value.second );	
+			}
+		}
+
 		~hash_table( ) = default;
 
 		hash_table( hash_table && ) = default;
