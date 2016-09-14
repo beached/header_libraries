@@ -141,8 +141,8 @@ namespace daw {
 			}
 
 		template<typename T, typename Arg, typename... Args>
-			bool is_a( T && value, Arg && tst, Args && ... tsts ) {
-				return is_a( std::forward<T>( value ), std::forward<Arg>( tst ) ) || is_a( std::forward<T>( value ), std::forward<Args>( tsts )... );
+			bool is_a( T const & value, Arg const & tst, Args const & ... tsts ) {
+				return is_a( value, tst ) || is_a( value, tsts... );
 			}
 
 
