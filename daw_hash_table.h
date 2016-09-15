@@ -491,7 +491,7 @@ namespace daw {
 		}
 
 		template<typename Key>
-		auto insert( std::pair<Key, value_type value> const & p ) {
+		auto insert( std::pair<Key, value_type> const & p ) {
 			insert( p.first, p.second );
 		}
 
