@@ -318,20 +318,20 @@ namespace daw {
 		hash_table( ): 
 				hash_table( 7, 2.6, 50 ) { }
 
-		template<typename K, typename V>
-		hash_table( std::initializer_list<std::pair<K,V>> const & values ):
+		template<typename T>
+		hash_table( std::initializer_list<T> const & values ):
 				hash_table( ) {
 
 			for( auto const & value : values ) {
-				insert( value.first, value.second );	
+				insert( value );	
 			}
 		}
 
-		template<typename K, typename V>
-		hash_table & operator=( std::initializer_list<std::pair<K, V>> const & values ) {
+		template<typename T>
+		hash_table & operator=( std::initializer_list<T> const & values ) {
 			clear( );
 			for( auto const & value : values ) {
-				insert( value.first, value.second );	
+				insert( value );	
 			}
 		}
 
@@ -488,6 +488,11 @@ namespace daw {
 	public:
 		static size_t max_size( ) {
 			return static_cast<size_t>(std::numeric_limits<ptrdiff_t>::max( ) - 1);
+		}
+
+		template<typename Key>
+		auto insert( std::pair<K, value_type value> const & p ) {
+			insert( p.first, p.second );
 		}
 
 		template<typename Key>
