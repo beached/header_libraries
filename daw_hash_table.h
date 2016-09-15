@@ -474,11 +474,11 @@ namespace daw {
 		}
 
 		template<typename Key>
-		auto insert( Key const & key, value_type value ) {
+		auto & insert( Key const & key, value_type value ) {
 			auto hash = hash_fn( key );
 			auto pos = find_item_by_hash_or_create( hash, *this );
-			pos->first = std::move( value );
-			return &pos->first;
+			pos->value = std::move( value );
+			return pos->value;	
 		}
 
 		template<typename Key>
