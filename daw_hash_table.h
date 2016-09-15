@@ -629,6 +629,14 @@ namespace daw {
 
 	};	// struct hash_table
 
+	template<typename Key, typename Value>
+	auto create_hash_table( std::initializer_list<std::pair<Key, Value>> const & values ) {
+		hash_table<Value> result;
+		for( auto const & p : values ) {
+			result.insert( p.first, p.second );
+		}
+		return result;
+	}
 
 	template<typename T>
 	void swap( hash_table<T> & lhs, hash_table<T> & rhs ) noexcept {
