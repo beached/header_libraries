@@ -122,6 +122,11 @@ namespace daw {
 
 	};    // class optional_heap
 
+	template<typename T, typename... Args>
+	auto make_optional_heap( Args&&... args ) {
+		return optional_heap<T>{ std::forward<Args>(args)... };
+	}
+
 	template<typename T>
 	bool operator==( daw::optional_heap<T> const &lhs, daw::optional_heap<T> const &rhs ) {
 		if( lhs ) {
