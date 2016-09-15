@@ -318,11 +318,19 @@ namespace daw {
 		hash_table( ): 
 				hash_table( 7, 2.6, 50 ) { }
 
-		template<typename Key>
-		hash_table( std::initializer_list<std::pair<Key, value_type>> values ):
+		template<typename K, typename V>
+		hash_table( std::initializer_list<std::pair<K,V>> const & values ):
 				hash_table( ) {
 
-			for( auto const value : values ) {
+			for( auto const & value : values ) {
+				insert( value.first, value.second );	
+			}
+		}
+
+		template<typename K, typename V>
+		hash_table & operator=( std::initializer_list<std::pair<K, V>> const & values ) {
+			clear( );
+			for( auto const & value : values ) {
 				insert( value.first, value.second );	
 			}
 		}
