@@ -41,6 +41,14 @@ namespace daw {
 		using pointer_const = value_type const *;
 	private:
 		std::unique_ptr<value_type> m_value;
+
+	
+		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
+		static T * make_copy( T * ptr ) {
+			using v_t = std::remove_cv_t<std::remove_reference_t<T>>;
+			return new v_t{ *ptr };
+		}
+
 	public:
 		optional_heap( ):
 				m_value{ } { }
@@ -49,22 +57,26 @@ namespace daw {
 		optional_heap( T const & value ):
 				m_value{ new std::remove_cv_t<std::remove_reference_t<T>>{ value } } { }
 
-		optional_heap( optional_heap const & other ):
-				optional_heap{ *other.m_value } { }
+		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
+		optional_heap( optional_heap<T> const & other ):
+				optional_heap{ make_copy( other.m_value.get( ) ) } { }
 
-		optional_heap( optional_heap && other ):
-				m_value{ std::move( other.m_value ) } { }
+		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
+		optional_heap( optional_heap<T> && other ):
+				m_value{ other.m_value.release( ) } { }
 
-		optional_heap &operator=( optional_heap const & rhs ) {
+		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
+		optional_heap &operator=( optional_heap<T> const & rhs ) {
 			if( this != &rhs ) {
-				m_value = std::make_unique<value_type>( *rhs.m_value );
+				m_value.reset( make_copy( rhs.m_value.get( ) ) );
 			}
 			return *this;
 		}
 
-		optional_heap &operator=( optional_heap &&rhs ) {
+		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
+		optional_heap &operator=( optional_heap<T> &&rhs ) {
 			if( this != &rhs ) {
-				m_value = std::move( rhs.m_value );
+				m_value.reset( rhs.m_value.release( ) );
 			}
 			return *this;
 		}
