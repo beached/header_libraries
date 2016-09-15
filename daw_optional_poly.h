@@ -66,7 +66,7 @@ namespace daw {
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
 		optional_poly( optional_poly<T> const & other ):
-				optional_poly{ make_copy( other.m_value.get( ) ) } { }
+				m_value{ make_copy( other.m_value.get( ) ) } { }
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
 		optional_poly( optional_poly<T> && other ):
