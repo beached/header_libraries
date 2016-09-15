@@ -203,6 +203,11 @@ namespace daw {
 			return *this;
 		}
 
+		template<typename... Args>
+		void emplace( Args&&... args ) {
+			m_value = value_type{ std::forward<Args>( args )... };
+		}
+
 		optional &operator=( optional &&rhs ) {
 			if( this != &rhs ) {
 				optional tmp{ std::move( rhs ) };
@@ -264,6 +269,13 @@ namespace daw {
 		}
 
 	};    // class optional
+
+	template<typename T, typename... Args>
+	auto make_optional( Args&&... args ) {
+		optional<T> result{ };
+		result.emplace( std::forward<Args>( args )... );
+		return result;
+	}
 
 	template<typename T>
 	bool operator==( daw::optional<T> const &lhs, daw::optional<T> const &rhs ) {

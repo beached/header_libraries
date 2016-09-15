@@ -55,6 +55,11 @@ namespace daw {
 		optional_poly( ):
 				m_value{ } { }
 
+		template<typename... Args>
+		void emplace( Args&&... args ) {
+			m_value.reset( new value_type{ std::forward<Args>( args )... } );
+		}
+
 		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
 		optional_poly( T const & value ):
 				m_value{ new std::remove_cv_t<std::remove_reference_t<T>>{ value } } { }
@@ -145,7 +150,9 @@ namespace daw {
 
 	template<typename T, typename... Args>
 	auto make_optional_poly( Args&&... args ) {
-		return optional_poly<T>{ std::forward<Args>(args)... };
+		optional_poly<T> result{ };
+		result.emplace( std::forward<Args>(args)... );
+		return result;
 	}
 
 	template<typename T>

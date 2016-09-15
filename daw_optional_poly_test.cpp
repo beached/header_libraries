@@ -28,8 +28,8 @@
 BOOST_AUTO_TEST_CASE( daw_optional_poly_test_01 ) {
 	std::cout << "sizeof( size_t ) -> " << sizeof( size_t );
 	std::cout << " sizeof( int ) -> " << sizeof( int );
-	std::cout << " sizeof( daw::optional_poly<int> ) -> " << sizeof( daw::optional_heap<int> );
-	std::cout << " sizeof( daw::optional_poly<size_t> ) -> " << sizeof( daw::optional_heap<size_t> ) << '\n';
+	std::cout << " sizeof( daw::optional_poly<int> ) -> " << sizeof( daw::optional_poly<int> );
+	std::cout << " sizeof( daw::optional_poly<size_t> ) -> " << sizeof( daw::optional_poly<size_t> ) << '\n';
 	daw::optional_poly<int> a{ };
 	daw::optional_poly<int> b{ 1 };
 	daw::optional_poly<int> c{ 2 };
