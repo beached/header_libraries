@@ -64,9 +64,15 @@ namespace daw {
 		optional_poly( T const & value ):
 				m_value{ new std::remove_cv_t<std::remove_reference_t<T>>{ value } } { }
 
+		optional_poly( optional_poly const & other ):
+				m_value{ make_copy( other.m_value.get( ) ) } { }
+
 		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
 		optional_poly( optional_poly<T> const & other ):
 				m_value{ make_copy( other.m_value.get( ) ) } { }
+
+		optional_poly( optional_poly && other ):
+				m_value{ std::move( other.m_value ) } { }
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
 		optional_poly( optional_poly<T> && other ):
