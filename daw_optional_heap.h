@@ -45,8 +45,9 @@ namespace daw {
 		optional_heap( ):
 				m_value{ } { }
 
-		optional_heap( value_type value ):
-				m_value{ std::make_unique<value_type>( std::move( value ) ) } { }
+		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
+		optional_heap( T const & value ):
+				m_value{ new std::remove_cv_t<std::remove_reference_t<T>>{ value } } { }
 
 		optional_heap( optional_heap const & other ):
 				optional_heap{ *other.m_value } { }
@@ -68,8 +69,11 @@ namespace daw {
 			return *this;
 		}
 
-		optional_heap &operator=( value_type value ) {
-			m_value = std::make_unique<value_type>( std::move( value ) );
+		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
+		optional_heap &operator=( T const & value ) {
+			optional_heap tmp{ value };
+			using std::swap;
+			swap( *this, value );
 			return *this;
 		}
 
