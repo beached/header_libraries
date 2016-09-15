@@ -25,7 +25,7 @@
 
 #include "daw_optional_heap.h"
 
-BOOST_AUTO_TEST_CASE( daw_optional_test_01 ) {
+BOOST_AUTO_TEST_CASE( daw_optional_heap_test_01 ) {
 	std::cout << "sizeof( size_t ) -> " << sizeof( size_t );
 	std::cout << " sizeof( int ) -> " << sizeof( int );
 	std::cout << " sizeof( daw::optional_heap<int> ) -> " << sizeof( daw::optional_heap<int> );
@@ -71,14 +71,47 @@ BOOST_AUTO_TEST_CASE( daw_optional_test_01 ) {
 	BOOST_REQUIRE( test_16 );
 }
 
-BOOST_AUTO_TEST_CASE( daw_optional_test_02 ) {
+BOOST_AUTO_TEST_CASE( daw_optional_heap_test_02 ) {
 	struct test_t {
 		int8_t a;
 	};
 
 	daw::optional_heap<test_t> tmp = test_t{ };
 	tmp->a = 5;
-	
+}
 
+BOOST_AUTO_TEST_CASE( daw_optional_heap_test_03 ) {
+	struct base_t {
+		int blah;
+		virtual ~base_t( ) = default;
+		base_t( base_t const & ) = default;
+		base_t( base_t && ) = default;
+		base_t & operator=( base_t const & ) = default;
+		base_t & operator=( base_t && ) = default;
+		base_t( ): blah{ 123 } { }
+		virtual int get( ) const { return blah; }
+	};
 
+	struct child_t: public base_t {
+		int blah2;
+		child_t( ): base_t{ }, blah2{ 321 } { }
+		child_t( int x ): base_t{ }, blah2{ x } { }
+		~child_t( ) = default;
+		child_t( child_t const & ) = default;
+		child_t( child_t && ) = default;
+		child_t & operator=( child_t const & ) = default;
+		child_t & operator=( child_t && ) = default;
+		int get( ) const override { return blah2; }
+
+	};
+
+	daw::optional_heap<base_t> a = base_t{ };
+	daw::optional_heap<base_t> b = child_t{ };
+
+	std::cout << a->get( ) << " " << b->get( ) << std::endl;
+	b = child_t{ 4543 };
+	std::cout << a->get( ) << " " << b->get( ) << std::endl;
+	daw::optional_heap<child_t> c = child_t{ 54321 };
+	a = c; 
+	std::cout << a->get( ) << " " << b->get( ) << " " << c->get( ) << std::endl;
 }
