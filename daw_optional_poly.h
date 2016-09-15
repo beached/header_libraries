@@ -33,7 +33,7 @@
 
 namespace daw {
 	template<class ValueType>
-	struct optional_heap {
+	struct optional_poly {
 		using value_type = std::remove_cv_t<std::remove_reference_t<ValueType>>;
 		using reference = value_type &;
 		using const_reference = value_type const &;
@@ -50,24 +50,24 @@ namespace daw {
 		}
 
 	public:
-		template<typename T> friend struct optional_heap;
+		template<typename T> friend struct optional_poly;
 
-		optional_heap( ):
+		optional_poly( ):
 				m_value{ } { }
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
-		optional_heap( T const & value ):
+		optional_poly( T const & value ):
 				m_value{ new std::remove_cv_t<std::remove_reference_t<T>>{ value } } { }
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
-		optional_heap( optional_heap<T> const & other ):
-				optional_heap{ make_copy( other.m_value.get( ) ) } { }
+		optional_poly( optional_poly<T> const & other ):
+				optional_poly{ make_copy( other.m_value.get( ) ) } { }
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
-		optional_heap( optional_heap<T> && other ):
+		optional_poly( optional_poly<T> && other ):
 				m_value{ other.m_value.release( ) } { }
 
-		optional_heap & operator=( optional_heap const & rhs ) {
+		optional_poly & operator=( optional_poly const & rhs ) {
 			if( this != &rhs ) {
 				m_value.reset( make_copy( rhs.m_value.get( ) ) );
 			}
@@ -75,29 +75,29 @@ namespace daw {
 		}
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
-		optional_heap &operator=( optional_heap<T> const & rhs ) {
+		optional_poly &operator=( optional_poly<T> const & rhs ) {
 			m_value.reset( make_copy( rhs.m_value.get( ) ) );
 			return *this;
 		}
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
-		optional_heap &operator=( optional_heap<T> &&rhs ) {
-			if( this != static_cast<optional_heap*>(&rhs) ) {
+		optional_poly &operator=( optional_poly<T> &&rhs ) {
+			if( this != static_cast<optional_poly*>(&rhs) ) {
 				m_value.reset( rhs.m_value.release( ) );
 			}
 			return *this;
 		}
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
-		optional_heap &operator=( T const & value ) {
+		optional_poly &operator=( T const & value ) {
 			using v_t = std::remove_cv_t<std::remove_reference_t<T>>;
 			m_value.reset( new v_t{ value } );
 			return *this;
 		}
 
-		~optional_heap( ) = default;
+		~optional_poly( ) = default;
 
-		friend void swap( optional_heap &lhs, optional_heap &rhs ) noexcept {
+		friend void swap( optional_poly &lhs, optional_poly &rhs ) noexcept {
 			lhs.m_value.swap( rhs.m_value );
 		}
 
@@ -141,15 +141,15 @@ namespace daw {
 			m_value.reset( );
 		}
 
-	};    // class optional_heap
+	};    // class optional_poly
 
 	template<typename T, typename... Args>
-	auto make_optional_heap( Args&&... args ) {
-		return optional_heap<T>{ std::forward<Args>(args)... };
+	auto make_optional_poly( Args&&... args ) {
+		return optional_poly<T>{ std::forward<Args>(args)... };
 	}
 
 	template<typename T>
-	bool operator==( daw::optional_heap<T> const &lhs, daw::optional_heap<T> const &rhs ) {
+	bool operator==( daw::optional_poly<T> const &lhs, daw::optional_poly<T> const &rhs ) {
 		if( lhs ) {
 			if( rhs ) {
 				return *lhs == *rhs;
@@ -162,7 +162,7 @@ namespace daw {
 	}
 
 	template<typename T>
-	bool operator!=( daw::optional_heap<T> const &lhs, daw::optional_heap<T> const &rhs ) {
+	bool operator!=( daw::optional_poly<T> const &lhs, daw::optional_poly<T> const &rhs ) {
 		if( lhs ) {
 			if( rhs ) {
 				return *lhs != *rhs;
@@ -175,7 +175,7 @@ namespace daw {
 	}
 
 	template<typename T>
-	bool operator<( daw::optional_heap<T> const &lhs, daw::optional_heap<T> const &rhs ) {
+	bool operator<( daw::optional_poly<T> const &lhs, daw::optional_poly<T> const &rhs ) {
 		if( lhs ) {
 			if( rhs ) {
 				return *lhs < *rhs;
@@ -188,7 +188,7 @@ namespace daw {
 	}
 
 	template<typename T>
-	bool operator<=( daw::optional_heap<T> const &lhs, daw::optional_heap<T> const &rhs ) {
+	bool operator<=( daw::optional_poly<T> const &lhs, daw::optional_poly<T> const &rhs ) {
 		if( lhs ) {
 			if( rhs ) {
 				return *lhs <= *rhs;
@@ -201,7 +201,7 @@ namespace daw {
 	}
 
 	template<typename T>
-	bool operator>( daw::optional_heap<T> const &lhs, daw::optional_heap<T> const &rhs ) {
+	bool operator>( daw::optional_poly<T> const &lhs, daw::optional_poly<T> const &rhs ) {
 		if( lhs ) {
 			if( rhs ) {
 				return *lhs > *rhs;
@@ -214,7 +214,7 @@ namespace daw {
 	}
 
 	template<typename T>
-	bool operator>=( daw::optional_heap<T> const &lhs, daw::optional_heap<T> const &rhs ) {
+	bool operator>=( daw::optional_poly<T> const &lhs, daw::optional_poly<T> const &rhs ) {
 		if( lhs ) {
 			if( rhs ) {
 				return *lhs >= *rhs;

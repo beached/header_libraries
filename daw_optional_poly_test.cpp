@@ -23,17 +23,17 @@
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 
-#include "daw_optional_heap.h"
+#include "daw_optional_poly.h"
 
-BOOST_AUTO_TEST_CASE( daw_optional_heap_test_01 ) {
+BOOST_AUTO_TEST_CASE( daw_optional_poly_test_01 ) {
 	std::cout << "sizeof( size_t ) -> " << sizeof( size_t );
 	std::cout << " sizeof( int ) -> " << sizeof( int );
-	std::cout << " sizeof( daw::optional_heap<int> ) -> " << sizeof( daw::optional_heap<int> );
-	std::cout << " sizeof( daw::optional_heap<size_t> ) -> " << sizeof( daw::optional_heap<size_t> ) << '\n';
-	daw::optional_heap<int> a{ };
-	daw::optional_heap<int> b{ 1 };
-	daw::optional_heap<int> c{ 2 };
-	daw::optional_heap<int> d{ 1 };
+	std::cout << " sizeof( daw::optional_poly<int> ) -> " << sizeof( daw::optional_heap<int> );
+	std::cout << " sizeof( daw::optional_poly<size_t> ) -> " << sizeof( daw::optional_heap<size_t> ) << '\n';
+	daw::optional_poly<int> a{ };
+	daw::optional_poly<int> b{ 1 };
+	daw::optional_poly<int> c{ 2 };
+	daw::optional_poly<int> d{ 1 };
 
 	// a & b
 	auto test_01 = !( a == b);
@@ -71,16 +71,16 @@ BOOST_AUTO_TEST_CASE( daw_optional_heap_test_01 ) {
 	BOOST_REQUIRE( test_16 );
 }
 
-BOOST_AUTO_TEST_CASE( daw_optional_heap_test_02 ) {
+BOOST_AUTO_TEST_CASE( daw_optional_poly_test_02 ) {
 	struct test_t {
 		int8_t a;
 	};
 
-	daw::optional_heap<test_t> tmp = test_t{ };
+	daw::optional_poly<test_t> tmp = test_t{ };
 	tmp->a = 5;
 }
 
-BOOST_AUTO_TEST_CASE( daw_optional_heap_test_03 ) {
+BOOST_AUTO_TEST_CASE( daw_optional_poly_test_03 ) {
 	struct base_t {
 		int blah;
 		virtual ~base_t( ) = default;
@@ -105,13 +105,13 @@ BOOST_AUTO_TEST_CASE( daw_optional_heap_test_03 ) {
 
 	};
 
-	daw::optional_heap<base_t> a = base_t{ };
-	daw::optional_heap<base_t> b = child_t{ };
+	daw::optional_poly<base_t> a = base_t{ };
+	daw::optional_poly<base_t> b = child_t{ };
 
 	std::cout << a->get( ) << " " << b->get( ) << std::endl;
 	b = child_t{ 4543 };
 	std::cout << a->get( ) << " " << b->get( ) << std::endl;
-	daw::optional_heap<child_t> c = child_t{ 54321 };
+	daw::optional_poly<child_t> c = child_t{ 54321 };
 	a = c; 
 	std::cout << a->get( ) << " " << b->get( ) << " " << c->get( ) << std::endl;
 }
