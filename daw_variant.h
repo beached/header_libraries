@@ -54,9 +54,10 @@ namespace daw {
 	template<typename Type, typename... Types> struct variant_t;
 }	// namespace daw
 
-template<typename T, typename... Types>  const T & get( daw::variant_t<Types...> const & value );
 
 namespace daw {
+	template<typename T, typename... Types>  const T & get( daw::variant_t<Types...> const & value );
+
 	namespace tostrings {
 		template<typename CharT = char, typename Traits = ::std::char_traits<CharT>, typename Allocator = ::std::allocator<CharT>>
 		auto to_string( ::std::basic_string<CharT, Traits, Allocator> const & s ) {
@@ -398,15 +399,16 @@ namespace daw {
 	auto as_variant_t( Type const & value ) {
 		return variant_t<Type, Types...>{ }.store( value );
 	};
+
+	template<typename T, typename... Types>
+	T const & get( daw::variant_t<Types...> const & value ) {
+		return value.template get<T>( );
+	}
+
+	template<typename T, typename... Types>
+	T & get( daw::variant_t<Types...> & value ) {
+		return value.template get<T>( );
+	}
+
 }	// namespace daw
-
-template<typename T, typename... Types>
-T const & get( daw::variant_t<Types...> const & value ) {
-	return value.template get<T>( );
-}
-
-template<typename T, typename... Types>
-T & get( daw::variant_t<Types...> & value ) {
-	return value.template get<T>( );
-}
 
