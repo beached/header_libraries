@@ -75,15 +75,20 @@ namespace daw {
 		}
 	}	// namespace tostrings
 	template<typename... Types>
-	struct generate_to_strings_t {
+	class generate_to_strings_t {
 		template<typename T>
-		auto generate( ) const {
-			return []( variant_t<Types...> const & value ) {
+		struct generated_t {
+			std::string operator( )( variant_t<Types...> const & value ) const {
 				using std::to_string;
 				using daw::tostrings::to_string;
 				static_assert( sizeof( decltype( to_string( std::declval<T>( ) ) ) ) != 0, "to_string must be defined for type" );
 				return to_string( get<T>( value ) );
-			};
+			}
+		}; 	// generated_t
+	public:
+		template<typename T>
+		auto generate( ) const {
+			return generated_t<T>{ };
 		}
 	};	// generate_to_strings_t
 
