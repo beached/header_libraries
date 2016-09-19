@@ -94,10 +94,10 @@ namespace daw {
 	namespace impl {
 		template<typename L, typename R>
 		struct has_eq_impl {
-			static auto test(L, R) -> decltype( std::declval<L>( ) == std::declval<R>( ), void( ), std::true_type( ) );
-			static auto test(...) -> decltype(std::false_type());
+			template<typename U, typename V> static auto test(U, V) -> decltype( std::declval<U>( ) == std::declval<V>( ), void( ), std::true_type( ) );
+			template<typename U, typename V> static auto test(...) -> decltype(std::false_type());
 
-			static constexpr bool value = decltype( test( std::declval<R>( ), std::declval<L>( ) ) )::value;
+			static constexpr bool value = decltype( test<L, R>( std::declval<R>( ), std::declval<L>( ) ) )::value;
 		};  // has_eq_impl
 
 		template<typename L, typename R>
@@ -105,9 +105,9 @@ namespace daw {
 
 		template<typename L, typename R>
 		struct has_lt_impl {
-			static auto test(L, R) -> decltype( std::declval<L>( ) < std::declval<R>( ), void( ), std::true_type( ) );
-			static auto test(...) -> decltype(std::false_type());
-			static constexpr bool value = decltype( test( std::declval<R>( ), std::declval<L>( ) ) )::value;
+			template<typename U, typename V> static auto test(U, V) -> decltype( std::declval<U>( ) < std::declval<V>( ), void( ), std::true_type( ) );
+			template<typename U, typename V> static auto test(...) -> decltype(std::false_type());
+			static constexpr bool value = decltype( test<L, R>( std::declval<R>( ), std::declval<L>( ) ) )::value;
 		};  // has_eq_impl
 
 		template<typename L, typename R>
