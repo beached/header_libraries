@@ -26,7 +26,7 @@
 
 #include "daw_variant.h"
 
-BOOST_AUTO_TEST_CASE( daw_parser_helper001 ) {
+BOOST_AUTO_TEST_CASE( daw_variant_001 ) {
 	using namespace std::literals::string_literals;
 	using v_t = daw::variant_t<int, float, std::string, int*>;
 	std::cout << "size of variant is: " << sizeof( v_t ) << '\n';
@@ -60,3 +60,33 @@ BOOST_AUTO_TEST_CASE( daw_parser_helper001 ) {
 
 }
 
+struct blah {
+	int a;
+	int b;
+};
+
+std::string to_string( blah const & val ) {
+	using std::to_string;
+	return to_string( val.a ) + " " + to_string( val.b );
+}
+
+
+BOOST_AUTO_TEST_CASE( daw_variant_operators_001 ) {
+	using var_t = daw::variant_t<int, blah>;
+
+	var_t a = 5;
+	var_t b = 6;
+	var_t c = 6;
+	var_t d = blah{ };
+
+	BOOST_REQUIRE( a != b );
+	BOOST_REQUIRE( a != d );
+	BOOST_REQUIRE( d != a );
+	BOOST_REQUIRE( b == c );
+	BOOST_REQUIRE( a < b );
+	BOOST_REQUIRE( a <= b );
+	BOOST_REQUIRE( c <= b );
+	BOOST_REQUIRE( b > a );
+	BOOST_REQUIRE( b >= c );
+
+}
