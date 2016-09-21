@@ -52,7 +52,11 @@ BOOST_AUTO_TEST_CASE( daw_parser_helper001 ) {
 	auto r = daw::get<int*>( t ) == test_ptr;
 	BOOST_REQUIRE_MESSAGE( r, "Pointer" );
 
-
+	{
+		v_t test_i{ 5 };
+		v_t test_s = std::string{ "hello" };
+		BOOST_REQUIRE( test_i != test_s );
+	}
 
 }
 

@@ -22,7 +22,6 @@
 
 #pragma once
 
-#include <boost/optional.hpp>
 #include <cstdint>
 #include <functional>
 #include <ostream>
@@ -34,6 +33,7 @@
 
 #include "daw_algorithm.h"
 #include "daw_exception.h"
+#include "daw_optional.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -193,7 +193,7 @@ namespace daw {
 				static constexpr bool is_valid_type = daw::traits::is_one_of_v<std::remove_cv_t<T>, std::remove_cv_t<Type>, std::remove_cv_t<Types>...>;
 			private:
 			alignas(daw::traits::max_sizeof_t<Type,Types...>) std::array<uint8_t, BUFFER_SIZE> m_buffer;
-			boost::optional<std::type_index> m_stored_type;
+			daw::optional<std::type_index> m_stored_type;
 
 			static auto get_helper_funcs( std::type_index idx ) {
 				static auto func_map = get_variant_helpers<Type, Types...>( );
@@ -211,46 +211,46 @@ namespace daw {
 				}
 
 			template<typename T, typename Result = std::enable_if_t<is_valid_type<T>, std::remove_cv_t<T>>>
-				Result const * ptr( ) const {
-					using namespace daw::exception;
-					using value_type = std::remove_cv_t<T>;
-					daw_throw_on_true<bad_variant_t_access>( empty( ), "Attempt to access an empty value" );
-					daw_throw_on_false<bad_variant_t_access>( is_same_type<value_type>( ), "Attempt to access a value of another type" );
-					static_assert( sizeof(value_type) <= BUFFER_SIZE, "This should never happen.  sizeof(T) does not fit into m_buffer" );
-					return reinterpret_cast<value_type const *>(static_cast<void const *>(m_buffer.data( )));
-				}
+			Result const * ptr( ) const {
+				using namespace daw::exception;
+				using value_type = std::remove_cv_t<T>;
+				daw_throw_on_true<bad_variant_t_access>( empty( ), "Attempt to access an empty value" );
+				daw_throw_on_false<bad_variant_t_access>( is_same_type<value_type>( ), "Attempt to access a value of another type" );
+				static_assert( sizeof(value_type) <= BUFFER_SIZE, "This should never happen.  sizeof(T) does not fit into m_buffer" );
+				return reinterpret_cast<value_type const *>(static_cast<void const *>(m_buffer.data( )));
+			}
 
 			void * raw_ptr( ) {
 				return static_cast<void *>(m_buffer.data( ));
 			}
 
 			template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-				void set_type( ) {
-					m_stored_type = get_type_index<T>( );
-					new(raw_ptr( )) T{ }; 
-				}
+			void set_type( ) {
+				m_stored_type = get_type_index<T>( );
+				new(raw_ptr( )) T{ }; 
+			}
 
 			template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-				void set_type( T value ) {
-					if( !is_same_type<T>() ) {
-						reset( );
-					}
-					m_stored_type = get_type_index<T>( );
-					void * p = raw_ptr( );
-					new (p) T{std::move( value )}; 
+			void set_type( T value ) {
+				if( !is_same_type<T>() ) {
+					reset( );
 				}
+				m_stored_type = get_type_index<T>( );
+				void * p = raw_ptr( );
+				new (p) T{std::move( value )}; 
+			}
 
 			public:
 			variant_t( ):
-				m_buffer{ },
-				m_stored_type{ } { }
+					m_buffer{ },
+					m_stored_type{ } { }
 
 			template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-				variant_t( T value ):
+			variant_t( T value ):
 					variant_t{ } {
 
-						store( std::move( value ) );
-					}
+				store( std::move( value ) );
+			}
 
 			~variant_t( ) {
 				if( m_stored_type ) {
@@ -264,10 +264,10 @@ namespace daw {
 			variant_t & operator=( variant_t && ) = default;
 
 			template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-				variant_t & operator=( T value ) {
-					store( std::move( value ) );
-					return *this;
-				}
+			variant_t & operator=( T value ) {
+				store( std::move( value ) );
+				return *this;
+			}
 
 			friend void swap( variant_t & lhs, variant_t & rhs ) noexcept {
 				lhs.m_buffer.swap( rhs.m_buffer );
@@ -290,20 +290,20 @@ namespace daw {
 				if( m_stored_type ) {
 					get_helper_funcs( *m_stored_type ).destruct( *this );
 				}
-				m_stored_type = boost::optional<std::type_index>{ };
+				m_stored_type.reset( ); 
 			}
 
 			template<typename T>
-				bool is_same_type( ) const {
-					return m_stored_type == get_type_index<T>( );
-				}
+			bool is_same_type( ) const {
+				return m_stored_type == get_type_index<T>( );
+			}
 
 			template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-				variant_t & store( T const & value ) {
-					set_type<T>( );
-					get<T>( ) = value;
-					return *this;
-				}
+			variant_t & store( T const & value ) {
+				set_type<T>( );
+				get<T>( ) = value;
+				return *this;
+			}
 
 			template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
 				T & get( ) {
