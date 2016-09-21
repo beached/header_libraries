@@ -361,48 +361,48 @@ namespace daw {
 			namespace impl {
 				template<typename L, typename R>
 				struct has_op_eq_impl {
-					template<typename U, typename V> static auto test(U, V) -> decltype( std::declval<U>( ) == std::declval<V>( ), void( ), std::true_type( ) );
-					template<typename U, typename V> static auto test(...) -> decltype(std::false_type());
+					template<typename U, typename V> static auto test(U, V) -> std::enable_if_t<std::is_same<decltype( std::declval<U>( ) == std::declval<V>( ) ), bool>::type, std::true_type( )>;
+					template<typename U, typename V> static auto test(...) -> std::false_type;
 
 					static constexpr bool value = decltype( test<L, R>( std::declval<L>( ), std::declval<R>( ) ) )::value;
 				};  // has_op_eq_impl
 
 				template<typename L, typename R>
 				struct has_op_ne_impl {
-					template<typename U, typename V> static auto test(U, V) -> decltype( std::declval<U>( ) != std::declval<V>( ), void( ), std::true_type( ) );
-					template<typename U, typename V> static auto test(...) -> decltype(std::false_type());
+					template<typename U, typename V> static auto test(U, V) -> std::enable_if_t<std::is_same<decltype( std::declval<U>( ) != std::declval<V>( ) ), bool>::type, std::true_type( )>;
+					template<typename U, typename V> static auto test(...) -> std::false_type;
 
 					static constexpr bool value = decltype( test<L, R>( std::declval<L>( ), std::declval<R>( ) ) )::value;
 				};  // has_op_ne_impl
 
 				template<typename L, typename R>
 				struct has_op_lt_impl {
-					template<typename U, typename V> static auto test(U, V) -> decltype( std::declval<U>( ) < std::declval<V>( ), void( ), std::true_type( ) );
-					template<typename U, typename V> static auto test(...) -> decltype(std::false_type());
+					template<typename U, typename V> static auto test(U, V) -> std::enable_if_t<std::is_same<decltype( std::declval<U>( ) < std::declval<V>( ) ), bool>::type, std::true_type( )>;
+					template<typename U, typename V> static auto test(...) -> std::false_type;
 
 					static constexpr bool value = decltype( test<L, R>( std::declval<L>( ), std::declval<R>( ) ) )::value;
 				};  // has_op_lt_impl
 
 				template<typename L, typename R>
 				struct has_op_gt_impl {
-					template<typename U, typename V> static auto test(U, V) -> decltype( std::declval<U>( ) > std::declval<V>( ), void( ), std::true_type( ) );
-					template<typename U, typename V> static auto test(...) -> decltype(std::false_type());
+					template<typename U, typename V> static auto test(U, V) -> std::enable_if_t<std::is_same<decltype( std::declval<U>( ) > std::declval<V>( ) ), bool>::type, std::true_type( )>;
+					template<typename U, typename V> static auto test(...) -> std::false_type;
 
 					static constexpr bool value = decltype( test<L, R>( std::declval<L>( ), std::declval<R>( ) ) )::value;
 				};  // has_op_gt_impl
 
 				template<typename L, typename R>
 				struct has_op_le_impl {
-					template<typename U, typename V> static auto test(U, V) -> decltype( std::declval<U>( ) <= std::declval<V>( ), void( ), std::true_type( ) );
-					template<typename U, typename V> static auto test(...) -> decltype(std::false_type());
+					template<typename U, typename V> static auto test(U, V) -> std::enable_if_t<std::is_same<decltype( std::declval<U>( ) <= std::declval<V>( ) ), bool>::type, std::true_type( )>;
+					template<typename U, typename V> static auto test(...) -> std::false_type;
 
 					static constexpr bool value = decltype( test<L, R>( std::declval<L>( ), std::declval<R>( ) ) )::value;
 				};  // has_op_le_impl
 
 				template<typename L, typename R>
 				struct has_op_ge_impl {
-					template<typename U, typename V> static auto test(U, V) -> decltype( std::declval<U>( ) >= std::declval<V>( ), void( ), std::true_type( ) );
-					template<typename U, typename V> static auto test(...) -> decltype(std::false_type());
+					template<typename U, typename V> static auto test(U, V) -> std::enable_if_t<std::is_same<decltype( std::declval<U>( ) >= std::declval<V>( ) ), bool>::type, std::true_type( )>;
+					template<typename U, typename V> static auto test(...) -> std::false_type;
 
 					static constexpr bool value = decltype( test<L, R>( std::declval<L>( ), std::declval<R>( ) ) )::value;
 				};  // has_op_ge_impl
