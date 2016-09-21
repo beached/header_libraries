@@ -74,97 +74,67 @@ namespace daw {
 				return to_string( *ptr );
 			}
 	}	// namespace tostrings
-	template<typename... Types>
-		class generate_to_strings_t {
-			template<typename T>
-				struct generated_t {
-					std::string operator( )( variant_t<Types...> const & value ) const {
-						using std::to_string;
-						using daw::tostrings::to_string;
-						static_assert( sizeof( decltype( to_string( std::declval<T>( ) ) ) ) != 0, "to_string must be defined for type" );
-						return to_string( get<T>( value ) );
-					}
-				}; 	// generated_t
-			public:
-			template<typename T>
-				auto generate( ) const {
-					return generated_t<T>{ };
-				}
-		};	// generate_to_strings_t
-	namespace impl {
-		template<typename L, typename R>
-		struct has_eq_impl {
-			template<typename U, typename V> static auto test(U, V) -> decltype( std::declval<U>( ) == std::declval<V>( ), void( ), std::true_type( ) );
-			template<typename U, typename V> static auto test(...) -> decltype(std::false_type());
-
-			static constexpr bool value = decltype( test<L, R>( std::declval<R>( ), std::declval<L>( ) ) )::value;
-		};  // has_eq_impl
-
-		template<typename L, typename R>
-		using has_eq = std::integral_constant<bool,  has_eq_impl<L, R>::value>;
-
-		template<typename L, typename R>
-		struct has_lt_impl {
-			template<typename U, typename V> static auto test(U, V) -> decltype( std::declval<U>( ) < std::declval<V>( ), void( ), std::true_type( ) );
-			template<typename U, typename V> static auto test(...) -> decltype(std::false_type());
-			static constexpr bool value = decltype( test<L, R>( std::declval<R>( ), std::declval<L>( ) ) )::value;
-		};  // has_eq_impl
-
-		template<typename L, typename R>
-		using has_lt = std::integral_constant<bool,  has_lt_impl<L, R>::value>;
-
-	}	// namespace impl
-	template<typename... Types>
-		class generate_compare_t {
-			template<typename L, typename R>
-			static auto op_eq( L const & lhs, R const & rhs ) -> std::enable_if_t<!impl::has_eq<L, R>::value, bool> {
-				throw std::runtime_error( "Unsupported operation no operator==" );
-			}
-
-			template<typename L, typename R>
-			static auto op_eq( L const & lhs, R const & rhs ) -> std::enable_if_t<impl::has_eq<L, R>::value, bool> {
-				return lhs == rhs;
-			}
-
-			template<typename L, typename R>
-			static auto op_lt( L const & lhs, R const & rhs ) -> std::enable_if_t<!impl::has_lt<L, R>::value, bool> {
-				throw std::runtime_error( "Unsupported operation no operator<" );
-			}
-
-			template<typename L, typename R>
-			static auto op_lt( L const & lhs, R const & rhs ) -> std::enable_if_t<impl::has_lt<L, R>::value, bool> {
-				return lhs < rhs;
-			}
-
-			public:
-			template<typename T>
-				auto generate( ) const {
-					return []( variant_t<Types...> const & lhs, variant_t<Types...> const & rhs ) {
-						if( lhs.type_index( ) == rhs.type_index( )) {
-							auto const & a = lhs.template get<T>( );
-							auto const & b = rhs.template get<T>( );
-							if( op_eq( a,  b ) ) {
-								return 0;
-							} else if( op_lt( a, b ) ) {
-								return -1;
-							}
-							return 1;
-						}
-						return lhs.to_string( ).compare( rhs.to_string( ) );
-					};
-				}
-		};	// generate_compare_t
 
 	template<typename... Types>
-		struct generate_destruct_t {
-			template<typename T>
-				auto generate( ) const {
-					return []( variant_t<Types...> & value ) {
-						value.template get<T>( ).~T( );
-					};
-				}
-		};	// generate_compare_t
+	class generate_to_strings_t {
+		template<typename T>
+		struct generated_t {
+			std::string operator( )( variant_t<Types...> const & value ) const {
+				using std::to_string;
+				using daw::tostrings::to_string;
+				static_assert( sizeof( decltype( to_string( std::declval<T>( ) ) ) ) != 0, "to_string must be defined for type" );
+				return to_string( get<T>( value ) );
+			}
+		}; 	// generated_t
+	public:
+		template<typename T>
+		auto generate( ) const {
+			return generated_t<T>{ };
+		}
+	};	// generate_to_strings_t
 
+	template<typename... Types>
+	class generate_compare_t {
+		template<typename T>
+		static auto constexpr op_compare( variant_t<Types...> const & lhs, variant_t<Types...> const & rhs ) -> std::enable_if_t<daw::traits::operators::has_op_eq<T, T>::value && daw::traits::operators::has_op_lt<T, T>::value, int> {
+			auto const & a = lhs.template get<T>( );
+			auto const & b = rhs.template get<T>( );
+			if( a == b ) {
+				return 0;
+			} else if( a < b ) {
+				return -1;
+			}
+			return 1;
+		}
+
+		template<typename T>
+		static auto op_compare( variant_t<Types...> const & lhs, variant_t<Types...> const & rhs ) -> std::enable_if_t<!(daw::traits::operators::has_op_eq<T, T>::value && daw::traits::operators::has_op_lt<T, T>::value), int> {
+			return lhs.to_string( ).compare( rhs.to_string( ) );
+		}
+
+	public:
+		template<typename T>
+		auto const & generate( ) const {
+			static auto result = []( variant_t<Types...> const & lhs, variant_t<Types...> const & rhs ) {
+				if( lhs.type_index( ) == rhs.type_index( ) ) {
+					return op_compare<T>( lhs, rhs );
+				}
+				return lhs.to_string( ).compare( rhs.to_string( ) );
+
+			};
+			return result;
+		}
+	};	// generate_compare_t
+
+	template<typename... Types>
+	struct generate_destruct_t {
+		template<typename T>
+		auto generate( ) const {
+			return []( variant_t<Types...> & value ) {
+				value.template get<T>( ).~T( );
+			};
+		}
+	};	// generate_destruct_t
 
 	template<typename... Types>
 		struct variant_helper_funcs_t {
@@ -371,63 +341,64 @@ namespace daw {
 			}
 
 			template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-				auto compare( T const & rhs ) const {
-					return get<T>( ) - rhs;	
-				}
+			auto compare( T const & rhs ) const {
+				return compare( variant_t( rhs ) );
+			}
 
 			friend bool operator==( variant_t const & lhs, variant_t const & rhs ) {
 				return lhs.compare( rhs ) == 0;
 			}
 
 			template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-				friend bool operator==( variant_t const & lhs, T const & rhs ) {
-					return lhs.compare( rhs ) == 0;
-				}
+			friend bool operator==( variant_t const & lhs, T const & rhs ) {
+				return lhs.compare( rhs ) == 0;
+			}
 
 			friend bool operator!=( variant_t const & lhs, variant_t const & rhs ) {
 				return lhs.compare( rhs ) != 0;
 			}
 
 			template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-				friend bool operator!=( variant_t const & lhs, T const & rhs ) {
-					return lhs.compare( rhs ) != 0;
-				}
+			friend bool operator!=( variant_t const & lhs, T const & rhs ) {
+				return lhs.compare( rhs ) != 0;
+			}
 
 			friend bool operator<( variant_t const & lhs, variant_t const & rhs ) {
 				return lhs.compare( rhs ) < 0;
 			}
 
 			template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-				friend bool operator<( variant_t const & lhs, T const & rhs ) {
-					return lhs.compare( rhs ) < 0;
-				}
-
+			friend bool operator<( variant_t const & lhs, T const & rhs ) {
+				return lhs.compare( rhs ) < 0;
+			}
+			
 			friend bool operator>( variant_t const & lhs, variant_t const & rhs ) {
 				return lhs.compare( rhs ) > 0;
 			}
 
 			template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-				friend bool operator>( variant_t const & lhs, T const & rhs ) {
-					return lhs.compare( rhs ) > 0;
-				}
+			friend bool operator>( variant_t const & lhs, T const & rhs ) {
+				return lhs.compare( rhs ) > 0;
+			}
 
 			friend bool operator<=( variant_t const & lhs, variant_t const & rhs ) {
 				return lhs.compare( rhs ) <= 0;
 			}
 
 			template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-				friend bool operator<=( variant_t const & lhs, T const & rhs ) {
-					return lhs.compare( rhs ) <= 0;
-				}
-
+			friend bool operator<=( variant_t const & lhs, T const & rhs ) {
+				return lhs.compare( rhs ) <= 0;
+			}
+			
 			friend bool operator>=( variant_t const & lhs, variant_t const & rhs ) {
 				return lhs.compare( rhs ) >= 0;
 			}
 
 			template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-				friend bool operator>=( variant_t const & lhs, T const & rhs ) {
-					return lhs.compare( rhs ) >= 0;
-				}
+			friend bool operator>=( variant_t const & lhs, T const & rhs ) {
+				return lhs.compare( rhs ) >= 0;
+			}
+
 
 		};	// variant_t
 
