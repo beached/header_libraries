@@ -43,13 +43,14 @@ namespace daw {
 
 		namespace details {
 			template<typename T>
-				std::false_type is_equality_comparable_impl( T const &, long );
+			std::false_type is_equality_comparable_impl( T const &, long );
 
 			template<typename T>
-				auto is_equality_comparable_impl( T const & value, int ) -> typename::std::is_convertible<decltype(value == value), bool>::type;
+			auto is_equality_comparable_impl( T const & value, int ) -> typename ::std::is_convertible<decltype(value == value), bool>;
 		}	// namespace details
+
 		template<typename T>
-			struct is_equality_comparable: decltype(details::is_equality_comparable_impl(::std::declval<T const &>( ), 1 )) {};
+		struct is_equality_comparable: decltype(details::is_equality_comparable_impl(::std::declval<T const &>( ), 1 )) {};
 
 		namespace impl {
 			template<class ...>
@@ -360,71 +361,59 @@ namespace daw {
 		namespace operators {
 			namespace impl {
 				template<typename L, typename R>
-				struct has_op_eq_impl {
-					template<typename U, typename V> static auto test(U, V) -> std::enable_if_t<std::is_same<decltype( std::declval<U>( ) == std::declval<V>( ) ), bool>::type, std::true_type( )>;
-					template<typename U, typename V> static auto test(...) -> std::false_type;
-
-					static constexpr bool const value = decltype( test<L, R>( std::declval<L>( ), std::declval<R>( ) ) )::value;
-				};  // has_op_eq_impl
+				auto has_op_eq_impl( L const &, R const &, long ) -> std::false_type;
 
 				template<typename L, typename R>
-				struct has_op_ne_impl {
-					template<typename U, typename V> static auto test(U, V) -> std::enable_if_t<std::is_same<decltype( std::declval<U>( ) != std::declval<V>( ) ), bool>::type, std::true_type( )>;
-					template<typename U, typename V> static auto test(...) -> std::false_type;
-
-					static constexpr bool const value = decltype( test<L, R>( std::declval<L>( ), std::declval<R>( ) ) )::value;
-				};  // has_op_ne_impl
+				auto has_op_eq_impl( L const & lhs, R const & rhs, int ) -> typename ::std::is_convertible<decltype(lhs == rhs), bool>;
 
 				template<typename L, typename R>
-				struct has_op_lt_impl {
-					template<typename U, typename V> static auto test(U, V) -> std::enable_if_t<std::is_same<decltype( std::declval<U>( ) < std::declval<V>( ) ), bool>::type, std::true_type( )>;
-					template<typename U, typename V> static auto test(...) -> std::false_type;
-
-					static constexpr bool const value = decltype( test<L, R>( std::declval<L>( ), std::declval<R>( ) ) )::value;
-				};  // has_op_lt_impl
+				auto has_op_ne_impl( L const &, R const &, long ) -> std::false_type;
 
 				template<typename L, typename R>
-				struct has_op_gt_impl {
-					template<typename U, typename V> static auto test(U, V ) -> std::enable_if_t<std::is_same<decltype( std::declval<U>( ) > std::declval<V>( ) ), bool>::type, std::true_type( )>;
-					template<typename U, typename V> static auto test(...) -> std::false_type;
-
-					static constexpr bool const value = decltype( test<L, R>( std::declval<L>( ), std::declval<R>( ) ) )::value;
-				};  // has_op_gt_impl
+				auto has_op_ne_impl( L const & lhs, R const & rhs, int ) -> typename ::std::is_convertible<decltype(lhs != rhs), bool>;
 
 				template<typename L, typename R>
-				struct has_op_le_impl {
-					template<typename U, typename V> static auto test(U, V) -> std::enable_if_t<std::is_same<decltype( std::declval<U>( ) <= std::declval<V>( ) ), bool>::type, std::true_type( )>;
-					template<typename U, typename V> static auto test(...) -> std::false_type;
-
-					static constexpr bool const value = decltype( test<L, R>( std::declval<L>( ), std::declval<R>( ) ) )::value;
-				};  // has_op_le_impl
+				auto has_op_lt_impl( L const &, R const &, long ) -> std::false_type;
 
 				template<typename L, typename R>
-				struct has_op_ge_impl {
-					template<typename U, typename V> static auto test(U, V) -> std::enable_if_t<std::is_same<decltype( std::declval<U>( ) >= std::declval<V>( ) ), bool>::type, std::true_type( )>;
-					template<typename U, typename V> static auto test(...) -> std::false_type;
+				auto has_op_lt_impl( L const & lhs, R const & rhs, int ) -> typename ::std::is_convertible<decltype(lhs < rhs), bool>;
 
-					static constexpr bool const value = decltype( test<L, R>( std::declval<L>( ), std::declval<R>( ) ) )::value;
-				};  // has_op_ge_impl
+				template<typename L, typename R>
+				auto has_op_le_impl( L const &, R const &, long ) -> std::false_type;
+
+				template<typename L, typename R>
+				auto has_op_le_impl( L const & lhs, R const & rhs, int ) -> typename ::std::is_convertible<decltype(lhs <= rhs), bool>;
+
+				template<typename L, typename R>
+				auto has_op_gt_impl( L const &, R const &, long ) -> std::false_type;
+
+				template<typename L, typename R>
+				auto has_op_gt_impl( L const & lhs, R const & rhs, int ) -> typename ::std::is_convertible<decltype(lhs > rhs), bool>;
+
+				template<typename L, typename R>
+				auto has_op_ge_impl( L const &, R const &, long ) -> std::false_type;
+
+				template<typename L, typename R>
+				auto has_op_ge_impl( L const & lhs, R const & rhs, int ) -> typename ::std::is_convertible<decltype(lhs >= rhs), bool>;
 			}	// namespace impl
 
-			template<typename L, typename R = L>
-			using has_op_eq = std::integral_constant<bool, impl::has_op_eq_impl<L, R>::value>;
+			template<typename L, typename R>
+			struct has_op_eq: decltype(impl::has_op_eq_impl( ::std::declval<L>( ), std::declval<R>( ), 1 ) ) { };
 
-			template<typename L, typename R = L>
-			using has_op_ne = std::integral_constant<bool, impl::has_op_ne_impl<L, R>::value>;
+			template<typename L, typename R>
+			struct has_op_ne: decltype(impl::has_op_ne_impl( ::std::declval<L>( ), std::declval<R>( ), 1 ) ) { };
 
-			template<typename L, typename R = L>
-			using has_op_lt = std::integral_constant<bool, impl::has_op_lt_impl<L, R>::value>;
+			template<typename L, typename R>
+			struct has_op_lt: decltype(impl::has_op_lt_impl( ::std::declval<L>( ), std::declval<R>( ), 1 ) ) { };
 
-			template<typename L, typename R = L>
-			using has_op_gt = std::integral_constant<bool, impl::has_op_gt_impl<L, R>::value>;
+			template<typename L, typename R>
+			struct has_op_le: decltype(impl::has_op_le_impl( ::std::declval<L>( ), std::declval<R>( ), 1 ) ) { };
 
-			template<typename L, typename R = L>
-			using has_op_le = std::integral_constant<bool, impl::has_op_le_impl<L, R>::value>;
+			template<typename L, typename R>
+			struct has_op_gt: decltype(impl::has_op_gt_impl( ::std::declval<L>( ), std::declval<R>( ), 1 ) ) { };
 
-			template<typename L, typename R = L>
-			using has_op_ge = std::integral_constant<bool, impl::has_op_ge_impl<L, R>::value>;
+			template<typename L, typename R>
+			struct has_op_ge: decltype(impl::has_op_ge_impl( ::std::declval<L>( ), std::declval<R>( ), 1 ) ) { };
 
 		}	// namespace operators
 	}	// namespace traits

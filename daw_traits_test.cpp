@@ -325,3 +325,23 @@ BOOST_AUTO_TEST_CASE( daw_traits_is_callable ) {
 
 }
 
+BOOST_AUTO_TEST_CASE( daw_traits_has_operator ) {
+	struct blah { std::string a; };
+	BOOST_REQUIRE( (daw::traits::operators::has_op_eq<int, int>::value) );
+	BOOST_REQUIRE( !(daw::traits::operators::has_op_eq<int, blah>::value) );
+
+	BOOST_REQUIRE( (daw::traits::operators::has_op_ne<int, int>::value) );
+	BOOST_REQUIRE( !(daw::traits::operators::has_op_ne<int, blah>::value) );
+
+	BOOST_REQUIRE( (daw::traits::operators::has_op_lt<int, int>::value) );
+	BOOST_REQUIRE( !(daw::traits::operators::has_op_lt<int, blah>::value) );
+
+	BOOST_REQUIRE( (daw::traits::operators::has_op_le<int, int>::value) );
+	BOOST_REQUIRE( !(daw::traits::operators::has_op_le<int, blah>::value) );
+
+	BOOST_REQUIRE( (daw::traits::operators::has_op_gt<int, int>::value) );
+	BOOST_REQUIRE( !(daw::traits::operators::has_op_gt<int, blah>::value) );
+
+	BOOST_REQUIRE( (daw::traits::operators::has_op_ge<int, int>::value) );
+	BOOST_REQUIRE( !(daw::traits::operators::has_op_ge<int, blah>::value) );
+}
