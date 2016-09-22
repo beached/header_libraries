@@ -78,18 +78,18 @@ namespace daw {
 	template<typename... Types>
 	class generate_to_strings_t {
 		template<typename T>
-		struct generated_t {
+		struct to_string_t {
 			std::string operator( )( variant_t<Types...> const & value ) const {
 				using std::to_string;
 				using daw::tostrings::to_string;
 				static_assert( sizeof( decltype( to_string( std::declval<T>( ) ) ) ) != 0, "to_string must be defined for type" );
 				return to_string( get<T>( value ) );
 			}
-		}; 	// generated_t
+		}; 	// to_string_t
 	public:
 		template<typename T>
 		auto generate( ) const {
-			return generated_t<T>{ };
+			return to_string_t<T>{ };
 		}
 	};	// generate_to_strings_t
 
@@ -111,26 +111,36 @@ namespace daw {
 		static int op_compare( variant_t<Types...> const & lhs, variant_t<Types...> const & rhs ) {
 			return lhs.to_string( ).compare( rhs.to_string( ) );
 		}
-	public:
+
+
 		template<typename T>
-		auto const & generate( ) const {
-			static auto result = []( variant_t<Types...> const & lhs, variant_t<Types...> const & rhs ) {
+		struct compare_t final {
+			int operator( )( variant_t<Types...> const & lhs, variant_t<Types...> const & rhs ) {
 				if( lhs.type_index( ) == rhs.type_index( ) ) {
 					return op_compare<T>( lhs, rhs );
 				}
 				return lhs.to_string( ).compare( rhs.to_string( ) );
-			};
-			return result;
+			}
+		};	// compare_t
+	public:
+		template<typename T>
+		auto generate( ) const {
+			return compare_t<T>{ };
 		}
 	};	// generate_compare_t
 
 	template<typename... Types>
-	struct generate_destruct_t {
+	class generate_destruct_t final {
+		template<typename T>
+		struct destruct_t final {
+			void operator( )( variant_t<Types...> & value ) const {
+				value.template get<T>( ).~T( );
+			}
+		};	// destruct_t
+	public:
 		template<typename T>
 		auto generate( ) const {
-			return []( variant_t<Types...> & value ) {
-				value.template get<T>( ).~T( );
-			};
+			return destruct_t<T>{ };
 		}
 	};	// generate_destruct_t
 
@@ -139,20 +149,21 @@ namespace daw {
 			using to_string_t = std::function<std::string( variant_t<Types...> const & )>;
 			using compare_t = std::function<int( variant_t<Types...> const &, variant_t<Types...> const & )>;
 			using destruct_t = std::function<void( variant_t<Types...> & )>;
+
 			to_string_t to_string;	
 			compare_t compare;	
 			destruct_t destruct;
 
 			variant_helper_funcs_t( ):
-				to_string{ },
-				compare{ },
-				destruct{ } { }
+					to_string{ },
+					compare{ },
+					destruct{ } { }
 
 			template<typename ToString, typename Compare, typename Destruct>
-				variant_helper_funcs_t( ToString a, Compare b, Destruct c ):
+			variant_helper_funcs_t( ToString a, Compare b, Destruct c ):
 					to_string{ a },
-				compare{ b },
-				destruct{ c } { }
+					compare{ b },
+					destruct{ c } { }
 		};	// variant_helper_funcs_t
 
 	template<typename... Types>
@@ -187,8 +198,10 @@ namespace daw {
 	template<typename Type, typename... Types>
 		struct variant_t {
 			static constexpr size_t BUFFER_SIZE = daw::traits::max_sizeof_v<Type,Types...>;
+
 			template<typename T>
-				static constexpr bool is_valid_type = daw::traits::is_one_of_v<std::remove_cv_t<T>, std::remove_cv_t<Type>, std::remove_cv_t<Types>...>;
+			static constexpr bool const is_valid_type = daw::traits::is_one_of_v<std::remove_cv_t<T>, std::remove_cv_t<Type>, std::remove_cv_t<Types>...>;
+
 			private:
 			alignas(daw::traits::max_sizeof_t<Type,Types...>) std::array<uint8_t, BUFFER_SIZE> m_buffer;
 			daw::optional<std::type_index> m_stored_type;
