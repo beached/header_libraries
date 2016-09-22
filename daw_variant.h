@@ -95,8 +95,8 @@ namespace daw {
 
 	template<typename... Types>
 	class generate_compare_t {
-		template<typename T>
-		static auto constexpr op_compare( variant_t<Types...> const & lhs, variant_t<Types...> const & rhs ) -> std::enable_if_t<daw::traits::operators::has_op_eq<T, T>::value && daw::traits::operators::has_op_lt<T, T>::value, int> {
+		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_eq<T>::value && daw::traits::operators::has_op_lt<T>::value>> 
+		static constexpr auto op_compare( variant_t<Types...> const & lhs, variant_t<Types...> const & rhs ) -> decltype( std::declval<T>( ) == std::declval<T>( ) && std::declval<T>( ) < std::declval<T>( ), int( ) ) {
 			auto const & a = lhs.template get<T>( );
 			auto const & b = rhs.template get<T>( );
 			if( a == b ) {
@@ -107,11 +107,10 @@ namespace daw {
 			return 1;
 		}
 
-		template<typename T>
-		static auto op_compare( variant_t<Types...> const & lhs, variant_t<Types...> const & rhs ) -> std::enable_if_t<!(daw::traits::operators::has_op_eq<T, T>::value && daw::traits::operators::has_op_lt<T, T>::value), int> {
+		template<typename T, typename = std::enable_if_t<daw::traits::has_to_string<variant_t<Types...>>::value && !(daw::traits::operators::has_op_eq<T>::value && daw::traits::operators::has_op_lt<T>::value)>> 
+		static int op_compare( variant_t<Types...> const & lhs, variant_t<Types...> const & rhs ) {
 			return lhs.to_string( ).compare( rhs.to_string( ) );
 		}
-
 	public:
 		template<typename T>
 		auto const & generate( ) const {
@@ -120,7 +119,6 @@ namespace daw {
 					return op_compare<T>( lhs, rhs );
 				}
 				return lhs.to_string( ).compare( rhs.to_string( ) );
-
 			};
 			return result;
 		}
