@@ -60,19 +60,19 @@ namespace daw {
 
 	namespace tostrings {
 		template<typename CharT = char, typename Traits = ::std::char_traits<CharT>, typename Allocator = ::std::allocator<CharT>>
-			auto to_string( ::std::basic_string<CharT, Traits, Allocator> const & s ) {
-				return s;
-			}
+		auto to_string( ::std::basic_string<CharT, Traits, Allocator> const & s ) {
+			return s;
+		}
 
 		template<typename T>
-			std::string to_string( T const * ptr ) {
-				if( nullptr == ptr ) {
-					return "";
-				}
-				using std::to_string;
-				using daw::tostrings::to_string;
-				return to_string( *ptr );
+		std::string to_string( T const * ptr ) {
+			if( nullptr == ptr ) {
+				return "";
 			}
+			using std::to_string;
+			using daw::tostrings::to_string;
+			return to_string( *ptr );
+		}
 	}	// namespace tostrings
 
 	template<typename... Types>
@@ -95,6 +95,16 @@ namespace daw {
 
 	template<typename... Types>
 	class generate_compare_t {
+		template<typename T, std::enable_if_t<!daw::traits::is_vector_like_not_string<T>::value>>
+		static bool op_eq( T const & lhs, T const & rhs ) {
+			return lhs == rhs;
+		}
+
+		template<typename T, std::enable_if_t<daw::traits::is_vector_like_not_string<T>::value>>
+		static auto op_eq( std::vector<T> const & lhs, std::vector<T> const & rhs ) -> decltype( lhs[0] == rhs[0], bool( ) ) {
+			return std::equal( lhs.begin( ), lhs.end( ), rhs.begin( ), rhs.end( ) );
+		}
+
 		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_eq<T>::value && daw::traits::operators::has_op_lt<T>::value>> 
 		static constexpr auto op_compare( variant_t<Types...> const & lhs, variant_t<Types...> const & rhs ) -> decltype( std::declval<T>( ) == std::declval<T>( ) && std::declval<T>( ) < std::declval<T>( ), int( ) ) {
 			auto const & a = lhs.template get<T>( );

@@ -70,6 +70,15 @@ std::string to_string( blah const & val ) {
 	return to_string( val.a ) + " " + to_string( val.b );
 }
 
+namespace std {
+	std::string to_string( std::vector<int> const & v ) {
+		std::string result;
+		for( auto i: v ) {
+			result += std::to_string( i );
+		}
+		return result;
+	}
+}
 
 BOOST_AUTO_TEST_CASE( daw_variant_operators_001 ) {
 	using var_t = daw::variant_t<int, blah>;
@@ -89,4 +98,11 @@ BOOST_AUTO_TEST_CASE( daw_variant_operators_001 ) {
 	BOOST_REQUIRE( b > a );
 	BOOST_REQUIRE( b >= c );
 
+	
+	using var_t2 = daw::variant_t<std::vector<int>, int, double>;
+	var_t2 e = std::vector<int>{ 1, 2, 3 };
+	var_t2 f = std::vector<int>{ 1, 2, 3 };
+	var_t2 g = std::vector<int>{ 1 };
+	BOOST_REQUIRE( e == f );
+	BOOST_REQUIRE( e != g );
 }
