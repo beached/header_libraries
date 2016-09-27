@@ -292,8 +292,9 @@ namespace daw {
 			}
 
 			friend void swap( variant_t & lhs, variant_t & rhs ) noexcept {
+				using std::swap;
 				lhs.m_buffer.swap( rhs.m_buffer );
-				lhs.m_stored_type.swap( rhs.m_stored_type );
+				swap( lhs.m_stored_type, rhs.m_stored_type );
 			}
 
 			auto type_index( ) const {
