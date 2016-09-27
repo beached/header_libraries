@@ -22,6 +22,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_algorithm
 	daw_benchmark
 	daw_clumpy_sparsy
+	daw_cstring
 	daw_hash_table
 	daw_math
 	daw_memory
@@ -43,7 +44,6 @@ set( UNTESTED_HEADER_FILES
 	daw_bit.h
 	daw_bit_queues.h
 	daw_common_mixins.h
-	daw_cstring.h
 	daw_exception.h
 	daw_expected.h
 	daw_newhelper.h

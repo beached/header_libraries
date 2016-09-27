@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2013-2016 Darrell Wright
+// Copyright (c) 2014-2016 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to deal
@@ -20,34 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include <boost/test/unit_test.hpp>
+#include <iostream>
 
-#include <exception>
-#include <memory>
+#include "daw_cstring.h"
 
-#include "daw_exception.h"
-#include "daw_string.h"
+BOOST_AUTO_TEST_CASE( daw_cstring_01 ) {
+	daw::cstring a = "a";
+	daw::cstring aa = "aa";
+	daw::cstring bb = "bb";
 
-template<typename T, typename... Args>
-T* new_throw( Args&&... args ) {
-	std::unique_ptr<T> result;
-	try {
-		result = std::make_unique<T>( std::forward<Args>( args )... );
-	} catch( ... ) {
-		std::rethrow_exception( std::current_exception( ) );
-	}
-	daw::exception::daw_throw_on_false( result, "Error allocating" );
-	return result.release( );
-}
-
-template<typename T>
-T* new_array_throw( const size_t size ) {
-	T* result = nullptr;
-	try {
-		result = new T[size];
-	} catch( ... ) {
-		std::rethrow_exception( std::current_exception( ) );
-	}
-	daw::exception::daw_throw_on_null( result, daw::string::string_join( "Error allocating ", size, " items" ) );
-	return result;
+	BOOST_REQUIRE( a == a );
+	BOOST_REQUIRE( a != aa );
+	BOOST_REQUIRE( a < aa );
+	BOOST_REQUIRE( bb > a );
 }
