@@ -49,3 +49,28 @@ bool operator>=( cls_name const & lhs, cls_name const & rhs ) {\
 	return lhs.compare( rhs ) >= 0;\
 }\
 
+#define create_friend_comparison_operators( cls_name )\
+friend bool operator==( cls_name const & lhs, cls_name const & rhs ) {\
+	return lhs.compare( rhs ) == 0;\
+}\
+\
+friend bool operator!=( cls_name const & lhs, cls_name const & rhs ) {\
+	return lhs.compare( rhs ) != 0;\
+}\
+\
+friend bool operator<( cls_name const & lhs, cls_name const & rhs ) {\
+	return lhs.compare( rhs ) < 0;\
+}\
+\
+friend bool operator>( cls_name const & lhs, cls_name const & rhs ) {\
+	return lhs.compare( rhs ) > 0;\
+}\
+\
+friend bool operator<=( cls_name const & lhs, cls_name const & rhs ) {\
+	return lhs.compare( rhs ) <= 0;\
+}\
+\
+friend bool operator>=( cls_name const & lhs, cls_name const & rhs ) {\
+	return lhs.compare( rhs ) >= 0;\
+}\
+

@@ -33,6 +33,7 @@
 
 #include "daw_algorithm.h"
 #include "daw_exception.h"
+#include "daw_operators.h"
 #include "daw_optional.h"
 #include "daw_traits.h"
 
@@ -366,17 +367,9 @@ namespace daw {
 				return compare( variant_t( rhs ) );
 			}
 
-			friend bool operator==( variant_t const & lhs, variant_t const & rhs ) {
-				return lhs.compare( rhs ) == 0;
-			}
-
 			template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
 			friend bool operator==( variant_t const & lhs, T const & rhs ) {
 				return lhs.compare( rhs ) == 0;
-			}
-
-			friend bool operator!=( variant_t const & lhs, variant_t const & rhs ) {
-				return lhs.compare( rhs ) != 0;
 			}
 
 			template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
@@ -384,26 +377,14 @@ namespace daw {
 				return lhs.compare( rhs ) != 0;
 			}
 
-			friend bool operator<( variant_t const & lhs, variant_t const & rhs ) {
-				return lhs.compare( rhs ) < 0;
-			}
-
 			template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
 			friend bool operator<( variant_t const & lhs, T const & rhs ) {
 				return lhs.compare( rhs ) < 0;
 			}
 			
-			friend bool operator>( variant_t const & lhs, variant_t const & rhs ) {
-				return lhs.compare( rhs ) > 0;
-			}
-
 			template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
 			friend bool operator>( variant_t const & lhs, T const & rhs ) {
 				return lhs.compare( rhs ) > 0;
-			}
-
-			friend bool operator<=( variant_t const & lhs, variant_t const & rhs ) {
-				return lhs.compare( rhs ) <= 0;
 			}
 
 			template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
@@ -411,17 +392,14 @@ namespace daw {
 				return lhs.compare( rhs ) <= 0;
 			}
 			
-			friend bool operator>=( variant_t const & lhs, variant_t const & rhs ) {
-				return lhs.compare( rhs ) >= 0;
-			}
-
 			template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
 			friend bool operator>=( variant_t const & lhs, T const & rhs ) {
 				return lhs.compare( rhs ) >= 0;
 			}
 
-
+			create_friend_comparison_operators( variant_t );
 		};	// variant_t
+
 
 	template<typename... Args>
 		std::string to_string( variant_t<Args...> const & value ) {
