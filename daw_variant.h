@@ -145,7 +145,7 @@ namespace daw {
 		template<typename T>
 		struct destruct_t final {
 			void operator( )( variant_t<Types...> & value ) const {
-				value.template get<T>( ).~T( );
+				//value.template get<T>( ).~T( );
 			}
 		};	// destruct_t
 	public:
