@@ -123,7 +123,6 @@ namespace daw {
 			return lhs.to_string( ).compare( rhs.to_string( ) );
 		}
 
-
 		template<typename T>
 		struct compare_t final {
 			int operator( )( variant_t<Types...> const & lhs, variant_t<Types...> const & rhs ) {

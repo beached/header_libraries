@@ -23,12 +23,24 @@
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 #include <string>
+#include <sstream>
 
 #include "daw_variant.h"
 
+struct test_t {
+	std::string s;
+	int foo;
+};
+
+std::string to_string( test_t const & value ) {
+	std::stringstream ss;
+	ss << value.s << ": " << value.foo;
+	return ss.str( );
+}
+
 BOOST_AUTO_TEST_CASE( daw_variant_001 ) {
 	using namespace std::literals::string_literals;
-	using v_t = daw::variant_t<int, float, std::string, int*>;
+	using v_t = daw::variant_t<test_t, int, float, std::string, int*>;
 	std::cout << "size of variant is: " << sizeof( v_t ) << '\n';
 	v_t s;
 	v_t t = 5;
@@ -42,6 +54,9 @@ BOOST_AUTO_TEST_CASE( daw_variant_001 ) {
 	BOOST_REQUIRE_MESSAGE( (t == u), "Type change" );
 	BOOST_REQUIRE_MESSAGE( *t == "5", "operator* conversion" );
 	BOOST_REQUIRE_MESSAGE( (t = 5.54f) == 5.54f, "Type change" );
+	t = "5"s;
+	t = test_t{ };
+	t = 5.5f;
 
 	int * test_ptr = new int;
 	*test_ptr = 1234;
