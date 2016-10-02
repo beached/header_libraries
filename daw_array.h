@@ -44,7 +44,7 @@ namespace daw {
 				m_size{ 0 } { }
 
 		array( size_t Size ):
-				m_begin{ new value_type[Size] }, 
+				m_begin{ new value_type[Size+1] }, 
 				m_end{ m_begin + Size }, 
 				m_size{ Size } { }
 
@@ -90,6 +90,21 @@ namespace daw {
 				array tmp{ rhs };
 				tmp.swap( *this );
 			}
+			return *this;
+		}
+
+		array( std::initializer_list<value_type> values ):
+				array( values.size( ) ) {
+			
+
+			std::copy_n( values.begin( ), values.size( ), m_begin );
+		}
+
+		array & operator=( std::initializer_list<value_type> values ) {
+			array tmp{ values.size( ) };
+			std::copy( values.begin( ), values.end( ), tmp.begin( ), tmp.end( ) );
+			using std::swap;
+			swap( *this, tmp );
 			return *this;
 		}
 
@@ -187,6 +202,18 @@ namespace daw {
 			auto tmp = m_end;
 			--tmp;
 			return *tmp;
+		}
+
+		iterator find_first_of( const_reference value, const_iterator start_at ) const {
+			*m_end = value;
+			while( *start_at != value ) {
+				++start_at;
+			}
+			return const_cast<iterator>( start_at );
+		}
+
+		iterator find_first_of( const_reference value ) const {
+			return find_first_of( value, cbegin( ) );
 		}
 	};	// struct array
 

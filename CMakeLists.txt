@@ -20,6 +20,7 @@ endif()
 
 set( TESTED_HEADERS_PREFIXES
 	daw_algorithm
+	daw_array
 	daw_benchmark
 	daw_clumpy_sparsy
 	daw_cstring
@@ -40,7 +41,6 @@ set( TESTED_HEADERS_PREFIXES
 
 set( UNTESTED_HEADER_FILES
 	concurrent_queue.h
-	daw_array.h
 	daw_bit.h
 	daw_bit_queues.h
 	daw_common_mixins.h
