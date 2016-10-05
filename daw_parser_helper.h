@@ -607,7 +607,7 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator, typename Sequence>
-		find_result_t<ForwardIterator> find_first_of( ForwardIterator first, ForwardIterator last, Sequnce values ) {
+		find_result_t<ForwardIterator> find_first_of( ForwardIterator first, ForwardIterator last, Sequence values ) {
 			auto first_val = *std::begin( values );
 			auto result = until_value( first, last, first_val );
 			if( !result ) {
