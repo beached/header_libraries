@@ -89,6 +89,14 @@ namespace daw {
 			return *--pos; 
 		}
 
+		reference front( ) {
+			return m_values.front( );
+		}
+
+		const_reference front( ) const {
+			return m_values.front( );
+		}
+
 		reference back( ) {
 			if( empty( ) ) {
 				throw std::out_of_range( "Attempt to peek an empty stack" );
