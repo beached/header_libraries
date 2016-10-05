@@ -58,38 +58,46 @@ namespace daw {
 		bounded_stack_t & operator=( bounded_stack_t const & ) = default;
 		bounded_stack_t & operator=( bounded_stack_t && ) = default;
 
-		bool empty( ) const {
+		constexpr bool empty( ) const {
 			return m_values.begin( ) == m_head;
 		}
 
-		size_t used( ) const {
+		constexpr size_t used( ) const {
 			return static_cast<size_t>(std::distance( m_values.cbegin( ), chead( ) ));
 		}
 		
-		size_t available( ) const {
+		constexpr size_t available( ) const {
 			return static_cast<size_t>(std::distance( chead( ), m_values.cend( ) ));
 		}
 
-		bool full( ) const {
+		constexpr bool full( ) const {
 			return chead( ) == m_values.cend( );
 		}
 	
-		void push( T value ) {
+		void push_back( T value ) {
 			if( full( ) ) {
-				throw std::out_of_range( "Attempt to push on a full stack" );
+				throw std::out_of_range( "Attempt to push_back on a full stack" );
 			}
 			*m_head++ = std::move( value );
 		}	
 
-		const_reference peek( ) const {
+		const_reference back( ) const {
 			if( empty( ) ) {
 				throw std::out_of_range( "Attempt to peek an empty stack" );
 			}
 			auto pos = m_head;
-			return std::move( *--pos ); 
+			return *--pos; 
 		}
 
-		value_type pop( ) {
+		reference back( ) {
+			if( empty( ) ) {
+				throw std::out_of_range( "Attempt to peek an empty stack" );
+			}
+			auto pos = m_head;
+			return *--pos; 
+		}
+
+		value_type pop_back( ) {
 			if( empty( ) ) {
 				throw std::out_of_range( "Attempt to pop an empty stack" );
 			}
