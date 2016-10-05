@@ -605,6 +605,33 @@ namespace daw {
 			result.found = found;
 			return result;
 		}
+
+		template<typename ForwardIterator, typename Sequence>
+		find_result_t<ForwardIterator> find_first_of( ForwardIterator first, ForwardIterator last, Sequnce values ) {
+			auto first_val = *std::begin( values );
+			auto result = until_value( first, last, first_val );
+			if( !result ) {
+				return result;
+			}
+			auto last_first = result.first;
+			auto new_end = std::next( result.first );
+			while( new_end != last ) {
+				auto seq_pos = std::next( std::begin( values ) );
+				while( seq_pos != std::end( values ) && new_end != last && *seq_pos == *new_end ) {
+					if( *new_end == first_val ) {
+						last_first = new_end;
+					}
+					++seq_pos;
+					++new_end;
+				}
+				if( seq_pos == std::end( values ) ) {
+					result.last = new_end;
+					return result;
+				}
+				result = until_value( first, last, first_val );
+			}
+			return make_find_result( first, last, false );
+		}
 	}    // namespace parser
 }    // namespace daw
 

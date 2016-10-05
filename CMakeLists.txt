@@ -21,6 +21,7 @@ endif()
 set( TESTED_HEADERS_PREFIXES
 	daw_algorithm
 	daw_array
+	daw_bounded_stack
 	daw_benchmark
 	daw_clumpy_sparsy
 	daw_cstring
