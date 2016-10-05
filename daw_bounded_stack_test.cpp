@@ -64,6 +64,8 @@ BOOST_AUTO_TEST_CASE( daw_bounded_stack_testing ) {
 	tst.push_back( 5 );
 	std::cout << "Used: " << tst.used( ) << " Avail: " << tst.available( ) << '\n';
 	BOOST_REQUIRE( tst.full( ) );
-	BOOST_REQUIRE( tst.pop_back( ) == 5 );
 
+	BOOST_REQUIRE( !tst.empty( ) );
+	tst.clear( );
+	BOOST_REQUIRE( tst.empty( ) );
 }

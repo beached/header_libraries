@@ -58,6 +58,10 @@ namespace daw {
 		bounded_stack_t & operator=( bounded_stack_t const & ) = default;
 		bounded_stack_t & operator=( bounded_stack_t && ) = default;
 
+		constexpr void clear( ) {
+			m_head = m_values.begin( );
+		}
+
 		constexpr bool empty( ) const {
 			return m_values.begin( ) == m_head;
 		}
