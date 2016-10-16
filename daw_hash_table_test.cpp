@@ -32,7 +32,7 @@
 #include "daw_benchmark.h"
 
 using namespace std::literals::string_literals;
-
+/*
 BOOST_AUTO_TEST_CASE( daw_hash_table_testing ) {
 	daw::hash_table<int> testing1;
 	struct big {
@@ -256,7 +256,7 @@ auto do_testing_dhs( size_t max_load, double resize_ratio ) {
 
 	return result;
 }
-
+*/
 
 /*
 BOOST_AUTO_TEST_CASE( daw_hash_table_size_perf ) {

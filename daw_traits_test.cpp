@@ -311,7 +311,7 @@ BOOST_AUTO_TEST_CASE( daw_traits_is_mixed_from ) {
 }
 
 int f( int ) { return 1; }
-
+/*
 BOOST_AUTO_TEST_CASE( daw_traits_is_callable ) {
 	auto blah = []( auto t ) { return t; };
 	bool val = daw::traits::is_callable_v<decltype(blah), int>;
@@ -324,7 +324,7 @@ BOOST_AUTO_TEST_CASE( daw_traits_is_callable ) {
 	BOOST_REQUIRE_MESSAGE( val , "TestYesOS should not be callable" );
 
 }
-
+*/
 BOOST_AUTO_TEST_CASE( daw_traits_has_operator ) {
 	struct blah { std::string a; };
 	BOOST_REQUIRE( (daw::traits::operators::has_op_eq<int, int>::value) );
