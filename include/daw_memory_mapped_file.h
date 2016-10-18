@@ -28,7 +28,7 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/iostreams/device/mapped_file.hpp>
-#include <boost/utility/string_ref.hpp>
+#include <boost/utility/string_view.hpp>
 
 namespace daw {
 	namespace filesystem {
@@ -46,7 +46,7 @@ namespace daw {
 			using reference = T &;
 			using const_reference = T const &;
 
-			MemoryMappedFile( boost::string_ref filename, bool const readonly = true ) : 
+			MemoryMappedFile( boost::string_view filename, bool const readonly = true ) : 
 					m_file_path{ filename.data( ) }, 
 					m_mf_params{ filename.data( ) } {
 

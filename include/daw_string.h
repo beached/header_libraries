@@ -24,7 +24,7 @@
 
 #include <boost/lexical_cast.hpp>
 #include <boost/spirit/include/qi_numeric.hpp>
-#include <boost/utility/string_ref.hpp>
+#include <boost/utility/string_view.hpp>
 #include <iomanip>
 #include <regex>
 #include <sstream>
@@ -386,7 +386,7 @@ namespace daw {
 
 
 		template<typename Value>
-		auto split( boost::string_ref str, Value const & value ) {
+		auto split( boost::string_view str, Value const & value ) {
 			std::vector<std::string> result;
 
 			auto last_pos = str.begin( );

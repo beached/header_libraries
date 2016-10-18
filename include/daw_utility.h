@@ -26,7 +26,7 @@
 #undef max
 #endif	//max
 
-#include <boost/utility/string_ref.hpp>
+#include <boost/utility/string_view.hpp>
 #include <cassert>
 #include <cmath>
 #include <functional>
@@ -304,7 +304,7 @@ namespace daw {
 	}
 
 	template<typename Iterator>
-	Iterator find_buff( Iterator first, Iterator last, boost::string_ref key ) {
+	Iterator find_buff( Iterator first, Iterator last, boost::string_view key ) {
 		auto it = advance( first, last, static_cast<typename Iterator::difference_type>(key.size( )) );
 		if( it == last ) {
 			return last;
@@ -345,7 +345,7 @@ namespace daw {
 	}
 
 	template<typename Iterator>
-	bool equal_nc( Iterator first, Iterator last, boost::string_ref upper_value ) {
+	bool equal_nc( Iterator first, Iterator last, boost::string_view upper_value ) {
 		if( static_cast<size_t>(std::distance( first, last )) != upper_value.size( ) ) {
 			return false;
 		}

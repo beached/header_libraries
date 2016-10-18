@@ -18,6 +18,11 @@ else( )
 	endif()
 endif()
 
+set( HEADER_FOLDER "include" )
+set( TEST_FOLDER "tests" )
+
+include_directories( ${HEADER_FOLDER} )
+
 set( TESTED_HEADERS_PREFIXES
 	daw_algorithm
 	daw_array
@@ -70,13 +75,13 @@ include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
 link_directories( ${Boost_LIBRARY_DIRS} )
 
 foreach( CUR_PREFIX ${TESTED_HEADERS_PREFIXES} )
-	install( FILES "${CUR_PREFIX}.h" DESTINATION include/daw )
-	add_executable( ${CUR_PREFIX}_test_bin ${CUR_PREFIX}.h ${CUR_PREFIX}_test.cpp header_libraries_test/test_main.cpp )
+	install( FILES "${HEADER_FOLDER}/${CUR_PREFIX}.h" DESTINATION include/daw )
+	add_executable( ${CUR_PREFIX}_test_bin ${HEADER_FOLDER}/${CUR_PREFIX}.h ${TEST_FOLDER}/${CUR_PREFIX}_test.cpp ${TEST_FOLDER}/test_main.cpp )
 	target_link_libraries( ${CUR_PREFIX}_test_bin ${Boost_LIBRARIES} ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
 	add_test( ${CUR_PREFIX}_test, ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
 
 foreach( CUR_PREFIX ${UNTESTED_HEADER_FILES} )
-	install( FILES "${CUR_PREFIX}" DESTINATION include/daw )
+	install( FILES "${HEADER_FOLDER}/${CUR_PREFIX}" DESTINATION include/daw )
 endforeach( CUR_PREFIX )
 
