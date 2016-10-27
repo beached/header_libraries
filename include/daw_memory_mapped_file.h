@@ -89,6 +89,10 @@ namespace daw {
 				return m_mf_file.is_open( );
 			}
 
+			explicit operator bool( ) const {
+				return m_mf_file.is_open( );
+			}
+
 			reference operator[]( size_t position ) {
 				return m_mf_file.data( )[position];
 			}
