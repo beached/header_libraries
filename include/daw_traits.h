@@ -426,6 +426,12 @@ namespace daw {
 			struct has_op_ge: decltype(impl::has_op_ge_impl( std::declval<L>( ), std::declval<R>( ), 1 ) ) { };
 
 		}	// namespace operators
+
+		template <typename T, typename U>
+		constexpr inline bool not_self( ) {
+			using decayed_t = typename std::decay_t<T>;
+		    return !std::is_same<decayed_t, U>::value && !std::is_base_of<U, decayed_t>::value;
+		}
 	}	// namespace traits
 }	// namespace daw
 

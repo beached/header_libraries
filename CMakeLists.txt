@@ -31,6 +31,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_clumpy_sparsy
 	daw_cstring
 	daw_hash_table
+	daw_heap_value
 	daw_math
 	daw_memory
 	daw_memory_mapped_file

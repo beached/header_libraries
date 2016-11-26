@@ -118,11 +118,11 @@ namespace daw {
 			return 0 != m_ptr;
 		}
 
-		reference operator->( ) noexcept {
-			return *get( );
+		pointer operator->( ) noexcept {
+			return get( );
 		}
 
-		constexpr const_reference operator->( ) const noexcept {
+		const_pointer operator->( ) const noexcept {
 			return *get( );
 		}
 
