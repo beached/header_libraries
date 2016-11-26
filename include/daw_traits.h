@@ -35,6 +35,12 @@
 
 namespace daw {
 	namespace traits {
+		template<typename From, typename To>
+		constexpr bool is_converible_v = std::is_convertible<From, To>::value;
+		
+		template<typename T, typename U>
+		constexpr bool is_same_v = std::is_same<T, U>::value;
+
 		template<typename T>
 			using root_type_t = std::decay_t<std::remove_reference_t<T>>;
 
@@ -43,14 +49,14 @@ namespace daw {
 
 		namespace details {
 			template<typename T>
-			std::false_type is_equality_comparable_impl( T const &, long );
+				std::false_type is_equality_comparable_impl( T const &, long );
 
 			template<typename T>
-			auto is_equality_comparable_impl( T const & value, int ) -> typename std::is_convertible<decltype(value == value), bool>;
+				auto is_equality_comparable_impl( T const & value, int ) -> typename std::is_convertible<decltype(value == value), bool>;
 		}	// namespace details
 
 		template<typename T>
-		struct is_equality_comparable: decltype(details::is_equality_comparable_impl(std::declval<T const &>( ), 1 )) {};
+			struct is_equality_comparable: decltype(details::is_equality_comparable_impl(std::declval<T const &>( ), 1 )) {};
 
 		namespace impl {
 			template<class ...>
@@ -202,6 +208,19 @@ namespace daw {
 			template<typename> struct type_sink { typedef void type; }; // consumes a type, and makes it `void`
 			template<typename T> using type_sink_t = typename type_sink<T>::type;
 		}
+		
+#define MEMBER_FUNC_CHECKER(name, fn, ret, args) \
+		template<typename C, typename=void> struct name : std::false_type {}; \
+		template<typename C> struct name<C, typename std::enable_if_t<std::is_convertible_v<decltype( std::declval<C>().fn args ), ret>>>: std::true_type {};
+
+#define MTYPE_CHECKER_ANY(checker, name) \
+		template<class C, typename = void> struct checker : std::false_type {}; \
+		template<class C> struct checker<C, typename std::enable_if< \
+		  !std::is_same<decltype(C::name)*, void>::value>::type> : std::true_type {}
+
+#define METHOD_CHECKER_ANY(name, fn, args) \
+		template<typename T, typename=void> struct name: std::false_type { }; \
+		template<typename T> struct name<T, typename std::enable_if_t<!std::is_same<decltype(std::declval<T>().fn args)*, void>::value>>: std::true_type { };
 
 #define GENERATE_HAS_MEMBER_FUNCTION_TRAIT(MemberName) \
 		namespace impl { \
@@ -236,7 +255,9 @@ namespace daw {
 		template<typename T> using has_##TypeName##_member_v = typename has_##TypeName##_member<T>::value;	\
 		template<typename T> using has_##TypeName##_member_t = typename has_##TypeName##_member<T>::type;
 
-		GENERATE_HAS_MEMBER_FUNCTION_TRAIT( begin );
+//		GENERATE_HAS_MEMBER_FUNCTION_TRAIT( begin );
+//
+		METHOD_CHECKER_ANY(has_begin_member, begin, ( ) );
 		GENERATE_HAS_MEMBER_FUNCTION_TRAIT( end );
 		GENERATE_HAS_MEMBER_FUNCTION_TRAIT( substr );
 		GENERATE_HAS_MEMBER_FUNCTION_TRAIT( push_back );
@@ -246,11 +267,13 @@ namespace daw {
 		GENERATE_HAS_MEMBER_TYPE_TRAIT( mapped_type );
 		GENERATE_HAS_MEMBER_TYPE_TRAIT( iterator );
 
-		template<typename T> using is_string =std::is_convertible < T,std::string>;
+		template<typename T> using is_string = std::is_convertible<T, std::string>;
 		template<typename T> using is_string_t = typename is_string<T>::type;
+		template<typename T> constexpr bool is_string_v = is_string<T>::value;
 
 		template<typename T> using isnt_string =std::integral_constant < bool, !is_string<T>::value>;
 		template<typename T> using isnt_string_t = typename isnt_string<T>::type;
+		template<typename T> constexpr bool isnt_string_v = isnt_string<T>::value;
 
 		template<typename T> using is_container_like =std::integral_constant < bool, has_begin_member<T>::value && has_end_member<T>::value>;
 		template<typename T> using is_container_like_t = typename is_container_like<T>::type;
@@ -258,6 +281,7 @@ namespace daw {
 
 		template<typename T> using is_container_not_string =std::integral_constant < bool, isnt_string<T>::value && is_container_like<T>::value>;
 		template<typename T> using is_container_not_string_t = typename is_container_not_string<T>::type;
+		template<typename T> constexpr bool is_container_not_string_v = is_container_not_string<T>::value;
 
 		template<typename T> using is_map_like =std::integral_constant < bool, is_container_like<T>::value && has_mapped_type_member<T>::value>;
 		template<typename T> using is_map_like_t = typename is_map_like<T>::type;
@@ -346,92 +370,92 @@ namespace daw {
 			constexpr auto is_callable_v = impl::is_callable_impl<F, Args...>::value;
 
 		template<std::size_t I, typename T, typename ...Ts>
-		struct nth_element_impl {
-			using type = typename nth_element_impl<I-1, Ts...>::type;
-		};
+			struct nth_element_impl {
+				using type = typename nth_element_impl<I-1, Ts...>::type;
+			};
 
 		template <typename T, typename ...Ts>
-		struct nth_element_impl<0, T, Ts...> {
-			using type = T;
-		};
+			struct nth_element_impl<0, T, Ts...> {
+				using type = T;
+			};
 
 		template <std::size_t I, typename ...Ts>
-		using nth_element = typename nth_element_impl<I, Ts...>::type;
+			using nth_element = typename nth_element_impl<I, Ts...>::type;
 
 		namespace impl {
 			template<typename T>
-			auto has_to_string( T const &, long ) -> std::false_type;
+				auto has_to_string( T const &, long ) -> std::false_type;
 
 			template<typename T>
-			auto has_to_string( T const & lhs, int ) -> std::is_convertible<decltype(lhs.to_string( )), std::string>;
+				auto has_to_string( T const & lhs, int ) -> std::is_convertible<decltype(lhs.to_string( )), std::string>;
 		}
 		template<typename T>
-		struct has_to_string: decltype(impl::has_to_string( std::declval<T>( ), 1 ) ) { };
+			struct has_to_string: decltype(impl::has_to_string( std::declval<T>( ), 1 ) ) { };
 
 		namespace operators {
 			namespace impl {
 				template<typename L, typename R>
-				auto has_op_eq_impl( L const &, R const &, long ) -> std::false_type;
+					auto has_op_eq_impl( L const &, R const &, long ) -> std::false_type;
 
 				template<typename L, typename R>
-				auto has_op_eq_impl( L const & lhs, R const & rhs, int ) -> std::is_convertible<decltype(lhs == rhs), bool>;
+					auto has_op_eq_impl( L const & lhs, R const & rhs, int ) -> std::is_convertible<decltype(lhs == rhs), bool>;
 
 				template<typename L, typename R>
-				auto has_op_ne_impl( L const &, R const &, long ) -> std::false_type;
+					auto has_op_ne_impl( L const &, R const &, long ) -> std::false_type;
 
 				template<typename L, typename R>
-				auto has_op_ne_impl( L const & lhs, R const & rhs, int ) -> std::is_convertible<decltype(lhs != rhs), bool>;
+					auto has_op_ne_impl( L const & lhs, R const & rhs, int ) -> std::is_convertible<decltype(lhs != rhs), bool>;
 
 				template<typename L, typename R>
-				auto has_op_lt_impl( L const &, R const &, long ) -> std::false_type;
+					auto has_op_lt_impl( L const &, R const &, long ) -> std::false_type;
 
 				template<typename L, typename R>
-				auto has_op_lt_impl( L const & lhs, R const & rhs, int ) -> std::is_convertible<decltype(lhs < rhs), bool>;
+					auto has_op_lt_impl( L const & lhs, R const & rhs, int ) -> std::is_convertible<decltype(lhs < rhs), bool>;
 
 				template<typename L, typename R>
-				auto has_op_le_impl( L const &, R const &, long ) -> std::false_type;
+					auto has_op_le_impl( L const &, R const &, long ) -> std::false_type;
 
 				template<typename L, typename R>
-				auto has_op_le_impl( L const & lhs, R const & rhs, int ) -> std::is_convertible<decltype(lhs <= rhs), bool>;
+					auto has_op_le_impl( L const & lhs, R const & rhs, int ) -> std::is_convertible<decltype(lhs <= rhs), bool>;
 
 				template<typename L, typename R>
-				auto has_op_gt_impl( L const &, R const &, long ) -> std::false_type;
+					auto has_op_gt_impl( L const &, R const &, long ) -> std::false_type;
 
 				template<typename L, typename R>
-				auto has_op_gt_impl( L const & lhs, R const & rhs, int ) -> std::is_convertible<decltype(lhs > rhs), bool>;
+					auto has_op_gt_impl( L const & lhs, R const & rhs, int ) -> std::is_convertible<decltype(lhs > rhs), bool>;
 
 				template<typename L, typename R>
-				auto has_op_ge_impl( L const &, R const &, long ) -> std::false_type;
+					auto has_op_ge_impl( L const &, R const &, long ) -> std::false_type;
 
 				template<typename L, typename R>
-				auto has_op_ge_impl( L const & lhs, R const & rhs, int ) -> std::is_convertible<decltype(lhs >= rhs), bool>;
+					auto has_op_ge_impl( L const & lhs, R const & rhs, int ) -> std::is_convertible<decltype(lhs >= rhs), bool>;
 			}	// namespace impl
 
 			template<typename L, typename R = L>
-			struct has_op_eq: decltype(impl::has_op_eq_impl( std::declval<L>( ), std::declval<R>( ), 1 ) ) { };
+				struct has_op_eq: decltype(impl::has_op_eq_impl( std::declval<L>( ), std::declval<R>( ), 1 ) ) { };
 
 			template<typename L, typename R = L>
-			struct has_op_ne: decltype(impl::has_op_ne_impl( std::declval<L>( ), std::declval<R>( ), 1 ) ) { };
+				struct has_op_ne: decltype(impl::has_op_ne_impl( std::declval<L>( ), std::declval<R>( ), 1 ) ) { };
 
 			template<typename L, typename R = L>
-			struct has_op_lt: decltype(impl::has_op_lt_impl( std::declval<L>( ), std::declval<R>( ), 1 ) ) { };
+				struct has_op_lt: decltype(impl::has_op_lt_impl( std::declval<L>( ), std::declval<R>( ), 1 ) ) { };
 
 			template<typename L, typename R = L>
-			struct has_op_le: decltype(impl::has_op_le_impl( std::declval<L>( ), std::declval<R>( ), 1 ) ) { };
+				struct has_op_le: decltype(impl::has_op_le_impl( std::declval<L>( ), std::declval<R>( ), 1 ) ) { };
 
 			template<typename L, typename R = L>
-			struct has_op_gt: decltype(impl::has_op_gt_impl( std::declval<L>( ), std::declval<R>( ), 1 ) ) { };
+				struct has_op_gt: decltype(impl::has_op_gt_impl( std::declval<L>( ), std::declval<R>( ), 1 ) ) { };
 
 			template<typename L, typename R = L>
-			struct has_op_ge: decltype(impl::has_op_ge_impl( std::declval<L>( ), std::declval<R>( ), 1 ) ) { };
+				struct has_op_ge: decltype(impl::has_op_ge_impl( std::declval<L>( ), std::declval<R>( ), 1 ) ) { };
 
 		}	// namespace operators
 
 		template <typename T, typename U>
-		constexpr inline bool not_self( ) {
-			using decayed_t = typename std::decay_t<T>;
-		    return !std::is_same<decayed_t, U>::value && !std::is_base_of<U, decayed_t>::value;
-		}
+			constexpr inline bool not_self( ) {
+				using decayed_t = typename std::decay_t<T>;
+				return !std::is_same<decayed_t, U>::value && !std::is_base_of<U, decayed_t>::value;
+			}
 	}	// namespace traits
 }	// namespace daw
 
