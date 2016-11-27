@@ -2,8 +2,6 @@ cmake_minimum_required( VERSION 2.8.12 )
 
 project( header_libraries )
 
-enable_testing( )
-
 find_package( Boost 1.58.0 COMPONENTS system filesystem regex unit_test_framework iostreams REQUIRED )
 
 find_package( Threads )
@@ -77,7 +75,7 @@ link_directories( ${Boost_LIBRARY_DIRS} )
 
 foreach( CUR_PREFIX ${TESTED_HEADERS_PREFIXES} )
 	install( FILES "${HEADER_FOLDER}/${CUR_PREFIX}.h" DESTINATION include/daw )
-	add_executable( ${CUR_PREFIX}_test_bin ${HEADER_FOLDER}/${CUR_PREFIX}.h ${TEST_FOLDER}/${CUR_PREFIX}_test.cpp ${TEST_FOLDER}/test_main.cpp )
+	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/${CUR_PREFIX}.h ${TEST_FOLDER}/${CUR_PREFIX}_test.cpp ${TEST_FOLDER}/test_main.cpp )
 	target_link_libraries( ${CUR_PREFIX}_test_bin ${Boost_LIBRARIES} ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
 	add_test( ${CUR_PREFIX}_test, ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
