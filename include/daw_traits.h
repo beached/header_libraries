@@ -61,25 +61,25 @@ namespace daw {
 
 		namespace impl {
 			template<class ...>
-				using void_t = void;
+			using void_t = void;
 
 			template<typename L, typename R>
-				using comparability = decltype( (std::declval<root_type_t<R>>( ) == std::declval<root_type_t<L>>( )) && (std::declval<root_type_t<L>>( ) == std::declval<root_type_t<R>>( )) );
+			using comparability = decltype( (std::declval<root_type_t<R>>( ) == std::declval<root_type_t<L>>( )) && (std::declval<root_type_t<L>>( ) == std::declval<root_type_t<R>>( )) );
 
 		}
 
 		template<typename L, typename R, class = void>
-			struct is_comparable: std::false_type { };
+		struct is_comparable: std::false_type { };
 
 
 		template<typename L, typename R>
-			struct is_comparable<L, R, impl::void_t<impl::comparability<L, R>>>: std::true_type { };
+		struct is_comparable<L, R, impl::void_t<impl::comparability<L, R>>>: std::true_type { };
 
 		template<typename L, typename R>
-			constexpr auto is_comparable_v = is_comparable<L, R>::value;
+		constexpr bool is_comparable_v = is_comparable<L, R>::value;
 
 		template<typename L, typename R>
-			using is_comparable_t = typename is_comparable<L, R>::type;
+		using is_comparable_t = typename is_comparable<L, R>::type;
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: is like a regular type see http://www.stepanovpapers.com/DeSt98.pdf
