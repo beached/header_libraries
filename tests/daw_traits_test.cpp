@@ -224,10 +224,10 @@ BOOST_AUTO_TEST_CASE( daw_traits_has_substr_member ) {
 	{
 		struct T {
 			int x;
-			bool substr( ) { return true; }
+			bool substr( size_t, size_t ) { return true; }
 		};
 		T t = { 5 };
-		t.substr( );
+		t.substr( 5, 5 );
 		BOOST_REQUIRE_MESSAGE( true == daw::traits::has_substr_member<T>::value, "4. struct T should have a substr method" );
 	}
 }

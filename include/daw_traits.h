@@ -23,6 +23,7 @@
 #pragma once
 
 #include <boost/type_traits.hpp>
+#include <cstdint>
 #include <type_traits>
 #include <vector>
 #include <list>
@@ -36,7 +37,7 @@
 namespace daw {
 	namespace traits {
 		template<typename From, typename To>
-		constexpr bool is_converible_v = std::is_convertible<From, To>::value;
+		constexpr bool is_convertible_v = std::is_convertible<From, To>::value;
 		
 		template<typename T, typename U>
 		constexpr bool is_same_v = std::is_same<T, U>::value;
@@ -211,7 +212,7 @@ namespace daw {
 		
 #define MEMBER_FUNC_CHECKER(name, fn, ret, args) \
 		template<typename C, typename=void> struct name : std::false_type {}; \
-		template<typename C> struct name<C, typename std::enable_if_t<std::is_convertible_v<decltype( std::declval<C>().fn args ), ret>>>: std::true_type {};
+		template<typename C> struct name<C, typename std::enable_if_t<is_convertible_v<decltype( std::declval<C>().fn args ), ret>>>: std::true_type {};
 
 #define MTYPE_CHECKER_ANY(checker, name) \
 		template<class C, typename = void> struct checker : std::false_type {}; \
@@ -258,8 +259,11 @@ namespace daw {
 //		GENERATE_HAS_MEMBER_FUNCTION_TRAIT( begin );
 //
 		METHOD_CHECKER_ANY(has_begin_member, begin, ( ) );
-		GENERATE_HAS_MEMBER_FUNCTION_TRAIT( end );
-		GENERATE_HAS_MEMBER_FUNCTION_TRAIT( substr );
+		METHOD_CHECKER_ANY(has_end_member, end, ( ) );
+		METHOD_CHECKER_ANY(has_substr_member, substr, (0, 1) );
+
+		//GENERATE_HAS_MEMBER_FUNCTION_TRAIT( end );
+		//GENERATE_HAS_MEMBER_FUNCTION_TRAIT( substr );
 		GENERATE_HAS_MEMBER_FUNCTION_TRAIT( push_back );
 
 		GENERATE_HAS_MEMBER_TYPE_TRAIT( type );
@@ -267,32 +271,37 @@ namespace daw {
 		GENERATE_HAS_MEMBER_TYPE_TRAIT( mapped_type );
 		GENERATE_HAS_MEMBER_TYPE_TRAIT( iterator );
 
-		template<typename T> using is_string = std::is_convertible<T, std::string>;
+		template<typename T> using is_string = std::integral_constant<bool, is_convertible_v<T, std::string> || is_convertible_v<T, std::wstring>>;
 		template<typename T> using is_string_t = typename is_string<T>::type;
 		template<typename T> constexpr bool is_string_v = is_string<T>::value;
 
-		template<typename T> using isnt_string =std::integral_constant < bool, !is_string<T>::value>;
+		template<typename T> using isnt_string = std::integral_constant<bool, !is_string<T>::value>;
 		template<typename T> using isnt_string_t = typename isnt_string<T>::type;
 		template<typename T> constexpr bool isnt_string_v = isnt_string<T>::value;
 
-		template<typename T> using is_container_like =std::integral_constant < bool, has_begin_member<T>::value && has_end_member<T>::value>;
+		template<typename T> using is_container_like = std::integral_constant<bool, has_begin_member<T>::value && has_end_member<T>::value>;
 		template<typename T> using is_container_like_t = typename is_container_like<T>::type;
 		template<typename T> constexpr bool is_container_like_v = is_container_like<T>::value;
 
-		template<typename T> using is_container_not_string =std::integral_constant < bool, isnt_string<T>::value && is_container_like<T>::value>;
+		template<typename T> using is_container_not_string = std::integral_constant<bool, isnt_string<T>::value && is_container_like<T>::value>;
 		template<typename T> using is_container_not_string_t = typename is_container_not_string<T>::type;
 		template<typename T> constexpr bool is_container_not_string_v = is_container_not_string<T>::value;
 
-		template<typename T> using is_map_like =std::integral_constant < bool, is_container_like<T>::value && has_mapped_type_member<T>::value>;
+		template<typename T> using is_map_like = std::integral_constant<bool, is_container_like<T>::value && has_mapped_type_member<T>::value>;
 		template<typename T> using is_map_like_t = typename is_map_like<T>::type;
+		template<typename T> constexpr bool is_map_like_v = is_map_like<T>::value;
 
 		template<typename T> using isnt_map_like =std::integral_constant < bool, !is_map_like<T>::value>;
 		template<typename T> using isnt_map_like_t = typename isnt_map_like<T>::type;
+		template<typename T> constexpr bool isnt_map_like_v = isnt_map_like<T>::value;
 
-		template<typename T> using is_vector_like_not_string =std::integral_constant < bool, is_container_not_string<T>::value && isnt_map_like<T>::value>;
+		template<typename T> using is_vector_like_not_string = std::integral_constant<bool, is_container_not_string<T>::value && isnt_map_like<T>::value>;
 		template<typename T> using is_vector_like_not_string_t = typename is_vector_like_not_string<T>::type;
+		template<typename T> constexpr bool is_vector_like_not_string_v = is_vector_like_not_string<T>::value;
 
-		template <typename T> using static_not =std::conditional < T::value,std::false_type,std::true_type>;
+		template<typename T> using static_not = std::conditional<T::value, std::false_type, std::true_type>;
+		template<typename T> using static_not_t = typename static_not<T>::type;
+		template<typename T> constexpr bool static_not_v = static_not<T>::value;
 
 #define GENERATE_IS_STD_CONTAINER1( ContainerName ) \
 		template<typename T> using is_##ContainerName =std::integral_constant<bool,std::is_same<T,std::ContainerName<typename T::value_type>>::value>; \
