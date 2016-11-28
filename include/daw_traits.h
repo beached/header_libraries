@@ -76,7 +76,7 @@ namespace daw {
 		struct is_comparable<L, R, impl::void_t<impl::comparability<L, R>>>: std::true_type { };
 
 		template<typename L, typename R>
-		constexpr auto is_comparable_v = is_comparable<L, R>::value;
+		constexpr bool is_comparable_v = is_comparable<L, R>::value;
 
 		template<typename L, typename R>
 		using is_comparable_t = typename is_comparable<L, R>::type;
