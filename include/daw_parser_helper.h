@@ -396,38 +396,38 @@ namespace daw {
 			}
 
 		template<typename T>
-			constexpr bool is_unicode_whitespace( T val ) {
-				switch( static_cast<uint32_t>(val) ) {
-					case 0x00000009:	// CHARACTER TABULATION
-					case 0x0000000A:	// LINE FEED
-					case 0x0000000B:	// LINE TABULATION
-					case 0x0000000C:	// FORM FEED
-					case 0x0000000D:	// CARRIAGE RETURN
-					case 0x00000020:	// SPACE
-					case 0x00000085:	// NEXT LINE
-					case 0x000000A0:	// NO-BREAK SPACE
-					case 0x00001680:	// OGHAM SPACE MARK
-					case 0x00002000:	// EN QUAD
-					case 0x00002001:	// EM QUAD
-					case 0x00002002:	// EN SPACE
-					case 0x00002003:	// EM SPACE
-					case 0x00002004:	// THREE-PER-EM SPACE
-					case 0x00002005:	// FOUR-PER-EM SPACE
-					case 0x00002006:	// SIX-PER-EM SPACE
-					case 0x00002007:	// FIGURE SPACE 
-					case 0x00002008:	// PUNCTUATION SPACE
-					case 0x00002009:	// THIN SPACE
-					case 0x0000200A:	// HAIR SPACE
-					case 0x00002028:	// LINE SEPARATOR
-					case 0x00002029:	// PARAGRAPH SEPARATOR
-					case 0x0000202F:	// NARROW NO-BREAK SPACE 
-					case 0x0000205F:	// MEDIUM MATHEMATICAL SPACE
-					case 0x00003000:	// IDEOGRAPHIC SPACE
-						return true;
-					default:
-						return false;
-				}
+		constexpr bool is_unicode_whitespace( T val ) {
+			switch( static_cast<uint32_t>(val) ) {
+				case 0x00000009:	// CHARACTER TABULATION
+				case 0x0000000A:	// LINE FEED
+				case 0x0000000B:	// LINE TABULATION
+				case 0x0000000C:	// FORM FEED
+				case 0x0000000D:	// CARRIAGE RETURN
+				case 0x00000020:	// SPACE
+				case 0x00000085:	// NEXT LINE
+				case 0x000000A0:	// NO-BREAK SPACE
+				case 0x00001680:	// OGHAM SPACE MARK
+				case 0x00002000:	// EN QUAD
+				case 0x00002001:	// EM QUAD
+				case 0x00002002:	// EN SPACE
+				case 0x00002003:	// EM SPACE
+				case 0x00002004:	// THREE-PER-EM SPACE
+				case 0x00002005:	// FOUR-PER-EM SPACE
+				case 0x00002006:	// SIX-PER-EM SPACE
+				case 0x00002007:	// FIGURE SPACE 
+				case 0x00002008:	// PUNCTUATION SPACE
+				case 0x00002009:	// THIN SPACE
+				case 0x0000200A:	// HAIR SPACE
+				case 0x00002028:	// LINE SEPARATOR
+				case 0x00002029:	// PARAGRAPH SEPARATOR
+				case 0x0000202F:	// NARROW NO-BREAK SPACE 
+				case 0x0000205F:	// MEDIUM MATHEMATICAL SPACE
+				case 0x00003000:	// IDEOGRAPHIC SPACE
+					return true;
+				default:
+					return false;
 			}
+		}
 
 		template<typename T>
 			constexpr bool not_unicode_whitespace( T val ) {

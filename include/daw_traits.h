@@ -43,7 +43,7 @@ namespace daw {
 		constexpr bool is_same_v = std::is_same<T, U>::value;
 
 		template<typename T>
-			using root_type_t = std::decay_t<std::remove_reference_t<T>>;
+		using root_type_t = std::decay_t<std::remove_reference_t<T>>;
 
 		template<typename ...>
 			using void_t = void;
@@ -61,30 +61,30 @@ namespace daw {
 
 		namespace impl {
 			template<class ...>
-				using void_t = void;
+			using void_t = void;
 
 			template<typename L, typename R>
-				using comparability = decltype( (std::declval<root_type_t<R>>( ) == std::declval<root_type_t<L>>( )) && (std::declval<root_type_t<L>>( ) == std::declval<root_type_t<R>>( )) );
+			using comparability = decltype( (std::declval<root_type_t<R>>( ) == std::declval<root_type_t<L>>( )) && (std::declval<root_type_t<L>>( ) == std::declval<root_type_t<R>>( )) );
 
 		}
 
 		template<typename L, typename R, class = void>
-			struct is_comparable: std::false_type { };
+		struct is_comparable: std::false_type { };
 
 
 		template<typename L, typename R>
-			struct is_comparable<L, R, impl::void_t<impl::comparability<L, R>>>: std::true_type { };
+		struct is_comparable<L, R, impl::void_t<impl::comparability<L, R>>>: std::true_type { };
 
 		template<typename L, typename R>
-			constexpr auto is_comparable_v = is_comparable<L, R>::value;
+		constexpr auto is_comparable_v = is_comparable<L, R>::value;
 
 		template<typename L, typename R>
-			using is_comparable_t = typename is_comparable<L, R>::type;
+		using is_comparable_t = typename is_comparable<L, R>::type;
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: is like a regular type see http://www.stepanovpapers.com/DeSt98.pdf
 		template<typename T>
-			using is_regular =std::integral_constant < bool,std::is_default_constructible<T>::value &&
+		using is_regular =std::integral_constant < bool,std::is_default_constructible<T>::value &&
 			std::is_copy_constructible<T>::value &&std::is_move_constructible<T>::value &&
 			std::is_copy_assignable<T>::value &&std::is_move_assignable<T>::value &&
 			is_equality_comparable<T>::value>;
@@ -94,27 +94,27 @@ namespace daw {
 		///				unions and small value optimization
 		///
 		template <typename... Args>
-			struct max_sizeof;
+		struct max_sizeof;
 
 		template <typename First>
-			struct max_sizeof<First> {
-				using type = First;
-				static const size_t value = sizeof( type );
-			};
+		struct max_sizeof<First> {
+			using type = First;
+			static const size_t value = sizeof( type );
+		};
 
 		//the biggest of everything in Args and First
 		template<typename First, typename... Args>
-			struct max_sizeof< First, Args...> {
-				using next = typename max_sizeof<Args...>::type;
-				using type = typename std::conditional<sizeof( First ) >= sizeof( next ), First, next>::type;
-				static const size_t value = sizeof( type );
-			};
+		struct max_sizeof< First, Args...> {
+			using next = typename max_sizeof<Args...>::type;
+			using type = typename std::conditional<sizeof( First ) >= sizeof( next ), First, next>::type;
+			static const size_t value = sizeof( type );
+		};
 
 		template<typename... Types>
-			using max_sizeof_t = typename max_sizeof<Types...>::type;
+		using max_sizeof_t = typename max_sizeof<Types...>::type;
 
 		template<typename... Types>
-			constexpr auto const max_sizeof_v = max_sizeof<Types...>::value;
+		constexpr auto const max_sizeof_v = max_sizeof<Types...>::value;
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	Returns true if all values passed are true

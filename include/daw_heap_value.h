@@ -95,7 +95,15 @@ namespace daw {
 		const_pointer operator->( ) const {
 			return m_value.get( );
 		}
+	
+		pointer ptr( ) {
+			return m_value.get( );
+		}
 		
+		const_pointer ptr( ) const {
+			return m_value.get( );
+		}
+
 		template<typename... Args>
 		auto operator[]( Args&&... args ) {
 			return m_value->operator[]( std::forward<Args>( args )... );
