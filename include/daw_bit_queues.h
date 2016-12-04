@@ -79,6 +79,10 @@ namespace daw {
 			clear( );
 			return result;
 		}
+		
+		queue_type const & value( ) const {
+			return m_queue;
+		}
 	};
 
 	using bit_queue = bit_queue_gen<uint16_t>;
@@ -128,6 +132,10 @@ namespace daw {
 
 		value_type pop_all( ) {
 			return m_queue.pop_all( );
+		}
+
+		queue_type const & value( ) const {
+			return m_queue.value( );
 		}
 	};
 
