@@ -97,7 +97,7 @@ namespace daw {
 		constexpr explicit nibble_queue_gen( queue_type v ): m_queue( std::move( v ) ) { }
 
 		constexpr size_t capacity( ) const noexcept {
-			return sizeof( queue_type ) / 4;
+			return m_queue.capacity( ) / 4;
 		}
 
 		constexpr size_t size( ) const noexcept {
