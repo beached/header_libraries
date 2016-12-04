@@ -35,6 +35,7 @@ namespace daw {
 
 	public:
 		bit_queue_gen( ): m_queue( 0 ), m_size( 0 ) { }
+		explicit bit_queue_gen( queue_type v ): m_queue( std::move( v ) ), m_size( sizeof( m_queue ) * 8 ) { }
 
 		size_t size( ) const {
 			return m_size;
@@ -97,6 +98,7 @@ namespace daw {
 
 	public:
 		nibble_queue_gen( ): m_queue( ) { }
+		explicit nibble_queue_gen( queue_type v ): m_queue( std::move( v ) ) { }
 
 		constexpr static size_t capacity( ) {
 			return sizeof( queue_type ) / 4;
