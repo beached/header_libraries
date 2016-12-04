@@ -139,10 +139,6 @@ namespace daw {
 		constexpr queue_type const & value( ) const noexcept {
 			return m_queue.value( );
 		}
-
-		constexpr queue_type & value( ) noexcept {
-			return m_queue.value( );
-		}
 	};
 
 	using nibble_queue = nibble_queue_gen<uint8_t>;
