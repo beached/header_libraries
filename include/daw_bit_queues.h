@@ -34,18 +34,18 @@ namespace daw {
 		size_t m_size;
 
 	public:
-		bit_queue_gen( ): m_queue( 0 ), m_size( 0 ) { }
-		explicit bit_queue_gen( queue_type v ): m_queue( std::move( v ) ), m_size( sizeof( m_queue ) * 8 ) { }
+		constexpr bit_queue_gen( ) noexcept: m_queue( 0 ), m_size( 0 ) { }
+		constexpr explicit bit_queue_gen( queue_type v ) noexcept: m_queue( std::move( v ) ), m_size( sizeof( m_queue ) * 8 ) { }
 
-		size_t size( ) const {
+		constexpr size_t size( ) const noexcept {
 			return m_size;
 		}
 
-		bool can_pop( size_t const bits ) const {
+		constexpr bool can_pop( size_t const bits ) const noexcept {
 			return m_size >= bits;
 		}
 
-		bool empty( ) const {
+		constexpr bool empty( ) const noexcept {
 			return 0 == m_size;
 		}
 
@@ -53,7 +53,7 @@ namespace daw {
 			return sizeof( m_queue ) * 8;
 		}
 
-		void push_back( value_type value, size_t const bits = sizeof( value_type ) * 8 ) {
+		constexpr void push_back( value_type value, size_t const bits = sizeof( value_type ) * 8 ) noexcept {
 			assert( (capacity( ) - m_size >= bits) && "Not enough bits to hold value pushed" );
 			m_queue <<= bits;
 			value &= get_mask<value_type>( bits );
@@ -61,7 +61,7 @@ namespace daw {
 			m_size += bits;
 		}
 
-		value_type pop_front( size_t const bits ) {
+		constexpr value_type pop_front( size_t const bits ) noexcept {
 			queue_type const mask_pos = static_cast<queue_type>(m_size - (bits - 1));
 			auto result = static_cast<value_type>(m_queue >> (mask_pos - 1)); // right shift so that all but the left most 6bits are gone
 			queue_type const mask = static_cast<queue_type>(~(get_mask<queue_type>( bits - 1 ) << (m_size - bits)));
@@ -70,22 +70,18 @@ namespace daw {
 			return result;
 		}
 
-		void clear( ) {
+		constexpr void clear( ) noexcept {
 			m_queue = 0;
 			m_size = 0;
 		}
 
-		value_type pop_all( ) {
+		constexpr value_type pop_all( ) noexcept {
 			auto result = static_cast<value_type>(m_queue);
 			clear( );
 			return result;
 		}
 		
-		queue_type const & value( ) const {
-			return m_queue;
-		}
-
-		queue_type & value( ) {
+		constexpr queue_type const & value( ) const noexcept {
 			return m_queue;
 		}
 	};
@@ -98,53 +94,53 @@ namespace daw {
 
 	public:
 		nibble_queue_gen( ): m_queue( ) { }
-		explicit nibble_queue_gen( queue_type v ): m_queue( std::move( v ) ) { }
+		constexpr explicit nibble_queue_gen( queue_type v ): m_queue( std::move( v ) ) { }
 
 		constexpr static size_t capacity( ) {
 			return sizeof( queue_type ) / 4;
 		}
 
-		size_t size( ) const {
+		constexpr size_t size( ) const noexcept {
 			return m_queue.size( ) / 4;
 		}
 
-		bool empty( ) const {
+		constexpr bool empty( ) const noexcept {
 			return 0 == size( );
 		}
 
-		void push_back( value_type const &value ) {
+		constexpr void push_back( value_type const &value ) noexcept {
 			m_queue.push_back( value, 4 );
 		}
 
-		void push_back( value_type const &value, size_t const & num_nibbles ) {
+		constexpr void push_back( value_type const &value, size_t const & num_nibbles ) noexcept {
 			m_queue.push_back( value, num_nibbles * 4 );
 		}
 
-		bool can_pop( size_t num_nibbles = sizeof( value_type ) * 2 ) const {
+		constexpr bool can_pop( size_t num_nibbles = sizeof( value_type ) * 2 ) const noexcept {
 			return m_queue.can_pop( num_nibbles * 4 );
 		}
 
-		bool full( ) const {
+		constexpr bool full( ) const noexcept {
 			return size( ) == capacity( );
 		}
 
-		value_type pop_front( size_t num_nibbles = sizeof( value_type ) * 2 ) {
+		constexpr value_type pop_front( size_t num_nibbles = sizeof( value_type ) * 2 ) noexcept {
 			return m_queue.pop_front( num_nibbles * 4 );
 		}
 
-		void clear( ) {
+		constexpr void clear( ) noexcept {
 			m_queue.clear( );
 		}
 
-		value_type pop_all( ) {
+		constexpr value_type pop_all( ) noexcept {
 			return m_queue.pop_all( );
 		}
 
-		queue_type const & value( ) const {
+		constexpr queue_type const & value( ) const noexcept {
 			return m_queue.value( );
 		}
 
-		queue_type & value( ) {
+		constexpr queue_type & value( ) noexcept {
 			return m_queue.value( );
 		}
 	};
