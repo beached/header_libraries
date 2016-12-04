@@ -49,7 +49,7 @@ namespace daw {
 			return 0 == m_size;
 		}
 
-		constexpr static size_t capacity( ) {
+		constexpr static size_t capacity( ) const noexcept {
 			return sizeof( m_queue ) * 8;
 		}
 
@@ -96,7 +96,7 @@ namespace daw {
 		nibble_queue_gen( ): m_queue( ) { }
 		constexpr explicit nibble_queue_gen( queue_type v ): m_queue( std::move( v ) ) { }
 
-		constexpr static size_t capacity( ) {
+		constexpr static size_t capacity( ) const noexcept {
 			return sizeof( queue_type ) / 4;
 		}
 
