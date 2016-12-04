@@ -84,7 +84,7 @@ namespace daw {
 			return m_queue;
 		}
 
-		queue_type & value( ) const {
+		queue_type & value( ) {
 			return m_queue;
 		}
 	};
@@ -142,7 +142,7 @@ namespace daw {
 			return m_queue.value( );
 		}
 
-		queue_type & value( ) const {
+		queue_type & value( ) {
 			return m_queue.value( );
 		}
 	};
