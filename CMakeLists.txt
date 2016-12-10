@@ -26,6 +26,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_array
 	daw_bounded_stack
 	daw_benchmark
+	daw_checked_iterator_proxy
 	daw_clumpy_sparsy
 	daw_cstring
 	daw_hash_table
