@@ -49,7 +49,7 @@ namespace daw {
 		Expected& operator=(Expected && rhs) = default;
 		~Expected( ) = default;
 
-		friend bool operator==(Expected const & lhs, Expected const & rhs) const noexcept {
+		friend bool operator==(Expected const & lhs, Expected const & rhs) const {
 			return lhs.m_value == rhs.m_value && lhs.m_exception == rhs.m_exception && lhs.m_source == rhs.m_source;
 		}
 
