@@ -29,64 +29,64 @@
 
 namespace daw {
 	template<class ValueType>
-	class Expected {
-		enum class ExpectedSource { value, exception, none };
+	class expected_t {
+		enum class expected_tSource { value, exception, none };
 		ValueType m_value;
 		std::exception_ptr m_exception;
-		ExpectedSource m_source;
+		expected_tSource m_source;
 	public:
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: No value, aka null
 		//////////////////////////////////////////////////////////////////////////
-		Expected( ) : 
+		expected_t( ) : 
 				m_value{ }, 
 				m_exception{ }, 
-				m_source{ ExpectedSource::none } { }
+				m_source{ expected_tSource::none } { }
 
-		Expected( Expected const & other ) = default;
-		Expected( Expected && other ) = default;
-		Expected& operator=(Expected const & rhs) = default;
-		Expected& operator=(Expected && rhs) = default;
-		~Expected( ) = default;
+		expected_t( expected_t const & other ) = default;
+		expected_t( expected_t && other ) = default;
+		expected_t& operator=(expected_t const & rhs) = default;
+		expected_t& operator=(expected_t && rhs) = default;
+		~expected_t( ) = default;
 
-		friend bool operator==(Expected const & lhs, Expected const & rhs) {
+		friend bool operator==(expected_t const & lhs, expected_t const & rhs) {
 			return lhs.m_value == rhs.m_value && lhs.m_exception == rhs.m_exception && lhs.m_source == rhs.m_source;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////
-		Expected( ValueType value ) noexcept: 
+		expected_t( ValueType value ) noexcept: 
 				m_value{ std::move( value ) }, 
 				m_exception{ },
-				m_source{ ExpectedSource::value } { }
+				m_source{ expected_tSource::value } { }
 
 		template<class ExceptionType>
-		static Expected<ValueType> from_exception( ExceptionType const & exception ) {
+		static expected_t<ValueType> from_exception( ExceptionType const & exception ) {
 			if( typeid(exception) != typeid(ExceptionType) ) {
 				throw std::invalid_argument( "slicing detected" );
 			}
 			return from_exception( std::make_exception_ptr( exception ) );
 		}
 
-		static Expected<ValueType>
+		static expected_t<ValueType>
 			from_exception( std::exception_ptr except_ptr ) {
-			Expected<ValueType> result;
-			result.m_source = Expected<ValueType>::ExpectedSource::exception;
+			expected_t<ValueType> result;
+			result.m_source = expected_t<ValueType>::expected_tSource::exception;
 			new(&result.m_exception) std::exception_ptr( std::move( except_ptr ) );
 			return result;
 		}
 
-		static Expected<ValueType> from_exception( ) {
+		static expected_t<ValueType> from_exception( ) {
 			return from_exception( std::current_exception( ) );
 		}
 
 		bool has_value( ) const noexcept {
-			return ExpectedSource::value == m_source;
+			return expected_tSource::value == m_source;
 		}
 
 		ValueType & get( ) {
-			assert( ExpectedSource::none != m_source );
+			assert( expected_tSource::none != m_source );
 			if( has_exception( ) ) {
 				std::rethrow_exception( m_exception );
 			}
@@ -94,7 +94,7 @@ namespace daw {
 		}
 
 		ValueType const & get( ) const {
-			assert( ExpectedSource::none != m_source );
+			assert( expected_tSource::none != m_source );
 			if( has_exception( ) ) {
 				std::rethrow_exception( m_exception );
 			}
@@ -102,11 +102,11 @@ namespace daw {
 		}
 
 		ValueType move_out( ) {
-			assert( ExpectedSource::none != m_source );
+			assert( expected_tSource::none != m_source );
 			if( has_exception( ) ) {
 				std::rethrow_exception( m_exception );
 			}
-			m_source = ExpectedSource::none;
+			m_source = expected_tSource::none;
 			return std::move( m_value );
 		}
 
@@ -123,18 +123,18 @@ namespace daw {
 		}
 
 		bool has_exception( ) const noexcept {
-			return ExpectedSource::exception == m_source;
+			return expected_tSource::exception == m_source;
 		}
 
 		template<class FunctionType>
-		static Expected from_code( FunctionType func ) {
+		static expected_t from_code( FunctionType func ) {
 			try {
-				return Expected( func( ) );
+				return expected_t( func( ) );
 			} catch( ... ) {
 				return from_exception( );
 			}
 		}
-	};	// class Expected
-	static_assert(::daw::traits::is_regular<Expected<int>>::value, "Expected isn't regular");
+	};	// class expected_t
+	static_assert(::daw::traits::is_regular<expected_t<int>>::value, "expected_t isn't regular");
 }	// namespace daw
 
