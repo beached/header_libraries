@@ -38,35 +38,28 @@ namespace daw {
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: No value, aka null
 		//////////////////////////////////////////////////////////////////////////
-		Expected( ) : m_value( ), m_exception( ), m_source( ExpectedSource::none ) { }
+		Expected( ) : 
+				m_valueR{ }, 
+				m_exception{ }, 
+				m_source{ ExpectedSource::none } { }
 
 		Expected( Expected const & other ) = default;
+		Expected( Expected && other ) = default;
 		Expected& operator=(Expected const & rhs) = default;
-
-		Expected( Expected&& other ) noexcept:
-			m_value( std::move( other.m_value ) ),
-			m_exception( std::move( other.m_exception ) ),
-			m_source( std::move( other.m_source ) ) { }
-
-		Expected& operator=(Expected && rhs) noexcept {
-			if( this != &rhs ) {
-				m_value = std::move( rhs.m_value );
-				m_exception = std::move( rhs.m_exception );
-				m_source = std::move( rhs.m_source );
-			}
-			return *this;
-		}
-
+		Expected& operator=(Expected && rhs) = default;
 		~Expected( ) = default;
 
-		bool operator==(Expected const & rhs) const noexcept {
-			return rhs.m_value == m_value && rhs.m_exception == m_exception && rhs.m_source == m_source;
+		friend bool operator==(Expected const & lhs, Expected const & rhs) const noexcept {
+			return lhs.m_value == rhs.m_value && lhs.m_exception == rhs.m_exception && lhs.m_source == rhs.m_source;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////
-		Expected( ValueType value ) noexcept: m_value( std::move( value ) ), m_exception( ), m_source( ExpectedSource::value ) { }
+		Expected( ValueType value ) noexcept: 
+				m_value{ std::move( value ) }, 
+				m_exception{ },
+				m_source{ ExpectedSource::value } { }
 
 		template<class ExceptionType>
 		static Expected<ValueType> from_exception( ExceptionType const & exception ) {
