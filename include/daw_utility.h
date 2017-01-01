@@ -203,7 +203,7 @@ namespace daw {
 	}
 
 	template<typename T>
-	std::vector<T> copy_vector( std::vector<T> const & container, size_t num_items ) {
+	std::vector<T> copy_vector( std::vector<T> const & container, std::size_t num_items ) {
 		assert( num_items <= container.size( ) );
 		std::vector<T> result( num_items );
 		auto first = std::begin( container );
@@ -212,7 +212,7 @@ namespace daw {
 	}
 
 	template<typename T>
-	void copy_vect_and_set( std::vector<T> & source, std::vector<T> & destination, size_t num_items, T const & replacement_value ) {
+	void copy_vect_and_set( std::vector<T> & source, std::vector<T> & destination, std::size_t num_items, T const & replacement_value ) {
 		using item_size_t = typename std::vector<T>::difference_type;
 		assert( num_items <std::numeric_limits<item_size_t>::max( ) );
 		auto first = std::begin( source );
@@ -259,7 +259,7 @@ namespace daw {
 	}
 
 	template<typename T>
-	void copy_vect_and_set( std::shared_ptr<std::vector<T>> & source, std::shared_ptr<std::vector<T>> & destination, size_t num_items, T const & replacement_value ) {
+	void copy_vect_and_set( std::shared_ptr<std::vector<T>> & source, std::shared_ptr<std::vector<T>> & destination, std::size_t num_items, T const & replacement_value ) {
 		using item_size_t = typename std::vector<T>::difference_type;
 		assert( num_items <std::numeric_limits<item_size_t>::max( ) );
 		auto first = std::begin( *source );
@@ -346,10 +346,10 @@ namespace daw {
 
 	template<typename Iterator>
 	bool equal_nc( Iterator first, Iterator last, boost::string_view upper_value ) {
-		if( static_cast<size_t>(std::distance( first, last )) != upper_value.size( ) ) {
+		if( static_cast<std::size_t>(std::distance( first, last )) != upper_value.size( ) ) {
 			return false;
 		}
-		for( size_t off = 0; off <upper_value.size( ); ++off ) {
+		for( std::size_t off = 0; off <upper_value.size( ); ++off ) {
 			auto const & left = upper_value[off];
 			auto const & right = daw::AsciiUpper( *(first + static_cast<std::ptrdiff_t>(off)) );
 			if( left != right ) {
@@ -439,7 +439,7 @@ namespace daw {
 
 	template<typename T>
 	auto copy_ptr_value( T * original ) {
-		using result_t = typename ::std::decay_t<T>;
+		using result_t = std::decay_t<T>;
 		return new result_t( *original );
 	}
 
