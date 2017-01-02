@@ -89,6 +89,6 @@ namespace daw {
 
 	};	// basic_semaphore
 
-	using semaphor = basic_semaphore<std::mutex, std::condition_variable>;
+	using semaphore = basic_semaphore<std::mutex, std::condition_variable>;
 }    // namespace daw
 
