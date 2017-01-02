@@ -64,6 +64,7 @@ set( UNTESTED_HEADER_FILES
 	daw_range_reference.h
 	daw_range_type.h
 	daw_reference.h
+	daw_semaphore.h
 	daw_string.h
 	daw_zipcontainer.h
 	daw_zipiter.h
