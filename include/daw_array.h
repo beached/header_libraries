@@ -22,7 +22,9 @@
 
 #pragma once
 
+#include <algorithm>
 #include <stdexcept>
+#include <utility>
 
 namespace daw {
 	template<typename T>
