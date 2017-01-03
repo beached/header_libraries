@@ -54,6 +54,7 @@ set( UNTESTED_HEADER_FILES
 	daw_exception.h
 	daw_expected.h
 	daw_fnv1a_hash.h
+	daw_locked_stack.h
 	daw_newhelper.h
 	daw_operators.h
 	daw_parallel_algorithm.h
