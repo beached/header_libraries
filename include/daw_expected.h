@@ -60,6 +60,12 @@ namespace daw {
 				m_value{ std::move( value ) }, 
 				m_exception{ } { }
 
+		expected_t & operator=( ValueType value ) noexcept {
+			m_value = std::move( value );
+			m_exception = std::exception_ptr{ };
+			return *this;
+		}
+
 		template<class ExceptionType>
 		static auto from_exception( ExceptionType const & exception ) {
 			if( typeid( exception ) != typeid( ExceptionType ) ) {
