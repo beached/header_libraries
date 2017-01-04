@@ -66,20 +66,19 @@ namespace daw {
 			return *this;
 		}
 
+		auto & from_value( ValueType value ) noexcept {
+			m_value = std::move( value );
+			m_exception = std::exception_ptr{ };
+			return *this;
+		}
+
 		template<class ExceptionType>
-		static auto from_exception( ExceptionType const & exception ) {
+		auto & from_exception( ExceptionType const & exception ) {
 			if( typeid( exception ) != typeid( ExceptionType ) ) {
 				throw std::invalid_argument( "slicing detected" );
 			}
 			return from_exception( std::make_exception_ptr( exception ) );
 		}
-
-		/*static auto from_exception( std::exception_ptr except_ptr ) {
-			expected_t result;
-			new( &result.m_exception ) std::exception_ptr( std::move( except_ptr ) );
-			return result;
-		}
-		*/
 
 		auto & from_exception( std::exception_ptr ptr ) {
 			expected_t result;
@@ -137,9 +136,9 @@ namespace daw {
 		}
 
 		template<class Function, typename... Args>
-		static auto from_code( Function func, Args&&... args ) {
+		auto from_code( Function func, Args&&... args ) {
 			try {
-				return expected_t{ func( std::forward<Args>( args )... ) };
+				return from_value( func( std::forward<Args>( args )... ) );
 			} catch( ... ) {
 				return from_exception( );
 			}
