@@ -74,10 +74,16 @@ namespace daw {
 			return from_exception( std::make_exception_ptr( exception ) );
 		}
 
-		static auto from_exception( std::exception_ptr except_ptr ) {
+		/*static auto from_exception( std::exception_ptr except_ptr ) {
 			expected_t result;
 			new( &result.m_exception ) std::exception_ptr( std::move( except_ptr ) );
 			return result;
+		}
+		*/
+
+		auto & from_exception( std::exception_ptr ptr ) {
+			new( &m_exception ) std::exception_ptr( std::move( ptr ) );
+			return *this;
 		}
 
 		static auto from_exception( ) {
