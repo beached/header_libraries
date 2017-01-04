@@ -29,6 +29,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_checked_iterator_proxy
 	daw_clumpy_sparsy
 	daw_cstring
+	daw_expected
 	daw_hash_table
 	daw_heap_value
 	daw_math
@@ -52,7 +53,6 @@ set( UNTESTED_HEADER_FILES
 	daw_bit_queues.h
 	daw_common_mixins.h
 	daw_exception.h
-	daw_expected.h
 	daw_fnv1a_hash.h
 	daw_locked_stack.h
 	daw_newhelper.h

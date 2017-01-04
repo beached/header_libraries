@@ -40,7 +40,8 @@ namespace daw {
 				using const_pointer = value_type const *;
 				using reference = value_type &;
 				using const_reference = value_type const &;
-				private:
+
+			private:
 				bool m_occupied;
 				alignas( value_type ) std::array<uint8_t, sizeof( T )> m_data;
 
@@ -77,7 +78,7 @@ namespace daw {
 					}
 				}
 
-				public:
+			public:
 				value_storage( ): 
 					m_occupied{ false }, 
 					m_data{ } {
@@ -268,6 +269,7 @@ namespace daw {
 			void reset( ) {
 				m_value.reset( );
 			}
+
 
 			template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_eq<value_type, T>::value, bool>>
 			friend constexpr bool operator==( optional const & lhs, optional<T> const & rhs ) {
