@@ -83,7 +83,7 @@ namespace daw {
 
 		auto & from_exception( std::exception_ptr ptr ) {
 			expected_t result;
-			new( &result.m_exception ) std::exception_ptr( std::move( except_ptr ) );
+			new( &result.m_exception ) std::exception_ptr{ std::move( ptr ) };
 			using std::swap;
 			swap( *this, result );
 			return *this;
