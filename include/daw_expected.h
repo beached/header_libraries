@@ -89,7 +89,7 @@ namespace daw {
 			return *this;
 		}
 
-		static auto from_exception( ) {
+		auto & from_exception( ) {
 			return from_exception( std::current_exception( ) );
 		}
 
