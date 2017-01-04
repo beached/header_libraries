@@ -113,6 +113,14 @@ namespace daw {
 			return static_cast<bool>( m_exception );
 		}
 
+		bool empty( ) const {
+			return !(static_cast<bool>( m_value ) || static_cast<bool>( m_exception ));
+		}
+
+		explicit operator bool( ) const {
+			return !empty( );
+		}
+
 		template<class Function, typename... Args>
 		static auto from_code( Function func, Args&&... args ) {
 			try {
