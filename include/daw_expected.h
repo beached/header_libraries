@@ -136,7 +136,7 @@ namespace daw {
 		}
 
 		template<class Function, typename... Args>
-		auto from_code( Function func, Args&&... args ) {
+		auto & from_code( Function func, Args&&... args ) {
 			try {
 				return from_value( func( std::forward<Args>( args )... ) );
 			} catch( ... ) {
@@ -144,6 +144,7 @@ namespace daw {
 			}
 		}
 	};	// class expected_t
+
 	static_assert( daw::traits::is_regular<expected_t<int>>::value, "expected_t isn't regular" );
 
 	template<>
@@ -242,7 +243,7 @@ namespace daw {
 		}
 
 		template<class Function, typename... Args>
-		auto from_code( Function func, Args&&... args ) {
+		auto & from_code( Function func, Args&&... args ) {
 			try {
 				return from_value( func( std::forward<Args>( args )... ) );
 			} catch( ... ) {
