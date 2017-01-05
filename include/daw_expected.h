@@ -245,7 +245,8 @@ namespace daw {
 		template<class Function, typename... Args>
 		auto & from_code( Function func, Args&&... args ) {
 			try {
-				return from_value( func( std::forward<Args>( args )... ) );
+				func( std::forward<Args>( args )... );
+				return from_value( true );
 			} catch( ... ) {
 				return from_exception( );
 			}
