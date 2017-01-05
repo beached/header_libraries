@@ -34,6 +34,7 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 	daw::expected_t<int> b{ 1 };
 	daw::expected_t<int> c{ 2 };
 	daw::expected_t<int> d{ 1 };
+	daw::expected_t<void> e;
 
 	// a & b
 	auto test_01 = !( a == b);
