@@ -61,7 +61,7 @@ namespace daw {
 				m_value{ std::move( value ) }, 
 				m_exception{ } { }
 
-		expected_t & operator=( value_t value ) = default;
+		expected_t & operator=( value_t value ) { 
 			using std::swap;
 			expected_t tmp{ std::move( value ) };
 			swap( *this, tmp );
