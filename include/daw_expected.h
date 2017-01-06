@@ -31,13 +31,15 @@
 #include "daw_exception.h"
 
 namespace daw {
-	template<class ValueType>
+	template<class T>
 	struct expected_t {
-		using value_t = ValueType;
+		using value_type = T;
+		using reference = value_type &;
+		using const_reference = value_type const &;
 
 		struct exception_tag { };
 	private:
-		daw::optional<ValueType> m_value;
+		daw::optional<value_type> m_value;
 		std::exception_ptr m_exception;
 	public:
 		//////////////////////////////////////////////////////////////////////////
@@ -57,11 +59,11 @@ namespace daw {
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////
-		expected_t( value_t value ) noexcept: 
+		expected_t( value_type value ) noexcept: 
 				m_value{ std::move( value ) }, 
 				m_exception{ } { }
 
-		expected_t & operator=( value_t value ) { 
+		expected_t & operator=( value_type value ) { 
 			using std::swap;
 			expected_t tmp{ std::move( value ) };
 			swap( *this, tmp );
@@ -86,35 +88,22 @@ namespace daw {
 		expected_t( exception_tag ):
 			expected_t{ std::current_exception( ) } { }
 
+		template<class Function, typename... Args>
+		static auto from_code( Function func, Args&&... args ) noexcept {
+			using std::swap;
+			try {
+				return expected_t{ func( std::forward<Args>( args )... ) };
+			} catch(...) {
+				return expected_t{ exception_tag{ } };
+			}
+		}
+
+		template<class Function, typename... Args, typename = std::enable_if_t<(sizeof( decltype( func( std::declval<Args>( )... ) ) ) != 0)>>
+		expected_t( Function func, Args&&... args ) noexcept:
+				expected_t{ expected_t::from_code( func, std::forward<Args>( args )... ) } { }
+
 		bool has_value( ) const noexcept {
 			return static_cast<bool>( m_value );
-		}
-
-		auto & get( ) {
-			if( has_exception( ) ) {
-				std::rethrow_exception( m_exception );
-			}
-			daw::exception::daw_throw_on_false( has_value( ) );	
-			return *m_value;
-		}
-
-		auto const & get( ) const {
-			if( has_exception( ) ) {
-				std::rethrow_exception( m_exception );
-			}
-			daw::exception::daw_throw_on_false( has_value( ) );	
-			return *m_value;
-		}
-
-		std::string get_exception_message( ) const {
-			try {
-				if( m_exception ) {
-					std::rethrow_exception( m_exception );
-				}
-			} catch( std::exception const & e ) {
-				return std::string{ e.what( ) };
-			}
-			return { }; 
 		}
 
 		bool has_exception( ) const noexcept {
@@ -122,34 +111,65 @@ namespace daw {
 		}
 
 		bool empty( ) const {
-			return !(static_cast<bool>( m_value ) || static_cast<bool>( m_exception ));
+			return !(has_value( ) || has_exception( ));
 		}
 
 		explicit operator bool( ) const {
 			return !empty( );
 		}
 
-		template<class Function, typename... Args>
-		auto & from_code( Function func, Args&&... args ) {
-			try {
-				return from_value( func( std::forward<Args>( args )... ) );
-			} catch( ... ) {
-				return from_exception( );
+		explicit operator value_type( ) const {
+			return get( );
+		}
+
+		void throw_if_exception( ) const {
+			if( has_exception( ) ) {
+				std::rethrow_exception( m_exception );
 			}
 		}
+
+		reference get( ) {
+			throw_if_exception( );
+			return *m_value;
+		}
+
+		const_reference get( ) const {
+			throw_if_exception( );
+			return *m_value;
+		}
+
+		std::string get_exception_message( ) const {
+			try {
+				throw_if_exception( );
+			} catch( std::exception const & e ) {
+				return std::string{ e.what( ) };
+			} catch(...) {
+				return { };
+			}
+			return { }; 
+		}
+
 	};	// class expected_t
 
 	static_assert( daw::traits::is_regular<expected_t<int>>::value, "expected_t isn't regular" );
 
 	template<>
-	class expected_t<void> {
+	struct expected_t<void> {
+		using value_type = void;
+
+		struct exception_tag { };
+	private:
 		bool m_value;
 		std::exception_ptr m_exception;
-	public:
-		expected_t( ) : 
-				m_value{ false }, 
-				m_exception{ } { }
 
+		expected_t( bool b ) noexcept:
+			m_value{ b },
+			m_exception{ } { }
+
+	public:
+		//////////////////////////////////////////////////////////////////////////
+		/// Summary: No value, aka null
+		//////////////////////////////////////////////////////////////////////////
 		expected_t( expected_t const & ) = default;
 		expected_t& operator=( expected_t const & ) = default;
 		expected_t( expected_t &&  ) = default;
@@ -163,65 +183,57 @@ namespace daw {
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////
-		template<typename T>
-		expected_t( T ) noexcept: 
-				m_value{ true }, 
-				m_exception{ } { }
+
+		expected_t( ) noexcept:
+			expected_t{ false } { }
 
 		template<typename T>
-		expected_t & operator=( T ) noexcept {
-			m_value = std::move( true );
-			m_exception = std::exception_ptr{ };
-			return *this;
-		}
+		expected_t( T ) noexcept:
+				expected_t{ true } { }
 
 		template<typename T>
-		auto & from_value( T ) noexcept {
-			m_value = true;
-			m_exception = std::exception_ptr{ };
-			return *this;
-		}
-
-		template<class ExceptionType>
-		auto & from_exception( ExceptionType const & exception ) {
-			if( typeid( exception ) != typeid( ExceptionType ) ) {
-				throw std::invalid_argument( "slicing detected" );
-			}
-			return from_exception( std::make_exception_ptr( exception ) );
-		}
-
-		auto & from_exception( std::exception_ptr ptr ) {
-			expected_t result;
-			new( &result.m_exception ) std::exception_ptr{ std::move( ptr ) };
+		expected_t & operator=( T ) { 
 			using std::swap;
-			swap( *this, result );
+			expected_t tmp{ true };
+			swap( *this, tmp );
 			return *this;
 		}
 
-		auto & from_exception( ) {
-			return from_exception( std::current_exception( ) );
+		expected_t( std::exception_ptr ptr ):
+			m_value{ },
+			m_exception{ std::move( ptr ) } { }
+
+		expected_t & operator=( std::exception_ptr ptr ) {
+			using std::swap;
+			expected_t tmp{ std::move( ptr ) };
+			swap( *this, tmp );
+			return *this;
 		}
+
+		template<typename ExceptionType>
+		expected_t( exception_tag, ExceptionType const & ex ):
+			expected_t{ std::make_exception_ptr( ex ) } { }
+
+		expected_t( exception_tag ):
+			expected_t{ std::current_exception( ) } { }
+
+		template<class Function, typename... Args>
+		static auto from_code( Function func, Args&&... args ) noexcept { 
+			using std::swap;
+			try {
+				func( std::forward<Args>( args )... );
+				return expected_t{ true };
+			} catch( ... ) {
+				return expected_t{ exception_tag{ } };
+			}
+		}
+
+		template<class Function, typename... Args, typename = std::enable_if_t<(sizeof( decltype( func( std::declval<Args>( )... ) ) ) != 0)>>
+		expected_t( Function func, Args&&... args ) noexcept:
+				expected_t{ expected_t::from_code( func, std::forward<Args>( args )... ) } { }
 
 		bool has_value( ) const noexcept {
 			return m_value;
-		}
-
-		void get( ) const {
-			if( has_exception( ) ) {
-				std::rethrow_exception( m_exception );
-			}
-			daw::exception::daw_throw_on_false( has_value( ) );	
-		}
-
-		std::string get_exception_message( ) const {
-			try {
-				if( m_exception ) {
-					std::rethrow_exception( m_exception );
-				}
-			} catch( std::exception const & e ) {
-				return std::string{ e.what( ) };
-			}
-			return { }; 
 		}
 
 		bool has_exception( ) const noexcept {
@@ -229,22 +241,38 @@ namespace daw {
 		}
 
 		bool empty( ) const {
-			return !m_value;
+			return !(has_value( ) || has_exception( ));
 		}
 
 		explicit operator bool( ) const {
-			return m_value;
+			return !empty( );
 		}
 
-		template<class Function, typename... Args>
-		auto & from_code( Function func, Args&&... args ) {
-			try {
-				func( std::forward<Args>( args )... );
-				return from_value( true );
-			} catch( ... ) {
-				return from_exception( );
+		explicit operator value_type( ) const {
+			get( );
+		}
+
+		void throw_if_exception( ) const {
+			if( has_exception( ) ) {
+				std::rethrow_exception( m_exception );
 			}
 		}
+
+		value_type get( ) const {
+			throw_if_exception( );
+		}
+
+		std::string get_exception_message( ) const {
+			try {
+				throw_if_exception( );
+			} catch( std::exception const & e ) {
+				return std::string{ e.what( ) };
+			} catch(...) {
+				return { };
+			}
+			return { }; 
+		}
+
 	};	// class expected_t<void>
 }	// namespace daw
 
