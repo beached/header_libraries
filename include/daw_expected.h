@@ -32,17 +32,18 @@
 
 namespace daw {
 	template<class ValueType>
-	class expected_t {
+	struct expected_t {
+		using value_t = ValueType;
+
+		struct exception_tag { };
+	private:
 		daw::optional<ValueType> m_value;
 		std::exception_ptr m_exception;
 	public:
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: No value, aka null
 		//////////////////////////////////////////////////////////////////////////
-		expected_t( ) : 
-				m_value{ }, 
-				m_exception{ } { }
-
+		expected_t( ) = default; 
 		expected_t( expected_t const & ) = default;
 		expected_t& operator=( expected_t const & ) = default;
 		expected_t( expected_t &&  ) = default;
@@ -56,41 +57,34 @@ namespace daw {
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////
-		expected_t( ValueType value ) noexcept: 
+		expected_t( value_t value ) noexcept: 
 				m_value{ std::move( value ) }, 
 				m_exception{ } { }
 
-		expected_t & operator=( ValueType value ) noexcept {
-			m_value = std::move( value );
-			m_exception = std::exception_ptr{ };
-			return *this;
-		}
-
-		auto & from_value( ValueType value ) noexcept {
-			m_value = std::move( value );
-			m_exception = std::exception_ptr{ };
-			return *this;
-		}
-
-		template<class ExceptionType>
-		auto & from_exception( ExceptionType const & exception ) {
-			if( typeid( exception ) != typeid( ExceptionType ) ) {
-				throw std::invalid_argument( "slicing detected" );
-			}
-			return from_exception( std::make_exception_ptr( exception ) );
-		}
-
-		auto & from_exception( std::exception_ptr ptr ) {
-			expected_t result;
-			new( &result.m_exception ) std::exception_ptr{ std::move( ptr ) };
+		expected_t & operator=( value_t value ) = default;
 			using std::swap;
-			swap( *this, result );
+			expected_t tmp{ std::move( value ) };
+			swap( *this, tmp );
 			return *this;
 		}
 
-		auto & from_exception( ) {
-			return from_exception( std::current_exception( ) );
+		expected_t( std::exception_ptr ptr ):
+			m_value{ },
+			m_exception{ std::move( ptr ) } { }
+
+		expected_t & operator=( std::exception_ptr ptr ) {
+			using std::swap;
+			expected_t tmp{ std::move( ptr ) };
+			swap( *this, tmp );
+			return *this;
 		}
+
+		template<typename ExceptionType>
+		expected_t( exception_tag, ExceptionType const & ex ):
+			expected_t{ std::make_exception_ptr( ex ) } { }
+
+		expected_t( exception_tag ):
+			expected_t{ std::current_exception( ) } { }
 
 		bool has_value( ) const noexcept {
 			return static_cast<bool>( m_value );
