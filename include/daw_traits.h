@@ -359,25 +359,6 @@ namespace daw {
 		template<typename T>
 			constexpr bool is_integral_v = std::is_integral<T>::value;
 
-		namespace impl {
-			template<typename F, typename...Args>
-				struct is_callable_impl {
-					template<class U> static auto test(U* p) -> decltype((*p)(std::declval<Args>()...), void(), std::true_type());
-					template<class U> static auto test(...) -> decltype(std::false_type());
-
-					static constexpr bool value = decltype(test<F>(0))::value;
-				};	// is_callable
-		}	// namespace impl
-
-		template<typename F, typename...Args>
-			using is_callable = std::integral_constant<bool, impl::is_callable_impl<F, Args...>::value>;
-
-		template<typename F, typename...Args>
-			using is_callable_t = typename is_callable<F, Args...>::type;
-
-		template<typename F, typename...Args>
-			constexpr auto is_callable_v = impl::is_callable_impl<F, Args...>::value;
-
 		template<std::size_t I, typename T, typename ...Ts>
 			struct nth_element_impl {
 				using type = typename nth_element_impl<I-1, Ts...>::type;
