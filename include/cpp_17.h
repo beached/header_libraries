@@ -26,6 +26,12 @@
 #include <tuple>
 
 namespace daw {
+	template<bool B>
+	using bool_constant = std::integral_constant<bool, B>;
+
+	template<bool B>
+	constexpr bool bool_consant_v = bool_constant<B>::value;
+
 	template<typename T>
 	constexpr bool is_function_v = std::is_function<T>::value;
 
