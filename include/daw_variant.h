@@ -211,7 +211,7 @@ namespace daw {
 			static constexpr size_t BUFFER_SIZE = daw::traits::max_sizeof_v<Type,Types...>;
 
 			template<typename T>
-			static constexpr bool const is_valid_type = daw::traits::is_one_of_v<std::remove_cv_t<T>, std::remove_cv_t<Type>, std::remove_cv_t<Types>...>;
+			static constexpr bool is_valid_type = daw::traits::is_one_of_v<std::remove_cv_t<T>, std::remove_cv_t<Type>, std::remove_cv_t<Types>...>;
 
 			private:
 			alignas(daw::traits::max_sizeof_t<Type,Types...>) std::array<uint8_t, BUFFER_SIZE> m_buffer;
