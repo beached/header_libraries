@@ -41,6 +41,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_poly_vector
 	daw_range_algorithm
 	daw_range
+	daw_safe_string
 	daw_traits
 	daw_tuple_helper
 	daw_utility
