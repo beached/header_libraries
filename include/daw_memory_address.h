@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2014-2016 Darrell Wright
+// Copyright (c) 2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to deal
@@ -20,36 +20,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <boost/test/unit_test.hpp>
-#include <iostream>
-#include "daw_memory.h"
+#pragma once
 
-#if defined(__clang__) 
-struct test3 {
-	constexpr static daw::memory<uint32_t> const reg2{ 0x1000u };
-};
-#endif
+#include<cstdint>
+
+namespace daw {
+	template<typename T, uintptr_t...>
+	struct memory_address { };
+
+	template<typename T, uintptr_t location>
+	struct memory_address<T, location> {
+		static_assert( location > 0, "nullptr is not a valid location" );
+		using value_type = T volatile;
+		private:
+		static value_type & m_value;
+		public:
+		value_type & operator( )( ) {
+			return m_value;
+		};
+
+		value_type const & operator( )( ) const {
+			return m_value;
+		}
+
+		operator value_type & ( ) {
+			return m_value;
+		}
+
+		operator value_type const &( ) const {
+			return m_value;
+		}
+	};	// memory_address<value_type, location>
+
+	template<typename T, uintptr_t location>
+	typename memory_address<T, location>::value_type & memory_address<T, location>::m_value = *((T * const)location);
 
 
-BOOST_AUTO_TEST_CASE( daw_memory_001 ) {
-#if defined(__clang__) 
-	constexpr daw::memory<uint8_t> test1( 0x00000400u );
-	constexpr daw::memory<uint8_t> test2( 0x00000800u );
-	constexpr static daw::memory<uint8_t> const reg1( 0x1000u );
-#endif
+	template<typename T, uintptr_t base, uintptr_t offset>
+	struct memory_address<T, base, offset>: public memory_address<T, (base + offset)> { };
 
-	daw::memory<uint8_t const> test3( 0x00000400u );
-	daw::memory<uint8_t> test4( 0x00000800u );
-
-	BOOST_REQUIRE( test3 < test4 );
-
-
-#if false
-	// This will probably fail on most OS's
-	for( size_t n = 0; n < 0x400; ++n ) {
-		std::cout << (int)test3[n] << " ";
-	}
-#endif
- 
 }
 
