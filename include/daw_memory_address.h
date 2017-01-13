@@ -25,39 +25,39 @@
 #include<cstdint>
 
 namespace daw {
-	template<typename T, uintptr_t...>
-	struct memory_address { };
+	namespace impl {
+		template<typename T, uintptr_t...>
+		struct memory_address_impl { };
 
-	template<typename T, uintptr_t location>
-	struct memory_address<T, location> {
-		static_assert( location > 0, "nullptr is not a valid location" );
-		using value_type = T volatile;
-		private:
-		static value_type & m_value;
-		public:
-		value_type & operator( )( ) {
-			return m_value;
-		};
+		template<typename T, uintptr_t location>
+		struct memory_address_impl<T, location> {
+			static_assert( location > 0, "nullptr is not a valid location" );
+			using value_type = T volatile;
+			private:
+			static value_type & m_value;
+			public:
+			value_type & operator( )( ) {
+				return m_value;
+			};
 
-		value_type const & operator( )( ) const {
-			return m_value;
-		}
+			value_type const & operator( )( ) const {
+				return m_value;
+			}
 
-		operator value_type & ( ) {
-			return m_value;
-		}
+			operator value_type & ( ) {
+				return m_value;
+			}
 
-		operator value_type const &( ) const {
-			return m_value;
-		}
-	};	// memory_address<value_type, location>
+			operator value_type const &( ) const {
+				return m_value;
+			}
+		};	// memory_address_impl<value_type, location>
 
-	template<typename T, uintptr_t location>
-	typename memory_address<T, location>::value_type & memory_address<T, location>::m_value = *((T * const)location);
+		template<typename T, uintptr_t location>
+		typename memory_address_impl<T, location>::value_type & memory_address_impl<T, location>::m_value = *((T * const)location);
+	}
 
-
-	template<typename T, uintptr_t base, uintptr_t offset>
-	struct memory_address<T, base, offset>: public memory_address<T, (base + offset)> { };
-
+	template<typename T, uintptr_t base, uintptr_t offset = 0>
+	using memory_address = daw::impl::memory_address_impl<T, (base + offset)>;
 }
 
