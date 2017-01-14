@@ -82,6 +82,10 @@ namespace daw {
 				return !(m_begin != m_end);
 			}
 
+			explicit operator bool( ) const {
+				return !empty( );
+			}
+
 			iterator begin( ) {
 				return m_begin;
 			}
