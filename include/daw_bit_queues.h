@@ -91,6 +91,14 @@ namespace daw {
 			return result;
 		}
 
+		value_type pop_back( size_t const bits ) noexcept {
+			queue_type const mask = static_cast<queue_type>((1 << bits) - 1);
+			auto result = m_queue & mask;
+			m_queue >>= bits;
+			m_size -= bits;
+			return result;
+		}
+
 		void clear( ) noexcept {
 			m_queue = 0;
 			m_size = 0;
