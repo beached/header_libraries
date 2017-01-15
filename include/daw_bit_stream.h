@@ -32,14 +32,14 @@
 namespace daw {
 	template<typename ForwardIteratorF, typename ForwardIteratorL>
 	class bit_stream {
-		using value_type = std::decay_t<typename std::iterator_traits<IteratorF>::value_type>;
+		using value_type = std::decay_t<typename std::iterator_traits<ForwardIteratorF>::value_type>;
 		static_assert(std::is_integral<value_type>::value, "value_type of iterator must be integral");
 
 		ForwardIteratorF m_first;
 		ForwardIteratorL m_last;
 		daw::bit_queue_gen<value_type, value_type> m_left_overs;
 	public:
-		bit_stream( IteratorF first, IteratorL last ):
+		bit_stream( ForwardIteratorF first, ForwardIteratorL last ):
 			m_first { first },
 			m_last { last },
 			m_left_overs { } { }
