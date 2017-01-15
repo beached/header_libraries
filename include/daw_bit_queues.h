@@ -32,11 +32,11 @@ namespace daw {
 	struct bit_queue_source_little_endian { };
 	struct bit_queue_source_big_endian { };
 
-	using bit_queue_native_endian = typename std::conditional<boost::endian::order::native == boost::endian::order::little, 
+	using bit_queue_source_native_endian = typename std::conditional<boost::endian::order::native == boost::endian::order::little, 
 		  bit_queue_source_little_endian, 
 		  bit_queue_source_big_endian>::type;
 
-	template<typename queue_type, typename value_type = uint8_t, typename BitQueueLSB = bit_queue_native_endian>
+	template<typename queue_type, typename value_type = uint8_t, typename BitQueueLSB = bit_queue_source_native_endian>
 	class bit_queue_gen {
 		queue_type m_queue;
 		size_t m_size;
@@ -62,20 +62,20 @@ namespace daw {
 		}
 	private:
 		template<typename T>
-		auto source_to_native_endian( T value, bit_queue_source_little_endian ) {
-			return boost::endian::little_to_native( value );
+		auto source_to_source_native_endian( T value, bit_queue_source_little_endian ) {
+			return boost::endian::little_to_source_native( value );
 		}
 
 		template<typename T>
-		auto source_to_native_endian( T value, bit_queue_source_big_endian ) {
-			return boost::endian::big_to_native( value );
+		auto source_to_source_native_endian( T value, bit_queue_source_big_endian ) {
+			return boost::endian::big_to_source_native( value );
 		}
 	public:
 		void push_back( value_type value, size_t const bits = sizeof( value_type ) * 8 ) noexcept {
 			assert( (capacity( ) - m_size >= bits) && "Not enough bits to hold value pushed" );
 			m_queue <<= bits;
 			value &= get_mask<value_type>( bits );
-			m_queue |= source_to_native_endian( value, BitQueueLSB{ } );
+			m_queue |= source_to_source_native_endian( value, BitQueueLSB{ } );
 			m_size += bits;
 		}
 

@@ -71,7 +71,7 @@ namespace daw {
 		}
 	};*/
 
-	template<typename InputIteratorF, typename InputIteratorL, typename BitQueueLSB = bit_queue_native_endian>
+	template<typename InputIteratorF, typename InputIteratorL, typename BitQueueLSB = bit_queue_source_native_endian>
 	class bit_stream {
 		using value_type = std::decay_t<typename std::iterator_traits<InputIteratorF>::value_type>;
 		static_assert(std::is_integral<value_type>::value, "value_type of iterator must be integral");
@@ -124,7 +124,7 @@ namespace daw {
 		}
 	};	// bit_stream
 
-	template<typename BitQueueLSB = bit_queue_native_endian, typename InputIteratorF, typename InputIteratorL>
+	template<typename BitQueueLSB = bit_queue_source_native_endian, typename InputIteratorF, typename InputIteratorL>
 	auto make_bit_stream( InputIteratorF first, InputIteratorL last ) {
 		return bit_stream<InputIteratorF, InputIteratorL, BitQueueLSB>{ first, last };
 	}
