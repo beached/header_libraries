@@ -75,8 +75,8 @@ namespace daw {
 			m_size = 0;
 		}
 
-		constexpr value_type pop_all( ) noexcept {
-			value_type result = static_cast<value_type>(m_queue);
+		value_type pop_all( ) noexcept {
+			auto result = static_cast<value_type>(m_queue);
 			clear( );
 			return result;
 		}
