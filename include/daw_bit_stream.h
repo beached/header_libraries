@@ -96,7 +96,7 @@ namespace daw {
 		}
 
 		value_type pop_bits( size_t num_bits = sizeof( value_type ) ) {
-			if( num_bits > sizeof( value_type ) ) {
+			if( num_bits > sizeof( value_type )*8 ) {
 				throw std::overflow_error( "Attempt to pop more bits than can fit into value" );
 			}
 			if( num_bits == 0 ) {
