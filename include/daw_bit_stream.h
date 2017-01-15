@@ -115,7 +115,7 @@ namespace daw {
 				}
 				m_left_overs.push_back( *m_first++ );
 			}
-			result |= m_left_overs.pop_right( num_bits );
+			result |= m_left_overs.pop_front( num_bits );
 			return result;
 		}
 

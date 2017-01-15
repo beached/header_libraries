@@ -56,11 +56,30 @@ namespace daw {
 			return sizeof( m_queue ) * 8;
 		}
 
+	private:
+		template<typename T>
+		static auto reverse_bits( T value, bit_queue_lsb_right ) {
+			T result = 0;
+			while( value != 0 ) {
+				result |= value & 1;
+				result <<= 1;
+				value <<= 1;
+			}
+			return result;
+		}
+
+		template<typename T>
+		static auto reverse_bits( T value, bit_queue_lsb_left ) {
+			return value;
+		}
+
+	public:
+
 		void push_back( value_type value, size_t const bits = sizeof( value_type ) * 8 ) noexcept {
 			assert( (capacity( ) - m_size >= bits) && "Not enough bits to hold value pushed" );
 			m_queue <<= bits;
 			value &= get_mask<value_type>( bits );
-			m_queue |= value;
+			m_queue |= reverse_bits( value, BitQueueLSB{ } );
 			m_size += bits;
 		}
 
@@ -81,16 +100,8 @@ namespace daw {
 			return result;
 		}
 
-		value_type pop_front( size_t const bits, bit_queue_lsb_left ) noexcept {
-			return pop_left( bits );
-		}
-
-		value_type pop_front( size_t const bits, bit_queue_lsb_right ) noexcept {
-			return pop_right( bits );
-		}
-
 		value_type pop_front( size_t const bits ) noexcept {
-			pop_front( bits, BitQueueLSB{ } );
+			return pop_left( bits );
 		}
 
 		void clear( ) noexcept {
