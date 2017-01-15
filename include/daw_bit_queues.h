@@ -58,7 +58,7 @@ namespace daw {
 
 	private:
 		template<typename T>
-		static auto reverse_bits( T value, bit_queue_lsb_right ) {
+		constexpr static auto reverse_bits( T value, bit_queue_lsb_right ) noexcept {
 			T result = 0;
 			for( size_t n=0; n<sizeof(T)*8; ++n ) {
 				result <<= 1;
@@ -69,7 +69,7 @@ namespace daw {
 		}
 
 		template<typename T>
-		static auto reverse_bits( T value, bit_queue_lsb_left ) {
+		constexpr static auto reverse_bits( T value, bit_queue_lsb_left ) noexcept {
 			return value;
 		}
 
