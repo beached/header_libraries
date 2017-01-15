@@ -75,7 +75,7 @@ namespace daw {
 			assert( (capacity( ) - m_size >= bits) && "Not enough bits to hold value pushed" );
 			m_queue <<= bits;
 			value &= get_mask<value_type>( bits );
-			m_queue |= source_to_source_native_endian( value, BitQueueLSB{ } );
+			m_queue |= source_to_native_endian( value, BitQueueLSB{ } );
 			m_size += bits;
 		}
 
