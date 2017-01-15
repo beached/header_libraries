@@ -30,16 +30,59 @@
 #include "daw_bit_queues.h"
 
 namespace daw {
-	template<typename ForwardIteratorF, typename ForwardIteratorL>
+	/*template<typename InputIteratorF, typename InputIteratorL> class bit_stream;
+
+	template<typename BitStream>
+	struct bit_stream_iterator: public std::input_iterator_tag {
+		using value_type = typename std::iterator_traits<InputIteratorF>::value_type;
+		using difference_type = typename std::iterator_traits<InputIteratorF>::difference_type;
+		using reference = typename std::iterator_traits<InputIteratorF>::reference;
+		using pointer = typename std::iterator_traits<InputIteratorF>::pointer;
+	private:
+		BitStream * m_bit_stream;
+		bool m_is_end;
+
+		bool at_end( ) const {
+			return !m_bit_stream->valid( );
+		}
+
+		template<typename InputIteratorF, typename InputIteratorL> friend class bit_stream;
+
+		bit_stream_iterator( BitStream * bit_stream, bool is_end ):
+				m_bit_stream{ bit_stream },
+				m_is_end{ is_end } { }
+	public:
+		bit_stream_iterator( BitStream & bit_stream ):
+				bit_stream_iterator{ &bit_stream, !bit_stream } { }
+
+		bool operator==( bit_stream_iterator const & rhs ) const {
+			return (std::tie( m_bit_stream, m_bit_stream->m_first, m_bit_stream->m_left_overs ) == 
+				std::tie( rhs.m_bit_stream, rhs.m_bit_stream->m_first, rhs.m_bit_stream->m_left_overs )) ||
+				(is_end || !valid)
+		}
+
+		bool operator!=( bit_stream_iterator const & rhs ) const {
+			return std::tie( m_bit_stream, m_bit_stream->m_first, m_bit_stream->m_left_overs ) !=
+				std::tie( rhs.m_bit_stream, rhs.m_bit_stream->m_first, rhs.m_bit_stream->m_left_overs );
+		}
+
+		value_type operator*( ) {
+			return m_bit
+		}
+	};*/
+
+	template<typename InputIteratorF, typename InputIteratorL>
 	class bit_stream {
-		using value_type = std::decay_t<typename std::iterator_traits<ForwardIteratorF>::value_type>;
+		using value_type = std::decay_t<typename std::iterator_traits<InputIteratorF>::value_type>;
 		static_assert(std::is_integral<value_type>::value, "value_type of iterator must be integral");
 
-		ForwardIteratorF m_first;
-		ForwardIteratorL m_last;
+		template<typename BitStream> struct bit_stream_iterator;
+
+		InputIteratorF m_first;
+		InputIteratorL m_last;
 		daw::bit_queue_gen<value_type, value_type> m_left_overs;
 	public:
-		bit_stream( ForwardIteratorF first, ForwardIteratorL last ):
+		bit_stream( InputIteratorF first, InputIteratorL last ):
 			m_first { first },
 			m_last { last },
 			m_left_overs { } { }
@@ -81,9 +124,9 @@ namespace daw {
 		}
 	};	// bit_stream
 
-	template<typename ForwardIteratorF, typename ForwardIteratorL>
-	auto make_bit_stream( ForwardIteratorF first, ForwardIteratorL last ) {
-		return bit_stream<ForwardIteratorF, ForwardIteratorL>{ first, last };
+	template<typename InputIteratorF, typename InputIteratorL>
+	auto make_bit_stream( InputIteratorF first, InputIteratorL last ) {
+		return bit_stream<InputIteratorF, InputIteratorL>{ first, last };
 	}
 }
 
