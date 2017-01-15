@@ -71,7 +71,7 @@ namespace daw {
 		}
 	};*/
 
-	template<typename InputIteratorF, typename InputIteratorL, typename BitQueueLSB = bit_queue_lsb_left>
+	template<typename InputIteratorF, typename InputIteratorL, typename BitQueueLSB = bit_queue_native_endian>
 	class bit_stream {
 		using value_type = std::decay_t<typename std::iterator_traits<InputIteratorF>::value_type>;
 		static_assert(std::is_integral<value_type>::value, "value_type of iterator must be integral");
