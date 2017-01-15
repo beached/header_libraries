@@ -61,8 +61,8 @@ namespace daw {
 		static auto reverse_bits( T value, bit_queue_lsb_right ) {
 			T result = 0;
 			for( size_t n=0; n<sizeof(T)*8; ++n ) {
-				result |= value & 1;
 				result <<= 1;
+				result |= value & 1;
 				value >>= 1;
 			}
 			return result;
