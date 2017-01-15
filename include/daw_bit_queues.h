@@ -62,13 +62,13 @@ namespace daw {
 		}
 	private:
 		template<typename T>
-		auto source_to_source_native_endian( T value, bit_queue_source_little_endian ) {
-			return boost::endian::little_to_source_native( value );
+		auto source_to_native_endian( T value, bit_queue_source_little_endian ) {
+			return boost::endian::little_to_native( value );
 		}
 
 		template<typename T>
-		auto source_to_source_native_endian( T value, bit_queue_source_big_endian ) {
-			return boost::endian::big_to_source_native( value );
+		auto source_to_native_endian( T value, bit_queue_source_big_endian ) {
+			return boost::endian::big_to_native( value );
 		}
 	public:
 		void push_back( value_type value, size_t const bits = sizeof( value_type ) * 8 ) noexcept {
