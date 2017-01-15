@@ -28,6 +28,7 @@
 #include <type_traits>
 
 #include "daw_bit_queues.h"
+#include "daw_exception.h"
 
 namespace daw {
 	/*template<typename InputIteratorF, typename InputIteratorL> class bit_stream;
@@ -96,12 +97,9 @@ namespace daw {
 		}
 
 		value_type pop_bits( size_t num_bits = sizeof( value_type ) ) {
-			if( num_bits > sizeof( value_type )*8 ) {
-				throw std::overflow_error( "Attempt to pop more bits than can fit into value" );
-			}
-			if( num_bits == 0 ) {
-				throw std::runtime_error( "Attempt to pop 0 bits" );
-			}
+			daw::exception::dbg_throw_on_true<std::overflow_error>( num_bits > sizeof( value_type )*8, "Attempt to pop more bits than can fit into value" );
+			daw::exception::dbg_throw_on_true<std::runtime_error>( num_bits == 0, "Attempt to pop 0 bits" ); 
+
 			value_type result = 0;
 
 			if( num_bits > m_left_overs.size( ) ) {
@@ -110,9 +108,8 @@ namespace daw {
 					result = m_left_overs.pop_all( );
 					result <<= num_bits;
 				}
-				if( m_first == m_last ) {
-					throw std::out_of_range( "Attempt to iterate past last item" );
-				}
+				daw::exception::dbg_throw_on_true<std::out_of_range>( m_first == m_last, "Attempt to iterate past last item" );
+
 				m_left_overs.push_back( *m_first++ );
 			}
 			result |= m_left_overs.pop_back( num_bits );

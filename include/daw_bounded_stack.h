@@ -27,6 +27,8 @@
 #include <stdexcept>
 #include <type_traits>
 
+#include "daw_exception.h"
+
 namespace daw {
 	template<typename T, size_t capacity>
 	struct bounded_stack_t {
@@ -83,16 +85,12 @@ namespace daw {
 		}
 	
 		void push_back( T value ) {
-			if( full( ) ) {
-				throw std::out_of_range( "Attempt to push_back on a full stack" );
-			}
+			daw::exception::dbg_throw_on_true<std::out_of_range>( full( ), "Attempt to push_back on a full stack" );
 			*m_head++ = std::move( value );
 		}	
 
 		const_reference back( ) const {
-			if( empty( ) ) {
-				throw std::out_of_range( "Attempt to peek an empty stack" );
-			}
+			daw::exception::dbg_throw_on_true<std::out_of_range>( empty( ), "Attempt to peek an empty stack" );
 			auto pos = m_head;
 			return *--pos; 
 		}
@@ -106,17 +104,13 @@ namespace daw {
 		}
 
 		reference back( ) {
-			if( empty( ) ) {
-				throw std::out_of_range( "Attempt to peek an empty stack" );
-			}
+			daw::exception::dbg_throw_on_true<std::out_of_range>( empty( ), "Attempt to peek an empty stack" );
 			auto pos = m_head;
 			return *--pos; 
 		}
 
 		value_type pop_back( ) {
-			if( empty( ) ) {
-				throw std::out_of_range( "Attempt to pop an empty stack" );
-			}
+			daw::exception::dbg_throw_on_true<std::out_of_range>( empty( ), "Attempt to pop an empty stack" );
 			return std::move( *--m_head ); 
 		}
 	};	// bounded_stack_t
