@@ -124,9 +124,9 @@ namespace daw {
 		}
 	};	// bit_stream
 
-	template<typename InputIteratorF, typename InputIteratorL>
+	template<typename InputIteratorF, typename InputIteratorL, typename BitQueueLSB = bit_queue_lsb_left>
 	auto make_bit_stream( InputIteratorF first, InputIteratorL last ) {
-		return bit_stream<InputIteratorF, InputIteratorL>{ first, last };
+		return bit_stream<InputIteratorF, InputIteratorL, BitQueueLSB>{ first, last };
 	}
 }
 
