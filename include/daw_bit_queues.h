@@ -34,8 +34,8 @@ namespace daw {
 		size_t m_size;
 
 	public:
-		constexpr bit_queue_gen( ) noexcept: m_queue( 0 ), m_size( 0 ) { }
-		constexpr explicit bit_queue_gen( queue_type v ) noexcept: m_queue( std::move( v ) ), m_size( sizeof( m_queue ) * 8 ) { }
+		constexpr bit_queue_gen( ) noexcept: m_queue { 0 }, m_size { 0 } { }
+		constexpr explicit bit_queue_gen( queue_type v ) noexcept: m_queue { std::move( v ) }, m_size { sizeof( m_queue ) * 8 } { }
 
 		constexpr size_t size( ) const noexcept {
 			return m_size;
@@ -84,7 +84,7 @@ namespace daw {
 		constexpr queue_type const & value( ) const noexcept {
 			return m_queue;
 		}
-	};
+	};	// bit_queue_gen
 
 	using bit_queue = bit_queue_gen<uint16_t>;
 
@@ -93,8 +93,9 @@ namespace daw {
 		bit_queue_gen<queue_type, value_type> m_queue;
 
 	public:
-		nibble_queue_gen( ): m_queue( ) { }
-		constexpr explicit nibble_queue_gen( queue_type v ): m_queue( std::move( v ) ) { }
+		constexpr nibble_queue_gen( ) noexcept: m_queue { } { }
+
+		constexpr explicit nibble_queue_gen( queue_type v ) noexcept: m_queue { std::move( v ) } { }
 
 		constexpr size_t capacity( ) const noexcept {
 			return m_queue.capacity( ) / 4;
@@ -139,7 +140,7 @@ namespace daw {
 		constexpr queue_type const & value( ) const noexcept {
 			return m_queue.value( );
 		}
-	};
+	};	// nibble_queue_gen
 
 	using nibble_queue = nibble_queue_gen<uint8_t>;
 }

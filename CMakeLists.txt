@@ -52,6 +52,7 @@ set( UNTESTED_HEADER_FILES
 	concurrent_queue.h
 	daw_bit.h
 	daw_bit_queues.h
+	daw_bit_stream.h
 	daw_common_mixins.h
 	daw_exception.h
 	daw_fnv1a_hash.h
