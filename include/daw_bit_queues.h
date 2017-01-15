@@ -28,7 +28,10 @@
 #include "daw_bit.h"
 
 namespace daw {
-	template<typename queue_type, typename value_type = uint8_t>
+	struct bit_queue_lsb_left { };
+	struct bit_queue_lsb_right { };
+
+	template<typename queue_type, typename value_type = uint8_t, typename BitQueueLSB = bit_queue_lsb_left>
 	class bit_queue_gen {
 		queue_type m_queue;
 		size_t m_size;
@@ -42,7 +45,7 @@ namespace daw {
 		}
 
 		constexpr bool can_pop( size_t const bits ) const noexcept {
-			return m_size >= bits;
+	  		return m_size >= bits;
 		}
 
 		constexpr bool empty( ) const noexcept {
@@ -61,13 +64,33 @@ namespace daw {
 			m_size += bits;
 		}
 
-		value_type pop_front( size_t const bits ) noexcept {
+		value_type pop_left( size_t const bits ) noexcept {
 			queue_type const mask_pos = static_cast<queue_type>(m_size - (bits - 1));
 			auto result = static_cast<value_type>(m_queue >> (mask_pos - 1)); // right shift so that all but the left most 6bits are gone
 			queue_type const mask = static_cast<queue_type>(~(get_mask<queue_type>( bits - 1 ) << (m_size - bits)));
 			m_queue &= mask;
 			m_size -= bits;
 			return result;
+		}
+
+		value_type pop_right( size_t const bits ) noexcept {
+			queue_type const mask = static_cast<queue_type>((2 << bits) - 1);
+			auto result = (m_queue & mask);
+			m_queue >>= bits;
+			m_size -= bits;
+			return result;
+		}
+
+		value_type pop_front( size_t const bits, bit_queue_lsb_left ) noexcept {
+			return pop_left( bits );
+		}
+
+		value_type pop_front( size_t const bits, bit_queue_lsb_right ) noexcept {
+			return pop_right( bits );
+		}
+
+		value_type pop_front( size_t const bits ) noexcept {
+			pop_front( bits, BitQueueLSB{ } );
 		}
 
 		void clear( ) noexcept {
