@@ -70,7 +70,7 @@ namespace daw {
 			return result;
 		}
 
-		constexpr void clear( ) noexcept {
+		void clear( ) noexcept {
 			m_queue = 0;
 			m_size = 0;
 		}
@@ -129,7 +129,7 @@ namespace daw {
 			return m_queue.pop_front( num_nibbles * 4 );
 		}
 
-		constexpr void clear( ) noexcept {
+		void clear( ) noexcept {
 			m_queue.clear( );
 		}
 
