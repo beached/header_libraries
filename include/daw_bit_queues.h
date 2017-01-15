@@ -53,7 +53,7 @@ namespace daw {
 			return sizeof( m_queue ) * 8;
 		}
 
-		constexpr void push_back( value_type value, size_t const bits = sizeof( value_type ) * 8 ) noexcept {
+		void push_back( value_type value, size_t const bits = sizeof( value_type ) * 8 ) noexcept {
 			assert( (capacity( ) - m_size >= bits) && "Not enough bits to hold value pushed" );
 			m_queue <<= bits;
 			value &= get_mask<value_type>( bits );
@@ -61,7 +61,7 @@ namespace daw {
 			m_size += bits;
 		}
 
-		constexpr value_type pop_front( size_t const bits ) noexcept {
+		value_type pop_front( size_t const bits ) noexcept {
 			queue_type const mask_pos = static_cast<queue_type>(m_size - (bits - 1));
 			auto result = static_cast<value_type>(m_queue >> (mask_pos - 1)); // right shift so that all but the left most 6bits are gone
 			queue_type const mask = static_cast<queue_type>(~(get_mask<queue_type>( bits - 1 ) << (m_size - bits)));
@@ -109,11 +109,11 @@ namespace daw {
 			return 0 == size( );
 		}
 
-		constexpr void push_back( value_type const &value ) noexcept {
+		void push_back( value_type const &value ) noexcept {
 			m_queue.push_back( value, 4 );
 		}
 
-		constexpr void push_back( value_type const &value, size_t const & num_nibbles ) noexcept {
+		void push_back( value_type const &value, size_t const & num_nibbles ) noexcept {
 			m_queue.push_back( value, num_nibbles * 4 );
 		}
 
@@ -133,7 +133,7 @@ namespace daw {
 			m_queue.clear( );
 		}
 
-		constexpr value_type pop_all( ) noexcept {
+		value_type pop_all( ) noexcept {
 			return m_queue.pop_all( );
 		}
 
