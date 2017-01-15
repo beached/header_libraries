@@ -22,16 +22,21 @@
 
 #pragma once
 
+#include <boost/endian/conversion.hpp>
 #include <cassert>
 #include <cstdint>
 
 #include "daw_bit.h"
 
 namespace daw {
-	struct bit_queue_lsb_left { };
-	struct bit_queue_lsb_right { };
+	struct bit_queue_source_little_endian { };
+	struct bit_queue_source_big_endian { };
 
-	template<typename queue_type, typename value_type = uint8_t, typename BitQueueLSB = bit_queue_lsb_left>
+	using bit_queue_native_endian = typename std::conditional<boost::endian::order::native == boost::endian::order::little, 
+		  bit_queue_source_little_endian, 
+		  bit_queue_source_big_endian>::type;
+
+	template<typename queue_type, typename value_type = uint8_t, typename BitQueueLSB = bit_queue_native_endian>
 	class bit_queue_gen {
 		queue_type m_queue;
 		size_t m_size;
@@ -55,31 +60,22 @@ namespace daw {
 		constexpr size_t capacity( ) const noexcept {
 			return sizeof( m_queue ) * 8;
 		}
-
 	private:
 		template<typename T>
-		constexpr static auto reverse_bits( T value, bit_queue_lsb_right ) noexcept {
-			T result = 0;
-			for( size_t n=0; n<sizeof(T)*8; ++n ) {
-				result <<= 1;
-				result |= value & 1;
-				value >>= 1;
-			}
-			return result;
+		auto source_to_native_endian( T value, bit_queue_source_little_endian ) {
+			return boost::endian::little_to_native( value );
 		}
 
 		template<typename T>
-		constexpr static auto reverse_bits( T value, bit_queue_lsb_left ) noexcept {
-			return value;
+		auto source_to_native_endian( T value, bit_queue_source_big_endian ) {
+			return boost::endian::big_to_native( value );
 		}
-
 	public:
-
 		void push_back( value_type value, size_t const bits = sizeof( value_type ) * 8 ) noexcept {
 			assert( (capacity( ) - m_size >= bits) && "Not enough bits to hold value pushed" );
 			m_queue <<= bits;
 			value &= get_mask<value_type>( bits );
-			m_queue |= reverse_bits( value, BitQueueLSB{ } );
+			m_queue |= source_to_native_endian( value, BitQueueLSB{ } );
 			m_size += bits;
 		}
 
