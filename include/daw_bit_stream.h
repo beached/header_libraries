@@ -71,7 +71,7 @@ namespace daw {
 		}
 	};*/
 
-	template<typename InputIteratorF, typename InputIteratorL>
+	template<typename InputIteratorF, typename InputIteratorL, typename BitQueueLSB = bit_queue_lsb_left>
 	class bit_stream {
 		using value_type = std::decay_t<typename std::iterator_traits<InputIteratorF>::value_type>;
 		static_assert(std::is_integral<value_type>::value, "value_type of iterator must be integral");
@@ -80,7 +80,7 @@ namespace daw {
 
 		InputIteratorF m_first;
 		InputIteratorL m_last;
-		daw::bit_queue_gen<value_type, value_type> m_left_overs;
+		daw::bit_queue_gen<value_type, value_type, BitQueueLSB> m_left_overs;
 	public:
 		bit_stream( InputIteratorF first, InputIteratorL last ):
 			m_first { first },
@@ -115,7 +115,7 @@ namespace daw {
 				}
 				m_left_overs.push_back( *m_first++ );
 			}
-			result |= m_left_overs.pop_front( num_bits );
+			result |= m_left_overs.pop_right( num_bits );
 			return result;
 		}
 
