@@ -23,7 +23,7 @@
 #pragma once
 
 #include <cstdint>
-#include <iterator_traits>
+#include <iterator>
 #include <stdexcept>
 #include <type_traits>
 
