@@ -76,5 +76,10 @@ namespace daw {
 			return result;
 		}
 	};	// bit_stream
+
+	template<typename ForwardIteratorF, typename ForwardIteratorL>
+	auto make_bit_stream( ForwardIteratorF first, ForwardIteratorL last ) {
+		return bit_stream<ForwardIteratorF, ForwardIteratorL>{ first, last };
+	}
 }
 
