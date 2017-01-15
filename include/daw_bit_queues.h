@@ -83,25 +83,12 @@ namespace daw {
 			m_size += bits;
 		}
 
-		value_type pop_left( size_t const bits ) noexcept {
-			queue_type const mask_pos = static_cast<queue_type>(m_size - (bits - 1));
-			auto result = static_cast<value_type>(m_queue >> (mask_pos - 1)); // right shift so that all but the left most 6bits are gone
-			queue_type const mask = static_cast<queue_type>(~(get_mask<queue_type>( bits - 1 ) << (m_size - bits)));
-			m_queue &= mask;
-			m_size -= bits;
-			return result;
-		}
-
-		value_type pop_right( size_t const bits ) noexcept {
-			queue_type const mask = static_cast<queue_type>((2 << bits) - 1);
-			auto result = (m_queue & mask);
-			m_queue >>= bits;
-			m_size -= bits;
-			return result;
-		}
-
 		value_type pop_front( size_t const bits ) noexcept {
-			return pop_left( bits );
+			queue_type const mask = static_cast<queue_type>(~((2 << bits) - 1));
+			auto result = (m_queue & mask) >> (capacity( ) - bits);
+			queue <<= bits;
+			m_size -= bits;
+			return result;
 		}
 
 		void clear( ) noexcept {
