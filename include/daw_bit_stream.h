@@ -75,6 +75,10 @@ namespace daw {
 			result |= m_left_overs.pop_front( num_bits );
 			return result;
 		}
+
+		void clear_left_overs( ) noexcept {
+			m_left_overs.clear( );
+		}
 	};	// bit_stream
 
 	template<typename ForwardIteratorF, typename ForwardIteratorL>
