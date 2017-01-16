@@ -23,10 +23,10 @@
 #pragma once
 
 #include <boost/endian/conversion.hpp>
-#include <cassert>
 #include <cstdint>
 
 #include "daw_bit.h"
+#include "daw_exception.h"
 
 namespace daw {
 	struct bit_queue_source_little_endian { };
@@ -72,9 +72,10 @@ namespace daw {
 		}
 	public:
 		void push_back( value_type value, size_t const bits = sizeof( value_type ) * 8 ) noexcept {
-			assert( (capacity( ) - m_size >= bits) && "Not enough bits to hold value pushed" );
+			daw::exception::dbg_throw_on_false( (capacity( ) - m_size) >= bits, "Not enough bits to hold value pushed" );
+
+			value &= get_left_mask<value_type>( sizeof(value_type)*8 - bits );
 			m_queue <<= bits;
-			value &= get_mask<value_type>( bits );
 			m_queue |= source_to_native_endian( value, BitQueueLSB{ } );
 			m_size += bits;
 		}
@@ -88,8 +89,10 @@ namespace daw {
 		}
 
 		value_type pop_back( size_t const bits ) noexcept {
-			queue_type const mask = static_cast<queue_type>((1 << bits) - 1);
-			auto result = m_queue & mask;
+			daw::exception::dbg_throw_on_false( m_size >= bits, "Not enough bits to pop request" );
+
+			auto const mask = get_left_mask<queue_type>( capacity( ) - bits );
+			auto result = static_cast<value_type>(m_queue & mask);
 			m_queue >>= bits;
 			m_size -= bits;
 			return result;

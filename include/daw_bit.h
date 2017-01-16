@@ -24,11 +24,14 @@
 
 namespace daw {
 	template<typename T>
-	T get_mask( size_t const & right_zero_bits ) {
-		T result = 0;
-		result |= (1 << right_zero_bits);     // set bit
-		result |= (result - 1);
-		return result;
+	constexpr T get_left_mask( size_t left_zero_bits ) noexcept {
+		constexpr auto const N = sizeof(T)*8;
+		return (1 << (N - left_zero_bits)) - 1;
+	}
+
+	template<typename T>
+	constexpr T get_right_mask( size_t right_zero_bits ) noexcept {
+		return ~get_left_mask<T>( right_zero_bits );
 	}
 }
 

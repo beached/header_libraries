@@ -21,10 +21,11 @@
 // SOFTWARE.
 
 #include <boost/test/unit_test.hpp>
-#include <iostream>
+#include <limits>
+
 #include "daw_bit_queues.h"
 
-BOOST_AUTO_TEST_CASE( daw_bit_queues_testing ) {
+BOOST_AUTO_TEST_CASE( daw_bit_queues_test_001 ) {
 	using value_type = uint16_t;
 	daw::bit_queue_gen<value_type, value_type> test1;
 	test1.push_back( 1, 1 );
@@ -40,7 +41,8 @@ BOOST_AUTO_TEST_CASE( daw_bit_queues_testing ) {
 		test2.push_back( 2 );
 		BOOST_REQUIRE( test2.value( ) == 2 );
 		BOOST_REQUIRE( test2.size( ) == sizeof(value_type)*8 );
-		BOOST_REQUIRE( test2.pop_back( 1 ) == 0 );
+		auto result = test2.pop_back( 1 );
+		BOOST_REQUIRE( result == 0 );
 	}
 
 	uint16_t v = 1;
@@ -75,4 +77,20 @@ BOOST_AUTO_TEST_CASE( daw_bit_queues_testing ) {
 	}
 	BOOST_REQUIRE( test1.size( ) == 0 );
 	BOOST_REQUIRE( test1.empty( ) );
+}
+
+BOOST_AUTO_TEST_CASE( daw_bit_queues_test_002 ) {
+	using value_type = uint8_t;
+	daw::bit_queue_gen<value_type, value_type> test1;
+	test1.push_back( std::numeric_limits<value_type>::max( ) );
+	BOOST_REQUIRE( test1.pop_back( 3 ) == 7 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_bit_queues_test_003 ) {
+	using value_type = uint16_t;
+	daw::bit_queue_gen<value_type, value_type> test1;
+	test1.push_back( 37, 4 );	
+	BOOST_REQUIRE( test1.value( ) == 5 );
+	test1.pop_back( 1 );
+	BOOST_REQUIRE( test1.value( ) == 2 );
 }
