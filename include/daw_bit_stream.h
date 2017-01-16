@@ -136,6 +136,21 @@ namespace daw {
 		return result;
 	}
 
+	template<typename BitStream>
+	void skip_bits( BitStream & bs, size_t bits_needed ) {
+		using value_type = typename BitStream::value_type;
+
+		while( bits_needed >= sizeof( value_type ) ) {
+			bs.pop_bits( );
+			bits_needed -= sizeof( value_type )*8;
+		}
+	}
+
+	template<typename BitStream>
+	void skip_bytes( BitStream & bs, size_t bytes_needed ) {
+		skip_bits( bs, bytes_needed*8 ); 
+	}
+
 	template<typename BitStream, typename TestValue>
 	void skip_until( BitStream & bs, TestValue const & v, size_t bit_count ) {
 		daw::exception::dbg_throw_on_true( bit_count > sizeof( TestValue )*8, "Attempt to use more bits than can be put into TestValue" );
