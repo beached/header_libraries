@@ -96,7 +96,7 @@ namespace daw {
 			return valid( );
 		}
 
-		value_type pop_bits( size_t num_bits = sizeof( value_type ) ) {
+		value_type pop_bits( size_t num_bits = sizeof( value_type )*8 ) {
 			daw::exception::dbg_throw_on_true<std::overflow_error>( num_bits > sizeof( value_type )*8, "Attempt to pop more bits than can fit into value" );
 			daw::exception::dbg_throw_on_true<std::runtime_error>( num_bits == 0, "Attempt to pop 0 bits" ); 
 
@@ -126,13 +126,15 @@ namespace daw {
 		using value_type = typename BitStream::value_type;
 		auto bits_needed = sizeof(T)*8;
 		T result = 0;
-		while( bits_needed >= sizeof( value_type ) ) {
+		while( bits_needed >= sizeof( value_type )*8 ) {
 			result <<= sizeof( value_type )*8;
 			result |= bs.pop_bits( );
 			bits_needed -= sizeof( value_type )*8;
 		}
-		result <<= bits_needed;
-		result |= bs.pop_bits( bits_needed );
+		if( bits_needed > 0 ) {
+			result <<= bits_needed;
+			result |= bs.pop_bits( bits_needed );
+		}
 		return result;
 	}
 
@@ -140,7 +142,7 @@ namespace daw {
 	void skip_bits( BitStream & bs, size_t bits_needed ) {
 		using value_type = typename BitStream::value_type;
 
-		while( bits_needed >= sizeof( value_type ) ) {
+		while( bits_needed >= sizeof( value_type )*8 ) {
 			bs.pop_bits( );
 			bits_needed -= sizeof( value_type )*8;
 		}
