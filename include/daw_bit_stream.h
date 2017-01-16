@@ -73,12 +73,12 @@ namespace daw {
 	};*/
 
 	template<typename InputIteratorF, typename InputIteratorL, typename BitQueueLSB = bit_queue_source_native_endian>
-	class bit_stream {
+	struct bit_stream {
 		using value_type = std::decay_t<typename std::iterator_traits<InputIteratorF>::value_type>;
 		static_assert(std::is_integral<value_type>::value, "value_type of iterator must be integral");
 
-		template<typename BitStream> struct bit_stream_iterator;
-
+	private:
+		//template<typename BitStream> struct bit_stream_iterator;
 		InputIteratorF m_first;
 		InputIteratorL m_last;
 		daw::bit_queue_gen<value_type, value_type, BitQueueLSB> m_left_overs;
@@ -116,24 +116,25 @@ namespace daw {
 			return result;
 		}
 
-		template<typename T>
-		auto pop_value( ) {
-			auto bits_needed = sizeof(T)*8;
-			T result = 0;
-			while( bits_needed >= sizeof(value_type ) ) {
-				result <<= sizeof( value_type )*8;
-				result |= pop_bits( );
-				bits_needed -= sizeof( value_type )*8;
-			}
-			result <<= bits_needed;
-			result |= pop_bits( bits_needed );
-			return result;
-		}
-
 		void clear_left_overs( ) noexcept {
 			m_left_overs.clear( );
 		}
 	};	// bit_stream
+
+	template<typename T, typename BitStream>
+	auto pop_value( BitStream & bs ) {
+		using value_type = typename BitStream::value_type;
+		auto bits_needed = sizeof(T)*8;
+		T result = 0;
+		while( bits_needed >= sizeof( value_type ) ) {
+			result <<= sizeof( value_type )*8;
+			result |= bs.pop_bits( );
+			bits_needed -= sizeof( value_type )*8;
+		}
+		result <<= bits_needed;
+		result |= bs.pop_bits( bits_needed );
+		return result;
+	}
 
 	template<typename BitQueueLSB = bit_queue_source_native_endian, typename InputIteratorF, typename InputIteratorL>
 	auto make_bit_stream( InputIteratorF first, InputIteratorL last ) {
