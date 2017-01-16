@@ -122,9 +122,10 @@ namespace daw {
 	};	// bit_stream
 
 	template<typename T, typename BitStream>
-	auto pop_value( BitStream & bs ) {
+	auto pop_value( BitStream & bs, size_t bits_needed ) {
+		daw::exception::dbg_throw_on_true( bits_needed <= sizeof(T)*8, "Attempt to extra more bits than can fit" );
+
 		using value_type = typename BitStream::value_type;
-		auto bits_needed = sizeof(T)*8;
 		T result = 0;
 		while( bits_needed >= sizeof( value_type )*8 ) {
 			result <<= sizeof( value_type )*8;
@@ -137,6 +138,12 @@ namespace daw {
 		}
 		return result;
 	}
+
+	template<typename T, typename BitStream>
+	auto pop_value( BitStream & bs ) {
+		return pop_value<T>( bs, sizeof(T)*8 );
+	}
+
 
 	template<typename BitStream>
 	void skip_bits( BitStream & bs, size_t bits_needed ) {
