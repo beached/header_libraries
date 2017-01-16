@@ -116,6 +116,20 @@ namespace daw {
 			return result;
 		}
 
+		template<typename T>
+		auto pop_value( ) {
+			auto bits_needed = sizeof(T)*8;
+			T result = 0;
+			while( bits_needed >= sizeof(value_type ) ) {
+				result <<= sizeof( value_type )*8;
+				result |= pop_bits( );
+				bits_needed -= sizeof( value_type )*8;
+			}
+			result <<= bits_needed;
+			result |= pop_bits( bits_needed );
+			return result;
+		}
+
 		void clear_left_overs( ) noexcept {
 			m_left_overs.clear( );
 		}
