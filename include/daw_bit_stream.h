@@ -136,6 +136,27 @@ namespace daw {
 		return result;
 	}
 
+	template<typename BitStream, typename TestValue>
+	void skip_until( BitStream & bs, TestValue const & v, size_t bit_count ) {
+		daw::exception::dbg_throw_on_true( bit_count > sizeof( TestValue )*8, "Attempt to use more bits than can be put into TestValue" );
+		daw::exception::dbg_throw_on_true( bit_count < 1, "Attempt to pop less than 1 bits" );
+		
+		auto cur_val = pop_value<TestValue>( bs );
+		while( bs && cur_val != v ) {
+			cur_val = pop_value<TestValue>( bs );
+		}
+		daw::exception::dbg_throw_on_true( cur_val != v, "Not enough data in stream" );
+	}
+
+	template<typename BitStream, typename TestValue>
+	void skip_until( BitStream & bs, TestValue const & v ) {
+		auto cur_val = bs.pop_bits( );
+		while( bs && cur_val != v ) {
+			cur_val = bs.pop_bits( );
+		}
+		daw::exception::dbg_throw_on_true( cur_val != v, "Not enough data in stream" );
+	}
+
 	template<typename BitQueueLSB = bit_queue_source_native_endian, typename InputIteratorF, typename InputIteratorL>
 	auto make_bit_stream( InputIteratorF first, InputIteratorL last ) {
 		return bit_stream<InputIteratorF, InputIteratorL, BitQueueLSB>{ first, last };
