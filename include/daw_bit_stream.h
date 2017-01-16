@@ -123,7 +123,7 @@ namespace daw {
 
 	template<typename T, typename BitStream>
 	auto pop_value( BitStream & bs, size_t bits_needed ) {
-		daw::exception::dbg_throw_on_true( bits_needed <= sizeof(T)*8, "Attempt to extra more bits than can fit" );
+		daw::exception::dbg_throw_on_false( bits_needed <= sizeof(T)*8, "Attempt to extra more bits than can fit" );
 
 		using value_type = typename BitStream::value_type;
 		T result = 0;
