@@ -25,7 +25,7 @@
 namespace daw {
 	template<typename T>
 	constexpr T get_left_mask( size_t left_zero_bits ) noexcept {
-		constexpr auto const N = sizeof(T)*8;
+		auto const N = sizeof(T)*8;
 		return (1 << (N - left_zero_bits)) - 1;
 	}
 
