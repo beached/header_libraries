@@ -25,6 +25,11 @@
 
 #include "daw_read_only.h"
 
+struct A {
+	void b( ) { };
+	void c( ) const { };
+};
+
 BOOST_AUTO_TEST_CASE( daw_read_only_test_01 ) {
 	std::cout << "sizeof( size_t ) -> " << sizeof( size_t );
 	std::cout << " sizeof( int ) -> " << sizeof( int );
@@ -35,6 +40,9 @@ BOOST_AUTO_TEST_CASE( daw_read_only_test_01 ) {
 	daw::read_only<int> c{ 2 };
 	daw::read_only<int> d{ 1 };
 	daw::read_only<int> e = 5;
+
+	daw::read_only<A> x{ };
+	x->c( );
 
 	int f = e;
 	// a & b

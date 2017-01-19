@@ -31,6 +31,7 @@ namespace daw {
 		using value_type = std::decay_t<T>;
 		using reference = value_type &;
 		using const_reference = value_type const &;
+		using const_pointer = value_type const *;
 	private:
 		value_type m_value;
 	public:
@@ -53,6 +54,10 @@ namespace daw {
 
 		reference read_write( ) {
 			return m_value;
+		}
+
+		const_pointer operator->( ) const {
+			return &m_value;
 		}
 
 		value_type move_out( ) {

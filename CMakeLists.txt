@@ -42,6 +42,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_poly_vector
 	daw_range_algorithm
 	daw_range
+	daw_read_only
 	daw_safe_string
 	daw_traits
 	daw_tuple_helper
@@ -66,7 +67,6 @@ set( UNTESTED_HEADER_FILES
 	daw_range_operators.h
 	daw_range_reference.h
 	daw_range_type.h
-	daw_read_only.h
 	daw_reference.h
 	daw_semaphore.h
 	daw_string.h
