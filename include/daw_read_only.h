@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016 Darrell Wright
+// Copyright (c) 2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to deal
@@ -22,15 +22,47 @@
 
 #pragma once
 
+#include <type_traits>
+#include <utility>
+
 namespace daw {
 	template<typename T>
-	constexpr T get_left_mask( size_t left_zero_bits ) noexcept {
-		return (1u << ((sizeof( T ) * 8) - left_zero_bits)) - 1;
-	}
+	struct read_only {
+		using value_type = std::decay_t<T>;
+		using reference = value_type &;
+		using const_reference = value_type const &;
+		using const_pointer = value_type const *;
+	private:
+		value_type m_value;
+	public:
+		read_only( value_type value = value_type { } ):
+			m_value { std::move( value ) } { }
 
-	template<typename T>
-	constexpr T get_right_mask( size_t right_zero_bits ) noexcept {
-		return ~get_left_mask<T>( right_zero_bits );
-	}
-}
+		read_only( read_only const & ) = default;
+		read_only( read_only && ) = default;
+		read_only & operator=( read_only const & ) = delete;
+		read_only & operator=( read_only && ) = delete;
+		~read_only( ) = default;
 
+		operator const_reference( ) const {
+			return m_value;
+		}
+
+		const_reference get( ) const {
+			return m_value;
+		}
+
+		reference read_write( ) {
+			return m_value;
+		}
+
+		const_pointer operator->( ) const {
+			return &m_value;
+		}
+
+		value_type move_out( ) {
+			return std::move( m_value );
+		}
+	};	// read_only
+
+}	// namespace daw
