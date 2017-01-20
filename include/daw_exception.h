@@ -278,5 +278,20 @@ namespace daw {
 				daw_throw<ExceptionType>( daw::string::fmt( format, arg, args... ) );
 			}
 		}
+
+		template<typename ExceptionType = AssertException, typename Predicate typename StringType, typename Container>
+		void assert_all_false( Container const & container, StringType && assert_message, Predicate predicate ) {
+			if( std::find_if( std::begin( container ), std::end( container ), predicate ) != std::end( container ) ) {
+				daw_throw<ExceptionType>( std::forward<StringType>( assert_message ) );
+			}
+		}
+
+		template<typename ExceptionType = AssertException, typename Predicate typename StringType, typename Container>
+		void assert_all_true( Container const & container, StringType && assert_message, Predicate predicate ) {
+			assert_all_false( container, std::forward<StringType>( assert_message ), [predicate]( auto const & v ) {
+				return !predicate( v );
+			} );
+		}
+
 	}	// namespace exception
 }	// namespace daw
