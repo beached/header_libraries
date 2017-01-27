@@ -22,8 +22,20 @@
 
 #include <boost/test/unit_test.hpp>
 #include <iostream>
+#include <stdexcept>
 
 #include "daw_expected.h"
+
+daw::expected_t<int> divide( int v ) {
+	try {
+		if( 0 == v ) {
+			throw std::runtime_error( "division by zero" );
+		}
+		return 4/v;
+	} catch(...) {
+		return std::current_exception( );
+	}
+}
 
 BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 	std::cout << "sizeof( size_t ) -> " << sizeof( size_t );
@@ -42,9 +54,19 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 	daw::expected_t<void> g{ []( int ) { std::cout << "Hello\n"; }, 5 };
 		//daw::expected_t<int> h{ []( int x ) { std::cout << "Hello\n"; return x*x; }, 5 };
 
+	auto h = divide( 0 );
+	auto i = divide( 2 );
+	BOOST_REQUIRE( h.has_exception( ) );
+	BOOST_REQUIRE( !h.has_value( ) );
+	BOOST_REQUIRE( !i.has_exception( ) );
+	BOOST_REQUIRE( i.has_value( ) );
 	// a & b
 	auto test_01 = !( a == b);
 	auto test_02 = !( b == a);
+
+	daw::expected_t<int> j { &divide, 0 };
+	BOOST_REQUIRE( j.has_exception( ) );
+	BOOST_REQUIRE( !j.has_value( ) );
 
 	BOOST_REQUIRE( test_01 );
 	BOOST_REQUIRE( test_02 );
