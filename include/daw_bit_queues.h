@@ -38,6 +38,7 @@ namespace daw {
 
 	template<typename queue_type, typename value_type = uint8_t, typename BitQueueLSB = bit_queue_source_native_endian>
 	class bit_queue_gen {
+		static_assert( std::numeric_limits<queue_type>::is_integer && !std::numeric_limits<queue_type>::is_signed, "Only unsigned integral types are supported" );
 		queue_type m_queue;
 		size_t m_size;
 
