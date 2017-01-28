@@ -77,7 +77,16 @@ namespace daw {
 						new(raw_ptr( )) value_type{ std::move( value ) };
 					}
 				}
-
+	
+				template<typename... Args>
+				void create( Args&&... args ) {
+					if( m_occupied ) {
+						reset( );
+					} else {
+						m_occupied = true;
+						new(raw_ptr( )) value_type{ std::forward<Args>( args )... };
+					}
+				}
 			public:
 				value_storage( ): 
 					m_occupied{ false }, 
@@ -86,6 +95,11 @@ namespace daw {
 						std::fill( m_data.begin( ), m_data.end( ), static_cast<uint8_t>(0) );		
 					}
 
+				template<typename... Args>
+				void emplace( Args&&... args ) {
+					create( std::forward<Args>(args)... );
+				}
+					
 				value_storage( value_type value ):
 					m_occupied{ true }, 
 					m_data{ } { 
