@@ -94,3 +94,26 @@ BOOST_AUTO_TEST_CASE( daw_bit_queues_test_003 ) {
 	test1.pop_back( 1 );
 	BOOST_REQUIRE( test1.value( ) == 2 );
 }
+
+BOOST_AUTO_TEST_CASE( daw_nibble_queue_test_001 ) {
+	using value_type = uint32_t;
+	
+	auto const nibble_to_hex = []( uint8_t c ) {
+		if( c < 10 ) {
+			return '0' + c;
+		} else if( c < 16 ) {
+			return 'a' + (c-10);
+		} else {
+			throw std::runtime_error( "Invalid nibble" );
+		}
+	};
+
+	for( uint32_t n = 0; n<32; ++n ) {
+		daw::nibble_queue_gen<value_type, uint8_t> test1{ (1u<<n) };
+		std::string str;
+		while( test1.can_pop( 1 ) ) {
+			str.push_back( nibble_to_hex( test1.pop_front( 1 ) ) );
+		}
+		std::cout << str << std::endl;
+	}
+}
