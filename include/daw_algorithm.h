@@ -280,17 +280,6 @@ namespace daw {
 			return first_out;
 		}
 
-		template<typename InputIteratorFirst, typename InputIteratorLast, typename OutputIterator, typename Predicate, typename TransformFunction>
-		auto transform_if( InputIteratorFirst first, InputIteratorLast const last, OutputIterator out_it, Predicate pred, TransformFunction trans ) {
-			while( first != last ) {
-				if( pred( *first ) ) {
-					*out_it = trans( *first );
-				}
-				++first;
-			}
-			return out_it;
-		}
-
 		struct enum_class_hash {
 			template<typename T>
 			size_t operator( )( T value ) {
@@ -543,6 +532,19 @@ namespace daw {
 			}
 			throw std::logic_error( "This case should have been handled within the loop" );
 		}
+
+		template<typename InputIteratorFirst, typename InputIteratorLast, typename OutputIterator, typename Predicate, typename TransformFunction>
+		auto transform_if( InputIteratorFirst first, InputIteratorLast const last, OutputIterator out_it, Predicate pred, TransformFunction trans ) {
+			while( first != last ) {
+				if( pred( *first ) ) {
+					*out_it = trans( *first );
+				}
+				++first;
+			}
+			return out_it;
+		}
+
+
 	}	// namespace algorithm
 }	// namespace daw
 
