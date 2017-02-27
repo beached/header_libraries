@@ -48,6 +48,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_tuple_helper
 	daw_utility
 	daw_variant
+	not_null
  )
 
 set( UNTESTED_HEADER_FILES
