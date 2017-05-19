@@ -447,8 +447,8 @@ namespace daw {
 			return !std::is_same<decayed_t, U>::value && !std::is_base_of<U, decayed_t>::value;
 		}
 
-		template<typename... Args>
-		using make_fp = std::add_pointer_t<Args...>;
+		template<typename T>
+		using make_fp = std::add_pointer_t<T>;
 	}	// namespace traits
 }	// namespace daw
 
