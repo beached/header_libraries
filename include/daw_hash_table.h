@@ -281,7 +281,7 @@ namespace daw {
 		using const_reference = value_type const &;
 		using iterator = hash_table_item_iterator<value_type>;
 		using const_iterator = hash_table_item_iterator<value_type const>;
-		private:
+	private:
 		using values_type = daw::array<impl::hash_table_item<value_type>>;
 		using priv_iterator = typename values_type::iterator;
 		values_type m_values;
