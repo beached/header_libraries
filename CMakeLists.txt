@@ -32,7 +32,6 @@ set( TESTED_HEADERS_PREFIXES
 	daw_cstring
 	daw_expected
 	daw_hash_table
-	daw_hash_table2
 	daw_heap_value
 	daw_math
 	daw_memory_address
