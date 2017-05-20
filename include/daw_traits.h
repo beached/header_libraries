@@ -203,7 +203,7 @@ namespace daw {
 		using is_one_of_t = typename is_one_of<T, Types...>::type;
 
 		template<typename T, typename... Types>
-		inline constexpr bool is_one_of_v = is_one_of<T, Types...>::value;
+		constexpr bool is_one_of_v = is_one_of<T, Types...>::value;
 
 		namespace details {
 			template<typename> struct type_sink { typedef void type; }; // consumes a type, and makes it `void`
