@@ -14,18 +14,16 @@
 namespace daw {
 	template<typename Data>
 	class concurrent_queue {
-	private:
+	  private:
 		std::queue<Data> m_queue;
 		mutable std::mutex m_mutex;
 		std::condition_variable m_condition;
 		std::atomic<bool> m_forced_exit;
-	public:
-		concurrent_queue( ) :
-			m_queue( ),
-			m_condition( ),
-			m_forced_exit( false ) { }
 
-		void push( Data const & data ) {
+	  public:
+		concurrent_queue( ) : m_queue( ), m_condition( ), m_forced_exit( false ) {}
+
+		void push( Data const &data ) {
 			std::unique_lock<std::mutex> lock( m_mutex );
 			m_queue.push( data );
 			lock.unlock( );
@@ -37,7 +35,7 @@ namespace daw {
 			return m_queue.empty( );
 		}
 
-		bool try_pop( Data& popped_value ) {
+		bool try_pop( Data &popped_value ) {
 			std::unique_lock<std::mutex> lock( m_mutex );
 			if( m_queue.empty( ) ) {
 				return false;
@@ -48,7 +46,7 @@ namespace daw {
 			return true;
 		}
 
-		void wait_and_pop( Data& popped_value ) {
+		void wait_and_pop( Data &popped_value ) {
 			std::unique_lock<std::mutex> lock( m_mutex );
 			while( m_queue.empty( ) ) {
 				m_condition.wait( lock );
@@ -69,5 +67,5 @@ namespace daw {
 			m_forced_exit = true;
 			m_condition.notify_all( );
 		}
-	};	// class concurrent_queue
-}	// namespace daw
+	}; // class concurrent_queue
+} // namespace daw

@@ -31,22 +31,15 @@
 
 #include "daw_math.h"
 
-
 void show( std::string value ) {
 	const auto width = std::numeric_limits<double>::digits10;
-	std::cout << std::setiosflags( std::ios::fixed )
-		<< std::setw( width + 2 )
-		<< std::left
-		<< value << " ";
+	std::cout << std::setiosflags( std::ios::fixed ) << std::setw( width + 2 ) << std::left << value << " ";
 }
 
 void show( double value ) {
 	const auto width = std::numeric_limits<double>::digits10;
 	std::cout << " ";
-	std::cout << std::setiosflags( std::ios::fixed )
-		<< std::setprecision( width )
-		<< std::right
-		<< value;
+	std::cout << std::setiosflags( std::ios::fixed ) << std::setprecision( width ) << std::right << value;
 }
 
 BOOST_AUTO_TEST_CASE( daw_math_factorial ) {
@@ -55,4 +48,3 @@ BOOST_AUTO_TEST_CASE( daw_math_factorial ) {
 	std::cout << "factorial( 0 ) = " << daw::math::factorial( 0 ) << "\n";
 	BOOST_REQUIRE_MESSAGE( daw::math::factorial( 0 ) == 1, "2. factorial of 0 should return 1" );
 }
-

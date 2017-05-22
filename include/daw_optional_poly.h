@@ -39,70 +39,73 @@ namespace daw {
 		using const_reference = value_type const &;
 		using pointer = value_type *;
 		using pointer_const = value_type const *;
-	private:
+
+	  private:
 		std::unique_ptr<value_type> m_value;
 
-	
-		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
-		static T * make_copy( T * ptr ) {
+		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
+		                                                 std::is_same<value_type, T>::value>>
+		static T *make_copy( T *ptr ) {
 			using v_t = std::remove_cv_t<std::remove_reference_t<T>>;
-			return new v_t{ *ptr };
+			return new v_t{*ptr};
 		}
 
-	public:
-		template<typename T> friend struct optional_poly;
+	  public:
+		template<typename T>
+		friend struct optional_poly;
 
-		optional_poly( ):
-				m_value{ } { }
+		optional_poly( ) : m_value{} {}
 
 		template<typename... Args>
-		void emplace( Args&&... args ) {
-			m_value.reset( new value_type{ std::forward<Args>( args )... } );
+		void emplace( Args &&... args ) {
+			m_value.reset( new value_type{std::forward<Args>( args )...} );
 		}
 
-		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
-		optional_poly( T && value ):
-				m_value{ new std::remove_cv_t<std::remove_reference_t<T>>( std::forward<T>( value ) ) } { }
+		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
+		                                                 std::is_same<value_type, T>::value>>
+		optional_poly( T &&value )
+		    : m_value{new std::remove_cv_t<std::remove_reference_t<T>>( std::forward<T>( value ) )} {}
 
-		optional_poly( optional_poly const & other ):
-				m_value{ make_copy( other.m_value.get( ) ) } { }
+		optional_poly( optional_poly const &other ) : m_value{make_copy( other.m_value.get( ) )} {}
 
-		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
-		optional_poly( optional_poly<T> const & other ):
-				m_value{ make_copy( other.m_value.get( ) ) } { }
+		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
+		                                                 std::is_same<value_type, T>::value>>
+		optional_poly( optional_poly<T> const &other ) : m_value{make_copy( other.m_value.get( ) )} {}
 
-		optional_poly( optional_poly && other ):
-				m_value{ std::move( other.m_value ) } { }
+		optional_poly( optional_poly &&other ) : m_value{std::move( other.m_value )} {}
 
-		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
-		optional_poly( optional_poly<T> && other ):
-				m_value{ other.m_value.release( ) } { }
+		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
+		                                                 std::is_same<value_type, T>::value>>
+		optional_poly( optional_poly<T> &&other ) : m_value{other.m_value.release( )} {}
 
-		optional_poly & operator=( optional_poly const & rhs ) {
+		optional_poly &operator=( optional_poly const &rhs ) {
 			if( this != &rhs ) {
 				m_value.reset( make_copy( rhs.m_value.get( ) ) );
 			}
 			return *this;
 		}
 
-		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
-		optional_poly &operator=( optional_poly<T> const & rhs ) {
+		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
+		                                                 std::is_same<value_type, T>::value>>
+		optional_poly &operator=( optional_poly<T> const &rhs ) {
 			m_value.reset( make_copy( rhs.m_value.get( ) ) );
 			return *this;
 		}
 
-		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
+		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
+		                                                 std::is_same<value_type, T>::value>>
 		optional_poly &operator=( optional_poly<T> &&rhs ) {
-			if( this != static_cast<optional_poly*>(&rhs) ) {
+			if( this != static_cast<optional_poly *>( &rhs ) ) {
 				m_value.reset( rhs.m_value.release( ) );
 			}
 			return *this;
 		}
 
-		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
-		optional_poly &operator=( T const & value ) {
+		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
+		                                                 std::is_same<value_type, T>::value>>
+		optional_poly &operator=( T const &value ) {
 			using v_t = std::remove_cv_t<std::remove_reference_t<T>>;
-			m_value.reset( new v_t{ value } );
+			m_value.reset( new v_t{value} );
 			return *this;
 		}
 
@@ -152,12 +155,12 @@ namespace daw {
 			m_value.reset( );
 		}
 
-	};    // class optional_poly
+	}; // class optional_poly
 
 	template<typename T, typename... Args>
-	auto make_optional_poly( Args&&... args ) {
-		optional_poly<T> result{ };
-		result.emplace( std::forward<Args>(args)... );
+	auto make_optional_poly( Args &&... args ) {
+		optional_poly<T> result{};
+		result.emplace( std::forward<Args>( args )... );
 		return result;
 	}
 
@@ -239,5 +242,4 @@ namespace daw {
 		return false;
 	}
 
-}    // namespace daw
-
+} // namespace daw

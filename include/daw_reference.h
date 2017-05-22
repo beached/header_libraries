@@ -22,81 +22,81 @@
 
 #pragma once
 
-#include <iterator>
-#include <algorithm>
-#include <numeric>
-#include <vector>
-#include <random>
-#include <iostream>
-#include "daw_traits.h"
 #include "daw_algorithm.h"
+#include "daw_traits.h"
+#include <algorithm>
+#include <iostream>
+#include <iterator>
+#include <numeric>
+#include <random>
+#include <vector>
 
 namespace daw {
 	template<typename T>
 	struct Reference {
 		using ptr_type = daw::traits::root_type_t<T>;
-		ptr_type const * ptr;
+		ptr_type const *ptr;
 		Reference( ) = delete;
-		Reference( T const & value ): ptr( &value ) { }
-		~Reference( ) { }
+		Reference( T const &value ) : ptr( &value ) {}
+		~Reference( ) {}
 
 		Reference( Reference const & ) = default;
 		Reference( Reference && ) = default;
-		Reference & operator=( Reference const & ) = default;
-		Reference & operator=( Reference && ) = default;
-		
-		T const & operator*( ) const {
+		Reference &operator=( Reference const & ) = default;
+		Reference &operator=( Reference && ) = default;
+
+		T const &operator*( ) const {
 			return *ptr;
 		}
 
-		T const & get( ) const {
+		T const &get( ) const {
 			return *ptr;
 		}
-	};	// struct Reference
+	}; // struct Reference
 
 	template<typename T>
-	bool operator==( Reference<T> const & lhs, Reference<T> const & rhs ) {
-		return *lhs == *rhs; 
+	bool operator==( Reference<T> const &lhs, Reference<T> const &rhs ) {
+		return *lhs == *rhs;
 	}
 
 	template<typename T>
-	bool operator!=( Reference<T> const & lhs, Reference<T> const & rhs ) {
+	bool operator!=( Reference<T> const &lhs, Reference<T> const &rhs ) {
 		return *lhs != *rhs;
 	}
 
 	template<typename T>
-	bool operator<( Reference<T> const & lhs, Reference<T> const & rhs ) {
+	bool operator<( Reference<T> const &lhs, Reference<T> const &rhs ) {
 		return *lhs < *rhs;
 	}
 
 	template<typename T>
-	bool operator<=( Reference<T> const & lhs, Reference<T> const & rhs ) {
+	bool operator<=( Reference<T> const &lhs, Reference<T> const &rhs ) {
 		return *lhs <= *rhs;
 	}
 
 	template<typename T>
-	bool operator>( Reference<T> const & lhs, Reference<T> const & rhs ) {
+	bool operator>( Reference<T> const &lhs, Reference<T> const &rhs ) {
 		return *lhs > *rhs;
 	}
 
 	template<typename T>
-	bool operator>=( Reference<T> const & lhs, Reference<T> const & rhs ) {
+	bool operator>=( Reference<T> const &lhs, Reference<T> const &rhs ) {
 		return *lhs >= *rhs;
 	}
 
 	template<typename T>
-	auto ref( T const * value ) {
+	auto ref( T const *value ) {
 		return Reference<T>( *value );
 	}
 
-	template<typename T, typename=void>
-	auto ref( T const & value ) {
+	template<typename T, typename = void>
+	auto ref( T const &value ) {
 		return Reference<T>( value );
 	}
 
 	template<typename Iterator>
 	auto to_reference_vector( Iterator first, Iterator last ) {
-		using value_type = daw::traits::root_type_t<decltype(*first)>;
+		using value_type = daw::traits::root_type_t<decltype( *first )>;
 		using values_type = ::std::vector<::daw::Reference<value_type>>;
 		values_type result;
 		for( auto it = first; it != last; ++it ) {
@@ -106,12 +106,10 @@ namespace daw {
 		return result;
 	}
 
-}	// namespace daw
+} // namespace daw
 
 template<typename T>
-::std::ostream & operator<<( ::std::ostream& os, ::daw::Reference<T> const & ref ) {
+::std::ostream &operator<<(::std::ostream &os, ::daw::Reference<T> const &ref ) {
 	os << *ref;
 	return os;
 }
-
-

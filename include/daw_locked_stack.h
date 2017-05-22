@@ -33,30 +33,29 @@ namespace daw {
 	template<typename T>
 	struct locked_stack_t {
 		using value_type = T;
-	private:
+
+	  private:
 		daw::semaphore m_semaphore;
 		std::unique_ptr<std::mutex> m_mutex;
 		std::vector<value_type> m_items;
-	public:	
-		locked_stack_t( ):
-				m_semaphore{ },
-				m_mutex{ std::make_unique<std::mutex>( ) },
-				m_items{ } { }
+
+	  public:
+		locked_stack_t( ) : m_semaphore{}, m_mutex{std::make_unique<std::mutex>( )}, m_items{} {}
 
 		~locked_stack_t( ) = default;
 		locked_stack_t( locked_stack_t && ) = default;
-		locked_stack_t & operator=( locked_stack_t && ) = default;
+		locked_stack_t &operator=( locked_stack_t && ) = default;
 
 		locked_stack_t( locked_stack_t const & ) = delete;
-		locked_stack_t & operator=( locked_stack_t const & ) = delete;
+		locked_stack_t &operator=( locked_stack_t const & ) = delete;
 
 		boost::optional<value_type> try_pop_back( ) {
-			if( !m_semaphore.try_wait( ) ) { 
-				return { };
+			if( !m_semaphore.try_wait( ) ) {
+				return {};
 			}
 			std::lock_guard<std::mutex> lock( *m_mutex );
 			if( m_items.empty( ) ) {
-				return { };
+				return {};
 			}
 			auto result = m_items.back( );
 			m_items.pop_back( );
@@ -67,7 +66,7 @@ namespace daw {
 			m_semaphore.wait( );
 			std::lock_guard<std::mutex> lock( *m_mutex );
 			if( m_items.empty( ) ) {
-				return { };
+				return {};
 			}
 			auto result = m_items.back( );
 			m_items.pop_back( );
@@ -75,14 +74,14 @@ namespace daw {
 		}
 
 		template<typename U>
-		void push_back( U && value ) {
+		void push_back( U &&value ) {
 			std::lock_guard<std::mutex> lock( *m_mutex );
 			m_items.push_back( std::forward<U>( value ) );
 			m_semaphore.notify( );
 		}
 
 		template<typename... Args>
-		void emplace_back( Args&&... args ) {
+		void emplace_back( Args &&... args ) {
 			std::lock_guard<std::mutex> lock( *m_mutex );
 			m_items.emplace_back( std::forward<Args>( args )... );
 			m_semaphore.notify( );
@@ -105,7 +104,6 @@ namespace daw {
 			}
 			return 0;
 		}
-	};	// locked_stack_t
+	}; // locked_stack_t
 
-}    // namespace daw
-
+} // namespace daw

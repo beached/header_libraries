@@ -38,11 +38,11 @@ BOOST_AUTO_TEST_CASE( daw_tuple_operators001 ) {
 	std::cout << "result of " << t1 << "*2 => " << res2 << std::endl;
 
 	auto t2 = std::make_tuple( 4.0, 2.0, 1.0 );
-	auto res3 = t1/t2;
+	auto res3 = t1 / t2;
 	auto res6 = 1.0 + t1;
 	auto res7 = t1 + 1.0;
-	auto res8 = 1.0/t1;
-	auto res9 = t1/2.0;
+	auto res8 = 1.0 / t1;
+	auto res9 = t1 / 2.0;
 	auto res10 = 1.0 - t1;
 	auto res11 = t1 - 1.0;
 	auto res12 = 2.0 * t1;
@@ -69,19 +69,19 @@ BOOST_AUTO_TEST_CASE( daw_tuple_operators001 ) {
 	std::cout << "result of " << t1 << " / " << t2 << " => " << res3 << std::endl;
 
 	BOOST_REQUIRE( res1 == res2 );
-	BOOST_REQUIRE( res3 == std::make_tuple( 0.25, 1.0, 3.0 ) ); 
-	BOOST_REQUIRE( res6 == std::make_tuple( 2.0, 3.0, 4.0 ) ); 
-	BOOST_REQUIRE( res7 == std::make_tuple( 2.0, 3.0, 4.0 ) ); 
-	BOOST_REQUIRE( res8 == std::make_tuple( 1.0, 0.5, 1.0/3.0 ) ); 
-	BOOST_REQUIRE( res9 == std::make_tuple( 0.5, 1.0, 1.5 ) ); 
-	BOOST_REQUIRE( res10 == std::make_tuple( 0.0, -1.0, -2.0 ) ); 
-	BOOST_REQUIRE( res11 == std::make_tuple( 0.0, 1.0, 2.0 ) ); 
-	BOOST_REQUIRE( res12 == std::make_tuple( 2.0, 4.0, 6.0 ) ); 
-	BOOST_REQUIRE( res13 == std::make_tuple( 2.0, 4.0, 6.0 ) ); 
-	BOOST_REQUIRE( res14 == std::make_tuple( 5.0, 4.0, 4.0 ) ); 
-	BOOST_REQUIRE( res15 == std::make_tuple( -3.0, 0.0, 2.0 ) ); 
-	BOOST_REQUIRE( res16 == std::make_tuple( 4.0, 4.0, 3.0 ) ); 
-	BOOST_REQUIRE( res3 == std::make_tuple( 0.25, 1.0, 3.0 ) ); 
+	BOOST_REQUIRE( res3 == std::make_tuple( 0.25, 1.0, 3.0 ) );
+	BOOST_REQUIRE( res6 == std::make_tuple( 2.0, 3.0, 4.0 ) );
+	BOOST_REQUIRE( res7 == std::make_tuple( 2.0, 3.0, 4.0 ) );
+	BOOST_REQUIRE( res8 == std::make_tuple( 1.0, 0.5, 1.0 / 3.0 ) );
+	BOOST_REQUIRE( res9 == std::make_tuple( 0.5, 1.0, 1.5 ) );
+	BOOST_REQUIRE( res10 == std::make_tuple( 0.0, -1.0, -2.0 ) );
+	BOOST_REQUIRE( res11 == std::make_tuple( 0.0, 1.0, 2.0 ) );
+	BOOST_REQUIRE( res12 == std::make_tuple( 2.0, 4.0, 6.0 ) );
+	BOOST_REQUIRE( res13 == std::make_tuple( 2.0, 4.0, 6.0 ) );
+	BOOST_REQUIRE( res14 == std::make_tuple( 5.0, 4.0, 4.0 ) );
+	BOOST_REQUIRE( res15 == std::make_tuple( -3.0, 0.0, 2.0 ) );
+	BOOST_REQUIRE( res16 == std::make_tuple( 4.0, 4.0, 3.0 ) );
+	BOOST_REQUIRE( res3 == std::make_tuple( 0.25, 1.0, 3.0 ) );
 }
 
 BOOST_AUTO_TEST_CASE( daw_tuple_helpers_001 ) {
@@ -89,8 +89,8 @@ BOOST_AUTO_TEST_CASE( daw_tuple_helpers_001 ) {
 	auto t1 = std::make_tuple( 5, 4, 3, 1 );
 	auto t2 = std::make_tuple( 1, 2, 4, 8 );
 
-	auto t_min = min( t1, t2 ); 
-	auto t_max = max( t1, t2 ); 
+	auto t_min = min( t1, t2 );
+	auto t_max = max( t1, t2 );
 	std::cout << "min of " << t1 << " and " << t2 << " is " << t_min << std::endl;
 	std::cout << "max of " << t1 << " and " << t2 << " is " << t_max << std::endl;
 	BOOST_REQUIRE( t_min == std::make_tuple( 1, 2, 3, 1 ) );

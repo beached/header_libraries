@@ -26,4 +26,3 @@
 BOOST_AUTO_TEST_CASE( test_main_stubb ) {
 	// TODO: Your test code here
 }
-

@@ -34,32 +34,32 @@ namespace daw {
 		std::unique_ptr<ConditionVariable> m_condition;
 		intmax_t m_count;
 
-	public:
-		basic_semaphore( intmax_t count = 0 ):
-			m_mutex{ std::make_unique<Mutex>( ) },
-			m_condition{ std::make_unique<ConditionVariable>( ) },
-			m_count{ count } { }
+	  public:
+		basic_semaphore( intmax_t count = 0 )
+		    : m_mutex{std::make_unique<Mutex>( )}
+		    , m_condition{std::make_unique<ConditionVariable>( )}
+		    , m_count{count} {}
 
 		~basic_semaphore( ) = default;
 		basic_semaphore( basic_semaphore const & ) = delete;
 		basic_semaphore( basic_semaphore && ) = default;
-		basic_semaphore & operator=( basic_semaphore const & ) = delete;
-		basic_semaphore & operator=( basic_semaphore && ) = default;
+		basic_semaphore &operator=( basic_semaphore const & ) = delete;
+		basic_semaphore &operator=( basic_semaphore && ) = default;
 
 		void notify( ) {
-			std::unique_lock<std::mutex> lock{ *m_mutex };
+			std::unique_lock<std::mutex> lock{*m_mutex};
 			++m_count;
 			m_condition->notify_one( );
 		}
 
 		void wait( ) {
-			std::unique_lock<std::mutex> lock{ *m_mutex };
+			std::unique_lock<std::mutex> lock{*m_mutex};
 			m_condition->wait( lock, [&]( ) { return m_count > 0; } );
 			--m_count;
 		}
 
 		bool try_wait( ) {
-			std::unique_lock<std::mutex> lock{ *m_mutex };
+			std::unique_lock<std::mutex> lock{*m_mutex};
 			if( m_count ) {
 				--m_count;
 				return true;
@@ -68,8 +68,8 @@ namespace daw {
 		}
 
 		template<typename Rep, typename Period>
-		auto wait_for( std::chrono::duration<Rep, Period> const & rel_time ) {
-			std::unique_lock<std::mutex> lock{ *m_mutex };
+		auto wait_for( std::chrono::duration<Rep, Period> const &rel_time ) {
+			std::unique_lock<std::mutex> lock{*m_mutex};
 			auto status = m_condition->wait_for( lock, rel_time, [&]( ) { return m_count > 0; } );
 			if( status ) {
 				--m_count;
@@ -78,16 +78,15 @@ namespace daw {
 		}
 
 		template<typename Rep, typename Period>
-		auto wait_until( std::chrono::duration<Rep, Period> const & rel_time ) {
-			std::unique_lock<std::mutex> lock{ *m_mutex };
+		auto wait_until( std::chrono::duration<Rep, Period> const &rel_time ) {
+			std::unique_lock<std::mutex> lock{*m_mutex};
 			auto status = m_condition->wait_until( lock, rel_time, [&]( ) { return m_count > 0; } );
 			if( status ) {
 				--m_count;
 			}
 			return status;
 		}
-	};	// basic_semaphore
+	}; // basic_semaphore
 
 	using semaphore = basic_semaphore<std::mutex, std::condition_variable>;
-}    // namespace daw
-
+} // namespace daw

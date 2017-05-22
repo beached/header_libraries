@@ -24,8 +24,8 @@
 #include <iostream>
 #include <string>
 
-#include "daw_parser_helper.h"
 #include "daw_parser_addons.h"
+#include "daw_parser_helper.h"
 
 BOOST_AUTO_TEST_CASE( daw_parser_helper001 ) {
 	static std::string uint_test = "43453";
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE( daw_parser_helper001 ) {
 	auto tr_full = daw::parser::trim( tr_test.begin( ), tr_test.end( ) ).as_string( );
 	std::cout << "Full trim '" << tr_full << "'\n";
 	BOOST_REQUIRE_MESSAGE( tr_full == "hello", "Trim did not work" );
-	
+
 	static std::string empty;
 	auto empty_left = daw::parser::trim_left( empty.begin( ), empty.end( ) ).as_string( );
 	std::cout << "Empty Left only '" << empty_left << "'\n";
@@ -72,6 +72,4 @@ BOOST_AUTO_TEST_CASE( daw_parser_helper001 ) {
 	auto empty_full = daw::parser::trim( empty.begin( ), empty.end( ) ).as_string( );
 	std::cout << "Empty full trim '" << empty_full << "'\n";
 	BOOST_REQUIRE_MESSAGE( empty_full == "", "Trim did not work" );
-
 }
-

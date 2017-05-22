@@ -22,8 +22,8 @@
 
 #include <boost/test/unit_test.hpp>
 #include <iostream>
-#include <string>
 #include <sstream>
+#include <string>
 
 #include "daw_variant.h"
 
@@ -32,7 +32,7 @@ struct test_t {
 	int foo;
 };
 
-std::string to_string( test_t const & value ) {
+std::string to_string( test_t const &value ) {
 	std::stringstream ss;
 	ss << value.s << ": " << value.foo;
 	return ss.str( );
@@ -40,39 +40,38 @@ std::string to_string( test_t const & value ) {
 
 BOOST_AUTO_TEST_CASE( daw_variant_001 ) {
 	using namespace std::literals::string_literals;
-	using v_t = daw::variant_t<test_t, int, float, std::string, int*>;
+	using v_t = daw::variant_t<test_t, int, float, std::string, int *>;
 	std::cout << "size of variant is: " << sizeof( v_t ) << '\n';
 	v_t s;
 	v_t t = 5;
 	std::string five = "5"s;
-	v_t u = five; 
+	v_t u = five;
 	BOOST_REQUIRE_MESSAGE( s.empty( ), "Default value should be empty" );
 	BOOST_REQUIRE_MESSAGE( t.get<int>( ) == 5, "Value not there" );
-	BOOST_REQUIRE_MESSAGE( static_cast<int>(t) == 5, "Value not there" );
+	BOOST_REQUIRE_MESSAGE( static_cast<int>( t ) == 5, "Value not there" );
 	BOOST_REQUIRE_MESSAGE( t == 5, "Value not there" );
 	BOOST_REQUIRE_MESSAGE( t.to_string( ) == "5", "too string not functioning" );
-	BOOST_REQUIRE_MESSAGE( (t == u), "Type change" );
+	BOOST_REQUIRE_MESSAGE( ( t == u ), "Type change" );
 	BOOST_REQUIRE_MESSAGE( *t == "5", "operator* conversion" );
-	BOOST_REQUIRE_MESSAGE( (t = 5.54f) == 5.54f, "Type change" );
+	BOOST_REQUIRE_MESSAGE( ( t = 5.54f ) == 5.54f, "Type change" );
 	t = "5"s;
-	t = test_t{ };
+	t = test_t{};
 	t = 5.5f;
 
-	int * test_ptr = new int;
+	int *test_ptr = new int;
 	*test_ptr = 1234;
 
 	t = "hello"s;
 
 	t = test_ptr;
-	auto r = daw::get<int*>( t ) == test_ptr;
+	auto r = daw::get<int *>( t ) == test_ptr;
 	BOOST_REQUIRE_MESSAGE( r, "Pointer" );
 
 	{
-		v_t test_i{ 5 };
-		v_t test_s = std::string{ "hello" };
+		v_t test_i{5};
+		v_t test_s = std::string{"hello"};
 		BOOST_REQUIRE( test_i != test_s );
 	}
-
 }
 
 struct blah {
@@ -80,20 +79,20 @@ struct blah {
 	int b;
 };
 
-std::string to_string( blah const & val ) {
+std::string to_string( blah const &val ) {
 	using std::to_string;
 	return to_string( val.a ) + " " + to_string( val.b );
 }
 
 namespace std {
-	std::string to_string( std::vector<int> const & v ) {
+	std::string to_string( std::vector<int> const &v ) {
 		std::string result;
-		for( auto i: v ) {
+		for( auto i : v ) {
 			result += std::to_string( i );
 		}
 		return result;
 	}
-}
+} // namespace std
 
 BOOST_AUTO_TEST_CASE( daw_variant_operators_001 ) {
 	using var_t = daw::variant_t<int, blah>;
@@ -101,7 +100,7 @@ BOOST_AUTO_TEST_CASE( daw_variant_operators_001 ) {
 	var_t a = 5;
 	var_t b = 6;
 	var_t c = 6;
-	var_t d = blah{ };
+	var_t d = blah{};
 
 	BOOST_REQUIRE( a != b );
 	BOOST_REQUIRE( a != d );
@@ -113,11 +112,10 @@ BOOST_AUTO_TEST_CASE( daw_variant_operators_001 ) {
 	BOOST_REQUIRE( b > a );
 	BOOST_REQUIRE( b >= c );
 
-	
 	using var_t2 = daw::variant_t<std::vector<int>, int, double>;
-	var_t2 e = std::vector<int>{ 1, 2, 3 };
-	var_t2 f = std::vector<int>{ 1, 2, 3 };
-	var_t2 g = std::vector<int>{ 1 };
+	var_t2 e = std::vector<int>{1, 2, 3};
+	var_t2 f = std::vector<int>{1, 2, 3};
+	var_t2 g = std::vector<int>{1};
 	BOOST_REQUIRE( e == f );
 	BOOST_REQUIRE( e != g );
 }

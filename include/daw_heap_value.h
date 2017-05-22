@@ -28,46 +28,44 @@
 #include "daw_traits.h"
 
 namespace daw {
-	/// Heap Value.  Access members via operator-> but copy/move constructors operators utilized the pointed to's members
-	/// This is used on larger classes that are members of other classes but the space requirements is that of a pointer
-	/// instead of the full size
+	/// Heap Value.  Access members via operator-> but copy/move constructors operators utilized the pointed to's
+	/// members This is used on larger classes that are members of other classes but the space requirements is that of a
+	/// pointer instead of the full size
 	template<typename T>
 	struct heap_value {
 		using value_t = std::decay_t<T>;
 		using reference = value_t &;
 		using const_reference = value_t const &;
 		using pointer = value_t *;
-		using const_pointer = value_t * const;
+		using const_pointer = value_t *const;
 
 		std::unique_ptr<value_t> m_value;
-	public:
-		heap_value( heap_value const & other ):
-			m_value{ std::make_unique<value_t>( *other.m_value ) } { }
 
-		heap_value & operator=( heap_value const & rhs ) {
+	  public:
+		heap_value( heap_value const &other ) : m_value{std::make_unique<value_t>( *other.m_value )} {}
+
+		heap_value &operator=( heap_value const &rhs ) {
 			if( this != &rhs ) {
 				*m_value = *rhs.m_value;
 			}
 			return *this;
 		}
 
-		heap_value( ):
-			m_value{ std::make_unique<value_t>( ) } { }
+		heap_value( ) : m_value{std::make_unique<value_t>( )} {}
 
 		heap_value( heap_value && ) = default;
-		heap_value & operator=( heap_value && ) = default;
+		heap_value &operator=( heap_value && ) = default;
 		~heap_value( ) = default;
 
 		// Make this less perfect so that we can still do copy/move construction
 		template<typename Arg, typename = std::enable_if_t<daw::traits::not_self<Arg, value_t>( )>>
-		heap_value( Arg && arg ):
-			m_value{ std::make_unique<value_t>( std::forward<Arg>( arg ) ) } { }
+		heap_value( Arg &&arg ) : m_value{std::make_unique<value_t>( std::forward<Arg>( arg ) )} {}
 
 		template<typename Arg, typename... Args>
-		heap_value( Arg && arg, Args&&... args ):
-			m_value{ std::make_unique<value_t>( std::forward<Arg>( arg ), std::forward<Args>( args )... ) } { }
+		heap_value( Arg &&arg, Args &&... args )
+		    : m_value{std::make_unique<value_t>( std::forward<Arg>( arg ), std::forward<Args>( args )... )} {}
 
-		friend void swap( heap_value & lhs, heap_value & rhs ) noexcept {
+		friend void swap( heap_value &lhs, heap_value &rhs ) noexcept {
 			using std::swap;
 			swap( lhs.m_value, rhs.m_value );
 		}
@@ -95,64 +93,63 @@ namespace daw {
 		const_pointer operator->( ) const {
 			return m_value.get( );
 		}
-	
+
 		pointer ptr( ) {
 			return m_value.get( );
 		}
-		
+
 		const_pointer ptr( ) const {
 			return m_value.get( );
 		}
 
 		template<typename... Args>
-		auto operator[]( Args&&... args ) {
+		auto operator[]( Args &&... args ) {
 			return m_value->operator[]( std::forward<Args>( args )... );
 		}
-		
+
 		template<typename... Args>
-		auto operator[]( Args&&... args ) const {
+		auto operator[]( Args &&... args ) const {
 			return m_value->operator[]( std::forward<Args>( args )... );
 		}
-		
+
 		template<typename... Args>
-		auto operator()( Args&&... args ) {
+		auto operator( )( Args &&... args ) {
 			return m_value->operator[]( std::forward<Args>( args )... );
 		}
-		
+
 		template<typename... Args>
-		auto operator()( Args&&... args ) const {
+		auto operator( )( Args &&... args ) const {
 			return m_value->operator[]( std::forward<Args>( args )... );
 		}
 	};
 
 	template<typename T, typename U>
-	bool operator==( heap_value<T> const & lhs, heap_value<U> const & rhs ) {
+	bool operator==( heap_value<T> const &lhs, heap_value<U> const &rhs ) {
 		return *lhs == *rhs;
 	}
 
 	template<typename T, typename U>
-	bool operator!=( heap_value<T> const & lhs, heap_value<U> const & rhs ) {
+	bool operator!=( heap_value<T> const &lhs, heap_value<U> const &rhs ) {
 		return *lhs != *rhs;
 	}
 
 	template<typename T, typename U>
-	bool operator>=( heap_value<T> const & lhs, heap_value<U> const & rhs ) {
+	bool operator>=( heap_value<T> const &lhs, heap_value<U> const &rhs ) {
 		return *lhs >= *rhs;
 	}
 
 	template<typename T, typename U>
-	bool operator<=( heap_value<T> const & lhs, heap_value<U> const & rhs ) {
+	bool operator<=( heap_value<T> const &lhs, heap_value<U> const &rhs ) {
 		return *lhs <= *rhs;
 	}
 
 	template<typename T, typename U>
-	bool operator>( heap_value<T> const & lhs, heap_value<U> const & rhs ) {
+	bool operator>( heap_value<T> const &lhs, heap_value<U> const &rhs ) {
 		return *lhs > *rhs;
 	}
 
 	template<typename T, typename U>
-	bool operator<( heap_value<T> const & lhs, heap_value<U> const & rhs ) {
+	bool operator<( heap_value<T> const &lhs, heap_value<U> const &rhs ) {
 		return *lhs < *rhs;
 	}
-}    // namespace daw
-
+} // namespace daw

@@ -26,8 +26,7 @@
 
 BOOST_AUTO_TEST_CASE( daw_not_null_test_001 ) {
 	auto tst = std::make_unique<int>( 5 );
-	daw::not_null<int*> t = tst.get( );
+	daw::not_null<int *> t = tst.get( );
 	std::unique_ptr<int> tst2;
 	t = tst2.get( );
 }
-

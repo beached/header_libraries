@@ -34,14 +34,17 @@ namespace daw {
 	struct bounded_stack_t {
 		static_assert( capacity >= 1, "There must be at least 1 element in stack capacity" );
 		using value_type = std::decay_t<T>;
-	private:
+
+	  private:
 		using values_type = std::array<value_type, capacity>;
-	public:
+
+	  public:
 		using reference = value_type &;
 		using const_reference = value_type const &;
 		using iterator = typename values_type::iterator;
 		using const_iterator = typename values_type::const_iterator;
-	private:
+
+	  private:
 		values_type m_values;
 		iterator m_head;
 		iterator m_last;
@@ -49,16 +52,15 @@ namespace daw {
 		const_iterator chead( ) const {
 			return m_head;
 		}
-	public:
-		constexpr bounded_stack_t( ) noexcept:
-			m_values{ },
-			m_head{ m_values.begin( ) } { }
+
+	  public:
+		constexpr bounded_stack_t( ) noexcept : m_values{}, m_head{m_values.begin( )} {}
 
 		~bounded_stack_t( ) = default;
 		bounded_stack_t( bounded_stack_t const & ) = default;
 		bounded_stack_t( bounded_stack_t && ) = default;
-		bounded_stack_t & operator=( bounded_stack_t const & ) = default;
-		bounded_stack_t & operator=( bounded_stack_t && ) = default;
+		bounded_stack_t &operator=( bounded_stack_t const & ) = default;
+		bounded_stack_t &operator=( bounded_stack_t && ) = default;
 
 		constexpr void clear( ) const {
 			m_head = m_values.begin( );
@@ -73,26 +75,26 @@ namespace daw {
 		}
 
 		constexpr size_t used( ) const {
-			return static_cast<size_t>(std::distance( m_values.cbegin( ), chead( ) ));
+			return static_cast<size_t>( std::distance( m_values.cbegin( ), chead( ) ) );
 		}
-		
+
 		constexpr size_t available( ) const {
-			return static_cast<size_t>(std::distance( chead( ), m_values.cend( ) ));
+			return static_cast<size_t>( std::distance( chead( ), m_values.cend( ) ) );
 		}
 
 		constexpr bool full( ) const {
 			return chead( ) == m_values.cend( );
 		}
-	
+
 		void push_back( T value ) {
 			daw::exception::dbg_throw_on_true<std::out_of_range>( full( ), "Attempt to push_back on a full stack" );
 			*m_head++ = std::move( value );
-		}	
+		}
 
 		const_reference back( ) const {
 			daw::exception::dbg_throw_on_true<std::out_of_range>( empty( ), "Attempt to peek an empty stack" );
 			auto pos = m_head;
-			return *--pos; 
+			return *--pos;
 		}
 
 		reference front( ) {
@@ -106,13 +108,12 @@ namespace daw {
 		reference back( ) {
 			daw::exception::dbg_throw_on_true<std::out_of_range>( empty( ), "Attempt to peek an empty stack" );
 			auto pos = m_head;
-			return *--pos; 
+			return *--pos;
 		}
 
 		value_type pop_back( ) {
 			daw::exception::dbg_throw_on_true<std::out_of_range>( empty( ), "Attempt to pop an empty stack" );
-			return std::move( *--m_head ); 
+			return std::move( *--m_head );
 		}
-	};	// bounded_stack_t
-}    // namespace daw
-
+	}; // bounded_stack_t
+} // namespace daw

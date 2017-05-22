@@ -29,4 +29,3 @@ BOOST_AUTO_TEST_CASE( daw_utility_round_to_nearest ) {
 	BOOST_REQUIRE( daw::round_to_nearest( -3, -5.0 ) == -5 );
 	BOOST_REQUIRE( daw::round_to_nearest( 133, 25.0 ) == 125 );
 }
-

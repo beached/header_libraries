@@ -27,9 +27,8 @@
 using namespace std::literals::string_literals;
 
 BOOST_AUTO_TEST_CASE( daw_array_testing ) {
-	daw::array<int> t = { 1, 2, 3, 4, 5, 6 };
+	daw::array<int> t = {1, 2, 3, 4, 5, 6};
 
 	auto pos = t.find_first_of( 4 );
 	assert( *pos == 4 );
-
 }

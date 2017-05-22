@@ -22,70 +22,66 @@
 
 #pragma once
 
-#include <string>
 #include <cstdint>
+#include <string>
 
-#include "scope_guard.h"
-#include "daw_traits.h"
 #include "daw_newhelper.h"
 #include "daw_operators.h"
+#include "daw_traits.h"
+#include "scope_guard.h"
 
 namespace daw {
 	template<typename CharType = char>
 	class CString {
-		CharType const * m_cstr;
+		CharType const *m_cstr;
 		bool m_local_string;
 
-		public:
-		CString( CharType const* c_str, bool do_copy = false, const size_t length = 0 ):
-			m_cstr{ c_str },
-			m_local_string{ do_copy } {
-				if( do_copy ) {
-					size_t len = length;
-					if( 0 == len ) {
-						len = strlen( c_str );
-					}
-					CharType* tmp = nullptr;
-					SCOPE_EXIT {
-						m_cstr = tmp;
-					};
-					tmp = new_array_throw<CharType>( len + 1 );
-					memcpy( tmp, c_str, len + 1 );
+	  public:
+		CString( CharType const *c_str, bool do_copy = false, const size_t length = 0 )
+		    : m_cstr{c_str}, m_local_string{do_copy} {
+			if( do_copy ) {
+				size_t len = length;
+				if( 0 == len ) {
+					len = strlen( c_str );
 				}
+				CharType *tmp = nullptr;
+				SCOPE_EXIT {
+					m_cstr = tmp;
+				};
+				tmp = new_array_throw<CharType>( len + 1 );
+				memcpy( tmp, c_str, len + 1 );
 			}
+		}
 
-		CString( ) noexcept:
-			m_cstr{ nullptr },
-			m_local_string{ true } { }
+		CString( ) noexcept : m_cstr{nullptr}, m_local_string{true} {}
 
-		CString( CString const & value ):
-			CString{ value.m_cstr, true } { }
+		CString( CString const &value ) : CString{value.m_cstr, true} {}
 
-		CString & operator=( CString const & rhs ) {
+		CString &operator=( CString const &rhs ) {
 			if( this != &rhs ) {
-				CString tmp{ rhs };
+				CString tmp{rhs};
 				tmp.swap( *this );
 			}
 			return *this;
 		}
 
-		CString & operator=( CharType const * c_str ) {
-			CString tmp{ c_str, true };
-			this->swap( tmp );	
+		CString &operator=( CharType const *c_str ) {
+			CString tmp{c_str, true};
+			this->swap( tmp );
 			return *this;
 		}
 
-		CString( CString && value ) noexcept: 
-			m_cstr{ std::exchange( value.m_cstr, nullptr ) },
-			m_local_string{ std::exchange( value.m_local_string, false ) } { }
+		CString( CString &&value ) noexcept
+		    : m_cstr{std::exchange( value.m_cstr, nullptr )}
+		    , m_local_string{std::exchange( value.m_local_string, false )} {}
 
-		void swap( CString & rhs ) noexcept {
+		void swap( CString &rhs ) noexcept {
 			using std::swap;
 			swap( m_cstr, rhs.m_cstr );
 			swap( m_local_string, rhs.m_local_string );
 		}
 
-		CString & operator=( CString && rhs ) noexcept {
+		CString &operator=( CString &&rhs ) noexcept {
 			if( this != &rhs ) {
 				m_cstr = std::exchange( rhs.m_cstr, nullptr );
 				m_local_string = std::exchange( rhs.m_local_string, false );
@@ -101,7 +97,7 @@ namespace daw {
 			nullify( );
 		}
 
-		CharType const & operator[]( size_t pos ) const {
+		CharType const &operator[]( size_t pos ) const {
 			return m_cstr[pos];
 		}
 
@@ -110,13 +106,13 @@ namespace daw {
 			m_local_string = false;
 		}
 
-		CharType * move( ) noexcept {
+		CharType *move( ) noexcept {
 			auto result = m_cstr;
 			nullify( );
 			return result;
 		}
 
-		const CharType * get( ) noexcept {
+		const CharType *get( ) noexcept {
 			return m_cstr;
 		}
 
@@ -151,24 +147,24 @@ namespace daw {
 			m_local_string = true;
 		}
 
-		auto compare( CString const & rhs ) const {
+		auto compare( CString const &rhs ) const {
 			return strcmp( m_cstr, rhs.m_cstr );
 		}
 
 		create_friend_comparison_operators( CString );
-	};	// CString
+	}; // CString
 
 	template<typename... Args>
-	void swap( CString<Args...> & lhs, CString<Args...> & rhs ) noexcept {
+	void swap( CString<Args...> &lhs, CString<Args...> &rhs ) noexcept {
 		lhs.swap( rhs );
 	}
 
 	// TODO		static_assert(daw::traits::is_regular<CString<char>>::value, "CString isn't regular");
 
 	template<typename Char>
-	std::string to_string( CString<Char> const & str ) {
+	std::string to_string( CString<Char> const &str ) {
 		return str.to_string( );
 	}
 
-	using cstring = CString<char> ;
-}	// namespace daw
+	using cstring = CString<char>;
+} // namespace daw

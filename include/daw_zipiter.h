@@ -27,88 +27,80 @@ namespace daw {
 	template<typename... T>
 	struct ZipIter {
 		using types_t = std::tuple<std::remove_cv_t<T>...>;
-	private:
+
+	  private:
 		types_t m_values;
 
-		template <class... Ts, std::size_t... Is>
-		void increment( std::tuple<Ts...>& tpl, std::index_sequence<Is...> ) {
+		template<class... Ts, std::size_t... Is>
+		void increment( std::tuple<Ts...> &tpl, std::index_sequence<Is...> ) {
 			using expander = int[];
-			expander { 0,
-				(void(
-				++std::get<Is>( tpl )
-				), 0)...
-			};
+			expander{0, ( void( ++std::get<Is>( tpl ) ), 0 )...};
 		}
 
-		template <class... Ts>
-		void increment( std::tuple<Ts...>& tpl ) {
+		template<class... Ts>
+		void increment( std::tuple<Ts...> &tpl ) {
 			increment( tpl, std::index_sequence_for<Ts...>{} );
 		}
 
-		template <class... Ts, std::size_t... Is>
-		void decrement( std::tuple<Ts...>& tpl, std::index_sequence<Is...> ) {
+		template<class... Ts, std::size_t... Is>
+		void decrement( std::tuple<Ts...> &tpl, std::index_sequence<Is...> ) {
 			using expander = int[];
-			expander { 0,
-				(void(
-				--std::get<Is>( tpl )
-				), 0)...
-			};
+			expander{0, ( void( --std::get<Is>( tpl ) ), 0 )...};
 		}
 
-		template <class... Ts>
-		void decrement( std::tuple<Ts...>& tpl ) {
+		template<class... Ts>
+		void decrement( std::tuple<Ts...> &tpl ) {
 			decrement( tpl, std::index_sequence_for<Ts...>{} );
 		}
 
-		template <class... Ts, std::size_t... Is>
-		void advance( std::tuple<Ts...>& tpl, std::index_sequence<Is...>, intmax_t n ) {
+		template<class... Ts, std::size_t... Is>
+		void advance( std::tuple<Ts...> &tpl, std::index_sequence<Is...>, intmax_t n ) {
 			using expander = int[];
-			expander { 0, (void( std::advance( std::get<Is>( tpl ), n ) ), 0)... };
+			expander{0, ( void( std::advance( std::get<Is>( tpl ), n ) ), 0 )...};
 		}
 
-		template <class... Ts>
-		void advance( std::tuple<Ts...>& tpl, intmax_t n ) {
+		template<class... Ts>
+		void advance( std::tuple<Ts...> &tpl, intmax_t n ) {
 			advance( tpl, std::index_sequence_for<Ts...>{}, n );
 		}
 
-
-	public:
+	  public:
 		ZipIter( ) = delete;
 		~ZipIter( ) = default;
 		ZipIter( ZipIter const & ) = default;
 		ZipIter( ZipIter && ) = default;
-		ZipIter & operator=( ZipIter const & ) = default;
-		ZipIter & operator=( ZipIter && ) = default;
+		ZipIter &operator=( ZipIter const & ) = default;
+		ZipIter &operator=( ZipIter && ) = default;
 
-		ZipIter( T... args ): m_values( std::move( args )... ) { }
+		ZipIter( T... args ) : m_values( std::move( args )... ) {}
 
-		types_t & as_tuple( ) {
+		types_t &as_tuple( ) {
 			return m_values;
 		}
 
-		types_t const & as_tuple( ) const {
+		types_t const &as_tuple( ) const {
 			return m_values;
 		}
 
-		ZipIter & operator++( ) {
+		ZipIter &operator++( ) {
 			increment( m_values );
 			return *this;
 		}
 
 		ZipIter operator++( int ) {
 			auto tmp = *this;
-			++(*this);
+			++( *this );
 			return tmp;
 		}
 
-		ZipIter & operator--( ) {
+		ZipIter &operator--( ) {
 			decrement( m_values );
 			return *this;
 		}
 
 		ZipIter operator--( int ) {
 			auto tmp = *this;
-			--(*this);
+			--( *this );
 			return tmp;
 		}
 
@@ -117,42 +109,42 @@ namespace daw {
 		}
 
 		template<size_t pos>
-		auto & get( ) noexcept {
+		auto &get( ) noexcept {
 			return std::get<pos>( m_values );
 		}
 
 		constexpr static size_t size( ) {
 			return std::tuple_size<T...>::value;
 		}
-	};	// struct ZipIter
+	}; // struct ZipIter
 
 	template<typename... T>
-	bool operator==( ZipIter<T...> const & lhs, ZipIter<T...> const & rhs ) {
+	bool operator==( ZipIter<T...> const &lhs, ZipIter<T...> const &rhs ) {
 		return lhs.as_tuple( ) == rhs.as_tuple( );
 	}
 
 	template<typename... T>
-	bool operator!=( ZipIter<T...> const & lhs, ZipIter<T...> const & rhs ) {
+	bool operator!=( ZipIter<T...> const &lhs, ZipIter<T...> const &rhs ) {
 		return lhs.as_tuple( ) != rhs.as_tuple( );
 	}
 
 	template<typename... T>
-	bool operator<=( ZipIter<T...> const & lhs, ZipIter<T...> const & rhs ) {
+	bool operator<=( ZipIter<T...> const &lhs, ZipIter<T...> const &rhs ) {
 		return lhs.as_tuple( ) <= rhs.as_tuple( );
 	}
 
 	template<typename... T>
-	bool operator>=( ZipIter<T...> const & lhs, ZipIter<T...> const & rhs ) {
+	bool operator>=( ZipIter<T...> const &lhs, ZipIter<T...> const &rhs ) {
 		return lhs.as_tuple( ) >= rhs.as_tuple( );
 	}
 
 	template<typename... T>
-	bool operator<( ZipIter<T...> const & lhs, ZipIter<T...> const & rhs ) {
+	bool operator<( ZipIter<T...> const &lhs, ZipIter<T...> const &rhs ) {
 		return lhs.as_tuple( ) < rhs.as_tuple( );
 	}
 
 	template<typename... T>
-	bool operator>( ZipIter<T...> const & lhs, ZipIter<T...> const & rhs ) {
+	bool operator>( ZipIter<T...> const &lhs, ZipIter<T...> const &rhs ) {
 		return lhs.as_tuple( ) > rhs.as_tuple( );
 	}
 
@@ -160,5 +152,4 @@ namespace daw {
 	ZipIter<T...> make_zipiter( T... args ) {
 		return ZipIter<T...>( args... );
 	}
-}	// namespace daw
-
+} // namespace daw

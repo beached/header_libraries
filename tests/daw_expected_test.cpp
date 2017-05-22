@@ -31,10 +31,8 @@ daw::expected_t<int> divide( int v ) {
 		if( 0 == v ) {
 			throw std::runtime_error( "division by zero" );
 		}
-		return 4/v;
-	} catch(...) {
-		return std::current_exception( );
-	}
+		return 4 / v;
+	} catch( ... ) { return std::current_exception( ); }
 }
 
 BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
@@ -42,17 +40,20 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 	std::cout << " sizeof( int ) -> " << sizeof( int );
 	std::cout << " sizeof( daw::expected_t<int> ) -> " << sizeof( daw::expected_t<int> );
 	std::cout << " sizeof( daw::expected_t<size_t> ) -> " << sizeof( daw::expected_t<size_t> ) << '\n';
-	daw::expected_t<int> a{ };
-	daw::expected_t<int> b{ 1 };
-	daw::expected_t<int> c{ 2 };
-	daw::expected_t<int> d{ 1 };
+	daw::expected_t<int> a{};
+	daw::expected_t<int> b{1};
+	daw::expected_t<int> c{2};
+	daw::expected_t<int> d{1};
 	daw::expected_t<void> e;
-	auto X = []( int x ) { std::cout << "Hello\n"; return x*x; };
+	auto X = []( int x ) {
+		std::cout << "Hello\n";
+		return x * x;
+	};
 	static_assert( daw::is_callable_v<decltype( X ), int>, "is_callable_v broke" );
 
-	daw::expected_t<void> f{ []( ) { std::cout << "Hello\n"; } };
-	daw::expected_t<void> g{ []( int ) { std::cout << "Hello\n"; }, 5 };
-		//daw::expected_t<int> h{ []( int x ) { std::cout << "Hello\n"; return x*x; }, 5 };
+	daw::expected_t<void> f{[]( ) { std::cout << "Hello\n"; }};
+	daw::expected_t<void> g{[]( int ) { std::cout << "Hello\n"; }, 5};
+	// daw::expected_t<int> h{ []( int x ) { std::cout << "Hello\n"; return x*x; }, 5 };
 
 	auto h = divide( 0 );
 	auto i = divide( 2 );
@@ -61,10 +62,10 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 	BOOST_REQUIRE( !i.has_exception( ) );
 	BOOST_REQUIRE( i.has_value( ) );
 	// a & b
-	auto test_01 = !( a == b);
-	auto test_02 = !( b == a);
+	auto test_01 = !( a == b );
+	auto test_02 = !( b == a );
 
-	daw::expected_t<int> j { &divide, 0 };
+	daw::expected_t<int> j{&divide, 0};
 	BOOST_REQUIRE( j.has_exception( ) );
 	BOOST_REQUIRE( !j.has_value( ) );
 

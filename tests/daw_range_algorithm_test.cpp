@@ -40,9 +40,7 @@ BOOST_AUTO_TEST_CASE( range_algorithm_accumulate ) {
 	auto sum = daw::algorithm::accumulate( test, 0 );
 	BOOST_REQUIRE_MESSAGE( static_cast<int>( test.size( ) ) == sum, "A vector of 1's size should equal it's sum" );
 
-	auto product = daw::algorithm::accumulate( test, 1, []( int const & lhs, int const & rhs ) {
-		return lhs * rhs;
-	} );
+	auto product = daw::algorithm::accumulate( test, 1, []( int const &lhs, int const &rhs ) { return lhs * rhs; } );
 
 	BOOST_REQUIRE_MESSAGE( 1 == product, "The product of a vector of 1's should be 1" );
 }
@@ -50,9 +48,7 @@ BOOST_AUTO_TEST_CASE( range_algorithm_accumulate ) {
 BOOST_AUTO_TEST_CASE( range_algorithm_map ) {
 	std::vector<int> test_vec( boost::counting_iterator<int>( 1 ), boost::counting_iterator<int>( 100 ) );
 
-	auto result = daw::algorithm::map( test_vec, []( int const & val ) {
-		return 2 * val;
-	} );
+	auto result = daw::algorithm::map( test_vec, []( int const &val ) { return 2 * val; } );
 
 	BOOST_REQUIRE_MESSAGE( test_vec.size( ) == result.size( ), "Result of map should be of equal size to the input" );
 
@@ -65,6 +61,5 @@ BOOST_AUTO_TEST_CASE( range_algorithm_map ) {
 BOOST_AUTO_TEST_CASE( daw_range_algorithm_test_where1 ) {
 	std::vector<int64_t> t1{1000};
 	std::iota( std::begin( t1 ), std::end( t1 ), 1 );
-	auto result = daw::algorithm::where( t1, []( auto v ) { return v%2 == 0; } );
+	auto result = daw::algorithm::where( t1, []( auto v ) { return v % 2 == 0; } );
 }
-

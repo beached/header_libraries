@@ -27,16 +27,16 @@
 
 namespace daw {
 	template<typename T>
-	class poly_vector_t: public daw::mixins::VectorLikeProxy<poly_vector_t<T>, std::vector<daw::heap_value<T>>> {
+	class poly_vector_t : public daw::mixins::VectorLikeProxy<poly_vector_t<T>, std::vector<daw::heap_value<T>>> {
 		std::vector<daw::heap_value<T>> m_values;
-	public:
-		std::vector<daw::heap_value<T>> & container( ) {
+
+	  public:
+		std::vector<daw::heap_value<T>> &container( ) {
 			return m_values;
 		}
 
-		std::vector<daw::heap_value<T>> const & container( ) const {
+		std::vector<daw::heap_value<T>> const &container( ) const {
 			return m_values;
 		}
-	};	// poly_vector_t
-}    // namespace daw
-
+	}; // poly_vector_t
+} // namespace daw

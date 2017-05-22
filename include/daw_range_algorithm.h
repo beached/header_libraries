@@ -22,102 +22,106 @@
 
 #pragma once
 
+#include "daw_range.h"
 #include <algorithm>
 #include <numeric>
-#include "daw_range.h"
 
 namespace daw {
 	namespace algorithm {
 		template<typename Container>
-		auto & sort( Container & container ) {
+		auto &sort( Container &container ) {
 			std::sort( std::begin( container ), std::end( container ) );
 			return container;
 		}
 
 		template<typename Container, typename UnaryPredicate>
-		auto & sort( Container& container, UnaryPredicate pred ) {
+		auto &sort( Container &container, UnaryPredicate pred ) {
 			std::sort( std::begin( container ), std::end( container ), pred );
 			return container;
 		}
 
 		template<typename Container>
-		auto & stable_sort( Container & container ) {
+		auto &stable_sort( Container &container ) {
 			std::stable_sort( std::begin( container ), std::end( container ) );
 			return container;
 		}
 
 		template<typename Container, typename UnaryPredicate>
-		auto & stable_sort( Container & container, UnaryPredicate pred ) {
+		auto &stable_sort( Container &container, UnaryPredicate pred ) {
 			std::stable_sort( std::begin( container ), std::end( container ), pred );
 			return container;
 		}
 
 		template<typename Container, typename Value>
-		auto find( Container const & container, Value const & value ) -> decltype(end( container )) {
+		auto find( Container const &container, Value const &value ) -> decltype( end( container ) ) {
 			return std::find( std::begin( container ), std::end( container ), value );
 		}
 
 		template<typename Container, typename UnaryPredicate>
-		auto find_if( Container const & container, UnaryPredicate pred ) -> decltype(end( container )) {
+		auto find_if( Container const &container, UnaryPredicate pred ) -> decltype( end( container ) ) {
 			return std::find_if( std::begin( container ), std::end( container ), pred );
 		}
 
 		template<typename Container, typename Value>
-		auto erase_remove( Container& container, Value const & value ) -> decltype(container.erase( std::end( container ), std::end( container ) )) {
-			return container.erase( std::remove( std::begin( container ), std::end( container ), value ), std::end( container ) );
+		auto erase_remove( Container &container, Value const &value )
+		    -> decltype( container.erase( std::end( container ), std::end( container ) ) ) {
+			return container.erase( std::remove( std::begin( container ), std::end( container ), value ),
+			                        std::end( container ) );
 		}
 
 		template<typename Container, typename UnaryPredicate>
-		auto erase_remove_if( Container& container, UnaryPredicate pred ) -> decltype(container.erase( std::end( container ), std::end( container ) )) {
-			return container.erase( std::remove_if( std::begin( container ), std::end( container ), pred ), std::end( container ) );
+		auto erase_remove_if( Container &container, UnaryPredicate pred )
+		    -> decltype( container.erase( std::end( container ), std::end( container ) ) ) {
+			return container.erase( std::remove_if( std::begin( container ), std::end( container ), pred ),
+			                        std::end( container ) );
 		}
 
 		template<typename Container, typename UnaryPredicate>
-		auto partition( Container& container, UnaryPredicate pred ) -> decltype(begin( container )) {
+		auto partition( Container &container, UnaryPredicate pred ) -> decltype( begin( container ) ) {
 			return std::partition( std::begin( container ), std::end( container ), pred );
 		}
 
 		template<typename Container, typename UnaryPredicate>
-		auto stable_partition( Container& container, UnaryPredicate pred ) -> decltype(begin( container )) {
+		auto stable_partition( Container &container, UnaryPredicate pred ) -> decltype( begin( container ) ) {
 			return std::stable_partition( std::begin( container ), std::end( container ), pred );
 		}
 
 		template<typename Container, typename T>
-		T accumulate( Container const & container, T init ) {
+		T accumulate( Container const &container, T init ) {
 			return std::accumulate( std::begin( container ), std::end( container ), std::move( init ) );
 		}
 
 		template<typename Container, typename T, typename BinaryOperator>
-		T accumulate( Container const & container, T init, BinaryOperator oper ) {
+		T accumulate( Container const &container, T init, BinaryOperator oper ) {
 			return std::accumulate( std::begin( container ), std::end( container ), std::move( init ), oper );
 		}
 
 		template<typename ContainerIn, typename UnaryOperator>
-		auto map( ContainerIn const & in, UnaryOperator oper ) -> std::vector <decltype(oper( std::declval<typename std::iterator_traits<decltype(std::begin( in ))>::value_type>( ) ))> {
-			using result_t = std::vector <decltype(oper( std::declval<typename std::iterator_traits<decltype(std::begin( in ))>::value_type>( ) ))>;
+		auto map( ContainerIn const &in, UnaryOperator oper ) -> std::vector<decltype(
+		    oper( std::declval<typename std::iterator_traits<decltype( std::begin( in ) )>::value_type>( ) ) )> {
+			using result_t = std::vector<decltype(
+			    oper( std::declval<typename std::iterator_traits<decltype( std::begin( in ) )>::value_type>( ) ) )>;
 			result_t result;
 			std::transform( std::begin( in ), std::end( in ), std::back_inserter( result ), oper );
 			return result;
 		}
 
 		template<typename Container, typename Value>
-		bool contains( Container const & container, Value const & value ) {
+		bool contains( Container const &container, Value const &value ) {
 			return std::find( std::begin( container ), std::end( container ), value ) != std::end( container );
 		}
 
 		template<typename Container, typename Value, typename UnaryPredicate>
-		bool contains( Container const & container, Value const & value, UnaryPredicate pred ) {
-			auto pred2 = [&value, &pred]( Value const & val ) {
-				return pred( value, val );
-			};
+		bool contains( Container const &container, Value const &value, UnaryPredicate pred ) {
+			auto pred2 = [&value, &pred]( Value const &val ) { return pred( value, val ); };
 			return std::find_if( std::begin( container ), std::end( container ), pred2 ) != std::end( container );
 		}
 
 		template<typename Container, typename UnaryPredicate>
-		auto where( Container & container, UnaryPredicate predicate ) {
-			using value_type = typename std::iterator_traits<decltype(std::begin( container ))>::value_type;
+		auto where( Container &container, UnaryPredicate predicate ) {
+			using value_type = typename std::iterator_traits<decltype( std::begin( container ) )>::value_type;
 			std::vector<std::reference_wrapper<value_type>> result;
-			for( auto & v : container ) {
+			for( auto &v : container ) {
 				if( predicate( v ) ) {
 					result.push_back( std::ref( v ) );
 				}
@@ -130,6 +134,5 @@ namespace daw {
 			auto rng = make_range( first, last );
 			return where( rng, predicate );
 		}
-	}	// namespace algorithm
-}	// namespace daw
-
+	} // namespace algorithm
+} // namespace daw

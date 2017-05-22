@@ -26,7 +26,5 @@
 #include "daw_benchmark.h"
 
 BOOST_AUTO_TEST_CASE( daw_optional_test_01 ) {
-	std::cout << "Time of: " <<	daw::benchmark( []( ) {
-		std::cout << "Hello\n";
-	} );
+	std::cout << "Time of: " << daw::benchmark( []( ) { std::cout << "Hello\n"; } );
 }

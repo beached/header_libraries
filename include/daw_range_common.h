@@ -26,10 +26,10 @@ namespace daw {
 	namespace range {
 		namespace impl {
 			template<typename Collection>
-			auto to_vector( Collection const & collection ) {
+			auto to_vector( Collection const &collection ) {
 				using value_type = daw::traits::root_type_t<typename Collection::value_type>;
 				::std::vector<value_type> result;
-				::std::copy( ::std::begin( collection ), ::std::end( collection ), ::std::back_inserter( result ) );
+				::std::copy(::std::begin( collection ), ::std::end( collection ), ::std::back_inserter( result ) );
 				return result;
 			}
 
@@ -44,11 +44,11 @@ namespace daw {
 			template<typename T>
 			using cleanup_t = daw::traits::root_type_t<T>;
 
-		}	// namespace impl
+		} // namespace impl
 
-		template<typename Arg, typename... Args> auto make_range_reference( Arg && arg, Args&&... args );
-		template<typename Arg, typename... Args> auto make_range_collection( Arg && arg, Args&&... args );
-	}	// namespace range
-}	// namespace daw
-
-
+		template<typename Arg, typename... Args>
+		auto make_range_reference( Arg &&arg, Args &&... args );
+		template<typename Arg, typename... Args>
+		auto make_range_collection( Arg &&arg, Args &&... args );
+	} // namespace range
+} // namespace daw

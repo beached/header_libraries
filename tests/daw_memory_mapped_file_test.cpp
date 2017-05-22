@@ -27,4 +27,3 @@
 BOOST_AUTO_TEST_CASE( daw_memory_mapped_file ) {
 	daw::filesystem::MemoryMappedFile<uint8_t> test( "blah.txt" );
 }
-

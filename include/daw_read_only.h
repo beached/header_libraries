@@ -32,16 +32,17 @@ namespace daw {
 		using reference = value_type &;
 		using const_reference = value_type const &;
 		using const_pointer = value_type const *;
-	private:
+
+	  private:
 		value_type m_value;
-	public:
-		read_only( value_type value = value_type { } ):
-			m_value { std::move( value ) } { }
+
+	  public:
+		read_only( value_type value = value_type{} ) : m_value{std::move( value )} {}
 
 		read_only( read_only const & ) = default;
 		read_only( read_only && ) = default;
-		read_only & operator=( read_only const & ) = delete;
-		read_only & operator=( read_only && ) = delete;
+		read_only &operator=( read_only const & ) = delete;
+		read_only &operator=( read_only && ) = delete;
 		~read_only( ) = default;
 
 		operator const_reference( ) const {
@@ -63,6 +64,6 @@ namespace daw {
 		value_type move_out( ) {
 			return std::move( m_value );
 		}
-	};	// read_only
+	}; // read_only
 
-}	// namespace daw
+} // namespace daw

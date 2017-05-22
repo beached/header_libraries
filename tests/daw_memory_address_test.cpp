@@ -20,21 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "daw_memory_address.h"
 #include <boost/test/unit_test.hpp>
 #include <cstdint>
-#include "daw_memory_address.h"
 
 int test( int b ) {
-	return 2*b;
+	return 2 * b;
 }
 
 BOOST_AUTO_TEST_CASE( daw_memory_address_test_01 ) {
 	daw::memory_address<int, 0x1> a;
-	daw::memory_address<int, 0x1, sizeof(int)*1> b;
-	daw::memory_address<int, 0x1, sizeof(int)*2> c;
-	daw::memory_address<int, 0x1, sizeof(int)*3> d;
-	auto e = a + b + c +d;
+	daw::memory_address<int, 0x1, sizeof( int ) * 1> b;
+	daw::memory_address<int, 0x1, sizeof( int ) * 2> c;
+	daw::memory_address<int, 0x1, sizeof( int ) * 3> d;
+	auto e = a + b + c + d;
 	auto f = test( b );
 	bool t = a == b;
 }
-

@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "daw_bounded_stack.h"
 #include <boost/test/unit_test.hpp>
 #include <iostream>
-#include "daw_bounded_stack.h"
 
 BOOST_AUTO_TEST_CASE( daw_bounded_stack_testing ) {
 	daw::bounded_stack_t<int, 5> tst;

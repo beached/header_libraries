@@ -7,8 +7,9 @@ namespace daw {
 	class ScopeGuard {
 		FunctionType m_function;
 		mutable bool m_is_active;
-	public:
-		ScopeGuard( FunctionType f ) : m_function( std::move( f ) ), m_is_active( true ) { }
+
+	  public:
+		ScopeGuard( FunctionType f ) : m_function( std::move( f ) ), m_is_active( true ) {}
 
 		~ScopeGuard( ) {
 			if( m_is_active ) {
@@ -21,23 +22,24 @@ namespace daw {
 		}
 
 		ScopeGuard( ) = delete;
-		ScopeGuard( const ScopeGuard& ) = delete;
+		ScopeGuard( const ScopeGuard & ) = delete;
 
-		ScopeGuard( ScopeGuard&& other ) : m_function( std::move( other.m_function ) ), m_is_active( std::move( other.m_is_active ) ) {
+		ScopeGuard( ScopeGuard &&other )
+		    : m_function( std::move( other.m_function ) ), m_is_active( std::move( other.m_is_active ) ) {
 			other.dismiss( );
 		}
 
-		ScopeGuard& operator=(ScopeGuard rhs) {
+		ScopeGuard &operator=( ScopeGuard rhs ) {
 			m_function = std::move( rhs.m_function );
 			m_is_active = std::move( rhs.m_is_active );
 			rhs.dismiss( );
 			return *this;
 		}
 
-		bool operator==(const ScopeGuard& rhs) const {
+		bool operator==( const ScopeGuard &rhs ) const {
 			return rhs.m_function == m_function && rhs.m_is_active == m_is_active;
 		}
-	};	// class ScopeGuard
+	}; // class ScopeGuard
 
 	template<typename FunctionType>
 	ScopeGuard<FunctionType> on_scope_exit( FunctionType f ) {
@@ -45,25 +47,21 @@ namespace daw {
 	}
 
 	namespace detail {
-		enum class ScopeGuardOnExit { };
+		enum class ScopeGuardOnExit {};
 
-		template <typename FunctionType>
-		ScopeGuard<FunctionType> operator+(ScopeGuardOnExit, FunctionType&& fn) {
+		template<typename FunctionType>
+		ScopeGuard<FunctionType> operator+( ScopeGuardOnExit, FunctionType &&fn ) {
 			return ScopeGuard<FunctionType>( std::forward<FunctionType>( fn ) );
 		}
-	}	// namespace detail
+	} // namespace detail
 
-#define SCOPE_EXIT \
-	auto ANONYMOUS_VARIABLE( SCOPE_EXIT_STATE ) \
-	= ::daw::detail::ScopeGuardOnExit( ) + [&]( )
+#define SCOPE_EXIT auto ANONYMOUS_VARIABLE( SCOPE_EXIT_STATE ) = ::daw::detail::ScopeGuardOnExit( ) + [&]( )
 
-#define CONCATENATE_IMPL(s1, s2) s1##s2
-#define CONCATENATE(s1, s2) CONCATENATE_IMPL(s1, s2)
+#define CONCATENATE_IMPL( s1, s2 ) s1##s2
+#define CONCATENATE( s1, s2 ) CONCATENATE_IMPL( s1, s2 )
 #ifdef __COUNTER__
-#define ANONYMOUS_VARIABLE(str) \
-	CONCATENATE( str, __COUNTER__ )
+#define ANONYMOUS_VARIABLE( str ) CONCATENATE( str, __COUNTER__ )
 #else
-#define ANONYMOUS_VARIABLE(str) \
-	CONCATENATE( str, __LINE__ )
+#define ANONYMOUS_VARIABLE( str ) CONCATENATE( str, __LINE__ )
 #endif
-}	// namespace daw
+} // namespace daw

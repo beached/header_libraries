@@ -22,42 +22,44 @@
 
 #pragma once
 
-#include<cstdint>
+#include <cstdint>
 
 namespace daw {
 	namespace impl {
 		template<typename T, uintptr_t...>
-		struct memory_address_impl { };
+		struct memory_address_impl {};
 
 		template<typename T, uintptr_t location>
 		struct memory_address_impl<T, location> {
 			static_assert( location > 0, "nullptr is not a valid location" );
 			using value_type = T volatile;
-			private:
-			static value_type & m_value;
-			public:
-			value_type & operator( )( ) {
+
+		  private:
+			static value_type &m_value;
+
+		  public:
+			value_type &operator( )( ) {
 				return m_value;
 			};
 
-			value_type const & operator( )( ) const {
+			value_type const &operator( )( ) const {
 				return m_value;
 			}
 
-			operator value_type & ( ) {
+			operator value_type &( ) {
 				return m_value;
 			}
 
 			operator value_type const &( ) const {
 				return m_value;
 			}
-		};	// memory_address_impl<value_type, location>
+		}; // memory_address_impl<value_type, location>
 
 		template<typename T, uintptr_t location>
-		typename memory_address_impl<T, location>::value_type & memory_address_impl<T, location>::m_value = *((T * const)location);
-	}
+		typename memory_address_impl<T, location>::value_type &
+		    memory_address_impl<T, location>::m_value = *( (T *const)location );
+	} // namespace impl
 
 	template<typename T, uintptr_t base, uintptr_t offset = 0>
-	using memory_address = daw::impl::memory_address_impl<T, (base + offset)>;
-}
-
+	using memory_address = daw::impl::memory_address_impl<T, ( base + offset )>;
+} // namespace daw

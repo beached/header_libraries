@@ -26,15 +26,16 @@ namespace daw {
 	namespace mixins {
 		template<typename Derived, typename ContainerType>
 		class ContainerProxy {
-		protected:
-			Derived & derived( ) {
-				return *static_cast<Derived*>(this);
+		  protected:
+			Derived &derived( ) {
+				return *static_cast<Derived *>( this );
 			}
 
-			Derived const & derived( ) const {
-				return *static_cast<Derived const*>(this);
+			Derived const &derived( ) const {
+				return *static_cast<Derived const *>( this );
 			}
-		public:
+
+		  public:
 			using container_type = ContainerType;
 			using iterator = typename container_type::iterator;
 			using const_iterator = typename container_type::const_iterator;
@@ -72,7 +73,7 @@ namespace daw {
 			}
 
 			template<typename... Args>
-			void emplace( iterator where, Args&&... args ) {
+			void emplace( iterator where, Args &&... args ) {
 				return derived( ).container( ).emplace( where, std::forward<Args>( args )... );
 			}
 
@@ -87,10 +88,11 @@ namespace daw {
 		///				Requires a member in Derived called container( ) that
 		///				returns the container
 		template<typename Derived, typename container_type>
-		class VectorLikeProxy: public ContainerProxy <Derived, container_type> {
-			using base_t = ContainerProxy <Derived, container_type> ;
-		public:
-			void push_back( typename base_t::value_type && value ) {
+		class VectorLikeProxy : public ContainerProxy<Derived, container_type> {
+			using base_t = ContainerProxy<Derived, container_type>;
+
+		  public:
+			void push_back( typename base_t::value_type &&value ) {
 				this->insert( this->end( ), std::move( value ) );
 			}
 
@@ -99,16 +101,16 @@ namespace daw {
 			}
 
 			template<typename... Args>
-			void emplace_back( Args&&... args ) {
+			void emplace_back( Args &&... args ) {
 				this->emplace( this->end( ), std::forward<Args>( args )... );
 			}
 
 			typename base_t::reference operator[]( typename base_t::size_type pos ) {
-				return *(this->begin( ) + pos);
+				return *( this->begin( ) + pos );
 			}
 
 			typename base_t::const_reference operator[]( typename base_t::size_type pos ) const {
-				return *(this->cbegin( ) + pos);
+				return *( this->cbegin( ) + pos );
 			}
 		};
 
@@ -119,9 +121,10 @@ namespace daw {
 		///				returns the container, find( ) that searches
 		///				for a key and key_type and mapped_type
 		template<typename Derived, typename MapType>
-		class MapLikeProxy: public ContainerProxy <Derived, MapType> {
-			using base_t = ContainerProxy <Derived, MapType> ;
-		public:
+		class MapLikeProxy : public ContainerProxy<Derived, MapType> {
+			using base_t = ContainerProxy<Derived, MapType>;
+
+		  public:
 			using key_type = typename MapType::key_type;
 			using mapped_type = typename MapType::mapped_type;
 
@@ -133,5 +136,5 @@ namespace daw {
 				return this->derived( ).find( key );
 			}
 		};
-	}	// namespace mixins
-}	// namespace daw
+	} // namespace mixins
+} // namespace daw

@@ -27,94 +27,91 @@
 namespace daw {
 	namespace parser {
 		template<typename ForwardIterator>
-			constexpr auto find_number( ForwardIterator first, ForwardIterator last ) {
-				using namespace daw::parser;
-				auto is_first = []( auto const & v ) {
-					return is_a( '-', v ) || is_number( v );
-				};
+		constexpr auto find_number( ForwardIterator first, ForwardIterator last ) {
+			using namespace daw::parser;
+			auto is_first = []( auto const &v ) { return is_a( '-', v ) || is_number( v ); };
 
-				bool has_decimal = false;
-				auto is_last = [&has_decimal]( auto const & v ) {
-					if( is_a( '.', v ) ) {
-						if( has_decimal ) {
-							return true;
-						}
-						has_decimal = true;
+			bool has_decimal = false;
+			auto is_last = [&has_decimal]( auto const &v ) {
+				if( is_a( '.', v ) ) {
+					if( has_decimal ) {
+						return true;
 					}
-					return is_number( v );
-				};
-				return from_to( first, last, is_first, is_last );
-			}
+					has_decimal = true;
+				}
+				return is_number( v );
+			};
+			return from_to( first, last, is_first, is_last );
+		}
 
 		template<typename ForwardIterator, typename Result>
-			constexpr void parse_unsigned_int( ForwardIterator first, ForwardIterator last, Result & result ) {
-				size_t count = std::numeric_limits<Result>::digits10;
+		constexpr void parse_unsigned_int( ForwardIterator first, ForwardIterator last, Result &result ) {
+			size_t count = std::numeric_limits<Result>::digits10;
 
-				if( '-' == *first ) {
-					throw ParserOutOfRangeException{ "Negative values are unsupported" };
-				}
-				result = 0;
-				for( ; first != last && count > 0; ++first, --count ) {
-					result *= static_cast<Result>(10);
-					Result val = *first - '0';
-					result += val; 
-				}
-				if( first != last ) {
-					throw ParserOutOfRangeException{ "Not enough room to store unsigned integer" };
-				}
+			if( '-' == *first ) {
+				throw ParserOutOfRangeException{"Negative values are unsupported"};
 			}
+			result = 0;
+			for( ; first != last && count > 0; ++first, --count ) {
+				result *= static_cast<Result>( 10 );
+				Result val = *first - '0';
+				result += val;
+			}
+			if( first != last ) {
+				throw ParserOutOfRangeException{"Not enough room to store unsigned integer"};
+			}
+		}
 
 		template<typename ForwardIterator, typename Result>
-			constexpr void parse_int( ForwardIterator first, ForwardIterator last, Result & result ) {
-				size_t count = std::numeric_limits<Result>::digits10;
-				result = 0;
-				bool is_neg = false;
-				if( '-' == *first ) {
-					if( !std::numeric_limits<Result>::is_signed ) {
-						throw ParserOutOfRangeException{ "Negative values are unsupported with unsigned Result" };
-					}
-					is_neg = true;
-					++first;
+		constexpr void parse_int( ForwardIterator first, ForwardIterator last, Result &result ) {
+			size_t count = std::numeric_limits<Result>::digits10;
+			result = 0;
+			bool is_neg = false;
+			if( '-' == *first ) {
+				if( !std::numeric_limits<Result>::is_signed ) {
+					throw ParserOutOfRangeException{"Negative values are unsupported with unsigned Result"};
 				}
-				for( ; first != last && count > 0; ++first, --count ) {
-					result *= static_cast<Result>(10);
-					Result val = *first - '0';
-					result += val; 
-				}
-				if( first != last ) {
-					throw ParserOutOfRangeException{ "Not enough room to store signed integer" };
-				}
-				if( is_neg ) {
-					result *= static_cast<Result>(-1);
-				}
+				is_neg = true;
+				++first;
 			}
+			for( ; first != last && count > 0; ++first, --count ) {
+				result *= static_cast<Result>( 10 );
+				Result val = *first - '0';
+				result += val;
+			}
+			if( first != last ) {
+				throw ParserOutOfRangeException{"Not enough room to store signed integer"};
+			}
+			if( is_neg ) {
+				result *= static_cast<Result>( -1 );
+			}
+		}
 
 		template<typename ForwardIterator>
-			auto parse_string_literal( ForwardIterator first, ForwardIterator const last ) {
-				auto result = left_trim( first, last );
-				auto quote_char = *first;
-				if( !is_quote( quote_char ) ) {
-					throw ParserException{ };
-				}
-				auto it = result.first;
-				auto last_it = it;
-				++it;
-				bool found = false;
-				while( it != last ) {
-					if( (found = is_a( *it, quote_char ) ) && !is_escape( *last_it )) {
-						break;
-					}
-					last_it = it++;
-				}
-				if( !found ) {	
-					throw ParserException{ };
-				}
-				++result.first;	// trim quote
-				result.last = it;
-				result.found = true;
-				return result;
+		auto parse_string_literal( ForwardIterator first, ForwardIterator const last ) {
+			auto result = left_trim( first, last );
+			auto quote_char = *first;
+			if( !is_quote( quote_char ) ) {
+				throw ParserException{};
 			}
+			auto it = result.first;
+			auto last_it = it;
+			++it;
+			bool found = false;
+			while( it != last ) {
+				if( ( found = is_a( *it, quote_char ) ) && !is_escape( *last_it ) ) {
+					break;
+				}
+				last_it = it++;
+			}
+			if( !found ) {
+				throw ParserException{};
+			}
+			++result.first; // trim quote
+			result.last = it;
+			result.found = true;
+			return result;
+		}
 
-	}    // namespace parser
-}    // namespace daw
-
+	} // namespace parser
+} // namespace daw

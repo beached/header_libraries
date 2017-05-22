@@ -29,13 +29,13 @@ struct A {
 
 	virtual ~A( );
 };
-A::~A( ) { }
+A::~A( ) {}
 
-struct B: public A {
+struct B : public A {
 	int b;
 };
 
 BOOST_AUTO_TEST_CASE( daw_poly_vector_01 ) {
 	daw::poly_vector_t<A> test;
-	test.push_back( B{ } );
+	test.push_back( B{} );
 }

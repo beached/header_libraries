@@ -22,75 +22,74 @@
 
 #pragma once
 
-#include <tuple>
-#include <utility>
 #include <ostream>
 #include <string>
+#include <tuple>
+#include <utility>
 
 namespace daw {
 	namespace tuple {
 		namespace detail {
 			template<typename T>
-			void do_nothing( T const & ) { }
+			void do_nothing( T const & ) {}
 
 			template<int... Is>
-			struct seq { };
+			struct seq {};
 
 			template<int N, int... Is>
-			struct gen_seq : gen_seq<N - 1, N - 1, Is...> { };
+			struct gen_seq : gen_seq<N - 1, N - 1, Is...> {};
 
 			template<int... Is>
-			struct gen_seq<0, Is...> : seq<Is...> { };
+			struct gen_seq<0, Is...> : seq<Is...> {};
 
 			template<typename T1, typename F, int... Is>
-			constexpr void for_each( T1 && t1, F && f, seq<Is...>) {
-				auto l = { (f( std::get<Is>(t1) ), 0)... };
+			constexpr void for_each( T1 &&t1, F &&f, seq<Is...> ) {
+				auto l = {( f( std::get<Is>( t1 ) ), 0 )...};
 				do_nothing( l );
 			}
 
 			struct min_t {
 				template<typename Result, typename A, typename B>
-				constexpr void operator( )( Result & result, A const & a, B const & b ) const {
+				constexpr void operator( )( Result &result, A const &a, B const &b ) const {
 					using std::min;
 					result = min( a, b );
 				}
 
-				static min_t const & get( ) {
-					static min_t result{ };
+				static min_t const &get( ) {
+					static min_t result{};
 					return result;
 				}
-			};	// min_t
+			}; // min_t
 
 			struct max_t {
 				template<typename Result, typename A, typename B>
-				constexpr void operator( )( Result & result, A const & a, B const & b ) const {
+				constexpr void operator( )( Result &result, A const &a, B const &b ) const {
 					using std::max;
 					result = max( a, b );
 				}
 
-				static max_t const & get( ) {
-					static max_t result{ };
+				static max_t const &get( ) {
+					static max_t result{};
 					return result;
 				}
-			};	// max_t
+			}; // max_t
 
 			using namespace std::literals::string_literals;
 
 			class print_t {
 				bool m_is_first;
 				char m_separator;
-				std::ostream & m_os;
-			public:
-				constexpr print_t( std::ostream & os, char separator = ',' ):
-					m_is_first{ true },
-					m_separator{ std::move( separator ) },
-					m_os{ os } { }
+				std::ostream &m_os;
+
+			  public:
+				constexpr print_t( std::ostream &os, char separator = ',' )
+				    : m_is_first{true}, m_separator{std::move( separator )}, m_os{os} {}
 
 				void reset( ) {
 					m_is_first = true;
 				}
 				template<typename T>
-				constexpr void operator( )( T const & v ) {
+				constexpr void operator( )( T const &v ) {
 					if( !m_is_first ) {
 						m_os << m_separator;
 					} else {
@@ -98,189 +97,188 @@ namespace daw {
 					}
 					m_os << " " << v;
 				}
-			};	// print_t
-		}	// namespace detail
+			}; // print_t
+		}      // namespace detail
 
 		template<typename... Ts, typename F>
-		constexpr void for_each( std::tuple<Ts...> const & t1, F && f ) {
-			detail::for_each( t1, std::forward<F>( f ), detail::gen_seq<sizeof...(Ts)>());
+		constexpr void for_each( std::tuple<Ts...> const &t1, F &&f ) {
+			detail::for_each( t1, std::forward<F>( f ), detail::gen_seq<sizeof...( Ts )>( ) );
 		}
 
 		template<typename... Ts, typename F>
-		constexpr void apply( std::tuple<Ts...> & t1, F && f ) {
-			detail::for_each( t1, std::forward<F>( f ), detail::gen_seq<sizeof...(Ts)>());
+		constexpr void apply( std::tuple<Ts...> &t1, F &&f ) {
+			detail::for_each( t1, std::forward<F>( f ), detail::gen_seq<sizeof...( Ts )>( ) );
 		}
 
 		namespace operators {
 			namespace detail {
 				template<typename Result, typename T1, typename T2, typename F, int... Is>
-				constexpr void apply_tuple( Result && result, T1 && op1, T2 && op2, F f, daw::tuple::detail::seq<Is...>) {
-					auto l = { (f( std::get<Is>(result), std::get<Is>(op1), std::get<Is>(op2) ), 0)... };
+				constexpr void apply_tuple( Result &&result, T1 &&op1, T2 &&op2, F f, daw::tuple::detail::seq<Is...> ) {
+					auto l = {( f( std::get<Is>( result ), std::get<Is>( op1 ), std::get<Is>( op2 ) ), 0 )...};
 					daw::tuple::detail::do_nothing( l );
 				}
 
 				template<typename Result, typename T1, typename T, typename F, int... Is>
-				constexpr void apply_value( Result && result, T1 && op1, T && op2, F f, daw::tuple::detail::seq<Is...>) {
-					auto l = { (f( std::get<Is>(result), std::get<Is>(op1), op2 ), 0)... };
+				constexpr void apply_value( Result &&result, T1 &&op1, T &&op2, F f, daw::tuple::detail::seq<Is...> ) {
+					auto l = {( f( std::get<Is>( result ), std::get<Is>( op1 ), op2 ), 0 )...};
 					daw::tuple::detail::do_nothing( l );
 				}
 
 				template<typename Result, typename T1, typename T, typename F, int... Is>
-				constexpr void apply_value2( Result && result, T1 && op1, T && op2, F f, daw::tuple::detail::seq<Is...>) {
-					auto l = { (f( std::get<Is>(result), op1, std::get<Is>(op2) ), 0)... };
+				constexpr void apply_value2( Result &&result, T1 &&op1, T &&op2, F f, daw::tuple::detail::seq<Is...> ) {
+					auto l = {( f( std::get<Is>( result ), op1, std::get<Is>( op2 ) ), 0 )...};
 					daw::tuple::detail::do_nothing( l );
 				}
 
 				template<typename... Ts, typename F>
-				constexpr std::tuple<Ts...> apply_tuple_tuple( std::tuple<Ts...> const & op1, std::tuple<Ts...> const & op2, F f ) {
+				constexpr std::tuple<Ts...> apply_tuple_tuple( std::tuple<Ts...> const &op1,
+				                                               std::tuple<Ts...> const &op2, F f ) {
 					std::tuple<Ts...> result;
-					apply_tuple(result, op1, op2, f, daw::tuple::detail::gen_seq<sizeof...(Ts)>());
+					apply_tuple( result, op1, op2, f, daw::tuple::detail::gen_seq<sizeof...( Ts )>( ) );
 					return result;
 				}
 
 				template<typename... Ts, typename T, typename F>
-				constexpr std::tuple<Ts...> apply_tuple_value2( T const & op1, std::tuple<Ts...> const & op2, F f ) {
+				constexpr std::tuple<Ts...> apply_tuple_value2( T const &op1, std::tuple<Ts...> const &op2, F f ) {
 					std::tuple<Ts...> result;
-					apply_value2(result, op1, op2, f, daw::tuple::detail::gen_seq<sizeof...(Ts)>());
+					apply_value2( result, op1, op2, f, daw::tuple::detail::gen_seq<sizeof...( Ts )>( ) );
 					return result;
 				}
 
 				template<typename... Ts, typename T, typename F>
-				constexpr std::tuple<Ts...> apply_tuple_value( std::tuple<Ts...> const & op1, T const & op2, F f ) {
+				constexpr std::tuple<Ts...> apply_tuple_value( std::tuple<Ts...> const &op1, T const &op2, F f ) {
 					std::tuple<Ts...> result;
-					apply_value(result, op1, op2, f, daw::tuple::detail::gen_seq<sizeof...(Ts)>());
+					apply_value( result, op1, op2, f, daw::tuple::detail::gen_seq<sizeof...( Ts )>( ) );
 					return result;
 				}
 
 				struct add_t {
 					template<typename Result, typename Lhs, typename Rhs>
-					constexpr void operator( )( Result & result, Lhs const & lhs, Rhs const & rhs ) const {
-						result = lhs+rhs;
+					constexpr void operator( )( Result &result, Lhs const &lhs, Rhs const &rhs ) const {
+						result = lhs + rhs;
 					}
 
-					static add_t const & get( ) {
-						static add_t result{ };
+					static add_t const &get( ) {
+						static add_t result{};
 						return result;
 					}
-				};	// add_t
+				}; // add_t
 
 				struct sub_t {
-				template<typename Result, typename Lhs, typename Rhs>
-					constexpr void operator( )( Result & result, Lhs const & lhs, Rhs const & rhs ) const {
-						result = lhs-rhs;
+					template<typename Result, typename Lhs, typename Rhs>
+					constexpr void operator( )( Result &result, Lhs const &lhs, Rhs const &rhs ) const {
+						result = lhs - rhs;
 					}
 
-					static sub_t const & get( ) {
-						static sub_t result{ };
+					static sub_t const &get( ) {
+						static sub_t result{};
 						return result;
 					}
-				};	// sub_t
+				}; // sub_t
 
 				struct mul_t {
-				template<typename Result, typename Lhs, typename Rhs>
-					constexpr void operator( )( Result & result, Lhs const & lhs, Rhs const & rhs ) const {
-						result = lhs*rhs;
+					template<typename Result, typename Lhs, typename Rhs>
+					constexpr void operator( )( Result &result, Lhs const &lhs, Rhs const &rhs ) const {
+						result = lhs * rhs;
 					}
 
-					static mul_t const & get( ) {
-						static mul_t result{ };
+					static mul_t const &get( ) {
+						static mul_t result{};
 						return result;
 					}
-				};	// mul_t
+				}; // mul_t
 
 				struct div_t {
 					template<typename Result, typename Lhs, typename Rhs>
-					constexpr void operator( )( Result & result, Lhs const & lhs, Rhs const & rhs ) const {
-						result = lhs/rhs;
+					constexpr void operator( )( Result &result, Lhs const &lhs, Rhs const &rhs ) const {
+						result = lhs / rhs;
 					}
 
-					static div_t const & get( ) {
-						static div_t result{ };
+					static div_t const &get( ) {
+						static div_t result{};
 						return result;
 					}
-				};	// div_t
-			}	// namespace detail
+				}; // div_t
+			}      // namespace detail
 
 			template<typename... Op1, typename... Op2>
-			constexpr std::tuple<Op1...> operator+( std::tuple<Op1...> const & lhs, std::tuple<Op2...> const & rhs ) {
+			constexpr std::tuple<Op1...> operator+( std::tuple<Op1...> const &lhs, std::tuple<Op2...> const &rhs ) {
 				return detail::apply_tuple_tuple( lhs, rhs, detail::add_t::get( ) );
 			}
 
 			template<typename... Op1, typename T>
-			constexpr std::tuple<Op1...> operator+( T const & lhs, std::tuple<Op1...> const & rhs ) {
+			constexpr std::tuple<Op1...> operator+( T const &lhs, std::tuple<Op1...> const &rhs ) {
 				return detail::apply_tuple_value2( lhs, rhs, detail::add_t::get( ) );
 			}
 
 			template<typename... Op1, typename T>
-			constexpr std::tuple<Op1...> operator+( std::tuple<Op1...> const & lhs, T const & rhs ) {
+			constexpr std::tuple<Op1...> operator+( std::tuple<Op1...> const &lhs, T const &rhs ) {
 				return detail::apply_tuple_value( lhs, rhs, detail::add_t::get( ) );
 			}
 
 			template<typename... Op1, typename... Op2>
-			constexpr std::tuple<Op1...> operator-( std::tuple<Op1...> const & lhs, std::tuple<Op2...> const & rhs ) {
+			constexpr std::tuple<Op1...> operator-( std::tuple<Op1...> const &lhs, std::tuple<Op2...> const &rhs ) {
 				return detail::apply_tuple_tuple( lhs, rhs, detail::sub_t::get( ) );
 			}
 
 			template<typename... Op1, typename T>
-			constexpr std::tuple<Op1...> operator-( T const & lhs, std::tuple<Op1...> const & rhs ) {
+			constexpr std::tuple<Op1...> operator-( T const &lhs, std::tuple<Op1...> const &rhs ) {
 				return detail::apply_tuple_value2( lhs, rhs, detail::sub_t::get( ) );
 			}
 
 			template<typename... Op1, typename T>
-			constexpr std::tuple<Op1...> operator-( std::tuple<Op1...> const & lhs, T const & rhs ) {
+			constexpr std::tuple<Op1...> operator-( std::tuple<Op1...> const &lhs, T const &rhs ) {
 				return detail::apply_tuple_value( lhs, rhs, detail::sub_t::get( ) );
 			}
 
-
 			template<typename... Op1, typename... Op2>
-			constexpr std::tuple<Op1...> operator*( std::tuple<Op1...> const & lhs, std::tuple<Op2...> const & rhs ) {
+			constexpr std::tuple<Op1...> operator*( std::tuple<Op1...> const &lhs, std::tuple<Op2...> const &rhs ) {
 				return detail::apply_tuple_tuple( lhs, rhs, detail::mul_t::get( ) );
 			}
 
 			template<typename... Op1, typename T>
-			constexpr std::tuple<Op1...> operator*( T const & lhs, std::tuple<Op1...> const & rhs ) {
+			constexpr std::tuple<Op1...> operator*( T const &lhs, std::tuple<Op1...> const &rhs ) {
 				return detail::apply_tuple_value2( lhs, rhs, detail::mul_t::get( ) );
 			}
 
 			template<typename... Op1, typename T>
-			constexpr std::tuple<Op1...> operator*( std::tuple<Op1...> const & lhs, T const & rhs ) {
+			constexpr std::tuple<Op1...> operator*( std::tuple<Op1...> const &lhs, T const &rhs ) {
 				return detail::apply_tuple_value( lhs, rhs, detail::mul_t::get( ) );
 			}
 
 			template<typename... Op1, typename... Op2>
-			constexpr std::tuple<Op1...> operator/( std::tuple<Op1...> const & lhs, std::tuple<Op2...> const & rhs ) {
+			constexpr std::tuple<Op1...> operator/( std::tuple<Op1...> const &lhs, std::tuple<Op2...> const &rhs ) {
 				return detail::apply_tuple_tuple( lhs, rhs, detail::div_t::get( ) );
 			}
 
 			template<typename... Op1, typename T>
-			constexpr std::tuple<Op1...> operator/( T const & lhs, std::tuple<Op1...> const & rhs ) {
+			constexpr std::tuple<Op1...> operator/( T const &lhs, std::tuple<Op1...> const &rhs ) {
 				return detail::apply_tuple_value2( lhs, rhs, detail::div_t::get( ) );
 			}
 
 			template<typename... Op1, typename T>
-			constexpr std::tuple<Op1...> operator/( std::tuple<Op1...> const & lhs, T const & rhs ) {
+			constexpr std::tuple<Op1...> operator/( std::tuple<Op1...> const &lhs, T const &rhs ) {
 				return detail::apply_tuple_value( lhs, rhs, detail::div_t::get( ) );
 			}
-		}	// namespace operators
+		} // namespace operators
 
 		template<typename... Ts>
-		constexpr std::ostream & operator<<( std::ostream & os, std::tuple<Ts...> const & t ) {
+		constexpr std::ostream &operator<<( std::ostream &os, std::tuple<Ts...> const &t ) {
 			os << "{";
-			for_each( t, detail::print_t{ os } );
+			for_each( t, detail::print_t{os} );
 			os << " }";
 			return os;
 		}
 
 		template<typename... Ts>
-		constexpr auto min( std::tuple<Ts...> const & a, std::tuple<Ts...> const & b ) {
+		constexpr auto min( std::tuple<Ts...> const &a, std::tuple<Ts...> const &b ) {
 			return operators::detail::apply_tuple_tuple( a, b, daw::tuple::detail::min_t::get( ) );
 		}
 
 		template<typename... Ts>
-		constexpr auto max( std::tuple<Ts...> const & a, std::tuple<Ts...> const & b ) {
+		constexpr auto max( std::tuple<Ts...> const &a, std::tuple<Ts...> const &b ) {
 			return operators::detail::apply_tuple_tuple( a, b, daw::tuple::detail::max_t::get( ) );
 		}
 
-	}	// namespace tuple
-}    // namespace daw
-
+	} // namespace tuple
+} // namespace daw

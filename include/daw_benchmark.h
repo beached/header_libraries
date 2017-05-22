@@ -26,12 +26,11 @@
 
 namespace daw {
 	template<typename F>
-		double benchmark( F func ) {
-			auto start = std::chrono::system_clock::now( );
-			func( );
-			auto finish = std::chrono::system_clock::now( );
-			std::chrono::duration<double> duration = finish - start;
-			return duration.count( ); 
-		}
-}    // namespace daw
-
+	double benchmark( F func ) {
+		auto start = std::chrono::system_clock::now( );
+		func( );
+		auto finish = std::chrono::system_clock::now( );
+		std::chrono::duration<double> duration = finish - start;
+		return duration.count( );
+	}
+} // namespace daw

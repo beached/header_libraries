@@ -27,10 +27,10 @@
 
 BOOST_AUTO_TEST_CASE( daw_safe_string_test_01 ) {
 	auto s = daw::make_safe_string( "This is an \\ \"unsafe string", []( auto un ) {
-		for( auto & c: un ) {
+		for( auto &c : un ) {
 			switch( c ) {
 			case '"':
-			case '\\': 
+			case '\\':
 				c = '#';
 				break;
 			}
@@ -39,4 +39,3 @@ BOOST_AUTO_TEST_CASE( daw_safe_string_test_01 ) {
 	} );
 	std::cout << s.get( ) << std::endl;
 }
-
