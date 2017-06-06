@@ -159,7 +159,7 @@ namespace daw {
 			return size( ) == capacity( );
 		}
 
-		constexpr value_type pop_front( size_t num_nibbles = sizeof( value_type ) * 2 ) noexcept {
+		value_type pop_front( size_t num_nibbles = sizeof( value_type ) * 2 ) noexcept {
 			return m_queue.pop_front( num_nibbles * 4 );
 		}
 
