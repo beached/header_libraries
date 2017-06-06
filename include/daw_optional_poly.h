@@ -34,7 +34,7 @@
 namespace daw {
 	template<class ValueType>
 	struct optional_poly {
-		using value_type = std::remove_cv_t<std::remove_reference_t<ValueType>>;
+		using value_type = std::decay_t<ValueType>;
 		using reference = value_type &;
 		using const_reference = value_type const &;
 		using pointer = value_type *;
@@ -46,7 +46,7 @@ namespace daw {
 		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
 		                                                 std::is_same<value_type, T>::value>>
 		static T *make_copy( T *ptr ) {
-			using v_t = std::remove_cv_t<std::remove_reference_t<T>>;
+			using v_t = std::decay_t<T>;
 			return new v_t{*ptr};
 		}
 
@@ -63,8 +63,7 @@ namespace daw {
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
 		                                                 std::is_same<value_type, T>::value>>
-		optional_poly( T &&value )
-		    : m_value{new std::remove_cv_t<std::remove_reference_t<T>>( std::forward<T>( value ) )} {}
+		optional_poly( T &&value ) : m_value{new std::decay_t<T>{std::forward<T>( value )}} {}
 
 		optional_poly( optional_poly const &other ) : m_value{make_copy( other.m_value.get( ) )} {}
 
@@ -104,8 +103,7 @@ namespace daw {
 		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
 		                                                 std::is_same<value_type, T>::value>>
 		optional_poly &operator=( T const &value ) {
-			using v_t = std::remove_cv_t<std::remove_reference_t<T>>;
-			m_value.reset( new v_t{value} );
+			m_value.reset( new value_type{value} );
 			return *this;
 		}
 
