@@ -46,6 +46,9 @@ namespace daw {
 		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
 		                                                 std::is_same<value_type, T>::value>>
 		static T *make_copy( T *ptr ) {
+			if( !ptr ) {
+				return nullptr;
+			}
 			using v_t = std::decay_t<T>;
 			return new v_t{*ptr};
 		}
