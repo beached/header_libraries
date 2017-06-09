@@ -58,7 +58,7 @@ set( UNTESTED_HEADER_FILES
 	daw_common_mixins.h
 	daw_exception.h
 	daw_fnv1a_hash.h
-	daw_iterator.h
+	daw_function_iterator.h
 	daw_locked_stack.h
 	daw_newhelper.h
 	daw_operators.h
