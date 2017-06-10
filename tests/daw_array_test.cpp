@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2014-2017 Darrell Wright
+// Copyright (c) 2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to deal
@@ -22,13 +22,27 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include "daw_heap_array.h"
+#include <algorithm>
+#include <cstdint>
+#include <cstdlib>
+#include <iostream>
+
+#include "daw_array.h"
 
 using namespace std::literals::string_literals;
 
-BOOST_AUTO_TEST_CASE( daw_heap_array_testing ) {
-	daw::array<int> t = {1, 2, 3, 4, 5, 6};
-
-	auto pos = t.find_first_of( 4 );
+BOOST_AUTO_TEST_CASE( make_array_testing ) {
+	auto const t = daw::make_array( 1, 2, 3, 4, 5, 6 );
+	
+	auto pos = std::find( t.begin( ), t.end( ), 4 );
 	assert( *pos == 4 );
 }
+
+BOOST_AUTO_TEST_CASE( to_array_testing ) {
+	int s[] = { 1, 2, 3, 4, 5, 6 }; 
+
+	auto const t = daw::to_array( s );
+	auto pos = std::find( t.begin( ), t.end( ), 4 );
+	assert( *pos == 4 );
+}
+

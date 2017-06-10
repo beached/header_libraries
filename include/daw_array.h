@@ -22,6 +22,11 @@
 
 #pragma once
 
+#include <array>
+#include <functional>
+#include <type_traits>
+#include <utility>
+
 namespace daw {
 	namespace detail {
 		template<class T, std::size_t N, std::size_t... I>
@@ -35,6 +40,24 @@ namespace daw {
 		return detail::to_array_impl( a, std::make_index_sequence<N>{} );
 	}
 
+	template<class B>
+	struct negation : std::integral_constant<bool, !bool( B::value )> {};
+
+	template<class...>
+	struct conjunction : std::true_type {};
+
+	template<class B1>
+	struct conjunction<B1> : B1 {};
+
+	template<class B1, class... Bn>
+	struct conjunction<B1, Bn...> : std::conditional_t<bool( B1::value ), conjunction<Bn...>, B1> {};
+
+	template<typename... T>
+	using conjunction_t = typename conjunction<T...>::type;
+
+	template<typename... T>
+	constexpr auto const conjunction_v = conjunction<T...>::value;
+
 	namespace details {
 		template<class>
 		struct is_ref_wrapper : std::false_type {};
@@ -43,7 +66,7 @@ namespace daw {
 		struct is_ref_wrapper<std::reference_wrapper<T>> : std::true_type {};
 
 		template<class T>
-		using not_ref_wrapper = std::experimental::negation<is_ref_wrapper<std::decay_t<T>>>;
+		using not_ref_wrapper = negation<is_ref_wrapper<std::decay_t<T>>>;
 
 		template<class D, class...>
 		struct return_type_helper {
@@ -51,7 +74,7 @@ namespace daw {
 		};
 		template<class... Types>
 		struct return_type_helper<void, Types...> : std::common_type<Types...> {
-			static_assert( std::experimental::conjunction_v<not_ref_wrapper<Types>...>,
+			static_assert( conjunction_v<not_ref_wrapper<Types>...>,
 			               "Types cannot contain reference_wrappers when D is void" );
 		};
 
