@@ -23,7 +23,6 @@ include_directories( ${HEADER_FOLDER} )
 
 set( TESTED_HEADERS_PREFIXES
 	daw_algorithm
-	daw_array
 	daw_bit_queues
 	daw_bounded_stack
 	daw_benchmark
@@ -32,6 +31,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_cstring
 	daw_expected
 	daw_hash_table
+	daw_heap_array
 	daw_heap_value
 	daw_math
 	daw_memory_address
@@ -53,6 +53,7 @@ set( TESTED_HEADERS_PREFIXES
 
 set( UNTESTED_HEADER_FILES
 	concurrent_queue.h
+	daw_array.h
 	daw_bit.h
 	daw_bit_stream.h
 	daw_common_mixins.h

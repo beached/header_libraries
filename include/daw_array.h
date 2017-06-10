@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2013-2016 Darrell Wright
+// Copyright (c) 2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to deal
@@ -22,193 +22,45 @@
 
 #pragma once
 
-#include <algorithm>
-#include <stdexcept>
-#include <utility>
-
 namespace daw {
-	template<typename T>
-	struct array {
-		using value_type = T;
-		using reference = T &;
-		using const_reference = T const &;
-		using iterator = T *;
-		using const_iterator = T const *;
-
-	  private:
-		value_type *m_begin;
-		value_type *m_end;
-		size_t m_size;
-
-	  public:
-		array( ) noexcept : m_begin{nullptr}, m_end{nullptr}, m_size{0} {}
-
-		array( size_t Size ) : m_begin{new value_type[Size + 1]}, m_end{m_begin + Size}, m_size{Size} {}
-
-		array( size_t Size, value_type def_value )
-		    : m_begin{new value_type[Size]}, m_end{m_begin + Size}, m_size{Size} {
-
-			std::fill( m_begin, m_end, def_value );
+	namespace detail {
+		template<class T, std::size_t N, std::size_t... I>
+		constexpr std::array<std::remove_cv_t<T>, N> to_array_impl( T ( &a )[N], std::index_sequence<I...> ) {
+			return {{a[I]...}};
 		}
+	} // namespace detail
 
-		array( array &&other ) noexcept
-		    : m_begin{std::exchange( other.m_begin, nullptr )}
-		    , m_end{std::exchange( other.m_end, nullptr )}
-		    , m_size{std::exchange( other.m_size, 0 )} {}
+	template<class T, std::size_t N>
+	constexpr std::array<std::remove_cv_t<T>, N> to_array( T ( &a )[N] ) {
+		return detail::to_array_impl( a, std::make_index_sequence<N>{} );
+	}
 
-		void swap( array &rhs ) noexcept {
-			using std::swap;
-			swap( m_begin, rhs.m_begin );
-			swap( m_end, rhs.m_end );
-			swap( m_size, rhs.m_size );
-		}
+	namespace details {
+		template<class>
+		struct is_ref_wrapper : std::false_type {};
 
-		array &operator=( array &&rhs ) noexcept {
-			if( this != &rhs ) {
-				m_begin = std::exchange( rhs.m_begin, nullptr );
-				m_end = std::exchange( rhs.m_end, nullptr );
-				m_size = std::exchange( rhs.m_size, 0 );
-			}
-			return *this;
-		}
+		template<class T>
+		struct is_ref_wrapper<std::reference_wrapper<T>> : std::true_type {};
 
-		array( array const &other )
-		    : m_begin{other.m_size == 0 ? nullptr : new value_type[other.m_size]}
-		    , m_end{other.m_size == 0 ? nullptr : m_begin + other.m_size}
-		    , m_size{other.m_size} {
+		template<class T>
+		using not_ref_wrapper = std::experimental::negation<is_ref_wrapper<std::decay_t<T>>>;
 
-			std::copy_n( other.m_begin, m_size, m_begin );
-		}
+		template<class D, class...>
+		struct return_type_helper {
+			using type = D;
+		};
+		template<class... Types>
+		struct return_type_helper<void, Types...> : std::common_type<Types...> {
+			static_assert( std::experimental::conjunction_v<not_ref_wrapper<Types>...>,
+			               "Types cannot contain reference_wrappers when D is void" );
+		};
 
-		array &operator=( array const &rhs ) {
-			if( this != &rhs ) {
-				array tmp{rhs};
-				tmp.swap( *this );
-			}
-			return *this;
-		}
+		template<class D, class... Types>
+		using return_type = std::array<typename return_type_helper<D, Types...>::type, sizeof...( Types )>;
+	} // namespace details
 
-		array( std::initializer_list<value_type> values ) : array( values.size( ) ) {
-
-			std::copy_n( values.begin( ), values.size( ), m_begin );
-		}
-
-		array &operator=( std::initializer_list<value_type> values ) {
-			array tmp{values.size( )};
-			std::copy( values.begin( ), values.end( ), tmp.begin( ), tmp.end( ) );
-			using std::swap;
-			swap( *this, tmp );
-			return *this;
-		}
-
-		array( iterator arry, size_t Size ) : m_begin{new value_type[Size]}, m_end{m_begin + Size}, m_size{Size} {
-
-			std::copy_n( arry, Size, m_begin );
-		}
-
-		~array( ) {
-			if( nullptr != m_begin ) {
-				auto tmp = m_begin;
-				m_begin = nullptr;
-				m_end = nullptr;
-				m_size = 0;
-				delete[] tmp;
-			}
-		}
-
-		explicit operator bool( ) const noexcept {
-			return nullptr == m_begin;
-		}
-
-		size_t size( ) const noexcept {
-			return m_size;
-		}
-
-		bool empty( ) const noexcept {
-			return m_begin == m_end;
-		}
-
-		iterator begin( ) noexcept {
-			return m_begin;
-		}
-
-		const_iterator begin( ) const noexcept {
-			return m_begin;
-		}
-
-		const_iterator cbegin( ) const noexcept {
-			return m_begin;
-		}
-
-		iterator end( ) noexcept {
-			return m_end;
-		}
-
-		const_iterator end( ) const noexcept {
-			return m_end;
-		}
-
-		const_iterator cend( ) const noexcept {
-			return m_end;
-		}
-
-		reference operator[]( size_t pos ) {
-			return *( m_begin + pos );
-		}
-
-		const_reference operator[]( size_t pos ) const {
-			return *( m_begin + pos );
-		}
-
-		reference at( size_t pos ) {
-			if( !( pos < m_size ) ) {
-				throw std::out_of_range( "position is beyond end of array" );
-			}
-			return operator[]( pos );
-		}
-
-		const_reference at( size_t pos ) const {
-			if( !( pos < m_size ) ) {
-				throw std::out_of_range( "position is beyond end of array" );
-			}
-			return operator[]( pos );
-		}
-
-		reference front( ) {
-			return *m_begin;
-		}
-
-		const_reference front( ) const {
-			return *m_begin;
-		}
-
-		reference back( ) {
-			auto tmp = m_end;
-			--tmp;
-			return *tmp;
-		}
-
-		const_reference back( ) const {
-			auto tmp = m_end;
-			--tmp;
-			return *tmp;
-		}
-
-		iterator find_first_of( const_reference value, const_iterator start_at ) const {
-			*m_end = value;
-			while( *start_at != value ) {
-				++start_at;
-			}
-			return const_cast<iterator>( start_at );
-		}
-
-		iterator find_first_of( const_reference value ) const {
-			return find_first_of( value, cbegin( ) );
-		}
-	}; // struct array
-
-	template<typename T>
-	void swap( daw::array<T> &lhs, daw::array<T> &rhs ) noexcept {
-		lhs.swap( rhs );
+	template<class D = void, class... Types>
+	constexpr details::return_type<D, Types...> make_array( Types &&... t ) {
+		return {std::forward<Types>( t )...};
 	}
 } // namespace daw
