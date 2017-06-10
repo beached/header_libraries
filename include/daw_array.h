@@ -24,32 +24,33 @@
 
 #include <array>
 #include <functional>
+#include <string>
 #include <type_traits>
 #include <utility>
 
 namespace daw {
 	namespace detail {
-		template<class T, std::size_t N, std::size_t... I>
+		template<typename T, std::size_t N, std::size_t... I>
 		constexpr std::array<std::remove_cv_t<T>, N> to_array_impl( T ( &a )[N], std::index_sequence<I...> ) {
 			return {{a[I]...}};
 		}
 	} // namespace detail
 
-	template<class T, std::size_t N>
+	template<typename T, std::size_t N>
 	constexpr std::array<std::remove_cv_t<T>, N> to_array( T ( &a )[N] ) {
 		return detail::to_array_impl( a, std::make_index_sequence<N>{} );
 	}
 
-	template<class B>
+	template<typename B>
 	struct negation : std::integral_constant<bool, !bool( B::value )> {};
 
-	template<class...>
+	template<typename...>
 	struct conjunction : std::true_type {};
 
-	template<class B1>
+	template<typename B1>
 	struct conjunction<B1> : B1 {};
 
-	template<class B1, class... Bn>
+	template<typename B1, typename... Bn>
 	struct conjunction<B1, Bn...> : std::conditional_t<bool( B1::value ), conjunction<Bn...>, B1> {};
 
 	template<typename... T>
@@ -59,31 +60,37 @@ namespace daw {
 	constexpr auto const conjunction_v = conjunction<T...>::value;
 
 	namespace details {
-		template<class>
+		template<typename>
 		struct is_ref_wrapper : std::false_type {};
 
-		template<class T>
+		template<typename T>
 		struct is_ref_wrapper<std::reference_wrapper<T>> : std::true_type {};
 
-		template<class T>
+		template<typename T>
 		using not_ref_wrapper = negation<is_ref_wrapper<std::decay_t<T>>>;
 
-		template<class D, class...>
+		template<typename D, typename...>
 		struct return_type_helper {
 			using type = D;
 		};
-		template<class... Types>
+		template<typename... Types>
 		struct return_type_helper<void, Types...> : std::common_type<Types...> {
 			static_assert( conjunction_v<not_ref_wrapper<Types>...>,
 			               "Types cannot contain reference_wrappers when D is void" );
 		};
 
-		template<class D, class... Types>
+		template<typename D, typename... Types>
 		using return_type = std::array<typename return_type_helper<D, Types...>::type, sizeof...( Types )>;
 	} // namespace details
 
-	template<class D = void, class... Types>
+	template<typename D = void, typename... Types>
 	constexpr details::return_type<D, Types...> make_array( Types &&... t ) {
 		return {std::forward<Types>( t )...};
 	}
+
+	template<typename... T>
+	constexpr decltype(auto) make_string_array( T &&... t ) {
+		return make_array(std::string{std::forward<T>( t )}...);
+	}
+
 } // namespace daw

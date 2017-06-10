@@ -46,3 +46,12 @@ BOOST_AUTO_TEST_CASE( to_array_testing ) {
 	assert( *pos == 4 );
 }
 
+BOOST_AUTO_TEST_CASE( make_string_array_testing ) {
+	auto const t = daw::make_string_array( "1", "2", "3", "4", "5", "6" );
+	
+	auto pos = std::find( t.begin( ), t.end( ), "4" );
+	assert( pos->size( ) == 1 );
+	assert( *pos == "4" );
+}
+
+
