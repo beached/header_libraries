@@ -100,7 +100,7 @@ namespace daw {
 
 		template<typename DelimFunction, typename CharT = char, typename Traits = std::char_traits<CharT>,
 		         typename Allocator = std::allocator<CharT>>
-		auto split_if( boost::basic_stringview<CharT, Traits, Allocator> sv, DelimFunction is_delim ) {
+		auto split_if( boost::basic_string_view<CharT, Traits, Allocator> sv, DelimFunction is_delim ) {
 			std::vector<std::basic_string<CharT, Traits, Allocator>> result;
 
 			auto pos = sv.cbegin( );
