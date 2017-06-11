@@ -98,15 +98,16 @@ namespace daw {
 			return elems;
 		}
 
-		template<typename DelimFunction, typename CharT = char, typename Traits = std::char_traits<CharT>>
-		auto split_if( boost::basic_string_view<CharT, Traits> sv, DelimFunction is_delim ) {
-			std::vector<std::basic_string<CharT, Traits, Allocator>> result;
-
-			auto pos = sv.cbegin( );
-			auto find_iter = find_if( pos, sv.end( ), is_delim );
+		template<typename String, typename Predicate>
+		auto split_if( String const & sv, Predicate is_delim ) {
+			using string_t = std::decay_t<String>;
+			std::vector<string_t> result;
+			auto pos = sv.begin( );
+			auto find_iter =
+			    find_if( pos, sv.end( ), [is_delim]( auto const &c ) { return static_cast<bool>( is_delim( c ) ); } );
 			while( true ) {
-				result.emplace_back( iter, find_iter );
-				if( find_iter == sv.cend( ) ) {
+				result.emplace_back( pos, find_iter );
+				if( find_iter == sv.end( ) ) {
 					break;
 				}
 				pos = ++find_iter;

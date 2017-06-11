@@ -45,6 +45,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_range
 	daw_read_only
 	daw_safe_string
+	daw_string
 	daw_traits
 	daw_tuple_helper
 	daw_utility
@@ -72,7 +73,6 @@ set( UNTESTED_HEADER_FILES
 	daw_range_type.h
 	daw_reference.h
 	daw_semaphore.h
-	daw_string.h
 	daw_zipcontainer.h
 	daw_zipiter.h
 	cpp_17.h
