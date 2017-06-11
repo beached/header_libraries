@@ -46,14 +46,14 @@
 namespace daw {
 	namespace string {
 		namespace details {
-			using string_t = ::std::string;
+			using string_t = std::string;
 		}
 	} // namespace string
 } // namespace daw
 
-template<typename CharT, typename Traits = ::std::char_traits<CharT>>
-void clear(::std::basic_stringstream<CharT, Traits> &ss ) {
-	ss.str(::std::basic_string<CharT, Traits>{} );
+template<typename CharT, typename Traits = std::char_traits<CharT>>
+void clear(std::basic_stringstream<CharT, Traits> &ss ) {
+	ss.str(std::basic_string<CharT, Traits>{} );
 	ss.clear( );
 }
 
@@ -73,29 +73,47 @@ namespace daw {
 				result.reserve( sizeof...( args ) + 1 );
 				result.emplace_back( boost::lexical_cast<details::string_t>( arg ) );
 				auto result2 = unknowns_to_string( args... );
-				result.insert(::std::end( result ), ::std::begin( result2 ), ::std::end( result2 ) );
+				result.insert(std::end( result ), std::begin( result2 ), std::end( result2 ) );
 				return result;
 			}
 		} // namespace details
 
-		template<typename Delim, typename CharT = char, typename Traits = ::std::char_traits<CharT>,
-		         typename Allocator = ::std::allocator<CharT>>
-		auto &split(::std::basic_string<CharT, Traits, Allocator> const &s, Delim delim,
-		            ::std::vector<std::basic_string<CharT, Traits, Allocator>> &elems ) {
+		template<typename Delim, typename CharT = char, typename Traits = std::char_traits<CharT>,
+		         typename Allocator = std::allocator<CharT>>
+		auto &split(std::basic_string<CharT, Traits, Allocator> const &s, Delim delim,
+		            std::vector<std::basic_string<CharT, Traits, Allocator>> &elems ) {
 			std::basic_stringstream<CharT, Traits> ss( s );
 			std::basic_string<CharT, Traits, Allocator> item;
-			while(::std::getline( ss, item, delim ) ) {
+			while(std::getline( ss, item, delim ) ) {
 				elems.push_back( item );
 			}
 			return elems;
 		}
 
-		template<typename Delim, typename CharT = char, typename Traits = ::std::char_traits<CharT>,
-		         typename Allocator = ::std::allocator<CharT>>
-		auto split(::std::basic_string<CharT, Traits, Allocator> const &s, Delim delim ) {
+		template<typename Delim, typename CharT = char, typename Traits = std::char_traits<CharT>,
+		         typename Allocator = std::allocator<CharT>>
+		auto split(std::basic_string<CharT, Traits, Allocator> const &s, Delim delim ) {
 			std::vector<std::basic_string<CharT, Traits, Allocator>> elems;
 			split( s, delim, elems );
 			return elems;
+		}
+
+		template<typename DelimFunction, typename CharT = char, typename Traits = std::char_traits<CharT>,
+		         typename Allocator = std::allocator<CharT>>
+		auto split_if( boost::basic_stringview<CharT, Traits, Allocator> sv, DelimFunction is_delim ) {
+			std::vector<std::basic_string<CharT, Traits, Allocator>> result;
+
+			auto pos = sv.cbegin( );
+			auto find_iter = find_if( pos, sv.end( ), is_delim );
+			while( true ) {
+				result.emplace_back( iter, find_iter );
+				if( find_iter == sv.cend( ) ) {
+					break;
+				}
+				pos = ++find_iter;
+				find_iter = find_if( pos, sv.end( ), is_delim );
+			}
+			return result;
 		}
 
 		template<typename Arg>
@@ -158,11 +176,11 @@ namespace daw {
 		template<typename Arg, typename... Args>
 		details::string_t fmt( details::string_t format, Arg arg, Args... args ) {
 			std::regex const reg( R"^(\{(\d+(:\d)*)\})^" );
-			static ::std::stringstream ss;
+			static std::stringstream ss;
 			clear( ss );
 			auto const arguments = details::unknowns_to_string( arg, args... );
 			std::smatch sm;
-			while(::std::regex_search( format, sm, reg ) ) {
+			while(std::regex_search( format, sm, reg ) ) {
 				auto const &prefix = sm.prefix( ).str( );
 				ss << prefix;
 				if( ends_with( prefix, "{" ) ) {
@@ -178,7 +196,7 @@ namespace daw {
 						ss << std::fixed << std::setprecision( precision )
 						   << boost::lexical_cast<double>( arguments[pos] );
 					} else {
-						throw ::std::out_of_range(
+						throw std::out_of_range(
 						    fmt( "Unknown string format.  Too many colons(", delims.size( ), "): ", sm[1].str( ) ) );
 					}
 				}
@@ -198,10 +216,10 @@ namespace daw {
 			}
 		} // namespace impl
 
-		template<typename CharT = char, typename Traits = ::std::char_traits<CharT>,
-		         typename Allocator = ::std::allocator<CharT>>
-		auto trim_right_copy(::std::basic_string<CharT, Traits, Allocator> const &str,
-		                     ::std::basic_string<CharT, Traits, Allocator> const &delimiters =
+		template<typename CharT = char, typename Traits = std::char_traits<CharT>,
+		         typename Allocator = std::allocator<CharT>>
+		auto trim_right_copy(std::basic_string<CharT, Traits, Allocator> const &str,
+		                     std::basic_string<CharT, Traits, Allocator> const &delimiters =
 		                         impl::standard_split_delimiters( CharT{} ) ) {
 			if( str.empty( ) ) {
 				return str;
@@ -209,10 +227,10 @@ namespace daw {
 			return str.substr( 0, str.find_last_not_of( delimiters ) + 1 );
 		}
 
-		template<typename CharT = char, typename Traits = ::std::char_traits<CharT>,
-		         typename Allocator = ::std::allocator<CharT>>
-		void trim_right(::std::basic_string<CharT, Traits, Allocator> &str,
-		                ::std::basic_string<CharT, Traits, Allocator> const &delimiters =
+		template<typename CharT = char, typename Traits = std::char_traits<CharT>,
+		         typename Allocator = std::allocator<CharT>>
+		void trim_right(std::basic_string<CharT, Traits, Allocator> &str,
+		                std::basic_string<CharT, Traits, Allocator> const &delimiters =
 		                    impl::standard_split_delimiters( CharT{} ) ) {
 			if( str.empty( ) ) {
 				return;
@@ -220,10 +238,10 @@ namespace daw {
 			str = str.substr( 0, str.find_last_not_of( delimiters ) + 1 );
 		}
 
-		template<typename CharT = char, typename Traits = ::std::char_traits<CharT>,
-		         typename Allocator = ::std::allocator<CharT>>
-		auto trim_left_copy(::std::basic_string<CharT, Traits, Allocator> const &str,
-		                    ::std::basic_string<CharT, Traits, Allocator> const &delimiters =
+		template<typename CharT = char, typename Traits = std::char_traits<CharT>,
+		         typename Allocator = std::allocator<CharT>>
+		auto trim_left_copy(std::basic_string<CharT, Traits, Allocator> const &str,
+		                    std::basic_string<CharT, Traits, Allocator> const &delimiters =
 		                        impl::standard_split_delimiters( CharT{} ) ) {
 			if( str.empty( ) ) {
 				return str;
@@ -231,10 +249,10 @@ namespace daw {
 			return str.substr( str.find_first_not_of( delimiters ) );
 		}
 
-		template<typename CharT = char, typename Traits = ::std::char_traits<CharT>,
-		         typename Allocator = ::std::allocator<CharT>>
-		void trim_left(::std::basic_string<CharT, Traits, Allocator> &str,
-		               ::std::basic_string<CharT, Traits, Allocator> const &delimiters =
+		template<typename CharT = char, typename Traits = std::char_traits<CharT>,
+		         typename Allocator = std::allocator<CharT>>
+		void trim_left(std::basic_string<CharT, Traits, Allocator> &str,
+		               std::basic_string<CharT, Traits, Allocator> const &delimiters =
 		                   impl::standard_split_delimiters( CharT{} ) ) {
 			if( str.empty( ) ) {
 				return;
@@ -247,13 +265,13 @@ namespace daw {
 			return StringType::npos != values.find( val );
 		}
 
-		template<typename CharT = char, typename Traits = ::std::char_traits<CharT>,
-		         typename Allocator = ::std::allocator<CharT>>
-		void trim(::std::basic_string<CharT, Traits, Allocator> &str,
-		          ::std::basic_string<CharT, Traits, Allocator> const &delimiters =
+		template<typename CharT = char, typename Traits = std::char_traits<CharT>,
+		         typename Allocator = std::allocator<CharT>>
+		void trim(std::basic_string<CharT, Traits, Allocator> &str,
+		          std::basic_string<CharT, Traits, Allocator> const &delimiters =
 		              impl::standard_split_delimiters( CharT{} ) ) {
 			auto const start = str.find_first_not_of( delimiters );
-			if(::std::basic_string<CharT, Traits, Allocator>::npos == start ) {
+			if(std::basic_string<CharT, Traits, Allocator>::npos == start ) {
 				str.clear( );
 				return;
 			}
@@ -262,18 +280,18 @@ namespace daw {
 			str = str.substr( start, len );
 		}
 
-		template<typename CharT = char, typename Traits = ::std::char_traits<CharT>,
-		         typename Allocator = ::std::allocator<CharT>>
-		auto trim_copy(::std::basic_string<CharT, Traits, Allocator> str,
-		               ::std::basic_string<CharT, Traits, Allocator> const &delimiters =
+		template<typename CharT = char, typename Traits = std::char_traits<CharT>,
+		         typename Allocator = std::allocator<CharT>>
+		auto trim_copy(std::basic_string<CharT, Traits, Allocator> str,
+		               std::basic_string<CharT, Traits, Allocator> const &delimiters =
 		                   impl::standard_split_delimiters( CharT{} ) ) {
 			trim( str, delimiters );
 			return str;
 		}
 
-		template<typename CharT = char, typename Traits = ::std::char_traits<CharT>,
-		         typename Allocator = ::std::allocator<CharT>>
-		bool convertTo(::std::basic_string<CharT, Traits, Allocator> const &from, int32_t &to ) {
+		template<typename CharT = char, typename Traits = std::char_traits<CharT>,
+		         typename Allocator = std::allocator<CharT>>
+		bool convertTo(std::basic_string<CharT, Traits, Allocator> const &from, int32_t &to ) {
 			auto it = from.begin( );
 			using namespace boost::spirit;
 			if( !qi::parse( it, from.end( ), qi::int_, to ) ) {
@@ -282,9 +300,9 @@ namespace daw {
 			return from.end( ) == it;
 		}
 
-		template<typename CharT = char, typename Traits = ::std::char_traits<CharT>,
-		         typename Allocator = ::std::allocator<CharT>>
-		bool convertTo(::std::basic_string<CharT, Traits, Allocator> const &from, int64_t &to ) {
+		template<typename CharT = char, typename Traits = std::char_traits<CharT>,
+		         typename Allocator = std::allocator<CharT>>
+		bool convertTo(std::basic_string<CharT, Traits, Allocator> const &from, int64_t &to ) {
 			auto it = from.begin( );
 			using namespace boost::spirit;
 			if( !qi::parse( it, from.end( ), qi::long_long, to ) ) {
@@ -293,9 +311,9 @@ namespace daw {
 			return from.end( ) == it;
 		}
 
-		template<typename CharT = char, typename Traits = ::std::char_traits<CharT>,
-		         typename Allocator = ::std::allocator<CharT>>
-		bool convertTo(::std::basic_string<CharT, Traits, Allocator> const &from, float &to ) {
+		template<typename CharT = char, typename Traits = std::char_traits<CharT>,
+		         typename Allocator = std::allocator<CharT>>
+		bool convertTo(std::basic_string<CharT, Traits, Allocator> const &from, float &to ) {
 			auto it = from.begin( );
 			using namespace boost::spirit;
 			if( !qi::parse( it, from.end( ), qi::float_, to ) ) {
@@ -304,9 +322,9 @@ namespace daw {
 			return from.end( ) == it;
 		}
 
-		template<typename CharT = char, typename Traits = ::std::char_traits<CharT>,
-		         typename Allocator = ::std::allocator<CharT>>
-		bool convertTo(::std::basic_string<CharT, Traits, Allocator> const &from, double &to ) {
+		template<typename CharT = char, typename Traits = std::char_traits<CharT>,
+		         typename Allocator = std::allocator<CharT>>
+		bool convertTo(std::basic_string<CharT, Traits, Allocator> const &from, double &to ) {
 			auto it = from.begin( );
 			using namespace boost::spirit;
 			if( !qi::parse( it, from.end( ), qi::double_, to ) ) {
@@ -316,26 +334,26 @@ namespace daw {
 		}
 
 		template<class T, class U>
-		std::string convertToString(::std::pair<T, U> const &from ) {
+		std::string convertToString(std::pair<T, U> const &from ) {
 			return string_join( "{", to_string( from.first ), ", ", to_string( from.second ), " }" );
 		}
 
-		template<typename ValueType, typename CharT = char, typename Traits = ::std::char_traits<CharT>,
-		         typename Allocator = ::std::allocator<CharT>>
-		void convertToString( ValueType const &from, ::std::basic_string<CharT, Traits, Allocator> &to ) {
+		template<typename ValueType, typename CharT = char, typename Traits = std::char_traits<CharT>,
+		         typename Allocator = std::allocator<CharT>>
+		void convertToString( ValueType const &from, std::basic_string<CharT, Traits, Allocator> &to ) {
 			to = to_string( from );
 		}
 
-		template<typename CharT = char, typename Traits = ::std::char_traits<CharT>,
-		         typename Allocator = ::std::allocator<CharT>>
-		bool contains(::std::basic_string<CharT, Traits, Allocator> const &str,
-		              ::std::basic_string<CharT, Traits, Allocator> const &match ) {
-			return str.find( match ) != ::std::basic_string<CharT, Traits, Allocator>::npos;
+		template<typename CharT = char, typename Traits = std::char_traits<CharT>,
+		         typename Allocator = std::allocator<CharT>>
+		bool contains(std::basic_string<CharT, Traits, Allocator> const &str,
+		              std::basic_string<CharT, Traits, Allocator> const &match ) {
+			return str.find( match ) != std::basic_string<CharT, Traits, Allocator>::npos;
 		}
 
-		template<typename CharT = char, typename traits = ::std::char_traits<CharT>,
-		         typename Alloc = ::std::allocator<CharT>>
-		void search_replace(::std::basic_string<CharT, traits, Alloc> &in_str, CharT const *search_for,
+		template<typename CharT = char, typename traits = std::char_traits<CharT>,
+		         typename Alloc = std::allocator<CharT>>
+		void search_replace(std::basic_string<CharT, traits, Alloc> &in_str, CharT const *search_for,
 		                    CharT const *replace_with ) {
 			struct {
 				inline auto operator( )( wchar_t const *str ) const {
@@ -350,23 +368,23 @@ namespace daw {
 			auto const search_for_len = str_size( search_for );
 			auto const replace_with_len = str_size( replace_with );
 
-			while( ( pos = in_str.find( search_for, pos ) ) != ::std::basic_string<CharT, traits, Alloc>::npos ) {
+			while( ( pos = in_str.find( search_for, pos ) ) != std::basic_string<CharT, traits, Alloc>::npos ) {
 				in_str.replace( pos, search_for_len, replace_with );
 				pos += replace_with_len;
 			}
 		}
 
-		template<typename CharT = char, typename traits = ::std::char_traits<CharT>,
-		         typename Alloc = ::std::allocator<CharT>>
-		auto search_replace_copy(::std::basic_string<CharT, traits, Alloc> in_str, CharT const *search_for,
+		template<typename CharT = char, typename traits = std::char_traits<CharT>,
+		         typename Alloc = std::allocator<CharT>>
+		auto search_replace_copy(std::basic_string<CharT, traits, Alloc> in_str, CharT const *search_for,
 		                         CharT const *replace_with ) {
 			search_replace( in_str, search_for, replace_with );
 			return in_str;
 		}
 
 		namespace impl {
-			template<typename CharT = char, typename Traits = ::std::char_traits<CharT>,
-			         typename Allocator = ::std::allocator<CharT>>
+			template<typename CharT = char, typename Traits = std::char_traits<CharT>,
+			         typename Allocator = std::allocator<CharT>>
 			struct BasicString {
 				using values_type = std::basic_string<CharT, Traits, Allocator>;
 				using value_type = typename values_type::value_type;
@@ -379,7 +397,7 @@ namespace daw {
 				value_type m_string;
 
 				template<typename... Args>
-				BasicString( Args &&... args ) : m_string{::std::forward<Args>( args )...} {}
+				BasicString( Args &&... args ) : m_string{std::forward<Args>( args )...} {}
 
 				BasicString( BasicString const & ) = default;
 
@@ -403,19 +421,19 @@ namespace daw {
 					return *this;
 				}
 
-				BasicString &trim_left(::std::basic_string<CharT, Traits, Allocator> const &delimiters =
+				BasicString &trim_left(std::basic_string<CharT, Traits, Allocator> const &delimiters =
 				                           impl::standard_split_delimiters( CharT{} ) ) {
 					daw::string::trim_left( m_string, delimiters );
 					return *this;
 				}
 
-				BasicString &trim_right(::std::basic_string<CharT, Traits, Allocator> const &delimiters =
+				BasicString &trim_right(std::basic_string<CharT, Traits, Allocator> const &delimiters =
 				                            impl::standard_split_delimiters( CharT{} ) ) {
 					daw::string::trim_right( m_string, delimiters );
 					return *this;
 				}
 
-				BasicString &trim(::std::basic_string<CharT, Traits, Allocator> const &delimiters =
+				BasicString &trim(std::basic_string<CharT, Traits, Allocator> const &delimiters =
 				                      impl::standard_split_delimiters( CharT{} ) ) {
 					daw::string::trim( m_string, delimiters );
 					return *this;
