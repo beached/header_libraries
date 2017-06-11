@@ -82,4 +82,3 @@ namespace daw {
 		return bit_iterator<Iterator>( std::forward<Iterator>( it ) );
 	}
 } // namespace daw
-

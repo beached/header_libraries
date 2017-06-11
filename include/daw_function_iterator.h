@@ -68,4 +68,3 @@ namespace daw {
 		return function_iterator<Function>( std::forward<Function>( func ) );
 	}
 } // namespace daw
-

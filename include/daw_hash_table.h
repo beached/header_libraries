@@ -1,7 +1,7 @@
 #pragma once
 // The MIT License (MIT)
 //
-// Copyright (c) 2016 Darrell Wright
+// Copyright (c) 2016-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to deal
@@ -377,8 +377,8 @@ namespace daw {
 		static size_t scale_hash( size_t hash, size_t table_size ) {
 			// Scale value to capacity using MAD(Multiply-Add-Divide) compression
 			// Use the two largest Prime's that fit in a 64bit unsigned integral
-			assert( table_size < max_size( ) );                                 // Table size must be less than max of ptrdiff_t as we use the value 0
-			                                                                    // as a sentinel.  This should be rare
+			assert( table_size < max_size( ) ); // Table size must be less than max of ptrdiff_t as we use the value 0
+			                                    // as a sentinel.  This should be rare
 			assert( hash >= impl::hash_table_item<value_type>::SentinalsSize ); // zero is a sentinel for no value
 			static const size_t prime_a = 18446744073709551557u;
 			static const size_t prime_b = 18446744073709551533u;

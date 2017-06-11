@@ -89,8 +89,8 @@ namespace daw {
 	}
 
 	template<typename... T>
-	constexpr decltype(auto) make_string_array( T &&... t ) {
-		return make_array(std::string{std::forward<T>( t )}...);
+	constexpr decltype( auto ) make_string_array( T &&... t ) {
+		return make_array( std::string{std::forward<T>( t )}... );
 	}
 
 } // namespace daw

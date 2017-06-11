@@ -33,13 +33,13 @@ using namespace std::literals::string_literals;
 
 BOOST_AUTO_TEST_CASE( make_array_testing ) {
 	auto const t = daw::make_array( 1, 2, 3, 4, 5, 6 );
-	
+
 	auto pos = std::find( t.begin( ), t.end( ), 4 );
 	assert( *pos == 4 );
 }
 
 BOOST_AUTO_TEST_CASE( to_array_testing ) {
-	int s[] = { 1, 2, 3, 4, 5, 6 }; 
+	int s[] = {1, 2, 3, 4, 5, 6};
 
 	auto const t = daw::to_array( s );
 	auto pos = std::find( t.begin( ), t.end( ), 4 );
@@ -48,10 +48,8 @@ BOOST_AUTO_TEST_CASE( to_array_testing ) {
 
 BOOST_AUTO_TEST_CASE( make_string_array_testing ) {
 	auto const t = daw::make_string_array( "1", "2", "3", "4", "5", "6" );
-	
+
 	auto pos = std::find( t.begin( ), t.end( ), "4" );
 	assert( pos->size( ) == 1 );
 	assert( *pos == "4" );
 }
-
-

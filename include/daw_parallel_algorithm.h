@@ -1,7 +1,6 @@
-#pragma once
 // The MIT License (MIT)
 //
-// Copyright (c) 2013-2016 Darrell Wright
+// Copyright (c) 2013-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to deal
@@ -20,6 +19,8 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
+
+#pragma once
 
 #include "daw_algorithm.h"
 #include "daw_zipcontainer.h"
@@ -44,8 +45,8 @@ namespace daw {
 			//			template<typename task_t=std_task_t>
 			//			std::shared_ptr<task_manager<task_t>> get_task_manager( ) {
 			//				static const size_t number_of_workers = std::thread::hardware_concurrency( ) > 0 ?
-			//std::thread::hardware_concurrency( ) + 1 : 2; 				static auto manager =
-			//std::shared_ptr<task_manager<task_t>>( new task_manager<task_t>( number_of_workers ) );
+			// std::thread::hardware_concurrency( ) + 1 : 2; 				static auto manager =
+			// std::shared_ptr<task_manager<task_t>>( new task_manager<task_t>( number_of_workers ) );
 			//
 			//				return manager;
 			//			}
@@ -74,9 +75,9 @@ namespace daw {
 			//				}
 			//
 			//				task_manager( size_t number_of_workers ):m_threads( number_of_workers ), m_workers(
-			//number_of_workers, std::async( std::launch::async, [&] { job_loop( ); } ) ), m_tasks( ), m_continue( true
+			// number_of_workers, std::async( std::launch::async, [&] { job_loop( ); } ) ), m_tasks( ), m_continue( true
 			//) { } 			public: 				template<typename T> 				friend
-			//std::shared_ptr<task_manager<T>> get_task_manager( );
+			// std::shared_ptr<task_manager<T>> get_task_manager( );
 			//
 			//				void stop( ) {
 			//					m_continue = false;
@@ -135,8 +136,8 @@ namespace daw {
 			//				std::advance( it_end, next_last );
 			//				std::vector<std::future<void( )>> tasks;
 			//				while( pos < sz ) {
-			//					tasks.push_back( std::async( std::launch::async, [start = it_begin, finish = it_end, func]( )
-			//{ 						for( auto it = start; it != finish; ++it ) { 							func( it
+			//					tasks.push_back( std::async( std::launch::async, [start = it_begin, finish = it_end, func](
+			//) { 						for( auto it = start; it != finish; ++it ) { 							func( it
 			//);
 			//						}
 			//					} ) );
@@ -153,7 +154,7 @@ namespace daw {
 			//			template<typename... ForwardIterator, typename Func>
 			//			void for_each_it( ZipIter<ForwardIterator...> z_fwdit, Func func ) {
 			//				static_assert(ZipIter<ForwardIterator...>::size( ) >= 3, "Must supply parameters like {out,
-			//begin1, end1, ..., beginn, endn}"); 				auto it_begin = std::get<0>( z_fwdit.as_tuple( ) );
+			// begin1, end1, ..., beginn, endn}"); 				auto it_begin = std::get<0>( z_fwdit.as_tuple( ) );
 			//				size_t const sz = std::distance( it_begin, std::get<1>( z_fwdit.as_tuple( ) ) );
 			//				assert( sz >= 0 );
 			//				auto const max_chunk_sz = sz / std_task_manager( )->max_concurrent( );
@@ -163,8 +164,8 @@ namespace daw {
 			//				std::advance( it_end, next_last );
 			//				std::vector<std::future<void( )>> tasks;
 			//				while( pos < sz ) {
-			//					tasks.push_back( std::async( std::launch::async, [start = it_begin, finish = it_end, func]( )
-			//{ 						for( auto it = start; it != finish; ++it ) { 							func( it
+			//					tasks.push_back( std::async( std::launch::async, [start = it_begin, finish = it_end, func](
+			//) { 						for( auto it = start; it != finish; ++it ) { 							func( it
 			//);
 			//						}
 			//					} ) );
@@ -186,7 +187,7 @@ namespace daw {
 			//
 			//			template<typename InputIt1, typename InputIt2, typename OutputIt, typename Func>
 			//			OutputIt transform_many( InputIt1 first_in1, InputIt1 last_in1, InputIt2 first_in2, OutputIt
-			//first_out, Func func ) { 				auto const dist = std::distance( first_in1, last_in1 );
+			// first_out, Func func ) { 				auto const dist = std::distance( first_in1, last_in1 );
 			//				for_each( 0, dist, [&]( size_t n ) {
 			//					auto res_it = first_out;
 			//					auto in_it1 = first_in1;
@@ -201,9 +202,9 @@ namespace daw {
 			//
 			//
 			//			template<typename InputIt1, typename InputIt2, typename InputIt3, typename OutputIt, typename
-			//Func> 			OutputIt transform_many( InputIt1 first_in1, InputIt1 last_in1, InputIt2 first_in2,
-			//InputIt3 first_in3, OutputIt first_out, Func func ) { 				auto const dist = std::distance(
-			//first_in1, last_in1 ); 				for_each( 0, dist, [&]( size_t n ) {
+			// Func> 			OutputIt transform_many( InputIt1 first_in1, InputIt1 last_in1, InputIt2 first_in2,
+			// InputIt3 first_in3, OutputIt first_out, Func func ) { 				auto const dist = std::distance(
+			// first_in1, last_in1 ); 				for_each( 0, dist, [&]( size_t n ) {
 			//					auto res_it = first_out;
 			//					auto in_it1 = first_in1;
 			//					auto in_it2 = first_in2;
@@ -218,8 +219,8 @@ namespace daw {
 			//			}
 			//
 			//			template<typename InputIt1, typename InputIt2, typename InputIt3, typename InputIt4, typename
-			//OutputIt, typename Func> 			OutputIt transform_many( InputIt1 first_in1, InputIt1 last_in1, InputIt2
-			//first_in2, InputIt3 first_in3, InputIt4 first_in4, OutputIt first_out, Func func ) {
+			// OutputIt, typename Func> 			OutputIt transform_many( InputIt1 first_in1, InputIt1 last_in1,
+			// InputIt2  first_in2, InputIt3 first_in3, InputIt4 first_in4, OutputIt first_out, Func func ) {
 			//				auto const dist = std::distance( first_in1, last_in1 );
 			//				for_each( 0, dist, [&]( size_t n ) {
 			//					auto res_it = first_out;
@@ -238,9 +239,9 @@ namespace daw {
 			//			}
 			//
 			//			template<typename InputIt1, typename InputIt2, typename InputIt3, typename InputIt4, typename
-			//InputIt5, typename OutputIt, typename Func>
+			// InputIt5, typename OutputIt, typename Func>
 			//			OutputIt transform_many( InputIt1 first_in1, InputIt1 last_in1, InputIt2 first_in2, InputIt3
-			//first_in3, InputIt4 first_in4, InputIt4 first_in5, OutputIt first_out, Func func ) {
+			// first_in3, InputIt4 first_in4, InputIt4 first_in5, OutputIt first_out, Func func ) {
 			//				auto const dist = std::distance( first_in1, last_in1 );
 			//				for_each( 0, dist, [&]( size_t n ) {
 			//					auto res_it = first_out;

@@ -1,10 +1,10 @@
-#pragma once
-
 //////////////////////////////////////////////////////////////////////////
 /// Summary:	concurrent queue by Anthony Williams from
 ///				https://www.justsoftwaresolutions.co.uk/threading/implementing-a-thread-safe-queue-using-condition-variables.html
 ///
 //////////////////////////////////////////////////////////////////////////
+
+#pragma once
 
 #include <atomic>
 #include <condition_variable>
