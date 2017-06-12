@@ -545,4 +545,12 @@ namespace daw {
 		using std::end;
 		return std::find( begin( container ), end( container ), item ) == end( container );
 	}
+
+	template<typename Container, typename Item>
+	decltype( auto ) index_of( Container const &container, Item const &item ) {
+		using std::begin;
+		using std::end;
+		auto const pos = std::find( begin( container ), end( container ), item );
+		return std::distance( begin( container ), pos );
+	}
 } // namespace daw
