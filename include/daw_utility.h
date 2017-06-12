@@ -30,6 +30,7 @@
 #include <cassert>
 #include <cmath>
 #include <functional>
+#include <initializer_list>
 #include <limits>
 #include <memory>
 #include <string>
@@ -528,4 +529,13 @@ namespace daw {
 
 	}; // not_null
 
+	template<typename Arg, typename... Args>
+	auto make_initializer_list( Arg && arg, Args &&... args ) {
+		return std::initializer_list<Arg>{std::forward<Arg>( arg ), std::forward<Args>( args )...};
+	}
+
+	template<typename Container, typename... Args>
+	decltype( auto ) append( Container &container, Args&&... args ) {
+		return container.insert( container.end( ), make_initializer_list( std::forward<Args>( args )... ) );
+	}
 } // namespace daw
