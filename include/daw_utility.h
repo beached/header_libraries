@@ -538,4 +538,11 @@ namespace daw {
 	decltype( auto ) append( Container &container, Args&&... args ) {
 		return container.insert( container.end( ), make_initializer_list( std::forward<Args>( args )... ) );
 	}
+
+	template<typename Container, typename Item>
+	bool contains( Container const &container, Item const &item ) {
+		using std::begin;
+		using std::end;
+		return std::find( begin( container ), end( container ), item ) == end( container );
+	}
 } // namespace daw
