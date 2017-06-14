@@ -256,10 +256,11 @@ namespace daw {
 		}
 	}; // class expected_t<void>
 
-	template<typename ExpectedResult, typename Function, typename... Args>
-	expected_t<ExpectedResult> expected_from_code( Function func, Args &&... args ) noexcept {
+	template<typename Function, typename... Args>
+	auto expected_from_code( Function func, Args &&... args ) noexcept {
+		using result_t = std::decay_t<decltype( func( std::forward<Args>( args )... ) )>;
 		try {
-			return expected_t<ExpectedResult>{func( std::forward<Args>( args )... )};
-		} catch( ... ) { return expected_t<ExpectedResult>{std::current_exception( )}; }
+			return expected_t<result_t>{func( std::forward<Args>( args )... )};
+		} catch( ... ) { return expected_t<result_t>{std::current_exception( )}; }
 	}
 } // namespace daw
