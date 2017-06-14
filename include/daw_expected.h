@@ -263,4 +263,12 @@ namespace daw {
 			return expected_t<result_t>{func( std::forward<Args>( args )... )};
 		} catch( ... ) { return expected_t<result_t>{std::current_exception( )}; }
 	}
+
+	template<typename ExpectedResult, typename Function, typename... Args>
+	auto expected_from_code( Function func, Args &&... args ) noexcept {
+		try {
+			return expected_t<ExpectedResult>{func( std::forward<Args>( args )... )};
+		} catch( ... ) { return expected_t<ExpectedResult>{std::current_exception( )}; }
+	}
+
 } // namespace daw
