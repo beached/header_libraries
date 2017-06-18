@@ -212,7 +212,8 @@ namespace daw {
 			} catch( ... ) { return expected_t{exception_tag{}}; }
 		}
 
-		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function, Args...>>>
+//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function, Args...>>>
+		template<class Function, typename... Args>
 		expected_t( Function func, Args &&... args ) noexcept
 		    : expected_t{expected_t::from_code( func, std::forward<Args>( args )... )} {}
 
