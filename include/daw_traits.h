@@ -531,4 +531,31 @@ namespace daw {
 
 	template<typename T>
 	using make_fp = std::add_pointer_t<T>;
+
+	namespace impl {
+		template<typename Function>
+		struct void_function {
+			Function function;
+			void_function( ) = default;
+			void_function( Function &&func ): function{ std::forward<Function>(func )} { }
+			~void_function( ) = default;
+			void_function( void_function const & ) = default;
+			void_function( void_function && ) = default;
+			void_function &operator=( void_function const & ) = default;
+			void_function &operator=( void_function && ) = default;
+
+			explicit constexpr operator bool( ) noexcept {
+				return static_cast<bool>(function);
+			}
+
+			template<typename... Args>
+			void operator( )( Args&&... args ) {
+				function( std::forward<Args>(args)... );
+			}
+		};
+	}
+	template<typename Function>
+	auto make_void_function( Function func ) noexcept {
+		return impl::void_function<Function>{ std::move( func ) };
+	}
 } // namespace daw
