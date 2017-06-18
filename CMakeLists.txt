@@ -41,6 +41,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_optional_poly
 	daw_parser_helper
 	daw_poly_vector
+	daw_random_iterator
 	daw_range_algorithm
 	daw_range
 	daw_read_only
