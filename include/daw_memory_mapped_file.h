@@ -47,7 +47,8 @@ namespace daw {
 			using reference = T &;
 			using const_reference = T const &;
 
-			MemoryMappedFile( boost::string_view filename, bool const readonly = true )
+			template<typename charT, typename traits>
+			MemoryMappedFile( boost::basic_string_view<charT, traits> filename, bool const readonly = true )
 			    : m_file_path{filename.data( )}, m_mf_params{filename.data( )} {
 
 				m_mf_params.flags = boost::iostreams::mapped_file::mapmode::readwrite;
