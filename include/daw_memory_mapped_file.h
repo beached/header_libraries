@@ -47,9 +47,8 @@ namespace daw {
 			using reference = T &;
 			using const_reference = T const &;
 
-			template<typename charT, typename traits>
-			MemoryMappedFile( boost::basic_string_view<charT, traits> filename, bool const readonly = true )
-			    : m_file_path{filename.data( )}, m_mf_params{filename.data( )} {
+			MemoryMappedFile( boost::filesystem::path file_path, bool const readonly = true )
+			    : m_file_path{file_path}, m_mf_params{filename.data( )} {
 
 				m_mf_params.flags = boost::iostreams::mapped_file::mapmode::readwrite;
 				if( readonly ) {
@@ -63,6 +62,10 @@ namespace daw {
 					throw ex;
 				}
 			}
+
+			template<typename charT, typename traits>
+			MemoryMappedFile( boost::basic_string_view<charT, traits> filename, bool const readonly = true )
+			    : MemoryMappedFile{boost::filesystem::path{filename.data( )}, readonly} {}
 
 			MemoryMappedFile( ) = delete;
 
