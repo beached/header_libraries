@@ -47,6 +47,12 @@ namespace daw {
 			return *this;
 		}
 
+		template<typename T>
+		function_iterator &operator=( T const &val ) {
+			m_function( val );
+			return *this;
+		}
+
 		function_iterator &operator*( ) {
 			return *this;
 		}
