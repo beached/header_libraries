@@ -23,7 +23,6 @@
 #pragma once
 
 #include <algorithm>
-#include <boost/date_time/posix_time/posix_time.hpp>
 #include <functional>
 #include <iterator>
 #include <stdexcept>
@@ -102,10 +101,6 @@ namespace daw {
 		template<typename Container, typename FunctionType>
 		void for_each_with_pos( Container &container, FunctionType const func ) {
 			for_each_with_pos( container, 0, static_cast<size_t>( container.size( ) ), func );
-		}
-
-		inline boost::posix_time::ptime now( ) {
-			return boost::posix_time::second_clock::local_time( );
 		}
 
 		template<class IteratorType, class ValueType, class Comp>
