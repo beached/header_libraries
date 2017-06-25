@@ -58,7 +58,8 @@ namespace daw {
 				try {
 					m_mf_file.open( m_mf_params );
 				} catch( std::exception const &ex ) {
-					std::cerr << "Error Opening memory mapped file '" << filename << "': " << ex.what( ) << std::endl;
+					std::cerr << "Error Opening memory mapped file '" << file_path.string( ) << "': " << ex.what( )
+					          << std::endl;
 					throw ex;
 				}
 			}
