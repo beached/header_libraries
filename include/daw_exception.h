@@ -28,23 +28,16 @@
 namespace daw {
 	namespace exception {
 #define MAKE_DAW_EXCEPTION( EXCEPTION_TYPE )                                                                           \
-	namespace impl {                                                                                                   \
-		template<typename MsgType>                                                                                     \
-		struct EXCEPTION_TYPE final {                                                                                  \
-			MsgType message;                                                                                           \
-			EXCEPTION_TYPE( std::string msg ) : message{std::move( msg )} {}                                           \
-			EXCEPTION_TYPE( ) = default;                                                                               \
-			~EXCEPTION_TYPE( ) = default;                                                                              \
-			EXCEPTION_TYPE( EXCEPTION_TYPE const & ) = default;                                                        \
-			EXCEPTION_TYPE( EXCEPTION_TYPE && ) = default;                                                             \
-			EXCEPTION_TYPE &operator=( EXCEPTION_TYPE const & ) = default;                                             \
-			EXCEPTION_TYPE &operator=( EXCEPTION_TYPE && ) = default;                                                  \
-			std::string const &what( ) {                                                                               \
-				return message;                                                                                        \
-			}                                                                                                          \
-		};                                                                                                             \
-	}                                                                                                                  \
-	using EXCEPTION_TYPE = ::daw::exception::impl::EXCEPTION_TYPE<std::string>;
+	struct EXCEPTION_TYPE : public std::runtime_error {                                                                \
+		EXCEPTION_TYPE( boost::string_view msg ) : std::runtime_error{msg.data( )} {}                                  \
+		EXCEPTION_TYPE( ) = default;                                                                                   \
+		~EXCEPTION_TYPE( );                                                                                            \
+		EXCEPTION_TYPE( EXCEPTION_TYPE const & ) = default;                                                            \
+		EXCEPTION_TYPE( EXCEPTION_TYPE && ) = default;                                                                 \
+		EXCEPTION_TYPE &operator=( EXCEPTION_TYPE const & ) = default;                                                 \
+		EXCEPTION_TYPE &operator=( EXCEPTION_TYPE && ) = default;                                                      \
+	};                                                                                                                 \
+	EXCEPTION_TYPE::~EXCEPTION_TYPE( ) {}
 
 		MAKE_DAW_EXCEPTION( NotImplemented );
 		MAKE_DAW_EXCEPTION( FatalError );
