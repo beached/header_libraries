@@ -30,7 +30,7 @@ namespace daw {
 #define MAKE_DAW_EXCEPTION( EXCEPTION_TYPE )                                                                           \
 	struct EXCEPTION_TYPE : public std::runtime_error {                                                                \
 		EXCEPTION_TYPE( boost::string_view msg ) : std::runtime_error{msg.data( )} {}                                  \
-		EXCEPTION_TYPE( ) = default;                                                                                   \
+		EXCEPTION_TYPE( ) : std::runtime_error{"No Error Message"} {};                                                 \
 		~EXCEPTION_TYPE( );                                                                                            \
 		EXCEPTION_TYPE( EXCEPTION_TYPE const & ) = default;                                                            \
 		EXCEPTION_TYPE( EXCEPTION_TYPE && ) = default;                                                                 \
