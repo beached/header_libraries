@@ -31,13 +31,12 @@ namespace daw {
 	struct EXCEPTION_TYPE : public std::runtime_error {                                                                \
 		EXCEPTION_TYPE( boost::string_view msg ) : std::runtime_error{msg.data( )} {}                                  \
 		EXCEPTION_TYPE( ) : std::runtime_error{"No Error Message"} {};                                                 \
-		~EXCEPTION_TYPE( );                                                                                            \
+		~EXCEPTION_TYPE( ) = default;                                                                                  \
 		EXCEPTION_TYPE( EXCEPTION_TYPE const & ) = default;                                                            \
 		EXCEPTION_TYPE( EXCEPTION_TYPE && ) = default;                                                                 \
 		EXCEPTION_TYPE &operator=( EXCEPTION_TYPE const & ) = default;                                                 \
 		EXCEPTION_TYPE &operator=( EXCEPTION_TYPE && ) = default;                                                      \
-	};                                                                                                                 \
-	EXCEPTION_TYPE::~EXCEPTION_TYPE( ) {}
+	};
 
 		MAKE_DAW_EXCEPTION( NotImplemented );
 		MAKE_DAW_EXCEPTION( FatalError );
