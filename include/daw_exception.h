@@ -47,18 +47,21 @@ namespace daw {
 #undef MAKE_DAW_EXCEPTION
 
 		template<typename ExceptionType = std::runtime_error, typename StringType>
-		void daw_throw( StringType const &msg ) {
+		[[noreturn]]void daw_throw( StringType const &msg ) {
 			throw ExceptionType( msg );
 		}
 
+#ifndef NODEBUGTHROW
+		template<typename ExceptionType = std::runtime_error, typename StringType>
+		[[noreturn]] void debug_throw( StringType const &msg ) {
+			daw_throw<ExceptionType>( msg );
+		}
+#else
 		template<typename ExceptionType = std::runtime_error, typename StringType>
 		void debug_throw( StringType const &msg ) {
-#ifndef NODEBUGTHROW
-			daw_throw<ExceptionType>( msg );
-#else
 			return;
-#endif
 		}
+#endif
 
 		template<typename ExceptionType = NullPtrAccessException, typename ValueType, typename StringType>
 		void dbg_throw_on_null( ValueType const *const value, StringType const &msg ) {
