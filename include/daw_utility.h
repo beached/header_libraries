@@ -530,12 +530,12 @@ namespace daw {
 	}; // not_null
 
 	template<typename Arg, typename... Args>
-	auto make_initializer_list( Arg && arg, Args &&... args ) {
+	auto make_initializer_list( Arg &&arg, Args &&... args ) {
 		return std::initializer_list<Arg>{std::forward<Arg>( arg ), std::forward<Args>( args )...};
 	}
 
 	template<typename Container, typename... Args>
-	decltype( auto ) append( Container &container, Args&&... args ) {
+	decltype( auto ) append( Container &container, Args &&... args ) {
 		return container.insert( container.end( ), make_initializer_list( std::forward<Args>( args )... ) );
 	}
 
@@ -552,5 +552,19 @@ namespace daw {
 		using std::end;
 		auto const pos = std::find( begin( container ), end( container ), item );
 		return std::distance( begin( container ), pos );
+	}
+
+	constexpr auto or_all( ) noexcept {
+		return 0;
+	}
+
+	template<typename Value>
+	constexpr auto or_all( Value value ) noexcept {
+		return value;
+	}
+
+	template<typename Value, typename... T>
+	constexpr auto or_all( Value value, T... values ) noexcept {
+		return value | or_all( values... );
 	}
 } // namespace daw
