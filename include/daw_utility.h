@@ -567,4 +567,19 @@ namespace daw {
 	constexpr auto or_all( Value value, T... values ) noexcept {
 		return value | or_all( values... );
 	}
+
+	template<typename Value>
+	constexpr size_t bitcount( Value value ) noexcept {
+		size_t result = 0;
+		while( value ) {
+			result += static_cast<size_t>( value & ~static_cast<Value>( 0b1 ) );
+			value >>= 1;
+		}
+		return result;
+	}
+
+	template<typename Value, typename... T>
+	constexpr size_t bitcount( Value value, T... values ) noexcept {
+		return bitcount( value ) + bitcount( values... );
+	};
 } // namespace daw
