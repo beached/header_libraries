@@ -29,10 +29,10 @@ namespace daw {
 		template<typename ForwardIterator>
 		constexpr auto find_number( ForwardIterator first, ForwardIterator last ) {
 			using namespace daw::parser;
-			auto is_first = []( auto const &v ) { return is_a( '-', v ) || is_number( v ); };
+			auto const is_first = []( auto const &v ) { return is_a( '-', v ) || is_number( v ); };
 
 			bool has_decimal = false;
-			auto is_last = [&has_decimal]( auto const &v ) {
+			auto const is_last = [&has_decimal]( auto const &v ) {
 				if( is_a( '.', v ) ) {
 					if( has_decimal ) {
 						return true;
