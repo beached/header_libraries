@@ -109,13 +109,13 @@ namespace daw {
 		}; // find_result_t
 
 		template<typename ForwardIterator>
-		find_result_t<ForwardIterator> make_find_result( ForwardIterator first, ForwardIterator last,
-		                                                 bool result = false ) {
+		constexpr find_result_t<ForwardIterator> make_find_result( ForwardIterator first, ForwardIterator last,
+		                                                           bool result = false ) noexcept {
 			return find_result_t<ForwardIterator>{first, last, result};
 		}
 
 		template<typename ForwardIterator>
-		auto until( ForwardIterator first, ForwardIterator last,
+		constexpr auto until( ForwardIterator first, ForwardIterator last,
 		            std::function<bool( daw::traits::root_type_t<decltype( *first )> )> is_last ) {
 
 			auto result = make_find_result( first, last );
@@ -143,14 +143,14 @@ namespace daw {
 		}
 
 		template<typename T, typename Arg>
-		bool is_a( T const &value, Arg const &tst ) {
+		constexpr bool is_a( T const &value, Arg const &tst ) noexcept {
 			// static_assert( daw::traits::is_comparable_v<T, Arg>, "value is not comparable to tst" );
 			using val_t = typename daw::traits::max_sizeof<T, Arg>::type;
 			return ( static_cast<val_t>( value ) == static_cast<val_t>( tst ) );
 		}
 
 		template<typename T, typename Arg, typename... Args>
-		bool is_a( T const &value, Arg const &tst, Args const &... tsts ) {
+		constexpr bool is_a( T const &value, Arg const &tst, Args const &... tsts ) noexcept {
 			return is_a( value, tst ) || is_a( value, tsts... );
 		}
 
@@ -414,7 +414,7 @@ namespace daw {
 		}
 
 		template<typename T>
-		constexpr bool is_unicode_whitespace( T val ) {
+		constexpr bool is_unicode_whitespace( T val ) noexcept {
 			switch( static_cast<uint32_t>( val ) ) {
 			case 0x00000009: // CHARACTER TABULATION
 			case 0x0000000A: // LINE FEED
@@ -448,17 +448,17 @@ namespace daw {
 		}
 
 		template<typename T>
-		constexpr bool is_escape( T val ) {
+		constexpr bool is_escape( T val ) noexcept {
 			return '\\' == static_cast<uint32_t>( val );
 		}
 
 		template<typename T>
-		constexpr bool is_quote( T val ) {
+		constexpr bool is_quote( T val ) noexcept {
 			return '"' == static_cast<uint32_t>( val );
 		}
 
 		template<typename ForwardIterator>
-		auto skip_ws( ForwardIterator first, ForwardIterator last ) {
+		constexpr auto skip_ws( ForwardIterator first, ForwardIterator last ) {
 			auto result = until_false( first, last, is_unicode_whitespace<decltype( *first )> );
 			result.first = result.last;
 			result.last = last;
@@ -466,12 +466,12 @@ namespace daw {
 		}
 
 		template<typename T>
-		constexpr bool not_unicode_whitespace( T val ) {
+		constexpr bool not_unicode_whitespace( T val ) noexcept {
 			return !is_unicode_whitespace( val );
 		}
 
 		template<typename ForwardIterator>
-		auto trim_left( ForwardIterator first, ForwardIterator last ) {
+		constexpr auto trim_left( ForwardIterator first, ForwardIterator last ) {
 			using val_t = daw::traits::root_type_t<decltype( *first )>;
 			auto start = until( first, last, &not_unicode_whitespace<val_t> );
 			if( !start ) {
@@ -481,7 +481,7 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator>
-		auto trim_right( ForwardIterator first, ForwardIterator last ) {
+		constexpr auto trim_right( ForwardIterator first, ForwardIterator last ) {
 			// Cannot start from right most index in unicode.  Must parse
 			// left to right.  So that sucks for perf, try not to just right trim
 			//
@@ -495,7 +495,7 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator>
-		auto trim( ForwardIterator first, ForwardIterator last ) {
+		constexpr auto trim( ForwardIterator first, ForwardIterator last ) {
 			auto start = trim_left( first, last );
 			auto finish = trim_right( start.first, last );
 			return make_find_result( start.first, finish.last,
