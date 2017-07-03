@@ -59,19 +59,20 @@ namespace daw {
 		}
 #else
 #define debug_throw( msg ) ;
-//		template<typename ExceptionType = std::runtime_error, typename StringType>
-//		void debug_throw( StringType const &msg ) {
-//			return;
-//		}
 #endif
 
+#ifndef NODEBUGTHROW
 		template<typename ExceptionType = NullPtrAccessException, typename ValueType, typename StringType>
 		void dbg_throw_on_null( ValueType const *const value, StringType const &msg ) {
 			if( nullptr == value ) {
 				debug_throw<ExceptionType>( msg );
 			}
 		}
+#else
+#define dbg_throw_on_null( value, msg ) ;
+#endif
 
+#ifndef NODEBUGTHROW
 		template<typename ExceptionType = NullPtrAccessException, typename ValueType, typename StringType>
 		ValueType *dbg_throw_on_null_or_return( ValueType *value, StringType const &msg ) {
 			if( nullptr == value ) {
@@ -79,14 +80,21 @@ namespace daw {
 			}
 			return value;
 		}
+#else
+#define dbg_throw_on_null_or_return( value, msg ) (value);
+#endif
 
+#ifndef NODEBUGTHROW
 		template<typename ExceptionType = AssertException, typename ValueType, typename StringType>
-		ValueType &dbg_throw_on_false_or_return( ValueType &&value, bool test, StringType const &msg ) {
+		auto dbg_throw_on_false_or_return( ValueType &&value, bool test, StringType const &msg ) {
 			if( !test ) {
 				debug_throw<ExceptionType>( msg );
 			}
 			return std::forward<ValueType>( value );
 		}
+#else
+#define dbg_throw_on_false_or_return( value, test, msg ) (value);
+#endif
 
 		template<typename ExceptionType = AssertException, typename StringType>
 		bool dbg_throw_on_false_or_return( bool test, StringType const &msg ) {
