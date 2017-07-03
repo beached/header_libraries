@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 #include <boost/test/unit_test.hpp>
+#include <boost/utility/string_view.hpp>
 #include <iostream>
 #include <string>
 
@@ -72,4 +73,11 @@ BOOST_AUTO_TEST_CASE( daw_parser_helper001 ) {
 	auto empty_full = daw::parser::trim( empty.begin( ), empty.end( ) ).as_string( );
 	std::cout << "Empty full trim '" << empty_full << "'\n";
 	BOOST_REQUIRE_MESSAGE( empty_full == "", "Trim did not work" );
+}
+
+BOOST_AUTO_TEST_CASE( daw_parser_helper002 ) {
+	// skip ws
+	boost::string_view const test_str = "          this is a test";
+	auto const sws = daw::parser::skip_ws( test_str.begin( ), test_str.end( ) ).as_string( );
+	std::cout << "With leading ws '" << test_str.to_string( ) << "', without '" << sws << "'\n";
 }

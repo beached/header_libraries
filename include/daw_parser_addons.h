@@ -64,7 +64,7 @@ namespace daw {
 
 		template<typename ForwardIterator, typename Result>
 		constexpr void parse_int( ForwardIterator first, ForwardIterator last, Result &result ) {
-			size_t count = std::numeric_limits<Result>::digits10;
+			intmax_t count = std::numeric_limits<Result>::digits10;
 			result = 0;
 			bool is_neg = false;
 			if( '-' == *first ) {

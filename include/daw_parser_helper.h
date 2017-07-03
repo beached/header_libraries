@@ -438,6 +438,14 @@ namespace daw {
 			}
 		}
 
+		template<typename ForwardIterator>
+		auto skip_ws( ForwardIterator first, ForwardIterator last ) {
+			auto result = until_false( first, last, is_unicode_whitespace<decltype( *first )> );
+			result.first = result.last;
+			result.last = last;
+			return result;
+		}
+
 		template<typename T>
 		constexpr bool not_unicode_whitespace( T val ) {
 			return !is_unicode_whitespace( val );
