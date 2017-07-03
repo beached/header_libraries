@@ -582,4 +582,14 @@ namespace daw {
 	constexpr size_t bitcount( Value value, T... values ) noexcept {
 		return bitcount( value ) + bitcount( values... );
 	};
+
+	template<typename Integer>
+	constexpr bool can_fit( intmax_t const value ) noexcept {
+		static_assert( std::numeric_limits<Integer>::is_integer, "Must supply an integral type" );
+		if( value >= 0 ) {
+			return value <= std::numeric_limits<Integer>::max( );
+		} else {
+			return value >= std::numeric_limits<Integer>::min( );
+		}
+	}
 } // namespace daw
