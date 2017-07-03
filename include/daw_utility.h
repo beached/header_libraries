@@ -583,13 +583,16 @@ namespace daw {
 		return bitcount( value ) + bitcount( values... );
 	};
 
-	template<typename Integer>
-	constexpr bool can_fit( intmax_t const value ) noexcept {
-		static_assert( std::numeric_limits<Integer>::is_integer, "Must supply an integral type" );
+	template<typename IntegerDest, typename IntegerSource>
+	constexpr bool can_fit( IntegerSource const value ) noexcept {
+		static_assert( std::numeric_limits<IntegerDest>::is_integer, "Must supply an integral type" );
+		static_assert( std::numeric_limits<IntegerSource>::is_integer, "Must supply an integral type" );
 		if( value >= 0 ) {
-			return value <= std::numeric_limits<Integer>::max( );
+			return value <= std::numeric_limits<IntegerDest>::max( );
+		} else if( std::numeric_limits<IntegerDest>::is_signed ) {
+			return value >= std::numeric_limits<IntegerDest>::min( );
 		} else {
-			return value >= std::numeric_limits<Integer>::min( );
+			return false;
 		}
 	}
 } // namespace daw
