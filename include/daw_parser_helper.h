@@ -56,10 +56,10 @@ namespace daw {
 			ForwardIterator last;
 			bool found;
 
-			constexpr find_result_t( ForwardIterator First, ForwardIterator Last, bool Found )
+			constexpr find_result_t( ForwardIterator First, ForwardIterator Last, bool Found ) noexcept
 			    : first{First}, last{Last}, found{Found} {}
 
-			constexpr explicit operator bool( ) const {
+			constexpr explicit operator bool( ) const noexcept {
 				return found;
 			}
 
