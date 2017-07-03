@@ -41,7 +41,9 @@ namespace daw {
 				}
 				return is_number( v );
 			};
-			return from_to( first, last, is_first, is_last );
+			auto result = from_to( first, last, is_first, is_last );
+			++result.last;
+			return result;
 		}
 
 		template<typename ForwardIterator, typename Result>
