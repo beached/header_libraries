@@ -1,4 +1,3 @@
-#pragma once
 // The MIT License (MIT)
 //
 // Copyright (c) 2013-2017 Darrell Wright
@@ -21,6 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#pragma once
+
 #include "daw_string.h"
 #include <stdexcept>
 #include <string>
@@ -30,13 +31,14 @@ namespace daw {
 #define MAKE_DAW_EXCEPTION( EXCEPTION_TYPE )                                                                           \
 	struct EXCEPTION_TYPE : public std::runtime_error {                                                                \
 		EXCEPTION_TYPE( boost::string_view msg ) : std::runtime_error{msg.data( )} {}                                  \
-		EXCEPTION_TYPE( ) : std::runtime_error{"No Error Message"} {};                                                 \
-		~EXCEPTION_TYPE( ) = default;                                                                                  \
+		EXCEPTION_TYPE( ) : std::runtime_error{"No Error Message"} {}                                                  \
+		~EXCEPTION_TYPE( );                                                                                            \
 		EXCEPTION_TYPE( EXCEPTION_TYPE const & ) = default;                                                            \
 		EXCEPTION_TYPE( EXCEPTION_TYPE && ) = default;                                                                 \
 		EXCEPTION_TYPE &operator=( EXCEPTION_TYPE const & ) = default;                                                 \
 		EXCEPTION_TYPE &operator=( EXCEPTION_TYPE && ) = default;                                                      \
-	};
+	};                                                                                                                 \
+	EXCEPTION_TYPE::~EXCEPTION_TYPE( ) {}
 
 		MAKE_DAW_EXCEPTION( NotImplemented );
 		MAKE_DAW_EXCEPTION( FatalError );
@@ -47,7 +49,7 @@ namespace daw {
 #undef MAKE_DAW_EXCEPTION
 
 		template<typename ExceptionType = std::runtime_error, typename StringType>
-		[[noreturn]]void daw_throw( StringType const &msg ) {
+		[[noreturn]] void daw_throw( StringType const &msg ) {
 			throw ExceptionType( msg );
 		}
 
@@ -57,10 +59,11 @@ namespace daw {
 			daw_throw<ExceptionType>( msg );
 		}
 #else
-		template<typename ExceptionType = std::runtime_error, typename StringType>
-		void debug_throw( StringType const &msg ) {
-			return;
-		}
+#define debug_throw( msg ) ;
+//		template<typename ExceptionType = std::runtime_error, typename StringType>
+//		void debug_throw( StringType const &msg ) {
+//			return;
+//		}
 #endif
 
 		template<typename ExceptionType = NullPtrAccessException, typename ValueType, typename StringType>
@@ -94,13 +97,16 @@ namespace daw {
 			return true;
 		}
 
+#ifndef NODEBUGTHROW
 		template<typename ExceptionType = AssertException, typename StringType>
 		void dbg_throw_on_false( bool test, StringType const &msg ) {
 			if( !test ) {
 				debug_throw<ExceptionType>( msg );
 			}
 		}
-
+#else
+#define dbg_throw_on_false( test, msg ) ;
+#endif
 		template<typename ExceptionType = AssertException, typename StringType, typename Arg, typename... Args>
 		void dbg_throw_on_false( bool test, StringType const &format, Arg arg, Args... args ) {
 			if( !test ) {
