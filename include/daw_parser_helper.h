@@ -56,21 +56,22 @@ namespace daw {
 			ForwardIterator last;
 			bool found;
 
-			find_result_t( ForwardIterator First, ForwardIterator Last, bool Found )
+			constexpr find_result_t( ForwardIterator First, ForwardIterator Last, bool Found )
 			    : first{First}, last{Last}, found{Found} {}
 
-			explicit operator bool( ) const {
+			constexpr explicit operator bool( ) const {
 				return found;
 			}
 
-			bool empty( ) noexcept {
+			constexpr bool empty( ) noexcept {
 				return first == last;
 			}
 
-			bool empty( bool throw_on_empty ) {
-				if( throw_on_empty ) {
+			constexpr bool empty( bool throw_on_empty ) {
+				if( throw_on_empty && empty( ) ) {
 					throw ParserEmptyException{};
 				}
+				return false;
 			}
 
 			template<typename Container>
@@ -90,19 +91,19 @@ namespace daw {
 				return as<std::string>( );
 			}
 
-			ForwardIterator begin( ) {
+			constexpr ForwardIterator begin( ) noexcept {
 				return first;
 			}
 
-			ForwardIterator const begin( ) const {
+			constexpr ForwardIterator const begin( ) const noexcept {
 				return first;
 			}
 
-			ForwardIterator end( ) {
+			constexpr ForwardIterator end( ) noexcept {
 				return last;
 			}
 
-			ForwardIterator const end( ) const {
+			constexpr ForwardIterator const end( ) const noexcept {
 				return last;
 			}
 		}; // find_result_t
