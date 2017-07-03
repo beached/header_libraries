@@ -446,6 +446,16 @@ namespace daw {
 			}
 		}
 
+		template<typename T>
+		constexpr bool is_escape( T val ) {
+			return '\\' == static_cast<uint32_t>( val );
+		}
+
+		template<typename T>
+		constexpr bool is_quote( T val ) {
+			return '"' == static_cast<uint32_t>( val );
+		}
+
 		template<typename ForwardIterator>
 		auto skip_ws( ForwardIterator first, ForwardIterator last ) {
 			auto result = until_false( first, last, is_unicode_whitespace<decltype( *first )> );
