@@ -90,11 +90,19 @@ namespace daw {
 				return as<std::string>( );
 			}
 
-			auto begin( ) {
+			ForwardIterator begin( ) {
 				return first;
 			}
 
-			auto end( ) {
+			ForwardIterator const begin( ) const {
+				return first;
+			}
+
+			ForwardIterator end( ) {
+				return last;
+			}
+
+			ForwardIterator const end( ) const {
 				return last;
 			}
 		}; // find_result_t
