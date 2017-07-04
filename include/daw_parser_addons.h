@@ -91,7 +91,7 @@ namespace daw {
 
 
 		template<typename ForwardIterator>
-		constexpr auto parse_string_literal( ForwardIterator first, ForwardIterator const last ) noexcept {
+		constexpr auto parse_string_literal( ForwardIterator first, ForwardIterator const last ) {
 			auto result = trim_left( first, last );
 			auto quote_char = *first;
 			if( !is_quote( quote_char ) ) {
