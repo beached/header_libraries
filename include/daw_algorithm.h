@@ -214,22 +214,22 @@ namespace daw {
 		}
 
 		template<class ValueType>
-		bool are_equal( ValueType ) {
+		constexpr bool are_equal( ValueType ) noexcept {
 			return true;
 		}
 
 		template<class ValueType>
-		bool are_equal( ValueType v1, ValueType v2 ) {
+		constexpr bool are_equal( ValueType v1, ValueType v2 ) {
 			return v1 == v2;
 		}
 
 		template<class ValueType, class... Values>
-		bool are_equal( ValueType v1, ValueType v2, Values... others ) {
+		constexpr bool are_equal( ValueType v1, ValueType v2, Values... others ) {
 			return are_equal( v1, v2 ) && are_equal( others... );
 		}
 
 		template<typename Iterator>
-		std::pair<Iterator, Iterator> slide( Iterator first, Iterator last, Iterator target ) {
+		constexpr std::pair<Iterator, Iterator> slide( Iterator first, Iterator last, Iterator target ) {
 			if( target < first ) {
 				return std::make_pair( target, std::rotate( target, first, last ) );
 			}
@@ -255,7 +255,7 @@ namespace daw {
 		using is_const_t = typename std::is_const<T>::type;
 
 		template<typename InputIt1, typename InputIt2, typename OutputIt, typename Func>
-		OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, OutputIt first_out, Func func ) {
+		constexpr OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, OutputIt first_out, Func func ) {
 			static_assert( !is_const_v<decltype( *first_out )>, "Output iterator cannot point to const data" );
 			while( first1 != last1 ) {
 				*first_out++ = func( *first1++, *first2++ );
@@ -264,8 +264,8 @@ namespace daw {
 		}
 
 		template<typename InputIt1, typename InputIt2, typename InputIt3, typename OutputIt, typename Func>
-		OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt3 first3, OutputIt first_out,
-		                         Func func ) {
+		constexpr OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt3 first3,
+		                                   OutputIt first_out, Func func ) {
 			static_assert( !is_const_v<decltype( *first_out )>, "Output iterator cannot point to const data" );
 			while( first1 != last1 ) {
 				*first_out++ = func( *first1++, *first2++, *first3++ );
@@ -275,7 +275,7 @@ namespace daw {
 
 		template<typename InputIt1, typename InputIt2, typename InputIt3, typename InputIt4, typename OutputIt,
 		         typename Func>
-		OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt3 first3, InputIt4 first4,
+		constexpr OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt3 first3, InputIt4 first4,
 		                         OutputIt first_out, Func func ) {
 			static_assert( !is_const_v<decltype( *first_out )>, "Output iterator cannot point to const data" );
 			while( first1 != last1 ) {
@@ -285,7 +285,7 @@ namespace daw {
 		}
 		template<typename InputIt1, typename InputIt2, typename InputIt3, typename InputIt4, typename InputIt5,
 		         typename OutputIt, typename Func>
-		OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt3 first3, InputIt4 first4,
+		constexpr OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt3 first3, InputIt4 first4,
 		                         InputIt4 first5, OutputIt first_out, Func func ) {
 			static_assert( !is_const_v<decltype( *first_out )>, "Output iterator cannot point to const data" );
 			while( first1 != last1 ) {
@@ -296,13 +296,13 @@ namespace daw {
 
 		struct enum_class_hash {
 			template<typename T>
-			size_t operator( )( T value ) {
+			constexpr size_t operator( )( T value ) {
 				return static_cast<size_t>( value );
 			}
 		}; // struct enum_class_hash
 
 		template<typename T>
-		T clamp( T const &value, T const &max_value ) {
+		constexpr T clamp( T const &value, T const &max_value ) noexcept {
 			if( value > max_value ) {
 				return max_value;
 			}
@@ -313,7 +313,7 @@ namespace daw {
 		struct tuple_functor {
 			template<typename T, typename F>
 			static void run( std::size_t i, T &&t, F &&f ) {
-				const std::size_t I = ( N - 1 );
+				constexpr const std::size_t I = ( N - 1 );
 				switch( i ) {
 				case I:
 					std::forward<F>( f )( std::get<I>( std::forward<T>( t ) ) );
@@ -327,11 +327,11 @@ namespace daw {
 		template<>
 		struct tuple_functor<0> {
 			template<typename T, typename F>
-			static void run( std::size_t, T, F ) {}
+			constexpr static void run( std::size_t, T, F ) {}
 		}; // struct tuple_functor
 
 		template<typename Iterator, typename UnaryPredicate>
-		auto find_last_of( Iterator first, Iterator last, UnaryPredicate pred ) {
+		constexpr auto find_last_of( Iterator first, Iterator last, UnaryPredicate pred ) {
 			auto prev = last;
 			while( first != last ) {
 				if( !pred( *first ) ) {
@@ -344,7 +344,7 @@ namespace daw {
 		}
 
 		template<typename Iterator, typename UnaryPredicate>
-		auto find_first_of( Iterator first, Iterator last, UnaryPredicate pred ) {
+		constexpr auto find_first_of( Iterator first, Iterator last, UnaryPredicate pred ) {
 			while( first != last ) {
 				if( pred( *first ) ) {
 					break;
@@ -355,7 +355,7 @@ namespace daw {
 		}
 
 		template<typename Iterator, typename UnaryPredicate>
-		auto find_first_range_of( Iterator first, Iterator last, UnaryPredicate pred ) {
+		constexpr auto find_first_range_of( Iterator first, Iterator last, UnaryPredicate pred ) {
 			first = find_first_of( first, last, pred );
 			last = find_last_of( first, last, pred );
 			++last;
@@ -379,34 +379,34 @@ namespace daw {
 		}
 
 		template<typename Value, typename UnaryFunction>
-		bool satisfies_one( Value value, UnaryFunction func ) {
+		constexpr bool satisfies_one( Value value, UnaryFunction func ) {
 			return func( value );
 		}
 
 		template<typename Value, typename UnaryFunction, typename... UnaryFunctions>
-		bool satisfies_one( Value value, UnaryFunction func, UnaryFunctions... funcs ) {
+		constexpr bool satisfies_one( Value value, UnaryFunction func, UnaryFunctions... funcs ) {
 			return func( value ) || satisfies_one( value, funcs... );
 		}
 
 		template<typename Iterator, typename UnaryFunction, typename... UnaryFunctions>
-		bool satisfies_one( Iterator first, Iterator last, UnaryFunction func, UnaryFunctions... funcs ) {
+		constexpr bool satisfies_one( Iterator first, Iterator last, UnaryFunction func, UnaryFunctions... funcs ) {
 			for( auto it = first; it != last; ++it ) {
 				return satisfies_one( *it, func, funcs... );
 			}
 		}
 
 		template<typename Value, typename UnaryFunction>
-		bool satisfies_all( Value value, UnaryFunction func ) {
+		constexpr bool satisfies_all( Value value, UnaryFunction func ) {
 			return func( value );
 		}
 
 		template<typename Value, typename UnaryFunction, typename... UnaryFunctions>
-		bool satisfies_all( Value value, UnaryFunction func, UnaryFunctions... funcs ) {
+		constexpr bool satisfies_all( Value value, UnaryFunction func, UnaryFunctions... funcs ) {
 			return func( value ) && satisfies_all( value, funcs... );
 		}
 
 		template<typename Iterator, typename UnaryFunction, typename... UnaryFunctions>
-		bool satisfies_all( Iterator first, Iterator last, UnaryFunction func, UnaryFunctions... funcs ) {
+		constexpr bool satisfies_all( Iterator first, Iterator last, UnaryFunction func, UnaryFunctions... funcs ) {
 			for( auto it = first; it != last; ++it ) {
 				return satisfies_all( *it, func, funcs... );
 			}
@@ -419,13 +419,14 @@ namespace daw {
 				Upper m_upper;
 
 			  public:
-				in_range( Lower lower, Upper upper ) : m_lower{std::move( lower )}, m_upper{std::move( upper )} {
-
-					assert( lower <= upper );
+				constexpr in_range( Lower lower, Upper upper ) : m_lower{std::move( lower )}, m_upper{std::move( upper )} {
+					if( lower > upper ) {
+						throw std::exception {};
+					};
 				}
 
 				template<typename T>
-				bool operator( )( T &&value ) const {
+				constexpr bool operator( )( T &&value ) const {
 					return m_lower <= value && value <= m_upper;
 				}
 			}; // in_range
@@ -435,10 +436,10 @@ namespace daw {
 				Value m_value;
 
 			  public:
-				equal_to( Value value ) : m_value{std::move( value )} {}
+				constexpr equal_to( Value value ) : m_value{std::move( value )} {}
 
 				template<typename T>
-				bool operator( )( T &&value ) const {
+				constexpr bool operator( )( T &&value ) const {
 					return value == m_value;
 				}
 			}; // equal_to
@@ -448,11 +449,11 @@ namespace daw {
 				Value m_value;
 
 			  public:
-				less_than( Value value ) : m_value{std::move( value )} {}
+				constexpr less_than( Value value ) : m_value{std::move( value )} {}
 
 				template<typename T>
-				bool operator( )( T &&value ) const {
-					return value == m_value;
+				constexpr bool operator( )( T &&value ) const {
+					return value < m_value;
 				}
 			}; // less_than
 
@@ -461,11 +462,11 @@ namespace daw {
 				Value m_value;
 
 			  public:
-				greater_than( Value value ) : m_value{std::move( value )} {}
+				constexpr greater_than( Value value ) : m_value{std::move( value )} {}
 
 				template<typename T>
-				bool operator( )( T &&value ) const {
-					return value == m_value;
+				constexpr bool operator( )( T &&value ) const {
+					return value > m_value;
 				}
 			}; // greater_than
 
@@ -474,10 +475,10 @@ namespace daw {
 				Value m_value;
 
 			  public:
-				greater_than_or_equal_to( Value value ) : m_value{std::move( value )} {}
+				constexpr greater_than_or_equal_to( Value value ) : m_value{std::move( value )} {}
 
 				template<typename T>
-				bool operator( )( T &&value ) const {
+				constexpr bool operator( )( T &&value ) const {
 					return value >= m_value;
 				}
 			}; // greater_than_or_equal_to
@@ -487,48 +488,48 @@ namespace daw {
 				Value m_value;
 
 			  public:
-				less_than_or_equal_to( Value value ) : m_value{std::move( value )} {}
+				constexpr less_than_or_equal_to( Value value ) : m_value{std::move( value )} {}
 
 				template<typename T>
-				bool operator( )( T &&value ) const {
+				constexpr bool operator( )( T &&value ) const {
 					return value <= m_value;
 				}
 			}; // less_than_or_equal_to
 		}      // namespace impl
 
 		template<typename Lower, typename Upper>
-		auto in_range( Lower &&lower, Upper &&upper ) {
+		constexpr auto in_range( Lower &&lower, Upper &&upper ) {
 			return impl::in_range<Lower, Upper>{std::forward<Lower>( lower ), std::forward<Upper>( upper )};
 		}
 
 		template<typename Value>
-		auto equal_to( Value &&value ) {
+		constexpr auto equal_to( Value &&value ) {
 			return impl::equal_to<Value>{std::forward<Value>( value )};
 		}
 
 		template<typename Value>
-		auto greater_than( Value &&value ) {
+		constexpr auto greater_than( Value &&value ) {
 			return impl::greater_than<Value>{std::forward<Value>( value )};
 		}
 
 		template<typename Value>
-		auto greater_than_or_equal_to( Value &&value ) {
+		constexpr auto greater_than_or_equal_to( Value &&value ) {
 			return impl::greater_than_or_equal_to<Value>{std::forward<Value>( value )};
 		}
 
 		template<typename Value>
-		auto less_than( Value &&value ) {
+		constexpr auto less_than( Value &&value ) {
 			return impl::less_than<Value>{std::forward<Value>( value )};
 		}
 
 		template<typename Value>
-		auto less_than_or_equal_to( Value &&value ) {
+		constexpr auto less_than_or_equal_to( Value &&value ) {
 			return impl::less_than_or_equal_to<Value>{std::forward<Value>( value )};
 		}
 
 		template<typename ForwardIterator1, typename ForwardIterator2>
-		auto lexicographical_compare( ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2,
-		                              ForwardIterator2 last2 ) {
+		constexpr auto lexicographical_compare( ForwardIterator1 first1, ForwardIterator1 last1,
+		                                        ForwardIterator2 first2, ForwardIterator2 last2 ) {
 			decltype( *first1 - *first2 ) tmp;
 			for( ; first1 != last1 && first2 != last2; ++first1, ++first2 ) {
 				if( ( tmp = *first1 - *first2 ) != 0 ) {
@@ -548,7 +549,7 @@ namespace daw {
 
 		template<typename InputIteratorFirst, typename InputIteratorLast, typename OutputIterator, typename Predicate,
 		         typename TransformFunction>
-		auto transform_if( InputIteratorFirst first, InputIteratorLast const last, OutputIterator out_it,
+		constexpr auto transform_if( InputIteratorFirst first, InputIteratorLast const last, OutputIterator out_it,
 		                   Predicate pred, TransformFunction trans ) {
 			while( first != last ) {
 				if( pred( *first ) ) {
@@ -563,4 +564,4 @@ namespace daw {
 } // namespace daw
 
 template<typename T>
-void Unused( T && ){};
+constexpr void Unused( T && ){};

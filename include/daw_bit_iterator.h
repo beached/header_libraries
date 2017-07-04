@@ -47,8 +47,8 @@ namespace daw {
 		size_t m_pos;
 
 	  public:
-		explicit bit_iterator( Iterator it ) : m_bit{std::move( it )} {}
-		explicit bit_iterator( Iterator it, size_t bit_pos ) : m_bit{std::move( it )}, m_pos{std::move( it_pos )} {
+		constexpr explicit bit_iterator( Iterator it ) : m_bit{std::move( it )} {}
+		constexpr explicit bit_iterator( Iterator it, size_t bit_pos ) : m_bit{std::move( it )}, m_pos{std::move( it_pos )} {
 
 			daw::exception::daw_throw_if_false(
 			    bit_pos >= sizeof( value_type ) * 8,
@@ -56,20 +56,20 @@ namespace daw {
 		}
 
 		template<typename T>
-		bit_iterator &operator=( T &&val ) {
+		constexpr bit_iterator &operator=( T &&val ) {
 			m_bit( std::forward<T>( val ) );
 			return *this;
 		}
 
-		bit_iterator &operator*( ) {
+		constexpr bit_iterator &operator*( ) {
 			return *this;
 		}
 
-		bit_iterator &operator++( ) {
+		constexpr bit_iterator &operator++( ) {
 			return *this;
 		}
 
-		bit_iterator &operator++( int ) {
+		constexpr bit_iterator &operator++( int ) {
 			return *this;
 		}
 	};
@@ -78,7 +78,7 @@ namespace daw {
 	/// Create a bit_iterator with supplied bit
 	///
 	template<typename Iterator>
-	auto make_bit_iterator( Iterator &&it ) {
+	constexpr auto make_bit_iterator( Iterator &&it ) {
 		return bit_iterator<Iterator>( std::forward<Iterator>( it ) );
 	}
 } // namespace daw

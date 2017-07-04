@@ -66,17 +66,17 @@ namespace daw {
 
 	  private:
 		template<typename T>
-		auto source_to_native_endian( T value, bit_queue_source_little_endian ) {
+		auto source_to_native_endian( T value, bit_queue_source_little_endian ) noexcept {
 			return boost::endian::little_to_native( value );
 		}
 
 		template<typename T>
-		auto source_to_native_endian( T value, bit_queue_source_big_endian ) {
+		auto source_to_native_endian( T value, bit_queue_source_big_endian ) noexcept {
 			return boost::endian::big_to_native( value );
 		}
 
 	  public:
-		void push_back( value_type value, size_t const bits = sizeof( value_type ) * 8 ) noexcept {
+		void push_back( value_type value, size_t const bits = sizeof( value_type ) * 8 ) {
 			daw::exception::dbg_throw_on_false( ( capacity( ) - m_size ) >= bits,
 			                                    "Not enough bits to hold value pushed" );
 
@@ -94,7 +94,7 @@ namespace daw {
 			return result;
 		}
 
-		value_type pop_back( size_t const bits ) noexcept {
+		value_type pop_back( size_t const bits ) {
 			daw::exception::dbg_throw_on_false( m_size >= bits, "Not enough bits to pop request" );
 
 			auto const mask = get_left_mask<queue_type>( capacity( ) - bits );
@@ -104,12 +104,12 @@ namespace daw {
 			return result;
 		}
 
-		void clear( ) noexcept {
+		constexpr void clear( ) noexcept {
 			m_queue = 0;
 			m_size = 0;
 		}
 
-		value_type pop_all( ) noexcept {
+		constexpr value_type pop_all( ) noexcept {
 			auto result = static_cast<value_type>( m_queue );
 			clear( );
 			return result;
@@ -143,11 +143,11 @@ namespace daw {
 			return 0 == size( );
 		}
 
-		void push_back( value_type const &value ) noexcept {
+		void push_back( value_type const &value ) {
 			m_queue.push_back( value, 4 );
 		}
 
-		void push_back( value_type const &value, size_t const &num_nibbles ) noexcept {
+		void push_back( value_type const &value, size_t const &num_nibbles ) {
 			m_queue.push_back( value, num_nibbles * 4 );
 		}
 
@@ -163,7 +163,7 @@ namespace daw {
 			return m_queue.pop_front( num_nibbles * 4 );
 		}
 
-		void clear( ) noexcept {
+		constexpr void clear( ) noexcept {
 			m_queue.clear( );
 		}
 
@@ -178,3 +178,4 @@ namespace daw {
 
 	using nibble_queue = nibble_queue_gen<uint8_t>;
 } // namespace daw
+

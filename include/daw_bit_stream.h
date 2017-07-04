@@ -84,13 +84,13 @@ namespace daw {
 		daw::bit_queue_gen<value_type, value_type, BitQueueLSB> m_left_overs;
 
 	  public:
-		bit_stream( InputIteratorF first, InputIteratorL last ) : m_first{first}, m_last{last}, m_left_overs{} {}
+		constexpr bit_stream( InputIteratorF first, InputIteratorL last ) noexcept : m_first{first}, m_last{last}, m_left_overs{} {}
 
-		bool valid( ) const {
+		constexpr bool valid( ) const noexcept {
 			return m_first != m_last;
 		}
 
-		explicit operator bool( ) const noexcept {
+		explicit constexpr operator bool( ) const noexcept {
 			return valid( );
 		}
 
@@ -116,7 +116,7 @@ namespace daw {
 			return result;
 		}
 
-		void clear_left_overs( ) noexcept {
+		constexpr void clear_left_overs( ) noexcept {
 			m_left_overs.clear( );
 		}
 	}; // bit_stream
@@ -182,7 +182,7 @@ namespace daw {
 	}
 
 	template<typename BitQueueLSB = bit_queue_source_native_endian, typename InputIteratorF, typename InputIteratorL>
-	auto make_bit_stream( InputIteratorF first, InputIteratorL last ) {
+	constexpr auto make_bit_stream( InputIteratorF first, InputIteratorL last ) noexcept {
 		return bit_stream<InputIteratorF, InputIteratorL, BitQueueLSB>{first, last};
 	}
 } // namespace daw
