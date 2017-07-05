@@ -84,6 +84,10 @@ namespace daw {
 		constexpr basic_string_view( const_pointer s, size_type count ) noexcept : m_first{s}, m_size{count} {}
 		constexpr basic_string_view( const_pointer s ) noexcept : m_first{s}, m_size{details::strlen<size_type>( s )} {}
 
+		template<typename Allocator>
+		basic_string_view( std::basic_string<value_type, traits_type, Allocator> const &str ) noexcept
+		    : m_first{str.data( )}, m_size{str.size( )} {}
+
 		constexpr basic_string_view( basic_string_view const &other ) noexcept = default;
 		constexpr basic_string_view &operator=( basic_string_view const & ) noexcept = default;
 		constexpr basic_string_view &operator=( basic_string_view && ) noexcept = default;
@@ -97,19 +101,19 @@ namespace daw {
 		}
 
 		constexpr const_iterator end( ) const noexcept {
-			return begin( ) + size( );
+			return begin( )[size( )];
 		}
 
 		constexpr const_iterator cend( ) const noexcept {
-			return cbegin( ) + size( );
+			return cbegin( )[size( )];
 		}
 
 		constexpr const_iterator rbegin( ) const noexcept {
-			return details::make_reverse_iterator( begin( ) + size( ) - 1 );
+			return details::make_reverse_iterator( begin( )[size( ) - 1] );
 		}
 
 		constexpr const_iterator crbegin( ) const noexcept {
-			return details::make_reverse_iterator( cbegin( ) + size( ) - 1 );
+			return details::make_reverse_iterator( cbegin( )[size( ) - 1] );
 		}
 
 		constexpr const_iterator rend( ) const noexcept {
@@ -121,22 +125,22 @@ namespace daw {
 		}
 
 		constexpr const_reference operator[]( size_type const pos ) const noexcept {
-			return *( cbegin( ) + pos );
+			return cbegin( )[pos];
 		}
 
 		constexpr const_reference at( size_type const pos ) const {
 			if( pos >= size( ) ) {
 				throw std::out_of_range{"Attempt to access basic_string_view past end"};
 			}
-			return *( cbegin( ) + pos );
+			return cbegin( )[pos];
 		}
 
 		constexpr const_reference front( ) const noexcept {
-			return operator[]( 0 );
+			return cbegin( )[0];
 		}
 
 		constexpr const_reference back( ) const noexcept {
-			return operator[]( size( ) - 1 );
+			return cbegin( )[size( )-1];
 		}
 
 		constexpr const_pointer data( ) const noexcept {
@@ -148,11 +152,11 @@ namespace daw {
 		}
 
 		constexpr size_type length( ) const noexcept {
-			return m_size;
+			return size( );
 		}
 
 		constexpr size_type max_size( ) const noexcept {
-			return std::numeric_limits<size_type>::max( );
+			return size( );
 		}
 
 		constexpr bool empty( ) const noexcept {
@@ -187,7 +191,7 @@ namespace daw {
 			}
 			size_type const rcount = std::min( count, size( ) - pos );
 			for( size_type n = pos; n < rcount; ++n ) {
-				*dest++ = *( cbegin( ) + n );
+				*dest++ = *( cbegin( )[n] );
 			}
 			return rcount;
 		}
@@ -197,7 +201,7 @@ namespace daw {
 				throw std::out_of_range{"Attempt to access basic_string_view past end"};
 			}
 			size_type const rcount = std::min( count, size( ) - pos );
-			return basic_string_view{cbegin( ) + pos, rcount};
+			return basic_string_view{cbegin( )[pos], rcount};
 		}
 
 		constexpr int compare( basic_string_view const v ) const noexcept {
@@ -234,7 +238,7 @@ namespace daw {
 			if( v.empty( ) ) {
 				return pos;
 			}
-			auto result = std::search( cbegin( ) + pos, cend( ), v.cbegin( ), v.cend( ), traits_type::eq );
+			auto result = std::search( cbegin( )[pos], cend( ), v.cbegin( ), v.cend( ), traits_type::eq );
 			if( cend( ) == result ) {
 				return npos;
 			}

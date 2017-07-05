@@ -25,12 +25,18 @@
 #include <cstdint>
 #include <cstdlib>
 #include <iostream>
+#include <string>
 
 #include "daw_string_view.h"
 
 BOOST_AUTO_TEST_CASE( daw_string_view_test_001 ) {
 	constexpr daw::string_view const a = "This is a test";
 	std::cout << a.to_string( ) << '\n';
+	std::string b = "Testing again";
+	daw::string_view c{ b };
+	c.remove_prefix( );
+	std::cout << c.to_string( ) << ' ' << c.front( ) << ' ' << c[3] << '\n';
 }
+
 
 
