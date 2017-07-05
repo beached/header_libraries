@@ -298,6 +298,10 @@ namespace daw {
 		constexpr size_type find_first_of( const_pointer s, size_type const pos = 0 ) const {
 			return find_first_of( basic_string_view{s}, pos );
 		}
+
+		std::basic_string<value_type, traits_type> to_string( ) const {
+			return std::basic_string<value_type, traits_type>{ cbegin( ), size( ) };
+		}
 	}; // basic_string_view
 
 	using string_view = basic_string_view<char>;
