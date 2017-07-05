@@ -51,6 +51,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_read_only
 	daw_safe_string
 	daw_string
+	daw_string_view
 	daw_traits
 	daw_tuple_helper
 	daw_utility
