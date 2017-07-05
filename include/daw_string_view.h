@@ -432,7 +432,7 @@ namespace daw {
 				return pos;
 			}
 			pos = m_size - ( pos + 1 );
-			const_reverse_iterator iter = find_not_of( crbegin( ) + pos, crend( ), s );
+			const_reverse_iterator iter = find_not_of( crbegin( ) + pos, crend( ), v );
 			if( crend( ) == iter ) {
 				return npos;
 			}
@@ -489,14 +489,14 @@ namespace daw {
 
 	template<typename CharT, typename Traits>
 	std::basic_ostream<CharT, Traits> &operator<<( std::basic_ostream<CharT, Traits> &os,
-	                                               std::basic_string_view<CharT, Traits> v ) {
+	                                               daw::basic_string_view<CharT, Traits> v ) {
 		if( os.good( ) ) {
-			auto const size = str.size( );
+			auto const size = v.size( );
 			auto const w = static_cast<std::size_t>( os.width( ) );
 			if( w <= size ) {
-				os.write( str.data( ), size );
+				os.write( v.data( ), size );
 			} else {
-				details::sv_insert_aligned( os, str );
+				details::sv_insert_aligned( os, v );
 			}
 			os.width( 0 );
 		}
@@ -504,18 +504,18 @@ namespace daw {
 	}
 
 	namespace string_view_literals {
-		constexpr string_view operator"" sv( char const *str, size_t len ) noexcept {
+		constexpr string_view operator"" _sv( char const *str, size_t len ) noexcept {
 			return daw::string_view{str, len};
 		}
 
-		constexpr u16string_view operator"" sv( char16_t const *str, size_t len ) noexcept {
+		constexpr u16string_view operator"" _sv( char16_t const *str, size_t len ) noexcept {
 			return daw::u16string_view{str, len};
 		}
-		constexpr u32string_view operator"" sv( char32_t const *str, size_t len ) noexcept {
+		constexpr u32string_view operator"" _sv( char32_t const *str, size_t len ) noexcept {
 			return daw::u32string_view{str, len};
 		}
 
-		constexpr wstring_view operator"" sv( wchar_t const *str, size_t len ) noexcept {
+		constexpr wstring_view operator"" _sv( wchar_t const *str, size_t len ) noexcept {
 			return daw::wstring_view{str, len};
 		}
 
