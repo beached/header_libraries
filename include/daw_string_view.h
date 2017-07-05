@@ -33,7 +33,8 @@ namespace daw {
 		template<typename SizeT, typename CharT>
 		constexpr SizeT strlen( CharT const *const str ) noexcept {
 			auto pos = str;
-			while( *( pos++ ) != 0 ) {
+			while( *( pos ) != 0 ) {
+				++pos;
 			}
 			return static_cast<SizeT>( pos - str );
 		}
