@@ -101,19 +101,19 @@ namespace daw {
 		}
 
 		constexpr const_iterator end( ) const noexcept {
-			return m_first[m_size];
+			return &m_first[m_size];
 		}
 
 		constexpr const_iterator cend( ) const noexcept {
-			return m_first[m_size];
+			return &m_first[m_size];
 		}
 
 		constexpr const_iterator rbegin( ) const noexcept {
-			return details::make_reverse_iterator( m_first[m_size-1] );
+			return details::make_reverse_iterator( &m_first[m_size-1] );
 		}
 
 		constexpr const_iterator crbegin( ) const noexcept {
-			return details::make_reverse_iterator( m_first[m_size-1] );
+			return details::make_reverse_iterator( &m_first[m_size-1] );
 		}
 
 		constexpr const_iterator rend( ) const noexcept {
@@ -238,7 +238,7 @@ namespace daw {
 			if( v.empty( ) ) {
 				return pos;
 			}
-			auto result = std::search( cbegin( )[pos], cend( ), v.cbegin( ), v.cend( ), traits_type::eq );
+			auto result = std::search( cbegin( ) + pos, cend( ), v.cbegin( ), v.cend( ), traits_type::eq );
 			if( cend( ) == result ) {
 				return npos;
 			}
