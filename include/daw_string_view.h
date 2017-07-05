@@ -101,50 +101,50 @@ namespace daw {
 		}
 
 		constexpr const_iterator end( ) const noexcept {
-			return begin( )[size( )];
+			return m_first[m_size];
 		}
 
 		constexpr const_iterator cend( ) const noexcept {
-			return cbegin( )[size( )];
+			return m_first[m_size];
 		}
 
 		constexpr const_iterator rbegin( ) const noexcept {
-			return details::make_reverse_iterator( begin( )[size( ) - 1] );
+			return details::make_reverse_iterator( m_first[m_size-1] );
 		}
 
 		constexpr const_iterator crbegin( ) const noexcept {
-			return details::make_reverse_iterator( cbegin( )[size( ) - 1] );
+			return details::make_reverse_iterator( m_first[m_size-1] );
 		}
 
 		constexpr const_iterator rend( ) const noexcept {
-			return details::make_reverse_iterator( begin( ) - 1 );
+			return details::make_reverse_iterator( m_first - 1 );
 		}
 
 		constexpr const_iterator crend( ) const noexcept {
-			return details::make_reverse_iterator( cbegin( ) - 1 );
+			return details::make_reverse_iterator( m_first - 1 );
 		}
 
 		constexpr const_reference operator[]( size_type const pos ) const noexcept {
-			return cbegin( )[pos];
+			return m_first[pos];
 		}
 
 		constexpr const_reference at( size_type const pos ) const {
-			if( pos >= size( ) ) {
+			if( pos >= m_size ) {
 				throw std::out_of_range{"Attempt to access basic_string_view past end"};
 			}
-			return cbegin( )[pos];
+			return m_first[pos];
 		}
 
 		constexpr const_reference front( ) const noexcept {
-			return cbegin( )[0];
+			return m_first[0];
 		}
 
 		constexpr const_reference back( ) const noexcept {
-			return cbegin( )[size( )-1];
+			return m_first[m_size-1];
 		}
 
 		constexpr const_pointer data( ) const noexcept {
-			return cbegin( );
+			return m_first;
 		}
 
 		constexpr size_type size( ) const noexcept {
@@ -152,15 +152,15 @@ namespace daw {
 		}
 
 		constexpr size_type length( ) const noexcept {
-			return size( );
+			return m_size;
 		}
 
 		constexpr size_type max_size( ) const noexcept {
-			return size( );
+			return m_size;
 		}
 
 		constexpr bool empty( ) const noexcept {
-			return 0 == size( );
+			return 0 == m_size;
 		}
 
 		constexpr void remove_prefix( size_type const n ) noexcept {
@@ -186,12 +186,12 @@ namespace daw {
 		}
 
 		constexpr size_type copy( pointer dest, size_type const count, size_type const pos = 0 ) const {
-			if( pos > size( ) ) {
+			if( pos > m_size ) {
 				throw std::out_of_range{"Attempt to access basic_string_view past end"};
 			}
-			size_type const rcount = std::min( count, size( ) - pos );
+			size_type const rcount = std::min( count, m_size - pos );
 			for( size_type n = pos; n < rcount; ++n ) {
-				*dest++ = *( cbegin( )[n] );
+				*dest++ = m_first[n];
 			}
 			return rcount;
 		}
@@ -200,8 +200,8 @@ namespace daw {
 			if( pos > size( ) ) {
 				throw std::out_of_range{"Attempt to access basic_string_view past end"};
 			}
-			size_type const rcount = std::min( count, size( ) - pos );
-			return basic_string_view{cbegin( )[pos], rcount};
+			size_type const rcount = std::min( count, m_size - pos );
+			return basic_string_view{&m_first[pos], rcount};
 		}
 
 		constexpr int compare( basic_string_view const v ) const noexcept {
