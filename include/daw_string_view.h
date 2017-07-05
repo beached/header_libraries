@@ -56,7 +56,7 @@ namespace daw {
 		}
 	} // namespace details
 
-	template<typename CharT, typename Traits = std::char_traits<CharT>, typename SizeT = uint32_t>
+	template<typename CharT, typename Traits = std::char_traits<CharT>, typename SizeT = std::size_t>
 	struct basic_string_view {
 		using traits_type = Traits;
 		using value_type = CharT;
