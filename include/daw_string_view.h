@@ -163,7 +163,7 @@ namespace daw {
 		}
 
 		constexpr void remove_prefix( ) noexcept {
-			remove_prefix( 0 );
+			remove_prefix( 1 );
 		}
 
 		constexpr void remove_suffix( size_type const n ) noexcept {
@@ -171,7 +171,7 @@ namespace daw {
 		}
 
 		constexpr void remove_suffix( ) noexcept {
-			remove_suffix( 0 );
+			remove_suffix( 1 );
 		}
 
 		constexpr void swap( basic_string_view &v ) noexcept {
