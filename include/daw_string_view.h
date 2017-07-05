@@ -29,6 +29,9 @@
 #include <string>
 
 namespace daw {
+	template<typename CharT, typename Traits = std::char_traits<CharT>>
+	struct basic_string_view;
+
 	namespace details {
 		template<typename SizeT, typename CharT>
 		constexpr SizeT strlen( CharT const *const str ) noexcept {
@@ -39,12 +42,12 @@ namespace daw {
 			return static_cast<SizeT>( pos - str );
 		}
 
-		template<class Iterator>
+		template<typename Iterator>
 		constexpr std::reverse_iterator<Iterator> make_reverse_iterator( Iterator i ) {
 			return std::reverse_iterator<Iterator>( i );
 		}
 
-		template<class InputIt, class ForwardIt, class BinaryPredicate>
+		template<typename InputIt, typename ForwardIt, typename BinaryPredicate>
 		constexpr InputIt find_first_of( InputIt first, InputIt last, ForwardIt s_first, ForwardIt s_last, BinaryPredicate p ) noexcept {
 			for( ; first != last; ++first ) {
 				for( ForwardIt it = s_first; it != s_last; ++it ) {
@@ -55,9 +58,41 @@ namespace daw {
 			}
 			return last;
 		}
+
+		template<typename charT, typename traits>
+		inline void sv_insert_fill_chars( std::basic_ostream<charT, traits> &os, std::size_t n ) {
+			enum { chunk_size = 8 };
+			charT fill_chars[chunk_size];
+			std::fill_n( fill_chars, static_cast<std::size_t>( chunk_size ), os.fill( ) );
+			for( ; n >= chunk_size && os.good( ); n -= chunk_size ) {
+				os.write( fill_chars, static_cast<std::size_t>( chunk_size ) );
+			}
+			if( n > 0 && os.good( ) ) {
+				os.write( fill_chars, n );
+			}
+		}
+
+		template<typename charT, typename traits>
+		void sv_insert_aligned( std::basic_ostream<charT, traits> &os, daw::basic_string_view<charT, traits> const &str ) {
+			auto const size = str.size( );
+			auto const alignment_size = static_cast<std::size_t>( os.width( ) ) - size;
+			bool const align_left = ( os.flags( ) & std::basic_ostream<charT, traits>::adjustfield ) ==
+			                        std::basic_ostream<charT, traits>::left;
+			if( !align_left ) {
+				sv_insert_fill_chars( os, alignment_size );
+				if( os.good( ) ) {
+					os.write( str.data( ), size );
+				}
+			} else {
+				os.write( str.data( ), size );
+				if( os.good( ) ) {
+					sv_insert_fill_chars( os, alignment_size );
+				}
+			}
+		}
 	} // namespace details
 
-	template<typename CharT, typename Traits = std::char_traits<CharT>, typename SizeT = std::size_t>
+	template<typename CharT, typename Traits>
 	struct basic_string_view {
 		using traits_type = Traits;
 		using value_type = CharT;
@@ -69,7 +104,7 @@ namespace daw {
 		using iterator = const_iterator;
 		using reverse_iterator = std::reverse_iterator<iterator>;
 		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
-		using size_type = SizeT;
+		using size_type = std::size_t;
 		using difference_type = std::ptrdiff_t;
 
 	  private:
@@ -84,13 +119,20 @@ namespace daw {
 		constexpr basic_string_view( const_pointer s, size_type count ) noexcept : m_first{s}, m_size{count} {}
 		constexpr basic_string_view( const_pointer s ) noexcept : m_first{s}, m_size{details::strlen<size_type>( s )} {}
 
+		constexpr basic_string_view( basic_string_view const &other ) noexcept = default;
+		constexpr basic_string_view &operator=( basic_string_view const & ) noexcept = default;
+		constexpr basic_string_view &operator=( basic_string_view && ) noexcept = default;
+
 		template<typename Allocator>
 		basic_string_view( std::basic_string<value_type, traits_type, Allocator> const &str ) noexcept
 		    : m_first{str.data( )}, m_size{str.size( )} {}
 
-		constexpr basic_string_view( basic_string_view const &other ) noexcept = default;
-		constexpr basic_string_view &operator=( basic_string_view const & ) noexcept = default;
-		constexpr basic_string_view &operator=( basic_string_view && ) noexcept = default;
+		template<typename Allocator>
+		basic_string_view &operator=( std::basic_string<value_type, traits_type, Allocator> const &str ) noexcept {
+			m_first = str.data( );
+			m_size = str.size( );
+			return *this;
+		}
 
 		constexpr const_iterator begin( ) const noexcept {
 			return m_first;
@@ -218,7 +260,7 @@ namespace daw {
 			return substr( pos1, count1 ).compare( v.substr( pos2, count2 ) );
 		}
 
-		constexpr int compare( const_pointer s ) const {
+		constexpr int compare( const_pointer s ) const noexcept {
 			return compare( basic_string_view{s} );
 		}
 
@@ -249,11 +291,11 @@ namespace daw {
 			return find( basic_string_view{&c, 1}, pos );
 		}
 
-		constexpr size_type find( const_pointer s, size_type const pos, size_type const count ) const {
+		constexpr size_type find( const_pointer s, size_type const pos, size_type const count ) const noexcept {
 			return find( basic_string_view{s, count}, pos );
 		}
 
-		constexpr size_type find( const_pointer s, size_type const pos = 0 ) const {
+		constexpr size_type find( const_pointer s, size_type const pos = 0 ) const noexcept {
 			return find( basic_string_view{s}, pos );
 		}
 
@@ -279,11 +321,11 @@ namespace daw {
 			return rfind( basic_string_view{&c, 1}, pos );
 		}
 
-		constexpr size_type rfind( const_pointer s, size_type const pos, size_type const count ) const {
+		constexpr size_type rfind( const_pointer s, size_type const pos, size_type const count ) const noexcept {
 			return rfind( basic_string_view{s, count}, pos );
 		}
 
-		constexpr size_type rfind( const_pointer s, size_type const pos = npos ) const {
+		constexpr size_type rfind( const_pointer s, size_type const pos = npos ) const noexcept {
 			return rfind( basic_string_view{s}, pos );
 		}
 
@@ -304,16 +346,109 @@ namespace daw {
 			return find_first_of( basic_string_view{&c, 1}, pos );
 		}
 
-		constexpr size_type find_first_of( const_pointer s, size_type pos, size_type const count ) const {
+		constexpr size_type find_first_of( const_pointer s, size_type pos, size_type const count ) const noexcept {
 			return find_first_of( basic_string_view{s, count}, pos );
 		}
 
-		constexpr size_type find_first_of( const_pointer s, size_type const pos = 0 ) const {
+		constexpr size_type find_first_of( const_pointer s, size_type const pos = 0 ) const noexcept {
 			return find_first_of( basic_string_view{s}, pos );
 		}
 
-		std::basic_string<value_type, traits_type> to_string( ) const {
+		std::basic_string<value_type, traits_type> to_string( ) const noexcept {
 			return std::basic_string<value_type, traits_type>{ cbegin( ), size( ) };
+		}
+	  private:
+		template<typename r_iter>
+		constexpr size_type reverse_distance( const_reverse_iterator first, const_reverse_iterator last ) const noexcept {
+			// Portability note here: std::distance is not NOEXCEPT, but calling it with a string_view::reverse_iterator
+			// will not throw.
+			return m_size - 1 - std::distance( first, last );
+		}
+
+	  public:
+		constexpr size_type find_last_of( basic_string_view v, size_type pos = npos ) const noexcept {
+			if( 0 == v.size( ) ) {
+				return npos;
+			}
+			if( pos >= m_size ) {
+				pos = 0;
+			} else {
+				pos = m_size - ( pos + 1 );
+			}
+			const_reverse_iterator iter =
+			    std::find_first_of( crbegin( ) + pos, crend( ), v.cbegin( ), v.cend( ), traits_type::eq );
+
+			if( iter == crend( ) ) {
+				return npos;
+			}
+			return reverse_distance( crbegin( ), iter );
+		}
+
+		constexpr size_type find_last_of( CharT c, size_type pos = npos ) const noexcept {
+			return find_last_of( basic_string_view{ &c, 1 }, pos );
+		}
+
+		constexpr size_type find_last_of( const CharT *s, size_type pos, size_type count ) const noexcept {
+			return find_last_of( basic_string_view{s, count}, pos );
+		}
+
+		constexpr size_type find_last_of( const CharT *s, size_type pos = npos ) const noexcept {
+			return find_last_of( basic_string_view{s}, pos );
+		}
+
+		constexpr size_type find_first_not_of( basic_string_view v, size_type pos = 0 ) const noexcept {
+			if( pos >= m_size ) {
+				return npos;
+			}
+			if( 0 == v.size( ) ) {
+				return pos;
+			}
+
+			const_iterator iter = find_not_of( cbegin( ) + pos, cend( ), v );
+			if( cend( ) == iter ) {
+				return npos;
+			}
+
+			return std::distance( cbegin( ), iter );
+		}
+
+		constexpr size_type find_first_not_of( CharT c, size_type pos = 0 ) const noexcept {
+			return find_first_not_of( basic_string_view{&c, 1}, pos );
+		}
+
+		constexpr size_type find_first_not_of( const CharT *s, size_type pos, size_type count ) const noexcept {
+			return find_first_not_of( basic_string_view{s, count}, pos );
+		}
+
+		constexpr size_type find_first_not_of( const CharT *s, size_type pos = 0 ) const noexcept {
+			return find_first_not_of( basic_string_view{s}, pos );
+		}
+
+		constexpr size_type find_last_not_of( basic_string_view v, size_type pos = npos ) const noexcept {
+			if( pos >= m_size ) {
+				pos = m_size - 1;
+			}
+			if( 0 == v.size( ) ) {
+				return pos;
+			}
+			pos = m_size - ( pos + 1 );
+			const_reverse_iterator iter = find_not_of( crbegin( ) + pos, crend( ), s );
+			if( crend( ) == iter ) {
+				return npos;
+			}
+			return reverse_distance( crbegin( ), iter );
+		}
+
+		constexpr size_type find_last_not_of( CharT c, size_type pos = npos ) const noexcept {
+			return find_last_not_of( basic_string_view{&c, 1}, pos );
+		}
+
+		constexpr size_type find_last_not_of( const CharT *s, size_type pos, size_type count ) const noexcept {
+			return find_last_not_of( basic_string_view{s, count}, pos );
+		}
+
+		constexpr size_type find_last_not_of( const CharT *s, size_type pos = npos ) const noexcept {
+			return find_last_not_of( basic_string_view{s}, pos );
 		}
 	}; // basic_string_view
 
@@ -322,5 +457,68 @@ namespace daw {
 	using u16string_view = basic_string_view<char16_t>;
 	using u32string_view = basic_string_view<char32_t>;
 
+	template<typename CharT, typename Traits>
+	constexpr bool operator==( basic_string_view<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
+		return lhs.compare( rhs ) == 0;
+	}
+
+	template<typename CharT, typename Traits>
+	constexpr bool operator!=( basic_string_view<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
+		return lhs.compare( rhs ) != 0;
+	}
+
+	template<typename CharT, typename Traits>
+	constexpr bool operator<( basic_string_view<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
+		return lhs.compare( rhs ) < 0;
+	}
+
+	template<typename CharT, typename Traits>
+	constexpr bool operator<=( basic_string_view<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
+		return lhs.compare( rhs ) <= 0;
+	}
+
+	template<typename CharT, typename Traits>
+	constexpr bool operator>( basic_string_view<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
+		return lhs.compare( rhs ) > 0;
+	}
+
+	template<typename CharT, typename Traits>
+	constexpr bool operator>=( basic_string_view<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
+		return lhs.compare( rhs ) >= 0;
+	}
+
+	template<typename CharT, typename Traits>
+	std::basic_ostream<CharT, Traits> &operator<<( std::basic_ostream<CharT, Traits> &os,
+	                                               std::basic_string_view<CharT, Traits> v ) {
+		if( os.good( ) ) {
+			auto const size = str.size( );
+			auto const w = static_cast<std::size_t>( os.width( ) );
+			if( w <= size ) {
+				os.write( str.data( ), size );
+			} else {
+				details::sv_insert_aligned( os, str );
+			}
+			os.width( 0 );
+		}
+		return os;
+	}
+
+	namespace string_view_literals {
+		constexpr string_view operator"" sv( char const *str, size_t len ) noexcept {
+			return daw::string_view{str, len};
+		}
+
+		constexpr u16string_view operator"" sv( char16_t const *str, size_t len ) noexcept {
+			return daw::u16string_view{str, len};
+		}
+		constexpr u32string_view operator"" sv( char32_t const *str, size_t len ) noexcept {
+			return daw::u32string_view{str, len};
+		}
+
+		constexpr wstring_view operator"" sv( wchar_t const *str, size_t len ) noexcept {
+			return daw::wstring_view{str, len};
+		}
+
+	} // namespace string_view_literals
 } // namespace daw
 

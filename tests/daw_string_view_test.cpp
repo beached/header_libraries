@@ -36,6 +36,8 @@ BOOST_AUTO_TEST_CASE( daw_string_view_test_001 ) {
 	daw::string_view c{ b };
 	c.remove_prefix( );
 	std::cout << c.to_string( ) << ' ' << c.front( ) << ' ' << c[3] << '\n';
+	c = a;
+	c = b;
 }
 
 
