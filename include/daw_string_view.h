@@ -170,11 +170,11 @@ namespace daw {
 			return details::make_reverse_iterator( m_first - 1 );
 		}
 
-		constexpr const_reference operator[]( size_type_internal const pos ) const noexcept {
+		constexpr const_reference operator[]( size_type const pos ) const noexcept {
 			return m_first[pos];
 		}
 
-		constexpr const_reference at( size_type_internal const pos ) const {
+		constexpr const_reference at( size_type const pos ) const {
 			if( pos >= m_size ) {
 				throw std::out_of_range{"Attempt to access basic_string_view past end"};
 			}
@@ -209,7 +209,7 @@ namespace daw {
 			return 0 == m_size;
 		}
 
-		constexpr void remove_prefix( size_type_internal const n ) noexcept {
+		constexpr void remove_prefix( size_type const n ) noexcept {
 			m_first += n;
 		}
 
@@ -217,7 +217,7 @@ namespace daw {
 			remove_prefix( 1 );
 		}
 
-		constexpr void remove_suffix( size_type_internal const n ) noexcept {
+		constexpr void remove_suffix( size_type const n ) noexcept {
 			m_size -= n;
 		}
 
@@ -231,7 +231,7 @@ namespace daw {
 			swap( m_size, v.m_size );
 		}
 
-		constexpr size_type_internal copy( pointer dest, size_type_internal const count, size_type_internal const pos = 0 ) const {
+		constexpr size_type copy( pointer dest, size_type const count, size_type const pos = 0 ) const {
 			if( pos > m_size ) {
 				throw std::out_of_range{"Attempt to access basic_string_view past end"};
 			}
@@ -242,7 +242,7 @@ namespace daw {
 			return rcount;
 		}
 
-		constexpr basic_string_view substr( size_type_internal const pos = 0, size_type_internal const count = npos ) const {
+		constexpr basic_string_view substr( size_type const pos = 0, size_type const count = npos ) const {
 			if( pos > size( ) ) {
 				throw std::out_of_range{"Attempt to access basic_string_view past end"};
 			}
@@ -255,12 +255,12 @@ namespace daw {
 			return traits_type::compare( data( ), v.data( ), rlen );
 		}
 
-		constexpr int compare( size_type_internal const pos1, size_type_internal const count1, basic_string_view const v ) const {
+		constexpr int compare( size_type const pos1, size_type const count1, basic_string_view const v ) const {
 			return substr( pos1, count1 ).compare( v );
 		}
 
-		constexpr int compare( size_type_internal const pos1, size_type_internal const count1, basic_string_view const v,
-		                       size_type_internal const pos2, size_type_internal const count2 ) const {
+		constexpr int compare( size_type const pos1, size_type const count1, basic_string_view const v,
+		                       size_type const pos2, size_type const count2 ) const {
 			return substr( pos1, count1 ).compare( v.substr( pos2, count2 ) );
 		}
 
@@ -268,16 +268,16 @@ namespace daw {
 			return compare( basic_string_view{s} );
 		}
 
-		constexpr int compare( size_type_internal const pos1, size_type_internal const count1, const_pointer s ) const {
+		constexpr int compare( size_type const pos1, size_type const count1, const_pointer s ) const {
 			return substr( pos1, count1 ).compare( basic_string_view{s} );
 		}
 
-		constexpr int compare( size_type_internal const pos1, size_type_internal const count1, const_pointer s,
-		                       size_type_internal const count2 ) const {
+		constexpr int compare( size_type const pos1, size_type const count1, const_pointer s,
+		                       size_type const count2 ) const {
 			return substr( pos1, count1 ).compare( basic_string_view{s, count2} );
 		}
 
-		constexpr size_type_internal find( basic_string_view const v, size_type_internal const pos = 0 ) const noexcept {
+		constexpr size_type find( basic_string_view const v, size_type const pos = 0 ) const noexcept {
 			if( size( ) < v.size( ) ) {
 				return npos;
 			}
@@ -291,19 +291,19 @@ namespace daw {
 			return static_cast<size_type_internal>( result - cbegin( ) );
 		}
 
-		constexpr size_type_internal find( value_type const c, size_type_internal const pos = 0 ) const noexcept {
+		constexpr size_type find( value_type const c, size_type const pos = 0 ) const noexcept {
 			return find( basic_string_view{&c, 1}, pos );
 		}
 
-		constexpr size_type_internal find( const_pointer s, size_type_internal const pos, size_type_internal const count ) const noexcept {
+		constexpr size_type find( const_pointer s, size_type const pos, size_type const count ) const noexcept {
 			return find( basic_string_view{s, count}, pos );
 		}
 
-		constexpr size_type_internal find( const_pointer s, size_type_internal const pos = 0 ) const noexcept {
+		constexpr size_type find( const_pointer s, size_type const pos = 0 ) const noexcept {
 			return find( basic_string_view{s}, pos );
 		}
 
-		constexpr size_type_internal rfind( basic_string_view const v, size_type_internal const pos = npos ) const noexcept {
+		constexpr size_type rfind( basic_string_view const v, size_type const pos = npos ) const noexcept {
 			if( size( ) < v.size( ) ) {
 				return npos;
 			}
@@ -321,19 +321,19 @@ namespace daw {
 			}
 		}
 
-		constexpr size_type_internal rfind( value_type const c, size_type_internal const pos = npos ) const noexcept {
+		constexpr size_type rfind( value_type const c, size_type const pos = npos ) const noexcept {
 			return rfind( basic_string_view{&c, 1}, pos );
 		}
 
-		constexpr size_type_internal rfind( const_pointer s, size_type_internal const pos, size_type_internal const count ) const noexcept {
+		constexpr size_type rfind( const_pointer s, size_type const pos, size_type const count ) const noexcept {
 			return rfind( basic_string_view{s, count}, pos );
 		}
 
-		constexpr size_type_internal rfind( const_pointer s, size_type_internal const pos = npos ) const noexcept {
+		constexpr size_type rfind( const_pointer s, size_type const pos = npos ) const noexcept {
 			return rfind( basic_string_view{s}, pos );
 		}
 
-		constexpr size_type_internal find_first_of( basic_string_view const v, size_type_internal const pos = 0 ) const noexcept {
+		constexpr size_type find_first_of( basic_string_view const v, size_type const pos = 0 ) const noexcept {
 			if( pos >= size( ) || v.size( ) == 0 ) {
 				return npos;
 			}
@@ -346,15 +346,15 @@ namespace daw {
 			return static_cast<size_type_internal>( iter - cbegin( ) );
 		}
 
-		constexpr size_type_internal find_first_of( value_type c, size_type_internal const pos = 0 ) const noexcept {
+		constexpr size_type find_first_of( value_type c, size_type const pos = 0 ) const noexcept {
 			return find_first_of( basic_string_view{&c, 1}, pos );
 		}
 
-		constexpr size_type_internal find_first_of( const_pointer s, size_type_internal pos, size_type_internal const count ) const noexcept {
+		constexpr size_type find_first_of( const_pointer s, size_type pos, size_type const count ) const noexcept {
 			return find_first_of( basic_string_view{s, count}, pos );
 		}
 
-		constexpr size_type_internal find_first_of( const_pointer s, size_type_internal const pos = 0 ) const noexcept {
+		constexpr size_type find_first_of( const_pointer s, size_type const pos = 0 ) const noexcept {
 			return find_first_of( basic_string_view{s}, pos );
 		}
 
@@ -363,14 +363,14 @@ namespace daw {
 		}
 	  private:
 		template<typename r_iter>
-		constexpr size_type_internal reverse_distance( const_reverse_iterator first, const_reverse_iterator last ) const noexcept {
+		constexpr size_type reverse_distance( const_reverse_iterator first, const_reverse_iterator last ) const noexcept {
 			// Portability note here: std::distance is not NOEXCEPT, but calling it with a string_view::reverse_iterator
 			// will not throw.
 			return m_size - 1 - std::distance( first, last );
 		}
 
 	  public:
-		constexpr size_type_internal find_last_of( basic_string_view v, size_type_internal pos = npos ) const noexcept {
+		constexpr size_type find_last_of( basic_string_view v, size_type pos = npos ) const noexcept {
 			if( 0 == v.size( ) ) {
 				return npos;
 			}
@@ -388,19 +388,19 @@ namespace daw {
 			return reverse_distance( crbegin( ), iter );
 		}
 
-		constexpr size_type_internal find_last_of( CharT c, size_type_internal pos = npos ) const noexcept {
+		constexpr size_type find_last_of( value_type c, size_type pos = npos ) const noexcept {
 			return find_last_of( basic_string_view{ &c, 1 }, pos );
 		}
 
-		constexpr size_type_internal find_last_of( const CharT *s, size_type_internal pos, size_type_internal count ) const noexcept {
+		constexpr size_type find_last_of( const_pointer s, size_type pos, size_type count ) const noexcept {
 			return find_last_of( basic_string_view{s, count}, pos );
 		}
 
-		constexpr size_type_internal find_last_of( const CharT *s, size_type_internal pos = npos ) const noexcept {
+		constexpr size_type find_last_of( const_pointer s, size_type pos = npos ) const noexcept {
 			return find_last_of( basic_string_view{s}, pos );
 		}
 
-		constexpr size_type_internal find_first_not_of( basic_string_view v, size_type_internal pos = 0 ) const noexcept {
+		constexpr size_type find_first_not_of( basic_string_view v, size_type pos = 0 ) const noexcept {
 			if( pos >= m_size ) {
 				return npos;
 			}
@@ -416,19 +416,19 @@ namespace daw {
 			return std::distance( cbegin( ), iter );
 		}
 
-		constexpr size_type_internal find_first_not_of( CharT c, size_type_internal pos = 0 ) const noexcept {
+		constexpr size_type find_first_not_of( value_type c, size_type pos = 0 ) const noexcept {
 			return find_first_not_of( basic_string_view{&c, 1}, pos );
 		}
 
-		constexpr size_type_internal find_first_not_of( const CharT *s, size_type_internal pos, size_type_internal count ) const noexcept {
+		constexpr size_type find_first_not_of( const_pointer s, size_type pos, size_type count ) const noexcept {
 			return find_first_not_of( basic_string_view{s, count}, pos );
 		}
 
-		constexpr size_type_internal find_first_not_of( const CharT *s, size_type_internal pos = 0 ) const noexcept {
+		constexpr size_type find_first_not_of( const_pointer s, size_type pos = 0 ) const noexcept {
 			return find_first_not_of( basic_string_view{s}, pos );
 		}
 
-		constexpr size_type_internal find_last_not_of( basic_string_view v, size_type_internal pos = npos ) const noexcept {
+		constexpr size_type find_last_not_of( basic_string_view v, size_type pos = npos ) const noexcept {
 			if( pos >= m_size ) {
 				pos = m_size - 1;
 			}
@@ -443,15 +443,15 @@ namespace daw {
 			return reverse_distance( crbegin( ), iter );
 		}
 
-		constexpr size_type_internal find_last_not_of( CharT c, size_type_internal pos = npos ) const noexcept {
+		constexpr size_type find_last_not_of( value_type c, size_type pos = npos ) const noexcept {
 			return find_last_not_of( basic_string_view{&c, 1}, pos );
 		}
 
-		constexpr size_type_internal find_last_not_of( const CharT *s, size_type_internal pos, size_type_internal count ) const noexcept {
+		constexpr size_type find_last_not_of( const_pointer s, size_type pos, size_type count ) const noexcept {
 			return find_last_not_of( basic_string_view{s, count}, pos );
 		}
 
-		constexpr size_type_internal find_last_not_of( const CharT *s, size_type_internal pos = npos ) const noexcept {
+		constexpr size_type find_last_not_of( const_pointer s, size_type pos = npos ) const noexcept {
 			return find_last_not_of( basic_string_view{s}, pos );
 		}
 	}; // basic_string_view
