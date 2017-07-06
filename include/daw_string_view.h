@@ -70,7 +70,7 @@ namespace daw {
 				os.write( fill_chars, static_cast<std::size_t>( chunk_size ) );
 			}
 			if( n > 0 && os.good( ) ) {
-				os.write( fill_chars, n );
+				os.write( fill_chars, static_cast<std::streamsize>(n) );
 			}
 		}
 
@@ -83,10 +83,10 @@ namespace daw {
 			if( !align_left ) {
 				sv_insert_fill_chars( os, alignment_size );
 				if( os.good( ) ) {
-					os.write( str.data( ), size );
+					os.write( str.data( ), static_cast<std::streamsize>(size) );
 				}
 			} else {
-				os.write( str.data( ), size );
+				os.write( str.data( ), static_cast<std::streamsize>(size) );
 				if( os.good( ) ) {
 					sv_insert_fill_chars( os, alignment_size );
 				}
@@ -496,7 +496,7 @@ namespace daw {
 			auto const size = v.size( );
 			auto const w = static_cast<std::size_t>( os.width( ) );
 			if( w <= size ) {
-				os.write( v.data( ), size );
+				os.write( v.data( ), static_cast<std::streamsize>(size) );
 			} else {
 				details::sv_insert_aligned( os, v );
 			}
@@ -523,6 +523,14 @@ namespace daw {
 
 	} // namespace string_view_literals
 } // namespace daw
+
+auto operator+( std::string const & lhs, daw::string_view rhs ) {
+	return lhs + rhs.to_string( );
+}
+
+auto operator+( daw::string_view lhs, std::string const & rhs ) {
+	return lhs.to_string( ) + rhs;
+}
 
 namespace std {
 	// TODO use same function as string without killing performance of creating a string
