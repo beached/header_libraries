@@ -25,10 +25,11 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/iostreams/device/mapped_file.hpp>
-#include <boost/utility/string_view.hpp>
 #include <iostream>
 #include <memory>
 #include <string>
+
+#include "daw_string_view.h"
 
 namespace daw {
 	namespace filesystem {
@@ -65,7 +66,7 @@ namespace daw {
 			}
 
 			template<typename charT, typename traits>
-			MemoryMappedFile( boost::basic_string_view<charT, traits> filename, bool const readonly = true )
+			MemoryMappedFile( daw::basic_string_view<charT, traits> filename, bool const readonly = true )
 			    : MemoryMappedFile{boost::filesystem::path{filename.data( )}, readonly} {}
 
 			MemoryMappedFile( ) = delete;
