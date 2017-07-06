@@ -28,6 +28,8 @@
 #include <limits>
 #include <string>
 
+#include "daw_fnv1a_hash.h"
+
 namespace daw {
 	template<typename CharT, typename Traits = std::char_traits<CharT>>
 	struct basic_string_view;
@@ -521,4 +523,27 @@ namespace daw {
 
 	} // namespace string_view_literals
 } // namespace daw
+
+namespace std {
+	// TODO use same function as string without killing performance of creating a string
+	template<>
+	struct hash<daw::string_view> {
+		constexpr size_t operator( )( daw::string_view s ) noexcept { return daw::fnv1a_hash( s.data( ), s.size( ) ); }
+	};
+	
+	template<>
+	struct hash<daw::wstring_view> {
+		constexpr size_t operator( )( daw::wstring_view s ) noexcept { return daw::fnv1a_hash( s.data( ), s.size( ) ); }
+	};
+
+	template<>
+	struct hash<daw::u16string_view> {
+		constexpr size_t operator( )( daw::u16string_view s ) noexcept { return daw::fnv1a_hash( s.data( ), s.size( ) ); }
+	};
+
+	template<>
+	struct hash<daw::u32string_view> {
+		constexpr size_t operator( )( daw::u32string_view s ) noexcept { return daw::fnv1a_hash( s.data( ), s.size( ) ); }
+	};
+}
 

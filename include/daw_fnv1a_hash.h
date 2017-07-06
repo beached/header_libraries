@@ -29,11 +29,11 @@ namespace daw {
 	namespace impl {
 		using is_64bit_t = std::integral_constant<bool, sizeof( size_t ) == sizeof( uint64_t )>;
 
-		constexpr size_t fnv_prime( ) {
+		constexpr size_t fnv_prime( ) noexcept {
 			return impl::is_64bit_t::value ? 1099511628211ULL : 16777619UL;
 		}
 
-		constexpr size_t fnv_offset( ) {
+		constexpr size_t fnv_offset( ) noexcept {
 			return impl::is_64bit_t::value ? 14695981039346656037ULL : 2166136261UL;
 		}
 
@@ -41,7 +41,7 @@ namespace daw {
 
 	template<typename T>
 	struct fnv1a_hash_t {
-		constexpr size_t operator( )( T const *const ptr ) {
+		constexpr size_t operator( )( T const *const ptr ) noexcept {
 			auto hash = daw::impl::fnv_offset( );
 			auto bptr = static_cast<uint8_t const *const>( static_cast<void const *const>( ptr ) );
 			for( size_t n = 0; n < sizeof( T ); ++n ) {
@@ -60,6 +60,17 @@ namespace daw {
 	constexpr size_t fnv1a_hash( char const *ptr ) {
 		auto hash = daw::impl::fnv_offset( );
 		while( *ptr != 0 ) {
+			hash = hash ^ static_cast<size_t>( *ptr );
+			hash *= daw::impl::fnv_prime( );
+			++ptr;
+		}
+		return hash;
+	}
+
+	template<typename CharT>
+	constexpr size_t fnv1a_hash( CharT const *ptr, size_t len ) {
+		auto hash = daw::impl::fnv_offset( );
+		while( len-- > 0 ) {
 			hash = hash ^ static_cast<size_t>( *ptr );
 			hash *= daw::impl::fnv_prime( );
 			++ptr;
