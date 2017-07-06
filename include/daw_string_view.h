@@ -106,19 +106,20 @@ namespace daw {
 		using iterator = const_iterator;
 		using reverse_iterator = std::reverse_iterator<iterator>;
 		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
-		using size_type = std::size_t;
+		using size_type = uint32_t; //std::size_t;
 		using difference_type = std::ptrdiff_t;
 
 	  private:
 		const_pointer m_first;
-		size_type m_size;
+		//size_type m_size;
+		uint32_t m_size;
 
 	  public:
 		static constexpr size_type const npos = std::numeric_limits<size_type>::max( );
 
 		constexpr basic_string_view( ) noexcept : m_first{nullptr}, m_size{0} {}
 
-		constexpr basic_string_view( const_pointer s, size_type count ) noexcept : m_first{s}, m_size{count} {}
+		constexpr basic_string_view( const_pointer s, std::size_t count ) noexcept : m_first{s}, m_size{static_cast<size_type>(count)} {}
 		constexpr basic_string_view( const_pointer s ) noexcept : m_first{s}, m_size{details::strlen<size_type>( s )} {}
 
 		constexpr basic_string_view( basic_string_view const &other ) noexcept = default;
@@ -127,12 +128,12 @@ namespace daw {
 
 		template<typename Allocator>
 		basic_string_view( std::basic_string<value_type, traits_type, Allocator> const &str ) noexcept
-		    : m_first{str.data( )}, m_size{str.size( )} {}
+		    : m_first{str.data( )}, m_size{static_cast<size_type>(str.size( ))} {}
 
 		template<typename Allocator>
 		basic_string_view &operator=( std::basic_string<value_type, traits_type, Allocator> const &str ) noexcept {
 			m_first = str.data( );
-			m_size = str.size( );
+			m_size = static_cast<size_type>(str.size( ));
 			return *this;
 		}
 
@@ -191,15 +192,15 @@ namespace daw {
 			return m_first;
 		}
 
-		constexpr size_type size( ) const noexcept {
+		constexpr std::size_t size( ) const noexcept {
 			return m_size;
 		}
 
-		constexpr size_type length( ) const noexcept {
+		constexpr std::size_t length( ) const noexcept {
 			return m_size;
 		}
 
-		constexpr size_type max_size( ) const noexcept {
+		constexpr std::size_t max_size( ) const noexcept {
 			return m_size;
 		}
 
