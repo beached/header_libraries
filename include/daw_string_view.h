@@ -121,7 +121,12 @@ namespace daw {
 		constexpr basic_string_view( ) noexcept : m_first{nullptr}, m_size{0} {}
 
 		constexpr basic_string_view( const_pointer s, size_type count ) noexcept : m_first{s}, m_size{static_cast<size_type_internal>(count)} {}
-		constexpr basic_string_view( const_pointer s ) noexcept : m_first{s}, m_size{details::strlen<size_type_internal>( s )} {}
+
+		template<size_t N>
+		constexpr basic_string_view( CharT const ( &s )[N] ) noexcept : basic_string_view{s, N} {}
+
+		constexpr basic_string_view( const_pointer s ) noexcept
+		    : basic_string_view{s, details::strlen<size_type_internal>( s )} {}
 
 		constexpr basic_string_view( basic_string_view const &other ) noexcept = default;
 		constexpr basic_string_view &operator=( basic_string_view const & ) noexcept = default;
@@ -129,7 +134,7 @@ namespace daw {
 
 		template<typename Allocator>
 		basic_string_view( std::basic_string<value_type, traits_type, Allocator> const &str ) noexcept
-		    : m_first{str.data( )}, m_size{static_cast<size_type_internal>(str.size( ))} {}
+		    : basic_string_view{str.data( ), static_cast<size_type_internal>( str.size( ) )} {}
 
 		template<typename Allocator>
 		basic_string_view &operator=( std::basic_string<value_type, traits_type, Allocator> const &str ) noexcept {
