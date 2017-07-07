@@ -107,14 +107,13 @@ namespace daw {
 		using iterator = const_iterator;
 		using reverse_iterator = std::reverse_iterator<iterator>;
 		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
-		using size_type_internal = std::size_t;
+		using size_type_internal = uint32_t;
 		using size_type = std::size_t;
 		using difference_type = std::ptrdiff_t;
 
 	  private:
 		const_pointer m_first;
-		//size_type_internal m_size;
-		uint32_t m_size;
+		size_type_internal m_size;
 
 	  public:
 		static constexpr size_type_internal const npos = std::numeric_limits<size_type_internal>::max( );
@@ -527,14 +526,45 @@ namespace daw {
 	} // namespace string_view_literals
 } // namespace daw
 
-auto operator+( std::string const & lhs, daw::string_view rhs ) {
-	return lhs + rhs.to_string( );
+template<typename CharT, typename Traits, typename Allocator>
+auto operator+( std::basic_string<CharT, Traits, Allocator> lhs, daw::basic_string_view<CharT, Traits> rhs ) {
+	lhs += rhs.to_string( );
+	return lhs;
 }
 
-auto operator+( daw::string_view lhs, std::string const & rhs ) {
-	return lhs.to_string( ) + rhs;
+template<typename CharT, typename Traits, size_t N>
+auto operator+( CharT(&lhs)[N], daw::basic_string_view<CharT, Traits> rhs ) {
+	std::basic_string<CharT, Traits> result = daw::basic_string_view<CharT, Traits>{ lhs, N }.to_string( );
+	result += rhs.to_string( );
+	return result;
 }
 
+template<typename CharT, typename Traits>
+auto operator+( CharT const * lhs, daw::basic_string_view<CharT, Traits> rhs ) {
+	std::basic_string<CharT, Traits> result = daw::basic_string_view<CharT, Traits>{ lhs }.to_string( );
+	result += rhs.to_string( );
+	return result;
+}
+
+template<typename CharT, typename Traits, typename Allocator>
+auto operator+( daw::basic_string_view<CharT, Traits> lhs, std::basic_string<CharT, Traits, Allocator> const & rhs ) {
+	std::basic_string<CharT, Traits, Allocator> result = lhs.to_string( ) + rhs;
+	return result;
+}
+
+template<typename CharT, typename Traits, size_t N>
+auto operator+( daw::basic_string_view<CharT, Traits> lhs, CharT(&rhs)[N] ) {
+	std::basic_string<CharT, Traits> result = lhs.to_string( );
+	result += daw::basic_string_view<CharT, Traits>{ rhs, N }.to_string( );
+	return result;
+}
+
+template<typename CharT, typename Traits>
+auto operator+( daw::basic_string_view<CharT, Traits> lhs, CharT const * rhs ) {
+	std::basic_string<CharT, Traits> result = lhs.to_string( );
+	result += daw::basic_string_view<CharT, Traits>{ rhs }.to_string( );
+	return result;
+}
 namespace std {
 	// TODO use same function as string without killing performance of creating a string
 	template<>
