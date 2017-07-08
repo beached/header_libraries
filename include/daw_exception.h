@@ -92,9 +92,6 @@ namespace daw {
 			}
 			return std::forward<ValueType>( value );
 		}
-#else
-#define dbg_throw_on_false_or_return( value, test, msg ) (value);
-#endif
 
 		template<typename ExceptionType = AssertException, typename StringType>
 		constexpr bool dbg_throw_on_false_or_return( bool test, StringType const &msg ) {
@@ -103,6 +100,9 @@ namespace daw {
 			}
 			return true;
 		}
+#else
+#define dbg_throw_on_false_or_return( test, ... ) (test);
+#endif
 
 #ifndef NODEBUGTHROW
 		template<typename ExceptionType = AssertException, typename StringType>
@@ -111,15 +111,16 @@ namespace daw {
 				debug_throw<ExceptionType>( msg );
 			}
 		}
-#else
-#define dbg_throw_on_false( test, msg ) ;
-#endif
+
 		template<typename ExceptionType = AssertException, typename StringType, typename Arg, typename... Args>
 		constexpr void dbg_throw_on_false( bool test, StringType const &format, Arg arg, Args... args ) {
 			if( !test ) {
 				debug_throw<ExceptionType>( daw::string::fmt( format, arg, args... ) );
 			}
 		}
+#else
+#define dbg_throw_on_false( ... );
+#endif
 
 		template<typename ExceptionType = AssertException, typename ValueType, typename StringType>
 		constexpr ValueType &dbg_throw_on_true_or_return( ValueType &value, bool test, StringType const &msg ) {
