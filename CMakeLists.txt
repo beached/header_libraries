@@ -31,6 +31,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_bit_queues
 	daw_bounded_stack
 	daw_benchmark
+	daw_carray
 	daw_checked_iterator_proxy
 	daw_clumpy_sparsy
 	daw_cstring

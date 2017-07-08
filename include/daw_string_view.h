@@ -27,6 +27,7 @@
 #include <cstdlib>
 #include <iterator>
 #include <limits>
+#include <stdexcept>
 #include <string>
 
 #include "daw_fnv1a_hash.h"
