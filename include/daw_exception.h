@@ -105,17 +105,24 @@ namespace daw {
 #endif
 
 #ifndef NODEBUGTHROW
-		template<typename ExceptionType = AssertException, typename StringType>
-		constexpr void dbg_throw_on_false( bool test, StringType const &msg ) {
+		template<typename ExceptionType = AssertException, typename BoolType, typename StringType>
+		constexpr void dbg_throw_on_false( BoolType const &test, StringType const &msg ) {
 			if( !test ) {
 				debug_throw<ExceptionType>( msg );
 			}
 		}
 
-		template<typename ExceptionType = AssertException, typename StringType, typename Arg, typename... Args>
-		constexpr void dbg_throw_on_false( bool test, StringType const &format, Arg arg, Args... args ) {
+		template<typename ExceptionType = AssertException, typename BoolType, typename StringType, typename Arg, typename... Args>
+		void dbg_throw_on_false( BoolType const & test, StringType const &format, Arg arg, Args... args ) {
 			if( !test ) {
 				debug_throw<ExceptionType>( daw::string::fmt( format, arg, args... ) );
+			}
+		}
+
+		template<typename ExceptionType = AssertException>
+		constexpr void dbg_throw_on_false( bool test ) {
+			if( !test ) {
+				throw ExceptionType{};
 			}
 		}
 #else
