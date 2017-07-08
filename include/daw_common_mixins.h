@@ -25,8 +25,16 @@
 namespace daw {
 	namespace mixins {
 		template<typename Derived, typename ContainerType>
-		class ContainerProxy {
-		  protected:
+		struct ContainerProxy {
+			using container_type = ContainerType;
+			using iterator = typename container_type::iterator;
+			using const_iterator = typename container_type::const_iterator;
+			using value_type = typename container_type::value_type;
+			using reference = typename container_type::reference;
+			using const_reference = typename container_type::const_reference;
+			using size_type = typename container_type::size_type;
+
+		  private:
 			Derived &derived( ) {
 				return *static_cast<Derived *>( this );
 			}
@@ -36,14 +44,6 @@ namespace daw {
 			}
 
 		  public:
-			using container_type = ContainerType;
-			using iterator = typename container_type::iterator;
-			using const_iterator = typename container_type::const_iterator;
-			using value_type = typename container_type::value_type;
-			using reference = typename container_type::reference;
-			using const_reference = typename container_type::const_reference;
-			using size_type = typename container_type::size_type;
-
 			iterator begin( ) {
 				return derived( ).container( ).begin( );
 			}
@@ -121,13 +121,14 @@ namespace daw {
 		///				returns the container, find( ) that searches
 		///				for a key and key_type and mapped_type
 		template<typename Derived, typename MapType>
-		class MapLikeProxy : public ContainerProxy<Derived, MapType> {
-			using base_t = ContainerProxy<Derived, MapType>;
-
-		  public:
+		struct MapLikeProxy : public ContainerProxy<Derived, MapType> {
 			using key_type = typename MapType::key_type;
 			using mapped_type = typename MapType::mapped_type;
 
+		  private:
+			using base_t = ContainerProxy<Derived, MapType>;
+
+		  public:
 			typename base_t::reference operator[]( key_type key ) {
 				return this->derived( ).find( key );
 			}
