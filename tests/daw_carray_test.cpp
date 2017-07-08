@@ -24,8 +24,14 @@
 
 #include "daw_carray.h"
 
+struct A {
+	A( ) = delete;
+};
+
 BOOST_AUTO_TEST_CASE( daw_heap_array_testing ) {
 	daw::carray<int, 6> t = {1, 2, 3, 4, 5, 6};
+
+	daw::carray<A, 100> s;
 
 	assert( t[3] == 4 );
 }

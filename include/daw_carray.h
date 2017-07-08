@@ -56,7 +56,7 @@ namespace daw {
 				return std::reverse_iterator<Iterator>( i );
 			}
 		  public:
-			constexpr carray( ) noexcept { };
+			constexpr carray( ) noexcept: m_data{ } { };
 
 			template<typename... Args>
 			constexpr carray( Args&&... args ): m_data{ std::forward<Args>(args)... } { }
