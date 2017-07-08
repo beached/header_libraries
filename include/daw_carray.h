@@ -68,7 +68,7 @@ namespace daw {
 		}
 
 		constexpr const_pointer ptr( ) const noexcept {
-			return reinterpret_cast<pointer>( m_data.data( ) );
+			return reinterpret_cast<const_pointer>( m_data.data( ) );
 		}
 
 		template<typename Iterator>
