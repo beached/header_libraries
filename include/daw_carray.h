@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <array>
 #include <cstdint>
 #include <cstdlib>
 #include <iterator>
@@ -36,141 +37,180 @@ namespace daw {
 			T tmp = lhs;
 			lhs = std::move( rhs );
 			rhs = std::move( tmp );
+		}
+
+		template<typename T, typename Arg>
+		constexpr void assign_to( T * ptr, Arg && arg ) noexcept( noexcept( T( std::declval<Arg&&>( ) ) ) ) {
+			*ptr = std::forward<Arg>(arg);
+		}
+
+		template<typename T, typename Arg, typename... Args>
+		constexpr void assign_to( T * ptr, Arg && arg, Args&&... args ) noexcept( noexcept( T( std::declval<Arg&&>( ) ) ) ) {
+			*ptr = std::forward<Arg>(arg);
+			assign_to( ++ptr, std::forward<Args>(args)... );
+		}
+	} // namespace details
+
+	template<typename T, size_t N>
+	struct carray {
+		using value_type = T;
+		using reference = T &;
+		using const_reference = T const &;
+		using pointer = T *;
+		using const_pointer = T const *;
+		using size_type = std::size_t;
+
+	  private:
+		alignas( value_type ) std::array<uint8_t, sizeof( T ) * N> m_data;
+
+		constexpr pointer ptr( ) noexcept {
+			return reinterpret_cast<pointer>( m_data.data( ) );
+		}
+
+		constexpr const_pointer ptr( ) const noexcept {
+			return reinterpret_cast<pointer>( m_data.data( ) );
+		}
+
+		template<typename Iterator>
+		static constexpr std::reverse_iterator<Iterator> make_reverse_iterator( Iterator i ) {
+			return std::reverse_iterator<Iterator>( i );
+		}
+
+	  public:
+		constexpr carray( ) noexcept : m_data{ } {}
+
+		constexpr carray( T ( &values )[N] ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) ) : m_data{} {
+			for( size_t n=0; n<N; ++n ) {
+				ptr( )[n] = values[n];
 			}
-		} // namespace details
-
-		template<typename T, size_t N>
-		struct carray {
-			using value_type = T;
-			using reference = T &;
-			using const_reference = T const &;
-			using pointer = T *;
-			using const_pointer = T const *;
-			using size_type = std::size_t;
-
-		  private:
-			T m_data[N];
-
-			template<typename Iterator>
-			static constexpr std::reverse_iterator<Iterator> make_reverse_iterator( Iterator i ) {
-				return std::reverse_iterator<Iterator>( i );
+		}
+		
+		constexpr carray & operator=( T ( &values )[N] ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) ) {
+			for( size_t n=0; n<N; ++n ) {
+				ptr( )[n] = values[n];
 			}
-		  public:
-			constexpr carray( ) noexcept: m_data{ } { };
+			return *this;
+		}
 
-			template<typename... Args>
-			constexpr carray( Args&&... args ): m_data{ std::forward<Args>(args)... } { }
-			
-			~carray( ) noexcept = default;
+		template<typename... Args>
+		constexpr carray( Args &&... args ) noexcept( noexcept( details::assign_to( std::declval<carray>( ).ptr( ),
+		                                                                   std::declval<Args &&>( )... ) ) )
+		    : m_data{} {
 
-			constexpr carray( carray const &other ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) ) {
-				for( size_t n=0; n<N; ++n ) {
-					m_data[n] = other.m_data[n];
-				}
+				details::assign_to( ptr( ), std::forward<Args>( args )... );
+		}
+
+		~carray( ) noexcept = default;
+
+		constexpr carray( carray const &other ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) ) {
+			for( size_t n = 0; n < N; ++n ) {
+				ptr( )[n] = other.ptr( )[n];
 			}
+		}
 
-			constexpr carray &operator=( carray const &other ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) ) {
-				for( size_t n=0; n<N; ++n ) {
-					m_data[n] = other.m_data[n];
-				}
+		constexpr carray &operator=( carray const &other ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) ) {
+			for( size_t n = 0; n < N; ++n ) {
+				ptr( )[n] = other.ptr( )[n];
 			}
+			return *this;
+		}
 
-			constexpr carray( carray && ) noexcept( noexcept( T( std::declval<T &&>( ) ) ) ) = default;
-			constexpr carray &operator=( carray && ) noexcept( noexcept( T( std::declval<T &&>( ) ) ) ) = default;
+		constexpr carray( carray && ) noexcept( noexcept( T( std::declval<T &&>( ) ) ) ) = default;
+		constexpr carray &operator=( carray && ) noexcept( noexcept( T( std::declval<T &&>( ) ) ) ) = default;
 
-			constexpr reference operator[]( size_type pos ) noexcept {
-				return m_data[pos];
-			}
+		constexpr reference operator[]( size_type pos ) noexcept {
+			return ptr( )[pos];
+		}
 
-			constexpr const_reference operator[]( size_type pos ) const noexcept {
-				return m_data[pos];
-			}
+		constexpr const_reference operator[]( size_type pos ) const noexcept {
+			return ptr( )[pos];
+		}
 
-			constexpr reference at( size_type pos ) {
-				daw::exception::daw_throw_on_false<std::out_of_range>( pos < N, "Attemp to access past end of array" );
-				return m_data[pos];
-			}
+		constexpr reference at( size_type pos ) {
+			daw::exception::daw_throw_on_false<std::out_of_range>( pos < N, "Attemp to access past end of array" );
+			return ptr( )[pos];
+		}
 
-			constexpr const_reference at( size_type pos ) const noexcept {
-				daw::exception::daw_throw_on_false<std::out_of_range>( pos < N, "Attemp to access past end of array" );
-				return m_data[pos];
-			}
+		constexpr const_reference at( size_type pos ) const noexcept {
+			daw::exception::daw_throw_on_false<std::out_of_range>( pos < N, "Attemp to access past end of array" );
+			return ptr( )[pos];
+		}
 
-			constexpr pointer begin( ) noexcept {
-				return m_data;
-			}
+		constexpr pointer begin( ) noexcept {
+			return ptr( );
+		}
 
-			constexpr const_pointer begin( ) const noexcept {
-				return m_data;
-			}
+		constexpr const_pointer begin( ) const noexcept {
+			return ptr( );
+		}
 
-			constexpr const_pointer cbegin( ) const noexcept {
-				return m_data;
-			}
+		constexpr const_pointer cbegin( ) const noexcept {
+			return ptr( );
+		}
 
-			constexpr pointer end( ) noexcept {
-				return &m_data[N];
-			}
+		constexpr pointer end( ) noexcept {
+			return &ptr( )[N];
+		}
 
-			constexpr const_pointer end( ) const noexcept {
-				return &m_data[N];
-			}
+		constexpr const_pointer end( ) const noexcept {
+			return &ptr( )[N];
+		}
 
-			constexpr const_pointer cend( ) const noexcept {
-				return &m_data[N];
-			}
+		constexpr const_pointer cend( ) const noexcept {
+			return &ptr( )[N];
+		}
 
-			constexpr auto rbegin( ) noexcept {
-				static_assert( N > 0, "Cannot call rbegin on empty array" );
-				return make_reverse_iterator( &m_data[N-1] );
-			}
+		constexpr auto rbegin( ) noexcept {
+			static_assert( N > 0, "Cannot call rbegin on empty array" );
+			return make_reverse_iterator( &ptr( )[N - 1] );
+		}
 
-			constexpr auto rbegin( ) const noexcept {
-				static_assert( N > 0, "Cannot call rbegin on empty array" );
-				return make_reverse_iterator( &m_data[N-1] );
-			}
+		constexpr auto rbegin( ) const noexcept {
+			static_assert( N > 0, "Cannot call rbegin on empty array" );
+			return make_reverse_iterator( &ptr( )[N - 1] );
+		}
 
-			constexpr auto crbegin( ) const noexcept {
-				static_assert( N > 0, "Cannot call crbegin on empty array" );
-				return make_reverse_iterator( &m_data[N-1] );
-			}
+		constexpr auto crbegin( ) const noexcept {
+			static_assert( N > 0, "Cannot call crbegin on empty array" );
+			return make_reverse_iterator( &ptr( )[N - 1] );
+		}
 
-			constexpr auto rend( ) noexcept {
-				static_assert( N > 0, "Cannot call rend on empty array" );
-				return make_reverse_iterator( m_data - 1 );
-			}
+		constexpr auto rend( ) noexcept {
+			static_assert( N > 0, "Cannot call rend on empty array" );
+			return make_reverse_iterator( ptr( ) - 1 );
+		}
 
-			constexpr auto rend( ) const noexcept {
-				static_assert( N > 0, "Cannot call rend on empty array" );
-			return make_reverse_iterator( m_data - 1 );
+		constexpr auto rend( ) const noexcept {
+			static_assert( N > 0, "Cannot call rend on empty array" );
+			return make_reverse_iterator( ptr( ) - 1 );
 		}
 
 		constexpr auto crend( ) const noexcept {
 			static_assert( N > 0, "Cannot call crend on empty array" );
-			return make_reverse_iterator( m_data - 1 );
+			return make_reverse_iterator( ptr( ) - 1 );
 		}
 
 		constexpr reference front( ) noexcept {
 			static_assert( N > 0, "Cannot call front on empty array" );
-			return m_data[0];
+			return ptr( )[0];
 		}
 
 		constexpr const_reference front( ) const noexcept {
 			static_assert( N > 0, "Cannot call front on empty array" );
-			return m_data[0];
+			return ptr( )[0];
 		}
 
 		constexpr reference back( ) noexcept {
 			static_assert( N > 0, "Cannot call back on empty array" );
-			return m_data[N-1];
+			return ptr( )[N - 1];
 		}
 		constexpr const_reference back( ) const noexcept {
 			static_assert( N > 0, "Cannot call back on empty array" );
-			return m_data[N-1];
+			return ptr( )[N - 1];
 		}
 
 		constexpr const_pointer data( ) const noexcept {
-			return m_data;
+			return ptr( );
 		}
 
 		constexpr size_type size( ) const noexcept {
@@ -192,8 +232,8 @@ namespace daw {
 		constexpr void
 		swap( carray &rhs ) noexcept( noexcept( details::swap( std::declval<T &>( ), std::declval<T &>( ) ) ) ) {
 			using details::swap;
-			for( size_t n=0; n<N; ++n ) {
-				swap( m_data[n], rhs.m_data[n] );
+			for( size_t n = 0; n < N; ++n ) {
+				swap( ptr( )[n], rhs.ptr( )[n] );
 			}
 		}
 	}; // carray
@@ -204,6 +244,5 @@ namespace daw {
 	      carray<T, N> &rhs ) noexcept( noexcept( details::swap( std::declval<T &>( ), std::declval<T &>( ) ) ) ) {
 		lhs.swap( rhs );
 	}
-}    // namespace daw
-
+} // namespace daw
 
