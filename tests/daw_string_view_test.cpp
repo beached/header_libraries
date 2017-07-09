@@ -32,8 +32,9 @@
 BOOST_AUTO_TEST_CASE( daw_string_view_test_001 ) {
 	constexpr daw::string_view const a = "This is a test";
 	std::cout << a.to_string( ) << '\n';
-	std::string b = "Testing again" + a;
-	daw::string_view c{ b };
+	daw::string_view b = "Testing again" + a;
+
+	daw::string_view c{ a };
 	c.remove_prefix( );
 	std::cout << c << ' ' << c.front( ) << ' ' << c[3] << '\n';
 	c = a;
@@ -41,8 +42,14 @@ BOOST_AUTO_TEST_CASE( daw_string_view_test_001 ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_string_view_find_last_of_001 ) {
-	daw::string_view a = "This is a test";
-	auto pos = a.find_last_of( "is" );
-}
+	daw::string_view const a = "abcdefghijklm";
+	std::string const b = "abcdefghijklm";
+	auto const pos = a.find_last_of( "ij" );
+	auto const pos2 = b.find_last_of( "ij" );
 
+	auto const es = a.find_last_of( "lm" );
+	auto const es2 = b.find_last_of( "lm" );
+	BOOST_REQUIRE_EQUAL( pos, pos2 );
+	BOOST_REQUIRE_EQUAL( es, es2 );
+}
 
