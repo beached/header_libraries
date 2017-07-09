@@ -164,15 +164,15 @@ namespace daw {
 			return details::make_reverse_iterator( &m_first[m_size-1] );
 		}
 
-		constexpr const_iterator crbegin( ) const noexcept {
+		constexpr const_reverse_iterator crbegin( ) const noexcept {
 			return details::make_reverse_iterator( &m_first[m_size-1] );
 		}
 
-		constexpr const_iterator rend( ) const noexcept {
+		constexpr const_reverse_iterator rend( ) const noexcept {
 			return details::make_reverse_iterator( m_first - 1 );
 		}
 
-		constexpr const_iterator crend( ) const noexcept {
+		constexpr const_reverse_iterator crend( ) const noexcept {
 			return details::make_reverse_iterator( m_first - 1 );
 		}
 
@@ -368,7 +368,6 @@ namespace daw {
 			return std::basic_string<value_type, traits_type>{ cbegin( ), size( ) };
 		}
 	  private:
-		template<typename r_iter>
 		constexpr size_type reverse_distance( const_reverse_iterator first, const_reverse_iterator last ) const noexcept {
 			// Portability note here: std::distance is not NOEXCEPT, but calling it with a string_view::reverse_iterator
 			// will not throw.
@@ -386,7 +385,8 @@ namespace daw {
 				pos = m_size - ( pos + 1 );
 			}
 			const_reverse_iterator iter =
-			    std::find_first_of( crbegin( ) + pos, crend( ), v.cbegin( ), v.cend( ), traits_type::eq );
+			    std::find_first_of( crbegin( ) + static_cast<typename const_reverse_iterator::difference_type>( pos ),
+			                        crend( ), v.cbegin( ), v.cend( ), traits_type::eq );
 
 			if( iter == crend( ) ) {
 				return npos;

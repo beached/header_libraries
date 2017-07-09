@@ -40,5 +40,9 @@ BOOST_AUTO_TEST_CASE( daw_string_view_test_001 ) {
 	c = b;
 }
 
+BOOST_AUTO_TEST_CASE( daw_string_view_find_last_of_001 ) {
+	daw::string_view a = "This is a test";
+	auto pos = a.find_last_of( "is" );
+}
 
 
