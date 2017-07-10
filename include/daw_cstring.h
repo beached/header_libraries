@@ -31,31 +31,31 @@
 #include "scope_guard.h"
 
 namespace daw {
-	template<typename CharType = char>
+	template<typename CharT = char>
 	class CString {
-		CharType const *m_cstr;
+		CharT const *m_data;
 		bool m_local_string;
 
 	  public:
-		CString( CharType const *c_str, bool do_copy = false, const size_t length = 0 )
-		    : m_cstr{c_str}, m_local_string{do_copy} {
+		CString( CharT const *ptr, bool do_copy = false, const size_t length = 0 )
+		    : m_data{ptr}, m_local_string{do_copy} {
 			if( do_copy ) {
 				size_t len = length;
 				if( 0 == len ) {
-					len = strlen( c_str );
+					len = strlen( ptr );
 				}
-				CharType *tmp = nullptr;
+				CharT *tmp = nullptr;
 				SCOPE_EXIT {
-					m_cstr = tmp;
+					m_data = tmp;
 				};
-				tmp = new_array_throw<CharType>( len + 1 );
-				memcpy( tmp, c_str, len + 1 );
+				tmp = new_array_throw<CharT>( len + 1 );
+				memcpy( tmp, ptr, len + 1 );
 			}
 		}
 
-		CString( ) noexcept : m_cstr{nullptr}, m_local_string{true} {}
+		constexpr CString( ) noexcept : m_data{nullptr}, m_local_string{true} {}
 
-		CString( CString const &value ) : CString{value.m_cstr, true} {}
+		CString( CString const &value ) : CString{value.m_data, true} {}
 
 		CString &operator=( CString const &rhs ) {
 			if( this != &rhs ) {
@@ -65,101 +65,90 @@ namespace daw {
 			return *this;
 		}
 
-		CString &operator=( CharType const *c_str ) {
-			CString tmp{c_str, true};
+		CString &operator=( CharT const *ptr ) {
+			CString tmp{ptr, true};
 			this->swap( tmp );
 			return *this;
 		}
 
-		CString( CString &&value ) noexcept
-		    : m_cstr{std::exchange( value.m_cstr, nullptr )}
-		    , m_local_string{std::exchange( value.m_local_string, false )} {}
+		CString( CString &&value ) noexcept = default;
+		CString &operator=( CString &&rhs ) noexcept = default;
 
 		void swap( CString &rhs ) noexcept {
 			using std::swap;
-			swap( m_cstr, rhs.m_cstr );
+			swap( m_data, rhs.m_data );
 			swap( m_local_string, rhs.m_local_string );
 		}
 
-		CString &operator=( CString &&rhs ) noexcept {
-			if( this != &rhs ) {
-				m_cstr = std::exchange( rhs.m_cstr, nullptr );
-				m_local_string = std::exchange( rhs.m_local_string, false );
-			}
-			return *this;
-		}
-
 		~CString( ) noexcept {
-			if( m_local_string && nullptr != m_cstr ) {
-				auto tmp = m_cstr;
+			if( m_local_string && nullptr != m_data ) {
+				auto tmp = m_data;
 				delete[] tmp;
 			}
 			nullify( );
 		}
 
-		CharType const &operator[]( size_t pos ) const {
-			return m_cstr[pos];
+		constexpr CharT const &operator[]( size_t pos ) const {
+			return m_data[pos];
 		}
 
-		void nullify( ) noexcept {
-			m_cstr = nullptr;
+		constexpr void nullify( ) noexcept {
+			m_data = nullptr;
 			m_local_string = false;
 		}
 
-		CharType *move( ) noexcept {
-			auto result = m_cstr;
+		constexpr CharT *move( ) noexcept {
+			auto result = m_data;
 			nullify( );
 			return result;
 		}
 
-		const CharType *get( ) noexcept {
-			return m_cstr;
+		constexpr CharT const *get( ) noexcept {
+			return m_data;
 		}
 
 		std::string to_string( ) const {
-			return std::string( m_cstr );
+			return std::string( m_data );
 		}
 
 		size_t size( ) const noexcept {
 			if( is_null( ) ) {
 				return 0;
 			}
-			return strlen( m_cstr );
+			return strlen( m_data );
 		}
 
-		bool is_null( ) const noexcept {
-			return nullptr == m_cstr;
+		constexpr bool is_null( ) const noexcept {
+			return nullptr == m_data;
 		}
 
 		bool empty( ) const noexcept {
-			return nullptr == m_cstr;
+			return nullptr == m_data || strlen( m_data ) == 0;
 		}
 
 		explicit operator bool( ) const noexcept {
 			return !empty( );
 		}
 
-		bool is_local_string( ) const noexcept {
+		constexpr bool is_local_string( ) const noexcept {
 			return m_local_string;
 		}
 
-		void take_ownership_of_data( ) noexcept {
+		constexpr void take_ownership_of_data( ) noexcept {
 			m_local_string = true;
 		}
 
 		auto compare( CString const &rhs ) const {
-			return strcmp( m_cstr, rhs.m_cstr );
+			return strcmp( m_data, rhs.m_data );
 		}
 
-		create_friend_comparison_operators( CString );
+		create_friend_comparison_operators( CString )
 	}; // CString
 
 	template<typename... Args>
-	void swap( CString<Args...> &lhs, CString<Args...> &rhs ) noexcept {
+	constexpr void swap( CString<Args...> &lhs, CString<Args...> &rhs ) noexcept {
 		lhs.swap( rhs );
 	}
-
-	// TODO		static_assert(daw::traits::is_regular<CString<char>>::value, "CString isn't regular");
 
 	template<typename Char>
 	std::string to_string( CString<Char> const &str ) {
