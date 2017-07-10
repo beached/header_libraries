@@ -51,26 +51,8 @@ namespace daw {
 			std::fill( m_begin, m_end, def_value );
 		}
 
-		heap_array( heap_array &&other ) noexcept
-		    : m_begin{std::exchange( other.m_begin, nullptr )}
-		    , m_end{std::exchange( other.m_end, nullptr )}
-		    , m_size{std::exchange( other.m_size, 0 )} {}
-
-		void swap( heap_array &rhs ) noexcept {
-			using std::swap;
-			swap( m_begin, rhs.m_begin );
-			swap( m_end, rhs.m_end );
-			swap( m_size, rhs.m_size );
-		}
-
-		heap_array &operator=( heap_array &&rhs ) noexcept {
-			if( this != &rhs ) {
-				m_begin = std::exchange( rhs.m_begin, nullptr );
-				m_end = std::exchange( rhs.m_end, nullptr );
-				m_size = std::exchange( rhs.m_size, 0 );
-			}
-			return *this;
-		}
+		heap_array( heap_array &&other ) noexcept = default; 
+		heap_array &operator=( heap_array &&rhs ) noexcept = default;
 
 		heap_array( heap_array const &other )
 		    : m_begin{other.m_size == 0 ? nullptr : new value_type[other.m_size]}
@@ -86,6 +68,13 @@ namespace daw {
 				tmp.swap( *this );
 			}
 			return *this;
+		}
+
+		void swap( heap_array &rhs ) noexcept {
+			using std::swap;
+			swap( m_begin, rhs.m_begin );
+			swap( m_end, rhs.m_end );
+			swap( m_size, rhs.m_size );
 		}
 
 		heap_array( std::initializer_list<value_type> values ) : heap_array( values.size( ) ) {
