@@ -61,6 +61,7 @@ set( TESTED_HEADERS_PREFIXES
 	)
 
 set( UNTESTED_HEADER_FILES
+	boost_test.h
 	concurrent_queue.h
 	daw_bit.h
 	daw_bit_stream.h
