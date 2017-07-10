@@ -407,8 +407,13 @@ namespace daw {
 			return iter == crend( ) ? npos : reverse_distance( crbegin( ), iter );
 		}
 
-		constexpr size_type find_last_of( value_type c, size_type pos = npos ) const noexcept {
-			return find_last_of( basic_string_view{&c, 1}, pos );
+		constexpr size_type find_last_of( value_type const c, size_type pos = npos ) const noexcept {
+			for( difference_type n = m_size - 1; n >= 0; --n ) {
+				if( m_first[n] == c ) {
+					return static_cast<size_type>( n );
+				}
+			}
+			return npos;
 		}
 
 		constexpr size_type find_last_of( const_pointer s, size_type pos, size_type count ) const noexcept {
