@@ -108,11 +108,10 @@ namespace daw {
 
 		~heap_array( ) {
 			if( nullptr != m_begin ) {
-				auto tmp = m_begin;
-				m_begin = nullptr;
+				auto tmp = std::exchange( m_begin, nullptr );
+				delete[] tmp;
 				m_end = nullptr;
 				m_size = 0;
-				delete[] tmp;
 			}
 		}
 
@@ -126,6 +125,14 @@ namespace daw {
 
 		bool empty( ) const noexcept {
 			return m_begin == m_end;
+		}
+
+		iterator data( ) noexcept {
+			return m_begin;
+		}
+
+		const_iterator data( ) const noexcept {
+			return m_begin;
 		}
 
 		iterator begin( ) noexcept {
