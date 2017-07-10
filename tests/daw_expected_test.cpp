@@ -20,10 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <boost/test/unit_test.hpp>
 #include <iostream>
 #include <stdexcept>
 
+#include "boost_test.h"
 #include "daw_expected.h"
 
 daw::expected_t<int> divide( int v ) {

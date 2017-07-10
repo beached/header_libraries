@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 #define BOOST_TEST_MODULE header_libraries
-#include <boost/test/unit_test.hpp>
+#include "boost_test.h"
 
 BOOST_AUTO_TEST_CASE( test_main_stubb ) {
 	// TODO: Your test code here

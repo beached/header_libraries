@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016-2017 Darrell Wright
+// Copyright (c) 2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to deal
@@ -20,11 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <iostream>
+#pragma once
 
-#include "boost_test.h"
-#include "daw_benchmark.h"
+#ifdef __clang__
+#   ifndef __ICC // icpc defines the __clang__ macro
+#       pragma clang diagnostic ignored "-Wglobal-constructors"
+#	endif
+#endif
 
-BOOST_AUTO_TEST_CASE( daw_optional_test_01 ) {
-	std::cout << "Time of: " << daw::benchmark( []( ) { std::cout << "Hello\n"; } );
-}
+#include <boost/test/unit_test.hpp>
+

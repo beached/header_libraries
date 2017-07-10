@@ -22,6 +22,7 @@
 
 #include <iostream>
 
+#include "boost_test.h"
 #include "static_hash_table.h"
 
 int main( int, char ** ) {

@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <boost/test/unit_test.hpp>
 #include <iostream>
 
+#include "boost_test.h"
 #include "daw_optional_poly.h"
 
 BOOST_AUTO_TEST_CASE( daw_optional_poly_test_01 ) {
@@ -87,7 +87,6 @@ BOOST_AUTO_TEST_CASE( daw_optional_poly_test_03 ) {
 		base_t( base_t const & ) = default;
 		base_t( base_t && ) = default;
 		base_t &operator=( base_t const & ) = default;
-		base_t &operator=( base_t && ) = default;
 		base_t( ) : blah{123} {}
 		virtual int get( ) const {
 			return blah;
@@ -98,11 +97,11 @@ BOOST_AUTO_TEST_CASE( daw_optional_poly_test_03 ) {
 		int blah2;
 		child_t( ) : base_t{}, blah2{321} {}
 		child_t( int x ) : base_t{}, blah2{x} {}
-		~child_t( ) = default;
+		~child_t( ) override = default;
 		child_t( child_t const & ) = default;
 		child_t( child_t && ) = default;
 		child_t &operator=( child_t const & ) = default;
-		child_t &operator=( child_t && ) = default;
+
 		int get( ) const override {
 			return blah2;
 		}

@@ -20,11 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <boost/test/unit_test.hpp>
 #include <iostream>
 #include <string>
 #include <tuple>
 
+#include "boost_test.h"
 #include "daw_tuple_helper.h"
 
 using namespace daw::tuple::operators;

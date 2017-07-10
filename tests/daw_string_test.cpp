@@ -20,14 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <boost/test/unit_test.hpp>
-
 #include <algorithm>
 #include <cstdint>
 #include <cstdlib>
 #include <cctype>
 #include <iostream>
 
+#include "boost_test.h"
 #include "daw_string.h"
 
 BOOST_AUTO_TEST_CASE( make_string_testing ) {

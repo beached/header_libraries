@@ -20,8 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <boost/test/unit_test.hpp>
-
+#include "boost_test.h"
 #include "daw_memory_mapped_file.h"
 
 BOOST_AUTO_TEST_CASE( daw_memory_mapped_file ) {

@@ -20,11 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <boost/test/unit_test.hpp>
 #include <boost/utility/string_view.hpp>
 #include <iostream>
 #include <string>
 
+#include "boost_test.h"
 #include "daw_parser_addons.h"
 #include "daw_parser_helper.h"
 

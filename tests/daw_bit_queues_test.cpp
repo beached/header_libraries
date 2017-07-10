@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <boost/test/unit_test.hpp>
 #include <limits>
 
+#include "boost_test.h"
 #include "daw_bit_queues.h"
 
 BOOST_AUTO_TEST_CASE( daw_bit_queues_test_001 ) {

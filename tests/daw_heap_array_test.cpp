@@ -20,14 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <boost/test/unit_test.hpp>
-
+#include "boost_test.h"
 #include "daw_heap_array.h"
 
 using namespace std::literals::string_literals;
 
 BOOST_AUTO_TEST_CASE( daw_heap_array_testing ) {
-	daw::array<int> t = {1, 2, 3, 4, 5, 6};
+	daw::heap_array<int> t = {1, 2, 3, 4, 5, 6};
 
 	auto pos = t.find_first_of( 4 );
 	assert( *pos == 4 );

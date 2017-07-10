@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <boost/test/unit_test.hpp>
 #include <iostream>
 
+#include "boost_test.h"
 #include "daw_heap_value.h"
 
 BOOST_AUTO_TEST_CASE( daw_heap_value_test_01 ) {

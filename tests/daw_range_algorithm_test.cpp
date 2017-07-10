@@ -20,15 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <boost/iterator/counting_iterator.hpp>
-#include <boost/test/unit_test.hpp>
-
 #include <algorithm>
+#include <boost/iterator/counting_iterator.hpp>
 #include <cstdint>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
+#include "boost_test.h"
 #include "daw_range_algorithm.h"
 
 BOOST_AUTO_TEST_CASE( range_algorithm_none_yet ) {

@@ -20,13 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <boost/test/unit_test.hpp>
 
 #include <algorithm>
 #include <cstdint>
 #include <cstdlib>
 #include <iostream>
 
+#include "boost_test.h"
 #include "daw_array.h"
 
 using namespace std::literals::string_literals;

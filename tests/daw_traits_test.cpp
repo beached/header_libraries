@@ -20,14 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <boost/test/unit_test.hpp>
-
-#include "daw_traits.h"
 #include <cstdint>
 #include <iostream>
 #include <string>
 #include <unordered_map>
 #include <vector>
+
+#include "boost_test.h"
+#include "daw_traits.h"
 
 BOOST_AUTO_TEST_CASE( daw_traits_is_equality_comparable ) {
 	BOOST_REQUIRE_MESSAGE( true == daw::traits::is_equality_comparable<std::string>::value,

@@ -20,13 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <boost/test/unit_test.hpp>
 #include <boost/unordered_map.hpp>
 #include <cstdint>
 #include <iostream>
 #include <random>
 #include <string>
 
+#include "boost_test.h"
 #include "daw_benchmark.h"
 #include "daw_hash_table.h"
 #include "daw_tuple_helper.h"

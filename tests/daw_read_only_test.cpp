@@ -20,14 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <boost/test/unit_test.hpp>
 #include <iostream>
 
+#include "boost_test.h"
 #include "daw_read_only.h"
 
 struct A {
-	void b( ){};
-	void c( ) const {};
+	void b( ) {}
+	void c( ) const {}
 };
 
 BOOST_AUTO_TEST_CASE( daw_read_only_test_01 ) {
@@ -44,7 +44,6 @@ BOOST_AUTO_TEST_CASE( daw_read_only_test_01 ) {
 	daw::read_only<A> x{};
 	x->c( );
 
-	int f = e;
 	// a & b
 	auto test_01 = !( a == b );
 	auto test_02 = !( b == a );

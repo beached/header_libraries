@@ -29,7 +29,7 @@
 #include <string>
 #include <utility>
 
-#include "daw_array.h"
+#include "daw_heap_array.h"
 #include "daw_exception.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_traits.h"
@@ -278,7 +278,7 @@ namespace daw {
 		using const_iterator = hash_table_item_iterator<value_type const>;
 
 	  private:
-		using values_type = daw::array<impl::hash_table_item<value_type>>;
+		using values_type = daw::heap_array<impl::hash_table_item<value_type>>;
 		using priv_iterator = typename values_type::iterator;
 		values_type m_values;
 		size_t m_load;
@@ -359,7 +359,6 @@ namespace daw {
 		template<typename KeyType>
 		static size_t hash_fn( KeyType &&key ) {
 			static const auto s_hash = []( auto &&k ) {
-				using k_type = daw::traits::root_type_t<KeyType>;
 				size_t result =
 				    ( daw::fnv1a_hash(::std::forward<KeyType>( k ) ) %
 				      ( std::numeric_limits<size_t>::max( ) - impl::hash_table_item<value_type>::SentinalsSize ) ) +

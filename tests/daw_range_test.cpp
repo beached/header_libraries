@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "boost_test.h"
 #include "daw_range.h"
-#include <boost/test/unit_test.hpp>
 
 #ifndef WIN32 // Fails on MSVC 2015.2
 BOOST_AUTO_TEST_CASE( daw_range_test01 ) {

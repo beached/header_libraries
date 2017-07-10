@@ -20,13 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <boost/test/unit_test.hpp>
-
 #include <cstdint>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
+#include "boost_test.h"
 #include "daw_algorithm.h"
 
 BOOST_AUTO_TEST_CASE( daw_transform_many ) {
