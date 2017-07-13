@@ -485,6 +485,11 @@ namespace daw {
 	using u16string_view = basic_string_view<char16_t>;
 	using u32string_view = basic_string_view<char32_t>;
 
+	template<typename CharT, typename Traits = std::char_traits<CharT>>
+	constexpr auto make_string_view_it( CharT const * first, CharT const * last ) noexcept {
+		return basic_string_view<CharT, Traits>{ first, static_cast<size_t>( last - first ) };
+	}
+
 	// basic_string_view / basic_string_view
 	//
 	template<typename CharT, typename Traits>
