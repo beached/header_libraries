@@ -243,13 +243,29 @@ namespace daw {
 			remove_suffix( 1 );
 		}
 
+		constexpr CharT pop_front( ) noexcept {
+			auto result = front( );
+			remove_prefix( );
+			return result;
+		}
+
+		constexpr CharT pop_back( ) noexcept {
+			auto result = back( );
+			remove_suffix( );
+			return result;
+		}
+
+		constexpr void resize( size_t const n ) noexcept {
+			m_size = static_cast<size_type_internal>( n );
+		}
+
 		constexpr void swap( basic_string_view &v ) noexcept {
 			using std::swap;
 			swap( m_first, v.m_first );
 			swap( m_size, v.m_size );
 		}
 
-		size_type copy( CharT * dest, size_type const count, size_type const pos = 0 ) const {
+		size_type copy( CharT *dest, size_type const count, size_type const pos = 0 ) const {
 			if( pos >= m_size ) {
 				throw std::out_of_range{"Attempt to access basic_string_view past end"};
 			}
@@ -486,8 +502,8 @@ namespace daw {
 	using u32string_view = basic_string_view<char32_t>;
 
 	template<typename CharT, typename Traits = std::char_traits<CharT>>
-	constexpr auto make_string_view_it( CharT const * first, CharT const * last ) noexcept {
-		return basic_string_view<CharT, Traits>{ first, static_cast<size_t>( last - first ) };
+	constexpr auto make_string_view_it( CharT const *first, CharT const *last ) noexcept {
+		return basic_string_view<CharT, Traits>{first, static_cast<size_t>( last - first )};
 	}
 
 	// basic_string_view / basic_string_view

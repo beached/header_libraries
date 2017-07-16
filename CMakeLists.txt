@@ -74,6 +74,7 @@ set( UNTESTED_HEADER_FILES
 	daw_operators.h
 	daw_parallel_algorithm.h
 	daw_parser_addons.h
+	daw_parser_helper_sv.h
 	daw_range_collection.h
 	daw_range_common.h
 	daw_range_operators.h
