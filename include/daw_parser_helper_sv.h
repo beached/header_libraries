@@ -45,7 +45,7 @@ namespace daw {
 		}
 
 		template<typename CharT, typename TraitsT, typename Predicate>
-		constexpr auto find_first_of_when( daw::basic_string_view<CharT, TraitsT> str, Predicate pred ) noexcept( noexcept( pred( CharT{ }} ) ) ) {
+		constexpr auto find_first_of_when( daw::basic_string_view<CharT, TraitsT> str, Predicate pred ) noexcept( noexcept( pred( CharT{ } ) ) ) {
 			auto it = str.begin( );
 			while( it != str.end( ) && !pred( *it ) ) {
 				++it;
