@@ -56,7 +56,7 @@ namespace daw {
 			result = 0;
 			for( ; first != last && count > 0; ++first, --count ) {
 				result *= static_cast<Result>( 10 );
-				Result val = *first - '0';
+				Result val = static_cast<Result>( *first ) - static_cast<Result>( '0' );
 				result += val;
 			}
 			if( first != last ) {
