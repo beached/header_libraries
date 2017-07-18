@@ -35,7 +35,7 @@
 
 namespace daw {
 	namespace parser {
-		template<typename CharT, typename TraitsT, typename Predicate>
+		template<typename CharT, typename TraitsT>
 		constexpr auto find_first_of( daw::basic_string_view<CharT, TraitsT> const str, CharT const value ) noexcept {
 			auto it = str.begin( );
 			while( it != str.end( ) && *it != value ) {
