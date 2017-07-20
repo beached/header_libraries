@@ -31,6 +31,7 @@
 #include <vector>
 
 #include "daw_traits.h"
+#include "daw_string_view.h"
 
 namespace daw {
 	namespace parser {
@@ -89,6 +90,10 @@ namespace daw {
 
 			std::string to_string( ) const {
 				return as<std::string>( );
+			}
+			
+			daw::string_view to_string_view( ) const {
+				return daw::make_string_view_it( first, last );
 			}
 
 			constexpr ForwardIterator begin( ) noexcept {
