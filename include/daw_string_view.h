@@ -122,6 +122,9 @@ namespace daw {
 		static constexpr size_type_internal const npos = std::numeric_limits<size_type_internal>::max( );
 
 		constexpr basic_string_view( ) noexcept : m_first{nullptr}, m_size{0} {}
+		
+		constexpr basic_string_view( std::nullptr_t ) noexcept : m_first{nullptr}, m_size{0} { }
+		constexpr basic_string_view( std::nullptr_t, size_type ) noexcept : m_first{nullptr}, m_size{0} { }
 
 		constexpr basic_string_view( const_pointer s, size_type count ) noexcept
 		    : m_first{s}, m_size{static_cast<size_type_internal>( count )} {}

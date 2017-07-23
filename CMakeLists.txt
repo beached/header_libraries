@@ -28,6 +28,7 @@ include_directories( ${HEADER_FOLDER} )
 set( TESTED_HEADERS_PREFIXES
 	daw_algorithm
 	daw_array
+	daw_array_view
 	daw_bit_queues
 	daw_bounded_stack
 	daw_benchmark
