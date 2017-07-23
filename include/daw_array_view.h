@@ -330,8 +330,9 @@ namespace daw {
 			return find_first_of( array_view{s, count}, pos );
 		}
 
-		constexpr size_type find_first_of( const_pointer s, size_type const pos = 0 ) const noexcept {
-			return find_first_of( array_view{s}, pos );
+		template<size_t N>
+		constexpr size_t find_first_of( T const (&s)[N], size_type const pos = 0 ) const noexcept {
+			return find_first_of( array_view{s, N}, pos );
 		}
 
 	  private:
@@ -339,22 +340,19 @@ namespace daw {
 		    noexcept {
 			// Portability note here: std::distance is not NOEXCEPT, but calling it with a array_view::reverse_iterator
 			// will not throw.
-			return static_cast<size_type>( ( m_size - 1u ) - static_cast<size_type>( std::distance( first, last ) ) );
+			//return static_cast<size_type>( ( m_size - 1u ) - static_cast<size_type>( std::distance( first, last ) ) );
+			return static_cast<size_type>( ( m_size ) - static_cast<size_type>( std::distance( first, last ) ) );
 		}
 
 	  public:
 		constexpr size_type find_last_of( array_view s, size_type pos = std::numeric_limits<size_type>::max( ) ) const noexcept {
 			if( s.m_size == 0u ) {
-				return size( );
+				return m_size;
 			}
-			if( pos >= m_size ) {
-				pos = 0;
-			} else {
-				pos = m_size - ( pos + 1 );
-			}
+			pos = pos >= m_size ? 0 : m_size - ( pos + 1 );
+
 			using std::equal_to;
-			const_reverse_iterator iter = std::find_first_of( crbegin( ) + static_cast<difference_type>( pos ),
-			                                                  crend( ), s.crbegin( ), s.crend( ), equal_to<T>{ } );
+			auto iter = std::search( crbegin( ) + static_cast<difference_type>( pos ), crend( ), s.crbegin( ), s.crend( ), equal_to<T>{ } );
 			return iter == crend( ) ? size( ) : reverse_distance( crbegin( ), iter );
 		}
 

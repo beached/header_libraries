@@ -48,3 +48,16 @@ BOOST_AUTO_TEST_CASE( daw_array_view_find_last_of_001 ) {
 	BOOST_REQUIRE_EQUAL( es, es2 );
 }
 
+BOOST_AUTO_TEST_CASE( daw_array_view_002 ) {
+	auto const a = daw::make_array_view( {1, 2, 3, 4, 5, 6, 7, 8} );
+	auto const pos = a.find_first_of( { 5, 6 } );
+
+	BOOST_REQUIRE_EQUAL( pos, 4 );
+}
+BOOST_AUTO_TEST_CASE( daw_array_view_003 ) {
+	auto const a = daw::make_array_view( {1, 2, 3, 4, 5, 6, 7, 8} );
+	auto const pos = a.find_last_of( { 5, 6 } );
+
+	BOOST_REQUIRE_EQUAL( pos, 4 );
+}
+
