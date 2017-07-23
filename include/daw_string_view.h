@@ -140,12 +140,12 @@ namespace daw {
 			return to_string( );
 		}
 
-		template<typename Allocator>
-		basic_string_view( std::basic_string<value_type, traits_type, Allocator> const &str ) noexcept
+		template<typename ChrT, typename TrtsT, typename Allocator>
+		basic_string_view( std::basic_string<ChrT, TrtsT, Allocator> const &str ) noexcept
 		    : basic_string_view{str.data( ), static_cast<size_type_internal>( str.size( ) )} {}
 
-		template<typename Allocator>
-		basic_string_view &operator=( std::basic_string<value_type, traits_type, Allocator> const &str ) noexcept {
+		template<typename ChrT, typename TrtsT, typename Allocator>
+		basic_string_view &operator=( std::basic_string<ChrT, TrtsT, Allocator> const &str ) noexcept {
 			m_first = str.data( );
 			m_size = static_cast<size_type_internal>( str.size( ) );
 			return *this;
