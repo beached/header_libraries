@@ -30,33 +30,28 @@
 
 BOOST_AUTO_TEST_CASE( daw_array_view_test_001 ) {
 	constexpr auto const a = daw::make_array_view( "This is a test" );
-	for( auto c: a ) {
+	for( auto c : a ) {
 		std::cout << c;
 	}
 	std::cout << '\n';
 }
 
-BOOST_AUTO_TEST_CASE( daw_array_view_find_last_of_001 ) {
-	constexpr auto const a = daw::make_array_view( "abcdefghijklm" );
-	std::string const b = "abcdefghijklm";
-	auto const pos = a.find_last_of( "ij" );
-	auto const pos2 = b.find_last_of( "ij" );
-
-	auto const es = a.find_last_of( "lm" );
-	auto const es2 = b.find_last_of( "lm" );
-	BOOST_REQUIRE_EQUAL( pos, pos2 );
-	BOOST_REQUIRE_EQUAL( es, es2 );
-}
-
-BOOST_AUTO_TEST_CASE( daw_array_view_002 ) {
-	auto const a = daw::make_array_view( {1, 2, 3, 4, 5, 6, 7, 8} );
-	auto const pos = a.find_first_of( { 5, 6 } );
+BOOST_AUTO_TEST_CASE( daw_array_view_test_002 ) {
+	int const arry_a[] = {1, 2, 3, 4, 5, 6, 7, 8};
+	int const arry_b[] = {5, 6};
+	auto const a = daw::make_array_view( arry_a );
+	auto const b = daw::make_array_view( arry_b );
+	auto const pos = a.find_first_of( b );
 
 	BOOST_REQUIRE_EQUAL( pos, 4 );
 }
-BOOST_AUTO_TEST_CASE( daw_array_view_003 ) {
-	auto const a = daw::make_array_view( {1, 2, 3, 4, 5, 6, 7, 8} );
-	auto const pos = a.find_last_of( { 5, 6 } );
+
+BOOST_AUTO_TEST_CASE( daw_array_view_find_last_of_004 ) {
+	int const arry_a[] = {1, 2, 3, 4, 5, 6, 7, 8};
+	int const arry_b[] = {5, 6};
+	auto const a = daw::make_array_view( arry_a );
+	auto const b = daw::make_array_view( arry_b );
+	auto const pos = a.find_last_of( b );
 
 	BOOST_REQUIRE_EQUAL( pos, 4 );
 }

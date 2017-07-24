@@ -42,6 +42,34 @@ namespace daw {
 		}
 	} // namespace details
 
+	template<class ForwardIterator1, class ForwardIterator2>
+	ForwardIterator1 find_end( ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2,
+	                           ForwardIterator2 last2 ) {
+		if( first2 == last2 ) {
+			return last1; // specified in C++11
+		}
+
+		ForwardIterator1 ret = last1;
+
+		while( first1 != last1 ) {
+			ForwardIterator1 it1 = first1;
+			ForwardIterator2 it2 = first2;
+			while( *it1 == *it2 ) { // or: while (pred(*it1,*it2)) for version (2)
+				++it1;
+				++it2;
+				if( it2 == last2 ) {
+					ret = first1;
+					break;
+				}
+				if( it1 == last1 ) {
+					return ret;
+				}
+			}
+			++first1;
+		}
+		return ret;
+	}
+
 	template<typename T>
 	struct array_view {
 		using value_type = T;
@@ -84,19 +112,19 @@ namespace daw {
 		}
 
 		constexpr const_iterator end( ) const noexcept {
-			return &m_first[m_size];
+			return m_first + m_size;
 		}
 
 		constexpr const_iterator cend( ) const noexcept {
-			return &m_first[m_size];
+			return m_first + m_size;
 		}
 
 		constexpr const_iterator rbegin( ) const noexcept {
-			return details::make_reverse_iterator( &m_first[m_size - 1] );
+			return details::make_reverse_iterator( m_first + ( m_size - 1 ) );
 		}
 
 		constexpr const_reverse_iterator crbegin( ) const noexcept {
-			return details::make_reverse_iterator( &m_first[m_size - 1] );
+			return details::make_reverse_iterator( m_first + ( m_size - 1 ) );
 		}
 
 		constexpr const_reverse_iterator rend( ) const noexcept {
@@ -195,7 +223,7 @@ namespace daw {
 			}
 			size_type const rlen = ( std::min )( count, m_size - pos );
 			auto src = m_first + pos;
-			for( size_t n=0; n<rlen; ++n ) {
+			for( size_t n = 0; n < rlen; ++n ) {
 				dest[n] = src[n];
 			}
 			return rlen;
@@ -222,12 +250,13 @@ namespace daw {
 			return 0;
 		}
 
-		constexpr array_view subset( size_type const pos = 0, size_type const count = std::numeric_limits<size_type>::max( ) ) const {
+		constexpr array_view subset( size_type const pos = 0,
+		                             size_type const count = std::numeric_limits<size_type>::max( ) ) const {
 			if( pos > size( ) ) {
 				throw std::out_of_range{"Attempt to access array_view past end"};
 			}
 			auto const rcount = std::min( count, m_size - pos );
-			return array_view{&m_first[pos], rcount};
+			return array_view{m_first + pos, rcount};
 		}
 
 		constexpr int compare( size_type const pos1, size_type const count1, array_view const v ) const {
@@ -260,7 +289,7 @@ namespace daw {
 				return pos;
 			}
 			using std::equal_to;
-			auto result = std::search( cbegin( ) + pos, cend( ), v.cbegin( ), v.cend( ), equal_to<T>{ } );
+			auto result = std::search( cbegin( ) + pos, cend( ), v.cbegin( ), v.cend( ), equal_to<T>{} );
 			if( cend( ) == result ) {
 				return size( );
 			}
@@ -279,7 +308,8 @@ namespace daw {
 			return find( array_view{s}, pos );
 		}
 
-		constexpr size_type rfind( array_view const v, size_type const pos = std::numeric_limits<size_type>::max( ) ) const noexcept {
+		constexpr size_type rfind( array_view const v,
+		                           size_type const pos = std::numeric_limits<size_type>::max( ) ) const noexcept {
 			if( size( ) < v.size( ) ) {
 				return size( );
 			}
@@ -297,7 +327,8 @@ namespace daw {
 			}
 		}
 
-		constexpr size_type rfind( value_type const c, size_type const pos = std::numeric_limits<size_type>::max( ) ) const noexcept {
+		constexpr size_type rfind( value_type const c,
+		                           size_type const pos = std::numeric_limits<size_type>::max( ) ) const noexcept {
 			return rfind( array_view{&c, 1}, pos );
 		}
 
@@ -305,21 +336,15 @@ namespace daw {
 			return rfind( array_view{s, count}, pos );
 		}
 
-		constexpr size_type rfind( const_pointer s, size_type const pos = std::numeric_limits<size_type>::max( ) ) const noexcept {
+		constexpr size_type rfind( const_pointer s, size_type const pos = std::numeric_limits<size_type>::max( ) ) const
+		    noexcept {
 			return rfind( array_view{s}, pos );
 		}
 
 		constexpr size_type find_first_of( array_view const v, size_type const pos = 0 ) const noexcept {
-			if( pos >= size( ) || v.size( ) == 0 ) {
-				return size( );
-			}
 			using std::equal_to;
-			auto const iter = std::search( cbegin( ) + pos, cend( ), v.cbegin( ), v.cend( ), equal_to<T>{ } );
-
-			if( cend( ) == iter ) {
-				return size( );
-			}
-			return static_cast<size_type>( iter - cbegin( ) );
+			auto const iter = std::search( cbegin( ) + pos, cend( ), v.cbegin( ), v.cend( ), equal_to<T>{} );
+			return iter == cend( ) ? m_size : static_cast<size_type>( iter - cbegin( ) );
 		}
 
 		constexpr size_type find_first_of( value_type c, size_type const pos = 0 ) const noexcept {
@@ -331,7 +356,7 @@ namespace daw {
 		}
 
 		template<size_t N>
-		constexpr size_t find_first_of( T const (&s)[N], size_type const pos = 0 ) const noexcept {
+		constexpr size_t find_first_of( T const ( &s )[N], size_type const pos = 0 ) const noexcept {
 			return find_first_of( array_view{s, N}, pos );
 		}
 
@@ -340,23 +365,21 @@ namespace daw {
 		    noexcept {
 			// Portability note here: std::distance is not NOEXCEPT, but calling it with a array_view::reverse_iterator
 			// will not throw.
-			//return static_cast<size_type>( ( m_size - 1u ) - static_cast<size_type>( std::distance( first, last ) ) );
+			// return static_cast<size_type>( ( m_size - 1u ) - static_cast<size_type>( std::distance( first, last ) )
+			// );
 			return static_cast<size_type>( ( m_size ) - static_cast<size_type>( std::distance( first, last ) ) );
 		}
 
 	  public:
-		constexpr size_type find_last_of( array_view s, size_type pos = std::numeric_limits<size_type>::max( ) ) const noexcept {
-			if( s.m_size == 0u ) {
-				return m_size;
-			}
-			pos = pos >= m_size ? 0 : m_size - ( pos + 1 );
-
+		constexpr size_type find_last_of( array_view s, size_type pos = std::numeric_limits<size_type>::max( ) ) const
+		    noexcept {
 			using std::equal_to;
-			auto iter = std::search( crbegin( ) + static_cast<difference_type>( pos ), crend( ), s.crbegin( ), s.crend( ), equal_to<T>{ } );
-			return iter == crend( ) ? size( ) : reverse_distance( crbegin( ), iter );
+			auto iter = std::find_end( cbegin( ), cend( ), s.begin( ), s.end( ), equal_to<T>{ } );
+			return iter == cend( ) ? m_size : static_cast<size_type>( iter - cbegin( ) );
 		}
 
-		constexpr size_type find_last_of( value_type const c, size_type pos = std::numeric_limits<size_type>::max( ) ) const noexcept {
+		constexpr size_type find_last_of( value_type const c,
+		                                  size_type pos = std::numeric_limits<size_type>::max( ) ) const noexcept {
 			for( difference_type n = m_size - 1; n >= 0; --n ) {
 				if( m_first[n] == c ) {
 					return static_cast<size_type>( n );
@@ -403,7 +426,8 @@ namespace daw {
 			return find_first_not_of( array_view{s}, pos );
 		}
 
-		constexpr size_type find_last_not_of( array_view v, size_type pos = std::numeric_limits<size_type>::max( ) ) const noexcept {
+		constexpr size_type find_last_not_of( array_view v,
+		                                      size_type pos = std::numeric_limits<size_type>::max( ) ) const noexcept {
 			if( pos >= m_size ) {
 				pos = m_size - 1;
 			}
@@ -418,7 +442,8 @@ namespace daw {
 			return reverse_distance( crbegin( ), iter );
 		}
 
-		constexpr size_type find_last_not_of( value_type c, size_type pos = std::numeric_limits<size_type>::max( ) ) const noexcept {
+		constexpr size_type find_last_not_of( value_type c,
+		                                      size_type pos = std::numeric_limits<size_type>::max( ) ) const noexcept {
 			return find_last_not_of( array_view{&c, 1}, pos );
 		}
 
@@ -426,7 +451,8 @@ namespace daw {
 			return find_last_not_of( array_view{s, count}, pos );
 		}
 
-		constexpr size_type find_last_not_of( const_pointer s, size_type pos = std::numeric_limits<size_type>::max( ) ) const noexcept {
+		constexpr size_type find_last_not_of( const_pointer s,
+		                                      size_type pos = std::numeric_limits<size_type>::max( ) ) const noexcept {
 			return find_last_not_of( array_view{s}, pos );
 		}
 	}; // array_view
