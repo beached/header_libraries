@@ -30,8 +30,8 @@
 #include <utility>
 #include <vector>
 
-#include "daw_traits.h"
 #include "daw_string_view.h"
+#include "daw_traits.h"
 
 namespace daw {
 	namespace parser {
@@ -91,7 +91,7 @@ namespace daw {
 			std::string to_string( ) const {
 				return as<std::string>( );
 			}
-			
+
 			daw::string_view to_string_view( ) const {
 				return daw::make_string_view_it( first, last );
 			}
@@ -121,7 +121,7 @@ namespace daw {
 
 		template<typename ForwardIterator>
 		constexpr auto until( ForwardIterator first, ForwardIterator last,
-		            std::function<bool( daw::traits::root_type_t<decltype( *first )> )> is_last ) {
+		                      std::function<bool( daw::traits::root_type_t<decltype( *first )> )> is_last ) {
 
 			auto result = make_find_result( first, last );
 			for( auto it = first; it != last; ++it ) {
@@ -176,8 +176,8 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator, typename Value, typename... Values>
-		constexpr find_result_t<ForwardIterator> until_value( ForwardIterator first, ForwardIterator last, Value &&value,
-		                                            Values &&... values ) {
+		constexpr find_result_t<ForwardIterator> until_value( ForwardIterator first, ForwardIterator last,
+		                                                      Value &&value, Values &&... values ) {
 			auto result = make_find_result( first, last );
 			for( auto it = first; it != last; ++it ) {
 				if( is_a( *it, std::forward<Value>( value ), std::forward<Values>( values )... ) ) {
@@ -203,63 +203,63 @@ namespace daw {
 			       std::end( container );
 		}
 
-		namespace test {
-			class in_t {
-				daw::string_view container;
-
-			  public:
-				constexpr in_t( daw::string_view values ) noexcept : container{std::move( values )} {}
-
-				template<typename U>
-				constexpr bool operator( )( U const &value ) const noexcept {
-					return value_in( value, container );
-				}
-			};	// in_t
-
-			constexpr auto in( daw::string_view container ) noexcept {
-				return in_t{std::move( container )};
-			}
-		} // namespace test
-
-		template<typename T>
 		class in_t {
-			std::vector<T> container;
+			daw::string_view container;
 
 		  public:
-			in_t( std::vector<T> values ) : container{std::move( values )} {}
+			constexpr in_t( daw::string_view values ) noexcept : container{std::move( values )} {}
 
 			template<typename U>
-			bool operator( )( U const &value ) const {
+			constexpr bool operator( )( U const &value ) const noexcept {
 				return value_in( value, container );
 			}
 		}; // in_t
 
+		constexpr auto in( daw::string_view container ) noexcept {
+			return in_t{std::move( container )};
+		}
+
+		/* old
+		template<typename T>
+		class in_t {
+		    std::vector<T> container;
+
+		  public:
+		    in_t( std::vector<T> values ) : container{std::move( values )} {}
+
+		    template<typename U>
+		    bool operator( )( U const &value ) const {
+		        return value_in( value, container );
+		    }
+		}; // in_t
+
 		template<typename T>
 		auto in( std::vector<T> container ) {
-			return in_t<T>{std::move( container )};
+		    return in_t<T>{std::move( container )};
 		}
 
 		template<typename T, size_t N>
 		auto in( T ( &container )[N] ) {
-			using value_t = daw::traits::root_type_t<T>;
-			std::vector<value_t> values;
-			std::copy_n( std::begin( container ), N, std::back_inserter( values ) );
+		    using value_t = daw::traits::root_type_t<T>;
+		    std::vector<value_t> values;
+		    std::copy_n( std::begin( container ), N, std::back_inserter( values ) );
 
-			return in_t<value_t>{std::move( values )};
+		    return in_t<value_t>{std::move( values )};
 		}
 
 		template<typename Container>
 		auto in( Container container ) {
-			using value_t = daw::traits::root_type_t<decltype( container[0] )>;
-			std::vector<value_t> values;
-			std::copy( std::begin( container ), std::end( container ), std::back_inserter( values ) );
+		    using value_t = daw::traits::root_type_t<decltype( container[0] )>;
+		    std::vector<value_t> values;
+		    std::copy( std::begin( container ), std::end( container ), std::back_inserter( values ) );
 
-			return in_t<value_t>{std::move( values )};
+		    return in_t<value_t>{std::move( values )};
 		}
+		*/
 
 		template<typename ForwardIterator, typename Container>
 		constexpr find_result_t<ForwardIterator> until_values( ForwardIterator first, ForwardIterator last,
-		                                             Container &&container ) {
+		                                                       Container &&container ) {
 			auto result = make_find_result( first, last );
 			for( auto it = first; it != last; ++it ) {
 				if( value_in( *it, container ) ) {
@@ -355,7 +355,7 @@ namespace daw {
 
 		template<typename ForwardIterator, typename StartFrom, typename GoUntil>
 		constexpr auto from_to( ForwardIterator first, ForwardIterator last, StartFrom &&start_from, GoUntil &&go_until,
-		              bool throw_if_end_reached = false )
+		                        bool throw_if_end_reached = false )
 		    -> std::enable_if_t<daw::traits::is_comparable_v<decltype( *first ), StartFrom> &&
 		                            daw::traits::is_comparable_v<decltype( *first ), GoUntil>,
 		                        find_result_t<ForwardIterator>> {
@@ -375,9 +375,9 @@ namespace daw {
 
 		template<typename ForwardIterator>
 		constexpr auto from_to( ForwardIterator first, ForwardIterator last,
-		              std::function<bool( daw::traits::root_type_t<decltype( *first )> )> is_first,
-		              std::function<bool( daw::traits::root_type_t<decltype( *first )> )> is_last,
-		              bool throw_if_end_reached = false ) {
+		                        std::function<bool( daw::traits::root_type_t<decltype( *first )> )> is_first,
+		                        std::function<bool( daw::traits::root_type_t<decltype( *first )> )> is_last,
+		                        bool throw_if_end_reached = false ) {
 			auto start = until( first, last, is_first );
 			if( !start ) {
 				throw ParserException{};
@@ -636,7 +636,7 @@ namespace daw {
 		//
 		template<typename ForwardIterator1, typename ForwardIterator2, typename BinaryPredicate>
 		constexpr bool starts_with( ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2,
-		                  ForwardIterator2 last2, BinaryPredicate pred ) {
+		                            ForwardIterator2 last2, BinaryPredicate pred ) {
 			while( first1 != last1 && first2 != last2 ) {
 				if( !pred( *first1, *first2 ) ) {
 					return false;
@@ -649,7 +649,7 @@ namespace daw {
 
 		template<typename ForwardIterator, typename Value>
 		constexpr find_result_t<ForwardIterator> until_last_of( ForwardIterator first, ForwardIterator last,
-		                                              Value const &value ) {
+		                                                        Value const &value ) {
 			auto result = until_value( first, last, value );
 			bool found = static_cast<bool>( result );
 			while( result && result.end( ) != last ) {
@@ -664,7 +664,8 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator, typename Sequence>
-		constexpr find_result_t<ForwardIterator> find_first_of_any( ForwardIterator first, ForwardIterator last, Sequence values ) {
+		constexpr find_result_t<ForwardIterator> find_first_of_any( ForwardIterator first, ForwardIterator last,
+		                                                            Sequence values ) {
 			auto first_val = *std::begin( values );
 			auto result = until_value( first, last, first_val );
 			if( !result ) {
