@@ -119,9 +119,9 @@ namespace daw {
 			return find_result_t<ForwardIterator>{first, last, result};
 		}
 
-		template<typename ForwardIterator>
-		constexpr auto until( ForwardIterator first, ForwardIterator last,
-		                      std::function<bool( daw::traits::root_type_t<decltype( *first )> )> is_last ) {
+		template<typename ForwardIterator, typename Predicate>
+		constexpr auto until( ForwardIterator first, ForwardIterator last, Predicate is_last ) {
+			//		                      std::function<bool( daw::traits::root_type_t<decltype( *first )> )> is_last ) {
 
 			auto result = make_find_result( first, last );
 			for( auto it = first; it != last; ++it ) {
@@ -133,8 +133,8 @@ namespace daw {
 			return result;
 		}
 
-		template<typename ForwardIterator, typename IsLast>
-		constexpr auto until_false( ForwardIterator first, ForwardIterator last, IsLast is_last ) {
+		template<typename ForwardIterator, typename Predicate>
+		constexpr auto until_false( ForwardIterator first, ForwardIterator last, Predicate is_last ) {
 			auto result = make_find_result( first, last );
 			for( auto it = first; it != last; ++it ) {
 				if( ( result.found = !is_last( *it ) ) ) {
