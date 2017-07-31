@@ -25,7 +25,6 @@
 #include <algorithm>
 #include <boost/algorithm/string/predicate.hpp>
 #include <exception>
-#include <functional>
 #include <list>
 #include <utility>
 #include <vector>
@@ -271,8 +270,8 @@ namespace daw {
 			return result;
 		}
 
-		template<typename T>
-		constexpr bool is_true( T &&value, std::function<bool( daw::traits::root_type_t<T> )> predicate ) {
+		template<typename T, typename Predicate>
+		constexpr bool is_true( T &&value, Predicate /*std::function<bool( daw::traits::root_type_t<T> )>*/ predicate ) {
 			return predicate( value );
 		}
 
@@ -407,9 +406,9 @@ namespace daw {
 			return endings;
 		};
 
-		template<typename ForwardIterator>
+		template<typename ForwardIterator, typename Predicate>
 		auto split_if( ForwardIterator first, ForwardIterator last,
-		               std::function<bool( daw::traits::root_type_t<decltype( *first )> )> is_divider ) {
+		               Predicate /*std::function<bool( daw::traits::root_type_t<decltype( *first )> )>*/ is_divider ) {
 			std::vector<ForwardIterator> endings;
 			auto result = until( first, last, is_divider );
 			while( result ) {
