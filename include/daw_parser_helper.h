@@ -373,11 +373,13 @@ namespace daw {
 			return result;
 		}
 
-		template<typename ForwardIterator>
-		constexpr auto from_to( ForwardIterator first, ForwardIterator last,
-		                        std::function<bool( daw::traits::root_type_t<decltype( *first )> )> is_first,
-		                        std::function<bool( daw::traits::root_type_t<decltype( *first )> )> is_last,
-		                        bool throw_if_end_reached = false ) {
+		template<typename ForwardIterator, typename IsFirstPredicate, typename IsLastPredicate>
+		constexpr auto from_to( ForwardIterator first, ForwardIterator last, IsFirstPredicate is_first,
+		                        IsLastPredicate is_last, bool throw_if_end_reached = false ) {
+			/*
+			std::function<bool( daw::traits::root_type_t<decltype( *first )> )> is_first,
+			std::function<bool( daw::traits::root_type_t<decltype( *first )> )> is_last,
+			*/
 			auto start = until( first, last, is_first );
 			if( !start ) {
 				throw ParserException{};
