@@ -136,7 +136,8 @@ namespace daw {
 		constexpr auto until( ForwardIterator first, ForwardIterator last, Predicate is_last, bool throw_if_end_reached ) {
 			auto result = make_find_result( first, last );
 			for( auto it = first; it != last; ++it ) {
-				if( ( result.found = is_last( *it ) ) ) {
+				if( is_last( *it ) ) {
+					result.found = true;
 					result.last = it;
 					return result;
 				}
@@ -152,7 +153,8 @@ namespace daw {
 		constexpr auto until_false( ForwardIterator first, ForwardIterator last, Predicate is_last ) {
 			auto result = make_find_result( first, last );
 			for( auto it = first; it != last; ++it ) {
-				if( ( result.found = !is_last( *it ) ) ) {
+				if( is_last( *it ) ) {
+					result.found = true;
 					result.last = it;
 					return result;
 				}
