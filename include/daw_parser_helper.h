@@ -203,6 +203,24 @@ namespace daw {
 			       std::end( container );
 		}
 
+		namespace test {
+			class in_t {
+				daw::string_view container;
+
+			  public:
+				constexpr in_t( daw::string_view values ) noexcept : container{std::move( values )} {}
+
+				template<typename U>
+				constexpr bool operator( )( U const &value ) const noexcept {
+					return value_in( value, container );
+				}
+			};	// in_t
+
+			constexpr auto in( daw::string_view container ) noexcept {
+				return in_t{std::move( container )};
+			}
+		} // namespace test
+
 		template<typename T>
 		class in_t {
 			std::vector<T> container;
