@@ -81,14 +81,8 @@ namespace daw {
 				return result;
 			}
 
-			///
-			// Depreciated, use to_string
-			std::string as_string( ) const {
-				return as<std::string>( );
-			}
-
 			std::string to_string( ) const {
-				return as<std::string>( );
+				return std::string{ first, static_cast<size_t>(last-first) };
 			}
 
 			daw::string_view to_string_view( ) const {
