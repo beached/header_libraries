@@ -379,7 +379,7 @@ namespace daw {
 			if( throw_if_end_reached && !finish ) {
 				throw ParserException{};
 			}
-			auto result = make_find_result( start.first, finish.last );
+			auto result = make_find_result( start.last, finish.last );
 			result.found = !result.empty( );
 			return result;
 		}
@@ -399,7 +399,9 @@ namespace daw {
 			if( throw_if_end_reached && !finish ) {
 				throw ParserException{};
 			}
-			return finish;
+			auto result = make_find_result( start.last, finish.last );
+			result.found = !result.empty( );
+			return result;
 		}
 
 		template<typename ForwardIterator, typename Divider, typename... Dividers>
