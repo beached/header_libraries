@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cstdint>
 #include <cstdlib>
 #include <iostream>
 #include <string>
@@ -35,11 +34,12 @@ BOOST_AUTO_TEST_CASE( daw_string_view_test_001 ) {
 	std::cout << a.to_string( ) << '\n';
 	daw::string_view b = "Testing again" + a;
 
-	daw::string_view c{a};
+	auto c = a;
 	c.remove_prefix( );
 	std::cout << c << ' ' << c.front( ) << ' ' << c[3] << '\n';
 	c = a;
 	c = b;
+	std::cout << c << ' ' << c.front( ) << ' ' << c[3] << '\n';
 }
 
 BOOST_AUTO_TEST_CASE( daw_string_view_find_last_of_001 ) {
@@ -87,8 +87,8 @@ BOOST_AUTO_TEST_CASE( tc002 ) {
 //----------------------------------------------------------------------------
 
 BOOST_AUTO_TEST_CASE( tc003 ) {
-	const char *empty_str = "";
-	const char *non_empty_str = "Hello World";
+	auto empty_str = "";
+	auto non_empty_str = "Hello World";
 
 	BOOST_TEST_MESSAGE( "Is empty with empty string" );
 	{
@@ -99,7 +99,6 @@ BOOST_AUTO_TEST_CASE( tc003 ) {
 
 	BOOST_TEST_MESSAGE( "Is non-empty with non-empty string" );
 	{
-		const char *str = "Hello world";
 		daw::string_view view = non_empty_str;
 
 		BOOST_REQUIRE( FALSE( view.empty( ) ) );
@@ -273,7 +272,7 @@ BOOST_AUTO_TEST_CASE( tc013modifier ) {
 	{
 		view.remove_prefix( 6 );
 
-		BOOST_REQUIRE( view == "World" );
+		BOOST_REQUIRE( ( view == "World" ) );
 	}
 }
 
@@ -524,10 +523,10 @@ BOOST_AUTO_TEST_CASE( tc021comparison ) {
 		}
 
 		BOOST_TEST_MESSAGE( "Returns false for non-equal strings with left char array" );
-		{ BOOST_REQUIRE( FALSE( "Goodbye World" == view ) ); }
+		{ BOOST_REQUIRE( FALSE( ( "Goodbye World" == view ) ) ); }
 
 		BOOST_TEST_MESSAGE( "Returns false for non-equal strings with right char array" );
-		{ BOOST_REQUIRE( FALSE( view == "Goodbye World" ) ); }
+		{ BOOST_REQUIRE( FALSE( ( view == "Goodbye World" ) ) ); }
 
 		BOOST_TEST_MESSAGE( "Returns false for non-equal strings with left char ptr" );
 		{
@@ -640,4 +639,3 @@ BOOST_AUTO_TEST_CASE( tc022comparison ) {
 		}
 	}
 }
-
