@@ -129,6 +129,9 @@ namespace daw {
 		constexpr basic_string_view( const_pointer s, size_type count ) noexcept
 		    : m_first{s}, m_size{static_cast<size_type_internal>( count )} {}
 
+		constexpr basic_string_view( basic_string_view sv, size_type count ) noexcept
+		    : m_first{sv.m_first}, m_size{static_cast<size_type_internal>( count )} {}
+
 		template<size_t N>
 		constexpr basic_string_view( CharT const ( &s )[N] ) noexcept : basic_string_view{s, N} {}
 
