@@ -403,7 +403,10 @@ namespace daw {
 		}
 
 		std::basic_string<value_type, traits_type> to_string( ) const {
-			return std::basic_string<value_type, traits_type>( cbegin( ), size( ) );
+			std::basic_string<value_type, traits_type> result;
+			result.reserve( size( ) );
+			std::copy_n( cbegin( ), size( ), std::back_inserter( result ) );
+			return result;
 		}
 
 	  private:
