@@ -139,6 +139,7 @@ namespace daw {
 		    : basic_string_view{s, details::strlen<size_type_internal>( s )} {}
 
 		constexpr basic_string_view( basic_string_view const &other ) noexcept = default;
+		constexpr basic_string_view( basic_string_view &&other ) noexcept = default;
 		constexpr basic_string_view &operator=( basic_string_view const & ) noexcept = default;
 		constexpr basic_string_view &operator=( basic_string_view && ) noexcept = default;
 
