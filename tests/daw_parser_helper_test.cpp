@@ -49,28 +49,28 @@ BOOST_AUTO_TEST_CASE( daw_parser_helper001 ) {
 	static std::string tr_test = "  hello  ";
 	std::cout << "Test trimming '" << tr_test << "'\n";
 
-	auto tr_left = daw::parser::trim_left( tr_test.begin( ), tr_test.end( ) ).as_string( );
+	auto tr_left = daw::parser::trim_left( tr_test.begin( ), tr_test.end( ) ).to_string( );
 	std::cout << "Left only '" << tr_left << "'\n";
 	BOOST_REQUIRE_MESSAGE( tr_left == "hello  ", "Trim left did not work" );
 
-	auto tr_right = daw::parser::trim_right( tr_test.begin( ), tr_test.end( ) ).as_string( );
+	auto tr_right = daw::parser::trim_right( tr_test.begin( ), tr_test.end( ) ).to_string( );
 	std::cout << "Right only '" << tr_right << "'\n";
 	BOOST_REQUIRE_MESSAGE( tr_right == "  hello", "Trim right did not work" );
 
-	auto tr_full = daw::parser::trim( tr_test.begin( ), tr_test.end( ) ).as_string( );
+	auto tr_full = daw::parser::trim( tr_test.begin( ), tr_test.end( ) ).to_string( );
 	std::cout << "Full trim '" << tr_full << "'\n";
 	BOOST_REQUIRE_MESSAGE( tr_full == "hello", "Trim did not work" );
 
 	static std::string empty;
-	auto empty_left = daw::parser::trim_left( empty.begin( ), empty.end( ) ).as_string( );
+	auto empty_left = daw::parser::trim_left( empty.begin( ), empty.end( ) ).to_string( );
 	std::cout << "Empty Left only '" << empty_left << "'\n";
 	BOOST_REQUIRE_MESSAGE( empty_left == "", "Trim left did not work" );
 
-	auto empty_right = daw::parser::trim_right( empty.begin( ), empty.end( ) ).as_string( );
+	auto empty_right = daw::parser::trim_right( empty.begin( ), empty.end( ) ).to_string( );
 	std::cout << "Empty Right only '" << empty_right << "'\n";
 	BOOST_REQUIRE_MESSAGE( empty_right == "", "Trim right did not work" );
 
-	auto empty_full = daw::parser::trim( empty.begin( ), empty.end( ) ).as_string( );
+	auto empty_full = daw::parser::trim( empty.begin( ), empty.end( ) ).to_string( );
 	std::cout << "Empty full trim '" << empty_full << "'\n";
 	BOOST_REQUIRE_MESSAGE( empty_full == "", "Trim did not work" );
 }
@@ -78,6 +78,6 @@ BOOST_AUTO_TEST_CASE( daw_parser_helper001 ) {
 BOOST_AUTO_TEST_CASE( daw_parser_helper002 ) {
 	// skip ws
 	boost::string_view const test_str = "          this is a test";
-	auto const sws = daw::parser::skip_ws( test_str.begin( ), test_str.end( ) ).as_string( );
+	auto const sws = daw::parser::skip_ws( test_str.begin( ), test_str.end( ) ).to_string( );
 	std::cout << "With leading ws '" << test_str.to_string( ) << "', without '" << sws << "'\n";
 }

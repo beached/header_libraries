@@ -26,6 +26,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <exception>
 #include <list>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -82,7 +83,8 @@ namespace daw {
 			}
 
 			std::string to_string( ) const {
-				return std::string{ first, static_cast<size_t>(last-first) };
+				return std::string( static_cast<char const *>( &(*first) ),
+				                    static_cast<std::string::size_type>( std::distance( first, last ) ) );
 			}
 
 			daw::string_view to_string_view( ) const {
@@ -147,7 +149,7 @@ namespace daw {
 		constexpr auto until_false( ForwardIterator first, ForwardIterator last, Predicate is_last ) {
 			auto result = make_find_result( first, last );
 			for( auto it = first; it != last; ++it ) {
-				if( is_last( *it ) ) {
+				if( !is_last( *it ) ) {
 					result.found = true;
 					result.last = it;
 					return result;
