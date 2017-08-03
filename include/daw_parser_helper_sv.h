@@ -22,14 +22,7 @@
 
 #pragma once
 
-#include <algorithm>
-#include <boost/algorithm/string/predicate.hpp>
-#include <exception>
-#include <functional>
-#include <list>
-#include <utility>
-#include <vector>
-
+#include "daw_parser_helper.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
 
@@ -37,8 +30,8 @@ namespace daw {
 	namespace parser {
 		template<typename CharT, typename TraitsT>
 		constexpr auto find_first_of( daw::basic_string_view<CharT, TraitsT> const str, CharT const value ) noexcept {
-			auto it = str.begin( );
-			while( it != str.end( ) && *it != value ) {
+			auto it = str.cbegin( );
+			while( it != str.cend( ) && *it != value ) {
 				++it;
 			}
 			return it;
@@ -46,12 +39,37 @@ namespace daw {
 
 		template<typename CharT, typename TraitsT, typename Predicate>
 		constexpr auto find_first_of_when( daw::basic_string_view<CharT, TraitsT> str, Predicate pred ) noexcept( noexcept( pred( CharT{ } ) ) ) {
-			auto it = str.begin( );
-			while( it != str.end( ) && !pred( *it ) ) {
+			auto it = str.cbegin( );
+			while( it != str.cend( ) && !pred( *it ) ) {
 				++it;
 			}
 			return it;
 		}
+
+		template<typename CharT, typename TraitsT>
+		constexpr daw::basic_string_view<CharT, TraitsT>
+		trim_left( daw::basic_string_view<CharT, TraitsT> str ) noexcept {
+			while( !str.empty( ) && is_unicode_whitespace( str.front( ) ) ) {
+				str.remove_prefix( );
+			}
+			return str;
+		}
+
+		template<typename CharT, typename TraitsT>
+		constexpr daw::basic_string_view<CharT, TraitsT>
+		trim_right( daw::basic_string_view<CharT, TraitsT> str ) noexcept {
+			while( !str.empty( ) && is_unicode_whitespace( str.back( ) ) ) {
+				str.remove_suffix( );
+			}
+			return str;
+		}
+
+		template<typename CharT, typename TraitsT>
+		constexpr daw::basic_string_view<CharT, TraitsT>
+		trim( daw::basic_string_view<CharT, TraitsT> str ) noexcept {
+			return trim_right( trim_left( str ) );
+		}
+
 	} // namespace parser
 } // namespace daw
 
