@@ -77,6 +77,18 @@ namespace daw {
 			return last;
 		}
 
+		template<typename InputIt, typename Predicate>
+		constexpr InputIt find_first_not_of_if( InputIt first, InputIt last, Predicate p ) noexcept(
+		    noexcept( std::declval<Predicate>( )( *std::declval<InputIt>( ) ) ) ) {
+			for( ; first != last; ++first ) {
+				if( !p( *first ) ) {
+					return first;
+				}
+			}
+			return last;
+		}
+
+
 		template<typename charT, typename traits>
 		inline void sv_insert_fill_chars( std::basic_ostream<charT, traits> &os, std::size_t n ) {
 			enum { chunk_size = 8 };
@@ -416,6 +428,20 @@ namespace daw {
 			}
 			return static_cast<size_type_internal>( iter - cbegin( ) );
 		}
+
+		template<typename Predicate>
+		constexpr size_type find_first_not_of_if( Predicate pred, size_type const pos = 0 ) const
+		    noexcept( noexcept( std::declval<Predicate>( )( std::declval<value_type>( ) ) ) ) {
+			if( pos >= size( ) ) {
+				return npos;
+			}
+			auto const iter = details::find_first_not_of_if( cbegin( ) + pos, cend( ), pred );
+			if( cend( ) == iter ) {
+				return npos;
+			}
+			return static_cast<size_type_internal>( iter - cbegin( ) );
+		}
+
 
 		constexpr size_type find_first_of( value_type c, size_type const pos = 0 ) const noexcept {
 			return find_first_of( basic_string_view{&c, 1}, pos );
