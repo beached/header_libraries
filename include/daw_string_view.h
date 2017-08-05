@@ -52,13 +52,26 @@ namespace daw {
 		}
 
 		template<typename InputIt, typename ForwardIt, typename BinaryPredicate>
-		constexpr InputIt find_first_of( InputIt first, InputIt last, ForwardIt s_first, ForwardIt s_last,
-		                                 BinaryPredicate p ) noexcept {
+		constexpr InputIt
+		find_first_of( InputIt first, InputIt last, ForwardIt s_first, ForwardIt s_last, BinaryPredicate p ) noexcept(
+		    noexcept( std::declval<BinaryPredicate>( )( *std::declval<InputIt>( ),
+		                                                          *std::declval<ForwardIt>( ) ) ) ) {
 			for( ; first != last; ++first ) {
 				for( ForwardIt it = s_first; it != s_last; ++it ) {
 					if( p( *first, *it ) ) {
 						return first;
 					}
+				}
+			}
+			return last;
+		}
+
+		template<typename InputIt, typename Predicate>
+		constexpr InputIt find_first_of_if( InputIt first, InputIt last, Predicate p ) noexcept(
+		    noexcept( std::declval<Predicate>( )( *std::declval<InputIt>( ) ) ) ) {
+			for( ; first != last; ++first ) {
+				if( p( *first ) ) {
+					return first;
 				}
 			}
 			return last;
@@ -385,6 +398,19 @@ namespace daw {
 			auto const iter =
 			    details::find_first_of( cbegin( ) + pos, cend( ), v.cbegin( ), v.cend( ), traits_type::eq );
 
+			if( cend( ) == iter ) {
+				return npos;
+			}
+			return static_cast<size_type_internal>( iter - cbegin( ) );
+		}
+
+		template<typename Predicate>
+		constexpr size_type find_first_of_if( Predicate pred, size_type const pos = 0 ) const
+		    noexcept( noexcept( std::declval<Predicate>( )( std::declval<value_type>( ) ) ) ) {
+			if( pos >= size( ) ) {
+				return npos;
+			}
+			auto const iter = details::find_first_of_if( cbegin( ) + pos, cend( ), pred );
 			if( cend( ) == iter ) {
 				return npos;
 			}
