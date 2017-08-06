@@ -447,6 +447,22 @@ namespace daw {
 			return static_cast<size_type>( std::distance( cbegin( ), iter ) );
 		}
 
+		constexpr size_type search_last( basic_string_view const v, size_type const pos = 0 ) const noexcept {
+			if( pos + v.size( ) >= size( ) || v.empty( ) ) {
+				return npos;
+			}
+			auto last_pos = pos;
+			auto fpos = search( v, pos );
+			while( fpos != npos ) {
+				last_pos = fpos;
+				fpos = search( v, fpos );
+				if( fpos == last_pos ) {
+					break;
+				}
+			}
+			return last_pos; 
+		}
+
 		template<typename Predicate>
 		constexpr size_type find_first_of_if( Predicate pred, size_type const pos = 0 ) const
 		    noexcept( noexcept( std::declval<Predicate>( )( std::declval<value_type>( ) ) ) ) {
