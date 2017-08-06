@@ -459,7 +459,7 @@ namespace daw {
 			if( cend( ) == iter ) {
 				return npos;
 			}
-			return static_cast<size_type_internal>( iter - cbegin( ) );
+			return static_cast<size_type_internal>( std::distance( cbegin( ), iter ) );
 		}
 
 		constexpr size_type find_first_of( value_type c, size_type const pos = 0 ) const noexcept {
