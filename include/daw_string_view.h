@@ -433,7 +433,18 @@ namespace daw {
 			if( cend( ) == iter ) {
 				return npos;
 			}
-			return static_cast<size_type_internal>( iter - cbegin( ) );
+			return static_cast<size_type>( std::distance( cbegin( ), iter ) );
+		}
+
+		constexpr size_type search( basic_string_view const v, size_type const pos = 0 ) const noexcept {
+			if( pos + v.size( ) >= size( ) || v.empty( ) ) {
+				return npos;
+			}
+			auto const iter = std::search( cbegin( ) + pos, cend( ), v.cbegin( ), v.end( ), traits_type::eq );
+			if( cend( ) == iter ) {
+				return npos;
+			}
+			return static_cast<size_type>( std::distance( cbegin( ), iter ) );
 		}
 
 		template<typename Predicate>

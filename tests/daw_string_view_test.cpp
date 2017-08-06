@@ -78,6 +78,12 @@ BOOST_AUTO_TEST_CASE( daw_string_view_find_first_not_of_001 ) {
 	BOOST_REQUIRE_EQUAL( pos, 5 );
 }
 
+BOOST_AUTO_TEST_CASE( daw_string_view_search_001 ) {
+	daw::string_view const a = "abcdeaaaijklm";
+	auto pos = a.search( "aaa" );
+	BOOST_REQUIRE_EQUAL( pos, 5 );
+}
+
 BOOST_AUTO_TEST_CASE( tc001 ) {
 	daw::string_view view;
 	BOOST_TEST_MESSAGE( "Constructs an empty string" );
