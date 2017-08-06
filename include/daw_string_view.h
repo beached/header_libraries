@@ -54,13 +54,34 @@ namespace daw {
 		template<typename InputIt, typename ForwardIt, typename BinaryPredicate>
 		constexpr InputIt
 		find_first_of( InputIt first, InputIt last, ForwardIt s_first, ForwardIt s_last, BinaryPredicate p ) noexcept(
-		    noexcept( std::declval<BinaryPredicate>( )( *std::declval<InputIt>( ),
-		                                                          *std::declval<ForwardIt>( ) ) ) ) {
+		    noexcept( std::declval<BinaryPredicate>( )( *std::declval<InputIt>( ), *std::declval<ForwardIt>( ) ) ) ) {
 			for( ; first != last; ++first ) {
 				for( ForwardIt it = s_first; it != s_last; ++it ) {
 					if( p( *first, *it ) ) {
 						return first;
 					}
+				}
+			}
+			return last;
+		}
+
+		template<typename InputIt, typename ForwardIt, typename BinaryPredicate>
+		constexpr InputIt find_first_not_of(
+		    InputIt first, InputIt last, ForwardIt s_first, ForwardIt s_last,
+		    BinaryPredicate
+		        p ) noexcept( noexcept( std::declval<BinaryPredicate>( )( *std::declval<InputIt>( ),
+		                                                                  *std::declval<ForwardIt>( ) ) ) ) {
+			bool found = false;
+			for( ; first != last; ++first ) {
+				found = false;
+				for( ForwardIt it = s_first; it != s_last; ++it ) {
+					if( p( *first, *it ) ) {
+						found = true;
+						break;
+					}
+				}
+				if( !found ) {
+					return first;
 				}
 			}
 			return last;
@@ -87,7 +108,6 @@ namespace daw {
 			}
 			return last;
 		}
-
 
 		template<typename charT, typename traits>
 		inline void sv_insert_fill_chars( std::basic_ostream<charT, traits> &os, std::size_t n ) {
@@ -404,7 +424,7 @@ namespace daw {
 		}
 
 		constexpr size_type find_first_of( basic_string_view const v, size_type const pos = 0 ) const noexcept {
-			if( pos >= size( ) || v.size( ) == 0 ) {
+			if( pos >= size( ) || v.empty( ) ) {
 				return npos;
 			}
 			auto const iter =
@@ -441,7 +461,6 @@ namespace daw {
 			}
 			return static_cast<size_type_internal>( iter - cbegin( ) );
 		}
-
 
 		constexpr size_type find_first_of( value_type c, size_type const pos = 0 ) const noexcept {
 			return find_first_of( basic_string_view{&c, 1}, pos );
@@ -506,16 +525,18 @@ namespace daw {
 			if( pos >= m_size ) {
 				return npos;
 			}
-			if( 0 == v.size( ) ) {
+			if( v.empty( ) ) {
 				return pos;
 			}
 
-			const_iterator iter = find_not_of( cbegin( ) + pos, cend( ), v );
+			const_iterator iter = details::find_first_not_of(
+			    cbegin( ) + pos, cend( ), v.cbegin( ), std::next( v.cbegin( ), static_cast<ptrdiff_t>( v.size( ) ) ),
+			    traits_type::eq );
 			if( cend( ) == iter ) {
 				return npos;
 			}
 
-			return std::distance( cbegin( ), iter );
+			return static_cast<size_type>( std::distance( cbegin( ), iter ) );
 		}
 
 		constexpr size_type find_first_not_of( value_type c, size_type pos = 0 ) const noexcept {
@@ -534,7 +555,7 @@ namespace daw {
 			if( pos >= m_size ) {
 				pos = m_size - 1;
 			}
-			if( 0 == v.size( ) ) {
+			if( v.empty( ) ) {
 				return pos;
 			}
 			pos = m_size - ( pos + 1 );

@@ -66,6 +66,17 @@ BOOST_AUTO_TEST_CASE( daw_string_view_find_first_not_of_if_001 ) {
 	BOOST_REQUIRE_EQUAL( pos, 2 );
 }
 
+BOOST_AUTO_TEST_CASE( daw_string_view_find_first_of_001 ) {
+	daw::string_view const a = "abcdefghijklm";
+	auto pos = a.find_first_of( "def" );
+	BOOST_REQUIRE_EQUAL( pos, 3 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_string_view_find_first_not_of_001 ) {
+	daw::string_view const a = "abcabfghijklm";
+	auto pos = a.find_first_not_of( "abc" );
+	BOOST_REQUIRE_EQUAL( pos, 5 );
+}
 
 BOOST_AUTO_TEST_CASE( tc001 ) {
 	daw::string_view view;
