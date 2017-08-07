@@ -24,7 +24,6 @@
 
 #include <boost/lexical_cast.hpp>
 #include <boost/spirit/include/qi_numeric.hpp>
-#include <boost/utility/string_view.hpp>
 #include <iomanip>
 #include <iterator>
 #include <regex>
@@ -33,6 +32,8 @@
 #include <string>
 #include <utility>
 #include <vector>
+
+#include "daw_string_view.h"
 
 #ifdef _MSC_VER
 #if _MSC_VER < 1800
@@ -478,7 +479,7 @@ namespace daw {
 		}      // namespace impl
 
 		template<typename Value>
-		auto split( boost::string_view str, Value const &value ) {
+		auto split( daw::string_view str, Value const &value ) {
 			std::vector<std::string> result;
 
 			auto last_pos = str.begin( );
