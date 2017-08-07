@@ -22,15 +22,17 @@
 
 #pragma once
 
-#include "daw_string.h"
 #include <stdexcept>
 #include <string>
+
+#include "daw_string.h"
+#include "daw_string_view.h"
 
 namespace daw {
 	namespace exception {
 #define MAKE_DAW_EXCEPTION( EXCEPTION_TYPE )                                                                           \
 	struct EXCEPTION_TYPE final : public std::runtime_error {                                                          \
-		EXCEPTION_TYPE( boost::string_view msg ) : std::runtime_error{msg.data( )} {}                                  \
+		EXCEPTION_TYPE( daw::string_view msg ) : std::runtime_error{msg.data( )} {}                                  \
 		EXCEPTION_TYPE( ) : std::runtime_error{"No Error Message"} {}                                                  \
 		~EXCEPTION_TYPE( ) = default;                                                                                  \
 		EXCEPTION_TYPE( EXCEPTION_TYPE const & ) = default;                                                            \
