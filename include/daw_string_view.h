@@ -616,11 +616,29 @@ namespace daw {
 		return basic_string_view<CharT, Traits>{first, static_cast<size_t>( last - first )};
 	}
 
+	template<typename Iterator, typename CharT = std::decay_t<decltype( *std::declval<Iterator>( ) )>, typename TraitsT = std::char_traits<CharT>>
+	constexpr auto make_string_view_it( Iterator first, Iterator last ) noexcept {
+		using sv_t = basic_string_view<CharT, TraitsT>;
+		using size_type = typename sv_t::size_type;
+		return sv_t{ &(*first), static_cast<size_type>(std::distance( first, last )) };
+	}
+} // namespace daw
+
+namespace std {
+	template<typename CharT, typename Allocator>
+	class vector;
+} // namespace std
+
+namespace daw {
+	template<typename CharT, typename Allocator, typename Traits = std::char_traits<CharT>>
+	constexpr auto make_string_view( std::vector<CharT, Allocator> const &v ) noexcept {
+		return basic_string_view<CharT, Traits>{v.data( ), v.size( )};
+	}
 	// basic_string_view / basic_string_view
-	//
-	template<typename CharT, typename Traits>
-	constexpr bool operator==( basic_string_view<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
-		return lhs.compare( rhs ) == 0;
+    //
+    template<typename CharT, typename Traits>
+    constexpr bool operator==( basic_string_view<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
+	return lhs.compare( rhs ) == 0;
 	}
 
 	template<typename CharT, typename Traits>
@@ -926,6 +944,7 @@ auto operator+( daw::basic_string_view<CharT, Traits> lhs, CharT const *rhs ) {
 	result += daw::basic_string_view<CharT, Traits>{rhs}.to_string( );
 	return result;
 }
+
 namespace std {
 	// TODO use same function as string without killing performance of creating a string
 	template<>

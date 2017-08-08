@@ -22,7 +22,9 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <iterator>
 #include <string>
+#include <vector>
 
 #include "boost_test.h"
 #include "daw_string_view.h"
@@ -41,6 +43,25 @@ BOOST_AUTO_TEST_CASE( daw_string_view_test_001 ) {
 	c = b;
 	std::cout << c << ' ' << c.front( ) << ' ' << c[3] << '\n';
 }
+
+BOOST_AUTO_TEST_CASE( daw_string_view_make_string_view_it ) {
+	std::string a = "This is a test";
+	auto b = daw::make_string_view_it( a.begin( ), a.end( ) );
+
+	BOOST_REQUIRE_MESSAGE( std::equal( a.begin( ), a.end( ), b.begin( ), b.end( ) ), "string and string_view should be equal" );
+}
+
+BOOST_AUTO_TEST_CASE( daw_string_view_make_string_view_vector ) {
+	std::string a = "This is a test";
+	std::vector<char> b;
+	std::copy( a.begin( ), a.end( ), std::back_inserter( b ) );
+
+	auto c = daw::make_string_view( b );
+
+	BOOST_REQUIRE_MESSAGE( std::equal( a.begin( ), a.end( ), b.begin( ), b.end( ) ), "string and vector should be equal" );
+	BOOST_REQUIRE_MESSAGE( std::equal( c.begin( ), c.end( ), b.begin( ), b.end( ) ), "string_view and vector should be equal" );
+}
+
 
 BOOST_AUTO_TEST_CASE( daw_string_view_find_last_of_001 ) {
 	daw::string_view const a = "abcdefghijklm";
@@ -87,9 +108,8 @@ BOOST_AUTO_TEST_CASE( daw_string_view_search_001 ) {
 BOOST_AUTO_TEST_CASE( daw_string_view_search_last_001 ) {
 	daw::string_view const a = "abcdeaaaijklm";
 	auto pos = a.search_last( "aaa" );
-	BOOST_REQUIRE_EQUAL( pos, 8 );
+	BOOST_REQUIRE_EQUAL( pos, 5 );
 }
-
 
 BOOST_AUTO_TEST_CASE( tc001 ) {
 	daw::string_view view;
