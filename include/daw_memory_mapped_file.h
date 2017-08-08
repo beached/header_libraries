@@ -34,8 +34,7 @@
 namespace daw {
 	namespace filesystem {
 		template<typename T>
-		class MemoryMappedFile {
-		  private:
+		class memory_mapped_file_t {
 			// TODO remove size_t const m_max_buff_size = 1048576;
 			boost::filesystem::path m_file_path;
 			boost::iostreams::mapped_file_params m_mf_params;
@@ -48,7 +47,7 @@ namespace daw {
 			using reference = T &;
 			using const_reference = T const &;
 
-			MemoryMappedFile( boost::filesystem::path file_path, bool const readonly = true )
+			memory_mapped_file_t( boost::filesystem::path file_path, bool const readonly = true )
 			    : m_file_path{file_path}, m_mf_params{file_path.string( )} {
 
 				m_mf_params.flags = boost::iostreams::mapped_file::mapmode::readwrite;
@@ -66,16 +65,16 @@ namespace daw {
 			}
 
 			template<typename charT, typename traits>
-			MemoryMappedFile( daw::basic_string_view<charT, traits> filename, bool const readonly = true )
-			    : MemoryMappedFile{boost::filesystem::path{filename.data( )}, readonly} {}
+			memory_mapped_file_t( daw::basic_string_view<charT, traits> filename, bool const readonly = true )
+			    : memory_mapped_file_t{boost::filesystem::path{filename.data( )}, readonly} {}
 
-			MemoryMappedFile( ) = delete;
+			memory_mapped_file_t( ) = delete;
 
-			MemoryMappedFile( MemoryMappedFile && ) = default;
-			MemoryMappedFile &operator=( MemoryMappedFile && ) = default;
+			memory_mapped_file_t( memory_mapped_file_t && ) = default;
+			memory_mapped_file_t &operator=( memory_mapped_file_t && ) = default;
 
-			MemoryMappedFile( MemoryMappedFile const & ) = delete;
-			MemoryMappedFile &operator=( MemoryMappedFile const & ) = delete;
+			memory_mapped_file_t( memory_mapped_file_t const & ) = delete;
+			memory_mapped_file_t &operator=( memory_mapped_file_t const & ) = delete;
 
 			void close( ) {
 				if( m_mf_file.is_open( ) ) {
@@ -83,7 +82,7 @@ namespace daw {
 				}
 			}
 
-			virtual ~MemoryMappedFile( ) {
+			virtual ~memory_mapped_file_t( ) {
 				try {
 					close( );
 				} catch( ... ) { std::cerr << "Exception while closing memory mapped file" << std::endl; }
@@ -109,7 +108,7 @@ namespace daw {
 				return m_mf_file.data( ) + static_cast<boost::iostreams::stream_offset>( position );
 			}
 
-			friend void swap( MemoryMappedFile &lhs, MemoryMappedFile &rhs ) noexcept {
+			friend void swap( memory_mapped_file_t &lhs, memory_mapped_file_t &rhs ) noexcept {
 				using std::swap;
 				swap( lhs.m_file_path, rhs.m_file_path );
 				swap( lhs.m_mf_params, rhs.m_mf_params );
@@ -143,17 +142,20 @@ namespace daw {
 			const_iterator cend( ) const {
 				return m_mf_file.end( );
 			}
-		};
+		};	// memory_mapped_file_t
 
 		template<typename T>
-		std::ostream &operator<<( std::ostream &os, MemoryMappedFile<T> const &mmf ) {
+		using MemoryMappedFile = memory_mapped_file_t<T>;
+
+		template<typename T>
+		std::ostream &operator<<( std::ostream &os, memory_mapped_file_t<T> const &mmf ) {
 			std::ostream_iterator<T> out_it{os};
 			std::copy( mmf.cbegin( ), mmf.cend( ), out_it );
 			return os;
 		}
 
 		template<typename T>
-		std::ostream &operator<<( std::ostream &os, MemoryMappedFile<T> const &&mmf ) {
+		std::ostream &operator<<( std::ostream &os, memory_mapped_file_t<T> const &&mmf ) {
 			std::ostream_iterator<T> out_it{os};
 			std::copy( mmf.cbegin( ), mmf.cend( ), out_it );
 			return os;
