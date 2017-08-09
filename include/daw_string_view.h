@@ -144,7 +144,7 @@ namespace daw {
 	} // namespace details
 
 	template<typename CharT, typename Traits>
-	struct basic_string_view {
+	struct basic_string_view final {
 		using traits_type = Traits;
 		using value_type = CharT;
 		using pointer = CharT *;
@@ -187,6 +187,7 @@ namespace daw {
 		constexpr basic_string_view( basic_string_view &&other ) noexcept = default;
 		constexpr basic_string_view &operator=( basic_string_view const & ) noexcept = default;
 		constexpr basic_string_view &operator=( basic_string_view && ) noexcept = default;
+		~basic_string_view( ) = default;
 
 		operator std::basic_string<CharT, Traits>( ) const {
 			return to_string( );
@@ -219,7 +220,7 @@ namespace daw {
 			return &m_first[m_size];
 		}
 
-		constexpr const_iterator rbegin( ) const noexcept {
+		constexpr const_reverse_iterator rbegin( ) const noexcept {
 			return details::make_reverse_iterator( &m_first[m_size - 1] );
 		}
 
@@ -393,7 +394,7 @@ namespace daw {
 			return find( basic_string_view{s}, pos );
 		}
 
-		constexpr size_type rfind( basic_string_view const v, size_type const pos = npos ) const noexcept {
+		constexpr size_type rfind( basic_string_view const v, size_type pos = npos ) const noexcept {
 			if( size( ) < v.size( ) ) {
 				return npos;
 			}
