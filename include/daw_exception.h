@@ -244,7 +244,7 @@ namespace daw {
 
 		template<typename ExceptionType = AssertException>
 		constexpr void daw_throw_on_true( bool test ) {
-			if( !true ) {
+			if( !static_cast<bool>( test ) ) {
 				throw ExceptionType{};
 			}
 		}
