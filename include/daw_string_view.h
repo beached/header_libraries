@@ -193,12 +193,6 @@ namespace daw {
 		}
 
 		template<typename ChrT, typename TrtsT, typename Allocator>
-		basic_string_view( std::basic_string<ChrT, TrtsT, Allocator> && ) = delete;
-
-		template<typename ChrT, typename TrtsT, typename Allocator>
-		basic_string_view &operator=( std::basic_string<ChrT, TrtsT, Allocator> && ) = delete;
-
-		template<typename ChrT, typename TrtsT, typename Allocator>
 		basic_string_view( std::basic_string<ChrT, TrtsT, Allocator> const &str ) noexcept
 		    : basic_string_view{str.data( ), static_cast<size_type_internal>( str.size( ) )} {}
 
