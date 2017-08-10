@@ -186,6 +186,8 @@ namespace daw {
 		constexpr basic_string_view( basic_string_view const &other ) noexcept = default;
 		constexpr basic_string_view( basic_string_view &&other ) noexcept = default;
 
+//		constexpr basic_string_view &operator=( basic_string_view const & rhs ) noexcept = default;
+//		constexpr basic_string_view &operator=( basic_string_view && rhs ) noexcept = default;
 		constexpr basic_string_view &operator=( basic_string_view const & rhs ) noexcept {
 			m_first = rhs.m_first;
 			m_size = rhs.m_size;
