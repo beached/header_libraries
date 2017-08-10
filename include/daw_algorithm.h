@@ -562,6 +562,3 @@ namespace daw {
 
 	} // namespace algorithm
 } // namespace daw
-
-template<typename T>
-constexpr void Unused( T && ){};
