@@ -46,6 +46,7 @@ namespace daw {
 		MAKE_DAW_EXCEPTION( NullPtrAccessException );
 		MAKE_DAW_EXCEPTION( AssertException );
 		MAKE_DAW_EXCEPTION( FileException );
+		MAKE_DAW_EXCEPTION( MethodNotImplemented );
 
 #undef MAKE_DAW_EXCEPTION
 
@@ -247,6 +248,11 @@ namespace daw {
 			if( !static_cast<bool>( test ) ) {
 				throw ExceptionType{};
 			}
+		}
+
+		template<typename ExceptionType = MethodNotImplemented>
+		[[noreturn]] constexpr void daw_throw_not_implemented( ) {
+			daw_throw<ExceptionType>( );
 		}
 
 		template<typename ExceptionType = AssertException, typename ValueType, typename StringType, typename BoolType,
