@@ -82,80 +82,82 @@ namespace daw {
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
 		                                                 std::is_same<value_type, T>::value>>
-		explicit optional_poly( optional_poly<T> const &other ) : m_value{make_copy( other.m_value.get( ) )} {}
+		optional_poly( T const &value ) : m_value{new std::decay_t<T>{value}} {}
 
+		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
+		                                                 std::is_same<value_type, T>::value>>
+		explicit optional_poly( optional_poly<T> const &other ) : m_value{make_copy( other.m_value.get( ) )} {}
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
 		                                                 std::is_same<value_type, T>::value>>
 		explicit optional_poly( optional_poly<T> &&other ) noexcept : m_value{other.m_value.release( )} {}
-
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
 		                                                 std::is_same<value_type, T>::value>>
 		optional_poly &operator=( optional_poly<T> const &rhs ) {
 			m_value.reset( make_copy( rhs.m_value.get( ) ) );
 			return *this;
-		}
-
-		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
-		                                                 std::is_same<value_type, T>::value>>
-		optional_poly &operator=( optional_poly<T> &&rhs ) {
-			if( this != static_cast<optional_poly *>( &rhs ) ) {
-				m_value.reset( rhs.m_value.release( ) );
 			}
-			return *this;
-		}
 
-		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
-		                                                 std::is_same<value_type, T>::value>>
-		optional_poly &operator=( T const &value ) {
-			m_value.reset( new value_type{value} );
-			return *this;
-		}
+			template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
+			                                                 std::is_same<value_type, T>::value>>
+			optional_poly &operator=( optional_poly<T> &&rhs ) {
+				if( this != static_cast<optional_poly *>( &rhs ) ) {
+					m_value.reset( rhs.m_value.release( ) );
+				}
+				return *this;
+			}
 
-		friend void swap( optional_poly &lhs, optional_poly &rhs ) noexcept {
-			lhs.m_value.swap( rhs.m_value );
-		}
+			template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
+			                                                 std::is_same<value_type, T>::value>>
+			optional_poly &operator=( T const &value ) {
+				m_value.reset( new value_type{value} );
+				return *this;
+			}
 
-		bool empty( ) const noexcept {
-			return !m_value;
-		}
+			friend void swap( optional_poly & lhs, optional_poly & rhs ) noexcept {
+				lhs.m_value.swap( rhs.m_value );
+			}
 
-		bool has_value( ) const noexcept {
-			return static_cast<bool>( m_value );
-		}
+			bool empty( ) const noexcept {
+				return !m_value;
+			}
 
-		explicit operator bool( ) const noexcept {
-			return static_cast<bool>( m_value );
-		}
+			bool has_value( ) const noexcept {
+				return static_cast<bool>( m_value );
+			}
 
-		reference get( ) {
-			return *m_value;
-		}
+			explicit operator bool( ) const noexcept {
+				return static_cast<bool>( m_value );
+			}
 
-		const_reference get( ) const {
-			return *m_value;
-		}
+			reference get( ) {
+				return *m_value;
+			}
 
-		reference operator*( ) {
-			return get( );
-		}
+			const_reference get( ) const {
+				return *m_value;
+			}
 
-		const_reference operator*( ) const {
-			return get( );
-		}
+			reference operator*( ) {
+				return get( );
+			}
 
-		pointer operator->( ) {
-			return m_value.get( );
-		}
+			const_reference operator*( ) const {
+				return get( );
+			}
 
-		pointer_const operator->( ) const {
-			return m_value.get( );
-		}
+			pointer operator->( ) {
+				return m_value.get( );
+			}
 
-		void reset( ) {
-			m_value.reset( );
-		}
+			pointer_const operator->( ) const {
+				return m_value.get( );
+			}
+
+			void reset( ) {
+				m_value.reset( );
+			}
 
 	}; // class optional_poly
 
