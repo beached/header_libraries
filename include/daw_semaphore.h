@@ -35,16 +35,16 @@ namespace daw {
 		intmax_t m_count;
 
 	  public:
-		basic_semaphore( intmax_t count = 0 )
+		explicit basic_semaphore( intmax_t count = 0 )
 		    : m_mutex{std::make_unique<Mutex>( )}
 		    , m_condition{std::make_unique<ConditionVariable>( )}
 		    , m_count{count} {}
 
 		~basic_semaphore( ) = default;
 		basic_semaphore( basic_semaphore const & ) = delete;
-		basic_semaphore( basic_semaphore && ) = default;
+		basic_semaphore( basic_semaphore && ) noexcept = default;
 		basic_semaphore &operator=( basic_semaphore const & ) = delete;
-		basic_semaphore &operator=( basic_semaphore && ) = default;
+		basic_semaphore &operator=( basic_semaphore && ) noexcept = default;
 
 		void notify( ) {
 			std::unique_lock<std::mutex> lock{*m_mutex};
