@@ -47,6 +47,7 @@ namespace daw {
 		MAKE_DAW_EXCEPTION( AssertException );
 		MAKE_DAW_EXCEPTION( FileException );
 		MAKE_DAW_EXCEPTION( MethodNotImplemented );
+		MAKE_DAW_EXCEPTION( UnexpectedEnumValue );
 
 #undef MAKE_DAW_EXCEPTION
 
@@ -253,6 +254,11 @@ namespace daw {
 		template<typename ExceptionType = MethodNotImplemented>
 		[[noreturn]] constexpr void daw_throw_not_implemented( ) {
 			daw_throw<ExceptionType>( "Method not implemented" );
+		}
+
+		template<typename ExceptionType = UnexpectedEnumValue>
+		[[noreturn]] constexpr void daw_throw_unexpected_enum( ) {
+			daw_throw<ExceptionType>( "Unknown/Unexpected enum" );
 		}
 
 		template<typename ExceptionType = AssertException, typename ValueType, typename StringType, typename BoolType,
