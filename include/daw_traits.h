@@ -537,7 +537,7 @@ namespace daw {
 		struct void_function {
 			Function function;
 			void_function( ) = default;
-			void_function( Function &&func ): function{ std::forward<Function>(func )} { }
+			void_function( Function &&func ) : function{std::forward<Function>( func )} {}
 			~void_function( ) = default;
 			void_function( void_function const & ) = default;
 			void_function( void_function && ) = default;
@@ -545,17 +545,17 @@ namespace daw {
 			void_function &operator=( void_function && ) = default;
 
 			explicit constexpr operator bool( ) noexcept {
-				return static_cast<bool>(function);
+				return static_cast<bool>( function );
 			}
 
 			template<typename... Args>
-			void operator( )( Args&&... args ) {
-				function( std::forward<Args>(args)... );
+			void operator( )( Args &&... args ) {
+				function( std::forward<Args>( args )... );
 			}
 		};
-	}
+	} // namespace impl
 	template<typename Function>
 	auto make_void_function( Function func ) noexcept {
-		return impl::void_function<Function>{ std::move( func ) };
+		return impl::void_function<Function>{std::move( func )};
 	}
 } // namespace daw

@@ -143,20 +143,19 @@ namespace daw {
 			return lhs.m_pointer >= rhs.m_pointer;
 		}
 
-		constexpr friend std::ptrdiff_t operator-( RandomIterator const &lhs, RandomIterator const & rhs ) noexcept {
+		constexpr friend std::ptrdiff_t operator-( RandomIterator const &lhs, RandomIterator const &rhs ) noexcept {
 			return lhs.m_pointer - rhs.m_pointer;
 		}
 	}; // RandomIterator
 
 	template<typename T>
 	constexpr auto make_random_iterator( T *const ptr ) noexcept {
-		return RandomIterator<T>{ ptr };
+		return RandomIterator<T>{ptr};
 	}
 
 	template<typename T>
 	constexpr auto make_const_random_iterator( T *const ptr ) noexcept {
-		return RandomIterator<T const>{ ptr };
+		return RandomIterator<T const>{ptr};
 	}
 
 } // namespace daw
-

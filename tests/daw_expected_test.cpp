@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 	BOOST_REQUIRE( test_01 );
 	BOOST_REQUIRE( test_02 );
 
-	auto const k = daw::expected_from_code( []( auto x ) { return x*x; }, 5 );
+	auto const k = daw::expected_from_code( []( auto x ) { return x * x; }, 5 );
 	BOOST_REQUIRE( k.has_value( ) );
 	BOOST_REQUIRE( k.get( ) == 25 );
 }

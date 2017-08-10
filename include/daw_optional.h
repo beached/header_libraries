@@ -89,7 +89,7 @@ namespace daw {
 			}
 
 		  public:
-			value_storage( ) : m_occupied{false}, m_data{} {
+			value_storage( ) : m_occupied{false} {
 
 				std::fill( m_data.begin( ), m_data.end( ), static_cast<uint8_t>( 0 ) );
 			}
@@ -106,14 +106,8 @@ namespace daw {
 
 			value_storage( value_storage const &other ) : m_occupied{other.m_occupied}, m_data{other.m_data} {}
 
-			value_storage( value_storage &&other )
+			value_storage( value_storage &&other ) noexcept
 			    : m_occupied{std::exchange( other.m_occupied, false )}, m_data{std::move( other.m_data )} {}
-
-			void swap( value_storage &rhs ) noexcept {
-				using std::swap;
-				swap( m_occupied, rhs.m_occupied );
-				swap( m_data, rhs.m_data );
-			}
 
 			value_storage &operator=( value_storage const &rhs ) {
 				if( this != &rhs ) {
@@ -124,12 +118,9 @@ namespace daw {
 				return *this;
 			}
 
-			value_storage &operator=( value_storage &&rhs ) {
-				if( this != &rhs ) {
-					value_storage tmp{std::move( rhs )};
-					using std::swap;
-					swap( *this, rhs );
-				}
+			value_storage &operator=( value_storage &&rhs ) noexcept {
+				m_occupied = std::exchange( rhs.m_occupied, false );
+				m_data = std::move( rhs.m_data );
 				return *this;
 			}
 
@@ -199,14 +190,13 @@ namespace daw {
 
 		optional( optional const &other ) : m_value{other.m_value} {}
 
-		optional( optional &&other ) : m_value{std::move( other.m_value )} {}
+		optional( optional &&other ) noexcept : m_value{std::move( other.m_value )} {}
 
 		explicit optional( value_type value ) : m_value{std::move( value )} {}
 
 		optional &operator=( optional const &rhs ) {
 			if( this != &rhs ) {
-				optional tmp{rhs};
-				swap( *this, tmp );
+				m_value = rhs.m_value;
 			}
 			return *this;
 		}
@@ -216,11 +206,8 @@ namespace daw {
 			m_value = value_type{std::forward<Args>( args )...};
 		}
 
-		optional &operator=( optional &&rhs ) {
-			if( this != &rhs ) {
-				optional tmp{std::move( rhs )};
-				swap( *this, tmp );
-			}
+		optional &operator=( optional &&rhs ) noexcept {
+			m_value = std::move( rhs.m_value );
 			return *this;
 		}
 
@@ -230,11 +217,6 @@ namespace daw {
 		}
 
 		~optional( ) = default;
-
-		friend void swap( optional &lhs, optional &rhs ) noexcept {
-			using std::swap;
-			swap( lhs.m_value, rhs.m_value );
-		}
 
 		bool empty( ) const noexcept {
 			return m_value.empty( );

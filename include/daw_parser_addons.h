@@ -89,7 +89,6 @@ namespace daw {
 			}
 		}
 
-
 		template<typename ForwardIterator>
 		constexpr auto parse_string_literal( ForwardIterator first, ForwardIterator const last ) {
 			auto result = trim_left( first, last );

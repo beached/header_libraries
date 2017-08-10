@@ -30,8 +30,7 @@ BOOST_AUTO_TEST_CASE( daw_utility_round_to_nearest ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_utility_append_test ) {
-	std::vector<int> a{ 1, 2, 3, 4, 5 };
+	std::vector<int> a{1, 2, 3, 4, 5};
 	daw::append( a, 6, 7, 8, 9 );
 	BOOST_REQUIRE( a.size( ) == 9 );
 }
-

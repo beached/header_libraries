@@ -49,7 +49,8 @@ BOOST_AUTO_TEST_CASE( daw_string_view_make_string_view_it ) {
 	std::string a = "This is a test";
 	auto b = daw::make_string_view_it( a.begin( ), a.end( ) );
 
-	BOOST_REQUIRE_MESSAGE( std::equal( a.begin( ), a.end( ), b.begin( ), b.end( ) ), "string and string_view should be equal" );
+	BOOST_REQUIRE_MESSAGE( std::equal( a.begin( ), a.end( ), b.begin( ), b.end( ) ),
+	                       "string and string_view should be equal" );
 }
 
 BOOST_AUTO_TEST_CASE( daw_string_view_make_string_view_vector ) {
@@ -59,10 +60,11 @@ BOOST_AUTO_TEST_CASE( daw_string_view_make_string_view_vector ) {
 
 	auto c = daw::make_string_view( b );
 
-	BOOST_REQUIRE_MESSAGE( std::equal( a.begin( ), a.end( ), b.begin( ), b.end( ) ), "string and vector should be equal" );
-	BOOST_REQUIRE_MESSAGE( std::equal( c.begin( ), c.end( ), b.begin( ), b.end( ) ), "string_view and vector should be equal" );
+	BOOST_REQUIRE_MESSAGE( std::equal( a.begin( ), a.end( ), b.begin( ), b.end( ) ),
+	                       "string and vector should be equal" );
+	BOOST_REQUIRE_MESSAGE( std::equal( c.begin( ), c.end( ), b.begin( ), b.end( ) ),
+	                       "string_view and vector should be equal" );
 }
-
 
 BOOST_AUTO_TEST_CASE( daw_string_view_find_last_of_001 ) {
 	daw::string_view const a = "abcdefghijklm";

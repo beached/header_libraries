@@ -21,9 +21,9 @@
 // SOFTWARE.
 
 #include <algorithm>
+#include <cctype>
 #include <cstdint>
 #include <cstdlib>
-#include <cctype>
 #include <iostream>
 
 #include "boost_test.h"
@@ -34,4 +34,3 @@ BOOST_AUTO_TEST_CASE( make_string_testing ) {
 	auto b = daw::string::split_if( a, &isspace );
 	assert( b.size( ) == 6 );
 }
-

@@ -24,5 +24,5 @@
 #include "daw_memory_mapped_file.h"
 
 BOOST_AUTO_TEST_CASE( daw_memory_mapped_file ) {
-	daw::filesystem::memory_mapped_file_t<uint8_t> test{ "./blah.txt" };
+	daw::filesystem::memory_mapped_file_t<uint8_t> test{"./blah.txt"};
 }

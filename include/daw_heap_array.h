@@ -51,7 +51,7 @@ namespace daw {
 			std::fill( m_begin, m_end, def_value );
 		}
 
-		heap_array( heap_array &&other ) noexcept = default; 
+		heap_array( heap_array &&other ) noexcept = default;
 		heap_array &operator=( heap_array &&rhs ) noexcept = default;
 
 		heap_array( heap_array const &other )

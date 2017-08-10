@@ -136,7 +136,8 @@ namespace daw {
 			//				std::advance( it_end, next_last );
 			//				std::vector<std::future<void( )>> tasks;
 			//				while( pos < sz ) {
-			//					tasks.push_back( std::async( std::launch::async, [start = it_begin, finish = it_end, func](
+			//					tasks.push_back( std::async( std::launch::async, [start = it_begin, finish = it_end,
+			//func](
 			//) { 						for( auto it = start; it != finish; ++it ) { 							func( it
 			//);
 			//						}
@@ -164,7 +165,8 @@ namespace daw {
 			//				std::advance( it_end, next_last );
 			//				std::vector<std::future<void( )>> tasks;
 			//				while( pos < sz ) {
-			//					tasks.push_back( std::async( std::launch::async, [start = it_begin, finish = it_end, func](
+			//					tasks.push_back( std::async( std::launch::async, [start = it_begin, finish = it_end,
+			//func](
 			//) { 						for( auto it = start; it != finish; ++it ) { 							func( it
 			//);
 			//						}

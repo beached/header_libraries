@@ -142,7 +142,7 @@ namespace daw {
 			const_iterator cend( ) const {
 				return m_mf_file.end( );
 			}
-		};	// memory_mapped_file_t
+		}; // memory_mapped_file_t
 
 		template<typename T>
 		using MemoryMappedFile = memory_mapped_file_t<T>;

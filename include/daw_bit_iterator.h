@@ -48,7 +48,8 @@ namespace daw {
 
 	  public:
 		constexpr explicit bit_iterator( Iterator it ) : m_bit{std::move( it )} {}
-		constexpr explicit bit_iterator( Iterator it, size_t bit_pos ) : m_bit{std::move( it )}, m_pos{std::move( it_pos )} {
+		constexpr explicit bit_iterator( Iterator it, size_t bit_pos )
+		    : m_bit{std::move( it )}, m_pos{std::move( it_pos )} {
 
 			daw::exception::daw_throw_if_false(
 			    bit_pos >= sizeof( value_type ) * 8,

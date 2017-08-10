@@ -55,4 +55,3 @@ BOOST_AUTO_TEST_CASE( daw_array_view_find_last_of_004 ) {
 
 	BOOST_REQUIRE_EQUAL( pos, 4 );
 }
-

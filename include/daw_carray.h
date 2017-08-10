@@ -40,14 +40,15 @@ namespace daw {
 		}
 
 		template<typename T, typename Arg>
-		constexpr void assign_to( T * ptr, Arg && arg ) noexcept( noexcept( T( std::declval<Arg&&>( ) ) ) ) {
-			*ptr = std::forward<Arg>(arg);
+		constexpr void assign_to( T *ptr, Arg &&arg ) noexcept( noexcept( T( std::declval<Arg &&>( ) ) ) ) {
+			*ptr = std::forward<Arg>( arg );
 		}
 
 		template<typename T, typename Arg, typename... Args>
-		constexpr void assign_to( T * ptr, Arg && arg, Args&&... args ) noexcept( noexcept( T( std::declval<Arg&&>( ) ) ) ) {
-			*ptr = std::forward<Arg>(arg);
-			assign_to( ++ptr, std::forward<Args>(args)... );
+		constexpr void assign_to( T *ptr, Arg &&arg,
+		                          Args &&... args ) noexcept( noexcept( T( std::declval<Arg &&>( ) ) ) ) {
+			*ptr = std::forward<Arg>( arg );
+			assign_to( ++ptr, std::forward<Args>( args )... );
 		}
 	} // namespace details
 
@@ -77,16 +78,16 @@ namespace daw {
 		}
 
 	  public:
-		constexpr carray( ) noexcept : m_data{ } {}
+		constexpr carray( ) noexcept : m_data{} {}
 
 		constexpr carray( T ( &values )[N] ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) ) : m_data{} {
-			for( size_t n=0; n<N; ++n ) {
+			for( size_t n = 0; n < N; ++n ) {
 				ptr( )[n] = values[n];
 			}
 		}
-		
-		constexpr carray & operator=( T ( &values )[N] ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) ) {
-			for( size_t n=0; n<N; ++n ) {
+
+		constexpr carray &operator=( T ( &values )[N] ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) ) {
+			for( size_t n = 0; n < N; ++n ) {
 				ptr( )[n] = values[n];
 			}
 			return *this;
@@ -94,10 +95,10 @@ namespace daw {
 
 		template<typename... Args>
 		constexpr carray( Args &&... args ) noexcept( noexcept( details::assign_to( std::declval<carray>( ).ptr( ),
-		                                                                   std::declval<Args &&>( )... ) ) )
+		                                                                            std::declval<Args &&>( )... ) ) )
 		    : m_data{} {
 
-				details::assign_to( ptr( ), std::forward<Args>( args )... );
+			details::assign_to( ptr( ), std::forward<Args>( args )... );
 		}
 
 		~carray( ) noexcept = default;
@@ -245,4 +246,3 @@ namespace daw {
 		lhs.swap( rhs );
 	}
 } // namespace daw
-

@@ -23,13 +23,12 @@
 #pragma once
 
 #ifdef __clang__
-#   ifndef __ICC // icpc defines the __clang__ macro
-#       pragma clang diagnostic ignored "-Wglobal-constructors"
-#       pragma clang diagnostic ignored "-Wunused-variable"
-#	endif
+#ifndef __ICC // icpc defines the __clang__ macro
+#pragma clang diagnostic ignored "-Wglobal-constructors"
+#pragma clang diagnostic ignored "-Wunused-variable"
+#endif
 #endif
 
 #pragma GCC diagnostic ignored "-Wunused-variable"
 
 #include <boost/test/unit_test.hpp>
-

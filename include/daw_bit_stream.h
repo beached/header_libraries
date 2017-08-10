@@ -84,7 +84,8 @@ namespace daw {
 		daw::bit_queue_gen<value_type, value_type, BitQueueLSB> m_left_overs;
 
 	  public:
-		constexpr bit_stream( InputIteratorF first, InputIteratorL last ) noexcept : m_first{first}, m_last{last}, m_left_overs{} {}
+		constexpr bit_stream( InputIteratorF first, InputIteratorL last ) noexcept
+		    : m_first{first}, m_last{last}, m_left_overs{} {}
 
 		constexpr bool valid( ) const noexcept {
 			return m_first != m_last;

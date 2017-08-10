@@ -29,9 +29,9 @@
 #include <string>
 #include <utility>
 
-#include "daw_heap_array.h"
 #include "daw_exception.h"
 #include "daw_fnv1a_hash.h"
+#include "daw_heap_array.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
 

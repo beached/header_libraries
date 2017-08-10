@@ -255,7 +255,8 @@ namespace daw {
 		using is_const_t = typename std::is_const<T>::type;
 
 		template<typename InputIt1, typename InputIt2, typename OutputIt, typename Func>
-		constexpr OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, OutputIt first_out, Func func ) {
+		constexpr OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, OutputIt first_out,
+		                                   Func func ) {
 			static_assert( !is_const_v<decltype( *first_out )>, "Output iterator cannot point to const data" );
 			while( first1 != last1 ) {
 				*first_out++ = func( *first1++, *first2++ );
@@ -275,8 +276,8 @@ namespace daw {
 
 		template<typename InputIt1, typename InputIt2, typename InputIt3, typename InputIt4, typename OutputIt,
 		         typename Func>
-		constexpr OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt3 first3, InputIt4 first4,
-		                         OutputIt first_out, Func func ) {
+		constexpr OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt3 first3,
+		                                   InputIt4 first4, OutputIt first_out, Func func ) {
 			static_assert( !is_const_v<decltype( *first_out )>, "Output iterator cannot point to const data" );
 			while( first1 != last1 ) {
 				*first_out++ = func( *first1++, *first2++, *first3++, *first4++ );
@@ -285,8 +286,8 @@ namespace daw {
 		}
 		template<typename InputIt1, typename InputIt2, typename InputIt3, typename InputIt4, typename InputIt5,
 		         typename OutputIt, typename Func>
-		constexpr OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt3 first3, InputIt4 first4,
-		                         InputIt4 first5, OutputIt first_out, Func func ) {
+		constexpr OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt3 first3,
+		                                   InputIt4 first4, InputIt4 first5, OutputIt first_out, Func func ) {
 			static_assert( !is_const_v<decltype( *first_out )>, "Output iterator cannot point to const data" );
 			while( first1 != last1 ) {
 				*first_out++ = func( *first1++, *first2++, *first3++, *first4++, *first5++ );
@@ -419,9 +420,10 @@ namespace daw {
 				Upper m_upper;
 
 			  public:
-				constexpr in_range( Lower lower, Upper upper ) : m_lower{std::move( lower )}, m_upper{std::move( upper )} {
+				constexpr in_range( Lower lower, Upper upper )
+				    : m_lower{std::move( lower )}, m_upper{std::move( upper )} {
 					if( lower > upper ) {
-						throw std::exception {};
+						throw std::exception{};
 					};
 				}
 
@@ -550,7 +552,7 @@ namespace daw {
 		template<typename InputIteratorFirst, typename InputIteratorLast, typename OutputIterator, typename Predicate,
 		         typename TransformFunction>
 		constexpr auto transform_if( InputIteratorFirst first, InputIteratorLast const last, OutputIterator out_it,
-		                   Predicate pred, TransformFunction trans ) {
+		                             Predicate pred, TransformFunction trans ) {
 			while( first != last ) {
 				if( pred( *first ) ) {
 					*out_it = trans( *first );

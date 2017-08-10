@@ -178,4 +178,3 @@ namespace daw {
 
 	using nibble_queue = nibble_queue_gen<uint8_t>;
 } // namespace daw
-

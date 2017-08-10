@@ -374,7 +374,7 @@ namespace daw {
 		constexpr size_type find_last_of( array_view s, size_type pos = std::numeric_limits<size_type>::max( ) ) const
 		    noexcept {
 			using std::equal_to;
-			auto iter = std::find_end( cbegin( ), cend( ), s.begin( ), s.end( ), equal_to<T>{ } );
+			auto iter = std::find_end( cbegin( ), cend( ), s.begin( ), s.end( ), equal_to<T>{} );
 			return iter == cend( ) ? m_size : static_cast<size_type>( iter - cbegin( ) );
 		}
 
@@ -513,4 +513,3 @@ namespace std {
 		}
 	};
 } // namespace std
-

@@ -83,7 +83,7 @@ namespace daw {
 			}
 
 			std::string to_string( ) const {
-				return std::string( static_cast<char const *>( &(*first) ),
+				return std::string( static_cast<char const *>( &( *first ) ),
 				                    static_cast<std::string::size_type>( std::distance( first, last ) ) );
 			}
 
@@ -116,7 +116,8 @@ namespace daw {
 
 		template<typename ForwardIterator, typename Predicate>
 		constexpr auto until( ForwardIterator first, ForwardIterator last, Predicate is_last ) {
-			//		                      std::function<bool( daw::traits::root_type_t<decltype( *first )> )> is_last ) {
+			//		                      std::function<bool( daw::traits::root_type_t<decltype( *first )> )> is_last )
+			//{
 
 			auto result = make_find_result( first, last );
 			for( auto it = first; it != last; ++it ) {
@@ -129,7 +130,8 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator, typename Predicate>
-		constexpr auto until( ForwardIterator first, ForwardIterator last, Predicate is_last, bool throw_if_end_reached ) {
+		constexpr auto until( ForwardIterator first, ForwardIterator last, Predicate is_last,
+		                      bool throw_if_end_reached ) {
 			auto result = make_find_result( first, last );
 			for( auto it = first; it != last; ++it ) {
 				if( is_last( *it ) ) {
@@ -143,7 +145,6 @@ namespace daw {
 			}
 			return result;
 		}
-
 
 		template<typename ForwardIterator, typename Predicate>
 		constexpr auto until_false( ForwardIterator first, ForwardIterator last, Predicate is_last ) {
@@ -285,7 +286,8 @@ namespace daw {
 		}
 
 		template<typename T, typename Predicate>
-		constexpr bool is_true( T &&value, Predicate /*std::function<bool( daw::traits::root_type_t<T> )>*/ predicate ) {
+		constexpr bool is_true( T &&value,
+		                        Predicate /*std::function<bool( daw::traits::root_type_t<T> )>*/ predicate ) {
 			return predicate( value );
 		}
 
@@ -388,7 +390,7 @@ namespace daw {
 
 		template<typename ForwardIterator, typename IsFirstPredicate, typename IsLastPredicate>
 		constexpr auto from_to_pred( ForwardIterator first, ForwardIterator last, IsFirstPredicate is_first,
-		                        IsLastPredicate is_last, bool throw_if_end_reached = false ) {
+		                             IsLastPredicate is_last, bool throw_if_end_reached = false ) {
 			/*
 			std::function<bool( daw::traits::root_type_t<decltype( *first )> )> is_first,
 			std::function<bool( daw::traits::root_type_t<decltype( *first )> )> is_last,

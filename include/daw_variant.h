@@ -71,8 +71,8 @@ namespace daw {
 			if( nullptr == ptr ) {
 				return "";
 			}
-			using std::to_string;
 			using daw::tostrings::to_string;
+			using std::to_string;
 			return to_string( *ptr );
 		}
 	} // namespace tostrings
@@ -82,8 +82,8 @@ namespace daw {
 		template<typename T>
 		struct to_string_t {
 			std::string operator( )( variant_t<Types...> const &value ) const {
-				using std::to_string;
 				using daw::tostrings::to_string;
+				using std::to_string;
 				static_assert( sizeof( decltype( to_string( std::declval<T>( ) ) ) ) != 0,
 				               "to_string must be defined for type" );
 				return to_string( get<T>( value ) );
