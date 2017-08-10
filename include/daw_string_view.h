@@ -185,8 +185,19 @@ namespace daw {
 
 		constexpr basic_string_view( basic_string_view const &other ) noexcept = default;
 		constexpr basic_string_view( basic_string_view &&other ) noexcept = default;
-		constexpr basic_string_view &operator=( basic_string_view const & ) noexcept = default;
-		constexpr basic_string_view &operator=( basic_string_view && ) noexcept = default;
+
+		constexpr basic_string_view &operator=( basic_string_view const & rhs ) noexcept {
+			m_first = rhs.m_first;
+			m_size = rhs.m_size;
+			return *this;
+		}
+
+		constexpr basic_string_view &operator=( basic_string_view && rhs ) noexcept {
+			m_first = std::move( rhs.m_first );
+			m_size = std::move( rhs.m_size );
+			return *this;
+		}
+
 		~basic_string_view( ) = default;
 
 		operator std::basic_string<CharT, Traits>( ) const {

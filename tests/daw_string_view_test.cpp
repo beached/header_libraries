@@ -45,6 +45,45 @@ BOOST_AUTO_TEST_CASE( daw_string_view_test_001 ) {
 	std::cout << c << ' ' << c.front( ) << ' ' << c[3] << '\n';
 }
 
+enum class tmp_e { a, b, c };
+
+constexpr bool is_equal_nc( daw::string_view lhs, daw::string_view rhs ) noexcept {
+	if( lhs.size( ) != rhs.size( ) ) {
+		return false;
+	}
+	bool result = true;
+	for( size_t n = 0; n < lhs.size( ); ++n ) {
+		result &= ( lhs[n] | ' ' ) == ( rhs[n] | ' ' );
+	}
+	return result;
+}
+
+constexpr tmp_e tmp_e_from_str( daw::string_view str ) {
+	if( is_equal_nc( str, "a" ) ) {
+		return tmp_e::a;
+	}
+	if( is_equal_nc( str, "b" ) ) {
+		return tmp_e::b;
+	}
+	if( is_equal_nc( str, "c" ) ) {
+		return tmp_e::c;
+	}
+	throw std::runtime_error( "unknown http request method" );
+}
+
+constexpr daw::string_view do_something( daw::string_view str, tmp_e & result ) {
+	str = str.substr( 0, str.find_first_of( ' ' ) );
+	result = tmp_e_from_str( str );
+
+	return str;
+}
+BOOST_AUTO_TEST_CASE( daw_string_view_contexpr_001 ) {
+	daw::string_view a = "A test";
+	tmp_e result = tmp_e::b;
+	auto str = do_something( a, result );
+	BOOST_REQUIRE( result == tmp_e::a );
+}
+
 BOOST_AUTO_TEST_CASE( daw_string_view_make_string_view_it ) {
 	std::string a = "This is a test";
 	auto b = daw::make_string_view_it( a.begin( ), a.end( ) );
