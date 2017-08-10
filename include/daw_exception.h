@@ -252,7 +252,7 @@ namespace daw {
 
 		template<typename ExceptionType = MethodNotImplemented>
 		[[noreturn]] constexpr void daw_throw_not_implemented( ) {
-			daw_throw<ExceptionType>( );
+			daw_throw<ExceptionType>( "Method not implemented" );
 		}
 
 		template<typename ExceptionType = AssertException, typename ValueType, typename StringType, typename BoolType,
