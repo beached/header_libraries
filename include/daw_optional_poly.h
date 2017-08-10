@@ -57,7 +57,19 @@ namespace daw {
 		template<typename T>
 		friend struct optional_poly;
 
-		optional_poly( ) : m_value{} {}
+		optional_poly( ) noexcept = default;
+		~optional_poly( ) = default;
+		optional_poly( optional_poly && ) noexcept = default;
+		optional_poly & operator=( optional_poly && ) noexcept = default;
+
+		optional_poly( optional_poly const &other ) : m_value{make_copy( other.m_value.get( ) )} {}
+
+		optional_poly &operator=( optional_poly const &rhs ) {
+			if( this != &rhs ) {
+				m_value.reset( make_copy( rhs.m_value.get( ) ) );
+			}
+			return *this;
+		}
 
 		template<typename... Args>
 		void emplace( Args &&... args ) {
@@ -68,24 +80,15 @@ namespace daw {
 		                                                 std::is_same<value_type, T>::value>>
 		optional_poly( T &&value ) : m_value{new std::decay_t<T>{std::forward<T>( value )}} {}
 
-		optional_poly( optional_poly const &other ) : m_value{make_copy( other.m_value.get( ) )} {}
+		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
+		                                                 std::is_same<value_type, T>::value>>
+		explicit optional_poly( optional_poly<T> const &other ) : m_value{make_copy( other.m_value.get( ) )} {}
+
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
 		                                                 std::is_same<value_type, T>::value>>
-		optional_poly( optional_poly<T> const &other ) : m_value{make_copy( other.m_value.get( ) )} {}
+		explicit optional_poly( optional_poly<T> &&other ) noexcept : m_value{other.m_value.release( )} {}
 
-		optional_poly( optional_poly &&other ) : m_value{std::move( other.m_value )} {}
-
-		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
-		                                                 std::is_same<value_type, T>::value>>
-		optional_poly( optional_poly<T> &&other ) : m_value{other.m_value.release( )} {}
-
-		optional_poly &operator=( optional_poly const &rhs ) {
-			if( this != &rhs ) {
-				m_value.reset( make_copy( rhs.m_value.get( ) ) );
-			}
-			return *this;
-		}
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<value_type, T>::value ||
 		                                                 std::is_same<value_type, T>::value>>
@@ -109,8 +112,6 @@ namespace daw {
 			m_value.reset( new value_type{value} );
 			return *this;
 		}
-
-		~optional_poly( ) = default;
 
 		friend void swap( optional_poly &lhs, optional_poly &rhs ) noexcept {
 			lhs.m_value.swap( rhs.m_value );
@@ -172,10 +173,8 @@ namespace daw {
 				return *lhs == *rhs;
 			}
 			return false;
-		} else if( rhs ) {
-			return false;
 		}
-		return true;
+		return !static_cast<bool>(rhs);
 	}
 
 	template<typename T>
@@ -185,10 +184,8 @@ namespace daw {
 				return *lhs != *rhs;
 			}
 			return true;
-		} else if( rhs ) {
-			return true;
 		}
-		return false;
+		return static_cast<bool>(rhs);
 	}
 
 	template<typename T>
@@ -198,8 +195,6 @@ namespace daw {
 				return *lhs < *rhs;
 			}
 			return false;
-		} else if( rhs ) {
-			return true;
 		}
 		return true;
 	}
@@ -211,8 +206,6 @@ namespace daw {
 				return *lhs <= *rhs;
 			}
 			return false;
-		} else if( rhs ) {
-			return true;
 		}
 		return true;
 	}
@@ -224,8 +217,6 @@ namespace daw {
 				return *lhs > *rhs;
 			}
 			return true;
-		} else if( rhs ) {
-			return false;
 		}
 		return false;
 	}
@@ -237,8 +228,6 @@ namespace daw {
 				return *lhs >= *rhs;
 			}
 			return true;
-		} else if( rhs ) {
-			return false;
 		}
 		return false;
 	}
