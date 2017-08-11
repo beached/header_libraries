@@ -596,7 +596,9 @@ namespace daw {
 			return false;
 		}
 	}
-	constexpr void breakpoint( ) { }
+	constexpr void breakpoint( ) {
+	;
+	}
 
 } // namespace daw
 
