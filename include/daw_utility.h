@@ -596,10 +596,10 @@ namespace daw {
 			return false;
 		}
 	}
+	constexpr void breakpoint( ) { }
+
 } // namespace daw
 
 template<typename... Ts>
 constexpr void Unused( Ts &&... ) {}
-
-constexpr void breakpoint( ) { }
 
