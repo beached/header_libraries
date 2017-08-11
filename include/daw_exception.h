@@ -333,5 +333,13 @@ namespace daw {
 			                  [predicate]( auto const &v ) { return !predicate( v ); } );
 		}
 
+
+		template<typename Function, typename... Args>
+		void no_exception( Function func, Args&&... args ) noexcept {
+			try {
+				func( std::forward<Args>( args )... );
+			} catch(...) { }
+		}
+
 	} // namespace exception
 } // namespace daw
