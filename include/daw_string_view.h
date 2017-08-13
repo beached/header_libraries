@@ -287,7 +287,11 @@ namespace daw {
 		}
 
 		constexpr bool empty( ) const noexcept {
-			return 0 == m_size;
+			return m_first == nullptr || 0 == m_size;
+		}
+		
+		constexpr operator bool( ) const noexcept {
+			return !empty( );
 		}
 
 		constexpr void remove_prefix( size_type const n ) noexcept {
