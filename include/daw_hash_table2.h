@@ -96,10 +96,11 @@ namespace daw {
 
 		constexpr auto lookup( size_t const hash ) const {
 			struct lookup_result_t {
-				bool found;
 				size_t position;
 				size_t lookup_cost;
-				lookup_result_t( ) : found{false}, position{0}, lookup_cost{0} {}
+				bool found;
+
+				lookup_result_t( ) : position{0}, lookup_cost{0}, found{false} {}
 				operator bool( ) const noexcept {
 					return found;
 				}

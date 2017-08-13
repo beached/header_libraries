@@ -77,13 +77,13 @@ namespace daw {
 			using namespace std::literals::string_literals;
 
 			class print_t {
+				std::ostream &m_os;
 				bool m_is_first;
 				char m_separator;
-				std::ostream &m_os;
 
 			  public:
 				constexpr print_t( std::ostream &os, char separator = ',' )
-				    : m_is_first{true}, m_separator{std::move( separator )}, m_os{os} {}
+				    : m_os{os}, m_is_first{true}, m_separator{std::move( separator )} {}
 
 				void reset( ) {
 					m_is_first = true;

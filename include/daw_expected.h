@@ -38,21 +38,21 @@ namespace daw {
 		using reference = value_type &;
 		using const_reference = value_type const &;
 
-		struct exception_tag {};
-
 	  private:
 		daw::optional<value_type> m_value;
 		std::exception_ptr m_exception;
 
 	  public:
+		struct exception_tag {};
+
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: No value, aka null
 		//////////////////////////////////////////////////////////////////////////
 		expected_t( ) = default;
 		expected_t( expected_t const & ) = default;
 		expected_t &operator=( expected_t const & ) = default;
-		expected_t( expected_t && ) = default;
-		expected_t &operator=( expected_t && ) = default;
+		expected_t( expected_t && ) noexcept = default;
+		expected_t &operator=( expected_t && ) noexcept = default;
 		~expected_t( ) = default;
 
 		friend bool operator==( expected_t const &lhs, expected_t const &rhs ) {
@@ -86,7 +86,7 @@ namespace daw {
 		expected_t( exception_tag ) : expected_t{std::current_exception( )} {}
 
 		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
-		//Args...>>>
+		// Args...>>>
 		template<class Function, typename... Args>
 		static auto from_code( Function func, Args &&... args ) noexcept {
 			using std::swap;
@@ -96,7 +96,7 @@ namespace daw {
 		}
 
 		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
-		//Args...>>>
+		// Args...>>>
 		template<class Function, typename... Args>
 		expected_t( Function func, Args &&... args ) noexcept
 		    : expected_t{expected_t::from_code( func, std::forward<Args>( args )... )} {}
@@ -157,10 +157,10 @@ namespace daw {
 		struct exception_tag {};
 
 	  private:
-		bool m_value;
 		std::exception_ptr m_exception;
+		bool m_value;
 
-		expected_t( bool b ) noexcept : m_value{b}, m_exception{} {}
+		expected_t( bool b ) noexcept : m_exception{}, m_value{b} {}
 
 	  public:
 		//////////////////////////////////////////////////////////////////////////
@@ -168,8 +168,8 @@ namespace daw {
 		//////////////////////////////////////////////////////////////////////////
 		expected_t( expected_t const & ) = default;
 		expected_t &operator=( expected_t const & ) = default;
-		expected_t( expected_t && ) = default;
-		expected_t &operator=( expected_t && ) = default;
+		expected_t( expected_t && ) noexcept = default;
+		expected_t &operator=( expected_t && ) noexcept = default;
 		~expected_t( ) = default;
 
 		friend bool operator==( expected_t const &lhs, expected_t const &rhs ) {
@@ -193,7 +193,7 @@ namespace daw {
 			return *this;
 		}
 
-		expected_t( std::exception_ptr ptr ) : m_value{}, m_exception{std::move( ptr )} {}
+		expected_t( std::exception_ptr ptr ) : m_exception{std::move( ptr )}, m_value{} {}
 
 		expected_t &operator=( std::exception_ptr ptr ) {
 			using std::swap;
@@ -208,7 +208,7 @@ namespace daw {
 		expected_t( exception_tag ) : expected_t{std::current_exception( )} {}
 
 		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
-		//Args...>>>
+		// Args...>>>
 		template<class Function, typename... Args>
 		static auto from_code( Function func, Args &&... args ) noexcept {
 			using std::swap;
@@ -219,7 +219,7 @@ namespace daw {
 		}
 
 		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
-		//Args...>>>
+		// Args...>>>
 		template<class Function, typename... Args>
 		expected_t( Function func, Args &&... args ) noexcept
 		    : expected_t{expected_t::from_code( func, std::forward<Args>( args )... )} {}

@@ -37,10 +37,23 @@ namespace daw {
 	namespace parser {
 		template<typename T, typename Iterator>
 		struct parser_result {
-			T result;
 			Iterator first;
 			Iterator last;
+			T result;
+
+			parser_result( ) = default;
+			parser_result( T value, Iterator f, Iterator l )
+			    : first{std::move( f )}, last{std::move( l )}, result{std::move( value )} {}
+
+			~parser_result( );
+			parser_result( parser_result const & ) = default;
+			parser_result( parser_result && ) noexcept = default;
+			parser_result & operator=( parser_result const & ) = default;
+			parser_result & operator=( parser_result && ) noexcept = default;
 		}; // parser_result
+
+		template<typename T, typename Iterator>
+		parser_result<T, Iterator>::~parser_result( ) = default;
 
 		struct ParserException : public std::exception {};
 		struct ParserEmptyException : public ParserException {};

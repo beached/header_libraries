@@ -280,11 +280,11 @@ namespace daw {
 	  private:
 		using values_type = daw::heap_array<impl::hash_table_item<value_type>>;
 		using priv_iterator = typename values_type::iterator;
-		values_type m_values;
+		double m_resize_ratio;
 		size_t m_load;
 		size_t m_growth_counter;
-		double m_resize_ratio;
 		size_t m_max_load;
+		values_type m_values;
 
 		auto priv_begin( ) {
 			return m_values.begin( );
@@ -304,11 +304,11 @@ namespace daw {
 
 	  public:
 		hash_table( size_t start_size, double resize_ratio = 2.0, size_t max_load_percent = 70 )
-		    : m_values{start_size}
+		    : m_resize_ratio{resize_ratio}
 		    , m_load{0}
 		    , m_growth_counter{0}
-		    , m_resize_ratio{resize_ratio}
 		    , m_max_load{max_load_percent} {
+		    , m_values{start_size}
 
 			assert( start_size > 0 );
 		}
@@ -317,11 +317,11 @@ namespace daw {
 
 		~hash_table( ) = default;
 
-		hash_table( hash_table && ) = default;
+		hash_table( hash_table && ) noexcept = default;
 
 		hash_table( hash_table const & ) = default;
 
-		hash_table &operator=( hash_table && ) = default;
+		hash_table &operator=( hash_table && ) noexcept = default;
 
 		hash_table &operator=( hash_table const & ) = default;
 

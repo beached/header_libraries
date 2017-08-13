@@ -157,12 +157,10 @@ namespace daw {
 			return boost::lexical_cast<details::string_t>( arg );
 		}
 
-		namespace {
-			template<typename Arg>
-			auto string_join( Arg const &arg ) -> decltype( to_string( arg ) ) {
-				return to_string( arg );
-			}
-		} // namespace
+		template<typename Arg>
+		decltype(auto) string_join( Arg const &arg ) {
+			return to_string( arg );
+		}
 
 		template<typename Arg1, typename Arg2>
 		auto string_join( Arg1 const &arg1, Arg2 const &arg2 ) -> decltype( to_string( arg1 ) + to_string( arg2 ) ) {
@@ -437,7 +435,7 @@ namespace daw {
 
 				BasicString( BasicString const & ) = default;
 
-				BasicString( BasicString && ) = default;
+				BasicString( BasicString && ) noexcept = default;
 
 				BasicString( value_type other ) : m_string{std::move( other )} {}
 
@@ -445,7 +443,7 @@ namespace daw {
 
 				BasicString &operator=( BasicString const & ) = default;
 
-				BasicString &operator=( BasicString && ) = default;
+				BasicString &operator=( BasicString && ) noexcept = default;
 
 				BasicString &operator=( value_type rhs ) {
 					m_string = std::move( rhs );

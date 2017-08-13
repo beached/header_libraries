@@ -42,8 +42,8 @@ namespace daw {
 			using const_reference = value_type const &;
 
 		  private:
-			bool m_occupied;
 			alignas( value_type ) std::array<uint8_t, sizeof( T )> m_data;
+			bool m_occupied;
 
 			void *raw_ptr( ) {
 				return static_cast<void *>( m_data.data( ) );
@@ -99,15 +99,15 @@ namespace daw {
 				create( std::forward<Args>( args )... );
 			}
 
-			value_storage( value_type value ) : m_occupied{true}, m_data{} {
+			value_storage( value_type value ) : m_data{}, m_occupied{true} {
 
 				store( std::move( value ) );
 			}
 
-			value_storage( value_storage const &other ) : m_occupied{other.m_occupied}, m_data{other.m_data} {}
+			value_storage( value_storage const &other ) : m_data{other.m_data}, m_occupied{other.m_occupied} {}
 
 			value_storage( value_storage &&other ) noexcept
-			    : m_occupied{std::exchange( other.m_occupied, false )}, m_data{std::move( other.m_data )} {}
+			    : m_data{std::move( other.m_data )}, m_occupied{std::exchange( other.m_occupied, false )} {}
 
 			value_storage &operator=( value_storage const &rhs ) {
 				if( this != &rhs ) {

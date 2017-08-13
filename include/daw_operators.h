@@ -72,4 +72,5 @@
                                                                                                                        \
 	friend bool operator>=( cls_name const &lhs, cls_name const &rhs ) {                                               \
 		return lhs.compare( rhs ) >= 0;                                                                                \
-	}
+	}																													\
+

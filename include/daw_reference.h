@@ -41,9 +41,9 @@ namespace daw {
 		~Reference( ) {}
 
 		Reference( Reference const & ) = default;
-		Reference( Reference && ) = default;
+		Reference( Reference && ) noexcept = default;
 		Reference &operator=( Reference const & ) = default;
-		Reference &operator=( Reference && ) = default;
+		Reference &operator=( Reference && ) noexcept = default;
 
 		T const &operator*( ) const {
 			return *ptr;

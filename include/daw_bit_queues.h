@@ -40,13 +40,13 @@ namespace daw {
 	class bit_queue_gen {
 		static_assert( std::numeric_limits<queue_type>::is_integer && !std::numeric_limits<queue_type>::is_signed,
 		               "Only unsigned integral types are supported" );
-		queue_type m_queue;
 		size_t m_size;
+		queue_type m_queue;
 
 	  public:
-		constexpr bit_queue_gen( ) noexcept : m_queue{0}, m_size{0} {}
+		constexpr bit_queue_gen( ) noexcept : m_size{0}, m_queue{0} {}
 		constexpr explicit bit_queue_gen( queue_type v ) noexcept
-		    : m_queue{std::move( v )}, m_size{sizeof( m_queue ) * 8} {}
+		    : m_size{sizeof( m_queue ) * 8}, m_queue{std::move( v )} {}
 
 		constexpr size_t size( ) const noexcept {
 			return m_size;

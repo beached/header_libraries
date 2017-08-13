@@ -36,10 +36,10 @@ namespace daw {
 		EXCEPTION_TYPE( ) : std::runtime_error{"No Error Message"} {}                                                  \
 		~EXCEPTION_TYPE( ) = default;                                                                                  \
 		EXCEPTION_TYPE( EXCEPTION_TYPE const & ) = default;                                                            \
-		EXCEPTION_TYPE( EXCEPTION_TYPE && ) = default;                                                                 \
+		EXCEPTION_TYPE( EXCEPTION_TYPE && ) noexcept = default;                                                        \
 		EXCEPTION_TYPE &operator=( EXCEPTION_TYPE const & ) = default;                                                 \
-		EXCEPTION_TYPE &operator=( EXCEPTION_TYPE && ) = default;                                                      \
-	};
+		EXCEPTION_TYPE &operator=( EXCEPTION_TYPE && ) noexcept = default;                                             \
+	};                                                                                                                 \
 
 		MAKE_DAW_EXCEPTION( NotImplemented );
 		MAKE_DAW_EXCEPTION( FatalError );
@@ -333,12 +333,11 @@ namespace daw {
 			                  [predicate]( auto const &v ) { return !predicate( v ); } );
 		}
 
-
 		template<typename Function, typename... Args>
-		void no_exception( Function func, Args&&... args ) noexcept {
+		void no_exception( Function func, Args &&... args ) noexcept {
 			try {
 				func( std::forward<Args>( args )... );
-			} catch(...) { }
+			} catch( ... ) {}
 		}
 
 	} // namespace exception
