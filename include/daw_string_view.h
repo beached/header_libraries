@@ -290,7 +290,7 @@ namespace daw {
 			return m_first == nullptr || 0 == m_size;
 		}
 		
-		constexpr operator bool( ) const noexcept {
+		constexpr explicit operator bool( ) const noexcept {
 			return !empty( );
 		}
 
