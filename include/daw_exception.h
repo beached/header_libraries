@@ -246,10 +246,25 @@ namespace daw {
 
 		template<typename ExceptionType = AssertException>
 		constexpr void daw_throw_on_true( bool test ) {
-			if( !static_cast<bool>( test ) ) {
+			if( static_cast<bool>( test ) ) {
 				throw ExceptionType{};
 			}
 		}
+
+		template<typename ExceptionType>
+		constexpr void daw_throw_value_on_true( ExceptionType const & test ) {
+			if( static_cast<bool>( test ) ) {
+				throw test; 
+			}
+		}
+
+		template<typename ExceptionType>
+		constexpr void daw_throw_value_on_false( ExceptionType const & test ) {
+			if( !static_cast<bool>( test ) ) {
+				throw test; 
+			}
+		}
+
 
 		template<typename ExceptionType = MethodNotImplemented>
 		[[noreturn]] constexpr void daw_throw_not_implemented( ) {
