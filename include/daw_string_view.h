@@ -892,38 +892,6 @@ constexpr bool operator>=( CharT const ( &lhs )[N], daw::basic_string_view<CharT
 	return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) >= 0;
 }
 
-template<typename CharT, typename Traits>
-std::basic_ostream<CharT> &operator<<( std::basic_ostream<CharT> &os,
-                                               daw::basic_string_view<CharT, Traits> v ) {
-	if( os.good( ) ) {
-		auto const size = v.size( );
-		auto const w = static_cast<std::size_t>( os.width( ) );
-		if( w <= size ) {
-			os.write( v.data( ), static_cast<std::streamsize>( size ) );
-		} else {
-			daw::details::sv_insert_aligned( os, v );
-		}
-		os.width( 0 );
-	}
-	return os;
-}
-
-template<typename CharT, typename Traits>
-std::basic_stringstream<CharT> &operator<<( std::basic_stringstream<CharT> &os,
-                                               daw::basic_string_view<CharT, Traits> v ) {
-	if( os.good( ) ) {
-		auto const size = v.size( );
-		auto const w = static_cast<std::size_t>( os.width( ) );
-		if( w <= size ) {
-			os.write( v.data( ), static_cast<std::streamsize>( size ) );
-		} else {
-			daw::details::sv_insert_aligned( os, v );
-		}
-		os.width( 0 );
-	}
-	return os;
-}
-
 template<typename CharT, typename Traits, typename Allocator>
 auto operator+( std::basic_string<CharT, Traits, Allocator> lhs, daw::basic_string_view<CharT, Traits> rhs ) {
 	lhs += rhs.to_string( );
@@ -965,6 +933,21 @@ auto operator+( daw::basic_string_view<CharT, Traits> lhs, CharT const *rhs ) {
 }
 
 namespace daw {
+	template<typename CharT, typename Traits>
+	std::basic_ostream<CharT> &operator<<( std::basic_ostream<CharT> &os, daw::basic_string_view<CharT, Traits> v ) {
+		if( os.good( ) ) {
+			auto const size = v.size( );
+			auto const w = static_cast<std::size_t>( os.width( ) );
+			if( w <= size ) {
+				os.write( v.data( ), static_cast<std::streamsize>( size ) );
+			} else {
+				daw::details::sv_insert_aligned( os, v );
+			}
+			os.width( 0 );
+		}
+		return os;
+	}
+
 	namespace string_view_literals {
 		constexpr string_view operator"" _sv( char const *str, size_t len ) noexcept {
 			return daw::string_view{str, len};
