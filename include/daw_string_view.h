@@ -893,7 +893,7 @@ constexpr bool operator>=( CharT const ( &lhs )[N], daw::basic_string_view<CharT
 }
 
 template<typename CharT, typename Traits>
-std::basic_ostream<CharT, Traits> &operator<<( std::basic_ostream<CharT, Traits> &os,
+std::basic_ostream<CharT> &operator<<( std::basic_ostream<CharT> &os,
                                                daw::basic_string_view<CharT, Traits> v ) {
 	if( os.good( ) ) {
 		auto const size = v.size( );
