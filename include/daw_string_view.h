@@ -186,13 +186,13 @@ namespace daw {
 		constexpr basic_string_view( basic_string_view const &other ) noexcept = default;
 		constexpr basic_string_view( basic_string_view &&other ) noexcept = default;
 
-		constexpr basic_string_view &operator=( basic_string_view const & rhs ) noexcept {
+		constexpr basic_string_view &operator=( basic_string_view const &rhs ) noexcept {
 			m_first = rhs.m_first;
 			m_size = rhs.m_size;
 			return *this;
 		}
 
-		constexpr basic_string_view &operator=( basic_string_view && rhs ) noexcept {
+		constexpr basic_string_view &operator=( basic_string_view &&rhs ) noexcept {
 			m_first = std::move( rhs.m_first );
 			m_size = std::move( rhs.m_size );
 			return *this;
@@ -289,7 +289,7 @@ namespace daw {
 		constexpr bool empty( ) const noexcept {
 			return m_first == nullptr || 0 == m_size;
 		}
-		
+
 		constexpr explicit operator bool( ) const noexcept {
 			return !empty( );
 		}
@@ -686,245 +686,227 @@ namespace daw {
 	constexpr bool operator>=( basic_string_view<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
 		return lhs.compare( rhs ) >= 0;
 	}
-
-	// basic_string_view / basic_string
-	//
-	template<typename CharT, typename Traits>
-	constexpr bool operator==( basic_string_view<CharT, Traits> lhs, std::basic_string<CharT, Traits> rhs ) noexcept {
-		return lhs.compare( rhs ) == 0;
-	}
-
-	template<typename CharT, typename Traits>
-	constexpr bool operator!=( basic_string_view<CharT, Traits> lhs, std::basic_string<CharT, Traits> rhs ) noexcept {
-		return lhs.compare( rhs ) != 0;
-	}
-
-	template<typename CharT, typename Traits>
-	constexpr bool operator<( basic_string_view<CharT, Traits> lhs, std::basic_string<CharT, Traits> rhs ) noexcept {
-		return lhs.compare( rhs ) < 0;
-	}
-
-	template<typename CharT, typename Traits>
-	constexpr bool operator<=( basic_string_view<CharT, Traits> lhs, std::basic_string<CharT, Traits> rhs ) noexcept {
-		return lhs.compare( rhs ) <= 0;
-	}
-
-	template<typename CharT, typename Traits>
-	constexpr bool operator>( basic_string_view<CharT, Traits> lhs, std::basic_string<CharT, Traits> rhs ) noexcept {
-		return lhs.compare( rhs ) > 0;
-	}
-
-	template<typename CharT, typename Traits>
-	constexpr bool operator>=( basic_string_view<CharT, Traits> lhs, std::basic_string<CharT, Traits> rhs ) noexcept {
-		return lhs.compare( rhs ) >= 0;
-	}
-
-	// std::basic_string / basic_string_view
-	//
-	template<typename CharT, typename Traits>
-	constexpr bool operator==( std::basic_string<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
-		return lhs.compare( rhs ) == 0;
-	}
-
-	template<typename CharT, typename Traits>
-	constexpr bool operator!=( std::basic_string<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
-		return lhs.compare( rhs ) != 0;
-	}
-
-	template<typename CharT, typename Traits>
-	constexpr bool operator<( std::basic_string<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
-		return lhs.compare( rhs ) < 0;
-	}
-
-	template<typename CharT, typename Traits>
-	constexpr bool operator<=( std::basic_string<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
-		return lhs.compare( rhs ) <= 0;
-	}
-
-	template<typename CharT, typename Traits>
-	constexpr bool operator>( std::basic_string<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
-		return lhs.compare( rhs ) > 0;
-	}
-
-	template<typename CharT, typename Traits>
-	constexpr bool operator>=( std::basic_string<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
-		return lhs.compare( rhs ) >= 0;
-	}
-
-	// basic_string_view / char const *
-	//
-	template<typename CharT, typename Traits>
-	constexpr bool operator==( basic_string_view<CharT, Traits> lhs,
-	                           typename basic_string_view<CharT, Traits>::const_pointer rhs ) noexcept {
-		return lhs.compare( rhs ) == 0;
-	}
-
-	template<typename CharT, typename Traits>
-	constexpr bool operator!=( basic_string_view<CharT, Traits> lhs,
-	                           typename basic_string_view<CharT, Traits>::const_pointer rhs ) noexcept {
-		return lhs.compare( rhs ) != 0;
-	}
-
-	template<typename CharT, typename Traits>
-	constexpr bool operator<( basic_string_view<CharT, Traits> lhs,
-	                          typename basic_string_view<CharT, Traits>::const_pointer rhs ) noexcept {
-		return lhs.compare( rhs ) < 0;
-	}
-
-	template<typename CharT, typename Traits>
-	constexpr bool operator<=( basic_string_view<CharT, Traits> lhs,
-	                           typename basic_string_view<CharT, Traits>::const_pointer rhs ) noexcept {
-		return lhs.compare( rhs ) <= 0;
-	}
-
-	template<typename CharT, typename Traits>
-	constexpr bool operator>( basic_string_view<CharT, Traits> lhs,
-	                          typename basic_string_view<CharT, Traits>::const_pointer rhs ) noexcept {
-		return lhs.compare( rhs ) > 0;
-	}
-
-	template<typename CharT, typename Traits>
-	constexpr bool operator>=( basic_string_view<CharT, Traits> lhs,
-	                           typename basic_string_view<CharT, Traits>::const_pointer rhs ) noexcept {
-		return lhs.compare( rhs ) >= 0;
-	}
-
-	// char const * / basic_string_view
-	//
-	template<typename CharT, typename Traits>
-	constexpr bool operator==( typename basic_string_view<CharT, Traits>::const_pointer lhs,
-	                           basic_string_view<CharT, Traits> rhs ) noexcept {
-		return basic_string_view<CharT, Traits>{lhs}.compare( rhs ) == 0;
-	}
-
-	template<typename CharT, typename Traits>
-	constexpr bool operator!=( typename basic_string_view<CharT, Traits>::const_pointer lhs,
-	                           basic_string_view<CharT, Traits> rhs ) noexcept {
-		return basic_string_view<CharT, Traits>{lhs}.compare( rhs ) != 0;
-	}
-
-	template<typename CharT, typename Traits>
-	constexpr bool operator<( typename basic_string_view<CharT, Traits>::const_pointer lhs,
-	                          basic_string_view<CharT, Traits> rhs ) noexcept {
-		return basic_string_view<CharT, Traits>{lhs}.compare( rhs ) < 0;
-	}
-
-	template<typename CharT, typename Traits>
-	constexpr bool operator<=( typename basic_string_view<CharT, Traits>::const_pointer lhs,
-	                           basic_string_view<CharT, Traits> rhs ) noexcept {
-		return basic_string_view<CharT, Traits>{lhs}.compare( rhs ) <= 0;
-	}
-
-	template<typename CharT, typename Traits>
-	constexpr bool operator>( typename basic_string_view<CharT, Traits>::const_pointer lhs,
-	                          basic_string_view<CharT, Traits> rhs ) noexcept {
-		return basic_string_view<CharT, Traits>{lhs}.compare( rhs ) > 0;
-	}
-
-	template<typename CharT, typename Traits>
-	constexpr bool operator>=( typename basic_string_view<CharT, Traits>::const_pointer lhs,
-	                           basic_string_view<CharT, Traits> rhs ) noexcept {
-		return basic_string_view<CharT, Traits>{lhs}.compare( rhs ) >= 0;
-	}
-
-	// basic_string_view / char const[N]
-	//
-	template<typename CharT, typename Traits, size_t N>
-	constexpr bool operator==( basic_string_view<CharT, Traits> lhs, CharT const ( &rhs )[N] ) noexcept {
-		return lhs.compare( rhs ) == 0;
-	}
-
-	template<typename CharT, typename Traits, size_t N>
-	constexpr bool operator!=( basic_string_view<CharT, Traits> lhs, CharT const ( &rhs )[N] ) noexcept {
-		return lhs.compare( rhs ) != 0;
-	}
-
-	template<typename CharT, typename Traits, size_t N>
-	constexpr bool operator<( basic_string_view<CharT, Traits> lhs, CharT const ( &rhs )[N] ) noexcept {
-		return lhs.compare( rhs ) < 0;
-	}
-
-	template<typename CharT, typename Traits, size_t N>
-	constexpr bool operator<=( basic_string_view<CharT, Traits> lhs, CharT const ( &rhs )[N] ) noexcept {
-		return lhs.compare( rhs ) <= 0;
-	}
-
-	template<typename CharT, typename Traits, size_t N>
-	constexpr bool operator>( basic_string_view<CharT, Traits> lhs, CharT const ( &rhs )[N] ) noexcept {
-		return lhs.compare( rhs ) > 0;
-	}
-
-	template<typename CharT, typename Traits, size_t N>
-	constexpr bool operator>=( basic_string_view<CharT, Traits> lhs, CharT const ( &rhs )[N] ) noexcept {
-		return lhs.compare( rhs ) >= 0;
-	}
-
-	// char const[N] / basic_string_view
-	//
-	template<typename CharT, typename Traits, size_t N>
-	constexpr bool operator==( CharT const ( &lhs )[N], basic_string_view<CharT, Traits> rhs ) noexcept {
-		return basic_string_view<CharT, Traits>{lhs}.compare( rhs ) == 0;
-	}
-
-	template<typename CharT, typename Traits, size_t N>
-	constexpr bool operator!=( CharT const ( &lhs )[N], basic_string_view<CharT, Traits> rhs ) noexcept {
-		return basic_string_view<CharT, Traits>{lhs}.compare( rhs ) != 0;
-	}
-
-	template<typename CharT, typename Traits, size_t N>
-	constexpr bool operator<( CharT const ( &lhs )[N], basic_string_view<CharT, Traits> rhs ) noexcept {
-		return basic_string_view<CharT, Traits>{lhs}.compare( rhs ) < 0;
-	}
-
-	template<typename CharT, typename Traits, size_t N>
-	constexpr bool operator<=( CharT const ( &lhs )[N], basic_string_view<CharT, Traits> rhs ) noexcept {
-		return basic_string_view<CharT, Traits>{lhs}.compare( rhs ) <= 0;
-	}
-
-	template<typename CharT, typename Traits, size_t N>
-	constexpr bool operator>( CharT const ( &lhs )[N], basic_string_view<CharT, Traits> rhs ) noexcept {
-		return basic_string_view<CharT, Traits>{lhs}.compare( rhs ) > 0;
-	}
-
-	template<typename CharT, typename Traits, size_t N>
-	constexpr bool operator>=( CharT const ( &lhs )[N], basic_string_view<CharT, Traits> rhs ) noexcept {
-		return basic_string_view<CharT, Traits>{lhs}.compare( rhs ) >= 0;
-	}
-
-	template<typename CharT, typename Traits>
-	std::basic_ostream<CharT, Traits> &operator<<( std::basic_ostream<CharT, Traits> &os,
-	                                               daw::basic_string_view<CharT, Traits> v ) {
-		if( os.good( ) ) {
-			auto const size = v.size( );
-			auto const w = static_cast<std::size_t>( os.width( ) );
-			if( w <= size ) {
-				os.write( v.data( ), static_cast<std::streamsize>( size ) );
-			} else {
-				details::sv_insert_aligned( os, v );
-			}
-			os.width( 0 );
-		}
-		return os;
-	}
-
-	namespace string_view_literals {
-		constexpr string_view operator"" _sv( char const *str, size_t len ) noexcept {
-			return daw::string_view{str, len};
-		}
-
-		constexpr u16string_view operator"" _sv( char16_t const *str, size_t len ) noexcept {
-			return daw::u16string_view{str, len};
-		}
-		constexpr u32string_view operator"" _sv( char32_t const *str, size_t len ) noexcept {
-			return daw::u32string_view{str, len};
-		}
-
-		constexpr wstring_view operator"" _sv( wchar_t const *str, size_t len ) noexcept {
-			return daw::wstring_view{str, len};
-		}
-
-	} // namespace string_view_literals
 } // namespace daw
+
+// basic_string_view / basic_string
+//
+template<typename CharT, typename Traits>
+constexpr bool operator==( daw::basic_string_view<CharT, Traits> lhs, std::basic_string<CharT, Traits> rhs ) noexcept {
+	return lhs.compare( rhs ) == 0;
+}
+
+template<typename CharT, typename Traits>
+constexpr bool operator!=( daw::basic_string_view<CharT, Traits> lhs, std::basic_string<CharT, Traits> rhs ) noexcept {
+	return lhs.compare( rhs ) != 0;
+}
+
+template<typename CharT, typename Traits>
+constexpr bool operator<( daw::basic_string_view<CharT, Traits> lhs, std::basic_string<CharT, Traits> rhs ) noexcept {
+	return lhs.compare( rhs ) < 0;
+}
+
+template<typename CharT, typename Traits>
+constexpr bool operator<=( daw::basic_string_view<CharT, Traits> lhs, std::basic_string<CharT, Traits> rhs ) noexcept {
+	return lhs.compare( rhs ) <= 0;
+}
+
+template<typename CharT, typename Traits>
+constexpr bool operator>( daw::basic_string_view<CharT, Traits> lhs, std::basic_string<CharT, Traits> rhs ) noexcept {
+	return lhs.compare( rhs ) > 0;
+}
+
+template<typename CharT, typename Traits>
+constexpr bool operator>=( daw::basic_string_view<CharT, Traits> lhs, std::basic_string<CharT, Traits> rhs ) noexcept {
+	return lhs.compare( rhs ) >= 0;
+}
+
+// std::basic_string / daw::basic_string_view
+//
+template<typename CharT, typename Traits>
+constexpr bool operator==( std::basic_string<CharT, Traits> lhs, daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	return lhs.compare( rhs ) == 0;
+}
+
+template<typename CharT, typename Traits>
+constexpr bool operator!=( std::basic_string<CharT, Traits> lhs, daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	return lhs.compare( rhs ) != 0;
+}
+
+template<typename CharT, typename Traits>
+constexpr bool operator<( std::basic_string<CharT, Traits> lhs, daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	return lhs.compare( rhs ) < 0;
+}
+
+template<typename CharT, typename Traits>
+constexpr bool operator<=( std::basic_string<CharT, Traits> lhs, daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	return lhs.compare( rhs ) <= 0;
+}
+
+template<typename CharT, typename Traits>
+constexpr bool operator>( std::basic_string<CharT, Traits> lhs, daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	return lhs.compare( rhs ) > 0;
+}
+
+template<typename CharT, typename Traits>
+constexpr bool operator>=( std::basic_string<CharT, Traits> lhs, daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	return lhs.compare( rhs ) >= 0;
+}
+
+// daw::basic_string_view / char const *
+//
+template<typename CharT, typename Traits>
+constexpr bool operator==( daw::basic_string_view<CharT, Traits> lhs,
+                           typename daw::basic_string_view<CharT, Traits>::const_pointer rhs ) noexcept {
+	return lhs.compare( rhs ) == 0;
+}
+
+template<typename CharT, typename Traits>
+constexpr bool operator!=( daw::basic_string_view<CharT, Traits> lhs,
+                           typename daw::basic_string_view<CharT, Traits>::const_pointer rhs ) noexcept {
+	return lhs.compare( rhs ) != 0;
+}
+
+template<typename CharT, typename Traits>
+constexpr bool operator<( daw::basic_string_view<CharT, Traits> lhs,
+                          typename daw::basic_string_view<CharT, Traits>::const_pointer rhs ) noexcept {
+	return lhs.compare( rhs ) < 0;
+}
+
+template<typename CharT, typename Traits>
+constexpr bool operator<=( daw::basic_string_view<CharT, Traits> lhs,
+                           typename daw::basic_string_view<CharT, Traits>::const_pointer rhs ) noexcept {
+	return lhs.compare( rhs ) <= 0;
+}
+
+template<typename CharT, typename Traits>
+constexpr bool operator>( daw::basic_string_view<CharT, Traits> lhs,
+                          typename daw::basic_string_view<CharT, Traits>::const_pointer rhs ) noexcept {
+	return lhs.compare( rhs ) > 0;
+}
+
+template<typename CharT, typename Traits>
+constexpr bool operator>=( daw::basic_string_view<CharT, Traits> lhs,
+                           typename daw::basic_string_view<CharT, Traits>::const_pointer rhs ) noexcept {
+	return lhs.compare( rhs ) >= 0;
+}
+
+// char const * / daw::basic_string_view
+//
+template<typename CharT, typename Traits>
+constexpr bool operator==( typename daw::basic_string_view<CharT, Traits>::const_pointer lhs,
+                           daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) == 0;
+}
+
+template<typename CharT, typename Traits>
+constexpr bool operator!=( typename daw::basic_string_view<CharT, Traits>::const_pointer lhs,
+                           daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) != 0;
+}
+
+template<typename CharT, typename Traits>
+constexpr bool operator<( typename daw::basic_string_view<CharT, Traits>::const_pointer lhs,
+                          daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) < 0;
+}
+
+template<typename CharT, typename Traits>
+constexpr bool operator<=( typename daw::basic_string_view<CharT, Traits>::const_pointer lhs,
+                           daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) <= 0;
+}
+
+template<typename CharT, typename Traits>
+constexpr bool operator>( typename daw::basic_string_view<CharT, Traits>::const_pointer lhs,
+                          daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) > 0;
+}
+
+template<typename CharT, typename Traits>
+constexpr bool operator>=( typename daw::basic_string_view<CharT, Traits>::const_pointer lhs,
+                           daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) >= 0;
+}
+
+// daw::basic_string_view / char const[N]
+//
+template<typename CharT, typename Traits, size_t N>
+constexpr bool operator==( daw::basic_string_view<CharT, Traits> lhs, CharT const ( &rhs )[N] ) noexcept {
+	return lhs.compare( rhs ) == 0;
+}
+
+template<typename CharT, typename Traits, size_t N>
+constexpr bool operator!=( daw::basic_string_view<CharT, Traits> lhs, CharT const ( &rhs )[N] ) noexcept {
+	return lhs.compare( rhs ) != 0;
+}
+
+template<typename CharT, typename Traits, size_t N>
+constexpr bool operator<( daw::basic_string_view<CharT, Traits> lhs, CharT const ( &rhs )[N] ) noexcept {
+	return lhs.compare( rhs ) < 0;
+}
+
+template<typename CharT, typename Traits, size_t N>
+constexpr bool operator<=( daw::basic_string_view<CharT, Traits> lhs, CharT const ( &rhs )[N] ) noexcept {
+	return lhs.compare( rhs ) <= 0;
+}
+
+template<typename CharT, typename Traits, size_t N>
+constexpr bool operator>( daw::basic_string_view<CharT, Traits> lhs, CharT const ( &rhs )[N] ) noexcept {
+	return lhs.compare( rhs ) > 0;
+}
+
+template<typename CharT, typename Traits, size_t N>
+constexpr bool operator>=( daw::basic_string_view<CharT, Traits> lhs, CharT const ( &rhs )[N] ) noexcept {
+	return lhs.compare( rhs ) >= 0;
+}
+
+// char const[N] / daw::basic_string_view
+//
+template<typename CharT, typename Traits, size_t N>
+constexpr bool operator==( CharT const ( &lhs )[N], daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) == 0;
+}
+
+template<typename CharT, typename Traits, size_t N>
+constexpr bool operator!=( CharT const ( &lhs )[N], daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) != 0;
+}
+
+template<typename CharT, typename Traits, size_t N>
+constexpr bool operator<( CharT const ( &lhs )[N], daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) < 0;
+}
+
+template<typename CharT, typename Traits, size_t N>
+constexpr bool operator<=( CharT const ( &lhs )[N], daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) <= 0;
+}
+
+template<typename CharT, typename Traits, size_t N>
+constexpr bool operator>( CharT const ( &lhs )[N], daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) > 0;
+}
+
+template<typename CharT, typename Traits, size_t N>
+constexpr bool operator>=( CharT const ( &lhs )[N], daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) >= 0;
+}
+
+template<typename CharT, typename Traits>
+std::basic_ostream<CharT, Traits> &operator<<( std::basic_ostream<CharT, Traits> &os,
+                                               daw::basic_string_view<CharT, Traits> v ) {
+	if( os.good( ) ) {
+		auto const size = v.size( );
+		auto const w = static_cast<std::size_t>( os.width( ) );
+		if( w <= size ) {
+			os.write( v.data( ), static_cast<std::streamsize>( size ) );
+		} else {
+			daw::details::sv_insert_aligned( os, v );
+		}
+		os.width( 0 );
+	}
+	return os;
+}
 
 template<typename CharT, typename Traits, typename Allocator>
 auto operator+( std::basic_string<CharT, Traits, Allocator> lhs, daw::basic_string_view<CharT, Traits> rhs ) {
@@ -965,6 +947,26 @@ auto operator+( daw::basic_string_view<CharT, Traits> lhs, CharT const *rhs ) {
 	result += daw::basic_string_view<CharT, Traits>{rhs}.to_string( );
 	return result;
 }
+
+namespace daw {
+	namespace string_view_literals {
+		constexpr string_view operator"" _sv( char const *str, size_t len ) noexcept {
+			return daw::string_view{str, len};
+		}
+
+		constexpr u16string_view operator"" _sv( char16_t const *str, size_t len ) noexcept {
+			return daw::u16string_view{str, len};
+		}
+		constexpr u32string_view operator"" _sv( char32_t const *str, size_t len ) noexcept {
+			return daw::u32string_view{str, len};
+		}
+
+		constexpr wstring_view operator"" _sv( wchar_t const *str, size_t len ) noexcept {
+			return daw::wstring_view{str, len};
+		}
+
+	} // namespace string_view_literals
+} // namespace daw
 
 namespace std {
 	// TODO use same function as string without killing performance of creating a string
