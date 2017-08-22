@@ -59,6 +59,15 @@ namespace daw {
 			std::advance( it, distance );
 		}
 
+		template<typename Iterator>
+		auto safe_next( Iterator it, Iterator last, size_t n ) {
+			auto const max_n = static_cast<size_t>( std::distance( it, last ) );
+			if( n > max_n ) {
+				n = max_n;
+			}
+			return std::next( it, n );
+		}
+
 		template<typename Container>
 		auto begin_at( Container &container, size_t distance ) -> decltype( std::begin( container ) ) {
 			auto result = std::begin( container );
