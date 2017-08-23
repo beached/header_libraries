@@ -26,32 +26,45 @@
 #include <type_traits>
 
 namespace daw {
-	template<typename Function>
-	class not_fn_t {
-		Function m_function;
+	namespace impl {
+		template<typename Function>
+		class not_fn_t {
+			Function m_function;
 
-	  public:
-		not_fn_t( ) = default;
-		~not_fn_t( ); 
-		not_fn_t( not_fn_t const & ) = default;
-		not_fn_t( not_fn_t && ) = default;
-		not_fn_t & operator=( not_fn_t const & ) = default;
-		not_fn_t & operator=( not_fn_t && ) = default;
+		  public:
+			not_fn_t( ) = default;
+			~not_fn_t( );
+			not_fn_t( not_fn_t const & ) = default;
+			not_fn_t( not_fn_t && ) = default;
+			not_fn_t &operator=( not_fn_t const & ) = default;
+			not_fn_t &operator=( not_fn_t && ) = default;
 
-		explicit not_fn_t( Function func ) : m_function{std::move( func )} {}
-		not_fn_t & operator=( Function func ) {
-			m_function = std::move( func );
-			return *this;
-		}
+			explicit not_fn_t( Function func ) : m_function{std::move( func )} {}
+			not_fn_t &operator=( Function func ) {
+				m_function = std::move( func );
+				return *this;
+			}
 
-		template<typename... Args>
-		auto operator( )( Args&&... args ) noexcept( noexcept( !(m_function( std::forward<Args>(args)... ) ) ) ) {
-			return !( m_function( std::forward<Args>( args )... ) );
-		}
-	};
+			template<typename... Args>
+			auto
+			operator( )( Args &&... args ) noexcept( noexcept( !( m_function( std::forward<Args>( args )... ) ) ) ) {
+				return !( m_function( std::forward<Args>( args )... ) );
+			}
+		};
+	} // namespace impl
 
 	template<typename Function>
 	not_fn_t::~not_fn_t( ) {}
+
+	template<typename Function>
+	auto not_fn( Function &&func ) {
+		return not_fn_t<Function>{std::forward<Function>( func )};
+	}
+
+	template<typename Function>
+	auto not_fn( ) {
+		return not_fn_t<Function>{};
+	}
 
 	template<bool B>
 	using bool_constant = std::integral_constant<bool, B>;
