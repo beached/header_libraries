@@ -40,15 +40,10 @@ namespace daw {
 			not_fn_t &operator=( not_fn_t && ) = default;
 
 			explicit not_fn_t( Function func ) : m_function{std::move( func )} {}
-			not_fn_t &operator=( Function func ) {
-				m_function = std::move( func );
-				return *this;
-			}
 
 			template<typename... Args>
-			auto
-			operator( )( Args &&... args ) noexcept( noexcept( !( m_function( std::forward<Args>( args )... ) ) ) ) {
-				return !( m_function( std::forward<Args>( args )... ) );
+			auto operator( )( Args &&... args ) {
+				return !m_function( std::forward<Args>( args )... );
 			}
 		};
 
