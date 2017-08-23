@@ -51,10 +51,11 @@ namespace daw {
 				return !( m_function( std::forward<Args>( args )... ) );
 			}
 		};
-	} // namespace impl
 
-	template<typename Function>
-	not_fn_t::~not_fn_t( ) {}
+		template<typename Function>
+		not_fn_t::~not_fn_t( ) {}
+
+	} // namespace impl
 
 	template<typename Function>
 	auto not_fn( Function &&func ) {
