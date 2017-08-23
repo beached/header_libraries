@@ -59,12 +59,12 @@ namespace daw {
 
 	template<typename Function>
 	auto not_fn( Function &&func ) {
-		return not_fn_t<Function>{std::forward<Function>( func )};
+		return impl::not_fn_t<Function>{std::forward<Function>( func )};
 	}
 
 	template<typename Function>
 	auto not_fn( ) {
-		return not_fn_t<Function>{};
+		return impl::not_fn_t<Function>{};
 	}
 
 	template<bool B>
