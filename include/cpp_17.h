@@ -33,13 +33,12 @@ namespace daw {
 
 		  public:
 			not_fn_t( ) = default;
+			explicit not_fn_t( Function func ) : m_function{std::move( func )} {}
 			~not_fn_t( );
 			not_fn_t( not_fn_t const & ) = default;
 			not_fn_t( not_fn_t && ) = default;
 			not_fn_t &operator=( not_fn_t const & ) = default;
 			not_fn_t &operator=( not_fn_t && ) = default;
-
-			explicit not_fn_t( Function func ) : m_function{std::move( func )} {}
 
 			template<typename... Args>
 			auto operator( )( Args &&... args ) {
@@ -53,12 +52,12 @@ namespace daw {
 	} // namespace impl
 
 	template<typename Function>
-	auto not_fn( Function &&func ) {
-		return impl::not_fn_t<Function>{std::forward<Function>( func )};
+	impl::not_fn_t<Function> not_fn( Function func ) {
+		return impl::not_fn_t<Function>{std::move( func )};
 	}
 
 	template<typename Function>
-	auto not_fn( ) {
+	impl::not_fn_t<Function> not_fn( ) {
 		return impl::not_fn_t<Function>{};
 	}
 
