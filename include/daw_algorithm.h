@@ -61,7 +61,7 @@ namespace daw {
 
 		template<typename Iterator>
 		auto safe_next( Iterator it, Iterator last, size_t n ) {
-			return std::next( it, std::min( n, std::distance( it, last ) ) );
+			return std::next( it, std::min( n, static_cast<size_t>( std::distance( it, last ) ) ) );
 		}
 
 		template<typename Container>
