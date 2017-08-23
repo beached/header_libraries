@@ -53,7 +53,7 @@ namespace daw {
 		};
 
 		template<typename Function>
-		not_fn_t::~not_fn_t( ) {}
+		not_fn_t<Function>::~not_fn_t( ) {}
 
 	} // namespace impl
 
