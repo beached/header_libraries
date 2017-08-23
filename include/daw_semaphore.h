@@ -89,4 +89,11 @@ namespace daw {
 	}; // basic_semaphore
 
 	using semaphore = basic_semaphore<std::mutex, std::condition_variable>;
+
+	template<typename Mutex, typename ConditionVariable>
+	void wait_all( std::initializer_list<basic_semaphore<Mutex, ConditionVariable> semaphores ) {
+		for( auto & sem: semaphores ) {
+			sem->wait( );
+		}
+	}
 } // namespace daw
