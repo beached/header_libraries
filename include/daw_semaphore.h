@@ -60,7 +60,7 @@ namespace daw {
 
 		bool try_wait( ) {
 			std::unique_lock<std::mutex> lock{*m_mutex};
-			if( m_count ) {
+			if( m_count > 0 ) {
 				--m_count;
 				return true;
 			}
