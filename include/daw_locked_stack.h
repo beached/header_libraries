@@ -73,6 +73,18 @@ namespace daw {
 			return result;
 		}
 
+		value_type pop_back2( ) {
+			while( true ) {
+				m_semaphore.wait( );
+				std::lock_guard<std::mutex> lock( *m_mutex );
+				if( !m_items.empty( ) ) {
+					auto result = m_items.back( );
+					m_items.pop_back( );
+					return result;
+				}
+			}
+		}
+
 		template<typename U>
 		void push_back( U &&value ) {
 			std::lock_guard<std::mutex> lock( *m_mutex );
