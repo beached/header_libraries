@@ -73,7 +73,6 @@ set( UNTESTED_HEADER_FILES
 	daw_locked_stack.h
 	daw_newhelper.h
 	daw_operators.h
-	daw_parallel_algorithm.h
 	daw_parser_addons.h
 	daw_parser_helper_sv.h
 	daw_range_collection.h
