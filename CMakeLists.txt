@@ -26,66 +26,66 @@ set( TEST_FOLDER "tests" )
 include_directories( ${HEADER_FOLDER} )
 
 set( TESTED_HEADERS_PREFIXES
+	concurrent_queue
+	cpp_17
 	daw_algorithm
 	daw_array
 	daw_array_view
-	daw_bit_queues
-	daw_bounded_stack
 	daw_benchmark
+	daw_bit
+	daw_bit_queues
+	daw_bit_stream
+	daw_bounded_stack
 	daw_carray
 	daw_checked_iterator_proxy
 	daw_clumpy_sparsy
+	daw_common_mixins
 	daw_cstring
+	daw_exception
 	daw_expected
+	daw_fnv1a_hash
+	daw_function_iterator
 	daw_hash_table
 	daw_heap_array
 	daw_heap_value
+	daw_locked_stack
 	daw_math
 	daw_memory_address
 	daw_memory_mapped_file
+	daw_newhelper
+	daw_operators
 	daw_optional
 	daw_optional_poly
+	daw_parser_addons
 	daw_parser_helper
+	daw_parser_helper_sv
 	daw_poly_vector
 	daw_random_iterator
-	daw_range_algorithm
 	daw_range
+	daw_range_algorithm
+	daw_range_collection
+	daw_range_common
+	daw_range_operators
+	daw_range_reference
+	daw_range_type
 	daw_read_only
+	daw_reference
 	daw_safe_string
+	daw_semaphore
 	daw_string
 	daw_string_view
 	daw_traits
 	daw_tuple_helper
 	daw_utility
 	daw_variant
+	daw_zipcontainer
+	daw_zipiter
 	not_null
-	)
+	scope_guard
+)
 
 set( UNTESTED_HEADER_FILES
 	boost_test.h
-	concurrent_queue.h
-	daw_bit.h
-	daw_bit_stream.h
-	daw_common_mixins.h
-	daw_exception.h
-	daw_fnv1a_hash.h
-	daw_function_iterator.h
-	daw_locked_stack.h
-	daw_newhelper.h
-	daw_operators.h
-	daw_parser_addons.h
-	daw_parser_helper_sv.h
-	daw_range_collection.h
-	daw_range_common.h
-	daw_range_operators.h
-	daw_range_reference.h
-	daw_range_type.h
-	daw_reference.h
-	daw_semaphore.h
-	daw_zipcontainer.h
-	daw_zipiter.h
-	cpp_17.h
-	scope_guard.h
 	)
 
 enable_testing( )
