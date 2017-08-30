@@ -94,16 +94,18 @@ namespace daw {
 	class basic_shared_semaphore {
 		std::shared_ptr<basic_semaphore<Mutex, ConditionVariable>> m_semaphore;
 	public:
-		explicit basic_shared_semaphore( intmax_t count = 0 ): m_semaphore{ count } { }
+	  explicit basic_shared_semaphore( intmax_t count = 0 )
+		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( count )} {}
 
-		~basic_shared_semaphore( ) = default;
-		basic_shared_semaphore( basic_shared_semaphore const & ) = default;;
-		basic_shared_semaphore( basic_shared_semaphore && ) noexcept = default;
-		basic_shared_semaphore &operator=( basic_shared_semaphore const & ) = default;
-		basic_shared_semaphore &operator=( basic_shared_semaphore && ) noexcept = default;
+	  ~basic_shared_semaphore( ) = default;
+	  basic_shared_semaphore( basic_shared_semaphore const & ) = default;
+	  ;
+	  basic_shared_semaphore( basic_shared_semaphore && ) noexcept = default;
+	  basic_shared_semaphore &operator=( basic_shared_semaphore const & ) = default;
+	  basic_shared_semaphore &operator=( basic_shared_semaphore && ) noexcept = default;
 
-		void notify( ) {
-			m_semaphore->notify( );
+	  void notify( ) {
+		  m_semaphore->notify( );
 		}
 
 		void wait( ) {
