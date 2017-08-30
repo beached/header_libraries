@@ -89,6 +89,43 @@ namespace daw {
 	}; // basic_semaphore
 
 	using semaphore = basic_semaphore<std::mutex, std::condition_variable>;
+	
+	template<typename Mutex, typename ConditionVariable>
+	class basic_shared_semaphore {
+		std::shared_ptr<basic_semaphore<Mutex, ConditionVariable>> m_semaphore;
+	public:
+		explicit basic_shared_semaphore( intmax_t count = 0 ): m_semaphore{ count } { }
+
+		~basic_shared_semaphore( ) = default;
+		basic_shared_semaphore( basic_shared_semaphore const & ) = default;;
+		basic_shared_semaphore( basic_shared_semaphore && ) noexcept = default;
+		basic_shared_semaphore &operator=( basic_shared_semaphore const & ) = default;
+		basic_shared_semaphore &operator=( basic_shared_semaphore && ) noexcept = default;
+
+		void notify( ) {
+			m_semaphore->notify( );
+		}
+
+		void wait( ) {
+			m_semaphore->wait( );
+		}
+
+		bool try_wait( ) {
+			return m_semaphore->try_wait( );
+		}
+
+		template<typename Rep, typename Period>
+		auto wait_for( std::chrono::duration<Rep, Period> const &rel_time ) {
+			return m_semaphore->wait_for( rel_time );
+		}
+
+		template<typename Rep, typename Period>
+		auto wait_until( std::chrono::duration<Rep, Period> const &rel_time ) {
+			return m_semaphore->wait_until( rel_time );
+		}
+	};	// basic_shared_semaphore
+
+	using shared_semaphore = basic_shared_semaphore<std::mutex, std::condition_variable>;
 
 	template<typename Mutex, typename ConditionVariable>
 	void wait_all( std::initializer_list<basic_semaphore<Mutex, ConditionVariable>> semaphores ) {
