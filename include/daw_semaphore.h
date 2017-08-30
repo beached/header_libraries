@@ -97,6 +97,9 @@ namespace daw {
 	  explicit basic_shared_semaphore( intmax_t count = 0 )
 		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( count )} {}
 
+	  explicit basic_shared_semaphore( basic_semaphore<Mutex, ConditionVariable> &&semaphore )
+		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( std::move( semaphore ) )} {}
+
 	  ~basic_shared_semaphore( ) = default;
 	  basic_shared_semaphore( basic_shared_semaphore const & ) = default;
 	  ;
