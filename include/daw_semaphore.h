@@ -35,7 +35,7 @@ namespace daw {
 		intmax_t m_count;
 
 	  public:
-		template<typename Int>
+		template<typename Int=int>
 		explicit basic_semaphore( Int count = 0 )
 		    : m_mutex{std::make_unique<Mutex>( )}
 		    , m_condition{std::make_unique<ConditionVariable>( )}
@@ -96,7 +96,7 @@ namespace daw {
 		std::shared_ptr<basic_semaphore<Mutex, ConditionVariable>> m_semaphore;
 
 	  public:
-		template<typename Int>
+		template<typename Int=int>
 		explicit basic_shared_semaphore( Int count = 0 )
 		    : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( count )} {}
 
@@ -105,7 +105,7 @@ namespace daw {
 
 		~basic_shared_semaphore( ) = default;
 		basic_shared_semaphore( basic_shared_semaphore const & ) = default;
-		;
+		
 		basic_shared_semaphore( basic_shared_semaphore && ) noexcept = default;
 		basic_shared_semaphore &operator=( basic_shared_semaphore const & ) = default;
 		basic_shared_semaphore &operator=( basic_shared_semaphore && ) noexcept = default;
