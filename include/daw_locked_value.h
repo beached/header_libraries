@@ -46,7 +46,7 @@ namespace daw {
 			release( );
 		}
 
-		locked_value_t( locked_value_t && ) noexcept = default;
+		locked_value_t( locked_value_t &&other ) noexcept = default;
 		locked_value_t &operator=( locked_value_t && ) noexcept = default;
 
 		locked_value_t( std::mutex &m, Value &value ) : m_mutex{&m}, m_value{&value} {
@@ -78,5 +78,48 @@ namespace daw {
 	locked_value_t<Value> make_locked_value( std::mutex &m, Value &value ) {
 		return locked_value_t<Value>{m, value};
 	}
+
+	template<typename T>
+	class lockable_value_t {
+		std::unique_ptr<std::mutex> m_mutex;
+		std::unique_ptr<T> m_value;
+
+	  public:
+		lockable_value_t( ) : m_mutex{std::make_unique<std::mutex>( )}, m_value{std::make_unique<T>( )} {}
+
+		template<typename U>
+		explicit lockable_value_t( U value )
+		    : m_mutex{std::make_unique<std::mutex>( )}, m_value{std::make_unique<T>( std::forward<U>( value ) )} {}
+
+		lockable_value_t( lockable_value_t && ) noexcept = default;
+		lockable_value_t &operator=( lockable_value_t && ) noexcept = default;
+
+		lockable_value_t( lockable_value_t const &other )
+		    : m_mutex{std::make_unique<std::mutex>( )}, m_value{std::make_unique<T>( *other.get( ) )} {}
+
+		lockable_value_t &operator=( lockable_value_t const &rhs ) {
+			if( this != &rhs ) {
+				m_mutex = std::make_unique<std::mutex>( );
+				m_value = *rhs.get( );
+			}
+			return *this;
+		}
+
+		locked_value_t<T> get( ) {
+			return make_locked_value( *m_mutex, *m_value );
+		}
+
+		locked_value_t<T> get( ) const {
+			return make_locked_value( *m_mutex, *static_cast<T const *>( m_value.get( ) ) );
+		}
+
+		locked_value_t<T> operator*( ) {
+			return get( );
+		}
+
+		locked_value_t<T> operator*( ) const {
+			return get( );
+		}
+	}; // lockable_value_t
 } // namespace daw
 
