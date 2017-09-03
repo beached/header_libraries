@@ -30,9 +30,14 @@
 struct A {
 	std::mutex m_mutex;
 	int counter = 0;
+	std::string str;
 
 	auto get( ) {
 		return daw::make_locked_value( m_mutex, counter );
+	}
+
+	auto get_str( ) {
+		return daw::make_locked_value( m_mutex, str );
 	}
 };
 
@@ -62,6 +67,8 @@ BOOST_AUTO_TEST_CASE( test_locked_value01 ) {
 	t2.join( );
 	t3.join( );
 	t4.join( );
+
+	std::cout << "operator-> tst" << a.get_str( )->empty( ) << '\n';
 }
 
 struct B {

@@ -72,6 +72,14 @@ namespace daw {
 		Value const &operator*( ) const noexcept {
 			return *m_value;
 		}
+
+		Value * operator->( ) noexcept {
+			return m_value;
+		}
+
+		Value const * operator->( ) const noexcept {
+			return m_value;
+		}
 	}; // locked_value_t
 
 	template<typename Value>
