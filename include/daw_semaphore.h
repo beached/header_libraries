@@ -35,10 +35,11 @@ namespace daw {
 		intmax_t m_count;
 
 	  public:
-		explicit basic_semaphore( intmax_t count = 0 )
+		template<typename Int>
+		explicit basic_semaphore( Int count = 0 )
 		    : m_mutex{std::make_unique<Mutex>( )}
 		    , m_condition{std::make_unique<ConditionVariable>( )}
-		    , m_count{count} {}
+		    , m_count{static_cast<intmax_t>( count )} {}
 
 		~basic_semaphore( ) = default;
 		basic_semaphore( basic_semaphore const & ) = delete;
@@ -89,26 +90,28 @@ namespace daw {
 	}; // basic_semaphore
 
 	using semaphore = basic_semaphore<std::mutex, std::condition_variable>;
-	
+
 	template<typename Mutex, typename ConditionVariable>
 	class basic_shared_semaphore {
 		std::shared_ptr<basic_semaphore<Mutex, ConditionVariable>> m_semaphore;
-	public:
-	  explicit basic_shared_semaphore( intmax_t count = 0 )
-		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( count )} {}
 
-	  explicit basic_shared_semaphore( basic_semaphore<Mutex, ConditionVariable> &&semaphore )
-		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( std::move( semaphore ) )} {}
+	  public:
+		template<typename Int>
+		explicit basic_shared_semaphore( Int count = 0 )
+		    : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( count )} {}
 
-	  ~basic_shared_semaphore( ) = default;
-	  basic_shared_semaphore( basic_shared_semaphore const & ) = default;
-	  ;
-	  basic_shared_semaphore( basic_shared_semaphore && ) noexcept = default;
-	  basic_shared_semaphore &operator=( basic_shared_semaphore const & ) = default;
-	  basic_shared_semaphore &operator=( basic_shared_semaphore && ) noexcept = default;
+		explicit basic_shared_semaphore( basic_semaphore<Mutex, ConditionVariable> &&semaphore )
+		    : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( std::move( semaphore ) )} {}
 
-	  void notify( ) {
-		  m_semaphore->notify( );
+		~basic_shared_semaphore( ) = default;
+		basic_shared_semaphore( basic_shared_semaphore const & ) = default;
+		;
+		basic_shared_semaphore( basic_shared_semaphore && ) noexcept = default;
+		basic_shared_semaphore &operator=( basic_shared_semaphore const & ) = default;
+		basic_shared_semaphore &operator=( basic_shared_semaphore && ) noexcept = default;
+
+		void notify( ) {
+			m_semaphore->notify( );
 		}
 
 		void wait( ) {
@@ -128,13 +131,13 @@ namespace daw {
 		auto wait_until( std::chrono::duration<Rep, Period> const &rel_time ) {
 			return m_semaphore->wait_until( rel_time );
 		}
-	};	// basic_shared_semaphore
+	}; // basic_shared_semaphore
 
 	using shared_semaphore = basic_shared_semaphore<std::mutex, std::condition_variable>;
 
 	template<typename Mutex, typename ConditionVariable>
 	void wait_all( std::initializer_list<basic_semaphore<Mutex, ConditionVariable>> semaphores ) {
-		for( auto & sem: semaphores ) {
+		for( auto &sem : semaphores ) {
 			sem->wait( );
 		}
 	}

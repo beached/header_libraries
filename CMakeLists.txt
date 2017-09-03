@@ -49,6 +49,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_heap_array
 	daw_heap_value
 	daw_locked_stack
+	daw_locked_value
 	daw_math
 	daw_memory_address
 	daw_memory_mapped_file
