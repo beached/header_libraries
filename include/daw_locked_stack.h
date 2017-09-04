@@ -116,6 +116,11 @@ namespace daw {
 			}
 			return 0;
 		}
+
+		std::vector<value_type> copy( ) const {
+			std::lock_guard<std::mutex> lock( *m_mutex );
+			return m_items;
+		}
 	}; // locked_stack_t
 
 } // namespace daw
