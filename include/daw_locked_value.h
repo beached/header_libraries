@@ -117,7 +117,7 @@ namespace daw {
 			return std::move( make_locked_value( *m_mutex, *m_value ) );
 		}
 
-		locked_value_t<T> const get( ) const {
+		locked_value_t<T> get( ) const {
 			return std::move( make_locked_value( *m_mutex, *static_cast<T const *>( m_value.get( ) ) ) );
 		}
 
