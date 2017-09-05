@@ -248,10 +248,6 @@ namespace daw {
 			return !empty( );
 		}
 
-		explicit operator value_type( ) const {
-			get( );
-		}
-
 		void throw_if_exception( ) const {
 			if( has_exception( ) ) {
 				std::rethrow_exception( m_exception );
@@ -272,18 +268,13 @@ namespace daw {
 		}
 	}; // class expected_t<void>
 
-	template<typename ExpectedResult, typename Function, typename... Args>
+	template<typename Function, typename... Args>
 	auto expected_from_code( Function func, Args &&... args ) noexcept {
+		using ExpectedResult = std::decay_t<decltype( std::declval<Function>( )( std::declval<Args>( )... ) )>;
 		static_assert( std::is_convertible<decltype( func( std::forward<Args>( args )... ) ), ExpectedResult>::value,
 		               "Must be able to convert result of func to expected result type" );
 		try {
 			return expected_t<ExpectedResult>(func( std::forward<Args>( args )... ));
 		} catch( ... ) { return expected_t<ExpectedResult>{std::current_exception( )}; }
-	}
-
-	template<typename Function, typename... Args>
-	decltype( auto ) expected_from_code( Function func, Args &&... args ) noexcept {
-		using result_t = std::decay_t<decltype( func( std::forward<Args>( args )... ) )>;
-		return expected_from_code<result_t>( std::move( func ), std::forward<Args>( args )... );
 	}
 } // namespace daw
