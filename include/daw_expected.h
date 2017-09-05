@@ -91,8 +91,8 @@ namespace daw {
 		static auto from_code( Function func, Args &&... args ) noexcept {
 			using std::swap;
 			try {
-				return expected_t{func( std::forward<Args>( args )... )};
-			} catch( ... ) { return expected_t{exception_tag{}}; }
+				return expected_t(func( std::forward<Args>( args )... ));
+			} catch( ... ) { return expected_t(exception_tag{}); }
 		}
 
 		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
@@ -277,4 +277,15 @@ namespace daw {
 			return expected_t<ExpectedResult>(func( std::forward<Args>( args )... ));
 		} catch( ... ) { return expected_t<ExpectedResult>{std::current_exception( )}; }
 	}
+
+	template<typename Function, typename... Args>
+	auto expected_from_code( Function func, Args &&... args ) noexcept {
+		using ExpectedResult = std::decay_t<decltype( std::declval<Function>( )( std::declval<Args>( )... ) )>;
+		static_assert( std::is_convertible<decltype( func( std::forward<Args>( args )... ) ), ExpectedResult>::value,
+		               "Must be able to convert result of func to expected result type" );
+		try {
+			return expected_t<ExpectedResult>(func( std::forward<Args>( args )... ));
+		} catch( ... ) { return expected_t<ExpectedResult>{std::current_exception( )}; }
+	}
+
 } // namespace daw
