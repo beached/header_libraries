@@ -114,11 +114,11 @@ namespace daw {
 		}
 
 		locked_value_t<T> get( ) {
-			return make_locked_value( *m_mutex, *m_value );
+			return std::move( make_locked_value( *m_mutex, *m_value ) );
 		}
 
 		locked_value_t<T> const get( ) const {
-			return make_locked_value( *m_mutex, *static_cast<T const *>( m_value.get( ) ) );
+			return std::move( make_locked_value( *m_mutex, *static_cast<T const *>( m_value.get( ) ) ) );
 		}
 
 		locked_value_t<T> operator*( ) {
