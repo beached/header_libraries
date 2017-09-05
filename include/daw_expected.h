@@ -137,6 +137,14 @@ namespace daw {
 			return *m_value;
 		}
 
+		reference operator*( ) {
+			return get( );
+		}
+
+		const_reference operator*( ) const {
+			return get( );
+		}
+
 		std::string get_exception_message( ) const {
 			try {
 				throw_if_exception( );
