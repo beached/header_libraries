@@ -198,4 +198,8 @@ namespace daw {
 	template<typename... Ts>
 	constexpr bool is_callable_v = is_callable<Ts...>::value;
 
+	template<class T>
+	constexpr std::add_const_t<T> &as_const( T &t ) noexcept {
+		return t;
+	}
 } // namespace daw

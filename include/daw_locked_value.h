@@ -27,6 +27,8 @@
 #include <mutex>
 #include <utility>
 
+#include "cpp_17.h"
+
 namespace daw {
 	template<typename Value>
 	class locked_value_t {
@@ -118,7 +120,7 @@ namespace daw {
 		}
 
 		locked_value_t<T> get( ) const {
-			return std::move( make_locked_value( *m_mutex, *static_cast<T const *>( m_value.get( ) ) ) );
+			return std::move( make_locked_value( *m_mutex, daw::as_const( m_value.get( ) ) ) );
 		}
 
 		locked_value_t<T> operator*( ) {
