@@ -176,4 +176,9 @@ namespace daw {
 			semaphore.wait( );
 		}
 	};
+
+	template<typename T>
+	auto make_waitable_value( shared_semaphore semaphore, T value ) {
+		return waitable_value<T>{ std::move( semaphore ), std::move( value ) };
+	}
 } // namespace daw
