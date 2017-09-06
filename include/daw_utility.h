@@ -600,6 +600,25 @@ namespace daw {
 	;
 	}
 
+	template<typename Float>
+	constexpr bool nearly_equal( Float a, Float b ) noexcept {
+		auto absA = fabs( a );
+		auto absB = fabs( b );
+		auto diff = fabs( a - b );
+
+		if( a == b ) { // shortcut, handles infinities
+			return true;
+		}
+		if( a == 0 || b == 0 || diff < std::numeric_limits<Float>::min_exponent( ) ) {
+			// a or b is zero or both are extremely close to it
+			// 			// relative error is less meaningful here
+			return diff < ( std::numeric_limits<Float>::epsilon( ) * std::numeric_limits<Float>::min_exponent( ) );
+		}
+		// use relative error
+		return diff / std::min( ( absA + absB ), std::numeric_limits<Float>::max( ) ) <
+		       std::numeric_limits<Float>::epsilon( );
+	}
+
 } // namespace daw
 
 template<typename... Ts>
