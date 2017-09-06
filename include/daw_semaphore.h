@@ -112,7 +112,7 @@ namespace daw {
 
 	  public:
 		template<typename Int=intmax_t>
-		explicit basic_shared_semaphore( Int count = 0 )
+		explicit basic_shared_semaphore( Int count = 0, bool latched = true )
 		    : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( count )} {}
 
 		explicit basic_shared_semaphore( basic_semaphore<Mutex, ConditionVariable> &&semaphore )
