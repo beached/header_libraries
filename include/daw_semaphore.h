@@ -78,10 +78,10 @@ namespace daw {
 			return status;
 		}
 
-		template<typename Rep, typename Period>
-		auto wait_until( std::chrono::duration<Rep, Period> const &rel_time ) {
+		template<typename Clock, typename Duration>
+		auto wait_until( std::chrono::time_point<Clock, Duration> const & timeout_time ) {
 			std::unique_lock<std::mutex> lock{*m_mutex};
-			auto status = m_condition->wait_until( lock, rel_time, [&]( ) { return m_count > 0; } );
+			auto status = m_condition->wait_until( lock, timeout_time, [&]( ) { return m_count > 0; } );
 			if( status ) {
 				--m_count;
 			}
@@ -127,9 +127,9 @@ namespace daw {
 			return m_semaphore->wait_for( rel_time );
 		}
 
-		template<typename Rep, typename Period>
-		auto wait_until( std::chrono::duration<Rep, Period> const &rel_time ) {
-			return m_semaphore->wait_until( rel_time );
+		template<typename Clock, typename Duration>
+		auto wait_until( std::chrono::time_point<Clock, Duration> const & timeout_time ) {
+			return m_semaphore->wait_until( timeout_time );
 		}
 	}; // basic_shared_semaphore
 
