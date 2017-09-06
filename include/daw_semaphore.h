@@ -33,13 +33,15 @@ namespace daw {
 		std::unique_ptr<Mutex> m_mutex;
 		std::unique_ptr<ConditionVariable> m_condition;
 		intmax_t m_count;
+		bool m_latched;
 
 	  public:
-		template<typename Int=int>
-		explicit basic_semaphore( Int count = 0 )
+		template<typename Int = intmax_t>
+		explicit basic_semaphore( Int count = 0, bool latched = true )
 		    : m_mutex{std::make_unique<Mutex>( )}
 		    , m_condition{std::make_unique<ConditionVariable>( )}
-		    , m_count{static_cast<intmax_t>( count )} {}
+		    , m_count{static_cast<intmax_t>( count )}
+		    , m_latched{latched} {}
 
 		~basic_semaphore( ) = default;
 		basic_semaphore( basic_semaphore const & ) = delete;
@@ -50,18 +52,31 @@ namespace daw {
 		void notify( ) {
 			std::unique_lock<std::mutex> lock{*m_mutex};
 			++m_count;
+			if( m_latched ) {
+				m_condition->notify_one( );
+			}
+		}
+
+		void add_notifier( ) {
+			std::unique_lock<std::mutex> lock{*m_mutex};
+			--m_count;
+		}
+
+		void set_latch( ) {
+			std::unique_lock<std::mutex> lock{*m_mutex};
+			m_latched = true;
 			m_condition->notify_one( );
 		}
 
 		void wait( ) {
 			std::unique_lock<std::mutex> lock{*m_mutex};
-			m_condition->wait( lock, [&]( ) { return m_count > 0; } );
+			m_condition->wait( lock, [&]( ) { return m_latched && m_count > 0; } );
 			--m_count;
 		}
 
 		bool try_wait( ) {
 			std::unique_lock<std::mutex> lock{*m_mutex};
-			if( m_count > 0 ) {
+			if( m_latched && m_count > 0 ) {
 				--m_count;
 				return true;
 			}
@@ -71,7 +86,7 @@ namespace daw {
 		template<typename Rep, typename Period>
 		auto wait_for( std::chrono::duration<Rep, Period> const &rel_time ) {
 			std::unique_lock<std::mutex> lock{*m_mutex};
-			auto status = m_condition->wait_for( lock, rel_time, [&]( ) { return m_count > 0; } );
+			auto status = m_condition->wait_for( lock, rel_time, [&]( ) { return m_latched && m_count > 0; } );
 			if( status ) {
 				--m_count;
 			}
@@ -81,7 +96,7 @@ namespace daw {
 		template<typename Clock, typename Duration>
 		auto wait_until( std::chrono::time_point<Clock, Duration> const & timeout_time ) {
 			std::unique_lock<std::mutex> lock{*m_mutex};
-			auto status = m_condition->wait_until( lock, timeout_time, [&]( ) { return m_count > 0; } );
+			auto status = m_condition->wait_until( lock, timeout_time, [&]( ) { return m_latched && m_count > 0; } );
 			if( status ) {
 				--m_count;
 			}
@@ -96,7 +111,7 @@ namespace daw {
 		std::shared_ptr<basic_semaphore<Mutex, ConditionVariable>> m_semaphore;
 
 	  public:
-		template<typename Int=int>
+		template<typename Int=intmax_t>
 		explicit basic_shared_semaphore( Int count = 0 )
 		    : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( count )} {}
 
@@ -112,6 +127,14 @@ namespace daw {
 
 		void notify( ) {
 			m_semaphore->notify( );
+		}
+
+		void add_notifier( ) {
+			m_semaphore->add_notifier( );
+		}
+
+		void set_latch( ) {
+			m_semaphore->set_latch( );
 		}
 
 		void wait( ) {
