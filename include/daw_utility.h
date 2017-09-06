@@ -602,6 +602,7 @@ namespace daw {
 
 	template<typename Float>
 	constexpr bool nearly_equal( Float a, Float b ) noexcept {
+		// Code from http://floating-point-gui.de/errors/comparison/
 		auto absA = fabs( a );
 		auto absB = fabs( b );
 		auto diff = fabs( a - b );
