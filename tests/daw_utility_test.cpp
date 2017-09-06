@@ -34,3 +34,17 @@ BOOST_AUTO_TEST_CASE( daw_utility_append_test ) {
 	daw::append( a, 6, 7, 8, 9 );
 	BOOST_REQUIRE( a.size( ) == 9 );
 }
+
+BOOST_AUTO_TEST_CASE( daw_utility_nearly_equal_test ) {
+	float f1 = 0;
+	float f2 = 0;
+	BOOST_REQUIRE( daw::nearly_equal( f1, f2 ) );
+	f1 = 1.0;
+	BOOST_REQUIRE( !daw::nearly_equal( f1, f2 ) );
+
+	int i1 = 1;
+	int i2 = 1;
+	BOOST_REQUIRE( daw::nearly_equal( i1, i2 ) );
+	i2 = 2;
+	BOOST_REQUIRE( !daw::nearly_equal( i1, i2 ) );
+}

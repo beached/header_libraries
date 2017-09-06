@@ -600,26 +600,72 @@ namespace daw {
 	;
 	}
 
-	template<typename Float>
-	constexpr bool nearly_equal( Float a, Float b ) noexcept {
+	template<typename T, typename std::enable_if_t<!std::is_floating_point<T>::value, long> = 0>
+	constexpr bool nearly_equal( T const &a, T const &b ) noexcept {
+		return a == b;
+	}
+
+	template<typename T, typename std::enable_if_t<std::is_floating_point<T>::value, long> = 0>
+	constexpr bool nearly_equal( T const &a, T const &b ) noexcept {
 		// Code from http://floating-point-gui.de/errors/comparison/
-		auto absA = fabs( a );
-		auto absB = fabs( b );
-		auto diff = fabs( a - b );
+		auto absA = std::abs( a );
+		auto absB = std::abs( b );
+		auto diff = std::abs( a - b );
 
 		if( a == b ) { // shortcut, handles infinities
 			return true;
 		}
-		if( a == 0 || b == 0 || diff < std::numeric_limits<Float>::min_exponent( ) ) {
+		if( a == 0 || b == 0 || diff < std::numeric_limits<T>::min_exponent ) {
 			// a or b is zero or both are extremely close to it
 			// 			// relative error is less meaningful here
-			return diff < ( std::numeric_limits<Float>::epsilon( ) * std::numeric_limits<Float>::min_exponent( ) );
+			return diff < ( std::numeric_limits<T>::epsilon( ) * std::numeric_limits<T>::min_exponent );
+		}
+		// use relative error
+		return diff / std::min( ( absA + absB ), std::numeric_limits<T>::max( ) ) <
+		       std::numeric_limits<T>::epsilon( );
+	}
+
+	/*
+	constexpr bool nearly_equal( double const &a, double const &b ) noexcept {
+		using Float = double;
+		// Code from http://floating-point-gui.de/errors/comparison/
+		auto absA = std::abs( a );
+		auto absB = std::abs( b );
+		auto diff = std::abs( a - b );
+
+		if( a == b ) { // shortcut, handles infinities
+			return true;
+		}
+		if( a == 0 || b == 0 || diff < std::numeric_limits<Float>::min_exponent ) {
+			// a or b is zero or both are extremely close to it
+			// 			// relative error is less meaningful here
+			return diff < ( std::numeric_limits<Float>::epsilon( ) * std::numeric_limits<Float>::min_exponent );
 		}
 		// use relative error
 		return diff / std::min( ( absA + absB ), std::numeric_limits<Float>::max( ) ) <
 		       std::numeric_limits<Float>::epsilon( );
 	}
 
+	constexpr bool nearly_equal( long double const &a, long double const &b ) noexcept {
+		using Float = long double;
+		// Code from http://floating-point-gui.de/errors/comparison/
+		auto absA = std::abs( a );
+		auto absB = std::abs( b );
+		auto diff = std::abs( a - b );
+
+		if( a == b ) { // shortcut, handles infinities
+			return true;
+		}
+		if( a == 0 || b == 0 || diff < std::numeric_limits<Float>::min_exponent ) {
+			// a or b is zero or both are extremely close to it
+			// 			// relative error is less meaningful here
+			return diff < ( std::numeric_limits<Float>::epsilon( ) * std::numeric_limits<Float>::min_exponent );
+		}
+		// use relative error
+		return diff / std::min( ( absA + absB ), std::numeric_limits<Float>::max( ) ) <
+		       std::numeric_limits<Float>::epsilon( );
+	}
+	*/
 } // namespace daw
 
 template<typename... Ts>
