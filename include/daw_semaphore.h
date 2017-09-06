@@ -164,4 +164,16 @@ namespace daw {
 			sem->wait( );
 		}
 	}
+
+	template<typename T>
+	struct waitable_value {
+		shared_semaphore semaphore;
+		T value;
+
+		waitable_value( shared_semaphore sem, T val ) : semaphore{std::move( sem )}, value{std::move( val )} {}
+
+		void wait( ) {
+			semaphore.wait( );
+		}
+	};
 } // namespace daw
