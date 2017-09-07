@@ -99,7 +99,7 @@ namespace daw {
 
 		template<typename U>
 		explicit lockable_value_t( U value )
-		    : m_mutex{std::make_unique<std::mutex>( )}, m_value{std::make_unique<T>( std::forward<U>( value ) )} {}
+		    : m_mutex{std::make_unique<std::mutex>( )}, m_value{std::make_unique<T>( std::move( value ) )} {}
 
 		lockable_value_t( lockable_value_t && ) noexcept = default;
 		lockable_value_t &operator=( lockable_value_t && ) noexcept = default;
