@@ -109,6 +109,10 @@ namespace daw {
 			return static_cast<bool>( m_exception );
 		}
 
+		std::exception_ptr get_exception_ptr( ) noexcept {
+			return m_exception;
+		}
+
 		bool empty( ) const {
 			return !( has_value( ) || has_exception( ) );
 		}
@@ -238,6 +242,10 @@ namespace daw {
 
 		bool has_exception( ) const noexcept {
 			return static_cast<bool>( m_exception );
+		}
+
+		std::exception_ptr get_exception_ptr( ) noexcept {
+			return m_exception;
 		}
 
 		bool empty( ) const {
