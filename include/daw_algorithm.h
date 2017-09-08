@@ -42,7 +42,7 @@ namespace daw {
 		}
 
 		template<typename Container, typename InputIterator>
-		void safe_advance( Container &container, InputIterator &it, ptrdiff_t distance ) {
+		constexpr void safe_advance( Container &container, InputIterator &it, ptrdiff_t distance ) noexcept {
 			if( 0 == distance ) {
 				return;
 			}
@@ -60,7 +60,7 @@ namespace daw {
 		}
 
 		template<typename Iterator>
-		auto safe_next( Iterator it, Iterator last, size_t n ) {
+		constexpr auto safe_next( Iterator it, Iterator last, size_t n ) noexcept {
 			return std::next( it, std::min( n, static_cast<size_t>( std::distance( it, last ) ) ) );
 		}
 
