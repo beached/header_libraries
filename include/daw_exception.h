@@ -230,22 +230,22 @@ namespace daw {
 			}
 		}
 
-		template<typename ExceptionType = AssertException, typename StringType, typename Arg, typename... Args>
-		constexpr void daw_throw_on_false( bool test, StringType const &format, Arg arg, Args... args ) {
+		template<typename ExceptionType = AssertException, typename Bool, typename StringType, typename Arg, typename... Args>
+		constexpr void daw_throw_on_false( Bool test, StringType const &format, Arg arg, Args... args ) {
 			if( !static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( daw::string::fmt( format, arg, args... ) );
 			}
 		}
 
-		template<typename ExceptionType = AssertException>
-		constexpr void daw_throw_on_false( bool test ) {
+		template<typename ExceptionType = AssertException, typename Bool>
+		constexpr void daw_throw_on_false( Bool test ) {
 			if( !static_cast<bool>( test ) ) {
 				throw ExceptionType{};
 			}
 		}
 
-		template<typename ExceptionType = AssertException>
-		constexpr void daw_throw_on_true( bool test ) {
+		template<typename ExceptionType = AssertException, typename Bool>
+		constexpr void daw_throw_on_true( Bool test ) {
 			if( static_cast<bool>( test ) ) {
 				throw ExceptionType{};
 			}
