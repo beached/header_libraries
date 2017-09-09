@@ -254,9 +254,9 @@ namespace daw {
 			return !empty( );
 		}
 
-		explicit operator value_type( ) const {
+		/*explicit operator value_type( ) const {
 			get( );
-		}
+		}*/
 
 		void throw_if_exception( ) const {
 			if( has_exception( ) ) {
@@ -283,7 +283,7 @@ namespace daw {
 		static_assert( std::is_convertible<decltype( func( std::forward<Args>( args )... ) ), ExpectedResult>::value,
 		               "Must be able to convert result of func to expected result type" );
 		try {
-			return expected_t<ExpectedResult>{func( std::forward<Args>( args )... )};
+			return expected_t<ExpectedResult>{func, std::forward<Args>( args )...};
 		} catch( ... ) { return expected_t<ExpectedResult>{std::current_exception( )}; }
 	}
 
