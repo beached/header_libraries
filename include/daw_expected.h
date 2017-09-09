@@ -65,18 +65,18 @@ namespace daw {
 		expected_t( value_type value ) noexcept : m_value{std::move( value )}, m_exception{} {}
 
 		expected_t &operator=( value_type value ) {
-			using std::swap;
-			expected_t tmp{std::move( value )};
-			swap( *this, tmp );
+			m_value = std::move( value );
+			m_exception = nullptr;
 			return *this;
 		}
 
 		expected_t( std::exception_ptr ptr ) : m_value{}, m_exception{std::move( ptr )} {}
 
 		expected_t &operator=( std::exception_ptr ptr ) {
-			using std::swap;
-			expected_t tmp{std::move( ptr )};
-			swap( *this, tmp );
+			if( m_value ) {
+				m_value.reset( );
+			}
+			m_exception = ptr;
 			return *this;
 		}
 
@@ -88,8 +88,7 @@ namespace daw {
 		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename... Args>
-		static auto from_code( Function func, Args &&... args ) noexcept {
-			using std::swap;
+		static expected_t from_code( Function func, Args &&... args ) noexcept {
 			try {
 				return expected_t{func( std::forward<Args>( args )... )};
 			} catch( ... ) { return expected_t{exception_tag{}}; }
@@ -222,8 +221,7 @@ namespace daw {
 		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename... Args>
-		static auto from_code( Function func, Args &&... args ) noexcept {
-			using std::swap;
+		static expected_t from_code( Function func, Args &&... args ) noexcept {
 			try {
 				func( std::forward<Args>( args )... );
 				return expected_t{true};
@@ -232,7 +230,7 @@ namespace daw {
 
 		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
-		template<class Function, typename... Args>
+		template<class Function, typename... Args, typename result=decltype(std::declval<Function>( )( std::declval<Args>( )... ))>
 		expected_t( Function func, Args &&... args ) noexcept
 		    : expected_t{expected_t::from_code( func, std::forward<Args>( args )... )} {}
 
