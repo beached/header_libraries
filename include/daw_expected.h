@@ -90,7 +90,8 @@ namespace daw {
 		template<class Function, typename... Args>
 		static expected_t from_code( Function func, Args &&... args ) noexcept {
 			try {
-				return expected_t{func( std::forward<Args>( args )... )};
+				auto tmp = func( std::forward<Args>( args )... );
+				return expected_t{std::move( tmp )};
 			} catch( ... ) { return expected_t{exception_tag{}}; }
 		}
 
