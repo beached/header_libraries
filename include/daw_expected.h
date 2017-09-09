@@ -64,7 +64,7 @@ namespace daw {
 		//////////////////////////////////////////////////////////////////////////
 		expected_t( value_type value ) noexcept : m_value{std::move( value )}, m_exception{} {}
 
-		expected_t &operator=( value_type value ) {
+		expected_t &operator=( value_type value ) noexcept {
 			m_value = std::move( value );
 			m_exception = nullptr;
 			return *this;
@@ -197,20 +197,17 @@ namespace daw {
 		template<typename T>
 		expected_t( T ) noexcept : expected_t{true} {}
 
-		template<typename T>
-		expected_t &operator=( T ) {
-			using std::swap;
-			expected_t tmp{true};
-			swap( *this, tmp );
+		expected_t &operator=( bool ) noexcept {
+			m_value = true;
+			m_exception = nullptr;
 			return *this;
 		}
 
-		expected_t( std::exception_ptr ptr ) : m_exception{std::move( ptr )}, m_value{} {}
+		expected_t( std::exception_ptr ptr ) : m_exception{std::move( ptr )}, m_value{false} {}
 
 		expected_t &operator=( std::exception_ptr ptr ) {
-			using std::swap;
-			expected_t tmp{std::move( ptr )};
-			swap( *this, tmp );
+			m_value = false;
+			m_exception = ptr;
 			return *this;
 		}
 
