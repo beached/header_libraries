@@ -304,31 +304,31 @@ namespace daw {
 			return std::forward<ValueType>( value );
 		}
 
-		template<typename ExceptionType = AssertException, typename StringType>
-		constexpr bool daw_throw_on_true_or_return( bool test, StringType const &msg ) {
+		template<typename ExceptionType = AssertException, typename Bool, typename StringType>
+		constexpr bool daw_throw_on_true_or_return( Bool test, StringType const &msg ) {
 			if( static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( msg );
 			}
 			return false;
 		}
 
-		template<typename ExceptionType = AssertException, typename StringType, typename Arg, typename... Args>
-		constexpr bool daw_throw_on_true_or_return( bool test, StringType const &format, Arg arg, Args... args ) {
+		template<typename ExceptionType = AssertException, typename Bool, typename StringType, typename Arg, typename... Args>
+		constexpr bool daw_throw_on_true_or_return( Bool test, StringType const &format, Arg arg, Args... args ) {
 			if( static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( daw::string::fmt( format, arg, args... ) );
 			}
 			return false;
 		}
 
-		template<typename ExceptionType = AssertException, typename StringType>
-		constexpr void daw_throw_on_true( bool test, StringType const &msg ) {
+		template<typename ExceptionType = AssertException, typename Bool, typename StringType>
+		constexpr void daw_throw_on_true( Bool test, StringType const &msg ) {
 			if( static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( msg );
 			}
 		}
 
-		template<typename ExceptionType = AssertException, typename StringType, typename Arg, typename... Args>
-		constexpr void daw_throw_on_true( bool test, StringType const &format, Arg arg, Args... args ) {
+		template<typename ExceptionType = AssertException, typename Bool, typename StringType, typename Arg, typename... Args>
+		constexpr void daw_throw_on_true( Bool test, StringType const &format, Arg arg, Args... args ) {
 			if( static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( daw::string::fmt( format, arg, args... ) );
 			}
