@@ -178,10 +178,27 @@ namespace daw {
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: No value, aka null
 		//////////////////////////////////////////////////////////////////////////
-		expected_t( expected_t const & ) = default;
-		expected_t &operator=( expected_t const & ) = default;
-		expected_t( expected_t && ) noexcept = default;
-		expected_t &operator=( expected_t && ) noexcept = default;
+		expected_t( expected_t &&other ) noexcept
+		    : m_exception{std::exchange( other.m_exception, nullptr )}
+		    , m_value{std::exchange( other.m_value, false )} {}
+
+		expected_t &operator=( expected_t && rhs ) noexcept {
+			if( this != &rhs ) {
+				m_exception = std::exchange( rhs.m_exception, nullptr );
+				m_value = std::exchange( rhs.m_value, false );
+			}
+			return *this;
+		}	
+
+		expected_t( expected_t const & other ) noexcept: m_exception{ other.m_exception }, m_value{ other.m_value } { }
+		expected_t &operator=( expected_t const & rhs ) noexcept {
+			if( this != &rhs ) {
+				m_exception = rhs.m_exception;
+				m_value = rhs.m_value;
+			}
+			return *this;
+		}	
+
 		~expected_t( ) = default;
 
 		friend bool operator==( expected_t const &lhs, expected_t const &rhs ) {
@@ -195,7 +212,7 @@ namespace daw {
 		expected_t( ) noexcept : expected_t{false} {}
 
 		template<typename T>
-		expected_t( T ) noexcept : expected_t{true} {}
+		expected_t( T&& ) noexcept : expected_t{true} {}
 
 		expected_t &operator=( bool ) noexcept {
 			m_value = true;
@@ -203,7 +220,7 @@ namespace daw {
 			return *this;
 		}
 
-		expected_t( std::exception_ptr ptr ) : m_exception{std::move( ptr )}, m_value{false} {}
+		expected_t( std::exception_ptr ptr ) noexcept : m_exception{std::move( ptr )}, m_value{false} {}
 
 		expected_t &operator=( std::exception_ptr ptr ) {
 			m_value = false;
@@ -212,16 +229,24 @@ namespace daw {
 		}
 
 		template<typename ExceptionType>
-		expected_t( exception_tag, ExceptionType const &ex ) : expected_t{std::make_exception_ptr( ex )} {}
+		expected_t( exception_tag, ExceptionType const &ex ) noexcept : expected_t{std::make_exception_ptr( ex )} {}
 
-		expected_t( exception_tag ) : expected_t{std::current_exception( )} {}
+		expected_t( exception_tag ) noexcept : expected_t{std::current_exception( )} {}
 
 		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
-		template<class Function, typename... Args>
-		static expected_t from_code( Function func, Args &&... args ) noexcept {
+		template<class Function, typename Arg, typename... Args>
+		static expected_t from_code( Function func, Arg && arg, Args &&... args ) noexcept {
 			try {
-				func( std::forward<Args>( args )... );
+				func( std::forward<Arg>( arg ), std::forward<Args>( args )... );
+				return expected_t{true};
+			} catch( ... ) { return expected_t{exception_tag{}}; }
+		}
+
+		template<class Function>
+		static expected_t from_code( Function func ) noexcept {
+			try {
+				func( );
 				return expected_t{true};
 			} catch( ... ) { return expected_t{exception_tag{}}; }
 		}
