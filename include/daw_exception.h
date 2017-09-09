@@ -109,16 +109,16 @@ namespace daw {
 #endif
 
 #ifndef NODEBUGTHROW
-		template<typename ExceptionType = AssertException, typename BoolType, typename StringType>
-		constexpr void dbg_throw_on_false( BoolType const &test, StringType const &msg ) {
+		template<typename ExceptionType = AssertException, typename Bool, typename StringType>
+		constexpr void dbg_throw_on_false( Bool const &test, StringType const &msg ) {
 			if( !static_cast<bool>( test ) ) {
 				debug_throw<ExceptionType>( msg );
 			}
 		}
 
-		template<typename ExceptionType = AssertException, typename BoolType, typename StringType, typename Arg,
+		template<typename ExceptionType = AssertException, typename Bool, typename StringType, typename Arg,
 		         typename... Args>
-		void dbg_throw_on_false( BoolType const &test, StringType const &format, Arg arg, Args... args ) {
+		void dbg_throw_on_false( Bool const &test, StringType const &format, Arg arg, Args... args ) {
 			if( !static_cast<bool>( test ) ) {
 				debug_throw<ExceptionType>( daw::string::fmt( format, arg, args... ) );
 			}
@@ -142,8 +142,8 @@ namespace daw {
 			return value;
 		}
 
-		template<typename ExceptionType = AssertException, typename BoolType, typename StringType>
-		constexpr bool dbg_throw_on_true_or_return( const BoolType &test, StringType const &msg ) {
+		template<typename ExceptionType = AssertException, typename Bool, typename StringType>
+		constexpr bool dbg_throw_on_true_or_return( const Bool &test, StringType const &msg ) {
 			if( static_cast<bool>( test ) ) {
 				debug_throw<ExceptionType>( msg );
 			}
@@ -171,7 +171,7 @@ namespace daw {
 			}
 		}
 
-		template<typename ExceptionType = AssertException, typename ValueType, typename StringType, typename BoolType,
+		template<typename ExceptionType = AssertException, typename ValueType, typename StringType, typename Bool,
 		         typename Arg, typename... Args>
 		constexpr void daw_throw_on_null( ValueType *value, StringType format, Arg arg, Args... args ) {
 			if( nullptr == value ) {
@@ -187,7 +187,7 @@ namespace daw {
 			return value;
 		}
 
-		template<typename ExceptionType = AssertException, typename ValueType, typename StringType, typename BoolType,
+		template<typename ExceptionType = AssertException, typename ValueType, typename StringType, typename Bool,
 		         typename Arg, typename... Args>
 		constexpr ValueType *daw_throw_on_null_or_return( ValueType *value, StringType format, Arg arg, Args... args ) {
 			if( nullptr == value ) {
@@ -196,26 +196,26 @@ namespace daw {
 			return value;
 		}
 
-		template<typename ExceptionType = AssertException, typename StringType, typename BoolType, typename Arg,
+		template<typename ExceptionType = AssertException, typename StringType, typename Bool, typename Arg,
 		         typename... Args>
-		constexpr bool daw_throw_on_false_or_return( BoolType &&test, StringType format, Arg arg, Args... args ) {
+		constexpr bool daw_throw_on_false_or_return( Bool &&test, StringType format, Arg arg, Args... args ) {
 			if( !static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( daw::string::fmt( format, arg, args... ) );
 			}
 			return true;
 		}
 
-		template<typename ExceptionType = AssertException, typename ValueType, typename StringType, typename BoolType>
-		constexpr ValueType daw_throw_on_false_or_return( ValueType &&value, BoolType &&test, StringType msg ) {
+		template<typename ExceptionType = AssertException, typename ValueType, typename StringType, typename Bool>
+		constexpr ValueType daw_throw_on_false_or_return( ValueType &&value, Bool &&test, StringType msg ) {
 			if( !static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( msg );
 			}
 			return std::forward<ValueType>( value );
 		}
 
-		template<typename ExceptionType = AssertException, typename ValueType, typename StringType, typename BoolType,
+		template<typename ExceptionType = AssertException, typename ValueType, typename StringType, typename Bool,
 		         typename Arg, typename... Args>
-		constexpr ValueType daw_throw_on_false_or_return( ValueType &&value, BoolType &&test, StringType format,
+		constexpr ValueType daw_throw_on_false_or_return( ValueType &&value, Bool &&test, StringType format,
 		                                                  Arg arg, Args... args ) {
 			if( !static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( daw::string::fmt( format, arg, args... ) );
@@ -223,29 +223,29 @@ namespace daw {
 			return std::forward<ValueType>( value );
 		}
 
-		template<typename ExceptionType = AssertException, typename BoolType, typename StringType>
-		constexpr void daw_throw_on_false( BoolType const &test, StringType const &msg ) {
+		template<typename ExceptionType = AssertException, typename Bool, typename StringType>
+		constexpr void daw_throw_on_false( Bool const &test, StringType const &msg ) {
 			if( !static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( msg );
 			}
 		}
 
 		template<typename ExceptionType = AssertException, typename Bool, typename StringType, typename Arg, typename... Args>
-		constexpr void daw_throw_on_false( Bool test, StringType const &format, Arg arg, Args... args ) {
+		constexpr void daw_throw_on_false( Bool const & test, StringType const &format, Arg arg, Args... args ) {
 			if( !static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( daw::string::fmt( format, arg, args... ) );
 			}
 		}
 
 		template<typename ExceptionType = AssertException, typename Bool>
-		constexpr void daw_throw_on_false( Bool test ) {
+		constexpr void daw_throw_on_false( Bool const & test ) {
 			if( !static_cast<bool>( test ) ) {
 				throw ExceptionType{};
 			}
 		}
 
 		template<typename ExceptionType = AssertException, typename Bool>
-		constexpr void daw_throw_on_true( Bool test ) {
+		constexpr void daw_throw_on_true( Bool const & test ) {
 			if( static_cast<bool>( test ) ) {
 				throw ExceptionType{};
 			}
@@ -276,9 +276,9 @@ namespace daw {
 			daw_throw<ExceptionType>( "Unknown/Unexpected enum" );
 		}
 
-		template<typename ExceptionType = AssertException, typename ValueType, typename StringType, typename BoolType,
+		template<typename ExceptionType = AssertException, typename ValueType, typename StringType, typename Bool,
 		         typename Arg, typename... Args>
-		constexpr ValueType daw_throw_on_true_or_return( ValueType &&value, BoolType &&test, StringType format, Arg arg,
+		constexpr ValueType daw_throw_on_true_or_return( ValueType &&value, Bool &&test, StringType format, Arg arg,
 		                                                 Args... args ) {
 			if( static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( daw::string::fmt( format, arg, args... ) );
@@ -286,8 +286,8 @@ namespace daw {
 			return std::forward<ValueType>( value );
 		}
 
-		template<typename ExceptionType = AssertException, typename ValueType, typename StringType, typename BoolType>
-		constexpr ValueType &&daw_throw_on_true_or_return( ValueType &&value, BoolType &&test, StringType msg ) {
+		template<typename ExceptionType = AssertException, typename ValueType, typename StringType, typename Bool>
+		constexpr ValueType &&daw_throw_on_true_or_return( ValueType &&value, Bool &&test, StringType msg ) {
 			if( static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( msg );
 			}
@@ -305,7 +305,7 @@ namespace daw {
 		}
 
 		template<typename ExceptionType = AssertException, typename Bool, typename StringType>
-		constexpr bool daw_throw_on_true_or_return( Bool test, StringType const &msg ) {
+		constexpr bool daw_throw_on_true_or_return( Bool const & test, StringType const &msg ) {
 			if( static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( msg );
 			}
@@ -313,7 +313,7 @@ namespace daw {
 		}
 
 		template<typename ExceptionType = AssertException, typename Bool, typename StringType, typename Arg, typename... Args>
-		constexpr bool daw_throw_on_true_or_return( Bool test, StringType const &format, Arg arg, Args... args ) {
+		constexpr bool daw_throw_on_true_or_return( Bool const & test, StringType const &format, Arg arg, Args... args ) {
 			if( static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( daw::string::fmt( format, arg, args... ) );
 			}
@@ -321,14 +321,14 @@ namespace daw {
 		}
 
 		template<typename ExceptionType = AssertException, typename Bool, typename StringType>
-		constexpr void daw_throw_on_true( Bool test, StringType const &msg ) {
+		constexpr void daw_throw_on_true( Bool const & test, StringType const &msg ) {
 			if( static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( msg );
 			}
 		}
 
 		template<typename ExceptionType = AssertException, typename Bool, typename StringType, typename Arg, typename... Args>
-		constexpr void daw_throw_on_true( Bool test, StringType const &format, Arg arg, Args... args ) {
+		constexpr void daw_throw_on_true( Bool const & test, StringType const &format, Arg arg, Args... args ) {
 			if( static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( daw::string::fmt( format, arg, args... ) );
 			}

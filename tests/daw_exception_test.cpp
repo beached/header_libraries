@@ -22,7 +22,14 @@
 
 #include "boost_test.h"
 #include <iostream>
+#include <memory>
 
 #include "daw_exception.h"
 
-BOOST_AUTO_TEST_CASE( test_01 ) {}
+BOOST_AUTO_TEST_CASE( test_01 ) {
+	std::unique_ptr<int> a;
+	auto b = std::make_unique<int>( 3 );
+	daw::exception::daw_throw_on_true( a );
+
+	daw::exception::daw_throw_on_false( b ); 
+}
