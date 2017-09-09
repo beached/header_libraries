@@ -182,22 +182,20 @@ namespace daw {
 		    : m_exception{std::exchange( other.m_exception, nullptr )}
 		    , m_value{std::exchange( other.m_value, false )} {}
 
-		expected_t &operator=( expected_t && rhs ) noexcept {
-			if( this != &rhs ) {
-				m_exception = std::exchange( rhs.m_exception, nullptr );
-				m_value = std::exchange( rhs.m_value, false );
+		expected_t( expected_t const &other ) noexcept : m_exception{}, m_value{other.m_value} {
+			if( other.m_exception ) {
+				m_exception = other.m_exception;
 			}
-			return *this;
-		}	
-
-		expected_t( expected_t const & other ) noexcept: m_exception{ other.m_exception }, m_value{ other.m_value } { }
-		expected_t &operator=( expected_t const & rhs ) noexcept {
+		}
+		expected_t &operator=( expected_t const &rhs ) noexcept {
 			if( this != &rhs ) {
-				m_exception = rhs.m_exception;
+				if( rhs.m_exception ) {
+					m_exception = rhs.m_exception;
+				}
 				m_value = rhs.m_value;
 			}
 			return *this;
-		}	
+		}
 
 		~expected_t( ) = default;
 
@@ -220,9 +218,13 @@ namespace daw {
 			return *this;
 		}
 
-		expected_t( std::exception_ptr ptr ) noexcept : m_exception{std::move( ptr )}, m_value{false} {}
+		expected_t( std::exception_ptr ptr ) noexcept : m_exception{}, m_value{false} {
+			daw::exception::daw_throw_on_false( ptr, "Attempt to pass a null exception pointer" );
+			m_exception = std::move( ptr );
+		}
 
 		expected_t &operator=( std::exception_ptr ptr ) {
+			daw::exception::daw_throw_on_false( ptr, "Attempt to pass a null exception pointer" );
 			m_value = false;
 			m_exception = ptr;
 			return *this;
