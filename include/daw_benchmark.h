@@ -37,7 +37,7 @@ namespace daw {
 	}
 	namespace utility {
 		template<typename T>
-		std::string format_small_seconds( T t ) {
+		std::string format_seconds( T t ) {
 			auto val = t * 1000000000000000.0;
 			if( val < 1000 ) {
 				return std::to_string( static_cast<uint64_t>( val ) ) + "fs";
