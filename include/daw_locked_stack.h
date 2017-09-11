@@ -86,10 +86,28 @@ namespace daw {
 		}
 
 		template<typename U>
+		bool pop( U &result ) {
+			m_semaphore.wait( );
+			std::lock_guard<std::mutex> lock( *m_mutex );
+			if( m_items.empty( ) ) {
+				return false;
+			}
+			result = m_items.back( );
+			m_items.pop_back( );
+			return true;
+		}
+
+		template<typename U>
 		void push_back( U &&value ) {
 			std::lock_guard<std::mutex> lock( *m_mutex );
 			m_items.push_back( std::forward<U>( value ) );
 			m_semaphore.notify( );
+		}
+
+		template<typename U>
+		bool push( U &&value ) {
+			push_back( std::forward<U>( value ) );
+			return true;
 		}
 
 		template<typename... Args>
