@@ -37,29 +37,37 @@ namespace daw {
 	}
 	namespace utility {
 		template<typename T>
-		std::string format_seconds( T t ) {
-			auto val = t * 1000000000000000.0;
+		std::string format_seconds( T t, size_t prec = 0 ) {
+			std::stringstream ss;
+			ss << std::setprecision( prec ) << std::fixed;
+			auto val = static_cast<double>( t ) * 1000000000000000.0;
 			if( val < 1000 ) {
-				return std::to_string( static_cast<uint64_t>( val ) ) + "fs";
+				ss << val << "fs";
+				return ss.str( );
 			}
 			val /= 1000.0;
 			if( val < 1000 ) {
-				return std::to_string( static_cast<uint64_t>( val ) ) + "ps";
+				ss << val << "ps";
+				return ss.str( );
 			}
 			val /= 1000.0;
 			if( val < 1000 ) {
-				return std::to_string( static_cast<uint64_t>( val ) ) + "ns";
+				ss << val << "ns";
+				return ss.str( );
 			}
 			val /= 1000.0;
 			if( val < 1000 ) {
-				return std::to_string( static_cast<uint64_t>( val ) ) + "µs";
+				ss << val << "us";
+				return ss.str( );
 			}
 			val /= 1000.0;
 			if( val < 1000 ) {
-				return std::to_string( static_cast<uint64_t>( val ) ) + "ms";
+				ss << val << "ms";
+				return ss.str( );
 			}
 			val /= 1000.0;
-			return std::to_string( static_cast<uint64_t>( val ) ) + "s";
+			ss << val << "s";
+			return ss.str( );
 		}
 
 		template<typename Bytes, typename Time = double>
