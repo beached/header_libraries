@@ -23,6 +23,8 @@
 #pragma once
 
 #include <chrono>
+#include <iomanip>
+#include <sstream>
 
 namespace daw {
 	template<typename F>
@@ -32,5 +34,68 @@ namespace daw {
 		auto finish = std::chrono::high_resolution_clock::now( );
 		std::chrono::duration<double> duration = finish - start;
 		return duration.count( );
+	}
+
+	namespace benchmark_help {
+
+		template<typename T>
+		std::string format_small_seconds( T t ) {
+			auto val = t * 1000000000000000.0;
+			if( val < 1000 ) {
+				return std::to_string( static_cast<uint64_t>( val ) ) + "fs";
+			}
+			val /= 1000.0;
+			if( val < 1000 ) {
+				return std::to_string( static_cast<uint64_t>( val ) ) + "ps";
+			}
+			val /= 1000.0;
+			if( val < 1000 ) {
+				return std::to_string( static_cast<uint64_t>( val ) ) + "ns";
+			}
+			val /= 1000.0;
+			if( val < 1000 ) {
+				return std::to_string( static_cast<uint64_t>( val ) ) + "µs";
+			}
+			val /= 1000.0;
+			if( val < 1000 ) {
+				return std::to_string( static_cast<uint64_t>( val ) ) + "ms";
+			}
+			val /= 1000.0;
+			return std::to_string( static_cast<uint64_t>( val ) ) + "s";
+		}
+
+		template<typename Bytes, typename Time>
+		std::string to_bytes_per_second( Bytes bytes, Time t, size_t prec = 1 ) {
+			std::stringstream ss;
+			ss << std::setprecision( prec ) << std::fixed;
+			auto val = static_cast<double>( bytes ) / static_cast<double>( t );
+			if( val < 1024.0 ) {
+				ss << ( static_cast<double>( val * 100.0 ) / 100 ) << "bytes";
+				return ss.str( );
+			}
+			val /= 1024.0;
+			if( val < 1024.0 ) {
+				ss << ( static_cast<double>( val * 100.0 ) / 100 ) << "KB";
+				return ss.str( );
+			}
+			val /= 1024.0;
+			if( val < 1024.0 ) {
+				ss << ( static_cast<double>( val * 100.0 ) / 100 ) << "MB";
+				return ss.str( );
+			}
+			val /= 1024.0;
+			if( val < 1024.0 ) {
+				ss << ( static_cast<double>( val * 100.0 ) / 100 ) << "GB";
+				return ss.str( );
+			}
+			val /= 1024.0;
+			if( val < 1024.0 ) {
+				ss << ( static_cast<double>( val * 100.0 ) / 100 ) << "TB";
+				return ss.str( );
+			}
+			val /= 1024.0;
+			ss << ( static_cast<double>( val * 100.0 ) / 100 ) << "PB";
+			return ss.str( );
+		}
 	}
 } // namespace daw
