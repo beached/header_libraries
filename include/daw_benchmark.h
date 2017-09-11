@@ -62,7 +62,7 @@ namespace daw {
 			return std::to_string( static_cast<uint64_t>( val ) ) + "s";
 		}
 
-		template<typename Bytes, typename Time>
+		template<typename Bytes, typename Time = double>
 		std::string to_bytes_per_second( Bytes bytes, Time t = 1.0, size_t prec = 1 ) {
 			std::stringstream ss;
 			ss << std::setprecision( prec ) << std::fixed;
