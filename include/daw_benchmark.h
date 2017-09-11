@@ -35,9 +35,7 @@ namespace daw {
 		std::chrono::duration<double> duration = finish - start;
 		return duration.count( );
 	}
-
-	namespace benchmark_help {
-
+	namespace utility {
 		template<typename T>
 		std::string format_small_seconds( T t ) {
 			auto val = t * 1000000000000000.0;
@@ -97,5 +95,5 @@ namespace daw {
 			ss << ( static_cast<double>( val * 100.0 ) / 100 ) << "PB";
 			return ss.str( );
 		}
-	}
+	}	// utility 
 } // namespace daw
