@@ -164,8 +164,7 @@ namespace daw {
 		size_type_internal m_size;
 
 	  public:
-		static constexpr size_type_internal const npos;
-		//= std::numeric_limits<size_type_internal>::max( );
+		static constexpr size_type_internal const npos = std::numeric_limits<size_type_internal>::max( );
 
 		constexpr basic_string_view( ) noexcept : m_first{nullptr}, m_size{0} {}
 
@@ -626,8 +625,6 @@ namespace daw {
 			return find_last_not_of( basic_string_view{s}, pos );
 		}
 	}; // basic_string_view
-	template<typename CharT, typename Traits>
-	constexpr typename basic_string_virw<CharT, Traits>::size_type_internal const basic_string_view<CharT, Traits>::npos = std::numeric_limits<typename basic_string_view<CharT, Traits>::size_type_internal>::max( );
 
 	using string_view = basic_string_view<char>;
 	using wstring_view = basic_string_view<wchar_t>;
