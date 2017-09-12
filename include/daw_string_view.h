@@ -143,7 +143,7 @@ namespace daw {
 		}
 	} // namespace details
 
-	template<typename CharT, typename Traits>
+	template<typename CharT, typename Traits, size_t InternalSizeType=uint32_t>
 	struct basic_string_view final {
 		using traits_type = Traits;
 		using value_type = CharT;
@@ -156,7 +156,7 @@ namespace daw {
 		using reverse_iterator = std::reverse_iterator<iterator>;
 		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 		using size_type = size_t;
-		using size_type_internal = size_t;
+		using size_type_internal = InternalSizeType; 
 		using difference_type = std::ptrdiff_t;
 
 	  private:
