@@ -155,8 +155,8 @@ namespace daw {
 		using iterator = const_iterator;
 		using reverse_iterator = std::reverse_iterator<iterator>;
 		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
-		using size_type_internal = uint32_t;
 		using size_type = std::size_t;
+		using size_type_internal = size_type;
 		using difference_type = std::ptrdiff_t;
 
 	  private:
