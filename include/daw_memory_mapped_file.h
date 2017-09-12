@@ -120,11 +120,11 @@ namespace daw {
 			}
 
 			iterator begin( ) {
-				return m_mf_file.begin( );
+				return m_mf_file.data( );
 			}
 
 			const_iterator begin( ) const {
-				return m_mf_file.begin( );
+				return m_mf_file.data( );
 			}
 
 			iterator end( ) {
@@ -136,7 +136,7 @@ namespace daw {
 			}
 
 			const_iterator cbegin( ) const {
-				return m_mf_file.begin( );
+				return m_mf_file.data( );
 			}
 
 			const_iterator cend( ) const {
