@@ -143,7 +143,7 @@ namespace daw {
 		}
 	} // namespace details
 
-	template<typename CharT, typename Traits, size_t InternalSizeType=uint32_t>
+	template<typename CharT, typename Traits, typename InternalSizeType=uint32_t>
 	struct basic_string_view final {
 		using traits_type = Traits;
 		using value_type = CharT;
