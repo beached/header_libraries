@@ -627,7 +627,7 @@ namespace daw {
 		}
 	}; // basic_string_view
 	template<typename CharT, typename Traits>
-	constexpr basic_string_virw<CharT, Traits>::size_type_internal const basic_string_view<CharT, Traits>::npos = std::numeric_limits<basic_string_view<CharT, Traits>::size_type_internal>::max( );
+	constexpr typename basic_string_virw<CharT, Traits>::size_type_internal const basic_string_view<CharT, Traits>::npos = std::numeric_limits<typename basic_string_view<CharT, Traits>::size_type_internal>::max( );
 
 	using string_view = basic_string_view<char>;
 	using wstring_view = basic_string_view<wchar_t>;
