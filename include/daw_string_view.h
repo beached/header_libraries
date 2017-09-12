@@ -164,7 +164,7 @@ namespace daw {
 		size_type_internal m_size;
 
 	  public:
-		static constexpr size_type_internal const npos = std::numeric_limits<size_type_internal>::max( );
+		constexpr size_type_internal const npos = std::numeric_limits<size_type_internal>::max( );
 
 		constexpr basic_string_view( ) noexcept : m_first{nullptr}, m_size{0} {}
 
