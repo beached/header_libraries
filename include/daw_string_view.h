@@ -630,6 +630,10 @@ namespace daw {
 	using wstring_view = basic_string_view<wchar_t>;
 	using u16string_view = basic_string_view<char16_t>;
 	using u32string_view = basic_string_view<char32_t>;
+	using big_string_view = basic_string_view<char, std::char_traits<char>, size_t>;
+	using big_wstring_view = basic_string_view<wchar_t, std::char_traits<wchar_t>, size_t>;
+	using big_u16string_view = basic_string_view<char16_t, std::char_traits<char16_t>, size_t>;
+	using big_u32string_view = basic_string_view<char32_t, std::char_traits<char32_t>, size_t>;
 
 	template<typename CharT, typename Traits = std::char_traits<CharT>>
 	constexpr auto make_string_view_it( CharT const *first, CharT const *last ) noexcept {
