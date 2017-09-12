@@ -33,44 +33,6 @@
 
 namespace daw {
 	template<typename T>
-	struct array_view;
-
-	namespace details {
-		template<typename Iterator>
-		constexpr std::reverse_iterator<Iterator> make_reverse_iterator( Iterator i ) {
-			return std::reverse_iterator<Iterator>( std::move( i ) );
-		}
-	} // namespace details
-
-	template<class ForwardIterator1, class ForwardIterator2>
-	ForwardIterator1 find_end( ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2,
-	                           ForwardIterator2 last2 ) {
-		if( first2 == last2 ) {
-			return last1; // specified in C++11
-		}
-
-		ForwardIterator1 ret = last1;
-
-		while( first1 != last1 ) {
-			ForwardIterator1 it1 = first1;
-			ForwardIterator2 it2 = first2;
-			while( *it1 == *it2 ) { // or: while (pred(*it1,*it2)) for version (2)
-				++it1;
-				++it2;
-				if( it2 == last2 ) {
-					ret = first1;
-					break;
-				}
-				if( it1 == last1 ) {
-					return ret;
-				}
-			}
-			++first1;
-		}
-		return ret;
-	}
-
-	template<typename T>
 	struct array_view {
 		using value_type = std::remove_reference_t<T>;
 		using pointer = value_type *;
@@ -120,19 +82,19 @@ namespace daw {
 		}
 
 		constexpr const_iterator rbegin( ) const noexcept {
-			return details::make_reverse_iterator( m_first + ( m_size - 1 ) );
+			return make_revers_iterator( m_first + ( m_size - 1 ) );
 		}
 
 		constexpr const_reverse_iterator crbegin( ) const noexcept {
-			return details::make_reverse_iterator( m_first + ( m_size - 1 ) );
+			return make_revers_iterator( m_first + ( m_size - 1 ) );
 		}
 
 		constexpr const_reverse_iterator rend( ) const noexcept {
-			return details::make_reverse_iterator( m_first - 1 );
+			return make_revers_iterator( m_first - 1 );
 		}
 
 		constexpr const_reverse_iterator crend( ) const noexcept {
-			return details::make_reverse_iterator( m_first - 1 );
+			return make_revers_iterator( m_first - 1 );
 		}
 
 		constexpr const_reference operator[]( size_type const pos ) const noexcept {

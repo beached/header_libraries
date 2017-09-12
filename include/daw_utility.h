@@ -666,6 +666,10 @@ namespace daw {
 		       std::numeric_limits<Float>::epsilon( );
 	}
 	*/
+	template<typename Iterator>
+	constexpr std::reverse_iterator<Iterator> make_reverse_iterator( Iterator i ) {
+		return std::reverse_iterator<Iterator>( std::move( i ) );
+	}
 } // namespace daw
 
 template<typename... Ts>

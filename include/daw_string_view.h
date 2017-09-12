@@ -46,11 +46,6 @@ namespace daw {
 			return static_cast<SizeT>( pos - str );
 		}
 
-		template<typename Iterator>
-		constexpr std::reverse_iterator<Iterator> make_reverse_iterator( Iterator i ) {
-			return std::reverse_iterator<Iterator>( i );
-		}
-
 		template<typename InputIt, typename ForwardIt, typename BinaryPredicate>
 		constexpr InputIt
 		find_first_of( InputIt first, InputIt last, ForwardIt s_first, ForwardIt s_last, BinaryPredicate p ) noexcept(
@@ -232,19 +227,19 @@ namespace daw {
 		}
 
 		constexpr const_reverse_iterator rbegin( ) const noexcept {
-			return details::make_reverse_iterator( &m_first[m_size - 1] );
+			return make_revers_iterator( &m_first[m_size - 1] );
 		}
 
 		constexpr const_reverse_iterator crbegin( ) const noexcept {
-			return details::make_reverse_iterator( &m_first[m_size - 1] );
+			return make_revers_iterator( &m_first[m_size - 1] );
 		}
 
 		constexpr const_reverse_iterator rend( ) const noexcept {
-			return details::make_reverse_iterator( m_first - 1 );
+			return make_revers_iterator( m_first - 1 );
 		}
 
 		constexpr const_reverse_iterator crend( ) const noexcept {
-			return details::make_reverse_iterator( m_first - 1 );
+			return make_revers_iterator( m_first - 1 );
 		}
 
 		constexpr const_reference operator[]( size_type const pos ) const noexcept {
