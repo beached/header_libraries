@@ -33,7 +33,7 @@
 #include "daw_fnv1a_hash.h"
 
 namespace daw {
-	template<typename CharT, typename Traits = std::char_traits<CharT>>
+	template<typename CharT, typename Traits = std::char_traits<CharT>, typename InternalSizeType=uint32_t>
 	struct basic_string_view;
 
 	namespace details {
@@ -143,7 +143,7 @@ namespace daw {
 		}
 	} // namespace details
 
-	template<typename CharT, typename Traits, typename InternalSizeType=uint32_t>
+	template<typename CharT, typename Traits, typename InternalSizeType>
 	struct basic_string_view final {
 		using traits_type = Traits;
 		using value_type = CharT;
