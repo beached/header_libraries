@@ -36,22 +36,3 @@ BOOST_AUTO_TEST_CASE( daw_array_view_test_001 ) {
 	std::cout << '\n';
 }
 
-BOOST_AUTO_TEST_CASE( daw_array_view_test_002 ) {
-	int const arry_a[] = {1, 2, 3, 4, 5, 6, 7, 8};
-	int const arry_b[] = {5, 6};
-	auto const a = daw::make_array_view( arry_a );
-	auto const b = daw::make_array_view( arry_b );
-	auto const pos = a.find_first_of( b );
-
-	BOOST_REQUIRE_EQUAL( pos, 4 );
-}
-
-BOOST_AUTO_TEST_CASE( daw_array_view_find_last_of_004 ) {
-	int const arry_a[] = {1, 2, 3, 4, 5, 6, 7, 8};
-	int const arry_b[] = {5, 6};
-	auto const a = daw::make_array_view( arry_a );
-	auto const b = daw::make_array_view( arry_b );
-	auto const pos = a.find_last_of( b );
-
-	BOOST_REQUIRE_EQUAL( pos, 4 );
-}

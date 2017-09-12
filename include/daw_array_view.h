@@ -72,13 +72,13 @@ namespace daw {
 
 	template<typename T>
 	struct array_view {
-		using value_type = T;
-		using pointer = T *;
+		using value_type = std::remove_reference_t<T>;
+		using pointer = value_type *;
 		using const_pointer = value_type const *;
 		using reference = value_type &;
 		using const_reference = value_type const &;
+		using iterator = pointer;
 		using const_iterator = const_pointer;
-		using iterator = const_iterator;
 		using reverse_iterator = std::reverse_iterator<iterator>;
 		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 		using size_type = std::size_t;
@@ -147,18 +147,14 @@ namespace daw {
 		}
 
 		constexpr const_reference front( ) const noexcept {
-			return m_first[0];
+			return *m_first;
 		}
 
 		constexpr const_reference back( ) const noexcept {
-			return m_first[m_size - 1];
+			return *std::next(m_first, m_size - 1);
 		}
 
 		constexpr const_pointer data( ) const noexcept {
-			return m_first;
-		}
-
-		constexpr const_pointer c_str( ) const noexcept {
 			return m_first;
 		}
 
@@ -166,20 +162,12 @@ namespace daw {
 			return m_size;
 		}
 
-		constexpr size_type length( ) const noexcept {
-			return m_size;
-		}
-
-		constexpr size_type max_size( ) const noexcept {
-			return m_size;
-		}
-
 		constexpr bool empty( ) const noexcept {
-			return 0 == m_size;
+			return nullptr == m_first || 0 == m_size;
 		}
 
 		constexpr void remove_prefix( size_type const n ) noexcept {
-			m_first += n;
+			std::advance( m_first, n );
 			m_size -= n;
 		}
 
@@ -207,6 +195,12 @@ namespace daw {
 			return result;
 		}
 
+		constexpr bool pop( T & value ) noexcept {
+			value = back( );
+			remove_suffix( );
+			return true;
+		}
+
 		constexpr void resize( size_type const n ) noexcept {
 			m_size = n;
 		}
@@ -229,27 +223,6 @@ namespace daw {
 			return rlen;
 		}
 
-		constexpr int compare( array_view const v ) const noexcept {
-			auto const sz = std::min( m_size, v.m_size );
-			size_type count = 0;
-			using std::equal_to;
-			using std::less;
-			for( size_type n = 0; n < sz; ++n ) {
-				if( !equal_to<T>{}( m_first[n], v.m_first[n] ) ) {
-					if( less<T>{}( m_first[n], v.m_first[n] ) ) {
-						return -1;
-					}
-					return 1;
-				}
-			}
-			if( m_size < v.m_size ) {
-				return -1;
-			} else if( v.m_size < m_size ) {
-				return 1;
-			}
-			return 0;
-		}
-
 		constexpr array_view subset( size_type const pos = 0,
 		                             size_type const count = std::numeric_limits<size_type>::max( ) ) const {
 			if( pos > size( ) ) {
@@ -257,107 +230,6 @@ namespace daw {
 			}
 			auto const rcount = std::min( count, m_size - pos );
 			return array_view{m_first + pos, rcount};
-		}
-
-		constexpr int compare( size_type const pos1, size_type const count1, array_view const v ) const {
-			return subset( pos1, count1 ).compare( v );
-		}
-
-		constexpr int compare( size_type const pos1, size_type const count1, array_view const v, size_type const pos2,
-		                       size_type const count2 ) const {
-			return subset( pos1, count1 ).compare( v.subset( pos2, count2 ) );
-		}
-
-		constexpr int compare( const_pointer s ) const noexcept {
-			return compare( array_view{s} );
-		}
-
-		constexpr int compare( size_type const pos1, size_type const count1, const_pointer s ) const {
-			return subset( pos1, count1 ).compare( array_view{s} );
-		}
-
-		constexpr int compare( size_type const pos1, size_type const count1, const_pointer s,
-		                       size_type const count2 ) const {
-			return subset( pos1, count1 ).compare( array_view{s, count2} );
-		}
-
-		constexpr size_type find( array_view const v, size_type const pos = 0 ) const noexcept {
-			if( size( ) < v.size( ) ) {
-				return size( );
-			}
-			if( v.empty( ) ) {
-				return pos;
-			}
-			using std::equal_to;
-			auto result = std::search( cbegin( ) + pos, cend( ), v.cbegin( ), v.cend( ), equal_to<T>{} );
-			if( cend( ) == result ) {
-				return size( );
-			}
-			return static_cast<size_type>( result - cbegin( ) );
-		}
-
-		constexpr size_type find( value_type const c, size_type const pos = 0 ) const noexcept {
-			return find( array_view{&c, 1}, pos );
-		}
-
-		constexpr size_type find( const_pointer s, size_type const pos, size_type const count ) const noexcept {
-			return find( array_view{s, count}, pos );
-		}
-
-		constexpr size_type find( const_pointer s, size_type const pos = 0 ) const noexcept {
-			return find( array_view{s}, pos );
-		}
-
-		constexpr size_type rfind( array_view const v,
-		                           size_type const pos = std::numeric_limits<size_type>::max( ) ) const noexcept {
-			if( size( ) < v.size( ) ) {
-				return size( );
-			}
-			pos = std::min( pos, size( ) - v.size( ) );
-			if( v.empty( ) ) {
-				return pos;
-			}
-			for( auto cur = begin( ) + pos;; --cur ) {
-				if( std::equal( cur, cur + v.size( ), v.begin( ) ) ) {
-					return static_cast<size_type>( cur - begin( ) );
-				}
-				if( cur == begin( ) ) {
-					return size( );
-				}
-			}
-		}
-
-		constexpr size_type rfind( value_type const c,
-		                           size_type const pos = std::numeric_limits<size_type>::max( ) ) const noexcept {
-			return rfind( array_view{&c, 1}, pos );
-		}
-
-		constexpr size_type rfind( const_pointer s, size_type const pos, size_type const count ) const noexcept {
-			return rfind( array_view{s, count}, pos );
-		}
-
-		constexpr size_type rfind( const_pointer s, size_type const pos = std::numeric_limits<size_type>::max( ) ) const
-		    noexcept {
-			return rfind( array_view{s}, pos );
-		}
-
-		constexpr size_type find_first_of( array_view const v, size_type const pos = 0 ) const noexcept {
-			using std::equal_to;
-			auto const iter = std::search( cbegin( ) + pos, cend( ), v.cbegin( ), v.cend( ), equal_to<T>{} );
-			return iter == cend( ) ? m_size : static_cast<size_type>( iter - cbegin( ) );
-		}
-
-		constexpr size_type find_first_of( value_type c, size_type const pos = 0 ) const noexcept {
-			return find_first_of( array_view{&c, 1}, pos );
-		}
-
-		constexpr size_type find_first_of( const_pointer s, size_type pos, size_type const count ) const noexcept {
-			return find_first_of( array_view{s, count}, pos );
-		}
-
-		template<size_t N>
-		constexpr size_t find_first_of( T const ( &s )[N], size_type const pos = 0 ) const noexcept {
-			return find_first_of( array_view{s, N}, pos );
 		}
 
 	  private:
@@ -368,92 +240,6 @@ namespace daw {
 			// return static_cast<size_type>( ( m_size - 1u ) - static_cast<size_type>( std::distance( first, last ) )
 			// );
 			return static_cast<size_type>( ( m_size ) - static_cast<size_type>( std::distance( first, last ) ) );
-		}
-
-	  public:
-		constexpr size_type find_last_of( array_view s, size_type pos = std::numeric_limits<size_type>::max( ) ) const
-		    noexcept {
-			using std::equal_to;
-			auto iter = std::find_end( cbegin( ), cend( ), s.begin( ), s.end( ), equal_to<T>{} );
-			return iter == cend( ) ? m_size : static_cast<size_type>( iter - cbegin( ) );
-		}
-
-		constexpr size_type find_last_of( value_type const c,
-		                                  size_type pos = std::numeric_limits<size_type>::max( ) ) const noexcept {
-			for( difference_type n = m_size - 1; n >= 0; --n ) {
-				if( m_first[n] == c ) {
-					return static_cast<size_type>( n );
-				}
-			}
-			return size( );
-		}
-
-		constexpr size_type find_last_of( const_pointer s, size_type pos, size_type count ) const noexcept {
-			return find_last_of( array_view{s, count}, pos );
-		}
-
-		template<size_t N>
-		constexpr size_type find_last_of( T const ( &s )[N],
-		                                  size_type pos = std::numeric_limits<size_type>::max( ) ) const noexcept {
-			return find_last_of( array_view{s, N}, pos );
-		}
-
-		constexpr size_type find_first_not_of( array_view v, size_type pos = 0 ) const noexcept {
-			if( pos >= m_size ) {
-				return size( );
-			}
-			if( 0 == v.size( ) ) {
-				return pos;
-			}
-
-			const_iterator iter = find_not_of( cbegin( ) + pos, cend( ), v );
-			if( cend( ) == iter ) {
-				return size( );
-			}
-
-			return std::distance( cbegin( ), iter );
-		}
-
-		constexpr size_type find_first_not_of( value_type c, size_type pos = 0 ) const noexcept {
-			return find_first_not_of( array_view{&c, 1}, pos );
-		}
-
-		constexpr size_type find_first_not_of( const_pointer s, size_type pos, size_type count ) const noexcept {
-			return find_first_not_of( array_view{s, count}, pos );
-		}
-
-		constexpr size_type find_first_not_of( const_pointer s, size_type pos = 0 ) const noexcept {
-			return find_first_not_of( array_view{s}, pos );
-		}
-
-		constexpr size_type find_last_not_of( array_view v,
-		                                      size_type pos = std::numeric_limits<size_type>::max( ) ) const noexcept {
-			if( pos >= m_size ) {
-				pos = m_size - 1;
-			}
-			if( 0 == v.size( ) ) {
-				return pos;
-			}
-			pos = m_size - ( pos + 1 );
-			const_reverse_iterator iter = find_not_of( crbegin( ) + pos, crend( ), v );
-			if( crend( ) == iter ) {
-				return size( );
-			}
-			return reverse_distance( crbegin( ), iter );
-		}
-
-		constexpr size_type find_last_not_of( value_type c,
-		                                      size_type pos = std::numeric_limits<size_type>::max( ) ) const noexcept {
-			return find_last_not_of( array_view{&c, 1}, pos );
-		}
-
-		constexpr size_type find_last_not_of( const_pointer s, size_type pos, size_type count ) const noexcept {
-			return find_last_not_of( array_view{s, count}, pos );
-		}
-
-		constexpr size_type find_last_not_of( const_pointer s,
-		                                      size_type pos = std::numeric_limits<size_type>::max( ) ) const noexcept {
-			return find_last_not_of( array_view{s}, pos );
 		}
 	}; // array_view
 
@@ -472,44 +258,31 @@ namespace daw {
 		return array_view<T>{s, N};
 	}
 
-	// array_view / array_view
-	//
 	template<typename T>
-	constexpr bool operator==( array_view<T> lhs, array_view<T> rhs ) noexcept {
-		return lhs.compare( rhs ) == 0;
+	constexpr auto make_mutable_array_view( T *first, T *last ) noexcept {
+		return array_view<T>{first, static_cast<size_t>( last - first )};
+	}
+
+	template<typename T, size_t N>
+	constexpr auto make_mutable_array_view( T ( &s )[N] ) noexcept {
+		return array_view<T>{s, N};
 	}
 
 	template<typename T>
-	constexpr bool operator!=( array_view<T> lhs, array_view<T> rhs ) noexcept {
-		return lhs.compare( rhs ) != 0;
-	}
-
-	template<typename T>
-	constexpr bool operator<( array_view<T> lhs, array_view<T> rhs ) noexcept {
-		return lhs.compare( rhs ) < 0;
-	}
-
-	template<typename T>
-	constexpr bool operator<=( array_view<T> lhs, array_view<T> rhs ) noexcept {
-		return lhs.compare( rhs ) <= 0;
-	}
-
-	template<typename T>
-	constexpr bool operator>( array_view<T> lhs, array_view<T> rhs ) noexcept {
-		return lhs.compare( rhs ) > 0;
-	}
-
-	template<typename T>
-	constexpr bool operator>=( array_view<T> lhs, array_view<T> rhs ) noexcept {
-		return lhs.compare( rhs ) >= 0;
+	constexpr auto make_mutable_array_view( T *s, size_t N ) noexcept {
+		return array_view<T>{s, N};
 	}
 } // namespace daw
 
 namespace std {
 	template<typename T>
 	struct hash<daw::array_view<T>> {
-		constexpr size_t operator( )( daw::array_view<T> s ) noexcept {
-			return daw::fnv1a_hash( s.data( ), s.size( ) );
+		size_t operator( )( daw::array_view<T> s ) noexcept {
+			auto const tot_size = sizeof( T ) + sizeof( decltype( s.size( ) ) );
+			char vals[tot_size];
+			*reinterpret_cast<T*>(&vals[0]) = s.data( );
+			*reinterpret_cast<decltype(s.size( ))>(&vals[sizeof(T)]) = s.size( );
+			return daw::fnv1a_hash( vals, tot_size );
 		}
 	};
 } // namespace std
