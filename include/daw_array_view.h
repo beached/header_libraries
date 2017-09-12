@@ -38,7 +38,7 @@ namespace daw {
 	namespace details {
 		template<typename Iterator>
 		constexpr std::reverse_iterator<Iterator> make_reverse_iterator( Iterator i ) {
-			return std::reverse_iterator<Iterator>( i );
+			return std::reverse_iterator<Iterator>( std::move( i ) );
 		}
 	} // namespace details
 
