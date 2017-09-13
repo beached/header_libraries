@@ -33,7 +33,7 @@
 #include "daw_fnv1a_hash.h"
 
 namespace daw {
-	template<typename CharT, typename Traits = std::char_traits<CharT>, typename InternalSizeType=uint32_t>
+	template<typename CharT, typename Traits = std::char_traits<CharT>, typename InternalSizeType=size_t>
 	struct basic_string_view;
 
 	namespace details {
@@ -626,15 +626,16 @@ namespace daw {
 	using u16string_view = basic_string_view<char16_t>;
 	using u32string_view = basic_string_view<char32_t>;
 
-	using small_string_view = basic_string_view<char, std::char_traits<char>, uint16_t>;
-	using small_wstring_view = basic_string_view<wchar_t, std::char_traits<wchar_t>, uint16_t>;
-	using small_u16string_view = basic_string_view<char16_t, std::char_traits<char16_t>, uint16_t>;
-	using small_u32string_view = basic_string_view<char32_t, std::char_traits<char32_t>, uint16_t>;
+	using tiny_string_view = basic_string_view<char, std::char_traits<char>, uint16_t>;
+	using tiny_wstring_view = basic_string_view<wchar_t, std::char_traits<wchar_t>, uint16_t>;
+	using tiny_u16string_view = basic_string_view<char16_t, std::char_traits<char16_t>, uint16_t>;
+	using tiny_u32string_view = basic_string_view<char32_t, std::char_traits<char32_t>, uint16_t>;
 
-	using big_string_view = basic_string_view<char, std::char_traits<char>, size_t>;
-	using big_wstring_view = basic_string_view<wchar_t, std::char_traits<wchar_t>, size_t>;
-	using big_u16string_view = basic_string_view<char16_t, std::char_traits<char16_t>, size_t>;
-	using big_u32string_view = basic_string_view<char32_t, std::char_traits<char32_t>, size_t>;
+	using small_string_view = basic_string_view<char, std::char_traits<char>, uint32_t>;
+	using small_wstring_view = basic_string_view<wchar_t, std::char_traits<wchar_t>, uint32_t>;
+	using small_u16string_view = basic_string_view<char16_t, std::char_traits<char16_t>, uint32_t>;
+	using small_u32string_view = basic_string_view<char32_t, std::char_traits<char32_t>, uint32_t>;
+
 
 	template<typename CharT, typename Traits = std::char_traits<CharT>>
 	constexpr auto make_string_view_it( CharT const *first, CharT const *last ) noexcept {
@@ -642,13 +643,13 @@ namespace daw {
 	}
 
 	template<typename CharT, typename Traits = std::char_traits<CharT>>
-	constexpr auto make_small_string_view_it( CharT const *first, CharT const *last ) noexcept {
+	constexpr auto make_tiny_string_view_it( CharT const *first, CharT const *last ) noexcept {
 		return basic_string_view<CharT, Traits, uint16_t>{first, static_cast<uint16_t>( last - first )};
 	}
 
 	template<typename CharT, typename Traits = std::char_traits<CharT>>
-	constexpr auto make_big_string_view_it( CharT const *first, CharT const *last ) noexcept {
-		return basic_string_view<CharT, Traits, size_t>{first, static_cast<size_t>( last - first )};
+	constexpr auto make_small_string_view_it( CharT const *first, CharT const *last ) noexcept {
+		return basic_string_view<CharT, Traits, uint32_t>{first, static_cast<_t>( last - first )};
 	}
 
 	template<typename Iterator, typename CharT = std::decay_t<decltype( *std::declval<Iterator>( ) )>,
