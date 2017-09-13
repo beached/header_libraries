@@ -621,6 +621,10 @@ namespace daw {
 		}
 	}; // basic_string_view
 
+	using small_string_view = basic_string_view<char, std::char_traits<char>, uint16_t>;
+	using small_wstring_view = basic_string_view<wchar_t, std::char_traits<wchar_t>, uint16_t>;
+	using small_u16string_view = basic_string_view<char16_t, std::char_traits<char16_t>, uint16_t>;
+	using small_u32string_view = basic_string_view<char32_t, std::char_traits<char32_t>, uint16_t>;
 	using string_view = basic_string_view<char>;
 	using wstring_view = basic_string_view<wchar_t>;
 	using u16string_view = basic_string_view<char16_t>;
