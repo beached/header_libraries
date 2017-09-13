@@ -648,9 +648,8 @@ namespace daw {
 
 	template<typename CharT, typename Traits = std::char_traits<CharT>>
 	constexpr auto make_big_string_view_it( CharT const *first, CharT const *last ) noexcept {
-		return basic_string_view<CharT, Traits, size_t_t>{first, static_cast<size_t_t>( last - first )};
+		return basic_string_view<CharT, Traits, size_t>{first, static_cast<size_t>( last - first )};
 	}
-
 
 	template<typename Iterator, typename CharT = std::decay_t<decltype( *std::declval<Iterator>( ) )>,
 	         typename TraitsT = std::char_traits<CharT>>
