@@ -649,7 +649,7 @@ namespace daw {
 
 	template<typename CharT, typename Traits = std::char_traits<CharT>>
 	constexpr auto make_small_string_view_it( CharT const *first, CharT const *last ) noexcept {
-		return basic_string_view<CharT, Traits, uint32_t>{first, static_cast<_t>( last - first )};
+		return basic_string_view<CharT, Traits, uint32_t>{first, static_cast<uint32_t>( last - first )};
 	}
 
 	template<typename Iterator, typename CharT = std::decay_t<decltype( *std::declval<Iterator>( ) )>,
