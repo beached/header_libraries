@@ -660,16 +660,9 @@ namespace daw {
 		using size_type = typename sv_t::size_type;
 		return sv_t{&( *first ), static_cast<size_type>( std::distance( first, last ) )};
 	}
-} // namespace daw
 
-namespace std {
-	template<typename CharT, typename Allocator>
-	class vector;
-} // namespace std
-
-namespace daw {
 	template<typename CharT, typename Allocator, typename Traits = std::char_traits<CharT>>
-	constexpr auto make_string_view( std::vector<CharT, Allocator> const &v ) noexcept {
+	auto make_string_view( std::vector<CharT, Allocator> const &v ) noexcept {
 		return basic_string_view<CharT, Traits>{v.data( ), v.size( )};
 	}
 	// basic_string_view / basic_string_view
