@@ -29,6 +29,7 @@
 #include <limits>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 #include "daw_fnv1a_hash.h"
 
