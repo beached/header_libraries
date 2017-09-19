@@ -125,7 +125,7 @@ namespace daw {
 			}
 
 			const_iterator begin( ) const {
-				return static_cast<const_iterator>( m_mf_file.data( ) );
+				return m_mf_file.data( );
 			}
 
 			iterator end( ) {
@@ -133,15 +133,15 @@ namespace daw {
 			}
 
 			const_iterator end( ) const {
-				return static_cast<const_iterator>( m_mf_file.end( ) );
+				return m_mf_file.end( );
 			}
 
 			const_iterator cbegin( ) const {
-				return static_cast<const_iterator>( m_mf_file.data( ) );
+				return m_mf_file.data( );
 			}
 
 			const_iterator cend( ) const {
-				return static_cast<const_iterator>( m_mf_file.end( ) );
+				return m_mf_file.end( );
 			}
 		}; // memory_mapped_file_t
 
