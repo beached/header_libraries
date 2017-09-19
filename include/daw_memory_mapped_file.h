@@ -106,7 +106,12 @@ namespace daw {
 				return static_cast<const_reference>( m_mf_file.data( )[position] );
 			}
 
-			const_iterator data( size_t position = 0 ) const {
+			pointer data( size_t position = 0 ) {
+				return static_cast<pointer>( m_mf_file.data( ) +
+				                                    static_cast<boost::iostreams::stream_offset>( position ) );
+			}
+
+			const_pointer data( size_t position = 0 ) const {
 				return static_cast<const_iterator>( m_mf_file.data( ) +
 				                                    static_cast<boost::iostreams::stream_offset>( position ) );
 			}
@@ -120,14 +125,6 @@ namespace daw {
 
 			size_t size( ) const {
 				return m_mf_file.size( );
-			}
-
-			pointer data( ) {
-				return m_mf_file.data( );
-			}
-
-			const_pointer data( ) const {
-				return reinterpret_cast<const_pointer>( m_mf_file.data( ) );
 			}
 
 			iterator begin( ) {
