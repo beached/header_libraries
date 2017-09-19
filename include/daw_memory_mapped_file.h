@@ -42,6 +42,8 @@ namespace daw {
 
 		  public:
 			using value_type = std::decay_t<T>;
+			using pointer = value_type *;
+			using const_pointer = value_type const *;
 			using iterator = value_type *;
 			using const_iterator = value_type const *;
 			using reference = value_type &;
@@ -120,6 +122,14 @@ namespace daw {
 				return m_mf_file.size( );
 			}
 
+			pointer data( ) {
+				return m_mf_file.data( );
+			}
+
+			const_pointer data( ) const {
+				return m_mf_file.data( );
+			}
+
 			iterator begin( ) {
 				return m_mf_file.data( );
 			}
@@ -129,11 +139,11 @@ namespace daw {
 			}
 
 			iterator end( ) {
-				return m_mf_file.end( );
+				return std::next( m_mf_file.data( ), size( ) );
 			}
 
 			const_iterator end( ) const {
-				return m_mf_file.end( );
+				return std::next( m_mf_file.data( ), size( ) );
 			}
 
 			const_iterator cbegin( ) const {
@@ -141,7 +151,7 @@ namespace daw {
 			}
 
 			const_iterator cend( ) const {
-				return m_mf_file.end( );
+				return std::next( m_mf_file.data( ), size( ) );
 			}
 		}; // memory_mapped_file_t
 
