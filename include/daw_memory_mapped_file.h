@@ -101,11 +101,12 @@ namespace daw {
 			}
 
 			const_reference operator[]( size_t position ) const {
-				return m_mf_file.data( )[position];
+				return static_cast<const_reference>( m_mf_file.data( )[position] );
 			}
 
 			const_iterator data( size_t position = 0 ) const {
-				return m_mf_file.data( ) + static_cast<boost::iostreams::stream_offset>( position );
+				return static_cast<const_iterator>( m_mf_file.data( ) +
+				                                    static_cast<boost::iostreams::stream_offset>( position ) );
 			}
 
 			friend void swap( memory_mapped_file_t &lhs, memory_mapped_file_t &rhs ) noexcept {
@@ -124,7 +125,7 @@ namespace daw {
 			}
 
 			const_iterator begin( ) const {
-				return m_mf_file.data( );
+				return static_cast<const_iterator>( m_mf_file.data( ) );
 			}
 
 			iterator end( ) {
@@ -132,15 +133,15 @@ namespace daw {
 			}
 
 			const_iterator end( ) const {
-				return m_mf_file.end( );
+				return static_cast<const_iterator>( m_mf_file.end( ) );
 			}
 
 			const_iterator cbegin( ) const {
-				return m_mf_file.data( );
+				return static_cast<const_iterator>( m_mf_file.data( ) );
 			}
 
 			const_iterator cend( ) const {
-				return m_mf_file.end( );
+				return static_cast<const_iterator>( m_mf_file.end( ) );
 			}
 		}; // memory_mapped_file_t
 
