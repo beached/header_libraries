@@ -147,7 +147,7 @@ namespace daw {
 			}
 
 			const_iterator cbegin( ) const {
-				return m_mf_file.data( );
+				return reinterpret_cast<const_iterator>( m_mf_file.data( ) );
 			}
 
 			const_iterator cend( ) const {
