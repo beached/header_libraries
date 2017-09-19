@@ -127,7 +127,7 @@ namespace daw {
 			}
 
 			const_pointer data( ) const {
-				return m_mf_file.data( );
+				return reinterpret_cast<const_pointer>( m_mf_file.data( ) );
 			}
 
 			iterator begin( ) {
@@ -135,7 +135,7 @@ namespace daw {
 			}
 
 			const_iterator begin( ) const {
-				return m_mf_file.data( );
+				return reinterpret_cast<const_iterator>( m_mf_file.data( ) );
 			}
 
 			iterator end( ) {
@@ -143,7 +143,7 @@ namespace daw {
 			}
 
 			const_iterator end( ) const {
-				return std::next( m_mf_file.data( ), size( ) );
+				return reinterpret_cast<const_iterator>( std::next( m_mf_file.data( ), size( ) ) );
 			}
 
 			const_iterator cbegin( ) const {
@@ -151,7 +151,7 @@ namespace daw {
 			}
 
 			const_iterator cend( ) const {
-				return std::next( m_mf_file.data( ), size( ) );
+				return reinterpret_cast<const_iterator>( std::next( m_mf_file.data( ), size( ) ) );
 			}
 		}; // memory_mapped_file_t
 
