@@ -41,11 +41,11 @@ namespace daw {
 			boost::iostreams::mapped_file m_mf_file;
 
 		  public:
-			using iterator = T *;
-			using const_iterator = T const *;
-			using value_type = T;
-			using reference = T &;
-			using const_reference = T const &;
+			using value_type = std::decay_t<T>;
+			using iterator = value_type *;
+			using const_iterator = value_type const *;
+			using reference = value_type &;
+			using const_reference = value_type const &;
 
 			memory_mapped_file_t( boost::filesystem::path file_path, bool const readonly = true )
 			    : m_file_path{file_path}, m_mf_params{file_path.string( )} {
