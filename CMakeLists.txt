@@ -74,6 +74,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_safe_string
 	daw_scoped_multilock
 	daw_semaphore
+	daw_stack_array
 	daw_string
 	daw_string_view
 	daw_traits
