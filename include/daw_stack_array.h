@@ -108,7 +108,14 @@ namespace daw {
 		constexpr bool empty( ) const noexcept {
 			return N == 0;
 		}
+
+		constexpr reference operator[]( size_type pos ) noexcept {
+			return m_data[pos];
+		}
+
+		constexpr const_reference operator[]( size_type pos ) const noexcept {
+			return m_data[pos];
+		}
 	};
 }    // namespace daw
-
 
