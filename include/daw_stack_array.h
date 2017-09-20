@@ -33,7 +33,7 @@ namespace daw {
 		using iterator = value_t *;
 		using const_iterator = value_t const *;
 		using pointer = value_t *;
-		using const_pointer = value_t *;
+		using const_pointer = value_t const *;
 		using size_type = size_t;
 
 		value_t m_data[N];
