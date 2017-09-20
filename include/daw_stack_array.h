@@ -116,13 +116,6 @@ namespace daw {
 		constexpr const_reference operator[]( size_type pos ) const noexcept {
 			return m_data[pos];
 		}
-
-		constexpr array_t & operator=( T const (&values)[N] ) noexcept {
-			for( size_t n=0; n<N; ++n ) {
-				m_data[n] = values[n];
-			}
-			return *this;
-		}
 	};
 }    // namespace daw
 
