@@ -59,6 +59,10 @@ namespace daw {
 			return N;
 		}
 
+		constexpr size_type available( ) const noexcept {
+			return N-m_index;
+		}
+
 		constexpr void clear( ) noexcept {
 			m_index = 0;
 		}
