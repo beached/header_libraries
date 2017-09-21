@@ -87,11 +87,11 @@ namespace daw {
 			return m_stack[pos];
 		}
 		constexpr pointer data( ) noexcept {
-			return m_stack;
+			return m_stack.data( );
 		}
 
 		constexpr const_pointer data( ) const noexcept {
-			return m_stack;
+			return m_stack.data( );
 		}
 
 		constexpr iterator begin( ) noexcept {
