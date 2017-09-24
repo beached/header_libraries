@@ -118,7 +118,7 @@ namespace daw {
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_string_view_make_test_001 ) {
-		uint8_t const p[] = { 'H', 'e', 'l', 'l', 'o', 0 };
+		unsigned char const p[] = { 'H', 'e', 'l', 'l', 'o', 0 };
 		auto sv = daw::make_string_view_it( reinterpret_cast<char const *>(p), reinterpret_cast<char const *>(p) + 6 );
 		daw::string_view p2 = "Hello";
 		BOOST_REQUIRE_EQUAL( p, p2 );

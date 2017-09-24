@@ -34,7 +34,14 @@
 #include "daw_fnv1a_hash.h"
 
 namespace daw {
-	template<typename CharT, typename Traits = std::char_traits<CharT>, typename InternalSizeType=size_t>
+	namespace impl {
+		template<typename Iterator>
+		constexpr std::reverse_iterator<Iterator> make_reverse_iterator( Iterator i ) {
+			return std::reverse_iterator<Iterator>( std::move( i ) );
+		}
+	} // namespace impl
+
+	template<typename CharT, typename Traits = std::char_traits<CharT>, typename InternalSizeType = size_t>
 	struct basic_string_view;
 
 	namespace details {
@@ -152,7 +159,7 @@ namespace daw {
 		using reverse_iterator = std::reverse_iterator<iterator>;
 		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 		using size_type = size_t;
-		using size_type_internal = InternalSizeType; 
+		using size_type_internal = InternalSizeType;
 		using difference_type = std::ptrdiff_t;
 
 	  private:
@@ -175,6 +182,9 @@ namespace daw {
 
 		template<size_t N>
 		constexpr basic_string_view( CharT const ( &s )[N] ) noexcept : basic_string_view{s, N} {}
+
+		basic_string_view( std::basic_string<CharT, Traits> const &str ) noexcept
+		    : basic_string_view{str.data( ), str.size( )} {}
 
 		constexpr basic_string_view( const_pointer s ) noexcept
 		    : basic_string_view{s, details::strlen<size_type_internal>( s )} {}
@@ -228,19 +238,19 @@ namespace daw {
 		}
 
 		constexpr const_reverse_iterator rbegin( ) const noexcept {
-			return make_revers_iterator( &m_first[m_size - 1] );
+			return impl::make_reverse_iterator( &m_first[m_size - 1] );
 		}
 
 		constexpr const_reverse_iterator crbegin( ) const noexcept {
-			return make_revers_iterator( &m_first[m_size - 1] );
+			return impl::make_reverse_iterator( &m_first[m_size - 1] );
 		}
 
 		constexpr const_reverse_iterator rend( ) const noexcept {
-			return make_revers_iterator( m_first - 1 );
+			return impl::make_reverse_iterator( m_first - 1 );
 		}
 
 		constexpr const_reverse_iterator crend( ) const noexcept {
-			return make_revers_iterator( m_first - 1 );
+			return impl::make_reverse_iterator( m_first - 1 );
 		}
 
 		constexpr const_reference operator[]( size_type const pos ) const noexcept {
@@ -527,9 +537,9 @@ namespace daw {
 	  private:
 		constexpr size_type reverse_distance( const_reverse_iterator first, const_reverse_iterator last ) const
 		    noexcept {
-			// Portability note here: std::distance is not NOEXCEPT, but calling it with a string_view::reverse_iterator
-			// will not throw.
-			return static_cast<size_type>( ( m_size - 1u ) - std::distance( first, last ) );
+			// Portability note here: std::distance is not NOEXCEPT, but calling it with a
+			// string_view::reverse_iterator will not throw.
+			return ( m_size - 1u ) - static_cast<size_t>( std::distance( first, last ) );
 		}
 
 	  public:
@@ -636,7 +646,6 @@ namespace daw {
 	using small_wstring_view = basic_string_view<wchar_t, std::char_traits<wchar_t>, uint32_t>;
 	using small_u16string_view = basic_string_view<char16_t, std::char_traits<char16_t>, uint32_t>;
 	using small_u32string_view = basic_string_view<char32_t, std::char_traits<char32_t>, uint32_t>;
-
 
 	template<typename CharT, typename Traits = std::char_traits<CharT>>
 	constexpr auto make_string_view_it( CharT const *first, CharT const *last ) noexcept {
