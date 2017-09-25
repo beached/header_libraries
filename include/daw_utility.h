@@ -32,6 +32,7 @@
 #include <initializer_list>
 #include <limits>
 #include <memory>
+#include <random>
 #include <string>
 #include <type_traits>
 #include <vector>
@@ -670,6 +671,24 @@ namespace daw {
 	constexpr std::reverse_iterator<Iterator> make_reverse_iterator( Iterator i ) {
 		return std::reverse_iterator<Iterator>( std::move( i ) );
 	}
+
+	template<typename T, typename Iterator>
+	void fill_random( T min_value, T max_value, Iterator first, Iterator last ) {
+		std::random_device rnd_device;
+		// Specify the engine and distribution.
+		std::mt19937 mersenne_engine{rnd_device( )};
+		std::uniform_int_distribution<T> dist{min_value, max_value};
+
+		std::generate( first, last, [&]( ) { return dist( mersenne_engine ); } );
+	}
+
+	template<typename T>
+	std::vector<T> generate_random_data( size_t count, T min_value = std::numeric_limits<T>::min( ), T max_value = std::numeric_limits<T>::max( ) ) {
+		std::vector<T> result;
+		result.resize( count );
+		fill_random( min_value, max_value, result.begin( ), result.end( ) );
+		return result;
+	}	
 } // namespace daw
 
 template<typename... Ts>
