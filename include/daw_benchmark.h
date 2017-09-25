@@ -24,6 +24,7 @@
 
 #include <chrono>
 #include <iomanip>
+#include <iostream>
 #include <sstream>
 
 namespace daw {
@@ -39,7 +40,7 @@ namespace daw {
 		template<typename T>
 		std::string format_seconds( T t, size_t prec = 0 ) {
 			std::stringstream ss;
-			ss << std::setprecision( prec ) << std::fixed;
+			ss << std::setprecision( static_cast<int>( prec ) ) << std::fixed;
 			auto val = static_cast<double>( t ) * 1000000000000000.0;
 			if( val < 1000 ) {
 				ss << val << "fs";
@@ -73,7 +74,7 @@ namespace daw {
 		template<typename Bytes, typename Time = double>
 		std::string to_bytes_per_second( Bytes bytes, Time t = 1.0, size_t prec = 1 ) {
 			std::stringstream ss;
-			ss << std::setprecision( prec ) << std::fixed;
+			ss << std::setprecision( static_cast<int>( prec ) ) << std::fixed;
 			auto val = static_cast<double>( bytes ) / static_cast<double>( t );
 			if( val < 1024.0 ) {
 				ss << ( static_cast<double>( val * 100.0 ) / 100 ) << "bytes";
@@ -103,5 +104,14 @@ namespace daw {
 			ss << ( static_cast<double>( val * 100.0 ) / 100 ) << "PB";
 			return ss.str( );
 		}
-	}	// utility 
+	} // namespace utility
+
+	template<typename Func>
+	auto show_benchmark( size_t data_size_bytes, std::string title, Func func ) noexcept {
+		auto const t = benchmark( func );
+		std::cout << title << ": took " << utility::format_seconds( t ) << " to process "
+		          << utility::to_bytes_per_second( data_size_bytes, 1.0, 2 ) << " at "
+		          << utility::to_bytes_per_second( data_size_bytes, t, 2 ) << "/s\n";
+	}
 } // namespace daw
+
