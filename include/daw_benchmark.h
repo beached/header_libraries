@@ -107,11 +107,11 @@ namespace daw {
 	} // namespace utility
 
 	template<typename Func>
-	auto show_benchmark( size_t data_size_bytes, std::string title, Func func ) noexcept {
+	auto show_benchmark( size_t data_size_bytes, std::string title, Func func, size_t data_prec = 1, size_t time_prec = 0 ) noexcept {
 		auto const t = benchmark( func );
-		std::cout << title << ": took " << utility::format_seconds( t ) << " to process "
-		          << utility::to_bytes_per_second( data_size_bytes, 1.0, 2 ) << " at "
-		          << utility::to_bytes_per_second( data_size_bytes, t, 2 ) << "/s\n";
+		std::cout << title << ": took " << utility::format_seconds( t, time_prec ) << " to process "
+		          << utility::to_bytes_per_second( data_size_bytes, 1.0, data_prec ) << " at "
+		          << utility::to_bytes_per_second( data_size_bytes, t, data_prec ) << "/s\n";
 	}
 } // namespace daw
 
