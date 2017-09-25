@@ -682,8 +682,8 @@ namespace daw {
 		std::generate( first, last, [&]( ) { return dist( mersenne_engine ); } );
 	}
 
-	template<typename T>
-	std::vector<T> generate_random_data( size_t count, T min_value = std::numeric_limits<T>::min( ), T max_value = std::numeric_limits<T>::max( ) ) {
+	template<typename T, typename RndType = T>
+	std::vector<T> generate_random_data( size_t count, RndType min_value = std::numeric_limits<T>::min( ), RndType max_value = std::numeric_limits<T>::max( ) ) {
 		std::vector<T> result;
 		result.resize( count );
 		fill_random( min_value, max_value, result.begin( ), result.end( ) );
