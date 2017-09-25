@@ -134,6 +134,15 @@ namespace daw {
 			}
 		}
 
+		template<typename Ptr>
+		constexpr void push_back( Ptr const *ptr, size_type sz ) noexcept {
+			auto const start = m_index;
+			m_index += sz;
+			for( size_t n = start; n < m_index; ++n ) {
+				m_stack[n] = static_cast<value_t>( *ptr++ );
+			}
+		}
+
 		constexpr value_t pop_back( ) noexcept {
 			return m_stack[--m_index];
 		}
