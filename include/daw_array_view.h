@@ -129,7 +129,7 @@ namespace daw {
 		}
 
 		constexpr void remove_prefix( size_type const n ) noexcept {
-			std::advance( m_first, n );
+			m_first += n;
 			m_size -= n;
 		}
 
