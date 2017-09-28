@@ -22,7 +22,14 @@
 
 #include "boost_test.h"
 #include <iostream>
+#include <cstdint>
 
 #include "daw_bit.h"
 
-BOOST_AUTO_TEST_CASE( test_01 ) {}
+BOOST_AUTO_TEST_CASE( test_01 ) {
+	constexpr auto const lm = daw::get_left_mask<uint8_t>( 5 );
+	constexpr auto const rm = daw::get_right_mask<uint8_t>( 5 );
+
+	BOOST_REQUIRE_EQUAL( lm, 0b00000111 );
+	BOOST_REQUIRE_EQUAL( rm, 0b11100000 );
+}

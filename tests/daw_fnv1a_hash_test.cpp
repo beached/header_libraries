@@ -25,4 +25,11 @@
 
 #include "daw_fnv1a_hash.h"
 
-BOOST_AUTO_TEST_CASE( test_01 ) {}
+BOOST_AUTO_TEST_CASE( test_01 ) {
+	constexpr auto const c1 = daw::fnv1a_hash( "Hello" );
+	constexpr auto const c2 = daw::fnv1a_hash( "Hello" );
+	constexpr auto const c3 = daw::fnv1a_hash( "hello" );
+
+	BOOST_REQUIRE_EQUAL( c1, c2 );
+	BOOST_REQUIRE( c1 != c3 );
+}

@@ -259,7 +259,7 @@ namespace daw {
 		}
 
 		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_eq<value_type, T>::value, bool>>
-		friend constexpr bool operator==( optional const &lhs, optional<T> const &rhs ) {
+		friend bool operator==( optional const &lhs, optional<T> const &rhs ) {
 			if( lhs.has_value( ) ) {
 				if( rhs.has_value( ) ) {
 					return lhs.get( ) == rhs.get( );
@@ -273,7 +273,7 @@ namespace daw {
 		}
 
 		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_eq<value_type, T>::value, bool>>
-		friend constexpr bool operator==( optional const &lhs, T const &rhs ) {
+		friend bool operator==( optional const &lhs, T const &rhs ) {
 			if( lhs.has_value( ) ) {
 				return lhs.get( ) == rhs;
 			}
@@ -281,7 +281,7 @@ namespace daw {
 		}
 
 		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_ne<value_type, T>::value, bool>>
-		friend constexpr bool operator!=( optional const &lhs, optional<T> const &rhs ) {
+		friend bool operator!=( optional const &lhs, optional<T> const &rhs ) {
 			if( lhs.has_value( ) ) {
 				if( rhs.has_value( ) ) {
 					return lhs.get( ) != rhs.get( );
@@ -295,7 +295,7 @@ namespace daw {
 		}
 
 		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_ne<value_type, T>::value, bool>>
-		friend constexpr bool operator!=( optional const &lhs, T const &rhs ) {
+		friend bool operator!=( optional const &lhs, T const &rhs ) {
 			if( lhs.has_value( ) ) {
 				return lhs.get( ) != rhs;
 			}
@@ -303,7 +303,7 @@ namespace daw {
 		}
 
 		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_lt<value_type, T>::value, bool>>
-		friend constexpr bool operator<( optional const &lhs, optional<T> const &rhs ) {
+		friend bool operator<( optional const &lhs, optional<T> const &rhs ) {
 			if( lhs.has_value( ) ) {
 				if( rhs.has_value( ) ) {
 					return lhs.get( ) < rhs.get( );
@@ -317,7 +317,7 @@ namespace daw {
 		}
 
 		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_lt<value_type, T>::value, bool>>
-		friend constexpr bool operator<( optional const &lhs, T const &rhs ) {
+		friend bool operator<( optional const &lhs, T const &rhs ) {
 			if( lhs.has_value( ) ) {
 				return lhs.get( ) < rhs;
 			}
@@ -325,7 +325,7 @@ namespace daw {
 		}
 
 		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_gt<value_type, T>::value, bool>>
-		friend constexpr bool operator>( optional const &lhs, optional<T> const &rhs ) {
+		friend bool operator>( optional const &lhs, optional<T> const &rhs ) {
 			if( lhs.has_value( ) ) {
 				if( rhs.has_value( ) ) {
 					return lhs.get( ) > rhs.get( );
@@ -339,7 +339,7 @@ namespace daw {
 		}
 
 		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_gt<value_type, T>::value, bool>>
-		friend constexpr bool operator>( optional const &lhs, T const &rhs ) {
+		friend bool operator>( optional const &lhs, T const &rhs ) {
 			if( lhs.has_value( ) ) {
 				return lhs.get( ) > rhs;
 			}
@@ -347,7 +347,7 @@ namespace daw {
 		}
 
 		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_le<value_type, T>::value, bool>>
-		friend constexpr bool operator<=( optional const &lhs, optional<T> const &rhs ) {
+		friend bool operator<=( optional const &lhs, optional<T> const &rhs ) {
 			if( lhs.has_value( ) ) {
 				if( rhs.has_value( ) ) {
 					return lhs.get( ) <= rhs.get( );
@@ -361,7 +361,7 @@ namespace daw {
 		}
 
 		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_le<value_type, T>::value, bool>>
-		friend constexpr bool operator<=( optional const &lhs, T const &rhs ) {
+		friend bool operator<=( optional const &lhs, T const &rhs ) {
 			if( lhs.has_value( ) ) {
 				return lhs.get( ) <= rhs;
 			}
@@ -369,7 +369,7 @@ namespace daw {
 		}
 
 		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_ge<value_type, T>::value, bool>>
-		friend constexpr bool operator>=( optional const &lhs, optional<T> const &rhs ) {
+		friend bool operator>=( optional const &lhs, optional<T> const &rhs ) {
 			if( lhs.has_value( ) ) {
 				if( rhs.has_value( ) ) {
 					return lhs.get( ) >= rhs.get( );
@@ -383,7 +383,7 @@ namespace daw {
 		}
 
 		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_ge<value_type, T>::value, bool>>
-		friend constexpr bool operator>=( optional const &lhs, T const &rhs ) {
+		friend bool operator>=( optional const &lhs, T const &rhs ) {
 			if( lhs.has_value( ) ) {
 				return lhs.get( ) >= rhs;
 			}
@@ -400,7 +400,7 @@ namespace daw {
 	}
 
 	template<typename T, typename U>
-	constexpr bool operator!=( optional<T> const &lhs, U const &rhs ) {
+	bool operator!=( optional<T> const &lhs, U const &rhs ) {
 		if( lhs ) {
 			return lhs != rhs;
 		}
@@ -408,7 +408,7 @@ namespace daw {
 	}
 
 	template<typename T, typename U>
-	constexpr bool operator<( optional<T> const &lhs, U const &rhs ) {
+	bool operator<( optional<T> const &lhs, U const &rhs ) {
 		if( lhs ) {
 			return lhs < rhs;
 		}
@@ -416,7 +416,7 @@ namespace daw {
 	}
 
 	template<typename T, typename U>
-	constexpr bool operator>( optional<T> const &lhs, U const &rhs ) {
+	bool operator>( optional<T> const &lhs, U const &rhs ) {
 		if( lhs ) {
 			return lhs > rhs;
 		}
@@ -424,7 +424,7 @@ namespace daw {
 	}
 
 	template<typename T, typename U>
-	constexpr bool operator<=( optional<T> const &lhs, U const &rhs ) {
+	bool operator<=( optional<T> const &lhs, U const &rhs ) {
 		if( lhs ) {
 			return lhs <= rhs;
 		}
@@ -432,7 +432,7 @@ namespace daw {
 	}
 
 	template<typename T, typename U>
-	constexpr bool operator>=( optional<T> const &lhs, U const &rhs ) {
+	bool operator>=( optional<T> const &lhs, U const &rhs ) {
 		if( lhs ) {
 			return lhs >= rhs;
 		}

@@ -31,7 +31,7 @@
 using namespace std::literals::string_literals;
 
 BOOST_AUTO_TEST_CASE( make_array_testing ) {
-	auto const t = daw::make_array( 1, 2, 3, 4, 5, 6 );
+	constexpr auto const t = daw::make_array( 1, 2, 3, 4, 5, 6 );
 
 	auto pos = std::find( t.begin( ), t.end( ), 4 );
 	assert( *pos == 4 );
