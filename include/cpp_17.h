@@ -32,16 +32,16 @@ namespace daw {
 			Function m_function;
 
 		  public:
-			not_fn_t( ) = default;
-			explicit not_fn_t( Function func ) : m_function{std::move( func )} {}
+			constexpr not_fn_t( ) noexcept = default;
+			constexpr explicit not_fn_t( Function func ) : m_function{std::move( func )} {}
 			~not_fn_t( );
-			not_fn_t( not_fn_t const & ) = default;
-			not_fn_t( not_fn_t && ) = default;
-			not_fn_t &operator=( not_fn_t const & ) = default;
-			not_fn_t &operator=( not_fn_t && ) = default;
+			constexpr not_fn_t( not_fn_t const & ) = default;
+			constexpr not_fn_t( not_fn_t && ) noexcept = default;
+			constexpr not_fn_t &operator=( not_fn_t const & ) = default;
+			constexpr not_fn_t &operator=( not_fn_t && ) noexcept = default;
 
 			template<typename... Args>
-			auto operator( )( Args &&... args ) {
+			constexpr auto operator( )( Args &&... args ) {
 				return !m_function( std::forward<Args>( args )... );
 			}
 		};
@@ -52,12 +52,12 @@ namespace daw {
 	} // namespace impl
 
 	template<typename Function>
-	impl::not_fn_t<Function> not_fn( Function func ) {
+	constexpr impl::not_fn_t<Function> not_fn( Function func ) {
 		return impl::not_fn_t<Function>{std::move( func )};
 	}
 
 	template<typename Function>
-	impl::not_fn_t<Function> not_fn( ) {
+	constexpr impl::not_fn_t<Function> not_fn( ) {
 		return impl::not_fn_t<Function>{};
 	}
 
@@ -98,7 +98,7 @@ namespace daw {
 		}
 
 		template<typename Base, typename T, typename RefWrap, typename... Args>
-		auto INVOKE( T Base::*pmf, RefWrap &&ref,
+		constexpr auto INVOKE( T Base::*pmf, RefWrap &&ref,
 		             Args &&... args ) noexcept( noexcept( ( ref.get( ).*pmf )( std::forward<Args>( args )... ) ) )
 		    -> std::enable_if_t<daw::is_function_v<T> && is_reference_wrapper_v<std::decay_t<RefWrap>>,
 		                        decltype( ( ref.get( ).*pmf )( std::forward<Args>( args )... ) )> {
@@ -107,7 +107,7 @@ namespace daw {
 		}
 
 		template<typename Base, typename T, typename Pointer, typename... Args>
-		auto INVOKE( T Base::*pmf, Pointer &&ptr, Args &&... args ) noexcept(
+		constexpr auto INVOKE( T Base::*pmf, Pointer &&ptr, Args &&... args ) noexcept(
 		    noexcept( ( ( *std::forward<Pointer>( ptr ) ).*pmf )( std::forward<Args>( args )... ) ) )
 		    -> std::enable_if_t<daw::is_function_v<T> && !is_reference_wrapper_v<std::decay_t<Pointer>> &&
 		                            !daw::is_base_of_v<Base, std::decay_t<Pointer>>,
@@ -118,7 +118,7 @@ namespace daw {
 		}
 
 		template<typename Base, typename T, typename Derived>
-		auto INVOKE( T Base::*pmd, Derived &&ref ) noexcept( noexcept( std::forward<Derived>( ref ).*pmd ) )
+		constexpr auto INVOKE( T Base::*pmd, Derived &&ref ) noexcept( noexcept( std::forward<Derived>( ref ).*pmd ) )
 		    -> std::enable_if_t<!daw::is_function_v<T> && daw::is_base_of_v<Base, std::decay_t<Derived>>,
 		                        decltype( std::forward<Derived>( ref ).*pmd )> {
 
@@ -126,14 +126,14 @@ namespace daw {
 		}
 
 		template<typename Base, typename T, typename RefWrap>
-		auto INVOKE( T Base::*pmd, RefWrap &&ref ) noexcept( noexcept( ref.get( ).*pmd ) )
+		constexpr auto INVOKE( T Base::*pmd, RefWrap &&ref ) noexcept( noexcept( ref.get( ).*pmd ) )
 		    -> std::enable_if_t<!daw::is_function_v<T> && is_reference_wrapper_v<std::decay_t<RefWrap>>,
 		                        decltype( ref.get( ).*pmd )> {
 			return ref.get( ).*pmd;
 		}
 
 		template<typename Base, typename T, typename Pointer>
-		auto INVOKE( T Base::*pmd, Pointer &&ptr ) noexcept( noexcept( ( *std::forward<Pointer>( ptr ) ).*pmd ) )
+		constexpr auto INVOKE( T Base::*pmd, Pointer &&ptr ) noexcept( noexcept( ( *std::forward<Pointer>( ptr ) ).*pmd ) )
 		    -> std::enable_if_t<!daw::is_function_v<T> && !is_reference_wrapper_v<std::decay_t<Pointer>> &&
 		                            !daw::is_base_of_v<Base, std::decay_t<Pointer>>,
 		                        decltype( ( *std::forward<Pointer>( ptr ) ).*pmd )> {
@@ -141,7 +141,7 @@ namespace daw {
 		}
 
 		template<typename F, typename... Args>
-		auto INVOKE( F &&f,
+		constexpr auto INVOKE( F &&f,
 		             Args &&... args ) noexcept( noexcept( std::forward<F>( f )( std::forward<Args>( args )... ) ) )
 		    -> std::enable_if_t<!daw::is_member_pointer_v<std::decay_t<F>>,
 		                        decltype( std::forward<F>( f )( std::forward<Args>( args )... ) )> {
@@ -151,7 +151,7 @@ namespace daw {
 	} // namespace detail
 
 	template<typename F, typename... ArgTypes>
-	auto invoke( F &&f, ArgTypes &&... args )
+	constexpr auto invoke( F &&f, ArgTypes &&... args )
 	    // exception specification for QoI
 	    noexcept( noexcept( detail::INVOKE( std::forward<F>( f ), std::forward<ArgTypes>( args )... ) ) )
 	        -> decltype( detail::INVOKE( std::forward<F>( f ), std::forward<ArgTypes>( args )... ) ) {
@@ -203,3 +203,4 @@ namespace daw {
 		return t;
 	}
 } // namespace daw
+

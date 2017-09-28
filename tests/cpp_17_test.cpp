@@ -25,4 +25,12 @@
 
 #include "cpp_17.h"
 
-BOOST_AUTO_TEST_CASE( test_01 ) {}
+void test( ) {}
+
+BOOST_AUTO_TEST_CASE( cpp_17_test_01 ) {
+	constexpr auto const is_func = daw::is_function_v<decltype( test )>;
+	constexpr auto const isnt_func = daw::is_function_v<decltype( is_func )>;
+
+	BOOST_REQUIRE( is_func );
+	BOOST_REQUIRE( !isnt_func );
+}
