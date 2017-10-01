@@ -59,8 +59,10 @@ namespace daw {
 		template<typename U, typename Dummy = std::enable_if_t<std::is_convertible<U, T>::value>>
 		constexpr not_null( not_null<U> const &other ) : not_null{other.get( )} {}
 
-		not_null( not_null const &other ) = default;
-		not_null &operator=( not_null const &other ) = default;
+		constexpr not_null( not_null const &other ) noexcept = default;
+		constexpr not_null &operator=( not_null const &other ) noexcept = default;
+		constexpr not_null( not_null && other ) noexcept = default;
+		constexpr not_null &operator=( not_null && other ) noexcept = default;
 
 		constexpr T get( ) const {
 			daw::exception::daw_throw_on_null( m_ptr, "Cannot be nullptr" );

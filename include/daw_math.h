@@ -40,7 +40,7 @@ namespace daw {
 		constexpr T const PI = T( 3.14159265358979323846264338327950288419716939937510582097494459230781640628620899 );
 
 		template<class T, class U>
-		T round_to_nearest( const T &value, const U &rnd_by ) {
+		T round_to_nearest( const T &value, const U &rnd_by ) noexcept {
 			static_assert( std::is_arithmetic<T>::value, "First template parameter must be an arithmetic type" );
 			static_assert( std::is_floating_point<U>::value,
 			               "Second template parameter must be a floating point type" );
@@ -50,7 +50,7 @@ namespace daw {
 		}
 
 		template<class T, class U>
-		T floor_by( const T &value, const U &rnd_by ) {
+		T floor_by( const T &value, const U &rnd_by ) noexcept {
 			static_assert( std::is_arithmetic<T>::value, "First template parameter must be an arithmetic type" );
 			static_assert( std::is_floating_point<U>::value,
 			               "Second template parameter must be a floating point type" );
@@ -63,7 +63,7 @@ namespace daw {
 		}
 
 		template<class T, class U>
-		T ceil_by( const T &value, const U &rnd_by ) {
+		T ceil_by( const T &value, const U &rnd_by ) noexcept {
 			static_assert( std::is_arithmetic<T>::value, "First template parameter must be an arithmetic type" );
 			static_assert( std::is_floating_point<U>::value,
 			               "Second template parameter must be a floating point type" );
@@ -74,28 +74,24 @@ namespace daw {
 			return static_cast<T>( ret );
 		}
 
-		namespace impl {
-			template<typename T>
-			constexpr T abs( T t ) {
-				return t >= 0 ? t : -t;
-			}
-
-			template<typename T>
-			constexpr uintmax_t factorial_impl( T t ) {
-				return t <= 1 ? 1 : factorial_impl( t - 1 );
-			}
-
-		} // namespace impl
+		template<typename T>
+		constexpr T abs( T t ) noexcept {
+			return t >= 0 ? t : -t;
+		}
 
 		template<typename T>
-		constexpr uintmax_t factorial( T t ) {
-			return t == 0 ? 1
-			              : t < 0 ? factorial( static_cast<uintmax_t>( impl::abs( t ) ) ) : impl::factorial_impl( t );
+		constexpr uintmax_t factorial( T t ) noexcept {
+			t = abs( t );
+			uintmax_t result = 1;
+			for( ; t > 0; --t ) {
+				result *= static_cast<uintmax_t>( t );
+			}
+			return result;
 		}
 
 		namespace impl {
 			template<typename T>
-			constexpr T pow_impl( T base, size_t exponent ) {
+			constexpr T pow_impl( T base, size_t exponent ) noexcept {
 				for( size_t k = 0; k < exponent; ++k ) {
 					base *= base;
 				}
@@ -105,7 +101,7 @@ namespace daw {
 		} // namespace impl
 
 		template<typename T>
-		constexpr T pow( T base, size_t exponent ) {
+		constexpr T pow( T base, size_t exponent ) noexcept {
 			return base == 0 ? 0 : exponent > 0 ? impl::pow_impl( base, exponent ) : 1;
 		}
 
@@ -115,13 +111,13 @@ namespace daw {
 			};
 
 			template<typename T>
-			constexpr auto cube( T x ) {
+			constexpr auto cube( T x ) noexcept {
 				return x * x * x;
 			}
 
 			// Based on the triple-angle formula: sin 3x = 3 sin x - 4 sin ^3 x
 			template<typename R>
-			constexpr R sin_helper( R x ) {
+			constexpr R sin_helper( R x ) noexcept {
 				return x < constants::tol ? x
 				                          : static_cast<R>( 3.0 ) * ( sin_helper( x / static_cast<R>( 3.0 ) ) ) -
 				                                static_cast<R>( 4.0 ) * cube( sin_helper( x / static_cast<R>( 3.0 ) ) );
@@ -129,12 +125,12 @@ namespace daw {
 		} // namespace impl
 
 		template<typename R>
-		constexpr R sin( R x ) {
+		constexpr R sin( R x ) noexcept {
 			return impl::sin_helper( x < 0 ? PI<R> - x : x );
 		}
 
 		template<typename R>
-		constexpr R cos( R x ) {
+		constexpr R cos( R x ) noexcept {
 			if( 0.0 == x ) {
 				return 1.0;
 			}
@@ -142,7 +138,7 @@ namespace daw {
 		}
 
 		template<class T>
-		auto sqr( T const &value ) {
+		constexpr auto sqr( T const &value ) noexcept {
 			static_assert( std::is_arithmetic<T>::value, "Template parameter must be an arithmetic type" );
 			return value * value;
 		}
@@ -151,12 +147,12 @@ namespace daw {
 		/// <summary>Set the minimum value allowed</summary>
 		///
 		template<typename T, typename U>
-		auto value_or_min( T const &value, U const &min_value ) {
+		constexpr auto value_or_min( T const &value, U const &min_value ) noexcept {
 			if( min_value > value ) {
 				return min_value;
 			}
 			return value;
 		}
-
 	} // namespace math
 } // namespace daw
+
