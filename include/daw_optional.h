@@ -211,6 +211,10 @@ namespace daw {
 			return *this;
 		}
 
+		void swap( optional & rhs ) noexcept {
+			m_value.swap( rhs.m_value );
+		}
+
 		optional &operator=( value_type value ) {
 			m_value = std::move( value );
 			return *this;
