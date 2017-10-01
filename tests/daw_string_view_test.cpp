@@ -58,7 +58,7 @@ namespace daw {
 		return result;
 	}
 
-	constexpr tmp_e tmp_e_from_str( daw::string_view str ) {
+	tmp_e tmp_e_from_str( daw::string_view str ) {
 		if( is_equal_nc( str, "a" ) ) {
 			return tmp_e::a;
 		}
@@ -71,7 +71,7 @@ namespace daw {
 		throw std::runtime_error( "unknown http request method" );
 	}
 
-	constexpr daw::string_view do_something( daw::string_view str, tmp_e &result ) {
+	daw::string_view do_something( daw::string_view str, tmp_e &result ) {
 		str = str.substr( 0, str.find_first_of( ' ' ) );
 		result = tmp_e_from_str( str );
 
@@ -119,7 +119,7 @@ namespace daw {
 
 	BOOST_AUTO_TEST_CASE( daw_string_view_make_test_001 ) {
 		unsigned char const p[] = { 'H', 'e', 'l', 'l', 'o', 0 };
-		auto sv = daw::make_string_view_it( reinterpret_cast<char const *>(p), reinterpret_cast<char const *>(p) + 6 );
+		auto sv = daw::make_string_view_it( reinterpret_cast<char const *>(p), reinterpret_cast<char const *>(p) + 5 );
 		daw::string_view p2 = "Hello";
 		BOOST_REQUIRE_EQUAL( sv, p2 );
 	}
