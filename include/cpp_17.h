@@ -26,6 +26,9 @@
 #include <type_traits>
 
 namespace daw {
+	template<typename...>
+	using void_t = void;
+
 	namespace impl {
 		template<typename Function>
 		class not_fn_t {
@@ -98,8 +101,9 @@ namespace daw {
 		}
 
 		template<typename Base, typename T, typename RefWrap, typename... Args>
-		constexpr auto INVOKE( T Base::*pmf, RefWrap &&ref,
-		             Args &&... args ) noexcept( noexcept( ( ref.get( ).*pmf )( std::forward<Args>( args )... ) ) )
+		constexpr auto
+		INVOKE( T Base::*pmf, RefWrap &&ref,
+		        Args &&... args ) noexcept( noexcept( ( ref.get( ).*pmf )( std::forward<Args>( args )... ) ) )
 		    -> std::enable_if_t<daw::is_function_v<T> && is_reference_wrapper_v<std::decay_t<RefWrap>>,
 		                        decltype( ( ref.get( ).*pmf )( std::forward<Args>( args )... ) )> {
 
@@ -133,7 +137,8 @@ namespace daw {
 		}
 
 		template<typename Base, typename T, typename Pointer>
-		constexpr auto INVOKE( T Base::*pmd, Pointer &&ptr ) noexcept( noexcept( ( *std::forward<Pointer>( ptr ) ).*pmd ) )
+		constexpr auto INVOKE( T Base::*pmd,
+		                       Pointer &&ptr ) noexcept( noexcept( ( *std::forward<Pointer>( ptr ) ).*pmd ) )
 		    -> std::enable_if_t<!daw::is_function_v<T> && !is_reference_wrapper_v<std::decay_t<Pointer>> &&
 		                            !daw::is_base_of_v<Base, std::decay_t<Pointer>>,
 		                        decltype( ( *std::forward<Pointer>( ptr ) ).*pmd )> {
@@ -141,8 +146,8 @@ namespace daw {
 		}
 
 		template<typename F, typename... Args>
-		constexpr auto INVOKE( F &&f,
-		             Args &&... args ) noexcept( noexcept( std::forward<F>( f )( std::forward<Args>( args )... ) ) )
+		constexpr auto
+		INVOKE( F &&f, Args &&... args ) noexcept( noexcept( std::forward<F>( f )( std::forward<Args>( args )... ) ) )
 		    -> std::enable_if_t<!daw::is_member_pointer_v<std::decay_t<F>>,
 		                        decltype( std::forward<F>( f )( std::forward<Args>( args )... ) )> {
 
@@ -202,5 +207,35 @@ namespace daw {
 	constexpr std::add_const_t<T> &as_const( T &t ) noexcept {
 		return t;
 	}
+
+	struct nonesuch {
+		nonesuch( ) = delete;
+		~nonesuch( ) = delete;
+		nonesuch( nonesuch const & ) = delete;
+		void operator=( nonesuch const & ) = delete;
+	};
+
+	namespace detail {
+		template<class Default, class AlwaysVoid, template<class...> class Op, class... Args>
+		struct detector {
+			using value_t = std::false_type;
+			using type = Default;
+		};
+
+		template<class Default, template<class...> class Op, class... Args>
+		struct detector<Default, daw::void_t<Op<Args...>>, Op, Args...> {
+			using value_t = std::true_type;
+			using type = Op<Args...>;
+		};
+
+	} // namespace detail
+	template<template<class...> class Op, class... Args>
+	using is_detected = typename detail::detector<nonesuch, void, Op, Args...>::value_t;
+
+	template<template<class...> class Op, class... Args>
+	using detected_t = typename detail::detector<nonesuch, void, Op, Args...>::type;
+
+	template<class Default, template<class...> class Op, class... Args>
+	using detected_or = detail::detector<Default, void, Op, Args...>;
 } // namespace daw
 
