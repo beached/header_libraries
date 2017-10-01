@@ -396,6 +396,11 @@ namespace daw {
 
 	}; // class optional
 
+	template<typename T>
+	void swap( optional<T> & lhs, optional<T> & rhs ) noexcept {
+		lhs.swap( rhs );
+	}
+
 	template<typename T, typename... Args>
 	auto make_optional( Args &&... args ) {
 		optional<T> result{};
