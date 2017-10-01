@@ -104,16 +104,21 @@ namespace daw {
 				store( std::move( value ) );
 			}
 
-			value_storage( value_storage const &other ) : m_data{other.m_data}, m_occupied{other.m_occupied} {}
+			value_storage( value_storage const &other ) noexcept : m_data{other.m_data}, m_occupied{other.m_occupied} {}
 
 			value_storage( value_storage &&other ) noexcept
 			    : m_data{std::move( other.m_data )}, m_occupied{std::exchange( other.m_occupied, false )} {}
 
+			void swap( value_storage & rhs ) noexcept {
+				using std::swap;
+				swap( m_data, rhs.m_data );
+				swap( m_occupied, rhs.m_occupied );
+			}
+
 			value_storage &operator=( value_storage const &rhs ) {
 				if( this != &rhs ) {
-					value_storage tmp{rhs};
-					using std::swap;
-					swap( *this, rhs );
+					std::copy( rhs.m_data.cbegin( ), rhs.m_data.cend( ), m_data.begin( ) );
+					m_occupied = rhs.m_occupied;
 				}
 				return *this;
 			}
