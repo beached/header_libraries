@@ -98,12 +98,16 @@ add_definitions( -DBOOST_TEST_DYN_LINK -DBOOST_ALL_NO_LIB -DBOOST_ALL_DYN_LINK )
 include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
 link_directories( ${Boost_LIBRARY_DIRS} )
 
+#set( CMAKE_CTEST_COMMAND ctest -V )
+add_custom_target( check COMMAND ${CMAKE_CTEST_COMMAND} )
+
 foreach( CUR_PREFIX ${TESTED_HEADERS_PREFIXES} )
 	install( FILES "${HEADER_FOLDER}/${CUR_PREFIX}.h" DESTINATION include/daw )
 	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/${CUR_PREFIX}.h ${TEST_FOLDER}/${CUR_PREFIX}_test.cpp ${TEST_FOLDER}/test_main.cpp )
 	#add_executable( ${CUR_PREFIX}_test_bin ${HEADER_FOLDER}/${CUR_PREFIX}.h ${TEST_FOLDER}/${CUR_PREFIX}_test.cpp ${TEST_FOLDER}/test_main.cpp )
 	target_link_libraries( ${CUR_PREFIX}_test_bin ${Boost_LIBRARIES} ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
 	add_test( ${CUR_PREFIX}_test, ${CUR_PREFIX}_test_bin )
+	add_dependencies( check ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
 
 foreach( CUR_PREFIX ${UNTESTED_HEADER_FILES} )

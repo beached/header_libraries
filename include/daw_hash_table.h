@@ -307,8 +307,8 @@ namespace daw {
 		    : m_resize_ratio{resize_ratio}
 		    , m_load{0}
 		    , m_growth_counter{0}
-		    , m_max_load{max_load_percent} {
-		    , m_values{start_size}
+		    , m_max_load{max_load_percent}
+		    , m_values{start_size} {
 
 			assert( start_size > 0 );
 		}
@@ -642,5 +642,4 @@ namespace daw {
 	void swap( hash_table<T> &lhs, hash_table<T> &rhs ) noexcept {
 		lhs.swap( rhs );
 	}
-
 } // namespace daw

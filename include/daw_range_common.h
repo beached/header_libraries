@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include "daw_traits.h"
+
 namespace daw {
 	namespace range {
 		namespace impl {
