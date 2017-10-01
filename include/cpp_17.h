@@ -245,13 +245,13 @@ namespace daw {
 	using detected_or_t = typename detected_or<Default, Op, Args...>::type;
 
 	template<class Expected, template<class...> class Op, class... Args>
-	using is_detected_exact = is_same<Expected, detected_t<Op, Args...>>;
+	using is_detected_exact = std::is_same<Expected, detected_t<Op, Args...>>;
 
 	template<class Expected, template<class...> class Op, class... Args>
 	constexpr bool is_detected_exact_v = is_detected_exact<Expected, Op, Args...>::value;
 
 	template<class To, template<class...> class Op, class... Args>
-	using is_detected_convertible = is_convertible<detected_t<Op, Args...>, To>;
+	using is_detected_convertible = std::is_convertible<detected_t<Op, Args...>, To>;
 
 	template<class To, template<class...> class Op, class... Args>
 	constexpr bool is_detected_convertible_v = is_detected_convertible<To, Op, Args...>::value;
