@@ -313,4 +313,14 @@ namespace daw {
 		using result_t = std::decay_t<decltype( func( std::forward<Args>( args )... ) )>;
 		return expected_from_code<result_t>( std::move( func ), std::forward<Args>( args )... );
 	}
+
+	template<typename ExpectedType>
+	auto expected_from_exception( ) noexcept {
+		return expected_t<ExpectedType>{std::current_exception( )};
+	}
+
+	template<typename ExpectedType>
+	auto expected_from_exception( std::exception_ptr ptr ) noexcept {
+		return expected_t<ExpectedType>{ptr};
+	}
 } // namespace daw
