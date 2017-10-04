@@ -255,5 +255,87 @@ namespace daw {
 
 	template<class To, template<class...> class Op, class... Args>
 	constexpr bool is_detected_convertible_v = is_detected_convertible<To, Op, Args...>::value;
-} // namespace daw
 
+	namespace detectors {
+		template<typename Function, typename... Args>
+		using callable_with = decltype( std::declval<Function &>( )( std::declval<Args &>( )... ) );
+
+		template<typename BinaryPredicate, typename T, typename U = T>
+		using binary_predicate = callable_with<BinaryPredicate, T, U>;
+
+		template<typename UnaryPredicate, typename T>
+		using unary_predicate = callable_with<UnaryPredicate, T>;
+
+		// Verifies that a == b is valid along with b == a and that the result is the same.
+		template<typename T>
+		using equality_comparable = decltype( std::declval<T &>( ) == std::declval<T &>( ) );
+
+		template<typename T>
+		using less_than_comparable = decltype( std::declval<T &>( ) < std::declval<T &>( ) );
+
+		namespace details {
+			template<typename T, typename U>
+			void swap( T & lhs, U & rhs ) {
+				using std::swap;
+				swap( lhs, rhs );
+			}
+		} // namespace details
+
+		template<typename T>
+		using swappable = decltype( details::swap( std::declval<T &>( ), std::declval<T &>( ) ) );
+	}
+	template<typename Predicate, typename... Args>
+	using is_predicate = typename is_detected_convertible<bool, detectors::callable_with, Args...>::type;
+
+	template<typename Predicate, typename T, typename U = T>
+	using is_predicate_t = typename is_predicate<Predicate, T, U>::type;
+
+	template<typename Predicate, typename T, typename U = T>
+	constexpr bool is_predicate_v = is_predicate<Predicate, T, U>::value;
+
+	template<typename BinaryPredicate, typename T, typename U = T>
+	using is_binary_predicate = is_predicate<BinaryPredicate, T, U>;
+
+	template<typename BinaryPredicate, typename T, typename U = T>
+	using is_binary_predicate_t = typename is_binary_predicate<BinaryPredicate, T, U>::type;
+
+	template<typename BinaryPredicate, typename T, typename U = T>
+	constexpr bool is_binary_predicate_v = is_binary_predicate<BinaryPredicate, T, U>::value;
+
+	template<typename UnaryPredicate, typename T>
+	using is_unary_predicate = is_predicate<UnaryPredicate, T>;
+
+	template<typename UnaryPredicate, typename T>
+	using is_unary_predicate_t = typename is_unary_predicate<UnaryPredicate, T>::type;
+
+	template<typename UnaryPredicate, typename T>
+	constexpr bool is_unary_predicate_v = is_unary_predicate<UnaryPredicate, T>::value;
+
+	template<typename T>
+	using is_equality_comparable = typename is_detected_convertible<bool, detectors::equality_comparable, T>::type;
+
+	template<typename T>
+	using is_equality_comparable_t = typename is_equality_comparable<T>::type;
+
+	template<typename T>
+	constexpr bool is_equality_comparable_v = is_equality_comparable<T>::value;
+
+	template<typename T>
+	using is_less_than_comparable = typename is_detected_convertible<bool, detectors::less_than_comparable, T>::type;
+
+	template<typename T>
+	using is_less_than_comparable_t = typename is_less_than_comparable<T>::type;
+
+	template<typename T>
+	constexpr bool is_less_than_comparable_v = is_less_than_comparable<T>::value;
+
+	template<typename T>
+	using is_swappable = std::integral_constant<bool, is_detected_v<detectors::swappable, T>>;
+
+	template<typename T>
+	using is_swappable_t = typename is_swappable<T>::type;
+
+	template<typename T>
+	constexpr bool is_swappable_v = is_swappable<T>::value;
+
+} // namespace daw
