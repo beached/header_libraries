@@ -188,21 +188,6 @@ namespace daw {
 		struct is_callable_impl<F( Args... ), always_void<std::result_of_t<F( Args... )>>> : std::true_type {};
 	} // namespace detail
 
-	template<typename...>
-	struct is_callable : std::false_type {};
-
-	template<typename Expr>
-	struct is_callable<Expr> : detail::is_callable_impl<Expr> {};
-
-	template<typename Function, typename... Args>
-	struct is_callable<Function, Args...> : detail::is_callable_impl<Function( Args... )> {};
-
-	template<typename... Ts>
-	using is_callable_t = typename is_callable<Ts...>::type;
-
-	template<typename... Ts>
-	constexpr bool is_callable_v = is_callable<Ts...>::value;
-
 	template<class T>
 	constexpr std::add_const_t<T> &as_const( T &t ) noexcept {
 		return t;
@@ -258,7 +243,7 @@ namespace daw {
 
 	namespace detectors {
 		template<typename Function, typename... Args>
-		using callable_with = decltype( std::declval<Function &>( )( std::declval<Args &>( )... ) );
+		using callable_with = decltype( std::declval<Function &>( )( std::declval<Args&>( )... ) );
 
 		template<typename BinaryPredicate, typename T, typename U = T>
 		using binary_predicate = callable_with<BinaryPredicate, T, U>;
@@ -268,10 +253,10 @@ namespace daw {
 
 		// Verifies that a == b is valid along with b == a and that the result is the same.
 		template<typename T>
-		using equality_comparable = decltype( std::declval<T &>( ) == std::declval<T &>( ) );
+		using equality_comparable = decltype( std::declval<T>( ) == std::declval<T>( ) );
 
 		template<typename T>
-		using less_than_comparable = decltype( std::declval<T &>( ) < std::declval<T &>( ) );
+		using less_than_comparable = decltype( std::declval<T>( ) < std::declval<T>( ) );
 
 		namespace details {
 			template<typename T, typename U>
@@ -282,52 +267,26 @@ namespace daw {
 		} // namespace details
 
 		template<typename T>
-		using swappable = decltype( details::swap( std::declval<T &>( ), std::declval<T &>( ) ) );
+		using swappable = decltype( details::swap( std::declval<T>( ), std::declval<T>( ) ) );
 	}
+
+	template<typename Function, typename... Args>
+	constexpr bool is_callable_v = is_detected_v<detectors::callable_with, Function, Args...>;
+
 	template<typename Predicate, typename... Args>
-	using is_predicate = typename is_detected_convertible<bool, detectors::callable_with, Args...>::type;
-
-	template<typename Predicate, typename T, typename U = T>
-	using is_predicate_t = typename is_predicate<Predicate, T, U>::type;
-
-	template<typename Predicate, typename T, typename U = T>
-	constexpr bool is_predicate_v = is_predicate<Predicate, T, U>::value;
+	constexpr bool is_predicate_v = is_detected_convertible_v<bool, detectors::callable_with, Predicate, Args...>;
 
 	template<typename BinaryPredicate, typename T, typename U = T>
-	using is_binary_predicate = is_predicate<BinaryPredicate, T, U>;
-
-	template<typename BinaryPredicate, typename T, typename U = T>
-	using is_binary_predicate_t = typename is_binary_predicate<BinaryPredicate, T, U>::type;
-
-	template<typename BinaryPredicate, typename T, typename U = T>
-	constexpr bool is_binary_predicate_v = is_binary_predicate<BinaryPredicate, T, U>::value;
+	constexpr bool is_binary_predicate_v = is_predicate_v<BinaryPredicate, T, U>;
 
 	template<typename UnaryPredicate, typename T>
-	using is_unary_predicate = is_predicate<UnaryPredicate, T>;
-
-	template<typename UnaryPredicate, typename T>
-	using is_unary_predicate_t = typename is_unary_predicate<UnaryPredicate, T>::type;
-
-	template<typename UnaryPredicate, typename T>
-	constexpr bool is_unary_predicate_v = is_unary_predicate<UnaryPredicate, T>::value;
+	constexpr bool is_unary_predicate_v = is_predicate_v<UnaryPredicate, T>;
 
 	template<typename T>
-	using is_equality_comparable = typename is_detected_convertible<bool, detectors::equality_comparable, T>::type;
+	constexpr bool is_equality_comparable_v = is_detected_convertible_v<bool, detectors::equality_comparable, T>;
 
 	template<typename T>
-	using is_equality_comparable_t = typename is_equality_comparable<T>::type;
-
-	template<typename T>
-	constexpr bool is_equality_comparable_v = is_equality_comparable<T>::value;
-
-	template<typename T>
-	using is_less_than_comparable = typename is_detected_convertible<bool, detectors::less_than_comparable, T>::type;
-
-	template<typename T>
-	using is_less_than_comparable_t = typename is_less_than_comparable<T>::type;
-
-	template<typename T>
-	constexpr bool is_less_than_comparable_v = is_less_than_comparable<T>::value;
+	constexpr bool is_less_than_comparable_v = is_detected_convertible_v<bool, detectors::less_than_comparable, T>;
 
 	template<typename T>
 	using is_swappable = std::integral_constant<bool, is_detected_v<detectors::swappable, T>>;
@@ -337,5 +296,5 @@ namespace daw {
 
 	template<typename T>
 	constexpr bool is_swappable_v = is_swappable<T>::value;
-
 } // namespace daw
+
