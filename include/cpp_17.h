@@ -252,11 +252,12 @@ namespace daw {
 		using unary_predicate = callable_with<UnaryPredicate, T>;
 
 		// Verifies that a == b is valid along with b == a and that the result is the same.
-		template<typename T>
-		using equality_comparable = decltype( std::declval<T>( ) == std::declval<T>( ) );
+		// TODO: add referce check is U == V and U < V valid
+		template<typename T, typename U>
+		using equality_comparable = decltype( std::declval<T>( ) == std::declval<U>( ) );
 
-		template<typename T>
-		using less_than_comparable = decltype( std::declval<T>( ) < std::declval<T>( ) );
+		template<typename T, typename U>
+		using less_than_comparable = decltype( std::declval<T>( ) < std::declval<U>( ) );
 
 		namespace details {
 			template<typename T, typename U>
@@ -282,11 +283,11 @@ namespace daw {
 	template<typename UnaryPredicate, typename T>
 	constexpr bool is_unary_predicate_v = is_predicate_v<UnaryPredicate, T>;
 
-	template<typename T>
-	constexpr bool is_equality_comparable_v = is_detected_convertible_v<bool, detectors::equality_comparable, T>;
+	template<typename T, typename U=T>
+	constexpr bool is_equality_comparable_v = is_detected_convertible_v<bool, detectors::equality_comparable, T, U>;
 
-	template<typename T>
-	constexpr bool is_less_than_comparable_v = is_detected_convertible_v<bool, detectors::less_than_comparable, T>;
+	template<typename T, typename U=T>
+	constexpr bool is_less_than_comparable_v = is_detected_convertible_v<bool, detectors::less_than_comparable, T, U>;
 
 	template<typename T>
 	using is_swappable = std::integral_constant<bool, is_detected_v<detectors::swappable, T>>;
