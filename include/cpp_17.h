@@ -269,6 +269,9 @@ namespace daw {
 
 		template<typename T>
 		using swappable = decltype( details::swap( std::declval<T>( ), std::declval<T>( ) ) );
+
+		template<typename Iterator, typename T>
+		using assignable = decltype( *std::declval<Iterator>( ) = std::declval<T>( ) );
 	}
 
 	template<typename Function, typename... Args>
@@ -296,12 +299,9 @@ namespace daw {
 	constexpr bool is_less_than_comparable_v = is_detected_convertible_v<bool, detectors::less_than_comparable, T, U>;
 
 	template<typename T>
-	using is_swappable = std::integral_constant<bool, is_detected_v<detectors::swappable, T>>;
+	constexpr bool is_swappable_v = is_detected_v<detectors::swappable, T>;
 
-	template<typename T>
-	using is_swappable_t = typename is_swappable<T>::type;
-
-	template<typename T>
-	constexpr bool is_swappable_v = is_swappable<T>::value;
+	template<typename Iterator, typename T=typename std::iterator_traits<Iterator>::value_type>
+	constexpr bool is_assignable_iterator_v = is_detected_v<detectors::assignable, Iterator, T>; 
 } // namespace daw
 
