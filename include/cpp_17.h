@@ -29,6 +29,18 @@ namespace daw {
 	template<typename...>
 	using void_t = void;
 
+	// base case; actually only used for empty pack
+	template<bool... values>
+	struct all_true : std::true_type {};
+
+	// if first is true, check the rest
+	template<bool... values>
+	struct all_true<true, values...> : all_true<values...> {};
+
+	// if first is false, the whole thing is false
+	template<bool... values>
+	struct all_true<false, values...> : std::false_type {};
+
 	namespace impl {
 		template<typename Function>
 		class not_fn_t {
