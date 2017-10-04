@@ -41,6 +41,9 @@ namespace daw {
 	template<bool... values>
 	struct all_true<false, values...> : std::false_type {};
 
+	template<bool... values>
+	constexpr bool all_true_v = all_true<values...>::value;
+
 	namespace impl {
 		template<typename Function>
 		class not_fn_t {
