@@ -473,7 +473,7 @@ namespace daw {
 	} // namespace detectors
 
 	template<typename Function, typename... Args>
-	constexpr bool is_callable_t = is_detected<detectors::callable_with, Function, Args...>::type;
+	using is_callable_t = typename is_detected<detectors::callable_with, Function, Args...>::type;
 
 	template<typename Function, typename... Args>
 	constexpr bool is_callable_v = is_detected_v<detectors::callable_with, Function, Args...>;
