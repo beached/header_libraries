@@ -102,7 +102,7 @@ namespace daw {
 	using conjunction_t = typename conjunction<T...>::type;
 
 	template<typename... T>
-	constexpr auto const conjunction_v = conjunction<T...>::value;
+	constexpr bool const conjunction_v = conjunction<T...>::value;
 
 	template<typename T>
 	constexpr bool is_arithmetic_v = std::is_arithmetic<T>::value;
@@ -172,7 +172,7 @@ namespace daw {
 	template<bool B>
 	constexpr bool bool_consant_v = bool_constant<B>::value;
 
-	namespace detail {
+	namespace impl {
 		template<typename T>
 		struct is_reference_wrapper : std::false_type {};
 
@@ -241,31 +241,31 @@ namespace daw {
 
 			return std::forward<F>( f )( std::forward<Args>( args )... );
 		}
-	} // namespace detail
+	} // namespace impl
 
 	template<typename F, typename... ArgTypes>
 	constexpr auto invoke( F &&f, ArgTypes &&... args )
 	  // exception specification for QoI
-	  noexcept( noexcept( detail::INVOKE( std::forward<F>( f ), std::forward<ArgTypes>( args )... ) ) )
-	    -> decltype( detail::INVOKE( std::forward<F>( f ), std::forward<ArgTypes>( args )... ) ) {
+	  noexcept( noexcept( impl::INVOKE( std::forward<F>( f ), std::forward<ArgTypes>( args )... ) ) )
+	    -> decltype( impl::INVOKE( std::forward<F>( f ), std::forward<ArgTypes>( args )... ) ) {
 
-		return detail::INVOKE( std::forward<F>( f ), std::forward<ArgTypes>( args )... );
+		return impl::INVOKE( std::forward<F>( f ), std::forward<ArgTypes>( args )... );
 	}
 
-	namespace detail {
+	namespace impl {
 		template<typename F, typename Tuple, std::size_t... I>
 		constexpr decltype( auto ) apply_impl( F &&f, Tuple &&t, std::index_sequence<I...> ) {
 			return daw::invoke( std::forward<F>( f ), std::get<I>( std::forward<Tuple>( t ) )... );
 		}
-	} // namespace detail
+	} // namespace impl
 
 	template<typename F, typename Tuple>
 	constexpr decltype( auto ) apply( F &&f, Tuple &&t ) {
-		return detail::apply_impl( std::forward<F>( f ), std::forward<Tuple>( t ),
+		return impl::apply_impl( std::forward<F>( f ), std::forward<Tuple>( t ),
 		                           std::make_index_sequence<daw::tuple_size_v<std::decay_t<Tuple>>>{} );
 	}
 
-	namespace detail {
+	namespace impl {
 		template<typename T>
 		using always_void = void;
 
@@ -274,7 +274,10 @@ namespace daw {
 
 		template<typename F, typename... Args>
 		struct is_callable_impl<F( Args... ), always_void<std::result_of_t<F( Args... )>>> : std::true_type {};
-	} // namespace detail
+	} // namespace impl
+
+	template<typename F, typename... Args>
+	constexpr bool is_callable_v = impl::is_callable_impl<F, Args...>::value;
 
 	template<typename T>
 	constexpr std::add_const_t<T> &as_const( T &t ) noexcept {
@@ -288,7 +291,7 @@ namespace daw {
 		void operator=( nonesuch const & ) = delete;
 	};
 
-	namespace detail {
+	namespace impl {
 		template<class Default, class AlwaysVoid, template<class...> class Op, class... Args>
 		struct detector {
 			using value_t = std::false_type;
@@ -301,15 +304,15 @@ namespace daw {
 			using type = Op<Args...>;
 		};
 
-	} // namespace detail
+	} // namespace impl
 	template<template<class...> class Op, class... Args>
-	using is_detected = typename detail::detector<nonesuch, void, Op, Args...>::value_t;
+	using is_detected = typename impl::detector<nonesuch, void, Op, Args...>::value_t;
 
 	template<template<class...> class Op, class... Args>
-	using detected_t = typename detail::detector<nonesuch, void, Op, Args...>::type;
+	using detected_t = typename impl::detector<nonesuch, void, Op, Args...>::type;
 
 	template<class Default, template<class...> class Op, class... Args>
-	using detected_or = detail::detector<Default, void, Op, Args...>;
+	using detected_or = impl::detector<Default, void, Op, Args...>;
 
 	template<template<class...> class Op, class... Args>
 	constexpr bool is_detected_v = is_detected<Op, Args...>::value;
