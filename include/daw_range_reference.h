@@ -44,7 +44,7 @@ namespace daw {
 			using values_type = ::std::vector<::daw::Reference<referenced_value_type>>;
 			values_type mutable m_values;
 
-		  public:
+		public:
 			using value_type = decltype( m_values.front( ).get( ) );
 			using reference = decltype( m_values.front( ) );
 			using const_reference = const reference;
@@ -194,9 +194,8 @@ namespace daw {
 
 			template<typename UnaryPredicate>
 			ReferenceRange &unique( UnaryPredicate predicate ) {
-				erase(
-				    ::std::unique( begin( ), end( ), [&predicate]( auto const &v ) { return predicate( v.get( ) ); } ),
-				    end( ) );
+				erase(::std::unique( begin( ), end( ), [&predicate]( auto const &v ) { return predicate( v.get( ) ); } ),
+				      end( ) );
 				return *this;
 			}
 
@@ -241,8 +240,8 @@ namespace daw {
 
 			template<typename UnaryPredicate>
 			auto stable_partition_it( UnaryPredicate predicate ) {
-				auto mid = ::std::stable_partition( begin( ), end( ),
-				                                    [&predicate]( auto const &v ) { return predicate( v.get( ) ); } );
+				auto mid =
+				  ::std::stable_partition( begin( ), end( ), [&predicate]( auto const &v ) { return predicate( v.get( ) ); } );
 				return ::std::make_pair( mid, *this );
 			}
 
@@ -258,9 +257,8 @@ namespace daw {
 
 			template<typename T, typename BinaryOperator>
 			auto accumulate( T &&init, BinaryOperator oper ) const {
-				return ::std::accumulate(
-				    begin( ), end( ), ::std::forward<T>( init ),
-				    [&oper]( auto const &a, auto const &b ) { return oper( a.get( ), b.get( ) ); } );
+				return ::std::accumulate( begin( ), end( ), ::std::forward<T>( init ),
+				                          [&oper]( auto const &a, auto const &b ) { return oper( a.get( ), b.get( ) ); } );
 			}
 
 			template<typename UnaryOperator>
@@ -396,8 +394,7 @@ namespace daw {
 		} // namespace impl
 		template<typename Arg, typename... Args>
 		auto make_range_reference( Arg &&arg, Args &&... args ) {
-			return ::daw::range::impl::make_range_reference(::std::forward<Arg>( arg ),
-			                                                ::std::forward<Args>( args )... );
+			return ::daw::range::impl::make_range_reference(::std::forward<Arg>( arg ), ::std::forward<Args>( args )... );
 		}
 
 		namespace details {

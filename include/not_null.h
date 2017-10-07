@@ -47,7 +47,7 @@ namespace daw {
 	class not_null {
 		T m_ptr;
 
-	  public:
+	public:
 		static_assert( std::is_assignable<T &, std::nullptr_t>::value, "T cannot be assigned nullptr." );
 
 		template<typename U, typename Dummy = std::enable_if_t<std::is_convertible<U, T>::value>>
@@ -61,8 +61,8 @@ namespace daw {
 
 		constexpr not_null( not_null const &other ) noexcept = default;
 		constexpr not_null &operator=( not_null const &other ) noexcept = default;
-		constexpr not_null( not_null && other ) noexcept = default;
-		constexpr not_null &operator=( not_null && other ) noexcept = default;
+		constexpr not_null( not_null &&other ) noexcept = default;
+		constexpr not_null &operator=( not_null &&other ) noexcept = default;
 
 		constexpr T get( ) const {
 			daw::exception::daw_throw_on_null( m_ptr, "Cannot be nullptr" );

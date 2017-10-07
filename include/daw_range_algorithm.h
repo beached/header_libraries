@@ -64,14 +64,14 @@ namespace daw {
 
 		template<typename Container, typename Value>
 		auto erase_remove( Container &container, Value const &value )
-		    -> decltype( container.erase( std::end( container ), std::end( container ) ) ) {
+		  -> decltype( container.erase( std::end( container ), std::end( container ) ) ) {
 			return container.erase( std::remove( std::begin( container ), std::end( container ), value ),
 			                        std::end( container ) );
 		}
 
 		template<typename Container, typename UnaryPredicate>
 		auto erase_remove_if( Container &container, UnaryPredicate pred )
-		    -> decltype( container.erase( std::end( container ), std::end( container ) ) ) {
+		  -> decltype( container.erase( std::end( container ), std::end( container ) ) ) {
 			return container.erase( std::remove_if( std::begin( container ), std::end( container ), pred ),
 			                        std::end( container ) );
 		}
@@ -97,10 +97,10 @@ namespace daw {
 		}
 
 		template<typename ContainerIn, typename UnaryOperator>
-		auto map( ContainerIn const &in, UnaryOperator oper ) -> std::vector<decltype(
-		    oper( std::declval<typename std::iterator_traits<decltype( std::begin( in ) )>::value_type>( ) ) )> {
+		auto map( ContainerIn const &in, UnaryOperator oper ) -> std::vector<
+		  decltype( oper( std::declval<typename std::iterator_traits<decltype( std::begin( in ) )>::value_type>( ) ) )> {
 			using result_t = std::vector<decltype(
-			    oper( std::declval<typename std::iterator_traits<decltype( std::begin( in ) )>::value_type>( ) ) )>;
+			  oper( std::declval<typename std::iterator_traits<decltype( std::begin( in ) )>::value_type>( ) ) )>;
 			result_t result;
 			std::transform( std::begin( in ), std::end( in ), std::back_inserter( result ), oper );
 			return result;

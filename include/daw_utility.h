@@ -72,26 +72,26 @@ namespace daw {
 
 	template<typename ResultType, typename ClassType, typename... ArgTypes>
 	using pointer_to_member_function_t =
-	    typename impl::make_pointer_to_member_function_impl<ResultType, ClassType, ArgTypes...>::type;
+	  typename impl::make_pointer_to_member_function_impl<ResultType, ClassType, ArgTypes...>::type;
 
 	template<typename ResultType, typename ClassType, typename... ArgTypes>
 	using pointer_to_volatile_member_function_t =
-	    typename impl::make_pointer_to_volatile_member_function_impl<ResultType, ClassType, ArgTypes...>::type;
+	  typename impl::make_pointer_to_volatile_member_function_impl<ResultType, ClassType, ArgTypes...>::type;
 
 	template<typename ResultType, typename ClassType, typename... ArgTypes>
 	using pointer_to_const_member_function_t =
-	    typename impl::make_pointer_to_const_member_function_impl<ResultType, ClassType, ArgTypes...>::type;
+	  typename impl::make_pointer_to_const_member_function_impl<ResultType, ClassType, ArgTypes...>::type;
 
 	template<typename ResultType, typename ClassType, typename... ArgTypes>
 	using pointer_to_const_volatile_member_function_t =
-	    typename impl::make_pointer_to_const_volatile_member_function_impl<ResultType, ClassType, ArgTypes...>::type;
+	  typename impl::make_pointer_to_const_volatile_member_function_impl<ResultType, ClassType, ArgTypes...>::type;
 
 	namespace impl {
 		template<typename T>
 		class EqualToImpl final {
 			T m_value;
 
-		  public:
+		public:
 			EqualToImpl( T value ) : m_value( value ) {}
 			EqualToImpl( ) = delete;
 			~EqualToImpl( ) = default;
@@ -104,7 +104,7 @@ namespace daw {
 				return m_value == value;
 			}
 		}; // class EqualToImpl
-	}      // namespace impl
+	}    // namespace impl
 	template<typename T>
 	impl::EqualToImpl<T> equal_to( T value ) {
 		return impl::EqualToImpl<T>( std::move( value ) );
@@ -114,7 +114,7 @@ namespace daw {
 	class equal_to_last final {
 		T *m_value;
 
-	  public:
+	public:
 		equal_to_last( ) : m_value( nullptr ) {}
 		~equal_to_last( ) = default;
 		equal_to_last( equal_to_last const & ) = default;
@@ -137,7 +137,7 @@ namespace daw {
 		class NotImpl final {
 			Function m_function;
 
-		  public:
+		public:
 			NotImpl( Function func ) : m_function( func ) {}
 			~NotImpl( ) = default;
 			NotImpl( NotImpl && ) = default;
@@ -149,7 +149,7 @@ namespace daw {
 				return !m_function( std::forward<Args>( args )... );
 			}
 		}; // class NotImpl
-	}      // namespace impl
+	}    // namespace impl
 
 	template<typename Function>
 	impl::NotImpl<Function> Not( Function func ) {
@@ -267,9 +267,8 @@ namespace daw {
 		static_assert( std::is_floating_point<U>::value, "Second template parameter must be a floating point type" );
 		const auto rnd = std::ceil( static_cast<U>( value ) / rnd_by );
 		const auto ret = rnd * rnd_by;
-		assert(
-		    ret >=
-		    value ); // , __func__": Error, return value should always be greater than or equal to value supplied" );
+		assert( ret >=
+		        value ); // , __func__": Error, return value should always be greater than or equal to value supplied" );
 		return static_cast<T>( ret );
 	}
 
@@ -384,7 +383,7 @@ namespace daw {
 	class MoveCapture final {
 		mutable T m_value;
 
-	  public:
+	public:
 		MoveCapture( ) = delete;
 		~MoveCapture( ) = default;
 		MoveCapture( T &&val ) : m_value( std::move( val ) ) {}
@@ -466,7 +465,7 @@ namespace daw {
 	class not_null {
 		T *m_ptr;
 
-	  public:
+	public:
 		not_null( ) = delete;
 		~not_null( ) = default;
 		not_null( not_null const & ) noexcept = default;
@@ -598,7 +597,7 @@ namespace daw {
 		}
 	}
 	constexpr void breakpoint( ) {
-	;
+		;
 	}
 
 	template<typename T, typename std::enable_if_t<!std::is_floating_point<T>::value, long> = 0>
@@ -622,49 +621,48 @@ namespace daw {
 			return diff < ( std::numeric_limits<T>::epsilon( ) * std::numeric_limits<T>::min_exponent );
 		}
 		// use relative error
-		return diff / std::min( ( absA + absB ), std::numeric_limits<T>::max( ) ) <
-		       std::numeric_limits<T>::epsilon( );
+		return diff / std::min( ( absA + absB ), std::numeric_limits<T>::max( ) ) < std::numeric_limits<T>::epsilon( );
 	}
 
 	/*
 	constexpr bool nearly_equal( double const &a, double const &b ) noexcept {
-		using Float = double;
-		// Code from http://floating-point-gui.de/errors/comparison/
-		auto absA = std::abs( a );
-		auto absB = std::abs( b );
-		auto diff = std::abs( a - b );
+	  using Float = double;
+	  // Code from http://floating-point-gui.de/errors/comparison/
+	  auto absA = std::abs( a );
+	  auto absB = std::abs( b );
+	  auto diff = std::abs( a - b );
 
-		if( a == b ) { // shortcut, handles infinities
-			return true;
-		}
-		if( a == 0 || b == 0 || diff < std::numeric_limits<Float>::min_exponent ) {
-			// a or b is zero or both are extremely close to it
-			// 			// relative error is less meaningful here
-			return diff < ( std::numeric_limits<Float>::epsilon( ) * std::numeric_limits<Float>::min_exponent );
-		}
-		// use relative error
-		return diff / std::min( ( absA + absB ), std::numeric_limits<Float>::max( ) ) <
-		       std::numeric_limits<Float>::epsilon( );
+	  if( a == b ) { // shortcut, handles infinities
+	    return true;
+	  }
+	  if( a == 0 || b == 0 || diff < std::numeric_limits<Float>::min_exponent ) {
+	    // a or b is zero or both are extremely close to it
+	    // 			// relative error is less meaningful here
+	    return diff < ( std::numeric_limits<Float>::epsilon( ) * std::numeric_limits<Float>::min_exponent );
+	  }
+	  // use relative error
+	  return diff / std::min( ( absA + absB ), std::numeric_limits<Float>::max( ) ) <
+	         std::numeric_limits<Float>::epsilon( );
 	}
 
 	constexpr bool nearly_equal( long double const &a, long double const &b ) noexcept {
-		using Float = long double;
-		// Code from http://floating-point-gui.de/errors/comparison/
-		auto absA = std::abs( a );
-		auto absB = std::abs( b );
-		auto diff = std::abs( a - b );
+	  using Float = long double;
+	  // Code from http://floating-point-gui.de/errors/comparison/
+	  auto absA = std::abs( a );
+	  auto absB = std::abs( b );
+	  auto diff = std::abs( a - b );
 
-		if( a == b ) { // shortcut, handles infinities
-			return true;
-		}
-		if( a == 0 || b == 0 || diff < std::numeric_limits<Float>::min_exponent ) {
-			// a or b is zero or both are extremely close to it
-			// 			// relative error is less meaningful here
-			return diff < ( std::numeric_limits<Float>::epsilon( ) * std::numeric_limits<Float>::min_exponent );
-		}
-		// use relative error
-		return diff / std::min( ( absA + absB ), std::numeric_limits<Float>::max( ) ) <
-		       std::numeric_limits<Float>::epsilon( );
+	  if( a == b ) { // shortcut, handles infinities
+	    return true;
+	  }
+	  if( a == 0 || b == 0 || diff < std::numeric_limits<Float>::min_exponent ) {
+	    // a or b is zero or both are extremely close to it
+	    // 			// relative error is less meaningful here
+	    return diff < ( std::numeric_limits<Float>::epsilon( ) * std::numeric_limits<Float>::min_exponent );
+	  }
+	  // use relative error
+	  return diff / std::min( ( absA + absB ), std::numeric_limits<Float>::max( ) ) <
+	         std::numeric_limits<Float>::epsilon( );
 	}
 	*/
 	template<typename Iterator>
@@ -683,14 +681,14 @@ namespace daw {
 	}
 
 	template<typename T, typename RndType = T>
-	std::vector<T> generate_random_data( size_t count, RndType min_value = std::numeric_limits<T>::min( ), RndType max_value = std::numeric_limits<T>::max( ) ) {
+	std::vector<T> generate_random_data( size_t count, RndType min_value = std::numeric_limits<T>::min( ),
+	                                     RndType max_value = std::numeric_limits<T>::max( ) ) {
 		std::vector<T> result;
 		result.resize( count );
 		fill_random( min_value, max_value, result.begin( ), result.end( ) );
 		return result;
-	}	
+	}
 } // namespace daw
 
 template<typename... Ts>
 constexpr void Unused( Ts &&... ) {}
-

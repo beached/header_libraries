@@ -38,15 +38,15 @@ namespace daw {
 		template<typename KeyType>
 		struct s_hash_fn_t {
 			constexpr size_t operator( )( KeyType const &k ) noexcept {
-				size_t result = ( daw::fnv1a_hash( k ) %
-				                  ( std::numeric_limits<size_t>::max( ) - impl::sentinals::sentinals_size ) ) +
-				                impl::sentinals::sentinals_size;
+				size_t result =
+				  ( daw::fnv1a_hash( k ) % ( std::numeric_limits<size_t>::max( ) - impl::sentinals::sentinals_size ) ) +
+				  impl::sentinals::sentinals_size;
 				return result;
 			}
 			constexpr size_t operator( )( KeyType const *k ) noexcept {
-				size_t result = ( daw::fnv1a_hash( k ) %
-				                  ( std::numeric_limits<size_t>::max( ) - impl::sentinals::sentinals_size ) ) +
-				                impl::sentinals::sentinals_size;
+				size_t result =
+				  ( daw::fnv1a_hash( k ) % ( std::numeric_limits<size_t>::max( ) - impl::sentinals::sentinals_size ) ) +
+				  impl::sentinals::sentinals_size;
 				return result;
 			}
 		};
@@ -69,7 +69,7 @@ namespace daw {
 		using reference = value_type &;
 		using const_reference = value_type const &;
 
-	  private:
+	private:
 		daw::array<size_t> m_hashes;
 		daw::array<value_type> m_values;
 
@@ -163,7 +163,7 @@ namespace daw {
 			return ( ( lookup_cost * 100 ) / current_size ) >= resize_ratio;
 		}
 
-	  public:
+	public:
 		hash_table( ) : m_hashes( m_initial_size, impl::sentinals::empty ), m_values( m_initial_size ) {
 
 			assert( m_hashes.size( ) > 0 );

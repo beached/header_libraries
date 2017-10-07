@@ -33,8 +33,8 @@ namespace daw {
 	struct bit_queue_source_big_endian {};
 
 	using bit_queue_source_native_endian =
-	    typename std::conditional<boost::endian::order::native == boost::endian::order::little,
-	                              bit_queue_source_little_endian, bit_queue_source_big_endian>::type;
+	  typename std::conditional<boost::endian::order::native == boost::endian::order::little,
+	                            bit_queue_source_little_endian, bit_queue_source_big_endian>::type;
 
 	template<typename queue_type, typename value_type = uint8_t, typename BitQueueLSB = bit_queue_source_native_endian>
 	class bit_queue_gen {
@@ -43,10 +43,10 @@ namespace daw {
 		size_t m_size;
 		queue_type m_queue;
 
-	  public:
+	public:
 		constexpr bit_queue_gen( ) noexcept : m_size{0}, m_queue{0} {}
 		constexpr explicit bit_queue_gen( queue_type v ) noexcept
-		    : m_size{sizeof( m_queue ) * 8}, m_queue{std::move( v )} {}
+		  : m_size{sizeof( m_queue ) * 8}, m_queue{std::move( v )} {}
 
 		constexpr size_t size( ) const noexcept {
 			return m_size;
@@ -64,7 +64,7 @@ namespace daw {
 			return sizeof( m_queue ) * 8;
 		}
 
-	  private:
+	private:
 		template<typename T>
 		auto source_to_native_endian( T value, bit_queue_source_little_endian ) noexcept {
 			return boost::endian::little_to_native( value );
@@ -75,10 +75,9 @@ namespace daw {
 			return boost::endian::big_to_native( value );
 		}
 
-	  public:
+	public:
 		void push_back( value_type value, size_t const bits = sizeof( value_type ) * 8 ) {
-			daw::exception::dbg_throw_on_false( ( capacity( ) - m_size ) >= bits,
-			                                    "Not enough bits to hold value pushed" );
+			daw::exception::dbg_throw_on_false( ( capacity( ) - m_size ) >= bits, "Not enough bits to hold value pushed" );
 
 			value &= get_left_mask<value_type>( sizeof( value_type ) * 8 - bits );
 			m_queue <<= bits;
@@ -126,7 +125,7 @@ namespace daw {
 	class nibble_queue_gen {
 		bit_queue_gen<queue_type, value_type> m_queue;
 
-	  public:
+	public:
 		constexpr nibble_queue_gen( ) noexcept : m_queue{} {}
 
 		constexpr explicit nibble_queue_gen( queue_type v ) noexcept : m_queue{std::move( v )} {}

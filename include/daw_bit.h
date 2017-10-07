@@ -27,11 +27,11 @@
 namespace daw {
 	template<typename T>
 	constexpr T get_left_mask( size_t left_zero_bits ) noexcept {
-		return static_cast<T>(std::numeric_limits<T>::max( ) >> left_zero_bits);
+		return static_cast<T>( std::numeric_limits<T>::max( ) >> left_zero_bits );
 	}
 
 	template<typename T>
 	constexpr T get_right_mask( size_t right_zero_bits ) noexcept {
-		return static_cast<T>(std::numeric_limits<T>::max( ) << right_zero_bits);
+		return static_cast<T>( std::numeric_limits<T>::max( ) << right_zero_bits );
 	}
 } // namespace daw

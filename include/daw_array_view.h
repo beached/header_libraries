@@ -46,11 +46,11 @@ namespace daw {
 		using size_type = std::size_t;
 		using difference_type = std::ptrdiff_t;
 
-	  private:
+	private:
 		const_pointer m_first;
 		size_type m_size;
 
-	  public:
+	public:
 		constexpr array_view( ) noexcept : m_first{nullptr}, m_size{0} {}
 
 		constexpr array_view( std::nullptr_t ) noexcept : m_first{nullptr}, m_size{0} {}
@@ -113,7 +113,7 @@ namespace daw {
 		}
 
 		constexpr const_reference back( ) const noexcept {
-			return *std::next(m_first, m_size - 1);
+			return *std::next( m_first, m_size - 1 );
 		}
 
 		constexpr const_pointer data( ) const noexcept {
@@ -157,7 +157,7 @@ namespace daw {
 			return result;
 		}
 
-		constexpr bool pop( T & value ) noexcept {
+		constexpr bool pop( T &value ) noexcept {
 			value = back( );
 			remove_suffix( );
 			return true;
@@ -194,9 +194,8 @@ namespace daw {
 			return array_view{m_first + pos, rcount};
 		}
 
-	  private:
-		constexpr size_type reverse_distance( const_reverse_iterator first, const_reverse_iterator last ) const
-		    noexcept {
+	private:
+		constexpr size_type reverse_distance( const_reverse_iterator first, const_reverse_iterator last ) const noexcept {
 			// Portability note here: std::distance is not NOEXCEPT, but calling it with a array_view::reverse_iterator
 			// will not throw.
 			// return static_cast<size_type>( ( m_size - 1u ) - static_cast<size_type>( std::distance( first, last ) )
@@ -242,8 +241,8 @@ namespace std {
 		size_t operator( )( daw::array_view<T> s ) noexcept {
 			auto const tot_size = sizeof( T ) + sizeof( decltype( s.size( ) ) );
 			char vals[tot_size];
-			*reinterpret_cast<T*>(&vals[0]) = s.data( );
-			*reinterpret_cast<decltype(s.size( ))>(&vals[sizeof(T)]) = s.size( );
+			*reinterpret_cast<T *>( &vals[0] ) = s.data( );
+			*reinterpret_cast<decltype( s.size( ) )>( &vals[sizeof( T )] ) = s.size( );
 			return daw::fnv1a_hash( vals, tot_size );
 		}
 	};

@@ -41,7 +41,7 @@ namespace daw {
 
 		std::unique_ptr<value_t> m_value;
 
-	  public:
+	public:
 		heap_value( heap_value const &other ) : m_value{std::make_unique<value_t>( *other.m_value )} {}
 
 		heap_value &operator=( heap_value const &rhs ) {
@@ -63,7 +63,7 @@ namespace daw {
 
 		template<typename Arg, typename... Args>
 		heap_value( Arg &&arg, Args &&... args )
-		    : m_value{std::make_unique<value_t>( std::forward<Arg>( arg ), std::forward<Args>( args )... )} {}
+		  : m_value{std::make_unique<value_t>( std::forward<Arg>( arg ), std::forward<Args>( args )... )} {}
 
 		friend void swap( heap_value &lhs, heap_value &rhs ) noexcept {
 			using std::swap;

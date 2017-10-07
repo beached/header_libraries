@@ -27,5 +27,5 @@
 
 BOOST_AUTO_TEST_CASE( test_01 ) {
 	daw::semaphore sem1;
-	daw::shared_semaphore sem2{ std::move( sem1 ) };
+	daw::shared_semaphore sem2{std::move( sem1 )};
 }

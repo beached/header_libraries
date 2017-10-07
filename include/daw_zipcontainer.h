@@ -30,14 +30,13 @@ namespace daw {
 		using iterator = ZipIter<decltype( std::declval<Containers...>( ).begin( ) )>;
 		using const_iterator = ZipIter<decltype( std::declval<std::add_const_t<Containers>>( ).begin( ) )...>;
 
-	  private:
+	private:
 		iterator m_begin;
 		iterator m_end;
 
-	  public:
+	public:
 		ZipContainer( Containers... containers )
-		    : m_begin( make_zipiter( std::begin( containers )... ) )
-		    , m_end( make_zipiter( std::end( containers )... ) ) {}
+		  : m_begin( make_zipiter( std::begin( containers )... ) ), m_end( make_zipiter( std::end( containers )... ) ) {}
 
 		iterator begin( ) {
 			return m_begin;

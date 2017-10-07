@@ -41,7 +41,7 @@ namespace daw {
 			size_t m_start;
 			std::vector<T> m_items;
 
-		  public:
+		public:
 			Chunk( ) = default;
 			~Chunk( ) = default;
 			Chunk( Chunk const & ) = default;
@@ -76,7 +76,7 @@ namespace daw {
 				return start( ) < rhs.start( );
 			}
 		}; // class Chunk
-	  public:
+	public:
 		using values_type = ::std::vector<Chunk>;
 		using value_type = typename values_type::value_type;
 		using reference = typename values_type::reference;
@@ -84,7 +84,7 @@ namespace daw {
 		using iterator = clumpy_sparsy_iterator<T>;
 		using const_iterator = clumpy_sparsy_const_iterator<T>;
 
-	  private:
+	private:
 		// Must be mutable as we hide our size and expand the values < size to fit as needed
 		values_type mutable m_items;
 		size_t m_size;
@@ -108,7 +108,7 @@ namespace daw {
 			return item_pos;
 		}
 
-	  public:
+	public:
 		size_t size( ) const {
 			return m_size;
 		}
@@ -145,7 +145,7 @@ namespace daw {
 
 	template<typename T>
 	class clumpy_sparsy_iterator
-	    : public boost::iterator_facade<clumpy_sparsy_iterator<T>, T, boost::random_access_traversal_tag> {
+	  : public boost::iterator_facade<clumpy_sparsy_iterator<T>, T, boost::random_access_traversal_tag> {
 		size_t m_position;
 		clumpy_sparsy<T> *m_items;
 
@@ -195,10 +195,9 @@ namespace daw {
 			}
 		}
 
-	  public:
+	public:
 		clumpy_sparsy_iterator( ) : m_position( std::numeric_limits<size_t>::max( ) ), m_items( nullptr ) {}
-		clumpy_sparsy_iterator( clumpy_sparsy<T> *items, size_t position = 0 )
-		    : m_position( position ), m_items( items ) {}
+		clumpy_sparsy_iterator( clumpy_sparsy<T> *items, size_t position = 0 ) : m_position( position ), m_items( items ) {}
 	}; // class clumpy_sparsy_iterator
 
 } // namespace daw

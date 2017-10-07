@@ -33,10 +33,10 @@ namespace daw {
 		using const_reference = value_type const &;
 		using const_pointer = value_type const *;
 
-	  private:
+	private:
 		value_type m_value;
 
-	  public:
+	public:
 		read_only( value_type value = value_type{} ) : m_value{std::move( value )} {}
 
 		read_only( read_only const & ) = default;

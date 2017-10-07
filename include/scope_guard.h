@@ -30,7 +30,7 @@ namespace daw {
 		FunctionType m_function;
 		mutable bool m_is_active;
 
-	  public:
+	public:
 		ScopeGuard( FunctionType f ) : m_function( std::move( f ) ), m_is_active( true ) {}
 
 		~ScopeGuard( ) {
@@ -47,7 +47,7 @@ namespace daw {
 		ScopeGuard( const ScopeGuard & ) = delete;
 
 		ScopeGuard( ScopeGuard &&other )
-		    : m_function( std::move( other.m_function ) ), m_is_active( std::move( other.m_is_active ) ) {
+		  : m_function( std::move( other.m_function ) ), m_is_active( std::move( other.m_is_active ) ) {
 			other.dismiss( );
 		}
 

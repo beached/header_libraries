@@ -40,7 +40,7 @@ namespace daw {
 			boost::iostreams::mapped_file_params m_mf_params;
 			boost::iostreams::mapped_file m_mf_file;
 
-		  public:
+		public:
 			using value_type = std::decay_t<T>;
 			using pointer = value_type *;
 			using const_pointer = value_type const *;
@@ -50,7 +50,7 @@ namespace daw {
 			using const_reference = value_type const &;
 
 			memory_mapped_file_t( boost::filesystem::path file_path, bool const readonly = true )
-			    : m_file_path{file_path}, m_mf_params{file_path.string( )} {
+			  : m_file_path{file_path}, m_mf_params{file_path.string( )} {
 
 				m_mf_params.flags = boost::iostreams::mapped_file::mapmode::readwrite;
 				if( readonly ) {
@@ -60,15 +60,14 @@ namespace daw {
 				try {
 					m_mf_file.open( m_mf_params );
 				} catch( std::exception const &ex ) {
-					std::cerr << "Error Opening memory mapped file '" << file_path.string( ) << "': " << ex.what( )
-					          << std::endl;
+					std::cerr << "Error Opening memory mapped file '" << file_path.string( ) << "': " << ex.what( ) << std::endl;
 					throw ex;
 				}
 			}
 
 			template<typename charT, typename traits>
 			memory_mapped_file_t( daw::basic_string_view<charT, traits> filename, bool const readonly = true )
-			    : memory_mapped_file_t{boost::filesystem::path{filename.data( )}, readonly} {}
+			  : memory_mapped_file_t{boost::filesystem::path{filename.data( )}, readonly} {}
 
 			memory_mapped_file_t( ) = delete;
 
@@ -108,12 +107,12 @@ namespace daw {
 
 			pointer data( size_t position = 0 ) {
 				return reinterpret_cast<pointer>( m_mf_file.data( ) +
-				                                    static_cast<boost::iostreams::stream_offset>( position ) );
+				                                  static_cast<boost::iostreams::stream_offset>( position ) );
 			}
 
 			const_pointer data( size_t position = 0 ) const {
 				return reinterpret_cast<const_pointer>( m_mf_file.data( ) +
-				                                    static_cast<boost::iostreams::stream_offset>( position ) );
+				                                        static_cast<boost::iostreams::stream_offset>( position ) );
 			}
 
 			friend void swap( memory_mapped_file_t &lhs, memory_mapped_file_t &rhs ) noexcept {

@@ -61,7 +61,7 @@ namespace daw {
 		using const_pointer = T const *;
 		using size_type = std::size_t;
 
-	  private:
+	private:
 		alignas( value_type ) std::array<uint8_t, sizeof( T ) * N> m_data;
 
 		constexpr pointer ptr( ) noexcept {
@@ -77,7 +77,7 @@ namespace daw {
 			return std::reverse_iterator<Iterator>( i );
 		}
 
-	  public:
+	public:
 		constexpr carray( ) noexcept : m_data{} {}
 
 		constexpr carray( T ( &values )[N] ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) ) : m_data{} {
@@ -96,7 +96,7 @@ namespace daw {
 		template<typename... Args>
 		constexpr carray( Args &&... args ) noexcept( noexcept( details::assign_to( std::declval<carray>( ).ptr( ),
 		                                                                            std::declval<Args &&>( )... ) ) )
-		    : m_data{} {
+		  : m_data{} {
 
 			details::assign_to( ptr( ), std::forward<Args>( args )... );
 		}

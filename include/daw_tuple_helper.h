@@ -81,9 +81,9 @@ namespace daw {
 				bool m_is_first;
 				char m_separator;
 
-			  public:
+			public:
 				constexpr print_t( std::ostream &os, char separator = ',' )
-				    : m_os{os}, m_is_first{true}, m_separator{std::move( separator )} {}
+				  : m_os{os}, m_is_first{true}, m_separator{std::move( separator )} {}
 
 				void reset( ) {
 					m_is_first = true;
@@ -98,7 +98,7 @@ namespace daw {
 					m_os << " " << v;
 				}
 			}; // print_t
-		}      // namespace detail
+		}    // namespace detail
 
 		template<typename... Ts, typename F>
 		constexpr void for_each( std::tuple<Ts...> const &t1, F &&f ) {
@@ -131,8 +131,8 @@ namespace daw {
 				}
 
 				template<typename... Ts, typename F>
-				constexpr std::tuple<Ts...> apply_tuple_tuple( std::tuple<Ts...> const &op1,
-				                                               std::tuple<Ts...> const &op2, F f ) {
+				constexpr std::tuple<Ts...> apply_tuple_tuple( std::tuple<Ts...> const &op1, std::tuple<Ts...> const &op2,
+				                                               F f ) {
 					std::tuple<Ts...> result;
 					apply_tuple( result, op1, op2, f, daw::tuple::detail::gen_seq<sizeof...( Ts )>( ) );
 					return result;
@@ -199,7 +199,7 @@ namespace daw {
 						return result;
 					}
 				}; // div_t
-			}      // namespace detail
+			}    // namespace detail
 
 			template<typename... Op1, typename... Op2>
 			constexpr std::tuple<Op1...> operator+( std::tuple<Op1...> const &lhs, std::tuple<Op2...> const &rhs ) {

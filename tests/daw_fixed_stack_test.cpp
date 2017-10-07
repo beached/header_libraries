@@ -29,7 +29,7 @@
 #include "daw_fixed_stack.h"
 
 BOOST_AUTO_TEST_CASE( daw_fixed_stack_test_001 ) {
-	daw::fixed_stack_t<int, 10> a{ };
+	daw::fixed_stack_t<int, 10> a{};
 	a.push_back( 1 );
 	a.push_back( 2 );
 	a.push_back( 4 );
@@ -42,4 +42,3 @@ BOOST_AUTO_TEST_CASE( daw_fixed_stack_test_001 ) {
 	}
 	std::cout << "The sum is " << sum << '\n';
 }
-

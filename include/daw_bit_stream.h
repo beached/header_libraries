@@ -77,15 +77,15 @@ namespace daw {
 		using value_type = std::decay_t<typename std::iterator_traits<InputIteratorF>::value_type>;
 		static_assert( std::is_integral<value_type>::value, "value_type of iterator must be integral" );
 
-	  private:
+	private:
 		// template<typename BitStream> struct bit_stream_iterator;
 		InputIteratorF m_first;
 		InputIteratorL m_last;
 		daw::bit_queue_gen<value_type, value_type, BitQueueLSB> m_left_overs;
 
-	  public:
+	public:
 		constexpr bit_stream( InputIteratorF first, InputIteratorL last ) noexcept
-		    : m_first{first}, m_last{last}, m_left_overs{} {}
+		  : m_first{first}, m_last{last}, m_left_overs{} {}
 
 		constexpr bool valid( ) const noexcept {
 			return m_first != m_last;
@@ -96,8 +96,8 @@ namespace daw {
 		}
 
 		value_type pop_bits( size_t num_bits = sizeof( value_type ) * 8 ) {
-			daw::exception::dbg_throw_on_true<std::overflow_error>(
-			    num_bits > sizeof( value_type ) * 8, "Attempt to pop more bits than can fit into value" );
+			daw::exception::dbg_throw_on_true<std::overflow_error>( num_bits > sizeof( value_type ) * 8,
+			                                                        "Attempt to pop more bits than can fit into value" );
 			daw::exception::dbg_throw_on_true<std::runtime_error>( num_bits == 0, "Attempt to pop 0 bits" );
 
 			value_type result = 0;
@@ -108,8 +108,7 @@ namespace daw {
 					result = m_left_overs.pop_all( );
 					result <<= num_bits;
 				}
-				daw::exception::dbg_throw_on_true<std::out_of_range>( m_first == m_last,
-				                                                      "Attempt to iterate past last item" );
+				daw::exception::dbg_throw_on_true<std::out_of_range>( m_first == m_last, "Attempt to iterate past last item" );
 
 				m_left_overs.push_back( *m_first++ );
 			}

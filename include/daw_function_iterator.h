@@ -35,10 +35,10 @@ namespace daw {
 		using pointer = void;
 		using reference = void;
 
-	  protected:
+	protected:
 		Function m_function;
 
-	  public:
+	public:
 		function_iterator( Function function ) : m_function{std::move( function )} {}
 
 		template<typename T>

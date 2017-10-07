@@ -35,13 +35,13 @@ namespace daw {
 		intmax_t m_count;
 		bool m_latched;
 
-	  public:
+	public:
 		template<typename Int = intmax_t>
 		explicit basic_semaphore( Int count = 0, bool latched = true )
-		    : m_mutex{std::make_unique<Mutex>( )}
-		    , m_condition{std::make_unique<ConditionVariable>( )}
-		    , m_count{static_cast<intmax_t>( count )}
-		    , m_latched{latched} {}
+		  : m_mutex{std::make_unique<Mutex>( )}
+		  , m_condition{std::make_unique<ConditionVariable>( )}
+		  , m_count{static_cast<intmax_t>( count )}
+		  , m_latched{latched} {}
 
 		~basic_semaphore( ) = default;
 		basic_semaphore( basic_semaphore const & ) = delete;
@@ -94,7 +94,7 @@ namespace daw {
 		}
 
 		template<typename Clock, typename Duration>
-		auto wait_until( std::chrono::time_point<Clock, Duration> const & timeout_time ) {
+		auto wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) {
 			std::unique_lock<std::mutex> lock{*m_mutex};
 			auto status = m_condition->wait_until( lock, timeout_time, [&]( ) { return m_latched && m_count > 0; } );
 			if( status ) {
@@ -110,17 +110,17 @@ namespace daw {
 	class basic_shared_semaphore {
 		std::shared_ptr<basic_semaphore<Mutex, ConditionVariable>> m_semaphore;
 
-	  public:
-		template<typename Int=intmax_t>
+	public:
+		template<typename Int = intmax_t>
 		explicit basic_shared_semaphore( Int count = 0, bool latched = true )
-		    : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( count )} {}
+		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( count )} {}
 
 		explicit basic_shared_semaphore( basic_semaphore<Mutex, ConditionVariable> &&semaphore )
-		    : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( std::move( semaphore ) )} {}
+		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( std::move( semaphore ) )} {}
 
 		~basic_shared_semaphore( ) = default;
 		basic_shared_semaphore( basic_shared_semaphore const & ) = default;
-		
+
 		basic_shared_semaphore( basic_shared_semaphore && ) noexcept = default;
 		basic_shared_semaphore &operator=( basic_shared_semaphore const & ) = default;
 		basic_shared_semaphore &operator=( basic_shared_semaphore && ) noexcept = default;
@@ -151,7 +151,7 @@ namespace daw {
 		}
 
 		template<typename Clock, typename Duration>
-		auto wait_until( std::chrono::time_point<Clock, Duration> const & timeout_time ) {
+		auto wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) {
 			return m_semaphore->wait_until( timeout_time );
 		}
 	}; // basic_shared_semaphore
@@ -179,6 +179,6 @@ namespace daw {
 
 	template<typename T>
 	auto make_waitable_value( shared_semaphore semaphore, T value ) {
-		return waitable_value<T>{ std::move( semaphore ), std::move( value ) };
+		return waitable_value<T>{std::move( semaphore ), std::move( value )};
 	}
 } // namespace daw

@@ -31,5 +31,5 @@ BOOST_AUTO_TEST_CASE( test_01 ) {
 	auto b = std::make_unique<int>( 3 );
 	daw::exception::daw_throw_on_true( a );
 
-	daw::exception::daw_throw_on_false( b ); 
+	daw::exception::daw_throw_on_false( b );
 }

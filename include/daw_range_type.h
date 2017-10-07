@@ -43,11 +43,11 @@ namespace daw {
 			using const_iterator = const iterator;
 			using difference_type = typename ::std::iterator_traits<Iterator>::difference_type;
 
-		  private:
+		private:
 			iterator m_begin;
 			iterator m_end;
 
-		  public:
+		public:
 			Range( ) = default;
 			Range( Range const & ) = default;
 			Range( Range && ) = default;
@@ -355,8 +355,7 @@ namespace daw {
 		}
 
 		template<typename Iterator>
-		bool contains( Range<Iterator> const &range,
-		               typename ::std::iterator_traits<Iterator>::value_type const &key ) {
+		bool contains( Range<Iterator> const &range, typename ::std::iterator_traits<Iterator>::value_type const &key ) {
 			return ::std::find( range.begin( ), range.end( ), key ) != range.end( );
 		}
 

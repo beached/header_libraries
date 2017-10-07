@@ -79,11 +79,11 @@ namespace daw {
 			~hash_table_item( ) = default;
 
 			hash_table_item( hash_table_item const &other )
-			    : hash{( other.hash == Sentinals::sentinal_removed ) ? Sentinals::sentinal_empty : other.hash}
-			    , value{other.value} {}
+			  : hash{( other.hash == Sentinals::sentinal_removed ) ? Sentinals::sentinal_empty : other.hash}
+			  , value{other.value} {}
 
 			hash_table_item( hash_table_item &&other ) noexcept
-			    : hash{std::move( other.hash )}, value{std::move( other.value )} {}
+			  : hash{std::move( other.hash )}, value{std::move( other.value )} {}
 
 			hash_table_item &operator=( hash_table_item const &rhs ) {
 				if( this != &rhs ) {
@@ -102,27 +102,27 @@ namespace daw {
 				return *this;
 			}
 		}; // hash_table_item
-	}      // namespace impl
+	}    // namespace impl
 
 	template<typename ValueType>
 	struct hash_table_item_iterator
-	    : public std::iterator<std::bidirectional_iterator_tag, typename impl::hash_table_item<ValueType>::value_type,
-	                           std::ptrdiff_t, impl::hash_table_item<ValueType> *,
-	                           typename impl::hash_table_item<ValueType>::value_type &> {
+	  : public std::iterator<std::bidirectional_iterator_tag, typename impl::hash_table_item<ValueType>::value_type,
+	                         std::ptrdiff_t, impl::hash_table_item<ValueType> *,
+	                         typename impl::hash_table_item<ValueType>::value_type &> {
 		using pointer = impl::hash_table_item<ValueType> *;
 
-	  private:
+	private:
 		pointer m_begin;
 		pointer m_position;
 		pointer m_end;
 
-	  public:
+	public:
 		hash_table_item_iterator( pointer first, pointer position, pointer last )
-		    : m_begin{first}, m_position{position}, m_end{last} {}
+		  : m_begin{first}, m_position{position}, m_end{last} {}
 
 		template<typename T, typename = std::enable_if_t<std::is_convertible<T, pointer>::value>>
 		hash_table_item_iterator( hash_table_item_iterator<T> const &other )
-		    : m_begin( other.m_begin ), m_position( other.m_position ), m_end( other.m_end ) {}
+		  : m_begin( other.m_begin ), m_position( other.m_position ), m_end( other.m_end ) {}
 
 		template<typename T, typename = std::enable_if_t<std::is_convertible<T, pointer>::value>>
 		hash_table_item_iterator &operator=( hash_table_item_iterator<T> const &rhs ) {
@@ -146,12 +146,12 @@ namespace daw {
 		~hash_table_item_iterator( ) = default;
 
 		hash_table_item_iterator( hash_table_item_iterator const &other ) noexcept
-		    : m_begin{other.m_begin}, m_position{other.m_position}, m_end{other.m_end} {}
+		  : m_begin{other.m_begin}, m_position{other.m_position}, m_end{other.m_end} {}
 
 		hash_table_item_iterator( hash_table_item_iterator &&other ) noexcept
-		    : m_begin{std::move( other.m_begin )}
-		    , m_position{std::move( other.m_position )}
-		    , m_end{std::move( other.m_end )} {}
+		  : m_begin{std::move( other.m_begin )}
+		  , m_position{std::move( other.m_position )}
+		  , m_end{std::move( other.m_end )} {}
 
 		hash_table_item_iterator &operator=( hash_table_item_iterator const &rhs ) noexcept {
 			if( this != &rhs ) {
@@ -277,7 +277,7 @@ namespace daw {
 		using iterator = hash_table_item_iterator<value_type>;
 		using const_iterator = hash_table_item_iterator<value_type const>;
 
-	  private:
+	private:
 		using values_type = daw::heap_array<impl::hash_table_item<value_type>>;
 		using priv_iterator = typename values_type::iterator;
 		double m_resize_ratio;
@@ -302,13 +302,13 @@ namespace daw {
 			return m_values.end( );
 		}
 
-	  public:
+	public:
 		hash_table( size_t start_size, double resize_ratio = 2.0, size_t max_load_percent = 70 )
-		    : m_resize_ratio{resize_ratio}
-		    , m_load{0}
-		    , m_growth_counter{0}
-		    , m_max_load{max_load_percent}
-		    , m_values{start_size} {
+		  : m_resize_ratio{resize_ratio}
+		  , m_load{0}
+		  , m_growth_counter{0}
+		  , m_max_load{max_load_percent}
+		  , m_values{start_size} {
 
 			assert( start_size > 0 );
 		}
@@ -355,14 +355,13 @@ namespace daw {
 			return iterator{priv_begin( ), priv_end( ), priv_end( )};
 		}
 
-	  private:
+	private:
 		template<typename KeyType>
 		static size_t hash_fn( KeyType &&key ) {
 			static const auto s_hash = []( auto &&k ) {
-				size_t result =
-				    ( daw::fnv1a_hash(::std::forward<KeyType>( k ) ) %
-				      ( std::numeric_limits<size_t>::max( ) - impl::hash_table_item<value_type>::SentinalsSize ) ) +
-				    impl::hash_table_item<value_type>::SentinalsSize; // Guarantee we cannot be zero
+				size_t result = ( daw::fnv1a_hash(::std::forward<KeyType>( k ) ) %
+				                  ( std::numeric_limits<size_t>::max( ) - impl::hash_table_item<value_type>::SentinalsSize ) ) +
+				                impl::hash_table_item<value_type>::SentinalsSize; // Guarantee we cannot be zero
 				return result;
 			};
 			return s_hash(::std::forward<KeyType>( key ) );
@@ -463,12 +462,12 @@ namespace daw {
 		}
 
 		void grow_table( ) {
-			m_load = resize_table( m_values, static_cast<size_t>( std::ceil( static_cast<double>( m_values.size( ) ) *
-			                                                                 m_resize_ratio ) ) );
+			m_load = resize_table(
+			  m_values, static_cast<size_t>( std::ceil( static_cast<double>( m_values.size( ) ) * m_resize_ratio ) ) );
 			++m_growth_counter;
 		}
 
-	  public:
+	public:
 		static size_t max_size( ) {
 			return static_cast<size_t>( std::numeric_limits<ptrdiff_t>::max( ) - 1 );
 		}
@@ -596,13 +595,13 @@ namespace daw {
 			return key_exists( key ) ? 1 : 0;
 		}
 
-	  private:
+	private:
 		bool hash_exists( size_t hash ) const {
 			auto pos = find_item_by_hash( hash, m_values );
 			return pos != m_values.priv_end( );
 		}
 
-	  public:
+	public:
 		friend bool operator==( hash_table const &lhs, hash_table const &rhs ) {
 			if( lhs.m_load == rhs.m_load ) {
 				for( auto const &value : lhs.m_values ) {

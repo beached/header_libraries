@@ -26,4 +26,3 @@
 #include "daw_zipiter.h"
 
 BOOST_AUTO_TEST_CASE( test_01 ) {}
-

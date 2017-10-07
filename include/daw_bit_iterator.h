@@ -38,7 +38,7 @@ namespace daw {
 		using pointer = void;
 		using reference = void;
 
-	  protected:
+	protected:
 		///
 		/// Original iterator
 		Iterator m_iterator;
@@ -46,14 +46,13 @@ namespace daw {
 		/// Position within value_type of pointed to type
 		size_t m_pos;
 
-	  public:
+	public:
 		constexpr explicit bit_iterator( Iterator it ) : m_bit{std::move( it )} {}
 		constexpr explicit bit_iterator( Iterator it, size_t bit_pos )
-		    : m_bit{std::move( it )}, m_pos{std::move( it_pos )} {
+		  : m_bit{std::move( it )}, m_pos{std::move( it_pos )} {
 
-			daw::exception::daw_throw_if_false(
-			    bit_pos >= sizeof( value_type ) * 8,
-			    "Cannot specify a bit position greater than the current value size in bits" );
+			daw::exception::daw_throw_if_false( bit_pos >= sizeof( value_type ) * 8,
+			                                    "Cannot specify a bit position greater than the current value size in bits" );
 		}
 
 		template<typename T>

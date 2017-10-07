@@ -37,7 +37,7 @@ namespace daw {
 	namespace algorithm {
 		template<typename Container, typename UnaryPredicate>
 		auto find_if( Container &container, UnaryPredicate predicate )
-		    -> decltype( std::find_if( begin( container ), end( container ), predicate ) ) {
+		  -> decltype( std::find_if( begin( container ), end( container ), predicate ) ) {
 			return std::find_if( std::begin( container ), std::end( container ), predicate );
 		}
 
@@ -92,8 +92,7 @@ namespace daw {
 		/// in interval [first_inclusive, last_exclusive)
 		///
 		template<typename Container, typename FunctionType>
-		void for_each_with_pos( Container &container, size_t first_inclusive, size_t last_exclusive,
-		                        FunctionType func ) {
+		void for_each_with_pos( Container &container, size_t first_inclusive, size_t last_exclusive, FunctionType func ) {
 			auto it = begin_at( container, first_inclusive );
 			auto const last_it = begin_at( container, last_exclusive );
 
@@ -113,15 +112,15 @@ namespace daw {
 		                            Comp less_than ) {
 			auto midpoint = []( const IteratorType &a, const IteratorType &b ) {
 				daw::exception::dbg_throw_on_false(
-				    a <= b, daw::string::string_join(
-				                __func__, ": Cannot find a midpoint unless the first parameter is <= the second" ) );
+				  a <= b, daw::string::string_join( __func__,
+				                                    ": Cannot find a midpoint unless the first parameter is <= the second" ) );
 				auto const mid = std::distance( a, b ) / 2;
 				auto result = a;
 				std::advance( result, mid );
 				return result;
 			};
 			daw::exception::dbg_throw_on_false(
-			    first < last, daw::string::string_join( __func__, ": First position must be less than second" ) );
+			  first < last, daw::string::string_join( __func__, ": First position must be less than second" ) );
 			IteratorType it_first( first );
 			IteratorType it_last( last );
 
@@ -424,9 +423,8 @@ namespace daw {
 				Lower m_lower;
 				Upper m_upper;
 
-			  public:
-				constexpr in_range( Lower lower, Upper upper )
-				    : m_lower{std::move( lower )}, m_upper{std::move( upper )} {
+			public:
+				constexpr in_range( Lower lower, Upper upper ) : m_lower{std::move( lower )}, m_upper{std::move( upper )} {
 					if( lower > upper ) {
 						throw std::exception{};
 					};
@@ -442,7 +440,7 @@ namespace daw {
 			class equal_to {
 				Value m_value;
 
-			  public:
+			public:
 				constexpr equal_to( Value value ) : m_value{std::move( value )} {}
 
 				template<typename T>
@@ -455,7 +453,7 @@ namespace daw {
 			class less_than {
 				Value m_value;
 
-			  public:
+			public:
 				constexpr less_than( Value value ) : m_value{std::move( value )} {}
 
 				template<typename T>
@@ -468,7 +466,7 @@ namespace daw {
 			class greater_than {
 				Value m_value;
 
-			  public:
+			public:
 				constexpr greater_than( Value value ) : m_value{std::move( value )} {}
 
 				template<typename T>
@@ -481,7 +479,7 @@ namespace daw {
 			class greater_than_or_equal_to {
 				Value m_value;
 
-			  public:
+			public:
 				constexpr greater_than_or_equal_to( Value value ) : m_value{std::move( value )} {}
 
 				template<typename T>
@@ -494,7 +492,7 @@ namespace daw {
 			class less_than_or_equal_to {
 				Value m_value;
 
-			  public:
+			public:
 				constexpr less_than_or_equal_to( Value value ) : m_value{std::move( value )} {}
 
 				template<typename T>
@@ -502,7 +500,7 @@ namespace daw {
 					return value <= m_value;
 				}
 			}; // less_than_or_equal_to
-		}      // namespace impl
+		}    // namespace impl
 
 		template<typename Lower, typename Upper>
 		constexpr auto in_range( Lower &&lower, Upper &&upper ) {
@@ -535,8 +533,8 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator1, typename ForwardIterator2>
-		constexpr auto lexicographical_compare( ForwardIterator1 first1, ForwardIterator1 last1,
-		                                        ForwardIterator2 first2, ForwardIterator2 last2 ) {
+		constexpr auto lexicographical_compare( ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2,
+		                                        ForwardIterator2 last2 ) {
 			decltype( *first1 - *first2 ) tmp;
 			for( ; first1 != last1 && first2 != last2; ++first1, ++first2 ) {
 				if( ( tmp = *first1 - *first2 ) != 0 ) {

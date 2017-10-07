@@ -41,7 +41,7 @@ namespace daw {
 			using reference = value_type &;
 			using const_reference = value_type const &;
 
-		  private:
+		private:
 			alignas( value_type ) std::array<uint8_t, sizeof( T )> m_data;
 			bool m_occupied;
 
@@ -88,7 +88,7 @@ namespace daw {
 				}
 			}
 
-		  public:
+		public:
 			value_storage( ) : m_occupied{false} {
 
 				std::fill( m_data.begin( ), m_data.end( ), static_cast<uint8_t>( 0 ) );
@@ -107,9 +107,9 @@ namespace daw {
 			value_storage( value_storage const &other ) noexcept : m_data{other.m_data}, m_occupied{other.m_occupied} {}
 
 			value_storage( value_storage &&other ) noexcept
-			    : m_data{std::move( other.m_data )}, m_occupied{std::exchange( other.m_occupied, false )} {}
+			  : m_data{std::move( other.m_data )}, m_occupied{std::exchange( other.m_occupied, false )} {}
 
-			void swap( value_storage & rhs ) noexcept {
+			void swap( value_storage &rhs ) noexcept {
 				using std::swap;
 				swap( m_data, rhs.m_data );
 				swap( m_occupied, rhs.m_occupied );
@@ -187,10 +187,10 @@ namespace daw {
 		using pointer = value_type *;
 		using pointer_const = value_type const *;
 
-	  private:
+	private:
 		impl::value_storage<value_type> m_value;
 
-	  public:
+	public:
 		optional( ) : m_value{} {}
 
 		optional( optional const &other ) : m_value{other.m_value} {}
@@ -216,7 +216,7 @@ namespace daw {
 			return *this;
 		}
 
-		void swap( optional & rhs ) noexcept {
+		void swap( optional &rhs ) noexcept {
 			m_value.swap( rhs.m_value );
 		}
 
@@ -402,7 +402,7 @@ namespace daw {
 	}; // class optional
 
 	template<typename T>
-	void swap( optional<T> & lhs, optional<T> & rhs ) noexcept {
+	void swap( optional<T> &lhs, optional<T> &rhs ) noexcept {
 		lhs.swap( rhs );
 	}
 

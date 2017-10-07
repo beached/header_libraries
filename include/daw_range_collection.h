@@ -70,10 +70,10 @@ namespace daw {
 			using value_type = daw::traits::root_type_t<T>;
 			using values_type = ::std::vector<value_type>;
 
-		  private:
+		private:
 			values_type m_values;
 
-		  public:
+		public:
 			using reference = typename values_type::reference;
 			using const_reference = typename values_type::const_reference;
 			using iterator = typename values_type::iterator;
@@ -284,8 +284,7 @@ namespace daw {
 			CollectionRange &transform( UnaryOperator oper ) const {
 				using v_t = daw::traits::root_type_t<decltype( oper( front( ) ) )>;
 				auto result = CollectionRange<v_t>( );
-				::std::transform(::std::begin( m_values ), ::std::end( m_values ), ::std::back_inserter( result ),
-				                 oper );
+				::std::transform(::std::begin( m_values ), ::std::end( m_values ), ::std::back_inserter( result ), oper );
 				return result;
 			}
 
@@ -388,8 +387,7 @@ namespace daw {
 
 			template<typename Container, typename = void>
 			auto make_range_collection( Container const &container ) {
-				using ValueType =
-				    impl::cleanup_t<typename ::std::iterator_traits<typename Container::iterator>::value_type>;
+				using ValueType = impl::cleanup_t<typename ::std::iterator_traits<typename Container::iterator>::value_type>;
 				return CollectionRange<ValueType>( container );
 			}
 
@@ -411,8 +409,7 @@ namespace daw {
 
 		template<typename Arg, typename... Args>
 		auto make_range_collection( Arg &&arg, Args &&... args ) {
-			return ::daw::range::impl::make_range_collection(::std::forward<Arg>( arg ),
-			                                                 ::std::forward<Args>( args )... );
+			return ::daw::range::impl::make_range_collection(::std::forward<Arg>( arg ), ::std::forward<Args>( args )... );
 		}
 
 		namespace details {

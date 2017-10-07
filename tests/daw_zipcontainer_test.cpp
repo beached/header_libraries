@@ -26,4 +26,3 @@
 #include "daw_zipcontainer.h"
 
 BOOST_AUTO_TEST_CASE( test_01 ) {}
-

@@ -29,7 +29,7 @@ namespace daw {
 	struct ZipIter {
 		using types_t = std::tuple<std::remove_cv_t<T>...>;
 
-	  private:
+	private:
 		types_t m_values;
 
 		template<class... Ts, std::size_t... Is>
@@ -65,7 +65,7 @@ namespace daw {
 			advance( tpl, std::index_sequence_for<Ts...>{}, n );
 		}
 
-	  public:
+	public:
 		ZipIter( ) = delete;
 		~ZipIter( ) = default;
 		ZipIter( ZipIter const & ) = default;

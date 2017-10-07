@@ -31,15 +31,15 @@
 namespace daw {
 	namespace exception {
 #define MAKE_DAW_EXCEPTION( EXCEPTION_TYPE )                                                                           \
-	struct EXCEPTION_TYPE final : public std::runtime_error {                                                          \
-		EXCEPTION_TYPE( daw::string_view msg ) : std::runtime_error{msg.data( )} {}                                    \
-		EXCEPTION_TYPE( ) : std::runtime_error{"No Error Message"} {}                                                  \
-		~EXCEPTION_TYPE( ) = default;                                                                                  \
-		EXCEPTION_TYPE( EXCEPTION_TYPE const & ) = default;                                                            \
-		EXCEPTION_TYPE( EXCEPTION_TYPE && ) noexcept = default;                                                        \
-		EXCEPTION_TYPE &operator=( EXCEPTION_TYPE const & ) = default;                                                 \
-		EXCEPTION_TYPE &operator=( EXCEPTION_TYPE && ) noexcept = default;                                             \
-	};                                                                                                                 \
+	struct EXCEPTION_TYPE final : public std::runtime_error {                                                            \
+		EXCEPTION_TYPE( daw::string_view msg ) : std::runtime_error{msg.data( )} {}                                        \
+		EXCEPTION_TYPE( ) : std::runtime_error{"No Error Message"} {}                                                      \
+		~EXCEPTION_TYPE( ) = default;                                                                                      \
+		EXCEPTION_TYPE( EXCEPTION_TYPE const & ) = default;                                                                \
+		EXCEPTION_TYPE( EXCEPTION_TYPE && ) noexcept = default;                                                            \
+		EXCEPTION_TYPE &operator=( EXCEPTION_TYPE const & ) = default;                                                     \
+		EXCEPTION_TYPE &operator=( EXCEPTION_TYPE && ) noexcept = default;                                                 \
+	};
 
 		MAKE_DAW_EXCEPTION( NotImplemented );
 		MAKE_DAW_EXCEPTION( FatalError );
@@ -215,8 +215,8 @@ namespace daw {
 
 		template<typename ExceptionType = AssertException, typename ValueType, typename StringType, typename Bool,
 		         typename Arg, typename... Args>
-		constexpr ValueType daw_throw_on_false_or_return( ValueType &&value, Bool &&test, StringType format,
-		                                                  Arg arg, Args... args ) {
+		constexpr ValueType daw_throw_on_false_or_return( ValueType &&value, Bool &&test, StringType format, Arg arg,
+		                                                  Args... args ) {
 			if( !static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( daw::string::fmt( format, arg, args... ) );
 			}
@@ -230,41 +230,41 @@ namespace daw {
 			}
 		}
 
-		template<typename ExceptionType = AssertException, typename Bool, typename StringType, typename Arg, typename... Args>
-		constexpr void daw_throw_on_false( Bool const & test, StringType const &format, Arg arg, Args... args ) {
+		template<typename ExceptionType = AssertException, typename Bool, typename StringType, typename Arg,
+		         typename... Args>
+		constexpr void daw_throw_on_false( Bool const &test, StringType const &format, Arg arg, Args... args ) {
 			if( !static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( daw::string::fmt( format, arg, args... ) );
 			}
 		}
 
 		template<typename ExceptionType = AssertException, typename Bool>
-		constexpr void daw_throw_on_false( Bool const & test ) {
+		constexpr void daw_throw_on_false( Bool const &test ) {
 			if( !static_cast<bool>( test ) ) {
 				throw ExceptionType{};
 			}
 		}
 
 		template<typename ExceptionType = AssertException, typename Bool>
-		constexpr void daw_throw_on_true( Bool const & test ) {
+		constexpr void daw_throw_on_true( Bool const &test ) {
 			if( static_cast<bool>( test ) ) {
 				throw ExceptionType{};
 			}
 		}
 
 		template<typename ExceptionType>
-		constexpr void daw_throw_value_on_true( ExceptionType const & test ) {
+		constexpr void daw_throw_value_on_true( ExceptionType const &test ) {
 			if( static_cast<bool>( test ) ) {
-				throw test; 
+				throw test;
 			}
 		}
 
 		template<typename ExceptionType>
-		constexpr void daw_throw_value_on_false( ExceptionType const & test ) {
+		constexpr void daw_throw_value_on_false( ExceptionType const &test ) {
 			if( !static_cast<bool>( test ) ) {
-				throw test; 
+				throw test;
 			}
 		}
-
 
 		template<typename ExceptionType = MethodNotImplemented>
 		[[noreturn]] constexpr void daw_throw_not_implemented( ) {
@@ -296,8 +296,8 @@ namespace daw {
 
 		template<typename ExceptionType = AssertException, typename ValueType, typename StringType, typename Arg,
 		         typename... Args>
-		constexpr ValueType daw_throw_on_true_or_return( ValueType &&value, bool test, StringType const &format,
-		                                                 Arg arg, Args... args ) {
+		constexpr ValueType daw_throw_on_true_or_return( ValueType &&value, bool test, StringType const &format, Arg arg,
+		                                                 Args... args ) {
 			if( static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( daw::string::fmt( format, arg, args... ) );
 			}
@@ -305,15 +305,16 @@ namespace daw {
 		}
 
 		template<typename ExceptionType = AssertException, typename Bool, typename StringType>
-		constexpr bool daw_throw_on_true_or_return( Bool const & test, StringType const &msg ) {
+		constexpr bool daw_throw_on_true_or_return( Bool const &test, StringType const &msg ) {
 			if( static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( msg );
 			}
 			return false;
 		}
 
-		template<typename ExceptionType = AssertException, typename Bool, typename StringType, typename Arg, typename... Args>
-		constexpr bool daw_throw_on_true_or_return( Bool const & test, StringType const &format, Arg arg, Args... args ) {
+		template<typename ExceptionType = AssertException, typename Bool, typename StringType, typename Arg,
+		         typename... Args>
+		constexpr bool daw_throw_on_true_or_return( Bool const &test, StringType const &format, Arg arg, Args... args ) {
 			if( static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( daw::string::fmt( format, arg, args... ) );
 			}
@@ -321,22 +322,22 @@ namespace daw {
 		}
 
 		template<typename ExceptionType = AssertException, typename Bool, typename StringType>
-		constexpr void daw_throw_on_true( Bool const & test, StringType const &msg ) {
+		constexpr void daw_throw_on_true( Bool const &test, StringType const &msg ) {
 			if( static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( msg );
 			}
 		}
 
-		template<typename ExceptionType = AssertException, typename Bool, typename StringType, typename Arg, typename... Args>
-		constexpr void daw_throw_on_true( Bool const & test, StringType const &format, Arg arg, Args... args ) {
+		template<typename ExceptionType = AssertException, typename Bool, typename StringType, typename Arg,
+		         typename... Args>
+		constexpr void daw_throw_on_true( Bool const &test, StringType const &format, Arg arg, Args... args ) {
 			if( static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( daw::string::fmt( format, arg, args... ) );
 			}
 		}
 
 		template<typename ExceptionType = AssertException, typename Predicate, typename StringType, typename Container>
-		constexpr void assert_all_false( Container const &container, StringType &&assert_message,
-		                                 Predicate predicate ) {
+		constexpr void assert_all_false( Container const &container, StringType &&assert_message, Predicate predicate ) {
 			if( std::find_if( std::begin( container ), std::end( container ), predicate ) != std::end( container ) ) {
 				daw_throw<ExceptionType>( std::forward<StringType>( assert_message ) );
 			}

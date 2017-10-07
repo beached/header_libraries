@@ -108,4 +108,3 @@ BOOST_AUTO_TEST_CASE( test_lockable_value01 ) {
 	t3.join( );
 	t4.join( );
 }
-

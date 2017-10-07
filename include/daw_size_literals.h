@@ -25,24 +25,23 @@
 namespace daw {
 	namespace size_literals {
 		constexpr size_t operator"" _KB( unsigned long long val ) noexcept {
-			return val*1024ull;
+			return val * 1024ull;
 		}
 
 		constexpr size_t operator"" _MB( unsigned long long val ) noexcept {
-			return val*1024ull*1024ull;
+			return val * 1024ull * 1024ull;
 		}
 
 		constexpr size_t operator"" _GB( unsigned long long val ) noexcept {
-			return val*1024ull*1024ull*1024ull;
+			return val * 1024ull * 1024ull * 1024ull;
 		}
 
 		constexpr size_t operator"" _TB( unsigned long long val ) noexcept {
-			return val*1024ull*1024ull*1024ull*1024ull;
+			return val * 1024ull * 1024ull * 1024ull * 1024ull;
 		}
 
 		constexpr size_t operator"" _PB( unsigned long long val ) noexcept {
-			return val*1024ull*1024ull*1024ull*1024ull*1024ull;
+			return val * 1024ull * 1024ull * 1024ull * 1024ull * 1024ull;
 		}
-	}
-}    // namespace daw
-
+	} // namespace size_literals
+} // namespace daw

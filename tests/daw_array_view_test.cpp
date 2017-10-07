@@ -35,4 +35,3 @@ BOOST_AUTO_TEST_CASE( daw_array_view_test_001 ) {
 	}
 	std::cout << '\n';
 }
-

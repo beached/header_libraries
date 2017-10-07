@@ -38,8 +38,7 @@ namespace daw {
 			return 0 != ( flags & flag );
 		}
 
-		constexpr auto get_flag_value( bool CheckIncrement, bool CheckDecrement, bool CheckDereference ) const
-		    noexcept {
+		constexpr auto get_flag_value( bool CheckIncrement, bool CheckDecrement, bool CheckDereference ) const noexcept {
 			uint8_t result = CheckIncrement ? check_increment : 0;
 			result |= CheckDecrement ? check_decrement : 0;
 			result |= CheckDereference ? check_dereference : 0;
@@ -47,13 +46,13 @@ namespace daw {
 			return result;
 		}
 
-	  public:
+	public:
 		checked_iterator_proxy_t( IteratorFirst it_first, IteratorLast it_last, bool CheckIncrement = true,
 		                          bool CheckDecrement = true, bool CheckDereference = true )
-		    : current{it_first}
-		    , first{std::move( it_first )}
-		    , last{std::move( it_last )}
-		    , flags{get_flag_value( CheckIncrement, CheckDecrement, CheckDereference )} {}
+		  : current{it_first}
+		  , first{std::move( it_first )}
+		  , last{std::move( it_last )}
+		  , flags{get_flag_value( CheckIncrement, CheckDecrement, CheckDereference )} {}
 
 		checked_iterator_proxy_t( checked_iterator_proxy_t const & ) = default;
 		checked_iterator_proxy_t( checked_iterator_proxy_t && ) = default;

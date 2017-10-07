@@ -36,11 +36,11 @@ namespace daw {
 		using const_pointer = value_t const *;
 		using size_type = size_t;
 
-	  private:
+	private:
 		size_t m_index;
 		daw::array_t<T, N> m_stack;
 
-	  public:
+	public:
 		constexpr fixed_stack_t( ) noexcept : m_index{0}, m_stack{0} {}
 
 		constexpr bool empty( ) const noexcept {
@@ -60,7 +60,7 @@ namespace daw {
 		}
 
 		constexpr size_type available( ) const noexcept {
-			return N-m_index;
+			return N - m_index;
 		}
 
 		constexpr void clear( ) noexcept {
@@ -129,7 +129,7 @@ namespace daw {
 		constexpr void push_back( const_pointer ptr, size_type sz ) noexcept {
 			auto const start = m_index;
 			m_index += sz;
-			for( size_t n=start; n<m_index; ++n ) {
+			for( size_t n = start; n < m_index; ++n ) {
 				m_stack[n] = *ptr++;
 			}
 		}
@@ -148,10 +148,9 @@ namespace daw {
 		}
 
 		constexpr void zero( ) noexcept {
-			for( size_t n=0; n<N; ++n ) {
+			for( size_t n = 0; n < N; ++n ) {
 				m_stack[n] = 0;
 			}
 		}
 	};
 } // namespace daw
-

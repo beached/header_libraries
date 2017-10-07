@@ -45,7 +45,7 @@ namespace daw {
 
 		using values_type = hash_item[Capacity];
 
-	  private:
+	private:
 		values_type m_values;
 
 		static constexpr size_t scale_hash( size_t hash_value ) {
@@ -100,7 +100,7 @@ namespace daw {
 			return Capacity;
 		}
 
-	  public:
+	public:
 		constexpr static_hash_t( ) : m_values{} {
 
 			for( size_t n = 0; n < Capacity; ++n ) {

@@ -34,7 +34,7 @@ namespace daw {
 			using const_reference = typename container_type::const_reference;
 			using size_type = typename container_type::size_type;
 
-		  private:
+		private:
 			Derived &derived( ) {
 				return *static_cast<Derived *>( this );
 			}
@@ -43,7 +43,7 @@ namespace daw {
 				return *static_cast<Derived const *>( this );
 			}
 
-		  public:
+		public:
 			iterator begin( ) {
 				return derived( ).container( ).begin( );
 			}
@@ -91,7 +91,7 @@ namespace daw {
 		class VectorLikeProxy : public ContainerProxy<Derived, container_type> {
 			using base_t = ContainerProxy<Derived, container_type>;
 
-		  public:
+		public:
 			void push_back( typename base_t::value_type &&value ) {
 				this->insert( this->end( ), std::move( value ) );
 			}
@@ -125,10 +125,10 @@ namespace daw {
 			using key_type = typename MapType::key_type;
 			using mapped_type = typename MapType::mapped_type;
 
-		  private:
+		private:
 			using base_t = ContainerProxy<Derived, MapType>;
 
-		  public:
+		public:
 			typename base_t::reference operator[]( key_type key ) {
 				return this->derived( ).find( key );
 			}

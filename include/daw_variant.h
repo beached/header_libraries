@@ -89,7 +89,7 @@ namespace daw {
 				return to_string( get<T>( value ) );
 			}
 		}; // to_string_t
-	  public:
+	public:
 		template<typename T>
 		auto generate( ) const {
 			return to_string_t<T>{};
@@ -104,15 +104,14 @@ namespace daw {
 		}
 
 		template<typename T, std::enable_if_t<daw::traits::is_vector_like_not_string<T>::value>>
-		static auto op_eq( std::vector<T> const &lhs, std::vector<T> const &rhs )
-		    -> decltype( lhs[0] == rhs[0], bool( ) ) {
+		static auto op_eq( std::vector<T> const &lhs, std::vector<T> const &rhs ) -> decltype( lhs[0] == rhs[0], bool( ) ) {
 			return std::equal( lhs.begin( ), lhs.end( ), rhs.begin( ), rhs.end( ) );
 		}
 
 		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_eq<T>::value &&
 		                                                 daw::traits::operators::has_op_lt<T>::value>>
 		static constexpr auto op_compare( variant_t<Types...> const &lhs, variant_t<Types...> const &rhs )
-		    -> decltype( std::declval<T>( ) == std::declval<T>( ) && std::declval<T>( ) < std::declval<T>( ), int( ) ) {
+		  -> decltype( std::declval<T>( ) == std::declval<T>( ) && std::declval<T>( ) < std::declval<T>( ), int( ) ) {
 			auto const &a = lhs.template get<T>( );
 			auto const &b = rhs.template get<T>( );
 			if( a == b ) {
@@ -139,7 +138,7 @@ namespace daw {
 				return lhs.to_string( ).compare( rhs.to_string( ) );
 			}
 		}; // compare_t
-	  public:
+	public:
 		template<typename T>
 		auto generate( ) const {
 			return compare_t<T>{};
@@ -155,7 +154,7 @@ namespace daw {
 				tmp.~T( );
 			}
 		}; // destruct_t
-	  public:
+	public:
 		template<typename T>
 		auto generate( ) const {
 			return destruct_t<T>{};
@@ -202,9 +201,8 @@ namespace daw {
 		std::unordered_map<std::type_index, variant_helper_funcs_t<Types...>> results;
 		generate_variant_helper_funcs_t<Types...> generate_variant_helper_funcs;
 
-		auto list = {
-		    ( (void)( results[get_type_index<Types>( )] = generate_variant_helper_funcs.template generate<Types>( ) ),
-		      0 )...};
+		auto list = {(
+		  (void)( results[get_type_index<Types>( )] = generate_variant_helper_funcs.template generate<Types>( ) ), 0 )...};
 
 		do_nothing( list );
 
@@ -217,9 +215,9 @@ namespace daw {
 
 		template<typename T>
 		static constexpr bool is_valid_type =
-		    daw::traits::is_one_of_v<std::remove_cv_t<T>, std::remove_cv_t<Type>, std::remove_cv_t<Types>...>;
+		  daw::traits::is_one_of_v<std::remove_cv_t<T>, std::remove_cv_t<Type>, std::remove_cv_t<Types>...>;
 
-	  private:
+	private:
 		alignas( daw::traits::max_sizeof_t<Type, Types...> ) std::array<uint8_t, BUFFER_SIZE> m_buffer;
 		daw::optional<std::type_index> m_stored_type;
 
@@ -272,7 +270,7 @@ namespace daw {
 			new( p ) T{std::move( value )};
 		}
 
-	  public:
+	public:
 		variant_t( ) : m_buffer{}, m_stored_type{} {}
 
 		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>

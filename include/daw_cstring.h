@@ -36,9 +36,8 @@ namespace daw {
 		CharT const *m_data;
 		bool m_local_string;
 
-	  public:
-		CString( CharT const *ptr, bool do_copy = false, const size_t length = 0 )
-		    : m_data{ptr}, m_local_string{do_copy} {
+	public:
+		CString( CharT const *ptr, bool do_copy = false, const size_t length = 0 ) : m_data{ptr}, m_local_string{do_copy} {
 			if( do_copy ) {
 				size_t len = length;
 				if( 0 == len ) {

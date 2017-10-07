@@ -14,13 +14,13 @@
 namespace daw {
 	template<typename Data>
 	class concurrent_queue {
-	  private:
+	private:
 		std::queue<Data> m_queue;
 		mutable std::mutex m_mutex;
 		std::condition_variable m_condition;
 		std::atomic<bool> m_forced_exit;
 
-	  public:
+	public:
 		concurrent_queue( ) : m_queue( ), m_condition( ), m_forced_exit( false ) {}
 
 		void push( Data const &data ) {

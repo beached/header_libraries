@@ -38,11 +38,11 @@ namespace daw {
 		using reference = value_type &;
 		using const_reference = value_type const &;
 
-	  private:
+	private:
 		daw::optional<value_type> m_value;
 		std::exception_ptr m_exception;
 
-	  public:
+	public:
 		struct exception_tag {};
 
 		//////////////////////////////////////////////////////////////////////////
@@ -99,7 +99,7 @@ namespace daw {
 		// Args...>>>
 		template<class Function, typename... Args>
 		expected_t( Function func, Args &&... args ) noexcept
-		    : expected_t{expected_t::from_code( func, std::forward<Args>( args )... )} {}
+		  : expected_t{expected_t::from_code( func, std::forward<Args>( args )... )} {}
 
 		bool has_value( ) const noexcept {
 			return static_cast<bool>( m_value );
@@ -168,19 +168,18 @@ namespace daw {
 
 		struct exception_tag {};
 
-	  private:
+	private:
 		std::exception_ptr m_exception;
 		bool m_value;
 
 		expected_t( bool b ) noexcept : m_exception{}, m_value{b} {}
 
-	  public:
+	public:
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: No value, aka null
 		//////////////////////////////////////////////////////////////////////////
 		expected_t( expected_t &&other ) noexcept
-		    : m_exception{std::exchange( other.m_exception, nullptr )}
-		    , m_value{std::exchange( other.m_value, false )} {}
+		  : m_exception{std::exchange( other.m_exception, nullptr )}, m_value{std::exchange( other.m_value, false )} {}
 
 		expected_t( expected_t const &other ) noexcept : m_exception{}, m_value{other.m_value} {
 			if( other.m_exception ) {
@@ -210,7 +209,7 @@ namespace daw {
 		expected_t( ) noexcept : expected_t{false} {}
 
 		template<typename T>
-		expected_t( T&& ) noexcept : expected_t{true} {}
+		expected_t( T && ) noexcept : expected_t{true} {}
 
 		expected_t &operator=( bool ) noexcept {
 			m_value = true;
@@ -238,7 +237,7 @@ namespace daw {
 		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename Arg, typename... Args>
-		static expected_t from_code( Function func, Arg && arg, Args &&... args ) noexcept {
+		static expected_t from_code( Function func, Arg &&arg, Args &&... args ) noexcept {
 			try {
 				func( std::forward<Arg>( arg ), std::forward<Args>( args )... );
 				return expected_t{true};
@@ -255,9 +254,10 @@ namespace daw {
 
 		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
-		template<class Function, typename... Args, typename result=decltype(std::declval<Function>( )( std::declval<Args>( )... ))>
+		template<class Function, typename... Args,
+		         typename result = decltype( std::declval<Function>( )( std::declval<Args>( )... ) )>
 		expected_t( Function func, Args &&... args ) noexcept
-		    : expected_t{expected_t::from_code( func, std::forward<Args>( args )... )} {}
+		  : expected_t{expected_t::from_code( func, std::forward<Args>( args )... )} {}
 
 		bool has_value( ) const noexcept {
 			return m_value;

@@ -42,7 +42,7 @@ namespace daw {
 		template<size_t N>
 		struct make_lock_guard<N, N> {
 			template<typename Results, typename TPLockables>
-			constexpr void operator( )( Results const &, TPLockables const & ) const noexcept { }
+			constexpr void operator( )( Results const &, TPLockables const & ) const noexcept {}
 		};
 	} // namespace details
 
@@ -52,13 +52,14 @@ namespace daw {
 		std::tuple<std::unique_ptr<std::lock_guard<std::decay_t<Lockables>>>...> m_locks;
 
 		template<typename Arg>
-		void _lock( Arg const & ) { }
+		void _lock( Arg const & ) {}
 
 		template<typename Arg1, typename Arg2, typename... Args>
-		void _lock( Arg1 & arg1, Arg2 & arg2, Args&... args ) {
+		void _lock( Arg1 &arg1, Arg2 &arg2, Args &... args ) {
 			std::lock( arg1, arg2, args... );
 		}
-	  public:
+
+	public:
 		scoped_multilock( Lockables &... lockables ) : m_locks{} {
 			_lock( lockables... );
 			auto args = std::make_tuple<Lockables *...>( &lockables... );
@@ -77,4 +78,3 @@ namespace daw {
 		return scoped_multilock<Lockables...>{lockables...};
 	}
 } // namespace daw
-

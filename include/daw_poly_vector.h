@@ -30,7 +30,7 @@ namespace daw {
 	class poly_vector_t : public daw::mixins::VectorLikeProxy<poly_vector_t<T>, std::vector<daw::heap_value<T>>> {
 		std::vector<daw::heap_value<T>> m_values;
 
-	  public:
+	public:
 		std::vector<daw::heap_value<T>> &container( ) {
 			return m_values;
 		}

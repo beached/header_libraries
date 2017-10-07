@@ -27,7 +27,7 @@
 
 #include "daw_scoped_multilock.h"
 
-BOOST_AUTO_TEST_CASE( daw_scoped_multilock_001 ) { 
+BOOST_AUTO_TEST_CASE( daw_scoped_multilock_001 ) {
 	std::mutex m1;
 	std::mutex m2;
 	bool result1 = false;
@@ -42,10 +42,9 @@ BOOST_AUTO_TEST_CASE( daw_scoped_multilock_001 ) {
 		if( !result2 ) {
 			m2.unlock( );
 		}
-	} };
+	}};
 
 	th.join( );
 	BOOST_REQUIRE_MESSAGE( result1, "m1 wasn't locked" );
 	BOOST_REQUIRE_MESSAGE( result2, "m2 wasn't locked" );
 }
-

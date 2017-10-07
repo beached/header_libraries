@@ -35,18 +35,18 @@ namespace daw {
 		using iterator = T *;
 		using const_iterator = T const *;
 
-	  private:
+	private:
 		value_type *m_begin;
 		value_type *m_end;
 		size_t m_size;
 
-	  public:
+	public:
 		heap_array( ) noexcept : m_begin{nullptr}, m_end{nullptr}, m_size{0} {}
 
 		heap_array( size_t Size ) : m_begin{new value_type[Size + 1]}, m_end{m_begin + Size}, m_size{Size} {}
 
 		heap_array( size_t Size, value_type def_value )
-		    : m_begin{new value_type[Size]}, m_end{m_begin + Size}, m_size{Size} {
+		  : m_begin{new value_type[Size]}, m_end{m_begin + Size}, m_size{Size} {
 
 			std::fill( m_begin, m_end, def_value );
 		}
@@ -55,9 +55,9 @@ namespace daw {
 		heap_array &operator=( heap_array &&rhs ) noexcept = default;
 
 		heap_array( heap_array const &other )
-		    : m_begin{other.m_size == 0 ? nullptr : new value_type[other.m_size]}
-		    , m_end{other.m_size == 0 ? nullptr : m_begin + other.m_size}
-		    , m_size{other.m_size} {
+		  : m_begin{other.m_size == 0 ? nullptr : new value_type[other.m_size]}
+		  , m_end{other.m_size == 0 ? nullptr : m_begin + other.m_size}
+		  , m_size{other.m_size} {
 
 			std::copy_n( other.m_begin, m_size, m_begin );
 		}

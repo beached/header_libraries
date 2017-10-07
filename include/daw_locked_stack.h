@@ -34,12 +34,12 @@ namespace daw {
 	struct locked_stack_t {
 		using value_type = T;
 
-	  private:
+	private:
 		daw::semaphore m_semaphore;
 		std::unique_ptr<std::mutex> m_mutex;
 		std::vector<value_type> m_items;
 
-	  public:
+	public:
 		locked_stack_t( ) : m_semaphore{}, m_mutex{std::make_unique<std::mutex>( )}, m_items{} {}
 
 		~locked_stack_t( ) = default;

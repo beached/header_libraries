@@ -49,20 +49,20 @@ namespace daw {
 		}
 
 		constexpr reference back( ) noexcept {
-			return m_data[N-1];
+			return m_data[N - 1];
 		}
 
 		constexpr const_reference back( ) const noexcept {
-			return m_data[N-1];
+			return m_data[N - 1];
 		}
-	
+
 		constexpr pointer data( ) noexcept {
 			return m_data;
 		}
 
 		constexpr const_pointer data( ) const noexcept {
 			return m_data;
-		}	
+		}
 
 		constexpr iterator begin( ) noexcept {
 			return m_data;
@@ -77,25 +77,25 @@ namespace daw {
 		}
 
 		constexpr iterator end( ) noexcept {
-			return m_data + static_cast<intmax_t>(N);
+			return m_data + static_cast<intmax_t>( N );
 		}
 
 		constexpr const_iterator end( ) const noexcept {
-			return m_data + static_cast<intmax_t>(N);
+			return m_data + static_cast<intmax_t>( N );
 		}
 
 		constexpr const_iterator cend( ) const noexcept {
-			return m_data + static_cast<intmax_t>(N);
+			return m_data + static_cast<intmax_t>( N );
 		}
 
 		constexpr void fill( const_reference value ) noexcept {
-			for( size_t n=0; n<N; ++n ) {
+			for( size_t n = 0; n < N; ++n ) {
 				m_data[n] = value;
 			}
 		}
 
-		constexpr void swap( array_t & other ) noexcept {
-			for( size_t n=0; n<N; ++n ) {
+		constexpr void swap( array_t &other ) noexcept {
+			for( size_t n = 0; n < N; ++n ) {
 				using std::swap;
 				swap( m_data[n], other.m_data[n] );
 			}
@@ -117,5 +117,4 @@ namespace daw {
 			return m_data[pos];
 		}
 	};
-}    // namespace daw
-
+} // namespace daw

@@ -35,16 +35,16 @@ namespace daw {
 		static_assert( capacity >= 1, "There must be at least 1 element in stack capacity" );
 		using value_type = std::decay_t<T>;
 
-	  private:
+	private:
 		using values_type = std::array<value_type, capacity>;
 
-	  public:
+	public:
 		using reference = value_type &;
 		using const_reference = value_type const &;
 		using iterator = typename values_type::iterator;
 		using const_iterator = typename values_type::const_iterator;
 
-	  private:
+	private:
 		values_type m_values;
 		iterator m_head;
 		iterator m_last;
@@ -53,7 +53,7 @@ namespace daw {
 			return m_head;
 		}
 
-	  public:
+	public:
 		constexpr bounded_stack_t( ) noexcept : m_values{}, m_head{m_values.begin( )} {}
 
 		~bounded_stack_t( ) = default;

@@ -21,8 +21,8 @@
 // SOFTWARE.
 
 #include "boost_test.h"
-#include <iostream>
 #include <cstdint>
+#include <iostream>
 
 #include "daw_bit.h"
 

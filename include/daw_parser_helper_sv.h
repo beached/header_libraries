@@ -48,8 +48,7 @@ namespace daw {
 		}
 
 		template<typename CharT, typename TraitsT>
-		constexpr daw::basic_string_view<CharT, TraitsT>
-		trim_left( daw::basic_string_view<CharT, TraitsT> str ) noexcept {
+		constexpr daw::basic_string_view<CharT, TraitsT> trim_left( daw::basic_string_view<CharT, TraitsT> str ) noexcept {
 			while( !str.empty( ) && is_unicode_whitespace( str.front( ) ) ) {
 				str.remove_prefix( );
 			}
@@ -57,8 +56,7 @@ namespace daw {
 		}
 
 		template<typename CharT, typename TraitsT>
-		constexpr daw::basic_string_view<CharT, TraitsT>
-		trim_right( daw::basic_string_view<CharT, TraitsT> str ) noexcept {
+		constexpr daw::basic_string_view<CharT, TraitsT> trim_right( daw::basic_string_view<CharT, TraitsT> str ) noexcept {
 			while( !str.empty( ) && is_unicode_whitespace( str.back( ) ) ) {
 				str.remove_suffix( );
 			}

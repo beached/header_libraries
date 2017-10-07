@@ -35,10 +35,10 @@ namespace daw {
 		using reference = value_type &;
 		using const_reference = value_type const &;
 
-	  private:
+	private:
 		pointer m_pointer;
 
-	  public:
+	public:
 		constexpr RandomIterator( ) noexcept : m_pointer{nullptr} {} // TODO: Is this the correct behaviour
 
 		constexpr RandomIterator( T *const ptr ) noexcept : m_pointer{ptr} {}
