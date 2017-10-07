@@ -265,20 +265,6 @@ namespace daw {
 		                           std::make_index_sequence<daw::tuple_size_v<std::decay_t<Tuple>>>{} );
 	}
 
-	namespace impl {
-		template<typename T>
-		using always_void = void;
-
-		template<typename Expr, typename Enable = void>
-		struct is_callable_impl : std::false_type {};
-
-		template<typename F, typename... Args>
-		struct is_callable_impl<F( Args... ), always_void<std::result_of_t<F( Args... )>>> : std::true_type {};
-	} // namespace impl
-
-	template<typename F, typename... Args>
-	constexpr bool is_callable_v = impl::is_callable_impl<F, Args...>::value;
-
 	template<typename T>
 	constexpr std::add_const_t<T> &as_const( T &t ) noexcept {
 		return t;

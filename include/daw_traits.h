@@ -447,10 +447,12 @@ namespace daw {
 			}
 		};
 	} // namespace impl
+
 	template<typename Function>
 	auto make_void_function( Function func ) noexcept {
 		return impl::void_function<Function>{std::move( func )};
 	}
+
 	namespace detectors {
 		template<typename Function, typename... Args>
 		using callable_with = decltype( std::declval<Function &>( )( std::declval<Args &>( )... ) );
@@ -486,12 +488,6 @@ namespace daw {
 	} // namespace detectors
 
 	template<typename Function, typename... Args>
-	using is_callable = is_detected<detectors::callable_with, Function, Args...>;
-
-	template<typename Function, typename... Args>
-	using is_callable_t = detected_t<detectors::callable_with, Function, Args...>;
-
-	template<typename Function, typename... Args>
 	constexpr bool is_callable_v = is_detected_v<detectors::callable_with, Function, Args...>;
 
 	template<typename Predicate, typename... Args>
@@ -517,7 +513,7 @@ namespace daw {
 
 	template<typename L, typename R>
 	constexpr bool is_comparable_v = is_equality_comparable_v<L, R> &&is_equality_comparable_v<R, L>;
-	//:
+
 	//////////////////////////////////////////////////////////////////////////
 	/// Summary: is like a regular type see http://www.stepanovpapers.com/DeSt98.pdf
 	template<typename T>
