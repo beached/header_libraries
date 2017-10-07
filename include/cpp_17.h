@@ -84,6 +84,9 @@ namespace daw {
 	constexpr bool is_base_of_v = std::is_base_of<Base, Derived>::value;
 
 	template<typename T>
+	constexpr bool is_class_v = std::is_class<T>::value;
+
+	template<typename T>
 	constexpr bool is_member_pointer_v = std::is_member_pointer<T>::value;
 
 	template<typename B>

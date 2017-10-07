@@ -175,87 +175,72 @@ namespace daw {
 			using type_sink_t = typename type_sink<T>::type;
 		} // namespace details
 
-		/*
-		#define MEMBER_FUNC_CHECKER( name, fn, ret, args ) \
-		  template<typename C, typename = void> \
-		  struct name : std::false_type {}; \
-		  template<typename C> \
-		  struct name<C, typename std::enable_if_t<is_convertible_v<decltype( std::declval<C>( ).fn args ), ret>>> \ :
-		std::true_type {};
-
-		#define MTYPE_CHECKER_ANY( checker, name ) \
-		  template<class C, typename = void> \
-		  struct checker : std::false_type {}; \
-		  template<class C> \
-		  struct checker<C, typename std::enable_if<!std::is_same<decltype( C::name ) *, void>::value>::type> \ :
-		std::true_type {}
-		*/
-
+// Build a check for the precence of a member
+// Can be used like METHOD_CHECKER_ANY( has_begin_method, begin, ( ) ) and the check will look for begin( )
+// If you want to check args you could do the following
+// METHOD_CHECKER_ANY( has_index_operation, operator[], ( std::declval<size_t>( ) ) )
 #define METHOD_CHECKER_ANY( name, fn, args )                                                                           \
 	namespace impl {                                                                                                     \
 		template<typename T, typename = void>                                                                              \
 		struct name : std::false_type {};                                                                                  \
+                                                                                                                       \
 		template<typename T>                                                                                               \
 		struct name<T, typename std::enable_if_t<!is_same_v<decltype( std::declval<T>( ).fn args ) *, void>>>              \
 		  : std::true_type {};                                                                                             \
 	}                                                                                                                    \
+                                                                                                                       \
 	template<typename T>                                                                                                 \
 	constexpr bool name##_v = impl::name<T>::value;
+			// END METHOD_CHECKER_ANY
 
-#define GENERATE_HAS_MEMBER_FUNCTION_TRAIT( MemberName )                                                               \
-	namespace impl {                                                                                                     \
-		template<typename T, typename = void>                                                                              \
-		class has_##MemberName##_member_impl : public std::false_type {};                                                  \
-		template<typename T>                                                                                               \
-		class has_##MemberName##_member_impl<T, typename std::enable_if<std::is_class<T>::value>::type> {                  \
-			struct Fallback {                                                                                                \
-				int MemberName;                                                                                                \
-			};                                                                                                               \
-			struct Derived : T, Fallback {};                                                                                 \
-                                                                                                                       \
-			template<typename U, U>                                                                                          \
-			struct Check;                                                                                                    \
-                                                                                                                       \
-			using ArrayOfOne = char[1];                                                                                      \
-			using ArrayOfTwo = char[2];                                                                                      \
-                                                                                                                       \
-			template<typename U>                                                                                             \
-			static ArrayOfOne &func( Check<int Fallback::*, &U::MemberName> * );                                             \
-			template<typename U>                                                                                             \
-			static ArrayOfTwo &func( ... );                                                                                  \
-                                                                                                                       \
-		public:                                                                                                            \
-			using type = has_##MemberName##_member_impl;                                                                     \
-			enum { value = sizeof( func<Derived>( 0 ) ) == 2 };                                                              \
-		}; /*struct has_##MemberName##_member_impl*/                                                                       \
-	}    /* namespace impl */                                                                                            \
-	template<typename T>                                                                                                 \
-	constexpr bool has_##MemberName##_member_v = impl::has_##MemberName##_member_impl<T>::value;
+			/*
+			#define GENERATE_HAS_MEMBER_FUNCTION_TRAIT( MemberName ) \
+			  namespace impl { \
+			    template<typename T, typename = void> \
+			    class has_##MemberName##_member_impl : public std::false_type {}; \
+			                                                                                                                       \
+			    template<typename T> \
+			    class has_##MemberName##_member_impl<T, typename std::enable_if_t<is_class_v<T>>> { \
+			      struct Fallback { \
+			        int MemberName; \
+			      }; \
+			      struct Derived : T, Fallback {}; \
+			                                                                                                                       \
+			      template<typename U, U> \
+			      struct Check; \
+			                                                                                                                       \
+			      using ArrayOfOne = char[1]; \
+			      using ArrayOfTwo = char[2]; \
+			                                                                                                                       \
+			      template<typename U> \
+			      static ArrayOfOne &func( Check<int Fallback::*, &U::MemberName> * ); \
+			      template<typename U> \
+			      static ArrayOfTwo &func( ... ); \
+			                                                                                                                       \
+			    public: \
+			      using type = has_##MemberName##_member_impl; \
+			      enum { value = sizeof( func<Derived>( 0 ) ) == 2 }; \
+			    }; \
+			  }
 
-#define GENERATE_HAS_MEMBER_TYPE_TRAIT( TypeName )                                                                     \
-	namespace impl {                                                                                                     \
-		template<typename T, typename = void>                                                                              \
-		struct has_##TypeName##_member : std::false_type {};                                                               \
+			*/
+
+#define HAS_STATIC_TYPE_MEMBER( MemberName )                                                                           \
+	namespace detectors {                                                                                                \
 		template<typename T>                                                                                               \
-		struct has_##TypeName##_member<T, details::type_sink_t<typename T::TypeName>> : std::true_type {};                 \
+		using MemberName##_member = decltype( std::declval<typename T::MemberName>( ) );                                   \
 	}                                                                                                                    \
 	template<typename T>                                                                                                 \
-	constexpr bool has_##TypeName##_member_v = impl::has_##TypeName##_member<T>::value;
+	constexpr bool has_##MemberName##_member_v = is_detected_v<detectors::MemberName##_member, T>;
 
-		//		GENERATE_HAS_MEMBER_FUNCTION_TRAIT( begin );
-		//
+		HAS_STATIC_TYPE_MEMBER( type );
+		HAS_STATIC_TYPE_MEMBER( value_type );
+		HAS_STATIC_TYPE_MEMBER( mapped_type );
+		HAS_STATIC_TYPE_MEMBER( iterator );
+
 		METHOD_CHECKER_ANY( has_begin_member, begin, ( ) );
 		METHOD_CHECKER_ANY( has_end_member, end, ( ) );
 		METHOD_CHECKER_ANY( has_substr_member, substr, ( 0, 1 ) );
-
-		// GENERATE_HAS_MEMBER_FUNCTION_TRAIT( end );
-		// GENERATE_HAS_MEMBER_FUNCTION_TRAIT( substr );
-		GENERATE_HAS_MEMBER_FUNCTION_TRAIT( push_back );
-
-		GENERATE_HAS_MEMBER_TYPE_TRAIT( type );
-		GENERATE_HAS_MEMBER_TYPE_TRAIT( value_type );
-		GENERATE_HAS_MEMBER_TYPE_TRAIT( mapped_type );
-		GENERATE_HAS_MEMBER_TYPE_TRAIT( iterator );
 
 		template<typename T>
 		constexpr bool is_string_v = all_true_v<is_convertible_v<T, std::string> || is_convertible_v<T, std::wstring>>;
