@@ -98,18 +98,18 @@ namespace daw {
 
 	template<typename... Types>
 	class generate_compare_t {
-		template<typename T, std::enable_if_t<!daw::traits::is_vector_like_not_string<T>::value>>
+		template<typename T, std::enable_if_t<!daw::traits::is_vector_like_not_string_v<T>>>
 		static bool op_eq( T const &lhs, T const &rhs ) {
 			return lhs == rhs;
 		}
 
-		template<typename T, std::enable_if_t<daw::traits::is_vector_like_not_string<T>::value>>
+		template<typename T, std::enable_if_t<daw::traits::is_vector_like_not_string_v<T>>>
 		static auto op_eq( std::vector<T> const &lhs, std::vector<T> const &rhs ) -> decltype( lhs[0] == rhs[0], bool( ) ) {
 			return std::equal( lhs.begin( ), lhs.end( ), rhs.begin( ), rhs.end( ) );
 		}
 
-		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_eq<T>::value &&
-		                                                 daw::traits::operators::has_op_lt<T>::value>>
+		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_eq_v<T> &&
+		                                                 daw::traits::operators::has_op_lt_v<T>>>
 		static constexpr auto op_compare( variant_t<Types...> const &lhs, variant_t<Types...> const &rhs )
 		  -> decltype( std::declval<T>( ) == std::declval<T>( ) && std::declval<T>( ) < std::declval<T>( ), int( ) ) {
 			auto const &a = lhs.template get<T>( );
@@ -122,9 +122,9 @@ namespace daw {
 			return 1;
 		}
 
-		template<typename T, typename = std::enable_if_t<daw::traits::has_to_string<variant_t<Types...>>::value &&
-		                                                 !( daw::traits::operators::has_op_eq<T>::value &&
-		                                                    daw::traits::operators::has_op_lt<T>::value )>>
+		template<typename T, typename = std::enable_if_t<daw::traits::has_to_string_v<variant_t<Types...>> &&
+		                                                 !( daw::traits::operators::has_op_eq_v<T> &&
+		                                                    daw::traits::operators::has_op_lt_v<T> )>>
 		static int op_compare( variant_t<Types...> const &lhs, variant_t<Types...> const &rhs ) {
 			return lhs.to_string( ).compare( rhs.to_string( ) );
 		}

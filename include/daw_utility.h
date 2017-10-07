@@ -38,6 +38,7 @@
 #include <vector>
 
 #include "daw_string_view.h"
+#include "daw_traits.h"
 
 namespace daw {
 	namespace impl {
@@ -243,8 +244,8 @@ namespace daw {
 
 	template<class T, class U>
 	T round_to_nearest( const T &value, const U &rnd_by ) {
-		static_assert( std::is_arithmetic<T>::value, "First template parameter must be an arithmetic type" );
-		static_assert( std::is_floating_point<U>::value, "Second template parameter must be a floating point type" );
+		static_assert( is_arithmetic_v<T>, "First template parameter must be an arithmetic type" );
+		static_assert( is_floating_point_v<U>, "Second template parameter must be a floating point type" );
 		const auto rnd = std::round( static_cast<U>( value ) / rnd_by );
 		const auto ret = rnd * rnd_by;
 		return static_cast<T>( ret );
@@ -252,8 +253,8 @@ namespace daw {
 
 	template<class T, class U>
 	T floor_by( const T &value, const U &rnd_by ) {
-		static_assert( std::is_arithmetic<T>::value, "First template parameter must be an arithmetic type" );
-		static_assert( std::is_floating_point<U>::value, "Second template parameter must be a floating point type" );
+		static_assert( is_arithmetic_v<T>, "First template parameter must be an arithmetic type" );
+		static_assert( is_floating_point_v<U>, "Second template parameter must be a floating point type" );
 		const auto rnd = std::floor( static_cast<U>( value ) / rnd_by );
 		const auto ret = rnd * rnd_by;
 		assert( ret <=
@@ -263,8 +264,8 @@ namespace daw {
 
 	template<class T, class U>
 	T ceil_by( const T &value, const U &rnd_by ) {
-		static_assert( std::is_arithmetic<T>::value, "First template parameter must be an arithmetic type" );
-		static_assert( std::is_floating_point<U>::value, "Second template parameter must be a floating point type" );
+		static_assert( is_arithmetic_v<T>, "First template parameter must be an arithmetic type" );
+		static_assert( is_floating_point_v<U>, "Second template parameter must be a floating point type" );
 		const auto rnd = std::ceil( static_cast<U>( value ) / rnd_by );
 		const auto ret = rnd * rnd_by;
 		assert( ret >=
@@ -600,12 +601,12 @@ namespace daw {
 		;
 	}
 
-	template<typename T, typename std::enable_if_t<!std::is_floating_point<T>::value, long> = 0>
+	template<typename T, typename std::enable_if_t<!is_floating_point_v<T>, long> = 0>
 	constexpr bool nearly_equal( T const &a, T const &b ) noexcept {
 		return a == b;
 	}
 
-	template<typename T, typename std::enable_if_t<std::is_floating_point<T>::value, long> = 0>
+	template<typename T, typename std::enable_if_t<is_floating_point_v<T>, long> = 0>
 	constexpr bool nearly_equal( T const &a, T const &b ) noexcept {
 		// Code from http://floating-point-gui.de/errors/comparison/
 		auto absA = std::abs( a );

@@ -35,25 +35,3 @@ BOOST_AUTO_TEST_CASE( cpp_17_test_01 ) {
 	BOOST_REQUIRE( !isnt_func );
 }
 
-struct test_binary_pred_t {
-	constexpr bool operator( )( int a, int b ) const noexcept {
-		return a == b;
-	}
-};
-
-BOOST_AUTO_TEST_CASE( binary_predicate_002 ) {
-	using a_t = daw::is_detected<daw::detectors::callable_with, test_binary_pred_t, int, int>;
-	using a_conv_t = std::is_convertible<a_t, bool>;
-	constexpr auto const a = a_conv_t::value;
-	static_assert( a, "a: Not callable with (int, int )" );
-
-	constexpr auto const b = daw::is_callable_v<test_binary_pred_t, int, int>;
-	static_assert( b, "b: Not callable with (int, int )" );
-
-	constexpr auto const c =
-	  daw::is_detected_convertible_v<bool, daw::detectors::callable_with, test_binary_pred_t, int, int>;
-	static_assert( c, "c: Not callable with (int, int )" );
-
-	static_assert( daw::is_predicate_v<test_binary_pred_t, int, int>, "Not a binary predicate" );
-	BOOST_REQUIRE( a );
-}

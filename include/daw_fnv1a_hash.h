@@ -27,14 +27,14 @@
 
 namespace daw {
 	namespace impl {
-		using is_64bit_t = std::integral_constant<bool, sizeof( size_t ) == sizeof( uint64_t )>;
+		constexpr bool is_64bit_v = sizeof( size_t ) == sizeof( uint64_t );
 
 		constexpr size_t fnv_prime( ) noexcept {
-			return impl::is_64bit_t::value ? 1099511628211ULL : 16777619UL;
+			return is_64bit_v ? 1099511628211ULL : 16777619UL;
 		}
 
 		constexpr size_t fnv_offset( ) noexcept {
-			return impl::is_64bit_t::value ? 14695981039346656037ULL : 2166136261UL;
+			return is_64bit_v ? 14695981039346656037ULL : 2166136261UL;
 		}
 
 	} // namespace impl

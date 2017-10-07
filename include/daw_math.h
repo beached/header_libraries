@@ -34,6 +34,8 @@
 #include <type_traits>
 #include <vector>
 
+#include "daw_traits.h"
+
 namespace daw {
 	namespace math {
 		template<typename T>
@@ -41,8 +43,8 @@ namespace daw {
 
 		template<class T, class U>
 		T round_to_nearest( const T &value, const U &rnd_by ) noexcept {
-			static_assert( std::is_arithmetic<T>::value, "First template parameter must be an arithmetic type" );
-			static_assert( std::is_floating_point<U>::value, "Second template parameter must be a floating point type" );
+			static_assert( is_arithmetic_v<T>, "First template parameter must be an arithmetic type" );
+			static_assert( is_floating_point_v<U>, "Second template parameter must be a floating point type" );
 			const auto rnd = std::round( static_cast<U>( value ) / rnd_by );
 			const auto ret = rnd * rnd_by;
 			return static_cast<T>( ret );
@@ -50,8 +52,8 @@ namespace daw {
 
 		template<class T, class U>
 		T floor_by( const T &value, const U &rnd_by ) noexcept {
-			static_assert( std::is_arithmetic<T>::value, "First template parameter must be an arithmetic type" );
-			static_assert( std::is_floating_point<U>::value, "Second template parameter must be a floating point type" );
+			static_assert( is_arithmetic_v<T>, "First template parameter must be an arithmetic type" );
+			static_assert( is_floating_point_v<U>, "Second template parameter must be a floating point type" );
 			const auto rnd = std::floor( static_cast<U>( value ) / rnd_by );
 			const auto ret = rnd * rnd_by;
 			assert( ret <=
@@ -61,8 +63,8 @@ namespace daw {
 
 		template<class T, class U>
 		T ceil_by( const T &value, const U &rnd_by ) noexcept {
-			static_assert( std::is_arithmetic<T>::value, "First template parameter must be an arithmetic type" );
-			static_assert( std::is_floating_point<U>::value, "Second template parameter must be a floating point type" );
+			static_assert( is_arithmetic_v<T>, "First template parameter must be an arithmetic type" );
+			static_assert( is_floating_point_v<U>, "Second template parameter must be a floating point type" );
 			const auto rnd = std::ceil( static_cast<U>( value ) / rnd_by );
 			const auto ret = rnd * rnd_by;
 			assert( ret >= value ); // , __func__": Error, return value should always be greater than or equal to value
@@ -135,7 +137,7 @@ namespace daw {
 
 		template<class T>
 		constexpr auto sqr( T const &value ) noexcept {
-			static_assert( std::is_arithmetic<T>::value, "Template parameter must be an arithmetic type" );
+			static_assert( is_arithmetic_v<T>, "Template parameter must be an arithmetic type" );
 			return value * value;
 		}
 

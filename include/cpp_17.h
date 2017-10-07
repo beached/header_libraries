@@ -29,6 +29,71 @@ namespace daw {
 	template<typename...>
 	using void_t = void;
 
+	template<typename T>
+	constexpr bool is_floating_point_v = std::is_floating_point<T>::value;
+
+	template<typename T>
+	constexpr bool is_integral_v = std::is_integral<T>::value;
+
+	template<typename T>
+	constexpr bool is_array_v = std::is_array<T>::value;
+
+	template<typename T, typename U>
+	constexpr bool is_assignable_v = std::is_assignable<T, U>::value;
+
+	template<typename T, typename U>
+	constexpr bool is_trivially_assignable_v = std::is_trivially_assignable<T, U>::value;
+
+	template<typename T, typename U>
+	constexpr bool is_nothrow_assignable_v = std::is_nothrow_assignable<T, U>::value;
+
+	template<typename From, typename To>
+	constexpr bool is_convertible_v = std::is_convertible<From, To>::value;
+
+	template<typename T, typename U>
+	constexpr bool is_same_v = std::is_same<T, U>::value;
+
+	template<typename T>
+	constexpr bool is_default_constructible_v = std::is_default_constructible<T>::value;
+
+	template<typename T>
+	constexpr bool is_copy_constructible_v = std::is_copy_constructible<T>::value;
+
+	template<typename T>
+	constexpr bool is_copy_assignable_v = std::is_copy_assignable<T>::value;
+
+	template<typename T>
+	constexpr bool is_move_constructible_v = std::is_move_constructible<T>::value;
+
+	template<typename T>
+	constexpr bool is_move_assignable_v = std::is_move_assignable<T>::value;
+
+	template<typename T>
+	constexpr bool is_const_v = std::is_const<T>::value;
+
+	template<typename T>
+	constexpr bool is_rvalue_reference_v = std::is_rvalue_reference<T>::value;
+
+	template<typename B>
+	struct negation : std::integral_constant<bool, !bool( B::value )> {};
+
+	template<typename...>
+	struct conjunction : std::true_type {};
+
+	template<typename B1>
+	struct conjunction<B1> : B1 {};
+
+	template<typename B1, typename... Bn>
+	struct conjunction<B1, Bn...> : std::conditional_t<bool( B1::value ), conjunction<Bn...>, B1> {};
+
+	template<typename... T>
+	using conjunction_t = typename conjunction<T...>::type;
+
+	template<typename... T>
+	constexpr auto const conjunction_v = conjunction<T...>::value;
+
+	template<typename T>
+	constexpr bool is_arithmetic_v = std::is_arithmetic<T>::value;
 	// base case; actually only used for empty pack
 	template<bool... values>
 	struct all_true : std::true_type {};
@@ -51,7 +116,7 @@ namespace daw {
 		}
 	} // namespace impl
 
-	template<bool...values>
+	template<bool... values>
 	constexpr bool any_true_v = impl::any_true<values...>( );
 
 	namespace impl {
@@ -211,7 +276,7 @@ namespace daw {
 		struct is_callable_impl<F( Args... ), always_void<std::result_of_t<F( Args... )>>> : std::true_type {};
 	} // namespace detail
 
-	template<class T>
+	template<typename T>
 	constexpr std::add_const_t<T> &as_const( T &t ) noexcept {
 		return t;
 	}
@@ -264,13 +329,4 @@ namespace daw {
 	template<class To, template<class...> class Op, class... Args>
 	constexpr bool is_detected_convertible_v = is_detected_convertible<To, Op, Args...>::value;
 
-	template<typename T>
-	constexpr bool is_floating_point_v = std::is_floating_point<T>::value;
-
-	template<typename T>
-	constexpr bool is_integral_v = std::is_integral<T>::value;
-
-	template<class T>
-	constexpr bool is_array_v = std::is_array<T>::value;
 } // namespace daw
-

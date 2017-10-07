@@ -107,7 +107,7 @@ namespace daw {
 			for_each_with_pos( container, 0, static_cast<size_t>( container.size( ) ), func );
 		}
 
-		template<class IteratorType, class ValueType, class Comp>
+		template<typename IteratorType, typename ValueType, typename Comp>
 		IteratorType binary_search( const IteratorType first, const IteratorType last, const ValueType &value,
 		                            Comp less_than ) {
 			auto midpoint = []( const IteratorType &a, const IteratorType &b ) {
@@ -138,32 +138,32 @@ namespace daw {
 			return last;
 		}
 
-		template<class Container>
+		template<typename Container>
 		auto rbegin2( Container &container ) -> decltype( container.rbegin( ) ) {
 			return container.rbegin( );
 		}
 
-		template<class Container>
+		template<typename Container>
 		auto crbegin2( Container &container ) -> decltype( container.crbegin( ) ) {
 			return container.crbegin( );
 		}
 
-		template<class Container>
+		template<typename Container>
 		auto rend2( Container &container ) -> decltype( container.rend( ) ) {
 			return container.rend( );
 		}
 
-		template<class Container>
+		template<typename Container>
 		auto crend2( Container &container ) -> decltype( container.crend( ) ) {
 			return container.crend( );
 		}
 
-		template<class Value>
+		template<typename Value>
 		inline const Value *to_array( const std::vector<Value> &values ) {
 			return &( values[0] );
 		}
 
-		template<class Value>
+		template<typename Value>
 		inline Value *to_array( std::vector<Value> &values ) {
 			return &( values[0] );
 		}
@@ -175,7 +175,7 @@ namespace daw {
 
 		/// Reverser eg for( auto item: reverse( container ) ) { }
 		namespace details {
-			template<class Fwd>
+			template<typename Fwd>
 			struct Reverser_generic {
 				Fwd &fwd;
 				Reverser_generic( Fwd &fwd_ ) : fwd( fwd_ ) {}
@@ -188,7 +188,7 @@ namespace daw {
 				}
 			};
 
-			template<class Fwd>
+			template<typename Fwd>
 			struct Reverser_special {
 				Fwd &fwd;
 				Reverser_special( Fwd &fwd_ ) : fwd( fwd_ ) {}
@@ -200,34 +200,34 @@ namespace daw {
 				}
 			};
 
-			template<class Fwd>
+			template<typename Fwd>
 			auto reverse_impl( Fwd &fwd, long ) -> decltype( Reverser_generic<Fwd>( fwd ) ) {
 				return Reverser_generic<Fwd>( fwd );
 			}
 
-			template<class Fwd>
+			template<typename Fwd>
 			auto reverse_impl( Fwd &fwd, int ) -> decltype( fwd.rbegin( ), Reverser_special<Fwd>( fwd ) ) {
 				return Reverser_special<Fwd>( fwd );
 			}
 		} // namespace details
 
-		template<class Fwd>
+		template<typename Fwd>
 		auto reverse( Fwd &&fwd ) -> decltype( details::reverse_impl( fwd, int( 0 ) ) ) {
-			static_assert( !( std::is_rvalue_reference<Fwd &&>::value ), "Cannot pass rvalue_reference to reverse()" );
+			static_assert( !is_rvalue_reference_v<Fwd &&>, "Cannot pass rvalue_reference to reverse()" );
 			return details::reverse_impl( fwd, int( 0 ) );
 		}
 
-		template<class ValueType>
+		template<typename ValueType>
 		constexpr bool are_equal( ValueType ) noexcept {
 			return true;
 		}
 
-		template<class ValueType>
+		template<typename ValueType>
 		constexpr bool are_equal( ValueType v1, ValueType v2 ) {
 			return v1 == v2;
 		}
 
-		template<class ValueType, class... Values>
+		template<typename ValueType, typename... Values>
 		constexpr bool are_equal( ValueType v1, ValueType v2, Values... others ) {
 			return are_equal( v1, v2 ) && are_equal( others... );
 		}
@@ -251,12 +251,6 @@ namespace daw {
 			auto finish = std::stable_partition( target, last, predicate );
 			return std::make_pair( start, finish );
 		}
-
-		template<typename T>
-		constexpr bool is_const_v = std::is_const<T>::value;
-
-		template<typename T>
-		using is_const_t = typename std::is_const<T>::type;
 
 		template<typename InputIt1, typename InputIt2, typename OutputIt, typename Func>
 		constexpr OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, OutputIt first_out,

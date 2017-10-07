@@ -331,14 +331,14 @@ namespace daw {
 		}
 
 		template<typename Container,
-		         typename ::std::enable_if<daw::traits::is_container_not_string<Container>::value, long>::type = 0>
+		         typename ::std::enable_if<daw::traits::is_container_not_string_v<Container>, long>::type = 0>
 		auto make_range( Container &container ) {
 			using Iterator = std::decay_t<decltype(::std::begin( container ) )>;
 			return Range<Iterator>(::std::begin( container ), ::std::end( container ) );
 		}
 
 		template<typename Container,
-		         typename ::std::enable_if<daw::traits::is_container_not_string<Container>::value, long>::type = 0>
+		         typename ::std::enable_if<daw::traits::is_container_not_string_v<Container>, long>::type = 0>
 		auto make_crange( Container const &container ) {
 			using Iterator = std::decay_t<decltype(::std::begin( container ) )>;
 			return Range<Iterator>(::std::begin( container ), ::std::end( container ) );

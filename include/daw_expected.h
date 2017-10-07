@@ -160,7 +160,7 @@ namespace daw {
 
 	}; // class expected_t
 
-	static_assert( daw::traits::is_regular<expected_t<int>>::value, "expected_t isn't regular" );
+	static_assert( daw::is_regular_v<expected_t<int>>, "expected_t isn't regular" );
 
 	template<>
 	struct expected_t<void> {
@@ -301,7 +301,7 @@ namespace daw {
 
 	template<typename ExpectedResult, typename Function, typename... Args>
 	auto expected_from_code( Function func, Args &&... args ) noexcept {
-		static_assert( std::is_convertible<decltype( func( std::forward<Args>( args )... ) ), ExpectedResult>::value,
+		static_assert( is_convertible_v<decltype( func( std::forward<Args>( args )... ) ), ExpectedResult>,
 		               "Must be able to convert result of func to expected result type" );
 		try {
 			return expected_t<ExpectedResult>{func, std::forward<Args>( args )...};

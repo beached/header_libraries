@@ -26,6 +26,7 @@
 #include <type_traits>
 
 #include "daw_exception.h"
+#include "daw_traits.h"
 
 namespace daw {
 	// Adapted from GSL
@@ -48,15 +49,15 @@ namespace daw {
 		T m_ptr;
 
 	public:
-		static_assert( std::is_assignable<T &, std::nullptr_t>::value, "T cannot be assigned nullptr." );
+		static_assert( is_assignable_v<T &, std::nullptr_t>, "T cannot be assigned nullptr." );
 
-		template<typename U, typename Dummy = std::enable_if_t<std::is_convertible<U, T>::value>>
+		template<typename U, typename Dummy = std::enable_if_t<is_convertible_v<U, T>>>
 		constexpr not_null( U &&u ) : m_ptr{std::forward<U>( u )} {
 
 			daw::exception::daw_throw_on_null( m_ptr, "Cannot be assigned nullptr" );
 		}
 
-		template<typename U, typename Dummy = std::enable_if_t<std::is_convertible<U, T>::value>>
+		template<typename U, typename Dummy = std::enable_if_t<is_convertible_v<U, T>>>
 		constexpr not_null( not_null<U> const &other ) : not_null{other.get( )} {}
 
 		constexpr not_null( not_null const &other ) noexcept = default;
@@ -92,21 +93,21 @@ namespace daw {
 	};
 
 	// more unwanted operators
-	template<class T, class U>
+	template<typename T, typename U>
 	std::ptrdiff_t operator-( const not_null<T> &, const not_null<U> & ) = delete;
 
-	template<class T>
+	template<typename T>
 	not_null<T> operator-( const not_null<T> &, std::ptrdiff_t ) = delete;
 
-	template<class T>
+	template<typename T>
 	not_null<T> operator+( const not_null<T> &, std::ptrdiff_t ) = delete;
 
-	template<class T>
+	template<typename T>
 	not_null<T> operator+( std::ptrdiff_t, const not_null<T> & ) = delete;
 } // namespace daw
 
 namespace std {
-	template<class T>
+	template<typename T>
 	struct hash<daw::not_null<T>> {
 		std::size_t operator( )( daw::not_null<T> const &value ) const {
 			return hash<T>{}( value );

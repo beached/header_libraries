@@ -28,6 +28,8 @@
 #include <type_traits>
 #include <utility>
 
+#include "cpp_17.h"
+
 namespace daw {
 	namespace detail {
 		template<typename T, std::size_t N, std::size_t... I>
@@ -40,25 +42,6 @@ namespace daw {
 	constexpr std::array<std::remove_cv_t<T>, N> to_array( T ( &a )[N] ) {
 		return detail::to_array_impl( a, std::make_index_sequence<N>{} );
 	}
-
-	template<typename B>
-	struct negation : std::integral_constant<bool, !bool( B::value )> {};
-
-	template<typename...>
-	struct conjunction : std::true_type {};
-
-	template<typename B1>
-	struct conjunction<B1> : B1 {};
-
-	template<typename B1, typename... Bn>
-	struct conjunction<B1, Bn...> : std::conditional_t<bool( B1::value ), conjunction<Bn...>, B1> {};
-
-	template<typename... T>
-	using conjunction_t = typename conjunction<T...>::type;
-
-	template<typename... T>
-	constexpr auto const conjunction_v = conjunction<T...>::value;
-
 	namespace details {
 		template<typename>
 		struct is_ref_wrapper : std::false_type {};
