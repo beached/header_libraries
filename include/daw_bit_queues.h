@@ -87,7 +87,7 @@ namespace daw {
 
 		value_type pop_front( size_t const bits ) noexcept {
 			queue_type const mask = static_cast<queue_type>( ~( ( 2 << bits ) - 1 ) );
-			auto result = ( m_queue & mask ) >> ( capacity( ) - bits );
+			auto result = static_cast<value_type>( m_queue & mask ) >> ( capacity( ) - bits );
 			m_queue <<= bits;
 			m_size -= bits;
 			return result;

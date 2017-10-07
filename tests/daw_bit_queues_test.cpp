@@ -98,11 +98,11 @@ BOOST_AUTO_TEST_CASE( daw_bit_queues_test_003 ) {
 BOOST_AUTO_TEST_CASE( daw_nibble_queue_test_001 ) {
 	using value_type = uint32_t;
 
-	auto const nibble_to_hex = []( uint8_t c ) {
-		if( c < 10 ) {
+	auto const nibble_to_hex = []( uint8_t c ) -> uint8_t {
+		if( c < 10u ) {
 			return '0' + c;
-		} else if( c < 16 ) {
-			return 'a' + ( c - 10 );
+		} else if( c < 16u ) {
+			return 'a' + ( c - 10u );
 		} else {
 			throw std::runtime_error( "Invalid nibble" );
 		}

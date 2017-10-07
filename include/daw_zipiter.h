@@ -24,6 +24,8 @@
 
 #include <tuple>
 
+#include "cpp_17.h"
+
 namespace daw {
 	template<typename... T>
 	struct ZipIter {
@@ -115,7 +117,7 @@ namespace daw {
 		}
 
 		constexpr static size_t size( ) {
-			return std::tuple_size<T...>::value;
+			return tuple_size_v<T...>;
 		}
 	}; // struct ZipIter
 

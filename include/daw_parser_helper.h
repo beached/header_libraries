@@ -55,7 +55,7 @@ namespace daw {
 		template<typename T, typename Iterator>
 		parser_result<T, Iterator>::~parser_result( ) = default;
 
-		struct ParserException : public std::exception {};
+		struct ParserException {};
 		struct ParserEmptyException : public ParserException {};
 		struct ParserOverflowException : public ParserException {};
 		struct ParserOutOfRangeException : public ParserException, public std::out_of_range {

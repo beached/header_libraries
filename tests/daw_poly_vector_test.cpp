@@ -25,14 +25,25 @@
 
 struct A {
 	int a;
-
+	A( ) = default;
+	A( A const & ) = default;
+	A( A && ) = default;
+	A &operator=( A const & ) = default;
+	A &operator=( A && ) = default;
 	virtual ~A( );
 };
 A::~A( ) {}
 
 struct B : public A {
 	int b;
+	B( ) = default;
+	B( B const & ) = default;
+	B( B && ) = default;
+	B &operator=( B const & ) = default;
+	B &operator=( B && ) = default;
+	~B( ) override;
 };
+B::~B( ) {}
 
 BOOST_AUTO_TEST_CASE( daw_poly_vector_01 ) {
 	daw::poly_vector_t<A> test;

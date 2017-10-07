@@ -74,6 +74,18 @@ namespace daw {
 	template<typename T>
 	constexpr bool is_rvalue_reference_v = std::is_rvalue_reference<T>::value;
 
+	template<class T>
+	constexpr size_t tuple_size_v = std::tuple_size<T>::value;
+
+	template<typename T>
+	constexpr bool is_function_v = std::is_function<T>::value;
+
+	template<typename Base, typename Derived>
+	constexpr bool is_base_of_v = std::is_base_of<Base, Derived>::value;
+
+	template<typename T>
+	constexpr bool is_member_pointer_v = std::is_member_pointer<T>::value;
+
 	template<typename B>
 	struct negation : std::integral_constant<bool, !bool( B::value )> {};
 
@@ -159,18 +171,6 @@ namespace daw {
 
 	template<bool B>
 	constexpr bool bool_consant_v = bool_constant<B>::value;
-
-	template<typename T>
-	constexpr bool is_function_v = std::is_function<T>::value;
-
-	template<typename Base, typename Derived>
-	constexpr bool is_base_of_v = std::is_base_of<Base, Derived>::value;
-
-	template<typename T>
-	constexpr bool is_member_pointer_v = std::is_member_pointer<T>::value;
-
-	template<typename T>
-	constexpr std::size_t tuple_size_v = std::tuple_size<T>::value;
 
 	namespace detail {
 		template<typename T>

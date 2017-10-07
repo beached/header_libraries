@@ -39,7 +39,7 @@ namespace daw {
 		EXCEPTION_TYPE( EXCEPTION_TYPE && ) noexcept = default;                                                            \
 		EXCEPTION_TYPE &operator=( EXCEPTION_TYPE const & ) = default;                                                     \
 		EXCEPTION_TYPE &operator=( EXCEPTION_TYPE && ) noexcept = default;                                                 \
-	};
+	};                                                                                                                   \
 
 		MAKE_DAW_EXCEPTION( NotImplemented );
 		MAKE_DAW_EXCEPTION( FatalError );
