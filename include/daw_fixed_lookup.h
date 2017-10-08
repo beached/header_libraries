@@ -38,6 +38,10 @@ namespace daw {
 		} // namespace sentinals
 	}   // namespace impl
 
+	///
+	/// A fixed lookup table.  Only indices returned by insert or get_existing are
+	/// defined.  A reference does not exist after a copy/move operation but the 
+	/// indices will remain valid
 	template<typename Value, size_t N>
 	struct fixed_lookup {
 		static_assert( N > 0, "Must supply a positive initial_size larger than 0" );
@@ -125,11 +129,35 @@ namespace daw {
 		~fixed_lookup( ) = default;
 
 		template<typename Key>
-		constexpr const_reference operator[]( Key &&key ) const {
+		constexpr size_t find_existing( Key &&key ) const {
 			auto const hash = hash_fn( std::forward<Key>( key ) );
 			auto const is_found = lookup( hash );
 			daw::exception::daw_throw_on_false( is_found, "Attempt to access an undefined key" );
-			return m_values[is_found.position];
+			return is_found.position;
+		}
+
+		template<typename Key>
+		constexpr size_t insert( Key &&key, Value value ) {
+			auto const hash = hash_fn( std::forward<Key>( key ) );
+			auto const is_found = lookup( hash );
+			daw::exception::daw_throw_on_true( !is_found && is_found.position == m_hashes.size( ),
+			                                   "Fixed hash table does not have enough space to allocate all entries" );
+			m_hashes[is_found.position] = hash;
+			m_values[is_found.position] = std::move( value );
+			return is_found.position;
+		}
+
+		constexpr reference get_existing( size_t position ) {
+			return m_values[position];
+		}
+
+		constexpr const_reference get_existing( size_t position ) const {
+			return m_values[position];
+		}
+
+		template<typename Key>
+		constexpr const_reference operator[]( Key &&key ) const {
+			return m_values[find_existing( std::forward<Key>( key ) )];
 		}
 
 		template<typename Key>
