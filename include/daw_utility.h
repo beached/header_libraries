@@ -26,7 +26,6 @@
 #undef max
 #endif // max
 
-#include <cassert>
 #include <cmath>
 #include <functional>
 #include <initializer_list>
@@ -34,9 +33,11 @@
 #include <memory>
 #include <random>
 #include <string>
+#include <tuple>
 #include <type_traits>
 #include <vector>
 
+#include "daw_exception.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
 
@@ -93,21 +94,22 @@ namespace daw {
 			T m_value;
 
 		public:
-			EqualToImpl( T value ) : m_value( value ) {}
 			EqualToImpl( ) = delete;
 			~EqualToImpl( ) = default;
-			EqualToImpl( EqualToImpl const & ) = default;
-			EqualToImpl &operator=( EqualToImpl const & ) = default;
-			EqualToImpl( EqualToImpl && ) = default;
-			EqualToImpl &operator=( EqualToImpl && ) = default;
+			constexpr EqualToImpl( EqualToImpl const & ) = default;
+			constexpr EqualToImpl &operator=( EqualToImpl const & ) = default;
+			constexpr EqualToImpl( EqualToImpl && ) noexcept = default;
+			constexpr EqualToImpl &operator=( EqualToImpl && ) noexcept = default;
 
-			bool operator( )( T const &value ) {
+			constexpr EqualToImpl( T value ) : m_value( std::move( value ) ) {}
+
+			constexpr bool operator( )( T const &value ) noexcept {
 				return m_value == value;
 			}
 		}; // class EqualToImpl
 	}    // namespace impl
 	template<typename T>
-	impl::EqualToImpl<T> equal_to( T value ) {
+	constexpr impl::EqualToImpl<T> equal_to( T value ) {
 		return impl::EqualToImpl<T>( std::move( value ) );
 	}
 
@@ -116,14 +118,15 @@ namespace daw {
 		T *m_value;
 
 	public:
-		equal_to_last( ) : m_value( nullptr ) {}
 		~equal_to_last( ) = default;
-		equal_to_last( equal_to_last const & ) = default;
-		equal_to_last( equal_to_last && ) = default;
-		equal_to_last &operator=( equal_to_last const & ) = default;
-		equal_to_last &operator=( equal_to_last && ) = default;
+		constexpr equal_to_last( equal_to_last const & ) noexcept = default;
+		constexpr equal_to_last( equal_to_last && ) noexcept = default;
+		constexpr equal_to_last &operator=( equal_to_last const & ) noexcept = default;
+		constexpr equal_to_last &operator=( equal_to_last && ) noexcept = default;
 
-		bool operator( )( T const &value ) {
+		constexpr equal_to_last( ) noexcept : m_value( nullptr ) {}
+
+		bool operator( )( T const &value ) noexcept {
 			bool result = false;
 			if( m_value ) {
 				result = *m_value == value;
@@ -141,9 +144,9 @@ namespace daw {
 		public:
 			NotImpl( Function func ) : m_function( func ) {}
 			~NotImpl( ) = default;
-			NotImpl( NotImpl && ) = default;
+			NotImpl( NotImpl && ) noexcept = default;
 			NotImpl &operator=( NotImpl const & ) = default;
-			NotImpl &operator=( NotImpl && ) = default;
+			NotImpl &operator=( NotImpl && ) noexcept = default;
 
 			template<typename... Args>
 			bool operator( )( Args &&... args ) {
@@ -164,24 +167,27 @@ namespace daw {
 	// for pointers to member function(const version)
 	template<typename ClassType, typename ReturnType, typename... Args>
 	struct function_traits<ReturnType ( ClassType::* )( Args... ) const> {
-		enum { arity = sizeof...( Args ) };
+		static constexpr size_t arity = sizeof...( Args );
 		using type = std::function<ReturnType( Args... )>;
+		using arg_types = std::tuple<Args...>;
 		using result_type = ReturnType;
 	};
 
 	// for pointers to member function
 	template<typename ClassType, typename ReturnType, typename... Args>
 	struct function_traits<ReturnType ( ClassType::* )( Args... )> {
-		enum { arity = sizeof...( Args ) };
+		static constexpr size_t arity = sizeof...( Args );
 		using type = std::function<ReturnType( Args... )>;
+		using arg_types = std::tuple<Args...>;
 		using result_type = ReturnType;
 	};
 
 	// for function pointers
 	template<typename ReturnType, typename... Args>
 	struct function_traits<ReturnType ( * )( Args... )> {
-		enum { arity = sizeof...( Args ) };
+		static constexpr size_t arity = sizeof...( Args );
 		using type = std::function<ReturnType( Args... )>;
+		using arg_types = std::tuple<Args...>;
 		using result_type = ReturnType;
 	};
 
@@ -214,148 +220,80 @@ namespace daw {
 	}
 
 	template<typename T>
-	std::vector<T> copy_vector( std::vector<T> const &container, std::size_t num_items ) {
-		assert( num_items <= container.size( ) );
-		std::vector<T> result( num_items );
-		auto first = std::begin( container );
-		std::copy( first, first + static_cast<typename std::vector<T>::difference_type>( num_items ),
-		           std::begin( result ) );
+	std::vector<T> copy_vector( std::vector<T> const &container, size_t num_items ) {
+		daw::exception::daw_throw_on_false( num_items <= container.size( ),
+		                                    "Cannot copy more items than are in container" );
+		std::vector<T> result;
+		result.reserve( num_items );
+
+		std::copy( std::begin( container ), std::next( std::begin( container ), static_cast<intmax_t>( num_items ) ),
+		           std::back_inserter( result ) );
+
 		return result;
 	}
 
-	template<typename T>
-	void copy_vect_and_set( std::vector<T> &source, std::vector<T> &destination, std::size_t num_items,
-	                        T const &replacement_value ) {
-		using item_size_t = typename std::vector<T>::difference_type;
-		assert( num_items < std::numeric_limits<item_size_t>::max( ) );
-		auto first = std::begin( source );
-		auto last = std::end( source );
-		auto max_dist = std::distance( first, last );
-		auto items = static_cast<item_size_t>( num_items );
-		if( items < max_dist ) {
-			last = first + items;
-		}
-
-		for( auto it = first; it != last; ++it ) {
-			destination.push_back( *it );
-			*it = replacement_value;
-		}
+	template<class T, class U>
+	constexpr T round_to_nearest( T const value, U const rnd_by ) noexcept {
+		static_assert( is_arithmetic_v<T>, "First template parameter must be an arithmetic type" );
+		static_assert( is_floating_point_v<U>, "Second template parameter must be a floating point type" );
+		auto const rnd = std::round( static_cast<U>( value ) / rnd_by );
+		return static_cast<T>( rnd * rnd_by );
 	}
 
 	template<class T, class U>
-	T round_to_nearest( const T &value, const U &rnd_by ) {
+	constexpr T floor_by( T const value, U const rnd_by ) noexcept {
 		static_assert( is_arithmetic_v<T>, "First template parameter must be an arithmetic type" );
 		static_assert( is_floating_point_v<U>, "Second template parameter must be a floating point type" );
-		const auto rnd = std::round( static_cast<U>( value ) / rnd_by );
-		const auto ret = rnd * rnd_by;
-		return static_cast<T>( ret );
+		auto const rnd = std::floor( static_cast<U>( value ) / rnd_by );
+		return static_cast<T>( rnd * rnd_by );
 	}
 
 	template<class T, class U>
-	T floor_by( const T &value, const U &rnd_by ) {
+	constexpr T ceil_by( T const value, U const rnd_by ) noexcept {
 		static_assert( is_arithmetic_v<T>, "First template parameter must be an arithmetic type" );
 		static_assert( is_floating_point_v<U>, "Second template parameter must be a floating point type" );
-		const auto rnd = std::floor( static_cast<U>( value ) / rnd_by );
-		const auto ret = rnd * rnd_by;
-		assert( ret <=
-		        value ); // , __func__": Error, return value should always be less than or equal to value supplied" );
-		return static_cast<T>( ret );
+		auto const rnd = std::ceil( static_cast<U>( value ) / rnd_by );
+		return static_cast<T>( rnd * rnd_by );
 	}
 
-	template<class T, class U>
-	T ceil_by( const T &value, const U &rnd_by ) {
-		static_assert( is_arithmetic_v<T>, "First template parameter must be an arithmetic type" );
-		static_assert( is_floating_point_v<U>, "Second template parameter must be a floating point type" );
-		const auto rnd = std::ceil( static_cast<U>( value ) / rnd_by );
-		const auto ret = rnd * rnd_by;
-		assert( ret >=
-		        value ); // , __func__": Error, return value should always be greater than or equal to value supplied" );
-		return static_cast<T>( ret );
-	}
-
-	template<typename T>
-	void copy_vect_and_set( std::shared_ptr<std::vector<T>> &source, std::shared_ptr<std::vector<T>> &destination,
-	                        std::size_t num_items, T const &replacement_value ) {
-		using item_size_t = typename std::vector<T>::difference_type;
-		assert( num_items < std::numeric_limits<item_size_t>::max( ) );
-		auto first = std::begin( *source );
-		auto last = std::end( *source );
-		auto max_dist = std::distance( first, last );
-		auto items = static_cast<item_size_t>( num_items );
-		if( items < max_dist ) {
-			last = first + items;
-		}
-
-		for( auto it = first; it != last; ++it ) {
-			destination->push_back( *it );
-			*it = replacement_value;
-		}
-	}
-
-	inline bool is_space( char chr ) {
+	constexpr bool is_space( char chr ) noexcept {
 		return 32 == chr;
 	}
 
-	template<typename Iterator, typename Pred>
-	auto find_all_where( Iterator first, Iterator last, Pred predicate ) -> std::vector<Iterator> {
-		std::vector<Iterator> results;
-		for( auto it = first; it != last; ++it ) {
-			if( predicate( *it ) ) {
-				results.push_back( it );
+	template<typename Iterator1, typename Iterator2, typename Pred>
+	std::vector<Iterator1> find_all_where( Iterator1 first, Iterator2 const last, Pred predicate ) {
+		std::vector<Iterator1> results;
+		for( ; first != last; ++first ) {
+			if( predicate( *first ) ) {
+				results.push_back( first );
 			}
 		}
 		return results;
 	}
 
 	template<typename T, typename Pred>
-	auto find_all_where( T const &values, Pred predicate ) -> std::vector<decltype( std::begin( values ) )> {
-		return find_all_where( std::begin( values ), std::end( values ), predicate );
+	decltype( auto ) find_all_where( T const &values, Pred predicate ) {
+		return find_all_where( std::cbegin( values ), std::cend( values ), predicate );
 	}
 
-	template<typename Iterator>
-	Iterator advance( Iterator it, Iterator last, typename Iterator::difference_type how_far ) {
-		auto result = it;
-		while( result != last && std::distance( it, result ) < how_far ) {
-			++it;
-		}
-		return it;
+	constexpr char AsciiUpper( char chr ) noexcept {
+		return chr & ~static_cast<char>( 32 );
 	}
 
-	template<typename Iterator>
-	Iterator find_buff( Iterator first, Iterator last, daw::string_view key ) {
-		auto it = advance( first, last, static_cast<typename Iterator::difference_type>( key.size( ) ) );
-		if( it == last ) {
-			return last;
-		}
-
-		for( ; it != last; ++it, ++first ) {
-			if( equal( first, it, key ) ) {
-				return first;
-			}
-		}
-		return last;
+	constexpr char AsciiLower( char chr ) noexcept {
+		return chr | static_cast<char>( 32 );
 	}
 
-	template<typename CharType>
-	CharType AsciiUpper( CharType chr ) {
-		return chr & ~static_cast<CharType>( 32 );
-	}
-
-	template<typename CharType>
-	CharType AsciiLower( CharType chr ) {
-		return chr | static_cast<CharType>( 32 );
-	}
-
-	template<typename CharType>
-	std::basic_string<CharType> AsciiUpper( std::basic_string<CharType> str ) {
+	template<typename CharType, typename Traits, typename Allocator>
+	auto AsciiUpper( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
 		for( auto &chr : str ) {
 			chr = AsciiUpper( chr );
 		}
 		return str;
 	}
 
-	template<typename CharType>
-	std::basic_string<CharType> AsciiLower( std::basic_string<CharType> str ) {
+	template<typename CharType, typename Traits, typename Allocator>
+	auto AsciiLower( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
 		for( auto &chr : str ) {
 			chr = AsciiLower( chr );
 		}
@@ -363,72 +301,17 @@ namespace daw {
 	}
 
 	template<typename Iterator>
-	bool equal_nc( Iterator first, Iterator last, daw::string_view upper_value ) {
-		if( static_cast<std::size_t>( std::distance( first, last ) ) != upper_value.size( ) ) {
+	constexpr bool equal_nc( Iterator first, Iterator last, daw::string_view upper_value ) noexcept {
+		if( static_cast<size_t>( std::distance( first, last ) ) != upper_value.size( ) ) {
 			return false;
 		}
-		for( std::size_t off = 0; off < upper_value.size( ); ++off ) {
-			auto const &left = upper_value[off];
-			auto const &right = daw::AsciiUpper( *( first + static_cast<std::ptrdiff_t>( off ) ) );
-			if( left != right ) {
+		for( auto c : upper_value ) {
+			if( c != daw::AsciiUpper( *first ) ) {
 				return false;
 			}
+			++first;
 		}
 		return true;
-	}
-
-	//////////////////////////////////////////////////////////////////////////
-	/// Summary:	Use this to move a value into a lambda capture by copy
-	///				capture without incurring a copy
-	template<typename T>
-	class MoveCapture final {
-		mutable T m_value;
-
-	public:
-		MoveCapture( ) = delete;
-		~MoveCapture( ) = default;
-		MoveCapture( T &&val ) : m_value( std::move( val ) ) {}
-		MoveCapture( MoveCapture && ) = default;
-		MoveCapture &operator=( MoveCapture && ) = default;
-
-		MoveCapture( MoveCapture const &other ) : m_value( std::move( other.m_value ) ) {}
-
-		MoveCapture &operator=( MoveCapture const &rhs ) {
-			if( this != &rhs ) {
-				m_value = std::move( rhs.m_value );
-			}
-			return *this;
-		}
-
-		T &value( ) {
-			return m_value;
-		}
-
-		T const &value( ) const {
-			return m_value;
-		}
-
-		T &operator*( ) {
-			return m_value.operator*( );
-		}
-
-		T const &operator*( ) const {
-			return m_value.operator*( );
-		}
-
-		T const *operator->( ) const {
-			return m_value.operator->( );
-		}
-
-		T move_out( ) {
-			auto result = std::move( m_value );
-			return result;
-		}
-	}; // class MoveCapture
-
-	template<typename T>
-	MoveCapture<T> as_move_capture( T &&val ) {
-		return MoveCapture<T>( std::move( val ) );
 	}
 
 	namespace details {
@@ -455,9 +338,9 @@ namespace daw {
 	}
 
 	template<typename T>
-	auto copy_ptr_value( T *original ) {
-		using result_t = std::decay_t<T>;
-		return new result_t( *original );
+	auto copy_ptr_value( T const *const original ) {
+		using result_t = daw::traits::root_type_t<T>;
+		return new result_t{*original};
 	}
 
 	// Acts like a reference, but has a strong no-null guarantee
@@ -469,66 +352,42 @@ namespace daw {
 	public:
 		not_null( ) = delete;
 		~not_null( ) = default;
-		not_null( not_null const & ) noexcept = default;
-		not_null( not_null && ) = default;
-		not_null &operator=( not_null const & ) noexcept = default;
-		not_null &operator=( not_null && ) noexcept = default;
+		constexpr not_null( not_null const & ) noexcept = default;
+		constexpr not_null( not_null && ) noexcept = default;
+		constexpr not_null &operator=( not_null const & ) noexcept = default;
+		constexpr not_null &operator=( not_null && ) noexcept = default;
 
-		not_null( T *ptr ) : m_ptr( ptr ) {
-			if( nullptr == ptr ) {
-				throw std::invalid_argument( "ptr" );
-			}
+		constexpr not_null( T *ptr ) : m_ptr{ ptr } {
+			daw::exception::daw_throw_on_null( ptr, "ptr cannot be null" );
 		}
 
-		friend void swap( not_null &lhs, not_null &rhs ) noexcept {
-			using std::swap;
-			swap( lhs.m_ptr, rhs.m_ptr );
-		}
-
-		explicit operator bool( ) const noexcept {
+		explicit constexpr operator bool( ) const noexcept {
 			return true;
 		}
 
-		T *operator->( ) noexcept {
+		constexpr T *operator->( ) noexcept {
 			return m_ptr;
 		}
 
-		T const *operator->( ) const noexcept {
+		constexpr T const *operator->( ) const noexcept {
 			return m_ptr;
 		}
 
-		T *get( ) noexcept {
+		constexpr T *get( ) noexcept {
 			return m_ptr;
 		}
 
-		T const *get( ) const noexcept {
+		constexpr T const *get( ) const noexcept {
 			return m_ptr;
 		}
 
-		friend bool operator==( not_null const &lhs, not_null const &rhs ) noexcept {
-			return std::equal_to<void *>( )( lhs.m_ptr, rhs.m_ptr );
+		friend constexpr bool operator==( not_null const &lhs, not_null const &rhs ) noexcept {
+			return lhs.m_ptr == rhs.m_ptr;
 		}
 
-		friend bool operator!=( not_null const &lhs, not_null const &rhs ) noexcept {
-			return !std::equal_to<void *>( )( lhs.m_ptr, rhs.m_ptr );
+		friend constexpr bool operator!=( not_null const &lhs, not_null const &rhs ) noexcept {
+			return lhs.m_ptr != rhs.m_ptr;
 		}
-
-		friend bool operator<( not_null const &lhs, not_null const &rhs ) noexcept {
-			return std::less<void *>( )( lhs.m_ptr, rhs.m_ptr );
-		}
-
-		friend bool operator>( not_null const &lhs, not_null const &rhs ) noexcept {
-			return std::greater<void *>( )( lhs.m_ptr, rhs.m_ptr );
-		}
-
-		friend bool operator<=( not_null const &lhs, not_null const &rhs ) noexcept {
-			return std::less_equal<void *>( )( lhs.m_ptr, rhs.m_ptr );
-		}
-
-		friend bool operator>=( not_null const &lhs, not_null const &rhs ) noexcept {
-			return std::greater_equal<void *>( )( lhs.m_ptr, rhs.m_ptr );
-		}
-
 	}; // not_null
 
 	template<typename Arg, typename... Args>
@@ -542,26 +401,22 @@ namespace daw {
 	}
 
 	template<typename Container, typename Item>
-	bool contains( Container const &container, Item const &item ) {
-		using std::begin;
-		using std::end;
-		return std::find( begin( container ), end( container ), item ) == end( container );
+	constexpr bool contains( Container const &container, Item const &item ) noexcept {
+		return std::find( std::cbegin( container ), std::cend( container ), item ) != std::cend( container );
 	}
 
 	template<typename Container, typename Item>
-	decltype( auto ) index_of( Container const &container, Item const &item ) {
-		using std::begin;
-		using std::end;
-		auto const pos = std::find( begin( container ), end( container ), item );
-		return std::distance( begin( container ), pos );
+	constexpr decltype( auto ) index_of( Container const &container, Item const &item ) noexcept {
+		auto const pos = std::find( std::begin( container ), std::end( container ), item );
+		return std::distance( std::begin( container ), pos );
 	}
 
 	constexpr auto or_all( ) noexcept {
-		return 0;
+		return false;
 	}
 
 	template<typename Value>
-	constexpr auto or_all( Value value ) noexcept {
+	constexpr Value or_all( Value value ) noexcept {
 		return value;
 	}
 
@@ -587,8 +442,8 @@ namespace daw {
 
 	template<typename IntegerDest, typename IntegerSource>
 	constexpr bool can_fit( IntegerSource const value ) noexcept {
-		static_assert( std::numeric_limits<IntegerDest>::is_integer, "Must supply an integral type" );
-		static_assert( std::numeric_limits<IntegerSource>::is_integer, "Must supply an integral type" );
+		static_assert( is_integral_v<IntegerDest>, "Must supply an integral type" );
+		static_assert( is_integral_v<IntegerSource>, "Must supply an integral type" );
 		if( value >= 0 ) {
 			return value <= std::numeric_limits<IntegerDest>::max( );
 		} else if( std::numeric_limits<IntegerDest>::is_signed ) {
@@ -597,16 +452,17 @@ namespace daw {
 			return false;
 		}
 	}
-	constexpr void breakpoint( ) {
+
+	constexpr void breakpoint( ) noexcept {
 		;
 	}
 
-	template<typename T, typename std::enable_if_t<!is_floating_point_v<T>, long> = 0>
+	template<typename T, std::enable_if_t<!is_floating_point_v<T>, std::nullptr_t> = nullptr>
 	constexpr bool nearly_equal( T const &a, T const &b ) noexcept {
 		return a == b;
 	}
 
-	template<typename T, typename std::enable_if_t<is_floating_point_v<T>, long> = 0>
+	template<typename T, std::enable_if_t<is_floating_point_v<T>, std::nullptr_t> = nullptr>
 	constexpr bool nearly_equal( T const &a, T const &b ) noexcept {
 		// Code from http://floating-point-gui.de/errors/comparison/
 		auto absA = std::abs( a );
@@ -625,54 +481,13 @@ namespace daw {
 		return diff / std::min( ( absA + absB ), std::numeric_limits<T>::max( ) ) < std::numeric_limits<T>::epsilon( );
 	}
 
-	/*
-	constexpr bool nearly_equal( double const &a, double const &b ) noexcept {
-	  using Float = double;
-	  // Code from http://floating-point-gui.de/errors/comparison/
-	  auto absA = std::abs( a );
-	  auto absB = std::abs( b );
-	  auto diff = std::abs( a - b );
-
-	  if( a == b ) { // shortcut, handles infinities
-	    return true;
-	  }
-	  if( a == 0 || b == 0 || diff < std::numeric_limits<Float>::min_exponent ) {
-	    // a or b is zero or both are extremely close to it
-	    // 			// relative error is less meaningful here
-	    return diff < ( std::numeric_limits<Float>::epsilon( ) * std::numeric_limits<Float>::min_exponent );
-	  }
-	  // use relative error
-	  return diff / std::min( ( absA + absB ), std::numeric_limits<Float>::max( ) ) <
-	         std::numeric_limits<Float>::epsilon( );
-	}
-
-	constexpr bool nearly_equal( long double const &a, long double const &b ) noexcept {
-	  using Float = long double;
-	  // Code from http://floating-point-gui.de/errors/comparison/
-	  auto absA = std::abs( a );
-	  auto absB = std::abs( b );
-	  auto diff = std::abs( a - b );
-
-	  if( a == b ) { // shortcut, handles infinities
-	    return true;
-	  }
-	  if( a == 0 || b == 0 || diff < std::numeric_limits<Float>::min_exponent ) {
-	    // a or b is zero or both are extremely close to it
-	    // 			// relative error is less meaningful here
-	    return diff < ( std::numeric_limits<Float>::epsilon( ) * std::numeric_limits<Float>::min_exponent );
-	  }
-	  // use relative error
-	  return diff / std::min( ( absA + absB ), std::numeric_limits<Float>::max( ) ) <
-	         std::numeric_limits<Float>::epsilon( );
-	}
-	*/
 	template<typename Iterator>
 	constexpr std::reverse_iterator<Iterator> make_reverse_iterator( Iterator i ) {
 		return std::reverse_iterator<Iterator>( std::move( i ) );
 	}
 
 	template<typename T, typename Iterator>
-	void fill_random( T min_value, T max_value, Iterator first, Iterator last ) {
+	void fill_random( T const min_value, T const max_value, Iterator first, Iterator last ) {
 		std::random_device rnd_device;
 		// Specify the engine and distribution.
 		std::mt19937 mersenne_engine{rnd_device( )};
@@ -692,4 +507,4 @@ namespace daw {
 } // namespace daw
 
 template<typename... Ts>
-constexpr void Unused( Ts &&... ) {}
+constexpr void Unused( Ts &&... ) noexcept {}
