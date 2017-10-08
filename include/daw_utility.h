@@ -190,10 +190,12 @@ namespace daw {
 		using arg_types = std::tuple<Args...>;
 		using result_type = ReturnType;
 	};
+	template<typename F>
+	using function_traits_t = typename function_traits<F>::type;
 
 	template<typename L>
-	static typename function_traits<L>::type make_function( L l ) {
-		return static_cast<typename function_traits<L>::type>( l );
+	constexpr function_traits_t<L> make_function( L l ) noexcept {
+		return static_cast<function_traits_t<L>>( l );
 	}
 
 	// handles bind & multiple function call operator()'s
@@ -204,15 +206,22 @@ namespace daw {
 
 	// handles explicit overloads
 	template<typename ReturnType, typename... Args>
-	auto make_function( ReturnType ( *p )( Args... ) ) -> std::function<ReturnType( Args... )> {
+	std::function<ReturnType( Args... )> make_function( ReturnType ( *p )( Args... ) ) {
 		return {p};
 	}
 
 	// handles explicit overloads
 	template<typename ReturnType, typename... Args, typename ClassType>
-	auto make_function( ReturnType ( ClassType::*p )( Args... ) ) -> std::function<ReturnType( Args... )> {
+	std::function<ReturnType( Args... )> make_function( ReturnType ( ClassType::*p )( Args... ) ) {
 		return {p};
 	}
+	
+	// handles explicit overloads
+	template<typename ReturnType, typename... Args, typename ClassType>
+	std::function<ReturnType( Args... )> make_std_function( ReturnType ( ClassType::*p )( Args... ) ) {
+		return {p};
+	}
+
 
 	template<typename T>
 	T copy( T const &value ) {
