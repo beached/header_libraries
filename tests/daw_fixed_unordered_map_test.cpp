@@ -46,6 +46,15 @@ constexpr auto get_map( ) {
 	return blah;
 }
 
+template<size_t N>
+constexpr auto too_many( ) {
+	daw::fixed_unordered_map<int, N> blah{};
+	for( size_t n=0; n<=N; ++n ) {
+		blah[n] = n;
+	}
+	return blah;
+}
+
 BOOST_AUTO_TEST_CASE( daw_fixed_unordered_map_002 ) {
 	constexpr auto values2 = get_map( );
 	daw::fixed_unordered_map<int, 10> blah{};
@@ -54,3 +63,8 @@ BOOST_AUTO_TEST_CASE( daw_fixed_unordered_map_002 ) {
 	blah[4] = 4;
 	BOOST_REQUIRE_EQUAL( values2['a'], blah['a'] );
 }
+
+// Will not compile... on purpose
+//BOOST_AUTO_TEST_CASE( daw_fixed_unordered_map_003 ) {
+//	constexpr auto values2 = too_many<10>();
+//}
