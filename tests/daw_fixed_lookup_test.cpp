@@ -65,6 +65,12 @@ BOOST_AUTO_TEST_CASE( daw_fixed_lookup_002 ) {
 	BOOST_REQUIRE_EQUAL( values2['a'], blah['a'] );
 }
 
+BOOST_AUTO_TEST_CASE( daw_make_fixed_lookup_001 ) {
+	constexpr auto values = daw::make_fixed_lookup<int>( "hello", 3, 5, 6, "why oh why" );
+	BOOST_REQUIRE_EQUAL( values.size( ), values.capacity( ) );
+	BOOST_REQUIRE_EQUAL( values.size( ), 5 );
+}
+
 // Will not compile... on purpose
 //BOOST_AUTO_TEST_CASE( daw_fixed_lookup_003 ) {
 //	constexpr auto values2 = too_many<10>();

@@ -40,7 +40,7 @@ namespace daw {
 
 	///
 	/// A fixed lookup table.  Only indices returned by insert or get_existing are
-	/// defined.  A reference does not exist after a copy/move operation but the 
+	/// defined.  A reference does not exist after a copy/move operation but the
 	/// indices will remain valid
 	template<typename Value, size_t N>
 	struct fixed_lookup {
@@ -54,11 +54,12 @@ namespace daw {
 		daw::array_t<size_t, N> m_hashes;
 		daw::array_t<value_type, N> m_values;
 
+	public:
 		static constexpr size_t capacity( ) noexcept {
 			return N;
 		}
 
-		constexpr size_t size( ) noexcept {
+		constexpr size_t size( ) const noexcept {
 			size_t count = 0;
 			for( auto hash : m_hashes ) {
 				count += hash >= impl::sentinals::sentinals_size ? 1 : 0;
@@ -66,6 +67,7 @@ namespace daw {
 			return count;
 		}
 
+	private:
 		template<typename KeyType>
 		static constexpr size_t hash_fn( KeyType &&key ) noexcept {
 			return ( daw::fnv1a_hash( std::forward<KeyType>( key ) ) %
@@ -176,5 +178,12 @@ namespace daw {
 			return static_cast<bool>( lookup( hash ) );
 		}
 	};
-} // namespace daw
 
+	template<typename Value, typename... Keys>
+	constexpr auto make_fixed_lookup( Keys &&... keys ) noexcept {
+		fixed_lookup<Value, sizeof...( Keys )> result{};
+		auto const lst = {( result[keys] = Value{}, 0 )...};
+		Unused( lst );
+		return result;
+	}
+} // namespace daw
