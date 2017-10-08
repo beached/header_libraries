@@ -43,8 +43,8 @@ set( TESTED_HEADERS_PREFIXES
 	daw_cstring
 	daw_exception
 	daw_expected
+	daw_fixed_lookup
 	daw_fixed_stack
-	daw_fixed_unordered_map
 	daw_fnv1a_hash
 	daw_function_iterator
 	daw_hash_table
