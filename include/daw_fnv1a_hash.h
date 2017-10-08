@@ -48,7 +48,7 @@ namespace daw {
 				current_hash ^= static_cast<size_t>(
 				  ( static_cast<size_t>( value ) & ( static_cast<size_t>( 0xFF ) << ( n * 8u ) ) ) >>
 				  ( n * 8u ) );
-				current_hash *= daw::impl::fnv_prime( );
+				current_hash *= impl::fnv_prime( );
 			}
 			return current_hash;
 		}
@@ -56,7 +56,7 @@ namespace daw {
 		template<typename Iterator1, typename Iterator2,
 		         std::enable_if_t<is_integral_v<typename std::iterator_traits<Iterator1>::type>, std::nullptr_t> = nullptr>
 		constexpr size_t operator( )( Iterator1 first, Iterator2 const last ) const noexcept {
-			auto hash = daw::impl::fnv_offset( );
+			auto hash = impl::fnv_offset( );
 			while( first != last ) {
 				hash = append_hash( hash, *first );
 			}
@@ -70,16 +70,16 @@ namespace daw {
 
 		template<typename Integral, std::enable_if_t<is_integral_v<Integral>, std::nullptr_t> = nullptr>
 		constexpr size_t operator( )( Integral const value ) const noexcept {
-			return append_hash( daw::impl::fnv_offset( ), value );
+			return append_hash( impl::fnv_offset( ), value );
 		}
 
 		template<typename T>
 		constexpr size_t operator( )( T const *const ptr ) const noexcept {
-			auto hash = daw::impl::fnv_offset( );
+			auto hash = impl::fnv_offset( );
 			auto bptr = static_cast<uint8_t const *const>( static_cast<void const *const>( ptr ) );
 			for( size_t n = 0; n < sizeof( T ); ++n ) {
 				hash = hash ^ static_cast<size_t>( bptr[n] );
-				hash *= daw::impl::fnv_prime( );
+				hash *= impl::fnv_prime( );
 			}
 			return hash;
 		}
@@ -91,7 +91,7 @@ namespace daw {
 	}
 
 	constexpr size_t fnv1a_hash( char const *ptr ) noexcept {
-		auto hash = daw::impl::fnv_offset( );
+		auto hash = impl::fnv_offset( );
 		while( *ptr != 0 ) {
 			hash = fnv1a_hash_t::append_hash( hash, *ptr );
 			++ptr;
@@ -101,7 +101,7 @@ namespace daw {
 
 	template<typename CharT>
 	constexpr size_t fnv1a_hash( CharT const *ptr, size_t const len ) noexcept {
-		auto hash = daw::impl::fnv_offset( );
+		auto hash = impl::fnv_offset( );
 		auto const last = std::next( ptr, static_cast<intmax_t>( len ) );
 		while( ptr != last ) {
 			hash = fnv1a_hash_t::append_hash( hash, *ptr );
@@ -115,3 +115,4 @@ namespace daw {
 		return fnv1a_hash( ptr, N );
 	}
 } // namespace daw
+

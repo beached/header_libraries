@@ -986,35 +986,20 @@ namespace daw {
 		}
 
 	} // namespace string_view_literals
+
+	template<typename CharT, typename Traits, typename InternalSizeType>
+	constexpr size_t fnv1a_hash( daw::basic_string_view<CharT, Traits, InternalSizeType> sv ) noexcept {
+		return fnv1a_hash( sv.data( ), sv.size( ) );
+	}
 } // namespace daw
 
 namespace std {
 	// TODO use same function as string without killing performance of creating a string
-	template<>
-	struct hash<daw::string_view> {
-		constexpr size_t operator( )( daw::string_view s ) noexcept {
-			return daw::fnv1a_hash( s.data( ), s.size( ) );
-		}
-	};
-
-	template<>
-	struct hash<daw::wstring_view> {
-		constexpr size_t operator( )( daw::wstring_view s ) noexcept {
-			return daw::fnv1a_hash( s.data( ), s.size( ) );
-		}
-	};
-
-	template<>
-	struct hash<daw::u16string_view> {
-		constexpr size_t operator( )( daw::u16string_view s ) noexcept {
-			return daw::fnv1a_hash( s.data( ), s.size( ) );
-		}
-	};
-
-	template<>
-	struct hash<daw::u32string_view> {
-		constexpr size_t operator( )( daw::u32string_view s ) noexcept {
-			return daw::fnv1a_hash( s.data( ), s.size( ) );
+	template<typename CharT, typename Traits, typename InternalSizeType>
+	struct hash<daw::basic_string_view<CharT, Traits, InternalSizeType>> {
+		constexpr size_t operator( )( daw::basic_string_view<CharT, Traits, InternalSizeType> s ) noexcept {
+			return daw::fnv1a_hash( s );
 		}
 	};
 } // namespace std
+
