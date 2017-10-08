@@ -215,13 +215,12 @@ namespace daw {
 	std::function<ReturnType( Args... )> make_function( ReturnType ( ClassType::*p )( Args... ) ) {
 		return {p};
 	}
-	
+
 	// handles explicit overloads
 	template<typename ReturnType, typename... Args, typename ClassType>
 	std::function<ReturnType( Args... )> make_std_function( ReturnType ( ClassType::*p )( Args... ) ) {
 		return {p};
 	}
-
 
 	template<typename T>
 	T copy( T const &value ) {
@@ -366,7 +365,7 @@ namespace daw {
 		constexpr not_null &operator=( not_null const & ) noexcept = default;
 		constexpr not_null &operator=( not_null && ) noexcept = default;
 
-		constexpr not_null( T *ptr ) : m_ptr{ ptr } {
+		constexpr not_null( T *ptr ) : m_ptr{ptr} {
 			daw::exception::daw_throw_on_null( ptr, "ptr cannot be null" );
 		}
 
@@ -513,6 +512,28 @@ namespace daw {
 		fill_random( min_value, max_value, result.begin( ), result.end( ) );
 		return result;
 	}
+
+	template<typename Iterator>
+	constexpr std::move_iterator<Iterator> make_move_iterator( Iterator i ) {
+		return std::move_iterator<Iterator>( i );
+	}
+
+	template<typename Iterator1, typename Iterator2, typename OutputIterator>
+	constexpr OutputIterator cxpr_copy( Iterator1 first_in, Iterator2 const last_in, OutputIterator first_out ) {
+		while( first_in != last_in ) {
+			*first_out++ = *first_in++;
+		}
+		return first_out;
+	}
+
+	template<typename Iterator1, typename Iterator2, typename OutputIterator>
+	constexpr OutputIterator cxpr_move( Iterator1 first_in, Iterator2 const last_in, OutputIterator first_out ) {
+		while( first_in != last_in ) {
+			*first_out++ = std::move( *first_in++ );
+		}
+		return first_out;
+	}
+
 } // namespace daw
 
 template<typename... Ts>

@@ -310,7 +310,7 @@ namespace daw {
 		  , m_max_load{max_load_percent}
 		  , m_values{start_size} {
 
-			assert( start_size > 0 );
+			daw::exception::daw_throw_on_false( start_size > 0 );
 		}
 
 		hash_table( ) : hash_table( 7, 2.6, 50 ) {}
@@ -375,9 +375,9 @@ namespace daw {
 		static size_t scale_hash( size_t hash, size_t table_size ) {
 			// Scale value to capacity using MAD(Multiply-Add-Divide) compression
 			// Use the two largest Prime's that fit in a 64bit unsigned integral
-			assert( table_size < max_size( ) ); // Table size must be less than max of ptrdiff_t as we use the value 0
+			daw::exception::daw_throw_on_false( table_size < max_size( ) ); // Table size must be less than max of ptrdiff_t as we use the value 0
 			                                    // as a sentinel.  This should be rare
-			assert( hash >= impl::hash_table_item<value_type>::SentinalsSize ); // zero is a sentinel for no value
+			daw::exception::daw_throw_on_false( hash >= impl::hash_table_item<value_type>::SentinalsSize ); // zero is a sentinel for no value
 			static const size_t prime_a = 18446744073709551557u;
 			static const size_t prime_b = 18446744073709551533u;
 			return ( hash * prime_a + prime_b ) % table_size;
@@ -390,7 +390,7 @@ namespace daw {
 				if( current_item ) {
 					++load;
 					auto pos = find_item_by_hash( current_item.hash, new_hash_table );
-					assert( pos != new_hash_table.cend( ) );
+					daw::exception::daw_throw_on_false( pos != new_hash_table.cend( ) );
 					using std::swap;
 					swap( *pos, current_item );
 				}

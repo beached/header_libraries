@@ -28,8 +28,9 @@
 BOOST_AUTO_TEST_CASE( test_01 ) {
 	constexpr auto const c1 = daw::fnv1a_hash( "Hello" );
 	constexpr auto const c2 = daw::fnv1a_hash( "Hello" );
-	constexpr auto const c3 = daw::fnv1a_hash( "hello" );
-
+	constexpr auto const c3 = daw::fnv1a_hash( 5 );
+	constexpr auto const c4 = daw::fnv1a_hash( 0xFF00FF00FF00FF );
+	std::cout << c1 << " " << c2 << " " << c3 << " " << c4 << '\n';
 	BOOST_REQUIRE_EQUAL( c1, c2 );
 	BOOST_REQUIRE( c1 != c3 );
 }

@@ -22,12 +22,13 @@
 
 #pragma once
 
-#include "daw_array.h"
-#include "daw_fnv1a_hash.h"
-#include "daw_traits.h"
-
 #include <stdexcept>
 #include <type_traits>
+
+#include "daw_exception.h"
+#include "daw_heap_array.h"
+#include "daw_fnv1a_hash.h"
+#include "daw_traits.h"
 
 namespace daw {
 	namespace impl {
@@ -43,6 +44,7 @@ namespace daw {
 				  impl::sentinals::sentinals_size;
 				return result;
 			}
+
 			constexpr size_t operator( )( KeyType const *k ) noexcept {
 				size_t result =
 				  ( daw::fnv1a_hash( k ) % ( std::numeric_limits<size_t>::max( ) - impl::sentinals::sentinals_size ) ) +
@@ -70,8 +72,8 @@ namespace daw {
 		using const_reference = value_type const &;
 
 	private:
-		daw::array<size_t> m_hashes;
-		daw::array<value_type> m_values;
+		daw::heap_array<size_t> m_hashes;
+		daw::heap_array<value_type> m_values;
 
 		static constexpr size_t max_size( ) noexcept {
 			return static_cast<size_t>( std::numeric_limits<ptrdiff_t>::max( ) - 1 );
@@ -82,15 +84,16 @@ namespace daw {
 			return impl::s_hash_fn_t<KeyType>{}( key );
 		}
 
-		static constexpr size_t scale_hash( size_t hash, size_t table_size ) noexcept {
+		static constexpr size_t scale_hash( size_t hash, size_t table_size )  {
 			// Scale value to capacity using MAD(Multiply-Add-Divide) compression
 			// Use the two largest Prime's that fit in a 64bit unsigned integral
-			assert( table_size > 0 );
-			assert( table_size < max_size( ) ); // Table size must be less than max of ptrdiff_t as we use the value 0
+			daw::exception::daw_throw_on_false( table_size > 0 );
+			daw::exception::daw_throw_on_false( table_size < max_size( ) ); // Table size must be less than max of ptrdiff_t as we use the value 0
 			                                    // as a sentinel.  This should be rare
-			assert( hash >= impl::sentinals::sentinals_size );
-			const size_t prime_a = 18446744073709551557u;
-			const size_t prime_b = 18446744073709551533u;
+			daw::exception::daw_throw_on_false( hash >= impl::sentinals::sentinals_size );
+
+			size_t const prime_a = 18446744073709551557u;
+			size_t const prime_b = 18446744073709551533u;
 			return ( hash * prime_a + prime_b ) % table_size;
 		}
 
@@ -159,27 +162,27 @@ namespace daw {
 		}
 
 		static constexpr bool should_resize( size_t lookup_cost, size_t current_size ) {
-			assert( current_size > 0 );
+			daw::exception::daw_throw_on_false( current_size > 0 );
 			return ( ( lookup_cost * 100 ) / current_size ) >= resize_ratio;
 		}
 
 	public:
-		hash_table( ) : m_hashes( m_initial_size, impl::sentinals::empty ), m_values( m_initial_size ) {
+		hash_table( ) : m_hashes{m_initial_size, impl::sentinals::empty}, m_values{m_initial_size} {
 
-			assert( m_hashes.size( ) > 0 );
-			assert( m_values.size( ) > 0 );
+			daw::exception::daw_throw_on_false( m_hashes.size( ) > 0 );
+			daw::exception::daw_throw_on_false( m_values.size( ) > 0 );
 		}
 
-		hash_table( size_t initial_size ) : m_hashes( initial_size, impl::sentinals::empty ), m_values( initial_size ) {
+		hash_table( size_t initial_size ) : m_hashes{initial_size, impl::sentinals::empty}, m_values{initial_size} {
 
-			assert( m_hashes.size( ) > 0 );
-			assert( m_values.size( ) > 0 );
+			daw::exception::daw_throw_on_false( m_hashes.size( ) > 0 );
+			daw::exception::daw_throw_on_false( m_values.size( ) > 0 );
 		}
 
 		hash_table( hash_table const & ) = default;
-		hash_table( hash_table && ) = default;
+		hash_table( hash_table && ) noexcept = default;
 		hash_table &operator=( hash_table const & ) = default;
-		hash_table &operator=( hash_table && ) = default;
+		hash_table &operator=( hash_table && ) noexcept = default;
 		~hash_table( ) = default;
 
 		void swap( hash_table &rhs ) noexcept {
