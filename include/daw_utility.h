@@ -187,6 +187,7 @@ namespace daw {
 	struct function_traits<ReturnType ( * )( Args... )> {
 		static constexpr size_t arity = sizeof...( Args );
 		using type = std::function<ReturnType( Args... )>;
+		using root_type = std::function<daw::traits::root_type_t<ReturnType>( daw::traits::root_type_t<Args>... )>;
 		using arg_types = std::tuple<Args...>;
 		using result_type = ReturnType;
 	};
@@ -196,6 +197,11 @@ namespace daw {
 	template<typename L>
 	constexpr function_traits_t<L> make_function( L l ) noexcept {
 		return static_cast<function_traits_t<L>>( l );
+	}
+
+	template<typename L>
+	constexpr auto make_root_function( L l ) noexcept {
+		return static_cast<typename function_traits<L>::root_type>( l );
 	}
 
 	// handles bind & multiple function call operator()'s
@@ -220,7 +226,7 @@ namespace daw {
 	// Strip const/volatile/reference from types
 	template<typename ReturnType, typename... Args, class T>
 	auto make_root_function( T &&t ) -> std::function<decltype(
-	  daw::triats::root_type_t<ReturnType>( t( std::declval<daw::traits::root_type_t<Args>>( )... ) ) )( Args... )> {
+	  daw::traits::root_type_t<ReturnType>( t( std::declval<daw::traits::root_type_t<Args>>( )... ) ) )( Args... )> {
 		return {std::forward<T>( t )};
 	}
 
