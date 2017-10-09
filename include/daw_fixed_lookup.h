@@ -126,14 +126,11 @@ namespace daw {
 	public:
 		constexpr fixed_lookup( ) noexcept( noexcept( daw::is_nothrow_default_constructible_v<value_type> ) ) = default;
 
-		constexpr fixed_lookup( fixed_lookup const &other ) noexcept(
-		  noexcept( daw::is_nothrow_copy_constructible_v<value_type> ) ) = default;
+		constexpr fixed_lookup( fixed_lookup const &other ) = default;
+		constexpr fixed_lookup &operator=( fixed_lookup const &other ) = default;
 
 		constexpr fixed_lookup( fixed_lookup &&other ) noexcept(
 		  noexcept( daw::is_nothrow_move_constructible_v<value_type> ) ) = default;
-
-		constexpr fixed_lookup &operator=( fixed_lookup const &other ) noexcept(
-		  noexcept( daw::is_nothrow_copy_constructible_v<value_type> ) ) = default;
 
 		constexpr fixed_lookup &operator=( fixed_lookup &&other ) noexcept(
 		  noexcept( daw::is_nothrow_move_constructible_v<value_type> ) ) = default;
