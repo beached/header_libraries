@@ -25,6 +25,7 @@
 #include <iostream>
 
 #include "boost_test.h"
+#include "daw_benchmark.h"
 #include "daw_fixed_lookup.h"
 
 BOOST_AUTO_TEST_CASE( daw_fixed_lookup_001 ) {
@@ -69,6 +70,46 @@ BOOST_AUTO_TEST_CASE( daw_make_fixed_lookup_001 ) {
 	constexpr auto values = daw::make_fixed_lookup<int>( "hello", 3, 5, 6, "why oh why" );
 	BOOST_REQUIRE_EQUAL( values.size( ), values.capacity( ) );
 	BOOST_REQUIRE_EQUAL( values.size( ), 5 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_fixed_lookup_bench_001 ) {
+	constexpr size_t const SZ = 5'000;
+	using value_t = intmax_t;
+	daw::fixed_lookup<value_t, SZ*2> lookup{};
+	std::unordered_map<value_t, value_t> hash_map{};
+	hash_map.reserve( SZ );
+	daw::show_benchmark( SZ * sizeof( value_t ), "fixed_lookup(fill)",
+	                     [&]( ) {
+		                     for( size_t n = 0; n < SZ; ++n ) {
+			                     lookup[n] = n;
+		                     }
+	                     },
+	                     2, 2, SZ );
+	daw::show_benchmark( SZ * sizeof( value_t ), "unordered_map(fill)",
+	                     [&]( ) {
+		                     for( size_t n = 0; n < SZ; ++n ) {
+			                     hash_map[n] = n;
+		                     }
+	                     },
+	                     2, 2, SZ );
+		intmax_t sum1 = 0;
+	  daw::show_benchmark( SZ * sizeof( value_t ), "fixed_lookup(summation)",
+	                       [&]( ) {
+		                       for( size_t n = 0; n < SZ; ++n ) {
+			                       sum1 += lookup[n];
+		                       }
+	                       },
+	                       2, 2, SZ );
+	  intmax_t sum2 = 0;
+	  daw::show_benchmark( SZ * sizeof( value_t ), "unordered_map(summation)",
+	                       [&]( ) {
+		                       for( size_t n = 0; n < SZ; ++n ) {
+			                       sum2 += hash_map[n];
+		                       }
+	                       },
+	                       2, 2, SZ );
+	  BOOST_REQUIRE_EQUAL( sum1, sum2 );
+	  std::cout << "sum1: " << sum1 << " sum2: " << sum2 << '\n';
 }
 
 // Will not compile... on purpose

@@ -46,8 +46,7 @@ namespace daw {
 		static constexpr size_t append_hash( size_t current_hash, Value const &value ) noexcept {
 			for( size_t n = 0; n < sizeof( Value ); ++n ) {
 				current_hash ^= static_cast<size_t>(
-				  ( static_cast<size_t>( value ) & ( static_cast<size_t>( 0xFF ) << ( n * 8u ) ) ) >>
-				  ( n * 8u ) );
+				  ( static_cast<size_t>( value ) & ( static_cast<size_t>( 0xFF ) << ( n * 8u ) ) ) >> ( n * 8u ) );
 				current_hash *= impl::fnv_prime( );
 			}
 			return current_hash;
@@ -65,7 +64,7 @@ namespace daw {
 
 		template<typename Member, size_t N, std::enable_if_t<is_integral_v<Member>, std::nullptr_t> = nullptr>
 		constexpr size_t operator( )( Member const ( &member )[N] ) const noexcept {
-			return operator( )( member, std::next( member, static_cast<intmax_t>(N) ) );
+			return operator( )( member, std::next( member, static_cast<intmax_t>( N ) ) );
 		}
 
 		template<typename Integral, std::enable_if_t<is_integral_v<Integral>, std::nullptr_t> = nullptr>

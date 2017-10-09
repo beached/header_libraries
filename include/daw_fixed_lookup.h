@@ -42,6 +42,8 @@ namespace daw {
 	/// A fixed lookup table.  Only indices returned by insert or get_existing are
 	/// defined.  A reference does not exist after a copy/move operation but the
 	/// indices will remain valid
+	/// In some testing the average distance to actual value was 0.147 when size is
+	/// double needed items
 	template<typename Value, size_t N>
 	struct fixed_lookup {
 		static_assert( N > 0, "Must supply a positive initial_size larger than 0" );
@@ -53,7 +55,6 @@ namespace daw {
 	private:
 		daw::array_t<size_t, N> m_hashes;
 		daw::array_t<value_type, N> m_values;
-
 	public:
 		static constexpr size_t capacity( ) noexcept {
 			return N;
@@ -70,16 +71,14 @@ namespace daw {
 	private:
 		template<typename KeyType>
 		static constexpr size_t hash_fn( KeyType &&key ) noexcept {
-			return ( daw::fnv1a_hash( std::forward<KeyType>( key ) ) %
-			         ( std::numeric_limits<size_t>::max( ) - impl::sentinals::sentinals_size ) ) +
-			       impl::sentinals::sentinals_size;
+			auto const hash = daw::fnv1a_hash( std::forward<KeyType>( key ) );
+			auto const divisor = std::numeric_limits<size_t>::max( ) - impl::sentinals::sentinals_size;
+			return ( hash % divisor ) + impl::sentinals::sentinals_size;
 		}
 
 		constexpr size_t scale_hash( size_t const hash ) const {
 			// Scale value to capacity using MAD(Multiply-Add-Divide) compression
 			// Use the two largest Prime's that fit in a 64bit unsigned integral
-			daw::exception::daw_throw_on_false( capacity( ) > 0 );
-			daw::exception::daw_throw_on_false( hash >= impl::sentinals::sentinals_size );
 
 			size_t const prime_a = 18446744073709551557u;
 			size_t const prime_b = 18446744073709551533u;
