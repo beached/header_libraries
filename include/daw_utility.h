@@ -216,6 +216,29 @@ namespace daw {
 		return {p};
 	}
 
+	//*****************
+	// Strip const/volatile/reference from types
+	template<typename ReturnType, typename... Args, class T>
+	auto make_root_function( T &&t ) -> std::function<decltype(
+	  daw::triats::root_type_t<ReturnType>( t( std::declval<daw::traits::root_type_t<Args>>( )... ) ) )( Args... )> {
+		return {std::forward<T>( t )};
+	}
+
+	// handles explicit overloads
+	template<typename ReturnType, typename... Args>
+	std::function<daw::traits::root_type_t<ReturnType>( daw::traits::root_type_t<Args>... )>
+	make_function( ReturnType ( *p )( Args... ) ) {
+		return {p};
+	}
+
+	// handles explicit overloads
+	template<typename ReturnType, typename... Args, typename ClassType>
+	std::function<daw::traits::root_type_t<ReturnType>( daw::traits::root_type_t<Args>... )>
+	make_function( ReturnType ( ClassType::*p )( Args... ) ) {
+		return {p};
+	}
+	//*****************
+
 	// handles explicit overloads
 	template<typename ReturnType, typename... Args, typename ClassType>
 	std::function<ReturnType( Args... )> make_std_function( ReturnType ( ClassType::*p )( Args... ) ) {
