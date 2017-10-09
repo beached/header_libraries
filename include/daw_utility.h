@@ -162,7 +162,7 @@ namespace daw {
 
 	// For generic types that are functors, delegate to its 'operator()'
 	template<typename T>
-	struct function_traits : public function_traits<decltype( &T::operator( ) )> {};
+	struct function_traits : public function_traits<decltype( std::declval<T>( )( ) )> {};
 
 	// for pointers to member function(const version)
 	template<typename ClassType, typename ReturnType, typename... Args>
