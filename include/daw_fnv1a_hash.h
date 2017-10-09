@@ -23,6 +23,7 @@
 #pragma once
 #include <cstddef>
 #include <cstdint>
+#include <string>
 
 #include "daw_traits.h"
 
@@ -107,6 +108,16 @@ namespace daw {
 			++ptr;
 		}
 		return hash;
+	}
+
+	template<typename CharT, typename Traits, typename Allocator>
+	size_t fnv1a_hash( std::basic_string<CharT, Traits, Allocator> const & str ) {
+		return fnv1a_hash( str.data( ), str.size( ) );
+	}
+
+	template<typename CharT, typename Traits, typename Allocator>
+	size_t fnv1a_hash( std::basic_string<CharT, Traits, Allocator> && str ) {
+		return fnv1a_hash( str.data( ), str.size( ) );
 	}
 
 	template<size_t N>
