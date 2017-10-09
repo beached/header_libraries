@@ -38,8 +38,6 @@ namespace daw {
 
 		value_t m_data[N];
 
-		constexpr array_t( ) noexcept = default;
-
 		constexpr reference front( ) noexcept {
 			return m_data[0];
 		}
@@ -91,13 +89,6 @@ namespace daw {
 		constexpr void fill( const_reference value ) noexcept {
 			for( size_t n = 0; n < N; ++n ) {
 				m_data[n] = value;
-			}
-		}
-
-		constexpr void swap( array_t &other ) noexcept {
-			for( size_t n = 0; n < N; ++n ) {
-				using std::swap;
-				swap( m_data[n], other.m_data[n] );
 			}
 		}
 

@@ -73,8 +73,8 @@ BOOST_AUTO_TEST_CASE( daw_make_fixed_lookup_001 ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_fixed_lookup_bench_001 ) {
-	constexpr size_t const SZ = 15'000;
 	using value_t = intmax_t;
+	constexpr value_t const SZ = 15'000;
 	daw::fixed_lookup<value_t, SZ*2> lookup{};
 	std::unordered_map<value_t, value_t> hash_map{};
 	std::vector<value_t> ary{ };
@@ -82,22 +82,22 @@ BOOST_AUTO_TEST_CASE( daw_fixed_lookup_bench_001 ) {
 	hash_map.reserve( SZ );
 	daw::show_benchmark( SZ * sizeof( value_t ), "fixed_lookup(fill)",
 	                     [&]( ) {
-		                     for( size_t n = 0; n < SZ; ++n ) {
+		                     for( value_t n = 0; n < SZ; ++n ) {
 			                     lookup[n] = n;
 		                     }
 	                     },
 	                     2, 2, SZ );
 	daw::show_benchmark( SZ * sizeof( value_t ), "unordered_map(fill)",
 	                     [&]( ) {
-		                     for( size_t n = 0; n < SZ; ++n ) {
+		                     for( value_t n = 0; n < SZ; ++n ) {
 			                     hash_map[n] = n;
 		                     }
 	                     },
 	                     2, 2, SZ );
 	daw::show_benchmark( SZ * sizeof( value_t ), "vector(fill)",
 	                     [&]( ) {
-		                     for( size_t n = 0; n < SZ; ++n ) {
-			                     ary[n] = n;
+		                     for( value_t n = 0; n < SZ; ++n ) {
+			                     ary[static_cast<size_t>( n )] = n;
 		                     }
 	                     },
 	                     2, 2, SZ );
@@ -105,7 +105,7 @@ BOOST_AUTO_TEST_CASE( daw_fixed_lookup_bench_001 ) {
 		intmax_t sum1 = 0;
 	  daw::show_benchmark( SZ * sizeof( value_t ), "fixed_lookup(summation)",
 	                       [&]( ) {
-		                       for( size_t n = 0; n < SZ; ++n ) {
+		                       for( value_t n = 0; n < SZ; ++n ) {
 			                       sum1 += lookup[n];
 		                       }
 	                       },
@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE( daw_fixed_lookup_bench_001 ) {
 	  intmax_t sum2 = 0;
 	  daw::show_benchmark( SZ * sizeof( value_t ), "unordered_map(summation)",
 	                       [&]( ) {
-		                       for( size_t n = 0; n < SZ; ++n ) {
+		                       for( value_t n = 0; n < SZ; ++n ) {
 			                       sum2 += hash_map[n];
 		                       }
 	                       },
@@ -121,8 +121,8 @@ BOOST_AUTO_TEST_CASE( daw_fixed_lookup_bench_001 ) {
 	  intmax_t sum3 = 0;
 	  daw::show_benchmark( SZ * sizeof( value_t ), "vector(summation)",
 	                       [&]( ) {
-		                       for( size_t n = 0; n < SZ; ++n ) {
-			                       sum3 += ary[n];
+		                       for( value_t n = 0; n < SZ; ++n ) {
+			                       sum3 += ary[static_cast<size_t>( n )];
 		                       }
 	                       },
 	                       2, 2, SZ );
