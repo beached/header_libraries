@@ -28,8 +28,8 @@
 #include "daw_exception.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_stack_array.h"
-#include "daw_traits.h"
 #include "daw_utility.h"
+#include "daw_traits.h"
 
 namespace daw {
 	namespace impl {
@@ -46,6 +46,7 @@ namespace daw {
 	/// double needed items
 	template<typename Value, size_t N>
 	struct fixed_lookup {
+		static_assert( daw::is_default_constructible_v<Value>, "Value must be default constructible" );
 		static_assert( N > 0, "Must supply a positive initial_size larger than 0" );
 
 		using value_type = daw::traits::root_type_t<Value>;
@@ -55,6 +56,7 @@ namespace daw {
 	private:
 		daw::array_t<size_t, N> m_hashes;
 		daw::array_t<value_type, N> m_values;
+
 	public:
 		static constexpr size_t capacity( ) noexcept {
 			return N;
@@ -122,11 +124,20 @@ namespace daw {
 		}
 
 	public:
-		constexpr fixed_lookup( ) = default;
-		constexpr fixed_lookup( fixed_lookup const &other ) noexcept = default;
-		constexpr fixed_lookup( fixed_lookup &&other ) noexcept = default;
-		constexpr fixed_lookup &operator=( fixed_lookup const &other ) noexcept = default;
-		constexpr fixed_lookup &operator=( fixed_lookup &&other ) noexcept = default;
+		constexpr fixed_lookup( ) noexcept( noexcept( daw::is_nothrow_default_constructible_v<value_type> ) ) = default;
+
+		constexpr fixed_lookup( fixed_lookup const &other ) noexcept(
+		  noexcept( daw::is_nothrow_copy_constructible_v<value_type> ) ) = default;
+
+		constexpr fixed_lookup( fixed_lookup &&other ) noexcept(
+		  noexcept( daw::is_nothrow_move_constructible_v<value_type> ) ) = default;
+
+		constexpr fixed_lookup &operator=( fixed_lookup const &other ) noexcept(
+		  noexcept( daw::is_nothrow_copy_constructible_v<value_type> ) ) = default;
+
+		constexpr fixed_lookup &operator=( fixed_lookup &&other ) noexcept(
+		  noexcept( daw::is_nothrow_move_constructible_v<value_type> ) ) = default;
+
 		~fixed_lookup( ) = default;
 
 		template<typename Key>

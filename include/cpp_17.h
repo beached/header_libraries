@@ -321,4 +321,12 @@ namespace daw {
 	template<class To, template<class...> class Op, class... Args>
 	constexpr bool is_detected_convertible_v = is_detected_convertible<To, Op, Args...>::value;
 
+	template<typename T>
+	constexpr bool is_nothrow_copy_constructible_v = std::is_nothrow_copy_constructible<T>::value;
+
+	template<typename T>
+	constexpr bool is_nothrow_move_constructible_v = std::is_nothrow_move_constructible<T>::value;
+
+	template<typename T>
+	constexpr bool is_nothrow_default_constructible_v = std::is_nothrow_default_constructible<T>::value;
 } // namespace daw
