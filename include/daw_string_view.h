@@ -32,6 +32,7 @@
 #include <vector>
 
 #include "daw_fnv1a_hash.h"
+#include "daw_generic_hash.h"
 
 namespace daw {
 	namespace impl {
