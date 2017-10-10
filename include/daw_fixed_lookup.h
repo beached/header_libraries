@@ -26,7 +26,7 @@
 #include <type_traits>
 
 #include "daw_exception.h"
-#include "daw_fnv1a_hash.h"
+#include "daw_generic_hash.h"
 #include "daw_stack_array.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
@@ -34,9 +34,24 @@
 namespace daw {
 	namespace impl {
 		namespace sentinals {
-			enum sentinals : size_t { empty = 0, removed, sentinals_size };
+			enum sentinals { empty = 0, removed, sentinals_size };
 		} // namespace sentinals
-	}   // namespace impl
+
+		template<size_t ValueSize>
+		struct largest_primes;
+
+		template<>
+		struct largest_primes<8> {
+			static constexpr uint64_t const a = 18446744073709551557ULL;
+			static constexpr uint64_t const b = 18446744073709551533ULL;
+		};
+
+		template<>
+		struct largest_primes<4> {
+			static constexpr uint32_t const a = 4093082899UL;
+			static constexpr uint32_t const b = 3367900313UL;
+		};
+	} // namespace impl
 
 	///
 	/// A fixed lookup table.  Only indices returned by insert or get_existing are
@@ -44,26 +59,30 @@ namespace daw {
 	/// indices will remain valid
 	/// In some testing the average distance to actual value was 0.147 when size is
 	/// double needed items
-	template<typename Value, size_t N>
+	template<typename Value, size_t N, size_t HashSize = sizeof( size_t )>
 	struct fixed_lookup {
 		static_assert( daw::is_default_constructible_v<Value>, "Value must be default constructible" );
 		static_assert( N > 0, "Must supply a positive initial_size larger than 0" );
 
-		using value_type = daw::traits::root_type_t<Value>;
-		using reference = value_type &;
-		using const_reference = value_type const &;
+		using value_t = daw::traits::root_type_t<Value>;
+		using hash_value_t = typename daw::generic_hash_t<HashSize>::hash_value_t;
+		static_assert( N <= std::numeric_limits<hash_value_t>::max( ),
+		               "Cannot allocate more values than can be addressed by hash value" );
+
+		using reference = value_t &;
+		using const_reference = value_t const &;
 
 	private:
-		daw::array_t<size_t, N> m_hashes;
-		daw::array_t<value_type, N> m_values;
+		daw::array_t<hash_value_t, N> m_hashes;
+		daw::array_t<value_t, N> m_values;
 
 	public:
-		static constexpr size_t capacity( ) noexcept {
+		static constexpr hash_value_t capacity( ) noexcept {
 			return N;
 		}
 
-		constexpr size_t size( ) const noexcept {
-			size_t count = 0;
+		constexpr hash_value_t size( ) const noexcept {
+			hash_value_t count = 0;
 			for( auto hash : m_hashes ) {
 				count += hash >= impl::sentinals::sentinals_size ? 1 : 0;
 			}
@@ -72,27 +91,24 @@ namespace daw {
 
 	private:
 		template<typename KeyType>
-		static constexpr size_t hash_fn( KeyType &&key ) noexcept {
-			auto const hash = daw::fnv1a_hash( std::forward<KeyType>( key ) );
-			auto const divisor = std::numeric_limits<size_t>::max( ) - impl::sentinals::sentinals_size;
+		static constexpr hash_value_t hash_fn( KeyType &&key ) noexcept {
+			auto const hash = daw::generic_hash<HashSize>( std::forward<KeyType>( key ) );
+			auto const divisor = std::numeric_limits<hash_value_t>::max( ) - impl::sentinals::sentinals_size;
 			return ( hash % divisor ) + impl::sentinals::sentinals_size;
 		}
 
-		constexpr size_t scale_hash( size_t const hash ) const {
+		constexpr hash_value_t scale_hash( hash_value_t const hash ) const {
 			// Scale value to capacity using MAD(Multiply-Add-Divide) compression
-			// Use the two largest Prime's that fit in a 64bit unsigned integral
-
-			size_t const prime_a = 18446744073709551557u;
-			size_t const prime_b = 18446744073709551533u;
-			return ( hash * prime_a + prime_b ) % capacity( );
+			// Use the two largest Prime's that fit in a hash_value_t
+			return ( ( hash * impl::largest_primes<HashSize>::a ) + impl::largest_primes<HashSize>::b ) % capacity( );
 		}
 
-		constexpr auto lookup( size_t const hash ) const noexcept {
+		constexpr auto lookup( hash_value_t const hash ) const noexcept {
 			struct lookup_result_t {
-				size_t position;
+				hash_value_t position;
 				bool found;
 
-				constexpr lookup_result_t( size_t pos, bool is_found ) noexcept : position{pos}, found{is_found} {}
+				constexpr lookup_result_t( hash_value_t pos, bool is_found ) noexcept : position{pos}, found{is_found} {}
 				constexpr lookup_result_t( ) noexcept = delete;
 				constexpr lookup_result_t( lookup_result_t const & ) noexcept = default;
 				constexpr lookup_result_t( lookup_result_t && ) noexcept = default;
@@ -106,14 +122,14 @@ namespace daw {
 			};
 
 			auto const hash_pos = scale_hash( hash );
-			for( size_t n = hash_pos; n != m_hashes.size( ); ++n ) {
+			for( hash_value_t n = hash_pos; n != m_hashes.size( ); ++n ) {
 				if( hash == m_hashes[n] ) {
 					return lookup_result_t{n, true};
 				} else if( impl::sentinals::empty == m_hashes[n] ) {
 					return lookup_result_t{n, false};
 				}
 			}
-			for( size_t n = 0; n != hash_pos; ++n ) {
+			for( hash_value_t n = 0; n != hash_pos; ++n ) {
 				if( m_hashes[n] == hash ) {
 					return lookup_result_t{n, true};
 				} else if( m_hashes[n] == impl::sentinals::empty ) {
@@ -124,21 +140,21 @@ namespace daw {
 		}
 
 	public:
-		constexpr fixed_lookup( ) noexcept( noexcept( daw::is_nothrow_default_constructible_v<value_type> ) ) = default;
+		constexpr fixed_lookup( ) noexcept( noexcept( daw::is_nothrow_default_constructible_v<value_t> ) ) = default;
 
 		constexpr fixed_lookup( fixed_lookup const &other ) = default;
 		constexpr fixed_lookup &operator=( fixed_lookup const &other ) = default;
 
 		constexpr fixed_lookup( fixed_lookup &&other ) noexcept(
-		  noexcept( daw::is_nothrow_move_constructible_v<value_type> ) ) = default;
+		  noexcept( daw::is_nothrow_move_constructible_v<value_t> ) ) = default;
 
-		constexpr fixed_lookup &operator=( fixed_lookup &&other ) noexcept(
-		  noexcept( daw::is_nothrow_move_constructible_v<value_type> ) ) = default;
+		constexpr fixed_lookup &
+		operator=( fixed_lookup &&other ) noexcept( noexcept( daw::is_nothrow_move_constructible_v<value_t> ) ) = default;
 
 		~fixed_lookup( ) = default;
 
 		template<typename Key>
-		constexpr size_t find_existing( Key &&key ) const {
+		constexpr hash_value_t find_existing( Key &&key ) const {
 			auto const hash = hash_fn( std::forward<Key>( key ) );
 			auto const is_found = lookup( hash );
 			daw::exception::daw_throw_on_false( is_found, "Attempt to access an undefined key" );
@@ -146,7 +162,7 @@ namespace daw {
 		}
 
 		template<typename Key>
-		constexpr size_t insert( Key &&key, Value value ) {
+		constexpr hash_value_t insert( Key &&key, Value value ) {
 			auto const hash = hash_fn( std::forward<Key>( key ) );
 			auto const is_found = lookup( hash );
 			daw::exception::daw_throw_on_true( !is_found && is_found.position == m_hashes.size( ),
@@ -156,11 +172,11 @@ namespace daw {
 			return is_found.position;
 		}
 
-		constexpr reference get_existing( size_t position ) {
+		constexpr reference get_existing( hash_value_t position ) {
 			return m_values[position];
 		}
 
-		constexpr const_reference get_existing( size_t position ) const {
+		constexpr const_reference get_existing( hash_value_t position ) const {
 			return m_values[position];
 		}
 

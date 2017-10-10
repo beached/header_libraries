@@ -72,9 +72,10 @@ BOOST_AUTO_TEST_CASE( daw_make_fixed_lookup_001 ) {
 	BOOST_REQUIRE_EQUAL( values.size( ), 5 );
 }
 
-BOOST_AUTO_TEST_CASE( daw_fixed_lookup_bench_001 ) {
-	using value_t = intmax_t;
-	constexpr value_t const SZ = 15'000;
+template<typename ValueType, ValueType SZ, size_t HashSize>
+void do_test( ) {
+	std::cout << "Testing with SZ = " << SZ << " and hash_size = " << HashSize << '\n';
+	using value_t = ValueType;
 	daw::fixed_lookup<value_t, SZ * 2> lookup{};
 	std::unordered_map<value_t, value_t> hash_map{};
 	std::vector<value_t> ary{};
@@ -131,7 +132,10 @@ BOOST_AUTO_TEST_CASE( daw_fixed_lookup_bench_001 ) {
 	std::cout << "sum1: " << sum1 << " sum2: " << sum2 << " sum3: " << sum3 << '\n';
 }
 
-// Will not compile... on purpose
-// BOOST_AUTO_TEST_CASE( daw_fixed_lookup_003 ) {
-//	constexpr auto values2 = too_many<10>();
-//}
+BOOST_AUTO_TEST_CASE( daw_fixed_lookup_bench_001 ) {
+	do_test<int64_t, 15'000, 8>( );
+}
+
+BOOST_AUTO_TEST_CASE( daw_fixed_lookup_bench_002 ) {
+	do_test<int32_t, 30'000, 4>( );
+}
