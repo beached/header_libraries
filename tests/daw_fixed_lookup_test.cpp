@@ -51,7 +51,7 @@ constexpr auto get_map( ) {
 template<size_t N>
 constexpr auto too_many( ) {
 	daw::fixed_lookup<int, N> blah{};
-	for( size_t n=0; n<=N; ++n ) {
+	for( size_t n = 0; n <= N; ++n ) {
 		blah[n] = n;
 	}
 	return blah;
@@ -75,9 +75,9 @@ BOOST_AUTO_TEST_CASE( daw_make_fixed_lookup_001 ) {
 BOOST_AUTO_TEST_CASE( daw_fixed_lookup_bench_001 ) {
 	using value_t = intmax_t;
 	constexpr value_t const SZ = 15'000;
-	daw::fixed_lookup<value_t, SZ*2> lookup{};
+	daw::fixed_lookup<value_t, SZ * 2> lookup{};
 	std::unordered_map<value_t, value_t> hash_map{};
-	std::vector<value_t> ary{ };
+	std::vector<value_t> ary{};
 	ary.resize( SZ );
 	hash_map.reserve( SZ );
 	daw::show_benchmark( SZ * sizeof( value_t ), "fixed_lookup(fill)",
@@ -102,36 +102,36 @@ BOOST_AUTO_TEST_CASE( daw_fixed_lookup_bench_001 ) {
 	                     },
 	                     2, 2, SZ );
 
-		intmax_t sum1 = 0;
-	  daw::show_benchmark( SZ * sizeof( value_t ), "fixed_lookup(summation)",
-	                       [&]( ) {
-		                       for( value_t n = 0; n < SZ; ++n ) {
-			                       sum1 += lookup[n];
-		                       }
-	                       },
-	                       2, 2, SZ );
-	  intmax_t sum2 = 0;
-	  daw::show_benchmark( SZ * sizeof( value_t ), "unordered_map(summation)",
-	                       [&]( ) {
-		                       for( value_t n = 0; n < SZ; ++n ) {
-			                       sum2 += hash_map[n];
-		                       }
-	                       },
-	                       2, 2, SZ );
-	  intmax_t sum3 = 0;
-	  daw::show_benchmark( SZ * sizeof( value_t ), "vector(summation)",
-	                       [&]( ) {
-		                       for( value_t n = 0; n < SZ; ++n ) {
-			                       sum3 += ary[static_cast<size_t>( n )];
-		                       }
-	                       },
-	                       2, 2, SZ );
-	  BOOST_REQUIRE_EQUAL( sum1, sum2 );
-	  BOOST_REQUIRE_EQUAL( sum1, sum3 );
-	  std::cout << "sum1: " << sum1 << " sum2: " << sum2 << " sum3: " << sum3 << '\n';
+	intmax_t sum1 = 0;
+	daw::show_benchmark( SZ * sizeof( value_t ), "fixed_lookup(summation)",
+	                     [&]( ) {
+		                     for( value_t n = 0; n < SZ; ++n ) {
+			                     sum1 += lookup[n];
+		                     }
+	                     },
+	                     2, 2, SZ );
+	intmax_t sum2 = 0;
+	daw::show_benchmark( SZ * sizeof( value_t ), "unordered_map(summation)",
+	                     [&]( ) {
+		                     for( value_t n = 0; n < SZ; ++n ) {
+			                     sum2 += hash_map[n];
+		                     }
+	                     },
+	                     2, 2, SZ );
+	intmax_t sum3 = 0;
+	daw::show_benchmark( SZ * sizeof( value_t ), "vector(summation)",
+	                     [&]( ) {
+		                     for( value_t n = 0; n < SZ; ++n ) {
+			                     sum3 += ary[static_cast<size_t>( n )];
+		                     }
+	                     },
+	                     2, 2, SZ );
+	BOOST_REQUIRE_EQUAL( sum1, sum2 );
+	BOOST_REQUIRE_EQUAL( sum1, sum3 );
+	std::cout << "sum1: " << sum1 << " sum2: " << sum2 << " sum3: " << sum3 << '\n';
 }
 
 // Will not compile... on purpose
-//BOOST_AUTO_TEST_CASE( daw_fixed_lookup_003 ) {
+// BOOST_AUTO_TEST_CASE( daw_fixed_lookup_003 ) {
 //	constexpr auto values2 = too_many<10>();
 //}

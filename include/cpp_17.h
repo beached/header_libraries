@@ -265,7 +265,7 @@ namespace daw {
 	template<typename F, typename Tuple>
 	constexpr decltype( auto ) apply( F &&f, Tuple &&t ) {
 		return impl::apply_impl( std::forward<F>( f ), std::forward<Tuple>( t ),
-		                           std::make_index_sequence<daw::tuple_size_v<std::decay_t<Tuple>>>{} );
+		                         std::make_index_sequence<daw::tuple_size_v<std::decay_t<Tuple>>>{} );
 	}
 
 	template<typename T>

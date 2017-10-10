@@ -191,39 +191,39 @@ namespace daw {
                                                                                                                        \
 	template<typename T>                                                                                                 \
 	constexpr bool name##_v = impl::name<T>::value;
-			// END METHOD_CHECKER_ANY
+		  // END METHOD_CHECKER_ANY
 
-			/*
-			#define GENERATE_HAS_MEMBER_FUNCTION_TRAIT( MemberName ) \
-			  namespace impl { \
-			    template<typename T, typename = void> \
-			    class has_##MemberName##_member_impl : public std::false_type {}; \
-			                                                                                                                       \
-			    template<typename T> \
-			    class has_##MemberName##_member_impl<T, typename std::enable_if_t<is_class_v<T>>> { \
-			      struct Fallback { \
-			        int MemberName; \
-			      }; \
-			      struct Derived : T, Fallback {}; \
-			                                                                                                                       \
-			      template<typename U, U> \
-			      struct Check; \
-			                                                                                                                       \
-			      using ArrayOfOne = char[1]; \
-			      using ArrayOfTwo = char[2]; \
-			                                                                                                                       \
-			      template<typename U> \
-			      static ArrayOfOne &func( Check<int Fallback::*, &U::MemberName> * ); \
-			      template<typename U> \
-			      static ArrayOfTwo &func( ... ); \
-			                                                                                                                       \
-			    public: \
-			      using type = has_##MemberName##_member_impl; \
-			      enum { value = sizeof( func<Derived>( 0 ) ) == 2 }; \
-			    }; \
-			  }
+		/*
+		#define GENERATE_HAS_MEMBER_FUNCTION_TRAIT( MemberName ) \
+		  namespace impl { \
+		    template<typename T, typename = void> \
+		    class has_##MemberName##_member_impl : public std::false_type {}; \
+		                                                                                                                       \
+		    template<typename T> \
+		    class has_##MemberName##_member_impl<T, typename std::enable_if_t<is_class_v<T>>> { \
+		      struct Fallback { \
+		        int MemberName; \
+		      }; \
+		      struct Derived : T, Fallback {}; \
+		                                                                                                                       \
+		      template<typename U, U> \
+		      struct Check; \
+		                                                                                                                       \
+		      using ArrayOfOne = char[1]; \
+		      using ArrayOfTwo = char[2]; \
+		                                                                                                                       \
+		      template<typename U> \
+		      static ArrayOfOne &func( Check<int Fallback::*, &U::MemberName> * ); \
+		      template<typename U> \
+		      static ArrayOfTwo &func( ... ); \
+		                                                                                                                       \
+		    public: \
+		      using type = has_##MemberName##_member_impl; \
+		      enum { value = sizeof( func<Derived>( 0 ) ) == 2 }; \
+		    }; \
+		  }
 
-			*/
+		*/
 
 #define HAS_STATIC_TYPE_MEMBER( MemberName )                                                                           \
 	namespace detectors {                                                                                                \
@@ -509,4 +509,3 @@ namespace daw {
 	  all_true_v<is_default_constructible_v<T> && is_copy_constructible_v<T> && is_move_constructible_v<T> &&
 	             is_copy_assignable_v<T> && is_move_assignable_v<T> && is_equality_comparable_v<T>>;
 } // namespace daw
-

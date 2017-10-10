@@ -1002,4 +1002,3 @@ namespace std {
 		}
 	};
 } // namespace std
-

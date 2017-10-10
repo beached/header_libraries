@@ -26,8 +26,8 @@
 #include <type_traits>
 
 #include "daw_exception.h"
-#include "daw_heap_array.h"
 #include "daw_fnv1a_hash.h"
+#include "daw_heap_array.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -84,12 +84,13 @@ namespace daw {
 			return impl::s_hash_fn_t<KeyType>{}( key );
 		}
 
-		static constexpr size_t scale_hash( size_t hash, size_t table_size )  {
+		static constexpr size_t scale_hash( size_t hash, size_t table_size ) {
 			// Scale value to capacity using MAD(Multiply-Add-Divide) compression
 			// Use the two largest Prime's that fit in a 64bit unsigned integral
 			daw::exception::daw_throw_on_false( table_size > 0 );
-			daw::exception::daw_throw_on_false( table_size < max_size( ) ); // Table size must be less than max of ptrdiff_t as we use the value 0
-			                                    // as a sentinel.  This should be rare
+			daw::exception::daw_throw_on_false(
+			  table_size < max_size( ) ); // Table size must be less than max of ptrdiff_t as we use the value 0
+			                              // as a sentinel.  This should be rare
 			daw::exception::daw_throw_on_false( hash >= impl::sentinals::sentinals_size );
 
 			size_t const prime_a = 18446744073709551557u;

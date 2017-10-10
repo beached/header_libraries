@@ -111,12 +111,12 @@ namespace daw {
 	}
 
 	template<typename CharT, typename Traits, typename Allocator>
-	size_t fnv1a_hash( std::basic_string<CharT, Traits, Allocator> const & str ) {
+	size_t fnv1a_hash( std::basic_string<CharT, Traits, Allocator> const &str ) {
 		return fnv1a_hash( str.data( ), str.size( ) );
 	}
 
 	template<typename CharT, typename Traits, typename Allocator>
-	size_t fnv1a_hash( std::basic_string<CharT, Traits, Allocator> && str ) {
+	size_t fnv1a_hash( std::basic_string<CharT, Traits, Allocator> &&str ) {
 		return fnv1a_hash( str.data( ), str.size( ) );
 	}
 
@@ -125,4 +125,3 @@ namespace daw {
 		return fnv1a_hash( ptr, N );
 	}
 } // namespace daw
-

@@ -415,4 +415,3 @@ BOOST_AUTO_TEST_CASE( binary_predicate_002 ) {
 	static_assert( daw::is_predicate_v<test_binary_pred_t, int, int>, "Not a binary predicate" );
 	BOOST_REQUIRE( a );
 }
-
