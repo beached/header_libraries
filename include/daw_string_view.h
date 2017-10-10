@@ -994,7 +994,7 @@ namespace daw {
 
 	template<size_t HashSize=sizeof(size_t), typename CharT, typename Traits, typename InternalSizeType>
 	constexpr size_t generic_hash( daw::basic_string_view<CharT, Traits, InternalSizeType> sv ) noexcept {
-		return generic_hash( sv.data( ), sv.size( ) );
+		return generic_hash<HashSize>( sv.data( ), sv.size( ) );
 	}
 
 } // namespace daw
