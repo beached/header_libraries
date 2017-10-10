@@ -991,6 +991,12 @@ namespace daw {
 	constexpr size_t fnv1a_hash( daw::basic_string_view<CharT, Traits, InternalSizeType> sv ) noexcept {
 		return fnv1a_hash( sv.data( ), sv.size( ) );
 	}
+
+	template<size_t HashSize=sizeof(size_t), typename CharT, typename Traits, typename InternalSizeType>
+	constexpr size_t generic_hash( daw::basic_string_view<CharT, Traits, InternalSizeType> sv ) noexcept {
+		return generic_hash( sv.data( ), sv.size( ) );
+	}
+
 } // namespace daw
 
 namespace std {
