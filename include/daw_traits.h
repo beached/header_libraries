@@ -507,7 +507,13 @@ namespace daw {
 	constexpr bool is_less_than_comparable_v = is_detected_convertible_v<bool, detectors::less_than_comparable, T, U>;
 
 	template<typename T, typename U = T>
+	constexpr bool is_equal_less_than_comparable_v = is_detected_convertible_v<bool, detectors::equal_less_than_comparable, T, U>;
+
+	template<typename T, typename U = T>
 	constexpr bool is_greater_than_comparable_v = is_detected_convertible_v<bool, detectors::greater_than_comparable, T, U>;
+
+	template<typename T, typename U = T>
+	constexpr bool is_equal_greater_than_comparable_v = is_detected_convertible_v<bool, detectors::equal_greater_than_comparable, T, U>;
 
 	template<typename T>
 	constexpr bool is_swappable_v = is_detected_v<detectors::swappable, T>;
