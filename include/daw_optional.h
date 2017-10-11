@@ -29,43 +29,44 @@
 #include <type_traits>
 #include <utility>
 
+#include "daw_exception.h"
 #include "daw_traits.h"
 
 namespace daw {
 	namespace impl {
 		template<typename T>
 		struct value_storage {
-			using value_type = typename std::remove_cv_t<std::remove_reference_t<T>>;
+			using value_type = T;
 			using pointer = value_type *;
 			using const_pointer = value_type const *;
 			using reference = value_type &;
 			using const_reference = value_type const &;
 
 		private:
-			alignas( value_type ) std::array<uint8_t, sizeof( T )> m_data;
+			std::array<uint8_t, sizeof( T )> m_data;
 			bool m_occupied;
 
-			void *raw_ptr( ) {
+			void *raw_ptr( ) noexcept {
 				return static_cast<void *>( m_data.data( ) );
 			}
 
-			void const *raw_ptr( ) const {
+			void const *raw_ptr( ) const noexcept {
 				return static_cast<void const *>( m_data.data( ) );
 			}
 
-			pointer ptr( ) {
+			pointer ptr( ) noexcept {
 				return static_cast<pointer>( raw_ptr( ) );
 			}
 
-			const_pointer ptr( ) const {
+			const_pointer ptr( ) const noexcept {
 				return static_cast<const_pointer>( raw_ptr( ) );
 			}
 
-			reference ref( ) {
+			reference ref( ) noexcept {
 				return *ptr( );
 			}
 
-			const_reference ref( ) const {
+			const_reference ref( ) const noexcept {
 				return *ptr( );
 			}
 
@@ -89,10 +90,7 @@ namespace daw {
 			}
 
 		public:
-			value_storage( ) : m_occupied{false} {
-
-				std::fill( m_data.begin( ), m_data.end( ), static_cast<uint8_t>( 0 ) );
-			}
+			value_storage( ) : m_data{0}, m_occupied{false} {}
 
 			template<typename... Args>
 			void emplace( Args &&... args ) {
@@ -100,7 +98,6 @@ namespace daw {
 			}
 
 			value_storage( value_type value ) : m_data{}, m_occupied{true} {
-
 				store( std::move( value ) );
 			}
 
@@ -124,15 +121,19 @@ namespace daw {
 			}
 
 			value_storage &operator=( value_storage &&rhs ) noexcept {
-				m_occupied = std::exchange( rhs.m_occupied, false );
+				m_occupied = false;
 				m_data = std::move( rhs.m_data );
+				m_occupied = std::exchange( rhs.m_occupied, false );
 				return *this;
 			}
 
 			value_storage &operator=( value_type value ) {
 				if( m_occupied ) {
+					m_occupied = false;
 					*ptr( ) = std::move( value );
+					m_occupied = true;
 				} else {
+					m_occupied = false;
 					store( std::move( value ) );
 					m_occupied = true;
 				}
@@ -159,16 +160,12 @@ namespace daw {
 			}
 
 			reference operator*( ) {
-				if( empty( ) ) {
-					throw std::runtime_error( "Attempt to access an empty value" );
-				}
+				daw::exception::daw_throw_on_true( empty( ), "Attempt to access an empty value" );
 				return ref( );
 			}
 
 			const_reference operator*( ) const {
-				if( empty( ) ) {
-					throw std::runtime_error( "Attempt to access an empty value" );
-				}
+				daw::exception::daw_throw_on_true( empty( ), "Attempt to access an empty value" );
 				return ref( );
 			}
 		}; // value_storage
@@ -178,6 +175,8 @@ namespace daw {
 			lhs.swap( rhs );
 		}
 	} // namespace impl
+
+	struct nothing;
 
 	template<class ValueType>
 	struct optional {
@@ -191,8 +190,8 @@ namespace daw {
 		impl::value_storage<value_type> m_value;
 
 	public:
-		optional( ) : m_value{} {}
-
+		optional( ) : m_value{ValueType{}} {}
+		optional( nothing ) : m_value{} {}
 		optional( optional const &other ) : m_value{other.m_value} {}
 
 		optional( optional &&other ) noexcept : m_value{std::move( other.m_value )} {}
@@ -216,12 +215,22 @@ namespace daw {
 			return *this;
 		}
 
+		optional &operator=( nothing && ) noexcept {
+			reset( );
+			return *this;
+		}
+
 		void swap( optional &rhs ) noexcept {
 			m_value.swap( rhs.m_value );
 		}
 
 		optional &operator=( value_type value ) {
 			m_value = std::move( value );
+			return *this;
+		}
+
+		optional &operator=( nothing ) {
+			reset( );
 			return *this;
 		}
 
@@ -248,11 +257,11 @@ namespace daw {
 		}
 
 		reference operator*( ) {
-			return get( );
+			return *m_value;
 		}
 
 		const_reference operator*( ) const {
-			return get( );
+			return *m_value;
 		}
 
 		pointer operator->( ) {
@@ -267,133 +276,145 @@ namespace daw {
 			m_value.reset( );
 		}
 
-		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_eq_v<value_type, T>, bool>>
+		template<typename T>
 		friend bool operator==( optional const &lhs, optional<T> const &rhs ) {
-			if( lhs.has_value( ) ) {
-				if( rhs.has_value( ) ) {
+			static_assert( daw::is_inequality_comparable_v<value_type, T>, "Types are not equality comparable" );
+			if( lhs ) {
+				if( rhs ) {
 					return lhs.get( ) == rhs.get( );
 				}
 				return false;
 			}
-			if( rhs.has_value( ) ) {
+			if( rhs ) {
 				return false;
 			}
 			return true;
 		}
 
-		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_eq_v<value_type, T>, bool>>
+		template<typename T>
 		friend bool operator==( optional const &lhs, T const &rhs ) {
-			if( lhs.has_value( ) ) {
+			static_assert( daw::is_inequality_comparable_v<value_type, T>, "Types are not equality comparable" );
+			if( lhs ) {
 				return lhs.get( ) == rhs;
 			}
 			return false;
 		}
 
-		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_ne_v<value_type, T>, bool>>
+		template<typename T>
 		friend bool operator!=( optional const &lhs, optional<T> const &rhs ) {
-			if( lhs.has_value( ) ) {
-				if( rhs.has_value( ) ) {
+			static_assert( daw::is_inequality_comparable_v<value_type, T>, "Types are not inequality comparable" );
+			if( lhs ) {
+				if( rhs ) {
 					return lhs.get( ) != rhs.get( );
 				}
 				return true;
 			}
-			if( rhs.has_value( ) ) {
+			if( rhs ) {
 				return true;
 			}
 			return false;
 		}
 
-		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_ne_v<value_type, T>, bool>>
+		template<typename T>
 		friend bool operator!=( optional const &lhs, T const &rhs ) {
-			if( lhs.has_value( ) ) {
+			static_assert( daw::is_inequality_comparable_v<value_type, T>, "Types are not inequality comparable" );
+			if( lhs ) {
 				return lhs.get( ) != rhs;
 			}
 			return false;
 		}
 
-		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_lt_v<value_type, T>, bool>>
+		template<typename T>
 		friend bool operator<( optional const &lhs, optional<T> const &rhs ) {
-			if( lhs.has_value( ) ) {
-				if( rhs.has_value( ) ) {
+			static_assert( daw::is_less_than_comparable_v<value_type, T>, "Types are not less than comparable" );
+			if( lhs ) {
+				if( rhs ) {
 					return lhs.get( ) < rhs.get( );
 				}
 				return false;
 			}
-			if( rhs.has_value( ) ) {
+			if( rhs ) {
 				return true;
 			}
 			return false;
 		}
 
-		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_lt_v<value_type, T>, bool>>
+		template<typename T>
 		friend bool operator<( optional const &lhs, T const &rhs ) {
-			if( lhs.has_value( ) ) {
+			static_assert( daw::is_less_than_comparable_v<value_type, T>, "Types are not less than comparable" );
+			if( lhs ) {
 				return lhs.get( ) < rhs;
 			}
 			return true;
 		}
 
-		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_gt_v<value_type, T>, bool>>
+		template<typename T>
 		friend bool operator>( optional const &lhs, optional<T> const &rhs ) {
-			if( lhs.has_value( ) ) {
-				if( rhs.has_value( ) ) {
+			static_assert( daw::is_greater_than_comparable_v<value_type, T>, "Types are not greater than comparable" );
+			if( lhs ) {
+				if( rhs ) {
 					return lhs.get( ) > rhs.get( );
 				}
 				return true;
 			}
-			if( rhs.has_value( ) ) {
+			if( rhs ) {
 				return false;
 			}
 			return false;
 		}
 
-		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_gt_v<value_type, T>, bool>>
+		template<typename T>
 		friend bool operator>( optional const &lhs, T const &rhs ) {
-			if( lhs.has_value( ) ) {
+			static_assert( daw::is_greater_than_comparable_v<value_type, T>, "Types are not greater than comparable" );
+			if( lhs ) {
 				return lhs.get( ) > rhs;
 			}
 			return false;
 		}
 
-		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_le_v<value_type, T>, bool>>
+		template<typename T>
 		friend bool operator<=( optional const &lhs, optional<T> const &rhs ) {
-			if( lhs.has_value( ) ) {
-				if( rhs.has_value( ) ) {
+			static_assert( daw::is_equal_less_than_comparable_v<value_type, T>, "Types are not equal_less than comparable" );
+			if( lhs ) {
+				if( rhs ) {
 					return lhs.get( ) <= rhs.get( );
 				}
 				return false;
 			}
-			if( rhs.has_value( ) ) {
+			if( rhs ) {
 				return true;
 			}
 			return true;
 		}
 
-		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_le_v<value_type, T>, bool>>
+		template<typename T>
 		friend bool operator<=( optional const &lhs, T const &rhs ) {
-			if( lhs.has_value( ) ) {
+			static_assert( daw::is_equal_less_than_comparable_v<value_type, T>, "Types are not equal_less than comparable" );
+			if( lhs ) {
 				return lhs.get( ) <= rhs;
 			}
 			return true;
 		}
 
-		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_ge_v<value_type, T>, bool>>
+		template<typename T>
 		friend bool operator>=( optional const &lhs, optional<T> const &rhs ) {
-			if( lhs.has_value( ) ) {
-				if( rhs.has_value( ) ) {
+			static_assert( daw::is_equal_greater_than_comparable_v<value_type, T>, "Types are not equal_greater than comparable" );
+			if( lhs ) {
+				if( rhs ) {
 					return lhs.get( ) >= rhs.get( );
 				}
 				return true;
 			}
-			if( rhs.has_value( ) ) {
+			if( rhs ) {
 				return false;
 			}
 			return true;
 		}
 
-		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_ge_v<value_type, T>, bool>>
+		template<typename T>
 		friend bool operator>=( optional const &lhs, T const &rhs ) {
-			if( lhs.has_value( ) ) {
+			static_assert( daw::is_equal_greater_than_comparable_v<value_type, T>, "Types are not equal_greater than comparable" );
+			if( lhs ) {
 				return lhs.get( ) >= rhs;
 			}
 			return false;
@@ -415,6 +436,7 @@ namespace daw {
 
 	template<typename T, typename U>
 	bool operator!=( optional<T> const &lhs, U const &rhs ) {
+		static_assert( daw::is_inequality_comparable_v<T, U>, "Types are not inequality comparable" );
 		if( lhs ) {
 			return lhs != rhs;
 		}
@@ -423,6 +445,7 @@ namespace daw {
 
 	template<typename T, typename U>
 	bool operator<( optional<T> const &lhs, U const &rhs ) {
+		static_assert( daw::is_inequality_comparable_v<T, U>, "Types are not less than comparable" );
 		if( lhs ) {
 			return lhs < rhs;
 		}
@@ -431,6 +454,7 @@ namespace daw {
 
 	template<typename T, typename U>
 	bool operator>( optional<T> const &lhs, U const &rhs ) {
+		static_assert( daw::is_inequality_comparable_v<T, U>, "Types are not greater than comparable" );
 		if( lhs ) {
 			return lhs > rhs;
 		}
@@ -439,6 +463,7 @@ namespace daw {
 
 	template<typename T, typename U>
 	bool operator<=( optional<T> const &lhs, U const &rhs ) {
+		static_assert( daw::is_inequality_comparable_v<T, U>, "Types are not equal less than comparable" );
 		if( lhs ) {
 			return lhs <= rhs;
 		}
@@ -447,6 +472,7 @@ namespace daw {
 
 	template<typename T, typename U>
 	bool operator>=( optional<T> const &lhs, U const &rhs ) {
+		static_assert( daw::is_inequality_comparable_v<T, U>, "Types are not equal greater than comparable" );
 		if( lhs ) {
 			return lhs >= rhs;
 		}

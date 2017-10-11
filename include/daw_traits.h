@@ -448,13 +448,23 @@ namespace daw {
 		template<typename UnaryPredicate, typename T>
 		using unary_predicate = callable_with<UnaryPredicate, T>;
 
-		// Verifies that a == b is valid along with b == a and that the result is the same.
-		// TODO: add referce check is U == V and U < V valid
 		template<typename T, typename U>
 		using equality_comparable = decltype( std::declval<T>( ) == std::declval<U>( ) );
 
 		template<typename T, typename U>
+		using inequality_comparable = decltype( std::declval<T>( ) != std::declval<U>( ) );
+
+		template<typename T, typename U>
 		using less_than_comparable = decltype( std::declval<T>( ) < std::declval<U>( ) );
+
+		template<typename T, typename U>
+		using equal_less_than_comparable = decltype( std::declval<T>( ) <= std::declval<U>( ) );
+
+		template<typename T, typename U>
+		using greater_than_comparable = decltype( std::declval<T>( ) > std::declval<U>( ) );
+
+		template<typename T, typename U>
+		using equal_greater_than_comparable = decltype( std::declval<T>( ) >= std::declval<U>( ) );
 
 		namespace details {
 			template<typename T, typename U>
@@ -491,7 +501,13 @@ namespace daw {
 	constexpr bool is_equality_comparable_v = is_detected_convertible_v<bool, detectors::equality_comparable, T, U>;
 
 	template<typename T, typename U = T>
+	constexpr bool is_inequality_comparable_v = is_detected_convertible_v<bool, detectors::inequality_comparable, T, U>;
+
+	template<typename T, typename U = T>
 	constexpr bool is_less_than_comparable_v = is_detected_convertible_v<bool, detectors::less_than_comparable, T, U>;
+
+	template<typename T, typename U = T>
+	constexpr bool is_greater_than_comparable_v = is_detected_convertible_v<bool, detectors::greater_than_comparable, T, U>;
 
 	template<typename T>
 	constexpr bool is_swappable_v = is_detected_v<detectors::swappable, T>;
@@ -500,7 +516,7 @@ namespace daw {
 	constexpr bool is_assignable_iterator_v = is_detected_v<detectors::assignable, Iterator, T>;
 
 	template<typename L, typename R>
-	constexpr bool is_comparable_v = is_equality_comparable_v<L, R> &&is_equality_comparable_v<R, L>;
+	constexpr bool is_comparable_v = is_equality_comparable_v<L, R> && is_equality_comparable_v<R, L>;
 
 	//////////////////////////////////////////////////////////////////////////
 	/// Summary: is like a regular type see http://www.stepanovpapers.com/DeSt98.pdf
