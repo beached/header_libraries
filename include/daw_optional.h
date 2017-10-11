@@ -176,7 +176,7 @@ namespace daw {
 		}
 	} // namespace impl
 
-	struct nothing;
+	struct nothing {};
 
 	template<class ValueType>
 	struct optional {
