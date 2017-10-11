@@ -38,6 +38,7 @@
 #include <vector>
 
 #include "daw_exception.h"
+#include "daw_random.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
 
@@ -522,25 +523,6 @@ namespace daw {
 	template<typename Iterator>
 	constexpr std::reverse_iterator<Iterator> make_reverse_iterator( Iterator i ) {
 		return std::reverse_iterator<Iterator>( std::move( i ) );
-	}
-
-	template<typename T, typename Iterator>
-	void fill_random( T const min_value, T const max_value, Iterator first, Iterator last ) {
-		std::random_device rnd_device;
-		// Specify the engine and distribution.
-		std::mt19937 mersenne_engine{rnd_device( )};
-		std::uniform_int_distribution<T> dist{min_value, max_value};
-
-		std::generate( first, last, [&]( ) { return dist( mersenne_engine ); } );
-	}
-
-	template<typename T, typename RndType = T>
-	std::vector<T> generate_random_data( size_t count, RndType min_value = std::numeric_limits<T>::min( ),
-	                                     RndType max_value = std::numeric_limits<T>::max( ) ) {
-		std::vector<T> result;
-		result.resize( count );
-		fill_random( min_value, max_value, result.begin( ), result.end( ) );
-		return result;
 	}
 
 	template<typename Iterator>

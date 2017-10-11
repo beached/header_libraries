@@ -28,7 +28,7 @@
 #include "daw_random.h"
 
 BOOST_AUTO_TEST_CASE( daw_random_01 ) {
-	for( auto n = 0; n<100000; ++n ) {
+	for( auto n = 0; n < 100000; ++n ) {
 		auto v1 = daw::randint( 0, 1000 );
 		BOOST_REQUIRE( 0 <= v1 && v1 <= 1000 );
 	}
@@ -38,13 +38,13 @@ BOOST_AUTO_TEST_CASE( daw_shuffle_01 ) {
 	std::vector<int32_t> a;
 	daw::shuffle( a.begin( ), a.end( ) );
 	a.reserve( 40 );
-	for( int32_t n=0; n<40; ++n ) {
+	for( int32_t n = 0; n < 40; ++n ) {
 		std::cout << " " << n;
 		a.push_back( n );
 	}
 	std::cout << "\n\nshuffled:\n";
 	daw::shuffle( a.begin( ), a.end( ) );
-	for( int32_t const &i: a ) {
+	for( int32_t const &i : a ) {
 		std::cout << " " << i;
 	}
 	std::cout << '\n';
@@ -54,13 +54,23 @@ BOOST_AUTO_TEST_CASE( daw_fill_01 ) {
 	std::vector<int32_t> a;
 	a.resize( 40 );
 	std::cout << "Before: \n";
-	for( int32_t const &i: a ) {
+	for( int32_t const &i : a ) {
 		std::cout << " " << i;
 	}
 	daw::random_fill( a.begin( ), a.end( ), 0, 100 );
 	std::cout << "\n\nAfter: \n";
-	for( int32_t const &i: a ) {
+	for( int32_t const &i : a ) {
 		std::cout << " " << i;
 	}
 	std::cout << '\n';
+}
+
+BOOST_AUTO_TEST_CASE( daw_make_random_01 ) {
+	using rnd_t = int16_t;
+	auto const r = daw::make_random_data<rnd_t>( 40, 1, 6 );
+	std::cout << "Generated Data: \n";
+	for( auto const &i : r ) {
+		std::cout << " " << i;
+	}
+	std::cout << "\n\n";
 }

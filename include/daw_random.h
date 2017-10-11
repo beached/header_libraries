@@ -41,7 +41,7 @@ namespace daw {
 			thread_local std::default_random_engine e{get_seed( )};
 			return e;
 		}
-	} // namespace detail
+	} // namespace impl
 
 	template<typename IntType>
 	inline IntType randint( IntType a, IntType b ) {
@@ -51,7 +51,7 @@ namespace daw {
 		using param_type = typename distribution_type::param_type;
 
 		thread_local distribution_type d;
-		return d(impl::global_rng( ), param_type{a, b});
+		return d( impl::global_rng( ), param_type{a, b} );
 	}
 
 	inline void reseed( ) {
@@ -80,6 +80,19 @@ namespace daw {
 		while( first != last ) {
 			*first++ = randint( a, b );
 		}
+	}
+
+	template<typename IntType>
+	std::vector<IntType> make_random_data( size_t count, IntType a = std::numeric_limits<IntType>::min( ),
+	                                           IntType b = std::numeric_limits<IntType>::max( ) ) {
+
+		static_assert( daw::is_integral_v<IntType>, "IntType must be a valid integral type" );
+		daw::exception::daw_throw_on_false( a <= b, "a <= b must be true" );
+
+		std::vector<IntType> result;
+		result.resize( count );
+		random_fill( result.begin( ), result.end( ), a, b );
+		return result;
 	}
 } // namespace daw
 
