@@ -134,6 +134,13 @@ namespace daw {
 			}
 		}
 
+		constexpr void assign( size_type count, const_reference value ) noexcept {
+			clear( );
+			for( size_t n=0; n<count; ++n ) {
+				push_back( value );
+			}
+		}
+
 		template<typename Ptr>
 		constexpr void push_back( Ptr const *ptr, size_type sz ) noexcept {
 			auto const start = m_index;
