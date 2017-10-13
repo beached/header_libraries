@@ -35,6 +35,7 @@ BOOST_AUTO_TEST_CASE( daw_fixed_stack_test_001 ) {
 	a.push_back( 4 );
 	a.push_back( 8 );
 	a.push_back( 16 );
+	a.emplace_back( 5 );
 	int sum = 0;
 	for( auto c : a ) {
 		sum += c;

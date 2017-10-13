@@ -150,6 +150,11 @@ namespace daw {
 			}
 		}
 
+		template<typename... Args>
+		constexpr void emplace_back( Args&&... args ) noexcept {
+			m_stack[m_index++] = value_t{std::forward<Args>( args )...};
+		}
+
 		constexpr value_t pop_back( ) noexcept {
 			return m_stack[--m_index];
 		}
