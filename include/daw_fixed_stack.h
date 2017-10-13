@@ -41,7 +41,7 @@ namespace daw {
 		daw::array_t<T, N> m_stack;
 
 	public:
-		constexpr fixed_stack_t( ) noexcept : m_index{0}, m_stack{0} {}
+		constexpr fixed_stack_t( ) noexcept : m_index{0}, m_stack{} {}
 
 		constexpr bool empty( ) const noexcept {
 			return m_index == 0;
