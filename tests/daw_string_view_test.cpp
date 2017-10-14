@@ -745,4 +745,31 @@ namespace daw {
 			}
 		}
 	}
+
+	BOOST_AUTO_TEST_CASE( daw_string_view_split_001 ) {
+		std::string str = "This is a test of the split";
+		auto const str_splt = split( str, ' ' );
+		BOOST_REQUIRE_EQUAL( str_splt.size( ), 7 );
+	}
+
+	BOOST_AUTO_TEST_CASE( daw_string_view_split_002 ) {
+		char const str[] = "This is a test of the split";
+		auto const str_splt = split( str, ' ' );
+		BOOST_REQUIRE_EQUAL( str_splt.size( ), 7 );
+	}
+
+	BOOST_AUTO_TEST_CASE( daw_string_view_split_003 ) {
+		std::string str = "This is a test of the split";
+		auto const str_splt = split( str, []( char c ) { return c == ' '; } );
+		BOOST_REQUIRE_EQUAL( str_splt.size( ), 7 );
+	}
+
+
+	BOOST_AUTO_TEST_CASE( daw_string_view_split_004 ) {
+		char const str[] = "This is a test of the split";
+		auto const str_splt = split( str, []( char c ) { return c == ' '; } );
+		BOOST_REQUIRE_EQUAL( str_splt.size( ), 7 );
+	}
+
+
 } // namespace daw

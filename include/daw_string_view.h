@@ -33,6 +33,7 @@
 
 #include "daw_fnv1a_hash.h"
 #include "daw_generic_hash.h"
+#include "daw_traits.h"
 
 namespace daw {
 	namespace impl {
@@ -59,6 +60,9 @@ namespace daw {
 		constexpr InputIt
 		find_first_of( InputIt first, InputIt last, ForwardIt s_first, ForwardIt s_last, BinaryPredicate p ) noexcept(
 		  noexcept( std::declval<BinaryPredicate>( )( *std::declval<InputIt>( ), *std::declval<ForwardIt>( ) ) ) ) {
+			static_assert( daw::is_binary_predicate_v<BinaryPredicate, typename std::iterator_traits<InputIt>::value_type>,
+			               "BinaryPredicate p does not fullfill the requires of a binary predicate concept.  See "
+			               "http://en.cppreference.com/w/cpp/concept/BinaryPredicate" );
 			for( ; first != last; ++first ) {
 				for( ForwardIt it = s_first; it != s_last; ++it ) {
 					if( p( *first, *it ) ) {
@@ -73,6 +77,9 @@ namespace daw {
 		constexpr InputIt
 		find_first_not_of( InputIt first, InputIt last, ForwardIt s_first, ForwardIt s_last, BinaryPredicate p ) noexcept(
 		  noexcept( std::declval<BinaryPredicate>( )( *std::declval<InputIt>( ), *std::declval<ForwardIt>( ) ) ) ) {
+			static_assert( daw::is_binary_predicate_v<BinaryPredicate, typename std::iterator_traits<InputIt>::value_type>,
+			               "BinaryPredicate p does not fullfill the requires of a binary predicate concept.  See "
+			               "http://en.cppreference.com/w/cpp/concept/BinaryPredicate" );
 			bool found = false;
 			for( ; first != last; ++first ) {
 				found = false;
@@ -89,10 +96,13 @@ namespace daw {
 			return last;
 		}
 
-		template<typename InputIt, typename Predicate>
+		template<typename InputIt, typename UnaryPredicate>
 		constexpr InputIt
 		find_first_of_if( InputIt first, InputIt last,
-		                  Predicate p ) noexcept( noexcept( std::declval<Predicate>( )( *std::declval<InputIt>( ) ) ) ) {
+		                  UnaryPredicate p ) noexcept( noexcept( std::declval<UnaryPredicate>( )( *std::declval<InputIt>( ) ) ) ) {
+			static_assert( daw::is_unary_predicate_v<UnaryPredicate, typename std::iterator_traits<InputIt>::value_type>,
+			               "UnaryPredicate p does not fullfill the requires of a unary predicate concept.  See "
+			               "http://en.cppreference.com/w/cpp/concept/Predicate" );
 			for( ; first != last; ++first ) {
 				if( p( *first ) ) {
 					return first;
@@ -101,9 +111,12 @@ namespace daw {
 			return last;
 		}
 
-		template<typename InputIt, typename Predicate>
-		constexpr InputIt find_first_not_of_if( InputIt first, InputIt last, Predicate p ) noexcept(
-		  noexcept( std::declval<Predicate>( )( *std::declval<InputIt>( ) ) ) ) {
+		template<typename InputIt, typename UnaryPredicate>
+		constexpr InputIt find_first_not_of_if( InputIt first, InputIt last, UnaryPredicate p ) noexcept(
+		  noexcept( std::declval<UnaryPredicate>( )( *std::declval<InputIt>( ) ) ) ) {
+			static_assert( daw::is_unary_predicate_v<UnaryPredicate, typename std::iterator_traits<InputIt>::value_type>,
+			               "UnaryPredicate p does not fullfill the requires of a unary predicate concept.  See "
+			               "http://en.cppreference.com/w/cpp/concept/Predicate" );
 			for( ; first != last; ++first ) {
 				if( !p( *first ) ) {
 					return first;
@@ -178,6 +191,10 @@ namespace daw {
 
 		constexpr basic_string_view( basic_string_view sv, size_type count ) noexcept
 		  : m_first{sv.m_first}, m_size{static_cast<size_type_internal>( count )} {}
+
+		template<typename Allocator>
+		basic_string_view( std::basic_string<CharT, Traits, Allocator> const &str )
+		  : m_first{str.data( )}, m_size{str.size( )} {}
 
 		template<size_t N>
 		constexpr basic_string_view( CharT const ( &s )[N] ) noexcept : basic_string_view{s, N} {}
@@ -299,7 +316,8 @@ namespace daw {
 			return !empty( );
 		}
 
-		constexpr void remove_prefix( size_type const n ) noexcept {
+		constexpr void remove_prefix( size_type n ) noexcept {
+			n = std::min( n, m_size );	
 			m_first += n;
 			m_size -= n;
 		}
@@ -487,9 +505,12 @@ namespace daw {
 			return last_pos;
 		}
 
-		template<typename Predicate>
-		constexpr size_type find_first_of_if( Predicate pred, size_type const pos = 0 ) const
-		  noexcept( noexcept( std::declval<Predicate>( )( std::declval<value_type>( ) ) ) ) {
+		template<typename UnaryPredicate>
+		constexpr size_type find_first_of_if( UnaryPredicate pred, size_type const pos = 0 ) const
+		  noexcept( noexcept( std::declval<UnaryPredicate>( )( std::declval<value_type>( ) ) ) ) {
+			static_assert( daw::is_unary_predicate_v<UnaryPredicate, CharT>,
+			               "UnaryPredicate p does not fullfill the requires of a unary predicate concept.  See "
+			               "http://en.cppreference.com/w/cpp/concept/Predicate" );
 			if( pos >= size( ) ) {
 				return npos;
 			}
@@ -500,9 +521,12 @@ namespace daw {
 			return static_cast<size_type_internal>( iter - cbegin( ) );
 		}
 
-		template<typename Predicate>
-		constexpr size_type find_first_not_of_if( Predicate pred, size_type const pos = 0 ) const
-		  noexcept( noexcept( std::declval<Predicate>( )( std::declval<value_type>( ) ) ) ) {
+		template<typename UnaryPredicate>
+		constexpr size_type find_first_not_of_if( UnaryPredicate pred, size_type const pos = 0 ) const
+		  noexcept( noexcept( std::declval<UnaryPredicate>( )( std::declval<value_type>( ) ) ) ) {
+			static_assert( daw::is_unary_predicate_v<UnaryPredicate, CharT>,
+			               "UnaryPredicate p does not fullfill the requires of a unary predicate concept.  See "
+			               "http://en.cppreference.com/w/cpp/concept/Predicate" );
 			if( pos >= size( ) ) {
 				return npos;
 			}
@@ -670,6 +694,16 @@ namespace daw {
 	template<typename CharT, typename Allocator, typename Traits = std::char_traits<CharT>>
 	auto make_string_view( std::vector<CharT, Allocator> const &v ) noexcept {
 		return basic_string_view<CharT, Traits>{v.data( ), v.size( )};
+	}
+
+	template<typename CharT, typename Traits>
+	daw::basic_string_view<CharT, Traits> make_string_view( std::basic_string<CharT, Traits> const &str ) {
+		return daw::basic_string_view<CharT, Traits>{ str };
+	}
+
+	template<typename CharT, size_t N>
+	daw::basic_string_view<CharT> make_string_view( CharT const ( &str )[N] ) {
+		return daw::basic_string_view<CharT>{str, N};
 	}
 	// basic_string_view / basic_string_view
 	//
@@ -955,6 +989,46 @@ namespace daw {
 		return result;
 	}
 
+	template<typename CharT, typename Traits, typename InternalSizeType>
+	auto split( daw::basic_string_view<CharT, Traits, InternalSizeType> str, CharT const delemiter ) {
+		std::vector<daw::basic_string_view<CharT, Traits, InternalSizeType>> result;
+		auto last_pos = str.cbegin( );
+		while( !str.empty( ) ) {
+			auto sz = str.find( delemiter );
+			result.emplace_back( last_pos, sz );
+			if( sz == str.npos ) {
+				break;
+			}
+			str.remove_prefix( sz + 1 );
+			last_pos = str.cbegin( );
+		}
+		return result;
+	}
+
+	template<typename CharT, typename Traits, typename InternalSizeType, typename UnaryPredicate>
+	auto split( daw::basic_string_view<CharT, Traits, InternalSizeType> str, UnaryPredicate pred ) {
+		static_assert( daw::is_unary_predicate_v<UnaryPredicate, CharT>,
+		               "UnaryPredicate p does not fullfill the requires of a unary predicate concept.  See "
+		               "http://en.cppreference.com/w/cpp/concept/Predicate" );
+		std::vector<daw::basic_string_view<CharT, Traits, InternalSizeType>> result;
+		auto last_pos = str.cbegin( );
+		while( !str.empty( ) ) {
+			auto sz = str.find_first_of_if( pred );
+			result.emplace_back( last_pos, sz );
+			if( sz == str.npos ) {
+				break;
+			}
+			str.remove_prefix( sz + 1 );
+			last_pos = str.cbegin( );
+		}
+		return result;
+	}
+
+	template<typename StringT, typename Delemiter>
+	auto split( StringT const & str, Delemiter del ) {
+		return split( make_string_view( str ), del );
+	}
+
 	template<typename CharT, typename Traits>
 	std::basic_ostream<CharT> &operator<<( std::basic_ostream<CharT> &os, daw::basic_string_view<CharT, Traits> v ) {
 		if( os.good( ) ) {
@@ -997,7 +1071,6 @@ namespace daw {
 	constexpr size_t generic_hash( daw::basic_string_view<CharT, Traits, InternalSizeType> sv ) noexcept {
 		return generic_hash<HashSize>( sv.data( ), sv.size( ) );
 	}
-
 } // namespace daw
 
 namespace std {
