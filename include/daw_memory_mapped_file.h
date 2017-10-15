@@ -60,7 +60,7 @@ namespace daw {
 				try {
 					m_mf_file.open( m_mf_params );
 				} catch( std::exception const &ex ) {
-					std::cerr << "Error Opening memory mapped file '" << file_path.string( ) << "': " << ex.what( ) << std::endl;
+					std::cerr << "Error Opening memory mapped file '" << file_path.string( ) << "': " << ex.what( ) << '\n';
 					throw ex;
 				}
 			}
@@ -86,7 +86,7 @@ namespace daw {
 			virtual ~memory_mapped_file_t( ) {
 				try {
 					close( );
-				} catch( ... ) { std::cerr << "Exception while closing memory mapped file" << std::endl; }
+				} catch( ... ) { std::cerr << "Exception while closing memory mapped file\n" }
 			}
 
 			bool is_open( ) const {

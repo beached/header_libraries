@@ -431,6 +431,10 @@ namespace daw {
 				function( std::forward<Args>( args )... );
 			}
 		};
+
+		struct is_uniform_tuple : std::false_type;
+
+
 	} // namespace impl
 
 	template<typename Function>
@@ -479,7 +483,6 @@ namespace daw {
 
 		template<typename Iterator, typename T>
 		using assignable = decltype( *std::declval<Iterator>( ) = std::declval<T>( ) );
-
 	} // namespace detectors
 
 	template<typename Function, typename... Args>
