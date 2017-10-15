@@ -114,7 +114,7 @@ namespace daw {
 		  : m_value{impl::copy( other.m_value, other.m_occupied )}, m_occupied{other.m_occupied} {}
 
 		constexpr static_optional( static_optional &&other ) noexcept
-		  : m_value{impl::move( other.m_value, other.m_occupied )}, m_occupied{std::exchange( other.m_occupied, false )} {}
+		  : m_value{impl::move( other.m_value, other.m_occupied )}, m_occupied{daw::exchange( other.m_occupied, false )} {}
 
 		constexpr static_optional &operator=( static_optional const &rhs ) noexcept {
 			if( &rhs != this ) {
@@ -126,7 +126,7 @@ namespace daw {
 
 		constexpr static_optional &operator=( static_optional &&rhs ) noexcept {
 			m_value = impl::move( rhs.m_value, rhs.m_occupied );
-			m_occupied = std::exchange( rhs.m_occupied, false );
+			m_occupied = daw::exchange( rhs.m_occupied, false );
 			return *this;
 		}
 
