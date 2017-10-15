@@ -43,10 +43,12 @@ namespace daw {
 			daw::nothing empty_value;
 
 			constexpr static_optional_storage( daw::nothing ) noexcept : empty_value{} {}
+			constexpr static_optional_storage( ) noexcept : value{} {}
 
-			template<typename... Args>
-			constexpr static_optional_storage( Args &&... args ) noexcept : value{std::forward<Args>( args )...} {}
-			
+			template<typename Arg, typename... Args>
+			constexpr static_optional_storage( Arg &&arg, Args &&... args ) noexcept
+			  : value{std::forward<Arg>( arg ), std::forward<Args>( args )...} {}
+
 			~static_optional_storage( ) noexcept = default;
 		};
 	} // namespace impl
