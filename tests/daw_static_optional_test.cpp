@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE( daw_optional_test_01 ) {
 	constexpr daw::static_optional<int> b{1};
 	constexpr daw::static_optional<int> c{2};
 	constexpr daw::static_optional<int> d{1};
-
+	BOOST_REQUIRE( !a );
 	// a & b
 	auto test_01 = !( a == b );
 	auto test_02 = !( b == a );

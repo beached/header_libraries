@@ -94,7 +94,17 @@ namespace daw {
 		}
 
 	public:
+		constexpr static_optional( ) noexcept : m_value{daw::nothing{}}, m_occupied{false} {}
 		explicit constexpr static_optional( daw::nothing ) noexcept : m_value{daw::nothing{}}, m_occupied{false} {}
+
+		template<typename Arg, typename... Args,
+		         std::enable_if_t<!daw::is_same_v<static_optional, std::decay_t<Arg>>, std::nullptr_t> = nullptr>
+		constexpr static_optional( Arg &&arg, Args &&... args ) noexcept( noexcept( value_type{
+		  std::forward<Arg>( arg ), std::forward<Args>( args )...} ) )
+
+		  : m_value{value_type{std::forward<Arg>( arg ), std::forward<Args>( args )...}}, m_occupied{true} {}
+
+		~static_optional( ) noexcept = default;
 
 		constexpr static_optional( static_optional const &other ) noexcept
 		  : m_value{impl::copy( other.m_value, other.m_occupied )}, m_occupied{other.m_occupied} {}
@@ -102,7 +112,7 @@ namespace daw {
 		constexpr static_optional( static_optional &&other ) noexcept
 		  : m_value{impl::move( other.m_value, other.m_occupied )}, m_occupied{std::exchange( other.m_occupied, false )} {}
 
-		constexpr static_optional &operator=( static_optional const & rhs ) noexcept {
+		constexpr static_optional &operator=( static_optional const &rhs ) noexcept {
 			if( &rhs != this ) {
 				m_value = impl::copy( rhs.m_value, rhs.m_occupied );
 				m_occupied = rhs.m_occupied;
@@ -110,7 +120,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr static_optional &operator=( static_optional && rhs ) noexcept {
+		constexpr static_optional &operator=( static_optional &&rhs ) noexcept {
 			m_value = impl::move( rhs.m_value, rhs.m_occupied );
 			m_occupied = std::exchange( rhs.m_occupied, false );
 			return *this;
@@ -122,12 +132,6 @@ namespace daw {
 			swap( *this, tmp );
 			return *this;
 		}
-
-		template<typename... Args>
-		constexpr static_optional( Args &&... args ) noexcept( noexcept( value_type{std::forward<Args>( args )...} ) )
-		  : m_value{value_type{std::forward<Args>( args )...}}, m_occupied{true} {}
-
-		~static_optional( ) noexcept = default;
 
 		constexpr bool empty( ) const noexcept {
 			return !m_occupied;
