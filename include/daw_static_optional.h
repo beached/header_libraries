@@ -51,6 +51,23 @@ namespace daw {
 
 			~static_optional_storage( ) noexcept = default;
 		};
+
+		template<typename T>
+		constexpr static_optional_storage<T> copy( static_optional_storage<T> const &value, bool is_init ) noexcept {
+			if( is_init ) {
+				return static_optional_storage<T>{value.value};
+			}
+			return static_optional_storage<T>{daw::nothing{}};
+		}
+
+		template<typename T>
+		constexpr static_optional_storage<T> move( static_optional_storage<T> &&value, bool is_init ) noexcept {
+			if( is_init ) {
+				auto result = static_optional_storage<T>{std::move( value.value )};
+				value.empty_value = daw::nothing{};
+			}
+			return static_optional_storage<T>{daw::nothing{}};
+		}
 	} // namespace impl
 
 	template<typename Value>
@@ -79,10 +96,25 @@ namespace daw {
 	public:
 		explicit constexpr static_optional( daw::nothing ) noexcept : m_value{daw::nothing{}}, m_occupied{false} {}
 
-		constexpr static_optional( static_optional const & ) noexcept = default;
-		constexpr static_optional( static_optional && ) noexcept = default;
-		constexpr static_optional &operator=( static_optional const & ) noexcept = default;
-		constexpr static_optional &operator=( static_optional && ) noexcept = default;
+		constexpr static_optional( static_optional const &other ) noexcept
+		  : m_value{impl::copy( other.m_value, other.m_occupied )}, m_occupied{other.m_occupied} {}
+
+		constexpr static_optional( static_optional &&other ) noexcept
+		  : m_value{impl::move( std::move(other.m_value), other.m_occupied )}, m_occupied{std::exchange( other.m_occupied, false )} {}
+
+		constexpr static_optional &operator=( static_optional const & rhs ) noexcept {
+			if( &rhs != this ) {
+				m_value = impl::copy( rhs.m_value, rhs.m_occupied );
+				m_occupied = rhs.m_occupied;
+			}
+			return *this;
+		}
+
+		constexpr static_optional &operator=( static_optional && rhs ) noexcept {
+			m_value = impl::move( std::move( rhs.m_value ), rhs.m_occupied );
+			m_occupied = std::exchange( rhs.m_occupied, false );
+			return *this;
+		}
 
 		constexpr static_optional &operator=( daw::nothing ) noexcept {
 			using std::swap;
