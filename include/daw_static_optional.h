@@ -42,14 +42,18 @@ namespace daw {
 			T value;
 			daw::nothing empty_value;
 
+			/*
+			constexpr static_optional_storage( static_optional_storage const & ) = delete;
+			constexpr static_optional_storage( static_optional_storage && ) = delete;
+			constexpr static_optional_storage &operator=( static_optional_storage const & ) = delete;
+			constexpr static_optional_storage &operator=( static_optional_storage && ) = delete;
 			constexpr static_optional_storage( daw::nothing ) noexcept : empty_value{} {}
 			constexpr static_optional_storage( ) noexcept : value{} {}
+			*/
+			constexpr static_optional_storage( daw::nothing ) noexcept : empty_value{} {}
+			constexpr static_optional_storage( T v ) noexcept : value{std::move( v )} {}
 
-			template<typename Arg, typename... Args>
-			constexpr static_optional_storage( Arg &&arg, Args &&... args ) noexcept
-			  : value{std::forward<Arg>( arg ), std::forward<Args>( args )...} {}
-
-			~static_optional_storage( ) noexcept = default;
+//			~static_optional_storage( ) noexcept = default;
 		};
 
 		template<typename T>
@@ -130,6 +134,13 @@ namespace daw {
 			using std::swap;
 			static_optional tmp{daw::nothing{}};
 			swap( *this, tmp );
+			return *this;
+		}
+
+		template<typename T, std::enable_if_t<!daw::is_same_v<static_optional, std::decay_t<T>>, std::nullptr_t> = nullptr>
+		constexpr static_optional & operator=( T && value ) noexcept {
+			m_value = std::forward<T>(value);
+			m_occupied = !daw::is_same_v<daw::nothing, std::decay_t<T>>;
 			return *this;
 		}
 

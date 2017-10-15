@@ -33,40 +33,27 @@ BOOST_AUTO_TEST_CASE( daw_optional_test_01 ) {
 	constexpr daw::static_optional<int> a{};
 	constexpr daw::static_optional<int> b{1};
 	constexpr daw::static_optional<int> c{2};
-	constexpr daw::static_optional<int> d{1};
+	daw::static_optional<int> d{1};
+
+	d = 2;
+	d = 1;
 	BOOST_REQUIRE( !a );
 	// a & b
-	auto test_01 = !( a == b );
-	auto test_02 = !( b == a );
-	auto test_03 = a != b;
-	auto test_04 = b != a;
-	auto test_05 = a < b;
-	auto test_06 = !( b < a );
-	auto test_07 = a <= b;
-	auto test_08 = !( b <= a );
-	auto test_09 = !( a >= b );
-	auto test_10 = b >= a;
-	auto test_11 = b == d;
-	auto test_12 = b != c;
-	auto test_13 = b < c;
-	auto test_14 = b <= c;
-	auto test_15 = c > b;
-	auto test_16 = c >= b;
-
-	BOOST_REQUIRE( test_01 );
-	BOOST_REQUIRE( test_02 );
-	BOOST_REQUIRE( test_03 );
-	BOOST_REQUIRE( test_04 );
-	BOOST_REQUIRE( test_05 );
-	BOOST_REQUIRE( test_06 );
-	BOOST_REQUIRE( test_07 );
-	BOOST_REQUIRE( test_08 );
-	BOOST_REQUIRE( test_09 );
-	BOOST_REQUIRE( test_10 );
-	BOOST_REQUIRE( test_11 );
-	BOOST_REQUIRE( test_12 );
-	BOOST_REQUIRE( test_13 );
-	BOOST_REQUIRE( test_14 );
-	BOOST_REQUIRE( test_15 );
-	BOOST_REQUIRE( test_16 );
+	BOOST_REQUIRE( !( a == b ) );
+	BOOST_REQUIRE( !( b == a ) );
+	BOOST_REQUIRE( a != b );
+	BOOST_REQUIRE( b != a );
+	BOOST_REQUIRE( a < b );
+	BOOST_REQUIRE( !( b < a ) );
+	BOOST_REQUIRE( a <= b );
+	BOOST_REQUIRE( !( b <= a ) );
+	BOOST_REQUIRE( !( a >= b ) );
+	BOOST_REQUIRE( b >= a );
+	BOOST_REQUIRE_EQUAL( b, d );
+	BOOST_REQUIRE( b != c );
+	BOOST_REQUIRE( b < c );
+	BOOST_REQUIRE( b <= c );
+	BOOST_REQUIRE( c > b );
+	BOOST_REQUIRE( c >= b );
 }
+
