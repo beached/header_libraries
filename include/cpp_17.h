@@ -341,4 +341,11 @@ namespace daw {
 
 	template<class T>
 	constexpr bool is_nothrow_destructible_v = std::is_nothrow_destructible<T>::value;
+
+	template<class T, class U = T>
+	constexpr T exchange( T &obj, U &&new_value ) {
+		T old_value = std::move( obj );
+		obj = std::forward<U>( new_value );
+		return old_value;
+	}
 } // namespace daw
