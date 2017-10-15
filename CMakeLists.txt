@@ -79,7 +79,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_scoped_multilock
 	daw_semaphore
 	daw_size_literals
-	daw_stack_array
+	daw_static_array
 	daw_static_optional
 	daw_string
 	daw_string_view

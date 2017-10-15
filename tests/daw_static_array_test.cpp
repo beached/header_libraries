@@ -26,10 +26,10 @@
 #include <string>
 
 #include "boost_test.h"
-#include "daw_stack_array.h"
+#include "daw_static_array.h"
 
-BOOST_AUTO_TEST_CASE( daw_stack_array_test_001 ) {
-	daw::array_t<int, 5> a = {1, 2, 3, 4, 5};
+BOOST_AUTO_TEST_CASE( daw_static_array_test_001 ) {
+	daw::static_array_t<int, 5> a = {1, 2, 3, 4, 5};
 	int sum = 0;
 	for( auto c : a ) {
 		sum += c;

@@ -25,4 +25,20 @@
 
 #include "scope_guard.h"
 
-BOOST_AUTO_TEST_CASE( test_01 ) {}
+struct oe_t {
+	bool * b;
+	constexpr oe_t( bool *ptr ) noexcept : b{ptr} {}
+
+	constexpr void operator( )( ) noexcept {
+		*b = !*b;
+	}
+};
+
+BOOST_AUTO_TEST_CASE( test_01 ) {
+	bool is_run = false;
+	{
+		auto sg = daw::on_scope_exit( oe_t{ &is_run } );
+	}
+	BOOST_REQUIRE_EQUAL( is_run, true );
+}
+

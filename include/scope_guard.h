@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include <functional>
+#include "daw_traits.h"
 
 namespace daw {
 	template<typename FunctionType>
@@ -31,59 +31,49 @@ namespace daw {
 		mutable bool m_is_active;
 
 	public:
-		ScopeGuard( FunctionType f ) : m_function( std::move( f ) ), m_is_active( true ) {}
+		constexpr ScopeGuard( FunctionType f ) noexcept : m_function{std::move( f )}, m_is_active{true} {}
 
-		~ScopeGuard( ) {
+		~ScopeGuard( ) noexcept( noexcept( m_function( ) ) ) {
 			if( m_is_active ) {
 				m_function( );
 			}
 		}
 
-		void dismiss( ) const {
+		constexpr void dismiss( ) const noexcept {
+			m_function = nullptr;
 			m_is_active = false;
 		}
 
 		ScopeGuard( ) = delete;
 		ScopeGuard( const ScopeGuard & ) = delete;
 
-		ScopeGuard( ScopeGuard &&other )
-		  : m_function( std::move( other.m_function ) ), m_is_active( std::move( other.m_is_active ) ) {
-			other.dismiss( );
-		}
+		constexpr ScopeGuard( ScopeGuard &&other ) noexcept
+		  : m_function{daw::exchange( other.m_function, nullptr )}, m_is_active{daw::exchange( other.m_is_active, false )} { }
 
-		ScopeGuard &operator=( ScopeGuard rhs ) {
-			m_function = std::move( rhs.m_function );
-			m_is_active = std::move( rhs.m_is_active );
-			rhs.dismiss( );
+		constexpr ScopeGuard &operator=( ScopeGuard &&rhs ) noexcept {
+			m_function = daw::exchange( rhs.m_function, nullptr );
+			m_is_active = daw::exchange( rhs.m_is_active, false );
 			return *this;
 		}
 
-		bool operator==( const ScopeGuard &rhs ) const {
+		constexpr bool operator==( const ScopeGuard &rhs ) const noexcept {
 			return rhs.m_function == m_function && rhs.m_is_active == m_is_active;
 		}
 	}; // class ScopeGuard
 
 	template<typename FunctionType>
-	ScopeGuard<FunctionType> on_scope_exit( FunctionType f ) {
+	constexpr ScopeGuard<FunctionType> on_scope_exit( FunctionType f ) noexcept {
 		return ScopeGuard<FunctionType>( std::move( f ) );
 	}
 
+	/*
 	namespace detail {
 		enum class ScopeGuardOnExit {};
 
 		template<typename FunctionType>
-		ScopeGuard<FunctionType> operator+( ScopeGuardOnExit, FunctionType &&fn ) {
+		constexpr ScopeGuard<FunctionType> operator+( ScopeGuardOnExit, FunctionType &&fn ) noexcept {
 			return ScopeGuard<FunctionType>( std::forward<FunctionType>( fn ) );
 		}
 	} // namespace detail
-
-#define SCOPE_EXIT auto ANONYMOUS_VARIABLE( SCOPE_EXIT_STATE ) = ::daw::detail::ScopeGuardOnExit( ) + [&]( )
-
-#define CONCATENATE_IMPL( s1, s2 ) s1##s2
-#define CONCATENATE( s1, s2 ) CONCATENATE_IMPL( s1, s2 )
-#ifdef __COUNTER__
-#define ANONYMOUS_VARIABLE( str ) CONCATENATE( str, __COUNTER__ )
-#else
-#define ANONYMOUS_VARIABLE( str ) CONCATENATE( str, __LINE__ )
-#endif
+	*/
 } // namespace daw

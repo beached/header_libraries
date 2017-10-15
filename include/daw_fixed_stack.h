@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include "daw_stack_array.h"
+#include "daw_static_array.h"
 
 namespace daw {
 	template<typename T, size_t N>
@@ -38,7 +38,7 @@ namespace daw {
 
 	private:
 		size_t m_index;
-		daw::array_t<T, N> m_stack;
+		daw::static_array_t<T, N> m_stack;
 
 	public:
 		constexpr fixed_stack_t( ) noexcept : m_index{0}, m_stack{} {}

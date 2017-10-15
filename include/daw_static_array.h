@@ -26,7 +26,7 @@
 
 namespace daw {
 	template<typename T, size_t N>
-	struct array_t {
+	struct static_array_t {
 		using value_t = T;
 		using reference = value_t &;
 		using const_reference = value_t const &;
