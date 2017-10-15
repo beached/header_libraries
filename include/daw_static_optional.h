@@ -42,36 +42,9 @@ namespace daw {
 			T value;
 			daw::nothing empty_value;
 
-			/*
-			constexpr static_optional_storage( static_optional_storage const & ) = delete;
-			constexpr static_optional_storage( static_optional_storage && ) = delete;
-			constexpr static_optional_storage &operator=( static_optional_storage const & ) = delete;
-			constexpr static_optional_storage &operator=( static_optional_storage && ) = delete;
-			constexpr static_optional_storage( daw::nothing ) noexcept : empty_value{} {}
-			constexpr static_optional_storage( ) noexcept : value{} {}
-			*/
 			constexpr static_optional_storage( daw::nothing ) noexcept : empty_value{} {}
 			constexpr static_optional_storage( T v ) noexcept : value{std::move( v )} {}
-
-//			~static_optional_storage( ) noexcept = default;
 		};
-
-		template<typename T>
-		constexpr static_optional_storage<T> copy( static_optional_storage<T> const &value, bool is_init ) noexcept {
-			if( is_init ) {
-				return static_optional_storage<T>{value.value};
-			}
-			return static_optional_storage<T>{daw::nothing{}};
-		}
-
-		template<typename T>
-		constexpr static_optional_storage<T> move( static_optional_storage<T> &value, bool is_init ) noexcept {
-			if( is_init ) {
-				auto result = static_optional_storage<T>{std::move( value.value )};
-				value.empty_value = daw::nothing{};
-			}
-			return static_optional_storage<T>{daw::nothing{}};
-		}
 	} // namespace impl
 
 	template<typename Value>
@@ -114,7 +87,7 @@ namespace daw {
 		  : m_value{other.m_value}, m_occupied{other.m_occupied} {}
 
 		constexpr static_optional( static_optional &&other ) noexcept
-		  : m_value{impl::move( other.m_value, other.m_occupied )}, m_occupied{daw::exchange( other.m_occupied, false )} {}
+		  : m_value{std::move( other.m_value )}, m_occupied{daw::exchange( other.m_occupied, false )} {}
 
 		constexpr static_optional &operator=( static_optional const &rhs ) noexcept {
 			if( &rhs != this ) {
