@@ -111,36 +111,37 @@ namespace daw {
 		~static_optional( ) noexcept = default;
 
 		constexpr static_optional( static_optional const &other ) noexcept
-		  : m_value{impl::copy( other.m_value, other.m_occupied )}, m_occupied{other.m_occupied} {}
+		  : m_value{other.m_value}, m_occupied{other.m_occupied} {}
 
 		constexpr static_optional( static_optional &&other ) noexcept
 		  : m_value{impl::move( other.m_value, other.m_occupied )}, m_occupied{daw::exchange( other.m_occupied, false )} {}
 
 		constexpr static_optional &operator=( static_optional const &rhs ) noexcept {
 			if( &rhs != this ) {
-				m_value = impl::copy( rhs.m_value, rhs.m_occupied );
+				m_value = rhs.m_value;
 				m_occupied = rhs.m_occupied;
 			}
 			return *this;
 		}
 
 		constexpr static_optional &operator=( static_optional &&rhs ) noexcept {
-			m_value = impl::move( rhs.m_value, rhs.m_occupied );
+			m_value = std::move( rhs.m_value );
 			m_occupied = daw::exchange( rhs.m_occupied, false );
 			return *this;
 		}
 
 		constexpr static_optional &operator=( daw::nothing ) noexcept {
-			using std::swap;
-			static_optional tmp{daw::nothing{}};
-			swap( *this, tmp );
+			m_value = daw::nothing{};
+			m_occupied = false;
 			return *this;
 		}
 
-		template<typename T, std::enable_if_t<!daw::is_same_v<static_optional, std::decay_t<T>>, std::nullptr_t> = nullptr>
-		constexpr static_optional & operator=( T && value ) noexcept {
-			m_value = std::forward<T>(value);
-			m_occupied = !daw::is_same_v<daw::nothing, std::decay_t<T>>;
+		template<typename T, std::enable_if_t<!daw::is_same_v<static_optional, std::decay_t<T>> &&
+		                                        !daw::is_same_v<daw::nothing, std::decay_t<T>>,
+		                                      std::nullptr_t> = nullptr>
+		constexpr static_optional &operator=( T value ) noexcept {
+			m_value = std::move(value);
+			m_occupied = true;
 			return *this;
 		}
 
