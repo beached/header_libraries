@@ -41,6 +41,9 @@ namespace daw {
 	template<typename T, typename U>
 	constexpr bool is_assignable_v = std::is_assignable<T, U>::value;
 
+	template<typename T>
+	constexpr bool is_trivial_v = std::is_trivial<T>::value;
+
 	template<typename T, typename U>
 	constexpr bool is_trivially_assignable_v = std::is_trivially_assignable<T, U>::value;
 
@@ -329,4 +332,13 @@ namespace daw {
 
 	template<typename T>
 	constexpr bool is_nothrow_default_constructible_v = std::is_nothrow_default_constructible<T>::value;
+
+	template<class T>
+	constexpr bool is_destructible_v = std::is_destructible<T>::value;
+
+	template<class T>
+	constexpr bool is_trivially_destructible_v = std::is_trivially_destructible<T>::value;
+
+	template<class T>
+	constexpr bool is_nothrow_destructible_v = std::is_nothrow_destructible<T>::value;
 } // namespace daw

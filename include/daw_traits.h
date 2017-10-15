@@ -530,4 +530,6 @@ namespace daw {
 	constexpr bool is_regular_v =
 	  all_true_v<is_default_constructible_v<T> && is_copy_constructible_v<T> && is_move_constructible_v<T> &&
 	             is_copy_assignable_v<T> && is_move_assignable_v<T> && is_equality_comparable_v<T>>;
+
+	struct nothing {};
 } // namespace daw

@@ -176,8 +176,6 @@ namespace daw {
 		}
 	} // namespace impl
 
-	struct nothing {};
-
 	template<class ValueType>
 	struct optional {
 		using value_type = std::remove_cv_t<std::remove_reference_t<ValueType>>;

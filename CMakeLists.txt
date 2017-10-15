@@ -80,6 +80,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_semaphore
 	daw_size_literals
 	daw_stack_array
+	daw_static_optional
 	daw_string
 	daw_string_view
 	daw_traits
