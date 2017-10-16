@@ -86,7 +86,7 @@ namespace daw {
 			virtual ~memory_mapped_file_t( ) {
 				try {
 					close( );
-				} catch( ... ) { std::cerr << "Exception while closing memory mapped file\n" }
+				} catch( ... ) { std::cerr << "Exception while closing memory mapped file\n"; }
 			}
 
 			bool is_open( ) const {
