@@ -23,7 +23,7 @@
 #include "boost_test.h"
 #include <iostream>
 
-#include "scope_guard.h"
+#include "daw_scope_guard.h"
 
 struct oe_t {
 	bool * b;

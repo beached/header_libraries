@@ -28,7 +28,7 @@
 #include "daw_newhelper.h"
 #include "daw_operators.h"
 #include "daw_traits.h"
-#include "scope_guard.h"
+#include "daw_scope_guard.h"
 
 namespace daw {
 	template<typename CharT = char>

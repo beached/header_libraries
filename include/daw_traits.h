@@ -431,10 +431,6 @@ namespace daw {
 				function( std::forward<Args>( args )... );
 			}
 		};
-
-		struct is_uniform_tuple : std::false_type;
-
-
 	} // namespace impl
 
 	template<typename Function>
@@ -483,7 +479,16 @@ namespace daw {
 
 		template<typename Iterator, typename T>
 		using assignable = decltype( *std::declval<Iterator>( ) = std::declval<T>( ) );
+
+		template<typename T>
+		using dereferenceable = decltype( *std::declval<T>( ) );
 	} // namespace detectors
+
+	template<typename T>
+	using is_dereferenceable_t = typename is_detected<detectors::dereferenceable, T>::type;
+
+	template<typename T>
+	constexpr bool is_dereferenceable_v = is_detected_v<detectors::dereferenceable, T>;
 
 	template<typename Function, typename... Args>
 	using is_callable_t = typename is_detected<detectors::callable_with, Function, Args...>::type;
@@ -518,14 +523,64 @@ namespace daw {
 	template<typename T, typename U = T>
 	constexpr bool is_equal_greater_than_comparable_v = is_detected_convertible_v<bool, detectors::equal_greater_than_comparable, T, U>;
 
-	template<typename T>
-	constexpr bool is_swappable_v = is_detected_v<detectors::swappable, T>;
-
 	template<typename Iterator, typename T = typename std::iterator_traits<Iterator>::value_type>
 	constexpr bool is_assignable_iterator_v = is_detected_v<detectors::assignable, Iterator, T>;
 
 	template<typename L, typename R>
 	constexpr bool is_comparable_v = is_equality_comparable_v<L, R> && is_equality_comparable_v<R, L>;
+	
+	namespace impl {
+		namespace is_iter {
+			template<typename T>
+			using has_value_type = typename std::iterator_traits<T>::value_type;
+
+			template<typename T>
+			using has_difference_type = typename std::iterator_traits<T>::difference_type;
+
+			template<typename T>
+			using has_reference = typename std::iterator_traits<T>::reference;
+
+			template<typename T>
+			using has_pointer = typename std::iterator_traits<T>::pointer;
+
+			template<typename T>
+			using has_iterator_category = typename std::iterator_traits<T>::iterator_category;
+
+			template<typename T>
+			using is_incrementable = decltype( ++std::declval<T&>( ) );
+		} // namespace is_iter
+		template<typename T>
+		constexpr bool is_incrementable_v = is_same_v<T &, daw::detected_t<is_iter::is_incrementable, T>>;
+
+		template<typename T>
+		constexpr bool has_value_type_v = daw::is_detected_v<is_iter::has_value_type, T>;
+
+		template<typename T>
+		constexpr bool has_difference_type_v = daw::is_detected_v<is_iter::has_difference_type, T>;
+
+		template<typename T>
+		constexpr bool has_reference_v = daw::is_detected_v<is_iter::has_reference, T>;
+
+		template<typename T>
+		constexpr bool has_pointer_v = daw::is_detected_v<is_iter::has_pointer, T>;
+
+		template<typename T>
+		constexpr bool has_iterator_category_v = daw::is_detected_v<is_iter::has_iterator_category, T>;
+
+		template<typename T>
+		constexpr bool has_iterator_trait_types_v = has_value_type_v<T> &&has_difference_type_v<T> &&has_reference_v<T>
+		  &&has_pointer_v<T> &&has_iterator_category_v<T>;
+	}
+
+	// TODO: add is_swappable after c++17. Cannot do in C++14
+	template<typename Iterator>
+	constexpr bool is_iterator_v =
+	  is_copy_constructible_v<Iterator> &&is_copy_assignable_v<Iterator> &&is_destructible_v<Iterator> &&
+	    impl::has_iterator_trait_types_v<Iterator> &&is_dereferenceable_v<Iterator> &&impl::is_incrementable_v<Iterator>;
+
+	template<typename OutputIterator, typename T>
+	constexpr bool is_output_iterator_v = is_iterator_v<OutputIterator> &&is_assignable_iterator_v<OutputIterator, T>;
+
 
 	//////////////////////////////////////////////////////////////////////////
 	/// Summary: is like a regular type see http://www.stepanovpapers.com/DeSt98.pdf

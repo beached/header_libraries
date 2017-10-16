@@ -415,3 +415,104 @@ BOOST_AUTO_TEST_CASE( binary_predicate_002 ) {
 	static_assert( daw::is_predicate_v<test_binary_pred_t, int, int>, "Not a binary predicate" );
 	BOOST_REQUIRE( a );
 }
+
+BOOST_AUTO_TEST_CASE( is_iterator_001 ) {
+	using iter_t = int const *;
+	BOOST_REQUIRE( daw::is_copy_constructible_v<iter_t> );
+	BOOST_REQUIRE( daw::is_copy_assignable_v<iter_t> );
+	BOOST_REQUIRE( daw::is_destructible_v<iter_t> );
+	BOOST_REQUIRE( daw::impl::has_iterator_trait_types_v<iter_t> );
+	BOOST_REQUIRE( daw::is_dereferenceable_v<iter_t> );
+	BOOST_REQUIRE( daw::impl::is_incrementable_v<iter_t> );
+}
+
+BOOST_AUTO_TEST_CASE( is_iterator_002 ) {
+	using iter_t = int const *;
+	BOOST_REQUIRE( daw::is_iterator_v<iter_t> );
+}
+
+BOOST_AUTO_TEST_CASE( is_iterator_003 ) {
+	using iter_t = typename std::vector<int>::iterator;
+	BOOST_REQUIRE( daw::is_copy_constructible_v<iter_t> );
+	BOOST_REQUIRE( daw::is_copy_assignable_v<iter_t> );
+	BOOST_REQUIRE( daw::is_destructible_v<iter_t> );
+	BOOST_REQUIRE( daw::impl::has_value_type_v<iter_t> );
+	BOOST_REQUIRE( daw::impl::has_difference_type_v<iter_t> );
+	BOOST_REQUIRE( daw::impl::has_reference_v<iter_t> );
+	BOOST_REQUIRE( daw::impl::has_pointer_v<iter_t> );
+	BOOST_REQUIRE( daw::impl::has_iterator_category_v<iter_t> );
+	BOOST_REQUIRE( daw::impl::has_iterator_trait_types_v<iter_t> );
+	BOOST_REQUIRE( daw::is_dereferenceable_v<iter_t> );
+	BOOST_REQUIRE( daw::impl::is_incrementable_v<iter_t> );
+}
+
+BOOST_AUTO_TEST_CASE( is_iterator_004 ) {
+	using iter_t = typename std::vector<int>::iterator;
+	BOOST_REQUIRE( daw::is_iterator_v<iter_t> );
+}
+
+BOOST_AUTO_TEST_CASE( is_iterator_005 ) {
+	using iter_t = int const * const;
+	BOOST_REQUIRE( daw::is_copy_constructible_v<iter_t> );
+	BOOST_REQUIRE( !daw::is_copy_assignable_v<iter_t> );
+	BOOST_REQUIRE( daw::is_destructible_v<iter_t> );
+	BOOST_REQUIRE( !daw::impl::has_iterator_trait_types_v<iter_t> );
+	BOOST_REQUIRE( daw::is_dereferenceable_v<iter_t> );
+	BOOST_REQUIRE( !daw::impl::is_incrementable_v<iter_t> );
+}
+
+BOOST_AUTO_TEST_CASE( is_iterator_006 ) {
+	using iter_t = int const * const;
+	BOOST_REQUIRE( !daw::is_iterator_v<iter_t> );
+}
+
+BOOST_AUTO_TEST_CASE( is_iterator_007 ) {
+	using iter_t = typename std::unordered_map<int, int>::iterator;
+	BOOST_REQUIRE( daw::is_copy_constructible_v<iter_t> );
+	BOOST_REQUIRE( daw::is_copy_assignable_v<iter_t> );
+	BOOST_REQUIRE( daw::is_destructible_v<iter_t> );
+	BOOST_REQUIRE( daw::impl::has_value_type_v<iter_t> );
+	BOOST_REQUIRE( daw::impl::has_difference_type_v<iter_t> );
+	BOOST_REQUIRE( daw::impl::has_reference_v<iter_t> );
+	BOOST_REQUIRE( daw::impl::has_pointer_v<iter_t> );
+	BOOST_REQUIRE( daw::impl::has_iterator_category_v<iter_t> );
+	BOOST_REQUIRE( daw::impl::has_iterator_trait_types_v<iter_t> );
+	BOOST_REQUIRE( daw::is_dereferenceable_v<iter_t> );
+	BOOST_REQUIRE( daw::impl::is_incrementable_v<iter_t> );
+}
+
+BOOST_AUTO_TEST_CASE( is_iterator_008 ) {
+	using iter_t = typename std::unordered_map<int, int>::iterator;
+	BOOST_REQUIRE( daw::is_iterator_v<iter_t> );
+}
+
+BOOST_AUTO_TEST_CASE( is_output_iterator_001 ) {
+	using iter_t = typename std::vector<int>::iterator;
+	constexpr auto const test_value = daw::is_output_iterator_v<iter_t, int>;
+	BOOST_REQUIRE( test_value );
+}
+
+BOOST_AUTO_TEST_CASE( is_output_iterator_002 ) {
+	using iter_t = std::back_insert_iterator<std::vector<int>>;
+	constexpr auto const test_value = daw::is_output_iterator_v<iter_t, int>;
+	BOOST_REQUIRE( test_value );
+}
+
+BOOST_AUTO_TEST_CASE( is_output_iterator_003 ) {
+	using iter_t = decltype( std::ostream_iterator<int>{std::cout} );
+	constexpr auto const test_value = daw::is_output_iterator_v<iter_t, int>;
+	BOOST_REQUIRE( test_value );
+}
+
+BOOST_AUTO_TEST_CASE( is_output_iterator_004 ) {
+	using iter_t = decltype( std::istream_iterator<int>{std::cin} );
+	constexpr auto const test_value = daw::is_output_iterator_v<iter_t, int>;
+	BOOST_REQUIRE( !test_value );
+}
+
+BOOST_AUTO_TEST_CASE( is_output_iterator_005 ) {
+	using iter_t = typename std::vector<int>::const_iterator;
+	constexpr auto const test_value = daw::is_output_iterator_v<iter_t, int>;
+	BOOST_REQUIRE( !test_value );
+}
+

@@ -76,6 +76,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_read_only
 	daw_reference
 	daw_safe_string
+	daw_scope_guard
 	daw_scoped_multilock
 	daw_semaphore
 	daw_size_literals
@@ -90,7 +91,6 @@ set( TESTED_HEADERS_PREFIXES
 	daw_zipcontainer
 	daw_zipiter
 	not_null
-	scope_guard
 )
 
 set( UNTESTED_HEADER_FILES

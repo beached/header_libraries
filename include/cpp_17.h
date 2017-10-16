@@ -333,16 +333,16 @@ namespace daw {
 	template<typename T>
 	constexpr bool is_nothrow_default_constructible_v = std::is_nothrow_default_constructible<T>::value;
 
-	template<class T>
+	template<typename T>
 	constexpr bool is_destructible_v = std::is_destructible<T>::value;
 
-	template<class T>
+	template<typename T>
 	constexpr bool is_trivially_destructible_v = std::is_trivially_destructible<T>::value;
 
-	template<class T>
+	template<typename T>
 	constexpr bool is_nothrow_destructible_v = std::is_nothrow_destructible<T>::value;
 
-	template<class T, class U = T>
+	template<typename T, typename U = T>
 	constexpr T exchange( T &obj, U &&new_value ) {
 		T old_value = std::move( obj );
 		obj = std::forward<U>( new_value );

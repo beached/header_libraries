@@ -31,21 +31,11 @@ namespace daw {
 		mutable bool m_is_active;
 
 	public:
-		constexpr ScopeGuard( FunctionType f ) noexcept : m_function{std::move( f )}, m_is_active{true} {}
-
-		~ScopeGuard( ) noexcept( noexcept( m_function( ) ) ) {
-			if( m_is_active ) {
-				m_function( );
-			}
-		}
-
-		constexpr void dismiss( ) const noexcept {
-			m_function = nullptr;
-			m_is_active = false;
-		}
-
 		ScopeGuard( ) = delete;
 		ScopeGuard( const ScopeGuard & ) = delete;
+		ScopeGuard &operator=( const ScopeGuard & ) = delete;
+
+		constexpr ScopeGuard( FunctionType f ) noexcept : m_function{std::move( f )}, m_is_active{true} {}
 
 		constexpr ScopeGuard( ScopeGuard &&other ) noexcept
 		  : m_function{daw::exchange( other.m_function, nullptr )}, m_is_active{daw::exchange( other.m_is_active, false )} { }
@@ -54,6 +44,18 @@ namespace daw {
 			m_function = daw::exchange( rhs.m_function, nullptr );
 			m_is_active = daw::exchange( rhs.m_is_active, false );
 			return *this;
+		}
+
+		/// Assumes m_function will never throw
+		~ScopeGuard( ) noexcept {
+			if( m_is_active ) {
+				m_function( );
+			}
+		}
+
+		constexpr void dismiss( ) const noexcept {
+			m_function = nullptr;
+			m_is_active = false;
 		}
 
 		constexpr bool operator==( const ScopeGuard &rhs ) const noexcept {
@@ -65,15 +67,5 @@ namespace daw {
 	constexpr ScopeGuard<FunctionType> on_scope_exit( FunctionType f ) noexcept {
 		return ScopeGuard<FunctionType>( std::move( f ) );
 	}
-
-	/*
-	namespace detail {
-		enum class ScopeGuardOnExit {};
-
-		template<typename FunctionType>
-		constexpr ScopeGuard<FunctionType> operator+( ScopeGuardOnExit, FunctionType &&fn ) noexcept {
-			return ScopeGuard<FunctionType>( std::forward<FunctionType>( fn ) );
-		}
-	} // namespace detail
-	*/
 } // namespace daw
+
