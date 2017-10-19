@@ -516,3 +516,42 @@ BOOST_AUTO_TEST_CASE( is_output_iterator_005 ) {
 	BOOST_REQUIRE( !test_value );
 }
 
+BOOST_AUTO_TEST_CASE( is_input_iterator_001 ) {
+	using iter_t = typename std::vector<int>::iterator;
+	{
+		constexpr auto const test_value = daw::is_equality_comparable_v<iter_t>;
+		BOOST_REQUIRE( test_value );
+	}
+	{
+		constexpr auto const test_value = daw::is_convertible_v<decltype( *std::declval<iter_t>( ) ), int>;
+		BOOST_REQUIRE( test_value );
+	}
+	{
+		constexpr auto const test_value = daw::is_input_iterator_v<iter_t, int>;
+		BOOST_REQUIRE( test_value );
+	}
+}
+
+BOOST_AUTO_TEST_CASE( is_input_iterator_002 ) {
+	using iter_t = std::back_insert_iterator<std::vector<int>>;
+	constexpr auto const test_value = daw::is_input_iterator_v<iter_t, int>;
+	BOOST_REQUIRE( !test_value );
+}
+
+BOOST_AUTO_TEST_CASE( is_input_iterator_003 ) {
+	using iter_t = decltype( std::ostream_iterator<int>{std::cout} );
+	constexpr auto const test_value = daw::is_input_iterator_v<iter_t, int>;
+	BOOST_REQUIRE( !test_value );
+}
+
+BOOST_AUTO_TEST_CASE( is_input_iterator_004 ) {
+	using iter_t = decltype( std::istream_iterator<int>{std::cin} );
+	constexpr auto const test_value = daw::is_input_iterator_v<iter_t, int>;
+	BOOST_REQUIRE( test_value );
+}
+
+BOOST_AUTO_TEST_CASE( is_input_iterator_005 ) {
+	using iter_t = typename std::vector<int>::const_iterator;
+	constexpr auto const test_value = daw::is_input_iterator_v<iter_t, int>;
+	BOOST_REQUIRE( test_value );
+}

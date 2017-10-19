@@ -193,37 +193,37 @@ namespace daw {
 	constexpr bool name##_v = impl::name<T>::value;
 		  // END METHOD_CHECKER_ANY
 
-		/*
-		#define GENERATE_HAS_MEMBER_FUNCTION_TRAIT( MemberName ) \
-		  namespace impl { \
-		    template<typename T, typename = void> \
-		    class has_##MemberName##_member_impl : public std::false_type {}; \
-		                                                                                                                       \
-		    template<typename T> \
-		    class has_##MemberName##_member_impl<T, typename std::enable_if_t<is_class_v<T>>> { \
-		      struct Fallback { \
-		        int MemberName; \
-		      }; \
-		      struct Derived : T, Fallback {}; \
-		                                                                                                                       \
-		      template<typename U, U> \
-		      struct Check; \
-		                                                                                                                       \
-		      using ArrayOfOne = char[1]; \
-		      using ArrayOfTwo = char[2]; \
-		                                                                                                                       \
-		      template<typename U> \
-		      static ArrayOfOne &func( Check<int Fallback::*, &U::MemberName> * ); \
-		      template<typename U> \
-		      static ArrayOfTwo &func( ... ); \
-		                                                                                                                       \
-		    public: \
-		      using type = has_##MemberName##_member_impl; \
-		      enum { value = sizeof( func<Derived>( 0 ) ) == 2 }; \
-		    }; \
-		  }
+			/*
+			#define GENERATE_HAS_MEMBER_FUNCTION_TRAIT( MemberName ) \
+			  namespace impl { \
+			    template<typename T, typename = void> \
+			    class has_##MemberName##_member_impl : public std::false_type {}; \
+			                                                                                                                       \
+			    template<typename T> \
+			    class has_##MemberName##_member_impl<T, typename std::enable_if_t<is_class_v<T>>> { \
+			      struct Fallback { \
+			        int MemberName; \
+			      }; \
+			      struct Derived : T, Fallback {}; \
+			                                                                                                                       \
+			      template<typename U, U> \
+			      struct Check; \
+			                                                                                                                       \
+			      using ArrayOfOne = char[1]; \
+			      using ArrayOfTwo = char[2]; \
+			                                                                                                                       \
+			      template<typename U> \
+			      static ArrayOfOne &func( Check<int Fallback::*, &U::MemberName> * ); \
+			      template<typename U> \
+			      static ArrayOfTwo &func( ... ); \
+			                                                                                                                       \
+			    public: \
+			      using type = has_##MemberName##_member_impl; \
+			      enum { value = sizeof( func<Derived>( 0 ) ) == 2 }; \
+			    }; \
+			  }
 
-		*/
+			*/
 
 #define HAS_STATIC_TYPE_MEMBER( MemberName )                                                                           \
 	namespace detectors {                                                                                                \
@@ -515,20 +515,23 @@ namespace daw {
 	constexpr bool is_less_than_comparable_v = is_detected_convertible_v<bool, detectors::less_than_comparable, T, U>;
 
 	template<typename T, typename U = T>
-	constexpr bool is_equal_less_than_comparable_v = is_detected_convertible_v<bool, detectors::equal_less_than_comparable, T, U>;
+	constexpr bool is_equal_less_than_comparable_v =
+	  is_detected_convertible_v<bool, detectors::equal_less_than_comparable, T, U>;
 
 	template<typename T, typename U = T>
-	constexpr bool is_greater_than_comparable_v = is_detected_convertible_v<bool, detectors::greater_than_comparable, T, U>;
+	constexpr bool is_greater_than_comparable_v =
+	  is_detected_convertible_v<bool, detectors::greater_than_comparable, T, U>;
 
 	template<typename T, typename U = T>
-	constexpr bool is_equal_greater_than_comparable_v = is_detected_convertible_v<bool, detectors::equal_greater_than_comparable, T, U>;
+	constexpr bool is_equal_greater_than_comparable_v =
+	  is_detected_convertible_v<bool, detectors::equal_greater_than_comparable, T, U>;
 
 	template<typename Iterator, typename T = typename std::iterator_traits<Iterator>::value_type>
 	constexpr bool is_assignable_iterator_v = is_detected_v<detectors::assignable, Iterator, T>;
 
 	template<typename L, typename R>
-	constexpr bool is_comparable_v = is_equality_comparable_v<L, R> && is_equality_comparable_v<R, L>;
-	
+	constexpr bool is_comparable_v = is_equality_comparable_v<L, R> &&is_equality_comparable_v<R, L>;
+
 	namespace impl {
 		namespace is_iter {
 			template<typename T>
@@ -547,7 +550,7 @@ namespace daw {
 			using has_iterator_category = typename std::iterator_traits<T>::iterator_category;
 
 			template<typename T>
-			using is_incrementable = decltype( ++std::declval<T&>( ) );
+			using is_incrementable = decltype( ++std::declval<T &>( ) );
 		} // namespace is_iter
 		template<typename T>
 		constexpr bool is_incrementable_v = is_same_v<T &, daw::detected_t<is_iter::is_incrementable, T>>;
@@ -570,7 +573,7 @@ namespace daw {
 		template<typename T>
 		constexpr bool has_iterator_trait_types_v = has_value_type_v<T> &&has_difference_type_v<T> &&has_reference_v<T>
 		  &&has_pointer_v<T> &&has_iterator_category_v<T>;
-	}
+	} // namespace impl
 
 	// TODO: add is_swappable after c++17. Cannot do in C++14
 	template<typename Iterator>
@@ -581,6 +584,13 @@ namespace daw {
 	template<typename OutputIterator, typename T>
 	constexpr bool is_output_iterator_v = is_iterator_v<OutputIterator> &&is_assignable_iterator_v<OutputIterator, T>;
 
+	template<typename InputIterator, typename T = std::decay_t<decltype( *std::declval<InputIterator>( ) )>>
+	constexpr bool is_input_iterator_v = is_iterator_v<InputIterator> &&is_equality_comparable_v<InputIterator>
+	  &&is_convertible_v<decltype( *std::declval<InputIterator>( ) ), T>;
+
+	template<typename ForwardIterator, typename T = std::decay_t<decltype( *std::declval<ForwardIterator>( ) )>>
+	constexpr bool is_forward_iterator_v =
+	  is_input_iterator_v<ForwardIterator, T> &&is_default_constructible_v<ForwardIterator>;
 
 	//////////////////////////////////////////////////////////////////////////
 	/// Summary: is like a regular type see http://www.stepanovpapers.com/DeSt98.pdf
