@@ -86,6 +86,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_string_view
 	daw_traits
 	daw_tuple_helper
+	daw_unique_array
 	daw_utility
 	daw_variant
 	daw_zipcontainer
