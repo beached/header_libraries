@@ -584,6 +584,5 @@ namespace daw {
 			}
 			return out_it;
 		}
-
 	} // namespace algorithm
 } // namespace daw

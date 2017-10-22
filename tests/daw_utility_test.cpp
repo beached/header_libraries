@@ -48,3 +48,43 @@ BOOST_AUTO_TEST_CASE( daw_utility_nearly_equal_test ) {
 	i2 = 2;
 	BOOST_REQUIRE( !daw::nearly_equal( i1, i2 ) );
 }
+
+BOOST_AUTO_TEST_CASE( daw_hex_test_001 ) {
+	uint32_t const a = 0xFF00FFFF;
+	std::string a_str;
+	daw::hex( a, std::back_inserter( a_str ) );
+	std::cout << "Output: " << a_str << '\n';
+	BOOST_REQUIRE_EQUAL( a_str, "FF00FFFF" );
+}
+
+BOOST_AUTO_TEST_CASE( daw_hex_test_002 ) {
+	std::vector<uint32_t> vec_a( 10, 0xFF00FFFF );
+	std::string a_str;
+	daw::hex( vec_a.cbegin( ), vec_a.cend( ), std::back_inserter( a_str ) );
+	std::cout << "Output: " << a_str << '\n';
+}
+
+BOOST_AUTO_TEST_CASE( daw_hex_test_003 ) {
+	std::string a_str;
+	daw::hex( "abcdef", std::back_inserter( a_str ) );
+	std::cout << "Output: " << a_str << '\n';
+}
+
+constexpr bool to_hex_test_004( ) noexcept {
+	uint32_t const a = 0xFF00FFFF;
+	char result[9] = {0};
+	char const expected[] = "FF00FFFF";
+	char * ptr = result;
+	daw::hex( a, ptr ); 
+	for( size_t n=0; n<8; ++n ) {
+		if( result[n] != expected[n] ) {
+			return false;
+		}
+	}
+	return true;
+}
+
+BOOST_AUTO_TEST_CASE( daw_hex_test_004 ) {
+	BOOST_REQUIRE( to_hex_test_004( ) );
+}
+

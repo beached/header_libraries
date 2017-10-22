@@ -325,8 +325,7 @@ namespace daw {
 		         typename Allocator = std::allocator<CharT>>
 		bool convertTo( std::basic_string<CharT, Traits, Allocator> const &from, int32_t &to ) {
 			auto it = from.begin( );
-			using namespace boost::spirit;
-			if( !qi::parse( it, from.end( ), qi::int_, to ) ) {
+			if( !boost::spirit::qi::parse( it, from.end( ), boost::spirit::qi::int_, to ) ) {
 				return false;
 			}
 			return from.end( ) == it;
@@ -336,8 +335,7 @@ namespace daw {
 		         typename Allocator = std::allocator<CharT>>
 		bool convertTo( std::basic_string<CharT, Traits, Allocator> const &from, int64_t &to ) {
 			auto it = from.begin( );
-			using namespace boost::spirit;
-			if( !qi::parse( it, from.end( ), qi::long_long, to ) ) {
+			if( !boost::spirit::qi::parse( it, from.end( ), boost::spirit::qi::long_long, to ) ) {
 				return false;
 			}
 			return from.end( ) == it;
@@ -347,8 +345,7 @@ namespace daw {
 		         typename Allocator = std::allocator<CharT>>
 		bool convertTo( std::basic_string<CharT, Traits, Allocator> const &from, float &to ) {
 			auto it = from.begin( );
-			using namespace boost::spirit;
-			if( !qi::parse( it, from.end( ), qi::float_, to ) ) {
+			if( !boost::spirit::qi::parse( it, from.end( ), boost::spirit::qi::float_, to ) ) {
 				return false;
 			}
 			return from.end( ) == it;
@@ -358,8 +355,7 @@ namespace daw {
 		         typename Allocator = std::allocator<CharT>>
 		bool convertTo( std::basic_string<CharT, Traits, Allocator> const &from, double &to ) {
 			auto it = from.begin( );
-			using namespace boost::spirit;
-			if( !qi::parse( it, from.end( ), qi::double_, to ) ) {
+			if( !boost::spirit::qi::parse( it, from.end( ), boost::spirit::qi::double_, to ) ) {
 				return false;
 			}
 			return from.end( ) == it;

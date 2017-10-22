@@ -546,6 +546,73 @@ namespace daw {
 		return first_out;
 	}
 
+	namespace impl {
+		constexpr char get_nibble( char c ) noexcept {
+			c = c & 0x0F;
+			if( c < 10 ) {
+				return '0' + c;
+			}
+			return 'A' + (c - 10);
+		}
+	}
+
+	template<typename OutputIterator>
+	constexpr OutputIterator hex( char c, OutputIterator it_out ) noexcept {
+		*it_out++ = impl::get_nibble( c & 0x0F );
+		*it_out++ = impl::get_nibble( c >> 4 );
+		return it_out;
+	}
+
+	template<typename T, typename OutputIterator, std::enable_if_t<daw::is_integral_v<T>, std::nullptr_t> = nullptr>
+	constexpr OutputIterator hex( T const & val, OutputIterator it_out ) noexcept {
+		for( size_t n = sizeof( T ); n > 0; --n ) {
+			it_out = hex( static_cast<char>( val >> ( 8 * (n-1) ) ), it_out );
+		}
+		return it_out;
+	}
+
+	template<typename T, typename OutputIterator, std::enable_if_t<!daw::is_integral_v<T>, std::nullptr_t> = nullptr>
+	OutputIterator hex( T const & val, OutputIterator it_out ) noexcept {
+		auto chr_ptr = reinterpret_cast<char const *>( &val );
+		for( size_t n=0; n<sizeof(T); ++n ) {
+			it_out = hex( *chr_ptr++, it_out );
+		}
+		return it_out;
+	}
+
+	template<typename ForwardIterator1, typename ForwardIterator2, typename OutputIterator,
+	         std::enable_if_t<daw::is_integral_v<typename std::iterator_traits<ForwardIterator1>::value_type>,
+	                          std::nullptr_t> = nullptr>
+	constexpr OutputIterator hex( ForwardIterator1 first_in, ForwardIterator2 const last_in, OutputIterator first_out ) noexcept {
+		for( ; first_in != last_in; ++first_in ) {
+			auto const val = *first_in;
+			first_out = hex( val, first_out );
+		}
+		return first_out;
+	}
+
+	template<typename OutputIterator>
+	constexpr OutputIterator hex( char const *str, size_t len, OutputIterator first_out ) noexcept {
+		for( size_t n = 0; n < len; ++n ) {
+			first_out = hex( str[n], first_out );
+		}
+		return first_out;
+	}
+
+	template<size_t N, typename OutputIterator>
+	constexpr OutputIterator hex( char const ( &str )[N], OutputIterator first_out ) noexcept {
+		return hex( str, N - 1, first_out );
+	}
+
+	template<typename ForwardIterator1, typename ForwardIterator2, typename OutputIterator,
+	         std::enable_if_t<!daw::is_integral_v<typename std::iterator_traits<ForwardIterator1>::value_type>,
+	                          std::nullptr_t> = nullptr>
+	OutputIterator hex( ForwardIterator1 first_in, ForwardIterator2 const last_in, OutputIterator first_out ) noexcept {
+		for( ; first_in != last_in; ++first_in ) {
+			first_out = hex( *first_out, first_out );
+		}
+		return first_out;
+	}
 } // namespace daw
 
 template<typename... Ts>

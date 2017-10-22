@@ -23,7 +23,6 @@
 #pragma once
 
 #include <algorithm>
-#include <boost/algorithm/string/predicate.hpp>
 #include <exception>
 #include <list>
 #include <string>

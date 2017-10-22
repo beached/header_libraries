@@ -22,7 +22,6 @@
 
 #pragma once
 
-#include <boost/type_traits.hpp>
 #include <cstdint>
 #include <deque>
 #include <list>
@@ -311,8 +310,12 @@ namespace daw {
 		template<typename T>
 		constexpr bool is_container_or_array_v = any_true_v<is_container_v<T>, is_array_v<T>>;
 
+		namespace detectors {
+			template<typename T>
+			using streamable = decltype( std::declval<std::ostream&>( ) << std::declval<T>( ) );
+		}
 		template<typename T>
-		constexpr bool is_streamable_v = boost::has_left_shift<std::ostream &, T const &, std::ostream &>::value;
+		constexpr bool is_streamable_v = daw::is_detected_v<detectors::streamable, T>;
 
 		template<template<class> class Base, typename Derived>
 		constexpr bool is_mixed_from_v = is_base_of_v<Base<Derived>, Derived>;

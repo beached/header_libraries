@@ -23,13 +23,13 @@
 #pragma once
 
 #include <algorithm>
-#include <boost/algorithm/hex.hpp>
 #include <iterator>
 #include <numeric>
 #include <vector>
 
 #include "daw_algorithm.h"
 #include "daw_traits.h"
+#include "daw_utility.h"
 
 namespace daw {
 	namespace range {
@@ -310,15 +310,15 @@ namespace daw {
 				return Range( m_begin, next( m_begin, new_size + 1 ) );
 			}
 
-			auto as_vector( ) const {
+			std::vector<value_type> as_vector( ) const {
 				std::vector<value_type> result;
 				std::copy( m_begin, m_end, std::back_inserter( result ) );
 				return result;
 			}
 
-			auto to_hex_string( ) const {
+			std::string to_hex_string( ) const {
 				std::string result;
-				boost::algorithm::hex( m_begin, m_end, std::back_inserter( result ) );
+				daw::hex( m_begin, m_end, std::back_inserter( result ) );
 				return result;
 			}
 		}; // struct Range

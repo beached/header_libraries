@@ -452,7 +452,7 @@ BOOST_AUTO_TEST_CASE( is_iterator_004 ) {
 }
 
 BOOST_AUTO_TEST_CASE( is_iterator_005 ) {
-	using iter_t = int const * const;
+	using iter_t = int const *const;
 	BOOST_REQUIRE( daw::is_copy_constructible_v<iter_t> );
 	BOOST_REQUIRE( !daw::is_copy_assignable_v<iter_t> );
 	BOOST_REQUIRE( daw::is_destructible_v<iter_t> );
@@ -462,7 +462,7 @@ BOOST_AUTO_TEST_CASE( is_iterator_005 ) {
 }
 
 BOOST_AUTO_TEST_CASE( is_iterator_006 ) {
-	using iter_t = int const * const;
+	using iter_t = int const *const;
 	BOOST_REQUIRE( !daw::is_iterator_v<iter_t> );
 }
 
@@ -555,3 +555,4 @@ BOOST_AUTO_TEST_CASE( is_input_iterator_005 ) {
 	constexpr auto const test_value = daw::is_input_iterator_v<iter_t, int>;
 	BOOST_REQUIRE( test_value );
 }
+
