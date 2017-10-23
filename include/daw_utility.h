@@ -271,29 +271,6 @@ namespace daw {
 		return result;
 	}
 
-	template<class T, class U>
-	constexpr T round_to_nearest( T const value, U const rnd_by ) noexcept {
-		static_assert( is_arithmetic_v<T>, "First template parameter must be an arithmetic type" );
-		static_assert( is_floating_point_v<U>, "Second template parameter must be a floating point type" );
-		auto const rnd = std::round( static_cast<U>( value ) / rnd_by );
-		return static_cast<T>( rnd * rnd_by );
-	}
-
-	template<class T, class U>
-	constexpr T floor_by( T const value, U const rnd_by ) noexcept {
-		static_assert( is_arithmetic_v<T>, "First template parameter must be an arithmetic type" );
-		static_assert( is_floating_point_v<U>, "Second template parameter must be a floating point type" );
-		auto const rnd = std::floor( static_cast<U>( value ) / rnd_by );
-		return static_cast<T>( rnd * rnd_by );
-	}
-
-	template<class T, class U>
-	constexpr T ceil_by( T const value, U const rnd_by ) noexcept {
-		static_assert( is_arithmetic_v<T>, "First template parameter must be an arithmetic type" );
-		static_assert( is_floating_point_v<U>, "Second template parameter must be a floating point type" );
-		auto const rnd = std::ceil( static_cast<U>( value ) / rnd_by );
-		return static_cast<T>( rnd * rnd_by );
-	}
 
 	constexpr bool is_space( char chr ) noexcept {
 		return 32 == chr;

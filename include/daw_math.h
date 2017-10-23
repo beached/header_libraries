@@ -41,35 +41,43 @@ namespace daw {
 		template<typename T>
 		constexpr T const PI = T( 3.14159265358979323846264338327950288419716939937510582097494459230781640628620899 );
 
-		template<class T, class U>
-		T round_to_nearest( const T &value, const U &rnd_by ) noexcept {
-			static_assert( is_arithmetic_v<T>, "First template parameter must be an arithmetic type" );
-			static_assert( is_floating_point_v<U>, "Second template parameter must be a floating point type" );
-			const auto rnd = std::round( static_cast<U>( value ) / rnd_by );
-			const auto ret = rnd * rnd_by;
-			return static_cast<T>( ret );
+		template<typename Result=intmax_t>
+		constexpr Result round( double d ) noexcept {
+			static_assert( daw::is_integral_v<Result>, "Result type must be integral" );
+			return static_cast<Result>( d + 0.5 );
 		}
 
-		template<class T, class U>
-		T floor_by( const T &value, const U &rnd_by ) noexcept {
-			static_assert( is_arithmetic_v<T>, "First template parameter must be an arithmetic type" );
-			static_assert( is_floating_point_v<U>, "Second template parameter must be a floating point type" );
-			const auto rnd = std::floor( static_cast<U>( value ) / rnd_by );
-			const auto ret = rnd * rnd_by;
-			assert( ret <=
-			        value ); // , __func__": Error, return value should always be less than or equal to value supplied" );
-			return static_cast<T>( ret );
+		template<typename Result=intmax_t>
+		constexpr Result floor( double d ) noexcept {
+			static_assert( daw::is_integral_v<Result>, "Result type must be integral" );
+			return static_cast<Result>( d );
 		}
 
-		template<class T, class U>
-		T ceil_by( const T &value, const U &rnd_by ) noexcept {
-			static_assert( is_arithmetic_v<T>, "First template parameter must be an arithmetic type" );
-			static_assert( is_floating_point_v<U>, "Second template parameter must be a floating point type" );
-			const auto rnd = std::ceil( static_cast<U>( value ) / rnd_by );
-			const auto ret = rnd * rnd_by;
-			assert( ret >= value ); // , __func__": Error, return value should always be greater than or equal to value
-			                        // supplied" );
-			return static_cast<T>( ret );
+		template<typename Result=intmax_t>
+		constexpr Result ceil( double d ) noexcept {
+			static_assert( daw::is_integral_v<Result>, "Result type must be integral" );
+			return static_cast<Result>( d + 1.0 );
+		}
+
+		template<typename T>
+		constexpr T round_by( T const value, double const rnd_by ) noexcept {
+			static_assert( is_arithmetic_v<T>, "value must be an arithmetic type" );
+			auto const rnd = static_cast<double>( round( static_cast<double>( value ) / rnd_by ) );
+			return static_cast<T>( rnd * rnd_by );
+		}
+
+		template<typename T>
+		constexpr T floor_by( T const value, double const rnd_by ) noexcept {
+			static_assert( is_arithmetic_v<T>, "value must be an arithmetic type" );
+			auto const rnd = static_cast<double>( floor( static_cast<double>( value ) / rnd_by ) );
+			return static_cast<T>( rnd * rnd_by );
+		}
+
+		template<typename T>
+		constexpr T ceil_by( T const value, double const rnd_by ) noexcept {
+			static_assert( is_arithmetic_v<T>, "value must be an arithmetic type" );
+			auto const rnd = static_cast<double>( ceil( static_cast<double>( value ) / rnd_by ) );
+			return static_cast<T>( rnd * rnd_by );
 		}
 
 		template<typename T>
@@ -135,7 +143,7 @@ namespace daw {
 			return sin( ( PI<R> / 2.0 ) - x );
 		}
 
-		template<class T>
+		template<typename T>
 		constexpr auto sqr( T const &value ) noexcept {
 			static_assert( is_arithmetic_v<T>, "Template parameter must be an arithmetic type" );
 			return value * value;

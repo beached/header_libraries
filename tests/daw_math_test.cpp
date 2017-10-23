@@ -47,3 +47,58 @@ BOOST_AUTO_TEST_CASE( daw_math_factorial ) {
 	std::cout << "factorial( 0 ) = " << daw::math::factorial( 0 ) << "\n";
 	BOOST_REQUIRE_MESSAGE( daw::math::factorial( 0 ) == 1, "2. factorial of 0 should return 1" );
 }
+
+BOOST_AUTO_TEST_CASE( daw_math_round_001 ) {
+	constexpr auto five = daw::math::round( 4.6 );
+
+	BOOST_REQUIRE_EQUAL( five, 5 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_math_round_by_001 ) {
+	constexpr auto a = daw::math::round_by( 4.6, 7 );
+
+	BOOST_REQUIRE_EQUAL( a, 7 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_math_round_by_002 ) {
+	constexpr auto a = daw::math::round_by( 4.6, 10 );
+
+	BOOST_REQUIRE_EQUAL( a, 0 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_math_ceil_by_001 ) {
+	constexpr auto a = daw::math::ceil_by( 4.6, 1 );
+
+	BOOST_REQUIRE_EQUAL( a, 5 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_math_ceil_by_002 ) {
+	constexpr auto a = daw::math::ceil_by( 4.6, 10 );
+
+	BOOST_REQUIRE_EQUAL( a, 10 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_math_ceil_by_003 ) {
+	constexpr auto a = daw::math::ceil_by( 6.6, 10 );
+
+	BOOST_REQUIRE_EQUAL( a, 10 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_math_floor_by_001 ) {
+	constexpr auto a = daw::math::floor_by( 4.6, 1 );
+
+	BOOST_REQUIRE_EQUAL( a, 4 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_math_floor_by_002 ) {
+	constexpr auto a = daw::math::floor_by( 14.6, 10 );
+
+	BOOST_REQUIRE_EQUAL( a, 10 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_math_floor_by_003 ) {
+	constexpr auto a = daw::math::floor_by( 6.6, 10 );
+
+	BOOST_REQUIRE_EQUAL( a, 0 );
+}
+
