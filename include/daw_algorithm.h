@@ -57,23 +57,45 @@ namespace daw {
 		  -> decltype( std::find_if( begin( container ), end( container ), predicate ) ) {
 			return std::find_if( std::begin( container ), std::end( container ), predicate );
 		}
+		namespace impl {
+			template<typename Iterator1, typename Iterator2>
+			constexpr auto dist( Iterator1 first, Iterator2 last, std::random_access_iterator_tag ) noexcept {
+				return last - first;
+			}
 
-		template<typename Container, typename InputIterator>
-		constexpr void safe_advance( Container &container, InputIterator &it, ptrdiff_t distance ) noexcept {
+			template<typename Iterator1, typename Iterator2, typename Tag>
+			auto dist( Iterator1 first, Iterator2 last, Tag ) noexcept {
+				return std::distance( first, last );
+			}
+
+			template<typename Iterator, typename Distance>
+			constexpr void advance( Iterator & first, Distance n, std::random_access_iterator_tag ) noexcept {
+				first += n;
+			}
+
+			template<typename Iterator, typename Distance, typename Tag>
+			void advance( Iterator & first, Distance n, Tag ) noexcept {
+				std::advance( first, n );
+			}
+		} // namespace impl
+
+		template<typename Container, typename Iterator>
+		constexpr void safe_advance( Container &container, Iterator &it, ptrdiff_t distance ) noexcept {
 			if( 0 == distance ) {
 				return;
 			}
-			auto const it_pos = std::distance( std::begin( container ), it );
+			using it_cat = typename std::iterator_traits<decltype( std::cbegin( container ) )>::iterator_category;
+			auto const it_pos = impl::dist( std::cbegin( container ), it, it_cat{} );
 
 			if( distance > 0 ) {
-				auto const size_of_container = std::distance( std::begin( container ), std::end( container ) );
+				auto const size_of_container = impl::dist( std::cbegin( container ), std::cend( container ), it_cat{} );
 				if( size_of_container <= static_cast<ptrdiff_t>( distance + it_pos ) ) {
 					distance = size_of_container - it_pos;
 				}
 			} else if( distance + it_pos > 0 ) {
 				distance = it_pos;
 			}
-			std::advance( it, distance );
+			impl::advance( it, distance, it_cat{} );
 		}
 
 		template<typename Iterator>
