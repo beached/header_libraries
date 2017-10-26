@@ -30,6 +30,8 @@
 #include <stdexcept>
 
 #include "daw_fnv1a_hash.h"
+#include "daw_iterator.h"
+#include "daw_utility.h"
 
 namespace daw {
 	template<typename T>
@@ -43,7 +45,7 @@ namespace daw {
 		using const_iterator = const_pointer;
 		using reverse_iterator = std::reverse_iterator<iterator>;
 		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
-		using size_type = std::size_t;
+		using size_type = size_t;
 		using difference_type = std::ptrdiff_t;
 
 	private:
@@ -53,13 +55,13 @@ namespace daw {
 	public:
 		constexpr array_view( ) noexcept : m_first{nullptr}, m_size{0} {}
 
-		constexpr array_view( std::nullptr_t ) noexcept : m_first{nullptr}, m_size{0} {}
+		explicit constexpr array_view( std::nullptr_t ) noexcept : m_first{nullptr}, m_size{0} {}
 		constexpr array_view( std::nullptr_t, size_type ) noexcept : m_first{nullptr}, m_size{0} {}
 
 		constexpr array_view( const_pointer s, size_type count ) noexcept : m_first{s}, m_size{count} {}
 
 		template<size_t N>
-		constexpr array_view( T const ( &s )[N] ) noexcept : array_view{s, N} {}
+		explicit constexpr array_view( value_type const ( &s )[N] ) noexcept : m_first{s}, m_size{N} {}
 
 		constexpr array_view( array_view const &other ) noexcept = default;
 		constexpr array_view &operator=( array_view const & ) noexcept = default;
@@ -73,6 +75,10 @@ namespace daw {
 			return m_first;
 		}
 
+		constexpr int f( ) noexcept {
+			return 1+1;
+		}
+
 		constexpr const_iterator end( ) const noexcept {
 			return m_first + m_size;
 		}
@@ -81,20 +87,20 @@ namespace daw {
 			return m_first + m_size;
 		}
 
-		constexpr const_iterator rbegin( ) const noexcept {
-			return make_revers_iterator( m_first + ( m_size - 1 ) );
+		constexpr const_reverse_iterator rbegin( ) const noexcept {
+			return make_reverse_iterator( m_first + ( m_size - 1 ) );
 		}
 
 		constexpr const_reverse_iterator crbegin( ) const noexcept {
-			return make_revers_iterator( m_first + ( m_size - 1 ) );
+			return make_reverse_iterator( m_first + ( m_size - 1 ) );
 		}
 
 		constexpr const_reverse_iterator rend( ) const noexcept {
-			return make_revers_iterator( m_first - 1 );
+			return make_reverse_iterator( m_first - 1 );
 		}
 
 		constexpr const_reverse_iterator crend( ) const noexcept {
-			return make_revers_iterator( m_first - 1 );
+			return make_reverse_iterator( m_first - 1 );
 		}
 
 		constexpr const_reference operator[]( size_type const pos ) const noexcept {

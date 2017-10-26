@@ -556,3 +556,13 @@ BOOST_AUTO_TEST_CASE( is_input_iterator_005 ) {
 	BOOST_REQUIRE( test_value );
 }
 
+BOOST_AUTO_TEST_CASE( are_convertible_to_v_001 ) {
+	constexpr bool const a = daw::are_convertible_to_v<int, char, short, unsigned>;
+	BOOST_REQUIRE( a );
+}
+
+BOOST_AUTO_TEST_CASE( are_convertible_to_v_002 ) {
+	constexpr bool const a = daw::are_convertible_to_v<int, char, short, unsigned, std::string>;
+	BOOST_REQUIRE( !a );
+}
+

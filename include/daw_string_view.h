@@ -33,16 +33,10 @@
 
 #include "daw_fnv1a_hash.h"
 #include "daw_generic_hash.h"
+#include "daw_iterator.h"
 #include "daw_traits.h"
 
 namespace daw {
-	namespace impl {
-		template<typename Iterator>
-		constexpr std::reverse_iterator<Iterator> make_reverse_iterator( Iterator i ) {
-			return std::reverse_iterator<Iterator>( std::move( i ) );
-		}
-	} // namespace impl
-
 	template<typename CharT, typename Traits = std::char_traits<CharT>, typename InternalSizeType = size_t>
 	struct basic_string_view;
 
@@ -254,19 +248,19 @@ namespace daw {
 		}
 
 		constexpr const_reverse_iterator rbegin( ) const noexcept {
-			return impl::make_reverse_iterator( &m_first[m_size - 1] );
+			return make_reverse_iterator( &m_first[m_size - 1] );
 		}
 
 		constexpr const_reverse_iterator crbegin( ) const noexcept {
-			return impl::make_reverse_iterator( &m_first[m_size - 1] );
+			return make_reverse_iterator( &m_first[m_size - 1] );
 		}
 
 		constexpr const_reverse_iterator rend( ) const noexcept {
-			return impl::make_reverse_iterator( m_first - 1 );
+			return make_reverse_iterator( m_first - 1 );
 		}
 
 		constexpr const_reverse_iterator crend( ) const noexcept {
-			return impl::make_reverse_iterator( m_first - 1 );
+			return make_reverse_iterator( m_first - 1 );
 		}
 
 		constexpr const_reference operator[]( size_type const pos ) const noexcept {

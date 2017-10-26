@@ -497,16 +497,6 @@ namespace daw {
 		return diff / std::min( ( absA + absB ), std::numeric_limits<T>::max( ) ) < std::numeric_limits<T>::epsilon( );
 	}
 
-	template<typename Iterator>
-	constexpr std::reverse_iterator<Iterator> make_reverse_iterator( Iterator i ) {
-		return std::reverse_iterator<Iterator>( std::move( i ) );
-	}
-
-	template<typename Iterator>
-	constexpr std::move_iterator<Iterator> make_move_iterator( Iterator i ) {
-		return std::move_iterator<Iterator>( i );
-	}
-
 	template<typename Iterator1, typename Iterator2, typename OutputIterator>
 	constexpr OutputIterator cxpr_copy( Iterator1 first_in, Iterator2 const last_in, OutputIterator first_out ) {
 		while( first_in != last_in ) {
@@ -590,6 +580,7 @@ namespace daw {
 		}
 		return first_out;
 	}
+
 } // namespace daw
 
 template<typename... Ts>

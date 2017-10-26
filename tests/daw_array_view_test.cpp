@@ -34,4 +34,7 @@ BOOST_AUTO_TEST_CASE( daw_array_view_test_001 ) {
 		std::cout << c;
 	}
 	std::cout << '\n';
+
+	auto const b = daw::make_array_view( {1, 2, 3, 4, 5} );
+	BOOST_REQUIRE_EQUAL( b.size( ), 5 );
 }

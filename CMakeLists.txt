@@ -80,6 +80,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_scoped_multilock
 	daw_semaphore
 	daw_size_literals
+	daw_span
 	daw_static_array
 	daw_static_optional
 	daw_string

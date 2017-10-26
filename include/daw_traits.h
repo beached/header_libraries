@@ -71,22 +71,22 @@ namespace daw {
 		/// Summary:	Returns true if all values passed are true
 		///
 		template<typename BoolType, typename std::enable_if<!is_integral_v<BoolType>, long>::type = 0>
-		bool are_true( BoolType b1 ) {
+		constexpr bool are_true( BoolType b1 ) noexcept {
 			return b1 == true;
 		}
 
 		template<typename IntLike, typename std::enable_if<is_integral_v<IntLike>, long>::type = 0>
-		bool are_true( IntLike b1 ) {
+		constexpr bool are_true( IntLike b1 ) noexcept {
 			return b1 != 0;
 		}
 
 		template<typename BoolType1, typename BoolType2>
-		bool are_true( BoolType1 b1, BoolType2 b2 ) {
+		constexpr bool are_true( BoolType1 b1, BoolType2 b2 ) noexcept {
 			return are_true( b1 ) && are_true( b2 );
 		}
 
 		template<typename BoolType1, typename BoolType2, typename... Booleans>
-		bool are_true( BoolType1 b1, BoolType2 b2, Booleans... others ) {
+		constexpr bool are_true( BoolType1 b1, BoolType2 b2, Booleans... others ) noexcept {
 			return are_true( b1, b2 ) && are_true( others... );
 		}
 
@@ -599,8 +599,11 @@ namespace daw {
 	/// Summary: is like a regular type see http://www.stepanovpapers.com/DeSt98.pdf
 	template<typename T>
 	constexpr bool is_regular_v =
-	  all_true_v<is_default_constructible_v<T> && is_copy_constructible_v<T> && is_move_constructible_v<T> &&
-	             is_copy_assignable_v<T> && is_move_assignable_v<T> && is_equality_comparable_v<T>>;
+	  all_true_v<is_default_constructible_v<T>, is_copy_constructible_v<T>, is_move_constructible_v<T>,
+	             is_copy_assignable_v<T>, is_move_assignable_v<T>, is_equality_comparable_v<T>>;
 
 	struct nothing {};
+	
+	template<typename To, typename... From>
+	constexpr bool are_convertible_to_v = all_true_v<is_convertible_v<From, To>...>;
 } // namespace daw
