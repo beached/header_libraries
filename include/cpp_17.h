@@ -27,7 +27,13 @@
 
 namespace daw {
 	template<typename...>
-	using void_t = void;
+	struct voider {
+		using type = void;
+	};
+
+	template<typename... Ts>
+	using void_t = typename voider<Ts...>::type;
+
 
 	template<typename T>
 	constexpr bool is_floating_point_v = std::is_floating_point<T>::value;

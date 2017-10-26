@@ -98,7 +98,8 @@ set( TESTED_HEADERS_PREFIXES
 
 set( UNTESTED_HEADER_FILES
 	boost_test.h
-	)
+	daw_iterator.h
+)
 
 enable_testing( )
 add_definitions( -DBOOST_TEST_DYN_LINK -DBOOST_ALL_NO_LIB -DBOOST_ALL_DYN_LINK ) 
