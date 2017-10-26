@@ -27,34 +27,49 @@
 
 #include "daw_newhelper.h"
 #include "daw_operators.h"
-#include "daw_traits.h"
 #include "daw_scope_guard.h"
+#include "daw_traits.h"
 
 namespace daw {
 	template<typename CharT = char>
 	class CString {
 		CharT const *m_data;
+		size_t m_size;
 		bool m_local_string;
 
+		static constexpr size_t string_length( CharT const *ptr ) noexcept {
+			size_t result = 0;
+			while( ptr[result] != 0 ) {
+				++result;
+			}
+			return result;
+		}
+
+		struct no_copy_t {};
+		constexpr CString( CharT const *ptr, no_copy_t, size_t const length ) noexcept
+		  : m_data{ptr}, m_size{0 == length ? string_length( ptr ) : length}, m_local_string{false} {}
+
 	public:
-		CString( CharT const *ptr, bool do_copy = false, const size_t length = 0 ) : m_data{ptr}, m_local_string{do_copy} {
+		CString( CharT const *ptr, bool do_copy, size_t const length )
+		  : m_data{ptr}, m_size{0 == length ? string_length( ptr ) : length}, m_local_string{do_copy} {
+
 			if( do_copy ) {
 				size_t len = length;
-				if( 0 == len ) {
-					len = strlen( ptr );
+				auto tmp = std::make_unique<CharT[]>( len + 1 );
+				for( size_t n = 0; n < ( len + 1 ); ++n ) {
+					tmp[n] = ptr[n];
 				}
-				CharT *tmp = nullptr;
-				SCOPE_EXIT {
-					m_data = tmp;
-				};
-				tmp = new_array_throw<CharT>( len + 1 );
-				memcpy( tmp, ptr, len + 1 );
+				m_data = tmp.release( );
 			}
 		}
 
-		constexpr CString( ) noexcept : m_data{nullptr}, m_local_string{true} {}
+		CString( CharT const *ptr, bool do_copy ) : CString{ptr, do_copy, 0} {}
 
-		CString( CString const &value ) : CString{value.m_data, true} {}
+		constexpr CString( CharT const *ptr ) : CString{ptr, no_copy_t{}, 0} {}
+
+		constexpr CString( ) noexcept : m_data{nullptr}, m_size{0}, m_local_string{true} {}
+
+		CString( CString const &value ) : CString{value.m_data, true, value.m_size} {}
 
 		CString &operator=( CString const &rhs ) {
 			if( this != &rhs ) {
@@ -66,33 +81,37 @@ namespace daw {
 
 		CString &operator=( CharT const *ptr ) {
 			CString tmp{ptr, true};
-			this->swap( tmp );
+			tmp.swap( *this );
 			return *this;
 		}
 
-		CString( CString &&value ) noexcept = default;
-		CString &operator=( CString &&rhs ) noexcept = default;
+		constexpr CString( CString &&value ) noexcept = default;
+		constexpr CString &operator=( CString &&rhs ) noexcept = default;
 
 		void swap( CString &rhs ) noexcept {
 			using std::swap;
 			swap( m_data, rhs.m_data );
+			swap( m_size, rhs.m_size );
 			swap( m_local_string, rhs.m_local_string );
 		}
 
 		~CString( ) noexcept {
-			if( m_local_string && nullptr != m_data ) {
-				auto tmp = m_data;
+			auto tmp = std::exchange( m_data, nullptr );
+			if( m_local_string && nullptr != tmp ) {
+				m_local_string = false;
+				m_size = 0;
 				delete[] tmp;
 			}
 			nullify( );
 		}
 
-		constexpr CharT const &operator[]( size_t pos ) const {
+		constexpr CharT const &operator[]( size_t pos ) const noexcept {
 			return m_data[pos];
 		}
 
 		constexpr void nullify( ) noexcept {
 			m_data = nullptr;
+			m_size = 0;
 			m_local_string = false;
 		}
 
@@ -107,25 +126,22 @@ namespace daw {
 		}
 
 		std::string to_string( ) const {
-			return std::string( m_data );
+			return std::string{m_data, m_size};
 		}
 
-		size_t size( ) const noexcept {
-			if( is_null( ) ) {
-				return 0;
-			}
-			return strlen( m_data );
+		constexpr size_t size( ) const noexcept {
+			return m_size;
 		}
 
 		constexpr bool is_null( ) const noexcept {
 			return nullptr == m_data;
 		}
 
-		bool empty( ) const noexcept {
-			return nullptr == m_data || strlen( m_data ) == 0;
+		constexpr bool empty( ) const noexcept {
+			return nullptr == m_data || 0 == m_size;
 		}
 
-		explicit operator bool( ) const noexcept {
+		explicit constexpr operator bool( ) const noexcept {
 			return !empty( );
 		}
 
@@ -137,7 +153,7 @@ namespace daw {
 			m_local_string = true;
 		}
 
-		auto compare( CString const &rhs ) const {
+		auto compare( CString const &rhs ) const noexcept {
 			return strcmp( m_data, rhs.m_data );
 		}
 
@@ -145,7 +161,7 @@ namespace daw {
 	}; // CString
 
 	template<typename... Args>
-	constexpr void swap( CString<Args...> &lhs, CString<Args...> &rhs ) noexcept {
+	void swap( CString<Args...> &lhs, CString<Args...> &rhs ) noexcept {
 		lhs.swap( rhs );
 	}
 
@@ -156,3 +172,4 @@ namespace daw {
 
 	using cstring = CString<char>;
 } // namespace daw
+

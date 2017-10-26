@@ -52,6 +52,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_hash_table2
 	daw_heap_array
 	daw_heap_value
+	daw_integer_iterator
 	daw_locked_stack
 	daw_locked_value
 	daw_math

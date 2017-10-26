@@ -90,14 +90,20 @@ namespace daw {
 			}
 
 		public:
+			struct default_construct {};
+
 			value_storage( ) : m_data{0}, m_occupied{false} {}
+
+			value_storage( default_construct ): m_data{0}, m_occupied{true} {
+				store( value_type{} );
+			}
 
 			template<typename... Args>
 			void emplace( Args &&... args ) {
 				create( std::forward<Args>( args )... );
 			}
 
-			value_storage( value_type value ) : m_data{}, m_occupied{true} {
+			value_storage( value_type value ) : m_data{0}, m_occupied{true} {
 				store( std::move( value ) );
 			}
 
@@ -188,7 +194,8 @@ namespace daw {
 		impl::value_storage<value_type> m_value;
 
 	public:
-		optional( ) : m_value{ValueType{}} {}
+		optional( ) : m_value{typename impl::value_storage<value_type>::default_construct( )} {}
+
 		optional( nothing ) : m_value{} {}
 		optional( optional const &other ) : m_value{other.m_value} {}
 

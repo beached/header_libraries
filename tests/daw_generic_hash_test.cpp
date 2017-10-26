@@ -35,6 +35,7 @@ BOOST_AUTO_TEST_CASE( test_01 ) {
 	BOOST_REQUIRE( c1 != c3 );
 }
 
+/*
 BOOST_AUTO_TEST_CASE( test_16_01 ) {
 	constexpr auto const c1 = daw::generic_hash<2>( "Hello" );
 	constexpr auto const c2 = daw::generic_hash<2>( "Hello" );
@@ -44,7 +45,7 @@ BOOST_AUTO_TEST_CASE( test_16_01 ) {
 	BOOST_REQUIRE_EQUAL( c1, c2 );
 	BOOST_REQUIRE( c1 != c3 );
 }
-
+*/
 
 BOOST_AUTO_TEST_CASE( test_32_01 ) {
 	constexpr auto const c1 = daw::generic_hash<4>( "Hello" );

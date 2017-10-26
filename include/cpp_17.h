@@ -343,7 +343,7 @@ namespace daw {
 	constexpr bool is_nothrow_destructible_v = std::is_nothrow_destructible<T>::value;
 
 	template<typename T, typename U = T>
-	constexpr T exchange( T &obj, U &&new_value ) {
+	constexpr T exchange( T &obj, U &&new_value ) noexcept {
 		T old_value = std::move( obj );
 		obj = std::forward<U>( new_value );
 		return old_value;
