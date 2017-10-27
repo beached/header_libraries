@@ -113,7 +113,7 @@ namespace daw {
 
 		constexpr daw::span<value_type const>
 		to_span( size_type const pos = 0, size_type const count = std::numeric_limits<size_type>::max( ) ) const {
-			if( pos > size( ) ) {
+			if( pos >= size( ) ) {
 				throw std::out_of_range{"Attempt to access array_view past end"};
 			}
 			auto const rcount = std::min( count, N - pos );
@@ -122,7 +122,7 @@ namespace daw {
 
 		constexpr daw::span<value_type> to_span( size_type const pos = 0,
 		                                         size_type const count = std::numeric_limits<size_type>::max( ) ) {
-			if( pos > size( ) ) {
+			if( pos >= size( ) ) {
 				throw std::out_of_range{"Attempt to access array_view past end"};
 			}
 			auto const rcount = std::min( count, N - pos );
@@ -131,7 +131,7 @@ namespace daw {
 
 		constexpr daw::array_view<value_type>
 		to_array_view( size_type const pos = 0, size_type const count = std::numeric_limits<size_type>::max( ) ) const {
-			if( pos > size( ) ) {
+			if( pos >= size( ) ) {
 				throw std::out_of_range{"Attempt to access array_view past end"};
 			}
 			auto const rcount = std::min( count, N - pos );

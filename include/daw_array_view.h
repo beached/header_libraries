@@ -75,10 +75,6 @@ namespace daw {
 			return m_first;
 		}
 
-		constexpr int f( ) noexcept {
-			return 1+1;
-		}
-
 		constexpr const_iterator end( ) const noexcept {
 			return m_first + m_size;
 		}
@@ -88,19 +84,19 @@ namespace daw {
 		}
 
 		constexpr const_reverse_iterator rbegin( ) const noexcept {
-			return make_reverse_iterator( m_first + ( m_size - 1 ) );
+			return make_reverse_iterator( m_first + m_size );
 		}
 
 		constexpr const_reverse_iterator crbegin( ) const noexcept {
-			return make_reverse_iterator( m_first + ( m_size - 1 ) );
+			return make_reverse_iterator( m_first + m_size );
 		}
 
 		constexpr const_reverse_iterator rend( ) const noexcept {
-			return make_reverse_iterator( m_first - 1 );
+			return make_reverse_iterator( m_first );
 		}
 
 		constexpr const_reverse_iterator crend( ) const noexcept {
-			return make_reverse_iterator( m_first - 1 );
+			return make_reverse_iterator( m_first );
 		}
 
 		constexpr const_reference operator[]( size_type const pos ) const noexcept {
@@ -193,7 +189,7 @@ namespace daw {
 
 		constexpr array_view subset( size_type const pos = 0,
 		                             size_type const count = std::numeric_limits<size_type>::max( ) ) const {
-			if( pos > size( ) ) {
+			if( pos >= size( ) ) {
 				throw std::out_of_range{"Attempt to access array_view past end"};
 			}
 			auto const rcount = std::min( count, m_size - pos );

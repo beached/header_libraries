@@ -227,7 +227,7 @@ namespace daw {
 
 		constexpr span subset( size_type const pos = 0,
 		                             size_type const count = std::numeric_limits<size_type>::max( ) ) const {
-			if( pos > size( ) ) {
+			if( pos >= size( ) ) {
 				throw std::out_of_range{"Attempt to access span past end"};
 			}
 			auto const rcount = std::min( count, m_size - pos );
