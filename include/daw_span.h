@@ -58,10 +58,10 @@ namespace daw {
 		explicit constexpr span( std::nullptr_t ) noexcept : m_first{nullptr}, m_size{0} {}
 		constexpr span( std::nullptr_t, size_type ) noexcept : m_first{nullptr}, m_size{0} {}
 
-		constexpr span( const_pointer s, size_type count ) noexcept : m_first{s}, m_size{count} {}
+		constexpr span( pointer s, size_type count ) noexcept : m_first{s}, m_size{count} {}
 
 		template<size_t N>
-		explicit constexpr span( value_type const ( &s )[N] ) noexcept : m_first{s}, m_size{N} {}
+		explicit constexpr span( value_type ( &s )[N] ) noexcept : m_first{s}, m_size{N} {}
 
 		constexpr span( span const &other ) noexcept = default;
 		constexpr span &operator=( span const & ) noexcept = default;
