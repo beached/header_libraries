@@ -69,12 +69,12 @@ namespace daw {
 			}
 
 			template<typename Iterator, typename Distance>
-			constexpr void advance( Iterator & first, Distance n, std::random_access_iterator_tag ) noexcept {
+			constexpr void advance( Iterator &first, Distance n, std::random_access_iterator_tag ) noexcept {
 				first += n;
 			}
 
 			template<typename Iterator, typename Distance, typename Tag>
-			void advance( Iterator & first, Distance n, Tag ) noexcept {
+			void advance( Iterator &first, Distance n, Tag ) noexcept {
 				std::advance( first, n );
 			}
 		} // namespace impl
@@ -614,9 +614,9 @@ namespace daw {
 			}
 		}
 
-	template<typename InputIterator1, typename InputIterator2, typename OutputIterator>
-		constexpr void copy_n( InputIterator1 first_in, OutputIterator first_out, size_t const count ) noexcept {
-			for( size_t n=0; n<count; ++n ) { 
+		template<typename InputIterator, typename OutputIterator>
+		constexpr void copy_n( InputIterator first_in, OutputIterator first_out, size_t const count ) noexcept {
+			for( size_t n = 0; n < count; ++n ) {
 				*first_out++ = *first_in++;
 			}
 		}
