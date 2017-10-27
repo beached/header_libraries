@@ -20,9 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#pragma once
+
 #include <cstddef>
 
-#pragma once
+#include "daw_span.h"
 
 namespace daw {
 	template<typename T, size_t N>
@@ -106,6 +108,10 @@ namespace daw {
 
 		constexpr const_reference operator[]( size_type pos ) const noexcept {
 			return m_data[pos];
+		}
+
+		explicit constexpr operator daw::span<value_type>( ) const noexcept {
+			return daw::span<value_type>{ m_data, N };
 		}
 	};
 } // namespace daw
