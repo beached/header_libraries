@@ -613,5 +613,12 @@ namespace daw {
 				*first_out++ = *first_in++;
 			}
 		}
+
+	template<typename InputIterator1, typename InputIterator2, typename OutputIterator>
+		constexpr void copy_n( InputIterator1 first_in, OutputIterator first_out, size_t const count ) noexcept {
+			for( size_t n=0; n<count; ++n ) { 
+				*first_out++ = *first_in++;
+			}
+		}
 	} // namespace algorithm
 } // namespace daw
