@@ -609,7 +609,7 @@ namespace daw {
 
 		template<typename InputIterator1, typename InputIterator2, typename OutputIterator>
 		constexpr void copy( InputIterator1 first_in, InputIterator2 const last_in, OutputIterator first_out ) noexcept {
-			while( first_in != last_out ) {
+			while( first_in != last_in ) {
 				*first_out++ = *first_in++;
 			}
 		}
