@@ -110,7 +110,11 @@ namespace daw {
 			return m_data[pos];
 		}
 
-		explicit constexpr operator daw::span<value_type>( ) const noexcept {
+		constexpr daw::span<value_type const> to_span( ) const noexcept {
+			return daw::span<value_type>{ m_data, N };
+		}
+
+		constexpr daw::span<value_type> to_span( ) noexcept {
 			return daw::span<value_type>{ m_data, N };
 		}
 	};
