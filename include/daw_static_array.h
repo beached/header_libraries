@@ -24,6 +24,7 @@
 
 #include <cstddef>
 
+#include "daw_array_view.h"
 #include "daw_span.h"
 
 namespace daw {
@@ -111,11 +112,16 @@ namespace daw {
 		}
 
 		constexpr daw::span<value_type const> to_span( ) const noexcept {
-			return daw::span<value_type>{ m_data, N };
+			return daw::span<value_type>{m_data, N};
 		}
 
 		constexpr daw::span<value_type> to_span( ) noexcept {
-			return daw::span<value_type>{ m_data, N };
+			return daw::span<value_type>{m_data, N};
 		}
-	};
+
+		constexpr daw::array_view<value_type> to_array_view( ) noexcept {
+			return daw::array_view<value_type>{m_data, N};
+		}
+	};	// static_array_t
 } // namespace daw
+
