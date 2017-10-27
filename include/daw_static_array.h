@@ -29,16 +29,16 @@
 namespace daw {
 	template<typename T, size_t N>
 	struct static_array_t {
-		using value_t = T;
-		using reference = value_t &;
-		using const_reference = value_t const &;
-		using iterator = value_t *;
-		using const_iterator = value_t const *;
-		using pointer = value_t *;
-		using const_pointer = value_t const *;
+		using value_type = T;
+		using reference = value_type &;
+		using const_reference = value_type const &;
+		using iterator = value_type *;
+		using const_iterator = value_type const *;
+		using pointer = value_type *;
+		using const_pointer = value_type const *;
 		using size_type = size_t;
 
-		value_t m_data[N];
+		value_type m_data[N];
 
 		constexpr reference front( ) noexcept {
 			return m_data[0];
