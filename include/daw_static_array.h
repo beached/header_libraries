@@ -119,7 +119,7 @@ namespace daw {
 			return daw::span<value_type>{m_data, N};
 		}
 
-		constexpr daw::array_view<value_type> to_array_view( ) noexcept {
+		constexpr daw::array_view<value_type> to_array_view( ) const noexcept {
 			return daw::array_view<value_type>{m_data, N};
 		}
 	};	// static_array_t
