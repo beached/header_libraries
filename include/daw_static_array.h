@@ -24,9 +24,6 @@
 
 #include <cstddef>
 
-#include "daw_array_view.h"
-#include "daw_span.h"
-
 namespace daw {
 	template<typename T, size_t N>
 	struct static_array_t {
@@ -109,33 +106,6 @@ namespace daw {
 
 		constexpr const_reference operator[]( size_type pos ) const noexcept {
 			return m_data[pos];
-		}
-
-		constexpr daw::span<value_type const>
-		to_span( size_type const pos = 0, size_type const count = std::numeric_limits<size_type>::max( ) ) const {
-			if( pos >= size( ) ) {
-				throw std::out_of_range{"Attempt to access array_view past end"};
-			}
-			auto const rcount = std::min( count, N - pos );
-			return daw::span<value_type>{m_data + pos, rcount};
-		}
-
-		constexpr daw::span<value_type> to_span( size_type const pos = 0,
-		                                         size_type const count = std::numeric_limits<size_type>::max( ) ) {
-			if( pos >= size( ) ) {
-				throw std::out_of_range{"Attempt to access array_view past end"};
-			}
-			auto const rcount = std::min( count, N - pos );
-			return daw::span<value_type>{m_data + pos, rcount};
-		}
-
-		constexpr daw::array_view<value_type>
-		to_array_view( size_type const pos = 0, size_type const count = std::numeric_limits<size_type>::max( ) ) const {
-			if( pos >= size( ) ) {
-				throw std::out_of_range{"Attempt to access array_view past end"};
-			}
-			auto const rcount = std::min( count, N - pos );
-			return daw::array_view<value_type>{m_data + pos, rcount};
 		}
 	}; // static_array_t
 } // namespace daw

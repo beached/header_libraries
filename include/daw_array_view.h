@@ -222,19 +222,10 @@ namespace daw {
 		return array_view<T>{s, N};
 	}
 
-	template<typename T>
-	constexpr auto make_mutable_array_view( T *first, T *last ) noexcept {
-		return array_view<T>{first, static_cast<size_t>( last - first )};
-	}
-
-	template<typename T, size_t N>
-	constexpr auto make_mutable_array_view( T ( &s )[N] ) noexcept {
-		return array_view<T>{s, N};
-	}
-
-	template<typename T>
-	constexpr auto make_mutable_array_view( T *s, size_t N ) noexcept {
-		return array_view<T>{s, N};
+	template<typename Container, std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
+	constexpr auto make_array_view( Container const &container ) noexcept {
+		using value_t = typename std::iterator_traits<decltype( container.begin( ) )>::value_type;
+		return array_view<value_t>{container.begin( ), container.size( )};
 	}
 } // namespace daw
 
