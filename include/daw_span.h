@@ -266,7 +266,7 @@ namespace daw {
 		return span<value_t>{container.begin( ), container.size( )};
 	}
 
-	struct access_past_end_exception {};
+	struct span_access_past_end_exception {};
 
 	template<typename Container, std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
 	constexpr auto make_span( Container &container, size_t const pos,
@@ -275,7 +275,7 @@ namespace daw {
 		using value_t = typename std::iterator_traits<decltype( container.begin( ) )>::value_type;
 
 		if( pos >= container.size( ) ) {
-			throw access_past_end_exception{};
+			throw span_access_past_end_exception{};
 		}
 		auto const rcount = std::min( count, container.size( ) - pos );
 		return span<value_t>{container.begin( ) + pos, rcount};

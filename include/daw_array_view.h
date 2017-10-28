@@ -228,7 +228,7 @@ namespace daw {
 		return array_view<value_t>{container.begin( ), container.size( )};
 	}
 
-	struct access_past_end_exception {};
+	struct array_view_access_past_end_exception{};
 
 	template<typename Container, std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
 	constexpr auto make_array_view( Container const &container, size_t const pos,
@@ -237,7 +237,7 @@ namespace daw {
 		using value_t = typename std::iterator_traits<decltype( container.begin( ) )>::value_type;
 
 		if( pos >= container.size( ) ) {
-			throw access_past_end_exception{};
+			throw array_view_access_past_end_exception{};
 		}
 		auto const rcount = std::min( count, container.size( ) - pos );
 		return array_view<value_t>{container.begin( ) + pos, rcount};
