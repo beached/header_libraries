@@ -20,9 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <fstream>
+
 #include "boost_test.h"
 #include "daw_memory_mapped_file.h"
 
+template<typename String>
+void create_file( String && str ) {
+	std::ofstream fs{ std::forward<String>(str) };
+	if( !fs ) {
+		return;
+	}
+	fs << "This is a test\n";
+}
+
 BOOST_AUTO_TEST_CASE( daw_memory_mapped_file ) {
+	create_file( "./blah.txt" );
 	daw::filesystem::memory_mapped_file_t<uint8_t> test{"./blah.txt"};
 }
