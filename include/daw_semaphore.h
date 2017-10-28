@@ -69,6 +69,11 @@ namespace daw {
 		}
 
 		void wait( ) {
+			for( size_t n=0; n<100; ++n ) {
+				if( try_wait( ) ) {
+					return;
+				}
+			}
 			std::unique_lock<Mutex> lock{*m_mutex};
 			m_condition->wait( lock, [&]( ) { return m_latched && m_count > 0; } );
 			--m_count;
