@@ -27,8 +27,6 @@
 #include <memory>
 #include <mutex>
 
-#include "daw_spin_lock.h"
-
 namespace daw {
 	template<typename Mutex, typename ConditionVariable>
 	class basic_semaphore {
@@ -106,7 +104,7 @@ namespace daw {
 		}
 	}; // basic_semaphore
 
-	using semaphore = basic_semaphore<daw::spin_lock, std::condition_variable>;
+	using semaphore = basic_semaphore<std::mutex, std::condition_variable>;
 
 	template<typename Mutex, typename ConditionVariable>
 	class basic_shared_semaphore {
@@ -158,7 +156,7 @@ namespace daw {
 		}
 	}; // basic_shared_semaphore
 
-	using shared_semaphore = basic_shared_semaphore<daw::spin_lock, std::condition_variable>;
+	using shared_semaphore = basic_shared_semaphore<std::mutex, std::condition_variable>;
 
 	template<typename Mutex, typename ConditionVariable>
 	void wait_all( std::initializer_list<basic_semaphore<Mutex, ConditionVariable>> semaphores ) {
