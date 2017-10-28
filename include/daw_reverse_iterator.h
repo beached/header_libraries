@@ -53,21 +53,20 @@ namespace daw {
 
 		constexpr Iterator base( ) const {
 			Iterator it = m_base;
-			return --it;
+			return it;
 		}
 
 		constexpr reference operator*( ) const {
-			return *base( );
+			auto tmp = m_base;
+			return *( --tmp );
 		}
 
 		constexpr pointer operator->( ) const {
-			return base( );
+			return &( operator*( ) );
 		}
 
 		constexpr auto operator[]( difference_type n ) const {
-			auto it = base( );
-			it -= n;
-			return *it;
+			return *( *this + n );
 		}
 
 		constexpr reverse_iterator &operator++( ) noexcept {
@@ -93,11 +92,11 @@ namespace daw {
 		}
 
 		constexpr reverse_iterator operator+( difference_type n ) const {
-			return reverse_iterator{base( ) - n};
+			return reverse_iterator{m_base - n};
 		}
 
 		constexpr reverse_iterator operator-( difference_type n ) const {
-			return reverse_iterator{base( ) + n};
+			return reverse_iterator{m_base + n};
 		}
 
 		constexpr reverse_iterator &operator+=( difference_type n ) {

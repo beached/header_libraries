@@ -92,9 +92,8 @@ namespace daw {
 		}
 
 		template<typename InputIt, typename UnaryPredicate>
-		constexpr InputIt
-		find_first_of_if( InputIt first, InputIt last,
-		                  UnaryPredicate p ) noexcept( noexcept( std::declval<UnaryPredicate>( )( *std::declval<InputIt>( ) ) ) ) {
+		constexpr InputIt find_first_of_if( InputIt first, InputIt last, UnaryPredicate p ) noexcept(
+		  noexcept( std::declval<UnaryPredicate>( )( *std::declval<InputIt>( ) ) ) ) {
 			static_assert( daw::is_unary_predicate_v<UnaryPredicate, typename std::iterator_traits<InputIt>::value_type>,
 			               "UnaryPredicate p does not fullfill the requires of a unary predicate concept.  See "
 			               "http://en.cppreference.com/w/cpp/concept/Predicate" );
@@ -151,6 +150,18 @@ namespace daw {
 				}
 			}
 		}
+
+		// Make argument a lower priority than T[]
+		template<typename T, std::enable_if_t<is_pointer_v<T>, std::nullptr_t> = nullptr>
+		struct only_ptr {
+			T * ptr;
+
+			constexpr only_ptr( T * p ) noexcept: ptr{ p } { }
+
+			constexpr operator T* ( ) const noexcept {
+				return ptr;
+			}
+		};
 	} // namespace details
 
 	template<typename CharT, typename Traits, typename InternalSizeType>
@@ -191,11 +202,10 @@ namespace daw {
 		basic_string_view( std::basic_string<CharT, Traits, Allocator> const &str )
 		  : m_first{str.data( )}, m_size{str.size( )} {}
 
-		template<size_t N>
-		constexpr basic_string_view( CharT const ( &s )[N] ) noexcept : basic_string_view{s, N} {}
-
 		basic_string_view( std::basic_string<CharT, Traits> const &str ) noexcept
 		  : basic_string_view{str.data( ), str.size( )} {}
+
+		basic_string_view( std::basic_string<CharT, Traits> &&str ) noexcept = delete;
 
 		constexpr basic_string_view( const_pointer s ) noexcept
 		  : basic_string_view{s, details::strlen<size_type_internal>( s )} {}
@@ -312,7 +322,7 @@ namespace daw {
 		}
 
 		constexpr void remove_prefix( size_type n ) noexcept {
-			n = std::min( n, m_size );	
+			n = std::min( n, m_size );
 			m_first += n;
 			m_size -= n;
 		}
@@ -555,7 +565,7 @@ namespace daw {
 		constexpr size_type reverse_distance( const_reverse_iterator first, const_reverse_iterator last ) const noexcept {
 			// Portability note here: std::distance is not NOEXCEPT, but calling it with a
 			// string_view::reverse_iterator will not throw.
-			return ( m_size - 1u ) - static_cast<size_t>( std::distance( first, last ) );
+			return ( size( ) - 1u ) - static_cast<size_t>( std::distance( first, last ) );
 		}
 
 	public:
@@ -568,8 +578,8 @@ namespace daw {
 			} else {
 				pos = m_size - ( pos + 1 );
 			}
-			const_reverse_iterator iter = std::find_first_of( crbegin( ) + static_cast<difference_type>( pos ), crend( ),
-			                                                  s.crbegin( ), s.crend( ), traits_type::eq );
+			auto iter = std::find_first_of( crbegin( ) + static_cast<difference_type>( pos ), crend( ), s.crbegin( ),
+			                                s.crend( ), traits_type::eq );
 			return iter == crend( ) ? npos : reverse_distance( crbegin( ), iter );
 		}
 
@@ -582,12 +592,26 @@ namespace daw {
 			return npos;
 		}
 
+		template<size_type N>
+		constexpr size_type find_last_of( CharT const ( &s )[N], size_type pos ) noexcept {
+			return find_last_of( basic_string_view{s, N - 1}, pos );
+		}
+
+		template<size_type N>
+		constexpr size_type find_last_of( CharT const ( &s )[N] ) noexcept {
+			return find_last_of( basic_string_view{s, N - 1}, npos );
+		}
+
 		constexpr size_type find_last_of( const_pointer s, size_type pos, size_type count ) const noexcept {
 			return find_last_of( basic_string_view{s, count}, pos );
 		}
 
-		constexpr size_type find_last_of( const_pointer s, size_type pos = npos ) const noexcept {
+		constexpr size_type find_last_of( const_pointer s, size_type pos ) const noexcept {
 			return find_last_of( basic_string_view{s}, pos );
+		}
+
+		constexpr size_type find_last_of( const_pointer s ) const noexcept {
+			return find_last_of( basic_string_view{s}, npos );
 		}
 
 		constexpr size_type find_first_not_of( basic_string_view v, size_type pos = 0 ) const noexcept {
@@ -693,7 +717,7 @@ namespace daw {
 
 	template<typename CharT, typename Traits>
 	daw::basic_string_view<CharT, Traits> make_string_view( std::basic_string<CharT, Traits> const &str ) {
-		return daw::basic_string_view<CharT, Traits>{ str };
+		return daw::basic_string_view<CharT, Traits>{str};
 	}
 
 	template<typename CharT, size_t N>
@@ -1020,7 +1044,7 @@ namespace daw {
 	}
 
 	template<typename StringT, typename Delemiter>
-	auto split( StringT const & str, Delemiter del ) {
+	auto split( StringT const &str, Delemiter del ) {
 		return split( make_string_view( str ), del );
 	}
 
@@ -1062,7 +1086,7 @@ namespace daw {
 		return fnv1a_hash( sv.data( ), sv.size( ) );
 	}
 
-	template<size_t HashSize=sizeof(size_t), typename CharT, typename Traits, typename InternalSizeType>
+	template<size_t HashSize = sizeof( size_t ), typename CharT, typename Traits, typename InternalSizeType>
 	constexpr size_t generic_hash( daw::basic_string_view<CharT, Traits, InternalSizeType> sv ) noexcept {
 		return generic_hash<HashSize>( sv.data( ), sv.size( ) );
 	}
