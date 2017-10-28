@@ -608,8 +608,9 @@ namespace daw {
 		}
 
 		template<typename InputIterator, typename OutputIterator, typename UnaryOperation>
-		constexpr OutputIt transform_n( InputIterator first_in, OutputIterator first_out, size_t count,
-		                              UnaryOperation unary_op ) noexcept( noexcept( *first_out = unary_op( *first_in ) ) ) {
+		constexpr OutputIterator
+		transform_n( InputIterator first_in, OutputIterator first_out, size_t count,
+		             UnaryOperation unary_op ) noexcept( noexcept( *first_out = unary_op( *first_in ) ) ) {
 
 			for( size_t n = 0; n < count; ++n ) {
 				*first_out++ = unary_op( *first_in++ );
