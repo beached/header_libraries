@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE( daw_random_iterator_01 ) {
 
 	std::cout << std::distance( first, last ) << '\n';
 	for( auto it = first; it != last; ++it ) {
-		std::cout << (int)*it << '\n';
+		std::cout << static_cast<int>( *it ) << '\n';
 	}
 }
 

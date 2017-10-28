@@ -20,13 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include "boost_test.h"
+#include <iostream>
 
-namespace daw {
-	template<typename Iterator>
-	constexpr std::move_iterator<Iterator> make_move_iterator( Iterator i ) {
-		return std::move_iterator<Iterator>( i );
+#include "daw_reverse_iterator.h"
+
+BOOST_AUTO_TEST_CASE( reverse_iterator_test_001 ) {
+	std::vector<int> a = {1, 2, 3, 4, 5, 6};
+	auto rend = daw::make_reverse_iterator( a.begin( ) );
+	auto rbegin = daw::make_reverse_iterator( a.end( ) );
+	for( ; rbegin != rend; ++rbegin ) {
+		std::cout << ' ' << *rbegin << '\n';
 	}
-}    // namespace daw
-
+}
 

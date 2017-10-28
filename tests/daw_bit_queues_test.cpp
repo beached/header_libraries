@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE( daw_bit_queues_test_001 ) {
 		v *= 2;
 		BOOST_REQUIRE( test1.value( ) == v );
 	}
-	BOOST_REQUIRE( test1.pop_front( 1 ) == 1 );
+	BOOST_REQUIRE_EQUAL( test1.pop_front( 1 ), 1 );
 	for( size_t n = 1; n < sizeof( value_type ) * 8; ++n ) {
 		int const result = test1.pop_front( 1 );
 		BOOST_REQUIRE( result == 0 );
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE( daw_nibble_queue_test_001 ) {
 		daw::nibble_queue_gen<value_type, uint8_t> test1{( 1u << n )};
 		std::string str;
 		while( test1.can_pop( 1 ) ) {
-			str.push_back( nibble_to_hex( test1.pop_front( 1 ) ) );
+			str.push_back( static_cast<char>( nibble_to_hex( test1.pop_front( 1 ) ) ) );
 		}
 		std::cout << str << std::endl;
 	}

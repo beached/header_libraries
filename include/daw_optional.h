@@ -194,7 +194,7 @@ namespace daw {
 		impl::value_storage<value_type> m_value;
 
 	public:
-		optional( ) : m_value{typename impl::value_storage<value_type>::default_construct( )} {}
+		optional( ) : m_value{} {}
 
 		optional( nothing ) : m_value{} {}
 		optional( optional const &other ) : m_value{other.m_value} {}
