@@ -28,8 +28,11 @@ namespace daw {
 		return std::move_iterator<Iterator>( i );
 	}
 
-	template<typename RandomIterator, typename DifferenceType>
-	constexpr Iterator next( RandomIterator it, DifferenceType diff ) noexcept( noexcept( it + diff ) ) {
+	template<typename RandomIterator>
+	constexpr Iterator
+	next( RandomIterator it,
+	      typename std::iterator_traits<RandomIterator>::difference_type n = 1 ) noexcept( noexcept( it + diff ) ) {
+
 		return it + diff;
 	}
 } // namespace daw
