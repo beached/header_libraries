@@ -99,8 +99,13 @@ namespace daw {
 		}
 
 		template<typename Iterator>
-		constexpr auto safe_next( Iterator it, Iterator last, size_t n ) noexcept {
+		constexpr Iterator safe_next( Iterator it, Iterator last, size_t n ) noexcept {
 			return std::next( it, std::min( n, static_cast<size_t>( std::distance( it, last ) ) ) );
+		}
+
+		template<typename RandomIterator>
+		constexpr RandomIterator next( RandomIterator it, typename std::iterator_traits<RandomIterator>::difference_type n ) noexcept {
+			return it + n;
 		}
 
 		template<typename Container>
@@ -672,14 +677,14 @@ namespace daw {
 		constexpr void rotate( ForwardIterator first, ForwardIterator middle,
 		                       ForwardIterator last ) noexcept( noexcept( std::swap( *first, *middle ) ) ) {
 
-			ForwardIterator next = middle;
-			while( first != next ) {
+			ForwardIterator tmp = middle;
+			while( first != tmp ) {
 				using std::swap;
-				swap( *first++, *next++ );
-				if( next == last ) {
-					next = middle;
+				swap( *first++, *tmp++ );
+				if( tmp == last ) {
+					tmp = middle;
 				} else if( first == middle ) {
-					middle = next;
+					middle = tmp;
 				}
 			}
 		}
