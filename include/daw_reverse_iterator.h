@@ -74,7 +74,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr reverse_iterator operator++(int)const noexcept {
+		constexpr reverse_iterator operator++(int) noexcept {
 			reverse_iterator tmp{*this};
 			--m_base;
 			return tmp;
@@ -85,7 +85,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr reverse_iterator operator--(int)const noexcept {
+		constexpr reverse_iterator operator--(int) noexcept {
 			reverse_iterator tmp{*this};
 			++m_base;
 			return tmp;
