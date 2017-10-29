@@ -224,8 +224,8 @@ namespace daw {
 
 	template<typename Container, std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
 	constexpr auto make_array_view( Container const &container ) noexcept {
-		using value_t = typename std::iterator_traits<decltype( std::begin( container ) )>::value_type;
-		return array_view<value_t>{std::begin( container ), container.size( )};
+		using value_t = typename std::iterator_traits<decltype( container.begin( ) )>::value_type;
+		return array_view<value_t>{container.begin( ), container.size( )};
 	}
 
 	struct array_view_access_past_end_exception{};
@@ -234,13 +234,13 @@ namespace daw {
 	constexpr auto make_array_view( Container const &container, size_t const pos,
 	                                      size_t const count = std::numeric_limits<size_t>::max( ) ) {
 
-		using value_t = typename std::iterator_traits<decltype( std::begin( container ) )>::value_type;
+		using value_t = typename std::iterator_traits<decltype( container.begin( ) )>::value_type;
 
 		if( pos >= container.size( ) ) {
 			throw array_view_access_past_end_exception{};
 		}
 		auto const rcount = std::min( count, container.size( ) - pos );
-		return array_view<value_t>{std::begin( container ) + pos, rcount};
+		return array_view<value_t>{container.begin( ) + pos, rcount};
 	}
 } // namespace daw
 
