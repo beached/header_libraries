@@ -631,5 +631,15 @@ namespace daw {
 				*first_out++ = *first_in++;
 			}
 		}
+
+		template<typename InputIterator1, typename InputIterator2, typename InputIterator3>
+		constexpr bool equal( InputIterator1 first1, InputIterator2 last1, InputIterator3 first2 ) noexcept( noexcept( *first1 == *first2 ) ) {
+			while( first1 != last1 ) {
+				if( !(*first1++ == *first2++ ) ) {
+					return false;
+				}
+			}
+			return true;
+		}
 	} // namespace algorithm
 } // namespace daw
