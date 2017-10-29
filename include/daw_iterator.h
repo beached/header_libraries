@@ -29,7 +29,7 @@ namespace daw {
 	}
 
 	template<typename RandomIterator>
-	constexpr Iterator
+	constexpr RandomIterator
 	next( RandomIterator it,
 	      typename std::iterator_traits<RandomIterator>::difference_type n = 1 ) noexcept( noexcept( it + diff ) ) {
 
