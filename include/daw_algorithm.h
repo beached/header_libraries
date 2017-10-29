@@ -633,9 +633,10 @@ namespace daw {
 		}
 
 		template<typename InputIterator1, typename InputIterator2, typename InputIterator3>
-		constexpr bool equal( InputIterator1 first1, InputIterator2 last1, InputIterator3 first2 ) noexcept( noexcept( *first1 == *first2 ) ) {
+		constexpr bool equal( InputIterator1 first1, InputIterator2 last1,
+		                      InputIterator3 first2 ) noexcept( noexcept( *first1 == *first2 ) ) {
 			while( first1 != last1 ) {
-				if( !(*first1++ == *first2++ ) ) {
+				if( !( *first1++ == *first2++ ) ) {
 					return false;
 				}
 			}
@@ -665,6 +666,22 @@ namespace daw {
 				}
 			}
 			return first1 == last1 && first2 == last2;
+		}
+
+		template<class ForwardIterator>
+		constexpr void rotate( ForwardIterator first, ForwardIterator middle,
+		                       ForwardIterator last ) noexcept( noexcept( std::swap( *first, *middle ) ) ) {
+
+			ForwardIterator next = middle;
+			while( first != next ) {
+				using std::swap;
+				swap( *first++, *next++ );
+				if( next == last ) {
+					next = middle;
+				} else if( first == middle ) {
+					middle = next;
+				}
+			}
 		}
 	} // namespace algorithm
 } // namespace daw
