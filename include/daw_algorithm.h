@@ -643,13 +643,28 @@ namespace daw {
 		}
 
 		template<typename InputIterator1, typename InputIterator2, typename InputIterator3, typename InputIterator4>
-		constexpr bool equal( InputIterator1 first1, InputIterator2 last1, InputIterator3 first2, InputIterator4 last2 ) noexcept( noexcept( *first1 == *first2 ) ) {
+		constexpr bool equal( InputIterator1 first1, InputIterator2 last1, InputIterator3 first2,
+		                      InputIterator4 last2 ) noexcept( noexcept( *first1 == *first2 ) ) {
 			while( first1 != last1 && first2 != last2 ) {
-				if( !(*first1++ == *first2++ ) ) {
+				if( !( *first1++ == *first2++ ) ) {
 					return false;
 				}
 			}
-			return first1 == last1 && first2 == last2; 
+			return first1 == last1 && first2 == last2;
+		}
+
+		template<typename InputIterator1, typename InputIterator2, typename InputIterator3, typename InputIterator4,
+		         typename BinaryPredicate>
+		constexpr bool equal( InputIterator1 first1, InputIterator2 last1, InputIterator3 first2, InputIterator4 last2,
+		                      BinaryPredicate pred ) noexcept( noexcept( pred( *first1, *first2 ) ) ) {
+			while( first1 != last1 && first2 != last2 ) {
+				if( !( pred( *first1, *first2 ) ) ) {
+					++first1;
+					++first2;
+					return false;
+				}
+			}
+			return first1 == last1 && first2 == last2;
 		}
 	} // namespace algorithm
 } // namespace daw
