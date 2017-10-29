@@ -104,7 +104,8 @@ namespace daw {
 		}
 
 		template<typename RandomIterator>
-		constexpr RandomIterator next( RandomIterator it, typename std::iterator_traits<RandomIterator>::difference_type n ) noexcept {
+		constexpr RandomIterator next( RandomIterator it,
+		                               typename std::iterator_traits<RandomIterator>::difference_type n ) noexcept {
 			return it + n;
 		}
 
@@ -673,7 +674,7 @@ namespace daw {
 			return first1 == last1 && first2 == last2;
 		}
 
-		template<class ForwardIterator>
+		template<typename ForwardIterator>
 		constexpr void rotate( ForwardIterator first, ForwardIterator middle,
 		                       ForwardIterator last ) noexcept( noexcept( std::swap( *first, *middle ) ) ) {
 
