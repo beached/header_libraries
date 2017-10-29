@@ -24,6 +24,8 @@
 
 #include <cstddef>
 
+#include "daw_algorithm.h"
+
 namespace daw {
 	template<typename T, size_t N>
 	struct static_array_t {
@@ -108,5 +110,20 @@ namespace daw {
 			return m_data[pos];
 		}
 	}; // static_array_t
+
+	template<typename T, typename U, size_t N>
+	constexpr bool operator==( static_array_t<T, N> const &lhs, static_array_t<U, N> const &rhs ) noexcept(
+	  noexcept( daw::algorithm::equal( lhs.cbegin( ), lhs.cend( ), rhs.cbegin( ), rhs.cend( ) ) ) ) {
+
+		return daw::algorithm::equal( lhs.cbegin( ), lhs.cend( ), rhs.cbegin( ), rhs.cend( ) );
+	}
+
+	template<typename T, typename U, size_t N>
+	constexpr bool operator!=( static_array_t<T, N> const &lhs, static_array_t<U, N> const &rhs ) noexcept(
+	  noexcept( daw::algorithm::equal( lhs.cbegin( ), lhs.cend( ), rhs.cbegin( ), rhs.cend( ) ) ) ) {
+
+		return !daw::algorithm::equal( lhs.cbegin( ), lhs.cend( ), rhs.cbegin( ), rhs.cend( ) );
+	}
+
 } // namespace daw
 
