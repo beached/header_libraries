@@ -154,11 +154,11 @@ namespace daw {
 		// Make argument a lower priority than T[]
 		template<typename T, std::enable_if_t<is_pointer_v<T>, std::nullptr_t> = nullptr>
 		struct only_ptr {
-			T * ptr;
+			T *ptr;
 
-			constexpr only_ptr( T * p ) noexcept: ptr{ p } { }
+			constexpr only_ptr( T *p ) noexcept : ptr{p} {}
 
-			constexpr operator T* ( ) const noexcept {
+			constexpr operator T *( ) const noexcept {
 				return ptr;
 			}
 		};
@@ -1010,18 +1010,81 @@ namespace daw {
 
 	template<typename CharT, typename Traits, typename InternalSizeType>
 	auto split( daw::basic_string_view<CharT, Traits, InternalSizeType> str, CharT const delemiter ) {
-		std::vector<daw::basic_string_view<CharT, Traits, InternalSizeType>> result;
+		class sv_arry_t {
+			std::vector<daw::basic_string_view<CharT, Traits, InternalSizeType>> data;
+
+		public:
+			sv_arry_t( std::vector<daw::basic_string_view<CharT, Traits, InternalSizeType>> v ) : data{std::move( v )} {}
+			sv_arry_t( ) = delete;
+			sv_arry_t( sv_arry_t const & ) = default;
+			sv_arry_t( sv_arry_t && ) = default;
+			sv_arry_t &operator=( sv_arry_t const & ) = default;
+			sv_arry_t &operator=( sv_arry_t && ) = default;
+			~sv_arry_t( ) = default;
+
+			decltype(auto) operator[]( size_t p ) const noexcept {
+				return data[p];
+			}
+
+			size_t size( ) const noexcept {
+				return data.size( );
+			}
+
+			decltype( auto ) begin( ) const noexcept {
+				return data.cbegin( );
+			}
+
+			decltype( auto ) cbegin( ) const noexcept {
+				return data.cbegin( );
+			}
+
+			decltype( auto ) rbegin( ) const noexcept {
+				return data.crbegin( );
+			}
+
+			decltype( auto ) crbegin( ) const noexcept {
+				return data.crbegin( );
+			}
+
+			decltype(auto) end( ) const noexcept {
+				return data.cend( );
+			}
+
+			decltype(auto) cend( ) const noexcept {
+				return data.cend( );
+			}
+
+			decltype(auto) rend( ) const noexcept {
+				return data.crend( );
+			}
+
+			decltype(auto) crend( ) const noexcept {
+				return data.crend( );
+			}
+
+			auto as_strings( ) const {
+				std::vector<std::basic_string<CharT, Traits>> tmp{};
+				tmp.reserve( size( ) );
+				for( auto const &str : data ) {
+					tmp.push_back( str.to_string( ) );
+				}
+				return tmp;
+			}
+		};
+
+		std::vector<daw::basic_string_view<CharT, Traits, InternalSizeType>> v;
 		auto last_pos = str.cbegin( );
 		while( !str.empty( ) ) {
-			auto sz = str.find( delemiter );
-			result.emplace_back( last_pos, sz );
+			auto sz = std::min( str.size( ), str.find( delemiter ) );
+			v.emplace_back( last_pos, sz );
 			if( sz == str.npos ) {
 				break;
 			}
 			str.remove_prefix( sz + 1 );
 			last_pos = str.cbegin( );
 		}
-		return result;
+		v.shrink_to_fit( );
+		return sv_arry_t{std::move( v )};
 	}
 
 	template<typename CharT, typename Traits, typename InternalSizeType, typename UnaryPredicate>

@@ -756,6 +756,12 @@ namespace daw {
 		std::string str = "This is a test of the split";
 		auto const str_splt = split( str, ' ' );
 		BOOST_REQUIRE_EQUAL( str_splt.size( ), 7 );
+		std::cout << str << "\n\n";
+		std::cout << "items:\n";
+		for( auto const & s: str_splt ) {
+			std::cout << '"' << s << "\"\n";
+		}
+		std::cout << "\n\n";
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_string_view_split_002 ) {
