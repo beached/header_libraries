@@ -40,7 +40,7 @@ std::string to_string( test_t const &value ) {
 
 BOOST_AUTO_TEST_CASE( daw_variant_001 ) {
 	using namespace std::literals::string_literals;
-	using v_t = daw::variant_t<test_t, int, float, std::string, int *>;
+	using v_t = daw::variant_t<test_t, int, float, std::string>;
 	std::cout << "size of variant is: " << sizeof( v_t ) << '\n';
 	v_t s;
 	v_t t = 5;
@@ -58,14 +58,7 @@ BOOST_AUTO_TEST_CASE( daw_variant_001 ) {
 	t = test_t{};
 	t = 5.5f;
 
-	int *test_ptr = new int;
-	*test_ptr = 1234;
-
 	t = "hello"s;
-
-	t = test_ptr;
-	auto r = daw::get<int *>( t ) == test_ptr;
-	BOOST_REQUIRE_MESSAGE( r, "Pointer" );
 
 	{
 		v_t test_i{5};
