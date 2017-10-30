@@ -38,10 +38,10 @@ namespace daw {
 		constexpr ScopeGuard( FunctionType f ) noexcept : m_function{std::move( f )}, m_is_active{true} {}
 
 		constexpr ScopeGuard( ScopeGuard &&other ) noexcept
-		  : m_function{daw::exchange( other.m_function, nullptr )}, m_is_active{daw::exchange( other.m_is_active, false )} { }
+		  : m_function{std::move( other.m_function )}, m_is_active{daw::exchange( other.m_is_active, false )} { }
 
 		constexpr ScopeGuard &operator=( ScopeGuard &&rhs ) noexcept {
-			m_function = daw::exchange( rhs.m_function, nullptr );
+			m_function = std::move( rhs.m_function );
 			m_is_active = daw::exchange( rhs.m_is_active, false );
 			return *this;
 		}
