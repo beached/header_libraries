@@ -1008,8 +1008,11 @@ namespace daw {
 		return result;
 	}
 
-	template<typename CharT, typename Traits, typename InternalSizeType>
-	auto split( daw::basic_string_view<CharT, Traits, InternalSizeType> str, CharT const delemiter ) {
+	template<typename CharT, typename Traits, typename InternalSizeType, typename UnaryPredicate>
+	auto split( daw::basic_string_view<CharT, Traits, InternalSizeType> str, UnaryPredicate pred ) {
+		static_assert( daw::is_unary_predicate_v<UnaryPredicate, CharT>,
+		               "UnaryPredicate p does not fullfill the requires of a unary predicate concept.  See "
+		               "http://en.cppreference.com/w/cpp/concept/Predicate" );
 		class sv_arry_t {
 			std::vector<daw::basic_string_view<CharT, Traits, InternalSizeType>> data;
 
@@ -1028,6 +1031,10 @@ namespace daw {
 
 			size_t size( ) const noexcept {
 				return data.size( );
+			}
+
+			bool empty( ) const noexcept {
+				return data.empty( );
 			}
 
 			decltype( auto ) begin( ) const noexcept {
@@ -1075,7 +1082,7 @@ namespace daw {
 		std::vector<daw::basic_string_view<CharT, Traits, InternalSizeType>> v;
 		auto last_pos = str.cbegin( );
 		while( !str.empty( ) ) {
-			auto sz = std::min( str.size( ), str.find( delemiter ) );
+			auto sz = std::min( str.size( ), str.find_first_of_if( pred ) );
 			v.emplace_back( last_pos, sz );
 			if( sz == str.npos ) {
 				break;
@@ -1087,28 +1094,20 @@ namespace daw {
 		return sv_arry_t{std::move( v )};
 	}
 
-	template<typename CharT, typename Traits, typename InternalSizeType, typename UnaryPredicate>
-	auto split( daw::basic_string_view<CharT, Traits, InternalSizeType> str, UnaryPredicate pred ) {
-		static_assert( daw::is_unary_predicate_v<UnaryPredicate, CharT>,
-		               "UnaryPredicate p does not fullfill the requires of a unary predicate concept.  See "
-		               "http://en.cppreference.com/w/cpp/concept/Predicate" );
-		std::vector<daw::basic_string_view<CharT, Traits, InternalSizeType>> result;
-		auto last_pos = str.cbegin( );
-		while( !str.empty( ) ) {
-			auto sz = str.find_first_of_if( pred );
-			result.emplace_back( last_pos, sz );
-			if( sz == str.npos ) {
-				break;
-			}
-			str.remove_prefix( sz + 1 );
-			last_pos = str.cbegin( );
-		}
-		return result;
+	template<typename CharT, typename Traits, typename InternalSizeType>
+	auto split( daw::basic_string_view<CharT, Traits, InternalSizeType> str, CharT const delemiter ) {
+		return split( str, [delemiter]( CharT c ) noexcept { return c == delemiter; } );
 	}
 
-	template<typename StringT, typename Delemiter>
-	auto split( StringT const &str, Delemiter del ) {
-		return split( make_string_view( str ), del );
+	template<typename CharT, typename Traits, typename InternalSizeType, size_t N>
+	auto split( daw::basic_string_view<CharT, Traits, InternalSizeType> str, CharT const (&delemiter)[N] ) {
+		static_assert( N == 2, "string literal used as delemiter.  One 1 value is supported (e.g. \",\" )" );
+		return split( str, [delemiter]( CharT c ) noexcept { return c == delemiter[0]; } );
+	}
+
+	template<typename String, typename Delemiter, std::enable_if_t<daw::traits::is_string_v<String>, std::nullptr_t> = nullptr>
+	auto split( String const &str, Delemiter d ) {
+		return split( daw::string_view{ str }, d );
 	}
 
 	template<typename CharT, typename Traits>

@@ -107,16 +107,16 @@ namespace daw {
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_string_view_find_last_of_001 ) {
-		static daw::string_view const   a = "abcdefghijklm";
-		std::string const               b = "abcdefghijklm";
+		static daw::string_view const a = "abcdefghijklm";
+		std::string const b = "abcdefghijklm";
 		static boost::string_view const c = "abcdefghijklm";
-		auto const pos =  a.find_last_of( "ij" );
+		auto const pos = a.find_last_of( "ij" );
 		auto const pos2 = b.find_last_of( "ij" );
 		auto const pos3 = c.find_last_of( "ij" );
 		BOOST_REQUIRE_EQUAL( pos, pos2 );
 		BOOST_REQUIRE_EQUAL( pos, pos3 );
 
-		auto const es =  a.find_last_of( "lm" );
+		auto const es = a.find_last_of( "lm" );
 		auto const es2 = b.find_last_of( "lm" );
 		auto const es3 = c.find_last_of( "lm" );
 		BOOST_REQUIRE_EQUAL( es, es2 );
@@ -754,11 +754,11 @@ namespace daw {
 
 	BOOST_AUTO_TEST_CASE( daw_string_view_split_001 ) {
 		std::string str = "This is a test of the split";
-		auto const str_splt = split( str, ' ' );
+		auto const str_splt = split( daw::string_view{ str }, ' ' );
 		BOOST_REQUIRE_EQUAL( str_splt.size( ), 7 );
 		std::cout << str << "\n\n";
 		std::cout << "items:\n";
-		for( auto const & s: str_splt ) {
+		for( auto const &s : str_splt ) {
 			std::cout << '"' << s << "\"\n";
 		}
 		std::cout << "\n\n";
@@ -766,7 +766,7 @@ namespace daw {
 
 	BOOST_AUTO_TEST_CASE( daw_string_view_split_002 ) {
 		char const str[] = "This is a test of the split";
-		auto const str_splt = split( str, ' ' );
+		auto const str_splt = split( daw::string_view{ str }, ' ' );
 		BOOST_REQUIRE_EQUAL( str_splt.size( ), 7 );
 	}
 
@@ -776,12 +776,17 @@ namespace daw {
 		BOOST_REQUIRE_EQUAL( str_splt.size( ), 7 );
 	}
 
-
 	BOOST_AUTO_TEST_CASE( daw_string_view_split_004 ) {
 		char const str[] = "This is a test of the split";
 		auto const str_splt = split( str, []( char c ) { return c == ' '; } );
 		BOOST_REQUIRE_EQUAL( str_splt.size( ), 7 );
 	}
 
-
+	BOOST_AUTO_TEST_CASE( daw_string_view_split_005 ) {
+		std::string b_str;
+		daw::string_view b = b_str;
+		auto const str_splt = split( b, "," );
+		BOOST_REQUIRE( str_splt.empty( ) );
+	}
 } // namespace daw
+
