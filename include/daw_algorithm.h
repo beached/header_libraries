@@ -98,6 +98,11 @@ namespace daw {
 			impl::advance( it, distance, it_cat{} );
 		}
 
+		template<typename RandomIterator1, typename RandomIterator2>
+		constexpr auto distance( RandomIterator1 first, RandomIterator2 last ) noexcept {
+			return last - first;
+		}
+
 		template<typename Iterator>
 		constexpr Iterator safe_next( Iterator it, Iterator last, size_t n ) noexcept {
 			return std::next( it, std::min( n, static_cast<size_t>( std::distance( it, last ) ) ) );
@@ -105,7 +110,7 @@ namespace daw {
 
 		template<typename RandomIterator>
 		constexpr RandomIterator next( RandomIterator it,
-		                               typename std::iterator_traits<RandomIterator>::difference_type n ) noexcept {
+		                               typename std::iterator_traits<RandomIterator>::difference_type n = 1 ) noexcept {
 			return it + n;
 		}
 
@@ -674,20 +679,72 @@ namespace daw {
 			return first1 == last1 && first2 == last2;
 		}
 
+		template<typename T, typename U, std::enable_if_t<is_convertible_v<T, U> && is_convertible_v<U, T>, std::nullptr_t> = nullptr>
+		constexpr void swapper( T & t, U & u ) noexcept {
+			T tmp = std::move( t );
+			t = std::move( u );
+			u = std::move( tmp );
+		}
+
 		template<typename ForwardIterator>
 		constexpr void rotate( ForwardIterator first, ForwardIterator middle,
 		                       ForwardIterator last ) noexcept( noexcept( std::swap( *first, *middle ) ) ) {
 
 			ForwardIterator tmp = middle;
 			while( first != tmp ) {
-				using std::swap;
-				swap( *first++, *tmp++ );
+				swapper( *first++, *tmp++ );
 				if( tmp == last ) {
 					tmp = middle;
 				} else if( first == middle ) {
 					middle = tmp;
 				}
 			}
+		}
+
+		template<typename ForwardIterator, typename T>
+		constexpr ForwardIterator upper_bound( ForwardIterator first, ForwardIterator const last,
+		                                       T const &value ) noexcept {
+
+			auto count = distance( first, last );
+			while( count > 0 ) {
+				auto it = first;
+				auto step = count / 2;
+				impl::advance( it, step, std::random_access_iterator_tag{} );
+				if( !( value < *it ) ) {
+					first = ++it;
+					count -= step + 1;
+				} else {
+					count = step;
+				}
+			}
+			return first;
+		}
+
+		template<typename RandomIterator1, typename RandomIterator2>
+		constexpr void sort( RandomIterator1 first, RandomIterator2 const last ) noexcept {
+			for( auto i = first; i != last; ++i ) {
+				rotate( upper_bound( first, i, *i ), i, next( i ) );
+			}
+		}
+
+		template<typename ForwardIterator1, typename ForwardIterator2>
+		constexpr ForwardIterator1 is_sorted_until( ForwardIterator1 first, ForwardIterator2 const last ) noexcept {
+			static_assert( daw::is_convertible_v<ForwardIterator2, ForwardIterator1>, "Must be able to convert last to first" );
+			if( first != last ) {
+				auto next_it = first;
+				while( ++next_it != last ) {
+					if( *next_it < *first ) {
+						return next_it;
+					}
+					first = next_it;
+				}
+			}
+			return last;
+		}
+
+		template<typename ForwardIterator1, typename ForwardIterator2>
+		constexpr bool is_sorted( ForwardIterator1 first, ForwardIterator2 const last ) noexcept {
+			return is_sorted_until( first, last ) == last;
 		}
 	} // namespace algorithm
 } // namespace daw
