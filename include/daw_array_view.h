@@ -223,15 +223,9 @@ namespace daw {
 	}
 
 	template<typename Container, std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
-	constexpr auto make_array_view_impl( Container const &container ) noexcept {
-		using value_t = typename std::iterator_traits<decltype( container.begin( ) )>::value_type;
-		return array_view<value_t>( container.begin( ), container.size( ) );
-	}
-
-	template<typename Container>
 	constexpr auto make_array_view( Container const &container ) noexcept {
-		static_assert( daw::traits::is_container_like_v<Container>, "container does not satisfy requirements of a Container" );
-		return make_array_view_impl( container );
+		using value_t = typename std::iterator_traits<decltype( container.begin( ) )>::value_type;
+		return array_view<value_t>( container.data( ), container.size( ) );
 	}
 
 	struct array_view_access_past_end_exception{};

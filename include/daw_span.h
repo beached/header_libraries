@@ -263,7 +263,7 @@ namespace daw {
 	template<typename Container, std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
 	constexpr auto make_span( Container &container ) noexcept {
 		using value_t = typename std::iterator_traits<decltype( container.begin( ) )>::value_type;
-		return span<value_t>{container.begin( ), container.size( )};
+		return span<value_t>(container.data( ), container.size( ));
 	}
 
 	struct span_access_past_end_exception {};
