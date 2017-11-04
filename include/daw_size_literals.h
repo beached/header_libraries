@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <cstdef>
+
 namespace daw {
 	namespace size_literals {
 		constexpr size_t operator"" _KB( unsigned long long val ) noexcept {
