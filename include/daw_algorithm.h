@@ -679,8 +679,9 @@ namespace daw {
 			return first1 == last1 && first2 == last2;
 		}
 
-		template<typename T, typename U, std::enable_if_t<is_convertible_v<T, U> && is_convertible_v<U, T>, std::nullptr_t> = nullptr>
-		constexpr void swapper( T & t, U & u ) noexcept {
+		template<typename T, typename U,
+		         std::enable_if_t<is_convertible_v<T, U> && is_convertible_v<U, T>, std::nullptr_t> = nullptr>
+		constexpr void swapper( T &t, U &u ) noexcept {
 			T tmp = std::move( t );
 			t = std::move( u );
 			u = std::move( tmp );
@@ -692,7 +693,7 @@ namespace daw {
 
 			ForwardIterator tmp = middle;
 			while( first != tmp ) {
-				swapper( *first++, *tmp++ );
+				daw::algorithm::swapper( *first++, *tmp++ );
 				if( tmp == last ) {
 					tmp = middle;
 				} else if( first == middle ) {
@@ -720,16 +721,44 @@ namespace daw {
 			return first;
 		}
 
+		template<typename RandomIterator1, typename RandomIterator2, typename RandomIterator3,
+		         typename Compare = std::less<>>
+		constexpr void nth_element( RandomIterator1 first, RandomIterator2 nth, RandomIterator3 const last,
+		                            Compare cmp = Compare{} ) noexcept {
+			for( auto i = first; i != nth; ++i ) {
+				auto min_idx = i;
+				for( auto j = daw::algorithm::next( i ); j != last; ++j ) {
+					if( cmp( *j, *min_idx ) ) {
+						min_idx = j;
+						daw::algorithm::swapper( *i, *min_idx );
+					}
+				}
+			}
+		}
+
+		template<typename RandomIterator1, typename RandomIterator2, typename Compare = std::less<>>
+		constexpr void quick_sort( RandomIterator1 first, RandomIterator2 const last, Compare cmp = Compare{} ) noexcept {
+			auto const N = daw::algorithm::distance( first, last );
+			if( N <= 1 ) {
+				return;
+			}
+			auto const pivot = daw::algorithm::next( first, N / 2 );
+			daw::algorithm::nth_element( first, pivot, last, cmp );
+			daw::algorithm::quick_sort( first, pivot, cmp );
+			daw::algorithm::quick_sort( pivot, last, cmp );
+		}
+
 		template<typename RandomIterator1, typename RandomIterator2>
 		constexpr void sort( RandomIterator1 first, RandomIterator2 const last ) noexcept {
 			for( auto i = first; i != last; ++i ) {
-				rotate( upper_bound( first, i, *i ), i, next( i ) );
+				daw::algorithm::rotate( daw::algorithm::upper_bound( first, i, *i ), i, daw::algorithm::next( i ) );
 			}
 		}
 
 		template<typename ForwardIterator1, typename ForwardIterator2>
 		constexpr ForwardIterator1 is_sorted_until( ForwardIterator1 first, ForwardIterator2 const last ) noexcept {
-			static_assert( daw::is_convertible_v<ForwardIterator2, ForwardIterator1>, "Must be able to convert last to first" );
+			static_assert( daw::is_convertible_v<ForwardIterator2, ForwardIterator1>,
+			               "Must be able to convert last to first" );
 			if( first != last ) {
 				auto next_it = first;
 				while( ++next_it != last ) {
@@ -744,7 +773,7 @@ namespace daw {
 
 		template<typename ForwardIterator1, typename ForwardIterator2>
 		constexpr bool is_sorted( ForwardIterator1 first, ForwardIterator2 const last ) noexcept {
-			return is_sorted_until( first, last ) == last;
+			return daw::algorithm::is_sorted_until( first, last ) == last;
 		}
 	} // namespace algorithm
 } // namespace daw

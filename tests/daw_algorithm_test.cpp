@@ -101,6 +101,12 @@ namespace daw_for_each_with_pos_002_ns {
 
 }
 
+constexpr bool quick_sort_test( ) noexcept {
+	int blah[6] = {23, 5, 2, -1, 100, -1000};
+	daw::algorithm::quick_sort( blah, blah + 6 );
+	return daw::algorithm::is_sorted( blah, blah + 6 );
+}
+
 constexpr bool sort_test( ) noexcept {
 	int blah[6] = {23, 5, 2, -1, 100, -1000};
 	daw::algorithm::sort( blah, blah + 6 );
@@ -115,6 +121,20 @@ BOOST_AUTO_TEST_CASE( daw_sort_test_001 ) {
 BOOST_AUTO_TEST_CASE( daw_sort_test_002 ) {
 	int blah[6] = {23, 5, 2, -1, 100, -1000};
 	daw::algorithm::sort( blah, blah + 6 );
+	for( auto i: blah ) {
+		std::cout << i << " ";
+	}
+	std::cout << '\n';
+}
+
+BOOST_AUTO_TEST_CASE( daw_sort_test_003 ) {
+	constexpr bool sort_tst = quick_sort_test( );
+	BOOST_REQUIRE( sort_tst );
+}
+
+BOOST_AUTO_TEST_CASE( daw_sort_test_004 ) {
+	int blah[6] = {23, 5, 2, -1, 100, -1000};
+	daw::algorithm::quick_sort( blah, blah + 6 );
 	for( auto i: blah ) {
 		std::cout << i << " ";
 	}
