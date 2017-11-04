@@ -24,6 +24,7 @@
 
 #include <boost/lexical_cast.hpp>
 #include <boost/spirit/include/qi_numeric.hpp>
+#include <cstdlib>
 #include <iomanip>
 #include <iterator>
 #include <regex>
@@ -34,6 +35,7 @@
 #include <vector>
 
 #include "daw_string_view.h"
+#include "daw_traits.h"
 
 #ifdef _MSC_VER
 #if _MSC_VER < 1800
@@ -501,8 +503,57 @@ namespace daw {
 			}
 			return ss.str( );
 		}
-
 	} // namespace string
+
+	namespace traits {
+		namespace detectors {
+			template<typename T>
+			using has_integer_subscript = decltype( std::declval<T>( )[0] );
+
+			template<typename T>
+			using has_size = decltype( std::declval<size_t&>( ) = std::declval<T>( ).size( ) );
+
+			template<typename T>
+			using is_array_array = decltype( std::declval<T>( )[0][0] );
+
+			template<typename T>
+			using has_empty = decltype( std::declval<bool&>( ) = std::declval<T>( ).empty( ) );
+
+			template<typename T>
+			using has_append_operator = decltype( std::declval<T&>( ) += std::declval<has_integer_subscript<T>>( ) );
+
+			template<typename T>
+			using has_append = decltype( std::declval<T>( ).append( std::declval<T>( ) ) );
+
+		} // namespace detectors
+
+		template<typename String>
+		constexpr bool has_integer_subscript_v = daw::is_detected_v<detectors::has_integer_subscript, String>;
+
+		template<typename String>
+		constexpr bool has_size_memberfn_v = daw::is_detected_v<detectors::has_size, String>;
+
+		template<typename String>
+		constexpr bool has_empty_memberfn_v = daw::is_detected_v<detectors::has_empty, String>;
+
+		template<typename String>
+		constexpr bool has_append_memberfn_v = daw::is_detected_v<detectors::has_append, String>;
+
+		template<typename String>
+		constexpr bool has_append_operator_v = daw::is_detected_v<detectors::has_append_operator, String>;
+
+		template<typename String>
+		constexpr bool is_not_array_array_v = !daw::is_detected_v<detectors::is_array_array, String>;
+
+		template<typename String>
+		constexpr bool is_string_view_like_v = is_container_like_v<String const> &&has_integer_subscript_v<String const>
+		  &&has_size_memberfn_v<String const> &&has_empty_memberfn_v<String const> &&is_not_array_array_v<String>;
+
+		template<typename String>
+		constexpr bool is_string_like_v = is_string_view_like_v<String> &&has_append_operator_v<String>
+		  &&has_append_memberfn_v<String> &&is_container_like_v<String> &&has_integer_subscript_v<String>;
+
+	} // namespace traits
 
 	using String = ::daw::string::impl::BasicString<char>;
 	using WString = ::daw::string::impl::BasicString<wchar_t>;
