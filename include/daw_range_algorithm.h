@@ -160,7 +160,29 @@ namespace daw {
 
 		template<typename Container, typename OutputIterator, typename UnaryOperator,
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
-		auto max_element( Container const &container ) noexcept( noexcept( std::max_element( std::cbegin( container ),
+		auto max_element( Container const&container ) noexcept( noexcept( std::max_element( std::cbegin( container ),
+		                                                                                     std::cend( container ) ) ) ) {
+
+			return std::max_element( std::cbegin( container ), std::cend( container ) );
+		}
+
+		template<typename Container, typename Compare,
+		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
+		Container &max_element( Container const &container, Compare compare ) noexcept(
+		  noexcept( std::max_element( std::begin( container ), std::end( container ), compare ) ) ) {
+
+			static_assert(
+			  daw::is_binary_predicate_v<Compare, decltype( *std::begin( container ) ), decltype( *std::end( container ) )>,
+			  "Compare does not satisfy the Binary Predicate concept.  See "
+			  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate for more information" );
+
+			std::max_element( std::begin( container ), std::end( container ), compare );
+			return container;
+		}
+
+		template<typename Container, typename OutputIterator, typename UnaryOperator,
+		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
+		auto max_element( Container &container ) noexcept( noexcept( std::max_element( std::cbegin( container ),
 		                                                                                     std::cend( container ) ) ) ) {
 
 			return std::max_element( std::cbegin( container ), std::cend( container ) );
