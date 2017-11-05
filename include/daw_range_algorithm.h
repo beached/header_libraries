@@ -158,17 +158,26 @@ namespace daw {
 			std::transform( std::cbegin( container ), std::cend( container ), first_out, unary_operator );
 		}
 
+		// max_element 
+		template<typename Container, typename UnaryOperator,
+		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
+		decltype( auto ) max_element( Container &container ) noexcept(
+		  noexcept( std::max_element( std::cbegin( container ), std::cend( container ) ) ) ) {
+
+			return std::max_element( std::cbegin( container ), std::cend( container ) );
+		}
+
 		template<typename Container, typename OutputIterator, typename UnaryOperator,
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
-		auto max_element( Container const&container ) noexcept( noexcept( std::max_element( std::cbegin( container ),
-		                                                                                     std::cend( container ) ) ) ) {
+		decltype( auto ) max_element( Container const&container ) noexcept(
+		  noexcept( std::max_element( std::cbegin( container ), std::cend( container ) ) ) ) {
 
 			return std::max_element( std::cbegin( container ), std::cend( container ) );
 		}
 
 		template<typename Container, typename Compare,
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
-		Container &max_element( Container const &container, Compare compare ) noexcept(
+		decltype( auto ) max_element( Container &container, Compare compare ) noexcept(
 		  noexcept( std::max_element( std::begin( container ), std::end( container ), compare ) ) ) {
 
 			static_assert(
@@ -180,17 +189,9 @@ namespace daw {
 			return container;
 		}
 
-		template<typename Container, typename OutputIterator, typename UnaryOperator,
-		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
-		auto max_element( Container &container ) noexcept( noexcept( std::max_element( std::cbegin( container ),
-		                                                                                     std::cend( container ) ) ) ) {
-
-			return std::max_element( std::cbegin( container ), std::cend( container ) );
-		}
-
 		template<typename Container, typename Compare,
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
-		Container &max_element( Container &container, Compare compare ) noexcept(
+		decltype( auto ) max_element( Container const &container, Compare compare ) noexcept(
 		  noexcept( std::max_element( std::begin( container ), std::end( container ), compare ) ) ) {
 
 			static_assert(
@@ -198,10 +199,10 @@ namespace daw {
 			  "Compare does not satisfy the Binary Predicate concept.  See "
 			  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate for more information" );
 
-			std::max_element( std::begin( container ), std::end( container ), compare );
-			return container;
+			return std::max_element( std::begin( container ), std::end( container ), compare );
 		}
 
+		// contains
 		template<typename Container, typename Value>
 		bool contains( Container const &container, Value const &value ) {
 			return std::find( std::begin( container ), std::end( container ), value ) != std::end( container );
