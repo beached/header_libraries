@@ -26,6 +26,7 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <string>
 
 namespace daw {
 	template<typename F>
@@ -36,6 +37,7 @@ namespace daw {
 		std::chrono::duration<double> duration = finish - start;
 		return duration.count( );
 	}
+
 	namespace utility {
 		template<typename T>
 		std::string format_seconds( T t, size_t prec = 0 ) {

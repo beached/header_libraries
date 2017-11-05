@@ -25,6 +25,7 @@
 #include <cstdint>
 #include <string>
 
+#include "daw_algorithm.h"
 #include "daw_newhelper.h"
 #include "daw_operators.h"
 #include "daw_scope_guard.h"
@@ -56,9 +57,7 @@ namespace daw {
 			if( do_copy ) {
 				size_t len = length;
 				auto tmp = std::make_unique<CharT[]>( len + 1 );
-				for( size_t n = 0; n < ( len + 1 ); ++n ) {
-					tmp[n] = ptr[n];
-				}
+				daw::algorithm::copy_n( ptr, tmp, len + 1 );
 				m_data = tmp.release( );
 			}
 		}

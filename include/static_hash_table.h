@@ -102,28 +102,25 @@ namespace daw {
 
 	public:
 		constexpr static_hash_t( ) : m_values{} {
-
-			for( size_t n = 0; n < Capacity; ++n ) {
-				m_values[n] = hash_item{};
-			}
+			daw::algorithm::fill_n( m_values.begin( ), Capacity, hash_item{ } );
 		}
 
 		constexpr static_hash_t( std::initializer_list<std::pair<char const *const, value_type>> items ) {
-			for( auto it = items.begin( ); it != items.end( ); ++it ) {
-				auto const hash = hash_fn( it->first );
+			for( auto const &item : items ) {
+				auto const hash = hash_fn( item.first );
 				auto const pos = find_impl( hash );
 				m_values[pos].hash_value = hash;
-				m_values[pos].value = std::move( it->second );
+				m_values[pos].value = std::move( item.second );
 			}
 		}
 
 		template<typename K>
 		constexpr static_hash_t( std::initializer_list<std::pair<K, value_type>> items ) {
-			for( auto it = items.begin( ); it != items.end( ); ++it ) {
-				auto const hash = hash_fn( it->first );
+			for( auto const &item : items ) {
+				auto const hash = hash_fn( item.first );
 				auto const pos = find_impl( hash );
 				m_values[pos].hash_value = hash;
-				m_values[pos].value = std::move( it->second );
+				m_values[pos].value = std::move( item.second );
 			}
 		}
 

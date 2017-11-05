@@ -29,6 +29,7 @@
 #include <limits>
 #include <stdexcept>
 
+#include "daw_algorithm.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_iterator.h"
 #include "daw_reverse_iterator.h"
@@ -180,11 +181,9 @@ namespace daw {
 			if( pos >= m_size ) {
 				throw std::out_of_range{"Attempt to access array_view past end"};
 			}
-			size_type const rlen = ( std::min )( count, m_size - pos );
-			auto src = m_first + pos;
-			for( size_t n = 0; n < rlen; ++n ) {
-				dest[n] = src[n];
-			}
+			size_type const rlen = std::min( count, m_size - pos );
+			auto src = daw::algorithm::next( m_first, pos );
+			daw::algorithm::copy_n( src, dest, rlen ); 
 			return rlen;
 		}
 

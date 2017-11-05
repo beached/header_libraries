@@ -586,8 +586,8 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator1, typename ForwardIterator2>
-		constexpr auto lexicographical_compare( ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2,
-		                                        ForwardIterator2 last2 ) {
+		constexpr auto lexicographical_compare( ForwardIterator1 first1, ForwardIterator1 const last1,
+		                                        ForwardIterator2 first2, ForwardIterator2 const last2 ) {
 			decltype( *first1 - *first2 ) tmp;
 			for( ; first1 != last1 && first2 != last2; ++first1, ++first2 ) {
 				if( ( tmp = *first1 - *first2 ) != 0 ) {
@@ -774,6 +774,42 @@ namespace daw {
 		template<typename ForwardIterator1, typename ForwardIterator2>
 		constexpr bool is_sorted( ForwardIterator1 first, ForwardIterator2 const last ) noexcept {
 			return daw::algorithm::is_sorted_until( first, last ) == last;
+		}
+
+		template<typename ForwardIterator, typename T>
+		constexpr void fill_n( ForwardIterator first, size_t count, T const &value ) noexcept {
+			for( size_t n = 0; n < count; ++n ) {
+				*first++ = value;
+			}
+		}
+
+		template<typename RandomIterator, typename RandomOutputIterator, typename UnaryOperation>
+		constexpr void map( RandomIterator first, RandomIterator const last, RandomOutputIterator first_out,
+		                    UnaryOperation unary_op ) noexcept( noexcept( *first_out++ = unary_op( *first++ ) ) ) {
+
+			while( first != last ) {
+				*first_out++ = unary_op( *first++ );
+			}
+		}
+
+		template<typename T, typename RandomIterator, typename BinaryOperation>
+		constexpr T reduce( RandomIterator first, RandomIterator const last, T init,
+		                    BinaryOperation binary_op ) noexcept( noexcept( init = binary_op( init, *first++ ) ) ) {
+
+			static_assert( is_binary_predicate_v<BinaryOperation, T, decltype( *first )>,
+			               "BinaryOperation passed to reduce must take two values referenced by first. e.g binary_op( "
+			               "init, *first) ) "
+			               "must be valid" );
+
+			static_assert(
+			  is_convertible_v<decltype( binary_op( init, *first++ ) ), T >,
+			  "Result of BinaryOperation must be convertable to type of value referenced by RandomIterator. "
+			  "e.g. *first = binary_op( *first, *(first + 1) ) must be valid." );
+
+				while( first != last ) {
+				init = binary_op( init, *first++ );
+				}
+			  return std::move( init );
 		}
 	} // namespace algorithm
 } // namespace daw

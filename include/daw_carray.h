@@ -28,6 +28,7 @@
 #include <iterator>
 #include <stdexcept>
 
+#include "daw_algorithm.h"
 #include "daw_exception.h"
 
 namespace daw {
@@ -81,15 +82,11 @@ namespace daw {
 		constexpr carray( ) noexcept : m_data{} {}
 
 		constexpr carray( T ( &values )[N] ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) ) : m_data{} {
-			for( size_t n = 0; n < N; ++n ) {
-				ptr( )[n] = values[n];
-			}
+			daw::algorithm::copy_n( values, ptr( ), N );
 		}
 
 		constexpr carray &operator=( T ( &values )[N] ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) ) {
-			for( size_t n = 0; n < N; ++n ) {
-				ptr( )[n] = values[n];
-			}
+			daw::algorithm::copy_n( values, ptr( ), N );
 			return *this;
 		}
 
@@ -104,15 +101,11 @@ namespace daw {
 		~carray( ) noexcept = default;
 
 		constexpr carray( carray const &other ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) ) {
-			for( size_t n = 0; n < N; ++n ) {
-				ptr( )[n] = other.ptr( )[n];
-			}
+			daw::algorithm::copy_n( other.ptr( ), ptr( ), N );
 		}
 
 		constexpr carray &operator=( carray const &other ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) ) {
-			for( size_t n = 0; n < N; ++n ) {
-				ptr( )[n] = other.ptr( )[n];
-			}
+			daw::algorithm::copy_n( other.ptr( ), ptr( ), N );
 			return *this;
 		}
 

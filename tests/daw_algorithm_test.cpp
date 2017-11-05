@@ -141,3 +141,35 @@ BOOST_AUTO_TEST_CASE( daw_sort_test_004 ) {
 	std::cout << '\n';
 }
 
+BOOST_AUTO_TEST_CASE( daw_map_test_001 ) {
+	int blah[6] = {23, 5, 2, -1, 100, -1000};
+	daw::algorithm::map( blah, daw::algorithm::next( blah, 6 ), blah, []( auto val ) { return val % 2 == 0 ? 0 : 1; } );
+}
+
+constexpr int map_test_002( ) {
+	int blah[6] = {23, 5, 2, -1, 100, -1000};
+	struct {
+		constexpr int operator( )( int val ) const noexcept {
+			return val % 2 == 0 ? 0 : 1;
+		}
+	} unary_op;
+
+	daw::algorithm::map( blah, daw::algorithm::next( blah, 6 ), blah, unary_op );
+	int result = 0;
+	for( size_t n=0; n<6; ++n ) {
+		result += blah[n];
+	}
+	return result;
+}
+
+BOOST_AUTO_TEST_CASE( daw_map_test_002 ) {
+	constexpr auto const tst = map_test_002( );
+	BOOST_REQUIRE_EQUAL( tst, 3 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_reduce_test_001 ) {
+	int blah[6] = { 1, 0, 1, 0, 1, 0 };
+	auto const tst = daw::algorithm::reduce( blah, daw::algorithm::next( blah, 6 ), 0, []( auto lhs, auto rhs ) noexcept { return lhs + rhs; } );
+	BOOST_REQUIRE_EQUAL( tst, 3 );
+}
+

@@ -82,14 +82,14 @@ namespace daw {
 		}
 	}
 
-	template<typename IntType>
-	std::vector<IntType> make_random_data( size_t count, IntType a = std::numeric_limits<IntType>::min( ),
-	                                           IntType b = std::numeric_limits<IntType>::max( ) ) {
+	template<typename IntType, typename Result = std::vector<IntType>>
+	Result make_random_data( size_t count, IntType a = std::numeric_limits<IntType>::min( ),
+	                                       IntType b = std::numeric_limits<IntType>::max( ) ) {
 
 		static_assert( daw::is_integral_v<IntType>, "IntType must be a valid integral type" );
 		daw::exception::daw_throw_on_false( a <= b, "a <= b must be true" );
 
-		std::vector<IntType> result;
+		Result result;
 		result.resize( count );
 		random_fill( result.begin( ), result.end( ), a, b );
 		return result;
