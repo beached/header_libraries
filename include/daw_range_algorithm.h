@@ -34,8 +34,7 @@ namespace daw {
 		sort( Container &container ) noexcept( noexcept( std::sort( std::begin( container ), std::end( container ) ) ) ) {
 
 			std::sort( std::begin( container ), std::end( container ) );
-			return Container;
-
+			return container;
 		}
 
 		template<typename Container, typename Compare,
@@ -48,7 +47,7 @@ namespace daw {
 			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
 
 			std::sort( std::begin( container ), std::end( container ), compare );
-			return Container;
+			return container;
 		}
 
 
@@ -58,8 +57,7 @@ namespace daw {
 		stable_sort( Container &container ) noexcept( noexcept( std::stable_sort( std::begin( container ), std::end( container ) ) ) ) {
 
 			std::stable_sort( std::begin( container ), std::end( container ) );
-			return Container;
-
+			return container;
 		}
 
 		template<typename Container, typename Compare,
@@ -72,7 +70,7 @@ namespace daw {
 			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
 
 			std::stable_sort( std::begin( container ), std::end( container ), compare );
-			return Container;
+			return container;
 		}
 
 		template<typename Container, typename Value>
