@@ -39,22 +39,22 @@ namespace daw {
 
 		template<typename Container, typename Compare,
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
-		Container & sort( Container &container,
-		           Compare compare ) noexcept( noexcept( std::sort( std::begin( container ), std::end( container ),
-		                                                            compare ) ) ) {
-			static_assert( daw::is_unary_predicate_v<Compare>,
-			               "Compare does not satisfy the Unary Predicate concept.  See "
-			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+		Container &sort( Container &container,
+		                 Compare compare ) noexcept( noexcept( std::sort( std::begin( container ), std::end( container ),
+		                                                                  compare ) ) ) {
+			static_assert(
+			  daw::is_binary_predicate_v<Compare, decltype( *std::begin( container ) ), decltype( *std::end( container ) )>,
+			  "Compare does not satisfy the Binary Predicate concept.  See "
+			  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate for more information" );
 
 			std::sort( std::begin( container ), std::end( container ), compare );
 			return container;
 		}
 
-
 		template<typename Container,
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
-		Container &
-		stable_sort( Container &container ) noexcept( noexcept( std::stable_sort( std::begin( container ), std::end( container ) ) ) ) {
+		Container &stable_sort( Container &container ) noexcept( noexcept( std::stable_sort( std::begin( container ),
+		                                                                                     std::end( container ) ) ) ) {
 
 			std::stable_sort( std::begin( container ), std::end( container ) );
 			return container;
@@ -62,12 +62,13 @@ namespace daw {
 
 		template<typename Container, typename Compare,
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
-		Container & stable_sort( Container &container,
-		           Compare compare ) noexcept( noexcept( std::stable_sort( std::begin( container ), std::end( container ),
-		                                                            compare ) ) ) {
-			static_assert( daw::is_unary_predicate_v<Compare>,
-			               "Compare does not satisfy the Unary Predicate concept.  See "
-			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+		Container &stable_sort( Container &container, Compare compare ) noexcept(
+		  noexcept( std::stable_sort( std::begin( container ), std::end( container ), compare ) ) ) {
+
+			static_assert(
+			  daw::is_binary_predicate_v<Compare, decltype( *std::begin( container ) ), decltype( *std::end( container ) )>,
+			  "Compare does not satisfy the Binary Predicate concept.  See "
+			  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate for more information" );
 
 			std::stable_sort( std::begin( container ), std::end( container ), compare );
 			return container;

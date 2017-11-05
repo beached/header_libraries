@@ -62,3 +62,18 @@ BOOST_AUTO_TEST_CASE( daw_range_algorithm_test_where1 ) {
 	std::iota( std::begin( t1 ), std::end( t1 ), 1 );
 	auto result = daw::algorithm::where( t1, []( auto v ) { return v % 2 == 0; } );
 }
+
+BOOST_AUTO_TEST_CASE( daw_range_algorithm_test_sort ) {
+	std::vector<int64_t> v1{1000};
+	std::iota( std::begin( v1 ), std::end( v1 ), 1 );
+	daw::algorithm::sort( v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
+	BOOST_REQUIRE( std::is_sorted( v1.cbegin( ), v1.cend( ) ) );
+}
+
+BOOST_AUTO_TEST_CASE( daw_range_algorithm_test_stable_sort ) {
+	std::vector<int64_t> v1{1000};
+	std::iota( std::begin( v1 ), std::end( v1 ), 1 );
+	daw::algorithm::stable_sort( v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
+	BOOST_REQUIRE( std::is_sorted( v1.cbegin( ), v1.cend( ) ) );
+}
+
