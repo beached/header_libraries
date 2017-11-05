@@ -766,23 +766,6 @@ namespace daw {
 			}
 		}
 
-		template<typename Container, std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
-		void
-		sort( Container &container ) noexcept( noexcept( std::sort( std::begin( container ), std::end( container ) ) ) ) {
-
-			std::sort( std::begin( container ), std::end( container ) );
-		}
-
-		template<typename Container, typename Compare, std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
-		void
-		sort( Container &container, Compare compare ) noexcept( noexcept( std::sort( std::begin( container ), std::end( container ), compare ) ) ) {
-			static_assert( daw::is_unary_predicate_v<Compare>,
-			               "Compare does not satisfy the Unary Predicate concept.  See "
-			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
-
-			std::sort( std::begin( container ), std::end( container ), compare );
-		}
-
 		template<typename ForwardIterator1, typename ForwardIterator2>
 		constexpr ForwardIterator1 is_sorted_until( ForwardIterator1 first, ForwardIterator2 const last ) noexcept {
 			static_assert( daw::is_convertible_v<ForwardIterator2, ForwardIterator1>,

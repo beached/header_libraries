@@ -28,28 +28,51 @@
 
 namespace daw {
 	namespace algorithm {
-		template<typename Container>
-		auto &sort( Container &container ) {
+		template<typename Container,
+		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
+		Container &
+		sort( Container &container ) noexcept( noexcept( std::sort( std::begin( container ), std::end( container ) ) ) ) {
+
 			std::sort( std::begin( container ), std::end( container ) );
-			return container;
+			return Container;
+
 		}
 
-		template<typename Container, typename UnaryPredicate>
-		auto &sort( Container &container, UnaryPredicate pred ) {
-			std::sort( std::begin( container ), std::end( container ), pred );
-			return container;
+		template<typename Container, typename Compare,
+		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
+		Container & sort( Container &container,
+		           Compare compare ) noexcept( noexcept( std::sort( std::begin( container ), std::end( container ),
+		                                                            compare ) ) ) {
+			static_assert( daw::is_unary_predicate_v<Compare>,
+			               "Compare does not satisfy the Unary Predicate concept.  See "
+			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+
+			std::sort( std::begin( container ), std::end( container ), compare );
+			return Container;
 		}
 
-		template<typename Container>
-		auto &stable_sort( Container &container ) {
+
+		template<typename Container,
+		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
+		Container &
+		stable_sort( Container &container ) noexcept( noexcept( std::stable_sort( std::begin( container ), std::end( container ) ) ) ) {
+
 			std::stable_sort( std::begin( container ), std::end( container ) );
-			return container;
+			return Container;
+
 		}
 
-		template<typename Container, typename UnaryPredicate>
-		auto &stable_sort( Container &container, UnaryPredicate pred ) {
-			std::stable_sort( std::begin( container ), std::end( container ), pred );
-			return container;
+		template<typename Container, typename Compare,
+		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
+		Container & stable_sort( Container &container,
+		           Compare compare ) noexcept( noexcept( std::stable_sort( std::begin( container ), std::end( container ),
+		                                                            compare ) ) ) {
+			static_assert( daw::is_unary_predicate_v<Compare>,
+			               "Compare does not satisfy the Unary Predicate concept.  See "
+			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+
+			std::stable_sort( std::begin( container ), std::end( container ), compare );
+			return Container;
 		}
 
 		template<typename Container, typename Value>
