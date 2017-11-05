@@ -185,8 +185,7 @@ namespace daw {
 			  "Compare does not satisfy the Binary Predicate concept.  See "
 			  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate for more information" );
 
-			std::max_element( std::begin( container ), std::end( container ), compare );
-			return container;
+			return std::max_element( std::begin( container ), std::end( container ), compare );
 		}
 
 		template<typename Container, typename Compare,
