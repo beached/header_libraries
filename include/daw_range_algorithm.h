@@ -136,13 +136,24 @@ namespace daw {
 
 		template<typename Container, typename OutputIterator, typename UnaryOperator,
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
+		void map( Container const &container, OutputIterator &first_out, UnaryOperator unary_operator ) noexcept(
+		  noexcept( std::transform( std::cbegin( container ), std::cend( container ), first_out, unary_operator ) ) ) {
+
+			static_assert( daw::is_unary_predicate_v<UnaryOperator, decltype( *std::cbegin( container ) )>,
+			               "Compare does not satisfy the Unary Predicate concept.  See "
+			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+
+			std::transform( std::cbegin( container ), std::cend( container ), first_out, unary_operator );
+		}
+
+		template<typename Container, typename OutputIterator, typename UnaryOperator,
+		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
 		void map( Container const &container, OutputIterator &&first_out, UnaryOperator unary_operator ) noexcept(
 		  noexcept( std::transform( std::cbegin( container ), std::cend( container ), first_out, unary_operator ) ) ) {
 
-			static_assert(
-			  daw::is_unary_predicate_v<UnaryOperator, decltype( *std::cbegin( container ) )>,
-			  "Compare does not satisfy the Unary Predicate concept.  See "
-			  "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+			static_assert( daw::is_unary_predicate_v<UnaryOperator, decltype( *std::cbegin( container ) )>,
+			               "Compare does not satisfy the Unary Predicate concept.  See "
+			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
 
 			std::transform( std::cbegin( container ), std::cend( container ), first_out, unary_operator );
 		}
