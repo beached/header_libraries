@@ -26,16 +26,16 @@
 
 namespace daw {
 	template<typename... Containers>
-	struct ZipContainer {
-		using iterator = ZipIter<decltype( std::declval<Containers...>( ).begin( ) )>;
-		using const_iterator = ZipIter<decltype( std::declval<std::add_const_t<Containers>>( ).begin( ) )...>;
+	struct zip_container {
+		using iterator = zip_iterator<decltype( std::declval<Containers...>( ).begin( ) )>;
+		using const_iterator = zip_iterator<decltype( std::declval<std::add_const_t<Containers>>( ).begin( ) )...>;
 
 	private:
 		iterator m_begin;
 		iterator m_end;
 
 	public:
-		ZipContainer( Containers... containers )
+		zip_container( Containers... containers )
 		  : m_begin( make_zipiter( std::begin( containers )... ) ), m_end( make_zipiter( std::end( containers )... ) ) {}
 
 		iterator begin( ) {
@@ -61,10 +61,10 @@ namespace daw {
 		const_iterator cend( ) const {
 			return m_end;
 		}
-	}; // struct ZipContainer
+	}; // struct zip_container
 
 	template<typename... Containers>
-	ZipContainer<Containers...> make_zipcontainer( Containers... args ) {
-		return ZipContainer<Containers...>( args... );
+	zip_container<Containers...> make_zipcontainer( Containers... args ) {
+		return zip_container<Containers...>( args... );
 	}
 } // namespace daw

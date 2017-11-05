@@ -97,11 +97,12 @@ namespace daw {
 	auto to_reference_vector( Iterator first, Iterator last ) {
 		using value_type = daw::traits::root_type_t<decltype( *first )>;
 		using values_type = ::std::vector<::daw::Reference<value_type>>;
-		values_type result;
-		for( auto it = first; it != last; ++it ) {
-			auto v = ::daw::ref<value_type>( *it );
-			result.push_back( v );
-		}
+
+		values_type result{};
+		daw::algorithm::map( first, last, std::back_inserter( result ), []( value_type const &val ) {
+			auto v = ::daw::ref<value_type>( val );
+			return v;
+		} );
 		return result;
 	}
 

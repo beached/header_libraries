@@ -37,6 +37,7 @@
 #include <type_traits>
 #include <vector>
 
+#include "daw_algorithm.h"
 #include "daw_exception.h"
 #include "daw_random.h"
 #include "daw_string_view.h"
@@ -278,12 +279,8 @@ namespace daw {
 
 	template<typename Iterator1, typename Iterator2, typename Pred>
 	std::vector<Iterator1> find_all_where( Iterator1 first, Iterator2 const last, Pred predicate ) {
-		std::vector<Iterator1> results;
-		for( ; first != last; ++first ) {
-			if( predicate( *first ) ) {
-				results.push_back( first );
-			}
-		}
+		std::vector<Iterator1> results{};
+		std::copy_if( first, last, std::back_inserter( results ), predicate );
 		return results;
 	}
 
@@ -301,19 +298,17 @@ namespace daw {
 	}
 
 	template<typename CharType, typename Traits, typename Allocator>
-	auto AsciiUpper( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
-		for( auto &chr : str ) {
-			chr = AsciiUpper( chr );
-		}
-		return str;
+	constexpr auto AsciiUpper( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
+		daw::algorithm::map( str.cbegin( ), str.cend( ),
+		                           str.begin( ), []( CharType c ) noexcept { return AsciiUpper( c ); } );
+		return std::move( str );
 	}
 
 	template<typename CharType, typename Traits, typename Allocator>
-	auto AsciiLower( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
-		for( auto &chr : str ) {
-			chr = AsciiLower( chr );
-		}
-		return str;
+	constexpr auto AsciiLower( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
+		daw::algorithm::map( str.cbegin( ), str.cend( ),
+		                           str.begin( ), []( CharType c ) noexcept { return AsciiLower( c ); } );
+		return std::move( str );
 	}
 
 	template<typename Iterator>
@@ -413,7 +408,7 @@ namespace daw {
 
 	template<typename Container, typename... Args>
 	decltype( auto ) append( Container &container, Args &&... args ) {
-		return container.insert( container.end( ), make_initializer_list( std::forward<Args>( args )... ) );
+		return container.insert( container.end( ), {std::forward<Args>( args )...} );
 	}
 
 	template<typename Container, typename Item>

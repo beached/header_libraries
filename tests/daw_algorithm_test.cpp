@@ -152,7 +152,7 @@ constexpr int map_test_002( ) {
 		constexpr int operator( )( int val ) const noexcept {
 			return val % 2 == 0 ? 0 : 1;
 		}
-	} unary_op;
+	} unary_op{};
 
 	daw::algorithm::map( blah, daw::algorithm::next( blah, 6 ), blah, unary_op );
 	int result = 0;

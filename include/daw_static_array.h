@@ -89,9 +89,7 @@ namespace daw {
 		}
 
 		constexpr void fill( const_reference value ) noexcept {
-			for( size_t n = 0; n < N; ++n ) {
-				m_data[n] = value;
-			}
+			daw::algorithm::fill_n( m_data.begin( ), N, value );
 		}
 
 		constexpr size_type size( ) const noexcept {
