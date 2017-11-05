@@ -121,6 +121,7 @@ namespace daw {
 		template<typename Container, typename UnaryOperator,
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
 		auto map( Container const &container, UnaryOperator unary_operator ) {
+
 			static_assert(
 			  daw::is_unary_predicate_v<UnaryOperator, decltype( *std::cbegin( container ) )>,
 			  "Compare does not satisfy the Unary Predicate concept.  See "
@@ -137,6 +138,7 @@ namespace daw {
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
 		void map( Container const &container, OutputIterator &first_out, UnaryOperator unary_operator ) noexcept(
 		  noexcept( std::transform( std::cbegin( container ), std::cend( container ), first_out, unary_operator ) ) ) {
+
 			static_assert(
 			  daw::is_unary_predicate_v<UnaryOperator, decltype( *std::cbegin( container ) )>,
 			  "Compare does not satisfy the Unary Predicate concept.  See "
