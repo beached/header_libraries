@@ -122,13 +122,11 @@ namespace daw {
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
 		auto map( Container const &container, UnaryOperator unary_operator ) {
 
-			static_assert(
-			  daw::is_unary_predicate_v<UnaryOperator, decltype( *std::cbegin( container ) )>,
-			  "Compare does not satisfy the Unary Predicate concept.  See "
-			  "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+			static_assert( daw::is_callable_v<UnaryOperator, decltype( *std::cbegin( container ) )>,
+			               "UnaryOperator is not callable with the values stored in Container" );
 
-			using result_t = std::vector<decltype(
-			  unary_operator( std::declval<typename std::iterator_traits<decltype( std::cbegin( container ) )>::value_type>( ) ) )>;
+			using result_t = std::vector<decltype( unary_operator(
+			  std::declval<typename std::iterator_traits<decltype( std::cbegin( container ) )>::value_type>( ) ) )>;
 			result_t result;
 			std::transform( std::cbegin( container ), std::cend( container ), std::back_inserter( result ), unary_operator );
 			return result;
@@ -139,9 +137,12 @@ namespace daw {
 		void map( Container const &container, OutputIterator &first_out, UnaryOperator unary_operator ) noexcept(
 		  noexcept( std::transform( std::cbegin( container ), std::cend( container ), first_out, unary_operator ) ) ) {
 
-			static_assert( daw::is_unary_predicate_v<UnaryOperator, decltype( *std::cbegin( container ) )>,
-			               "Compare does not satisfy the Unary Predicate concept.  See "
-			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+			static_assert( daw::is_callable_v<UnaryOperator, decltype( *std::cbegin( container ) )>,
+			               "UnaryOperator is not callable with the values stored in Container" );
+
+			static_assert(
+			  daw::is_convertible_v<decltype( unary_operator( *std::cbegin( container ) ) ), decltype( *first_out )>,
+			  "Output of UnaryOperator cannot be assigned to *first_out" );
 
 			std::transform( std::cbegin( container ), std::cend( container ), first_out, unary_operator );
 		}
