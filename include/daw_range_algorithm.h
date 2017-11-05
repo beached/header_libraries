@@ -118,14 +118,31 @@ namespace daw {
 			return std::accumulate( std::begin( container ), std::end( container ), std::move( init ), oper );
 		}
 
-		template<typename ContainerIn, typename UnaryOperator>
-		auto map( ContainerIn const &in, UnaryOperator oper ) -> std::vector<
-		  decltype( oper( std::declval<typename std::iterator_traits<decltype( std::begin( in ) )>::value_type>( ) ) )> {
+		template<typename Container, typename UnaryOperator,
+		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
+		auto map( Container const &container, UnaryOperator unary_operator ) {
+			static_assert(
+			  daw::is_unary_predicate_v<UnaryOperator, decltype( *std::cbegin( container ) )>,
+			  "Compare does not satisfy the Unary Predicate concept.  See "
+			  "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+
 			using result_t = std::vector<decltype(
-			  oper( std::declval<typename std::iterator_traits<decltype( std::begin( in ) )>::value_type>( ) ) )>;
+			  unary_operator( std::declval<typename std::iterator_traits<decltype( std::cbegin( container ) )>::value_type>( ) ) )>;
 			result_t result;
-			std::transform( std::begin( in ), std::end( in ), std::back_inserter( result ), oper );
+			std::transform( std::cbegin( container ), std::cend( container ), std::back_inserter( result ), unary_operator );
 			return result;
+		}
+
+		template<typename Container, typename OutputIterator, typename UnaryOperator,
+		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
+		void map( Container const &container, OutputIterator &first_out, UnaryOperator unary_operator ) noexcept(
+		  noexcept( std::transform( std::cbegin( container ), std::cend( container ), first_out, unary_operator ) ) ) {
+			static_assert(
+			  daw::is_unary_predicate_v<UnaryOperator, decltype( *std::cbegin( container ) )>,
+			  "Compare does not satisfy the Unary Predicate concept.  See "
+			  "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+
+			std::transform( std::cbegin( container ), std::cend( container ), first_out, unary_operator );
 		}
 
 		template<typename Container, typename Value>
