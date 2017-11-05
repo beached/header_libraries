@@ -136,7 +136,7 @@ namespace daw {
 
 		template<typename Container, typename OutputIterator, typename UnaryOperator,
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
-		void map( Container const &container, OutputIterator &first_out, UnaryOperator unary_operator ) noexcept(
+		void map( Container const &container, OutputIterator &&first_out, UnaryOperator unary_operator ) noexcept(
 		  noexcept( std::transform( std::cbegin( container ), std::cend( container ), first_out, unary_operator ) ) ) {
 
 			static_assert(
