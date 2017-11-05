@@ -77,3 +77,9 @@ BOOST_AUTO_TEST_CASE( daw_range_algorithm_test_stable_sort ) {
 	BOOST_REQUIRE( std::is_sorted( v1.cbegin( ), v1.cend( ) ) );
 }
 
+BOOST_AUTO_TEST_CASE( daw_range_algorithm_test_max_element ) {
+	std::vector<int64_t> v1{1000};
+	std::iota( std::begin( v1 ), std::end( v1 ), 1 );
+	daw::algorithm::max_element( v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
+}
+
