@@ -74,13 +74,47 @@ namespace daw {
 			return container;
 		}
 
-		template<typename Container, typename Value>
-		auto find( Container const &container, Value const &value ) -> decltype( end( container ) ) {
+		template<typename Container, typename Value,
+		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
+		decltype( auto ) find( Container &container,
+		                       Value const &value ) noexcept( noexcept( std::find( std::begin( container ),
+		                                                                           std::end( container ), value ) ) ) {
+
 			return std::find( std::begin( container ), std::end( container ), value );
 		}
 
-		template<typename Container, typename UnaryPredicate>
-		auto find_if( Container const &container, UnaryPredicate pred ) -> decltype( end( container ) ) {
+		template<typename Container, typename Value,
+		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
+		decltype( auto ) find( Container const &container,
+		                       Value const &value ) noexcept( noexcept( std::find( std::begin( container ),
+		                                                                           std::end( container ), value ) ) ) {
+
+			return std::find( std::begin( container ), std::end( container ), value );
+		}
+
+		template<typename Container, typename UnaryPredicate,
+		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
+		decltype( auto ) find_if( Container &container, UnaryPredicate pred ) noexcept(
+		  noexcept( std::find_if( std::begin( container ), std::end( container ), pred ) ) ) {
+
+			static_assert(
+			  daw::is_unary_predicate_v<UnaryPredicate, decltype( *std::begin( container ) ), decltype( *std::end( container ) )>,
+			  "Compare does not satisfy the Unary Predicate concept.  See "
+			  "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+
+			return std::find_if( std::begin( container ), std::end( container ), pred );
+		} 
+
+		template<typename Container, typename UnaryPredicate,
+		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
+		decltype( auto ) find_if( Container const &container, UnaryPredicate pred ) noexcept(
+		  noexcept( std::find_if( std::begin( container ), std::end( container ), pred ) ) ) {
+
+			static_assert(
+			  daw::is_unary_predicate_v<UnaryPredicate, decltype( *std::begin( container ) ), decltype( *std::end( container ) )>,
+			  "Compare does not satisfy the Unary Predicate concept.  See "
+			  "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+
 			return std::find_if( std::begin( container ), std::end( container ), pred );
 		}
 
