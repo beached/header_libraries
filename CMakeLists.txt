@@ -37,6 +37,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_checked_iterator_proxy
 	daw_clumpy_sparsy
 	daw_common_mixins
+	daw_container_algorithm
 	daw_cstring
 	daw_exception
 	daw_expected
