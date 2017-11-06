@@ -32,21 +32,21 @@
 
 BOOST_AUTO_TEST_CASE( container_algorithm_accumulate ) {
 	std::vector<int> test( 100, 1 );
-	auto const sum = daw::algorithm::accumulate( test, 0 );
+	auto const sum = daw::container::accumulate( test, 0 );
 	BOOST_REQUIRE_EQUAL( test.size( ), sum );
 
-	auto const product = daw::algorithm::accumulate( test, 1, []( auto lhs, auto rhs ) { return lhs * rhs; } );
+	auto const product = daw::container::accumulate( test, 1, []( auto lhs, auto rhs ) { return lhs * rhs; } );
 	BOOST_REQUIRE_EQUAL( product, 1 );
 }
 
 BOOST_AUTO_TEST_CASE( container_algorithm_transform ) {
 	std::vector<int> test_vec{ boost::counting_iterator<int>( 1 ), boost::counting_iterator<int>( 100 ) };
 
-	auto result = daw::algorithm::transform( test_vec, []( int const &val ) { return 2 * val; } );
+	auto result = daw::container::transform( test_vec, []( int const &val ) { return 2 * val; } );
 	BOOST_REQUIRE_EQUAL( test_vec.size( ), result.size( ) );
 
-	auto const sum1 = daw::algorithm::accumulate( test_vec, 0 );
-	auto const sum2 = daw::algorithm::accumulate( result, 0 );
+	auto const sum1 = daw::container::accumulate( test_vec, 0 );
+	auto const sum2 = daw::container::accumulate( result, 0 );
 
 	BOOST_REQUIRE_EQUAL( sum1 * 2, sum2 );
 }
@@ -54,20 +54,20 @@ BOOST_AUTO_TEST_CASE( container_algorithm_transform ) {
 BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_sort ) {
 	std::vector<int64_t> v1{1000};
 	std::iota( std::begin( v1 ), std::end( v1 ), 1 );
-	daw::algorithm::sort( v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
+	daw::container::sort( v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
 	BOOST_REQUIRE( std::is_sorted( v1.cbegin( ), v1.cend( ) ) );
 }
 
 BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_stable_sort ) {
 	std::vector<int64_t> v1{1000};
 	std::iota( std::begin( v1 ), std::end( v1 ), 1 );
-	daw::algorithm::stable_sort( v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
+	daw::container::stable_sort( v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
 	BOOST_REQUIRE( std::is_sorted( v1.cbegin( ), v1.cend( ) ) );
 }
 
 BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_max_element ) {
 	std::vector<int64_t> v1{1000};
 	std::iota( std::begin( v1 ), std::end( v1 ), 1 );
-	daw::algorithm::max_element( v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
+	daw::container::max_element( v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
 }
 
