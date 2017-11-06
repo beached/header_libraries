@@ -41,9 +41,10 @@ BOOST_AUTO_TEST_CASE( container_algorithm_accumulate ) {
 
 BOOST_AUTO_TEST_CASE( container_algorithm_transform ) {
 	std::vector<int> test_vec{ boost::counting_iterator<int>( 1 ), boost::counting_iterator<int>( 100 ) };
+	std::vector<int> result{ };
+	result.resize( test_vec.size( ) );
 
-	auto result = daw::container::transform( test_vec, []( int const &val ) { return 2 * val; } );
-	BOOST_REQUIRE_EQUAL( test_vec.size( ), result.size( ) );
+	daw::container::transform( test_vec, std::back_inserter( result ), []( int const &val ) { return 2 * val; } );
 
 	auto const sum1 = daw::container::accumulate( test_vec, 0 );
 	auto const sum2 = daw::container::accumulate( result, 0 );

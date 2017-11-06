@@ -25,6 +25,8 @@
 #include <algorithm>
 #include <numeric>
 
+#include "daw_traits.h"
+
 namespace daw {
 	namespace container {
 		template<typename Container,
