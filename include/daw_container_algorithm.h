@@ -267,7 +267,11 @@ namespace daw {
 			return std::max_element( std::begin( container ), std::end( container ), compare );
 		}
 
-		template<typename Container, typename Value>
+		template<
+		  typename Container, typename Value,
+		  std::enable_if_t<daw::traits::is_container_like_v<Container> &&
+		                     !daw::is_unary_predicate_v<Value, decltype( *std::cbegin( std::declval<Container>( ) ) )>,
+		                   std::nullptr_t> = nullptr>
 		bool contains( Container const &container,
 		               Value &&value ) noexcept( noexcept( std::find( std::cbegin( container ), std::cend( container ),
 		                                                              value ) != std::cend( container ) ) ) {
