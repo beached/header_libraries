@@ -131,9 +131,6 @@ namespace daw {
 		decltype( auto ) erase_remove_if( Container &container, UnaryPredicate pred ) noexcept( noexcept( container.erase(
 		  std::remove_if( std::begin( container ), std::end( container ), pred ), std::end( container ) ) ) ) {
 
-			static_assert( daw::is_detected_v<decltype( container.erase( std::begin( container ), std::end( container ) ) )>,
-			               "Container must have erase method taking two iterators" );
-
 			static_assert( daw::is_unary_predicate_v<UnaryPredicate, decltype( *std::begin( container ) )>,
 			               "Compare does not satisfy the Unary Predicate concept.  See "
 			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
