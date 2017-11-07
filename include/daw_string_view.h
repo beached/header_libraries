@@ -206,7 +206,7 @@ namespace daw {
 		  : basic_string_view{str.data( ), str.size( )} {}
 
 		// TODO: determine if I want this or not
-		//basic_string_view( std::basic_string<CharT, Traits> &&str ) noexcept = delete;
+		// basic_string_view( std::basic_string<CharT, Traits> &&str ) noexcept = delete;
 
 		constexpr basic_string_view( const_pointer s ) noexcept
 		  : basic_string_view{s, details::strlen<size_type_internal>( s )} {}
@@ -1026,7 +1026,7 @@ namespace daw {
 			sv_arry_t &operator=( sv_arry_t && ) = default;
 			~sv_arry_t( ) = default;
 
-			decltype(auto) operator[]( size_t p ) const noexcept {
+			decltype( auto ) operator[]( size_t p ) const noexcept {
 				return data[p];
 			}
 
@@ -1054,19 +1054,19 @@ namespace daw {
 				return data.crbegin( );
 			}
 
-			decltype(auto) end( ) const noexcept {
+			decltype( auto ) end( ) const noexcept {
 				return data.cend( );
 			}
 
-			decltype(auto) cend( ) const noexcept {
+			decltype( auto ) cend( ) const noexcept {
 				return data.cend( );
 			}
 
-			decltype(auto) rend( ) const noexcept {
+			decltype( auto ) rend( ) const noexcept {
 				return data.crend( );
 			}
 
-			decltype(auto) crend( ) const noexcept {
+			decltype( auto ) crend( ) const noexcept {
 				return data.crend( );
 			}
 
@@ -1101,14 +1101,15 @@ namespace daw {
 	}
 
 	template<typename CharT, typename Traits, typename InternalSizeType, size_t N>
-	auto split( daw::basic_string_view<CharT, Traits, InternalSizeType> str, CharT const (&delemiter)[N] ) {
+	auto split( daw::basic_string_view<CharT, Traits, InternalSizeType> str, CharT const ( &delemiter )[N] ) {
 		static_assert( N == 2, "string literal used as delemiter.  One 1 value is supported (e.g. \",\" )" );
 		return split( str, [delemiter]( CharT c ) noexcept { return c == delemiter[0]; } );
 	}
 
-	template<typename String, typename Delemiter, std::enable_if_t<daw::traits::is_string_v<String>, std::nullptr_t> = nullptr>
+	template<typename String, typename Delemiter,
+	         std::enable_if_t<daw::traits::is_string_v<String>, std::nullptr_t> = nullptr>
 	auto split( String const &str, Delemiter d ) {
-		return split( daw::string_view{ str }, d );
+		return split( daw::string_view{str}, d );
 	}
 
 	template<typename CharT, typename Traits>
@@ -1153,6 +1154,14 @@ namespace daw {
 	constexpr size_t generic_hash( daw::basic_string_view<CharT, Traits, InternalSizeType> sv ) noexcept {
 		return generic_hash<HashSize>( sv.data( ), sv.size( ) );
 	}
+
+	namespace detectors {
+		template<typename String>
+		using can_be_string_view = decltype( daw::string_view( std::declval<String>( ) ) );
+	}
+
+	template<typename String>
+	constexpr bool can_be_string_view = daw::is_detected_v<detectors::can_be_string_view, String>;
 } // namespace daw
 
 namespace std {

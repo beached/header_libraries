@@ -788,5 +788,9 @@ namespace daw {
 		auto const str_splt = split( b, "," );
 		BOOST_REQUIRE( str_splt.empty( ) );
 	}
+
+	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_001 ) {
+		BOOST_REQUIRE( daw::can_be_string_view<decltype("Hello")> );
+	}
 } // namespace daw
 
