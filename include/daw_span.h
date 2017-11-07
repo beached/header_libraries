@@ -226,6 +226,10 @@ namespace daw {
 			return rlen;
 		}
 
+		constexpr void fill( const_reference value ) noexcept {
+			daw::algorithm::fill_n( m_data.begin( ), N, value );
+		}
+
 		constexpr span subset( size_type const pos = 0,
 		                       size_type const count = std::numeric_limits<size_type>::max( ) ) const {
 			if( pos >= size( ) ) {
