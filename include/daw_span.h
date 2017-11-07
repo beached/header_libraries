@@ -227,7 +227,7 @@ namespace daw {
 		}
 
 		constexpr void fill( const_reference value ) noexcept {
-			daw::algorithm::fill_n( m_data.begin( ), N, value );
+			daw::algorithm::fill_n( m_first, m_size, value );
 		}
 
 		constexpr span subset( size_type const pos = 0,
