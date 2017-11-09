@@ -24,6 +24,8 @@
 
 #include <limits>
 
+#include "daw_traits.h"
+
 namespace daw {
 	template<typename T>
 	constexpr T get_left_mask( size_t left_zero_bits ) noexcept {
@@ -34,4 +36,22 @@ namespace daw {
 	constexpr T get_right_mask( size_t right_zero_bits ) noexcept {
 		return static_cast<T>( std::numeric_limits<T>::max( ) << right_zero_bits );
 	}
+
+	template<typename Bit, typename... Bits>
+	constexpr auto make_mask( Bit bit, Bits... bits ) noexcept {
+		static_assert( is_integral_v<Bit>, "Only integer types are supported" );
+
+		using expand = int[];
+		static_cast<void>( expand{0, ( ( bit |= bits ), 0 )...} );
+		return bit;
+	}
+
+	template<typename Integer, typename MaskBit, typename... MaskBits>
+	constexpr bool are_set( Integer value, MaskBit mask_bit, MaskBits... mask_bits ) noexcept {
+		static_assert( is_integral_v<Integer>, "Only integer types are supported" );
+		static_assert( is_integral_v<MaskBit>, "Only integer types are supported" );
+
+		return ( value & make_mask( mask_bit, mask_bits... ) ) != 0;
+	}
 } // namespace daw
+
