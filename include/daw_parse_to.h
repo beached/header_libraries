@@ -39,8 +39,7 @@ namespace daw {
 		struct empty_input_exception : invalid_input_exception {};
 
 		namespace converters {
-			template<typename T, std::enable_if_t<is_same_v<T, char>, std::nullptr_t> = nullptr>
-			constexpr char parse_to_value( daw::string_view str ) {
+			constexpr char parse_to_value( daw::string_view str, char ) {
 				if( str.empty( ) ) {
 					throw empty_input_exception{};
 				}
@@ -49,7 +48,7 @@ namespace daw {
 
 			template<typename T,
 			         std::enable_if_t<!is_same_v<T, char> && is_integral_v<T> && is_signed_v<T>, std::nullptr_t> = nullptr>
-			constexpr T parse_to_value( daw::string_view str ) {
+			constexpr T parse_to_value( daw::string_view str, T ) {
 				if( str.empty( ) ) {
 					throw empty_input_exception{};
 				}
@@ -59,7 +58,7 @@ namespace daw {
 			}
 
 			template<typename T, std::enable_if_t<is_integral_v<T> && is_unsigned_v<T>, std::nullptr_t> = nullptr>
-			constexpr T parse_to_value( daw::string_view str ) {
+			constexpr T parse_to_value( daw::string_view str, T ) {
 				if( str.empty( ) ) {
 					throw empty_input_exception{};
 				}
@@ -68,8 +67,7 @@ namespace daw {
 				return result;
 			}
 
-			template<typename T, std::enable_if_t<is_same_v<T, std::string>, std::nullptr_t> = nullptr>
-			std::string parse_to_value( daw::string_view str ) {
+			std::string parse_to_value( daw::string_view str, std::string const & ) {
 				if( str.empty( ) ) {
 					throw empty_input_exception{};
 				}
@@ -85,8 +83,7 @@ namespace daw {
 				return result;
 			}
 
-			template<typename T, std::enable_if_t<is_same_v<T, daw::string_view>, std::nullptr_t> = nullptr>
-			constexpr daw::string_view parse_to_value( daw::string_view str ) {
+			constexpr daw::string_view parse_to_value( daw::string_view str, daw::string_view ) {
 				if( str.empty( ) ) {
 					throw empty_input_exception{};
 				}
@@ -116,7 +113,7 @@ namespace daw {
 				using pos_t = std::integral_constant<size_t, sizeof...( Args ) - N>;
 				using value_t = std::decay_t<decltype( std::get<pos_t::value>( tp ) )>;
 
-				std::get<pos_t::value>( tp ) = parse_to_value<value_t>( str.substr( 0, end_pos.first ) );
+				std::get<pos_t::value>( tp ) = parse_to_value( str.substr( 0, end_pos.first ), value_t{} );
 				str.remove_prefix( end_pos.last );
 				daw::parser::impl::set_value_from_string_view<N - 1, Args...>( tp, std::move( str ), std::move( splitter ) );
 			}
@@ -178,7 +175,7 @@ namespace daw {
 			class parse_result_of {
 				static auto get_type( ) noexcept {
 					using namespace ::daw::parser::converters;
-					return parse_to_value<T>( daw::string_view{} );
+					return parse_to_value( daw::string_view{}, T{} );
 				}
 			public:
 				using type = std::decay_t<decltype( get_type( ) )>;
