@@ -422,10 +422,20 @@ namespace daw {
 		}
 
 		constexpr int compare( basic_string_view const v ) const noexcept {
-			auto const cmp = traits_type::compare( m_first, v.m_first, ( std::min )( m_size, v.m_size ) );
-			if( cmp != 0 ) {
-				return cmp;
+			auto const sz = std::min( m_size, v.m_size );
+
+			auto lhs = m_first;
+			auto rhs = v.m_first;
+			for( size_t n=0; n<sz && *lhs == *rhs; ++n ) {
+				++lhs;
+				++rhs;
 			}
+			if( *lhs < *rhs ) {
+				return -1;
+			} else if( *lhs > *rhs ) {
+				return 1;
+			}
+			// Equal so far
 			if( m_size == v.m_size ) {
 				return 0;
 			}

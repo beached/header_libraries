@@ -397,6 +397,7 @@ namespace daw {
 		{
 			view.remove_suffix( 6 );
 
+			BOOST_REQUIRE_EQUAL( view, "Hello" );
 			BOOST_REQUIRE( view == "Hello" );
 		}
 	}
@@ -521,6 +522,7 @@ namespace daw {
 		BOOST_TEST_MESSAGE( "Substring returns at most count characters" );
 		{
 			auto substr = view.substr( 6, 1 );
+			BOOST_REQUIRE_EQUAL( substr, "W" );
 			BOOST_REQUIRE( substr == "W" );
 		}
 
