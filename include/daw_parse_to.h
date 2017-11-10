@@ -220,7 +220,7 @@ namespace daw {
 	         std::enable_if_t<!is_convertible_v<Splitter, daw::string_view>, std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) apply_string( Callable callable, daw::string_view str, Splitter splitter ) {
 		static_assert( is_callable_v<Splitter, daw::string_view>, "Splitter is not a callable type" );
-		using ftraits = typename daw::function_traits<decltype( callable )>::args_tuple;
+		using ftraits = typename daw::function_traits<decltype( callable )>::decayed_args_tuple;
 		return impl::apply_string_impl( ftraits{}, std::move( callable ), std::move( str ), std::move( splitter ) );
 	}
 

@@ -35,6 +35,7 @@ namespace daw {
 
 		using result_type = ReturnType;
 		using args_tuple = std::tuple<Args...>;
+		using decayed_args_tuple = std::tuple<std::decay_t<Args>...>;
 
 		template<size_t i>
 		struct arg {
