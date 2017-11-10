@@ -103,6 +103,7 @@ set( TESTED_HEADERS_PREFIXES
 
 set( UNTESTED_HEADER_FILES
 	boost_test.h
+	daw_function.h
 	daw_iterator.h
 )
 
