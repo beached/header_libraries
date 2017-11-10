@@ -70,9 +70,19 @@ BOOST_AUTO_TEST_CASE( daw_values_from_stream_005 ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_values_from_stream_006 ) {
-	//auto f = []( auto a, auto b, auto c ) { return a + b + c; };
 	auto f = []( int a, int b, int c ) { return a + b + c; };
 	auto result = daw::apply_string2<int, int, int>( f, "1,2,3", "," );
 	BOOST_REQUIRE_EQUAL( result, 6 );
 }
 
+BOOST_AUTO_TEST_CASE( daw_values_from_stream_007 ) {
+	auto f = []( int a, int b, int c ) { return a + b + c; };
+	auto result = daw::apply_string( f, "1	2  3", daw::parser::whitespace_splitter{ } );
+	BOOST_REQUIRE_EQUAL( result, 6 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_values_from_stream_008 ) {
+	auto f = []( int a, int b, int c ) { return a + b + c; };
+	auto result = daw::apply_string2<int, int, int>( f, "1  2     3", daw::parser::whitespace_splitter{ } );
+	BOOST_REQUIRE_EQUAL( result, 6 );
+}

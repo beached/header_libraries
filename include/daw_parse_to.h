@@ -29,6 +29,7 @@
 
 #include "daw_function.h"
 #include "daw_parser_addons.h"
+#include "daw_parser_helper.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
 
@@ -161,6 +162,35 @@ namespace daw {
 				return result_t{str.npos, str.npos};
 			}
 		};
+
+		template<bool skip_multiple>
+		struct basic_whitespace_splitter {
+			constexpr auto operator( )( daw::string_view str ) const noexcept {
+				struct result_t {
+					typename daw::string_view::size_type first;
+					typename daw::string_view::size_type last;
+				};
+				typename daw::string_view::size_type n = 0;
+				size_t const sz = str.size( );
+				while( n < sz && not_unicode_whitespace( str[n] ) ) {
+					++n;
+				}
+				if( n == sz ) {
+					return result_t{str.npos, str.npos};
+				}
+				if( !skip_multiple ) {
+					return result_t{n, n + 1};
+				}
+				auto const f = n;
+				while( n < sz && is_unicode_whitespace( str[n] ) ) {
+					++n;
+				}
+				return result_t{f, n};
+			}
+		};
+		using whitespace_splitter = basic_whitespace_splitter<true>;
+		using single_whitespace_splitter = basic_whitespace_splitter<false>;
+		
 		template<typename... Args, typename Splitter,
 		         std::enable_if_t<!is_convertible_v<Splitter, daw::string_view>, std::nullptr_t> = nullptr>
 		constexpr std::tuple<Args...> parse_to( daw::string_view str, Splitter splitter ) {
@@ -239,14 +269,14 @@ namespace daw {
 	template<typename... Args, typename Callable, typename Splitter,
 	         std::enable_if_t<!is_convertible_v<Splitter, daw::string_view>, std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) apply_string2( Callable callable, daw::string_view str, Splitter splitter ) {
-		static_cast<void>( impl::ArityCheckEqual<daw::function_traits<Callable>::arity, sizeof...(Args)>{} );
+		static_cast<void>( impl::ArityCheckEqual<daw::function_traits<Callable>::arity, sizeof...( Args )>{} );
 		return daw::apply( std::move( callable ), parser::parse_to<Args...>( std::move( str ), std::move( splitter ) ) );
 	}
 
 	template<typename... Args, typename Callable>
 	constexpr decltype( auto ) apply_string2( Callable callable, daw::string_view str, daw::string_view delemiter ) {
 		return apply_string2<Args...>( std::move( callable ), std::move( str ),
-		                                         parser::default_splitter{std::move( delemiter )} );
+		                               parser::default_splitter{std::move( delemiter )} );
 	}
 } // namespace daw
 
