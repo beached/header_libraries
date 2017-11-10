@@ -103,7 +103,7 @@ namespace daw {
 
 		namespace impl {
 			template<size_t N, std::enable_if_t<( N == 0 ), std::nullptr_t> = nullptr, typename... Args, typename Splitter>
-			constexpr void set_value_from_string_view( std::tuple<Args...> &, daw::string_view, Splitter ) noexcept {}
+			constexpr void set_value_from_string_view( std::tuple<Args...> &, daw::string_view, Splitter ) {}
 
 			template<size_t N, std::enable_if_t<( N > 0 ), std::nullptr_t> = nullptr, typename... Args, typename Splitter>
 			constexpr void set_value_from_string_view( std::tuple<Args...> &tp, daw::string_view str, Splitter splitter ) {
@@ -148,7 +148,7 @@ namespace daw {
 
 		template<bool skip_multiple>
 		struct basic_whitespace_splitter {
-			constexpr auto operator( )( daw::string_view str ) const noexcept {
+			constexpr auto operator( )( daw::string_view str ) const {
 				struct result_t {
 					typename daw::string_view::size_type first;
 					typename daw::string_view::size_type last;
