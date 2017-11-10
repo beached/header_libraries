@@ -40,7 +40,7 @@ namespace daw {
 
 		namespace converters {
 			template<typename T, std::enable_if_t<is_same_v<T, char>, std::nullptr_t> = nullptr>
-			constexpr char parser( daw::string_view str ) {
+			constexpr char parse_to_value( daw::string_view str ) {
 				if( str.empty( ) ) {
 					throw empty_input_exception{};
 				}
@@ -49,7 +49,7 @@ namespace daw {
 
 			template<typename T,
 			         std::enable_if_t<!is_same_v<T, char> && is_integral_v<T> && is_signed_v<T>, std::nullptr_t> = nullptr>
-			constexpr T parser( daw::string_view str ) {
+			constexpr T parse_to_value( daw::string_view str ) {
 				if( str.empty( ) ) {
 					throw empty_input_exception{};
 				}
@@ -59,7 +59,7 @@ namespace daw {
 			}
 
 			template<typename T, std::enable_if_t<is_integral_v<T> && is_unsigned_v<T>, std::nullptr_t> = nullptr>
-			constexpr T parser( daw::string_view str ) {
+			constexpr T parse_to_value( daw::string_view str ) {
 				if( str.empty( ) ) {
 					throw empty_input_exception{};
 				}
@@ -69,7 +69,7 @@ namespace daw {
 			}
 
 			template<typename T, std::enable_if_t<is_same_v<T, std::string>, std::nullptr_t> = nullptr>
-			std::string parser( daw::string_view str ) {
+			std::string parse_to_value( daw::string_view str ) {
 				if( str.empty( ) ) {
 					throw empty_input_exception{};
 				}
@@ -86,7 +86,7 @@ namespace daw {
 			}
 
 			template<typename T, std::enable_if_t<is_same_v<T, daw::string_view>, std::nullptr_t> = nullptr>
-			constexpr daw::string_view parser( daw::string_view str ) {
+			constexpr daw::string_view parse_to_value( daw::string_view str ) {
 				if( str.empty( ) ) {
 					throw empty_input_exception{};
 				}
@@ -115,7 +115,8 @@ namespace daw {
 				using pos_t = std::integral_constant<size_t, sizeof...( Args ) - N>;
 				using value_t = std::decay_t<decltype( std::get<pos_t::value>( tp ) )>;
 
-				std::get<pos_t::value>( tp ) = daw::parser::converters::parser<value_t>( str.substr( 0, end_pos.first ) );
+				using namespace ::daw::parser::converters;
+				std::get<pos_t::value>( tp ) = parse_to_value<value_t>( str.substr( 0, end_pos.first ) );
 				str.remove_prefix( end_pos.last );
 				daw::parser::impl::set_value_from_string_view<N - 1>( tp, std::move( str ), std::move( splitter ) );
 			}
