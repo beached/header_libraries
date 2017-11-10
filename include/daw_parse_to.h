@@ -111,7 +111,7 @@ namespace daw {
 				}
 				using namespace ::daw::parser::converters;
 				using pos_t = std::integral_constant<size_t, sizeof...( Args ) - N>;
-				using value_t = std::decay_t<decltype( std::get<pos_t::value>( tp ) )>;
+				using value_t = std::decay_t<decltype( std::get<pos_t::value>( std::declval<std::tuple<Args...>>( ) ) )>;
 
 				std::get<pos_t::value>( tp ) = parse_to_value( str.substr( 0, end_pos.first ), value_t{} );
 				str.remove_prefix( end_pos.last );
