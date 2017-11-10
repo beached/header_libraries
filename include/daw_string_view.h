@@ -426,14 +426,17 @@ namespace daw {
 
 			auto lhs = m_first;
 			auto rhs = v.m_first;
-			for( size_t n=0; n<sz && *lhs == *rhs; ++n ) {
+			size_t n=0;
+			for( ; n<sz && *lhs == *rhs; ++n ) {
 				++lhs;
 				++rhs;
 			}
-			if( *lhs < *rhs ) {
-				return -1;
-			} else if( *lhs > *rhs ) {
-				return 1;
+			if( n < sz ) {
+				if( *lhs < *rhs ) {
+					return -1;
+				} else if( *lhs > *rhs ) {
+					return 1;
+				}
 			}
 			// Equal so far
 			if( m_size == v.m_size ) {
