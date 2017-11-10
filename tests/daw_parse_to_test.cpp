@@ -48,3 +48,27 @@ BOOST_AUTO_TEST_CASE( daw_values_from_stream_003 ) {
 	BOOST_REQUIRE_EQUAL( std::get<3>( vals ), 3 );
 }
 
+namespace daw_values_from_stream_004_ns {
+	struct X {
+		int a;
+		int64_t b;
+		uint64_t c;
+	};
+
+	BOOST_AUTO_TEST_CASE( daw_values_from_stream_004 ) {
+		constexpr auto x = daw::construct_from<X, int, int64_t, uint64_t>( "1,-14334,3434234", "," );
+		BOOST_REQUIRE_EQUAL( x.a, 1 );
+		BOOST_REQUIRE_EQUAL( x.b, -14334 );
+		BOOST_REQUIRE_EQUAL( x.c, 3434234 );
+	}
+} // namespace daw_values_from_stream_004_ns
+
+namespace daw_values_from_stream_005_ns {
+	BOOST_AUTO_TEST_CASE( daw_values_from_stream_005 ) {
+		auto f = []( int a, int b, int c ) { return a + b +c; };
+		auto result = daw::apply_string( f, "1,2,3", "," );
+		BOOST_REQUIRE_EQUAL( result, 6 );
+	}
+} // namespace daw_values_from_stream_004_ns
+
+

@@ -27,6 +27,7 @@
 #include <tuple>
 #include <utility>
 
+#include "daw_function.h"
 #include "daw_parser_addons.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
@@ -172,7 +173,8 @@ namespace daw {
 		template<typename... Args>
 		constexpr std::tuple<Args...> parse_to( daw::string_view str, daw::string_view delemiter ) {
 			std::tuple<Args...> result;
-			impl::set_value_from_string_view<sizeof...( Args )>( result, str, default_splitter{delemiter} );
+			impl::set_value_from_string_view<sizeof...( Args )>( result, std::move( str ),
+			                                                     default_splitter{std::move( delemiter )} );
 			return result;
 		}
 
@@ -181,5 +183,51 @@ namespace daw {
 			return parse_to( std::move( str ), daw::string_view{" "} );
 		}
 	} // namespace parser
+
+	namespace impl {
+		template<typename T>
+		struct make_a {
+			template<typename... Args>
+			constexpr decltype( auto ) operator( )( Args &&... args ) const {
+				return T{std::forward<Args>( args )...};
+			}
+		};
+	} // namespace impl
+
+	template<typename Destination, typename... ExpectedArgs, typename Splitter,
+	         std::enable_if_t<!is_convertible_v<Splitter, daw::string_view>, std::nullptr_t> = nullptr>
+	constexpr decltype( auto ) construct_from( daw::string_view str, Splitter splitter ) {
+		static_assert( is_callable_v<Splitter, daw::string_view>, "Splitter is not a callable type" );
+
+		return daw::apply( impl::make_a<Destination>{},
+		                   parser::parse_to<ExpectedArgs...>( std::move( str ), std::move( splitter ) ) );
+	}
+
+	template<typename Destination, typename... ExpectedArgs>
+	constexpr decltype( auto ) construct_from( daw::string_view str, daw::string_view delemiter ) {
+		return construct_from<Destination, ExpectedArgs...>( std::move( str ),
+		                                                     parser::default_splitter{std::move( delemiter )} );
+	}
+
+	namespace impl {
+		template<typename... Args, typename Callable, typename Splitter>
+		constexpr decltype( auto ) apply_string_impl( std::tuple<Args...>, Callable callable, daw::string_view str,
+		                                              Splitter splitter ) {
+			return daw::apply( std::move( callable ), parser::parse_to<Args...>( std::move( str ), std::move( splitter ) ) );
+		}
+	} // namespace impl
+	template<typename Callable, typename Splitter,
+	         std::enable_if_t<!is_convertible_v<Splitter, daw::string_view>, std::nullptr_t> = nullptr>
+	constexpr decltype( auto ) apply_string( Callable callable, daw::string_view str, Splitter splitter ) {
+		static_assert( is_callable_v<Splitter, daw::string_view>, "Splitter is not a callable type" );
+		using ftraits = typename daw::function_traits<decltype( callable )>::args_tuple;
+		return impl::apply_string_impl( ftraits{}, std::move( callable ), std::move( str ), std::move( splitter ) );
+	}
+
+	template<typename Callable>
+	constexpr decltype( auto ) apply_string( Callable callable, daw::string_view str, daw::string_view delemiter ) {
+		return apply_string<Callable>( std::move( callable ), std::move( str ),
+		                               parser::default_splitter{std::move( delemiter )} );
+	}
 } // namespace daw
 
