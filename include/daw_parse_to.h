@@ -39,24 +39,7 @@ namespace daw {
 		struct invalid_input_exception : parser_exception {};
 		struct empty_input_exception : invalid_input_exception {};
 
-		namespace impl {
-			template<size_t N, typename... Args, std::enable_if_t<( N == 0 ), std::nullptr_t> = nullptr>
-			constexpr void set_value_from_stream( std::tuple<Args...> &, std::istream & ) noexcept {}
-
-			template<size_t N, typename... Args, std::enable_if_t<( N > 0 ), std::nullptr_t> = nullptr>
-			void set_value_from_stream( std::tuple<Args...> &tp, std::istream &io ) {
-				io >> std::get<sizeof...( Args ) - N>( tp );
-				set_value_from_stream<N - 1>( tp, io );
-			}
-		} // namespace impl
-		template<typename... Args>
-		std::tuple<Args...> parse_to( std::istream &io ) {
-			std::tuple<Args...> result;
-			impl::set_value_from_stream<sizeof...( Args )>( result, io );
-			return result;
-		}
-
-		namespace default_parsers {
+		namespace converters {
 			template<typename T, std::enable_if_t<is_same_v<T, char>, std::nullptr_t> = nullptr>
 			constexpr char parser( daw::string_view str ) {
 				if( str.empty( ) ) {
@@ -117,7 +100,7 @@ namespace daw {
 				return str.substr( 1, str.size( ) - 2 );
 			}
 
-		} // namespace default_parsers
+		} // namespace converters
 
 		namespace impl {
 			template<size_t N, std::enable_if_t<( N == 0 ), std::nullptr_t> = nullptr, typename... Args, typename Splitter>
@@ -133,7 +116,7 @@ namespace daw {
 				using pos_t = std::integral_constant<size_t, sizeof...( Args ) - N>;
 				using value_t = std::decay_t<decltype( std::get<pos_t::value>( tp ) )>;
 
-				std::get<pos_t::value>( tp ) = daw::parser::default_parsers::parser<value_t>( str.substr( 0, end_pos.first ) );
+				std::get<pos_t::value>( tp ) = daw::parser::converters::parser<value_t>( str.substr( 0, end_pos.first ) );
 				str.remove_prefix( end_pos.last );
 				daw::parser::impl::set_value_from_string_view<N - 1>( tp, std::move( str ), std::move( splitter ) );
 			}
