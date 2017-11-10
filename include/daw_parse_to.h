@@ -229,5 +229,24 @@ namespace daw {
 		return apply_string<Callable>( std::move( callable ), std::move( str ),
 		                               parser::default_splitter{std::move( delemiter )} );
 	}
+	namespace impl {
+		template<size_t CallableArgsArity, size_t ParsedArgsArity>
+		class ArityCheckEqual {
+			static_assert( CallableArgsArity == ParsedArgsArity, "Callable args arity does not match number of arguments" );
+		};
+	} // namespace impl
+
+	template<typename... Args, typename Callable, typename Splitter,
+	         std::enable_if_t<!is_convertible_v<Splitter, daw::string_view>, std::nullptr_t> = nullptr>
+	constexpr decltype( auto ) apply_string2( Callable callable, daw::string_view str, Splitter splitter ) {
+		static_cast<void>( impl::ArityCheckEqual<daw::function_traits<Callable>::arity, sizeof...(Args)>{} );
+		return daw::apply( std::move( callable ), parser::parse_to<Args...>( std::move( str ), std::move( splitter ) ) );
+	}
+
+	template<typename... Args, typename Callable>
+	constexpr decltype( auto ) apply_string2( Callable callable, daw::string_view str, daw::string_view delemiter ) {
+		return apply_string2<Args...>( std::move( callable ), std::move( str ),
+		                                         parser::default_splitter{std::move( delemiter )} );
+	}
 } // namespace daw
 
