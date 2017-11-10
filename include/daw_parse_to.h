@@ -27,7 +27,6 @@
 #include <utility>
 
 #include "daw_function.h"
-#include "daw_parser_addons.h"
 #include "daw_parser_helper.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
@@ -37,6 +36,7 @@ namespace daw {
 		struct parser_exception {};
 		struct invalid_input_exception : parser_exception {};
 		struct empty_input_exception : invalid_input_exception {};
+		struct numeric_overflow_exception : invalid_input_exception {};
 
 		namespace converters {
 			constexpr char parse_to_value( daw::string_view str, char ) {
@@ -46,15 +46,51 @@ namespace daw {
 				return str.front( );
 			}
 
+			namespace impl {
+				template<typename Result>
+				constexpr Result parse_int( daw::string_view & str ) {
+					intmax_t count = std::numeric_limits<Result>::digits10;
+					Result result = 0;
+					bool is_neg = false;
+					if( '-' == str.front( ) ) {
+						if( !std::numeric_limits<Result>::is_signed ) {
+							throw invalid_input_exception{}; 
+						}
+						is_neg = true;
+						str.remove_prefix( );
+					}
+					while( count > 0 && !str.empty( ) && is_number( str.front( ) ) ) {
+						result *= static_cast<Result>( 10 );
+						result += static_cast<Result>( str.front( ) - '0' );
+						--count;
+						str.remove_prefix( );
+					}
+					if( !str.empty( ) ) {
+						throw numeric_overflow_exception{};
+					}
+					if( is_neg ) {
+						result *= static_cast<Result>( -1 );
+					}
+					return result;
+				}
+
+				template<typename Result>
+				constexpr Result parse_unsigned_int( daw::string_view & str ) {
+					if( '-' == str.front( ) ) {
+						throw invalid_input_exception{};
+					}
+					return parse_int<Result>( str );
+				}
+
+			} // namespace impl
+
 			template<typename T,
 			         std::enable_if_t<!is_same_v<T, char> && is_integral_v<T> && is_signed_v<T>, std::nullptr_t> = nullptr>
 			constexpr T parse_to_value( daw::string_view str, T ) {
 				if( str.empty( ) ) {
 					throw empty_input_exception{};
 				}
-				T result{};
-				daw::parser::parse_int( str.cbegin( ), str.cend( ), result );
-				return result;
+				return impl::parse_int<T>( str );
 			}
 
 			template<typename T, std::enable_if_t<is_integral_v<T> && is_unsigned_v<T>, std::nullptr_t> = nullptr>
@@ -62,27 +98,15 @@ namespace daw {
 				if( str.empty( ) ) {
 					throw empty_input_exception{};
 				}
-				T result{};
-				daw::parser::parse_unsigned_int( str.cbegin( ), str.cend( ), result );
-				return result;
+				return impl::parse_unsigned_int<T>( str );
 			}
 
-			std::string parse_to_value( daw::string_view str, std::string const & ) {
-				if( str.empty( ) ) {
-					throw empty_input_exception{};
-				}
-				if( str.size( ) < 2 ) {
-					throw invalid_input_exception{};
-				}
-				if( str.front( ) != '"' && str.back( ) != '"' ) {
-					throw invalid_input_exception{};
-				}
-				str = str.substr( 1, str.size( ) - 2 );
-				std::string result{};
-				std::copy( str.cbegin( ), str.cend( ), std::back_inserter( result ) );
-				return result;
-			}
 
+			namespace impl {
+				constexpr bool is_quote( char const last_char, char const c ) noexcept {
+					return last_char != '\\' && c == '"';	
+				}
+			}
 			constexpr daw::string_view parse_to_value( daw::string_view str, daw::string_view ) {
 				if( str.empty( ) ) {
 					throw empty_input_exception{};
@@ -90,12 +114,24 @@ namespace daw {
 				if( str.size( ) < 2 ) {
 					throw invalid_input_exception{};
 				}
-				if( str.front( ) != '"' && str.back( ) != '"' ) {
+				if( str.front( ) != '"' ) {
 					throw invalid_input_exception{};
 				}
-				return str.substr( 1, str.size( ) - 2 );
+				str.remove_prefix( );
+				auto const first = str.cbegin( );
+				char last_char = str.pop_front( );
+				while( !str.empty( ) && !impl::is_quote( last_char, str.front( ) ) ) {
+					last_char = str.pop_front( );
+				}
+				if( str.front( ) != '"' ) {
+					throw invalid_input_exception{};
+				}
+				return daw::make_string_view_it( first, str.cbegin( ) );
 			}
 
+			std::string parse_to_value( daw::string_view str, std::string ) {
+				return parse_to_value( str, daw::string_view{} ).to_string( );
+			}
 		} // namespace converters
 
 		namespace impl {
@@ -114,6 +150,7 @@ namespace daw {
 				using value_t = std::decay_t<decltype( std::get<pos_t::value>( std::declval<std::tuple<Args...>>( ) ) )>;
 
 				std::get<pos_t::value>( tp ) = parse_to_value( str.substr( 0, end_pos.first ), value_t{} );
+
 				str.remove_prefix( end_pos.last );
 				daw::parser::impl::set_value_from_string_view<N - 1, Args...>( tp, std::move( str ), std::move( splitter ) );
 			}
@@ -168,8 +205,10 @@ namespace daw {
 				return result_t{f, n};
 			}
 		};
+
 		using whitespace_splitter = basic_whitespace_splitter<true>;
 		using single_whitespace_splitter = basic_whitespace_splitter<false>;
+
 		namespace impl {
 			template<typename T>
 			class parse_result_of {
