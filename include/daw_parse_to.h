@@ -102,11 +102,11 @@ namespace daw {
 		} // namespace converters
 
 		namespace impl {
-			template<size_t N, std::enable_if_t<( N == 0 ), std::nullptr_t> = nullptr, typename... Args, typename Splitter>
-			constexpr void set_value_from_string_view( std::tuple<Args...> &, daw::string_view, Splitter ) {}
+			template<size_t N, typename... Args, std::enable_if_t<( N == 0 ), std::nullptr_t> = nullptr, typename Tuple, typename Splitter>
+			constexpr void set_value_from_string_view( Tuple &, daw::string_view, Splitter ) {}
 
-			template<size_t N, std::enable_if_t<( N > 0 ), std::nullptr_t> = nullptr, typename... Args, typename Splitter>
-			constexpr void set_value_from_string_view( std::tuple<Args...> &tp, daw::string_view str, Splitter splitter ) {
+			template<size_t N, typename... Args, std::enable_if_t<( N > 0 ), std::nullptr_t> = nullptr, typename Tuple, typename Splitter>
+			constexpr void set_value_from_string_view( Tuple &tp, daw::string_view str, Splitter splitter ) {
 				static_assert( N <= sizeof...( Args ), "Invalud value of N" );
 				auto const end_pos = splitter( str );
 				if( N > 1 && end_pos.first == str.npos ) {
@@ -114,11 +114,11 @@ namespace daw {
 				}
 				using namespace ::daw::parser::converters;
 				using pos_t = std::integral_constant<size_t, sizeof...( Args ) - N>;
-				using value_t = std::decay_t<decltype( parse_to_value<std::decay_t<decltype( std::get<pos_t::value>( tp ) )>>( str ) )>;
+				using value_t = std::decay_t<decltype( std::get<pos_t::value>( tp ) )>;
 
 				std::get<pos_t::value>( tp ) = parse_to_value<value_t>( str.substr( 0, end_pos.first ) );
 				str.remove_prefix( end_pos.last );
-				daw::parser::impl::set_value_from_string_view<N - 1>( tp, std::move( str ), std::move( splitter ) );
+				daw::parser::impl::set_value_from_string_view<N - 1, Args...>( tp, std::move( str ), std::move( splitter ) );
 			}
 		} // namespace impl
 		class default_splitter {
@@ -173,27 +173,38 @@ namespace daw {
 		};
 		using whitespace_splitter = basic_whitespace_splitter<true>;
 		using single_whitespace_splitter = basic_whitespace_splitter<false>;
-		
+		namespace impl {
+			template<typename T>
+			class parse_result_of {
+				static auto get_type( ) noexcept {
+					using namespace ::daw::parser::converters;
+					return parse_to_value<T>( daw::string_view{} );
+				}
+			public:
+				using type = std::decay_t<decltype( get_type( ) )>;
+			};
+
+			template<typename T>
+			using parse_result_of_t = typename parse_result_of<T>::type;
+		} // namespace impl
+
 		template<typename... Args, typename Splitter,
 		         std::enable_if_t<!is_convertible_v<Splitter, daw::string_view>, std::nullptr_t> = nullptr>
-		constexpr std::tuple<Args...> parse_to( daw::string_view str, Splitter splitter ) {
+		constexpr decltype( auto ) parse_to( daw::string_view str, Splitter splitter ) {
 			static_assert( is_callable_v<Splitter, daw::string_view>, "Splitter is not a callable type" );
-			std::tuple<Args...> result;
-			impl::set_value_from_string_view<sizeof...( Args )>( result, std::move( str ), std::move( splitter ) );
+			std::tuple<impl::parse_result_of_t<Args>...> result{};
+			impl::set_value_from_string_view<sizeof...( Args ), Args...>( result, std::move( str ), std::move( splitter ) );
 			return result;
 		}
 
 		template<typename... Args>
-		constexpr std::tuple<Args...> parse_to( daw::string_view str, daw::string_view delemiter ) {
-			std::tuple<Args...> result;
-			impl::set_value_from_string_view<sizeof...( Args )>( result, std::move( str ),
-			                                                     default_splitter{std::move( delemiter )} );
-			return result;
+		constexpr decltype( auto ) parse_to( daw::string_view str, daw::string_view delemiter ) {
+			return parse_to<Args...>( std::move( str ), default_splitter{std::move( delemiter )} );
 		}
 
 		template<typename... Args>
-		constexpr std::tuple<Args...> parse_to( daw::string_view str ) {
-			return parse_to( std::move( str ), daw::string_view{" "} );
+		constexpr decltype( auto ) parse_to( daw::string_view str ) {
+			return parse_to<Args...>( std::move( str ), daw::string_view{" "} );
 		}
 	} // namespace parser
 
