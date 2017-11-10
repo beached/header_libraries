@@ -112,10 +112,10 @@ namespace daw {
 				if( N > 1 && end_pos.first == str.npos ) {
 					throw invalid_input_exception{};
 				}
-				using pos_t = std::integral_constant<size_t, sizeof...( Args ) - N>;
-				using value_t = std::decay_t<decltype( std::get<pos_t::value>( tp ) )>;
-
 				using namespace ::daw::parser::converters;
+				using pos_t = std::integral_constant<size_t, sizeof...( Args ) - N>;
+				using value_t = std::decay_t<decltype( parse_to_value<std::decay_t<decltype( std::get<pos_t::value>( tp ) )>>( str ) )>;
+
 				std::get<pos_t::value>( tp ) = parse_to_value<value_t>( str.substr( 0, end_pos.first ) );
 				str.remove_prefix( end_pos.last );
 				daw::parser::impl::set_value_from_string_view<N - 1>( tp, std::move( str ), std::move( splitter ) );
