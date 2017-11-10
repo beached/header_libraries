@@ -812,15 +812,53 @@ namespace daw {
 			               "init, *first) ) "
 			               "must be valid" );
 
-			static_assert(
-			  is_convertible_v<decltype( binary_op( init, *first++ ) ), T >,
-			  "Result of BinaryOperation must be convertable to type of value referenced by RandomIterator. "
-			  "e.g. *first = binary_op( *first, *(first + 1) ) must be valid." );
+			static_assert( is_convertible_v<decltype( binary_op( init, *first++ ) ), T>,
+			               "Result of BinaryOperation must be convertable to type of value referenced by RandomIterator. "
+			               "e.g. *first = binary_op( *first, *(first + 1) ) must be valid." );
 
-				while( first != last ) {
+			while( first != last ) {
 				init = binary_op( init, *first++ );
-				}
-			  return std::move( init );
+			}
+			return std::move( init );
 		}
+
+		template<class ForwardIt1, class ForwardIt2>
+		constexpr ForwardIt1 search( ForwardIt1 first, ForwardIt1 last, ForwardIt2 s_first,
+		                             ForwardIt2 s_last ) noexcept( noexcept( *first == *s_first ) ) {
+			for( ;; ++first ) {
+				ForwardIt1 it = first;
+				for( ForwardIt2 s_it = s_first;; ++it, ++s_it ) {
+					if( s_it == s_last ) {
+						return first;
+					}
+					if( it == last ) {
+						return last;
+					}
+					if( !( *it == *s_it ) ) {
+						break;
+					}
+				}
+			}
+		}
+
+		template<class ForwardIt1, class ForwardIt2, class BinaryPredicate>
+		constexpr ForwardIt1 search( ForwardIt1 first, ForwardIt1 last, ForwardIt2 s_first, ForwardIt2 s_last,
+		                             BinaryPredicate p ) noexcept( noexcept( !p( *first, *s_first ) ) ) {
+			for( ;; ++first ) {
+				ForwardIt1 it = first;
+				for( ForwardIt2 s_it = s_first;; ++it, ++s_it ) {
+					if( s_it == s_last ) {
+						return first;
+					}
+					if( it == last ) {
+						return last;
+					}
+					if( !p( *it, *s_it ) ) {
+						break;
+					}
+				}
+			}
+		}
+
 	} // namespace algorithm
 } // namespace daw

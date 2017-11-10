@@ -28,7 +28,6 @@ namespace daw {
 	namespace parser {
 		template<typename ForwardIterator>
 		constexpr auto find_number( ForwardIterator first, ForwardIterator last ) {
-			using namespace daw::parser;
 			auto const is_first = []( auto const &v ) { return is_a( '-', v ) || is_number( v ); };
 
 			bool has_decimal = false;

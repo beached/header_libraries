@@ -575,7 +575,6 @@ namespace daw {
 		}
 		return first_out;
 	}
-
 } // namespace daw
 
 template<typename... Ts>

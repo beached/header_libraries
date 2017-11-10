@@ -351,6 +351,12 @@ namespace daw {
 	template<typename T>
 	constexpr bool is_pointer_v = std::is_pointer<T>::value;
 
+	template<typename T>
+	constexpr bool is_unsigned_v = std::is_unsigned<T>::value;
+
+	template<typename T>
+	constexpr bool is_signed_v = std::is_signed<T>::value;
+
 	template<typename T, typename U = T>
 	constexpr T exchange( T &obj, U &&new_value ) noexcept {
 		T old_value = std::move( obj );

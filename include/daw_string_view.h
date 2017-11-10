@@ -42,6 +42,44 @@ namespace daw {
 	struct basic_string_view;
 
 	namespace details {
+		template<class ForwardIt1, class ForwardIt2>
+		constexpr ForwardIt1 search( ForwardIt1 first, ForwardIt1 last, ForwardIt2 s_first,
+		                             ForwardIt2 s_last ) noexcept( noexcept( *first == *s_first ) ) {
+			for( ;; ++first ) {
+				ForwardIt1 it = first;
+				for( ForwardIt2 s_it = s_first;; ++it, ++s_it ) {
+					if( s_it == s_last ) {
+						return first;
+					}
+					if( it == last ) {
+						return last;
+					}
+					if( !( *it == *s_it ) ) {
+						break;
+					}
+				}
+			}
+		}
+
+		template<class ForwardIt1, class ForwardIt2, class BinaryPredicate>
+		constexpr ForwardIt1 search( ForwardIt1 first, ForwardIt1 last, ForwardIt2 s_first, ForwardIt2 s_last,
+		                             BinaryPredicate p ) noexcept( noexcept( !p( *first, *s_first ) ) ) {
+			for( ;; ++first ) {
+				ForwardIt1 it = first;
+				for( ForwardIt2 s_it = s_first;; ++it, ++s_it ) {
+					if( s_it == s_last ) {
+						return first;
+					}
+					if( it == last ) {
+						return last;
+					}
+					if( !p( *it, *s_it ) ) {
+						break;
+					}
+				}
+			}
+		}
+
 		template<typename SizeT, typename CharT>
 		constexpr SizeT strlen( CharT const *const str ) noexcept {
 			auto pos = str;
@@ -423,7 +461,7 @@ namespace daw {
 			if( v.empty( ) ) {
 				return pos;
 			}
-			auto result = std::search( cbegin( ) + pos, cend( ), v.cbegin( ), v.cend( ), traits_type::eq );
+			auto result = details::search( cbegin( ) + pos, cend( ), v.cbegin( ), v.cend( ), traits_type::eq );
 			if( cend( ) == result ) {
 				return npos;
 			}
@@ -488,7 +526,7 @@ namespace daw {
 			if( pos + v.size( ) >= size( ) || v.empty( ) ) {
 				return npos;
 			}
-			auto const iter = std::search( cbegin( ) + pos, cend( ), v.cbegin( ), v.end( ), traits_type::eq );
+			auto const iter = details::search( cbegin( ) + pos, cend( ), v.cbegin( ), v.end( ), traits_type::eq );
 			if( cend( ) == iter ) {
 				return npos;
 			}
