@@ -46,15 +46,15 @@ namespace daw {
 				return str.front( );
 			}
 
-			namespace impl {
+			namespace helpers {
 				template<typename Result>
-				constexpr Result parse_int( daw::string_view & str ) {
+				constexpr Result parse_int( daw::string_view &str ) {
 					intmax_t count = std::numeric_limits<Result>::digits10;
 					Result result = 0;
 					bool is_neg = false;
 					if( '-' == str.front( ) ) {
 						if( !std::numeric_limits<Result>::is_signed ) {
-							throw invalid_input_exception{}; 
+							throw invalid_input_exception{};
 						}
 						is_neg = true;
 						str.remove_prefix( );
@@ -75,14 +75,14 @@ namespace daw {
 				}
 
 				template<typename Result>
-				constexpr Result parse_unsigned_int( daw::string_view & str ) {
+				constexpr Result parse_unsigned_int( daw::string_view &str ) {
 					if( '-' == str.front( ) ) {
 						throw invalid_input_exception{};
 					}
 					return parse_int<Result>( str );
 				}
 
-			} // namespace impl
+			} // namespace helpers
 
 			template<typename T,
 			         std::enable_if_t<!is_same_v<T, char> && is_integral_v<T> && is_signed_v<T>, std::nullptr_t> = nullptr>
@@ -90,7 +90,7 @@ namespace daw {
 				if( str.empty( ) ) {
 					throw empty_input_exception{};
 				}
-				return impl::parse_int<T>( str );
+				return helpers::parse_int<T>( str );
 			}
 
 			template<typename T, std::enable_if_t<is_integral_v<T> && is_unsigned_v<T>, std::nullptr_t> = nullptr>
@@ -98,15 +98,14 @@ namespace daw {
 				if( str.empty( ) ) {
 					throw empty_input_exception{};
 				}
-				return impl::parse_unsigned_int<T>( str );
+				return helpers::parse_unsigned_int<T>( str );
 			}
-
 
 			namespace impl {
 				constexpr bool is_quote( char const last_char, char const c ) noexcept {
-					return last_char != '\\' && c == '"';	
+					return last_char != '\\' && c == '"';
 				}
-			}
+			} // namespace impl
 			constexpr daw::string_view parse_to_value( daw::string_view str, daw::string_view ) {
 				if( str.empty( ) ) {
 					throw empty_input_exception{};
@@ -135,10 +134,12 @@ namespace daw {
 		} // namespace converters
 
 		namespace impl {
-			template<size_t N, typename... Args, std::enable_if_t<( N == 0 ), std::nullptr_t> = nullptr, typename Tuple, typename Splitter>
+			template<size_t N, typename... Args, std::enable_if_t<( N == 0 ), std::nullptr_t> = nullptr, typename Tuple,
+			         typename Splitter>
 			constexpr void set_value_from_string_view( Tuple &, daw::string_view, Splitter ) {}
 
-			template<size_t N, typename... Args, std::enable_if_t<( N > 0 ), std::nullptr_t> = nullptr, typename Tuple, typename Splitter>
+			template<size_t N, typename... Args, std::enable_if_t<( N > 0 ), std::nullptr_t> = nullptr, typename Tuple,
+			         typename Splitter>
 			constexpr void set_value_from_string_view( Tuple &tp, daw::string_view str, Splitter splitter ) {
 				static_assert( N <= sizeof...( Args ), "Invalud value of N" );
 				auto const end_pos = splitter( str );
@@ -216,6 +217,7 @@ namespace daw {
 					using namespace ::daw::parser::converters;
 					return parse_to_value( daw::string_view{}, T{} );
 				}
+
 			public:
 				using type = std::decay_t<decltype( get_type( ) )>;
 			};
