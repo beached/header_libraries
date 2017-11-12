@@ -756,7 +756,7 @@ namespace daw {
 
 	BOOST_AUTO_TEST_CASE( daw_string_view_split_001 ) {
 		std::string str = "This is a test of the split";
-		auto const str_splt = split( daw::string_view{ str }, ' ' );
+		auto const str_splt = split( daw::string_view{str}, ' ' );
 		BOOST_REQUIRE_EQUAL( str_splt.size( ), 7 );
 		std::cout << str << "\n\n";
 		std::cout << "items:\n";
@@ -768,7 +768,7 @@ namespace daw {
 
 	BOOST_AUTO_TEST_CASE( daw_string_view_split_002 ) {
 		char const str[] = "This is a test of the split";
-		auto const str_splt = split( daw::string_view{ str }, ' ' );
+		auto const str_splt = split( daw::string_view{str}, ' ' );
 		BOOST_REQUIRE_EQUAL( str_splt.size( ), 7 );
 	}
 
@@ -792,7 +792,56 @@ namespace daw {
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_001 ) {
-		BOOST_REQUIRE( daw::can_be_string_view<decltype("Hello")> );
+		BOOST_REQUIRE( daw::can_be_string_view<decltype( "Hello" )> );
 	}
+
+	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_starts_with_001 ) {
+		BOOST_REQUIRE( daw::string_view{ "This is a test" }.starts_with( "This" ) );
+	}
+
+	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_starts_with_002 ) {
+		BOOST_REQUIRE( daw::string_view{"This is a test"}.starts_with( daw::string_view{"This"} ) );
+	}
+
+	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_starts_with_003 ) {
+		BOOST_REQUIRE( daw::string_view{"This is a test"}.starts_with( 'T' ) );
+	}
+
+	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_starts_with_004 ) {
+		BOOST_REQUIRE( !daw::string_view{"This is a test"}.starts_with( "ahis" ) );
+	}
+
+	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_starts_with_005 ) {
+		BOOST_REQUIRE( !daw::string_view{"This is a test"}.starts_with( daw::string_view{"ahis"} ) );
+	}
+
+	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_starts_with_006 ) {
+		BOOST_REQUIRE( !daw::string_view{"This is a test"}.starts_with( 'a' ) );
+	}
+
+	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_ends_with_001 ) {
+		BOOST_REQUIRE( daw::string_view{"This is a test"}.ends_with( "test" ) );
+	}
+
+	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_ends_with_002 ) {
+		BOOST_REQUIRE( daw::string_view{"This is a test"}.ends_with( daw::string_view{"test"} ) );
+	}
+
+	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_ends_with_003 ) {
+		BOOST_REQUIRE( daw::string_view{"This is a test"}.ends_with( 't' ) );
+	}
+
+	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_ends_with_004 ) {
+		BOOST_REQUIRE( !daw::string_view{"This is a test"}.ends_with( "aest" ) );
+	}
+
+	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_ends_with_005 ) {
+		BOOST_REQUIRE( !daw::string_view{"This is a test"}.ends_with( daw::string_view{"aest"} ) );
+	}
+
+	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_ends_with_006 ) {
+		BOOST_REQUIRE( !daw::string_view{"This is a test"}.ends_with( 'a' ) );
+	}
+
 } // namespace daw
 

@@ -677,6 +677,21 @@ namespace daw {
 			}
 		}
 
+		template<typename InputIterator1, typename InputIterator2, typename OutputIterator>
+		constexpr void move( InputIterator1 first_in, InputIterator2 const last_in, OutputIterator first_out ) noexcept {
+			while( first_in != last_in ) {
+				*first_out++ = std::move( *first_in++ );
+			}
+		}
+
+		template<typename InputIterator, typename OutputIterator>
+		constexpr void move_n( InputIterator first_in, OutputIterator first_out, size_t const count ) noexcept {
+			for( size_t n = 0; n < count; ++n ) {
+				*first_out++ = std::move( *first_in++ );
+			}
+		}
+
+
 		template<typename InputIterator1, typename InputIterator2, typename InputIterator3>
 		constexpr bool equal( InputIterator1 first1, InputIterator2 last1,
 		                      InputIterator3 first2 ) noexcept( noexcept( *first1 == *first2 ) ) {

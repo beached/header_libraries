@@ -722,6 +722,58 @@ namespace daw {
 		constexpr size_type find_last_not_of( const_pointer s, size_type pos = npos ) const noexcept {
 			return find_last_not_of( basic_string_view{s}, pos );
 		}
+
+		constexpr bool starts_with( value_type c ) const noexcept {
+			if( empty( ) ) {
+				return false;
+			}
+			return front( ) == c;
+		}
+
+		constexpr bool starts_with( basic_string_view s ) const noexcept {
+			if( s.size( ) > size( ) ) {
+				return false;
+			}
+			auto lhs = cbegin( );
+			while( !s.empty( ) ) {
+				if( *lhs++ != s.front( ) ) {
+					return false;
+				}
+				s.remove_prefix( );
+			}
+			return true;
+		}
+
+		constexpr bool starts_with( const_pointer s ) const noexcept {
+			return starts_with( basic_string_view{s} );
+		}
+
+		constexpr bool ends_with( value_type c ) const noexcept {
+			if( empty( ) ) {
+				return false;
+			}
+			return back( ) == c;
+		}
+
+		constexpr bool ends_with( basic_string_view s ) const noexcept {
+			if( s.size( ) > size( ) ) {
+				return false;
+			}
+			auto lhs = crbegin( );
+			while( !s.empty( ) ) {
+				if( *lhs++ != s.back( ) ) {
+					return false;
+				}
+				s.remove_suffix( );
+			}
+			return true;
+		}
+
+		constexpr bool ends_with( const_pointer s ) const noexcept {
+			return ends_with( basic_string_view{s} );
+		}
+
+
 	}; // basic_string_view
 
 	using string_view = basic_string_view<char>;
