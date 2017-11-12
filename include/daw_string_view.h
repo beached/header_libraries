@@ -35,173 +35,10 @@
 #include "daw_generic_hash.h"
 #include "daw_iterator.h"
 #include "daw_reverse_iterator.h"
+#include "daw_string_impl.h"
 #include "daw_traits.h"
 
 namespace daw {
-	template<typename CharT, typename Traits = std::char_traits<CharT>, typename InternalSizeType = size_t>
-	struct basic_string_view;
-
-	namespace details {
-		template<class ForwardIt1, class ForwardIt2>
-		constexpr ForwardIt1 search( ForwardIt1 first, ForwardIt1 last, ForwardIt2 s_first,
-		                             ForwardIt2 s_last ) noexcept( noexcept( *first == *s_first ) ) {
-			for( ;; ++first ) {
-				ForwardIt1 it = first;
-				for( ForwardIt2 s_it = s_first;; ++it, ++s_it ) {
-					if( s_it == s_last ) {
-						return first;
-					}
-					if( it == last ) {
-						return last;
-					}
-					if( !( *it == *s_it ) ) {
-						break;
-					}
-				}
-			}
-		}
-
-		template<class ForwardIt1, class ForwardIt2, class BinaryPredicate>
-		constexpr ForwardIt1 search( ForwardIt1 first, ForwardIt1 last, ForwardIt2 s_first, ForwardIt2 s_last,
-		                             BinaryPredicate p ) noexcept( noexcept( !p( *first, *s_first ) ) ) {
-			for( ;; ++first ) {
-				ForwardIt1 it = first;
-				for( ForwardIt2 s_it = s_first;; ++it, ++s_it ) {
-					if( s_it == s_last ) {
-						return first;
-					}
-					if( it == last ) {
-						return last;
-					}
-					if( !p( *it, *s_it ) ) {
-						break;
-					}
-				}
-			}
-		}
-
-		template<typename SizeT, typename CharT>
-		constexpr SizeT strlen( CharT const *const str ) noexcept {
-			auto pos = str;
-			while( *( pos ) != 0 ) {
-				++pos;
-			}
-			return static_cast<SizeT>( pos - str );
-		}
-
-		template<typename InputIt, typename ForwardIt, typename BinaryPredicate>
-		constexpr InputIt
-		find_first_of( InputIt first, InputIt last, ForwardIt s_first, ForwardIt s_last, BinaryPredicate p ) noexcept(
-		  noexcept( std::declval<BinaryPredicate>( )( *std::declval<InputIt>( ), *std::declval<ForwardIt>( ) ) ) ) {
-			static_assert( daw::is_binary_predicate_v<BinaryPredicate, typename std::iterator_traits<InputIt>::value_type>,
-			               "BinaryPredicate p does not fullfill the requires of a binary predicate concept.  See "
-			               "http://en.cppreference.com/w/cpp/concept/BinaryPredicate" );
-			for( ; first != last; ++first ) {
-				for( ForwardIt it = s_first; it != s_last; ++it ) {
-					if( p( *first, *it ) ) {
-						return first;
-					}
-				}
-			}
-			return last;
-		}
-
-		template<typename InputIt, typename ForwardIt, typename BinaryPredicate>
-		constexpr InputIt
-		find_first_not_of( InputIt first, InputIt last, ForwardIt s_first, ForwardIt s_last, BinaryPredicate p ) noexcept(
-		  noexcept( std::declval<BinaryPredicate>( )( *std::declval<InputIt>( ), *std::declval<ForwardIt>( ) ) ) ) {
-			static_assert( daw::is_binary_predicate_v<BinaryPredicate, typename std::iterator_traits<InputIt>::value_type>,
-			               "BinaryPredicate p does not fullfill the requires of a binary predicate concept.  See "
-			               "http://en.cppreference.com/w/cpp/concept/BinaryPredicate" );
-			bool found = false;
-			for( ; first != last; ++first ) {
-				found = false;
-				for( ForwardIt it = s_first; it != s_last; ++it ) {
-					if( p( *first, *it ) ) {
-						found = true;
-						break;
-					}
-				}
-				if( !found ) {
-					return first;
-				}
-			}
-			return last;
-		}
-
-		template<typename InputIt, typename UnaryPredicate>
-		constexpr InputIt find_first_of_if( InputIt first, InputIt last, UnaryPredicate p ) noexcept(
-		  noexcept( std::declval<UnaryPredicate>( )( *std::declval<InputIt>( ) ) ) ) {
-			static_assert( daw::is_unary_predicate_v<UnaryPredicate, typename std::iterator_traits<InputIt>::value_type>,
-			               "UnaryPredicate p does not fullfill the requires of a unary predicate concept.  See "
-			               "http://en.cppreference.com/w/cpp/concept/Predicate" );
-			for( ; first != last; ++first ) {
-				if( p( *first ) ) {
-					return first;
-				}
-			}
-			return last;
-		}
-
-		template<typename InputIt, typename UnaryPredicate>
-		constexpr InputIt find_first_not_of_if( InputIt first, InputIt last, UnaryPredicate p ) noexcept(
-		  noexcept( std::declval<UnaryPredicate>( )( *std::declval<InputIt>( ) ) ) ) {
-			static_assert( daw::is_unary_predicate_v<UnaryPredicate, typename std::iterator_traits<InputIt>::value_type>,
-			               "UnaryPredicate p does not fullfill the requires of a unary predicate concept.  See "
-			               "http://en.cppreference.com/w/cpp/concept/Predicate" );
-			for( ; first != last; ++first ) {
-				if( !p( *first ) ) {
-					return first;
-				}
-			}
-			return last;
-		}
-
-		template<typename charT, typename traits>
-		inline void sv_insert_fill_chars( std::basic_ostream<charT, traits> &os, std::size_t n ) {
-			enum { chunk_size = 8 };
-			charT fill_chars[chunk_size];
-			std::fill_n( fill_chars, static_cast<std::size_t>( chunk_size ), os.fill( ) );
-			for( ; n >= chunk_size && os.good( ); n -= chunk_size ) {
-				os.write( fill_chars, static_cast<std::size_t>( chunk_size ) );
-			}
-			if( n > 0 && os.good( ) ) {
-				os.write( fill_chars, static_cast<std::streamsize>( n ) );
-			}
-		}
-
-		template<typename charT, typename traits>
-		void sv_insert_aligned( std::basic_ostream<charT, traits> &os, daw::basic_string_view<charT, traits> const &str ) {
-			auto const size = str.size( );
-			auto const alignment_size = static_cast<std::size_t>( os.width( ) ) - size;
-			bool const align_left =
-			  ( os.flags( ) & std::basic_ostream<charT, traits>::adjustfield ) == std::basic_ostream<charT, traits>::left;
-			if( !align_left ) {
-				sv_insert_fill_chars( os, alignment_size );
-				if( os.good( ) ) {
-					os.write( str.data( ), static_cast<std::streamsize>( size ) );
-				}
-			} else {
-				os.write( str.data( ), static_cast<std::streamsize>( size ) );
-				if( os.good( ) ) {
-					sv_insert_fill_chars( os, alignment_size );
-				}
-			}
-		}
-
-		// Make argument a lower priority than T[]
-		template<typename T, std::enable_if_t<is_pointer_v<T>, std::nullptr_t> = nullptr>
-		struct only_ptr {
-			T *ptr;
-
-			constexpr only_ptr( T *p ) noexcept : ptr{p} {}
-
-			constexpr operator T *( ) const noexcept {
-				return ptr;
-			}
-		};
-	} // namespace details
-
 	template<typename CharT, typename Traits, typename InternalSizeType>
 	struct basic_string_view final {
 		using traits_type = Traits;
@@ -221,6 +58,20 @@ namespace daw {
 	private:
 		const_pointer m_first;
 		size_type_internal m_size;
+
+		template<typename ForwardIterator>
+		constexpr ForwardIterator find_not_of( ForwardIterator first, ForwardIterator const last, basic_string_view sv ) const noexcept {
+			while( first != last ) {
+				auto it = sv.cbegin( );
+				for( size_t n = 0; n < sv.size( ); ++n ) {
+					if( *first == sv[0] ) {
+						return first;
+					}
+				}
+				++first;
+			}
+			return last;
+		}
 
 	public:
 		static constexpr size_type_internal const npos = std::numeric_limits<size_type_internal>::max( );
@@ -426,8 +277,8 @@ namespace daw {
 
 			auto lhs = m_first;
 			auto rhs = v.m_first;
-			size_t n=0;
-			for( ; n<sz && *lhs == *rhs; ++n ) {
+			size_t n = 0;
+			for( ; n < sz && *lhs == *rhs; ++n ) {
 				++lhs;
 				++rhs;
 			}
@@ -704,7 +555,7 @@ namespace daw {
 				return pos;
 			}
 			pos = m_size - ( pos + 1 );
-			const_reverse_iterator iter = find_not_of( crbegin( ) + pos, crend( ), v );
+			const_reverse_iterator iter = find_not_of( crbegin( ) + static_cast<intmax_t>( pos ), crend( ), v );
 			if( crend( ) == iter ) {
 				return npos;
 			}
@@ -772,8 +623,6 @@ namespace daw {
 		constexpr bool ends_with( const_pointer s ) const noexcept {
 			return ends_with( basic_string_view{s} );
 		}
-
-
 	}; // basic_string_view
 
 	using string_view = basic_string_view<char>;

@@ -23,17 +23,18 @@
 #pragma once
 
 #include "daw_static_array.h"
+#include "daw_algorithm.h"
 
 namespace daw {
 	template<typename T, size_t N>
 	struct fixed_stack_t {
-		using value_t = T;
-		using reference = value_t &;
-		using const_reference = value_t const &;
-		using iterator = value_t *;
-		using const_iterator = value_t const *;
-		using pointer = value_t *;
-		using const_pointer = value_t const *;
+		using value_type = T;
+		using reference = value_type &;
+		using const_reference = value_type const &;
+		using iterator = value_type *;
+		using const_iterator = value_type const *;
+		using pointer = value_type *;
+		using const_pointer = value_type const *;
 		using size_type = size_t;
 
 	private:
@@ -44,7 +45,7 @@ namespace daw {
 		constexpr fixed_stack_t( ) noexcept : m_index{0}, m_stack{} {}
 
 		constexpr fixed_stack_t( const_pointer ptr, size_type count ) noexcept: m_index{ std::min( count, N ) }, m_stack{} {
-			daw::algorithm::copy_n( ptr, std::min( count, N ), m_stack.begin( ) );
+			daw::algorithm::copy_n( ptr, m_stack.begin( ), std::min( count, N ) );
 		}
 
 		constexpr bool empty( ) const noexcept {
@@ -94,6 +95,21 @@ namespace daw {
 		constexpr const_reference operator[]( size_type pos ) const noexcept {
 			return m_stack[pos];
 		}
+
+		constexpr reference at( size_type pos ) {
+			if( pos > size( ) ) {
+				throw std::out_of_range{"Attempt to access past end of fix_stack"};
+			}
+			return m_stack[pos];
+		}
+
+		constexpr const_reference at( size_type pos ) const {
+			if( pos > size( ) ) {
+				throw std::out_of_range{"Attempt to access past end of fix_stack"};
+			}
+			return m_stack[pos];
+		}
+
 		constexpr pointer data( ) noexcept {
 			return m_stack.data( );
 		}
@@ -150,17 +166,29 @@ namespace daw {
 			auto const start = m_index;
 			m_index += sz;
 			for( size_t n = start; n < m_index; ++n ) {
-				m_stack[n] = static_cast<value_t>( *ptr++ );
+				m_stack[n] = static_cast<value_type>( *ptr++ );
 			}
 		}
 
 		template<typename... Args>
 		constexpr void emplace_back( Args&&... args ) noexcept {
-			m_stack[m_index++] = value_t{std::forward<Args>( args )...};
+			m_stack[m_index++] = value_type{std::forward<Args>( args )...};
 		}
 
-		constexpr value_t pop_back( ) noexcept {
+		constexpr value_type pop_back( ) noexcept {
 			return m_stack[--m_index];
+		}
+
+		constexpr void resize( size_type const count ) {
+			if( count > capacity( ) ) {
+				throw std::out_of_range{"Attempt to resize past capacity of fix_stack"};
+			}
+			if( count > size( ) ) {
+				for( size_type n=size( ); n<count; ++n ) {
+					m_stack[n] = value_type{};
+				}
+			}
+			m_index = count;
 		}
 
 		constexpr void zero( ) noexcept {

@@ -89,6 +89,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_spin_lock
 	daw_static_array
 	daw_static_optional
+	daw_static_string
 	daw_string
 	daw_string_view
 	daw_traits
@@ -105,6 +106,7 @@ set( UNTESTED_HEADER_FILES
 	boost_test.h
 	daw_function.h
 	daw_iterator.h
+	daw_string_impl.h
 )
 
 enable_testing( )
