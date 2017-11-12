@@ -363,4 +363,10 @@ namespace daw {
 		obj = std::forward<U>( new_value );
 		return old_value;
 	}
+
+	template<typename Container>
+	constexpr decltype( auto ) size( Container const &c ) noexcept( noexcept( c.size( ) ) ) {
+		return c.size( );
+	}
 } // namespace daw
+

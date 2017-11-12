@@ -121,6 +121,29 @@ namespace daw {
 			return result;
 		}
 
+		template<typename Lhs>
+		constexpr auto const &min_item( Lhs const &lhs ) noexcept {
+			return lhs;
+		}
+		
+		template<typename Lhs, typename... Ts,
+		                        std::enable_if_t<( sizeof...( Ts ) > 0 ), std::nullptr_t> = nullptr>
+		constexpr auto const & min_item( Lhs const &lhs, Ts const &... ts ) noexcept {
+			auto const & rhs = min_item( ts... );
+			return lhs < rhs ? lhs : rhs;
+		}
+
+		template<typename Lhs>
+		constexpr auto const & max_item( Lhs const & lhs ) noexcept {
+			return lhs;
+		}
+		
+		template<typename Lhs, typename... Ts,
+		                        std::enable_if_t<( sizeof...( Ts ) > 0 ), std::nullptr_t> = nullptr>
+		constexpr auto const & max_item( Lhs const &lhs, Ts const &... ts ) noexcept {
+			auto const & rhs = max_item( ts... );
+			return lhs > rhs ? lhs : rhs;
+		}
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: Run func( container, position ) on each element
 		/// in interval [first_inclusive, last_exclusive)

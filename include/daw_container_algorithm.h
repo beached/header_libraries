@@ -287,5 +287,60 @@ namespace daw {
 
 			return std::find_if( std::cbegin( container ), std::cend( container ), pred ) != std::cend( container );
 		}
+
+		template<typename Container, typename OutputIterator,
+		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
+		constexpr void copy( Container const &source, OutputIterator destination ) {
+			auto src = std::cbegin( source );
+			auto const last = std::cend( source );
+
+			while( src != last ) {
+				*destination++ = *src++;
+			}
+		}
+
+		template<typename Container, typename OutputIterator,
+		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
+		constexpr void copy_n( Container const &source, size_t count, OutputIterator destination ) {
+			auto src = std::cbegin( source );
+			count = std::min( count, daw::size( source ) );
+			for( size_t n = 0; n < count; ++n ) {
+				*destination++ = *src++;
+			}
+		}
+
+		template<typename Container, typename OutputIterator, typename UnaryPredicate,
+		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
+		constexpr void copy_if( Container const &source, OutputIterator destination ) {
+			static_assert( daw::is_unary_predicate_v<UnaryPredicate, decltype( *std::begin( source ) )>,
+			               "Compare does not satisfy the Unary Predicate concept.  See "
+			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+
+			auto src = std::cbegin( source );
+			auto const last = std::cend( source );
+
+			while( src != last ) {
+				if( pred( *src ) ) {
+					*destination++ = *src++;
+				}
+			}
+		}
+
+		template<typename Container, typename OutputIterator, typename UnaryPredicate,
+		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
+		constexpr void copy_n( Container const &source, size_t count, OutputIterator destination ) {
+			static_assert( daw::is_unary_predicate_v<UnaryPredicate, decltype( *std::begin( source ) )>,
+			               "Compare does not satisfy the Unary Predicate concept.  See "
+			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+
+			auto src = std::cbegin( source );
+			count = std::min( count, daw::size( source ) );
+			for( size_t n = 0; n < count; ++n ) {
+				if( pred( *src ) ) {
+					*destination++ = *src++;
+				}
+			}
+		}
+
 	} // namespace container
 } // namespace daw

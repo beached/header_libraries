@@ -72,3 +72,18 @@ BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_max_element ) {
 	daw::container::max_element( v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
 }
 
+BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_copy_001 ) {
+	std::array<int, 100> a1{};
+	std::iota( std::begin( a1 ), std::end( a1 ), 2 );
+	std::array<int, 100> a2{};
+	daw::container::copy( a1, a2.begin( ) );
+	BOOST_REQUIRE( std::equal( std::cbegin( a1 ), std::cend( a1 ), std::cbegin( a2 ), std::cend( a2 ) ) );
+}
+
+BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_copy_n_001 ) {
+	std::array<int, 100> a1{};
+	std::iota( std::begin( a1 ), std::end( a1 ), 2 );
+	std::array<int, 100> a2{};
+	daw::container::copy_n( a1, 100, a2.begin( ) );
+	BOOST_REQUIRE( std::equal( std::cbegin( a1 ), std::cend( a1 ), std::cbegin( a2 ), std::cend( a2 ) ) );
+}

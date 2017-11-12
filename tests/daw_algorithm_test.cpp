@@ -173,3 +173,15 @@ BOOST_AUTO_TEST_CASE( daw_reduce_test_001 ) {
 	BOOST_REQUIRE_EQUAL( tst, 3 );
 }
 
+namespace copy_n_ns {
+	constexpr bool test_copy_n( ) {
+		char const src[] = "This is a test.";
+		char dst[16] = {0};
+		daw::algorithm::copy_n( src, dst, 16 );
+		return true;
+	}
+	BOOST_AUTO_TEST_CASE( daw_copy_n_test_001 ) {
+		constexpr auto b = test_copy_n( );
+	}
+} // namespace copy_n_ns
+
