@@ -747,5 +747,8 @@ namespace daw {
 		BOOST_REQUIRE( !daw::static_string{"This is a test"}.ends_with( 'a' ) );
 	}
 
+	BOOST_AUTO_TEST_CASE( daw_static_string_constexpr_001 ) {
+		constexpr daw::static_string a = "This is a test";
+	}
 } // namespace daw
 

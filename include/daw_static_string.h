@@ -59,7 +59,7 @@ namespace daw {
 		using difference_type = std::ptrdiff_t;
 
 	private:
-		daw::fixed_stack_t<CharT, Capacity> m_data;
+		daw::fixed_stack_t<CharT, Capacity+1> m_data;
 
 	public:
 		static constexpr size_type_internal const npos = std::numeric_limits<size_type_internal>::max( );
@@ -116,51 +116,60 @@ namespace daw {
 			return daw::basic_string_view<CharT, Traits>{m_data.data( ), m_data.size( )};
 		}
 
+		constexpr bool full( ) noexcept {
+			return m_data.size( ) == capacity( );
+		}
+
 		constexpr void push_back( value_type c ) {
-			if( m_data.full( ) ) {
+			if( full( ) ) {
 				throw std::out_of_range{"Attempt to push_back basic_static_string past end"};
 			}
 			m_data.push_back( c );
+			*m_data.end( ) = 0;
 		}
 
 		constexpr basic_static_string &append( value_type c ) {
 			if( m_data.full( ) ) {
 				throw std::out_of_range{"Attempt to append basic_static_string past end"};
 			}
-			m_data.push_back( c );
+			push_back( c );
 			return *this;
 		}
 
 		constexpr basic_static_string &append( basic_string_view<CharT, Traits> sv ) {
-			if( m_data.size( ) + sv.size( ) > m_data.capacity( ) ) {
+			if( m_data.size( ) + sv.size( ) > capacity( ) ) {
 				throw std::out_of_range{"Attempt to append basic_static_string past end"};
 			}
 			daw::container::copy( sv, std::back_inserter( m_data ) );
+			*m_data.end( ) = 0;
 			return *this;
 		}
 
 		constexpr basic_static_string &append( std::basic_string<CharT, Traits> const & str ) {
-			if( m_data.size( ) + str.size( ) > m_data.capacity( ) ) {
+			if( m_data.size( ) + str.size( ) > capacity( ) ) {
 				throw std::out_of_range{"Attempt to append basic_static_string past end"};
 			}
 			daw::container::copy( str, std::back_inserter( m_data ) );
+			*m_data.end( ) = 0;
 			return *this;
 		}
 
 		constexpr basic_static_string &append( std::basic_string<CharT, Traits> && str ) {
-			if( m_data.size( ) + str.size( ) > m_data.capacity( ) ) {
+			if( m_data.size( ) + str.size( ) > capacity( ) ) {
 				throw std::out_of_range{"Attempt to append basic_static_string past end"};
 			}
 			daw::container::copy( str, std::back_inserter( m_data ) );
+			*m_data.end( ) = 0;
 			return *this;
 		}
 
 		template<typename Iterator, std::enable_if_t<daw::is_iterator_v<Iterator>, std::nullptr_t> = nullptr>
 		constexpr basic_static_string &append( Iterator first, Iterator const last ) {
-			if( m_data.size( ) + static_cast<size_t>( daw::algorithm::distance( first, last ) ) > m_data.capacity( ) ) {
+			if( m_data.size( ) + static_cast<size_t>( daw::algorithm::distance( first, last ) ) > capacity( ) ) {
 				throw std::out_of_range{"Attempt to append basic_static_string past end"};
 			}
 			daw::algorithm::copy( first, last, std::back_inserter( m_data ) );
+			*m_data.end( ) = 0;
 			return *this;
 		}
 
@@ -268,6 +277,10 @@ namespace daw {
 			return m_data.data( );
 		}
 
+		constexpr size_type capacity( ) const noexcept {
+			return Capacity;
+		}
+
 		constexpr size_type size( ) const noexcept {
 			return m_data.size( );
 		}
@@ -290,6 +303,7 @@ namespace daw {
 
 		constexpr void remove_suffix( size_type const n ) noexcept {
 			m_data.resize( m_data.size( ) - n );
+			*m_data.end( ) = 0;
 		}
 
 		constexpr void remove_suffix( ) noexcept {
@@ -298,11 +312,12 @@ namespace daw {
 
 		constexpr void clear( ) noexcept {
 			m_data.clear( );
+			*m_data.end( ) = 0;
 		}
 
 		constexpr CharT pop_back( ) noexcept {
-			auto result = m_data.back( );
-			m_data.pop_back( );
+			auto result = m_data.pop_back( );
+			*m_data.end( ) = 0;
 			return result;
 		}
 
