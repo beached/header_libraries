@@ -165,8 +165,8 @@ namespace daw {
 			return a == b;
 		}
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wfloat-equal"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wfloat-equal"
 		template<typename T, std::enable_if_t<is_floating_point_v<T>, std::nullptr_t> = nullptr>
 		constexpr bool nearly_equal( T const &a, T const &b ) noexcept {
 			// Code from http://floating-point-gui.de/errors/comparison/
@@ -185,7 +185,7 @@ namespace daw {
 			// use relative error
 			return diff / std::min( ( absA + absB ), std::numeric_limits<T>::max( ) ) < std::numeric_limits<T>::epsilon( );
 		}
-#pragma GCC diagnostic pop
+#pragma clang diagnostic pop
 
 	} // namespace math
 } // namespace daw

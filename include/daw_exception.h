@@ -41,8 +41,8 @@ namespace daw {
 		EXCEPTION_TYPE &operator=( EXCEPTION_TYPE && ) noexcept = default;                                                 \
 	};
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wweak-vtables"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wweak-vtables"
 		MAKE_DAW_EXCEPTION( NotImplemented );
 		MAKE_DAW_EXCEPTION( FatalError );
 		MAKE_DAW_EXCEPTION( NullPtrAccessException );
@@ -50,7 +50,7 @@ namespace daw {
 		MAKE_DAW_EXCEPTION( FileException );
 		MAKE_DAW_EXCEPTION( MethodNotImplemented );
 		MAKE_DAW_EXCEPTION( UnexpectedEnumValue );
-#pragma GCC diagnostic pop
+#pragma clang diagnostic pop
 
 #undef MAKE_DAW_EXCEPTION
 
