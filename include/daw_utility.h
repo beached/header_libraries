@@ -272,7 +272,6 @@ namespace daw {
 		return result;
 	}
 
-
 	constexpr bool is_space( char chr ) noexcept {
 		return 32 == chr;
 	}
@@ -300,14 +299,14 @@ namespace daw {
 	template<typename CharType, typename Traits, typename Allocator>
 	constexpr auto AsciiUpper( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
 		daw::algorithm::map( str.cbegin( ), str.cend( ),
-		                           str.begin( ), []( CharType c ) noexcept { return AsciiUpper( c ); } );
+		                     str.begin( ), []( CharType c ) noexcept { return AsciiUpper( c ); } );
 		return std::move( str );
 	}
 
 	template<typename CharType, typename Traits, typename Allocator>
 	constexpr auto AsciiLower( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
 		daw::algorithm::map( str.cbegin( ), str.cend( ),
-		                           str.begin( ), []( CharType c ) noexcept { return AsciiLower( c ); } );
+		                     str.begin( ), []( CharType c ) noexcept { return AsciiLower( c ); } );
 		return std::move( str );
 	}
 
@@ -490,9 +489,9 @@ namespace daw {
 			if( c < 10 ) {
 				return '0' + c;
 			}
-			return 'A' + (c - 10);
+			return 'A' + ( c - 10 );
 		}
-	}
+	} // namespace impl
 
 	template<typename OutputIterator>
 	constexpr OutputIterator hex( char c, OutputIterator it_out ) noexcept {
@@ -502,17 +501,17 @@ namespace daw {
 	}
 
 	template<typename T, typename OutputIterator, std::enable_if_t<daw::is_integral_v<T>, std::nullptr_t> = nullptr>
-	constexpr OutputIterator hex( T const & val, OutputIterator it_out ) noexcept {
+	constexpr OutputIterator hex( T const &val, OutputIterator it_out ) noexcept {
 		for( size_t n = sizeof( T ); n > 0; --n ) {
-			it_out = hex( static_cast<char>( val >> ( 8 * (n-1) ) ), it_out );
+			it_out = hex( static_cast<char>( val >> ( 8 * ( n - 1 ) ) ), it_out );
 		}
 		return it_out;
 	}
 
 	template<typename T, typename OutputIterator, std::enable_if_t<!daw::is_integral_v<T>, std::nullptr_t> = nullptr>
-	OutputIterator hex( T const & val, OutputIterator it_out ) noexcept {
+	OutputIterator hex( T const &val, OutputIterator it_out ) noexcept {
 		auto chr_ptr = reinterpret_cast<char const *>( &val );
-		for( size_t n=0; n<sizeof(T); ++n ) {
+		for( size_t n = 0; n < sizeof( T ); ++n ) {
 			it_out = hex( *chr_ptr++, it_out );
 		}
 		return it_out;
@@ -521,7 +520,8 @@ namespace daw {
 	template<typename ForwardIterator1, typename ForwardIterator2, typename OutputIterator,
 	         std::enable_if_t<daw::is_integral_v<typename std::iterator_traits<ForwardIterator1>::value_type>,
 	                          std::nullptr_t> = nullptr>
-	constexpr OutputIterator hex( ForwardIterator1 first_in, ForwardIterator2 const last_in, OutputIterator first_out ) noexcept {
+	constexpr OutputIterator hex( ForwardIterator1 first_in, ForwardIterator2 const last_in,
+	                              OutputIterator first_out ) noexcept {
 		for( ; first_in != last_in; ++first_in ) {
 			auto const val = *first_in;
 			first_out = hex( val, first_out );
@@ -551,7 +551,55 @@ namespace daw {
 		}
 		return first_out;
 	}
+
+	template<typename Iterator>
+	constexpr auto make_range( Iterator first, Iterator last ) noexcept {
+		struct range_t {
+			using iterator = Iterator;
+			using difference_type = typename std::iterator_traits<iterator>::difference_type;
+			using pointer = typename std::iterator_traits<iterator>::pointer;
+			using reference = typename std::iterator_traits<iterator>::reference;
+			using value_type = typename std::iterator_traits<iterator>::value_type;
+
+			iterator m_first;
+			iterator m_last;
+
+			constexpr iterator begin( ) {
+				return m_first;
+			}
+
+			constexpr iterator begin( ) const {
+				return m_first;
+			}
+
+			constexpr iterator end( ) {
+				return m_last;
+			}
+
+			constexpr iterator end( ) const {
+				return m_last;
+			}
+
+			constexpr void remove_prefix( size_t count ) {
+				m_first += static_cast<difference_type>( count );
+			}
+
+			constexpr void remove_prefix( ) {
+				++m_first;
+			}
+
+			constexpr void remove_suffix( ) {
+				--m_last;
+			}
+
+			constexpr void remove_suffix( size_t count ) {
+				m_last -= static_cast<difference_type>( count );
+			}
+		};
+		return range_t{first, last};
+	}
 } // namespace daw
 
 template<typename... Ts>
 constexpr void Unused( Ts &&... ) noexcept {}
+
