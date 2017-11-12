@@ -64,6 +64,10 @@ namespace daw {
 			return N;
 		}
 
+		constexpr bool has_room( size_type count ) noexcept {
+			return count + m_index >= N;
+		}
+
 		constexpr size_type available( ) const noexcept {
 			return N - m_index;
 		}

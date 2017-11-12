@@ -120,6 +120,10 @@ namespace daw {
 			return m_data.size( ) == capacity( );
 		}
 
+		constexpr bool has_room( size_type count ) noexcept {
+			return m_data.has_room( count + 1 );
+		}
+
 		constexpr void push_back( value_type c ) {
 			if( full( ) ) {
 				throw std::out_of_range{"Attempt to push_back basic_static_string past end"};
