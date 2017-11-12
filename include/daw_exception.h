@@ -30,29 +30,13 @@
 
 namespace daw {
 	namespace exception {
-#define MAKE_DAW_EXCEPTION( EXCEPTION_TYPE )                                                                           \
-	struct EXCEPTION_TYPE final : public std::runtime_error {                                                            \
-		EXCEPTION_TYPE( daw::string_view msg ) : std::runtime_error{msg.data( )} {}                                        \
-		EXCEPTION_TYPE( ) : std::runtime_error{"No Error Message"} {}                                                      \
-		~EXCEPTION_TYPE( ) = default;                                                                                      \
-		EXCEPTION_TYPE( EXCEPTION_TYPE const & ) = default;                                                                \
-		EXCEPTION_TYPE( EXCEPTION_TYPE && ) noexcept = default;                                                            \
-		EXCEPTION_TYPE &operator=( EXCEPTION_TYPE const & ) = default;                                                     \
-		EXCEPTION_TYPE &operator=( EXCEPTION_TYPE && ) noexcept = default;                                                 \
-	};
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wweak-vtables"
-		MAKE_DAW_EXCEPTION( NotImplemented );
-		MAKE_DAW_EXCEPTION( FatalError );
-		MAKE_DAW_EXCEPTION( NullPtrAccessException );
-		MAKE_DAW_EXCEPTION( AssertException );
-		MAKE_DAW_EXCEPTION( FileException );
-		MAKE_DAW_EXCEPTION( MethodNotImplemented );
-		MAKE_DAW_EXCEPTION( UnexpectedEnumValue );
-#pragma clang diagnostic pop
-
-#undef MAKE_DAW_EXCEPTION
+		using NotImplemented = std::runtime_error;
+		using FatalError = std::runtime_error;
+		using NullPtrAccessException = std::runtime_error;
+		using AssertException = std::runtime_error;
+		using FileException = std::runtime_error;
+		using MethodNotImplemented = std::runtime_error;
+		using UnexpectedEnumValue = std::runtime_error;
 
 		template<typename ExceptionType = std::runtime_error, typename StringType>
 		[[noreturn]] constexpr void daw_throw( StringType const &msg ) {
@@ -241,14 +225,14 @@ namespace daw {
 			}
 		}
 
-		template<typename ExceptionType = AssertException, typename Bool>
+		template<typename ExceptionType = std::exception, typename Bool>
 		constexpr void daw_throw_on_false( Bool const &test ) {
 			if( !static_cast<bool>( test ) ) {
 				throw ExceptionType{};
 			}
 		}
 
-		template<typename ExceptionType = AssertException, typename Bool>
+		template<typename ExceptionType = std::exception, typename Bool>
 		constexpr void daw_throw_on_true( Bool const &test ) {
 			if( static_cast<bool>( test ) ) {
 				throw ExceptionType{};
