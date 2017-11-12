@@ -39,25 +39,26 @@ namespace daw {
 
 	private:
 		size_t m_index;
+		size_t m_first;
 		daw::static_array_t<T, N> m_stack;
 
 	public:
-		constexpr fixed_stack_t( ) noexcept : m_index{0}, m_stack{} {}
+		constexpr fixed_stack_t( ) noexcept : m_index{0}, m_first{0}, m_stack{} {}
 
-		constexpr fixed_stack_t( const_pointer ptr, size_type count ) noexcept: m_index{ std::min( count, N ) }, m_stack{} {
+		constexpr fixed_stack_t( const_pointer ptr, size_type count ) noexcept: m_index{ std::min( count, N ) }, m_first{0}, m_stack{} {
 			daw::algorithm::copy_n( ptr, m_stack.begin( ), std::min( count, N ) );
 		}
 
 		constexpr bool empty( ) const noexcept {
-			return m_index == 0;
+			return m_index == m_first;
 		}
 
 		constexpr bool full( ) const noexcept {
-			return m_index == N;
+			return m_index - m_first == N;
 		}
 
 		constexpr size_type size( ) const noexcept {
-			return m_index;
+			return m_index - m_first;
 		}
 
 		constexpr size_type capacity( ) const noexcept {
@@ -65,23 +66,24 @@ namespace daw {
 		}
 
 		constexpr bool has_room( size_type count ) noexcept {
-			return count + m_index >= N;
+			return count + size( ) >= N;
 		}
 
 		constexpr size_type available( ) const noexcept {
-			return N - m_index;
+			return N - size( );
 		}
 
 		constexpr void clear( ) noexcept {
 			m_index = 0;
+			m_first = 0;
 		}
 
 		constexpr reference front( ) noexcept {
-			return m_stack[0];
+			return m_stack[m_first];
 		}
 
 		constexpr const_reference front( ) const noexcept {
-			return m_stack[0];
+			return m_stack[m_first];
 		}
 
 		constexpr reference back( ) noexcept {
@@ -93,45 +95,45 @@ namespace daw {
 		}
 
 		constexpr reference operator[]( size_type pos ) noexcept {
-			return m_stack[pos];
+			return m_stack[m_first + pos];
 		}
 
 		constexpr const_reference operator[]( size_type pos ) const noexcept {
-			return m_stack[pos];
+			return m_stack[m_first + pos];
 		}
 
 		constexpr reference at( size_type pos ) {
 			if( pos > size( ) ) {
 				throw std::out_of_range{"Attempt to access past end of fix_stack"};
 			}
-			return m_stack[pos];
+			return m_stack[pos+m_first];
 		}
 
 		constexpr const_reference at( size_type pos ) const {
 			if( pos > size( ) ) {
 				throw std::out_of_range{"Attempt to access past end of fix_stack"};
 			}
-			return m_stack[pos];
+			return m_stack[pos+m_first];
 		}
 
 		constexpr pointer data( ) noexcept {
-			return m_stack.data( );
+			return m_stack.data( ) + m_first;
 		}
 
 		constexpr const_pointer data( ) const noexcept {
-			return m_stack.data( );
+			return m_stack.data( ) + m_first;
 		}
 
 		constexpr iterator begin( ) noexcept {
-			return m_stack.begin( );
+			return m_stack.begin( ) + m_first;
 		}
 
 		constexpr const_iterator begin( ) const noexcept {
-			return m_stack.begin( );
+			return m_stack.begin( ) + m_first;
 		}
 
 		constexpr const_iterator cbegin( ) const noexcept {
-			return m_stack.cbegin( );
+			return m_stack.cbegin( ) + m_first;
 		}
 
 		constexpr iterator end( ) noexcept {
@@ -146,11 +148,30 @@ namespace daw {
 			return &m_stack[m_index];
 		}
 
+	private:
+		constexpr void do_move_to_front( ) noexcept {
+			for( size_t n=m_first; n<m_index; ++n ) {
+				m_stack[n-m_first] = m_stack[n];
+			}
+			m_index -= m_first;
+			m_first = 0;
+		}
+
+		constexpr bool can_move_front( size_type how_many ) noexcept {
+			return m_first > 0 && m_index >= N - how_many;
+		}
+	public:
 		constexpr void push_back( const_reference value ) noexcept {
+			if( can_move_front( 1 ) ) {
+				do_move_to_front( );
+			}
 			m_stack[m_index++] = value;
 		}
 
 		constexpr void push_back( const_pointer ptr, size_type sz ) noexcept {
+			if( can_move_front( sz ) ) {
+				do_move_to_front( );
+			}
 			auto const start = m_index;
 			m_index += sz;
 			for( size_t n = start; n < m_index; ++n ) {
@@ -167,6 +188,9 @@ namespace daw {
 
 		template<typename Ptr>
 		constexpr void push_back( Ptr const *ptr, size_type sz ) noexcept {
+			if( can_move_front( sz ) ) {
+				do_move_to_front( );
+			}
 			auto const start = m_index;
 			m_index += sz;
 			for( size_t n = start; n < m_index; ++n ) {
@@ -176,6 +200,9 @@ namespace daw {
 
 		template<typename... Args>
 		constexpr void emplace_back( Args&&... args ) noexcept {
+			if( can_move_front( sizeof...( Args ) ) ) {
+				do_move_to_front( );
+			}
 			m_stack[m_index++] = value_type{std::forward<Args>( args )...};
 		}
 
@@ -183,11 +210,28 @@ namespace daw {
 			return m_stack[--m_index];
 		}
 
+		constexpr void pop_front( size_type const count ) {
+			if( m_index > m_index - count ) {
+					throw std::out_of_range( "Attempt to pop_front past end of stack" );
+			}
+			m_index += count;
+		}
+
+		///	take care calling as it is slow
+		constexpr value_type pop_front( ) {
+			auto result = front( );
+			pop_front( 1 );
+			return result;
+		}
+
 		constexpr void resize( size_type const count ) {
 			if( count > capacity( ) ) {
 				throw std::out_of_range{"Attempt to resize past capacity of fix_stack"};
 			}
 			if( count > size( ) ) {
+				if( can_move_front( count ) ) {
+					do_move_to_front( );
+				}
 				for( size_type n=size( ); n<count; ++n ) {
 					m_stack[n] = value_type{};
 				}
