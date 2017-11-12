@@ -102,3 +102,18 @@ BOOST_AUTO_TEST_CASE( daw_math_floor_by_003 ) {
 	BOOST_REQUIRE_EQUAL( a, 0 );
 }
 
+BOOST_AUTO_TEST_CASE( daw_math_nearly_equal_test ) {
+	float f1 = 0;
+	float f2 = 0;
+	BOOST_REQUIRE( daw::math::nearly_equal( f1, f2 ) );
+	f1 = 1.0;
+	BOOST_REQUIRE( !daw::math::nearly_equal( f1, f2 ) );
+
+	int i1 = 1;
+	int i2 = 1;
+	BOOST_REQUIRE( daw::math::nearly_equal( i1, i2 ) );
+	i2 = 2;
+	BOOST_REQUIRE( !daw::math::nearly_equal( i1, i2 ) );
+}
+
+

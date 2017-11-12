@@ -30,20 +30,6 @@ BOOST_AUTO_TEST_CASE( daw_utility_append_test ) {
 	BOOST_REQUIRE( a.size( ) == 9 );
 }
 
-BOOST_AUTO_TEST_CASE( daw_utility_nearly_equal_test ) {
-	float f1 = 0;
-	float f2 = 0;
-	BOOST_REQUIRE( daw::nearly_equal( f1, f2 ) );
-	f1 = 1.0;
-	BOOST_REQUIRE( !daw::nearly_equal( f1, f2 ) );
-
-	int i1 = 1;
-	int i2 = 1;
-	BOOST_REQUIRE( daw::nearly_equal( i1, i2 ) );
-	i2 = 2;
-	BOOST_REQUIRE( !daw::nearly_equal( i1, i2 ) );
-}
-
 BOOST_AUTO_TEST_CASE( daw_hex_test_001 ) {
 	uint32_t const a = 0xFF00FFFF;
 	std::string a_str;
