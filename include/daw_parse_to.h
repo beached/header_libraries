@@ -359,8 +359,8 @@ namespace daw {
 	                   std::nullptr_t> = nullptr>
 	decltype( auto ) values_from_stream( Stream &&s, Splitter splitter ) {
 
-		return parser::parse_to<Args...>( daw::string_view{std::string{std::istreambuf_iterator<char>{s}, {}}},
-		                                  std::move( splitter ) );
+		std::string const str{std::istreambuf_iterator<char>{s}, {}};
+		return parser::parse_to<Args...>( daw::string_view{str}, std::move( splitter ) );
 	}
 
 	template<

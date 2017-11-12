@@ -1010,10 +1010,17 @@ namespace daw {
 		return split( daw::string_view{str.data( ), str.size( )}, std::move( pred ) );
 	}
 
+	template<typename CharT, size_t N, typename Traits, typename InternalSizeType, typename UnaryPredicate>
+	auto split( daw::basic_static_string<CharT, N, Traits, InternalSizeType> &&str, UnaryPredicate pred ) = delete;
+
 	template<typename CharT, size_t Capacity, typename Traits, typename InternalSizeType>
 	auto split( daw::basic_static_string<CharT, Capacity, Traits, InternalSizeType> const &str, CharT const delemiter ) {
 		return split( str, [delemiter]( CharT c ) noexcept { return c == delemiter; } );
 	}
+
+	template<typename CharT, size_t Capacity, typename Traits, typename InternalSizeType>
+	auto split( daw::basic_static_string<CharT, Capacity, Traits, InternalSizeType> &&str,
+	            CharT const delemiter ) = delete;
 
 	template<typename CharT, size_t Capacity, typename Traits, typename InternalSizeType, size_t N>
 	auto split( daw::basic_static_string<CharT, Capacity, Traits, InternalSizeType> const &str,
@@ -1021,6 +1028,10 @@ namespace daw {
 		static_assert( N == 2, "string literal used as delemiter.  One 1 value is supported (e.g. \",\" )" );
 		return split( str, [delemiter]( CharT c ) noexcept { return c == delemiter[0]; } );
 	}
+
+	template<typename CharT, size_t Capacity, typename Traits, typename InternalSizeType, size_t N>
+	auto split( daw::basic_static_string<CharT, Capacity, Traits, InternalSizeType> &&str,
+	            CharT const ( &delemiter )[N] ) = delete;
 
 	template<typename CharT, size_t Capacity, typename Traits>
 	std::basic_ostream<CharT> &operator<<( std::basic_ostream<CharT> &os,

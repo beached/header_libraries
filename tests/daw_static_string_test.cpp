@@ -659,8 +659,8 @@ namespace daw {
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_static_string_split_001 ) {
-		std::string str = "This is a test of the split";
-		auto const str_splt = split( daw::static_string{str}, ' ' );
+		daw::static_string str = "This is a test of the split";
+		auto const str_splt = split( str, ' ' );
 		BOOST_REQUIRE_EQUAL( str_splt.size( ), 7 );
 		std::cout << str << "\n\n";
 		std::cout << "items:\n";
@@ -668,24 +668,6 @@ namespace daw {
 			std::cout << '"' << s << "\"\n";
 		}
 		std::cout << "\n\n";
-	}
-
-	BOOST_AUTO_TEST_CASE( daw_static_string_split_002 ) {
-		char const str[] = "This is a test of the split";
-		auto const str_splt = split( daw::static_string{str}, ' ' );
-		BOOST_REQUIRE_EQUAL( str_splt.size( ), 7 );
-	}
-
-	BOOST_AUTO_TEST_CASE( daw_static_string_split_003 ) {
-		std::string str = "This is a test of the split";
-		auto const str_splt = split( str, []( char c ) { return c == ' '; } );
-		BOOST_REQUIRE_EQUAL( str_splt.size( ), 7 );
-	}
-
-	BOOST_AUTO_TEST_CASE( daw_static_string_split_004 ) {
-		char const str[] = "This is a test of the split";
-		auto const str_splt = split( str, []( char c ) { return c == ' '; } );
-		BOOST_REQUIRE_EQUAL( str_splt.size( ), 7 );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_static_string_split_005 ) {

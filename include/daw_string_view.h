@@ -94,8 +94,10 @@ namespace daw {
 		basic_string_view( std::basic_string<CharT, Traits> const &str ) noexcept
 		  : basic_string_view{str.data( ), str.size( )} {}
 
-		// TODO: determine if I want this or not
-		// basic_string_view( std::basic_string<CharT, Traits> &&str ) noexcept = delete;
+		template<typename Allocator>
+		basic_string_view( std::basic_string<CharT, Traits, Allocator> &&str ) = delete;
+
+		basic_string_view( std::basic_string<CharT, Traits> &&str ) noexcept = delete;
 
 		constexpr basic_string_view( const_pointer s ) noexcept
 		  : basic_string_view{s, details::strlen<size_type_internal>( s )} {}
