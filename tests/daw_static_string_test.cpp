@@ -732,5 +732,10 @@ namespace daw {
 	BOOST_AUTO_TEST_CASE( daw_static_string_constexpr_001 ) {
 		constexpr daw::static_string a = "This is a test";
 	}
+
+	BOOST_AUTO_TEST_CASE( daw_static_string_overfull_001 ) {
+		daw::basic_static_string<char, 4> a = "This";
+		BOOST_CHECK_THROW( a.push_back( 'a' ), std::out_of_range );
+	}
 } // namespace daw
 
