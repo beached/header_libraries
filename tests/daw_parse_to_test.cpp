@@ -21,9 +21,13 @@
 // SOFTWARE.
 
 #include "boost_test.h"
-#include "daw_parse_to.h"
+#include <string>
+#include <sstream>
 
-BOOST_AUTO_TEST_CASE( daw_values_from_stream_001 ) {
+#include "daw_parse_to.h"
+#include "daw_math.h"
+
+BOOST_AUTO_TEST_CASE( daw_parse_to_001 ) {
 	constexpr auto vals = daw::parser::parse_to<int, int, int, int>( "0,1,2,3", "," );
 	BOOST_REQUIRE_EQUAL( std::get<0>( vals ), 0 );
 	BOOST_REQUIRE_EQUAL( std::get<1>( vals ), 1 );
@@ -31,7 +35,7 @@ BOOST_AUTO_TEST_CASE( daw_values_from_stream_001 ) {
 	BOOST_REQUIRE_EQUAL( std::get<3>( vals ), 3 );
 }
 
-BOOST_AUTO_TEST_CASE( daw_values_from_stream_002 ) {
+BOOST_AUTO_TEST_CASE( daw_parse_to_002 ) {
 	auto vals = daw::parser::parse_to<int, std::string, int, int>( "0,\"hello there\",2,3", "," );
 	BOOST_REQUIRE_EQUAL( std::get<0>( vals ), 0 );
 	BOOST_REQUIRE_EQUAL( std::get<std::string>( vals ), "hello there" );
@@ -39,7 +43,7 @@ BOOST_AUTO_TEST_CASE( daw_values_from_stream_002 ) {
 	BOOST_REQUIRE_EQUAL( std::get<3>( vals ), 3 );
 }
 
-BOOST_AUTO_TEST_CASE( daw_values_from_stream_003 ) {
+BOOST_AUTO_TEST_CASE( daw_parse_to_003 ) {
 	constexpr daw::string_view const str = R"(0,"hello there",2,3)";
 	constexpr auto vals = daw::parser::parse_to<int, daw::string_view, int, int>( str, "," );
 	BOOST_REQUIRE_EQUAL( std::get<0>( vals ), 0 );
@@ -55,7 +59,7 @@ namespace daw_values_from_stream_004_ns {
 		uint64_t c;
 	};
 
-	BOOST_AUTO_TEST_CASE( daw_values_from_stream_004 ) {
+	BOOST_AUTO_TEST_CASE( daw_parse_to_004 ) {
 		constexpr auto x = daw::construct_from<X, int, int64_t, uint64_t>( "1,-14334,3434234", "," );
 		BOOST_REQUIRE_EQUAL( x.a, 1 );
 		BOOST_REQUIRE_EQUAL( x.b, -14334 );
@@ -63,26 +67,40 @@ namespace daw_values_from_stream_004_ns {
 	}
 } // namespace daw_values_from_stream_004_ns
 
-BOOST_AUTO_TEST_CASE( daw_values_from_stream_005 ) {
+BOOST_AUTO_TEST_CASE( daw_parse_to_005 ) {
 	auto f = []( int a, int b, int c ) { return a + b + c; };
 	auto result = daw::apply_string( f, "1,2,3", "," );
 	BOOST_REQUIRE_EQUAL( result, 6 );
 }
 
-BOOST_AUTO_TEST_CASE( daw_values_from_stream_006 ) {
+BOOST_AUTO_TEST_CASE( daw_parse_to_006 ) {
 	auto f = []( int a, int b, int c ) { return a + b + c; };
 	auto result = daw::apply_string2<int, int, int>( f, "1,2,3", "," );
 	BOOST_REQUIRE_EQUAL( result, 6 );
 }
 
-BOOST_AUTO_TEST_CASE( daw_values_from_stream_007 ) {
+BOOST_AUTO_TEST_CASE( daw_parse_to_007 ) {
 	auto f = []( int a, int b, int c ) { return a + b + c; };
 	auto result = daw::apply_string( f, "1	2  3", daw::parser::whitespace_splitter{ } );
 	BOOST_REQUIRE_EQUAL( result, 6 );
 }
 
-BOOST_AUTO_TEST_CASE( daw_values_from_stream_008 ) {
+BOOST_AUTO_TEST_CASE( daw_parse_to_008 ) {
 	auto f = []( int a, int b, int c ) { return a + b + c; };
 	auto result = daw::apply_string2<int, int, int>( f, "1  2     3", daw::parser::whitespace_splitter{ } );
 	BOOST_REQUIRE_EQUAL( result, 6 );
 }
+
+
+BOOST_AUTO_TEST_CASE( daw_values_from_stream_001 ) {
+	std::string str = "this 1 1.234 test";
+	std::stringstream ss{ str };
+	auto vals = daw::values_from_stream<daw::parser::converters::unquoted_string, int, float,
+	                                    daw::parser::converters::unquoted_string>( ss, " " );
+
+	BOOST_REQUIRE_EQUAL( std::get<0>( vals ), "this" );
+	BOOST_REQUIRE_EQUAL( std::get<1>( vals ), 1 );
+	BOOST_REQUIRE( daw::math::nearly_equal( std::get<2>( vals ), 1.234f ) );
+	BOOST_REQUIRE_EQUAL( std::get<3>( vals ), "test" );
+}
+

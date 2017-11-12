@@ -468,30 +468,6 @@ namespace daw {
 		;
 	}
 
-	template<typename T, std::enable_if_t<!is_floating_point_v<T>, std::nullptr_t> = nullptr>
-	constexpr bool nearly_equal( T const &a, T const &b ) noexcept {
-		return a == b;
-	}
-
-	template<typename T, std::enable_if_t<is_floating_point_v<T>, std::nullptr_t> = nullptr>
-	constexpr bool nearly_equal( T const &a, T const &b ) noexcept {
-		// Code from http://floating-point-gui.de/errors/comparison/
-		auto absA = std::abs( a );
-		auto absB = std::abs( b );
-		auto diff = std::abs( a - b );
-
-		if( a == b ) { // shortcut, handles infinities
-			return true;
-		}
-		if( a == 0 || b == 0 || diff < std::numeric_limits<T>::min_exponent ) {
-			// a or b is zero or both are extremely close to it
-			// 			// relative error is less meaningful here
-			return diff < ( std::numeric_limits<T>::epsilon( ) * std::numeric_limits<T>::min_exponent );
-		}
-		// use relative error
-		return diff / std::min( ( absA + absB ), std::numeric_limits<T>::max( ) ) < std::numeric_limits<T>::epsilon( );
-	}
-
 	template<typename Iterator1, typename Iterator2, typename OutputIterator>
 	constexpr OutputIterator cxpr_copy( Iterator1 first_in, Iterator2 const last_in, OutputIterator first_out ) {
 		while( first_in != last_in ) {

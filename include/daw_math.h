@@ -41,19 +41,19 @@ namespace daw {
 		template<typename T>
 		constexpr T const PI = T( 3.14159265358979323846264338327950288419716939937510582097494459230781640628620899 );
 
-		template<typename Result=intmax_t>
+		template<typename Result = intmax_t>
 		constexpr Result round( double d ) noexcept {
 			static_assert( daw::is_integral_v<Result>, "Result type must be integral" );
 			return static_cast<Result>( d + 0.5 );
 		}
 
-		template<typename Result=intmax_t>
+		template<typename Result = intmax_t>
 		constexpr Result floor( double d ) noexcept {
 			static_assert( daw::is_integral_v<Result>, "Result type must be integral" );
 			return static_cast<Result>( d );
 		}
 
-		template<typename Result=intmax_t>
+		template<typename Result = intmax_t>
 		constexpr Result ceil( double d ) noexcept {
 			static_assert( daw::is_integral_v<Result>, "Result type must be integral" );
 			return static_cast<Result>( d + 1.0 );
@@ -159,5 +159,33 @@ namespace daw {
 			}
 			return value;
 		}
+
+		template<typename T, std::enable_if_t<!is_floating_point_v<T>, std::nullptr_t> = nullptr>
+		constexpr bool nearly_equal( T const &a, T const &b ) noexcept {
+			return a == b;
+		}
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+		template<typename T, std::enable_if_t<is_floating_point_v<T>, std::nullptr_t> = nullptr>
+		constexpr bool nearly_equal( T const &a, T const &b ) noexcept {
+			// Code from http://floating-point-gui.de/errors/comparison/
+			auto absA = std::abs( a );
+			auto absB = std::abs( b );
+			auto diff = std::abs( a - b );
+
+			if( a == b ) { // shortcut, handles infinities
+				return true;
+			}
+			if( a == 0 || b == 0 || diff < std::numeric_limits<T>::min_exponent ) {
+				// a or b is zero or both are extremely close to it
+				// 			// relative error is less meaningful here
+				return diff < ( std::numeric_limits<T>::epsilon( ) * std::numeric_limits<T>::min_exponent );
+			}
+			// use relative error
+			return diff / std::min( ( absA + absB ), std::numeric_limits<T>::max( ) ) < std::numeric_limits<T>::epsilon( );
+		}
+#pragma GCC diagnostic pop
+
 	} // namespace math
 } // namespace daw

@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <iterator>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -106,15 +107,28 @@ namespace daw {
 					return last_char != '\\' && c == '"';
 				}
 			} // namespace impl
+
+			struct unquoted_string {};
+			struct unquoted_string_view{};
+
+			constexpr daw::string_view parse_to_value( daw::string_view str, unquoted_string_view ) {
+				if( str.empty( ) ) {
+					throw empty_input_exception{};
+				}
+				return str;
+			}
+
 			constexpr daw::string_view parse_to_value( daw::string_view str, daw::string_view ) {
 				if( str.empty( ) ) {
 					throw empty_input_exception{};
 				}
 				if( str.size( ) < 2 ) {
-					throw invalid_input_exception{};
+					struct input_too_small_exception {};
+					throw input_too_small_exception{};
 				}
 				if( str.front( ) != '"' ) {
-					throw invalid_input_exception{};
+					struct missing_expected_quotes_exception {};
+					throw missing_expected_quotes_exception{};
 				}
 				str.remove_prefix( );
 				auto const first = str.cbegin( );
@@ -123,13 +137,36 @@ namespace daw {
 					last_char = str.pop_front( );
 				}
 				if( str.front( ) != '"' ) {
-					throw invalid_input_exception{};
+					struct missing_expected_quotes_exception {};
+					throw missing_expected_quotes_exception{};
 				}
 				return daw::make_string_view_it( first, str.cbegin( ) );
 			}
 
 			std::string parse_to_value( daw::string_view str, std::string ) {
 				return parse_to_value( str, daw::string_view{} ).to_string( );
+			}
+
+			std::string parse_to_value( daw::string_view str, unquoted_string ) {
+				return parse_to_value( str, unquoted_string_view{} ).to_string( );
+			}
+
+			float parse_to_value( daw::string_view str, float ) {
+				auto const s = str.to_string( );
+				char **end = nullptr;
+				return strtof( s.c_str( ), end );
+			}
+
+			double parse_to_value( daw::string_view str, double ) {
+				auto const s = str.to_string( );
+				char **end = nullptr;
+				return strtod( s.c_str( ), end );
+			}
+
+			long double parse_to_value( daw::string_view str, long double ) {
+				auto const s = str.to_string( );
+				char **end = nullptr;
+				return strtold( s.c_str( ), end );
 			}
 		} // namespace converters
 
@@ -309,6 +346,35 @@ namespace daw {
 	constexpr decltype( auto ) apply_string2( Callable callable, daw::string_view str, daw::string_view delemiter ) {
 		return apply_string2<Args...>( std::move( callable ), std::move( str ),
 		                               parser::default_splitter{std::move( delemiter )} );
+	}
+
+	namespace detectors {
+		template<typename Stream>
+		using has_str = decltype( Stream{}.str( ) );
+	}
+
+	template<
+	  typename... Args, typename Stream, typename Splitter,
+	  std::enable_if_t<(!is_detected_v<detectors::has_str, Stream> && !is_convertible_v<Splitter, daw::string_view>),
+	                   std::nullptr_t> = nullptr>
+	decltype( auto ) values_from_stream( Stream &&s, Splitter splitter ) {
+
+		return parser::parse_to<Args...>( daw::string_view{std::string{std::istreambuf_iterator<char>{s}, {}}},
+		                                  std::move( splitter ) );
+	}
+
+	template<
+	  typename... Args, typename Stream, typename Splitter,
+	  std::enable_if_t<(is_detected_v<detectors::has_str, Stream> && !is_convertible_v<Splitter, daw::string_view>),
+	                   std::nullptr_t> = nullptr>
+	decltype( auto ) values_from_stream( Stream &&s, Splitter splitter ) {
+
+		return parser::parse_to<Args...>( daw::string_view{s.str( )}, std::move( splitter ) );
+	}
+
+	template<typename... Args, typename Stream>
+	decltype( auto ) values_from_stream( Stream &&s, daw::string_view delemiter ) {
+		return values_from_stream<Args...>( std::forward<Stream>( s ), parser::default_splitter{std::move( delemiter )} );
 	}
 } // namespace daw
 

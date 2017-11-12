@@ -83,13 +83,3 @@ BOOST_AUTO_TEST_CASE( daw_hex_test_004 ) {
 	BOOST_REQUIRE( to_hex_test_004( ) );
 }
 
-BOOST_AUTO_TEST_CASE( daw_values_from_stream_001 ) {
-	std::string str = "this 1 1.234 test";
-	std::stringstream ss{ str };	
-	auto vals = daw::values_from_stream<std::string, int, float, std::string>( ss );
-	BOOST_REQUIRE_EQUAL( std::get<0>( vals ), "this" );
-	BOOST_REQUIRE_EQUAL( std::get<1>( vals ), 1 );
-	BOOST_REQUIRE_EQUAL( std::get<2>( vals ), 1.234 );
-	BOOST_REQUIRE_EQUAL( std::get<3>( vals ), "test" );
-}
-
