@@ -298,8 +298,9 @@ namespace daw {
 			return 1;
 		}
 
-		constexpr int compare( basic_string_view const v ) const noexcept {
-			return compare( *this, v );
+		constexpr int compare( basic_string_view const rhs ) const noexcept {
+			basic_string_view lhs{*this};
+			return compare( lhs, rhs );
 		}
 
 		constexpr int compare( size_type const pos1, size_type const count1, basic_string_view const v ) const {
@@ -311,12 +312,14 @@ namespace daw {
 			return compare( substr( pos1, count1 ), v.substr( pos2, count2 ) );
 		}
 
-		constexpr int compare( const_pointer s ) const noexcept {
-			return compare( *this, basic_string_view{s} );
+		constexpr int compare( const_pointer rhs ) const noexcept {
+			basic_string_view lhs{*this};
+			return compare( lhs, rhs );
 		}
 
-		constexpr int compare( value_type c ) const noexcept {
-			return compare( *this, c );
+		constexpr int compare( value_type rhs ) const noexcept {
+			basic_string_view lhs{*this};
+			return compare( lhs, rhs );
 		}
 
 		constexpr int compare( size_type const pos1, size_type const count1, const_pointer s ) const {
