@@ -57,10 +57,7 @@ namespace daw {
 		struct ParserException {};
 		struct ParserEmptyException : public ParserException {};
 		struct ParserOverflowException : public ParserException {};
-		struct ParserOutOfRangeException : public ParserException, public std::out_of_range {
-			template<typename String>
-			ParserOutOfRangeException( String &&arg ) : ParserException{}, std::out_of_range{std::forward<String>( arg )} {}
-		};
+		using ParserOutOfRangeException = std::out_of_range;
 
 		template<typename ForwardIterator>
 		struct find_result_t {
@@ -342,6 +339,11 @@ namespace daw {
 		template<typename T>
 		constexpr bool is_number( T const &value ) noexcept {
 			return in_range( value, '0', '9' );
+		}
+
+		template<typename T>
+		constexpr bool is_hex( T const &value ) noexcept {
+			return in_range( value, '0', '9' ) || in_range( value, 'a', 'f' ) || in_range( value, 'A', 'F' );
 		}
 
 		template<typename T>
