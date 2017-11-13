@@ -683,33 +683,33 @@ namespace daw {
 	// basic_string_view / something else
 	//
 	template<typename CharT, typename Traits, typename Rhs>
-	constexpr bool operator==( basic_string_view<CharT, Traits> lhs, Rhs &&rhs ) noexcept {
-		return lhs.compare( std::forward<Rhs>( rhs ) ) == 0;
+	constexpr bool operator==( basic_string_view<CharT, Traits> lhs, Rhs const &rhs ) noexcept {
+		return lhs.compare( basic_string_view<CharT, Traits>{ rhs } ) == 0;
 	}
 
 	template<typename CharT, typename Traits, typename Rhs>
-	constexpr bool operator!=( basic_string_view<CharT, Traits> lhs, Rhs &&rhs ) noexcept {
-		return lhs.compare( std::forward<Rhs>( rhs ) ) != 0;
+	constexpr bool operator!=( basic_string_view<CharT, Traits> lhs, Rhs const &rhs ) noexcept {
+		return lhs.compare( basic_string_view<CharT, Traits>{ rhs } ) != 0;
 	}
 
 	template<typename CharT, typename Traits, typename Rhs>
-	constexpr bool operator>( basic_string_view<CharT, Traits> lhs, Rhs &&rhs ) noexcept {
-		return lhs.compare( std::forward<Rhs>( rhs ) ) > 0;
+	constexpr bool operator>( basic_string_view<CharT, Traits> lhs, Rhs const &rhs ) noexcept {
+		return lhs.compare( basic_string_view<CharT, Traits>{ rhs } ) > 0;
 	}
 
 	template<typename CharT, typename Traits, typename Rhs>
-	constexpr bool operator>=( basic_string_view<CharT, Traits> lhs, Rhs &&rhs ) noexcept {
-		return lhs.compare( std::forward<Rhs>( rhs ) ) >= 0;
+	constexpr bool operator>=( basic_string_view<CharT, Traits> lhs, Rhs const &rhs ) noexcept {
+		return lhs.compare( basic_string_view<CharT, Traits>{ rhs } ) >= 0;
 	}
 
 	template<typename CharT, typename Traits, typename Rhs>
-	constexpr bool operator<( basic_string_view<CharT, Traits> lhs, Rhs &&rhs ) noexcept {
-		return lhs.compare( std::forward<Rhs>( rhs ) ) < 0;
+	constexpr bool operator<( basic_string_view<CharT, Traits> lhs, Rhs const &rhs ) noexcept {
+		return lhs.compare( basic_string_view<CharT, Traits>{ rhs } ) < 0;
 	}
 
 	template<typename CharT, typename Traits, typename Rhs>
-	constexpr bool operator<=( basic_string_view<CharT, Traits> lhs, Rhs &&rhs ) noexcept {
-		return lhs.compare( std::forward<Rhs>( rhs ) ) <= 0;
+	constexpr bool operator<=( basic_string_view<CharT, Traits> lhs, Rhs const &rhs ) noexcept {
+		return lhs.compare( basic_string_view<CharT, Traits>{ rhs } ) <= 0;
 	}
 
 	// something else / daw::basic_string_view
