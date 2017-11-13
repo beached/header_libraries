@@ -168,6 +168,16 @@ namespace daw {
 				char **end = nullptr;
 				return strtold( s.c_str( ), end );
 			}
+
+			template<typename EnumType>
+			struct enum_mapper_value {};
+
+			template<typename EnumType>
+			constexpr auto parse_to_value( daw::string_view str, enum_mapper_value<EnumType> ) noexcept(
+			  noexcept( enum_mapper_value<EnumType>::get_enum_value( str ) ) ) {
+
+				return enum_mapper_value<EnumType>::get_enum_value( str );
+			}
 		} // namespace converters
 
 		namespace impl {
@@ -315,6 +325,8 @@ namespace daw {
 			return daw::apply( std::move( callable ), parser::parse_to<Args...>( std::move( str ), std::move( splitter ) ) );
 		}
 	} // namespace impl
+
+	/// Apply the reified string as the types deducted from the Callable to the Callable
 	template<typename Callable, typename Splitter,
 	         std::enable_if_t<!is_convertible_v<Splitter, daw::string_view>, std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) apply_string( Callable callable, daw::string_view str, Splitter splitter ) {
@@ -335,6 +347,7 @@ namespace daw {
 		};
 	} // namespace impl
 
+	/// Apply the reified string as the types specified as Args... to the Callable
 	template<typename... Args, typename Callable, typename Splitter,
 	         std::enable_if_t<!is_convertible_v<Splitter, daw::string_view>, std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) apply_string2( Callable callable, daw::string_view str, Splitter splitter ) {

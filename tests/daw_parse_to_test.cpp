@@ -21,11 +21,12 @@
 // SOFTWARE.
 
 #include "boost_test.h"
-#include <string>
 #include <sstream>
+#include <string>
 
-#include "daw_parse_to.h"
+#include "daw_exception.h"
 #include "daw_math.h"
+#include "daw_parse_to.h"
 
 BOOST_AUTO_TEST_CASE( daw_parse_to_001 ) {
 	constexpr auto vals = daw::parser::parse_to<int, int, int, int>( "0,1,2,3", "," );
@@ -81,20 +82,19 @@ BOOST_AUTO_TEST_CASE( daw_parse_to_006 ) {
 
 BOOST_AUTO_TEST_CASE( daw_parse_to_007 ) {
 	auto f = []( int a, int b, int c ) { return a + b + c; };
-	auto result = daw::apply_string( f, "1	2  3", daw::parser::whitespace_splitter{ } );
+	auto result = daw::apply_string( f, "1	2  3", daw::parser::whitespace_splitter{} );
 	BOOST_REQUIRE_EQUAL( result, 6 );
 }
 
 BOOST_AUTO_TEST_CASE( daw_parse_to_008 ) {
 	auto f = []( int a, int b, int c ) { return a + b + c; };
-	auto result = daw::apply_string2<int, int, int>( f, "1  2     3", daw::parser::whitespace_splitter{ } );
+	auto result = daw::apply_string2<int, int, int>( f, "1  2     3", daw::parser::whitespace_splitter{} );
 	BOOST_REQUIRE_EQUAL( result, 6 );
 }
 
-
 BOOST_AUTO_TEST_CASE( daw_values_from_stream_001 ) {
 	std::string str = "this 1 1.234 test";
-	std::stringstream ss{ str };
+	std::stringstream ss{str};
 	auto vals = daw::values_from_stream<daw::parser::converters::unquoted_string, int, float,
 	                                    daw::parser::converters::unquoted_string>( ss, " " );
 
@@ -103,4 +103,61 @@ BOOST_AUTO_TEST_CASE( daw_values_from_stream_001 ) {
 	BOOST_REQUIRE( daw::math::nearly_equal( std::get<2>( vals ), 1.234f ) );
 	BOOST_REQUIRE_EQUAL( std::get<3>( vals ), "test" );
 }
+
+enum class e_colours { red = 0, green = 1, blue = 2 };
+
+namespace daw {
+	namespace parser {
+		namespace converters {
+			struct invalid_e_colour_exception {};
+
+			template<>
+			struct enum_mapper_value<e_colours> {
+				static constexpr e_colours get_enum_value( daw::string_view str ) {
+					daw::exception::daw_throw_on_true( str.empty( ), "Attempt to parse an e_colour from an empty string_view" );
+					switch( str.front( ) ) {
+					case 'r':
+					case 'R':
+						return e_colours::red;
+					case 'g':
+					case 'G':
+						return e_colours::green;
+					case 'b':
+					case 'B':
+						return e_colours::blue;
+					default:
+						throw invalid_e_colour_exception{};
+					}
+				}
+			};
+		} // namespace converters
+	}   // namespace parser
+} // namespace daw
+
+namespace daw_parse_to_enum_001_ns {
+
+	constexpr int get_value( e_colours colour ) noexcept {
+		switch( colour ) {
+		case e_colours::red:
+			return 64;
+		case e_colours::green:
+			return 128;
+		case e_colours::blue:
+			return 256;
+		}
+		return -1;
+	}
+
+	constexpr int sum_colours( e_colours a, e_colours b ) noexcept {
+		return get_value( a ) + get_value( b );
+	}
+
+	BOOST_AUTO_TEST_CASE( daw_parse_to_enum_001 ) {
+
+		auto result = daw::apply_string2<daw::parser::converters::enum_mapper_value<e_colours>,
+		                                 daw::parser::converters::enum_mapper_value<e_colours>>(
+		  []( e_colours a, e_colours b ) { return sum_colours( a, b ); }, "green blue", daw::parser::whitespace_splitter{} );
+		BOOST_REQUIRE_EQUAL( result, 384 ); 
+	}
+} // namespace daw_parse_to_enum_001_ns
 
