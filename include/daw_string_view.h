@@ -732,9 +732,6 @@ namespace daw {
 		return basic_string_view<CharT, Traits>::compare( basic_string_view<CharT, Traits>{lhs}, rhs ) != 0;
 	}
 
-	template<typename T, typename CharT = char, typename Traits = std::char_traits<CharT>>
-	constexpr bool can_be_string_view = daw::is_detected_v<detectors::can_be_string_view, T, CharT, Traits>;
-
 	template<typename CharT, typename Traits>
 	constexpr bool operator>( basic_string_view<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
 		return basic_string_view<CharT, Traits>::compare( lhs, rhs ) > 0;
@@ -780,9 +777,6 @@ namespace daw {
 	constexpr bool operator>=( CharT const *lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
 		return basic_string_view<CharT, Traits>::compare( basic_string_view<CharT, Traits>{lhs}, rhs ) >= 0;
 	}
-
-	template<typename T, typename CharT = char, typename Traits = std::char_traits<CharT>>
-	constexpr bool can_be_string_view = daw::is_detected_v<detectors::can_be_string_view, T, CharT, Traits>;
 
 	template<typename CharT, typename Traits>
 	constexpr bool operator<( basic_string_view<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
