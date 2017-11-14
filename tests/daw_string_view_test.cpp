@@ -671,6 +671,24 @@ namespace daw {
 				std::string str = "Goodbye World";
 				BOOST_REQUIRE( FALSE( view == str ) );
 			}
+
+			BOOST_TEST_MESSAGE( "Two unequal string_views of size 1" );
+			{
+				std::string str1 = "1";
+				std::string str2 = "2";
+				daw::string_view sv1{str1};
+				daw::string_view sv2{str2};
+				BOOST_REQUIRE( FALSE( sv1 == sv2 ) );
+			}
+			BOOST_TEST_MESSAGE( "Two equal string_views of size 1" );
+			{
+				std::string str1 = "1";
+				std::string str2 = "1";
+				daw::string_view sv1{str1};
+				daw::string_view sv2{str2};
+				BOOST_REQUIRE_EQUAL( sv1, sv2 );
+			}
+
 		}
 	}
 

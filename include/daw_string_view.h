@@ -276,6 +276,12 @@ namespace daw {
 		}
 
 		static constexpr int compare( basic_string_view lhs, basic_string_view rhs ) noexcept {
+			if( lhs.size( ) < rhs.size( ) ) {
+				return -1;
+			}
+			if( lhs.size( ) > rhs.size( ) ) {
+				return 1;
+			}
 			while( !lhs.empty( ) && !rhs.empty( ) ) {
 				if( lhs.front( ) != rhs.front( ) ) {
 					if( lhs.front( ) < rhs.front( ) ) {
@@ -286,16 +292,7 @@ namespace daw {
 				lhs.remove_prefix( );
 				rhs.remove_prefix( );
 			}
-			if( rhs.empty( ) ) {
-				if( lhs.empty( ) ) {
-					return 0;
-				}
-				return 1;
-			}
-			if( lhs.empty( ) ) {
-				return -1;
-			}
-			return 1;
+			return 0;
 		}
 
 		constexpr int compare( basic_string_view const rhs ) const noexcept {
