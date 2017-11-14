@@ -686,40 +686,152 @@ namespace daw {
 		template<typename T, typename CharT = char, typename Traits = std::char_traits<CharT>>
 		using can_be_string_view = decltype( daw::basic_string_view<CharT, Traits>{T{}} );
 	}
+	template<typename T, typename CharT = char, typename Traits = std::char_traits<CharT>>
+	constexpr bool can_be_string_view = daw::is_detected_v<detectors::can_be_string_view, T, CharT, Traits>;
+
+	template<typename CharT, typename Traits>
+	constexpr bool operator==( basic_string_view<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( lhs, rhs ) == 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator==( basic_string_view<CharT, Traits> lhs,
+	                           std::basic_string<CharT, Traits> const &rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( lhs, basic_string_view<CharT, Traits>{rhs} ) == 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator==( basic_string_view<CharT, Traits> lhs, CharT const *rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( lhs, basic_string_view<CharT, Traits>{rhs} ) == 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator==( std::basic_string<CharT, Traits> const &lhs,
+	                           basic_string_view<CharT, Traits> rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( basic_string_view<CharT, Traits>{lhs}, rhs ) == 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator==( CharT const *lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( basic_string_view<CharT, Traits>{lhs}, rhs ) == 0;
+	}
+
+	template<typename CharT, typename Traits>
+	constexpr bool operator!=( basic_string_view<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( lhs, rhs ) != 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator!=( basic_string_view<CharT, Traits> lhs,
+	                           std::basic_string<CharT, Traits> const &rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( lhs, basic_string_view<CharT, Traits>{rhs} ) != 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator!=( basic_string_view<CharT, Traits> lhs, CharT const *rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( lhs, basic_string_view<CharT, Traits>{rhs} ) != 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator!=( std::basic_string<CharT, Traits> const &lhs,
+	                           basic_string_view<CharT, Traits> rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( basic_string_view<CharT, Traits>{lhs}, rhs ) != 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator!=( CharT const *lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( basic_string_view<CharT, Traits>{lhs}, rhs ) != 0;
+	}
 
 	template<typename T, typename CharT = char, typename Traits = std::char_traits<CharT>>
 	constexpr bool can_be_string_view = daw::is_detected_v<detectors::can_be_string_view, T, CharT, Traits>;
 
-#define MAKE_SV_OPERATOR( OP1, OP2 )                                                                                   \
-	template<typename CharT, typename Traits>                                                                            \
-	constexpr bool OP1( basic_string_view<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {          \
-		return basic_string_view<CharT, Traits>::compare( lhs, rhs ) OP2 0;                                                \
-	}                                                                                                                    \
-	template<typename CharT, typename Traits>                                                                            \
-	constexpr bool OP1( basic_string_view<CharT, Traits> lhs, std::basic_string<CharT, Traits> const &rhs ) noexcept {   \
-		return basic_string_view<CharT, Traits>::compare( lhs, basic_string_view<CharT, Traits>{rhs} ) OP2 0;              \
-	}                                                                                                                    \
-	template<typename CharT, typename Traits>                                                                            \
-	constexpr bool OP1( basic_string_view<CharT, Traits> lhs, CharT const *rhs ) noexcept {                              \
-		return basic_string_view<CharT, Traits>::compare( lhs, basic_string_view<CharT, Traits>{rhs} ) OP2 0;              \
-	}                                                                                                                    \
-	template<typename CharT, typename Traits>                                                                            \
-	constexpr bool OP1( std::basic_string<CharT, Traits> const &lhs, basic_string_view<CharT, Traits> rhs ) noexcept {   \
-		return basic_string_view<CharT, Traits>::compare( basic_string_view<CharT, Traits>{lhs}, rhs ) OP2 0;              \
-	}                                                                                                                    \
-	template<typename CharT, typename Traits>                                                                            \
-	constexpr bool OP1( CharT const *lhs, basic_string_view<CharT, Traits> rhs ) noexcept {                              \
-		return basic_string_view<CharT, Traits>::compare( basic_string_view<CharT, Traits>{lhs}, rhs ) OP2 0;              \
+	template<typename CharT, typename Traits>
+	constexpr bool operator>( basic_string_view<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( lhs, rhs ) > 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator>( basic_string_view<CharT, Traits> lhs,
+	                          std::basic_string<CharT, Traits> const &rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( lhs, basic_string_view<CharT, Traits>{rhs} ) > 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator>( basic_string_view<CharT, Traits> lhs, CharT const *rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( lhs, basic_string_view<CharT, Traits>{rhs} ) > 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator>( std::basic_string<CharT, Traits> const &lhs,
+	                          basic_string_view<CharT, Traits> rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( basic_string_view<CharT, Traits>{lhs}, rhs ) > 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator>( CharT const *lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( basic_string_view<CharT, Traits>{lhs}, rhs ) > 0;
 	}
 
-	MAKE_SV_OPERATOR( operator==, == );
-	MAKE_SV_OPERATOR( operator!=, != );
-	MAKE_SV_OPERATOR( operator<, < );
-	MAKE_SV_OPERATOR( operator<=, <= );
-	MAKE_SV_OPERATOR( operator>, > );
-	MAKE_SV_OPERATOR( operator>=, >= );
+	template<typename CharT, typename Traits>
+	constexpr bool operator>=( basic_string_view<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( lhs, rhs ) >= 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator>=( basic_string_view<CharT, Traits> lhs,
+	                           std::basic_string<CharT, Traits> const &rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( lhs, basic_string_view<CharT, Traits>{rhs} ) >= 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator>=( basic_string_view<CharT, Traits> lhs, CharT const *rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( lhs, basic_string_view<CharT, Traits>{rhs} ) >= 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator>=( std::basic_string<CharT, Traits> const &lhs,
+	                           basic_string_view<CharT, Traits> rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( basic_string_view<CharT, Traits>{lhs}, rhs ) >= 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator>=( CharT const *lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( basic_string_view<CharT, Traits>{lhs}, rhs ) >= 0;
+	}
 
-#undef MAKE_SV_OPERATOR
+	template<typename T, typename CharT = char, typename Traits = std::char_traits<CharT>>
+	constexpr bool can_be_string_view = daw::is_detected_v<detectors::can_be_string_view, T, CharT, Traits>;
+
+	template<typename CharT, typename Traits>
+	constexpr bool operator<( basic_string_view<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( lhs, rhs ) < 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator<( basic_string_view<CharT, Traits> lhs,
+	                          std::basic_string<CharT, Traits> const &rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( lhs, basic_string_view<CharT, Traits>{rhs} ) < 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator<( basic_string_view<CharT, Traits> lhs, CharT const *rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( lhs, basic_string_view<CharT, Traits>{rhs} ) < 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator<( std::basic_string<CharT, Traits> const &lhs,
+	                          basic_string_view<CharT, Traits> rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( basic_string_view<CharT, Traits>{lhs}, rhs ) < 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator<( CharT const *lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( basic_string_view<CharT, Traits>{lhs}, rhs ) < 0;
+	}
+
+	template<typename CharT, typename Traits>
+	constexpr bool operator<=( basic_string_view<CharT, Traits> lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( lhs, rhs ) <= 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator<=( basic_string_view<CharT, Traits> lhs,
+	                           std::basic_string<CharT, Traits> const &rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( lhs, basic_string_view<CharT, Traits>{rhs} ) <= 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator<=( basic_string_view<CharT, Traits> lhs, CharT const *rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( lhs, basic_string_view<CharT, Traits>{rhs} ) <= 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator<=( std::basic_string<CharT, Traits> const &lhs,
+	                           basic_string_view<CharT, Traits> rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( basic_string_view<CharT, Traits>{lhs}, rhs ) <= 0;
+	}
+	template<typename CharT, typename Traits>
+	constexpr bool operator<=( CharT const *lhs, basic_string_view<CharT, Traits> rhs ) noexcept {
+		return basic_string_view<CharT, Traits>::compare( basic_string_view<CharT, Traits>{lhs}, rhs ) <= 0;
+	}
 
 	template<typename CharT, typename Traits, typename Allocator>
 	auto operator+( std::basic_string<CharT, Traits, Allocator> lhs, daw::basic_string_view<CharT, Traits> rhs ) {
