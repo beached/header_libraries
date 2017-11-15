@@ -566,3 +566,8 @@ BOOST_AUTO_TEST_CASE( are_convertible_to_v_002 ) {
 	BOOST_REQUIRE( !a );
 }
 
+BOOST_AUTO_TEST_CASE( type_n_t_test_001 ) {
+	constexpr bool tuple_n_t_test = daw::is_same_v<int, daw::type_n_t<2, long, double, int, float>>;
+	BOOST_REQUIRE( tuple_n_t_test );
+}
+

@@ -606,4 +606,7 @@ namespace daw {
 	
 	template<typename To, typename... From>
 	constexpr bool are_convertible_to_v = all_true_v<is_convertible_v<From, To>...>;
+
+	template<size_t N, typename... Args>
+	using type_n_t = std::tuple_element_t<N, std::tuple<Args...>>;
 } // namespace daw
