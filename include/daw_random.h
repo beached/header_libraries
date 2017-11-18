@@ -54,6 +54,11 @@ namespace daw {
 		return d( impl::global_rng( ), param_type{a, b} );
 	}
 
+	template<typename IntType>
+	inline IntType randint( ) {
+		return randint<IntType>( std::numeric_limits<IntType>::min( ), std::numeric_limits<IntType>::max( ) );
+	}
+
 	inline void reseed( ) {
 		impl::global_rng( ).seed( impl::get_seed( ) );
 	}
