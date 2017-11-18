@@ -7,7 +7,7 @@ addons:
     packages:
       - cmake-data
       - cmake
-			- libboost-all-dev
+      - libboost-all-dev
 matrix:
   include:
     - os: linux
