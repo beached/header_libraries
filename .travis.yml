@@ -2,12 +2,6 @@ dist: trusty
 sudo: false
 language: cpp
 
-addons:
-  apt:
-    packages:
-      - cmake-data
-      - cmake
-      - libboost-all-dev
 matrix:
   include:
     - os: linux
@@ -15,8 +9,12 @@ matrix:
         apt:
           sources:
             - ubuntu-toolchain-r-test
+            - boost-latest
           packages:
             - g++-7
+            - cmake-data
+            - cmake
+            - libboost-all-dev
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 
@@ -24,9 +22,14 @@ matrix:
       addons:
         apt:
           sources:
+            - ubuntu-toolchain-r-test
             - llvm-toolchain-trusty-5.0
+            - boost-latest
           packages:
             - clang-5.0
+            - cmake-data
+            - cmake
+            - libboost-all-dev
       env:
         - MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
 
