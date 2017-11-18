@@ -39,24 +39,40 @@
 
 namespace daw {
 	namespace math {
+		template<typename Float>
+		struct int_for_float {
+			using type = intmax_t;
+		};
+
+		template<>
+		struct int_for_float<float> {
+			using type = int32_t;
+		};
+
+		template<typename Float>
+		using int_for_float_t = typename int_for_float<Float>::type;
+
 		template<typename T>
 		constexpr T const PI = T( 3.14159265358979323846264338327950288419716939937510582097494459230781640628620899 );
 
-		template<typename Result = intmax_t>
-		constexpr Result round( double d ) noexcept {
+		template<typename Float, typename Result = int_for_float_t<Float>>
+		constexpr Result round( Float d ) noexcept {
 			static_assert( daw::is_integral_v<Result>, "Result type must be integral" );
+			static_assert( daw::is_floating_point_v<Float>, "Argument must be a floating point type" );
 			return static_cast<Result>( d + 0.5 );
 		}
 
-		template<typename Result = intmax_t>
-		constexpr Result floor( double d ) noexcept {
+		template<typename Float, typename Result = int_for_float_t<Float>>
+		constexpr Result floor( Float d ) noexcept {
 			static_assert( daw::is_integral_v<Result>, "Result type must be integral" );
+			static_assert( daw::is_floating_point_v<Float>, "Argument must be a floating point type" );
 			return static_cast<Result>( d );
 		}
 
-		template<typename Result = intmax_t>
-		constexpr Result ceil( double d ) noexcept {
+		template<typename Float, typename Result = int_for_float_t<Float>>
+		constexpr Result ceil( Float d ) noexcept {
 			static_assert( daw::is_integral_v<Result>, "Result type must be integral" );
+			static_assert( daw::is_floating_point_v<Float>, "Argument must be a floating point type" );
 			return static_cast<Result>( d + 1.0 );
 		}
 
