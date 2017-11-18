@@ -1,38 +1,35 @@
+dist: trusty
 sudo: false
-
 language: cpp
-
-compiler:
-  - gcc
-  - clang
-install:
-  - export BOOST_BASE="~/libboost"
-  - if [ "${CXX}" = "g++" ]; then export CC="gcc-${GCC_VERSION}" CXX="g++-${GCC_VERSION}" BOOST_CXX="/usr/bin/g++-${GCC_VERSION}" BOOST_ROOT="${BOOST_BASE}/gcc" CXXFLAGS="" LINKFLAGS=""; fi
-  - if [ "${CXX}" = "clang++" ]; then export BOOST_ROOT="${BOOST_BASE}/clang" BOOST_CXX="clang++"  CXXFLAGS="-stdlib=libc++" LINKFLAGS="-stdlib=libc++"; fi
-  - /bin/bash "./travis_install_boost.sh" || { rm -rf "${BOOST_ROOT}" ; exit 1; }
-
-cache:
-  directories:
-    - ~/libboost
 
 addons:
   apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    - llvm-toolchain-precise
     packages:
+      - cmake-data
       - cmake
-      - clang
-      - libc++
-      - g++-5
-      - gcc-5
-      - libbz2-dev
-      - libssl-dev
-      - git
+matrix:
+  include:
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 
-script:
-  - test -d build || mkdir build
-  - cd build
-  - cmake ..
-  - make
-  - make test
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-trusty-5.0
+          packages:
+            - clang-5.0
+      env:
+        - MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
+
+script: cmake
+
+before_install:
+  - eval "${MATRIX_EVAL}"
