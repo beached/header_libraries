@@ -31,6 +31,7 @@
 #include <string>
 #include <vector>
 
+#include "daw_algorithm.h"
 #include "daw_container_algorithm.h"
 #include "daw_fixed_stack.h"
 #include "daw_fnv1a_hash.h"
@@ -76,7 +77,7 @@ namespace daw {
 
 		template<size_t N>
 		constexpr basic_static_string( basic_static_string<CharT, N> sv, size_type count )
-		  : m_data{sv.data( ), std::min( count, N )} {}
+		  : m_data{sv.data( ), daw::min( count, N )} {}
 
 		template<typename Allocator>
 		basic_static_string( std::basic_string<CharT, Traits, Allocator> const &str ) noexcept
@@ -334,7 +335,7 @@ namespace daw {
 			if( pos >= size( ) ) {
 				throw std::out_of_range{"Attempt to access basic_static_string past end"};
 			}
-			size_type rlen = std::min( count, size( ) - pos );
+			size_type rlen = daw::min( count, size( ) - pos );
 			daw::algorithm::copy_n( m_data.data( ) + pos, dest, rlen );
 			return rlen;
 		}
@@ -343,7 +344,7 @@ namespace daw {
 			if( pos > size( ) ) {
 				throw std::out_of_range{"Attempt to access basic_static_string past end"};
 			}
-			auto const rcount = static_cast<size_type_internal>( std::min( count, size( ) - pos ) );
+			auto const rcount = static_cast<size_type_internal>( daw::min( count, size( ) - pos ) );
 			return basic_static_string{&m_data[pos], rcount};
 		}
 

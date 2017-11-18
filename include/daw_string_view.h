@@ -31,6 +31,7 @@
 #include <string>
 #include <vector>
 
+#include "daw_algorithm.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_generic_hash.h"
 #include "daw_iterator.h"
@@ -215,7 +216,7 @@ namespace daw {
 		}
 
 		constexpr void remove_prefix( size_type n ) noexcept {
-			n = std::min( n, m_size );
+			n = daw::min( n, m_size );
 			m_first += n;
 			m_size -= n;
 		}
@@ -262,7 +263,7 @@ namespace daw {
 			if( pos >= m_size ) {
 				throw std::out_of_range{"Attempt to access basic_string_view past end"};
 			}
-			size_type rlen = ( std::min )( count, m_size - pos );
+			size_type rlen = daw::min( count, m_size - pos );
 			traits_type::copy( dest, m_first + pos, rlen );
 			return rlen;
 		}
@@ -271,7 +272,7 @@ namespace daw {
 			if( pos > size( ) ) {
 				throw std::out_of_range{"Attempt to access basic_string_view past end"};
 			}
-			auto const rcount = static_cast<size_type_internal>( std::min( count, m_size - pos ) );
+			auto const rcount = static_cast<size_type_internal>( daw::min( count, m_size - pos ) );
 			return basic_string_view{&m_first[pos], rcount};
 		}
 
@@ -348,7 +349,7 @@ namespace daw {
 			if( size( ) < v.size( ) ) {
 				return npos;
 			}
-			pos = std::min( pos, size( ) - v.size( ) );
+			pos = daw::min( pos, size( ) - v.size( ) );
 			if( v.empty( ) ) {
 				return pos;
 			}
@@ -938,7 +939,7 @@ namespace daw {
 		std::vector<daw::basic_string_view<CharT, Traits, InternalSizeType>> v;
 		auto last_pos = str.cbegin( );
 		while( !str.empty( ) ) {
-			auto sz = std::min( str.size( ), str.find_first_of_if( pred ) );
+			auto sz = daw::min( str.size( ), str.find_first_of_if( pred ) );
 			v.emplace_back( last_pos, sz );
 			if( sz == str.npos ) {
 				break;

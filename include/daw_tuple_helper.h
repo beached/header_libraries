@@ -27,6 +27,8 @@
 #include <tuple>
 #include <utility>
 
+#include "daw_algorithm.h"
+
 namespace daw {
 	namespace tuple {
 		namespace detail {
@@ -51,7 +53,7 @@ namespace daw {
 			struct min_t {
 				template<typename Result, typename A, typename B>
 				constexpr void operator( )( Result &result, A const &a, B const &b ) const {
-					using std::min;
+					using daw::min;
 					result = min( a, b );
 				}
 
@@ -64,7 +66,7 @@ namespace daw {
 			struct max_t {
 				template<typename Result, typename A, typename B>
 				constexpr void operator( )( Result &result, A const &a, B const &b ) const {
-					using std::max;
+					using daw::max;
 					result = max( a, b );
 				}
 

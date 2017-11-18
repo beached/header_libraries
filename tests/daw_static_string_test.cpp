@@ -45,7 +45,7 @@ namespace daw {
 		return result;
 	}
 
-	constexpr tmp_e tmp_e_from_str( daw::string_view str ) {
+	tmp_e tmp_e_from_str( daw::string_view str ) {
 		if( is_equal_nc( str, "a" ) ) {
 			return tmp_e::a;
 		}

@@ -28,6 +28,7 @@
 
 #include "boost_test.h"
 #include "daw_string.h"
+#include "daw_string_view.h"
 
 BOOST_AUTO_TEST_CASE( make_string_testing ) {
 	std::string a = "a b c d e f";

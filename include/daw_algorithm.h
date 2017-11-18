@@ -31,10 +31,25 @@
 
 #include "cpp_17.h"
 #include "daw_exception.h"
-#include "daw_string.h"
 #include "daw_traits.h"
 
 namespace daw {
+	template<typename T, typename U>
+	constexpr std::common_type_t<T, U> const &min( T const &lhs, U const &rhs ) noexcept {
+		if( lhs <= rhs ) {
+			return lhs;
+		}
+		return rhs;
+	}
+
+	template<typename T, typename U>
+	constexpr std::common_type_t<T, U> const &max( T const &lhs, U const &rhs ) noexcept {
+		if( lhs >= rhs ) {
+			return lhs;
+		}
+		return rhs;
+	}
+
 	namespace algorithm {
 		namespace impl {
 			template<typename Container>
@@ -105,7 +120,7 @@ namespace daw {
 
 		template<typename Iterator>
 		constexpr Iterator safe_next( Iterator it, Iterator last, size_t n ) noexcept {
-			return std::next( it, std::min( n, static_cast<size_t>( std::distance( it, last ) ) ) );
+			return std::next( it, daw::min( n, static_cast<size_t>( std::distance( it, last ) ) ) );
 		}
 
 		template<typename RandomIterator>
@@ -125,23 +140,21 @@ namespace daw {
 		constexpr auto const &min_item( Lhs const &lhs ) noexcept {
 			return lhs;
 		}
-		
-		template<typename Lhs, typename... Ts,
-		                        std::enable_if_t<( sizeof...( Ts ) > 0 ), std::nullptr_t> = nullptr>
-		constexpr auto const & min_item( Lhs const &lhs, Ts const &... ts ) noexcept {
-			auto const & rhs = min_item( ts... );
+
+		template<typename Lhs, typename... Ts, std::enable_if_t<( sizeof...( Ts ) > 0 ), std::nullptr_t> = nullptr>
+		constexpr auto const &min_item( Lhs const &lhs, Ts const &... ts ) noexcept {
+			auto const &rhs = min_item( ts... );
 			return lhs < rhs ? lhs : rhs;
 		}
 
 		template<typename Lhs>
-		constexpr auto const & max_item( Lhs const & lhs ) noexcept {
+		constexpr auto const &max_item( Lhs const &lhs ) noexcept {
 			return lhs;
 		}
-		
-		template<typename Lhs, typename... Ts,
-		                        std::enable_if_t<( sizeof...( Ts ) > 0 ), std::nullptr_t> = nullptr>
-		constexpr auto const & max_item( Lhs const &lhs, Ts const &... ts ) noexcept {
-			auto const & rhs = max_item( ts... );
+
+		template<typename Lhs, typename... Ts, std::enable_if_t<( sizeof...( Ts ) > 0 ), std::nullptr_t> = nullptr>
+		constexpr auto const &max_item( Lhs const &lhs, Ts const &... ts ) noexcept {
+			auto const &rhs = max_item( ts... );
 			return lhs > rhs ? lhs : rhs;
 		}
 		//////////////////////////////////////////////////////////////////////////
@@ -193,16 +206,15 @@ namespace daw {
 		IteratorType binary_search( const IteratorType first, const IteratorType last, const ValueType &value,
 		                            Comp less_than ) {
 			auto midpoint = []( const IteratorType &a, const IteratorType &b ) {
-				daw::exception::dbg_throw_on_false(
-				  a <= b, daw::string::string_join( __func__,
-				                                    ": Cannot find a midpoint unless the first parameter is <= the second" ) );
+				daw::exception::dbg_throw_on_false( a <= b,
+				                                    " Cannot find a midpoint unless the first parameter is <= the second" );
+
 				auto const mid = std::distance( a, b ) / 2;
 				auto result = a;
 				std::advance( result, mid );
 				return result;
 			};
-			daw::exception::dbg_throw_on_false(
-			  first < last, daw::string::string_join( __func__, ": First position must be less than second" ) );
+			daw::exception::dbg_throw_on_false( first < last, ": First position must be less than second" );
 			IteratorType it_first( first );
 			IteratorType it_last( last );
 
@@ -691,7 +703,6 @@ namespace daw {
 			}
 		}
 
-
 		template<typename InputIterator1, typename InputIterator2, typename InputIterator3>
 		constexpr bool equal( InputIterator1 first1, InputIterator2 last1,
 		                      InputIterator3 first2 ) noexcept( noexcept( *first1 == *first2 ) ) {
@@ -900,3 +911,4 @@ namespace daw {
 
 	} // namespace algorithm
 } // namespace daw
+

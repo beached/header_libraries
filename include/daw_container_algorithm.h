@@ -25,6 +25,7 @@
 #include <algorithm>
 #include <numeric>
 
+#include "daw_algorithm.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -303,7 +304,7 @@ namespace daw {
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
 		constexpr void copy_n( Container const &source, size_t count, OutputIterator destination ) {
 			auto src = std::cbegin( source );
-			count = std::min( count, daw::size( source ) );
+			count = daw::min( count, daw::size( source ) );
 			for( size_t n = 0; n < count; ++n ) {
 				*destination++ = *src++;
 			}
@@ -334,7 +335,7 @@ namespace daw {
 			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
 
 			auto src = std::cbegin( source );
-			count = std::min( count, daw::size( source ) );
+			count = daw::min( count, daw::size( source ) );
 			for( size_t n = 0; n < count; ++n ) {
 				if( pred( *src ) ) {
 					*destination++ = *src++;

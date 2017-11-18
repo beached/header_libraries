@@ -34,6 +34,7 @@
 #include <type_traits>
 #include <vector>
 
+#include "daw_algorithm.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -185,7 +186,7 @@ namespace daw {
 				return diff < ( std::numeric_limits<T>::epsilon( ) * std::numeric_limits<T>::min_exponent );
 			}
 			// use relative error
-			return diff / std::min( ( absA + absB ), std::numeric_limits<T>::max( ) ) < std::numeric_limits<T>::epsilon( );
+			return diff / daw::min( ( absA + absB ), std::numeric_limits<T>::max( ) ) < std::numeric_limits<T>::epsilon( );
 		}
 #ifdef __clang__
 #pragma clang diagnostic pop

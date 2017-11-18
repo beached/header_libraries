@@ -120,8 +120,8 @@ namespace daw {
 		explicit basic_shared_semaphore( Int count = 0, bool latched = true )
 		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( count )} {}
 
-		explicit basic_shared_semaphore( basic_semaphore<Mutex, ConditionVariable> &&semaphore )
-		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( std::move( semaphore ) )} {}
+		explicit basic_shared_semaphore( basic_semaphore<Mutex, ConditionVariable> &&sem )
+		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( std::move( sem ) )} {}
 
 		~basic_shared_semaphore( ) = default;
 		basic_shared_semaphore( basic_shared_semaphore const & ) = default;
@@ -183,7 +183,7 @@ namespace daw {
 	};
 
 	template<typename T>
-	auto make_waitable_value( shared_semaphore semaphore, T value ) {
-		return waitable_value<T>{std::move( semaphore ), std::move( value )};
+	auto make_waitable_value( shared_semaphore sem, T value ) {
+		return waitable_value<T>{std::move( sem ), std::move( value )};
 	}
 } // namespace daw

@@ -45,8 +45,8 @@ namespace daw {
 	public:
 		constexpr fixed_stack_t( ) noexcept : m_index{0}, m_first{0}, m_stack{} {}
 
-		constexpr fixed_stack_t( const_pointer ptr, size_type count ) noexcept: m_index{ std::min( count, N ) }, m_first{0}, m_stack{} {
-			daw::algorithm::copy_n( ptr, m_stack.begin( ), std::min( count, N ) );
+		constexpr fixed_stack_t( const_pointer ptr, size_type count ) noexcept: m_index{ daw::min( count, N ) }, m_first{0}, m_stack{} {
+			daw::algorithm::copy_n( ptr, m_stack.begin( ), daw::min( count, N ) );
 		}
 
 		constexpr bool empty( ) const noexcept {

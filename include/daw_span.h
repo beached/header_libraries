@@ -29,6 +29,7 @@
 #include <limits>
 #include <stdexcept>
 
+#include "daw_algorithm.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_iterator.h"
 #include "daw_reverse_iterator.h"
@@ -218,7 +219,7 @@ namespace daw {
 			if( pos >= m_size ) {
 				throw std::out_of_range{"Attempt to access span past end"};
 			}
-			size_type const rlen = ( std::min )( count, m_size - pos );
+			size_type const rlen = daw::min( count, m_size - pos );
 			auto src = m_first + pos;
 			for( size_t n = 0; n < rlen; ++n ) {
 				dest[n] = src[n];
@@ -235,7 +236,7 @@ namespace daw {
 			if( pos >= size( ) ) {
 				throw std::out_of_range{"Attempt to access span past end"};
 			}
-			auto const rcount = std::min( count, m_size - pos );
+			auto const rcount = daw::min( count, m_size - pos );
 			return span{m_first + pos, rcount};
 		}
 
@@ -281,7 +282,7 @@ namespace daw {
 		if( pos >= container.size( ) ) {
 			throw span_access_past_end_exception{};
 		}
-		auto const rcount = std::min( count, container.size( ) - pos );
+		auto const rcount = daw::min( count, container.size( ) - pos );
 		return span<value_t>{container.begin( ) + pos, rcount};
 	}
 } // namespace daw

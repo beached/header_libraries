@@ -22,9 +22,10 @@
 
 #pragma once
 
-#include "daw_range.h"
 #include <algorithm>
 #include <numeric>
+
+#include "daw_range.h"
 
 namespace daw {
 	namespace algorithm {
@@ -103,7 +104,7 @@ namespace daw {
 			  "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
 
 			return std::find_if( std::begin( container ), std::end( container ), pred );
-		} 
+		}
 
 		template<typename Container, typename UnaryPredicate,
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
@@ -192,7 +193,7 @@ namespace daw {
 			std::transform( std::cbegin( container ), std::cend( container ), first_out, unary_operator );
 		}
 
-		// max_element 
+		// max_element
 		template<typename Container, typename UnaryOperator,
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
 		decltype( auto ) max_element( Container &container ) noexcept(

@@ -26,7 +26,6 @@
 #include <string>
 
 #include "daw_string.h"
-#include "daw_string_view.h"
 
 namespace daw {
 	namespace exception {

@@ -34,7 +34,6 @@
 #include <utility>
 #include <vector>
 
-#include "daw_string_view.h"
 #include "daw_traits.h"
 
 #ifdef _MSC_VER
@@ -469,25 +468,6 @@ namespace daw {
 
 			}; // BasicString
 		}    // namespace impl
-
-		template<typename Value>
-		auto split( daw::string_view str, Value const &value ) {
-			std::vector<std::string> result;
-
-			auto last_pos = str.begin( );
-
-			auto pos = str.begin( );
-			for( ; pos != str.end( ); ++pos ) {
-				if( value == *pos ) {
-					result.push_back( std::string{last_pos, pos} );
-					last_pos = pos;
-				}
-			}
-			if( pos != last_pos ) {
-				result.push_back( std::string{last_pos, pos} );
-			}
-			return result;
-		}
 
 		template<typename StrArray, typename Char>
 		auto combine( StrArray const &strings, Char chr ) {

@@ -181,9 +181,9 @@ namespace daw {
 			if( pos >= m_size ) {
 				throw std::out_of_range{"Attempt to access array_view past end"};
 			}
-			size_type const rlen = std::min( count, m_size - pos );
+			size_type const rlen = daw::min( count, m_size - pos );
 			auto src = daw::algorithm::next( m_first, pos );
-			daw::algorithm::copy_n( src, dest, rlen ); 
+			daw::algorithm::copy_n( src, dest, rlen );
 			return rlen;
 		}
 
@@ -192,7 +192,7 @@ namespace daw {
 			if( pos >= size( ) ) {
 				throw std::out_of_range{"Attempt to access array_view past end"};
 			}
-			auto const rcount = std::min( count, m_size - pos );
+			auto const rcount = daw::min( count, m_size - pos );
 			return array_view{m_first + pos, rcount};
 		}
 
@@ -238,7 +238,7 @@ namespace daw {
 		if( pos >= container.size( ) ) {
 			throw array_view_access_past_end_exception{};
 		}
-		auto const rcount = std::min( count, container.size( ) - pos );
+		auto const rcount = daw::min( count, container.size( ) - pos );
 		return array_view<value_t>{container.begin( ) + pos, rcount};
 	}
 } // namespace daw
