@@ -34,8 +34,7 @@ matrix:
         - MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
 
 script:
-	- eval "${MATRIX_EVAL}" && echo "CC=${CC} CXX=${CXX}" && mkdir build && cd build && cmake .. && make check
+  - eval "${MATRIX_EVAL}" && echo "CC=${CC} CXX=${CXX}" && mkdir build && cd build && cmake .. && make check
 
 before_install:
   - eval "${MATRIX_EVAL}"
-
