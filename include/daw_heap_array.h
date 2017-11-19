@@ -41,7 +41,7 @@ namespace daw {
 		size_t m_size;
 
 	public:
-		heap_array( ) noexcept : m_begin{nullptr}, m_end{nullptr}, m_size{0} {}
+		constexpr heap_array( ) noexcept : m_begin{nullptr}, m_end{nullptr}, m_size{0} {}
 
 		heap_array( size_t Size ) : m_begin{new value_type[Size + 1]}, m_end{m_begin + Size}, m_size{Size} {}
 
@@ -51,8 +51,8 @@ namespace daw {
 			std::fill( m_begin, m_end, def_value );
 		}
 
-		heap_array( heap_array &&other ) noexcept = default;
-		heap_array &operator=( heap_array &&rhs ) noexcept = default;
+		constexpr heap_array( heap_array &&other ) noexcept = default;
+		constexpr heap_array &operator=( heap_array && ) noexcept = default;
 
 		heap_array( heap_array const &other )
 		  : m_begin{other.m_size == 0 ? nullptr : new value_type[other.m_size]}
@@ -64,17 +64,16 @@ namespace daw {
 
 		heap_array &operator=( heap_array const &rhs ) {
 			if( this != &rhs ) {
-				heap_array tmp{rhs};
-				tmp.swap( *this );
+				clear( );
+				if( rhs.m_begin == nullptr ) {
+					return *this;
+				}
+				m_size = rhs.m_size;
+				m_begin = new value_type[rhs.m_size];
+				m_end = m_begin + m_size;
+				std::copy_n( rhs.m_begin, m_size, m_begin );
 			}
 			return *this;
-		}
-
-		void swap( heap_array &rhs ) noexcept {
-			using std::swap;
-			swap( m_begin, rhs.m_begin );
-			swap( m_end, rhs.m_end );
-			swap( m_size, rhs.m_size );
 		}
 
 		heap_array( std::initializer_list<value_type> values ) : heap_array( values.size( ) ) {
@@ -95,13 +94,17 @@ namespace daw {
 			std::copy_n( arry, Size, m_begin );
 		}
 
-		~heap_array( ) {
+		void clear( ) noexcept {
 			if( nullptr != m_begin ) {
 				auto tmp = std::exchange( m_begin, nullptr );
 				delete[] tmp;
 				m_end = nullptr;
 				m_size = 0;
 			}
+		}
+
+		~heap_array( ) {
+			clear( );
 		}
 
 		explicit operator bool( ) const noexcept {
