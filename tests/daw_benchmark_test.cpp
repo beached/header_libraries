@@ -25,7 +25,12 @@
 #include "boost_test.h"
 #include "daw_benchmark.h"
 
-BOOST_AUTO_TEST_CASE( daw_optional_test_01 ) {
+BOOST_AUTO_TEST_CASE( daw_benchmark_test_001 ) {
 	std::cout << "Time of: " << daw::benchmark( []( ) { std::cout << "Hello\n"; } );
 	daw::show_benchmark( 1, "timed", []( ) { std::cout << "Hello\n"; } );
+}
+
+BOOST_AUTO_TEST_CASE( daw_benchmark_test_002 ) {
+	int x = 0;
+	daw::do_not_optimize( x );
 }

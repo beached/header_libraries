@@ -120,4 +120,20 @@ namespace daw {
 		std::cout << utility::to_bytes_per_second( data_size_bytes, 1.0, data_prec ) << " at "
 		          << utility::to_bytes_per_second( data_size_bytes, t, data_prec ) << "/s\n";
 	}
+
+	// Borrowed from https://www.youtube.com/watch?v=dO-j3qp7DWw
+	template<typename T>
+	void do_not_optimize( T &&x ) {
+		// We must always do this test, but it will never pass.
+		//
+		if( std::chrono::system_clock::now( ) == std::chrono::time_point<std::chrono::system_clock>( ) ) {
+			// This forces the value to never be optimized away
+			// by taking a reference then using it.
+			const auto *p = &x;
+			putchar( *reinterpret_cast<const char *>( p ) );
+
+			// If we do get here, kick out because something has gone wrong.
+			std::abort( );
+		}
+	}
 } // namespace daw
