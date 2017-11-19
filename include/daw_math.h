@@ -55,24 +55,45 @@ namespace daw {
 		template<typename T>
 		constexpr T const PI = T( 3.14159265358979323846264338327950288419716939937510582097494459230781640628620899 );
 
-		template<typename Float, typename Result = int_for_float_t<Float>>
-		constexpr Result round( Float d ) noexcept {
+		template<typename Result = int_for_float_t<float>>
+		constexpr Result round( float d ) noexcept {
 			static_assert( daw::is_integral_v<Result>, "Result type must be integral" );
-			static_assert( daw::is_floating_point_v<Float>, "Argument must be a floating point type" );
+			static_assert( daw::is_floating_point_v<float>, "Argument must be a floating point type" );
 			return static_cast<Result>( d + 0.5 );
 		}
 
-		template<typename Float, typename Result = int_for_float_t<Float>>
-		constexpr Result floor( Float d ) noexcept {
+		template<typename Result = int_for_float_t<double>>
+		constexpr Result round( double d ) noexcept {
 			static_assert( daw::is_integral_v<Result>, "Result type must be integral" );
-			static_assert( daw::is_floating_point_v<Float>, "Argument must be a floating point type" );
+			static_assert( daw::is_floating_point_v<double>, "Argument must be a floating point type" );
+			return static_cast<Result>( d + 0.5 );
+		}
+
+		template<typename Result = int_for_float_t<float>>
+		constexpr Result floor( float d ) noexcept {
+			static_assert( daw::is_integral_v<Result>, "Result type must be integral" );
+			static_assert( daw::is_floating_point_v<float>, "Argument must be a floating point type" );
 			return static_cast<Result>( d );
 		}
 
-		template<typename Float, typename Result = int_for_float_t<Float>>
-		constexpr Result ceil( Float d ) noexcept {
+		template<typename Result = int_for_float_t<double>>
+		constexpr Result floor( double d ) noexcept {
 			static_assert( daw::is_integral_v<Result>, "Result type must be integral" );
-			static_assert( daw::is_floating_point_v<Float>, "Argument must be a floating point type" );
+			static_assert( daw::is_floating_point_v<double>, "Argument must be a doubleing point type" );
+			return static_cast<Result>( d );
+		}
+
+		template<typename Result = int_for_float_t<float>>
+		constexpr Result ceil( float d ) noexcept {
+			static_assert( daw::is_integral_v<Result>, "Result type must be integral" );
+			static_assert( daw::is_floating_point_v<float>, "Argument must be a floating point type" );
+			return static_cast<Result>( d + 1.0 );
+		}
+
+		template<typename Result = int_for_float_t<double>>
+		constexpr Result ceil( double d ) noexcept {
+			static_assert( daw::is_integral_v<Result>, "Result type must be integral" );
+			static_assert( daw::is_floating_point_v<double>, "Argument must be a doubleing point type" );
 			return static_cast<Result>( d + 1.0 );
 		}
 
