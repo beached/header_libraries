@@ -1,6 +1,7 @@
-#Header Libraries
-======
+# Header Libraries
+## Description
 A set of header only algorithms, data structures, and utilities I use in many of my other projects.  Most should have tests
+
 ## Building
 to build
 ``` bash
