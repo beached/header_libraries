@@ -1,0 +1,79 @@
+os: linux
+dist: trusty
+language: cpp
+env:
+- CXX_COMPILER=g++-7       BUILD_TYPE=Debug
+- CXX_COMPILER=g++-7       BUILD_TYPE=Release
+- CXX_COMPILER=clang++-5.0 BUILD_TYPE=Debug
+- CXX_COMPILER=clang++-5.0 BUILD_TYPE=Release
+
+before_install:
+- |
+  sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  sudo add-apt-repository -y ppa:anthony-justsoftwaresolutions/libcxx
+  sudo add-apt-repository "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-5.0 main"
+  wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
+
+- |
+  sudo apt-get update -qq
+
+install:
+
+################################################################################
+# Install the latest gcc and clang compilers plus code coverage generator
+# Boost.Test needs to be built with gcc-7, but Ubuntu 14.04 provides 4.8
+# ./bootstrap.sh needs to find gcc-7 and clang and ./b2 needs to find g++-7 and clang++
+# gcc-7 needs binutils-2.26 for LTO builds, but Ubuntu 14.04 provides 2.24
+################################################################################
+- |
+  sudo apt-get install g++-7 binutils-2.26 lcov
+  sudo apt-get install clang-5.0 lldb-5.0 lld-5.0
+  sudo apt-get install libc++-helpers libc++-dev libc++1 libc++abi-dev libc++abi1
+
+- |
+  sudo update-alternatives --install /usr/bin/gcc     gcc     /usr/bin/gcc-7       90
+  sudo update-alternatives --install /usr/bin/g++     g++     /usr/bin/g++-7       90
+  sudo update-alternatives --install /usr/bin/clang   clang   /usr/bin/clang-5.0   90
+  sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-5.0 90
+  export PATH=/usr/lib/binutils-2.26/bin:${PATH}
+
+################################################################################
+# All manual dependencies are installed in ${TRAVIS_BUILD_DIR}/../deps
+################################################################################
+- |
+  DEPS_DIR="${TRAVIS_BUILD_DIR}/../deps"
+  mkdir -p ${DEPS_DIR}
+
+################################################################################
+# Install the latest Boost and build Boost.Test (compiled with g++-7)
+################################################################################
+- |
+  cd ${DEPS_DIR}
+  BOOST_URL="https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2"
+  mkdir -p boost-1.65.1 && travis_retry wget --quiet -O - ${BOOST_URL} | tar --strip-components=1 -xj -C boost-1.65.1
+  cd boost-1.65.1
+  ./bootstrap.sh --with-toolset=gcc   --with-libraries=test && sudo ./b2 -d0 --layout=versioned install toolset=gcc
+  ./bootstrap.sh --with-toolset=clang --with-libraries=test && sudo ./b2 -d0 --layout=versioned install toolset=clang cxxflag="-stdlib=libc++" linkflag="-stdlib=libc++ -lc++abi"
+  sudo ldconfig /usr/local/lib
+
+################################################################################
+# Install the latest CMake
+################################################################################
+- |
+  cd ${DEPS_DIR}
+  CMAKE_URL="http://www.cmake.org/files/v3.9/cmake-3.9.2-Linux-x86_64.tar.gz"
+  mkdir -p cmake-3.9.2 && travis_retry wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake-3.9.2
+  export PATH=${DEPS_DIR}/cmake-3.9.2/bin:${PATH}
+
+before_script:
+- |
+  cd ${TRAVIS_BUILD_DIR}
+  mkdir build && cd build
+  cmake .. -DCMAKE_CXX_COMPILER=${CXX_COMPILER} -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
+
+script:
+- |
+  make check
+
+notifications:
+  email: false
