@@ -38,69 +38,6 @@ BOOST_AUTO_TEST_CASE( daw_transform_many ) {
 	BOOST_REQUIRE_MESSAGE( out.size( ) == in1.size( ), "1. Incorrect size on output" );
 }
 
-BOOST_AUTO_TEST_CASE( daw_for_each_subset_001 ) {
-	std::array<int, 5> const blah = {0, 1, 2, 3, 4};
-	daw::algorithm::for_each_subset( blah, 1, 4,
-	                                 []( auto &container, size_t pos ) { std::cout << container[pos] << '\n'; } );
-}
-
-namespace daw_for_each_subset_002_ns {
-	struct summer_t {
-		int *sum;
-		constexpr summer_t( int *ptr ) noexcept : sum{ptr} {}
-
-		template<typename Container>
-		constexpr void operator( )( Container &container, size_t pos ) const noexcept {
-			*sum += container[pos];
-		}
-	};
-
-	template<size_t N>
-	constexpr int find_sum( int const( &ptr )[N] ) noexcept {
-		int sum = 0;
-		daw::algorithm::for_each_subset( ptr, 1, N - 1, summer_t{&sum} );
-		return sum;
-	}
-
-	BOOST_AUTO_TEST_CASE( daw_for_each_subset_002 ) {
-		constexpr int blah[] = {0, 1, 2, 3, 4};
-		constexpr auto sum = find_sum( blah );
-		BOOST_REQUIRE_EQUAL( sum, 6 );
-	}
-}
-
-BOOST_AUTO_TEST_CASE( daw_for_each_pos_001 ) {
-	std::array<int, 5> const blah = {0, 1, 2, 3, 4};
-	daw::algorithm::for_each_with_pos(
-	  blah, []( auto const &value, size_t pos ) { std::cout << pos << ": " << value << '\n'; } );
-}
-
-namespace daw_for_each_with_pos_002_ns {
-	struct summer_t {
-		int *sum;
-		constexpr summer_t( int *ptr ) noexcept : sum{ptr} {}
-
-		template<typename Value>
-		constexpr void operator( )( Value const &value, size_t pos ) const noexcept {
-			*sum += value * static_cast<Value>( pos );
-		}
-	};
-
-	template<size_t N>
-	constexpr int find_sum( int const( &ptr )[N] ) noexcept {
-		int sum = 0;
-		daw::algorithm::for_each_with_pos( ptr, summer_t{&sum} );
-		return sum;
-	}
-
-	BOOST_AUTO_TEST_CASE( daw_for_each_subset_002 ) {
-		constexpr int blah[] = {0, 1, 2, 3, 4};
-		constexpr auto sum = find_sum( blah );
-		BOOST_REQUIRE_EQUAL( sum, 30 );
-	}
-
-}
-
 constexpr bool quick_sort_test( ) noexcept {
 	int blah[6] = {23, 5, 2, -1, 100, -1000};
 	daw::algorithm::quick_sort( blah, blah + 6 );

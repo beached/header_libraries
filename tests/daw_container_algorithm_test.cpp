@@ -40,8 +40,8 @@ BOOST_AUTO_TEST_CASE( container_algorithm_accumulate ) {
 }
 
 BOOST_AUTO_TEST_CASE( container_algorithm_transform ) {
-	std::vector<int> test_vec{ boost::counting_iterator<int>( 1 ), boost::counting_iterator<int>( 100 ) };
-	std::vector<int> result{ };
+	std::vector<int> test_vec{boost::counting_iterator<int>( 1 ), boost::counting_iterator<int>( 100 )};
+	std::vector<int> result{};
 	result.resize( test_vec.size( ) );
 
 	daw::container::transform( test_vec, std::back_inserter( result ), []( int const &val ) { return 2 * val; } );
@@ -87,3 +87,53 @@ BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_copy_n_001 ) {
 	daw::container::copy_n( a1, 100, a2.begin( ) );
 	BOOST_REQUIRE( std::equal( std::cbegin( a1 ), std::cend( a1 ), std::cbegin( a2 ), std::cend( a2 ) ) );
 }
+
+BOOST_AUTO_TEST_CASE( daw_for_each_pos_001 ) {
+	std::array<int, 5> const blah = {0, 1, 2, 3, 4};
+	daw::container::for_each_with_pos(
+	  blah, []( auto const &value, size_t pos ) { std::cout << pos << ": " << value << '\n'; } );
+}
+
+namespace daw_for_each_with_pos_002_ns {
+	struct summer_t {
+		int *sum;
+		constexpr summer_t( int *ptr ) noexcept : sum{ptr} {}
+
+		template<typename Value>
+		constexpr void operator( )( Value const &value, size_t pos ) const noexcept {
+			*sum += value * static_cast<Value>( pos );
+		}
+	};
+} // namespace daw_for_each_with_pos_002_ns
+
+BOOST_AUTO_TEST_CASE( daw_for_each_subset_001 ) {
+	std::array<int, 5> const blah = {0, 1, 2, 3, 4};
+	daw::container::for_each_subset( blah, 1, 4,
+	                                 []( auto &container, size_t pos ) { std::cout << container[pos] << '\n'; } );
+}
+
+namespace daw_for_each_subset_002_ns {
+	struct summer_t {
+		int *sum;
+		constexpr summer_t( int *ptr ) noexcept : sum{ptr} {}
+
+		template<typename Container>
+		constexpr void operator( )( Container &container, size_t pos ) const noexcept {
+			*sum += container[pos];
+		}
+	};
+
+	template<size_t N>
+	constexpr int find_sum( int const ( &ptr )[N] ) noexcept {
+		int sum = 0;
+		daw::container::for_each_subset( ptr, 1, N - 1, summer_t{&sum} );
+		return sum;
+	}
+
+	BOOST_AUTO_TEST_CASE( daw_for_each_subset_002 ) {
+		constexpr int blah[] = {0, 1, 2, 3, 4};
+		constexpr auto sum = find_sum( blah );
+		BOOST_REQUIRE_EQUAL( sum, 6 );
+	}
+}
+

@@ -30,6 +30,28 @@
 
 namespace daw {
 	namespace container {
+		namespace impl {
+			template<typename Container>
+			using has_size_method = decltype( std::declval<Container>( ).size( ) );
+		}
+
+		template<typename T, size_t N>
+		constexpr size_t container_size( T const ( & )[N] ) noexcept {
+			return N;
+		}
+
+		template<typename Container,
+		         std::enable_if_t<daw::is_detected_v<impl::has_size_method, Container>, std::nullptr_t> = nullptr>
+		constexpr size_t container_size( Container const &c ) noexcept {
+			return static_cast<size_t>( c.size( ) );
+		}
+
+		template<typename Container, typename UnaryPredicate>
+		auto find_if( Container &container, UnaryPredicate predicate )
+		  -> decltype( std::find_if( begin( container ), end( container ), predicate ) ) {
+			return std::find_if( std::begin( container ), std::end( container ), predicate );
+		}
+
 		template<typename Container,
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
 		void
@@ -343,5 +365,49 @@ namespace daw {
 			}
 		}
 
+		//////////////////////////////////////////////////////////////////////////
+		/// Summary: Run func( container, position ) on each element
+		/// in interval [first_inclusive, last_exclusive)
+		///
+		template<typename Container, typename Function>
+		constexpr void for_each_with_pos( Container &container, size_t const first_inclusive, size_t last_exclusive,
+		                                  Function func ) noexcept( noexcept( func( *std::begin( container ),
+		                                                                            std::declval<size_t>( ) ) ) ) {
+
+			using value_t = std::decay_t<typename std::iterator_traits<decltype( std::begin( container ) )>::value_type>;
+			static_assert( daw::is_callable_v<Function, value_t, size_t>,
+			               "Supplied function does not satisfy requirements of taking arguments of type (value_t, size_t)" );
+
+			auto it = daw::algorithm::begin_at( container, first_inclusive );
+			for( size_t row = first_inclusive; row < last_exclusive; ++row ) {
+				func( *it++, row );
+			}
+		}
+
+		template<typename Container, typename Function>
+		constexpr void for_each_with_pos( Container &container,
+		                                  Function func ) noexcept( noexcept( func( *std::begin( container ),
+		                                                                            std::declval<size_t>( ) ) ) ) {
+			using value_t = std::decay_t<typename std::iterator_traits<decltype( std::begin( container ) )>::value_type>;
+			static_assert( daw::is_callable_v<Function, value_t, size_t>,
+			               "Supplied function does not satisfy requirements of taking arguments of type (value_t, size_t)" );
+			for_each_with_pos( container, 0, container_size( container ), func );
+		}
+
+		//////////////////////////////////////////////////////////////////////////
+		/// Summary: Run func( container, position ) on each element
+		/// in interval [first_inclusive, last_exclusive)
+		///
+		template<typename Container, typename Function>
+		constexpr void for_each_subset( Container &container, size_t const first_inclusive, size_t last_exclusive,
+		                                Function func ) noexcept( noexcept( func( container, std::declval<size_t>( ) ) ) ) {
+			static_assert(
+			  daw::is_callable_v<Function, Container, size_t>,
+			  "Supplied function does not satisfy requirements of taking arguments of type (Container, size_t)" );
+
+			for( size_t row = first_inclusive; row < last_exclusive; ++row ) {
+				func( container, row );
+			}
+		}
 	} // namespace container
 } // namespace daw
