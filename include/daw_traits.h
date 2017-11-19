@@ -603,10 +603,23 @@ namespace daw {
 	             is_copy_assignable_v<T>, is_move_assignable_v<T>, is_equality_comparable_v<T>>;
 
 	struct nothing {};
-	
+
 	template<typename To, typename... From>
 	constexpr bool are_convertible_to_v = all_true_v<is_convertible_v<From, To>...>;
 
 	template<size_t N, typename... Args>
 	using type_n_t = std::tuple_element_t<N, std::tuple<Args...>>;
+
+	template<bool Condition, typename IfTrue, typename IfFalse>
+	struct type_if_else {
+		using type = IfFalse;
+	};
+
+	template<typename IfTrue, typename IfFalse>
+	struct type_if_else<true, IfTrue, IfFalse> {
+		using type = IfTrue;
+	};
+
+	template<bool Condition, typename IfTrue, typename IfFalse>
+	using if_else_t = typename type_if_else<Condition, IfTrue, IfFalse>::type;
 } // namespace daw

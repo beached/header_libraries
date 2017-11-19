@@ -571,3 +571,13 @@ BOOST_AUTO_TEST_CASE( type_n_t_test_001 ) {
 	BOOST_REQUIRE( tuple_n_t_test );
 }
 
+BOOST_AUTO_TEST_CASE( if_else_t_001 ) {
+	constexpr bool tst = daw::is_same_v<int, daw::if_else_t<true, int, std::string>>;
+	BOOST_REQUIRE( tst );
+}
+
+BOOST_AUTO_TEST_CASE( if_else_t_002 ) {
+	constexpr bool tst = daw::is_same_v<std::string, daw::if_else_t<false, int, std::string>>;
+	BOOST_REQUIRE( tst );
+}
+
