@@ -55,8 +55,8 @@ install:
   BOOST_URL="https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2"
   mkdir -p boost-1.65.1 && travis_retry wget --quiet -O - ${BOOST_URL} | tar --strip-components=1 -xj -C boost-1.65.1
   cd boost-1.65.1
-  ./bootstrap.sh --with-toolset=gcc   --with-libraries=container,date_time,filesystem,iostreams,locale,log,math,regex,signals,system,thread,test && sudo ./b2 -d0 --layout=versioned install toolset=gcc
-  ./bootstrap.sh --with-toolset=clang --with-libraries=container,date_time,filesystem,iostreams,locale,log,math,regex,signals,system,thread,test && sudo ./b2 -d0 --layout=versioned install toolset=clang cxxflag="-stdlib=libc++" linkflag="-stdlib=libc++ -lc++abi"
+  ./bootstrap.sh --with-toolset=gcc   --with-libraries=container,date_time,filesystem,iostreams,locale,log,math,regex,signals,system,thread,test && sudo ./b2 --layout=versioned install toolset=gcc
+  ./bootstrap.sh --with-toolset=clang --with-libraries=container,date_time,filesystem,iostreams,locale,log,math,regex,signals,system,thread,test && sudo ./b2 --layout=versioned install toolset=clang cxxflag="-stdlib=libc++" linkflag="-stdlib=libc++ -lc++abi"
   sudo ldconfig /usr/local/lib
 
 ################################################################################
