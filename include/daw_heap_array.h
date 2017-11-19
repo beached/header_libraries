@@ -51,8 +51,17 @@ namespace daw {
 			std::fill( m_begin, m_end, def_value );
 		}
 
-		constexpr heap_array( heap_array &&other ) noexcept = default;
-		constexpr heap_array &operator=( heap_array && ) noexcept = default;
+		constexpr heap_array( heap_array &&other ) noexcept
+		  : m_begin{std::exchange( other.m_begin, nullptr )}
+		  , m_end{std::exchange( other.m_begin, nullptr )}
+		  , m_size{std::exchange( other.m_size, 0 )} {}
+
+		constexpr heap_array &operator=( heap_array &&rhs ) noexcept {
+			m_begin = std::exchange( rhs.m_begin, nullptr );
+			m_end = std::exchange( rhs.m_end, nullptr );
+			m_size = std::exchange( rhs.m_size, 0 );
+			return *this;
+		}
 
 		heap_array( heap_array const &other )
 		  : m_begin{other.m_size == 0 ? nullptr : new value_type[other.m_size]}
