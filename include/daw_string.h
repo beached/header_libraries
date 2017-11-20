@@ -421,6 +421,7 @@ namespace daw {
 				using const_pointer = value_type const *;
 				using iterator = typename values_type::iterator;
 				using const_iterator = typename values_type::const_iterator;
+
 				value_type m_string;
 
 				template<typename... Args>
@@ -466,6 +467,9 @@ namespace daw {
 					return *this;
 				}
 
+				auto to_string( ) const {
+					return m_value;
+				}
 			}; // BasicString
 		}    // namespace impl
 
@@ -539,3 +543,10 @@ namespace daw {
 	using WString = ::daw::string::impl::BasicString<wchar_t>;
 
 } // namespace daw
+
+template<typename CharT>
+std::ostream & operator<<( std::ostream & os, daw::string::impl::BasicString<CharT> const & str ) {
+
+	return os;
+}
+
