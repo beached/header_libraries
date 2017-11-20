@@ -365,8 +365,9 @@ namespace daw {
 
 				value_type m_string;
 
-				template<typename... Args, std::enable_if_t<daw::is_detected_v<can_construct_string, Args...>, std::nullptr_t> = nullptr>
-				BasicString( Args &&... args ) : m_string{ std::forward<Args>( args )...} {}
+				template<typename... Args,
+				         std::enable_if_t<daw::is_detected_v<can_construct_string, Args...>, std::nullptr_t> = nullptr>
+				BasicString( Args &&... args ) : m_string( std::forward<Args>( args )... ) {}
 
 				BasicString( BasicString const & ) = default;
 
