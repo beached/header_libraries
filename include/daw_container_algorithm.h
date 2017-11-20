@@ -46,12 +46,6 @@ namespace daw {
 			return static_cast<size_t>( c.size( ) );
 		}
 
-		template<typename Container, typename UnaryPredicate>
-		auto find_if( Container &container, UnaryPredicate predicate )
-		  -> decltype( std::find_if( begin( container ), end( container ), predicate ) ) {
-			return std::find_if( std::begin( container ), std::end( container ), predicate );
-		}
-
 		template<typename Container,
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
 		void
