@@ -467,8 +467,8 @@ namespace daw {
 					return *this;
 				}
 
-				auto to_string( ) const {
-					return m_value;
+				auto const & to_string( ) const {
+					return m_string;
 				}
 			}; // BasicString
 		}    // namespace impl
@@ -546,7 +546,7 @@ namespace daw {
 
 template<typename CharT>
 std::ostream & operator<<( std::ostream & os, daw::string::impl::BasicString<CharT> const & str ) {
-
+	os << str.to_string( );
 	return os;
 }
 
