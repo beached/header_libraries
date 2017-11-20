@@ -325,7 +325,7 @@ namespace daw {
 				inline auto operator( )( wchar_t const *ptr ) const noexcept {
 					return wcslen( ptr );
 				}
-				inline auto str_size( char const *ptr ) const noexcept {
+				inline auto operator( )( char const *ptr ) const noexcept {
 					return strlen( ptr );
 				}
 			} str_size;
