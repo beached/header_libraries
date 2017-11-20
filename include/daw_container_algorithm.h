@@ -125,18 +125,6 @@ namespace daw {
 			return std::find_if( std::begin( container ), std::end( container ), pred );
 		}
 
-		template<typename Container, typename UnaryPredicate,
-		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
-		decltype( auto ) find_if( Container const &container, UnaryPredicate pred ) noexcept(
-		  noexcept( std::find_if( std::begin( container ), std::end( container ), pred ) ) ) {
-
-			static_assert( daw::is_unary_predicate_v<UnaryPredicate, decltype( *std::begin( container ) )>,
-			               "Compare does not satisfy the Unary Predicate concept.  See "
-			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
-
-			return std::find_if( std::begin( container ), std::end( container ), pred );
-		}
-
 		template<typename Container, typename Value,
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
 		decltype( auto ) erase_remove( Container &container, Value const &value ) noexcept( noexcept( container.erase(
