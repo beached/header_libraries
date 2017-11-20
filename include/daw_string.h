@@ -351,7 +351,7 @@ namespace daw {
 			template<typename... Args>
 			using can_construct_string = decltype( std::string( std::declval<Args>( )... ) );
 
-			template<typename CharT = char, typename Traits = std::char_traits<CharT>,
+			template<typename CharT, typename Traits = std::char_traits<CharT>,
 			         typename Allocator = std::allocator<CharT>>
 			struct BasicString {
 				using values_type = std::basic_string<CharT, Traits, Allocator>;
@@ -363,7 +363,7 @@ namespace daw {
 				using iterator = typename values_type::iterator;
 				using const_iterator = typename values_type::const_iterator;
 
-				value_type m_string;
+				values_type m_string;
 
 				template<typename... Args,
 				         std::enable_if_t<daw::is_detected_v<can_construct_string, Args...>, std::nullptr_t> = nullptr>
