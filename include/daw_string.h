@@ -322,10 +322,10 @@ namespace daw {
 		void search_replace( std::basic_string<CharT, traits, Alloc> &in_str, CharT const *search_for,
 		                     CharT const *replace_with ) {
 			struct {
-				inline auto operator( )( wchar_t const *str ) const {
+				inline auto operator( )( wchar_t const *str ) const noexcept {
 					return wcslen( str );
 				}
-				inline auto str_size( char const *str ) const {
+				inline auto str_size( char const *str ) const noexcept {
 					return strlen( str );
 				}
 			} str_size;
