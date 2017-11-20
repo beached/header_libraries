@@ -348,6 +348,9 @@ namespace daw {
 		}
 
 		namespace impl {
+			template<typename... Args>
+			using can_construct_string = decltype( std::string( std::declval<Args>( )... ) );
+
 			template<typename CharT = char, typename Traits = std::char_traits<CharT>,
 			         typename Allocator = std::allocator<CharT>>
 			struct BasicString {
@@ -362,8 +365,8 @@ namespace daw {
 
 				value_type m_string;
 
-				template<typename... Args>
-				BasicString( Args &&... args ) : m_string{std::forward<Args>( args )...} {}
+				template<typename... Args, std::enable_if_t<daw::is_detected_v<can_construct_string, Args...>, std::nullptr_t> = nullptr>
+				BasicString( Args &&... args ) : m_string{ std::forward<Args>( args )...} {}
 
 				BasicString( BasicString const & ) = default;
 
@@ -383,7 +386,7 @@ namespace daw {
 				}
 
 				BasicString &search_replace( CharT const *search_for, CharT const *replace_with ) {
-					daw::string::search_replace( m_string, search_for, replace_with );
+					search_replace( m_string, search_for, replace_with );
 					return *this;
 				}
 
