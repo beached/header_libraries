@@ -25,6 +25,7 @@
 #include <algorithm>
 #include <functional>
 #include <iterator>
+#include <iostream>
 #include <stdexcept>
 #include <type_traits>
 #include <vector>

@@ -29,6 +29,7 @@
 #include <cmath>
 #include <functional>
 #include <initializer_list>
+#include <iostream>
 #include <limits>
 #include <memory>
 #include <random>
@@ -289,11 +290,17 @@ namespace daw {
 	}
 
 	constexpr char AsciiUpper( char chr ) noexcept {
-		return chr & ~static_cast<char>( 32 );
+		if( 'a' <= chr && chr <= 'z' ) {
+			return chr & ~static_cast<char>( 32 );
+		}
+		return chr;
 	}
 
 	constexpr char AsciiLower( char chr ) noexcept {
-		return chr | static_cast<char>( 32 );
+		if( 'A' <= chr && chr <= 'Z' ) {
+			return chr | static_cast<char>( 32 );
+		}
+		return chr;
 	}
 
 	template<typename CharType, typename Traits, typename Allocator>

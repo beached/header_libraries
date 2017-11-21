@@ -23,6 +23,7 @@
 #pragma once
 
 #include <boost/endian/conversion.hpp>
+#include <iostream>
 #include <cstdint>
 
 #include "daw_bit.h"

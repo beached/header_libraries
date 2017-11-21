@@ -20,7 +20,6 @@ else( )
 	endif( )
 endif( )
 
-
 set( HEADER_FOLDER "include" )
 set( TEST_FOLDER "tests" )
 
