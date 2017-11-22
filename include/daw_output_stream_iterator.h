@@ -22,56 +22,13 @@
 
 #pragma once
 
+#include "daw_function_iterator.h"
+
 namespace daw {
-	///
-	///	An output iterator that calls supplied function when operator= is called
-	/// This is like std::back_intsert_iterator
-	///
-	template<typename Function>
-	struct function_iterator {
-		using iterator_category = std::output_iterator_tag;
-		using value_type = void;
-		using difference_type = void;
-		using pointer = void;
-		using reference = void;
-
-	protected:
-		Function m_function;
-
-	public:
-		function_iterator( Function function ) : m_function{std::move( function )} {}
-
-		template<typename T>
-		function_iterator &operator=( T &&val ) {
-			m_function( std::forward<T>( val ) );
-			return *this;
-		}
-
-		template<typename T>
-		function_iterator &operator=( T const &val ) {
-			m_function( val );
-			return *this;
-		}
-
-		function_iterator &operator*( ) {
-			return *this;
-		}
-
-		function_iterator &operator++( ) {
-			return *this;
-		}
-
-		function_iterator &operator++( int ) {
-			return *this;
-		}
-	};
-
-	///
-	/// Create a function_iterator with supplied function
-	///
-	template<typename Function>
-	auto make_function_iterator( Function &&func ) {
-		return function_iterator<Function>( std::forward<Function>( func ) );
+	template<typename OutputStream>
+	auto make_output_stream_iterator( OutputStream &strm ) {
+		return make_function_iterator( [&strm]( auto &&val ) noexcept( noexcept( strm << val ) ) { strm << val; } );
 	}
-} // namespace daw
+}    // namespace daw
+
 
