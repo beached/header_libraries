@@ -621,3 +621,13 @@ BOOST_AUTO_TEST_CASE( string_view_concept_test_001 ) {
 BOOST_AUTO_TEST_CASE( string_view_concept_test_002 ) {
 		test_string_view<std::string>( );
 }
+
+BOOST_AUTO_TEST_CASE( is_member_size_equal_v ) {
+		constexpr bool result_t = daw::traits::is_member_size_equal_v<std::string, sizeof(char)>;
+		constexpr bool result_f = daw::traits::is_member_size_equal_v<std::wstring, sizeof(char)>;
+		constexpr bool result_t2 = daw::traits::is_member_size_equal_v<std::wstring, sizeof(wchar_t)>;
+		BOOST_REQUIRE( result_t );
+		BOOST_REQUIRE( !result_f );
+		BOOST_REQUIRE( result_t2 );
+}
+

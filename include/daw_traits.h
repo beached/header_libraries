@@ -671,5 +671,7 @@ namespace daw {
 		constexpr bool is_string_like_v = is_string_view_like_v<String> &&has_append_operator_v<String>
 		  &&has_append_memberfn_v<String> &&is_container_like_v<String> &&has_integer_subscript_v<String>;
 
+		template<typename Container, size_t ExpectedSize>
+		constexpr bool is_member_size_equal_v = sizeof( *std::cbegin( std::declval<Container>( ) ) ) == ExpectedSize;
 	} // namespace traits
 } // namespace daw
