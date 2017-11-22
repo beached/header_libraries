@@ -96,11 +96,16 @@ namespace daw {
 		basic_string_view( std::basic_string<CharT, Traits> const &str ) noexcept
 		  : basic_string_view{str.data( ), str.size( )} {}
 
+	private:
+		/// If you really want to do this, use to_string_view as storing the address
+		/// of temporaries is often a mistake
 		template<typename Allocator>
-		basic_string_view( std::basic_string<CharT, Traits, Allocator> &&str ) = delete;
+		basic_string_view( std::basic_string<CharT, Traits, Allocator> &&str ) noexcept
+		  : m_first{str.data( )}, m_size{str.size( )} {}
 
-		basic_string_view( std::basic_string<CharT, Traits> &&str ) noexcept = delete;
-
+		template<typename Chr, typename Tr, typename Alloc>
+		friend basic_string_view<Chr, Tr> to_string_view( std::basic_string<Chr, Tr, Alloc> &&str ) noexcept;
+	public:
 		constexpr basic_string_view( const_pointer s ) noexcept
 		  : basic_string_view{s, details::strlen<size_type_internal>( s )} {}
 
@@ -625,6 +630,11 @@ namespace daw {
 			return ends_with( basic_string_view{s} );
 		}
 	}; // basic_string_view
+
+	template<typename Chr, typename Tr, typename Alloc>
+	basic_string_view<Chr, Tr> to_string_view( std::basic_string<Chr, Tr, Alloc> &&str ) noexcept {
+		return basic_string_view<Chr, Tr>{str};
+	}
 
 	using string_view = basic_string_view<char>;
 	using wstring_view = basic_string_view<wchar_t>;

@@ -867,5 +867,9 @@ namespace daw {
 		BOOST_REQUIRE( !daw::string_view{"This is a test"}.ends_with( 'a' ) );
 	}
 
+	BOOST_AUTO_TEST_CASE( daw_to_string_view_001 ) {
+		auto val = daw::to_string_view( std::to_string( 5 ) ).to_string( );
+		BOOST_REQUIRE_EQUAL( "5", val );
+	}
 } // namespace daw
 
