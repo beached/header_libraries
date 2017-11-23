@@ -143,27 +143,27 @@ namespace daw {
 				return daw::make_string_view_it( first, str.cbegin( ) );
 			}
 
-			std::string parse_to_value( daw::string_view str, std::string ) {
+			inline std::string parse_to_value( daw::string_view str, std::string ) {
 				return parse_to_value( str, daw::string_view{} ).to_string( );
 			}
 
-			std::string parse_to_value( daw::string_view str, unquoted_string ) {
+			inline std::string parse_to_value( daw::string_view str, unquoted_string ) {
 				return parse_to_value( str, unquoted_string_view{} ).to_string( );
 			}
 
-			float parse_to_value( daw::string_view str, float ) {
+			inline float parse_to_value( daw::string_view str, float ) {
 				auto const s = str.to_string( );
 				char **end = nullptr;
 				return strtof( s.c_str( ), end );
 			}
 
-			double parse_to_value( daw::string_view str, double ) {
+			inline double parse_to_value( daw::string_view str, double ) {
 				auto const s = str.to_string( );
 				char **end = nullptr;
 				return strtod( s.c_str( ), end );
 			}
 
-			long double parse_to_value( daw::string_view str, long double ) {
+			inline long double parse_to_value( daw::string_view str, long double ) {
 				auto const s = str.to_string( );
 				char **end = nullptr;
 				return strtold( s.c_str( ), end );
@@ -260,7 +260,7 @@ namespace daw {
 		namespace impl {
 			template<typename T>
 			class parse_result_of {
-				static auto get_type( ) noexcept {
+				static constexpr auto get_type( ) noexcept {
 					using namespace ::daw::parser::converters;
 					return parse_to_value( daw::string_view{}, T{} );
 				}
