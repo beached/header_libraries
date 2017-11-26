@@ -60,7 +60,7 @@ namespace daw {
 		using difference_type = std::ptrdiff_t;
 
 	private:
-		daw::fixed_stack_t<CharT, Capacity+1> m_data;
+		daw::fixed_stack_t<CharT, Capacity + 1> m_data;
 
 	public:
 		static constexpr size_type_internal const npos = std::numeric_limits<size_type_internal>::max( );
@@ -68,12 +68,14 @@ namespace daw {
 		static_assert( Capacity <= static_cast<size_t>( npos ),
 		               "InternalSizeType is insufficient to represent capacity of string" );
 
-		constexpr basic_static_string( ) noexcept : m_data{} {}
+		constexpr basic_static_string( ) noexcept
+		  : m_data{} {}
 
 		constexpr basic_static_string( std::nullptr_t ) noexcept = delete;
 		constexpr basic_static_string( std::nullptr_t, size_type ) noexcept = delete;
 
-		constexpr basic_static_string( const_pointer s, size_type count ) : m_data{s, count} {}
+		constexpr basic_static_string( const_pointer s, size_type count )
+		  : m_data{s, count} {}
 
 		template<size_t N>
 		constexpr basic_static_string( basic_static_string<CharT, N> sv, size_type count )
@@ -87,12 +89,14 @@ namespace daw {
 		basic_static_string( std::basic_string<ChrT, TrtsT, Allocator> const &str ) noexcept
 		  : m_data{str.data( ), static_cast<size_type_internal>( str.size( ) )} {}
 
-		basic_static_string( std::basic_string<CharT, Traits> const &str ) noexcept : m_data{str.data( ), str.size( )} {}
+		basic_static_string( std::basic_string<CharT, Traits> const &str ) noexcept
+		  : m_data{str.data( ), str.size( )} {}
 
 		// TODO: determine if I want this or not
 		// basic_static_string( std::basic_string<CharT, Traits> &&str ) noexcept = delete;
 
-		constexpr basic_static_string( const_pointer s ) noexcept : m_data{s, details::strlen<size_type_internal>( s )} {}
+		constexpr basic_static_string( const_pointer s ) noexcept
+		  : m_data{s, details::strlen<size_type_internal>( s )} {}
 
 		constexpr basic_static_string( basic_static_string const &other ) noexcept = default;
 		constexpr basic_static_string( basic_static_string &&other ) noexcept = default;
@@ -150,7 +154,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr basic_static_string &append( std::basic_string<CharT, Traits> const & str ) {
+		constexpr basic_static_string &append( std::basic_string<CharT, Traits> const &str ) {
 			if( m_data.size( ) + str.size( ) > capacity( ) ) {
 				throw std::out_of_range{"Attempt to append basic_static_string past end"};
 			}
@@ -159,7 +163,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr basic_static_string &append( std::basic_string<CharT, Traits> && str ) {
+		constexpr basic_static_string &append( std::basic_string<CharT, Traits> &&str ) {
 			if( m_data.size( ) + str.size( ) > capacity( ) ) {
 				throw std::out_of_range{"Attempt to append basic_static_string past end"};
 			}
@@ -179,7 +183,7 @@ namespace daw {
 		}
 
 		template<typename T>
-		constexpr basic_static_string &append( T const & t, size_type pos, size_type count = basic_static_string::npos ) {
+		constexpr basic_static_string &append( T const &t, size_type pos, size_type count = basic_static_string::npos ) {
 			daw::basic_string_view<CharT, Traits> tmp = t;
 			return append( tmp.substr( pos, count ) );
 		}
@@ -996,7 +1000,7 @@ namespace daw {
 	template<typename CharT, size_t Capacity, typename Traits, size_t N>
 	auto operator+( daw::basic_static_string<CharT, Capacity, Traits> lhs, CharT ( &rhs )[N] ) {
 		static_assert( Capacity < ( N - 1 ), "Not enough space to perform append" );
-		lhs.append( daw::basic_string_view<CharT, Traits>{ rhs } );
+		lhs.append( daw::basic_string_view<CharT, Traits>{rhs} );
 		return std::move( lhs );
 	}
 
@@ -1060,8 +1064,10 @@ namespace daw {
 		return fnv1a_hash( str.data( ), str.size( ) );
 	}
 
-	template<size_t HashSize = sizeof( size_t ), typename CharT, size_t Capacity, typename Traits, typename InternalSizeType>
-	constexpr size_t generic_hash( daw::basic_static_string<CharT, Capacity, Traits, InternalSizeType> const &str ) noexcept {
+	template<size_t HashSize = sizeof( size_t ), typename CharT, size_t Capacity, typename Traits,
+	         typename InternalSizeType>
+	constexpr size_t
+	generic_hash( daw::basic_static_string<CharT, Capacity, Traits, InternalSizeType> const &str ) noexcept {
 		return generic_hash<HashSize>( str.data( ), str.size( ) );
 	}
 
@@ -1084,4 +1090,3 @@ namespace std {
 		}
 	};
 } // namespace std
-

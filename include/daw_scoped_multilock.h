@@ -60,7 +60,8 @@ namespace daw {
 		}
 
 	public:
-		scoped_multilock( Lockables &... lockables ) : m_locks{} {
+		scoped_multilock( Lockables &... lockables )
+		  : m_locks{} {
 			_lock( lockables... );
 			auto args = std::make_tuple<Lockables *...>( &lockables... );
 			details::make_lock_guard<0, sizeof...( Lockables )>{}( m_locks, args );

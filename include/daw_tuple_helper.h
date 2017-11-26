@@ -85,7 +85,9 @@ namespace daw {
 
 			public:
 				constexpr print_t( std::ostream &os, char separator = ',' )
-				  : m_os{os}, m_is_first{true}, m_separator{std::move( separator )} {}
+				  : m_os{os}
+				  , m_is_first{true}
+				  , m_separator{std::move( separator )} {}
 
 				void reset( ) {
 					m_is_first = true;

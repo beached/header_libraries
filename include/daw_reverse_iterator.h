@@ -38,12 +38,15 @@ namespace daw {
 		Iterator m_base;
 
 	public:
-		constexpr reverse_iterator( ) : m_base{} {}
+		constexpr reverse_iterator( )
+		  : m_base{} {}
 
-		constexpr explicit reverse_iterator( Iterator it ) : m_base{std::move( it )} {}
+		constexpr explicit reverse_iterator( Iterator it )
+		  : m_base{std::move( it )} {}
 
 		template<typename U>
-		constexpr reverse_iterator( const reverse_iterator<U> &other ) : m_base{other.m_base} {}
+		constexpr reverse_iterator( const reverse_iterator<U> &other )
+		  : m_base{other.m_base} {}
 
 		template<typename U>
 		constexpr reverse_iterator &operator=( const reverse_iterator<U> &other ) {
@@ -74,7 +77,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr reverse_iterator operator++(int) noexcept {
+		constexpr reverse_iterator operator++(int)noexcept {
 			reverse_iterator tmp{*this};
 			--m_base;
 			return tmp;
@@ -85,7 +88,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr reverse_iterator operator--(int) noexcept {
+		constexpr reverse_iterator operator--(int)noexcept {
 			reverse_iterator tmp{*this};
 			++m_base;
 			return tmp;
@@ -166,4 +169,3 @@ namespace daw {
 		return reverse_iterator<Iterator>{std::move( i )};
 	}
 } // namespace daw
-

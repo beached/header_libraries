@@ -92,9 +92,13 @@ namespace daw {
 		public:
 			struct default_construct {};
 
-			value_storage( ) : m_data{0}, m_occupied{false} {}
+			value_storage( )
+			  : m_data{0}
+			  , m_occupied{false} {}
 
-			value_storage( default_construct ): m_data{0}, m_occupied{true} {
+			value_storage( default_construct )
+			  : m_data{0}
+			  , m_occupied{true} {
 				store( value_type{} );
 			}
 
@@ -103,14 +107,19 @@ namespace daw {
 				create( std::forward<Args>( args )... );
 			}
 
-			value_storage( value_type value ) : m_data{0}, m_occupied{true} {
+			value_storage( value_type value )
+			  : m_data{0}
+			  , m_occupied{true} {
 				store( std::move( value ) );
 			}
 
-			value_storage( value_storage const &other ) noexcept : m_data{other.m_data}, m_occupied{other.m_occupied} {}
+			value_storage( value_storage const &other ) noexcept
+			  : m_data{other.m_data}
+			  , m_occupied{other.m_occupied} {}
 
 			value_storage( value_storage &&other ) noexcept
-			  : m_data{std::move( other.m_data )}, m_occupied{std::exchange( other.m_occupied, false )} {}
+			  : m_data{std::move( other.m_data )}
+			  , m_occupied{std::exchange( other.m_occupied, false )} {}
 
 			void swap( value_storage &rhs ) noexcept {
 				using std::swap;
@@ -194,14 +203,19 @@ namespace daw {
 		impl::value_storage<value_type> m_value;
 
 	public:
-		optional( ) : m_value{} {}
+		optional( )
+		  : m_value{} {}
 
-		optional( nothing ) : m_value{} {}
-		optional( optional const &other ) : m_value{other.m_value} {}
+		optional( nothing )
+		  : m_value{} {}
+		optional( optional const &other )
+		  : m_value{other.m_value} {}
 
-		optional( optional &&other ) noexcept : m_value{std::move( other.m_value )} {}
+		optional( optional &&other ) noexcept
+		  : m_value{std::move( other.m_value )} {}
 
-		explicit optional( value_type value ) : m_value{std::move( value )} {}
+		explicit optional( value_type value )
+		  : m_value{std::move( value )} {}
 
 		optional &operator=( optional const &rhs ) {
 			if( this != &rhs ) {
@@ -403,7 +417,8 @@ namespace daw {
 
 		template<typename T>
 		friend bool operator>=( optional const &lhs, optional<T> const &rhs ) {
-			static_assert( daw::is_equal_greater_than_comparable_v<value_type, T>, "Types are not equal_greater than comparable" );
+			static_assert( daw::is_equal_greater_than_comparable_v<value_type, T>,
+			               "Types are not equal_greater than comparable" );
 			if( lhs ) {
 				if( rhs ) {
 					return lhs.get( ) >= rhs.get( );
@@ -418,7 +433,8 @@ namespace daw {
 
 		template<typename T>
 		friend bool operator>=( optional const &lhs, T const &rhs ) {
-			static_assert( daw::is_equal_greater_than_comparable_v<value_type, T>, "Types are not equal_greater than comparable" );
+			static_assert( daw::is_equal_greater_than_comparable_v<value_type, T>,
+			               "Types are not equal_greater than comparable" );
 			if( lhs ) {
 				return lhs.get( ) >= rhs;
 			}

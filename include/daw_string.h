@@ -351,8 +351,7 @@ namespace daw {
 			template<typename... Args>
 			using can_construct_string = decltype( std::string( std::declval<Args>( )... ) );
 
-			template<typename CharT, typename Traits = std::char_traits<CharT>,
-			         typename Allocator = std::allocator<CharT>>
+			template<typename CharT, typename Traits = std::char_traits<CharT>, typename Allocator = std::allocator<CharT>>
 			struct BasicString {
 				using values_type = std::basic_string<CharT, Traits, Allocator>;
 				using value_type = typename values_type::value_type;
@@ -367,13 +366,15 @@ namespace daw {
 
 				template<typename... Args,
 				         std::enable_if_t<daw::is_detected_v<can_construct_string, Args...>, std::nullptr_t> = nullptr>
-				BasicString( Args &&... args ) : m_string( std::forward<Args>( args )... ) {}
+				BasicString( Args &&... args )
+				  : m_string( std::forward<Args>( args )... ) {}
 
 				BasicString( BasicString const & ) = default;
 
 				BasicString( BasicString && ) noexcept = default;
 
-				BasicString( value_type other ) : m_string{std::move( other )} {}
+				BasicString( value_type other )
+				  : m_string{std::move( other )} {}
 
 				~BasicString( ) = default;
 
@@ -441,4 +442,3 @@ std::ostream &operator<<( std::ostream &os, daw::string::impl::BasicString<CharT
 	os << str.to_string( );
 	return os;
 }
-

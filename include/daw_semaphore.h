@@ -69,7 +69,7 @@ namespace daw {
 		}
 
 		void wait( ) {
-			for( size_t n=0; n<100; ++n ) {
+			for( size_t n = 0; n < 100; ++n ) {
 				if( try_wait( ) ) {
 					return;
 				}
@@ -175,7 +175,9 @@ namespace daw {
 		shared_semaphore semaphore;
 		T value;
 
-		waitable_value( shared_semaphore sem, T val ) : semaphore{std::move( sem )}, value{std::move( val )} {}
+		waitable_value( shared_semaphore sem, T val )
+		  : semaphore{std::move( sem )}
+		  , value{std::move( val )} {}
 
 		void wait( ) {
 			semaphore.wait( );

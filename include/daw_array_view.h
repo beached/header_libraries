@@ -55,15 +55,25 @@ namespace daw {
 		size_type m_size;
 
 	public:
-		constexpr array_view( ) noexcept : m_first{nullptr}, m_size{0} {}
+		constexpr array_view( ) noexcept
+		  : m_first{nullptr}
+		  , m_size{0} {}
 
-		explicit constexpr array_view( std::nullptr_t ) noexcept : m_first{nullptr}, m_size{0} {}
-		constexpr array_view( std::nullptr_t, size_type ) noexcept : m_first{nullptr}, m_size{0} {}
+		explicit constexpr array_view( std::nullptr_t ) noexcept
+		  : m_first{nullptr}
+		  , m_size{0} {}
+		constexpr array_view( std::nullptr_t, size_type ) noexcept
+		  : m_first{nullptr}
+		  , m_size{0} {}
 
-		constexpr array_view( const_pointer s, size_type count ) noexcept : m_first{s}, m_size{count} {}
+		constexpr array_view( const_pointer s, size_type count ) noexcept
+		  : m_first{s}
+		  , m_size{count} {}
 
 		template<size_t N>
-		explicit constexpr array_view( value_type const ( &s )[N] ) noexcept : m_first{s}, m_size{N} {}
+		explicit constexpr array_view( value_type const ( &s )[N] ) noexcept
+		  : m_first{s}
+		  , m_size{N} {}
 
 		constexpr array_view( array_view const &other ) noexcept = default;
 		constexpr array_view &operator=( array_view const & ) noexcept = default;
@@ -227,11 +237,11 @@ namespace daw {
 		return array_view<value_t>( container.data( ), container.size( ) );
 	}
 
-	struct array_view_access_past_end_exception{};
+	struct array_view_access_past_end_exception {};
 
 	template<typename Container, std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
 	constexpr auto make_array_view( Container const &container, size_t const pos,
-	                                      size_t const count = std::numeric_limits<size_t>::max( ) ) {
+	                                size_t const count = std::numeric_limits<size_t>::max( ) ) {
 
 		using value_t = typename std::iterator_traits<decltype( container.begin( ) )>::value_type;
 

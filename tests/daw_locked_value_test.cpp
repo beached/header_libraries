@@ -74,7 +74,8 @@ BOOST_AUTO_TEST_CASE( test_locked_value01 ) {
 struct B {
 	daw::lockable_value_t<int> a;
 
-	B( ) : a{0} {}
+	B( )
+	  : a{0} {}
 
 	auto get( ) {
 		return *a;

@@ -83,10 +83,12 @@ namespace daw {
 			CollectionRange( ) = default;
 
 			template<typename Collection>
-			CollectionRange( Collection const &collection ) : m_values( impl::to_vector( collection ) ) {}
+			CollectionRange( Collection const &collection )
+			  : m_values( impl::to_vector( collection ) ) {}
 
 			template<typename IteratorF, typename IteratorL>
-			CollectionRange( IteratorF first, IteratorL last ) : m_values( impl::to_vector( first, last ) ) {}
+			CollectionRange( IteratorF first, IteratorL last )
+			  : m_values( impl::to_vector( first, last ) ) {}
 
 			CollectionRange( CollectionRange const & ) = default;
 			CollectionRange( CollectionRange && ) = default;

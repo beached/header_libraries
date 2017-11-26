@@ -28,14 +28,12 @@
 
 #include "daw_output_stream_iterator.h"
 
-int main( int, char** ) {
+int main( int, char ** ) {
 
 	auto osi = daw::make_output_stream_iterator( std::cout );
-	std::array<int,5> a = {0,1,2,3,4};
+	std::array<int, 5> a = {0, 1, 2, 3, 4};
 
 	std::copy( a.cbegin( ), a.cend( ), osi );
 
 	return EXIT_SUCCESS;
 }
-
-

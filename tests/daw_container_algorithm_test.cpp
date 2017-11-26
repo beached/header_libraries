@@ -97,7 +97,8 @@ BOOST_AUTO_TEST_CASE( daw_for_each_pos_001 ) {
 namespace daw_for_each_with_pos_002_ns {
 	struct summer_t {
 		int *sum;
-		constexpr summer_t( int *ptr ) noexcept : sum{ptr} {}
+		constexpr summer_t( int *ptr ) noexcept
+		  : sum{ptr} {}
 
 		template<typename Value>
 		constexpr void operator( )( Value const &value, size_t pos ) const noexcept {
@@ -115,7 +116,8 @@ BOOST_AUTO_TEST_CASE( daw_for_each_subset_001 ) {
 namespace daw_for_each_subset_002_ns {
 	struct summer_t {
 		int *sum;
-		constexpr summer_t( int *ptr ) noexcept : sum{ptr} {}
+		constexpr summer_t( int *ptr ) noexcept
+		  : sum{ptr} {}
 
 		template<typename Container>
 		constexpr void operator( )( Container &container, size_t pos ) const noexcept {
@@ -135,5 +137,4 @@ namespace daw_for_each_subset_002_ns {
 		constexpr auto sum = find_sum( blah );
 		BOOST_REQUIRE_EQUAL( sum, 6 );
 	}
-}
-
+} // namespace daw_for_each_subset_002_ns

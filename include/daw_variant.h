@@ -40,7 +40,8 @@
 namespace daw {
 	struct bad_variant_t_access : public std::runtime_error {
 		template<typename... Args>
-		bad_variant_t_access( Args &&... args ) : std::runtime_error{std::forward<Args>( args )...} {}
+		bad_variant_t_access( Args &&... args )
+		  : std::runtime_error{std::forward<Args>( args )...} {}
 
 		~bad_variant_t_access( ) = default;
 	};
@@ -171,10 +172,16 @@ namespace daw {
 		compare_t compare;
 		destruct_t destruct;
 
-		variant_helper_funcs_t( ) : to_string{}, compare{}, destruct{} {}
+		variant_helper_funcs_t( )
+		  : to_string{}
+		  , compare{}
+		  , destruct{} {}
 
 		template<typename ToString, typename Compare, typename Destruct>
-		variant_helper_funcs_t( ToString a, Compare b, Destruct c ) : to_string{a}, compare{b}, destruct{c} {}
+		variant_helper_funcs_t( ToString a, Compare b, Destruct c )
+		  : to_string{a}
+		  , compare{b}
+		  , destruct{c} {}
 	}; // variant_helper_funcs_t
 
 	template<typename... Types>
@@ -271,10 +278,13 @@ namespace daw {
 		}
 
 	public:
-		variant_t( ) : m_buffer{}, m_stored_type{} {}
+		variant_t( )
+		  : m_buffer{}
+		  , m_stored_type{} {}
 
 		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-		variant_t( T value ) : variant_t{} {
+		variant_t( T value )
+		  : variant_t{} {
 
 			store( std::move( value ) );
 		}

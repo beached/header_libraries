@@ -43,7 +43,8 @@ namespace daw {
 		basic_safe_string &operator=( basic_safe_string && ) = default;
 
 		basic_safe_string( string_type unsafe_string, SanitizeFunction sanitize_function = SanitizeFunction{} )
-		  : m_unsafe_string{std::move( unsafe_string )}, m_sanitize_function{std::move( sanitize_function )} {}
+		  : m_unsafe_string{std::move( unsafe_string )}
+		  , m_sanitize_function{std::move( sanitize_function )} {}
 
 		basic_safe_string( charT const *const unsafe_cstring, SanitizeFunction sanitize_function = SanitizeFunction{} )
 		  : basic_safe_string{string_type{unsafe_cstring}, std::move( sanitize_function )} {}

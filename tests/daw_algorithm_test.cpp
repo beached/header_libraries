@@ -58,7 +58,7 @@ BOOST_AUTO_TEST_CASE( daw_sort_test_001 ) {
 BOOST_AUTO_TEST_CASE( daw_sort_test_002 ) {
 	int blah[6] = {23, 5, 2, -1, 100, -1000};
 	daw::algorithm::insertion_sort( blah, blah + 6 );
-	for( auto i: blah ) {
+	for( auto i : blah ) {
 		std::cout << i << " ";
 	}
 	std::cout << '\n';
@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE( daw_sort_test_003 ) {
 BOOST_AUTO_TEST_CASE( daw_sort_test_004 ) {
 	int blah[6] = {23, 5, 2, -1, 100, -1000};
 	daw::algorithm::quick_sort( blah, blah + 6 );
-	for( auto i: blah ) {
+	for( auto i : blah ) {
 		std::cout << i << " ";
 	}
 	std::cout << '\n';
@@ -93,7 +93,7 @@ constexpr int map_test_002( ) {
 
 	daw::algorithm::map( blah, daw::algorithm::next( blah, 6 ), blah, unary_op );
 	int result = 0;
-	for( size_t n=0; n<6; ++n ) {
+	for( size_t n = 0; n < 6; ++n ) {
 		result += blah[n];
 	}
 	return result;
@@ -105,8 +105,9 @@ BOOST_AUTO_TEST_CASE( daw_map_test_002 ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_reduce_test_001 ) {
-	int blah[6] = { 1, 0, 1, 0, 1, 0 };
-	auto const tst = daw::algorithm::reduce( blah, daw::algorithm::next( blah, 6 ), 0, []( auto lhs, auto rhs ) noexcept { return lhs + rhs; } );
+	int blah[6] = {1, 0, 1, 0, 1, 0};
+	auto const tst = daw::algorithm::reduce( blah, daw::algorithm::next( blah, 6 ),
+	                                         0, []( auto lhs, auto rhs ) noexcept { return lhs + rhs; } );
 	BOOST_REQUIRE_EQUAL( tst, 3 );
 }
 
@@ -121,4 +122,3 @@ namespace copy_n_ns {
 		constexpr auto b = test_copy_n( );
 	}
 } // namespace copy_n_ns
-

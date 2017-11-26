@@ -35,4 +35,3 @@ BOOST_AUTO_TEST_CASE( make_string_testing ) {
 
 	BOOST_REQUIRE_EQUAL( b.size( ), 6 );
 }
-

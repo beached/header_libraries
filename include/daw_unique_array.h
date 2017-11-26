@@ -50,10 +50,12 @@ namespace daw {
 		constexpr unique_array_t &operator=( unique_array_t && ) noexcept = default;
 
 		unique_array_t( size_type sz ) noexcept( noexcept( new value_type[sz]( ) ) )
-		  : m_data{new value_type[sz]( )}, m_size{sz} {}
+		  : m_data{new value_type[sz]( )}
+		  , m_size{sz} {}
 
 		unique_array_t( size_type sz, const_reference default_value ) noexcept( noexcept( new value_type[sz] ) )
-		  : m_data{new value_type[sz]}, m_size{sz} {
+		  : m_data{new value_type[sz]}
+		  , m_size{sz} {
 
 			for( size_type n = 0; n < m_size; ++n ) {
 				m_data[n] = default_value;
@@ -92,12 +94,14 @@ namespace daw {
 		}
 
 		reference at( size_type pos ) {
-			daw::exception::daw_throw_on_false<std::out_of_range>( pos >= m_size, "Attempt to access value past end of range" );
+			daw::exception::daw_throw_on_false<std::out_of_range>( pos >= m_size,
+			                                                       "Attempt to access value past end of range" );
 			return m_data[pos];
 		}
 
 		const_reference at( size_type pos ) const {
-			daw::exception::daw_throw_on_false<std::out_of_range>( pos >= m_size, "Attempt to access value past end of range" );
+			daw::exception::daw_throw_on_false<std::out_of_range>( pos >= m_size,
+			                                                       "Attempt to access value past end of range" );
 			return m_data[pos];
 		}
 
@@ -131,7 +135,7 @@ namespace daw {
 
 		const_reference front( ) const noexcept {
 			return *m_data;
-		}		
+		}
 
 		reference back( ) noexcept {
 			return *std::next( m_data, m_size - 1 );
@@ -140,7 +144,5 @@ namespace daw {
 		const_reference back( ) const noexcept {
 			return *std::next( m_data, m_size - 1 );
 		}
-
 	};
 } // namespace daw
-

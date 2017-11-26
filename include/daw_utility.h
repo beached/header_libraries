@@ -104,7 +104,8 @@ namespace daw {
 			constexpr EqualToImpl( EqualToImpl && ) noexcept = default;
 			constexpr EqualToImpl &operator=( EqualToImpl && ) noexcept = default;
 
-			constexpr EqualToImpl( T value ) : m_value( std::move( value ) ) {}
+			constexpr EqualToImpl( T value )
+			  : m_value( std::move( value ) ) {}
 
 			constexpr bool operator( )( T const &value ) noexcept {
 				return m_value == value;
@@ -127,7 +128,8 @@ namespace daw {
 		constexpr equal_to_last &operator=( equal_to_last const & ) noexcept = default;
 		constexpr equal_to_last &operator=( equal_to_last && ) noexcept = default;
 
-		constexpr equal_to_last( ) noexcept : m_value( nullptr ) {}
+		constexpr equal_to_last( ) noexcept
+		  : m_value( nullptr ) {}
 
 		bool operator( )( T const &value ) noexcept {
 			bool result = false;
@@ -145,7 +147,8 @@ namespace daw {
 			Function m_function;
 
 		public:
-			NotImpl( Function func ) : m_function( func ) {}
+			NotImpl( Function func )
+			  : m_function( func ) {}
 			~NotImpl( ) = default;
 			NotImpl( NotImpl && ) noexcept = default;
 			NotImpl &operator=( NotImpl const & ) = default;
@@ -335,7 +338,8 @@ namespace daw {
 		template<typename T>
 		struct RunIfValid {
 			::std::weak_ptr<T> m_link;
-			RunIfValid( std::weak_ptr<T> w_ptr ) : m_link( w_ptr ) {}
+			RunIfValid( std::weak_ptr<T> w_ptr )
+			  : m_link( w_ptr ) {}
 
 			template<typename Function>
 			bool operator( )( Function func ) {
@@ -374,7 +378,8 @@ namespace daw {
 		constexpr not_null &operator=( not_null const & ) noexcept = default;
 		constexpr not_null &operator=( not_null && ) noexcept = default;
 
-		constexpr not_null( T *ptr ) : m_ptr{ptr} {
+		constexpr not_null( T *ptr )
+		  : m_ptr{ptr} {
 			daw::exception::daw_throw_on_null( ptr, "ptr cannot be null" );
 		}
 
@@ -609,4 +614,3 @@ namespace daw {
 
 template<typename... Ts>
 constexpr void Unused( Ts &&... ) noexcept {}
-

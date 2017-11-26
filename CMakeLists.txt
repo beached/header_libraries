@@ -86,6 +86,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_semaphore
 	daw_size_literals
 	daw_span
+	daw_split_iterator
 	daw_spin_lock
 	daw_static_array
 	daw_static_optional

@@ -93,4 +93,3 @@ namespace daw_fixed_stack_test_004_ns {
 		BOOST_REQUIRE_EQUAL( sum, 36 );
 	}
 } // namespace daw_fixed_stack_test_004_ns
-

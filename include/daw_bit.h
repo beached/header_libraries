@@ -54,4 +54,3 @@ namespace daw {
 		return ( value & make_mask( mask_bit, mask_bits... ) ) != 0;
 	}
 } // namespace daw
-

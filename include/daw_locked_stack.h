@@ -40,7 +40,10 @@ namespace daw {
 		std::vector<value_type> m_items;
 
 	public:
-		locked_stack_t( ) : m_semaphore{}, m_mutex{std::make_unique<std::mutex>( )}, m_items{} {}
+		locked_stack_t( )
+		  : m_semaphore{}
+		  , m_mutex{std::make_unique<std::mutex>( )}
+		  , m_items{} {}
 
 		~locked_stack_t( ) = default;
 		locked_stack_t( locked_stack_t && ) = default;

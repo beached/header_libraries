@@ -43,7 +43,9 @@ template<typename T>
 struct test_t {
 	daw::RandomIterator<T> first;
 	daw::RandomIterator<T> last;
-	test_t( T *const f, T *const l ) : first{f}, last{l} {}
+	test_t( T *const f, T *const l )
+	  : first{f}
+	  , last{l} {}
 	test_t( ) = delete;
 	~test_t( ) = default;
 	test_t( test_t const & ) = default;

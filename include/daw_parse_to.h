@@ -109,7 +109,7 @@ namespace daw {
 			} // namespace impl
 
 			struct unquoted_string {};
-			struct unquoted_string_view{};
+			struct unquoted_string_view {};
 
 			constexpr daw::string_view parse_to_value( daw::string_view str, unquoted_string_view ) {
 				if( str.empty( ) ) {
@@ -207,7 +207,8 @@ namespace daw {
 			daw::string_view m_delemiter;
 
 		public:
-			constexpr default_splitter( daw::string_view delemiter ) : m_delemiter{std::move( delemiter )} {}
+			constexpr default_splitter( daw::string_view delemiter )
+			  : m_delemiter{std::move( delemiter )} {}
 			constexpr default_splitter( ) noexcept = delete;
 			~default_splitter( ) noexcept = default;
 			constexpr default_splitter( default_splitter const & ) noexcept = default;
@@ -390,4 +391,3 @@ namespace daw {
 		return values_from_stream<Args...>( std::forward<Stream>( s ), parser::default_splitter{std::move( delemiter )} );
 	}
 } // namespace daw
-

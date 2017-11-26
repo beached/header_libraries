@@ -29,6 +29,4 @@ namespace daw {
 	auto make_output_stream_iterator( OutputStream &strm ) {
 		return make_function_iterator( [&strm]( auto &&val ) noexcept( noexcept( strm << val ) ) { strm << val; } );
 	}
-}    // namespace daw
-
-
+} // namespace daw

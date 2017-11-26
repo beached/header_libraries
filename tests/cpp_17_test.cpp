@@ -29,17 +29,21 @@ namespace void_t_tests {
 	void test2( int ) {}
 	struct X {};
 
-	bool fn2(...) { return true; }
+	bool fn2( ... ) {
+		return true;
+	}
 
 	template<typename T, typename = daw::void_t<decltype( fn( T{} ) )>>
-	bool fn2( T ) { return false; }
+	bool fn2( T ) {
+		return false;
+	}
 
 	BOOST_AUTO_TEST_CASE( void_t_test_001 ) {
 		BOOST_REQUIRE( fn2( X{} ) );
 	}
-}
+} // namespace void_t_tests
 
-void test( ){}
+void test( ) {}
 BOOST_AUTO_TEST_CASE( cpp_17_test_01 ) {
 	constexpr auto const is_func = daw::is_function_v<decltype( test )>;
 	constexpr auto const isnt_func = daw::is_function_v<decltype( is_func )>;
@@ -47,4 +51,3 @@ BOOST_AUTO_TEST_CASE( cpp_17_test_01 ) {
 	BOOST_REQUIRE( is_func );
 	BOOST_REQUIRE( !isnt_func );
 }
-

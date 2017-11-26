@@ -36,7 +36,8 @@ namespace daw {
 		using ptr_type = daw::traits::root_type_t<T>;
 		ptr_type const *ptr;
 		Reference( ) = delete;
-		Reference( T const &value ) : ptr( &value ) {}
+		Reference( T const &value )
+		  : ptr( &value ) {}
 		~Reference( ) {}
 
 		Reference( Reference const & ) = default;

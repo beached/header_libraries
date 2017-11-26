@@ -79,9 +79,11 @@ namespace daw {
 		}
 
 	public:
-		constexpr carray( ) noexcept : m_data{} {}
+		constexpr carray( ) noexcept
+		  : m_data{} {}
 
-		constexpr carray( T ( &values )[N] ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) ) : m_data{} {
+		constexpr carray( T ( &values )[N] ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) )
+		  : m_data{} {
 			daw::algorithm::copy_n( values, ptr( ), N );
 		}
 

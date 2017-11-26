@@ -60,7 +60,9 @@ namespace daw {
 		template<typename... Ts, std::size_t... Is>
 		static constexpr void advance( std::tuple<Ts...> &tpl, std::index_sequence<Is...>, intmax_t n ) {
 			using expander = int[];
-			expander{0, ( static_cast<void>( ::daw::algorithm::impl::advance( std::get<Is>( tpl ), n, std::random_access_iterator_tag{} ) ), 0 )...};
+			expander{0, ( static_cast<void>(
+			                ::daw::algorithm::impl::advance( std::get<Is>( tpl ), n, std::random_access_iterator_tag{} ) ),
+			              0 )...};
 		}
 
 		template<typename... Ts>
@@ -76,7 +78,8 @@ namespace daw {
 		constexpr zip_iterator &operator=( zip_iterator const & ) = default;
 		constexpr zip_iterator &operator=( zip_iterator && ) noexcept = default;
 
-		constexpr zip_iterator( Iterators... args ) : m_values{std::move( args )...} {}
+		constexpr zip_iterator( Iterators... args )
+		  : m_values{std::move( args )...} {}
 
 		constexpr types_t &as_tuple( ) noexcept {
 			return m_values;
@@ -167,4 +170,3 @@ template<size_t i, typename... T>
 constexpr auto const &get( daw::zip_iterator<T...> const &zi ) noexcept {
 	return zi.template get<i>( );
 }
-

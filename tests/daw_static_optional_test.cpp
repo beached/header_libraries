@@ -56,4 +56,3 @@ BOOST_AUTO_TEST_CASE( daw_optional_test_01 ) {
 	BOOST_REQUIRE( c > b );
 	BOOST_REQUIRE( c >= b );
 }
-

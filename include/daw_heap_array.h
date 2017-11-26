@@ -41,12 +41,20 @@ namespace daw {
 		size_t m_size;
 
 	public:
-		constexpr heap_array( ) noexcept : m_begin{nullptr}, m_end{nullptr}, m_size{0} {}
+		constexpr heap_array( ) noexcept
+		  : m_begin{nullptr}
+		  , m_end{nullptr}
+		  , m_size{0} {}
 
-		heap_array( size_t Size ) : m_begin{new value_type[Size + 1]}, m_end{m_begin + Size}, m_size{Size} {}
+		heap_array( size_t Size )
+		  : m_begin{new value_type[Size + 1]}
+		  , m_end{m_begin + Size}
+		  , m_size{Size} {}
 
 		heap_array( size_t Size, value_type def_value )
-		  : m_begin{new value_type[Size]}, m_end{m_begin + Size}, m_size{Size} {
+		  : m_begin{new value_type[Size]}
+		  , m_end{m_begin + Size}
+		  , m_size{Size} {
 
 			std::fill( m_begin, m_end, def_value );
 		}
@@ -85,7 +93,8 @@ namespace daw {
 			return *this;
 		}
 
-		heap_array( std::initializer_list<value_type> values ) : heap_array( values.size( ) ) {
+		heap_array( std::initializer_list<value_type> values )
+		  : heap_array( values.size( ) ) {
 
 			std::copy_n( values.begin( ), values.size( ), m_begin );
 		}
@@ -98,7 +107,10 @@ namespace daw {
 			return *this;
 		}
 
-		heap_array( iterator arry, size_t Size ) : m_begin{new value_type[Size]}, m_end{m_begin + Size}, m_size{Size} {
+		heap_array( iterator arry, size_t Size )
+		  : m_begin{new value_type[Size]}
+		  , m_end{m_begin + Size}
+		  , m_size{Size} {
 
 			std::copy_n( arry, Size, m_begin );
 		}

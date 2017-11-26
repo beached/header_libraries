@@ -23,8 +23,8 @@
 #pragma once
 
 #include <boost/endian/conversion.hpp>
-#include <iostream>
 #include <cstdint>
+#include <iostream>
 
 #include "daw_bit.h"
 #include "daw_exception.h"
@@ -45,9 +45,12 @@ namespace daw {
 		queue_type m_queue;
 
 	public:
-		constexpr bit_queue_gen( ) noexcept : m_size{0}, m_queue{0} {}
+		constexpr bit_queue_gen( ) noexcept
+		  : m_size{0}
+		  , m_queue{0} {}
 		constexpr explicit bit_queue_gen( queue_type v ) noexcept
-		  : m_size{sizeof( m_queue ) * 8}, m_queue{std::move( v )} {}
+		  : m_size{sizeof( m_queue ) * 8}
+		  , m_queue{std::move( v )} {}
 
 		constexpr size_t size( ) const noexcept {
 			return m_size;
@@ -127,9 +130,11 @@ namespace daw {
 		bit_queue_gen<queue_type, value_type> m_queue;
 
 	public:
-		constexpr nibble_queue_gen( ) noexcept : m_queue{} {}
+		constexpr nibble_queue_gen( ) noexcept
+		  : m_queue{} {}
 
-		constexpr explicit nibble_queue_gen( queue_type v ) noexcept : m_queue{std::move( v )} {}
+		constexpr explicit nibble_queue_gen( queue_type v ) noexcept
+		  : m_queue{std::move( v )} {}
 
 		constexpr size_t capacity( ) const noexcept {
 			return m_queue.capacity( ) / 4;

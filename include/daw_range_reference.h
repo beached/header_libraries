@@ -59,7 +59,8 @@ namespace daw {
 			ReferenceRange &operator=( ReferenceRange const & ) = default;
 			ReferenceRange &operator=( ReferenceRange && ) = default;
 
-			ReferenceRange( iterator first, iterator last ) : m_values(::daw::to_reference_vector( first, last ) ) {}
+			ReferenceRange( iterator first, iterator last )
+			  : m_values(::daw::to_reference_vector( first, last ) ) {}
 
 			bool at_end( ) const {
 				return begin( ) == end( );

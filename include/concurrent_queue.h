@@ -21,7 +21,10 @@ namespace daw {
 		std::atomic<bool> m_forced_exit;
 
 	public:
-		concurrent_queue( ) : m_queue( ), m_condition( ), m_forced_exit( false ) {}
+		concurrent_queue( )
+		  : m_queue( )
+		  , m_condition( )
+		  , m_forced_exit( false ) {}
 
 		void push( Data const &data ) {
 			std::unique_lock<std::mutex> lock( m_mutex );

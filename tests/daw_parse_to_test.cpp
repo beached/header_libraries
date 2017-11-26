@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE( daw_values_from_stream_001 ) {
 	BOOST_REQUIRE_EQUAL( std::get<3>( vals ), "test" );
 }
 
-enum class e_colours: int { red = 2, green = 4, blue = 8 };
+enum class e_colours : int { red = 2, green = 4, blue = 8 };
 
 namespace daw {
 	namespace parser {
@@ -148,7 +148,8 @@ namespace daw_parse_to_enum_001_ns {
 
 		auto result = daw::apply_string2<daw::parser::converters::enum_mapper_value<e_colours>,
 		                                 daw::parser::converters::enum_mapper_value<e_colours>>(
-		  []( e_colours a, e_colours b ) { return sum_colours( a, b ); }, "green blue", daw::parser::whitespace_splitter{} );
+		  []( e_colours a, e_colours b ) { return sum_colours( a, b ); }, "green blue",
+		  daw::parser::whitespace_splitter{} );
 		BOOST_REQUIRE_EQUAL( result, 12 );
 	}
 
@@ -161,11 +162,10 @@ namespace daw_parse_to_enum_001_ns {
 	BOOST_AUTO_TEST_CASE( daw_parse_to_enum_002 ) {
 
 		constexpr auto result = daw::apply_string2<daw::parser::converters::enum_mapper_value<e_colours>,
-		                                 daw::parser::converters::enum_mapper_value<e_colours>>(
+		                                           daw::parser::converters::enum_mapper_value<e_colours>>(
 		  daw_parse_to_enum_001_ns::callable_t{}, "green blue", " " );
 
 		BOOST_REQUIRE_EQUAL( result, 12 );
 	}
 
 } // namespace daw_parse_to_enum_001_ns
-

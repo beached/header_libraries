@@ -54,7 +54,9 @@ namespace daw {
 		}
 
 	public:
-		constexpr bounded_stack_t( ) noexcept : m_values{}, m_head{m_values.begin( )} {}
+		constexpr bounded_stack_t( ) noexcept
+		  : m_values{}
+		  , m_head{m_values.begin( )} {}
 
 		~bounded_stack_t( ) = default;
 		bounded_stack_t( bounded_stack_t const & ) = default;

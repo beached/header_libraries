@@ -39,7 +39,8 @@ namespace daw {
 		Function m_function;
 
 	public:
-		function_iterator( Function function ) : m_function{std::move( function )} {}
+		function_iterator( Function function )
+		  : m_function{std::move( function )} {}
 
 		template<typename T>
 		function_iterator &operator=( T &&val ) {
@@ -74,4 +75,3 @@ namespace daw {
 		return function_iterator<Function>( std::forward<Function>( func ) );
 	}
 } // namespace daw
-

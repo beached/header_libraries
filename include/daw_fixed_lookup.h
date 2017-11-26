@@ -108,7 +108,9 @@ namespace daw {
 				hash_value_t position;
 				bool found;
 
-				constexpr lookup_result_t( hash_value_t pos, bool is_found ) noexcept : position{pos}, found{is_found} {}
+				constexpr lookup_result_t( hash_value_t pos, bool is_found ) noexcept
+				  : position{pos}
+				  , found{is_found} {}
 				constexpr lookup_result_t( ) noexcept = delete;
 				constexpr lookup_result_t( lookup_result_t const & ) noexcept = default;
 				constexpr lookup_result_t( lookup_result_t && ) noexcept = default;

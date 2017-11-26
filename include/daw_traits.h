@@ -192,37 +192,37 @@ namespace daw {
 	constexpr bool name##_v = impl::name<T>::value;
 		  // END METHOD_CHECKER_ANY
 
-			/*
-			#define GENERATE_HAS_MEMBER_FUNCTION_TRAIT( MemberName ) \
-			  namespace impl { \
-			    template<typename T, typename = void> \
-			    class has_##MemberName##_member_impl : public std::false_type {}; \
-			                                                                                                                       \
-			    template<typename T> \
-			    class has_##MemberName##_member_impl<T, typename std::enable_if_t<is_class_v<T>>> { \
-			      struct Fallback { \
-			        int MemberName; \
-			      }; \
-			      struct Derived : T, Fallback {}; \
-			                                                                                                                       \
-			      template<typename U, U> \
-			      struct Check; \
-			                                                                                                                       \
-			      using ArrayOfOne = char[1]; \
-			      using ArrayOfTwo = char[2]; \
-			                                                                                                                       \
-			      template<typename U> \
-			      static ArrayOfOne &func( Check<int Fallback::*, &U::MemberName> * ); \
-			      template<typename U> \
-			      static ArrayOfTwo &func( ... ); \
-			                                                                                                                       \
-			    public: \
-			      using type = has_##MemberName##_member_impl; \
-			      enum { value = sizeof( func<Derived>( 0 ) ) == 2 }; \
-			    }; \
-			  }
+		/*
+		#define GENERATE_HAS_MEMBER_FUNCTION_TRAIT( MemberName ) \
+		  namespace impl { \
+		    template<typename T, typename = void> \
+		    class has_##MemberName##_member_impl : public std::false_type {}; \
+		                                                                                                                       \
+		    template<typename T> \
+		    class has_##MemberName##_member_impl<T, typename std::enable_if_t<is_class_v<T>>> { \
+		      struct Fallback { \
+		        int MemberName; \
+		      }; \
+		      struct Derived : T, Fallback {}; \
+		                                                                                                                       \
+		      template<typename U, U> \
+		      struct Check; \
+		                                                                                                                       \
+		      using ArrayOfOne = char[1]; \
+		      using ArrayOfTwo = char[2]; \
+		                                                                                                                       \
+		      template<typename U> \
+		      static ArrayOfOne &func( Check<int Fallback::*, &U::MemberName> * ); \
+		      template<typename U> \
+		      static ArrayOfTwo &func( ... ); \
+		                                                                                                                       \
+		    public: \
+		      using type = has_##MemberName##_member_impl; \
+		      enum { value = sizeof( func<Derived>( 0 ) ) == 2 }; \
+		    }; \
+		  }
 
-			*/
+		*/
 
 #define HAS_STATIC_TYPE_MEMBER( MemberName )                                                                           \
 	namespace detectors {                                                                                                \
@@ -418,7 +418,8 @@ namespace daw {
 		struct void_function {
 			Function function;
 			void_function( ) = default;
-			void_function( Function &&func ) : function{std::forward<Function>( func )} {}
+			void_function( Function &&func )
+			  : function{std::forward<Function>( func )} {}
 			~void_function( ) = default;
 			void_function( void_function const & ) = default;
 			void_function( void_function && ) = default;

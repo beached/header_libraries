@@ -37,9 +37,13 @@ namespace daw {
 		struct hash_item {
 			size_t hash_value;
 			value_type value;
-			constexpr hash_item( ) : hash_value{}, value{} {}
+			constexpr hash_item( )
+			  : hash_value{}
+			  , value{} {}
 
-			constexpr hash_item( size_t h, value_type v ) : hash_value{std::move( h )}, value{std::move( v )} {}
+			constexpr hash_item( size_t h, value_type v )
+			  : hash_value{std::move( h )}
+			  , value{std::move( v )} {}
 
 		}; // hash_item
 
@@ -101,8 +105,9 @@ namespace daw {
 		}
 
 	public:
-		constexpr static_hash_t( ) : m_values{} {
-			daw::algorithm::fill_n( m_values.begin( ), Capacity, hash_item{ } );
+		constexpr static_hash_t( )
+		  : m_values{} {
+			daw::algorithm::fill_n( m_values.begin( ), Capacity, hash_item{} );
 		}
 
 		constexpr static_hash_t( std::initializer_list<std::pair<char const *const, value_type>> items ) {

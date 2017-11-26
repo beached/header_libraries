@@ -36,7 +36,8 @@ namespace daw {
 
 	public:
 		zip_container( Containers... containers )
-		  : m_begin( make_zipiter( std::begin( containers )... ) ), m_end( make_zipiter( std::end( containers )... ) ) {}
+		  : m_begin( make_zipiter( std::begin( containers )... ) )
+		  , m_end( make_zipiter( std::end( containers )... ) ) {}
 
 		iterator begin( ) {
 			return m_begin;

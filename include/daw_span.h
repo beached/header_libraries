@@ -55,15 +55,25 @@ namespace daw {
 		size_type m_size;
 
 	public:
-		constexpr span( ) noexcept : m_first{nullptr}, m_size{0} {}
+		constexpr span( ) noexcept
+		  : m_first{nullptr}
+		  , m_size{0} {}
 
-		explicit constexpr span( std::nullptr_t ) noexcept : m_first{nullptr}, m_size{0} {}
-		constexpr span( std::nullptr_t, size_type ) noexcept : m_first{nullptr}, m_size{0} {}
+		explicit constexpr span( std::nullptr_t ) noexcept
+		  : m_first{nullptr}
+		  , m_size{0} {}
+		constexpr span( std::nullptr_t, size_type ) noexcept
+		  : m_first{nullptr}
+		  , m_size{0} {}
 
-		constexpr span( pointer s, size_type count ) noexcept : m_first{s}, m_size{count} {}
+		constexpr span( pointer s, size_type count ) noexcept
+		  : m_first{s}
+		  , m_size{count} {}
 
 		template<size_t N>
-		explicit constexpr span( value_type ( &s )[N] ) noexcept : m_first{s}, m_size{N} {}
+		explicit constexpr span( value_type ( &s )[N] ) noexcept
+		  : m_first{s}
+		  , m_size{N} {}
 
 		constexpr span( span const &other ) noexcept = default;
 		constexpr span &operator=( span const & ) noexcept = default;
@@ -268,7 +278,7 @@ namespace daw {
 	template<typename Container, std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
 	constexpr auto make_span( Container &container ) noexcept {
 		using value_t = typename std::iterator_traits<decltype( container.begin( ) )>::value_type;
-		return span<value_t>(container.data( ), container.size( ));
+		return span<value_t>( container.data( ), container.size( ) );
 	}
 
 	struct span_access_past_end_exception {};

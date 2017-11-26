@@ -85,7 +85,9 @@ namespace daw {
 
 	public:
 		constexpr bit_stream( InputIteratorF first, InputIteratorL last ) noexcept
-		  : m_first{first}, m_last{last}, m_left_overs{} {}
+		  : m_first{first}
+		  , m_last{last}
+		  , m_left_overs{} {}
 
 		constexpr bool valid( ) const noexcept {
 			return m_first != m_last;

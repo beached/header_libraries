@@ -98,10 +98,10 @@ namespace daw {
 		decltype( auto ) find_if( Container &container, UnaryPredicate pred ) noexcept(
 		  noexcept( std::find_if( std::begin( container ), std::end( container ), pred ) ) ) {
 
-			static_assert(
-			  daw::is_unary_predicate_v<UnaryPredicate, decltype( *std::begin( container ) ), decltype( *std::end( container ) )>,
-			  "Compare does not satisfy the Unary Predicate concept.  See "
-			  "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+			static_assert( daw::is_unary_predicate_v<UnaryPredicate, decltype( *std::begin( container ) ),
+			                                         decltype( *std::end( container ) )>,
+			               "Compare does not satisfy the Unary Predicate concept.  See "
+			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
 
 			return std::find_if( std::begin( container ), std::end( container ), pred );
 		}
@@ -111,10 +111,10 @@ namespace daw {
 		decltype( auto ) find_if( Container const &container, UnaryPredicate pred ) noexcept(
 		  noexcept( std::find_if( std::begin( container ), std::end( container ), pred ) ) ) {
 
-			static_assert(
-			  daw::is_unary_predicate_v<UnaryPredicate, decltype( *std::begin( container ) ), decltype( *std::end( container ) )>,
-			  "Compare does not satisfy the Unary Predicate concept.  See "
-			  "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+			static_assert( daw::is_unary_predicate_v<UnaryPredicate, decltype( *std::begin( container ) ),
+			                                         decltype( *std::end( container ) )>,
+			               "Compare does not satisfy the Unary Predicate concept.  See "
+			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
 
 			return std::find_if( std::begin( container ), std::end( container ), pred );
 		}
@@ -204,7 +204,7 @@ namespace daw {
 
 		template<typename Container, typename OutputIterator, typename UnaryOperator,
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
-		decltype( auto ) max_element( Container const&container ) noexcept(
+		decltype( auto ) max_element( Container const &container ) noexcept(
 		  noexcept( std::max_element( std::cbegin( container ), std::cend( container ) ) ) ) {
 
 			return std::max_element( std::cbegin( container ), std::cend( container ) );

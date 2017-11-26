@@ -55,9 +55,9 @@ constexpr bool to_hex_test_004( ) noexcept {
 	uint32_t const a = 0xFF00FFFF;
 	char result[9] = {0};
 	char const expected[] = "FF00FFFF";
-	char * ptr = result;
-	daw::hex( a, ptr ); 
-	for( size_t n=0; n<8; ++n ) {
+	char *ptr = result;
+	daw::hex( a, ptr );
+	for( size_t n = 0; n < 8; ++n ) {
 		if( result[n] != expected[n] ) {
 			return false;
 		}
@@ -68,4 +68,3 @@ constexpr bool to_hex_test_004( ) noexcept {
 BOOST_AUTO_TEST_CASE( daw_hex_test_004 ) {
 	BOOST_REQUIRE( to_hex_test_004( ) );
 }
-

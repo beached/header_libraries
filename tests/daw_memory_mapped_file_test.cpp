@@ -26,8 +26,8 @@
 #include "daw_memory_mapped_file.h"
 
 template<typename String>
-void create_file( String && str ) {
-	std::ofstream fs{ std::forward<String>(str) };
+void create_file( String &&str ) {
+	std::ofstream fs{std::forward<String>( str )};
 	if( !fs ) {
 		return;
 	}

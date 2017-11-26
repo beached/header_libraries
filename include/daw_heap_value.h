@@ -42,7 +42,8 @@ namespace daw {
 		std::unique_ptr<value_t> m_value;
 
 	public:
-		heap_value( heap_value const &other ) : m_value{std::make_unique<value_t>( *other.m_value )} {}
+		heap_value( heap_value const &other )
+		  : m_value{std::make_unique<value_t>( *other.m_value )} {}
 
 		heap_value &operator=( heap_value const &rhs ) {
 			if( this != &rhs ) {
@@ -51,7 +52,8 @@ namespace daw {
 			return *this;
 		}
 
-		heap_value( ) : m_value{std::make_unique<value_t>( )} {}
+		heap_value( )
+		  : m_value{std::make_unique<value_t>( )} {}
 
 		heap_value( heap_value && ) = default;
 		heap_value &operator=( heap_value && ) = default;
@@ -59,7 +61,8 @@ namespace daw {
 
 		// Make this less perfect so that we can still do copy/move construction
 		template<typename Arg, typename = std::enable_if_t<daw::traits::not_self<Arg, value_t>( )>>
-		heap_value( Arg &&arg ) : m_value{std::make_unique<value_t>( std::forward<Arg>( arg ) )} {}
+		heap_value( Arg &&arg )
+		  : m_value{std::make_unique<value_t>( std::forward<Arg>( arg ) )} {}
 
 		template<typename Arg, typename... Args>
 		heap_value( Arg &&arg, Args &&... args )

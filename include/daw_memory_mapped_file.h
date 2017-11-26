@@ -50,7 +50,8 @@ namespace daw {
 			using const_reference = value_type const &;
 
 			memory_mapped_file_t( boost::filesystem::path file_path, bool const readonly = true )
-			  : m_file_path{file_path}, m_mf_params{file_path.string( )} {
+			  : m_file_path{file_path}
+			  , m_mf_params{file_path.string( )} {
 
 				m_mf_params.flags = boost::iostreams::mapped_file::mapmode::readwrite;
 				if( readonly ) {

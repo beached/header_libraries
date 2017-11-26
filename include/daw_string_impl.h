@@ -28,7 +28,8 @@ namespace daw {
 	template<typename CharT, typename Traits = std::char_traits<CharT>, typename InternalSizeType = size_t>
 	struct basic_string_view;
 
-	template<typename CharT, size_t Capacity, typename Traits = std::char_traits<CharT>, typename InternalSizeType = size_t>
+	template<typename CharT, size_t Capacity, typename Traits = std::char_traits<CharT>,
+	         typename InternalSizeType = size_t>
 	struct basic_static_string;
 
 	namespace details {
@@ -180,7 +181,8 @@ namespace daw {
 		}
 
 		template<typename charT, size_t Capacity, typename traits>
-		void sv_insert_aligned( std::basic_ostream<charT, traits> &os, daw::basic_static_string<charT, Capacity, traits> const &str ) {
+		void sv_insert_aligned( std::basic_ostream<charT, traits> &os,
+		                        daw::basic_static_string<charT, Capacity, traits> const &str ) {
 			auto const size = str.size( );
 			auto const alignment_size = static_cast<std::size_t>( os.width( ) ) - size;
 			bool const align_left =
@@ -203,7 +205,8 @@ namespace daw {
 		struct only_ptr {
 			T *ptr;
 
-			constexpr only_ptr( T *p ) noexcept : ptr{p} {}
+			constexpr only_ptr( T *p ) noexcept
+			  : ptr{p} {}
 
 			constexpr operator T *( ) const noexcept {
 				return ptr;
@@ -212,4 +215,3 @@ namespace daw {
 	} // namespace details
 
 } // namespace daw
-

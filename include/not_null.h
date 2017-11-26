@@ -52,13 +52,15 @@ namespace daw {
 		static_assert( is_assignable_v<T &, std::nullptr_t>, "T cannot be assigned nullptr." );
 
 		template<typename U, std::enable_if_t<is_convertible_v<U, T>, std::nullptr_t> = nullptr>
-		constexpr not_null( U u ) : m_ptr{u} {
+		constexpr not_null( U u )
+		  : m_ptr{u} {
 
 			daw::exception::daw_throw_on_null( m_ptr, "Cannot be assigned nullptr" );
 		}
 
 		template<typename U, std::enable_if_t<is_convertible_v<U, T>, std::nullptr_t> = nullptr>
-		constexpr not_null( not_null<U> const &other ) : not_null{other.get( )} {}
+		constexpr not_null( not_null<U> const &other )
+		  : not_null{other.get( )} {}
 		~not_null( ) = default;
 
 		constexpr not_null( not_null const &other ) noexcept = default;

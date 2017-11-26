@@ -54,7 +54,9 @@ namespace daw {
 			Range &operator=( Range const & ) = default;
 			Range &operator=( Range && ) = default;
 
-			Range( Iterator First, Iterator Last ) : m_begin( First ), m_end( Last ) {}
+			Range( Iterator First, Iterator Last )
+			  : m_begin( First )
+			  , m_end( Last ) {}
 
 			Range &move_next( ) {
 				assert( m_begin != m_end );

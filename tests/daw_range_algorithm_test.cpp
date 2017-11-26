@@ -82,4 +82,3 @@ BOOST_AUTO_TEST_CASE( daw_range_algorithm_test_max_element ) {
 	std::iota( std::begin( v1 ), std::end( v1 ), 1 );
 	daw::algorithm::max_element( v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
 }
-

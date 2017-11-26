@@ -62,7 +62,9 @@ namespace daw {
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////
-		expected_t( value_type value ) noexcept : m_value{std::move( value )}, m_exception{} {}
+		expected_t( value_type value ) noexcept
+		  : m_value{std::move( value )}
+		  , m_exception{} {}
 
 		expected_t &operator=( value_type value ) noexcept {
 			m_value = std::move( value );
@@ -70,7 +72,9 @@ namespace daw {
 			return *this;
 		}
 
-		expected_t( std::exception_ptr ptr ) : m_value{}, m_exception{std::move( ptr )} {}
+		expected_t( std::exception_ptr ptr )
+		  : m_value{}
+		  , m_exception{std::move( ptr )} {}
 
 		expected_t &operator=( std::exception_ptr ptr ) {
 			if( m_value ) {
@@ -81,9 +85,11 @@ namespace daw {
 		}
 
 		template<typename ExceptionType>
-		expected_t( exception_tag, ExceptionType const &ex ) : expected_t{std::make_exception_ptr( ex )} {}
+		expected_t( exception_tag, ExceptionType const &ex )
+		  : expected_t{std::make_exception_ptr( ex )} {}
 
-		expected_t( exception_tag ) : expected_t{std::current_exception( )} {}
+		expected_t( exception_tag )
+		  : expected_t{std::current_exception( )} {}
 
 		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
@@ -172,16 +178,21 @@ namespace daw {
 		std::exception_ptr m_exception;
 		bool m_value;
 
-		expected_t( bool b ) noexcept : m_exception{}, m_value{b} {}
+		expected_t( bool b ) noexcept
+		  : m_exception{}
+		  , m_value{b} {}
 
 	public:
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: No value, aka null
 		//////////////////////////////////////////////////////////////////////////
 		expected_t( expected_t &&other ) noexcept
-		  : m_exception{std::exchange( other.m_exception, nullptr )}, m_value{std::exchange( other.m_value, false )} {}
+		  : m_exception{std::exchange( other.m_exception, nullptr )}
+		  , m_value{std::exchange( other.m_value, false )} {}
 
-		expected_t( expected_t const &other ) noexcept : m_exception{}, m_value{other.m_value} {
+		expected_t( expected_t const &other ) noexcept
+		  : m_exception{}
+		  , m_value{other.m_value} {
 			if( other.m_exception ) {
 				m_exception = other.m_exception;
 			}
@@ -206,10 +217,12 @@ namespace daw {
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////
 
-		expected_t( ) noexcept : expected_t{false} {}
+		expected_t( ) noexcept
+		  : expected_t{false} {}
 
 		template<typename T>
-		expected_t( T && ) noexcept : expected_t{true} {}
+		expected_t( T && ) noexcept
+		  : expected_t{true} {}
 
 		expected_t &operator=( bool ) noexcept {
 			m_value = true;
@@ -217,7 +230,9 @@ namespace daw {
 			return *this;
 		}
 
-		expected_t( std::exception_ptr ptr ) noexcept : m_exception{}, m_value{false} {
+		expected_t( std::exception_ptr ptr ) noexcept
+		  : m_exception{}
+		  , m_value{false} {
 			daw::exception::daw_throw_on_false( ptr, "Attempt to pass a null exception pointer" );
 			m_exception = std::move( ptr );
 		}
@@ -230,9 +245,11 @@ namespace daw {
 		}
 
 		template<typename ExceptionType>
-		expected_t( exception_tag, ExceptionType const &ex ) noexcept : expected_t{std::make_exception_ptr( ex )} {}
+		expected_t( exception_tag, ExceptionType const &ex ) noexcept
+		  : expected_t{std::make_exception_ptr( ex )} {}
 
-		expected_t( exception_tag ) noexcept : expected_t{std::current_exception( )} {}
+		expected_t( exception_tag ) noexcept
+		  : expected_t{std::current_exception( )} {}
 
 		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
 		// Args...>>>

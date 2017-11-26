@@ -688,7 +688,6 @@ namespace daw {
 				daw::string_view sv2{str2};
 				BOOST_REQUIRE_EQUAL( sv1, sv2 );
 			}
-
 		}
 	}
 
@@ -820,7 +819,7 @@ namespace daw {
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_starts_with_001 ) {
-		BOOST_REQUIRE( daw::string_view{ "This is a test" }.starts_with( "This" ) );
+		BOOST_REQUIRE( daw::string_view{"This is a test"}.starts_with( "This" ) );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_starts_with_002 ) {
@@ -872,4 +871,3 @@ namespace daw {
 		BOOST_REQUIRE_EQUAL( "5", val );
 	}
 } // namespace daw
-

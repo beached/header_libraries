@@ -33,4 +33,3 @@ BOOST_AUTO_TEST_CASE( reverse_iterator_test_001 ) {
 		std::cout << ' ' << *rbegin << '\n';
 	}
 }
-

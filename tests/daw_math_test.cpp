@@ -115,5 +115,3 @@ BOOST_AUTO_TEST_CASE( daw_math_nearly_equal_test ) {
 	i2 = 2;
 	BOOST_REQUIRE( !daw::math::nearly_equal( i1, i2 ) );
 }
-
-

@@ -62,7 +62,8 @@ namespace daw {
 		optional_poly( optional_poly && ) noexcept = default;
 		optional_poly &operator=( optional_poly && ) noexcept = default;
 
-		optional_poly( optional_poly const &other ) : m_value{make_copy( other.m_value.get( ) )} {}
+		optional_poly( optional_poly const &other )
+		  : m_value{make_copy( other.m_value.get( ) )} {}
 
 		optional_poly &operator=( optional_poly const &rhs ) {
 			if( this != &rhs ) {
@@ -78,19 +79,23 @@ namespace daw {
 
 		template<typename T,
 		         typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
-		optional_poly( T &&value ) : m_value{new std::decay_t<T>{std::forward<T>( value )}} {}
+		optional_poly( T &&value )
+		  : m_value{new std::decay_t<T>{std::forward<T>( value )}} {}
 
 		template<typename T,
 		         typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
-		optional_poly( T const &value ) : m_value{new std::decay_t<T>{value}} {}
+		optional_poly( T const &value )
+		  : m_value{new std::decay_t<T>{value}} {}
 
 		template<typename T,
 		         typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
-		explicit optional_poly( optional_poly<T> const &other ) : m_value{make_copy( other.m_value.get( ) )} {}
+		explicit optional_poly( optional_poly<T> const &other )
+		  : m_value{make_copy( other.m_value.get( ) )} {}
 
 		template<typename T,
 		         typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
-		explicit optional_poly( optional_poly<T> &&other ) noexcept : m_value{other.m_value.release( )} {}
+		explicit optional_poly( optional_poly<T> &&other ) noexcept
+		  : m_value{other.m_value.release( )} {}
 
 		template<typename T,
 		         typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>

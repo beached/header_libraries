@@ -196,8 +196,12 @@ namespace daw {
 		}
 
 	public:
-		clumpy_sparsy_iterator( ) : m_position( std::numeric_limits<size_t>::max( ) ), m_items( nullptr ) {}
-		clumpy_sparsy_iterator( clumpy_sparsy<T> *items, size_t position = 0 ) : m_position( position ), m_items( items ) {}
+		clumpy_sparsy_iterator( )
+		  : m_position( std::numeric_limits<size_t>::max( ) )
+		  , m_items( nullptr ) {}
+		clumpy_sparsy_iterator( clumpy_sparsy<T> *items, size_t position = 0 )
+		  : m_position( position )
+		  , m_items( items ) {}
 	}; // class clumpy_sparsy_iterator
 
 } // namespace daw

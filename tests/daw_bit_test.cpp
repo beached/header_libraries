@@ -38,4 +38,3 @@ BOOST_AUTO_TEST_CASE( bit_mask_001 ) {
 	BOOST_REQUIRE( !daw::are_set( 0b0000'1000, 0b1000'000, 0b0000'0001 ) );
 	BOOST_REQUIRE( daw::are_set( 0b0000'1000, 0b1000'000, 0b0000'0001, 0b0000'1000 ) );
 }
-

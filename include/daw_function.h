@@ -31,7 +31,7 @@ namespace daw {
 
 	template<typename ClassType, typename ReturnType, typename... Args>
 	struct function_info<ReturnType ( ClassType::* )( Args... ) const> {
-		static constexpr size_t const arity = sizeof...(Args);
+		static constexpr size_t const arity = sizeof...( Args );
 
 		using result_type = ReturnType;
 		using args_tuple = std::tuple<Args...>;
@@ -45,4 +45,3 @@ namespace daw {
 		};
 	};
 } // namespace daw
-

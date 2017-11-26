@@ -42,7 +42,9 @@ namespace daw {
 
 			parser_result( ) = default;
 			parser_result( T value, Iterator f, Iterator l )
-			  : first{std::move( f )}, last{std::move( l )}, result{std::move( value )} {}
+			  : first{std::move( f )}
+			  , last{std::move( l )}
+			  , result{std::move( value )} {}
 
 			~parser_result( );
 			parser_result( parser_result const & ) = default;
@@ -66,7 +68,9 @@ namespace daw {
 			bool found;
 
 			constexpr find_result_t( ForwardIterator First, ForwardIterator Last, bool Found ) noexcept
-			  : first{First}, last{Last}, found{Found} {}
+			  : first{First}
+			  , last{Last}
+			  , found{Found} {}
 
 			constexpr explicit operator bool( ) const noexcept {
 				return found;
@@ -183,7 +187,8 @@ namespace daw {
 			std::vector<Arg> m_args;
 
 		public:
-			one_of_t( std::initializer_list<Arg> args ) : m_args{args} {}
+			one_of_t( std::initializer_list<Arg> args )
+			  : m_args{args} {}
 
 			template<typename T>
 			bool operator( )( T &&value ) const {
@@ -228,7 +233,8 @@ namespace daw {
 			daw::string_view container;
 
 		public:
-			constexpr in_t( daw::string_view values ) noexcept : container{std::move( values )} {}
+			constexpr in_t( daw::string_view values ) noexcept
+			  : container{std::move( values )} {}
 
 			template<typename U>
 			constexpr bool operator( )( U const &value ) const noexcept {
@@ -582,7 +588,9 @@ namespace daw {
 			}
 
 		public:
-			is_crlf( size_t count = 1 ) : m_last_values{}, m_count{count} {}
+			is_crlf( size_t count = 1 )
+			  : m_last_values{}
+			  , m_count{count} {}
 
 			bool operator( )( value_type const &v ) {
 				m_last_values.push_back( std::move( v ) );
@@ -599,7 +607,8 @@ namespace daw {
 				Predicate predicate;
 
 			public:
-				constexpr negate_t( Predicate pred ) : predicate{std::move( pred )} {}
+				constexpr negate_t( Predicate pred )
+				  : predicate{std::move( pred )} {}
 
 				template<typename... Args>
 				constexpr bool operator( )( Args &&... args ) const {
@@ -626,7 +635,8 @@ namespace daw {
 			std::vector<value_t> m_to_match;
 
 		public:
-			matcher_t( std::vector<value_t> to_match ) : m_to_match{std::move( to_match )} {}
+			matcher_t( std::vector<value_t> to_match )
+			  : m_to_match{std::move( to_match )} {}
 
 			template<typename ForwardIterator>
 			find_result_t<ForwardIterator> operator( )( ForwardIterator first, ForwardIterator last ) const {

@@ -27,7 +27,7 @@
 
 BOOST_AUTO_TEST_CASE( integer_range_01 ) {
 	int sum = 0;
-	for( auto s: daw::integer_range<int>( 5, 10 ) ) {
+	for( auto s : daw::integer_range<int>( 5, 10 ) ) {
 		sum += s;
 	}
 	BOOST_REQUIRE_EQUAL( sum, 35 );

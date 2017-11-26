@@ -34,7 +34,6 @@ namespace daw {
 	template<typename... Ts>
 	using void_t = typename voider<Ts...>::type;
 
-
 	template<typename T>
 	constexpr bool is_floating_point_v = std::is_floating_point<T>::value;
 
@@ -150,7 +149,8 @@ namespace daw {
 
 		public:
 			constexpr not_fn_t( ) noexcept = default;
-			constexpr explicit not_fn_t( Function func ) : m_function{std::move( func )} {}
+			constexpr explicit not_fn_t( Function func )
+			  : m_function{std::move( func )} {}
 			~not_fn_t( );
 			constexpr not_fn_t( not_fn_t const & ) = default;
 			constexpr not_fn_t( not_fn_t && ) noexcept = default;
@@ -372,4 +372,3 @@ namespace daw {
 		return c.size( );
 	}
 } // namespace daw
-

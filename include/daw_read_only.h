@@ -37,7 +37,8 @@ namespace daw {
 		value_type m_value;
 
 	public:
-		read_only( value_type value = value_type{} ) : m_value{std::move( value )} {}
+		read_only( value_type value = value_type{} )
+		  : m_value{std::move( value )} {}
 
 		read_only( read_only const & ) = default;
 		read_only( read_only && ) = default;

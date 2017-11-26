@@ -161,7 +161,6 @@ namespace daw {
 		BOOST_TEST_MESSAGE( "Is 0 bytes in size" );
 
 		{ BOOST_REQUIRE( view.size( ) == 0 ); }
-
 	}
 
 	//----------------------------------------------------------------------------
@@ -738,4 +737,3 @@ namespace daw {
 		BOOST_CHECK_THROW( a.push_back( 'a' ), std::out_of_range );
 	}
 } // namespace daw
-

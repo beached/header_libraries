@@ -39,9 +39,11 @@ namespace daw {
 		pointer m_pointer;
 
 	public:
-		constexpr RandomIterator( ) noexcept : m_pointer{nullptr} {} // TODO: Is this the correct behaviour
+		constexpr RandomIterator( ) noexcept
+		  : m_pointer{nullptr} {} // TODO: Is this the correct behaviour
 
-		constexpr RandomIterator( T *const ptr ) noexcept : m_pointer{ptr} {}
+		constexpr RandomIterator( T *const ptr ) noexcept
+		  : m_pointer{ptr} {}
 
 		RandomIterator( RandomIterator const & ) = default;
 		RandomIterator( RandomIterator && ) = default;

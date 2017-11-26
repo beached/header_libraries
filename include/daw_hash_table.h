@@ -74,7 +74,9 @@ namespace daw {
 				return hash >= Sentinals::SentinalsSize;
 			}
 
-			hash_table_item( ) : hash{Sentinals::sentinal_empty}, value{} {}
+			hash_table_item( )
+			  : hash{Sentinals::sentinal_empty}
+			  , value{} {}
 
 			~hash_table_item( ) = default;
 
@@ -83,7 +85,8 @@ namespace daw {
 			  , value{other.value} {}
 
 			hash_table_item( hash_table_item &&other ) noexcept
-			  : hash{std::move( other.hash )}, value{std::move( other.value )} {}
+			  : hash{std::move( other.hash )}
+			  , value{std::move( other.value )} {}
 
 			hash_table_item &operator=( hash_table_item const &rhs ) {
 				if( this != &rhs ) {
@@ -118,11 +121,15 @@ namespace daw {
 
 	public:
 		hash_table_item_iterator( pointer first, pointer position, pointer last )
-		  : m_begin{first}, m_position{position}, m_end{last} {}
+		  : m_begin{first}
+		  , m_position{position}
+		  , m_end{last} {}
 
 		template<typename T, typename = std::enable_if_t<is_convertible_v<T, pointer>>>
 		hash_table_item_iterator( hash_table_item_iterator<T> const &other )
-		  : m_begin( other.m_begin ), m_position( other.m_position ), m_end( other.m_end ) {}
+		  : m_begin( other.m_begin )
+		  , m_position( other.m_position )
+		  , m_end( other.m_end ) {}
 
 		template<typename T, typename = std::enable_if_t<is_convertible_v<T, pointer>>>
 		hash_table_item_iterator &operator=( hash_table_item_iterator<T> const &rhs ) {
@@ -146,7 +153,9 @@ namespace daw {
 		~hash_table_item_iterator( ) = default;
 
 		hash_table_item_iterator( hash_table_item_iterator const &other ) noexcept
-		  : m_begin{other.m_begin}, m_position{other.m_position}, m_end{other.m_end} {}
+		  : m_begin{other.m_begin}
+		  , m_position{other.m_position}
+		  , m_end{other.m_end} {}
 
 		hash_table_item_iterator( hash_table_item_iterator &&other ) noexcept
 		  : m_begin{std::move( other.m_begin )}
@@ -313,7 +322,8 @@ namespace daw {
 			daw::exception::daw_throw_on_false( start_size > 0 );
 		}
 
-		hash_table( ) : hash_table( 7, 2.6, 50 ) {}
+		hash_table( )
+		  : hash_table( 7, 2.6, 50 ) {}
 
 		~hash_table( ) = default;
 

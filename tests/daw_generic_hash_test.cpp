@@ -37,13 +37,13 @@ BOOST_AUTO_TEST_CASE( test_01 ) {
 
 /*
 BOOST_AUTO_TEST_CASE( test_16_01 ) {
-	constexpr auto const c1 = daw::generic_hash<2>( "Hello" );
-	constexpr auto const c2 = daw::generic_hash<2>( "Hello" );
-	constexpr auto const c3 = daw::generic_hash<2>( 5 );
-	constexpr auto const c4 = daw::generic_hash<2>( 0xFF00FF00FF00FF );
-	std::cout << c1 << " " << c2 << " " << c3 << " " << c4 << '\n';
-	BOOST_REQUIRE_EQUAL( c1, c2 );
-	BOOST_REQUIRE( c1 != c3 );
+  constexpr auto const c1 = daw::generic_hash<2>( "Hello" );
+  constexpr auto const c2 = daw::generic_hash<2>( "Hello" );
+  constexpr auto const c3 = daw::generic_hash<2>( 5 );
+  constexpr auto const c4 = daw::generic_hash<2>( 0xFF00FF00FF00FF );
+  std::cout << c1 << " " << c2 << " " << c3 << " " << c4 << '\n';
+  BOOST_REQUIRE_EQUAL( c1, c2 );
+  BOOST_REQUIRE( c1 != c3 );
 }
 */
 

@@ -26,8 +26,9 @@
 #include "daw_scope_guard.h"
 
 struct oe_t {
-	bool * b;
-	constexpr oe_t( bool *ptr ) noexcept : b{ptr} {}
+	bool *b;
+	constexpr oe_t( bool *ptr ) noexcept
+	  : b{ptr} {}
 
 	constexpr void operator( )( ) noexcept {
 		*b = !*b;
@@ -36,9 +37,6 @@ struct oe_t {
 
 BOOST_AUTO_TEST_CASE( test_01 ) {
 	bool is_run = false;
-	{
-		auto sg = daw::on_scope_exit( oe_t{ &is_run } );
-	}
+	{ auto sg = daw::on_scope_exit( oe_t{&is_run} ); }
 	BOOST_REQUIRE_EQUAL( is_run, true );
 }
-

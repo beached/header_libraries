@@ -104,7 +104,10 @@ namespace daw {
 				size_t lookup_cost;
 				bool found;
 
-				lookup_result_t( ) : position{0}, lookup_cost{0}, found{false} {}
+				lookup_result_t( )
+				  : position{0}
+				  , lookup_cost{0}
+				  , found{false} {}
 				operator bool( ) const noexcept {
 					return found;
 				}
@@ -168,13 +171,17 @@ namespace daw {
 		}
 
 	public:
-		hash_table( ) : m_hashes{m_initial_size, impl::sentinals::empty}, m_values{m_initial_size} {
+		hash_table( )
+		  : m_hashes{m_initial_size, impl::sentinals::empty}
+		  , m_values{m_initial_size} {
 
 			daw::exception::daw_throw_on_false( m_hashes.size( ) > 0 );
 			daw::exception::daw_throw_on_false( m_values.size( ) > 0 );
 		}
 
-		hash_table( size_t initial_size ) : m_hashes{initial_size, impl::sentinals::empty}, m_values(initial_size) {
+		hash_table( size_t initial_size )
+		  : m_hashes{initial_size, impl::sentinals::empty}
+		  , m_values( initial_size ) {
 
 			daw::exception::daw_throw_on_false( m_hashes.size( ) > 0 );
 			daw::exception::daw_throw_on_false( m_values.size( ) > 0 );

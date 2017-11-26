@@ -22,8 +22,8 @@
 
 #include "boost_test.h"
 #include <algorithm>
-#include <iostream>
 #include <cstdint>
+#include <iostream>
 
 #include "daw_static_array.h"
 #include "daw_zipiter.h"
@@ -37,10 +37,7 @@ constexpr bool test( ) {
 	return *get<0>( zi ) == 8 && *get<1>( zi ) == 2;
 }
 
-
 BOOST_AUTO_TEST_CASE( test_01 ) {
 	constexpr bool result = test( );
 	BOOST_REQUIRE( result );
 }
-
-

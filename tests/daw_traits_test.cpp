@@ -49,7 +49,9 @@ BOOST_AUTO_TEST_CASE( daw_traits_is_equality_comparable ) {
 			std::vector<int> y;
 
 		public:
-			NotEqual2( int, std::vector<int> ) : x( 0 ), y( ) {
+			NotEqual2( int, std::vector<int> )
+			  : x( 0 )
+			  , y( ) {
 				x += 1;
 			}
 		};
@@ -63,7 +65,8 @@ BOOST_AUTO_TEST_CASE( daw_traits_is_regular ) {
 	BOOST_REQUIRE_MESSAGE( daw::is_regular_v<std::string>, "1. std::string should report as being regular" );
 	struct NotRegular {
 		int x;
-		NotRegular( int ) : x( ) {}
+		NotRegular( int )
+		  : x( ) {}
 		NotRegular( ) = delete;
 		NotRegular( NotRegular const & ) = delete;
 		NotRegular &operator=( NotRegular const & ) = delete;
@@ -313,12 +316,14 @@ BOOST_AUTO_TEST_CASE( daw_traits_isnt_string ) {
 
 struct TestNoOS {
 	int x;
-	TestNoOS( ) : x( 1 ) {}
+	TestNoOS( )
+	  : x( 1 ) {}
 };
 
 struct TestYesOS {
 	int x;
-	TestYesOS( ) : x( 1 ) {}
+	TestYesOS( )
+	  : x( 1 ) {}
 };
 
 std::ostream &operator<<( std::ostream &os, TestYesOS const &t ) {
@@ -609,25 +614,23 @@ void test_string( ) {
 	BOOST_REQUIRE( is_string_like );
 }
 
-
 BOOST_AUTO_TEST_CASE( string_concept_test_001 ) {
-		test_string<std::string>( );
+	test_string<std::string>( );
 }
 
 BOOST_AUTO_TEST_CASE( string_view_concept_test_001 ) {
-		test_string_view<daw::string_view>( );
+	test_string_view<daw::string_view>( );
 }
 
 BOOST_AUTO_TEST_CASE( string_view_concept_test_002 ) {
-		test_string_view<std::string>( );
+	test_string_view<std::string>( );
 }
 
 BOOST_AUTO_TEST_CASE( is_member_size_equal_v ) {
-		constexpr bool result_t = daw::traits::is_value_size_equal_v<std::string, sizeof(char)>;
-		constexpr bool result_f = daw::traits::is_value_size_equal_v<std::wstring, sizeof(char)>;
-		constexpr bool result_t2 = daw::traits::is_value_size_equal_v<std::wstring, sizeof(wchar_t)>;
-		BOOST_REQUIRE( result_t );
-		BOOST_REQUIRE( !result_f );
-		BOOST_REQUIRE( result_t2 );
+	constexpr bool result_t = daw::traits::is_value_size_equal_v<std::string, sizeof( char )>;
+	constexpr bool result_f = daw::traits::is_value_size_equal_v<std::wstring, sizeof( char )>;
+	constexpr bool result_t2 = daw::traits::is_value_size_equal_v<std::wstring, sizeof( wchar_t )>;
+	BOOST_REQUIRE( result_t );
+	BOOST_REQUIRE( !result_f );
+	BOOST_REQUIRE( result_t2 );
 }
-

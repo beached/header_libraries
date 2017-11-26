@@ -42,8 +42,10 @@ namespace daw {
 			T value;
 			daw::nothing empty_value;
 
-			constexpr static_optional_storage( daw::nothing ) noexcept : empty_value{} {}
-			constexpr static_optional_storage( T v ) noexcept : value{std::move( v )} {}
+			constexpr static_optional_storage( daw::nothing ) noexcept
+			  : empty_value{} {}
+			constexpr static_optional_storage( T v ) noexcept
+			  : value{std::move( v )} {}
 		};
 	} // namespace impl
 
@@ -71,23 +73,30 @@ namespace daw {
 		}
 
 	public:
-		constexpr static_optional( ) noexcept : m_value{daw::nothing{}}, m_occupied{false} {}
-		explicit constexpr static_optional( daw::nothing ) noexcept : m_value{daw::nothing{}}, m_occupied{false} {}
+		constexpr static_optional( ) noexcept
+		  : m_value{daw::nothing{}}
+		  , m_occupied{false} {}
+		explicit constexpr static_optional( daw::nothing ) noexcept
+		  : m_value{daw::nothing{}}
+		  , m_occupied{false} {}
 
 		template<typename Arg, typename... Args,
 		         std::enable_if_t<!daw::is_same_v<static_optional, std::decay_t<Arg>>, std::nullptr_t> = nullptr>
 		constexpr static_optional( Arg &&arg, Args &&... args ) noexcept( noexcept( value_type{
 		  std::forward<Arg>( arg ), std::forward<Args>( args )...} ) )
 
-		  : m_value{value_type{std::forward<Arg>( arg ), std::forward<Args>( args )...}}, m_occupied{true} {}
+		  : m_value{value_type{std::forward<Arg>( arg ), std::forward<Args>( args )...}}
+		  , m_occupied{true} {}
 
 		~static_optional( ) noexcept = default;
 
 		constexpr static_optional( static_optional const &other ) noexcept
-		  : m_value{other.m_value}, m_occupied{other.m_occupied} {}
+		  : m_value{other.m_value}
+		  , m_occupied{other.m_occupied} {}
 
 		constexpr static_optional( static_optional &&other ) noexcept
-		  : m_value{std::move( other.m_value )}, m_occupied{daw::exchange( other.m_occupied, false )} {}
+		  : m_value{std::move( other.m_value )}
+		  , m_occupied{daw::exchange( other.m_occupied, false )} {}
 
 		constexpr static_optional &operator=( static_optional const &rhs ) noexcept {
 			if( &rhs != this ) {
@@ -113,7 +122,7 @@ namespace daw {
 		                                        !daw::is_same_v<daw::nothing, std::decay_t<T>>,
 		                                      std::nullptr_t> = nullptr>
 		constexpr static_optional &operator=( T value ) noexcept {
-			m_value = std::move(value);
+			m_value = std::move( value );
 			m_occupied = true;
 			return *this;
 		}

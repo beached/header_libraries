@@ -28,8 +28,6 @@
 #include "boost_test.h"
 #include "daw_unique_array.h"
 
-
 BOOST_AUTO_TEST_CASE( daw_unique_array_test_001 ) {
-	daw::unique_array_t<int> blah{ 15 }; 
+	daw::unique_array_t<int> blah{15};
 }
-

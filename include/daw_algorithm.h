@@ -24,8 +24,8 @@
 
 #include <algorithm>
 #include <functional>
-#include <iterator>
 #include <iostream>
+#include <iterator>
 #include <stdexcept>
 #include <type_traits>
 #include <vector>
@@ -208,7 +208,8 @@ namespace daw {
 			template<typename Fwd>
 			struct Reverser_generic {
 				Fwd &fwd;
-				Reverser_generic( Fwd &fwd_ ) : fwd( fwd_ ) {}
+				Reverser_generic( Fwd &fwd_ )
+				  : fwd( fwd_ ) {}
 				typedef std::reverse_iterator<typename Fwd::iterator> reverse_iterator;
 				reverse_iterator begin( ) {
 					return reverse_iterator( std::end( fwd ) );
@@ -221,7 +222,8 @@ namespace daw {
 			template<typename Fwd>
 			struct Reverser_special {
 				Fwd &fwd;
-				Reverser_special( Fwd &fwd_ ) : fwd( fwd_ ) {}
+				Reverser_special( Fwd &fwd_ )
+				  : fwd( fwd_ ) {}
 				auto begin( ) -> decltype( fwd.rbegin( ) ) {
 					return fwd.rbegin( );
 				}
@@ -448,7 +450,9 @@ namespace daw {
 				Upper m_upper;
 
 			public:
-				constexpr in_range( Lower lower, Upper upper ) : m_lower{std::move( lower )}, m_upper{std::move( upper )} {
+				constexpr in_range( Lower lower, Upper upper )
+				  : m_lower{std::move( lower )}
+				  , m_upper{std::move( upper )} {
 					if( lower > upper ) {
 						throw std::exception{};
 					};
@@ -465,7 +469,8 @@ namespace daw {
 				Value m_value;
 
 			public:
-				constexpr equal_to( Value value ) : m_value{std::move( value )} {}
+				constexpr equal_to( Value value )
+				  : m_value{std::move( value )} {}
 
 				template<typename T>
 				constexpr bool operator( )( T &&value ) const {
@@ -478,7 +483,8 @@ namespace daw {
 				Value m_value;
 
 			public:
-				constexpr less_than( Value value ) : m_value{std::move( value )} {}
+				constexpr less_than( Value value )
+				  : m_value{std::move( value )} {}
 
 				template<typename T>
 				constexpr bool operator( )( T &&value ) const {
@@ -491,7 +497,8 @@ namespace daw {
 				Value m_value;
 
 			public:
-				constexpr greater_than( Value value ) : m_value{std::move( value )} {}
+				constexpr greater_than( Value value )
+				  : m_value{std::move( value )} {}
 
 				template<typename T>
 				constexpr bool operator( )( T &&value ) const {
@@ -504,7 +511,8 @@ namespace daw {
 				Value m_value;
 
 			public:
-				constexpr greater_than_or_equal_to( Value value ) : m_value{std::move( value )} {}
+				constexpr greater_than_or_equal_to( Value value )
+				  : m_value{std::move( value )} {}
 
 				template<typename T>
 				constexpr bool operator( )( T &&value ) const {
@@ -517,7 +525,8 @@ namespace daw {
 				Value m_value;
 
 			public:
-				constexpr less_than_or_equal_to( Value value ) : m_value{std::move( value )} {}
+				constexpr less_than_or_equal_to( Value value )
+				  : m_value{std::move( value )} {}
 
 				template<typename T>
 				constexpr bool operator( )( T &&value ) const {
@@ -847,4 +856,3 @@ namespace daw {
 
 	} // namespace algorithm
 } // namespace daw
-

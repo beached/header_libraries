@@ -48,11 +48,15 @@ namespace daw {
 
 		struct no_copy_t {};
 		constexpr CString( CharT const *ptr, no_copy_t, size_t const length ) noexcept
-		  : m_data{ptr}, m_size{0 == length ? string_length( ptr ) : length}, m_local_string{false} {}
+		  : m_data{ptr}
+		  , m_size{0 == length ? string_length( ptr ) : length}
+		  , m_local_string{false} {}
 
 	public:
 		CString( CharT const *ptr, bool do_copy, size_t const length )
-		  : m_data{ptr}, m_size{0 == length ? string_length( ptr ) : length}, m_local_string{do_copy} {
+		  : m_data{ptr}
+		  , m_size{0 == length ? string_length( ptr ) : length}
+		  , m_local_string{do_copy} {
 
 			if( do_copy ) {
 				size_t len = length;
@@ -62,13 +66,19 @@ namespace daw {
 			}
 		}
 
-		CString( CharT const *ptr, bool do_copy ) : CString{ptr, do_copy, 0} {}
+		CString( CharT const *ptr, bool do_copy )
+		  : CString{ptr, do_copy, 0} {}
 
-		constexpr CString( CharT const *ptr ) : CString{ptr, no_copy_t{}, 0} {}
+		constexpr CString( CharT const *ptr )
+		  : CString{ptr, no_copy_t{}, 0} {}
 
-		constexpr CString( ) noexcept : m_data{nullptr}, m_size{0}, m_local_string{true} {}
+		constexpr CString( ) noexcept
+		  : m_data{nullptr}
+		  , m_size{0}
+		  , m_local_string{true} {}
 
-		CString( CString const &value ) : CString{value.m_data, true, value.m_size} {}
+		CString( CString const &value )
+		  : CString{value.m_data, true, value.m_size} {}
 
 		CString &operator=( CString const &rhs ) {
 			if( this != &rhs ) {
@@ -171,4 +181,3 @@ namespace daw {
 
 	using cstring = CString<char>;
 } // namespace daw
-

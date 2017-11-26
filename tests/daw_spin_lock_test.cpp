@@ -30,6 +30,5 @@
 
 BOOST_AUTO_TEST_CASE( daw_spin_lock_001 ) {
 	daw::spin_lock sp{};
-	std::lock_guard<daw::spin_lock> mut{ sp };
+	std::lock_guard<daw::spin_lock> mut{sp};
 }
-

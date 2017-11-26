@@ -78,20 +78,29 @@ namespace daw {
 	public:
 		static constexpr size_type_internal const npos = std::numeric_limits<size_type_internal>::max( );
 
-		constexpr basic_string_view( ) noexcept : m_first{nullptr}, m_size{0} {}
+		constexpr basic_string_view( ) noexcept
+		  : m_first{nullptr}
+		  , m_size{0} {}
 
-		constexpr basic_string_view( std::nullptr_t ) noexcept : m_first{nullptr}, m_size{0} {}
-		constexpr basic_string_view( std::nullptr_t, size_type ) noexcept : m_first{nullptr}, m_size{0} {}
+		constexpr basic_string_view( std::nullptr_t ) noexcept
+		  : m_first{nullptr}
+		  , m_size{0} {}
+		constexpr basic_string_view( std::nullptr_t, size_type ) noexcept
+		  : m_first{nullptr}
+		  , m_size{0} {}
 
 		constexpr basic_string_view( const_pointer s, size_type count ) noexcept
-		  : m_first{s}, m_size{static_cast<size_type_internal>( count )} {}
+		  : m_first{s}
+		  , m_size{static_cast<size_type_internal>( count )} {}
 
 		constexpr basic_string_view( basic_string_view sv, size_type count ) noexcept
-		  : m_first{sv.m_first}, m_size{static_cast<size_type_internal>( count )} {}
+		  : m_first{sv.m_first}
+		  , m_size{static_cast<size_type_internal>( count )} {}
 
 		template<typename Allocator>
 		basic_string_view( std::basic_string<CharT, Traits, Allocator> const &str )
-		  : m_first{str.data( )}, m_size{str.size( )} {}
+		  : m_first{str.data( )}
+		  , m_size{str.size( )} {}
 
 		basic_string_view( std::basic_string<CharT, Traits> const &str ) noexcept
 		  : basic_string_view{str.data( ), str.size( )} {}
@@ -101,10 +110,12 @@ namespace daw {
 		/// of temporaries is often a mistake
 		template<typename Allocator>
 		basic_string_view( std::basic_string<CharT, Traits, Allocator> &&str ) noexcept
-		  : m_first{str.data( )}, m_size{str.size( )} {}
+		  : m_first{str.data( )}
+		  , m_size{str.size( )} {}
 
 		template<typename Chr, typename Tr, typename Alloc>
 		friend basic_string_view<Chr, Tr> to_string_view( std::basic_string<Chr, Tr, Alloc> &&str ) noexcept;
+
 	public:
 		constexpr basic_string_view( const_pointer s ) noexcept
 		  : basic_string_view{s, details::strlen<size_type_internal>( s )} {}
@@ -636,6 +647,9 @@ namespace daw {
 		return basic_string_view<Chr, Tr>{str};
 	}
 
+	template<typename CharT>
+	using default_basic_string_view = basic_string_view<CharT>;
+
 	using string_view = basic_string_view<char>;
 	using wstring_view = basic_string_view<wchar_t>;
 	using u16string_view = basic_string_view<char16_t>;
@@ -884,7 +898,8 @@ namespace daw {
 			std::vector<daw::basic_string_view<CharT, Traits, InternalSizeType>> data;
 
 		public:
-			sv_arry_t( std::vector<daw::basic_string_view<CharT, Traits, InternalSizeType>> v ) : data{std::move( v )} {}
+			sv_arry_t( std::vector<daw::basic_string_view<CharT, Traits, InternalSizeType>> v )
+			  : data{std::move( v )} {}
 			sv_arry_t( ) = delete;
 			sv_arry_t( sv_arry_t const & ) = default;
 			sv_arry_t( sv_arry_t && ) = default;

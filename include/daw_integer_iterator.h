@@ -37,8 +37,10 @@ namespace daw {
 
 		value_type current_value;
 
-		constexpr integer_range_iterator( ) noexcept : current_value{std::numeric_limits<T>::max( )} {}
-		constexpr integer_range_iterator( value_type start_value ) noexcept : current_value{start_value} {}
+		constexpr integer_range_iterator( ) noexcept
+		  : current_value{std::numeric_limits<T>::max( )} {}
+		constexpr integer_range_iterator( value_type start_value ) noexcept
+		  : current_value{start_value} {}
 		constexpr integer_range_iterator( value_type start_value, value_type last_value ) noexcept
 		  : current_value{start_value} {}
 		~integer_range_iterator( ) noexcept = default;
@@ -85,7 +87,8 @@ namespace daw {
 			return last;
 		}
 
-		constexpr integer_range( T f, T l ) noexcept : first{f}, last{l} {}
+		constexpr integer_range( T f, T l ) noexcept
+		  : first{f}
+		  , last{l} {}
 	};
 } // namespace daw
-
