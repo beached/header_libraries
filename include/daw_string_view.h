@@ -503,6 +503,20 @@ namespace daw {
 			return iter == crend( ) ? npos : reverse_distance( crbegin( ), iter );
 		}
 
+		template<typename UnaryPredicate>
+		constexpr size_type find_last_of_if( UnaryPredicate pred, size_type pos = npos ) const noexcept {
+			static_assert( daw::is_unary_predicate_v<UnaryPredicate, CharT>,
+			               "UnaryPredicate p does not fullfill the requires of a unary predicate concept.  See "
+			               "http://en.cppreference.com/w/cpp/concept/Predicate" );
+			if( pos >= m_size ) {
+				pos = 0;
+			} else {
+				pos = m_size - ( pos + 1 );
+			}
+			auto iter = std::find_if( crbegin( ) + static_cast<difference_type>( pos ), crend( ), pred );
+			return iter == crend( ) ? npos : reverse_distance( crbegin( ), iter );
+		}
+
 		constexpr size_type find_last_of( value_type const c, size_type pos = npos ) const noexcept {
 			for( difference_type n = m_size - 1; n >= 0; --n ) {
 				if( m_first[n] == c ) {
