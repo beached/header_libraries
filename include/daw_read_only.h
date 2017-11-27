@@ -22,13 +22,10 @@
 
 #pragma once
 
-#include <type_traits>
-#include <utility>
-
 namespace daw {
 	template<typename T>
 	struct read_only {
-		using value_type = std::decay_t<T>;
+		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
 		using const_pointer = value_type const *;
@@ -37,14 +34,17 @@ namespace daw {
 		value_type m_value;
 
 	public:
-		read_only( value_type value = value_type{} )
+		constexpr read_only( )
+		  : m_value{} {}
+
+		read_only( value_type value ) noexcept
 		  : m_value{std::move( value )} {}
 
 		read_only( read_only const & ) = default;
-		read_only( read_only && ) = default;
+		read_only( read_only && ) noexcept = default;
 		read_only &operator=( read_only const & ) = delete;
-		read_only &operator=( read_only && ) = delete;
-		~read_only( ) = default;
+		read_only &operator=( read_only && ) noexcept = delete;
+		~read_only( ) noexcept = default;
 
 		operator const_reference( ) const {
 			return m_value;
@@ -66,5 +66,5 @@ namespace daw {
 			return std::move( m_value );
 		}
 	}; // read_only
-
 } // namespace daw
+

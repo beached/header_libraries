@@ -24,13 +24,21 @@
 
 #include "boost_test.h"
 #include "daw_read_only.h"
+#include "daw_traits.h"
+
+template<typename T>
+using rw_type = decltype( daw::read_only<T>{4} = 5 );
+
+BOOST_AUTO_TEST_CASE( daw_read_only_test_01 ) {
+	static_assert( !daw::is_detected_v<rw_type,int>, "Read only type is assignable, it should not be" );
+}
 
 struct A {
 	void b( ) {}
 	void c( ) const {}
 };
 
-BOOST_AUTO_TEST_CASE( daw_read_only_test_01 ) {
+BOOST_AUTO_TEST_CASE( daw_read_only_test_02 ) {
 	std::cout << "sizeof( size_t ) -> " << sizeof( size_t );
 	std::cout << " sizeof( int ) -> " << sizeof( int );
 	std::cout << " sizeof( daw::read_only<int> ) -> " << sizeof( daw::read_only<int> );
@@ -79,3 +87,4 @@ BOOST_AUTO_TEST_CASE( daw_read_only_test_01 ) {
 	BOOST_REQUIRE( test_15 );
 	BOOST_REQUIRE( test_16 );
 }
+
