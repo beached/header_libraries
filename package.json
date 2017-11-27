@@ -1,5 +1,7 @@
 {
+  "name": "header_libraries",
   "url": "https://github.com/beached/header_libraries/issues",
+  "version": "0.5.0",
   "license": "MIT",
   "repository": {
     "type": "git",
