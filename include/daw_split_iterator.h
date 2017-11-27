@@ -48,7 +48,8 @@ namespace daw {
 		}
 	};
 
-	template<typename CharT, typename Splitter = char_splitter_t<CharT>>
+	template<typename Iterator, typename CharT = typename std::iterator_traits<Iterator>::value_type,
+	         typename Splitter = char_splitter_t<CharT>>
 	struct split_it {
 		static_assert( daw::is_unary_predicate_v<Splitter, CharT>,
 		               "Splitter does not fullfill the roll of a Unary Predicate that takes a CharT as it's argument" );
@@ -59,10 +60,8 @@ namespace daw {
 		using reference = CharT const &;
 
 	private:
-		value_type m_data;
+		Iterator m_iterator;
 		Splitter m_splitter;
-		size_t m_first;
-		size_t m_last;
 
 		constexpr size_t find_prev( ) noexcept {
 			auto pos = m_data.substr( 0, m_last ).find_last_of_if( m_splitter );
@@ -240,5 +239,5 @@ namespace daw {
 		auto result = split_it<value_t>( sv, divider );
 		return result;
 	}
-
 } // namespace daw
+
