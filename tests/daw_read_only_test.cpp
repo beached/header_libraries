@@ -88,3 +88,9 @@ BOOST_AUTO_TEST_CASE( daw_read_only_test_02 ) {
 	BOOST_REQUIRE( test_16 );
 }
 
+BOOST_AUTO_TEST_CASE( daw_read_only_test_03 ) {
+	daw::read_only<int> a{ 5 };
+	int b = a;
+	BOOST_REQUIRE_EQUAL( a, b );
+}
+
