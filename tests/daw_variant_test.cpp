@@ -25,11 +25,13 @@
 #include <string>
 
 #include "boost_test.h"
+#include "daw_traits.h"
 #include "daw_variant.h"
 
 struct test_t {
 	std::string s;
 	int foo;
+	char t;
 };
 
 std::string to_string( test_t const &value ) {
@@ -42,7 +44,10 @@ BOOST_AUTO_TEST_CASE( daw_variant_001 ) {
 	using namespace std::literals::string_literals;
 	using v_t = daw::variant_t<test_t, int, float, std::string>;
 	std::cout << "size of variant is: " << sizeof( v_t ) << '\n';
-	v_t s;
+	std::cout << "size of largest type in variant is "
+	          << daw::traits::max_sizeof_v<test_t, int, float, std::string> << '\n';
+	std::cout << "size of type index is " << sizeof( std::type_index ) << '\n';
+	v_t s{};
 	v_t t = 5;
 	std::string five = "5"s;
 	v_t u = five;
@@ -77,15 +82,13 @@ std::string to_string( blah const &val ) {
 	return to_string( val.a ) + " " + to_string( val.b );
 }
 
-namespace std {
-	std::string to_string( std::vector<int> const &v ) {
-		std::string result;
-		for( auto i : v ) {
-			result += std::to_string( i );
-		}
-		return result;
+std::string to_string( std::vector<int> const &v ) {
+	std::string result;
+	for( auto i : v ) {
+		result += std::to_string( i );
 	}
-} // namespace std
+	return result;
+}
 
 BOOST_AUTO_TEST_CASE( daw_variant_operators_001 ) {
 	using var_t = daw::variant_t<int, blah>;
@@ -112,3 +115,28 @@ BOOST_AUTO_TEST_CASE( daw_variant_operators_001 ) {
 	BOOST_REQUIRE( e == f );
 	BOOST_REQUIRE( e != g );
 }
+
+namespace daw_variant_destructors_001_ns {
+
+	struct temp_t {
+		bool *b;
+
+		temp_t( bool *B )
+		  : b{B} {}
+
+		~temp_t( ) {
+			if( auto tmp = std::exchange( b, nullptr ) ) {
+				*tmp = true;
+			}
+		}
+	};
+	std::string to_string( temp_t ) { return ""; }
+
+	BOOST_AUTO_TEST_CASE( daw_variant_destructors_001 ) {
+		bool b_test = false;
+		daw::variant_t<temp_t, int> a = temp_t{&b_test};
+		a = 5;
+		BOOST_REQUIRE( b_test );
+	}
+} // namespace daw_variant_destructors_001_ns
+

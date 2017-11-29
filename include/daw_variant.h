@@ -34,8 +34,8 @@
 #include "daw_algorithm.h"
 #include "daw_exception.h"
 #include "daw_operators.h"
-#include "daw_optional.h"
 #include "daw_traits.h"
+#include "daw_utility.h"
 
 namespace daw {
 	struct bad_variant_t_access : public std::runtime_error {
@@ -47,7 +47,7 @@ namespace daw {
 	};
 
 	template<typename T>
-	static auto get_type_index( ) {
+	static std::type_index get_type_index( ) {
 		using value_type = std::remove_cv_t<T>;
 		return std::type_index( typeid( value_type ) );
 	}
@@ -63,8 +63,12 @@ namespace daw {
 	namespace tostrings {
 		template<typename CharT = char, typename Traits = ::std::char_traits<CharT>,
 		         typename Allocator = ::std::allocator<CharT>>
-		auto to_string(::std::basic_string<CharT, Traits, Allocator> const &s ) {
-			return s;
+		std::basic_string<CharT, Traits, Allocator> to_string(::std::basic_string<CharT, Traits, Allocator> s ) {
+			return std::move( s );
+		}
+
+		std::string to_string(...) {
+			daw::exception::daw_throw( "Attemp to call to string on unsupported type, overload to enable" );
 		}
 
 		template<typename T>
@@ -77,16 +81,24 @@ namespace daw {
 			return to_string( *ptr );
 		}
 	} // namespace tostrings
+	namespace has_to_string {
+		using daw::tostrings::to_string;
+		using std::to_string;
+		template<typename T>
+		using check = decltype( to_string( std::declval<T>( ) ) );
+	}
+	template<typename T>
+	constexpr bool has_to_string_v = daw::is_detected_v<has_to_string::check, T>;
 
 	template<typename... Types>
 	class generate_to_strings_t {
 		template<typename T>
 		struct to_string_t {
+			static_assert( has_to_string_v<T>, "to_string must be defined for type" );
+
 			std::string operator( )( variant_t<Types...> const &value ) const {
 				using daw::tostrings::to_string;
 				using std::to_string;
-				static_assert( sizeof( decltype( to_string( std::declval<T>( ) ) ) ) != 0,
-				               "to_string must be defined for type" );
 				return to_string( get<T>( value ) );
 			}
 		}; // to_string_t
@@ -198,9 +210,6 @@ namespace daw {
 		}
 	}; // generate_variant_helper_funcs_t
 
-	template<typename... Stuff>
-	void do_nothing( Stuff... ) {}
-
 	template<typename... Types>
 	auto get_variant_helpers( ) {
 		static_assert( sizeof...( Types ) > 0, "Must supply at least one type" );
@@ -211,22 +220,86 @@ namespace daw {
 		auto list = {(
 		  (void)( results[get_type_index<Types>( )] = generate_variant_helper_funcs.template generate<Types>( ) ), 0 )...};
 
-		do_nothing( list );
+		Unused( list );
 
 		return results;
 	}
 
+	namespace impl {
+		class stored_type_t {
+			std::type_index m_value;
+
+			static std::type_index empty_type( ) noexcept {
+				struct no_type_t {};
+				return get_type_index<no_type_t>( );
+			}
+
+		public:
+			stored_type_t( ) noexcept
+			  : m_value{empty_type( )} {}
+
+			stored_type_t( std::type_index ti ) noexcept
+			  : m_value{std::move( ti )} {}
+
+			stored_type_t &operator=( std::type_index ti ) noexcept {
+				m_value = std::move( ti );
+				return *this;
+			}
+
+			stored_type_t( stored_type_t const & ) = default;
+			stored_type_t( stored_type_t && ) noexcept = default;
+			stored_type_t &operator=( stored_type_t const & ) = default;
+			stored_type_t &operator=( stored_type_t && ) noexcept = default;
+			~stored_type_t( ) noexcept = default;
+
+			std::type_index const &operator*( ) const noexcept {
+				return m_value;
+			}
+
+			operator bool( ) const noexcept {
+				return m_value != empty_type( );
+			}
+
+			bool empty( ) const noexcept {
+				return m_value == empty_type( );
+			}
+
+			void reset( ) noexcept {
+				m_value = empty_type( );
+			}
+		};
+
+		bool operator==( stored_type_t const &lhs, stored_type_t const &rhs ) noexcept {
+			return *lhs == *rhs;
+		}
+
+		bool operator!=( stored_type_t const &lhs, stored_type_t const &rhs ) noexcept {
+			return *lhs != *rhs;
+		}
+
+	} // namespace impl
+
 	template<typename Type, typename... Types>
 	struct variant_t {
-		static constexpr size_t BUFFER_SIZE = daw::traits::max_sizeof_v<Type, Types...>;
+		static constexpr size_t const BUFFER_SIZE = daw::traits::max_sizeof_v<Type, Types...>;
 
 		template<typename T>
 		static constexpr bool is_valid_type =
 		  daw::traits::is_one_of_v<std::remove_cv_t<T>, std::remove_cv_t<Type>, std::remove_cv_t<Types>...>;
 
 	private:
+	public:
+		bool empty( ) const noexcept {
+			return m_stored_type.empty( );
+		}
+
+	private:
+		void reset_type( ) noexcept {
+			m_stored_type.reset( );
+		}
+
+		impl::stored_type_t m_stored_type;
 		alignas( daw::traits::max_sizeof_t<Type, Types...> ) std::array<uint8_t, BUFFER_SIZE> m_buffer;
-		daw::optional<std::type_index> m_stored_type;
 
 		static auto get_helper_funcs( std::type_index idx ) {
 			static auto func_map = get_variant_helpers<Type, Types...>( );
@@ -261,44 +334,45 @@ namespace daw {
 			return static_cast<void *>( m_buffer.data( ) );
 		}
 
-		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
+		/*template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
 		void set_type( ) {
-			m_stored_type = get_type_index<T>( );
-			new( raw_ptr( ) ) T{};
-		}
+		  m_stored_type = get_type_index<T>( );
+		  new( raw_ptr( ) ) T{};
+		}*/
 
 		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-		void set_type( T value ) {
+		void set_type( T &&value ) {
 			if( !is_same_type<T>( ) ) {
 				reset( );
 			}
 			m_stored_type = get_type_index<T>( );
 			void *p = raw_ptr( );
-			new( p ) T{std::move( value )};
+			new( p ) T{std::forward<T>( value )};
 		}
 
 	public:
 		variant_t( )
-		  : m_buffer{}
-		  , m_stored_type{} {}
+		  : m_stored_type{}
+		  , m_buffer{} {}
 
 		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
 		variant_t( T value )
-		  : variant_t{} {
+		  : m_stored_type{}
+		  , m_buffer{} {
 
 			store( std::move( value ) );
 		}
 
 		~variant_t( ) {
-			if( m_stored_type ) {
+			if( !empty( ) ) {
 				get_helper_funcs( *m_stored_type ).destruct( *this );
 			}
 		}
 
 		variant_t( variant_t const & ) = default;
 		variant_t &operator=( variant_t const & ) = default;
-		variant_t( variant_t && ) = default;
-		variant_t &operator=( variant_t && ) = default;
+		variant_t( variant_t && ) noexcept = default;
+		variant_t &operator=( variant_t && ) noexcept = default;
 
 		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
 		variant_t &operator=( T value ) {
@@ -312,23 +386,19 @@ namespace daw {
 			swap( lhs.m_stored_type, rhs.m_stored_type );
 		}
 
-		auto type_index( ) const {
-			return m_stored_type;
-		}
-
-		bool empty( ) const {
-			return !static_cast<bool>( m_stored_type );
+		std::type_index type_index( ) const {
+			return *m_stored_type;
 		}
 
 		explicit operator bool( ) const {
-			return static_cast<bool>( m_stored_type );
+			return !empty( );
 		}
 
 		void reset( ) {
-			if( m_stored_type ) {
+			if( !empty( ) ) {
 				get_helper_funcs( *m_stored_type ).destruct( *this );
 			}
-			m_stored_type.reset( );
+			reset_type( );
 		}
 
 		template<typename T>
@@ -337,9 +407,9 @@ namespace daw {
 		}
 
 		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-		variant_t &store( T const &value ) {
-			set_type<T>( );
-			get<T>( ) = value;
+		variant_t &store( T &&value ) {
+			set_type<T>( std::forward<T>( value ) );
+			//			get<T>( ) = value;
 			return *this;
 		}
 
@@ -442,5 +512,4 @@ namespace daw {
 	T &get( daw::variant_t<Types...> &value ) {
 		return value.template get<T>( );
 	}
-
 } // namespace daw
