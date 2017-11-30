@@ -634,3 +634,19 @@ BOOST_AUTO_TEST_CASE( is_member_size_equal_v ) {
 	BOOST_REQUIRE( !result_f );
 	BOOST_REQUIRE( result_t2 );
 }
+
+BOOST_AUTO_TEST_CASE( are_unique_test_001 ) {
+	constexpr bool t1 = daw::traits::are_unique_v<int, double, float>;
+	BOOST_REQUIRE( t1 );
+}
+
+BOOST_AUTO_TEST_CASE( are_unique_test_002 ) {
+	constexpr bool t1 = daw::traits::are_unique_v<int, double, int, float>;
+	BOOST_REQUIRE( !t1 );
+}
+
+BOOST_AUTO_TEST_CASE( are_unique_test_003 ) {
+	constexpr bool t1 = daw::traits::are_unique_v<int>;
+	BOOST_REQUIRE( t1 );
+}
+

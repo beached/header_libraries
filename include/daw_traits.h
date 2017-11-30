@@ -674,5 +674,27 @@ namespace daw {
 
 		template<typename Container, size_t ExpectedSize>
 		constexpr bool is_value_size_equal_v = sizeof( *std::cbegin( std::declval<Container>( ) ) ) == ExpectedSize;
+
+		namespace impl {
+			template<typename... Ts>
+			struct are_unique;
+
+			template<typename T1>
+			struct are_unique<T1>: std::true_type {};
+
+			template<typename T1, typename T2>
+			struct are_unique<T1, T2> : std::integral_constant<bool, !daw::is_same_v<T1, T2>> {};
+
+			template<typename T1, typename T2, typename... Ts>
+			struct are_unique<T1, T2, Ts...>: std::integral_constant<bool, are_unique<T1, T2>::value && are_unique<T1, Ts...>::value && are_unique<T2, Ts...>::value> {};
+		}
+
+		template<typename...Ts>
+		using are_unique_t = impl::are_unique<Ts...>;
+		template<typename...Ts>
+		constexpr bool are_unique_v = are_unique_t<Ts...>::value;
 	} // namespace traits
+
+	template<bool B, typename T=std::nullptr_t>
+	using required = std::enable_if_t<B, T>;
 } // namespace daw
