@@ -371,4 +371,8 @@ namespace daw {
 	constexpr decltype( auto ) size( Container const &c ) noexcept( noexcept( c.size( ) ) ) {
 		return c.size( );
 	}
+
+	template<class T>
+	constexpr bool is_reference_v = std::is_reference<T>::value;
+
 } // namespace daw
