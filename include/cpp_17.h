@@ -372,7 +372,9 @@ namespace daw {
 		return c.size( );
 	}
 
-	template<class T>
+	template<typename T>
 	constexpr bool is_reference_v = std::is_reference<T>::value;
 
+	template<typename T>
+	constexpr bool is_volatile_v = std::is_volatile<T>::value;
 } // namespace daw
