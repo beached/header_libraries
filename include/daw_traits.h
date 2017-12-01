@@ -693,6 +693,25 @@ namespace daw {
 		using are_unique_t = impl::are_unique<Ts...>;
 		template<typename...Ts>
 		constexpr bool are_unique_v = are_unique_t<Ts...>::value;
+
+		namespace impl {
+			template<typename...Ts>
+			struct are_all_a;
+
+			template<template<class...> class Op, typename CurrentArg>
+			struct are_all_a<Op<CurrentArg>> {
+				static constexpr auto const value = Op<CurrentArg>::value;
+			};
+
+			template<template<class...> class Op, typename CurrentArg, typename NextArg, typename... Args>
+			struct are_all_a<Op<CurrentArg>, NextArg, Args...> {
+				static constexpr auto const value = Op<CurrentArg>::value && are_all_a<Op<NextArg>, Args...>::value;
+			};
+
+		} // namespace impl
+
+		template<template<class...> class BoolTrait, typename T, typename... Ts>
+		constexpr bool are_all_a_v = impl::are_all_a<BoolTrait<T>, Ts...>::value;
 	} // namespace traits
 
 	template<bool B, typename T=std::nullptr_t>
