@@ -650,16 +650,28 @@ BOOST_AUTO_TEST_CASE( are_unique_test_003 ) {
 	BOOST_REQUIRE( t1 );
 }
 
-template<typename T>
-using is_int = std::is_integral<T>;
-
-BOOST_AUTO_TEST_CASE( are_all_a_test_001 ) {
-	constexpr bool t1 = daw::traits::are_all_a_v<is_int, int, long, char, short>;
+BOOST_AUTO_TEST_CASE( isnt_cv_ref_test_001 ) {
+	constexpr bool t1 = daw::traits::isnt_cv_ref_v<int, long, char, short>;
 	BOOST_REQUIRE( t1 );
 }
 
-BOOST_AUTO_TEST_CASE( are_all_a_test_002 ) {
-	constexpr bool t1 = daw::traits::are_all_a_v<is_int, float, long, char, short>;
+BOOST_AUTO_TEST_CASE( isnt_cv_ref_test_002 ) {
+	constexpr bool t1 = daw::traits::isnt_cv_ref_v<float, long&, char, short>;
 	BOOST_REQUIRE( !t1 );
 }
+
+namespace isnt_cv_ref_test_003_ns {
+	struct test_t {
+		std::string s;
+		int foo;
+		char t;
+	};
+
+	BOOST_AUTO_TEST_CASE( isnt_cv_ref_test_003 ) {
+		constexpr bool t1 = daw::traits::isnt_cv_ref_v<test_t, int, float, std::string>;
+		BOOST_REQUIRE( t1 );
+		constexpr bool t2 = daw::traits::isnt_cv_ref_v<int, float, std::add_const_t<double>>;
+		BOOST_REQUIRE( !t2 );
+	}
+} // namespace isnt_cv_ref_test_003_ns
 

@@ -695,23 +695,18 @@ namespace daw {
 		constexpr bool are_unique_v = are_unique_t<Ts...>::value;
 
 		namespace impl {
-			template<typename...Ts>
-			struct are_all_a;
+			template<typename...>
+			struct isnt_cv_ref;
 
-			template<template<class...> class Op, typename CurrentArg>
-			struct are_all_a<Op<CurrentArg>> {
-				static constexpr auto const value = Op<CurrentArg>::value;
-			};
+			template<>
+			struct isnt_cv_ref<>: std::true_type {};
 
-			template<template<class...> class Op, typename CurrentArg, typename NextArg, typename... Args>
-			struct are_all_a<Op<CurrentArg>, NextArg, Args...> {
-				static constexpr auto const value = Op<CurrentArg>::value && are_all_a<Op<NextArg>, Args...>::value;
-			};
-
+			template<typename T, typename... Ts>
+			struct isnt_cv_ref<T, Ts...>: std::integral_constant<bool, (!(is_const_v<T> || is_reference_v<T> || is_volatile_v<T>) && is_same_v<std::true_type, typename isnt_cv_ref<Ts...>::type>)> {};
 		} // namespace impl
 
-		template<template<class...> class BoolTrait, typename T, typename... Ts>
-		constexpr bool are_all_a_v = impl::are_all_a<BoolTrait<T>, Ts...>::value;
+		template<typename... Ts>
+		constexpr bool isnt_cv_ref_v = impl::isnt_cv_ref<Ts...>::value;
 	} // namespace traits
 
 	template<bool B, typename T=std::nullptr_t>
