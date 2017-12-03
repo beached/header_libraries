@@ -893,16 +893,16 @@ namespace daw {
 			}
 		}
 
-		template<typename InputIt, typename T>
-		constexpr T accumulate( InputIt first, InputIt last, T init ) noexcept {
+		template<typename InputIterator, typename T>
+		constexpr T accumulate( InputIterator first, InputIterator last, T init ) noexcept {
 			for( ; first != last; ++first ) {
 				init = init + *first;
 			}
 			return init;
 		}
 
-		template<typename InputIt, typename T, typename BinaryOperation>
-		constexpr T accumulate( InputIt first, InputIt last, T init,
+		template<typename InputIterator, typename T, typename BinaryOperation>
+		constexpr T accumulate( InputIterator first, InputIterator last, T init,
 		                        BinaryOperation op ) noexcept( noexcept( op( init, *first ) ) ) {
 
 			for( ; first != last; ++first ) {
@@ -910,5 +910,59 @@ namespace daw {
 			}
 			return init;
 		}
+
+		template<typename ForwardIterator, typename Compare>
+		constexpr std::pair<ForwardIterator, ForwardIterator> minmax_element( ForwardIterator first, ForwardIterator last,
+		                                                                      Compare comp ) {
+			std::pair<ForwardIterator, ForwardIterator> result{first, first};
+
+			if( first == last ) {
+				return result;
+			}
+			if( ++first == last ) {
+				return result;
+			}
+			if( comp( *first, *result.first ) ) {
+				result.first = first;
+			} else {
+				result.second = first;
+			}
+
+			while( ++first != last ) {
+				auto i = first;
+				if( ++first == last ) {
+					if( comp( *i, *result.first ) ) {
+						result.first = i;
+					} else if( !( comp( *i, *result.second ) ) ) {
+						result.second = i;
+					}
+					break;
+				} else {
+					if( comp( *first, *i ) ) {
+						if( comp( *first, *result.first ) ) {
+							result.first = first;
+						}
+						if( !( comp( *i, *result.second ) ) ) {
+							result.second = i;
+						}
+					} else {
+						if( comp( *i, *result.first ) ) {
+							result.first = i;
+						}
+						if( !( comp( *first, *result.second ) ) ) {
+							result.second = first;
+						}
+					}
+				}
+			}
+			return result;
+		}
+
+		template<typename ForwardIterator>
+		constexpr std::pair<ForwardIterator, ForwardIterator> minmax_element( ForwardIterator first,
+		                                                                      ForwardIterator last ) {
+			return std::minmax_element( first, last, std::less<>( ) );
+		}
 	} // namespace algorithm
 } // namespace daw
+
