@@ -98,6 +98,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_unique_array
 	daw_utility
 	daw_variant
+	daw_variant2
 	daw_zipcontainer
 	daw_zipiter
 	not_null

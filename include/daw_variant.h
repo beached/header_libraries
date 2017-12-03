@@ -34,6 +34,7 @@
 #include "daw_algorithm.h"
 #include "daw_exception.h"
 #include "daw_operators.h"
+#include "daw_static_array.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
 
@@ -52,7 +53,7 @@ namespace daw {
 		return std::type_index( typeid( value_type ) );
 	}
 
-	template<typename Type, typename... Types>
+	template<typename... Types>
 	struct variant_t;
 } // namespace daw
 
@@ -67,7 +68,7 @@ namespace daw {
 			return std::move( s );
 		}
 
-		std::string to_string(...) {
+		std::string to_string( ... ) {
 			daw::exception::daw_throw( "Attemp to call to string on unsupported type, overload to enable" );
 		}
 
@@ -86,7 +87,7 @@ namespace daw {
 		using std::to_string;
 		template<typename T>
 		using check = decltype( to_string( std::declval<T>( ) ) );
-	}
+	} // namespace has_to_string
 	template<typename T>
 	constexpr bool has_to_string_v = daw::is_detected_v<has_to_string::check, T>;
 
@@ -212,7 +213,7 @@ namespace daw {
 
 	template<typename... Types>
 	auto get_variant_helpers( ) {
-		static_assert( sizeof...( Types ) > 0, "Must supply at least one type" );
+		static_assert( sizeof...( Types ) != 0, "Must supply at least one type" );
 
 		std::unordered_map<std::type_index, variant_helper_funcs_t<Types...>> results;
 		generate_variant_helper_funcs_t<Types...> generate_variant_helper_funcs;
@@ -230,7 +231,7 @@ namespace daw {
 			std::type_index m_value;
 
 			static std::type_index empty_type( ) noexcept {
-				struct no_type_t {};
+				class no_type_t {};
 				return get_type_index<no_type_t>( );
 			}
 
@@ -279,13 +280,13 @@ namespace daw {
 
 	} // namespace impl
 
-	template<typename Type, typename... Types>
+	template<typename... Types>
 	struct variant_t {
-		static constexpr size_t const BUFFER_SIZE = daw::traits::max_sizeof_v<Type, Types...>;
+		static_assert( sizeof...(Types) != 0, "Empty variant is not supported" );
 
 		template<typename T>
 		static constexpr bool is_valid_type =
-		  daw::traits::is_one_of_v<std::remove_cv_t<T>, std::remove_cv_t<Type>, std::remove_cv_t<Types>...>;
+		  daw::traits::is_one_of_v<std::remove_cv_t<T>, std::remove_cv_t<Types>...>;
 
 	private:
 	public:
@@ -298,47 +299,42 @@ namespace daw {
 			m_stored_type.reset( );
 		}
 
+		static constexpr size_t const s_buffer_size = daw::traits::max_sizeof_v<Types...>;
 		impl::stored_type_t m_stored_type;
-		alignas( daw::traits::max_sizeof_t<Type, Types...> ) std::array<uint8_t, BUFFER_SIZE> m_buffer;
+		alignas( daw::traits::max_sizeof_t<Types...> ) daw::static_array_t<uint8_t, s_buffer_size> m_buffer;
 
 		static auto get_helper_funcs( std::type_index idx ) {
-			static auto func_map = get_variant_helpers<Type, Types...>( );
+			static auto func_map = get_variant_helpers<Types...>( );
 			return func_map[idx];
 		}
 
-		template<typename T, typename Result = std::enable_if_t<is_valid_type<T>, std::remove_cv_t<T>>>
-		Result *ptr( ) {
-			using namespace daw::exception;
+		template<typename T>
+		decltype( auto ) ptr( ) {
 			using value_type = std::remove_cv_t<T>;
-			daw_throw_on_true<bad_variant_t_access>( empty( ), "Attempt to access an empty value" );
-			daw_throw_on_false<bad_variant_t_access>( is_same_type<value_type>( ),
+			daw::exception::daw_throw_on_true<bad_variant_t_access>( empty( ), "Attempt to access an empty value" );
+			daw::exception::daw_throw_on_false<bad_variant_t_access>( is_same_type<value_type>( ),
 			                                          "Attempt to access a value of another type" );
-			static_assert( sizeof( value_type ) <= BUFFER_SIZE,
+			static_assert( sizeof( value_type ) <= s_buffer_size,
 			               "This should never happen.  sizeof(T) does not fit into m_buffer" );
 			return reinterpret_cast<value_type *>( static_cast<void *>( m_buffer.data( ) ) );
 		}
 
-		template<typename T, typename Result = std::enable_if_t<is_valid_type<T>, std::remove_cv_t<T>>>
-		Result const *ptr( ) const {
-			using namespace daw::exception;
+		template<typename T>
+		decltype( auto ) ptr( ) const {
 			using value_type = std::remove_cv_t<T>;
-			daw_throw_on_true<bad_variant_t_access>( empty( ), "Attempt to access an empty value" );
-			daw_throw_on_false<bad_variant_t_access>( is_same_type<value_type>( ),
+			daw::exception::daw_throw_on_true<bad_variant_t_access>( empty( ), "Attempt to access an empty value" );
+			daw::exception::daw_throw_on_false<bad_variant_t_access>( is_same_type<value_type>( ),
 			                                          "Attempt to access a value of another type" );
-			static_assert( sizeof( value_type ) <= BUFFER_SIZE,
+
+			static_assert( sizeof( value_type ) <= s_buffer_size,
 			               "This should never happen.  sizeof(T) does not fit into m_buffer" );
+
 			return reinterpret_cast<value_type const *>( static_cast<void const *>( m_buffer.data( ) ) );
 		}
 
 		void *raw_ptr( ) {
 			return static_cast<void *>( m_buffer.data( ) );
 		}
-
-		/*template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
-		void set_type( ) {
-		  m_stored_type = get_type_index<T>( );
-		  new( raw_ptr( ) ) T{};
-		}*/
 
 		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
 		void set_type( T &&value ) {
@@ -357,8 +353,7 @@ namespace daw {
 
 		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
 		variant_t( T value )
-		  : m_stored_type{}
-		  , m_buffer{} {
+		  : variant_t{} {
 
 			store( std::move( value ) );
 		}
@@ -378,12 +373,6 @@ namespace daw {
 		variant_t &operator=( T value ) {
 			store( std::move( value ) );
 			return *this;
-		}
-
-		friend void swap( variant_t &lhs, variant_t &rhs ) noexcept {
-			using std::swap;
-			lhs.m_buffer.swap( rhs.m_buffer );
-			swap( lhs.m_stored_type, rhs.m_stored_type );
 		}
 
 		std::type_index type_index( ) const {
@@ -498,11 +487,6 @@ namespace daw {
 		return os;
 	}
 
-	template<typename Type, typename... Types>
-	auto as_variant_t( Type const &value ) {
-		return variant_t<Type, Types...>{}.store( value );
-	};
-
 	template<typename T, typename... Types>
 	T const &get( daw::variant_t<Types...> const &value ) {
 		return value.template get<T>( );
@@ -513,3 +497,4 @@ namespace daw {
 		return value.template get<T>( );
 	}
 } // namespace daw
+

@@ -569,9 +569,6 @@ namespace daw {
 		struct range_t {
 			using iterator = Iterator;
 			using difference_type = typename std::iterator_traits<iterator>::difference_type;
-			using pointer = typename std::iterator_traits<iterator>::pointer;
-			using reference = typename std::iterator_traits<iterator>::reference;
-			using value_type = typename std::iterator_traits<iterator>::value_type;
 
 			iterator m_first;
 			iterator m_last;
@@ -610,6 +607,18 @@ namespace daw {
 		};
 		return range_t{first, last};
 	}
+
+	template<typename... Ts>
+	struct pack_index_of;
+
+	template<typename T, typename... Ts>
+	struct pack_index_of<T, Ts...> : std::integral_constant<size_t, 0> {};
+
+	template<typename T, typename U, typename... Ts>
+	struct pack_index_of<T, U, Ts...> : std::integral_constant<size_t, 1 + pack_index_of<T, Ts...>::value> {};
+
+	template<typename T, typename... Ts>
+	constexpr size_t pack_index_of_v = pack_index_of<T, Ts...>::value;
 } // namespace daw
 
 template<typename... Ts>

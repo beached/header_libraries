@@ -68,3 +68,8 @@ constexpr bool to_hex_test_004( ) noexcept {
 BOOST_AUTO_TEST_CASE( daw_hex_test_004 ) {
 	BOOST_REQUIRE( to_hex_test_004( ) );
 }
+
+BOOST_AUTO_TEST_CASE( daw_pack_index_of_001 ) {
+	constexpr auto const pack_pos = daw::pack_index_of_v<int, std::string, bool, float, int, long>;
+	BOOST_REQUIRE_EQUAL( pack_pos, 3 );
+}

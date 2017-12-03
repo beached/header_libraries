@@ -63,19 +63,34 @@ namespace daw {
 				return std::distance( first, last );
 			}
 
-			template<typename Iterator, typename Distance>
-			constexpr void advance( Iterator &first, Distance n, std::random_access_iterator_tag ) noexcept {
-				first += n;
+			template<typename Iterator, typename Distance, typename ItTag>
+			constexpr void advance( Iterator &first, Distance n, ItTag ) noexcept {
+				if( static_cast<ptrdiff_t>( n ) < 0 ) {
+					for( ; n < 0; ++n ) {
+						--first;
+					}
+					return;
+				}
+				for( ; n > 0; --n ) {
+					++first;
+				}
 			}
 
-			template<typename Iterator, typename Distance, typename Tag>
-			void advance( Iterator &first, Distance n, Tag ) noexcept {
-				std::advance( first, n );
+			template<typename Iterator, typename Distance>
+			constexpr void advance( Iterator &first, Distance n, std::random_access_iterator_tag ) noexcept {
+				first += static_cast<ptrdiff_t>( n );
 			}
 		} // namespace impl
 
+		template<typename Iterator, typename Distance>
+		constexpr void advance( Iterator &it, Distance n ) noexcept {
+			impl::advance( it, static_cast<typename std::iterator_traits<Iterator>::difference_type>( n ),
+			               typename std::iterator_traits<Iterator>::iterator_tag{} );
+		}
+
 		template<typename Container, typename Iterator>
-		constexpr void safe_advance( Container &container, Iterator &it, ptrdiff_t distance ) noexcept {
+		constexpr void safe_advance( Container &container, Iterator &it,
+		                             typename std::iterator_traits<Iterator>::difference_type distance ) noexcept {
 			if( 0 == distance ) {
 				return;
 			}
@@ -99,14 +114,26 @@ namespace daw {
 		}
 
 		template<typename Iterator>
-		constexpr Iterator safe_next( Iterator it, Iterator last, size_t n ) noexcept {
-			return std::next( it, daw::min( n, static_cast<size_t>( std::distance( it, last ) ) ) );
+		constexpr Iterator next( Iterator it, typename std::iterator_traits<Iterator>::difference_type n = 1 ) noexcept {
+			impl::advance( it, n, typename std::iterator_traits<Iterator>::iterator_category{} );
+			return it;
 		}
 
-		template<typename RandomIterator>
-		constexpr RandomIterator next( RandomIterator it,
-		                               typename std::iterator_traits<RandomIterator>::difference_type n = 1 ) noexcept {
-			return it + n;
+		template<typename Iterator>
+		constexpr Iterator prev( Iterator it, typename std::iterator_traits<Iterator>::difference_type n = 1 ) noexcept {
+			impl::advance( it, -n, typename std::iterator_traits<Iterator>::iterator_category{} );
+			return it;
+		}
+
+		template<typename Iterator>
+		constexpr Iterator safe_next( Iterator it, Iterator last,
+		                              typename std::iterator_traits<Iterator>::difference_type n = 1 ) noexcept {
+			return daw::algorithm::next( it, daw::min( n, std::distance( it, last ) ) );
+		}
+
+		template<typename Iterator>
+		constexpr Iterator safe_prev( Iterator it, Iterator first, size_t n = 1 ) noexcept {
+			return daw::algorithm::prev( it, daw::min( n, std::distance( first, it ) ) );
 		}
 
 		template<typename Container>
@@ -363,6 +390,10 @@ namespace daw {
 
 		template<typename Iterator, typename UnaryPredicate>
 		constexpr auto find_last_of( Iterator first, Iterator last, UnaryPredicate pred ) {
+			static_assert( daw::is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
+			               "Compare does not satisfy the Unary Predicate concept.  See "
+			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+
 			auto prev = last;
 			while( first != last ) {
 				if( !pred( *first ) ) {
@@ -376,6 +407,10 @@ namespace daw {
 
 		template<typename Iterator, typename UnaryPredicate>
 		constexpr auto find_first_of( Iterator first, Iterator last, UnaryPredicate pred ) {
+			static_assert( daw::is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
+			               "Compare does not satisfy the Unary Predicate concept.  See "
+			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+
 			while( first != last ) {
 				if( pred( *first ) ) {
 					break;
@@ -387,6 +422,10 @@ namespace daw {
 
 		template<typename Iterator, typename UnaryPredicate>
 		constexpr auto find_first_range_of( Iterator first, Iterator last, UnaryPredicate pred ) {
+			static_assert( daw::is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
+			               "Compare does not satisfy the Unary Predicate concept.  See "
+			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+
 			first = find_first_of( first, last, pred );
 			last = find_last_of( first, last, pred );
 			++last;
@@ -854,5 +893,22 @@ namespace daw {
 			}
 		}
 
+		template<typename InputIt, typename T>
+		constexpr T accumulate( InputIt first, InputIt last, T init ) noexcept {
+			for( ; first != last; ++first ) {
+				init = init + *first;
+			}
+			return init;
+		}
+
+		template<typename InputIt, typename T, typename BinaryOperation>
+		constexpr T accumulate( InputIt first, InputIt last, T init,
+		                        BinaryOperation op ) noexcept( noexcept( op( init, *first ) ) ) {
+
+			for( ; first != last; ++first ) {
+				init = op( init, *first );
+			}
+			return init;
+		}
 	} // namespace algorithm
 } // namespace daw

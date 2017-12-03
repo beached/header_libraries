@@ -30,9 +30,8 @@
 BOOST_AUTO_TEST_CASE( split_it_001 ) {
 	std::string str = "This is a test of the split";
 	auto it = daw::make_split_it( str, ' ' );
-	auto const last = daw::split_it<char>{};
 
-	while( it != last ) {
+	while( it != str.end( ) ) {
 		std::cout << *it << '\n';
 		++it;
 	}
@@ -41,9 +40,8 @@ BOOST_AUTO_TEST_CASE( split_it_001 ) {
 BOOST_AUTO_TEST_CASE( split_it_002 ) {
 	std::string str = "t  j ";
 	auto it = daw::make_split_it( str, ' ' );
-	auto const last = daw::split_it<char>{};
 
-	while( it != last ) {
+	while( it != str.end( ) ) {
 		std::cout << *it << '\n';
 		++it;
 	}

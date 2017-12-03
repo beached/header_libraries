@@ -130,13 +130,45 @@ namespace daw_variant_destructors_001_ns {
 			}
 		}
 	};
-	std::string to_string( temp_t ) { return ""; }
 
 	BOOST_AUTO_TEST_CASE( daw_variant_destructors_001 ) {
 		bool b_test = false;
 		daw::variant_t<temp_t, int> a = temp_t{&b_test};
 		a = 5;
 		BOOST_REQUIRE( b_test );
+		std::cout << to_string( a ) << '\n';
+		a = temp_t{&b_test};
 	}
 } // namespace daw_variant_destructors_001_ns
+
+BOOST_AUTO_TEST_CASE( daw_variant_recursive_001 ) {
+	daw::variant_t<int, daw::variant_t<int, bool>> a{1};
+	BOOST_REQUIRE( a == 1 );
+	a = daw::variant_t<int, bool>{false};
+	BOOST_REQUIRE( a != 1 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_variant_swap_001 ) {
+	daw::variant_t<int> a{1};
+	daw::variant_t<int> b{2};
+	using std::swap;
+	swap( a, b );
+	BOOST_REQUIRE( a == 2 );
+}
+
+namespace daw_variant_optional_001_ns {
+	template<typename T>
+	using optional = daw::variant_t<T>;
+
+	BOOST_AUTO_TEST_CASE( daw_variant_optional_001 ) {
+		optional<int> a{5};
+		optional<int> b;
+
+		BOOST_REQUIRE( a );
+		BOOST_REQUIRE( b.empty( ) );
+		BOOST_REQUIRE( a != b );
+		a.reset( );
+		BOOST_REQUIRE( a == b );
+	}
+}
 
