@@ -93,15 +93,17 @@ namespace daw {
 			return *this;
 		}
 
+		/*
 		heap_array( std::initializer_list<value_type> values )
 		  : heap_array( values.size( ) ) {
 
 			std::copy_n( values.begin( ), values.size( ), m_begin );
 		}
+		*/
 
-		heap_array &operator=( std::initializer_list<value_type> values ) {
+		heap_array &operator=( std::initializer_list<value_type> const & values ) {
 			heap_array tmp{values.size( )};
-			std::copy( values.begin( ), values.end( ), tmp.begin( ), tmp.end( ) );
+			std::copy_n( values.begin( ), values.size( ), tmp.m_begin );
 			using std::swap;
 			swap( *this, tmp );
 			return *this;
@@ -122,6 +124,13 @@ namespace daw {
 				m_end = nullptr;
 				m_size = 0;
 			}
+		}
+
+		void swap( heap_array & rhs ) noexcept {
+			using std::swap;
+			swap( m_begin, rhs.m_begin );
+			swap( m_end, rhs.m_end );
+			swap( m_size, rhs.m_size );
 		}
 
 		~heap_array( ) {
