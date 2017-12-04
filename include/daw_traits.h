@@ -644,7 +644,36 @@ namespace daw {
 			template<typename T>
 			using has_append = decltype( std::declval<T>( ).append( std::declval<T>( ) ) );
 
+			template<typename T, typename U>
+			using has_addition_operator = decltype( std::declval<T>( ) + std::declval<U>( ) );
+
+			template<typename T, typename U>
+			using has_subtraction_operator = decltype( std::declval<T>( ) - std::declval<U>( ) );
+
+			template<typename T, typename U>
+			using has_multiplication_operator = decltype( std::declval<T>( ) * std::declval<U>( ) );
+
+			template<typename T, typename U>
+			using has_division_operator = decltype( std::declval<T>( ) / std::declval<U>( ) );
+
+			template<typename T, typename U>
+			using has_modulus_operator = decltype( std::declval<T>( ) % std::declval<U>( ) );
 		} // namespace detectors
+
+		template<typename T, typename U = T>
+		constexpr bool has_addition_operator_v = daw::is_detected_v<detectors::has_addition_operator, T, U>;
+
+		template<typename T, typename U = T>
+		constexpr bool has_subtraction_operator_v = daw::is_detected_v<detectors::has_subtraction_operator, T, U>;
+
+		template<typename T, typename U = T>
+		constexpr bool has_multiplication_operator_v = daw::is_detected_v<detectors::has_multiplication_operator, T, U>;
+
+		template<typename T, typename U = T>
+		constexpr bool has_division_operator_v = daw::is_detected_v<detectors::has_division_operator, T, U>;
+
+		template<typename T, typename U = T>
+		constexpr bool has_modulus_operator_v = daw::is_detected_v<detectors::has_modulus_operator, T, U>;
 
 		template<typename String>
 		constexpr bool has_integer_subscript_v = daw::is_detected_v<detectors::has_integer_subscript, String>;

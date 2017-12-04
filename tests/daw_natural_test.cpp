@@ -73,6 +73,13 @@ BOOST_AUTO_TEST_CASE( daw_natural_op_div_01 ) {
 	BOOST_REQUIRE_EQUAL( result, 5 );
 }
 
+BOOST_AUTO_TEST_CASE( daw_natural_op_mod_01 ) {
+	constexpr daw::natural_t<int> a = 3;
+	constexpr daw::natural_t<int> b = 2;
+	auto result = a % b;
+	BOOST_REQUIRE_EQUAL( result, 1 );
+}
+
 BOOST_AUTO_TEST_CASE( daw_natural_literal_01 ) {
 	using namespace daw::literals;
 	constexpr auto a = 134_N;
