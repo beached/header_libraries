@@ -128,5 +128,11 @@ namespace daw {
 	constexpr bool operator>=( natural_t<T> const &lhs, natural_t<U> const &rhs ) noexcept {
 		return static_cast<T>( lhs ) >= static_cast<U>( rhs );
 	}
+
+	namespace literals {
+		constexpr size_t operator"" _N( unsigned long long val ) noexcept {
+			return daw::natural_t<unsigned long long>{ val };
+		}
+	}
 } // namespace daw
 
