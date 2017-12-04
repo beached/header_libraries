@@ -658,6 +658,12 @@ namespace daw {
 
 			template<typename T, typename U>
 			using has_modulus_operator = decltype( std::declval<T>( ) % std::declval<U>( ) );
+
+			template<typename T>
+			using has_increment_operator = decltype( ++std::declval<T&>( ) );
+
+			template<typename T>
+			using has_decrement_operator = decltype( --std::declval<T&>( ) );
 		} // namespace detectors
 
 		template<typename T, typename U = T>
@@ -674,6 +680,12 @@ namespace daw {
 
 		template<typename T, typename U = T>
 		constexpr bool has_modulus_operator_v = daw::is_detected_v<detectors::has_modulus_operator, T, U>;
+
+		template<typename T>
+		constexpr bool has_increment_operator_v = daw::is_detected_v<detectors::has_increment_operator, T>;
+
+		template<typename T>
+		constexpr bool has_decrement_operator_v = daw::is_detected_v<detectors::has_decrement_operator, T>;
 
 		template<typename String>
 		constexpr bool has_integer_subscript_v = daw::is_detected_v<detectors::has_integer_subscript, String>;

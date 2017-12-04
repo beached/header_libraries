@@ -110,6 +110,67 @@ namespace daw {
 			result.m_value = static_cast<U>( lhs ) % static_cast<V>( rhs );
 			return result;
 		}
+
+		template<typename U>
+		constexpr natural_t &operator+=( natural_t<U> const &rhs ) noexcept {
+			static_assert( daw::traits::has_addition_operator_v<T>, "Addition operator is not valid" );
+			m_value += rhs.m_value;
+			return *this;
+		}
+
+		template<typename U>
+		constexpr natural_t &operator-=( natural_t<U> const &rhs ) {
+			static_assert( daw::traits::has_subtraction_operator_v<T>, "Subtraction operator is not valid" );
+			m_value = validate( m_value - rhs.m_value );
+			return *this;
+		}
+
+		template<typename U>
+		constexpr natural_t &operator*=( natural_t<U> const &rhs ) noexcept {
+			static_assert( daw::traits::has_multiplication_operator_v<T>, "Multiplication operator is not valid" );
+			m_value *= rhs.m_value;
+			return *this;
+		}
+
+		template<typename U>
+		constexpr natural_t &operator/=( natural_t<U> const &rhs ) noexcept {
+			static_assert( daw::traits::has_division_operator_v<T>, "Division operator is not valid" );
+			m_value /= rhs.m_value;
+			return *this;
+		}
+
+		template<typename U>
+		constexpr natural_t &operator%=( natural_t<U> const &rhs ) noexcept {
+			static_assert( daw::traits::has_modulus_operator_v<T>, "Modulus operator is not valid" );
+			m_value %= rhs.m_value;
+			return *this;
+		}
+
+		constexpr natural_t &operator++( ) noexcept {
+			static_assert( daw::traits::has_increment_operator_v<T>, "Increment operator is not valid" );
+			++m_value;
+			return *this;
+		}
+
+		constexpr natural_t operator++(int) noexcept {
+			static_assert( daw::traits::has_increment_operator_v<T>, "Increment operator is not valid" );
+			auto tmp = *this;
+			++m_value;
+			return tmp;
+		}
+
+		constexpr natural_t &operator--( ) {
+			static_assert( daw::traits::has_decrement_operator_v<T>, "Decrement operator is not valid" );
+			m_value = validate( m_value - 1 );
+			return *this;
+		}
+
+		constexpr natural_t operator--(int) {
+			static_assert( daw::traits::has_decrement_operator_v<T>, "Decrement operator is not valid" );
+			auto tmp = *this;
+			m_value = validate( m_value - 1 );
+			return tmp;
+		}
 	};
 
 	template<typename T, typename U>

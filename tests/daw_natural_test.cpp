@@ -45,17 +45,40 @@ BOOST_AUTO_TEST_CASE( daw_natural_op_plus_01 ) {
 	BOOST_REQUIRE_EQUAL( result, 3 );
 }
 
-BOOST_AUTO_TEST_CASE( daw_natural_op_minus_01 ) {
+BOOST_AUTO_TEST_CASE( daw_natural_op_plus_02 ) {
+	daw::natural_t<int> a = 4;
+	constexpr daw::natural_t<int> b = 2;
+	a += b;
+	BOOST_REQUIRE_EQUAL( a, 6 );
+}
+BOOST_AUTO_TEST_CASE( daw_natural_op_min_01 ) {
 	constexpr daw::natural_t<int> a = 1;
 	constexpr daw::natural_t<int> b = 2;
 	auto result = b - a;
 	BOOST_REQUIRE_EQUAL( result, 1 );
 }
 
-BOOST_AUTO_TEST_CASE( daw_natural_op_minus_02 ) {
+BOOST_AUTO_TEST_CASE( daw_natural_op_min_02 ) {
 	daw::natural_t<int> a = 1;
 	daw::natural_t<int> b = 2;
 	BOOST_REQUIRE_THROW( a - b, daw::exception::arithmetic_exception );
+	BOOST_REQUIRE_EQUAL( a, 1 );
+	BOOST_REQUIRE_EQUAL( b, 2 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_natural_op_min_03 ) {
+	daw::natural_t<int> a = 4;
+	constexpr daw::natural_t<int> b = 2;
+	a -= b;
+	BOOST_REQUIRE_EQUAL( a, 2 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_natural_op_min_04 ) {
+	daw::natural_t<int> a = 1;
+	constexpr daw::natural_t<int> b = 2;
+	BOOST_REQUIRE_THROW( a -= b, daw::exception::arithmetic_exception );
+	BOOST_REQUIRE_EQUAL( a, 1 );
+	BOOST_REQUIRE_EQUAL( b, 2 );
 }
 
 BOOST_AUTO_TEST_CASE( daw_natural_op_mul_01 ) {
@@ -66,11 +89,25 @@ BOOST_AUTO_TEST_CASE( daw_natural_op_mul_01 ) {
 	BOOST_REQUIRE_EQUAL( result, 30 );
 }
 
+BOOST_AUTO_TEST_CASE( daw_natural_op_mul_02 ) {
+	daw::natural_t<int> a = 4;
+	constexpr daw::natural_t<int> b = 2;
+	a *= b;
+	BOOST_REQUIRE_EQUAL( a, 8 );
+}
+
 BOOST_AUTO_TEST_CASE( daw_natural_op_div_01 ) {
 	constexpr daw::natural_t<int> a = 30;
 	constexpr daw::natural_t<int> b = 6;
 	auto result = a / b;
 	BOOST_REQUIRE_EQUAL( result, 5 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_natural_op_div_02 ) {
+	daw::natural_t<int> a = 4;
+	constexpr daw::natural_t<int> b = 2;
+	a /= b;
+	BOOST_REQUIRE_EQUAL( a, 2 );
 }
 
 BOOST_AUTO_TEST_CASE( daw_natural_op_mod_01 ) {
@@ -80,6 +117,13 @@ BOOST_AUTO_TEST_CASE( daw_natural_op_mod_01 ) {
 	BOOST_REQUIRE_EQUAL( result, 1 );
 }
 
+BOOST_AUTO_TEST_CASE( daw_natural_op_mod_02 ) {
+	daw::natural_t<int> a = 3;
+	constexpr daw::natural_t<int> b = 2;
+	a %= b;
+	BOOST_REQUIRE_EQUAL( a, 1 );
+}
+
 BOOST_AUTO_TEST_CASE( daw_natural_literal_01 ) {
 	using namespace daw::literals;
 	constexpr auto a = 134_N;
@@ -87,4 +131,45 @@ BOOST_AUTO_TEST_CASE( daw_natural_literal_01 ) {
 	BOOST_REQUIRE_EQUAL( a, 134 );
 	BOOST_REQUIRE_EQUAL( b, 333 );
 }
+
+BOOST_AUTO_TEST_CASE( daw_natural_op_inc_01 ) {
+	daw::natural_t<int> a = 3;
+	++a;
+	BOOST_REQUIRE_EQUAL( a, 4 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_natural_op_inc_02 ) {
+	daw::natural_t<int> a = 3;
+	daw::natural_t<int> b = a++;
+	BOOST_REQUIRE_EQUAL( a, 4 );
+	BOOST_REQUIRE_EQUAL( b, 3 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_natural_op_dec_01 ) {
+	daw::natural_t<int> a = 3;
+	--a;
+	BOOST_REQUIRE_EQUAL( a, 2 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_natural_op_dec_02 ) {
+	daw::natural_t<int> a = 3;
+	daw::natural_t<int> b = a--;
+	BOOST_REQUIRE_EQUAL( a, 2 );
+	BOOST_REQUIRE_EQUAL( b, 3 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_natural_op_dec_03 ) {
+	daw::natural_t<int> a = 1;
+	BOOST_REQUIRE_THROW( --a, daw::exception::arithmetic_exception );
+	BOOST_REQUIRE_EQUAL( a, 1 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_natural_op_dec_04 ) {
+	daw::natural_t<int> a = 1;
+	daw::natural_t<int> b{2};
+	BOOST_REQUIRE_THROW( b = a--, daw::exception::arithmetic_exception );
+	BOOST_REQUIRE_EQUAL( a, 1 );
+	BOOST_REQUIRE_EQUAL( b, 2 );
+}
+
 
