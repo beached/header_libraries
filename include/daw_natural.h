@@ -68,49 +68,6 @@ namespace daw {
 			return m_value;
 		}
 
-		template<typename U, typename V>
-		friend constexpr auto operator+( natural_t<U> const &lhs, natural_t<V> const &rhs ) noexcept {
-			static_assert( daw::traits::has_addition_operator_v<U, V>, "Addition operator is not valid" );
-			using result_t = decltype( std::declval<U>( ) + std::declval<V>( ) );
-			natural_t<result_t> result{};
-			result.m_value = static_cast<U>( lhs ) + static_cast<V>( rhs );
-			return result;
-		}
-
-		template<typename U, typename V>
-		friend constexpr auto operator-( natural_t<U> const &lhs, natural_t<V> const &rhs ) {
-			static_assert( daw::traits::has_subtraction_operator_v<U, V>, "Subtraction operator is not valid" );
-			using result_t = decltype( std::declval<U>( ) - std::declval<V>( ) );
-			return natural_t<result_t>{static_cast<U>( lhs ) - static_cast<V>( rhs )};
-		}
-
-		template<typename U, typename V>
-		friend constexpr auto operator*( natural_t<U> const &lhs, natural_t<V> const &rhs ) noexcept {
-			static_assert( daw::traits::has_multiplication_operator_v<U, V>, "Multiplication operator is not valid" );
-			using result_t = decltype( std::declval<U>( ) * std::declval<V>( ) );
-			natural_t<result_t> result{};
-			result.m_value = static_cast<U>( lhs ) * static_cast<V>( rhs );
-			return result;
-		}
-
-		template<typename U, typename V>
-		friend constexpr auto operator/( natural_t<U> const &lhs, natural_t<V> const &rhs ) noexcept {
-			static_assert( daw::traits::has_division_operator_v<U, V>, "Division operator is not valid" );
-			using result_t = decltype( std::declval<U>( ) / std::declval<V>( ) );
-			natural_t<result_t> result{};
-			result.m_value = static_cast<U>( lhs ) / static_cast<V>( rhs );
-			return result;
-		}
-
-		template<typename U, typename V>
-		friend constexpr auto operator%( natural_t<U> const &lhs, natural_t<V> const &rhs ) noexcept {
-			static_assert( daw::traits::has_modulus_operator_v<U, V>, "Modulus operator is not valid" );
-			using result_t = decltype( std::declval<U>( ) % std::declval<V>( ) );
-			natural_t<result_t> result{};
-			result.m_value = static_cast<U>( lhs ) % static_cast<V>( rhs );
-			return result;
-		}
-
 		template<typename U>
 		constexpr natural_t &operator+=( natural_t<U> const &rhs ) noexcept {
 			static_assert( daw::traits::has_addition_operator_v<T>, "Addition operator is not valid" );
@@ -152,7 +109,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr natural_t operator++(int) noexcept {
+		constexpr natural_t operator++(int)noexcept {
 			static_assert( daw::traits::has_increment_operator_v<T>, "Increment operator is not valid" );
 			auto tmp = *this;
 			++m_value;
@@ -165,11 +122,54 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr natural_t operator--(int) {
+		constexpr natural_t operator--( int ) {
 			static_assert( daw::traits::has_decrement_operator_v<T>, "Decrement operator is not valid" );
 			auto tmp = *this;
 			m_value = validate( m_value - 1 );
 			return tmp;
+		}
+
+		template<typename U>
+		friend constexpr decltype( auto ) operator+( natural_t const &lhs, natural_t<U> const &rhs ) noexcept {
+			static_assert( daw::traits::has_addition_operator_v<T, U>, "Addition operator is not valid" );
+			using result_t = decltype( std::declval<T>( ) + std::declval<U>( ) );
+			natural_t<result_t> result{};
+			result.m_value = static_cast<T>( lhs ) + static_cast<U>( rhs );
+			return result;
+		}
+
+		template<typename U>
+		friend constexpr auto operator-( natural_t const &lhs, natural_t<U> const &rhs ) {
+			static_assert( daw::traits::has_subtraction_operator_v<T, U>, "Subtraction operator is not valid" );
+			using result_t = decltype( std::declval<T>( ) - std::declval<U>( ) );
+			return natural_t<result_t>{static_cast<T>( lhs ) - static_cast<U>( rhs )};
+		}
+
+		template<typename U>
+		friend constexpr auto operator*( natural_t const &lhs, natural_t<U> const &rhs ) noexcept {
+			static_assert( daw::traits::has_multiplication_operator_v<T, U>, "Multiplication operator is not valid" );
+			using result_t = decltype( std::declval<T>( ) * std::declval<U>( ) );
+			natural_t<result_t> result{};
+			result.m_value = static_cast<T>( lhs ) * static_cast<U>( rhs );
+			return result;
+		}
+
+		template<typename U>
+		friend constexpr auto operator/( natural_t const &lhs, natural_t<U> const &rhs ) noexcept {
+			static_assert( daw::traits::has_division_operator_v<T, U>, "Division operator is not valid" );
+			using result_t = decltype( std::declval<T>( ) / std::declval<U>( ) );
+			natural_t<result_t> result{};
+			result.m_value = static_cast<T>( lhs ) / static_cast<U>( rhs );
+			return result;
+		}
+
+		template<typename U>
+		friend constexpr auto operator%( natural_t const &lhs, natural_t<U> const &rhs ) noexcept {
+			static_assert( daw::traits::has_modulus_operator_v<T, U>, "Modulus operator is not valid" );
+			using result_t = decltype( std::declval<T>( ) % std::declval<U>( ) );
+			natural_t<result_t> result{};
+			result.m_value = static_cast<T>( lhs ) % static_cast<U>( rhs );
+			return result;
 		}
 	};
 

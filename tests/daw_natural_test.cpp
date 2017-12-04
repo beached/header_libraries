@@ -25,6 +25,7 @@
 #include "boost_test.h"
 
 #include "daw_natural.h"
+#include "daw_utility.h"
 
 BOOST_AUTO_TEST_CASE( daw_natural_test_01 ) {
 	daw::natural_t<int> a = 5;
@@ -61,7 +62,7 @@ BOOST_AUTO_TEST_CASE( daw_natural_op_min_01 ) {
 BOOST_AUTO_TEST_CASE( daw_natural_op_min_02 ) {
 	daw::natural_t<int> a = 1;
 	daw::natural_t<int> b = 2;
-	BOOST_REQUIRE_THROW( a - b, daw::exception::arithmetic_exception );
+	BOOST_REQUIRE_THROW( Unused(a - b), daw::exception::arithmetic_exception );
 	BOOST_REQUIRE_EQUAL( a, 1 );
 	BOOST_REQUIRE_EQUAL( b, 2 );
 }
