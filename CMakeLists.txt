@@ -58,6 +58,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_locked_value
 	daw_math
 	daw_memory_mapped_file
+	daw_natural
 	daw_newhelper
 	daw_operators
 	daw_optional

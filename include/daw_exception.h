@@ -37,6 +37,8 @@ namespace daw {
 		using MethodNotImplemented = std::runtime_error;
 		using UnexpectedEnumValue = std::runtime_error;
 
+		struct arithmetic_exception {};
+
 		template<typename ExceptionType = std::runtime_error, typename StringType>
 		[[noreturn]] constexpr void daw_throw( StringType const &msg ) {
 			throw ExceptionType( msg );
