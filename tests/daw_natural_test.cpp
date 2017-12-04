@@ -38,6 +38,10 @@ BOOST_AUTO_TEST_CASE( daw_natural_test_02 ) {
 	BOOST_REQUIRE_EQUAL( a, b );
 }
 
+BOOST_AUTO_TEST_CASE( daw_natural_test_03 ) {
+	BOOST_REQUIRE_THROW( daw::natural_t<int>{-5}, daw::exception::arithmetic_exception );
+}
+
 BOOST_AUTO_TEST_CASE( daw_natural_op_plus_01 ) {
 	constexpr daw::natural_t<int> a = 1;
 	constexpr daw::natural_t<int> b = 2;
