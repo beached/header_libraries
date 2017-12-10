@@ -225,7 +225,7 @@ namespace daw {
 		}
 
 		template<typename ExceptionType = AssertException, typename Bool, typename StringType>
-		constexpr void assert( Bool const &test, StringType const &msg ) {
+		constexpr void Assert( Bool const &test, StringType const &msg ) {
 			if( !static_cast<bool>( test ) ) {
 				daw_throw<ExceptionType>( msg );
 			}
