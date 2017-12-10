@@ -508,8 +508,8 @@ namespace daw {
 	template<typename OutputIterator>
 	constexpr OutputIterator hex( char c, OutputIterator it_out ) noexcept {
 		uint8_t n = static_cast<uint8_t>( c );
-		*it_out++ = impl::get_nibble( n & 0x0F );
 		*it_out++ = impl::get_nibble( n >> 4 );
+		*it_out++ = impl::get_nibble( n & 0x0F );
 		return it_out;
 	}
 

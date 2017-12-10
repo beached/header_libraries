@@ -69,6 +69,15 @@ BOOST_AUTO_TEST_CASE( daw_hex_test_004 ) {
 	BOOST_REQUIRE( to_hex_test_004( ) );
 }
 
+BOOST_AUTO_TEST_CASE( daw_hex_test_005 ) {
+	uint32_t const a = 0x789ABCDE;
+	std::string a_str;
+	daw::hex( a, std::back_inserter( a_str ) );
+	std::cout << "Output: " << a_str << '\n';
+	BOOST_REQUIRE_EQUAL( a_str, "789ABCDE" );
+}
+
+
 BOOST_AUTO_TEST_CASE( daw_pack_index_of_001 ) {
 	constexpr auto const pack_pos = daw::pack_index_of_v<int, std::string, bool, float, int, long>;
 	BOOST_REQUIRE_EQUAL( pack_pos, 3 );
