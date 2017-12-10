@@ -503,6 +503,15 @@ namespace daw {
 			}
 			return static_cast<char>( 'A' + ( c - 10 ) );
 		}
+
+		constexpr char get_lc_nibble( uint8_t c ) noexcept {
+			c &= 0x0F;
+			if( c < 10 ) {
+				return static_cast<char>( '0' + c );
+			}
+			return static_cast<char>( 'a' + ( c - 10 ) );
+		}
+
 	} // namespace impl
 
 	template<typename OutputIterator>
@@ -510,6 +519,14 @@ namespace daw {
 		uint8_t n = static_cast<uint8_t>( c );
 		*it_out++ = impl::get_nibble( n >> 4 );
 		*it_out++ = impl::get_nibble( n & 0x0F );
+		return it_out;
+	}
+
+	template<typename OutputIterator>
+	constexpr OutputIterator hex_lc( char c, OutputIterator it_out ) noexcept {
+		uint8_t n = static_cast<uint8_t>( c );
+		*it_out++ = impl::get_lc_nibble( n >> 4 );
+		*it_out++ = impl::get_lc_nibble( n & 0x0F );
 		return it_out;
 	}
 
