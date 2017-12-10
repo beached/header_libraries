@@ -659,6 +659,18 @@ namespace daw {
 			return first_out;
 		}
 
+		template<typename InputIterator, typename OutputIterator, typename BinaryOperation>
+		constexpr OutputIterator
+		transform_it( InputIterator first_in, InputIterator const last_in, OutputIterator first_out,
+		           BinaryOperation binary_op ) noexcept( noexcept( first_out = binary_op( *first_in++, first_out ) ) ) {
+
+			while( first_in != last_in ) {
+				first_out = binary_op( *first_in++, first_out );
+			}
+			return first_out;
+		}
+
+
 		template<typename InputIterator1, typename InputIterator2, typename OutputIterator>
 		constexpr void copy( InputIterator1 first_in, InputIterator2 const last_in, OutputIterator first_out ) noexcept {
 			while( first_in != last_in ) {

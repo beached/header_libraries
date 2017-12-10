@@ -122,3 +122,14 @@ namespace copy_n_ns {
 		constexpr auto b = test_copy_n( );
 	}
 } // namespace copy_n_ns
+
+BOOST_AUTO_TEST_CASE( daw_transform_it_test_001 ) {
+	std::vector<int> a = {1, 2, 3, 4, 5, 6};
+	std::vector<int> b{};
+	daw::algorithm::transform_it( a.cbegin( ), a.cend( ), std::back_inserter( b ), []( int a_val, auto out_it ) {
+		for( size_t n = 0; static_cast<int>( n ) < a_val; ++n ) {
+			*out_it++ = a_val;
+		}
+		return out_it;
+	} );
+}
