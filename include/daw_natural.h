@@ -26,6 +26,7 @@
 #include "daw_traits.h"
 
 namespace daw {
+	struct invalid_natural_number : public daw::exception::arithmetic_exception { };
 	///
 	// A natural number type
 	// An operation that causes overflow is undefined
@@ -39,7 +40,7 @@ namespace daw {
 		template<typename Value>
 		static constexpr decltype( auto ) validate( Value &&val ) {
 			if( val < 1 ) {
-				throw daw::exception::arithmetic_exception{};
+				throw invalid_natural_number{};
 			}
 			return std::forward<Value>( val );
 		}
