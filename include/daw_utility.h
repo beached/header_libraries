@@ -496,19 +496,20 @@ namespace daw {
 	}
 
 	namespace impl {
-		constexpr char get_nibble( char c ) noexcept {
-			c = c & 0x0F;
+		constexpr char get_nibble( uint8_t c ) noexcept {
+			c &= 0x0F;
 			if( c < 10 ) {
-				return '0' + c;
+				return static_cast<char>( '0' + c );
 			}
-			return 'A' + ( c - 10 );
+			return static_cast<char>( 'A' + ( c - 10 ) );
 		}
 	} // namespace impl
 
 	template<typename OutputIterator>
 	constexpr OutputIterator hex( char c, OutputIterator it_out ) noexcept {
-		*it_out++ = impl::get_nibble( c & 0x0F );
-		*it_out++ = impl::get_nibble( c >> 4 );
+		uint8_t n = static_cast<uint8_t>( c );
+		*it_out++ = impl::get_nibble( n & 0x0F );
+		*it_out++ = impl::get_nibble( n >> 4 );
 		return it_out;
 	}
 
@@ -615,7 +616,8 @@ namespace daw {
 	struct pack_index_of<T, Ts...> : std::integral_constant<size_t, 0> {};
 
 	template<typename T, typename U, typename... Ts>
-	struct pack_index_of<T, U, Ts...> : std::integral_constant<size_t, 1 + pack_index_of<T, Ts...>::value> {};
+	struct pack_index_of<T, U, Ts...>
+	  : std::integral_constant<size_t, ( daw::is_same_v<T, U> ? 0 : 1 + pack_index_of<T, Ts...>::value )> {};
 
 	template<typename T, typename... Ts>
 	constexpr size_t pack_index_of_v = pack_index_of<T, Ts...>::value;
@@ -623,3 +625,4 @@ namespace daw {
 
 template<typename... Ts>
 constexpr void Unused( Ts &&... ) noexcept {}
+

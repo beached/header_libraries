@@ -73,3 +73,14 @@ BOOST_AUTO_TEST_CASE( daw_pack_index_of_001 ) {
 	constexpr auto const pack_pos = daw::pack_index_of_v<int, std::string, bool, float, int, long>;
 	BOOST_REQUIRE_EQUAL( pack_pos, 3 );
 }
+
+BOOST_AUTO_TEST_CASE( daw_pack_index_of_002 ) {
+	constexpr auto const pack_pos = daw::pack_index_of_v<double, std::string, bool, float, int, long>;
+	BOOST_REQUIRE_EQUAL( pack_pos, 5 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_pack_index_of_003 ) {
+	constexpr auto const pack_pos = daw::pack_index_of_v<bool, std::string, bool, float, int, long>;
+	BOOST_REQUIRE_EQUAL( pack_pos, 1 );
+}
+
