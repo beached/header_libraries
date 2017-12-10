@@ -1,4 +1,5 @@
 // The MIT License (MIT)
+// w much of a difference
 //
 // Copyright (c) 2013-2017 Darrell Wright
 //
@@ -37,7 +38,12 @@ namespace daw {
 		using MethodNotImplemented = std::runtime_error;
 		using UnexpectedEnumValue = std::runtime_error;
 
-		struct arithmetic_exception {};
+		struct basic_exception {};
+		struct arithmetic_exception: public basic_exception {};
+		struct not_implemented_exception: public basic_exception {};
+
+		template<typename T, T error_number>
+		struct errno_exception: public basic_exception, public std::integral_constant<T, error_number> { };
 
 		template<typename ExceptionType = std::runtime_error, typename StringType>
 		[[noreturn]] constexpr void daw_throw( StringType const &msg ) {

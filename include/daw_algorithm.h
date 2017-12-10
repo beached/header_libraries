@@ -36,7 +36,7 @@
 
 namespace daw {
 	template<typename T, typename U>
-	constexpr std::common_type_t<T, U> const &min( T const &lhs, U const &rhs ) noexcept {
+	constexpr std::common_type_t<T, U> min( T const &lhs, U const &rhs ) noexcept {
 		if( lhs <= rhs ) {
 			return lhs;
 		}
@@ -44,7 +44,7 @@ namespace daw {
 	}
 
 	template<typename T, typename U>
-	constexpr std::common_type_t<T, U> const &max( T const &lhs, U const &rhs ) noexcept {
+	constexpr std::common_type_t<T, U> max( T const &lhs, U const &rhs ) noexcept {
 		if( lhs >= rhs ) {
 			return lhs;
 		}
@@ -85,7 +85,7 @@ namespace daw {
 		template<typename Iterator, typename Distance>
 		constexpr void advance( Iterator &it, Distance n ) noexcept {
 			impl::advance( it, static_cast<typename std::iterator_traits<Iterator>::difference_type>( n ),
-			               typename std::iterator_traits<Iterator>::iterator_tag{} );
+			               typename std::iterator_traits<Iterator>::iterator_category{} );
 		}
 
 		template<typename Container, typename Iterator>

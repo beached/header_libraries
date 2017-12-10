@@ -38,6 +38,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_bounded_stack
 	daw_carray
 	daw_checked_iterator_proxy
+	daw_circular_iterator
 	daw_clumpy_sparsy
 	daw_common_mixins
 	daw_container_algorithm
