@@ -30,15 +30,16 @@
 namespace daw {
 
 	template<typename Container>
-	struct circular_iterator {
+	class circular_iterator {
+		using iterator = typename Container::iterator;
+	public:
 		using difference_type = std::ptrdiff_t;
 		using value_type = typename Container::value_type;
-		using iterator_category = std::random_access_iterator_tag;
+		using iterator_category = typename std::iterator_traits<iterator>::iterator_category;
 		using reference = typename Container::reference;
 		using const_reference = typename Container::const_reference;
 
 	private:
-		using iterator = typename Container::iterator;
 		static_assert(
 		  is_same_v<std::random_access_iterator_tag, typename std::iterator_traits<iterator>::iterator_category>,
 		  "Container iterators must be randomly accessable" );
