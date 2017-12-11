@@ -140,19 +140,6 @@ namespace daw {
 			return tmp;
 		}
 
-
-		constexpr circular_iterator operator+( std::ptrdiff_t n ) const noexcept {
-			auto tmp{*this};
-			tmp += n;
-			return tmp;
-		}
-
-		constexpr circular_iterator operator-( std::ptrdiff_t n ) const noexcept {
-			auto tmp{*this};
-			tmp += n;
-			return tmp;
-		}
-
 		constexpr friend bool operator==( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
 			return lhs.m_iterator == rhs.m_iterator;
 		}
