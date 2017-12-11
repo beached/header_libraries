@@ -38,8 +38,8 @@ namespace daw {
 		using pointer = void;
 		using value_type = std::decay_t<decltype( *std::declval<iterator>( ) )>;
 		using iterator_category = typename std::iterator_traits<iterator>::iterator_category;
-		using reference = decltype( *( &( *std::begin( std::declval<Container>( ) ) ) ) );
-		using const_reference = decltype( *( &( *std::cbegin( std::declval<Container>( ) ) ) ) );
+		using reference = value_type &;// decltype( *( &( *std::begin( std::declval<Container>( ) ) ) ) );
+		using const_reference = value_type const &; //decltype( *( &( *std::cbegin( std::declval<Container>( ) ) ) ) );
 
 	private:
 		static_assert(
