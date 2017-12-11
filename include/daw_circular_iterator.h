@@ -174,18 +174,8 @@ namespace daw {
 		return circular_iterator<Container>{&container};
 	}
 
-	template<typename Container>
-	constexpr auto make_circular_iterator( Container const &container ) noexcept {
-		return circular_iterator<Container>{&container};
-	}
-
 	template<typename Container, typename Iterator>
 	constexpr auto make_circular_iterator( Container &container, Iterator it ) noexcept {
-		return circular_iterator<Container>{&container, std::move( it )};
-	}
-
-	template<typename Container, typename Iterator>
-	constexpr auto make_circular_iterator( Container const &container, Iterator it ) noexcept {
 		return circular_iterator<Container>{&container, std::move( it )};
 	}
 } // namespace daw
