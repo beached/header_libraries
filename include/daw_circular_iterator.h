@@ -28,12 +28,24 @@
 #include "daw_traits.h"
 
 namespace daw {
+	namespace impl {
+		template<typename C>
+		using has_size_member = decltype( std::declval<C>( ).size( ) );
+
+		template<typename Container, std::enable_if_t<is_detected_v<has_size_member, Container>, std::nullptr_t> = nullptr>
+		constexpr size_t container_size( Container &c ) {
+			return c.size( );
+		}
+
+		template<typename Container, std::enable_if_t<!is_detected_v<has_size_member, Container>, std::nullptr_t> = nullptr>
+		constexpr size_t container_size( Container &c ) {
+			return static_cast<size_t>( daw::algorithm::distance( std::cbegin( c ), std::cend( c ) ) );
+		}
+	} // namespace impl
 
 	template<typename Container>
-	class circular_iterator {
+	struct circular_iterator {
 		using iterator = typename Container::iterator;
-
-	public:
 		using difference_type = std::ptrdiff_t;
 		using pointer = void;
 		using value_type = typename std::iterator_traits<iterator>::value_type;
@@ -45,23 +57,24 @@ namespace daw {
 		  is_same_v<std::random_access_iterator_tag, typename std::iterator_traits<iterator>::iterator_category>,
 		  "Container iterators must be randomly accessable" );
 
-		Container &m_container;
-		iterator m_iterator;
+		Container m_container;
+		intmax_t m_position;
 
 		constexpr std::ptrdiff_t get_offset( std::ptrdiff_t n ) const noexcept {
-			auto const first = std::cbegin( m_container );
-			auto const sz = daw::algorithm::distance( first, std::end( m_container ) );
-			auto dist = daw::algorithm::distance( first, m_iterator );
-			auto orig_dist = dist;
-			dist += n;
-			if( dist < 0 ) {
-				dist *= -1;
-				dist %= sz;
-				dist = sz - dist;
-			} else if( dist >= sz ) {
-				dist %= sz;
+			auto const sz = static_cast<std::ptrdiff_t>( impl::container_size( m_container ) );
+			n += m_position;
+			if( n < 0 ) {
+				n *= -1;
+				n %= sz;
+				return sz - n;
+			} else if( n >= sz ) {
+				return n % sz;
 			}
-			return dist - orig_dist;
+			return n;
+		}
+
+		iterator get_begin( ) {
+			return std::begin( m_container );
 		}
 
 	public:
@@ -69,65 +82,64 @@ namespace daw {
 
 		constexpr circular_iterator( Container &container ) noexcept
 		  : m_container{container}
-		  , m_iterator{std::begin( container )} {}
+		  , m_position{0} {}
 
-		constexpr circular_iterator( Container & container, iterator i ) noexcept
+		constexpr circular_iterator( Container &container, iterator i ) noexcept
 		  : m_container{container}
-		  , m_iterator{std::move( i )} {}
+		  , m_position{std::distance( std::begin( container ), std::move( i ) )} {}
 
 		constexpr circular_iterator( circular_iterator const & ) = default;
 
 		constexpr circular_iterator( circular_iterator &&other ) noexcept
 		  : m_container{std::move( other ).m_container}
-		  , m_iterator{std::move( other ).m_iterator} {}
+		  , m_position{other.m_position} {}
 
 		constexpr circular_iterator &operator=( circular_iterator const & ) = default;
-		constexpr circular_iterator &operator=( circular_iterator && rhs ) noexcept {
+		constexpr circular_iterator &operator=( circular_iterator &&rhs ) noexcept {
 			m_container = std::move( rhs ).m_container;
-			m_iterator = std::move( rhs ).m_iterator;
+			m_position = rhs.m_position;
 			return *this;
 		}
 
 		~circular_iterator( ) noexcept = default;
 
 		constexpr circular_iterator &operator+=( std::ptrdiff_t n ) noexcept {
-			daw::algorithm::advance( m_iterator, get_offset( n ) );
+			m_position = get_offset( n );
 			return *this;
 		}
 
 		constexpr circular_iterator &operator-=( std::ptrdiff_t n ) {
-			n *= -1;
-			daw::algorithm::advance( m_iterator, get_offset( n ) );
+			m_position = get_offset( -n );
 			return *this;
 		}
 
 		constexpr reference operator*( ) {
-			return *m_iterator;
+			return *std::next( get_begin( ), m_position );
 		}
 
 		constexpr iterator operator->( ) noexcept {
-			return m_iterator;
+			return std::next( get_begin( ), m_position );
 		}
 
 		constexpr circular_iterator &operator++( ) noexcept {
-			daw::algorithm::advance( m_iterator, get_offset( 1 ) );
+			m_position = get_offset( 1 );
 			return *this;
 		}
 
 		constexpr circular_iterator operator++(int)noexcept {
 			auto result = circular_iterator{*this};
-			daw::algorithm::advance( m_iterator, get_offset( 1 ) );
+			m_position = get_offset( 1 );
 			return result;
 		}
 
 		constexpr circular_iterator &operator--( ) noexcept {
-			daw::algorithm::advance( m_iterator, get_offset( -1 ) );
+			m_position = get_offset( -1 );
 			return *this;
 		}
 
 		constexpr circular_iterator operator--(int)noexcept {
 			auto result = circular_iterator{*this};
-			daw::algorithm::advance( m_iterator, get_offset( -1 ) );
+			m_position = get_offset( -1 );
 			return result;
 		}
 
@@ -139,36 +151,32 @@ namespace daw {
 
 		constexpr circular_iterator operator-( std::ptrdiff_t n ) noexcept {
 			auto tmp{*this};
-			tmp += n;
+			tmp -= n;
 			return tmp;
 		}
 
 		constexpr friend bool operator==( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			return lhs.m_iterator == rhs.m_iterator;
+			return lhs.m_position == rhs.m_position && &lhs.m_container == &rhs.m_container;
 		}
 
 		constexpr friend bool operator!=( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			return lhs.m_iterator != rhs.m_iterator;
+			return lhs.m_position != rhs.m_position && &lhs.m_container != &rhs.m_container;
 		}
 
 		constexpr friend bool operator<( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			return lhs.m_iterator < rhs.m_iterator;
+			return lhs.m_position < rhs.m_position && &lhs.m_container < &rhs.m_container;
 		}
 
 		constexpr friend bool operator>( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			return lhs.m_iterator > rhs.m_iterator;
+			return lhs.m_position > rhs.m_position && &lhs.m_container > &rhs.m_container;
 		}
 
 		constexpr friend bool operator<=( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			return lhs.m_iterator <= rhs.m_iterator;
+			return lhs.m_position <= rhs.m_position && &lhs.m_container <= &rhs.m_container;
 		}
 
 		constexpr friend bool operator>=( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			return lhs.m_iterator >= rhs.m_iterator;
-		}
-
-		constexpr friend std::ptrdiff_t operator-( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			return lhs.m_iterator - rhs.m_iterator;
+			return lhs.m_position >= rhs.m_position && &lhs.m_container >= &rhs.m_container;
 		}
 	}; // circular_iterator
 
