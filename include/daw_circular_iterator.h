@@ -31,7 +31,7 @@ namespace daw {
 
 	template<typename Container>
 	class circular_iterator {
-		using iterator = decltype( std::begin( std::declval<Container&>( ) ) );
+		using iterator = typename Container::iterator;
 
 	public:
 		using difference_type = std::ptrdiff_t;
