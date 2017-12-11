@@ -110,6 +110,14 @@ namespace daw {
 			}
 		}
 
+		template<typename ExceptionType = AssertException, typename Bool, typename StringType>
+		constexpr void DebugAssert( Bool const &test, StringType const &msg ) {
+			if( !static_cast<bool>( test ) ) {
+				debug_throw<ExceptionType>( msg );
+			}
+		}
+
+
 		template<typename ExceptionType = AssertException, typename Bool, typename StringType, typename Arg,
 		         typename... Args>
 		void dbg_throw_on_false( Bool const &test, StringType const &format, Arg arg, Args... args ) {
@@ -125,7 +133,11 @@ namespace daw {
 			}
 		}
 #else
-#define dbg_throw_on_false( ... ) ;
+		template<typename...T>
+		constexpr void dbg_throw_on_false( T... ) noexcept {};
+
+		template<typename...T>
+		constexpr void DebugAssert( T... ) noexcept {};
 #endif
 
 		template<typename ExceptionType = AssertException, typename ValueType, typename StringType>

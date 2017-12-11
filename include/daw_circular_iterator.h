@@ -27,18 +27,20 @@
 #include "daw_algorithm.h"
 #include "daw_traits.h"
 
+#define CONSTEXPR
+
 namespace daw {
 	namespace impl {
 		template<typename C>
 		using has_size_member = decltype( std::declval<C>( ).size( ) );
 
 		template<typename Container, std::enable_if_t<is_detected_v<has_size_member, Container>, std::nullptr_t> = nullptr>
-		constexpr size_t container_size( Container &c ) {
+		CONSTEXPR size_t container_size( Container &c ) {
 			return c.size( );
 		}
 
 		template<typename Container, std::enable_if_t<!is_detected_v<has_size_member, Container>, std::nullptr_t> = nullptr>
-		constexpr size_t container_size( Container &c ) {
+		CONSTEXPR size_t container_size( Container &c ) {
 			return static_cast<size_t>( daw::algorithm::distance( std::cbegin( c ), std::cend( c ) ) );
 		}
 	} // namespace impl
@@ -58,10 +60,10 @@ namespace daw {
 		  "Container iterators must be randomly accessable" );
 
 		Container *m_container;
-		intmax_t m_position;
+		difference_type m_position;
 
-		constexpr std::ptrdiff_t get_offset( std::ptrdiff_t n ) const noexcept {
-			auto const sz = static_cast<std::ptrdiff_t>( impl::container_size( *m_container ) );
+		CONSTEXPR difference_type get_offset( difference_type n ) const noexcept {
+			auto const sz = static_cast<difference_type>( impl::container_size( *m_container ) );
 			n += m_position;
 			if( n < 0 ) {
 				n *= -1;
@@ -73,121 +75,137 @@ namespace daw {
 			return n;
 		}
 
-		iterator get_begin( ) {
-			return std::begin( *m_container );
+		CONSTEXPR decltype( auto ) get_iterator( difference_type n ) const {
+			auto result = std::next( std::begin( *m_container ), n );
+			return result;
 		}
 
 	public:
-		constexpr circular_iterator( ) noexcept = delete;
+		CONSTEXPR circular_iterator( ) noexcept
+		  : m_container{nullptr}
+		  , m_position{0} {}
 
-		constexpr circular_iterator( Container &container ) noexcept
+		CONSTEXPR circular_iterator( Container &container ) noexcept
 		  : m_container{&container}
 		  , m_position{0} {}
 
-		constexpr circular_iterator( Container *container ) noexcept
+		CONSTEXPR circular_iterator( Container *container ) noexcept
 		  : m_container{container}
 		  , m_position{0} {}
 
-		constexpr circular_iterator( Container &container, iterator i ) noexcept
+		CONSTEXPR circular_iterator( Container &container, iterator i ) noexcept
 		  : m_container{&container}
 		  , m_position{std::distance( std::begin( container ), std::move( i ) )} {}
 
-		constexpr circular_iterator( Container *container, iterator i ) noexcept
+		CONSTEXPR circular_iterator( Container *container, iterator i ) noexcept
 		  : m_container{container}
 		  , m_position{std::distance( std::begin( *container ), std::move( i ) )} {}
 
-		constexpr circular_iterator( circular_iterator const & ) = default;
-		constexpr circular_iterator( circular_iterator &&other ) noexcept = default;
-
-		constexpr circular_iterator &operator=( circular_iterator const & ) = default;
-		constexpr circular_iterator &operator=( circular_iterator &&rhs ) noexcept = default;
-
+		CONSTEXPR circular_iterator( circular_iterator const & ) = default;
+		CONSTEXPR circular_iterator( circular_iterator &&other ) noexcept = default;
+		CONSTEXPR circular_iterator &operator=( circular_iterator const & ) = default;
+		CONSTEXPR circular_iterator &operator=( circular_iterator &&rhs ) noexcept = default;
 		~circular_iterator( ) noexcept = default;
 
-		constexpr circular_iterator &operator+=( std::ptrdiff_t n ) noexcept {
+		CONSTEXPR circular_iterator &operator+=( difference_type n ) noexcept {
 			m_position = get_offset( n );
 			return *this;
 		}
 
-		constexpr circular_iterator &operator-=( std::ptrdiff_t n ) {
+		CONSTEXPR circular_iterator &operator-=( difference_type n ) {
 			m_position = get_offset( -n );
 			return *this;
 		}
 
-		constexpr reference operator*( ) {
-			return *std::next( get_begin( ), m_position );
+		CONSTEXPR decltype( auto ) operator*( ) {
+			return *get_iterator( m_position );
 		}
 
-		constexpr iterator operator->( ) noexcept {
-			return std::next( get_begin( ), m_position );
+		CONSTEXPR decltype( auto ) operator-> ( ) noexcept {
+			return *get_iterator( m_position );
 		}
 
-		constexpr circular_iterator &operator++( ) noexcept {
+		CONSTEXPR circular_iterator &operator++( ) noexcept {
 			m_position = get_offset( 1 );
 			return *this;
 		}
 
-		constexpr circular_iterator operator++(int)noexcept {
+		CONSTEXPR circular_iterator operator++(int)noexcept {
 			auto result = circular_iterator{*this};
 			m_position = get_offset( 1 );
 			return result;
 		}
 
-		constexpr circular_iterator &operator--( ) noexcept {
+		CONSTEXPR circular_iterator &operator--( ) noexcept {
 			m_position = get_offset( -1 );
 			return *this;
 		}
 
-		constexpr circular_iterator operator--(int)noexcept {
+		CONSTEXPR circular_iterator operator--(int)noexcept {
 			auto result = circular_iterator{*this};
 			m_position = get_offset( -1 );
 			return result;
 		}
 
-		constexpr circular_iterator operator+( std::ptrdiff_t n ) noexcept {
-			auto tmp{*this};
+		CONSTEXPR circular_iterator operator+( difference_type n ) noexcept {
+			circular_iterator tmp{*this};
 			tmp += n;
 			return tmp;
 		}
 
-		constexpr circular_iterator operator-( std::ptrdiff_t n ) noexcept {
-			auto tmp{*this};
+		CONSTEXPR circular_iterator operator-( difference_type n ) noexcept {
+			circular_iterator tmp{*this};
 			tmp -= n;
 			return tmp;
 		}
 
-		constexpr friend bool operator==( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
+		CONSTEXPR circular_iterator end( ) noexcept {
+			circular_iterator tmp{*this};
+			tmp.m_position = static_cast<difference_type>( impl::container_size( *m_container ) );
+			return tmp;
+		}
+		CONSTEXPR friend bool operator==( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
 			return lhs.m_position == rhs.m_position && lhs.m_container == rhs.m_container;
 		}
 
-		constexpr friend bool operator!=( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			return lhs.m_position != rhs.m_position && lhs.m_container != rhs.m_container;
+		CONSTEXPR friend bool operator!=( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
+			return lhs.m_position != rhs.m_position || lhs.m_container != rhs.m_container;
 		}
 
-		constexpr friend bool operator<( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			return lhs.m_position < rhs.m_position && lhs.m_container < rhs.m_container;
+		CONSTEXPR friend bool operator<( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
+			daw::exception::DebugAssert( lhs.m_container == rhs.m_container, "Attempt to compare difference containers" );
+			return lhs.m_position < rhs.m_position;
 		}
 
-		constexpr friend bool operator>( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			return lhs.m_position > rhs.m_position && lhs.m_container > rhs.m_container;
+		CONSTEXPR friend bool operator>( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
+			daw::exception::DebugAssert( lhs.m_container == rhs.m_container, "Attempt to compare difference containers" );
+			return lhs.m_position > rhs.m_position;
 		}
 
-		constexpr friend bool operator<=( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			return lhs.m_position <= rhs.m_position && lhs.m_container <= rhs.m_container;
+		CONSTEXPR friend bool operator<=( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
+			daw::exception::DebugAssert( lhs.m_container == rhs.m_container, "Attempt to compare difference containers" );
+			return lhs.m_position <= rhs.m_position;
 		}
 
-		constexpr friend bool operator>=( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			return lhs.m_position >= rhs.m_position && lhs.m_container >= rhs.m_container;
+		CONSTEXPR friend bool operator>=( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
+			daw::exception::DebugAssert( lhs.m_container == rhs.m_container, "Attempt to compare difference containers" );
+			return lhs.m_position >= rhs.m_position;
+		}
+
+		CONSTEXPR friend difference_type operator-( circular_iterator const &lhs, circular_iterator const &rhs ) {
+			daw::exception::DebugAssert( lhs.m_container == rhs.m_container,
+			                             "Can only find difference of iterators from same container" );
+			return lhs.m_position - rhs.m_position;
 		}
 	}; // circular_iterator
 
 	template<typename Container>
-	constexpr auto make_circular_iterator( Container &container ) noexcept {
+	CONSTEXPR auto make_circular_iterator( Container &container ) noexcept {
 		return circular_iterator<Container>{container};
 	}
 
 	template<typename Container, typename Iterator>
-	constexpr auto make_circular_iterator( Container &container, Iterator it ) noexcept {
+	CONSTEXPR auto make_circular_iterator( Container &container, Iterator it ) noexcept {
 		return circular_iterator<Container>{container, std::move( it )};
 	}
 } // namespace daw

@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <algorithm>
 #include <cstdint>
 #include <cstdlib>
 #include <iostream>
@@ -27,12 +28,13 @@
 
 #include "boost_test.h"
 #include "daw_circular_iterator.h"
+#include "daw_traits.h"
 
 BOOST_AUTO_TEST_CASE( daw_circular_iterator_001 ) {
 	std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7};
 
 	auto first = daw::make_circular_iterator( numbers );
-	for( size_t n=0; n<14; ++n ) {
+	for( size_t n = 0; n < 14; ++n ) {
 		std::cout << *first++ << ' ';
 	}
 	std::cout << '\n';
@@ -42,7 +44,7 @@ BOOST_AUTO_TEST_CASE( daw_circular_iterator_002 ) {
 	std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7};
 
 	auto first = daw::make_circular_iterator( numbers );
-	for( size_t n=0; n<14; ++n ) {
+	for( size_t n = 0; n < 14; ++n ) {
 		std::cout << *first-- << ' ';
 	}
 	std::cout << '\n';
@@ -52,8 +54,8 @@ BOOST_AUTO_TEST_CASE( daw_circular_iterator_003 ) {
 	std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7};
 
 	auto first = daw::make_circular_iterator( numbers );
-	for( intmax_t n=0; n<14; ++n ) {
-		first += n*n;
+	for( intmax_t n = 0; n < 14; ++n ) {
+		first += n * n;
 		std::cout << *first << ' ';
 	}
 	std::cout << '\n';
@@ -88,11 +90,57 @@ BOOST_AUTO_TEST_CASE( daw_circular_iterator_007 ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_circular_iterator_008 ) {
-	int a[] = { 1, 2, 3, 4 };
+	int a[] = {1, 2, 3, 4};
+	auto it = daw::make_circular_iterator( a );
+	auto it2 = it + 4;
+	constexpr bool tst1 = daw::is_same_v<decltype( *it ), decltype( a[0] )>;
+	constexpr bool tst2 = daw::is_same_v<decltype( it ), decltype( it2 )>;
+	BOOST_REQUIRE( tst1 );
+	BOOST_REQUIRE( tst2 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_circular_iterator_009 ) {
+	int a[] = {1, 2, 3, 4};
+	auto it = daw::make_circular_iterator( a );
+	auto it2 = it + 4;
+	constexpr bool tst1 = daw::is_same_v<decltype( *it ), decltype( a[0] )>;
+	constexpr bool tst2 = daw::is_same_v<decltype( it ), decltype( it2 )>;
+	BOOST_REQUIRE( tst1 );
+	BOOST_REQUIRE( tst2 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_circular_iterator_010 ) {
+	int a[] = {1, 2, 3, 4};
 	auto it = daw::make_circular_iterator( a );
 	using std::swap;
-	swap( *it, *(it + 1) );
+	swap( *it, *( it + 1 ) );
 	BOOST_REQUIRE_EQUAL( a[0], 2 );
 	BOOST_REQUIRE_EQUAL( a[1], 1 );
 }
 
+BOOST_AUTO_TEST_CASE( daw_circular_iterator_011 ) {
+	int a[] = {1, 2, 3, 4};
+	auto it = daw::make_circular_iterator( a );
+	auto it2 = it + 3;
+	BOOST_REQUIRE_EQUAL( std::distance( it, it2 ), 3 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_circular_iterator_012 ) {
+	int a[] = {1, 2, 3, 4};
+	auto it = daw::make_circular_iterator( a );
+	auto it2 = it + 3;
+	std::iter_swap( it, it2 );
+	BOOST_REQUIRE_EQUAL( a[0], 4 );
+	BOOST_REQUIRE_EQUAL( a[3], 1 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_circular_iterator_013 ) {
+	int a[] = {1, 2, 3, 4};
+	auto it = daw::make_circular_iterator( a );
+	auto const last = it.end( );
+	std::reverse( it, last );
+	BOOST_REQUIRE_EQUAL( a[0], 4 );
+	BOOST_REQUIRE_EQUAL( a[1], 3 );
+	BOOST_REQUIRE_EQUAL( a[2], 2 );
+	BOOST_REQUIRE_EQUAL( a[3], 1 );
+}
