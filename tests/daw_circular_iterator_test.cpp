@@ -28,7 +28,7 @@
 #include "boost_test.h"
 #include "daw_circular_iterator.h"
 
-BOOST_AUTO_TEST_CASE( daw_circular_iterator_01 ) {
+BOOST_AUTO_TEST_CASE( daw_circular_iterator_001 ) {
 	std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7};
 
 	auto first = daw::make_circular_iterator( numbers );
@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE( daw_circular_iterator_01 ) {
 	std::cout << '\n';
 }
 
-BOOST_AUTO_TEST_CASE( daw_circular_iterator_02 ) {
+BOOST_AUTO_TEST_CASE( daw_circular_iterator_002 ) {
 	std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7};
 
 	auto first = daw::make_circular_iterator( numbers );
@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE( daw_circular_iterator_02 ) {
 	std::cout << '\n';
 }
 
-BOOST_AUTO_TEST_CASE( daw_circular_iterator_03 ) {
+BOOST_AUTO_TEST_CASE( daw_circular_iterator_003 ) {
 	std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7};
 
 	auto first = daw::make_circular_iterator( numbers );
@@ -57,5 +57,33 @@ BOOST_AUTO_TEST_CASE( daw_circular_iterator_03 ) {
 		std::cout << *first << ' ';
 	}
 	std::cout << '\n';
+}
+
+BOOST_AUTO_TEST_CASE( daw_circular_iterator_004 ) {
+	std::vector<int> a;
+	auto it = daw::make_circular_iterator( a );
+	constexpr bool is_move_assignable = std::is_move_assignable<decltype( it )>::value;
+	BOOST_REQUIRE( is_move_assignable );
+}
+
+BOOST_AUTO_TEST_CASE( daw_circular_iterator_005 ) {
+	std::vector<int> a;
+	auto it = daw::make_circular_iterator( a );
+	constexpr bool is_move_constructible = std::is_move_constructible<decltype( it )>::value;
+	BOOST_REQUIRE( is_move_constructible );
+}
+
+BOOST_AUTO_TEST_CASE( daw_circular_iterator_006 ) {
+	std::vector<int> a;
+	auto it = daw::make_circular_iterator( a );
+	constexpr bool is_nothrow_move_assignable = std::is_nothrow_move_assignable<decltype( it )>::value;
+	BOOST_CHECK( is_nothrow_move_assignable );
+}
+
+BOOST_AUTO_TEST_CASE( daw_circular_iterator_007 ) {
+	std::vector<int> a;
+	auto it = daw::make_circular_iterator( a );
+	constexpr bool is_nothrow_move_constructible = std::is_nothrow_move_constructible<decltype( it )>::value;
+	BOOST_CHECK( is_nothrow_move_constructible );
 }
 
