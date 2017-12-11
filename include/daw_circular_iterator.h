@@ -36,10 +36,9 @@ namespace daw {
 	public:
 		using difference_type = std::ptrdiff_t;
 		using pointer = void;
-		using value_type =  std::decay_t<decltype( *std::declval<iterator&>( ) )>;
+		using value_type = typename std::iterator_traits<iterator>::value_type;
 		using iterator_category = std::random_access_iterator_tag;
-		using reference = decltype( *( &( *std::begin( std::declval<Container&>( ) ) ) ) );
-		using const_reference = decltype( *( &( *std::cbegin( std::declval<Container&>( ) ) ) ) );
+		using reference = value_type &;
 
 	private:
 		static_assert(
