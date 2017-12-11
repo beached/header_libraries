@@ -38,7 +38,7 @@ namespace daw {
 		using pointer = void;
 		using value_type = typename std::iterator_traits<iterator>::value_type;
 		using iterator_category = std::random_access_iterator_tag;
-		using reference = value_type &;
+		using reference = typename std::iterator_traits<iterator>::reference;
 
 	private:
 		static_assert(
