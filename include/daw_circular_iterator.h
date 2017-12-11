@@ -45,12 +45,12 @@ namespace daw {
 		  is_same_v<std::random_access_iterator_tag, typename std::iterator_traits<iterator>::iterator_category>,
 		  "Container iterators must be randomly accessable" );
 
-		Container *m_container;
+		Container &m_container;
 		iterator m_iterator;
 
 		constexpr std::ptrdiff_t get_offset( std::ptrdiff_t n ) const noexcept {
-			auto const first = std::cbegin( *m_container );
-			auto const sz = daw::algorithm::distance( first, std::end( *m_container ) );
+			auto const first = std::cbegin( m_container );
+			auto const sz = daw::algorithm::distance( first, std::end( m_container ) );
 			auto dist = daw::algorithm::distance( first, m_iterator );
 			auto orig_dist = dist;
 			dist += n;
@@ -67,18 +67,26 @@ namespace daw {
 	public:
 		constexpr circular_iterator( ) noexcept = delete;
 
-		constexpr circular_iterator( Container *ptr ) noexcept
-		  : m_container{ptr}
-		  , m_iterator{std::begin( *ptr )} {}
+		constexpr circular_iterator( Container &container ) noexcept
+		  : m_container{container}
+		  , m_iterator{std::begin( container )} {}
 
-		constexpr circular_iterator( Container *ptr, iterator i ) noexcept
-		  : m_container{ptr}
+		constexpr circular_iterator( Container & container, iterator i ) noexcept
+		  : m_container{container}
 		  , m_iterator{std::move( i )} {}
 
 		constexpr circular_iterator( circular_iterator const & ) = default;
-		constexpr circular_iterator( circular_iterator && ) noexcept = default;
+
+		constexpr circular_iterator( circular_iterator &&other ) noexcept
+		  : m_container{std::move( other ).m_container}
+		  , m_iterator{std::move( other ).m_iterator} {}
+
 		constexpr circular_iterator &operator=( circular_iterator const & ) = default;
-		constexpr circular_iterator &operator=( circular_iterator && ) noexcept = default;
+		constexpr circular_iterator &operator=( circular_iterator && rhs ) noexcept {
+			m_container = std::move( rhs ).m_container;
+			m_iterator = std::move( rhs ).m_iterator;
+			return *this;
+		}
 
 		~circular_iterator( ) noexcept = default;
 
@@ -166,11 +174,11 @@ namespace daw {
 
 	template<typename Container>
 	constexpr auto make_circular_iterator( Container &container ) noexcept {
-		return circular_iterator<Container>{&container};
+		return circular_iterator<Container>{container};
 	}
 
 	template<typename Container, typename Iterator>
 	constexpr auto make_circular_iterator( Container &container, Iterator it ) noexcept {
-		return circular_iterator<Container>{&container, std::move( it )};
+		return circular_iterator<Container>{container, std::move( it )};
 	}
 } // namespace daw
