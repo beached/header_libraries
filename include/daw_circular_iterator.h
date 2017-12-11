@@ -31,15 +31,15 @@ namespace daw {
 
 	template<typename Container>
 	class circular_iterator {
-		using iterator = decltype( std::begin( std::declval<Container>( ) ) );
+		using iterator = decltype( std::begin( std::declval<Container&>( ) ) );
 
 	public:
 		using difference_type = std::ptrdiff_t;
 		using pointer = void;
-		using value_type = std::decay_t<decltype( *std::declval<iterator>( ) )>;
+		using value_type =  std::decay_t<decltype( *std::declval<iterator&>( ) )>;
 		using iterator_category = std::random_access_iterator_tag;
-		using reference = decltype( *( &( *std::begin( std::declval<Container>( ) ) ) ) );
-		using const_reference = decltype( *( &( *std::cbegin( std::declval<Container>( ) ) ) ) );
+		using reference = decltype( *( &( *std::begin( std::declval<Container&>( ) ) ) ) );
+		using const_reference = decltype( *( &( *std::cbegin( std::declval<Container&>( ) ) ) ) );
 
 	private:
 		static_assert(
