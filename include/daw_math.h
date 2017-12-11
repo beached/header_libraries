@@ -236,25 +236,24 @@ namespace daw {
 		template<typename T0, typename T1>
 		constexpr auto vmax( T0 &&val1, T1 &&val2 ) noexcept -> std::common_type_t<T0, T1> {
 			if( val1 > val2 ) {
-				return std::forward<std::common_type_t<T0, T1>>( val1 );
+				return std::forward<std::common_type_t<T0>>( val1 );
 			}
-			return std::forward<std::common_type_t<T0, T1>>( val2 );
+			return std::forward<std::common_type_t<T1>>( val2 );
 		}
 
-		// This approach seems to produce the smallest assembly
 		template<typename T0, typename T1, typename... Ts,
 		         std::enable_if_t<( sizeof...( Ts ) != 0 ), std::nullptr_t> = nullptr>
 		constexpr auto vmax( T0 &&val1, T1 &&val2, Ts &&... vs ) noexcept -> std::common_type_t<T0, T1, Ts...> {
 			auto tmp = vmax( std::forward<Ts>( vs )... );
 			if( val1 > val2 ) {
 				if( val1 > tmp ) {
-					return std::forward<std::common_type_t<T0, T1, Ts...>>( val1 );
+					return std::forward<std::common_type_t<T0>>( val1 );
 				}
-				return std::forward<std::common_type_t<T0, T1, Ts...>>( tmp );
+				return tmp;
 			} else if( val2 > tmp ) {
-				return std::forward<std::common_type_t<T0, T1, Ts...>>( val2 );
+				return std::forward<std::common_type_t<T1>>( val2 );
 			}
-			return std::forward<std::common_type_t<T0, T1, Ts...>>( tmp );
+			return tmp;
 		}
 
 		template<typename T>
@@ -265,9 +264,9 @@ namespace daw {
 		template<typename T0, typename T1>
 		constexpr auto vmin( T0 &&val1, T1 &&val2 ) noexcept -> std::common_type_t<T0, T1> {
 			if( val1 < val2 ) {
-				return std::forward<std::common_type_t<T0, T1>>( val1 );
+				return std::forward<std::common_type_t<T0>>( val1 );
 			}
-			return std::forward<std::common_type_t<T0, T1>>( val2 );
+			return std::forward<std::common_type_t<T1>>( val2 );
 		}
 
 		template<typename T0, typename T1, typename... Ts,
@@ -276,13 +275,13 @@ namespace daw {
 			auto tmp = vmin( std::forward<Ts>( vs )... );
 			if( val1 < val2 ) {
 				if( val1 < tmp ) {
-					return std::forward<std::common_type_t<T0, T1, Ts...>>( val1 );
+					return std::forward<std::common_type_t<T0>>( val1 );
 				}
-				return std::forward<std::common_type_t<T0, T1, Ts...>>( tmp );
+				return tmp;
 			} else if( val2 < tmp ) {
-				return std::forward<std::common_type_t<T0, T1, Ts...>>( val2 );
+				return std::forward<std::common_type_t<T1>>( val2 );
 			}
-			return std::forward<std::common_type_t<T0, T1, Ts...>>( tmp );
+			return tmp;
 		}
 	} // namespace math
 } // namespace daw
