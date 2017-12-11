@@ -228,19 +228,33 @@ namespace daw {
 #ifdef __clang__
 #pragma clang diagnostic pop
 #endif
-
 		template<typename T>
 		constexpr T vmax( T &&t ) noexcept {
 			return std::forward<T>( t );
 		}
 
-		template<typename T0, typename T1, typename... Ts>
-		constexpr auto vmax( T0 &&val1, T1 &&val2, Ts &&... vs ) noexcept -> typename std::common_type<T0, T1, Ts...>::type {
-			if( val2 > val1 ) {
-				return vmax( val2, std::forward<Ts>( vs )... );
-			} else {
-				return vmax( val1, std::forward<Ts>( vs )... );
+		template<typename T0, typename T1>
+		constexpr auto vmax( T0 &&val1, T1 &&val2 ) noexcept -> std::common_type_t<T0, T1> {
+			if( val1 > val2 ) {
+				return std::forward<std::common_type_t<T0, T1>>( val1 );
 			}
+			return std::forward<std::common_type_t<T0, T1>>( val2 );
+		}
+
+		// This approach seems to produce the smallest assembly
+		template<typename T0, typename T1, typename... Ts,
+		         std::enable_if_t<( sizeof...( Ts ) != 0 ), std::nullptr_t> = nullptr>
+		constexpr auto vmax( T0 &&val1, T1 &&val2, Ts &&... vs ) noexcept -> std::common_type_t<T0, T1, Ts...> {
+			auto tmp = vmax( std::forward<Ts>( vs )... );
+			if( val1 > val2 ) {
+				if( val1 > tmp ) {
+					return std::forward<std::common_type_t<T0, T1, Ts...>>( val1 );
+				}
+				return std::forward<std::common_type_t<T0, T1, Ts...>>( tmp );
+			} else if( val2 > tmp ) {
+				return std::forward<std::common_type_t<T0, T1, Ts...>>( val2 );
+			}
+			return std::forward<std::common_type_t<T0, T1, Ts...>>( tmp );
 		}
 
 		template<typename T>
@@ -248,14 +262,27 @@ namespace daw {
 			return std::forward<T>( t );
 		}
 
-		template<typename T0, typename T1, typename... Ts>
-		constexpr auto vmin( T0 &&val1, T1 &&val2, Ts &&... vs ) noexcept ->
-		  typename std::common_type<T0, T1, Ts...>::type {
-			if( val2 < val1 ) {
-				return vmin( val2, std::forward<Ts>( vs )... );
-			} else {
-				return vmin( val1, std::forward<Ts>( vs )... );
+		template<typename T0, typename T1>
+		constexpr auto vmin( T0 &&val1, T1 &&val2 ) noexcept -> std::common_type_t<T0, T1> {
+			if( val1 < val2 ) {
+				return std::forward<std::common_type_t<T0, T1>>( val1 );
 			}
+			return std::forward<std::common_type_t<T0, T1>>( val2 );
+		}
+
+		template<typename T0, typename T1, typename... Ts,
+		         std::enable_if_t<( sizeof...( Ts ) != 0 ), std::nullptr_t> = nullptr>
+		constexpr auto vmin( T0 &&val1, T1 &&val2, Ts &&... vs ) noexcept -> std::common_type_t<T0, T1, Ts...> {
+			auto tmp = vmin( std::forward<Ts>( vs )... );
+			if( val1 < val2 ) {
+				if( val1 < tmp ) {
+					return std::forward<std::common_type_t<T0, T1, Ts...>>( val1 );
+				}
+				return std::forward<std::common_type_t<T0, T1, Ts...>>( tmp );
+			} else if( val2 < tmp ) {
+				return std::forward<std::common_type_t<T0, T1, Ts...>>( val2 );
+			}
+			return std::forward<std::common_type_t<T0, T1, Ts...>>( tmp );
 		}
 	} // namespace math
 } // namespace daw
