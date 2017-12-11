@@ -37,7 +37,7 @@ namespace daw {
 		using difference_type = std::ptrdiff_t;
 		using pointer = void;
 		using value_type = std::decay_t<decltype( *std::declval<iterator>( ) )>;
-		using iterator_category = typename std::iterator_traits<iterator>::iterator_category;
+		using iterator_category = std::random_access_iterator_tag;
 		using reference = decltype( *( &( *std::begin( std::declval<Container>( ) ) ) ) );
 		using const_reference = decltype( *( &( *std::cbegin( std::declval<Container>( ) ) ) ) );
 
