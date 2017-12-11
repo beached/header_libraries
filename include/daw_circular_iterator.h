@@ -45,7 +45,7 @@ namespace daw {
 
 	template<typename Container>
 	struct circular_iterator {
-		using iterator = typename Container::iterator;
+		using iterator = decltype( std::begin( std::declval<Container &>( ) ) );
 		using difference_type = std::ptrdiff_t;
 		using pointer = void;
 		using value_type = typename std::iterator_traits<iterator>::value_type;
@@ -57,11 +57,11 @@ namespace daw {
 		  is_same_v<std::random_access_iterator_tag, typename std::iterator_traits<iterator>::iterator_category>,
 		  "Container iterators must be randomly accessable" );
 
-		Container m_container;
+		Container *m_container;
 		intmax_t m_position;
 
 		constexpr std::ptrdiff_t get_offset( std::ptrdiff_t n ) const noexcept {
-			auto const sz = static_cast<std::ptrdiff_t>( impl::container_size( m_container ) );
+			auto const sz = static_cast<std::ptrdiff_t>( impl::container_size( *m_container ) );
 			n += m_position;
 			if( n < 0 ) {
 				n *= -1;
@@ -74,32 +74,33 @@ namespace daw {
 		}
 
 		iterator get_begin( ) {
-			return std::begin( m_container );
+			return std::begin( *m_container );
 		}
 
 	public:
 		constexpr circular_iterator( ) noexcept = delete;
 
 		constexpr circular_iterator( Container &container ) noexcept
+		  : m_container{&container}
+		  , m_position{0} {}
+
+		constexpr circular_iterator( Container *container ) noexcept
 		  : m_container{container}
 		  , m_position{0} {}
 
 		constexpr circular_iterator( Container &container, iterator i ) noexcept
-		  : m_container{container}
+		  : m_container{&container}
 		  , m_position{std::distance( std::begin( container ), std::move( i ) )} {}
 
-		constexpr circular_iterator( circular_iterator const & ) = default;
+		constexpr circular_iterator( Container *container, iterator i ) noexcept
+		  : m_container{container}
+		  , m_position{std::distance( std::begin( *container ), std::move( i ) )} {}
 
-		constexpr circular_iterator( circular_iterator &&other ) noexcept
-		  : m_container{std::move( other ).m_container}
-		  , m_position{other.m_position} {}
+		constexpr circular_iterator( circular_iterator const & ) = default;
+		constexpr circular_iterator( circular_iterator &&other ) noexcept = default;
 
 		constexpr circular_iterator &operator=( circular_iterator const & ) = default;
-		constexpr circular_iterator &operator=( circular_iterator &&rhs ) noexcept {
-			m_container = std::move( rhs ).m_container;
-			m_position = rhs.m_position;
-			return *this;
-		}
+		constexpr circular_iterator &operator=( circular_iterator &&rhs ) noexcept = default;
 
 		~circular_iterator( ) noexcept = default;
 
@@ -156,27 +157,27 @@ namespace daw {
 		}
 
 		constexpr friend bool operator==( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			return lhs.m_position == rhs.m_position && &lhs.m_container == &rhs.m_container;
+			return lhs.m_position == rhs.m_position && lhs.m_container == rhs.m_container;
 		}
 
 		constexpr friend bool operator!=( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			return lhs.m_position != rhs.m_position && &lhs.m_container != &rhs.m_container;
+			return lhs.m_position != rhs.m_position && lhs.m_container != rhs.m_container;
 		}
 
 		constexpr friend bool operator<( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			return lhs.m_position < rhs.m_position && &lhs.m_container < &rhs.m_container;
+			return lhs.m_position < rhs.m_position && lhs.m_container < rhs.m_container;
 		}
 
 		constexpr friend bool operator>( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			return lhs.m_position > rhs.m_position && &lhs.m_container > &rhs.m_container;
+			return lhs.m_position > rhs.m_position && lhs.m_container > rhs.m_container;
 		}
 
 		constexpr friend bool operator<=( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			return lhs.m_position <= rhs.m_position && &lhs.m_container <= &rhs.m_container;
+			return lhs.m_position <= rhs.m_position && lhs.m_container <= rhs.m_container;
 		}
 
 		constexpr friend bool operator>=( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			return lhs.m_position >= rhs.m_position && &lhs.m_container >= &rhs.m_container;
+			return lhs.m_position >= rhs.m_position && lhs.m_container >= rhs.m_container;
 		}
 	}; // circular_iterator
 

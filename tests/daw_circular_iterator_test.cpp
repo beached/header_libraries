@@ -87,3 +87,12 @@ BOOST_AUTO_TEST_CASE( daw_circular_iterator_007 ) {
 	BOOST_CHECK( is_nothrow_move_constructible );
 }
 
+BOOST_AUTO_TEST_CASE( daw_circular_iterator_008 ) {
+	int a[] = { 1, 2, 3, 4 };
+	auto it = daw::make_circular_iterator( a );
+	using std::swap;
+	swap( *it, *(it + 1) );
+	BOOST_REQUIRE_EQUAL( a[0], 2 );
+	BOOST_REQUIRE_EQUAL( a[1], 1 );
+}
+
