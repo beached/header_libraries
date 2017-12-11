@@ -98,11 +98,7 @@ namespace daw {
 			return *m_iterator;
 		}
 
-		constexpr const_reference operator*( ) const {
-			return *m_iterator;
-		}
-
-		constexpr iterator operator->( ) const noexcept {
+		constexpr iterator operator->( ) noexcept {
 			return m_iterator;
 		}
 
