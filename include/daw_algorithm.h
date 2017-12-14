@@ -662,14 +662,13 @@ namespace daw {
 		template<typename InputIterator, typename OutputIterator, typename BinaryOperation>
 		constexpr OutputIterator
 		transform_it( InputIterator first_in, InputIterator const last_in, OutputIterator first_out,
-		           BinaryOperation binary_op ) noexcept( noexcept( first_out = binary_op( *first_in++, first_out ) ) ) {
+		              BinaryOperation binary_op ) noexcept( noexcept( first_out = binary_op( *first_in++, first_out ) ) ) {
 
 			while( first_in != last_in ) {
 				first_out = binary_op( *first_in++, first_out );
 			}
 			return first_out;
 		}
-
 
 		template<typename InputIterator1, typename InputIterator2, typename OutputIterator>
 		constexpr void copy( InputIterator1 first_in, InputIterator2 const last_in, OutputIterator first_out ) noexcept {
@@ -848,8 +847,8 @@ namespace daw {
 			}
 		}
 
-		template<typename T, typename RandomIterator, typename BinaryOperation>
-		constexpr T reduce( RandomIterator first, RandomIterator const last, T init,
+		template<typename T, typename RandomIterator, typename RandomIteratorLast, typename BinaryOperation>
+		constexpr T reduce( RandomIterator first, RandomIteratorLast last, T init,
 		                    BinaryOperation binary_op ) noexcept( noexcept( init = binary_op( init, *first++ ) ) ) {
 
 			static_assert( is_binary_predicate_v<BinaryOperation, T, decltype( *first )>,
@@ -865,6 +864,29 @@ namespace daw {
 				init = binary_op( init, *first++ );
 			}
 			return std::move( init );
+		}
+
+		template<typename InputIterator1, typename InputIterator1Last, typename InputIterator2, typename T,
+		         typename ReduceFunction, typename MapFunction>
+		constexpr T
+		map_reduce( InputIterator1 first1, InputIterator1Last last1, InputIterator2 first2, T init,
+		            ReduceFunction reduce_func,
+		            MapFunction map_func ) noexcept( noexcept( reduce_func( init, map_func( *first1, *first2 ) ) ) ) {
+
+			static_assert( is_binary_predicate_v<MapFunction, decltype( *first1 ), decltype( *first2 )>,
+			               "BinaryOperation map_func passed take two values referenced by first. e.g map_func( *first1, "
+			               "*first2 ) must be valid" );
+
+			static_assert( is_binary_predicate_v<ReduceFunction, T, decltype( map_func( *first1, *first2 ) )>,
+			               "BinaryOperation reduce_func must take two values referenced by first. e.g reduce_func( init, "
+			               "map_func( *first1, *first2 ) ) must be valid" );
+
+			while( first1 != last1 ) {
+				init = reduce_func( init, map_func( *first1, *first2 ) );
+				++first1;
+				++first2;
+			}
+			return init;
 		}
 
 		template<class ForwardIt1, class ForwardIt2>
@@ -923,10 +945,18 @@ namespace daw {
 			return init;
 		}
 
-		template<typename ForwardIterator, typename Compare>
-		constexpr std::pair<ForwardIterator, ForwardIterator> minmax_element( ForwardIterator first, ForwardIterator last,
-		                                                                      Compare comp ) {
-			std::pair<ForwardIterator, ForwardIterator> result{first, first};
+		template<typename ForwardIterator, typename LastType, typename Compare>
+		constexpr auto minmax_element( ForwardIterator first, LastType last,
+		                               Compare comp ) noexcept( noexcept( comp( *first, *first ) ) ) {
+
+			static_assert( daw::is_binary_predicate_v<Compare, decltype( *first ), decltype( *first )>,
+			               "Compare must satisfy the compare concept, which includes BinaryPredicate.  See "
+			               "http://en.cppreference.com/w/cpp/concept/Compare" );
+
+			struct {
+				ForwardIterator min_element;
+				ForwardIterator max_element;
+			} result{first, first};
 
 			if( first == last ) {
 				return result;
@@ -934,35 +964,35 @@ namespace daw {
 			if( ++first == last ) {
 				return result;
 			}
-			if( comp( *first, *result.first ) ) {
-				result.first = first;
+			if( comp( *first, *result.min_element ) ) {
+				result.min_element = first;
 			} else {
-				result.second = first;
+				result.max_element = first;
 			}
 
 			while( ++first != last ) {
 				auto i = first;
 				if( ++first == last ) {
-					if( comp( *i, *result.first ) ) {
-						result.first = i;
-					} else if( !( comp( *i, *result.second ) ) ) {
-						result.second = i;
+					if( comp( *i, *result.min_element ) ) {
+						result.min_element = i;
+					} else if( !( comp( *i, *result.max_element ) ) ) {
+						result.max_element = i;
 					}
 					break;
 				} else {
 					if( comp( *first, *i ) ) {
-						if( comp( *first, *result.first ) ) {
-							result.first = first;
+						if( comp( *first, *result.min_element ) ) {
+							result.min_element = first;
 						}
-						if( !( comp( *i, *result.second ) ) ) {
-							result.second = i;
+						if( !( comp( *i, *result.max_element ) ) ) {
+							result.max_element = i;
 						}
 					} else {
-						if( comp( *i, *result.first ) ) {
-							result.first = i;
+						if( comp( *i, *result.min_element ) ) {
+							result.min_element = i;
 						}
-						if( !( comp( *first, *result.second ) ) ) {
-							result.second = first;
+						if( !( comp( *first, *result.max_element ) ) ) {
+							result.max_element = first;
 						}
 					}
 				}
@@ -970,10 +1000,12 @@ namespace daw {
 			return result;
 		}
 
-		template<typename ForwardIterator>
-		constexpr std::pair<ForwardIterator, ForwardIterator> minmax_element( ForwardIterator first,
-		                                                                      ForwardIterator last ) {
-			return std::minmax_element( first, last, std::less<>( ) );
+		template<typename ForwardIterator, typename LastType>
+		constexpr decltype( auto )
+		minmax_element( ForwardIterator first,
+		                LastType last ) noexcept( noexcept( minmax_element( first, last, std::less<>{} ) ) ) {
+
+			return daw::algorithm::minmax_element( first, last, std::less<>{} );
 		}
 	} // namespace algorithm
 } // namespace daw

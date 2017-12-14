@@ -133,3 +133,12 @@ BOOST_AUTO_TEST_CASE( daw_transform_it_test_001 ) {
 		return out_it;
 	} );
 }
+
+BOOST_AUTO_TEST_CASE( daw_minmax_element_test_001 ) {
+	std::vector<int> tst = { 1, 3, 2, -1, 100, -50, 1, 5, 2442 };
+	auto result = daw::algorithm::minmax_element( tst.cbegin( ), tst.cend( ) );
+
+	BOOST_REQUIRE_EQUAL( *(result.min_element), -50 );
+	BOOST_REQUIRE_EQUAL( *(result.max_element), 2442 );
+}
+

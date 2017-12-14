@@ -748,6 +748,9 @@ namespace daw {
 
 		template<typename... Ts>
 		constexpr bool isnt_cv_ref_v = impl::isnt_cv_ref<Ts...>::value;
+
+		template<typename T>
+		using deref_t = decltype( *std::declval<T>( ) );
 	} // namespace traits
 
 	template<bool B, typename T=std::nullptr_t>
