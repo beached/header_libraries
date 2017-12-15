@@ -651,6 +651,9 @@ namespace daw {
 			return impl::in_range<Lower, Upper>{std::forward<Lower>( lower ), std::forward<Upper>( upper )};
 		}
 
+		/// @brief Returns a callable that returns true if value passed is equal to value
+		/// @param value Value to test for equality with
+		/// @returns True if value passed to operator( ) is equal to value constructed with
 		template<typename Value>
 		constexpr auto equal_to( Value &&value ) {
 			return impl::equal_to<Value>{std::forward<Value>( value )};
