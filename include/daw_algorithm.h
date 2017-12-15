@@ -235,7 +235,7 @@ namespace daw {
 			template<typename Fwd>
 			struct Reverser_generic {
 				Fwd &fwd;
-				Reverser_generic( Fwd &fwd_ )
+				explicit Reverser_generic( Fwd &fwd_ )
 				  : fwd( fwd_ ) {}
 				typedef std::reverse_iterator<typename Fwd::iterator> reverse_iterator;
 				reverse_iterator begin( ) {
@@ -249,7 +249,7 @@ namespace daw {
 			template<typename Fwd>
 			struct Reverser_special {
 				Fwd &fwd;
-				Reverser_special( Fwd &fwd_ )
+				explicit Reverser_special( Fwd &fwd_ )
 				  : fwd( fwd_ ) {}
 				auto begin( ) -> decltype( fwd.rbegin( ) ) {
 					return fwd.rbegin( );
@@ -703,84 +703,233 @@ namespace daw {
 			return impl::less_than_or_equal_to<Value>{std::forward<Value>( value )};
 		}
 
-		template<typename ForwardIterator1, typename ForwardIterator2>
-		constexpr auto lexicographical_compare( ForwardIterator1 first1, ForwardIterator1 const last1,
-		                                        ForwardIterator2 first2, ForwardIterator2 const last2 ) {
-			decltype( *first1 - *first2 ) tmp;
-			for( ; first1 != last1 && first2 != last2; ++first1, ++first2 ) {
-				if( ( tmp = *first1 - *first2 ) != 0 ) {
-					return tmp;
+		/// Returns true if the first range [first1, last1) is lexigraphically less than the second range [first2, last2)
+		///
+		/// @tparam InputIterator1 Iterator type for start of range 1
+		/// @tparam LastType1 Type for value at end of range 1
+		/// @tparam InputIterator2 Iterator type for start of range 2
+		/// @tparam LastType2 Type for value at end of range 2
+		/// @tparam Compare Type for comp callback that fullfills Compare concept
+		/// @param first1 Start of range 1
+		/// @param last1 End of range 1
+		/// @param first2 Start of range 1
+		/// @param last2 End of Range 1
+		/// @param comp Comparison function that returns true if value1 < value2
+		/// @return true of range 1 is lexigraphically less than range 2 using supplied comparison
+		template<typename InputIterator1, typename LastType1, typename InputIterator2, typename LastType2, typename Compare>
+		constexpr bool lexicographical_compare( InputIterator1 first1, LastType1 last1, InputIterator2 first2,
+		                                        LastType2 last2,
+		                                        Compare comp ) noexcept( noexcept( comp( *first1, *first2 ) !=
+		                                                                           comp( *first2, *first1 ) ) ) {
+
+			static_assert( is_binary_predicate_v<Compare, decltype( *first1 ), decltype( *first2 )>,
+			               "Compare must satisfy the compare concept, which includes BinaryPredicate.  See "
+			               "http://en.cppreference.com/w/cpp/concept/Compare" );
+
+			while( ( first1 != last1 ) && ( first2 != last2 ) ) {
+				if( comp( *first1, *first2 ) ) {
+					return true;
 				}
-			}
-			if( first1 == last1 ) {
-				if( first2 == last2 ) {
-					return 0;
+				if( comp( *first2, *first1 ) ) {
+					return false;
 				}
-				return 1;
-			} else if( first2 == last2 ) {
-				return -1;
+				++first1;
+				++first2;
 			}
-			throw std::logic_error( "This case should have been handled within the loop" );
+			return ( first1 == last1 ) && ( first2 != last2 );
 		}
 
-		template<typename InputIteratorFirst, typename InputIteratorLast, typename OutputIterator, typename Predicate,
+		/// Returns true if the first range [first1, last1) is lexigraphically less than the second range [first2, last2)
+		///
+		/// @tparam InputIterator1 Iterator type for start of range 1
+		/// @tparam LastType1 Type for value at end of range 1
+		/// @tparam InputIterator2 Iterator type for start of range 2
+		/// @tparam LastType2 Type for value at end of range 2
+		/// @param first1 Start of range 1
+		/// @param last1 End of range 1
+		/// @param first2 Start of range 1
+		/// @param last2 End of Range 1
+		/// @return true of range 1 is lexigraphically less than range 2
+		template<typename InputIterator1, typename LastType1, typename InputIterator2, typename LastType2>
+		constexpr bool
+		lexicographical_compare( InputIterator1 first1, LastType1 last1, InputIterator2 first2,
+		                         LastType2 last2 ) noexcept( noexcept( ( *first1 < *first2 ) != ( *first2 < *first1 ) ) ) {
+
+			while( ( first1 != last1 ) && ( first2 != last2 ) ) {
+				if( *first1 < *first2 ) {
+					return true;
+				}
+				if( *first2 < *first1 ) {
+					return false;
+				}
+				++first1;
+				++first2;
+			}
+			return ( first1 == last1 ) && ( first2 != last2 );
+		}
+
+		/// Apply the TransformFunction on the value referenced by range [first, last) when the predicate returns true for
+		/// that value
+		///
+		/// @tparam InputIterator Type of Iterator for start of range
+		/// @tparam LastType Type for representing end of range
+		/// @tparam OutputIterator Iterator for output range
+		/// @tparam UnaryPredicate A unary predicate that takes the dereferenced InputIterator as an arugment
+		/// @tparam TransformFunction Takes the dereferenced InputIterator as an arugment and returns a value assignable to
+		/// the dereferenced OutputIterator
+		/// @param first first item in range [first, last)
+		/// @param last last item in range [first, last)
+		/// @param first_out Output iterator written to when predicate returns true
+		/// @param pred predicate to determine if a transform should happen
+		/// @param trans transform function to convert from input range to output range
+		/// @return The end of the output range
+		template<typename InputIterator, typename LastType, typename OutputIterator, typename UnaryPredicate,
 		         typename TransformFunction>
-		constexpr auto transform_if( InputIteratorFirst first, InputIteratorLast const last, OutputIterator out_it,
-		                             Predicate pred, TransformFunction trans ) {
+		constexpr OutputIterator transform_if( InputIterator first, LastType const last, OutputIterator first_out,
+		                                       UnaryPredicate pred, TransformFunction trans ) {
+
+			static_assert( is_iterator_v<InputIterator>, "first is does not satisfy the requirements of an Iterator" );
+			static_assert( is_iterator_v<OutputIterator>, "first_out is does not satisfy the requirements of an Iterator" );
+			static_assert( is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
+			               "pred does not satisfy the Unary Predicate concept.  See "
+			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+
+			static_assert( is_callable_v<TransformFunction, decltype( *first )>,
+			               "TransformFunction does not accept a single argument of the dereferenced type of first" );
+
+			static_assert( is_assignable_v<decltype( *first_out ), decltype( trans( *first ) )>,
+			               "Result of trans( *first ) must be assignable to *first_out" );
+
 			while( first != last ) {
 				if( pred( *first ) ) {
-					*out_it = trans( *first );
+					*first_out = trans( *first );
 				}
 				++first;
 			}
-			return out_it;
+			return first_out;
 		}
 
+		/// Run the transform function unary_op on n elements of range started by first
+		///
+		/// @tparam InputIterator input range iterator type
+		/// @tparam OutputIterator output range iterator type
+		/// @tparam UnaryOperation callable that takes the dereferenced value from input range and is assignable to the
+		/// dereferenced value of output range
+		/// @param first first element in input range [first, first + count)
+		/// @param first_out first element in output range [first_out, first_out + count)
+		/// @param count number of items to process
+		/// @param unary_op callable that transforms items from input range to items of output range
+		/// @return last item in output range
 		template<typename InputIterator, typename OutputIterator, typename UnaryOperation>
 		constexpr OutputIterator
-		transform_n( InputIterator first_in, OutputIterator first_out, size_t count,
-		             UnaryOperation unary_op ) noexcept( noexcept( *first_out = unary_op( *first_in ) ) ) {
+		transform_n( InputIterator first, OutputIterator first_out, size_t count,
+		             UnaryOperation unary_op ) noexcept( noexcept( *first_out = unary_op( *first ) ) ) {
 
-			for( size_t n = 0; n < count; ++n ) {
-				*first_out++ = unary_op( *first_in++ );
+			static_assert( is_callable_v<UnaryOperation, decltype( *first )>,
+			               "UnaryOperation does not accept a single argument of the dereferenced type of first" );
+
+			static_assert( is_assignable_v<decltype( *first_out ), decltype( unary_op( *first ) )>,
+			               "Result of unary_op( *first ) must be assignable to *first_out" );
+
+			while( count-- > 0 ) {
+				*first_out = unary_op( *first );
+				++first;
+				++first_out;
 			}
 			return first_out;
 		}
 
-		template<typename InputIterator, typename OutputIterator, typename UnaryOperation>
+		/// Transform range [first, last) and output to range [first_out, first_out + std::distance( first, last ))
+		///
+		/// @tparam InputIterator input range iterator type
+		/// @tparam LastType
+		/// @tparam OutputIterator output range iterator type
+		/// @tparam UnaryOperation callable that takes the dereferenced value from input range and is assignable to the
+		/// dereferenced value of output range
+		/// @param first first element in input range [first, first + count)
+		/// @param last
+		/// @param first_out first element in output range [first_out, first_out + count)
+		/// @param unary_op callable that transforms items from input range to items of output range
+		/// @return last item in output range
+		template<typename InputIterator, typename LastType, typename OutputIterator, typename UnaryOperation>
 		constexpr OutputIterator
-		transform( InputIterator first_in, InputIterator const last_in, OutputIterator first_out,
-		           UnaryOperation unary_op ) noexcept( noexcept( *first_out++ = unary_op( *first_in++ ) ) ) {
+		transform( InputIterator first, LastType last, OutputIterator first_out,
+		           UnaryOperation unary_op ) noexcept( noexcept( *first_out = unary_op( *first ) ) ) {
 
-			while( first_in != last_in ) {
-				*first_out++ = unary_op( *first_in++ );
+			static_assert( is_callable_v<UnaryOperation, decltype( *first )>,
+			               "UnaryOperation does not accept a single argument of the dereferenced type of first" );
+
+			static_assert( is_assignable_v<decltype( *first_out ), decltype( unary_op( *first ) )>,
+			               "Result of unary_op( *first ) must be assignable to *first_out" );
+
+			while( first != last ) {
+				*first_out = unary_op( *first );
+				++first;
+				++first_out;
 			}
 			return first_out;
 		}
 
-		template<typename InputIterator, typename OutputIterator, typename BinaryOperation>
+		/// Transform input range [first, last) to output range [first_out, first_out + std::distance(first, last)).
+		///
+		/// @tparam InputIterator type of Iterator of input range
+		/// @tparam LastType type of Iterator marking end of input range
+		/// @tparam OutputIterator type of iterator for output range
+		/// @tparam BinaryOperation a callable that takes the type of the dereference input range iterator and the output
+		/// range as argument, returning the next position in output range
+		/// @param first start of input range
+		/// @param last end of input range
+		/// @param first_out first item in output range
+		/// @param binary_op transformation function
+		/// @return end of output range written to
+		template<typename InputIterator, typename LastType, typename OutputIterator, typename BinaryOperation>
 		constexpr OutputIterator
-		transform_it( InputIterator first_in, InputIterator const last_in, OutputIterator first_out,
-		              BinaryOperation binary_op ) noexcept( noexcept( first_out = binary_op( *first_in++, first_out ) ) ) {
+		transform_it( InputIterator first, LastType last, OutputIterator first_out,
+		              BinaryOperation binary_op ) noexcept( noexcept( first_out = binary_op( *first++, first_out ) ) ) {
 
-			while( first_in != last_in ) {
-				first_out = binary_op( *first_in++, first_out );
+			while( first != last ) {
+				first_out = binary_op( *first, first_out );
+				++first;
 			}
 			return first_out;
 		}
 
-		template<typename InputIterator1, typename InputIterator2, typename OutputIterator>
-		constexpr void copy( InputIterator1 first_in, InputIterator2 const last_in, OutputIterator first_out ) noexcept {
-			while( first_in != last_in ) {
-				*first_out++ = *first_in++;
+		/// Copy input range [first, last) to output range [first_out, first_out + std::distance( first, last ))
+		///
+		/// @tparam InputIterator type of Iterator of input range
+		/// @tparam LastType type of Iterator marking end of input range
+		/// @tparam OutputIterator type of iterator for output range
+		/// @param first start of input range
+		/// @param last end of input range
+		/// @param first_out first item in output range
+		/// @return end of output range written to
+		template<typename InputIterator, typename LastType, typename OutputIterator>
+		constexpr OutputIterator copy( InputIterator first, LastType last,
+		                               OutputIterator first_out ) noexcept( noexcept( *first_out = *first ) ) {
+			while( first != last ) {
+				*first_out = *first;
+				++first;
+				++first_out;
 			}
+			return first_out;
 		}
 
+		/// Copy input range [first, last) to output range [first_out, first_out + count)
+		///
+		/// @tparam InputIterator type of Iterator of input range
+		/// @tparam OutputIterator type of iterator for output range
+		/// @param first start of input range
+		/// @param first_out first item in output range
+		/// @param count number of items to copy
+		/// @return end of output range written to
 		template<typename InputIterator, typename OutputIterator>
-		constexpr void copy_n( InputIterator first_in, OutputIterator first_out, size_t const count ) noexcept {
-			for( size_t n = 0; n < count; ++n ) {
-				*first_out++ = *first_in++;
+		constexpr OutputIterator copy_n( InputIterator first, OutputIterator first_out, size_t count ) noexcept {
+			while( count --> 0 ) {
+				*first_out = *first;
+				++first;
+				++first_out;
 			}
+			return first_out;
 		}
 
 		template<typename InputIterator1, typename InputIterator2, typename OutputIterator>

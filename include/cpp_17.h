@@ -43,8 +43,8 @@ namespace daw {
 	template<typename T>
 	constexpr bool is_array_v = std::is_array<T>::value;
 
-	template<typename T, typename U>
-	constexpr bool is_assignable_v = std::is_assignable<T, U>::value;
+	template<typename Lhs, typename Rhs>
+	constexpr bool is_assignable_v = std::is_assignable<Lhs, Rhs>::value;
 
 	template<typename T>
 	constexpr bool is_trivial_v = std::is_trivial<T>::value;

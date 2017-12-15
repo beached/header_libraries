@@ -111,29 +111,6 @@ BOOST_AUTO_TEST_CASE( daw_reduce_test_001 ) {
 	BOOST_REQUIRE_EQUAL( tst, 3 );
 }
 
-namespace copy_n_ns {
-	constexpr bool test_copy_n( ) {
-		char const src[] = "This is a test.";
-		char dst[16] = {0};
-		daw::algorithm::copy_n( src, dst, 16 );
-		return true;
-	}
-	BOOST_AUTO_TEST_CASE( daw_copy_n_test_001 ) {
-		constexpr auto b = test_copy_n( );
-	}
-} // namespace copy_n_ns
-
-BOOST_AUTO_TEST_CASE( daw_transform_it_test_001 ) {
-	std::vector<int> a = {1, 2, 3, 4, 5, 6};
-	std::vector<int> b{};
-	daw::algorithm::transform_it( a.cbegin( ), a.cend( ), std::back_inserter( b ), []( int a_val, auto out_it ) {
-		for( size_t n = 0; static_cast<int>( n ) < a_val; ++n ) {
-			*out_it++ = a_val;
-		}
-		return out_it;
-	} );
-}
-
 BOOST_AUTO_TEST_CASE( daw_minmax_element_test_001 ) {
 	std::vector<int> tst = {1, 3, 2, -1, 100, -50, 1, 5, 2442};
 	auto result = daw::algorithm::minmax_element( tst.cbegin( ), tst.cend( ) );
@@ -156,6 +133,7 @@ BOOST_AUTO_TEST_CASE( daw_satisfies_one_test_001 ) {
 	BOOST_REQUIRE_EQUAL( is_correct_type, true );
 	BOOST_REQUIRE_EQUAL( ans, true );
 }
+
 BOOST_AUTO_TEST_CASE( daw_satisfies_one_test_002 ) {
 	std::vector<int> const tst = {0, 1, 2, 3, 4, 6, 7, 8, 9, 10};
 
@@ -206,6 +184,7 @@ BOOST_AUTO_TEST_CASE( daw_satisfies_all_test_001 ) {
 	BOOST_REQUIRE_EQUAL( is_correct_type, true );
 	BOOST_REQUIRE_EQUAL( ans, true );
 }
+
 BOOST_AUTO_TEST_CASE( daw_satisfies_all_test_002 ) {
 	std::vector<int> const tst = {0, 1, 2, 3, 4, 6, 7, 8, 9, 10};
 
@@ -268,7 +247,7 @@ BOOST_AUTO_TEST_CASE( daw_greater_than_test_001 ) {
 	BOOST_REQUIRE( !tst( -1 ) );
 }
 
-BOOST_AUTO_TEST_CASE( daw_greater_than_or_equal_totest_001 ) {
+BOOST_AUTO_TEST_CASE( daw_greater_than_or_equal_to_test_001 ) {
 	auto tst = daw::algorithm::greater_than_or_equal_to( 5 );
 
 	BOOST_REQUIRE( tst( 6 ) );
@@ -284,10 +263,89 @@ BOOST_AUTO_TEST_CASE( daw_less_than_test_001 ) {
 	BOOST_REQUIRE( tst( -1 ) );
 }
 
-BOOST_AUTO_TEST_CASE( daw_less_than_or_equal_totest_001 ) {
+BOOST_AUTO_TEST_CASE( daw_less_than_or_equal_to_test_001 ) {
 	auto tst = daw::algorithm::less_than_or_equal_to( 5 );
 
 	BOOST_REQUIRE( !tst( 6 ) );
 	BOOST_REQUIRE( tst( 5 ) );
 	BOOST_REQUIRE( tst( -1 ) );
 }
+
+BOOST_AUTO_TEST_CASE( daw_lexigraphical_compare_test_001 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::vector<int> const b = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+	auto ans = daw::algorithm::lexicographical_compare( a.cbegin( ), a.cend( ), b.cbegin( ), b.cend( ) );
+	BOOST_REQUIRE( ans );
+}
+
+BOOST_AUTO_TEST_CASE( daw_lexigraphical_compare_test_002 ) {
+	std::vector<int> const a = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::vector<int> const b = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+	auto ans = daw::algorithm::lexicographical_compare( a.cbegin( ), a.cend( ), b.cbegin( ), b.cend( ) );
+	BOOST_REQUIRE( !ans );
+}
+
+BOOST_AUTO_TEST_CASE( daw_transform_if_test_001 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::vector<int> b{};
+	std::vector<int> const expected_b = {-1, 1, 3, 5, 7, 9};
+
+	daw::algorithm::transform_if( a.cbegin( ), a.cend( ), std::back_inserter( b ),
+	                              []( auto const &v ) { return v % 2 == 0; }, []( auto const &v ) { return v - 1; } );
+
+	auto ans = std::equal( b.cbegin( ), b.cend( ), expected_b.cbegin( ), expected_b.cend( ) );
+	BOOST_REQUIRE( ans );
+}
+
+BOOST_AUTO_TEST_CASE( daw_transform_n_test_001 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::vector<int> b{};
+	std::vector<int> const expected_b = {0, 2, 4, 6};
+
+	daw::algorithm::transform_n( a.cbegin( ), std::back_inserter( b ), 4, []( auto const &v ) { return v * 2; } );
+
+	auto ans = std::equal( b.cbegin( ), b.cend( ), expected_b.cbegin( ), expected_b.cend( ) );
+	BOOST_REQUIRE( ans );
+}
+
+BOOST_AUTO_TEST_CASE( daw_transform_test_001 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::vector<int> b{};
+	std::vector<int> const expected_b = {0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20};
+
+	daw::algorithm::transform( a.cbegin( ), a.cend( ), std::back_inserter( b ), []( auto const &v ) { return v * 2; } );
+
+	auto ans = std::equal( b.cbegin( ), b.cend( ), expected_b.cbegin( ), expected_b.cend( ) );
+	BOOST_REQUIRE( ans );
+}
+
+BOOST_AUTO_TEST_CASE( daw_transform_it_test_001 ) {
+	std::vector<int> a = {1, 2, 3, 4, 5, 6};
+	std::vector<int> b{};
+	daw::algorithm::transform_it( a.cbegin( ), a.cend( ), std::back_inserter( b ), []( int a_val, auto out_it ) {
+		for( size_t n = 0; static_cast<int>( n ) < a_val; ++n ) {
+			*out_it++ = a_val;
+		}
+		return out_it;
+	} );
+}
+
+BOOST_AUTO_TEST_CASE( daw_copy_test_001 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::vector<int> b{};
+
+	daw::algorithm::copy( a.cbegin( ), a.cend( ), std::back_inserter( b ) );
+	BOOST_REQUIRE( std::equal( a.cbegin( ), a.cend( ), b.cbegin( ), b.cend( ) ) );
+}
+
+BOOST_AUTO_TEST_CASE( daw_copy_n_test_001 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::vector<int> b{};
+	std::vector<int> const expected_b = {0, 1, 2, 3, 4, 5};
+
+	daw::algorithm::copy_n( a.cbegin( ), std::back_inserter( b ), 6 );
+	BOOST_REQUIRE( std::equal( b.cbegin( ), b.cend( ), expected_b.cbegin( ), expected_b.cend( ) ) );
+}
+

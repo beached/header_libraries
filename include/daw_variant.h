@@ -93,7 +93,7 @@ namespace daw {
 
 	template<typename... Types>
 	class generate_to_strings_t {
-		template<typename T>
+		template<typename T, std::enable_if_t<has_to_string_v<T>, std::nullptr_t> = nullptr>
 		struct to_string_t {
 			static_assert( has_to_string_v<T>, "to_string must be defined for type" );
 

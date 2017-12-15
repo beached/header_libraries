@@ -121,10 +121,10 @@ namespace daw_variant_destructors_001_ns {
 	struct temp_t {
 		bool *b;
 
-		temp_t( bool *B )
+		constexpr temp_t( bool *B ) noexcept
 		  : b{B} {}
 
-		~temp_t( ) {
+		~temp_t( ) noexcept {
 			if( auto tmp = std::exchange( b, nullptr ) ) {
 				*tmp = true;
 			}
