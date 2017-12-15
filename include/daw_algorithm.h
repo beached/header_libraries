@@ -499,21 +499,55 @@ namespace daw {
 			return false;
 		}
 
-		template<typename Value, typename UnaryFunction>
-		constexpr bool satisfies_all( Value value, UnaryFunction func ) {
+		/// Returns true if function returns true for the value
+		/// @param value Argument to UnaryPredicate
+		/// @param func A UnaryPredicate that returns true/false
+		/// @return The result of func
+		template<typename Value, typename UnaryPredicate>
+		constexpr bool satisfies_all( Value value, UnaryPredicate func ) noexcept( noexcept( func( value ) ) ) {
+			static_assert( is_unary_predicate_v<UnaryPredicate, decltype( value )>,
+			               "UnaryPredicate must take one value and return a bool e.g. func( value ) must be valid" );
 			return func( value );
 		}
 
-		template<typename Value, typename UnaryFunction, typename... UnaryFunctions>
-		constexpr bool satisfies_all( Value value, UnaryFunction func, UnaryFunctions... funcs ) {
+		/// Returns true if all function(s) returns true for the value
+		/// @param value Argument to UnaryPredicate(s)
+		/// @param func A UnaryPredicate that returns true/false
+		/// @param funcs UnaryPredicates that return true/false
+		/// @return True if any of the func/funcs return true(e.g. like OR)
+		template<typename Value, typename UnaryPredicate, typename... UnaryPredicates>
+		constexpr bool satisfies_all( Value value, UnaryPredicate func, UnaryPredicates... funcs ) {
+
+			static_assert( is_unary_predicate_v<UnaryPredicate, decltype( value )>,
+			               "UnaryPredicate must take one value and return a bool e.g. func( value ) must be valid" );
+
 			return func( value ) && satisfies_all( value, funcs... );
 		}
 
-		template<typename Iterator, typename UnaryFunction, typename... UnaryFunctions>
-		constexpr bool satisfies_all( Iterator first, Iterator last, UnaryFunction func, UnaryFunctions... funcs ) {
-			for( auto it = first; it != last; ++it ) {
-				return satisfies_all( *it, func, funcs... );
+		/// Returns true if all function(s) returns true for all values in range
+		/// @param first iterator pointing to the beginning of the range inclusively
+		/// @param last iterator pointing to the end of the range exclusively
+		/// @param func A UnaryPredicate that returns true/false
+		/// @param funcs UnaryPredicates that return true/false
+		/// @return True if any of the func/funcs return true(e.g. like OR) for any value in range
+		template<typename Iterator, typename LastType, typename UnaryPredicate, typename... UnaryPredicates,
+		         std::enable_if_t<(daw::is_dereferenceable_v<LastType> &&
+		                           daw::is_equality_comparable_v<daw::traits::deref_t<LastType>>),
+		                          std::nullptr_t> = nullptr>
+		constexpr bool
+		satisfies_all( Iterator first, LastType last, UnaryPredicate func,
+		               UnaryPredicates... funcs ) noexcept( noexcept( satisfies_one( *first, func, funcs... ) ) ) {
+
+			static_assert( is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
+			               "UnaryPredicate must take one value and return a bool e.g. func( *first ) must be valid" );
+
+			while( first != last ) {
+				if( !satisfies_all( *first, func, funcs... ) ) {
+					return false;
+				}
+				++first;
 			}
+			return true;
 		}
 
 		namespace impl {
