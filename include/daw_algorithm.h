@@ -490,7 +490,7 @@ namespace daw {
 			               "UnaryPredicate must take one value and return a bool e.g. func( *first ) must be valid" );
 
 			while( first != last ) {
-				if( satisfies_one( *it, func, funcs... ) ) {
+				if( satisfies_one( *first, func, funcs... ) ) {
 					return true;
 				}
 			}
