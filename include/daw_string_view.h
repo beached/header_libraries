@@ -994,6 +994,22 @@ namespace daw {
 		return split( str, [delemiter]( CharT c ) noexcept { return c == delemiter; } );
 	}
 
+	template<typename CharT, typename Traits, typename InternalSizeType, size_t N>
+	auto split( daw::basic_string_view<CharT, Traits, InternalSizeType> str, CharT const ( &delemiter )[N] ) {
+		static_assert( N == 2, "string literal used as delemiter.  One 1 value is supported (e.g. \",\" )" );
+		return split( str, [delemiter]( CharT c ) noexcept { return c == delemiter[0]; } );
+	}
+
+	template<typename CharT, typename Traits, typename Allocator, typename Delemiter>
+	auto split( std::basic_string<CharT, Traits, Allocator> const &str, Delemiter d ) {
+		return split( make_string_view( str ), d );
+	}
+
+	template<typename CharT, size_t N, typename Delemiter>
+	auto split( CharT const ( &str )[N], Delemiter d ) {
+		return split( basic_string_view<CharT>{str, N}, d );
+	}
+
 	template<typename CharT, typename Traits>
 	std::basic_ostream<CharT> &operator<<( std::basic_ostream<CharT> &os, daw::basic_string_view<CharT, Traits> v ) {
 		if( os.good( ) ) {
