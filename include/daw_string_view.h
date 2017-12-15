@@ -903,11 +903,10 @@ namespace daw {
 		return result;
 	}
 
-	template<typename CharT, typename Traits, typename InternalSizeType, typename UnaryPredicate>
+	template<typename CharT, typename Traits, typename InternalSizeType, typename UnaryPredicate,
+	         std::enable_if_t<daw::is_unary_predicate_v<UnaryPredicate, CharT>, std::nullptr_t> = nullptr>
 	auto split( daw::basic_string_view<CharT, Traits, InternalSizeType> str, UnaryPredicate pred ) {
-		static_assert( daw::is_unary_predicate_v<UnaryPredicate, CharT>,
-		               "UnaryPredicate p does not fullfill the requires of a unary predicate concept.  See "
-		               "http://en.cppreference.com/w/cpp/concept/Predicate" );
+
 		class sv_arry_t {
 			std::vector<daw::basic_string_view<CharT, Traits, InternalSizeType>> data;
 
