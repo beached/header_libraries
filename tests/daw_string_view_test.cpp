@@ -810,7 +810,7 @@ namespace daw {
 	BOOST_AUTO_TEST_CASE( daw_string_view_split_005 ) {
 		std::string b_str;
 		daw::string_view b = b_str;
-		auto const str_splt = split( b, "," );
+		auto const str_splt = split( b, ',' );
 		BOOST_REQUIRE( str_splt.empty( ) );
 	}
 
