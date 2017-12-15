@@ -241,3 +241,15 @@ BOOST_AUTO_TEST_CASE( daw_satisfies_all_test_004 ) {
 	BOOST_REQUIRE_EQUAL( is_correct_type, true );
 	BOOST_REQUIRE_EQUAL( ans, false );
 }
+
+
+BOOST_AUTO_TEST_CASE( daw_in_range_test_001 ) {
+	auto tst = daw::algorithm::in_range( 1, 5 );
+
+	BOOST_REQUIRE( tst( 4 ) );
+	BOOST_REQUIRE( tst( 1 ) );
+	BOOST_REQUIRE( tst( 5 ) );
+	BOOST_REQUIRE( !tst( 0 ) );
+	BOOST_REQUIRE( !tst( 6 ) );
+	BOOST_REQUIRE( !tst( 14 ) );
+}

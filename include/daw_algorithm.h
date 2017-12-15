@@ -642,6 +642,10 @@ namespace daw {
 			}; // less_than_or_equal_to
 		}    // namespace impl
 
+		/// @brief Returns a callable that returns true if the value passed is in the range [Lower, Upper]
+		/// @param lower The lowest value allowed
+		/// @param upper The largest value allowed
+		/// @returns true if value passed to operator( ) is within the range [lower, upper]
 		template<typename Lower, typename Upper>
 		constexpr auto in_range( Lower &&lower, Upper &&upper ) {
 			return impl::in_range<Lower, Upper>{std::forward<Lower>( lower ), std::forward<Upper>( upper )};
