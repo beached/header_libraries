@@ -26,7 +26,7 @@
 #include "daw_traits.h"
 
 namespace daw {
-	struct invalid_natural_number : public daw::exception::arithmetic_exception { };
+	struct invalid_natural_number : public daw::exception::arithmetic_exception {};
 	///
 	// A natural number type
 	// An operation that causes overflow is undefined
@@ -210,4 +210,3 @@ namespace daw {
 		}
 	} // namespace literals
 } // namespace daw
-

@@ -86,12 +86,12 @@ namespace daw {
 	};
 
 	template<typename Iterator>
-	constexpr bool operator==( splitter_range_t<Iterator> const & lhs, splitter_range_t<Iterator> const & rhs ) noexcept {
+	constexpr bool operator==( splitter_range_t<Iterator> const &lhs, splitter_range_t<Iterator> const &rhs ) noexcept {
 		return lhs.m_first == rhs.m_first && lhs.m_last == rhs.m_last;
 	}
 
 	template<typename Iterator>
-	constexpr bool operator!=( splitter_range_t<Iterator> const & lhs, splitter_range_t<Iterator> const & rhs ) noexcept {
+	constexpr bool operator!=( splitter_range_t<Iterator> const &lhs, splitter_range_t<Iterator> const &rhs ) noexcept {
 		return lhs.m_first != rhs.m_first || lhs.m_last != rhs.m_last;
 	}
 
@@ -130,7 +130,8 @@ namespace daw {
 			if( m_position.cbegin( ) == m_data.cbegin( ) ) {
 				return;
 			}
-			m_position.end( ) = daw::algorithm::safe_prev( m_position.cbegin( ), m_data.cbegin( ), impl::splitter_size{}( m_splitter ) );
+			m_position.end( ) =
+			  daw::algorithm::safe_prev( m_position.cbegin( ), m_data.cbegin( ), impl::splitter_size{}( m_splitter ) );
 			m_position.begin( ) = find_prev( );
 		}
 
@@ -138,8 +139,8 @@ namespace daw {
 			if( m_position.end( ) == m_data.cend( ) ) {
 				return m_position.end( );
 			}
-			return daw::algorithm::find_first_of( daw::algorithm::safe_next( m_position.end( ), m_data.cend( ) ), m_data.cend( ),
-			                                      impl::splitter_size{}( m_splitter ) );
+			return daw::algorithm::find_first_of( daw::algorithm::safe_next( m_position.end( ), m_data.cend( ) ),
+			                                      m_data.cend( ), impl::splitter_size{}( m_splitter ) );
 		}
 
 		constexpr void move_next( ) noexcept {
@@ -281,7 +282,8 @@ namespace daw {
 			if( lhs.at_end( ) == rhs.at_end( ) ) {
 				return false;
 			}
-			return std::tie( lhs.m_position.begin( ), lhs.m_position.end( ), lhs.m_data ) != std::tie( rhs.m_position.begin( ), rhs.m_position.end( ), rhs.m_data );
+			return std::tie( lhs.m_position.begin( ), lhs.m_position.end( ), lhs.m_data ) !=
+			       std::tie( rhs.m_position.begin( ), rhs.m_position.end( ), rhs.m_data );
 		}
 
 		constexpr friend bool operator!=( split_it const &lhs, Iterator const &rhs ) noexcept {
@@ -333,7 +335,8 @@ namespace daw {
 			if( m_position.cbegin( ) == m_data.cbegin( ) ) {
 				return;
 			}
-			m_position.end( ) = daw::algorithm::safe_prev( m_position.cbegin( ), m_data.cbegin( ), impl::splitter_size{}( m_splitter ) );
+			m_position.end( ) =
+			  daw::algorithm::safe_prev( m_position.cbegin( ), m_data.cbegin( ), impl::splitter_size{}( m_splitter ) );
 			m_position.begin( ) = find_prev( );
 		}
 
@@ -341,8 +344,8 @@ namespace daw {
 			if( m_position.end( ) == m_data.cend( ) ) {
 				return m_position.end( );
 			}
-			return daw::algorithm::find_first_of( daw::algorithm::safe_next( m_position.end( ), m_data.cend( ) ), m_data.cend( ),
-			                                      impl::splitter_size{}( m_splitter ) );
+			return daw::algorithm::find_first_of( daw::algorithm::safe_next( m_position.end( ), m_data.cend( ) ),
+			                                      m_data.cend( ), impl::splitter_size{}( m_splitter ) );
 		}
 
 		constexpr void move_next( ) noexcept {
@@ -484,7 +487,8 @@ namespace daw {
 			if( lhs.at_end( ) == rhs.at_end( ) ) {
 				return false;
 			}
-			return std::tie( lhs.m_position.begin( ), lhs.m_position.end( ), lhs.m_data ) != std::tie( rhs.m_position.begin( ), rhs.m_position.end( ), rhs.m_data );
+			return std::tie( lhs.m_position.begin( ), lhs.m_position.end( ), lhs.m_data ) !=
+			       std::tie( rhs.m_position.begin( ), rhs.m_position.end( ), rhs.m_data );
 		}
 
 		constexpr friend bool operator!=( split_it const &lhs, Iterator const &rhs ) noexcept {
@@ -503,15 +507,6 @@ namespace daw {
 			return m_position.begin( ) == m_data.cend( );
 		}
 	};
-
-
-
-
-
-
-
-
-
 
 	namespace impl {
 		template<typename String>
@@ -539,4 +534,3 @@ namespace daw {
 		return result;
 	}
 } // namespace daw
-

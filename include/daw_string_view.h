@@ -1060,4 +1060,3 @@ namespace std {
 		}
 	};
 } // namespace std
-

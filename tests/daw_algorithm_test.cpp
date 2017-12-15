@@ -135,10 +135,38 @@ BOOST_AUTO_TEST_CASE( daw_transform_it_test_001 ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_minmax_element_test_001 ) {
-	std::vector<int> tst = { 1, 3, 2, -1, 100, -50, 1, 5, 2442 };
+	std::vector<int> tst = {1, 3, 2, -1, 100, -50, 1, 5, 2442};
 	auto result = daw::algorithm::minmax_element( tst.cbegin( ), tst.cend( ) );
 
-	BOOST_REQUIRE_EQUAL( *(result.min_element), -50 );
-	BOOST_REQUIRE_EQUAL( *(result.max_element), 2442 );
+	BOOST_REQUIRE_EQUAL( *( result.min_element ), -50 );
+	BOOST_REQUIRE_EQUAL( *( result.max_element ), 2442 );
 }
 
+BOOST_AUTO_TEST_CASE( daw_satisfies_one_test_001 ) {
+	std::vector<int> const tst = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+	auto const ans = daw::algorithm::satisfies_one(
+	  tst, []( auto const &v ) { return std::find( v.cbegin( ), v.cend( ), 11 ) != v.cend( ); },
+	  []( auto const &v ) { return std::find( v.cbegin( ), v.cend( ), 12 ) != v.cend( ); },
+	  []( auto const &v ) { return std::find( v.cbegin( ), v.cend( ), 13 ) != v.cend( ); },
+	  []( auto const &v ) { return std::find( v.cbegin( ), v.cend( ), 5 ) != v.cend( ); },
+	  []( auto const &v ) { return std::find( v.cbegin( ), v.cend( ), 15 ) != v.cend( ); } );
+
+	constexpr bool is_correct_type = daw::is_same_v<bool, std::decay_t<decltype( ans )>>;
+	BOOST_REQUIRE_EQUAL( is_correct_type, true );
+	BOOST_REQUIRE_EQUAL( ans, true );
+}
+BOOST_AUTO_TEST_CASE( daw_satisfies_one_test_002 ) {
+	std::vector<int> const tst = {0, 1, 2, 3, 4, 6, 7, 8, 9, 10};
+
+	auto const ans = daw::algorithm::satisfies_one(
+	  tst, []( auto const &v ) { return std::find( v.cbegin( ), v.cend( ), 11 ) != v.cend( ); },
+	  []( auto const &v ) { return std::find( v.cbegin( ), v.cend( ), 12 ) != v.cend( ); },
+	  []( auto const &v ) { return std::find( v.cbegin( ), v.cend( ), 13 ) != v.cend( ); },
+	  []( auto const &v ) { return std::find( v.cbegin( ), v.cend( ), 5 ) != v.cend( ); },
+	  []( auto const &v ) { return std::find( v.cbegin( ), v.cend( ), 15 ) != v.cend( ); } );
+
+	constexpr bool is_correct_type = daw::is_same_v<bool, std::decay_t<decltype( ans )>>;
+	BOOST_REQUIRE_EQUAL( is_correct_type, true );
+	BOOST_REQUIRE_EQUAL( ans, false );
+}

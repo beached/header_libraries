@@ -282,11 +282,10 @@ namespace daw {
 
 	template<typename... Types>
 	struct variant_t {
-		static_assert( sizeof...(Types) != 0, "Empty variant is not supported" );
+		static_assert( sizeof...( Types ) != 0, "Empty variant is not supported" );
 
 		template<typename T>
-		static constexpr bool is_valid_type =
-		  daw::traits::is_one_of_v<std::remove_cv_t<T>, std::remove_cv_t<Types>...>;
+		static constexpr bool is_valid_type = daw::traits::is_one_of_v<std::remove_cv_t<T>, std::remove_cv_t<Types>...>;
 
 	private:
 	public:
@@ -313,7 +312,7 @@ namespace daw {
 			using value_type = std::remove_cv_t<T>;
 			daw::exception::daw_throw_on_true<bad_variant_t_access>( empty( ), "Attempt to access an empty value" );
 			daw::exception::daw_throw_on_false<bad_variant_t_access>( is_same_type<value_type>( ),
-			                                          "Attempt to access a value of another type" );
+			                                                          "Attempt to access a value of another type" );
 			static_assert( sizeof( value_type ) <= s_buffer_size,
 			               "This should never happen.  sizeof(T) does not fit into m_buffer" );
 			return reinterpret_cast<value_type *>( static_cast<void *>( m_buffer.data( ) ) );
@@ -324,7 +323,7 @@ namespace daw {
 			using value_type = std::remove_cv_t<T>;
 			daw::exception::daw_throw_on_true<bad_variant_t_access>( empty( ), "Attempt to access an empty value" );
 			daw::exception::daw_throw_on_false<bad_variant_t_access>( is_same_type<value_type>( ),
-			                                          "Attempt to access a value of another type" );
+			                                                          "Attempt to access a value of another type" );
 
 			static_assert( sizeof( value_type ) <= s_buffer_size,
 			               "This should never happen.  sizeof(T) does not fit into m_buffer" );
@@ -497,4 +496,3 @@ namespace daw {
 		return value.template get<T>( );
 	}
 } // namespace daw
-

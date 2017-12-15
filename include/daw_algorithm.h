@@ -448,21 +448,53 @@ namespace daw {
 			return result;
 		}
 
-		template<typename Value, typename UnaryFunction>
-		constexpr bool satisfies_one( Value value, UnaryFunction func ) {
+		/// Returns true if any function returns true for the value
+		/// @param value Argument to UnaryPredicate
+		/// @param func A UnaryPredicate that returns true/false
+		/// @return The result of func
+		template<typename Value, typename UnaryPredicate>
+		constexpr bool satisfies_one( Value value, UnaryPredicate func ) noexcept( noexcept( func( value ) ) ) {
+			static_assert( is_unary_predicate_v<UnaryPredicate, decltype( value )>,
+			               "UnaryPredicate must take one value and return a bool e.g. func( value ) must be valid" );
 			return func( value );
 		}
 
-		template<typename Value, typename UnaryFunction, typename... UnaryFunctions>
-		constexpr bool satisfies_one( Value value, UnaryFunction func, UnaryFunctions... funcs ) {
+		/// Returns true if any function returns true for the value
+		/// @param value Argument to UnaryPredicate(s)
+		/// @param func A UnaryPredicate that returns true/false
+		/// @param funcs UnaryPredicates that return true/false
+		/// @return True if any of the func/funcs return true(e.g. like OR)
+		template<typename Value, typename UnaryPredicate, typename... UnaryPredicates>
+		constexpr bool satisfies_one( Value value, UnaryPredicate func,
+		                              UnaryPredicates... funcs ) noexcept( noexcept( func( value ) ||
+		                                                                             satisfies_one( value, funcs... ) ) ) {
+
+			static_assert( is_unary_predicate_v<UnaryPredicate, decltype( value )>,
+			               "UnaryPredicate must take one value and return a bool e.g. func( value ) must be valid" );
+
 			return func( value ) || satisfies_one( value, funcs... );
 		}
 
-		template<typename Iterator, typename UnaryFunction, typename... UnaryFunctions>
-		constexpr bool satisfies_one( Iterator first, Iterator last, UnaryFunction func, UnaryFunctions... funcs ) {
-			for( auto it = first; it != last; ++it ) {
-				return satisfies_one( *it, func, funcs... );
+		/// Returns true if any function returns true for any value in range
+		/// @param first iterator pointing to the beginning of the range inclusively
+		/// @param last iterator pointing to the end of the range exclusively
+		/// @param func A UnaryPredicate that returns true/false
+		/// @param funcs UnaryPredicates that return true/false
+		/// @return True if any of the func/funcs return true(e.g. like OR) for any value in range
+		template<typename Iterator, typename UnaryPredicate, typename... UnaryPredicates>
+		constexpr bool
+		satisfies_one( Iterator first, Iterator last, UnaryPredicate func,
+		               UnaryPredicates... funcs ) noexcept( noexcept( satisfies_one( *first, func, funcs... ) ) ) {
+
+			static_assert( is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
+			               "UnaryPredicate must take one value and return a bool e.g. func( *first ) must be valid" );
+
+			while( first != last ) {
+				if( satisfies_one( *it, func, funcs... ) ) {
+					return true;
+				}
 			}
+			return false;
 		}
 
 		template<typename Value, typename UnaryFunction>
@@ -842,6 +874,10 @@ namespace daw {
 		constexpr void map( RandomIterator first, RandomIterator const last, RandomOutputIterator first_out,
 		                    UnaryOperation unary_op ) noexcept( noexcept( *first_out++ = unary_op( *first++ ) ) ) {
 
+			static_assert(
+			  is_unary_predicate_v<UnaryOperation, decltype( *first )>,
+			  "UnaryOperation must take one value of the dereferenced type of first e.g. unary_op( *first ) must be valid" );
+
 			while( first != last ) {
 				*first_out++ = unary_op( *first++ );
 			}
@@ -1009,4 +1045,3 @@ namespace daw {
 		}
 	} // namespace algorithm
 } // namespace daw
-

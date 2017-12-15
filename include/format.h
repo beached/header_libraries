@@ -117,4 +117,3 @@ namespace daw {
 		size_t num_vars = find_variable_count( str );
 	}
 } // namespace daw
-

@@ -39,11 +39,11 @@ namespace daw {
 		using UnexpectedEnumValue = std::runtime_error;
 
 		struct basic_exception {};
-		struct arithmetic_exception: public basic_exception {};
-		struct not_implemented_exception: public basic_exception {};
+		struct arithmetic_exception : public basic_exception {};
+		struct not_implemented_exception : public basic_exception {};
 
 		template<typename T, T error_number>
-		struct errno_exception: public basic_exception, public std::integral_constant<T, error_number> { };
+		struct errno_exception : public basic_exception, public std::integral_constant<T, error_number> {};
 
 		template<typename ExceptionType = std::runtime_error, typename StringType>
 		[[noreturn]] constexpr void daw_throw( StringType const &msg ) {
@@ -117,7 +117,6 @@ namespace daw {
 			}
 		}
 
-
 		template<typename ExceptionType = AssertException, typename Bool, typename StringType, typename Arg,
 		         typename... Args>
 		void dbg_throw_on_false( Bool const &test, StringType const &format, Arg arg, Args... args ) {
@@ -133,10 +132,10 @@ namespace daw {
 			}
 		}
 #else
-		template<typename...T>
+		template<typename... T>
 		constexpr void dbg_throw_on_false( T... ) noexcept {};
 
-		template<typename...T>
+		template<typename... T>
 		constexpr void DebugAssert( T... ) noexcept {};
 #endif
 

@@ -660,10 +660,10 @@ namespace daw {
 			using has_modulus_operator = decltype( std::declval<T>( ) % std::declval<U>( ) );
 
 			template<typename T>
-			using has_increment_operator = decltype( ++std::declval<T&>( ) );
+			using has_increment_operator = decltype( ++std::declval<T &>( ) );
 
 			template<typename T>
-			using has_decrement_operator = decltype( --std::declval<T&>( ) );
+			using has_decrement_operator = decltype( --std::declval<T &>( ) );
 		} // namespace detectors
 
 		template<typename T, typename U = T>
@@ -721,18 +721,20 @@ namespace daw {
 			struct are_unique;
 
 			template<typename T1>
-			struct are_unique<T1>: std::true_type {};
+			struct are_unique<T1> : std::true_type {};
 
 			template<typename T1, typename T2>
 			struct are_unique<T1, T2> : std::integral_constant<bool, !daw::is_same_v<T1, T2>> {};
 
 			template<typename T1, typename T2, typename... Ts>
-			struct are_unique<T1, T2, Ts...>: std::integral_constant<bool, are_unique<T1, T2>::value && are_unique<T1, Ts...>::value && are_unique<T2, Ts...>::value> {};
-		}
+			struct are_unique<T1, T2, Ts...>
+			  : std::integral_constant<bool, are_unique<T1, T2>::value && are_unique<T1, Ts...>::value &&
+			                                   are_unique<T2, Ts...>::value> {};
+		} // namespace impl
 
-		template<typename...Ts>
+		template<typename... Ts>
 		using are_unique_t = impl::are_unique<Ts...>;
-		template<typename...Ts>
+		template<typename... Ts>
 		constexpr bool are_unique_v = are_unique_t<Ts...>::value;
 
 		namespace impl {
@@ -740,10 +742,12 @@ namespace daw {
 			struct isnt_cv_ref;
 
 			template<>
-			struct isnt_cv_ref<>: std::true_type {};
+			struct isnt_cv_ref<> : std::true_type {};
 
 			template<typename T, typename... Ts>
-			struct isnt_cv_ref<T, Ts...>: std::integral_constant<bool, (!(is_const_v<T> || is_reference_v<T> || is_volatile_v<T>) && is_same_v<std::true_type, typename isnt_cv_ref<Ts...>::type>)> {};
+			struct isnt_cv_ref<T, Ts...>
+			  : std::integral_constant<bool, ( !(is_const_v<T> || is_reference_v<T> || is_volatile_v<T>)&&is_same_v<
+			                                   std::true_type, typename isnt_cv_ref<Ts...>::type> )> {};
 		} // namespace impl
 
 		template<typename... Ts>
@@ -753,6 +757,6 @@ namespace daw {
 		using deref_t = decltype( *std::declval<T>( ) );
 	} // namespace traits
 
-	template<bool B, typename T=std::nullptr_t>
+	template<bool B, typename T = std::nullptr_t>
 	using required = std::enable_if_t<B, T>;
 } // namespace daw
