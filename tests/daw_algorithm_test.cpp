@@ -170,3 +170,27 @@ BOOST_AUTO_TEST_CASE( daw_satisfies_one_test_002 ) {
 	BOOST_REQUIRE_EQUAL( is_correct_type, true );
 	BOOST_REQUIRE_EQUAL( ans, false );
 }
+
+BOOST_AUTO_TEST_CASE( daw_satisfies_one_test_003 ) {
+	std::vector<int> const tst = {0, 1, 2, 3, 4, 6, 7, 8, 9, 10};
+
+	auto const ans = daw::algorithm::satisfies_one( tst.begin( ), tst.end( ), []( auto v ) { return v == 11; },
+	                                                []( auto v ) { return v == 12; }, []( auto v ) { return v == 13; },
+	                                                []( auto v ) { return v == 14; }, []( auto v ) { return v == 15; } );
+
+	constexpr bool is_correct_type = daw::is_same_v<bool, std::decay_t<decltype( ans )>>;
+	BOOST_REQUIRE_EQUAL( is_correct_type, true );
+	BOOST_REQUIRE_EQUAL( ans, false );
+}
+
+BOOST_AUTO_TEST_CASE( daw_satisfies_one_test_004 ) {
+	std::vector<int> const tst = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+	auto const ans = daw::algorithm::satisfies_one( tst.begin( ), tst.end( ), []( auto v ) { return v == 11; },
+	                                                []( auto v ) { return v == 12; }, []( auto v ) { return v == 13; },
+	                                                []( auto v ) { return v == 5; }, []( auto v ) { return v == 15; } );
+
+	constexpr bool is_correct_type = daw::is_same_v<bool, std::decay_t<decltype( ans )>>;
+	BOOST_REQUIRE_EQUAL( is_correct_type, true );
+	BOOST_REQUIRE_EQUAL( ans, true );
+}

@@ -465,9 +465,7 @@ namespace daw {
 		/// @param funcs UnaryPredicates that return true/false
 		/// @return True if any of the func/funcs return true(e.g. like OR)
 		template<typename Value, typename UnaryPredicate, typename... UnaryPredicates>
-		constexpr bool satisfies_one( Value value, UnaryPredicate func,
-		                              UnaryPredicates... funcs ) noexcept( noexcept( func( value ) ||
-		                                                                             satisfies_one( value, funcs... ) ) ) {
+		constexpr bool satisfies_one( Value value, UnaryPredicate func, UnaryPredicates... funcs ) {
 
 			static_assert( is_unary_predicate_v<UnaryPredicate, decltype( value )>,
 			               "UnaryPredicate must take one value and return a bool e.g. func( value ) must be valid" );
@@ -481,7 +479,10 @@ namespace daw {
 		/// @param func A UnaryPredicate that returns true/false
 		/// @param funcs UnaryPredicates that return true/false
 		/// @return True if any of the func/funcs return true(e.g. like OR) for any value in range
-		template<typename Iterator, typename LastType, typename UnaryPredicate, typename... UnaryPredicates>
+		template<typename Iterator, typename LastType, typename UnaryPredicate, typename... UnaryPredicates,
+		         std::enable_if_t<(daw::is_dereferenceable_v<LastType> &&
+		                           daw::is_equality_comparable_v<daw::traits::deref_t<LastType>>),
+		                          std::nullptr_t> = nullptr>
 		constexpr bool
 		satisfies_one( Iterator first, LastType last, UnaryPredicate func,
 		               UnaryPredicates... funcs ) noexcept( noexcept( satisfies_one( *first, func, funcs... ) ) ) {
