@@ -481,9 +481,9 @@ namespace daw {
 		/// @param func A UnaryPredicate that returns true/false
 		/// @param funcs UnaryPredicates that return true/false
 		/// @return True if any of the func/funcs return true(e.g. like OR) for any value in range
-		template<typename Iterator, typename UnaryPredicate, typename... UnaryPredicates>
+		template<typename Iterator, typename LastType, typename UnaryPredicate, typename... UnaryPredicates>
 		constexpr bool
-		satisfies_one( Iterator first, Iterator last, UnaryPredicate func,
+		satisfies_one( Iterator first, LastType last, UnaryPredicate func,
 		               UnaryPredicates... funcs ) noexcept( noexcept( satisfies_one( *first, func, funcs... ) ) ) {
 
 			static_assert( is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
@@ -493,6 +493,7 @@ namespace daw {
 				if( satisfies_one( *first, func, funcs... ) ) {
 					return true;
 				}
+				++first;
 			}
 			return false;
 		}
