@@ -449,6 +449,7 @@ namespace daw {
 		}
 
 		/// Returns true if any function returns true for the value
+		///
 		/// @param value Argument to UnaryPredicate
 		/// @param func A UnaryPredicate that returns true/false
 		/// @return The result of func
@@ -460,6 +461,7 @@ namespace daw {
 		}
 
 		/// Returns true if any function returns true for the value
+		///
 		/// @param value Argument to UnaryPredicate(s)
 		/// @param func A UnaryPredicate that returns true/false
 		/// @param funcs UnaryPredicates that return true/false
@@ -474,6 +476,7 @@ namespace daw {
 		}
 
 		/// Returns true if any function returns true for any value in range
+		///
 		/// @param first iterator pointing to the beginning of the range inclusively
 		/// @param last iterator pointing to the end of the range exclusively
 		/// @param func A UnaryPredicate that returns true/false
@@ -500,6 +503,7 @@ namespace daw {
 		}
 
 		/// Returns true if function returns true for the value
+		///
 		/// @param value Argument to UnaryPredicate
 		/// @param func A UnaryPredicate that returns true/false
 		/// @return The result of func
@@ -511,6 +515,7 @@ namespace daw {
 		}
 
 		/// Returns true if all function(s) returns true for the value
+		///
 		/// @param value Argument to UnaryPredicate(s)
 		/// @param func A UnaryPredicate that returns true/false
 		/// @param funcs UnaryPredicates that return true/false
@@ -525,6 +530,7 @@ namespace daw {
 		}
 
 		/// Returns true if all function(s) returns true for all values in range
+		///
 		/// @param first iterator pointing to the beginning of the range inclusively
 		/// @param last iterator pointing to the end of the range exclusively
 		/// @param func A UnaryPredicate that returns true/false
@@ -642,7 +648,8 @@ namespace daw {
 			}; // less_than_or_equal_to
 		}    // namespace impl
 
-		/// @brief Returns a callable that returns true if the value passed is in the range [Lower, Upper]
+		/// Returns a callable that returns true if the value passed is in the range [Lower, Upper]
+		///
 		/// @param lower The lowest value allowed
 		/// @param upper The largest value allowed
 		/// @returns true if value passed to operator( ) is within the range [lower, upper]
@@ -651,29 +658,46 @@ namespace daw {
 			return impl::in_range<Lower, Upper>{std::forward<Lower>( lower ), std::forward<Upper>( upper )};
 		}
 
-		/// @brief Returns a callable that returns true if value passed is equal to value
-		/// @param value Value to test for equality with
+		/// Returns a callable that returns true if value passed is equal to value construct with
+		///
+		/// @param value Value to test with
 		/// @returns True if value passed to operator( ) is equal to value constructed with
 		template<typename Value>
 		constexpr auto equal_to( Value &&value ) {
 			return impl::equal_to<Value>{std::forward<Value>( value )};
 		}
 
+		/// Returns a callable that returns true if value passed is greater than the value constructed with
+		///
+		/// @param value Value to test with
+		/// @returns True if value passed to operator( ) is greater than to value constructed with
 		template<typename Value>
 		constexpr auto greater_than( Value &&value ) {
 			return impl::greater_than<Value>{std::forward<Value>( value )};
 		}
 
+		/// Returns a callable that returns true if value passed is greater than or equal to the value constructed with
+		///
+		/// @param value Value to test with
+		/// @returns True if value passed to operator( ) is greater than or equal to to value constructed with
 		template<typename Value>
 		constexpr auto greater_than_or_equal_to( Value &&value ) {
 			return impl::greater_than_or_equal_to<Value>{std::forward<Value>( value )};
 		}
 
+		/// Returns a callable that returns true if value passed is less than the value constructed with
+		///
+		/// @param value Value to test with
+		/// @returns True if value passed to operator( ) is less than to value constructed with
 		template<typename Value>
 		constexpr auto less_than( Value &&value ) {
 			return impl::less_than<Value>{std::forward<Value>( value )};
 		}
 
+		/// Returns a callable that returns true if value passed is less than or equal to the value constructed with
+		///
+		/// @param value Value to test with
+		/// @returns True if value passed to operator( ) is less than or equal to to value constructed with
 		template<typename Value>
 		constexpr auto less_than_or_equal_to( Value &&value ) {
 			return impl::less_than_or_equal_to<Value>{std::forward<Value>( value )};

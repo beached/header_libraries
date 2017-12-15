@@ -242,7 +242,6 @@ BOOST_AUTO_TEST_CASE( daw_satisfies_all_test_004 ) {
 	BOOST_REQUIRE_EQUAL( ans, false );
 }
 
-
 BOOST_AUTO_TEST_CASE( daw_in_range_test_001 ) {
 	auto tst = daw::algorithm::in_range( 1, 5 );
 
@@ -261,3 +260,34 @@ BOOST_AUTO_TEST_CASE( daw_equal_to_test_001 ) {
 	BOOST_REQUIRE( !tst( -1 ) );
 }
 
+BOOST_AUTO_TEST_CASE( daw_greater_than_test_001 ) {
+	auto tst = daw::algorithm::greater_than( 5 );
+
+	BOOST_REQUIRE( tst( 6 ) );
+	BOOST_REQUIRE( !tst( 5 ) );
+	BOOST_REQUIRE( !tst( -1 ) );
+}
+
+BOOST_AUTO_TEST_CASE( daw_greater_than_or_equal_totest_001 ) {
+	auto tst = daw::algorithm::greater_than_or_equal_to( 5 );
+
+	BOOST_REQUIRE( tst( 6 ) );
+	BOOST_REQUIRE( tst( 5 ) );
+	BOOST_REQUIRE( !tst( -1 ) );
+}
+
+BOOST_AUTO_TEST_CASE( daw_less_than_test_001 ) {
+	auto tst = daw::algorithm::less_than( 5 );
+
+	BOOST_REQUIRE( !tst( 6 ) );
+	BOOST_REQUIRE( !tst( 5 ) );
+	BOOST_REQUIRE( tst( -1 ) );
+}
+
+BOOST_AUTO_TEST_CASE( daw_less_than_or_equal_totest_001 ) {
+	auto tst = daw::algorithm::less_than_or_equal_to( 5 );
+
+	BOOST_REQUIRE( !tst( 6 ) );
+	BOOST_REQUIRE( tst( 5 ) );
+	BOOST_REQUIRE( tst( -1 ) );
+}
