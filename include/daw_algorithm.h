@@ -63,21 +63,31 @@ namespace daw {
 				return std::distance( first, last );
 			}
 
-			template<typename Iterator, typename Distance, typename ItTag>
-			constexpr void advance( Iterator &first, Distance n, ItTag ) noexcept {
-				if( static_cast<ptrdiff_t>( n ) < 0 ) {
-					for( ; n < 0; ++n ) {
-						--first;
-					}
-					return;
-				}
-				for( ; n > 0; --n ) {
+			template<typename Iterator, typename Distance>
+			constexpr void advance( Iterator &first, Distance n, std::input_iterator_tag ) noexcept( noexcept( ++first ) ) {
+				while( n-- ) {
 					++first;
 				}
 			}
 
 			template<typename Iterator, typename Distance>
-			constexpr void advance( Iterator &first, Distance n, std::random_access_iterator_tag ) noexcept {
+			constexpr void advance( Iterator &first, Distance n,
+			                        std::bidirectional_iterator_tag ) noexcept( noexcept( ++first ) && noexcept( --first ) ) {
+				if( n >= 0 ) {
+					while( n-- ) {
+						++first;
+					}
+				} else {
+					while( ++n ) {
+						--first;
+					}
+				}
+			}
+
+			template<typename Iterator, typename Distance>
+			constexpr void advance( Iterator &first, Distance n,
+			                        std::random_access_iterator_tag ) noexcept( noexcept( first +=
+			                                                                              static_cast<ptrdiff_t>( n ) ) ) {
 				first += static_cast<ptrdiff_t>( n );
 			}
 		} // namespace impl
@@ -1123,25 +1133,25 @@ namespace daw {
 		template<typename RandomIterator1, typename RandomIterator2, typename Compare>
 		constexpr void quick_sort( RandomIterator1 first, RandomIterator2 const last, Compare comp ) noexcept {
 
-			static_assert( is_compare_v<Compare, decltype( *first )>,
-			               "Compare function does not meet the requirements of the Compare concept. "
-			               "http://en.cppreference.com/w/cpp/concept/Compare" );
+		  static_assert( is_compare_v<Compare, decltype( *first )>,
+		                 "Compare function does not meet the requirements of the Compare concept. "
+		                 "http://en.cppreference.com/w/cpp/concept/Compare" );
 
-			auto const N = daw::algorithm::distance( first, last );
-			if( N <= 1 ) {
-				return;
-			}
-			auto const pivot = daw::algorithm::next( first, N / 2 );
-			daw::algorithm::nth_element( first, pivot, last, comp );
-			daw::algorithm::quick_sort( first, pivot, comp );
-			daw::algorithm::quick_sort( pivot, last, comp );
+		  auto const N = daw::algorithm::distance( first, last );
+		  if( N <= 1 ) {
+		    return;
+		  }
+		  auto const pivot = daw::algorithm::next( first, N / 2 );
+		  daw::algorithm::nth_element( first, pivot, last, comp );
+		  daw::algorithm::quick_sort( first, pivot, comp );
+		  daw::algorithm::quick_sort( pivot, last, comp );
 		}
 
 		template<typename RandomIterator1, typename RandomIterator2>
 		constexpr void insertion_sort( RandomIterator1 first, RandomIterator2 const last ) noexcept {
-			for( auto i = first; i != last; ++i ) {
-				daw::algorithm::rotate( daw::algorithm::upper_bound( first, i, *i ), i, daw::algorithm::next( i ) );
-			}
+		  for( auto i = first; i != last; ++i ) {
+		    daw::algorithm::rotate( daw::algorithm::upper_bound( first, i, *i ), i, daw::algorithm::next( i ) );
+		  }
 		}
 		*/
 
@@ -1312,7 +1322,7 @@ namespace daw {
 
 		template<class ForwardIterator1, class ForwardIterator2>
 		constexpr ForwardIterator1 search( ForwardIterator1 first, ForwardIterator1 last, ForwardIterator2 s_first,
-		                             ForwardIterator2 s_last ) noexcept( noexcept( *first == *s_first ) ) {
+		                                   ForwardIterator2 s_last ) noexcept( noexcept( *first == *s_first ) ) {
 
 			static_assert( is_forward_iterator_v<ForwardIterator1>,
 			               "ForwardIterator1 passed to rotate does not meet the requirements of the ForwardIterator concept "
