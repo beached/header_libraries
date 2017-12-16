@@ -1475,4 +1475,11 @@ namespace daw {
 			return daw::algorithm::minmax_element( first, last, std::less<>{} );
 		}
 	} // namespace algorithm
+
+	template<typename Iterator, typename Distance>
+	constexpr void advance( Iterator &it, Distance n ) noexcept {
+		impl::advance( it, static_cast<typename std::iterator_traits<Iterator>::difference_type>( n ),
+		               typename std::iterator_traits<Iterator>::iterator_category{} );
+	}
+
 } // namespace daw
