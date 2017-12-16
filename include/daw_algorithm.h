@@ -62,6 +62,31 @@ namespace daw {
 		daw::advance( it, distance );
 	}
 
+	/// @brief Advance Iterator within the bounds of container
+	/// @tparam Container Container type who's iterators are of type Iterator
+	/// @tparam Iterator Iterator pointing to members of container.
+	/// @param container container to set bounds on iterator
+	/// @param it iterator to move.  It is undefined behavior if iterator is outside the range [std::begin(container),
+	/// std::end(container)]
+	/// @param distance how far to move
+	template<typename Container, typename Iterator>
+	constexpr void safe_advance( Container const &container, Iterator &it,
+	                             ptrdiff_t distance ) noexcept( noexcept( daw::advance( it, distance ) ) ) {
+
+		static_assert( is_iterator_v<Iterator>,
+		               "Iterator passed to advance does not fullfill the concept of an Iterator. "
+		               "http://en.cppreference.com/w/cpp/concept/Iterator" );
+
+		auto const ip_pos = daw::distance( std::begin( container ), it );
+		auto const c_size = daw::distance( std::cbegin( container ), std::cend( container ) );
+
+		daw::exception::DebugAssert( ip_pos >= 0 && ip_pos <= c_size, "Iterator is outside bounds of container" );
+
+		distance = impl::math::clamp( distance, -ip_pos, c_size - ip_pos );
+
+		daw::advance( it, distance );
+	}
+
 	/// @brief Advance iterator n steps forward but do not go past last.  Undefined if it > last
 	/// @tparam Iterator Type of Iterator to advance
 	/// @param it iterator to advance
@@ -74,7 +99,7 @@ namespace daw {
 		               "Iterator passed to advance does not fullfill the concept of an Iterator. "
 		               "http://en.cppreference.com/w/cpp/concept/Iterator" );
 
-		n = daw::impl::math::min( n, static_cast<size_t>(std::distance( it, last ) ) );
+		n = daw::impl::math::min( n, static_cast<size_t>( std::distance( it, last ) ) );
 		return daw::next( it, static_cast<ptrdiff_t>( n ) );
 	}
 
@@ -90,7 +115,7 @@ namespace daw {
 		               "Iterator passed to advance does not fullfill the concept of an Iterator. "
 		               "http://en.cppreference.com/w/cpp/concept/Iterator" );
 
-		n = daw::impl::math::min( n, static_cast<size_t>(std::distance( first, it ) ) );
+		n = daw::impl::math::min( n, static_cast<size_t>( std::distance( first, it ) ) );
 		return daw::prev( it, static_cast<ptrdiff_t>( n ) );
 	}
 
@@ -100,12 +125,24 @@ namespace daw {
 	/// @param n how many steps to move forward from begin
 	/// @return an iterator referencing a value in container n steps from begin
 	template<typename Container>
-	constexpr auto begin_at( Container &container, size_t n ) noexcept(
-	  noexcept( std::begin( container ) &&
-	            noexcept( safe_advance( container, std::begin( container ), static_cast<ptrdiff_t>( n ) ) ) ) )
+	constexpr auto begin_at( Container &container, size_t n ) noexcept( noexcept( std::begin( container ) ) )
 	  -> decltype( std::begin( container ) ) {
 
 		auto result = std::begin( container );
+		safe_advance( container, result, static_cast<ptrdiff_t>( n ) );
+		return result;
+	}
+
+	/// @brief Take iterator return from begin of a container and return the result of running next with n steps
+	/// @tparam Container Container type iterator will come from
+	/// @param container container to get iterator from
+	/// @param n how many steps to move forward from begin
+	/// @return an iterator referencing a value in container n steps from begin
+	template<typename Container>
+	constexpr auto begin_at( Container const &container, size_t n ) noexcept( noexcept( std::cbegin( container ) ) )
+	  -> decltype( std::cbegin( container ) ) {
+
+		auto result = std::cbegin( container );
 		safe_advance( container, result, static_cast<ptrdiff_t>( n ) );
 		return result;
 	}

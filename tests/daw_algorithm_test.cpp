@@ -158,6 +158,41 @@ BOOST_AUTO_TEST_CASE( daw_safe_prev_test_004 ) {
 	BOOST_REQUIRE( ans );
 }
 
+BOOST_AUTO_TEST_CASE( daw_begin_at_test_001 ) {
+	std::vector<int> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto it = daw::begin_at( a, 0 );
+
+	static_assert( daw::is_same_v<decltype( it ), decltype( std::begin( a ) )>, "Iterator type is changing in begin_at" );
+
+	bool const ans = it == std::begin( a );
+	BOOST_REQUIRE( ans );
+}
+
+BOOST_AUTO_TEST_CASE( daw_begin_at_test_002 ) {
+	std::vector<int> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto it = daw::begin_at( a, 5 );
+	bool const ans = it == std::next( std::begin( a ), 5 );
+	BOOST_REQUIRE( ans );
+}
+
+BOOST_AUTO_TEST_CASE( daw_begin_at_test_003 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto it = daw::begin_at( a, 0 );
+
+	static_assert( daw::is_same_v<decltype( it ), decltype( std::begin( a ) )>, "Iterator type is changing in begin_at" );
+
+	bool const ans = it == std::begin( a );
+	BOOST_REQUIRE( ans );
+}
+
+BOOST_AUTO_TEST_CASE( daw_begin_at_test_004 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto it = daw::begin_at( a, 5 );
+	bool const ans = it == std::next( std::begin( a ), 5 );
+	BOOST_REQUIRE( ans );
+}
+
+
 BOOST_AUTO_TEST_CASE( daw_transform_many ) {
 	std::vector<uint32_t> in1 = {1, 3, 5, 7, 9};
 	std::vector<uint32_t> in2 = {0, 2, 4, 6, 8};
