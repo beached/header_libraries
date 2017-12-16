@@ -509,6 +509,9 @@ namespace daw {
 	template<typename UnaryPredicate, typename T>
 	constexpr bool is_unary_predicate_v = is_predicate_v<UnaryPredicate, T>;
 
+	template<typename Compare, typename T, typename U = T>
+	constexpr bool is_compare_v = is_binary_predicate_v<Compare, T, U>;
+
 	template<typename T, typename U = T>
 	constexpr bool is_equality_comparable_v = is_detected_convertible_v<bool, detectors::equality_comparable, T, U>;
 

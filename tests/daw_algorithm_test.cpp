@@ -38,6 +38,7 @@ BOOST_AUTO_TEST_CASE( daw_transform_many ) {
 	BOOST_REQUIRE_MESSAGE( out.size( ) == in1.size( ), "1. Incorrect size on output" );
 }
 
+/* TODO: remove
 constexpr bool quick_sort_test( ) noexcept {
 	int blah[6] = {23, 5, 2, -1, 100, -1000};
 	daw::algorithm::quick_sort( blah, blah + 6 );
@@ -77,6 +78,7 @@ BOOST_AUTO_TEST_CASE( daw_sort_test_004 ) {
 	}
 	std::cout << '\n';
 }
+*/
 
 BOOST_AUTO_TEST_CASE( daw_map_test_001 ) {
 	int blah[6] = {23, 5, 2, -1, 100, -1000};
