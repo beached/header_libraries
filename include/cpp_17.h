@@ -377,4 +377,10 @@ namespace daw {
 
 	template<typename T>
 	constexpr bool is_volatile_v = std::is_volatile<T>::value;
+
+	template<typename T>
+	constexpr bool is_trivially_move_assignable_v = std::is_trivially_move_assignable<T>::value;
+
+	template<typename T>
+	constexpr bool is_nothrow_move_assignable_v = std::is_nothrow_move_assignable<T>::value;
 } // namespace daw

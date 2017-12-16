@@ -842,12 +842,12 @@ namespace daw {
 		/// Transform range [first, last) and output to range [first_out, first_out + std::distance( first, last ))
 		///
 		/// @tparam InputIterator input range iterator type
-		/// @tparam LastType
+		/// @tparam LastType type of Iterator marking end of input range
 		/// @tparam OutputIterator output range iterator type
 		/// @tparam UnaryOperation callable that takes the dereferenced value from input range and is assignable to the
 		/// dereferenced value of output range
 		/// @param first first element in input range [first, first + count)
-		/// @param last
+		/// @param last end of input range
 		/// @param first_out first element in output range [first_out, first_out + count)
 		/// @param unary_op callable that transforms items from input range to items of output range
 		/// @return last item in output range
@@ -923,8 +923,9 @@ namespace daw {
 		/// @param count number of items to copy
 		/// @return end of output range written to
 		template<typename InputIterator, typename OutputIterator>
-		constexpr OutputIterator copy_n( InputIterator first, OutputIterator first_out, size_t count ) noexcept {
-			while( count --> 0 ) {
+		constexpr OutputIterator copy_n( InputIterator first, OutputIterator first_out,
+		                                 size_t count ) noexcept( noexcept( *first_out = *first ) ) {
+			while( count-- > 0 ) {
 				*first_out = *first;
 				++first;
 				++first_out;
@@ -932,71 +933,146 @@ namespace daw {
 			return first_out;
 		}
 
-		template<typename InputIterator1, typename InputIterator2, typename OutputIterator>
-		constexpr void move( InputIterator1 first_in, InputIterator2 const last_in, OutputIterator first_out ) noexcept {
-			while( first_in != last_in ) {
-				*first_out++ = std::move( *first_in++ );
+		/// Move values from input range [first, last) to output range [first_out, std::distance( first, last))
+		///
+		/// @tparam InputIterator type of Iterator of input range
+		/// @tparam LastType type of Iterator marking end of input range
+		/// @tparam OutputIterator type of iterator for output range
+		/// @param first start of input range
+		/// @param last end of input range
+		/// @param first_out first item in output range
+		/// @return end of output range written to
+		template<typename InputIterator, typename LastType, typename OutputIterator>
+		constexpr OutputIterator move( InputIterator first, LastType const last,
+		                               OutputIterator first_out ) noexcept( noexcept( *first_out = std::move( *first ) ) ) {
+
+			while( first != last ) {
+				*first_out = std::move( *first );
+				++first;
+				++first_out;
 			}
+			return first_out;
 		}
 
+		/// Move values from input range [first, last) to output range [first_out, first_out + count)
+		///
+		/// @tparam InputIterator type of Iterator of input range
+		/// @tparam OutputIterator type of iterator for output range
+		/// @param first start of input range
+		/// @param first_out first item in output range
+		/// @param count number of items to move
+		/// @return end of output range written to
 		template<typename InputIterator, typename OutputIterator>
-		constexpr void move_n( InputIterator first_in, OutputIterator first_out, size_t const count ) noexcept {
-			for( size_t n = 0; n < count; ++n ) {
-				*first_out++ = std::move( *first_in++ );
+		constexpr OutputIterator move_n( InputIterator first, OutputIterator first_out,
+		                                 size_t count ) noexcept( noexcept( *first_out = std::move( *first ) ) ) {
+
+			while( count-- > 0 ) {
+				*first_out = std::move( *first );
+				++first;
+				++first_out;
 			}
+			return first_out;
 		}
 
-		template<typename InputIterator1, typename InputIterator2, typename InputIterator3>
-		constexpr bool equal( InputIterator1 first1, InputIterator2 last1,
-		                      InputIterator3 first2 ) noexcept( noexcept( *first1 == *first2 ) ) {
-			while( first1 != last1 ) {
-				if( !( *first1++ == *first2++ ) ) {
-					return false;
-				}
+		/// Determine if two ranges [first1, last1) and [first2, first2 + std::distance( first1, last1 )) are equal
+		///
+		/// @tparam InputIterator1 type of Iterator of first input range
+		/// @tparam LastType type of Iterator marking end of first input range
+		/// @tparam InputIterator2 type of Iterator of second input range
+		/// @param first1 start of first input range
+		/// @param last1 end of first input range
+		/// @param first2 start of second input range
+		/// @return true if both ranges are equal
+		template<typename InputIterator1, typename LastType, typename InputIterator2>
+		constexpr bool equal( InputIterator1 first1, LastType last1,
+		                      InputIterator2 first2 ) noexcept( noexcept( *first1 == *first2 ) ) {
+
+			while( ( first1 != last1 ) && ( *first1 == *first2 ) ) {
+				++first1;
+				++first2;
 			}
-			return true;
+			return !( first1 != last1 );
 		}
 
-		template<typename InputIterator1, typename InputIterator2, typename InputIterator3, typename InputIterator4>
-		constexpr bool equal( InputIterator1 first1, InputIterator2 last1, InputIterator3 first2,
-		                      InputIterator4 last2 ) noexcept( noexcept( *first1 == *first2 ) ) {
-			while( first1 != last1 && first2 != last2 ) {
-				if( !( *first1++ == *first2++ ) ) {
-					return false;
-				}
+		/// Determine if two ranges [first1, last1) and [first2, last2)
+		///
+		/// @tparam InputIterator1 type of Iterator of first input range
+		/// @tparam LastType1 type of Iterator marking end of first input range
+		/// @tparam InputIterator2 type of Iterator of second input range
+		/// @tparam LastType2 type of Iterator marking end of second input range
+		/// @param first1 start of first input range
+		/// @param last1 end of first input range
+		/// @param first2 start of second input range
+		/// @param last2 end of second input range
+		/// @return true if both ranges are equal
+		template<typename InputIterator1, typename LastType1, typename InputIterator2, typename LastType2>
+		constexpr bool equal( InputIterator1 first1, LastType1 last1, InputIterator2 first2,
+		                      LastType2 last2 ) noexcept( noexcept( *first1 == *first2 ) ) {
+
+			while( ( first1 != last1 ) && ( first2 != last2 ) && ( *first1 == *first2 ) ) {
+				++first1;
+				++first2;
 			}
-			return first1 == last1 && first2 == last2;
+
+			return !( first1 != last1 ) && !( first2 != last2 );
 		}
 
-		template<typename InputIterator1, typename InputIterator2, typename InputIterator3, typename InputIterator4,
-		         typename BinaryPredicate>
-		constexpr bool equal( InputIterator1 first1, InputIterator2 last1, InputIterator3 first2, InputIterator4 last2,
-		                      BinaryPredicate pred ) noexcept( noexcept( pred( *first1, *first2 ) ) ) {
-			while( first1 != last1 && first2 != last2 ) {
-				if( !( pred( *first1, *first2 ) ) ) {
-					++first1;
-					++first2;
-					return false;
-				}
+		/// Determine if two ranges [first1, last1) and [first2, last2) using pred
+		///
+		/// @tparam InputIterator1 type of Iterator of first input range
+		/// @tparam LastType1 type of Iterator marking end of first input range
+		/// @tparam InputIterator2 type of Iterator of second input range
+		/// @tparam LastType2 type of Iterator marking end of second input range
+		/// @tparam Compare type of predicate fullfilling Compare concept
+		/// @param first1 start of first input range
+		/// @param last1 end of first input range
+		/// @param first2 start of second input range
+		/// @param last2 end of second input range
+		/// @param pred predicate to determine equality of elements
+		/// @return true if both ranges are equal
+		template<typename InputIterator1, typename LastType1, typename InputIterator2, typename LastType2, typename Compare>
+		constexpr bool equal( InputIterator1 first1, LastType1 last1, InputIterator2 first2, LastType2 last2,
+		                      Compare pred ) noexcept( noexcept( pred( *first1, *first2 ) ) ) {
+
+			while( ( first1 != last1 ) && ( first2 != last2 ) && pred( *first1, *first2 ) ) {
+				++first1;
+				++first2;
 			}
-			return first1 == last1 && first2 == last2;
+			return !( first1 != last1 ) && !( first2 != last2 );
 		}
 
+		/// constexpr version of std::swap
+		///
+		/// @tparam T first type to swap
+		/// @tparam U second type to swap
+		/// @param t first value to swap
+		/// @param u second value to swap
 		template<typename T, typename U,
-		         std::enable_if_t<is_convertible_v<T, U> && is_convertible_v<U, T>, std::nullptr_t> = nullptr>
+		         std::enable_if_t<is_convertible_v<T, U> && is_convertible_v<U, T> && is_nothrow_move_assignable_v<T> &&
+		                            is_nothrow_move_assignable_v<U>,
+		                          std::nullptr_t> = nullptr>
 		constexpr void swapper( T &t, U &u ) noexcept {
 			T tmp = std::move( t );
 			t = std::move( u );
 			u = std::move( tmp );
 		}
 
-		template<typename ForwardIterator>
+		/// Performs a left rotation on a range of elements.
+		///
+		/// @tparam ForwardIterator type of Iterator for items in range
+		/// @tparam LastType type that is equal to ForwardIterator when end of range reached
+		/// @param first first item in range
+		/// @param middle middle of range, first item in new range
+		/// @param last last item in range
+		template<typename ForwardIterator, typename LastType>
 		constexpr void rotate( ForwardIterator first, ForwardIterator middle,
-		                       ForwardIterator last ) noexcept( noexcept( std::swap( *first, *middle ) ) ) {
+		                       LastType last ) noexcept( noexcept( swapper( *first, *middle ) ) ) {
 
 			ForwardIterator tmp = middle;
 			while( first != tmp ) {
-				daw::algorithm::swapper( *first++, *tmp++ );
+				daw::algorithm::swapper( *first, *tmp );
+				++first;
+				++tmp;
 				if( tmp == last ) {
 					tmp = middle;
 				} else if( first == middle ) {
@@ -1005,10 +1081,16 @@ namespace daw {
 			}
 		}
 
-		template<typename ForwardIterator, typename T>
-		constexpr ForwardIterator upper_bound( ForwardIterator first, ForwardIterator const last,
-		                                       T const &value ) noexcept {
-
+		/// Returns an iterator pointing to the first element in the range [first, last) that is greater than value, or last if no such element is found.
+		///
+		/// @tparam RandomIterator Iteratot type pointing to range
+		/// @tparam T a value comparable to the dereferenced RandomIterator
+		/// @param first first item in range
+		/// @param last end of range
+		/// @param value value to compare to
+		/// @return position of first element greater than value or last
+		template<typename RandomIterator, typename T>
+		constexpr RandomIterator upper_bound( RandomIterator first, RandomIterator last, T const &value ) noexcept {
 			auto count = distance( first, last );
 			while( count > 0 ) {
 				auto it = first;

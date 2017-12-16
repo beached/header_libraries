@@ -349,3 +349,101 @@ BOOST_AUTO_TEST_CASE( daw_copy_n_test_001 ) {
 	BOOST_REQUIRE( std::equal( b.cbegin( ), b.cend( ), expected_b.cbegin( ), expected_b.cend( ) ) );
 }
 
+BOOST_AUTO_TEST_CASE( daw_move_test_001 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto expected_b = a;
+	std::vector<int> b{};
+
+	daw::algorithm::move( a.cbegin( ), a.cend( ), std::back_inserter( b ) );
+	BOOST_REQUIRE( std::equal( expected_b.cbegin( ), expected_b.cend( ), b.cbegin( ), b.cend( ) ) );
+}
+
+BOOST_AUTO_TEST_CASE( daw_move_n_test_001 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::vector<int> b{};
+	std::vector<int> const expected_b = {0, 1, 2, 3, 4, 5};
+
+	daw::algorithm::move_n( a.cbegin( ), std::back_inserter( b ), 6 );
+	BOOST_REQUIRE( std::equal( b.cbegin( ), b.cend( ), expected_b.cbegin( ), expected_b.cend( ) ) );
+}
+
+BOOST_AUTO_TEST_CASE( daw_equal_test_001 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto const b = a;
+	BOOST_REQUIRE( daw::algorithm::equal( a.cbegin( ), a.cend( ), b.cbegin( ) ) );
+}
+
+BOOST_AUTO_TEST_CASE( daw_equal_test_002 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::vector<int> const b = {0, 1, 2, 3, 4, 1, 6, 7, 8, 9, 10};
+	BOOST_REQUIRE( !daw::algorithm::equal( a.cbegin( ), a.cend( ), b.cbegin( ) ) );
+}
+
+BOOST_AUTO_TEST_CASE( daw_equal_test_003 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto const b = a;
+	BOOST_REQUIRE( daw::algorithm::equal( a.cbegin( ), a.cend( ), b.cbegin( ), b.cend( ) ) );
+}
+
+BOOST_AUTO_TEST_CASE( daw_equal_test_004 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::vector<int> const b = {0, 1, 2, 3, 4, 1, 6, 7, 8, 9, 10};
+	BOOST_REQUIRE( !daw::algorithm::equal( a.cbegin( ), a.cend( ), b.cbegin( ), b.cend( ) ) );
+}
+
+BOOST_AUTO_TEST_CASE( daw_equal_test_005 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::vector<int> const b = {0, 1, 2, 3, 4};
+	BOOST_REQUIRE( !daw::algorithm::equal( a.cbegin( ), a.cend( ), b.cbegin( ), b.cend( ) ) );
+}
+
+BOOST_AUTO_TEST_CASE( daw_equal_test_006 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::vector<int> const b = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	BOOST_REQUIRE( daw::algorithm::equal( a.cbegin( ), a.cend( ), b.cbegin( ), b.cend( ),
+	                                      []( auto lhs, auto rhs ) { return lhs == rhs; } ) );
+}
+
+BOOST_AUTO_TEST_CASE( daw_equal_test_007 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::vector<int> const b = {0, 1, 2, 5, 4, 5, 6, 7, 8, 9, 10};
+	BOOST_REQUIRE( !daw::algorithm::equal( a.cbegin( ), a.cend( ), b.cbegin( ), b.cend( ),
+	                                       []( auto lhs, auto rhs ) { return lhs == rhs; } ) );
+}
+
+BOOST_AUTO_TEST_CASE( daw_equal_test_008 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::vector<int> const b = {0, 1, 3, 4, 5, 6, 7, 8, 9, 10};
+	BOOST_REQUIRE( !daw::algorithm::equal( a.cbegin( ), a.cend( ), b.cbegin( ), b.cend( ),
+	                                       []( auto lhs, auto rhs ) { return lhs == rhs; } ) );
+}
+
+BOOST_AUTO_TEST_CASE( daw_swapper_test_001 ) {
+	std::string a { "a" };
+	std::string b { "b" };
+	daw::algorithm::swapper( a, b );
+	BOOST_REQUIRE_EQUAL( a, "b" );
+	BOOST_REQUIRE_EQUAL( b, "a" );
+}
+
+BOOST_AUTO_TEST_CASE( daw_rotate_test_001 ) {
+	std::vector<int> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	daw::algorithm::rotate( a.begin( ), std::next( a.begin( ), 5 ), a.end( ) );
+	BOOST_REQUIRE_EQUAL( a.front( ), 5 );
+	BOOST_REQUIRE_EQUAL( a.back( ), 4 );
+	BOOST_REQUIRE_EQUAL( a[5], 10 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_upper_bound_test_001 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto tst = daw::algorithm::upper_bound( a.cbegin( ), a.cend( ), 5 );
+	auto ans = tst == std::next( a.cbegin( ), 6 );
+	BOOST_REQUIRE( ans );
+}
+
+BOOST_AUTO_TEST_CASE( daw_upper_bound_test_002 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto tst = daw::algorithm::upper_bound( a.cbegin( ), a.cend( ), 20 );
+	auto ans = tst == a.cend( );
+	BOOST_REQUIRE( ans );
+}
