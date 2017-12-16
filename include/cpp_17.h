@@ -383,4 +383,119 @@ namespace daw {
 
 	template<typename T>
 	constexpr bool is_nothrow_move_assignable_v = std::is_nothrow_move_assignable<T>::value;
+
+	// Iterator movement, until I can use c++ 17 and the std ones are constexpr
+	namespace impl {
+		// Pointer calc helpers.  Cannot include math header as it depends on algorithm
+		namespace math {
+			template<typename T, typename U>
+			constexpr std::common_type_t<T, U> min( T const &lhs, U const &rhs ) noexcept {
+				if( lhs <= rhs ) {
+					return lhs;
+				}
+				return rhs;
+			}
+
+			template<typename T, typename U, typename V>
+			constexpr T clamp( T val, U const &min_val, V const &max_val ) noexcept {
+				if( val < min_val ) {
+					val = min_val;
+				} else if( val > max_val ) {
+					val = max_val;
+				}
+				return val;
+			};
+		} // namespace math
+
+		template<typename InputIterator>
+		constexpr ptrdiff_t distance_impl( InputIterator first, InputIterator last,
+		                                   std::input_iterator_tag ) noexcept( noexcept( ++first ) ) {
+			ptrdiff_t count = 0;
+			while( first != last ) {
+				++count;
+				++first;
+			}
+			return count;
+		}
+
+		template<typename Iterator1, typename Iterator2>
+		constexpr ptrdiff_t distance_impl( Iterator1 first, Iterator2 last,
+		                                   std::random_access_iterator_tag ) noexcept( noexcept( last - first ) ) {
+			return last - first;
+		}
+
+		template<typename Iterator, typename Distance>
+		constexpr void advance( Iterator &first, Distance n, std::input_iterator_tag ) noexcept( noexcept( ++first ) ) {
+			while( n-- ) {
+				++first;
+			}
+		}
+
+		template<typename Iterator, typename Distance>
+		constexpr void advance( Iterator &first, Distance n,
+		                        std::bidirectional_iterator_tag ) noexcept( noexcept( ++first ) && noexcept( --first ) ) {
+			if( n >= 0 ) {
+				while( n-- ) {
+					++first;
+				}
+			} else {
+				while( ++n ) {
+					--first;
+				}
+			}
+		}
+
+		template<typename Iterator, typename Distance>
+		constexpr void advance( Iterator &first, Distance n,
+		                        std::random_access_iterator_tag ) noexcept( noexcept( first +=
+		                                                                              static_cast<ptrdiff_t>( n ) ) ) {
+			first += static_cast<ptrdiff_t>( n );
+		}
+	} // namespace impl
+
+	/// @brief Calculate distance between iterators
+	/// @tparam Iterator type of Iterator to compare
+	/// @param first first iterator, must be <= second if Iterators are not RandomAccess
+	/// @param second second iterator, must be >= first if Iterators are not RandomAccess
+	/// @return	a ptrdiff_t of how many steps apart iterators are.  If Iterators are RandomAccess it may be <0, otherwise
+	/// always greater
+	template<typename Iterator>
+	constexpr ptrdiff_t distance( Iterator first, Iterator second ) noexcept(
+	  noexcept( impl::distance_impl( first, second, typename std::iterator_traits<Iterator>::iterator_category{} ) ) ) {
+		return impl::distance_impl( first, second, typename std::iterator_traits<Iterator>::iterator_category{} );
+	}
+
+	/// @brief Advance iterator n steps
+	/// @tparam Iterator Type of iterator to advance
+	/// @tparam Distance A type convertible to an integral type
+	/// @param it iterator to advance
+	/// @param n how far to move iterator
+	template<typename Iterator, typename Distance>
+	constexpr void advance( Iterator &it, Distance n ) noexcept( noexcept(
+	  impl::advance( it, static_cast<ptrdiff_t>( n ), typename std::iterator_traits<Iterator>::iterator_category{} ) ) ) {
+
+		impl::advance( it, static_cast<ptrdiff_t>( n ), typename std::iterator_traits<Iterator>::iterator_category{} );
+	}
+
+	/// @brief Move iterator forward n steps, if n < 0 it is only defined for types that are Bidirectional
+	/// @tparam Iterator Type of iterator to move forward
+	/// @param it Iterator to advance
+	/// @param n how far to move forward
+	/// @return The resulting iterator of advancing it n steps
+	template<typename Iterator>
+	constexpr Iterator next( Iterator it, ptrdiff_t n = 1 ) noexcept {
+		impl::advance( it, n, typename std::iterator_traits<Iterator>::iterator_category{} );
+		return it;
+	}
+
+	/// @brief Move iterator backward n steps, if n > 0, only defined for types that are Bidirectional
+	/// @tparam Iterator Type of iterator to move backward
+	/// @param it Iterator to advance
+	/// @param n how far to move backward
+	/// @return The resulting iterator of advancing it n steps
+	template<typename Iterator>
+	constexpr Iterator prev( Iterator it, ptrdiff_t n = 1 ) noexcept {
+		impl::advance( it, -n, typename std::iterator_traits<Iterator>::iterator_category{} );
+		return it;
+	}
 } // namespace daw

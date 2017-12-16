@@ -28,6 +28,136 @@
 #include "boost_test.h"
 #include "daw_algorithm.h"
 
+BOOST_AUTO_TEST_CASE( daw_safe_advance_test_001 ) {
+	std::vector<int> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto it = std::begin( a );
+	daw::safe_advance( a, it, 5 );
+	bool const ans = ( it != std::begin( a ) );
+	BOOST_REQUIRE( ans );
+	auto it2 = std::next( std::begin( a ), 5 );
+	bool const ans2 = it == it2;
+	BOOST_REQUIRE( ans2 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_safe_advance_test_002 ) {
+	std::vector<int> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto it = std::begin( a );
+	daw::safe_advance( a, it, static_cast<ptrdiff_t>( a.size( ) + 5u ) );
+	bool const ans = ( it == std::end( a ) );
+	BOOST_REQUIRE( ans );
+}
+
+BOOST_AUTO_TEST_CASE( daw_safe_advance_test_003 ) {
+	std::vector<int> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto it = std::begin( a );
+	daw::safe_advance( a, it, -5 );
+	bool const ans = ( it == std::begin( a ) );
+	BOOST_REQUIRE( ans );
+}
+
+BOOST_AUTO_TEST_CASE( daw_safe_advance_test_004 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto it = std::begin( a );
+	daw::safe_advance( a, it, 5 );
+	bool const ans = ( it != std::begin( a ) );
+	BOOST_REQUIRE( ans );
+	auto it2 = std::next( std::begin( a ), 5 );
+	bool const ans2 = it == it2;
+	BOOST_REQUIRE( ans2 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_safe_advance_test_005 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto it = std::begin( a );
+	daw::safe_advance( a, it, static_cast<ptrdiff_t>( a.size( ) + 5u ) );
+	bool const ans = ( it == std::end( a ) );
+	BOOST_REQUIRE( ans );
+}
+
+BOOST_AUTO_TEST_CASE( daw_safe_advance_test_006 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto it = std::begin( a );
+	daw::safe_advance( a, it, -5 );
+	bool const ans = ( it == std::begin( a ) );
+	BOOST_REQUIRE( ans );
+}
+
+BOOST_AUTO_TEST_CASE( daw_safe_next_test_001 ) {
+	std::vector<int> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto it = daw::safe_next( std::begin( a ), std::end( a ), 5 );
+
+	static_assert( daw::is_same_v<decltype( it ), decltype( std::begin( a ) )>,
+	               "Iterator type is changing in safe_next" );
+
+	bool const ans = it == std::next( std::begin( a ), 5 );
+	BOOST_REQUIRE( ans );
+}
+
+BOOST_AUTO_TEST_CASE( daw_safe_next_test_002 ) {
+	std::vector<int> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto it = daw::safe_next( std::begin( a ), std::end( a ), a.size( ) + 5 );
+
+	bool const ans = it == std::end( a );
+	BOOST_REQUIRE( ans );
+}
+
+BOOST_AUTO_TEST_CASE( daw_safe_next_test_003 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto it = daw::safe_next( std::begin( a ), std::end( a ), 5 );
+
+	static_assert( daw::is_same_v<decltype( it ), decltype( std::begin( a ) )>,
+	               "Iterator type is changing in safe_next" );
+
+	bool const ans = it == std::next( std::begin( a ), 5 );
+	BOOST_REQUIRE( ans );
+}
+
+BOOST_AUTO_TEST_CASE( daw_safe_next_test_004 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto it = daw::safe_next( std::begin( a ), std::end( a ), a.size( ) + 5 );
+
+	bool const ans = it == std::end( a );
+	BOOST_REQUIRE( ans );
+}
+
+BOOST_AUTO_TEST_CASE( daw_safe_prev_test_001 ) {
+	std::vector<int> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto it = daw::safe_prev( std::end( a ), std::begin( a ), 5 );
+
+	static_assert( daw::is_same_v<decltype( it ), decltype( std::begin( a ) )>,
+	               "Iterator type is changing in safe_prev" );
+
+	bool const ans = it == std::prev( std::end( a ), 5 );
+	BOOST_REQUIRE( ans );
+}
+
+BOOST_AUTO_TEST_CASE( daw_safe_prev_test_002 ) {
+	std::vector<int> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto it = daw::safe_prev( std::end( a ), std::begin( a ), a.size( ) + 5 );
+
+	bool const ans = it == std::begin( a );
+	BOOST_REQUIRE( ans );
+}
+
+BOOST_AUTO_TEST_CASE( daw_safe_prev_test_003 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto it = daw::safe_prev( std::end( a ), std::begin( a ), 5 );
+
+	static_assert( daw::is_same_v<decltype( it ), decltype( std::begin( a ) )>,
+	               "Iterator type is changing in safe_prev" );
+
+	bool const ans = it == std::prev( std::end( a ), 5 );
+	BOOST_REQUIRE( ans );
+}
+
+BOOST_AUTO_TEST_CASE( daw_safe_prev_test_004 ) {
+	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto it = daw::safe_prev( std::end( a ), std::begin( a ), a.size( ) + 5 );
+
+	bool const ans = it == std::begin( a );
+	BOOST_REQUIRE( ans );
+}
+
 BOOST_AUTO_TEST_CASE( daw_transform_many ) {
 	std::vector<uint32_t> in1 = {1, 3, 5, 7, 9};
 	std::vector<uint32_t> in2 = {0, 2, 4, 6, 8};
@@ -40,49 +170,49 @@ BOOST_AUTO_TEST_CASE( daw_transform_many ) {
 
 /* TODO: remove
 constexpr bool quick_sort_test( ) noexcept {
-	int blah[6] = {23, 5, 2, -1, 100, -1000};
-	daw::algorithm::quick_sort( blah, blah + 6 );
-	return daw::algorithm::is_sorted( blah, blah + 6 );
+  int blah[6] = {23, 5, 2, -1, 100, -1000};
+  daw::algorithm::quick_sort( blah, blah + 6 );
+  return daw::algorithm::is_sorted( blah, blah + 6 );
 }
 
 constexpr bool sort_test( ) noexcept {
-	int blah[6] = {23, 5, 2, -1, 100, -1000};
-	daw::algorithm::insertion_sort( blah, blah + 6 );
-	return daw::algorithm::is_sorted( blah, blah + 6 );
+  int blah[6] = {23, 5, 2, -1, 100, -1000};
+  daw::algorithm::insertion_sort( blah, blah + 6 );
+  return daw::algorithm::is_sorted( blah, blah + 6 );
 }
 
 BOOST_AUTO_TEST_CASE( daw_sort_test_001 ) {
-	constexpr bool sort_tst = sort_test( );
-	BOOST_REQUIRE( sort_tst );
+  constexpr bool sort_tst = sort_test( );
+  BOOST_REQUIRE( sort_tst );
 }
 
 BOOST_AUTO_TEST_CASE( daw_sort_test_002 ) {
-	int blah[6] = {23, 5, 2, -1, 100, -1000};
-	daw::algorithm::insertion_sort( blah, blah + 6 );
-	for( auto i : blah ) {
-		std::cout << i << " ";
-	}
-	std::cout << '\n';
+  int blah[6] = {23, 5, 2, -1, 100, -1000};
+  daw::algorithm::insertion_sort( blah, blah + 6 );
+  for( auto i : blah ) {
+    std::cout << i << " ";
+  }
+  std::cout << '\n';
 }
 
 BOOST_AUTO_TEST_CASE( daw_sort_test_003 ) {
-	constexpr bool sort_tst = quick_sort_test( );
-	BOOST_REQUIRE( sort_tst );
+  constexpr bool sort_tst = quick_sort_test( );
+  BOOST_REQUIRE( sort_tst );
 }
 
 BOOST_AUTO_TEST_CASE( daw_sort_test_004 ) {
-	int blah[6] = {23, 5, 2, -1, 100, -1000};
-	daw::algorithm::quick_sort( blah, blah + 6 );
-	for( auto i : blah ) {
-		std::cout << i << " ";
-	}
-	std::cout << '\n';
+  int blah[6] = {23, 5, 2, -1, 100, -1000};
+  daw::algorithm::quick_sort( blah, blah + 6 );
+  for( auto i : blah ) {
+    std::cout << i << " ";
+  }
+  std::cout << '\n';
 }
 */
 
 BOOST_AUTO_TEST_CASE( daw_map_test_001 ) {
 	int blah[6] = {23, 5, 2, -1, 100, -1000};
-	daw::algorithm::map( blah, daw::algorithm::next( blah, 6 ), blah, []( auto val ) { return val % 2 == 0 ? 0 : 1; } );
+	daw::algorithm::map( blah, daw::next( blah, 6 ), blah, []( auto val ) { return val % 2 == 0 ? 0 : 1; } );
 }
 
 constexpr int map_test_002( ) {
@@ -93,7 +223,7 @@ constexpr int map_test_002( ) {
 		}
 	} unary_op{};
 
-	daw::algorithm::map( blah, daw::algorithm::next( blah, 6 ), blah, unary_op );
+	daw::algorithm::map( blah, daw::next( blah, 6 ), blah, unary_op );
 	int result = 0;
 	for( size_t n = 0; n < 6; ++n ) {
 		result += blah[n];
@@ -108,8 +238,8 @@ BOOST_AUTO_TEST_CASE( daw_map_test_002 ) {
 
 BOOST_AUTO_TEST_CASE( daw_reduce_test_001 ) {
 	int blah[6] = {1, 0, 1, 0, 1, 0};
-	auto const tst = daw::algorithm::reduce( blah, daw::algorithm::next( blah, 6 ),
-	                                         0, []( auto lhs, auto rhs ) noexcept { return lhs + rhs; } );
+	auto const tst =
+	  daw::algorithm::reduce( blah, daw::next( blah, 6 ), 0, []( auto lhs, auto rhs ) noexcept { return lhs + rhs; } );
 	BOOST_REQUIRE_EQUAL( tst, 3 );
 }
 
@@ -421,8 +551,8 @@ BOOST_AUTO_TEST_CASE( daw_equal_test_008 ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_swapper_test_001 ) {
-	std::string a { "a" };
-	std::string b { "b" };
+	std::string a{"a"};
+	std::string b{"b"};
 	daw::algorithm::swapper( a, b );
 	BOOST_REQUIRE_EQUAL( a, "b" );
 	BOOST_REQUIRE_EQUAL( b, "a" );

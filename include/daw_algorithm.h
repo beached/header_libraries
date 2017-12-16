@@ -35,124 +35,82 @@
 #include "daw_traits.h"
 
 namespace daw {
-	template<typename T, typename U>
-	constexpr std::common_type_t<T, U> min( T const &lhs, U const &rhs ) noexcept {
-		if( lhs <= rhs ) {
-			return lhs;
-		}
-		return rhs;
+	// Iterator movement functions
+
+	/// @brief Advance Iterator within the bounds of container
+	/// @tparam Container Container type who's iterators are of type Iterator
+	/// @tparam Iterator Iterator pointing to members of container.
+	/// @param container container to set bounds on iterator
+	/// @param it iterator to move.  It is undefined behavior if iterator is outside the range [std::begin(container),
+	/// std::end(container)]
+	/// @param distance how far to move
+	template<typename Container, typename Iterator>
+	constexpr void safe_advance( Container &container, Iterator &it,
+	                             ptrdiff_t distance ) noexcept( noexcept( daw::advance( it, distance ) ) ) {
+
+		static_assert( is_iterator_v<Iterator>,
+		               "Iterator passed to advance does not fullfill the concept of an Iterator. "
+		               "http://en.cppreference.com/w/cpp/concept/Iterator" );
+
+		auto const ip_pos = daw::distance( std::begin( container ), it );
+		auto const c_size = daw::distance( std::cbegin( container ), std::cend( container ) );
+
+		daw::exception::DebugAssert( ip_pos >= 0 && ip_pos <= c_size, "Iterator is outside bounds of container" );
+
+		distance = impl::math::clamp( distance, -ip_pos, c_size - ip_pos );
+
+		daw::advance( it, distance );
 	}
 
-	template<typename T, typename U>
-	constexpr std::common_type_t<T, U> max( T const &lhs, U const &rhs ) noexcept {
-		if( lhs >= rhs ) {
-			return lhs;
-		}
-		return rhs;
+	/// @brief Advance iterator n steps forward but do not go past last.  Undefined if it > last
+	/// @tparam Iterator Type of Iterator to advance
+	/// @param it iterator to advance
+	/// @param last boundary for it
+	/// @param n number of steps to advance forwards
+	/// @return The resulting iterator advanced n steps
+	template<typename Iterator>
+	constexpr Iterator safe_next( Iterator it, Iterator const last, size_t n = 1 ) noexcept {
+		static_assert( is_iterator_v<Iterator>,
+		               "Iterator passed to advance does not fullfill the concept of an Iterator. "
+		               "http://en.cppreference.com/w/cpp/concept/Iterator" );
+
+		n = daw::impl::math::min( n, static_cast<size_t>(std::distance( it, last ) ) );
+		return daw::next( it, static_cast<ptrdiff_t>( n ) );
+	}
+
+	/// @brief Advance iterator n steps backward but do not go past first.  Undefined if it < first
+	/// @tparam Iterator Type of Iterator to advance
+	/// @param it iterator to advance
+	/// @param first boundary for it
+	/// @param n number of steps to advance backwards
+	/// @return The resulting iterator advanced n steps
+	template<typename Iterator>
+	constexpr Iterator safe_prev( Iterator it, Iterator first, size_t n = 1 ) noexcept {
+		static_assert( is_iterator_v<Iterator>,
+		               "Iterator passed to advance does not fullfill the concept of an Iterator. "
+		               "http://en.cppreference.com/w/cpp/concept/Iterator" );
+
+		n = daw::impl::math::min( n, static_cast<size_t>(std::distance( first, it ) ) );
+		return daw::prev( it, static_cast<ptrdiff_t>( n ) );
+	}
+
+	/// @brief Take iterator return from begin of a container and return the result of running next with n steps
+	/// @tparam Container Container type iterator will come from
+	/// @param container container to get iterator from
+	/// @param n how many steps to move forward from begin
+	/// @return an iterator referencing a value in container n steps from begin
+	template<typename Container>
+	constexpr auto begin_at( Container &container, size_t n ) noexcept(
+	  noexcept( std::begin( container ) &&
+	            noexcept( safe_advance( container, std::begin( container ), static_cast<ptrdiff_t>( n ) ) ) ) )
+	  -> decltype( std::begin( container ) ) {
+
+		auto result = std::begin( container );
+		safe_advance( container, result, static_cast<ptrdiff_t>( n ) );
+		return result;
 	}
 
 	namespace algorithm {
-		namespace impl {
-			template<typename Iterator1, typename Iterator2>
-			constexpr auto dist( Iterator1 first, Iterator2 last, std::random_access_iterator_tag ) noexcept {
-				return last - first;
-			}
-
-			template<typename Iterator1, typename Iterator2, typename Tag>
-			auto dist( Iterator1 first, Iterator2 last, Tag ) noexcept {
-				return std::distance( first, last );
-			}
-
-			template<typename Iterator, typename Distance>
-			constexpr void advance( Iterator &first, Distance n, std::input_iterator_tag ) noexcept( noexcept( ++first ) ) {
-				while( n-- ) {
-					++first;
-				}
-			}
-
-			template<typename Iterator, typename Distance>
-			constexpr void advance( Iterator &first, Distance n,
-			                        std::bidirectional_iterator_tag ) noexcept( noexcept( ++first ) && noexcept( --first ) ) {
-				if( n >= 0 ) {
-					while( n-- ) {
-						++first;
-					}
-				} else {
-					while( ++n ) {
-						--first;
-					}
-				}
-			}
-
-			template<typename Iterator, typename Distance>
-			constexpr void advance( Iterator &first, Distance n,
-			                        std::random_access_iterator_tag ) noexcept( noexcept( first +=
-			                                                                              static_cast<ptrdiff_t>( n ) ) ) {
-				first += static_cast<ptrdiff_t>( n );
-			}
-		} // namespace impl
-
-		template<typename Iterator, typename Distance>
-		constexpr void advance( Iterator &it, Distance n ) noexcept {
-			impl::advance( it, static_cast<typename std::iterator_traits<Iterator>::difference_type>( n ),
-			               typename std::iterator_traits<Iterator>::iterator_category{} );
-		}
-
-		template<typename Container, typename Iterator>
-		constexpr void safe_advance( Container &container, Iterator &it,
-		                             typename std::iterator_traits<Iterator>::difference_type distance ) noexcept {
-			if( 0 == distance ) {
-				return;
-			}
-			using it_cat = typename std::iterator_traits<decltype( std::cbegin( container ) )>::iterator_category;
-			auto const it_pos = impl::dist( std::cbegin( container ), it, it_cat{} );
-
-			if( distance > 0 ) {
-				auto const size_of_container = impl::dist( std::cbegin( container ), std::cend( container ), it_cat{} );
-				if( size_of_container <= static_cast<ptrdiff_t>( distance + it_pos ) ) {
-					distance = size_of_container - it_pos;
-				}
-			} else if( distance + it_pos > 0 ) {
-				distance = it_pos;
-			}
-			impl::advance( it, distance, it_cat{} );
-		}
-
-		template<typename RandomIterator1, typename RandomIterator2>
-		constexpr auto distance( RandomIterator1 first, RandomIterator2 last ) noexcept {
-			return last - first;
-		}
-
-		template<typename Iterator>
-		constexpr Iterator next( Iterator it, typename std::iterator_traits<Iterator>::difference_type n = 1 ) noexcept {
-			impl::advance( it, n, typename std::iterator_traits<Iterator>::iterator_category{} );
-			return it;
-		}
-
-		template<typename Iterator>
-		constexpr Iterator prev( Iterator it, typename std::iterator_traits<Iterator>::difference_type n = 1 ) noexcept {
-			impl::advance( it, -n, typename std::iterator_traits<Iterator>::iterator_category{} );
-			return it;
-		}
-
-		template<typename Iterator>
-		constexpr Iterator safe_next( Iterator it, Iterator last,
-		                              typename std::iterator_traits<Iterator>::difference_type n = 1 ) noexcept {
-			return daw::algorithm::next( it, daw::min( n, std::distance( it, last ) ) );
-		}
-
-		template<typename Iterator>
-		constexpr Iterator safe_prev( Iterator it, Iterator first, size_t n = 1 ) noexcept {
-			return daw::algorithm::prev( it, daw::min( n, std::distance( first, it ) ) );
-		}
-
-		template<typename Container>
-		constexpr auto begin_at( Container &container, size_t distance ) -> decltype( std::begin( container ) ) {
-			auto result = std::begin( container );
-			safe_advance( container, result, static_cast<ptrdiff_t>( distance ) );
-			return result;
-		}
-
 		template<typename Lhs>
 		constexpr auto const &min_item( Lhs const &lhs ) noexcept {
 			return lhs;
@@ -184,7 +142,7 @@ namespace daw {
 
 				auto const mid = std::distance( a, b ) / 2;
 				auto result = a;
-				std::advance( result, mid );
+				daw::advance( result, mid );
 				return result;
 			};
 			daw::exception::dbg_throw_on_false( first < last, ": First position must be less than second" );
@@ -195,7 +153,7 @@ namespace daw {
 				auto mid = midpoint( it_first, it_last );
 				if( less_than( mid, value ) ) {
 					it_first = mid;
-					std::advance( it_first, 1 );
+					daw::advance( it_first, 1 );
 				} else if( less_than( value, mid ) ) {
 					it_last = mid;
 				} else { // equal
@@ -1083,19 +1041,20 @@ namespace daw {
 
 		/// @brief Returns an iterator pointing to the first element in the range [first, last) that is greater than value,
 		/// or last if no such element is found.
-		/// @tparam RandomIterator Iteratot type pointing to range
+		/// @tparam ForwardIterator Iteratot type pointing to range
 		/// @tparam T a value comparable to the dereferenced RandomIterator
 		/// @param first first item in range
 		/// @param last end of range
 		/// @param value value to compare to
 		/// @return position of first element greater than value or last
-		template<typename RandomIterator, typename T>
-		constexpr RandomIterator upper_bound( RandomIterator first, RandomIterator last, T const &value ) noexcept {
-			auto count = distance( first, last );
+		template<typename ForwardIterator, typename T>
+		constexpr ForwardIterator upper_bound( ForwardIterator first, ForwardIterator last, T const &value ) noexcept(
+		  noexcept( daw::advance( first, 1 ) ) && noexcept( ++first ) && noexcept( daw::distance( first, last ) ) ) {
+			auto count = daw::distance( first, last );
 			while( count > 0 ) {
 				auto it = first;
 				auto step = count / 2;
-				impl::advance( it, step, std::random_access_iterator_tag{} );
+				daw::advance( it, step );
 				if( !( value < *it ) ) {
 					first = ++it;
 					count -= step + 1;
@@ -1475,11 +1434,5 @@ namespace daw {
 			return daw::algorithm::minmax_element( first, last, std::less<>{} );
 		}
 	} // namespace algorithm
-
-	template<typename Iterator, typename Distance>
-	constexpr void advance( Iterator &it, Distance n ) noexcept {
-		algorithm::impl::advance( it, static_cast<typename std::iterator_traits<Iterator>::difference_type>( n ),
-		               typename std::iterator_traits<Iterator>::iterator_category{} );
-	}
 
 } // namespace daw
