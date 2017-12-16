@@ -230,7 +230,7 @@ namespace daw {
 			return nullptr == ptr;
 		}
 
-		/// Reverser eg for( auto item: reverse( container ) ) { }
+		/// @brief Reverser eg for( auto item: reverse( container ) ) { }
 		namespace details {
 			template<typename Fwd>
 			struct Reverser_generic {
@@ -448,8 +448,8 @@ namespace daw {
 			return result;
 		}
 
-		/// Returns true if any function returns true for the value
 		///
+		/// @brief Returns true if any function returns true for the value
 		/// @param value Argument to UnaryPredicate
 		/// @param func A UnaryPredicate that returns true/false
 		/// @return The result of func
@@ -460,8 +460,8 @@ namespace daw {
 			return func( value );
 		}
 
-		/// Returns true if any function returns true for the value
 		///
+		/// @brief Returns true if any function returns true for the value
 		/// @param value Argument to UnaryPredicate(s)
 		/// @param func A UnaryPredicate that returns true/false
 		/// @param funcs UnaryPredicates that return true/false
@@ -475,8 +475,8 @@ namespace daw {
 			return func( value ) || satisfies_one( value, funcs... );
 		}
 
-		/// Returns true if any function returns true for any value in range
 		///
+		/// @brief Returns true if any function returns true for any value in range
 		/// @param first iterator pointing to the beginning of the range inclusively
 		/// @param last iterator pointing to the end of the range exclusively
 		/// @param func A UnaryPredicate that returns true/false
@@ -502,8 +502,8 @@ namespace daw {
 			return false;
 		}
 
-		/// Returns true if function returns true for the value
 		///
+		/// @brief Returns true if function returns true for the value
 		/// @param value Argument to UnaryPredicate
 		/// @param func A UnaryPredicate that returns true/false
 		/// @return The result of func
@@ -514,8 +514,8 @@ namespace daw {
 			return func( value );
 		}
 
-		/// Returns true if all function(s) returns true for the value
 		///
+		/// @brief Returns true if all function(s) returns true for the value
 		/// @param value Argument to UnaryPredicate(s)
 		/// @param func A UnaryPredicate that returns true/false
 		/// @param funcs UnaryPredicates that return true/false
@@ -529,8 +529,8 @@ namespace daw {
 			return func( value ) && satisfies_all( value, funcs... );
 		}
 
-		/// Returns true if all function(s) returns true for all values in range
 		///
+		/// @brief Returns true if all function(s) returns true for all values in range
 		/// @param first iterator pointing to the beginning of the range inclusively
 		/// @param last iterator pointing to the end of the range exclusively
 		/// @param func A UnaryPredicate that returns true/false
@@ -648,8 +648,8 @@ namespace daw {
 			}; // less_than_or_equal_to
 		}    // namespace impl
 
-		/// Returns a callable that returns true if the value passed is in the range [Lower, Upper]
 		///
+		/// @brief Returns a callable that returns true if the value passed is in the range [Lower, Upper]
 		/// @param lower The lowest value allowed
 		/// @param upper The largest value allowed
 		/// @returns true if value passed to operator( ) is within the range [lower, upper]
@@ -658,8 +658,8 @@ namespace daw {
 			return impl::in_range<Lower, Upper>{std::forward<Lower>( lower ), std::forward<Upper>( upper )};
 		}
 
-		/// Returns a callable that returns true if value passed is equal to value construct with
 		///
+		/// @brief Returns a callable that returns true if value passed is equal to value construct with
 		/// @param value Value to test with
 		/// @returns True if value passed to operator( ) is equal to value constructed with
 		template<typename Value>
@@ -667,8 +667,8 @@ namespace daw {
 			return impl::equal_to<Value>{std::forward<Value>( value )};
 		}
 
-		/// Returns a callable that returns true if value passed is greater than the value constructed with
 		///
+		/// @brief Returns a callable that returns true if value passed is greater than the value constructed with
 		/// @param value Value to test with
 		/// @returns True if value passed to operator( ) is greater than to value constructed with
 		template<typename Value>
@@ -676,8 +676,8 @@ namespace daw {
 			return impl::greater_than<Value>{std::forward<Value>( value )};
 		}
 
-		/// Returns a callable that returns true if value passed is greater than or equal to the value constructed with
 		///
+		/// @brief Returns a callable that returns true if value passed is greater than or equal to the value constructed with
 		/// @param value Value to test with
 		/// @returns True if value passed to operator( ) is greater than or equal to to value constructed with
 		template<typename Value>
@@ -685,8 +685,8 @@ namespace daw {
 			return impl::greater_than_or_equal_to<Value>{std::forward<Value>( value )};
 		}
 
-		/// Returns a callable that returns true if value passed is less than the value constructed with
 		///
+		/// @brief Returns a callable that returns true if value passed is less than the value constructed with
 		/// @param value Value to test with
 		/// @returns True if value passed to operator( ) is less than to value constructed with
 		template<typename Value>
@@ -694,8 +694,8 @@ namespace daw {
 			return impl::less_than<Value>{std::forward<Value>( value )};
 		}
 
-		/// Returns a callable that returns true if value passed is less than or equal to the value constructed with
 		///
+		/// @brief Returns a callable that returns true if value passed is less than or equal to the value constructed with
 		/// @param value Value to test with
 		/// @returns True if value passed to operator( ) is less than or equal to to value constructed with
 		template<typename Value>
@@ -703,8 +703,8 @@ namespace daw {
 			return impl::less_than_or_equal_to<Value>{std::forward<Value>( value )};
 		}
 
-		/// Returns true if the first range [first1, last1) is lexigraphically less than the second range [first2, last2)
 		///
+		/// @brief Returns true if the first range [first1, last1) is lexigraphically less than the second range [first2, last2)
 		/// @tparam InputIterator1 Iterator type for start of range 1
 		/// @tparam LastType1 Type for value at end of range 1
 		/// @tparam InputIterator2 Iterator type for start of range 2
@@ -739,8 +739,8 @@ namespace daw {
 			return ( first1 == last1 ) && ( first2 != last2 );
 		}
 
-		/// Returns true if the first range [first1, last1) is lexigraphically less than the second range [first2, last2)
 		///
+		/// @brief Returns true if the first range [first1, last1) is lexigraphically less than the second range [first2, last2)
 		/// @tparam InputIterator1 Iterator type for start of range 1
 		/// @tparam LastType1 Type for value at end of range 1
 		/// @tparam InputIterator2 Iterator type for start of range 2
@@ -768,9 +768,9 @@ namespace daw {
 			return ( first1 == last1 ) && ( first2 != last2 );
 		}
 
-		/// Apply the TransformFunction on the value referenced by range [first, last) when the predicate returns true for
-		/// that value
 		///
+		/// @brief Apply the TransformFunction on the value referenced by range [first, last) when the predicate returns true for
+		/// that value
 		/// @tparam InputIterator Type of Iterator for start of range
 		/// @tparam LastType Type for representing end of range
 		/// @tparam OutputIterator Iterator for output range
@@ -809,8 +809,8 @@ namespace daw {
 			return first_out;
 		}
 
-		/// Run the transform function unary_op on n elements of range started by first
 		///
+		/// @brief Run the transform function unary_op on n elements of range started by first
 		/// @tparam InputIterator input range iterator type
 		/// @tparam OutputIterator output range iterator type
 		/// @tparam UnaryOperation callable that takes the dereferenced value from input range and is assignable to the
@@ -839,8 +839,8 @@ namespace daw {
 			return first_out;
 		}
 
-		/// Transform range [first, last) and output to range [first_out, first_out + std::distance( first, last ))
 		///
+		/// @brief Transform range [first, last) and output to range [first_out, first_out + std::distance( first, last ))
 		/// @tparam InputIterator input range iterator type
 		/// @tparam LastType type of Iterator marking end of input range
 		/// @tparam OutputIterator output range iterator type
@@ -870,8 +870,8 @@ namespace daw {
 			return first_out;
 		}
 
-		/// Transform input range [first, last) to output range [first_out, first_out + std::distance(first, last)).
 		///
+		/// @brief Transform input range [first, last) to output range [first_out, first_out + std::distance(first, last)).
 		/// @tparam InputIterator type of Iterator of input range
 		/// @tparam LastType type of Iterator marking end of input range
 		/// @tparam OutputIterator type of iterator for output range
@@ -894,8 +894,8 @@ namespace daw {
 			return first_out;
 		}
 
-		/// Copy input range [first, last) to output range [first_out, first_out + std::distance( first, last ))
 		///
+		/// @brief Copy input range [first, last) to output range [first_out, first_out + std::distance( first, last ))
 		/// @tparam InputIterator type of Iterator of input range
 		/// @tparam LastType type of Iterator marking end of input range
 		/// @tparam OutputIterator type of iterator for output range
@@ -914,8 +914,8 @@ namespace daw {
 			return first_out;
 		}
 
-		/// Copy input range [first, last) to output range [first_out, first_out + count)
 		///
+		/// @brief Copy input range [first, last) to output range [first_out, first_out + count)
 		/// @tparam InputIterator type of Iterator of input range
 		/// @tparam OutputIterator type of iterator for output range
 		/// @param first start of input range
@@ -933,7 +933,7 @@ namespace daw {
 			return first_out;
 		}
 
-		/// Move values from input range [first, last) to output range [first_out, std::distance( first, last))
+		/// @brief Move values from input range [first, last) to output range [first_out, std::distance( first, last))
 		///
 		/// @tparam InputIterator type of Iterator of input range
 		/// @tparam LastType type of Iterator marking end of input range
@@ -954,8 +954,8 @@ namespace daw {
 			return first_out;
 		}
 
-		/// Move values from input range [first, last) to output range [first_out, first_out + count)
 		///
+		/// @brief Move values from input range [first, last) to output range [first_out, first_out + count)
 		/// @tparam InputIterator type of Iterator of input range
 		/// @tparam OutputIterator type of iterator for output range
 		/// @param first start of input range
@@ -974,8 +974,8 @@ namespace daw {
 			return first_out;
 		}
 
-		/// Determine if two ranges [first1, last1) and [first2, first2 + std::distance( first1, last1 )) are equal
 		///
+		/// @brief Determine if two ranges [first1, last1) and [first2, first2 + std::distance( first1, last1 )) are equal
 		/// @tparam InputIterator1 type of Iterator of first input range
 		/// @tparam LastType type of Iterator marking end of first input range
 		/// @tparam InputIterator2 type of Iterator of second input range
@@ -994,8 +994,8 @@ namespace daw {
 			return !( first1 != last1 );
 		}
 
-		/// Determine if two ranges [first1, last1) and [first2, last2)
 		///
+		/// @brief Determine if two ranges [first1, last1) and [first2, last2)
 		/// @tparam InputIterator1 type of Iterator of first input range
 		/// @tparam LastType1 type of Iterator marking end of first input range
 		/// @tparam InputIterator2 type of Iterator of second input range
@@ -1017,8 +1017,8 @@ namespace daw {
 			return !( first1 != last1 ) && !( first2 != last2 );
 		}
 
-		/// Determine if two ranges [first1, last1) and [first2, last2) using pred
 		///
+		/// @brief Determine if two ranges [first1, last1) and [first2, last2) using pred
 		/// @tparam InputIterator1 type of Iterator of first input range
 		/// @tparam LastType1 type of Iterator marking end of first input range
 		/// @tparam InputIterator2 type of Iterator of second input range
@@ -1041,8 +1041,8 @@ namespace daw {
 			return !( first1 != last1 ) && !( first2 != last2 );
 		}
 
-		/// constexpr version of std::swap
 		///
+		/// @brief constexpr version of std::swap
 		/// @tparam T first type to swap
 		/// @tparam U second type to swap
 		/// @param t first value to swap
@@ -1057,8 +1057,8 @@ namespace daw {
 			u = std::move( tmp );
 		}
 
-		/// Performs a left rotation on a range of elements.
 		///
+		/// @brief Performs a left rotation on a range of elements.
 		/// @tparam ForwardIterator type of Iterator for items in range
 		/// @tparam LastType type that is equal to ForwardIterator when end of range reached
 		/// @param first first item in range
@@ -1081,8 +1081,8 @@ namespace daw {
 			}
 		}
 
-		/// Returns an iterator pointing to the first element in the range [first, last) that is greater than value, or last if no such element is found.
 		///
+		/// @brief Returns an iterator pointing to the first element in the range [first, last) that is greater than value, or last if no such element is found.
 		/// @tparam RandomIterator Iteratot type pointing to range
 		/// @tparam T a value comparable to the dereferenced RandomIterator
 		/// @param first first item in range
@@ -1106,18 +1106,22 @@ namespace daw {
 			return first;
 		}
 
-		template<typename RandomIterator1, typename RandomIterator2, typename RandomIterator3,
-		         typename Compare = std::less<>>
-		constexpr void nth_element( RandomIterator1 first, RandomIterator2 nth, RandomIterator3 const last,
-		                            Compare cmp = Compare{} ) noexcept {
-			for( auto i = first; i != nth; ++i ) {
-				auto min_idx = i;
-				for( auto j = daw::algorithm::next( i ); j != last; ++j ) {
+		template<typename RandomIterator, typename Compare = std::less<>>
+		constexpr void nth_element( RandomIterator first, RandomIterator nth, RandomIterator const last,
+		                            Compare cmp = Compare{} ) noexcept( noexcept( cmp( *first, *nth ) ) &&
+		                                                                noexcept( swapper( *first, *nth ) ) ) {
+
+			while( first != nth ) {
+				auto min_idx = first;
+				auto j = next( first );
+				while( j != last ) {
 					if( cmp( *j, *min_idx ) ) {
 						min_idx = j;
-						daw::algorithm::swapper( *i, *min_idx );
+						swapper( *first, *min_idx );
 					}
+					++j;
 				}
+				++first;
 			}
 		}
 
