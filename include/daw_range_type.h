@@ -35,12 +35,12 @@ namespace daw {
 	namespace range {
 		template<typename Iterator>
 		struct Range {
-			using value_type = typename ::std::iterator_traits<Iterator>::value_type;
-			using reference = typename ::std::iterator_traits<Iterator>::reference;
+			using value_type = typename std::iterator_traits<Iterator>::value_type;
+			using reference = typename std::iterator_traits<Iterator>::reference;
 			using const_reference = const reference;
 			using iterator = Iterator;
 			using const_iterator = const iterator;
-			using difference_type = typename ::std::iterator_traits<Iterator>::difference_type;
+			using difference_type = typename std::iterator_traits<Iterator>::difference_type;
 
 		private:
 			iterator m_begin;
@@ -92,7 +92,7 @@ namespace daw {
 			}
 
 			void advance( difference_type n ) {
-				::std::advance( m_begin, n );
+				daw::advance( m_begin, n );
 			}
 
 			void set_begin( iterator i ) {
@@ -138,13 +138,13 @@ namespace daw {
 
 			reference back( ) {
 				auto it = m_begin;
-				::std::advance( it, size( ) - 1 );
+				daw::advance( it, size( ) - 1 );
 				return *it;
 			}
 
 			const_reference back( ) const {
 				auto it = m_begin;
-				::std::advance( it, size( ) - 1 );
+				daw::advance( it, size( ) - 1 );
 				return *it;
 			}
 
@@ -157,7 +157,7 @@ namespace daw {
 			}
 
 			size_t size( ) const {
-				return static_cast<size_t>(::std::distance( m_begin, m_end ) );
+				return static_cast<size_t>(daw::distance( m_begin, m_end ) );
 			}
 
 			reference operator[]( size_t pos ) {
@@ -169,11 +169,11 @@ namespace daw {
 			}
 
 			bool operator==( Range const &other ) const {
-				return ::std::equal( m_begin, m_end, other.m_begin, other.m_end );
+				return std::equal( m_begin, m_end, other.m_begin, other.m_end );
 			}
 
 			bool operator!=( Range const &other ) const {
-				return !::std::equal( m_begin, m_end, other.m_begin, other.m_end );
+				return !std::equal( m_begin, m_end, other.m_begin, other.m_end );
 			}
 
 			auto sort( ) {
@@ -205,12 +205,12 @@ namespace daw {
 
 			template<typename Value>
 			iterator find( Value const &value ) const {
-				return ::std::find( m_begin, m_end, value );
+				return std::find( m_begin, m_end, value );
 			}
 
 			template<typename UnaryPredicate>
 			iterator find_if( UnaryPredicate predicate ) const {
-				return ::std::find_if( m_begin, m_end, predicate );
+				return std::find_if( m_begin, m_end, predicate );
 			}
 
 			template<typename Value>
@@ -245,32 +245,32 @@ namespace daw {
 
 			template<typename T>
 			T accumulate( T &&init ) {
-				return ::std::accumulate( m_begin, m_end, ::std::forward<T>( init ) );
+				return std::accumulate( m_begin, m_end, std::forward<T>( init ) );
 			}
 
 			template<typename T, typename BinaryOperator>
 			T accumulate( T &&init, BinaryOperator oper ) {
-				return ::std::accumulate( m_begin, m_end, ::std::forward<T>( init ), oper );
+				return std::accumulate( m_begin, m_end, std::forward<T>( init ), oper );
 			}
 
 			template<typename UnaryOperator>
 			auto map( UnaryOperator oper ) { // TODO verify result shouldn't be ref range
 				using v_t = decltype( oper( *begin( ) ) );
-				using result_t = ::std::vector<v_t>;
+				using result_t = std::vector<v_t>;
 				result_t result;
-				::std::transform( begin( ), end( ), ::std::back_inserter( result ), oper );
+				std::transform( begin( ), end( ), std::back_inserter( result ), oper );
 				return result;
 			}
 
 			template<typename Value>
 			bool contains( Value const &value ) const {
-				return ::std::find( m_begin, m_end, value ) != m_end;
+				return std::find( m_begin, m_end, value ) != m_end;
 			}
 
 			template<typename Value, typename UnaryPredicate>
 			bool contains( Value const &value, UnaryPredicate predicate ) {
 				auto predicate2 = [&value, &predicate]( Value const &val ) { return predicate( value, val ); };
-				return ::std::find_if( m_begin, m_end, predicate2 ) != m_end;
+				return std::find_if( m_begin, m_end, predicate2 ) != m_end;
 			}
 
 			auto shuffle( ) {
@@ -283,32 +283,32 @@ namespace daw {
 			}
 
 			auto slice( size_t first_pos ) {
-				using std::next;
+				using daw::next;
 				return Range{next( m_begin, first_pos ), next( m_begin, size( ) )};
 			}
 
 			auto slice( size_t first_pos ) const {
-				using std::next;
+				using daw::next;
 				return Range{next( m_begin, first_pos ), next( m_begin, size( ) )};
 			}
 
 			auto slice( size_t first_pos, size_t last_pos ) {
-				using std::next;
+				using daw::next;
 				return Range{next( m_begin, first_pos ), next( m_begin, last_pos )};
 			}
 
 			auto slice( size_t first_pos, size_t last_pos ) const {
-				using std::next;
+				using daw::next;
 				return Range{next( m_begin, first_pos ), next( m_begin, last_pos )};
 			}
 
 			auto shrink( size_t new_size ) {
-				using std::next;
+				using daw::next;
 				return Range( m_begin, next( m_begin, new_size + 1 ) );
 			}
 
 			auto shrink( size_t new_size ) const {
-				using std::next;
+				using daw::next;
 				return Range( m_begin, next( m_begin, new_size + 1 ) );
 			}
 
@@ -332,23 +332,23 @@ namespace daw {
 		}
 
 		template<typename Container,
-		         typename ::std::enable_if<daw::traits::is_container_not_string_v<Container>, long>::type = 0>
+		         typename std::enable_if<daw::traits::is_container_not_string_v<Container>, long>::type = 0>
 		auto make_range( Container &container ) {
-			using Iterator = std::decay_t<decltype(::std::begin( container ) )>;
-			return Range<Iterator>(::std::begin( container ), ::std::end( container ) );
+			using Iterator = std::decay_t<decltype(std::begin( container ) )>;
+			return Range<Iterator>(std::begin( container ), std::end( container ) );
 		}
 
 		template<typename Container,
-		         typename ::std::enable_if<daw::traits::is_container_not_string_v<Container>, long>::type = 0>
+		         typename std::enable_if<daw::traits::is_container_not_string_v<Container>, long>::type = 0>
 		auto make_crange( Container const &container ) {
-			using Iterator = std::decay_t<decltype(::std::begin( container ) )>;
-			return Range<Iterator>(::std::begin( container ), ::std::end( container ) );
+			using Iterator = std::decay_t<decltype(std::begin( container ) )>;
+			return Range<Iterator>(std::begin( container ), std::end( container ) );
 		}
 
 		template<typename Iterator>
-		void safe_advance( Range<Iterator> &range, typename ::std::iterator_traits<Iterator>::difference_type count ) {
+		void safe_advance( Range<Iterator> &range, typename std::iterator_traits<Iterator>::difference_type count ) {
 			assert( 0 <= count );
-			if(::std::distance( range.begin( ), range.end( ) ) >= count ) {
+			if(daw::distance( range.begin( ), range.end( ) ) >= count ) {
 				range.advance( count );
 			} else {
 				range.set_begin( range.end( ) );
@@ -356,8 +356,8 @@ namespace daw {
 		}
 
 		template<typename Iterator>
-		bool contains( Range<Iterator> const &range, typename ::std::iterator_traits<Iterator>::value_type const &key ) {
-			return ::std::find( range.begin( ), range.end( ), key ) != range.end( );
+		bool contains( Range<Iterator> const &range, typename std::iterator_traits<Iterator>::value_type const &key ) {
+			return std::find( range.begin( ), range.end( ), key ) != range.end( );
 		}
 
 		template<typename Iterator>

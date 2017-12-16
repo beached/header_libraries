@@ -39,7 +39,7 @@ namespace daw {
 
 		template<typename Container, std::enable_if_t<!is_detected_v<has_size_member, Container>, std::nullptr_t> = nullptr>
 		constexpr size_t container_size( Container &c ) {
-			return static_cast<size_t>( daw::algorithm::distance( std::cbegin( c ), std::cend( c ) ) );
+			return static_cast<size_t>( daw::distance( std::cbegin( c ), std::cend( c ) ) );
 		}
 	} // namespace impl
 
@@ -93,11 +93,11 @@ namespace daw {
 
 		constexpr circular_iterator( Container &container, iterator i ) noexcept
 		  : m_container{&container}
-		  , m_position{std::distance( std::begin( container ), std::move( i ) )} {}
+		  , m_position{daw::distance( std::begin( container ), std::move( i ) )} {}
 
 		constexpr circular_iterator( Container *container, iterator i ) noexcept
 		  : m_container{container}
-		  , m_position{std::distance( std::begin( *container ), std::move( i ) )} {}
+		  , m_position{daw::distance( std::begin( *container ), std::move( i ) )} {}
 
 		constexpr circular_iterator( circular_iterator const &other ) noexcept
 		  : m_container{other.m_container}

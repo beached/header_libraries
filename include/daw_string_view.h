@@ -35,6 +35,7 @@
 #include "daw_fnv1a_hash.h"
 #include "daw_generic_hash.h"
 #include "daw_iterator.h"
+#include "daw_math.h"
 #include "daw_reverse_iterator.h"
 #include "daw_string_impl.h"
 #include "daw_traits.h"

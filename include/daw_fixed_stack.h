@@ -23,6 +23,7 @@
 #pragma once
 
 #include "daw_algorithm.h"
+#include "daw_math.h"
 #include "daw_static_array.h"
 
 namespace daw {

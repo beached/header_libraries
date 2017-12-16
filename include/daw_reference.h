@@ -100,10 +100,9 @@ namespace daw {
 		using values_type = ::std::vector<::daw::Reference<value_type>>;
 
 		values_type result{};
-		daw::algorithm::map( first, last, std::back_inserter( result ), []( value_type const &val ) {
-			auto v = ::daw::ref<value_type>( val );
-			return v;
-		} );
+		while( first != last ) {
+			result.push_back( daw::ref<value_type>( *first ) );
+		}
 		return result;
 	}
 

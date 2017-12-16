@@ -27,6 +27,7 @@
 #include <numeric>
 
 #include "daw_algorithm.h"
+#include "daw_math.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -361,7 +362,7 @@ namespace daw {
 			static_assert( daw::is_callable_v<Function, value_t, size_t>,
 			               "Supplied function does not satisfy requirements of taking arguments of type (value_t, size_t)" );
 
-			auto it = daw::algorithm::begin_at( container, first_inclusive );
+			auto it = daw::begin_at( container, first_inclusive );
 			for( size_t row = first_inclusive; row < last_exclusive; ++row ) {
 				func( *it++, row );
 			}

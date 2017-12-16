@@ -60,9 +60,7 @@ namespace daw {
 		template<typename... Ts, std::size_t... Is>
 		static constexpr void advance( std::tuple<Ts...> &tpl, std::index_sequence<Is...>, intmax_t n ) {
 			using expander = int[];
-			expander{0, ( static_cast<void>(
-			                ::daw::algorithm::impl::advance( std::get<Is>( tpl ), n, std::random_access_iterator_tag{} ) ),
-			              0 )...};
+			expander{0, ( static_cast<void>( daw::advance( std::get<Is>( tpl ), n ), 0 ) )...};
 		}
 
 		template<typename... Ts>

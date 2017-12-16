@@ -99,15 +99,14 @@ namespace daw {
 	struct split_it;
 
 	template<typename Iterator, typename Splitter>
-	struct split_it<
-	  Iterator, Splitter,
-	  std::enable_if_t<!is_same_v<std::decay_t<typename std::iterator_traits<Iterator>::value_type>, char>>> {
+	struct split_it<Iterator, Splitter,
+	                std::enable_if_t<!is_same_v<std::decay_t<decltype( *std::declval<Iterator>( ) )>, char>>> {
 		using CharT = typename std::iterator_traits<Iterator>::value_type;
 		static_assert( daw::is_unary_predicate_v<Splitter, CharT>,
 		               "Splitter does not fullfill the roll of a Unary Predicate that takes a CharT as it's argument" );
 		using iterator_category = std::bidirectional_iterator_tag;
 		using value_type = typename std::iterator_traits<Iterator>::value_type;
-		using difference_type = std::ptrdiff_t;
+		using difference_type = ptrdiff_t;
 		using pointer = CharT const *;
 		using reference = CharT const &;
 
@@ -122,7 +121,7 @@ namespace daw {
 			if( pos == m_data.cend( ) ) {
 				return 0;
 			}
-			return daw::algorithm::safe_next( pos, m_data.cend( ), impl::splitter_size{}( m_splitter ) );
+			return daw::safe_next( pos, m_data.cend( ), impl::splitter_size{}( m_splitter ) );
 		}
 
 		constexpr void move_prev( ) noexcept {
@@ -130,8 +129,7 @@ namespace daw {
 			if( m_position.cbegin( ) == m_data.cbegin( ) ) {
 				return;
 			}
-			m_position.end( ) =
-			  daw::algorithm::safe_prev( m_position.cbegin( ), m_data.cbegin( ), impl::splitter_size{}( m_splitter ) );
+			m_position.end( ) = daw::safe_prev( m_position.cbegin( ), m_data.cbegin( ), impl::splitter_size{}( m_splitter ) );
 			m_position.begin( ) = find_prev( );
 		}
 
@@ -139,13 +137,13 @@ namespace daw {
 			if( m_position.end( ) == m_data.cend( ) ) {
 				return m_position.end( );
 			}
-			return daw::algorithm::find_first_of( daw::algorithm::safe_next( m_position.end( ), m_data.cend( ) ),
-			                                      m_data.cend( ), impl::splitter_size{}( m_splitter ) );
+			return daw::algorithm::find_first_of( daw::safe_next( m_position.end( ), m_data.cend( ) ), m_data.cend( ),
+			                                      impl::splitter_size{}( m_splitter ) );
 		}
 
 		constexpr void move_next( ) noexcept {
 			if( m_position.end( ) != m_data.cend( ) ) {
-				daw::algorithm::advance( m_position.end( ), impl::splitter_size{}( m_splitter ) );
+				daw::advance( m_position.end( ), impl::splitter_size{}( m_splitter ) );
 			}
 			m_position.begin( ) = m_position.end( );
 			m_position.end( ) = find_next( );
@@ -223,14 +221,14 @@ namespace daw {
 			return tmp;
 		}
 
-		constexpr split_it &operator+=( std::ptrdiff_t n ) {
+		constexpr split_it &operator+=( ptrdiff_t n ) {
 			for( ; n > 0; --n ) {
 				move_next( );
 			}
 			return *this;
 		}
 
-		constexpr split_it &operator-=( std::ptrdiff_t n ) {
+		constexpr split_it &operator-=( ptrdiff_t n ) {
 			static_assert( impl::can_decrement<Iterator>, "Supplied Iterator is not Bidirectional" );
 			for( ; n > 0; --n ) {
 				move_prev( );
@@ -238,7 +236,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr split_it operator+( std::ptrdiff_t n ) noexcept {
+		constexpr split_it operator+( ptrdiff_t n ) noexcept {
 			split_it tmp{*this};
 			for( ; n > 0; --n ) {
 				move_next( );
@@ -246,7 +244,7 @@ namespace daw {
 			return tmp;
 		}
 
-		constexpr split_it operator-( std::ptrdiff_t n ) noexcept {
+		constexpr split_it operator-( ptrdiff_t n ) noexcept {
 			static_assert( impl::can_decrement<Iterator>, "Supplied Iterator is not Bidirectional" );
 			split_it tmp{*this};
 			for( ; n > 0; --n ) {
@@ -304,15 +302,14 @@ namespace daw {
 	};
 
 	template<typename Iterator, typename Splitter>
-	struct split_it<
-	  Iterator, Splitter,
-	  std::enable_if_t<is_same_v<std::decay_t<typename std::iterator_traits<Iterator>::value_type>, char>>> {
+	struct split_it<Iterator, Splitter,
+	                std::enable_if_t<is_same_v<std::decay_t<decltype( *std::declval<Iterator>( ) )>, char>>> {
 		using CharT = typename std::iterator_traits<Iterator>::value_type;
 		static_assert( daw::is_unary_predicate_v<Splitter, CharT>,
 		               "Splitter does not fullfill the roll of a Unary Predicate that takes a CharT as it's argument" );
 		using iterator_category = std::bidirectional_iterator_tag;
 		using value_type = typename std::iterator_traits<Iterator>::value_type;
-		using difference_type = std::ptrdiff_t;
+		using difference_type = ptrdiff_t;
 		using pointer = CharT const *;
 		using reference = CharT const &;
 
@@ -327,7 +324,7 @@ namespace daw {
 			if( pos == m_data.cend( ) ) {
 				return 0;
 			}
-			return daw::algorithm::safe_next( pos, m_data.cend( ), impl::splitter_size{}( m_splitter ) );
+			return daw::safe_next( pos, m_data.cend( ), impl::splitter_size{}( m_splitter ) );
 		}
 
 		constexpr void move_prev( ) noexcept {
@@ -335,8 +332,7 @@ namespace daw {
 			if( m_position.cbegin( ) == m_data.cbegin( ) ) {
 				return;
 			}
-			m_position.end( ) =
-			  daw::algorithm::safe_prev( m_position.cbegin( ), m_data.cbegin( ), impl::splitter_size{}( m_splitter ) );
+			m_position.end( ) = daw::safe_prev( m_position.cbegin( ), m_data.cbegin( ), impl::splitter_size{}( m_splitter ) );
 			m_position.begin( ) = find_prev( );
 		}
 
@@ -344,13 +340,13 @@ namespace daw {
 			if( m_position.end( ) == m_data.cend( ) ) {
 				return m_position.end( );
 			}
-			return daw::algorithm::find_first_of( daw::algorithm::safe_next( m_position.end( ), m_data.cend( ) ),
-			                                      m_data.cend( ), impl::splitter_size{}( m_splitter ) );
+			return daw::algorithm::find_first_of( daw::safe_next( m_position.end( ), m_data.cend( ) ), m_data.cend( ),
+			                                      impl::splitter_size{}( m_splitter ) );
 		}
 
 		constexpr void move_next( ) noexcept {
 			if( m_position.end( ) != m_data.cend( ) ) {
-				daw::algorithm::advance( m_position.end( ), impl::splitter_size{}( m_splitter ) );
+				daw::advance( m_position.end( ), impl::splitter_size{}( m_splitter ) );
 			}
 			m_position.begin( ) = m_position.end( );
 			m_position.end( ) = find_next( );
@@ -428,14 +424,14 @@ namespace daw {
 			return tmp;
 		}
 
-		constexpr split_it &operator+=( std::ptrdiff_t n ) {
+		constexpr split_it &operator+=( ptrdiff_t n ) {
 			for( ; n > 0; --n ) {
 				move_next( );
 			}
 			return *this;
 		}
 
-		constexpr split_it &operator-=( std::ptrdiff_t n ) {
+		constexpr split_it &operator-=( ptrdiff_t n ) {
 			static_assert( impl::can_decrement<Iterator>, "Supplied Iterator is not Bidirectional" );
 			for( ; n > 0; --n ) {
 				move_prev( );
@@ -443,7 +439,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr split_it operator+( std::ptrdiff_t n ) noexcept {
+		constexpr split_it operator+( ptrdiff_t n ) noexcept {
 			split_it tmp{*this};
 			for( ; n > 0; --n ) {
 				move_next( );
@@ -451,7 +447,7 @@ namespace daw {
 			return tmp;
 		}
 
-		constexpr split_it operator-( std::ptrdiff_t n ) noexcept {
+		constexpr split_it operator-( ptrdiff_t n ) noexcept {
 			static_assert( impl::can_decrement<Iterator>, "Supplied Iterator is not Bidirectional" );
 			split_it tmp{*this};
 			for( ; n > 0; --n ) {
@@ -523,14 +519,12 @@ namespace daw {
 		return result;
 	}
 
-	template<typename String,
-	         typename CharT = char_splitter_t<
-	           typename std::iterator_traits<decltype( std::begin( std::declval<String>( ) ) )>::value_type>,
-	         daw::required<!impl::is_splitter_v<CharT, String>> = nullptr>
+	template<typename String, typename CharT>
 	constexpr auto make_split_it( String const &sv, CharT divider ) noexcept {
 		using IterT = decltype( std::begin( sv ) );
-		auto result =
-		  split_it<IterT, char_splitter_t<CharT>>{std::begin( sv ), std::end( sv ), char_splitter_t<CharT>{divider}};
+		using SpltT = char_splitter_t<CharT>;
+
+		auto result = split_it<IterT, SpltT>( std::begin( sv ), std::end( sv ), SpltT{std::move( divider )} );
 		return result;
 	}
 } // namespace daw

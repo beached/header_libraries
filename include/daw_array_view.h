@@ -127,7 +127,7 @@ namespace daw {
 		}
 
 		constexpr const_reference back( ) const noexcept {
-			return *std::next( m_first, m_size - 1 );
+			return *daw::next( m_first, m_size - 1 );
 		}
 
 		constexpr const_pointer data( ) const noexcept {
@@ -192,7 +192,7 @@ namespace daw {
 				throw std::out_of_range{"Attempt to access array_view past end"};
 			}
 			size_type const rlen = daw::min( count, m_size - pos );
-			auto src = daw::algorithm::next( m_first, pos );
+			auto src = daw::next( m_first, pos );
 			daw::algorithm::copy_n( src, dest, rlen );
 			return rlen;
 		}

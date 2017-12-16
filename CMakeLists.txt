@@ -88,7 +88,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_semaphore
 	daw_size_literals
 	daw_span
-	daw_split_iterator
+	#daw_split_iterator
 	daw_spin_lock
 	daw_static_array
 	daw_static_optional
@@ -99,7 +99,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_tuple_helper
 	daw_unique_array
 	daw_utility
-	daw_variant
+	#daw_variant
 	#daw_variant2
 	daw_zipcontainer
 	daw_zipiter

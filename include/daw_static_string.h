@@ -174,7 +174,7 @@ namespace daw {
 
 		template<typename Iterator, std::enable_if_t<daw::is_iterator_v<Iterator>, std::nullptr_t> = nullptr>
 		constexpr basic_static_string &append( Iterator first, Iterator const last ) {
-			if( m_data.size( ) + static_cast<size_t>( daw::algorithm::distance( first, last ) ) > capacity( ) ) {
+			if( m_data.size( ) + static_cast<size_t>( daw::distance( first, last ) ) > capacity( ) ) {
 				throw std::out_of_range{"Attempt to append basic_static_string past end"};
 			}
 			daw::algorithm::copy( first, last, std::back_inserter( m_data ) );

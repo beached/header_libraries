@@ -116,21 +116,21 @@ BOOST_AUTO_TEST_CASE( daw_math_nearly_equal_test ) {
 	BOOST_REQUIRE( !daw::math::nearly_equal( i1, i2 ) );
 }
 
-BOOST_AUTO_TEST_CASE( daw_math_vmax_001 ) {
-	BOOST_REQUIRE_EQUAL( daw::math::vmax( 5, 3, 100, 3, 4, 0xFFFF, -100 ), 0xFFFF );
+BOOST_AUTO_TEST_CASE( daw_math_max_001 ) {
+	BOOST_REQUIRE_EQUAL( daw::max( 5, 3, 100, 3, 4, 0xFFFF, -100 ), 0xFFFF );
 }
 
-BOOST_AUTO_TEST_CASE( daw_math_vmax_002 ) {
-	BOOST_REQUIRE_EQUAL( daw::math::vmax( 5, 3, std::numeric_limits<float>::infinity( ), 100, 3, 4, 0xFFFF, -100 ),
+BOOST_AUTO_TEST_CASE( daw_math_max_002 ) {
+	BOOST_REQUIRE_EQUAL( daw::max( 5, 3, std::numeric_limits<float>::infinity( ), 100, 3, 4, 0xFFFF, -100 ),
 	                     std::numeric_limits<float>::infinity( ) );
 }
 
-BOOST_AUTO_TEST_CASE( daw_math_vmin_001 ) {
-	BOOST_REQUIRE_EQUAL( daw::math::vmin( 5, 3, 100, 3, 4, -100, 0xFFFF ), -100 );
+BOOST_AUTO_TEST_CASE( daw_math_min_001 ) {
+	BOOST_REQUIRE_EQUAL( daw::min( 5, 3, 100, 3, 4, -100, 0xFFFF ), -100 );
 }
 
-BOOST_AUTO_TEST_CASE( daw_math_vmin_002 ) {
-	BOOST_REQUIRE_EQUAL( daw::math::vmin( 5, 3, 100, std::numeric_limits<float>::infinity( ), 3, 4, -100, 0xFFFF ),
+BOOST_AUTO_TEST_CASE( daw_math_min_002 ) {
+	BOOST_REQUIRE_EQUAL( daw::min( 5, 3, 100, std::numeric_limits<float>::infinity( ), 3, 4, -100, 0xFFFF ),
 	                     -100 );
 }
 

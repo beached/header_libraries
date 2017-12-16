@@ -27,7 +27,7 @@
 #include <tuple>
 #include <utility>
 
-#include "daw_algorithm.h"
+#include "daw_math.h"
 
 namespace daw {
 	namespace tuple {
