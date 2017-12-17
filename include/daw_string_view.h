@@ -260,15 +260,52 @@ namespace daw {
 			return result;
 		}
 
+		/// @brief create a substr of the first count characters and remove them from beggining
+		/// @param count number of characters to remove and return
+		/// @return a substr of size count starting at begin
 		constexpr basic_string_view pop_front( size_t count ) noexcept {
 			basic_string_view result = substr( 0, count );
 			remove_prefix( count );
 			return result;
 		}
 
+		/// @brief searches for where, returns substring between front and where, then pops off the substring and the where string
+		/// @param where string to split on and remove from front
+		/// @return substring from beginning to where string
+		constexpr basic_string_view pop_front( basic_string_view where ) noexcept {
+			auto pos = find( where );
+			auto result = pop_front( pos );
+			remove_prefix( where.size( ) );
+			return result;
+		}
+
 		constexpr CharT pop_back( ) noexcept {
 			auto result = back( );
 			remove_suffix( );
+			return result;
+		}
+
+		/// @brief create a substr of the last count characters and remove them from end
+		/// @param count number of characters to remove and return
+		/// @return a substr of size count ending at end of string_view
+		constexpr basic_string_view pop_back( size_t count ) noexcept {
+			basic_string_view result = substr( size( ) - count, npos );
+			remove_suffix( count );
+			return result;
+		}
+
+		/// @brief searches for last where, returns substring between where and end, then pops off the substring and the where string
+		/// @param where string to split on and remove from back
+		/// @return substring from end of where string to end of string
+		constexpr basic_string_view pop_back( basic_string_view where ) noexcept {
+			auto pos = find_last_of( where );
+			if( pos == npos ) {
+				auto result{*this};
+				remove_prefix( npos );
+				return result;
+			}
+			auto result = substr( pos + where.size( ) );
+			remove_suffix( size( ) - pos );
 			return result;
 		}
 
@@ -660,16 +697,6 @@ namespace daw {
 
 		constexpr bool ends_with( const_pointer s ) const noexcept {
 			return ends_with( basic_string_view{s} );
-		}
-
-		/// @brief searches for where, returns substring between front and where, then pops off the substring and the where string
-		/// @param where string to split on and remove from front
-		/// @return substring from beginning to where string
-		constexpr basic_string_view pop_front( basic_string_view where ) noexcept {
-			auto pos = find( where );
-			auto result = pop_front( pos );
-			remove_prefix( where.size( ) );
-			return result;
 		}
 	}; // basic_string_view
 
