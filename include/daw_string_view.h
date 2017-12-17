@@ -41,6 +41,11 @@
 #include "daw_traits.h"
 
 namespace daw {
+	template<typename T>
+	constexpr size_t find_predicate_result_size( T ) noexcept {
+		return 1;
+	}
+
 	template<typename CharT, typename Traits, typename InternalSizeType>
 	struct basic_string_view final {
 		using traits_type = Traits;
@@ -279,6 +284,21 @@ namespace daw {
 			return result;
 		}
 
+		/// @brief creates a substr of the substr from begin to position reported true by predicate
+		/// @tparam UnaryPredicate a unary predicate type that accepts a char and indicates with true when to stop
+		/// @param pred predicate to determine where to split
+		/// @return substring from beginning to position marked by predicate
+		template<typename UnaryPredicate,
+		         std::enable_if_t<is_unary_predicate_v<UnaryPredicate, CharT>, std::nullptr_t> = nullptr>
+		constexpr basic_string_view
+		pop_front( UnaryPredicate pred ) noexcept( noexcept( pred( std::declval<CharT>( ) ) ) ) {
+
+			auto pos = find_first_of_if( std::move( pred ) );
+			auto result = pop_front( pos );
+			remove_prefix( find_predicate_result_size( pred ) );
+			return result;
+		}
+
 		constexpr CharT pop_back( ) noexcept {
 			auto result = back( );
 			remove_suffix( );
@@ -294,7 +314,8 @@ namespace daw {
 			return result;
 		}
 
-		/// @brief searches for last where, returns substring between where and end, then pops off the substring and the where string
+		/// @brief searches for last where, returns substring between where and end, then pops off the substring and the
+		/// where string
 		/// @param where string to split on and remove from back
 		/// @return substring from end of where string to end of string
 		constexpr basic_string_view pop_back( basic_string_view where ) noexcept {
@@ -308,6 +329,28 @@ namespace daw {
 			remove_suffix( size( ) - pos );
 			return result;
 		}
+
+		/// @brief searches for last position UnaryPredicate would be true, returns substring between pred and end, then
+		/// pops off the substring and the pred specified string
+		/// @tparam UnaryPredicate a unary predicate type that accepts a char and indicates with true when to stop
+		/// @param pred predicate to determine where to split
+		/// @return substring from last position marked by predicate to end
+		template<typename UnaryPredicate,
+		         std::enable_if_t<is_unary_predicate_v<UnaryPredicate, CharT>, std::nullptr_t> = nullptr>
+		constexpr basic_string_view
+		pop_back( UnaryPredicate pred ) noexcept( noexcept( pred( std::declval<CharT>( ) ) ) ) {
+
+			auto pos = find_last_of_if( std::move( pred ) );
+			if( pos == npos ) {
+				auto result{*this};
+				remove_prefix( npos );
+				return result;
+			}
+			auto result = substr( pos + find_predicate_result_size( pred ) );
+			remove_suffix( size( ) - pos );
+			return result;
+		}
+
 
 		constexpr void resize( size_t const n ) noexcept {
 			m_size = static_cast<size_type_internal>( n );

@@ -899,5 +899,22 @@ namespace daw {
 		BOOST_REQUIRE( sv.empty( ) );
 	}
 
+	BOOST_AUTO_TEST_CASE( daw_pop_front_pred_test_001 ) {
+		std::string str = "This is1a test";
+		daw::string_view sv{str.data( ), str.size( )};
+		auto lhs = sv.pop_front( []( auto c ) { return std::isdigit( c ); } );
+		BOOST_REQUIRE_EQUAL( lhs, "This is" );
+		BOOST_REQUIRE_EQUAL( sv, "a test" );
+	}
+
+	BOOST_AUTO_TEST_CASE( daw_pop_back_pred_test_001 ) {
+		std::string str = "This is1a test";
+		daw::string_view sv{str.data( ), str.size( )};
+		auto rhs = sv.pop_back( []( auto c ) { return std::isdigit( c ); } );
+		BOOST_REQUIRE_EQUAL( sv, "This is" );
+		BOOST_REQUIRE_EQUAL( rhs, "a test" );
+	}
+
 
 } // namespace daw
+
