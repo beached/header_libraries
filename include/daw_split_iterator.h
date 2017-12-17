@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <string>
 #include "daw_algorithm.h"
 #include "daw_reverse_iterator.h"
 #include "daw_traits.h"
@@ -47,10 +48,8 @@ namespace daw {
 	template<typename CharT>
 	struct char_splitter_t {
 		CharT c;
-		constexpr char_splitter_t( CharT val ) noexcept
-		  : c{val} {}
 
-		constexpr bool operator( )( CharT rhs ) noexcept {
+		constexpr bool operator( )( CharT rhs ) const noexcept {
 			return c == rhs;
 		}
 	};
@@ -95,7 +94,7 @@ namespace daw {
 		return lhs.m_first != rhs.m_first || lhs.m_last != rhs.m_last;
 	}
 
-	template<typename...>
+	template<typename Iterator, typename Splitter,typename...>
 	struct split_it;
 
 	template<typename Iterator, typename Splitter>
@@ -519,12 +518,11 @@ namespace daw {
 		return result;
 	}
 
-	template<typename String, typename CharT>
-	constexpr auto make_split_it( String const &sv, CharT divider ) noexcept {
-		using IterT = decltype( std::begin( sv ) );
+	template<typename CharT, typename Traits, typename Allocator>
+	constexpr auto make_split_it( std::basic_string<CharT, Traits, Allocator> &str, CharT divider ) noexcept {
 		using SpltT = char_splitter_t<CharT>;
+		using iterator = typename std::basic_string<CharT, Traits, Allocator>::iterator;
 
-		auto result = split_it<IterT, SpltT>( std::begin( sv ), std::end( sv ), SpltT{std::move( divider )} );
-		return result;
+		return split_it<iterator, SpltT>( str.begin( ), str.end( ), SpltT{std::move( divider )} );
 	}
 } // namespace daw

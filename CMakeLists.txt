@@ -94,6 +94,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_static_optional
 	daw_static_string
 	daw_string
+	daw_string_split_range
 	daw_string_view
 	daw_traits
 	daw_tuple_helper
