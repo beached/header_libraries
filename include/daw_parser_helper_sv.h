@@ -70,13 +70,17 @@ namespace daw {
 		}
 
 		template<typename CharT, typename TraitsT, typename Int>
-		constexpr void parse_unsigned_int( daw::basic_string_view<CharT, TraitsT> str, Int & i ) {
+		constexpr Int parse_unsigned_int( daw::basic_string_view<CharT, TraitsT> str ) {
+			Int i = 0;
 			daw::parser::parse_unsigned_int( str.cbegin( ), str.cend( ), i );
+			return i;
 		}
 
 		template<typename CharT, typename TraitsT, typename Int>
-		constexpr void parse_int( daw::basic_string_view<CharT, TraitsT> str, Int & i ) {
+		constexpr Int parse_int( daw::basic_string_view<CharT, TraitsT> str ) {
+			Int i = 0;
 			daw::parser::parse_int( str.cbegin( ), str.cend( ), i );
+			return i;
 		}
 	} // namespace parser
 } // namespace daw
