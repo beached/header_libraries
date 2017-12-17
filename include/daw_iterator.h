@@ -27,12 +27,5 @@ namespace daw {
 	constexpr std::move_iterator<Iterator> make_move_iterator( Iterator i ) {
 		return std::move_iterator<Iterator>( i );
 	}
-
-	template<typename RandomIterator>
-	constexpr RandomIterator
-	next( RandomIterator it,
-	      typename std::iterator_traits<RandomIterator>::difference_type n = 1 ) noexcept( noexcept( it + n ) ) {
-
-		return it + n;
-	}
 } // namespace daw
+
