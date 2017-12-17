@@ -871,13 +871,13 @@ namespace daw {
 		BOOST_REQUIRE_EQUAL( "5", val );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_chop_test_001 ) {
+	BOOST_AUTO_TEST_CASE( daw_pop_front_sv_test_001 ) {
 		std::string str = "This,is,a,test";
 		daw::string_view sv{str.data( ), str.size( )};
-		BOOST_REQUIRE_EQUAL(sv.chop( "," ), "This");
-		BOOST_REQUIRE_EQUAL( sv.chop( "," ), "is" );
-		BOOST_REQUIRE_EQUAL( sv.chop( "," ), "a" );
-		BOOST_REQUIRE_EQUAL( sv.chop( "," ), "test" );
+		BOOST_REQUIRE_EQUAL(sv.pop_front( "," ), "This");
+		BOOST_REQUIRE_EQUAL( sv.pop_front( "," ), "is" );
+		BOOST_REQUIRE_EQUAL( sv.pop_front( "," ), "a" );
+		BOOST_REQUIRE_EQUAL( sv.pop_front( "," ), "test" );
 		BOOST_REQUIRE( sv.empty( ) );
 	}
 } // namespace daw

@@ -260,6 +260,12 @@ namespace daw {
 			return result;
 		}
 
+		constexpr basic_string_view pop_front( size_t count ) noexcept {
+			basic_string_view result = substr( 0, count );
+			remove_prefix( count );
+			return result;
+		}
+
 		constexpr CharT pop_back( ) noexcept {
 			auto result = back( );
 			remove_suffix( );
@@ -656,13 +662,13 @@ namespace daw {
 			return ends_with( basic_string_view{s} );
 		}
 
-		constexpr basic_string_view chop( basic_string_view where ) noexcept {
+		/// @brief searches for where, returns substring between front and where, then pops off the substring and the where string
+		/// @param where string to split on and remove from front
+		/// @return substring from beginning to where string
+		constexpr basic_string_view pop_front( basic_string_view where ) noexcept {
 			auto pos = find( where );
-			auto result = substr( 0, pos );
-			remove_prefix( pos );
+			auto result = pop_front( pos );
 			remove_prefix( where.size( ) );
-			pos = result.find( where );
-			result = result.substr( 0, pos );
 			return result;
 		}
 	}; // basic_string_view
