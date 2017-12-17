@@ -655,6 +655,16 @@ namespace daw {
 		constexpr bool ends_with( const_pointer s ) const noexcept {
 			return ends_with( basic_string_view{s} );
 		}
+
+		constexpr basic_string_view chop( basic_string_view where ) noexcept {
+			auto pos = find( where );
+			auto result = substr( 0, pos );
+			remove_prefix( pos );
+			remove_prefix( where.size( ) );
+			pos = result.find( where );
+			result = result.substr( 0, pos );
+			return result;
+		}
 	}; // basic_string_view
 
 	template<typename Chr, typename Tr, typename Alloc>

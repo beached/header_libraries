@@ -870,4 +870,14 @@ namespace daw {
 		auto val = daw::to_string_view( std::to_string( 5 ) ).to_string( );
 		BOOST_REQUIRE_EQUAL( "5", val );
 	}
+
+	BOOST_AUTO_TEST_CASE( daw_chop_test_001 ) {
+		std::string str = "This,is,a,test";
+		daw::string_view sv{str.data( ), str.size( )};
+		BOOST_REQUIRE_EQUAL(sv.chop( "," ), "This");
+		BOOST_REQUIRE_EQUAL( sv.chop( "," ), "is" );
+		BOOST_REQUIRE_EQUAL( sv.chop( "," ), "a" );
+		BOOST_REQUIRE_EQUAL( sv.chop( "," ), "test" );
+		BOOST_REQUIRE( sv.empty( ) );
+	}
 } // namespace daw
