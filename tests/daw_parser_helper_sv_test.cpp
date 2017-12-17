@@ -25,4 +25,10 @@
 
 #include "daw_parser_helper_sv.h"
 
-BOOST_AUTO_TEST_CASE( test_01 ) {}
+BOOST_AUTO_TEST_CASE( test_in_t_test_001 ) {
+	daw::parser::char_in_t<' ', '1'> tst{};
+	BOOST_REQUIRE( tst( ' ' ) );
+	BOOST_REQUIRE( !tst( '#' ) );
+	BOOST_REQUIRE( tst( '1' ) );
+}
+
