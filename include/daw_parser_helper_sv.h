@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include "daw_parser_addons.h"
 #include "daw_parser_helper.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
@@ -68,5 +69,14 @@ namespace daw {
 			return trim_right( trim_left( str ) );
 		}
 
+		template<typename CharT, typename TraitsT, typename Int>
+		constexpr void parse_unsigned_int( daw::basic_string_view<CharT, TraitsT> str, Int & i ) {
+			daw::parser::parse_unsigned_int( str.cbegin( ), str.cend( ), i );
+		}
+
+		template<typename CharT, typename TraitsT, typename Int>
+		constexpr void parse_int( daw::basic_string_view<CharT, TraitsT> str, Int & i ) {
+			daw::parser::parse_int( str.cbegin( ), str.cend( ), i );
+		}
 	} // namespace parser
 } // namespace daw
