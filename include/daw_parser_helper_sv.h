@@ -69,14 +69,14 @@ namespace daw {
 			return trim_right( trim_left( str ) );
 		}
 
-		template<typename CharT, typename TraitsT, typename Int>
+		template<typename Int, typename CharT, typename TraitsT>
 		constexpr Int parse_unsigned_int( daw::basic_string_view<CharT, TraitsT> str ) {
 			Int i = 0;
 			daw::parser::parse_unsigned_int( str.cbegin( ), str.cend( ), i );
 			return i;
 		}
 
-		template<typename CharT, typename TraitsT, typename Int>
+		template<typename Int, typename CharT, typename TraitsT>
 		constexpr Int parse_int( daw::basic_string_view<CharT, TraitsT> str ) {
 			Int i = 0;
 			daw::parser::parse_int( str.cbegin( ), str.cend( ), i );
