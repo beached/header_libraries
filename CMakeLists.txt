@@ -102,7 +102,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_utility
 	#daw_variant
 	#daw_variant2
-	daw_virtual_holder
+	#daw_virtual_holder
 	daw_zipcontainer
 	daw_zipiter
 	not_null
