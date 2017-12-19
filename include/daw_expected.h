@@ -37,6 +37,8 @@ namespace daw {
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
+		using pointer = value_type *;
+		using const_pointer = value_type const *;
 
 	private:
 		daw::optional<value_type> m_value;
@@ -93,7 +95,8 @@ namespace daw {
 
 		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
-		template<class Function, typename... Args>
+		template<class Function, typename... Args,
+		         std::enable_if_t<daw::is_callable_v<Function, Args...>, std::nullptr_t> = nullptr>
 		static expected_t from_code( Function func, Args &&... args ) noexcept {
 			try {
 				auto tmp = func( std::forward<Args>( args )... );
@@ -155,12 +158,12 @@ namespace daw {
 			return get( );
 		}
 
-		reference operator->( ) {
-			return get( );
+		pointer operator->( ) {
+			return &get( );
 		}
 
-		const_reference operator->( ) const {
-			return get( );
+		const_pointer operator->( ) const {
+			return &get( );
 		}
 
 
