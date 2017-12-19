@@ -34,3 +34,9 @@ BOOST_AUTO_TEST_CASE( daw_benchmark_test_002 ) {
 	int x = 0;
 	daw::do_not_optimize( x );
 }
+
+BOOST_AUTO_TEST_CASE( daw_bench_test_test_001 ) {
+	auto res = daw::bench_test( "sqr: ", []( auto i ) { return i * i; }, 55 );
+	BOOST_REQUIRE( res.has_value( ) );
+	BOOST_REQUIRE_EQUAL( *res, 3025 );
+}

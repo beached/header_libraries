@@ -28,6 +28,9 @@
 #include <sstream>
 #include <string>
 
+#include "daw_expected.h"
+#include "daw_traits.h"
+
 namespace daw {
 	template<typename F>
 	double benchmark( F func ) {
@@ -136,4 +139,15 @@ namespace daw {
 			std::abort( );
 		}
 	}
+
+	template<typename Test, typename... Args>
+	auto bench_test( std::string title, Test test_callable, Args &&... args ) noexcept {
+		auto const start = std::chrono::high_resolution_clock::now( );
+		auto result = daw::expected_from_code( std::move( test_callable ), std::forward<Args>( args )... );
+		auto const finish = std::chrono::high_resolution_clock::now( );
+		std::chrono::duration<double> const duration = finish - start;
+		std::cout << title << " took " << utility::format_seconds( duration.count( ), 2 ) << '\n';
+		return result;
+	}
 } // namespace daw
+
