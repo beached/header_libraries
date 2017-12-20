@@ -319,7 +319,7 @@ namespace daw {
 		/// @param where string to split on and remove from back
 		/// @return substring from end of where string to end of string
 		constexpr basic_string_view pop_back( basic_string_view where ) noexcept {
-			auto pos = find_last_of( where );
+			auto pos = rfind( where );
 			if( pos == npos ) {
 				auto result{*this};
 				remove_prefix( npos );
@@ -351,6 +351,33 @@ namespace daw {
 			return result;
 		}
 
+		/// @brief searches for where, returns substring between front and where, then pops off the substring and the where
+		/// string. Do nothing if where is not found
+		/// @param where string to split on and remove from front
+		/// @return substring from beginning to where string
+		constexpr basic_string_view try_pop_front( basic_string_view where ) noexcept {
+			auto pos = find( where );
+			if( pos == npos ) {
+				return basic_string_view{};
+			}
+			auto result = pop_front( pos );
+			remove_prefix( where.size( ) );
+			return result;
+		}
+
+		/// @brief searches for last where, returns substring between where and end, then pops off the substring and the
+		/// where string.  If where is not found, nothing is done
+		/// @param where string to split on and remove from back
+		/// @return substring from end of where string to end of string
+		constexpr basic_string_view try_pop_back( basic_string_view where ) noexcept {
+			auto pos = rfind( where );
+			if( pos == npos ) {
+				return basic_string_view{};
+			}
+			auto result = substr( pos + where.size( ) );
+			remove_suffix( size( ) - pos );
+			return result;
+		}
 
 		constexpr void resize( size_t const n ) noexcept {
 			m_size = static_cast<size_type_internal>( n );

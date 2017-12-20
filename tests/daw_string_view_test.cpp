@@ -915,6 +915,40 @@ namespace daw {
 		BOOST_REQUIRE_EQUAL( rhs, "a test" );
 	}
 
+	BOOST_AUTO_TEST_CASE( daw_try_pop_back_sv_test_001 ) {
+		std::string str = "This is a test";
+		daw::string_view sv{str.data( ), str.size( )};
+		BOOST_REQUIRE_EQUAL( sv.try_pop_back( " " ), "test" );
+		BOOST_REQUIRE_EQUAL( sv.try_pop_back( " " ), "a" );
+		BOOST_REQUIRE_EQUAL( sv.try_pop_back( " " ), "is" );
+		BOOST_REQUIRE_EQUAL( sv.try_pop_back( " " ), "" );
+		BOOST_REQUIRE_EQUAL( sv, "This" );
+	}
 
+	BOOST_AUTO_TEST_CASE( daw_try_pop_back_sv_test_002 ) {
+		std::string str = "This is a test";
+		daw::string_view sv{str.data( ), str.size( )};
+		auto result = sv.try_pop_back( "blah" );
+		BOOST_REQUIRE( result.empty( ) );
+		BOOST_REQUIRE( sv == str );
+	}
+
+	BOOST_AUTO_TEST_CASE( daw_try_pop_front_sv_test_001 ) {
+		std::string str = "This is a test";
+		daw::string_view sv{str.data( ), str.size( )};
+		BOOST_REQUIRE_EQUAL( sv.try_pop_front( " " ), "This" );
+		BOOST_REQUIRE_EQUAL( sv.try_pop_front( " " ), "is" );
+		BOOST_REQUIRE_EQUAL( sv.try_pop_front( " " ), "a" );
+		BOOST_REQUIRE( sv.try_pop_front( " " ) != "test" );
+		BOOST_REQUIRE_EQUAL( sv, "test" );
+	}
+
+	BOOST_AUTO_TEST_CASE( daw_try_pop_front_sv_test_002 ) {
+		std::string str = "This is a test";
+		daw::string_view sv{str.data( ), str.size( )};
+		auto result = sv.try_pop_front( "blah" );
+		BOOST_REQUIRE( result.empty( ) );
+		BOOST_REQUIRE( sv == str );
+	}
 } // namespace daw
 
