@@ -379,6 +379,16 @@ namespace daw {
 			return result;
 		}
 
+		/// @brief searches for where, and disgregards everything until the end of that
+		/// @param where string to find and consume
+		/// @return substring with everything up until the end of where removed
+		constexpr basic_string_view & consume_front( basic_string_view where ) noexcept {
+			auto pos = find( where );
+			remove_prefix( pos );
+			remove_prefix( where.size( ) );
+			return *this;
+		}
+
 		constexpr void resize( size_t const n ) noexcept {
 			m_size = static_cast<size_type_internal>( n );
 		}
