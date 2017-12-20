@@ -318,7 +318,7 @@ namespace daw {
 
 		template<typename Container, typename OutputIterator, typename UnaryPredicate,
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
-		constexpr void copy_if( Container const &source, OutputIterator destination ) {
+		constexpr OutputIterator copy_if( Container const &source, OutputIterator destination, UnaryPredicate pred ) {
 			static_assert( daw::is_unary_predicate_v<UnaryPredicate, decltype( *std::begin( source ) )>,
 			               "Compare does not satisfy the Unary Predicate concept.  See "
 			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
@@ -331,6 +331,7 @@ namespace daw {
 					*destination++ = *src++;
 				}
 			}
+			return destination;
 		}
 
 		template<typename Container, typename OutputIterator, typename UnaryPredicate,
