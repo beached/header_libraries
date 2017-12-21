@@ -1400,6 +1400,19 @@ namespace daw {
 			return init;
 		}
 
+		/// @brief return the min and max of two items sorted
+		///	@tparam T of items to evaluate
+		/// @param a item 1
+		/// @param b item 2
+		/// @return a std::pair<T, T> that has the first member holding min(a, b) and second max(a, b)
+		template<typename T>
+		constexpr std::pair<T, T> minmax_item( T const & a, T const & b ) noexcept {
+			if( a <= b ) {
+				return std::pair<T, T>{ a, b };
+			}
+			return std::pair<T, T>{ b, a };
+		}
+
 		template<typename ForwardIterator, typename LastType, typename Compare>
 		constexpr auto minmax_element( ForwardIterator first, LastType last,
 		                               Compare comp ) noexcept( noexcept( comp( *first, *first ) ) ) {

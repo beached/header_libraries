@@ -614,3 +614,12 @@ BOOST_AUTO_TEST_CASE( daw_upper_bound_test_002 ) {
 	auto ans = tst == a.cend( );
 	BOOST_REQUIRE( ans );
 }
+
+BOOST_AUTO_TEST_CASE( daw_minmax_item_test_001 ) {
+	int a = 5;
+	int b = -100;
+	auto ans = daw::algorithm::minmax_item( a, b );
+	BOOST_REQUIRE_EQUAL( ans.first, -100 );
+	BOOST_REQUIRE_EQUAL( ans.second, 5 );
+}
+
