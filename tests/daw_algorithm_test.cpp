@@ -192,7 +192,6 @@ BOOST_AUTO_TEST_CASE( daw_begin_at_test_004 ) {
 	BOOST_REQUIRE( ans );
 }
 
-
 BOOST_AUTO_TEST_CASE( daw_transform_many ) {
 	std::vector<uint32_t> in1 = {1, 3, 5, 7, 9};
 	std::vector<uint32_t> in2 = {0, 2, 4, 6, 8};
@@ -621,5 +620,16 @@ BOOST_AUTO_TEST_CASE( daw_minmax_item_test_001 ) {
 	auto ans = daw::algorithm::minmax_item( a, b );
 	BOOST_REQUIRE_EQUAL( ans.first, -100 );
 	BOOST_REQUIRE_EQUAL( ans.second, 5 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_minmax_item_test_002 ) {
+	struct A {
+		int v;
+	};
+	A a{5};
+	A b{-100};
+	auto ans = daw::algorithm::minmax_item( a, b, []( auto const &lhs, auto const &rhs ) { return lhs.v < rhs.v; } );
+	BOOST_REQUIRE_EQUAL( ans.first.v, -100 );
+	BOOST_REQUIRE_EQUAL( ans.second.v, 5 );
 }
 
