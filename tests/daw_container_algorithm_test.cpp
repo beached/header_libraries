@@ -138,3 +138,13 @@ namespace daw_for_each_subset_002_ns {
 		BOOST_REQUIRE_EQUAL( sum, 6 );
 	}
 } // namespace daw_for_each_subset_002_ns
+
+BOOST_AUTO_TEST_CASE( daw_append_001 ) {
+	std::vector<int> a = {1, 2, 3};
+	std::vector<int> const b = {4, 5, 6};
+	std::vector<int> const expect = {1,2,3,4,5,6};
+	daw::container::append( b, a );
+	auto const tst = std::equal( expect.cbegin( ), expect.cend( ), a.cbegin( ), a.cend( ) );
+	BOOST_REQUIRE( tst );
+}
+

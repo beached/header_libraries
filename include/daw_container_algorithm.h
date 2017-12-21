@@ -379,20 +379,33 @@ namespace daw {
 			for_each_with_pos( container, 0, container_size( container ), func );
 		}
 
-		//////////////////////////////////////////////////////////////////////////
-		/// Summary: Run func( container, position ) on each element
-		/// in interval [first_inclusive, last_exclusive)
-		///
+		/// @brief Summary: Run func( container, position ) on each element in interval [first_inclusive, last_exclusive)
+		/// @tparam Container range of items to iterate over
+		/// @tparam Function A callable that can take as arguments the container and an index
+		/// @param container range of items
+		/// @param first index of first item in range to work on
+		/// @param last end of range
+		/// @param func callable to pass container and position too
 		template<typename Container, typename Function>
-		constexpr void for_each_subset( Container &container, size_t const first_inclusive, size_t last_exclusive,
+		constexpr void for_each_subset( Container &container, size_t first, size_t const last,
 		                                Function func ) noexcept( noexcept( func( container, std::declval<size_t>( ) ) ) ) {
 			static_assert(
 			  daw::is_callable_v<Function, Container, size_t>,
 			  "Supplied function does not satisfy requirements of taking arguments of type (Container, size_t)" );
 
-			for( size_t row = first_inclusive; row < last_exclusive; ++row ) {
-				func( container, row );
+			for( ; first < last; ++first ) {
+				func( container, first );
 			}
+		}
+
+		/// @brief insert the contents of one container into another
+		/// @tparam Source Range type that has std::begin/std::end being value
+		/// @tparam Destination Container that must have insert( iter, range_begin, range_end ) as a member along with std::end
+		/// @param source range holding data to copy to destination
+		/// @param destination a container to append to
+		template<typename Source, typename Destination>
+		constexpr void append( Source const & source, Destination & destination ) {
+			destination.insert( std::end( destination ), std::begin( source ), std::end( source ) );
 		}
 	} // namespace container
 } // namespace daw
