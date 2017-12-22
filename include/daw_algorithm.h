@@ -1406,11 +1406,11 @@ namespace daw {
 		/// @param b item 2
 		/// @return a std::pair<T, T> that has the first member holding min(a, b) and second max(a, b)
 		template<typename T>
-		constexpr std::pair<T, T> minmax_item( T const & a, T const & b ) noexcept {
+		constexpr std::pair<T, T> minmax_item( T const &a, T const &b ) noexcept {
 			if( b < a ) {
-				return std::pair<T, T>{ b, a };
+				return std::pair<T, T>{b, a};
 			}
-			return std::pair<T, T>{ a, b };
+			return std::pair<T, T>{a, b};
 		}
 
 		/// @brief return the min and max of two items sorted
@@ -1421,14 +1421,14 @@ namespace daw {
 		/// @param comp comparison predicate
 		/// @return a std::pair<T, T> that has the first member holding min(a, b) and second max(a, b)
 		template<typename T, typename Compare>
-		constexpr std::pair<T, T> minmax_item( T const & a, T const & b, Compare comp ) noexcept {
+		constexpr std::pair<T, T> minmax_item( T const &a, T const &b, Compare comp ) noexcept {
 			static_assert( is_compare_v<Compare, T>,
 			               "Compare function does not meet the requirements of the Compare concept. "
 			               "http://en.cppreference.com/w/cpp/concept/Compare" );
 			if( comp( b, a ) ) {
-				return std::pair<T, T>{ b, a };
+				return std::pair<T, T>{b, a};
 			}
-			return std::pair<T, T>{ a, b };
+			return std::pair<T, T>{a, b};
 		}
 
 		template<typename ForwardIterator, typename LastType, typename Compare>
@@ -1501,6 +1501,26 @@ namespace daw {
 
 			return daw::algorithm::minmax_element( first, last, std::less<>{} );
 		}
-	} // namespace algorithm
 
+		template<typename InputIterator1, typename LastType1, typename InputIterator2, typename LastType2,
+		         typename OutputIterator>
+		constexpr OutputIterator set_intersection( InputIterator1 first1, LastType1 last1, InputIterator2 first2,
+		                                           LastType2 last2,
+		                                           OutputIterator d_first ) noexcept( noexcept( *first2 < *first1 ) &&
+		                                                                              noexcept( *first1 < *first2 ) ) {
+
+			while( first1 != last1 && first2 != last2 ) {
+				if( *first1 < *first2 ) {
+					++first1;
+				} else {
+					if( !( *first2 < *first1 ) ) {
+						*d_first++ = *first1++;
+					}
+					++first2;
+				}
+			}
+			return d_first;
+		}
+	} // namespace algorithm
 } // namespace daw
+
