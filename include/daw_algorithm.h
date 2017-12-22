@@ -1421,14 +1421,14 @@ namespace daw {
 		/// @param comp comparison predicate
 		/// @return a std::pair<T, T> that has the first member holding min(a, b) and second max(a, b)
 		template<typename T, typename Compare>
-		constexpr std::pair<T, T> minmax_item( T const &a, T const &b, Compare comp ) noexcept {
+		constexpr std::pair<T, T> minmax_item( T a, T b, Compare comp ) noexcept {
 			static_assert( is_compare_v<Compare, T>,
 			               "Compare function does not meet the requirements of the Compare concept. "
 			               "http://en.cppreference.com/w/cpp/concept/Compare" );
 			if( comp( b, a ) ) {
-				return std::pair<T, T>{b, a};
+				return std::pair<T, T>{std::move( b ), std::move( a )};
 			}
-			return std::pair<T, T>{a, b};
+			return std::pair<T, T>{std::move( a ), std::move( b )};
 		}
 
 		template<typename ForwardIterator, typename LastType, typename Compare>
