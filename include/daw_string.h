@@ -194,6 +194,14 @@ namespace daw {
 			return func( src, ending );
 		}
 
+		details::string_t fmt( details::string_t const & format ) {
+			return format;
+		}
+
+		details::string_t fmt( details::string_t && format ) {
+			return std::move(format);
+		}
+
 		//////////////////////////////////////////////////////////////////////////
 		// Summary: takes a format string like "{0} {1} {2}" and in this case 3 parameters
 		template<typename Arg, typename... Args>
