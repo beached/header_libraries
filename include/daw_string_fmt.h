@@ -24,7 +24,6 @@
 
 #include <string>
 
-#include "daw_exception.h"
 #include "daw_parser_helper_sv.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
