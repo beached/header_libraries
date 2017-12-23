@@ -32,16 +32,8 @@ namespace daw {
 	struct invalid_string_fmt_index {};
 	namespace impl {
 		template<size_t N>
-		inline std::string to_string( char const ( &str )[N] ) {
+		std::string to_string( char const ( &str )[N] ) {
 			return std::string{str};
-		}
-
-		inline std::string to_string( std::string const &str ) {
-			return std::string{str};
-		}
-
-		inline std::string to_string( std::string &&str ) noexcept {
-			return std::string{std::move( str )};
 		}
 
 		template<typename T>
