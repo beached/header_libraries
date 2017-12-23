@@ -108,3 +108,16 @@ BOOST_AUTO_TEST_CASE( string_fmt_perf_002 ) {
 		}
 	} );
 }
+
+BOOST_AUTO_TEST_CASE( string_fmt_has_to_string_001 ) {
+	struct A{
+		int a;
+		explicit operator std::string( ) const {
+			return std::to_string( a );
+		}
+	};
+	A a{1};
+	auto result = daw::fmt( "Testing {0}", a );
+
+	BOOST_REQUIRE_EQUAL( result, "Testing 1" );
+}

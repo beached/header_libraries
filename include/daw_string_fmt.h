@@ -45,6 +45,28 @@ namespace daw {
 			return std::string{std::move( str )};
 		}
 
+		template<typename T>
+		using has_to_string = decltype( std::declval<T>( ).to_string( ) );
+
+		template<typename T>
+		constexpr bool has_to_string_v = daw::is_detected_v<has_to_string, T>;
+
+		template<typename T>
+		using can_cast_to_string = decltype( static_cast<std::string>( std::declval<T>( ) ) );
+
+		template<typename T>
+		constexpr bool can_cast_to_string_v = daw::is_detected_v<can_cast_to_string, T>;
+
+		template<typename T, std::enable_if_t<(has_to_string_v<T> && !can_cast_to_string_v<T>), std::nullptr_t> = nullptr>
+		inline std::string to_string( T const &value ) {
+			return value.to_string( );
+		}
+
+		template<typename T, std::enable_if_t<can_cast_to_string_v<T>, std::nullptr_t> = nullptr>
+		inline std::string to_string( T const &value ) {
+			return static_cast<std::string>( value );
+		}
+
 		template<uint8_t Cnt, uint8_t Sz, typename... Args, std::enable_if_t<( Cnt >= Sz ), std::nullptr_t> = nullptr>
 		inline std::string get_arg_impl( uint8_t const, Args &&... ) {
 			throw daw::invalid_string_fmt_index{};
