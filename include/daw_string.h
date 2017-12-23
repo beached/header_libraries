@@ -194,23 +194,20 @@ namespace daw {
 			return func( src, ending );
 		}
 
-		details::string_t fmt( details::string_t const & format ) {
-			return format;
-		}
-
-		details::string_t fmt( details::string_t && format ) {
-			return std::move(format);
+		template<typename String>
+		constexpr decltype( auto ) fmt( String &&fmt ) noexcept {
+			return std::forward<String>( fmt );
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 		// Summary: takes a format string like "{0} {1} {2}" and in this case 3 parameters
-		template<typename Arg, typename... Args>
-		details::string_t fmt( details::string_t format, Arg arg, Args... args ) {
+		template<typename String, typename Arg, typename... Args>
+		details::string_t fmt( String && format_, Arg arg, Args... args ) {
 			std::regex const reg( R"^(\{(\d+(:\d)*)\})^" );
-			static std::stringstream ss;
-			clear( ss );
+			std::stringstream ss;
 			auto const arguments = details::unknowns_to_string( arg, args... );
 			std::smatch sm;
+			std::string format{format_};
 			while( std::regex_search( format, sm, reg ) ) {
 				auto const &prefix = sm.prefix( ).str( );
 				ss << prefix;
