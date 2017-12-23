@@ -1,0 +1,110 @@
+// The MIT License (MIT)
+//
+// Copyright (c) 2017 Darrell Wright
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files( the "Software" ), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+
+#include <cstdint>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+#include <vector>
+
+#include "boost_test.h"
+#include "daw_benchmark.h"
+#include "daw_string_fmt.h"
+
+BOOST_AUTO_TEST_CASE( stirng_fmt_test_001 ) {
+	std::cout << daw::fmt( "This is a {0} of the {1} and has been used {2} times for {0}ing\n", "test", "daw::fmt",
+	                       1'000'000 );
+}
+
+BOOST_AUTO_TEST_CASE( string_fmt_test_single_item_001 ) {
+	auto result = daw::fmt( "{0}", 5 );
+
+	BOOST_REQUIRE_EQUAL( result, "5" );
+}
+
+BOOST_AUTO_TEST_CASE( string_fmt_test_recursion_001 ) {
+	auto result = daw::fmt( "{0}", daw::fmt( "{0}", 5 ) );
+	BOOST_REQUIRE_EQUAL( result, "5" );
+	// auto const ans1 = daw::bench_test( "string_fmt_test_001", [&]( ) { test_func( ) } );
+	// BOOST_REQUIRE_EQUAL( *ans1, );
+}
+
+BOOST_AUTO_TEST_CASE( string_fmt_test_out_of_range_001 ) {
+	BOOST_REQUIRE_THROW( daw::fmt( "{1}", 5 ), daw::invalid_string_fmt_index );
+}
+
+BOOST_AUTO_TEST_CASE( string_fmt_perf_001 ) {
+	std::cout << "Larger format perf\n";
+	daw::bench_test( "string_fmt perf", [&]( ) {
+		for( size_t n = 0; n < 10'000'000; ++n ) {
+			auto tst = daw::fmt( "This is a {0} of the {1} and has been used {2} times for {0}ing\n", "test", "daw::fmt", n );
+			daw::do_not_optimize( tst );
+		}
+	} );
+
+	daw::bench_test( "fmt_t perf", [&]( ) {
+		auto const formatter = daw::fmt_t{"This is a {0} of the {1} and has been used {2} times for {0}ing\n"};
+		for( size_t n = 0; n < 10'000'000; ++n ) {
+			auto tst = formatter( "test", "daw::fmt", n );
+			daw::do_not_optimize( tst );
+		}
+	} );
+
+	daw::bench_test( "string_concat perf", [&]( ) {
+		using std::to_string;
+		using daw::impl::to_string;
+		for( size_t n = 0; n < 10'000'000; ++n ) {
+			auto tst = "This is a" + to_string( "test" ) + " of the " + to_string( "daw::fmt" ) + " and has been used " +
+			           to_string( n ) + " times for " + to_string( "test" ) + "ing\n";
+			daw::do_not_optimize( tst );
+		}
+	} );
+}
+
+BOOST_AUTO_TEST_CASE( string_fmt_perf_002 ) {
+	std::cout << "\n\nSmaller format perf\n";
+	daw::bench_test( "string_fmt perf", [&]( ) {
+		for( size_t n = 0; n < 10'000'000; ++n ) {
+			auto tst =
+			  daw::fmt( "This is a test of the daw::fmt and has been used {2} times for testing\n", "test", "daw::fmt", n );
+			daw::do_not_optimize( tst );
+		}
+	} );
+
+	daw::bench_test( "fmt_t perf", [&]( ) {
+		auto const formatter = daw::fmt_t{"This is a test of the daw::fmt and has been used {2} times for testing\n"};
+		for( size_t n = 0; n < 10'000'000; ++n ) {
+			auto tst = formatter( n );
+			daw::do_not_optimize( tst );
+		}
+	} );
+
+	daw::bench_test( "string_concat perf", [&]( ) {
+		using std::to_string;
+		using daw::impl::to_string;
+		for( size_t n = 0; n < 10'000'000; ++n ) {
+			auto tst = "This is a test of the daw::fmt and has been used " + to_string( n ) + " times for testing\n";
+			daw::do_not_optimize( tst );
+		}
+	} );
+}
