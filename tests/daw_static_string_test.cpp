@@ -308,9 +308,10 @@ namespace daw {
 	//----------------------------------------------------------------------------
 
 	BOOST_AUTO_TEST_CASE( tc014modifier ) {
+
 		daw::static_string view = "Hello World";
 
-		BOOST_TEST_MESSAGE( "Removes last n characters" );
+		BOOST_TEST_MESSAGE( "Removes last 6 characters" );
 		{
 			view.remove_suffix( 6 );
 

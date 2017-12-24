@@ -459,7 +459,7 @@ namespace daw {
 		std::basic_string<value_type, traits_type> to_string( ) const {
 			std::basic_string<value_type, traits_type> result;
 			result.reserve( size( ) );
-			std::copy_n( cbegin( ), size( ), std::back_inserter( result ) );
+			daw::algorithm::copy_n( data( ), std::back_inserter( result ), size( ) );
 			return result;
 		}
 
@@ -467,7 +467,7 @@ namespace daw {
 		constexpr size_type reverse_distance( const_reverse_iterator first, const_reverse_iterator last ) const noexcept {
 			// Portability note here: std::distance is not NOEXCEPT, but calling it with a
 			// static_string::reverse_iterator will not throw.
-			return ( size( ) - 1u ) - static_cast<size_t>( std::distance( first, last ) );
+			return ( size( ) - 1u ) - static_cast<size_t>( daw::distance( first, last ) );
 		}
 
 	public:
@@ -600,7 +600,7 @@ namespace daw {
 	constexpr auto make_static_string_it( Iterator first, Iterator last ) noexcept {
 		using sv_t = basic_static_string<CharT, Capacity, TraitsT>;
 		using size_type = typename sv_t::size_type;
-		return sv_t{&( *first ), static_cast<size_type>( std::distance( first, last ) )};
+		return sv_t{&( *first ), static_cast<size_type>( daw::distance( first, last ) )};
 	}
 
 	template<size_t Capacity = 100, typename CharT, typename Allocator, typename Traits = std::char_traits<CharT>>
@@ -1046,8 +1046,8 @@ namespace daw {
 	std::basic_ostream<CharT> &operator<<( std::basic_ostream<CharT> &os,
 	                                       daw::basic_static_string<CharT, Capacity, Traits> const &str ) {
 		if( os.good( ) ) {
-			auto const size = str.size( );
-			auto const w = static_cast<std::size_t>( os.width( ) );
+			auto const size = static_cast<ptrdiff_t>( str.size( ) );
+			auto const w = static_cast<ptrdiff_t>( os.width( ) );
 			if( w <= size ) {
 				os.write( str.data( ), static_cast<std::streamsize>( size ) );
 			} else {
