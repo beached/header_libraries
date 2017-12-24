@@ -51,7 +51,6 @@ set( TESTED_HEADERS_PREFIXES
 	daw_function_iterator
 	daw_generic_hash
 	daw_hash_table
-	daw_hash_table2
 	daw_heap_array
 	daw_heap_value
 	daw_integer_iterator
@@ -72,13 +71,6 @@ set( TESTED_HEADERS_PREFIXES
 	daw_output_stream_iterator
 	daw_random
 	daw_random_iterator
-	daw_range
-	daw_range_algorithm
-	daw_range_collection
-	daw_range_common
-	daw_range_operators
-	daw_range_reference
-	daw_range_type
 	daw_read_only
 	daw_reference
 	daw_reverse_iterator
@@ -88,7 +80,6 @@ set( TESTED_HEADERS_PREFIXES
 	daw_semaphore
 	daw_size_literals
 	daw_span
-	#daw_split_iterator
 	daw_spin_lock
 	daw_static_array
 	daw_static_optional
@@ -101,12 +92,25 @@ set( TESTED_HEADERS_PREFIXES
 	daw_tuple_helper
 	daw_unique_array
 	daw_utility
-	#daw_variant
-	#daw_variant2
-	#daw_virtual_holder
 	daw_zipcontainer
 	daw_zipiter
 	not_null
+)
+
+#Still testing and may not work
+set( DEV_HEADER_FILES
+	daw_hash_table2
+	daw_range
+	daw_range_algorithm
+	daw_range_collection
+	daw_range_common
+	daw_range_operators
+	daw_range_reference
+	daw_range_type
+	#daw_split_iterator
+	daw_variant
+	daw_variant2
+	daw_virtual_holder
 )
 
 set( UNTESTED_HEADER_FILES
@@ -135,7 +139,16 @@ foreach( CUR_PREFIX ${TESTED_HEADERS_PREFIXES} )
 	add_dependencies( check ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
 
+foreach( CUR_PREFIX ${DEV_HEADER_FILES} )
+	install( FILES "${HEADER_FOLDER}/${CUR_PREFIX}.h" DESTINATION include/daw )
+	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/${CUR_PREFIX}.h ${TEST_FOLDER}/${CUR_PREFIX}_test.cpp )
+	target_link_libraries( ${CUR_PREFIX}_test_bin test_main ${Boost_LIBRARIES} ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
+	add_dependencies( check ${CUR_PREFIX}_test_bin )
+endforeach( CUR_PREFIX )
+
 foreach( CUR_PREFIX ${UNTESTED_HEADER_FILES} )
 	install( FILES "${HEADER_FOLDER}/${CUR_PREFIX}" DESTINATION include/daw )
 endforeach( CUR_PREFIX )
+
+
 

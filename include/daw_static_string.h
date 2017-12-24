@@ -310,12 +310,12 @@ namespace daw {
 			return !m_data.empty( );
 		}
 
-		constexpr void remove_suffix( size_type const n ) noexcept {
+		constexpr void remove_suffix( size_type n ) {
 			m_data.resize( m_data.size( ) - n );
 			*m_data.end( ) = 0;
 		}
 
-		constexpr void remove_suffix( ) noexcept {
+		constexpr void remove_suffix( ) {
 			remove_suffix( 1 );
 		}
 

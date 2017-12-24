@@ -24,8 +24,10 @@
 
 #include <algorithm>
 #include <numeric>
+#include <type_traits>
 
 #include "daw_range.h"
+#include "daw_traits.h"
 
 namespace daw {
 	namespace algorithm {
