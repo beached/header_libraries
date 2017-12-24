@@ -110,7 +110,7 @@ set( DEV_HEADER_FILES
 	#daw_split_iterator
 	daw_variant
 	daw_variant2
-	daw_virtual_holder
+	#	daw_virtual_holder
 )
 
 set( UNTESTED_HEADER_FILES
