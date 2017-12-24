@@ -203,6 +203,8 @@ namespace daw {
 				daw::parser::impl::set_value_from_string_view<N - 1, Args...>( tp, std::move( str ), std::move( splitter ) );
 			}
 		} // namespace impl
+
+		/// @brief Split on supplied delemiter string.
 		class default_splitter {
 			daw::string_view m_delemiter;
 
@@ -229,6 +231,8 @@ namespace daw {
 			}
 		};
 
+		/// @brief Splits a string on any unicode whitespace characters
+		/// @tparam skip_multiple If multiple whitespace characters are seen in a row, skip them all
 		template<bool skip_multiple>
 		struct basic_whitespace_splitter {
 			constexpr auto operator( )( daw::string_view str ) const {
@@ -255,7 +259,10 @@ namespace daw {
 			}
 		};
 
+		/// @brief Whitespace splitter that splits on each encounter
 		using whitespace_splitter = basic_whitespace_splitter<true>;
+
+		/// @brief Whitespace splitter that will merge whitespace as 1 delemiter
 		using single_whitespace_splitter = basic_whitespace_splitter<false>;
 
 		namespace impl {
@@ -274,6 +281,12 @@ namespace daw {
 			using parse_result_of_t = typename parse_result_of<T>::type;
 		} // namespace impl
 
+		/// @brief Attempts to parse a string to the values types specified
+		/// @tparam Args Result types of values encoded as strings
+		/// @tparam Splitter Callable splitter that returns the next position of a value
+		/// @param str String containing encoded values
+		/// @param splitter Function to split string into arguments
+		/// @return A tuple of values of the types specified in Args
 		template<typename... Args, typename Splitter,
 		         std::enable_if_t<!is_convertible_v<Splitter, daw::string_view>, std::nullptr_t> = nullptr>
 		constexpr decltype( auto ) parse_to( daw::string_view str, Splitter splitter ) {
@@ -283,11 +296,20 @@ namespace daw {
 			return result;
 		}
 
+		/// @brief Attempts to parse a string to the values types specified
+		/// @tparam Args Result types of values encoded as strings
+		/// @param str String containing encoded values
+		/// @param delemiter split what string arguments on
+		/// @return A tuple of values of the types specified in Args
 		template<typename... Args>
 		constexpr decltype( auto ) parse_to( daw::string_view str, daw::string_view delemiter ) {
 			return parse_to<Args...>( std::move( str ), default_splitter{std::move( delemiter )} );
 		}
 
+		/// @brief Attempts to parse a string to the values types specified in args and sepearated by a " "
+		/// @tparam Args Result types of values encoded as strings
+		/// @param str String containing encoded values
+		/// @return A tuple of values of the types specified in Args
 		template<typename... Args>
 		constexpr decltype( auto ) parse_to( daw::string_view str ) {
 			return parse_to<Args...>( std::move( str ), daw::string_view{" "} );
@@ -304,6 +326,12 @@ namespace daw {
 		};
 	} // namespace impl
 
+	/// @brief Contructs an object from the arguments specified in the string.
+	/// @tparam Destination The type of object to construct
+	/// @tparam ExpectedArgs The types of values to parse out of the string
+	/// @param str String containing encoded values
+	/// @param delemiter split what string arguments on
+	/// @return A constructed Destination
 	template<typename Destination, typename... ExpectedArgs, typename Splitter,
 	         std::enable_if_t<!is_convertible_v<Splitter, daw::string_view>, std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) construct_from( daw::string_view str, Splitter splitter ) {
@@ -313,6 +341,13 @@ namespace daw {
 		                   parser::parse_to<ExpectedArgs...>( std::move( str ), std::move( splitter ) ) );
 	}
 
+	/// @brief Contructs an object from the arguments specified in the string.
+	/// @tparam Destination The type of object to construct
+	/// @tparam ExpectedArgs The types of values to parse out of the string
+	/// @tparam Splitter Callable splitter that returns the next position of a value
+	/// @param str String containing encoded values
+	/// @param splitter Function to split string into arguments
+	/// @return A constructed Destination
 	template<typename Destination, typename... ExpectedArgs>
 	constexpr decltype( auto ) construct_from( daw::string_view str, daw::string_view delemiter ) {
 		return construct_from<Destination, ExpectedArgs...>( std::move( str ),
@@ -327,7 +362,14 @@ namespace daw {
 		}
 	} // namespace impl
 
-	/// Apply the reified string as the types deducted from the Callable to the Callable
+	/// @brief Apply the reified string as the types deducted from the Callable to the Callable.  This may have unexpected
+	/// results if strings are ot controlled
+	/// @tparam Callable Can be called with operator( )
+	/// @tparam Splitter Callable splitter that returns the next position of a value
+	/// @param callable a function that takes deducted arguments
+	/// @param str String containing encoded values
+	/// @param splitter Function to split string into arguments
+	/// @return The result of callable
 	template<typename Callable, typename Splitter,
 	         std::enable_if_t<!is_convertible_v<Splitter, daw::string_view>, std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) apply_string( Callable callable, daw::string_view str, Splitter splitter ) {
@@ -336,6 +378,13 @@ namespace daw {
 		return impl::apply_string_impl( ftraits{}, std::move( callable ), std::move( str ), std::move( splitter ) );
 	}
 
+	/// @brief Apply the reified string as the types deducted from the Callable to the Callable.  This may have unexpected
+	/// results if strings are ot controlled
+	/// @tparam Callable Can be called with operator( )
+	/// @param callable a function that takes deducted arguments
+	/// @param str String containing encoded values
+	/// @param delemiter split what string arguments on
+	/// @return The result of callable
 	template<typename Callable>
 	constexpr decltype( auto ) apply_string( Callable callable, daw::string_view str, daw::string_view delemiter ) {
 		return apply_string<Callable>( std::move( callable ), std::move( str ),
@@ -348,7 +397,14 @@ namespace daw {
 		};
 	} // namespace impl
 
-	/// Apply the reified string as the types specified as Args... to the Callable
+	/// @brief Apply the reified string as the types specified as Args... to the Callable
+	/// @tparam Args Types of expected data to find in string
+	/// @tparam Callable Callable function type that will accept the args in string
+	/// @tparam Splitter A predicate that will return true on the string parts to split on
+	/// @param callable Function to apply arguments to
+	/// @param str String data with string encoded arguments
+	/// @param splitter Function to split string into arguments
+	/// @return result of callable
 	template<typename... Args, typename Callable, typename Splitter,
 	         std::enable_if_t<!is_convertible_v<Splitter, daw::string_view>, std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) apply_string2( Callable callable, daw::string_view str, Splitter splitter ) {
@@ -356,6 +412,13 @@ namespace daw {
 		return daw::apply( std::move( callable ), parser::parse_to<Args...>( std::move( str ), std::move( splitter ) ) );
 	}
 
+	/// @brief Apply the reified string as the types specified as Args... to the Callable
+	/// @tparam Args Types of expected data to find in string
+	/// @tparam Callable Callable function type that will accept the args in string
+	/// @param callable Function to apply arguments to
+	/// @param str String data with string encoded arguments
+	/// @param delemiter split what string arguments on
+	/// @return result of callable
 	template<typename... Args, typename Callable>
 	constexpr decltype( auto ) apply_string2( Callable callable, daw::string_view str, daw::string_view delemiter ) {
 		return apply_string2<Args...>( std::move( callable ), std::move( str ),
@@ -367,16 +430,30 @@ namespace daw {
 		using has_str = decltype( Stream{}.str( ) );
 	}
 
+	/// @brief Extract specified argument types from a stream of character data
+	/// @tparam Args Types of expected data to find in string
+	/// @tparam Stream Text stream type that does not have a str( ) method
+	/// @tparam Splitter A predicate that will return true on the string parts to split on
+	/// @param stream text stream to extract values from
+	/// @param splitter Function to split string into arguments
+	/// @return A tuple of values of the types specified in Args
 	template<
 	  typename... Args, typename Stream, typename Splitter,
 	  std::enable_if_t<(!is_detected_v<detectors::has_str, Stream> && !is_convertible_v<Splitter, daw::string_view>),
 	                   std::nullptr_t> = nullptr>
-	decltype( auto ) values_from_stream( Stream &&s, Splitter splitter ) {
+	decltype( auto ) values_from_stream( Stream &&stream, Splitter splitter ) {
 
-		std::string const str{std::istreambuf_iterator<char>{s}, {}};
+		std::string const str{std::istreambuf_iterator<char>{stream}, {}};
 		return parser::parse_to<Args...>( daw::string_view{str}, std::move( splitter ) );
 	}
 
+	/// @brief Extract specified argument types from a stream of character data
+	/// @tparam Args Types of expected data to find in string
+	/// @tparam Stream Text stream type, like stringstream, that has a str( ) method
+	/// @tparam Splitter A predicate that will return true on the string parts to split on
+	/// @param stream text stream to extract values from
+	/// @param splitter Function to split string into arguments
+	/// @return A tuple of values of the types specified in Args
 	template<
 	  typename... Args, typename Stream, typename Splitter,
 	  std::enable_if_t<(is_detected_v<detectors::has_str, Stream> && !is_convertible_v<Splitter, daw::string_view>),
@@ -386,6 +463,12 @@ namespace daw {
 		return parser::parse_to<Args...>( daw::string_view{s.str( )}, std::move( splitter ) );
 	}
 
+	/// @brief Extract specified argument types from a stream of character data
+	/// @tparam Args Types of expected data to find in string
+	/// @tparam Stream Text stream type
+	/// @param stream text stream to extract values from
+	/// @param delemiter split what string arguments on
+	/// @return A tuple of values of the types specified in Args
 	template<typename... Args, typename Stream>
 	decltype( auto ) values_from_stream( Stream &&s, daw::string_view delemiter ) {
 		return values_from_stream<Args...>( std::forward<Stream>( s ), parser::default_splitter{std::move( delemiter )} );
