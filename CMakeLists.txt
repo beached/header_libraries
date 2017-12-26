@@ -68,6 +68,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_parser_helper
 	daw_parser_helper_sv
 	daw_poly_vector
+	daw_observable_ptr
 	daw_output_stream_iterator
 	daw_random
 	daw_random_iterator
