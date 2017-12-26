@@ -107,7 +107,7 @@ namespace daw {
 			~control_block_t( ) = default;
 
 			bool can_borrow( ) const noexcept {
-				return !m_destruct && m_lock_id.load( ) >= 0;
+				return !m_destruct;
 			}
 
 			void destruct_if_time( ) {
@@ -255,6 +255,14 @@ namespace daw {
 				return daw::expected_t<result_t>{};
 			}
 			return daw::expected_t<result_t>::from_code( c, r );
+		}
+
+		bool can_borrow( ) const {
+			return m_control_block->can_borrow( );
+		}
+
+		explicit operator bool( ) const {
+			return can_borrow( );
 		}
 	};
 
