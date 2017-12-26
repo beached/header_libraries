@@ -58,27 +58,27 @@ namespace daw {
 	template<typename Integer, typename Bit, typename... Bits>
 	constexpr Integer set_bits( Integer i, Bit b, Bits...bs ) noexcept {
 		using expand = int[];
-		b = (1u << b);
+		b = static_cast<Bit>(1u << b);
 		static_cast<void>( expand{0, ( ( b |= (1u<<bs) ), 0 )...} );
-		return i | b;
+		return i | static_cast<Integer>(b);
 	}
 
 	/// @brief set bits at positions specified by b,bs...
 	template<typename Integer, typename Bit, typename... Bits>
 	constexpr Integer unset_bits( Integer i, Bit b, Bits...bs ) noexcept {
 		using expand = int[];
-		b = (1u << b);
+		b = static_cast<Bit>(1u << b);
 		static_cast<void>( expand{0, ( ( b |= (1u<<bs) ), 0 )...} );
-		return i & ~b;
+		return i & static_cast<Integer>(~b);
 	}
 
 	/// @brief get value with all bits but those specified masked out
 	template<typename Integer, typename Bit, typename... Bits>
 	constexpr Integer get_bits( Integer i, Bit b, Bits...bs ) noexcept {
 		using expand = int[];
-		b = (1u << b);
+		b = static_cast<Bit>(1u << b);
 		static_cast<void>( expand{0, ( ( b |= (1u<<bs) ), 0 )...} );
-		return i & b;
+		return i & static_cast<Integer>(b);
 	}
 
 } // namespace daw
