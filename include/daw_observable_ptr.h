@@ -305,6 +305,11 @@ namespace daw {
 		T *operator->( ) noexcept {
 			return m_control_block->m_ptr;
 		}
-	}; // namespace daw
+	};
 
+	template<typename T, typename... Args>
+	observable_ptr<T>
+	make_observable_ptr( Args &&... args ) noexcept( noexcept( new T( std::forward<Args>( args )... ) ) ) {
+		return observable_ptr<T>{new T( std::forward<Args>( args )... )};
+	}
 } // namespace daw

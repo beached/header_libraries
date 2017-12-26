@@ -49,3 +49,13 @@ BOOST_AUTO_TEST_CASE( test_002 ) {
 	}
 	BOOST_REQUIRE_EQUAL( *p, 5 );
 }
+
+BOOST_AUTO_TEST_CASE( test_003 ) {
+	auto t = daw::make_observable_ptr<int>( 4 );
+
+	auto obs = t.get_observer( );
+
+	obs.lock( []( int &val ) { val = 5; } );
+
+	BOOST_REQUIRE_EQUAL( *t, 5 );
+}
