@@ -37,4 +37,14 @@ BOOST_AUTO_TEST_CASE( test_01 ) {
 BOOST_AUTO_TEST_CASE( bit_mask_001 ) {
 	BOOST_REQUIRE( !daw::are_set( 0b0000'1000, 0b1000'000, 0b0000'0001 ) );
 	BOOST_REQUIRE( daw::are_set( 0b0000'1000, 0b1000'000, 0b0000'0001, 0b0000'1000 ) );
+	BOOST_REQUIRE( daw::are_set( 0b1, 1 ) );
+}
+
+BOOST_AUTO_TEST_CASE( set_bits_001 ) {
+	BOOST_REQUIRE_EQUAL( 0b0001'0000, daw::set_bits( 0u, 4 ) );
+	BOOST_REQUIRE_EQUAL( 0b0001'0001, daw::set_bits( 0u, 0, 4 ) );
+}
+
+BOOST_AUTO_TEST_CASE( get_bits_001 ) {
+	BOOST_REQUIRE_EQUAL( 0b0001'0101, daw::get_bits( 0b1111'1111, 0, 2, 4 ) );
 }
