@@ -106,8 +106,8 @@ namespace daw {
 			control_block_t &operator=( control_block_t && ) = default;
 			~control_block_t( ) = default;
 
-			bool can_borrow( ) const noexcept {
-				return !m_destruct;
+			bool expired( ) const noexcept {
+				return m_destruct;
 			}
 
 			void destruct_if_time( ) {
@@ -257,12 +257,12 @@ namespace daw {
 			return daw::expected_t<result_t>::from_code( c, r );
 		}
 
-		bool can_borrow( ) const {
-			return m_control_block->can_borrow( );
+		bool expired( ) const {
+			return m_control_block->expired( );
 		}
 
 		explicit operator bool( ) const {
-			return can_borrow( );
+			return !expired( );
 		}
 	};
 
@@ -345,12 +345,8 @@ namespace daw {
 			return daw::expected_t<result_t>::from_code( c, r );
 		}
 
-		bool can_borrow( ) const {
-			return m_control_block->can_borrow( );
-		}
-
 		explicit operator bool( ) const {
-			return can_borrow( );
+			return m_control_block != nullptr && m_control_block->m_ptr != nullptr;
 		}
 	};
 
