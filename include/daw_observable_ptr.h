@@ -324,10 +324,6 @@ namespace daw {
 		observable_ptr( std::nullptr_t )
 		  : observable_ptr{nullptr} {}
 
-		observer_ptr<T> get_observer( ) {
-			return observer_ptr<T>{m_control_block};
-		}
-
 		observer_ptr<T> get_observer( ) const {
 			return observer_ptr<T>{m_control_block};
 		}
