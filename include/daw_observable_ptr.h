@@ -191,7 +191,11 @@ namespace daw {
 		impl::control_block_t<T> *m_control_block;
 
 	public:
-		observer_ptr( ) = delete;
+		observer_ptr( )
+		  : m_control_block{nullptr} {}
+
+		observer_ptr( std::nullptr_t )
+		  : m_control_block{nullptr} {}
 
 		/// @brief An observer of an observable_ptr
 		/// @param cb Control block for observable pointer.  Must never be null, will abort if so
@@ -315,6 +319,9 @@ namespace daw {
 		  : m_control_block{new impl::control_block_t<T>{value}} {}
 
 		observable_ptr( )
+		  : observable_ptr{nullptr} {}
+
+		observable_ptr( std::nullptr_t )
 		  : observable_ptr{nullptr} {}
 
 		observer_ptr<T> get_observer( ) {
