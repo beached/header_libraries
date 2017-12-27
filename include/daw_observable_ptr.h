@@ -290,6 +290,10 @@ namespace daw {
 		explicit operator bool( ) const {
 			return !expired( );
 		}
+
+		observer_ptr<T> get_observer( ) const {
+			return observer_ptr<T>{m_control_block};
+		}
 	};
 
 	/// @brief A pointer wrapper that allows others to temporarily postpone destruction while in a locked scope
