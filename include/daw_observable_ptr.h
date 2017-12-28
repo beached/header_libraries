@@ -23,7 +23,9 @@
 #pragma once
 
 #include <atomic>
+#include <cstdint>
 #include <functional>
+#include <memory>
 #include <mutex>
 
 #include "daw_expected.h"
@@ -83,21 +85,44 @@ namespace daw {
 		class control_block_t {
 			using observer_count_t = int16_t;
 
-			T *m_ptr; // Pointer we are guarding
-			std::atomic_bool
-			  m_destruct;         // The owner has gone out of scope, as soon as there are no borrows, run values destructor
-			std::mutex m_on_loan; // Pointer has been borrowed
-			std::atomic<observer_count_t>
-			  m_observer_count; // Number of observers alive, cannot delete control block unless this is 0
+			// Pointer we are guarding
+			T *m_ptr;
+
+			// The owner has gone out of scope, as soon as there are no borrows, run values destructor
+			std::atomic_bool m_ptr_destruct;
+
+			// This controls access to deleting the control block
+			std::once_flag m_cb_destruct;
+
+			// Pointer has been borrowed
+			std::mutex m_is_borrowed;
+
+			// Number of observers alive, cannot delete control block unless this is 0
+			std::atomic<observer_count_t> m_observer_count;
 
 			constexpr control_block_t( T *ptr ) noexcept
 			  : m_ptr{ptr}
-			  , m_destruct{false}
-			  , m_on_loan{}
+			  , m_ptr_destruct{false}
+			  , m_cb_destruct{}
+			  , m_is_borrowed{}
 			  , m_observer_count{0} {}
 
 			template<typename U>
 			friend class observable_ptr;
+
+			void destruct_if_should( std::lock_guard<std::mutex> const & ) {
+				if( m_ptr_destruct.load( ) ) {
+					auto tmp = std::exchange( m_ptr, nullptr );
+					if( tmp ) {
+						delete tmp;
+					}
+				}
+			}
+
+			void destruct_if_should( ) {
+				std::lock_guard<std::mutex> lck{m_is_borrowed};
+				destruct_if_should( lck );
+			}
 
 		public:
 			control_block_t( control_block_t const & ) = default;
@@ -105,82 +130,83 @@ namespace daw {
 			control_block_t &operator=( control_block_t const & ) = default;
 			control_block_t &operator=( control_block_t && ) = default;
 
-			~control_block_t( ) {
-				auto tmp = std::exchange( m_ptr, nullptr );
-				if( tmp ) {
-					delete tmp;
-				}
-			}
+			// Should never get to this point without point without owner/observer cleaning up ptr
+			~control_block_t( ) = default;
 
 			bool expired( ) const noexcept {
-				return m_destruct;
-			}
-
-			void destruct_if_time( ) {
-				if( m_destruct.load( ) ) {
-					std::lock_guard<std::mutex> lck{m_on_loan};
-					auto tmp = std::exchange( m_ptr, nullptr );
-					if( tmp ) {
-						delete tmp;
-					}
-				}
+				return m_ptr_destruct;
 			}
 
 			locked_ptr<T> try_borrow( ) {
-				if( !m_on_loan.try_lock( ) ) {
+				if( !m_is_borrowed.try_lock( ) ) {
 					return locked_ptr<T>( nullptr, []( ) {} );
 				}
-				return locked_ptr<T>{m_ptr, [&]( ) {
-					                     destruct_if_time( );
-					                     m_on_loan.unlock( );
-				                     }};
+				return locked_ptr<T>{m_ptr, [&]( ) { m_is_borrowed.unlock( ); }};
 			}
 
 			locked_ptr<T> borrow( ) {
-				m_on_loan.lock( );
-				return locked_ptr<T>{m_ptr, [&]( ) {
-					                     destruct_if_time( );
-					                     m_on_loan.unlock( );
-				                     }};
+				m_is_borrowed.lock( );
+				return locked_ptr<T>{m_ptr, [&]( ) { m_is_borrowed.unlock( ); }};
 			}
 
 			bool add_observer( ) noexcept {
-				++m_observer_count;
-				if( m_destruct.load( ) ) {
-					--m_observer_count;
+				if( m_ptr_destruct.load( ) ) {
 					return false;
 				}
+				++m_observer_count;
 				return true;
 			}
 
 		private:
-			bool remove_observer( ) noexcept {
-				if( --m_observer_count <= 0 && m_destruct.load( ) ) {
-					std::lock_guard<std::mutex> lck{m_on_loan};
-					auto tmp = std::exchange( m_ptr, nullptr );
-					if( tmp ) {
-						delete tmp;
-					}
-				}
-				return false;
+			bool remove_observer( std::lock_guard<std::mutex> &lck ) noexcept {
+				--m_observer_count;
+				destruct_if_should( lck );
+				return m_observer_count <= 0;
 			}
 
-			bool remove_owner( ) noexcept {
-				m_destruct = true;
-				destruct_if_time( );
-				return m_observer_count.load( ) <= 0;
+			bool remove_owner( std::lock_guard<std::mutex> &lck ) noexcept {
+				m_ptr_destruct = true;
+				destruct_if_should( lck );
+				return m_observer_count <= 0;
+			}
+
+			static void destruct_cb( control_block_t *cb ) noexcept {
+				if( !cb ) {
+					return;
+				}
+				bool do_destruct = false;
+				std::call_once( cb->m_cb_destruct, [&do_destruct]( ) { do_destruct = true; } );
+				if( do_destruct ) {
+					delete cb;
+				}
 			}
 
 		public:
 			static void remove_observer( control_block_t *cb ) noexcept {
-				if( cb && cb->remove_observer( ) ) {
-					delete cb;
+				if( !cb ) {
+					return;
+				}
+				bool destruction = false;
+				{
+					std::lock_guard<std::mutex> lck{cb->m_is_borrowed};
+					destruction = cb->remove_observer( lck );
+				}
+				if( destruction ) {
+					destruct_cb( cb );
 				}
 			}
 
 			static void remove_owner( control_block_t *cb ) noexcept {
-				if( cb->remove_owner( ) ) {
-					delete cb;
+				if( !cb ) {
+					return;
+				}
+				bool destruction = false;
+				{
+					std::lock_guard<std::mutex> lck{cb->m_is_borrowed};
+					destruction = cb->remove_owner( lck );
+				}
+				if( destruction ) {
+					destruct_cb( cb );
 				}
 			}
 		};
@@ -394,4 +420,3 @@ namespace daw {
 		return observable_ptr<T>{new T( std::forward<Args>( args )... )};
 	}
 } // namespace daw
-
