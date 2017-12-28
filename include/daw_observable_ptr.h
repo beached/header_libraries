@@ -69,6 +69,14 @@ namespace daw {
 				return &m_ptr;
 			}
 
+			T * get( ) {
+				return m_ptr;
+			}
+
+			T const * get( ) const {
+				return m_ptr;
+			}
+
 			explicit operator bool( ) const {
 				return m_ptr != nullptr;
 			}
