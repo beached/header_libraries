@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE( test_002 ) {
 
 	auto obs = t.get_observer( );
 	{
-		auto lck = obs.try_borrow();
+		auto lck = obs.try_borrow( );
 		if( lck ) {
 			*lck = 5;
 		}
@@ -61,9 +61,28 @@ BOOST_AUTO_TEST_CASE( test_003 ) {
 }
 
 BOOST_AUTO_TEST_CASE( test_004 ) {
+
 	auto t = daw::make_observable_ptr<std::atomic_int_least8_t>( static_cast<int_least8_t>( 0 ) );
 
 	auto const obs = t.get_observer( );
 
 	BOOST_REQUIRE_EQUAL( obs.borrow( )->load( ), 0 );
 }
+
+namespace {
+	struct test_005_t {
+		daw::observable_ptr<std::atomic_int_least8_t> value;
+
+		test_005_t( )
+		  : value{daw::make_observable_ptr<std::atomic_int_least8_t>( static_cast<int_least8_t>( 0 ) )} {
+
+		}
+	};
+} // namespace
+
+BOOST_AUTO_TEST_CASE( test_005 ) {
+	test_005_t tmp{};
+	auto v = tmp.value->load( );
+	BOOST_REQUIRE_EQUAL( 0, v );
+}
+

@@ -53,7 +53,7 @@ namespace daw {
 				m_on_exit( );
 			}
 
-			T *operator->( ) const {
+			T *operator->( ) const noexcept {
 				return m_ptr;
 			}
 
@@ -107,8 +107,7 @@ namespace daw {
 			  , m_is_borrowed{}
 			  , m_observer_count{0} {}
 
-			template<typename U>
-			friend class observable_ptr;
+			friend class observable_ptr<T>;
 
 			void destruct_if_should( std::lock_guard<std::mutex> const & ) {
 				if( m_ptr_destruct.load( ) ) {
@@ -295,12 +294,16 @@ namespace daw {
 			return daw::expected_t<result_t>::from_code( c, r );
 		}
 
-		T const & operator*( ) const {
+		decltype(auto) operator-> ( ) const noexcept {
+			return borrow( );
+		}
+
+		T const &operator*( ) const {
 			T const &r = *borrow( );
 			return r;
 		}
 
-		T & operator*( ) {
+		T &operator*( ) {
 			T &r = *borrow( );
 			return r;
 		}
@@ -341,25 +344,21 @@ namespace daw {
 		  : m_control_block{new impl::control_block_t<T>{value}} {}
 
 		observable_ptr( )
-		  : observable_ptr{nullptr} {}
+		  : m_control_block{nullptr} {}
 
 		observable_ptr( std::nullptr_t )
-		  : observable_ptr{nullptr} {}
+		  : m_control_block{nullptr} {}
 
 		observer_ptr<T> get_observer( ) const {
 			return observer_ptr<T>{m_control_block};
 		}
 
-		T * get( ) const {
+		T *get( ) const {
 			return m_control_block->m_ptr;
 		}
 
-		T const *operator->( ) const noexcept {
-			return borrow( )->get( );
-		}
-
-		T *operator->( ) noexcept {
-			return borrow( )->get( );
+		decltype(auto) operator-> ( ) const noexcept {
+			return borrow( );
 		}
 
 		impl::locked_ptr<T> try_borrow( ) const {
@@ -398,12 +397,12 @@ namespace daw {
 			return daw::expected_t<result_t>::from_code( c, r );
 		}
 
-		T const & operator*( ) const {
+		T const &operator*( ) const {
 			T const &r = *borrow( );
 			return r;
 		}
 
-		T & operator*( ) {
+		T &operator*( ) {
 			T &r = *borrow( );
 			return r;
 		}
@@ -420,6 +419,11 @@ namespace daw {
 	template<typename T, typename... Args>
 	observable_ptr<T>
 	make_observable_ptr( Args &&... args ) noexcept( noexcept( new T( std::forward<Args>( args )... ) ) ) {
-		return observable_ptr<T>{new T( std::forward<Args>( args )... )};
+		T *tmp = new T( std::forward<Args>( args )... );
+		if( !tmp ) {
+			return observable_ptr<T>{};
+		}
+		return observable_ptr<T>{tmp};
 	}
 } // namespace daw
+
