@@ -59,3 +59,11 @@ BOOST_AUTO_TEST_CASE( test_003 ) {
 
 	BOOST_REQUIRE_EQUAL( *t, 5 );
 }
+
+BOOST_AUTO_TEST_CASE( test_004 ) {
+	auto t = daw::make_observable_ptr<std::atomic_int_least8_t>( static_cast<int_least8_t>( 0 ) );
+
+	auto const obs = t.get_observer( );
+
+	BOOST_REQUIRE_EQUAL( obs.borrow( )->load( ), 0 );
+}
