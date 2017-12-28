@@ -44,7 +44,7 @@ namespace daw {
 
 		public:
 			template<typename OnExit>
-			constexpr locked_ptr( T *ptr, OnExit on_exit ) noexcept
+			locked_ptr( T *ptr, OnExit on_exit ) noexcept
 			  : m_ptr{ptr}
 			  , m_on_exit( std::move( on_exit ) ) {}
 
@@ -57,19 +57,19 @@ namespace daw {
 				return m_ptr;
 			}
 
-			T &operator*( ) {
+			T &operator*( ) noexcept {
 				return *m_ptr;
 			}
 
-			T const &operator*( ) const {
-				return &m_ptr;
+			T const &operator*( ) const noexcept {
+				return *m_ptr;
 			}
 
-			T *get( ) const {
+			T *get( ) const noexcept {
 				return m_ptr;
 			}
 
-			explicit operator bool( ) const {
+			explicit operator bool( ) const noexcept {
 				return m_ptr != nullptr;
 			}
 
@@ -105,7 +105,10 @@ namespace daw {
 			  , m_ptr_destruct{false}
 			  , m_cb_destruct{}
 			  , m_is_borrowed{}
-			  , m_observer_count{0} {}
+			  , m_observer_count{0} {
+
+				std::cout << "";
+			}
 
 			friend class observable_ptr<T>;
 
@@ -146,6 +149,10 @@ namespace daw {
 			locked_ptr<T> borrow( ) const {
 				m_is_borrowed.lock( );
 				return locked_ptr<T>{m_ptr, [&]( ) { m_is_borrowed.unlock( ); }};
+			}
+
+			T *get( ) const noexcept {
+				return m_ptr;
 			}
 
 			bool add_observer( ) noexcept {
@@ -216,15 +223,15 @@ namespace daw {
 		impl::control_block_t<T> *m_control_block;
 
 	public:
-		observer_ptr( )
+		constexpr observer_ptr( ) noexcept
 		  : m_control_block{nullptr} {}
 
-		observer_ptr( std::nullptr_t )
+		constexpr observer_ptr( std::nullptr_t ) noexcept
 		  : m_control_block{nullptr} {}
 
 		/// @brief An observer of an observable_ptr
 		/// @param cb Control block for observable pointer.  Must never be null, will abort if so
-		constexpr observer_ptr( impl::control_block_t<T> *cb ) noexcept
+		observer_ptr( impl::control_block_t<T> *cb )
 		  : m_control_block{cb} {}
 
 		void reset( ) noexcept {
@@ -239,11 +246,15 @@ namespace daw {
 		}
 
 		constexpr observer_ptr( observer_ptr const &other ) noexcept
-		  : m_control_block{other.m_control_block} {}
+		  : m_control_block{other.m_control_block} {
 
-		constexpr observer_ptr &operator=( observer_ptr const &rhs ) noexcept {
+			m_control_block->add_observer( );
+		}
+
+		observer_ptr &operator=( observer_ptr const &rhs ) {
 			if( this != &rhs ) {
 				m_control_block = rhs.m_control_block;
+				m_control_block->add_observer( );
 			}
 			return *this;
 		}
@@ -252,10 +263,15 @@ namespace daw {
 		  : m_control_block{std::exchange( other.m_control_block, nullptr )} {}
 
 		constexpr observer_ptr &operator=( observer_ptr &&rhs ) noexcept {
-			if( this != &rhs ) {
-				m_control_block = std::exchange( rhs.m_control_block, nullptr );
-			}
+			m_control_block = std::exchange( rhs.m_control_block, nullptr );
 			return *this;
+		}
+
+		constexpr T *get( ) const noexcept {
+			if( !m_control_block ) {
+				return nullptr;
+			}
+			return m_control_block->get( );
 		}
 
 		impl::locked_ptr<T> try_borrow( ) const {
@@ -294,7 +310,7 @@ namespace daw {
 			return daw::expected_t<result_t>::from_code( c, r );
 		}
 
-		decltype(auto) operator-> ( ) const noexcept {
+		decltype( auto ) operator-> ( ) const noexcept {
 			return borrow( );
 		}
 
@@ -322,14 +338,18 @@ namespace daw {
 	template<typename T>
 	class observable_ptr {
 		impl::control_block_t<T> *m_control_block;
-		static constexpr intmax_t owner_id = -3;
 
 	public:
 		observable_ptr( observable_ptr const & ) = delete;
 		observable_ptr &operator=( observable_ptr const & ) = delete;
 
-		observable_ptr( observable_ptr && ) noexcept = default;
-		observable_ptr &operator=( observable_ptr && ) noexcept = default;
+		observable_ptr( observable_ptr &&other ) noexcept
+		  : m_control_block{std::exchange( other.m_control_block, nullptr )} {}
+
+		observable_ptr &operator=( observable_ptr &&rhs ) noexcept {
+			m_control_block = std::exchange( rhs.m_control_block, nullptr );
+			return *this;
+		}
 
 		~observable_ptr( ) noexcept {
 			auto tmp = std::exchange( m_control_block, nullptr );
@@ -343,21 +363,24 @@ namespace daw {
 		explicit observable_ptr( T *value )
 		  : m_control_block{new impl::control_block_t<T>{value}} {}
 
-		observable_ptr( )
+		constexpr observable_ptr( ) noexcept
 		  : m_control_block{nullptr} {}
 
-		observable_ptr( std::nullptr_t )
+		constexpr observable_ptr( std::nullptr_t ) noexcept
 		  : m_control_block{nullptr} {}
 
 		observer_ptr<T> get_observer( ) const {
 			return observer_ptr<T>{m_control_block};
 		}
 
-		T *get( ) const {
-			return m_control_block->m_ptr;
+		constexpr T *get( ) const noexcept {
+			if( !m_control_block ) {
+				return nullptr;
+			}
+			return m_control_block->get( );
 		}
 
-		decltype(auto) operator-> ( ) const noexcept {
+		decltype( auto ) operator-> ( ) const noexcept {
 			return borrow( );
 		}
 
@@ -426,4 +449,3 @@ namespace daw {
 		return observable_ptr<T>{tmp};
 	}
 } // namespace daw
-
