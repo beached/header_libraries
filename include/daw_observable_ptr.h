@@ -69,11 +69,11 @@ namespace daw {
 				return &m_ptr;
 			}
 
-			T * get( ) {
+			T *get( ) {
 				return m_ptr;
 			}
 
-			T const * get( ) const {
+			T const *get( ) const {
 				return m_ptr;
 			}
 
@@ -103,7 +103,7 @@ namespace daw {
 			std::once_flag m_cb_destruct;
 
 			// Pointer has been borrowed
-			std::mutex m_is_borrowed;
+			mutable std::mutex m_is_borrowed;
 
 			// Number of observers alive, cannot delete control block unless this is 0
 			std::atomic<observer_count_t> m_observer_count;
@@ -145,10 +145,22 @@ namespace daw {
 				return m_ptr_destruct;
 			}
 
+			locked_ptr<T const> try_borrow( ) const {
+				if( !m_is_borrowed.try_lock( ) ) {
+					return locked_ptr<T>( nullptr, []( ) {} );
+				}
+				return locked_ptr<T>{m_ptr, [&]( ) { m_is_borrowed.unlock( ); }};
+			}
+
 			locked_ptr<T> try_borrow( ) {
 				if( !m_is_borrowed.try_lock( ) ) {
 					return locked_ptr<T>( nullptr, []( ) {} );
 				}
+				return locked_ptr<T>{m_ptr, [&]( ) { m_is_borrowed.unlock( ); }};
+			}
+
+			locked_ptr<T const> borrow( ) const {
+				m_is_borrowed.lock( );
 				return locked_ptr<T>{m_ptr, [&]( ) { m_is_borrowed.unlock( ); }};
 			}
 
@@ -269,30 +281,34 @@ namespace daw {
 
 		impl::locked_ptr<T const> try_borrow( ) const {
 			if( !m_control_block ) {
-				return impl::locked_ptr<T>{nullptr, []( ) {}};
+				return impl::locked_ptr<T const>{nullptr, []( ) {}};
 			}
-			return m_control_block->try_borrow( );
+			impl::control_block_t<T> const &cb = *m_control_block;
+			return cb.try_borrow( );
 		}
 
 		impl::locked_ptr<T> try_borrow( ) {
 			if( !m_control_block ) {
 				return impl::locked_ptr<T>{nullptr, []( ) {}};
 			}
-			return m_control_block->try_borrow( );
+			impl::control_block_t<T> &cb = *m_control_block;
+			return cb.try_borrow( );
 		}
 
 		impl::locked_ptr<T const> borrow( ) const {
 			if( !m_control_block ) {
-				return impl::locked_ptr<T>{nullptr, []( ) {}};
+				return impl::locked_ptr<T const>{nullptr, []( ) {}};
 			}
-			return m_control_block->borrow( );
+			impl::control_block_t<T> const &cb = *m_control_block;
+			return cb.borrow( );
 		}
 
 		impl::locked_ptr<T> borrow( ) {
 			if( !m_control_block ) {
 				return impl::locked_ptr<T>{nullptr, []( ) {}};
 			}
-			return m_control_block->borrow( );
+			impl::control_block_t<T> &cb = *m_control_block;
+			return cb.borrow( );
 		}
 
 		template<typename Callable>
@@ -383,34 +399,57 @@ namespace daw {
 		}
 
 		impl::locked_ptr<T const> try_borrow( ) const {
-			observer_ptr<T> const tmp{m_control_block};
-			return tmp.try_borrow( );
+			if( !m_control_block ) {
+				return impl::locked_ptr<T const>{nullptr, []( ) {}};
+			}
+			impl::control_block_t<T> const &cb = *m_control_block;
+			return cb.try_borrow( );
 		}
 
 		impl::locked_ptr<T> try_borrow( ) {
-			observer_ptr<T> tmp{m_control_block};
-			return tmp.try_borrow( );
+			if( !m_control_block ) {
+				return impl::locked_ptr<T>{nullptr, []( ) {}};
+			}
+			impl::control_block_t<T> &cb = *m_control_block;
+			return cb.try_borrow( );
 		}
 
 		impl::locked_ptr<T const> borrow( ) const {
-			observer_ptr<T> const tmp{m_control_block};
-			return tmp.borrow( );
+			if( !m_control_block ) {
+				return impl::locked_ptr<T const>{nullptr, []( ) {}};
+			}
+			impl::control_block_t<T> const &cb = *m_control_block;
+			return cb.borrow( );
 		}
 
 		impl::locked_ptr<T> borrow( ) {
-			observer_ptr<T> tmp{m_control_block};
-			return tmp.borrow( );
-		}
-		template<typename Callable>
-		decltype( auto ) lock( Callable c ) const {
-			observer_ptr<T> const tmp{m_control_block};
-			return tmp.lock( std::move( c ) );
+			if( !m_control_block ) {
+				return impl::locked_ptr<T>{nullptr, []( ) {}};
+			}
+			impl::control_block_t<T> &cb = *m_control_block;
+			return cb.borrow( );
 		}
 
 		template<typename Callable>
-		decltype( auto ) lock( Callable c ) {
-			observer_ptr<T> tmp{m_control_block};
-			return tmp.lock( std::move( c ) );
+		decltype( auto ) lock( Callable c ) const noexcept( noexcept( c( std::declval<T const &>( ) ) ) ) {
+			using result_t = std::decay_t<decltype( c( std::declval<T const &>( ) ) )>;
+			auto lck_ptr = borrow( );
+			if( !lck_ptr ) {
+				return daw::expected_t<result_t>{};
+			}
+			T const &r = *lck_ptr;
+			return daw::expected_t<result_t>::from_code( c, r );
+		}
+
+		template<typename Callable>
+		decltype( auto ) lock( Callable c ) noexcept( noexcept( c( std::declval<T &>( ) ) ) ) {
+			using result_t = std::decay_t<decltype( std::declval<Callable>( )( std::declval<T &>( ) ) )>;
+			auto lck_ptr = borrow( );
+			if( !lck_ptr ) {
+				return daw::expected_t<result_t>{};
+			}
+			T &r = *lck_ptr;
+			return daw::expected_t<result_t>::from_code( c, r );
 		}
 
 		explicit operator bool( ) const noexcept {
