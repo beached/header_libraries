@@ -26,7 +26,6 @@
 #include <boost/variant.hpp>
 
 namespace daw {
-
 	template<typename T>
 	class observable_ptr_pair {
 		boost::variant<daw::observable_ptr<T>, daw::observer_ptr<T>> m_ptrs;
@@ -40,8 +39,12 @@ namespace daw {
 
 		observable_ptr_pair( observable_ptr_pair && ) noexcept = default;
 		observable_ptr_pair &operator=( observable_ptr_pair && ) noexcept = default;
-		observable_ptr_pair( observable_ptr_pair const & ) = default;
-		observable_ptr_pair &operator=( observable_ptr_pair const & ) = default;
+		observable_ptr_pair( observable_ptr_pair const &other )
+		  : m_ptrs{other.get_observer( )} {}
+
+		observable_ptr_pair &operator=( observable_ptr_pair const & rhs ) {
+			m_ptrs = rhs.get_observer( );
+		}
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor vis ) {
