@@ -147,7 +147,7 @@ namespace daw {
 					store_observer( other.get_observable_ptr( )->get_observer( ) );
 					break;
 				case data_types::type_observer:
-					store_observer( other.get_observer_ptr( ) );
+					store_observer( *other.get_observer_ptr( ) );
 					break;
 				case data_types::type_nothing:
 					break;
@@ -176,7 +176,7 @@ namespace daw {
 					store_observer( rhs.get_observable_ptr( )->get_observer( ) );
 					break;
 				case data_types::type_observer:
-					store_observer( rhs.get_observer_ptr( ) );
+					store_observer( *rhs.get_observer_ptr( ) );
 					break;
 				case data_types::type_nothing:
 					break;
