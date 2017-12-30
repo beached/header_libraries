@@ -84,23 +84,23 @@ namespace daw {
 				}
 			}
 
-			template<typename... Args>
-			void store_observable( Args &&... args ) {
+			template<typename Value>
+			void store_observable( Value && value ) {
 				if( type != data_types::type_observable ) {
 					clear( );
 				}
 				type = data_types::type_nothing;
-				observable_data = observable_ptr<T>( std::forward<Args>(args)... );
+				observable_data = std::forward<Value>(value);
 				type = data_types::type_observable;
 			}
 
-			template<typename... Args>
-			void store_observer( Args &&... args ) {
+			template<typename Value>
+			void store_observer( Value && value ) {
 				if( type != data_types::type_observer ) {
 					clear( );
 				}
 				type = data_types::type_nothing;
-				observer_data = observer_ptr<T>( std::forward<Args>(args)... );
+				observer_data = std::forward<Value>(value);
 				type = data_types::type_observer;
 			}
 
