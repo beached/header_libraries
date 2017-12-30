@@ -24,7 +24,7 @@
 #include <iostream>
 
 #include "daw_observable_ptr_pair.h"
-/*
+
 BOOST_AUTO_TEST_CASE( test_001 ) {
   int *p = new int{4};
   daw::observable_ptr_pair<int> t{p};
@@ -68,7 +68,7 @@ BOOST_AUTO_TEST_CASE( test_004 ) {
 
   BOOST_REQUIRE_EQUAL( obs.borrow( )->load( ), 0 );
 }
-*/
+
 namespace {
 	struct test_t {
 		int value;
@@ -90,8 +90,17 @@ BOOST_AUTO_TEST_CASE( test_visit_006 ) {
 	BOOST_REQUIRE_EQUAL( 5, res );
 }
 
-BOOST_AUTO_TEST_CASE( test_apply_visitor_006 ) {
+BOOST_AUTO_TEST_CASE( test_apply_visitor_007 ) {
 	auto const tmp = daw::make_observable_ptr_pair<test_t>( 5 );
 	auto const res = tmp.apply_visitor( []( auto const & ptr ) { return ptr->value; } );
 	BOOST_REQUIRE_EQUAL( 5, res );
 }
+
+BOOST_AUTO_TEST_CASE( test_visit_008 ) {
+	auto tmp = daw::make_observable_ptr_pair<test_t>( 5 );
+	tmp.visit( []( auto & v ) -> int &  { return v.value; } ) = 6;
+	auto const res = tmp.visit( []( auto v ) { return v.value; } );
+	BOOST_REQUIRE_EQUAL( 6, res );
+}
+
+

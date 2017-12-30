@@ -42,7 +42,7 @@ namespace daw {
 		observable_ptr_pair( observable_ptr_pair const &other )
 		  : m_ptrs{other.get_observer( )} {}
 
-		observable_ptr_pair &operator=( observable_ptr_pair const & rhs ) {
+		observable_ptr_pair &operator=( observable_ptr_pair const &rhs ) {
 			m_ptrs = rhs.get_observer( );
 		}
 
@@ -58,12 +58,16 @@ namespace daw {
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor vis ) {
-			return boost::apply_visitor( [vis = std::move( vis )]( auto &p ) { return vis( *p.borrow( ) ); }, m_ptrs );
+			return boost::apply_visitor( [vis = std::move( vis )]( auto &p )->decltype(
+			                               vis( std::declval<T &>( ) ) ) { return vis( *p.borrow( ) ); },
+			                             m_ptrs );
 		}
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor vis ) const {
-			return boost::apply_visitor( [vis = std::move( vis )]( auto const &p ) { return vis( *p.borrow( ) ); }, m_ptrs );
+			return boost::apply_visitor( [vis = std::move( vis )]( auto &p )->decltype(
+			                               vis( std::declval<T const &>( ) ) ) { return vis( *p.borrow( ) ); },
+			                             m_ptrs );
 		}
 
 		decltype( auto ) operator-> ( ) const {
