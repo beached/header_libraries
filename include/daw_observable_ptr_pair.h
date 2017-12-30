@@ -47,50 +47,60 @@ namespace daw {
 		}
 
 		template<typename Visitor>
-		decltype( auto ) visit( Visitor vis ) {
+		decltype( auto ) apply_visitor( Visitor vis ) {
 			return boost::apply_visitor( std::move( vis ), m_ptrs );
 		}
 
 		template<typename Visitor>
-		decltype( auto ) visit( Visitor vis ) const {
+		decltype( auto ) apply_visitor( Visitor vis ) const {
 			return boost::apply_visitor( std::move( vis ), m_ptrs );
 		}
 
+		template<typename Visitor>
+		decltype( auto ) visit( Visitor vis ) {
+			return boost::apply_visitor( [vis = std::move( vis )]( auto &p ) { return vis( *p.borrow( ) ); }, m_ptrs );
+		}
+
+		template<typename Visitor>
+		decltype( auto ) visit( Visitor vis ) const {
+			return boost::apply_visitor( [vis = std::move( vis )]( auto const &p ) { return vis( *p.borrow( ) ); }, m_ptrs );
+		}
+
 		decltype( auto ) operator-> ( ) const {
-			return visit( []( auto const &obs_ptr ) { return obs_ptr.operator->( ); } );
+			return apply_visitor( []( auto const &obs_ptr ) { return obs_ptr.operator->( ); } );
 		}
 
 		decltype( auto ) operator*( ) const {
-			return visit( []( auto const &obs_ptr ) { return obs_ptr.operator*( ); } );
+			return apply_visitor( []( auto const &obs_ptr ) { return obs_ptr.operator*( ); } );
 		}
 
 		operator bool( ) const {
-			return visit( []( auto const &obs_ptr ) { return obs_ptr.operator bool( ); } );
+			return apply_visitor( []( auto const &obs_ptr ) { return obs_ptr.operator bool( ); } );
 		}
 
 		operator observer_ptr<T>( ) const {
-			return visit( []( auto const &obs_ptr ) { return obs_ptr.operator observer_ptr<T>( ); } );
+			return apply_visitor( []( auto const &obs_ptr ) { return obs_ptr.operator observer_ptr<T>( ); } );
 		}
 
 		decltype( auto ) get_observer( ) const {
-			return visit( []( auto const &obs_ptr ) { return obs_ptr.get_observer( ); } );
+			return apply_visitor( []( auto const &obs_ptr ) { return obs_ptr.get_observer( ); } );
 		}
 
 		decltype( auto ) borrow( ) const {
-			return visit( []( auto const &obs_ptr ) { return obs_ptr.borrow( ); } );
+			return apply_visitor( []( auto const &obs_ptr ) { return obs_ptr.borrow( ); } );
 		}
 
 		decltype( auto ) try_borrow( ) const {
-			return visit( []( auto const &obs_ptr ) { return obs_ptr.try_borrow( ); } );
+			return apply_visitor( []( auto const &obs_ptr ) { return obs_ptr.try_borrow( ); } );
 		}
 
 		decltype( auto ) get( ) const {
-			return visit( []( auto const &obs_ptr ) { return obs_ptr.get( ); } );
+			return apply_visitor( []( auto const &obs_ptr ) { return obs_ptr.get( ); } );
 		}
 
 		template<typename Callable>
 		decltype( auto ) lock( Callable c ) const {
-			return visit( [&c]( auto const &obs_ptr ) { return obs_ptr.lock( std::move( c ) ); } );
+			return apply_visitor( [&c]( auto const &obs_ptr ) { return obs_ptr.lock( std::move( c ) ); } );
 		}
 	};
 
