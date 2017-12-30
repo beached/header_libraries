@@ -23,9 +23,8 @@
 #pragma once
 
 #include "daw_observable_ptr.h"
+#include "daw_static_array.h"
 #include "daw_traits.h"
-
-#include <boost/variant.hpp>
 
 namespace daw {
 	namespace impl {
@@ -34,46 +33,227 @@ namespace daw {
 
 		template<typename Func, typename... Args>
 		constexpr bool has_void_result_v = is_detected_v<has_void_result, Func, Args...>;
-	} // namespace impl
+
+		template<typename T>
+		class observable_ptr_pair_impl {
+			enum class data_types : uint_least8_t { type_nothing, type_observable, type_observer };
+
+			union {
+				observable_ptr<T> observable_data;
+				observer_ptr<T> observer_data;
+			};
+
+			data_types type;
+
+			observable_ptr<T> *get_observable_ptr( ) noexcept {
+				return &observable_data;
+			}
+
+			observable_ptr<T> const *get_observable_ptr( ) const noexcept {
+				return &observable_data;
+			}
+
+			observer_ptr<T> *get_observer_ptr( ) noexcept {
+				return &observer_data;
+			}
+
+			observer_ptr<T> const *get_observer_ptr( ) const noexcept {
+				return &observer_data;
+			}
+
+			void destroy_obserable( ) {
+				type = data_types::type_nothing;
+				get_observable_ptr( )->~observable_ptr<T>( );
+			}
+
+			void destroy_observer( ) {
+				type = data_types::type_nothing;
+				get_observer_ptr( )->~observer_ptr<T>( );
+			}
+
+			void clear( ) noexcept {
+				switch( type ) {
+				case data_types::type_observable:
+					destroy_obserable( );
+					break;
+				case data_types::type_observer:
+					destroy_observer( );
+					break;
+				case data_types::type_nothing:
+					break;
+				}
+			}
+
+			template<typename... Args>
+			void store_observable( Args &&... args ) {
+				if( type != data_types::type_observable ) {
+					clear( );
+				}
+				type = data_types::type_nothing;
+				observable_data = observable_ptr<T>( std::forward<Args>(args)... );
+				type = data_types::type_observable;
+			}
+
+			template<typename... Args>
+			void store_observer( Args &&... args ) {
+				if( type != data_types::type_observer ) {
+					clear( );
+				}
+				type = data_types::type_nothing;
+				observer_data = observer_ptr<T>( std::forward<Args>(args)... );
+				type = data_types::type_observer;
+			}
+
+		public:
+			observable_ptr_pair_impl( )
+			  //: m_buffer{}
+			  : type{data_types::nothing} {
+				store_observable( );
+			}
+
+			~observable_ptr_pair_impl( ) noexcept {
+				clear( );
+			}
+
+			observable_ptr_pair_impl( observable_ptr<T> &&ptr )
+			  : type{data_types::type_nothing} {
+
+				store_observable( std::move( ptr ) );
+			}
+
+			observable_ptr_pair_impl( observable_ptr<T> const &ptr )
+			  : type{data_types::type_nothing} {
+
+				store_observable( ptr );
+			}
+
+			observable_ptr_pair_impl( observer_ptr<T> &&ptr )
+			  : type{data_types::type_nothing} {
+
+				store_observer( std::move( ptr ) );
+			}
+
+			observable_ptr_pair_impl( observer_ptr<T> const &ptr )
+			  : type{data_types::type_nothing} {
+
+				store_observer( ptr );
+			}
+
+			observable_ptr_pair_impl( observable_ptr_pair_impl const &other )
+			  : type{data_types::type_nothing} {
+
+				switch( other.type ) {
+				case data_types::type_observable:
+					store_observer( other.get_observable_ptr( )->get_observer( ) );
+					break;
+				case data_types::type_observer:
+					store_observer( other.get_observer_ptr( ) );
+					break;
+				case data_types::type_nothing:
+					break;
+				}
+			}
+
+			observable_ptr_pair_impl( observable_ptr_pair_impl &&other ) noexcept
+			  : type{data_types::type_nothing} {
+
+				switch( other.type ) {
+				case data_types::type_observable:
+					store_observable( std::move( *other.get_observable_ptr( ) ) );
+					break;
+				case data_types::type_observer:
+					store_observer( std::move( *other.get_observer_ptr( ) ) );
+					break;
+				case data_types::type_nothing:
+				default:
+					break;
+				}
+			}
+
+			observable_ptr_pair_impl &operator=( observable_ptr_pair_impl const &rhs ) {
+				switch( rhs.type ) {
+				case data_types::type_observable:
+					store_observer( rhs.get_observable_ptr( )->get_observer( ) );
+					break;
+				case data_types::type_observer:
+					store_observer( rhs.get_observer_ptr( ) );
+					break;
+				case data_types::type_nothing:
+					break;
+				}
+			}
+
+			observable_ptr_pair_impl &operator=( observable_ptr_pair_impl &&rhs ) {
+				switch( rhs.type ) {
+				case data_types::type_observable:
+					store_observable( std::move( *rhs.get_observable_ptr( ) ) );
+					break;
+				case data_types::type_observer:
+					store_observer( std::move( *rhs.get_observer_ptr( ) ) );
+					break;
+				case data_types::type_nothing:
+				default:
+					break;
+				}
+			}
+
+			template<typename Visitor>
+			decltype( auto ) visit( Visitor vis ) {
+				if( type == data_types::type_nothing ) {
+					abort( );
+				}
+				if( type == data_types::type_observable ) {
+					return vis( *get_observable_ptr( ) );
+				}
+				return vis( *get_observer_ptr( ) );
+			}
+
+			template<typename Visitor>
+			decltype( auto ) visit( Visitor vis ) const {
+				if( type == data_types::type_nothing ) {
+					abort( );
+				}
+				if( type == data_types::type_observable ) {
+					return vis( *get_observable_ptr( ) );
+				}
+				return vis( *get_observer_ptr( ) );
+			}
+		}; // namespace daw
+	}    // namespace impl
 
 	template<typename T>
 	class observable_ptr_pair {
-		boost::variant<daw::observable_ptr<T>, daw::observer_ptr<T>> m_ptrs;
+		impl::observable_ptr_pair_impl<T> m_ptrs;
 
 	public:
 		observable_ptr_pair( )
-		  : m_ptrs{observable_ptr<T>{}} {}
+		  : m_ptrs{} {}
 
 		observable_ptr_pair( T *ptr )
 		  : m_ptrs{observable_ptr<T>{ptr}} {}
 
 		observable_ptr_pair( observable_ptr_pair && ) noexcept = default;
-		observable_ptr_pair &operator=( observable_ptr_pair && ) noexcept = default;
-		observable_ptr_pair( observable_ptr_pair const &other )
-		  : m_ptrs{other.get_observer( )} {}
-
-		observable_ptr_pair &operator=( observable_ptr_pair const &rhs ) {
-			m_ptrs = rhs.get_observer( );
-		}
+		observable_ptr_pair( observable_ptr_pair const &other ) = default;
+		observable_ptr_pair &operator=( observable_ptr_pair const &rhs ) = default;
 
 		template<typename Visitor>
 		decltype( auto ) apply_visitor( Visitor vis ) {
-			return boost::apply_visitor( std::move( vis ), m_ptrs );
+			return m_ptrs.visit( std::move( vis ) );
 		}
 
 		template<typename Visitor>
 		decltype( auto ) apply_visitor( Visitor vis ) const {
-			return boost::apply_visitor( std::move( vis ), m_ptrs );
+			return m_ptrs.visit( std::move( vis ) );
 		}
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor vis ) {
-			return boost::apply_visitor( [&]( auto &p ) -> decltype( auto ) { return vis( *p.borrow( ) ); }, m_ptrs );
+			return m_ptrs.visit( [&]( auto &p ) -> decltype( auto ) { return vis( *p.borrow( ) ); } );
 		}
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor vis ) const {
-			return boost::apply_visitor( [&]( auto const &p ) -> decltype( auto ) { return vis( *p.borrow( ) ); }, m_ptrs );
+			return m_ptrs.visit( [&]( auto const &p ) -> decltype( auto ) { return vis( *p.borrow( ) ); } );
 		}
 
 		decltype( auto ) operator-> ( ) const {
