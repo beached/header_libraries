@@ -227,7 +227,7 @@ namespace daw {
 
 	public:
 		observable_ptr_pair( )
-		  : m_ptrs{} {}
+		  : m_ptrs{observable_ptr<T>{}} {}
 
 		observable_ptr_pair( T *ptr )
 		  : m_ptrs{observable_ptr<T>{ptr}} {}
