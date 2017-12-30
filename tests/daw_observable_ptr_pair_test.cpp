@@ -75,6 +75,10 @@ namespace {
 
 		test_t( int v )
 		  : value{v} { }
+
+		void set_value( int v ) {
+			value = v;
+		}
 	};
 } // namespace
 
@@ -99,7 +103,14 @@ BOOST_AUTO_TEST_CASE( test_apply_visitor_007 ) {
 BOOST_AUTO_TEST_CASE( test_visit_008 ) {
 	auto tmp = daw::make_observable_ptr_pair<test_t>( 5 );
 	tmp.visit( []( auto & v ) -> int &  { return v.value; } ) = 6;
-	auto const res = tmp.visit( []( auto v ) { return v.value; } );
+	auto const res = tmp.visit( []( auto v ) ->int { return v.value; } );
+	BOOST_REQUIRE_EQUAL( 6, res );
+}
+
+BOOST_AUTO_TEST_CASE( test_visit_009 ) {
+	auto tmp = daw::make_observable_ptr_pair<test_t>( 5 );
+	tmp.visit( []( auto & v ) { v.set_value( 6 ); } );
+	auto const res = tmp.visit( []( auto v ) ->int { return v.value; } );
 	BOOST_REQUIRE_EQUAL( 6, res );
 }
 

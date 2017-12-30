@@ -23,9 +23,19 @@
 #pragma once
 
 #include "daw_observable_ptr.h"
+#include "daw_traits.h"
+
 #include <boost/variant.hpp>
 
 namespace daw {
+	namespace impl {
+		template<typename Func, typename... Args>
+		using has_void_result = decltype( std::declval<Func>( )( std::declval<Args>( )... ) );
+
+		template<typename Func, typename... Args>
+		constexpr bool has_void_result_v = is_detected_v<has_void_result, Func, Args...>;
+	} // namespace impl
+
 	template<typename T>
 	class observable_ptr_pair {
 		boost::variant<daw::observable_ptr<T>, daw::observer_ptr<T>> m_ptrs;
@@ -58,16 +68,12 @@ namespace daw {
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor vis ) {
-			return boost::apply_visitor( [vis = std::move( vis )]( auto &p )->decltype(
-			                               vis( std::declval<T &>( ) ) ) { return vis( *p.borrow( ) ); },
-			                             m_ptrs );
+			return boost::apply_visitor( [&]( auto &p ) -> decltype( auto ) { return vis( *p.borrow( ) ); }, m_ptrs );
 		}
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor vis ) const {
-			return boost::apply_visitor( [vis = std::move( vis )]( auto &p )->decltype(
-			                               vis( std::declval<T const &>( ) ) ) { return vis( *p.borrow( ) ); },
-			                             m_ptrs );
+			return boost::apply_visitor( [&]( auto const &p ) -> decltype( auto ) { return vis( *p.borrow( ) ); }, m_ptrs );
 		}
 
 		decltype( auto ) operator-> ( ) const {
