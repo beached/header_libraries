@@ -93,6 +93,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_traits
 	daw_tuple_helper
 	daw_unique_array
+	daw_union_pair
 	daw_utility
 	daw_zipcontainer
 	daw_zipiter

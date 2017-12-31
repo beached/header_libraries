@@ -25,6 +25,7 @@
 #include "daw_observable_ptr.h"
 #include "daw_static_array.h"
 #include "daw_traits.h"
+#include "daw_union_pair.h"
 
 namespace daw {
 	namespace impl {
@@ -33,201 +34,11 @@ namespace daw {
 
 		template<typename Func, typename... Args>
 		constexpr bool has_void_result_v = is_detected_v<has_void_result, Func, Args...>;
-
-		template<typename Type0, typename Type1>
-		class union_pair_t {
-			enum class data_types : uint_least8_t { type_nothing, type_0, type_1 };
-
-			union {
-				Type0 value0;
-				Type1 value1;
-			};
-
-			data_types type;
-
-			Type0 *get_type0_ptr( ) noexcept {
-				return &value0;
-			}
-
-			Type0 const *get_type0_ptr( ) const noexcept {
-				return &value0;
-			}
-
-			Type1 *get_type1_ptr( ) noexcept {
-				return &value1;
-			}
-
-			Type1 const *get_type1_ptr( ) const noexcept {
-				return &value1;
-			}
-
-			void destroy_type0( ) {
-				type = data_types::type_nothing;
-				get_type0_ptr( )->~Type0( );
-			}
-
-			void destroy_type1( ) {
-				type = data_types::type_nothing;
-				get_type1_ptr( )->~Type1( );
-			}
-
-			void clear( ) noexcept {
-				switch( type ) {
-				case data_types::type_nothing:
-					break;
-				case data_types::type_0:
-					destroy_type0( );
-					break;
-				case data_types::type_1:
-					destroy_type1( );
-					break;
-				}
-			}
-
-			template<typename t>
-			void store_type0( t &&value ) {
-				if( type != data_types::type_0 ) {
-					clear( );
-				}
-				type = data_types::type_nothing;
-				value0 = std::forward<t>( value );
-				type = data_types::type_0;
-			}
-
-			template<typename t>
-			void store_type1( t &&value ) {
-				if( type != data_types::type_1 ) {
-					clear( );
-				}
-				type = data_types::type_nothing;
-				value1 = std::forward<t>( value );
-				type = data_types::type_1;
-			}
-
-		public:
-			union_pair_t( ) = delete;
-
-			~union_pair_t( ) noexcept {
-				clear( );
-			}
-
-			union_pair_t( Type0 &&ptr )
-			  : type{data_types::type_nothing} {
-
-				store_type0( std::move( ptr ) );
-			}
-
-			union_pair_t( Type0 const &ptr )
-			  : type{data_types::type_nothing} {
-
-				store_type0( ptr );
-			}
-
-			union_pair_t( Type1 &&ptr )
-			  : type{data_types::type_nothing} {
-
-				store_type1( std::move( ptr ) );
-			}
-
-			union_pair_t( Type1 const &ptr )
-			  : type{data_types::type_nothing} {
-
-				store_type1( ptr );
-			}
-
-			union_pair_t( union_pair_t const &other )
-			  : type{data_types::type_nothing} {
-
-				switch( other.type ) {
-				case data_types::type_0:
-					store_type0( *other.get_type0_ptr( ) );
-					break;
-				case data_types::type_1:
-					store_type1( *other.get_type1_ptr( ) );
-					break;
-				case data_types::type_nothing:
-					break;
-				}
-			}
-
-			union_pair_t( union_pair_t &&other ) noexcept
-			  : type{data_types::type_nothing} {
-
-				switch( other.type ) {
-				case data_types::type_0:
-					store_type0( std::move( *other.get_type0_ptr( ) ) );
-					break;
-				case data_types::type_1:
-					store_type1( std::move( *other.get_type1_ptr( ) ) );
-					break;
-				case data_types::type_nothing:
-					break;
-				}
-			}
-
-			union_pair_t &operator=( union_pair_t const &rhs ) {
-				if( this != &rhs ) {
-					switch( rhs.type ) {
-					case data_types::type_0:
-						store_type0( *rhs.get_type0_ptr( ) );
-						break;
-					case data_types::type_1:
-						store_type1( *rhs.get_type1_ptr( ) );
-						break;
-					case data_types::type_nothing:
-						break;
-					}
-				}
-				return *this;
-			}
-
-			union_pair_t &operator=( union_pair_t &&rhs ) noexcept {
-				if( this != rhs ) {
-					switch( rhs.type ) {
-					case data_types::type_0:
-						store_type0( std::move( *rhs.get_type0_ptr( ) ) );
-						break;
-					case data_types::type_1:
-						store_type1( std::move( *rhs.get_type1_ptr( ) ) );
-						break;
-					case data_types::type_nothing:
-						break;
-					}
-				}
-				return *this;
-			}
-
-			template<typename Visitor>
-			decltype( auto ) visit( Visitor vis ) {
-				switch( type ) {
-				case data_types::type_0:
-					return vis( *get_type0_ptr( ) );
-				case data_types::type_1:
-					return vis( *get_type1_ptr( ) );
-				case data_types::type_nothing:
-					break;
-				}
-				abort( );
-			}
-
-			template<typename Visitor>
-			decltype( auto ) visit( Visitor vis ) const {
-				switch( type ) {
-				case data_types::type_0:
-					return vis( *get_type0_ptr( ) );
-				case data_types::type_1:
-					return vis( *get_type1_ptr( ) );
-				case data_types::type_nothing:
-					break;
-				}
-				abort( );
-			}
-		}; // namespace daw
-	}    // namespace impl
+	} // namespace impl
 
 	template<typename T>
 	class observable_ptr_pair {
-		impl::union_pair_t<observable_ptr<T>, observer_ptr<T>> m_ptrs;
+		union_pair_t<observable_ptr<T>, observer_ptr<T>> m_ptrs;
 
 	public:
 		observable_ptr_pair( )
@@ -316,5 +127,5 @@ namespace daw {
 		}
 		return observable_ptr_pair<T>{tmp};
 	}
-
 } // namespace daw
+
