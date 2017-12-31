@@ -38,33 +38,33 @@ namespace daw {
 
 		data_types type;
 
-		Type0 *get_type0_ptr( ) noexcept {
+		constexpr Type0 *get_type0_ptr( ) noexcept {
 			return &value0;
 		}
 
-		Type0 const *get_type0_ptr( ) const noexcept {
+		constexpr Type0 const *get_type0_ptr( ) const noexcept {
 			return &value0;
 		}
 
-		Type1 *get_type1_ptr( ) noexcept {
+		constexpr Type1 *get_type1_ptr( ) noexcept {
 			return &value1;
 		}
 
-		Type1 const *get_type1_ptr( ) const noexcept {
+		constexpr Type1 const *get_type1_ptr( ) const noexcept {
 			return &value1;
 		}
 
-		void destroy_type0( ) {
+		constexpr void destroy_type0( ) noexcept {
 			type = data_types::type_nothing;
 			get_type0_ptr( )->~Type0( );
 		}
 
-		void destroy_type1( ) {
+		constexpr void destroy_type1( ) noexcept {
 			type = data_types::type_nothing;
 			get_type1_ptr( )->~Type1( );
 		}
 
-		void clear( ) noexcept {
+		constexpr void clear( ) noexcept {
 			switch( type ) {
 			case data_types::type_nothing:
 				break;
@@ -78,7 +78,7 @@ namespace daw {
 		}
 
 		template<typename T>
-		void store_type0( T &&value ) {
+		constexpr void store_type0( T &&value ) {
 			if( type != data_types::type_0 ) {
 				clear( );
 			}
@@ -88,7 +88,7 @@ namespace daw {
 		}
 
 		template<typename T>
-		void store_type1( T &&value ) {
+		constexpr void store_type1( T &&value ) {
 			if( type != data_types::type_1 ) {
 				clear( );
 			}
@@ -98,37 +98,38 @@ namespace daw {
 		}
 
 	public:
-		union_pair_t( ) = delete;
+		constexpr union_pair_t( ) noexcept
+		  : type{data_types::type_nothing} {}
 
 		~union_pair_t( ) noexcept {
 			clear( );
 		}
 
-		union_pair_t( Type0 &&ptr )
+		constexpr union_pair_t( Type0 &&ptr ) noexcept
 		  : type{data_types::type_nothing} {
 
 			store_type0( std::move( ptr ) );
 		}
 
-		union_pair_t( Type0 const &ptr )
+		constexpr union_pair_t( Type0 const &ptr )
 		  : type{data_types::type_nothing} {
 
 			store_type0( ptr );
 		}
 
-		union_pair_t( Type1 &&ptr )
+		constexpr union_pair_t( Type1 &&ptr ) noexcept
 		  : type{data_types::type_nothing} {
 
 			store_type1( std::move( ptr ) );
 		}
 
-		union_pair_t( Type1 const &ptr )
+		constexpr union_pair_t( Type1 const &ptr )
 		  : type{data_types::type_nothing} {
 
 			store_type1( ptr );
 		}
 
-		union_pair_t( union_pair_t const &other )
+		constexpr union_pair_t( union_pair_t const &other )
 		  : type{data_types::type_nothing} {
 
 			switch( other.type ) {
@@ -143,7 +144,7 @@ namespace daw {
 			}
 		}
 
-		union_pair_t( union_pair_t &&other ) noexcept
+		constexpr union_pair_t( union_pair_t &&other ) noexcept
 		  : type{data_types::type_nothing} {
 
 			switch( other.type ) {
@@ -158,7 +159,7 @@ namespace daw {
 			}
 		}
 
-		union_pair_t &operator=( union_pair_t const &rhs ) {
+		constexpr union_pair_t &operator=( union_pair_t const &rhs ) {
 			if( this != &rhs ) {
 				switch( rhs.type ) {
 				case data_types::type_0:
@@ -174,7 +175,7 @@ namespace daw {
 			return *this;
 		}
 
-		union_pair_t &operator=( union_pair_t &&rhs ) noexcept {
+		constexpr union_pair_t &operator=( union_pair_t &&rhs ) noexcept {
 			if( this != &rhs ) {
 				switch( rhs.type ) {
 				case data_types::type_0:
@@ -191,7 +192,7 @@ namespace daw {
 		}
 
 		template<typename Visitor>
-		decltype( auto ) visit( Visitor vis ) {
+		constexpr decltype( auto ) visit( Visitor vis ) {
 			switch( type ) {
 			case data_types::type_0:
 				return vis( *get_type0_ptr( ) );
@@ -204,7 +205,7 @@ namespace daw {
 		}
 
 		template<typename Visitor>
-		decltype( auto ) visit( Visitor vis ) const {
+		constexpr decltype( auto ) visit( Visitor vis ) const {
 			switch( type ) {
 			case data_types::type_0:
 				return vis( *get_type0_ptr( ) );
