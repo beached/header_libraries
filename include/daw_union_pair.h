@@ -29,7 +29,7 @@
 namespace daw {
 	template<typename Type0, typename Type1>
 	class union_pair_t {
-		enum class data_types : uint_least8_t { type_nothing, type_0, type_1 };
+		enum class data_types : uint_least8_t { type_0, type_1, type_nothing  };
 
 		union {
 			Type0 value0;
@@ -103,6 +103,10 @@ namespace daw {
 
 		~union_pair_t( ) noexcept {
 			clear( );
+		}
+
+		constexpr uint_least8_t which( ) const noexcept {
+			return static_cast<uint_least8_t>( type );
 		}
 
 		constexpr union_pair_t( Type0 &&ptr ) noexcept
