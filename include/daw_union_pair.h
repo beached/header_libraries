@@ -121,6 +121,22 @@ namespace daw {
 			store_type0( ptr );
 		}
 
+		constexpr union_pair_t &operator=( Type0 const &val ) {
+			store_type0( val );
+		}
+
+		constexpr union_pair_t &operator=( Type0 &&val ) noexcept {
+			store_type0( std::move( val ) );
+		}
+
+		constexpr union_pair_t &operator=( Type1 const &val ) {
+			store_type1( val );
+		}
+
+		constexpr union_pair_t &operator=( Type1 &&val ) noexcept {
+			store_type1( std::move( val ) );
+		}
+
 		constexpr union_pair_t( Type1 &&ptr ) noexcept
 		  : type{data_types::type_nothing} {
 
