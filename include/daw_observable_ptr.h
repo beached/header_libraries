@@ -105,10 +105,7 @@ namespace daw {
 			  , m_ptr_destruct{false}
 			  , m_cb_destruct{}
 			  , m_is_borrowed{}
-			  , m_observer_count{0} {
-
-				std::cout << "";
-			}
+			  , m_observer_count{0} { }
 
 			friend class observable_ptr<T>;
 
@@ -434,7 +431,7 @@ namespace daw {
 			return m_control_block != nullptr && !m_control_block->expired( );
 		}
 
-		operator observer_ptr<T>( ) const noexcept {
+		explicit operator observer_ptr<T>( ) const noexcept {
 			return observer_ptr<T>{m_control_block};
 		}
 	};
