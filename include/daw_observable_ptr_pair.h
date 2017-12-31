@@ -51,11 +51,11 @@ namespace daw {
 		observable_ptr_pair &operator=( observable_ptr_pair &&rhs ) = default;
 
 		observable_ptr_pair( observable_ptr_pair const &other )
-		  : m_ptrs{other.m_ptrs.visit( []( auto const &v ) -> decltype( auto ) { return v->get_observer( ); } )} {}
+		  : m_ptrs{other.m_ptrs.visit( []( auto const &v ) -> decltype( auto ) { return v.get_observer( ); } )} {}
 
 		observable_ptr_pair &operator=( observable_ptr_pair const &rhs ) {
 			if( this != &rhs ) {
-				m_ptrs = rhs.m_ptrs.visit( []( auto const &v ) -> decltype( auto ) { return v->get_observer( ); } );
+				m_ptrs = rhs.m_ptrs.visit( []( auto const &v ) -> decltype( auto ) { return v.get_observer( ); } );
 			}
 			return *this;
 		}
