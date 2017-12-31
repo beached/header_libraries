@@ -175,7 +175,7 @@ namespace daw {
 		}
 
 		union_pair_t &operator=( union_pair_t &&rhs ) noexcept {
-			if( this != rhs ) {
+			if( this != &rhs ) {
 				switch( rhs.type ) {
 				case data_types::type_0:
 					store_type0( std::move( *rhs.get_type0_ptr( ) ) );
