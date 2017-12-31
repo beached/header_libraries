@@ -47,8 +47,15 @@ namespace daw {
 		observable_ptr_pair( T *ptr )
 		  : m_ptrs{observable_ptr<T>{ptr}} {}
 
-		observable_ptr_pair( observable_ptr_pair && other ) noexcept = default;
-		observable_ptr_pair &operator=( observable_ptr_pair &&rhs ) noexcept = default;
+		observable_ptr_pair( observable_ptr_pair &&other ) noexcept
+		  : m_ptrs{std::move( other.m_ptrs )} {}
+
+		observable_ptr_pair &operator=( observable_ptr_pair &&rhs ) noexcept {
+			if( this != &rhs ) {
+				m_ptrs = std::move( rhs.m_ptrs );
+			}
+			return *this;
+		}
 
 		observable_ptr_pair( observable_ptr_pair const &other )
 		  : m_ptrs{other.m_ptrs.visit( []( auto const &v ) -> decltype( auto ) { return v.get_observer( ); } )} {}
