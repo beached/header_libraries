@@ -48,7 +48,7 @@ namespace daw {
 			  : m_ptr{ptr}
 			  , m_on_exit( std::move( on_exit ) ) {}
 
-			~locked_ptr( ) noexcept {
+			~locked_ptr( ) noexcept( noexcept( m_on_exit( ) ) ) {
 				m_ptr = nullptr;
 				m_on_exit( );
 			}
@@ -73,8 +73,8 @@ namespace daw {
 				return m_ptr != nullptr;
 			}
 
-			locked_ptr( locked_ptr && ) = default;
-			locked_ptr &operator=( locked_ptr && ) = default;
+			locked_ptr( locked_ptr && ) noexcept = default;
+			locked_ptr &operator=( locked_ptr && ) noexcept = default;
 
 			locked_ptr( ) = delete;
 			locked_ptr( locked_ptr const & ) = delete;
@@ -100,7 +100,7 @@ namespace daw {
 			// Number of observers alive, cannot delete control block unless this is 0
 			std::atomic<observer_count_t> m_observer_count;
 
-			constexpr control_block_t( T *ptr ) noexcept
+			constexpr control_block_t( T *ptr )
 			  : m_ptr{ptr}
 			  , m_ptr_destruct{false}
 			  , m_cb_destruct{}
@@ -124,10 +124,10 @@ namespace daw {
 			}
 
 		public:
-			control_block_t( control_block_t const & ) = default;
-			control_block_t( control_block_t && ) = default;
-			control_block_t &operator=( control_block_t const & ) = default;
-			control_block_t &operator=( control_block_t && ) = default;
+			control_block_t( control_block_t const & ) = delete;
+			control_block_t( control_block_t && ) noexcept = delete;
+			control_block_t &operator=( control_block_t const & ) = delete;
+			control_block_t &operator=( control_block_t && ) noexcept = delete;
 
 			// Should never get to this point without point without owner/observer cleaning up ptr
 			~control_block_t( ) = default;
@@ -148,11 +148,11 @@ namespace daw {
 				return locked_ptr<T>{m_ptr, [&]( ) { m_is_borrowed.unlock( ); }};
 			}
 
-			T *get( ) const noexcept {
+			constexpr T *get( ) const noexcept {
 				return m_ptr;
 			}
 
-			bool add_observer( ) noexcept {
+			bool add_observer( ) {
 				if( m_ptr_destruct.load( ) ) {
 					return false;
 				}
@@ -161,19 +161,19 @@ namespace daw {
 			}
 
 		private:
-			bool remove_observer( std::lock_guard<std::mutex> &lck ) noexcept {
+			bool remove_observer( std::lock_guard<std::mutex> &lck ) {
 				--m_observer_count;
 				destruct_if_should( lck );
 				return m_observer_count <= 0;
 			}
 
-			bool remove_owner( std::lock_guard<std::mutex> &lck ) noexcept {
+			bool remove_owner( std::lock_guard<std::mutex> &lck ) {
 				m_ptr_destruct = true;
 				destruct_if_should( lck );
 				return m_observer_count <= 0;
 			}
 
-			static void destruct_cb( control_block_t *cb ) noexcept {
+			static void destruct_cb( control_block_t *cb ) {
 				if( !cb ) {
 					return;
 				}
@@ -185,7 +185,7 @@ namespace daw {
 			}
 
 		public:
-			static void remove_observer( control_block_t *cb ) noexcept {
+			static void remove_observer( control_block_t *cb ) {
 				if( !cb ) {
 					return;
 				}
@@ -199,7 +199,7 @@ namespace daw {
 				}
 			}
 
-			static void remove_owner( control_block_t *cb ) noexcept {
+			static void remove_owner( control_block_t *cb ) {
 				if( !cb ) {
 					return;
 				}
@@ -234,7 +234,9 @@ namespace daw {
 		void reset( ) noexcept {
 			auto tmp = std::exchange( m_control_block, nullptr );
 			if( tmp != nullptr ) {
+				try {
 				impl::control_block_t<T>::remove_observer( tmp );
+				} catch( ... ) {}
 			}
 		}
 
@@ -242,7 +244,7 @@ namespace daw {
 			reset( );
 		}
 
-		constexpr observer_ptr( observer_ptr const &other ) noexcept
+		constexpr observer_ptr( observer_ptr const &other )
 		  : m_control_block{other.m_control_block} {
 
 			m_control_block->add_observer( );
@@ -377,7 +379,7 @@ namespace daw {
 			return m_control_block->get( );
 		}
 
-		decltype( auto ) operator-> ( ) const noexcept {
+		decltype( auto ) operator-> ( ) const {
 			return borrow( );
 		}
 
@@ -396,7 +398,7 @@ namespace daw {
 		}
 
 		template<typename Callable>
-		decltype( auto ) lock( Callable c ) const noexcept( noexcept( c( std::declval<T const &>( ) ) ) ) {
+		decltype( auto ) lock( Callable c ) const {
 			using result_t = std::decay_t<decltype( c( std::declval<T const &>( ) ) )>;
 			auto lck_ptr = borrow( );
 			if( !lck_ptr ) {
@@ -407,7 +409,7 @@ namespace daw {
 		}
 
 		template<typename Callable>
-		decltype( auto ) lock( Callable c ) noexcept( noexcept( c( std::declval<T &>( ) ) ) ) {
+		decltype( auto ) lock( Callable c ) {
 			using result_t = std::decay_t<decltype( std::declval<Callable>( )( std::declval<T &>( ) ) )>;
 			auto lck_ptr = borrow( );
 			if( !lck_ptr ) {
@@ -427,11 +429,11 @@ namespace daw {
 			return r;
 		}
 
-		explicit operator bool( ) const noexcept {
+		explicit operator bool( ) const {
 			return m_control_block != nullptr && !m_control_block->expired( );
 		}
 
-		explicit operator observer_ptr<T>( ) const noexcept {
+		explicit operator observer_ptr<T>( ) const {
 			return observer_ptr<T>{m_control_block};
 		}
 	};
