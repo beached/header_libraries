@@ -27,6 +27,7 @@
 #include <utility>
 
 namespace daw {
+	struct visit_null_union_pair_exception {};
 	template<typename Type0, typename Type1>
 	class union_pair_t {
 		enum class data_types : uint_least8_t { type_0, type_1, type_nothing  };
@@ -221,7 +222,7 @@ namespace daw {
 			case data_types::type_nothing:
 				break;
 			}
-			std::abort( );
+			throw visit_null_union_pair_exception{};
 		}
 
 		template<typename Visitor>
@@ -234,7 +235,7 @@ namespace daw {
 			case data_types::type_nothing:
 				break;
 			}
-			std::abort( );
+			throw visit_null_union_pair_exception{};
 		}
 	};
 } // namespace daw
