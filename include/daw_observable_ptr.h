@@ -43,14 +43,23 @@ namespace daw {
 			std::function<void( )> m_on_exit;
 
 		public:
+			locked_ptr( ) = delete;
+			locked_ptr( locked_ptr const & ) = delete;
+			locked_ptr &operator=( locked_ptr const & ) = delete;
+
+			locked_ptr( locked_ptr && ) noexcept = default;
+			locked_ptr &operator=( locked_ptr && ) noexcept = default;
+
 			template<typename OnExit>
 			locked_ptr( T *ptr, OnExit on_exit ) noexcept
 			  : m_ptr{ptr}
 			  , m_on_exit( std::move( on_exit ) ) {}
 
-			~locked_ptr( ) noexcept( noexcept( m_on_exit( ) ) ) {
+			~locked_ptr( ) noexcept {
 				m_ptr = nullptr;
-				m_on_exit( );
+				try {
+					m_on_exit( );
+				} catch( ... ) {}
 			}
 
 			T *operator->( ) const noexcept {
@@ -72,13 +81,6 @@ namespace daw {
 			explicit operator bool( ) const noexcept {
 				return m_ptr != nullptr;
 			}
-
-			locked_ptr( locked_ptr && ) noexcept = default;
-			locked_ptr &operator=( locked_ptr && ) noexcept = default;
-
-			locked_ptr( ) = delete;
-			locked_ptr( locked_ptr const & ) = delete;
-			locked_ptr &operator=( locked_ptr const & ) = delete;
 		};
 
 		template<typename T>
@@ -100,15 +102,6 @@ namespace daw {
 			// Number of observers alive, cannot delete control block unless this is 0
 			std::atomic<observer_count_t> m_observer_count;
 
-			constexpr control_block_t( T *ptr )
-			  : m_ptr{ptr}
-			  , m_ptr_destruct{false}
-			  , m_cb_destruct{}
-			  , m_is_borrowed{}
-			  , m_observer_count{0} { }
-
-			friend class observable_ptr<T>;
-
 			void destruct_if_should( std::lock_guard<std::mutex> const & ) {
 				if( m_ptr_destruct.load( ) ) {
 					auto tmp = std::exchange( m_ptr, nullptr );
@@ -122,15 +115,24 @@ namespace daw {
 				std::lock_guard<std::mutex> lck{m_is_borrowed};
 				destruct_if_should( lck );
 			}
+			constexpr control_block_t( T *ptr )
+			  : m_ptr{ptr}
+			  , m_ptr_destruct{false}
+			  , m_cb_destruct{}
+			  , m_is_borrowed{}
+			  , m_observer_count{0} {}
+
+			friend class observable_ptr<T>;
 
 		public:
+			control_block_t( ) = delete;
 			control_block_t( control_block_t const & ) = delete;
 			control_block_t( control_block_t && ) noexcept = delete;
 			control_block_t &operator=( control_block_t const & ) = delete;
 			control_block_t &operator=( control_block_t && ) noexcept = delete;
 
 			// Should never get to this point without point without owner/observer cleaning up ptr
-			~control_block_t( ) = default;
+			~control_block_t( ) noexcept = default;
 
 			bool expired( ) const noexcept {
 				return m_ptr_destruct;
@@ -235,7 +237,7 @@ namespace daw {
 			auto tmp = std::exchange( m_control_block, nullptr );
 			if( tmp != nullptr ) {
 				try {
-				impl::control_block_t<T>::remove_observer( tmp );
+					impl::control_block_t<T>::remove_observer( tmp );
 				} catch( ... ) {}
 			}
 		}
@@ -448,3 +450,4 @@ namespace daw {
 		return observable_ptr<T>{tmp};
 	}
 } // namespace daw
+
