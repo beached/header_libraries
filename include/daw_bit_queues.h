@@ -68,6 +68,10 @@ namespace daw {
 			return sizeof( m_queue ) * 8;
 		}
 
+		constexpr bool full( ) const noexcept {
+			return size( ) == capacity( );
+		}
+
 	private:
 		template<typename T>
 		auto source_to_native_endian( T value, bit_queue_source_little_endian ) noexcept {
