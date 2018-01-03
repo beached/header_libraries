@@ -38,17 +38,17 @@ namespace daw {
 	                            bit_queue_source_little_endian, bit_queue_source_big_endian>::type;
 
 	template<typename queue_type, typename value_type = uint8_t, typename BitQueueLSB = bit_queue_source_native_endian>
-	class bit_queue_gen {
+	class basic_bit_queue {
 		static_assert( std::numeric_limits<queue_type>::is_integer && !std::numeric_limits<queue_type>::is_signed,
 		               "Only unsigned integral types are supported" );
 		size_t m_size;
 		queue_type m_queue;
 
 	public:
-		constexpr bit_queue_gen( ) noexcept
+		constexpr basic_bit_queue( ) noexcept
 		  : m_size{0}
 		  , m_queue{0} {}
-		constexpr explicit bit_queue_gen( queue_type v ) noexcept
+		constexpr explicit basic_bit_queue( queue_type v ) noexcept
 		  : m_size{sizeof( m_queue ) * 8}
 		  , m_queue{std::move( v )} {}
 
@@ -121,19 +121,19 @@ namespace daw {
 		constexpr queue_type const &value( ) const noexcept {
 			return m_queue;
 		}
-	}; // bit_queue_gen
+	}; // basic_bit_queue
 
-	using bit_queue = bit_queue_gen<uint16_t>;
+	using bit_queue = basic_bit_queue<uint16_t>;
 
 	template<typename queue_type, typename value_type = uint8_t>
-	class nibble_queue_gen {
-		bit_queue_gen<queue_type, value_type> m_queue;
+	class basic_nibble_queue {
+		basic_bit_queue<queue_type, value_type> m_queue;
 
 	public:
-		constexpr nibble_queue_gen( ) noexcept
+		constexpr basic_nibble_queue( ) noexcept
 		  : m_queue{} {}
 
-		constexpr explicit nibble_queue_gen( queue_type v ) noexcept
+		constexpr explicit basic_nibble_queue( queue_type v ) noexcept
 		  : m_queue{std::move( v )} {}
 
 		constexpr size_t capacity( ) const noexcept {
@@ -179,7 +179,7 @@ namespace daw {
 		constexpr queue_type const &value( ) const noexcept {
 			return m_queue.value( );
 		}
-	}; // nibble_queue_gen
+	}; // basic_nibble_queue
 
-	using nibble_queue = nibble_queue_gen<uint8_t>;
+	using nibble_queue = basic_nibble_queue<uint8_t>;
 } // namespace daw

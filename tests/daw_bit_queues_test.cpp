@@ -27,7 +27,7 @@
 
 BOOST_AUTO_TEST_CASE( daw_bit_queues_test_001 ) {
 	using value_type = uint16_t;
-	daw::bit_queue_gen<value_type, value_type> test1;
+	daw::basic_bit_queue<value_type, value_type> test1;
 	test1.push_back( 1, 1 );
 	BOOST_REQUIRE( test1.value( ) == 1 );
 	BOOST_REQUIRE( test1.size( ) == 1 );
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE( daw_bit_queues_test_001 ) {
 	BOOST_REQUIRE( test1.size( ) == 0 );
 
 	{
-		daw::bit_queue_gen<value_type, value_type> test2;
+		daw::basic_bit_queue<value_type, value_type> test2;
 		test2.push_back( 2 );
 		BOOST_REQUIRE( test2.value( ) == 2 );
 		BOOST_REQUIRE( test2.size( ) == sizeof( value_type ) * 8 );
@@ -81,14 +81,14 @@ BOOST_AUTO_TEST_CASE( daw_bit_queues_test_001 ) {
 
 BOOST_AUTO_TEST_CASE( daw_bit_queues_test_002 ) {
 	using value_type = uint8_t;
-	daw::bit_queue_gen<value_type, value_type> test1;
+	daw::basic_bit_queue<value_type, value_type> test1;
 	test1.push_back( std::numeric_limits<value_type>::max( ) );
 	BOOST_REQUIRE( test1.pop_back( 3 ) == 7 );
 }
 
 BOOST_AUTO_TEST_CASE( daw_bit_queues_test_003 ) {
 	using value_type = uint16_t;
-	daw::bit_queue_gen<value_type, value_type> test1;
+	daw::basic_bit_queue<value_type, value_type> test1;
 	test1.push_back( 37, 4 );
 	BOOST_REQUIRE( test1.value( ) == 5 );
 	test1.pop_back( 1 );
@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE( daw_nibble_queue_test_001 ) {
 	};
 
 	for( uint32_t n = 0; n < 32; ++n ) {
-		daw::nibble_queue_gen<value_type, uint8_t> test1{( 1u << n )};
+		daw::basic_nibble_queue<value_type, uint8_t> test1{( 1u << n )};
 		std::string str;
 		while( test1.can_pop( 1 ) ) {
 			str.push_back( static_cast<char>( nibble_to_hex( test1.pop_front( 1 ) ) ) );
