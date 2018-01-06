@@ -55,9 +55,7 @@ namespace daw {
 
 	template<typename... Types>
 	struct variant_t;
-} // namespace daw
 
-namespace daw {
 	template<typename T, typename... Types>
 	const T &get( daw::variant_t<Types...> const &value );
 
