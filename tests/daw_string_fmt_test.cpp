@@ -36,6 +36,11 @@ BOOST_AUTO_TEST_CASE( stirng_fmt_test_001 ) {
 	                       1'000'000 );
 }
 
+BOOST_AUTO_TEST_CASE( stirng_fmt_test_002 ) {
+	daw::fmt_t f{"This is a {0} of the {1} and has been used {2} times for {0}ing\n"};
+	std::cout << f( "test", "daw::fmt", 1'000'000 );
+}
+
 BOOST_AUTO_TEST_CASE( string_fmt_test_single_item_001 ) {
 	auto result = daw::fmt( "{0}", 5 );
 

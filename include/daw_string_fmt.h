@@ -88,6 +88,10 @@ namespace daw {
 		fmt_t( String &&format_str )
 		  : m_format_str{std::forward<String>( format_str )} {}
 
+		template<size_t N>
+		fmt_t( char const ( &format_str )[N] )
+		  : m_format_str{std::string{format_str}} {}
+
 		template<typename... Args>
 		std::string operator( )( Args &&... args ) const {
 			std::string result{};
