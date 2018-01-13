@@ -28,6 +28,7 @@
 
 #include <cmath>
 #include <functional>
+#include <fstream>
 #include <initializer_list>
 #include <iostream>
 #include <limits>
@@ -638,6 +639,14 @@ namespace daw {
 
 	template<typename T, typename... Ts>
 	constexpr size_t pack_index_of_v = pack_index_of<T, Ts...>::value;
+
+	template<typename CharT = char>
+	std::basic_string<CharT> read_file( daw::string_view path ) {
+		std::basic_ifstream<CharT> in_file{path.to_string( )};
+		daw::exception::Assert( in_file, "Could not open file" );
+		return std::string{std::istreambuf_iterator<CharT>{in_file}, {}};
+	}
+
 } // namespace daw
 
 template<typename... Ts>

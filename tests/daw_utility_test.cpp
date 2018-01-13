@@ -93,3 +93,7 @@ BOOST_AUTO_TEST_CASE( daw_pack_index_of_003 ) {
 	BOOST_REQUIRE_EQUAL( pack_pos, 1 );
 }
 
+BOOST_AUTO_TEST_CASE( daw_read_file_001 ) {
+	auto f = daw::read_file( "./daw_utility_test_bin" );
+	std::cout << f.size( ) << '\n';
+}
