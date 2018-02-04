@@ -219,7 +219,9 @@ namespace daw {
 			using type = has_##MemberName##_member_impl;                                                                     \
 			enum { value = sizeof( func<Derived>( 0 ) ) == 2 };                                                              \
 		};                                                                                                                 \
-	}
+	}                                                                                                                    \
+	template<typename T>																																																 \
+	using has_##MemberName##_member_v = impl::has_##MemberName##_member_impl::value;
 
 #define HAS_STATIC_TYPE_MEMBER( MemberName )                                                                           \
 	namespace detectors {                                                                                                \
@@ -760,3 +762,4 @@ namespace daw {
 	template<bool B, typename T = std::nullptr_t>
 	using required = std::enable_if_t<B, T>;
 } // namespace daw
+
