@@ -192,6 +192,7 @@ namespace daw {
 	constexpr bool name##_v = impl::name<T>::value;
 		  // END METHOD_CHECKER_ANY
 
+/*
 #define GENERATE_HAS_MEMBER_FUNCTION_TRAIT( MemberName )                                                               \
 	namespace impl {                                                                                                     \
 		template<typename T, typename = void>                                                                              \
@@ -221,7 +222,8 @@ namespace daw {
 		};                                                                                                                 \
 	}                                                                                                                    \
 	template<typename T>																																																 \
-	using has_##MemberName##_member_v = impl::has_##MemberName##_member_impl::value;
+	using has_##MemberName##_member_v = ::daw::traits::impl::has_##MemberName##_member_impl::value;
+*/
 
 #define HAS_STATIC_TYPE_MEMBER( MemberName )                                                                           \
 	namespace detectors {                                                                                                \
