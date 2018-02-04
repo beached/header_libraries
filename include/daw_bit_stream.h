@@ -81,7 +81,7 @@ namespace daw {
 		// template<typename BitStream> struct bit_stream_iterator;
 		InputIteratorF m_first;
 		InputIteratorL m_last;
-		daw::bit_queue_gen<value_type, value_type, BitQueueLSB> m_left_overs;
+		daw::basic_bit_queue<value_type, value_type, BitQueueLSB> m_left_overs;
 
 	public:
 		constexpr bit_stream( InputIteratorF first, InputIteratorL last ) noexcept
