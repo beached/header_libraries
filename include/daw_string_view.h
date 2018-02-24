@@ -1091,8 +1091,8 @@ namespace daw {
 			auto as_strings( ) const {
 				std::vector<std::basic_string<CharT, Traits>> tmp{};
 				tmp.reserve( size( ) );
-				for( auto const &str : data ) {
-					tmp.push_back( str.to_string( ) );
+				for( auto const &s : data ) {
+					tmp.push_back( s.to_string( ) );
 				}
 				return tmp;
 			}
