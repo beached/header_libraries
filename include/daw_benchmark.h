@@ -149,5 +149,20 @@ namespace daw {
 		std::cout << title << " took " << utility::format_seconds( duration.count( ), 2 ) << '\n';
 		return result;
 	}
+
+	template<typename Test, typename... Args>
+	auto bench_test2( std::string title, Test test_callable, size_t item_count = 1 ) noexcept {
+		auto const start = std::chrono::high_resolution_clock::now( );
+		auto result = daw::expected_from_code( std::move( test_callable ) );
+		auto const finish = std::chrono::high_resolution_clock::now( );
+		std::chrono::duration<double> const duration = finish - start;
+		std::cout << title << " took " << utility::format_seconds( duration.count( ), 2 );
+		if( item_count > 1 ) {
+			std::cout << " to process " << item_count << " items at " << utility::format_seconds( (duration/item_count).count( ), 2 ) << " per item\n";
+		} else {
+			std::cout << '\n';
+		}
+		return result;
+	}
 } // namespace daw
 
