@@ -151,9 +151,9 @@ namespace daw {
 	}
 
 	template<typename Test, typename... Args>
-	auto bench_test2( std::string title, Test test_callable, size_t item_count = 1 ) noexcept {
+	auto bench_test2( std::string title, Test test_callable, size_t item_count, Args &&... args ) noexcept {
 		auto const start = std::chrono::high_resolution_clock::now( );
-		auto result = daw::expected_from_code( std::move( test_callable ) );
+		auto result = daw::expected_from_code( std::move( test_callable ), std::forward<Args>( args )... );
 		auto const finish = std::chrono::high_resolution_clock::now( );
 		std::chrono::duration<double> const duration = finish - start;
 		std::cout << title << " took " << utility::format_seconds( duration.count( ), 2 );
