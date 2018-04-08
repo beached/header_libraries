@@ -949,6 +949,8 @@ namespace daw {
 		auto result = sv.try_pop_front( "blah" );
 		BOOST_REQUIRE( result.empty( ) );
 		BOOST_REQUIRE( sv == str );
+		daw::string_view s{};
+		s.remove_prefix( );
 	}
 } // namespace daw
 

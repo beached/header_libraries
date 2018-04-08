@@ -97,3 +97,11 @@ BOOST_AUTO_TEST_CASE( daw_read_file_001 ) {
 	auto f = daw::read_file( "./daw_utility_test_bin" );
 	std::cout << f.size( ) << '\n';
 }
+
+BOOST_AUTO_TEST_CASE( daw_get_pack_value_001 ) {
+	constexpr auto const tst = daw::daw_get_pack_value( 2, "a", true, 4 );
+
+	static_assert( std::is_same_<decltype( tst ), bool>, "Expected a bool" );
+	BOOST_REQUIRE( tst );
+}
+

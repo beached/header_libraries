@@ -238,7 +238,13 @@ namespace daw {
 		}
 
 		constexpr void remove_prefix( size_type n ) noexcept {
+#ifdef DEBUG
+			if( n > m_size ) {
+				throw std::out_of_range{"Attempt to access basic_string_view past end"};
+			}
+#else
 			n = daw::min( n, m_size );
+#endif
 			m_first += n;
 			m_size -= n;
 		}
