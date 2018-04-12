@@ -83,7 +83,7 @@ namespace daw {
 			return *this;
 		}
 
-		string_split_iterator operator++(int)const noexcept {
+		string_split_iterator operator++( int ) const noexcept {
 			string_split_iterator tmp{*this};
 			tmp.move_next( );
 			return tmp;
@@ -105,16 +105,14 @@ namespace daw {
 			if( ( lhs.m_pos == npos && npos == rhs.m_pos ) ) {
 				return true;
 			}
-			return std::tie( lhs.m_str, lhs.m_pos, lhs.m_delemiter ) ==
-				   std::tie( rhs.m_str, rhs.m_pos, rhs.m_delemiter );
+			return std::tie( lhs.m_str, lhs.m_pos, lhs.m_delemiter ) == std::tie( rhs.m_str, rhs.m_pos, rhs.m_delemiter );
 		}
 
 		friend bool operator!=( string_split_iterator const &lhs, string_split_iterator const &rhs ) noexcept {
 			if( ( lhs.m_pos == npos && npos == rhs.m_pos ) ) {
 				return false;
 			}
-			return std::tie( lhs.m_str, lhs.m_pos, lhs.m_delemiter ) !=
-				   std::tie( rhs.m_str, rhs.m_pos, rhs.m_delemiter );
+			return std::tie( lhs.m_str, lhs.m_pos, lhs.m_delemiter ) != std::tie( rhs.m_str, rhs.m_pos, rhs.m_delemiter );
 		}
 	};
 
@@ -159,16 +157,14 @@ namespace daw {
 	};
 
 	template<typename CharT, typename Delemiter>
-	auto split_string( std::basic_string<CharT> const &str,
-	                   Delemiter delemiter ) noexcept {
+	auto split_string( std::basic_string<CharT> const &str, Delemiter delemiter ) noexcept {
 
 		std::basic_string<CharT> d = delemiter;
 		return string_split_range<CharT>{str, std::move( d )};
 	}
 
 	template<typename CharT, typename Delemiter>
-	auto split_string( daw::basic_string_view<CharT> str,
-	                   Delemiter delemiter ) noexcept {
+	auto split_string( daw::basic_string_view<CharT> str, Delemiter delemiter ) noexcept {
 
 		std::basic_string<CharT> d = delemiter;
 		return string_split_range<CharT>{std::move( str ), std::move( d )};
@@ -183,4 +179,3 @@ namespace daw {
 	}
 
 } // namespace daw
-

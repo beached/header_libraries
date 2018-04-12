@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016-2017 Darrell Wright
+// Copyright (c) 2016-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to deal
@@ -69,7 +69,7 @@ namespace daw {
 			return *this;
 		}
 
-		checked_iterator_proxy_t operator++(int)const {
+		checked_iterator_proxy_t operator++( int ) const {
 			checked_iterator_proxy_t result{*this};
 			++result;
 			return result;
@@ -83,7 +83,7 @@ namespace daw {
 			return *this;
 		}
 
-		checked_iterator_proxy_t operator--(int)const {
+		checked_iterator_proxy_t operator--( int ) const {
 			checked_iterator_proxy_t result{*this};
 			--result;
 			return result;

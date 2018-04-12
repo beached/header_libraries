@@ -34,8 +34,7 @@ namespace daw {
 		}
 
 		inline void lock( ) noexcept {
-			while( !try_lock( ) ) {
-			}
+			while( !try_lock( ) ) {}
 		}
 
 		inline void unlock( ) noexcept {

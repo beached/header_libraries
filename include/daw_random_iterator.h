@@ -88,7 +88,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr RandomIterator operator++(int)noexcept {
+		constexpr RandomIterator operator++( int ) noexcept {
 			auto result = RandomIterator{*this};
 			++m_pointer;
 			return result;
@@ -99,7 +99,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr RandomIterator operator--(int)noexcept {
+		constexpr RandomIterator operator--( int ) noexcept {
 			auto result = RandomIterator{*this};
 			--m_pointer;
 			return result;

@@ -431,7 +431,6 @@ namespace daw {
 			return impl::from( std::false_type( ), std::forward<Arg>( arg ), std::forward<Args>( args )... );
 		}
 
-
 	} // namespace range
 } // namespace daw
 
@@ -446,4 +445,3 @@ template<typename T>
 	os << " }";
 	return os;
 }
-

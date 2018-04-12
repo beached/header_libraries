@@ -287,4 +287,3 @@ namespace daw {
 #endif
 	} // namespace math
 } // namespace daw
-

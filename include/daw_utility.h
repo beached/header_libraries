@@ -27,8 +27,8 @@
 #endif // max
 
 #include <cmath>
-#include <functional>
 #include <fstream>
+#include <functional>
 #include <initializer_list>
 #include <iostream>
 #include <limits>

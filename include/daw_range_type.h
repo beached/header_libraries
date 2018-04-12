@@ -157,7 +157,7 @@ namespace daw {
 			}
 
 			size_t size( ) const {
-				return static_cast<size_t>(daw::distance( m_begin, m_end ) );
+				return static_cast<size_t>( daw::distance( m_begin, m_end ) );
 			}
 
 			reference operator[]( size_t pos ) {
@@ -334,21 +334,21 @@ namespace daw {
 		template<typename Container,
 		         typename std::enable_if<daw::traits::is_container_not_string_v<Container>, long>::type = 0>
 		auto make_range( Container &container ) {
-			using Iterator = std::decay_t<decltype(std::begin( container ) )>;
-			return Range<Iterator>(std::begin( container ), std::end( container ) );
+			using Iterator = std::decay_t<decltype( std::begin( container ) )>;
+			return Range<Iterator>( std::begin( container ), std::end( container ) );
 		}
 
 		template<typename Container,
 		         typename std::enable_if<daw::traits::is_container_not_string_v<Container>, long>::type = 0>
 		auto make_crange( Container const &container ) {
-			using Iterator = std::decay_t<decltype(std::begin( container ) )>;
-			return Range<Iterator>(std::begin( container ), std::end( container ) );
+			using Iterator = std::decay_t<decltype( std::begin( container ) )>;
+			return Range<Iterator>( std::begin( container ), std::end( container ) );
 		}
 
 		template<typename Iterator>
 		void safe_advance( Range<Iterator> &range, typename std::iterator_traits<Iterator>::difference_type count ) {
 			assert( 0 <= count );
-			if(daw::distance( range.begin( ), range.end( ) ) >= count ) {
+			if( daw::distance( range.begin( ), range.end( ) ) >= count ) {
 				range.advance( count );
 			} else {
 				range.set_begin( range.end( ) );

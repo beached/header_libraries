@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to deal
@@ -174,6 +174,13 @@ namespace daw {
 				do_move_to_front( );
 			}
 			m_stack[m_index++] = value;
+		}
+
+		constexpr void push_back( value_type&& value ) noexcept {
+			if( can_move_front( 1 ) ) {
+				do_move_to_front( );
+			}
+			m_stack[m_index++] = std::move( value );
 		}
 
 		constexpr void push_back( const_pointer ptr, size_type sz ) noexcept {

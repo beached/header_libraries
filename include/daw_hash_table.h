@@ -385,9 +385,9 @@ namespace daw {
 		static size_t scale_hash( size_t hash, size_t table_size ) {
 			// Scale value to capacity using MAD(Multiply-Add-Divide) compression
 			// Use the two largest Prime's that fit in a 64bit unsigned integral
-			daw::exception::daw_throw_on_false(
-			  table_size < max_size( ) ); // Table size must be less than max of ptrdiff_t as we use the value 0
-			                              // as a sentinel.  This should be rare
+			daw::exception::daw_throw_on_false( table_size <
+			                                    max_size( ) ); // Table size must be less than max of ptrdiff_t as we use the
+			                                                   // value 0 as a sentinel.  This should be rare
 			daw::exception::daw_throw_on_false(
 			  hash >= impl::hash_table_item<value_type>::SentinalsSize ); // zero is a sentinel for no value
 			static const size_t prime_a = 18446744073709551557u;

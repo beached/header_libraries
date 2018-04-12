@@ -202,7 +202,7 @@ namespace daw {
 		//////////////////////////////////////////////////////////////////////////
 		// Summary: takes a format string like "{0} {1} {2}" and in this case 3 parameters
 		template<typename String, typename Arg, typename... Args>
-		details::string_t fmt( String && format_, Arg arg, Args... args ) {
+		details::string_t fmt( String &&format_, Arg arg, Args... args ) {
 			std::regex const reg( R"^(\{(\d+(:\d)*)\})^" );
 			std::stringstream ss;
 			auto const arguments = details::unknowns_to_string( arg, args... );

@@ -28,4 +28,3 @@ namespace daw {
 		return std::move_iterator<Iterator>( i );
 	}
 } // namespace daw
-

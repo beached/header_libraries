@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to deal
@@ -400,11 +400,12 @@ namespace daw {
 
 		/// @brief insert the contents of one container into another
 		/// @tparam Source Range type that has std::begin/std::end being value
-		/// @tparam Destination Container that must have insert( iter, range_begin, range_end ) as a member along with std::end
+		/// @tparam Destination Container that must have insert( iter, range_begin, range_end ) as a member along with
+		/// std::end
 		/// @param source range holding data to copy to destination
 		/// @param destination a container to append to
 		template<typename Source, typename Destination>
-		constexpr void append( Source const & source, Destination & destination ) {
+		constexpr void append( Source const &source, Destination &destination ) {
 			destination.insert( std::end( destination ), std::begin( source ), std::end( source ) );
 		}
 	} // namespace container

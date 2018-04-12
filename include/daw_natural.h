@@ -110,7 +110,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr natural_t operator++(int)noexcept {
+		constexpr natural_t operator++( int ) noexcept {
 			static_assert( daw::traits::has_increment_operator_v<T>, "Increment operator is not valid" );
 			auto tmp = *this;
 			++m_value;

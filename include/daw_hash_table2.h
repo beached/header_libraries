@@ -88,9 +88,9 @@ namespace daw {
 			// Scale value to capacity using MAD(Multiply-Add-Divide) compression
 			// Use the two largest Prime's that fit in a 64bit unsigned integral
 			daw::exception::daw_throw_on_false( table_size > 0 );
-			daw::exception::daw_throw_on_false(
-			  table_size < max_size( ) ); // Table size must be less than max of ptrdiff_t as we use the value 0
-			                              // as a sentinel.  This should be rare
+			daw::exception::daw_throw_on_false( table_size <
+			                                    max_size( ) ); // Table size must be less than max of ptrdiff_t as we use the
+			                                                   // value 0 as a sentinel.  This should be rare
 			daw::exception::daw_throw_on_false( hash >= impl::sentinals::sentinals_size );
 
 			size_t const prime_a = 18446744073709551557u;

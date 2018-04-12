@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to deal
@@ -57,7 +57,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr find_iterator operator++(int)const noexcept {
+		constexpr find_iterator operator++( int ) const noexcept {
 			find_iterator tmp{*this};
 			++current_value;
 			return tmp;

@@ -22,10 +22,10 @@
 
 #pragma once
 
-#include <string>
 #include "daw_algorithm.h"
 #include "daw_reverse_iterator.h"
 #include "daw_traits.h"
+#include <string>
 
 namespace daw {
 	namespace impl {
@@ -94,7 +94,7 @@ namespace daw {
 		return lhs.m_first != rhs.m_first || lhs.m_last != rhs.m_last;
 	}
 
-	template<typename Iterator, typename Splitter,typename...>
+	template<typename Iterator, typename Splitter, typename...>
 	struct split_it;
 
 	template<typename Iterator, typename Splitter>
@@ -207,13 +207,13 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr split_it operator++(int)const noexcept {
+		constexpr split_it operator++( int ) const noexcept {
 			split_it tmp{*this};
 			move_next( );
 			return tmp;
 		}
 
-		constexpr split_it operator--(int)const noexcept {
+		constexpr split_it operator--( int ) const noexcept {
 			static_assert( impl::can_decrement<Iterator>, "Supplied Iterator is not Bidirectional" );
 			split_it tmp{*this};
 			move_prev( );
@@ -410,13 +410,13 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr split_it operator++(int)const noexcept {
+		constexpr split_it operator++( int ) const noexcept {
 			split_it tmp{*this};
 			move_next( );
 			return tmp;
 		}
 
-		constexpr split_it operator--(int)const noexcept {
+		constexpr split_it operator--( int ) const noexcept {
 			static_assert( impl::can_decrement<Iterator>, "Supplied Iterator is not Bidirectional" );
 			split_it tmp{*this};
 			move_prev( );

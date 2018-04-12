@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2014-2017 Darrell Wright
+// Copyright (c) 2014-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to deal
@@ -158,7 +158,8 @@ namespace daw {
 		std::chrono::duration<double> const duration = finish - start;
 		std::cout << title << " took " << utility::format_seconds( duration.count( ), 2 );
 		if( item_count > 1 ) {
-			std::cout << " to process " << item_count << " items at " << utility::format_seconds( (duration/item_count).count( ), 2 ) << " per item\n";
+			std::cout << " to process " << item_count << " items at "
+			          << utility::format_seconds( ( duration / item_count ).count( ), 2 ) << " per item\n";
 		} else {
 			std::cout << '\n';
 		}

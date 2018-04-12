@@ -90,7 +90,8 @@ namespace daw {
 				return c == check_val;
 			}
 
-			template<char check_val, char... check_vals, std::enable_if_t<(sizeof...(check_vals) != 0), std::nullptr_t> = nullptr>
+			template<char check_val, char... check_vals,
+			         std::enable_if_t<( sizeof...( check_vals ) != 0 ), std::nullptr_t> = nullptr>
 			constexpr bool check( char const c ) const noexcept {
 				return c == check_val || check<check_vals...>( c );
 			}

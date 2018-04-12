@@ -135,4 +135,3 @@ namespace daw {
 		return observable_ptr_pair<T>{tmp};
 	}
 } // namespace daw
-

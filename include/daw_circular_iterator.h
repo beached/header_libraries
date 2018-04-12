@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to deal
@@ -146,7 +146,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr circular_iterator operator++(int)noexcept {
+		constexpr circular_iterator operator++( int ) noexcept {
 			auto result = circular_iterator{*this};
 			m_position = get_offset( 1 );
 			return result;
@@ -157,7 +157,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr circular_iterator operator--(int)noexcept {
+		constexpr circular_iterator operator--( int ) noexcept {
 			auto result = circular_iterator{*this};
 			m_position = get_offset( -1 );
 			return result;

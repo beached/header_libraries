@@ -30,7 +30,7 @@ namespace daw {
 	struct visit_null_union_pair_exception {};
 	template<typename Type0, typename Type1>
 	class union_pair_t {
-		enum class data_types : uint_least8_t { type_0, type_1, type_nothing  };
+		enum class data_types : uint_least8_t { type_0, type_1, type_nothing };
 
 		union {
 			Type0 value0;
@@ -239,4 +239,3 @@ namespace daw {
 		}
 	};
 } // namespace daw
-

@@ -280,7 +280,8 @@ namespace daw {
 			return result;
 		}
 
-		/// @brief searches for where, returns substring between front and where, then pops off the substring and the where string
+		/// @brief searches for where, returns substring between front and where, then pops off the substring and the where
+		/// string
 		/// @param where string to split on and remove from front
 		/// @return substring from beginning to where string
 		constexpr basic_string_view pop_front( basic_string_view where ) noexcept {
@@ -343,8 +344,7 @@ namespace daw {
 		/// @return substring from last position marked by predicate to end
 		template<typename UnaryPredicate,
 		         std::enable_if_t<is_unary_predicate_v<UnaryPredicate, CharT>, std::nullptr_t> = nullptr>
-		constexpr basic_string_view
-		pop_back( UnaryPredicate pred ) noexcept( noexcept( pred( std::declval<CharT>( ) ) ) ) {
+		constexpr basic_string_view pop_back( UnaryPredicate pred ) noexcept( noexcept( pred( std::declval<CharT>( ) ) ) ) {
 
 			auto pos = find_last_of_if( std::move( pred ) );
 			if( pos == npos ) {
@@ -388,7 +388,7 @@ namespace daw {
 		/// @brief searches for where, and disgregards everything until the end of that
 		/// @param where string to find and consume
 		/// @return substring with everything up until the end of where removed
-		constexpr basic_string_view & consume_front( basic_string_view where ) noexcept {
+		constexpr basic_string_view &consume_front( basic_string_view where ) noexcept {
 			auto pos = find( where );
 			remove_prefix( pos );
 			remove_prefix( where.size( ) );

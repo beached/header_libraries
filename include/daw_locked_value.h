@@ -138,4 +138,3 @@ namespace daw {
 		}
 	}; // lockable_value_t
 } // namespace daw
-
