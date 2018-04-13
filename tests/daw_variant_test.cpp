@@ -170,5 +170,4 @@ namespace daw_variant_optional_001_ns {
 		a.reset( );
 		BOOST_REQUIRE( a == b );
 	}
-}
-
+} // namespace daw_variant_optional_001_ns

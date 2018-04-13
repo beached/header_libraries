@@ -74,4 +74,3 @@ BOOST_AUTO_TEST_CASE( split_it_004 ) {
 		++it;
 	}
 }
-

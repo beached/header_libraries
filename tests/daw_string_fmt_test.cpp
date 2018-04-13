@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
 #include <cstdint>
 #include <cstdlib>
 #include <iostream>
@@ -115,7 +114,7 @@ BOOST_AUTO_TEST_CASE( string_fmt_perf_002 ) {
 }
 
 BOOST_AUTO_TEST_CASE( string_fmt_has_to_string_001 ) {
-	struct A{
+	struct A {
 		int a;
 		explicit operator std::string( ) const {
 			return std::to_string( a );

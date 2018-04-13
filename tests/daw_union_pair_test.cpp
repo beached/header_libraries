@@ -45,4 +45,3 @@ BOOST_AUTO_TEST_CASE( daw_union_pair_test_002 ) {
 	daw::union_pair_t<int, double> tmp{int{5}};
 	BOOST_REQUIRE_EQUAL( 5, tmp.visit( []( auto v ) { return static_cast<int>( v ); } ) );
 }
-

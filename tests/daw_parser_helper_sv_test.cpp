@@ -31,4 +31,3 @@ BOOST_AUTO_TEST_CASE( test_in_t_test_001 ) {
 	BOOST_REQUIRE( !tst( '#' ) );
 	BOOST_REQUIRE( tst( '1' ) );
 }
-

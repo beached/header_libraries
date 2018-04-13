@@ -27,8 +27,8 @@
 #include <vector>
 
 #include "boost_test.h"
-#include "daw_string_split_range.h"
 #include "daw_container_algorithm.h"
+#include "daw_string_split_range.h"
 
 BOOST_AUTO_TEST_CASE( string_split_range_001 ) {
 	std::string const str = "This is a test of the split";
@@ -37,14 +37,11 @@ BOOST_AUTO_TEST_CASE( string_split_range_001 ) {
 
 	auto rng = daw::split_string( str, " " );
 	daw::algorithm::transform( rng.begin( ), rng.end( ), std::back_inserter( tst ),
-	                           []( auto sv ) {
-								   return sv.to_string( );
-							   } );
+	                           []( auto sv ) { return sv.to_string( ); } );
 
 	bool const ans = std::equal( tst.cbegin( ), tst.cend( ), expected_tst.cbegin( ), expected_tst.cend( ) );
 	BOOST_REQUIRE( ans );
 }
-
 
 BOOST_AUTO_TEST_CASE( string_split_range_002 ) {
 	std::vector<std::string> const expected_tst = {"This", "is", "a", "test", "of", "the", "split"};
@@ -69,4 +66,3 @@ BOOST_AUTO_TEST_CASE( string_split_range_003 ) {
 	bool const ans = std::equal( tst.cbegin( ), tst.cend( ), expected_tst.cbegin( ), expected_tst.cend( ) );
 	BOOST_REQUIRE( ans );
 }
-

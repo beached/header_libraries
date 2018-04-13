@@ -80,9 +80,9 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 		int a;
 	};
 
-	daw::expected_t<L> l{ []( ) { return L{ 5 }; } };
+	daw::expected_t<L> l{[]( ) { return L{5}; }};
 	BOOST_REQUIRE( l->a == 5 );
 
-	auto const m = daw::expected_from_code( []( ) { return L{ 6 }; } );
+	auto const m = daw::expected_from_code( []( ) { return L{6}; } );
 	BOOST_REQUIRE( m->a == 6 );
 }

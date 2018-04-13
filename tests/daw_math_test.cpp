@@ -130,7 +130,5 @@ BOOST_AUTO_TEST_CASE( daw_math_min_001 ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_math_min_002 ) {
-	BOOST_REQUIRE_EQUAL( daw::min( 5, 3, 100, std::numeric_limits<float>::infinity( ), 3, 4, -100, 0xFFFF ),
-	                     -100 );
+	BOOST_REQUIRE_EQUAL( daw::min( 5, 3, 100, std::numeric_limits<float>::infinity( ), 3, 4, -100, 0xFFFF ), -100 );
 }
-

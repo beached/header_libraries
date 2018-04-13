@@ -79,7 +79,6 @@ BOOST_AUTO_TEST_CASE( daw_hex_test_005 ) {
 	BOOST_REQUIRE_EQUAL( a_str, "789ABCDE" );
 }
 
-
 BOOST_AUTO_TEST_CASE( daw_pack_index_of_001 ) {
 	constexpr auto const pack_pos = daw::pack_index_of_v<int, std::string, bool, float, int, long>;
 	BOOST_REQUIRE_EQUAL( pack_pos, 3 );
@@ -102,20 +101,19 @@ BOOST_AUTO_TEST_CASE( daw_read_file_001 ) {
 
 /*
 BOOST_AUTO_TEST_CASE( daw_get_pack_value_001 ) {
-	constexpr auto const tst = daw::daw_get_pack_value( 2, "a", true, 4 );
+  constexpr auto const tst = daw::daw_get_pack_value( 2, "a", true, 4 );
 
-	static_assert( daw::is_same_v<decltype( tst ), bool>, "Expected a bool" );
-	BOOST_REQUIRE( tst );
+  static_assert( daw::is_same_v<decltype( tst ), bool>, "Expected a bool" );
+  BOOST_REQUIRE( tst );
 }
 */
 
 BOOST_AUTO_TEST_CASE( daw_pack_type_at_001 ) {
-	using tst_t = daw::pack_type_at<5, double, float, std::string, char, char*, int, void*>;
+	using tst_t = daw::pack_type_at<5, double, float, std::string, char, char *, int, void *>;
 	constexpr bool tst = std::is_same<int, tst_t>::value;
-	std::cout << daw::pack_index_of_v<int, double, float, std::string, char, char*, int, void*> << '\n';
+	std::cout << daw::pack_index_of_v<int, double, float, std::string, char, char *, int, void *> << '\n';
 
 	std::cout << typeid( tst_t ).name( ) << '\n';
 	std::cout << typeid( int ).name( ) << '\n';
 	BOOST_REQUIRE( tst );
 }
-

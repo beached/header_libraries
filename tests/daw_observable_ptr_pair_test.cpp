@@ -26,47 +26,47 @@
 #include "daw_observable_ptr_pair.h"
 
 BOOST_AUTO_TEST_CASE( test_001 ) {
-  int *p = new int{4};
-  daw::observable_ptr_pair<int> t{p};
+	int *p = new int{4};
+	daw::observable_ptr_pair<int> t{p};
 
-  auto obs = t.get_observer( );
+	auto obs = t.get_observer( );
 
-  obs.lock( []( int &val ) { val = 5; } );
+	obs.lock( []( int &val ) { val = 5; } );
 
-  BOOST_REQUIRE_EQUAL( *p, 5 );
+	BOOST_REQUIRE_EQUAL( *p, 5 );
 }
 
 BOOST_AUTO_TEST_CASE( test_002 ) {
-  int *p = new int{4};
-  daw::observable_ptr_pair<int> t{p};
+	int *p = new int{4};
+	daw::observable_ptr_pair<int> t{p};
 
-  auto obs = t.get_observer( );
-  {
-    auto lck = obs.try_borrow( );
-    if( lck ) {
-      *lck = 5;
-    }
-  }
-  BOOST_REQUIRE_EQUAL( *p, 5 );
+	auto obs = t.get_observer( );
+	{
+		auto lck = obs.try_borrow( );
+		if( lck ) {
+			*lck = 5;
+		}
+	}
+	BOOST_REQUIRE_EQUAL( *p, 5 );
 }
 
 BOOST_AUTO_TEST_CASE( test_003 ) {
-  auto t = daw::make_observable_ptr_pair<int>( 4 );
+	auto t = daw::make_observable_ptr_pair<int>( 4 );
 
-  auto obs = t.get_observer( );
+	auto obs = t.get_observer( );
 
-  obs.lock( []( int &val ) { val = 5; } );
+	obs.lock( []( int &val ) { val = 5; } );
 
-  BOOST_REQUIRE_EQUAL( *t, 5 );
+	BOOST_REQUIRE_EQUAL( *t, 5 );
 }
 
 BOOST_AUTO_TEST_CASE( test_004 ) {
 
-  auto t = daw::make_observable_ptr_pair<std::atomic_int>( static_cast<int>( 0 ) );
+	auto t = daw::make_observable_ptr_pair<std::atomic_int>( static_cast<int>( 0 ) );
 
-  auto const obs = t.get_observer( );
+	auto const obs = t.get_observer( );
 
-  BOOST_REQUIRE_EQUAL( obs.borrow( )->load( ), 0 );
+	BOOST_REQUIRE_EQUAL( obs.borrow( )->load( ), 0 );
 }
 
 namespace {
@@ -74,7 +74,7 @@ namespace {
 		int value;
 
 		test_t( int v )
-		  : value{v} { }
+		  : value{v} {}
 
 		void set_value( int v ) {
 			value = v;
@@ -96,22 +96,20 @@ BOOST_AUTO_TEST_CASE( test_visit_006 ) {
 
 BOOST_AUTO_TEST_CASE( test_apply_visitor_007 ) {
 	auto const tmp = daw::make_observable_ptr_pair<test_t>( 5 );
-	auto const res = tmp.apply_visitor( []( auto const & ptr ) { return ptr->value; } );
+	auto const res = tmp.apply_visitor( []( auto const &ptr ) { return ptr->value; } );
 	BOOST_REQUIRE_EQUAL( 5, res );
 }
 
 BOOST_AUTO_TEST_CASE( test_visit_008 ) {
 	auto tmp = daw::make_observable_ptr_pair<test_t>( 5 );
-	tmp.visit( []( auto & v ) -> int &  { return v.value; } ) = 6;
-	auto const res = tmp.visit( []( auto v ) ->int { return v.value; } );
+	tmp.visit( []( auto &v ) -> int & { return v.value; } ) = 6;
+	auto const res = tmp.visit( []( auto v ) -> int { return v.value; } );
 	BOOST_REQUIRE_EQUAL( 6, res );
 }
 
 BOOST_AUTO_TEST_CASE( test_visit_009 ) {
 	auto tmp = daw::make_observable_ptr_pair<test_t>( 5 );
-	tmp.visit( []( auto & v ) { v.set_value( 6 ); } );
-	auto const res = tmp.visit( []( auto v ) ->int { return v.value; } );
+	tmp.visit( []( auto &v ) { v.set_value( 6 ); } );
+	auto const res = tmp.visit( []( auto v ) -> int { return v.value; } );
 	BOOST_REQUIRE_EQUAL( 6, res );
 }
-
-

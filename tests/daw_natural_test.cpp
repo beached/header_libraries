@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE( daw_natural_op_min_01 ) {
 BOOST_AUTO_TEST_CASE( daw_natural_op_min_02 ) {
 	daw::natural_t<int> a = 1;
 	daw::natural_t<int> b = 2;
-	BOOST_REQUIRE_THROW( Unused(a - b), daw::exception::arithmetic_exception );
+	BOOST_REQUIRE_THROW( Unused( a - b ), daw::exception::arithmetic_exception );
 	BOOST_REQUIRE_EQUAL( a, 1 );
 	BOOST_REQUIRE_EQUAL( b, 2 );
 }
@@ -176,5 +176,3 @@ BOOST_AUTO_TEST_CASE( daw_natural_op_dec_04 ) {
 	BOOST_REQUIRE_EQUAL( a, 1 );
 	BOOST_REQUIRE_EQUAL( b, 2 );
 }
-
-

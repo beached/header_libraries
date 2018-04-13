@@ -40,4 +40,3 @@ BOOST_AUTO_TEST_CASE( string_fmt_test_001 ) {
 	auto result = daw::string::fmt( "This is {0} test", "a" );
 	BOOST_REQUIRE_EQUAL( result, "This is a test" );
 }
-

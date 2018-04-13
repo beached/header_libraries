@@ -23,11 +23,11 @@
 #include "boost_test.h"
 #include <iostream>
 
-#include "daw_range_collection.h"
 #include "daw_benchmark.h"
+#include "daw_range_collection.h"
 
 BOOST_AUTO_TEST_CASE( test_01 ) {
-	std::vector<int> a = {1,2,3,4,5};
+	std::vector<int> a = {1, 2, 3, 4, 5};
 	using namespace daw::range;
 	auto tst = from( a );
 	daw::do_not_optimize( tst );

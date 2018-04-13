@@ -176,7 +176,7 @@ namespace daw {
 			m_stack[m_index++] = value;
 		}
 
-		constexpr void push_back( value_type&& value ) noexcept {
+		constexpr void push_back( value_type &&value ) noexcept {
 			if( can_move_front( 1 ) ) {
 				do_move_to_front( );
 			}

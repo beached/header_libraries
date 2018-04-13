@@ -30,7 +30,7 @@ template<typename T>
 using rw_type = decltype( daw::read_only<T>{4} = 5 );
 
 BOOST_AUTO_TEST_CASE( daw_read_only_test_01 ) {
-	static_assert( !daw::is_detected_v<rw_type,int>, "Read only type is assignable, it should not be" );
+	static_assert( !daw::is_detected_v<rw_type, int>, "Read only type is assignable, it should not be" );
 }
 
 struct A {
@@ -89,8 +89,7 @@ BOOST_AUTO_TEST_CASE( daw_read_only_test_02 ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_read_only_test_03 ) {
-	daw::read_only<int> a{ 5 };
+	daw::read_only<int> a{5};
 	int b = a;
 	BOOST_REQUIRE_EQUAL( a, b );
 }
-

@@ -632,4 +632,3 @@ BOOST_AUTO_TEST_CASE( daw_minmax_item_test_002 ) {
 	BOOST_REQUIRE_EQUAL( ans.first.v, -100 );
 	BOOST_REQUIRE_EQUAL( ans.second.v, 5 );
 }
-

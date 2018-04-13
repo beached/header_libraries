@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE( daw_variant_001 ) {
 	std::cout << "size of variant is: " << sizeof( v_t ) << '\n';
 	std::cout << "size of largest type in variant is "
 	          << daw::traits::max_sizeof_v<test_t, int, float, std::string, c_t> << '\n';
-	std::cout << "size of type index is " << sizeof( decltype( std::declval<v_t>().index( ) ) ) << '\n';
+	std::cout << "size of type index is " << sizeof( decltype( std::declval<v_t>( ).index( ) ) ) << '\n';
 	v_t s{};
 	v_t t = 5;
 	std::string five = "5"s;
@@ -187,4 +187,3 @@ namespace daw_variant_optional_001_ns {
 		// TODO			BOOST_REQUIRE( a == b );
 	}
 } // namespace daw_variant_optional_001_ns
-

@@ -656,7 +656,7 @@ BOOST_AUTO_TEST_CASE( isnt_cv_ref_test_001 ) {
 }
 
 BOOST_AUTO_TEST_CASE( isnt_cv_ref_test_002 ) {
-	constexpr bool t1 = daw::traits::isnt_cv_ref_v<float, long&, char, short>;
+	constexpr bool t1 = daw::traits::isnt_cv_ref_v<float, long &, char, short>;
 	BOOST_REQUIRE( !t1 );
 }
 
@@ -674,4 +674,3 @@ namespace isnt_cv_ref_test_003_ns {
 		BOOST_REQUIRE( !t2 );
 	}
 } // namespace isnt_cv_ref_test_003_ns
-

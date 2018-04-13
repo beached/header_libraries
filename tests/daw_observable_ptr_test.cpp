@@ -74,9 +74,7 @@ namespace {
 		daw::observable_ptr<std::atomic_int_least8_t> value;
 
 		test_005_t( )
-		  : value{daw::make_observable_ptr<std::atomic_int_least8_t>( static_cast<int_least8_t>( 0 ) )} {
-
-		}
+		  : value{daw::make_observable_ptr<std::atomic_int_least8_t>( static_cast<int_least8_t>( 0 ) )} {}
 	};
 } // namespace
 
@@ -85,4 +83,3 @@ BOOST_AUTO_TEST_CASE( test_005 ) {
 	auto v = tmp.value->load( );
 	BOOST_REQUIRE_EQUAL( 0, v );
 }
-

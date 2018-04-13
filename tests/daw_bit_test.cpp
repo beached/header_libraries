@@ -53,4 +53,3 @@ BOOST_AUTO_TEST_CASE( unset_bits_001 ) {
 BOOST_AUTO_TEST_CASE( get_bits_001 ) {
 	BOOST_REQUIRE_EQUAL( 0b0001'0101, daw::get_bits( 0b1111'1111, 0u, 2u, 4u ) );
 }
-

@@ -953,4 +953,3 @@ namespace daw {
 		s.remove_prefix( );
 	}
 } // namespace daw
-
