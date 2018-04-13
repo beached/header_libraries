@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2014-2017 Darrell Wright
+// Copyright (c) 2014-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to deal
@@ -20,9 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <sstream>
+#include <typeinfo>
+
 #include "boost_test.h"
 #include "daw_utility.h"
-#include <sstream>
 
 BOOST_AUTO_TEST_CASE( daw_utility_append_test ) {
 	std::vector<int> a{1, 2, 3, 4, 5};
@@ -98,10 +100,22 @@ BOOST_AUTO_TEST_CASE( daw_read_file_001 ) {
 	std::cout << f.size( ) << '\n';
 }
 
+/*
 BOOST_AUTO_TEST_CASE( daw_get_pack_value_001 ) {
 	constexpr auto const tst = daw::daw_get_pack_value( 2, "a", true, 4 );
 
-	static_assert( std::is_same_<decltype( tst ), bool>, "Expected a bool" );
+	static_assert( daw::is_same_v<decltype( tst ), bool>, "Expected a bool" );
+	BOOST_REQUIRE( tst );
+}
+*/
+
+BOOST_AUTO_TEST_CASE( daw_pack_type_at_001 ) {
+	using tst_t = daw::pack_type_at<5, double, float, std::string, char, char*, int, void*>;
+	constexpr bool tst = std::is_same<int, tst_t>::value;
+	std::cout << daw::pack_index_of_v<int, double, float, std::string, char, char*, int, void*> << '\n';
+
+	std::cout << typeid( tst_t ).name( ) << '\n';
+	std::cout << typeid( int ).name( ) << '\n';
 	BOOST_REQUIRE( tst );
 }
 
