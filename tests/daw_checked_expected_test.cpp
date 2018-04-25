@@ -35,7 +35,7 @@ daw::checked_expected_t<int, std::runtime_error> divide( int v ) noexcept {
 	} catch( ... ) { return std::current_exception( ); }
 }
 
-daw::checked_expected_t<int, std::runtime_error> divide2( int v ) noexcept {
+daw::checked_expected_t<int, std::runtime_error> divide2( int v ) {
 	try {
 		if( v == 0 ) {
 			throw std::runtime_error{ "division by zero" };
@@ -80,9 +80,18 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 	auto h = divide( 0 );
 	auto i = divide( 2 );
 	auto h2 = divide2( 0 );
-	auto i2 = divide2( 5 );
+	try {
+		auto i2 = divide2( 5 );
+	} catch( std::runtime_error const & ) {
+		throw std::runtime_error{ "This shouldn't happen" };
+	} catch( ... ) { }
 
-	int i3 = daw::checked_from_code<std::runtime_error>( divide3, 5 );
+	try {
+		int i3 = daw::checked_from_code<std::runtime_error>( divide3, 5 );
+	} catch( std::runtime_error const & ) {
+		throw std::runtime_error{ "This shouldn't happen" };
+	} catch( ... ) { }
+
 
 	BOOST_REQUIRE( h.has_exception( ) );
 	BOOST_REQUIRE( !h.has_value( ) );
