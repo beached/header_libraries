@@ -32,39 +32,36 @@
 #include "daw_traits.h"
 
 namespace daw {
+	struct unexpected_exception: public std::exception {};
+
 	namespace impl {
 		template<typename ExpectedException>
-		bool is_expected_exception( std::exception_ptr ptr ) noexcept {
+		void is_expected_exception( std::exception_ptr ptr ) noexcept {
 			try {
 				std::rethrow_exception( ptr );
-			} catch( ExpectedException const & ) { return true; } catch( ... ) {
-				return false;
+			} catch( ExpectedException const & ) { return; } catch( ... ) {
+				throw unexpected_exception{};
 			}
 		}
 
 		template<typename... ExpectedExceptions>
 		auto is_expected_exception( std::exception_ptr ) noexcept
-		  -> std::enable_if_t<( sizeof...( ExpectedExceptions ) == 0 ), bool> {
-			return false;
-		}
+		  -> std::enable_if_t<( sizeof...( ExpectedExceptions ) == 0 )> {}
 
 		template<typename ExpectedException, typename... ExpectedExceptions>
 		auto is_expected_exception( std::exception_ptr ptr ) noexcept
-		  -> std::enable_if_t<( sizeof...( ExpectedExceptions ) > 0 ), bool> {
+		  -> std::enable_if_t<( sizeof...( ExpectedExceptions ) > 0 )> {
 
 			try {
 				std::rethrow_exception( ptr );
-			} catch( ExpectedException const & ) { return true; } catch( ... ) {
-				return is_expected_exception<ExpectedExceptions...>( ptr );
+			} catch( ExpectedException const & ) { return; } catch( ... ) {
+				is_expected_exception<ExpectedExceptions...>( ptr );
 			}
 		}
 	} // namespace impl
 
 	template<typename T, typename... ExpectedExceptions>
-  struct checked_expected_t;
-
-	template<typename T, typename... ExpectedExceptions>
-	struct checked_expected_t<std::enable_if_t<!std::is_same_v<T, void>, T>, ExpectedExceptions...> {
+	struct checked_expected_t {
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
@@ -121,16 +118,13 @@ namespace daw {
 		checked_expected_t( exception_tag, ExceptionType const &ex )
 		  : checked_expected_t{std::make_exception_ptr( ex )} {
 
-			static_assert( daw::traits::is_one_of_v<ExceptionType, ExpectedExceptions...>,
-			               "Unexpected exception type" );
+			static_assert( daw::traits::is_one_of_v<ExceptionType, ExpectedExceptions...>, "Unexpected exception type" );
 		}
 
 		checked_expected_t( exception_tag ) noexcept
 		  : checked_expected_t{std::current_exception( )} {
 
-			if( !impl::is_expected_exception<ExpectedExceptions...>( m_exception ) ) {
-				std::terminate( );
-			}
+			impl::is_expected_exception<ExpectedExceptions...>( m_exception );
 		}
 
 		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
@@ -144,7 +138,7 @@ namespace daw {
 			} catch( ... ) { return checked_expected_t{exception_tag{}}; }
 		}
 
-		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
+		// template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename... Args>
 		checked_expected_t( Function func, Args &&... args ) noexcept
@@ -219,8 +213,8 @@ namespace daw {
 
 	static_assert( daw::is_regular_v<checked_expected_t<int>>, "checked_expected_t isn't regular" );
 
-	template<typename T, typename... ExpectedExceptions>
-	struct checked_expected_t<std::enable_if_t<std::is_same_v<T, void>, void>, ExpectedExceptions...> {
+	template<typename... ExpectedExceptions>
+	struct checked_expected_t<void, ExpectedExceptions...> {
 		using value_type = void;
 
 		struct exception_tag {};
@@ -305,9 +299,7 @@ namespace daw {
 		checked_expected_t( exception_tag ) noexcept
 		  : checked_expected_t{std::current_exception( )} {
 
-			if( !impl::is_expected_exception<ExpectedExceptions...>( m_exception ) ) {
-				std::terminate( );
-			}
+			impl::is_expected_exception<ExpectedExceptions...>( m_exception );
 		}
 
 		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
@@ -374,4 +366,18 @@ namespace daw {
 			return {};
 		}
 	}; // class checked_expected_t<void>
+
+	namespace impl {
+		template<typename T, typename...>
+		using first_t = T;
+
+		template<typename T, typename U, typename...>
+		using second_t = U;
+	} // namespace impl
+
+	template<typename... ExpectedExceptions, typename Function>
+	auto checked_from_code( Function func ) noexcept {
+		using result_t = std::decay_t<decltype( func( ) )>;
+		return checked_expected_t<result_t, ExpectedExceptions...>::from_code( func );
+	}
 } // namespace daw

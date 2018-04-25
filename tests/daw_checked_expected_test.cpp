@@ -71,6 +71,11 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 	auto i = divide( 2 );
 	auto h2 = divide2( 0 );
 	auto i2 = divide2( 5 );
+
+	auto i3 = daw::checked_from_code<std::runtime_error>( []( ) -> int {
+		throw std::exception{};
+	} );
+
 	BOOST_REQUIRE( h.has_exception( ) );
 	BOOST_REQUIRE( !h.has_value( ) );
 	BOOST_REQUIRE( h2.has_exception( ) );
@@ -81,7 +86,7 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 	auto test_01 = !( a == b );
 	auto test_02 = !( b == a );
 
-	daw::checked_expected_t<int> j{&divide, 0};
+	daw::checked_expected_t<int, std::runtime_error> j{&divide, 0};
 	BOOST_REQUIRE( j.has_exception( ) );
 	BOOST_REQUIRE( !j.has_value( ) );
 
