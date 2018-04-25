@@ -32,15 +32,14 @@
 #include "daw_traits.h"
 
 namespace daw {
-	struct unexpected_exception: public std::exception {};
-
 	namespace impl {
 		template<typename ExpectedException>
 		void is_expected_exception( std::exception_ptr ptr ) noexcept {
 			try {
 				std::rethrow_exception( ptr );
 			} catch( ExpectedException const & ) { return; } catch( ... ) {
-				throw unexpected_exception{};
+				struct unexpected_exception_type{};	// Cannot catch what you cannot name
+				throw unexpected_exception_type{};
 			}
 		}
 
@@ -375,9 +374,9 @@ namespace daw {
 		using second_t = U;
 	} // namespace impl
 
-	template<typename... ExpectedExceptions, typename Function>
-	auto checked_from_code( Function func ) noexcept {
-		using result_t = std::decay_t<decltype( func( ) )>;
-		return checked_expected_t<result_t, ExpectedExceptions...>::from_code( func );
+	template<typename... ExpectedExceptions, typename Function, typename... Args>
+	auto checked_from_code( Function func, Args&&... args ) noexcept {
+		using result_t = std::decay_t<decltype( func( std::forward<Args>( args )... ) )>;
+		return checked_expected_t<result_t, ExpectedExceptions...>::from_code( func, std::forward<Args>( args )... );
 	}
 } // namespace daw

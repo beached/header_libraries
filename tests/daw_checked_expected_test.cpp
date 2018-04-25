@@ -47,6 +47,16 @@ daw::checked_expected_t<int, std::runtime_error> divide2( int v ) noexcept {
 	} catch( ... ) { return std::current_exception( ); }
 }
 
+int divide3( int v ) {
+	if( v == 0 ) {
+		throw std::runtime_error{ "division by zero" };
+	}
+	if( v > 4 ) {
+		throw std::exception{};
+	}
+	return 4 / v;
+}
+
 BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 	std::cout << "sizeof( size_t ) -> " << sizeof( size_t );
 	std::cout << " sizeof( int ) -> " << sizeof( int );
@@ -72,9 +82,7 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 	auto h2 = divide2( 0 );
 	auto i2 = divide2( 5 );
 
-	auto i3 = daw::checked_from_code<std::runtime_error>( []( ) -> int {
-		throw std::exception{};
-	} );
+	int i3 = daw::checked_from_code<std::runtime_error>( divide3, 5 );
 
 	BOOST_REQUIRE( h.has_exception( ) );
 	BOOST_REQUIRE( !h.has_value( ) );
