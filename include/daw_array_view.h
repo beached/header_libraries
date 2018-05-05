@@ -50,6 +50,11 @@ namespace daw {
 		using size_type = size_t;
 		using difference_type = std::ptrdiff_t;
 
+		static_assert(
+		  is_convertible_v<std::random_access_iterator_tag,
+							typename std::iterator_traits<iterator>::iterator_category>,
+		  "Iterator must be random access type" );
+
 	private:
 		const_pointer m_first;
 		size_type m_size;
