@@ -21,6 +21,7 @@
 // SOFTWARE.
 #pragma once
 
+#include <boost/optional.hpp>
 #include <exception>
 #include <stdexcept>
 #include <string>
@@ -28,7 +29,6 @@
 
 #include "cpp_17.h"
 #include "daw_exception.h"
-#include "daw_optional.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -41,7 +41,7 @@ namespace daw {
 		using const_pointer = value_type const *;
 
 	private:
-		daw::optional<value_type> m_value;
+		boost::optional<value_type> m_value;
 		std::exception_ptr m_exception;
 
 	public:
@@ -97,7 +97,7 @@ namespace daw {
 		// Args...>>>
 		template<class Function, typename... Args,
 		         std::enable_if_t<daw::is_callable_v<Function, Args...>, std::nullptr_t> = nullptr>
-		static expected_t from_code( Function func, Args &&... args ) noexcept {
+		static expected_t from_code( Function &&func, Args &&... args ) noexcept {
 			try {
 				auto tmp = func( std::forward<Args>( args )... );
 				return expected_t{std::move( tmp )};
@@ -107,8 +107,8 @@ namespace daw {
 		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename... Args>
-		expected_t( Function func, Args &&... args ) noexcept
-		  : expected_t{expected_t::from_code( func, std::forward<Args>( args )... )} {}
+		expected_t( Function &&func, Args &&... args ) noexcept
+		  : expected_t{expected_t::from_code( std::forward<Function>( func ), std::forward<Args>( args )... )} {}
 
 		bool has_value( ) const noexcept {
 			return static_cast<bool>( m_value );
@@ -264,18 +264,11 @@ namespace daw {
 
 		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
-		template<class Function, typename Arg, typename... Args>
-		static expected_t from_code( Function func, Arg &&arg, Args &&... args ) noexcept {
+		template<class Function, typename... Args,
+		         std::enable_if_t<daw::is_callable_v<Function, Args...>, std::nullptr_t> = nullptr>
+		static expected_t from_code( Function &&func, Args &&... args ) noexcept {
 			try {
-				func( std::forward<Arg>( arg ), std::forward<Args>( args )... );
-				return expected_t{true};
-			} catch( ... ) { return expected_t{exception_tag{}}; }
-		}
-
-		template<class Function>
-		static expected_t from_code( Function func ) noexcept {
-			try {
-				func( );
+				func( std::forward<Args>( args )... );
 				return expected_t{true};
 			} catch( ... ) { return expected_t{exception_tag{}}; }
 		}
@@ -284,8 +277,8 @@ namespace daw {
 		// Args...>>>
 		template<class Function, typename... Args,
 		         typename result = decltype( std::declval<Function>( )( std::declval<Args>( )... ) )>
-		expected_t( Function func, Args &&... args ) noexcept
-		  : expected_t{expected_t::from_code( func, std::forward<Args>( args )... )} {}
+		expected_t( Function &&func, Args &&... args ) noexcept
+		  : expected_t{expected_t::from_code( std::forward<Function>( func ), std::forward<Args>( args )... )} {}
 
 		bool has_value( ) const noexcept {
 			return m_value;
@@ -328,18 +321,18 @@ namespace daw {
 	}; // class expected_t<void>
 
 	template<typename ExpectedResult, typename Function, typename... Args>
-	auto expected_from_code( Function func, Args &&... args ) noexcept {
+	auto expected_from_code( Function &&func, Args &&... args ) noexcept {
 		static_assert( is_convertible_v<decltype( func( std::forward<Args>( args )... ) ), ExpectedResult>,
 		               "Must be able to convert result of func to expected result type" );
 		try {
-			return expected_t<ExpectedResult>{func, std::forward<Args>( args )...};
+			return expected_t<ExpectedResult>{std::forward<Function>( func ), std::forward<Args>( args )...};
 		} catch( ... ) { return expected_t<ExpectedResult>{std::current_exception( )}; }
 	}
 
 	template<typename Function, typename... Args>
-	decltype( auto ) expected_from_code( Function func, Args &&... args ) noexcept {
+	decltype( auto ) expected_from_code( Function &&func, Args &&... args ) noexcept {
 		using result_t = std::decay_t<decltype( func( std::forward<Args>( args )... ) )>;
-		return expected_from_code<result_t>( std::move( func ), std::forward<Args>( args )... );
+		return expected_from_code<result_t>( std::forward<Function>( func ), std::forward<Args>( args )... );
 	}
 
 	template<typename ExpectedType>
