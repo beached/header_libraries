@@ -51,8 +51,7 @@ namespace daw {
 		using difference_type = std::ptrdiff_t;
 
 		static_assert(
-		  is_convertible_v<std::random_access_iterator_tag,
-							typename std::iterator_traits<iterator>::iterator_category>,
+		  is_convertible_v<std::random_access_iterator_tag, typename std::iterator_traits<iterator>::iterator_category>,
 		  "Iterator must be random access type" );
 
 	private:

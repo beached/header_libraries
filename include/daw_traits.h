@@ -759,6 +759,9 @@ namespace daw {
 
 		template<typename T>
 		using deref_t = decltype( *std::declval<T>( ) );
+
+		template<typename Function, typename... Args>
+		using result_of_t = decltype( std::declval<Function>( )( std::declval<Args>( )... ) );
 	} // namespace traits
 
 	template<bool B, typename T = std::nullptr_t>

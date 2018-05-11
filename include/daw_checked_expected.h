@@ -38,18 +38,17 @@ namespace daw {
 			try {
 				std::rethrow_exception( ptr );
 			} catch( ExpectedException const & ) { return; } catch( ... ) {
-				struct unexpected_exception_type{};	// Cannot catch what you cannot name
+				struct unexpected_exception_type {}; // Cannot catch what you cannot name
 				throw unexpected_exception_type{};
 			}
 		}
 
 		template<typename... ExpectedExceptions, typename T>
-		constexpr auto is_expected_exception( T&& ) noexcept
+		constexpr auto is_expected_exception( T && ) noexcept
 		  -> std::enable_if_t<( sizeof...( ExpectedExceptions ) == 0 )> {}
 
 		template<typename ExpectedException, typename... ExpectedExceptions>
-		auto is_expected_exception( std::exception_ptr ptr )
-		  -> std::enable_if_t<( sizeof...( ExpectedExceptions ) > 0 )> {
+		auto is_expected_exception( std::exception_ptr ptr ) -> std::enable_if_t<( sizeof...( ExpectedExceptions ) > 0 )> {
 
 			try {
 				std::rethrow_exception( ptr );
@@ -378,7 +377,7 @@ namespace daw {
 	} // namespace impl
 
 	template<typename... ExpectedExceptions, typename Function, typename... Args>
-	auto checked_from_code( Function func, Args&&... args ) {
+	auto checked_from_code( Function func, Args &&... args ) {
 		using result_t = std::decay_t<decltype( func( std::forward<Args>( args )... ) )>;
 		return checked_expected_t<result_t, ExpectedExceptions...>::from_code( func, std::forward<Args>( args )... );
 	}
