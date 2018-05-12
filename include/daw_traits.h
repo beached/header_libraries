@@ -445,7 +445,7 @@ namespace daw {
 
 	namespace detectors {
 		template<typename Function, typename... Args>
-		using callable_with = decltype( std::declval<Function &>( )( std::declval<Args &>( )... ) );
+		using callable_with = decltype( std::declval<Function>( )( std::declval<Args>( )... ) );
 
 		template<typename BinaryPredicate, typename T, typename U = T>
 		using binary_predicate = callable_with<BinaryPredicate, T, U>;
