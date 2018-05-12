@@ -381,4 +381,24 @@ namespace daw {
 		using result_t = std::decay_t<decltype( func( std::forward<Args>( args )... ) )>;
 		return checked_expected_t<result_t, ExpectedExceptions...>::from_code( func, std::forward<Args>( args )... );
 	}
+
+	template<typename Function, typename Result, typename... Exceptions>
+	class checked_function_t {
+		Function func;
+
+	public:
+		constexpr checked_function_t( Function f )
+		  : func{std::move( f )} {}
+
+		template<typename... Args>
+		constexpr decltype( auto ) operator( )( Args &&... args ) const {
+			return checked_expected_t<Result, Exceptions...>::from_code( func, std::forward<Args>( args )... );
+		}
+	};
+
+	template<typename Result, typename... Exceptions, typename Function>
+	constexpr checked_function_t<Function, Result, Exceptions...> make_checked_function( Function &&func ) noexcept {
+		return checked_function_t<Function, Result, Exceptions...>{std::forward<Function>( func )};
+	}
 } // namespace daw
+
