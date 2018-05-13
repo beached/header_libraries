@@ -67,6 +67,34 @@ namespace daw {
 				return exception_handler( ptr );
 			}
 		};
+
+		template<typename T, typename THandler, typename EmptyHandler, typename ExceptionHandler>
+		struct expected_void_visitor {
+			mutable THandler T_handler;
+			mutable EmptyHandler empty_handler;
+			mutable ExceptionHandler exception_handler;
+
+			static_assert( daw::is_callable_v<THandler, T const &> || daw::is_callable_v<THandler, T &&>, "THandler must accept a single argument of type T" );
+			static_assert( daw::is_callable_v<EmptyHandler>, "EmptyHandler must accept no arguments" );
+			static_assert( daw::is_callable_v<ExceptionHandler, std::exception_ptr>,
+			               "ExceptionHandler must accept a single argument of type std::exception_ptr" );
+
+			void operator( )( T const &value ) const noexcept {
+				T_handler( value );
+			}
+
+			void operator( )( T &&value ) const noexcept {
+				T_handler( std::move( value ) );
+			}
+
+			void operator( )( empty_value_t ) const noexcept {
+				empty_handler( );
+			}
+
+			void operator( )( std::exception_ptr ptr ) const noexcept {
+				exception_handler( ptr );
+			}
+		};
 	} // namespace impl
 
 	template<typename T, typename THandler, typename EmptyHandler, typename ExceptionHandler>
@@ -80,6 +108,21 @@ namespace daw {
 		               "ExceptionHandler must accept a single argument of type std::exception_ptr" );
 
 		return impl::expected_visitor<T, THandler, EmptyHandler, ExceptionHandler>{
+		  std::forward<THandler>( T_handler ), std::forward<EmptyHandler>( empty_handler ),
+		  std::forward<ExceptionHandler>( exception_handler )};
+	}
+
+	template<typename T, typename THandler, typename EmptyHandler, typename ExceptionHandler>
+	impl::expected_void_visitor<T, THandler, EmptyHandler, ExceptionHandler>
+	make_expected_void_visitor( THandler &&T_handler, EmptyHandler &&empty_handler,
+	                       ExceptionHandler &&exception_handler ) noexcept {
+
+		static_assert( daw::is_callable_v<THandler, T const &> || daw::is_callable_v<THandler, T &&>, "THandler must accept a single argument of type T" );
+		static_assert( daw::is_callable_v<EmptyHandler>, "EmptyHandler must accept no arguments" );
+		static_assert( daw::is_callable_v<ExceptionHandler, std::exception_ptr>,
+		               "ExceptionHandler must accept a single argument of type std::exception_ptr" );
+
+		return impl::expected_void_visitor<T, THandler, EmptyHandler, ExceptionHandler>{
 		  std::forward<THandler>( T_handler ), std::forward<EmptyHandler>( empty_handler ),
 		  std::forward<ExceptionHandler>( exception_handler )};
 	}
