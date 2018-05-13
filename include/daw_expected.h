@@ -46,17 +46,13 @@ namespace daw {
 			mutable EmptyHandler empty_handler;
 			mutable ExceptionHandler exception_handler;
 
-			static_assert( daw::is_callable_v<THandler, T const &> || daw::is_callable_v<THandler, T &&>, "THandler must accept a single argument of type T" );
+			static_assert( daw::is_callable_v<THandler, T const &>, "THandler must accept a single argument of type T" );
 			static_assert( daw::is_callable_v<EmptyHandler>, "EmptyHandler must accept no arguments" );
 			static_assert( daw::is_callable_v<ExceptionHandler, std::exception_ptr>,
 			               "ExceptionHandler must accept a single argument of type std::exception_ptr" );
 
 			decltype( auto ) operator( )( T const &value ) const noexcept {
 				return T_handler( value );
-			}
-
-			decltype( auto ) operator( )( T &&value ) const noexcept {
-				return T_handler( std::move( value ) );
 			}
 
 			decltype( auto ) operator( )( empty_value_t ) const noexcept {
@@ -74,17 +70,13 @@ namespace daw {
 			mutable EmptyHandler empty_handler;
 			mutable ExceptionHandler exception_handler;
 
-			static_assert( daw::is_callable_v<THandler, T const &> || daw::is_callable_v<THandler, T &&>, "THandler must accept a single argument of type T" );
+			static_assert( daw::is_callable_v<THandler, T const &>, "THandler must accept a single argument of type T" );
 			static_assert( daw::is_callable_v<EmptyHandler>, "EmptyHandler must accept no arguments" );
 			static_assert( daw::is_callable_v<ExceptionHandler, std::exception_ptr>,
 			               "ExceptionHandler must accept a single argument of type std::exception_ptr" );
 
 			void operator( )( T const &value ) const noexcept {
 				T_handler( value );
-			}
-
-			void operator( )( T &&value ) const noexcept {
-				T_handler( std::move( value ) );
 			}
 
 			void operator( )( empty_value_t ) const noexcept {
