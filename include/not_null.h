@@ -3,14 +3,14 @@
 // Copyright (c) 2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -49,16 +49,19 @@ namespace daw {
 		T m_ptr;
 
 	public:
-		static_assert( is_assignable_v<T &, std::nullptr_t>, "T cannot be assigned nullptr." );
+		static_assert( is_assignable_v<T &, std::nullptr_t>,
+		               "T cannot be assigned nullptr." );
 
-		template<typename U, std::enable_if_t<is_convertible_v<U, T>, std::nullptr_t> = nullptr>
+		template<typename U,
+		         std::enable_if_t<is_convertible_v<U, T>, std::nullptr_t> = nullptr>
 		constexpr not_null( U u )
 		  : m_ptr{u} {
 
 			daw::exception::daw_throw_on_null( m_ptr, "Cannot be assigned nullptr" );
 		}
 
-		template<typename U, std::enable_if_t<is_convertible_v<U, T>, std::nullptr_t> = nullptr>
+		template<typename U,
+		         std::enable_if_t<is_convertible_v<U, T>, std::nullptr_t> = nullptr>
 		constexpr not_null( not_null<U> const &other )
 		  : not_null{other.get( )} {}
 		~not_null( ) = default;
@@ -80,7 +83,8 @@ namespace daw {
 			return get( );
 		}
 
-		// prevents compilation when someone attempts to assign a null pointer constant
+		// prevents compilation when someone attempts to assign a null pointer
+		// constant
 		not_null( std::nullptr_t ) = delete;
 		not_null &operator=( std::nullptr_t ) = delete;
 

@@ -3,14 +3,14 @@
 // Copyright (c) 2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -41,14 +41,19 @@ namespace daw {
 		  : current_value{std::numeric_limits<T>::max( )} {}
 		constexpr integer_range_iterator( value_type start_value ) noexcept
 		  : current_value{start_value} {}
-		constexpr integer_range_iterator( value_type start_value, value_type last_value ) noexcept
+		constexpr integer_range_iterator( value_type start_value,
+		                                  value_type last_value ) noexcept
 		  : current_value{start_value} {}
 		~integer_range_iterator( ) noexcept = default;
 
-		constexpr integer_range_iterator( integer_range_iterator const & ) noexcept = default;
-		constexpr integer_range_iterator &operator=( integer_range_iterator const & ) noexcept = default;
-		constexpr integer_range_iterator( integer_range_iterator && ) noexcept = default;
-		constexpr integer_range_iterator &operator=( integer_range_iterator && ) noexcept = default;
+		constexpr integer_range_iterator(
+		  integer_range_iterator const & ) noexcept = default;
+		constexpr integer_range_iterator &
+		operator=( integer_range_iterator const & ) noexcept = default;
+		constexpr integer_range_iterator( integer_range_iterator && ) noexcept =
+		  default;
+		constexpr integer_range_iterator &
+		operator=( integer_range_iterator && ) noexcept = default;
 
 		constexpr reference operator*( ) const noexcept {
 			return current_value;
@@ -65,11 +70,15 @@ namespace daw {
 			return tmp;
 		}
 
-		friend constexpr bool operator==( integer_range_iterator const &lhs, integer_range_iterator const &rhs ) noexcept {
+		friend constexpr bool
+		operator==( integer_range_iterator const &lhs,
+		            integer_range_iterator const &rhs ) noexcept {
 			return lhs.current_value == rhs.current_value;
 		}
 
-		friend constexpr bool operator!=( integer_range_iterator const &lhs, integer_range_iterator const &rhs ) noexcept {
+		friend constexpr bool
+		operator!=( integer_range_iterator const &lhs,
+		            integer_range_iterator const &rhs ) noexcept {
 			return lhs.current_value != rhs.current_value;
 		}
 	};

@@ -3,14 +3,14 @@
 // Copyright (c) 2016-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -43,8 +43,9 @@ namespace daw {
 	private:
 		std::unique_ptr<value_type> m_value;
 
-		template<typename T,
-		         typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
+		template<typename T, typename = std::enable_if_t<
+		                       std::is_base_of<value_type, T>::value ||
+		                       std::is_same<value_type, T>::value>>
 		static T *make_copy( T *ptr ) {
 			if( !ptr ) {
 				return nullptr;
@@ -77,35 +78,41 @@ namespace daw {
 			m_value.reset( new value_type{std::forward<Args>( args )...} );
 		}
 
-		template<typename T,
-		         typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
+		template<typename T, typename = std::enable_if_t<
+		                       std::is_base_of<value_type, T>::value ||
+		                       std::is_same<value_type, T>::value>>
 		optional_poly( T &&value )
 		  : m_value{new std::decay_t<T>{std::forward<T>( value )}} {}
 
-		template<typename T,
-		         typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
+		template<typename T, typename = std::enable_if_t<
+		                       std::is_base_of<value_type, T>::value ||
+		                       std::is_same<value_type, T>::value>>
 		optional_poly( T const &value )
 		  : m_value{new std::decay_t<T>{value}} {}
 
-		template<typename T,
-		         typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
+		template<typename T, typename = std::enable_if_t<
+		                       std::is_base_of<value_type, T>::value ||
+		                       std::is_same<value_type, T>::value>>
 		explicit optional_poly( optional_poly<T> const &other )
 		  : m_value{make_copy( other.m_value.get( ) )} {}
 
-		template<typename T,
-		         typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
+		template<typename T, typename = std::enable_if_t<
+		                       std::is_base_of<value_type, T>::value ||
+		                       std::is_same<value_type, T>::value>>
 		explicit optional_poly( optional_poly<T> &&other ) noexcept
 		  : m_value{other.m_value.release( )} {}
 
-		template<typename T,
-		         typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
+		template<typename T, typename = std::enable_if_t<
+		                       std::is_base_of<value_type, T>::value ||
+		                       std::is_same<value_type, T>::value>>
 		optional_poly &operator=( optional_poly<T> const &rhs ) {
 			m_value.reset( make_copy( rhs.m_value.get( ) ) );
 			return *this;
 		}
 
-		template<typename T,
-		         typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
+		template<typename T, typename = std::enable_if_t<
+		                       std::is_base_of<value_type, T>::value ||
+		                       std::is_same<value_type, T>::value>>
 		optional_poly &operator=( optional_poly<T> &&rhs ) {
 			if( this != static_cast<optional_poly *>( &rhs ) ) {
 				m_value.reset( rhs.m_value.release( ) );
@@ -113,8 +120,9 @@ namespace daw {
 			return *this;
 		}
 
-		template<typename T,
-		         typename = std::enable_if_t<std::is_base_of<value_type, T>::value || std::is_same<value_type, T>::value>>
+		template<typename T, typename = std::enable_if_t<
+		                       std::is_base_of<value_type, T>::value ||
+		                       std::is_same<value_type, T>::value>>
 		optional_poly &operator=( T const &value ) {
 			m_value.reset( new value_type{value} );
 			return *this;
@@ -174,7 +182,8 @@ namespace daw {
 	}
 
 	template<typename T>
-	bool operator==( daw::optional_poly<T> const &lhs, daw::optional_poly<T> const &rhs ) {
+	bool operator==( daw::optional_poly<T> const &lhs,
+	                 daw::optional_poly<T> const &rhs ) {
 		if( lhs ) {
 			if( rhs ) {
 				return *lhs == *rhs;
@@ -185,7 +194,8 @@ namespace daw {
 	}
 
 	template<typename T>
-	bool operator!=( daw::optional_poly<T> const &lhs, daw::optional_poly<T> const &rhs ) {
+	bool operator!=( daw::optional_poly<T> const &lhs,
+	                 daw::optional_poly<T> const &rhs ) {
 		if( lhs ) {
 			if( rhs ) {
 				return *lhs != *rhs;
@@ -196,7 +206,8 @@ namespace daw {
 	}
 
 	template<typename T>
-	bool operator<( daw::optional_poly<T> const &lhs, daw::optional_poly<T> const &rhs ) {
+	bool operator<( daw::optional_poly<T> const &lhs,
+	                daw::optional_poly<T> const &rhs ) {
 		if( lhs ) {
 			if( rhs ) {
 				return *lhs < *rhs;
@@ -207,7 +218,8 @@ namespace daw {
 	}
 
 	template<typename T>
-	bool operator<=( daw::optional_poly<T> const &lhs, daw::optional_poly<T> const &rhs ) {
+	bool operator<=( daw::optional_poly<T> const &lhs,
+	                 daw::optional_poly<T> const &rhs ) {
 		if( lhs ) {
 			if( rhs ) {
 				return *lhs <= *rhs;
@@ -218,7 +230,8 @@ namespace daw {
 	}
 
 	template<typename T>
-	bool operator>( daw::optional_poly<T> const &lhs, daw::optional_poly<T> const &rhs ) {
+	bool operator>( daw::optional_poly<T> const &lhs,
+	                daw::optional_poly<T> const &rhs ) {
 		if( lhs ) {
 			if( rhs ) {
 				return *lhs > *rhs;
@@ -229,7 +242,8 @@ namespace daw {
 	}
 
 	template<typename T>
-	bool operator>=( daw::optional_poly<T> const &lhs, daw::optional_poly<T> const &rhs ) {
+	bool operator>=( daw::optional_poly<T> const &lhs,
+	                 daw::optional_poly<T> const &rhs ) {
 		if( lhs ) {
 			if( rhs ) {
 				return *lhs >= *rhs;

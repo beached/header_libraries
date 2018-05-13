@@ -3,14 +3,14 @@
 // Copyright (c) 2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -45,7 +45,8 @@ namespace daw {
 
 	template<typename IntType>
 	inline IntType randint( IntType a, IntType b ) {
-		static_assert( daw::is_integral_v<IntType>, "IntType must be a valid integral type" );
+		static_assert( daw::is_integral_v<IntType>,
+		               "IntType must be a valid integral type" );
 		daw::exception::daw_throw_on_false( a <= b, "a <= b must be true" );
 		using distribution_type = std::uniform_int_distribution<IntType>;
 		using param_type = typename distribution_type::param_type;
@@ -56,7 +57,8 @@ namespace daw {
 
 	template<typename IntType>
 	inline IntType randint( ) {
-		return randint<IntType>( std::numeric_limits<IntType>::min( ), std::numeric_limits<IntType>::max( ) );
+		return randint<IntType>( std::numeric_limits<IntType>::min( ),
+		                         std::numeric_limits<IntType>::max( ) );
 	}
 
 	inline void reseed( ) {
@@ -69,7 +71,8 @@ namespace daw {
 
 	template<typename RandomIterator>
 	void shuffle( RandomIterator first, RandomIterator last ) {
-		using diff_t = typename std::iterator_traits<RandomIterator>::difference_type;
+		using diff_t =
+		  typename std::iterator_traits<RandomIterator>::difference_type;
 
 		diff_t n = last - first;
 		for( diff_t i = n - 1; i > 0; --i ) {
@@ -79,8 +82,10 @@ namespace daw {
 	}
 
 	template<typename IntType, typename ForwardIterator>
-	void random_fill( ForwardIterator first, ForwardIterator const last, IntType a, IntType b ) {
-		static_assert( daw::is_integral_v<IntType>, "IntType must be a valid integral type" );
+	void random_fill( ForwardIterator first, ForwardIterator const last,
+	                  IntType a, IntType b ) {
+		static_assert( daw::is_integral_v<IntType>,
+		               "IntType must be a valid integral type" );
 		daw::exception::daw_throw_on_false( a <= b, "a <= b must be true" );
 		while( first != last ) {
 			*first++ = randint( a, b );
@@ -88,10 +93,12 @@ namespace daw {
 	}
 
 	template<typename IntType, typename Result = std::vector<IntType>>
-	Result make_random_data( size_t count, IntType a = std::numeric_limits<IntType>::min( ),
+	Result make_random_data( size_t count,
+	                         IntType a = std::numeric_limits<IntType>::min( ),
 	                         IntType b = std::numeric_limits<IntType>::max( ) ) {
 
-		static_assert( daw::is_integral_v<IntType>, "IntType must be a valid integral type" );
+		static_assert( daw::is_integral_v<IntType>,
+		               "IntType must be a valid integral type" );
 		daw::exception::daw_throw_on_false( a <= b, "a <= b must be true" );
 
 		Result result;

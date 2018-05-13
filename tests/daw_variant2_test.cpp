@@ -3,14 +3,14 @@
 // Copyright (c) 2014-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -45,9 +45,11 @@ BOOST_AUTO_TEST_CASE( daw_variant_001 ) {
 	using c_t = char[41];
 	using v_t = daw::variant<test_t, int, float, std::string, c_t>;
 	std::cout << "size of variant is: " << sizeof( v_t ) << '\n';
-	std::cout << "size of largest type in variant is "
-	          << daw::traits::max_sizeof_v<test_t, int, float, std::string, c_t> << '\n';
-	std::cout << "size of type index is " << sizeof( decltype( std::declval<v_t>( ).index( ) ) ) << '\n';
+	std::cout
+	  << "size of largest type in variant is "
+	  << daw::traits::max_sizeof_v<test_t, int, float, std::string, c_t> << '\n';
+	std::cout << "size of type index is "
+	          << sizeof( decltype( std::declval<v_t>( ).index( ) ) ) << '\n';
 	v_t s{};
 	v_t t = 5;
 	std::string five = "5"s;
@@ -56,7 +58,8 @@ BOOST_AUTO_TEST_CASE( daw_variant_001 ) {
 	BOOST_REQUIRE_MESSAGE( t.get<int>( ) == 5, "Value not there" );
 	BOOST_REQUIRE_MESSAGE( static_cast<int>( t ) == 5, "Value not there" );
 	// TODO	BOOST_REQUIRE_MESSAGE( t == 5, "Value not there" );
-	// TODO	BOOST_REQUIRE_MESSAGE( t.to_string( ) == "5", "too string not functioning" );
+	// TODO	BOOST_REQUIRE_MESSAGE( t.to_string( ) == "5", "too string not
+	// functioning" );
 	// TODO	BOOST_REQUIRE_MESSAGE( ( t == u ), "Type change" );
 	// TODO	BOOST_REQUIRE_MESSAGE( *t == "5", "operator* conversion" );
 	// TODO	BOOST_REQUIRE_MESSAGE( ( t = 5.54f ) == 5.54f, "Type change" );

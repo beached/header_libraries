@@ -3,14 +3,14 @@
 // Copyright ( c ) 2013-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -58,7 +58,8 @@ namespace daw {
 		~expected_t( ) = default;
 
 		friend bool operator==( expected_t const &lhs, expected_t const &rhs ) {
-			return std::tie( lhs.m_value, lhs.m_exception ) == std::tie( rhs.m_value, rhs.m_exception );
+			return std::tie( lhs.m_value, lhs.m_exception ) ==
+			       std::tie( rhs.m_value, rhs.m_exception );
 		}
 
 		//////////////////////////////////////////////////////////////////////////
@@ -93,10 +94,12 @@ namespace daw {
 		expected_t( exception_tag )
 		  : expected_t{std::current_exception( )} {}
 
-		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
+		//		template<class Function, typename... Args, typename =
+		//std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename... Args,
-		         std::enable_if_t<daw::is_callable_v<Function, Args...>, std::nullptr_t> = nullptr>
+		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
+		                          std::nullptr_t> = nullptr>
 		static expected_t from_code( Function &&func, Args &&... args ) noexcept {
 			try {
 				auto tmp = func( std::forward<Args>( args )... );
@@ -104,11 +107,13 @@ namespace daw {
 			} catch( ... ) { return expected_t{exception_tag{}}; }
 		}
 
-		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
+		//		template<class Function, typename... Args, typename =
+		//std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename... Args>
 		expected_t( Function &&func, Args &&... args ) noexcept
-		  : expected_t{expected_t::from_code( std::forward<Function>( func ), std::forward<Args>( args )... )} {}
+		  : expected_t{expected_t::from_code( std::forward<Function>( func ),
+		                                      std::forward<Args>( args )... )} {}
 
 		bool has_value( ) const noexcept {
 			return static_cast<bool>( m_value );
@@ -169,15 +174,16 @@ namespace daw {
 		std::string get_exception_message( ) const {
 			try {
 				throw_if_exception( );
-			} catch( std::exception const &e ) { return std::string{e.what( )}; } catch( ... ) {
-				return {};
-			}
+			} catch( std::exception const &e ) {
+				return std::string{e.what( )};
+			} catch( ... ) { return {}; }
 			return {};
 		}
 
 	}; // class expected_t
 
-	static_assert( daw::is_regular_v<expected_t<int>>, "expected_t isn't regular" );
+	static_assert( daw::is_regular_v<expected_t<int>>,
+	               "expected_t isn't regular" );
 
 	template<>
 	struct expected_t<void> {
@@ -221,7 +227,8 @@ namespace daw {
 		~expected_t( ) = default;
 
 		friend bool operator==( expected_t const &lhs, expected_t const &rhs ) {
-			return std::tie( lhs.m_value, lhs.m_exception ) == std::tie( rhs.m_value, rhs.m_exception );
+			return std::tie( lhs.m_value, lhs.m_exception ) ==
+			       std::tie( rhs.m_value, rhs.m_exception );
 		}
 
 		//////////////////////////////////////////////////////////////////////////
@@ -244,12 +251,14 @@ namespace daw {
 		expected_t( std::exception_ptr ptr ) noexcept
 		  : m_exception{}
 		  , m_value{false} {
-			daw::exception::daw_throw_on_false( ptr, "Attempt to pass a null exception pointer" );
+			daw::exception::daw_throw_on_false(
+			  ptr, "Attempt to pass a null exception pointer" );
 			m_exception = std::move( ptr );
 		}
 
 		expected_t &operator=( std::exception_ptr ptr ) {
-			daw::exception::daw_throw_on_false( ptr, "Attempt to pass a null exception pointer" );
+			daw::exception::daw_throw_on_false(
+			  ptr, "Attempt to pass a null exception pointer" );
 			m_value = false;
 			m_exception = ptr;
 			return *this;
@@ -262,10 +271,12 @@ namespace daw {
 		expected_t( exception_tag ) noexcept
 		  : expected_t{std::current_exception( )} {}
 
-		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
+		//		template<class Function, typename... Args, typename =
+		//std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename... Args,
-		         std::enable_if_t<daw::is_callable_v<Function, Args...>, std::nullptr_t> = nullptr>
+		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
+		                          std::nullptr_t> = nullptr>
 		static expected_t from_code( Function &&func, Args &&... args ) noexcept {
 			try {
 				func( std::forward<Args>( args )... );
@@ -273,12 +284,15 @@ namespace daw {
 			} catch( ... ) { return expected_t{exception_tag{}}; }
 		}
 
-		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
+		//		template<class Function, typename... Args, typename =
+		//std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename... Args,
-		         typename result = decltype( std::declval<Function>( )( std::declval<Args>( )... ) )>
+		         typename result = decltype(
+		           std::declval<Function>( )( std::declval<Args>( )... ) )>
 		expected_t( Function &&func, Args &&... args ) noexcept
-		  : expected_t{expected_t::from_code( std::forward<Function>( func ), std::forward<Args>( args )... )} {}
+		  : expected_t{expected_t::from_code( std::forward<Function>( func ),
+		                                      std::forward<Args>( args )... )} {}
 
 		bool has_value( ) const noexcept {
 			return m_value;
@@ -313,26 +327,34 @@ namespace daw {
 		std::string get_exception_message( ) const {
 			try {
 				throw_if_exception( );
-			} catch( std::exception const &e ) { return std::string{e.what( )}; } catch( ... ) {
-				return {};
-			}
+			} catch( std::exception const &e ) {
+				return std::string{e.what( )};
+			} catch( ... ) { return {}; }
 			return {};
 		}
 	}; // class expected_t<void>
 
 	template<typename ExpectedResult, typename Function, typename... Args>
 	auto expected_from_code( Function &&func, Args &&... args ) noexcept {
-		static_assert( is_convertible_v<decltype( func( std::forward<Args>( args )... ) ), ExpectedResult>,
-		               "Must be able to convert result of func to expected result type" );
+		static_assert(
+		  is_convertible_v<decltype( func( std::forward<Args>( args )... ) ),
+		                   ExpectedResult>,
+		  "Must be able to convert result of func to expected result type" );
 		try {
-			return expected_t<ExpectedResult>{std::forward<Function>( func ), std::forward<Args>( args )...};
-		} catch( ... ) { return expected_t<ExpectedResult>{std::current_exception( )}; }
+			return expected_t<ExpectedResult>{std::forward<Function>( func ),
+			                                  std::forward<Args>( args )...};
+		} catch( ... ) {
+			return expected_t<ExpectedResult>{std::current_exception( )};
+		}
 	}
 
 	template<typename Function, typename... Args>
-	decltype( auto ) expected_from_code( Function &&func, Args &&... args ) noexcept {
-		using result_t = std::decay_t<decltype( func( std::forward<Args>( args )... ) )>;
-		return expected_from_code<result_t>( std::forward<Function>( func ), std::forward<Args>( args )... );
+	decltype( auto ) expected_from_code( Function &&func,
+	                                     Args &&... args ) noexcept {
+		using result_t =
+		  std::decay_t<decltype( func( std::forward<Args>( args )... ) )>;
+		return expected_from_code<result_t>( std::forward<Function>( func ),
+		                                     std::forward<Args>( args )... );
 	}
 
 	template<typename ExpectedType>

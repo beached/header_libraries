@@ -3,14 +3,14 @@
 // Copyright (c) 2014-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -48,7 +48,8 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing ) {
     testing2.shrink_to_fit( );
     auto a = sizeof( big );
     auto b = sizeof( big * );
-    std::cout << a << b << testing1["hello"] << " " << testing1[454] << " " << testing2["hello"].b << std::endl;
+    std::cout << a << b << testing1["hello"] << " " << testing1[454] << " " <<
+testing2["hello"].b << std::endl;
 }
 
 auto integerKeys( size_t count = 10000 ) {
@@ -102,8 +103,9 @@ auto time_once( Keys const & keys) {
 
 template<typename HashSet, typename Keys>
 auto best_of_many(const Keys& keys, size_t count = 10 ) {
-    auto best_time = std::make_tuple( std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity(),
-std::numeric_limits<double>::infinity( ) );
+    auto best_time = std::make_tuple( std::numeric_limits<double>::infinity(),
+std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity(
+) );
 
     for (size_t i = 0; i < count; ++i) {
         best_time = daw::tuple::min(best_time, time_once<HashSet>(keys));
@@ -112,12 +114,10 @@ std::numeric_limits<double>::infinity( ) );
 }
 
 BOOST_AUTO_TEST_CASE( daw_hash_table_testing_correctness ) {
-    std::cout << "Testing that all values entered exist afterwards" << std::endl;
-    std::cout << "Generating Keys" << std::endl;
-    auto keys = integerKeys( 10 );
-    using value_type = daw::traits::root_type_t <decltype( *std::begin( keys ) )>;
-    std::cout << "Entering keys" << std::endl;
-    daw::hash_table<value_type> set;
+    std::cout << "Testing that all values entered exist afterwards" <<
+std::endl; std::cout << "Generating Keys" << std::endl; auto keys = integerKeys(
+10 ); using value_type = daw::traits::root_type_t <decltype( *std::begin( keys )
+)>; std::cout << "Entering keys" << std::endl; daw::hash_table<value_type> set;
     for( auto const & key: keys ) {
         set[key] = key;
     }
@@ -135,7 +135,8 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing_correctness ) {
     std::sort( keys.begin( ), keys.end( ) );
     std::sort( values.begin( ), values.end( ) );
 
-    BOOST_REQUIRE( std::equal( keys.begin( ), keys.end( ), values.begin( ), values.end( ) ) );
+    BOOST_REQUIRE( std::equal( keys.begin( ), keys.end( ), values.begin( ),
+values.end( ) ) );
 
     std::cout << "Done" << std::endl;
 
@@ -168,22 +169,25 @@ void do_testing( size_t count ) {
         auto perf_std = items_per_second( a, count );
         auto perf = items_per_second( b, count );
         std::cout << "size_t keys/values\n";
-        std::cout << "-->std::unorderd_map " << perf_std << " ops per seconds, " << sec_to_microsec_each( a, count ) <<
-" µs each\n"; std::cout << "-->daw::hash_table " << perf << " ops per seconds, " << sec_to_microsec_each( b, count ) <<
-" µs each\n"; std::cout << "ratio " << ((a * 100.0) / b) << " % perf of std" << std::endl;
+        std::cout << "-->std::unorderd_map " << perf_std << " ops per seconds, "
+<< sec_to_microsec_each( a, count ) << " µs each\n"; std::cout <<
+"-->daw::hash_table " << perf << " ops per seconds, " << sec_to_microsec_each(
+b, count ) << " µs each\n"; std::cout << "ratio " << ((a * 100.0) / b) << " %
+perf of std" << std::endl;
     }
     {
         std::cout << "Generating Keys" << std::endl;
         auto const keys = stringKeys( count );
         std::cout << "Starting benchmark" << std::endl;
         auto b = best_of_many<daw::hash_table<std::string>>( keys );
-        auto a = best_of_many<std::unordered_map<std::string, std::string>>( keys );
-        auto perf_std = items_per_second( a, count );
-        auto perf = items_per_second( b, count );
-        std::cout << "string keys/values\n";
-        std::cout << "-->std::unorderd_map " << perf_std << " ops per seconds, " << sec_to_microsec_each( a, count ) <<
-" µs each\n"; std::cout << "-->daw::hash_table " << perf << " ops per seconds, " << sec_to_microsec_each( b, count ) <<
-" µs each\n"; std::cout << "ratio " << ((a * 100.0) / b) << " % perf of std" << std::endl;
+        auto a = best_of_many<std::unordered_map<std::string, std::string>>(
+keys ); auto perf_std = items_per_second( a, count ); auto perf =
+items_per_second( b, count ); std::cout << "string keys/values\n"; std::cout <<
+"-->std::unorderd_map " << perf_std << " ops per seconds, " <<
+sec_to_microsec_each( a, count ) << " µs each\n"; std::cout <<
+"-->daw::hash_table " << perf << " ops per seconds, " << sec_to_microsec_each(
+b, count ) << " µs each\n"; std::cout << "ratio " << ((a * 100.0) / b) << " %
+perf of std" << std::endl;
     }
 
 }
@@ -196,8 +200,8 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_testing_perf ) {
 }
 
 template<typename Keys>
-auto time_once_dhs( Keys const & keys, size_t load_factor, double resize_ratio ) {
-    using value_type = decltype( *std::begin( keys ) );
+auto time_once_dhs( Keys const & keys, size_t load_factor, double resize_ratio )
+{ using value_type = decltype( *std::begin( keys ) );
     daw::hash_table<value_type> set{ 7, resize_ratio, load_factor };
     auto insert = daw::benchmark( [&set, &keys]( ) {
         do_test( set, keys );
@@ -218,12 +222,15 @@ auto time_once_dhs( Keys const & keys, size_t load_factor, double resize_ratio )
 }
 
 template<typename Keys>
-auto best_of_many_dhs(const Keys& keys, size_t count, size_t max_load, double resize_ratio ) {
-    auto best_time = std::make_tuple( std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity(),
-std::numeric_limits<double>::infinity( ) );
+auto best_of_many_dhs(const Keys& keys, size_t count, size_t max_load, double
+resize_ratio ) { auto best_time = std::make_tuple(
+std::numeric_limits<double>::infinity(),
+std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity(
+) );
 
     for (size_t i = 0; i < count; ++i) {
-        best_time = daw::tuple::min(best_time, time_once_dhs(keys, max_load, resize_ratio));
+        best_time = daw::tuple::min(best_time, time_once_dhs(keys, max_load,
+resize_ratio));
     }
     return best_time;
 }
@@ -233,8 +240,8 @@ auto do_testing_dhs( size_t max_load, double resize_ratio ) {
     using namespace daw::tuple;
     const size_t count = 1000000;
     std::tuple<double, double, double> result;
-    std::cout << "Testing { inserts, queries, removes } with a max_load_factor of " << max_load << "% and a growth ratio
-of " << resize_ratio << "X\n";
+    std::cout << "Testing { inserts, queries, removes } with a max_load_factor
+of " << max_load << "% and a growth ratio of " << resize_ratio << "X\n";
     {
         std::cout << "Generating Keys: " << count << std::endl;
         auto const keys = integerKeys( count );
@@ -243,8 +250,8 @@ of " << resize_ratio << "X\n";
         result = a;
         auto perf = items_per_second( a, count );
         std::cout << "size_t keys/values\n";
-        std::cout << "-->daw::hash_table " << perf << " ops per seconds, " << sec_to_microsec_each( a, count ) << " µs
-each\n";
+        std::cout << "-->daw::hash_table " << perf << " ops per seconds, " <<
+sec_to_microsec_each( a, count ) << " µs each\n";
     }
     {
         std::cout << "Generating Keys" << std::endl;
@@ -254,8 +261,8 @@ each\n";
         result = min( a, result );
         auto perf = items_per_second( a, count );
         std::cout << "string keys/values\n";
-        std::cout << "-->daw::hash_table " << perf << " ops per seconds, " << sec_to_microsec_each( a, count ) << " µs
-each\n";
+        std::cout << "-->daw::hash_table " << perf << " ops per seconds, " <<
+sec_to_microsec_each( a, count ) << " µs each\n";
     }
 
     return result;
@@ -280,7 +287,8 @@ BOOST_AUTO_TEST_CASE( daw_hash_table_size_perf ) {
             }
         }
     }
-    std::cout << "\n\nBest query perf was found with a load factor of " << best_factor << ", resize ratio of " <<
-best_ratio << " with results of " << best << '\n';
+    std::cout << "\n\nBest query perf was found with a load factor of " <<
+best_factor << ", resize ratio of " << best_ratio << " with results of " << best
+<< '\n';
 }
 */

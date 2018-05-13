@@ -3,14 +3,14 @@
 // Copyright (c) 2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -43,22 +43,28 @@ namespace daw {
 		constexpr bool has_to_string_v = daw::is_detected_v<has_to_string, T>;
 
 		template<typename T>
-		using can_cast_to_string = decltype( static_cast<std::string>( std::declval<T>( ) ) );
+		using can_cast_to_string =
+		  decltype( static_cast<std::string>( std::declval<T>( ) ) );
 
 		template<typename T>
-		constexpr bool can_cast_to_string_v = daw::is_detected_v<can_cast_to_string, T>;
+		constexpr bool can_cast_to_string_v =
+		  daw::is_detected_v<can_cast_to_string, T>;
 
-		template<typename T, std::enable_if_t<(has_to_string_v<T> && !can_cast_to_string_v<T>), std::nullptr_t> = nullptr>
+		template<typename T,
+		         std::enable_if_t<(has_to_string_v<T> && !can_cast_to_string_v<T>),
+		                          std::nullptr_t> = nullptr>
 		inline std::string to_string( T const &value ) {
 			return value.to_string( );
 		}
 
-		template<typename T, std::enable_if_t<can_cast_to_string_v<T>, std::nullptr_t> = nullptr>
+		template<typename T, std::enable_if_t<can_cast_to_string_v<T>,
+		                                      std::nullptr_t> = nullptr>
 		inline std::string to_string( T const &value ) {
 			return static_cast<std::string>( value );
 		}
 
-		template<uint8_t Cnt, uint8_t Sz, typename... Args, std::enable_if_t<( Cnt >= Sz ), std::nullptr_t> = nullptr>
+		template<uint8_t Cnt, uint8_t Sz, typename... Args,
+		         std::enable_if_t<( Cnt >= Sz ), std::nullptr_t> = nullptr>
 		inline std::string get_arg_impl( uint8_t const, Args &&... ) {
 			throw daw::invalid_string_fmt_index{};
 		}
@@ -76,7 +82,8 @@ namespace daw {
 
 		template<typename... Args>
 		std::string get_arg( uint8_t const idx, Args &&... args ) {
-			return get_arg_impl<0, sizeof...( Args )>( idx, std::forward<Args>( args )... );
+			return get_arg_impl<0, sizeof...( Args )>(
+			  idx, std::forward<Args>( args )... );
 		}
 	} // namespace impl
 
@@ -84,7 +91,9 @@ namespace daw {
 		std::string m_format_str;
 
 	public:
-		template<typename String, std::enable_if_t<daw::is_convertible_v<String, std::string>, std::nullptr_t> = nullptr>
+		template<typename String,
+		         std::enable_if_t<daw::is_convertible_v<String, std::string>,
+		                          std::nullptr_t> = nullptr>
 		fmt_t( String &&format_str )
 		  : m_format_str{std::forward<String>( format_str )} {}
 
@@ -95,7 +104,8 @@ namespace daw {
 		template<typename... Args>
 		std::string operator( )( Args &&... args ) const {
 			std::string result{};
-			result.reserve( m_format_str.size( ) + ( sizeof...( args ) * 4 ) ); // WAG for size
+			result.reserve( m_format_str.size( ) +
+			                ( sizeof...( args ) * 4 ) ); // WAG for size
 			daw::string_view sv{m_format_str};
 			result += sv.pop_front( "{" ).to_string( );
 			while( !sv.empty( ) ) {

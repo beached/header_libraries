@@ -3,14 +3,14 @@
 // Copyright (c) 2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -29,10 +29,12 @@ namespace daw {
 	template<typename Iterator>
 	struct reverse_iterator {
 		using value_type = typename std::iterator_traits<Iterator>::value_type;
-		using difference_type = typename std::iterator_traits<Iterator>::difference_type;
+		using difference_type =
+		  typename std::iterator_traits<Iterator>::difference_type;
 		using pointer = typename std::iterator_traits<Iterator>::pointer;
 		using reference = typename std::iterator_traits<Iterator>::reference;
-		using iterator_category = typename std::iterator_traits<Iterator>::iterator_category;
+		using iterator_category =
+		  typename std::iterator_traits<Iterator>::iterator_category;
 
 	private:
 		Iterator m_base;
@@ -114,53 +116,62 @@ namespace daw {
 	}; // reverse_iterator
 
 	template<typename Iterator>
-	constexpr reverse_iterator<Iterator> operator+( typename reverse_iterator<Iterator>::difference_type n,
-	                                                reverse_iterator<Iterator> const &it ) {
+	constexpr reverse_iterator<Iterator>
+	operator+( typename reverse_iterator<Iterator>::difference_type n,
+	           reverse_iterator<Iterator> const &it ) {
 
 		return reverse_iterator<Iterator>{it.current - n};
 	}
 
 	template<typename Iterator>
-	constexpr reverse_iterator<Iterator> operator-( typename reverse_iterator<Iterator>::difference_type n,
-	                                                reverse_iterator<Iterator> const &it ) {
+	constexpr reverse_iterator<Iterator>
+	operator-( typename reverse_iterator<Iterator>::difference_type n,
+	           reverse_iterator<Iterator> const &it ) {
 
 		return reverse_iterator<Iterator>{it.current + n};
 	}
 
 	template<class Iterator1, class Iterator2>
-	constexpr auto operator-( reverse_iterator<Iterator1> const &lhs, reverse_iterator<Iterator2> const &rhs )
+	constexpr auto operator-( reverse_iterator<Iterator1> const &lhs,
+	                          reverse_iterator<Iterator2> const &rhs )
 	  -> decltype( rhs.base( ) - lhs.base( ) ) {
 
 		return rhs.base( ) - lhs.base( );
 	}
 
 	template<typename Iterator1, typename Iterator2>
-	constexpr bool operator==( reverse_iterator<Iterator1> const &lhs, reverse_iterator<Iterator2> const &rhs ) {
+	constexpr bool operator==( reverse_iterator<Iterator1> const &lhs,
+	                           reverse_iterator<Iterator2> const &rhs ) {
 		return lhs.base( ) == rhs.base( );
 	}
 
 	template<typename Iterator1, typename Iterator2>
-	constexpr bool operator!=( reverse_iterator<Iterator1> const &lhs, reverse_iterator<Iterator2> const &rhs ) {
+	constexpr bool operator!=( reverse_iterator<Iterator1> const &lhs,
+	                           reverse_iterator<Iterator2> const &rhs ) {
 		return lhs.base( ) != rhs.base( );
 	}
 
 	template<typename Iterator1, typename Iterator2>
-	constexpr bool operator<( reverse_iterator<Iterator1> const &lhs, reverse_iterator<Iterator2> const &rhs ) {
+	constexpr bool operator<( reverse_iterator<Iterator1> const &lhs,
+	                          reverse_iterator<Iterator2> const &rhs ) {
 		return lhs.base( ) < rhs.base( );
 	}
 
 	template<typename Iterator1, typename Iterator2>
-	constexpr bool operator<=( reverse_iterator<Iterator1> const &lhs, reverse_iterator<Iterator2> const &rhs ) {
+	constexpr bool operator<=( reverse_iterator<Iterator1> const &lhs,
+	                           reverse_iterator<Iterator2> const &rhs ) {
 		return lhs.base( ) <= rhs.base( );
 	}
 
 	template<typename Iterator1, typename Iterator2>
-	constexpr bool operator>( reverse_iterator<Iterator1> const &lhs, reverse_iterator<Iterator2> const &rhs ) {
+	constexpr bool operator>( reverse_iterator<Iterator1> const &lhs,
+	                          reverse_iterator<Iterator2> const &rhs ) {
 		return lhs.base( ) > rhs.base( );
 	}
 
 	template<typename Iterator1, typename Iterator2>
-	constexpr bool operator>=( reverse_iterator<Iterator1> const &lhs, reverse_iterator<Iterator2> const &rhs ) {
+	constexpr bool operator>=( reverse_iterator<Iterator1> const &lhs,
+	                           reverse_iterator<Iterator2> const &rhs ) {
 		return lhs.base( ) >= rhs.base( );
 	}
 

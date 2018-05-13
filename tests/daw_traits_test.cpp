@@ -3,14 +3,14 @@
 // Copyright (c) 2014-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -31,16 +31,19 @@
 #include "daw_traits.h"
 
 BOOST_AUTO_TEST_CASE( daw_traits_is_equality_comparable ) {
-	BOOST_REQUIRE_MESSAGE( daw::is_equality_comparable_v<std::string>,
-	                       "1. std::string should report as being equality comparable" );
-	BOOST_REQUIRE_MESSAGE( daw::is_equality_comparable_v<std::vector<std::string>>,
-	                       "2. std::vector should report as being equality comparable" );
+	BOOST_REQUIRE_MESSAGE(
+	  daw::is_equality_comparable_v<std::string>,
+	  "1. std::string should report as being equality comparable" );
+	BOOST_REQUIRE_MESSAGE(
+	  daw::is_equality_comparable_v<std::vector<std::string>>,
+	  "2. std::vector should report as being equality comparable" );
 	{
 		struct NotEqual {
 			int x;
 		};
-		BOOST_REQUIRE_MESSAGE( !daw::is_equality_comparable_v<NotEqual>,
-		                       "3. NotEqual struct should not report as being equality comparable" );
+		BOOST_REQUIRE_MESSAGE(
+		  !daw::is_equality_comparable_v<NotEqual>,
+		  "3. NotEqual struct should not report as being equality comparable" );
 	}
 	{
 		class NotEqual2 {
@@ -56,13 +59,15 @@ BOOST_AUTO_TEST_CASE( daw_traits_is_equality_comparable ) {
 			}
 		};
 		NotEqual2 ne2( 2, {2, 2} );
-		BOOST_REQUIRE_MESSAGE( !daw::is_equality_comparable_v<NotEqual2>,
-		                       "4. NotEqual2 struct should not report as being equality comparable" );
+		BOOST_REQUIRE_MESSAGE(
+		  !daw::is_equality_comparable_v<NotEqual2>,
+		  "4. NotEqual2 struct should not report as being equality comparable" );
 	}
 }
 
 BOOST_AUTO_TEST_CASE( daw_traits_is_regular ) {
-	BOOST_REQUIRE_MESSAGE( daw::is_regular_v<std::string>, "1. std::string should report as being regular" );
+	BOOST_REQUIRE_MESSAGE( daw::is_regular_v<std::string>,
+	                       "1. std::string should report as being regular" );
 	struct NotRegular {
 		int x;
 		NotRegular( int )
@@ -74,12 +79,17 @@ BOOST_AUTO_TEST_CASE( daw_traits_is_regular ) {
 		NotRegular &operator=( NotRegular && ) = delete;
 	};
 	NotRegular x{5};
-	BOOST_REQUIRE_MESSAGE( !daw::is_regular_v<NotRegular>, "2. struct NotRegular should report as being regular" );
+	BOOST_REQUIRE_MESSAGE(
+	  !daw::is_regular_v<NotRegular>,
+	  "2. struct NotRegular should report as being regular" );
 }
 
 BOOST_AUTO_TEST_CASE( daw_traits_max_sizeof ) {
-	auto result = daw::traits::max_sizeof<int8_t, int16_t, uint8_t, int, int32_t, int64_t, uint64_t, size_t>::value;
-	BOOST_REQUIRE_MESSAGE( result == sizeof( size_t ), "1. Max sizeof did not report the size of the largest item" );
+	auto result = daw::traits::max_sizeof<int8_t, int16_t, uint8_t, int, int32_t,
+	                                      int64_t, uint64_t, size_t>::value;
+	BOOST_REQUIRE_MESSAGE(
+	  result == sizeof( size_t ),
+	  "1. Max sizeof did not report the size of the largest item" );
 }
 
 BOOST_AUTO_TEST_CASE( daw_traits_are_true ) {
@@ -100,11 +110,13 @@ BOOST_AUTO_TEST_CASE( daw_traits_are_true ) {
 
 BOOST_AUTO_TEST_CASE( daw_traits_are_same_types ) {
 	{
-		auto result = daw::traits::are_same_types_v<bool, std::string, std::vector<int>>;
+		auto result =
+		  daw::traits::are_same_types_v<bool, std::string, std::vector<int>>;
 		BOOST_REQUIRE_MESSAGE( !result, "1. Different types reported as same" );
 	}
 	{
-		auto result = daw::traits::are_same_types_v<std::string, std::string, std::string>;
+		auto result =
+		  daw::traits::are_same_types_v<std::string, std::string, std::string>;
 		BOOST_REQUIRE_MESSAGE( result, "2. Same types reported as different" );
 	}
 }
@@ -112,11 +124,14 @@ BOOST_AUTO_TEST_CASE( daw_traits_are_same_types ) {
 BOOST_AUTO_TEST_CASE( daw_traits_bool_and ) {
 	{
 		auto result = daw::traits::bool_and<true, true, true>::value;
-		BOOST_REQUIRE_MESSAGE( result, "1. All true's in bool_and should return true" );
+		BOOST_REQUIRE_MESSAGE( result,
+		                       "1. All true's in bool_and should return true" );
 	}
 	{
 		auto result = daw::traits::bool_and<true, false, false>::value;
-		BOOST_REQUIRE_MESSAGE( !result, "2. A mix of true's and false's in bool_and should return false" );
+		BOOST_REQUIRE_MESSAGE(
+		  !result,
+		  "2. A mix of true's and false's in bool_and should return false" );
 	}
 	{
 		auto result = daw::traits::bool_and<true>::value;
@@ -124,18 +139,21 @@ BOOST_AUTO_TEST_CASE( daw_traits_bool_and ) {
 	}
 	{
 		auto result = daw::traits::bool_and<false>::value;
-		BOOST_REQUIRE_MESSAGE( !result, "4. A false in bool_and should return false" );
+		BOOST_REQUIRE_MESSAGE( !result,
+		                       "4. A false in bool_and should return false" );
 	}
 }
 
 BOOST_AUTO_TEST_CASE( daw_traits_bool_or ) {
 	{
 		auto result = daw::traits::bool_or<true, true, true>::value;
-		BOOST_REQUIRE_MESSAGE( result, "1. All true's in bool_or should return true" );
+		BOOST_REQUIRE_MESSAGE( result,
+		                       "1. All true's in bool_or should return true" );
 	}
 	{
 		auto result = daw::traits::bool_or<true, false, false>::value;
-		BOOST_REQUIRE_MESSAGE( result, "2. A mix of true's and false's in bool_or should return true" );
+		BOOST_REQUIRE_MESSAGE(
+		  result, "2. A mix of true's and false's in bool_or should return true" );
 	}
 	{
 		auto result = daw::traits::bool_or<true>::value;
@@ -143,11 +161,13 @@ BOOST_AUTO_TEST_CASE( daw_traits_bool_or ) {
 	}
 	{ // Seems to fail in MSVC 2013, not clang++ or g++
 		auto result = daw::traits::bool_or<false>::value;
-		BOOST_REQUIRE_MESSAGE( !result, "4. A false in bool_or should return false" );
+		BOOST_REQUIRE_MESSAGE( !result,
+		                       "4. A false in bool_or should return false" );
 	}
 	{
 		auto result = daw::traits::bool_or<false, false>::value;
-		BOOST_REQUIRE_MESSAGE( !result, "5. Two false's in bool_or should return false" );
+		BOOST_REQUIRE_MESSAGE( !result,
+		                       "5. Two false's in bool_or should return false" );
 	}
 }
 
@@ -155,8 +175,8 @@ bool enable_if_any_func_test( std::string, ... ) {
 	return false;
 }
 
-template<typename... Args,
-         typename = typename daw::traits::enable_if_any<bool, std::is_same<bool, Args>::value...>::type>
+template<typename... Args, typename = typename daw::traits::enable_if_any<
+                             bool, std::is_same<bool, Args>::value...>::type>
 bool enable_if_any_func_test( Args... args ) {
 	return true;
 }
@@ -164,16 +184,21 @@ bool enable_if_any_func_test( Args... args ) {
 BOOST_AUTO_TEST_CASE( daw_traits_enable_if_any ) {
 	{
 		auto result = enable_if_any_func_test( std::string( "" ) );
-		BOOST_REQUIRE_MESSAGE( !result, "1. Enable if any should have defaulted to string only with a std::string value" );
+		BOOST_REQUIRE_MESSAGE( !result,
+		                       "1. Enable if any should have defaulted to string "
+		                       "only with a std::string value" );
 	}
 	{
-		auto result = enable_if_any_func_test( std::string( ), true, 134, std::string( "dfd" ) );
-		BOOST_REQUIRE_MESSAGE(
-		  result, "2. Enable if any should have ran templated version with multiple params including a boolean" );
+		auto result = enable_if_any_func_test( std::string( ), true, 134,
+		                                       std::string( "dfd" ) );
+		BOOST_REQUIRE_MESSAGE( result,
+		                       "2. Enable if any should have ran templated version "
+		                       "with multiple params including a boolean" );
 	}
 	{
 		auto result = enable_if_any_func_test( false );
-		BOOST_REQUIRE_MESSAGE( result, "3. Enable if any should have worked with a false" );
+		BOOST_REQUIRE_MESSAGE( result,
+		                       "3. Enable if any should have worked with a false" );
 	}
 }
 
@@ -181,8 +206,8 @@ bool enable_if_all_func_test( bool ) {
 	return false;
 }
 
-template<typename... Args,
-         typename = typename daw::traits::enable_if_all<bool, std::is_same<bool, Args>::value...>::type>
+template<typename... Args, typename = typename daw::traits::enable_if_all<
+                             bool, std::is_same<bool, Args>::value...>::type>
 bool enable_if_all_func_test( Args... args ) {
 	return true;
 }
@@ -190,62 +215,81 @@ bool enable_if_all_func_test( Args... args ) {
 BOOST_AUTO_TEST_CASE( daw_traits_enable_if_all ) {
 	{
 		auto result = enable_if_all_func_test( true );
-		BOOST_REQUIRE_MESSAGE( !result, "1. Enable if all should have defaulted to string only with a std::string value" );
+		BOOST_REQUIRE_MESSAGE( !result,
+		                       "1. Enable if all should have defaulted to string "
+		                       "only with a std::string value" );
 	}
 	{
 		auto result = enable_if_all_func_test( true, true, true, true, true );
-		BOOST_REQUIRE_MESSAGE( result,
-		                       "2. Enable if all should have ran templated version with multiple "
-		                       "params including a boolean but failed and defaulted to non-templated "
-		                       "version" );
+		BOOST_REQUIRE_MESSAGE(
+		  result,
+		  "2. Enable if all should have ran templated version with multiple "
+		  "params including a boolean but failed and defaulted to non-templated "
+		  "version" );
 	}
 }
 
 BOOST_AUTO_TEST_CASE( daw_traits_is_one_of ) {
 	{
-		auto result = daw::traits::is_one_of_v<std::string, std::string, std::string, int, std::vector<std::string>>;
-		BOOST_REQUIRE_MESSAGE( result, "1. Is one of should report true when at least one matches" );
+		auto result =
+		  daw::traits::is_one_of_v<std::string, std::string, std::string, int,
+		                           std::vector<std::string>>;
+		BOOST_REQUIRE_MESSAGE(
+		  result, "1. Is one of should report true when at least one matches" );
 	}
 	{
-		auto result = daw::traits::is_one_of_v<std::string, int, int, double, std::vector<std::string>>;
-		BOOST_REQUIRE_MESSAGE( !result, "2. Is one of should report false when none matches" );
+		auto result = daw::traits::is_one_of_v<std::string, int, int, double,
+		                                       std::vector<std::string>>;
+		BOOST_REQUIRE_MESSAGE(
+		  !result, "2. Is one of should report false when none matches" );
 	}
 	{
 		auto result = daw::traits::is_one_of_v<std::string, std::string>;
-		BOOST_REQUIRE_MESSAGE( result, "3. Is one of should report true with a single param and it matches" );
+		BOOST_REQUIRE_MESSAGE(
+		  result,
+		  "3. Is one of should report true with a single param and it matches" );
 	}
 	{
 		auto result = daw::traits::is_one_of_v<std::string, int>;
-		BOOST_REQUIRE_MESSAGE( !result, "4. Is one of should report false with a single param and it does not match" );
+		BOOST_REQUIRE_MESSAGE( !result,
+		                       "4. Is one of should report false with a single "
+		                       "param and it does not match" );
 	}
 }
 
 BOOST_AUTO_TEST_CASE( daw_traits_has_begin_member ) {
-	BOOST_REQUIRE_MESSAGE( daw::traits::has_begin_member_v<std::string>, "1. std::string should have a begin( ) method" );
+	BOOST_REQUIRE_MESSAGE( daw::traits::has_begin_member_v<std::string>,
+	                       "1. std::string should have a begin( ) method" );
 
 	BOOST_REQUIRE_MESSAGE( daw::traits::has_begin_member_v<std::vector<int>>,
 	                       "2. std::vector should have a begin( ) method" );
 	{
-		using test_t = std::unordered_map<std::string, int>; // Macro's and comma parameters
-		BOOST_REQUIRE_MESSAGE( daw::traits::has_begin_member_v<test_t>, "3. std::unordered should have a begin( ) method" );
+		using test_t =
+		  std::unordered_map<std::string, int>; // Macro's and comma parameters
+		BOOST_REQUIRE_MESSAGE( daw::traits::has_begin_member_v<test_t>,
+		                       "3. std::unordered should have a begin( ) method" );
 	}
 	{
 		struct T {
 			int x;
 		};
-		BOOST_REQUIRE_MESSAGE( !daw::traits::has_begin_member_v<T>, "4. struct T should not have a begin( ) method" );
+		BOOST_REQUIRE_MESSAGE( !daw::traits::has_begin_member_v<T>,
+		                       "4. struct T should not have a begin( ) method" );
 	}
 }
 
 BOOST_AUTO_TEST_CASE( daw_traits_has_substr_member ) {
-	BOOST_REQUIRE_MESSAGE( daw::traits::has_substr_member_v<std::string>, "1. std::string should have a substr method" );
+	BOOST_REQUIRE_MESSAGE( daw::traits::has_substr_member_v<std::string>,
+	                       "1. std::string should have a substr method" );
 
 	BOOST_REQUIRE_MESSAGE( !daw::traits::has_substr_member_v<std::vector<int>>,
 	                       "2. std::vector should not have a substr method" );
 	{
-		using test_t = std::unordered_map<std::string, int>; // Macro's and comma parameters
-		BOOST_REQUIRE_MESSAGE( !daw::traits::has_substr_member_v<test_t>,
-		                       "3. std::unordered should not have a substr method" );
+		using test_t =
+		  std::unordered_map<std::string, int>; // Macro's and comma parameters
+		BOOST_REQUIRE_MESSAGE(
+		  !daw::traits::has_substr_member_v<test_t>,
+		  "3. std::unordered should not have a substr method" );
 	}
 	{
 		struct T {
@@ -256,37 +300,48 @@ BOOST_AUTO_TEST_CASE( daw_traits_has_substr_member ) {
 		};
 		T t = {5};
 		t.substr( 5, 5 );
-		BOOST_REQUIRE_MESSAGE( daw::traits::has_substr_member_v<T>, "4. struct T should have a substr method" );
+		BOOST_REQUIRE_MESSAGE( daw::traits::has_substr_member_v<T>,
+		                       "4. struct T should have a substr method" );
 	}
 }
 
 BOOST_AUTO_TEST_CASE( daw_traits_has_value_type_member ) {
-	BOOST_REQUIRE_MESSAGE( daw::traits::has_value_type_member_v<std::string>, "1. std::string should have a value_type" );
+	BOOST_REQUIRE_MESSAGE( daw::traits::has_value_type_member_v<std::string>,
+	                       "1. std::string should have a value_type" );
 	struct T {
 		int x;
 	};
-	BOOST_REQUIRE_MESSAGE( !daw::traits::has_value_type_member_v<T>, "2. T should not have a value_type" );
-	BOOST_REQUIRE_MESSAGE( !daw::traits::has_value_type_member_v<int>, "3. int should not have a value_type" );
+	BOOST_REQUIRE_MESSAGE( !daw::traits::has_value_type_member_v<T>,
+	                       "2. T should not have a value_type" );
+	BOOST_REQUIRE_MESSAGE( !daw::traits::has_value_type_member_v<int>,
+	                       "3. int should not have a value_type" );
 }
 
 BOOST_AUTO_TEST_CASE( daw_traits_is_container_like ) {
-	BOOST_REQUIRE_MESSAGE( daw::traits::is_container_like_v<std::string>, "1. std::string should be container like" );
-	BOOST_REQUIRE_MESSAGE( daw::traits::is_container_like_v<std::vector<std::string>>,
-	                       "2. std::vector<std::string> should be container like" );
+	BOOST_REQUIRE_MESSAGE( daw::traits::is_container_like_v<std::string>,
+	                       "1. std::string should be container like" );
+	BOOST_REQUIRE_MESSAGE(
+	  daw::traits::is_container_like_v<std::vector<std::string>>,
+	  "2. std::vector<std::string> should be container like" );
 	using map_t = std::unordered_map<std::string, int>;
-	BOOST_REQUIRE_MESSAGE( daw::traits::is_container_like_v<map_t>,
-	                       "3. std::unordered_map<std::string, int> should be container like" );
+	BOOST_REQUIRE_MESSAGE(
+	  daw::traits::is_container_like_v<map_t>,
+	  "3. std::unordered_map<std::string, int> should be container like" );
 	struct T {
 		int x;
 	};
-	BOOST_REQUIRE_MESSAGE( !daw::traits::is_container_like_v<T>, "4. T should not be container like" );
-	BOOST_REQUIRE_MESSAGE( !daw::traits::is_container_like_v<int>, "5. int should not be container like" );
+	BOOST_REQUIRE_MESSAGE( !daw::traits::is_container_like_v<T>,
+	                       "4. T should not be container like" );
+	BOOST_REQUIRE_MESSAGE( !daw::traits::is_container_like_v<int>,
+	                       "5. int should not be container like" );
 }
 
 BOOST_AUTO_TEST_CASE( daw_traits_is_string ) {
-	BOOST_REQUIRE_MESSAGE( daw::traits::is_string_v<std::string>, "1. is_string should return true for std::string" );
-	BOOST_REQUIRE_MESSAGE( !daw::traits::is_string_v<std::vector<std::string>>,
-	                       "2. is_string should return false for std::vector<std::string>" );
+	BOOST_REQUIRE_MESSAGE( daw::traits::is_string_v<std::string>,
+	                       "1. is_string should return true for std::string" );
+	BOOST_REQUIRE_MESSAGE(
+	  !daw::traits::is_string_v<std::vector<std::string>>,
+	  "2. is_string should return false for std::vector<std::string>" );
 	struct T {
 		int x;
 	};
@@ -301,15 +356,17 @@ BOOST_AUTO_TEST_CASE( daw_traits_is_string ) {
 BOOST_AUTO_TEST_CASE( daw_traits_isnt_string ) {
 	BOOST_REQUIRE_MESSAGE( !daw::traits::isnt_string_v<std::string>,
 	                       "1. isnt_string should return true for std::string" );
-	BOOST_REQUIRE_MESSAGE( daw::traits::isnt_string_v<std::vector<std::string>>,
-	                       "2. isnt_string should return false for std::vector<std::string>" );
+	BOOST_REQUIRE_MESSAGE(
+	  daw::traits::isnt_string_v<std::vector<std::string>>,
+	  "2. isnt_string should return false for std::vector<std::string>" );
 	struct T {
 		int x;
 	};
 	BOOST_REQUIRE_MESSAGE( daw::traits::isnt_string_v<std::vector<std::string>>,
 	                       "3. isnt_string should return false for struct T" );
-	BOOST_REQUIRE_MESSAGE( !daw::traits::isnt_string_v<decltype( "this is a test" )>,
-	                       "4. Character array should convert to string" );
+	BOOST_REQUIRE_MESSAGE(
+	  !daw::traits::isnt_string_v<decltype( "this is a test" )>,
+	  "4. Character array should convert to string" );
 	BOOST_REQUIRE_MESSAGE( daw::traits::isnt_string_v<std::vector<char>>,
 	                       "5. Vector of char should not convert to string" );
 }
@@ -332,11 +389,14 @@ std::ostream &operator<<( std::ostream &os, TestYesOS const &t ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_traits_is_streamable ) {
-	BOOST_REQUIRE_MESSAGE( daw::traits::is_streamable_v<int>, "1. int should have an ostream overload" );
+	BOOST_REQUIRE_MESSAGE( daw::traits::is_streamable_v<int>,
+	                       "1. int should have an ostream overload" );
 
-	BOOST_REQUIRE_MESSAGE( !daw::traits::is_streamable_v<TestNoOS>, "2. TestNoOS should not have an ostream overload" );
+	BOOST_REQUIRE_MESSAGE( !daw::traits::is_streamable_v<TestNoOS>,
+	                       "2. TestNoOS should not have an ostream overload" );
 
-	BOOST_REQUIRE_MESSAGE( daw::traits::is_streamable_v<TestYesOS>, "3. TestYesOS should have an ostream overload" );
+	BOOST_REQUIRE_MESSAGE( daw::traits::is_streamable_v<TestYesOS>,
+	                       "3. TestYesOS should have an ostream overload" );
 }
 
 namespace daw_traits_is_mixed_from_ns {
@@ -352,11 +412,16 @@ namespace daw_traits_is_mixed_from_ns {
 	};
 } // namespace daw_traits_is_mixed_from_ns
 BOOST_AUTO_TEST_CASE( daw_traits_is_mixed_from ) {
-	auto test1 = daw::traits::is_mixed_from_v<daw_traits_is_mixed_from_ns::Base, daw_traits_is_mixed_from_ns::Derived>;
+	auto test1 =
+	  daw::traits::is_mixed_from_v<daw_traits_is_mixed_from_ns::Base,
+	                               daw_traits_is_mixed_from_ns::Derived>;
 	BOOST_REQUIRE_MESSAGE( test1, "1. Base<Child> should be a base for Child" );
 
-	auto test2 = daw::traits::is_mixed_from_v<daw_traits_is_mixed_from_ns::Base, daw_traits_is_mixed_from_ns::NonDerived>;
-	BOOST_REQUIRE_MESSAGE( !test2, "2. Base<NonDerived> should not be a base for NonDerived" );
+	auto test2 =
+	  daw::traits::is_mixed_from_v<daw_traits_is_mixed_from_ns::Base,
+	                               daw_traits_is_mixed_from_ns::NonDerived>;
+	BOOST_REQUIRE_MESSAGE(
+	  !test2, "2. Base<NonDerived> should not be a base for NonDerived" );
 }
 
 int f( int ) {
@@ -406,7 +471,8 @@ struct test_binary_pred_t {
 };
 
 BOOST_AUTO_TEST_CASE( binary_predicate_002 ) {
-	using a_t = daw::is_detected<daw::detectors::callable_with, test_binary_pred_t, int, int>;
+	using a_t = daw::is_detected<daw::detectors::callable_with,
+	                             test_binary_pred_t, int, int>;
 	using a_conv_t = std::is_convertible<a_t, bool>;
 	constexpr auto const a = a_conv_t::value;
 	static_assert( a, "a: Not callable with (int, int )" );
@@ -415,10 +481,12 @@ BOOST_AUTO_TEST_CASE( binary_predicate_002 ) {
 	static_assert( b, "b: Not callable with (int, int )" );
 
 	constexpr auto const c =
-	  daw::is_detected_convertible_v<bool, daw::detectors::callable_with, test_binary_pred_t, int, int>;
+	  daw::is_detected_convertible_v<bool, daw::detectors::callable_with,
+	                                 test_binary_pred_t, int, int>;
 	static_assert( c, "c: Not callable with (int, int )" );
 
-	static_assert( daw::is_predicate_v<test_binary_pred_t, int, int>, "Not a binary predicate" );
+	static_assert( daw::is_predicate_v<test_binary_pred_t, int, int>,
+	               "Not a binary predicate" );
 	BOOST_REQUIRE( a );
 }
 
@@ -529,7 +597,8 @@ BOOST_AUTO_TEST_CASE( is_input_iterator_001 ) {
 		BOOST_REQUIRE( test_value );
 	}
 	{
-		constexpr auto const test_value = daw::is_convertible_v<decltype( *std::declval<iter_t>( ) ), int>;
+		constexpr auto const test_value =
+		  daw::is_convertible_v<decltype( *std::declval<iter_t>( ) ), int>;
 		BOOST_REQUIRE( test_value );
 	}
 	{
@@ -563,37 +632,46 @@ BOOST_AUTO_TEST_CASE( is_input_iterator_005 ) {
 }
 
 BOOST_AUTO_TEST_CASE( are_convertible_to_v_001 ) {
-	constexpr bool const a = daw::are_convertible_to_v<int, char, short, unsigned>;
+	constexpr bool const a =
+	  daw::are_convertible_to_v<int, char, short, unsigned>;
 	BOOST_REQUIRE( a );
 }
 
 BOOST_AUTO_TEST_CASE( are_convertible_to_v_002 ) {
-	constexpr bool const a = daw::are_convertible_to_v<int, char, short, unsigned, std::string>;
+	constexpr bool const a =
+	  daw::are_convertible_to_v<int, char, short, unsigned, std::string>;
 	BOOST_REQUIRE( !a );
 }
 
 BOOST_AUTO_TEST_CASE( type_n_t_test_001 ) {
-	constexpr bool tuple_n_t_test = daw::is_same_v<int, daw::type_n_t<2, long, double, int, float>>;
+	constexpr bool tuple_n_t_test =
+	  daw::is_same_v<int, daw::type_n_t<2, long, double, int, float>>;
 	BOOST_REQUIRE( tuple_n_t_test );
 }
 
 BOOST_AUTO_TEST_CASE( if_else_t_001 ) {
-	constexpr bool tst = daw::is_same_v<int, daw::if_else_t<true, int, std::string>>;
+	constexpr bool tst =
+	  daw::is_same_v<int, daw::if_else_t<true, int, std::string>>;
 	BOOST_REQUIRE( tst );
 }
 
 BOOST_AUTO_TEST_CASE( if_else_t_002 ) {
-	constexpr bool tst = daw::is_same_v<std::string, daw::if_else_t<false, int, std::string>>;
+	constexpr bool tst =
+	  daw::is_same_v<std::string, daw::if_else_t<false, int, std::string>>;
 	BOOST_REQUIRE( tst );
 }
 
 template<typename string_t>
 void test_string_view( ) {
-	constexpr bool has_integer_subscript = daw::traits::has_integer_subscript_v<string_t>;
+	constexpr bool has_integer_subscript =
+	  daw::traits::has_integer_subscript_v<string_t>;
 	constexpr bool has_size_memberfn = daw::traits::has_size_memberfn_v<string_t>;
-	constexpr bool has_empty_memberfn = daw::traits::has_empty_memberfn_v<string_t>;
-	constexpr bool is_not_array_array = daw::traits::is_not_array_array_v<string_t>;
-	constexpr bool is_string_view_like = daw::traits::is_string_view_like_v<string_t>;
+	constexpr bool has_empty_memberfn =
+	  daw::traits::has_empty_memberfn_v<string_t>;
+	constexpr bool is_not_array_array =
+	  daw::traits::is_not_array_array_v<string_t>;
+	constexpr bool is_string_view_like =
+	  daw::traits::is_string_view_like_v<string_t>;
 
 	BOOST_REQUIRE( has_integer_subscript );
 	BOOST_REQUIRE( has_size_memberfn );
@@ -605,8 +683,10 @@ void test_string_view( ) {
 template<typename string_t>
 void test_string( ) {
 	test_string_view<string_t>( );
-	constexpr bool has_append_operator = daw::traits::has_append_operator_v<string_t>;
-	constexpr bool has_append_memberfn = daw::traits::has_append_memberfn_v<string_t>;
+	constexpr bool has_append_operator =
+	  daw::traits::has_append_operator_v<string_t>;
+	constexpr bool has_append_memberfn =
+	  daw::traits::has_append_memberfn_v<string_t>;
 	constexpr bool is_string_like = daw::traits::is_string_like_v<string_t>;
 
 	BOOST_REQUIRE( has_append_operator );
@@ -627,9 +707,12 @@ BOOST_AUTO_TEST_CASE( string_view_concept_test_002 ) {
 }
 
 BOOST_AUTO_TEST_CASE( is_member_size_equal_v ) {
-	constexpr bool result_t = daw::traits::is_value_size_equal_v<std::string, sizeof( char )>;
-	constexpr bool result_f = daw::traits::is_value_size_equal_v<std::wstring, sizeof( char )>;
-	constexpr bool result_t2 = daw::traits::is_value_size_equal_v<std::wstring, sizeof( wchar_t )>;
+	constexpr bool result_t =
+	  daw::traits::is_value_size_equal_v<std::string, sizeof( char )>;
+	constexpr bool result_f =
+	  daw::traits::is_value_size_equal_v<std::wstring, sizeof( char )>;
+	constexpr bool result_t2 =
+	  daw::traits::is_value_size_equal_v<std::wstring, sizeof( wchar_t )>;
 	BOOST_REQUIRE( result_t );
 	BOOST_REQUIRE( !result_f );
 	BOOST_REQUIRE( result_t2 );
@@ -668,9 +751,11 @@ namespace isnt_cv_ref_test_003_ns {
 	};
 
 	BOOST_AUTO_TEST_CASE( isnt_cv_ref_test_003 ) {
-		constexpr bool t1 = daw::traits::isnt_cv_ref_v<test_t, int, float, std::string>;
+		constexpr bool t1 =
+		  daw::traits::isnt_cv_ref_v<test_t, int, float, std::string>;
 		BOOST_REQUIRE( t1 );
-		constexpr bool t2 = daw::traits::isnt_cv_ref_v<int, float, std::add_const_t<double>>;
+		constexpr bool t2 =
+		  daw::traits::isnt_cv_ref_v<int, float, std::add_const_t<double>>;
 		BOOST_REQUIRE( !t2 );
 	}
 } // namespace isnt_cv_ref_test_003_ns

@@ -3,14 +3,14 @@
 // Copyright (c) 2014-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -57,7 +57,8 @@ namespace daw {
 		template<typename First, typename... Args>
 		struct max_sizeof<First, Args...> {
 			using next = typename max_sizeof<Args...>::type;
-			using type = typename std::conditional<sizeof( First ) >= sizeof( next ), First, next>::type;
+			using type = typename std::conditional<sizeof( First ) >= sizeof( next ),
+			                                       First, next>::type;
 			static const size_t value = sizeof( type );
 		};
 
@@ -70,12 +71,14 @@ namespace daw {
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	Returns true if all values passed are true
 		///
-		template<typename BoolType, typename std::enable_if<!is_integral_v<BoolType>, long>::type = 0>
+		template<typename BoolType,
+		         typename std::enable_if<!is_integral_v<BoolType>, long>::type = 0>
 		constexpr bool are_true( BoolType b1 ) noexcept {
 			return b1 == true;
 		}
 
-		template<typename IntLike, typename std::enable_if<is_integral_v<IntLike>, long>::type = 0>
+		template<typename IntLike,
+		         typename std::enable_if<is_integral_v<IntLike>, long>::type = 0>
 		constexpr bool are_true( IntLike b1 ) noexcept {
 			return b1 != 0;
 		}
@@ -86,7 +89,8 @@ namespace daw {
 		}
 
 		template<typename BoolType1, typename BoolType2, typename... Booleans>
-		constexpr bool are_true( BoolType1 b1, BoolType2 b2, Booleans... others ) noexcept {
+		constexpr bool are_true( BoolType1 b1, BoolType2 b2,
+		                         Booleans... others ) noexcept {
 			return are_true( b1, b2 ) && are_true( others... );
 		}
 
@@ -102,7 +106,8 @@ namespace daw {
 
 			template<typename T, typename First, typename... Rest>
 			struct are_same_types<T, First, Rest...>
-			  : std::integral_constant<bool, is_same_v<T, First> || are_same_types<T, Rest...>::value> {};
+			  : std::integral_constant<bool, is_same_v<T, First> ||
+			                                   are_same_types<T, Rest...>::value> {};
 		} // namespace impl
 
 		template<typename T, typename... Rest>
@@ -118,7 +123,8 @@ namespace daw {
 		/// Summary:	Integral constant with result of and'ing all bool's supplied
 		///
 		template<bool... Bools>
-		using bool_and = std::is_same<bool_sequence<Bools...>, bool_sequence<( Bools || true )...>>;
+		using bool_and = std::is_same<bool_sequence<Bools...>,
+		                              bool_sequence<( Bools || true )...>>;
 
 		template<bool... Bools>
 		constexpr bool bool_and_v = bool_and<Bools...>::value;
@@ -127,7 +133,8 @@ namespace daw {
 		/// Summary:	Integral constant with result of or'ing all bool's supplied
 		///
 		template<bool... Bools>
-		using bool_or = std::integral_constant<bool, ( !bool_and<!Bools...>::value )>;
+		using bool_or =
+		  std::integral_constant<bool, ( !bool_and<!Bools...>::value )>;
 
 		template<bool... Bools>
 		constexpr bool bool_or_v = bool_or<Bools...>::value;
@@ -158,7 +165,9 @@ namespace daw {
 
 			template<typename T, typename Type, typename... Types>
 			struct is_one_of<T, Type, Types...>
-			  : public std::integral_constant<bool, is_same_v<T, Type> || is_one_of<T, Types...>::value> {};
+			  : public std::integral_constant<bool, is_same_v<T, Type> ||
+			                                          is_one_of<T, Types...>::value> {
+			};
 
 		} // namespace impl
 
@@ -175,20 +184,22 @@ namespace daw {
 		} // namespace details
 
 // Build a check for the precence of a member
-// Can be used like METHOD_CHECKER_ANY( has_begin_method, begin, ( ) ) and the check will look for begin( )
-// If you want to check args you could do the following
-// METHOD_CHECKER_ANY( has_index_operation, operator[], ( std::declval<size_t>( ) ) )
-#define METHOD_CHECKER_ANY( name, fn, args )                                                                           \
-	namespace impl {                                                                                                     \
-		template<typename T, typename = void>                                                                              \
-		struct name : std::false_type {};                                                                                  \
-                                                                                                                       \
-		template<typename T>                                                                                               \
-		struct name<T, typename std::enable_if_t<!is_same_v<decltype( std::declval<T>( ).fn args ) *, void>>>              \
-		  : std::true_type {};                                                                                             \
-	}                                                                                                                    \
-                                                                                                                       \
-	template<typename T>                                                                                                 \
+// Can be used like METHOD_CHECKER_ANY( has_begin_method, begin, ( ) ) and the
+// check will look for begin( ) If you want to check args you could do the
+// following METHOD_CHECKER_ANY( has_index_operation, operator[], (
+// std::declval<size_t>( ) ) )
+#define METHOD_CHECKER_ANY( name, fn, args )                                   \
+	namespace impl {                                                             \
+		template<typename T, typename = void>                                      \
+		struct name : std::false_type {};                                          \
+                                                                               \
+		template<typename T>                                                       \
+		struct name<T, typename std::enable_if_t<!is_same_v<                       \
+		                 decltype( std::declval<T>( ).fn args ) *, void>>>         \
+		  : std::true_type {};                                                     \
+	}                                                                            \
+                                                                               \
+	template<typename T>                                                         \
 	constexpr bool name##_v = impl::name<T>::value;
 		  // END METHOD_CHECKER_ANY
 
@@ -199,7 +210,8 @@ namespace daw {
 		    class has_##MemberName##_member_impl : public std::false_type {}; \
 		                                                                                                                       \
 		    template<typename T> \
-		    class has_##MemberName##_member_impl<T, typename std::enable_if_t<is_class_v<T>>> { \
+		    class has_##MemberName##_member_impl<T, typename
+		std::enable_if_t<is_class_v<T>>> { \
 		      struct Fallback { \
 		        int MemberName; \
 		      }; \
@@ -225,13 +237,15 @@ namespace daw {
 		::daw::traits::impl::has_##MemberName##_member_impl::value;
 		*/
 
-#define HAS_STATIC_TYPE_MEMBER( MemberName )                                                                           \
-	namespace detectors {                                                                                                \
-		template<typename T>                                                                                               \
-		using MemberName##_member = decltype( std::declval<typename T::MemberName>( ) );                                   \
-	}                                                                                                                    \
-	template<typename T>                                                                                                 \
-	constexpr bool has_##MemberName##_member_v = is_detected_v<detectors::MemberName##_member, T>;
+#define HAS_STATIC_TYPE_MEMBER( MemberName )                                   \
+	namespace detectors {                                                        \
+		template<typename T>                                                       \
+		using MemberName##_member =                                                \
+		  decltype( std::declval<typename T::MemberName>( ) );                     \
+	}                                                                            \
+	template<typename T>                                                         \
+	constexpr bool has_##MemberName##_member_v =                                 \
+	  is_detected_v<detectors::MemberName##_member, T>;
 
 		HAS_STATIC_TYPE_MEMBER( type );
 		HAS_STATIC_TYPE_MEMBER( value_type );
@@ -243,28 +257,34 @@ namespace daw {
 		METHOD_CHECKER_ANY( has_substr_member, substr, ( 0, 1 ) );
 
 		template<typename T>
-		constexpr bool is_string_v = all_true_v<is_convertible_v<T, std::string> || is_convertible_v<T, std::wstring>>;
+		constexpr bool is_string_v = all_true_v<is_convertible_v<T, std::string> ||
+		                                        is_convertible_v<T, std::wstring>>;
 
 		template<typename T>
 		constexpr bool isnt_string_v = !is_string_v<T>;
 
 		template<typename T>
-		constexpr bool is_container_like_v = all_true_v<has_begin_member_v<T>, has_end_member_v<T>>;
+		constexpr bool is_container_like_v =
+		  all_true_v<has_begin_member_v<T>, has_end_member_v<T>>;
 
 		template<typename T>
-		constexpr bool is_container_not_string_v = all_true_v<isnt_string_v<T>, is_container_like_v<T>>;
+		constexpr bool is_container_not_string_v =
+		  all_true_v<isnt_string_v<T>, is_container_like_v<T>>;
 
 		template<typename T>
-		constexpr bool is_map_like_v = all_true_v<is_container_like_v<T>, has_mapped_type_member_v<T>>;
+		constexpr bool is_map_like_v =
+		  all_true_v<is_container_like_v<T>, has_mapped_type_member_v<T>>;
 
 		template<typename T>
 		constexpr bool isnt_map_like_v = !is_map_like_v<T>;
 
 		template<typename T>
-		constexpr bool is_vector_like_not_string_v = all_true_v<is_container_not_string_v<T>, isnt_map_like_v<T>>;
+		constexpr bool is_vector_like_not_string_v =
+		  all_true_v<is_container_not_string_v<T>, isnt_map_like_v<T>>;
 
 		template<typename T>
-		using static_not = std::conditional<T::value, std::false_type, std::true_type>;
+		using static_not =
+		  std::conditional<T::value, std::false_type, std::true_type>;
 
 		template<typename T>
 		using static_not_t = typename static_not<T>::type;
@@ -272,9 +292,10 @@ namespace daw {
 		template<typename T>
 		constexpr bool static_not_v = static_not<T>::value;
 
-#define GENERATE_IS_STD_CONTAINER1( ContainerName )                                                                    \
-	template<typename T>                                                                                                 \
-	constexpr bool is_##ContainerName##_v = is_same_v<T, std::ContainerName<typename T::value_type>>;
+#define GENERATE_IS_STD_CONTAINER1( ContainerName )                            \
+	template<typename T>                                                         \
+	constexpr bool is_##ContainerName##_v =                                      \
+	  is_same_v<T, std::ContainerName<typename T::value_type>>;
 
 		GENERATE_IS_STD_CONTAINER1( vector );
 		GENERATE_IS_STD_CONTAINER1( list );
@@ -284,10 +305,10 @@ namespace daw {
 
 #undef GENERATE_IS_STD_CONTAINER1
 
-#define GENERATE_IS_STD_CONTAINER2( ContainerName )                                                                    \
-	template<typename T>                                                                                                 \
-	constexpr bool is_##ContainerName##_v =                                                                              \
-	  is_same_v<T, std::ContainerName<typename T::key_type, typename T::mapped_type>>;
+#define GENERATE_IS_STD_CONTAINER2( ContainerName )                            \
+	template<typename T>                                                         \
+	constexpr bool is_##ContainerName##_v = is_same_v<                           \
+	  T, std::ContainerName<typename T::key_type, typename T::mapped_type>>;
 
 		GENERATE_IS_STD_CONTAINER2( map );
 		GENERATE_IS_STD_CONTAINER2( unordered_map );
@@ -296,27 +317,34 @@ namespace daw {
 
 		template<typename T>
 		constexpr bool is_single_item_container_v =
-		  any_true_v<is_vector_v<T>, is_list_v<T>, is_set_v<T>, is_deque_v<T>, is_unordered_set_v<T>>;
+		  any_true_v<is_vector_v<T>, is_list_v<T>, is_set_v<T>, is_deque_v<T>,
+		             is_unordered_set_v<T>>;
 
 		template<typename T>
-		constexpr bool is_container_v = any_true_v<is_vector_v<T>, is_list_v<T>, is_set_v<T>, is_deque_v<T>,
-		                                           is_unordered_set_v<T>, is_map_v<T>, is_unordered_map_v<T>>;
+		constexpr bool is_container_v =
+		  any_true_v<is_vector_v<T>, is_list_v<T>, is_set_v<T>, is_deque_v<T>,
+		             is_unordered_set_v<T>, is_map_v<T>, is_unordered_map_v<T>>;
 
 		template<typename T>
-		constexpr bool is_map_type_v = any_true_v<is_map_v<T>, is_unordered_map_v<T>>;
+		constexpr bool is_map_type_v =
+		  any_true_v<is_map_v<T>, is_unordered_map_v<T>>;
 
 		template<typename T>
-		constexpr bool is_numberic_v = any_true_v<is_floating_point_v<T>, is_integral_v<T>>;
+		constexpr bool is_numberic_v =
+		  any_true_v<is_floating_point_v<T>, is_integral_v<T>>;
 
 		template<typename T>
-		constexpr bool is_container_or_array_v = any_true_v<is_container_v<T>, is_array_v<T>>;
+		constexpr bool is_container_or_array_v =
+		  any_true_v<is_container_v<T>, is_array_v<T>>;
 
 		namespace detectors {
 			template<typename T>
-			using streamable = decltype( std::declval<std::ostream &>( ) << std::declval<T>( ) );
+			using streamable =
+			  decltype( std::declval<std::ostream &>( ) << std::declval<T>( ) );
 		}
 		template<typename T>
-		constexpr bool is_streamable_v = daw::is_detected_v<detectors::streamable, T>;
+		constexpr bool is_streamable_v =
+		  daw::is_detected_v<detectors::streamable, T>;
 
 		template<template<class> class Base, typename Derived>
 		constexpr bool is_mixed_from_v = is_base_of_v<Base<Derived>, Derived>;
@@ -339,11 +367,13 @@ namespace daw {
 			auto has_to_string( T const &, long ) -> std::false_type;
 
 			template<typename T>
-			auto has_to_string( T const &lhs, int ) -> std::is_convertible<decltype( lhs.to_string( ) ), std::string>;
+			auto has_to_string( T const &lhs, int )
+			  -> std::is_convertible<decltype( lhs.to_string( ) ), std::string>;
 		} // namespace impl
 
 		template<typename T>
-		constexpr bool has_to_string_v = decltype( impl::has_to_string( std::declval<T>( ), 1 ) )::value;
+		constexpr bool has_to_string_v =
+		  decltype( impl::has_to_string( std::declval<T>( ), 1 ) )::value;
 
 		namespace operators {
 			namespace impl {
@@ -351,56 +381,68 @@ namespace daw {
 				auto has_op_eq_impl( L const &, R const &, long ) -> std::false_type;
 
 				template<typename L, typename R>
-				auto has_op_eq_impl( L const &lhs, R const &rhs, int ) -> std::is_convertible<decltype( lhs == rhs ), bool>;
+				auto has_op_eq_impl( L const &lhs, R const &rhs, int )
+				  -> std::is_convertible<decltype( lhs == rhs ), bool>;
 
 				template<typename L, typename R>
 				auto has_op_ne_impl( L const &, R const &, long ) -> std::false_type;
 
 				template<typename L, typename R>
-				auto has_op_ne_impl( L const &lhs, R const &rhs, int ) -> std::is_convertible<decltype( lhs != rhs ), bool>;
+				auto has_op_ne_impl( L const &lhs, R const &rhs, int )
+				  -> std::is_convertible<decltype( lhs != rhs ), bool>;
 
 				template<typename L, typename R>
 				auto has_op_lt_impl( L const &, R const &, long ) -> std::false_type;
 
 				template<typename L, typename R>
-				auto has_op_lt_impl( L const &lhs, R const &rhs, int ) -> std::is_convertible<decltype( lhs < rhs ), bool>;
+				auto has_op_lt_impl( L const &lhs, R const &rhs, int )
+				  -> std::is_convertible<decltype( lhs < rhs ), bool>;
 
 				template<typename L, typename R>
 				auto has_op_le_impl( L const &, R const &, long ) -> std::false_type;
 
 				template<typename L, typename R>
-				auto has_op_le_impl( L const &lhs, R const &rhs, int ) -> std::is_convertible<decltype( lhs <= rhs ), bool>;
+				auto has_op_le_impl( L const &lhs, R const &rhs, int )
+				  -> std::is_convertible<decltype( lhs <= rhs ), bool>;
 
 				template<typename L, typename R>
 				auto has_op_gt_impl( L const &, R const &, long ) -> std::false_type;
 
 				template<typename L, typename R>
-				auto has_op_gt_impl( L const &lhs, R const &rhs, int ) -> std::is_convertible<decltype( lhs > rhs ), bool>;
+				auto has_op_gt_impl( L const &lhs, R const &rhs, int )
+				  -> std::is_convertible<decltype( lhs > rhs ), bool>;
 
 				template<typename L, typename R>
 				auto has_op_ge_impl( L const &, R const &, long ) -> std::false_type;
 
 				template<typename L, typename R>
-				auto has_op_ge_impl( L const &lhs, R const &rhs, int ) -> std::is_convertible<decltype( lhs >= rhs ), bool>;
+				auto has_op_ge_impl( L const &lhs, R const &rhs, int )
+				  -> std::is_convertible<decltype( lhs >= rhs ), bool>;
 			} // namespace impl
 
 			template<typename L, typename R = L>
-			constexpr bool has_op_eq_v = decltype( impl::has_op_eq_impl( std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
+			constexpr bool has_op_eq_v = decltype( impl::has_op_eq_impl(
+			  std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
 
 			template<typename L, typename R = L>
-			constexpr bool has_op_ne_v = decltype( impl::has_op_ne_impl( std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
+			constexpr bool has_op_ne_v = decltype( impl::has_op_ne_impl(
+			  std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
 
 			template<typename L, typename R = L>
-			constexpr bool has_op_lt_v = decltype( impl::has_op_lt_impl( std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
+			constexpr bool has_op_lt_v = decltype( impl::has_op_lt_impl(
+			  std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
 
 			template<typename L, typename R = L>
-			constexpr bool has_op_le_v = decltype( impl::has_op_le_impl( std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
+			constexpr bool has_op_le_v = decltype( impl::has_op_le_impl(
+			  std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
 
 			template<typename L, typename R = L>
-			constexpr bool has_op_gt_v = decltype( impl::has_op_gt_impl( std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
+			constexpr bool has_op_gt_v = decltype( impl::has_op_gt_impl(
+			  std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
 
 			template<typename L, typename R = L>
-			constexpr bool has_op_ge_v = decltype( impl::has_op_ge_impl( std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
+			constexpr bool has_op_ge_v = decltype( impl::has_op_ge_impl(
+			  std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
 
 		} // namespace operators
 
@@ -445,7 +487,8 @@ namespace daw {
 
 	namespace detectors {
 		template<typename Function, typename... Args>
-		using callable_with = decltype( std::declval<Function>( )( std::declval<Args>( )... ) );
+		using callable_with =
+		  decltype( std::declval<Function>( )( std::declval<Args>( )... ) );
 
 		template<typename BinaryPredicate, typename T, typename U = T>
 		using binary_predicate = callable_with<BinaryPredicate, T, U>;
@@ -454,22 +497,28 @@ namespace daw {
 		using unary_predicate = callable_with<UnaryPredicate, T>;
 
 		template<typename T, typename U>
-		using equality_comparable = decltype( std::declval<T>( ) == std::declval<U>( ) );
+		using equality_comparable =
+		  decltype( std::declval<T>( ) == std::declval<U>( ) );
 
 		template<typename T, typename U>
-		using inequality_comparable = decltype( std::declval<T>( ) != std::declval<U>( ) );
+		using inequality_comparable =
+		  decltype( std::declval<T>( ) != std::declval<U>( ) );
 
 		template<typename T, typename U>
-		using less_than_comparable = decltype( std::declval<T>( ) < std::declval<U>( ) );
+		using less_than_comparable =
+		  decltype( std::declval<T>( ) < std::declval<U>( ) );
 
 		template<typename T, typename U>
-		using equal_less_than_comparable = decltype( std::declval<T>( ) <= std::declval<U>( ) );
+		using equal_less_than_comparable =
+		  decltype( std::declval<T>( ) <= std::declval<U>( ) );
 
 		template<typename T, typename U>
-		using greater_than_comparable = decltype( std::declval<T>( ) > std::declval<U>( ) );
+		using greater_than_comparable =
+		  decltype( std::declval<T>( ) > std::declval<U>( ) );
 
 		template<typename T, typename U>
-		using equal_greater_than_comparable = decltype( std::declval<T>( ) >= std::declval<U>( ) );
+		using equal_greater_than_comparable =
+		  decltype( std::declval<T>( ) >= std::declval<U>( ) );
 
 		namespace details {
 			template<typename T, typename U>
@@ -480,29 +529,37 @@ namespace daw {
 		} // namespace details
 
 		template<typename T>
-		using swappable = decltype( details::swap( std::declval<T>( ), std::declval<T>( ) ) );
+		using swappable =
+		  decltype( details::swap( std::declval<T>( ), std::declval<T>( ) ) );
 
 		template<typename Iterator, typename T>
-		using assignable = decltype( *std::declval<Iterator>( ) = std::declval<T>( ) );
+		using assignable =
+		  decltype( *std::declval<Iterator>( ) = std::declval<T>( ) );
 
 		template<typename T>
 		using dereferenceable = decltype( *std::declval<T>( ) );
 	} // namespace detectors
 
 	template<typename T>
-	using is_dereferenceable_t = typename is_detected<detectors::dereferenceable, T>::type;
+	using is_dereferenceable_t =
+	  typename is_detected<detectors::dereferenceable, T>::type;
 
 	template<typename T>
-	constexpr bool is_dereferenceable_v = is_detected_v<detectors::dereferenceable, T>;
+	constexpr bool is_dereferenceable_v =
+	  is_detected_v<detectors::dereferenceable, T>;
 
 	template<typename Function, typename... Args>
-	using is_callable_t = typename is_detected<detectors::callable_with, Function, Args...>::type;
+	using is_callable_t =
+	  typename is_detected<detectors::callable_with, Function, Args...>::type;
 
 	template<typename Function, typename... Args>
-	constexpr bool is_callable_v = is_detected_v<detectors::callable_with, Function, Args...>;
+	constexpr bool is_callable_v =
+	  is_detected_v<detectors::callable_with, Function, Args...>;
 
 	template<typename Predicate, typename... Args>
-	constexpr bool is_predicate_v = is_detected_convertible_v<bool, detectors::callable_with, Predicate, Args...>;
+	constexpr bool is_predicate_v =
+	  is_detected_convertible_v<bool, detectors::callable_with, Predicate,
+	                            Args...>;
 
 	template<typename BinaryPredicate, typename T, typename U = T>
 	constexpr bool is_binary_predicate_v = is_predicate_v<BinaryPredicate, T, U>;
@@ -514,17 +571,21 @@ namespace daw {
 	constexpr bool is_compare_v = is_binary_predicate_v<Compare, T, U>;
 
 	template<typename T, typename U = T>
-	constexpr bool is_equality_comparable_v = is_detected_convertible_v<bool, detectors::equality_comparable, T, U>;
+	constexpr bool is_equality_comparable_v =
+	  is_detected_convertible_v<bool, detectors::equality_comparable, T, U>;
 
 	template<typename T, typename U = T>
-	constexpr bool is_inequality_comparable_v = is_detected_convertible_v<bool, detectors::inequality_comparable, T, U>;
+	constexpr bool is_inequality_comparable_v =
+	  is_detected_convertible_v<bool, detectors::inequality_comparable, T, U>;
 
 	template<typename T, typename U = T>
-	constexpr bool is_less_than_comparable_v = is_detected_convertible_v<bool, detectors::less_than_comparable, T, U>;
+	constexpr bool is_less_than_comparable_v =
+	  is_detected_convertible_v<bool, detectors::less_than_comparable, T, U>;
 
 	template<typename T, typename U = T>
 	constexpr bool is_equal_less_than_comparable_v =
-	  is_detected_convertible_v<bool, detectors::equal_less_than_comparable, T, U>;
+	  is_detected_convertible_v<bool, detectors::equal_less_than_comparable, T,
+	                            U>;
 
 	template<typename T, typename U = T>
 	constexpr bool is_greater_than_comparable_v =
@@ -532,13 +593,17 @@ namespace daw {
 
 	template<typename T, typename U = T>
 	constexpr bool is_equal_greater_than_comparable_v =
-	  is_detected_convertible_v<bool, detectors::equal_greater_than_comparable, T, U>;
+	  is_detected_convertible_v<bool, detectors::equal_greater_than_comparable, T,
+	                            U>;
 
-	template<typename Iterator, typename T = typename std::iterator_traits<Iterator>::value_type>
-	constexpr bool is_assignable_iterator_v = is_detected_v<detectors::assignable, Iterator, T>;
+	template<typename Iterator,
+	         typename T = typename std::iterator_traits<Iterator>::value_type>
+	constexpr bool is_assignable_iterator_v =
+	  is_detected_v<detectors::assignable, Iterator, T>;
 
 	template<typename L, typename R>
-	constexpr bool is_comparable_v = is_equality_comparable_v<L, R> &&is_equality_comparable_v<R, L>;
+	constexpr bool is_comparable_v =
+	  is_equality_comparable_v<L, R> &&is_equality_comparable_v<R, L>;
 
 	namespace impl {
 		namespace is_iter {
@@ -546,7 +611,8 @@ namespace daw {
 			using has_value_type = typename std::iterator_traits<T>::value_type;
 
 			template<typename T>
-			using has_difference_type = typename std::iterator_traits<T>::difference_type;
+			using has_difference_type =
+			  typename std::iterator_traits<T>::difference_type;
 
 			template<typename T>
 			using has_reference = typename std::iterator_traits<T>::reference;
@@ -555,62 +621,79 @@ namespace daw {
 			using has_pointer = typename std::iterator_traits<T>::pointer;
 
 			template<typename T>
-			using has_iterator_category = typename std::iterator_traits<T>::iterator_category;
+			using has_iterator_category =
+			  typename std::iterator_traits<T>::iterator_category;
 
 			template<typename T>
 			using is_incrementable = decltype( ++std::declval<T &>( ) );
 		} // namespace is_iter
 		template<typename T>
-		constexpr bool is_incrementable_v = is_same_v<T &, daw::detected_t<is_iter::is_incrementable, T>>;
+		constexpr bool is_incrementable_v =
+		  is_same_v<T &, daw::detected_t<is_iter::is_incrementable, T>>;
 
 		template<typename T>
-		constexpr bool has_value_type_v = daw::is_detected_v<is_iter::has_value_type, T>;
+		constexpr bool has_value_type_v =
+		  daw::is_detected_v<is_iter::has_value_type, T>;
 
 		template<typename T>
-		constexpr bool has_difference_type_v = daw::is_detected_v<is_iter::has_difference_type, T>;
+		constexpr bool has_difference_type_v =
+		  daw::is_detected_v<is_iter::has_difference_type, T>;
 
 		template<typename T>
-		constexpr bool has_reference_v = daw::is_detected_v<is_iter::has_reference, T>;
+		constexpr bool has_reference_v =
+		  daw::is_detected_v<is_iter::has_reference, T>;
 
 		template<typename T>
 		constexpr bool has_pointer_v = daw::is_detected_v<is_iter::has_pointer, T>;
 
 		template<typename T>
-		constexpr bool has_iterator_category_v = daw::is_detected_v<is_iter::has_iterator_category, T>;
+		constexpr bool has_iterator_category_v =
+		  daw::is_detected_v<is_iter::has_iterator_category, T>;
 
 		template<typename T>
-		constexpr bool has_iterator_trait_types_v = has_value_type_v<T> &&has_difference_type_v<T> &&has_reference_v<T>
-		  &&has_pointer_v<T> &&has_iterator_category_v<T>;
+		constexpr bool has_iterator_trait_types_v =
+		  has_value_type_v<T> &&has_difference_type_v<T> &&has_reference_v<T>
+		    &&has_pointer_v<T> &&has_iterator_category_v<T>;
 	} // namespace impl
 
 	// TODO: add is_swappable after c++17. Cannot do in C++14
 	template<typename Iterator>
 	constexpr bool is_iterator_v =
-	  is_copy_constructible_v<Iterator> &&is_copy_assignable_v<Iterator> &&is_destructible_v<Iterator> &&
-	    impl::has_iterator_trait_types_v<Iterator> &&is_dereferenceable_v<Iterator> &&impl::is_incrementable_v<Iterator>;
+	  is_copy_constructible_v<Iterator> &&is_copy_assignable_v<Iterator>
+	    &&is_destructible_v<Iterator> &&impl::has_iterator_trait_types_v<Iterator>
+	      &&is_dereferenceable_v<Iterator> &&impl::is_incrementable_v<Iterator>;
 
 	template<typename OutputIterator, typename T>
-	constexpr bool is_output_iterator_v = is_iterator_v<OutputIterator> &&is_assignable_iterator_v<OutputIterator, T>;
+	constexpr bool is_output_iterator_v =
+	  is_iterator_v<OutputIterator> &&is_assignable_iterator_v<OutputIterator, T>;
 
-	template<typename InputIterator, typename T = std::decay_t<decltype( *std::declval<InputIterator>( ) )>>
-	constexpr bool is_input_iterator_v = is_iterator_v<InputIterator> &&is_equality_comparable_v<InputIterator>
-	  &&is_convertible_v<decltype( *std::declval<InputIterator>( ) ), T>;
+	template<typename InputIterator,
+	         typename T =
+	           std::decay_t<decltype( *std::declval<InputIterator>( ) )>>
+	constexpr bool is_input_iterator_v =
+	  is_iterator_v<InputIterator> &&is_equality_comparable_v<InputIterator>
+	    &&is_convertible_v<decltype( *std::declval<InputIterator>( ) ), T>;
 
-	template<typename ForwardIterator, typename T = std::decay_t<decltype( *std::declval<ForwardIterator>( ) )>>
-	constexpr bool is_forward_iterator_v =
-	  is_input_iterator_v<ForwardIterator, T> &&is_default_constructible_v<ForwardIterator>;
+	template<typename ForwardIterator,
+	         typename T =
+	           std::decay_t<decltype( *std::declval<ForwardIterator>( ) )>>
+	constexpr bool is_forward_iterator_v = is_input_iterator_v<ForwardIterator, T>
+	  &&is_default_constructible_v<ForwardIterator>;
 
 	//////////////////////////////////////////////////////////////////////////
-	/// Summary: is like a regular type see http://www.stepanovpapers.com/DeSt98.pdf
+	/// Summary: is like a regular type see
+	/// http://www.stepanovpapers.com/DeSt98.pdf
 	template<typename T>
 	constexpr bool is_regular_v =
-	  all_true_v<is_default_constructible_v<T>, is_copy_constructible_v<T>, is_move_constructible_v<T>,
-	             is_copy_assignable_v<T>, is_move_assignable_v<T>, is_equality_comparable_v<T>>;
+	  all_true_v<is_default_constructible_v<T>, is_copy_constructible_v<T>,
+	             is_move_constructible_v<T>, is_copy_assignable_v<T>,
+	             is_move_assignable_v<T>, is_equality_comparable_v<T>>;
 
 	struct nothing {};
 
 	template<typename To, typename... From>
-	constexpr bool are_convertible_to_v = all_true_v<is_convertible_v<From, To>...>;
+	constexpr bool are_convertible_to_v =
+	  all_true_v<is_convertible_v<From, To>...>;
 
 	template<size_t N, typename... Args>
 	using type_n_t = std::tuple_element_t<N, std::tuple<Args...>>;
@@ -634,34 +717,43 @@ namespace daw {
 			using has_integer_subscript = decltype( std::declval<T>( )[0] );
 
 			template<typename T>
-			using has_size = decltype( std::declval<size_t &>( ) = std::declval<T>( ).size( ) );
+			using has_size =
+			  decltype( std::declval<size_t &>( ) = std::declval<T>( ).size( ) );
 
 			template<typename T>
 			using is_array_array = decltype( std::declval<T>( )[0][0] );
 
 			template<typename T>
-			using has_empty = decltype( std::declval<bool &>( ) = std::declval<T>( ).empty( ) );
+			using has_empty =
+			  decltype( std::declval<bool &>( ) = std::declval<T>( ).empty( ) );
 
 			template<typename T>
-			using has_append_operator = decltype( std::declval<T &>( ) += std::declval<has_integer_subscript<T>>( ) );
+			using has_append_operator = decltype(
+			  std::declval<T &>( ) += std::declval<has_integer_subscript<T>>( ) );
 
 			template<typename T>
-			using has_append = decltype( std::declval<T>( ).append( std::declval<T>( ) ) );
+			using has_append =
+			  decltype( std::declval<T>( ).append( std::declval<T>( ) ) );
 
 			template<typename T, typename U>
-			using has_addition_operator = decltype( std::declval<T>( ) + std::declval<U>( ) );
+			using has_addition_operator =
+			  decltype( std::declval<T>( ) + std::declval<U>( ) );
 
 			template<typename T, typename U>
-			using has_subtraction_operator = decltype( std::declval<T>( ) - std::declval<U>( ) );
+			using has_subtraction_operator =
+			  decltype( std::declval<T>( ) - std::declval<U>( ) );
 
 			template<typename T, typename U>
-			using has_multiplication_operator = decltype( std::declval<T>( ) * std::declval<U>( ) );
+			using has_multiplication_operator =
+			  decltype( std::declval<T>( ) * std::declval<U>( ) );
 
 			template<typename T, typename U>
-			using has_division_operator = decltype( std::declval<T>( ) / std::declval<U>( ) );
+			using has_division_operator =
+			  decltype( std::declval<T>( ) / std::declval<U>( ) );
 
 			template<typename T, typename U>
-			using has_modulus_operator = decltype( std::declval<T>( ) % std::declval<U>( ) );
+			using has_modulus_operator =
+			  decltype( std::declval<T>( ) % std::declval<U>( ) );
 
 			template<typename T>
 			using has_increment_operator = decltype( ++std::declval<T &>( ) );
@@ -671,54 +763,70 @@ namespace daw {
 		} // namespace detectors
 
 		template<typename T, typename U = T>
-		constexpr bool has_addition_operator_v = daw::is_detected_v<detectors::has_addition_operator, T, U>;
+		constexpr bool has_addition_operator_v =
+		  daw::is_detected_v<detectors::has_addition_operator, T, U>;
 
 		template<typename T, typename U = T>
-		constexpr bool has_subtraction_operator_v = daw::is_detected_v<detectors::has_subtraction_operator, T, U>;
+		constexpr bool has_subtraction_operator_v =
+		  daw::is_detected_v<detectors::has_subtraction_operator, T, U>;
 
 		template<typename T, typename U = T>
-		constexpr bool has_multiplication_operator_v = daw::is_detected_v<detectors::has_multiplication_operator, T, U>;
+		constexpr bool has_multiplication_operator_v =
+		  daw::is_detected_v<detectors::has_multiplication_operator, T, U>;
 
 		template<typename T, typename U = T>
-		constexpr bool has_division_operator_v = daw::is_detected_v<detectors::has_division_operator, T, U>;
+		constexpr bool has_division_operator_v =
+		  daw::is_detected_v<detectors::has_division_operator, T, U>;
 
 		template<typename T, typename U = T>
-		constexpr bool has_modulus_operator_v = daw::is_detected_v<detectors::has_modulus_operator, T, U>;
+		constexpr bool has_modulus_operator_v =
+		  daw::is_detected_v<detectors::has_modulus_operator, T, U>;
 
 		template<typename T>
-		constexpr bool has_increment_operator_v = daw::is_detected_v<detectors::has_increment_operator, T>;
+		constexpr bool has_increment_operator_v =
+		  daw::is_detected_v<detectors::has_increment_operator, T>;
 
 		template<typename T>
-		constexpr bool has_decrement_operator_v = daw::is_detected_v<detectors::has_decrement_operator, T>;
+		constexpr bool has_decrement_operator_v =
+		  daw::is_detected_v<detectors::has_decrement_operator, T>;
 
 		template<typename String>
-		constexpr bool has_integer_subscript_v = daw::is_detected_v<detectors::has_integer_subscript, String>;
+		constexpr bool has_integer_subscript_v =
+		  daw::is_detected_v<detectors::has_integer_subscript, String>;
 
 		template<typename String>
-		constexpr bool has_size_memberfn_v = daw::is_detected_v<detectors::has_size, String>;
+		constexpr bool has_size_memberfn_v =
+		  daw::is_detected_v<detectors::has_size, String>;
 
 		template<typename String>
-		constexpr bool has_empty_memberfn_v = daw::is_detected_v<detectors::has_empty, String>;
+		constexpr bool has_empty_memberfn_v =
+		  daw::is_detected_v<detectors::has_empty, String>;
 
 		template<typename String>
-		constexpr bool has_append_memberfn_v = daw::is_detected_v<detectors::has_append, String>;
+		constexpr bool has_append_memberfn_v =
+		  daw::is_detected_v<detectors::has_append, String>;
 
 		template<typename String>
-		constexpr bool has_append_operator_v = daw::is_detected_v<detectors::has_append_operator, String>;
+		constexpr bool has_append_operator_v =
+		  daw::is_detected_v<detectors::has_append_operator, String>;
 
 		template<typename String>
-		constexpr bool is_not_array_array_v = !daw::is_detected_v<detectors::is_array_array, String>;
+		constexpr bool is_not_array_array_v =
+		  !daw::is_detected_v<detectors::is_array_array, String>;
 
 		template<typename String>
-		constexpr bool is_string_view_like_v = is_container_like_v<String const> &&has_integer_subscript_v<String const>
-		  &&has_size_memberfn_v<String const> &&has_empty_memberfn_v<String const> &&is_not_array_array_v<String>;
+		constexpr bool is_string_view_like_v = is_container_like_v<String const> &&
+		  has_integer_subscript_v<String const> &&has_size_memberfn_v<String const>
+		    &&has_empty_memberfn_v<String const> &&is_not_array_array_v<String>;
 
 		template<typename String>
-		constexpr bool is_string_like_v = is_string_view_like_v<String> &&has_append_operator_v<String>
-		  &&has_append_memberfn_v<String> &&is_container_like_v<String> &&has_integer_subscript_v<String>;
+		constexpr bool is_string_like_v = is_string_view_like_v<String>
+		  &&has_append_operator_v<String> &&has_append_memberfn_v<String>
+		    &&is_container_like_v<String> &&has_integer_subscript_v<String>;
 
 		template<typename Container, size_t ExpectedSize>
-		constexpr bool is_value_size_equal_v = sizeof( *std::cbegin( std::declval<Container>( ) ) ) == ExpectedSize;
+		constexpr bool is_value_size_equal_v =
+		  sizeof( *std::cbegin( std::declval<Container>( ) ) ) == ExpectedSize;
 
 		namespace impl {
 			template<typename... Ts>
@@ -728,11 +836,13 @@ namespace daw {
 			struct are_unique<T1> : std::true_type {};
 
 			template<typename T1, typename T2>
-			struct are_unique<T1, T2> : std::integral_constant<bool, !daw::is_same_v<T1, T2>> {};
+			struct are_unique<T1, T2>
+			  : std::integral_constant<bool, !daw::is_same_v<T1, T2>> {};
 
 			template<typename T1, typename T2, typename... Ts>
 			struct are_unique<T1, T2, Ts...>
-			  : std::integral_constant<bool, are_unique<T1, T2>::value && are_unique<T1, Ts...>::value &&
+			  : std::integral_constant<bool, are_unique<T1, T2>::value &&
+			                                   are_unique<T1, Ts...>::value &&
 			                                   are_unique<T2, Ts...>::value> {};
 		} // namespace impl
 
@@ -750,8 +860,11 @@ namespace daw {
 
 			template<typename T, typename... Ts>
 			struct isnt_cv_ref<T, Ts...>
-			  : std::integral_constant<bool, ( !(is_const_v<T> || is_reference_v<T> || is_volatile_v<T>)&&is_same_v<
-			                                   std::true_type, typename isnt_cv_ref<Ts...>::type> )> {};
+			  : std::integral_constant<
+			      bool, ( !(is_const_v<T> || is_reference_v<T> ||
+			                is_volatile_v<
+			                  T>)&&is_same_v<std::true_type,
+			                                 typename isnt_cv_ref<Ts...>::type> )> {};
 		} // namespace impl
 
 		template<typename... Ts>
@@ -761,7 +874,8 @@ namespace daw {
 		using deref_t = decltype( *std::declval<T>( ) );
 
 		template<typename Function, typename... Args>
-		using result_of_t = decltype( std::declval<Function>( )( std::declval<Args>( )... ) );
+		using result_of_t =
+		  decltype( std::declval<Function>( )( std::declval<Args>( )... ) );
 	} // namespace traits
 
 	template<bool B, typename T = std::nullptr_t>
@@ -774,7 +888,8 @@ namespace daw {
 	struct disjunction<B1> : B1 {};
 
 	template<typename B1, typename... Bn>
-	struct disjunction<B1, Bn...> : std::conditional_t<bool( B1::value ), B1, disjunction<Bn...>> {};
+	struct disjunction<B1, Bn...>
+	  : std::conditional_t<bool( B1::value ), B1, disjunction<Bn...>> {};
 
 	template<typename... B>
 	using disjunction_t = typename disjunction<B...>::type;

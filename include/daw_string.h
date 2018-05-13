@@ -3,14 +3,14 @@
 // Copyright (c) 2014-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -60,12 +60,14 @@ namespace daw {
 			}
 
 			template<typename Arg, typename... Args>
-			std::vector<details::string_t> unknowns_to_string( Arg arg, Args... args ) {
+			std::vector<details::string_t> unknowns_to_string( Arg arg,
+			                                                   Args... args ) {
 				std::vector<details::string_t> result;
 				result.reserve( sizeof...( args ) + 1 );
 				result.emplace_back( boost::lexical_cast<details::string_t>( arg ) );
 				auto result2 = unknowns_to_string( args... );
-				result.insert( std::end( result ), std::begin( result2 ), std::end( result2 ) );
+				result.insert( std::end( result ), std::begin( result2 ),
+				               std::end( result2 ) );
 				return result;
 			}
 		} // namespace details
@@ -77,7 +79,9 @@ namespace daw {
 			auto pos = sv.begin( );
 			decltype( pos ) find_iter;
 			while( true ) {
-				find_iter = find_if( pos, sv.end( ), []( auto const &c ) { return static_cast<bool>( isspace( c ) ); } );
+				find_iter = find_if( pos, sv.end( ), []( auto const &c ) {
+					return static_cast<bool>( isspace( c ) );
+				} );
 				result.emplace_back( pos, find_iter );
 				if( find_iter == sv.end( ) ) {
 					break;
@@ -112,7 +116,8 @@ namespace daw {
 			decltype( pos ) find_iter;
 			while( true ) {
 				find_iter = find_if( pos, sv.end( ), [&delimiters]( auto const &c ) {
-					return std::find( std::begin( delimiters ), std::end( delimiters ), c ) != delimiters.end( );
+					return std::find( std::begin( delimiters ), std::end( delimiters ),
+					                  c ) != delimiters.end( );
 				} );
 				result.emplace_back( pos, find_iter );
 				if( find_iter == sv.end( ) ) {
@@ -130,8 +135,9 @@ namespace daw {
 			auto pos = sv.begin( );
 			decltype( pos ) find_iter;
 			while( true ) {
-				find_iter =
-				  find_if( pos, sv.end( ), [is_delim]( auto const &c ) { return static_cast<bool>( is_delim( c ) ); } );
+				find_iter = find_if( pos, sv.end( ), [is_delim]( auto const &c ) {
+					return static_cast<bool>( is_delim( c ) );
+				} );
 				result.emplace_back( pos, find_iter );
 				if( find_iter == sv.end( ) ) {
 					break;
@@ -152,13 +158,15 @@ namespace daw {
 		}
 
 		template<typename Arg1, typename Arg2>
-		auto string_join( Arg1 const &arg1, Arg2 const &arg2 ) -> decltype( to_string( arg1 ) + to_string( arg2 ) ) {
+		auto string_join( Arg1 const &arg1, Arg2 const &arg2 )
+		  -> decltype( to_string( arg1 ) + to_string( arg2 ) ) {
 			return to_string( arg1 ) + to_string( arg2 );
 		}
 
 		template<typename Arg1, typename Arg2, typename... Args>
 		auto string_join( Arg1 const &arg1, Arg2 const &arg2, Args const &... args )
-		  -> decltype( string_join( string_join( arg1, arg2 ), string_join( args... ) ) ) {
+		  -> decltype( string_join( string_join( arg1, arg2 ),
+		                            string_join( args... ) ) ) {
 			return string_join( string_join( arg1, arg2 ), string_join( args... ) );
 		}
 
@@ -178,11 +186,13 @@ namespace daw {
 				return false;
 			}
 
-			bool operator( )( StringType const &src, const char ending ) const noexcept {
+			bool operator( )( StringType const &src, const char ending ) const
+			  noexcept {
 				return 0 < src.size( ) && ending == src[src.size( ) - 1];
 			}
 
-			bool operator( )( StringType const &src, StringType const &ending ) const noexcept {
+			bool operator( )( StringType const &src, StringType const &ending ) const
+			  noexcept {
 				auto pos = src.find_last_of( ending );
 				return details::string_t::npos != pos && pos == src.size( ) - 1;
 			}
@@ -200,7 +210,8 @@ namespace daw {
 		}
 
 		//////////////////////////////////////////////////////////////////////////
-		// Summary: takes a format string like "{0} {1} {2}" and in this case 3 parameters
+		// Summary: takes a format string like "{0} {1} {2}" and in this case 3
+		// parameters
 		template<typename String, typename Arg, typename... Args>
 		details::string_t fmt( String &&format_, Arg arg, Args... args ) {
 			std::regex const reg( R"^(\{(\d+(:\d)*)\})^" );
@@ -221,10 +232,12 @@ namespace daw {
 						// Assumes the argument at pos is a double.  If not, will crash
 						size_t pos = boost::lexical_cast<size_t>( delims[0] );
 						int precision = boost::lexical_cast<int>( delims[1] );
-						ss << std::fixed << std::setprecision( precision ) << boost::lexical_cast<double>( arguments[pos] );
+						ss << std::fixed << std::setprecision( precision )
+						   << boost::lexical_cast<double>( arguments[pos] );
 					} else {
 						throw std::out_of_range(
-						  fmt( "Unknown string format.  Too many colons(", delims.size( ), "): ", sm[1].str( ) ) );
+						  fmt( "Unknown string format.  Too many colons(", delims.size( ),
+						       "): ", sm[1].str( ) ) );
 					}
 				}
 				format = sm.suffix( ).str( );
@@ -247,7 +260,8 @@ namespace daw {
 		         typename Allocator = std::allocator<CharT>>
 		auto trim_right_copy(
 		  std::basic_string<CharT, Traits, Allocator> const &str,
-		  std::basic_string<CharT, Traits, Allocator> const &delimiters = impl::standard_split_delimiters( CharT{} ) ) {
+		  std::basic_string<CharT, Traits, Allocator> const &delimiters =
+		    impl::standard_split_delimiters( CharT{} ) ) {
 			if( str.empty( ) ) {
 				return str;
 			}
@@ -256,9 +270,10 @@ namespace daw {
 
 		template<typename CharT = char, typename Traits = std::char_traits<CharT>,
 		         typename Allocator = std::allocator<CharT>>
-		void trim_right(
-		  std::basic_string<CharT, Traits, Allocator> &str,
-		  std::basic_string<CharT, Traits, Allocator> const &delimiters = impl::standard_split_delimiters( CharT{} ) ) {
+		void
+		trim_right( std::basic_string<CharT, Traits, Allocator> &str,
+		            std::basic_string<CharT, Traits, Allocator> const &delimiters =
+		              impl::standard_split_delimiters( CharT{} ) ) {
 			if( str.empty( ) ) {
 				return;
 			}
@@ -269,7 +284,8 @@ namespace daw {
 		         typename Allocator = std::allocator<CharT>>
 		auto trim_left_copy(
 		  std::basic_string<CharT, Traits, Allocator> const &str,
-		  std::basic_string<CharT, Traits, Allocator> const &delimiters = impl::standard_split_delimiters( CharT{} ) ) {
+		  std::basic_string<CharT, Traits, Allocator> const &delimiters =
+		    impl::standard_split_delimiters( CharT{} ) ) {
 			if( str.empty( ) ) {
 				return str;
 			}
@@ -278,9 +294,10 @@ namespace daw {
 
 		template<typename CharT = char, typename Traits = std::char_traits<CharT>,
 		         typename Allocator = std::allocator<CharT>>
-		void trim_left(
-		  std::basic_string<CharT, Traits, Allocator> &str,
-		  std::basic_string<CharT, Traits, Allocator> const &delimiters = impl::standard_split_delimiters( CharT{} ) ) {
+		void
+		trim_left( std::basic_string<CharT, Traits, Allocator> &str,
+		           std::basic_string<CharT, Traits, Allocator> const &delimiters =
+		             impl::standard_split_delimiters( CharT{} ) ) {
 			if( str.empty( ) ) {
 				return;
 			}
@@ -294,9 +311,9 @@ namespace daw {
 
 		template<typename CharT = char, typename Traits = std::char_traits<CharT>,
 		         typename Allocator = std::allocator<CharT>>
-		void
-		trim( std::basic_string<CharT, Traits, Allocator> &str,
-		      std::basic_string<CharT, Traits, Allocator> const &delimiters = impl::standard_split_delimiters( CharT{} ) ) {
+		void trim( std::basic_string<CharT, Traits, Allocator> &str,
+		           std::basic_string<CharT, Traits, Allocator> const &delimiters =
+		             impl::standard_split_delimiters( CharT{} ) ) {
 			auto const start = str.find_first_not_of( delimiters );
 			if( std::basic_string<CharT, Traits, Allocator>::npos == start ) {
 				str.clear( );
@@ -309,9 +326,10 @@ namespace daw {
 
 		template<typename CharT = char, typename Traits = std::char_traits<CharT>,
 		         typename Allocator = std::allocator<CharT>>
-		auto trim_copy(
-		  std::basic_string<CharT, Traits, Allocator> str,
-		  std::basic_string<CharT, Traits, Allocator> const &delimiters = impl::standard_split_delimiters( CharT{} ) ) {
+		auto
+		trim_copy( std::basic_string<CharT, Traits, Allocator> str,
+		           std::basic_string<CharT, Traits, Allocator> const &delimiters =
+		             impl::standard_split_delimiters( CharT{} ) ) {
 			trim( str, delimiters );
 			return str;
 		}
@@ -320,12 +338,14 @@ namespace daw {
 		         typename Allocator = std::allocator<CharT>>
 		bool contains( std::basic_string<CharT, Traits, Allocator> const &str,
 		               std::basic_string<CharT, Traits, Allocator> const &match ) {
-			return str.find( match ) != std::basic_string<CharT, Traits, Allocator>::npos;
+			return str.find( match ) !=
+			       std::basic_string<CharT, Traits, Allocator>::npos;
 		}
 
-		template<typename CharT = char, typename traits = std::char_traits<CharT>, typename Alloc = std::allocator<CharT>>
-		void search_replace( std::basic_string<CharT, traits, Alloc> &in_str, CharT const *search_for,
-		                     CharT const *replace_with ) {
+		template<typename CharT = char, typename traits = std::char_traits<CharT>,
+		         typename Alloc = std::allocator<CharT>>
+		void search_replace( std::basic_string<CharT, traits, Alloc> &in_str,
+		                     CharT const *search_for, CharT const *replace_with ) {
 			struct {
 				inline auto operator( )( wchar_t const *ptr ) const noexcept {
 					return wcslen( ptr );
@@ -339,14 +359,17 @@ namespace daw {
 			auto const search_for_len = str_size( search_for );
 			auto const replace_with_len = str_size( replace_with );
 
-			while( ( pos = in_str.find( search_for, pos ) ) != std::basic_string<CharT, traits, Alloc>::npos ) {
+			while( ( pos = in_str.find( search_for, pos ) ) !=
+			       std::basic_string<CharT, traits, Alloc>::npos ) {
 				in_str.replace( pos, search_for_len, replace_with );
 				pos += replace_with_len;
 			}
 		}
 
-		template<typename CharT = char, typename traits = std::char_traits<CharT>, typename Alloc = std::allocator<CharT>>
-		auto search_replace_copy( std::basic_string<CharT, traits, Alloc> in_str, CharT const *search_for,
+		template<typename CharT = char, typename traits = std::char_traits<CharT>,
+		         typename Alloc = std::allocator<CharT>>
+		auto search_replace_copy( std::basic_string<CharT, traits, Alloc> in_str,
+		                          CharT const *search_for,
 		                          CharT const *replace_with ) {
 			search_replace( in_str, search_for, replace_with );
 			return in_str;
@@ -354,9 +377,11 @@ namespace daw {
 
 		namespace impl {
 			template<typename... Args>
-			using can_construct_string = decltype( std::string( std::declval<Args>( )... ) );
+			using can_construct_string =
+			  decltype( std::string( std::declval<Args>( )... ) );
 
-			template<typename CharT, typename Traits = std::char_traits<CharT>, typename Allocator = std::allocator<CharT>>
+			template<typename CharT, typename Traits = std::char_traits<CharT>,
+			         typename Allocator = std::allocator<CharT>>
 			struct BasicString {
 				using values_type = std::basic_string<CharT, Traits, Allocator>;
 				using value_type = typename values_type::value_type;
@@ -369,8 +394,10 @@ namespace daw {
 
 				values_type m_string;
 
-				template<typename... Args,
-				         std::enable_if_t<daw::is_detected_v<can_construct_string, Args...>, std::nullptr_t> = nullptr>
+				template<
+				  typename... Args,
+				  std::enable_if_t<daw::is_detected_v<can_construct_string, Args...>,
+				                   std::nullptr_t> = nullptr>
 				BasicString( Args &&... args )
 				  : m_string( std::forward<Args>( args )... ) {}
 
@@ -392,25 +419,29 @@ namespace daw {
 					return *this;
 				}
 
-				BasicString &search_replace( CharT const *search_for, CharT const *replace_with ) {
+				BasicString &search_replace( CharT const *search_for,
+				                             CharT const *replace_with ) {
 					::daw::string::search_replace( m_string, search_for, replace_with );
 					return *this;
 				}
 
 				BasicString &trim_left(
-				  std::basic_string<CharT, Traits, Allocator> const &delimiters = impl::standard_split_delimiters( CharT{} ) ) {
+				  std::basic_string<CharT, Traits, Allocator> const &delimiters =
+				    impl::standard_split_delimiters( CharT{} ) ) {
 					::daw::string::trim_left( m_string, delimiters );
 					return *this;
 				}
 
 				BasicString &trim_right(
-				  std::basic_string<CharT, Traits, Allocator> const &delimiters = impl::standard_split_delimiters( CharT{} ) ) {
+				  std::basic_string<CharT, Traits, Allocator> const &delimiters =
+				    impl::standard_split_delimiters( CharT{} ) ) {
 					daw::string::trim_right( m_string, delimiters );
 					return *this;
 				}
 
-				BasicString &trim(
-				  std::basic_string<CharT, Traits, Allocator> const &delimiters = impl::standard_split_delimiters( CharT{} ) ) {
+				BasicString &
+				trim( std::basic_string<CharT, Traits, Allocator> const &delimiters =
+				        impl::standard_split_delimiters( CharT{} ) ) {
 					daw::string::trim( m_string, delimiters );
 					return *this;
 				}
@@ -443,7 +474,8 @@ namespace daw {
 } // namespace daw
 
 template<typename CharT>
-std::ostream &operator<<( std::ostream &os, daw::string::impl::BasicString<CharT> const &str ) {
+std::ostream &operator<<( std::ostream &os,
+                          daw::string::impl::BasicString<CharT> const &str ) {
 	os << str.to_string( );
 	return os;
 }

@@ -3,14 +3,14 @@
 // Copyright (c) 2016-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -32,7 +32,8 @@
 namespace daw {
 	template<typename T, size_t capacity>
 	struct bounded_stack_t {
-		static_assert( capacity >= 1, "There must be at least 1 element in stack capacity" );
+		static_assert( capacity >= 1,
+		               "There must be at least 1 element in stack capacity" );
 		using value_type = std::decay_t<T>;
 
 	private:
@@ -77,7 +78,8 @@ namespace daw {
 		}
 
 		constexpr size_t used( ) const {
-			return static_cast<size_t>( std::distance( m_values.cbegin( ), chead( ) ) );
+			return static_cast<size_t>(
+			  std::distance( m_values.cbegin( ), chead( ) ) );
 		}
 
 		constexpr size_t available( ) const {
@@ -89,12 +91,14 @@ namespace daw {
 		}
 
 		void push_back( T value ) {
-			daw::exception::dbg_throw_on_true<std::out_of_range>( full( ), "Attempt to push_back on a full stack" );
+			daw::exception::dbg_throw_on_true<std::out_of_range>(
+			  full( ), "Attempt to push_back on a full stack" );
 			*m_head++ = std::move( value );
 		}
 
 		const_reference back( ) const {
-			daw::exception::dbg_throw_on_true<std::out_of_range>( empty( ), "Attempt to peek an empty stack" );
+			daw::exception::dbg_throw_on_true<std::out_of_range>(
+			  empty( ), "Attempt to peek an empty stack" );
 			auto pos = m_head;
 			return *--pos;
 		}
@@ -108,13 +112,15 @@ namespace daw {
 		}
 
 		reference back( ) {
-			daw::exception::dbg_throw_on_true<std::out_of_range>( empty( ), "Attempt to peek an empty stack" );
+			daw::exception::dbg_throw_on_true<std::out_of_range>(
+			  empty( ), "Attempt to peek an empty stack" );
 			auto pos = m_head;
 			return *--pos;
 		}
 
 		value_type pop_back( ) {
-			daw::exception::dbg_throw_on_true<std::out_of_range>( empty( ), "Attempt to pop an empty stack" );
+			daw::exception::dbg_throw_on_true<std::out_of_range>(
+			  empty( ), "Attempt to pop an empty stack" );
 			return std::move( *--m_head );
 		}
 	}; // bounded_stack_t

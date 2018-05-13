@@ -3,14 +3,14 @@
 // Copyright ( c ) 2013-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -36,7 +36,8 @@ namespace daw {
 		types_t m_values;
 
 		template<typename... Ts, std::size_t... Is>
-		static constexpr void increment( std::tuple<Ts...> &tpl, std::index_sequence<Is...> ) {
+		static constexpr void increment( std::tuple<Ts...> &tpl,
+		                                 std::index_sequence<Is...> ) {
 			using expander = int[];
 			expander{0, ( static_cast<void>( ++std::get<Is>( tpl ) ), 0 )...};
 		}
@@ -47,7 +48,8 @@ namespace daw {
 		}
 
 		template<typename... Ts, std::size_t... Is>
-		static constexpr void decrement( std::tuple<Ts...> &tpl, std::index_sequence<Is...> ) {
+		static constexpr void decrement( std::tuple<Ts...> &tpl,
+		                                 std::index_sequence<Is...> ) {
 			using expander = int[];
 			expander{0, ( static_cast<void>( --std::get<Is>( tpl ) ), 0 )...};
 		}
@@ -58,9 +60,11 @@ namespace daw {
 		}
 
 		template<typename... Ts, std::size_t... Is>
-		static constexpr void advance( std::tuple<Ts...> &tpl, std::index_sequence<Is...>, intmax_t n ) {
+		static constexpr void advance( std::tuple<Ts...> &tpl,
+		                               std::index_sequence<Is...>, intmax_t n ) {
 			using expander = int[];
-			expander{0, ( static_cast<void>( daw::advance( std::get<Is>( tpl ), n ), 0 ) )...};
+			expander{0, ( static_cast<void>( daw::advance( std::get<Is>( tpl ), n ),
+			                                 0 ) )...};
 		}
 
 		template<typename... Ts>
@@ -124,32 +128,38 @@ namespace daw {
 	}; // struct zip_iterator
 
 	template<typename... T>
-	constexpr bool operator==( zip_iterator<T...> const &lhs, zip_iterator<T...> const &rhs ) noexcept {
+	constexpr bool operator==( zip_iterator<T...> const &lhs,
+	                           zip_iterator<T...> const &rhs ) noexcept {
 		return lhs.as_tuple( ) == rhs.as_tuple( );
 	}
 
 	template<typename... T>
-	constexpr bool operator!=( zip_iterator<T...> const &lhs, zip_iterator<T...> const &rhs ) {
+	constexpr bool operator!=( zip_iterator<T...> const &lhs,
+	                           zip_iterator<T...> const &rhs ) {
 		return lhs.as_tuple( ) != rhs.as_tuple( );
 	}
 
 	template<typename... T>
-	constexpr bool operator<=( zip_iterator<T...> const &lhs, zip_iterator<T...> const &rhs ) {
+	constexpr bool operator<=( zip_iterator<T...> const &lhs,
+	                           zip_iterator<T...> const &rhs ) {
 		return lhs.as_tuple( ) <= rhs.as_tuple( );
 	}
 
 	template<typename... T>
-	constexpr bool operator>=( zip_iterator<T...> const &lhs, zip_iterator<T...> const &rhs ) {
+	constexpr bool operator>=( zip_iterator<T...> const &lhs,
+	                           zip_iterator<T...> const &rhs ) {
 		return lhs.as_tuple( ) >= rhs.as_tuple( );
 	}
 
 	template<typename... T>
-	constexpr bool operator<( zip_iterator<T...> const &lhs, zip_iterator<T...> const &rhs ) {
+	constexpr bool operator<( zip_iterator<T...> const &lhs,
+	                          zip_iterator<T...> const &rhs ) {
 		return lhs.as_tuple( ) < rhs.as_tuple( );
 	}
 
 	template<typename... T>
-	constexpr bool operator>( zip_iterator<T...> const &lhs, zip_iterator<T...> const &rhs ) {
+	constexpr bool operator>( zip_iterator<T...> const &lhs,
+	                          zip_iterator<T...> const &rhs ) {
 		return lhs.as_tuple( ) > rhs.as_tuple( );
 	}
 

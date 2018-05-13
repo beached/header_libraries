@@ -3,14 +3,14 @@
 // Copyright (c) 2014-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -74,23 +74,28 @@ namespace daw {
 	} // namespace impl
 
 	template<typename ResultType, typename... ArgTypes>
-	using function_pointer_t = typename impl::make_function_pointer_impl<ResultType, ArgTypes...>::type;
+	using function_pointer_t =
+	  typename impl::make_function_pointer_impl<ResultType, ArgTypes...>::type;
 
 	template<typename ResultType, typename ClassType, typename... ArgTypes>
 	using pointer_to_member_function_t =
-	  typename impl::make_pointer_to_member_function_impl<ResultType, ClassType, ArgTypes...>::type;
+	  typename impl::make_pointer_to_member_function_impl<ResultType, ClassType,
+	                                                      ArgTypes...>::type;
 
 	template<typename ResultType, typename ClassType, typename... ArgTypes>
 	using pointer_to_volatile_member_function_t =
-	  typename impl::make_pointer_to_volatile_member_function_impl<ResultType, ClassType, ArgTypes...>::type;
+	  typename impl::make_pointer_to_volatile_member_function_impl<
+	    ResultType, ClassType, ArgTypes...>::type;
 
 	template<typename ResultType, typename ClassType, typename... ArgTypes>
 	using pointer_to_const_member_function_t =
-	  typename impl::make_pointer_to_const_member_function_impl<ResultType, ClassType, ArgTypes...>::type;
+	  typename impl::make_pointer_to_const_member_function_impl<
+	    ResultType, ClassType, ArgTypes...>::type;
 
 	template<typename ResultType, typename ClassType, typename... ArgTypes>
 	using pointer_to_const_volatile_member_function_t =
-	  typename impl::make_pointer_to_const_volatile_member_function_impl<ResultType, ClassType, ArgTypes...>::type;
+	  typename impl::make_pointer_to_const_volatile_member_function_impl<
+	    ResultType, ClassType, ArgTypes...>::type;
 
 	namespace impl {
 		template<typename T>
@@ -126,7 +131,8 @@ namespace daw {
 		~equal_to_last( ) = default;
 		constexpr equal_to_last( equal_to_last const & ) noexcept = default;
 		constexpr equal_to_last( equal_to_last && ) noexcept = default;
-		constexpr equal_to_last &operator=( equal_to_last const & ) noexcept = default;
+		constexpr equal_to_last &
+		operator=( equal_to_last const & ) noexcept = default;
 		constexpr equal_to_last &operator=( equal_to_last && ) noexcept = default;
 
 		constexpr equal_to_last( ) noexcept
@@ -195,7 +201,8 @@ namespace daw {
 	struct function_traits<ReturnType ( * )( Args... )> {
 		static constexpr size_t arity = sizeof...( Args );
 		using type = std::function<ReturnType( Args... )>;
-		using root_type = std::function<daw::traits::root_type_t<ReturnType>( daw::traits::root_type_t<Args>... )>;
+		using root_type = std::function<daw::traits::root_type_t<ReturnType>(
+		  daw::traits::root_type_t<Args>... )>;
 		using arg_types = std::tuple<Args...>;
 		using result_type = ReturnType;
 	};
@@ -214,40 +221,46 @@ namespace daw {
 
 	// handles bind & multiple function call operator()'s
 	template<typename ReturnType, typename... Args, class T>
-	auto make_function( T &&t ) -> std::function<decltype( ReturnType( t( std::declval<Args>( )... ) ) )( Args... )> {
+	auto make_function( T &&t ) -> std::function<
+	  decltype( ReturnType( t( std::declval<Args>( )... ) ) )( Args... )> {
 		return {std::forward<T>( t )};
 	}
 
 	// handles explicit overloads
 	template<typename ReturnType, typename... Args>
-	std::function<ReturnType( Args... )> make_function( ReturnType ( *p )( Args... ) ) {
-		return {p};
-	}
-
-	// handles explicit overloads
-	template<typename ReturnType, typename... Args, typename ClassType>
-	std::function<ReturnType( Args... )> make_function( ReturnType ( ClassType::*p )( Args... ) ) {
-		return {p};
-	}
-
-	//*****************
-	// Strip const/volatile/reference from types
-	template<typename ReturnType, typename... Args, class T>
-	auto make_root_function( T &&t ) -> std::function<decltype(
-	  daw::traits::root_type_t<ReturnType>( t( std::declval<daw::traits::root_type_t<Args>>( )... ) ) )( Args... )> {
-		return {std::forward<T>( t )};
-	}
-
-	// handles explicit overloads
-	template<typename ReturnType, typename... Args>
-	std::function<daw::traits::root_type_t<ReturnType>( daw::traits::root_type_t<Args>... )>
+	std::function<ReturnType( Args... )>
 	make_function( ReturnType ( *p )( Args... ) ) {
 		return {p};
 	}
 
 	// handles explicit overloads
 	template<typename ReturnType, typename... Args, typename ClassType>
-	std::function<daw::traits::root_type_t<ReturnType>( daw::traits::root_type_t<Args>... )>
+	std::function<ReturnType( Args... )>
+	make_function( ReturnType ( ClassType::*p )( Args... ) ) {
+		return {p};
+	}
+
+	//*****************
+	// Strip const/volatile/reference from types
+	template<typename ReturnType, typename... Args, class T>
+	auto make_root_function( T &&t )
+	  -> std::function<decltype( daw::traits::root_type_t<ReturnType>(
+	    t( std::declval<daw::traits::root_type_t<Args>>( )... ) ) )( Args... )> {
+		return {std::forward<T>( t )};
+	}
+
+	// handles explicit overloads
+	template<typename ReturnType, typename... Args>
+	std::function<
+	  daw::traits::root_type_t<ReturnType>( daw::traits::root_type_t<Args>... )>
+	make_function( ReturnType ( *p )( Args... ) ) {
+		return {p};
+	}
+
+	// handles explicit overloads
+	template<typename ReturnType, typename... Args, typename ClassType>
+	std::function<
+	  daw::traits::root_type_t<ReturnType>( daw::traits::root_type_t<Args>... )>
 	make_function( ReturnType ( ClassType::*p )( Args... ) ) {
 		return {p};
 	}
@@ -255,7 +268,8 @@ namespace daw {
 
 	// handles explicit overloads
 	template<typename ReturnType, typename... Args, typename ClassType>
-	std::function<ReturnType( Args... )> make_std_function( ReturnType ( ClassType::*p )( Args... ) ) {
+	std::function<ReturnType( Args... )>
+	make_std_function( ReturnType ( ClassType::*p )( Args... ) ) {
 		return {p};
 	}
 
@@ -265,14 +279,18 @@ namespace daw {
 	}
 
 	template<typename T>
-	std::vector<T> copy_vector( std::vector<T> const &container, size_t num_items ) {
-		daw::exception::daw_throw_on_false( num_items <= container.size( ),
-		                                    "Cannot copy more items than are in container" );
+	std::vector<T> copy_vector( std::vector<T> const &container,
+	                            size_t num_items ) {
+		daw::exception::daw_throw_on_false(
+		  num_items <= container.size( ),
+		  "Cannot copy more items than are in container" );
 		std::vector<T> result;
 		result.reserve( num_items );
 
-		std::copy( std::begin( container ), std::next( std::begin( container ), static_cast<intmax_t>( num_items ) ),
-		           std::back_inserter( result ) );
+		std::copy(
+		  std::begin( container ),
+		  std::next( std::begin( container ), static_cast<intmax_t>( num_items ) ),
+		  std::back_inserter( result ) );
 
 		return result;
 	}
@@ -282,7 +300,8 @@ namespace daw {
 	}
 
 	template<typename Iterator1, typename Iterator2, typename Pred>
-	std::vector<Iterator1> find_all_where( Iterator1 first, Iterator2 const last, Pred predicate ) {
+	std::vector<Iterator1> find_all_where( Iterator1 first, Iterator2 const last,
+	                                       Pred predicate ) {
 		std::vector<Iterator1> results{};
 		std::copy_if( first, last, std::back_inserter( results ), predicate );
 		return results;
@@ -290,7 +309,8 @@ namespace daw {
 
 	template<typename T, typename Pred>
 	decltype( auto ) find_all_where( T const &values, Pred predicate ) {
-		return find_all_where( std::cbegin( values ), std::cend( values ), predicate );
+		return find_all_where( std::cbegin( values ), std::cend( values ),
+		                       predicate );
 	}
 
 	constexpr char AsciiUpper( char chr ) noexcept {
@@ -308,22 +328,28 @@ namespace daw {
 	}
 
 	template<typename CharType, typename Traits, typename Allocator>
-	constexpr auto AsciiUpper( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
-		daw::algorithm::map( str.cbegin( ), str.cend( ),
-		                     str.begin( ), []( CharType c ) noexcept { return AsciiUpper( c ); } );
+	constexpr auto
+	AsciiUpper( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
+		daw::algorithm::map(
+		  str.cbegin( ), str.cend( ),
+		  str.begin( ), []( CharType c ) noexcept { return AsciiUpper( c ); } );
 		return std::move( str );
 	}
 
 	template<typename CharType, typename Traits, typename Allocator>
-	constexpr auto AsciiLower( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
-		daw::algorithm::map( str.cbegin( ), str.cend( ),
-		                     str.begin( ), []( CharType c ) noexcept { return AsciiLower( c ); } );
+	constexpr auto
+	AsciiLower( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
+		daw::algorithm::map(
+		  str.cbegin( ), str.cend( ),
+		  str.begin( ), []( CharType c ) noexcept { return AsciiLower( c ); } );
 		return std::move( str );
 	}
 
 	template<typename Iterator>
-	constexpr bool equal_nc( Iterator first, Iterator last, daw::string_view upper_value ) noexcept {
-		if( static_cast<size_t>( std::distance( first, last ) ) != upper_value.size( ) ) {
+	constexpr bool equal_nc( Iterator first, Iterator last,
+	                         daw::string_view upper_value ) noexcept {
+		if( static_cast<size_t>( std::distance( first, last ) ) !=
+		    upper_value.size( ) ) {
 			return false;
 		}
 		for( auto c : upper_value ) {
@@ -404,33 +430,41 @@ namespace daw {
 			return m_ptr;
 		}
 
-		friend constexpr bool operator==( not_null const &lhs, not_null const &rhs ) noexcept {
+		friend constexpr bool operator==( not_null const &lhs,
+		                                  not_null const &rhs ) noexcept {
 			return lhs.m_ptr == rhs.m_ptr;
 		}
 
-		friend constexpr bool operator!=( not_null const &lhs, not_null const &rhs ) noexcept {
+		friend constexpr bool operator!=( not_null const &lhs,
+		                                  not_null const &rhs ) noexcept {
 			return lhs.m_ptr != rhs.m_ptr;
 		}
 	}; // not_null
 
 	template<typename Arg, typename... Args>
 	auto make_initializer_list( Arg &&arg, Args &&... args ) {
-		return std::initializer_list<Arg>{std::forward<Arg>( arg ), std::forward<Args>( args )...};
+		return std::initializer_list<Arg>{std::forward<Arg>( arg ),
+		                                  std::forward<Args>( args )...};
 	}
 
 	template<typename Container, typename... Args>
 	decltype( auto ) append( Container &container, Args &&... args ) {
-		return container.insert( container.end( ), {std::forward<Args>( args )...} );
+		return container.insert( container.end( ),
+		                         {std::forward<Args>( args )...} );
 	}
 
 	template<typename Container, typename Item>
-	constexpr bool contains( Container const &container, Item const &item ) noexcept {
-		return std::find( std::cbegin( container ), std::cend( container ), item ) != std::cend( container );
+	constexpr bool contains( Container const &container,
+	                         Item const &item ) noexcept {
+		return std::find( std::cbegin( container ), std::cend( container ),
+		                  item ) != std::cend( container );
 	}
 
 	template<typename Container, typename Item>
-	constexpr decltype( auto ) index_of( Container const &container, Item const &item ) noexcept {
-		auto const pos = std::find( std::begin( container ), std::end( container ), item );
+	constexpr decltype( auto ) index_of( Container const &container,
+	                                     Item const &item ) noexcept {
+		auto const pos =
+		  std::find( std::begin( container ), std::end( container ), item );
 		return std::distance( std::begin( container ), pos );
 	}
 
@@ -466,7 +500,8 @@ namespace daw {
 	template<typename IntegerDest, typename IntegerSource>
 	constexpr bool can_fit( IntegerSource const value ) noexcept {
 		static_assert( is_integral_v<IntegerDest>, "Must supply an integral type" );
-		static_assert( is_integral_v<IntegerSource>, "Must supply an integral type" );
+		static_assert( is_integral_v<IntegerSource>,
+		               "Must supply an integral type" );
 		if( value >= 0 ) {
 			return value <= std::numeric_limits<IntegerDest>::max( );
 		} else if( std::numeric_limits<IntegerDest>::is_signed ) {
@@ -481,7 +516,9 @@ namespace daw {
 	}
 
 	template<typename Iterator1, typename Iterator2, typename OutputIterator>
-	constexpr OutputIterator cxpr_copy( Iterator1 first_in, Iterator2 const last_in, OutputIterator first_out ) {
+	constexpr OutputIterator cxpr_copy( Iterator1 first_in,
+	                                    Iterator2 const last_in,
+	                                    OutputIterator first_out ) {
 		while( first_in != last_in ) {
 			*first_out++ = *first_in++;
 		}
@@ -489,7 +526,9 @@ namespace daw {
 	}
 
 	template<typename Iterator1, typename Iterator2, typename OutputIterator>
-	constexpr OutputIterator cxpr_move( Iterator1 first_in, Iterator2 const last_in, OutputIterator first_out ) {
+	constexpr OutputIterator cxpr_move( Iterator1 first_in,
+	                                    Iterator2 const last_in,
+	                                    OutputIterator first_out ) {
 		while( first_in != last_in ) {
 			*first_out++ = std::move( *first_in++ );
 		}
@@ -531,7 +570,8 @@ namespace daw {
 		return it_out;
 	}
 
-	template<typename T, typename OutputIterator, std::enable_if_t<daw::is_integral_v<T>, std::nullptr_t> = nullptr>
+	template<typename T, typename OutputIterator,
+	         std::enable_if_t<daw::is_integral_v<T>, std::nullptr_t> = nullptr>
 	constexpr OutputIterator hex( T const &val, OutputIterator it_out ) noexcept {
 		for( size_t n = sizeof( T ); n > 0; --n ) {
 			it_out = hex( static_cast<char>( val >> ( 8 * ( n - 1 ) ) ), it_out );
@@ -539,7 +579,8 @@ namespace daw {
 		return it_out;
 	}
 
-	template<typename T, typename OutputIterator, std::enable_if_t<!daw::is_integral_v<T>, std::nullptr_t> = nullptr>
+	template<typename T, typename OutputIterator,
+	         std::enable_if_t<!daw::is_integral_v<T>, std::nullptr_t> = nullptr>
 	OutputIterator hex( T const &val, OutputIterator it_out ) noexcept {
 		auto chr_ptr = reinterpret_cast<char const *>( &val );
 		for( size_t n = 0; n < sizeof( T ); ++n ) {
@@ -548,10 +589,13 @@ namespace daw {
 		return it_out;
 	}
 
-	template<typename ForwardIterator1, typename ForwardIterator2, typename OutputIterator,
-	         std::enable_if_t<daw::is_integral_v<typename std::iterator_traits<ForwardIterator1>::value_type>,
+	template<typename ForwardIterator1, typename ForwardIterator2,
+	         typename OutputIterator,
+	         std::enable_if_t<daw::is_integral_v<typename std::iterator_traits<
+	                            ForwardIterator1>::value_type>,
 	                          std::nullptr_t> = nullptr>
-	constexpr OutputIterator hex( ForwardIterator1 first_in, ForwardIterator2 const last_in,
+	constexpr OutputIterator hex( ForwardIterator1 first_in,
+	                              ForwardIterator2 const last_in,
 	                              OutputIterator first_out ) noexcept {
 		for( ; first_in != last_in; ++first_in ) {
 			auto const val = *first_in;
@@ -561,7 +605,8 @@ namespace daw {
 	}
 
 	template<typename OutputIterator>
-	constexpr OutputIterator hex( char const *str, size_t len, OutputIterator first_out ) noexcept {
+	constexpr OutputIterator hex( char const *str, size_t len,
+	                              OutputIterator first_out ) noexcept {
 		for( size_t n = 0; n < len; ++n ) {
 			first_out = hex( str[n], first_out );
 		}
@@ -569,14 +614,18 @@ namespace daw {
 	}
 
 	template<size_t N, typename OutputIterator>
-	constexpr OutputIterator hex( char const ( &str )[N], OutputIterator first_out ) noexcept {
+	constexpr OutputIterator hex( char const ( &str )[N],
+	                              OutputIterator first_out ) noexcept {
 		return hex( str, N - 1, first_out );
 	}
 
-	template<typename ForwardIterator1, typename ForwardIterator2, typename OutputIterator,
-	         std::enable_if_t<!daw::is_integral_v<typename std::iterator_traits<ForwardIterator1>::value_type>,
+	template<typename ForwardIterator1, typename ForwardIterator2,
+	         typename OutputIterator,
+	         std::enable_if_t<!daw::is_integral_v<typename std::iterator_traits<
+	                            ForwardIterator1>::value_type>,
 	                          std::nullptr_t> = nullptr>
-	OutputIterator hex( ForwardIterator1 first_in, ForwardIterator2 const last_in, OutputIterator first_out ) noexcept {
+	OutputIterator hex( ForwardIterator1 first_in, ForwardIterator2 const last_in,
+	                    OutputIterator first_out ) noexcept {
 		for( ; first_in != last_in; ++first_in ) {
 			first_out = hex( *first_out, first_out );
 		}
@@ -587,7 +636,8 @@ namespace daw {
 	constexpr auto make_range( Iterator first, Iterator last ) noexcept {
 		struct range_t {
 			using iterator = Iterator;
-			using difference_type = typename std::iterator_traits<iterator>::difference_type;
+			using difference_type =
+			  typename std::iterator_traits<iterator>::difference_type;
 
 			iterator m_first;
 			iterator m_last;
@@ -635,10 +685,13 @@ namespace daw {
 
 	template<typename T, typename U, typename... Ts>
 	struct pack_index_of<T, U, Ts...>
-	  : std::integral_constant<size_t, ( daw::is_same_v<T, U> ? 0 : 1 + pack_index_of<T, Ts...>::value )> {};
+	  : std::integral_constant<
+	      size_t,
+	      ( daw::is_same_v<T, U> ? 0 : 1 + pack_index_of<T, Ts...>::value )> {};
 
 	template<size_t N, typename... Ts>
-	using pack_type_at = decltype( std::get<N>( std::declval<std::tuple<Ts...>>( ) ) );
+	using pack_type_at =
+	  decltype( std::get<N>( std::declval<std::tuple<Ts...>>( ) ) );
 
 	template<typename T, typename... Ts>
 	constexpr size_t pack_index_of_v = pack_index_of<T, Ts...>::value;
@@ -650,6 +703,42 @@ namespace daw {
 		return std::string{std::istreambuf_iterator<CharT>{in_file}, {}};
 	}
 
+	namespace impl {
+		template<typename... Functions>
+		struct overload_t;
+
+		template<typename Function>
+		struct overload_t<Function> {
+		private:
+			Function m_func;
+
+		public:
+			overload_t( Function &&func )
+			  : m_func{std::forward<Function>( func )} {}
+
+			template<typename... Args>
+			auto operator( )( Args &&... args ) const -> decltype(
+			  std::declval<Function>( )( std::forward<Args>( args )... ) ) {
+				return m_func( std::forward<Args>( args )... );
+			}
+		};
+
+		template<typename Function, typename... Functions>
+		struct overload_t<Function, Functions...> : overload_t<Function>,
+		                                            overload_t<Functions...> {
+			using overload_t<Function>::operator( );
+			using overload_t<Functions...>::operator( );
+
+			overload_t( Function &&func, Functions &&... funcs )
+			  : overload_t<Function>( std::forward<Function>( func ) )
+			  , overload_t<Functions...>( std::forward<Functions>( funcs )... ) {}
+		};
+	} // namespace impl
+
+	template<typename... Functions>
+	auto make_overload( Functions &&... funcs ) {
+		return impl::overload_t<Functions...>{std::forward<Functions>( funcs )...};
+	}
 } // namespace daw
 
 template<typename... Ts>

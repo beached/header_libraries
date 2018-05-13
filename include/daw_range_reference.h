@@ -3,14 +3,14 @@
 // Copyright (c) 2014-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -40,8 +40,10 @@ namespace daw {
 		template<typename Iterator>
 		class ReferenceRange {
 			using is_range_reference = std::true_type;
-			using referenced_value_type = ::std::remove_cv_t<typename ::std::iterator_traits<Iterator>::value_type>;
-			using values_type = ::std::vector<::daw::Reference<referenced_value_type>>;
+			using referenced_value_type = ::std::remove_cv_t<
+			  typename ::std::iterator_traits<Iterator>::value_type>;
+			using values_type =
+			  ::std::vector<::daw::Reference<referenced_value_type>>;
 			values_type mutable m_values;
 
 		public:
@@ -50,7 +52,8 @@ namespace daw {
 			using const_reference = const reference;
 			using iterator = Iterator;
 			using const_iterator = const iterator;
-			using difference_type = typename ::std::iterator_traits<decltype( m_values.begin( ) )>::difference_type;
+			using difference_type = typename ::std::iterator_traits<decltype(
+			  m_values.begin( ) )>::difference_type;
 
 			ReferenceRange( ) = default;
 			ReferenceRange( ReferenceRange const & ) = default;
@@ -155,7 +158,9 @@ namespace daw {
 
 			template<typename UnaryPredicate>
 			ReferenceRange &sort( UnaryPredicate predicate ) {
-				::std::sort( begin( ), end( ), [&predicate]( auto const &v ) { return predicate( v.get( ) ); } );
+				::std::sort( begin( ), end( ), [&predicate]( auto const &v ) {
+					return predicate( v.get( ) );
+				} );
 				return *this;
 			}
 
@@ -175,7 +180,9 @@ namespace daw {
 
 			template<typename UnaryPredicate>
 			ReferenceRange &stable_sort( UnaryPredicate predicate ) {
-				::std::stable_sort( begin( ), end( ), [&predicate]( auto const &v ) { return predicate( v.get( ) ); } );
+				::std::stable_sort( begin( ), end( ), [&predicate]( auto const &v ) {
+					return predicate( v.get( ) );
+				} );
 				return *this;
 			}
 
@@ -195,7 +202,10 @@ namespace daw {
 
 			template<typename UnaryPredicate>
 			ReferenceRange &unique( UnaryPredicate predicate ) {
-				erase(::std::unique( begin( ), end( ), [&predicate]( auto const &v ) { return predicate( v.get( ) ); } ),
+				erase(::std::unique( begin( ), end( ),
+				                     [&predicate]( auto const &v ) {
+					                     return predicate( v.get( ) );
+				                     } ),
 				      end( ) );
 				return *this;
 			}
@@ -207,7 +217,9 @@ namespace daw {
 
 			template<typename UnaryPredicate>
 			ReferenceRange &partition( UnaryPredicate predicate ) {
-				::std::partition( begin( ), end( ), [&predicate]( auto const &v ) { return predicate( v.get( ) ); } );
+				::std::partition( begin( ), end( ), [&predicate]( auto const &v ) {
+					return predicate( v.get( ) );
+				} );
 				return *this;
 			}
 
@@ -229,8 +241,9 @@ namespace daw {
 
 			template<typename UnaryPredicate>
 			ReferenceRange &stable_partition( UnaryPredicate predicate ) {
-				::std::stable_partition( m_values.begin( ), m_values.end( ),
-				                         [&predicate]( auto const &v ) { return predicate( v.get( ) ); } );
+				::std::stable_partition(
+				  m_values.begin( ), m_values.end( ),
+				  [&predicate]( auto const &v ) { return predicate( v.get( ) ); } );
 				return *this;
 			}
 
@@ -241,8 +254,9 @@ namespace daw {
 
 			template<typename UnaryPredicate>
 			auto stable_partition_it( UnaryPredicate predicate ) {
-				auto mid =
-				  ::std::stable_partition( begin( ), end( ), [&predicate]( auto const &v ) { return predicate( v.get( ) ); } );
+				auto mid = ::std::stable_partition(
+				  begin( ), end( ),
+				  [&predicate]( auto const &v ) { return predicate( v.get( ) ); } );
 				return ::std::make_pair( mid, *this );
 			}
 
@@ -259,15 +273,18 @@ namespace daw {
 			template<typename T, typename BinaryOperator>
 			auto accumulate( T &&init, BinaryOperator oper ) const {
 				return ::std::accumulate( begin( ), end( ), ::std::forward<T>( init ),
-				                          [&oper]( auto const &a, auto const &b ) { return oper( a.get( ), b.get( ) ); } );
+				                          [&oper]( auto const &a, auto const &b ) {
+					                          return oper( a.get( ), b.get( ) );
+				                          } );
 			}
 
 			template<typename UnaryOperator>
 			auto transform( UnaryOperator oper ) const {
 				using v_t = decltype( oper( *begin( ) ) );
 				auto result = ::daw::range::make_range_collection<v_t>( );
-				::std::transform( begin( ), end( ), ::std::back_inserter( result ),
-				                  [&oper]( auto const &v ) { return oper( v.get( ) ); } );
+				::std::transform(
+				  begin( ), end( ), ::std::back_inserter( result ),
+				  [&oper]( auto const &v ) { return oper( v.get( ) ); } );
 				return result;
 			}
 
@@ -278,14 +295,18 @@ namespace daw {
 
 			template<typename Value, typename UnaryPredicate>
 			bool contains( Value const &value, UnaryPredicate predicate ) const {
-				auto pred2 = [&value, &predicate]( Value const &val ) { return predicate( value, val ); };
+				auto pred2 = [&value, &predicate]( Value const &val ) {
+					return predicate( value, val );
+				};
 				return ::std::find_if( begin( ), end( ), pred2 ) != end( );
 			}
 
 			template<typename UnaryPredicate>
 			ReferenceRange &erase( UnaryPredicate predicate ) {
 				m_values.erase(::std::remove_if( m_values.begin( ), m_values.end( ),
-				                                 [&predicate]( auto const &v ) { return predicate( v.get( ) ); } ),
+				                                 [&predicate]( auto const &v ) {
+					                                 return predicate( v.get( ) );
+				                                 } ),
 				               m_values.end( ) );
 				return *this;
 			}
@@ -297,32 +318,42 @@ namespace daw {
 
 			template<typename Value>
 			ReferenceRange erase_where_equal_to( Value const &value ) const {
-				return erase( [&value]( auto const &current_value ) { return value == current_value; } );
+				return erase( [&value]( auto const &current_value ) {
+					return value == current_value;
+				} );
 			}
 
 			template<typename Value>
 			ReferenceRange &erase_where_equal_to( Value const &value ) {
-				return erase( [&value]( auto const &current_value ) { return value == current_value; } );
+				return erase( [&value]( auto const &current_value ) {
+					return value == current_value;
+				} );
 			}
 
 			template<typename UnaryPredicate>
 			ReferenceRange where( UnaryPredicate predicate ) const {
-				return erase( [predicate]( auto const &v ) { return !predicate( v ); } );
+				return erase(
+				  [predicate]( auto const &v ) { return !predicate( v ); } );
 			}
 
 			template<typename UnaryPredicate>
 			ReferenceRange &where( UnaryPredicate predicate ) {
-				return erase( [predicate]( auto const &v ) { return !predicate( v ); } );
+				return erase(
+				  [predicate]( auto const &v ) { return !predicate( v ); } );
 			}
 
 			template<typename Value>
 			ReferenceRange where_equal_to( Value const &value ) const {
-				return where( [&value]( auto const &current_value ) { return value == current_value; } );
+				return where( [&value]( auto const &current_value ) {
+					return value == current_value;
+				} );
 			}
 
 			template<typename Value>
 			ReferenceRange &where_equal_to( Value const &value ) {
-				return where( [&value]( auto const &current_value ) { return value == current_value; } );
+				return where( [&value]( auto const &current_value ) {
+					return value == current_value;
+				} );
 			}
 
 			template<typename Container>
@@ -364,21 +395,25 @@ namespace daw {
 
 			template<typename UniformRandomNumberGenerator>
 			ReferenceRange &shuffle( UniformRandomNumberGenerator &&urng ) {
-				::std::shuffle( begin( ), end( ), std::forward<UniformRandomNumberGenerator>( urng ) );
+				::std::shuffle( begin( ), end( ),
+				                std::forward<UniformRandomNumberGenerator>( urng ) );
 				return *this;
 			}
 
 			template<typename UniformRandomNumberGenerator>
 			ReferenceRange shuffle( UniformRandomNumberGenerator &&urng ) const {
-				return copy( ).shuffle( std::forward<UniformRandomNumberGenerator>( urng ) );
+				return copy( ).shuffle(
+				  std::forward<UniformRandomNumberGenerator>( urng ) );
 			}
 		}; // class ReferenceRange
 
 		namespace impl {
 			template<typename Container, typename = void>
 			auto make_range_reference( Container &container ) {
-				using iterator = ::std::remove_const_t<decltype(::std::begin( container ) )>;
-				return ReferenceRange<iterator>(::std::begin( container ), ::std::end( container ) );
+				using iterator =
+				  ::std::remove_const_t<decltype(::std::begin( container ) )>;
+				return ReferenceRange<iterator>(::std::begin( container ),
+				                                ::std::end( container ) );
 			}
 
 			template<typename IteratorF, typename IteratorL>
@@ -388,14 +423,16 @@ namespace daw {
 			}
 
 			template<typename Iterator>
-			auto make_range_reference(::daw::range::ReferenceRange<Iterator> const &container ) {
+			auto make_range_reference(
+			  ::daw::range::ReferenceRange<Iterator> const &container ) {
 				using iterator = typename ::std::remove_const_t<Iterator>;
 				return ReferenceRange<iterator>( container.begin( ), container.end( ) );
 			}
 		} // namespace impl
 		template<typename Arg, typename... Args>
 		auto make_range_reference( Arg &&arg, Args &&... args ) {
-			return ::daw::range::impl::make_range_reference(::std::forward<Arg>( arg ), ::std::forward<Args>( args )... );
+			return ::daw::range::impl::make_range_reference(
+			  ::std::forward<Arg>( arg ), ::std::forward<Args>( args )... );
 		}
 
 		namespace details {
@@ -403,11 +440,13 @@ namespace daw {
 			std::false_type is_range_reference_impl( T const &, long );
 
 			template<typename T>
-			auto is_range_reference_impl( T const &value, int ) -> typename T::is_range_reference;
+			auto is_range_reference_impl( T const &value, int ) ->
+			  typename T::is_range_reference;
 		} // namespace details
 
 		template<typename T>
-		struct is_range_reference : decltype( details::is_range_reference_impl( std::declval<T const &>( ), 1 ) ) {};
+		struct is_range_reference : decltype( details::is_range_reference_impl(
+		                              std::declval<T const &>( ), 1 ) ) {};
 
 		template<typename T>
 		using is_range_reference_t = typename is_range_reference<T>::type;
@@ -418,7 +457,8 @@ namespace daw {
 } // namespace daw
 
 template<typename Iterator>
-::std::ostream &operator<<(::std::ostream &os, ::daw::range::ReferenceRange<Iterator> const &rng ) {
+::std::ostream &operator<<(::std::ostream &os,
+                           ::daw::range::ReferenceRange<Iterator> const &rng ) {
 	os << "{";
 	if( !rng.empty( ) ) {
 		for( auto it = rng.cbegin( ); it != rng.cend( ); ++it ) {

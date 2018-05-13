@@ -3,14 +3,14 @@
 // Copyright (c) 2014-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -62,12 +62,14 @@ namespace daw {
 	namespace tostrings {
 		template<typename CharT = char, typename Traits = ::std::char_traits<CharT>,
 		         typename Allocator = ::std::allocator<CharT>>
-		std::basic_string<CharT, Traits, Allocator> to_string(::std::basic_string<CharT, Traits, Allocator> s ) {
+		std::basic_string<CharT, Traits, Allocator>
+		to_string(::std::basic_string<CharT, Traits, Allocator> s ) {
 			return std::move( s );
 		}
 
 		std::string to_string( ... ) {
-			daw::exception::daw_throw( "Attemp to call to string on unsupported type, overload to enable" );
+			daw::exception::daw_throw(
+			  "Attemp to call to string on unsupported type, overload to enable" );
 		}
 
 		template<typename T>
@@ -91,7 +93,8 @@ namespace daw {
 
 	template<typename... Types>
 	class generate_to_strings_t {
-		template<typename T, std::enable_if_t<has_to_string_v<T>, std::nullptr_t> = nullptr>
+		template<typename T,
+		         std::enable_if_t<has_to_string_v<T>, std::nullptr_t> = nullptr>
 		struct to_string_t {
 			static_assert( has_to_string_v<T>, "to_string must be defined for type" );
 
@@ -110,20 +113,27 @@ namespace daw {
 
 	template<typename... Types>
 	class generate_compare_t {
-		template<typename T, std::enable_if_t<!daw::traits::is_vector_like_not_string_v<T>>>
+		template<typename T,
+		         std::enable_if_t<!daw::traits::is_vector_like_not_string_v<T>>>
 		static bool op_eq( T const &lhs, T const &rhs ) {
 			return lhs == rhs;
 		}
 
-		template<typename T, std::enable_if_t<daw::traits::is_vector_like_not_string_v<T>>>
-		static auto op_eq( std::vector<T> const &lhs, std::vector<T> const &rhs ) -> decltype( lhs[0] == rhs[0], bool( ) ) {
+		template<typename T,
+		         std::enable_if_t<daw::traits::is_vector_like_not_string_v<T>>>
+		static auto op_eq( std::vector<T> const &lhs, std::vector<T> const &rhs )
+		  -> decltype( lhs[0] == rhs[0], bool( ) ) {
 			return std::equal( lhs.begin( ), lhs.end( ), rhs.begin( ), rhs.end( ) );
 		}
 
-		template<typename T, typename = std::enable_if_t<daw::traits::operators::has_op_eq_v<T> &&
-		                                                 daw::traits::operators::has_op_lt_v<T>>>
-		static constexpr auto op_compare( variant_t<Types...> const &lhs, variant_t<Types...> const &rhs )
-		  -> decltype( std::declval<T>( ) == std::declval<T>( ) && std::declval<T>( ) < std::declval<T>( ), int( ) ) {
+		template<typename T, typename = std::enable_if_t<
+		                       daw::traits::operators::has_op_eq_v<T> &&
+		                       daw::traits::operators::has_op_lt_v<T>>>
+		static constexpr auto op_compare( variant_t<Types...> const &lhs,
+		                                  variant_t<Types...> const &rhs )
+		  -> decltype( std::declval<T>( ) == std::declval<T>( ) &&
+		                 std::declval<T>( ) < std::declval<T>( ),
+		               int( ) ) {
 			auto const &a = lhs.template get<T>( );
 			auto const &b = rhs.template get<T>( );
 			if( a == b ) {
@@ -134,16 +144,19 @@ namespace daw {
 			return 1;
 		}
 
-		template<typename T, typename = std::enable_if_t<daw::traits::has_to_string_v<variant_t<Types...>> &&
-		                                                 !( daw::traits::operators::has_op_eq_v<T> &&
-		                                                    daw::traits::operators::has_op_lt_v<T> )>>
-		static int op_compare( variant_t<Types...> const &lhs, variant_t<Types...> const &rhs ) {
+		template<typename T, typename = std::enable_if_t<
+		                       daw::traits::has_to_string_v<variant_t<Types...>> &&
+		                       !( daw::traits::operators::has_op_eq_v<T> &&
+		                          daw::traits::operators::has_op_lt_v<T> )>>
+		static int op_compare( variant_t<Types...> const &lhs,
+		                       variant_t<Types...> const &rhs ) {
 			return lhs.to_string( ).compare( rhs.to_string( ) );
 		}
 
 		template<typename T>
 		struct compare_t final {
-			int operator( )( variant_t<Types...> const &lhs, variant_t<Types...> const &rhs ) {
+			int operator( )( variant_t<Types...> const &lhs,
+			                 variant_t<Types...> const &rhs ) {
 				if( lhs.type_index( ) == rhs.type_index( ) ) {
 					return op_compare<T>( lhs, rhs );
 				}
@@ -175,8 +188,10 @@ namespace daw {
 
 	template<typename... Types>
 	struct variant_helper_funcs_t {
-		using to_string_t = std::function<std::string( variant_t<Types...> const & )>;
-		using compare_t = std::function<int( variant_t<Types...> const &, variant_t<Types...> const & )>;
+		using to_string_t =
+		  std::function<std::string( variant_t<Types...> const & )>;
+		using compare_t = std::function<int( variant_t<Types...> const &,
+		                                     variant_t<Types...> const & )>;
 		using destruct_t = std::function<void( variant_t<Types...> & )>;
 
 		to_string_t to_string;
@@ -203,9 +218,10 @@ namespace daw {
 
 		template<typename T>
 		auto generate( ) const {
-			return variant_helper_funcs_t<Types...>{generate_to_strings.template generate<T>( ),
-			                                        generate_compares.template generate<T>( ),
-			                                        generate_destructs.template generate<T>( )};
+			return variant_helper_funcs_t<Types...>{
+			  generate_to_strings.template generate<T>( ),
+			  generate_compares.template generate<T>( ),
+			  generate_destructs.template generate<T>( )};
 		}
 	}; // generate_variant_helper_funcs_t
 
@@ -213,11 +229,14 @@ namespace daw {
 	auto get_variant_helpers( ) {
 		static_assert( sizeof...( Types ) != 0, "Must supply at least one type" );
 
-		std::unordered_map<std::type_index, variant_helper_funcs_t<Types...>> results;
+		std::unordered_map<std::type_index, variant_helper_funcs_t<Types...>>
+		  results;
 		generate_variant_helper_funcs_t<Types...> generate_variant_helper_funcs;
 
-		auto list = {(
-		  (void)( results[get_type_index<Types>( )] = generate_variant_helper_funcs.template generate<Types>( ) ), 0 )...};
+		auto list = {
+		  ( (void)( results[get_type_index<Types>( )] =
+		              generate_variant_helper_funcs.template generate<Types>( ) ),
+		    0 )...};
 
 		Unused( list );
 
@@ -268,11 +287,13 @@ namespace daw {
 			}
 		};
 
-		bool operator==( stored_type_t const &lhs, stored_type_t const &rhs ) noexcept {
+		bool operator==( stored_type_t const &lhs,
+		                 stored_type_t const &rhs ) noexcept {
 			return *lhs == *rhs;
 		}
 
-		bool operator!=( stored_type_t const &lhs, stored_type_t const &rhs ) noexcept {
+		bool operator!=( stored_type_t const &lhs,
+		                 stored_type_t const &rhs ) noexcept {
 			return *lhs != *rhs;
 		}
 
@@ -283,7 +304,8 @@ namespace daw {
 		static_assert( sizeof...( Types ) != 0, "Empty variant is not supported" );
 
 		template<typename T>
-		static constexpr bool is_valid_type = daw::traits::is_one_of_v<std::remove_cv_t<T>, std::remove_cv_t<Types>...>;
+		static constexpr bool is_valid_type =
+		  daw::traits::is_one_of_v<std::remove_cv_t<T>, std::remove_cv_t<Types>...>;
 
 	private:
 	public:
@@ -296,9 +318,11 @@ namespace daw {
 			m_stored_type.reset( );
 		}
 
-		static constexpr size_t const s_buffer_size = daw::traits::max_sizeof_v<Types...>;
+		static constexpr size_t const s_buffer_size =
+		  daw::traits::max_sizeof_v<Types...>;
 		impl::stored_type_t m_stored_type;
-		alignas( daw::traits::max_sizeof_t<Types...> ) daw::static_array_t<uint8_t, s_buffer_size> m_buffer;
+		alignas( daw::traits::max_sizeof_t<Types...> )
+		  daw::static_array_t<uint8_t, s_buffer_size> m_buffer;
 
 		static auto get_helper_funcs( std::type_index idx ) {
 			static auto func_map = get_variant_helpers<Types...>( );
@@ -308,25 +332,33 @@ namespace daw {
 		template<typename T>
 		decltype( auto ) ptr( ) {
 			using value_type = std::remove_cv_t<T>;
-			daw::exception::daw_throw_on_true<bad_variant_t_access>( empty( ), "Attempt to access an empty value" );
-			daw::exception::daw_throw_on_false<bad_variant_t_access>( is_same_type<value_type>( ),
-			                                                          "Attempt to access a value of another type" );
-			static_assert( sizeof( value_type ) <= s_buffer_size,
-			               "This should never happen.  sizeof(T) does not fit into m_buffer" );
-			return reinterpret_cast<value_type *>( static_cast<void *>( m_buffer.data( ) ) );
+			daw::exception::daw_throw_on_true<bad_variant_t_access>(
+			  empty( ), "Attempt to access an empty value" );
+			daw::exception::daw_throw_on_false<bad_variant_t_access>(
+			  is_same_type<value_type>( ),
+			  "Attempt to access a value of another type" );
+			static_assert(
+			  sizeof( value_type ) <= s_buffer_size,
+			  "This should never happen.  sizeof(T) does not fit into m_buffer" );
+			return reinterpret_cast<value_type *>(
+			  static_cast<void *>( m_buffer.data( ) ) );
 		}
 
 		template<typename T>
 		decltype( auto ) ptr( ) const {
 			using value_type = std::remove_cv_t<T>;
-			daw::exception::daw_throw_on_true<bad_variant_t_access>( empty( ), "Attempt to access an empty value" );
-			daw::exception::daw_throw_on_false<bad_variant_t_access>( is_same_type<value_type>( ),
-			                                                          "Attempt to access a value of another type" );
+			daw::exception::daw_throw_on_true<bad_variant_t_access>(
+			  empty( ), "Attempt to access an empty value" );
+			daw::exception::daw_throw_on_false<bad_variant_t_access>(
+			  is_same_type<value_type>( ),
+			  "Attempt to access a value of another type" );
 
-			static_assert( sizeof( value_type ) <= s_buffer_size,
-			               "This should never happen.  sizeof(T) does not fit into m_buffer" );
+			static_assert(
+			  sizeof( value_type ) <= s_buffer_size,
+			  "This should never happen.  sizeof(T) does not fit into m_buffer" );
 
-			return reinterpret_cast<value_type const *>( static_cast<void const *>( m_buffer.data( ) ) );
+			return reinterpret_cast<value_type const *>(
+			  static_cast<void const *>( m_buffer.data( ) ) );
 		}
 
 		void *raw_ptr( ) {
@@ -478,7 +510,8 @@ namespace daw {
 	}
 
 	template<typename... Args>
-	std::ostream &operator>>( std::ostream &os, variant_t<Args...> const &value ) {
+	std::ostream &operator>>( std::ostream &os,
+	                          variant_t<Args...> const &value ) {
 		using std::to_string;
 		os << to_string( value );
 		return os;

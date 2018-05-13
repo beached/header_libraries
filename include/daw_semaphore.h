@@ -3,14 +3,14 @@
 // Copyright (c) 2016-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -91,7 +91,8 @@ namespace daw {
 		template<typename Rep, typename Period>
 		auto wait_for( std::chrono::duration<Rep, Period> const &rel_time ) {
 			std::unique_lock<Mutex> lock{*m_mutex};
-			auto status = m_condition->wait_for( lock, rel_time, [&]( ) { return m_latched && m_count > 0; } );
+			auto status = m_condition->wait_for(
+			  lock, rel_time, [&]( ) { return m_latched && m_count > 0; } );
 			if( status ) {
 				--m_count;
 			}
@@ -99,9 +100,11 @@ namespace daw {
 		}
 
 		template<typename Clock, typename Duration>
-		auto wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) {
+		auto
+		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) {
 			std::unique_lock<Mutex> lock{*m_mutex};
-			auto status = m_condition->wait_until( lock, timeout_time, [&]( ) { return m_latched && m_count > 0; } );
+			auto status = m_condition->wait_until(
+			  lock, timeout_time, [&]( ) { return m_latched && m_count > 0; } );
 			if( status ) {
 				--m_count;
 			}
@@ -118,17 +121,22 @@ namespace daw {
 	public:
 		template<typename Int = intmax_t>
 		explicit basic_shared_semaphore( Int count = 0, bool latched = true )
-		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( count )} {}
+		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>(
+		      count )} {}
 
-		explicit basic_shared_semaphore( basic_semaphore<Mutex, ConditionVariable> &&sem )
-		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( std::move( sem ) )} {}
+		explicit basic_shared_semaphore(
+		  basic_semaphore<Mutex, ConditionVariable> &&sem )
+		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>(
+		      std::move( sem ) )} {}
 
 		~basic_shared_semaphore( ) = default;
 		basic_shared_semaphore( basic_shared_semaphore const & ) = default;
 
 		basic_shared_semaphore( basic_shared_semaphore && ) noexcept = default;
-		basic_shared_semaphore &operator=( basic_shared_semaphore const & ) = default;
-		basic_shared_semaphore &operator=( basic_shared_semaphore && ) noexcept = default;
+		basic_shared_semaphore &
+		operator=( basic_shared_semaphore const & ) = default;
+		basic_shared_semaphore &
+		operator=( basic_shared_semaphore && ) noexcept = default;
 
 		void notify( ) {
 			m_semaphore->notify( );
@@ -156,15 +164,19 @@ namespace daw {
 		}
 
 		template<typename Clock, typename Duration>
-		auto wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) {
+		auto
+		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) {
 			return m_semaphore->wait_until( timeout_time );
 		}
 	}; // basic_shared_semaphore
 
-	using shared_semaphore = basic_shared_semaphore<std::mutex, std::condition_variable>;
+	using shared_semaphore =
+	  basic_shared_semaphore<std::mutex, std::condition_variable>;
 
 	template<typename Mutex, typename ConditionVariable>
-	void wait_all( std::initializer_list<basic_semaphore<Mutex, ConditionVariable>> semaphores ) {
+	void
+	wait_all( std::initializer_list<basic_semaphore<Mutex, ConditionVariable>>
+	            semaphores ) {
 		for( auto &sem : semaphores ) {
 			sem->wait( );
 		}

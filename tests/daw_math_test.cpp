@@ -3,14 +3,14 @@
 // Copyright (c) 2014-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -32,20 +32,24 @@
 
 void show( std::string value ) {
 	const auto width = std::numeric_limits<double>::digits10;
-	std::cout << std::setiosflags( std::ios::fixed ) << std::setw( width + 2 ) << std::left << value << " ";
+	std::cout << std::setiosflags( std::ios::fixed ) << std::setw( width + 2 )
+	          << std::left << value << " ";
 }
 
 void show( double value ) {
 	const auto width = std::numeric_limits<double>::digits10;
 	std::cout << " ";
-	std::cout << std::setiosflags( std::ios::fixed ) << std::setprecision( width ) << std::right << value;
+	std::cout << std::setiosflags( std::ios::fixed ) << std::setprecision( width )
+	          << std::right << value;
 }
 
 BOOST_AUTO_TEST_CASE( daw_math_factorial ) {
 	std::cout << "factorial( 5 ) = " << daw::math::factorial( 5 ) << "\n";
-	BOOST_REQUIRE_MESSAGE( daw::math::factorial( 5 ) == 120, "1. factorial of 5 should be 120" );
+	BOOST_REQUIRE_MESSAGE( daw::math::factorial( 5 ) == 120,
+	                       "1. factorial of 5 should be 120" );
 	std::cout << "factorial( 0 ) = " << daw::math::factorial( 0 ) << "\n";
-	BOOST_REQUIRE_MESSAGE( daw::math::factorial( 0 ) == 1, "2. factorial of 0 should return 1" );
+	BOOST_REQUIRE_MESSAGE( daw::math::factorial( 0 ) == 1,
+	                       "2. factorial of 0 should return 1" );
 }
 
 BOOST_AUTO_TEST_CASE( daw_math_round_001 ) {
@@ -121,7 +125,8 @@ BOOST_AUTO_TEST_CASE( daw_math_max_001 ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_math_max_002 ) {
-	BOOST_REQUIRE_EQUAL( daw::max( 5, 3, std::numeric_limits<float>::infinity( ), 100, 3, 4, 0xFFFF, -100 ),
+	BOOST_REQUIRE_EQUAL( daw::max( 5, 3, std::numeric_limits<float>::infinity( ),
+	                               100, 3, 4, 0xFFFF, -100 ),
 	                     std::numeric_limits<float>::infinity( ) );
 }
 
@@ -130,5 +135,8 @@ BOOST_AUTO_TEST_CASE( daw_math_min_001 ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_math_min_002 ) {
-	BOOST_REQUIRE_EQUAL( daw::min( 5, 3, 100, std::numeric_limits<float>::infinity( ), 3, 4, -100, 0xFFFF ), -100 );
+	BOOST_REQUIRE_EQUAL( daw::min( 5, 3, 100,
+	                               std::numeric_limits<float>::infinity( ), 3, 4,
+	                               -100, 0xFFFF ),
+	                     -100 );
 }

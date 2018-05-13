@@ -3,14 +3,14 @@
 // Copyright (c) 2013-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -49,26 +49,31 @@ namespace daw {
 			using reference = value_type &;
 			using const_reference = value_type const &;
 
-			memory_mapped_file_t( boost::filesystem::path file_path, bool const readonly = true )
+			memory_mapped_file_t( boost::filesystem::path file_path,
+			                      bool const readonly = true )
 			  : m_file_path{file_path}
 			  , m_mf_params{file_path.string( )} {
 
 				m_mf_params.flags = boost::iostreams::mapped_file::mapmode::readwrite;
 				if( readonly ) {
-					// FIXME: seems to crash	m_mf_params.flags = boost::iostreams::mapped_file::mapmode::readonly;
+					// FIXME: seems to crash	m_mf_params.flags =
+					// boost::iostreams::mapped_file::mapmode::readonly;
 				}
 				m_mf_params.offset = 0;
 				try {
 					m_mf_file.open( m_mf_params );
 				} catch( std::exception const &ex ) {
-					std::cerr << "Error Opening memory mapped file '" << file_path.string( ) << "': " << ex.what( ) << '\n';
+					std::cerr << "Error Opening memory mapped file '"
+					          << file_path.string( ) << "': " << ex.what( ) << '\n';
 					throw ex;
 				}
 			}
 
 			template<typename charT, typename traits>
-			memory_mapped_file_t( daw::basic_string_view<charT, traits> filename, bool const readonly = true )
-			  : memory_mapped_file_t{boost::filesystem::path{filename.data( )}, readonly} {}
+			memory_mapped_file_t( daw::basic_string_view<charT, traits> filename,
+			                      bool const readonly = true )
+			  : memory_mapped_file_t{boost::filesystem::path{filename.data( )},
+			                         readonly} {}
 
 			memory_mapped_file_t( ) = delete;
 
@@ -87,7 +92,9 @@ namespace daw {
 			virtual ~memory_mapped_file_t( ) {
 				try {
 					close( );
-				} catch( ... ) { std::cerr << "Exception while closing memory mapped file\n"; }
+				} catch( ... ) {
+					std::cerr << "Exception while closing memory mapped file\n";
+				}
 			}
 
 			bool is_open( ) const {
@@ -107,16 +114,19 @@ namespace daw {
 			}
 
 			pointer data( size_t position = 0 ) {
-				return reinterpret_cast<pointer>( m_mf_file.data( ) +
-				                                  static_cast<boost::iostreams::stream_offset>( position ) );
+				return reinterpret_cast<pointer>(
+				  m_mf_file.data( ) +
+				  static_cast<boost::iostreams::stream_offset>( position ) );
 			}
 
 			const_pointer data( size_t position = 0 ) const {
-				return reinterpret_cast<const_pointer>( m_mf_file.data( ) +
-				                                        static_cast<boost::iostreams::stream_offset>( position ) );
+				return reinterpret_cast<const_pointer>(
+				  m_mf_file.data( ) +
+				  static_cast<boost::iostreams::stream_offset>( position ) );
 			}
 
-			friend void swap( memory_mapped_file_t &lhs, memory_mapped_file_t &rhs ) noexcept {
+			friend void swap( memory_mapped_file_t &lhs,
+			                  memory_mapped_file_t &rhs ) noexcept {
 				using std::swap;
 				swap( lhs.m_file_path, rhs.m_file_path );
 				swap( lhs.m_mf_params, rhs.m_mf_params );
@@ -140,7 +150,8 @@ namespace daw {
 			}
 
 			const_iterator end( ) const {
-				return reinterpret_cast<const_iterator>( std::next( m_mf_file.data( ), size( ) ) );
+				return reinterpret_cast<const_iterator>(
+				  std::next( m_mf_file.data( ), size( ) ) );
 			}
 
 			const_iterator cbegin( ) const {
@@ -148,7 +159,8 @@ namespace daw {
 			}
 
 			const_iterator cend( ) const {
-				return reinterpret_cast<const_iterator>( std::next( m_mf_file.data( ), size( ) ) );
+				return reinterpret_cast<const_iterator>(
+				  std::next( m_mf_file.data( ), size( ) ) );
 			}
 		}; // memory_mapped_file_t
 
@@ -156,14 +168,16 @@ namespace daw {
 		using MemoryMappedFile = memory_mapped_file_t<T>;
 
 		template<typename T>
-		std::ostream &operator<<( std::ostream &os, memory_mapped_file_t<T> const &mmf ) {
+		std::ostream &operator<<( std::ostream &os,
+		                          memory_mapped_file_t<T> const &mmf ) {
 			std::ostream_iterator<T> out_it{os};
 			std::copy( mmf.cbegin( ), mmf.cend( ), out_it );
 			return os;
 		}
 
 		template<typename T>
-		std::ostream &operator<<( std::ostream &os, memory_mapped_file_t<T> const &&mmf ) {
+		std::ostream &operator<<( std::ostream &os,
+		                          memory_mapped_file_t<T> const &&mmf ) {
 			std::ostream_iterator<T> out_it{os};
 			std::copy( mmf.cbegin( ), mmf.cend( ), out_it );
 			return os;

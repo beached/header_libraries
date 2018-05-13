@@ -3,14 +3,14 @@
 // Copyright (c) 2016-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -28,8 +28,9 @@
 #include "daw_traits.h"
 
 namespace daw {
-	/// Heap Value.  Access members via operator-> but copy/move constructors operators utilized the pointed to's
-	/// members This is used on larger classes that are members of other classes but the space requirements is that of a
+	/// Heap Value.  Access members via operator-> but copy/move constructors
+	/// operators utilized the pointed to's members This is used on larger classes
+	/// that are members of other classes but the space requirements is that of a
 	/// pointer instead of the full size
 	template<typename T>
 	struct heap_value {
@@ -60,13 +61,15 @@ namespace daw {
 		~heap_value( ) = default;
 
 		// Make this less perfect so that we can still do copy/move construction
-		template<typename Arg, typename = std::enable_if_t<daw::traits::not_self<Arg, value_t>( )>>
+		template<typename Arg, typename = std::enable_if_t<
+		                         daw::traits::not_self<Arg, value_t>( )>>
 		heap_value( Arg &&arg )
 		  : m_value{std::make_unique<value_t>( std::forward<Arg>( arg ) )} {}
 
 		template<typename Arg, typename... Args>
 		heap_value( Arg &&arg, Args &&... args )
-		  : m_value{std::make_unique<value_t>( std::forward<Arg>( arg ), std::forward<Args>( args )... )} {}
+		  : m_value{std::make_unique<value_t>( std::forward<Arg>( arg ),
+		                                       std::forward<Args>( args )... )} {}
 
 		friend void swap( heap_value &lhs, heap_value &rhs ) noexcept {
 			using std::swap;

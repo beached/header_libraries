@@ -3,14 +3,14 @@
 // Copyright (c) 2013-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -85,7 +85,8 @@ namespace daw {
 		using const_iterator = clumpy_sparsy_const_iterator<T>;
 
 	private:
-		// Must be mutable as we hide our size and expand the values < size to fit as needed
+		// Must be mutable as we hide our size and expand the values < size to fit
+		// as needed
 		values_type mutable m_items;
 		size_t m_size;
 
@@ -93,8 +94,9 @@ namespace daw {
 			if( pos >= size( ) ) {
 				return size( );
 			}
-			auto item_pos = daw::algorithm::find_last_of( m_items.begin( ), m_items.end( ),
-			                                              [pos]( auto const &item ) { return pos >= item.start( ); } );
+			auto item_pos = daw::algorithm::find_last_of(
+			  m_items.begin( ), m_items.end( ),
+			  [pos]( auto const &item ) { return pos >= item.start( ); } );
 			if( item_pos < size( ) ) {
 				// We are within the max size of the container.  Feel free to add it
 				auto offset = pos - item_pos->start( );
@@ -145,7 +147,8 @@ namespace daw {
 
 	template<typename T>
 	class clumpy_sparsy_iterator
-	  : public boost::iterator_facade<clumpy_sparsy_iterator<T>, T, boost::random_access_traversal_tag> {
+	  : public boost::iterator_facade<clumpy_sparsy_iterator<T>, T,
+	                                  boost::random_access_traversal_tag> {
 		size_t m_position;
 		clumpy_sparsy<T> *m_items;
 

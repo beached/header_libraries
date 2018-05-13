@@ -3,14 +3,14 @@
 // Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -51,7 +51,9 @@ namespace daw {
 		using difference_type = std::ptrdiff_t;
 
 		static_assert(
-		  is_convertible_v<std::random_access_iterator_tag, typename std::iterator_traits<iterator>::iterator_category>,
+		  is_convertible_v<
+		    std::random_access_iterator_tag,
+		    typename std::iterator_traits<iterator>::iterator_category>,
 		  "Iterator must be random access type" );
 
 	private:
@@ -191,7 +193,8 @@ namespace daw {
 			swap( m_size, v.m_size );
 		}
 
-		constexpr size_type copy( T *dest, size_type const count, size_type const pos = 0 ) const {
+		constexpr size_type copy( T *dest, size_type const count,
+		                          size_type const pos = 0 ) const {
 			if( pos >= m_size ) {
 				throw std::out_of_range{"Attempt to access array_view past end"};
 			}
@@ -201,8 +204,9 @@ namespace daw {
 			return rlen;
 		}
 
-		constexpr array_view subset( size_type const pos = 0,
-		                             size_type const count = std::numeric_limits<size_type>::max( ) ) const {
+		constexpr array_view subset(
+		  size_type const pos = 0,
+		  size_type const count = std::numeric_limits<size_type>::max( ) ) const {
 			if( pos >= size( ) ) {
 				throw std::out_of_range{"Attempt to access array_view past end"};
 			}
@@ -211,12 +215,16 @@ namespace daw {
 		}
 
 	private:
-		constexpr size_type reverse_distance( const_reverse_iterator first, const_reverse_iterator last ) const noexcept {
-			// Portability note here: std::distance is not NOEXCEPT, but calling it with a array_view::reverse_iterator
-			// will not throw.
-			// return static_cast<size_type>( ( m_size - 1u ) - static_cast<size_type>( std::distance( first, last ) )
+		constexpr size_type reverse_distance( const_reverse_iterator first,
+		                                      const_reverse_iterator last ) const
+		  noexcept {
+			// Portability note here: std::distance is not NOEXCEPT, but calling it
+			// with a array_view::reverse_iterator will not throw. return
+			// static_cast<size_type>( ( m_size - 1u ) - static_cast<size_type>(
+			// std::distance( first, last ) )
 			// );
-			return static_cast<size_type>( ( m_size ) - static_cast<size_type>( std::distance( first, last ) ) );
+			return static_cast<size_type>(
+			  ( m_size ) - static_cast<size_type>( std::distance( first, last ) ) );
 		}
 	}; // array_view
 
@@ -235,19 +243,26 @@ namespace daw {
 		return array_view<T>{s, N};
 	}
 
-	template<typename Container, std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
+	template<typename Container,
+	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
+	                          std::nullptr_t> = nullptr>
 	constexpr auto make_array_view( Container const &container ) noexcept {
-		using value_t = typename std::iterator_traits<decltype( container.begin( ) )>::value_type;
+		using value_t =
+		  typename std::iterator_traits<decltype( container.begin( ) )>::value_type;
 		return array_view<value_t>( container.data( ), container.size( ) );
 	}
 
 	struct array_view_access_past_end_exception {};
 
-	template<typename Container, std::enable_if_t<daw::traits::is_container_like_v<Container>, std::nullptr_t> = nullptr>
-	constexpr auto make_array_view( Container const &container, size_t const pos,
-	                                size_t const count = std::numeric_limits<size_t>::max( ) ) {
+	template<typename Container,
+	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
+	                          std::nullptr_t> = nullptr>
+	constexpr auto
+	make_array_view( Container const &container, size_t const pos,
+	                 size_t const count = std::numeric_limits<size_t>::max( ) ) {
 
-		using value_t = typename std::iterator_traits<decltype( container.begin( ) )>::value_type;
+		using value_t =
+		  typename std::iterator_traits<decltype( container.begin( ) )>::value_type;
 
 		if( pos >= container.size( ) ) {
 			throw array_view_access_past_end_exception{};
@@ -264,7 +279,8 @@ namespace std {
 			auto const tot_size = sizeof( T ) + sizeof( decltype( s.size( ) ) );
 			char vals[tot_size];
 			*reinterpret_cast<T *>( &vals[0] ) = s.data( );
-			*reinterpret_cast<decltype( s.size( ) )>( &vals[sizeof( T )] ) = s.size( );
+			*reinterpret_cast<decltype( s.size( ) )>( &vals[sizeof( T )] ) =
+			  s.size( );
 			return daw::fnv1a_hash( vals, tot_size );
 		}
 	};
