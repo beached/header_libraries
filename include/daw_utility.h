@@ -713,11 +713,11 @@ namespace daw {
 			Function m_func;
 
 		public:
-			overload_t( Function &&func )
+			constexpr overload_t( Function &&func )
 			  : m_func{std::forward<Function>( func )} {}
 
 			template<typename... Args>
-			auto operator( )( Args &&... args ) const -> decltype(
+			constexpr auto operator( )( Args &&... args ) const -> decltype(
 			  std::declval<Function>( )( std::forward<Args>( args )... ) ) {
 				return m_func( std::forward<Args>( args )... );
 			}
@@ -729,17 +729,18 @@ namespace daw {
 			using overload_t<Function>::operator( );
 			using overload_t<Functions...>::operator( );
 
-			overload_t( Function &&func, Functions &&... funcs )
+			constexpr overload_t( Function &&func, Functions &&... funcs )
 			  : overload_t<Function>( std::forward<Function>( func ) )
 			  , overload_t<Functions...>( std::forward<Functions>( funcs )... ) {}
 		};
 	} // namespace impl
 
 	template<typename... Functions>
-	auto make_overload( Functions &&... funcs ) {
+	constexpr auto make_overload( Functions &&... funcs ) {
 		return impl::overload_t<Functions...>{std::forward<Functions>( funcs )...};
 	}
 } // namespace daw
 
 template<typename... Ts>
 constexpr void Unused( Ts &&... ) noexcept {}
+
