@@ -31,114 +31,14 @@
 #include "cpp_17.h"
 #include "daw_exception.h"
 #include "daw_traits.h"
+#include "daw_utility.h"
 
 namespace daw {
 	struct empty_expected_exception : std::exception {};
-	namespace impl {
-		struct empty_value_t {};
-		constexpr bool operator==( empty_value_t, empty_value_t ) noexcept {
-			return true;
-		}
+	struct empty_value_t {};
 
-		template<typename T, typename THandler, typename EmptyHandler,
-		         typename ExceptionHandler>
-		struct expected_visitor {
-			mutable THandler T_handler;
-			mutable EmptyHandler empty_handler;
-			mutable ExceptionHandler exception_handler;
-
-			static_assert( daw::is_callable_v<THandler, T const &>,
-			               "THandler must accept a single argument of type T" );
-			static_assert( daw::is_callable_v<EmptyHandler>,
-			               "EmptyHandler must accept no arguments" );
-			static_assert( daw::is_callable_v<ExceptionHandler, std::exception_ptr>,
-			               "ExceptionHandler must accept a single argument of type "
-			               "std::exception_ptr" );
-
-			decltype( auto ) operator( )( T const &value ) const noexcept {
-				return T_handler( value );
-			}
-
-			decltype( auto ) operator( )( empty_value_t ) const noexcept {
-				return empty_handler( );
-			}
-
-			decltype( auto ) operator( )( std::exception_ptr ptr ) const noexcept {
-				return exception_handler( ptr );
-			}
-		};
-
-		template<typename T, typename THandler, typename EmptyHandler,
-		         typename ExceptionHandler>
-		struct expected_void_visitor {
-			mutable THandler T_handler;
-			mutable EmptyHandler empty_handler;
-			mutable ExceptionHandler exception_handler;
-
-			static_assert( daw::is_callable_v<THandler, T const &>,
-			               "THandler must accept a single argument of type T" );
-			static_assert( daw::is_callable_v<EmptyHandler>,
-			               "EmptyHandler must accept no arguments" );
-			static_assert( daw::is_callable_v<ExceptionHandler, std::exception_ptr>,
-			               "ExceptionHandler must accept a single argument of type "
-			               "std::exception_ptr" );
-
-			void operator( )( T const &value ) const noexcept {
-				T_handler( value );
-			}
-
-			void operator( )( empty_value_t ) const noexcept {
-				empty_handler( );
-			}
-
-			void operator( )( std::exception_ptr ptr ) const noexcept {
-				exception_handler( ptr );
-			}
-		};
-	} // namespace impl
-
-	template<typename T, typename THandler, typename EmptyHandler,
-	         typename ExceptionHandler>
-	impl::expected_visitor<T, THandler, EmptyHandler, ExceptionHandler>
-	make_expected_visitor( THandler &&T_handler, EmptyHandler &&empty_handler,
-	                       ExceptionHandler &&exception_handler ) noexcept {
-
-		static_assert( daw::is_callable_v<THandler, T const &> ||
-		                 daw::is_callable_v<THandler, T &&>,
-		               "THandler must accept a single argument of type T" );
-		static_assert( daw::is_callable_v<EmptyHandler>,
-		               "EmptyHandler must accept no arguments" );
-		static_assert( daw::is_callable_v<ExceptionHandler, std::exception_ptr>,
-		               "ExceptionHandler must accept a single argument of type "
-		               "std::exception_ptr" );
-
-		return impl::expected_visitor<T, THandler, EmptyHandler, ExceptionHandler>{
-		  std::forward<THandler>( T_handler ),
-		  std::forward<EmptyHandler>( empty_handler ),
-		  std::forward<ExceptionHandler>( exception_handler )};
-	}
-
-	template<typename T, typename THandler, typename EmptyHandler,
-	         typename ExceptionHandler>
-	impl::expected_void_visitor<T, THandler, EmptyHandler, ExceptionHandler>
-	make_expected_void_visitor( THandler &&T_handler,
-	                            EmptyHandler &&empty_handler,
-	                            ExceptionHandler &&exception_handler ) noexcept {
-
-		static_assert( daw::is_callable_v<THandler, T const &> ||
-		                 daw::is_callable_v<THandler, T &&>,
-		               "THandler must accept a single argument of type T" );
-		static_assert( daw::is_callable_v<EmptyHandler>,
-		               "EmptyHandler must accept no arguments" );
-		static_assert( daw::is_callable_v<ExceptionHandler, std::exception_ptr>,
-		               "ExceptionHandler must accept a single argument of type "
-		               "std::exception_ptr" );
-
-		return impl::expected_void_visitor<T, THandler, EmptyHandler,
-		                                   ExceptionHandler>{
-		  std::forward<THandler>( T_handler ),
-		  std::forward<EmptyHandler>( empty_handler ),
-		  std::forward<ExceptionHandler>( exception_handler )};
+	constexpr bool operator==( empty_value_t, empty_value_t ) noexcept {
+		return true;
 	}
 
 	template<class T>
@@ -150,7 +50,7 @@ namespace daw {
 		using const_pointer = value_type const *;
 
 	private:
-		boost::variant<impl::empty_value_t, value_type, std::exception_ptr> m_value;
+		boost::variant<empty_value_t, value_type, std::exception_ptr> m_value;
 
 	public:
 		struct exception_tag {};
@@ -200,7 +100,7 @@ namespace daw {
 		}
 
 		void clear( ) noexcept {
-			m_value = impl::empty_value_t{};
+			m_value = empty_value_t{};
 		}
 
 		template<typename ExceptionType>
@@ -233,17 +133,17 @@ namespace daw {
 
 		bool has_value( ) const noexcept {
 			return boost::apply_visitor(
-			  make_expected_visitor<value_type>(
-			    []( value_type const & ) { return true; }, []( ) { return false; },
-			    []( std::exception_ptr ) { return false; } ),
+			  daw::make_overload( []( value_type const & ) { return true; },
+			                      []( std::exception_ptr ) { return false; },
+			                      []( empty_value_t ) { return false; } ),
 			  m_value );
 		}
 
 		bool has_exception( ) const noexcept {
 			return boost::apply_visitor(
-			  make_expected_visitor<value_type>(
-			    []( value_type const & ) { return false; }, []( ) { return false; },
-			    []( std::exception_ptr ) { return true; } ),
+			  make_overload( []( value_type const & ) { return false; },
+			                 []( empty_value_t ) { return false; },
+			                 []( std::exception_ptr ) { return true; } ),
 			  m_value );
 		}
 
@@ -253,9 +153,9 @@ namespace daw {
 
 		bool empty( ) const noexcept {
 			return boost::apply_visitor(
-			  make_expected_visitor<value_type>(
-			    []( value_type const & ) { return false; }, []( ) { return true; },
-			    []( std::exception_ptr ) { return false; } ),
+			  make_overload( []( value_type const & ) { return false; },
+			                 []( empty_value_t ) { return true; },
+			                 []( std::exception_ptr ) { return false; } ),
 			  m_value );
 		}
 
@@ -268,11 +168,12 @@ namespace daw {
 		}
 
 		void throw_if_exception( ) const {
-			boost::apply_visitor(
-			  make_expected_visitor<value_type>(
-			    []( value_type const & ) {}, []( ) {},
-			    []( std::exception_ptr ptr ) { std::rethrow_exception( ptr ); } ),
-			  m_value );
+			boost::apply_visitor( make_overload( []( value_type const & ) {},
+			                                     []( empty_value_t ) {},
+			                                     []( std::exception_ptr ptr ) {
+				                                     std::rethrow_exception( ptr );
+			                                     } ),
+			                      m_value );
 		}
 
 		reference get( ) {
@@ -328,7 +229,7 @@ namespace daw {
 		struct exception_tag {};
 
 	private:
-		boost::variant<impl::empty_value_t, value_type, std::exception_ptr> m_value;
+		boost::variant<empty_value_t, value_type, std::exception_ptr> m_value;
 
 		expected_t( bool b ) noexcept
 		  : m_value{value_type{}} {}
@@ -362,7 +263,7 @@ namespace daw {
 		}
 
 		void clear( ) noexcept {
-			m_value = impl::empty_value_t{};
+			m_value = empty_value_t{};
 		}
 
 		expected_t( std::exception_ptr ptr ) noexcept
@@ -395,6 +296,11 @@ namespace daw {
 			return boost::apply_visitor( std::forward<Visitor>( visitor ), m_value );
 		}
 
+		template<typename Visitor>
+		decltype( auto ) visit( Visitor &&visitor ) const {
+			return boost::apply_visitor( std::forward<Visitor>( visitor ), m_value );
+		}
+
 		template<class Function, typename... Args,
 		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
 		                          std::nullptr_t> = nullptr>
@@ -404,17 +310,17 @@ namespace daw {
 
 		bool has_value( ) const noexcept {
 			return boost::apply_visitor(
-			  make_expected_visitor<value_type>(
-			    []( value_type const & ) { return true; }, []( ) { return false; },
-			    []( std::exception_ptr ) { return false; } ),
+			  make_overload( []( value_type const & ) { return true; },
+			                 []( empty_value_t ) { return false; },
+			                 []( std::exception_ptr ) { return false; } ),
 			  m_value );
 		}
 
 		bool has_exception( ) const noexcept {
 			return boost::apply_visitor(
-			  make_expected_visitor<value_type>(
-			    []( value_type const & ) { return false; }, []( ) { return false; },
-			    []( std::exception_ptr ) { return true; } ),
+			  make_overload( []( value_type const & ) { return false; },
+			                 []( empty_value_t ) { return false; },
+			                 []( std::exception_ptr ) { return true; } ),
 			  m_value );
 		}
 
@@ -424,9 +330,9 @@ namespace daw {
 
 		bool empty( ) const noexcept {
 			return boost::apply_visitor(
-			  make_expected_visitor<value_type>(
-			    []( value_type const & ) { return false; }, []( ) { return true; },
-			    []( std::exception_ptr ) { return false; } ),
+			  make_overload( []( value_type const & ) { return false; },
+			                 []( empty_value_t ) { return true; },
+			                 []( std::exception_ptr ) { return false; } ),
 			  m_value );
 		}
 
@@ -435,11 +341,12 @@ namespace daw {
 		}
 
 		void throw_if_exception( ) const {
-			boost::apply_visitor(
-			  make_expected_visitor<value_type>(
-			    []( value_type const & ) {}, []( ) {},
-			    []( std::exception_ptr ptr ) { std::rethrow_exception( ptr ); } ),
-			  m_value );
+			boost::apply_visitor( make_overload( []( value_type const & ) {},
+			                                     []( empty_value_t ) {},
+			                                     []( std::exception_ptr ptr ) {
+				                                     std::rethrow_exception( ptr );
+			                                     } ),
+			                      m_value );
 		}
 
 		void get( ) const {
