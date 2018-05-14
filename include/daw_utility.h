@@ -716,7 +716,9 @@ namespace daw {
 			constexpr overload_t( Function &&func )
 			  : m_func{std::forward<Function>( func )} {}
 
-			template<typename... Args>
+			template<typename... Args,
+			         std::enable_if_t<daw::is_callable_v<Function, Args...>,
+			                          std::nullptr_t> = nullptr>
 			constexpr auto operator( )( Args &&... args ) const -> decltype(
 			  std::declval<Function>( )( std::forward<Args>( args )... ) ) {
 				return m_func( std::forward<Args>( args )... );
@@ -724,8 +726,8 @@ namespace daw {
 		};
 
 		template<typename Function, typename... Functions>
-		struct overload_t<Function, Functions...> : overload_t<Function>,
-		                                            overload_t<Functions...> {
+		struct overload_t<Function, Functions...>
+		  : public overload_t<Function>, public overload_t<Functions...> {
 			using overload_t<Function>::operator( );
 			using overload_t<Functions...>::operator( );
 

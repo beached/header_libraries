@@ -127,14 +127,29 @@ BOOST_AUTO_TEST_CASE( daw_pack_type_at_001 ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_overload_001 ) {
-	struct A {};
-	struct B {};
+	struct A {
+		auto operator( )( int64_t a ) const {
+			std::cout << "A->int\n";
+			return 0;
+		}
+	};
+	struct B {
+		auto operator( )( std::string b ) const {
+			std::cout << "B->std::string\n";
+			return 1;
+		}
+	};
+	struct C {
+		auto operator( )( char* c ) const {
+			std::cout << "D->bool\n";
+			return 2;
+		}
+	};
 
-	auto fn = daw::make_overload(
-	  []( int i ) { return 0; },
-	  []( A ) { return 1; }, []( B ) { return 2; } );
+	auto fn = daw::make_overload( A{}, B{}, C{} );
 
-	BOOST_REQUIRE_EQUAL( fn( 5 ), 0 );
-	BOOST_REQUIRE_EQUAL( fn( A{} ), 1 );
-	BOOST_REQUIRE_EQUAL( fn( B{} ), 2 );
+
+	BOOST_REQUIRE_EQUAL( fn( 1 ), 0 );
+	BOOST_REQUIRE_EQUAL( fn( std::string{"Hello"} ), 1 );
+	BOOST_REQUIRE_EQUAL( fn( "Good bye" ), 2 );
 }
