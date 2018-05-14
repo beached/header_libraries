@@ -729,11 +729,9 @@ namespace daw {
 			using overload_t<Function>::operator( );
 			using overload_t<Functions...>::operator( );
 
-			/*
 			overload_t( Function &&func, Functions &&... funcs )
 			  : overload_t<Function>( std::forward<Function>( func ) )
 			  , overload_t<Functions...>( std::forward<Functions>( funcs )... ) {}
-				*/
 		};
 	} // namespace impl
 
