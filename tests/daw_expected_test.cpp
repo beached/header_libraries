@@ -31,7 +31,7 @@ daw::expected_t<int> divide( int v ) {
 		if( 0 == v ) {
 			throw std::runtime_error( "division by zero" );
 		}
-		return 4 / v;
+		return daw::expected_t<int>{4 / v};
 	} catch( ... ) { return std::current_exception( ); }
 }
 

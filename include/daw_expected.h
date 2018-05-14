@@ -171,11 +171,11 @@ namespace daw {
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////
-		expected_t( value_type &&value ) noexcept(
+		explicit expected_t( value_type &&value ) noexcept(
 		  std::is_nothrow_move_constructible<value_type>::value )
 		  : m_value{std::move( value )} {}
 
-		expected_t( value_type const &value ) noexcept(
+		explicit expected_t( value_type const &value ) noexcept(
 		  std::is_nothrow_copy_constructible<value_type>::value )
 		  : m_value{value} {}
 
@@ -207,7 +207,7 @@ namespace daw {
 		expected_t( exception_tag, ExceptionType const &ex ) noexcept
 		  : m_value{std::make_exception_ptr( ex )} {}
 
-		expected_t( exception_tag ) noexcept
+		explicit expected_t( exception_tag ) noexcept
 		  : m_value{std::current_exception( )} {}
 
 		template<class Function, typename... Args,
