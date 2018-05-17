@@ -60,6 +60,9 @@ namespace daw {
 	template<typename From, typename To>
 	constexpr bool is_convertible_v = std::is_convertible<From, To>::value;
 
+	template<typename T, typename... Args>
+	constexpr bool is_constructible_v = std::is_constructible<T, Args...>::value;
+
 	template<typename T, typename U>
 	constexpr bool is_same_v = std::is_same<T, U>::value;
 
