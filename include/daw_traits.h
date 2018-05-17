@@ -878,15 +878,18 @@ namespace daw {
 		  decltype( std::declval<Function>( )( std::declval<Args>( )... ) );
 
 		namespace impl {
-			template<typename Arg, typename... Args>
-			constexpr std::decay_t<Arg> first_arg_test( Arg&&, Args&&... ) noexcept;
+			template<typename...>
+			struct is_type;
 
-			template<typename... Args>
-			using first_arg = decltype( first_arg_test( std::declval<Args>( )... ) );
+			template<typename T>
+			struct is_type<T>: std::false_type{};
+
+			template<typename T, typename Arg, typename... Args>
+			struct is_type<T, Arg, Args...>: std::integral_constant<bool, is_same_v<T, std::decay_t<Arg>>> {};
 		}
 
 		template<typename T, typename...Args>
-		constexpr bool is_type_v = sizeof...(Args) > 0 && is_same_v<T, std::decay_t<impl::first_arg<Args...>>>;
+		constexpr bool is_type_v = impl::is_type<T, Args...>::value;
 	} // namespace traits
 
 	template<bool B, typename T = std::nullptr_t>
