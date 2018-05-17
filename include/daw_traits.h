@@ -876,6 +876,17 @@ namespace daw {
 		template<typename Function, typename... Args>
 		using result_of_t =
 		  decltype( std::declval<Function>( )( std::declval<Args>( )... ) );
+
+		namespace impl {
+			template<typename Arg, typename... Args>
+			constexpr std::decay_t<Arg> first_arg_test( Arg&&, Args&&... ) noexcept;
+
+			template<typename... Args>
+			using first_arg = decltype( first_arg_test( std::declval<Args>( )... ) );
+		}
+
+		template<typename T, typename...Args>
+		constexpr bool is_type_v = std::is_same_v<T, std::decay_t<impl::first_arg<Args...>>>;
 	} // namespace traits
 
 	template<bool B, typename T = std::nullptr_t>
