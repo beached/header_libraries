@@ -886,10 +886,19 @@ namespace daw {
 
 			template<typename T, typename Arg, typename... Args>
 			struct is_type<T, Arg, Args...>: std::integral_constant<bool, is_same_v<T, std::decay_t<Arg>>> {};
+
+			template<typename... Ts>
+			constexpr void tuple_test( std::tuple<Ts...> const & ) noexcept {};
+
+			template<typename... Ts>
+			using detect_is_tuple = decltype( tuple_test( std::declval<Ts>( )... ) );
 		}
 
 		template<typename T, typename...Args>
 		constexpr bool is_type_v = impl::is_type<T, Args...>::value;
+
+		template<typename...Ts>
+		constexpr bool is_tuple_v = is_detected_v<impl::detect_is_tuple, Ts...>;
 	} // namespace traits
 
 	template<bool B, typename T = std::nullptr_t>

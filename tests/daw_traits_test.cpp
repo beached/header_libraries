@@ -774,3 +774,24 @@ BOOST_AUTO_TEST_CASE( is_type_test_003 ) {
 	constexpr auto tst = daw::traits::is_type_v<float>;
 	BOOST_REQUIRE( !tst );
 }
+
+BOOST_AUTO_TEST_CASE( is_tuple_test_001 ) {
+	constexpr auto tst = daw::traits::is_tuple_v<float, int>;
+	BOOST_REQUIRE( !tst );
+}
+
+BOOST_AUTO_TEST_CASE( is_tuple_test_002 ) {
+	constexpr auto tst = daw::traits::is_tuple_v<std::tuple<float, int>>;
+	BOOST_REQUIRE( tst );
+}
+
+BOOST_AUTO_TEST_CASE( is_tuple_test_003 ) {
+	constexpr auto tst = daw::traits::is_tuple_v<>;
+	BOOST_REQUIRE( !tst );
+}
+
+BOOST_AUTO_TEST_CASE( is_tuple_test_004 ) {
+	constexpr auto tst = daw::traits::is_tuple_v<std::tuple<>>;
+	BOOST_REQUIRE( tst );
+}
+
