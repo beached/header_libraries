@@ -886,7 +886,7 @@ namespace daw {
 		}
 
 		template<typename T, typename...Args>
-		constexpr bool is_type_v = is_same_v<T, std::decay_t<impl::first_arg<Args...>>>;
+		constexpr bool is_type_v = sizeof...(Args) > 0 && is_same_v<T, std::decay_t<impl::first_arg<Args...>>>;
 	} // namespace traits
 
 	template<bool B, typename T = std::nullptr_t>
