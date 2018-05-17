@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016-2017 Darrell Wright
+// Copyright (c) 2016-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to deal
@@ -36,18 +36,25 @@ namespace daw {
 		bool m_latched;
 
 	public:
-		template<typename Int = intmax_t>
-		explicit basic_semaphore( Int count = 0, bool latched = true )
+		basic_semaphore( )
+		  : m_mutex{std::make_unique<Mutex>( )}
+		  , m_condition{std::make_unique<ConditionVariable>( )}
+		  , m_count{0}
+		  , m_latched{true} {}
+
+		template<typename Int>
+		explicit basic_semaphore( Int count )
+		  : m_mutex{std::make_unique<Mutex>( )}
+		  , m_condition{std::make_unique<ConditionVariable>( )}
+		  , m_count{static_cast<intmax_t>( count )}
+		  , m_latched{true} {}
+
+		template<typename Int>
+		basic_semaphore( Int count, bool latched )
 		  : m_mutex{std::make_unique<Mutex>( )}
 		  , m_condition{std::make_unique<ConditionVariable>( )}
 		  , m_count{static_cast<intmax_t>( count )}
 		  , m_latched{latched} {}
-
-		~basic_semaphore( ) = default;
-		basic_semaphore( basic_semaphore const & ) = delete;
-		basic_semaphore( basic_semaphore && ) noexcept = default;
-		basic_semaphore &operator=( basic_semaphore const & ) = delete;
-		basic_semaphore &operator=( basic_semaphore && ) noexcept = default;
 
 		void notify( ) {
 			std::unique_lock<Mutex> lock{*m_mutex};
@@ -116,19 +123,19 @@ namespace daw {
 		std::shared_ptr<basic_semaphore<Mutex, ConditionVariable>> m_semaphore;
 
 	public:
-		template<typename Int = intmax_t>
-		explicit basic_shared_semaphore( Int count = 0, bool latched = true )
+		basic_shared_semaphore( )
+		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( )} {}
+
+		template<typename Int>
+		explicit basic_shared_semaphore( Int count )
 		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( count )} {}
+
+		template<typename Int>
+		explicit basic_shared_semaphore( Int count, bool latched )
+		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( count, latched )} {}
 
 		explicit basic_shared_semaphore( basic_semaphore<Mutex, ConditionVariable> &&sem )
 		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( std::move( sem ) )} {}
-
-		~basic_shared_semaphore( ) = default;
-		basic_shared_semaphore( basic_shared_semaphore const & ) = default;
-
-		basic_shared_semaphore( basic_shared_semaphore && ) noexcept = default;
-		basic_shared_semaphore &operator=( basic_shared_semaphore const & ) = default;
-		basic_shared_semaphore &operator=( basic_shared_semaphore && ) noexcept = default;
 
 		void notify( ) {
 			m_semaphore->notify( );
