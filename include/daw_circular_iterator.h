@@ -3,14 +3,14 @@
 // Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -32,14 +32,19 @@ namespace daw {
 		template<typename C>
 		using has_size_member = decltype( std::declval<C>( ).size( ) );
 
-		template<typename Container, std::enable_if_t<is_detected_v<has_size_member, Container>, std::nullptr_t> = nullptr>
+		template<typename Container,
+		         std::enable_if_t<is_detected_v<has_size_member, Container>,
+		                          std::nullptr_t> = nullptr>
 		constexpr size_t container_size( Container &c ) {
 			return c.size( );
 		}
 
-		template<typename Container, std::enable_if_t<!is_detected_v<has_size_member, Container>, std::nullptr_t> = nullptr>
+		template<typename Container,
+		         std::enable_if_t<!is_detected_v<has_size_member, Container>,
+		                          std::nullptr_t> = nullptr>
 		constexpr size_t container_size( Container &c ) {
-			return static_cast<size_t>( daw::distance( std::cbegin( c ), std::cend( c ) ) );
+			return static_cast<size_t>(
+			  daw::distance( std::cbegin( c ), std::cend( c ) ) );
 		}
 	} // namespace impl
 
@@ -54,14 +59,16 @@ namespace daw {
 
 	private:
 		static_assert(
-		  is_same_v<std::random_access_iterator_tag, typename std::iterator_traits<iterator>::iterator_category>,
+		  is_same_v<std::random_access_iterator_tag,
+		            typename std::iterator_traits<iterator>::iterator_category>,
 		  "Container iterators must be randomly accessable" );
 
 		Container *m_container;
 		difference_type m_position;
 
 		constexpr difference_type get_offset( difference_type n ) const noexcept {
-			auto const sz = static_cast<difference_type>( impl::container_size( *m_container ) );
+			auto const sz =
+			  static_cast<difference_type>( impl::container_size( *m_container ) );
 			n += m_position;
 			if( n < 0 ) {
 				n *= -1;
@@ -107,7 +114,8 @@ namespace daw {
 		  : m_container{other.m_container}
 		  , m_position{other.m_position} {}
 
-		constexpr circular_iterator &operator=( circular_iterator const &rhs ) noexcept {
+		constexpr circular_iterator &
+		operator=( circular_iterator const &rhs ) noexcept {
 			if( this != &rhs ) {
 				m_container = rhs.m_container;
 				m_position = rhs.m_position;
@@ -177,40 +185,55 @@ namespace daw {
 
 		constexpr circular_iterator end( ) noexcept {
 			circular_iterator tmp{*this};
-			tmp.m_position = static_cast<difference_type>( impl::container_size( *m_container ) );
+			tmp.m_position =
+			  static_cast<difference_type>( impl::container_size( *m_container ) );
 			return tmp;
 		}
-		constexpr friend bool operator==( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			return lhs.m_position == rhs.m_position && lhs.m_container == rhs.m_container;
+		constexpr friend bool operator==( circular_iterator const &lhs,
+		                                  circular_iterator const &rhs ) noexcept {
+			return lhs.m_position == rhs.m_position &&
+			       lhs.m_container == rhs.m_container;
 		}
 
-		constexpr friend bool operator!=( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			return lhs.m_position != rhs.m_position || lhs.m_container != rhs.m_container;
+		constexpr friend bool operator!=( circular_iterator const &lhs,
+		                                  circular_iterator const &rhs ) noexcept {
+			return lhs.m_position != rhs.m_position ||
+			       lhs.m_container != rhs.m_container;
 		}
 
-		constexpr friend bool operator<( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			daw::exception::DebugAssert( lhs.m_container == rhs.m_container, "Attempt to compare difference containers" );
+		constexpr friend bool operator<( circular_iterator const &lhs,
+		                                 circular_iterator const &rhs ) noexcept {
+			daw::exception::DebugAssert( lhs.m_container == rhs.m_container,
+			                             "Attempt to compare difference containers" );
 			return lhs.m_position < rhs.m_position;
 		}
 
-		constexpr friend bool operator>( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			daw::exception::DebugAssert( lhs.m_container == rhs.m_container, "Attempt to compare difference containers" );
+		constexpr friend bool operator>( circular_iterator const &lhs,
+		                                 circular_iterator const &rhs ) noexcept {
+			daw::exception::DebugAssert( lhs.m_container == rhs.m_container,
+			                             "Attempt to compare difference containers" );
 			return lhs.m_position > rhs.m_position;
 		}
 
-		constexpr friend bool operator<=( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			daw::exception::DebugAssert( lhs.m_container == rhs.m_container, "Attempt to compare difference containers" );
+		constexpr friend bool operator<=( circular_iterator const &lhs,
+		                                  circular_iterator const &rhs ) noexcept {
+			daw::exception::DebugAssert( lhs.m_container == rhs.m_container,
+			                             "Attempt to compare difference containers" );
 			return lhs.m_position <= rhs.m_position;
 		}
 
-		constexpr friend bool operator>=( circular_iterator const &lhs, circular_iterator const &rhs ) noexcept {
-			daw::exception::DebugAssert( lhs.m_container == rhs.m_container, "Attempt to compare difference containers" );
+		constexpr friend bool operator>=( circular_iterator const &lhs,
+		                                  circular_iterator const &rhs ) noexcept {
+			daw::exception::DebugAssert( lhs.m_container == rhs.m_container,
+			                             "Attempt to compare difference containers" );
 			return lhs.m_position >= rhs.m_position;
 		}
 
-		constexpr friend difference_type operator-( circular_iterator const &lhs, circular_iterator const &rhs ) {
-			daw::exception::DebugAssert( lhs.m_container == rhs.m_container,
-			                             "Can only find difference of iterators from same container" );
+		constexpr friend difference_type operator-( circular_iterator const &lhs,
+		                                            circular_iterator const &rhs ) {
+			daw::exception::DebugAssert(
+			  lhs.m_container == rhs.m_container,
+			  "Can only find difference of iterators from same container" );
 			return lhs.m_position - rhs.m_position;
 		}
 	}; // circular_iterator
@@ -221,7 +244,8 @@ namespace daw {
 	}
 
 	template<typename Container, typename Iterator>
-	constexpr auto make_circular_iterator( Container &container, Iterator it ) noexcept {
+	constexpr auto make_circular_iterator( Container &container,
+	                                       Iterator it ) noexcept {
 		return circular_iterator<Container>{container, std::move( it )};
 	}
 } // namespace daw

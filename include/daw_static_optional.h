@@ -3,14 +3,14 @@
 // Copyright (c) 2016-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -37,7 +37,8 @@ namespace daw {
 		template<typename T>
 		union static_optional_storage {
 			static_assert( daw::is_nothrow_destructible_v<T> || daw::is_trivial_v<T>,
-			               "static_optional_storage can only be used for types that are nothrow destructable or trivial" );
+			               "static_optional_storage can only be used for types that "
+			               "are nothrow destructable or trivial" );
 
 			T value;
 			daw::nothing empty_value;
@@ -51,8 +52,10 @@ namespace daw {
 
 	template<typename Value>
 	struct static_optional {
-		static_assert( daw::is_nothrow_destructible_v<Value> || daw::is_trivial_v<Value>,
-		               "static_optional can only be used for types that are nothrow destructable or trivial" );
+		static_assert( daw::is_nothrow_destructible_v<Value> ||
+		                 daw::is_trivial_v<Value>,
+		               "static_optional can only be used for types that are "
+		               "nothrow destructable or trivial" );
 
 		using value_type = Value;
 		using reference = value_type &;
@@ -63,12 +66,14 @@ namespace daw {
 		bool m_occupied;
 
 		constexpr reference ref( ) {
-			daw::exception::daw_throw_on_true( empty( ), "Attempt to access an empty value" );
+			daw::exception::daw_throw_on_true( empty( ),
+			                                   "Attempt to access an empty value" );
 			return m_value.value;
 		}
 
 		constexpr const_reference ref( ) const {
-			daw::exception::daw_throw_on_true( empty( ), "Attempt to access an empty value" );
+			daw::exception::daw_throw_on_true( empty( ),
+			                                   "Attempt to access an empty value" );
 			return m_value.value;
 		}
 
@@ -80,12 +85,16 @@ namespace daw {
 		  : m_value{daw::nothing{}}
 		  , m_occupied{false} {}
 
-		template<typename Arg, typename... Args,
-		         std::enable_if_t<!daw::is_same_v<static_optional, std::decay_t<Arg>>, std::nullptr_t> = nullptr>
-		constexpr static_optional( Arg &&arg, Args &&... args ) noexcept( noexcept( value_type{
+		template<
+		  typename Arg, typename... Args,
+		  std::enable_if_t<!daw::is_same_v<static_optional, std::decay_t<Arg>>,
+		                   std::nullptr_t> = nullptr>
+		constexpr static_optional( Arg &&arg,
+		                           Args &&... args ) noexcept( noexcept( value_type{
 		  std::forward<Arg>( arg ), std::forward<Args>( args )...} ) )
 
-		  : m_value{value_type{std::forward<Arg>( arg ), std::forward<Args>( args )...}}
+		  : m_value{value_type{std::forward<Arg>( arg ),
+		                       std::forward<Args>( args )...}}
 		  , m_occupied{true} {}
 
 		~static_optional( ) noexcept = default;
@@ -98,7 +107,8 @@ namespace daw {
 		  : m_value{std::move( other.m_value )}
 		  , m_occupied{daw::exchange( other.m_occupied, false )} {}
 
-		constexpr static_optional &operator=( static_optional const &rhs ) noexcept {
+		constexpr static_optional &
+		operator=( static_optional const &rhs ) noexcept {
 			if( &rhs != this ) {
 				m_value = rhs.m_value;
 				m_occupied = rhs.m_occupied;
@@ -118,9 +128,10 @@ namespace daw {
 			return *this;
 		}
 
-		template<typename T, std::enable_if_t<!daw::is_same_v<static_optional, std::decay_t<T>> &&
-		                                        !daw::is_same_v<daw::nothing, std::decay_t<T>>,
-		                                      std::nullptr_t> = nullptr>
+		template<typename T, std::enable_if_t<
+		                       !daw::is_same_v<static_optional, std::decay_t<T>> &&
+		                         !daw::is_same_v<daw::nothing, std::decay_t<T>>,
+		                       std::nullptr_t> = nullptr>
 		constexpr static_optional &operator=( T value ) noexcept {
 			m_value = std::move( value );
 			m_occupied = true;
@@ -144,7 +155,8 @@ namespace daw {
 		}
 
 		const_reference operator*( ) const {
-			daw::exception::daw_throw_on_true( empty( ), "Attempt to access an empty value" );
+			daw::exception::daw_throw_on_true( empty( ),
+			                                   "Attempt to access an empty value" );
 			return ref( );
 		}
 
@@ -161,8 +173,10 @@ namespace daw {
 		}
 
 		template<typename T>
-		friend bool operator==( static_optional const &lhs, static_optional<T> const &rhs ) {
-			static_assert( daw::is_inequality_comparable_v<value_type, T>, "Types are not equality comparable" );
+		friend bool operator==( static_optional const &lhs,
+		                        static_optional<T> const &rhs ) {
+			static_assert( daw::is_inequality_comparable_v<value_type, T>,
+			               "Types are not equality comparable" );
 			if( lhs ) {
 				if( rhs ) {
 					return lhs.get( ) == rhs.get( );
@@ -177,7 +191,8 @@ namespace daw {
 
 		template<typename T>
 		friend bool operator==( static_optional const &lhs, T const &rhs ) {
-			static_assert( daw::is_inequality_comparable_v<value_type, T>, "Types are not equality comparable" );
+			static_assert( daw::is_inequality_comparable_v<value_type, T>,
+			               "Types are not equality comparable" );
 			if( lhs ) {
 				return lhs.get( ) == rhs;
 			}
@@ -185,8 +200,10 @@ namespace daw {
 		}
 
 		template<typename T>
-		friend bool operator!=( static_optional const &lhs, static_optional<T> const &rhs ) {
-			static_assert( daw::is_inequality_comparable_v<value_type, T>, "Types are not inequality comparable" );
+		friend bool operator!=( static_optional const &lhs,
+		                        static_optional<T> const &rhs ) {
+			static_assert( daw::is_inequality_comparable_v<value_type, T>,
+			               "Types are not inequality comparable" );
 			if( lhs ) {
 				if( rhs ) {
 					return lhs.get( ) != rhs.get( );
@@ -201,7 +218,8 @@ namespace daw {
 
 		template<typename T>
 		friend bool operator!=( static_optional const &lhs, T const &rhs ) {
-			static_assert( daw::is_inequality_comparable_v<value_type, T>, "Types are not inequality comparable" );
+			static_assert( daw::is_inequality_comparable_v<value_type, T>,
+			               "Types are not inequality comparable" );
 			if( lhs ) {
 				return lhs.get( ) != rhs;
 			}
@@ -209,8 +227,10 @@ namespace daw {
 		}
 
 		template<typename T>
-		friend bool operator<( static_optional const &lhs, static_optional<T> const &rhs ) {
-			static_assert( daw::is_less_than_comparable_v<value_type, T>, "Types are not less than comparable" );
+		friend bool operator<( static_optional const &lhs,
+		                       static_optional<T> const &rhs ) {
+			static_assert( daw::is_less_than_comparable_v<value_type, T>,
+			               "Types are not less than comparable" );
 			if( lhs ) {
 				if( rhs ) {
 					return lhs.get( ) < rhs.get( );
@@ -225,7 +245,8 @@ namespace daw {
 
 		template<typename T>
 		friend bool operator<( static_optional const &lhs, T const &rhs ) {
-			static_assert( daw::is_less_than_comparable_v<value_type, T>, "Types are not less than comparable" );
+			static_assert( daw::is_less_than_comparable_v<value_type, T>,
+			               "Types are not less than comparable" );
 			if( lhs ) {
 				return lhs.get( ) < rhs;
 			}
@@ -233,8 +254,10 @@ namespace daw {
 		}
 
 		template<typename T>
-		friend bool operator>( static_optional const &lhs, static_optional<T> const &rhs ) {
-			static_assert( daw::is_greater_than_comparable_v<value_type, T>, "Types are not greater than comparable" );
+		friend bool operator>( static_optional const &lhs,
+		                       static_optional<T> const &rhs ) {
+			static_assert( daw::is_greater_than_comparable_v<value_type, T>,
+			               "Types are not greater than comparable" );
 			if( lhs ) {
 				if( rhs ) {
 					return lhs.get( ) > rhs.get( );
@@ -249,7 +272,8 @@ namespace daw {
 
 		template<typename T>
 		friend bool operator>( static_optional const &lhs, T const &rhs ) {
-			static_assert( daw::is_greater_than_comparable_v<value_type, T>, "Types are not greater than comparable" );
+			static_assert( daw::is_greater_than_comparable_v<value_type, T>,
+			               "Types are not greater than comparable" );
 			if( lhs ) {
 				return lhs.get( ) > rhs;
 			}
@@ -257,8 +281,10 @@ namespace daw {
 		}
 
 		template<typename T>
-		friend bool operator<=( static_optional const &lhs, static_optional<T> const &rhs ) {
-			static_assert( daw::is_equal_less_than_comparable_v<value_type, T>, "Types are not equal_less than comparable" );
+		friend bool operator<=( static_optional const &lhs,
+		                        static_optional<T> const &rhs ) {
+			static_assert( daw::is_equal_less_than_comparable_v<value_type, T>,
+			               "Types are not equal_less than comparable" );
 			if( lhs ) {
 				if( rhs ) {
 					return lhs.get( ) <= rhs.get( );
@@ -273,7 +299,8 @@ namespace daw {
 
 		template<typename T>
 		friend bool operator<=( static_optional const &lhs, T const &rhs ) {
-			static_assert( daw::is_equal_less_than_comparable_v<value_type, T>, "Types are not equal_less than comparable" );
+			static_assert( daw::is_equal_less_than_comparable_v<value_type, T>,
+			               "Types are not equal_less than comparable" );
 			if( lhs ) {
 				return lhs.get( ) <= rhs;
 			}
@@ -281,7 +308,8 @@ namespace daw {
 		}
 
 		template<typename T>
-		friend bool operator>=( static_optional const &lhs, static_optional<T> const &rhs ) {
+		friend bool operator>=( static_optional const &lhs,
+		                        static_optional<T> const &rhs ) {
 			static_assert( daw::is_equal_greater_than_comparable_v<value_type, T>,
 			               "Types are not equal_greater than comparable" );
 			if( lhs ) {
@@ -322,7 +350,8 @@ namespace daw {
 
 	template<typename T, typename U>
 	bool operator!=( static_optional<T> const &lhs, U const &rhs ) {
-		static_assert( daw::is_inequality_comparable_v<T, U>, "Types are not inequality comparable" );
+		static_assert( daw::is_inequality_comparable_v<T, U>,
+		               "Types are not inequality comparable" );
 		if( lhs ) {
 			return lhs != rhs;
 		}
@@ -331,7 +360,8 @@ namespace daw {
 
 	template<typename T, typename U>
 	bool operator<( static_optional<T> const &lhs, U const &rhs ) {
-		static_assert( daw::is_inequality_comparable_v<T, U>, "Types are not less than comparable" );
+		static_assert( daw::is_inequality_comparable_v<T, U>,
+		               "Types are not less than comparable" );
 		if( lhs ) {
 			return lhs < rhs;
 		}
@@ -340,7 +370,8 @@ namespace daw {
 
 	template<typename T, typename U>
 	bool operator>( static_optional<T> const &lhs, U const &rhs ) {
-		static_assert( daw::is_inequality_comparable_v<T, U>, "Types are not greater than comparable" );
+		static_assert( daw::is_inequality_comparable_v<T, U>,
+		               "Types are not greater than comparable" );
 		if( lhs ) {
 			return lhs > rhs;
 		}
@@ -349,7 +380,8 @@ namespace daw {
 
 	template<typename T, typename U>
 	bool operator<=( static_optional<T> const &lhs, U const &rhs ) {
-		static_assert( daw::is_inequality_comparable_v<T, U>, "Types are not equal less than comparable" );
+		static_assert( daw::is_inequality_comparable_v<T, U>,
+		               "Types are not equal less than comparable" );
 		if( lhs ) {
 			return lhs <= rhs;
 		}
@@ -358,7 +390,8 @@ namespace daw {
 
 	template<typename T, typename U>
 	bool operator>=( static_optional<T> const &lhs, U const &rhs ) {
-		static_assert( daw::is_inequality_comparable_v<T, U>, "Types are not equal greater than comparable" );
+		static_assert( daw::is_inequality_comparable_v<T, U>,
+		               "Types are not equal greater than comparable" );
 		if( lhs ) {
 			return lhs >= rhs;
 		}

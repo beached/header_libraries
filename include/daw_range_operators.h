@@ -3,14 +3,14 @@
 // Copyright (c) 2014-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -54,90 +54,120 @@ namespace daw {
 	}     // namespace range
 } // namespace daw
 
-#define DAW_RANGE_GENERATE_VCLAUSE( clause_name )                                                                      \
-	namespace daw {                                                                                                      \
-		namespace range {                                                                                                  \
-			namespace operators {                                                                                            \
-				namespace details {                                                                                            \
-					template<typename... Args>                                                                                   \
-					class clause_name##_t {                                                                                      \
-						::std::tuple<Args...> clause_name##_args;                                                                  \
-                                                                                                                       \
-						template<typename Container, typename... ClauseArgs,                                                       \
-						         typename ::std::enable_if_t<!::daw::range::is_range_reference_v<Container> &&                     \
-						                                     !::daw::range::is_range_collection_v<Container>> * = nullptr,         \
-						         typename = void>                                                                                  \
-						static auto clause_name##_helper( Container const &container, ClauseArgs &&... clause_args ) {             \
-							return from( container ).clause_name( std::forward<ClauseArgs>( clause_args )... );                      \
-						}                                                                                                          \
-                                                                                                                       \
-						template<typename Container, typename... ClauseArgs,                                                       \
-						         typename ::std::enable_if_t<::daw::range::is_range_reference_v<Container>> * = nullptr>           \
-						static auto clause_name##_helper( Container container, ClauseArgs &&... clause_args ) {                    \
-							return container.clause_name( std::forward<ClauseArgs>( clause_args )... );                              \
-						}                                                                                                          \
-                                                                                                                       \
-						template<typename Container, typename... ClauseArgs,                                                       \
-						         typename ::std::enable_if_t<::daw::range::is_range_collection_v<Container>> * = nullptr>          \
-						static auto clause_name##_helper( Container const &container, ClauseArgs &&... clause_args ) {             \
-							return container.clause_name( std::forward<ClauseArgs>( clause_args )... );                              \
-						}                                                                                                          \
-                                                                                                                       \
-						template<typename Container>                                                                               \
-						auto delayed_dispatch( Container &&container ) const {                                                     \
-							return call_##clause_name( std::forward<Container>( container ),                                         \
-							                           typename gens<sizeof...( Args )>::type( ) );                                  \
-						}                                                                                                          \
-                                                                                                                       \
-						template<typename Container, int... S>                                                                     \
-						auto call_##clause_name( Container &&container, seq<S...> ) const {                                        \
-							return clause_name##_helper( std::forward<Container>( container ),                                       \
-							                             std::get<S>( clause_name##_args )... );                                     \
-						}                                                                                                          \
-                                                                                                                       \
-						template<typename Iterator, int... S>                                                                      \
-						auto call_##clause_name(::daw::range::ReferenceRange<Iterator> container, seq<S...> ) const {              \
-							return clause_name##_helper( container, std::get<S>( clause_name##_args )... );                          \
-						}                                                                                                          \
-                                                                                                                       \
-					public:                                                                                                      \
-						clause_name##_t(::std::tuple<Args...> &&args )                                                             \
-						  : clause_name##_args(::std::forward<::std::tuple<Args>>( args )... ) {}                                  \
-                                                                                                                       \
-						template<typename Container>                                                                               \
-						auto operator( )( Container &&container ) const {                                                          \
-							return delayed_dispatch( std::forward<Container>( container ) );                                         \
-						}                                                                                                          \
-					};                                                                                                           \
-				}                                                                                                              \
-                                                                                                                       \
-				template<typename... Args>                                                                                     \
-				auto clause_name( Args &&... clause_name##_args ) {                                                            \
-					std::tuple<Args...> param = std::make_tuple( std::forward<Args...>( clause_name##_args )... );               \
-					return ::daw::range::operators::details::clause_name##_t<Args...>( std::move( param ) );                     \
-				}                                                                                                              \
-			}                                                                                                                \
-		}                                                                                                                  \
-	}                                                                                                                    \
-	template<typename Container, typename... Args,                                                                       \
-	         typename ::std::enable_if_t<!::daw::range::is_range_reference_v<Container> &&                               \
-	                                     !::daw::range::is_range_collection_v<Container>> * = nullptr,                   \
-	         typename = void>                                                                                            \
-	auto operator<<( Container &&container,                                                                              \
-	                 ::daw::range::operators::details::clause_name##_t<Args...> const &predicate ) {                     \
-		return predicate( std::forward<Container>( container ) );                                                          \
-	}                                                                                                                    \
-	template<typename Container, typename... Args,                                                                       \
-	         typename ::std::enable_if_t<::daw::range::is_range_collection_v<Container>> * = nullptr>                    \
-	auto operator<<( Container &&container,                                                                              \
-	                 ::daw::range::operators::details::clause_name##_t<Args...> const &predicate ) {                     \
-		return predicate( std::forward<Container>( container ) );                                                          \
-	}                                                                                                                    \
-	template<typename Container, typename... Args,                                                                       \
-	         typename ::std::enable_if_t<::daw::range::is_range_reference_v<Container>> * = nullptr>                     \
-	auto operator<<( Container &&container,                                                                              \
-	                 ::daw::range::operators::details::clause_name##_t<Args...> const &predicate ) {                     \
-		return predicate( std::forward<Container>( container ) );                                                          \
+#define DAW_RANGE_GENERATE_VCLAUSE( clause_name )                              \
+	namespace daw {                                                              \
+		namespace range {                                                          \
+			namespace operators {                                                    \
+				namespace details {                                                    \
+					template<typename... Args>                                           \
+					class clause_name##_t {                                              \
+						::std::tuple<Args...> clause_name##_args;                          \
+                                                                               \
+						template<                                                          \
+						  typename Container, typename... ClauseArgs,                      \
+						  typename ::std::enable_if_t<                                     \
+						    !::daw::range::is_range_reference_v<Container> &&              \
+						    !::daw::range::is_range_collection_v<Container>> * = nullptr,  \
+						  typename = void>                                                 \
+						static auto clause_name##_helper( Container const &container,      \
+						                                  ClauseArgs &&... clause_args ) { \
+							return from( container )                                         \
+							  .clause_name( std::forward<ClauseArgs>( clause_args )... );    \
+						}                                                                  \
+                                                                               \
+						template<                                                          \
+						  typename Container, typename... ClauseArgs,                      \
+						  typename ::std::enable_if_t<                                     \
+						    ::daw::range::is_range_reference_v<Container>> * = nullptr>    \
+						static auto clause_name##_helper( Container container,             \
+						                                  ClauseArgs &&... clause_args ) { \
+							return container.clause_name(                                    \
+							  std::forward<ClauseArgs>( clause_args )... );                  \
+						}                                                                  \
+                                                                               \
+						template<                                                          \
+						  typename Container, typename... ClauseArgs,                      \
+						  typename ::std::enable_if_t<                                     \
+						    ::daw::range::is_range_collection_v<Container>> * = nullptr>   \
+						static auto clause_name##_helper( Container const &container,      \
+						                                  ClauseArgs &&... clause_args ) { \
+							return container.clause_name(                                    \
+							  std::forward<ClauseArgs>( clause_args )... );                  \
+						}                                                                  \
+                                                                               \
+						template<typename Container>                                       \
+						auto delayed_dispatch( Container &&container ) const {             \
+							return call_##clause_name(                                       \
+							  std::forward<Container>( container ),                          \
+							  typename gens<sizeof...( Args )>::type( ) );                   \
+						}                                                                  \
+                                                                               \
+						template<typename Container, int... S>                             \
+						auto call_##clause_name( Container &&container,                    \
+						                         seq<S...> ) const {                       \
+							return clause_name##_helper(                                     \
+							  std::forward<Container>( container ),                          \
+							  std::get<S>( clause_name##_args )... );                        \
+						}                                                                  \
+                                                                               \
+						template<typename Iterator, int... S>                              \
+						auto call_##clause_name(                                           \
+						  ::daw::range::ReferenceRange<Iterator> container,                \
+						  seq<S...> ) const {                                              \
+							return clause_name##_helper(                                     \
+							  container, std::get<S>( clause_name##_args )... );             \
+						}                                                                  \
+                                                                               \
+					public:                                                              \
+						clause_name##_t(::std::tuple<Args...> &&args )                     \
+						  : clause_name                                                    \
+						  ##_args(::std::forward<::std::tuple<Args>>( args )... ) {}       \
+                                                                               \
+						template<typename Container>                                       \
+						auto operator( )( Container &&container ) const {                  \
+							return delayed_dispatch( std::forward<Container>( container ) ); \
+						}                                                                  \
+					};                                                                   \
+				}                                                                      \
+                                                                               \
+				template<typename... Args>                                             \
+				auto clause_name( Args &&... clause_name##_args ) {                    \
+					std::tuple<Args...> param =                                          \
+					  std::make_tuple( std::forward<Args...>( clause_name##_args )... ); \
+					return ::daw::range::operators::details::clause_name##_t<Args...>(   \
+					  std::move( param ) );                                              \
+				}                                                                      \
+			}                                                                        \
+		}                                                                          \
+	}                                                                            \
+	template<typename Container, typename... Args,                               \
+	         typename ::std::enable_if_t<                                        \
+	           !::daw::range::is_range_reference_v<Container> &&                 \
+	           !::daw::range::is_range_collection_v<Container>> * = nullptr,     \
+	         typename = void>                                                    \
+	auto operator<<(                                                             \
+	  Container &&container,                                                     \
+	  ::daw::range::operators::details::clause_name##_t<Args...> const           \
+	    &predicate ) {                                                           \
+		return predicate( std::forward<Container>( container ) );                  \
+	}                                                                            \
+	template<typename Container, typename... Args,                               \
+	         typename ::std::enable_if_t<                                        \
+	           ::daw::range::is_range_collection_v<Container>> * = nullptr>      \
+	auto operator<<(                                                             \
+	  Container &&container,                                                     \
+	  ::daw::range::operators::details::clause_name##_t<Args...> const           \
+	    &predicate ) {                                                           \
+		return predicate( std::forward<Container>( container ) );                  \
+	}                                                                            \
+	template<typename Container, typename... Args,                               \
+	         typename ::std::enable_if_t<                                        \
+	           ::daw::range::is_range_reference_v<Container>> * = nullptr>       \
+	auto operator<<(                                                             \
+	  Container &&container,                                                     \
+	  ::daw::range::operators::details::clause_name##_t<Args...> const           \
+	    &predicate ) {                                                           \
+		return predicate( std::forward<Container>( container ) );                  \
 	}
 
 DAW_RANGE_GENERATE_VCLAUSE( accumulate );

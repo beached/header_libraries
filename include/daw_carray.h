@@ -3,14 +3,14 @@
 // Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -34,20 +34,23 @@
 namespace daw {
 	namespace details {
 		template<typename T>
-		constexpr void swap( T &lhs, T &rhs ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) ) {
+		constexpr void
+		swap( T &lhs,
+		      T &rhs ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) ) {
 			T tmp = lhs;
 			lhs = std::move( rhs );
 			rhs = std::move( tmp );
 		}
 
 		template<typename T, typename Arg>
-		constexpr void assign_to( T *ptr, Arg &&arg ) noexcept( noexcept( T( std::declval<Arg &&>( ) ) ) ) {
+		constexpr void assign_to( T *ptr, Arg &&arg ) noexcept(
+		  noexcept( T( std::declval<Arg &&>( ) ) ) ) {
 			*ptr = std::forward<Arg>( arg );
 		}
 
 		template<typename T, typename Arg, typename... Args>
-		constexpr void assign_to( T *ptr, Arg &&arg,
-		                          Args &&... args ) noexcept( noexcept( T( std::declval<Arg &&>( ) ) ) ) {
+		constexpr void assign_to( T *ptr, Arg &&arg, Args &&... args ) noexcept(
+		  noexcept( T( std::declval<Arg &&>( ) ) ) ) {
 			*ptr = std::forward<Arg>( arg );
 			assign_to( ++ptr, std::forward<Args>( args )... );
 		}
@@ -74,7 +77,8 @@ namespace daw {
 		}
 
 		template<typename Iterator>
-		static constexpr std::reverse_iterator<Iterator> make_reverse_iterator( Iterator i ) {
+		static constexpr std::reverse_iterator<Iterator>
+		make_reverse_iterator( Iterator i ) {
 			return std::reverse_iterator<Iterator>( i );
 		}
 
@@ -82,19 +86,21 @@ namespace daw {
 		constexpr carray( ) noexcept
 		  : m_data{} {}
 
-		constexpr carray( T ( &values )[N] ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) )
+		constexpr carray( T ( &values )[N] ) noexcept(
+		  noexcept( T( std::declval<T const &>( ) ) ) )
 		  : m_data{} {
 			daw::algorithm::copy_n( values, ptr( ), N );
 		}
 
-		constexpr carray &operator=( T ( &values )[N] ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) ) {
+		constexpr carray &operator=( T ( &values )[N] ) noexcept(
+		  noexcept( T( std::declval<T const &>( ) ) ) ) {
 			daw::algorithm::copy_n( values, ptr( ), N );
 			return *this;
 		}
 
 		template<typename... Args>
-		constexpr carray( Args &&... args ) noexcept( noexcept( details::assign_to( std::declval<carray>( ).ptr( ),
-		                                                                            std::declval<Args &&>( )... ) ) )
+		constexpr carray( Args &&... args ) noexcept( noexcept( details::assign_to(
+		  std::declval<carray>( ).ptr( ), std::declval<Args &&>( )... ) ) )
 		  : m_data{} {
 
 			details::assign_to( ptr( ), std::forward<Args>( args )... );
@@ -102,17 +108,21 @@ namespace daw {
 
 		~carray( ) noexcept = default;
 
-		constexpr carray( carray const &other ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) ) {
+		constexpr carray( carray const &other ) noexcept(
+		  noexcept( T( std::declval<T const &>( ) ) ) ) {
 			daw::algorithm::copy_n( other.ptr( ), ptr( ), N );
 		}
 
-		constexpr carray &operator=( carray const &other ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) ) {
+		constexpr carray &operator=( carray const &other ) noexcept(
+		  noexcept( T( std::declval<T const &>( ) ) ) ) {
 			daw::algorithm::copy_n( other.ptr( ), ptr( ), N );
 			return *this;
 		}
 
-		constexpr carray( carray && ) noexcept( noexcept( T( std::declval<T &&>( ) ) ) ) = default;
-		constexpr carray &operator=( carray && ) noexcept( noexcept( T( std::declval<T &&>( ) ) ) ) = default;
+		constexpr carray( carray && ) noexcept(
+		  noexcept( T( std::declval<T &&>( ) ) ) ) = default;
+		constexpr carray &operator=( carray && ) noexcept(
+		  noexcept( T( std::declval<T &&>( ) ) ) ) = default;
 
 		constexpr reference operator[]( size_type pos ) noexcept {
 			return ptr( )[pos];
@@ -123,12 +133,14 @@ namespace daw {
 		}
 
 		constexpr reference at( size_type pos ) {
-			daw::exception::daw_throw_on_false<std::out_of_range>( pos < N, "Attemp to access past end of array" );
+			daw::exception::daw_throw_on_false<std::out_of_range>(
+			  pos < N, "Attemp to access past end of array" );
 			return ptr( )[pos];
 		}
 
 		constexpr const_reference at( size_type pos ) const noexcept {
-			daw::exception::daw_throw_on_false<std::out_of_range>( pos < N, "Attemp to access past end of array" );
+			daw::exception::daw_throw_on_false<std::out_of_range>(
+			  pos < N, "Attemp to access past end of array" );
 			return ptr( )[pos];
 		}
 
@@ -221,12 +233,13 @@ namespace daw {
 			return 0 == N;
 		}
 
-		constexpr void fill( const_reference value ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) ) {
+		constexpr void fill( const_reference value ) noexcept(
+		  noexcept( T( std::declval<T const &>( ) ) ) ) {
 			std::fill( begin( ), end( ), value );
 		}
 
-		constexpr void
-		swap( carray &rhs ) noexcept( noexcept( details::swap( std::declval<T &>( ), std::declval<T &>( ) ) ) ) {
+		constexpr void swap( carray &rhs ) noexcept( noexcept(
+		  details::swap( std::declval<T &>( ), std::declval<T &>( ) ) ) ) {
 			using details::swap;
 			for( size_t n = 0; n < N; ++n ) {
 				swap( ptr( )[n], rhs.ptr( )[n] );
@@ -235,9 +248,8 @@ namespace daw {
 	}; // carray
 
 	template<typename T, size_t N>
-	constexpr void
-	swap( carray<T, N> &lhs,
-	      carray<T, N> &rhs ) noexcept( noexcept( details::swap( std::declval<T &>( ), std::declval<T &>( ) ) ) ) {
+	constexpr void swap( carray<T, N> &lhs, carray<T, N> &rhs ) noexcept(
+	  noexcept( details::swap( std::declval<T &>( ), std::declval<T &>( ) ) ) ) {
 		lhs.swap( rhs );
 	}
 } // namespace daw

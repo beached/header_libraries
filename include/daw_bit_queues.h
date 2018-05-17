@@ -3,14 +3,14 @@
 // Copyright (c) 2016-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -33,13 +33,15 @@ namespace daw {
 	struct bit_queue_source_little_endian {};
 	struct bit_queue_source_big_endian {};
 
-	using bit_queue_source_native_endian =
-	  typename std::conditional<boost::endian::order::native == boost::endian::order::little,
-	                            bit_queue_source_little_endian, bit_queue_source_big_endian>::type;
+	using bit_queue_source_native_endian = typename std::conditional<
+	  boost::endian::order::native == boost::endian::order::little,
+	  bit_queue_source_little_endian, bit_queue_source_big_endian>::type;
 
-	template<typename queue_type, typename value_type = uint8_t, typename BitQueueLSB = bit_queue_source_native_endian>
+	template<typename queue_type, typename value_type = uint8_t,
+	         typename BitQueueLSB = bit_queue_source_native_endian>
 	class basic_bit_queue {
-		static_assert( std::numeric_limits<queue_type>::is_integer && !std::numeric_limits<queue_type>::is_signed,
+		static_assert( std::numeric_limits<queue_type>::is_integer &&
+		                 !std::numeric_limits<queue_type>::is_signed,
 		               "Only unsigned integral types are supported" );
 		size_t m_size;
 		queue_type m_queue;
@@ -74,18 +76,23 @@ namespace daw {
 
 	private:
 		template<typename T>
-		auto source_to_native_endian( T value, bit_queue_source_little_endian ) noexcept {
+		auto source_to_native_endian( T value,
+		                              bit_queue_source_little_endian ) noexcept {
 			return boost::endian::little_to_native( value );
 		}
 
 		template<typename T>
-		auto source_to_native_endian( T value, bit_queue_source_big_endian ) noexcept {
+		auto source_to_native_endian( T value,
+		                              bit_queue_source_big_endian ) noexcept {
 			return boost::endian::big_to_native( value );
 		}
 
 	public:
-		void push_back( value_type value, size_t const bits = sizeof( value_type ) * 8 ) {
-			daw::exception::dbg_throw_on_false( ( capacity( ) - m_size ) >= bits, "Not enough bits to hold value pushed" );
+		void push_back( value_type value,
+		                size_t const bits = sizeof( value_type ) * 8 ) {
+			daw::exception::dbg_throw_on_false(
+			  ( capacity( ) - m_size ) >= bits,
+			  "Not enough bits to hold value pushed" );
 
 			value &= get_left_mask<value_type>( sizeof( value_type ) * 8 - bits );
 			m_queue <<= bits;
@@ -95,14 +102,16 @@ namespace daw {
 
 		value_type pop_front( size_t const bits ) noexcept {
 			queue_type const mask = static_cast<queue_type>( ~( ( 2 << bits ) - 1 ) );
-			auto result = static_cast<value_type>( static_cast<value_type>( m_queue & mask ) >> ( capacity( ) - bits ) );
+			auto result = static_cast<value_type>(
+			  static_cast<value_type>( m_queue & mask ) >> ( capacity( ) - bits ) );
 			m_queue <<= bits;
 			m_size -= bits;
 			return result;
 		}
 
 		value_type pop_back( size_t const bits ) {
-			daw::exception::dbg_throw_on_false( m_size >= bits, "Not enough bits to pop request" );
+			daw::exception::dbg_throw_on_false( m_size >= bits,
+			                                    "Not enough bits to pop request" );
 
 			auto const mask = get_left_mask<queue_type>( capacity( ) - bits );
 			auto result = static_cast<value_type>( m_queue & mask );
@@ -160,7 +169,8 @@ namespace daw {
 			m_queue.push_back( value, num_nibbles * 4 );
 		}
 
-		constexpr bool can_pop( size_t num_nibbles = sizeof( value_type ) * 2 ) const noexcept {
+		constexpr bool can_pop( size_t num_nibbles = sizeof( value_type ) *
+		                                             2 ) const noexcept {
 			return m_queue.can_pop( num_nibbles * 4 );
 		}
 
@@ -168,7 +178,8 @@ namespace daw {
 			return size( ) == capacity( );
 		}
 
-		value_type pop_front( size_t num_nibbles = sizeof( value_type ) * 2 ) noexcept {
+		value_type pop_front( size_t num_nibbles = sizeof( value_type ) *
+		                                           2 ) noexcept {
 			return m_queue.pop_front( num_nibbles * 4 );
 		}
 

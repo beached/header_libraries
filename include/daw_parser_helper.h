@@ -3,14 +3,14 @@
 // Copyright (c) 2014-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -67,7 +67,8 @@ namespace daw {
 			ForwardIterator last;
 			bool found;
 
-			constexpr find_result_t( ForwardIterator First, ForwardIterator Last, bool Found ) noexcept
+			constexpr find_result_t( ForwardIterator First, ForwardIterator Last,
+			                         bool Found ) noexcept
 			  : first{First}
 			  , last{Last}
 			  , found{Found} {}
@@ -95,8 +96,9 @@ namespace daw {
 			}
 
 			std::string to_string( ) const {
-				return std::string( static_cast<char const *>( &( *first ) ),
-				                    static_cast<std::string::size_type>( std::distance( first, last ) ) );
+				return std::string(
+				  static_cast<char const *>( &( *first ) ),
+				  static_cast<std::string::size_type>( std::distance( first, last ) ) );
 			}
 
 			daw::string_view to_string_view( ) const {
@@ -121,14 +123,17 @@ namespace daw {
 		}; // find_result_t
 
 		template<typename ForwardIterator>
-		constexpr find_result_t<ForwardIterator> make_find_result( ForwardIterator first, ForwardIterator last,
-		                                                           bool result = false ) noexcept {
+		constexpr find_result_t<ForwardIterator>
+		make_find_result( ForwardIterator first, ForwardIterator last,
+		                  bool result = false ) noexcept {
 			return find_result_t<ForwardIterator>{first, last, result};
 		}
 
 		template<typename ForwardIterator, typename Predicate>
-		constexpr auto until( ForwardIterator first, ForwardIterator last, Predicate is_last ) {
-			//		                      std::function<bool( daw::traits::root_type_t<decltype( *first )> )> is_last )
+		constexpr auto until( ForwardIterator first, ForwardIterator last,
+		                      Predicate is_last ) {
+			//		                      std::function<bool(
+			//daw::traits::root_type_t<decltype( *first )> )> is_last )
 			//{
 
 			auto result = make_find_result( first, last );
@@ -142,7 +147,8 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator, typename Predicate>
-		constexpr auto until( ForwardIterator first, ForwardIterator last, Predicate is_last, bool throw_if_end_reached ) {
+		constexpr auto until( ForwardIterator first, ForwardIterator last,
+		                      Predicate is_last, bool throw_if_end_reached ) {
 			auto result = make_find_result( first, last );
 			for( auto it = first; it != last; ++it ) {
 				if( is_last( *it ) ) {
@@ -158,7 +164,8 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator, typename Predicate>
-		constexpr auto until_false( ForwardIterator first, ForwardIterator last, Predicate is_last ) {
+		constexpr auto until_false( ForwardIterator first, ForwardIterator last,
+		                            Predicate is_last ) {
 			auto result = make_find_result( first, last );
 			for( auto it = first; it != last; ++it ) {
 				if( !is_last( *it ) ) {
@@ -172,13 +179,15 @@ namespace daw {
 
 		template<typename T, typename Arg>
 		constexpr bool is_a( T const &value, Arg const &tst ) noexcept {
-			// static_assert( daw::is_comparable_v<T, Arg>, "value is not comparable to tst" );
+			// static_assert( daw::is_comparable_v<T, Arg>, "value is not comparable
+			// to tst" );
 			using val_t = typename daw::traits::max_sizeof<T, Arg>::type;
 			return ( static_cast<val_t>( value ) == static_cast<val_t>( tst ) );
 		}
 
 		template<typename T, typename Arg, typename... Args>
-		constexpr bool is_a( T const &value, Arg const &tst, Args const &... tsts ) noexcept {
+		constexpr bool is_a( T const &value, Arg const &tst,
+		                     Args const &... tsts ) noexcept {
 			return is_a( value, tst ) || is_a( value, tsts... );
 		}
 
@@ -202,11 +211,13 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator, typename Value, typename... Values>
-		constexpr find_result_t<ForwardIterator> until_value( ForwardIterator first, ForwardIterator last, Value &&value,
-		                                                      Values &&... values ) {
+		constexpr find_result_t<ForwardIterator>
+		until_value( ForwardIterator first, ForwardIterator last, Value &&value,
+		             Values &&... values ) {
 			auto result = make_find_result( first, last );
 			for( auto it = first; it != last; ++it ) {
-				if( is_a( *it, std::forward<Value>( value ), std::forward<Values>( values )... ) ) {
+				if( is_a( *it, std::forward<Value>( value ),
+				          std::forward<Values>( values )... ) ) {
 					result.last = it;
 					result.found = true;
 					break;
@@ -220,13 +231,16 @@ namespace daw {
 		  -> decltype( std::begin( container ) == std::end( container ) ) {
 
 			return std::find_if( std::begin( container ), std::end( container ),
-			                     [&]( auto const &v ) { return is_a( value, v ); } ) == std::end( container );
+			                     [&]( auto const &v ) {
+				                     return is_a( value, v );
+			                     } ) == std::end( container );
 		}
 
 		template<typename T, typename U, size_t N>
 		constexpr bool value_in( T &&value, U ( &container )[N] ) {
-			return std::find_if( container, container + N, [&]( auto const &v ) { return is_a( value, v ); } ) ==
-			       std::end( container );
+			return std::find_if( container, container + N, [&]( auto const &v ) {
+				       return is_a( value, v );
+			       } ) == std::end( container );
 		}
 
 		class in_t {
@@ -278,15 +292,17 @@ namespace daw {
 		auto in( Container container ) {
 		    using value_t = daw::traits::root_type_t<decltype( container[0] )>;
 		    std::vector<value_t> values;
-		    std::copy( std::begin( container ), std::end( container ), std::back_inserter( values ) );
+		    std::copy( std::begin( container ), std::end( container ),
+		std::back_inserter( values ) );
 
 		    return in_t<value_t>{std::move( values )};
 		}
 		*/
 
 		template<typename ForwardIterator, typename Container>
-		constexpr find_result_t<ForwardIterator> until_values( ForwardIterator first, ForwardIterator last,
-		                                                       Container &&container ) {
+		constexpr find_result_t<ForwardIterator>
+		until_values( ForwardIterator first, ForwardIterator last,
+		              Container &&container ) {
 			auto result = make_find_result( first, last );
 			for( auto it = first; it != last; ++it ) {
 				if( value_in( *it, container ) ) {
@@ -299,26 +315,35 @@ namespace daw {
 		}
 
 		template<typename T, typename Predicate>
-		constexpr bool is_true( T &&value, Predicate /*std::function<bool( daw::traits::root_type_t<T> )>*/ predicate ) {
+		constexpr bool
+		is_true( T &&value,
+		         Predicate /*std::function<bool( daw::traits::root_type_t<T> )>*/
+		           predicate ) {
 			return predicate( value );
 		}
 
 		template<typename T, typename Predicate, typename... Predicates>
-		constexpr bool is_true( T &&value, Predicate &&predicate, Predicates &&... predicates ) {
-			return is_true( std::forward<Predicate>( predicate ), std::forward<T>( value ) ) ||
-			       is_true( std::forward<T>( value ), std::forward<Predicates>( predicates )... );
+		constexpr bool is_true( T &&value, Predicate &&predicate,
+		                        Predicates &&... predicates ) {
+			return is_true( std::forward<Predicate>( predicate ),
+			                std::forward<T>( value ) ) ||
+			       is_true( std::forward<T>( value ),
+			                std::forward<Predicates>( predicates )... );
 		}
 
 		template<typename T, typename U, typename... Args>
 		constexpr void expect( T &&value, U &&check, Args &&... args ) {
-			if( !is_a( std::forward<T>( value ), std::forward<U>( check ), std::forward<Args>( args )... ) ) {
+			if( !is_a( std::forward<T>( value ), std::forward<U>( check ),
+			           std::forward<Args>( args )... ) ) {
 				throw ParserException{};
 			}
 		}
 
 		template<typename T, typename Predicate, typename... Predicates>
-		constexpr void expect_true( T &&value, Predicate &&predicate, Predicates &&... predicates ) {
-			if( !is_true( std::forward<T>( value ), std::forward<Predicate>( predicate ),
+		constexpr void expect_true( T &&value, Predicate &&predicate,
+		                            Predicates &&... predicates ) {
+			if( !is_true( std::forward<T>( value ),
+			              std::forward<Predicate>( predicate ),
 			              std::forward<Predicates>( predicates )... ) ) {
 				throw ParserException{};
 			}
@@ -349,17 +374,20 @@ namespace daw {
 
 		template<typename T>
 		constexpr bool is_hex( T const &value ) noexcept {
-			return in_range( value, '0', '9' ) || in_range( value, 'a', 'f' ) || in_range( value, 'A', 'F' );
+			return in_range( value, '0', '9' ) || in_range( value, 'a', 'f' ) ||
+			       in_range( value, 'A', 'F' );
 		}
 
 		template<typename T>
 		constexpr bool is_alphanumeric( T &&value ) noexcept {
-			return is_alpha( std::forward<T>( value ) ) || is_number( std::forward<T>( value ) );
+			return is_alpha( std::forward<T>( value ) ) ||
+			       is_number( std::forward<T>( value ) );
 		}
 
 		template<typename T, typename U>
 		constexpr void assert_not_equal( T &&lhs, U &&rhs ) {
-			static_assert( daw::is_comparable_v<T, U>, "lhs is not comparable to rhs" );
+			static_assert( daw::is_comparable_v<T, U>,
+			               "lhs is not comparable to rhs" );
 			if( lhs != rhs ) {
 				throw ParserException{};
 			}
@@ -367,7 +395,8 @@ namespace daw {
 
 		template<typename T, typename U>
 		constexpr void assert_equal( T &&lhs, U &&rhs ) {
-			static_assert( daw::is_comparable_v<T, U>, "lhs is not comparable to rhs" );
+			static_assert( daw::is_comparable_v<T, U>,
+			               "lhs is not comparable to rhs" );
 			if( lhs == rhs ) {
 				throw ParserException{};
 			}
@@ -386,17 +415,20 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator, typename StartFrom, typename GoUntil>
-		constexpr auto from_to( ForwardIterator first, ForwardIterator last, StartFrom &&start_from, GoUntil &&go_until,
+		constexpr auto from_to( ForwardIterator first, ForwardIterator last,
+		                        StartFrom &&start_from, GoUntil &&go_until,
 		                        bool throw_if_end_reached = false )
 		  -> std::enable_if_t<daw::is_comparable_v<decltype( *first ), StartFrom> &&
 		                        daw::is_comparable_v<decltype( *first ), GoUntil>,
 		                      find_result_t<ForwardIterator>> {
 
-			auto start = until_value( first, last, std::forward<StartFrom>( start_from ) );
+			auto start =
+			  until_value( first, last, std::forward<StartFrom>( start_from ) );
 			if( !start ) {
 				throw ParserException{};
 			}
-			auto finish = until_value( start.last, last, std::forward<GoUntil>( go_until ) );
+			auto finish =
+			  until_value( start.last, last, std::forward<GoUntil>( go_until ) );
 			if( throw_if_end_reached && !finish ) {
 				throw ParserException{};
 			}
@@ -405,12 +437,16 @@ namespace daw {
 			return result;
 		}
 
-		template<typename ForwardIterator, typename IsFirstPredicate, typename IsLastPredicate>
-		constexpr auto from_to_pred( ForwardIterator first, ForwardIterator last, IsFirstPredicate is_first,
-		                             IsLastPredicate is_last, bool throw_if_end_reached = false ) {
+		template<typename ForwardIterator, typename IsFirstPredicate,
+		         typename IsLastPredicate>
+		constexpr auto from_to_pred( ForwardIterator first, ForwardIterator last,
+		                             IsFirstPredicate is_first,
+		                             IsLastPredicate is_last,
+		                             bool throw_if_end_reached = false ) {
 			/*
-			std::function<bool( daw::traits::root_type_t<decltype( *first )> )> is_first,
-			std::function<bool( daw::traits::root_type_t<decltype( *first )> )> is_last,
+			std::function<bool( daw::traits::root_type_t<decltype( *first )> )>
+			is_first, std::function<bool( daw::traits::root_type_t<decltype( *first )>
+			)> is_last,
 			*/
 			auto start = until( first, last, is_first );
 			if( !start ) {
@@ -426,13 +462,16 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator, typename Divider, typename... Dividers>
-		auto split_on( ForwardIterator first, ForwardIterator last, Divider &&divider, Dividers &&... dividers ) {
+		auto split_on( ForwardIterator first, ForwardIterator last,
+		               Divider &&divider, Dividers &&... dividers ) {
 			std::vector<ForwardIterator> endings;
-			auto result = until_value( first, last, std::forward<Divider>( divider ), std::forward<Dividers>( dividers )... );
+			auto result = until_value( first, last, std::forward<Divider>( divider ),
+			                           std::forward<Dividers>( dividers )... );
 			while( result ) {
 				endings.push_back( result.last );
 				result =
-				  until_value( result.last, last, std::forward<Divider>( divider ), std::forward<Dividers>( dividers )... );
+				  until_value( result.last, last, std::forward<Divider>( divider ),
+				               std::forward<Dividers>( dividers )... );
 			}
 			if( result.first != result.last ) {
 				endings.push_back( result.last );
@@ -441,8 +480,11 @@ namespace daw {
 		};
 
 		template<typename ForwardIterator, typename Predicate>
-		auto split_if( ForwardIterator first, ForwardIterator last,
-		               Predicate /*std::function<bool( daw::traits::root_type_t<decltype( *first )> )>*/ is_divider ) {
+		auto
+		split_if( ForwardIterator first, ForwardIterator last,
+		          Predicate /*std::function<bool( daw::traits::root_type_t<decltype(
+		                       *first )> )>*/
+		                      is_divider ) {
 			std::vector<ForwardIterator> endings;
 			auto result = until( first, last, is_divider );
 			while( result ) {
@@ -516,7 +558,8 @@ namespace daw {
 
 		template<typename ForwardIterator>
 		constexpr auto skip_ws( ForwardIterator first, ForwardIterator last ) {
-			auto result = until_false( first, last, is_unicode_whitespace<decltype( *first )> );
+			auto result =
+			  until_false( first, last, is_unicode_whitespace<decltype( *first )> );
 			result.first = result.last;
 			result.last = last;
 			return result;
@@ -555,7 +598,9 @@ namespace daw {
 		constexpr auto trim( ForwardIterator first, ForwardIterator last ) {
 			auto start = trim_left( first, last );
 			auto finish = trim_right( start.first, last );
-			return make_find_result( start.first, finish.last, static_cast<bool>( start ) || static_cast<bool>( finish ) );
+			return make_find_result( start.first, finish.last,
+			                         static_cast<bool>( start ) ||
+			                           static_cast<bool>( finish ) );
 		}
 
 		template<typename T>
@@ -579,7 +624,8 @@ namespace daw {
 					return false;
 				}
 				bool result = true;
-				for( auto it = m_last_values.begin( ); result && it != m_last_values.end( ); ++it ) {
+				for( auto it = m_last_values.begin( );
+				     result && it != m_last_values.end( ); ++it ) {
 					result = result && is_a( *( it ), '\r' );
 					++it;
 					result = result && is_a( *( it ), '\n' );
@@ -639,11 +685,13 @@ namespace daw {
 			  : m_to_match{std::move( to_match )} {}
 
 			template<typename ForwardIterator>
-			find_result_t<ForwardIterator> operator( )( ForwardIterator first, ForwardIterator last ) const {
+			find_result_t<ForwardIterator> operator( )( ForwardIterator first,
+			                                            ForwardIterator last ) const {
 				auto result = make_find_result( first, last );
 
-				auto pos = std::search( result.first, result.last, m_to_match.begin( ), m_to_match.end( ),
-				                        []( auto const &lhs, auto const &rhs ) { return is_a( lhs, rhs ); } );
+				auto pos = std::search(
+				  result.first, result.last, m_to_match.begin( ), m_to_match.end( ),
+				  []( auto const &lhs, auto const &rhs ) { return is_a( lhs, rhs ); } );
 
 				if( pos != result.last ) {
 					result.last = pos;
@@ -657,7 +705,8 @@ namespace daw {
 		auto matcher( Container const &container ) {
 			using value_t = daw::traits::root_type_t<decltype( *container.begin( ) )>;
 			std::vector<value_t> values;
-			std::copy( container.begin( ), container.end( ), std::back_inserter( values ) );
+			std::copy( container.begin( ), container.end( ),
+			           std::back_inserter( values ) );
 			return matcher_t<value_t>{std::move( values )};
 		}
 
@@ -670,11 +719,14 @@ namespace daw {
 		}
 
 		///
-		// Does the first range (first1, last1] start with the second range (first2, last2]
+		// Does the first range (first1, last1] start with the second range (first2,
+		// last2]
 		//
-		template<typename ForwardIterator1, typename ForwardIterator2, typename BinaryPredicate>
-		constexpr bool starts_with( ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2,
-		                            ForwardIterator2 last2, BinaryPredicate pred ) {
+		template<typename ForwardIterator1, typename ForwardIterator2,
+		         typename BinaryPredicate>
+		constexpr bool starts_with( ForwardIterator1 first1, ForwardIterator1 last1,
+		                            ForwardIterator2 first2, ForwardIterator2 last2,
+		                            BinaryPredicate pred ) {
 			while( first1 != last1 && first2 != last2 ) {
 				if( !pred( *first1, *first2 ) ) {
 					return false;
@@ -686,8 +738,9 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator, typename Value>
-		constexpr find_result_t<ForwardIterator> until_last_of( ForwardIterator first, ForwardIterator last,
-		                                                        Value const &value ) {
+		constexpr find_result_t<ForwardIterator>
+		until_last_of( ForwardIterator first, ForwardIterator last,
+		               Value const &value ) {
 			auto result = until_value( first, last, value );
 			bool found = static_cast<bool>( result );
 			while( result && result.end( ) != last ) {
@@ -702,8 +755,9 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator, typename Sequence>
-		constexpr find_result_t<ForwardIterator> find_first_of_any( ForwardIterator first, ForwardIterator last,
-		                                                            Sequence values ) {
+		constexpr find_result_t<ForwardIterator>
+		find_first_of_any( ForwardIterator first, ForwardIterator last,
+		                   Sequence values ) {
 			auto first_val = *std::begin( values );
 			auto result = until_value( first, last, first_val );
 			if( !result ) {
@@ -713,7 +767,8 @@ namespace daw {
 			auto new_end = std::next( result.first );
 			while( new_end != last ) {
 				auto seq_pos = std::next( std::begin( values ) );
-				while( seq_pos != std::end( values ) && new_end != last && *seq_pos == *new_end ) {
+				while( seq_pos != std::end( values ) && new_end != last &&
+				       *seq_pos == *new_end ) {
 					if( *new_end == first_val ) {
 						last_first = new_end;
 					}

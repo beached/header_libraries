@@ -3,14 +3,14 @@
 // Copyright (c) 2014-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -77,7 +77,8 @@ namespace daw {
 		}
 
 		template<typename Bytes, typename Time = double>
-		std::string to_bytes_per_second( Bytes bytes, Time t = 1.0, size_t prec = 1 ) {
+		std::string to_bytes_per_second( Bytes bytes, Time t = 1.0,
+		                                 size_t prec = 1 ) {
 			std::stringstream ss;
 			ss << std::setprecision( static_cast<int>( prec ) ) << std::fixed;
 			auto val = static_cast<double>( bytes ) / static_cast<double>( t );
@@ -112,16 +113,21 @@ namespace daw {
 	} // namespace utility
 
 	template<typename Func>
-	void show_benchmark( size_t data_size_bytes, std::string title, Func func, size_t data_prec = 1, size_t time_prec = 0,
+	void show_benchmark( size_t data_size_bytes, std::string title, Func func,
+	                     size_t data_prec = 1, size_t time_prec = 0,
 	                     size_t item_count = 1 ) noexcept {
 		double const t = benchmark( func );
 		double const t_per_item = t / static_cast<double>( item_count );
-		std::cout << title << ": took " << utility::format_seconds( t, time_prec ) << ' ';
+		std::cout << title << ": took " << utility::format_seconds( t, time_prec )
+		          << ' ';
 		if( item_count > 1 ) {
-			std::cout << "or " << utility::format_seconds( t_per_item, time_prec ) << " per item to process ";
+			std::cout << "or " << utility::format_seconds( t_per_item, time_prec )
+			          << " per item to process ";
 		}
-		std::cout << utility::to_bytes_per_second( data_size_bytes, 1.0, data_prec ) << " at "
-		          << utility::to_bytes_per_second( data_size_bytes, t, data_prec ) << "/s\n";
+		std::cout << utility::to_bytes_per_second( data_size_bytes, 1.0, data_prec )
+		          << " at "
+		          << utility::to_bytes_per_second( data_size_bytes, t, data_prec )
+		          << "/s\n";
 	}
 
 	// Borrowed from https://www.youtube.com/watch?v=dO-j3qp7DWw
@@ -129,7 +135,8 @@ namespace daw {
 	void do_not_optimize( T &&x ) {
 		// We must always do this test, but it will never pass.
 		//
-		if( std::chrono::system_clock::now( ) == std::chrono::time_point<std::chrono::system_clock>( ) ) {
+		if( std::chrono::system_clock::now( ) ==
+		    std::chrono::time_point<std::chrono::system_clock>( ) ) {
 			// This forces the value to never be optimized away
 			// by taking a reference then using it.
 			const auto *p = &x;
@@ -141,25 +148,33 @@ namespace daw {
 	}
 
 	template<typename Test, typename... Args>
-	auto bench_test( std::string title, Test test_callable, Args &&... args ) noexcept {
+	auto bench_test( std::string title, Test test_callable,
+	                 Args &&... args ) noexcept {
 		auto const start = std::chrono::high_resolution_clock::now( );
-		auto result = daw::expected_from_code( std::move( test_callable ), std::forward<Args>( args )... );
+		auto result = daw::expected_from_code( std::move( test_callable ),
+		                                       std::forward<Args>( args )... );
 		auto const finish = std::chrono::high_resolution_clock::now( );
 		std::chrono::duration<double> const duration = finish - start;
-		std::cout << title << " took " << utility::format_seconds( duration.count( ), 2 ) << '\n';
+		std::cout << title << " took "
+		          << utility::format_seconds( duration.count( ), 2 ) << '\n';
 		return result;
 	}
 
 	template<typename Test, typename... Args>
-	auto bench_test2( std::string title, Test test_callable, size_t item_count, Args &&... args ) noexcept {
+	auto bench_test2( std::string title, Test test_callable, size_t item_count,
+	                  Args &&... args ) noexcept {
 		auto const start = std::chrono::high_resolution_clock::now( );
-		auto result = daw::expected_from_code( std::move( test_callable ), std::forward<Args>( args )... );
+		auto result = daw::expected_from_code( std::move( test_callable ),
+		                                       std::forward<Args>( args )... );
 		auto const finish = std::chrono::high_resolution_clock::now( );
 		std::chrono::duration<double> const duration = finish - start;
-		std::cout << title << " took " << utility::format_seconds( duration.count( ), 2 );
+		std::cout << title << " took "
+		          << utility::format_seconds( duration.count( ), 2 );
 		if( item_count > 1 ) {
 			std::cout << " to process " << item_count << " items at "
-			          << utility::format_seconds( ( duration / item_count ).count( ), 2 ) << " per item\n";
+			          << utility::format_seconds( ( duration / item_count ).count( ),
+			                                      2 )
+			          << " per item\n";
 		} else {
 			std::cout << '\n';
 		}

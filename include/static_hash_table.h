@@ -3,14 +3,14 @@
 // Copyright (c) 2016-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -61,27 +61,31 @@ namespace daw {
 		template<typename K>
 		static constexpr size_t hash_fn( K const &key ) {
 			return ( daw::fnv1a_hash( key ) %
-			         ( std::numeric_limits<size_t>::max( ) - static_cast<size_t>( hash_sentinals::Size ) ) ) +
+			         ( std::numeric_limits<size_t>::max( ) -
+			           static_cast<size_t>( hash_sentinals::Size ) ) ) +
 			       static_cast<size_t>( hash_sentinals::Size );
 		}
 
 		static constexpr size_t hash_fn( char const *const key ) {
 			return ( daw::fnv1a_hash( key ) %
-			         ( std::numeric_limits<size_t>::max( ) - static_cast<size_t>( hash_sentinals::Size ) ) ) +
+			         ( std::numeric_limits<size_t>::max( ) -
+			           static_cast<size_t>( hash_sentinals::Size ) ) ) +
 			       static_cast<size_t>( hash_sentinals::Size );
 		}
 
 		constexpr size_t find_impl( size_t const hash ) const {
 			auto const scaled_hash = scale_hash( hash );
 			for( size_t n = scaled_hash; n < Capacity; ++n ) {
-				if( m_values[n].hash_value == static_cast<size_t>( hash_sentinals::empty ) ) {
+				if( m_values[n].hash_value ==
+				    static_cast<size_t>( hash_sentinals::empty ) ) {
 					return n;
 				} else if( m_values[n].hash_value == hash ) {
 					return n;
 				}
 			}
 			for( size_t n = 0; n < scaled_hash; ++n ) {
-				if( m_values[n].hash_value == static_cast<size_t>( hash_sentinals::empty ) ) {
+				if( m_values[n].hash_value ==
+				    static_cast<size_t>( hash_sentinals::empty ) ) {
 					return n;
 				} else if( m_values[n].hash_value == hash ) {
 					return n;
@@ -92,12 +96,14 @@ namespace daw {
 
 		constexpr size_t find_next_empty( size_t const pos ) const {
 			for( size_t n = pos; n < Capacity; ++n ) {
-				if( m_values[n].hash_value == static_cast<size_t>( hash_sentinals::empty ) ) {
+				if( m_values[n].hash_value ==
+				    static_cast<size_t>( hash_sentinals::empty ) ) {
 					return n;
 				}
 			}
 			for( size_t n = 0; n < pos; ++n ) {
-				if( m_values[n].hash_value == static_cast<size_t>( hash_sentinals::empty ) ) {
+				if( m_values[n].hash_value ==
+				    static_cast<size_t>( hash_sentinals::empty ) ) {
 					return n;
 				}
 			}
@@ -110,7 +116,8 @@ namespace daw {
 			daw::algorithm::fill_n( m_values.begin( ), Capacity, hash_item{} );
 		}
 
-		constexpr static_hash_t( std::initializer_list<std::pair<char const *const, value_type>> items ) {
+		constexpr static_hash_t(
+		  std::initializer_list<std::pair<char const *const, value_type>> items ) {
 			for( auto const &item : items ) {
 				auto const hash = hash_fn( item.first );
 				auto const pos = find_impl( hash );
@@ -120,7 +127,8 @@ namespace daw {
 		}
 
 		template<typename K>
-		constexpr static_hash_t( std::initializer_list<std::pair<K, value_type>> items ) {
+		constexpr static_hash_t(
+		  std::initializer_list<std::pair<K, value_type>> items ) {
 			for( auto const &item : items ) {
 				auto const hash = hash_fn( item.first );
 				auto const pos = find_impl( hash );

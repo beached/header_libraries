@@ -3,14 +3,14 @@
 // Copyright (c) 2014-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -112,7 +112,8 @@ BOOST_AUTO_TEST_CASE( daw_nibble_queue_test_001 ) {
 		daw::basic_nibble_queue<value_type, uint8_t> test1{( 1u << n )};
 		std::string str;
 		while( test1.can_pop( 1 ) ) {
-			str.push_back( static_cast<char>( nibble_to_hex( test1.pop_front( 1 ) ) ) );
+			str.push_back(
+			  static_cast<char>( nibble_to_hex( test1.pop_front( 1 ) ) ) );
 		}
 		std::cout << str << std::endl;
 	}

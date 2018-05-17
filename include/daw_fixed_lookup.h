@@ -3,14 +3,14 @@
 // Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -57,17 +57,19 @@ namespace daw {
 	/// A fixed lookup table.  Only indices returned by insert or get_existing are
 	/// defined.  A reference does not exist after a copy/move operation but the
 	/// indices will remain valid
-	/// In some testing the average distance to actual value was 0.147 when size is
-	/// double needed items
+	/// In some testing the average distance to actual value was 0.147 when size
+	/// is double needed items
 	template<typename Value, size_t N, size_t HashSize = sizeof( size_t )>
 	struct fixed_lookup {
-		static_assert( daw::is_default_constructible_v<Value>, "Value must be default constructible" );
+		static_assert( daw::is_default_constructible_v<Value>,
+		               "Value must be default constructible" );
 		static_assert( N > 0, "Must supply a positive initial_size larger than 0" );
 
 		using value_t = daw::traits::root_type_t<Value>;
 		using hash_value_t = typename daw::generic_hash_t<HashSize>::hash_value_t;
-		static_assert( N <= std::numeric_limits<hash_value_t>::max( ),
-		               "Cannot allocate more values than can be addressed by hash value" );
+		static_assert(
+		  N <= std::numeric_limits<hash_value_t>::max( ),
+		  "Cannot allocate more values than can be addressed by hash value" );
 
 		using reference = value_t &;
 		using const_reference = value_t const &;
@@ -92,15 +94,19 @@ namespace daw {
 	private:
 		template<typename KeyType>
 		static constexpr hash_value_t hash_fn( KeyType &&key ) noexcept {
-			auto const hash = daw::generic_hash<HashSize>( std::forward<KeyType>( key ) );
-			auto const divisor = std::numeric_limits<hash_value_t>::max( ) - impl::sentinals::sentinals_size;
+			auto const hash =
+			  daw::generic_hash<HashSize>( std::forward<KeyType>( key ) );
+			auto const divisor = std::numeric_limits<hash_value_t>::max( ) -
+			                     impl::sentinals::sentinals_size;
 			return ( hash % divisor ) + impl::sentinals::sentinals_size;
 		}
 
 		constexpr hash_value_t scale_hash( hash_value_t const hash ) const {
 			// Scale value to capacity using MAD(Multiply-Add-Divide) compression
 			// Use the two largest Prime's that fit in a hash_value_t
-			return ( ( hash * impl::largest_primes<HashSize>::a ) + impl::largest_primes<HashSize>::b ) % capacity( );
+			return ( ( hash * impl::largest_primes<HashSize>::a ) +
+			         impl::largest_primes<HashSize>::b ) %
+			       capacity( );
 		}
 
 		constexpr auto lookup( hash_value_t const hash ) const noexcept {
@@ -114,8 +120,10 @@ namespace daw {
 				constexpr lookup_result_t( ) noexcept = delete;
 				constexpr lookup_result_t( lookup_result_t const & ) noexcept = default;
 				constexpr lookup_result_t( lookup_result_t && ) noexcept = default;
-				constexpr lookup_result_t &operator=( lookup_result_t const & ) noexcept = default;
-				constexpr lookup_result_t &operator=( lookup_result_t && ) noexcept = default;
+				constexpr lookup_result_t &
+				operator=( lookup_result_t const & ) noexcept = default;
+				constexpr lookup_result_t &
+				operator=( lookup_result_t && ) noexcept = default;
 				~lookup_result_t( ) = default;
 
 				constexpr operator bool( ) const noexcept {
@@ -142,7 +150,8 @@ namespace daw {
 		}
 
 	public:
-		constexpr fixed_lookup( ) noexcept( noexcept( daw::is_nothrow_default_constructible_v<value_t> ) ) = default;
+		constexpr fixed_lookup( ) noexcept(
+		  noexcept( daw::is_nothrow_default_constructible_v<value_t> ) ) = default;
 
 		constexpr fixed_lookup( fixed_lookup const &other ) = default;
 		constexpr fixed_lookup &operator=( fixed_lookup const &other ) = default;
@@ -150,8 +159,8 @@ namespace daw {
 		constexpr fixed_lookup( fixed_lookup &&other ) noexcept(
 		  noexcept( daw::is_nothrow_move_constructible_v<value_t> ) ) = default;
 
-		constexpr fixed_lookup &
-		operator=( fixed_lookup &&other ) noexcept( noexcept( daw::is_nothrow_move_constructible_v<value_t> ) ) = default;
+		constexpr fixed_lookup &operator=( fixed_lookup &&other ) noexcept(
+		  noexcept( daw::is_nothrow_move_constructible_v<value_t> ) ) = default;
 
 		~fixed_lookup( ) = default;
 
@@ -159,7 +168,8 @@ namespace daw {
 		constexpr hash_value_t find_existing( Key &&key ) const {
 			auto const hash = hash_fn( std::forward<Key>( key ) );
 			auto const is_found = lookup( hash );
-			daw::exception::daw_throw_on_false( is_found, "Attempt to access an undefined key" );
+			daw::exception::daw_throw_on_false(
+			  is_found, "Attempt to access an undefined key" );
 			return is_found.position;
 		}
 
@@ -167,8 +177,9 @@ namespace daw {
 		constexpr hash_value_t insert( Key &&key, Value value ) {
 			auto const hash = hash_fn( std::forward<Key>( key ) );
 			auto const is_found = lookup( hash );
-			daw::exception::daw_throw_on_true( !is_found && is_found.position == m_hashes.size( ),
-			                                   "Fixed hash table does not have enough space to allocate all entries" );
+			daw::exception::daw_throw_on_true(
+			  !is_found && is_found.position == m_hashes.size( ),
+			  "Fixed hash table does not have enough space to allocate all entries" );
 			m_hashes[is_found.position] = hash;
 			m_values[is_found.position] = std::move( value );
 			return is_found.position;
@@ -191,8 +202,9 @@ namespace daw {
 		constexpr reference operator[]( Key &&key ) {
 			auto const hash = hash_fn( std::forward<Key>( key ) );
 			auto const is_found = lookup( hash );
-			daw::exception::daw_throw_on_true( !is_found && is_found.position == m_hashes.size( ),
-			                                   "Fixed hash table does not have enough space to allocate all entries" );
+			daw::exception::daw_throw_on_true(
+			  !is_found && is_found.position == m_hashes.size( ),
+			  "Fixed hash table does not have enough space to allocate all entries" );
 			m_hashes[is_found.position] = hash;
 			return m_values[is_found.position];
 		}

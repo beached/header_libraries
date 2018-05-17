@@ -3,14 +3,14 @@
 // Copyright (c) 2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -62,12 +62,14 @@ namespace daw {
 		  , m_delemiter{}
 		  , m_pos{npos} {}
 
-		string_split_iterator( daw::basic_string_view<CharT> str, std::basic_string<CharT> delemiter ) noexcept
+		string_split_iterator( daw::basic_string_view<CharT> str,
+		                       std::basic_string<CharT> delemiter ) noexcept
 		  : m_str{str}
 		  , m_delemiter{std::move( delemiter )}
 		  , m_pos{0} {}
 
-		string_split_iterator( std::basic_string<CharT> const &str, std::basic_string<CharT> delemiter ) noexcept
+		string_split_iterator( std::basic_string<CharT> const &str,
+		                       std::basic_string<CharT> delemiter ) noexcept
 		  : m_str{make_string_view( str )}
 		  , m_delemiter{std::move( delemiter )}
 		  , m_pos{0} {}
@@ -75,7 +77,8 @@ namespace daw {
 		string_split_iterator( string_split_iterator const & ) = default;
 		string_split_iterator( string_split_iterator && ) noexcept = default;
 		string_split_iterator &operator=( string_split_iterator const & ) = default;
-		string_split_iterator &operator=( string_split_iterator && ) noexcept = default;
+		string_split_iterator &
+		operator=( string_split_iterator && ) noexcept = default;
 		~string_split_iterator( ) noexcept = default;
 
 		string_split_iterator &operator++( ) noexcept {
@@ -101,18 +104,22 @@ namespace daw {
 			return result.substr( 0, find_next( ) - m_pos );
 		}
 
-		friend bool operator==( string_split_iterator const &lhs, string_split_iterator const &rhs ) noexcept {
+		friend bool operator==( string_split_iterator const &lhs,
+		                        string_split_iterator const &rhs ) noexcept {
 			if( ( lhs.m_pos == npos && npos == rhs.m_pos ) ) {
 				return true;
 			}
-			return std::tie( lhs.m_str, lhs.m_pos, lhs.m_delemiter ) == std::tie( rhs.m_str, rhs.m_pos, rhs.m_delemiter );
+			return std::tie( lhs.m_str, lhs.m_pos, lhs.m_delemiter ) ==
+			       std::tie( rhs.m_str, rhs.m_pos, rhs.m_delemiter );
 		}
 
-		friend bool operator!=( string_split_iterator const &lhs, string_split_iterator const &rhs ) noexcept {
+		friend bool operator!=( string_split_iterator const &lhs,
+		                        string_split_iterator const &rhs ) noexcept {
 			if( ( lhs.m_pos == npos && npos == rhs.m_pos ) ) {
 				return false;
 			}
-			return std::tie( lhs.m_str, lhs.m_pos, lhs.m_delemiter ) != std::tie( rhs.m_str, rhs.m_pos, rhs.m_delemiter );
+			return std::tie( lhs.m_str, lhs.m_pos, lhs.m_delemiter ) !=
+			       std::tie( rhs.m_str, rhs.m_pos, rhs.m_delemiter );
 		}
 	};
 
@@ -127,10 +134,12 @@ namespace daw {
 		string_split_range( ) noexcept
 		  : m_first{} {}
 
-		string_split_range( daw::basic_string_view<CharT> str, std::string delemiter ) noexcept
+		string_split_range( daw::basic_string_view<CharT> str,
+		                    std::string delemiter ) noexcept
 		  : m_first{str, std::move( delemiter )} {}
 
-		string_split_range( std::basic_string<CharT> const &str, std::string delemiter ) noexcept
+		string_split_range( std::basic_string<CharT> const &str,
+		                    std::string delemiter ) noexcept
 		  : m_first{str, std::move( delemiter )} {}
 
 		string_split_range( string_split_range const & ) = default;
@@ -157,14 +166,16 @@ namespace daw {
 	};
 
 	template<typename CharT, typename Delemiter>
-	auto split_string( std::basic_string<CharT> const &str, Delemiter delemiter ) noexcept {
+	auto split_string( std::basic_string<CharT> const &str,
+	                   Delemiter delemiter ) noexcept {
 
 		std::basic_string<CharT> d = delemiter;
 		return string_split_range<CharT>{str, std::move( d )};
 	}
 
 	template<typename CharT, typename Delemiter>
-	auto split_string( daw::basic_string_view<CharT> str, Delemiter delemiter ) noexcept {
+	auto split_string( daw::basic_string_view<CharT> str,
+	                   Delemiter delemiter ) noexcept {
 
 		std::basic_string<CharT> d = delemiter;
 		return string_split_range<CharT>{std::move( str ), std::move( d )};

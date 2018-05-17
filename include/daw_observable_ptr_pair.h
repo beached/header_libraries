@@ -3,14 +3,14 @@
 // Copyright (c) 2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -30,10 +30,12 @@
 namespace daw {
 	namespace impl {
 		template<typename Func, typename... Args>
-		using has_void_result = decltype( std::declval<Func>( )( std::declval<Args>( )... ) );
+		using has_void_result =
+		  decltype( std::declval<Func>( )( std::declval<Args>( )... ) );
 
 		template<typename Func, typename... Args>
-		constexpr bool has_void_result_v = is_detected_v<has_void_result, Func, Args...>;
+		constexpr bool has_void_result_v =
+		  is_detected_v<has_void_result, Func, Args...>;
 	} // namespace impl
 
 	template<typename T>
@@ -58,11 +60,15 @@ namespace daw {
 		}
 
 		observable_ptr_pair( observable_ptr_pair const &other )
-		  : m_ptrs{other.m_ptrs.visit( []( auto const &v ) -> decltype( auto ) { return v.get_observer( ); } )} {}
+		  : m_ptrs{other.m_ptrs.visit( []( auto const &v ) -> decltype( auto ) {
+			  return v.get_observer( );
+		  } )} {}
 
 		observable_ptr_pair &operator=( observable_ptr_pair const &rhs ) {
 			if( this != &rhs ) {
-				m_ptrs = rhs.m_ptrs.visit( []( auto const &v ) -> decltype( auto ) { return v.get_observer( ); } );
+				m_ptrs = rhs.m_ptrs.visit( []( auto const &v ) -> decltype( auto ) {
+					return v.get_observer( );
+				} );
 			}
 			return *this;
 		}
@@ -79,55 +85,69 @@ namespace daw {
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor vis ) {
-			return m_ptrs.visit( [&]( auto &p ) -> decltype( auto ) { return vis( *p.borrow( ) ); } );
+			return m_ptrs.visit(
+			  [&]( auto &p ) -> decltype( auto ) { return vis( *p.borrow( ) ); } );
 		}
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor vis ) const {
-			return m_ptrs.visit( [&]( auto const &p ) -> decltype( auto ) { return vis( *p.borrow( ) ); } );
+			return m_ptrs.visit( [&]( auto const &p ) -> decltype( auto ) {
+				return vis( *p.borrow( ) );
+			} );
 		}
 
 		decltype( auto ) operator-> ( ) const {
-			return apply_visitor( []( auto const &obs_ptr ) { return obs_ptr.operator->( ); } );
+			return apply_visitor(
+			  []( auto const &obs_ptr ) { return obs_ptr.operator->( ); } );
 		}
 
 		decltype( auto ) operator*( ) const {
-			return apply_visitor( []( auto const &obs_ptr ) { return obs_ptr.operator*( ); } );
+			return apply_visitor(
+			  []( auto const &obs_ptr ) { return obs_ptr.operator*( ); } );
 		}
 
 		operator bool( ) const {
-			return apply_visitor( []( auto const &obs_ptr ) { return obs_ptr.operator bool( ); } );
+			return apply_visitor(
+			  []( auto const &obs_ptr ) { return obs_ptr.operator bool( ); } );
 		}
 
 		operator observer_ptr<T>( ) const {
-			return apply_visitor( []( auto const &obs_ptr ) { return obs_ptr.operator observer_ptr<T>( ); } );
+			return apply_visitor( []( auto const &obs_ptr ) {
+				return obs_ptr.operator observer_ptr<T>( );
+			} );
 		}
 
 		decltype( auto ) get_observer( ) const {
-			return apply_visitor( []( auto const &obs_ptr ) { return obs_ptr.get_observer( ); } );
+			return apply_visitor(
+			  []( auto const &obs_ptr ) { return obs_ptr.get_observer( ); } );
 		}
 
 		decltype( auto ) borrow( ) const {
-			return apply_visitor( []( auto const &obs_ptr ) { return obs_ptr.borrow( ); } );
+			return apply_visitor(
+			  []( auto const &obs_ptr ) { return obs_ptr.borrow( ); } );
 		}
 
 		decltype( auto ) try_borrow( ) const {
-			return apply_visitor( []( auto const &obs_ptr ) { return obs_ptr.try_borrow( ); } );
+			return apply_visitor(
+			  []( auto const &obs_ptr ) { return obs_ptr.try_borrow( ); } );
 		}
 
 		decltype( auto ) get( ) const {
-			return apply_visitor( []( auto const &obs_ptr ) { return obs_ptr.get( ); } );
+			return apply_visitor(
+			  []( auto const &obs_ptr ) { return obs_ptr.get( ); } );
 		}
 
 		template<typename Callable>
 		decltype( auto ) lock( Callable c ) const {
-			return apply_visitor( [&c]( auto const &obs_ptr ) { return obs_ptr.lock( std::move( c ) ); } );
+			return apply_visitor( [&c]( auto const &obs_ptr ) {
+				return obs_ptr.lock( std::move( c ) );
+			} );
 		}
 	};
 
 	template<typename T, typename... Args>
-	observable_ptr_pair<T>
-	make_observable_ptr_pair( Args &&... args ) noexcept( noexcept( new T( std::forward<Args>( args )... ) ) ) {
+	observable_ptr_pair<T> make_observable_ptr_pair( Args &&... args ) noexcept(
+	  noexcept( new T( std::forward<Args>( args )... ) ) ) {
 		T *tmp = new T( std::forward<Args>( args )... );
 		if( !tmp ) {
 			return observable_ptr_pair<T>{nullptr};

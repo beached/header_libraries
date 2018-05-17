@@ -1,16 +1,16 @@
 // The MIT License ( MIT )
 //
-// Copyright ( c ) 2013-2018 Darrell Wright
+// Copyright ( c ) 2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -19,9 +19,10 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
+
 #pragma once
 
-#include <boost/optional.hpp>
+#include <boost/variant.hpp>
 #include <exception>
 #include <stdexcept>
 #include <string>
@@ -30,8 +31,16 @@
 #include "cpp_17.h"
 #include "daw_exception.h"
 #include "daw_traits.h"
+#include "daw_utility.h"
 
 namespace daw {
+	struct empty_expected_exception : std::exception {};
+	struct empty_value_t {};
+
+	constexpr bool operator==( empty_value_t, empty_value_t ) noexcept {
+		return true;
+	}
+
 	template<class T>
 	struct expected_t {
 		using value_type = T;
@@ -41,89 +50,104 @@ namespace daw {
 		using const_pointer = value_type const *;
 
 	private:
-		boost::optional<value_type> m_value;
-		std::exception_ptr m_exception;
+		boost::variant<empty_value_t, value_type, std::exception_ptr> m_value = empty_value_t{};
 
 	public:
 		struct exception_tag {};
+		expected_t( ) = default;
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: No value, aka null
 		//////////////////////////////////////////////////////////////////////////
-		expected_t( ) = default;
-		expected_t( expected_t const & ) = default;
-		expected_t &operator=( expected_t const & ) = default;
-		expected_t( expected_t && ) noexcept = default;
-		expected_t &operator=( expected_t && ) noexcept = default;
-		~expected_t( ) = default;
-
 		friend bool operator==( expected_t const &lhs, expected_t const &rhs ) {
-			return std::tie( lhs.m_value, lhs.m_exception ) == std::tie( rhs.m_value, rhs.m_exception );
+			return lhs.m_value == rhs.m_value;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////
-		expected_t( value_type value ) noexcept
-		  : m_value{std::move( value )}
-		  , m_exception{} {}
+		explicit expected_t( value_type &&value )
+		  : m_value{std::move( value )} {}
 
-		expected_t &operator=( value_type value ) noexcept {
+		explicit expected_t( value_type const &value )
+		  : m_value{value} {}
+
+		expected_t &operator=( value_type &&value ) {
 			m_value = std::move( value );
-			m_exception = nullptr;
+			return *this;
+		}
+
+		expected_t &operator=( value_type const &value ) {
+			m_value = value;
 			return *this;
 		}
 
 		expected_t( std::exception_ptr ptr )
-		  : m_value{}
-		  , m_exception{std::move( ptr )} {}
+		  : m_value{ptr} {}
 
 		expected_t &operator=( std::exception_ptr ptr ) {
-			if( m_value ) {
-				m_value.reset( );
-			}
-			m_exception = ptr;
+			m_value = ptr;
 			return *this;
+		}
+
+		void clear( ) {
+			m_value = empty_value_t{};
 		}
 
 		template<typename ExceptionType>
 		expected_t( exception_tag, ExceptionType const &ex )
-		  : expected_t{std::make_exception_ptr( ex )} {}
+		  : m_value{std::make_exception_ptr( ex )} {}
 
-		expected_t( exception_tag )
-		  : expected_t{std::current_exception( )} {}
+		explicit expected_t( exception_tag )
+		  : m_value{std::current_exception( )} {}
 
-		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
-		// Args...>>>
 		template<class Function, typename... Args,
-		         std::enable_if_t<daw::is_callable_v<Function, Args...>, std::nullptr_t> = nullptr>
-		static expected_t from_code( Function &&func, Args &&... args ) noexcept {
+		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
+		                          std::nullptr_t> = nullptr>
+		static expected_t from_code( Function &&func, Args &&... args ) {
 			try {
-				auto tmp = func( std::forward<Args>( args )... );
-				return expected_t{std::move( tmp )};
+				return expected_t{func( std::forward<Args>( args )... )};
 			} catch( ... ) { return expected_t{exception_tag{}}; }
 		}
 
-		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
-		// Args...>>>
-		template<class Function, typename... Args>
-		expected_t( Function &&func, Args &&... args ) noexcept
-		  : expected_t{expected_t::from_code( std::forward<Function>( func ), std::forward<Args>( args )... )} {}
-
-		bool has_value( ) const noexcept {
-			return static_cast<bool>( m_value );
+		template<typename Visitor>
+		decltype( auto ) visit( Visitor &&visitor ) {
+			return boost::apply_visitor( std::forward<Visitor>( visitor ), m_value );
 		}
 
-		bool has_exception( ) const noexcept {
-			return static_cast<bool>( m_exception );
+		template<class Function, typename... Args,
+		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
+		                          std::nullptr_t> = nullptr>
+		expected_t( Function &&func, Args &&... args )
+		  : expected_t{expected_t::from_code( std::forward<Function>( func ),
+		                                      std::forward<Args>( args )... )} {}
+
+		bool has_value( ) const {
+			return boost::apply_visitor(
+			  daw::make_overload( []( value_type const & ) { return true; },
+			                      []( std::exception_ptr ) { return false; },
+			                      []( empty_value_t ) { return false; } ),
+			  m_value );
 		}
 
-		std::exception_ptr get_exception_ptr( ) noexcept {
-			return m_exception;
+		bool has_exception( ) const {
+			return boost::apply_visitor(
+			  make_overload( []( value_type const & ) { return false; },
+			                 []( empty_value_t ) { return false; },
+			                 []( std::exception_ptr ) { return true; } ),
+			  m_value );
+		}
+
+		std::exception_ptr get_exception_ptr( ) {
+			return boost::get<std::exception_ptr>( m_value );
 		}
 
 		bool empty( ) const {
-			return !( has_value( ) || has_exception( ) );
+			return boost::apply_visitor(
+			  make_overload( []( value_type const & ) { return false; },
+			                 []( empty_value_t ) { return true; },
+			                 []( std::exception_ptr ) { return false; } ),
+			  m_value );
 		}
 
 		explicit operator bool( ) const {
@@ -135,19 +159,22 @@ namespace daw {
 		}
 
 		void throw_if_exception( ) const {
-			if( has_exception( ) ) {
-				std::rethrow_exception( m_exception );
-			}
+			boost::apply_visitor( make_overload( []( value_type const & ) {},
+			                                     []( empty_value_t ) {},
+			                                     []( std::exception_ptr ptr ) {
+				                                     std::rethrow_exception( ptr );
+			                                     } ),
+			                      m_value );
 		}
 
 		reference get( ) {
 			throw_if_exception( );
-			return *m_value;
+			return boost::get<value_type>( m_value );
 		}
 
 		const_reference get( ) const {
 			throw_if_exception( );
-			return *m_value;
+			return boost::get<value_type>( m_value );
 		}
 
 		reference operator*( ) {
@@ -167,133 +194,134 @@ namespace daw {
 		}
 
 		std::string get_exception_message( ) const {
+			std::string result{};
 			try {
 				throw_if_exception( );
-			} catch( std::exception const &e ) { return std::string{e.what( )}; } catch( ... ) {
-				return {};
+			} catch( std::exception const &e ) { result = e.what( ); } catch( ... ) {
 			}
-			return {};
+			return result;
 		}
-
 	}; // class expected_t
 
-	static_assert( daw::is_regular_v<expected_t<int>>, "expected_t isn't regular" );
+	static_assert( daw::is_regular_v<expected_t<int>>,
+	               "expected_t isn't regular" );
+
+	namespace impl {
+		struct void_value_t {};
+		constexpr bool operator==( void_value_t, void_value_t ) noexcept {
+			return true;
+		}
+	} // namespace impl
 
 	template<>
 	struct expected_t<void> {
-		using value_type = void;
+		using value_type = impl::void_value_t;
 
 		struct exception_tag {};
 
 	private:
-		std::exception_ptr m_exception;
-		bool m_value;
+		boost::variant<empty_value_t, value_type, std::exception_ptr> m_value = empty_value_t{};
 
-		expected_t( bool b ) noexcept
-		  : m_exception{}
-		  , m_value{b} {}
+		expected_t( bool b )
+		  : m_value{value_type{}} {}
 
 	public:
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: No value, aka null
 		//////////////////////////////////////////////////////////////////////////
-		expected_t( expected_t &&other ) noexcept
-		  : m_exception{std::exchange( other.m_exception, nullptr )}
-		  , m_value{std::exchange( other.m_value, false )} {}
-
-		expected_t( expected_t const &other ) noexcept
-		  : m_exception{}
-		  , m_value{other.m_value} {
-			if( other.m_exception ) {
-				m_exception = other.m_exception;
-			}
-		}
-		expected_t &operator=( expected_t const &rhs ) noexcept {
-			if( this != &rhs ) {
-				if( rhs.m_exception ) {
-					m_exception = rhs.m_exception;
-				}
-				m_value = rhs.m_value;
-			}
-			return *this;
-		}
-
-		~expected_t( ) = default;
+		expected_t( ) = default;
 
 		friend bool operator==( expected_t const &lhs, expected_t const &rhs ) {
-			return std::tie( lhs.m_value, lhs.m_exception ) == std::tie( rhs.m_value, rhs.m_exception );
+			return lhs.m_value == rhs.m_value;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////
 
-		expected_t( ) noexcept
-		  : expected_t{false} {}
-
-		template<typename T>
+		/*
+		template<typename T, std::enable_if_t<!daw::is_same_v<T, expected_t>, std::nullptr_t> = nullptr>
 		expected_t( T && ) noexcept
-		  : expected_t{true} {}
+		  : m_value{value_type{}} {}
+		 */
 
-		expected_t &operator=( bool ) noexcept {
-			m_value = true;
-			m_exception = nullptr;
+		expected_t &operator=( bool ) {
+			m_value = value_type{};
 			return *this;
 		}
 
-		expected_t( std::exception_ptr ptr ) noexcept
-		  : m_exception{}
-		  , m_value{false} {
-			daw::exception::daw_throw_on_false( ptr, "Attempt to pass a null exception pointer" );
-			m_exception = std::move( ptr );
+		void clear( ) {
+			m_value = empty_value_t{};
 		}
 
+		explicit expected_t( std::exception_ptr ptr )
+		  : m_value{ptr} {}
+
 		expected_t &operator=( std::exception_ptr ptr ) {
-			daw::exception::daw_throw_on_false( ptr, "Attempt to pass a null exception pointer" );
-			m_value = false;
-			m_exception = ptr;
+			m_value = ptr;
 			return *this;
 		}
 
 		template<typename ExceptionType>
-		expected_t( exception_tag, ExceptionType const &ex ) noexcept
-		  : expected_t{std::make_exception_ptr( ex )} {}
+		expected_t( exception_tag, ExceptionType const &ex )
+		  : m_value{std::make_exception_ptr( ex )} {}
 
-		expected_t( exception_tag ) noexcept
-		  : expected_t{std::current_exception( )} {}
+		explicit expected_t( exception_tag )
+		  : m_value{std::current_exception( )} {}
 
-		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
-		// Args...>>>
-		template<class Function, typename... Args,
-		         std::enable_if_t<daw::is_callable_v<Function, Args...>, std::nullptr_t> = nullptr>
-		static expected_t from_code( Function &&func, Args &&... args ) noexcept {
+		template<class Function, typename... Args>
+		static expected_t from_code( Function &&func, Args &&... args ) {
+			static_assert( daw::is_callable_v<Function, Args...>,
+			               "Function cannot be called with arguments provided" );
 			try {
 				func( std::forward<Args>( args )... );
 				return expected_t{true};
 			} catch( ... ) { return expected_t{exception_tag{}}; }
 		}
 
-		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
-		// Args...>>>
+		template<typename Visitor>
+		decltype( auto ) visit( Visitor &&visitor ) {
+			return boost::apply_visitor( std::forward<Visitor>( visitor ), m_value );
+		}
+
+		template<typename Visitor>
+		decltype( auto ) visit( Visitor &&visitor ) const {
+			return boost::apply_visitor( std::forward<Visitor>( visitor ), m_value );
+		}
+
 		template<class Function, typename... Args,
-		         typename result = decltype( std::declval<Function>( )( std::declval<Args>( )... ) )>
-		expected_t( Function &&func, Args &&... args ) noexcept
-		  : expected_t{expected_t::from_code( std::forward<Function>( func ), std::forward<Args>( args )... )} {}
+		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
+		                          std::nullptr_t> = nullptr>
+		expected_t( Function &&func, Args &&... args )
+		  : expected_t{expected_t::from_code( std::forward<Function>( func ),
+		                                      std::forward<Args>( args )... )} {}
 
 		bool has_value( ) const noexcept {
-			return m_value;
+			return boost::apply_visitor(
+			  make_overload( []( value_type const & ) { return true; },
+			                 []( empty_value_t ) { return false; },
+			                 []( std::exception_ptr ) { return false; } ),
+			  m_value );
 		}
 
 		bool has_exception( ) const noexcept {
-			return static_cast<bool>( m_exception );
+			return boost::apply_visitor(
+			  make_overload( []( value_type const & ) { return false; },
+			                 []( empty_value_t ) { return false; },
+			                 []( std::exception_ptr ) { return true; } ),
+			  m_value );
 		}
 
-		std::exception_ptr get_exception_ptr( ) noexcept {
-			return m_exception;
+		std::exception_ptr get_exception_ptr( ) {
+			return boost::get<std::exception_ptr>( m_value );
 		}
 
-		bool empty( ) const {
-			return !( has_value( ) || has_exception( ) );
+		bool empty( ) const noexcept {
+			return boost::apply_visitor(
+			  make_overload( []( value_type const & ) { return false; },
+			                 []( empty_value_t ) { return true; },
+			                 []( std::exception_ptr ) { return false; } ),
+			  m_value );
 		}
 
 		explicit operator bool( ) const {
@@ -301,47 +329,58 @@ namespace daw {
 		}
 
 		void throw_if_exception( ) const {
-			if( has_exception( ) ) {
-				std::rethrow_exception( m_exception );
-			}
+			boost::apply_visitor( make_overload( []( value_type const & ) {},
+			                                     []( empty_value_t ) {},
+			                                     []( std::exception_ptr ptr ) {
+				                                     std::rethrow_exception( ptr );
+			                                     } ),
+			                      m_value );
 		}
 
-		value_type get( ) const {
+		void get( ) const {
 			throw_if_exception( );
 		}
 
 		std::string get_exception_message( ) const {
+			std::string result{};
 			try {
 				throw_if_exception( );
-			} catch( std::exception const &e ) { return std::string{e.what( )}; } catch( ... ) {
-				return {};
+			} catch( std::exception const &e ) { result = e.what( ); } catch( ... ) {
 			}
-			return {};
+			return result;
 		}
 	}; // class expected_t<void>
 
 	template<typename ExpectedResult, typename Function, typename... Args>
-	auto expected_from_code( Function &&func, Args &&... args ) noexcept {
-		static_assert( is_convertible_v<decltype( func( std::forward<Args>( args )... ) ), ExpectedResult>,
-		               "Must be able to convert result of func to expected result type" );
+	auto expected_from_code( Function &&func, Args &&... args ) {
+		static_assert(
+		  is_convertible_v<decltype( func( std::forward<Args>( args )... ) ),
+		                   ExpectedResult>,
+		  "Must be able to convert result of func to expected result type" );
 		try {
-			return expected_t<ExpectedResult>{std::forward<Function>( func ), std::forward<Args>( args )...};
-		} catch( ... ) { return expected_t<ExpectedResult>{std::current_exception( )}; }
+			return expected_t<ExpectedResult>{std::forward<Function>( func ),
+			                                  std::forward<Args>( args )...};
+		} catch( ... ) {
+			return expected_t<ExpectedResult>{std::current_exception( )};
+		}
 	}
 
 	template<typename Function, typename... Args>
-	decltype( auto ) expected_from_code( Function &&func, Args &&... args ) noexcept {
-		using result_t = std::decay_t<decltype( func( std::forward<Args>( args )... ) )>;
-		return expected_from_code<result_t>( std::forward<Function>( func ), std::forward<Args>( args )... );
+	decltype( auto ) expected_from_code( Function &&func,
+	                                     Args &&... args ) {
+		using result_t =
+		  std::decay_t<decltype( func( std::forward<Args>( args )... ) )>;
+		return expected_from_code<result_t>( std::forward<Function>( func ),
+		                                     std::forward<Args>( args )... );
 	}
 
 	template<typename ExpectedType>
-	auto expected_from_exception( ) noexcept {
+	auto expected_from_exception( ) {
 		return expected_t<ExpectedType>{std::current_exception( )};
 	}
 
 	template<typename ExpectedType>
-	auto expected_from_exception( std::exception_ptr ptr ) noexcept {
+	auto expected_from_exception( std::exception_ptr ptr ) {
 		return expected_t<ExpectedType>{ptr};
 	}
 } // namespace daw

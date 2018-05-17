@@ -3,14 +3,14 @@
 // Copyright (c) 2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -90,7 +90,8 @@ namespace daw {
 			// Pointer we are guarding
 			T *m_ptr;
 
-			// The owner has gone out of scope, as soon as there are no borrows, run values destructor
+			// The owner has gone out of scope, as soon as there are no borrows, run
+			// values destructor
 			std::atomic_bool m_ptr_destruct;
 
 			// This controls access to deleting the control block
@@ -131,7 +132,8 @@ namespace daw {
 			control_block_t &operator=( control_block_t const & ) = delete;
 			control_block_t &operator=( control_block_t && ) noexcept = delete;
 
-			// Should never get to this point without point without owner/observer cleaning up ptr
+			// Should never get to this point without point without owner/observer
+			// cleaning up ptr
 			~control_block_t( ) noexcept = default;
 
 			bool expired( ) const noexcept {
@@ -180,7 +182,8 @@ namespace daw {
 					return;
 				}
 				bool do_destruct = false;
-				std::call_once( cb->m_cb_destruct, [&do_destruct]( ) { do_destruct = true; } );
+				std::call_once( cb->m_cb_destruct,
+				                [&do_destruct]( ) { do_destruct = true; } );
 				if( do_destruct ) {
 					delete cb;
 				}
@@ -229,7 +232,8 @@ namespace daw {
 		  : m_control_block{nullptr} {}
 
 		/// @brief An observer of an observable_ptr
-		/// @param cb Control block for observable pointer.  Must never be null, will abort if so
+		/// @param cb Control block for observable pointer.  Must never be null,
+		/// will abort if so
 		observer_ptr( impl::control_block_t<T> *cb )
 		  : m_control_block{cb} {}
 
@@ -290,8 +294,10 @@ namespace daw {
 		}
 
 		template<typename Callable>
-		decltype( auto ) lock( Callable c ) const noexcept( noexcept( c( std::declval<T const &>( ) ) ) ) {
-			using result_t = std::decay_t<decltype( c( std::declval<T const &>( ) ) )>;
+		decltype( auto ) lock( Callable c ) const
+		  noexcept( noexcept( c( std::declval<T const &>( ) ) ) ) {
+			using result_t =
+			  std::decay_t<decltype( c( std::declval<T const &>( ) ) )>;
 			auto lck_ptr = borrow( );
 			if( !lck_ptr ) {
 				return daw::expected_t<result_t>{};
@@ -301,8 +307,10 @@ namespace daw {
 		}
 
 		template<typename Callable>
-		decltype( auto ) lock( Callable c ) noexcept( noexcept( c( std::declval<T &>( ) ) ) ) {
-			using result_t = std::decay_t<decltype( std::declval<Callable>( )( std::declval<T &>( ) ) )>;
+		decltype( auto )
+		lock( Callable c ) noexcept( noexcept( c( std::declval<T &>( ) ) ) ) {
+			using result_t = std::decay_t<decltype(
+			  std::declval<Callable>( )( std::declval<T &>( ) ) )>;
 			auto lck_ptr = borrow( );
 			if( !lck_ptr ) {
 				return daw::expected_t<result_t>{};
@@ -334,7 +342,8 @@ namespace daw {
 		}
 	};
 
-	/// @brief A pointer wrapper that allows others to temporarily postpone destruction while in a locked scope
+	/// @brief A pointer wrapper that allows others to temporarily postpone
+	/// destruction while in a locked scope
 	/// @tparam T Type to construct/hold
 	template<typename T>
 	class observable_ptr {
@@ -401,7 +410,8 @@ namespace daw {
 
 		template<typename Callable>
 		decltype( auto ) lock( Callable c ) const {
-			using result_t = std::decay_t<decltype( c( std::declval<T const &>( ) ) )>;
+			using result_t =
+			  std::decay_t<decltype( c( std::declval<T const &>( ) ) )>;
 			auto lck_ptr = borrow( );
 			if( !lck_ptr ) {
 				return daw::expected_t<result_t>{};
@@ -412,7 +422,8 @@ namespace daw {
 
 		template<typename Callable>
 		decltype( auto ) lock( Callable c ) {
-			using result_t = std::decay_t<decltype( std::declval<Callable>( )( std::declval<T &>( ) ) )>;
+			using result_t = std::decay_t<decltype(
+			  std::declval<Callable>( )( std::declval<T &>( ) ) )>;
 			auto lck_ptr = borrow( );
 			if( !lck_ptr ) {
 				return daw::expected_t<result_t>{};
@@ -441,8 +452,8 @@ namespace daw {
 	};
 
 	template<typename T, typename... Args>
-	observable_ptr<T>
-	make_observable_ptr( Args &&... args ) noexcept( noexcept( new T( std::forward<Args>( args )... ) ) ) {
+	observable_ptr<T> make_observable_ptr( Args &&... args ) noexcept(
+	  noexcept( new T( std::forward<Args>( args )... ) ) ) {
 		T *tmp = new T( std::forward<Args>( args )... );
 		if( !tmp ) {
 			return observable_ptr<T>{};

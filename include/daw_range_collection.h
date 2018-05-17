@@ -3,14 +3,14 @@
 // Copyright (c) 2014-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -54,7 +54,8 @@ namespace daw {
 			using const_reference = typename values_type::const_reference;
 			using iterator = typename values_type::iterator;
 			using const_iterator = typename values_type::const_iterator;
-			using difference_type = typename ::std::iterator_traits<iterator>::difference_type;
+			using difference_type =
+			  typename ::std::iterator_traits<iterator>::difference_type;
 
 			CollectionRange( ) = default;
 
@@ -162,7 +163,8 @@ namespace daw {
 
 			template<typename U, typename BinaryOperator>
 			decltype( auto ) accumulate( U &&init, BinaryOperator oper ) const {
-				return ::std::accumulate( begin( ), end( ), ::std::forward<U>( init ), oper );
+				return ::std::accumulate( begin( ), end( ), ::std::forward<U>( init ),
+				                          oper );
 			}
 
 			template<typename Value>
@@ -172,7 +174,9 @@ namespace daw {
 
 			template<typename Value, typename UnaryPredicate>
 			bool contains( Value const &value, UnaryPredicate predicate ) const {
-				auto pred2 = [&value, &predicate]( Value const &val ) { return predicate( value, val ); };
+				auto pred2 = [&value, &predicate]( Value const &val ) {
+					return predicate( value, val );
+				};
 				return ::std::find_if( begin( ), end( ), pred2 ) != end( );
 			}
 
@@ -221,7 +225,8 @@ namespace daw {
 			}
 
 			CollectionRange &unique( ) {
-				m_values.erase(::std::unique( m_values.begin( ), m_values.end( ) ), m_values.end( ) );
+				m_values.erase(::std::unique( m_values.begin( ), m_values.end( ) ),
+				               m_values.end( ) );
 				return *this;
 			}
 
@@ -232,7 +237,9 @@ namespace daw {
 
 			template<typename UnaryPredicate>
 			CollectionRange &unique( UnaryPredicate predicate ) {
-				m_values.erase(::std::unique( m_values.begin( ), m_values.end( ), predicate ), m_values.end( ) );
+				m_values.erase(
+				  ::std::unique( m_values.begin( ), m_values.end( ), predicate ),
+				  m_values.end( ) );
 				return *this;
 			}
 
@@ -262,13 +269,16 @@ namespace daw {
 			CollectionRange &transform( UnaryOperator oper ) const {
 				using v_t = daw::traits::root_type_t<decltype( oper( front( ) ) )>;
 				auto result = CollectionRange<v_t>( );
-				::std::transform(::std::begin( m_values ), ::std::end( m_values ), ::std::back_inserter( result ), oper );
+				::std::transform(::std::begin( m_values ), ::std::end( m_values ),
+				                 ::std::back_inserter( result ), oper );
 				return result;
 			}
 
 			template<typename UnaryPredicate>
 			CollectionRange &erase( UnaryPredicate predicate ) {
-				m_values.erase(::std::remove_if( m_values.begin( ), m_values.end( ), predicate ), m_values.end( ) );
+				m_values.erase(
+				  ::std::remove_if( m_values.begin( ), m_values.end( ), predicate ),
+				  m_values.end( ) );
 				return *this;
 			}
 
@@ -279,7 +289,9 @@ namespace daw {
 
 			template<typename Value>
 			decltype( auto ) erase_where_equal_to( Value const &value ) {
-				return erase( [&value]( auto const &current_value ) { return value == current_value; } );
+				return erase( [&value]( auto const &current_value ) {
+					return value == current_value;
+				} );
 			}
 
 			template<typename Value>
@@ -289,7 +301,8 @@ namespace daw {
 
 			template<typename UnaryPredicate>
 			decltype( auto ) where( UnaryPredicate predicate ) {
-				return erase( [predicate]( auto const &v ) { return !predicate( v ); } );
+				return erase(
+				  [predicate]( auto const &v ) { return !predicate( v ); } );
 			}
 
 			template<typename UnaryPredicate>
@@ -299,7 +312,9 @@ namespace daw {
 
 			template<typename Value>
 			decltype( auto ) where_equal_to( Value const &value ) {
-				return where( [&value]( auto const &current_value ) { return value == current_value; } );
+				return where( [&value]( auto const &current_value ) {
+					return value == current_value;
+				} );
 			}
 
 			template<typename Value>
@@ -337,13 +352,15 @@ namespace daw {
 
 			template<typename UniformRandomNumberGenerator>
 			CollectionRange &shuffle( UniformRandomNumberGenerator &&urng ) {
-				::std::shuffle( begin( ), end( ), std::forward<UniformRandomNumberGenerator>( urng ) );
+				::std::shuffle( begin( ), end( ),
+				                std::forward<UniformRandomNumberGenerator>( urng ) );
 				return *this;
 			}
 
 			template<typename UniformRandomNumberGenerator>
 			decltype( auto ) shuffle( UniformRandomNumberGenerator &&urng ) const {
-				return make_range_reference( *this ).shuffle( std::forward<UniformRandomNumberGenerator>( urng ) );
+				return make_range_reference( *this ).shuffle(
+				  std::forward<UniformRandomNumberGenerator>( urng ) );
 			}
 
 			CollectionRange &shuffle( ) {
@@ -365,21 +382,26 @@ namespace daw {
 
 			template<typename Container, typename = void>
 			auto make_range_collection( Container const &container ) {
-				using ValueType = impl::cleanup_t<typename ::std::iterator_traits<typename Container::iterator>::value_type>;
+				using ValueType = impl::cleanup_t<typename ::std::iterator_traits<
+				  typename Container::iterator>::value_type>;
 				return CollectionRange<ValueType>{container};
 			}
 
 			template<typename IteratorF, typename IteratorL>
 			auto make_range_collection( IteratorF first, IteratorL last ) {
-				using ValueType = impl::cleanup_t<typename ::std::iterator_traits<IteratorF>::value_type>;
+				using ValueType = impl::cleanup_t<
+				  typename ::std::iterator_traits<IteratorF>::value_type>;
 				return CollectionRange<ValueType>{first, last};
 			}
 
 			template<typename Iterator>
-			auto make_range_collection(::daw::range::ReferenceRange<Iterator> const &collection ) {
-				using ValueType = impl::cleanup_t<typename ::std::iterator_traits<Iterator>::value_type>;
+			auto make_range_collection(
+			  ::daw::range::ReferenceRange<Iterator> const &collection ) {
+				using ValueType = impl::cleanup_t<
+				  typename ::std::iterator_traits<Iterator>::value_type>;
 				CollectionRange<ValueType> result{};
-				std::transform(::std::begin( collection ), ::std::end( collection ), ::std::back_inserter( result ),
+				std::transform(::std::begin( collection ), ::std::end( collection ),
+				               ::std::back_inserter( result ),
 				               []( auto const &rv ) { return rv.get( ); } );
 				return result;
 			}
@@ -387,7 +409,8 @@ namespace daw {
 
 		template<typename Arg, typename... Args>
 		decltype( auto ) make_range_collection( Arg &&arg, Args &&... args ) {
-			return ::daw::range::impl::make_range_collection(::std::forward<Arg>( arg ), ::std::forward<Args>( args )... );
+			return ::daw::range::impl::make_range_collection(
+			  ::std::forward<Arg>( arg ), ::std::forward<Args>( args )... );
 		}
 
 		namespace details {
@@ -395,11 +418,13 @@ namespace daw {
 			std::false_type is_range_collection_impl( T const &, long );
 
 			template<typename T>
-			auto is_range_collection_impl( T const &value, int ) -> typename T::is_range_collection;
+			auto is_range_collection_impl( T const &value, int ) ->
+			  typename T::is_range_collection;
 		} // namespace details
 
 		template<typename T>
-		struct is_range_collection : decltype( details::is_range_collection_impl( std::declval<T const &>( ), 1 ) ) {};
+		struct is_range_collection : decltype( details::is_range_collection_impl(
+		                               std::declval<T const &>( ), 1 ) ) {};
 
 		template<typename T>
 		using is_range_collection_t = typename is_range_collection<T>::type;
@@ -410,32 +435,37 @@ namespace daw {
 		namespace impl {
 			template<typename Arg, typename... Args>
 			decltype( auto ) from( std::true_type, Arg &&arg, Args &&... args ) {
-				return make_range_reference( std::forward<Arg>( arg ), std::forward<Args>( args )... );
+				return make_range_reference( std::forward<Arg>( arg ),
+				                             std::forward<Args>( args )... );
 			}
 
 			template<typename Arg, typename... Args>
 			decltype( auto ) from( std::false_type, Arg &&arg, Args &&... args ) {
-				return make_range_collection( std::forward<Arg>( arg ), std::forward<Args>( args )... );
+				return make_range_collection( std::forward<Arg>( arg ),
+				                              std::forward<Args>( args )... );
 			}
 
 		} // namespace impl
 
 		template<typename Arg, typename... Args>
 		decltype( auto ) from( Arg &&arg, Args &&... args ) {
-			return impl::from( typename ::std::is_const<Arg>::type{}, std::forward<Arg>( arg ),
+			return impl::from( typename ::std::is_const<Arg>::type{},
+			                   std::forward<Arg>( arg ),
 			                   std::forward<Args>( args )... );
 		}
 
 		template<typename Arg, typename... Args>
 		auto from_mutable( Arg &&arg, Args &&... args ) {
-			return impl::from( std::false_type( ), std::forward<Arg>( arg ), std::forward<Args>( args )... );
+			return impl::from( std::false_type( ), std::forward<Arg>( arg ),
+			                   std::forward<Args>( args )... );
 		}
 
 	} // namespace range
 } // namespace daw
 
 template<typename T>
-::std::ostream &operator<<(::std::ostream &os, ::daw::range::CollectionRange<T> const &rng ) {
+::std::ostream &operator<<(::std::ostream &os,
+                           ::daw::range::CollectionRange<T> const &rng ) {
 	os << "{";
 	if( !rng.empty( ) ) {
 		for( auto it = rng.cbegin( ); it != rng.cend( ); ++it ) {

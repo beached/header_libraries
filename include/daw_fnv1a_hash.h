@@ -3,14 +3,14 @@
 // Copyright (c) 2016-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -43,19 +43,26 @@ namespace daw {
 
 	struct fnv1a_hash_t {
 		// TODO: check for UB if values are signed
-		template<typename Value, std::enable_if_t<is_integral_v<Value>, std::nullptr_t> = nullptr>
-		static constexpr size_t append_hash( size_t current_hash, Value const &value ) noexcept {
+		template<typename Value,
+		         std::enable_if_t<is_integral_v<Value>, std::nullptr_t> = nullptr>
+		static constexpr size_t append_hash( size_t current_hash,
+		                                     Value const &value ) noexcept {
 			for( size_t n = 0; n < sizeof( Value ); ++n ) {
 				current_hash ^= static_cast<size_t>(
-				  ( static_cast<size_t>( value ) & ( static_cast<size_t>( 0xFF ) << ( n * 8u ) ) ) >> ( n * 8u ) );
+				  ( static_cast<size_t>( value ) &
+				    ( static_cast<size_t>( 0xFF ) << ( n * 8u ) ) ) >>
+				  ( n * 8u ) );
 				current_hash *= impl::fnv_prime( );
 			}
 			return current_hash;
 		}
 
 		template<typename Iterator1, typename Iterator2,
-		         std::enable_if_t<is_integral_v<typename std::iterator_traits<Iterator1>::type>, std::nullptr_t> = nullptr>
-		constexpr size_t operator( )( Iterator1 first, Iterator2 const last ) const noexcept {
+		         std::enable_if_t<
+		           is_integral_v<typename std::iterator_traits<Iterator1>::type>,
+		           std::nullptr_t> = nullptr>
+		constexpr size_t operator( )( Iterator1 first, Iterator2 const last ) const
+		  noexcept {
 			auto hash = impl::fnv_offset( );
 			while( first != last ) {
 				hash = append_hash( hash, *first );
@@ -63,12 +70,15 @@ namespace daw {
 			return hash;
 		}
 
-		template<typename Member, size_t N, std::enable_if_t<is_integral_v<Member>, std::nullptr_t> = nullptr>
+		template<typename Member, size_t N,
+		         std::enable_if_t<is_integral_v<Member>, std::nullptr_t> = nullptr>
 		constexpr size_t operator( )( Member const ( &member )[N] ) const noexcept {
-			return operator( )( member, std::next( member, static_cast<intmax_t>( N ) ) );
+			return operator( )( member,
+			                    std::next( member, static_cast<intmax_t>( N ) ) );
 		}
 
-		template<typename Integral, std::enable_if_t<is_integral_v<Integral>, std::nullptr_t> = nullptr>
+		template<typename Integral, std::enable_if_t<is_integral_v<Integral>,
+		                                             std::nullptr_t> = nullptr>
 		constexpr size_t operator( )( Integral const value ) const noexcept {
 			return append_hash( impl::fnv_offset( ), value );
 		}
@@ -76,7 +86,8 @@ namespace daw {
 		template<typename T>
 		constexpr size_t operator( )( T const *const ptr ) const noexcept {
 			auto hash = impl::fnv_offset( );
-			auto bptr = static_cast<uint8_t const *const>( static_cast<void const *const>( ptr ) );
+			auto bptr = static_cast<uint8_t const *const>(
+			  static_cast<void const *const>( ptr ) );
 			for( size_t n = 0; n < sizeof( T ); ++n ) {
 				hash = hash ^ static_cast<size_t>( bptr[n] );
 				hash *= impl::fnv_prime( );
@@ -85,7 +96,8 @@ namespace daw {
 		}
 	};
 
-	template<typename T, std::enable_if_t<is_integral_v<T>, std::nullptr_t> = nullptr>
+	template<typename T,
+	         std::enable_if_t<is_integral_v<T>, std::nullptr_t> = nullptr>
 	constexpr size_t fnv1a_hash( T const value ) noexcept {
 		return fnv1a_hash_t{}( value );
 	}

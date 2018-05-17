@@ -3,14 +3,14 @@
 // Copyright ( c ) 2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -38,7 +38,8 @@ namespace daw {
 			try {
 				std::rethrow_exception( ptr );
 			} catch( ExpectedException const & ) { return; } catch( ... ) {
-				struct unexpected_exception_type {}; // Cannot catch what you cannot name
+				struct unexpected_exception_type {
+				}; // Cannot catch what you cannot name
 				throw unexpected_exception_type{};
 			}
 		}
@@ -48,7 +49,8 @@ namespace daw {
 		  -> std::enable_if_t<( sizeof...( ExpectedExceptions ) == 0 )> {}
 
 		template<typename ExpectedException, typename... ExpectedExceptions>
-		auto is_expected_exception( std::exception_ptr ptr ) -> std::enable_if_t<( sizeof...( ExpectedExceptions ) > 0 )> {
+		auto is_expected_exception( std::exception_ptr ptr )
+		  -> std::enable_if_t<( sizeof...( ExpectedExceptions ) > 0 )> {
 
 			try {
 				std::rethrow_exception( ptr );
@@ -83,8 +85,10 @@ namespace daw {
 		checked_expected_t &operator=( checked_expected_t && ) noexcept = default;
 		~checked_expected_t( ) = default;
 
-		friend bool operator==( checked_expected_t const &lhs, checked_expected_t const &rhs ) {
-			return std::tie( lhs.m_value, lhs.m_exception ) == std::tie( rhs.m_value, rhs.m_exception );
+		friend bool operator==( checked_expected_t const &lhs,
+		                        checked_expected_t const &rhs ) {
+			return std::tie( lhs.m_value, lhs.m_exception ) ==
+			       std::tie( rhs.m_value, rhs.m_exception );
 		}
 
 		//////////////////////////////////////////////////////////////////////////
@@ -119,7 +123,9 @@ namespace daw {
 		checked_expected_t( exception_tag, ExceptionType const &ex ) noexcept
 		  : checked_expected_t{std::make_exception_ptr( ex )} {
 
-			static_assert( daw::traits::is_one_of_v<ExceptionType, ExpectedExceptions...>, "Unexpected exception type" );
+			static_assert(
+			  daw::traits::is_one_of_v<ExceptionType, ExpectedExceptions...>,
+			  "Unexpected exception type" );
 		}
 
 		checked_expected_t( exception_tag )
@@ -128,10 +134,12 @@ namespace daw {
 			impl::is_expected_exception<ExpectedExceptions...>( m_exception );
 		}
 
-		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
+		//		template<class Function, typename... Args, typename =
+		//std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename... Args,
-		         std::enable_if_t<daw::is_callable_v<Function, Args...>, std::nullptr_t> = nullptr>
+		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
+		                          std::nullptr_t> = nullptr>
 		static checked_expected_t from_code( Function func, Args &&... args ) {
 			try {
 				auto tmp = func( std::forward<Args>( args )... );
@@ -139,11 +147,12 @@ namespace daw {
 			} catch( ... ) { return checked_expected_t{exception_tag{}}; }
 		}
 
-		// template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
-		// Args...>>>
+		// template<class Function, typename... Args, typename =
+		// std::enable_if_t<is_callable_v<Function, Args...>>>
 		template<class Function, typename... Args>
 		checked_expected_t( Function func, Args &&... args )
-		  : checked_expected_t{checked_expected_t::from_code( func, std::forward<Args>( args )... )} {}
+		  : checked_expected_t{checked_expected_t::from_code(
+		      func, std::forward<Args>( args )... )} {}
 
 		bool has_value( ) const noexcept {
 			return static_cast<bool>( m_value );
@@ -204,15 +213,16 @@ namespace daw {
 		std::string get_exception_message( ) const {
 			try {
 				throw_if_exception( );
-			} catch( std::exception const &e ) { return std::string{e.what( )}; } catch( ... ) {
-				return {};
-			}
+			} catch( std::exception const &e ) {
+				return std::string{e.what( )};
+			} catch( ... ) { return {}; }
 			return {};
 		}
 
 	}; // class checked_expected_t
 
-	static_assert( daw::is_regular_v<checked_expected_t<int>>, "checked_expected_t isn't regular" );
+	static_assert( daw::is_regular_v<checked_expected_t<int>>,
+	               "checked_expected_t isn't regular" );
 
 	template<typename... ExpectedExceptions>
 	struct checked_expected_t<void, ExpectedExceptions...> {
@@ -255,8 +265,10 @@ namespace daw {
 
 		~checked_expected_t( ) = default;
 
-		friend bool operator==( checked_expected_t const &lhs, checked_expected_t const &rhs ) {
-			return std::tie( lhs.m_value, lhs.m_exception ) == std::tie( rhs.m_value, rhs.m_exception );
+		friend bool operator==( checked_expected_t const &lhs,
+		                        checked_expected_t const &rhs ) {
+			return std::tie( lhs.m_value, lhs.m_exception ) ==
+			       std::tie( rhs.m_value, rhs.m_exception );
 		}
 
 		//////////////////////////////////////////////////////////////////////////
@@ -294,7 +306,9 @@ namespace daw {
 		checked_expected_t( exception_tag, ExceptionType const &ex ) noexcept
 		  : checked_expected_t{std::make_exception_ptr( ex )} {
 
-			static_assert( daw::traits::is_one_of_v<ExceptionType, ExpectedExceptions...>, "Unexpected exception type" );
+			static_assert(
+			  daw::traits::is_one_of_v<ExceptionType, ExpectedExceptions...>,
+			  "Unexpected exception type" );
 		}
 
 		checked_expected_t( exception_tag )
@@ -303,10 +317,12 @@ namespace daw {
 			impl::is_expected_exception<ExpectedExceptions...>( m_exception );
 		}
 
-		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
+		//		template<class Function, typename... Args, typename =
+		//std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename Arg, typename... Args>
-		static checked_expected_t from_code( Function func, Arg &&arg, Args &&... args ) {
+		static checked_expected_t from_code( Function func, Arg &&arg,
+		                                     Args &&... args ) {
 			try {
 				func( std::forward<Arg>( arg ), std::forward<Args>( args )... );
 				return checked_expected_t{true};
@@ -321,12 +337,15 @@ namespace daw {
 			} catch( ... ) { return checked_expected_t{exception_tag{}}; }
 		}
 
-		//		template<class Function, typename... Args, typename = std::enable_if_t<is_callable_v<Function,
+		//		template<class Function, typename... Args, typename =
+		//std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename... Args,
-		         typename result = decltype( std::declval<Function>( )( std::declval<Args>( )... ) )>
+		         typename result = decltype(
+		           std::declval<Function>( )( std::declval<Args>( )... ) )>
 		checked_expected_t( Function func, Args &&... args )
-		  : checked_expected_t{checked_expected_t::from_code( func, std::forward<Args>( args )... )} {}
+		  : checked_expected_t{checked_expected_t::from_code(
+		      func, std::forward<Args>( args )... )} {}
 
 		bool has_value( ) const noexcept {
 			return m_value;
@@ -361,9 +380,9 @@ namespace daw {
 		std::string get_exception_message( ) const {
 			try {
 				throw_if_exception( );
-			} catch( std::exception const &e ) { return std::string{e.what( )}; } catch( ... ) {
-				return {};
-			}
+			} catch( std::exception const &e ) {
+				return std::string{e.what( )};
+			} catch( ... ) { return {}; }
 			return {};
 		}
 	}; // class checked_expected_t<void>
@@ -378,7 +397,31 @@ namespace daw {
 
 	template<typename... ExpectedExceptions, typename Function, typename... Args>
 	auto checked_from_code( Function func, Args &&... args ) {
-		using result_t = std::decay_t<decltype( func( std::forward<Args>( args )... ) )>;
-		return checked_expected_t<result_t, ExpectedExceptions...>::from_code( func, std::forward<Args>( args )... );
+		using result_t =
+		  std::decay_t<decltype( func( std::forward<Args>( args )... ) )>;
+		return checked_expected_t<result_t, ExpectedExceptions...>::from_code(
+		  func, std::forward<Args>( args )... );
+	}
+
+	template<typename Function, typename Result, typename... Exceptions>
+	class checked_function_t {
+		Function func;
+
+	public:
+		constexpr checked_function_t( Function f )
+		  : func{std::move( f )} {}
+
+		template<typename... Args>
+		constexpr decltype( auto ) operator( )( Args &&... args ) const {
+			return checked_expected_t<Result, Exceptions...>::from_code(
+			  func, std::forward<Args>( args )... );
+		}
+	};
+
+	template<typename Result, typename... Exceptions, typename Function>
+	constexpr checked_function_t<Function, Result, Exceptions...>
+	make_checked_function( Function &&func ) noexcept {
+		return checked_function_t<Function, Result, Exceptions...>{
+		  std::forward<Function>( func )};
 	}
 } // namespace daw

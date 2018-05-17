@@ -3,14 +3,14 @@
 // Copyright (c) 2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -67,14 +67,16 @@ BOOST_AUTO_TEST_CASE( daw_fixed_lookup_002 ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_make_fixed_lookup_001 ) {
-	constexpr auto values = daw::make_fixed_lookup<int>( "hello", 3, 5, 6, "why oh why" );
+	constexpr auto values =
+	  daw::make_fixed_lookup<int>( "hello", 3, 5, 6, "why oh why" );
 	BOOST_REQUIRE_EQUAL( values.size( ), values.capacity( ) );
 	BOOST_REQUIRE_EQUAL( values.size( ), 5 );
 }
 
 template<typename ValueType, ValueType SZ, size_t HashSize>
 void do_test( ) {
-	std::cout << "Testing with SZ = " << SZ << " and hash_size = " << HashSize << '\n';
+	std::cout << "Testing with SZ = " << SZ << " and hash_size = " << HashSize
+	          << '\n';
 	using value_t = ValueType;
 	daw::fixed_lookup<value_t, SZ * 2> lookup{};
 	std::unordered_map<value_t, value_t> hash_map{};
@@ -129,7 +131,8 @@ void do_test( ) {
 	                     2, 2, SZ );
 	BOOST_REQUIRE_EQUAL( sum1, sum2 );
 	BOOST_REQUIRE_EQUAL( sum1, sum3 );
-	std::cout << "sum1: " << sum1 << " sum2: " << sum2 << " sum3: " << sum3 << '\n';
+	std::cout << "sum1: " << sum1 << " sum2: " << sum2 << " sum3: " << sum3
+	          << '\n';
 }
 
 BOOST_AUTO_TEST_CASE( daw_fixed_lookup_bench_001 ) {

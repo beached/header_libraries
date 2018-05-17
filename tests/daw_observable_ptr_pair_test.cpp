@@ -3,14 +3,14 @@
 // Copyright (c) 2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -62,7 +62,8 @@ BOOST_AUTO_TEST_CASE( test_003 ) {
 
 BOOST_AUTO_TEST_CASE( test_004 ) {
 
-	auto t = daw::make_observable_ptr_pair<std::atomic_int>( static_cast<int>( 0 ) );
+	auto t =
+	  daw::make_observable_ptr_pair<std::atomic_int>( static_cast<int>( 0 ) );
 
 	auto const obs = t.get_observer( );
 
@@ -96,7 +97,8 @@ BOOST_AUTO_TEST_CASE( test_visit_006 ) {
 
 BOOST_AUTO_TEST_CASE( test_apply_visitor_007 ) {
 	auto const tmp = daw::make_observable_ptr_pair<test_t>( 5 );
-	auto const res = tmp.apply_visitor( []( auto const &ptr ) { return ptr->value; } );
+	auto const res =
+	  tmp.apply_visitor( []( auto const &ptr ) { return ptr->value; } );
 	BOOST_REQUIRE_EQUAL( 5, res );
 }
 

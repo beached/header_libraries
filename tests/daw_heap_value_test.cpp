@@ -3,14 +3,14 @@
 // Copyright (c) 2014-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -34,11 +34,14 @@ BOOST_AUTO_TEST_CASE( daw_heap_value_test_01 ) {
 		size_t e;
 	};
 	std::cout << "sizeof( int ) -> " << sizeof( int ) << '\t';
-	std::cout << "sizeof( daw::heap_value<int> ) -> " << sizeof( daw::heap_value<int> ) << '\n';
+	std::cout << "sizeof( daw::heap_value<int> ) -> "
+	          << sizeof( daw::heap_value<int> ) << '\n';
 	std::cout << "sizeof( size_t ) -> " << sizeof( size_t ) << '\t';
-	std::cout << "sizeof( daw::heap_value<size_t> ) -> " << sizeof( daw::heap_value<size_t> ) << '\n';
+	std::cout << "sizeof( daw::heap_value<size_t> ) -> "
+	          << sizeof( daw::heap_value<size_t> ) << '\n';
 	std::cout << "sizeof( lrg ) -> " << sizeof( lrg ) << '\t';
-	std::cout << "sizeof( daw::heap_value<lrg> ) -> " << sizeof( daw::heap_value<lrg> ) << '\n';
+	std::cout << "sizeof( daw::heap_value<lrg> ) -> "
+	          << sizeof( daw::heap_value<lrg> ) << '\n';
 	daw::heap_value<int> a{};
 	daw::heap_value<int> b{1};
 	daw::heap_value<int> c{2};

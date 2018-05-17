@@ -3,14 +3,14 @@
 // Copyright (c) 2013-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -41,21 +41,25 @@ namespace daw {
 	/// @tparam Container Container type who's iterators are of type Iterator
 	/// @tparam Iterator Iterator pointing to members of container.
 	/// @param container container to set bounds on iterator
-	/// @param it iterator to move.  It is undefined behavior if iterator is outside the range [std::begin(container),
-	/// std::end(container)]
+	/// @param it iterator to move.  It is undefined behavior if iterator is
+	/// outside the range [std::begin(container), std::end(container)]
 	/// @param distance how far to move
 	template<typename Container, typename Iterator>
-	constexpr void safe_advance( Container &container, Iterator &it,
-	                             ptrdiff_t distance ) noexcept( noexcept( daw::advance( it, distance ) ) ) {
+	constexpr void safe_advance(
+	  Container &container, Iterator &it,
+	  ptrdiff_t distance ) noexcept( noexcept( daw::advance( it, distance ) ) ) {
 
 		static_assert( is_iterator_v<Iterator>,
-		               "Iterator passed to advance does not fullfill the concept of an Iterator. "
+		               "Iterator passed to advance does not fullfill the concept "
+		               "of an Iterator. "
 		               "http://en.cppreference.com/w/cpp/concept/Iterator" );
 
 		auto const ip_pos = daw::distance( std::begin( container ), it );
-		auto const c_size = daw::distance( std::cbegin( container ), std::cend( container ) );
+		auto const c_size =
+		  daw::distance( std::cbegin( container ), std::cend( container ) );
 
-		daw::exception::DebugAssert( ip_pos >= 0 && ip_pos <= c_size, "Iterator is outside bounds of container" );
+		daw::exception::DebugAssert( ip_pos >= 0 && ip_pos <= c_size,
+		                             "Iterator is outside bounds of container" );
 
 		distance = impl::math::clamp( distance, -ip_pos, c_size - ip_pos );
 
@@ -66,66 +70,81 @@ namespace daw {
 	/// @tparam Container Container type who's iterators are of type Iterator
 	/// @tparam Iterator Iterator pointing to members of container.
 	/// @param container container to set bounds on iterator
-	/// @param it iterator to move.  It is undefined behavior if iterator is outside the range [std::begin(container),
-	/// std::end(container)]
+	/// @param it iterator to move.  It is undefined behavior if iterator is
+	/// outside the range [std::begin(container), std::end(container)]
 	/// @param distance how far to move
 	template<typename Container, typename Iterator>
-	constexpr void safe_advance( Container const &container, Iterator &it,
-	                             ptrdiff_t distance ) noexcept( noexcept( daw::advance( it, distance ) ) ) {
+	constexpr void safe_advance(
+	  Container const &container, Iterator &it,
+	  ptrdiff_t distance ) noexcept( noexcept( daw::advance( it, distance ) ) ) {
 
 		static_assert( is_iterator_v<Iterator>,
-		               "Iterator passed to advance does not fullfill the concept of an Iterator. "
+		               "Iterator passed to advance does not fullfill the concept "
+		               "of an Iterator. "
 		               "http://en.cppreference.com/w/cpp/concept/Iterator" );
 
 		auto const ip_pos = daw::distance( std::begin( container ), it );
-		auto const c_size = daw::distance( std::cbegin( container ), std::cend( container ) );
+		auto const c_size =
+		  daw::distance( std::cbegin( container ), std::cend( container ) );
 
-		daw::exception::DebugAssert( ip_pos >= 0 && ip_pos <= c_size, "Iterator is outside bounds of container" );
+		daw::exception::DebugAssert( ip_pos >= 0 && ip_pos <= c_size,
+		                             "Iterator is outside bounds of container" );
 
 		distance = impl::math::clamp( distance, -ip_pos, c_size - ip_pos );
 
 		daw::advance( it, distance );
 	}
 
-	/// @brief Advance iterator n steps forward but do not go past last.  Undefined if it > last
+	/// @brief Advance iterator n steps forward but do not go past last. Undefined
+	/// if it > last
 	/// @tparam Iterator Type of Iterator to advance
 	/// @param it iterator to advance
 	/// @param last boundary for it
 	/// @param n number of steps to advance forwards
 	/// @return The resulting iterator advanced n steps
 	template<typename Iterator>
-	constexpr Iterator safe_next( Iterator it, Iterator const last, size_t n = 1 ) noexcept {
+	constexpr Iterator safe_next( Iterator it, Iterator const last,
+	                              size_t n = 1 ) noexcept {
 		static_assert( is_iterator_v<Iterator>,
-		               "Iterator passed to advance does not fullfill the concept of an Iterator. "
+		               "Iterator passed to advance does not fullfill the concept "
+		               "of an Iterator. "
 		               "http://en.cppreference.com/w/cpp/concept/Iterator" );
 
-		n = daw::impl::math::min( n, static_cast<size_t>( std::distance( it, last ) ) );
+		n = daw::impl::math::min(
+		  n, static_cast<size_t>( std::distance( it, last ) ) );
 		return daw::next( it, static_cast<ptrdiff_t>( n ) );
 	}
 
-	/// @brief Advance iterator n steps backward but do not go past first.  Undefined if it < first
+	/// @brief Advance iterator n steps backward but do not go past first.
+	/// Undefined if it < first
 	/// @tparam Iterator Type of Iterator to advance
 	/// @param it iterator to advance
 	/// @param first boundary for it
 	/// @param n number of steps to advance backwards
 	/// @return The resulting iterator advanced n steps
 	template<typename Iterator>
-	constexpr Iterator safe_prev( Iterator it, Iterator first, size_t n = 1 ) noexcept {
+	constexpr Iterator safe_prev( Iterator it, Iterator first,
+	                              size_t n = 1 ) noexcept {
 		static_assert( is_iterator_v<Iterator>,
-		               "Iterator passed to advance does not fullfill the concept of an Iterator. "
+		               "Iterator passed to advance does not fullfill the concept "
+		               "of an Iterator. "
 		               "http://en.cppreference.com/w/cpp/concept/Iterator" );
 
-		n = daw::impl::math::min( n, static_cast<size_t>( std::distance( first, it ) ) );
+		n = daw::impl::math::min(
+		  n, static_cast<size_t>( std::distance( first, it ) ) );
 		return daw::prev( it, static_cast<ptrdiff_t>( n ) );
 	}
 
-	/// @brief Take iterator return from begin of a container and return the result of running next with n steps
+	/// @brief Take iterator return from begin of a container and return the
+	/// result of running next with n steps
 	/// @tparam Container Container type iterator will come from
 	/// @param container container to get iterator from
 	/// @param n how many steps to move forward from begin
 	/// @return an iterator referencing a value in container n steps from begin
 	template<typename Container>
-	constexpr auto begin_at( Container &container, size_t n ) noexcept( noexcept( std::begin( container ) ) )
+	constexpr auto
+	begin_at( Container &container,
+	          size_t n ) noexcept( noexcept( std::begin( container ) ) )
 	  -> decltype( std::begin( container ) ) {
 
 		auto result = std::begin( container );
@@ -133,13 +152,16 @@ namespace daw {
 		return result;
 	}
 
-	/// @brief Take iterator return from begin of a container and return the result of running next with n steps
+	/// @brief Take iterator return from begin of a container and return the
+	/// result of running next with n steps
 	/// @tparam Container Container type iterator will come from
 	/// @param container container to get iterator from
 	/// @param n how many steps to move forward from begin
 	/// @return an iterator referencing a value in container n steps from begin
 	template<typename Container>
-	constexpr auto begin_at( Container const &container, size_t n ) noexcept( noexcept( std::cbegin( container ) ) )
+	constexpr auto
+	begin_at( Container const &container,
+	          size_t n ) noexcept( noexcept( std::cbegin( container ) ) )
 	  -> decltype( std::cbegin( container ) ) {
 
 		auto result = std::cbegin( container );
@@ -153,8 +175,11 @@ namespace daw {
 			return lhs;
 		}
 
-		template<typename Lhs, typename... Ts, std::enable_if_t<( sizeof...( Ts ) > 0 ), std::nullptr_t> = nullptr>
-		constexpr auto const &min_item( Lhs const &lhs, Ts const &... ts ) noexcept {
+		template<
+		  typename Lhs, typename... Ts,
+		  std::enable_if_t<( sizeof...( Ts ) > 0 ), std::nullptr_t> = nullptr>
+		constexpr auto const &min_item( Lhs const &lhs,
+		                                Ts const &... ts ) noexcept {
 			auto const &rhs = min_item( ts... );
 			return lhs < rhs ? lhs : rhs;
 		}
@@ -164,25 +189,32 @@ namespace daw {
 			return lhs;
 		}
 
-		template<typename Lhs, typename... Ts, std::enable_if_t<( sizeof...( Ts ) > 0 ), std::nullptr_t> = nullptr>
-		constexpr auto const &max_item( Lhs const &lhs, Ts const &... ts ) noexcept {
+		template<
+		  typename Lhs, typename... Ts,
+		  std::enable_if_t<( sizeof...( Ts ) > 0 ), std::nullptr_t> = nullptr>
+		constexpr auto const &max_item( Lhs const &lhs,
+		                                Ts const &... ts ) noexcept {
 			auto const &rhs = max_item( ts... );
 			return lhs > rhs ? lhs : rhs;
 		}
 
 		template<typename IteratorType, typename ValueType, typename Comp>
-		IteratorType binary_search( const IteratorType first, const IteratorType last, const ValueType &value,
+		IteratorType binary_search( const IteratorType first,
+		                            const IteratorType last, const ValueType &value,
 		                            Comp less_than ) {
 			auto midpoint = []( const IteratorType &a, const IteratorType &b ) {
-				daw::exception::dbg_throw_on_false( a <= b,
-				                                    " Cannot find a midpoint unless the first parameter is <= the second" );
+				daw::exception::dbg_throw_on_false(
+				  a <= b,
+				  " Cannot find a midpoint unless the first parameter is <= the "
+				  "second" );
 
 				auto const mid = std::distance( a, b ) / 2;
 				auto result = a;
 				daw::advance( result, mid );
 				return result;
 			};
-			daw::exception::dbg_throw_on_false( first < last, ": First position must be less than second" );
+			daw::exception::dbg_throw_on_false(
+			  first < last, ": First position must be less than second" );
 			IteratorType it_first( first );
 			IteratorType it_last( last );
 
@@ -265,19 +297,23 @@ namespace daw {
 			};
 
 			template<typename Fwd>
-			auto reverse_impl( Fwd &fwd, long ) -> decltype( Reverser_generic<Fwd>( fwd ) ) {
+			auto reverse_impl( Fwd &fwd, long )
+			  -> decltype( Reverser_generic<Fwd>( fwd ) ) {
 				return Reverser_generic<Fwd>( fwd );
 			}
 
 			template<typename Fwd>
-			auto reverse_impl( Fwd &fwd, int ) -> decltype( fwd.rbegin( ), Reverser_special<Fwd>( fwd ) ) {
+			auto reverse_impl( Fwd &fwd, int )
+			  -> decltype( fwd.rbegin( ), Reverser_special<Fwd>( fwd ) ) {
 				return Reverser_special<Fwd>( fwd );
 			}
 		} // namespace details
 
 		template<typename Fwd>
-		auto reverse( Fwd &&fwd ) -> decltype( details::reverse_impl( fwd, int( 0 ) ) ) {
-			static_assert( !is_rvalue_reference_v<Fwd &&>, "Cannot pass rvalue_reference to reverse()" );
+		auto reverse( Fwd &&fwd )
+		  -> decltype( details::reverse_impl( fwd, int( 0 ) ) ) {
+			static_assert( !is_rvalue_reference_v<Fwd &&>,
+			               "Cannot pass rvalue_reference to reverse()" );
 			return details::reverse_impl( fwd, int( 0 ) );
 		}
 
@@ -297,7 +333,8 @@ namespace daw {
 		}
 
 		template<typename Iterator>
-		constexpr std::pair<Iterator, Iterator> slide( Iterator first, Iterator last, Iterator target ) {
+		constexpr std::pair<Iterator, Iterator>
+		slide( Iterator first, Iterator last, Iterator target ) {
 			if( target < first ) {
 				return std::make_pair( target, std::rotate( target, first, last ) );
 			}
@@ -310,49 +347,66 @@ namespace daw {
 		}
 
 		template<typename Iterator, typename Predicate>
-		std::pair<Iterator, Iterator> gather( Iterator first, Iterator last, Iterator target, Predicate predicate ) {
-			auto start = std::stable_partition( first, target, std::not1( predicate ) );
+		std::pair<Iterator, Iterator> gather( Iterator first, Iterator last,
+		                                      Iterator target,
+		                                      Predicate predicate ) {
+			auto start =
+			  std::stable_partition( first, target, std::not1( predicate ) );
 			auto finish = std::stable_partition( target, last, predicate );
 			return std::make_pair( start, finish );
 		}
 
-		template<typename InputIt1, typename InputIt2, typename OutputIt, typename Func>
-		constexpr OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, OutputIt first_out,
+		template<typename InputIt1, typename InputIt2, typename OutputIt,
+		         typename Func>
+		constexpr OutputIt transform_many( InputIt1 first1, InputIt1 last1,
+		                                   InputIt2 first2, OutputIt first_out,
 		                                   Func func ) {
-			static_assert( !is_const_v<decltype( *first_out )>, "Output iterator cannot point to const data" );
+			static_assert( !is_const_v<decltype( *first_out )>,
+			               "Output iterator cannot point to const data" );
 			while( first1 != last1 ) {
 				*first_out++ = func( *first1++, *first2++ );
 			}
 			return first_out;
 		}
 
-		template<typename InputIt1, typename InputIt2, typename InputIt3, typename OutputIt, typename Func>
-		constexpr OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt3 first3,
+		template<typename InputIt1, typename InputIt2, typename InputIt3,
+		         typename OutputIt, typename Func>
+		constexpr OutputIt transform_many( InputIt1 first1, InputIt1 last1,
+		                                   InputIt2 first2, InputIt3 first3,
 		                                   OutputIt first_out, Func func ) {
-			static_assert( !is_const_v<decltype( *first_out )>, "Output iterator cannot point to const data" );
+			static_assert( !is_const_v<decltype( *first_out )>,
+			               "Output iterator cannot point to const data" );
 			while( first1 != last1 ) {
 				*first_out++ = func( *first1++, *first2++, *first3++ );
 			}
 			return first_out;
 		}
 
-		template<typename InputIt1, typename InputIt2, typename InputIt3, typename InputIt4, typename OutputIt,
-		         typename Func>
-		constexpr OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt3 first3,
-		                                   InputIt4 first4, OutputIt first_out, Func func ) {
-			static_assert( !is_const_v<decltype( *first_out )>, "Output iterator cannot point to const data" );
+		template<typename InputIt1, typename InputIt2, typename InputIt3,
+		         typename InputIt4, typename OutputIt, typename Func>
+		constexpr OutputIt transform_many( InputIt1 first1, InputIt1 last1,
+		                                   InputIt2 first2, InputIt3 first3,
+		                                   InputIt4 first4, OutputIt first_out,
+		                                   Func func ) {
+			static_assert( !is_const_v<decltype( *first_out )>,
+			               "Output iterator cannot point to const data" );
 			while( first1 != last1 ) {
 				*first_out++ = func( *first1++, *first2++, *first3++, *first4++ );
 			}
 			return first_out;
 		}
-		template<typename InputIt1, typename InputIt2, typename InputIt3, typename InputIt4, typename InputIt5,
-		         typename OutputIt, typename Func>
-		constexpr OutputIt transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt3 first3,
-		                                   InputIt4 first4, InputIt4 first5, OutputIt first_out, Func func ) {
-			static_assert( !is_const_v<decltype( *first_out )>, "Output iterator cannot point to const data" );
+		template<typename InputIt1, typename InputIt2, typename InputIt3,
+		         typename InputIt4, typename InputIt5, typename OutputIt,
+		         typename Func>
+		constexpr OutputIt transform_many( InputIt1 first1, InputIt1 last1,
+		                                   InputIt2 first2, InputIt3 first3,
+		                                   InputIt4 first4, InputIt4 first5,
+		                                   OutputIt first_out, Func func ) {
+			static_assert( !is_const_v<decltype( *first_out )>,
+			               "Output iterator cannot point to const data" );
 			while( first1 != last1 ) {
-				*first_out++ = func( *first1++, *first2++, *first3++, *first4++, *first5++ );
+				*first_out++ =
+				  func( *first1++, *first2++, *first3++, *first4++, *first5++ );
 			}
 			return first_out;
 		}
@@ -382,7 +436,8 @@ namespace daw {
 					std::forward<F>( f )( std::get<I>( std::forward<T>( t ) ) );
 					break;
 				default:
-					tuple_functor<I>::run( i, std::forward<T>( t ), std::forward<F>( f ) );
+					tuple_functor<I>::run( i, std::forward<T>( t ),
+					                       std::forward<F>( f ) );
 				}
 			}
 		}; // struct tuple_functor
@@ -394,11 +449,14 @@ namespace daw {
 		}; // struct tuple_functor
 
 		template<typename Iterator, typename UnaryPredicate>
-		constexpr auto find_last_of( Iterator first, Iterator last, UnaryPredicate pred ) {
+		constexpr auto find_last_of( Iterator first, Iterator last,
+		                             UnaryPredicate pred ) {
 
-			static_assert( daw::is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
-			               "pred does not satisfy the Unary Predicate concept.  See "
-			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+			static_assert(
+			  daw::is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
+			  "pred does not satisfy the Unary Predicate concept.  See "
+			  "http://en.cppreference.com/w/cpp/concept/Predicate for more "
+			  "information" );
 
 			auto prev = last;
 			while( first != last ) {
@@ -412,10 +470,13 @@ namespace daw {
 		}
 
 		template<typename Iterator, typename UnaryPredicate>
-		constexpr auto find_first_of( Iterator first, Iterator last, UnaryPredicate pred ) {
-			static_assert( daw::is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
-			               "pred does not satisfy the Unary Predicate concept.  See "
-			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+		constexpr auto find_first_of( Iterator first, Iterator last,
+		                              UnaryPredicate pred ) {
+			static_assert(
+			  daw::is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
+			  "pred does not satisfy the Unary Predicate concept.  See "
+			  "http://en.cppreference.com/w/cpp/concept/Predicate for more "
+			  "information" );
 
 			while( first != last ) {
 				if( pred( *first ) ) {
@@ -427,10 +488,13 @@ namespace daw {
 		}
 
 		template<typename Iterator, typename UnaryPredicate>
-		constexpr auto find_first_range_of( Iterator first, Iterator last, UnaryPredicate pred ) {
-			static_assert( daw::is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
-			               "pred does not satisfy the Unary Predicate concept.  See "
-			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+		constexpr auto find_first_range_of( Iterator first, Iterator last,
+		                                    UnaryPredicate pred ) {
+			static_assert(
+			  daw::is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
+			  "pred does not satisfy the Unary Predicate concept.  See "
+			  "http://en.cppreference.com/w/cpp/concept/Predicate for more "
+			  "information" );
 
 			first = find_first_of( first, last, pred );
 			last = find_last_of( first, last, pred );
@@ -459,9 +523,12 @@ namespace daw {
 		/// @param func A UnaryPredicate that returns true/false
 		/// @return The result of func
 		template<typename Value, typename UnaryPredicate>
-		constexpr bool satisfies_one( Value value, UnaryPredicate func ) noexcept( noexcept( func( value ) ) ) {
+		constexpr bool
+		satisfies_one( Value value,
+		               UnaryPredicate func ) noexcept( noexcept( func( value ) ) ) {
 			static_assert( is_unary_predicate_v<UnaryPredicate, decltype( value )>,
-			               "UnaryPredicate must take one value and return a bool e.g. func( value ) must be valid" );
+			               "UnaryPredicate must take one value and return a bool "
+			               "e.g. func( value ) must be valid" );
 			return func( value );
 		}
 
@@ -470,11 +537,14 @@ namespace daw {
 		/// @param func A UnaryPredicate that returns true/false
 		/// @param funcs UnaryPredicates that return true/false
 		/// @return True if any of the func/funcs return true(e.g. like OR)
-		template<typename Value, typename UnaryPredicate, typename... UnaryPredicates>
-		constexpr bool satisfies_one( Value value, UnaryPredicate func, UnaryPredicates... funcs ) {
+		template<typename Value, typename UnaryPredicate,
+		         typename... UnaryPredicates>
+		constexpr bool satisfies_one( Value value, UnaryPredicate func,
+		                              UnaryPredicates... funcs ) {
 
 			static_assert( is_unary_predicate_v<UnaryPredicate, decltype( value )>,
-			               "UnaryPredicate must take one value and return a bool e.g. func( value ) must be valid" );
+			               "UnaryPredicate must take one value and return a bool "
+			               "e.g. func( value ) must be valid" );
 
 			return func( value ) || satisfies_one( value, funcs... );
 		}
@@ -484,17 +554,23 @@ namespace daw {
 		/// @param last iterator pointing to the end of the range exclusively
 		/// @param func A UnaryPredicate that returns true/false
 		/// @param funcs UnaryPredicates that return true/false
-		/// @return True if any of the func/funcs return true(e.g. like OR) for any value in range
-		template<typename Iterator, typename LastType, typename UnaryPredicate, typename... UnaryPredicates,
-		         std::enable_if_t<(daw::is_dereferenceable_v<LastType> &&
-		                           daw::is_equality_comparable_v<daw::traits::deref_t<LastType>>),
-		                          std::nullptr_t> = nullptr>
-		constexpr bool
-		satisfies_one( Iterator first, LastType last, UnaryPredicate func,
-		               UnaryPredicates... funcs ) noexcept( noexcept( satisfies_one( *first, func, funcs... ) ) ) {
+		/// @return True if any of the func/funcs return true(e.g. like OR) for any
+		/// value in range
+		template<typename Iterator, typename LastType, typename UnaryPredicate,
+		         typename... UnaryPredicates,
+		         std::enable_if_t<
+		           (daw::is_dereferenceable_v<LastType> &&
+		            daw::is_equality_comparable_v<daw::traits::deref_t<LastType>>),
+		           std::nullptr_t> = nullptr>
+		constexpr bool satisfies_one(
+		  Iterator first, LastType last, UnaryPredicate func,
+		  UnaryPredicates... funcs ) noexcept( noexcept( satisfies_one( *first,
+		                                                                func,
+		                                                                funcs... ) ) ) {
 
 			static_assert( is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
-			               "UnaryPredicate must take one value and return a bool e.g. func( *first ) must be valid" );
+			               "UnaryPredicate must take one value and return a bool "
+			               "e.g. func( *first ) must be valid" );
 
 			while( first != last ) {
 				if( satisfies_one( *first, func, funcs... ) ) {
@@ -510,9 +586,12 @@ namespace daw {
 		/// @param func A UnaryPredicate that returns true/false
 		/// @return The result of func
 		template<typename Value, typename UnaryPredicate>
-		constexpr bool satisfies_all( Value value, UnaryPredicate func ) noexcept( noexcept( func( value ) ) ) {
+		constexpr bool
+		satisfies_all( Value value,
+		               UnaryPredicate func ) noexcept( noexcept( func( value ) ) ) {
 			static_assert( is_unary_predicate_v<UnaryPredicate, decltype( value )>,
-			               "UnaryPredicate must take one value and return a bool e.g. func( value ) must be valid" );
+			               "UnaryPredicate must take one value and return a bool "
+			               "e.g. func( value ) must be valid" );
 			return func( value );
 		}
 
@@ -521,31 +600,41 @@ namespace daw {
 		/// @param func A UnaryPredicate that returns true/false
 		/// @param funcs UnaryPredicates that return true/false
 		/// @return True if any of the func/funcs return true(e.g. like OR)
-		template<typename Value, typename UnaryPredicate, typename... UnaryPredicates>
-		constexpr bool satisfies_all( Value value, UnaryPredicate func, UnaryPredicates... funcs ) {
+		template<typename Value, typename UnaryPredicate,
+		         typename... UnaryPredicates>
+		constexpr bool satisfies_all( Value value, UnaryPredicate func,
+		                              UnaryPredicates... funcs ) {
 
 			static_assert( is_unary_predicate_v<UnaryPredicate, Value>,
-			               "UnaryPredicate must take one value and return a bool e.g. func( value ) must be valid" );
+			               "UnaryPredicate must take one value and return a bool "
+			               "e.g. func( value ) must be valid" );
 
 			return func( value ) && satisfies_all( value, funcs... );
 		}
 
-		/// @brief Returns true if all function(s) returns true for all values in range
+		/// @brief Returns true if all function(s) returns true for all values in
+		/// range
 		/// @param first iterator pointing to the beginning of the range inclusively
 		/// @param last iterator pointing to the end of the range exclusively
 		/// @param func A UnaryPredicate that returns true/false
 		/// @param funcs UnaryPredicates that return true/false
-		/// @return True if any of the func/funcs return true(e.g. like OR) for any value in range
-		template<typename Iterator, typename LastType, typename UnaryPredicate, typename... UnaryPredicates,
-		         std::enable_if_t<(daw::is_dereferenceable_v<LastType> &&
-		                           daw::is_equality_comparable_v<daw::traits::deref_t<LastType>>),
-		                          std::nullptr_t> = nullptr>
-		constexpr bool
-		satisfies_all( Iterator first, LastType last, UnaryPredicate func,
-		               UnaryPredicates... funcs ) noexcept( noexcept( satisfies_one( *first, func, funcs... ) ) ) {
+		/// @return True if any of the func/funcs return true(e.g. like OR) for any
+		/// value in range
+		template<typename Iterator, typename LastType, typename UnaryPredicate,
+		         typename... UnaryPredicates,
+		         std::enable_if_t<
+		           (daw::is_dereferenceable_v<LastType> &&
+		            daw::is_equality_comparable_v<daw::traits::deref_t<LastType>>),
+		           std::nullptr_t> = nullptr>
+		constexpr bool satisfies_all(
+		  Iterator first, LastType last, UnaryPredicate func,
+		  UnaryPredicates... funcs ) noexcept( noexcept( satisfies_one( *first,
+		                                                                func,
+		                                                                funcs... ) ) ) {
 
 			static_assert( is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
-			               "UnaryPredicate must take one value and return a bool e.g. func( *first ) must be valid" );
+			               "UnaryPredicate must take one value and return a bool "
+			               "e.g. func( *first ) must be valid" );
 
 			while( first != last ) {
 				if( !satisfies_all( *first, func, funcs... ) ) {
@@ -648,58 +737,71 @@ namespace daw {
 			}; // less_than_or_equal_to
 		}    // namespace impl
 
-		/// @brief Returns a callable that returns true if the value passed is in the range [Lower, Upper]
+		/// @brief Returns a callable that returns true if the value passed is in
+		/// the range [Lower, Upper]
 		/// @param lower The lowest value allowed
 		/// @param upper The largest value allowed
-		/// @returns true if value passed to operator( ) is within the range [lower, upper]
+		/// @returns true if value passed to operator( ) is within the range [lower,
+		/// upper]
 		template<typename Lower, typename Upper>
 		constexpr auto in_range( Lower &&lower, Upper &&upper ) {
-			return impl::in_range<Lower, Upper>{std::forward<Lower>( lower ), std::forward<Upper>( upper )};
+			return impl::in_range<Lower, Upper>{std::forward<Lower>( lower ),
+			                                    std::forward<Upper>( upper )};
 		}
 
-		/// @brief Returns a callable that returns true if value passed is equal to value construct with
+		/// @brief Returns a callable that returns true if value passed is equal to
+		/// value construct with
 		/// @param value Value to test with
-		/// @returns True if value passed to operator( ) is equal to value constructed with
+		/// @returns True if value passed to operator( ) is equal to value
+		/// constructed with
 		template<typename Value>
 		constexpr auto equal_to( Value &&value ) {
 			return impl::equal_to<Value>{std::forward<Value>( value )};
 		}
 
-		/// @brief Returns a callable that returns true if value passed is greater than the value constructed with
+		/// @brief Returns a callable that returns true if value passed is greater
+		/// than the value constructed with
 		/// @param value Value to test with
-		/// @returns True if value passed to operator( ) is greater than to value constructed with
+		/// @returns True if value passed to operator( ) is greater than to value
+		/// constructed with
 		template<typename Value>
 		constexpr auto greater_than( Value &&value ) {
 			return impl::greater_than<Value>{std::forward<Value>( value )};
 		}
 
-		/// @brief Returns a callable that returns true if value passed is greater than or equal to the value constructed
-		/// with
+		/// @brief Returns a callable that returns true if value passed is greater
+		/// than or equal to the value constructed with
 		/// @param value Value to test with
-		/// @returns True if value passed to operator( ) is greater than or equal to to value constructed with
+		/// @returns True if value passed to operator( ) is greater than or equal to
+		/// to value constructed with
 		template<typename Value>
 		constexpr auto greater_than_or_equal_to( Value &&value ) {
-			return impl::greater_than_or_equal_to<Value>{std::forward<Value>( value )};
+			return impl::greater_than_or_equal_to<Value>{
+			  std::forward<Value>( value )};
 		}
 
-		/// @brief Returns a callable that returns true if value passed is less than the value constructed with
+		/// @brief Returns a callable that returns true if value passed is less than
+		/// the value constructed with
 		/// @param value Value to test with
-		/// @returns True if value passed to operator( ) is less than to value constructed with
+		/// @returns True if value passed to operator( ) is less than to value
+		/// constructed with
 		template<typename Value>
 		constexpr auto less_than( Value &&value ) {
 			return impl::less_than<Value>{std::forward<Value>( value )};
 		}
 
-		/// @brief Returns a callable that returns true if value passed is less than or equal to the value constructed with
+		/// @brief Returns a callable that returns true if value passed is less than
+		/// or equal to the value constructed with
 		/// @param value Value to test with
-		/// @returns True if value passed to operator( ) is less than or equal to to value constructed with
+		/// @returns True if value passed to operator( ) is less than or equal to to
+		/// value constructed with
 		template<typename Value>
 		constexpr auto less_than_or_equal_to( Value &&value ) {
 			return impl::less_than_or_equal_to<Value>{std::forward<Value>( value )};
 		}
 
-		/// @brief Returns true if the first range [first1, last1) is lexigraphically less than the second range [first2,
-		/// last2)
+		/// @brief Returns true if the first range [first1, last1) is
+		/// lexigraphically less than the second range [first2, last2)
 		/// @tparam InputIterator1 Iterator type for start of range 1
 		/// @tparam LastType1 Type for value at end of range 1
 		/// @tparam InputIterator2 Iterator type for start of range 2
@@ -710,20 +812,27 @@ namespace daw {
 		/// @param first2 Start of range 1
 		/// @param last2 End of Range 1
 		/// @param comp Comparison function that returns true if value1 < value2
-		/// @return true of range 1 is lexigraphically less than range 2 using supplied comparison
-		template<typename InputIterator1, typename LastType1, typename InputIterator2, typename LastType2, typename Compare>
-		constexpr bool lexicographical_compare( InputIterator1 first1, LastType1 last1, InputIterator2 first2,
-		                                        LastType2 last2,
-		                                        Compare comp ) noexcept( noexcept( comp( *first1, *first2 ) !=
-		                                                                           comp( *first2, *first1 ) ) ) {
+		/// @return true of range 1 is lexigraphically less than range 2 using
+		/// supplied comparison
+		template<typename InputIterator1, typename LastType1,
+		         typename InputIterator2, typename LastType2, typename Compare>
+		constexpr bool lexicographical_compare(
+		  InputIterator1 first1, LastType1 last1, InputIterator2 first2,
+		  LastType2 last2,
+		  Compare comp ) noexcept( noexcept( comp( *first1, *first2 ) !=
+		                                     comp( *first2, *first1 ) ) ) {
 
-			static_assert( is_compare_v<Compare, decltype( *first1 ), decltype( *first2 )>,
-			               "Compare function does not meet the requirements of the Compare concept. "
-			               "http://en.cppreference.com/w/cpp/concept/Compare" );
+			static_assert(
+			  is_compare_v<Compare, decltype( *first1 ), decltype( *first2 )>,
+			  "Compare function does not meet the requirements of the Compare "
+			  "concept. "
+			  "http://en.cppreference.com/w/cpp/concept/Compare" );
 
-			static_assert( is_compare_v<Compare, decltype( *first2 ), decltype( *first1 )>,
-			               "Compare function does not meet the requirements of the Compare concept. "
-			               "http://en.cppreference.com/w/cpp/concept/Compare" );
+			static_assert(
+			  is_compare_v<Compare, decltype( *first2 ), decltype( *first1 )>,
+			  "Compare function does not meet the requirements of the Compare "
+			  "concept. "
+			  "http://en.cppreference.com/w/cpp/concept/Compare" );
 
 			while( ( first1 != last1 ) && ( first2 != last2 ) ) {
 				if( comp( *first1, *first2 ) ) {
@@ -738,8 +847,8 @@ namespace daw {
 			return ( first1 == last1 ) && ( first2 != last2 );
 		}
 
-		/// @brief Returns true if the first range [first1, last1) is lexigraphically less than the second range [first2,
-		/// last2)
+		/// @brief Returns true if the first range [first1, last1) is
+		/// lexigraphically less than the second range [first2, last2)
 		/// @tparam InputIterator1 Iterator type for start of range 1
 		/// @tparam LastType1 Type for value at end of range 1
 		/// @tparam InputIterator2 Iterator type for start of range 2
@@ -749,10 +858,12 @@ namespace daw {
 		/// @param first2 Start of range 1
 		/// @param last2 End of Range 1
 		/// @return true of range 1 is lexigraphically less than range 2
-		template<typename InputIterator1, typename LastType1, typename InputIterator2, typename LastType2>
-		constexpr bool
-		lexicographical_compare( InputIterator1 first1, LastType1 last1, InputIterator2 first2,
-		                         LastType2 last2 ) noexcept( noexcept( ( *first1 < *first2 ) != ( *first2 < *first1 ) ) ) {
+		template<typename InputIterator1, typename LastType1,
+		         typename InputIterator2, typename LastType2>
+		constexpr bool lexicographical_compare(
+		  InputIterator1 first1, LastType1 last1, InputIterator2 first2,
+		  LastType2 last2 ) noexcept( noexcept( ( *first1 < *first2 ) !=
+		                                        ( *first2 < *first1 ) ) ) {
 
 			while( ( first1 != last1 ) && ( first2 != last2 ) ) {
 				if( *first1 < *first2 ) {
@@ -767,36 +878,48 @@ namespace daw {
 			return ( first1 == last1 ) && ( first2 != last2 );
 		}
 
-		/// @brief Apply the TransformFunction on the value referenced by range [first, last) when the predicate returns
-		/// true for that value
+		/// @brief Apply the TransformFunction on the value referenced by range
+		/// [first, last) when the predicate returns true for that value
 		/// @tparam InputIterator Type of Iterator for start of range
 		/// @tparam LastType Type for representing end of range
 		/// @tparam OutputIterator Iterator for output range
-		/// @tparam UnaryPredicate A unary predicate that takes the dereferenced InputIterator as an arugment
-		/// @tparam TransformFunction Takes the dereferenced InputIterator as an arugment and returns a value assignable to
-		/// the dereferenced OutputIterator
+		/// @tparam UnaryPredicate A unary predicate that takes the dereferenced
+		/// InputIterator as an arugment
+		/// @tparam TransformFunction Takes the dereferenced InputIterator as an
+		/// arugment and returns a value assignable to the dereferenced
+		/// OutputIterator
 		/// @param first first item in range [first, last)
 		/// @param last last item in range [first, last)
 		/// @param first_out Output iterator written to when predicate returns true
 		/// @param pred predicate to determine if a transform should happen
-		/// @param trans transform function to convert from input range to output range
+		/// @param trans transform function to convert from input range to output
+		/// range
 		/// @return The end of the output range
-		template<typename InputIterator, typename LastType, typename OutputIterator, typename UnaryPredicate,
-		         typename TransformFunction>
-		constexpr OutputIterator transform_if( InputIterator first, LastType const last, OutputIterator first_out,
-		                                       UnaryPredicate pred, TransformFunction trans ) {
+		template<typename InputIterator, typename LastType, typename OutputIterator,
+		         typename UnaryPredicate, typename TransformFunction>
+		constexpr OutputIterator
+		transform_if( InputIterator first, LastType const last,
+		              OutputIterator first_out, UnaryPredicate pred,
+		              TransformFunction trans ) {
 
-			static_assert( is_iterator_v<InputIterator>, "first is does not satisfy the requirements of an Iterator" );
-			static_assert( is_iterator_v<OutputIterator>, "first_out is does not satisfy the requirements of an Iterator" );
+			static_assert(
+			  is_iterator_v<InputIterator>,
+			  "first is does not satisfy the requirements of an Iterator" );
+			static_assert(
+			  is_iterator_v<OutputIterator>,
+			  "first_out is does not satisfy the requirements of an Iterator" );
 			static_assert( is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
 			               "pred does not satisfy the Unary Predicate concept.  See "
-			               "http://en.cppreference.com/w/cpp/concept/Predicate for more information" );
+			               "http://en.cppreference.com/w/cpp/concept/Predicate for "
+			               "more information" );
 
 			static_assert( is_callable_v<TransformFunction, decltype( *first )>,
-			               "TransformFunction does not accept a single argument of the dereferenced type of first" );
+			               "TransformFunction does not accept a single argument of "
+			               "the dereferenced type of first" );
 
-			static_assert( is_assignable_v<decltype( *first_out ), decltype( trans( *first ) )>,
-			               "Result of trans( *first ) must be assignable to *first_out" );
+			static_assert(
+			  is_assignable_v<decltype( *first_out ), decltype( trans( *first ) )>,
+			  "Result of trans( *first ) must be assignable to *first_out" );
 
 			while( first != last ) {
 				if( pred( *first ) ) {
@@ -807,26 +930,33 @@ namespace daw {
 			return first_out;
 		}
 
-		/// @brief Run the transform function unary_op on n elements of range started by first
+		/// @brief Run the transform function unary_op on n elements of range
+		/// started by first
 		/// @tparam InputIterator input range iterator type
 		/// @tparam OutputIterator output range iterator type
-		/// @tparam UnaryOperation callable that takes the dereferenced value from input range and is assignable to the
-		/// dereferenced value of output range
+		/// @tparam UnaryOperation callable that takes the dereferenced value from
+		/// input range and is assignable to the dereferenced value of output range
 		/// @param first first element in input range [first, first + count)
-		/// @param first_out first element in output range [first_out, first_out + count)
+		/// @param first_out first element in output range [first_out, first_out +
+		/// count)
 		/// @param count number of items to process
-		/// @param unary_op callable that transforms items from input range to items of output range
+		/// @param unary_op callable that transforms items from input range to items
+		/// of output range
 		/// @return last item in output range
-		template<typename InputIterator, typename OutputIterator, typename UnaryOperation>
-		constexpr OutputIterator
-		transform_n( InputIterator first, OutputIterator first_out, size_t count,
-		             UnaryOperation unary_op ) noexcept( noexcept( *first_out = unary_op( *first ) ) ) {
+		template<typename InputIterator, typename OutputIterator,
+		         typename UnaryOperation>
+		constexpr OutputIterator transform_n(
+		  InputIterator first, OutputIterator first_out, size_t count,
+		  UnaryOperation unary_op ) noexcept( noexcept( *first_out =
+		                                                  unary_op( *first ) ) ) {
 
 			static_assert( is_callable_v<UnaryOperation, decltype( *first )>,
-			               "UnaryOperation does not accept a single argument of the dereferenced type of first" );
+			               "UnaryOperation does not accept a single argument of the "
+			               "dereferenced type of first" );
 
-			static_assert( is_assignable_v<decltype( *first_out ), decltype( unary_op( *first ) )>,
-			               "Result of unary_op( *first ) must be assignable to *first_out" );
+			static_assert(
+			  is_assignable_v<decltype( *first_out ), decltype( unary_op( *first ) )>,
+			  "Result of unary_op( *first ) must be assignable to *first_out" );
 
 			while( count-- > 0 ) {
 				*first_out = unary_op( *first );
@@ -836,27 +966,34 @@ namespace daw {
 			return first_out;
 		}
 
-		/// @brief Transform range [first, last) and output to range [first_out, first_out + std::distance( first, last ))
+		/// @brief Transform range [first, last) and output to range [first_out,
+		/// first_out + std::distance( first, last ))
 		/// @tparam InputIterator input range iterator type
 		/// @tparam LastType type of Iterator marking end of input range
 		/// @tparam OutputIterator output range iterator type
-		/// @tparam UnaryOperation callable that takes the dereferenced value from input range and is assignable to the
-		/// dereferenced value of output range
+		/// @tparam UnaryOperation callable that takes the dereferenced value from
+		/// input range and is assignable to the dereferenced value of output range
 		/// @param first first element in input range [first, first + count)
 		/// @param last end of input range
-		/// @param first_out first element in output range [first_out, first_out + count)
-		/// @param unary_op callable that transforms items from input range to items of output range
+		/// @param first_out first element in output range [first_out, first_out +
+		/// count)
+		/// @param unary_op callable that transforms items from input range to items
+		/// of output range
 		/// @return last item in output range
-		template<typename InputIterator, typename LastType, typename OutputIterator, typename UnaryOperation>
-		constexpr OutputIterator
-		transform( InputIterator first, LastType last, OutputIterator first_out,
-		           UnaryOperation unary_op ) noexcept( noexcept( *first_out = unary_op( *first ) ) ) {
+		template<typename InputIterator, typename LastType, typename OutputIterator,
+		         typename UnaryOperation>
+		constexpr OutputIterator transform(
+		  InputIterator first, LastType last, OutputIterator first_out,
+		  UnaryOperation unary_op ) noexcept( noexcept( *first_out =
+		                                                  unary_op( *first ) ) ) {
 
 			static_assert( is_callable_v<UnaryOperation, decltype( *first )>,
-			               "UnaryOperation does not accept a single argument of the dereferenced type of first" );
+			               "UnaryOperation does not accept a single argument of the "
+			               "dereferenced type of first" );
 
-			static_assert( is_assignable_v<decltype( *first_out ), decltype( unary_op( *first ) )>,
-			               "Result of unary_op( *first ) must be assignable to *first_out" );
+			static_assert(
+			  is_assignable_v<decltype( *first_out ), decltype( unary_op( *first ) )>,
+			  "Result of unary_op( *first ) must be assignable to *first_out" );
 
 			while( first != last ) {
 				*first_out = unary_op( *first );
@@ -866,21 +1003,26 @@ namespace daw {
 			return first_out;
 		}
 
-		/// @brief Transform input range [first, last) to output range [first_out, first_out + std::distance(first, last)).
+		/// @brief Transform input range [first, last) to output range [first_out,
+		/// first_out + std::distance(first, last)).
 		/// @tparam InputIterator type of Iterator of input range
 		/// @tparam LastType type of Iterator marking end of input range
 		/// @tparam OutputIterator type of iterator for output range
-		/// @tparam BinaryOperation a callable that takes the type of the dereference input range iterator and the output
-		/// range as argument, returning the next position in output range
+		/// @tparam BinaryOperation a callable that takes the type of the
+		/// dereference input range iterator and the output range as argument,
+		/// returning the next position in output range
 		/// @param first start of input range
 		/// @param last end of input range
 		/// @param first_out first item in output range
 		/// @param binary_op transformation function
 		/// @return end of output range written to
-		template<typename InputIterator, typename LastType, typename OutputIterator, typename BinaryOperation>
-		constexpr OutputIterator
-		transform_it( InputIterator first, LastType last, OutputIterator first_out,
-		              BinaryOperation binary_op ) noexcept( noexcept( first_out = binary_op( *first++, first_out ) ) ) {
+		template<typename InputIterator, typename LastType, typename OutputIterator,
+		         typename BinaryOperation>
+		constexpr OutputIterator transform_it(
+		  InputIterator first, LastType last, OutputIterator first_out,
+		  BinaryOperation
+		    binary_op ) noexcept( noexcept( first_out = binary_op( *first++,
+		                                                           first_out ) ) ) {
 
 			while( first != last ) {
 				first_out = binary_op( *first, first_out );
@@ -889,7 +1031,8 @@ namespace daw {
 			return first_out;
 		}
 
-		/// @brief Copy input range [first, last) to output range [first_out, first_out + std::distance( first, last ))
+		/// @brief Copy input range [first, last) to output range [first_out,
+		/// first_out + std::distance( first, last ))
 		/// @tparam InputIterator type of Iterator of input range
 		/// @tparam LastType type of Iterator marking end of input range
 		/// @tparam OutputIterator type of iterator for output range
@@ -898,8 +1041,9 @@ namespace daw {
 		/// @param first_out first item in output range
 		/// @return end of output range written to
 		template<typename InputIterator, typename LastType, typename OutputIterator>
-		constexpr OutputIterator copy( InputIterator first, LastType last,
-		                               OutputIterator first_out ) noexcept( noexcept( *first_out = *first ) ) {
+		constexpr OutputIterator copy(
+		  InputIterator first, LastType last,
+		  OutputIterator first_out ) noexcept( noexcept( *first_out = *first ) ) {
 			while( first != last ) {
 				*first_out = *first;
 				++first;
@@ -908,7 +1052,8 @@ namespace daw {
 			return first_out;
 		}
 
-		/// @brief Copy input range [first, last) to output range [first_out, first_out + count)
+		/// @brief Copy input range [first, last) to output range [first_out,
+		/// first_out + count)
 		/// @tparam InputIterator type of Iterator of input range
 		/// @tparam OutputIterator type of iterator for output range
 		/// @param first start of input range
@@ -916,8 +1061,9 @@ namespace daw {
 		/// @param count number of items to copy
 		/// @return end of output range written to
 		template<typename InputIterator, typename OutputIterator>
-		constexpr OutputIterator copy_n( InputIterator first, OutputIterator first_out,
-		                                 size_t count ) noexcept( noexcept( *first_out = *first ) ) {
+		constexpr OutputIterator
+		copy_n( InputIterator first, OutputIterator first_out,
+		        size_t count ) noexcept( noexcept( *first_out = *first ) ) {
 			while( count-- > 0 ) {
 				*first_out = *first;
 				++first;
@@ -926,7 +1072,8 @@ namespace daw {
 			return first_out;
 		}
 
-		/// @brief Move values from input range [first, last) to output range [first_out, std::distance( first, last))
+		/// @brief Move values from input range [first, last) to output range
+		/// [first_out, std::distance( first, last))
 		///
 		/// @tparam InputIterator type of Iterator of input range
 		/// @tparam LastType type of Iterator marking end of input range
@@ -936,8 +1083,10 @@ namespace daw {
 		/// @param first_out first item in output range
 		/// @return end of output range written to
 		template<typename InputIterator, typename LastType, typename OutputIterator>
-		constexpr OutputIterator move( InputIterator first, LastType const last,
-		                               OutputIterator first_out ) noexcept( noexcept( *first_out = std::move( *first ) ) ) {
+		constexpr OutputIterator move(
+		  InputIterator first, LastType const last,
+		  OutputIterator first_out ) noexcept( noexcept( *first_out =
+		                                                   std::move( *first ) ) ) {
 
 			while( first != last ) {
 				*first_out = std::move( *first );
@@ -947,7 +1096,8 @@ namespace daw {
 			return first_out;
 		}
 
-		/// @brief Move values from input range [first, last) to output range [first_out, first_out + count)
+		/// @brief Move values from input range [first, last) to output range
+		/// [first_out, first_out + count)
 		/// @tparam InputIterator type of Iterator of input range
 		/// @tparam OutputIterator type of iterator for output range
 		/// @param first start of input range
@@ -955,8 +1105,9 @@ namespace daw {
 		/// @param count number of items to move
 		/// @return end of output range written to
 		template<typename InputIterator, typename OutputIterator>
-		constexpr OutputIterator move_n( InputIterator first, OutputIterator first_out,
-		                                 size_t count ) noexcept( noexcept( *first_out = std::move( *first ) ) ) {
+		constexpr OutputIterator move_n(
+		  InputIterator first, OutputIterator first_out,
+		  size_t count ) noexcept( noexcept( *first_out = std::move( *first ) ) ) {
 
 			while( count-- > 0 ) {
 				*first_out = std::move( *first );
@@ -966,7 +1117,8 @@ namespace daw {
 			return first_out;
 		}
 
-		/// @brief Determine if two ranges [first1, last1) and [first2, first2 + std::distance( first1, last1 )) are equal
+		/// @brief Determine if two ranges [first1, last1) and [first2, first2 +
+		/// std::distance( first1, last1 )) are equal
 		/// @tparam InputIterator1 type of Iterator of first input range
 		/// @tparam LastType type of Iterator marking end of first input range
 		/// @tparam InputIterator2 type of Iterator of second input range
@@ -974,9 +1126,11 @@ namespace daw {
 		/// @param last1 end of first input range
 		/// @param first2 start of second input range
 		/// @return true if both ranges are equal
-		template<typename InputIterator1, typename LastType, typename InputIterator2>
-		constexpr bool equal( InputIterator1 first1, LastType last1,
-		                      InputIterator2 first2 ) noexcept( noexcept( *first1 == *first2 ) ) {
+		template<typename InputIterator1, typename LastType,
+		         typename InputIterator2>
+		constexpr bool
+		equal( InputIterator1 first1, LastType last1,
+		       InputIterator2 first2 ) noexcept( noexcept( *first1 == *first2 ) ) {
 
 			while( ( first1 != last1 ) && ( *first1 == *first2 ) ) {
 				++first1;
@@ -995,11 +1149,14 @@ namespace daw {
 		/// @param first2 start of second input range
 		/// @param last2 end of second input range
 		/// @return true if both ranges are equal
-		template<typename InputIterator1, typename LastType1, typename InputIterator2, typename LastType2>
-		constexpr bool equal( InputIterator1 first1, LastType1 last1, InputIterator2 first2,
-		                      LastType2 last2 ) noexcept( noexcept( *first1 == *first2 ) ) {
+		template<typename InputIterator1, typename LastType1,
+		         typename InputIterator2, typename LastType2>
+		constexpr bool
+		equal( InputIterator1 first1, LastType1 last1, InputIterator2 first2,
+		       LastType2 last2 ) noexcept( noexcept( *first1 == *first2 ) ) {
 
-			while( ( first1 != last1 ) && ( first2 != last2 ) && ( *first1 == *first2 ) ) {
+			while( ( first1 != last1 ) && ( first2 != last2 ) &&
+			       ( *first1 == *first2 ) ) {
 				++first1;
 				++first2;
 			}
@@ -1007,7 +1164,8 @@ namespace daw {
 			return !( first1 != last1 ) && !( first2 != last2 );
 		}
 
-		/// @brief Determine if two ranges [first1, last1) and [first2, last2) using pred
+		/// @brief Determine if two ranges [first1, last1) and [first2, last2) using
+		/// pred
 		/// @tparam InputIterator1 type of Iterator of first input range
 		/// @tparam LastType1 type of Iterator marking end of first input range
 		/// @tparam InputIterator2 type of Iterator of second input range
@@ -1019,15 +1177,21 @@ namespace daw {
 		/// @param last2 end of second input range
 		/// @param comp predicate to determine equality of elements
 		/// @return true if both ranges are equal
-		template<typename InputIterator1, typename LastType1, typename InputIterator2, typename LastType2, typename Compare>
-		constexpr bool equal( InputIterator1 first1, LastType1 last1, InputIterator2 first2, LastType2 last2,
-		                      Compare comp ) noexcept( noexcept( comp( *first1, *first2 ) ) ) {
+		template<typename InputIterator1, typename LastType1,
+		         typename InputIterator2, typename LastType2, typename Compare>
+		constexpr bool
+		equal( InputIterator1 first1, LastType1 last1, InputIterator2 first2,
+		       LastType2 last2,
+		       Compare comp ) noexcept( noexcept( comp( *first1, *first2 ) ) ) {
 
-			static_assert( is_compare_v<Compare, decltype( *first1 ), decltype( *first2 )>,
-			               "Compare function does not meet the requirements of the Compare concept. "
-			               "http://en.cppreference.com/w/cpp/concept/Compare" );
+			static_assert(
+			  is_compare_v<Compare, decltype( *first1 ), decltype( *first2 )>,
+			  "Compare function does not meet the requirements of the Compare "
+			  "concept. "
+			  "http://en.cppreference.com/w/cpp/concept/Compare" );
 
-			while( ( first1 != last1 ) && ( first2 != last2 ) && comp( *first1, *first2 ) ) {
+			while( ( first1 != last1 ) && ( first2 != last2 ) &&
+			       comp( *first1, *first2 ) ) {
 				++first1;
 				++first2;
 			}
@@ -1039,10 +1203,12 @@ namespace daw {
 		/// @tparam U second type to swap
 		/// @param t first value to swap
 		/// @param u second value to swap
-		template<typename T, typename U,
-		         std::enable_if_t<is_convertible_v<T, U> && is_convertible_v<U, T> && is_nothrow_move_assignable_v<T> &&
-		                            is_nothrow_move_assignable_v<U>,
-		                          std::nullptr_t> = nullptr>
+		template<
+		  typename T, typename U,
+		  std::enable_if_t<is_convertible_v<T, U> && is_convertible_v<U, T> &&
+		                     is_nothrow_move_assignable_v<T> &&
+		                     is_nothrow_move_assignable_v<U>,
+		                   std::nullptr_t> = nullptr>
 		constexpr void swapper( T &t, U &u ) noexcept {
 			T tmp = std::move( t );
 			t = std::move( u );
@@ -1051,17 +1217,21 @@ namespace daw {
 
 		/// @brief Performs a left rotation on a range of elements.
 		/// @tparam ForwardIterator type of Iterator for items in range
-		/// @tparam LastType type that is equal to ForwardIterator when end of range reached
+		/// @tparam LastType type that is equal to ForwardIterator when end of range
+		/// reached
 		/// @param first first item in range
 		/// @param middle middle of range, first item in new range
 		/// @param last last item in range
 		template<typename ForwardIterator, typename LastType>
-		constexpr void rotate( ForwardIterator first, ForwardIterator middle,
-		                       LastType last ) noexcept( noexcept( swapper( *first, *middle ) ) ) {
+		constexpr void
+		rotate( ForwardIterator first, ForwardIterator middle,
+		        LastType last ) noexcept( noexcept( swapper( *first, *middle ) ) ) {
 
-			static_assert( is_forward_iterator_v<ForwardIterator>,
-			               "ForwardIterator passed to rotate does not meet the requirements of the ForwardIterator concept "
-			               "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
+			static_assert(
+			  is_forward_iterator_v<ForwardIterator>,
+			  "ForwardIterator passed to rotate does not meet the requirements of "
+			  "the ForwardIterator concept "
+			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
 
 			ForwardIterator tmp = middle;
 			while( first != tmp ) {
@@ -1076,8 +1246,9 @@ namespace daw {
 			}
 		}
 
-		/// @brief Returns an iterator pointing to the first element in the range [first, last) that is greater than value,
-		/// or last if no such element is found.
+		/// @brief Returns an iterator pointing to the first element in the range
+		/// [first, last) that is greater than value, or last if no such element is
+		/// found.
 		/// @tparam ForwardIterator Iteratot type pointing to range
 		/// @tparam T a value comparable to the dereferenced RandomIterator
 		/// @param first first item in range
@@ -1085,8 +1256,11 @@ namespace daw {
 		/// @param value value to compare to
 		/// @return position of first element greater than value or last
 		template<typename ForwardIterator, typename T>
-		constexpr ForwardIterator upper_bound( ForwardIterator first, ForwardIterator last, T const &value ) noexcept(
-		  noexcept( daw::advance( first, 1 ) ) && noexcept( ++first ) && noexcept( daw::distance( first, last ) ) ) {
+		constexpr ForwardIterator upper_bound(
+		  ForwardIterator first, ForwardIterator last,
+		  T const &value ) noexcept( noexcept( daw::advance( first, 1 ) ) &&
+		                             noexcept( ++first ) &&
+		                             noexcept( daw::distance( first, last ) ) ) {
 			auto count = daw::distance( first, last );
 			while( count > 0 ) {
 				auto it = first;
@@ -1103,13 +1277,17 @@ namespace daw {
 		}
 
 		template<typename RandomIterator, typename Compare = std::less<>>
-		constexpr void nth_element( RandomIterator first, RandomIterator nth, RandomIterator const last,
-		                            Compare comp = Compare{} ) noexcept( noexcept( comp( *first, *nth ) ) &&
-		                                                                 noexcept( swapper( *first, *nth ) ) ) {
+		constexpr void nth_element(
+		  RandomIterator first, RandomIterator nth, RandomIterator const last,
+		  Compare comp = Compare{} ) noexcept( noexcept( comp( *first, *nth ) ) &&
+		                                       noexcept( swapper( *first,
+		                                                          *nth ) ) ) {
 
-			static_assert( is_compare_v<Compare, decltype( *first ), decltype( *nth )>,
-			               "Compare function does not meet the requirements of the Compare concept. "
-			               "http://en.cppreference.com/w/cpp/concept/Compare" );
+			static_assert(
+			  is_compare_v<Compare, decltype( *first ), decltype( *nth )>,
+			  "Compare function does not meet the requirements of the Compare "
+			  "concept. "
+			  "http://en.cppreference.com/w/cpp/concept/Compare" );
 
 			while( first != nth ) {
 				auto min_idx = first;
@@ -1126,12 +1304,13 @@ namespace daw {
 		}
 
 		/* TODO: remove
-		template<typename RandomIterator1, typename RandomIterator2, typename Compare>
-		constexpr void quick_sort( RandomIterator1 first, RandomIterator2 const last, Compare comp ) noexcept {
+		template<typename RandomIterator1, typename RandomIterator2, typename
+		Compare> constexpr void quick_sort( RandomIterator1 first, RandomIterator2
+		const last, Compare comp ) noexcept {
 
 		  static_assert( is_compare_v<Compare, decltype( *first )>,
-		                 "Compare function does not meet the requirements of the Compare concept. "
-		                 "http://en.cppreference.com/w/cpp/concept/Compare" );
+		                 "Compare function does not meet the requirements of the
+		Compare concept. " "http://en.cppreference.com/w/cpp/concept/Compare" );
 
 		  auto const N = daw::algorithm::distance( first, last );
 		  if( N <= 1 ) {
@@ -1144,26 +1323,30 @@ namespace daw {
 		}
 
 		template<typename RandomIterator1, typename RandomIterator2>
-		constexpr void insertion_sort( RandomIterator1 first, RandomIterator2 const last ) noexcept {
-		  for( auto i = first; i != last; ++i ) {
-		    daw::algorithm::rotate( daw::algorithm::upper_bound( first, i, *i ), i, daw::algorithm::next( i ) );
+		constexpr void insertion_sort( RandomIterator1 first, RandomIterator2 const
+		last ) noexcept { for( auto i = first; i != last; ++i ) {
+		    daw::algorithm::rotate( daw::algorithm::upper_bound( first, i, *i ), i,
+		daw::algorithm::next( i ) );
 		  }
 		}
 		*/
 
-		/// @brief Examines the range [first, last) and finds the largest range beginning at first in which the elements are
-		/// sorted in ascending order.
+		/// @brief Examines the range [first, last) and finds the largest range
+		/// beginning at first in which the elements are sorted in ascending order.
 		/// @tparam ForwardIterator Iterator type used to hold range
 		/// @param first first item in range
 		/// @param last	end of range
 		/// @return	ForwardIterator with the last sorted item
 		template<typename ForwardIterator>
-		constexpr ForwardIterator is_sorted_until( ForwardIterator first,
-		                                           ForwardIterator last ) noexcept( noexcept( *first < next( *first ) ) ) {
+		constexpr ForwardIterator is_sorted_until(
+		  ForwardIterator first,
+		  ForwardIterator last ) noexcept( noexcept( *first < next( *first ) ) ) {
 
-			static_assert( is_forward_iterator_v<ForwardIterator>,
-			               "ForwardIterator passed to rotate does not meet the requirements of the ForwardIterator concept "
-			               "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
+			static_assert(
+			  is_forward_iterator_v<ForwardIterator>,
+			  "ForwardIterator passed to rotate does not meet the requirements of "
+			  "the ForwardIterator concept "
+			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
 
 			auto next_it = next( first );
 			while( next_it != last ) {
@@ -1176,24 +1359,29 @@ namespace daw {
 			return last;
 		}
 
-		/// @brief Examines the range [first, last) and finds the largest range beginning at first in which the elements are
-		/// sorted in ascending order.
+		/// @brief Examines the range [first, last) and finds the largest range
+		/// beginning at first in which the elements are sorted in ascending order.
 		/// @tparam ForwardIterator Iterator type used to hold range
-		/// @tparam Compare Comparision function object type that satifies the Compare concept
+		/// @tparam Compare Comparision function object type that satifies the
+		/// Compare concept
 		/// @param first first item in range
 		/// @param last	end of range
 		/// @param comp comparision function object
 		/// @return	ForwardIterator with the last sorted item
 		template<typename ForwardIterator, typename Compare>
-		constexpr ForwardIterator is_sorted_until( ForwardIterator first, ForwardIterator last,
-		                                           Compare comp ) noexcept( noexcept( comp( *first, *first ) ) ) {
+		constexpr ForwardIterator is_sorted_until(
+		  ForwardIterator first, ForwardIterator last,
+		  Compare comp ) noexcept( noexcept( comp( *first, *first ) ) ) {
 
-			static_assert( is_forward_iterator_v<ForwardIterator>,
-			               "ForwardIterator passed to rotate does not meet the requirements of the ForwardIterator concept "
-			               "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
+			static_assert(
+			  is_forward_iterator_v<ForwardIterator>,
+			  "ForwardIterator passed to rotate does not meet the requirements of "
+			  "the ForwardIterator concept "
+			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
 
 			static_assert( is_compare_v<Compare, decltype( *first )>,
-			               "Compare function does not meet the requirements of the Compare concept. "
+			               "Compare function does not meet the requirements of the "
+			               "Compare concept. "
 			               "http://en.cppreference.com/w/cpp/concept/Compare" );
 
 			auto next_it = first;
@@ -1207,11 +1395,15 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator, typename LastType>
-		constexpr bool is_sorted( ForwardIterator first, LastType last ) noexcept( noexcept( *first < *first ) ) {
+		constexpr bool
+		is_sorted( ForwardIterator first,
+		           LastType last ) noexcept( noexcept( *first < *first ) ) {
 
-			static_assert( is_forward_iterator_v<ForwardIterator>,
-			               "ForwardIterator passed to rotate does not meet the requirements of the ForwardIterator concept "
-			               "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
+			static_assert(
+			  is_forward_iterator_v<ForwardIterator>,
+			  "ForwardIterator passed to rotate does not meet the requirements of "
+			  "the ForwardIterator concept "
+			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
 			if( !( first != last ) ) {
 				return true;
 			}
@@ -1224,15 +1416,19 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator, typename LastType, typename Compare>
-		constexpr bool is_sorted( ForwardIterator first, LastType last,
-		                          Compare comp ) noexcept( noexcept( comp( *first, *first ) ) ) {
+		constexpr bool
+		is_sorted( ForwardIterator first, LastType last,
+		           Compare comp ) noexcept( noexcept( comp( *first, *first ) ) ) {
 
-			static_assert( is_forward_iterator_v<ForwardIterator>,
-			               "ForwardIterator passed to rotate does not meet the requirements of the ForwardIterator concept "
-			               "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
+			static_assert(
+			  is_forward_iterator_v<ForwardIterator>,
+			  "ForwardIterator passed to rotate does not meet the requirements of "
+			  "the ForwardIterator concept "
+			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
 
 			static_assert( is_compare_v<Compare, decltype( *first )>,
-			               "Compare function does not meet the requirements of the Compare concept. "
+			               "Compare function does not meet the requirements of the "
+			               "Compare concept. "
 			               "http://en.cppreference.com/w/cpp/concept/Compare" );
 
 			if( !( first != last ) ) {
@@ -1247,37 +1443,49 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator, typename T>
-		constexpr void fill_n( ForwardIterator first, size_t count, T const &value ) noexcept {
+		constexpr void fill_n( ForwardIterator first, size_t count,
+		                       T const &value ) noexcept {
 			for( size_t n = 0; n < count; ++n ) {
 				*first++ = value;
 			}
 		}
 
-		template<typename RandomIterator, typename RandomOutputIterator, typename UnaryOperation>
-		constexpr void map( RandomIterator first, RandomIterator const last, RandomOutputIterator first_out,
-		                    UnaryOperation unary_op ) noexcept( noexcept( *first_out++ = unary_op( *first++ ) ) ) {
+		template<typename RandomIterator, typename RandomOutputIterator,
+		         typename UnaryOperation>
+		constexpr void map(
+		  RandomIterator first, RandomIterator const last,
+		  RandomOutputIterator first_out,
+		  UnaryOperation unary_op ) noexcept( noexcept( *first_out++ =
+		                                                  unary_op( *first++ ) ) ) {
 
-			static_assert(
-			  is_unary_predicate_v<UnaryOperation, decltype( *first )>,
-			  "UnaryOperation must take one value of the dereferenced type of first e.g. unary_op( *first ) must be valid" );
+			static_assert( is_unary_predicate_v<UnaryOperation, decltype( *first )>,
+			               "UnaryOperation must take one value of the dereferenced "
+			               "type of first e.g. unary_op( *first ) must be valid" );
 
 			while( first != last ) {
 				*first_out++ = unary_op( *first++ );
 			}
 		}
 
-		template<typename T, typename RandomIterator, typename RandomIteratorLast, typename BinaryOperation>
-		constexpr T reduce( RandomIterator first, RandomIteratorLast last, T init,
-		                    BinaryOperation binary_op ) noexcept( noexcept( init = binary_op( init, *first++ ) ) ) {
+		template<typename T, typename RandomIterator, typename RandomIteratorLast,
+		         typename BinaryOperation>
+		constexpr T reduce(
+		  RandomIterator first, RandomIteratorLast last, T init,
+		  BinaryOperation
+		    binary_op ) noexcept( noexcept( init = binary_op( init, *first++ ) ) ) {
 
-			static_assert( is_binary_predicate_v<BinaryOperation, T, decltype( *first )>,
-			               "BinaryOperation passed to reduce must take two values referenced by first. e.g binary_op( "
-			               "init, *first) ) "
-			               "must be valid" );
+			static_assert(
+			  is_binary_predicate_v<BinaryOperation, T, decltype( *first )>,
+			  "BinaryOperation passed to reduce must take two values referenced by "
+			  "first. e.g binary_op( "
+			  "init, *first) ) "
+			  "must be valid" );
 
-			static_assert( is_convertible_v<decltype( binary_op( init, *first++ ) ), T>,
-			               "Result of BinaryOperation must be convertable to type of value referenced by RandomIterator. "
-			               "e.g. *first = binary_op( *first, *(first + 1) ) must be valid." );
+			static_assert(
+			  is_convertible_v<decltype( binary_op( init, *first++ ) ), T>,
+			  "Result of BinaryOperation must be convertable to type of value "
+			  "referenced by RandomIterator. "
+			  "e.g. *first = binary_op( *first, *(first + 1) ) must be valid." );
 
 			while( first != last ) {
 				init = binary_op( init, *first++ );
@@ -1285,28 +1493,39 @@ namespace daw {
 			return std::move( init );
 		}
 
-		template<typename InputIterator1, typename InputIterator1Last, typename InputIterator2, typename T,
-		         typename ReduceFunction, typename MapFunction>
-		constexpr T
-		map_reduce( InputIterator1 first1, InputIterator1Last last1, InputIterator2 first2, T init,
-		            ReduceFunction reduce_func,
-		            MapFunction map_func ) noexcept( noexcept( reduce_func( init, map_func( *first1, *first2 ) ) ) ) {
+		template<typename InputIterator1, typename InputIterator1Last,
+		         typename InputIterator2, typename T, typename ReduceFunction,
+		         typename MapFunction>
+		constexpr T map_reduce(
+		  InputIterator1 first1, InputIterator1Last last1, InputIterator2 first2,
+		  T init, ReduceFunction reduce_func,
+		  MapFunction
+		    map_func ) noexcept( noexcept( reduce_func( init,
+		                                                map_func( *first1,
+		                                                          *first2 ) ) ) ) {
 
 			static_assert( is_iterator_v<InputIterator1>,
-			               "Iterator1 passed to rotate does not meet the requirements of the Iterator concept "
+			               "Iterator1 passed to rotate does not meet the "
+			               "requirements of the Iterator concept "
 			               "http://en.cppreference.com/w/cpp/concept/Iterator" );
 
 			static_assert( is_iterator_v<InputIterator2>,
-			               "Iterator2 passed to rotate does not meet the requirements of the Iterator concept "
+			               "Iterator2 passed to rotate does not meet the "
+			               "requirements of the Iterator concept "
 			               "http://en.cppreference.com/w/cpp/concept/Iterator" );
 
-			static_assert( is_binary_predicate_v<MapFunction, decltype( *first1 ), decltype( *first2 )>,
-			               "BinaryOperation map_func passed take two values referenced by first. e.g map_func( *first1, "
+			static_assert( is_binary_predicate_v<MapFunction, decltype( *first1 ),
+			                                     decltype( *first2 )>,
+			               "BinaryOperation map_func passed take two values "
+			               "referenced by first. e.g map_func( *first1, "
 			               "*first2 ) must be valid" );
 
-			static_assert( is_binary_predicate_v<ReduceFunction, T, decltype( map_func( *first1, *first2 ) )>,
-			               "BinaryOperation reduce_func must take two values referenced by first. e.g reduce_func( init, "
-			               "map_func( *first1, *first2 ) ) must be valid" );
+			static_assert(
+			  is_binary_predicate_v<ReduceFunction, T,
+			                        decltype( map_func( *first1, *first2 ) )>,
+			  "BinaryOperation reduce_func must take two values referenced by first. "
+			  "e.g reduce_func( init, "
+			  "map_func( *first1, *first2 ) ) must be valid" );
 
 			while( first1 != last1 ) {
 				init = reduce_func( init, map_func( *first1, *first2 ) );
@@ -1317,16 +1536,21 @@ namespace daw {
 		}
 
 		template<class ForwardIterator1, class ForwardIterator2>
-		constexpr ForwardIterator1 search( ForwardIterator1 first, ForwardIterator1 last, ForwardIterator2 s_first,
-		                                   ForwardIterator2 s_last ) noexcept( noexcept( *first == *s_first ) ) {
+		constexpr ForwardIterator1 search(
+		  ForwardIterator1 first, ForwardIterator1 last, ForwardIterator2 s_first,
+		  ForwardIterator2 s_last ) noexcept( noexcept( *first == *s_first ) ) {
 
-			static_assert( is_forward_iterator_v<ForwardIterator1>,
-			               "ForwardIterator1 passed to rotate does not meet the requirements of the ForwardIterator concept "
-			               "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
+			static_assert(
+			  is_forward_iterator_v<ForwardIterator1>,
+			  "ForwardIterator1 passed to rotate does not meet the requirements of "
+			  "the ForwardIterator concept "
+			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
 
-			static_assert( is_forward_iterator_v<ForwardIterator2>,
-			               "ForwardIterator2 passed to rotate does not meet the requirements of the ForwardIterator concept "
-			               "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
+			static_assert(
+			  is_forward_iterator_v<ForwardIterator2>,
+			  "ForwardIterator2 passed to rotate does not meet the requirements of "
+			  "the ForwardIterator concept "
+			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
 
 			for( ;; ++first ) {
 				ForwardIterator1 it = first;
@@ -1345,21 +1569,28 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator1, class ForwardIterator2, class Compare>
-		constexpr ForwardIterator1 search( ForwardIterator1 first, ForwardIterator1 last, ForwardIterator2 s_first,
-		                                   ForwardIterator2 s_last,
-		                                   Compare comp ) noexcept( noexcept( !comp( *first, *s_first ) ) ) {
+		constexpr ForwardIterator1
+		search( ForwardIterator1 first, ForwardIterator1 last,
+		        ForwardIterator2 s_first, ForwardIterator2 s_last,
+		        Compare comp ) noexcept( noexcept( !comp( *first, *s_first ) ) ) {
 
-			static_assert( is_forward_iterator_v<ForwardIterator1>,
-			               "ForwardIterator1 passed to rotate does not meet the requirements of the ForwardIterator concept "
-			               "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
+			static_assert(
+			  is_forward_iterator_v<ForwardIterator1>,
+			  "ForwardIterator1 passed to rotate does not meet the requirements of "
+			  "the ForwardIterator concept "
+			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
 
-			static_assert( is_forward_iterator_v<ForwardIterator2>,
-			               "ForwardIterator2 passed to rotate does not meet the requirements of the ForwardIterator concept "
-			               "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
+			static_assert(
+			  is_forward_iterator_v<ForwardIterator2>,
+			  "ForwardIterator2 passed to rotate does not meet the requirements of "
+			  "the ForwardIterator concept "
+			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
 
-			static_assert( is_compare_v<Compare, decltype( *first ), decltype( *s_first )>,
-			               "Compare function does not meet the requirements of the Compare concept. "
-			               "http://en.cppreference.com/w/cpp/concept/Compare" );
+			static_assert(
+			  is_compare_v<Compare, decltype( *first ), decltype( *s_first )>,
+			  "Compare function does not meet the requirements of the Compare "
+			  "concept. "
+			  "http://en.cppreference.com/w/cpp/concept/Compare" );
 
 			for( ;; ++first ) {
 				ForwardIterator1 it = first;
@@ -1378,19 +1609,24 @@ namespace daw {
 		}
 
 		template<typename InputIterator, typename T>
-		constexpr T accumulate( InputIterator first, InputIterator last, T init ) noexcept {
+		constexpr T accumulate( InputIterator first, InputIterator last,
+		                        T init ) noexcept {
 			for( ; first != last; ++first ) {
 				init = init + *first;
 			}
 			return init;
 		}
 
-		template<typename InputIterator, typename LastType, typename T, typename BinaryOperation>
-		constexpr T accumulate( InputIterator first, LastType last, T init,
-		                        BinaryOperation binary_op ) noexcept( noexcept( binary_op( init, *first ) ) ) {
+		template<typename InputIterator, typename LastType, typename T,
+		         typename BinaryOperation>
+		constexpr T accumulate(
+		  InputIterator first, LastType last, T init,
+		  BinaryOperation binary_op ) noexcept( noexcept( binary_op( init,
+		                                                             *first ) ) ) {
 
 			static_assert( is_iterator_v<InputIterator>,
-			               "Iterator passed to rotate does not meet the requirements of the Iterator concept "
+			               "Iterator passed to rotate does not meet the requirements "
+			               "of the Iterator concept "
 			               "http://en.cppreference.com/w/cpp/concept/Iterator" );
 
 			while( first != last ) {
@@ -1404,7 +1640,8 @@ namespace daw {
 		///	@tparam T of items to evaluate
 		/// @param a item 1
 		/// @param b item 2
-		/// @return a std::pair<T, T> that has the first member holding min(a, b) and second max(a, b)
+		/// @return a std::pair<T, T> that has the first member holding min(a, b)
+		/// and second max(a, b)
 		template<typename T>
 		constexpr std::pair<T, T> minmax_item( T const &a, T const &b ) noexcept {
 			if( b < a ) {
@@ -1419,11 +1656,13 @@ namespace daw {
 		/// @param a item 1
 		/// @param b item 2
 		/// @param comp comparison predicate
-		/// @return a std::pair<T, T> that has the first member holding min(a, b) and second max(a, b)
+		/// @return a std::pair<T, T> that has the first member holding min(a, b)
+		/// and second max(a, b)
 		template<typename T, typename Compare>
 		constexpr std::pair<T, T> minmax_item( T a, T b, Compare comp ) noexcept {
 			static_assert( is_compare_v<Compare, T>,
-			               "Compare function does not meet the requirements of the Compare concept. "
+			               "Compare function does not meet the requirements of the "
+			               "Compare concept. "
 			               "http://en.cppreference.com/w/cpp/concept/Compare" );
 			if( comp( b, a ) ) {
 				return std::pair<T, T>{std::move( b ), std::move( a )};
@@ -1432,16 +1671,21 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator, typename LastType, typename Compare>
-		constexpr auto minmax_element( ForwardIterator first, LastType last,
-		                               Compare comp ) noexcept( noexcept( comp( *first, *first ) ) ) {
+		constexpr auto minmax_element(
+		  ForwardIterator first, LastType last,
+		  Compare comp ) noexcept( noexcept( comp( *first, *first ) ) ) {
 
-			static_assert( is_forward_iterator_v<ForwardIterator>,
-			               "ForwardIterator passed to rotate does not meet the requirements of the ForwardIterator concept "
-			               "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
+			static_assert(
+			  is_forward_iterator_v<ForwardIterator>,
+			  "ForwardIterator passed to rotate does not meet the requirements of "
+			  "the ForwardIterator concept "
+			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
 
-			static_assert( is_compare_v<Compare, decltype( *first ), decltype( *first )>,
-			               "Compare function does not meet the requirements of the Compare concept. "
-			               "http://en.cppreference.com/w/cpp/concept/Compare" );
+			static_assert(
+			  is_compare_v<Compare, decltype( *first ), decltype( *first )>,
+			  "Compare function does not meet the requirements of the Compare "
+			  "concept. "
+			  "http://en.cppreference.com/w/cpp/concept/Compare" );
 
 			struct {
 				ForwardIterator min_element;
@@ -1492,22 +1736,26 @@ namespace daw {
 
 		template<typename ForwardIterator, typename LastType>
 		constexpr decltype( auto )
-		minmax_element( ForwardIterator first,
-		                LastType last ) noexcept( noexcept( minmax_element( first, last, std::less<>{} ) ) ) {
+		minmax_element( ForwardIterator first, LastType last ) noexcept(
+		  noexcept( minmax_element( first, last, std::less<>{} ) ) ) {
 
-			static_assert( is_forward_iterator_v<ForwardIterator>,
-			               "ForwardIterator passed to rotate does not meet the requirements of the ForwardIterator concept "
-			               "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
+			static_assert(
+			  is_forward_iterator_v<ForwardIterator>,
+			  "ForwardIterator passed to rotate does not meet the requirements of "
+			  "the ForwardIterator concept "
+			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
 
 			return daw::algorithm::minmax_element( first, last, std::less<>{} );
 		}
 
-		template<typename InputIterator1, typename LastType1, typename InputIterator2, typename LastType2,
+		template<typename InputIterator1, typename LastType1,
+		         typename InputIterator2, typename LastType2,
 		         typename OutputIterator>
-		constexpr OutputIterator set_intersection( InputIterator1 first1, LastType1 last1, InputIterator2 first2,
-		                                           LastType2 last2,
-		                                           OutputIterator d_first ) noexcept( noexcept( *first2 < *first1 ) &&
-		                                                                              noexcept( *first1 < *first2 ) ) {
+		constexpr OutputIterator set_intersection(
+		  InputIterator1 first1, LastType1 last1, InputIterator2 first2,
+		  LastType2 last2,
+		  OutputIterator d_first ) noexcept( noexcept( *first2 < *first1 ) &&
+		                                     noexcept( *first1 < *first2 ) ) {
 
 			while( first1 != last1 && first2 != last2 ) {
 				if( *first1 < *first2 ) {

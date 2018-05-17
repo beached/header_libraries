@@ -3,14 +3,14 @@
 // Copyright (c) 2014-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -40,7 +40,8 @@ namespace daw {
 			using const_reference = const reference;
 			using iterator = Iterator;
 			using const_iterator = const iterator;
-			using difference_type = typename std::iterator_traits<Iterator>::difference_type;
+			using difference_type =
+			  typename std::iterator_traits<Iterator>::difference_type;
 
 		private:
 			iterator m_begin;
@@ -254,7 +255,8 @@ namespace daw {
 			}
 
 			template<typename UnaryOperator>
-			auto map( UnaryOperator oper ) { // TODO verify result shouldn't be ref range
+			auto
+			map( UnaryOperator oper ) { // TODO verify result shouldn't be ref range
 				using v_t = decltype( oper( *begin( ) ) );
 				using result_t = std::vector<v_t>;
 				result_t result;
@@ -269,7 +271,9 @@ namespace daw {
 
 			template<typename Value, typename UnaryPredicate>
 			bool contains( Value const &value, UnaryPredicate predicate ) {
-				auto predicate2 = [&value, &predicate]( Value const &val ) { return predicate( value, val ); };
+				auto predicate2 = [&value, &predicate]( Value const &val ) {
+					return predicate( value, val );
+				};
 				return std::find_if( m_begin, m_end, predicate2 ) != m_end;
 			}
 
@@ -279,7 +283,8 @@ namespace daw {
 
 			template<typename UniformRandomNumberGenerator>
 			auto shuffle( UniformRandomNumberGenerator &&urng ) {
-				return make_range_reference( *this ).shuffle( std::forward<UniformRandomNumberGenerator>( urng ) );
+				return make_range_reference( *this ).shuffle(
+				  std::forward<UniformRandomNumberGenerator>( urng ) );
 			}
 
 			auto slice( size_t first_pos ) {
@@ -331,22 +336,28 @@ namespace daw {
 			return Range<iterator>{first, last};
 		}
 
-		template<typename Container,
-		         typename std::enable_if<daw::traits::is_container_not_string_v<Container>, long>::type = 0>
+		template<
+		  typename Container,
+		  typename std::enable_if<daw::traits::is_container_not_string_v<Container>,
+		                          long>::type = 0>
 		auto make_range( Container &container ) {
 			using Iterator = std::decay_t<decltype( std::begin( container ) )>;
 			return Range<Iterator>( std::begin( container ), std::end( container ) );
 		}
 
-		template<typename Container,
-		         typename std::enable_if<daw::traits::is_container_not_string_v<Container>, long>::type = 0>
+		template<
+		  typename Container,
+		  typename std::enable_if<daw::traits::is_container_not_string_v<Container>,
+		                          long>::type = 0>
 		auto make_crange( Container const &container ) {
 			using Iterator = std::decay_t<decltype( std::begin( container ) )>;
 			return Range<Iterator>( std::begin( container ), std::end( container ) );
 		}
 
 		template<typename Iterator>
-		void safe_advance( Range<Iterator> &range, typename std::iterator_traits<Iterator>::difference_type count ) {
+		void safe_advance(
+		  Range<Iterator> &range,
+		  typename std::iterator_traits<Iterator>::difference_type count ) {
 			assert( 0 <= count );
 			if( daw::distance( range.begin( ), range.end( ) ) >= count ) {
 				range.advance( count );
@@ -356,7 +367,9 @@ namespace daw {
 		}
 
 		template<typename Iterator>
-		bool contains( Range<Iterator> const &range, typename std::iterator_traits<Iterator>::value_type const &key ) {
+		bool
+		contains( Range<Iterator> const &range,
+		          typename std::iterator_traits<Iterator>::value_type const &key ) {
 			return std::find( range.begin( ), range.end( ), key ) != range.end( );
 		}
 

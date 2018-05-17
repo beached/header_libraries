@@ -3,14 +3,14 @@
 // Copyright (c) 2014-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -28,7 +28,9 @@ namespace daw {
 	namespace parser {
 		template<typename ForwardIterator>
 		constexpr auto find_number( ForwardIterator first, ForwardIterator last ) {
-			auto const is_first = []( auto const &v ) { return is_a( '-', v ) || is_number( v ); };
+			auto const is_first = []( auto const &v ) {
+				return is_a( '-', v ) || is_number( v );
+			};
 
 			bool has_decimal = false;
 			auto const is_last = [&has_decimal]( auto const &v ) {
@@ -46,7 +48,8 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator, typename Result>
-		constexpr void parse_unsigned_int( ForwardIterator first, ForwardIterator last, Result &result ) {
+		constexpr void parse_unsigned_int( ForwardIterator first,
+		                                   ForwardIterator last, Result &result ) {
 			size_t count = std::numeric_limits<Result>::digits10;
 
 			if( '-' == *first ) {
@@ -59,18 +62,21 @@ namespace daw {
 				result += val;
 			}
 			if( first != last ) {
-				throw ParserOutOfRangeException{"Not enough room to store unsigned integer"};
+				throw ParserOutOfRangeException{
+				  "Not enough room to store unsigned integer"};
 			}
 		}
 
 		template<typename ForwardIterator, typename Result>
-		constexpr void parse_int( ForwardIterator first, ForwardIterator last, Result &result ) {
+		constexpr void parse_int( ForwardIterator first, ForwardIterator last,
+		                          Result &result ) {
 			intmax_t count = std::numeric_limits<Result>::digits10;
 			result = 0;
 			bool is_neg = false;
 			if( '-' == *first ) {
 				if( !std::numeric_limits<Result>::is_signed ) {
-					throw ParserOutOfRangeException{"Negative values are unsupported with unsigned Result"};
+					throw ParserOutOfRangeException{
+					  "Negative values are unsupported with unsigned Result"};
 				}
 				is_neg = true;
 				++first;
@@ -81,7 +87,8 @@ namespace daw {
 				result += val;
 			}
 			if( first != last ) {
-				throw ParserOutOfRangeException{"Not enough room to store signed integer"};
+				throw ParserOutOfRangeException{
+				  "Not enough room to store signed integer"};
 			}
 			if( is_neg ) {
 				result *= static_cast<Result>( -1 );
@@ -89,7 +96,8 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator>
-		constexpr auto parse_string_literal( ForwardIterator first, ForwardIterator const last ) {
+		constexpr auto parse_string_literal( ForwardIterator first,
+		                                     ForwardIterator const last ) {
 			auto result = trim_left( first, last );
 			auto quote_char = *first;
 			if( !is_quote( quote_char ) ) {

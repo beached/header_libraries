@@ -3,14 +3,14 @@
 // Copyright (c) 2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -64,28 +64,32 @@ BOOST_AUTO_TEST_CASE( daw_circular_iterator_003 ) {
 BOOST_AUTO_TEST_CASE( daw_circular_iterator_004 ) {
 	std::vector<int> a;
 	auto it = daw::make_circular_iterator( a );
-	constexpr bool is_move_assignable = std::is_move_assignable<decltype( it )>::value;
+	constexpr bool is_move_assignable =
+	  std::is_move_assignable<decltype( it )>::value;
 	BOOST_REQUIRE( is_move_assignable );
 }
 
 BOOST_AUTO_TEST_CASE( daw_circular_iterator_005 ) {
 	std::vector<int> a;
 	auto it = daw::make_circular_iterator( a );
-	constexpr bool is_move_constructible = std::is_move_constructible<decltype( it )>::value;
+	constexpr bool is_move_constructible =
+	  std::is_move_constructible<decltype( it )>::value;
 	BOOST_REQUIRE( is_move_constructible );
 }
 
 BOOST_AUTO_TEST_CASE( daw_circular_iterator_006 ) {
 	std::vector<int> a;
 	auto it = daw::make_circular_iterator( a );
-	constexpr bool is_nothrow_move_assignable = std::is_nothrow_move_assignable<decltype( it )>::value;
+	constexpr bool is_nothrow_move_assignable =
+	  std::is_nothrow_move_assignable<decltype( it )>::value;
 	BOOST_CHECK( is_nothrow_move_assignable );
 }
 
 BOOST_AUTO_TEST_CASE( daw_circular_iterator_007 ) {
 	std::vector<int> a;
 	auto it = daw::make_circular_iterator( a );
-	constexpr bool is_nothrow_move_constructible = std::is_nothrow_move_constructible<decltype( it )>::value;
+	constexpr bool is_nothrow_move_constructible =
+	  std::is_nothrow_move_constructible<decltype( it )>::value;
 	BOOST_CHECK( is_nothrow_move_constructible );
 }
 

@@ -3,14 +3,14 @@
 // Copyright (c) 2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -40,14 +40,16 @@ namespace daw {
 		struct s_hash_fn_t {
 			constexpr size_t operator( )( KeyType const &k ) noexcept {
 				size_t result =
-				  ( daw::fnv1a_hash( k ) % ( std::numeric_limits<size_t>::max( ) - impl::sentinals::sentinals_size ) ) +
+				  ( daw::fnv1a_hash( k ) % ( std::numeric_limits<size_t>::max( ) -
+				                             impl::sentinals::sentinals_size ) ) +
 				  impl::sentinals::sentinals_size;
 				return result;
 			}
 
 			constexpr size_t operator( )( KeyType const *k ) noexcept {
 				size_t result =
-				  ( daw::fnv1a_hash( k ) % ( std::numeric_limits<size_t>::max( ) - impl::sentinals::sentinals_size ) ) +
+				  ( daw::fnv1a_hash( k ) % ( std::numeric_limits<size_t>::max( ) -
+				                             impl::sentinals::sentinals_size ) ) +
 				  impl::sentinals::sentinals_size;
 				return result;
 			}
@@ -57,16 +59,20 @@ namespace daw {
 	namespace resize_policies {
 		struct golden_ratio {
 			constexpr size_t operator( )( size_t current_size ) const {
-				return static_cast<size_t>( static_cast<double>( current_size ) *
-				                            1.61803398875 ); // assumes 2^53(9 Petabytes) will be enough for anybody :)
+				return static_cast<size_t>(
+				  static_cast<double>( current_size ) *
+				  1.61803398875 ); // assumes 2^53(9 Petabytes) will be enough for
+				                   // anybody :)
 			}
 		};
 	} // namespace resize_policies
 
-	template<typename Value, size_t m_initial_size = 11, uint8_t resize_ratio = 80,
+	template<typename Value, size_t m_initial_size = 11,
+	         uint8_t resize_ratio = 80,
 	         typename ResizePolicy = resize_policies::golden_ratio>
 	struct hash_table {
-		static_assert( m_initial_size > 0, "Must supply a positive initial_size larger than 0" );
+		static_assert( m_initial_size > 0,
+		               "Must supply a positive initial_size larger than 0" );
 		using value_type = daw::traits::root_type_t<Value>;
 		using reference = value_type &;
 		using const_reference = value_type const &;
@@ -88,10 +94,12 @@ namespace daw {
 			// Scale value to capacity using MAD(Multiply-Add-Divide) compression
 			// Use the two largest Prime's that fit in a 64bit unsigned integral
 			daw::exception::daw_throw_on_false( table_size > 0 );
-			daw::exception::daw_throw_on_false( table_size <
-			                                    max_size( ) ); // Table size must be less than max of ptrdiff_t as we use the
-			                                                   // value 0 as a sentinel.  This should be rare
-			daw::exception::daw_throw_on_false( hash >= impl::sentinals::sentinals_size );
+			daw::exception::daw_throw_on_false(
+			  table_size <
+			  max_size( ) ); // Table size must be less than max of ptrdiff_t as we
+			                 // use the value 0 as a sentinel.  This should be rare
+			daw::exception::daw_throw_on_false( hash >=
+			                                    impl::sentinals::sentinals_size );
 
 			size_t const prime_a = 18446744073709551557u;
 			size_t const prime_b = 18446744073709551533u;
@@ -115,7 +123,9 @@ namespace daw {
 			lookup_result_t result;
 			auto const s_hash = scale_hash( hash, m_hashes.size( ) );
 			result.position = s_hash;
-			size_t removed_found = std::numeric_limits<size_t>::max( ); // Need a check and this will be rare
+			size_t removed_found =
+			  std::numeric_limits<size_t>::max( ); // Need a check and this will be
+			                                       // rare
 			for( ; result.position != m_hashes.size( ); ++result.position ) {
 				if( m_hashes[result.position] == hash ) {
 					result.found = true;
@@ -124,7 +134,8 @@ namespace daw {
 				} else if( m_hashes[result.position] == impl::sentinals::empty ) {
 					result.lookup_cost = result.position - s_hash;
 					return result;
-				} else if( m_hashes[result.position] == impl::sentinals::removed && result.position < removed_found ) {
+				} else if( m_hashes[result.position] == impl::sentinals::removed &&
+				           result.position < removed_found ) {
 					removed_found = result.position;
 				}
 			}
@@ -132,12 +143,15 @@ namespace daw {
 			for( ; result.position != s_hash; ++result.position ) {
 				if( m_hashes[result.position] == hash ) {
 					result.found = true;
-					result.lookup_cost = ( m_hashes.size( ) - s_hash ) + result.position - s_hash;
+					result.lookup_cost =
+					  ( m_hashes.size( ) - s_hash ) + result.position - s_hash;
 					return result;
 				} else if( m_hashes[result.position] == impl::sentinals::empty ) {
-					result.lookup_cost = ( m_hashes.size( ) - s_hash ) + result.position - s_hash;
+					result.lookup_cost =
+					  ( m_hashes.size( ) - s_hash ) + result.position - s_hash;
 					return result;
-				} else if( m_hashes[result.position] == impl::sentinals::removed && result.position < removed_found ) {
+				} else if( m_hashes[result.position] == impl::sentinals::removed &&
+				           result.position < removed_found ) {
 					removed_found = result.position;
 				}
 			}
@@ -146,7 +160,8 @@ namespace daw {
 				result.position = removed_found;
 				return result;
 			}
-			result.position = m_hashes.size( ); // Indicate that there are no empty or removed cells, table is full
+			result.position = m_hashes.size( ); // Indicate that there are no empty or
+			                                    // removed cells, table is full
 			return result;
 		}
 
@@ -165,7 +180,8 @@ namespace daw {
 			resize_tables( ResizePolicy{}( m_hashes.size( ) ) );
 		}
 
-		static constexpr bool should_resize( size_t lookup_cost, size_t current_size ) {
+		static constexpr bool should_resize( size_t lookup_cost,
+		                                     size_t current_size ) {
 			daw::exception::daw_throw_on_false( current_size > 0 );
 			return ( ( lookup_cost * 100 ) / current_size ) >= resize_ratio;
 		}

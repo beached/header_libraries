@@ -3,14 +3,14 @@
 // Copyright (c) 2014-2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -35,16 +35,19 @@ BOOST_AUTO_TEST_CASE( container_algorithm_accumulate ) {
 	auto const sum = daw::container::accumulate( test, 0 );
 	BOOST_REQUIRE_EQUAL( test.size( ), sum );
 
-	auto const product = daw::container::accumulate( test, 1, []( auto lhs, auto rhs ) { return lhs * rhs; } );
+	auto const product = daw::container::accumulate(
+	  test, 1, []( auto lhs, auto rhs ) { return lhs * rhs; } );
 	BOOST_REQUIRE_EQUAL( product, 1 );
 }
 
 BOOST_AUTO_TEST_CASE( container_algorithm_transform ) {
-	std::vector<int> test_vec{boost::counting_iterator<int>( 1 ), boost::counting_iterator<int>( 100 )};
+	std::vector<int> test_vec{boost::counting_iterator<int>( 1 ),
+	                          boost::counting_iterator<int>( 100 )};
 	std::vector<int> result{};
 	result.resize( test_vec.size( ) );
 
-	daw::container::transform( test_vec, std::back_inserter( result ), []( int const &val ) { return 2 * val; } );
+	daw::container::transform( test_vec, std::back_inserter( result ),
+	                           []( int const &val ) { return 2 * val; } );
 
 	auto const sum1 = daw::container::accumulate( test_vec, 0 );
 	auto const sum2 = daw::container::accumulate( result, 0 );
@@ -62,14 +65,16 @@ BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_sort ) {
 BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_stable_sort ) {
 	std::vector<int64_t> v1{1000};
 	std::iota( std::begin( v1 ), std::end( v1 ), 1 );
-	daw::container::stable_sort( v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
+	daw::container::stable_sort( v1,
+	                             []( auto lhs, auto rhs ) { return lhs < rhs; } );
 	BOOST_REQUIRE( std::is_sorted( v1.cbegin( ), v1.cend( ) ) );
 }
 
 BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_max_element ) {
 	std::vector<int64_t> v1{1000};
 	std::iota( std::begin( v1 ), std::end( v1 ), 1 );
-	daw::container::max_element( v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
+	daw::container::max_element( v1,
+	                             []( auto lhs, auto rhs ) { return lhs < rhs; } );
 }
 
 BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_copy_001 ) {
@@ -77,7 +82,8 @@ BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_copy_001 ) {
 	std::iota( std::begin( a1 ), std::end( a1 ), 2 );
 	std::array<int, 100> a2{};
 	daw::container::copy( a1, a2.begin( ) );
-	BOOST_REQUIRE( std::equal( std::cbegin( a1 ), std::cend( a1 ), std::cbegin( a2 ), std::cend( a2 ) ) );
+	BOOST_REQUIRE( std::equal( std::cbegin( a1 ), std::cend( a1 ),
+	                           std::cbegin( a2 ), std::cend( a2 ) ) );
 }
 
 BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_copy_n_001 ) {
@@ -85,13 +91,15 @@ BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_copy_n_001 ) {
 	std::iota( std::begin( a1 ), std::end( a1 ), 2 );
 	std::array<int, 100> a2{};
 	daw::container::copy_n( a1, 100, a2.begin( ) );
-	BOOST_REQUIRE( std::equal( std::cbegin( a1 ), std::cend( a1 ), std::cbegin( a2 ), std::cend( a2 ) ) );
+	BOOST_REQUIRE( std::equal( std::cbegin( a1 ), std::cend( a1 ),
+	                           std::cbegin( a2 ), std::cend( a2 ) ) );
 }
 
 BOOST_AUTO_TEST_CASE( daw_for_each_pos_001 ) {
 	std::array<int, 5> const blah = {0, 1, 2, 3, 4};
-	daw::container::for_each_with_pos(
-	  blah, []( auto const &value, size_t pos ) { std::cout << pos << ": " << value << '\n'; } );
+	daw::container::for_each_with_pos( blah, []( auto const &value, size_t pos ) {
+		std::cout << pos << ": " << value << '\n';
+	} );
 }
 
 namespace daw_for_each_with_pos_002_ns {
@@ -101,7 +109,8 @@ namespace daw_for_each_with_pos_002_ns {
 		  : sum{ptr} {}
 
 		template<typename Value>
-		constexpr void operator( )( Value const &value, size_t pos ) const noexcept {
+		constexpr void operator( )( Value const &value, size_t pos ) const
+		  noexcept {
 			*sum += value * static_cast<Value>( pos );
 		}
 	};
@@ -110,7 +119,9 @@ namespace daw_for_each_with_pos_002_ns {
 BOOST_AUTO_TEST_CASE( daw_for_each_subset_001 ) {
 	std::array<int, 5> const blah = {0, 1, 2, 3, 4};
 	daw::container::for_each_subset( blah, 1, 4,
-	                                 []( auto &container, size_t pos ) { std::cout << container[pos] << '\n'; } );
+	                                 []( auto &container, size_t pos ) {
+		                                 std::cout << container[pos] << '\n';
+	                                 } );
 }
 
 namespace daw_for_each_subset_002_ns {
@@ -120,7 +131,8 @@ namespace daw_for_each_subset_002_ns {
 		  : sum{ptr} {}
 
 		template<typename Container>
-		constexpr void operator( )( Container &container, size_t pos ) const noexcept {
+		constexpr void operator( )( Container &container, size_t pos ) const
+		  noexcept {
 			*sum += container[pos];
 		}
 	};
@@ -144,6 +156,7 @@ BOOST_AUTO_TEST_CASE( daw_append_001 ) {
 	std::vector<int> const b = {4, 5, 6};
 	std::vector<int> const expect = {1, 2, 3, 4, 5, 6};
 	daw::container::append( b, a );
-	auto const tst = std::equal( expect.cbegin( ), expect.cend( ), a.cbegin( ), a.cend( ) );
+	auto const tst =
+	  std::equal( expect.cbegin( ), expect.cend( ), a.cbegin( ), a.cend( ) );
 	BOOST_REQUIRE( tst );
 }

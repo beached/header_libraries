@@ -3,14 +3,14 @@
 // Copyright (c) 2017 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -34,7 +34,8 @@
 namespace daw {
 	enum class tmp_e { a, b, c };
 
-	constexpr bool is_equal_nc( daw::string_view lhs, daw::string_view rhs ) noexcept {
+	constexpr bool is_equal_nc( daw::string_view lhs,
+	                            daw::string_view rhs ) noexcept {
 		if( lhs.size( ) != rhs.size( ) ) {
 			return false;
 		}
@@ -75,8 +76,9 @@ namespace daw {
 		std::string a = "This is a test";
 		auto b = daw::make_static_string_it( a.begin( ), a.end( ) );
 
-		BOOST_REQUIRE_MESSAGE( std::equal( a.begin( ), a.end( ), b.begin( ), b.end( ) ),
-		                       "string and static_string should be equal" );
+		BOOST_REQUIRE_MESSAGE(
+		  std::equal( a.begin( ), a.end( ), b.begin( ), b.end( ) ),
+		  "string and static_string should be equal" );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_static_string_make_static_string_vector ) {
@@ -86,10 +88,12 @@ namespace daw {
 
 		auto c = daw::make_static_string( b );
 
-		BOOST_REQUIRE_MESSAGE( std::equal( a.begin( ), a.end( ), b.begin( ), b.end( ) ),
-		                       "string and vector should be equal" );
-		BOOST_REQUIRE_MESSAGE( std::equal( c.begin( ), c.end( ), b.begin( ), b.end( ) ),
-		                       "static_string and vector should be equal" );
+		BOOST_REQUIRE_MESSAGE(
+		  std::equal( a.begin( ), a.end( ), b.begin( ), b.end( ) ),
+		  "string and vector should be equal" );
+		BOOST_REQUIRE_MESSAGE(
+		  std::equal( c.begin( ), c.end( ), b.begin( ), b.end( ) ),
+		  "static_string and vector should be equal" );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_static_string_find_last_of_001 ) {
@@ -112,7 +116,8 @@ namespace daw {
 	BOOST_AUTO_TEST_CASE( daw_static_string_make_test_001 ) {
 		unsigned char const p[] = {'H', 'e', 'l', 'l', 'o', 0};
 		auto sv =
-		  daw::make_static_string_it( reinterpret_cast<char const *>( p ), reinterpret_cast<char const *>( p ) + 5 );
+		  daw::make_static_string_it( reinterpret_cast<char const *>( p ),
+		                              reinterpret_cast<char const *>( p ) + 5 );
 		daw::static_string p2 = "Hello";
 		BOOST_REQUIRE_EQUAL( sv, p2 );
 	}
@@ -256,7 +261,9 @@ namespace daw {
 		daw::static_string view = str;
 
 		BOOST_TEST_MESSAGE( "Returns non-zero for non-empty string" );
-		{ BOOST_REQUIRE( view.length( ) == std::char_traits<char>::length( str ) ); }
+		{
+			BOOST_REQUIRE( view.length( ) == std::char_traits<char>::length( str ) );
+		}
 
 		BOOST_TEST_MESSAGE( "Returns 0 for empty string" );
 		{
@@ -390,7 +397,8 @@ namespace daw {
 			BOOST_REQUIRE( std::strncmp( result, "Hello", 5 ) == 0 );
 		}
 
-		BOOST_TEST_MESSAGE( "Copies part of the string, offset from the beginning" );
+		BOOST_TEST_MESSAGE(
+		  "Copies part of the string, offset from the beginning" );
 		{
 			char result[11];
 			view.copy( result, 10, 6 );
@@ -457,7 +465,8 @@ namespace daw {
 			BOOST_REQUIRE( view.compare( "Goodbye World" ) != 0 );
 		}
 
-		BOOST_TEST_MESSAGE( "Returns > 0 for substring beginning with same string" );
+		BOOST_TEST_MESSAGE(
+		  "Returns > 0 for substring beginning with same string" );
 		{
 			daw::static_string view = "Hello World";
 
@@ -471,14 +480,18 @@ namespace daw {
 			BOOST_REQUIRE( view.compare( "Hello World" ) < 0 );
 		}
 
-		BOOST_TEST_MESSAGE( "Returns < 0 for same-sized string compared to character greater than char" );
+		BOOST_TEST_MESSAGE(
+		  "Returns < 0 for same-sized string compared to character greater than "
+		  "char" );
 		{
 			daw::static_string view = "1234567";
 
 			BOOST_REQUIRE( view.compare( "1234667" ) < 0 );
 		}
 
-		BOOST_TEST_MESSAGE( "Returns > 0 for same-sized string compared to character less than char" );
+		BOOST_TEST_MESSAGE(
+		  "Returns > 0 for same-sized string compared to character less than "
+		  "char" );
 		{
 			daw::static_string view = "1234567";
 
@@ -500,10 +513,12 @@ namespace daw {
 				BOOST_REQUIRE( view == view2 );
 			}
 
-			BOOST_TEST_MESSAGE( "Returns true for equal strings with left char array" );
+			BOOST_TEST_MESSAGE(
+			  "Returns true for equal strings with left char array" );
 			{ BOOST_REQUIRE( "Hello World" == view ); }
 
-			BOOST_TEST_MESSAGE( "Returns true for equal strings with right char array" );
+			BOOST_TEST_MESSAGE(
+			  "Returns true for equal strings with right char array" );
 			{ BOOST_REQUIRE( view == "Hello World" ); }
 
 			BOOST_TEST_MESSAGE( "Returns true for equal strings with left char ptr" );
@@ -512,19 +527,22 @@ namespace daw {
 				BOOST_REQUIRE( str == view );
 			}
 
-			BOOST_TEST_MESSAGE( "Returns true for equal strings with right char ptr" );
+			BOOST_TEST_MESSAGE(
+			  "Returns true for equal strings with right char ptr" );
 			{
 				const char *str = "Hello World";
 				BOOST_REQUIRE( view == str );
 			}
 
-			BOOST_TEST_MESSAGE( "Returns true for equal strings with left std::string" );
+			BOOST_TEST_MESSAGE(
+			  "Returns true for equal strings with left std::string" );
 			{
 				std::string str = "Hello World";
 				BOOST_REQUIRE( str == view );
 			}
 
-			BOOST_TEST_MESSAGE( "Returns true for equal strings with right std::string" );
+			BOOST_TEST_MESSAGE(
+			  "Returns true for equal strings with right std::string" );
 			{
 				std::string str = "Hello World";
 				BOOST_REQUIRE( view == str );
@@ -540,31 +558,37 @@ namespace daw {
 				BOOST_REQUIRE( FALSE( view == view2 ) );
 			}
 
-			BOOST_TEST_MESSAGE( "Returns false for non-equal strings with left char array" );
+			BOOST_TEST_MESSAGE(
+			  "Returns false for non-equal strings with left char array" );
 			{ BOOST_REQUIRE( FALSE( ( "Goodbye World" == view ) ) ); }
 
-			BOOST_TEST_MESSAGE( "Returns false for non-equal strings with right char array" );
+			BOOST_TEST_MESSAGE(
+			  "Returns false for non-equal strings with right char array" );
 			{ BOOST_REQUIRE( FALSE( ( view == "Goodbye World" ) ) ); }
 
-			BOOST_TEST_MESSAGE( "Returns false for non-equal strings with left char ptr" );
+			BOOST_TEST_MESSAGE(
+			  "Returns false for non-equal strings with left char ptr" );
 			{
 				const char *str = "Goodbye World";
 				BOOST_REQUIRE( FALSE( str == view ) );
 			}
 
-			BOOST_TEST_MESSAGE( "Returns false for non-equal strings with right char ptr" );
+			BOOST_TEST_MESSAGE(
+			  "Returns false for non-equal strings with right char ptr" );
 			{
 				const char *str = "Goodbye World";
 				BOOST_REQUIRE( FALSE( view == str ) );
 			}
 
-			BOOST_TEST_MESSAGE( "Returns false for non-equal strings with left std::string" );
+			BOOST_TEST_MESSAGE(
+			  "Returns false for non-equal strings with left std::string" );
 			{
 				std::string str = "Goodbye World";
 				BOOST_REQUIRE( FALSE( str == view ) );
 			}
 
-			BOOST_TEST_MESSAGE( "Returns false for non-equal strings with right std::string" );
+			BOOST_TEST_MESSAGE(
+			  "Returns false for non-equal strings with right std::string" );
 			{
 				std::string str = "Goodbye World";
 				BOOST_REQUIRE( FALSE( view == str ) );
@@ -586,31 +610,37 @@ namespace daw {
 				BOOST_REQUIRE( FALSE( view != view2 ) );
 			}
 
-			BOOST_TEST_MESSAGE( "Returns false for equal strings with left char array" );
+			BOOST_TEST_MESSAGE(
+			  "Returns false for equal strings with left char array" );
 			{ BOOST_REQUIRE( FALSE( "Hello World" != view ) ); }
 
-			BOOST_TEST_MESSAGE( "Returns false for equal strings with right char array" );
+			BOOST_TEST_MESSAGE(
+			  "Returns false for equal strings with right char array" );
 			{ BOOST_REQUIRE( FALSE( view != "Hello World" ) ); }
 
-			BOOST_TEST_MESSAGE( "Returns false for equal strings with left char ptr" );
+			BOOST_TEST_MESSAGE(
+			  "Returns false for equal strings with left char ptr" );
 			{
 				const char *str = "Hello World";
 				BOOST_REQUIRE( FALSE( str != view ) );
 			}
 
-			BOOST_TEST_MESSAGE( "Returns false for equal strings with right char ptr" );
+			BOOST_TEST_MESSAGE(
+			  "Returns false for equal strings with right char ptr" );
 			{
 				const char *str = "Hello World";
 				BOOST_REQUIRE( FALSE( view != str ) );
 			}
 
-			BOOST_TEST_MESSAGE( "Returns false for equal strings with left std::string" );
+			BOOST_TEST_MESSAGE(
+			  "Returns false for equal strings with left std::string" );
 			{
 				std::string str = "Hello World";
 				BOOST_REQUIRE( FALSE( str != view ) );
 			}
 
-			BOOST_TEST_MESSAGE( "Returns false for equal strings with right std::string" );
+			BOOST_TEST_MESSAGE(
+			  "Returns false for equal strings with right std::string" );
 			{
 				std::string str = "Hello World";
 				BOOST_REQUIRE( FALSE( view != str ) );
@@ -626,31 +656,37 @@ namespace daw {
 				BOOST_REQUIRE( view != view2 );
 			}
 
-			BOOST_TEST_MESSAGE( "Returns true for non-equal strings with left char array" );
+			BOOST_TEST_MESSAGE(
+			  "Returns true for non-equal strings with left char array" );
 			{ BOOST_REQUIRE( "Goodbye World" != view ); }
 
-			BOOST_TEST_MESSAGE( "Returns true for non-equal strings with right char array" );
+			BOOST_TEST_MESSAGE(
+			  "Returns true for non-equal strings with right char array" );
 			{ BOOST_REQUIRE( view != "Goodbye World" ); }
 
-			BOOST_TEST_MESSAGE( "Returns true for non-equal strings with left char ptr" );
+			BOOST_TEST_MESSAGE(
+			  "Returns true for non-equal strings with left char ptr" );
 			{
 				const char *str = "Goodbye World";
 				BOOST_REQUIRE( str != view );
 			}
 
-			BOOST_TEST_MESSAGE( "Returns true for non-equal strings with right char ptr" );
+			BOOST_TEST_MESSAGE(
+			  "Returns true for non-equal strings with right char ptr" );
 			{
 				const char *str = "Goodbye World";
 				BOOST_REQUIRE( view != str );
 			}
 
-			BOOST_TEST_MESSAGE( "Returns true for non-equal strings with left std::string" );
+			BOOST_TEST_MESSAGE(
+			  "Returns true for non-equal strings with left std::string" );
 			{
 				std::string str = "Goodbye World";
 				BOOST_REQUIRE( str != view );
 			}
 
-			BOOST_TEST_MESSAGE( "Returns true for non-equal strings with right std::string" );
+			BOOST_TEST_MESSAGE(
+			  "Returns true for non-equal strings with right std::string" );
 			{
 				std::string str = "Goodbye World";
 				BOOST_REQUIRE( view != str );
@@ -686,7 +722,8 @@ namespace daw {
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_static_string_starts_with_002 ) {
-		BOOST_REQUIRE( daw::static_string{"This is a test"}.starts_with( daw::static_string{"This"} ) );
+		BOOST_REQUIRE( daw::static_string{"This is a test"}.starts_with(
+		  daw::static_string{"This"} ) );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_static_string_starts_with_003 ) {
@@ -694,11 +731,13 @@ namespace daw {
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_static_string_starts_with_004 ) {
-		BOOST_REQUIRE( !daw::static_string{"This is a test"}.starts_with( "ahis" ) );
+		BOOST_REQUIRE(
+		  !daw::static_string{"This is a test"}.starts_with( "ahis" ) );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_static_string_starts_with_005 ) {
-		BOOST_REQUIRE( !daw::static_string{"This is a test"}.starts_with( daw::static_string{"ahis"} ) );
+		BOOST_REQUIRE( !daw::static_string{"This is a test"}.starts_with(
+		  daw::static_string{"ahis"} ) );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_static_string_starts_with_006 ) {
@@ -710,7 +749,8 @@ namespace daw {
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_static_string_ends_with_002 ) {
-		BOOST_REQUIRE( daw::static_string{"This is a test"}.ends_with( daw::static_string{"test"} ) );
+		BOOST_REQUIRE( daw::static_string{"This is a test"}.ends_with(
+		  daw::static_string{"test"} ) );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_static_string_ends_with_003 ) {
@@ -722,7 +762,8 @@ namespace daw {
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_static_string_ends_with_005 ) {
-		BOOST_REQUIRE( !daw::static_string{"This is a test"}.ends_with( daw::static_string{"aest"} ) );
+		BOOST_REQUIRE( !daw::static_string{"This is a test"}.ends_with(
+		  daw::static_string{"aest"} ) );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_static_string_ends_with_006 ) {
