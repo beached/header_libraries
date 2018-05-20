@@ -34,13 +34,6 @@
 #include "daw_utility.h"
 
 namespace daw {
-	struct empty_expected_exception : std::exception {};
-	struct empty_value_t {};
-
-	constexpr bool operator==( empty_value_t, empty_value_t ) noexcept {
-		return true;
-	}
-
 	template<class T>
 	struct expected_t {
 		using value_type = T;
@@ -50,7 +43,8 @@ namespace daw {
 		using const_pointer = value_type const *;
 
 	private:
-		boost::variant<empty_value_t, value_type, std::exception_ptr> m_value = empty_value_t{};
+		boost::variant<std::exception_ptr, value_type> m_value =
+		  std::exception_ptr{nullptr};
 
 	public:
 		struct exception_tag {};
@@ -91,12 +85,12 @@ namespace daw {
 		}
 
 		void clear( ) {
-			m_value = empty_value_t{};
+			m_value = std::exception_ptr{nullptr};
 		}
 
 		template<typename ExceptionType>
-		expected_t( exception_tag, ExceptionType const &ex )
-		  : m_value{std::make_exception_ptr( ex )} {}
+		expected_t( exception_tag, ExceptionType &&ex )
+		  : m_value{std::make_exception_ptr( std::forward<ExceptionType>( ex ) )} {}
 
 		explicit expected_t( exception_tag )
 		  : m_value{std::current_exception( )} {}
@@ -124,17 +118,16 @@ namespace daw {
 
 		bool has_value( ) const {
 			return boost::apply_visitor(
-			  daw::make_overload( []( value_type const & ) { return true; },
-			                      []( std::exception_ptr ) { return false; },
-			                      []( empty_value_t ) { return false; } ),
+			  daw::make_overload( []( value_type const & ) noexcept { return true; },
+			                      []( std::exception_ptr ) noexcept { return false; } ),
 			  m_value );
 		}
 
 		bool has_exception( ) const {
 			return boost::apply_visitor(
-			  make_overload( []( value_type const & ) { return false; },
-			                 []( empty_value_t ) { return false; },
-			                 []( std::exception_ptr ) { return true; } ),
+			  make_overload(
+			    []( value_type const & ) noexcept { return false; },
+			    []( std::exception_ptr ptr ) noexcept { return ( ptr != nullptr ); } ),
 			  m_value );
 		}
 
@@ -144,9 +137,9 @@ namespace daw {
 
 		bool empty( ) const {
 			return boost::apply_visitor(
-			  make_overload( []( value_type const & ) { return false; },
-			                 []( empty_value_t ) { return true; },
-			                 []( std::exception_ptr ) { return false; } ),
+			  make_overload(
+			    []( value_type const & ) noexcept { return false; },
+			    []( std::exception_ptr ptr ) noexcept { return ( ptr == nullptr ); } ),
 			  m_value );
 		}
 
@@ -159,10 +152,11 @@ namespace daw {
 		}
 
 		void throw_if_exception( ) const {
-			boost::apply_visitor( make_overload( []( value_type const & ) {},
-			                                     []( empty_value_t ) {},
+			boost::apply_visitor( make_overload( []( value_type const & ) noexcept {},
 			                                     []( std::exception_ptr ptr ) {
-				                                     std::rethrow_exception( ptr );
+				                                     if( ptr != nullptr ) {
+					                                     std::rethrow_exception( ptr );
+				                                     }
 			                                     } ),
 			                      m_value );
 		}
@@ -220,7 +214,8 @@ namespace daw {
 		struct exception_tag {};
 
 	private:
-		boost::variant<empty_value_t, value_type, std::exception_ptr> m_value = empty_value_t{};
+		boost::variant<value_type, std::exception_ptr> m_value =
+		  std::exception_ptr{nullptr};
 
 		expected_t( bool b )
 		  : m_value{value_type{}} {}
@@ -240,9 +235,9 @@ namespace daw {
 		//////////////////////////////////////////////////////////////////////////
 
 		/*
-		template<typename T, std::enable_if_t<!daw::is_same_v<T, expected_t>, std::nullptr_t> = nullptr>
-		expected_t( T && ) noexcept
-		  : m_value{value_type{}} {}
+		template<typename T, std::enable_if_t<!daw::is_same_v<T, expected_t>,
+		std::nullptr_t> = nullptr> expected_t( T && ) noexcept :
+		m_value{value_type{}} {}
 		 */
 
 		expected_t &operator=( bool ) {
@@ -251,7 +246,7 @@ namespace daw {
 		}
 
 		void clear( ) {
-			m_value = empty_value_t{};
+			m_value = std::exception_ptr{nullptr};
 		}
 
 		explicit expected_t( std::exception_ptr ptr )
@@ -263,8 +258,8 @@ namespace daw {
 		}
 
 		template<typename ExceptionType>
-		expected_t( exception_tag, ExceptionType const &ex )
-		  : m_value{std::make_exception_ptr( ex )} {}
+		expected_t( exception_tag, ExceptionType &&ex )
+		  : m_value{std::make_exception_ptr( std::forward<ExceptionType>( ex ) )} {}
 
 		explicit expected_t( exception_tag )
 		  : m_value{std::current_exception( )} {}
@@ -298,17 +293,16 @@ namespace daw {
 
 		bool has_value( ) const noexcept {
 			return boost::apply_visitor(
-			  make_overload( []( value_type const & ) { return true; },
-			                 []( empty_value_t ) { return false; },
-			                 []( std::exception_ptr ) { return false; } ),
+			  make_overload( []( value_type const & ) noexcept { return true; },
+			                 []( std::exception_ptr ) noexcept { return false; } ),
 			  m_value );
 		}
 
 		bool has_exception( ) const noexcept {
 			return boost::apply_visitor(
-			  make_overload( []( value_type const & ) { return false; },
-			                 []( empty_value_t ) { return false; },
-			                 []( std::exception_ptr ) { return true; } ),
+			  make_overload(
+			    []( value_type const & ) noexcept { return false; },
+			    []( std::exception_ptr ptr ) noexcept { return ( ptr != nullptr ); } ),
 			  m_value );
 		}
 
@@ -318,21 +312,22 @@ namespace daw {
 
 		bool empty( ) const noexcept {
 			return boost::apply_visitor(
-			  make_overload( []( value_type const & ) { return false; },
-			                 []( empty_value_t ) { return true; },
-			                 []( std::exception_ptr ) { return false; } ),
+			  make_overload(
+			    []( value_type const & ) noexcept { return false; },
+			    []( std::exception_ptr ptr ) noexcept { return ( ptr == nullptr ); } ),
 			  m_value );
 		}
 
-		explicit operator bool( ) const {
+		explicit operator bool( ) const noexcept {
 			return !empty( );
 		}
 
 		void throw_if_exception( ) const {
-			boost::apply_visitor( make_overload( []( value_type const & ) {},
-			                                     []( empty_value_t ) {},
+			boost::apply_visitor( make_overload( []( value_type const & ) noexcept {},
 			                                     []( std::exception_ptr ptr ) {
-				                                     std::rethrow_exception( ptr );
+				                                     if( ptr != nullptr ) {
+					                                     std::rethrow_exception( ptr );
+				                                     }
 			                                     } ),
 			                      m_value );
 		}
@@ -341,11 +336,13 @@ namespace daw {
 			throw_if_exception( );
 		}
 
-		std::string get_exception_message( ) const {
+		std::string get_exception_message( ) const noexcept {
 			std::string result{};
 			try {
 				throw_if_exception( );
-			} catch( std::exception const &e ) { result = e.what( ); } catch( ... ) {
+			} catch( std::exception const &e ) { 
+
+				result = e.what( ); } catch( ... ) {
 			}
 			return result;
 		}
@@ -366,8 +363,7 @@ namespace daw {
 	}
 
 	template<typename Function, typename... Args>
-	decltype( auto ) expected_from_code( Function &&func,
-	                                     Args &&... args ) {
+	decltype( auto ) expected_from_code( Function &&func, Args &&... args ) {
 		using result_t =
 		  std::decay_t<decltype( func( std::forward<Args>( args )... ) )>;
 		return expected_from_code<result_t>( std::forward<Function>( func ),
