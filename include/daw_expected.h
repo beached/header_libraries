@@ -306,7 +306,7 @@ namespace daw {
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor &&visitor ) {
-			return boost::apply_visitor(
+			auto vis =
 			  daw::make_overload( [&]( value_type const & ) mutable noexcept(
 			                        noexcept( visitor( ) ) ) { return visitor( ); },
 			                      [&]( value_type && ) mutable noexcept(
@@ -314,20 +314,19 @@ namespace daw {
 			                      [&]( std::exception_ptr ptr ) mutable noexcept(
 			                        noexcept( visitor( ptr ) ) ) {
 				                      return visitor( ptr );
-			                      } ),
-			  m_value );
+			                      } );
+			return boost::apply_visitor( vis, m_value );
 		}
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor &&visitor ) const {
-			return boost::apply_visitor(
-			  daw::make_overload( [&]( value_type const & ) mutable noexcept(
-			                        noexcept( visitor( ) ) ) { return visitor( ); },
-			                      [&]( std::exception_ptr ptr ) mutable noexcept(
-			                        noexcept( visitor( ptr ) ) ) {
-				                      return visitor( ptr );
-			                      } ),
-			  m_value );
+			auto vis = std::forward<Visitor>( visitor );
+			auto vis2 =
+			  daw::make_overload( [&vis]( value_type const & ) noexcept(
+			                        noexcept( vis( ) ) ) { return vis( ); },
+			                      [&vis]( std::exception_ptr ptr ) noexcept(
+			                        noexcept( vis( ptr ) ) ) { return vis( ptr ); } );
+			return boost::apply_visitor( vis2, m_value );
 		}
 
 		template<class Function, typename... Args,
