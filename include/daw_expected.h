@@ -401,10 +401,10 @@ namespace daw {
 		                   ExpectedResult>,
 		  "Must be able to convert result of func to expected result type" );
 		try {
-			return expected_t<ExpectedResult>{std::forward<Function>( func ),
-			                                  std::forward<Args>( args )...};
+			return expected_t<ExpectedResult>( std::forward<Function>( func ),
+			                                   std::forward<Args>( args )... );
 		} catch( ... ) {
-			return expected_t<ExpectedResult>{std::current_exception( )};
+			return expected_t<ExpectedResult>( std::current_exception( ) );
 		}
 	}
 
@@ -418,11 +418,11 @@ namespace daw {
 
 	template<typename ExpectedType>
 	auto expected_from_exception( ) {
-		return expected_t<ExpectedType>{std::current_exception( )};
+		return expected_t<ExpectedType>( std::current_exception( ) );
 	}
 
 	template<typename ExpectedType>
 	auto expected_from_exception( std::exception_ptr ptr ) {
-		return expected_t<ExpectedType>{ptr};
+		return expected_t<ExpectedType>( ptr );
 	}
 } // namespace daw
