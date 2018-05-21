@@ -146,7 +146,7 @@ BOOST_AUTO_TEST_CASE( daw_overload_001 ) {
 		}
 	};
 
-	auto fn = daw::make_overload( A{}, B{}, C{} );
+	auto fn = daw::overload( A{}, B{}, C{} );
 
 	BOOST_REQUIRE_EQUAL( fn( 1 ), 0 );
 	BOOST_REQUIRE_EQUAL( fn( std::string{"Hello"} ), 1 );

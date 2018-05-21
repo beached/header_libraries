@@ -126,19 +126,17 @@ namespace daw {
 
 		bool has_value( ) const {
 			return boost::apply_visitor(
-			  daw::make_overload( []( value_type const & ) noexcept { return true; },
-			                      []( std::exception_ptr ) noexcept {
-				                      return false;
-			                      } ),
+			  daw::overload( []( value_type const & ) noexcept { return true; },
+			                 []( std::exception_ptr ) noexcept { return false; } ),
 			  m_value );
 		}
 
 		bool has_exception( ) const {
 			return boost::apply_visitor(
-			  make_overload( []( value_type const & ) noexcept { return false; },
-			                 []( std::exception_ptr ptr ) noexcept {
-				                 return ( ptr != nullptr );
-			                 } ),
+			  overload( []( value_type const & ) noexcept { return false; },
+			            []( std::exception_ptr ptr ) noexcept {
+				            return ( ptr != nullptr );
+			            } ),
 			  m_value );
 		}
 
@@ -148,10 +146,10 @@ namespace daw {
 
 		bool empty( ) const {
 			return boost::apply_visitor(
-			  make_overload( []( value_type const & ) noexcept { return false; },
-			                 []( std::exception_ptr ptr ) noexcept {
-				                 return ( ptr == nullptr );
-			                 } ),
+			  overload( []( value_type const & ) noexcept { return false; },
+			            []( std::exception_ptr ptr ) noexcept {
+				            return ( ptr == nullptr );
+			            } ),
 			  m_value );
 		}
 
@@ -164,32 +162,32 @@ namespace daw {
 		}
 
 		void throw_if_exception( ) const {
-			boost::apply_visitor( make_overload( []( value_type const & ) noexcept {},
-			                                     []( std::exception_ptr ptr ) {
-				                                     if( ptr != nullptr ) {
-					                                     std::rethrow_exception( ptr );
-				                                     }
-			                                     } ),
+			boost::apply_visitor( overload( []( value_type const & ) noexcept {},
+			                                []( std::exception_ptr ptr ) {
+				                                if( ptr != nullptr ) {
+					                                std::rethrow_exception( ptr );
+				                                }
+			                                } ),
 			                      m_value );
 		}
 
 		reference get( ) {
 			return boost::apply_visitor(
-			  daw::make_overload( []( reference value ) noexcept
-			                        ->reference { return value; },
-			                      []( std::exception_ptr ptr ) -> reference {
-				                      std::rethrow_exception( ptr );
-			                      } ),
+			  daw::overload( []( reference value ) noexcept
+			                   ->reference { return value; },
+			                 []( std::exception_ptr ptr ) -> reference {
+				                 std::rethrow_exception( ptr );
+			                 } ),
 			  m_value );
 		}
 
 		const_reference get( ) const {
 			return boost::apply_visitor(
-			  daw::make_overload( []( const_reference value ) noexcept
-			                        ->const_reference { return value; },
-			                      []( std::exception_ptr ptr ) -> const_reference {
-				                      std::rethrow_exception( ptr );
-			                      } ),
+			  daw::overload( []( const_reference value ) noexcept
+			                   ->const_reference { return value; },
+			                 []( std::exception_ptr ptr ) -> const_reference {
+				                 std::rethrow_exception( ptr );
+			                 } ),
 			  m_value );
 		}
 
@@ -203,23 +201,21 @@ namespace daw {
 
 		pointer operator->( ) {
 			return boost::apply_visitor(
-			  daw::make_overload( []( reference value ) noexcept
-			                        ->pointer { return std::addressof( value ); },
-			                      []( std::exception_ptr ptr ) -> pointer {
-				                      std::rethrow_exception( ptr );
-			                      } ),
+			  daw::overload( []( reference value ) noexcept
+			                   ->pointer { return std::addressof( value ); },
+			                 []( std::exception_ptr ptr ) -> pointer {
+				                 std::rethrow_exception( ptr );
+			                 } ),
 			  m_value );
 		}
 
 		const_pointer operator->( ) const {
 			return boost::apply_visitor(
-			  daw::make_overload(
-			    []( const_reference value ) noexcept->const_pointer {
-				    return std::addressof( value );
-			    },
-			    []( std::exception_ptr ptr ) -> const_pointer {
-				    std::rethrow_exception( ptr );
-			    } ),
+			  daw::overload( []( const_reference value ) noexcept
+			                   ->const_pointer { return std::addressof( value ); },
+			                 []( std::exception_ptr ptr ) -> const_pointer {
+				                 std::rethrow_exception( ptr );
+			                 } ),
 			  m_value );
 		}
 
@@ -307,14 +303,12 @@ namespace daw {
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor &&visitor ) {
 			auto vis =
-			  daw::make_overload( [&]( value_type const & ) mutable noexcept(
-			                        noexcept( visitor( ) ) ) { return visitor( ); },
-			                      [&]( value_type && ) mutable noexcept(
-			                        noexcept( visitor( ) ) ) { return visitor( ); },
-			                      [&]( std::exception_ptr ptr ) mutable noexcept(
-			                        noexcept( visitor( ptr ) ) ) {
-				                      return visitor( ptr );
-			                      } );
+			  daw::overload( [&]( value_type const & ) mutable noexcept(
+			                   noexcept( visitor( ) ) ) { return visitor( ); },
+			                 [&]( value_type && ) mutable noexcept(
+			                   noexcept( visitor( ) ) ) { return visitor( ); },
+			                 [&]( std::exception_ptr ptr ) mutable noexcept( noexcept(
+			                   visitor( ptr ) ) ) { return visitor( ptr ); } );
 			return boost::apply_visitor( vis, m_value );
 		}
 
@@ -322,10 +316,10 @@ namespace daw {
 		decltype( auto ) visit( Visitor &&visitor ) const {
 			auto vis = std::forward<Visitor>( visitor );
 			auto vis2 =
-			  daw::make_overload( [&vis]( value_type const & ) noexcept(
-			                        noexcept( vis( ) ) ) { return vis( ); },
-			                      [&vis]( std::exception_ptr ptr ) noexcept(
-			                        noexcept( vis( ptr ) ) ) { return vis( ptr ); } );
+			  daw::overload( [&vis]( value_type const & ) noexcept(
+			                   noexcept( vis( ) ) ) { return vis( ); },
+			                 [&vis]( std::exception_ptr ptr ) noexcept(
+			                   noexcept( vis( ptr ) ) ) { return vis( ptr ); } );
 			return boost::apply_visitor( vis2, m_value );
 		}
 
@@ -338,17 +332,17 @@ namespace daw {
 
 		bool has_value( ) const noexcept {
 			return boost::apply_visitor(
-			  make_overload( []( value_type const & ) noexcept { return true; },
-			                 []( std::exception_ptr ) noexcept { return false; } ),
+			  overload( []( value_type const & ) noexcept { return true; },
+			            []( std::exception_ptr ) noexcept { return false; } ),
 			  m_value );
 		}
 
 		bool has_exception( ) const noexcept {
 			return boost::apply_visitor(
-			  make_overload( []( value_type const & ) noexcept { return false; },
-			                 []( std::exception_ptr ptr ) noexcept {
-				                 return ( ptr != nullptr );
-			                 } ),
+			  overload( []( value_type const & ) noexcept { return false; },
+			            []( std::exception_ptr ptr ) noexcept {
+				            return ( ptr != nullptr );
+			            } ),
 			  m_value );
 		}
 
@@ -358,10 +352,10 @@ namespace daw {
 
 		bool empty( ) const noexcept {
 			return boost::apply_visitor(
-			  make_overload( []( value_type const & ) noexcept { return false; },
-			                 []( std::exception_ptr ptr ) noexcept {
-				                 return ( ptr == nullptr );
-			                 } ),
+			  overload( []( value_type const & ) noexcept { return false; },
+			            []( std::exception_ptr ptr ) noexcept {
+				            return ( ptr == nullptr );
+			            } ),
 			  m_value );
 		}
 
@@ -370,12 +364,12 @@ namespace daw {
 		}
 
 		void throw_if_exception( ) const {
-			boost::apply_visitor( make_overload( []( value_type const & ) noexcept {},
-			                                     []( std::exception_ptr ptr ) {
-				                                     if( ptr != nullptr ) {
-					                                     std::rethrow_exception( ptr );
-				                                     }
-			                                     } ),
+			boost::apply_visitor( overload( []( value_type const & ) noexcept {},
+			                                []( std::exception_ptr ptr ) {
+				                                if( ptr != nullptr ) {
+					                                std::rethrow_exception( ptr );
+				                                }
+			                                } ),
 			                      m_value );
 		}
 

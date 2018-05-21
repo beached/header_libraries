@@ -93,36 +93,36 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 	BOOST_REQUIRE( m->a == 6 );
 
 	auto o = m.visit(
-	  daw::make_overload( []( L const &value ) -> bool { return value.a == 6; },
-	                      []( L &&value ) -> bool { return value.a == 6; },
-	                      []( std::exception_ptr ) -> bool { return false; } ) );
+	  daw::overload( []( L const &value ) -> bool { return value.a == 6; },
+	                 []( L &&value ) -> bool { return value.a == 6; },
+	                 []( std::exception_ptr ) -> bool { return false; } ) );
 	BOOST_REQUIRE( o );
 
 	auto const m2 = m;
 	auto p = m2.visit(
-	  daw::make_overload( []( L const &value ) -> bool { return value.a == 6; },
-	                      []( L &&value ) -> bool { return value.a == 6; },
-	                      []( std::exception_ptr ) -> bool { return false; } ) );
+	  daw::overload( []( L const &value ) -> bool { return value.a == 6; },
+	                 []( L &&value ) -> bool { return value.a == 6; },
+	                 []( std::exception_ptr ) -> bool { return false; } ) );
 	BOOST_REQUIRE( p );
 
 	m.visit(
-	  daw::make_overload( []( L && ) { std::cout << "valueRR\n"; },
-	                      []( L const & ) { std::cout << "valueCR\n"; },
-	                      []( std::exception_ptr ) { std::cout << "except"; } ) );
+	  daw::overload( []( L && ) { std::cout << "valueRR\n"; },
+	                 []( L const & ) { std::cout << "valueCR\n"; },
+	                 []( std::exception_ptr ) { std::cout << "except"; } ) );
 
 	m2.visit(
-	  daw::make_overload( []( L && ) { std::cout << "valueRR\n"; },
-	                      []( L const & ) { std::cout << "valueCR\n"; },
-	                      []( std::exception_ptr ) { std::cout << "except"; } ) );
+	  daw::overload( []( L && ) { std::cout << "valueRR\n"; },
+	                 []( L const & ) { std::cout << "valueCR\n"; },
+	                 []( std::exception_ptr ) { std::cout << "except"; } ) );
 
 	auto q = f.visit(
-	  daw::make_overload( []( ) -> bool { return true; },
-	                      []( std::exception_ptr ) -> bool { return false; } ) );
+	  daw::overload( []( ) -> bool { return true; },
+	                 []( std::exception_ptr ) -> bool { return false; } ) );
 	BOOST_REQUIRE( q );
 
 	auto const f2 = f;
 	auto r = f2.visit(
-	  daw::make_overload( []( ) -> bool { return true; },
-	                      []( std::exception_ptr ) -> bool { return false; } ) );
+	  daw::overload( []( ) -> bool { return true; },
+	                 []( std::exception_ptr ) -> bool { return false; } ) );
 	BOOST_REQUIRE( r );
 }

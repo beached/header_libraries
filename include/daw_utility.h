@@ -704,55 +704,53 @@ namespace daw {
 		return std::string{std::istreambuf_iterator<CharT>{in_file}, {}};
 	}
 
-	namespace impl {
-		template<typename... Functions>
-		struct overload_t;
+	template<typename... Functions>
+	struct overload_t;
 
-		template<typename Function>
-		struct overload_t<Function> {
-		private:
-			Function m_func;
+	template<typename Function>
+	struct overload_t<Function> {
+	private:
+		Function m_func;
 
-		public:
-			constexpr overload_t( Function &&func )
-			  : m_func( std::forward<Function>( func ) ) {}
+	public:
+		constexpr overload_t( Function &&func )
+		  : m_func( std::forward<Function>( func ) ) {}
 
-			template<typename... Args,
-			         std::enable_if_t<daw::is_callable_v<Function, Args...>,
-			                          std::nullptr_t> = nullptr>
-			constexpr auto operator( )( Args &&... args ) const noexcept(
-			  noexcept( std::declval<Function>( )( std::declval<Args>( )... ) ) )
-			  -> decltype( std::declval<Function>( )( std::declval<Args>( )... ) ) {
+		template<typename... Args,
+		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
+		                          std::nullptr_t> = nullptr>
+		constexpr auto operator( )( Args &&... args ) const noexcept(
+		  noexcept( std::declval<Function>( )( std::declval<Args>( )... ) ) )
+		  -> decltype( std::declval<Function>( )( std::declval<Args>( )... ) ) {
 
-				return m_func( std::forward<Args>( args )... );
-			}
+			return m_func( std::forward<Args>( args )... );
+		}
 
-			template<typename... Args,
-			         std::enable_if_t<daw::is_callable_v<Function, Args...>,
-			                          std::nullptr_t> = nullptr>
-			constexpr auto operator( )( Args &&... args ) noexcept(
-			  noexcept( std::declval<Function>( )( std::declval<Args>( )... ) ) )
-			  -> decltype( std::declval<Function>( )( std::declval<Args>( )... ) ) {
+		template<typename... Args,
+		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
+		                          std::nullptr_t> = nullptr>
+		constexpr auto operator( )( Args &&... args ) noexcept(
+		  noexcept( std::declval<Function>( )( std::declval<Args>( )... ) ) )
+		  -> decltype( std::declval<Function>( )( std::declval<Args>( )... ) ) {
 
-				return m_func( std::forward<Args>( args )... );
-			}
-		};
+			return m_func( std::forward<Args>( args )... );
+		}
+	};
 
-		template<typename Function, typename... Functions>
-		struct overload_t<Function, Functions...>
-		  : public overload_t<Function>, public overload_t<Functions...> {
-			using overload_t<Function>::operator( );
-			using overload_t<Functions...>::operator( );
+	template<typename Function, typename... Functions>
+	struct overload_t<Function, Functions...> : public overload_t<Function>,
+	                                            public overload_t<Functions...> {
+		using overload_t<Function>::operator( );
+		using overload_t<Functions...>::operator( );
 
-			constexpr overload_t( Function &&func, Functions &&... funcs )
-			  : overload_t<Function>( std::forward<Function>( func ) )
-			  , overload_t<Functions...>( std::forward<Functions>( funcs )... ) {}
-		};
-	} // namespace impl
+		constexpr overload_t( Function &&func, Functions &&... funcs )
+		  : overload_t<Function>( std::forward<Function>( func ) )
+		  , overload_t<Functions...>( std::forward<Functions>( funcs )... ) {}
+	};
 
 	template<typename... Functions>
-	constexpr auto make_overload( Functions &&... funcs ) {
-		return impl::overload_t<Functions...>{std::forward<Functions>( funcs )...};
+	constexpr auto overload( Functions &&... funcs ) {
+		return overload_t<Functions...>{std::forward<Functions>( funcs )...};
 	}
 } // namespace daw
 
