@@ -394,35 +394,36 @@ namespace daw {
 		}
 	}; // class expected_t<void>
 
-	template<typename ExpectedResult, typename Function, typename... Args>
-	auto expected_from_code( Function &&func, Args &&... args ) {
+	template<typename Result, typename Function, typename... Args>
+	expected_t<Result> expected_from_code( Function &&func, Args &&... args ) {
 		static_assert(
-		  is_convertible_v<decltype( func( std::forward<Args>( args )... ) ),
-		                   ExpectedResult>,
+		  daw::is_callable_convertible_v<Result, Function, Args...>,
 		  "Must be able to convert result of func to expected result type" );
-		try {
-			return expected_t<ExpectedResult>( std::forward<Function>( func ),
-			                                   std::forward<Args>( args )... );
-		} catch( ... ) {
-			return expected_t<ExpectedResult>( std::current_exception( ) );
-		}
+
+		auto result = expected_t<Result>( );
+		result.from_code( std::forward<Function>( func ),
+		                  std::forward<Args>( args )... );
+		return result;
 	}
 
 	template<typename Function, typename... Args>
-	decltype( auto ) expected_from_code( Function &&func, Args &&... args ) {
+	auto expected_from_code( Function &&func, Args &&... args ) {
 		using result_t =
 		  std::decay_t<decltype( func( std::forward<Args>( args )... ) )>;
-		return expected_from_code<result_t>( std::forward<Function>( func ),
-		                                     std::forward<Args>( args )... );
+
+		auto result = expected_t<result_t>( );
+		result.from_code( std::forward<Function>( func ),
+		                  std::forward<Args>( args )... );
+		return result;
 	}
 
-	template<typename ExpectedType>
-	auto expected_from_exception( ) {
-		return expected_t<ExpectedType>( std::current_exception( ) );
+	template<typename Result>
+	expected_t<Result> expected_from_exception( ) {
+		return expected_t<Result>( std::current_exception( ) );
 	}
 
-	template<typename ExpectedType>
-	auto expected_from_exception( std::exception_ptr ptr ) {
-		return expected_t<ExpectedType>( ptr );
+	template<typename Result>
+	expected_t<Result> expected_from_exception( std::exception_ptr ptr ) {
+		return expected_t<Result>( ptr );
 	}
 } // namespace daw
