@@ -135,7 +135,7 @@ namespace daw {
 		}
 
 		//		template<class Function, typename... Args, typename =
-		//std::enable_if_t<is_callable_v<Function,
+		// std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename... Args,
 		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
@@ -318,7 +318,7 @@ namespace daw {
 		}
 
 		//		template<class Function, typename... Args, typename =
-		//std::enable_if_t<is_callable_v<Function,
+		// std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename Arg, typename... Args>
 		static checked_expected_t from_code( Function func, Arg &&arg,
@@ -338,7 +338,7 @@ namespace daw {
 		}
 
 		//		template<class Function, typename... Args, typename =
-		//std::enable_if_t<is_callable_v<Function,
+		// std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename... Args,
 		         typename result = decltype(

@@ -797,9 +797,9 @@ BOOST_AUTO_TEST_CASE( is_tuple_test_004 ) {
 
 BOOST_AUTO_TEST_CASE( is_callable_convertible_001 ) {
 	auto const func = []( auto d ) noexcept {
-		return 2.0*d;
+		return 2.0 * d;
 	};
-	constexpr auto tst = daw::is_callable_convertible_v<double, decltype(func), double>;
+	constexpr auto tst =
+	  daw::is_callable_convertible_v<double, decltype( func ), double>;
 	BOOST_REQUIRE( tst );
 }
-

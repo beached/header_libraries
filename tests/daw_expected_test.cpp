@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 	auto test_01 = !( a == b );
 	auto test_02 = !( b == a );
 
-	daw::expected_t<int> j{&divide, 0};
+	auto j = divide( 0 );
 	BOOST_REQUIRE( j.has_exception( ) );
 	BOOST_REQUIRE( !j.has_value( ) );
 
@@ -78,6 +78,7 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 	BOOST_REQUIRE( test_02 );
 
 	auto const k = daw::expected_from_code( []( auto x ) { return x * x; }, 5 );
+	BOOST_REQUIRE( !k.empty( ) );
 	BOOST_REQUIRE( k.has_value( ) );
 	BOOST_REQUIRE( k.get( ) == 25 );
 
@@ -125,4 +126,3 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 	                      []( std::exception_ptr ) -> bool { return false; } ) );
 	BOOST_REQUIRE( r );
 }
-

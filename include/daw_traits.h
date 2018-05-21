@@ -558,7 +558,8 @@ namespace daw {
 
 	template<typename Result, typename Function, typename... Args>
 	constexpr bool is_callable_convertible_v =
-	  is_detected_convertible_v<Result, detectors::callable_with, Function, Args...>;
+	  is_detected_convertible_v<Result, detectors::callable_with, Function,
+	                            Args...>;
 
 	template<typename Predicate, typename... Args>
 	constexpr bool is_predicate_v =
@@ -886,22 +887,23 @@ namespace daw {
 			struct is_type;
 
 			template<typename T>
-			struct is_type<T>: std::false_type{};
+			struct is_type<T> : std::false_type {};
 
 			template<typename T, typename Arg, typename... Args>
-			struct is_type<T, Arg, Args...>: std::integral_constant<bool, is_same_v<T, std::decay_t<Arg>>> {};
+			struct is_type<T, Arg, Args...>
+			  : std::integral_constant<bool, is_same_v<T, std::decay_t<Arg>>> {};
 
 			template<typename... Ts>
 			constexpr void tuple_test( std::tuple<Ts...> const & ) noexcept {};
 
 			template<typename... Ts>
 			using detect_is_tuple = decltype( tuple_test( std::declval<Ts>( )... ) );
-		}
+		} // namespace impl
 
-		template<typename T, typename...Args>
+		template<typename T, typename... Args>
 		constexpr bool is_type_v = impl::is_type<T, Args...>::value;
 
-		template<typename...Ts>
+		template<typename... Ts>
 		constexpr bool is_tuple_v = is_detected_v<impl::detect_is_tuple, Ts...>;
 	} // namespace traits
 

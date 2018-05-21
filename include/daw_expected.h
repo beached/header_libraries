@@ -97,12 +97,13 @@ namespace daw {
 		  : m_value( std::current_exception( ) ) {}
 
 		template<class Function, typename... Args,
-		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
-		                          std::nullptr_t> = nullptr>
+		         std::enable_if_t<
+		           daw::is_callable_convertible_v<value_type, Function, Args...>,
+		           std::nullptr_t> = nullptr>
 		static expected_t from_code( Function &&func, Args &&... args ) {
 			try {
-				return expected_t{func( std::forward<Args>( args )... )};
-			} catch( ... ) { return expected_t{exception_tag{}}; }
+				return expected_t( func( std::forward<Args>( args )... ) );
+			} catch( ... ) { return expected_t( exception_tag{} ); }
 		}
 
 		template<typename Visitor>
@@ -116,11 +117,12 @@ namespace daw {
 		}
 
 		template<class Function, typename... Args,
-		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
-		                          std::nullptr_t> = nullptr>
+		         std::enable_if_t<
+		           daw::is_callable_convertible_v<value_type, Function, Args...>,
+		           std::nullptr_t> = nullptr>
 		expected_t( Function &&func, Args &&... args )
-		  : expected_t{expected_t::from_code( std::forward<Function>( func ),
-		                                      std::forward<Args>( args )... )} {}
+		  : expected_t( expected_t::from_code( std::forward<Function>( func ),
+		                                       std::forward<Args>( args )... ) ) {}
 
 		bool has_value( ) const {
 			return boost::apply_visitor(
@@ -292,16 +294,14 @@ namespace daw {
 		explicit expected_t( exception_tag )
 		  : m_value( std::current_exception( ) ) {}
 
-		template<class Function, typename... Args>
+		template<class Function, typename... Args,
+		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
+		                          std::nullptr_t> = nullptr>
 		static expected_t from_code( Function &&func, Args &&... args ) {
-			/*
-			 static_assert( daw::is_callable_v<Function, Args...>,
-			               "Function cannot be called with arguments provided" );
-			              */
 			try {
 				func( std::forward<Args>( args )... );
-				return expected_t{true};
-			} catch( ... ) { return expected_t{exception_tag{}}; }
+				return expected_t( true );
+			} catch( ... ) { return expected_t( exception_tag{} ); }
 		}
 
 		template<typename Visitor>
@@ -333,8 +333,8 @@ namespace daw {
 		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
 		                          std::nullptr_t> = nullptr>
 		expected_t( Function &&func, Args &&... args )
-		  : expected_t{expected_t::from_code( std::forward<Function>( func ),
-		                                      std::forward<Args>( args )... )} {}
+		  : expected_t( expected_t::from_code( std::forward<Function>( func ),
+		                                       std::forward<Args>( args )... ) ) {}
 
 		bool has_value( ) const noexcept {
 			return boost::apply_visitor(
@@ -410,10 +410,8 @@ namespace daw {
 		using result_t =
 		  std::decay_t<decltype( func( std::forward<Args>( args )... ) )>;
 
-		auto result = expected_t<result_t>( );
-		result.from_code( std::forward<Function>( func ),
-		                  std::forward<Args>( args )... );
-		return result;
+		return expected_t<result_t>::from_code( std::forward<Function>( func ),
+		                                        std::forward<Args>( args )... );
 	}
 
 	template<typename Result>

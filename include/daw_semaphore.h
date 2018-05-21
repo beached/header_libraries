@@ -127,18 +127,23 @@ namespace daw {
 
 	public:
 		basic_shared_semaphore( )
-		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( )} {}
+		  : m_semaphore{
+		      std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( )} {}
 
 		template<typename Int>
 		explicit basic_shared_semaphore( Int count )
-		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( count )} {}
+		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>(
+		      count )} {}
 
 		template<typename Int>
 		explicit basic_shared_semaphore( Int count, bool latched )
-		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( count, latched )} {}
+		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>(
+		      count, latched )} {}
 
-		explicit basic_shared_semaphore( basic_semaphore<Mutex, ConditionVariable> &&sem )
-		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( std::move( sem ) )} {}
+		explicit basic_shared_semaphore(
+		  basic_semaphore<Mutex, ConditionVariable> &&sem )
+		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>(
+		      std::move( sem ) )} {}
 
 		void notify( ) {
 			m_semaphore->notify( );

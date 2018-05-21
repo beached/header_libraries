@@ -95,7 +95,7 @@ namespace daw {
 		  : expected_t{std::current_exception( )} {}
 
 		//		template<class Function, typename... Args, typename =
-		//std::enable_if_t<is_callable_v<Function,
+		// std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename... Args,
 		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
@@ -108,7 +108,7 @@ namespace daw {
 		}
 
 		//		template<class Function, typename... Args, typename =
-		//std::enable_if_t<is_callable_v<Function,
+		// std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename... Args>
 		expected_t( Function &&func, Args &&... args ) noexcept
@@ -272,7 +272,7 @@ namespace daw {
 		  : expected_t{std::current_exception( )} {}
 
 		//		template<class Function, typename... Args, typename =
-		//std::enable_if_t<is_callable_v<Function,
+		// std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename... Args,
 		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
@@ -285,7 +285,7 @@ namespace daw {
 		}
 
 		//		template<class Function, typename... Args, typename =
-		//std::enable_if_t<is_callable_v<Function,
+		// std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename... Args,
 		         typename result = decltype(

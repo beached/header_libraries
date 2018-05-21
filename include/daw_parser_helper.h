@@ -133,7 +133,7 @@ namespace daw {
 		constexpr auto until( ForwardIterator first, ForwardIterator last,
 		                      Predicate is_last ) {
 			//		                      std::function<bool(
-			//daw::traits::root_type_t<decltype( *first )> )> is_last )
+			// daw::traits::root_type_t<decltype( *first )> )> is_last )
 			//{
 
 			auto result = make_find_result( first, last );
@@ -480,11 +480,10 @@ namespace daw {
 		};
 
 		template<typename ForwardIterator, typename Predicate>
-		auto
-		split_if( ForwardIterator first, ForwardIterator last,
-		          Predicate /*std::function<bool( daw::traits::root_type_t<decltype(
-		                       *first )> )>*/
-		                      is_divider ) {
+		auto split_if( ForwardIterator first, ForwardIterator last,
+		               Predicate /*std::function<bool(
+		                          *daw::traits::root_type_t<decltype( first )> )>*/
+		                           is_divider ) {
 			std::vector<ForwardIterator> endings;
 			auto result = until( first, last, is_divider );
 			while( result ) {

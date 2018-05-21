@@ -140,14 +140,13 @@ BOOST_AUTO_TEST_CASE( daw_overload_001 ) {
 		}
 	};
 	struct C {
-		auto operator( )( char* c ) const {
+		auto operator( )( char *c ) const {
 			std::cout << "D->bool\n";
 			return 2;
 		}
 	};
 
 	auto fn = daw::make_overload( A{}, B{}, C{} );
-
 
 	BOOST_REQUIRE_EQUAL( fn( 1 ), 0 );
 	BOOST_REQUIRE_EQUAL( fn( std::string{"Hello"} ), 1 );
