@@ -715,13 +715,25 @@ namespace daw {
 
 		public:
 			constexpr overload_t( Function &&func )
-			  : m_func{std::forward<Function>( func )} {}
+			  : m_func( std::forward<Function>( func ) ) {}
 
 			template<typename... Args,
 			         std::enable_if_t<daw::is_callable_v<Function, Args...>,
 			                          std::nullptr_t> = nullptr>
-			constexpr auto operator( )( Args &&... args ) const -> decltype(
-			  std::declval<Function>( )( std::forward<Args>( args )... ) ) {
+			constexpr auto operator( )( Args &&... args ) const noexcept(
+			  noexcept( std::declval<Function>( )( std::declval<Args>( )... ) ) )
+			  -> decltype( std::declval<Function>( )( std::declval<Args>( )... ) ) {
+
+				return m_func( std::forward<Args>( args )... );
+			}
+
+			template<typename... Args,
+			         std::enable_if_t<daw::is_callable_v<Function, Args...>,
+			                          std::nullptr_t> = nullptr>
+			constexpr auto operator( )( Args &&... args ) noexcept(
+			  noexcept( std::declval<Function>( )( std::declval<Args>( )... ) ) )
+			  -> decltype( std::declval<Function>( )( std::declval<Args>( )... ) ) {
+
 				return m_func( std::forward<Args>( args )... );
 			}
 		};

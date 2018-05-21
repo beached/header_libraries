@@ -61,10 +61,10 @@ namespace daw {
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////
 		explicit expected_t( value_type &&value )
-		  : m_value{std::move( value )} {}
+		  : m_value( std::move( value ) ) {}
 
 		explicit expected_t( value_type const &value )
-		  : m_value{value} {}
+		  : m_value( value ) {}
 
 		expected_t &operator=( value_type &&value ) {
 			m_value = std::move( value );
@@ -77,7 +77,7 @@ namespace daw {
 		}
 
 		expected_t( std::exception_ptr ptr )
-		  : m_value{ptr} {}
+		  : m_value( ptr ) {}
 
 		expected_t &operator=( std::exception_ptr ptr ) {
 			m_value = ptr;
@@ -90,10 +90,11 @@ namespace daw {
 
 		template<typename ExceptionType>
 		expected_t( exception_tag, ExceptionType &&ex )
-		  : m_value{std::make_exception_ptr( std::forward<ExceptionType>( ex ) )} {}
+		  : m_value(
+		      std::make_exception_ptr( std::forward<ExceptionType>( ex ) ) ) {}
 
 		explicit expected_t( exception_tag )
-		  : m_value{std::current_exception( )} {}
+		  : m_value( std::current_exception( ) ) {}
 
 		template<class Function, typename... Args,
 		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
@@ -106,6 +107,11 @@ namespace daw {
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor &&visitor ) {
+			return boost::apply_visitor( std::forward<Visitor>( visitor ), m_value );
+		}
+
+		template<typename Visitor>
+		decltype( auto ) visit( Visitor &&visitor ) const {
 			return boost::apply_visitor( std::forward<Visitor>( visitor ), m_value );
 		}
 
@@ -205,11 +211,13 @@ namespace daw {
 
 		const_pointer operator->( ) const {
 			return boost::apply_visitor(
-			  daw::make_overload( []( const_reference value ) noexcept
-			                        ->const_pointer { return std::addressof( value ); },
-			                      []( std::exception_ptr ptr ) -> const_pointer {
-				                      std::rethrow_exception( ptr );
-			                      } ),
+			  daw::make_overload(
+			    []( const_reference value ) noexcept->const_pointer {
+				    return std::addressof( value );
+			    },
+			    []( std::exception_ptr ptr ) -> const_pointer {
+				    std::rethrow_exception( ptr );
+			    } ),
 			  m_value );
 		}
 
@@ -244,7 +252,7 @@ namespace daw {
 		  std::exception_ptr{nullptr};
 
 		expected_t( bool b )
-		  : m_value{value_type{}} {}
+		  : m_value( value_type{} ) {}
 
 	public:
 		//////////////////////////////////////////////////////////////////////////
@@ -259,13 +267,6 @@ namespace daw {
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////
-
-		/*
-		template<typename T, std::enable_if_t<!daw::is_same_v<T, expected_t>,
-		std::nullptr_t> = nullptr> expected_t( T && ) noexcept :
-		m_value{value_type{}} {}
-		 */
-
 		expected_t &operator=( bool ) {
 			m_value = value_type{};
 			return *this;
@@ -276,7 +277,7 @@ namespace daw {
 		}
 
 		explicit expected_t( std::exception_ptr ptr )
-		  : m_value{ptr} {}
+		  : m_value( ptr ) {}
 
 		expected_t &operator=( std::exception_ptr ptr ) {
 			m_value = ptr;
@@ -285,15 +286,18 @@ namespace daw {
 
 		template<typename ExceptionType>
 		expected_t( exception_tag, ExceptionType &&ex )
-		  : m_value{std::make_exception_ptr( std::forward<ExceptionType>( ex ) )} {}
+		  : m_value(
+		      std::make_exception_ptr( std::forward<ExceptionType>( ex ) ) ) {}
 
 		explicit expected_t( exception_tag )
-		  : m_value{std::current_exception( )} {}
+		  : m_value( std::current_exception( ) ) {}
 
 		template<class Function, typename... Args>
 		static expected_t from_code( Function &&func, Args &&... args ) {
-			static_assert( daw::is_callable_v<Function, Args...>,
+			/*
+			 static_assert( daw::is_callable_v<Function, Args...>,
 			               "Function cannot be called with arguments provided" );
+			              */
 			try {
 				func( std::forward<Args>( args )... );
 				return expected_t{true};
@@ -302,12 +306,28 @@ namespace daw {
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor &&visitor ) {
-			return boost::apply_visitor( std::forward<Visitor>( visitor ), m_value );
+			return boost::apply_visitor(
+			  daw::make_overload( [&]( value_type const & ) mutable noexcept(
+			                        noexcept( visitor( ) ) ) { return visitor( ); },
+			                      [&]( value_type && ) mutable noexcept(
+			                        noexcept( visitor( ) ) ) { return visitor( ); },
+			                      [&]( std::exception_ptr ptr ) mutable noexcept(
+			                        noexcept( visitor( ptr ) ) ) {
+				                      return visitor( ptr );
+			                      } ),
+			  m_value );
 		}
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor &&visitor ) const {
-			return boost::apply_visitor( std::forward<Visitor>( visitor ), m_value );
+			return boost::apply_visitor(
+			  daw::make_overload( [&]( value_type const & ) mutable noexcept(
+			                        noexcept( visitor( ) ) ) { return visitor( ); },
+			                      [&]( std::exception_ptr ptr ) mutable noexcept(
+			                        noexcept( visitor( ptr ) ) ) {
+				                      return visitor( ptr );
+			                      } ),
+			  m_value );
 		}
 
 		template<class Function, typename... Args,
