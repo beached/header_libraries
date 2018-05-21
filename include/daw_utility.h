@@ -274,7 +274,8 @@ namespace daw {
 	}
 
 	template<typename T>
-	T copy( T const &value ) {
+	constexpr T
+	copy( T &&value ) noexcept( std::is_nothrow_copy_constructible<T>::value ) {
 		return value;
 	}
 
