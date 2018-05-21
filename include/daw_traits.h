@@ -556,6 +556,10 @@ namespace daw {
 	constexpr bool is_callable_v =
 	  is_detected_v<detectors::callable_with, Function, Args...>;
 
+	template<typename Result, typename Function, typename... Args>
+	constexpr bool is_callable_convertible_v =
+	  is_detected_convertible_v<Result, detectors::callable_with, Function, Args...>;
+
 	template<typename Predicate, typename... Args>
 	constexpr bool is_predicate_v =
 	  is_detected_convertible_v<bool, detectors::callable_with, Predicate,
