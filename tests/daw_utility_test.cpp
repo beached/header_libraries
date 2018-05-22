@@ -141,33 +141,21 @@ BOOST_AUTO_TEST_CASE( daw_overload_001 ) {
 		}
 	};
 	struct C {
-		auto operator( )( char *c ) const {
+		auto operator( )( bool b, bool c ) const {
 			std::cout << "D->bool\n";
 			return 2;
 		}
 	};
 
 	auto fn = daw::overload( A{}, B{}, C{} );
-/*
+
 	BOOST_REQUIRE_EQUAL( fn( 1 ), 0 );
 	BOOST_REQUIRE_EQUAL( fn( std::string{"Hello"} ), 1 );
-	BOOST_REQUIRE_EQUAL( fn( "Good bye" ), 2 );
-	*/
-}
+	BOOST_REQUIRE_EQUAL( fn( true, false ), 2 );
 
-int string_len( std::string const & str ) noexcept {
-	std::cout << "string\n";
-	return str.size( );
-}
+	auto const fn2 = daw::overload( A{}, B{}, C{} );
 
-BOOST_AUTO_TEST_CASE( daw_overload_002 ) {
-	auto fn = daw::overload(
-	  []( int i ) noexcept {
-		  std::cout << "int\n";
-		  return log10( i );
-	  },
-	  string_len );
-
-	BOOST_REQUIRE_EQUAL( fn( 10 ), 1 );
-	BOOST_REQUIRE_EQUAL( fn( "hello" ), 5 );
+	BOOST_REQUIRE_EQUAL( fn2( 1 ), 0 );
+	BOOST_REQUIRE_EQUAL( fn2( std::string{"Hello"} ), 1 );
+	BOOST_REQUIRE_EQUAL( fn2( true, false ), 2 );
 }

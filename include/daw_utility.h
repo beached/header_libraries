@@ -713,19 +713,10 @@ namespace daw {
 		Function m_func;
 
 	public:
-		template<typename Func, std::enable_if_t<!daw::is_function_v<Func>,
+		template<typename Func, std::enable_if_t<daw::is_same_v<Func, Function>,
 		                                         std::nullptr_t> = nullptr>
 		constexpr overload_t( Func &&func )
-		  : m_func( std::forward<Func>( func ) ) {}
-
-		template<typename Result, typename... Args>
-		constexpr overload_t( Result ( *func )( Args... ) )
-		  : m_func( [func]( Args... args ) mutable noexcept(
-		              noexcept( func( std::forward<Args>( args )... ) ) )
-		              ->decltype( func( std::forward<Args>( args )... ) ) {
-
-			              return func( std::forward<Args>( args )... );
-		              } ) {}
+		  : m_func( std::forward<Func>( func ) ) { }
 
 		template<typename... Args,
 		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
