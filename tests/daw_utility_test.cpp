@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <cmath>
 #include <sstream>
 #include <typeinfo>
 
@@ -147,8 +148,26 @@ BOOST_AUTO_TEST_CASE( daw_overload_001 ) {
 	};
 
 	auto fn = daw::overload( A{}, B{}, C{} );
-
+/*
 	BOOST_REQUIRE_EQUAL( fn( 1 ), 0 );
 	BOOST_REQUIRE_EQUAL( fn( std::string{"Hello"} ), 1 );
 	BOOST_REQUIRE_EQUAL( fn( "Good bye" ), 2 );
+	*/
+}
+
+int string_len( std::string const & str ) noexcept {
+	std::cout << "string\n";
+	return str.size( );
+}
+
+BOOST_AUTO_TEST_CASE( daw_overload_002 ) {
+	auto fn = daw::overload(
+	  []( int i ) noexcept {
+		  std::cout << "int\n";
+		  return log10( i );
+	  },
+	  string_len );
+
+	BOOST_REQUIRE_EQUAL( fn( 10 ), 1 );
+	BOOST_REQUIRE_EQUAL( fn( "hello" ), 5 );
 }

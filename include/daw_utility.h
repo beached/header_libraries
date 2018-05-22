@@ -713,8 +713,19 @@ namespace daw {
 		Function m_func;
 
 	public:
-		constexpr overload_t( Function &&func )
-		  : m_func( std::forward<Function>( func ) ) {}
+		template<typename Func, std::enable_if_t<!daw::is_function_v<Func>,
+		                                         std::nullptr_t> = nullptr>
+		constexpr overload_t( Func &&func )
+		  : m_func( std::forward<Func>( func ) ) {}
+
+		template<typename Result, typename... Args>
+		constexpr overload_t( Result ( *func )( Args... ) )
+		  : m_func( [func]( Args... args ) mutable noexcept(
+		              noexcept( func( std::forward<Args>( args )... ) ) )
+		              ->decltype( func( std::forward<Args>( args )... ) ) {
+
+			              return func( std::forward<Args>( args )... );
+		              } ) {}
 
 		template<typename... Args,
 		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
@@ -743,9 +754,12 @@ namespace daw {
 		using overload_t<Function>::operator( );
 		using overload_t<Functions...>::operator( );
 
-		constexpr overload_t( Function &&func, Functions &&... funcs )
-		  : overload_t<Function>( std::forward<Function>( func ) )
-		  , overload_t<Functions...>( std::forward<Functions>( funcs )... ) {}
+		template<
+		  typename Func, typename... Funcs,
+		  std::enable_if_t<!daw::is_function_v<Func>, std::nullptr_t> = nullptr>
+		constexpr overload_t( Func &&func, Funcs &&... funcs )
+		  : overload_t<Func>( std::forward<Func>( func ) )
+		  , overload_t<Funcs...>( std::forward<Funcs>( funcs )... ) {}
 	};
 
 	template<typename... Functions>
