@@ -281,13 +281,10 @@ namespace daw {
 	} // namespace impl
 
 	template<typename F, typename... ArgTypes>
-	constexpr auto invoke( F &&f, ArgTypes &&... args )
+	constexpr decltype( auto ) invoke( F &&f, ArgTypes &&... args )
 	  // exception specification for QoI
 	  noexcept( noexcept( impl::INVOKE( std::forward<F>( f ),
-	                                    std::forward<ArgTypes>( args )... ) ) )
-	    -> decltype( impl::INVOKE( std::forward<F>( f ),
-	                               std::forward<ArgTypes>( args )... ) ) {
-
+	                                    std::forward<ArgTypes>( args )... ) ) ) {
 		return impl::INVOKE( std::forward<F>( f ),
 		                     std::forward<ArgTypes>( args )... );
 	}
