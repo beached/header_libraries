@@ -126,3 +126,131 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 	                 []( std::exception_ptr ) -> bool { return false; } ) );
 	BOOST_REQUIRE( r );
 }
+
+BOOST_AUTO_TEST_CASE( daw_expected_test_copy_001 ) {
+	daw::expected_t<std::string> tmp;
+	tmp = "This is a test";
+	BOOST_REQUIRE( tmp.has_value( ) );
+	BOOST_REQUIRE( !tmp.has_exception( ) );
+	BOOST_REQUIRE( !tmp.empty( ) );
+	BOOST_REQUIRE( tmp.get( ) == "This is a test" );
+	daw::expected_t<std::string> tmp2;
+	tmp2 = tmp;
+	BOOST_REQUIRE( tmp.has_value( ) == tmp2.has_value( ) );
+	BOOST_REQUIRE( tmp.has_exception( ) == tmp2.has_exception( ) );
+	BOOST_REQUIRE( tmp.empty( ) == tmp2.empty( ) );
+	BOOST_REQUIRE( tmp.get( ) == tmp2.get( ) );
+
+	daw::expected_t<std::string> tmp3( tmp );
+	BOOST_REQUIRE( tmp.has_value( ) == tmp3.has_value( ) );
+	BOOST_REQUIRE( tmp.has_exception( ) == tmp3.has_exception( ) );
+	BOOST_REQUIRE( tmp.empty( ) == tmp3.empty( ) );
+	BOOST_REQUIRE( tmp.get( ) == tmp3.get( ) );
+}
+
+BOOST_AUTO_TEST_CASE( daw_expected_test_copy_002 ) {
+	daw::expected_t<std::string> tmp;
+	try {
+		throw std::exception{};
+	} catch( ... ) { tmp.set_exception( ); }
+	BOOST_REQUIRE( !tmp.has_value( ) );
+	BOOST_REQUIRE( tmp.has_exception( ) );
+	BOOST_REQUIRE( !tmp.empty( ) );
+	BOOST_REQUIRE_EXCEPTION( tmp.get( ), std::exception,
+	                         []( auto && ) { return true; } );
+	daw::expected_t<std::string> tmp2;
+	tmp2 = tmp;
+	BOOST_REQUIRE( tmp.has_value( ) == tmp2.has_value( ) );
+	BOOST_REQUIRE( tmp.has_exception( ) == tmp2.has_exception( ) );
+	BOOST_REQUIRE( tmp.empty( ) == tmp2.empty( ) );
+	BOOST_REQUIRE_EXCEPTION( tmp2.get( ), std::exception,
+	                         []( auto && ) { return true; } );
+
+	daw::expected_t<std::string> tmp3( tmp );
+	BOOST_REQUIRE( tmp.has_value( ) == tmp3.has_value( ) );
+	BOOST_REQUIRE( tmp.has_exception( ) == tmp3.has_exception( ) );
+	BOOST_REQUIRE( tmp.empty( ) == tmp3.empty( ) );
+	BOOST_REQUIRE_EXCEPTION( tmp3.get( ), std::exception,
+	                         []( auto && ) { return true; } );
+}
+
+BOOST_AUTO_TEST_CASE( daw_expected_test_move_assignment_001 ) {
+	daw::expected_t<std::string> tmp;
+	tmp = "This is a test";
+	BOOST_REQUIRE( tmp.has_value( ) );
+	BOOST_REQUIRE( !tmp.has_exception( ) );
+	BOOST_REQUIRE( !tmp.empty( ) );
+	BOOST_REQUIRE( tmp.get( ) == "This is a test" );
+	daw::expected_t<std::string> tmp2;
+	tmp2 = std::move( tmp );
+	BOOST_REQUIRE( !tmp.has_value( ) );
+	BOOST_REQUIRE( !tmp.has_exception( ) );
+	BOOST_REQUIRE( tmp.empty( ) );
+	BOOST_REQUIRE( tmp2.has_value( ) );
+	BOOST_REQUIRE( !tmp2.has_exception( ) );
+	BOOST_REQUIRE( !tmp2.empty( ) );
+	BOOST_REQUIRE( tmp2.get( ) == "This is a test" );
+}
+
+BOOST_AUTO_TEST_CASE( daw_expected_test_move_construction_001 ) {
+	daw::expected_t<std::string> tmp;
+	tmp = "This is a test";
+	BOOST_REQUIRE( tmp.has_value( ) );
+	BOOST_REQUIRE( !tmp.has_exception( ) );
+	BOOST_REQUIRE( !tmp.empty( ) );
+	BOOST_REQUIRE( tmp.get( ) == "This is a test" );
+	daw::expected_t<std::string> tmp2( std::move( tmp ) );
+	BOOST_REQUIRE( !tmp.has_value( ) );
+	BOOST_REQUIRE( !tmp.has_exception( ) );
+	BOOST_REQUIRE( tmp.empty( ) );
+	BOOST_REQUIRE( tmp2.has_value( ) );
+	BOOST_REQUIRE( !tmp2.has_exception( ) );
+	BOOST_REQUIRE( !tmp2.empty( ) );
+	BOOST_REQUIRE( tmp2.get( ) == "This is a test" );
+}
+
+BOOST_AUTO_TEST_CASE( daw_expected_test_move_assignment_002 ) {
+	daw::expected_t<std::string> tmp;
+	try {
+		throw std::exception{};
+	} catch( ... ) { tmp.set_exception( ); }
+	BOOST_REQUIRE( !tmp.has_value( ) );
+	BOOST_REQUIRE( tmp.has_exception( ) );
+	BOOST_REQUIRE( !tmp.empty( ) );
+	BOOST_REQUIRE_EXCEPTION( tmp.get( ), std::exception,
+	                         []( auto && ) { return true; } );
+
+	daw::expected_t<std::string> tmp2;
+	tmp2 = std::move( tmp );
+	BOOST_REQUIRE( !tmp.has_value( ) );
+	BOOST_REQUIRE( !tmp.has_exception( ) );
+	BOOST_REQUIRE( tmp.empty( ) );
+	BOOST_REQUIRE( !tmp2.has_value( ) );
+	BOOST_REQUIRE( tmp2.has_exception( ) );
+	BOOST_REQUIRE( !tmp2.empty( ) );
+	BOOST_REQUIRE_EXCEPTION( tmp2.get( ), std::exception,
+	                         []( auto && ) { return true; } );
+}
+
+BOOST_AUTO_TEST_CASE( daw_expected_test_move_construction_002 ) {
+	daw::expected_t<std::string> tmp;
+	try {
+		throw std::exception{};
+	} catch( ... ) { tmp.set_exception( ); }
+	BOOST_REQUIRE( !tmp.has_value( ) );
+	BOOST_REQUIRE( tmp.has_exception( ) );
+	BOOST_REQUIRE( !tmp.empty( ) );
+	BOOST_REQUIRE_EXCEPTION( tmp.get( ), std::exception,
+	                         []( auto && ) { return true; } );
+
+	daw::expected_t<std::string> tmp2( std::move( tmp ) );
+	BOOST_REQUIRE( !tmp.has_value( ) );
+	BOOST_REQUIRE( !tmp.has_exception( ) );
+	BOOST_REQUIRE( tmp.empty( ) );
+	BOOST_REQUIRE( !tmp2.has_value( ) );
+	BOOST_REQUIRE( tmp2.has_exception( ) );
+	BOOST_REQUIRE( !tmp2.empty( ) );
+	BOOST_REQUIRE_EXCEPTION( tmp2.get( ), std::exception,
+	                         []( auto && ) { return true; } );
+}
+

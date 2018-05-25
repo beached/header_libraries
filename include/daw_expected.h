@@ -49,6 +49,17 @@ namespace daw {
 	public:
 		struct exception_tag {};
 		expected_t( ) = default;
+		~expected_t( ) = default;
+		expected_t( expected_t const & ) = default;
+		expected_t &operator=( expected_t const & ) = default;
+		expected_t( expected_t &&other ) noexcept
+		  : m_value( std::exchange( other.m_value, std::exception_ptr{nullptr} ) ) {
+		}
+
+		expected_t &operator=( expected_t &&rhs ) noexcept {
+			m_value = std::exchange( rhs.m_value, std::exception_ptr{nullptr} );
+			return *this;
+		}
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: No value, aka null
@@ -104,6 +115,14 @@ namespace daw {
 			try {
 				return expected_t( func( std::forward<Args>( args )... ) );
 			} catch( ... ) { return expected_t( exception_tag{} ); }
+		}
+
+		void set_exception( std::exception_ptr ptr ) {
+			m_value = ptr;
+		}
+
+		void set_exception( ) {
+			set_exception( std::current_exception( ) );
 		}
 
 		template<typename Visitor>
@@ -220,11 +239,15 @@ namespace daw {
 		}
 
 		std::string get_exception_message( ) const {
-			std::string result{};
+			auto result = std::string( );
 			try {
 				throw_if_exception( );
-			} catch( std::exception const &e ) { result = e.what( ); } catch( ... ) {
-			}
+			} catch( std::exception const &e ) {
+				result = e.what( );
+			} catch( std::system_error const &e ) {
+				using std::to_string;
+				result = to_string( e.code( ) ) + ": " + e.what( );
+			} catch( ... ) {}
 			return result;
 		}
 	}; // class expected_t
@@ -257,6 +280,17 @@ namespace daw {
 		/// Summary: No value, aka null
 		//////////////////////////////////////////////////////////////////////////
 		expected_t( ) = default;
+		~expected_t( ) = default;
+		expected_t( expected_t const & ) = default;
+		expected_t &operator=( expected_t const & ) = default;
+		expected_t( expected_t &&other ) noexcept
+		  : m_value( std::exchange( other.m_value, std::exception_ptr{nullptr} ) ) {
+		}
+
+		expected_t &operator=( expected_t &&rhs ) noexcept {
+			m_value = std::exchange( rhs.m_value, std::exception_ptr{nullptr} );
+			return *this;
+		}
 
 		friend bool operator==( expected_t const &lhs, expected_t const &rhs ) {
 			return lhs.m_value == rhs.m_value;
@@ -298,6 +332,14 @@ namespace daw {
 				func( std::forward<Args>( args )... );
 				return expected_t( true );
 			} catch( ... ) { return expected_t( exception_tag{} ); }
+		}
+
+		void set_exception( std::exception_ptr ptr ) {
+			m_value = ptr;
+		}
+
+		void set_exception( ) {
+			set_exception( std::current_exception( ) );
 		}
 
 		template<typename Visitor>
