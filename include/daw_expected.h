@@ -195,7 +195,10 @@ namespace daw {
 			  daw::overload( []( reference value ) noexcept
 			                   ->reference { return value; },
 			                 []( std::exception_ptr ptr ) -> reference {
-				                 std::rethrow_exception( ptr );
+				                 if( ptr != nullptr ) {
+					                 std::rethrow_exception( ptr );
+				                 }
+				                 throw std::logic_error( "Unexpected empty state" );
 			                 } ),
 			  m_value );
 		}
@@ -205,7 +208,10 @@ namespace daw {
 			  daw::overload( []( const_reference value ) noexcept
 			                   ->const_reference { return value; },
 			                 []( std::exception_ptr ptr ) -> const_reference {
-				                 std::rethrow_exception( ptr );
+				                 if( ptr != nullptr ) {
+					                 std::rethrow_exception( ptr );
+				                 }
+				                 throw std::logic_error( "Unexpected empty state" );
 			                 } ),
 			  m_value );
 		}
@@ -233,7 +239,10 @@ namespace daw {
 			  daw::overload( []( const_reference value ) noexcept
 			                   ->const_pointer { return std::addressof( value ); },
 			                 []( std::exception_ptr ptr ) -> const_pointer {
-				                 std::rethrow_exception( ptr );
+				                 if( ptr != nullptr ) {
+					                 std::rethrow_exception( ptr );
+				                 }
+				                 throw std::logic_error( "Unexpected empty state" );
 			                 } ),
 			  m_value );
 		}
@@ -416,7 +425,15 @@ namespace daw {
 		}
 
 		void get( ) const {
-			throw_if_exception( );
+			boost::apply_visitor( overload( []( value_type const & ) noexcept {},
+			                                []( std::exception_ptr ptr ) {
+				                                if( ptr != nullptr ) {
+					                                std::rethrow_exception( ptr );
+				                                }
+				                                throw std::logic_error(
+				                                  "Unexpected empty state" );
+			                                } ),
+			                      m_value );
 		}
 
 		std::string get_exception_message( ) const noexcept {
