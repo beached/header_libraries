@@ -256,11 +256,10 @@ namespace daw {
 			auto result = std::string( );
 			try {
 				throw_if_exception( );
+			} catch( std::system_error const &e ) {
+				result = e.code( ).message( ) + ": " + e.what( );
 			} catch( std::exception const &e ) {
 				result = e.what( );
-			} catch( std::system_error const &e ) {
-				using std::to_string;
-				result = to_string( e.code( ) ) + ": " + e.what( );
 			} catch( ... ) {}
 			return result;
 		}

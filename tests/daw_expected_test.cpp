@@ -81,16 +81,22 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 	BOOST_REQUIRE( !k.empty( ) );
 	BOOST_REQUIRE( k.has_value( ) );
 	BOOST_REQUIRE( k.get( ) == 25 );
+}
 
-	struct L {
-		int a;
-	};
+struct L {
+	int a;
+};
 
-	daw::expected_t<L> l{[]( ) { return L{5}; }( )};
-	BOOST_REQUIRE( l->a == 5 );
+BOOST_AUTO_TEST_CASE( daw_expected_test_02 ) {
+	daw::expected_t<void> f{[]( ) { std::cout << "Hello\n"; }};
+
+	daw::expected_t<L> l([]( ) { return L{5}; }( ));
+	auto a = l->a == 5;
+	BOOST_REQUIRE( a );
 
 	auto m = daw::expected_from_code( []( ) -> L { return L{6}; } );
-	BOOST_REQUIRE( m->a == 6 );
+	auto ma = m->a == 6;
+	BOOST_REQUIRE( ma );
 
 	auto o = m.visit(
 	  daw::overload( []( L const &value ) -> bool { return value.a == 6; },
