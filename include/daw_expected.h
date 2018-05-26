@@ -34,6 +34,9 @@
 #include "daw_utility.h"
 
 namespace daw {
+	struct exptr {
+		void * ptr;
+	};
 	template<class T>
 	struct expected_t {
 		using value_type = T;
@@ -114,7 +117,9 @@ namespace daw {
 		static expected_t from_code( Function &&func, Args &&... args ) {
 			try {
 				return expected_t( func( std::forward<Args>( args )... ) );
-			} catch( ... ) { return expected_t( exception_tag{} ); }
+			} catch( ... ) {
+				return expected_t( std::current_exception( ) );
+			}
 		}
 
 		void set_exception( std::exception_ptr ptr ) {
