@@ -552,9 +552,23 @@ namespace daw {
 	using is_callable_t =
 	  typename is_detected<detectors::callable_with, Function, Args...>::type;
 
+	namespace impl {
+		template<typename...>
+		struct is_single_void_arg_t : std::false_type {};
+
+		template<>
+		struct is_single_void_arg_t<void> : std::true_type {};
+	} // namespace impl
+
+	template<typename... Args>
+	constexpr bool is_single_void_arg_v =
+	  impl::is_single_void_arg_t<Args...>::value;
+
 	template<typename Function, typename... Args>
 	constexpr bool is_callable_v =
-	  is_detected_v<detectors::callable_with, Function, Args...>;
+	  is_detected_v<detectors::callable_with, Function, Args...> ||
+	  ( is_single_void_arg_v<Args...> &&
+	    is_detected_v<detectors::callable_with, Function> );
 
 	template<typename Result, typename Function, typename... Args>
 	constexpr bool is_callable_convertible_v =

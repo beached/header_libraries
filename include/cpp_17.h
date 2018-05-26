@@ -425,6 +425,9 @@ namespace daw {
 	constexpr bool is_nothrow_move_assignable_v =
 	  std::is_nothrow_move_assignable<T>::value;
 
+	template<typename T>
+	constexpr bool is_void_v = std::is_void<T>::value;
+
 	// Iterator movement, until I can use c++ 17 and the std ones are constexpr
 	namespace impl {
 		// Pointer calc helpers.  Cannot include math header as it depends on
