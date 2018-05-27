@@ -349,10 +349,7 @@ namespace daw {
 		  : m_value( std::current_exception( ) ) {}
 
 	private:
-		template<class Function, typename... Args,
-		         std::enable_if_t<
-		           daw::is_callable_convertible_v<value_type, Function, Args...>,
-		           std::nullptr_t> = nullptr>
+		template<class Function, typename... Args>
 		static boost::variant<std::exception_ptr, value_type>
 		variant_from_code( Function &&func, Args &&... args ) {
 			try {
@@ -364,7 +361,7 @@ namespace daw {
 	public:
 		template<class Function, typename... Args,
 		         std::enable_if_t<
-		           daw::is_callable_convertible_v<value_type, Function, Args...>,
+		           daw::is_callable_v<Function, Args...>,
 		           std::nullptr_t> = nullptr>
 		explicit expected_t( Function &&func, Args &&... args )
 		  : m_value( variant_from_code( std::forward<Function>( func ),
