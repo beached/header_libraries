@@ -357,7 +357,7 @@ namespace daw {
 		variant_from_code( Function &&func, Args &&... args ) {
 			try {
 				func( std::forward<Args>( args )... );
-				return void_value_t( );
+				return impl::void_value_t( );
 			} catch( ... ) { return std::current_exception( ); }
 		}
 
