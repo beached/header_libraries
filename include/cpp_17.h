@@ -415,9 +415,6 @@ namespace daw {
 	  noexcept( noexcept( impl::INVOKE( std::forward<F>( f ),
 	                                    std::forward<ArgTypes>( args )... ) ) ) {
 
-		static_assert(
-		  daw::is_detected_v<impl::detect_call_operator, F, ArgTypes...>,
-		  "invoke does not work on function pointers" );
 		return impl::INVOKE( std::forward<F>( f ),
 		                     std::forward<ArgTypes>( args )... );
 	}
