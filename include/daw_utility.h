@@ -716,7 +716,7 @@ namespace daw {
 		template<typename Func, std::enable_if_t<daw::is_same_v<Func, Function>,
 		                                         std::nullptr_t> = nullptr>
 		constexpr overload_t( Func &&func )
-		  : m_func( std::forward<Func>( func ) ) { }
+		  : m_func( std::forward<Func>( func ) ) {}
 
 		template<typename... Args,
 		         std::enable_if_t<daw::is_callable_v<Function, Args...>,

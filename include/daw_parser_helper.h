@@ -483,7 +483,7 @@ namespace daw {
 		auto split_if( ForwardIterator first, ForwardIterator last,
 		               Predicate /*std::function<bool(
 		                          *daw::traits::root_type_t<decltype( first )> )>*/
-		                           is_divider ) {
+		                 is_divider ) {
 			std::vector<ForwardIterator> endings;
 			auto result = until( first, last, is_divider );
 			while( result ) {

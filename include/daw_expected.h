@@ -35,7 +35,7 @@
 
 namespace daw {
 	struct exptr {
-		void * ptr;
+		void *ptr;
 	};
 	template<class T>
 	struct expected_t {
@@ -110,16 +110,36 @@ namespace daw {
 		explicit expected_t( exception_tag )
 		  : m_value( std::current_exception( ) ) {}
 
+	private:
+		template<class Function, typename... Args,
+		         std::enable_if_t<
+		           daw::is_callable_convertible_v<value_type, Function, Args...>,
+		           std::nullptr_t> = nullptr>
+		static boost::variant<std::exception_ptr, value_type>
+		variant_from_code( Function &&func, Args &&... args ) {
+			try {
+				return func( std::forward<Args>( args )... );
+			} catch( ... ) { return std::current_exception( ); }
+		}
+
+	public:
+		template<class Function, typename... Args,
+		         std::enable_if_t<
+		           daw::is_callable_convertible_v<value_type, Function, Args...>,
+		           std::nullptr_t> = nullptr>
+		explicit expected_t( Function &&func, Args &&... args )
+		  : m_value( variant_from_code( std::forward<Function>( func ),
+		                                std::forward<Args>( args )... ) ) {}
+
 		template<class Function, typename... Args,
 		         std::enable_if_t<
 		           daw::is_callable_convertible_v<value_type, Function, Args...>,
 		           std::nullptr_t> = nullptr>
 		static expected_t from_code( Function &&func, Args &&... args ) {
-			try {
-				return expected_t( func( std::forward<Args>( args )... ) );
-			} catch( ... ) {
-				return expected_t( std::current_exception( ) );
-			}
+			auto result = expected_t( );
+			result.m_value = variant_from_code( std::forward<Function>( func ),
+			                                    std::forward<Args>( args )... );
+			return result;
 		}
 
 		void set_exception( std::exception_ptr ptr ) {
@@ -139,14 +159,6 @@ namespace daw {
 		decltype( auto ) visit( Visitor &&visitor ) const {
 			return boost::apply_visitor( std::forward<Visitor>( visitor ), m_value );
 		}
-
-		template<class Function, typename... Args,
-		         std::enable_if_t<
-		           daw::is_callable_convertible_v<value_type, Function, Args...>,
-		           std::nullptr_t> = nullptr>
-		expected_t( Function &&func, Args &&... args )
-		  : expected_t( expected_t::from_code( std::forward<Function>( func ),
-		                                       std::forward<Args>( args )... ) ) {}
 
 		bool has_value( ) const {
 			return boost::apply_visitor(
@@ -258,12 +270,11 @@ namespace daw {
 				throw_if_exception( );
 			} catch( std::system_error const &e ) {
 				result = e.code( ).message( ) + ": " + e.what( );
-			} catch( std::exception const &e ) {
-				result = e.what( );
-			} catch( ... ) {}
+			} catch( std::exception const &e ) { result = e.what( ); } catch( ... ) {
+			}
 			return result;
 		}
-	}; // class expected_t
+	}; // namespace daw
 
 	static_assert( daw::is_regular_v<expected_t<int>>,
 	               "expected_t isn't regular" );
@@ -337,14 +348,37 @@ namespace daw {
 		explicit expected_t( exception_tag )
 		  : m_value( std::current_exception( ) ) {}
 
+	private:
 		template<class Function, typename... Args,
-		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
-		                          std::nullptr_t> = nullptr>
-		static expected_t from_code( Function &&func, Args &&... args ) {
+		         std::enable_if_t<
+		           daw::is_callable_convertible_v<value_type, Function, Args...>,
+		           std::nullptr_t> = nullptr>
+		static boost::variant<std::exception_ptr, value_type>
+		variant_from_code( Function &&func, Args &&... args ) {
 			try {
 				func( std::forward<Args>( args )... );
-				return expected_t( true );
-			} catch( ... ) { return expected_t( exception_tag{} ); }
+				return void_value_t( );
+			} catch( ... ) { return std::current_exception( ); }
+		}
+
+	public:
+		template<class Function, typename... Args,
+		         std::enable_if_t<
+		           daw::is_callable_convertible_v<value_type, Function, Args...>,
+		           std::nullptr_t> = nullptr>
+		explicit expected_t( Function &&func, Args &&... args )
+		  : m_value( variant_from_code( std::forward<Function>( func ),
+		                                std::forward<Args>( args )... ) ) {}
+
+		template<class Function, typename... Args,
+		         std::enable_if_t<
+		           daw::is_callable_convertible_v<value_type, Function, Args...>,
+		           std::nullptr_t> = nullptr>
+		static expected_t from_code( Function &&func, Args &&... args ) {
+			auto result = expected_t( );
+			result.m_value = variant_from_code( std::forward<Function>( func ),
+			                                    std::forward<Args>( args )... );
+			return result;
 		}
 
 		void set_exception( std::exception_ptr ptr ) {
@@ -377,13 +411,6 @@ namespace daw {
 			                   noexcept( vis( ptr ) ) ) { return vis( ptr ); } );
 			return boost::apply_visitor( vis2, m_value );
 		}
-
-		template<class Function, typename... Args,
-		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
-		                          std::nullptr_t> = nullptr>
-		expected_t( Function &&func, Args &&... args )
-		  : expected_t( expected_t::from_code( std::forward<Function>( func ),
-		                                       std::forward<Args>( args )... ) ) {}
 
 		bool has_value( ) const noexcept {
 			return boost::apply_visitor(
