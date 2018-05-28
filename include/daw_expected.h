@@ -360,9 +360,8 @@ namespace daw {
 
 	public:
 		template<class Function, typename... Args,
-		         std::enable_if_t<
-		           daw::is_callable_v<Function, Args...>,
-		           std::nullptr_t> = nullptr>
+		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
+		                          std::nullptr_t> = nullptr>
 		explicit expected_t( Function &&func, Args &&... args )
 		  : m_value( variant_from_code( std::forward<Function>( func ),
 		                                std::forward<Args>( args )... ) ) {}
