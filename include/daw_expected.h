@@ -152,11 +152,21 @@ namespace daw {
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor &&visitor ) {
+			static_assert(
+			  daw::is_callable_v<Visitor, value_type &>,
+			  "Visitor must be callable with the variants expected value_type &" );
+			static_assert( daw::is_callable_v<Visitor, std::exception_ptr>,
+			               "Visitor must be callable with std::exception_ptr" );
 			return boost::apply_visitor( std::forward<Visitor>( visitor ), m_value );
 		}
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor &&visitor ) const {
+			static_assert(
+			  daw::is_callable_v<Visitor, value_type const &>,
+			  "Visitor must be callable with the variants expected value_type const &" );
+			static_assert( daw::is_callable_v<Visitor, std::exception_ptr>,
+			               "Visitor must be callable with std::exception_ptr" );
 			return boost::apply_visitor( std::forward<Visitor>( visitor ), m_value );
 		}
 
@@ -387,7 +397,11 @@ namespace daw {
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor &&visitor ) {
-			auto vis =
+			static_assert( daw::is_callable_v<Visitor>,
+			               "Visitor must be callable without arguments" );
+			static_assert( daw::is_callable_v<Visitor, std::exception_ptr>,
+			               "Visitor must be callable with std::exception_ptr" );
+			auto const vis =
 			  daw::overload( [&]( value_type const & ) mutable noexcept(
 			                   noexcept( visitor( ) ) ) { return visitor( ); },
 			                 [&]( value_type && ) mutable noexcept(
@@ -399,13 +413,17 @@ namespace daw {
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor &&visitor ) const {
-			auto vis = std::forward<Visitor>( visitor );
-			auto vis2 =
-			  daw::overload( [&vis]( value_type const & ) noexcept(
-			                   noexcept( vis( ) ) ) { return vis( ); },
-			                 [&vis]( std::exception_ptr ptr ) noexcept(
-			                   noexcept( vis( ptr ) ) ) { return vis( ptr ); } );
-			return boost::apply_visitor( vis2, m_value );
+			static_assert( daw::is_callable_v<Visitor>,
+			               "Visitor must be callable without arguments" );
+			static_assert( daw::is_callable_v<Visitor, std::exception_ptr>,
+			               "Visitor must be callable with std::exception_ptr" );
+			auto const vis =
+			  daw::overload( [&]( value_type const & ) noexcept(
+			                   noexcept( visitor( ) ) ) { return visitor( ); },
+			                 [&]( std::exception_ptr ptr ) noexcept( noexcept(
+			                   visitor( ptr ) ) ) { return visitor( ptr ); } );
+
+			return boost::apply_visitor( vis, m_value );
 		}
 
 		bool has_value( ) const noexcept {

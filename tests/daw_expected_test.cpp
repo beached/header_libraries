@@ -258,4 +258,7 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_move_construction_002 ) {
 	BOOST_REQUIRE( !tmp2.empty( ) );
 	BOOST_REQUIRE_EXCEPTION( tmp2.get( ), std::exception,
 	                         []( auto && ) { return true; } );
+
 }
+
+

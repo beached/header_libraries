@@ -710,7 +710,7 @@ namespace daw {
 	template<typename Function>
 	struct overload_t<Function> {
 	private:
-		Function m_func;
+		mutable Function m_func;
 
 	public:
 		template<typename Func, std::enable_if_t<daw::is_same_v<Func, Function>,
@@ -765,7 +765,7 @@ namespace daw {
 
 	template<typename... Args, typename OverloadSet, std::enable_if_t<!daw::is_callable_v<OverloadSet, Args...>, std::nullptr_t> = nullptr>
 	decltype( auto ) empty_overload( OverloadSet && overload_set ) {
-		return overload( std::forward<OverloadSet>( overload_set ), []( Args&&... ) noexcept {} );
+		return overload( std::forward<OverloadSet>( overload_set ), []( Args&&... ) mutable noexcept {} );
 	}
 
 } // namespace daw
