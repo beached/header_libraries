@@ -22,6 +22,7 @@
 
 #include <cmath>
 #include <sstream>
+#include <system_error>
 #include <typeinfo>
 
 #include "boost_test.h"
@@ -159,3 +160,28 @@ BOOST_AUTO_TEST_CASE( daw_overload_001 ) {
 	BOOST_REQUIRE_EQUAL( fn2( std::string{"Hello"} ), 1 );
 	BOOST_REQUIRE_EQUAL( fn2( true, false ), 2 );
 }
+
+BOOST_AUTO_TEST_CASE( daw_overload_002 ) {
+	auto const ov = daw::overload( []( int i ) { return i*2; }, []( std::string const & s ) { return s.size( ); } );
+	auto ov2 = daw::overload( ov, []( std::error_code ec ) { return ec.value( ); } );
+
+	BOOST_REQUIRE( ov2( 1 ) == 2 );
+	BOOST_REQUIRE( ov2( "hi" ) == 2 );
+	BOOST_REQUIRE( ov2( std::error_code( ) ) == 0 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_empty_overload_001 ) {
+	auto const ov = daw::overload( []( int i ) { return i*2; }, []( std::string const & s ) { return s.size( ); } );
+	auto ov2 = daw::overload( ov, []( std::error_code ec ) { return ec.value( ); } );
+
+	BOOST_REQUIRE( ov2( 1 ) == 2 );
+	BOOST_REQUIRE( ov2( "hi" ) == 2 );
+	BOOST_REQUIRE( ov2( std::error_code( ) ) == 0 );
+	struct A{};
+	bool const can_a = daw::is_callable_v<decltype( ov2 ), A>; 
+	BOOST_REQUIRE( !can_a );
+	auto ov3 = daw::empty_overload<A>( ov2 );
+	bool const can_a2 = daw::is_callable_v<decltype( ov3 ), A>; 
+	BOOST_REQUIRE( can_a2 );
+}
+
