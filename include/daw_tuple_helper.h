@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016-2017 Darrell Wright
+// Copyright (c) 2016-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -33,7 +33,7 @@ namespace daw {
 	namespace tuple {
 		namespace detail {
 			template<typename T>
-			void do_nothing( T const & ) {}
+			constexpr void do_nothing( T && ) noexcept {}
 
 			template<int... Is>
 			struct seq {};
@@ -46,7 +46,7 @@ namespace daw {
 
 			template<typename T1, typename F, int... Is>
 			constexpr void for_each( T1 &&t1, F &&f, seq<Is...> ) {
-				auto l = {( f( std::get<Is>( t1 ) ), 0 )...};
+				auto l = {( f( std::get<Is>( std::forward<T1>( t1 ) ) ), 0 )...};
 				do_nothing( l );
 			}
 
@@ -58,7 +58,7 @@ namespace daw {
 					result = min( a, b );
 				}
 
-				static min_t const &get( ) {
+				static min_t const &get( ) noexcept {
 					static min_t result{};
 					return result;
 				}
@@ -72,7 +72,7 @@ namespace daw {
 					result = max( a, b );
 				}
 
-				static max_t const &get( ) {
+				static max_t const &get( ) noexcept {
 					static max_t result{};
 					return result;
 				}
