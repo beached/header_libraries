@@ -758,14 +758,21 @@ namespace daw {
 		return overload_t<Functions...>{std::forward<Functions>( funcs )...};
 	}
 
-	template<typename... Args, typename OverloadSet, std::enable_if_t<daw::is_callable_v<OverloadSet, Args...>, std::nullptr_t> = nullptr>
-	decltype( auto ) empty_overload( OverloadSet && overload_set ) {
-		return std::forward<OverloadSet>( overload_set );	
+	template<typename... Args, typename OverloadSet,
+	         std::enable_if_t<daw::is_callable_v<OverloadSet, Args...>,
+	                          std::nullptr_t> = nullptr>
+	decltype( auto ) empty_overload( OverloadSet &&overload_set ) {
+		return std::forward<OverloadSet>( overload_set );
 	}
 
-	template<typename... Args, typename OverloadSet, std::enable_if_t<!daw::is_callable_v<OverloadSet, Args...>, std::nullptr_t> = nullptr>
-	decltype( auto ) empty_overload( OverloadSet && overload_set ) {
-		return overload( std::forward<OverloadSet>( overload_set ), []( Args&&... ) mutable noexcept {} );
+	template<typename... Args, typename OverloadSet,
+	         std::enable_if_t<!daw::is_callable_v<OverloadSet, Args...>,
+	                          std::nullptr_t> = nullptr>
+	decltype( auto ) empty_overload( OverloadSet &&overload_set ) {
+		return overload(
+		  std::forward<OverloadSet>( overload_set ), [](
+		                                               Args &&
+		                                               ... ) mutable noexcept {} );
 	}
 
 } // namespace daw

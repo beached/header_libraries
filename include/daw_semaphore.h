@@ -37,27 +37,27 @@ namespace daw {
 
 	public:
 		basic_semaphore( )
-		  : m_mutex{std::make_unique<Mutex>( )}
-		  , m_condition{std::make_unique<ConditionVariable>( )}
-		  , m_count{0}
-		  , m_latched{true} {}
+		  : m_mutex( std::make_unique<Mutex>( ) )
+		  , m_condition( std::make_unique<ConditionVariable>( ) )
+		  , m_count( 0 )
+		  , m_latched( true ) {}
 
 		template<typename Int>
 		explicit basic_semaphore( Int count )
-		  : m_mutex{std::make_unique<Mutex>( )}
-		  , m_condition{std::make_unique<ConditionVariable>( )}
-		  , m_count{static_cast<intmax_t>( count )}
-		  , m_latched{true} {}
+		  : m_mutex( std::make_unique<Mutex>( ) )
+		  , m_condition( std::make_unique<ConditionVariable>( ) )
+		  , m_count( static_cast<intmax_t>( count ) )
+		  , m_latched( true ) {}
 
 		template<typename Int>
 		basic_semaphore( Int count, bool latched )
-		  : m_mutex{std::make_unique<Mutex>( )}
-		  , m_condition{std::make_unique<ConditionVariable>( )}
-		  , m_count{static_cast<intmax_t>( count )}
-		  , m_latched{latched} {}
+		  : m_mutex( std::make_unique<Mutex>( ) )
+		  , m_condition( std::make_unique<ConditionVariable>( ) )
+		  , m_count( static_cast<intmax_t>( count ) )
+		  , m_latched( latched ) {}
 
 		void notify( ) {
-			std::unique_lock<Mutex> lock{*m_mutex};
+			auto lock = std::unique_lock<Mutex>( *m_mutex );
 			++m_count;
 			if( m_latched ) {
 				m_condition->notify_one( );
@@ -65,12 +65,12 @@ namespace daw {
 		}
 
 		void add_notifier( ) {
-			std::unique_lock<Mutex> lock{*m_mutex};
+			auto lock = std::unique_lock<Mutex>( *m_mutex );
 			--m_count;
 		}
 
 		void set_latch( ) {
-			std::unique_lock<Mutex> lock{*m_mutex};
+			auto lock = std::unique_lock<Mutex>( *m_mutex );
 			m_latched = true;
 			m_condition->notify_one( );
 		}
@@ -81,13 +81,13 @@ namespace daw {
 					return;
 				}
 			}
-			std::unique_lock<Mutex> lock{*m_mutex};
+			auto lock = std::unique_lock<Mutex>( *m_mutex );
 			m_condition->wait( lock, [&]( ) { return m_latched && m_count > 0; } );
 			--m_count;
 		}
 
 		bool try_wait( ) {
-			std::unique_lock<Mutex> lock{*m_mutex};
+			auto lock = std::unique_lock<Mutex>( *m_mutex );
 			if( m_latched && m_count > 0 ) {
 				--m_count;
 				return true;
@@ -97,7 +97,7 @@ namespace daw {
 
 		template<typename Rep, typename Period>
 		auto wait_for( std::chrono::duration<Rep, Period> const &rel_time ) {
-			std::unique_lock<Mutex> lock{*m_mutex};
+			auto lock = std::unique_lock<Mutex>( *m_mutex );
 			auto status = m_condition->wait_for(
 			  lock, rel_time, [&]( ) { return m_latched && m_count > 0; } );
 			if( status ) {
@@ -109,7 +109,7 @@ namespace daw {
 		template<typename Clock, typename Duration>
 		auto
 		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) {
-			std::unique_lock<Mutex> lock{*m_mutex};
+			auto lock = std::unique_lock<Mutex>( *m_mutex );
 			auto status = m_condition->wait_until(
 			  lock, timeout_time, [&]( ) { return m_latched && m_count > 0; } );
 			if( status ) {
@@ -127,23 +127,26 @@ namespace daw {
 
 	public:
 		basic_shared_semaphore( )
-		  : m_semaphore{
-		      std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( )} {}
+		  : m_semaphore(
+		      std::make_shared<basic_semaphore<Mutex, ConditionVariable>>( ) ) {}
 
 		template<typename Int>
 		explicit basic_shared_semaphore( Int count )
-		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>(
-		      count )} {}
+		  : m_semaphore(
+		      std::make_shared<basic_semaphore<Mutex, ConditionVariable>>(
+		        count ) ) {}
 
 		template<typename Int>
 		explicit basic_shared_semaphore( Int count, bool latched )
-		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>(
-		      count, latched )} {}
+		  : m_semaphore(
+		      std::make_shared<basic_semaphore<Mutex, ConditionVariable>>(
+		        count, latched ) ) {}
 
 		explicit basic_shared_semaphore(
 		  basic_semaphore<Mutex, ConditionVariable> &&sem )
-		  : m_semaphore{std::make_shared<basic_semaphore<Mutex, ConditionVariable>>(
-		      std::move( sem ) )} {}
+		  : m_semaphore(
+		      std::make_shared<basic_semaphore<Mutex, ConditionVariable>>(
+		        std::move( sem ) ) ) {}
 
 		void notify( ) {
 			m_semaphore->notify( );
@@ -166,12 +169,13 @@ namespace daw {
 		}
 
 		template<typename Rep, typename Period>
-		auto wait_for( std::chrono::duration<Rep, Period> const &rel_time ) {
+		decltype( auto )
+		wait_for( std::chrono::duration<Rep, Period> const &rel_time ) {
 			return m_semaphore->wait_for( rel_time );
 		}
 
 		template<typename Clock, typename Duration>
-		auto
+		decltype( auto )
 		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) {
 			return m_semaphore->wait_until( timeout_time );
 		}
@@ -195,8 +199,8 @@ namespace daw {
 		T value;
 
 		waitable_value( shared_semaphore sem, T val )
-		  : semaphore{std::move( sem )}
-		  , value{std::move( val )} {}
+		  : semaphore( std::move( sem ) )
+		  , value( std::move( val ) ) {}
 
 		void wait( ) {
 			semaphore.wait( );

@@ -429,24 +429,24 @@ int f( int ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_traits_is_callable ) {
-    auto blah = []( auto t ) { return t; };
-    bool val = daw::is_callable_v<decltype(blah), int>;
-    BOOST_REQUIRE_MESSAGE( val, "blah should be callable" );
-    val = daw::is_callable_v<decltype(&f), int>;
-    BOOST_REQUIRE_MESSAGE( val, "f should be callable with an int" );
-    val = !daw::is_callable_v<decltype(&f), TestYesOS>;
-    BOOST_REQUIRE_MESSAGE( val, "f should be callable with an non-int" );
-    val = !daw::is_callable_v<TestYesOS, int>;
-    BOOST_REQUIRE_MESSAGE( val , "TestYesOS should not be callable" );
-		
-		auto const blah2 = []( ) { return true; };
-		using T = decltype( blah2 );
-		bool const b1 = daw::is_callable_v<T, void>;
-		BOOST_REQUIRE( b1 );
-		bool const b2 = daw::is_callable_v<T>;
-		BOOST_REQUIRE( b2 );
-		bool const b3 = daw::is_callable_v<T, int>;
-		BOOST_REQUIRE( !b3 );
+	auto blah = []( auto t ) { return t; };
+	bool val = daw::is_callable_v<decltype( blah ), int>;
+	BOOST_REQUIRE_MESSAGE( val, "blah should be callable" );
+	val = daw::is_callable_v<decltype( &f ), int>;
+	BOOST_REQUIRE_MESSAGE( val, "f should be callable with an int" );
+	val = !daw::is_callable_v<decltype( &f ), TestYesOS>;
+	BOOST_REQUIRE_MESSAGE( val, "f should be callable with an non-int" );
+	val = !daw::is_callable_v<TestYesOS, int>;
+	BOOST_REQUIRE_MESSAGE( val, "TestYesOS should not be callable" );
+
+	auto const blah2 = []( ) { return true; };
+	using T = decltype( blah2 );
+	bool const b1 = daw::is_callable_v<T, void>;
+	BOOST_REQUIRE( b1 );
+	bool const b2 = daw::is_callable_v<T>;
+	BOOST_REQUIRE( b2 );
+	bool const b3 = daw::is_callable_v<T, int>;
+	BOOST_REQUIRE( !b3 );
 }
 
 BOOST_AUTO_TEST_CASE( daw_traits_has_operator ) {

@@ -88,9 +88,9 @@ struct L {
 };
 
 BOOST_AUTO_TEST_CASE( daw_expected_test_02 ) {
-	auto f = daw::expected_t<void>([]( ) { std::cout << "Hello\n"; });
+	auto f = daw::expected_t<void>( []( ) { std::cout << "Hello\n"; } );
 
-	auto l = daw::expected_t<L>([]( ) { return L{5}; }( ));
+	auto l = daw::expected_t<L>( []( ) { return L{5}; }( ) );
 	auto a = l->a == 5;
 	BOOST_REQUIRE( a );
 
@@ -258,7 +258,4 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_move_construction_002 ) {
 	BOOST_REQUIRE( !tmp2.empty( ) );
 	BOOST_REQUIRE_EXCEPTION( tmp2.get( ), std::exception,
 	                         []( auto && ) { return true; } );
-
 }
-
-

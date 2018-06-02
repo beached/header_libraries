@@ -162,9 +162,9 @@ namespace daw {
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor &&visitor ) const {
-			static_assert(
-			  daw::is_callable_v<Visitor, value_type const &>,
-			  "Visitor must be callable with the variants expected value_type const &" );
+			static_assert( daw::is_callable_v<Visitor, value_type const &>,
+			               "Visitor must be callable with the variants expected "
+			               "value_type const &" );
 			static_assert( daw::is_callable_v<Visitor, std::exception_ptr>,
 			               "Visitor must be callable with std::exception_ptr" );
 			return boost::apply_visitor( std::forward<Visitor>( visitor ), m_value );
