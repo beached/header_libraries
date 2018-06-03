@@ -103,7 +103,7 @@ namespace daw {
 			m_condition->wait( lock, stop_waiting( ) );
 		}
 
-		bool try_wait( ) {
+		bool try_wait( ) const {
 			auto lock = std::unique_lock<Mutex>( *m_mutex );
 			return stop_waiting( )( );
 		}
@@ -170,7 +170,7 @@ namespace daw {
 			counting_semaphore->wait( );
 		}
 
-		bool try_wait( ) {
+		bool try_wait( ) const {
 			return counting_semaphore->try_wait( );
 		}
 

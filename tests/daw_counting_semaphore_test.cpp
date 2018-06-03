@@ -46,3 +46,9 @@ BOOST_AUTO_TEST_CASE( barrier_001 ) {
 	}
 	sem.wait( );
 }
+
+BOOST_AUTO_TEST_CASE( try_wait_001 ) {
+	auto const sem = daw::counting_semaphore( 0 );
+	BOOST_REQUIRE( sem.try_wait( ) );
+}
+
