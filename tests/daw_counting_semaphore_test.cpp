@@ -27,5 +27,6 @@
 
 BOOST_AUTO_TEST_CASE( test_01 ) {
 	daw::counting_semaphore sem1;
+	auto sem1b = daw::counting_semaphore( );
 	auto sem2 = daw::shared_counting_semaphore( std::move( sem1 ) );
 }
