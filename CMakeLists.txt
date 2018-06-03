@@ -43,6 +43,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_clumpy_sparsy
 	daw_common_mixins
 	daw_container_algorithm
+	daw_counting_semaphore
 	daw_cstring
 	daw_exception
 	daw_expected
