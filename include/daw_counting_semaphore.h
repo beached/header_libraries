@@ -43,14 +43,14 @@ namespace daw {
 
 	public:
 		basic_counting_semaphore( )
-		  : m_mutex( )
-		  , m_condition( )
+		  : m_mutex( std::make_unique<Mutex>( ) )
+		  , m_condition( std::make_unique<ConditionVariable>( ) )
 		  , m_count( 1 ) {}
 
 		template<typename Int>
 		explicit basic_counting_semaphore( Int count )
-		  : m_mutex( )
-		  , m_condition( )
+		  : m_mutex( std::make_unique<Mutex>( ) )
+		  , m_condition( std::make_unique<ConditionVariable>( ) )
 		  , m_count( static_cast<intmax_t>( count ) ) {
 
 			daw::exception::DebugAssert( m_count >= 0, "Count cannot be negative" );
@@ -58,8 +58,8 @@ namespace daw {
 
 		template<typename Int>
 		basic_counting_semaphore( Int count, bool latched )
-		  : m_mutex( )
-		  , m_condition( )
+		  : m_mutex( std::make_unique<Mutex>( ) )
+		  , m_condition( std::make_unique<ConditionVariable>( ) )
 		  , m_count( static_cast<intmax_t>( count ) ) {
 
 			daw::exception::DebugAssert( m_count >= 0, "Count cannot be negative" );
