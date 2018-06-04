@@ -24,6 +24,7 @@
 
 #include <memory>
 #include <type_traits>
+#include <utility>
 
 #include "daw_traits.h"
 
@@ -125,13 +126,14 @@ namespace daw {
 		}
 
 	public:
-		constexpr value_ptr( value_type * ptr ) noexcept
+		constexpr value_ptr( value_type *ptr ) noexcept
 		  : m_value( ptr ) {}
 
 		template<typename... Args,
-		         std::enable_if_t<!(daw::traits::is_type_v<value_ptr, std::decay_t<Args>...> ||
-		                           daw::traits::is_type_v<value_type *, Args...>),
-		                          std::nullptr_t> = nullptr>
+		         std::enable_if_t<
+		           !(daw::traits::is_type_v<value_ptr, std::decay_t<Args>...> ||
+		             daw::traits::is_type_v<value_type *, Args...>),
+		           std::nullptr_t> = nullptr>
 		explicit value_ptr( Args &&... args ) noexcept(
 		  noexcept( make_ptr( std::forward<Args>( args )... ) ) )
 		  : impl::enable_default_constructor<T>( )
@@ -163,12 +165,14 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr value_ptr & operator=( value_type const &rhs ) noexcept( noexcept( *m_value = rhs ) ) {
+		constexpr value_ptr &
+		operator=( value_type const &rhs ) noexcept( noexcept( *m_value = rhs ) ) {
 			*m_value = rhs;
 			return *this;
 		}
 
-		constexpr value_ptr & operator=( value_type &&rhs ) noexcept( noexcept( *m_value = std::move( rhs ) ) ) {
+		constexpr value_ptr &operator=( value_type &&rhs ) noexcept(
+		  noexcept( *m_value = std::move( rhs ) ) ) {
 			*m_value = std::move( rhs );
 			return *this;
 		}
@@ -321,4 +325,20 @@ namespace daw {
 	            value_ptr<U> const &rhs ) noexcept( noexcept( *lhs <= *rhs ) ) {
 		return *lhs <= *rhs;
 	}
+	namespace impl {
+		struct empty_t {};
+	} // namespace impl
 } // namespace daw
+
+namespace std {
+	template<typename T>
+	struct hash<daw::value_ptr<T>>
+	  : std::enable_if_t<daw::is_callable_v<std::hash<T>, T>,
+	                     daw::impl::empty_t> {
+
+		template<typename Arg>
+		size_t operator( )( Arg &&arg ) const {
+			return std::hash<T>{}( *std::forward<Arg>( arg ) );
+		}
+	};
+} // namespace std

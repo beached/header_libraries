@@ -95,5 +95,6 @@ BOOST_AUTO_TEST_CASE( daw_value_ptr_test_01 ) {
 	auto const h = g;
 
 	g = 5;
-	*h = 6;
+
+	auto hash_value = std::hash<decltype( g )>{}( g );
 }
