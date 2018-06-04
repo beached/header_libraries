@@ -132,7 +132,7 @@ namespace daw {
 		         std::enable_if_t<!(daw::traits::is_type_v<value_ptr, std::decay_t<Args>...> ||
 		                           daw::traits::is_type_v<value_type *, Args...>),
 		                          std::nullptr_t> = nullptr>
-		value_ptr( Args &&... args ) noexcept(
+		explicit value_ptr( Args &&... args ) noexcept(
 		  noexcept( make_ptr( std::forward<Args>( args )... ) ) )
 		  : impl::enable_default_constructor<T>( )
 		  , impl::enable_copy_constructor<T>( )
@@ -152,19 +152,24 @@ namespace daw {
 		  , impl::enable_copy_assignment<T>( )
 		  , m_value( std::exchange( other.m_value, nullptr ) ) {}
 
-		value_ptr &operator=( value_ptr const &rhs ) noexcept(
+		constexpr value_ptr &operator=( value_ptr const &rhs ) noexcept(
 		  noexcept( *m_value = *( rhs.m_value ) ) ) {
-
-			if( m_value ) {
-				*m_value = *( rhs.m_value );
-			} else {
-				m_value = make_ptr( *( rhs.m_value ) );
-			}
+			*m_value = *( rhs.m_value );
 			return *this;
 		}
 
 		constexpr value_ptr &operator=( value_ptr &&rhs ) noexcept {
 			m_value = std::exchange( rhs.m_value, nullptr );
+			return *this;
+		}
+
+		constexpr value_ptr & operator=( value_type const &rhs ) noexcept( noexcept( *m_value = rhs ) ) {
+			*m_value = rhs;
+			return *this;
+		}
+
+		constexpr value_ptr & operator=( value_type &&rhs ) noexcept( noexcept( *m_value = std::move( rhs ) ) ) {
+			*m_value = std::move( rhs );
 			return *this;
 		}
 

@@ -90,4 +90,10 @@ BOOST_AUTO_TEST_CASE( daw_value_ptr_test_01 ) {
 	daw::value_ptr<A> e{ };
 
 	auto f = std::move(e);
+
+	auto g = daw::value_ptr<int>( );
+	auto const h = g;
+
+	g = 5;
+	*h = 6;
 }
