@@ -914,6 +914,7 @@ namespace daw {
 			using detect_is_tuple = decltype( tuple_test( std::declval<Ts>( )... ) );
 		} // namespace impl
 
+		// Tests if type T is the same as the first argument in Args or if args is empty it is false
 		template<typename T, typename... Args>
 		constexpr bool is_type_v = impl::is_type<T, Args...>::value;
 
