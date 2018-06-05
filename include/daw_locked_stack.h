@@ -23,11 +23,11 @@
 #pragma once
 
 #include <boost/optional.hpp>
-#include <memory>
 #include <mutex>
 #include <vector>
 
 #include "daw_semaphore.h"
+#include "daw_value_ptr.h"
 
 namespace daw {
 	template<typename T>
@@ -36,18 +36,18 @@ namespace daw {
 
 	private:
 		daw::semaphore m_semaphore;
-		std::unique_ptr<std::mutex> m_mutex;
+		mutable value_ptr<std::mutex> m_mutex;
 		std::vector<value_type> m_items;
 
 	public:
 		locked_stack_t( )
-		  : m_semaphore{}
-		  , m_mutex{std::make_unique<std::mutex>( )}
-		  , m_items{} {}
+		  : m_semaphore( )
+		  , m_mutex( )
+		  , m_items( ) {}
 
-		~locked_stack_t( ) = default;
-		locked_stack_t( locked_stack_t && ) = default;
-		locked_stack_t &operator=( locked_stack_t && ) = default;
+		~locked_stack_t( ) noexcept = default;
+		locked_stack_t( locked_stack_t && ) noexcept = default;
+		locked_stack_t &operator=( locked_stack_t && ) noexcept = default;
 
 		locked_stack_t( locked_stack_t const & ) = delete;
 		locked_stack_t &operator=( locked_stack_t const & ) = delete;

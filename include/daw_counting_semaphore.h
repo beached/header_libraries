@@ -24,17 +24,17 @@
 
 #include <condition_variable>
 #include <cstdint>
-#include <memory>
 #include <mutex>
 
 #include "daw_exception.h"
+#include "daw_value_ptr.h"
 
 namespace daw {
 	template<typename Mutex, typename ConditionVariable>
 	class basic_counting_semaphore {
-		// These are in unique_ptr's so that the semaphore can be moved
-		std::unique_ptr<Mutex> m_mutex;
-		std::unique_ptr<ConditionVariable> m_condition;
+		// These are in value_ptr's so that the semaphore can be moved
+		mutable value_ptr<Mutex> m_mutex;
+		value_ptr<ConditionVariable> m_condition;
 		intmax_t m_count;
 
 		auto stop_waiting( ) const {
@@ -43,14 +43,14 @@ namespace daw {
 
 	public:
 		basic_counting_semaphore( )
-		  : m_mutex( std::make_unique<Mutex>( ) )
-		  , m_condition( std::make_unique<ConditionVariable>( ) )
+		  : m_mutex( )
+		  , m_condition( )
 		  , m_count( 1 ) {}
 
 		template<typename Int>
 		explicit basic_counting_semaphore( Int count )
-		  : m_mutex( std::make_unique<Mutex>( ) )
-		  , m_condition( std::make_unique<ConditionVariable>( ) )
+		  : m_mutex( )
+		  , m_condition( )
 		  , m_count( static_cast<intmax_t>( count ) ) {
 
 			daw::exception::DebugAssert( m_count >= 0, "Count cannot be negative" );
@@ -58,8 +58,8 @@ namespace daw {
 
 		template<typename Int>
 		basic_counting_semaphore( Int count, bool latched )
-		  : m_mutex( std::make_unique<Mutex>( ) )
-		  , m_condition( std::make_unique<ConditionVariable>( ) )
+		  : m_mutex( )
+		  , m_condition( )
 		  , m_count( static_cast<intmax_t>( count ) ) {
 
 			daw::exception::DebugAssert( m_count >= 0, "Count cannot be negative" );

@@ -23,11 +23,11 @@
 #pragma once
 
 #include <future>
-#include <memory>
 #include <mutex>
 #include <utility>
 
 #include "cpp_17.h"
+#include "daw_value_ptr.h"
 
 namespace daw {
 	template<typename Value>
@@ -93,19 +93,23 @@ namespace daw {
 
 	template<typename T>
 	class lockable_value_t {
-		std::unique_ptr<std::mutex> m_mutex;
-		std::unique_ptr<T> m_value;
+		daw::value_ptr<std::mutex> m_mutex;
+		daw::value_ptr<T> m_value;
 
 	public:
-		lockable_value_t( )
-		  : m_mutex{std::make_unique<std::mutex>( )}
-		  , m_value{std::make_unique<T>( )} {}
+		lockable_value_t( ) noexcept( is_nothrow_default_constructible_v<T> )
+		  : m_mutex( )
+		  , m_value( ) {}
 
-		template<typename U>
-		explicit lockable_value_t( U value )
-		  : m_mutex{std::make_unique<std::mutex>( )}
-		  , m_value{std::make_unique<T>( std::move( value ) )} {}
+		template<typename U,
+		         std::enable_if_t<!daw::traits::is_type_v<lockable_value_t, U>,
+		                          std::nullptr_t> = nullptr>
+		explicit lockable_value_t( U &&value ) noexcept(
+		  noexcept( daw::value_ptr<T>( std::forward<U>( value ) ) ) )
+		  : m_mutex( )
+		  , m_value( std::forward<T>( value ) ) {}
 
+		/*
 		lockable_value_t( lockable_value_t && ) noexcept = default;
 		lockable_value_t &operator=( lockable_value_t && ) noexcept = default;
 
@@ -120,6 +124,7 @@ namespace daw {
 			}
 			return *this;
 		}
+		*/
 
 		locked_value_t<T> get( ) {
 			return make_locked_value( *m_mutex, *m_value );

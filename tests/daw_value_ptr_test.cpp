@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 #include <iostream>
+#include <mutex>
 
 #include "boost_test.h"
 #include "daw_value_ptr.h"
@@ -87,7 +88,7 @@ BOOST_AUTO_TEST_CASE( daw_value_ptr_test_01 ) {
 		A( A const & ) = delete;
 		A & operator=( A const & ) = delete;
 	};
-	daw::value_ptr<A> e{ };
+	auto e = daw::value_ptr<A>( );
 
 	auto f = std::move(e);
 
@@ -97,4 +98,7 @@ BOOST_AUTO_TEST_CASE( daw_value_ptr_test_01 ) {
 	g = 5;
 
 	auto hash_value = std::hash<decltype( g )>{}( g );
+
+	auto i = daw::value_ptr<std::mutex>( );
+	i.reset( );
 }

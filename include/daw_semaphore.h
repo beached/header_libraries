@@ -27,32 +27,34 @@
 #include <memory>
 #include <mutex>
 
+#include "daw_value_ptr.h"
+
 namespace daw {
 	template<typename Mutex, typename ConditionVariable>
 	class basic_semaphore {
-		std::unique_ptr<Mutex> m_mutex;
-		std::unique_ptr<ConditionVariable> m_condition;
+		value_ptr<Mutex> m_mutex;
+		value_ptr<ConditionVariable> m_condition;
 		intmax_t m_count;
 		bool m_latched;
 
 	public:
 		basic_semaphore( )
-		  : m_mutex( std::make_unique<Mutex>( ) )
-		  , m_condition( std::make_unique<ConditionVariable>( ) )
+		  : m_mutex( )
+		  , m_condition( )
 		  , m_count( 0 )
 		  , m_latched( true ) {}
 
 		template<typename Int>
 		explicit basic_semaphore( Int count )
-		  : m_mutex( std::make_unique<Mutex>( ) )
-		  , m_condition( std::make_unique<ConditionVariable>( ) )
+		  : m_mutex( )
+		  , m_condition( )
 		  , m_count( static_cast<intmax_t>( count ) )
 		  , m_latched( true ) {}
 
 		template<typename Int>
 		basic_semaphore( Int count, bool latched )
-		  : m_mutex( std::make_unique<Mutex>( ) )
-		  , m_condition( std::make_unique<ConditionVariable>( ) )
+		  : m_mutex( )
+		  , m_condition( )
 		  , m_count( static_cast<intmax_t>( count ) )
 		  , m_latched( latched ) {}
 
