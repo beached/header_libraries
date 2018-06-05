@@ -32,37 +32,26 @@
 namespace daw {
 	template<typename Value>
 	class locked_value_t {
-		std::mutex *m_mutex;
-		Value *m_value;
+		std::unique_ptr<std::lock_guard<std::mutex>> m_lock;
+		std::reference_wrapper<Value> m_value;
 
 	public:
-		void release( ) {
-			m_value = nullptr;
-			if( m_mutex ) {
-				m_mutex->unlock( );
-				m_mutex = nullptr;
-			}
-		}
-
-		~locked_value_t( ) {
-			release( );
-		}
+		locked_value_t( locked_value_t const &other ) = delete;
+		locked_value_t &operator=( locked_value_t const &other ) = delete;
 
 		locked_value_t( locked_value_t &&other ) noexcept = default;
 		locked_value_t &operator=( locked_value_t && ) noexcept = default;
 
 		locked_value_t( std::mutex &m, Value &value )
-		  : m_mutex( &m )
-		  , m_value( &value ) {
+		  : m_lock( std::make_unique<std::lock_guard<std::mutex>>( m ) )
+		  , m_value( value ) { }
 
-			m_mutex->lock( );
+		void release( ) noexcept {
+			m_lock.reset( );
 		}
 
-		locked_value_t( locked_value_t const & ) = delete;
-		locked_value_t &operator=( locked_value_t const & ) = delete;
-
 		Value &get( ) noexcept {
-			return *m_value;
+			return m_value.get( );
 		}
 
 		Value const &get( ) const noexcept {
@@ -70,19 +59,19 @@ namespace daw {
 		}
 
 		Value &operator*( ) noexcept {
-			return *m_value;
+			return get();
 		}
 
 		Value const &operator*( ) const noexcept {
-			return *m_value;
+			return get();
 		}
 
 		Value *operator->( ) noexcept {
-			return m_value;
+			return &m_value.get( );
 		}
 
 		Value const *operator->( ) const noexcept {
-			return m_value;
+			return &m_value.get( );
 		}
 	}; // locked_value_t
 
