@@ -109,3 +109,11 @@ BOOST_AUTO_TEST_CASE( test_lockable_value01 ) {
 	t3.join( );
 	t4.join( );
 }
+
+BOOST_AUTO_TEST_CASE( const_lock_value_01 ) {
+	auto const a = daw::lockable_value_t<int>( 0xDEAD );
+	{
+		auto b = *a;
+		BOOST_REQUIRE_EQUAL( b.get( ), 0xDEAD );
+	}
+}

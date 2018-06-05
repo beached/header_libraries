@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -30,54 +30,60 @@
 #include "daw_value_ptr.h"
 
 namespace daw {
-	template<typename Value>
+	template<typename T>
 	class locked_value_t {
 		std::unique_ptr<std::lock_guard<std::mutex>> m_lock;
-		std::reference_wrapper<Value> m_value;
+		std::reference_wrapper<T> m_value;
 
 	public:
+		using value_type = T;
+		using reference = T &;
+		using const_reference = T const &;
+		using pointer = T *;
+		using const_pointer = T const *;
+
 		locked_value_t( locked_value_t const &other ) = delete;
 		locked_value_t &operator=( locked_value_t const &other ) = delete;
 
 		locked_value_t( locked_value_t &&other ) noexcept = default;
 		locked_value_t &operator=( locked_value_t && ) noexcept = default;
 
-		locked_value_t( std::mutex &m, Value &value )
+		locked_value_t( std::mutex &m, T &value )
 		  : m_lock( std::make_unique<std::lock_guard<std::mutex>>( m ) )
-		  , m_value( value ) { }
+		  , m_value( value ) {}
 
 		void release( ) noexcept {
 			m_lock.reset( );
 		}
 
-		Value &get( ) noexcept {
+		reference get( ) noexcept {
 			return m_value.get( );
 		}
 
-		Value const &get( ) const noexcept {
+		const_reference get( ) const noexcept {
 			return *m_value;
 		}
 
-		Value &operator*( ) noexcept {
-			return get();
+		reference operator*( ) noexcept {
+			return get( );
 		}
 
-		Value const &operator*( ) const noexcept {
-			return get();
+		const_reference operator*( ) const noexcept {
+			return get( );
 		}
 
-		Value *operator->( ) noexcept {
+		pointer operator->( ) noexcept {
 			return &m_value.get( );
 		}
 
-		Value const *operator->( ) const noexcept {
+		const_pointer operator->( ) const noexcept {
 			return &m_value.get( );
 		}
 	}; // locked_value_t
 
-	template<typename Value>
-	locked_value_t<Value> make_locked_value( std::mutex &m, Value &value ) {
-		return locked_value_t<Value>{m, value};
+	template<typename T>
+	locked_value_t<T> make_locked_value( std::mutex &m, T &value ) {
+		return locked_value_t<T>{m, value};
 	}
 
 	template<typename T>
@@ -110,8 +116,9 @@ namespace daw {
 			return get( );
 		}
 
-		locked_value_t<T> operator*( ) const {
+		locked_value_t<T const> operator*( ) const {
 			return get( );
 		}
 	}; // lockable_value_t
 } // namespace daw
+
