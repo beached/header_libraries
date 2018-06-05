@@ -27,11 +27,11 @@
 
 BOOST_AUTO_TEST_CASE( daw_value_ptr_test_01 ) {
 	struct lrg {
-		size_t a;
-		size_t b;
-		size_t c;
-		size_t d;
-		size_t e;
+		size_t a{};
+		size_t b{};
+		size_t c{};
+		size_t d{};
+		size_t e{};
 	};
 	std::cout << "sizeof( int ) -> " << sizeof( int ) << '\t';
 	std::cout << "sizeof( daw::value_ptr<int> ) -> "
