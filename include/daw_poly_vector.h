@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <vector>
+
 #include "daw_common_mixins.h"
 #include "daw_heap_value.h"
 
