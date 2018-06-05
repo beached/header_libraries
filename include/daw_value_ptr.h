@@ -51,7 +51,10 @@ namespace daw {
 
 	public:
 		constexpr value_ptr( value_type *ptr ) noexcept
-		  : m_value( ptr ) {}
+				: enable_default_constructor<T>(impl::non_constructor{} )
+				, enable_copy_constructor<T>(impl::non_constructor{})
+				, enable_copy_assignment<T>(impl::non_constructor{})
+		  	, m_value( ptr ) {}
 
 		template<typename... Args,
 		         std::enable_if_t<
@@ -60,22 +63,22 @@ namespace daw {
 		           std::nullptr_t> = nullptr>
 		explicit value_ptr( Args &&... args ) noexcept(
 		  noexcept( make_ptr( std::forward<Args>( args )... ) ) )
-		  : enable_default_constructor<T>( )
-		  , enable_copy_constructor<T>( )
-		  , enable_copy_assignment<T>( )
+				: enable_default_constructor<T>(impl::non_constructor{} )
+				, enable_copy_constructor<T>(impl::non_constructor{})
+				, enable_copy_assignment<T>(impl::non_constructor{})
 		  , m_value( make_ptr( std::forward<Args>( args )... ) ) {}
 
 		value_ptr( value_ptr const &other ) noexcept(
 		  noexcept( make_ptr( *other.m_value ) ) )
-		  : enable_default_constructor<T>( )
-		  , enable_copy_constructor<T>( )
-		  , enable_copy_assignment<T>( )
+		  : enable_default_constructor<T>( other )
+		  , enable_copy_constructor<T>( other )
+		  , enable_copy_assignment<T>( other )
 		  , m_value( make_ptr( *other.m_value ) ) {}
 
 		constexpr value_ptr( value_ptr &&other ) noexcept
-		  : enable_default_constructor<T>( )
-		  , enable_copy_constructor<T>( )
-		  , enable_copy_assignment<T>( )
+		  : enable_default_constructor<T>( std::move( other ) )
+		  , enable_copy_constructor<T>( std::move( other ) )
+		  , enable_copy_assignment<T>( std::move( other ) )
 		  , m_value( std::exchange( other.m_value, nullptr ) ) {}
 
 		constexpr value_ptr &operator=( value_ptr const &rhs ) noexcept(

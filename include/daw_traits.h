@@ -942,14 +942,20 @@ namespace daw {
 	constexpr bool disjunction_v = disjunction<B...>::value;
 
 	namespace impl {
+		struct non_constructor{};
+
 		template<bool>
-		struct delete_default_constructor_if {};
+		struct delete_default_constructor_if {
+			constexpr delete_default_constructor_if( ) noexcept { }
+			constexpr delete_default_constructor_if( non_constructor ) noexcept {}
+		};
 
 		template<>
 		struct delete_default_constructor_if<true> {
 			delete_default_constructor_if( ) = delete;
 
 			~delete_default_constructor_if( ) noexcept = default;
+			constexpr delete_default_constructor_if( non_constructor ) noexcept {}
 			constexpr delete_default_constructor_if(
 			  delete_default_constructor_if const & ) {}
 			constexpr delete_default_constructor_if &
@@ -965,12 +971,16 @@ namespace daw {
 		};
 
 		template<bool>
-		struct delete_copy_constructor_if {};
+		struct delete_copy_constructor_if {
+			constexpr delete_copy_constructor_if( ) noexcept { }
+			constexpr delete_copy_constructor_if( non_constructor ) noexcept {}
+		};
 
 		template<>
 		struct delete_copy_constructor_if<true> {
 			delete_copy_constructor_if( delete_copy_constructor_if const & ) = delete;
 
+			constexpr delete_copy_constructor_if( non_constructor ) noexcept {}
 			constexpr delete_copy_constructor_if( ) noexcept {}
 			~delete_copy_constructor_if( ) noexcept = default;
 			constexpr delete_copy_constructor_if &
@@ -986,13 +996,17 @@ namespace daw {
 		};
 
 		template<bool>
-		struct delete_copy_assignment_if {};
+		struct delete_copy_assignment_if {
+			constexpr delete_copy_assignment_if( ) noexcept { }
+			constexpr delete_copy_assignment_if( non_constructor ) noexcept {}
+		};
 
 		template<>
 		struct delete_copy_assignment_if<true> {
 			delete_copy_assignment_if &
 			operator=( delete_copy_assignment_if const & ) = delete;
 
+			constexpr delete_copy_assignment_if( non_constructor ) noexcept {}
 			constexpr delete_copy_assignment_if( ) noexcept {}
 			~delete_copy_assignment_if( ) noexcept = default;
 			constexpr delete_copy_assignment_if(
