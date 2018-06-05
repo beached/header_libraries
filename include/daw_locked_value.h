@@ -52,8 +52,8 @@ namespace daw {
 		locked_value_t &operator=( locked_value_t && ) noexcept = default;
 
 		locked_value_t( std::mutex &m, Value &value )
-		  : m_mutex{&m}
-		  , m_value{&value} {
+		  : m_mutex( &m )
+		  , m_value( &value ) {
 
 			m_mutex->lock( );
 		}
@@ -108,23 +108,6 @@ namespace daw {
 		  noexcept( daw::value_ptr<T>( std::forward<U>( value ) ) ) )
 		  : m_mutex( )
 		  , m_value( std::forward<T>( value ) ) {}
-
-		/*
-		lockable_value_t( lockable_value_t && ) noexcept = default;
-		lockable_value_t &operator=( lockable_value_t && ) noexcept = default;
-
-		lockable_value_t( lockable_value_t const &other )
-		  : m_mutex{std::make_unique<std::mutex>( )}
-		  , m_value{std::make_unique<T>( *other.get( ) )} {}
-
-		lockable_value_t &operator=( lockable_value_t const &rhs ) {
-			if( this != &rhs ) {
-				m_mutex = std::make_unique<std::mutex>( );
-				m_value = *rhs.get( );
-			}
-			return *this;
-		}
-		*/
 
 		locked_value_t<T> get( ) {
 			return make_locked_value( *m_mutex, *m_value );

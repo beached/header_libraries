@@ -50,16 +50,9 @@ namespace daw {
 		}
 
 	public:
-		explicit constexpr value_ptr( value_type *ptr ) noexcept
-		  : enable_default_constructor<T>( impl::non_constructor{} )
-		  , enable_copy_constructor<T>( impl::non_constructor{} )
-		  , enable_copy_assignment<T>( impl::non_constructor{} )
-		  , m_value( ptr ) {}
-
 		template<typename... Args,
 		         std::enable_if_t<
-		           !(daw::traits::is_type_v<value_ptr, std::decay_t<Args>...> ||
-		             daw::traits::is_type_v<value_type *, Args...>),
+		           !daw::traits::is_type_v<value_ptr, std::decay_t<Args>...>,
 		           std::nullptr_t> = nullptr>
 		explicit value_ptr( Args &&... args ) noexcept(
 		  noexcept( make_ptr( std::forward<Args>( args )... ) ) )
@@ -75,31 +68,31 @@ namespace daw {
 		  , enable_copy_assignment<T>( other )
 		  , m_value( make_ptr( *other.m_value ) ) {}
 
-		constexpr value_ptr( value_ptr &&other ) noexcept
+		value_ptr( value_ptr &&other ) noexcept
 		  : enable_default_constructor<T>( std::move( other ) )
 		  , enable_copy_constructor<T>( std::move( other ) )
 		  , enable_copy_assignment<T>( std::move( other ) )
 		  , m_value( std::exchange( other.m_value, nullptr ) ) {}
 
-		constexpr value_ptr &operator=( value_ptr const &rhs ) noexcept(
+		value_ptr &operator=( value_ptr const &rhs ) noexcept(
 		  is_nothrow_copy_constructible_v<value_type> ) {
 			*m_value = *( rhs.m_value );
 			return *this;
 		}
 
-		constexpr value_ptr &operator=( value_ptr &&rhs ) noexcept {
+		value_ptr &operator=( value_ptr &&rhs ) noexcept {
 			m_value = std::exchange( rhs.m_value, nullptr );
 			return *this;
 		}
 
-		constexpr value_ptr &operator=( value_type const &rhs ) noexcept(
+		value_ptr &operator=( value_type const &rhs ) noexcept(
 		  is_nothrow_copy_assignable_v<value_type> ) {
 
 			*m_value = rhs;
 			return *this;
 		}
 
-		constexpr value_ptr &operator=( value_type &&rhs ) noexcept(
+		value_ptr &operator=( value_type &&rhs ) noexcept(
 		  is_nothrow_move_assignable_v<value_type> ) {
 
 			*m_value = std::move( rhs );
@@ -117,44 +110,44 @@ namespace daw {
 			reset( );
 		}
 
-		constexpr pointer release( ) noexcept {
+		pointer release( ) noexcept {
 			return std::exchange( m_value, nullptr );
 		}
 
-		friend constexpr void swap( value_ptr &lhs, value_ptr &rhs ) noexcept {
+		friend void swap( value_ptr &lhs, value_ptr &rhs ) noexcept {
 			using std::swap;
 			swap( lhs.m_value, rhs.m_value );
 		}
 
-		constexpr pointer get( ) noexcept {
+		pointer get( ) noexcept {
 			return m_value;
 		}
 
-		constexpr const_pointer get( ) const noexcept {
+		const_pointer get( ) const noexcept {
 			return m_value;
 		}
 
-		constexpr reference operator*( ) noexcept {
+		reference operator*( ) noexcept {
 			return *m_value;
 		}
 
-		constexpr const_reference operator*( ) const noexcept {
+		const_reference operator*( ) const noexcept {
 			return *m_value;
 		}
 
-		constexpr pointer operator->( ) noexcept {
+		pointer operator->( ) noexcept {
 			return m_value;
 		}
 
-		constexpr const_pointer operator->( ) const noexcept {
+		const_pointer operator->( ) const noexcept {
 			return m_value;
 		}
 
-		explicit operator reference ( ) noexcept {
+		explicit operator reference( ) noexcept {
 			return *m_value;
 		}
 
-		explicit operator const_reference ( ) const noexcept {
+		explicit operator const_reference( ) const noexcept {
 			return *m_value;
 		}
 	};
@@ -214,7 +207,7 @@ namespace daw {
 
 	template<typename T, typename U,
 	         value_ptr_impl::has_compare_equality<T, U, std::nullptr_t> = nullptr>
-	constexpr bool
+	bool
 	operator==( value_ptr<T> const &lhs,
 	            value_ptr<U> const &rhs ) noexcept( noexcept( *lhs == *rhs ) ) {
 		return *lhs == *rhs;
@@ -223,7 +216,7 @@ namespace daw {
 	template<
 	  typename T, typename U,
 	  value_ptr_impl::has_compare_inequality<T, U, std::nullptr_t> = nullptr>
-	constexpr bool
+	bool
 	operator!=( value_ptr<T> const &lhs,
 	            value_ptr<U> const &rhs ) noexcept( noexcept( *lhs != *rhs ) ) {
 		return *lhs != *rhs;
@@ -231,7 +224,7 @@ namespace daw {
 
 	template<typename T, typename U,
 	         value_ptr_impl::has_compare_greater<T, U, std::nullptr_t> = nullptr>
-	constexpr bool
+	bool
 	operator>( value_ptr<T> const &lhs,
 	           value_ptr<U> const &rhs ) noexcept( noexcept( *lhs > *rhs ) ) {
 		return *lhs > *rhs;
@@ -240,7 +233,7 @@ namespace daw {
 	template<
 	  typename T, typename U,
 	  value_ptr_impl::has_compare_greater_equal<T, U, std::nullptr_t> = nullptr>
-	constexpr bool
+	bool
 	operator>=( value_ptr<T> const &lhs,
 	            value_ptr<U> const &rhs ) noexcept( noexcept( *lhs >= *rhs ) ) {
 		return *lhs >= *rhs;
@@ -248,7 +241,7 @@ namespace daw {
 
 	template<typename T, typename U,
 	         value_ptr_impl::has_compare_less<T, U, std::nullptr_t> = nullptr>
-	constexpr bool
+	bool
 	operator<( value_ptr<T> const &lhs,
 	           value_ptr<U> const &rhs ) noexcept( noexcept( *lhs < *rhs ) ) {
 		return *lhs < *rhs;
@@ -257,7 +250,7 @@ namespace daw {
 	template<
 	  typename T, typename U,
 	  value_ptr_impl::has_compare_less_equal<T, U, std::nullptr_t> = nullptr>
-	constexpr bool
+	bool
 	operator<=( value_ptr<T> const &lhs,
 	            value_ptr<U> const &rhs ) noexcept( noexcept( *lhs <= *rhs ) ) {
 		return *lhs <= *rhs;
