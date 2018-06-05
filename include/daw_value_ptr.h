@@ -29,86 +29,10 @@
 #include "daw_traits.h"
 
 namespace daw {
-	namespace impl {
-		template<bool>
-		struct delete_default_constructor_if {};
-
-		template<>
-		struct delete_default_constructor_if<true> {
-			delete_default_constructor_if( ) = delete;
-
-			~delete_default_constructor_if( ) noexcept = default;
-			constexpr delete_default_constructor_if(
-			  delete_default_constructor_if const & ) {}
-			constexpr delete_default_constructor_if &
-			operator=( delete_default_constructor_if const & ) noexcept {
-				return *this;
-			}
-			constexpr delete_default_constructor_if(
-			  delete_default_constructor_if && ) noexcept {}
-			constexpr delete_default_constructor_if &
-			operator=( delete_default_constructor_if && ) noexcept {
-				return *this;
-			}
-		};
-
-		template<typename T>
-		using enable_default_constructor =
-		  delete_default_constructor_if<!is_default_constructible_v<T>>;
-
-		template<bool>
-		struct delete_copy_constructor_if {};
-
-		template<>
-		struct delete_copy_constructor_if<true> {
-			delete_copy_constructor_if( delete_copy_constructor_if const & ) = delete;
-
-			constexpr delete_copy_constructor_if( ) noexcept {}
-			~delete_copy_constructor_if( ) noexcept = default;
-			constexpr delete_copy_constructor_if &
-			operator=( delete_copy_constructor_if const & ) noexcept {
-				return *this;
-			}
-			constexpr delete_copy_constructor_if(
-			  delete_copy_constructor_if && ) noexcept {}
-			constexpr delete_copy_constructor_if &
-			operator=( delete_copy_constructor_if && ) noexcept {
-				return *this;
-			}
-		};
-
-		template<typename T>
-		using enable_copy_constructor =
-		  delete_copy_constructor_if<!is_copy_constructible_v<T>>;
-
-		template<bool>
-		struct delete_copy_assignment_if {};
-
-		template<>
-		struct delete_copy_assignment_if<true> {
-			delete_copy_assignment_if &
-			operator=( delete_copy_assignment_if const & ) = delete;
-
-			constexpr delete_copy_assignment_if( ) noexcept {}
-			~delete_copy_assignment_if( ) noexcept = default;
-			constexpr delete_copy_assignment_if(
-			  delete_copy_assignment_if const & ) noexcept {}
-			constexpr delete_copy_assignment_if(
-			  delete_copy_assignment_if && ) noexcept {}
-			constexpr delete_copy_assignment_if &
-			operator=( delete_copy_assignment_if && ) noexcept {
-				return *this;
-			}
-		};
-
-		template<typename T>
-		using enable_copy_assignment =
-		  delete_copy_assignment_if<!is_copy_assignable_v<T>>;
-	} // namespace impl
 	template<typename T>
-	struct value_ptr : impl::enable_default_constructor<T>,
-	                   impl::enable_copy_constructor<T>,
-	                   impl::enable_copy_assignment<T> {
+	struct value_ptr : enable_default_constructor<T>,
+	                   enable_copy_constructor<T>,
+	                   enable_copy_assignment<T> {
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
@@ -136,22 +60,22 @@ namespace daw {
 		           std::nullptr_t> = nullptr>
 		explicit value_ptr( Args &&... args ) noexcept(
 		  noexcept( make_ptr( std::forward<Args>( args )... ) ) )
-		  : impl::enable_default_constructor<T>( )
-		  , impl::enable_copy_constructor<T>( )
-		  , impl::enable_copy_assignment<T>( )
+		  : enable_default_constructor<T>( )
+		  , enable_copy_constructor<T>( )
+		  , enable_copy_assignment<T>( )
 		  , m_value( make_ptr( std::forward<Args>( args )... ) ) {}
 
 		value_ptr( value_ptr const &other ) noexcept(
 		  noexcept( make_ptr( *other.m_value ) ) )
-		  : impl::enable_default_constructor<T>( )
-		  , impl::enable_copy_constructor<T>( )
-		  , impl::enable_copy_assignment<T>( )
+		  : enable_default_constructor<T>( )
+		  , enable_copy_constructor<T>( )
+		  , enable_copy_assignment<T>( )
 		  , m_value( make_ptr( *other.m_value ) ) {}
 
 		constexpr value_ptr( value_ptr &&other ) noexcept
-		  : impl::enable_default_constructor<T>( )
-		  , impl::enable_copy_constructor<T>( )
-		  , impl::enable_copy_assignment<T>( )
+		  : enable_default_constructor<T>( )
+		  , enable_copy_constructor<T>( )
+		  , enable_copy_assignment<T>( )
 		  , m_value( std::exchange( other.m_value, nullptr ) ) {}
 
 		constexpr value_ptr &operator=( value_ptr const &rhs ) noexcept(

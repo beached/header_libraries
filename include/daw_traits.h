@@ -940,4 +940,86 @@ namespace daw {
 
 	template<typename... B>
 	constexpr bool disjunction_v = disjunction<B...>::value;
+
+	namespace impl {
+		template<bool>
+		struct delete_default_constructor_if {};
+
+		template<>
+		struct delete_default_constructor_if<true> {
+			delete_default_constructor_if( ) = delete;
+
+			~delete_default_constructor_if( ) noexcept = default;
+			constexpr delete_default_constructor_if(
+			  delete_default_constructor_if const & ) {}
+			constexpr delete_default_constructor_if &
+			operator=( delete_default_constructor_if const & ) noexcept {
+				return *this;
+			}
+			constexpr delete_default_constructor_if(
+			  delete_default_constructor_if && ) noexcept {}
+			constexpr delete_default_constructor_if &
+			operator=( delete_default_constructor_if && ) noexcept {
+				return *this;
+			}
+		};
+
+		template<bool>
+		struct delete_copy_constructor_if {};
+
+		template<>
+		struct delete_copy_constructor_if<true> {
+			delete_copy_constructor_if( delete_copy_constructor_if const & ) = delete;
+
+			constexpr delete_copy_constructor_if( ) noexcept {}
+			~delete_copy_constructor_if( ) noexcept = default;
+			constexpr delete_copy_constructor_if &
+			operator=( delete_copy_constructor_if const & ) noexcept {
+				return *this;
+			}
+			constexpr delete_copy_constructor_if(
+			  delete_copy_constructor_if && ) noexcept {}
+			constexpr delete_copy_constructor_if &
+			operator=( delete_copy_constructor_if && ) noexcept {
+				return *this;
+			}
+		};
+
+		template<bool>
+		struct delete_copy_assignment_if {};
+
+		template<>
+		struct delete_copy_assignment_if<true> {
+			delete_copy_assignment_if &
+			operator=( delete_copy_assignment_if const & ) = delete;
+
+			constexpr delete_copy_assignment_if( ) noexcept {}
+			~delete_copy_assignment_if( ) noexcept = default;
+			constexpr delete_copy_assignment_if(
+			  delete_copy_assignment_if const & ) noexcept {}
+			constexpr delete_copy_assignment_if(
+			  delete_copy_assignment_if && ) noexcept {}
+			constexpr delete_copy_assignment_if &
+			operator=( delete_copy_assignment_if && ) noexcept {
+				return *this;
+			}
+		};
+	} // namespace impl
+
+	template<typename T>
+	using enable_default_constructor =
+	  impl::delete_default_constructor_if<!is_default_constructible_v<T>>;
+
+	template<typename T>
+	using enable_copy_constructor =
+	  impl::delete_copy_constructor_if<!is_copy_constructible_v<T>>;
+
+	template<typename T>
+	using enable_copy_assignment =
+	  impl::delete_copy_assignment_if<!is_copy_assignable_v<T>>;
+
+
+
+
+
 } // namespace daw
