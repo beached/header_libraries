@@ -93,7 +93,7 @@ namespace daw {
 
 	template<typename T>
 	class lockable_value_t {
-		daw::value_ptr<std::mutex> m_mutex;
+		mutable daw::value_ptr<std::mutex> m_mutex;
 		daw::value_ptr<T> m_value;
 
 	public:
