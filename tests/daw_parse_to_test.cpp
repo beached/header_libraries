@@ -175,7 +175,7 @@ namespace daw_parse_to_enum_001_ns {
 		constexpr auto result =
 		  daw::apply_string2<daw::parser::converters::enum_mapper_value<e_colours>,
 		                     daw::parser::converters::enum_mapper_value<e_colours>>(
-		    daw_parse_to_enum_001_ns::callable_t{}, "green blue", " " );
+		    daw_parse_to_enum_001_ns::callable_t(), "green blue", " " );
 
 		BOOST_REQUIRE_EQUAL( result, 12 );
 	}

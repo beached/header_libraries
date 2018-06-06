@@ -702,11 +702,14 @@ namespace daw {
 	//////////////////////////////////////////////////////////////////////////
 	/// Summary: is like a regular type see
 	/// http://www.stepanovpapers.com/DeSt98.pdf
+	/// Now using C++'s defition of Regular 
+	/// http://en.cppreference.com/w/cpp/experimental/ranges/concepts/Regular
 	template<typename T>
 	constexpr bool is_regular_v =
 	  all_true_v<is_default_constructible_v<T>, is_copy_constructible_v<T>,
 	             is_move_constructible_v<T>, is_copy_assignable_v<T>,
-	             is_move_assignable_v<T>, is_equality_comparable_v<T>>;
+	             is_move_assignable_v<T>, is_equality_comparable_v<T>,
+	             is_inequality_comparable_v<T>>;
 
 	struct nothing {};
 

@@ -71,6 +71,10 @@ namespace daw {
 			return lhs.m_value == rhs.m_value;
 		}
 
+		friend bool operator!=( expected_t const &lhs, expected_t const &rhs ) {
+			return lhs.m_value != rhs.m_value;
+		}
+
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////

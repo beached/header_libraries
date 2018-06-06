@@ -23,9 +23,13 @@
 #pragma once
 
 #include <tuple>
+#include "daw_traits.h"
 
 namespace daw {
-	template<typename T>
+	template<typename...>
+	struct function_info;
+
+	template<typename T, std::enable_if_t<daw::is_callable_v<T>, std::nullptr_t> = nullptr>
 	struct function_info : public function_info<decltype( &T::operator( ) )> {};
 	// For generic types, directly use the result of the signature of its
 	// 'operator()'
