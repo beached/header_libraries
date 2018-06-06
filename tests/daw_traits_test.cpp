@@ -811,3 +811,12 @@ BOOST_AUTO_TEST_CASE( is_callable_convertible_001 ) {
 	  daw::is_callable_convertible_v<double, decltype( func ), double>;
 	BOOST_REQUIRE( tst );
 }
+
+BOOST_AUTO_TEST_CASE( all_true_001 ) {
+	constexpr bool b1 = daw::all_true_v<true, false, true, true, true, true, true,
+	                                    true, true, true, true, true, true, true>;
+	BOOST_REQUIRE( !b1 );
+	constexpr bool b2 = daw::all_true_v<true, true, true, true, true, true, true,
+	                                    true, true, true, true, true, true, true>;
+	BOOST_REQUIRE( b2 );
+}

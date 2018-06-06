@@ -283,6 +283,10 @@ namespace daw {
 	constexpr bool is_nothrow_destructible_v =
 	  std::is_nothrow_destructible<T>::value;
 
+	template<class T, class... Args>
+	constexpr bool is_nothrow_constructible_v =
+	  std::is_nothrow_constructible<T, Args...>::value;
+
 	template<typename T>
 	constexpr bool is_pointer_v = std::is_pointer<T>::value;
 

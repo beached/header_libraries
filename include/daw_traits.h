@@ -1031,9 +1031,4 @@ namespace daw {
 	template<typename T>
 	using enable_copy_assignment =
 	  impl::delete_copy_assignment_if<!is_copy_assignable_v<T>>;
-
-
-
-
-
 } // namespace daw

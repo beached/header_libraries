@@ -101,4 +101,8 @@ BOOST_AUTO_TEST_CASE( daw_value_ptr_test_01 ) {
 
 	auto i = daw::value_ptr<std::mutex>( );
 	i.reset( );
+
+	static_assert( daw::is_regular_v<daw::value_ptr<int>>, "value_ptr<int> isn't regular" );
+	static_assert( !daw::is_regular_v<daw::value_ptr<std::mutex>>, "value_ptr<std::mutex> shouldn't be regular" );
+	daw::value_ptr<std::mutex> blah{};
 }

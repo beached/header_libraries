@@ -44,7 +44,7 @@ namespace daw {
 
 		template<typename... Args>
 		static pointer make_ptr( Args &&... args ) noexcept(
-		  noexcept( new value_type( std::forward<Args>( args )... ) ) ) {
+		  daw::is_nothrow_constructible_v<value_type, Args...> ) {
 
 			return new value_type( std::forward<Args>( args )... );
 		}
@@ -52,10 +52,10 @@ namespace daw {
 	public:
 		template<typename... Args,
 		         std::enable_if_t<
-		           !daw::traits::is_type_v<value_ptr, std::decay_t<Args>...>,
+		           (daw::is_constructible_v<value_type, Args...> &&
+		            !daw::traits::is_type_v<value_ptr, std::decay_t<Args>...>),
 		           std::nullptr_t> = nullptr>
-		explicit value_ptr( Args &&... args ) noexcept(
-		  noexcept( make_ptr( std::forward<Args>( args )... ) ) )
+		explicit value_ptr( Args &&... args ) noexcept( daw::is_nothrow_constructible_v<value_type, Args...> )
 		  : enable_default_constructor<T>( impl::non_constructor{} )
 		  , enable_copy_constructor<T>( impl::non_constructor{} )
 		  , enable_copy_assignment<T>( impl::non_constructor{} )
