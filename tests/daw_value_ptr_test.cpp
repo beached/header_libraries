@@ -106,3 +106,31 @@ BOOST_AUTO_TEST_CASE( daw_value_ptr_test_01 ) {
 	static_assert( !daw::is_regular_v<daw::value_ptr<std::mutex>>, "value_ptr<std::mutex> shouldn't be regular" );
 	daw::value_ptr<std::mutex> blah{};
 }
+
+struct virt_A {
+	virtual ~virt_A( ) noexcept; 
+	virtual int operator( )( ) const {
+		return 0;
+	}
+};
+
+virt_A::~virt_A( ) noexcept = default;
+
+struct virt_B: virt_A {
+	int operator( )( ) const override {
+		return 1;
+	}
+	~virt_B( ) noexcept override;
+};
+
+virt_B::~virt_B( ) noexcept = default;
+
+BOOST_AUTO_TEST_CASE( virtual_inheritance_test ) {
+	using test_t = daw::value_ptr<virt_A>;
+	auto a = test_t( );
+	auto b = test_t::emplace<virt_B>( );
+
+	BOOST_REQUIRE( a( ) != b( ) );
+	std::cout << "a: " << a( ) << '\n';
+	std::cout << "b: " << b( ) << '\n';
+}

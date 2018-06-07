@@ -42,24 +42,40 @@ namespace daw {
 	private:
 		pointer m_value = nullptr;
 
-		template<typename... Args>
+		template<typename U=value_type, typename... Args>
 		static pointer make_ptr( Args &&... args ) noexcept(
 		  daw::is_nothrow_constructible_v<value_type, Args...> ) {
 
-			return new value_type( std::forward<Args>( args )... );
+			return new U( std::forward<Args>( args )... );
 		}
+		struct private_constructor{};
 
+		constexpr explicit value_ptr( private_constructor ) noexcept {}
 	public:
 		template<typename... Args,
 		         std::enable_if_t<
 		           (daw::is_constructible_v<value_type, Args...> &&
 		            !daw::traits::is_type_v<value_ptr, std::decay_t<Args>...>),
 		           std::nullptr_t> = nullptr>
-		explicit value_ptr( Args &&... args ) noexcept( daw::is_nothrow_constructible_v<value_type, Args...> )
+		explicit value_ptr( Args &&... args ) noexcept(
+		  daw::is_nothrow_constructible_v<value_type, Args...> )
 		  : enable_default_constructor<T>( impl::non_constructor{} )
 		  , enable_copy_constructor<T>( impl::non_constructor{} )
 		  , enable_copy_assignment<T>( impl::non_constructor{} )
 		  , m_value( make_ptr( std::forward<Args>( args )... ) ) {}
+
+		template<typename U = value_type, typename... Args,
+		         std::enable_if_t<
+		           (daw::is_constructible_v<value_type, Args...> &&
+		            !daw::traits::is_type_v<value_ptr, std::decay_t<Args>...>),
+		           std::nullptr_t> = nullptr>
+		static value_ptr emplace( Args &&... args ) noexcept(
+		  daw::is_nothrow_constructible_v<value_type, Args...> ) {
+
+			auto result = value_ptr( private_constructor{} );
+			result.m_value = make_ptr<U>( std::forward<Args>( args )... );
+			return result;
+		}
 
 		value_ptr( value_ptr const &other ) noexcept(
 		  noexcept( make_ptr( *other.m_value ) ) )
@@ -104,6 +120,15 @@ namespace daw {
 			if( tmp ) {
 				delete tmp;
 			}
+		}
+
+		template<typename... Args,
+		         std::enable_if_t<daw::is_callable_v<value_type, Args...>,
+		                          std::nullptr_t> = nullptr>
+		decltype( auto ) operator( )( Args &&... args ) noexcept(
+		  noexcept( m_value->operator( )( std::forward<Args>( args )... ) ) ) {
+
+			return m_value->operator( )( std::forward<Args>( args )... );
 		}
 
 		~value_ptr( ) noexcept( is_nothrow_destructible_v<value_type> ) {
