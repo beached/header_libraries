@@ -64,7 +64,7 @@ namespace daw {
 		  , enable_copy_assignment<T>( impl::non_constructor{} )
 		  , m_value( make_ptr( std::forward<Args>( args )... ) ) {}
 
-		template<typename U = value_type, typename... Args,
+		template<typename U, typename... Args,
 		         std::enable_if_t<
 		           (daw::is_constructible_v<value_type, Args...> &&
 		            !daw::traits::is_type_v<value_ptr, std::decay_t<Args>...>),
