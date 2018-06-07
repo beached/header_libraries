@@ -131,6 +131,7 @@ BOOST_AUTO_TEST_CASE( virtual_inheritance_test ) {
 	auto b = test_t::emplace<virt_B>( );
 
 	BOOST_REQUIRE( a( ) != b( ) );
-	std::cout << "a: " << a( ) << '\n';
-	std::cout << "b: " << b( ) << '\n';
+	std::cout << "a: " << a( ) << ", " << sizeof( virt_A ) << '\n';
+	std::cout << "b: " << b( ) << ", " << sizeof( virt_B ) << '\n';
+
 }

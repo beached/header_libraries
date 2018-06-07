@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <atomic>
 #include <condition_variable>
 #include <cstdint>
 #include <mutex>
@@ -35,12 +36,18 @@ namespace daw {
 		// These are in value_ptr's so that the semaphore can be moved
 		mutable value_ptr<Mutex> m_mutex;
 		value_ptr<ConditionVariable> m_condition;
-		intmax_t m_count;
+		//intmax_t m_count;
+		value_ptr<std::atomic_intmax_t> m_count;
 
 		auto stop_waiting( ) const {
-			return [&]( ) { return m_count <= 0; };
+			return [&]( ) { 
+				return static_cast<intmax_t>(*m_count) <= 0; 
+			};
 		}
 
+		void decrement( ) {
+			--(*m_count);
+		}
 	public:
 		basic_counting_semaphore( )
 		  : m_mutex( )
@@ -51,45 +58,34 @@ namespace daw {
 		explicit basic_counting_semaphore( Int count )
 		  : m_mutex( )
 		  , m_condition( )
-		  , m_count( static_cast<intmax_t>( count ) ) {
-
-			daw::exception::DebugAssert( m_count >= 0, "Count cannot be negative" );
-		}
+		  , m_count( static_cast<intmax_t>( count ) ) { }
 
 		template<typename Int>
 		basic_counting_semaphore( Int count, bool latched )
 		  : m_mutex( )
 		  , m_condition( )
-		  , m_count( static_cast<intmax_t>( count ) ) {
-
-			daw::exception::DebugAssert( m_count >= 0, "Count cannot be negative" );
-		}
+		  , m_count( static_cast<intmax_t>( count ) ) { }
 
 		void reset( ) {
-			auto lock = std::unique_lock<Mutex>( *m_mutex );
+			//auto lock = std::unique_lock<Mutex>( *m_mutex );
 			m_count = 1;
 		}
 
 		template<typename Int>
 		void reset( Int count ) {
-			daw::exception::DebugAssert( m_count >= 0, "Count cannot be negative" );
-			auto lock = std::unique_lock<Mutex>( *m_mutex );
-			m_count = static_cast<intmax_t>( count );
+			//auto lock = std::unique_lock<Mutex>( *m_mutex );
+			*m_count = static_cast<intmax_t>( count );
 		}
 
 		void notify( ) {
-			auto lock = std::unique_lock<Mutex>( *m_mutex );
-			--m_count;
-			daw::exception::DebugAssert( m_count >= 0,
-			                             "Notify called too many times" );
+			//auto lock = std::unique_lock<Mutex>( *m_mutex );
+			decrement( );
 			m_condition->notify_all( );
 		}
 
 		void notify_one( ) {
-			auto lock = std::unique_lock<Mutex>( *m_mutex );
-			--m_count;
-			daw::exception::DebugAssert( m_count >= 0,
-			                             "Notify called too many times" );
+			//auto lock = std::unique_lock<Mutex>( *m_mutex );
+			decrement( );
 			m_condition->notify_one( );
 		}
 
@@ -104,7 +100,7 @@ namespace daw {
 		}
 
 		bool try_wait( ) const {
-			auto lock = std::unique_lock<Mutex>( *m_mutex );
+			//auto lock = std::unique_lock<Mutex>( *m_mutex );
 			return stop_waiting( )( );
 		}
 
