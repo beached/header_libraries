@@ -43,7 +43,6 @@ set( TESTED_HEADERS_PREFIXES
 	daw_clumpy_sparsy
 	daw_common_mixins
 	daw_container_algorithm
-	daw_counting_semaphore
 	daw_cstring
 	daw_exception
 	daw_expected
@@ -56,6 +55,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_heap_array
 	daw_heap_value
 	daw_integer_iterator
+	daw_latch
 	daw_locked_stack
 	daw_locked_value
 	daw_math

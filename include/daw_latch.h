@@ -32,59 +32,58 @@
 
 namespace daw {
 	template<typename Mutex, typename ConditionVariable>
-	class basic_counting_semaphore {
+	class basic_latch {
 		// These are in value_ptr's so that the semaphore can be moved
 		mutable value_ptr<Mutex> m_mutex;
 		value_ptr<ConditionVariable> m_condition;
-		//intmax_t m_count;
+		// intmax_t m_count;
 		value_ptr<std::atomic_intmax_t> m_count;
 
 		auto stop_waiting( ) const {
-			return [&]( ) { 
-				return static_cast<intmax_t>(*m_count) <= 0; 
-			};
+			return [&]( ) { return static_cast<intmax_t>( *m_count ) <= 0; };
 		}
 
 		void decrement( ) {
-			--(*m_count);
+			--( *m_count );
 		}
+
 	public:
-		basic_counting_semaphore( )
+		basic_latch( )
 		  : m_mutex( )
 		  , m_condition( )
 		  , m_count( 1 ) {}
 
 		template<typename Int>
-		explicit basic_counting_semaphore( Int count )
+		explicit basic_latch( Int count )
 		  : m_mutex( )
 		  , m_condition( )
-		  , m_count( static_cast<intmax_t>( count ) ) { }
+		  , m_count( static_cast<intmax_t>( count ) ) {}
 
 		template<typename Int>
-		basic_counting_semaphore( Int count, bool latched )
+		basic_latch( Int count, bool latched )
 		  : m_mutex( )
 		  , m_condition( )
-		  , m_count( static_cast<intmax_t>( count ) ) { }
+		  , m_count( static_cast<intmax_t>( count ) ) {}
 
 		void reset( ) {
-			//auto lock = std::unique_lock<Mutex>( *m_mutex );
+			// auto lock = std::unique_lock<Mutex>( *m_mutex );
 			m_count = 1;
 		}
 
 		template<typename Int>
 		void reset( Int count ) {
-			//auto lock = std::unique_lock<Mutex>( *m_mutex );
+			// auto lock = std::unique_lock<Mutex>( *m_mutex );
 			*m_count = static_cast<intmax_t>( count );
 		}
 
 		void notify( ) {
-			//auto lock = std::unique_lock<Mutex>( *m_mutex );
+			// auto lock = std::unique_lock<Mutex>( *m_mutex );
 			decrement( );
 			m_condition->notify_all( );
 		}
 
 		void notify_one( ) {
-			//auto lock = std::unique_lock<Mutex>( *m_mutex );
+			// auto lock = std::unique_lock<Mutex>( *m_mutex );
 			decrement( );
 			m_condition->notify_one( );
 		}
@@ -100,7 +99,7 @@ namespace daw {
 		}
 
 		bool try_wait( ) const {
-			//auto lock = std::unique_lock<Mutex>( *m_mutex );
+			// auto lock = std::unique_lock<Mutex>( *m_mutex );
 			return stop_waiting( )( );
 		}
 
@@ -116,80 +115,70 @@ namespace daw {
 			auto lock = std::unique_lock<Mutex>( *m_mutex );
 			return m_condition->wait_until( lock, timeout_time, stop_waiting( ) );
 		}
-	}; // basic_counting_semaphore
+	}; // basic_latch
 
-	using counting_semaphore =
-	  basic_counting_semaphore<std::mutex, std::condition_variable>;
+	using latch = basic_latch<std::mutex, std::condition_variable>;
 
 	template<typename Mutex, typename ConditionVariable>
-	class basic_shared_counting_semaphore {
-		std::shared_ptr<basic_counting_semaphore<Mutex, ConditionVariable>>
-		  counting_semaphore;
+	class basic_shared_latch {
+		std::shared_ptr<basic_latch<Mutex, ConditionVariable>> latch;
 
 	public:
-		basic_shared_counting_semaphore( )
-		  : counting_semaphore(
-		      std::make_shared<
-		        basic_counting_semaphore<Mutex, ConditionVariable>>( ) ) {}
+		basic_shared_latch( )
+		  : latch( std::make_shared<basic_latch<Mutex, ConditionVariable>>( ) ) {}
 
 		template<typename Int>
-		explicit basic_shared_counting_semaphore( Int count )
-		  : counting_semaphore(
-		      std::make_shared<basic_counting_semaphore<Mutex, ConditionVariable>>(
-		        count ) ) {}
+		explicit basic_shared_latch( Int count )
+		  : latch(
+		      std::make_shared<basic_latch<Mutex, ConditionVariable>>( count ) ) {}
 
 		template<typename Int>
-		explicit basic_shared_counting_semaphore( Int count, bool latched )
-		  : counting_semaphore(
-		      std::make_shared<basic_counting_semaphore<Mutex, ConditionVariable>>(
-		        count, latched ) ) {}
+		explicit basic_shared_latch( Int count, bool latched )
+		  : latch( std::make_shared<basic_latch<Mutex, ConditionVariable>>(
+		      count, latched ) ) {}
 
-		explicit basic_shared_counting_semaphore(
-		  basic_counting_semaphore<Mutex, ConditionVariable> &&sem )
-		  : counting_semaphore(
-		      std::make_shared<basic_counting_semaphore<Mutex, ConditionVariable>>(
-		        std::move( sem ) ) ) {}
+		explicit basic_shared_latch( basic_latch<Mutex, ConditionVariable> &&sem )
+		  : latch( std::make_shared<basic_latch<Mutex, ConditionVariable>>(
+		      std::move( sem ) ) ) {}
 
 		void notify( ) {
-			counting_semaphore->notify( );
+			latch->notify( );
 		}
 
 		void add_notifier( ) {
-			counting_semaphore->add_notifier( );
+			latch->add_notifier( );
 		}
 
 		void set_latch( ) {
-			counting_semaphore->set_latch( );
+			latch->set_latch( );
 		}
 
 		void wait( ) {
-			counting_semaphore->wait( );
+			latch->wait( );
 		}
 
 		bool try_wait( ) const {
-			return counting_semaphore->try_wait( );
+			return latch->try_wait( );
 		}
 
 		template<typename Rep, typename Period>
 		decltype( auto )
 		wait_for( std::chrono::duration<Rep, Period> const &rel_time ) {
-			return counting_semaphore->wait_for( rel_time );
+			return latch->wait_for( rel_time );
 		}
 
 		template<typename Clock, typename Duration>
 		decltype( auto )
 		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) {
-			return counting_semaphore->wait_until( timeout_time );
+			return latch->wait_until( timeout_time );
 		}
-	}; // basic_shared_counting_semaphore
+	}; // basic_shared_latch
 
-	using shared_counting_semaphore =
-	  basic_shared_counting_semaphore<std::mutex, std::condition_variable>;
+	using shared_latch = basic_shared_latch<std::mutex, std::condition_variable>;
 
 	template<typename Mutex, typename ConditionVariable>
 	void wait_all(
-	  std::initializer_list<basic_counting_semaphore<Mutex, ConditionVariable>>
-	    semaphores ) {
+	  std::initializer_list<basic_latch<Mutex, ConditionVariable>> semaphores ) {
 		for( auto &sem : semaphores ) {
 			sem->wait( );
 		}

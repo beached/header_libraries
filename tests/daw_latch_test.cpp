@@ -25,17 +25,17 @@
 #include <iostream>
 #include <thread>
 
-#include "daw_counting_semaphore.h"
+#include "daw_latch.h"
 
 BOOST_AUTO_TEST_CASE( construction_001 ) {
-	daw::counting_semaphore sem1;
-	auto sem1b = daw::counting_semaphore( );
-	auto sem2 = daw::shared_counting_semaphore( std::move( sem1 ) );
+	daw::latch sem1;
+	auto sem1b = daw::latch( );
+	auto sem2 = daw::shared_latch( std::move( sem1 ) );
 }
 
 BOOST_AUTO_TEST_CASE( barrier_001 ) {
 	constexpr size_t const count = 5;
-	auto sem = daw::shared_counting_semaphore( count );
+	auto sem = daw::shared_latch( count );
 	for( size_t n = 0; n < count; ++n ) {
 		using namespace std::chrono_literals;
 		auto th = std::thread( [sem]( ) mutable {
@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE( barrier_001 ) {
 }
 
 BOOST_AUTO_TEST_CASE( try_wait_001 ) {
-	auto const sem = daw::counting_semaphore( 0 );
+	auto const sem = daw::latch( 0 );
 	BOOST_REQUIRE( sem.try_wait( ) );
 }
 
