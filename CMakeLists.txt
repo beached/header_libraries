@@ -122,6 +122,7 @@ set( DEV_HEADER_FILES
 
 set( UNTESTED_HEADER_FILES
 	boost_test.h
+	daw_condition_variable.h
 	daw_function.h
 	daw_iterator.h
 	daw_string_impl.h

@@ -23,10 +23,9 @@
 #pragma once
 
 #include <atomic>
-#include <condition_variable>
 #include <cstdint>
-#include <mutex>
 
+#include "daw_condition_variable.h"
 #include "daw_exception.h"
 #include "daw_value_ptr.h"
 
@@ -34,9 +33,7 @@ namespace daw {
 	template<typename Mutex, typename ConditionVariable>
 	class basic_latch {
 		// These are in value_ptr's so that the semaphore can be moved
-		mutable value_ptr<Mutex> m_mutex;
-		value_ptr<ConditionVariable> m_condition;
-		// intmax_t m_count;
+		daw::condition_variable m_condition;
 		value_ptr<std::atomic_intmax_t> m_count;
 
 		auto stop_waiting( ) const {
@@ -49,43 +46,36 @@ namespace daw {
 
 	public:
 		basic_latch( )
-		  : m_mutex( )
-		  , m_condition( )
+		  : m_condition( )
 		  , m_count( 1 ) {}
 
 		template<typename Int>
 		explicit basic_latch( Int count )
-		  : m_mutex( )
-		  , m_condition( )
+		  : m_condition( )
 		  , m_count( static_cast<intmax_t>( count ) ) {}
 
 		template<typename Int>
 		basic_latch( Int count, bool latched )
-		  : m_mutex( )
-		  , m_condition( )
+		  : m_condition( )
 		  , m_count( static_cast<intmax_t>( count ) ) {}
 
 		void reset( ) {
-			// auto lock = std::unique_lock<Mutex>( *m_mutex );
 			m_count = 1;
 		}
 
 		template<typename Int>
 		void reset( Int count ) {
-			// auto lock = std::unique_lock<Mutex>( *m_mutex );
 			*m_count = static_cast<intmax_t>( count );
 		}
 
 		void notify( ) {
-			// auto lock = std::unique_lock<Mutex>( *m_mutex );
 			decrement( );
-			m_condition->notify_all( );
+			m_condition.notify_all( );
 		}
 
 		void notify_one( ) {
-			// auto lock = std::unique_lock<Mutex>( *m_mutex );
 			decrement( );
-			m_condition->notify_one( );
+			m_condition.notify_one( );
 		}
 
 		void wait( ) {
@@ -94,26 +84,22 @@ namespace daw {
 					return;
 				}
 			}
-			auto lock = std::unique_lock<Mutex>( *m_mutex );
-			m_condition->wait( lock, stop_waiting( ) );
+			m_condition.wait( stop_waiting( ) );
 		}
 
 		bool try_wait( ) const {
-			// auto lock = std::unique_lock<Mutex>( *m_mutex );
 			return stop_waiting( )( );
 		}
 
 		template<typename Rep, typename Period>
 		auto wait_for( std::chrono::duration<Rep, Period> const &rel_time ) {
-			auto lock = std::unique_lock<Mutex>( *m_mutex );
-			return m_condition->wait_for( lock, rel_time, stop_waiting( ) );
+			return m_condition.wait_for( rel_time, stop_waiting( ) );
 		}
 
 		template<typename Clock, typename Duration>
 		auto
 		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) {
-			auto lock = std::unique_lock<Mutex>( *m_mutex );
-			return m_condition->wait_until( lock, timeout_time, stop_waiting( ) );
+			return m_condition.wait_until( timeout_time, stop_waiting( ) );
 		}
 	}; // basic_latch
 
