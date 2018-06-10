@@ -32,7 +32,7 @@
 namespace daw {
 	template<typename T>
 	class locked_value_t {
-		std::unique_ptr<std::lock_guard<std::mutex>> m_lock;
+		std::unique_lock<std::mutex> m_lock;
 		std::reference_wrapper<T> m_value;
 
 	public:
@@ -49,11 +49,11 @@ namespace daw {
 		locked_value_t &operator=( locked_value_t && ) noexcept = default;
 
 		locked_value_t( std::mutex &m, T &value )
-		  : m_lock( std::make_unique<std::lock_guard<std::mutex>>( m ) )
+		  : m_lock( m )
 		  , m_value( value ) {}
 
 		void release( ) noexcept {
-			m_lock.reset( );
+			m_lock.unlock( );
 		}
 
 		reference get( ) noexcept {
