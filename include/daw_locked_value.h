@@ -83,7 +83,7 @@ namespace daw {
 
 	template<typename T>
 	locked_value_t<T> make_locked_value( std::mutex &m, T &value ) {
-		return locked_value_t<T>{m, value};
+		return locked_value_t<T>( m, value );
 	}
 
 	template<typename T>
