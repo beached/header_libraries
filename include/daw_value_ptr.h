@@ -42,15 +42,16 @@ namespace daw {
 	private:
 		pointer m_value = nullptr;
 
-		template<typename U=value_type, typename... Args>
+		template<typename U = value_type, typename... Args>
 		static pointer make_ptr( Args &&... args ) noexcept(
 		  daw::is_nothrow_constructible_v<value_type, Args...> ) {
 
 			return new U( std::forward<Args>( args )... );
 		}
-		struct private_constructor{};
+		struct private_constructor {};
 
 		constexpr explicit value_ptr( private_constructor ) noexcept {}
+
 	public:
 		template<typename... Args,
 		         std::enable_if_t<

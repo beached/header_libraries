@@ -186,7 +186,7 @@ BOOST_AUTO_TEST_CASE( daw_empty_overload_001 ) {
 	struct A {};
 	bool const can_a = daw::is_callable_v<decltype( ov2 ), A>;
 	BOOST_REQUIRE( !can_a );
-	//auto ov3 = daw::empty_overload<A>( ov2 );
-	//bool const can_a2 = daw::is_callable_v<decltype( ov3 ), A>;
-	//BOOST_REQUIRE( can_a2 );
+	// auto ov3 = daw::empty_overload<A>( ov2 );
+	// bool const can_a2 = daw::is_callable_v<decltype( ov3 ), A>;
+	// BOOST_REQUIRE( can_a2 );
 }

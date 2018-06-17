@@ -29,6 +29,7 @@ set( TESTED_HEADERS_PREFIXES
 	concurrent_queue
 	cpp_17
 	daw_algorithm
+	daw_argument_iterator
 	daw_array
 	daw_array_view
 	daw_benchmark

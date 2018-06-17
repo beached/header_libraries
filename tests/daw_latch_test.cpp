@@ -51,4 +51,3 @@ BOOST_AUTO_TEST_CASE( try_wait_001 ) {
 	auto const sem = daw::latch( 0 );
 	BOOST_REQUIRE( sem.try_wait( ) );
 }
-

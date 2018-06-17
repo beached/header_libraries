@@ -43,10 +43,10 @@ BOOST_AUTO_TEST_CASE( daw_value_ptr_test_01 ) {
 	std::cout << "sizeof( lrg ) -> " << sizeof( lrg ) << '\t';
 	std::cout << "sizeof( daw::value_ptr<lrg> ) -> "
 	          << sizeof( daw::value_ptr<lrg> ) << '\n';
-	auto a = daw::value_ptr<int>();
-	auto b = daw::value_ptr<int>(1);
-	auto c = daw::value_ptr<int>(2);
-	auto d = daw::value_ptr<int>(1);
+	auto a = daw::value_ptr<int>( );
+	auto b = daw::value_ptr<int>( 1 );
+	auto c = daw::value_ptr<int>( 2 );
+	auto d = daw::value_ptr<int>( 1 );
 
 	// a & b
 	auto test_01 = !( a == b );
@@ -86,11 +86,11 @@ BOOST_AUTO_TEST_CASE( daw_value_ptr_test_01 ) {
 	struct A {
 		constexpr A( ) noexcept {}
 		A( A const & ) = delete;
-		A & operator=( A const & ) = delete;
+		A &operator=( A const & ) = delete;
 	};
 	auto e = daw::value_ptr<A>( );
 
-	auto f = std::move(e);
+	auto f = std::move( e );
 
 	auto g = daw::value_ptr<int>( );
 	auto const h = g;
@@ -102,13 +102,15 @@ BOOST_AUTO_TEST_CASE( daw_value_ptr_test_01 ) {
 	auto i = daw::value_ptr<std::mutex>( );
 	i.reset( );
 
-	static_assert( daw::is_regular_v<daw::value_ptr<int>>, "value_ptr<int> isn't regular" );
-	static_assert( !daw::is_regular_v<daw::value_ptr<std::mutex>>, "value_ptr<std::mutex> shouldn't be regular" );
+	static_assert( daw::is_regular_v<daw::value_ptr<int>>,
+	               "value_ptr<int> isn't regular" );
+	static_assert( !daw::is_regular_v<daw::value_ptr<std::mutex>>,
+	               "value_ptr<std::mutex> shouldn't be regular" );
 	daw::value_ptr<std::mutex> blah{};
 }
 
 struct virt_A {
-	virtual ~virt_A( ) noexcept; 
+	virtual ~virt_A( ) noexcept;
 	virtual int operator( )( ) const {
 		return 0;
 	}
@@ -116,7 +118,7 @@ struct virt_A {
 
 virt_A::~virt_A( ) noexcept = default;
 
-struct virt_B: virt_A {
+struct virt_B : virt_A {
 	int operator( )( ) const override {
 		return 1;
 	}
@@ -133,5 +135,4 @@ BOOST_AUTO_TEST_CASE( virtual_inheritance_test ) {
 	BOOST_REQUIRE( a( ) != b( ) );
 	std::cout << "a: " << a( ) << ", " << sizeof( virt_A ) << '\n';
 	std::cout << "b: " << b( ) << ", " << sizeof( virt_B ) << '\n';
-
 }

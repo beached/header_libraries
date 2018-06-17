@@ -702,7 +702,7 @@ namespace daw {
 	//////////////////////////////////////////////////////////////////////////
 	/// Summary: is like a regular type see
 	/// http://www.stepanovpapers.com/DeSt98.pdf
-	/// Now using C++'s defition of Regular 
+	/// Now using C++'s defition of Regular
 	/// http://en.cppreference.com/w/cpp/experimental/ranges/concepts/Regular
 	template<typename T>
 	constexpr bool is_regular_v =
@@ -917,7 +917,8 @@ namespace daw {
 			using detect_is_tuple = decltype( tuple_test( std::declval<Ts>( )... ) );
 		} // namespace impl
 
-		// Tests if type T is the same as the first argument in Args or if args is empty it is false
+		// Tests if type T is the same as the first argument in Args or if args is
+		// empty it is false
 		template<typename T, typename... Args>
 		constexpr bool is_type_v = impl::is_type<T, Args...>::value;
 
@@ -945,11 +946,11 @@ namespace daw {
 	constexpr bool disjunction_v = disjunction<B...>::value;
 
 	namespace impl {
-		struct non_constructor{};
+		struct non_constructor {};
 
 		template<bool>
 		struct delete_default_constructor_if {
-			constexpr delete_default_constructor_if( ) noexcept { }
+			constexpr delete_default_constructor_if( ) noexcept {}
 			constexpr delete_default_constructor_if( non_constructor ) noexcept {}
 		};
 
@@ -975,7 +976,7 @@ namespace daw {
 
 		template<bool>
 		struct delete_copy_constructor_if {
-			constexpr delete_copy_constructor_if( ) noexcept { }
+			constexpr delete_copy_constructor_if( ) noexcept {}
 			constexpr delete_copy_constructor_if( non_constructor ) noexcept {}
 		};
 
@@ -1000,7 +1001,7 @@ namespace daw {
 
 		template<bool>
 		struct delete_copy_assignment_if {
-			constexpr delete_copy_assignment_if( ) noexcept { }
+			constexpr delete_copy_assignment_if( ) noexcept {}
 			constexpr delete_copy_assignment_if( non_constructor ) noexcept {}
 		};
 
