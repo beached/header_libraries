@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -21,30 +21,15 @@
 // SOFTWARE.
 
 #include "boost_test.h"
-#include <chrono>
 #include <iostream>
-#include <thread>
 
-#include "daw_scoped_multilock.h"
+#include "iterator/daw_reverse_iterator.h"
 
-BOOST_AUTO_TEST_CASE( daw_scoped_multilock_001 ) {
-	std::mutex m1;
-	std::mutex m2;
-	bool result1 = false;
-	bool result2 = false;
-	auto lck = daw::make_scoped_multilock( m1, m2 );
-	std::thread th{[&]( ) {
-		result1 = !m1.try_lock( );
-		result2 = !m2.try_lock( );
-		if( !result1 ) {
-			m1.unlock( );
-		}
-		if( !result2 ) {
-			m2.unlock( );
-		}
-	}};
-
-	th.join( );
-	BOOST_REQUIRE_MESSAGE( result1, "m1 wasn't locked" );
-	BOOST_REQUIRE_MESSAGE( result2, "m2 wasn't locked" );
+BOOST_AUTO_TEST_CASE( reverse_iterator_test_001 ) {
+	std::vector<int> a = {1, 2, 3, 4, 5, 6};
+	auto rend = daw::make_reverse_iterator( a.begin( ) );
+	auto rbegin = daw::make_reverse_iterator( a.end( ) );
+	for( ; rbegin != rend; ++rbegin ) {
+		std::cout << ' ' << *rbegin << '\n';
+	}
 }

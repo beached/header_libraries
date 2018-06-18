@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -21,23 +21,30 @@
 // SOFTWARE.
 
 #include "boost_test.h"
-#include <algorithm>
-#include <cstdint>
+#include <chrono>
 #include <iostream>
+#include <thread>
 
-#include "daw_static_array.h"
-#include "daw_zipiter.h"
+#include "parallel/daw_scoped_multilock.h"
 
-constexpr bool test( ) {
-	daw::static_array_t<uint8_t, 10> a{9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
-	daw::static_array_t<uint8_t, 10> b{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+BOOST_AUTO_TEST_CASE( daw_scoped_multilock_001 ) {
+	std::mutex m1;
+	std::mutex m2;
+	bool result1 = false;
+	bool result2 = false;
+	auto lck = daw::make_scoped_multilock( m1, m2 );
+	std::thread th{[&]( ) {
+		result1 = !m1.try_lock( );
+		result2 = !m2.try_lock( );
+		if( !result1 ) {
+			m1.unlock( );
+		}
+		if( !result2 ) {
+			m2.unlock( );
+		}
+	}};
 
-	auto zi = daw::make_zip_iterator( a.begin( ), b.begin( ) );
-	++zi;
-	return *get<0>( zi ) == 8 && *get<1>( zi ) == 2;
-}
-
-BOOST_AUTO_TEST_CASE( test_01 ) {
-	constexpr bool result = test( );
-	BOOST_REQUIRE( result );
+	th.join( );
+	BOOST_REQUIRE_MESSAGE( result1, "m1 wasn't locked" );
+	BOOST_REQUIRE_MESSAGE( result2, "m2 wasn't locked" );
 }

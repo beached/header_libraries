@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -20,14 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include <cstdint>
+#include <cstdlib>
+#include <iostream>
+#include <mutex>
 
-#include "daw_function_iterator.h"
+#include "boost_test.h"
+#include "parallel/daw_spin_lock.h"
 
-namespace daw {
-	template<typename OutputStream>
-	auto make_output_stream_iterator( OutputStream &strm ) {
-		return make_function_iterator( [&strm]( auto &&val ) noexcept(
-		  noexcept( strm << val ) ) { strm << val; } );
-	}
-} // namespace daw
+BOOST_AUTO_TEST_CASE( daw_spin_lock_001 ) {
+	daw::spin_lock sp{};
+	std::lock_guard<daw::spin_lock> mut{sp};
+}

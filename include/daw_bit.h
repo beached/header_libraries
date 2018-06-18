@@ -52,7 +52,12 @@ namespace daw {
 		static_assert( is_integral_v<Integer>, "Only integer types are supported" );
 		static_assert( is_integral_v<MaskBit>, "Only integer types are supported" );
 
-		return ( value & make_mask( mask_bit, mask_bits... ) ) != 0;
+		using common_t = std::common_type_t<Integer, MaskBit, MaskBits...>;
+
+		return ( static_cast<common_t>( value ) &
+		         make_mask( static_cast<common_t>( mask_bit ),
+		                    static_cast<common_t>( mask_bits )... ) ) !=
+		       static_cast<common_t>( 0 );
 	}
 
 	/// @brief set bits at positions specified by b,bs...

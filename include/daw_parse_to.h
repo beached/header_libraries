@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -358,8 +358,9 @@ namespace daw {
 	/// @brief Contructs an object from the arguments specified in the string.
 	/// @tparam Destination The type of object to construct
 	/// @tparam ExpectedArgs The types of values to parse out of the string
+	/// @tparam Splitter Callable splitter that returns the next position of a value
 	/// @param str String containing encoded values
-	/// @param delemiter split what string arguments on
+	/// @param splitter split what string arguments on
 	/// @return A constructed Destination
 	template<typename Destination, typename... ExpectedArgs, typename Splitter,
 	         std::enable_if_t<!is_convertible_v<Splitter, daw::string_view>,
@@ -377,10 +378,8 @@ namespace daw {
 	/// @brief Contructs an object from the arguments specified in the string.
 	/// @tparam Destination The type of object to construct
 	/// @tparam ExpectedArgs The types of values to parse out of the string
-	/// @tparam Splitter Callable splitter that returns the next position of a
-	/// value
 	/// @param str String containing encoded values
-	/// @param splitter Function to split string into arguments
+	/// @param delemiter that str is split on 
 	/// @return A constructed Destination
 	template<typename Destination, typename... ExpectedArgs>
 	constexpr decltype( auto ) construct_from( daw::string_view str,
@@ -519,7 +518,7 @@ namespace daw {
 	/// method
 	/// @tparam Splitter A predicate that will return true on the string parts to
 	/// split on
-	/// @param stream text stream to extract values from
+	/// @param s text stream to extract values from
 	/// @param splitter Function to split string into arguments
 	/// @return A tuple of values of the types specified in Args
 	template<typename... Args, typename Stream, typename Splitter,
@@ -535,7 +534,7 @@ namespace daw {
 	/// @brief Extract specified argument types from a stream of character data
 	/// @tparam Args Types of expected data to find in string
 	/// @tparam Stream Text stream type
-	/// @param stream text stream to extract values from
+	/// @param s text stream to extract values from
 	/// @param delemiter split what string arguments on
 	/// @return A tuple of values of the types specified in Args
 	template<typename... Args, typename Stream>

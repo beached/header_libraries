@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -25,7 +25,7 @@
 #include <iostream>
 
 #include "boost_test.h"
-#include "daw_split_iterator.h"
+#include "iterator/daw_split_iterator.h"
 
 BOOST_AUTO_TEST_CASE( split_it_001 ) {
 	std::string str = "This is a test of the split";

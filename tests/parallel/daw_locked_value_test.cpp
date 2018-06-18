@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -25,7 +25,7 @@
 #include <iostream>
 #include <thread>
 
-#include "daw_locked_value.h"
+#include "parallel/daw_locked_value.h"
 
 struct A {
 	std::mutex m_mutex;

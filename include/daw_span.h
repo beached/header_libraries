@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -31,9 +31,9 @@
 
 #include "daw_algorithm.h"
 #include "daw_fnv1a_hash.h"
-#include "daw_iterator.h"
-#include "daw_reverse_iterator.h"
 #include "daw_utility.h"
+#include "iterator/daw_iterator.h"
+#include "iterator/daw_reverse_iterator.h"
 
 namespace daw {
 	template<typename T>

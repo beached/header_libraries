@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -26,7 +26,7 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "daw_output_stream_iterator.h"
+#include "iterator/daw_output_stream_iterator.h"
 
 int main( int, char ** ) {
 

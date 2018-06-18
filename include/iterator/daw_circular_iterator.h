@@ -24,8 +24,8 @@
 
 #include <iterator>
 
-#include "daw_algorithm.h"
-#include "daw_traits.h"
+#include "../daw_algorithm.h"
+#include "../daw_traits.h"
 
 namespace daw {
 	namespace impl {

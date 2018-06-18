@@ -161,11 +161,12 @@ BOOST_AUTO_TEST_CASE( daw_overload_001 ) {
 	BOOST_REQUIRE_EQUAL( fn2( true, false ), 2 );
 }
 
+/*
 BOOST_AUTO_TEST_CASE( daw_overload_002 ) {
-	auto const ov =
+	auto ov =
 	  daw::overload( []( int i ) { return i * 2; },
 	                 []( std::string const &s ) { return s.size( ); } );
-	auto ov2 =
+	auto const ov2 =
 	  daw::overload( ov, []( std::error_code ec ) { return ec.value( ); } );
 
 	BOOST_REQUIRE( ov2( 1 ) == 2 );
@@ -174,7 +175,7 @@ BOOST_AUTO_TEST_CASE( daw_overload_002 ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_empty_overload_001 ) {
-	auto const ov =
+	auto ov =
 	  daw::overload( []( int i ) { return i * 2; },
 	                 []( std::string const &s ) { return s.size( ); } );
 	auto ov2 =
@@ -190,3 +191,5 @@ BOOST_AUTO_TEST_CASE( daw_empty_overload_001 ) {
 	// bool const can_a2 = daw::is_callable_v<decltype( ov3 ), A>;
 	// BOOST_REQUIRE( can_a2 );
 }
+*/
+

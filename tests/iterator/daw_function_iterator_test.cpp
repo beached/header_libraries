@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -23,12 +23,6 @@
 #include "boost_test.h"
 #include <iostream>
 
-#include "daw_integer_iterator.h"
+#include "iterator/daw_function_iterator.h"
 
-BOOST_AUTO_TEST_CASE( integer_range_01 ) {
-	int sum = 0;
-	for( auto s : daw::integer_range<int>( 5, 10 ) ) {
-		sum += s;
-	}
-	BOOST_REQUIRE_EQUAL( sum, 35 );
-}
+BOOST_AUTO_TEST_CASE( test_01 ) {}

@@ -381,9 +381,8 @@ namespace daw {
 		                                std::forward<Args>( args )... ) ) {}
 
 		template<class Function, typename... Args,
-		         std::enable_if_t<
-		           daw::is_callable_convertible_v<value_type, Function, Args...>,
-		           std::nullptr_t> = nullptr>
+		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
+		                          std::nullptr_t> = nullptr>
 		static expected_t from_code( Function &&func, Args &&... args ) {
 			auto result = expected_t( );
 			result.m_value = variant_from_code( std::forward<Function>( func ),

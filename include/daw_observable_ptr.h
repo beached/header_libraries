@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -149,7 +149,12 @@ namespace daw {
 
 			locked_ptr<T> borrow( ) const {
 				m_is_borrowed.lock( );
-				return locked_ptr<T>{m_ptr, [&]( ) { m_is_borrowed.unlock( ); }};
+				return locked_ptr<T>( m_ptr, [&]( ) { m_is_borrowed.unlock( ); } );
+			}
+
+			locked_ptr<T> borrow( ) {
+				m_is_borrowed.lock( );
+				return locked_ptr<T>( m_ptr, [&]( ) { m_is_borrowed.unlock( ); } );
 			}
 
 			constexpr T *get( ) const noexcept {
@@ -293,30 +298,36 @@ namespace daw {
 			return m_control_block->borrow( );
 		}
 
-		template<typename Callable>
-		decltype( auto ) lock( Callable c ) const
+		template<typename Callable,
+		         std::enable_if_t<daw::is_callable_v<Callable, T const &>,
+		                          std::nullptr_t> = nullptr>
+		decltype( auto ) lock( Callable && c ) const
 		  noexcept( noexcept( c( std::declval<T const &>( ) ) ) ) {
-			using result_t =
-			  std::decay_t<decltype( c( std::declval<T const &>( ) ) )>;
+
 			auto lck_ptr = borrow( );
+			using result_t = std::decay_t<decltype( c( *lck_ptr ) )>;
+
 			if( !lck_ptr ) {
 				return daw::expected_t<result_t>{};
 			}
-			T const &r = *lck_ptr;
-			return daw::expected_t<result_t>::from_code( c, r );
+			return daw::expected_t<result_t>::from_code( std::forward<Callable>( c ),
+			                                             *lck_ptr );
 		}
 
-		template<typename Callable>
+		template<typename Callable,
+		         std::enable_if_t<daw::is_callable_v<Callable, T &>,
+		                          std::nullptr_t> = nullptr>
 		decltype( auto )
-		lock( Callable c ) noexcept( noexcept( c( std::declval<T &>( ) ) ) ) {
-			using result_t = std::decay_t<decltype(
-			  std::declval<Callable>( )( std::declval<T &>( ) ) )>;
+		lock( Callable && c ) noexcept( noexcept( c( std::declval<T &>( ) ) ) ) {
 			auto lck_ptr = borrow( );
+
+			using result_t = std::decay_t<decltype( c( *lck_ptr ) )>;
+
 			if( !lck_ptr ) {
 				return daw::expected_t<result_t>{};
 			}
-			T &r = *lck_ptr;
-			return daw::expected_t<result_t>::from_code( c, r );
+			return daw::expected_t<result_t>::from_code( std::forward<Callable>( c ),
+			                                             *lck_ptr );
 		}
 
 		decltype( auto ) operator-> ( ) const noexcept {

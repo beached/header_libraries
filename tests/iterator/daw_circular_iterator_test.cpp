@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -27,8 +27,8 @@
 #include <vector>
 
 #include "boost_test.h"
-#include "daw_circular_iterator.h"
-#include "daw_traits.h"
+#include "iterator/daw_circular_iterator.h"
+#include "iterator/daw_traits.h"
 
 BOOST_AUTO_TEST_CASE( daw_circular_iterator_001 ) {
 	std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7};

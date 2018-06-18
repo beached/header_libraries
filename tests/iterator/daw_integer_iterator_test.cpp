@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -20,11 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include "boost_test.h"
+#include <iostream>
 
-namespace daw {
-	template<typename Iterator>
-	constexpr std::move_iterator<Iterator> make_move_iterator( Iterator i ) {
-		return std::move_iterator<Iterator>( i );
+#include "iterator/daw_integer_iterator.h"
+
+BOOST_AUTO_TEST_CASE( integer_range_01 ) {
+	int sum = 0;
+	for( auto s : daw::integer_range<int>( 5, 10 ) ) {
+		sum += s;
 	}
-} // namespace daw
+	BOOST_REQUIRE_EQUAL( sum, 35 );
+}

@@ -334,7 +334,7 @@ namespace daw {
 	constexpr bool is_void_v = std::is_void<T>::value;
 
 	template<typename T>
-	constexpr bool is_aggregate_v = std::is_aggregate<T>::value;
+	constexpr bool is_pod_v = std::is_pod<T>::value;
 
 	namespace impl {
 		template<typename Base, typename T, typename Derived, typename... Args>

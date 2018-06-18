@@ -22,10 +22,11 @@
 
 #pragma once
 
-#include "daw_algorithm.h"
 #include <boost/iterator/iterator_facade.hpp>
 #include <cstdint>
 #include <vector>
+
+#include "daw_algorithm.h"
 
 namespace daw {
 	template<typename T>

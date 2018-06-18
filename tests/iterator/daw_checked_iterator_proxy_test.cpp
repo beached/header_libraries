@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2016-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -23,6 +23,31 @@
 #include "boost_test.h"
 #include <iostream>
 
-#include "concurrent_queue.h"
+#include "iterator/daw_checked_iterator_proxy.h"
 
-BOOST_AUTO_TEST_CASE( test_01 ) {}
+BOOST_AUTO_TEST_CASE( daw_checked_iterator_proxy_001 ) {
+	std::vector<int> const test = {0, 1, 2, 3, 4};
+
+	for( auto it = daw::make_checked_iterator_proxy( test.begin( ), test.end( ) );
+	     it != test.end( ); ++it ) {
+		std::cout << *it << '\n';
+	}
+}
+
+BOOST_AUTO_TEST_CASE( daw_checked_iterator_proxy_002 ) {
+	std::vector<int> const test = {0, 1, 2, 3, 4};
+
+	bool result = false;
+	try {
+		for( auto it =
+		       daw::make_checked_iterator_proxy( test.begin( ), test.begin( ) + 2 );
+		     it != test.end( ); ++it ) {
+			std::cout << *it << '\n';
+		}
+	} catch( std::out_of_range const &ex ) {
+		result = true;
+		std::cout << "Expected exception with message: " << ex.what( ) << '\n';
+	}
+	BOOST_REQUIRE_MESSAGE(
+	  result, "Expected an out_of_range exception but didn't get one" );
+}

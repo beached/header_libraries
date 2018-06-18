@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -20,16 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "boost_test.h"
-#include <iostream>
+#pragma once
 
-#include "daw_reverse_iterator.h"
+#include "daw_function_iterator.h"
 
-BOOST_AUTO_TEST_CASE( reverse_iterator_test_001 ) {
-	std::vector<int> a = {1, 2, 3, 4, 5, 6};
-	auto rend = daw::make_reverse_iterator( a.begin( ) );
-	auto rbegin = daw::make_reverse_iterator( a.end( ) );
-	for( ; rbegin != rend; ++rbegin ) {
-		std::cout << ' ' << *rbegin << '\n';
+namespace daw {
+	template<typename OutputStream>
+	auto make_output_stream_iterator( OutputStream &strm ) {
+		return make_function_iterator( [&strm]( auto &&val ) noexcept(
+		  noexcept( strm << val ) ) { strm << val; } );
 	}
-}
+} // namespace daw

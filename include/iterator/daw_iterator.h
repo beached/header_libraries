@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -20,15 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cstdint>
-#include <cstdlib>
-#include <iostream>
-#include <mutex>
+#pragma once
 
-#include "boost_test.h"
-#include "daw_spin_lock.h"
-
-BOOST_AUTO_TEST_CASE( daw_spin_lock_001 ) {
-	daw::spin_lock sp{};
-	std::lock_guard<daw::spin_lock> mut{sp};
-}
+namespace daw {
+	template<typename Iterator>
+	constexpr std::move_iterator<Iterator> make_move_iterator( Iterator i ) {
+		return std::move_iterator<Iterator>( i );
+	}
+} // namespace daw

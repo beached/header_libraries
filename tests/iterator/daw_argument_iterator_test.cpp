@@ -29,7 +29,7 @@
 #include <string_view>
 #include <vector>
 
-#include "daw_argument_iterator.h"
+#include "iterator/daw_argument_iterator.h"
 
 BOOST_AUTO_TEST_CASE( test_end_001 ) {
 	constexpr auto last = daw::arg_iterator_t( );
@@ -37,14 +37,14 @@ BOOST_AUTO_TEST_CASE( test_end_001 ) {
 }
 
 BOOST_AUTO_TEST_CASE( test_range_001 ) {
-	constexpr char const * argv_[] = {"test", "this", "out" };
+	constexpr char const *argv_[] = {"test", "this", "out"};
 	auto const args = daw::arg_iterator_t( 3, argv_ );
 	BOOST_REQUIRE_EQUAL( args.size( ), 3 );
 	BOOST_REQUIRE_EQUAL( args.position( ), 0 );
 }
 
 BOOST_AUTO_TEST_CASE( test_prefix_inc_001 ) {
-	constexpr char const * argv_[] = {"test", "this", "out" };
+	constexpr char const *argv_[] = {"test", "this", "out"};
 	auto args = daw::arg_iterator_t( 3, argv_ );
 	++args;
 	BOOST_REQUIRE_EQUAL( args.size( ), 3 );
@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE( test_prefix_inc_001 ) {
 }
 
 BOOST_AUTO_TEST_CASE( test_postfix_inc_001 ) {
-	constexpr char const * argv_[] = {"test", "this", "out" };
+	constexpr char const *argv_[] = {"test", "this", "out"};
 	auto args = daw::arg_iterator_t( 3, argv_ );
 	auto old_args = args++;
 	BOOST_REQUIRE_EQUAL( args.size( ), 3 );
@@ -67,22 +67,20 @@ BOOST_AUTO_TEST_CASE( test_postfix_inc_001 ) {
 }
 
 BOOST_AUTO_TEST_CASE( test_accumulate_001 ) {
-	constexpr char const * argv_[] = {"test", "this", "out" };
+	constexpr char const *argv_[] = {"test", "this", "out"};
 	auto const args = daw::arg_iterator_t( 3, argv_ );
 
-	auto result =
-	  std::accumulate( args.begin( ), args.end( ), 0, []( int i, auto &&sv ) {
-		  return i + sv[0];
-	  } );
+	auto result = std::accumulate( args.begin( ), args.end( ), 0,
+	                               []( int i, auto &&sv ) { return i + sv[0]; } );
 	BOOST_REQUIRE_EQUAL( result, 't' + 't' + 'o' );
 }
 
 BOOST_AUTO_TEST_CASE( test_index_001 ) {
-	constexpr char const * argv_[] = {"test", "this", "out" };
+	constexpr char const *argv_[] = {"test", "this", "out"};
 	auto args = daw::arg_iterator_t( 3, argv_ );
 
 	int sum = 0;
-	for( int n=0; n<static_cast<int>( args.size( ) ); ++n ) {
+	for( int n = 0; n < static_cast<int>( args.size( ) ); ++n ) {
 		sum += args[n][0];
 	}
 	BOOST_REQUIRE_EQUAL( sum, 't' + 't' + 'o' );

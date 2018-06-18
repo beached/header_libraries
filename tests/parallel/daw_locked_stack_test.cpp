@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -23,6 +23,6 @@
 #include "boost_test.h"
 #include <iostream>
 
-#include "daw_locked_stack.h"
+#include "parallel/daw_locked_stack.h"
 
 BOOST_AUTO_TEST_CASE( test_01 ) {}
