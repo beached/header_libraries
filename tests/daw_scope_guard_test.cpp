@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -35,8 +35,8 @@ struct oe_t {
 	}
 };
 
-BOOST_AUTO_TEST_CASE( test_01 ) {
+BOOST_AUTO_TEST_CASE( scope_guard_001 ) {
 	bool is_run = false;
-	{ auto sg = daw::on_scope_exit( oe_t{&is_run} ); }
+	{ auto sg = daw::on_scope_exit( oe_t( &is_run ) ); }
 	BOOST_REQUIRE_EQUAL( is_run, true );
 }

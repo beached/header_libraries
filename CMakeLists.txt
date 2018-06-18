@@ -50,7 +50,6 @@ set( TESTED_HEADERS_PREFIXES
 	daw_hash_table
 	daw_heap_array
 	daw_heap_value
-	daw_latch
 	daw_math
 	daw_memory_mapped_file
 	daw_natural
@@ -92,6 +91,7 @@ set( TESTED_HEADERS_PREFIXES
 
 set( TESTED_PARALLEL_HEADERS_PREFIXES
 	concurrent_queue
+	daw_latch
 	daw_locked_stack
 	daw_locked_value
 	daw_scoped_multilock
@@ -134,8 +134,8 @@ set( UNTESTED_HEADER_FILES
 	boost_test.h
 	daw_condition_variable.h
 	daw_function.h
-	iterator/daw_iterator.h
 	daw_string_impl.h
+	iterator/daw_iterator.h
 )
 
 enable_testing( )

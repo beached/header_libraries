@@ -301,7 +301,7 @@ namespace daw {
 		template<typename Callable,
 		         std::enable_if_t<daw::is_callable_v<Callable, T const &>,
 		                          std::nullptr_t> = nullptr>
-		decltype( auto ) lock( Callable && c ) const
+		decltype( auto ) lock( Callable &&c ) const
 		  noexcept( noexcept( c( std::declval<T const &>( ) ) ) ) {
 
 			auto lck_ptr = borrow( );
@@ -318,7 +318,7 @@ namespace daw {
 		         std::enable_if_t<daw::is_callable_v<Callable, T &>,
 		                          std::nullptr_t> = nullptr>
 		decltype( auto )
-		lock( Callable && c ) noexcept( noexcept( c( std::declval<T &>( ) ) ) ) {
+		lock( Callable &&c ) noexcept( noexcept( c( std::declval<T &>( ) ) ) ) {
 			auto lck_ptr = borrow( );
 
 			using result_t = std::decay_t<decltype( c( *lck_ptr ) )>;

@@ -22,32 +22,30 @@
 
 #pragma once
 
-#include "daw_traits.h"
 #include <tuple>
 
-namespace daw {
-	template<typename...>
-	struct function_info;
+#include "daw_traits.h"
 
-	template<typename T,
-	         std::enable_if_t<daw::is_callable_v<T>, std::nullptr_t> = nullptr>
-	struct function_info : public function_info<decltype( &T::operator( ) )> {};
+namespace daw {
+	template<typename T>
+		struct function_info : public function_info<decltype( &T::operator( ) )> {};
 	// For generic types, directly use the result of the signature of its
 	// 'operator()'
 
 	template<typename ClassType, typename ReturnType, typename... Args>
-	struct function_info<ReturnType ( ClassType::* )( Args... ) const> {
-		static constexpr size_t const arity = sizeof...( Args );
+		struct function_info<ReturnType ( ClassType::* )( Args... ) const> {
+			static constexpr size_t const arity = sizeof...( Args );
 
-		using result_type = ReturnType;
-		using args_tuple = std::tuple<Args...>;
-		using decayed_args_tuple = std::tuple<std::decay_t<Args>...>;
+			using result_type = ReturnType;
+			using args_tuple = std::tuple<Args...>;
+			using decayed_args_tuple = std::tuple<std::decay_t<Args>...>;
 
-		template<size_t i>
-		struct arg {
-			typedef typename std::tuple_element<i, std::tuple<Args...>>::type type;
-			// the i-th argument is equivalent to the i-th tuple element of a tuple
-			// composed of those arguments.
+			template<size_t i>
+				struct arg {
+					typedef typename std::tuple_element<i, std::tuple<Args...>>::type type;
+					// the i-th argument is equivalent to the i-th tuple element of a tuple
+					// composed of those arguments.
+				};
 		};
-	};
 } // namespace daw
+

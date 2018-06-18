@@ -43,8 +43,6 @@ namespace daw {
 		template<typename... Args>
 		bad_variant_t_access( Args &&... args )
 		  : std::runtime_error{std::forward<Args>( args )...} {}
-
-		~bad_variant_t_access( ) = default;
 	};
 
 	template<typename T>

@@ -25,7 +25,7 @@
 #include <iostream>
 #include <thread>
 
-#include "daw_latch.h"
+#include "parallel/daw_latch.h"
 
 BOOST_AUTO_TEST_CASE( construction_001 ) {
 	daw::latch sem1;

@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2014-2017 Darrell Wright
+// Copyright (c) 2014-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -170,6 +170,7 @@ namespace daw_parse_to_enum_001_ns {
 		}
 	};
 
+	/*
 	BOOST_AUTO_TEST_CASE( daw_parse_to_enum_002 ) {
 
 		constexpr auto result =
@@ -179,6 +180,6 @@ namespace daw_parse_to_enum_001_ns {
 
 		BOOST_REQUIRE_EQUAL( result, 12 );
 	}
-
+	*/
 } // namespace daw_parse_to_enum_001_ns
 

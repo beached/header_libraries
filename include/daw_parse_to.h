@@ -358,7 +358,8 @@ namespace daw {
 	/// @brief Contructs an object from the arguments specified in the string.
 	/// @tparam Destination The type of object to construct
 	/// @tparam ExpectedArgs The types of values to parse out of the string
-	/// @tparam Splitter Callable splitter that returns the next position of a value
+	/// @tparam Splitter Callable splitter that returns the next position of a
+	/// value
 	/// @param str String containing encoded values
 	/// @param splitter split what string arguments on
 	/// @return A constructed Destination
@@ -379,7 +380,7 @@ namespace daw {
 	/// @tparam Destination The type of object to construct
 	/// @tparam ExpectedArgs The types of values to parse out of the string
 	/// @param str String containing encoded values
-	/// @param delemiter that str is split on 
+	/// @param delemiter that str is split on
 	/// @return A constructed Destination
 	template<typename Destination, typename... ExpectedArgs>
 	constexpr decltype( auto ) construct_from( daw::string_view str,
@@ -410,12 +411,10 @@ namespace daw {
 	/// @param splitter Function to split string into arguments
 	/// @return The result of callable
 	template<typename Callable, typename Splitter,
-	         std::enable_if_t<!is_convertible_v<Splitter, daw::string_view>,
+	         std::enable_if_t<is_callable_v<Splitter, daw::string_view>,
 	                          std::nullptr_t> = nullptr>
 	constexpr decltype( auto )
 	apply_string( Callable callable, daw::string_view str, Splitter splitter ) {
-		static_assert( is_callable_v<Splitter, daw::string_view>,
-		               "Splitter is not a callable type" );
 		using ftraits =
 		  typename daw::function_info<decltype( callable )>::decayed_args_tuple;
 		return impl::apply_string_impl( ftraits{}, std::move( callable ),
@@ -458,7 +457,7 @@ namespace daw {
 	/// @param splitter Function to split string into arguments
 	/// @return result of callable
 	template<typename... Args, typename Callable, typename Splitter,
-	         std::enable_if_t<!is_convertible_v<Splitter, daw::string_view>,
+	         std::enable_if_t<is_callable_v<Splitter, daw::string_view>,
 	                          std::nullptr_t> = nullptr>
 	constexpr decltype( auto )
 	apply_string2( Callable callable, daw::string_view str, Splitter splitter ) {
