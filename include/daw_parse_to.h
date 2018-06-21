@@ -39,6 +39,46 @@ namespace daw {
 		struct empty_input_exception : invalid_input_exception {};
 		struct numeric_overflow_exception : invalid_input_exception {};
 
+		template<typename T>
+		class not_default_constructable {
+			struct not_avail {};
+			union value_t {
+				not_avail no_value;
+				T has_value;
+				constexpr value_t( ) noexcept
+				  : no_value{} {}
+				template<typename Arg, typename... Args>
+				constexpr value_t( Arg &&arg, Args &&... args )
+				  : has_value( std::forward<Arg>( arg ),
+				               std::forward<Args>( args )... ) {}
+			} value;
+			bool has_value;
+
+		public:
+			constexpr not_default_constructable( ) noexcept
+			  : value( )
+			  , has_value( false ) {}
+
+			template<typename Arg, typename... Args>
+			constexpr not_default_constructable( Arg &&arg, Args &&... args )
+			  : value( std::forward<Arg>( arg ), std::forward<Args>( args )... )
+			  , has_value( true ) {}
+
+			constexpr operator T &( ) {
+				if( !has_value ) {
+					throw std::exception( );
+				}
+				return value.has_value;
+			}
+
+			constexpr operator T const &( ) const {
+				if( !has_value ) {
+					throw std::exception( );
+				}
+				return value.has_value;
+			}
+		};
+
 		namespace converters {
 			constexpr char parse_to_value( daw::string_view str, char ) {
 				if( str.empty( ) ) {
@@ -276,10 +316,19 @@ namespace daw {
 		using single_whitespace_splitter = basic_whitespace_splitter<false>;
 
 		namespace impl {
-			template<typename T>
+			template<typename T, std::enable_if_t<is_default_constructible_v<T>,
+			                                      std::nullptr_t> = nullptr>
 			constexpr decltype( auto ) parse_result_of_test( ) noexcept {
 				using namespace ::daw::parser::converters;
 				return parse_to_value( daw::string_view( ), T( ) );
+			}
+
+			template<typename T, std::enable_if_t<!is_default_constructible_v<T>,
+			                                      std::nullptr_t> = nullptr>
+			constexpr decltype( auto ) parse_result_of_test( ) noexcept {
+				using namespace ::daw::parser::converters;
+				return parse_to_value( daw::string_view( ),
+				                       daw::parser::not_default_constructable<T>( ) );
 			}
 
 			template<typename T>
@@ -383,7 +432,6 @@ namespace daw {
 		  str, parser::default_splitter{" "} );
 	}
 
-
 	namespace impl {
 		template<typename... Args, typename Callable, typename Splitter>
 		constexpr decltype( auto )
@@ -458,8 +506,8 @@ namespace daw {
 	constexpr decltype( auto ) apply_string2( Callable &&callable,
 	                                          daw::string_view str,
 	                                          Splitter &&splitter ) {
-				static_assert( is_callable_v<Callable, Args...>,
-		                   "Callable must accept Args..." );
+		static_assert( is_callable_v<Callable, Args...>,
+		               "Callable must accept Args..." );
 		return daw::apply(
 		  std::forward<Callable>( callable ),
 		  parser::parse_to<Args...>( str, std::forward<Splitter>( splitter ) ) );
@@ -493,16 +541,15 @@ namespace daw {
 	/// @param callable Function to apply argument to
 	/// @param str String data with string encoded argument
 	/// @return result of callable
-	template<typename Arg, typename Callable,
-	         std::enable_if_t<is_callable_v<Callable, Arg>, std::nullptr_t> =
-	           nullptr>
+	template<
+	  typename Arg, typename Callable,
+	  std::enable_if_t<is_callable_v<Callable, Arg>, std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) apply_string2( Callable &&callable,
 	                                          daw::string_view str ) {
 
 		return apply_string2<Arg>( std::forward<Callable>( callable ), str,
-		                               parser::default_splitter{" "} );
+		                           parser::default_splitter{" "} );
 	}
-
 
 	namespace detectors {
 		template<typename Stream>
