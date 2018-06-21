@@ -40,7 +40,7 @@ namespace daw {
 		struct numeric_overflow_exception : invalid_input_exception {};
 
 		template<typename T>
-		class not_default_constructable {
+		class not_dc {
 			struct not_avail {};
 			union value_t {
 				not_avail no_value;
@@ -55,12 +55,12 @@ namespace daw {
 			bool has_value;
 
 		public:
-			constexpr not_default_constructable( ) noexcept
+			constexpr not_dc( ) noexcept
 			  : value( )
 			  , has_value( false ) {}
 
 			template<typename Arg, typename... Args>
-			constexpr not_default_constructable( Arg &&arg, Args &&... args )
+			constexpr not_dc( Arg &&arg, Args &&... args )
 			  : value( std::forward<Arg>( arg ), std::forward<Args>( args )... )
 			  , has_value( true ) {}
 
@@ -327,8 +327,7 @@ namespace daw {
 			                                      std::nullptr_t> = nullptr>
 			constexpr decltype( auto ) parse_result_of_test( ) noexcept {
 				using namespace ::daw::parser::converters;
-				return parse_to_value( daw::string_view( ),
-				                       daw::parser::not_default_constructable<T>( ) );
+				return parse_to_value( daw::string_view( ), daw::parser::not_dc<T>( ) );
 			}
 
 			template<typename T>

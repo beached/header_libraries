@@ -174,21 +174,19 @@ namespace daw_parse_to_enum_001_ns {
 
 	struct ClassTest {
 		int value = 0;
-		// constexpr ClassTest( ) noexcept = default;
+		constexpr ClassTest( ) noexcept = delete;
 		constexpr ClassTest( int v ) noexcept
 		  : value( v ) {}
 	};
 
-	constexpr daw::parser::not_default_constructable<ClassTest>
-	parse_to_value( daw::string_view str,
-	                daw::parser::not_default_constructable<ClassTest> ) {
+	constexpr daw::parser::not_dc<ClassTest>
+	parse_to_value( daw::string_view str, daw::parser::not_dc<ClassTest> ) {
 		return daw::construct_from<ClassTest, int>( str );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_parse_to_class_001 ) {
 		constexpr auto result =
-		  daw::apply_string2<e_colours,
-		                     daw::parser::not_default_constructable<ClassTest>>(
+		  daw::apply_string2<e_colours, daw::parser::not_dc<ClassTest>>(
 		    []( e_colours a, ClassTest b ) {
 			    return static_cast<int>( a ) + b.value;
 		    },
