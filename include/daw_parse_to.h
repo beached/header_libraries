@@ -180,9 +180,9 @@ namespace daw {
 			         std::enable_if_t<is_enum_v<EnumType>, std::nullptr_t> = nullptr>
 			constexpr decltype( auto )
 			parse_to_value( daw::string_view str, EnumType ) noexcept(
-			  noexcept( get_enum_value( str, std::declval<EnumType>( ) ) ) ) {
+			  noexcept( parse_enum_value( str, std::declval<EnumType>( ) ) ) ) {
 
-				return get_enum_value( str, EnumType{} );
+				return parse_enum_value( str, EnumType{} );
 			}
 		} // namespace converters
 
