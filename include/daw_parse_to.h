@@ -444,8 +444,8 @@ namespace daw {
 	constexpr decltype( auto ) apply_string2( Callable &&callable,
 	                                          daw::string_view str,
 	                                          Splitter &&splitter ) {
-		/*		static_assert( is_callable_v<Callable, Args...>,
-		                   "Callable must accept Args..." );*/
+				static_assert( is_callable_v<Callable, Args...>,
+		                   "Callable must accept Args..." );
 		return daw::apply(
 		  std::forward<Callable>( callable ),
 		  parser::parse_to<Args...>( str, std::forward<Splitter>( splitter ) ) );
