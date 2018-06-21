@@ -366,9 +366,23 @@ namespace daw {
 	template<typename Destination, typename... ExpectedArgs>
 	constexpr decltype( auto ) construct_from( daw::string_view str,
 	                                           daw::string_view delemiter ) {
+
 		return construct_from<Destination, ExpectedArgs...>(
 		  str, parser::default_splitter{delemiter} );
 	}
+
+	/// @brief Contructs an object from the arguments specified in the string
+	/// using a default delemiter of " ".
+	/// @tparam Destination The type of object to construct
+	/// @tparam ExpectedArg The type of value to parse out of the string
+	/// @param str String containing encoded values
+	/// @return A constructed Destination
+	template<typename Destination, typename ExpectedArg>
+	constexpr decltype( auto ) construct_from( daw::string_view str ) {
+		return construct_from<Destination, ExpectedArg>(
+		  str, parser::default_splitter{" "} );
+	}
+
 
 	namespace impl {
 		template<typename... Args, typename Callable, typename Splitter>
@@ -470,6 +484,25 @@ namespace daw {
 		return apply_string2<Args...>( std::forward<Callable>( callable ), str,
 		                               parser::default_splitter{delemiter} );
 	}
+
+	/// @brief Apply the reified string as the types specified as Arg to the
+	/// Callable
+	/// @tparam Arg Type of expected data to find in string
+	/// @tparam Callable Callable function type that will accept the arg in
+	/// string
+	/// @param callable Function to apply argument to
+	/// @param str String data with string encoded argument
+	/// @return result of callable
+	template<typename Arg, typename Callable,
+	         std::enable_if_t<is_callable_v<Callable, Arg>, std::nullptr_t> =
+	           nullptr>
+	constexpr decltype( auto ) apply_string2( Callable &&callable,
+	                                          daw::string_view str ) {
+
+		return apply_string2<Arg>( std::forward<Callable>( callable ), str,
+		                               parser::default_splitter{" "} );
+	}
+
 
 	namespace detectors {
 		template<typename Stream>

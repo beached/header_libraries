@@ -178,13 +178,12 @@ namespace daw_parse_to_enum_001_ns {
 		constexpr ClassTest( int v ) noexcept: value( v ) {}
 	};
 
-	ClassTest parse_to_value( daw::string_view str, ClassTest ) {
-		using ::daw::parser::converters::parse_to_value;
-		return ClassTest( parse_to_value( str, int( ) ) );
+	constexpr ClassTest parse_to_value( daw::string_view str, ClassTest ) {
+		return daw::construct_from<ClassTest, int>( str );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_parse_to_class_001 ) {
-		auto result = daw::apply_string2<e_colours, ClassTest>( []( e_colours a, ClassTest b ) {
+		constexpr auto result = daw::apply_string2<e_colours, ClassTest>( []( e_colours a, ClassTest b ) {
 			return static_cast<int>(a) + b.value;
 		}, "green 54", daw::parser::whitespace_splitter{ } );
 		BOOST_REQUIRE_EQUAL( result, 58 );
