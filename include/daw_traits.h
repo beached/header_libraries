@@ -945,6 +945,14 @@ namespace daw {
 	template<typename... B>
 	constexpr bool disjunction_v = disjunction<B...>::value;
 
+	template<size_t N, typename... Args>
+	struct pack_type {
+		using type = std::decay_t<std::tuple_element_t<N, std::tuple<Args...>>>;
+	};
+
+	template<size_t N, typename... Args>
+	using pack_type_t = typename pack_type<N, Args...>::type;
+
 	namespace impl {
 		struct non_constructor {};
 

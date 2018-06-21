@@ -114,35 +114,25 @@ BOOST_AUTO_TEST_CASE( daw_values_from_stream_001 ) {
 
 enum class e_colours : int { red = 2, green = 4, blue = 8 };
 
-namespace daw {
-	namespace parser {
-		namespace converters {
-			struct invalid_e_colour_exception {};
+struct invalid_e_colour_exception {};
 
-			template<>
-			struct enum_mapper_value<e_colours> {
-				static constexpr e_colours get_enum_value( daw::string_view str ) {
-					daw::exception::daw_throw_on_true(
-					  str.empty( ),
-					  "Attempt to parse an e_colour from an empty string_view" );
-					switch( str.front( ) ) {
-					case 'r':
-					case 'R':
-						return e_colours::red;
-					case 'g':
-					case 'G':
-						return e_colours::green;
-					case 'b':
-					case 'B':
-						return e_colours::blue;
-					default:
-						throw invalid_e_colour_exception{};
-					}
-				}
-			};
-		} // namespace converters
-	}   // namespace parser
-} // namespace daw
+constexpr e_colours get_enum_value( daw::string_view str, e_colours ) {
+	daw::exception::daw_throw_on_true(
+	  str.empty( ), "Attempt to parse an e_colour from an empty string_view" );
+	switch( str.front( ) ) {
+	case 'r':
+	case 'R':
+		return e_colours::red;
+	case 'g':
+	case 'G':
+		return e_colours::green;
+	case 'b':
+	case 'B':
+		return e_colours::blue;
+	default:
+		throw invalid_e_colour_exception{};
+	}
+}
 
 namespace daw_parse_to_enum_001_ns {
 
@@ -155,12 +145,10 @@ namespace daw_parse_to_enum_001_ns {
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_parse_to_enum_001 ) {
-
-		auto result =
-		  daw::apply_string2<daw::parser::converters::enum_mapper_value<e_colours>,
-		                     daw::parser::converters::enum_mapper_value<e_colours>>(
-		    []( e_colours a, e_colours b ) { return sum_colours( a, b ); },
-		    "green blue", daw::parser::whitespace_splitter{} );
+		using namespace daw::parser::converters;
+		auto result = daw::apply_string2<e_colours, e_colours>(
+		  []( e_colours a, e_colours b ) { return sum_colours( a, b ); },
+		  "green blue", daw::parser::whitespace_splitter{} );
 		BOOST_REQUIRE_EQUAL( result, 12 );
 	}
 
@@ -170,16 +158,11 @@ namespace daw_parse_to_enum_001_ns {
 		}
 	};
 
-	/*
 	BOOST_AUTO_TEST_CASE( daw_parse_to_enum_002 ) {
 
-		constexpr auto result =
-		  daw::apply_string2<daw::parser::converters::enum_mapper_value<e_colours>,
-		                     daw::parser::converters::enum_mapper_value<e_colours>>(
-		    daw_parse_to_enum_001_ns::callable_t( ), "green blue", " " );
+		constexpr auto result = daw::apply_string2<e_colours, e_colours>(
+		  callable_t( ), "green blue", " " );
 
 		BOOST_REQUIRE_EQUAL( result, 12 );
 	}
-	*/
 } // namespace daw_parse_to_enum_001_ns
-

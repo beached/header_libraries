@@ -86,8 +86,8 @@ namespace daw {
 			} // namespace helpers
 
 			template<typename T,
-			         std::enable_if_t<!is_same_v<T, char> && is_integral_v<T> &&
-			                            is_signed_v<T>,
+			         std::enable_if_t<(!is_same_v<T, char> && is_integral_v<T> &&
+			                           is_signed_v<T> && !is_enum_v<T>),
 			                          std::nullptr_t> = nullptr>
 			constexpr T parse_to_value( daw::string_view str, T ) {
 				if( str.empty( ) ) {
@@ -176,17 +176,13 @@ namespace daw {
 				return strtold( s.c_str( ), end );
 			}
 
-			template<typename EnumType>
-			struct enum_mapper_value {};
+			template<typename EnumType,
+			         std::enable_if_t<is_enum_v<EnumType>, std::nullptr_t> = nullptr>
+			constexpr decltype( auto )
+			parse_to_value( daw::string_view str, EnumType ) noexcept(
+			  noexcept( get_enum_value( str, std::declval<EnumType>( ) ) ) ) {
 
-			template<typename EnumType>
-			constexpr auto parse_to_value(
-			  daw::string_view str,
-			  enum_mapper_value<
-			    EnumType> ) noexcept( noexcept( enum_mapper_value<EnumType>::
-			                                      get_enum_value( str ) ) ) {
-
-				return enum_mapper_value<EnumType>::get_enum_value( str );
+				return get_enum_value( str, EnumType{} );
 			}
 		} // namespace converters
 
@@ -195,53 +191,43 @@ namespace daw {
 			         std::enable_if_t<( N == 0 ), std::nullptr_t> = nullptr,
 			         typename Tuple, typename Splitter>
 			constexpr void set_value_from_string_view( Tuple &, daw::string_view,
-			                                           Splitter ) {}
+			                                           Splitter && ) {}
 
-			template<size_t N, typename... Args,
-			         std::enable_if_t<( N > 0 ), std::nullptr_t> = nullptr,
-			         typename Tuple, typename Splitter>
+			template<size_t N, typename... Args, typename Tuple, typename Splitter,
+			         std::enable_if_t<( N > 0 && N <= sizeof...( Args ) ),
+			                          std::nullptr_t> = nullptr>
 			constexpr void set_value_from_string_view( Tuple &tp,
 			                                           daw::string_view str,
-			                                           Splitter splitter ) {
-				static_assert( N <= sizeof...( Args ), "Invalud value of N" );
+			                                           Splitter &&splitter ) {
+
 				auto const end_pos = splitter( str );
 				if( N > 1 && end_pos.first == str.npos ) {
-					throw invalid_input_exception{};
+					throw invalid_input_exception( );
 				}
 				using namespace ::daw::parser::converters;
-				using pos_t = std::integral_constant<size_t, sizeof...( Args ) - N>;
-				using value_t = std::decay_t<decltype(
-				  std::get<pos_t::value>( std::declval<std::tuple<Args...>>( ) ) )>;
 
-				std::get<pos_t::value>( tp ) =
+				constexpr auto const pos_v = sizeof...( Args ) - N;
+
+				using value_t = daw::pack_type_t<pos_v, Args...>;
+
+				std::get<pos_v>( tp ) =
 				  parse_to_value( str.substr( 0, end_pos.first ), value_t{} );
 
 				str.remove_prefix( end_pos.last );
 				daw::parser::impl::set_value_from_string_view<N - 1, Args...>(
-				  tp, std::move( str ), std::move( splitter ) );
+				  tp, str, std::forward<Splitter>( splitter ) );
 			}
 		} // namespace impl
 
 		/// @brief Split on supplied delemiter string.
-		class default_splitter {
+		struct default_splitter {
 			daw::string_view m_delemiter;
 
-		public:
-			constexpr default_splitter( daw::string_view delemiter )
-			  : m_delemiter{std::move( delemiter )} {}
-			constexpr default_splitter( ) noexcept = delete;
-			~default_splitter( ) noexcept = default;
-			constexpr default_splitter( default_splitter const & ) noexcept = default;
-			constexpr default_splitter( default_splitter && ) noexcept = default;
-			constexpr default_splitter &
-			operator=( default_splitter const & ) noexcept = default;
-			constexpr default_splitter &
-			operator=( default_splitter && ) noexcept = default;
-
 			constexpr auto operator( )( daw::string_view str ) const noexcept {
+				using sv_size_t = typename daw::string_view::size_type;
 				struct result_t {
-					typename daw::string_view::size_type first;
-					typename daw::string_view::size_type last;
+					sv_size_t first;
+					sv_size_t last;
 				};
 				auto const pos = str.find( m_delemiter );
 				if( pos < str.size( ) ) {
@@ -257,12 +243,15 @@ namespace daw {
 		template<bool skip_multiple>
 		struct basic_whitespace_splitter {
 			constexpr auto operator( )( daw::string_view str ) const {
+				using sv_size_t = typename daw::string_view::size_type;
 				struct result_t {
-					typename daw::string_view::size_type first;
-					typename daw::string_view::size_type last;
+					sv_size_t first;
+					sv_size_t last;
 				};
-				typename daw::string_view::size_type n = 0;
+
+				sv_size_t n = 0;
 				size_t const sz = str.size( );
+
 				while( n < sz && not_unicode_whitespace( str[n] ) ) {
 					++n;
 				}
@@ -288,18 +277,14 @@ namespace daw {
 
 		namespace impl {
 			template<typename T>
-			class parse_result_of {
-				static constexpr auto get_type( ) noexcept {
-					using namespace ::daw::parser::converters;
-					return parse_to_value( daw::string_view{}, T{} );
-				}
-
-			public:
-				using type = std::decay_t<decltype( get_type( ) )>;
-			};
+			constexpr decltype( auto ) parse_result_of_test( ) noexcept {
+				using namespace ::daw::parser::converters;
+				return parse_to_value( daw::string_view( ), T( ) );
+			}
 
 			template<typename T>
-			using parse_result_of_t = typename parse_result_of<T>::type;
+			using parse_result_of_t =
+			  std::decay_t<decltype( parse_result_of_test<T>( ) )>;
 		} // namespace impl
 
 		/// @brief Attempts to parse a string to the values types specified
@@ -310,15 +295,14 @@ namespace daw {
 		/// @param splitter Function to split string into arguments
 		/// @return A tuple of values of the types specified in Args
 		template<typename... Args, typename Splitter,
-		         std::enable_if_t<!is_convertible_v<Splitter, daw::string_view>,
+		         std::enable_if_t<is_callable_v<Splitter, daw::string_view>,
 		                          std::nullptr_t> = nullptr>
 		constexpr decltype( auto ) parse_to( daw::string_view str,
-		                                     Splitter splitter ) {
-			static_assert( is_callable_v<Splitter, daw::string_view>,
-			               "Splitter is not a callable type" );
-			std::tuple<impl::parse_result_of_t<Args>...> result{};
+		                                     Splitter &&splitter ) {
+
+			auto result = std::tuple<impl::parse_result_of_t<Args>...>( );
 			impl::set_value_from_string_view<sizeof...( Args ), Args...>(
-			  result, std::move( str ), std::move( splitter ) );
+			  result, str, std::forward<Splitter>( splitter ) );
 			return result;
 		}
 
@@ -330,8 +314,7 @@ namespace daw {
 		template<typename... Args>
 		constexpr decltype( auto ) parse_to( daw::string_view str,
 		                                     daw::string_view delemiter ) {
-			return parse_to<Args...>( std::move( str ),
-			                          default_splitter{std::move( delemiter )} );
+			return parse_to<Args...>( str, default_splitter{delemiter} );
 		}
 
 		/// @brief Attempts to parse a string to the values types specified in args
@@ -341,7 +324,7 @@ namespace daw {
 		/// @return A tuple of values of the types specified in Args
 		template<typename... Args>
 		constexpr decltype( auto ) parse_to( daw::string_view str ) {
-			return parse_to<Args...>( std::move( str ), daw::string_view{" "} );
+			return parse_to<Args...>( str, daw::string_view( " " ) );
 		}
 	} // namespace parser
 
@@ -364,16 +347,14 @@ namespace daw {
 	/// @param splitter split what string arguments on
 	/// @return A constructed Destination
 	template<typename Destination, typename... ExpectedArgs, typename Splitter,
-	         std::enable_if_t<!is_convertible_v<Splitter, daw::string_view>,
+	         std::enable_if_t<is_callable_v<Splitter, daw::string_view>,
 	                          std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) construct_from( daw::string_view str,
-	                                           Splitter splitter ) {
-		static_assert( is_callable_v<Splitter, daw::string_view>,
-		               "Splitter is not a callable type" );
+	                                           Splitter &&splitter ) {
 
 		return daw::apply( impl::make_a<Destination>{},
 		                   parser::parse_to<ExpectedArgs...>(
-		                     std::move( str ), std::move( splitter ) ) );
+		                     str, std::forward<Splitter>( splitter ) ) );
 	}
 
 	/// @brief Contructs an object from the arguments specified in the string.
@@ -386,17 +367,17 @@ namespace daw {
 	constexpr decltype( auto ) construct_from( daw::string_view str,
 	                                           daw::string_view delemiter ) {
 		return construct_from<Destination, ExpectedArgs...>(
-		  std::move( str ), parser::default_splitter{std::move( delemiter )} );
+		  str, parser::default_splitter{delemiter} );
 	}
 
 	namespace impl {
 		template<typename... Args, typename Callable, typename Splitter>
 		constexpr decltype( auto )
-		apply_string_impl( std::tuple<Args...>, Callable callable,
-		                   daw::string_view str, Splitter splitter ) {
+		apply_string_impl( std::tuple<Args...>, Callable &&callable,
+		                   daw::string_view str, Splitter &&splitter ) {
 			return daw::apply(
-			  std::move( callable ),
-			  parser::parse_to<Args...>( std::move( str ), std::move( splitter ) ) );
+			  std::forward<Callable>( callable ),
+			  parser::parse_to<Args...>( str, std::forward<Splitter>( splitter ) ) );
 		}
 	} // namespace impl
 
@@ -413,12 +394,14 @@ namespace daw {
 	template<typename Callable, typename Splitter,
 	         std::enable_if_t<is_callable_v<Splitter, daw::string_view>,
 	                          std::nullptr_t> = nullptr>
-	constexpr decltype( auto )
-	apply_string( Callable callable, daw::string_view str, Splitter splitter ) {
+	constexpr decltype( auto ) apply_string( Callable &&callable,
+	                                         daw::string_view str,
+	                                         Splitter &&splitter ) {
 		using ftraits =
-		  typename daw::function_info<decltype( callable )>::decayed_args_tuple;
-		return impl::apply_string_impl( ftraits{}, std::move( callable ),
-		                                std::move( str ), std::move( splitter ) );
+		  typename daw::function_info<std::decay_t<Callable>>::decayed_args_tuple;
+		return impl::apply_string_impl( ftraits{},
+		                                std::forward<Callable>( callable ), str,
+		                                std::forward<Splitter>( splitter ) );
 	}
 
 	/// @brief Apply the reified string as the types deducted from the Callable to
@@ -430,12 +413,11 @@ namespace daw {
 	/// @param delemiter split what string arguments on
 	/// @return The result of callable
 	template<typename Callable>
-	constexpr decltype( auto ) apply_string( Callable callable,
+	constexpr decltype( auto ) apply_string( Callable &&callable,
 	                                         daw::string_view str,
 	                                         daw::string_view delemiter ) {
-		return apply_string<Callable>(
-		  std::move( callable ), std::move( str ),
-		  parser::default_splitter{std::move( delemiter )} );
+		return apply_string<Callable>( std::forward<Callable>( callable ), str,
+		                               parser::default_splitter{delemiter} );
 	}
 	namespace impl {
 		template<size_t CallableArgsArity, size_t ParsedArgsArity>
@@ -459,14 +441,14 @@ namespace daw {
 	template<typename... Args, typename Callable, typename Splitter,
 	         std::enable_if_t<is_callable_v<Splitter, daw::string_view>,
 	                          std::nullptr_t> = nullptr>
-	constexpr decltype( auto )
-	apply_string2( Callable callable, daw::string_view str, Splitter splitter ) {
-		static_cast<void>(
-		  impl::ArityCheckEqual<daw::function_info<Callable>::arity,
-		                        sizeof...( Args )>{} );
+	constexpr decltype( auto ) apply_string2( Callable &&callable,
+	                                          daw::string_view str,
+	                                          Splitter &&splitter ) {
+		/*		static_assert( is_callable_v<Callable, Args...>,
+		                   "Callable must accept Args..." );*/
 		return daw::apply(
-		  std::move( callable ),
-		  parser::parse_to<Args...>( std::move( str ), std::move( splitter ) ) );
+		  std::forward<Callable>( callable ),
+		  parser::parse_to<Args...>( str, std::forward<Splitter>( splitter ) ) );
 	}
 
 	/// @brief Apply the reified string as the types specified as Args... to the
@@ -478,18 +460,20 @@ namespace daw {
 	/// @param str String data with string encoded arguments
 	/// @param delemiter split what string arguments on
 	/// @return result of callable
-	template<typename... Args, typename Callable>
-	constexpr decltype( auto ) apply_string2( Callable callable,
+	template<typename... Args, typename Callable,
+	         std::enable_if_t<is_callable_v<Callable, Args...>, std::nullptr_t> =
+	           nullptr>
+	constexpr decltype( auto ) apply_string2( Callable &&callable,
 	                                          daw::string_view str,
 	                                          daw::string_view delemiter ) {
-		return apply_string2<Args...>(
-		  std::move( callable ), std::move( str ),
-		  parser::default_splitter{std::move( delemiter )} );
+
+		return apply_string2<Args...>( std::forward<Callable>( callable ), str,
+		                               parser::default_splitter{delemiter} );
 	}
 
 	namespace detectors {
 		template<typename Stream>
-		using has_str = decltype( Stream{}.str( ) );
+		using has_str = decltype( Stream( ).str( ) );
 	}
 
 	/// @brief Extract specified argument types from a stream of character data
@@ -502,13 +486,13 @@ namespace daw {
 	/// @return A tuple of values of the types specified in Args
 	template<typename... Args, typename Stream, typename Splitter,
 	         std::enable_if_t<(!is_detected_v<detectors::has_str, Stream> &&
-	                           !is_convertible_v<Splitter, daw::string_view>),
+	                           is_callable_v<Splitter, daw::string_view>),
 	                          std::nullptr_t> = nullptr>
-	decltype( auto ) values_from_stream( Stream &&stream, Splitter splitter ) {
+	decltype( auto ) values_from_stream( Stream &&stream, Splitter &&splitter ) {
 
-		std::string const str{std::istreambuf_iterator<char>{stream}, {}};
-		return parser::parse_to<Args...>( daw::string_view{str},
-		                                  std::move( splitter ) );
+		auto const str = std::string( std::istreambuf_iterator<char>{stream}, {} );
+		return parser::parse_to<Args...>( daw::string_view( str ),
+		                                  std::forward<Splitter>( splitter ) );
 	}
 
 	/// @brief Extract specified argument types from a stream of character data
@@ -522,12 +506,12 @@ namespace daw {
 	/// @return A tuple of values of the types specified in Args
 	template<typename... Args, typename Stream, typename Splitter,
 	         std::enable_if_t<(is_detected_v<detectors::has_str, Stream> &&
-	                           !is_convertible_v<Splitter, daw::string_view>),
+	                           is_callable_v<Splitter, daw::string_view>),
 	                          std::nullptr_t> = nullptr>
-	decltype( auto ) values_from_stream( Stream &&s, Splitter splitter ) {
+	decltype( auto ) values_from_stream( Stream &&s, Splitter &&splitter ) {
 
-		return parser::parse_to<Args...>( daw::string_view{s.str( )},
-		                                  std::move( splitter ) );
+		return parser::parse_to<Args...>( daw::string_view( s.str( ) ),
+		                                  std::forward<Splitter>( splitter ) );
 	}
 
 	/// @brief Extract specified argument types from a stream of character data
@@ -539,8 +523,7 @@ namespace daw {
 	template<typename... Args, typename Stream>
 	decltype( auto ) values_from_stream( Stream &&s,
 	                                     daw::string_view delemiter ) {
-		return values_from_stream<Args...>(
-		  std::forward<Stream>( s ),
-		  parser::default_splitter{std::move( delemiter )} );
+		return values_from_stream<Args...>( std::forward<Stream>( s ),
+		                                    parser::default_splitter{delemiter} );
 	}
 } // namespace daw

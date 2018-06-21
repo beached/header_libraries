@@ -1201,18 +1201,18 @@ namespace daw {
 		/// @brief constexpr version of std::swap
 		/// @tparam T first type to swap
 		/// @tparam U second type to swap
-		/// @param t first value to swap
-		/// @param u second value to swap
+		/// @param lhs first value to swap
+		/// @param rhs second value to swap
 		template<
 		  typename T, typename U,
-		  std::enable_if_t<is_convertible_v<T, U> && is_convertible_v<U, T> &&
-		                     is_nothrow_move_assignable_v<T> &&
-		                     is_nothrow_move_assignable_v<U>,
+		  std::enable_if_t<(is_convertible_v<T, U> && is_convertible_v<U, T>),
 		                   std::nullptr_t> = nullptr>
-		constexpr void swapper( T &t, U &u ) noexcept {
-			T tmp = std::move( t );
-			t = std::move( u );
-			u = std::move( tmp );
+		constexpr void swapper( T &lhs, U &rhs ) noexcept(
+		  is_nothrow_move_assignable_v<T> &&is_nothrow_move_assignable_v<U> ) {
+
+			T tmp = std::move( lhs );
+			lhs = std::move( rhs );
+			rhs = std::move( tmp );
 		}
 
 		/// @brief Performs a left rotation on a range of elements.
