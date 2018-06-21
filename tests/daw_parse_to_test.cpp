@@ -165,4 +165,12 @@ namespace daw_parse_to_enum_001_ns {
 
 		BOOST_REQUIRE_EQUAL( result, 12 );
 	}
+
+	BOOST_AUTO_TEST_CASE( daw_parse_to_enum_003 ) {
+		using namespace daw::parser::converters;
+		auto result = daw::apply_string2<e_colours, e_colours, int>(
+		  []( e_colours a, e_colours b, int c ) { return sum_colours( a, b ) + c; },
+		  "green blue 534", daw::parser::whitespace_splitter{} );
+		BOOST_REQUIRE_EQUAL( result, 546 );
+	}
 } // namespace daw_parse_to_enum_001_ns
