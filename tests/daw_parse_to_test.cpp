@@ -145,7 +145,6 @@ namespace daw_parse_to_enum_001_ns {
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_parse_to_enum_001 ) {
-		using namespace daw::parser::converters;
 		auto result = daw::apply_string2<e_colours, e_colours>(
 		  []( e_colours a, e_colours b ) { return sum_colours( a, b ); },
 		  "green blue", daw::parser::whitespace_splitter{} );
@@ -167,10 +166,27 @@ namespace daw_parse_to_enum_001_ns {
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_parse_to_enum_003 ) {
-		using namespace daw::parser::converters;
 		auto result = daw::apply_string2<e_colours, e_colours, int>(
 		  []( e_colours a, e_colours b, int c ) { return sum_colours( a, b ) + c; },
 		  "green blue 534", daw::parser::whitespace_splitter{} );
 		BOOST_REQUIRE_EQUAL( result, 546 );
+	}
+
+	struct ClassTest {
+		int value = 0;
+		constexpr ClassTest( ) noexcept = default;
+		constexpr ClassTest( int v ) noexcept: value( v ) {}
+	};
+
+	ClassTest parse_to_value( daw::string_view str, ClassTest ) {
+		using ::daw::parser::converters::parse_to_value;
+		return ClassTest( parse_to_value( str, int( ) ) );
+	}
+
+	BOOST_AUTO_TEST_CASE( daw_parse_to_class_001 ) {
+		auto result = daw::apply_string2<e_colours, ClassTest>( []( e_colours a, ClassTest b ) {
+			return static_cast<int>(a) + b.value;
+		}, "green 54", daw::parser::whitespace_splitter{ } );
+		BOOST_REQUIRE_EQUAL( result, 58 );
 	}
 } // namespace daw_parse_to_enum_001_ns
