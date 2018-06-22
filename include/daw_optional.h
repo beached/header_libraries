@@ -95,8 +95,8 @@ namespace daw {
 			value_storage( ) noexcept = default;
 
 			value_storage( default_construct )
-			  : m_data(0)
-			  , m_occupied(true) {
+			  : m_data( 0 )
+			  , m_occupied( true ) {
 				store( value_type( ) );
 			}
 
@@ -107,17 +107,17 @@ namespace daw {
 
 			value_storage( value_type value )
 			  : m_data{0}
-			  , m_occupied(true) {
+			  , m_occupied( true ) {
 				store( std::move( value ) );
 			}
 
 			value_storage( value_storage const &other ) noexcept
-			  : m_data(other.m_data)
-			  , m_occupied(other.m_occupied) {}
+			  : m_data( other.m_data )
+			  , m_occupied( other.m_occupied ) {}
 
 			value_storage( value_storage &&other ) noexcept
-			  : m_data(std::move( other.m_data ))
-			  , m_occupied(std::exchange( other.m_occupied, false )) {}
+			  : m_data( std::move( other.m_data ) )
+			  , m_occupied( std::exchange( other.m_occupied, false ) ) {}
 
 			void swap( value_storage &rhs ) noexcept {
 				using std::swap;

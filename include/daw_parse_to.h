@@ -220,7 +220,7 @@ namespace daw {
 				if( pos < str.size( ) ) {
 					return result_t{pos, pos + m_delemiter.size( )};
 				}
-				return result_t{str.npos, str.npos};
+				return result_t{daw::string_view::npos, daw::string_view::npos};
 			}
 		};
 
@@ -243,7 +243,7 @@ namespace daw {
 					++n;
 				}
 				if( n == sz ) {
-					return result_t{str.npos, str.npos};
+					return result_t{daw::string_view::npos, daw::string_view::npos};
 				}
 				if( !skip_multiple ) {
 					return result_t{n, n + 1};
@@ -405,8 +405,8 @@ namespace daw {
 	         std::enable_if_t<is_callable_v<Splitter, daw::string_view>,
 	                          std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) apply_string2( Callable &&callable,
-	                                         daw::string_view str,
-	                                         Splitter &&splitter ) {
+	                                          daw::string_view str,
+	                                          Splitter &&splitter ) {
 		using ftraits =
 		  typename daw::function_info<std::decay_t<Callable>>::decayed_args_tuple;
 		return impl::apply_string_impl( ftraits{},
@@ -424,18 +424,11 @@ namespace daw {
 	/// @return The result of callable
 	template<typename Callable>
 	constexpr decltype( auto ) apply_string2( Callable &&callable,
-	                                         daw::string_view str,
-	                                         daw::string_view delemiter ) {
+	                                          daw::string_view str,
+	                                          daw::string_view delemiter ) {
 		return apply_string2<Callable>( std::forward<Callable>( callable ), str,
-		                               parser::default_splitter{delemiter} );
+		                                parser::default_splitter{delemiter} );
 	}
-	namespace impl {
-		template<size_t CallableArgsArity, size_t ParsedArgsArity>
-		class ArityCheckEqual {
-			static_assert( CallableArgsArity == ParsedArgsArity,
-			               "Callable args arity does not match number of arguments" );
-		};
-	} // namespace impl
 
 	/// @brief Apply the reified string as the types specified as Args... to the
 	/// Callable
@@ -452,8 +445,8 @@ namespace daw {
 	         std::enable_if_t<is_callable_v<Splitter, daw::string_view>,
 	                          std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) apply_string( Callable &&callable,
-	                                          daw::string_view str,
-	                                          Splitter &&splitter ) {
+	                                         daw::string_view str,
+	                                         Splitter &&splitter ) {
 		static_assert( is_callable_v<Callable, Args...>,
 		               "Callable must accept Args..." );
 		return daw::apply(
@@ -474,11 +467,11 @@ namespace daw {
 	         std::enable_if_t<is_callable_v<Callable, Args...>, std::nullptr_t> =
 	           nullptr>
 	constexpr decltype( auto ) apply_string( Callable &&callable,
-	                                          daw::string_view str,
-	                                          daw::string_view delemiter ) {
+	                                         daw::string_view str,
+	                                         daw::string_view delemiter ) {
 
 		return apply_string<Args...>( std::forward<Callable>( callable ), str,
-		                               parser::default_splitter{delemiter} );
+		                              parser::default_splitter{delemiter} );
 	}
 
 	/// @brief Apply the reified string as the types specified as Arg to the
@@ -493,10 +486,10 @@ namespace daw {
 	  typename Arg, typename Callable,
 	  std::enable_if_t<is_callable_v<Callable, Arg>, std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) apply_string( Callable &&callable,
-	                                          daw::string_view str ) {
+	                                         daw::string_view str ) {
 
 		return apply_string<Arg>( std::forward<Callable>( callable ), str,
-		                           parser::default_splitter{" "} );
+		                          parser::default_splitter{" "} );
 	}
 
 	namespace detectors {
