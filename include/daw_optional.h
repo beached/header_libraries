@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016-2017 Darrell Wright
+// Copyright (c) 2016-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -43,8 +43,8 @@ namespace daw {
 			using const_reference = value_type const &;
 
 		private:
-			std::array<uint8_t, sizeof( T )> m_data;
-			bool m_occupied;
+			std::array<uint8_t, sizeof( T )> m_data = {0};
+			bool m_occupied = false;
 
 			void *raw_ptr( ) noexcept {
 				return static_cast<void *>( m_data.data( ) );
@@ -92,14 +92,12 @@ namespace daw {
 		public:
 			struct default_construct {};
 
-			value_storage( )
-			  : m_data{0}
-			  , m_occupied{false} {}
+			value_storage( ) noexcept = default;
 
 			value_storage( default_construct )
-			  : m_data{0}
-			  , m_occupied{true} {
-				store( value_type{} );
+			  : m_data(0)
+			  , m_occupied(true) {
+				store( value_type( ) );
 			}
 
 			template<typename... Args>
@@ -109,17 +107,17 @@ namespace daw {
 
 			value_storage( value_type value )
 			  : m_data{0}
-			  , m_occupied{true} {
+			  , m_occupied(true) {
 				store( std::move( value ) );
 			}
 
 			value_storage( value_storage const &other ) noexcept
-			  : m_data{other.m_data}
-			  , m_occupied{other.m_occupied} {}
+			  : m_data(other.m_data)
+			  , m_occupied(other.m_occupied) {}
 
 			value_storage( value_storage &&other ) noexcept
-			  : m_data{std::move( other.m_data )}
-			  , m_occupied{std::exchange( other.m_occupied, false )} {}
+			  : m_data(std::move( other.m_data ))
+			  , m_occupied(std::exchange( other.m_occupied, false )) {}
 
 			void swap( value_storage &rhs ) noexcept {
 				using std::swap;

@@ -120,8 +120,6 @@ set( DEV_HEADER_FILES
 	daw_range_operators
 	daw_range_reference
 	daw_range_type
-	daw_variant
-	daw_variant2
 	#daw_variant3
 	#	daw_virtual_holder
 )
@@ -135,6 +133,8 @@ set( UNTESTED_HEADER_FILES
 	daw_condition_variable.h
 	daw_function.h
 	daw_string_impl.h
+	daw_variant.h
+	daw_variant2.h
 	iterator/daw_iterator.h
 )
 
