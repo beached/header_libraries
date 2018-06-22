@@ -135,7 +135,11 @@ set( UNTESTED_HEADER_FILES
 	daw_string_impl.h
 	daw_variant.h
 	daw_variant2.h
-	"iterator/daw_iterator.h"
+	iterator/daw_iterator.h
+)
+
+set( UNTESTED_ITERATOR_HEADER_FILES
+	daw_iterator.h
 )
 
 enable_testing( )
@@ -183,5 +187,9 @@ endforeach( CUR_PREFIX )
 
 foreach( CUR_PREFIX ${UNTESTED_HEADER_FILES} )
 	install( FILES "${HEADER_FOLDER}/${CUR_PREFIX}" DESTINATION include/daw )
+endforeach( CUR_PREFIX )
+
+foreach( CUR_PREFIX ${UNTESTED_ITERATOR_HEADER_FILES} )
+	install( FILES "${HEADER_FOLDER}/iterator/${CUR_PREFIX}" DESTINATION include/daw/iterator )
 endforeach( CUR_PREFIX )
 
