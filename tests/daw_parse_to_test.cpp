@@ -74,26 +74,26 @@ namespace daw_values_from_stream_004_ns {
 
 BOOST_AUTO_TEST_CASE( daw_parse_to_005 ) {
 	auto f = []( int a, int b, int c ) { return a + b + c; };
-	auto result = daw::apply_string( f, "1,2,3", "," );
+	auto result = daw::apply_string2( f, "1,2,3", "," );
 	BOOST_REQUIRE_EQUAL( result, 6 );
 }
 
 BOOST_AUTO_TEST_CASE( daw_parse_to_006 ) {
 	auto f = []( int a, int b, int c ) { return a + b + c; };
-	auto result = daw::apply_string2<int, int, int>( f, "1,2,3", "," );
+	auto result = daw::apply_string<int, int, int>( f, "1,2,3", "," );
 	BOOST_REQUIRE_EQUAL( result, 6 );
 }
 
 BOOST_AUTO_TEST_CASE( daw_parse_to_007 ) {
 	auto f = []( int a, int b, int c ) { return a + b + c; };
 	auto result =
-	  daw::apply_string( f, "1	2  3", daw::parser::whitespace_splitter{} );
+	  daw::apply_string2( f, "1	2  3", daw::parser::whitespace_splitter{} );
 	BOOST_REQUIRE_EQUAL( result, 6 );
 }
 
 BOOST_AUTO_TEST_CASE( daw_parse_to_008 ) {
 	auto f = []( int a, int b, int c ) { return a + b + c; };
-	auto result = daw::apply_string2<int, int, int>(
+	auto result = daw::apply_string<int, int, int>(
 	  f, "1  2     3", daw::parser::whitespace_splitter{} );
 	BOOST_REQUIRE_EQUAL( result, 6 );
 }
@@ -145,7 +145,7 @@ namespace daw_parse_to_enum_001_ns {
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_parse_to_enum_001 ) {
-		auto result = daw::apply_string2<e_colours, e_colours>(
+		auto result = daw::apply_string<e_colours, e_colours>(
 		  []( e_colours a, e_colours b ) { return sum_colours( a, b ); },
 		  "green blue", daw::parser::whitespace_splitter{} );
 		BOOST_REQUIRE_EQUAL( result, 12 );
@@ -159,14 +159,14 @@ namespace daw_parse_to_enum_001_ns {
 
 	BOOST_AUTO_TEST_CASE( daw_parse_to_enum_002 ) {
 
-		constexpr auto result = daw::apply_string2<e_colours, e_colours>(
+		constexpr auto result = daw::apply_string<e_colours, e_colours>(
 		  callable_t( ), "green blue", " " );
 
 		BOOST_REQUIRE_EQUAL( result, 12 );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_parse_to_enum_003 ) {
-		auto result = daw::apply_string2<e_colours, e_colours, int>(
+		auto result = daw::apply_string<e_colours, e_colours, int>(
 		  []( e_colours a, e_colours b, int c ) { return sum_colours( a, b ) + c; },
 		  "green blue 534", daw::parser::whitespace_splitter{} );
 		BOOST_REQUIRE_EQUAL( result, 546 );
@@ -184,7 +184,7 @@ namespace daw_parse_to_enum_001_ns {
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_parse_to_class_001 ) {
-		constexpr auto result = daw::apply_string2<e_colours, ClassTest>(
+		constexpr auto result = daw::apply_string<e_colours, ClassTest>(
 		  []( e_colours a, ClassTest b ) {
 			  return static_cast<int>( a ) + b.value;
 		  },

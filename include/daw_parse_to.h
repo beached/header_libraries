@@ -404,7 +404,7 @@ namespace daw {
 	template<typename Callable, typename Splitter,
 	         std::enable_if_t<is_callable_v<Splitter, daw::string_view>,
 	                          std::nullptr_t> = nullptr>
-	constexpr decltype( auto ) apply_string( Callable &&callable,
+	constexpr decltype( auto ) apply_string2( Callable &&callable,
 	                                         daw::string_view str,
 	                                         Splitter &&splitter ) {
 		using ftraits =
@@ -423,10 +423,10 @@ namespace daw {
 	/// @param delemiter split what string arguments on
 	/// @return The result of callable
 	template<typename Callable>
-	constexpr decltype( auto ) apply_string( Callable &&callable,
+	constexpr decltype( auto ) apply_string2( Callable &&callable,
 	                                         daw::string_view str,
 	                                         daw::string_view delemiter ) {
-		return apply_string<Callable>( std::forward<Callable>( callable ), str,
+		return apply_string2<Callable>( std::forward<Callable>( callable ), str,
 		                               parser::default_splitter{delemiter} );
 	}
 	namespace impl {
@@ -451,7 +451,7 @@ namespace daw {
 	template<typename... Args, typename Callable, typename Splitter,
 	         std::enable_if_t<is_callable_v<Splitter, daw::string_view>,
 	                          std::nullptr_t> = nullptr>
-	constexpr decltype( auto ) apply_string2( Callable &&callable,
+	constexpr decltype( auto ) apply_string( Callable &&callable,
 	                                          daw::string_view str,
 	                                          Splitter &&splitter ) {
 		static_assert( is_callable_v<Callable, Args...>,
@@ -473,11 +473,11 @@ namespace daw {
 	template<typename... Args, typename Callable,
 	         std::enable_if_t<is_callable_v<Callable, Args...>, std::nullptr_t> =
 	           nullptr>
-	constexpr decltype( auto ) apply_string2( Callable &&callable,
+	constexpr decltype( auto ) apply_string( Callable &&callable,
 	                                          daw::string_view str,
 	                                          daw::string_view delemiter ) {
 
-		return apply_string2<Args...>( std::forward<Callable>( callable ), str,
+		return apply_string<Args...>( std::forward<Callable>( callable ), str,
 		                               parser::default_splitter{delemiter} );
 	}
 
@@ -492,10 +492,10 @@ namespace daw {
 	template<
 	  typename Arg, typename Callable,
 	  std::enable_if_t<is_callable_v<Callable, Arg>, std::nullptr_t> = nullptr>
-	constexpr decltype( auto ) apply_string2( Callable &&callable,
+	constexpr decltype( auto ) apply_string( Callable &&callable,
 	                                          daw::string_view str ) {
 
-		return apply_string2<Arg>( std::forward<Callable>( callable ), str,
+		return apply_string<Arg>( std::forward<Callable>( callable ), str,
 		                           parser::default_splitter{" "} );
 	}
 
