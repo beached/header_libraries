@@ -116,7 +116,7 @@ enum class e_colours : int { red = 2, green = 4, blue = 8 };
 
 struct invalid_e_colour_exception {};
 
-constexpr e_colours parse_enum_value( daw::string_view str, e_colours ) {
+constexpr e_colours parse_to_value( daw::string_view str, e_colours* ) {
 	daw::exception::daw_throw_on_true(
 	  str.empty( ), "Attempt to parse an e_colour from an empty string_view" );
 	switch( str.front( ) ) {
@@ -179,11 +179,6 @@ namespace daw_parse_to_enum_001_ns {
 		  : value( v ) {}
 	};
 
-	/*	constexpr daw::parser::not_dc<ClassTest>
-	  parse_to_value( daw::string_view str, daw::parser::not_dc<ClassTest> ) {
-	    return daw::construct_from<ClassTest, int>( str );
-	  }
-	*/
 	constexpr ClassTest parse_to_value( daw::string_view str, ClassTest * ) {
 		return daw::construct_from<ClassTest, int>( str );
 	}

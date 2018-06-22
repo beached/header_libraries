@@ -178,15 +178,6 @@ namespace daw {
 				char **end = nullptr;
 				return strtold( s.c_str( ), end );
 			}
-
-			template<typename EnumType,
-			         std::enable_if_t<is_enum_v<EnumType>, std::nullptr_t> = nullptr>
-			constexpr decltype( auto )
-			parse_to_value( daw::string_view str, EnumType * ) noexcept(
-			  noexcept( parse_enum_value( str, std::declval<EnumType>( ) ) ) ) {
-
-				return parse_enum_value( str, EnumType{} );
-			}
 		} // namespace converters
 
 		namespace impl {
