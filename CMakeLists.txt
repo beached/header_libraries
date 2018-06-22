@@ -135,7 +135,7 @@ set( UNTESTED_HEADER_FILES
 	daw_string_impl.h
 	daw_variant.h
 	daw_variant2.h
-	iterator/daw_iterator.h
+	"iterator/daw_iterator.h"
 )
 
 enable_testing( )

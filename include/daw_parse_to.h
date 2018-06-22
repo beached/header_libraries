@@ -288,18 +288,15 @@ namespace daw {
 		constexpr decltype( auto ) parse_to( daw::string_view str,
 		                                     Splitter &&splitter ) {
 
-			// auto result = std::tuple<impl::parse_result_of_t<Args>...>( );
-			std::array<daw::string_view, sizeof...( Args )> positions{};
-			for( size_t n = 0; n < positions.size( ); ++n ) {
-				auto const pos = splitter( str );
-				positions[n] = str.substr( 0, pos.first );
-				str.remove_prefix( pos.last );
-			}
-			/*
-			impl::set_value_from_string_view<sizeof...( Args ), Args...>(
-			  result, str, std::forward<Splitter>( splitter ) );
-			return result;
-			 */
+			auto const positions = [&]( ) {
+				std::array<daw::string_view, sizeof...( Args )> result{ };
+				for( auto & item: result ) {
+					auto const pos = splitter( str );
+					item = str.substr( 0, pos.first );
+					str.remove_prefix( pos.last );
+				}
+				return result;
+			}( );
 			return impl::set_value_from_string_view<Args...>( positions );
 		}
 
