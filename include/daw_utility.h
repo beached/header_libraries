@@ -774,7 +774,11 @@ namespace daw {
 		                                               Args &&
 		                                               ... ) mutable noexcept {} );
 	}
+
+	template<typename... Args>
+	struct tag { };
 } // namespace daw
 
 template<typename... Ts>
 constexpr void Unused( Ts &&... ) noexcept {}
+
