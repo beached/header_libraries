@@ -62,14 +62,11 @@ set( TESTED_HEADERS_PREFIXES
 	daw_parser_helper
 	daw_parser_helper_sv
 	daw_poly_vector
-	daw_observable_ptr
-	daw_observable_ptr_pair
 	daw_random
 	daw_read_only
 	daw_reference
 	daw_safe_string
 	daw_scope_guard
-	daw_semaphore
 	daw_size_literals
 	daw_span
 	daw_static_array
@@ -94,7 +91,10 @@ set( TESTED_PARALLEL_HEADERS_PREFIXES
 	daw_latch
 	daw_locked_stack
 	daw_locked_value
+	daw_observable_ptr
+	daw_observable_ptr_pair
 	daw_scoped_multilock
+	daw_semaphore
 	daw_spin_lock
 )
 

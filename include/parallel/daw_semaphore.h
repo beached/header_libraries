@@ -27,7 +27,7 @@
 #include <memory>
 #include <mutex>
 
-#include "daw_value_ptr.h"
+#include "../daw_value_ptr.h"
 
 namespace daw {
 	template<typename Mutex, typename ConditionVariable>

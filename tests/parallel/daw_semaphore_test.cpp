@@ -23,7 +23,7 @@
 #include "boost_test.h"
 #include <iostream>
 
-#include "daw_semaphore.h"
+#include "parallel/daw_semaphore.h"
 
 BOOST_AUTO_TEST_CASE( test_01 ) {
 	daw::semaphore sem1;

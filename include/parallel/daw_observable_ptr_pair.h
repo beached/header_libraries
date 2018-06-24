@@ -22,10 +22,10 @@
 
 #pragma once
 
+#include "../daw_static_array.h"
+#include "../daw_traits.h"
+#include "../daw_union_pair.h"
 #include "daw_observable_ptr.h"
-#include "daw_static_array.h"
-#include "daw_traits.h"
-#include "daw_union_pair.h"
 
 namespace daw {
 	namespace impl {

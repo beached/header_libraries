@@ -28,9 +28,8 @@
 #include <memory>
 #include <mutex>
 
-#include "daw_expected.h"
-#include "daw_semaphore.h"
-#include "daw_traits.h"
+#include "../daw_expected.h"
+#include "../daw_traits.h"
 
 namespace daw {
 	template<typename T>

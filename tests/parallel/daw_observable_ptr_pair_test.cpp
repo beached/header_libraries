@@ -23,11 +23,11 @@
 #include "boost_test.h"
 #include <iostream>
 
-#include "daw_observable_ptr.h"
+#include "parallel/daw_observable_ptr_pair.h"
 
 BOOST_AUTO_TEST_CASE( test_001 ) {
 	int *p = new int{4};
-	daw::observable_ptr<int> t{p};
+	daw::observable_ptr_pair<int> t{p};
 
 	auto obs = t.get_observer( );
 
@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE( test_001 ) {
 
 BOOST_AUTO_TEST_CASE( test_002 ) {
 	int *p = new int{4};
-	daw::observable_ptr<int> t{p};
+	daw::observable_ptr_pair<int> t{p};
 
 	auto obs = t.get_observer( );
 	{
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE( test_002 ) {
 }
 
 BOOST_AUTO_TEST_CASE( test_003 ) {
-	auto t = daw::make_observable_ptr<int>( 4 );
+	auto t = daw::make_observable_ptr_pair<int>( 4 );
 
 	auto obs = t.get_observer( );
 
@@ -62,8 +62,8 @@ BOOST_AUTO_TEST_CASE( test_003 ) {
 
 BOOST_AUTO_TEST_CASE( test_004 ) {
 
-	auto t = daw::make_observable_ptr<std::atomic_int_least8_t>(
-	  static_cast<int_least8_t>( 0 ) );
+	auto t =
+	  daw::make_observable_ptr_pair<std::atomic_int>( static_cast<int>( 0 ) );
 
 	auto const obs = t.get_observer( );
 
@@ -71,17 +71,47 @@ BOOST_AUTO_TEST_CASE( test_004 ) {
 }
 
 namespace {
-	struct test_005_t {
-		daw::observable_ptr<std::atomic_int_least8_t> value;
+	struct test_t {
+		int value;
 
-		test_005_t( )
-		  : value{daw::make_observable_ptr<std::atomic_int_least8_t>(
-		      static_cast<int_least8_t>( 0 ) )} {}
+		test_t( int v )
+		  : value{v} {}
+
+		void set_value( int v ) {
+			value = v;
+		}
 	};
 } // namespace
 
-BOOST_AUTO_TEST_CASE( test_005 ) {
-	test_005_t tmp{};
-	auto v = tmp.value->load( );
-	BOOST_REQUIRE_EQUAL( 0, v );
+BOOST_AUTO_TEST_CASE( test_operator_arrow_005 ) {
+	auto tmp = daw::make_observable_ptr_pair<test_t>( 5 );
+	auto v = tmp->value;
+	BOOST_REQUIRE_EQUAL( 5, v );
+}
+
+BOOST_AUTO_TEST_CASE( test_visit_006 ) {
+	auto const tmp = daw::make_observable_ptr_pair<test_t>( 5 );
+	auto const res = tmp.visit( []( auto v ) { return v.value; } );
+	BOOST_REQUIRE_EQUAL( 5, res );
+}
+
+BOOST_AUTO_TEST_CASE( test_apply_visitor_007 ) {
+	auto const tmp = daw::make_observable_ptr_pair<test_t>( 5 );
+	auto const res =
+	  tmp.apply_visitor( []( auto const &ptr ) { return ptr->value; } );
+	BOOST_REQUIRE_EQUAL( 5, res );
+}
+
+BOOST_AUTO_TEST_CASE( test_visit_008 ) {
+	auto tmp = daw::make_observable_ptr_pair<test_t>( 5 );
+	tmp.visit( []( auto &v ) -> int & { return v.value; } ) = 6;
+	auto const res = tmp.visit( []( auto v ) -> int { return v.value; } );
+	BOOST_REQUIRE_EQUAL( 6, res );
+}
+
+BOOST_AUTO_TEST_CASE( test_visit_009 ) {
+	auto tmp = daw::make_observable_ptr_pair<test_t>( 5 );
+	tmp.visit( []( auto &v ) { v.set_value( 6 ); } );
+	auto const res = tmp.visit( []( auto v ) -> int { return v.value; } );
+	BOOST_REQUIRE_EQUAL( 6, res );
 }
