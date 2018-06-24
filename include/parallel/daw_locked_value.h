@@ -97,7 +97,7 @@ namespace daw {
 		  , m_value( ) {}
 
 		template<typename U,
-		         std::enable_if_t<!daw::traits::is_type_v<lockable_value_t, U>,
+		         std::enable_if_t<!daw::traits::is_first_type_v<lockable_value_t, U>,
 		                          std::nullptr_t> = nullptr>
 		explicit lockable_value_t( U &&value ) noexcept(
 		  noexcept( daw::value_ptr<T>( std::forward<U>( value ) ) ) )
