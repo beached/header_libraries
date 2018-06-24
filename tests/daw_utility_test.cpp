@@ -198,5 +198,21 @@ BOOST_AUTO_TEST_CASE( daw_empty_overload_001 ) {
 BOOST_AUTO_TEST_CASE( construct_a_001 ) {
 	constexpr auto tmp =
 	  daw::construct_from<std::array<int, 4>>( std::make_tuple( 1, 2, 3, 4 ) );
+	static_assert( daw::is_same_v<std::decay_t<decltype(tmp)>, std::array<int, 4>>, "Invalid types" );
+	BOOST_REQUIRE_EQUAL( tmp.size( ), 4 );
+	BOOST_REQUIRE_EQUAL( tmp[0], 1 );
+	BOOST_REQUIRE_EQUAL( tmp[1], 2 );
+	BOOST_REQUIRE_EQUAL( tmp[2], 3 );
+	BOOST_REQUIRE_EQUAL( tmp[3], 4 );
+}
+
+BOOST_AUTO_TEST_CASE( construct_a_002 ) {
+	auto tmp =
+	  daw::construct_from<std::vector<int>>( std::make_tuple( static_cast<size_t>( 2 ), 5 ) );
+
+	static_assert( daw::is_same_v<std::decay_t<decltype(tmp)>, std::vector<int>>, "Invalid types" );
+	BOOST_REQUIRE_EQUAL( tmp.size( ), 2 );
+	BOOST_REQUIRE_EQUAL( tmp[0], 5 );
+	BOOST_REQUIRE_EQUAL( tmp[1], 5 );
 }
 

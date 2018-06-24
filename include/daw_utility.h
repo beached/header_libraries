@@ -787,7 +787,7 @@ namespace daw {
 			return T{std::forward<Args>( args )...};
 		}
 	};
-/*
+
 	template<typename...VectorArgs>
 	struct construct_a<std::vector<VectorArgs...>> {
 		template<typename... Args>
@@ -797,7 +797,7 @@ namespace daw {
 			return std::vector<VectorArgs...>(std::forward<Args>( args )...);
 		}
 	};
-*/
+
 	namespace impl {
 		template<typename... Args>
 		constexpr void is_tuple_test( std::tuple<Args...> const & ) noexcept;
