@@ -899,17 +899,10 @@ namespace daw {
 		using result_of_t =
 		  decltype( std::declval<Function>( )( std::declval<Args>( )... ) );
 
+		template<typename T, typename... Args>
+		using first_type = T;
+
 		namespace impl {
-			template<typename...>
-			struct is_type;
-
-			template<typename T>
-			struct is_type<T> : std::false_type {};
-
-			template<typename T, typename Arg, typename... Args>
-			struct is_type<T, Arg, Args...>
-			  : std::integral_constant<bool, is_same_v<T, std::decay_t<Arg>>> {};
-
 			template<typename... Ts>
 			constexpr void tuple_test( std::tuple<Ts...> const & ) noexcept {};
 
@@ -917,10 +910,20 @@ namespace daw {
 			using detect_is_tuple = decltype( tuple_test( std::declval<Ts>( )... ) );
 		} // namespace impl
 
+		template<typename...>
+		struct is_first_type;
+
+		template<typename T>
+		struct is_first_type<T> : std::false_type {};
+
+		template<typename T, typename Arg, typename... Args>
+		struct is_first_type<T, Arg, Args...> : std::is_same<T, std::decay_t<Arg>> {
+		};
+
 		// Tests if type T is the same as the first argument in Args or if args is
 		// empty it is false
 		template<typename T, typename... Args>
-		constexpr bool is_type_v = impl::is_type<T, Args...>::value;
+		constexpr bool is_first_type_v = is_first_type<T, Args...>::value;
 
 		template<typename... Ts>
 		constexpr bool is_tuple_v = is_detected_v<impl::detect_is_tuple, Ts...>;

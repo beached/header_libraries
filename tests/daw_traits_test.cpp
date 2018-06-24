@@ -769,17 +769,17 @@ namespace isnt_cv_ref_test_003_ns {
 } // namespace isnt_cv_ref_test_003_ns
 
 BOOST_AUTO_TEST_CASE( is_type_test_001 ) {
-	constexpr auto tst = daw::traits::is_type_v<int, int, float, double>;
+	constexpr auto tst = daw::traits::is_first_type_v<int, int, float, double>;
 	BOOST_REQUIRE( tst );
 }
 
 BOOST_AUTO_TEST_CASE( is_type_test_002 ) {
-	constexpr auto tst = daw::traits::is_type_v<float, int, float, double>;
+	constexpr auto tst = daw::traits::is_first_type_v<float, int, float, double>;
 	BOOST_REQUIRE( !tst );
 }
 
 BOOST_AUTO_TEST_CASE( is_type_test_003 ) {
-	constexpr auto tst = daw::traits::is_type_v<float>;
+	constexpr auto tst = daw::traits::is_first_type_v<float>;
 	BOOST_REQUIRE( !tst );
 }
 
