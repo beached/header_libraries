@@ -434,7 +434,7 @@ namespace daw {
 		template<typename F, typename Tuple, std::size_t... I>
 		constexpr decltype( auto ) apply_impl( F &&f, Tuple &&t,
 		                                       std::index_sequence<I...> ) {
-			return invoke( std::forward<F>( f ),
+			return daw::invoke( std::forward<F>( f ),
 			               std::get<I>( std::forward<Tuple>( t ) )... );
 		}
 	} // namespace impl

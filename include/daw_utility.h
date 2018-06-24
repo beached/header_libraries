@@ -787,21 +787,33 @@ namespace daw {
 			return T{std::forward<Args>( args )...};
 		}
 	};
+/*
+	template<typename...VectorArgs>
+	struct construct_a<std::vector<VectorArgs...>> {
+		template<typename... Args>
+		constexpr decltype( auto ) operator( )( Args &&... args ) const
+		  noexcept( daw::is_nothrow_constructible_v<std::vector<VectorArgs...>, Args...> ) {
 
-	template<typename Destination, typename... Args>
-	constexpr decltype( auto )
-	construct_from( std::tuple<Args...> const &args ) noexcept(
-	  daw::is_nothrow_constructible_v<Destination, Args...> ) {
+			return std::vector<VectorArgs...>(std::forward<Args>( args )...);
+		}
+	};
+*/
+	namespace impl {
+		template<typename... Args>
+		constexpr void is_tuple_test( std::tuple<Args...> const & ) noexcept;
 
-		return daw::apply( construct_a<Destination>{}, args );
+		template<typename T>
+		using is_tuple_detect = decltype( is_tuple_test( std::declval<T>( ) ) );
+
+		template<typename T>
+		constexpr bool is_tuple_v = daw::is_detected_v<is_tuple_detect, T>;
 	}
-
-	template<typename Destination, typename... Args>
+	template<typename Destination, typename Tuple>
 	constexpr decltype( auto )
-	construct_from( std::tuple<Args...> &&args ) noexcept(
-	  daw::is_nothrow_constructible_v<Destination, Args...> ) {
+	construct_from( Tuple &&args ) noexcept( noexcept( daw::apply( construct_a<Destination>{}, std::forward<Tuple>( args ) )  ) ) {
 
-		return daw::apply( construct_a<Destination>{}, std::move( args ) );
+		static_assert( impl::is_tuple_v<Tuple>, "Argument to construct_from must be a std::tuple" );
+		return daw::apply( construct_a<Destination>{}, std::forward<Tuple>( args ) );
 	}
 } // namespace daw
 

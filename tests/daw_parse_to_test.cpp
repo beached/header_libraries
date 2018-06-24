@@ -183,12 +183,15 @@ namespace daw_parse_to_enum_001_ns {
 		return daw::construct_from<ClassTest, int>( str );
 	}
 
+	struct e_colours_call {
+		constexpr int operator( )( e_colours a, ClassTest b ) const noexcept {
+			  return static_cast<int>( a ) + b.value;
+		}
+	};
+
 	BOOST_AUTO_TEST_CASE( daw_parse_to_class_001 ) {
 		constexpr auto result = daw::apply_string<e_colours, ClassTest>(
-		  []( e_colours a, ClassTest b ) {
-			  return static_cast<int>( a ) + b.value;
-		  },
-		  "green 54", daw::parser::whitespace_splitter{} );
+		  e_colours_call{}, "green 54", daw::parser::whitespace_splitter{} );
 		BOOST_REQUIRE_EQUAL( result, 58 );
 	}
 } // namespace daw_parse_to_enum_001_ns

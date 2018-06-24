@@ -29,6 +29,7 @@
 
 #include "daw_function.h"
 #include "daw_parser_helper.h"
+#include "daw_static_array.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
@@ -183,7 +184,8 @@ namespace daw {
 		namespace impl {
 			template<size_t N, typename... Args>
 			constexpr decltype( auto ) set_value_from_string_view_item(
-			  std::array<daw::string_view, sizeof...( Args )> const &positions ) {
+			  daw::static_array_t<daw::string_view, sizeof...( Args )> const
+			    &positions ) {
 				using ::daw::parser::converters::parse_to_value;
 				using result_t = daw::pack_type_t<N, Args...>;
 				return parse_to_value( positions[N], tag<result_t>{} );
@@ -191,7 +193,8 @@ namespace daw {
 
 			template<typename... Args, size_t... Is>
 			constexpr decltype( auto ) set_value_from_string_view(
-			  std::array<daw::string_view, sizeof...( Args )> const &positions,
+			  daw::static_array_t<daw::string_view, sizeof...( Args )> const
+			    &positions,
 			  std::index_sequence<Is...> ) {
 				;
 				return std::make_tuple(
@@ -200,7 +203,8 @@ namespace daw {
 
 			template<typename... Args>
 			constexpr decltype( auto ) set_value_from_string_view(
-			  std::array<daw::string_view, sizeof...( Args )> const &positions ) {
+			  daw::static_array_t<daw::string_view, sizeof...( Args )> const
+			    &positions ) {
 				return set_value_from_string_view<Args...>(
 				  positions, std::index_sequence_for<Args...>{} );
 			}
@@ -272,6 +276,18 @@ namespace daw {
 			template<typename T>
 			using parse_result_of_t =
 			  std::decay_t<decltype( parse_result_of_test<T>( ) )>;
+
+			template<size_t N, typename Splitter>
+			constexpr auto get_positions( daw::string_view str,
+			                              Splitter &&splitter ) {
+				daw::static_array_t<daw::string_view, N> result{};
+				for( auto & item: result ) {
+					auto const pos = splitter( str );
+					item = str.substr( 0, pos.first );
+					str.remove_prefix( pos.last );
+				}
+				return result;
+			}
 		} // namespace impl
 
 		/// @brief Attempts to parse a string to the values types specified
@@ -287,16 +303,9 @@ namespace daw {
 		constexpr decltype( auto ) parse_to( daw::string_view str,
 		                                     Splitter &&splitter ) {
 
-			auto const positions = [&]( ) {
-				std::array<daw::string_view, sizeof...( Args )> result{};
-				for( auto &item : result ) {
-					auto const pos = splitter( str );
-					item = str.substr( 0, pos.first );
-					str.remove_prefix( pos.last );
-				}
-				return result;
-			}( );
-			return impl::set_value_from_string_view<Args...>( positions );
+			return impl::set_value_from_string_view<Args...>(
+			  impl::get_positions<sizeof...( Args )>(
+			    str, std::forward<Splitter>( splitter ) ) );
 		}
 
 		/// @brief Attempts to parse a string to the values types specified

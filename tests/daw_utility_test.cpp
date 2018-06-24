@@ -20,9 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <array>
 #include <cmath>
 #include <sstream>
 #include <system_error>
+#include <tuple>
 #include <typeinfo>
 
 #include "boost_test.h"
@@ -192,3 +194,9 @@ BOOST_AUTO_TEST_CASE( daw_empty_overload_001 ) {
   // BOOST_REQUIRE( can_a2 );
 }
 */
+
+BOOST_AUTO_TEST_CASE( construct_a_001 ) {
+	constexpr auto tmp =
+	  daw::construct_from<std::array<int, 4>>( std::make_tuple( 1, 2, 3, 4 ) );
+}
+
