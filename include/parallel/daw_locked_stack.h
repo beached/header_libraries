@@ -26,8 +26,8 @@
 #include <mutex>
 #include <vector>
 
+#include "../daw_value_ptr.h"
 #include "daw_semaphore.h"
-#include "daw_value_ptr.h"
 
 namespace daw {
 	template<typename T>

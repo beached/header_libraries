@@ -26,7 +26,7 @@
 #include <mutex>
 #include <utility>
 
-#include "cpp_17.h"
+#include "../cpp_17.h"
 #include "daw_value_ptr.h"
 
 namespace daw {
@@ -96,9 +96,9 @@ namespace daw {
 		  : m_mutex( )
 		  , m_value( ) {}
 
-		template<typename U,
-		         std::enable_if_t<!daw::traits::is_first_type_v<lockable_value_t, U>,
-		                          std::nullptr_t> = nullptr>
+		template<typename U, std::enable_if_t<
+		                       !daw::traits::is_first_type_v<lockable_value_t, U>,
+		                       std::nullptr_t> = nullptr>
 		explicit lockable_value_t( U &&value ) noexcept(
 		  noexcept( daw::value_ptr<T>( std::forward<U>( value ) ) ) )
 		  : m_mutex( )
