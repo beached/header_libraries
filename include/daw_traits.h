@@ -899,8 +899,15 @@ namespace daw {
 		using result_of_t =
 		  decltype( std::declval<Function>( )( std::declval<Args>( )... ) );
 
-		template<typename T, typename... Args>
-		using first_type = T;
+		namespace impl {
+			template<typename T, typename... Args>
+			struct first_type_impl {
+				using type = T;
+			};
+		}
+
+		template<typename... Args>
+		using first_type = typename impl::first_type_impl<Args...>::type;
 
 		namespace impl {
 			template<typename... Ts>
@@ -927,6 +934,12 @@ namespace daw {
 
 		template<typename... Ts>
 		constexpr bool is_tuple_v = is_detected_v<impl::detect_is_tuple, Ts...>;
+
+		namespace impl {
+			
+		}
+		template<typename T, typename... Args>
+		constexpr bool is_init_list_constructible_v = are_same_types_v<Args...> && daw::is_constructible_v<T, std::initializer_list<first_type<Args...>>>; 
 	} // namespace traits
 
 	template<bool B, typename T = std::nullptr_t>
