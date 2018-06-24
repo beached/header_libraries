@@ -130,7 +130,6 @@ set( DEV_HEADER_FILES
 
 set( UNTESTED_HEADER_FILES
 	boost_test.h
-	daw_condition_variable.h
 	daw_function.h
 	daw_string_impl.h
 	daw_variant.h
@@ -140,6 +139,9 @@ set( UNTESTED_HEADER_FILES
 
 set( UNTESTED_ITERATOR_HEADER_FILES
 	daw_iterator.h
+)
+set( UNTESTED_PARALLEL_HEADER_FILES
+	daw_condition_variable.h
 )
 
 enable_testing( )
@@ -191,5 +193,9 @@ endforeach( CUR_PREFIX )
 
 foreach( CUR_PREFIX ${UNTESTED_ITERATOR_HEADER_FILES} )
 	install( FILES "${HEADER_FOLDER}/iterator/${CUR_PREFIX}" DESTINATION include/daw/iterator )
+endforeach( CUR_PREFIX )
+
+foreach( CUR_PREFIX ${UNTESTED_PARALLEL_HEADER_FILES} )
+	install( FILES "${HEADER_FOLDER}/parallel/${CUR_PREFIX}" DESTINATION include/daw/parallel )
 endforeach( CUR_PREFIX )
 

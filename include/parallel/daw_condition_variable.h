@@ -27,8 +27,8 @@
 #include <cstdint>
 #include <mutex>
 
-#include "daw_exception.h"
-#include "daw_value_ptr.h"
+#include "../daw_exception.h"
+#include "../daw_value_ptr.h"
 
 namespace daw {
 	template<typename Mutex, typename ConditionVariable>
