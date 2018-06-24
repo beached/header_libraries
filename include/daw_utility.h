@@ -776,7 +776,33 @@ namespace daw {
 	}
 
 	template<typename... Args>
-	struct tag { };
+	struct tag {};
+
+	template<typename T>
+	struct construct_a {
+		template<typename... Args>
+		constexpr decltype( auto ) operator( )( Args &&... args ) const
+		  noexcept( daw::is_nothrow_constructible_v<T, Args...> ) {
+
+			return T{std::forward<Args>( args )...};
+		}
+	};
+
+	template<typename Destination, typename... Args>
+	constexpr decltype( auto )
+	construct_from( std::tuple<Args...> const &args ) noexcept(
+	  daw::is_nothrow_constructible_v<Destination, Args...> ) {
+
+		return daw::apply( construct_a<Destination>{}, args );
+	}
+
+	template<typename Destination, typename... Args>
+	constexpr decltype( auto )
+	construct_from( std::tuple<Args...> &&args ) noexcept(
+	  daw::is_nothrow_constructible_v<Destination, Args...> ) {
+
+		return daw::apply( construct_a<Destination>{}, std::move( args ) );
+	}
 } // namespace daw
 
 template<typename... Ts>

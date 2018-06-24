@@ -150,15 +150,14 @@ namespace daw {
 				return daw::make_string_view_it( first, str.cbegin( ) );
 			}
 
-			inline std::string parse_to_value( daw::string_view str, tag<std::string> ) {
+			inline std::string parse_to_value( daw::string_view str,
+			                                   tag<std::string> ) {
 				return parse_to_value( str, tag<daw::string_view>{} ).to_string( );
 			}
 
 			inline std::string parse_to_value( daw::string_view str,
 			                                   tag<unquoted_string> ) {
-				return parse_to_value( str,
-				                       tag<unquoted_string_view>{ } )
-				  .to_string( );
+				return parse_to_value( str, tag<unquoted_string_view>{} ).to_string( );
 			}
 
 			inline float parse_to_value( daw::string_view str, tag<float> ) {
@@ -173,7 +172,8 @@ namespace daw {
 				return strtod( s.c_str( ), end );
 			}
 
-			inline long double parse_to_value( daw::string_view str, tag<long double> ) {
+			inline long double parse_to_value( daw::string_view str,
+			                                   tag<long double> ) {
 				auto const s = str.to_string( );
 				char **end = nullptr;
 				return strtold( s.c_str( ), end );
@@ -288,8 +288,8 @@ namespace daw {
 		                                     Splitter &&splitter ) {
 
 			auto const positions = [&]( ) {
-				std::array<daw::string_view, sizeof...( Args )> result{ };
-				for( auto & item: result ) {
+				std::array<daw::string_view, sizeof...( Args )> result{};
+				for( auto &item : result ) {
 					auto const pos = splitter( str );
 					item = str.substr( 0, pos.first );
 					str.remove_prefix( pos.last );
@@ -321,16 +321,6 @@ namespace daw {
 		}
 	} // namespace parser
 
-	namespace impl {
-		template<typename T>
-		struct make_a {
-			template<typename... Args>
-			constexpr decltype( auto ) operator( )( Args &&... args ) const {
-				return T{std::forward<Args>( args )...};
-			}
-		};
-	} // namespace impl
-
 	/// @brief Contructs an object from the arguments specified in the string.
 	/// @tparam Destination The type of object to construct
 	/// @tparam ExpectedArgs The types of values to parse out of the string
@@ -345,7 +335,7 @@ namespace daw {
 	constexpr decltype( auto ) construct_from( daw::string_view str,
 	                                           Splitter &&splitter ) {
 
-		return daw::apply( impl::make_a<Destination>{},
+		return daw::apply( daw::construct_a<Destination>{},
 		                   parser::parse_to<ExpectedArgs...>(
 		                     str, std::forward<Splitter>( splitter ) ) );
 	}
@@ -387,8 +377,8 @@ namespace daw {
 		}
 	} // namespace impl
 
-	/// @brief Apply the reified string as the types deducted from the Callable to
-	/// the Callable.  This may have unexpected results if strings are ot
+	/// @brief Apply the reified string as the types deducted from the Callable
+	/// to the Callable.  This may have unexpected results if strings are ot
 	/// controlled
 	/// @tparam Callable Can be called with operator( )
 	/// @tparam Splitter Callable splitter that returns the next position of a
@@ -410,8 +400,8 @@ namespace daw {
 		                                std::forward<Splitter>( splitter ) );
 	}
 
-	/// @brief Apply the reified string as the types deducted from the Callable to
-	/// the Callable.  This may have unexpected results if strings are ot
+	/// @brief Apply the reified string as the types deducted from the Callable
+	/// to the Callable.  This may have unexpected results if strings are ot
 	/// controlled
 	/// @tparam Callable Can be called with operator( )
 	/// @param callable a function that takes deducted arguments
@@ -431,8 +421,8 @@ namespace daw {
 	/// @tparam Args Types of expected data to find in string
 	/// @tparam Callable Callable function type that will accept the args in
 	/// string
-	/// @tparam Splitter A predicate that will return true on the string parts to
-	/// split on
+	/// @tparam Splitter A predicate that will return true on the string parts
+	/// to split on
 	/// @param callable Function to apply arguments to
 	/// @param str String data with string encoded arguments
 	/// @param splitter Function to split string into arguments
@@ -496,8 +486,8 @@ namespace daw {
 	/// @brief Extract specified argument types from a stream of character data
 	/// @tparam Args Types of expected data to find in string
 	/// @tparam Stream Text stream type that does not have a str( ) method
-	/// @tparam Splitter A predicate that will return true on the string parts to
-	/// split on
+	/// @tparam Splitter A predicate that will return true on the string parts
+	/// to split on
 	/// @param stream text stream to extract values from
 	/// @param splitter Function to split string into arguments
 	/// @return A tuple of values of the types specified in Args
@@ -516,8 +506,8 @@ namespace daw {
 	/// @tparam Args Types of expected data to find in string
 	/// @tparam Stream Text stream type, like stringstream, that has a str( )
 	/// method
-	/// @tparam Splitter A predicate that will return true on the string parts to
-	/// split on
+	/// @tparam Splitter A predicate that will return true on the string parts
+	/// to split on
 	/// @param s text stream to extract values from
 	/// @param splitter Function to split string into arguments
 	/// @return A tuple of values of the types specified in Args
