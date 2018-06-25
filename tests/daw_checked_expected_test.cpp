@@ -120,13 +120,13 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 	daw::checked_expected_t<L> l{[]( ) { return L{5}; }};
 	BOOST_REQUIRE( l->a == 5 );
 
-	auto m = daw::make_checked_function<int, std::runtime_error>( []( int i ) {
-		if( i == 0 ) {
+	auto m = daw::make_checked_function<int, std::runtime_error>( []( int ii ) {
+		if( ii == 0 ) {
 			throw std::runtime_error( "Attempt to divide by zero" );
-		} else if( i > 100 ) {
+		} else if( ii > 100 ) {
 			throw std::exception{};
 		}
-		return 100 / i;
+		return 100 / ii;
 	} );
 	auto t = m( 0 );
 	BOOST_REQUIRE( t.has_exception( ) );

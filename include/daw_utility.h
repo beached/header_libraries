@@ -779,11 +779,15 @@ namespace daw {
 	struct tag {};
 
 	template<typename T>
-	struct use_aggregate_construction {};
+	struct use_aggregate_construction {
+		using type = T;
+
+		use_aggregate_construction( ) = delete;
+	};
 
 	namespace impl {
 		template<typename T>
-		constexpr T should_use_aggregate_construction_test(
+		constexpr int should_use_aggregate_construction_test(
 		  use_aggregate_construction<T> const & ) noexcept;
 
 		template<typename T>
@@ -798,8 +802,7 @@ namespace daw {
 	template<typename T>
 	struct construct_a {
 		template<typename... Args,
-		         std::enable_if_t<(daw::is_constructible_v<T, Args...> &&
-		                           !impl::should_use_aggregate_construction_v<T>),
+		         std::enable_if_t<daw::is_constructible_v<T, Args...>,
 		                          std::nullptr_t> = nullptr>
 		constexpr T operator( )( Args &&... args ) const
 		  noexcept( daw::is_nothrow_constructible_v<T, Args...> ) {
@@ -808,14 +811,25 @@ namespace daw {
 		}
 
 		template<typename... Args,
-		         std::enable_if_t<(!daw::is_constructible_v<T, Args...> ||
-		                           impl::should_use_aggregate_construction_v<T>),
+		         std::enable_if_t<!daw::is_constructible_v<T, Args...>,
 		                          std::nullptr_t> = nullptr>
 		constexpr auto operator( )( Args &&... args ) const
 		  noexcept( daw::is_nothrow_constructible_v<T, Args...> ) {
 
-			using result_t = impl::should_use_aggregate_construction_detect<T>;
-			return result_t{std::forward<Args>( args )...};
+			T result = {std::forward<Args>( args )...};
+			return result;
+		}
+	};
+
+	template<typename T>
+	struct construct_a<daw::use_aggregate_construction<T>> {
+
+		template<typename... Args>
+		constexpr T operator( )( Args &&... args ) const
+		  noexcept( daw::is_nothrow_constructible_v<T, Args...> ) {
+
+			T result = {std::forward<Args>( args )...};
+			return result;
 		}
 	};
 
@@ -830,17 +844,23 @@ namespace daw {
 		constexpr bool is_tuple_v = daw::is_detected_v<is_tuple_detect, T>;
 	} // namespace impl
 
-	template<typename Destination, typename Tuple>
-	constexpr decltype( auto ) construct_from( Tuple &&args ) noexcept( noexcept(
-	  daw::apply( construct_a<Destination>{}, std::forward<Tuple>( args ) ) ) ) {
+	template<typename Destination, typename... Args>
+	constexpr decltype( auto )
+	construct_from( std::tuple<Args...> &&args ) noexcept(
+	  noexcept( daw::apply( construct_a<Destination>{}, std::move( args ) ) ) ) {
 
-		static_assert( impl::is_tuple_v<Tuple>,
-		               "Argument to construct_from must be a std::tuple" );
-		return daw::apply( construct_a<Destination>{},
-		                   std::forward<Tuple>( args ) );
+		return daw::apply( construct_a<Destination>{}, std::move( args ) );
 	}
+
+	template<typename Destination, typename... Args>
+	constexpr decltype( auto )
+	construct_from( std::tuple<Args...> const &args ) noexcept(
+	  noexcept( daw::apply( construct_a<Destination>{}, args ) ) ) {
+
+		return daw::apply( construct_a<Destination>{}, args );
+	}
+
 } // namespace daw
 
 template<typename... Ts>
 constexpr void Unused( Ts &&... ) noexcept {}
-

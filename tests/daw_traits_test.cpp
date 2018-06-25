@@ -822,6 +822,10 @@ BOOST_AUTO_TEST_CASE( all_true_001 ) {
 }
 
 BOOST_AUTO_TEST_CASE( is_init_list_constructible_001 ) {
-	static_assert( daw::traits::is_init_list_constructible_v<std::vector<int>, int, int, int, int>, "a vector<int> should be initializer_list constructible" );
-	static_assert( !daw::traits::is_init_list_constructible_v<std::array<int, 4>, int, int, int, int>, "a vector<int> should be initializer_list constructible" );
+	static_assert( daw::traits::is_init_list_constructible_v<std::vector<int>,
+	                                                         int, int, int, int>,
+	               "a vector<int> should be initializer_list constructible" );
+	static_assert( !daw::traits::is_init_list_constructible_v<std::array<int, 4>,
+	                                                          int, int, int, int>,
+	               "a vector<int> should be initializer_list constructible" );
 }

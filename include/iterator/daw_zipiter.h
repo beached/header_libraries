@@ -26,6 +26,7 @@
 
 #include "../cpp_17.h"
 #include "../daw_algorithm.h"
+#include "../daw_utility.h"
 
 namespace daw {
 	template<typename... Iterators>

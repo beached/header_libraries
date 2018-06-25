@@ -54,10 +54,10 @@ namespace daw {
 
 	public:
 		template<typename... Args,
-		         std::enable_if_t<
-		           (daw::is_constructible_v<value_type, Args...> &&
-		            !daw::traits::is_first_type_v<value_ptr, std::decay_t<Args>...>),
-		           std::nullptr_t> = nullptr>
+		         std::enable_if_t<(daw::is_constructible_v<value_type, Args...> &&
+		                           !daw::traits::is_first_type_v<
+		                             value_ptr, std::decay_t<Args>...>),
+		                          std::nullptr_t> = nullptr>
 		explicit value_ptr( Args &&... args ) noexcept(
 		  daw::is_nothrow_constructible_v<value_type, Args...> )
 		  : enable_default_constructor<T>( impl::non_constructor{} )
@@ -66,10 +66,10 @@ namespace daw {
 		  , m_value( make_ptr( std::forward<Args>( args )... ) ) {}
 
 		template<typename U, typename... Args,
-		         std::enable_if_t<
-		           (daw::is_constructible_v<value_type, Args...> &&
-		            !daw::traits::is_first_type_v<value_ptr, std::decay_t<Args>...>),
-		           std::nullptr_t> = nullptr>
+		         std::enable_if_t<(daw::is_constructible_v<value_type, Args...> &&
+		                           !daw::traits::is_first_type_v<
+		                             value_ptr, std::decay_t<Args>...>),
+		                          std::nullptr_t> = nullptr>
 		static value_ptr emplace( Args &&... args ) noexcept(
 		  daw::is_nothrow_constructible_v<value_type, Args...> ) {
 

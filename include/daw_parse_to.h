@@ -281,7 +281,7 @@ namespace daw {
 			constexpr auto get_positions( daw::string_view str,
 			                              Splitter &&splitter ) {
 				daw::static_array_t<daw::string_view, N> result{};
-				for( auto & item: result ) {
+				for( auto &item : result ) {
 					auto const pos = splitter( str );
 					item = str.substr( 0, pos.first );
 					str.remove_prefix( pos.last );

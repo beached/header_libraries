@@ -435,7 +435,7 @@ namespace daw {
 		constexpr decltype( auto ) apply_impl( F &&f, Tuple &&t,
 		                                       std::index_sequence<I...> ) {
 			return daw::invoke( std::forward<F>( f ),
-			               std::get<I>( std::forward<Tuple>( t ) )... );
+			                    std::get<I>( std::forward<Tuple>( t ) )... );
 		}
 	} // namespace impl
 

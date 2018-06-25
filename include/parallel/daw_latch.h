@@ -25,9 +25,9 @@
 #include <atomic>
 #include <cstdint>
 
-#include "daw_condition_variable.h"
 #include "../daw_exception.h"
 #include "../daw_value_ptr.h"
+#include "daw_condition_variable.h"
 
 namespace daw {
 	template<typename Mutex, typename ConditionVariable>
