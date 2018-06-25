@@ -778,42 +778,44 @@ namespace daw {
 	template<typename... Args>
 	struct tag {};
 
-	namespace impl {
-		template<typename T, typename... Args>
-		using is_normal_constructible_detect =
-		  decltype( T( std::declval<Args...>( ) ) );
+	template<typename T>
+	struct use_aggregate_construction {};
 
-		template<typename T, typename... Args>
-		constexpr bool is_normal_constructible_v =
-		  daw::is_detected_v<is_normal_constructible_detect, T, Args...>;
+	namespace impl {
+		template<typename T>
+		constexpr T should_use_aggregate_construction_test(
+		  use_aggregate_construction<T> const & ) noexcept;
+
+		template<typename T>
+		using should_use_aggregate_construction_detect =
+		  decltype( should_use_aggregate_construction_test( std::declval<T>( ) ) );
+
+		template<typename T>
+		constexpr bool should_use_aggregate_construction_v =
+		  daw::is_detected_v<should_use_aggregate_construction_detect, T>;
 	} // namespace impl
 
 	template<typename T>
 	struct construct_a {
-		template<typename... Args>
-		constexpr auto operator( )( Args &&... args ) const
-		  noexcept( daw::is_nothrow_constructible_v<T, Args...> )
-		    -> std::enable_if_t<impl::is_normal_constructible_v<T, Args...>, T> {
+		template<typename... Args,
+		         std::enable_if_t<(daw::is_constructible_v<T, Args...> &&
+		                           !impl::should_use_aggregate_construction_v<T>),
+		                          std::nullptr_t> = nullptr>
+		constexpr T operator( )( Args &&... args ) const
+		  noexcept( daw::is_nothrow_constructible_v<T, Args...> ) {
 
 			return T( std::forward<Args>( args )... );
 		}
 
-		template<typename... Args>
+		template<typename... Args,
+		         std::enable_if_t<(!daw::is_constructible_v<T, Args...> ||
+		                           impl::should_use_aggregate_construction_v<T>),
+		                          std::nullptr_t> = nullptr>
 		constexpr auto operator( )( Args &&... args ) const
-		  noexcept( daw::is_nothrow_constructible_v<T, Args...> )
-		    -> std::enable_if_t<!impl::is_normal_constructible_v<T, Args...>, T> {
+		  noexcept( daw::is_nothrow_constructible_v<T, Args...> ) {
 
-			return T{std::forward<Args>( args )...};
-		}
-	};
-
-	template<typename... VectorArgs>
-	struct construct_a<std::vector<VectorArgs...>> {
-		template<typename... Args>
-		constexpr decltype( auto ) operator( )( Args &&... args ) const noexcept(
-		  daw::is_nothrow_constructible_v<std::vector<VectorArgs...>, Args...> ) {
-
-			return std::vector<VectorArgs...>( std::forward<Args>( args )... );
+			using result_t = impl::should_use_aggregate_construction_detect<T>;
+			return result_t{std::forward<Args>( args )...};
 		}
 	};
 
@@ -827,6 +829,7 @@ namespace daw {
 		template<typename T>
 		constexpr bool is_tuple_v = daw::is_detected_v<is_tuple_detect, T>;
 	} // namespace impl
+
 	template<typename Destination, typename Tuple>
 	constexpr decltype( auto ) construct_from( Tuple &&args ) noexcept( noexcept(
 	  daw::apply( construct_a<Destination>{}, std::forward<Tuple>( args ) ) ) ) {
