@@ -40,7 +40,7 @@ namespace daw {
 		static constexpr void increment( std::tuple<Ts...> &tpl,
 		                                 std::index_sequence<Is...> ) {
 			using expander = int[];
-			expander{0, ( static_cast<void>( ++std::get<Is>( tpl ) ), 0 )...};
+			(void)expander{0, ( static_cast<void>( ++std::get<Is>( tpl ) ), 0 )...};
 		}
 
 		template<typename... Ts>
@@ -52,7 +52,7 @@ namespace daw {
 		static constexpr void decrement( std::tuple<Ts...> &tpl,
 		                                 std::index_sequence<Is...> ) {
 			using expander = int[];
-			expander{0, ( static_cast<void>( --std::get<Is>( tpl ) ), 0 )...};
+			(void)expander{0, ( static_cast<void>( --std::get<Is>( tpl ) ), 0 )...};
 		}
 
 		template<typename... Ts>
@@ -64,7 +64,7 @@ namespace daw {
 		static constexpr void advance( std::tuple<Ts...> &tpl,
 		                               std::index_sequence<Is...>, intmax_t n ) {
 			using expander = int[];
-			expander{0, ( static_cast<void>( daw::advance( std::get<Is>( tpl ), n ),
+			(void)expander{0, ( static_cast<void>( daw::advance( std::get<Is>( tpl ), n ),
 			                                 0 ) )...};
 		}
 
