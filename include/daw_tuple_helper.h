@@ -28,6 +28,7 @@
 #include <utility>
 
 #include "daw_math.h"
+#include "daw_static_array.h"
 
 namespace daw {
 	namespace tuple {
@@ -325,5 +326,66 @@ namespace daw {
 			  a, b, daw::tuple::detail::max_t::get( ) );
 		}
 
+		namespace apply_at_details {
+			template<typename Func>
+			constexpr void apply_func_impl( Func &&, ... ) noexcept {}
+
+			template<typename Func, typename Arg>
+			constexpr void apply_func_impl( Func &&func, Arg &&arg ) noexcept(
+			  noexcept( func( std::forward<Arg>( arg ) ) ) ) {
+				func( std::forward<Arg>( arg ) );
+			}
+
+			template<typename Func>
+			struct call_func {
+				Func func;
+
+				template<typename Arg, std::enable_if_t<daw::is_callable_v<Func, Arg>,
+				                                        std::nullptr_t> = nullptr>
+				constexpr void
+				operator( )( Arg &&value ) noexcept( noexcept( func( value ) ) ) {
+					func( value );
+				}
+
+				constexpr void operator( )( ... ) noexcept {}
+			};
+
+			template<typename Func>
+			constexpr call_func<Func> make_call_func( Func &&func ) noexcept {
+				return call_func<Func>{std::forward<Func>( func )};
+			}
+
+			template<size_t N, typename Func, typename Arg>
+			constexpr void apply_func( size_t idx, Func func, Arg &&arg ) noexcept(
+			  noexcept( func( std::forward<Arg>( arg ) ) ) ) {
+				if( N == idx ) {
+					apply_func_impl( std::move( func ), std::forward<Arg>( arg ) );
+				}
+			}
+
+			template<typename Tuple, typename Func, size_t... Is>
+			constexpr void apply_at_impl( size_t idx, Tuple &&tp, Func &&func,
+			                              std::index_sequence<Is...> ) {
+				using expander = int[];
+				(void)expander{0, ( apply_func<Is>( idx, std::forward<Func>( func ),
+				                                    std::get<Is>( tp ) ),
+				                    0 )...};
+			}
+
+			template<typename... Args, typename Func>
+			constexpr void apply_at( size_t idx, std::tuple<Args...> &&tp,
+			                         Func &&func ) {
+				apply_at_impl( idx, std::move( tp ), std::forward<Func>( func ),
+				               std::index_sequence_for<Args...>{} );
+			}
+		} // namespace apply_at_details
+		template<typename... Args, typename Func>
+		constexpr void apply_at( size_t idx, std::tuple<Args...> const &tp,
+		                         Func &&func ) {
+			apply_at_details::apply_at_impl(
+			  idx, tp, apply_at_details::make_call_func( std::forward<Func>( func ) ),
+			  std::index_sequence_for<Args...>{} );
+		}
 	} // namespace tuple
 } // namespace daw
+

@@ -99,3 +99,11 @@ BOOST_AUTO_TEST_CASE( daw_tuple_helpers_001 ) {
 	BOOST_REQUIRE( t_min == std::make_tuple( 1, 2, 3, 1 ) );
 	BOOST_REQUIRE( t_max == std::make_tuple( 5, 4, 4, 8 ) );
 }
+
+BOOST_AUTO_TEST_CASE( runtime_get_test_001 ) {
+	constexpr auto tp = std::make_tuple( "hello", 3ULL, 3.545, true );
+	auto i = 0;
+	daw::tuple::apply_at( 1, tp, [&i]( int value ) { i = value; } );
+	BOOST_REQUIRE_EQUAL( 3, i );
+
+}
