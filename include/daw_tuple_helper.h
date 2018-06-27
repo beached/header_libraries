@@ -344,7 +344,7 @@ namespace daw {
 				                                        std::nullptr_t> = nullptr>
 				constexpr void
 				operator( )( Arg &&value ) noexcept( noexcept( func( value ) ) ) {
-					func( value );
+					func( std::forward<Arg>( value ) );
 				}
 
 				constexpr void operator( )( ... ) noexcept {}
