@@ -78,6 +78,12 @@ BOOST_AUTO_TEST_CASE( daw_parse_to_005 ) {
 	BOOST_REQUIRE_EQUAL( result, 6 );
 }
 
+BOOST_AUTO_TEST_CASE( daw_parse_to_005b ) {
+	auto f = []( int a, int b, int c ) noexcept { return a + b + c; };
+	auto result = daw::apply_string2( f, "1,2,3", "," );
+	BOOST_REQUIRE_EQUAL( result, 6 );
+}
+
 BOOST_AUTO_TEST_CASE( daw_parse_to_006 ) {
 	auto f = []( int a, int b, int c ) { return a + b + c; };
 	auto result = daw::apply_string<int, int, int>( f, "1,2,3", "," );

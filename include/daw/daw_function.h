@@ -33,6 +33,38 @@ namespace daw {
 	// 'operator()'
 
 	template<typename ClassType, typename ReturnType, typename... Args>
+	struct function_info<ReturnType ( ClassType::* )( Args... )> {
+		static constexpr size_t const arity = sizeof...( Args );
+
+		using result_type = ReturnType;
+		using args_tuple = std::tuple<Args...>;
+		using decayed_args_tuple = std::tuple<std::decay_t<Args>...>;
+
+		template<size_t i>
+		struct arg {
+			typedef typename std::tuple_element<i, std::tuple<Args...>>::type type;
+			// the i-th argument is equivalent to the i-th tuple element of a tuple
+			// composed of those arguments.
+		};
+	};
+
+	template<typename ClassType, typename ReturnType, typename... Args>
+	struct function_info<ReturnType ( ClassType::* )( Args... ) noexcept> {
+		static constexpr size_t const arity = sizeof...( Args );
+
+		using result_type = ReturnType;
+		using args_tuple = std::tuple<Args...>;
+		using decayed_args_tuple = std::tuple<std::decay_t<Args>...>;
+
+		template<size_t i>
+		struct arg {
+			typedef typename std::tuple_element<i, std::tuple<Args...>>::type type;
+			// the i-th argument is equivalent to the i-th tuple element of a tuple
+			// composed of those arguments.
+		};
+	};
+
+	template<typename ClassType, typename ReturnType, typename... Args>
 	struct function_info<ReturnType ( ClassType::* )( Args... ) const> {
 		static constexpr size_t const arity = sizeof...( Args );
 
@@ -47,4 +79,85 @@ namespace daw {
 			// composed of those arguments.
 		};
 	};
+
+	template<typename ClassType, typename ReturnType, typename... Args>
+	struct function_info<ReturnType ( ClassType::* )( Args... ) const noexcept> {
+		static constexpr size_t const arity = sizeof...( Args );
+
+		using result_type = ReturnType;
+		using args_tuple = std::tuple<Args...>;
+		using decayed_args_tuple = std::tuple<std::decay_t<Args>...>;
+
+		template<size_t i>
+		struct arg {
+			typedef typename std::tuple_element<i, std::tuple<Args...>>::type type;
+			// the i-th argument is equivalent to the i-th tuple element of a tuple
+			// composed of those arguments.
+		};
+	};
+
+	template<typename ClassType, typename ReturnType, typename... Args>
+	struct function_info<ReturnType ( ClassType::* )( Args... ) volatile> {
+		static constexpr size_t const arity = sizeof...( Args );
+
+		using result_type = ReturnType;
+		using args_tuple = std::tuple<Args...>;
+		using decayed_args_tuple = std::tuple<std::decay_t<Args>...>;
+
+		template<size_t i>
+		struct arg {
+			typedef typename std::tuple_element<i, std::tuple<Args...>>::type type;
+			// the i-th argument is equivalent to the i-th tuple element of a tuple
+			// composed of those arguments.
+		};
+	};
+
+	template<typename ClassType, typename ReturnType, typename... Args>
+	struct function_info<ReturnType ( ClassType::* )( Args... ) volatile noexcept> {
+		static constexpr size_t const arity = sizeof...( Args );
+
+		using result_type = ReturnType;
+		using args_tuple = std::tuple<Args...>;
+		using decayed_args_tuple = std::tuple<std::decay_t<Args>...>;
+
+		template<size_t i>
+		struct arg {
+			typedef typename std::tuple_element<i, std::tuple<Args...>>::type type;
+			// the i-th argument is equivalent to the i-th tuple element of a tuple
+			// composed of those arguments.
+		};
+	};
+
+	template<typename ClassType, typename ReturnType, typename... Args>
+	struct function_info<ReturnType ( ClassType::* )( Args... ) volatile const> {
+		static constexpr size_t const arity = sizeof...( Args );
+
+		using result_type = ReturnType;
+		using args_tuple = std::tuple<Args...>;
+		using decayed_args_tuple = std::tuple<std::decay_t<Args>...>;
+
+		template<size_t i>
+		struct arg {
+			typedef typename std::tuple_element<i, std::tuple<Args...>>::type type;
+			// the i-th argument is equivalent to the i-th tuple element of a tuple
+			// composed of those arguments.
+		};
+	};
+
+	template<typename ClassType, typename ReturnType, typename... Args>
+	struct function_info<ReturnType ( ClassType::* )( Args... ) volatile const noexcept> {
+		static constexpr size_t const arity = sizeof...( Args );
+
+		using result_type = ReturnType;
+		using args_tuple = std::tuple<Args...>;
+		using decayed_args_tuple = std::tuple<std::decay_t<Args>...>;
+
+		template<size_t i>
+		struct arg {
+			typedef typename std::tuple_element<i, std::tuple<Args...>>::type type;
+			// the i-th argument is equivalent to the i-th tuple element of a tuple
+			// composed of those arguments.
+		};
+	};
 } // namespace daw
+

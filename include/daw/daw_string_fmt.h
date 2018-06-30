@@ -110,7 +110,7 @@ namespace daw {
 			result += sv.pop_front( "{" ).to_string( );
 			while( !sv.empty( ) ) {
 				auto const idx_str = sv.pop_front( "}" );
-				auto idx = daw::parser::parse_unsigned_int<uint8_t>( idx_str );
+				auto const idx = daw::parser::parse_unsigned_int<uint8_t>( idx_str );
 				result += impl::get_arg( idx, std::forward<Args>( args )... );
 				result += sv.pop_front( "{" ).to_string( );
 			}
