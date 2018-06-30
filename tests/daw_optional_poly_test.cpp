@@ -103,12 +103,6 @@ BOOST_AUTO_TEST_CASE( daw_optional_poly_test_03 ) {
 		  : blah2{321} {}
 		explicit child_t( int x )
 		  : blah2{x} {}
-		~child_t( ) override = default;
-		child_t( child_t const & ) = default;
-		child_t( child_t && ) noexcept = default;
-		child_t &operator=( child_t && ) noexcept = default;
-		child_t &operator=( child_t const & ) = default;
-
 		int get( ) const override {
 			return blah2;
 		}

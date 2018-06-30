@@ -40,7 +40,8 @@ namespace void_t_tests {
 	}
 
 	BOOST_AUTO_TEST_CASE( void_t_test_001 ) {
-		BOOST_REQUIRE( fn2( X{} ) );
+		auto const b1 = fn2( X{} );
+		BOOST_REQUIRE( b1 );
 	}
 } // namespace void_t_tests
 
