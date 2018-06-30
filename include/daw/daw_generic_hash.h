@@ -79,7 +79,7 @@ namespace daw {
 		template<typename Value,
 		         std::enable_if_t<is_integral_v<Value>, std::nullptr_t> = nullptr>
 		static constexpr hash_value_t append_hash( hash_value_t current_hash,
-		                                           Value const &value ) noexcept {
+		                                           Value const & ) noexcept {
 			// TODO	static_assert( sizeof( Value ) >= sizeof( hash_value_t ), "Value
 			// must be at least 2 bytes" );
 			// TODO
