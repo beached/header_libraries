@@ -468,7 +468,7 @@ namespace daw {
 					val = max_val;
 				}
 				return val;
-			};
+			}
 		} // namespace math
 
 		template<typename InputIterator>
