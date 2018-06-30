@@ -911,7 +911,7 @@ namespace daw {
 
 		namespace impl {
 			template<typename... Ts>
-			constexpr void tuple_test( std::tuple<Ts...> const & ) noexcept {};
+			constexpr void tuple_test( std::tuple<Ts...> const & ) noexcept {}
 
 			template<typename... Ts>
 			using detect_is_tuple = decltype( tuple_test( std::declval<Ts>( )... ) );
