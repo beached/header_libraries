@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016-2017 Darrell Wright
+// Copyright (c) 2016-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -22,8 +22,8 @@
 
 #include <iostream>
 
-#include "boost_test.h"
-#include "daw_safe_string.h"
+#include "daw/boost_test.h"
+#include "daw/daw_safe_string.h"
 
 BOOST_AUTO_TEST_CASE( daw_safe_string_test_01 ) {
 	auto s =

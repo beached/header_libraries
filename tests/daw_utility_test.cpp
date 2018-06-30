@@ -27,8 +27,8 @@
 #include <tuple>
 #include <typeinfo>
 
-#include "boost_test.h"
-#include "daw_utility.h"
+#include "daw/boost_test.h"
+#include "daw/daw_utility.h"
 
 BOOST_AUTO_TEST_CASE( daw_utility_append_test ) {
 	std::vector<int> a{1, 2, 3, 4, 5};

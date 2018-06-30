@@ -20,13 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "boost_test.h"
+#include "daw/boost_test.h"
 #include <sstream>
 #include <string>
 
-#include "daw_exception.h"
-#include "daw_math.h"
-#include "daw_parse_to.h"
+#include "daw/daw_exception.h"
+#include "daw/daw_math.h"
+#include "daw/daw_parse_to.h"
 
 BOOST_AUTO_TEST_CASE( daw_parse_to_001 ) {
 	constexpr auto vals =

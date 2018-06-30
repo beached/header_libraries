@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -25,8 +25,8 @@
 #include <iostream>
 #include <string>
 
-#include "boost_test.h"
-#include "daw_static_array.h"
+#include "daw/boost_test.h"
+#include "daw/daw_static_array.h"
 
 BOOST_AUTO_TEST_CASE( daw_static_array_test_001 ) {
 	daw::static_array_t<int, 5> a = {1, 2, 3, 4, 5};

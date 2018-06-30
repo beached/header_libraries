@@ -25,8 +25,8 @@
 #include <iostream>
 #include <mutex>
 
-#include "boost_test.h"
-#include "parallel/daw_spin_lock.h"
+#include "daw/boost_test.h"
+#include "daw/parallel/daw_spin_lock.h"
 
 BOOST_AUTO_TEST_CASE( daw_spin_lock_001 ) {
 	daw::spin_lock sp{};

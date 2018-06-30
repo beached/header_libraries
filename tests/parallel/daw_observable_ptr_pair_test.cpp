@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -20,10 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "boost_test.h"
+#include "daw/boost_test.h"
 #include <iostream>
 
-#include "parallel/daw_observable_ptr_pair.h"
+#include "daw/parallel/daw_observable_ptr_pair.h"
 
 BOOST_AUTO_TEST_CASE( test_001 ) {
 	int *p = new int{4};

@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "boost_test.h"
+#include "daw/boost_test.h"
 #include <algorithm>
 #include <iostream>
 #include <numeric>
@@ -29,7 +29,7 @@
 #include <string_view>
 #include <vector>
 
-#include "iterator/daw_argument_iterator.h"
+#include "daw/iterator/daw_argument_iterator.h"
 
 BOOST_AUTO_TEST_CASE( test_end_001 ) {
 	constexpr auto last = daw::arg_iterator_t( );

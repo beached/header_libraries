@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2014-2017 Darrell Wright
+// Copyright (c) 2014-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -25,8 +25,8 @@
 #include <unordered_map>
 #include <vector>
 
-#include "boost_test.h"
-#include "daw_algorithm.h"
+#include "daw/boost_test.h"
+#include "daw/daw_algorithm.h"
 
 BOOST_AUTO_TEST_CASE( daw_safe_advance_test_001 ) {
 	std::vector<int> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};

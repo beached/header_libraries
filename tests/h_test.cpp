@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016-2017 Darrell Wright
+// Copyright (c) 2016-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -22,8 +22,8 @@
 
 #include <iostream>
 
-#include "boost_test.h"
-#include "static_hash_table.h"
+#include "daw/boost_test.h"
+#include "daw/static_hash_table.h"
 
 int main( int, char ** ) {
 	constexpr static daw::static_hash_t<size_t, 2> const values = {

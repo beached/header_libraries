@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2014-2017 Darrell Wright
+// Copyright (c) 2014-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "boost_test.h"
-#include "daw_range.h"
+#include "daw/boost_test.h"
+#include "daw/daw_range.h"
 
 #ifndef WIN32 // Fails on MSVC 2015.2
 BOOST_AUTO_TEST_CASE( daw_range_test01 ) {

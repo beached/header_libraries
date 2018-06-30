@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -25,8 +25,8 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "boost_test.h"
-#include "daw_union_pair.h"
+#include "daw/boost_test.h"
+#include "daw/daw_union_pair.h"
 
 BOOST_AUTO_TEST_CASE( daw_union_pair_test_001 ) {
 	daw::union_pair_t<int, double> tmp{int{5}};

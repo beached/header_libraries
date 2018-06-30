@@ -26,7 +26,7 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "iterator/daw_output_stream_iterator.h"
+#include "daw/iterator/daw_output_stream_iterator.h"
 
 int main( int, char ** ) {
 

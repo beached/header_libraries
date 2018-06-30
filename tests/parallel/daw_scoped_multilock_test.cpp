@@ -20,12 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "boost_test.h"
+#include "daw/boost_test.h"
 #include <chrono>
 #include <iostream>
 #include <thread>
 
-#include "parallel/daw_scoped_multilock.h"
+#include "daw/parallel/daw_scoped_multilock.h"
 
 BOOST_AUTO_TEST_CASE( daw_scoped_multilock_001 ) {
 	std::mutex m1;

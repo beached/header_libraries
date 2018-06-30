@@ -24,8 +24,8 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "boost_test.h"
-#include "iterator/daw_random_iterator.h"
+#include "daw/boost_test.h"
+#include "daw/iterator/daw_random_iterator.h"
 
 BOOST_AUTO_TEST_CASE( daw_random_iterator_01 ) {
 	int numbers[] = {1, 2, 3, 4, 5, 6, 7};

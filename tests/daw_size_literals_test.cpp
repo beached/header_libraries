@@ -25,8 +25,8 @@
 #include <iostream>
 #include <string>
 
-#include "boost_test.h"
-#include "daw_size_literals.h"
+#include "daw/boost_test.h"
+#include "daw/daw_size_literals.h"
 
 BOOST_AUTO_TEST_CASE( daw_size_literals_001 ) {
 	using namespace daw::size_literals;

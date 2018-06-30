@@ -20,10 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "boost_test.h"
+#include "daw/boost_test.h"
 #include <iostream>
 
-#include "iterator/daw_checked_iterator_proxy.h"
+#include "daw/iterator/daw_checked_iterator_proxy.h"
 
 BOOST_AUTO_TEST_CASE( daw_checked_iterator_proxy_001 ) {
 	std::vector<int> const test = {0, 1, 2, 3, 4};

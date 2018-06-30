@@ -27,8 +27,8 @@
 #include <string>
 #include <vector>
 
-#include "boost_test.h"
-#include "daw_string_view.h"
+#include "daw/boost_test.h"
+#include "daw/daw_string_view.h"
 
 #define FALSE( b ) ( !( b ) )
 namespace daw {

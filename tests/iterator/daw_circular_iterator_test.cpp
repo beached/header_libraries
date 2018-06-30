@@ -26,9 +26,9 @@
 #include <iostream>
 #include <vector>
 
-#include "boost_test.h"
-#include "iterator/daw_circular_iterator.h"
-#include "daw_traits.h"
+#include "daw/boost_test.h"
+#include "daw/iterator/daw_circular_iterator.h"
+#include "daw/daw_traits.h"
 
 BOOST_AUTO_TEST_CASE( daw_circular_iterator_001 ) {
 	std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7};

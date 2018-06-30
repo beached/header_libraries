@@ -20,13 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "boost_test.h"
+#include "daw/boost_test.h"
 #include <algorithm>
 #include <cstdint>
 #include <iostream>
 
-#include "daw_static_array.h"
-#include "iterator/daw_zipiter.h"
+#include "daw/daw_static_array.h"
+#include "daw/iterator/daw_zipiter.h"
 
 constexpr bool test( ) {
 	daw::static_array_t<uint8_t, 10> a{9, 8, 7, 6, 5, 4, 3, 2, 1, 0};

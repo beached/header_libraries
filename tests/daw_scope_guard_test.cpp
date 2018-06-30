@@ -20,10 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "boost_test.h"
+#include "daw/boost_test.h"
 #include <iostream>
 
-#include "daw_scope_guard.h"
+#include "daw/daw_scope_guard.h"
 
 struct oe_t {
 	bool *b;

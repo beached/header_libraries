@@ -24,8 +24,8 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "boost_test.h"
-#include "iterator/daw_split_iterator.h"
+#include "daw/boost_test.h"
+#include "daw/iterator/daw_split_iterator.h"
 
 BOOST_AUTO_TEST_CASE( split_it_001 ) {
 	std::string str = "This is a test of the split";

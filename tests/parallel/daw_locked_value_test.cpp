@@ -20,12 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "boost_test.h"
+#include "daw/boost_test.h"
 #include <chrono>
 #include <iostream>
 #include <thread>
 
-#include "parallel/daw_locked_value.h"
+#include "daw/parallel/daw_locked_value.h"
 
 struct A {
 	std::mutex m_mutex;

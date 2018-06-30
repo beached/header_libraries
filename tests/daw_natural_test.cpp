@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2014-2017 Darrell Wright
+// Copyright (c) 2014-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -22,10 +22,10 @@
 
 #include <iostream>
 
-#include "boost_test.h"
+#include "daw/boost_test.h"
 
-#include "daw_natural.h"
-#include "daw_utility.h"
+#include "daw/daw_natural.h"
+#include "daw/daw_utility.h"
 
 BOOST_AUTO_TEST_CASE( daw_natural_test_01 ) {
 	daw::natural_t<int> a = 5;

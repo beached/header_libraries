@@ -20,10 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "boost_test.h"
+#include "daw/boost_test.h"
 #include <iostream>
 
-#include "iterator/daw_reverse_iterator.h"
+#include "daw/iterator/daw_reverse_iterator.h"
 
 BOOST_AUTO_TEST_CASE( reverse_iterator_test_001 ) {
 	std::vector<int> a = {1, 2, 3, 4, 5, 6};

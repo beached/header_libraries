@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2014-2017 Darrell Wright
+// Copyright (c) 2014-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -24,8 +24,8 @@
 #include <string>
 #include <tuple>
 
-#include "boost_test.h"
-#include "daw_tuple_helper.h"
+#include "daw/boost_test.h"
+#include "daw/daw_tuple_helper.h"
 
 using namespace daw::tuple::operators;
 using namespace daw::tuple;

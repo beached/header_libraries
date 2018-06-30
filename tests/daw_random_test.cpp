@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -24,8 +24,8 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "boost_test.h"
-#include "daw_random.h"
+#include "daw/boost_test.h"
+#include "daw/daw_random.h"
 
 BOOST_AUTO_TEST_CASE( daw_random_01 ) {
 	for( auto n = 0; n < 100000; ++n ) {

@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -26,9 +26,9 @@
 #include <string>
 #include <vector>
 
-#include "boost_test.h"
-#include "daw_benchmark.h"
-#include "daw_string_fmt.h"
+#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
+#include "daw/daw_string_fmt.h"
 
 BOOST_AUTO_TEST_CASE( stirng_fmt_test_001 ) {
 	std::cout << daw::fmt(

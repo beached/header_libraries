@@ -23,8 +23,8 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "boost_test.h"
-#include "daw_checked_expected.h"
+#include "daw/boost_test.h"
+#include "daw/daw_checked_expected.h"
 
 daw::checked_expected_t<int, std::runtime_error> divide( int v ) noexcept {
 	try {

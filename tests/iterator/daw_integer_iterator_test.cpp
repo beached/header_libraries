@@ -20,10 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "boost_test.h"
+#include "daw/boost_test.h"
 #include <iostream>
 
-#include "iterator/daw_integer_iterator.h"
+#include "daw/iterator/daw_integer_iterator.h"
 
 BOOST_AUTO_TEST_CASE( integer_range_01 ) {
 	int sum = 0;

@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -24,9 +24,9 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "boost_test.h"
-#include "daw_benchmark.h"
-#include "daw_fixed_lookup.h"
+#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
+#include "daw/daw_fixed_lookup.h"
 
 BOOST_AUTO_TEST_CASE( daw_fixed_lookup_001 ) {
 	daw::fixed_lookup<int, 100> blah{};

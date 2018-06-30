@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -25,8 +25,8 @@
 #include <iostream>
 #include <string>
 
-#include "boost_test.h"
-#include "daw_span.h"
+#include "daw/boost_test.h"
+#include "daw/daw_span.h"
 
 BOOST_AUTO_TEST_CASE( daw_span_test_001 ) {
 	constexpr auto const a = daw::make_span( "This is a test" );
