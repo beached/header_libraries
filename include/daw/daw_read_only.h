@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Darrell Wright
+// Copyright (c) 2017-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -20,6 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "cpp_17.h"
+
 #pragma once
 
 namespace daw {
@@ -34,36 +36,39 @@ namespace daw {
 		value_type m_value;
 
 	public:
-		constexpr read_only( )
-		  : m_value{} {}
+		constexpr read_only( ) noexcept( daw::is_nothrow_constructible_v<T> )
+		  : m_value( ) {}
 
-		read_only( value_type value ) noexcept
-		  : m_value{std::move( value )} {}
+		constexpr read_only( value_type &&value ) noexcept(
+		  daw::is_nothrow_move_constructible_v<T> )
+		  : m_value( std::move( value ) ) {}
 
-		read_only( read_only const & ) = default;
-		read_only( read_only && ) noexcept = default;
-		read_only &operator=( read_only const & ) = delete;
-		read_only &operator=( read_only && ) noexcept = delete;
-		~read_only( ) noexcept = default;
+		constexpr read_only( value_type const &value ) noexcept(
+		  daw::is_nothrow_copy_constructible_v<T> )
+		  : m_value( value ) {}
 
-		operator const_reference( ) const {
+		read_only & operator=( value_type const & ) = delete;
+		read_only & operator=( value_type && ) = delete;
+
+		constexpr operator const_reference( ) const noexcept {
 			return m_value;
 		}
 
-		const_reference get( ) const {
+		constexpr const_reference get( ) const noexcept {
 			return m_value;
 		}
 
-		reference read_write( ) {
+		constexpr reference read_write( ) noexcept {
 			return m_value;
 		}
 
-		const_pointer operator->( ) const {
+		constexpr const_pointer operator->( ) const noexcept {
 			return &m_value;
 		}
 
-		value_type move_out( ) {
+		constexpr value_type move_out( ) noexcept {
 			return std::move( m_value );
 		}
 	}; // read_only
 } // namespace daw
+
