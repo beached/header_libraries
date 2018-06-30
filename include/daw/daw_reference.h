@@ -23,7 +23,7 @@
 #pragma once
 
 #include <algorithm>
-#include <iostream>
+#include <ostream>
 #include <iterator>
 #include <numeric>
 #include <vector>

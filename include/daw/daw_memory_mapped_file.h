@@ -25,7 +25,6 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/iostreams/device/mapped_file.hpp>
-#include <iostream>
 #include <memory>
 #include <string>
 
@@ -60,13 +59,7 @@ namespace daw {
 					// boost::iostreams::mapped_file::mapmode::readonly;
 				}
 				m_mf_params.offset = 0;
-				try {
-					m_mf_file.open( m_mf_params );
-				} catch( std::exception const &ex ) {
-					std::cerr << "Error Opening memory mapped file '"
-					          << file_path.string( ) << "': " << ex.what( ) << '\n';
-					throw ex;
-				}
+				m_mf_file.open( m_mf_params );
 			}
 
 			template<typename charT, typename traits>
@@ -89,12 +82,10 @@ namespace daw {
 				}
 			}
 
-			virtual ~memory_mapped_file_t( ) {
+			virtual ~memory_mapped_file_t( ) noexcept {
 				try {
 					close( );
-				} catch( ... ) {
-					std::cerr << "Exception while closing memory mapped file\n";
-				}
+				} catch( ... ) { }
 			}
 
 			bool is_open( ) const {
