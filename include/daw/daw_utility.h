@@ -494,7 +494,7 @@ namespace daw {
 	template<typename Value, typename... T>
 	constexpr size_t bitcount( Value value, T... values ) noexcept {
 		return bitcount( value ) + bitcount( values... );
-	};
+	}
 
 	template<typename IntegerDest, typename IntegerSource>
 	constexpr bool can_fit( IntegerSource const value ) noexcept {

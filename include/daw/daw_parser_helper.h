@@ -477,7 +477,7 @@ namespace daw {
 				endings.push_back( result.last );
 			}
 			return endings;
-		};
+		}
 
 		template<typename ForwardIterator, typename Predicate>
 		auto split_if( ForwardIterator first, ForwardIterator last,
