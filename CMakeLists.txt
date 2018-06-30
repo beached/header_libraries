@@ -132,17 +132,16 @@ set( UNTESTED_HEADER_FILES
 	daw_variant.h
 	daw_variant2.h
 	daw_zipcontainer.h
-	iterator/daw_iterator.h
-	iterator/daw_function_iterator.h
-	parallel/concurrent_queue.h
-	parallel/daw_locked_stack.h
 )
 
 set( UNTESTED_ITERATOR_HEADER_FILES
 	daw_iterator.h
+	daw_function_iterator.h
 )
 set( UNTESTED_PARALLEL_HEADER_FILES
+	concurrent_queue.h
 	daw_condition_variable.h
+	daw_locked_stack.h
 )
 
 enable_testing( )
