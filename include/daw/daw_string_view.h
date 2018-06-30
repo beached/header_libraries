@@ -720,7 +720,10 @@ namespace daw {
 
 		constexpr size_type find_last_of( value_type const c,
 		                                  size_type pos = npos ) const noexcept {
-			for( difference_type n = m_size - 1; n >= 0; --n ) {
+			if( pos >= m_size ) {
+				pos = 0;
+			}
+			for( difference_type n = m_size - 1; n >= pos; --n ) {
 				if( m_first[n] == c ) {
 					return static_cast<size_type>( n );
 				}
