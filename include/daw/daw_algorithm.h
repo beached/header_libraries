@@ -24,7 +24,6 @@
 
 #include <algorithm>
 #include <functional>
-#include <iostream>
 #include <iterator>
 #include <stdexcept>
 #include <type_traits>

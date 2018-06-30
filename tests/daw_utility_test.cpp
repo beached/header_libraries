@@ -23,6 +23,7 @@
 #include <array>
 #include <cmath>
 #include <sstream>
+#include <iostream>
 #include <system_error>
 #include <tuple>
 #include <typeinfo>
@@ -99,11 +100,6 @@ BOOST_AUTO_TEST_CASE( daw_pack_index_of_003 ) {
 	constexpr auto const pack_pos =
 	  daw::pack_index_of_v<bool, std::string, bool, float, int, long>;
 	BOOST_REQUIRE_EQUAL( pack_pos, 1 );
-}
-
-BOOST_AUTO_TEST_CASE( daw_read_file_001 ) {
-	auto f = daw::read_file( "./daw_utility_test_bin" );
-	std::cout << f.size( ) << '\n';
 }
 
 /*

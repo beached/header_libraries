@@ -23,7 +23,6 @@
 #pragma once
 
 #include <algorithm>
-#include <iostream>
 #include <numeric>
 
 #include "daw_algorithm.h"

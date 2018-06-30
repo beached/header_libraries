@@ -22,6 +22,7 @@
 
 #include <algorithm>
 #include <boost/iterator/counting_iterator.hpp>
+#include <iostream>
 #include <cstdint>
 #include <string>
 #include <unordered_map>

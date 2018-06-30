@@ -58,6 +58,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_parser_helper_sv
 	daw_poly_vector
 	daw_random
+	daw_read_file
 	daw_read_only
 	daw_safe_string
 	daw_scope_guard
