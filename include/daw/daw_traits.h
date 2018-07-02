@@ -575,6 +575,26 @@ namespace daw {
 	  is_detected_convertible_v<Result, detectors::callable_with, Function,
 	                            Args...>;
 
+	namespace impl {
+		template<typename Function, typename... Args,
+		         std::enable_if_t<is_callable_v<Function, Args...>,
+		                          std::nullptr_t> = nullptr>
+		constexpr bool is_nothrow_callable_test( ) noexcept {
+			return noexcept( std::declval<Function>( )( std::declval<Args>( )... ) );
+		}
+
+		template<typename Function, typename... Args,
+		         std::enable_if_t<!is_callable_v<Function, Args...>,
+		                          std::nullptr_t> = nullptr>
+		constexpr bool is_nothrow_callable_test( ) noexcept {
+			return false;
+		}
+	} // namespace impl
+
+	template<typename Function, typename... Args>
+	constexpr bool
+	  is_nothrow_callable_v = impl::is_nothrow_callable_test<Function, Args...>( );
+
 	template<typename Predicate, typename... Args>
 	constexpr bool is_predicate_v =
 	  is_detected_convertible_v<bool, detectors::callable_with, Predicate,

@@ -829,3 +829,16 @@ BOOST_AUTO_TEST_CASE( is_init_list_constructible_001 ) {
 	                                                          int, int, int, int>,
 	               "a vector<int> should be initializer_list constructible" );
 }
+
+BOOST_AUTO_TEST_CASE( is_nothrow_callable_001 ) {
+	struct X {};
+	struct A {
+		constexpr void operator()( X );
+		constexpr void operator()( int ) noexcept;
+	};
+	constexpr bool b1 = daw::is_nothrow_callable_v<A, int>;
+	BOOST_REQUIRE( b1 ); 
+
+	constexpr bool b2 = daw::is_nothrow_callable_v<A, X>;
+	BOOST_REQUIRE( !b2 ); 
+}
