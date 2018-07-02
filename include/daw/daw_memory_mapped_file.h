@@ -85,7 +85,7 @@ namespace daw {
 			virtual ~memory_mapped_file_t( ) noexcept {
 				try {
 					close( );
-				} catch( ... ) { }
+				} catch( ... ) {}
 			}
 
 			bool is_open( ) const {

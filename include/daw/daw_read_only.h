@@ -47,8 +47,8 @@ namespace daw {
 		  daw::is_nothrow_copy_constructible_v<T> )
 		  : m_value( value ) {}
 
-		read_only & operator=( value_type const & ) = delete;
-		read_only & operator=( value_type && ) = delete;
+		read_only &operator=( value_type const & ) = delete;
+		read_only &operator=( value_type && ) = delete;
 
 		constexpr operator const_reference( ) const noexcept {
 			return m_value;
@@ -71,4 +71,3 @@ namespace daw {
 		}
 	}; // read_only
 } // namespace daw
-

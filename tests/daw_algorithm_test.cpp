@@ -277,9 +277,8 @@ BOOST_AUTO_TEST_CASE( daw_map_test_002 ) {
 
 BOOST_AUTO_TEST_CASE( daw_reduce_test_001 ) {
 	int blah[6] = {1, 0, 1, 0, 1, 0};
-	auto const tst = daw::algorithm::reduce(
-	  blah, daw::next( blah, 6 ),
-	  0, []( auto lhs, auto rhs ) noexcept { return lhs + rhs; } );
+	auto const tst = daw::algorithm::reduce( blah, daw::next( blah, 6 ), 0, [
+	]( auto lhs, auto rhs ) noexcept { return lhs + rhs; } );
 	BOOST_REQUIRE_EQUAL( tst, 3 );
 }
 

@@ -64,7 +64,7 @@ namespace daw {
 			ReferenceRange &operator=( ReferenceRange && ) = default;
 
 			ReferenceRange( iterator first, iterator last )
-			  : m_values(::daw::to_reference_vector( first, last ) ) {}
+			  : m_values( ::daw::to_reference_vector( first, last ) ) {}
 
 			bool at_end( ) const {
 				return begin( ) == end( );
@@ -193,7 +193,7 @@ namespace daw {
 			}
 
 			ReferenceRange &unique( ) {
-				erase(::std::unique( begin( ), end( ) ), end( ) );
+				erase( ::std::unique( begin( ), end( ) ), end( ) );
 				return *this;
 			}
 
@@ -203,11 +203,11 @@ namespace daw {
 
 			template<typename UnaryPredicate>
 			ReferenceRange &unique( UnaryPredicate predicate ) {
-				erase(::std::unique( begin( ), end( ),
-				                     [&predicate]( auto const &v ) {
-					                     return predicate( v.get( ) );
-				                     } ),
-				      end( ) );
+				erase( ::std::unique( begin( ), end( ),
+				                      [&predicate]( auto const &v ) {
+					                      return predicate( v.get( ) );
+				                      } ),
+				       end( ) );
 				return *this;
 			}
 
@@ -304,11 +304,11 @@ namespace daw {
 
 			template<typename UnaryPredicate>
 			ReferenceRange &erase( UnaryPredicate predicate ) {
-				m_values.erase(::std::remove_if( m_values.begin( ), m_values.end( ),
-				                                 [&predicate]( auto const &v ) {
-					                                 return predicate( v.get( ) );
-				                                 } ),
-				               m_values.end( ) );
+				m_values.erase( ::std::remove_if( m_values.begin( ), m_values.end( ),
+				                                  [&predicate]( auto const &v ) {
+					                                  return predicate( v.get( ) );
+				                                  } ),
+				                m_values.end( ) );
 				return *this;
 			}
 
@@ -412,9 +412,9 @@ namespace daw {
 			template<typename Container, typename = void>
 			auto make_range_reference( Container &container ) {
 				using iterator =
-				  ::std::remove_const_t<decltype(::std::begin( container ) )>;
-				return ReferenceRange<iterator>(::std::begin( container ),
-				                                ::std::end( container ) );
+				  ::std::remove_const_t<decltype( ::std::begin( container ) )>;
+				return ReferenceRange<iterator>( ::std::begin( container ),
+				                                 ::std::end( container ) );
 			}
 
 			template<typename IteratorF, typename IteratorL>
@@ -458,8 +458,9 @@ namespace daw {
 } // namespace daw
 
 template<typename Iterator>
-::std::ostream &operator<<(::std::ostream &os,
-                           ::daw::range::ReferenceRange<Iterator> const &rng ) {
+::std::ostream &
+operator<<( ::std::ostream &os,
+            ::daw::range::ReferenceRange<Iterator> const &rng ) {
 	os << "{";
 	if( !rng.empty( ) ) {
 		for( auto it = rng.cbegin( ); it != rng.cend( ); ++it ) {

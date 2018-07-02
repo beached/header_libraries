@@ -64,8 +64,8 @@ namespace daw {
 		static constexpr void advance( std::tuple<Ts...> &tpl,
 		                               std::index_sequence<Is...>, intmax_t n ) {
 			using expander = int[];
-			(void)expander{0, ( static_cast<void>( daw::advance( std::get<Is>( tpl ), n ),
-			                                 0 ) )...};
+			(void)expander{0, ( static_cast<void>(
+			                    daw::advance( std::get<Is>( tpl ), n ), 0 ) )...};
 		}
 
 		template<typename... Ts>

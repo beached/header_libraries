@@ -329,18 +329,16 @@ namespace daw {
 	template<typename CharType, typename Traits, typename Allocator>
 	constexpr auto
 	AsciiUpper( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
-		daw::algorithm::map(
-		  str.cbegin( ), str.cend( ),
-		  str.begin( ), []( CharType c ) noexcept { return AsciiUpper( c ); } );
+		daw::algorithm::map( str.cbegin( ), str.cend( ), str.begin( ), [
+		]( CharType c ) noexcept { return AsciiUpper( c ); } );
 		return std::move( str );
 	}
 
 	template<typename CharType, typename Traits, typename Allocator>
 	constexpr auto
 	AsciiLower( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
-		daw::algorithm::map(
-		  str.cbegin( ), str.cend( ),
-		  str.begin( ), []( CharType c ) noexcept { return AsciiLower( c ); } );
+		daw::algorithm::map( str.cbegin( ), str.cend( ), str.begin( ), [
+		]( CharType c ) noexcept { return AsciiLower( c ); } );
 		return std::move( str );
 	}
 
@@ -380,7 +378,7 @@ namespace daw {
 	} // namespace details
 
 	template<typename T>
-	auto RunIfValid(::std::weak_ptr<T> w_ptr ) {
+	auto RunIfValid( ::std::weak_ptr<T> w_ptr ) {
 		return details::RunIfValid<T>( w_ptr );
 	}
 
@@ -760,10 +758,8 @@ namespace daw {
 	         std::enable_if_t<!daw::is_callable_v<OverloadSet, Args...>,
 	                          std::nullptr_t> = nullptr>
 	decltype( auto ) empty_overload( OverloadSet &&overload_set ) {
-		return overload(
-		  std::forward<OverloadSet>( overload_set ), [](
-		                                               Args &&
-		                                               ... ) mutable noexcept {} );
+		return overload( std::forward<OverloadSet>( overload_set ),
+		                 []( Args && ... ) mutable noexcept {} );
 	}
 
 	template<typename... Args>

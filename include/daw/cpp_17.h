@@ -227,8 +227,8 @@ namespace daw {
 			using value_t = std::true_type;
 			using type = Op<Args...>;
 		};
-
 	} // namespace impl
+
 	template<template<class...> class Op, class... Args>
 	using is_detected =
 	  typename impl::detector<nonesuch, void, Op, Args...>::value_t;

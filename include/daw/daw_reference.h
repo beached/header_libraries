@@ -23,9 +23,9 @@
 #pragma once
 
 #include <algorithm>
-#include <ostream>
 #include <iterator>
 #include <numeric>
+#include <ostream>
 #include <vector>
 
 #include "daw_algorithm.h"
@@ -110,8 +110,8 @@ namespace daw {
 } // namespace daw
 
 template<typename T>
-::std::ostream &operator<<(::std::ostream &os,
-                           ::daw::Reference<T> const &ref ) {
+::std::ostream &operator<<( ::std::ostream &os,
+                            ::daw::Reference<T> const &ref ) {
 	os << *ref;
 	return os;
 }

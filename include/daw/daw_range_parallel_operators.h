@@ -126,9 +126,9 @@ namespace daw {
 							}                                                                \
                                                                                \
 						public:                                                            \
-							clause_name##_t(::std::tuple<Args...> &&args )                   \
+							clause_name##_t( ::std::tuple<Args...> &&args )                  \
 							  : clause_name                                                  \
-							  ##_args(::std::forward<::std::tuple<Args>>( args )... ) {}     \
+							  ##_args( ::std::forward<::std::tuple<Args>>( args )... ) {}    \
                                                                                \
 							template<typename Container>                                     \
 							auto operator( )( Container &&container ) const {                \

@@ -397,14 +397,14 @@ namespace daw {
 		static size_t hash_fn( KeyType &&key ) {
 			static const auto s_hash = []( auto &&k ) {
 				size_t result =
-				  ( daw::fnv1a_hash(::std::forward<KeyType>( k ) ) %
+				  ( daw::fnv1a_hash( ::std::forward<KeyType>( k ) ) %
 				    ( std::numeric_limits<size_t>::max( ) -
 				      impl::hash_table_item<value_type>::SentinalsSize ) ) +
 				  impl::hash_table_item<value_type>::SentinalsSize; // Guarantee we
 				                                                    // cannot be zero
 				return result;
 			};
-			return s_hash(::std::forward<KeyType>( key ) );
+			return s_hash( ::std::forward<KeyType>( key ) );
 		}
 
 		static size_t hash_fn( char const *c_str ) {

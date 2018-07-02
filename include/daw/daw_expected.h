@@ -223,21 +223,22 @@ namespace daw {
 
 		reference get( ) {
 			return boost::apply_visitor(
-			  daw::overload( []( reference value ) noexcept
-			                   ->reference { return value; },
-			                 []( std::exception_ptr ptr ) -> reference {
-				                 if( ptr != nullptr ) {
-					                 std::rethrow_exception( ptr );
-				                 }
-				                 throw std::logic_error( "Unexpected empty state" );
-			                 } ),
+			  daw::overload(
+			    []( reference value ) noexcept->reference { return value; },
+			    []( std::exception_ptr ptr ) -> reference {
+				    if( ptr != nullptr ) {
+					    std::rethrow_exception( ptr );
+				    }
+				    throw std::logic_error( "Unexpected empty state" );
+			    } ),
 			  m_value );
 		}
 
 		const_reference get( ) const {
 			return boost::apply_visitor(
-			  daw::overload( []( const_reference value ) noexcept
-			                   ->const_reference { return value; },
+			  daw::overload( []( const_reference value ) noexcept->const_reference {
+				  return value;
+			  },
 			                 []( std::exception_ptr ptr ) -> const_reference {
 				                 if( ptr != nullptr ) {
 					                 std::rethrow_exception( ptr );
@@ -257,8 +258,9 @@ namespace daw {
 
 		pointer operator->( ) {
 			return boost::apply_visitor(
-			  daw::overload( []( reference value ) noexcept
-			                   ->pointer { return std::addressof( value ); },
+			  daw::overload( []( reference value ) noexcept->pointer {
+				  return std::addressof( value );
+			  },
 			                 []( std::exception_ptr ptr ) -> pointer {
 				                 std::rethrow_exception( ptr );
 			                 } ),
@@ -267,8 +269,9 @@ namespace daw {
 
 		const_pointer operator->( ) const {
 			return boost::apply_visitor(
-			  daw::overload( []( const_reference value ) noexcept
-			                   ->const_pointer { return std::addressof( value ); },
+			  daw::overload( []( const_reference value ) noexcept->const_pointer {
+				  return std::addressof( value );
+			  },
 			                 []( std::exception_ptr ptr ) -> const_pointer {
 				                 if( ptr != nullptr ) {
 					                 std::rethrow_exception( ptr );

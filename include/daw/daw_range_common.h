@@ -32,8 +32,8 @@ namespace daw {
 				using value_type =
 				  daw::traits::root_type_t<typename Collection::value_type>;
 				::std::vector<value_type> result;
-				::std::copy(::std::begin( collection ), ::std::end( collection ),
-				            ::std::back_inserter( result ) );
+				::std::copy( ::std::begin( collection ), ::std::end( collection ),
+				             ::std::back_inserter( result ) );
 				return result;
 			}
 

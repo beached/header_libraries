@@ -36,4 +36,3 @@ namespace daw {
 		return std::string( std::istreambuf_iterator<CharT>{in_file}, {} );
 	}
 } // namespace daw
-

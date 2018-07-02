@@ -61,7 +61,7 @@ namespace daw {
 		template<typename CharT = char, typename Traits = ::std::char_traits<CharT>,
 		         typename Allocator = ::std::allocator<CharT>>
 		std::basic_string<CharT, Traits, Allocator>
-		to_string(::std::basic_string<CharT, Traits, Allocator> s ) {
+		to_string( ::std::basic_string<CharT, Traits, Allocator> s ) {
 			return std::move( s );
 		}
 

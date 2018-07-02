@@ -105,5 +105,4 @@ BOOST_AUTO_TEST_CASE( runtime_get_test_001 ) {
 	auto i = 0;
 	daw::tuple::apply_at( 1, tp, [&i]( int value ) { i = value; } );
 	BOOST_REQUIRE_EQUAL( 3, i );
-
 }

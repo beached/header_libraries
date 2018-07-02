@@ -225,8 +225,8 @@ namespace daw {
 			}
 
 			CollectionRange &unique( ) {
-				m_values.erase(::std::unique( m_values.begin( ), m_values.end( ) ),
-				               m_values.end( ) );
+				m_values.erase( ::std::unique( m_values.begin( ), m_values.end( ) ),
+				                m_values.end( ) );
 				return *this;
 			}
 
@@ -269,8 +269,8 @@ namespace daw {
 			CollectionRange &transform( UnaryOperator oper ) const {
 				using v_t = daw::traits::root_type_t<decltype( oper( front( ) ) )>;
 				auto result = CollectionRange<v_t>( );
-				::std::transform(::std::begin( m_values ), ::std::end( m_values ),
-				                 ::std::back_inserter( result ), oper );
+				::std::transform( ::std::begin( m_values ), ::std::end( m_values ),
+				                  ::std::back_inserter( result ), oper );
 				return result;
 			}
 
@@ -400,9 +400,9 @@ namespace daw {
 				using ValueType = impl::cleanup_t<
 				  typename ::std::iterator_traits<Iterator>::value_type>;
 				CollectionRange<ValueType> result{};
-				std::transform(::std::begin( collection ), ::std::end( collection ),
-				               ::std::back_inserter( result ),
-				               []( auto const &rv ) { return rv.get( ); } );
+				std::transform( ::std::begin( collection ), ::std::end( collection ),
+				                ::std::back_inserter( result ),
+				                []( auto const &rv ) { return rv.get( ); } );
 				return result;
 			}
 		} // namespace impl
@@ -464,8 +464,8 @@ namespace daw {
 } // namespace daw
 
 template<typename T>
-::std::ostream &operator<<(::std::ostream &os,
-                           ::daw::range::CollectionRange<T> const &rng ) {
+::std::ostream &operator<<( ::std::ostream &os,
+                            ::daw::range::CollectionRange<T> const &rng ) {
 	os << "{";
 	if( !rng.empty( ) ) {
 		for( auto it = rng.cbegin( ); it != rng.cend( ); ++it ) {
