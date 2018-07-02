@@ -442,8 +442,8 @@ namespace daw {
 	constexpr decltype( auto ) apply_string( Callable &&callable,
 	                                         daw::string_view str,
 	                                         Splitter &&splitter ) {
-		static_assert( is_callable_v<Callable, Args...>,
-		               "Callable must accept Args..." );
+		//		static_assert( is_callable_v<Callable, Args...>,
+		//		               "Callable must accept Args..." );
 		return daw::apply(
 		  std::forward<Callable>( callable ),
 		  parser::parse_to<Args...>( str, std::forward<Splitter>( splitter ) ) );
@@ -458,9 +458,11 @@ namespace daw {
 	/// @param str String data with string encoded arguments
 	/// @param delemiter split what string arguments on
 	/// @return result of callable
-	template<typename... Args, typename Callable,
-	         std::enable_if_t<is_callable_v<Callable, Args...>, std::nullptr_t> =
-	           nullptr>
+	/*	template<typename... Args, typename Callable,
+	           std::enable_if_t<is_callable_v<Callable, Args...>, std::nullptr_t>
+	   = nullptr>
+	             */
+	template<typename... Args, typename Callable>
 	constexpr decltype( auto ) apply_string( Callable &&callable,
 	                                         daw::string_view str,
 	                                         daw::string_view delemiter ) {
@@ -477,9 +479,12 @@ namespace daw {
 	/// @param callable Function to apply argument to
 	/// @param str String data with string encoded argument
 	/// @return result of callable
+	/*
 	template<
 	  typename Arg, typename Callable,
 	  std::enable_if_t<is_callable_v<Callable, Arg>, std::nullptr_t> = nullptr>
+	  */
+	template<typename Arg, typename Callable>
 	constexpr decltype( auto ) apply_string( Callable &&callable,
 	                                         daw::string_view str ) {
 
