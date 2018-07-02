@@ -868,7 +868,7 @@ namespace daw {
 
 		template<typename Container, size_t ExpectedSize>
 		constexpr bool is_value_size_equal_v =
-		  sizeof( *std::cbegin( std::declval<Container>( ) ) ) == ExpectedSize;
+		  sizeof( *std::begin( std::declval<Container>( ) ) ) == ExpectedSize;
 
 		namespace impl {
 			template<typename... Ts>
