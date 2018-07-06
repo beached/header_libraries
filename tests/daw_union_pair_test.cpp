@@ -70,3 +70,8 @@ BOOST_AUTO_TEST_CASE( daw_union_pair_test_004,
 	            tmp.visit( []( auto v ) { return static_cast<double>( v ); } ) );
 }
 
+BOOST_AUTO_TEST_CASE( daw_union_pair_test_005 ) {
+	auto tmp = daw::union_pair_t<int, double>( );
+	auto tmp2 = daw::union_pair_t<int, double>( 5 );
+	tmp = tmp2;
+}
