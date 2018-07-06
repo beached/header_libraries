@@ -47,7 +47,7 @@ namespace daw {
 		                         public std::integral_constant<T, error_number> {};
 
 		template<typename ExceptionType = std::runtime_error, typename StringType>
-		[[noreturn]] constexpr void daw_throw( StringType const &msg ) {
+		[[noreturn]] void daw_throw( StringType const &msg ) {
 			throw ExceptionType( msg );
 		}
 
@@ -241,6 +241,14 @@ namespace daw {
 				  std::forward<StringType>( format ), std::forward<Args>( args )... ) );
 			}
 			return true;
+		}
+
+		template<typename ExceptionType = AssertException, typename Bool,
+		         typename StringType>
+		constexpr void precondition_check( Bool &&condition, StringType &&msg ) {
+			if( !static_cast<bool>( condition ) ) {
+				daw_throw<ExceptionType>( std::forward<StringType>( msg ) );
+			}
 		}
 
 		template<typename ExceptionType = AssertException, typename ValueType,
