@@ -50,14 +50,16 @@ namespace daw {
 			locked_ptr &operator=( locked_ptr && ) noexcept = default;
 
 			template<typename OnExit>
-			locked_ptr( T *ptr, OnExit on_exit ) noexcept
-			  : m_ptr{ptr}
-			  , m_on_exit( std::move( on_exit ) ) {}
+			locked_ptr( T *ptr, OnExit &&on_exit ) noexcept
+			  : m_ptr( ptr )
+			  , m_on_exit( std::forward<OnExit>( on_exit ) ) {}
 
 			~locked_ptr( ) noexcept {
 				m_ptr = nullptr;
 				try {
-					m_on_exit( );
+					if( m_on_exit ) {
+						m_on_exit( );
+					}
 				} catch( ... ) {}
 			}
 
@@ -116,11 +118,11 @@ namespace daw {
 				destruct_if_should( lck );
 			}
 			constexpr control_block_t( T *ptr )
-			  : m_ptr{ptr}
-			  , m_ptr_destruct{false}
-			  , m_cb_destruct{}
-			  , m_is_borrowed{}
-			  , m_observer_count{0} {}
+			  : m_ptr( ptr )
+			  , m_ptr_destruct( false )
+			  , m_cb_destruct( )
+			  , m_is_borrowed( )
+			  , m_observer_count( 0 ) {}
 
 			friend class observable_ptr<T>;
 
@@ -133,7 +135,7 @@ namespace daw {
 
 			// Should never get to this point without point without owner/observer
 			// cleaning up ptr
-			~control_block_t( ) noexcept = default;
+			//~control_block_t( ) noexcept = default;
 
 			bool expired( ) const noexcept {
 				return m_ptr_destruct;
@@ -230,20 +232,20 @@ namespace daw {
 
 	public:
 		constexpr observer_ptr( ) noexcept
-		  : m_control_block{nullptr} {}
+		  : m_control_block( nullptr ) {}
 
 		constexpr observer_ptr( std::nullptr_t ) noexcept
-		  : m_control_block{nullptr} {}
+		  : m_control_block( nullptr ) {}
 
 		/// @brief An observer of an observable_ptr
 		/// @param cb Control block for observable pointer.  Must never be null,
 		/// will abort if so
 		observer_ptr( impl::control_block_t<T> *cb )
-		  : m_control_block{cb} {}
+		  : m_control_block( cb ) {}
 
 		void reset( ) noexcept {
 			auto tmp = std::exchange( m_control_block, nullptr );
-			if( tmp != nullptr ) {
+			if( tmp ) {
 				try {
 					impl::control_block_t<T>::remove_observer( tmp );
 				} catch( ... ) {}
@@ -255,7 +257,7 @@ namespace daw {
 		}
 
 		constexpr observer_ptr( observer_ptr const &other )
-		  : m_control_block{other.m_control_block} {
+		  : m_control_block( other.m_control_block ) {
 
 			m_control_block->add_observer( );
 		}
@@ -269,10 +271,12 @@ namespace daw {
 		}
 
 		constexpr observer_ptr( observer_ptr &&other ) noexcept
-		  : m_control_block{std::exchange( other.m_control_block, nullptr )} {}
+		  : m_control_block( std::exchange( other.m_control_block, nullptr ) ) {}
 
 		constexpr observer_ptr &operator=( observer_ptr &&rhs ) noexcept {
-			m_control_block = std::exchange( rhs.m_control_block, nullptr );
+			if( this != &rhs ) {
+				m_control_block = std::exchange( rhs.m_control_block, nullptr );
+			}
 			return *this;
 		}
 
@@ -285,14 +289,14 @@ namespace daw {
 
 		impl::locked_ptr<T> try_borrow( ) const {
 			if( !m_control_block ) {
-				return impl::locked_ptr<T>{nullptr, []( ) {}};
+				return impl::locked_ptr<T>( nullptr, []( ) {} );
 			}
 			return m_control_block->try_borrow( );
 		}
 
 		impl::locked_ptr<T> borrow( ) const {
 			if( !m_control_block ) {
-				return impl::locked_ptr<T>{nullptr, []( ) {}};
+				return impl::locked_ptr<T>( nullptr, []( ) {} );
 			}
 			return m_control_block->borrow( );
 		}
@@ -318,8 +322,8 @@ namespace daw {
 		                          std::nullptr_t> = nullptr>
 		decltype( auto )
 		lock( Callable &&c ) noexcept( noexcept( c( std::declval<T &>( ) ) ) ) {
-			auto lck_ptr = borrow( );
 
+			auto lck_ptr = borrow( );
 			using result_t = std::decay_t<decltype( c( *lck_ptr ) )>;
 
 			if( !lck_ptr ) {
@@ -364,33 +368,37 @@ namespace daw {
 		observable_ptr &operator=( observable_ptr const & ) = delete;
 
 		observable_ptr( observable_ptr &&other ) noexcept
-		  : m_control_block{std::exchange( other.m_control_block, nullptr )} {}
+		  : m_control_block( std::exchange( other.m_control_block, nullptr ) ) {}
 
 		observable_ptr &operator=( observable_ptr &&rhs ) noexcept {
-			m_control_block = std::exchange( rhs.m_control_block, nullptr );
+			if( this != &rhs ) {
+				m_control_block = std::exchange( rhs.m_control_block, nullptr );
+			}
 			return *this;
 		}
 
 		~observable_ptr( ) noexcept {
 			auto tmp = std::exchange( m_control_block, nullptr );
-			if( tmp ) {
-				impl::control_block_t<T>::remove_owner( tmp );
-			}
+			try {
+				if( tmp ) {
+					impl::control_block_t<T>::remove_owner( tmp );
+				}
+			} catch( ... ) {}
 		}
 
 		/// @brief Take ownership of pointer and construct shared_ptr with it
 		/// @param value pointer to take ownershiip of
 		explicit observable_ptr( T *value )
-		  : m_control_block{new impl::control_block_t<T>{value}} {}
+		  : m_control_block( new impl::control_block_t<T>( value ) ) {}
 
 		constexpr observable_ptr( ) noexcept
-		  : m_control_block{nullptr} {}
+		  : m_control_block( nullptr ) {}
 
 		constexpr observable_ptr( std::nullptr_t ) noexcept
-		  : m_control_block{nullptr} {}
+		  : m_control_block( nullptr ) {}
 
 		observer_ptr<T> get_observer( ) const {
-			return observer_ptr<T>{m_control_block};
+			return observer_ptr<T>( m_control_block );
 		}
 
 		constexpr T *get( ) const noexcept {
@@ -406,20 +414,20 @@ namespace daw {
 
 		impl::locked_ptr<T> try_borrow( ) const {
 			if( !m_control_block ) {
-				return impl::locked_ptr<T>{nullptr, []( ) {}};
+				return impl::locked_ptr<T>( nullptr, []( ) {} );
 			}
 			return m_control_block->try_borrow( );
 		}
 
 		impl::locked_ptr<T> borrow( ) const {
 			if( !m_control_block ) {
-				return impl::locked_ptr<T>{nullptr, []( ) {}};
+				return impl::locked_ptr<T>( nullptr, []( ) {} );
 			}
 			return m_control_block->borrow( );
 		}
 
 		template<typename Callable>
-		decltype( auto ) lock( Callable c ) const {
+		decltype( auto ) lock( Callable &&c ) const {
 			using result_t =
 			  std::decay_t<decltype( c( std::declval<T const &>( ) ) )>;
 			auto lck_ptr = borrow( );
@@ -427,11 +435,12 @@ namespace daw {
 				return daw::expected_t<result_t>{};
 			}
 			T const &r = *lck_ptr;
-			return daw::expected_t<result_t>::from_code( c, r );
+			return daw::expected_t<result_t>::from_code( std::forward<Callable>( c ),
+			                                             r );
 		}
 
 		template<typename Callable>
-		decltype( auto ) lock( Callable c ) {
+		decltype( auto ) lock( Callable &&c ) {
 			using result_t = std::decay_t<decltype(
 			  std::declval<Callable>( )( std::declval<T &>( ) ) )>;
 			auto lck_ptr = borrow( );
@@ -439,7 +448,8 @@ namespace daw {
 				return daw::expected_t<result_t>{};
 			}
 			T &r = *lck_ptr;
-			return daw::expected_t<result_t>::from_code( c, r );
+			return daw::expected_t<result_t>::from_code( std::forward<Callable>( c ),
+			                                             r );
 		}
 
 		T const &operator*( ) const {
@@ -457,7 +467,7 @@ namespace daw {
 		}
 
 		explicit operator observer_ptr<T>( ) const {
-			return observer_ptr<T>{m_control_block};
+			return observer_ptr<T>( m_control_block );
 		}
 	};
 
@@ -466,8 +476,9 @@ namespace daw {
 	  noexcept( new T( std::forward<Args>( args )... ) ) ) {
 		T *tmp = new T( std::forward<Args>( args )... );
 		if( !tmp ) {
-			return observable_ptr<T>{};
+			return observable_ptr<T>( );
 		}
-		return observable_ptr<T>{tmp};
+		return observable_ptr<T>( tmp );
 	}
 } // namespace daw
+
