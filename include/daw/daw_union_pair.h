@@ -35,11 +35,12 @@ namespace daw {
 		enum class data_types : uint_least8_t { type_0, type_1, type_nothing };
 
 		union {
+			nullptr_t nothing;
 			Type0 value0;
 			Type1 value1;
 		};
 
-		data_types type;
+		data_types type = data_types::type_nothing;
 
 		constexpr Type0 *get_type0_ptr( ) noexcept {
 			return &value0;
@@ -57,14 +58,16 @@ namespace daw {
 			return &value1;
 		}
 
-		constexpr void destroy_type0( ) noexcept {
+		constexpr void destroy_type0( ) {
 			type = data_types::type_nothing;
 			get_type0_ptr( )->~Type0( );
+			nothing = nullptr;
 		}
 
-		constexpr void destroy_type1( ) noexcept {
+		constexpr void destroy_type1( ) {
 			type = data_types::type_nothing;
 			get_type1_ptr( )->~Type1( );
+			nothing = nullptr;
 		}
 
 		constexpr void clear( ) noexcept {
@@ -173,6 +176,7 @@ namespace daw {
 				store_type1( *other.get_type1_ptr( ) );
 				break;
 			case data_types::type_nothing:
+				nothing = nullptr;
 				break;
 			}
 		}
@@ -188,6 +192,7 @@ namespace daw {
 				store_type1( std::move( *other.get_type1_ptr( ) ) );
 				break;
 			case data_types::type_nothing:
+				nothing = nullptr;
 				break;
 			}
 		}
@@ -202,6 +207,7 @@ namespace daw {
 					store_type1( *rhs.get_type1_ptr( ) );
 					break;
 				case data_types::type_nothing:
+					clear( );
 					break;
 				}
 			}
@@ -218,6 +224,7 @@ namespace daw {
 					store_type1( std::move( *rhs.get_type1_ptr( ) ) );
 					break;
 				case data_types::type_nothing:
+					clear( );
 					break;
 				}
 			}
