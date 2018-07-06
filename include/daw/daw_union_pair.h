@@ -35,7 +35,7 @@ namespace daw {
 		enum class data_types : uint_least8_t { type_0, type_1, type_nothing };
 
 		union {
-			nullptr_t nothing;
+			std::nullptr_t nothing;
 			Type0 value0;
 			Type1 value1;
 		};
