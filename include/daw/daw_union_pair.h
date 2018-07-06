@@ -26,6 +26,8 @@
 #include <cstdlib>
 #include <utility>
 
+#include "cpp_17.h"
+
 namespace daw {
 	struct visit_null_union_pair_exception {};
 	template<typename Type0, typename Type1>
@@ -80,6 +82,9 @@ namespace daw {
 
 		template<typename T>
 		constexpr void store_type0( T &&value ) {
+			static_assert( daw::is_convertible_v<T, Type0>,
+			               "Incompatible type T cannot convert to Type0" );
+
 			if( type != data_types::type_0 ) {
 				clear( );
 			}
@@ -90,6 +95,9 @@ namespace daw {
 
 		template<typename T>
 		constexpr void store_type1( T &&value ) {
+			static_assert( daw::is_convertible_v<T, Type1>,
+			               "Incompatible type T cannot convert to Type1" );
+
 			if( type != data_types::type_1 ) {
 				clear( );
 			}
@@ -100,7 +108,7 @@ namespace daw {
 
 	public:
 		constexpr union_pair_t( ) noexcept
-		  : type{data_types::type_nothing} {}
+		  : type( data_types::type_nothing ) {}
 
 		~union_pair_t( ) noexcept {
 			clear( );
@@ -111,47 +119,51 @@ namespace daw {
 		}
 
 		constexpr union_pair_t( Type0 &&ptr ) noexcept
-		  : type{data_types::type_nothing} {
+		  : type( data_types::type_nothing ) {
 
 			store_type0( std::move( ptr ) );
 		}
 
 		constexpr union_pair_t( Type0 const &ptr )
-		  : type{data_types::type_nothing} {
+		  : type( data_types::type_nothing ) {
 
 			store_type0( ptr );
 		}
 
 		constexpr union_pair_t &operator=( Type0 const &val ) {
 			store_type0( val );
+			return *this;
 		}
 
 		constexpr union_pair_t &operator=( Type0 &&val ) noexcept {
 			store_type0( std::move( val ) );
+			return *this;
 		}
 
 		constexpr union_pair_t &operator=( Type1 const &val ) {
 			store_type1( val );
+			return *this;
 		}
 
 		constexpr union_pair_t &operator=( Type1 &&val ) noexcept {
 			store_type1( std::move( val ) );
+			return *this;
 		}
 
 		constexpr union_pair_t( Type1 &&ptr ) noexcept
-		  : type{data_types::type_nothing} {
+		  : type( data_types::type_nothing ) {
 
 			store_type1( std::move( ptr ) );
 		}
 
 		constexpr union_pair_t( Type1 const &ptr )
-		  : type{data_types::type_nothing} {
+		  : type( data_types::type_nothing ) {
 
 			store_type1( ptr );
 		}
 
 		constexpr union_pair_t( union_pair_t const &other )
-		  : type{data_types::type_nothing} {
+		  : type( data_types::type_nothing ) {
 
 			switch( other.type ) {
 			case data_types::type_0:
@@ -166,7 +178,7 @@ namespace daw {
 		}
 
 		constexpr union_pair_t( union_pair_t &&other ) noexcept
-		  : type{data_types::type_nothing} {
+		  : type( data_types::type_nothing ) {
 
 			switch( other.type ) {
 			case data_types::type_0:
@@ -213,7 +225,7 @@ namespace daw {
 		}
 
 		template<typename Visitor>
-		constexpr decltype( auto ) visit( Visitor vis ) {
+		constexpr decltype( auto ) visit( Visitor &&vis ) {
 			switch( type ) {
 			case data_types::type_0:
 				return vis( *get_type0_ptr( ) );
@@ -222,11 +234,11 @@ namespace daw {
 			case data_types::type_nothing:
 				break;
 			}
-			throw visit_null_union_pair_exception{};
+			throw visit_null_union_pair_exception( );
 		}
 
 		template<typename Visitor>
-		constexpr decltype( auto ) visit( Visitor vis ) const {
+		constexpr decltype( auto ) visit( Visitor &&vis ) const {
 			switch( type ) {
 			case data_types::type_0:
 				return vis( *get_type0_ptr( ) );
@@ -235,7 +247,8 @@ namespace daw {
 			case data_types::type_nothing:
 				break;
 			}
-			throw visit_null_union_pair_exception{};
+			throw visit_null_union_pair_exception( );
 		}
 	};
 } // namespace daw
+

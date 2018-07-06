@@ -29,7 +29,7 @@
 #include "daw/daw_union_pair.h"
 
 BOOST_AUTO_TEST_CASE( daw_union_pair_test_001 ) {
-	daw::union_pair_t<int, double> tmp{int{5}};
+	auto tmp = daw::union_pair_t<int, double>( 5 );
 	struct vis_t {
 		constexpr int operator( )( int i ) const noexcept {
 			return i;
@@ -38,11 +38,35 @@ BOOST_AUTO_TEST_CASE( daw_union_pair_test_001 ) {
 			return static_cast<int>( d );
 		}
 	};
-	BOOST_REQUIRE_EQUAL( 5, tmp.visit( vis_t{} ) );
+	BOOST_REQUIRE_EQUAL( 5, tmp.visit( vis_t( ) ) );
 }
 
 BOOST_AUTO_TEST_CASE( daw_union_pair_test_002 ) {
-	daw::union_pair_t<int, double> tmp{int{5}};
+	auto tmp = daw::union_pair_t<int, double>( 5 );
 	BOOST_REQUIRE_EQUAL(
 	  5, tmp.visit( []( auto v ) { return static_cast<int>( v ); } ) );
 }
+
+BOOST_AUTO_TEST_CASE( daw_union_pair_test_003,
+                      *boost::unit_test::tolerance( 0.1 ) ) {
+	auto tmp = daw::union_pair_t<int, double>( 5 );
+	tmp = 6.6;
+	struct vis_t {
+		constexpr double operator( )( int i ) const noexcept {
+			return static_cast<double>( i );
+		}
+		constexpr double operator( )( double d ) const noexcept {
+			return d;
+		}
+	};
+	BOOST_REQUIRE_EQUAL( 6.6, tmp.visit( vis_t( ) ) );
+}
+
+BOOST_AUTO_TEST_CASE( daw_union_pair_test_004,
+                      *boost::unit_test::tolerance( 0.1 ) ) {
+	auto tmp = daw::union_pair_t<int, double>( 5 );
+	tmp = 6.6;
+	BOOST_REQUIRE_EQUAL( 6.6,
+	            tmp.visit( []( auto v ) { return static_cast<double>( v ); } ) );
+}
+
