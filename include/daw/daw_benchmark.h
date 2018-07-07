@@ -131,7 +131,6 @@ namespace daw {
 	}
 
 	// Borrowed from https://www.youtube.com/watch?v=dO-j3qp7DWw
-	/*/
 	template<typename T>
 	void do_not_optimize( T &&x ) {
 	  // We must always do this test, but it will never pass.
@@ -147,7 +146,6 @@ namespace daw {
 	    std::abort( );
 	  }
 	}
-*/
 
 	/*
 	 The do_not_optimize(...) function can be used to prevent a value or
@@ -155,6 +153,7 @@ namespace daw {
 	 intended to add little to no overhead.
 	 See: https://youtu.be/nXaxk27zwlk?t=2441
 	*/
+	/* Commenting for now, was causing ICE on gcc
 	template<typename T>
 	inline void do_not_optimize( T const &value ) {
 		asm volatile( "" : : "r,m"( value ) : "memory" );
@@ -168,7 +167,7 @@ namespace daw {
 		asm volatile( "" : "+m,r"( value ) : : "memory" );
 #endif
 	}
-
+	*/
 	template<typename Test, typename... Args>
 	auto bench_test( std::string title, Test test_callable,
 	                 Args &&... args ) noexcept {
