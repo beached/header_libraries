@@ -154,9 +154,9 @@ namespace daw {
 		try {
 			T *tmp = new T( std::forward<Args>( args )... );
 			if( !tmp ) {
-				return observable_ptr_pair<T>{nullptr};
+				return observable_ptr_pair<T>( nullptr );
 			}
-			return observable_ptr_pair<T>{tmp};
+			return observable_ptr_pair<T>( tmp );
 		} catch( std::bad_alloc const & ) { std::terminate( ); }
 	}
 } // namespace daw
