@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <new>
+
 #include "../daw_static_array.h"
 #include "../daw_traits.h"
 #include "../daw_union_pair.h"
@@ -147,11 +149,14 @@ namespace daw {
 
 	template<typename T, typename... Args>
 	observable_ptr_pair<T> make_observable_ptr_pair( Args &&... args ) noexcept(
-	  noexcept( new T( std::forward<Args>( args )... ) ) ) {
-		T *tmp = new T( std::forward<Args>( args )... );
-		if( !tmp ) {
-			return observable_ptr_pair<T>{nullptr};
-		}
-		return observable_ptr_pair<T>{tmp};
+	  daw::is_nothrow_constructible_v<T, Args...> ) {
+
+		try {
+			T *tmp = new T( std::forward<Args>( args )... );
+			if( !tmp ) {
+				return observable_ptr_pair<T>{nullptr};
+			}
+			return observable_ptr_pair<T>{tmp};
+		} catch( std::bad_alloc const & ) { std::terminate( ); }
 	}
 } // namespace daw
