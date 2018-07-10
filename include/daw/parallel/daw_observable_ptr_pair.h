@@ -148,7 +148,7 @@ namespace daw {
 	};
 
 	template<typename T, typename... Args>
-	observable_ptr_pair<T> make_observable_ptr_pair( Args &&... args ) noexcept(
+	[[nodiscard]] observable_ptr_pair<T> make_observable_ptr_pair( Args &&... args ) noexcept(
 	  daw::is_nothrow_constructible_v<T, Args...> ) {
 
 		try {

@@ -117,6 +117,7 @@ namespace daw {
 				std::lock_guard<std::mutex> lck{m_is_borrowed};
 				destruct_if_should( lck );
 			}
+
 			constexpr control_block_t( T *ptr )
 			  : m_ptr( ptr )
 			  , m_ptr_destruct( false )
@@ -472,7 +473,8 @@ namespace daw {
 	};
 
 	template<typename T, typename... Args>
-	observable_ptr<T> make_observable_ptr( Args &&... args ) noexcept(
+	[[nodiscard]] observable_ptr<T>
+	make_observable_ptr( Args &&... args ) noexcept(
 	  noexcept( new T( std::forward<Args>( args )... ) ) ) {
 		T *tmp = new T( std::forward<Args>( args )... );
 		if( !tmp ) {
