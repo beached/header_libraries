@@ -60,13 +60,13 @@ namespace daw {
 
 			template<typename T, typename... Args>
 			void emplace( Args &&... args ) noexcept(
-			  noexcept( new( static_cast<void *>( m_data.data( ) ) )
-			              std::decay_t<T>{std::forward<Args>( args )...} ) ) {
+			  noexcept( daw::is_nothrow_constructible_v<T, Args...> ) {
+
 				using base_t = std::decay_t<T>;
 				static_assert( is_valid_v<base_t, Ts...>,
 				               "T must exist in stored types" );
 				void *p = m_data.data( );
-				new( p ) base_t{std::forward<Args>( args )...};
+				new( p ) base_t(std::forward<Args>( args )...);
 			}
 
 			template<typename T>

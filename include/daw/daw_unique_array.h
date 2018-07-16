@@ -28,7 +28,6 @@
 #include "daw_exception.h"
 
 namespace daw {
-
 	template<typename T>
 	struct unique_array_t {
 		using value_type = T;
@@ -44,26 +43,13 @@ namespace daw {
 		pointer m_data = nullptr;
 		size_type m_size = 0;
 
-	public:
-		constexpr unique_array_t( ) noexcept = default;
-		constexpr unique_array_t( unique_array_t && ) noexcept = default;
-		constexpr unique_array_t &operator=( unique_array_t && ) noexcept = default;
-
-		unique_array_t( size_type sz ) noexcept( noexcept( new value_type[sz]( ) ) )
-		  : m_data{new value_type[sz]( )}
-		  , m_size{sz} {}
-
-		unique_array_t( size_type sz, const_reference default_value ) noexcept(
-		  noexcept( new value_type[sz] ) )
-		  : m_data{new value_type[sz]}
-		  , m_size{sz} {
-
-			for( size_type n = 0; n < m_size; ++n ) {
-				m_data[n] = default_value;
-			}
+		static pointer create_values( size_t n ) noexcept {
+			try {
+				return new value_type[n];
+			} catch( std::bad_alloc const & ) { std::terminate( ); }
 		}
 
-		~unique_array_t( ) noexcept( noexcept( delete[] m_data ) ) {
+		constexpr void clear( ) {
 			auto tmp = std::exchange( m_data, nullptr );
 			m_size = 0;
 			if( tmp ) {
@@ -71,18 +57,54 @@ namespace daw {
 			}
 		}
 
+	public:
+		constexpr unique_array_t( ) noexcept = default;
+		constexpr unique_array_t( unique_array_t &&other ) noexcept
+		  : m_data( std::exchange( other.m_data, nullptr ) )
+		  , m_size( std::exchange( other.m_size, 0 ) ) {}
+
+		constexpr unique_array_t &operator=( unique_array_t &&rhs ) noexcept {
+			if( this == &rhs ) {
+				return *this;
+			}
+			clear( );
+			if( !rhs.m_data ) {
+				return *this;
+			}
+			m_data = std::exchange( rhs.m_data, nullptr );
+			m_size = std::exchange( rhs.m_size, 0 );
+			return *this;
+		}
+
+		unique_array_t( size_type sz ) noexcept
+		  : m_data( create_values( sz ) )
+		  , m_size( sz ) {}
+
+		template<typename... Args>
+		unique_array_t( size_type sz, Args &&... args ) noexcept(
+		  daw::is_nothrow_constructible_v<value_type, Args...> )
+		  : m_data( create_values( sz ) )
+		  , m_size( sz ) {
+
+			std::fill_n( m_data, m_size, {args...} );
+		}
+
+		~unique_array_t( ) noexcept( noexcept( delete[] m_data ) ) {
+			clear( );
+		}
+
 		unique_array_t( unique_array_t const & ) = delete;
 		unique_array_t &operator=( unique_array_t const & ) = delete;
 
-		bool empty( ) const noexcept {
-			return m_size == 0;
+		constexpr bool empty( ) const noexcept {
+			return m_data == nullptr;
 		}
 
-		size_type size( ) const noexcept {
+		constexpr size_type size( ) const noexcept {
 			return m_size;
 		}
 
-		size_type capacity( ) const noexcept {
+		constexpr size_type capacity( ) const noexcept {
 			return m_size;
 		}
 
@@ -106,27 +128,27 @@ namespace daw {
 			return m_data[pos];
 		}
 
-		iterator begin( ) noexcept {
+		constexpr iterator begin( ) noexcept {
 			return m_data;
 		}
 
-		const_iterator begin( ) const noexcept {
+		constexpr const_iterator begin( ) const noexcept {
 			return m_data;
 		}
 
-		const_iterator cbegin( ) const noexcept {
+		constexpr const_iterator cbegin( ) const noexcept {
 			return m_data;
 		}
 
-		iterator end( ) noexcept {
+		constexpr iterator end( ) noexcept {
 			return std::next( m_data, m_size );
 		}
 
-		const_iterator end( ) const noexcept {
+		constexpr const_iterator end( ) const noexcept {
 			return std::next( m_data, m_size );
 		}
 
-		const_iterator cend( ) const noexcept {
+		constexpr const_iterator cend( ) const noexcept {
 			return std::next( m_data, m_size );
 		}
 
@@ -147,3 +169,4 @@ namespace daw {
 		}
 	};
 } // namespace daw
+

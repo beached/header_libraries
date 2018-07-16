@@ -36,25 +36,28 @@ namespace daw {
 		using const_iterator = T const *;
 
 	private:
-		value_type *m_begin;
-		value_type *m_end;
-		size_t m_size;
+		value_type *m_begin = nullptr;
+		value_type *m_end = nullptr;
+		size_t m_size = 0;
+
+		static value_type *create_value( size_t n ) {
+			try {
+				return new value_type[n];
+			} catch( std::bad_alloc const & ) { std::terminate( ); } catch( ... ) {
+				return nullptr;
+			}
+		}
 
 	public:
-		constexpr heap_array( ) noexcept
-		  : m_begin{nullptr}
-		  , m_end{nullptr}
-		  , m_size{0} {}
+		constexpr heap_array( ) noexcept = default;
 
 		heap_array( size_t Size )
-		  : m_begin{new value_type[Size + 1]}
-		  , m_end{m_begin + Size}
-		  , m_size{Size} {}
+		  : m_begin( create_value( Size + 1 ) )
+		  , m_end( m_begin + Size )
+		  , m_size( Size ) {}
 
-		heap_array( size_t Size, value_type def_value )
-		  : m_begin{new value_type[Size]}
-		  , m_end{m_begin + Size}
-		  , m_size{Size} {
+		heap_array( size_t Size, value_type const &def_value )
+		  : heap_array( Size ) {
 
 			std::fill( m_begin, m_end, def_value );
 		}
@@ -72,9 +75,9 @@ namespace daw {
 		}
 
 		heap_array( heap_array const &other )
-		  : m_begin{other.m_size == 0 ? nullptr : new value_type[other.m_size]}
-		  , m_end{other.m_size == 0 ? nullptr : m_begin + other.m_size}
-		  , m_size{other.m_size} {
+		  : m_begin( other.m_size == 0 ? nullptr : create_value( other.m_size ) )
+		  , m_end( other.m_size == 0 ? nullptr : m_begin + other.m_size )
+		  , m_size( other.m_size ) {
 
 			std::copy_n( other.m_begin, m_size, m_begin );
 		}
@@ -86,23 +89,15 @@ namespace daw {
 					return *this;
 				}
 				m_size = rhs.m_size;
-				m_begin = new value_type[rhs.m_size];
+				m_begin = create_value( m_size );
 				m_end = m_begin + m_size;
 				std::copy_n( rhs.m_begin, m_size, m_begin );
 			}
 			return *this;
 		}
 
-		/*
-		heap_array( std::initializer_list<value_type> values )
-		  : heap_array( values.size( ) ) {
-
-		  std::copy_n( values.begin( ), values.size( ), m_begin );
-		}
-		*/
-
 		heap_array &operator=( std::initializer_list<value_type> const &values ) {
-			heap_array tmp{values.size( )};
+			heap_array tmp( values.size( ) );
 			std::copy_n( values.begin( ), values.size( ), tmp.m_begin );
 			using std::swap;
 			swap( *this, tmp );
@@ -110,23 +105,23 @@ namespace daw {
 		}
 
 		heap_array( iterator arry, size_t Size )
-		  : m_begin{new value_type[Size]}
-		  , m_end{m_begin + Size}
-		  , m_size{Size} {
+		  : m_begin( create_value( Size ) )
+		  , m_end( m_begin + Size )
+		  , m_size( Size ) {
 
 			std::copy_n( arry, Size, m_begin );
 		}
 
-		void clear( ) noexcept {
+		constexpr void clear( ) noexcept {
 			if( nullptr != m_begin ) {
 				auto tmp = std::exchange( m_begin, nullptr );
-				delete[] tmp;
-				m_end = nullptr;
 				m_size = 0;
+				m_end = nullptr;
+				delete[] tmp;
 			}
 		}
 
-		void swap( heap_array &rhs ) noexcept {
+		constexpr void swap( heap_array &rhs ) noexcept {
 			using std::swap;
 			swap( m_begin, rhs.m_begin );
 			swap( m_end, rhs.m_end );
@@ -137,93 +132,93 @@ namespace daw {
 			clear( );
 		}
 
-		explicit operator bool( ) const noexcept {
+		explicit constexpr operator bool( ) const noexcept {
 			return nullptr == m_begin;
 		}
 
-		size_t size( ) const noexcept {
+		constexpr size_t size( ) const noexcept {
 			return m_size;
 		}
 
-		bool empty( ) const noexcept {
+		constexpr bool empty( ) const noexcept {
 			return m_begin == m_end;
 		}
 
-		iterator data( ) noexcept {
+		constexpr iterator data( ) noexcept {
 			return m_begin;
 		}
 
-		const_iterator data( ) const noexcept {
+		constexpr const_iterator data( ) const noexcept {
 			return m_begin;
 		}
 
-		iterator begin( ) noexcept {
+		constexpr iterator begin( ) noexcept {
 			return m_begin;
 		}
 
-		const_iterator begin( ) const noexcept {
+		constexpr const_iterator begin( ) const noexcept {
 			return m_begin;
 		}
 
-		const_iterator cbegin( ) const noexcept {
+		constexpr const_iterator cbegin( ) const noexcept {
 			return m_begin;
 		}
 
-		iterator end( ) noexcept {
+		constexpr iterator end( ) noexcept {
 			return m_end;
 		}
 
-		const_iterator end( ) const noexcept {
+		constexpr const_iterator end( ) const noexcept {
 			return m_end;
 		}
 
-		const_iterator cend( ) const noexcept {
+		constexpr const_iterator cend( ) const noexcept {
 			return m_end;
 		}
 
-		reference operator[]( size_t pos ) {
+		constexpr reference operator[]( size_t pos ) {
 			return *( m_begin + pos );
 		}
 
-		const_reference operator[]( size_t pos ) const {
+		constexpr const_reference operator[]( size_t pos ) const {
 			return *( m_begin + pos );
 		}
 
-		reference at( size_t pos ) {
+		constexpr reference at( size_t pos ) {
 			if( !( pos < m_size ) ) {
 				throw std::out_of_range( "position is beyond end of heap_array" );
 			}
 			return operator[]( pos );
 		}
 
-		const_reference at( size_t pos ) const {
+		constexpr const_reference at( size_t pos ) const {
 			if( !( pos < m_size ) ) {
 				throw std::out_of_range( "position is beyond end of heap_array" );
 			}
 			return operator[]( pos );
 		}
 
-		reference front( ) {
+		constexpr reference front( ) {
 			return *m_begin;
 		}
 
-		const_reference front( ) const {
+		constexpr const_reference front( ) const {
 			return *m_begin;
 		}
 
-		reference back( ) {
+		constexpr reference back( ) {
 			auto tmp = m_end;
 			--tmp;
 			return *tmp;
 		}
 
-		const_reference back( ) const {
+		constexpr const_reference back( ) const {
 			auto tmp = m_end;
 			--tmp;
 			return *tmp;
 		}
 
-		iterator find_first_of( const_reference value,
+		constexpr iterator find_first_of( const_reference value,
 		                        const_iterator start_at ) const {
 			*m_end = value;
 			while( *start_at != value ) {
@@ -238,7 +233,7 @@ namespace daw {
 	}; // struct heap_array
 
 	template<typename T>
-	void swap( daw::heap_array<T> &lhs, daw::heap_array<T> &rhs ) noexcept {
+	constexpr void swap( daw::heap_array<T> &lhs, daw::heap_array<T> &rhs ) noexcept {
 		lhs.swap( rhs );
 	}
 } // namespace daw

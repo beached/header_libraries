@@ -385,7 +385,7 @@ namespace daw {
 	template<typename T>
 	auto copy_ptr_value( T const *const original ) {
 		using result_t = daw::traits::root_type_t<T>;
-		return new result_t{*original};
+		return new result_t( *original );
 	}
 
 	// Acts like a reference, but has a strong no-null guarantee
