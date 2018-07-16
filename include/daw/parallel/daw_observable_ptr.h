@@ -50,7 +50,7 @@ namespace daw {
 			locked_ptr &operator=( locked_ptr && ) noexcept = default;
 
 			template<typename OnExit>
-			locked_ptr( T *ptr, OnExit &&on_exit ) noexcept
+			constexpr locked_ptr( T *ptr, OnExit &&on_exit ) noexcept
 			  : m_ptr( ptr )
 			  , m_on_exit( std::forward<OnExit>( on_exit ) ) {}
 
@@ -63,23 +63,23 @@ namespace daw {
 				} catch( ... ) {}
 			}
 
-			T *operator->( ) const noexcept {
+			constexpr T *operator->( ) const noexcept {
 				return m_ptr;
 			}
 
-			T &operator*( ) noexcept {
+			constexpr T &operator*( ) noexcept {
 				return *m_ptr;
 			}
 
-			T const &operator*( ) const noexcept {
+			constexpr T const &operator*( ) const noexcept {
 				return *m_ptr;
 			}
 
-			T *get( ) const noexcept {
+			constexpr T *get( ) const noexcept {
 				return m_ptr;
 			}
 
-			explicit operator bool( ) const noexcept {
+			constexpr explicit operator bool( ) const noexcept {
 				return m_ptr != nullptr;
 			}
 		};

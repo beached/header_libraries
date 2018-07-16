@@ -115,15 +115,19 @@ BOOST_AUTO_TEST_CASE( daw_pack_type_at_001 ) {
 	using tst_t =
 	  daw::pack_type_at<5, double, float, std::string, char, char *, int, void *>;
 
+	std::cout << "type of daw::pack_type_at<5, double, float, std::string, char, char *, int, void *>, should be like int: " << typeid( tst_t ).name( ) << '\n';
+	std::cout << "type id name of int: " << typeid( int ).name( ) << '\n';
 	constexpr bool tst = daw::is_same_v<int, tst_t>;
-
-	std::cout << daw::pack_index_of_v<int, double, float, std::string, char,
-	                                  char *, int, void *> << '\n';
-
-	std::cout << typeid( tst_t ).name( ) << '\n';
-	std::cout << typeid( int ).name( ) << '\n';
-	std::cout << tst << '\n';
 	BOOST_REQUIRE( tst );
+
+	constexpr size_t pos = daw::pack_index_of_v<int, double, float, std::string,
+	                                            char, char *, int, void *>;
+	std::cout << "type of daw::pack_index_of_v<int, double, float, std::string, "
+	             "char, char *, int, void *> should be 5: " << 5 << '\n';
+
+	BOOST_REQUIRE_EQUAL( pos, 5 );
+
+	std::cout << tst << '\n';
 }
 
 BOOST_AUTO_TEST_CASE( daw_overload_001 ) {
