@@ -71,6 +71,7 @@ namespace daw {
 			}
 			return result;
 		}
+		 		
 		namespace tostring_helpers {
 			using std::to_string;
 
@@ -195,7 +196,7 @@ namespace daw {
 
 		struct stdout_callable {
 			inline void operator( )( char c ) const noexcept {
-				std::putchar( c );
+				putchar_unlocked( c );
 			}
 
 			inline void operator( )( char const *str, size_t count = 0 ) const
@@ -208,7 +209,7 @@ namespace daw {
 			}
 
 			inline void operator( )( wchar_t c ) const noexcept {
-				std::putwchar( c );
+				putwchar_unlocked( c );
 			}
 
 			inline void operator( )( wchar_t const *str, size_t count = 0 ) const
