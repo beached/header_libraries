@@ -219,7 +219,7 @@ namespace daw {
 		}
 
 		constexpr iterator find_first_of( const_reference value,
-		                        const_iterator start_at ) const {
+		                                  const_iterator start_at ) const {
 			*m_end = value;
 			while( *start_at != value ) {
 				++start_at;
@@ -233,7 +233,8 @@ namespace daw {
 	}; // struct heap_array
 
 	template<typename T>
-	constexpr void swap( daw::heap_array<T> &lhs, daw::heap_array<T> &rhs ) noexcept {
+	constexpr void swap( daw::heap_array<T> &lhs,
+	                     daw::heap_array<T> &rhs ) noexcept {
 		lhs.swap( rhs );
 	}
 } // namespace daw

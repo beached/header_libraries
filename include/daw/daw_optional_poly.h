@@ -51,7 +51,7 @@ namespace daw {
 				return nullptr;
 			}
 			using v_t = std::decay_t<T>;
-			return new v_t(*ptr);
+			return new v_t( *ptr );
 		}
 
 	public:

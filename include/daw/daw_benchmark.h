@@ -133,18 +133,18 @@ namespace daw {
 	// Borrowed from https://www.youtube.com/watch?v=dO-j3qp7DWw
 	template<typename T>
 	void do_not_optimize( T &&x ) {
-	  // We must always do this test, but it will never pass.
-	  //
-	  if( std::chrono::system_clock::now( ) ==
-	      std::chrono::time_point<std::chrono::system_clock>( ) ) {
-	    // This forces the value to never be optimized away
-	    // by taking a reference then using it.
-	    const auto *p = &x;
-	    putchar( *reinterpret_cast<const char *>( p ) );
+		// We must always do this test, but it will never pass.
+		//
+		if( std::chrono::system_clock::now( ) ==
+		    std::chrono::time_point<std::chrono::system_clock>( ) ) {
+			// This forces the value to never be optimized away
+			// by taking a reference then using it.
+			const auto *p = &x;
+			putchar( *reinterpret_cast<const char *>( p ) );
 
-	    // If we do get here, kick out because something has gone wrong.
-	    std::abort( );
-	  }
+			// If we do get here, kick out because something has gone wrong.
+			std::abort( );
+		}
 	}
 
 	/*
@@ -156,15 +156,15 @@ namespace daw {
 	/* Commenting for now, was causing ICE on gcc
 	template<typename T>
 	inline void do_not_optimize( T const &value ) {
-		asm volatile( "" : : "r,m"( value ) : "memory" );
+	  asm volatile( "" : : "r,m"( value ) : "memory" );
 	}
 
 	template<typename T>
 	inline void do_not_optimize( T &value ) {
 #if defined( __clang__ )
-		asm volatile( "" : "+r,m"( value ) : : "memory" );
+	  asm volatile( "" : "+r,m"( value ) : : "memory" );
 #else
-		asm volatile( "" : "+m,r"( value ) : : "memory" );
+	  asm volatile( "" : "+m,r"( value ) : : "memory" );
 #endif
 	}
 	*/

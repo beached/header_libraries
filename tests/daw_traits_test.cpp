@@ -389,14 +389,15 @@ std::ostream &operator<<( std::ostream &os, TestYesOS const &t ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_traits_is_streamable ) {
-	BOOST_REQUIRE_MESSAGE( daw::traits::is_streamable_v<int>,
-	                       "1. int should have an ostream overload" );
+	constexpr auto tst1 = daw::traits::is_streamable_v<std::ostream, int>;
+	BOOST_REQUIRE_MESSAGE( tst1, "1. int should have an ostream overload" );
 
-	BOOST_REQUIRE_MESSAGE( !daw::traits::is_streamable_v<TestNoOS>,
+	constexpr auto tst2 = daw::traits::is_streamable_v<std::ostream, TestNoOS>;
+	BOOST_REQUIRE_MESSAGE( !tst2,
 	                       "2. TestNoOS should not have an ostream overload" );
 
-	BOOST_REQUIRE_MESSAGE( daw::traits::is_streamable_v<TestYesOS>,
-	                       "3. TestYesOS should have an ostream overload" );
+	constexpr auto tst3 = daw::traits::is_streamable_v<std::ostream, TestYesOS>;
+	BOOST_REQUIRE_MESSAGE( tst3, "3. TestYesOS should have an ostream overload" );
 }
 
 namespace daw_traits_is_mixed_from_ns {
@@ -833,12 +834,12 @@ BOOST_AUTO_TEST_CASE( is_init_list_constructible_001 ) {
 BOOST_AUTO_TEST_CASE( is_nothrow_callable_001 ) {
 	struct X {};
 	struct A {
-		constexpr void operator()( X );
-		constexpr void operator()( int ) noexcept;
+		constexpr void operator( )( X );
+		constexpr void operator( )( int ) noexcept;
 	};
 	constexpr bool b1 = daw::is_nothrow_callable_v<A, int>;
-	BOOST_REQUIRE( b1 ); 
+	BOOST_REQUIRE( b1 );
 
 	constexpr bool b2 = daw::is_nothrow_callable_v<A, X>;
-	BOOST_REQUIRE( !b2 ); 
+	BOOST_REQUIRE( !b2 );
 }

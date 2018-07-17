@@ -67,6 +67,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_static_array
 	daw_static_optional
 	daw_static_string
+	daw_stream
 	daw_string
 	daw_string_fmt
 	daw_string_split_range

@@ -483,4 +483,3 @@ namespace daw {
 		return observable_ptr<T>( tmp );
 	}
 } // namespace daw
-

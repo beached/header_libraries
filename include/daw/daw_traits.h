@@ -27,7 +27,6 @@
 #include <iterator>
 #include <list>
 #include <map>
-#include <ostream>
 #include <set>
 #include <type_traits>
 #include <unordered_map>
@@ -339,13 +338,13 @@ namespace daw {
 		  any_true_v<is_container_v<T>, is_array_v<T>>;
 
 		namespace detectors {
-			template<typename T>
+			template<typename OutStream, typename T>
 			using streamable =
-			  decltype( std::declval<std::ostream &>( ) << std::declval<T>( ) );
+			  decltype( std::declval<OutStream>( ) << std::declval<T>( ) );
 		}
-		template<typename T>
+		template<typename OutStream, typename T>
 		constexpr bool is_streamable_v =
-		  daw::is_detected_v<detectors::streamable, T>;
+		  daw::is_detected_v<detectors::streamable, OutStream &, T>;
 
 		template<template<class> class Base, typename Derived>
 		constexpr bool is_mixed_from_v = is_base_of_v<Base<Derived>, Derived>;
@@ -593,8 +592,8 @@ namespace daw {
 	} // namespace impl
 
 	template<typename Function, typename... Args>
-	constexpr bool
-	  is_nothrow_callable_v = impl::is_nothrow_callable_test<Function, Args...>( );
+	constexpr bool is_nothrow_callable_v =
+	  impl::is_nothrow_callable_test<Function, Args...>( );
 
 	template<typename Predicate, typename... Args>
 	constexpr bool is_predicate_v =

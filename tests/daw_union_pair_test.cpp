@@ -66,8 +66,8 @@ BOOST_AUTO_TEST_CASE( daw_union_pair_test_004,
                       *boost::unit_test::tolerance( 0.1 ) ) {
 	auto tmp = daw::union_pair_t<int, double>( 5 );
 	tmp = 6.6;
-	BOOST_REQUIRE_EQUAL( 6.6,
-	            tmp.visit( []( auto v ) { return static_cast<double>( v ); } ) );
+	BOOST_REQUIRE_EQUAL(
+	  6.6, tmp.visit( []( auto v ) { return static_cast<double>( v ); } ) );
 }
 
 BOOST_AUTO_TEST_CASE( daw_union_pair_test_005 ) {

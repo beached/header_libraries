@@ -22,6 +22,9 @@
 
 #pragma once
 
+#include "../daw_algorithm.h"
+#include "../daw_traits.h"
+
 namespace daw {
 	///
 	///	An output iterator that calls supplied function when operator= is called
@@ -39,8 +42,13 @@ namespace daw {
 		Function m_function;
 
 	public:
-		function_iterator( Function function )
-		  : m_function{std::move( function )} {}
+		constexpr function_iterator( Function &&function ) noexcept(
+		  daw::is_nothrow_move_constructible_v<Function> )
+		  : m_function( std::move( function ) ) {}
+
+		constexpr function_iterator( Function const &function ) noexcept(
+		  daw::is_nothrow_copy_constructible_v<Function> )
+		  : m_function( function ) {}
 
 		template<typename T>
 		function_iterator &operator=( T &&val ) {
@@ -48,21 +56,15 @@ namespace daw {
 			return *this;
 		}
 
-		template<typename T>
-		function_iterator &operator=( T const &val ) {
-			m_function( val );
+		constexpr function_iterator &operator*( ) noexcept {
 			return *this;
 		}
 
-		function_iterator &operator*( ) {
+		constexpr function_iterator &operator++( ) noexcept {
 			return *this;
 		}
 
-		function_iterator &operator++( ) {
-			return *this;
-		}
-
-		function_iterator &operator++( int ) {
+		constexpr function_iterator &operator++( int ) noexcept {
 			return *this;
 		}
 	};
@@ -71,7 +73,7 @@ namespace daw {
 	/// Create a function_iterator with supplied function
 	///
 	template<typename Function>
-	auto make_function_iterator( Function &&func ) {
+	constexpr auto make_function_iterator( Function &&func ) {
 		return function_iterator<Function>( std::forward<Function>( func ) );
 	}
 } // namespace daw

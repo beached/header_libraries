@@ -370,7 +370,7 @@ namespace daw {
 			}
 			m_stored_type = get_type_index<T>( );
 			void *p = raw_ptr( );
-			new( p ) T(std::forward<T>( value ));
+			new( p ) T( std::forward<T>( value ) );
 		}
 
 	public:

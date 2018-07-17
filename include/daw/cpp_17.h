@@ -22,8 +22,8 @@
 
 #pragma once
 
-#include <tuple>
 #include <iterator>
+#include <tuple>
 #include <type_traits>
 
 namespace daw {
