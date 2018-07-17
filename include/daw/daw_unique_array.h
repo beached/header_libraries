@@ -25,6 +25,7 @@
 #include <memory>
 #include <stdexcept>
 
+#include "cpp_17.h"
 #include "daw_exception.h"
 
 namespace daw {

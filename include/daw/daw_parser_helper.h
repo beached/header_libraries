@@ -29,6 +29,7 @@
 #include <utility>
 #include <vector>
 
+#include "daw_exception.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
 
@@ -82,9 +83,8 @@ namespace daw {
 			}
 
 			constexpr bool empty( bool throw_on_empty ) {
-				if( throw_on_empty && empty( ) ) {
-					throw ParserEmptyException{};
-				}
+				daw::exception::precondition_check<ParserEmptyException>(
+				  !( throw_on_empty && empty( ) ) );
 				return false;
 			}
 
@@ -157,9 +157,8 @@ namespace daw {
 					return result;
 				}
 			}
-			if( throw_if_end_reached ) {
-				throw ParserException{};
-			}
+			daw::exception::precondition_check<ParserException>(
+			  !throw_if_end_reached );
 			return result;
 		}
 
@@ -335,7 +334,8 @@ namespace daw {
 		constexpr void expect( T &&value, U &&check, Args &&... args ) {
 			if( !is_a( std::forward<T>( value ), std::forward<U>( check ),
 			           std::forward<Args>( args )... ) ) {
-				throw ParserException{};
+
+				daw::exception::daw_throw<ParserException>( );
 			}
 		}
 
@@ -345,7 +345,8 @@ namespace daw {
 			if( !is_true( std::forward<T>( value ),
 			              std::forward<Predicate>( predicate ),
 			              std::forward<Predicates>( predicates )... ) ) {
-				throw ParserException{};
+
+				daw::exception::daw_throw<ParserException>( );
 			}
 		}
 
@@ -388,25 +389,21 @@ namespace daw {
 		constexpr void assert_not_equal( T &&lhs, U &&rhs ) {
 			static_assert( daw::is_comparable_v<T, U>,
 			               "lhs is not comparable to rhs" );
-			if( lhs != rhs ) {
-				throw ParserException{};
-			}
+
+			daw::exception::precondition_check<ParserException>( lhs == rhs );
 		}
 
 		template<typename T, typename U>
 		constexpr void assert_equal( T &&lhs, U &&rhs ) {
 			static_assert( daw::is_comparable_v<T, U>,
 			               "lhs is not comparable to rhs" );
-			if( lhs == rhs ) {
-				throw ParserException{};
-			}
+			daw::exception::precondition_check<ParserException>( lhs != rhs );
 		}
 
 		template<typename Iterator>
 		constexpr void assert_not_empty( Iterator first, Iterator last ) {
-			if( first == last ) {
-				throw ParserEmptyException{};
-			}
+
+			daw::exception::precondition_check<ParserEmptyException>( first != last );
 		}
 
 		template<typename Iterator>
@@ -424,14 +421,15 @@ namespace daw {
 
 			auto start =
 			  until_value( first, last, std::forward<StartFrom>( start_from ) );
-			if( !start ) {
-				throw ParserException{};
-			}
+
+			daw::exception::precondition_check<ParserException>( start );
+
 			auto finish =
 			  until_value( start.last, last, std::forward<GoUntil>( go_until ) );
-			if( throw_if_end_reached && !finish ) {
-				throw ParserException{};
-			}
+
+			daw::exception::precondition_check<ParserException>(
+			  !( throw_if_end_reached && !finish ) );
+
 			auto result = make_find_result( start.last, finish.last );
 			result.found = !result.empty( );
 			return result;
@@ -449,13 +447,14 @@ namespace daw {
 			)> is_last,
 			*/
 			auto start = until( first, last, is_first );
-			if( !start ) {
-				throw ParserException{};
-			}
+
+			daw::exception::precondition_check<ParserException>( start );
+
 			auto finish = until( start.last, last, is_last );
-			if( throw_if_end_reached && !finish ) {
-				throw ParserException{};
-			}
+
+			daw::exception::precondition_check<ParserException>(
+			  !( throw_if_end_reached && !finish ) );
+
 			auto result = make_find_result( start.last, finish.last );
 			result.found = !result.empty( );
 			return result;

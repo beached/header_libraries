@@ -23,6 +23,7 @@
 #pragma once
 
 #include "daw_traits.h"
+#include <ostream>
 
 namespace daw {
 	template<typename CharT, typename Traits = std::char_traits<CharT>,

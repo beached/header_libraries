@@ -25,6 +25,7 @@
 #include <stdexcept>
 #include <string_view>
 
+#include "../daw_exception.h"
 #include "../daw_traits.h"
 
 namespace daw {
@@ -112,9 +113,10 @@ namespace daw {
 
 		constexpr std::string_view at( difference_type n ) const {
 			auto const pos = m_pos + n;
-			if( 0 > pos || pos >= m_argc ) {
-				throw std::out_of_range( "Attempt to access invalid argument" );
-			}
+
+			daw::exception::precondition_check<std::out_of_range>(
+			  0 < pos && pos < m_argc, "Attempt to access invalid argument" );
+
 			return std::string_view( m_argv[pos] );
 		}
 

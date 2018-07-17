@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include "daw_exception.h"
 #include "daw_parser_helper.h"
 
 namespace daw {
@@ -52,19 +53,17 @@ namespace daw {
 		                                   ForwardIterator last, Result &result ) {
 			size_t count = std::numeric_limits<Result>::digits10;
 
-			if( '-' == *first ) {
-				throw ParserOutOfRangeException{"Negative values are unsupported"};
-			}
+			daw::exception::precondition_check<ParserOutOfRangeException>(
+			  '-' != *first, "Negative values are unsupported" );
+
 			result = 0;
 			for( ; first != last && count > 0; ++first, --count ) {
 				result *= static_cast<Result>( 10 );
 				Result val = static_cast<Result>( *first ) - static_cast<Result>( '0' );
 				result += val;
 			}
-			if( first != last ) {
-				throw ParserOutOfRangeException{
-				  "Not enough room to store unsigned integer"};
-			}
+			daw::exception::precondition_check<ParserOutOfRangeException>(
+			  first == last, "Not enough room to store unsigned integer" );
 		}
 
 		template<typename ForwardIterator, typename Result>
@@ -74,10 +73,10 @@ namespace daw {
 			result = 0;
 			bool is_neg = false;
 			if( '-' == *first ) {
-				if( !std::numeric_limits<Result>::is_signed ) {
-					throw ParserOutOfRangeException{
-					  "Negative values are unsupported with unsigned Result"};
-				}
+				daw::exception::precondition_check<ParserOutOfRangeException>(
+				  std::numeric_limits<Result>::is_signed,
+				  "Negative values are unsupported with unsigned Result" );
+
 				is_neg = true;
 				++first;
 			}
@@ -86,10 +85,8 @@ namespace daw {
 				Result val = *first - '0';
 				result += val;
 			}
-			if( first != last ) {
-				throw ParserOutOfRangeException{
-				  "Not enough room to store signed integer"};
-			}
+			daw::exception::precondition_check<ParserOutOfRangeException>(
+			  first == last, "Not enough room to store signed integer" );
 			if( is_neg ) {
 				result *= static_cast<Result>( -1 );
 			}
@@ -100,9 +97,10 @@ namespace daw {
 		                                     ForwardIterator const last ) {
 			auto result = trim_left( first, last );
 			auto quote_char = *first;
-			if( !is_quote( quote_char ) ) {
-				throw ParserException{};
-			}
+
+			daw::exception::precondition_check<ParserException>(
+			  is_quote( quote_char ) );
+
 			auto it = result.first;
 			auto last_it = it;
 			++it;
@@ -113,9 +111,8 @@ namespace daw {
 				}
 				last_it = it++;
 			}
-			if( !found ) {
-				throw ParserException{};
-			}
+			daw::exception::precondition_check<ParserException>( found );
+
 			++result.first; // trim quote
 			result.last = it;
 			result.found = true;

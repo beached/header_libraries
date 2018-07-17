@@ -40,9 +40,8 @@ namespace daw {
 
 		template<typename Value>
 		static constexpr decltype( auto ) validate( Value &&val ) {
-			if( val < 1 ) {
-				throw invalid_natural_number{};
-			}
+			daw::exception::precondition_check<invalid_natural_number>( val >= 1 );
+
 			return std::forward<Value>( val );
 		}
 

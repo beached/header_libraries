@@ -32,6 +32,7 @@
 #include <vector>
 
 #include "daw_algorithm.h"
+#include "daw_exception.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_generic_hash.h"
 #include "daw_math.h"
@@ -207,7 +208,8 @@ namespace daw {
 
 		constexpr const_reference at( size_type const pos ) const {
 			if( pos >= m_size ) {
-				throw std::out_of_range{"Attempt to access basic_string_view past end"};
+				daw::exception::daw_throw<std::out_of_range>(
+				  "Attempt to access basic_string_view past end" );
 			}
 			return m_first[pos];
 		}
@@ -251,7 +253,8 @@ namespace daw {
 #ifdef DEBUG
 		constexpr void remove_prefix( size_type n ) {
 			if( n > m_size && n != npos ) {
-				throw std::out_of_range{"Attempt to access basic_string_view past end"};
+				daw::exception::daw_throw<std::out_of_range>(
+				  "Attempt to access basic_string_view past end" );
 			}
 #else
 		constexpr void remove_prefix( size_type n ) noexcept {
@@ -435,7 +438,8 @@ namespace daw {
 		size_type copy( CharT *dest, size_type const count,
 		                size_type const pos = 0 ) const {
 			if( pos >= m_size ) {
-				throw std::out_of_range{"Attempt to access basic_string_view past end"};
+				daw::exception::daw_throw<std::out_of_range>(
+				  "Attempt to access basic_string_view past end" );
 			}
 			size_type rlen = daw::min( count, m_size - pos );
 			traits_type::copy( dest, m_first + pos, rlen );
@@ -445,7 +449,8 @@ namespace daw {
 		constexpr basic_string_view substr( size_type const pos = 0,
 		                                    size_type const count = npos ) const {
 			if( pos > size( ) ) {
-				throw std::out_of_range{"Attempt to access basic_string_view past end"};
+				daw::exception::daw_throw<std::out_of_range>(
+				  "Attempt to access basic_string_view past end" );
 			}
 			auto const rcount =
 			  static_cast<size_type_internal>( daw::min( count, m_size - pos ) );

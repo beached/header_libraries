@@ -30,6 +30,7 @@
 #include <stdexcept>
 
 #include "daw_algorithm.h"
+#include "daw_exception.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_utility.h"
 #include "iterator/daw_iterator.h"
@@ -135,16 +136,15 @@ namespace daw {
 		}
 
 		constexpr reference at( size_type const pos ) {
-			if( pos >= m_size ) {
-				throw std::out_of_range{"Attempt to access span past end"};
-			}
+			daw::exception::precondition_check<std::out_of_range>(
+			  pos < m_size, "Attempt to access span past end" );
 			return m_first[pos];
 		}
 
 		constexpr const_reference at( size_type const pos ) const {
-			if( pos >= m_size ) {
-				throw std::out_of_range{"Attempt to access span past end"};
-			}
+			daw::exception::precondition_check<std::out_of_range>(
+			  pos < m_size, "Attempt to access span past end" );
+
 			return m_first[pos];
 		}
 
@@ -227,9 +227,10 @@ namespace daw {
 
 		constexpr size_type copy( T *dest, size_type const count,
 		                          size_type const pos = 0 ) const {
-			if( pos >= m_size ) {
-				throw std::out_of_range{"Attempt to access span past end"};
-			}
+
+			daw::exception::precondition_check<std::out_of_range>(
+			  pos < m_size, "Attempt to access span past end" );
+
 			size_type const rlen = daw::min( count, m_size - pos );
 			auto src = m_first + pos;
 			for( size_t n = 0; n < rlen; ++n ) {
@@ -245,9 +246,10 @@ namespace daw {
 		constexpr span subset(
 		  size_type const pos = 0,
 		  size_type const count = std::numeric_limits<size_type>::max( ) ) const {
-			if( pos >= size( ) ) {
-				throw std::out_of_range{"Attempt to access span past end"};
-			}
+
+			daw::exception::precondition_check<std::out_of_range>(
+			  pos < m_size, "Attempt to access span past end" );
+
 			auto const rcount = daw::min( count, m_size - pos );
 			return span{m_first + pos, rcount};
 		}
@@ -303,9 +305,9 @@ namespace daw {
 		using value_t =
 		  typename std::iterator_traits<decltype( container.begin( ) )>::value_type;
 
-		if( pos >= container.size( ) ) {
-			throw span_access_past_end_exception{};
-		}
+		daw::exception::precondition_check<span_access_past_end_exception>(
+		  pos < container.size( ) );
+
 		auto const rcount = daw::min( count, container.size( ) - pos );
 		return span<value_t>{container.begin( ) + pos, rcount};
 	}

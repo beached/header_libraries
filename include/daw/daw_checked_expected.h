@@ -40,7 +40,7 @@ namespace daw {
 			} catch( ExpectedException const & ) { return; } catch( ... ) {
 				struct unexpected_exception_type {
 				}; // Cannot catch what you cannot name
-				throw unexpected_exception_type{};
+				daw::exception::daw_throw<unexpected_exception_type>( );
 			}
 		}
 

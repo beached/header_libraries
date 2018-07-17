@@ -24,6 +24,7 @@
 
 #include <string>
 
+#include "daw_exception.h"
 #include "daw_parser_helper_sv.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
@@ -66,7 +67,7 @@ namespace daw {
 		template<uint8_t Cnt, uint8_t Sz, typename... Args,
 		         std::enable_if_t<( Cnt >= Sz ), std::nullptr_t> = nullptr>
 		inline std::string get_arg_impl( uint8_t const, Args &&... ) {
-			throw daw::invalid_string_fmt_index{};
+			daw::exception::daw_throw<daw::invalid_string_fmt_index>( );
 		}
 
 		template<uint8_t Cnt, uint8_t Sz, typename Arg, typename... Args,

@@ -229,7 +229,8 @@ namespace daw {
 				    if( ptr != nullptr ) {
 					    std::rethrow_exception( ptr );
 				    }
-				    throw std::logic_error( "Unexpected empty state" );
+				    daw::exception::daw_throw<std::logic_error>(
+				      "Unexpected empty state" );
 			    } ),
 			  m_value );
 		}
@@ -243,7 +244,8 @@ namespace daw {
 				                 if( ptr != nullptr ) {
 					                 std::rethrow_exception( ptr );
 				                 }
-				                 throw std::logic_error( "Unexpected empty state" );
+				                 daw::exception::daw_throw<std::logic_error>(
+				                   "Unexpected empty state" );
 			                 } ),
 			  m_value );
 		}
@@ -276,7 +278,8 @@ namespace daw {
 				                 if( ptr != nullptr ) {
 					                 std::rethrow_exception( ptr );
 				                 }
-				                 throw std::logic_error( "Unexpected empty state" );
+				                 daw::exception::daw_throw<std::logic_error>(
+				                   "Unexpected empty state" );
 			                 } ),
 			  m_value );
 		}
@@ -476,15 +479,16 @@ namespace daw {
 		}
 
 		void get( ) const {
-			boost::apply_visitor( overload( []( value_type const & ) noexcept {},
-			                                []( std::exception_ptr ptr ) {
-				                                if( ptr != nullptr ) {
-					                                std::rethrow_exception( ptr );
-				                                }
-				                                throw std::logic_error(
-				                                  "Unexpected empty state" );
-			                                } ),
-			                      m_value );
+			boost::apply_visitor(
+			  overload( []( value_type const & ) noexcept {},
+			            []( std::exception_ptr ptr ) {
+				            if( ptr != nullptr ) {
+					            std::rethrow_exception( ptr );
+				            }
+				            daw::exception::daw_throw<std::logic_error>(
+				              "Unexpected empty state" );
+			            } ),
+			  m_value );
 		}
 
 		std::string get_exception_message( ) const noexcept {

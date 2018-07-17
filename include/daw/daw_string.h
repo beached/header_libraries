@@ -33,6 +33,7 @@
 #include <utility>
 #include <vector>
 
+#include "daw_exception.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -235,7 +236,7 @@ namespace daw {
 						ss << std::fixed << std::setprecision( precision )
 						   << boost::lexical_cast<double>( arguments[pos] );
 					} else {
-						throw std::out_of_range(
+						daw::exception::daw_throw<std::out_of_range>(
 						  fmt( "Unknown string format.  Too many colons(", delims.size( ),
 						       "): ", sm[1].str( ) ) );
 					}

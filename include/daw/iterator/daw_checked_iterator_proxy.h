@@ -25,6 +25,8 @@
 #include <stdexcept>
 #include <type_traits>
 
+#include "../daw_exception.h"
+
 namespace daw {
 	template<typename IteratorFirst, typename IteratorLast>
 	class checked_iterator_proxy_t {
@@ -73,8 +75,7 @@ namespace daw {
 
 		checked_iterator_proxy_t &operator++( ) {
 			if( is_flag_set( check_increment ) && current == last ) {
-				throw std::out_of_range(
-				  "Attempt to increment iterator past end of range" );
+				daw::exception::daw_throw<std::out_of_range>( "Attempt to increment iterator past end of range" );
 			}
 			++current;
 			return *this;

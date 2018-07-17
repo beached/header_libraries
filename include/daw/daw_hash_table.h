@@ -549,9 +549,10 @@ namespace daw {
 		auto const &at( Key const &key ) const {
 			auto hash = hash_fn( key );
 			auto pos = find_item_by_hash( hash, *this );
-			if( priv_end( ) == pos ) {
-				throw std::out_of_range( "Key does not already exist" );
-			}
+
+			daw::exception::precondition_check<std::out_of_range>(
+			  priv_end( ) != pos, "Key does not already exist" );
+
 			return pos->value;
 		}
 
@@ -559,9 +560,10 @@ namespace daw {
 		auto &at( Key const &key ) {
 			auto hash = hash_fn( key );
 			auto pos = find_item_by_hash( hash, *this );
-			if( priv_end( ) == pos ) {
-				throw std::out_of_range( "Key does not already exist" );
-			}
+
+			daw::exception::precondition_check<std::out_of_range>(
+			  priv_end( ) != pos, "Key does not already exist" );
+
 			return pos->value;
 		}
 

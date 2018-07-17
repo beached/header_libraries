@@ -33,6 +33,7 @@
 
 #include "daw_algorithm.h"
 #include "daw_container_algorithm.h"
+#include "daw_exception.h"
 #include "daw_fixed_stack.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_generic_hash.h"
@@ -143,29 +144,27 @@ namespace daw {
 		}
 
 		constexpr void push_back( value_type c ) {
-			if( full( ) ) {
-				throw std::out_of_range{
-				  "Attempt to push_back basic_static_string past end"};
-			}
+			daw::exception::precondition_check<std::out_of_range>(
+			  !full( ), "Attempt to push_back basic_static_string past end" );
+
 			m_data.push_back( c );
 			*m_data.end( ) = 0;
 		}
 
 		constexpr basic_static_string &append( value_type c ) {
-			if( m_data.full( ) ) {
-				throw std::out_of_range{
-				  "Attempt to append basic_static_string past end"};
-			}
+			daw::exception::precondition_check<std::out_of_range>(
+			  !m_data.full( ), "Attempt to append basic_static_string past end" );
+
 			push_back( c );
 			return *this;
 		}
 
 		constexpr basic_static_string &
 		append( basic_string_view<CharT, Traits> sv ) {
-			if( m_data.size( ) + sv.size( ) > capacity( ) ) {
-				throw std::out_of_range{
-				  "Attempt to append basic_static_string past end"};
-			}
+			daw::exception::precondition_check<std::out_of_range>(
+			  m_data.size( ) + sv.size( ) <= capacity( ),
+			  "Attempt to append basic_static_string past end" );
+
 			daw::container::copy( sv, std::back_inserter( m_data ) );
 			*m_data.end( ) = 0;
 			return *this;
@@ -365,10 +364,9 @@ namespace daw {
 
 		constexpr size_type copy( CharT *dest, size_type const count,
 		                          size_type const pos = 0 ) const {
-			if( pos >= size( ) ) {
-				throw std::out_of_range{
-				  "Attempt to access basic_static_string past end"};
-			}
+			daw::exception::precondition_check<std::out_of_range>(
+			  pos < size( ), "Attempt to access basic_static_string past end" );
+
 			size_type rlen = daw::min( count, size( ) - pos );
 			daw::algorithm::copy_n( m_data.data( ) + pos, dest, rlen );
 			return rlen;
@@ -376,10 +374,9 @@ namespace daw {
 
 		constexpr basic_static_string substr( size_type const pos = 0,
 		                                      size_type const count = npos ) const {
-			if( pos > size( ) ) {
-				throw std::out_of_range{
-				  "Attempt to access basic_static_string past end"};
-			}
+			daw::exception::precondition_check<std::out_of_range>(
+			  pos < size( ), "Attempt to access basic_static_string past end" );
+
 			auto const rcount =
 			  static_cast<size_type_internal>( daw::min( count, size( ) - pos ) );
 			return basic_static_string{&m_data[pos], rcount};

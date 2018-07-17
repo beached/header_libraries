@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <array>
 #include <string>
 
 #include "daw_string_view.h"
@@ -42,18 +43,14 @@ namespace daw {
 		constexpr reference operator( )( basic_string_view<CharT> str ) noexcept(
 		  noexcept( std::declval<OutputCallback>( )( std::declval<CharT>( ) ) ) ) {
 
-			for( auto c : str ) {
-				m_out( c );
-			}
+			m_out( str.data( ), str.size( ) );
 			return *this;
 		}
 
 		constexpr reference operator( )( CharT const *str, size_t size ) noexcept(
 		  noexcept( std::declval<OutputCallback>( )( std::declval<CharT>( ) ) ) ) {
 
-			for( size_t n = 0; n < size; ++n ) {
-				m_out( str[n] );
-			}
+			m_out( str, size );
 			return *this;
 		}
 
@@ -96,7 +93,7 @@ namespace daw {
 
 		template<typename CharT, typename OutputCallback, typename T>
 		using has_operator_lsh_lsh_detect = decltype( operator<<(
-		  std::declval<basic_output_stream<CharT, OutputCallback> &>( ),
+		  std::declval<daw::basic_output_stream<CharT, OutputCallback> &>( ),
 		  std::declval<T const &>( ) ) );
 
 		template<typename CharT, typename OutputCallback, typename T>
@@ -107,10 +104,29 @@ namespace daw {
 		constexpr bool has_tostring_v =
 		  daw::is_detected_v<tostring_helpers::has_tostring_detect, T>;
 
+		template<typename CharT>
+		struct get_zero;
+
+		template<>
+		struct get_zero<char> {
+			constexpr char operator( )( ) const noexcept {
+				return '0';
+			}
+		};
+
+		template<>
+		struct get_zero<wchar_t> {
+			constexpr char operator( )( ) const noexcept {
+				return L'0';
+			}
+		};
+
 		struct display_value {
 
-			template<typename CharT, typename OutputCallback, typename T>
-			constexpr static void
+			template<typename CharT, typename OutputCallback, typename T,
+			         std::enable_if_t<(!daw::is_integral_v<std::decay_t<T>>),
+			                          std::nullptr_t> = nullptr>
+			static constexpr void
 			display( basic_output_stream<CharT, OutputCallback> &os, T &&value ) {
 
 				using impl::tostring_helpers::to_string;
@@ -119,31 +135,89 @@ namespace daw {
 				os( str.data( ), str.size( ) );
 			}
 
-			template<typename CharT, typename OutputCallback>
-			constexpr static void
-			display( basic_output_stream<CharT, OutputCallback> &os,
-			         basic_string_view<CharT> str ) {
-				os( str );
+			template<typename T>
+			static constexpr size_t num_digits( T value ) noexcept {
+				static_assert( daw::is_integral_v<std::decay_t<T>>,
+				               "value must be an integer type" );
+				if( value == 0 ) {
+					return 1;
+				}
+				size_t result = 0;
+				while( value != 0 ) {
+					value /= 10;
+					++result;
+				}
+				return result;
+			}
+
+			template<typename CharT, typename OutputCallback, typename T,
+			         std::enable_if_t<(daw::is_integral_v<std::decay_t<T>>),
+			                          std::nullptr_t> = nullptr>
+			static constexpr void
+			display( basic_output_stream<CharT, OutputCallback> &os, T &&val ) {
+
+				using int_t = std::decay_t<T>;
+				std::array<char, num_digits( std::numeric_limits<int_t>::max( ) ) + 2>
+				  buff = {0};
+				int_t value = std::forward<T>( val );
+				size_t pos_diff = 1;
+				if( value < 0 ) {
+					value *= -1;
+					buff[0] = '-';
+					pos_diff = 0;
+				}
+
+				auto const digit_count = num_digits( value );
+				for( size_t n = 0; n < digit_count; ++n ) {
+					auto const tmp = value / 10;
+					auto const cur_digit = static_cast<CharT>( value - ( tmp * 10 ) );
+					auto const cur_pos = ( digit_count - pos_diff ) - n;
+					buff[cur_pos] = get_zero<CharT>{}( ) + cur_digit;
+					value = tmp;
+				}
+				os( buff.data( ), digit_count + ( 1 - pos_diff ) );
 			}
 
 			template<typename CharT, typename OutputCallback>
-			constexpr static void
+			static constexpr void
+			display( basic_output_stream<CharT, OutputCallback> &os, CharT const *str,
+			         size_t N ) {
+
+				os( str, N );
+			}
+
+			template<typename CharT, typename OutputCallback>
+			static constexpr void
 			display( basic_output_stream<CharT, OutputCallback> &os, CharT c ) {
 				os( c );
 			}
 		};
 
-		template<typename CharT>
 		struct stdout_callable {
-			inline void operator( )( CharT c ) const noexcept {
+			inline void operator( )( char c ) const noexcept {
 				std::putchar( c );
 			}
-		};
 
-		template<>
-		struct stdout_callable<wchar_t> {
+			inline void operator( )( char const *str, size_t count = 0 ) const
+			  noexcept {
+				if( count < 1 ) {
+					count = daw::impl::strlen( str );
+				}
+				std::fwrite( static_cast<void const *>( str ), sizeof( char ), count,
+				             stdout );
+			}
+
 			inline void operator( )( wchar_t c ) const noexcept {
 				std::putwchar( c );
+			}
+
+			inline void operator( )( wchar_t const *str, size_t count = 0 ) const
+			  noexcept {
+				if( count < 1 ) {
+					count = daw::impl::strlen( str );
+				}
+				std::fwrite( static_cast<void const *>( str ), sizeof( wchar_t ), count,
+				             stdout );
 			}
 		};
 	} // namespace impl
@@ -154,10 +228,8 @@ namespace daw {
 		  std::forward<OutputCallback>( oi ) );
 	}
 
-	static auto con_out =
-	  make_output_stream<char>( impl::stdout_callable<char>{} );
-	static auto con_wout =
-	  make_output_stream<wchar_t>( impl::stdout_callable<wchar_t>{} );
+	static auto con_out = make_output_stream<char>( impl::stdout_callable{} );
+	static auto con_wout = make_output_stream<wchar_t>( impl::stdout_callable{} );
 } // namespace daw
 
 template<typename CharT, typename OutputCallback, typename T,
@@ -166,9 +238,10 @@ template<typename CharT, typename OutputCallback, typename T,
             !daw::impl::has_operator_lsh_lsh_v<CharT, OutputCallback, T>),
            std::nullptr_t> = nullptr>
 constexpr daw::basic_output_stream<CharT, OutputCallback> &
-operator<<( daw::basic_output_stream<CharT, OutputCallback> &os, T &&value ) {
+operator<<( daw::basic_output_stream<CharT, OutputCallback> &os,
+            T const &value ) {
 
-	daw::impl::display_value::display( os, std::forward<T>( value ) );
+	daw::impl::display_value::display( os, value );
 	return os;
 }
 
@@ -177,7 +250,6 @@ constexpr daw::basic_output_stream<CharT, OutputCallback> &
 operator<<( daw::basic_output_stream<CharT, OutputCallback> &os,
             CharT const ( &str )[N] ) {
 
-	daw::impl::display_value::display( os,
-	                                   daw::basic_string_view<CharT>( str, N ) );
+	daw::impl::display_value::display( os, str, N - 1 );
 	return os;
 }

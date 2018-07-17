@@ -26,6 +26,8 @@
 #include <stdexcept>
 #include <utility>
 
+#include "daw_exception.h"
+
 namespace daw {
 	template<typename T>
 	struct heap_array {
@@ -185,16 +187,16 @@ namespace daw {
 		}
 
 		constexpr reference at( size_t pos ) {
-			if( !( pos < m_size ) ) {
-				throw std::out_of_range( "position is beyond end of heap_array" );
-			}
+			daw::exception::precondition_check<std::out_of_range>(
+			  pos < m_size, "position is beyond end of heap_array" );
+
 			return operator[]( pos );
 		}
 
 		constexpr const_reference at( size_t pos ) const {
-			if( !( pos < m_size ) ) {
-				throw std::out_of_range( "position is beyond end of heap_array" );
-			}
+			daw::exception::precondition_check<std::out_of_range>(
+			  pos < m_size, "position is beyond end of heap_array" );
+
 			return operator[]( pos );
 		}
 

@@ -655,7 +655,7 @@ namespace daw {
 				  : m_lower{std::move( lower )}
 				  , m_upper{std::move( upper )} {
 					if( lower > upper ) {
-						throw std::exception{};
+						daw::exception::daw_throw<std::exception>( );
 					};
 				}
 

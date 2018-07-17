@@ -219,9 +219,10 @@ namespace daw {
 		const_reference operator[]( Key const &key ) const {
 			auto const hash = hash_fn<Key>( key );
 			auto const is_found = lookup( hash );
-			if( !is_found ) {
-				throw std::out_of_range( "Attempt to access an undefined key" );
-			}
+
+			daw::exception::precondition_check<std::out_of_range>(
+			  is_found, "Attempt to access an undefined key" );
+
 			return m_values[is_found.position];
 		}
 

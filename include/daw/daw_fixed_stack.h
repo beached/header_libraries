@@ -110,16 +110,14 @@ namespace daw {
 		}
 
 		constexpr reference at( size_type pos ) {
-			if( pos > size( ) ) {
-				throw std::out_of_range{"Attempt to access past end of fix_stack"};
-			}
+			daw::exception::precondition_check(
+			  pos < size( ), "Attempt to access past end of fix_stack" );
 			return m_stack[pos + m_first];
 		}
 
 		constexpr const_reference at( size_type pos ) const {
-			if( pos > size( ) ) {
-				throw std::out_of_range{"Attempt to access past end of fix_stack"};
-			}
+			daw::exception::precondition_check(
+			  pos < size( ), "Attempt to access past end of fix_stack" );
 			return m_stack[pos + m_first];
 		}
 
@@ -226,9 +224,9 @@ namespace daw {
 		}
 
 		constexpr void pop_front( size_type const count ) {
-			if( m_index > m_index - count ) {
-				throw std::out_of_range( "Attempt to pop_front past end of stack" );
-			}
+			daw::exception::precondition_check<std::out_of_range>(
+			  m_index <= m_index - count, "Attempt to pop_front past end of stack" );
+
 			m_index += count;
 		}
 
@@ -240,9 +238,10 @@ namespace daw {
 		}
 
 		constexpr void resize( size_type const count ) {
-			if( count > capacity( ) ) {
-				throw std::out_of_range{"Attempt to resize past capacity of fix_stack"};
-			}
+
+			daw::exception::precondition_check<std::out_of_range>(
+			  count <= capacity( ), "Attempt to resize past capacity of fix_stack" );
+
 			if( count > size( ) ) {
 				if( can_move_front( count ) ) {
 					do_move_to_front( );

@@ -43,9 +43,8 @@ namespace daw {
 
 		namespace converters {
 			constexpr char parse_to_value( daw::string_view str, tag<char> ) {
-				if( str.empty( ) ) {
-					throw empty_input_exception{};
-				}
+				daw::exception::precondition_check<empty_input_exception>(
+				  !str.empty( ) );
 				return str.front( );
 			}
 
@@ -56,9 +55,10 @@ namespace daw {
 					Result result = 0;
 					bool is_neg = false;
 					if( '-' == str.front( ) ) {
-						if( !std::numeric_limits<Result>::is_signed ) {
-							throw invalid_input_exception{};
-						}
+
+						daw::exception::precondition_check<invalid_input_exception>(
+						  std::numeric_limits<Result>::is_signed );
+
 						is_neg = true;
 						str.remove_prefix( );
 					}
@@ -68,9 +68,9 @@ namespace daw {
 						--count;
 						str.remove_prefix( );
 					}
-					if( !str.empty( ) ) {
-						throw numeric_overflow_exception{};
-					}
+
+					daw::exception::precondition_check<numeric_overflow_exception>(
+					  str.empty( ) );
 					if( is_neg ) {
 						result *= static_cast<Result>( -1 );
 					}
@@ -79,9 +79,9 @@ namespace daw {
 
 				template<typename Result>
 				constexpr Result parse_unsigned_int( daw::string_view &str ) {
-					if( '-' == str.front( ) ) {
-						throw invalid_input_exception{};
-					}
+					daw::exception::precondition_check<invalid_input_exception>(
+					  '-' != str.front( ) );
+
 					return parse_int<Result>( str );
 				}
 
@@ -92,9 +92,8 @@ namespace daw {
 			                           is_signed_v<T> && !is_enum_v<T>),
 			                          std::nullptr_t> = nullptr>
 			constexpr T parse_to_value( daw::string_view str, tag<T> ) {
-				if( str.empty( ) ) {
-					throw empty_input_exception{};
-				}
+				daw::exception::precondition_check<empty_input_exception>(
+				  !str.empty( ) );
 				return helpers::parse_int<T>( str );
 			}
 
@@ -102,9 +101,9 @@ namespace daw {
 			         std::enable_if_t<is_integral_v<T> && is_unsigned_v<T>,
 			                          std::nullptr_t> = nullptr>
 			constexpr T parse_to_value( daw::string_view str, tag<T> ) {
-				if( str.empty( ) ) {
-					throw empty_input_exception{};
-				}
+				daw::exception::precondition_check<empty_input_exception>(
+				  !str.empty( ) );
+
 				return helpers::parse_unsigned_int<T>( str );
 			}
 
@@ -119,35 +118,34 @@ namespace daw {
 
 			constexpr daw::string_view parse_to_value( daw::string_view str,
 			                                           tag<unquoted_string_view> ) {
-				if( str.empty( ) ) {
-					throw empty_input_exception{};
-				}
+				daw::exception::precondition_check<empty_input_exception>(
+				  !str.empty( ) );
+
 				return str;
 			}
 
 			constexpr daw::string_view parse_to_value( daw::string_view str,
 			                                           tag<daw::string_view> ) {
-				if( str.empty( ) ) {
-					throw empty_input_exception{};
-				}
-				if( str.size( ) < 2 ) {
-					struct input_too_small_exception {};
-					throw input_too_small_exception{};
-				}
-				if( str.front( ) != '"' ) {
-					struct missing_expected_quotes_exception {};
-					throw missing_expected_quotes_exception{};
-				}
+				daw::exception::precondition_check<empty_input_exception>(
+				  !str.empty( ) );
+
+				struct input_too_small_exception {};
+				struct missing_expected_quotes_exception {};
+
+				daw::exception::precondition_check<input_too_small_exception>(
+				  str.size( ) > 2 );
+				daw::exception::precondition_check<missing_expected_quotes_exception>(
+				  str.front( ) == '"' );
+
 				str.remove_prefix( );
 				auto const first = str.cbegin( );
 				char last_char = str.pop_front( );
 				while( !str.empty( ) && !impl::is_quote( last_char, str.front( ) ) ) {
 					last_char = str.pop_front( );
 				}
-				if( str.front( ) != '"' ) {
-					struct missing_expected_quotes_exception {};
-					throw missing_expected_quotes_exception{};
-				}
+				daw::exception::precondition_check<missing_expected_quotes_exception>(
+				  str.front( ) == '"' );
+
 				return daw::make_string_view_it( first, str.cbegin( ) );
 			}
 

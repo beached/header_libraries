@@ -27,6 +27,7 @@
 #include <utility>
 
 #include "cpp_17.h"
+#include "daw_exception.h"
 
 namespace daw {
 	struct visit_null_union_pair_exception {};
@@ -241,7 +242,7 @@ namespace daw {
 			case data_types::type_nothing:
 				break;
 			}
-			throw visit_null_union_pair_exception( );
+			daw::exception::daw_throw<visit_null_union_pair_exception>( );
 		}
 
 		template<typename Visitor>
@@ -254,7 +255,7 @@ namespace daw {
 			case data_types::type_nothing:
 				break;
 			}
-			throw visit_null_union_pair_exception( );
+			daw::exception::daw_throw<visit_null_union_pair_exception>( );
 		}
 	};
 } // namespace daw
