@@ -75,7 +75,8 @@ namespace daw {
 
 		checked_iterator_proxy_t &operator++( ) {
 			if( is_flag_set( check_increment ) && current == last ) {
-				daw::exception::daw_throw<std::out_of_range>( "Attempt to increment iterator past end of range" );
+				daw::exception::daw_throw<std::out_of_range>(
+				  "Attempt to increment iterator past end of range" );
 			}
 			++current;
 			return *this;

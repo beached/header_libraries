@@ -26,6 +26,19 @@
 #include "daw_traits.h"
 
 namespace daw {
+	namespace impl {
+		template<typename String>
+		using has_data_member = decltype( std::declval<String>( ).data( ) );
+
+		template<typename String>
+		using has_size_member = decltype( std::declval<String>( ).size( ) );
+
+		template<typename String>
+		constexpr bool is_string_like_v =
+		  daw::is_detected_v<has_data_member, String>
+		    &&daw::is_detected_v<has_size_member, String>;
+	} // namespace impl
+
 	template<typename CharT, typename OutputCallback>
 	class basic_output_stream {
 		OutputCallback m_out;
@@ -37,22 +50,31 @@ namespace daw {
 		  daw::is_nothrow_copy_constructible_v<OutputCallback> )
 		  : m_out( oi ) {}
 
-		constexpr reference operator( )( basic_string_view<CharT> str ) noexcept(
-		  noexcept( std::declval<OutputCallback>( )( std::declval<CharT>( ) ) ) ) {
+		constexpr explicit basic_output_stream( OutputCallback &&oi ) noexcept(
+		  daw::is_nothrow_move_constructible_v<OutputCallback> )
+		  : m_out( std::move( oi ) ) {}
 
-			m_out( str.data( ), str.size( ) );
+		static constexpr bool is_nothrow_on_char_v =
+		  noexcept( m_out( std::declval<CharT>( ) ) );
+		static constexpr bool is_nothrow_on_sv_v =
+		  noexcept( m_out( std::declval<daw::basic_string_view<CharT>>( ) ) );
+
+		template<typename String,
+		         std::enable_if_t<(impl::is_string_like_v<String> &&
+		                           !daw::is_same_v<CharT, String>),
+		                          std::nullptr_t> = nullptr>
+		constexpr reference
+		operator( )( String &&str ) noexcept( is_nothrow_on_sv_v ) {
+			static_assert( daw::is_same_v<std::decay_t<CharT>,
+			                              std::decay_t<decltype( *str.data( ) )>>,
+			               "str must contain CharT data" );
+
+			m_out( daw::basic_string_view<CharT>( str.data( ), str.size( ) ) );
 			return *this;
 		}
 
-		constexpr reference operator( )( CharT const *str, size_t size ) noexcept(
-		  noexcept( std::declval<OutputCallback>( )( std::declval<CharT>( ) ) ) ) {
-
-			m_out( str, size );
-			return *this;
-		}
-
-		constexpr reference operator( )( CharT c ) noexcept(
-		  noexcept( std::declval<OutputCallback>( )( std::declval<CharT>( ) ) ) ) {
+		constexpr reference
+		operator( )( CharT c ) noexcept( is_nothrow_on_char_v ) {
 
 			m_out( c );
 			return *this;
@@ -129,18 +151,19 @@ namespace daw {
 
 				using impl::tostring_helpers::to_string;
 				using std::to_string;
-				auto str = to_string( std::forward<T>( value ) );
-				os( str.data( ), str.size( ) );
+				os( to_string( std::forward<T>( value ) ) );
 			}
 
+		private:
 			template<typename T>
-			static constexpr size_t num_digits( T value ) noexcept {
-				static_assert( daw::is_integral_v<std::decay_t<T>>,
+			static constexpr auto num_digits( T value ) noexcept {
+				using int_t = std::decay_t<T>;
+				static_assert( daw::is_integral_v<int_t>,
 				               "value must be an integer type" );
 				if( value == 0 ) {
-					return 1;
+					return static_cast<int_t>( 1 );
 				}
-				size_t result = 0;
+				int_t result = 0;
 				while( value != 0 ) {
 					value /= 10;
 					++result;
@@ -148,8 +171,9 @@ namespace daw {
 				return result;
 			}
 
-			static constexpr uintmax_t pow10( uintmax_t n ) noexcept {
-				uintmax_t result = 1;
+			template<typename Int>
+			static constexpr Int pow10( Int n ) noexcept {
+				Int result = 1;
 				while( n > 1 ) {
 					result *= 10;
 					--n;
@@ -157,6 +181,7 @@ namespace daw {
 				return result;
 			}
 
+		public:
 			template<typename CharT, typename OutputCallback, typename T,
 			         std::enable_if_t<(daw::is_integral_v<std::decay_t<T>>),
 			                          std::nullptr_t> = nullptr>
@@ -171,10 +196,11 @@ namespace daw {
 					value *= -1;
 				}
 
-				auto max10 = pow10( num_digits( value ) );
+				auto max10 = pow10<int_t>( num_digits<int_t>( value ) );
 				while( max10 > 0 ) {
-					auto const tmp = (value / max10)*max10;
-					auto const cur_digit = get_zero<CharT>{}( ) + static_cast<CharT>( tmp/max10 );
+					auto const tmp = ( value / max10 ) * max10;
+					CharT const cur_digit =
+					  get_zero<CharT>{}( ) + static_cast<CharT>( tmp / max10 );
 					os( cur_digit );
 					value -= tmp;
 					max10 /= 10;
@@ -186,7 +212,7 @@ namespace daw {
 			display( basic_output_stream<CharT, OutputCallback> &os, CharT const *str,
 			         size_t N ) {
 
-				os( str, N );
+				os( daw::basic_string_view<CharT>( str, N ) );
 			}
 
 			template<typename CharT, typename OutputCallback>
@@ -198,30 +224,18 @@ namespace daw {
 
 		struct stdout_callable {
 			inline void operator( )( char c ) const noexcept {
-				putchar_unlocked( c );
-			}
-
-			inline void operator( )( char const *str, size_t count = 0 ) const
-			  noexcept {
-				if( count < 1 ) {
-					count = daw::impl::strlen( str );
-				}
-				for( size_t n = 0; n < count; ++n ) {
-					putchar_unlocked( str[n] );
-				}
+				putchar( c );
 			}
 
 			inline void operator( )( wchar_t c ) const noexcept {
-				putwchar_unlocked( c );
+				putwchar( c );
 			}
 
-			inline void operator( )( wchar_t const *str, size_t count = 0 ) const
+			template<typename CharT>
+			inline void operator( )( daw::basic_string_view<CharT> str ) const
 			  noexcept {
-				if( count < 1 ) {
-					count = daw::impl::strlen( str );
-				}
-				for( size_t n = 0; n < count; ++n ) {
-					putwchar_unlocked( str[n] );
+				for( auto c : str ) {
+					putchar( c );
 				}
 			}
 		};
@@ -255,6 +269,6 @@ constexpr daw::basic_output_stream<CharT, OutputCallback> &
 operator<<( daw::basic_output_stream<CharT, OutputCallback> &os,
             CharT const ( &str )[N] ) {
 
-	daw::impl::display_value::display( os, str, N - 1 );
+	os( daw::basic_string_view<CharT>( str, N - 1 ) );
 	return os;
 }

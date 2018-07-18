@@ -24,5 +24,6 @@
 #include "daw/daw_stream.h"
 
 BOOST_AUTO_TEST_CASE( daw_stream_001 ) {
-	daw::con_out << "Hello the number is: " << 55 << ' ' << -234432 << '\n';
+	daw::con_out << "Hello the number is: " << 55 << ' ' << 1.3434343434L << ' '
+	             << -234432 << '\n';
 }
