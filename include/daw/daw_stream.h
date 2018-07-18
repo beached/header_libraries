@@ -22,9 +22,6 @@
 
 #pragma once
 
-#include <array>
-#include <string>
-
 #include "daw_string_view.h"
 #include "daw_traits.h"
 
@@ -71,7 +68,7 @@ namespace daw {
 			}
 			return result;
 		}
-		 		
+
 		namespace tostring_helpers {
 			using std::to_string;
 
@@ -151,6 +148,15 @@ namespace daw {
 				return result;
 			}
 
+			static constexpr uintmax_t pow10( uintmax_t n ) noexcept {
+				uintmax_t result = 1;
+				while( n > 1 ) {
+					result *= 10;
+					--n;
+				}
+				return result;
+			}
+
 			template<typename CharT, typename OutputCallback, typename T,
 			         std::enable_if_t<(daw::is_integral_v<std::decay_t<T>>),
 			                          std::nullptr_t> = nullptr>
@@ -158,25 +164,21 @@ namespace daw {
 			display( basic_output_stream<CharT, OutputCallback> &os, T &&val ) {
 
 				using int_t = std::decay_t<T>;
-				std::array<char, num_digits( std::numeric_limits<int_t>::max( ) ) + 2>
-				  buff = {0};
 				int_t value = std::forward<T>( val );
 				size_t pos_diff = 1;
 				if( value < 0 ) {
+					os( '-' );
 					value *= -1;
-					buff[0] = '-';
-					pos_diff = 0;
 				}
 
-				auto const digit_count = num_digits( value );
-				for( size_t n = 0; n < digit_count; ++n ) {
-					auto const tmp = value / 10;
-					auto const cur_digit = static_cast<CharT>( value - ( tmp * 10 ) );
-					auto const cur_pos = ( digit_count - pos_diff ) - n;
-					buff[cur_pos] = get_zero<CharT>{}( ) + cur_digit;
-					value = tmp;
+				auto max10 = pow10( num_digits( value ) );
+				while( max10 > 0 ) {
+					auto const tmp = (value / max10)*max10;
+					auto const cur_digit = get_zero<CharT>{}( ) + static_cast<CharT>( tmp/max10 );
+					os( cur_digit );
+					value -= tmp;
+					max10 /= 10;
 				}
-				os( buff.data( ), digit_count + ( 1 - pos_diff ) );
 			}
 
 			template<typename CharT, typename OutputCallback>
@@ -204,8 +206,9 @@ namespace daw {
 				if( count < 1 ) {
 					count = daw::impl::strlen( str );
 				}
-				std::fwrite( static_cast<void const *>( str ), sizeof( char ), count,
-				             stdout );
+				for( size_t n = 0; n < count; ++n ) {
+					putchar_unlocked( str[n] );
+				}
 			}
 
 			inline void operator( )( wchar_t c ) const noexcept {
@@ -217,8 +220,9 @@ namespace daw {
 				if( count < 1 ) {
 					count = daw::impl::strlen( str );
 				}
-				std::fwrite( static_cast<void const *>( str ), sizeof( wchar_t ), count,
-				             stdout );
+				for( size_t n = 0; n < count; ++n ) {
+					putwchar_unlocked( str[n] );
+				}
 			}
 		};
 	} // namespace impl
