@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 #include <limits>
+#include <iostream>
 
 #include "daw/boost_test.h"
 #include "daw/daw_bit_queues.h"

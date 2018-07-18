@@ -959,6 +959,78 @@ namespace daw {
 		template<typename T, typename... Args>
 		constexpr bool is_init_list_constructible_v = are_same_types_v<Args...>
 		  &&daw::is_constructible_v<T, std::initializer_list<first_type<Args...>>>;
+
+		namespace ostream_detectors {
+			template<typename T>
+			using has_char_type_detect = typename T::char_type;
+
+			template<typename T>
+			constexpr bool has_char_type_v =
+			  daw::is_detected_v<has_char_type_detect, T>;
+
+			template<typename T>
+			using has_adjustfield_detect = decltype( T::adjustfield );
+
+			template<typename T>
+			constexpr bool has_adjustfield_v =
+			  daw::is_detected_v<has_adjustfield_detect, T>;
+
+			template<typename T>
+			using has_left_detect = decltype( T::left );
+
+			template<typename T>
+			constexpr bool has_left_v = daw::is_detected_v<has_left_detect, T>;
+
+			template<typename T>
+			using has_fill_member_detect = decltype( std::declval<T>( ).fill( ) );
+
+			template<typename T>
+			constexpr bool has_fill_member_v =
+			  daw::is_detected_v<has_fill_member_detect, T>;
+
+			template<typename T>
+			using has_good_member_detect = decltype( std::declval<T>( ).good( ) );
+
+			template<typename T>
+			constexpr bool has_good_member_v =
+			  daw::is_detected_v<has_good_member_detect, T>;
+
+			template<typename T, typename CharT>
+			using has_write_member_detect = decltype( std::declval<T>( ).write(
+			  std::declval<CharT const *>( ), std::declval<int>( ) ) );
+
+			template<typename T, typename CharT>
+			constexpr bool has_write_member_v =
+			  daw::is_detected_v<has_write_member_detect, T, CharT>;
+
+			template<typename T>
+			using has_width_member_detect = decltype( std::declval<T>( ).width( ) );
+
+			template<typename T>
+			constexpr bool has_width_member_v =
+			  daw::is_detected_v<has_width_member_detect, T>;
+
+			template<typename T>
+			using has_flags_member_detect = decltype( std::declval<T>( ).flags( ) );
+
+			template<typename T>
+			constexpr bool has_flags_member_v =
+			  daw::is_detected_v<has_flags_member_detect, T>;
+
+		} // namespace ostream_detectors
+
+		template<typename T>
+		constexpr bool is_ostream_like_lite_v =
+		  ostream_detectors::has_char_type_v<T>
+		    &&ostream_detectors::has_adjustfield_v<T>
+		      &&ostream_detectors::has_fill_member_v<T>
+		        &&ostream_detectors::has_good_member_v<T>
+		          &&ostream_detectors::has_width_member_v<T>
+		            &&ostream_detectors::has_flags_member_v<T>;
+
+		template<typename T, typename CharT>
+		constexpr bool is_ostream_like_v = is_ostream_like_lite_v<T>
+		  &&ostream_detectors::has_write_member_v<T, CharT>;
 	} // namespace traits
 
 	template<bool B, typename T = std::nullptr_t>

@@ -24,7 +24,6 @@
 
 #include <boost/endian/conversion.hpp>
 #include <cstdint>
-#include <iostream>
 
 #include "daw_bit.h"
 #include "daw_exception.h"

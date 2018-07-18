@@ -24,7 +24,6 @@
 
 #include <cstdint>
 #include <functional>
-#include <ostream>
 #include <string>
 #include <type_traits>
 #include <typeindex>
@@ -507,9 +506,10 @@ namespace daw {
 		return value.to_string( );
 	}
 
-	template<typename... Args>
-	std::ostream &operator>>( std::ostream &os,
-	                          variant_t<Args...> const &value ) {
+	template<typename OStream, typename... Args,
+	         std::enable_if_t<daw::traits::is_ostream_like_lite_v<OStream>,
+	                          std::nullptr_t> = nullptr>
+	OStream &operator>>( OStream &os, variant_t<Args...> const &value ) {
 		using std::to_string;
 		os << to_string( value );
 		return os;

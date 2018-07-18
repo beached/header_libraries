@@ -26,9 +26,9 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/iostreams/device/mapped_file.hpp>
 #include <memory>
-#include <string>
 
 #include "daw_string_view.h"
+#include "daw_traits.h"
 
 namespace daw {
 	namespace filesystem {
@@ -158,19 +158,25 @@ namespace daw {
 		template<typename T>
 		using MemoryMappedFile = memory_mapped_file_t<T>;
 
-		template<typename T>
-		std::ostream &operator<<( std::ostream &os,
-		                          memory_mapped_file_t<T> const &mmf ) {
-			std::ostream_iterator<T> out_it{os};
-			std::copy( mmf.cbegin( ), mmf.cend( ), out_it );
+		template<typename OStream, typename T,
+		         std::enable_if_t<daw::traits::is_ostream_like_lite_v<OStream>,
+		                          std::nullptr_t> = nullptr>
+		OStream &operator<<( OStream &os, memory_mapped_file_t<T> const &mmf ) {
+
+			for( auto const &value : mmf ) {
+				os << mmf;
+			}
 			return os;
 		}
 
-		template<typename T>
-		std::ostream &operator<<( std::ostream &os,
-		                          memory_mapped_file_t<T> const &&mmf ) {
-			std::ostream_iterator<T> out_it{os};
-			std::copy( mmf.cbegin( ), mmf.cend( ), out_it );
+		template<typename OStream, typename T,
+		         std::enable_if_t<daw::traits::is_ostream_like_lite_v<OStream>,
+		                          std::nullptr_t> = nullptr>
+		OStream &operator<<( OStream &os, memory_mapped_file_t<T> const &&mmf ) {
+
+			for( auto const &value : mmf ) {
+				os << mmf;
+			}
 			return os;
 		}
 	} // namespace filesystem

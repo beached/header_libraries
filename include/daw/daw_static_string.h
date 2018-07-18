@@ -1276,23 +1276,6 @@ namespace daw {
 	  daw::basic_static_string<CharT, Capacity, Traits, InternalSizeType> &&str,
 	  CharT const ( &delemiter )[N] ) = delete;
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	std::basic_ostream<CharT> &
-	operator<<( std::basic_ostream<CharT> &os,
-	            daw::basic_static_string<CharT, Capacity, Traits> const &str ) {
-		if( os.good( ) ) {
-			auto const size = static_cast<ptrdiff_t>( str.size( ) );
-			auto const w = static_cast<ptrdiff_t>( os.width( ) );
-			if( w <= size ) {
-				os.write( str.data( ), static_cast<std::streamsize>( size ) );
-			} else {
-				daw::details::sv_insert_aligned( os, str );
-			}
-			os.width( 0 );
-		}
-		return os;
-	}
-
 	template<typename CharT, size_t Capacity, typename Traits,
 	         typename InternalSizeType>
 	constexpr size_t
@@ -1318,6 +1301,25 @@ namespace daw {
 	template<typename String>
 	constexpr bool can_be_static_string =
 	  daw::is_detected_v<detectors::can_be_static_string, String>;
+
+	template<typename OStream, typename CharT, size_t Capacity, typename Traits,
+	         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,
+	                          std::nullptr_t> = nullptr>
+	OStream &
+	operator<<( OStream &os,
+	            daw::basic_static_string<CharT, Capacity, Traits> const &str ) {
+		if( os.good( ) ) {
+			auto const size = static_cast<ptrdiff_t>( str.size( ) );
+			auto const w = static_cast<ptrdiff_t>( os.width( ) );
+			if( w <= size ) {
+				os.write( str.data( ), static_cast<std::streamsize>( size ) );
+			} else {
+				daw::details::sv_insert_aligned( os, str );
+			}
+			os.width( 0 );
+		}
+		return os;
+	}
 } // namespace daw
 
 namespace std {

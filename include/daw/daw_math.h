@@ -27,13 +27,9 @@
 
 #include <cassert>
 #include <cmath>
-#include <functional>
 #include <limits>
 #include <memory>
-#include <string>
-#include <type_traits>
 #include <utility>
-#include <vector>
 
 #include "daw_algorithm.h"
 #include "daw_traits.h"

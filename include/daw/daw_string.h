@@ -451,6 +451,15 @@ namespace daw {
 					return m_string;
 				}
 			}; // BasicString
+
+			template<typename OStream, typename CharT,
+			         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,
+			                          std::nullptr_t> = nullptr>
+			OStream &operator<<( OStream &os,
+			                          BasicString<CharT> const &str ) {
+				os << str.to_string( );
+				return os;
+			}
 		}    // namespace impl
 
 		template<typename StrArray, typename Char>
@@ -471,12 +480,5 @@ namespace daw {
 
 	using String = ::daw::string::impl::BasicString<char>;
 	using WString = ::daw::string::impl::BasicString<wchar_t>;
-
 } // namespace daw
 
-template<typename CharT>
-std::ostream &operator<<( std::ostream &os,
-                          daw::string::impl::BasicString<CharT> const &str ) {
-	os << str.to_string( );
-	return os;
-}

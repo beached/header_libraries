@@ -28,15 +28,15 @@
 namespace daw {
 	namespace impl {
 		template<typename String>
-		using has_data_member = decltype( std::declval<String>( ).data( ) );
+		using has_data_member_detect = decltype( std::declval<String>( ).data( ) );
 
 		template<typename String>
-		using has_size_member = decltype( std::declval<String>( ).size( ) );
+		using has_size_member_detect = decltype( std::declval<String>( ).size( ) );
 
 		template<typename String>
 		constexpr bool is_string_like_v =
-		  daw::is_detected_v<has_data_member, String>
-		    &&daw::is_detected_v<has_size_member, String>;
+		  daw::is_detected_v<has_data_member_detect, String>
+		    &&daw::is_detected_v<has_size_member_detect, String>;
 	} // namespace impl
 
 	template<typename CharT, typename OutputCallback>
@@ -107,8 +107,30 @@ namespace daw {
 			}
 
 			template<typename T>
+			using has_tostring_detect2 =
+			  decltype( to_string( std::declval<T const &>( ) ) );
+
+			template<typename T>
+			constexpr bool has_tostring2_v =
+			  daw::is_detected_v<tostring_helpers::has_tostring_detect2, T>;
+
+			template<typename String,
+			         std::enable_if_t<(!has_tostring2_v<std::decay_t<String>> &&
+			                           is_string_like_v<std::decay_t<String>>),
+			                          std::nullptr_t> = nullptr>
+			constexpr auto to_string( String &&str ) noexcept {
+				using CharT = std::decay_t<decltype( *str.data( ) )>;
+				return basic_string_view<CharT>( str.data( ), str.size( ) );
+			}
+
+			template<typename T>
 			using has_tostring_detect =
 			  decltype( to_string( std::declval<T const &>( ) ) );
+
+			template<typename T>
+			constexpr bool has_tostring_v =
+			  daw::is_detected_v<tostring_helpers::has_tostring_detect, T>;
+
 		} // namespace tostring_helpers
 
 		template<typename CharT, typename OutputCallback, typename T>
@@ -119,10 +141,6 @@ namespace daw {
 		template<typename CharT, typename OutputCallback, typename T>
 		constexpr bool has_operator_lsh_lsh_v =
 		  daw::is_detected_v<has_operator_lsh_lsh_detect, CharT, OutputCallback, T>;
-
-		template<typename T>
-		constexpr bool has_tostring_v =
-		  daw::is_detected_v<tostring_helpers::has_tostring_detect, T>;
 
 		template<typename CharT>
 		struct get_zero;
@@ -249,20 +267,8 @@ namespace daw {
 
 	static auto con_out = make_output_stream<char>( impl::stdout_callable{} );
 	static auto con_wout = make_output_stream<wchar_t>( impl::stdout_callable{} );
+
 } // namespace daw
-
-template<typename CharT, typename OutputCallback, typename T,
-         std::enable_if_t<
-           (daw::impl::has_tostring_v<T> &&
-            !daw::impl::has_operator_lsh_lsh_v<CharT, OutputCallback, T>),
-           std::nullptr_t> = nullptr>
-constexpr daw::basic_output_stream<CharT, OutputCallback> &
-operator<<( daw::basic_output_stream<CharT, OutputCallback> &os,
-            T const &value ) {
-
-	daw::impl::display_value::display( os, value );
-	return os;
-}
 
 template<typename CharT, typename OutputCallback, size_t N>
 constexpr daw::basic_output_stream<CharT, OutputCallback> &
@@ -282,6 +288,18 @@ operator<<( daw::basic_output_stream<CharT, OutputCallback> &os, bool b ) {
 	} else {
 		operator<<( os, "false" );
 	}
+	return os;
+}
+
+template<typename CharT, typename OutputCallback, typename T,
+         std::enable_if_t<
+           (daw::impl::tostring_helpers::has_tostring_v<T> &&
+            !daw::impl::has_operator_lsh_lsh_v<CharT, OutputCallback, T>),
+           std::nullptr_t> = nullptr>
+constexpr daw::basic_output_stream<CharT, OutputCallback> &
+operator<<( daw::basic_output_stream<CharT, OutputCallback> &os, T &&value ) {
+
+	daw::impl::display_value::display( os, value );
 	return os;
 }
 

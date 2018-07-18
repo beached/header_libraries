@@ -22,8 +22,9 @@
 
 #pragma once
 
+#include <array>
+
 #include "daw_traits.h"
-#include <ostream>
 
 namespace daw {
 	template<typename CharT, typename Traits = std::char_traits<CharT>,
@@ -180,60 +181,68 @@ namespace daw {
 			return last;
 		}
 
-		template<typename charT, typename traits>
-		inline void sv_insert_fill_chars( std::basic_ostream<charT, traits> &os,
-		                                  std::size_t n ) {
-			enum { chunk_size = 8 };
-			charT fill_chars[chunk_size];
-			std::fill_n( fill_chars, static_cast<std::size_t>( chunk_size ),
-			             os.fill( ) );
-			for( ; n >= chunk_size && os.good( ); n -= chunk_size ) {
-				os.write( fill_chars, static_cast<std::size_t>( chunk_size ) );
+		template<typename OStream,
+		         std::enable_if_t<daw::traits::is_ostream_like_lite_v<OStream>,
+		                          std::nullptr_t> = nullptr>
+		inline void sv_insert_fill_chars( OStream &os, std::size_t n ) {
+			using CharT = typename OStream::char_type;
+			static_assert( daw::traits::ostream_detectors::has_write_member_v<OStream, CharT>,
+			               "OStream Must has write member" );
+
+			std::array<CharT, 8> fill_chars = {0};
+			fill_chars.fill( os.fill( ) );
+
+			for( ; n >= fill_chars.size( ) && os.good( ); n -= fill_chars.size( ) ) {
+				os.write( fill_chars.data( ),
+				          static_cast<intmax_t>( fill_chars.size( ) ) );
 			}
 			if( n > 0 && os.good( ) ) {
-				os.write( fill_chars, static_cast<std::streamsize>( n ) );
+				os.write( fill_chars.data( ), static_cast<intmax_t>( n ) );
 			}
 		}
 
-		template<typename charT, typename traits>
-		void sv_insert_aligned( std::basic_ostream<charT, traits> &os,
-		                        daw::basic_string_view<charT, traits> const &str ) {
+		template<
+		  typename OStream, typename CharT, typename Traits,
+		  std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>, std::nullptr_t> = nullptr>
+		void sv_insert_aligned( OStream &os,
+		                        daw::basic_string_view<CharT, Traits> str ) {
 			auto const size = str.size( );
 			auto const alignment_size =
 			  static_cast<std::size_t>( os.width( ) ) - size;
 			bool const align_left =
-			  ( os.flags( ) & std::basic_ostream<charT, traits>::adjustfield ) ==
-			  std::basic_ostream<charT, traits>::left;
+			  ( os.flags( ) & OStream::adjustfield ) == OStream::left;
 			if( !align_left ) {
 				sv_insert_fill_chars( os, alignment_size );
 				if( os.good( ) ) {
-					os.write( str.data( ), static_cast<std::streamsize>( size ) );
+					os.write( str.data( ), static_cast<intmax_t>( size ) );
 				}
 			} else {
-				os.write( str.data( ), static_cast<std::streamsize>( size ) );
+				os.write( str.data( ), static_cast<intmax_t>( size ) );
 				if( os.good( ) ) {
 					sv_insert_fill_chars( os, alignment_size );
 				}
 			}
 		}
 
-		template<typename charT, size_t Capacity, typename traits>
+		template<
+		  typename CharT, size_t Capacity, typename Traits, typename OStream,
+		  std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>, std::nullptr_t> = nullptr>
 		void sv_insert_aligned(
-		  std::basic_ostream<charT, traits> &os,
-		  daw::basic_static_string<charT, Capacity, traits> const &str ) {
+		  OStream &os,
+		  daw::basic_static_string<CharT, Capacity, Traits> const &str ) {
+
 			auto const size = str.size( );
 			auto const alignment_size =
 			  static_cast<std::size_t>( os.width( ) ) - size;
 			bool const align_left =
-			  ( os.flags( ) & std::basic_ostream<charT, traits>::adjustfield ) ==
-			  std::basic_ostream<charT, traits>::left;
+			  ( os.flags( ) & OStream::adjustfield ) == OStream::left;
 			if( !align_left ) {
 				sv_insert_fill_chars( os, alignment_size );
 				if( os.good( ) ) {
-					os.write( str.data( ), static_cast<std::streamsize>( size ) );
+					os.write( str.data( ), static_cast<intmax_t>( size ) );
 				}
 			} else {
-				os.write( str.data( ), static_cast<std::streamsize>( size ) );
+				os.write( str.data( ), static_cast<intmax_t>( size ) );
 				if( os.good( ) ) {
 					sv_insert_fill_chars( os, alignment_size );
 				}

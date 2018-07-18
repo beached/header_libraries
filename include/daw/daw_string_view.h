@@ -22,7 +22,6 @@
 
 #pragma once
 
-#include <algorithm>
 #include <cstdint>
 #include <cstdlib>
 #include <iterator>
@@ -1328,15 +1327,15 @@ namespace daw {
 		return split( basic_string_view<CharT>{str, N}, d );
 	}
 
-	template<typename CharT, typename Traits>
-	std::basic_ostream<CharT> &
-	operator<<( std::basic_ostream<CharT> &os,
-	            daw::basic_string_view<CharT, Traits> v ) {
+	template<typename CharT, typename Traits, typename OStream,
+	         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,
+	                          std::nullptr_t> = nullptr>
+	OStream &operator<<( OStream &os, daw::basic_string_view<CharT, Traits> v ) {
 		if( os.good( ) ) {
 			auto const size = v.size( );
 			auto const w = static_cast<std::size_t>( os.width( ) );
 			if( w <= size ) {
-				os.write( v.data( ), static_cast<std::streamsize>( size ) );
+				os.write( v.data( ), static_cast<intmax_t>( size ) );
 			} else {
 				daw::details::sv_insert_aligned( os, v );
 			}

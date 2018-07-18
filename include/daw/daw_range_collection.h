@@ -23,7 +23,6 @@
 #pragma once
 
 #include <algorithm>
-#include <iostream>
 #include <iterator>
 #include <numeric>
 #include <random>
@@ -460,18 +459,19 @@ namespace daw {
 			                   std::forward<Args>( args )... );
 		}
 
+		template<typename OStream, typename T,
+		         std::enable_if_t<daw::traits::is_ostream_like_lite_v<OStream>,
+		                          std::nullptr_t> = nullptr>
+		OStream &operator<<( OStream &os, CollectionRange<T> const &rng ) {
+			os << "{";
+			if( !rng.empty( ) ) {
+				for( auto it = rng.cbegin( ); it != rng.cend( ); ++it ) {
+					os << " " << *it;
+				}
+			}
+			os << " }";
+			return os;
+		}
 	} // namespace range
 } // namespace daw
 
-template<typename T>
-::std::ostream &operator<<( ::std::ostream &os,
-                            ::daw::range::CollectionRange<T> const &rng ) {
-	os << "{";
-	if( !rng.empty( ) ) {
-		for( auto it = rng.cbegin( ); it != rng.cend( ); ++it ) {
-			os << " " << *it;
-		}
-	}
-	os << " }";
-	return os;
-}

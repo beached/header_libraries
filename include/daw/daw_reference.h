@@ -25,7 +25,6 @@
 #include <algorithm>
 #include <iterator>
 #include <numeric>
-#include <ostream>
 #include <vector>
 
 #include "daw_algorithm.h"
@@ -107,11 +106,12 @@ namespace daw {
 		return result;
 	}
 
+	template<typename OStream, typename T,
+	         std::enable_if_t<daw::traits::is_ostream_like_lite_v<OStream>,
+	                          std::nullptr_t> = nullptr>
+	OStream &operator<<( OStream &os, Reference<T> const &ref ) {
+		os << *ref;
+		return os;
+	}
 } // namespace daw
 
-template<typename T>
-::std::ostream &operator<<( ::std::ostream &os,
-                            ::daw::Reference<T> const &ref ) {
-	os << *ref;
-	return os;
-}
