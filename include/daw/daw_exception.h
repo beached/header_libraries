@@ -47,7 +47,7 @@ namespace daw {
 
 		template<typename ExceptionType = std::runtime_error, typename... Args>
 		[[noreturn]] void daw_throw( Args &&... args ) {
-#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS )
+#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) || defined( _CPPUNWIND )
 			throw ExceptionType( std::forward<Args>( args )... );
 #else
 			std::terminate( );
@@ -133,7 +133,7 @@ namespace daw {
 		template<typename ExceptionType = AssertException>
 		constexpr void dbg_throw_on_false( bool test ) {
 			if( !static_cast<bool>( test ) ) {
-#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS )
+#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) || defined( _CPPUNWIND )
 				throw ExceptionType{};
 #else
 				std::terminate( );
@@ -261,7 +261,7 @@ namespace daw {
 		template<typename ExceptionType = std::exception, typename Bool>
 		constexpr void daw_throw_on_false( Bool &&test ) {
 			if( !static_cast<bool>( std::forward<Bool>( test ) ) ) {
-#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS )
+#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) || defined( _CPPUNWIND )
 				throw ExceptionType{};
 #else
 				std::terminate( );
@@ -272,7 +272,7 @@ namespace daw {
 		template<typename ExceptionType = std::exception, typename Bool>
 		constexpr void daw_throw_on_true( Bool const &test ) {
 			if( static_cast<bool>( test ) ) {
-#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS )
+#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) || defined( _CPPUNWIND )
 				throw ExceptionType{};
 #else
 				std::terminate( );
@@ -283,7 +283,7 @@ namespace daw {
 		template<typename ExceptionType = std::exception>
 		constexpr void daw_throw_value_on_true( ExceptionType const &test ) {
 			if( static_cast<bool>( test ) ) {
-#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS )
+#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) || defined( _CPPUNWIND )
 				throw test;
 #else
 				std::terminate( );
@@ -294,7 +294,7 @@ namespace daw {
 		template<typename ExceptionType>
 		constexpr void daw_throw_value_on_false( ExceptionType const &test ) {
 			if( !static_cast<bool>( test ) ) {
-#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS )
+#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) || defined( _CPPUNWIND )
 				throw test;
 #else
 				std::terminate( );
@@ -395,11 +395,11 @@ namespace daw {
 
 		template<typename Function, typename... Args>
 		void no_exception( Function func, Args &&... args ) noexcept {
-#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS )
+#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) || defined( _CPPUNWIND )
 			try {
 #endif
 				func( std::forward<Args>( args )... );
-#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS )
+#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) || defined( _CPPUNWIND )
 			} catch( ... ) {}
 #endif
 		}

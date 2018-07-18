@@ -272,3 +272,16 @@ operator<<( daw::basic_output_stream<CharT, OutputCallback> &os,
 	os( daw::basic_string_view<CharT>( str, N - 1 ) );
 	return os;
 }
+
+template<typename CharT, typename OutputCallback>
+constexpr daw::basic_output_stream<CharT, OutputCallback> &
+operator<<( daw::basic_output_stream<CharT, OutputCallback> &os, bool b ) {
+
+	if( b ) {
+		operator<<( os, "true" );
+	} else {
+		operator<<( os, "false" );
+	}
+	return os;
+}
+
