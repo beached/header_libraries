@@ -79,52 +79,33 @@ namespace daw {
 		constexpr basic_static_string( std::nullptr_t,
 		                               size_type ) noexcept = delete;
 
-		constexpr basic_static_string( const_pointer s, size_type count )
-		  : m_data{s, count} {}
+		constexpr basic_static_string( const_pointer str_ptr, size_type count )
+		  : m_data( str_ptr, count ) {}
 
 		template<size_t N>
-		constexpr basic_static_string( basic_static_string<CharT, N> sv,
+		constexpr basic_static_string( basic_static_string<CharT, N> str,
 		                               size_type count )
-		  : m_data{sv.data( ), daw::min( count, N )} {}
+		  : m_data( str.data( ), daw::min( count, N ) ) {}
 
 		template<typename Allocator>
 		basic_static_string(
 		  std::basic_string<CharT, Traits, Allocator> const &str ) noexcept
-		  : m_data{str.data( ), str.size( )} {}
+		  : m_data( str.data( ), str.size( ) ) {}
 
 		template<typename ChrT, typename TrtsT, typename Allocator>
 		basic_static_string(
 		  std::basic_string<ChrT, TrtsT, Allocator> const &str ) noexcept
-		  : m_data{str.data( ), static_cast<size_type_internal>( str.size( ) )} {}
+		  : m_data( str.data( ), static_cast<size_type_internal>( str.size( ) ) ) {}
 
 		basic_static_string( std::basic_string<CharT, Traits> const &str ) noexcept
-		  : m_data{str.data( ), str.size( )} {}
+		  : m_data( str.data( ), str.size( ) ) {}
 
 		// TODO: determine if I want this or not
 		// basic_static_string( std::basic_string<CharT, Traits> &&str ) noexcept =
 		// delete;
 
-		constexpr basic_static_string( const_pointer s ) noexcept
-		  : m_data{s, details::strlen<size_type_internal>( s )} {}
-
-		constexpr basic_static_string( basic_static_string const &other ) noexcept =
-		  default;
-		constexpr basic_static_string( basic_static_string &&other ) noexcept =
-		  default;
-
-		constexpr basic_static_string &
-		operator=( basic_static_string const &rhs ) noexcept {
-			m_data = rhs.m_data;
-			return *this;
-		}
-
-		constexpr basic_static_string &
-		operator=( basic_static_string &&rhs ) noexcept {
-			m_data = std::move( rhs.m_data );
-			return *this;
-		}
-
-		~basic_static_string( ) = default;
+		constexpr basic_static_string( const_pointer str_ptr ) noexcept
+		  : m_data( str_ptr, details::strlen<size_type_internal>( str_ptr ) ) {}
 
 		operator std::basic_string<CharT, Traits>( ) const {
 			return to_string( );

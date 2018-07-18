@@ -778,4 +778,24 @@ namespace daw {
 		daw::basic_static_string<char, 4> a = "This";
 		BOOST_CHECK_THROW( a.push_back( 'a' ), std::out_of_range );
 	}
+
+	constexpr void cxcopy_test( daw::static_string & lhs, static_string const & rhs ) noexcept {
+		lhs = rhs;
+	}
+
+	constexpr auto cxcopy_cosnt_test( static_string const & rhs ) noexcept {
+		return rhs;	
+	}
+
+	constexpr auto cxcopy_tester( ) noexcept {
+		daw::static_string a = "String a";
+		daw::static_string b = "String b";
+		cxcopy_test( a, b );
+		return cxcopy_cosnt_test( a );
+	}
+
+	BOOST_AUTO_TEST_CASE( constexpr_copy_001 ) {
+		constexpr auto str = cxcopy_tester( );	
+		BOOST_REQUIRE_EQUAL( str, "String b" );
+	}
 } // namespace daw
