@@ -53,3 +53,18 @@ BOOST_AUTO_TEST_CASE( cpp_17_test_01 ) {
 	BOOST_REQUIRE( is_func );
 	BOOST_REQUIRE( !isnt_func );
 }
+
+BOOST_AUTO_TEST_CASE( bit_cast_001 ) {
+	uint32_t const tst = 0x89AB'CDEF;
+	auto const f = daw::bit_cast<float>( tst );
+	auto const i = daw::bit_cast<uint32_t>( f ); 
+	BOOST_REQUIRE_EQUAL( tst, i );
+}
+
+BOOST_AUTO_TEST_CASE( bit_cast_002 ) {
+	uint32_t const tst = 0x89AB'CDEF;
+	auto const f = daw::bit_cast<float>( &tst );
+	auto const i = daw::bit_cast<uint32_t>( f ); 
+	BOOST_REQUIRE_EQUAL( tst, i );
+}
+
