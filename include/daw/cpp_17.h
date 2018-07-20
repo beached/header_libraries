@@ -586,4 +586,26 @@ namespace daw {
 		  it, -n, typename std::iterator_traits<Iterator>::iterator_category{} );
 		return it;
 	}
+
+	template<typename T>
+	constexpr bool is_trivially_copyable_v = std::is_trivially_copyable<T>::value;
+
+	template<typename T>
+	using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
+
+	template<typename To, typename From>
+	To bit_cast( From &&from ) noexcept {
+		static_assert( is_trivially_copyable_v<remove_cvref_t<From>>,
+		               "From type must be trivially copiable" );
+		static_assert( is_trivially_copyable_v<remove_cvref_t<To>>,
+		               "To type must be trivially copiable" );
+		static_assert( sizeof( From ) == sizeof( To ),
+		               "Sizes of From and To types must be the same" );
+
+		auto result = To( );
+		memcpy( &result, &from, sizeof( To ) );
+
+		return result;
+	}
 } // namespace daw
+
