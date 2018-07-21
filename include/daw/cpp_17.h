@@ -594,13 +594,15 @@ namespace daw {
 	using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 
 	template<typename To, typename From>
-	To bit_cast( From &&from ) noexcept {
+	To bit_cast( From &&from ) noexcept( is_nothrow_constructible_v<To> ) {
 		static_assert( is_trivially_copyable_v<remove_cvref_t<From>>,
 		               "From type must be trivially copiable" );
 		static_assert( is_trivially_copyable_v<remove_cvref_t<To>>,
 		               "To type must be trivially copiable" );
 		static_assert( sizeof( From ) == sizeof( To ),
 		               "Sizes of From and To types must be the same" );
+		static_assert( is_default_constructible_v<To>,
+		               "To type must be default constructible" );
 
 		auto result = To( );
 		memcpy( &result, &from, sizeof( To ) );
@@ -609,13 +611,16 @@ namespace daw {
 	}
 
 	template<typename To, typename From>
-	To bit_cast( From const * const from ) noexcept {
+	To bit_cast( From const *const from ) noexcept(
+	  is_nothrow_constructible_v<To> ) {
 		static_assert( is_trivially_copyable_v<remove_cvref_t<From>>,
 		               "From type must be trivially copiable" );
 		static_assert( is_trivially_copyable_v<remove_cvref_t<To>>,
 		               "To type must be trivially copiable" );
 		static_assert( sizeof( From ) == sizeof( To ),
 		               "Sizes of From and To types must be the same" );
+		static_assert( is_default_constructible_v<To>,
+		               "To type must be default constructible" );
 
 		auto result = To( );
 		memcpy( &result, from, sizeof( To ) );
