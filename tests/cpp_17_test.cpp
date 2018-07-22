@@ -57,14 +57,51 @@ BOOST_AUTO_TEST_CASE( cpp_17_test_01 ) {
 BOOST_AUTO_TEST_CASE( bit_cast_001 ) {
 	uint32_t const tst = 0x89AB'CDEF;
 	auto const f = daw::bit_cast<float>( tst );
-	auto const i = daw::bit_cast<uint32_t>( f ); 
+	auto const i = daw::bit_cast<uint32_t>( f );
 	BOOST_REQUIRE_EQUAL( tst, i );
 }
 
 BOOST_AUTO_TEST_CASE( bit_cast_002 ) {
 	uint32_t const tst = 0x89AB'CDEF;
 	auto const f = daw::bit_cast<float>( &tst );
-	auto const i = daw::bit_cast<uint32_t>( f ); 
+	auto const i = daw::bit_cast<uint32_t>( f );
 	BOOST_REQUIRE_EQUAL( tst, i );
+}
+
+struct tmp_t {};
+
+struct tmp2_t {
+	constexpr tmp2_t( tmp_t ) noexcept {}
+	constexpr tmp2_t( int ) noexcept( false ) {}
+};
+
+BOOST_AUTO_TEST_CASE( is_nothrow_convertible_001 ) {
+	static_assert( !daw::is_nothrow_convertible_v<int, tmp_t>,
+	               "int should not be convertible to tmp_t" );
+	static_assert( daw::is_nothrow_convertible_v<int, double>,
+	               "int should not be convertible to tmp_t" );
+	static_assert( daw::is_nothrow_convertible_v<tmp_t, tmp2_t>,
+	               "tmp_t should be nothrow convertible to tmp2_t" );
+	static_assert( !daw::is_nothrow_convertible_v<int, tmp2_t>,
+	               "int should not be nothrow convertible to tmp2_t" );
+}
+
+template<typename T>
+auto dc_func( T &&v ) {
+	auto x = std::pair<T, int>( std::forward<T>( v ), 99 );
+	return x;
+}
+
+BOOST_AUTO_TEST_CASE( decay_copy_001 ) {
+	double d = 5.6;
+	double const cd = 3.4;
+
+	static_assert(
+	  !daw::is_same_v<decltype( dc_func( d ) ), decltype( dc_func( cd ) )>,
+	  "Results should be difference, double and double const" );
+
+	static_assert( daw::is_same_v<decltype( daw::decay_copy( d ) ),
+	                              decltype( daw::decay_copy( cd ) )>,
+	               "Results should be the same, double" );
 }
 

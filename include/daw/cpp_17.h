@@ -595,6 +595,7 @@ namespace daw {
 
 	template<typename To, typename From>
 	To bit_cast( From &&from ) noexcept( is_nothrow_constructible_v<To> ) {
+
 		static_assert( is_trivially_copyable_v<remove_cvref_t<From>>,
 		               "From type must be trivially copiable" );
 		static_assert( is_trivially_copyable_v<remove_cvref_t<To>>,
@@ -604,28 +605,71 @@ namespace daw {
 		static_assert( is_default_constructible_v<To>,
 		               "To type must be default constructible" );
 
-		auto result = To( );
-		memcpy( &result, &from, sizeof( To ) );
-
-		return result;
+		auto result = std::aligned_storage_t<sizeof( To ), alignof( To )>{};
+		return *static_cast<To *>( memcpy( &result, &from, sizeof( To ) ) );
 	}
 
 	template<typename To, typename From>
 	To bit_cast( From const *const from ) noexcept(
 	  is_nothrow_constructible_v<To> ) {
-		static_assert( is_trivially_copyable_v<remove_cvref_t<From>>,
-		               "From type must be trivially copiable" );
-		static_assert( is_trivially_copyable_v<remove_cvref_t<To>>,
-		               "To type must be trivially copiable" );
-		static_assert( sizeof( From ) == sizeof( To ),
-		               "Sizes of From and To types must be the same" );
-		static_assert( is_default_constructible_v<To>,
-		               "To type must be default constructible" );
 
-		auto result = To( );
-		memcpy( &result, from, sizeof( To ) );
+		return bit_cast<To>( *from );
+	}
 
-		return result;
+	template<typename...>
+	struct disjunction : std::false_type {};
+
+	template<typename B1>
+	struct disjunction<B1> : B1 {};
+
+	template<typename B1, typename... Bn>
+	struct disjunction<B1, Bn...>
+	  : std::conditional_t<bool( B1::value ), B1, disjunction<Bn...>> {};
+
+	namespace details {
+
+		template<typename From, typename To,
+		         bool = disjunction<std::is_void<From>, std::is_function<To>,
+		                            std::is_array<To>>::value>
+		struct do_is_nothrow_convertible {
+			using type = std::is_void<To>;
+		};
+
+		struct do_is_nothrow_convertible_impl {
+			template<typename To>
+			static void test_aux( To ) noexcept;
+
+			template<typename From, typename To>
+			static bool_constant<noexcept( test_aux<To>( std::declval<From>( ) ) )>
+
+			test( int );
+
+			template<typename, typename>
+			static std::false_type test( ... );
+		};
+
+		template<typename From, typename To>
+		struct do_is_nothrow_convertible<From, To, false> {
+			using type =
+			  decltype( do_is_nothrow_convertible_impl::test<From, To>( 0 ) );
+		};
+
+	} // namespace details
+
+	template<typename From, typename To>
+	struct is_nothrow_convertible
+	  : details::do_is_nothrow_convertible<From, To>::type {};
+
+	template<typename From, typename To>
+	constexpr bool is_nothrow_convertible_v =
+	  is_nothrow_convertible<From, To>::value;
+
+	template<class T>
+	constexpr auto
+	decay_copy( T &&v ) noexcept( is_nothrow_convertible_v<T, std::decay_t<T>> )
+	  -> std::enable_if_t<is_convertible_v<T, std::decay_t<T>>, std::decay_t<T>> {
+
+		return std::forward<T>( v );
 	}
 } // namespace daw
 
