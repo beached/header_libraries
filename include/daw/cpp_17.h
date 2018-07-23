@@ -616,6 +616,23 @@ namespace daw {
 		return bit_cast<To>( *from );
 	}
 
+	template<typename...>
+	struct disjunction : std::false_type {};
+
+	template<typename B1>
+	struct disjunction<B1> : B1 {};
+
+	template<typename B1, typename... Bn>
+	struct disjunction<B1, Bn...>
+	  : std::conditional_t<bool( B1::value ), B1, disjunction<Bn...>> {};
+
+	template<typename... B>
+	using disjunction_t = typename disjunction<B...>::type;
+
+	template<typename... B>
+	constexpr bool disjunction_v = disjunction<B...>::value;
+
+
 	namespace details {
 
 		template<typename From, typename To,
