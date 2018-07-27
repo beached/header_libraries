@@ -585,7 +585,7 @@ namespace daw {
 
 	template<typename CharT, typename Traits, typename Allocator>
 	constexpr auto
-	make_split_it( std::basic_string<CharT, Traits, Allocator> &str,
+	make_split_it( std::basic_string<CharT, Traits, Allocator> const &str,
 	               CharT divider ) noexcept {
 		using SpltT = char_splitter_t<CharT>;
 		using iterator =
