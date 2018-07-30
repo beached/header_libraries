@@ -378,6 +378,13 @@ namespace daw {
 
 				return std::copysign( sn + cor, xold );
 			}
+
+			template<typename To, typename From>
+			auto to_array( From &&from ) noexcept {
+				constexpr size_t const num_values = sizeof( From ) / sizeof( To );
+				static_assert( sizeof( From ) == num_values * sizeof( To ),
+				               "Must have integral number of To's in From" );
+			}
 		} // namespace impl
 
 		template<typename Double,
