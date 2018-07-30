@@ -846,7 +846,28 @@ namespace daw {
 		return daw::apply( construct_a<Destination>{}, args );
 	}
 
+	/*
+	 The do_not_optimize(...) function can be used to prevent a value or
+	 expression from being optimized away by the compiler. This function is
+	 intended to add little to no overhead.
+	 See: https://youtu.be/nXaxk27zwlk?t=2441
+	*/
+
+	template<typename T>
+	inline void force_evaluation( T const &value ) {
+		asm volatile( "" : : "r,m"( value ) : "memory" );
+	}
+
+	template<typename T>
+	inline void force_evaluation( T &value ) {
+#if defined( __clang__ )
+		asm volatile( "" : "+r,m"( value ) : : "memory" );
+#else
+		asm volatile( "" : "+m,r"( value ) : : "memory" );
+#endif
+	}
 } // namespace daw
 
 template<typename... Ts>
 constexpr void Unused( Ts &&... ) noexcept {}
+

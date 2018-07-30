@@ -39,6 +39,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_clumpy_sparsy
 	daw_container_algorithm
 	daw_cstring
+	daw_endian
 	daw_exception
 	daw_expected
 	daw_fixed_lookup
