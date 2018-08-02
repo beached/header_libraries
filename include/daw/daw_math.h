@@ -40,6 +40,15 @@
 #include "daw/daw_utility.h"
 
 namespace daw {
+	template<typename Float, std::enable_if_t<daw::is_floating_point_v<Float>,
+	                                          std::nullptr_t> = nullptr>
+	constexpr Float float_abs( Float f ) {
+		if( x < 0 ) {
+			return -x;
+		}
+		return x;
+	}
+
 	template<typename T>
 	constexpr T max( T &&t ) noexcept {
 		return std::forward<T>( t );
@@ -316,110 +325,5 @@ namespace daw {
 #ifdef __clang__
 #pragma clang diagnostic pop
 #endif
-
-		namespace impl {
-			template<typename T>
-			inline void math_check_force_underflow( T &value ) noexcept {
-				if( fabs( value ) < std::numeric_limits<tmp_t>::min( ) ) {
-					T tmp = value * value;
-					daw::force_evaluation( tmp );
-				}
-			}
-
-			constexpr double POLYNOMIAL2( double d ) noexcept {
-				return ( ( ( s5 * d + s4 ) * d + s3 ) * d + s2 ) * d;
-			}
-
-			constexpr double POLYNOMIAL( double d ) noexcept {
-				return POLYNOMIAL2( d ) + s1;
-			}
-
-/* The computed polynomial is a variation of the Taylor series expansion for
-	 sin(a):
-
-	 a - a^3/3! + a^5/5! - a^7/7! + a^9/9! + (1 - a^2) * da / 2
-
-	 The constants s1, s2, s3, etc. are pre-computed values of 1/3!, 1/5! and so
-	 on.  The result is returned to LHS.  */
-			constexpr double taylor_sine( double xx, double a, double da ) noexcept {
-				double const t = ( POLYNOMIAL( xx ) * a - 0.5 * da ) * xx + da;
-				return a + t;
-			}
-			/* Given a number partitioned into X and DX, this function computes the
-			   sine of the number by combining the sin and cos of X (as computed by a
-			   variation of the Taylor series) with the values looked up from the
-			   sin/cos table to get the result.  */
-			template<typename Double,
-			         std::enable_if_t<daw::is_convertible_v<Double, double>,
-			                          std::nullptr_t> = nullptr>
-			double do_sin( double x, double dx ) noexcept {
-				double const xold = x;
-				/* Max ULP is 0.501 if |x| < 0.126, otherwise ULP is 0.518.  */
-				if( fabs( x ) < 0.126 ) {
-					return taylor_sine( x*x, x, dx );
-				}
-
-				if( x <= 0 ) {
-					dx = -dx;
-				}
-
-				{
-					double const ux = big + fabs( x );
-					x = fabs( x ) - ( ux - big );
-				}
-
-				double sn, ssn, cs, ccs;
-				double const xx = x * x;
-
-				double s = x + ( dx + x * xx * ( sn3 + xx * sn5 ) );
-				double c = x * dx + xx * ( cs2 + xx * ( cs4 + xx * cs6 ) );
-				SINCOS_TABLE_LOOKUP( u, sn, ssn, cs, ccs );
-				double cor = ( ssn + s * ccs - sn * c ) + cs * s;
-
-				return std::copysign( sn + cor, xold );
-			}
-
-			template<typename To, typename From>
-			auto to_array( From &&from ) noexcept {
-				constexpr size_t const num_values = sizeof( From ) / sizeof( To );
-				static_assert( sizeof( From ) == num_values * sizeof( To ),
-				               "Must have integral number of To's in From" );
-			}
-		} // namespace impl
-
-		template<typename Double,
-		         std::enable_if_t<daw::is_convertible_v<Double, double>,
-		                          std::nullptr_t> = nullptr>
-		double sin( Double d ) noexcept {
-			// Assumes Little Endian
-			constexpr size_t const HIGH_HALF =
-			  daw::endian::native == daw::endian::little ? 1 : 0;
-
-			constexpr size_t const LOW_HALF =
-			  daw::endian::native == daw::endian::little ? 0 : 1;
-
-			auto const restore_round = daw::on_scope_exit(
-			  [rnd_mode = fegetround( )]( ) { fesetround( rnd_mode ); } );
-
-			fesetround( FE_TONEAREST );
-
-			uint32_t[2] as_int = daw::bit_cast<uint32_t[2], double>( d );
-			uint32_t m = as_int[HIGH_HALF];
-			uint32_t k = 0x7FFF'FFFF & m; // no sign
-
-			/*--------------------------- 2^-26<|x|< 0.855469---------------------- */
-			if( k < 0x3E50'0000 ) { // if x->0 =>sin(x)=x
-				impl::math_check_force_underflow( x );
-				return d;
-			}
-
-			/*----------------------- 0.855469  <|x|<2.426265 ----------------------*/
-			if( k < 0x400368fd ) {
-				auto t = hp0 - fabs( x );
-				/* Max ULP is 0.51.  */
-				return std::copysign( do_cos( t, hp1 ), d );
-			}
-		}
-
 	} // namespace math
 } // namespace daw

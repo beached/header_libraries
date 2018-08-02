@@ -866,6 +866,75 @@ namespace daw {
 		asm volatile( "" : "+m,r"( value ) : : "memory" );
 #endif
 	}
+
+	template<typename To>
+	constexpr uint8_t
+	value_from_chars( unsigned char const *ptr,
+	            std::integral_constant<size_t, sizeof( uint8_t )> ) noexcept {
+		return *ptr;
+	}
+
+	template<typename To>
+	constexpr uint16_t
+	value_from_chars( unsigned char const *ptr,
+	            std::integral_constant<size_t, sizeof( uint16_t )> ) noexcept {
+		uint16_t result = ( *ptr++ ) << 8U;
+		result |= *ptr;
+		return result;
+	}
+
+	template<typename To>
+	constexpr uint32_t
+	value_from_chars( unsigned char const *ptr,
+	            std::integral_constant<size_t, sizeof( uint32_t )> ) noexcept {
+		uint32_t result = ( *ptr++ ) << 24U;
+		result |= ( *ptr++ ) << 16U;
+		result |= ( *ptr++ ) << 8U;
+		result |= *ptr;
+		return result;
+	}
+
+	template<typename To>
+	constexpr uint64_t
+	value_from_chars( unsigned char const *ptr,
+	            std::integral_constant<size_t, sizeof( uint64_t )> ) noexcept {
+		uint64_t result = ( *ptr++ ) << 56U;
+		result |= ( *ptr++ ) << 48U;
+		result |= ( *ptr++ ) << 40U;
+		result |= ( *ptr++ ) << 32U;
+		result |= ( *ptr++ ) << 24U;
+		result |= ( *ptr++ ) << 16U;
+		result |= ( *ptr++ ) << 8U;
+		result |= *ptr;
+		return result;
+	}
+
+	template<typename From>
+	auto as_char_array( From && from ) noexcept {
+		static_assert( is_trivially_copyable_v<remove_cvref_t<From>>,
+		               "From type must be trivially copiable" );
+		auto result = std::array<unsigned char, sizeof( From )>{0};
+		memcpy( result.data( ), &from, result.size( ) );	
+		return result;
+	}
+
+	template<typename To, typename From>
+	auto to_array_of( From &&from ) noexcept {
+		constexpr size_t const num_values = sizeof( From ) / sizeof( To );
+		static_assert( daw::is_integral_v<std::decay<To>> );
+		static_assert( sizeof( From ) == num_values * sizeof( To ),
+		               "Must have integral number of To's in From" );
+
+		auto const as_chars = as_char_array( from );
+		auto result = std::array<To, num_values>{0};
+
+		for( size_t entry = 0; entry < num_values; ++entry ) {
+			result[entry] =
+			  value_from_chars( std::next( as_chars.data( ), entry * sizeof( To ) ),
+			              std::integral_constant<size_t, sizeof( TO )>{} );
+		}
+		return result;
+	}
 } // namespace daw
 
 template<typename... Ts>

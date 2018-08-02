@@ -118,11 +118,3 @@ BOOST_AUTO_TEST_CASE( decay_copy_001 ) {
 	               "Results should be the same, double" );
 }
 
-
-BOOST_AUTO_TEST_CASE( as_char_array_001 ) {
-	uint16_t const value = 0x43'21;
-	auto const ary = daw::as_char_array( value );
-
-	BOOST_REQUIRE_EQUAL( 0x43, ary[1] );
-	BOOST_REQUIRE_EQUAL( 0x21, ary[0] );
-}

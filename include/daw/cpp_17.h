@@ -609,15 +609,6 @@ namespace daw {
 		return *static_cast<To *>( memcpy( &result, &from, sizeof( To ) ) );
 	}
 
-	template<typename From>
-	auto as_char_array( From && from ) noexcept {
-		static_assert( is_trivially_copyable_v<remove_cvref_t<From>>,
-		               "From type must be trivially copiable" );
-		auto result = std::array<unsigned char, sizeof( From )>{0};
-		memcpy( result.data( ), &from, result.size( ) );	
-		return result;
-	}
-
 	template<typename To, typename From>
 	To bit_cast( From const *const from ) noexcept(
 	  is_nothrow_constructible_v<To> ) {
