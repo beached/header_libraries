@@ -40,7 +40,6 @@
 #include "daw_algorithm.h"
 #include "daw_exception.h"
 #include "daw_random.h"
-#include "daw_string_view.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -342,9 +341,10 @@ namespace daw {
 		return std::move( str );
 	}
 
+	/*
 	template<typename Iterator>
 	constexpr bool equal_nc( Iterator first, Iterator last,
-	                         daw::string_view upper_value ) noexcept {
+	                         ::daw::string_view upper_value ) noexcept {
 		if( static_cast<size_t>( std::distance( first, last ) ) !=
 		    upper_value.size( ) ) {
 			return false;
@@ -357,6 +357,7 @@ namespace daw {
 		}
 		return true;
 	}
+	*/
 
 	namespace details {
 		template<typename T>
@@ -868,60 +869,61 @@ namespace daw {
 	}
 
 	template<typename To>
-	constexpr uint8_t
-	value_from_chars( unsigned char const *ptr,
-	            std::integral_constant<size_t, sizeof( uint8_t )> ) noexcept {
+	constexpr uint8_t value_from_chars(
+	  unsigned char const *ptr,
+	  std::integral_constant<size_t, sizeof( uint8_t )> ) noexcept {
 		return *ptr;
 	}
 
 	template<typename To>
-	constexpr uint16_t
-	value_from_chars( unsigned char const *ptr,
-	            std::integral_constant<size_t, sizeof( uint16_t )> ) noexcept {
-		uint16_t result = ( *ptr++ ) << 8U;
+	constexpr uint16_t value_from_chars(
+	  unsigned char const *ptr,
+	  std::integral_constant<size_t, sizeof( uint16_t )> ) noexcept {
+		auto result = static_cast<uint16_t>( ( *ptr++ ) << 8U );
 		result |= *ptr;
 		return result;
 	}
 
 	template<typename To>
-	constexpr uint32_t
-	value_from_chars( unsigned char const *ptr,
-	            std::integral_constant<size_t, sizeof( uint32_t )> ) noexcept {
-		uint32_t result = ( *ptr++ ) << 24U;
-		result |= ( *ptr++ ) << 16U;
-		result |= ( *ptr++ ) << 8U;
-		result |= *ptr;
+	constexpr uint32_t value_from_chars(
+	  unsigned char const *ptr,
+	  std::integral_constant<size_t, sizeof( uint32_t )> ) noexcept {
+		uint32_t result = static_cast<uint32_t>( ( *ptr++ ) << 24U );
+		result |= static_cast<uint32_t>( ( *ptr++ ) << 16U );
+		result |= static_cast<uint32_t>( ( *ptr++ ) << 8U );
+		result |= static_cast<uint32_t>( *ptr );
 		return result;
 	}
 
 	template<typename To>
-	constexpr uint64_t
-	value_from_chars( unsigned char const *ptr,
-	            std::integral_constant<size_t, sizeof( uint64_t )> ) noexcept {
-		uint64_t result = ( *ptr++ ) << 56U;
-		result |= ( *ptr++ ) << 48U;
-		result |= ( *ptr++ ) << 40U;
-		result |= ( *ptr++ ) << 32U;
-		result |= ( *ptr++ ) << 24U;
-		result |= ( *ptr++ ) << 16U;
-		result |= ( *ptr++ ) << 8U;
-		result |= *ptr;
+	constexpr uint64_t value_from_chars(
+	  unsigned char const *ptr,
+	  std::integral_constant<size_t, sizeof( uint64_t )> ) noexcept {
+		auto result =
+		  static_cast<uint64_t>( static_cast<uint64_t>( *ptr++ ) << 56U );
+		result |= static_cast<uint64_t>( static_cast<uint64_t>( *ptr++ ) << 48U );
+		result |= static_cast<uint64_t>( static_cast<uint64_t>( *ptr++ ) << 40U );
+		result |= static_cast<uint64_t>( static_cast<uint64_t>( *ptr++ ) << 32U );
+		result |= static_cast<uint64_t>( static_cast<uint64_t>( *ptr++ ) << 24U );
+		result |= static_cast<uint64_t>( static_cast<uint64_t>( *ptr++ ) << 16U );
+		result |= static_cast<uint64_t>( static_cast<uint64_t>( *ptr++ ) << 8U );
+		result |= static_cast<uint64_t>( *ptr );
 		return result;
 	}
 
 	template<typename From>
-	auto as_char_array( From && from ) noexcept {
+	auto as_char_array( From &&from ) noexcept {
 		static_assert( is_trivially_copyable_v<remove_cvref_t<From>>,
 		               "From type must be trivially copiable" );
 		auto result = std::array<unsigned char, sizeof( From )>{0};
-		memcpy( result.data( ), &from, result.size( ) );	
+		memcpy( result.data( ), &from, result.size( ) );
 		return result;
 	}
 
 	template<typename To, typename From>
 	auto to_array_of( From &&from ) noexcept {
 		constexpr size_t const num_values = sizeof( From ) / sizeof( To );
-		static_assert( daw::is_integral_v<std::decay<To>> );
+		static_assert( daw::is_integral_v<std::decay<To>>, "To must be an integer like type" );
 		static_assert( sizeof( From ) == num_values * sizeof( To ),
 		               "Must have integral number of To's in From" );
 
@@ -931,7 +933,7 @@ namespace daw {
 		for( size_t entry = 0; entry < num_values; ++entry ) {
 			result[entry] =
 			  value_from_chars( std::next( as_chars.data( ), entry * sizeof( To ) ),
-			              std::integral_constant<size_t, sizeof( TO )>{} );
+			                    std::integral_constant<size_t, sizeof( To )>{} );
 		}
 		return result;
 	}

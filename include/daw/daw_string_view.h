@@ -249,15 +249,7 @@ namespace daw {
 			return !empty( );
 		}
 
-#ifdef DEBUG
-		constexpr void remove_prefix( size_type n ) {
-			if( n > m_size && n != npos ) {
-				daw::exception::daw_throw<std::out_of_range>(
-				  "Attempt to access basic_string_view past end" );
-			}
-#else
 		constexpr void remove_prefix( size_type n ) noexcept {
-#endif
 			n = daw::min( n, m_size );
 			m_first += n;
 			m_size -= n;
@@ -727,7 +719,7 @@ namespace daw {
 			if( pos >= m_size ) {
 				pos = 0;
 			}
-			for( difference_type n = m_size - 1; n >= pos; --n ) {
+			for( auto n = m_size - 1; n >= pos; --n ) {
 				if( m_first[n] == c ) {
 					return static_cast<size_type>( n );
 				}

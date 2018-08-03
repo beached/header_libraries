@@ -43,10 +43,10 @@ namespace daw {
 	template<typename Float, std::enable_if_t<daw::is_floating_point_v<Float>,
 	                                          std::nullptr_t> = nullptr>
 	constexpr Float float_abs( Float f ) {
-		if( x < 0 ) {
-			return -x;
+		if( f < 0 ) {
+			return -f;
 		}
-		return x;
+		return f;
 	}
 
 	template<typename T>
@@ -80,7 +80,7 @@ namespace daw {
 	}
 
 	template<typename T>
-	constexpr T min( T &&t ) noexcept {
+	constexpr decltype( auto ) min( T &&t ) noexcept {
 		return std::forward<T>( t );
 	}
 
