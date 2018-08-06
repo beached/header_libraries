@@ -73,10 +73,11 @@ namespace daw {
 		}
 
 		~scoped_multilock( ) = default;
-		scoped_multilock( scoped_multilock const & ) = delete;
 		scoped_multilock( scoped_multilock && ) noexcept = default;
-		scoped_multilock &operator=( scoped_multilock const & ) = delete;
 		scoped_multilock &operator=( scoped_multilock && ) noexcept = default;
+
+		scoped_multilock( scoped_multilock const & ) = delete;
+		scoped_multilock &operator=( scoped_multilock const & ) = delete;
 	};
 
 	template<typename... Lockables>

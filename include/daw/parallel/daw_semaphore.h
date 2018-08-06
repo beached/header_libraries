@@ -34,15 +34,11 @@ namespace daw {
 	class basic_semaphore {
 		value_ptr<Mutex> m_mutex;
 		value_ptr<ConditionVariable> m_condition;
-		intmax_t m_count;
-		bool m_latched;
+		intmax_t m_count = 0;
+		bool m_latched = true;
 
 	public:
-		basic_semaphore( )
-		  : m_mutex( )
-		  , m_condition( )
-		  , m_count( 0 )
-		  , m_latched( true ) {}
+		basic_semaphore( ) = default;
 
 		template<typename Int>
 		explicit basic_semaphore( Int count )
@@ -214,3 +210,4 @@ namespace daw {
 		return waitable_value<T>{std::move( sem ), std::move( value )};
 	}
 } // namespace daw
+

@@ -42,7 +42,6 @@ namespace daw {
 			std::function<void( )> m_on_exit;
 
 		public:
-			locked_ptr( ) = delete;
 			locked_ptr( locked_ptr const & ) = delete;
 			locked_ptr &operator=( locked_ptr const & ) = delete;
 

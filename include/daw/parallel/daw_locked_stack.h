@@ -45,13 +45,6 @@ namespace daw {
 		  , m_mutex( )
 		  , m_items( ) {}
 
-		~locked_stack_t( ) noexcept = default;
-		locked_stack_t( locked_stack_t && ) noexcept = default;
-		locked_stack_t &operator=( locked_stack_t && ) noexcept = default;
-
-		locked_stack_t( locked_stack_t const & ) = delete;
-		locked_stack_t &operator=( locked_stack_t const & ) = delete;
-
 		boost::optional<value_type> try_pop_back( ) {
 			if( !m_semaphore.try_wait( ) ) {
 				return {};
