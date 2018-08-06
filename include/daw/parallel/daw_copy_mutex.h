@@ -34,10 +34,6 @@ namespace daw {
 		copiable_mutex( ) noexcept
 		  : m_mutex( std::make_unique<Mutex>( ) ) {}
 
-		copiable_mutex( copiable_mutex && ) noexcept = default;
-		copiable_mutex &operator=( copiable_mutex && ) noexcept = default;
-		~copiable_mutex( ) = default;
-
 		copiable_mutex( copiable_mutex const & ) noexcept
 		  : m_mutex( std::make_unique<Mutex>( ) ) {}
 
@@ -45,6 +41,10 @@ namespace daw {
 			m_mutex.reset( std::make_unique<Mutex>( ) );
 			return *this;
 		}
+
+		copiable_mutex( copiable_mutex && ) noexcept = default;
+		copiable_mutex &operator=( copiable_mutex && ) noexcept = default;
+		~copiable_mutex( ) = default;
 
 		void lock( ) {
 			m_mutex->lock( );
