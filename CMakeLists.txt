@@ -54,6 +54,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_natural
 	daw_optional
 	daw_optional_poly
+	daw_overload
 	daw_parse_to
 	daw_parser_helper
 	daw_parser_helper_sv
