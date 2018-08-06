@@ -83,6 +83,7 @@ set( TESTED_HEADERS_PREFIXES
 )
 
 set( TESTED_PARALLEL_HEADERS_PREFIXES
+	daw_copy_mutex
 	daw_latch
 	daw_locked_value
 	daw_observable_ptr
