@@ -41,7 +41,9 @@ namespace daw {
 		struct arithmetic_exception : public basic_exception {};
 		struct not_implemented_exception : public basic_exception {};
 
-		template<typename T, T error_number>
+		constexpr bool will_throw_v = !defined(NODEBUGTHROW) && (defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) || defined( _CPPUNWIND ))
+
+		testmplate<typename T, T error_number>
 		struct errno_exception : public basic_exception,
 		                         public std::integral_constant<T, error_number> {};
 
