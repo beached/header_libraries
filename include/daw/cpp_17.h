@@ -141,7 +141,12 @@ namespace daw {
 	constexpr bool all_true_v = all_true<values...>::value;
 
 	namespace impl {
-		template<bool value, bool... values>
+		template<bool value>
+		constexpr bool any_true( ) noexcept {
+			return value;
+		}
+
+		template<bool value, bool... values, std::enable_if_t<(sizeof...(values) > 0), std::nullptr_t> = nullptr>
 		constexpr bool any_true( ) noexcept {
 			return value || any_true<values...>( );
 		}

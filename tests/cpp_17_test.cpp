@@ -54,6 +54,14 @@ BOOST_AUTO_TEST_CASE( cpp_17_test_01 ) {
 	BOOST_REQUIRE( !isnt_func );
 }
 
+BOOST_AUTO_TEST_CASE( is_array_v_001 ) {
+	struct A {};
+	static_assert( !daw::is_array_v<A> );
+	static_assert( daw::is_array_v<A[]> );
+	static_assert( daw::is_array_v<A[3]> );
+	static_assert( !daw::is_array_v<float> );
+}
+
 BOOST_AUTO_TEST_CASE( bit_cast_001 ) {
 	uint32_t const tst = 0x89AB'CDEF;
 	auto const f = daw::bit_cast<float>( tst );

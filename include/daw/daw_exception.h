@@ -132,7 +132,6 @@ namespace daw {
 		constexpr void DebugAssert( Bool &&test, Args &&... args ) {
 			if( !static_cast<bool>( std::forward<Bool>( test ) ) ) {
 				debug_throw<ExceptionType>( std::forward<Args>( args )... );
-				debug_throw<ExceptionType>( std::forward<Args>( args )... );
 			}
 		}
 
@@ -192,7 +191,7 @@ namespace daw {
 		}
 
 		template<typename ExceptionType = AssertException, typename ValueType,
-		         typename... Args, typename Bool>
+		         typename... Args>
 		constexpr void daw_throw_on_null( ValueType *value, Args &&... args ) {
 			if( nullptr == value ) {
 				daw_throw<ExceptionType>( std::forward<Args>( args )... );
@@ -201,16 +200,6 @@ namespace daw {
 
 		template<typename ExceptionType = AssertException, typename ValueType,
 		         typename... Args>
-		constexpr ValueType *daw_throw_on_null_or_return( ValueType *value,
-		                                                  Args &&... args ) {
-			if( nullptr == value ) {
-				daw_throw<ExceptionType>( std::forward<Args>( args )... );
-			}
-			return value;
-		}
-
-		template<typename ExceptionType = AssertException, typename ValueType,
-		         typename... Args, typename Bool>
 		constexpr ValueType *daw_throw_on_null_or_return( ValueType *value,
 		                                                  Args &&... args ) {
 			if( nullptr == value ) {
@@ -394,7 +383,7 @@ namespace daw {
 		constexpr void assert_all_true( Container const &container,
 		                                Message &&assert_message,
 		                                Predicate &&predicate ) {
-			assert_all_false( container, std::forward<Message>( assert_message ),
+			assert_all_false<ExceptionType>( container, std::forward<Message>( assert_message ),
 			                  [predicate = std::forward<Predicate>( predicate )](
 			                    auto const &v ) { return !predicate( v ); } );
 		}
