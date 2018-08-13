@@ -56,10 +56,10 @@ BOOST_AUTO_TEST_CASE( cpp_17_test_01 ) {
 
 BOOST_AUTO_TEST_CASE( is_array_v_001 ) {
 	struct A {};
-	static_assert( !daw::is_array_v<A> );
-	static_assert( daw::is_array_v<A[]> );
-	static_assert( daw::is_array_v<A[3]> );
-	static_assert( !daw::is_array_v<float> );
+	static_assert( !daw::is_array_v<A>, "" );
+	static_assert( daw::is_array_v<A[]>, "" );
+	static_assert( daw::is_array_v<A[3]>, "" );
+	static_assert( !daw::is_array_v<float>, "" );
 }
 
 BOOST_AUTO_TEST_CASE( bit_cast_001 ) {

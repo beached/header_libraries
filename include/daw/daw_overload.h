@@ -22,37 +22,66 @@
 
 #pragma once
 
+#include "daw_traits.h"
+
 namespace daw {
 	// overload_t/overload create a callable with the overloads of operator( )
 	// provided
-	template<class... Ts>
-	struct overloaded_t {};
+	//
+	template<typename... Functions>
+	struct overload_t;
 
-	template<class T0>
-	struct overloaded_t<T0> : T0 {
-		using T0::operator( );
+	template<typename Function>
+	struct overload_t<Function> {
+	private:
+		mutable Function m_func;
 
-		constexpr overloaded_t( T0 &&t0 )
-		  : T0( std::forward<T0>( t0 ) ) {}
+	public:
+		template<typename Func, std::enable_if_t<daw::is_same_v<Func, Function>,
+		                                         std::nullptr_t> = nullptr>
+		constexpr overload_t( Func &&func )
+		  : m_func( std::forward<Func>( func ) ) {}
+
+		template<typename... Args,
+		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
+		                          std::nullptr_t> = nullptr>
+		constexpr auto operator( )( Args &&... args ) const noexcept(
+		  noexcept( std::declval<Function>( )( std::declval<Args>( )... ) ) )
+		  -> decltype( std::declval<Function>( )( std::declval<Args>( )... ) ) {
+
+			return m_func( std::forward<Args>( args )... );
+		}
+
+		template<typename... Args,
+		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
+		                          std::nullptr_t> = nullptr>
+		constexpr auto operator( )( Args &&... args ) noexcept(
+		  noexcept( std::declval<Function>( )( std::declval<Args>( )... ) ) )
+		  -> decltype( std::declval<Function>( )( std::declval<Args>( )... ) ) {
+
+			return m_func( std::forward<Args>( args )... );
+		}
 	};
 
-	template<class T0, class T1, class... Ts>
-	struct overloaded_t<T0, T1, Ts...> : T0, overloaded_t<T1, Ts...> {
-		using T0::operator( );
-		using overloaded_t<T1, Ts...>::operator( );
+	template<typename Function, typename... Functions>
+	struct overload_t<Function, Functions...> : public overload_t<Function>,
+	                                            public overload_t<Functions...> {
+		using overload_t<Function>::operator( );
+		using overload_t<Functions...>::operator( );
 
-		constexpr overloaded_t( T0 &&t0, T1 &&t1, Ts &&... ts )
-		  : T0( std::move( t0 ) )
-		  , overloaded_t<T1, Ts...>( std::forward<T1>( t1 ),
-		                             std::forward<Ts>( ts )... ) {}
+		template<
+		  typename Func, typename... Funcs,
+		  std::enable_if_t<!daw::is_function_v<Func>, std::nullptr_t> = nullptr>
+		constexpr overload_t( Func &&func, Funcs &&... funcs )
+		  : overload_t<Func>( std::forward<Func>( func ) )
+		  , overload_t<Funcs...>( std::forward<Funcs>( funcs )... ) {}
 	};
 
-	template<class... Ts>
-	constexpr overloaded_t<std::decay_t<Ts>...> overload( Ts &&... ts ) {
-		return {std::forward<Ts>( ts )...};
+	template<typename... Functions>
+	constexpr auto overload( Functions &&... funcs ) {
+		return overload_t<Functions...>{std::forward<Functions>( funcs )...};
 	}
 
-	// creates an overload set but adds a default noop.  only works for void
 	template<typename... Args, typename OverloadSet,
 	         std::enable_if_t<daw::is_callable_v<OverloadSet, Args...>,
 	                          std::nullptr_t> = nullptr>
