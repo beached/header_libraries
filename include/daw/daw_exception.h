@@ -42,9 +42,9 @@ namespace daw {
 		struct not_implemented_exception : public basic_exception {};
 
 #if !defined(NODEBUGTHROW) && (defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) || defined( _CPPUNWIND ))
-		constexpr bool can_throw_v = true;
+		constexpr bool may_throw_v = true;
 #else
-		constexpr bool can_throw_v = false;
+		constexpr bool may_throw_v = false;
 #endif
 
 		template<typename T, T error_number>
