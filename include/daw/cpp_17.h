@@ -457,6 +457,10 @@ namespace daw {
 		// Pointer calc helpers.  Cannot include math header as it depends on
 		// algorithm
 		namespace math {
+#ifdef min
+			// MSVC seems to define this :(
+#undef min
+#endif
 			template<typename T, typename U>
 			constexpr std::common_type_t<T, U> min( T const &lhs,
 			                                        U const &rhs ) noexcept {
