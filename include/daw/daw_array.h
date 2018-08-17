@@ -69,14 +69,25 @@ namespace daw {
 		             sizeof...( Types )>;
 	} // namespace details
 
+	/*
 	template<typename D = void, typename... Types>
 	constexpr details::return_type<D, Types...> make_array( Types &&... t ) {
-		return {std::forward<Types>( t )...};
+	  return {std::forward<Types>( t )...};
+	}
+	*/
+	template<typename T = void, typename... Args>
+	constexpr auto make_array( Args &&... args ) {
+		using result_t =
+		  std::conditional_t<daw::is_same_v<void, T>,
+		                     std::common_type_t<std::decay_t<Args>...>, T>;
+		std::array<result_t, sizeof...( Args )> result = {
+		  std::forward<Args>( args )...};
+		return result;
 	}
 
-	template<typename... T>
-	constexpr decltype( auto ) make_string_array( T &&... t ) {
-		return make_array( std::string{std::forward<T>( t )}... );
+	template<typename... Ts>
+	std::array<std::string, sizeof...(Ts)> make_string_array( Ts &&... t ) {
+		return {std::string( std::forward<Ts>( t ) )...};
 	}
-
 } // namespace daw
+
