@@ -55,11 +55,12 @@ enum class enum_t { apple = 0, orange = 1, bannana = 3 };
 
 struct enum_validator_t {
 	template<typename T>
-	constexpr bool operator( )( T const & value ) noexcept {
-		switch( static_cast<int>( value ) ) {
-		case static_cast<int>(enum_t::apple):
-		case static_cast<int>(enum_t::orange):
-		case static_cast<int>(enum_t::bannana):
+	constexpr bool operator( )( T const &value ) noexcept {
+		using u_t = std::underlying_type_t<enum_t>;
+		switch( static_cast<u_t>( value ) ) {
+		case static_cast<u_t>( enum_t::apple ):
+		case static_cast<u_t>( enum_t::orange ):
+		case static_cast<u_t>( enum_t::bannana ):
 			return true;
 		default:
 			return false;
@@ -79,4 +80,3 @@ BOOST_AUTO_TEST_CASE( enum_test_bad_001 ) {
 	BOOST_REQUIRE_THROW( value_t( 5 ), std::out_of_range );
 	BOOST_REQUIRE_THROW( value_t( -1 ), std::out_of_range );
 }
-
