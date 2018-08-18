@@ -460,29 +460,38 @@ namespace daw {
 		template<typename Function>
 		struct void_function {
 			Function function;
-			void_function( ) = default;
-			void_function( Function &&func )
-			  : function{std::forward<Function>( func )} {}
-			~void_function( ) = default;
-			void_function( void_function const & ) = default;
-			void_function( void_function && ) = default;
-			void_function &operator=( void_function const & ) = default;
-			void_function &operator=( void_function && ) = default;
 
-			explicit constexpr operator bool( ) noexcept {
+			constexpr void_function( ) noexcept(
+			  is_nothrow_constructible_v<Function> ) = default;
+
+			explicit constexpr void_function( Function const &func ) noexcept(
+			  is_nothrow_copy_constructible_v<Function> )
+			  : function( func ) {}
+
+			explicit constexpr void_function( Function &&func ) noexcept(
+			  is_nothrow_move_constructible_v<Function> )
+			  : function( std::move( func ) ) {}
+
+			explicit constexpr operator bool( ) noexcept(
+			  noexcept( static_cast<bool>( std::declval<Function>( ) ) ) ) {
+
 				return static_cast<bool>( function );
 			}
 
 			template<typename... Args>
-			void operator( )( Args &&... args ) {
+			constexpr void operator( )( Args &&... args ) noexcept(
+			  noexcept( std::declval<Function>( )( std::declval<Args>( )... ) ) ) {
+
 				function( std::forward<Args>( args )... );
 			}
 		};
 	} // namespace impl
 
 	template<typename Function>
-	auto make_void_function( Function func ) noexcept {
-		return impl::void_function<Function>{std::move( func )};
+	constexpr auto make_void_function( Function &&func ) noexcept( noexcept(
+	  impl::void_function<Function>( std::forward<Function>( func ) ) ) ) {
+
+		return impl::void_function<Function>( std::forward<Function>( func ) );
 	}
 
 	namespace detectors {
