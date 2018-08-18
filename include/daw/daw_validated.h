@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <type_traits>
+
 #include "daw_traits.h"
 #include "daw_utility.h"
 
