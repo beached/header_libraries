@@ -21,7 +21,6 @@
 // SOFTWARE.
 
 #include <stdexcept>
-#include <ostream>
 
 #include "daw/boost_test.h"
 #include "daw/daw_validated.h"
