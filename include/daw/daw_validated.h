@@ -38,9 +38,7 @@ namespace daw {
 		// without validation
 
 		using value_t = T;
-		using reference = value_t &;
 		using const_reference = value_t const &;
-		using pointer = value_t *;
 		using const_pointer = value_t const *;
 
 	private:
