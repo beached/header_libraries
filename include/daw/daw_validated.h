@@ -55,7 +55,7 @@ namespace daw {
 	public:
 		template<
 		  typename... Args,
-		  std::enable_if_t<( !is_enum_v<value_t> &&
+		  std::enable_if_t<( !is_enum_v<std::decay_t<value_t>> &&
 		                     daw::is_constructible_v<value_t, Args...> &&
 		                     !(sizeof...( Args ) == 1 &&
 		                       daw::traits::is_first_type_v<validated, Args...>)),
@@ -66,7 +66,7 @@ namespace daw {
 
 		// Handle enum's differently as it is UB to go out of range on a c enum
 		template<typename Arg,
-		         std::enable_if_t<(is_enum_v<value_t> &&
+		         std::enable_if_t<(is_enum_v<std::decay_t<value_t>> &&
 		                           !is_same_v<validated, std::decay_t<Arg>>),
 		                          std::nullptr_t> = nullptr>
 		constexpr validated( Arg &&arg )
