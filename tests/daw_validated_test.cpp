@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <array>
 #include <stdexcept>
 
 #include "daw/boost_test.h"
@@ -98,4 +99,33 @@ BOOST_AUTO_TEST_CASE( enum_test_bad_001 ) {
 	using value_t = daw::validated<enum_t, enum_validator_t>;
 	BOOST_REQUIRE_THROW( value_t( 5 ), std::out_of_range );
 	BOOST_REQUIRE_THROW( value_t( -1 ), std::out_of_range );
+}
+
+struct no_repeat_container {
+	template<typename Container>
+	constexpr bool operator( )( Container const &c ) noexcept {
+		auto const last = c.end( );
+		for( auto it = c.begin( ); it != last; ++it ) {
+			if( std::find( std::next( it ), last, *it ) != last ) {
+				return false;
+			}
+		}
+		return true;
+	}
+};
+
+BOOST_AUTO_TEST_CASE( array_good_001 ) {
+	using value_t = daw::validated<std::array<int, 5>, no_repeat_container>;
+	auto tmp = value_t( 0, 1, 2, 3, 4 );
+	BOOST_REQUIRE( tmp.get( ).size( ) == 5 );
+
+	std::array<int, 5> tmp2 = value_t( 0, 1, 2, 3, 4 );
+	for( size_t n=0; n<5; ++n ) {
+		BOOST_REQUIRE_EQUAL( tmp2[n], n );
+	}
+}
+
+BOOST_AUTO_TEST_CASE( array_bad_001 ) {
+	using value_t = daw::validated<std::array<int, 5>, no_repeat_container>;
+	BOOST_REQUIRE_THROW( value_t( 1, 1, 2, 3, 4 ), std::out_of_range );
 }
