@@ -45,81 +45,76 @@ namespace void_t_tests {
 	}
 } // namespace void_t_tests
 
-void test( ) {}
-BOOST_AUTO_TEST_CASE( cpp_17_test_01 ) {
-	constexpr auto const is_func = daw::is_function_v<decltype( test )>;
-	constexpr auto const isnt_func = daw::is_function_v<decltype( is_func )>;
+namespace cpp_17_test_01 {
+	void test( ) {}
+	struct test2 {};
+	static_assert( daw::is_function_v<decltype( test )>, "" );
+	static_assert( !daw::is_function_v<test2>, "" );
+} // namespace cpp_17_test_01
 
-	BOOST_REQUIRE( is_func );
-	BOOST_REQUIRE( !isnt_func );
-}
+namespace not_fn_test {
+	struct not_fn_test {
+		bool value = false;
+		constexpr bool operator( )( ) const noexcept {
+			return value;
+		}
+	};
 
-struct not_fn_test {
-	bool value = false;
-	constexpr bool operator( )( ) const noexcept {
-		return value;
-	}
-};
+	static_assert( daw::not_fn<not_fn_test>( )( ), "" );
 
-BOOST_AUTO_TEST_CASE( not_fn_001 ) {
-	constexpr auto const fn1 = daw::not_fn<not_fn_test>( );
-	BOOST_REQUIRE( fn1( ) );
-}
+	static constexpr auto fn1 = not_fn_test{true};
+	static constexpr auto const fn2 = daw::not_fn( fn1 );
+	static_assert( fn1( ), "" );
+	static_assert( !fn2( ), "" );
+} // namespace not_fn_test
 
-BOOST_AUTO_TEST_CASE( not_fn_002 ) {
-	auto fn1 = not_fn_test{true};
-	auto const fn2 = daw::not_fn( fn1 );
-	BOOST_REQUIRE( fn1( ) );
-	BOOST_REQUIRE( !fn2( ) );
-}
-
-BOOST_AUTO_TEST_CASE( is_array_v_001 ) {
+namespace is_array_v_001 {
 	struct A {};
 	static_assert( !daw::is_array_v<A>, "" );
 	static_assert( daw::is_array_v<A[]>, "" );
 	static_assert( daw::is_array_v<A[3]>, "" );
 	static_assert( !daw::is_array_v<float>, "" );
-}
+} // namespace is_array_v_001
 
 BOOST_AUTO_TEST_CASE( bit_cast_001 ) {
-	uint32_t const tst = 0x89AB'CDEF;
+	constexpr uint32_t const tst = 0x89AB'CDEF;
 	auto const f = daw::bit_cast<float>( tst );
 	auto const i = daw::bit_cast<uint32_t>( f );
 	BOOST_REQUIRE_EQUAL( tst, i );
 }
 
 BOOST_AUTO_TEST_CASE( bit_cast_002 ) {
-	uint32_t const tst = 0x89AB'CDEF;
+	constexpr uint32_t const tst = 0x89AB'CDEF;
 	auto const f = daw::bit_cast<float>( &tst );
 	auto const i = daw::bit_cast<uint32_t>( f );
 	BOOST_REQUIRE_EQUAL( tst, i );
 }
 
 BOOST_AUTO_TEST_CASE( bit_cast_003 ) {
-	uint64_t const as_bin =
+	constexpr uint64_t const as_bin =
 	  0b0'01111111111'0000000000000000000000000000000000000000000000000000; // double
 	                                                                        // 1
-	double const as_dbl = 1.0;
+	constexpr double const as_dbl = 1.0;
 	bool const b1 = daw::bit_cast<uint64_t>( as_dbl ) == as_bin;
 	BOOST_REQUIRE( b1 );
 
-	uint64_t const as_bin2 =
+	constexpr uint64_t const as_bin2 =
 	  0b1'10000000000'0000000000000000000000000000000000000000000000000000; // double
 	                                                                        // -2
-	double const as_dbl2 = -2.0;
+	constexpr double const as_dbl2 = -2.0;
 
 	bool const b2 = daw::bit_cast<uint64_t>( as_dbl2 ) == as_bin2;
 	BOOST_REQUIRE( b1 );
 }
 
-struct tmp_t {};
+namespace is_nothrow_convertible_001 {
+	struct tmp_t {};
 
-struct tmp2_t {
-	constexpr tmp2_t( tmp_t ) noexcept {}
-	constexpr tmp2_t( int ) noexcept( false ) {}
-};
+	struct tmp2_t {
+		constexpr tmp2_t( tmp_t ) noexcept {}
+		constexpr tmp2_t( int ) noexcept( false ) {}
+	};
 
-BOOST_AUTO_TEST_CASE( is_nothrow_convertible_001 ) {
 	static_assert( !daw::is_nothrow_convertible_v<int, tmp_t>,
 	               "int should not be convertible to tmp_t" );
 	static_assert( daw::is_nothrow_convertible_v<int, double>,
@@ -128,17 +123,17 @@ BOOST_AUTO_TEST_CASE( is_nothrow_convertible_001 ) {
 	               "tmp_t should be nothrow convertible to tmp2_t" );
 	static_assert( !daw::is_nothrow_convertible_v<int, tmp2_t>,
 	               "int should not be nothrow convertible to tmp2_t" );
-}
+} // namespace is_nothrow_convertible_001
 
-template<typename T>
-auto dc_func( T &&v ) {
-	auto x = std::pair<T, int>( std::forward<T>( v ), 99 );
-	return x;
-}
+namespace decay_copy_001 {
+	template<typename T>
+	auto dc_func( T &&v ) {
+		auto x = std::pair<T, int>( std::forward<T>( v ), 99 );
+		return x;
+	}
 
-BOOST_AUTO_TEST_CASE( decay_copy_001 ) {
-	double d = 5.6;
-	double const cd = 3.4;
+	static double d = 5.6;
+	static double const cd = 3.4;
 
 	static_assert(
 	  !daw::is_same_v<decltype( dc_func( d ) ), decltype( dc_func( cd ) )>,
@@ -147,4 +142,4 @@ BOOST_AUTO_TEST_CASE( decay_copy_001 ) {
 	static_assert( daw::is_same_v<decltype( daw::decay_copy( d ) ),
 	                              decltype( daw::decay_copy( cd ) )>,
 	               "Results should be the same, double" );
-}
+} // namespace decay_copy_001
