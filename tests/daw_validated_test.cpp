@@ -35,12 +35,15 @@ struct int_validator_t {
 };
 
 BOOST_AUTO_TEST_CASE( int_range_test_good_001 ) {
-	constexpr daw::validated<int, int_validator_t<int, 0, 100>> tmp( 0 );
-
+	using value_t = daw::validated<int, int_validator_t<int, 0, 100>>;
+	constexpr value_t tmp( 0 );
 	BOOST_REQUIRE_EQUAL( tmp, 0 );
 
-	constexpr daw::validated<int, int_validator_t<int, 0, 100>> tmp2( 100 );
+	constexpr value_t tmp2( 100 );
 	BOOST_REQUIRE_EQUAL( tmp2, 100 );
+
+	constexpr int tmp3 = value_t( 0 );
+	BOOST_REQUIRE_EQUAL( tmp3, 0 );
 }
 
 BOOST_AUTO_TEST_CASE( int_range_test_bad_001 ) {
