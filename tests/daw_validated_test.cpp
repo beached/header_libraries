@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 #include <array>
+#include <memory>
 #include <stdexcept>
 
 #include "daw/boost_test.h"
@@ -156,6 +157,23 @@ BOOST_AUTO_TEST_CASE( struct_good_001 ) {
 BOOST_AUTO_TEST_CASE( struct_bad_001 ) {
 	using value_t = daw::validated<test_class_t, test_class_validator_t>;
 	BOOST_REQUIRE_THROW( value_t( 1 ), std::out_of_range );
+}
+
+struct test_class2_validator_t {
+	constexpr bool operator( )( std::unique_ptr<int> & c ) noexcept {
+		return true;
+	}
+};
+
+BOOST_AUTO_TEST_CASE( struct_move_001 ) {
+	using value_t = daw::validated<std::unique_ptr<int>, test_class2_validator_t>;
+	auto a = value_t( std::make_unique<int>( 2 ) );
+
+	std::unique_ptr<int> b( std::move( a ).get( ) );
+
+	BOOST_REQUIRE( !a.get( ) );
+
+	BOOST_REQUIRE_EQUAL( *b, 2 );
 }
 
 BOOST_AUTO_TEST_CASE( operator_star_001 ) {
