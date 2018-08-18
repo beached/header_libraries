@@ -717,6 +717,9 @@ namespace daw {
 		  daw::is_detected_v<should_use_aggregate_construction_detect, T>;
 	} // namespace impl
 
+	/// @brief Construct a value.  If normal ( ) construction does not work
+	///	try aggregate.
+	/// @tparam T type of value to construct
 	template<typename T>
 	struct construct_a {
 		template<typename... Args,
@@ -873,4 +876,3 @@ namespace daw {
 
 template<typename... Ts>
 constexpr void Unused( Ts &&... ) noexcept {}
-

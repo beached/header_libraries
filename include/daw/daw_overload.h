@@ -97,4 +97,3 @@ namespace daw {
 		                 []( Args && ... ) mutable noexcept {} );
 	}
 } // namespace daw
-

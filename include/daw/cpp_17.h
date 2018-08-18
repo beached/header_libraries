@@ -146,7 +146,9 @@ namespace daw {
 			return value;
 		}
 
-		template<bool value, bool... values, std::enable_if_t<(sizeof...(values) > 0), std::nullptr_t> = nullptr>
+		template<
+		  bool value, bool... values,
+		  std::enable_if_t<( sizeof...( values ) > 0 ), std::nullptr_t> = nullptr>
 		constexpr bool any_true( ) noexcept {
 			return value || any_true<values...>( );
 		}
@@ -161,34 +163,35 @@ namespace daw {
 			Function m_function;
 
 		public:
-			constexpr not_fn_t( ) noexcept = default;
-			constexpr explicit not_fn_t( Function func )
+			constexpr not_fn_t( ) noexcept(
+			  std::is_nothrow_constructible<Function>::value ) = default;
+
+			explicit constexpr not_fn_t( Function &&func ) noexcept(
+			  std::is_nothrow_move_constructible<Function>::value )
 			  : m_function{std::move( func )} {}
-			~not_fn_t( );
-			constexpr not_fn_t( not_fn_t const & ) = default;
-			constexpr not_fn_t( not_fn_t && ) noexcept = default;
-			constexpr not_fn_t &operator=( not_fn_t const & ) = default;
-			constexpr not_fn_t &operator=( not_fn_t && ) noexcept = default;
+
+			explicit constexpr not_fn_t( Function const &func ) noexcept(
+			  std::is_nothrow_copy_constructible<Function>::value )
+			  : m_function{std::move( func )} {}
 
 			template<typename... Args>
-			constexpr auto operator( )( Args &&... args ) {
+			constexpr decltype( auto ) operator( )( Args &&... args ) noexcept(
+			  noexcept( !std::declval<Function>( )( std::declval<Args>( )... ) ) ) {
 				return !m_function( std::forward<Args>( args )... );
 			}
 		};
-
-		template<typename Function>
-		not_fn_t<Function>::~not_fn_t( ) {}
-
 	} // namespace impl
 
 	template<typename Function>
-	constexpr impl::not_fn_t<Function> not_fn( Function func ) {
-		return impl::not_fn_t<Function>{std::move( func )};
+	constexpr auto not_fn( Function &&func ) {
+		using func_t = std::remove_cv_t<std::remove_reference_t<Function>>;
+		return impl::not_fn_t<func_t>( std::forward<Function>( func ) );
 	}
 
 	template<typename Function>
-	constexpr impl::not_fn_t<Function> not_fn( ) {
-		return impl::not_fn_t<Function>{};
+	constexpr auto not_fn( ) {
+		using func_t = std::remove_cv_t<std::remove_reference_t<Function>>;
+		return impl::not_fn_t<func_t>( );
 	}
 
 	template<bool B>
@@ -641,7 +644,6 @@ namespace daw {
 	template<typename... B>
 	constexpr bool disjunction_v = disjunction<B...>::value;
 
-
 	namespace details {
 
 		template<typename From, typename To,
@@ -688,4 +690,3 @@ namespace daw {
 		return std::forward<T>( v );
 	}
 } // namespace daw
-

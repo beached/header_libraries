@@ -82,6 +82,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_unique_array
 	daw_union_pair
 	daw_utility
+	daw_validated
 	daw_value_ptr
 	not_null
 )

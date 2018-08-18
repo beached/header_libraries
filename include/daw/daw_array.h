@@ -86,8 +86,7 @@ namespace daw {
 	}
 
 	template<typename... Ts>
-	std::array<std::string, sizeof...(Ts)> make_string_array( Ts &&... t ) {
+	std::array<std::string, sizeof...( Ts )> make_string_array( Ts &&... t ) {
 		return {std::string( std::forward<Ts>( t ) )...};
 	}
 } // namespace daw
-

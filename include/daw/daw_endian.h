@@ -164,4 +164,3 @@ namespace daw {
 		return to_little_endian( std::forward<T>( value ) );
 	}
 } // namespace daw
-

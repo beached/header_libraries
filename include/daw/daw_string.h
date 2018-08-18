@@ -455,12 +455,11 @@ namespace daw {
 			template<typename OStream, typename CharT,
 			         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,
 			                          std::nullptr_t> = nullptr>
-			OStream &operator<<( OStream &os,
-			                          BasicString<CharT> const &str ) {
+			OStream &operator<<( OStream &os, BasicString<CharT> const &str ) {
 				os << str.to_string( );
 				return os;
 			}
-		}    // namespace impl
+		} // namespace impl
 
 		template<typename StrArray, typename Char>
 		auto combine( StrArray const &strings, Char chr ) {
@@ -481,4 +480,3 @@ namespace daw {
 	using String = ::daw::string::impl::BasicString<char>;
 	using WString = ::daw::string::impl::BasicString<wchar_t>;
 } // namespace daw
-

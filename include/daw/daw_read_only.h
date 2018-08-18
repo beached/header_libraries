@@ -27,7 +27,8 @@
 namespace daw {
 	template<typename T>
 	struct read_only {
-		static_assert( !daw::is_reference_v<T>, "Reference types are not supported" );
+		static_assert( !daw::is_reference_v<T>,
+		               "Reference types are not supported" );
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;

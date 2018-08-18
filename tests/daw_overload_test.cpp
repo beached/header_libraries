@@ -23,8 +23,8 @@
 #include <iostream>
 
 #include "daw/boost_test.h"
-#include "daw/daw_traits.h"
 #include "daw/daw_overload.h"
+#include "daw/daw_traits.h"
 
 BOOST_AUTO_TEST_CASE( daw_overload_001 ) {
 	struct A {
@@ -90,4 +90,3 @@ BOOST_AUTO_TEST_CASE( daw_empty_overload_001 ) {
   // BOOST_REQUIRE( can_a2 );
 }
 */
-

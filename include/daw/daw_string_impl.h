@@ -186,8 +186,9 @@ namespace daw {
 		                          std::nullptr_t> = nullptr>
 		inline void sv_insert_fill_chars( OStream &os, std::size_t n ) {
 			using CharT = typename OStream::char_type;
-			static_assert( daw::traits::ostream_detectors::has_write_member_v<OStream, CharT>,
-			               "OStream Must has write member" );
+			static_assert(
+			  daw::traits::ostream_detectors::has_write_member_v<OStream, CharT>,
+			  "OStream Must has write member" );
 
 			std::array<CharT, 8> fill_chars = {0};
 			fill_chars.fill( os.fill( ) );
@@ -201,9 +202,9 @@ namespace daw {
 			}
 		}
 
-		template<
-		  typename OStream, typename CharT, typename Traits,
-		  std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>, std::nullptr_t> = nullptr>
+		template<typename OStream, typename CharT, typename Traits,
+		         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,
+		                          std::nullptr_t> = nullptr>
 		void sv_insert_aligned( OStream &os,
 		                        daw::basic_string_view<CharT, Traits> str ) {
 			auto const size = str.size( );
@@ -224,9 +225,9 @@ namespace daw {
 			}
 		}
 
-		template<
-		  typename CharT, size_t Capacity, typename Traits, typename OStream,
-		  std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>, std::nullptr_t> = nullptr>
+		template<typename CharT, size_t Capacity, typename Traits, typename OStream,
+		         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,
+		                          std::nullptr_t> = nullptr>
 		void sv_insert_aligned(
 		  OStream &os,
 		  daw::basic_static_string<CharT, Capacity, Traits> const &str ) {

@@ -77,12 +77,16 @@ BOOST_AUTO_TEST_CASE( bit_cast_002 ) {
 }
 
 BOOST_AUTO_TEST_CASE( bit_cast_003 ) {
-	uint64_t const as_bin = 0b0'01111111111'0000000000000000000000000000000000000000000000000000;	// double 1
-	double const as_dbl = 1.0; 
+	uint64_t const as_bin =
+	  0b0'01111111111'0000000000000000000000000000000000000000000000000000; // double
+	                                                                        // 1
+	double const as_dbl = 1.0;
 	bool const b1 = daw::bit_cast<uint64_t>( as_dbl ) == as_bin;
 	BOOST_REQUIRE( b1 );
 
-	uint64_t const as_bin2 = 0b1'10000000000'0000000000000000000000000000000000000000000000000000;	// double -2
+	uint64_t const as_bin2 =
+	  0b1'10000000000'0000000000000000000000000000000000000000000000000000; // double
+	                                                                        // -2
 	double const as_dbl2 = -2.0;
 
 	bool const b2 = daw::bit_cast<uint64_t>( as_dbl2 ) == as_bin2;
@@ -125,4 +129,3 @@ BOOST_AUTO_TEST_CASE( decay_copy_001 ) {
 	                              decltype( daw::decay_copy( cd ) )>,
 	               "Results should be the same, double" );
 }
-

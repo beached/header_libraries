@@ -312,4 +312,3 @@ operator<<( daw::io::basic_output_stream<CharT, OutputCallback> &os,
 	daw::io::impl::display_value::display( os, value );
 	return os;
 }
-

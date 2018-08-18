@@ -100,4 +100,3 @@ BOOST_AUTO_TEST_CASE( daw_read_only_test_03 ) {
 	int b = a;
 	BOOST_REQUIRE_EQUAL( a, b );
 }
-
