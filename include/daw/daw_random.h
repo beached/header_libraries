@@ -30,7 +30,7 @@
 namespace daw {
 	namespace impl {
 		inline auto get_seed( ) -> std::default_random_engine::result_type {
-			std::default_random_engine::result_type lo;
+			std::default_random_engine::result_type lo{};
 #if defined( __i386__ ) || defined( __x86_64__ )
 			__asm__ __volatile__( "rdtsc" : "=a"( lo ) );
 #endif
@@ -51,7 +51,7 @@ namespace daw {
 		using distribution_type = std::uniform_int_distribution<IntType>;
 		using param_type = typename distribution_type::param_type;
 
-		thread_local distribution_type d;
+		thread_local distribution_type d{};
 		return d( impl::global_rng( ), param_type{a, b} );
 	}
 
@@ -101,7 +101,7 @@ namespace daw {
 		               "IntType must be a valid integral type" );
 		daw::exception::daw_throw_on_false( a <= b, "a <= b must be true" );
 
-		Result result;
+		Result result{};
 		result.resize( count );
 		random_fill( result.begin( ), result.end( ), a, b );
 		return result;
