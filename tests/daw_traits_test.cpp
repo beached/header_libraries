@@ -106,61 +106,44 @@ BOOST_AUTO_TEST_CASE( daw_traits_are_true ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_traits_are_same_types ) {
-	{
-		constexpr auto result =
-		  daw::traits::are_same_types_v<bool, std::string, std::vector<int>>;
-		static_assert( !result, "1. Different types reported as same" );
-	}
-	{
-		constexpr auto result =
-		  daw::traits::are_same_types_v<std::string, std::string, std::string>;
-		static_assert( result, "2. Same types reported as different" );
-	}
+	static_assert(
+	  !daw::traits::are_same_types_v<bool, std::string, std::vector<int>>,
+	  "1. Different types reported as same" );
+	static_assert(
+	  daw::traits::are_same_types_v<std::string, std::string, std::string>,
+	  "2. Same types reported as different" );
 }
 
 BOOST_AUTO_TEST_CASE( daw_traits_bool_and ) {
-	{
-		constexpr auto result = daw::traits::bool_and<true, true, true>::value;
-		static_assert( result, "1. All true's in bool_and should return true" );
-	}
-	{
-		constexpr auto result = daw::traits::bool_and<true, false, false>::value;
-		static_assert(
-		  !result,
-		  "2. A mix of true's and false's in bool_and should return false" );
-	}
-	{
-		constexpr auto result = daw::traits::bool_and<true>::value;
-		static_assert( result, "3. A true in bool_and should return true" );
-	}
-	{
-		constexpr auto result = daw::traits::bool_and<false>::value;
-		static_assert( !result, "4. A false in bool_and should return false" );
-	}
+	static_assert( daw::traits::bool_and<true, true, true>::value,
+	               "1. All true's in bool_and should return true" );
+	static_assert(
+	  !daw::traits::bool_and<true, false, false>::value,
+	  "2. A mix of true's and false's in bool_and should return false" );
+
+	static_assert( daw::traits::bool_and<true>::value,
+	               "3. A true in bool_and should return true" );
+	static_assert( !daw::traits::bool_and<false>::value,
+	               "4. A false in bool_and should return false" );
 }
 
 BOOST_AUTO_TEST_CASE( daw_traits_bool_or ) {
-	{
-		constexpr auto result = daw::traits::bool_or<true, true, true>::value;
-		static_assert( result, "1. All true's in bool_or should return true" );
-	}
-	{
-		constexpr auto result = daw::traits::bool_or<true, false, false>::value;
-		static_assert(
-		  result, "2. A mix of true's and false's in bool_or should return true" );
-	}
-	{
-		constexpr auto result = daw::traits::bool_or<true>::value;
-		static_assert( result, "3. A true in bool_or should return true" );
-	}
-	{ // Seems to fail in MSVC 2013, not clang++ or g++
-		constexpr auto result = daw::traits::bool_or<false>::value;
-		static_assert( !result, "4. A false in bool_or should return false" );
-	}
-	{
-		constexpr auto result = daw::traits::bool_or<false, false>::value;
-		static_assert( !result, "5. Two false's in bool_or should return false" );
-	}
+	static_assert( daw::traits::bool_or<true, true, true>::value,
+	               "1. All true's in bool_or should return true" );
+
+	static_assert(
+	  daw::traits::bool_or<true, false, false>::value,
+	  "2. A mix of true's and false's in bool_or should return true" );
+
+	static_assert( daw::traits::bool_or<true>::value,
+	               "3. A true in bool_or should return true" );
+
+	// Seems to fail in MSVC 2013, not clang++ or g++
+	static_assert( !daw::traits::bool_or<false>::value,
+	               "4. A false in bool_or should return false" );
+
+	static_assert( !daw::traits::bool_or<false, false>::value,
+	               "5. Two false's in bool_or should return false" );
 }
 
 bool enable_if_any_func_test( std::string, ... ) {
@@ -204,50 +187,33 @@ constexpr bool enable_if_all_func_test( Args... args ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_traits_enable_if_all ) {
-	{
-		constexpr auto result = enable_if_all_func_test( true );
-		static_assert( !result,
-		               "1. Enable if all should have defaulted to string "
-		               "only with a std::string value" );
-	}
-	{
-		constexpr auto result =
-		  enable_if_all_func_test( true, true, true, true, true );
-		static_assert(
-		  result,
-		  "2. Enable if all should have ran templated version with multiple "
-		  "params including a boolean but failed and defaulted to non-templated "
-		  "version" );
-	}
+	static_assert( !enable_if_all_func_test( true ),
+	               "1. Enable if all should have defaulted to string "
+	               "only with a std::string value" );
+
+	static_assert(
+	  enable_if_all_func_test( true, true, true, true, true ),
+	  "2. Enable if all should have ran templated version with multiple "
+	  "params including a boolean but failed and defaulted to non-templated "
+	  "version" );
 }
 
 BOOST_AUTO_TEST_CASE( daw_traits_is_one_of ) {
-	{
-		constexpr auto result =
-		  daw::traits::is_one_of_v<std::string, std::string, std::string, int,
-		                           std::vector<std::string>>;
-		static_assert(
-		  result, "1. Is one of should report true when at least one matches" );
-	}
-	{
-		constexpr auto result =
-		  daw::traits::is_one_of_v<std::string, int, int, double,
-		                           std::vector<std::string>>;
-		static_assert( !result,
-		               "2. Is one of should report false when none matches" );
-	}
-	{
-		constexpr auto result = daw::traits::is_one_of_v<std::string, std::string>;
-		static_assert(
-		  result,
-		  "3. Is one of should report true with a single param and it matches" );
-	}
-	{
-		constexpr auto result = daw::traits::is_one_of_v<std::string, int>;
-		static_assert( !result,
-		               "4. Is one of should report false with a single "
-		               "param and it does not match" );
-	}
+	static_assert( daw::traits::is_one_of_v<std::string, std::string, std::string,
+	                                        int, std::vector<std::string>>,
+	               "1. Is one of should report true when at least one matches" );
+
+	static_assert( !daw::traits::is_one_of_v<std::string, int, int, double,
+	                                         std::vector<std::string>>,
+	               "2. Is one of should report false when none matches" );
+
+	static_assert(
+	  daw::traits::is_one_of_v<std::string, std::string>,
+	  "3. Is one of should report true with a single param and it matches" );
+
+	static_assert( !daw::traits::is_one_of_v<std::string, int>,
+	               "4. Is one of should report false with a single "
+	               "param and it does not match" );
 }
 
 BOOST_AUTO_TEST_CASE( daw_traits_has_begin_member ) {
@@ -402,16 +368,15 @@ namespace daw_traits_is_mixed_from_ns {
 	};
 } // namespace daw_traits_is_mixed_from_ns
 BOOST_AUTO_TEST_CASE( daw_traits_is_mixed_from ) {
-	constexpr auto test1 =
+	static_assert(
 	  daw::traits::is_mixed_from_v<daw_traits_is_mixed_from_ns::Base,
-	                               daw_traits_is_mixed_from_ns::Derived>;
-	static_assert( test1, "1. Base<Child> should be a base for Child" );
+	                               daw_traits_is_mixed_from_ns::Derived>,
+	  "1. Base<Child> should be a base for Child" );
 
-	constexpr auto test2 =
-	  daw::traits::is_mixed_from_v<daw_traits_is_mixed_from_ns::Base,
-	                               daw_traits_is_mixed_from_ns::NonDerived>;
-	static_assert( !test2,
-	               "2. Base<NonDerived> should not be a base for NonDerived" );
+	static_assert(
+	  !daw::traits::is_mixed_from_v<daw_traits_is_mixed_from_ns::Base,
+	                                daw_traits_is_mixed_from_ns::NonDerived>,
+	  "2. Base<NonDerived> should not be a base for NonDerived" );
 }
 
 constexpr int f( int ) noexcept {
@@ -420,8 +385,8 @@ constexpr int f( int ) noexcept {
 
 BOOST_AUTO_TEST_CASE( daw_traits_is_callable ) {
 	auto blah = []( auto t ) { return t; };
-	constexpr bool val = daw::is_callable_v<decltype( blah ), int>;
-	static_assert( val, "blah should be callable" );
+	static_assert( daw::is_callable_v<decltype( blah ), int>,
+	               "blah should be callable" );
 
 	constexpr auto val2 = daw::is_callable_v<decltype( &f ), int>;
 	static_assert( val2, "f should be callable with an int" );
@@ -452,23 +417,35 @@ BOOST_AUTO_TEST_CASE( daw_traits_has_operator ) {
 	struct blah {
 		std::string a;
 	};
-	static_assert( (daw::traits::operators::has_op_eq_v<int, int>), "int == int failed" );
-	static_assert( !(daw::traits::operators::has_op_eq_v<int, blah>), "int == blah worked, it shouldn't" );
+	static_assert( (daw::traits::operators::has_op_eq_v<int, int>),
+	               "int == int failed" );
+	static_assert( !(daw::traits::operators::has_op_eq_v<int, blah>),
+	               "int == blah worked, it shouldn't" );
 
-	static_assert( (daw::traits::operators::has_op_ne_v<int, int>), "int != int failed" );
-	static_assert( !(daw::traits::operators::has_op_ne_v<int, blah>), "int != blah worked, it shouldn't");
+	static_assert( (daw::traits::operators::has_op_ne_v<int, int>),
+	               "int != int failed" );
+	static_assert( !(daw::traits::operators::has_op_ne_v<int, blah>),
+	               "int != blah worked, it shouldn't" );
 
-	static_assert( (daw::traits::operators::has_op_lt_v<int, int>), "int < int failed" );
-	static_assert( !(daw::traits::operators::has_op_lt_v<int, blah>), "int < blah worked, it shoudln't");
+	static_assert( (daw::traits::operators::has_op_lt_v<int, int>),
+	               "int < int failed" );
+	static_assert( !(daw::traits::operators::has_op_lt_v<int, blah>),
+	               "int < blah worked, it shoudln't" );
 
-	static_assert( (daw::traits::operators::has_op_le_v<int, int>), "int <= int failed");
-	static_assert( !(daw::traits::operators::has_op_le_v<int, blah>), "int <= blah worked, it shouldn't");
+	static_assert( (daw::traits::operators::has_op_le_v<int, int>),
+	               "int <= int failed" );
+	static_assert( !(daw::traits::operators::has_op_le_v<int, blah>),
+	               "int <= blah worked, it shouldn't" );
 
-	static_assert( (daw::traits::operators::has_op_gt_v<int, int>), "int > int failed");
-	static_assert( !(daw::traits::operators::has_op_gt_v<int, blah>), "int > blah worked, it shouldn't");
+	static_assert( (daw::traits::operators::has_op_gt_v<int, int>),
+	               "int > int failed" );
+	static_assert( !(daw::traits::operators::has_op_gt_v<int, blah>),
+	               "int > blah worked, it shouldn't" );
 
-	static_assert( (daw::traits::operators::has_op_ge_v<int, int>), "int >= int failed");
-	static_assert( !(daw::traits::operators::has_op_ge_v<int, blah>), "int >= blah worked, it shouldn't");
+	static_assert( (daw::traits::operators::has_op_ge_v<int, int>),
+	               "int >= int failed" );
+	static_assert( !(daw::traits::operators::has_op_ge_v<int, blah>),
+	               "int >= blah worked, it shouldn't" );
 }
 
 struct test_binary_pred_t {
@@ -637,19 +614,23 @@ BOOST_AUTO_TEST_CASE( are_convertible_to_v_001 ) {
 }
 
 BOOST_AUTO_TEST_CASE( are_convertible_to_v_002 ) {
-	static_assert( !daw::are_convertible_to_v<int, char, short, unsigned, std::string>, "" );
+	static_assert(
+	  !daw::are_convertible_to_v<int, char, short, unsigned, std::string>, "" );
 }
 
 BOOST_AUTO_TEST_CASE( type_n_t_test_001 ) {
-	static_assert( daw::is_same_v<int, daw::type_n_t<2, long, double, int, float>>, "" );
+	static_assert(
+	  daw::is_same_v<int, daw::type_n_t<2, long, double, int, float>>, "" );
 }
 
 BOOST_AUTO_TEST_CASE( if_else_t_001 ) {
-	static_assert( daw::is_same_v<int, daw::if_else_t<true, int, std::string>>, "" );
+	static_assert( daw::is_same_v<int, daw::if_else_t<true, int, std::string>>,
+	               "" );
 }
 
 BOOST_AUTO_TEST_CASE( if_else_t_002 ) {
-	static_assert( daw::is_same_v<std::string, daw::if_else_t<false, int, std::string>>, "" );
+	static_assert(
+	  daw::is_same_v<std::string, daw::if_else_t<false, int, std::string>>, "" );
 }
 
 template<typename string_t>
@@ -682,9 +663,12 @@ BOOST_AUTO_TEST_CASE( string_view_concept_test_002 ) {
 }
 
 BOOST_AUTO_TEST_CASE( is_member_size_equal_v ) {
-	static_assert( daw::traits::is_value_size_equal_v<std::string, sizeof( char )>, "" );
-	static_assert( !daw::traits::is_value_size_equal_v<std::wstring, sizeof( char )>, "" );
-	static_assert( daw::traits::is_value_size_equal_v<std::wstring, sizeof( wchar_t )>, "" );
+	static_assert(
+	  daw::traits::is_value_size_equal_v<std::string, sizeof( char )>, "" );
+	static_assert(
+	  !daw::traits::is_value_size_equal_v<std::wstring, sizeof( char )>, "" );
+	static_assert(
+	  daw::traits::is_value_size_equal_v<std::wstring, sizeof( wchar_t )>, "" );
 }
 
 BOOST_AUTO_TEST_CASE( are_unique_test_001 ) {
@@ -715,8 +699,10 @@ namespace isnt_cv_ref_test_003_ns {
 	};
 
 	BOOST_AUTO_TEST_CASE( isnt_cv_ref_test_003 ) {
-		static_assert( daw::traits::isnt_cv_ref_v<test_t, int, float, std::string>, "" );
-		static_assert( !daw::traits::isnt_cv_ref_v<int, float, std::add_const_t<double>>, "" );
+		static_assert( daw::traits::isnt_cv_ref_v<test_t, int, float, std::string>,
+		               "" );
+		static_assert(
+		  !daw::traits::isnt_cv_ref_v<int, float, std::add_const_t<double>>, "" );
 	}
 } // namespace isnt_cv_ref_test_003_ns
 
@@ -752,14 +738,17 @@ BOOST_AUTO_TEST_CASE( is_callable_convertible_001 ) {
 	auto const func = []( auto d ) noexcept {
 		return 2.0 * d;
 	};
-	static_assert( daw::is_callable_convertible_v<double, decltype( func ), double>, "" );
+	static_assert(
+	  daw::is_callable_convertible_v<double, decltype( func ), double>, "" );
 }
 
 BOOST_AUTO_TEST_CASE( all_true_001 ) {
 	static_assert( !daw::all_true_v<true, false, true, true, true, true, true,
-	                                    true, true, true, true, true, true, true>, "" );
-	static_assert( daw::all_true_v<true, true, true, true, true, true, true,
-	                                    true, true, true, true, true, true, true>, "" );
+	                                true, true, true, true, true, true, true>,
+	               "" );
+	static_assert( daw::all_true_v<true, true, true, true, true, true, true, true,
+	                               true, true, true, true, true, true>,
+	               "" );
 }
 
 BOOST_AUTO_TEST_CASE( is_init_list_constructible_001 ) {
