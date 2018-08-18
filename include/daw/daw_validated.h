@@ -76,7 +76,7 @@ namespace daw {
 		template<typename... Args,
 		         std::enable_if_t<( is_enum_v<value_t> && sizeof...( Args ) == 0 ),
 		                          std::nullptr_t> = nullptr>
-		constexpr validated( ) noexcept
+		constexpr validated( Args&&... ) noexcept
 		  : m_value{} {}
 
 		constexpr const_reference get( ) const &noexcept {
