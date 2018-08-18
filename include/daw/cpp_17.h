@@ -36,6 +36,45 @@ namespace daw {
 	using void_t = typename voider<Ts...>::type;
 
 	template<typename T>
+	constexpr bool is_nothrow_copy_constructible_v =
+	  std::is_nothrow_copy_constructible<T>::value;
+
+	template<typename T>
+	constexpr bool is_nothrow_move_constructible_v =
+	  std::is_nothrow_move_constructible<T>::value;
+
+	template<typename T>
+	constexpr bool is_nothrow_default_constructible_v =
+	  std::is_nothrow_default_constructible<T>::value;
+
+	template<typename T>
+	constexpr bool is_destructible_v = std::is_destructible<T>::value;
+
+	template<typename T>
+	constexpr bool is_trivially_destructible_v =
+	  std::is_trivially_destructible<T>::value;
+
+	template<typename T>
+	constexpr bool is_nothrow_destructible_v =
+	  std::is_nothrow_destructible<T>::value;
+
+	template<class T, class... Args>
+	constexpr bool is_nothrow_constructible_v =
+	  std::is_nothrow_constructible<T, Args...>::value;
+
+	template<typename T>
+	constexpr bool is_pointer_v = std::is_pointer<T>::value;
+
+	template<typename T>
+	constexpr bool is_unsigned_v = std::is_unsigned<T>::value;
+
+	template<typename T>
+	constexpr bool is_signed_v = std::is_signed<T>::value;
+
+	template<typename T>
+	constexpr bool is_enum_v = std::is_enum<T>::value;
+
+	template<typename T>
 	constexpr bool is_floating_point_v = std::is_floating_point<T>::value;
 
 	template<typename T>
@@ -104,6 +143,45 @@ namespace daw {
 	template<typename T>
 	constexpr bool is_member_pointer_v = std::is_member_pointer<T>::value;
 
+	template<typename T>
+	constexpr bool is_reference_v = std::is_reference<T>::value;
+
+	template<typename T>
+	constexpr bool is_volatile_v = std::is_volatile<T>::value;
+
+	template<typename T>
+	constexpr bool is_trivially_copyable_v = std::is_trivially_copyable<T>::value;
+
+	template<typename T>
+	using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
+
+	template<typename T>
+	constexpr bool is_trivially_move_assignable_v =
+	  std::is_trivially_move_assignable<T>::value;
+
+	template<typename T>
+	constexpr bool is_nothrow_move_assignable_v =
+	  std::is_nothrow_move_assignable<T>::value;
+
+	template<typename T>
+	constexpr bool is_nothrow_copy_assignable_v =
+	  std::is_nothrow_copy_assignable<T>::value;
+
+	template<typename T>
+	constexpr bool is_void_v = std::is_void<T>::value;
+
+	template<typename T>
+	constexpr bool is_pod_v = std::is_pod<T>::value;
+
+	template<typename T>
+	constexpr bool is_arithmetic_v = std::is_arithmetic<T>::value;
+
+	template<bool B>
+	using bool_constant = std::integral_constant<bool, B>;
+
+	template<bool B>
+	constexpr bool bool_consant_v = bool_constant<B>::value;
+
 	template<typename B>
 	struct negation : std::integral_constant<bool, !bool( B::value )> {};
 
@@ -123,8 +201,6 @@ namespace daw {
 	template<typename... T>
 	constexpr bool const conjunction_v = conjunction<T...>::value;
 
-	template<typename T>
-	constexpr bool is_arithmetic_v = std::is_arithmetic<T>::value;
 	// base case; actually only used for empty pack
 	template<bool... values>
 	struct all_true : std::true_type {};
@@ -164,18 +240,24 @@ namespace daw {
 
 		public:
 			constexpr not_fn_t( ) noexcept(
-			  std::is_nothrow_constructible<Function>::value ) = default;
+			  is_nothrow_constructible_v<Function> ) = default;
 
 			explicit constexpr not_fn_t( Function &&func ) noexcept(
-			  std::is_nothrow_move_constructible<Function>::value )
+			  is_nothrow_move_constructible_v<Function> )
 			  : m_function{std::move( func )} {}
 
 			explicit constexpr not_fn_t( Function const &func ) noexcept(
-			  std::is_nothrow_copy_constructible<Function>::value )
-			  : m_function{std::move( func )} {}
+			  is_nothrow_copy_constructible_v<Function> )
+			  : m_function{func} {}
 
 			template<typename... Args>
 			constexpr decltype( auto ) operator( )( Args &&... args ) noexcept(
+			  noexcept( !std::declval<Function>( )( std::declval<Args>( )... ) ) ) {
+				return !m_function( std::forward<Args>( args )... );
+			}
+
+			template<typename... Args>
+			constexpr decltype( auto ) operator( )( Args &&... args ) const noexcept(
 			  noexcept( !std::declval<Function>( )( std::declval<Args>( )... ) ) ) {
 				return !m_function( std::forward<Args>( args )... );
 			}
@@ -190,15 +272,8 @@ namespace daw {
 
 	template<typename Function>
 	constexpr auto not_fn( ) {
-		using func_t = std::remove_cv_t<std::remove_reference_t<Function>>;
-		return impl::not_fn_t<func_t>( );
+		return impl::not_fn_t<Function>( );
 	}
-
-	template<bool B>
-	using bool_constant = std::integral_constant<bool, B>;
-
-	template<bool B>
-	constexpr bool bool_consant_v = bool_constant<B>::value;
 
 	namespace impl {
 		template<typename T>
@@ -206,10 +281,10 @@ namespace daw {
 
 		template<typename U>
 		struct is_reference_wrapper<std::reference_wrapper<U>> : std::true_type {};
-
-		template<typename T>
-		constexpr bool is_reference_wrapper_v = is_reference_wrapper<T>::value;
 	} // namespace impl
+
+	template<typename T>
+	constexpr bool is_reference_wrapper_v = impl::is_reference_wrapper<T>::value;
 
 	template<typename T>
 	constexpr std::add_const_t<T> &as_const( T &t ) noexcept {
@@ -269,45 +344,6 @@ namespace daw {
 	constexpr bool is_detected_convertible_v =
 	  is_detected_convertible<To, Op, Args...>::value;
 
-	template<typename T>
-	constexpr bool is_nothrow_copy_constructible_v =
-	  std::is_nothrow_copy_constructible<T>::value;
-
-	template<typename T>
-	constexpr bool is_nothrow_move_constructible_v =
-	  std::is_nothrow_move_constructible<T>::value;
-
-	template<typename T>
-	constexpr bool is_nothrow_default_constructible_v =
-	  std::is_nothrow_default_constructible<T>::value;
-
-	template<typename T>
-	constexpr bool is_destructible_v = std::is_destructible<T>::value;
-
-	template<typename T>
-	constexpr bool is_trivially_destructible_v =
-	  std::is_trivially_destructible<T>::value;
-
-	template<typename T>
-	constexpr bool is_nothrow_destructible_v =
-	  std::is_nothrow_destructible<T>::value;
-
-	template<class T, class... Args>
-	constexpr bool is_nothrow_constructible_v =
-	  std::is_nothrow_constructible<T, Args...>::value;
-
-	template<typename T>
-	constexpr bool is_pointer_v = std::is_pointer<T>::value;
-
-	template<typename T>
-	constexpr bool is_unsigned_v = std::is_unsigned<T>::value;
-
-	template<typename T>
-	constexpr bool is_signed_v = std::is_signed<T>::value;
-
-	template<typename T>
-	constexpr bool is_enum_v = std::is_enum<T>::value;
-
 	template<typename T, typename U = T>
 	constexpr T exchange( T &obj, U &&new_value ) noexcept {
 		T old_value = std::move( obj );
@@ -321,29 +357,6 @@ namespace daw {
 		return c.size( );
 	}
 
-	template<typename T>
-	constexpr bool is_reference_v = std::is_reference<T>::value;
-
-	template<typename T>
-	constexpr bool is_volatile_v = std::is_volatile<T>::value;
-
-	template<typename T>
-	constexpr bool is_trivially_move_assignable_v =
-	  std::is_trivially_move_assignable<T>::value;
-
-	template<typename T>
-	constexpr bool is_nothrow_move_assignable_v =
-	  std::is_nothrow_move_assignable<T>::value;
-
-	template<typename T>
-	constexpr bool is_nothrow_copy_assignable_v =
-	  std::is_nothrow_copy_assignable<T>::value;
-
-	template<typename T>
-	constexpr bool is_void_v = std::is_void<T>::value;
-
-	template<typename T>
-	constexpr bool is_pod_v = std::is_pod<T>::value;
 
 	namespace impl {
 		template<typename Base, typename T, typename Derived, typename... Args>
@@ -598,12 +611,6 @@ namespace daw {
 		  it, -n, typename std::iterator_traits<Iterator>::iterator_category{} );
 		return it;
 	}
-
-	template<typename T>
-	constexpr bool is_trivially_copyable_v = std::is_trivially_copyable<T>::value;
-
-	template<typename T>
-	using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 
 	template<typename To, typename From>
 	To bit_cast( From &&from ) noexcept( is_nothrow_constructible_v<To> ) {

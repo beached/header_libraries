@@ -54,6 +54,25 @@ BOOST_AUTO_TEST_CASE( cpp_17_test_01 ) {
 	BOOST_REQUIRE( !isnt_func );
 }
 
+struct not_fn_test {
+	bool value = false;
+	constexpr bool operator( )( ) const noexcept {
+		return value;
+	}
+};
+
+BOOST_AUTO_TEST_CASE( not_fn_001 ) {
+	constexpr auto const fn1 = daw::not_fn<not_fn_test>( );
+	BOOST_REQUIRE( fn1( ) );
+}
+
+BOOST_AUTO_TEST_CASE( not_fn_002 ) {
+	auto fn1 = not_fn_test{ true };
+	auto const fn2 = daw::not_fn( fn1 );
+	BOOST_REQUIRE( fn1( ) );
+	BOOST_REQUIRE( !fn2( ) );
+}
+
 BOOST_AUTO_TEST_CASE( is_array_v_001 ) {
 	struct A {};
 	static_assert( !daw::is_array_v<A>, "" );
