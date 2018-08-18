@@ -32,6 +32,9 @@ namespace daw {
 	struct validated {
 		static_assert( is_same_v<T, remove_cvref_t<T>>,
 		               "T cannot be cv or ref qualified" );
+		// This is really true for ref qualified T as it allows the value to change
+		// without validation
+
 		using value_t = T;
 		using reference = value_t &;
 		using const_reference = value_t const &;
@@ -68,20 +71,12 @@ namespace daw {
 			: m_value( static_cast<value_t>( validate( std::forward<Arg>( arg ) ) ) ) {}
 
 
-		constexpr reference get( ) & noexcept {
-			return m_value;
-		}
-
 		constexpr const_reference get( ) const & noexcept {
 			return m_value;
 		}
 
 		constexpr value_t && get( ) && noexcept {
 			return std::move( m_value );
-		}
-
-		constexpr operator reference( ) & noexcept {
-			return m_value;
 		}
 
 		constexpr operator const_reference( ) const & noexcept {
@@ -91,6 +86,5 @@ namespace daw {
 		constexpr operator value_t &&( ) && noexcept {
 			return std::move( m_value );
 		}
-
 	};
 } // namespace daw

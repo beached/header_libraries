@@ -77,3 +77,4 @@ BOOST_AUTO_TEST_CASE( enum_test_bad_001 ) {
 	BOOST_REQUIRE_THROW( value_t( 5 ), std::out_of_range );
 	BOOST_REQUIRE_THROW( value_t( -1 ), std::out_of_range );
 }
+
