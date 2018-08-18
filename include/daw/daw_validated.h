@@ -76,8 +76,18 @@ namespace daw {
 		template<typename... Args,
 		         std::enable_if_t<( is_enum_v<value_t> && sizeof...( Args ) == 0 ),
 		                          std::nullptr_t> = nullptr>
-		constexpr validated( Args&&... ) noexcept
+		constexpr validated( Args &&... ) noexcept
 		  : m_value{} {}
+
+		constexpr validated &operator=( const_reference rhs ) {
+			m_value = validate( rhs );
+			return *this;
+		}
+
+		constexpr validated &operator=( value_t &&rhs ) {
+			m_value = validate( std::move( rhs ) );
+			return *this;
+		}
 
 		constexpr const_reference get( ) const &noexcept {
 			return m_value;

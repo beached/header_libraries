@@ -43,12 +43,31 @@ BOOST_AUTO_TEST_CASE( int_range_test_good_001 ) {
 
 	constexpr int tmp3 = value_t( 0 );
 	BOOST_REQUIRE_EQUAL( tmp3, 0 );
+
+	value_t tmp4 = 5;
+	BOOST_REQUIRE_EQUAL( tmp4, 5 );
+	tmp4 = 100;
+	int tmp5 = 40;
+	tmp4 = std::move( tmp5 );
+}
+
+template<typename T, typename U>
+constexpr void assign( T & lhs, U && rhs ) {
+	lhs = std::forward<U>( rhs );
 }
 
 BOOST_AUTO_TEST_CASE( int_range_test_bad_001 ) {
 	using value_t = daw::validated<int, int_validator_t<int, 0, 100>>;
 	BOOST_REQUIRE_THROW( value_t( -1 ), std::out_of_range );
 	BOOST_REQUIRE_THROW( value_t( 101 ), std::out_of_range );
+	value_t tmp = 1;
+	BOOST_REQUIRE_EQUAL( tmp, 1 );
+	BOOST_REQUIRE_THROW( assign( tmp, 101 ), std::out_of_range );
+	BOOST_REQUIRE_EQUAL( tmp, 1 );
+	int tmp2 = 101; 
+	BOOST_REQUIRE_THROW( assign( tmp, std::move( tmp2 ) ), std::out_of_range );
+	BOOST_REQUIRE_EQUAL( tmp, 1 );
+
 }
 
 enum class enum_t { apple = 0, orange = 1, bannana = 3 };
