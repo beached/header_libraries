@@ -90,7 +90,7 @@ namespace daw {
 			return std::move( m_value );
 		}
 
-		constexpr operator const_reference( ) const &noexcept {
+		constexpr operator const_reference( ) const noexcept {
 			return m_value;
 		}
 
