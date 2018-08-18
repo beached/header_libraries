@@ -73,6 +73,10 @@ namespace daw {
 		  : m_value(
 		      static_cast<value_t>( validate( std::forward<Arg>( arg ) ) ) ) {}
 
+
+		template<typename... Args, std::enable_if_t<(is_enum_v<value_t> && sizeof...(Args) == 0), std::nullptr_t> = nullptr>
+		constexpr validated( ) noexcept: m_value{} {}
+
 		constexpr const_reference get( ) const &noexcept {
 			return m_value;
 		}

@@ -73,6 +73,7 @@ BOOST_AUTO_TEST_CASE( enum_test_good_001 ) {
 	constexpr auto tmp = value_t( 1 );
 	BOOST_REQUIRE( tmp == enum_t::orange );
 	BOOST_REQUIRE( value_t( enum_t::apple ) == enum_t::apple );
+	BOOST_REQUIRE( value_t( ) == enum_t::apple );
 }
 
 BOOST_AUTO_TEST_CASE( enum_test_bad_001 ) {
