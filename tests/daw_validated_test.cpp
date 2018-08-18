@@ -207,3 +207,19 @@ BOOST_AUTO_TEST_CASE( operator_right_arrow_001 ) {
 	constexpr auto c = value_t( 2 )->calc( 2 );
 	BOOST_REQUIRE_EQUAL( c, 4 );
 }
+
+struct throwing_validator {
+	constexpr bool operator( )( int const & v ) {
+		if( v % 2 == 0 ) {
+			throw std::runtime_error( "V must be odd" );
+		}
+		return true;
+	}
+};
+
+BOOST_AUTO_TEST_CASE( throwing_validator_001 ) {
+	using value_t = daw::validated<int, throwing_validator>;
+	BOOST_REQUIRE_EQUAL( value_t( 1 ), 1 );
+
+	BOOST_REQUIRE_THROW( value_t( 2 ), std::runtime_error );
+}
