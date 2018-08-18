@@ -28,7 +28,7 @@
 template<typename T, T min_value, T max_value>
 struct int_validator_t {
 	template<typename U>
-	constexpr bool operator( )( U &&value ) noexcept {
+	constexpr bool operator( )( U &&value ) const noexcept {
 		return value >= min_value && value <= max_value;
 	}
 };
@@ -55,7 +55,7 @@ enum class enum_t { apple = 0, orange = 1, bannana = 3 };
 
 struct enum_validator_t {
 	template<typename T>
-	constexpr bool operator( )( T const &value ) noexcept {
+	constexpr bool operator( )( T const &value ) const noexcept {
 		using u_t = std::underlying_type_t<enum_t>;
 		switch( static_cast<u_t>( value ) ) {
 		case static_cast<u_t>( enum_t::apple ):
