@@ -389,6 +389,9 @@ namespace daw {
 		return new result_t( *original );
 	}
 
+	template<typename T>
+	using non_owning_ptr = T;
+
 	// Acts like a reference, but has a strong no-null guarantee
 	// Non-owning
 	template<typename T>
