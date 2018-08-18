@@ -239,8 +239,8 @@ namespace daw {
 			Function m_function;
 
 		public:
-			constexpr not_fn_t( ) noexcept(
-			  is_nothrow_constructible_v<Function> ) = default;
+			constexpr not_fn_t( ) noexcept( is_nothrow_constructible_v<Function> ) =
+			  default;
 
 			explicit constexpr not_fn_t( Function &&func ) noexcept(
 			  is_nothrow_move_constructible_v<Function> )
@@ -356,7 +356,6 @@ namespace daw {
 	size( Container const &c ) noexcept( noexcept( c.size( ) ) ) {
 		return c.size( );
 	}
-
 
 	namespace impl {
 		template<typename Base, typename T, typename Derived, typename... Args>

@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE( not_fn_001 ) {
 }
 
 BOOST_AUTO_TEST_CASE( not_fn_002 ) {
-	auto fn1 = not_fn_test{ true };
+	auto fn1 = not_fn_test{true};
 	auto const fn2 = daw::not_fn( fn1 );
 	BOOST_REQUIRE( fn1( ) );
 	BOOST_REQUIRE( !fn2( ) );

@@ -160,7 +160,7 @@ BOOST_AUTO_TEST_CASE( struct_bad_001 ) {
 }
 
 struct test_class2_validator_t {
-	constexpr bool operator( )( std::unique_ptr<int> & c ) noexcept {
+	constexpr bool operator( )( std::unique_ptr<int> &c ) noexcept {
 		return true;
 	}
 };
@@ -209,7 +209,7 @@ BOOST_AUTO_TEST_CASE( operator_right_arrow_001 ) {
 }
 
 struct throwing_validator {
-	constexpr bool operator( )( int const & v ) {
+	constexpr bool operator( )( int const &v ) {
 		if( v % 2 == 0 ) {
 			throw std::runtime_error( "V must be odd" );
 		}
