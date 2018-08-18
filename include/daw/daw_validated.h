@@ -40,6 +40,8 @@ namespace daw {
 		using value_t = T;
 		using reference = value_t &;
 		using const_reference = value_t const &;
+		using pointer = value_t *;
+		using const_pointer = value_t const *;
 
 	private:
 		value_t m_value;
@@ -96,6 +98,14 @@ namespace daw {
 
 		constexpr operator value_t &&( ) && noexcept {
 			return std::move( m_value );
+		}
+
+		constexpr const_reference operator*( ) const noexcept {
+			return m_value;
+		}
+
+		constexpr const_pointer operator->( ) const noexcept {
+			return &m_value;
 		}
 	};
 } // namespace daw

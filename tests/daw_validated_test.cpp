@@ -120,7 +120,7 @@ BOOST_AUTO_TEST_CASE( array_good_001 ) {
 	BOOST_REQUIRE( tmp.get( ).size( ) == 5 );
 
 	std::array<int, 5> tmp2 = value_t( 0, 1, 2, 3, 4 );
-	for( size_t n=0; n<5; ++n ) {
+	for( size_t n = 0; n < 5; ++n ) {
 		BOOST_REQUIRE_EQUAL( tmp2[n], n );
 	}
 }
@@ -128,4 +128,64 @@ BOOST_AUTO_TEST_CASE( array_good_001 ) {
 BOOST_AUTO_TEST_CASE( array_bad_001 ) {
 	using value_t = daw::validated<std::array<int, 5>, no_repeat_container>;
 	BOOST_REQUIRE_THROW( value_t( 1, 1, 2, 3, 4 ), std::out_of_range );
+}
+
+struct test_class_t {
+	int value;
+	constexpr int calc( int n ) const {
+		return value * n;
+	}
+
+	constexpr int calc( int n ) {
+		return value + n;
+	}
+};
+
+struct test_class_validator_t {
+	constexpr bool operator( )( test_class_t const &c ) noexcept {
+		return c.value % 2 == 0;
+	}
+};
+
+BOOST_AUTO_TEST_CASE( struct_good_001 ) {
+	using value_t = daw::validated<test_class_t, test_class_validator_t>;
+	value_t a = {2};
+	BOOST_REQUIRE_EQUAL( a.get( ).value, 2 );
+}
+
+BOOST_AUTO_TEST_CASE( struct_bad_001 ) {
+	using value_t = daw::validated<test_class_t, test_class_validator_t>;
+	BOOST_REQUIRE_THROW( value_t( 1 ), std::out_of_range );
+}
+
+BOOST_AUTO_TEST_CASE( operator_star_001 ) {
+	using value_t = daw::validated<test_class_t, test_class_validator_t>;
+
+	value_t a = {2};
+	BOOST_REQUIRE_EQUAL( a.get( ).value, 2 );
+
+	BOOST_REQUIRE_EQUAL( ( *a ).calc( 2 ), 4 );
+
+	value_t const b = {4};
+	BOOST_REQUIRE_EQUAL( b.get( ).value, 4 );
+	BOOST_REQUIRE_EQUAL( ( *b ).calc( 2 ), 8 );
+
+	constexpr auto c = ( *value_t( 2 ) ).calc( 2 );
+	BOOST_REQUIRE_EQUAL( c, 4 );
+}
+
+BOOST_AUTO_TEST_CASE( operator_right_arrow_001 ) {
+	using value_t = daw::validated<test_class_t, test_class_validator_t>;
+
+	value_t a = {2};
+	BOOST_REQUIRE_EQUAL( a.get( ).value, 2 );
+
+	BOOST_REQUIRE_EQUAL( a->calc( 2 ), 4 );
+
+	value_t const b = {4};
+	BOOST_REQUIRE_EQUAL( b.get( ).value, 4 );
+	BOOST_REQUIRE_EQUAL( b->calc( 2 ), 8 );
+
+	constexpr auto c = value_t( 2 )->calc( 2 );
+	BOOST_REQUIRE_EQUAL( c, 4 );
 }
