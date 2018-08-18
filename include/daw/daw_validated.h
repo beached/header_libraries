@@ -94,10 +94,6 @@ namespace daw {
 			return m_value;
 		}
 
-		constexpr operator value_t &&( ) && noexcept {
-			return std::move( m_value );
-		}
-
 		constexpr const_reference operator*( ) const noexcept {
 			return m_value;
 		}
