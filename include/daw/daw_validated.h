@@ -65,19 +65,16 @@ namespace daw {
 		      construct_a<value_t>{}( std::forward<Args>( args )... ) ) ) {}
 
 		// Handle enum's differently as it is UB to go out of range on a c enum
-		template<typename Arg,
-		         std::enable_if_t<(is_enum_v<value_t> &&
-		                           !is_same_v<validated, std::decay_t<Arg>>),
-		                          std::nullptr_t> = nullptr>
-		constexpr validated( Arg &&arg )
+		template<
+		  typename... Args,
+		  std::enable_if_t<( is_enum_v<value_t> && sizeof...( Args ) < 2 &&
+		                     !(sizeof...( Args ) == 1 &&
+		                       daw::traits::is_first_type_v<validated, Args...>)),
+		                   std::nullptr_t> = nullptr>
+		constexpr validated( Args &&... args )
 		  : m_value(
-		      static_cast<value_t>( validate( std::forward<Arg>( arg ) ) ) ) {}
-
-		template<typename... Args,
-		         std::enable_if_t<( is_enum_v<value_t> && sizeof...( Args ) == 0 ),
-		                          std::nullptr_t> = nullptr>
-		constexpr validated( Args &&... ) noexcept
-		  : m_value{} {}
+		      static_cast<value_t>( validate( std::underlying_type_t<value_t>(
+		        std::forward<Args>( args )... ) ) ) ) {}
 
 		constexpr validated &operator=( const_reference rhs ) {
 			m_value = validate( rhs );

@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE( int_range_test_good_001 ) {
 }
 
 template<typename T, typename U>
-constexpr void assign( T & lhs, U && rhs ) {
+constexpr void assign( T &lhs, U &&rhs ) {
 	lhs = std::forward<U>( rhs );
 }
 
@@ -64,10 +64,9 @@ BOOST_AUTO_TEST_CASE( int_range_test_bad_001 ) {
 	BOOST_REQUIRE_EQUAL( tmp, 1 );
 	BOOST_REQUIRE_THROW( assign( tmp, 101 ), std::out_of_range );
 	BOOST_REQUIRE_EQUAL( tmp, 1 );
-	int tmp2 = 101; 
+	int tmp2 = 101;
 	BOOST_REQUIRE_THROW( assign( tmp, std::move( tmp2 ) ), std::out_of_range );
 	BOOST_REQUIRE_EQUAL( tmp, 1 );
-
 }
 
 enum class enum_t { apple = 0, orange = 1, bannana = 3 };
