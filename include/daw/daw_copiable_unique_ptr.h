@@ -92,6 +92,10 @@ namespace daw {
 			return std::exchange( m_value, nullptr );
 		}
 
+		explicit constexpr operator bool( ) noexcept {
+			return static_cast<bool>( m_value );
+		}
+
 		constexpr friend void swap( copiable_unique_ptr &lhs,
 		                            copiable_unique_ptr &rhs ) noexcept {
 			pointer tmp = lhs.m_value;
