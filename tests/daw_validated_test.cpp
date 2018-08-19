@@ -37,14 +37,11 @@ struct int_validator_t {
 
 BOOST_AUTO_TEST_CASE( int_range_test_good_001 ) {
 	using value_t = daw::validated<int, int_validator_t<int, 0, 100>>;
-	constexpr value_t tmp( 0 );
-	BOOST_REQUIRE_EQUAL( tmp, 0 );
+	static_assert( value_t( 0 ) == 0, "" );
 
-	constexpr value_t tmp2( 100 );
-	BOOST_REQUIRE_EQUAL( tmp2, 100 );
+	static_assert( value_t( 100 ) == 100, "" );
 
-	constexpr int tmp3 = value_t( 0 );
-	BOOST_REQUIRE_EQUAL( tmp3, 0 );
+	static_assert( value_t( 0 ) == 0, "" );
 
 	value_t tmp4 = 5;
 	BOOST_REQUIRE_EQUAL( tmp4, 5 );
@@ -104,7 +101,7 @@ BOOST_AUTO_TEST_CASE( enum_test_bad_001 ) {
 
 struct no_repeat_container {
 	template<typename Container>
-	constexpr bool operator( )( Container const &c ) noexcept {
+	bool operator( )( Container const &c ) noexcept {
 		auto const last = c.end( );
 		for( auto it = c.begin( ); it != last; ++it ) {
 			if( std::find( std::next( it ), last, *it ) != last ) {
@@ -117,14 +114,16 @@ struct no_repeat_container {
 
 BOOST_AUTO_TEST_CASE( array_good_001 ) {
 	using value_t = daw::validated<std::array<int, 5>, no_repeat_container>;
-	auto tmp = value_t( 0, 1, 2, 3, 4 );
-	BOOST_REQUIRE( tmp.get( ).size( ) == 5 );
+	value_t tmp( 0, 1, 2, 3, 4 );
+	BOOST_REQUIRE_EQUAL( tmp.get( ).size( ), 5 );
 
 	std::array<int, 5> tmp2 = value_t( 0, 1, 2, 3, 4 );
-	for( size_t n = 0; n < 5; ++n ) {
-		BOOST_REQUIRE_EQUAL( tmp2[n], n );
-	}
-}
+	BOOST_REQUIRE_EQUAL( tmp2[0], 0 );
+	BOOST_REQUIRE_EQUAL( tmp2[1], 1 );
+	BOOST_REQUIRE_EQUAL( tmp2[2], 2 );
+	BOOST_REQUIRE_EQUAL( tmp2[3], 3 );
+	BOOST_REQUIRE_EQUAL( tmp2[4], 4 );
+} // namespace array_good_001
 
 BOOST_AUTO_TEST_CASE( array_bad_001 ) {
 	using value_t = daw::validated<std::array<int, 5>, no_repeat_container>;
@@ -137,6 +136,7 @@ struct test_class_t {
 		return value * n;
 	}
 
+	// Should never get called via validated
 	constexpr int calc( int n ) {
 		return value + n;
 	}
@@ -148,11 +148,11 @@ struct test_class_validator_t {
 	}
 };
 
-BOOST_AUTO_TEST_CASE( struct_good_001 ) {
+namespace struct_good_001 {
 	using value_t = daw::validated<test_class_t, test_class_validator_t>;
-	value_t a = {2};
-	BOOST_REQUIRE_EQUAL( a.get( ).value, 2 );
-}
+	static constexpr value_t a = {2};
+	static_assert( a.get( ).value == 2, "" );
+} // namespace struct_good_001
 
 BOOST_AUTO_TEST_CASE( struct_bad_001 ) {
 	using value_t = daw::validated<test_class_t, test_class_validator_t>;
@@ -179,34 +179,35 @@ BOOST_AUTO_TEST_CASE( struct_move_001 ) {
 BOOST_AUTO_TEST_CASE( operator_star_001 ) {
 	using value_t = daw::validated<test_class_t, test_class_validator_t>;
 
-	value_t a = {2};
-	BOOST_REQUIRE_EQUAL( a.get( ).value, 2 );
+	constexpr value_t a = {2};
+	static_assert( a.get( ).value == 2, "" );
 
-	BOOST_REQUIRE_EQUAL( ( *a ).calc( 2 ), 4 );
+	static_assert( ( *a ).calc( 2 ) == 4, "" );
+	test_class_t a_tmp = a;
 
-	value_t const b = {4};
-	BOOST_REQUIRE_EQUAL( b.get( ).value, 4 );
-	BOOST_REQUIRE_EQUAL( ( *b ).calc( 2 ), 8 );
+	BOOST_REQUIRE( (*a).calc( 5 ) != a_tmp.calc( 5 ) );
 
-	constexpr auto c = ( *value_t( 2 ) ).calc( 2 );
-	BOOST_REQUIRE_EQUAL( c, 4 );
-}
+	constexpr value_t const b = {4};
+	static_assert( b.get( ).value == 4, "" );
+	static_assert( ( *b ).calc( 2 ) == 8, "" );
 
-BOOST_AUTO_TEST_CASE( operator_right_arrow_001 ) {
+	static_assert( ( *value_t( 2 ) ).calc( 2 ) == 4, "" );
+} // namespace operator_star_001
+
+namespace operator_right_arrow_001 {
 	using value_t = daw::validated<test_class_t, test_class_validator_t>;
 
-	value_t a = {2};
-	BOOST_REQUIRE_EQUAL( a.get( ).value, 2 );
+	static constexpr value_t a = {2};
+	static_assert( a.get( ).value == 2, "" );
 
-	BOOST_REQUIRE_EQUAL( a->calc( 2 ), 4 );
+	static_assert( a->calc( 2 ) == 4, "" );
 
-	value_t const b = {4};
-	BOOST_REQUIRE_EQUAL( b.get( ).value, 4 );
-	BOOST_REQUIRE_EQUAL( b->calc( 2 ), 8 );
+	static constexpr value_t const b = {4};
+	static_assert( b.get( ).value == 4, "" );
+	static_assert( b->calc( 2 ) == 8, "" );
 
-	constexpr auto c = value_t( 2 )->calc( 2 );
-	BOOST_REQUIRE_EQUAL( c, 4 );
-}
+	static_assert( value_t( 2 )->calc( 2 ) == 4, "" );
+} // namespace operator_right_arrow_001
 
 struct throwing_validator {
 	constexpr bool operator( )( int const &v ) {
@@ -219,7 +220,7 @@ struct throwing_validator {
 
 BOOST_AUTO_TEST_CASE( throwing_validator_001 ) {
 	using value_t = daw::validated<int, throwing_validator>;
-	BOOST_REQUIRE_EQUAL( value_t( 1 ), 1 );
+	static_assert( value_t( 1 ) == 1, "" );
 
 	BOOST_REQUIRE_THROW( value_t( 2 ), std::runtime_error );
 }
