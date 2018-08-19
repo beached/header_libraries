@@ -113,7 +113,7 @@ namespace daw {
 			}
 
 			void destruct_if_should( ) {
-				std::lock_guard<std::mutex> lck{m_is_borrowed};
+				std::lock_guard<std::mutex> lck( m_is_borrowed );
 				destruct_if_should( lck );
 			}
 
@@ -177,10 +177,18 @@ namespace daw {
 				return m_observer_count <= 0;
 			}
 
+			bool remove_observer( std::lock_guard<std::mutex> &&lck ) {
+				return remove_observer( lck );
+			}
+
 			bool remove_owner( std::lock_guard<std::mutex> &lck ) {
 				m_ptr_destruct = true;
 				destruct_if_should( lck );
 				return m_observer_count <= 0;
+			}
+
+			bool remove_owner( std::lock_guard<std::mutex> &&lck ) {
+				return remove_owner( lck );
 			}
 
 			static void destruct_cb( control_block_t *cb ) {
@@ -197,29 +205,17 @@ namespace daw {
 
 		public:
 			static void remove_observer( control_block_t *cb ) {
-				if( !cb ) {
-					return;
-				}
-				bool destruction = false;
-				{
-					std::lock_guard<std::mutex> lck{cb->m_is_borrowed};
-					destruction = cb->remove_observer( lck );
-				}
-				if( destruction ) {
+				if( cb && cb->remove_observer(
+				            std::lock_guard<std::mutex>( cb->m_is_borrowed ) ) ) {
+
 					destruct_cb( cb );
 				}
 			}
 
 			static void remove_owner( control_block_t *cb ) {
-				if( !cb ) {
-					return;
-				}
-				bool destruction = false;
-				{
-					std::lock_guard<std::mutex> lck{cb->m_is_borrowed};
-					destruction = cb->remove_owner( lck );
-				}
-				if( destruction ) {
+				if( cb && cb->remove_owner(
+				            std::lock_guard<std::mutex>( cb->m_is_borrowed ) ) ) {
+
 					destruct_cb( cb );
 				}
 			}
