@@ -24,9 +24,9 @@
 #include <mutex>
 
 #include "daw/boost_test.h"
-#include "daw/daw_value_ptr.h"
+#include "daw/daw_copiable_unique_ptr.h"
 
-BOOST_AUTO_TEST_CASE( daw_value_ptr_test_01 ) {
+BOOST_AUTO_TEST_CASE( daw_copiable_unique_ptr_test_01 ) {
 	struct lrg {
 		size_t a{};
 		size_t b{};
@@ -35,79 +35,34 @@ BOOST_AUTO_TEST_CASE( daw_value_ptr_test_01 ) {
 		size_t e{};
 	};
 	std::cout << "sizeof( int ) -> " << sizeof( int ) << '\t';
-	std::cout << "sizeof( daw::value_ptr<int> ) -> "
-	          << sizeof( daw::value_ptr<int> ) << '\n';
+	std::cout << "sizeof( daw::copiable_unique_ptr<int> ) -> "
+	          << sizeof( daw::copiable_unique_ptr<int> ) << '\n';
 	std::cout << "sizeof( size_t ) -> " << sizeof( size_t ) << '\t';
-	std::cout << "sizeof( daw::value_ptr<size_t> ) -> "
-	          << sizeof( daw::value_ptr<size_t> ) << '\n';
+	std::cout << "sizeof( daw::copiable_unique_ptr<size_t> ) -> "
+	          << sizeof( daw::copiable_unique_ptr<size_t> ) << '\n';
 	std::cout << "sizeof( lrg ) -> " << sizeof( lrg ) << '\t';
-	std::cout << "sizeof( daw::value_ptr<lrg> ) -> "
-	          << sizeof( daw::value_ptr<lrg> ) << '\n';
-	auto a = daw::value_ptr<int>( );
-	auto b = daw::value_ptr<int>( 1 );
-	auto c = daw::value_ptr<int>( 2 );
-	auto d = daw::value_ptr<int>( 1 );
-
-	// a & b
-	BOOST_REQUIRE_EQUAL( *a, 0 );
-	auto test_01 = !( a == b );
-	auto test_02 = !( b == a );
-	auto test_03 = a != b;
-	auto test_04 = b != a;
-	auto test_05 = a < b;
-	auto test_06 = !( b < a );
-	auto test_07 = a <= b;
-	auto test_08 = !( b <= a );
-	auto test_09 = !( a >= b );
-	auto test_10 = b >= a;
-	auto test_11 = b == d;
-	auto test_12 = b != c;
-	auto test_13 = b < c;
-	auto test_14 = b <= c;
-	auto test_15 = c > b;
-	auto test_16 = c >= b;
-
-	BOOST_REQUIRE( test_01 );
-	BOOST_REQUIRE( test_02 );
-	BOOST_REQUIRE( test_03 );
-	BOOST_REQUIRE( test_04 );
-	BOOST_REQUIRE( test_05 );
-	BOOST_REQUIRE( test_06 );
-	BOOST_REQUIRE( test_07 );
-	BOOST_REQUIRE( test_08 );
-	BOOST_REQUIRE( test_09 );
-	BOOST_REQUIRE( test_10 );
-	BOOST_REQUIRE( test_11 );
-	BOOST_REQUIRE( test_12 );
-	BOOST_REQUIRE( test_13 );
-	BOOST_REQUIRE( test_14 );
-	BOOST_REQUIRE( test_15 );
-	BOOST_REQUIRE( test_16 );
+	std::cout << "sizeof( daw::copiable_unique_ptr<lrg> ) -> "
+	          << sizeof( daw::copiable_unique_ptr<lrg> ) << '\n';
 
 	struct A {
 		constexpr A( ) noexcept {}
 		A( A const & ) = delete;
 		A &operator=( A const & ) = delete;
 	};
-	auto e = daw::value_ptr<A>( );
+	auto e = daw::make_copiable_unique_ptr<A>( );
 
 	auto f = std::move( e );
 
-	auto g = daw::value_ptr<int>( );
+	auto g = daw::make_copiable_unique_ptr<int>( );
 	auto const h = g;
 
-	g = 5;
+	*g = 5;
 
 	auto hash_value = std::hash<decltype( g )>{}( g );
 
-	auto i = daw::value_ptr<std::mutex>( );
+	auto i = daw::make_copiable_unique_ptr<std::mutex>( );
 	i.reset( );
-
-	static_assert( daw::is_regular_v<daw::value_ptr<int>>,
-	               "value_ptr<int> isn't regular" );
-	static_assert( !daw::is_regular_v<daw::value_ptr<std::mutex>>,
-	               "value_ptr<std::mutex> shouldn't be regular" );
-	daw::value_ptr<std::mutex> blah{};
+	BOOST_REQUIRE_EQUAL( i.get( ), nullptr );
 }
 
 struct virt_A {
@@ -129,11 +84,11 @@ struct virt_B : virt_A {
 virt_B::~virt_B( ) noexcept = default;
 
 BOOST_AUTO_TEST_CASE( virtual_inheritance_test ) {
-	using test_t = daw::value_ptr<virt_A>;
-	auto a = test_t( );
-	auto b = test_t::emplace<virt_B>( );
+	using test_t = daw::copiable_unique_ptr<virt_A>;
+	auto a = test_t( new virt_A( ) );
+	auto b = test_t( new virt_B( ) );
 
-	BOOST_REQUIRE( a( ) != b( ) );
-	std::cout << "a: " << a( ) << ", " << sizeof( virt_A ) << '\n';
-	std::cout << "b: " << b( ) << ", " << sizeof( virt_B ) << '\n';
+	BOOST_REQUIRE( (*a)( ) != (*b)( ) );
+	std::cout << "a: " << (*a)( ) << ", " << sizeof( virt_A ) << '\n';
+	std::cout << "b: " << (*b)( ) << ", " << sizeof( virt_B ) << '\n';
 }

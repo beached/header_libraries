@@ -41,6 +41,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_checked_expected
 	daw_clumpy_sparsy
 	daw_container_algorithm
+	daw_copiable_unique_ptr
 	daw_cstring
 	daw_endian
 	daw_exception

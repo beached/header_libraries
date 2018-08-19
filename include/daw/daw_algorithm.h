@@ -1410,9 +1410,9 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator, typename LastType>
-		constexpr bool
-		is_sorted( ForwardIterator first,
-		           LastType last ) noexcept( noexcept( *first < *first ) ) {
+		constexpr bool is_sorted( ForwardIterator first, LastType last ) noexcept(
+		  noexcept( *first < *first && *first < *last && first != last ) &&
+		  noexcept( next( first ) ) && noexcept( ++first ) ) {
 
 			static_assert(
 			  is_forward_iterator_v<ForwardIterator>,
