@@ -30,8 +30,7 @@
 
 namespace daw {
 	template<typename T, typename Deleter = std::default_delete<T>>
-	struct copiable_unique_ptr : enable_copy_constructor<T>,
-	                             enable_copy_assignment<T> {
+	struct copiable_unique_ptr {
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
@@ -53,31 +52,28 @@ namespace daw {
 
 	public:
 		constexpr copiable_unique_ptr( ) noexcept = default;
+		constexpr copiable_unique_ptr( copiable_unique_ptr &&other ) noexcept
+		  : m_value( std::exchange( other.m_value, nullptr ) ) {}
+
+		constexpr copiable_unique_ptr &
+		operator=( copiable_unique_ptr &&rhs ) noexcept {
+			if( rhs != this ) {
+				m_value = std::exchange( rhs.m_value, nullptr );
+			}
+			return *this;
+		}
+
 		constexpr copiable_unique_ptr( pointer ptr ) noexcept
 		  : m_value( ptr ) {}
 
 		copiable_unique_ptr( copiable_unique_ptr const &other ) noexcept(
-		  noexcept( make_ptr( *other.m_value ) ) )
-		  : enable_copy_constructor<T>( other )
-		  , enable_copy_assignment<T>( other )
-		  , m_value( make_ptr( *other.m_value ) ) {}
-
-		constexpr copiable_unique_ptr( copiable_unique_ptr &&other ) noexcept
-		  : enable_copy_constructor<T>( std::move( other ) )
-		  , enable_copy_assignment<T>( std::move( other ) )
-		  , m_value( std::exchange( other.m_value, nullptr ) ) {}
+		  is_nothrow_copy_constructible_v<value_type> )
+		  : m_value( make_ptr( *other.m_value ) ) {}
 
 		copiable_unique_ptr &operator=( copiable_unique_ptr const &rhs ) noexcept(
-		  is_nothrow_copy_constructible_v<value_type> ) {
-			*m_value = *( rhs.m_value );
-			return *this;
-		}
+		  is_nothrow_copy_assignable_v<value_type> ) {
 
-		constexpr copiable_unique_ptr &
-		operator=( copiable_unique_ptr &&rhs ) noexcept {
-			if( &rhs != this ) {
-				m_value = std::exchange( rhs.m_value, nullptr );
-			}
+			*m_value = *( rhs.m_value );
 			return *this;
 		}
 
