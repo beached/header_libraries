@@ -77,14 +77,14 @@ namespace daw {
 			return *this;
 		}
 
-		void reset( ) noexcept( is_nothrow_destructible_v<value_type> ) {
+		void reset( ) { 
 			auto tmp = std::exchange( m_value, nullptr );
 			if( tmp ) {
 				Deleter( )( tmp );
 			}
 		}
 
-		~copiable_unique_ptr( ) noexcept( is_nothrow_destructible_v<value_type> ) {
+		~copiable_unique_ptr( ) {
 			reset( );
 		}
 
