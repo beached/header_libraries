@@ -20,19 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cstdint>
-#include <cstdlib>
-#include <iostream>
-#include <string>
-
-#include "daw/boost_test.h"
 #include "daw/daw_size_literals.h"
 
-BOOST_AUTO_TEST_CASE( daw_size_literals_001 ) {
+namespace daw_size_literals_001 {
 	using namespace daw::size_literals;
-	BOOST_REQUIRE_EQUAL( 1_KB, 1024ull );
-	BOOST_REQUIRE_EQUAL( 1_MB, 1024ull * 1024u );
-	BOOST_REQUIRE_EQUAL( 1_GB, 1024ull * 1024u * 1024u );
-	BOOST_REQUIRE_EQUAL( 1_TB, 1024ull * 1024u * 1024u * 1024u );
-	BOOST_REQUIRE_EQUAL( 1_PB, 1024ull * 1024u * 1024u * 1024u * 1024u );
-}
+	static_assert( 1_KB == 1024ull, "" );
+	static_assert( 1_MB == 1024ull * 1024u, "" );
+	static_assert( 1_GB == 1024ull * 1024u * 1024u, "" );
+	static_assert( 1_TB == 1024ull * 1024u * 1024u * 1024u, "" );
+	static_assert( 1_PB == 1024ull * 1024u * 1024u * 1024u * 1024u, "" );
+} // namespace daw_size_literals_001
