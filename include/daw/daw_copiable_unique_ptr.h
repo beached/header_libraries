@@ -66,18 +66,15 @@ namespace daw {
 		constexpr copiable_unique_ptr( pointer ptr ) noexcept
 		  : m_value( ptr ) {}
 
-		copiable_unique_ptr( copiable_unique_ptr const &other ) noexcept(
-		  is_nothrow_copy_constructible_v<value_type> )
+		copiable_unique_ptr( copiable_unique_ptr const &other )
 		  : m_value( make_ptr( *other.m_value ) ) {}
 
-		copiable_unique_ptr &operator=( copiable_unique_ptr const &rhs ) noexcept(
-		  is_nothrow_copy_assignable_v<value_type> ) {
-
+		copiable_unique_ptr &operator=( copiable_unique_ptr const &rhs ) {
 			*m_value = *( rhs.m_value );
 			return *this;
 		}
 
-		void reset( ) { 
+		void reset( ) {
 			auto tmp = std::exchange( m_value, nullptr );
 			if( tmp ) {
 				Deleter( )( tmp );
