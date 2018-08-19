@@ -35,26 +35,27 @@ BOOST_AUTO_TEST_CASE( daw_optional_test_01 ) {
 	constexpr daw::static_optional<int> a{};
 	constexpr daw::static_optional<int> b{1};
 	constexpr daw::static_optional<int> c{2};
-	daw::static_optional<int> d{1};
 
+	static_assert( !a, "" );
+	// a & b
+	static_assert( !( a == b ), "" );
+	static_assert( !( b == a ), "" );
+	static_assert( a != b, "" );
+	static_assert( b != a, "" );
+	static_assert( a < b, "" );
+	static_assert( !( b < a ), "" );
+	static_assert( a <= b, "" );
+	static_assert( !( b <= a ), "" );
+	static_assert( !( a >= b ), "" );
+	static_assert( b >= a, "" );
+	static_assert( b != c, "" );
+	static_assert( b < c, "" );
+	static_assert( b <= c, "" );
+	static_assert( c > b, "" );
+	static_assert( c >= b, "" );
+
+	daw::static_optional<int> d{1};
 	d = 2;
 	d = 1;
-	BOOST_REQUIRE( !a );
-	// a & b
-	BOOST_REQUIRE( !( a == b ) );
-	BOOST_REQUIRE( !( b == a ) );
-	BOOST_REQUIRE( a != b );
-	BOOST_REQUIRE( b != a );
-	BOOST_REQUIRE( a < b );
-	BOOST_REQUIRE( !( b < a ) );
-	BOOST_REQUIRE( a <= b );
-	BOOST_REQUIRE( !( b <= a ) );
-	BOOST_REQUIRE( !( a >= b ) );
-	BOOST_REQUIRE( b >= a );
 	BOOST_REQUIRE_EQUAL( b, d );
-	BOOST_REQUIRE( b != c );
-	BOOST_REQUIRE( b < c );
-	BOOST_REQUIRE( b <= c );
-	BOOST_REQUIRE( c > b );
-	BOOST_REQUIRE( c >= b );
 }
