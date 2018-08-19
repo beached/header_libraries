@@ -38,9 +38,7 @@ struct int_validator_t {
 BOOST_AUTO_TEST_CASE( int_range_test_good_001 ) {
 	using value_t = daw::validated<int, int_validator_t<int, 0, 100>>;
 	static_assert( value_t( 0 ) == 0, "" );
-
 	static_assert( value_t( 100 ) == 100, "" );
-
 	static_assert( value_t( 0 ) == 0, "" );
 
 	value_t tmp4 = 5;
@@ -209,6 +207,15 @@ namespace operator_right_arrow_001 {
 	static_assert( value_t( 2 )->calc( 2 ) == 4, "" );
 } // namespace operator_right_arrow_001
 
+constexpr int function_argument_test( daw::validated<int, int_validator_t<int, 5, 10>> arg ) {
+	return arg*2;
+}
+
+BOOST_AUTO_TEST_CASE( function_argument_001 ) {
+	static_assert( function_argument_test( 6 ) == 12, "" );
+	BOOST_REQUIRE_THROW( function_argument_test( 15 ), std::out_of_range );
+}
+
 struct throwing_validator {
 	constexpr bool operator( )( int const &v ) {
 		if( v % 2 == 0 ) {
@@ -224,3 +231,5 @@ BOOST_AUTO_TEST_CASE( throwing_validator_001 ) {
 
 	BOOST_REQUIRE_THROW( value_t( 2 ), std::runtime_error );
 }
+
+
