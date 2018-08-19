@@ -102,8 +102,9 @@ namespace daw {
 	/// @param n number of steps to advance forwards
 	/// @return The resulting iterator advanced n steps
 	template<typename Iterator>
-	constexpr Iterator safe_next( Iterator it, Iterator const last,
-	                              size_t n = 1 ) noexcept {
+	constexpr Iterator
+	safe_next( Iterator it, Iterator const last,
+	           size_t n = 1 ) noexcept( noexcept( daw::next( it, n ) ) ) {
 		static_assert( is_iterator_v<Iterator>,
 		               "Iterator passed to advance does not fullfill the concept "
 		               "of an Iterator. "
@@ -122,8 +123,9 @@ namespace daw {
 	/// @param n number of steps to advance backwards
 	/// @return The resulting iterator advanced n steps
 	template<typename Iterator>
-	constexpr Iterator safe_prev( Iterator it, Iterator first,
-	                              size_t n = 1 ) noexcept {
+	constexpr Iterator
+	safe_prev( Iterator it, Iterator first,
+	           size_t n = 1 ) noexcept( noexcept( daw::prev( it, n ) ) ) {
 		static_assert( is_iterator_v<Iterator>,
 		               "Iterator passed to advance does not fullfill the concept "
 		               "of an Iterator. "
@@ -197,31 +199,34 @@ namespace daw {
 			return lhs > rhs ? lhs : rhs;
 		}
 
-		template<typename IteratorType, typename ValueType, typename Comp>
-		IteratorType binary_search( const IteratorType first,
-		                            const IteratorType last, const ValueType &value,
-		                            Comp less_than ) {
-			auto midpoint = []( const IteratorType &a, const IteratorType &b ) {
-				daw::exception::dbg_throw_on_false(
-				  a <= b,
-				  " Cannot find a midpoint unless the first parameter is <= the "
-				  "second" );
+		namespace impl {
+			struct midpoint {
+				template<typename IteratorType>
+				constexpr IteratorType operator( )( IteratorType const &a,
+				                                    IteratorType const &b ) const {
+					daw::exception::precondition_check(
+					  a <= b,
+					  " Cannot find a midpoint unless the first parameter is <= the "
+					  "second" );
 
-				auto const mid = std::distance( a, b ) / 2;
-				auto result = a;
-				daw::advance( result, mid );
-				return result;
+					return daw::next( a, daw::distance( a, b ) / 2 );
+				}
 			};
-			daw::exception::dbg_throw_on_false(
+		} // namespace impl
+		template<typename IteratorType, typename ValueType, typename Comp>
+		constexpr IteratorType
+		binary_search( IteratorType first, IteratorType const last,
+		               ValueType const &value, Comp less_than ) {
+			daw::exception::precondition_check(
 			  first < last, ": First position must be less than second" );
-			IteratorType it_first( first );
-			IteratorType it_last( last );
 
-			while( it_first < it_last ) {
-				auto mid = midpoint( it_first, it_last );
+			auto it_last = last;
+
+			while( first < it_last ) {
+				auto mid = impl::midpoint{}( first, it_last );
 				if( less_than( mid, value ) ) {
-					it_first = mid;
-					daw::advance( it_first, 1 );
+					first = mid;
+					daw::advance( first, 1 );
 				} else if( less_than( value, mid ) ) {
 					it_last = mid;
 				} else { // equal
@@ -232,22 +237,33 @@ namespace daw {
 		}
 
 		template<typename Container>
-		auto rbegin2( Container &container ) -> decltype( container.rbegin( ) ) {
+		constexpr auto
+		rbegin2( Container &container ) noexcept( noexcept( container.rbegin( ) ) )
+		  -> decltype( container.rbegin( ) ) {
+
 			return container.rbegin( );
 		}
 
 		template<typename Container>
-		auto crbegin2( Container &container ) -> decltype( container.crbegin( ) ) {
+		constexpr auto crbegin2( Container &container ) noexcept(
+		  noexcept( container.crbegin( ) ) ) -> decltype( container.crbegin( ) ) {
+
 			return container.crbegin( );
 		}
 
 		template<typename Container>
-		auto rend2( Container &container ) -> decltype( container.rend( ) ) {
+		constexpr auto
+		rend2( Container &container ) noexcept( noexcept( container.rend( ) ) )
+		  -> decltype( container.rend( ) ) {
+
 			return container.rend( );
 		}
 
 		template<typename Container>
-		auto crend2( Container &container ) -> decltype( container.crend( ) ) {
+		constexpr auto
+		crend2( Container &container ) noexcept( noexcept( container.crend( ) ) )
+		  -> decltype( container.crend( ) ) {
+
 			return container.crend( );
 		}
 
@@ -262,7 +278,7 @@ namespace daw {
 		}
 
 		template<typename Ptr>
-		inline bool is_null_ptr( Ptr const *const ptr ) {
+		constexpr bool is_null_ptr( Ptr const *const ptr ) noexcept {
 			return nullptr == ptr;
 		}
 
