@@ -92,7 +92,7 @@ namespace daw {
 			return std::exchange( m_value, nullptr );
 		}
 
-		explicit constexpr operator bool( ) noexcept {
+		explicit constexpr operator bool( ) const noexcept {
 			return static_cast<bool>( m_value );
 		}
 
