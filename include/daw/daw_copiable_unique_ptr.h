@@ -57,9 +57,8 @@ namespace daw {
 
 		constexpr copiable_unique_ptr &
 		operator=( copiable_unique_ptr &&rhs ) noexcept {
-			if( rhs != this ) {
-				m_value = std::exchange( rhs.m_value, nullptr );
-			}
+			auto tmp = m_value;
+			m_value = std::exchange( rhs.m_value, tmp );
 			return *this;
 		}
 
@@ -67,10 +66,21 @@ namespace daw {
 		  : m_value( ptr ) {}
 
 		copiable_unique_ptr( copiable_unique_ptr const &other )
-		  : m_value( make_ptr( *other.m_value ) ) {}
+		  : m_value( other.m_value ? make_ptr( *other.m_value ) : nullptr ) {}
 
 		copiable_unique_ptr &operator=( copiable_unique_ptr const &rhs ) {
-			*m_value = *( rhs.m_value );
+			if( this == &rhs ) {
+				return *this;
+			}
+			if( !rhs.m_value ) {
+				reset( );
+				return *this;
+			}
+			if( !m_value ) {
+				m_value = make_ptr( *rhs.m_value );
+				return *this;
+			}
+			*m_value = *rhs.m_value;
 			return *this;
 		}
 

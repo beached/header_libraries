@@ -51,6 +51,7 @@ BOOST_AUTO_TEST_CASE( daw_copiable_unique_ptr_test_01 ) {
 	};
 	auto const a = daw::copiable_unique_ptr<int>( );
 	BOOST_REQUIRE( !a );
+	auto b = a;
 
 	auto e = daw::make_copiable_unique_ptr<A>( );
 	BOOST_REQUIRE( static_cast<bool>( e ) );
