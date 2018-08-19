@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE( daw_copiable_unique_ptr_test_01 ) {
 		A( A const & ) = delete;
 		A &operator=( A const & ) = delete;
 	};
-	auto a = daw::copiable_unique_ptr<int>( );
+	auto const a = daw::copiable_unique_ptr<int>( );
 	BOOST_REQUIRE( !a );
 
 	auto e = daw::make_copiable_unique_ptr<A>( );
