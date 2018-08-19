@@ -239,7 +239,7 @@ namespace daw {
 		observer_ptr( impl::control_block_t<T> *cb )
 		  : m_control_block( cb ) {}
 
-		void reset( ) noexcept {
+		void reset( ) {
 			auto tmp = std::exchange( m_control_block, nullptr );
 			if( tmp ) {
 				try {
@@ -248,7 +248,7 @@ namespace daw {
 			}
 		}
 
-		~observer_ptr( ) noexcept {
+		~observer_ptr( ) {
 			reset( );
 		}
 
