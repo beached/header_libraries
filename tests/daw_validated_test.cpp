@@ -183,7 +183,7 @@ BOOST_AUTO_TEST_CASE( operator_star_001 ) {
 	static_assert( ( *a ).calc( 2 ) == 4, "" );
 	test_class_t a_tmp = a;
 
-	BOOST_REQUIRE( (*a).calc( 5 ) != a_tmp.calc( 5 ) );
+	BOOST_REQUIRE( ( *a ).calc( 5 ) != a_tmp.calc( 5 ) );
 
 	constexpr value_t const b = {4};
 	static_assert( b.get( ).value == 4, "" );
@@ -207,8 +207,9 @@ namespace operator_right_arrow_001 {
 	static_assert( value_t( 2 )->calc( 2 ) == 4, "" );
 } // namespace operator_right_arrow_001
 
-constexpr int function_argument_test( daw::validated<int, int_validator_t<int, 5, 10>> arg ) {
-	return arg*2;
+constexpr int
+function_argument_test( daw::validated<int, int_validator_t<int, 5, 10>> arg ) {
+	return arg * 2;
 }
 
 BOOST_AUTO_TEST_CASE( function_argument_001 ) {
@@ -231,5 +232,4 @@ BOOST_AUTO_TEST_CASE( throwing_validator_001 ) {
 
 	BOOST_REQUIRE_THROW( value_t( 2 ), std::runtime_error );
 }
-
 

@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE( daw_copiable_unique_ptr_test_01 ) {
 
 	auto e = daw::make_copiable_unique_ptr<A>( );
 	BOOST_REQUIRE( static_cast<bool>( e ) );
-	
+
 	auto f = std::move( e );
 
 	auto g = daw::make_copiable_unique_ptr<int>( );
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE( virtual_inheritance_test ) {
 	auto a = test_t( new virt_A( ) );
 	auto b = test_t( new virt_B( ) );
 
-	BOOST_REQUIRE( (*a)( ) != (*b)( ) );
-	std::cout << "a: " << (*a)( ) << ", " << sizeof( virt_A ) << '\n';
-	std::cout << "b: " << (*b)( ) << ", " << sizeof( virt_B ) << '\n';
+	BOOST_REQUIRE( ( *a )( ) != ( *b )( ) );
+	std::cout << "a: " << ( *a )( ) << ", " << sizeof( virt_A ) << '\n';
+	std::cout << "b: " << ( *b )( ) << ", " << sizeof( virt_B ) << '\n';
 }

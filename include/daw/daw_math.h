@@ -34,7 +34,6 @@
 
 #include "daw/cpp_17.h"
 #include "daw/daw_algorithm.h"
-#include "daw/daw_endian.h"
 #include "daw/daw_scope_guard.h"
 #include "daw/daw_traits.h"
 #include "daw/daw_utility.h"
