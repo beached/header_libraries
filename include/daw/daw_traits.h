@@ -456,44 +456,6 @@ namespace daw {
 	template<typename T>
 	using make_fp = std::add_pointer_t<T>;
 
-	namespace impl {
-		template<typename Function>
-		struct void_function {
-			Function function;
-
-			constexpr void_function( ) noexcept(
-			  is_nothrow_constructible_v<Function> ) = default;
-
-			explicit constexpr void_function( Function const &func ) noexcept(
-			  is_nothrow_copy_constructible_v<Function> )
-			  : function( func ) {}
-
-			explicit constexpr void_function( Function &&func ) noexcept(
-			  is_nothrow_move_constructible_v<Function> )
-			  : function( std::move( func ) ) {}
-
-			explicit constexpr operator bool( ) noexcept(
-			  noexcept( static_cast<bool>( std::declval<Function>( ) ) ) ) {
-
-				return static_cast<bool>( function );
-			}
-
-			template<typename... Args>
-			constexpr void operator( )( Args &&... args ) noexcept(
-			  noexcept( std::declval<Function>( )( std::declval<Args>( )... ) ) ) {
-
-				function( std::forward<Args>( args )... );
-			}
-		};
-	} // namespace impl
-
-	template<typename Function>
-	constexpr auto make_void_function( Function &&func ) noexcept( noexcept(
-	  impl::void_function<Function>( std::forward<Function>( func ) ) ) ) {
-
-		return impl::void_function<Function>( std::forward<Function>( func ) );
-	}
-
 	namespace detectors {
 		template<typename Function, typename... Args>
 		using callable_with =
@@ -549,18 +511,6 @@ namespace daw {
 		using dereferenceable = decltype( *std::declval<T>( ) );
 	} // namespace detectors
 
-	template<typename T>
-	using is_dereferenceable_t =
-	  typename is_detected<detectors::dereferenceable, T>::type;
-
-	template<typename T>
-	constexpr bool is_dereferenceable_v =
-	  is_detected_v<detectors::dereferenceable, T>;
-
-	template<typename Function, typename... Args>
-	using is_callable_t =
-	  typename is_detected<detectors::callable_with, Function, Args...>::type;
-
 	namespace impl {
 		template<typename...>
 		struct is_single_void_arg_t : std::false_type {};
@@ -572,6 +522,7 @@ namespace daw {
 	template<typename... Args>
 	constexpr bool is_single_void_arg_v =
 	  impl::is_single_void_arg_t<Args...>::value;
+
 
 	template<typename Function, typename... Args>
 	constexpr bool is_callable_v =
@@ -603,6 +554,54 @@ namespace daw {
 	template<typename Function, typename... Args>
 	constexpr bool is_nothrow_callable_v =
 	  impl::is_nothrow_callable_test<Function, Args...>( );
+
+	namespace impl {
+		template<typename Function>
+		struct void_function {
+			Function function;
+
+			constexpr void_function( ) noexcept(
+			  is_nothrow_constructible_v<Function> ) = default;
+
+			explicit constexpr void_function( Function const &func ) noexcept(
+			  is_nothrow_copy_constructible_v<Function> )
+			  : function( func ) {}
+
+			explicit constexpr void_function( Function &&func ) noexcept(
+			  is_nothrow_move_constructible_v<Function> )
+			  : function( std::move( func ) ) {}
+
+			explicit constexpr operator bool( ) noexcept(
+			  noexcept( static_cast<bool>( std::declval<Function>( ) ) ) ) {
+
+				return static_cast<bool>( function );
+			}
+
+			template<typename... Args, std::enable_if_t<daw::is_callable_v<Function, Args...>, std::nullptr_t> = nullptr>
+			constexpr void operator( )( Args &&... args ) noexcept( daw::is_nothrow_callable_v<Function, Args...> ) {
+				function( std::forward<Args>( args )... );
+			}
+		};
+	} // namespace impl
+
+	template<typename Function>
+	constexpr auto make_void_function( Function &&func ) noexcept( noexcept(
+	  impl::void_function<Function>( std::forward<Function>( func ) ) ) ) {
+
+		return impl::void_function<Function>( std::forward<Function>( func ) );
+	}
+
+	template<typename T>
+	using is_dereferenceable_t =
+	  typename is_detected<detectors::dereferenceable, T>::type;
+
+	template<typename T>
+	constexpr bool is_dereferenceable_v =
+	  is_detected_v<detectors::dereferenceable, T>;
+
+	template<typename Function, typename... Args>
+	using is_callable_t =
+	  typename is_detected<detectors::callable_with, Function, Args...>::type;
 
 	template<typename Predicate, typename... Args>
 	constexpr bool is_predicate_v =
