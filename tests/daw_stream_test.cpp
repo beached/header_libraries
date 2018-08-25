@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 #include <string>
+#include <iostream>
 
 #include "daw/boost_test.h"
 #include "daw/daw_stream.h"
@@ -29,4 +30,34 @@ BOOST_AUTO_TEST_CASE( daw_stream_001 ) {
 	using namespace std::string_literals;
 	daw::con_out << "Hello the number is: " << 55 << ' ' << 1.3434343434L << ' '
 	             << -234432 << ' ' << true << " string literal\n"s;
+}
+
+BOOST_AUTO_TEST_CASE( daw_memory_stream_001 ) {
+	using namespace std::string_literals;
+	char buffer[100] = {0};
+	auto buff_os = daw::make_memory_buffer_stream( buffer, 100 );
+
+
+	buff_os << "Hello the number is: " << 55 << ' ' << 1.3434343434L << ' '
+							 << -234432 << ' ' << true << " string literal\n"s;
+
+	std::cout << "wrote " << buff_os.get_underlying_stream().size( ) << " chars to buffer\n";
+}
+
+template<typename CharT>
+constexpr size_t fill_buffer( CharT * buffer, size_t capacity ) {
+	auto buff_os = daw::make_memory_buffer_stream( buffer, capacity );
+
+	buff_os << "Hello the number is: " << 55 << ' ' << 1.3434343434L << ' '
+							 << -234432 << ' ' << true << " string literal\n";
+
+	return buff_os.get_underlying_stream().size( );
+}
+
+
+BOOST_AUTO_TEST_CASE( daw_memory_stream_002 ) {
+	constexpr char buffer[100] = {0};
+	constexpr size_t sz = fill_buffer( buffer, 100 );
+
+	std::cout << daw::string_view( buffer, sz ) << "\n";
 }

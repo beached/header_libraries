@@ -83,6 +83,14 @@ namespace daw {
 				m_out( c );
 				return *this;
 			}
+
+			constexpr OutputCallback const & get_underlying_stream( ) const noexcept {
+				return m_out;
+			}
+
+			constexpr OutputCallback & get_underlying_stream( ) noexcept {
+				return m_out;
+			}
 		};
 
 		namespace impl {
@@ -264,6 +272,80 @@ namespace daw {
 			};
 		} // namespace impl
 
+		struct buffer_full_exception {};
+
+		template<typename CharT = char>
+		class char_buffer_stream {
+			static_assert( !daw::is_const_v<CharT>, "Cannot write to a const buffer" );
+			size_t m_capacity = 0;
+			size_t m_position = 0;
+			CharT *m_first = nullptr;
+
+		public:
+			constexpr char_buffer_stream( ) noexcept = default;
+			constexpr char_buffer_stream( CharT *buffer, size_t capacity ) noexcept
+			  : m_capacity( capacity )
+			  , m_first( buffer ) {}
+
+			constexpr CharT *data( ) const noexcept {
+				return m_first;
+			}
+
+			constexpr size_t size( ) const noexcept {
+				return m_position;
+			}
+
+			constexpr bool empty( ) const noexcept {
+				return size( ) == 0;
+			}
+
+			constexpr size_t capacity( ) const noexcept {
+				return m_capacity;
+			}
+
+			constexpr bool is_full( ) const noexcept {
+				return size( ) == capacity( );
+			}
+
+		private:
+			constexpr void append( CharT c ) noexcept {
+				m_first[m_position++] = c;
+			}
+
+		public:
+			constexpr void operator( )( CharT c ) {
+				if( is_full( ) ) {
+					throw buffer_full_exception{};
+				}
+				append( c );
+			}
+
+			constexpr void operator( )( daw::basic_string_view<CharT> sv ) {
+				if( capacity( ) - size( ) < sv.size( ) ) {
+					throw buffer_full_exception{};
+				}
+				for( auto c : sv ) {
+					append( c );
+				}
+			}
+
+			constexpr void reset( ) noexcept {
+				m_position = 0;
+			}
+
+			constexpr daw::basic_string_view<CharT> to_string_view( ) const noexcept {
+				return daw::basic_string_view<CharT>( data( ), size( ) );
+			}
+
+			std::basic_string<CharT> to_string( ) const {
+				return std::basic_string<CharT>( data( ), size( ) );
+			}
+
+			constexpr basic_output_stream<CharT, char_buffer_stream> to_stream( ) {
+				return basic_output_stream<CharT, char_buffer_stream>( *this );
+			}
+		};
+
 		template<typename CharT, typename OutputCallback>
 		constexpr auto make_output_stream( OutputCallback &&oi ) {
 			return basic_output_stream<CharT, OutputCallback>(
@@ -277,6 +359,13 @@ namespace daw {
 
 	static auto con_wout =
 	  daw::io::make_output_stream<wchar_t>( daw::io::impl::stdout_callable{} );
+
+	template<typename CharT>
+	constexpr auto make_memory_buffer_stream( CharT *buffer,
+	                                          size_t capacity ) noexcept {
+		return daw::io::make_output_stream<CharT>(
+		  daw::io::char_buffer_stream<CharT>( buffer, capacity ) );
+	}
 } // namespace daw
 
 template<typename CharT, typename OutputCallback, size_t N>

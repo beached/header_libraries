@@ -523,7 +523,6 @@ namespace daw {
 	constexpr bool is_single_void_arg_v =
 	  impl::is_single_void_arg_t<Args...>::value;
 
-
 	template<typename Function, typename... Args>
 	constexpr bool is_callable_v =
 	  is_detected_v<detectors::callable_with, Function, Args...> ||
@@ -577,8 +576,11 @@ namespace daw {
 				return static_cast<bool>( function );
 			}
 
-			template<typename... Args, std::enable_if_t<daw::is_callable_v<Function, Args...>, std::nullptr_t> = nullptr>
-			constexpr void operator( )( Args &&... args ) noexcept( daw::is_nothrow_callable_v<Function, Args...> ) {
+			template<typename... Args,
+			         std::enable_if_t<daw::is_callable_v<Function, Args...>,
+			                          std::nullptr_t> = nullptr>
+			constexpr void operator( )( Args &&... args ) noexcept(
+			  daw::is_nothrow_callable_v<Function, Args...> ) {
 				function( std::forward<Args>( args )... );
 			}
 		};
