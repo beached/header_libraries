@@ -111,13 +111,13 @@ namespace daw {
 				to_string( CharT const *str ) noexcept {
 					return basic_string_view<CharT>( str, daw::io::impl::strlen( str ) );
 				}
-
+/*
 				template<typename CharT, size_t N>
 				constexpr basic_string_view<CharT>
 				to_string( CharT const ( &str )[N] ) noexcept {
 					return basic_string_view<CharT>( str, N );
 				}
-
+*/
 				template<typename T>
 				using has_tostring_detect2 =
 				  decltype( to_string( std::declval<T const &>( ) ) );
@@ -214,7 +214,7 @@ namespace daw {
 
 			public:
 				template<typename CharT, typename OutputCallback, typename T,
-				         std::enable_if_t<(daw::is_integral_v<std::decay_t<T>>),
+				         std::enable_if_t<(daw::is_integral_v<std::decay_t<T>> && !daw::is_same_v<bool, std::decay_t<T>>),
 				                          std::nullptr_t> = nullptr>
 				static constexpr void
 				display( basic_output_stream<CharT, OutputCallback> &os, T &&val ) {
@@ -377,9 +377,10 @@ operator<<( daw::io::basic_output_stream<CharT, OutputCallback> &os,
 	return os;
 }
 
-template<typename CharT, typename OutputCallback>
+
+template<typename CharT, typename OutputCallback, typename Bool, std::enable_if_t<daw::is_same_v<bool, std::decay_t<Bool>>, std::nullptr_t> = nullptr>
 constexpr daw::io::basic_output_stream<CharT, OutputCallback> &
-operator<<( daw::io::basic_output_stream<CharT, OutputCallback> &os, bool b ) {
+operator<<( daw::io::basic_output_stream<CharT, OutputCallback> &os, Bool b ) {
 
 	if( b ) {
 		operator<<( os, "true" );
@@ -389,10 +390,11 @@ operator<<( daw::io::basic_output_stream<CharT, OutputCallback> &os, bool b ) {
 	return os;
 }
 
+
 template<typename CharT, typename OutputCallback, typename T,
          std::enable_if_t<
            (daw::io::impl::tostring_helpers::has_tostring_v<T> &&
-            !daw::io::impl::has_operator_lsh_lsh_v<CharT, OutputCallback, T>),
+            !daw::io::impl::has_operator_lsh_lsh_v<CharT, OutputCallback, T> && !daw::is_same_v<bool, std::decay_t<T>>),
            std::nullptr_t> = nullptr>
 constexpr daw::io::basic_output_stream<CharT, OutputCallback> &
 operator<<( daw::io::basic_output_stream<CharT, OutputCallback> &os,
@@ -401,3 +403,4 @@ operator<<( daw::io::basic_output_stream<CharT, OutputCallback> &os,
 	daw::io::impl::display_value::display( os, value );
 	return os;
 }
+
