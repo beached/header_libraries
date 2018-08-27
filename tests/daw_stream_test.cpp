@@ -48,16 +48,23 @@ template<typename CharT>
 constexpr size_t fill_buffer( CharT * buffer, size_t capacity ) {
 	auto buff_os = daw::make_memory_buffer_stream( buffer, capacity );
 
-	buff_os << "Hello the number is: " << 55 << ' ' << 1.3434343434L << ' '
+	buff_os << "Hello the number is: " << 55 << ' ' << ' '
 							 << -234432 << ' ' << true << " string literal\n";
 
 	return buff_os.get_underlying_stream().size( );
 }
 
+template<size_t N>
+struct str_t {
+	char buffer[N] = {0};
+	size_t sz;
+
+	constexpr str_t( ): sz( fill_buffer( buffer, N ) ) {}
+};
 
 BOOST_AUTO_TEST_CASE( daw_memory_stream_002 ) {
-	constexpr char buffer[100] = {0};
-	constexpr size_t sz = fill_buffer( buffer, 100 );
+	constexpr str_t<75> str{ };
 
-	std::cout << daw::string_view( buffer, sz ) << "\n";
+	std::cout << daw::string_view( str.buffer, str.sz ) << '\n';
+	std::operator<<( std::cout, "\n" );
 }

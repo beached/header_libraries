@@ -230,6 +230,14 @@ namespace daw {
 			}
 		}
 
+		template<typename ExceptionType = AssertException, typename Bool,
+		         typename... Args>
+		constexpr void dbg_precondition_check( Bool &&condition, Args &&... args ) {
+			if( !static_cast<bool>( condition ) ) {
+				debug_throw<ExceptionType>( std::forward<Args>( args )... );
+			}
+		}
+
 		template<typename ExceptionType = AssertException, typename ValueType,
 		         typename... Args, typename Bool>
 		constexpr ValueType daw_throw_on_false_or_return( ValueType &&value,
