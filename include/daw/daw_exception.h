@@ -44,10 +44,10 @@ namespace daw {
 #if !defined( NODEBUGTHROW ) &&                                                \
   ( defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) ||                  \
     defined( _CPPUNWIND ) )
-#define MAY_THROW_EXCEPTIONS = true
+#define MAY_THROW_EXCEPTIONS true
 		constexpr bool may_throw_v = true;
 #else
-#define MAY_THROW_EXCEPTIONS = false
+#define MAY_THROW_EXCEPTIONS false
 		constexpr bool may_throw_v = false;
 #endif
 

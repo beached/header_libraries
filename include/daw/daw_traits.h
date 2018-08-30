@@ -1041,6 +1041,10 @@ namespace daw {
 		template<typename T, typename CharT>
 		constexpr bool is_ostream_like_v = is_ostream_like_lite_v<T>
 		  &&ostream_detectors::has_write_member_v<T, CharT>;
+
+		template<typename T>
+		constexpr bool is_character_v = is_same_v<char, remove_cvref_t<T>> ||
+		                                is_same_v<wchar_t, remove_cvref_t<T>>;
 	} // namespace traits
 
 	template<bool B, typename T = std::nullptr_t>
