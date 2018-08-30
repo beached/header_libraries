@@ -913,10 +913,10 @@ namespace daw {
 			template<typename T, typename... Ts>
 			struct isnt_cv_ref<T, Ts...>
 			  : std::integral_constant<
-			      bool, ( !(is_const_v<T> || is_reference_v<T> ||
-			                is_volatile_v<
-			                  T>)&&is_same_v<std::true_type,
-			                                 typename isnt_cv_ref<Ts...>::type> )> {};
+			      bool,
+			      ( !any_true_v<is_const_v<T>, is_reference_v<T>, is_volatile_v<T>> &&
+			        is_same_v<std::true_type, typename isnt_cv_ref<Ts...>::type> )> {
+			};
 		} // namespace impl
 
 		template<typename... Ts>
@@ -967,8 +967,9 @@ namespace daw {
 
 		namespace impl {}
 		template<typename T, typename... Args>
-		constexpr bool is_init_list_constructible_v = are_same_types_v<Args...>
-		  &&daw::is_constructible_v<T, std::initializer_list<first_type<Args...>>>;
+		constexpr bool is_init_list_constructible_v = all_true_v<
+		  are_same_types_v<Args...>,
+		  daw::is_constructible_v<T, std::initializer_list<first_type<Args...>>>>;
 
 		namespace ostream_detectors {
 			template<typename T>
@@ -1031,20 +1032,20 @@ namespace daw {
 
 		template<typename T>
 		constexpr bool is_ostream_like_lite_v =
-		  ostream_detectors::has_char_type_v<T>
-		    &&ostream_detectors::has_adjustfield_v<T>
-		      &&ostream_detectors::has_fill_member_v<T>
-		        &&ostream_detectors::has_good_member_v<T>
-		          &&ostream_detectors::has_width_member_v<T>
-		            &&ostream_detectors::has_flags_member_v<T>;
+		  all_true_v<ostream_detectors::has_char_type_v<T>,
+		             ostream_detectors::has_adjustfield_v<T>,
+		             ostream_detectors::has_fill_member_v<T>,
+		             ostream_detectors::has_good_member_v<T>,
+		             ostream_detectors::has_width_member_v<T>,
+		             ostream_detectors::has_flags_member_v<T>>;
 
 		template<typename T, typename CharT>
-		constexpr bool is_ostream_like_v = is_ostream_like_lite_v<T>
-		  &&ostream_detectors::has_write_member_v<T, CharT>;
+		constexpr bool is_ostream_like_v =
+		  all_true_v<is_ostream_like_lite_v<T>,
+		             ostream_detectors::has_write_member_v<T, CharT>>;
 
 		template<typename T>
-		constexpr bool is_character_v = is_same_v<char, remove_cvref_t<T>> ||
-		                                is_same_v<wchar_t, remove_cvref_t<T>>;
+		constexpr bool is_character_v = is_one_of_v<T, char, wchar_t>;
 
 		template<typename Arg, typename... Args>
 		using last_type_t =
