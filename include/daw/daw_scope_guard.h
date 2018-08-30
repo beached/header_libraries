@@ -49,7 +49,7 @@ namespace daw {
 			return *this;
 		}
 
-		/// Assumes m_function will never throw
+#if !defined( MAY_THROW_EXCEPTIONS ) || MAY_THROW_EXCEPTIONS
 		~ScopeGuard( ) noexcept {
 			if( m_is_active ) {
 				try {
@@ -57,7 +57,13 @@ namespace daw {
 				} catch( ... ) { std::terminate( ); }
 			}
 		}
-
+#else
+		~ScopeGuard( ) noexcept {
+			if( m_is_active ) {
+				m_function( );
+			}
+		}
+#endif
 		constexpr void dismiss( ) const noexcept {
 			m_function = nullptr;
 			m_is_active = false;
