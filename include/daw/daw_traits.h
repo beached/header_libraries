@@ -1045,6 +1045,10 @@ namespace daw {
 		template<typename T>
 		constexpr bool is_character_v = is_same_v<char, remove_cvref_t<T>> ||
 		                                is_same_v<wchar_t, remove_cvref_t<T>>;
+
+		template<typename Arg, typename... Args>
+		using last_type_t =
+		  std::tuple_element_t<sizeof...( Args ), std::tuple<Arg, Args...>>;
 	} // namespace traits
 
 	template<bool B, typename T = std::nullptr_t>

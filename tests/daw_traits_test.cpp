@@ -754,3 +754,16 @@ BOOST_AUTO_TEST_CASE( daw_traits_enable_if_any ) {
 	static_assert( enable_if_any_func_test( false ),
 	               "3. Enable if any should have worked with a false" );
 }
+
+namespace is_character_001 {
+	static_assert( daw::traits::is_character_v<char>, "" );
+	static_assert( daw::traits::is_character_v<wchar_t>, "" );
+	static_assert( !daw::traits::is_character_v<int>, "" );
+}
+
+namespace last_type_001 {
+	static_assert( daw::is_same_v<daw::traits::last_type_t<int, bool, char, void, float>, float>, "" );
+	static_assert( daw::is_same_v<daw::traits::last_type_t<int>, int>, "" );
+}
+
+
