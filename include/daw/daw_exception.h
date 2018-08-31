@@ -25,10 +25,37 @@
 
 #include <algorithm>
 #include <exception>
+#include <iterator>
+#include <type_traits>
+#include <utility>
+
+#if !defined( NODEBUGTHROW ) &&                                                \
+  ( defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) ||                  \
+    defined( _CPPUNWIND ) )
+
+#define MAY_THROW_EXCEPTIONS true
 #include <stdexcept>
+
+#else
+
+#define MAY_THROW_EXCEPTIONS false
+
+#endif
 
 namespace daw {
 	namespace exception {
+		struct basic_exception {
+			template<typename Arg>
+			constexpr basic_exception( Arg ) noexcept { }
+
+			constexpr basic_exception( ) noexcept = default;
+		};
+		struct arithmetic_exception : public basic_exception {};
+		struct not_implemented_exception : public basic_exception {};
+
+		constexpr bool may_throw_v = MAY_THROW_EXCEPTIONS;
+
+#if MAY_THROW_EXCEPTIONS 
 		using NotImplemented = std::runtime_error;
 		using FatalError = std::runtime_error;
 		using NullPtrAccessException = std::runtime_error;
@@ -36,37 +63,60 @@ namespace daw {
 		using FileException = std::runtime_error;
 		using MethodNotImplemented = std::runtime_error;
 		using UnexpectedEnumValue = std::runtime_error;
-
-		struct basic_exception {};
-		struct arithmetic_exception : public basic_exception {};
-		struct not_implemented_exception : public basic_exception {};
-
-#if !defined( NODEBUGTHROW ) &&                                                \
-  ( defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) ||                  \
-    defined( _CPPUNWIND ) )
-#define MAY_THROW_EXCEPTIONS true
-		constexpr bool may_throw_v = true;
+		using DefaultException = std::runtime_error;
 #else
-#define MAY_THROW_EXCEPTIONS false
-		constexpr bool may_throw_v = false;
+		using NotImplemented = basic_exception;
+		using FatalError = basic_exception;
+		using NullPtrAccessException = basic_exception;
+		using AssertException = basic_exception;
+		using FileException = basic_exception;
+		using MethodNotImplemented = basic_exception;
+		using UnexpectedEnumValue = basic_exception;
+		suing DefaultException = basic_exception;
 #endif
 
 		template<typename T, T error_number>
 		struct errno_exception : public basic_exception,
 		                         public std::integral_constant<T, error_number> {};
 
-		template<typename ExceptionType = std::runtime_error, typename... Args>
-		[[noreturn]] void daw_throw( Args &&... args ) {
+		template<
+		  typename ExceptionType = DefaultException,
+		  std::enable_if_t<std::is_default_constructible<ExceptionType>::value,
+		                   std::nullptr_t> = nullptr>
+		[[noreturn]] void daw_throw( ) {
 #if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) ||                  \
   defined( _CPPUNWIND )
-			throw ExceptionType( std::forward<Args>( args )... );
+			throw ExceptionType( );
+#else
+			std::terminate( );
+#endif
+		}
+
+		template<
+		  typename ExceptionType = DefaultException,
+		  std::enable_if_t<!std::is_default_constructible<ExceptionType>::value,
+		                   std::nullptr_t> = nullptr>
+		[[noreturn]] void daw_throw( ) {
+#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) ||                  \
+  defined( _CPPUNWIND )
+			throw ExceptionType( "" );
+#else
+			std::terminate( );
+#endif
+		}
+
+		template<typename ExceptionType = DefaultException, typename Arg, typename... Args>
+		[[noreturn]] void daw_throw( Arg && arg, Args &&... args ) {
+#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) ||                  \
+  defined( _CPPUNWIND )
+			throw ExceptionType( std::forward<Arg>( arg ), std::forward<Args>( args )... );
 #else
 			std::terminate( );
 #endif
 		}
 
 #ifndef NODEBUGTHROW
-		template<typename ExceptionType = std::runtime_error, typename... Args>
+		template<typename ExceptionType = DefaultException, typename... Args>
 		[[noreturn]] constexpr void debug_throw( Args &&... args ) {
 			daw_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
@@ -267,51 +317,31 @@ namespace daw {
 			}
 		}
 
-		template<typename ExceptionType = std::exception, typename Bool>
+		template<typename ExceptionType = DefaultException, typename Bool>
 		constexpr void daw_throw_on_false( Bool &&test ) {
 			if( !static_cast<bool>( std::forward<Bool>( test ) ) ) {
-#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) ||                  \
-  defined( _CPPUNWIND )
-				throw ExceptionType{};
-#else
-				std::terminate( );
-#endif
+				daw_throw<ExceptionType>( );
 			}
 		}
 
-		template<typename ExceptionType = std::exception, typename Bool>
+		template<typename ExceptionType = DefaultException, typename Bool>
 		constexpr void daw_throw_on_true( Bool const &test ) {
 			if( static_cast<bool>( test ) ) {
-#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) ||                  \
-  defined( _CPPUNWIND )
-				throw ExceptionType{};
-#else
-				std::terminate( );
-#endif
+				daw_throw<ExceptionType>( );
 			}
 		}
 
-		template<typename ExceptionType = std::exception>
+		template<typename ExceptionType = DefaultException>
 		constexpr void daw_throw_value_on_true( ExceptionType const &test ) {
 			if( static_cast<bool>( test ) ) {
-#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) ||                  \
-  defined( _CPPUNWIND )
-				throw test;
-#else
-				std::terminate( );
-#endif
+				daw_throw<ExceptionType>( );
 			}
 		}
 
 		template<typename ExceptionType>
 		constexpr void daw_throw_value_on_false( ExceptionType const &test ) {
 			if( !static_cast<bool>( test ) ) {
-#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) ||                  \
-  defined( _CPPUNWIND )
-				throw test;
-#else
-				std::terminate( );
-#endif
+				daw_throw<ExceptionType>( );
 			}
 		}
 
@@ -367,7 +397,7 @@ namespace daw {
 			return false;
 		}
 
-		template<typename ExceptionType = std::exception, typename Bool>
+		template<typename ExceptionType = DefaultException, typename Bool>
 		constexpr void daw_throw_on_true( Bool &&test ) {
 			if( static_cast<bool>( std::forward<Bool>( test ) ) ) {
 				daw_throw<ExceptionType>( );
