@@ -23,6 +23,7 @@
 #pragma once
 #include <cstddef>
 #include <cstdint>
+#include <iterator>
 #ifndef NOSTRING
 #include <string>
 #endif
