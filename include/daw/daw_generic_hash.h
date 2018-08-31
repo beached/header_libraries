@@ -30,6 +30,7 @@
 #include <utility>
 
 #include "daw_traits.h"
+#include "cpp_17.h"
 
 namespace daw {
 	template<size_t HashBytes>
