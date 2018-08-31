@@ -23,9 +23,11 @@
 #pragma once
 #include <cstddef>
 #include <cstdint>
+#ifndef NOSTRING
 #include <string>
+#endif
 #include <type_traits>
-#include <utilty>
+#include <utility>
 
 #include "daw_traits.h"
 
@@ -224,6 +226,7 @@ namespace daw {
 		return hash;
 	}
 
+#ifndef NOSTRING
 	template<size_t HashBytes = sizeof( size_t ), typename CharT, typename Traits,
 	         typename Allocator>
 	auto generic_hash(
@@ -238,7 +241,7 @@ namespace daw {
 		auto tmp = std::move( str );
 		return generic_hash<HashBytes>( tmp.data( ), tmp.size( ) );
 	}
-
+#endif
 	template<size_t HashBytes = sizeof( size_t ), size_t N>
 	constexpr auto generic_hash( char const ( &ptr )[N] ) noexcept {
 		return generic_hash<HashBytes>( ptr, N );
