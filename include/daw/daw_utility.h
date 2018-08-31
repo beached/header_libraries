@@ -27,6 +27,7 @@
 #endif // max
 
 #include <cmath>
+#include <cstddef>
 #include <functional>
 #include <initializer_list>
 #include <limits>
@@ -35,6 +36,7 @@
 #include <string>
 #include <tuple>
 #include <type_traits>
+#include <utility>
 #include <vector>
 
 #include "daw_algorithm.h"

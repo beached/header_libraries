@@ -25,6 +25,7 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/iostreams/device/mapped_file.hpp>
+#include <cstddef>
 #include <memory>
 
 #include "daw_string_view.h"

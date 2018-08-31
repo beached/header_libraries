@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <cstddef>
 #include <cstdint>
 #include <functional>
 #ifndef NOSTRING
@@ -31,6 +32,7 @@
 #include <typeindex>
 #include <typeinfo>
 #include <unordered_map>
+#include <utilty>
 
 #include "daw_algorithm.h"
 #include "daw_exception.h"

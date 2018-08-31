@@ -23,6 +23,7 @@
 #pragma once
 
 #include <boost/variant.hpp>
+#include <cstddef>
 #include <exception>
 #include <stdexcept>
 #include <string>

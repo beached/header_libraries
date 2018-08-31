@@ -26,6 +26,7 @@
 #endif // max
 
 #include <cassert>
+#include <cstddef>
 #include <cfenv>
 #include <cmath>
 #include <limits>

@@ -23,9 +23,11 @@
 #pragma once
 
 #include <algorithm>
+#include <cstddef>
 #include <iterator>
 #include <numeric>
 #include <random>
+#include <utility>
 #include <vector>
 
 #include "daw_algorithm.h"

@@ -23,12 +23,16 @@
 #pragma once
 
 #include <algorithm>
+#include <cstddef>
 #include <cstdint>
 #include <cstdlib>
 #include <iterator>
 #include <limits>
 #include <stdexcept>
+#ifndef NOSTRING
 #include <string>
+#endif
+#include <utility>
 #include <vector>
 
 #include "daw_algorithm.h"
@@ -87,6 +91,7 @@ namespace daw {
 		                               size_type count )
 		  : m_data( str.data( ), daw::min( count, N ) ) {}
 
+#ifndef NOSTRING
 		template<typename Allocator>
 		basic_static_string(
 		  std::basic_string<CharT, Traits, Allocator> const &str ) noexcept
@@ -99,18 +104,18 @@ namespace daw {
 
 		basic_static_string( std::basic_string<CharT, Traits> const &str ) noexcept
 		  : m_data( str.data( ), str.size( ) ) {}
-
+#endif
 		// TODO: determine if I want this or not
 		// basic_static_string( std::basic_string<CharT, Traits> &&str ) noexcept =
 		// delete;
 
 		constexpr basic_static_string( const_pointer str_ptr ) noexcept
 		  : m_data( str_ptr, details::strlen<size_type_internal>( str_ptr ) ) {}
-
+#ifndef NOSTRING
 		operator std::basic_string<CharT, Traits>( ) const {
 			return to_string( );
 		}
-
+#endif
 		operator daw::basic_string_view<CharT, Traits>( ) const {
 			return daw::basic_string_view<CharT, Traits>{m_data.data( ),
 			                                             m_data.size( )};
@@ -151,7 +156,8 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr basic_static_string &
+#ifndef NOSTRING
+		basic_static_string &
 		append( std::basic_string<CharT, Traits> const &str ) {
 			if( m_data.size( ) + str.size( ) > capacity( ) ) {
 				throw std::out_of_range{
@@ -172,6 +178,7 @@ namespace daw {
 			*m_data.end( ) = 0;
 			return *this;
 		}
+#endif
 
 		template<typename Iterator, std::enable_if_t<daw::is_iterator_v<Iterator>,
 		                                             std::nullptr_t> = nullptr>
@@ -195,13 +202,14 @@ namespace daw {
 			return append( tmp.substr( pos, count ) );
 		}
 
+#ifndef NOSTRING
 		template<typename ChrT, typename TrtsT, typename Allocator>
 		basic_static_string &
 		operator=( std::basic_string<ChrT, TrtsT, Allocator> const &str ) noexcept {
 			m_data = basic_static_string{str.data( ), str.size( )};
 			return *this;
 		}
-
+#endif
 		constexpr iterator begin( ) noexcept {
 			return m_data.begin( );
 		}
@@ -500,13 +508,14 @@ namespace daw {
 			return find_first_of( basic_static_string{s}, pos );
 		}
 
+#ifndef NOSTRING
 		std::basic_string<value_type, traits_type> to_string( ) const {
 			std::basic_string<value_type, traits_type> result;
 			result.reserve( size( ) );
 			daw::algorithm::copy_n( data( ), std::back_inserter( result ), size( ) );
 			return result;
 		}
-
+#endif
 	private:
 		constexpr size_type reverse_distance( const_reverse_iterator first,
 		                                      const_reverse_iterator last ) const
@@ -697,11 +706,13 @@ namespace daw {
 		return basic_static_string<CharT, Capacity, Traits>{v.data( ), v.size( )};
 	}
 
+#ifndef NOSTRING
 	template<size_t Capacity = 100, typename CharT, typename Traits>
 	daw::basic_static_string<CharT, Capacity, Traits>
 	make_static_string( std::basic_string<CharT, Traits> const &str ) {
 		return daw::basic_static_string<CharT, Capacity, Traits>{str};
 	}
+#endif
 
 	template<size_t Capacity = 100, typename CharT, size_t N>
 	daw::basic_static_string<CharT, Capacity>
@@ -853,6 +864,7 @@ namespace daw {
 		return lhs.compare( rhs ) >= 0;
 	}
 
+#ifndef NOSTRING
 	// basic_static_string / basic_string
 	//
 	template<typename CharT, size_t Capacity, typename Traits>
@@ -946,7 +958,7 @@ namespace daw {
 		return daw::basic_string_view<CharT, Traits>{lhs.data( ), lhs.size( )}
 		         .compare( rhs ) >= 0;
 	}
-
+#endif
 	// daw::basic_static_string / char const *
 	//
 	template<typename CharT, size_t Capacity, typename Traits>
@@ -1148,6 +1160,7 @@ namespace daw {
 	}
 
 	/// Appending
+#ifndef NOSTRING
 	template<typename CharT, size_t Capacity, typename Traits, typename Allocator>
 	auto
 	operator+( std::basic_string<CharT, Traits, Allocator> lhs,
@@ -1155,6 +1168,7 @@ namespace daw {
 		lhs.append( rhs.cbegin( ), rhs.cend( ) );
 		return std::move( lhs );
 	}
+#endif
 
 	template<typename CharT, typename Traits, size_t N, size_t Capacity>
 	auto
@@ -1175,6 +1189,7 @@ namespace daw {
 		return result;
 	}
 
+#ifndef NOSTRING
 	template<typename CharT, size_t Capacity, typename Traits, typename Allocator>
 	auto operator+( daw::basic_static_string<CharT, Capacity, Traits> lhs,
 	                std::basic_string<CharT, Traits, Allocator> const &rhs ) {
@@ -1188,6 +1203,7 @@ namespace daw {
 		lhs.append( std::move( rhs ) );
 		return std::move( lhs );
 	}
+#endif
 
 	template<typename CharT, size_t Capacity, typename Traits, size_t N>
 	auto operator+( daw::basic_static_string<CharT, Capacity, Traits> lhs,

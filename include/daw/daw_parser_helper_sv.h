@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <cstddef>
+
 #include "daw_parser_addons.h"
 #include "daw_parser_helper.h"
 #include "daw_string_view.h"

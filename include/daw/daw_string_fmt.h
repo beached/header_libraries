@@ -22,7 +22,9 @@
 
 #pragma once
 
+#include <cstddef>
 #include <string>
+#include <utility>
 
 #include "daw_exception.h"
 #include "daw_parser_helper_sv.h"

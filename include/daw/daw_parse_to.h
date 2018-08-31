@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <cstddef>
 #include <iterator>
 #include <string>
 #include <tuple>

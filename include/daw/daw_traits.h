@@ -23,6 +23,7 @@
 #pragma once
 
 #include <cstdint>
+#include <cstddef>
 #include <deque>
 #include <iterator>
 #include <list>

@@ -24,6 +24,7 @@
 
 #include <boost/lexical_cast.hpp>
 #include <cstdlib>
+#include <cstddef>
 #include <iomanip>
 #include <iterator>
 #include <regex>

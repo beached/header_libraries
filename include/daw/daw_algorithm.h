@@ -23,12 +23,13 @@
 #pragma once
 
 #include <algorithm>
+#include <cstddef>
 #include <functional>
 #include <iterator>
 #include <stdexcept>
 #include <type_traits>
-#include <vector>
 #include <utility>
+#include <vector>
 
 #include "cpp_17.h"
 #include "daw_exception.h"

@@ -21,6 +21,7 @@
 // SOFTWARE.
 #pragma once
 
+#include <cstddef>
 #include <exception>
 #include <stdexcept>
 #include <string>

@@ -25,6 +25,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <cstdlib>
+#include <cstddef>
 #include <iterator>
 #include <limits>
 #include <stdexcept>
