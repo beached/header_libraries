@@ -24,7 +24,9 @@
 #include <cstdlib>
 #include <iostream>
 #include <iterator>
+#ifndef NOSTRING
 #include <string>
+#endif
 #include <vector>
 
 #include "daw/boost_test.h"
@@ -32,6 +34,7 @@
 
 #define FALSE( b ) ( !( b ) )
 namespace daw {
+#ifndef NOSTRING
 	BOOST_AUTO_TEST_CASE( daw_string_view_test_001 ) {
 		constexpr daw::string_view const a = "This is a test";
 		std::cout << a.to_string( ) << '\n';
@@ -45,6 +48,7 @@ namespace daw {
 		c = b;
 		std::cout << c << ' ' << c.front( ) << ' ' << c[3] << '\n';
 	}
+#endif
 
 	enum class tmp_e { a, b, c };
 
@@ -86,6 +90,7 @@ namespace daw {
 		BOOST_REQUIRE( result == tmp_e::a );
 	}
 
+#ifndef HASNOSTRING
 	BOOST_AUTO_TEST_CASE( daw_string_view_make_string_view_it ) {
 		std::string a = "This is a test";
 		auto b = daw::make_string_view_it( a.begin( ), a.end( ) );
@@ -126,6 +131,7 @@ namespace daw {
 		BOOST_REQUIRE_EQUAL( es, es2 );
 		BOOST_REQUIRE_EQUAL( es, es3 );
 	}
+#endif
 
 	BOOST_AUTO_TEST_CASE( daw_string_view_make_test_001 ) {
 		unsigned char const p[] = {'H', 'e', 'l', 'l', 'o', 0};
@@ -194,6 +200,7 @@ namespace daw {
 
 	//----------------------------------------------------------------------------
 
+#ifndef NOSTRING
 	BOOST_AUTO_TEST_CASE( tc002 ) {
 		std::string str = "Hello world";
 		daw::string_view view = str;
@@ -207,7 +214,7 @@ namespace daw {
 		BOOST_TEST_MESSAGE( "Points to original string" );
 		{ BOOST_REQUIRE( view.data( ) == str.data( ) ); }
 	}
-
+#endif
 	//----------------------------------------------------------------------------
 
 	BOOST_AUTO_TEST_CASE( tc003 ) {
@@ -436,7 +443,7 @@ namespace daw {
 	//----------------------------------------------------------------------------
 	// String Operations
 	//----------------------------------------------------------------------------
-
+#ifndef NOSTRING
 	BOOST_AUTO_TEST_CASE( tc016conversion ) {
 		daw::string_view view = "Hello World";
 
@@ -448,7 +455,6 @@ namespace daw {
 		BOOST_TEST_MESSAGE( "Copied string contains same contents as view" );
 		{ BOOST_REQUIRE( string == "Hello World" ); }
 	}
-
 	//----------------------------------------------------------------------------
 
 	BOOST_AUTO_TEST_CASE( tc017conversion ) {
@@ -462,7 +468,7 @@ namespace daw {
 		BOOST_TEST_MESSAGE( "Copied string contains same contents as view" );
 		{ BOOST_REQUIRE( string == "Hello World" ); }
 	}
-
+#endif
 	//----------------------------------------------------------------------------
 	// Operations
 	//----------------------------------------------------------------------------
@@ -637,7 +643,7 @@ namespace daw {
 				const char *str = "Hello World";
 				BOOST_REQUIRE( view == str );
 			}
-
+#ifndef NOSTRING
 			BOOST_TEST_MESSAGE(
 			  "Returns true for equal strings with left std::string" );
 			{
@@ -651,6 +657,7 @@ namespace daw {
 				std::string str = "Hello World";
 				BOOST_REQUIRE( view == str );
 			}
+#endif
 		}
 
 		BOOST_TEST_MESSAGE( "Is not equal" );
@@ -684,6 +691,7 @@ namespace daw {
 				BOOST_REQUIRE( FALSE( view == str ) );
 			}
 
+#ifndef NOSTRING
 			BOOST_TEST_MESSAGE(
 			  "Returns false for non-equal strings with left std::string" );
 			{
@@ -714,6 +722,7 @@ namespace daw {
 				daw::string_view sv2{str2};
 				BOOST_REQUIRE_EQUAL( sv1, sv2 );
 			}
+#endif
 		}
 	}
 
@@ -753,6 +762,7 @@ namespace daw {
 				BOOST_REQUIRE( FALSE( view != str ) );
 			}
 
+#ifndef NOSTRING
 			BOOST_TEST_MESSAGE(
 			  "Returns false for equal strings with left std::string" );
 			{
@@ -766,6 +776,7 @@ namespace daw {
 				std::string str = "Hello World";
 				BOOST_REQUIRE( FALSE( view != str ) );
 			}
+#endif
 		}
 
 		BOOST_TEST_MESSAGE( "Is not equal" );
@@ -799,6 +810,7 @@ namespace daw {
 				BOOST_REQUIRE( view != str );
 			}
 
+#ifndef NOSTRING
 			BOOST_TEST_MESSAGE(
 			  "Returns true for non-equal strings with left std::string" );
 			{
@@ -812,9 +824,11 @@ namespace daw {
 				std::string str = "Goodbye World";
 				BOOST_REQUIRE( view != str );
 			}
+#endif
 		}
 	}
 
+#ifndef NOSTRING
 	BOOST_AUTO_TEST_CASE( daw_string_view_split_001 ) {
 		std::string str = "This is a test of the split";
 		auto const str_splt = split( daw::string_view{str}, ' ' );
@@ -826,6 +840,7 @@ namespace daw {
 		}
 		std::cout << "\n\n";
 	}
+#endif
 
 	BOOST_AUTO_TEST_CASE( daw_string_view_split_002 ) {
 		char const str[] = "This is a test of the split";
@@ -833,25 +848,27 @@ namespace daw {
 		BOOST_REQUIRE_EQUAL( str_splt.size( ), 7 );
 	}
 
+#ifndef NOSTRING
 	BOOST_AUTO_TEST_CASE( daw_string_view_split_003 ) {
 		std::string str = "This is a test of the split";
 		auto const str_splt = split( str, []( char c ) { return c == ' '; } );
 		BOOST_REQUIRE_EQUAL( str_splt.size( ), 7 );
 	}
-
+#endif
 	BOOST_AUTO_TEST_CASE( daw_string_view_split_004 ) {
 		char const str[] = "This is a test of the split";
 		auto const str_splt = split( str, []( char c ) { return c == ' '; } );
 		BOOST_REQUIRE_EQUAL( str_splt.size( ), 7 );
 	}
 
+#ifndef NOSTRING
 	BOOST_AUTO_TEST_CASE( daw_string_view_split_005 ) {
 		std::string b_str;
 		daw::string_view b = b_str;
 		auto const str_splt = split( b, ',' );
 		BOOST_REQUIRE( str_splt.empty( ) );
 	}
-
+#endif
 	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_001 ) {
 		BOOST_REQUIRE( daw::can_be_string_view<decltype( "Hello" )> );
 	}
@@ -908,6 +925,7 @@ namespace daw {
 		BOOST_REQUIRE( !daw::string_view{"This is a test"}.ends_with( 'a' ) );
 	}
 
+#ifndef NOSTRING
 	BOOST_AUTO_TEST_CASE( daw_to_string_view_001 ) {
 		auto val = daw::to_string_view( std::to_string( 5 ) ).to_string( );
 		BOOST_REQUIRE_EQUAL( "5", val );
@@ -994,4 +1012,5 @@ namespace daw {
 		daw::string_view s{};
 		s.remove_prefix( );
 	}
+#endif
 } // namespace daw

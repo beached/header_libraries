@@ -24,7 +24,9 @@
 
 #include <cstdint>
 #include <functional>
+#ifndef NOSTRING
 #include <string>
+#endif
 #include <type_traits>
 #include <typeindex>
 #include <typeinfo>
@@ -56,6 +58,7 @@ namespace daw {
 	template<typename T, typename... Types>
 	const T &get( daw::variant_t<Types...> const &value );
 
+#ifndef NOSTRING
 	namespace tostrings {
 		template<typename CharT = char, typename Traits = ::std::char_traits<CharT>,
 		         typename Allocator = ::std::allocator<CharT>>
@@ -63,7 +66,6 @@ namespace daw {
 		to_string( ::std::basic_string<CharT, Traits, Allocator> s ) {
 			return std::move( s );
 		}
-
 		std::string to_string( ... ) {
 			daw::exception::daw_throw(
 			  "Attemp to call to string on unsupported type, overload to enable" );
@@ -79,6 +81,7 @@ namespace daw {
 			return to_string( *ptr );
 		}
 	} // namespace tostrings
+
 	namespace has_to_string {
 		using daw::tostrings::to_string;
 		using std::to_string;
@@ -87,7 +90,11 @@ namespace daw {
 	} // namespace has_to_string
 	template<typename T>
 	constexpr bool has_to_string_v = daw::is_detected_v<has_to_string::check, T>;
+#else 
+	constexpr bool has_to_string_v = false;
+#endif
 
+#ifndef NOSTRING
 	template<typename... Types>
 	class generate_to_strings_t {
 		template<typename T,
@@ -107,7 +114,7 @@ namespace daw {
 			return to_string_t<T>{};
 		}
 	}; // generate_to_strings_t
-
+#endif
 	template<typename... Types>
 	class generate_compare_t {
 		template<typename T,
@@ -185,8 +192,12 @@ namespace daw {
 
 	template<typename... Types>
 	struct variant_helper_funcs_t {
+#ifndef NOSTRING
 		using to_string_t =
 		  std::function<std::string( variant_t<Types...> const & )>;
+#else
+		using to_string_t = void*;
+#endif
 		using compare_t = std::function<int( variant_t<Types...> const &,
 		                                     variant_t<Types...> const & )>;
 		using destruct_t = std::function<void( variant_t<Types...> & )>;
@@ -209,14 +220,18 @@ namespace daw {
 
 	template<typename... Types>
 	struct generate_variant_helper_funcs_t {
+#ifndef NOSTRING
 		generate_to_strings_t<Types...> generate_to_strings;
+#endif
 		generate_compare_t<Types...> generate_compares;
 		generate_destruct_t<Types...> generate_destructs;
 
 		template<typename T>
 		auto generate( ) const {
 			return variant_helper_funcs_t<Types...>{
+#ifndef NOSTRING
 			  generate_to_strings.template generate<T>( ),
+#endif
 			  generate_compares.template generate<T>( ),
 			  generate_destructs.template generate<T>( )};
 		}
@@ -448,6 +463,7 @@ namespace daw {
 			return get<T>( );
 		}
 
+#ifndef NOSTRING
 		std::string to_string( ) const {
 			if( empty( ) ) {
 				return "";
@@ -458,6 +474,7 @@ namespace daw {
 		std::string operator*( ) const {
 			return to_string( );
 		}
+#endif
 
 		auto compare( variant_t const &rhs ) const {
 			return get_helper_funcs( *m_stored_type ).compare( *this, rhs );
@@ -501,6 +518,7 @@ namespace daw {
 		create_friend_comparison_operators( variant_t );
 	}; // variant_t
 
+#ifndef NOSTRING
 	template<typename... Args>
 	std::string to_string( variant_t<Args...> const &value ) {
 		return value.to_string( );
@@ -514,6 +532,7 @@ namespace daw {
 		os << to_string( value );
 		return os;
 	}
+#endif
 
 	template<typename T, typename... Types>
 	T const &get( daw::variant_t<Types...> const &value ) {
