@@ -72,7 +72,7 @@ namespace daw {
 		using FileException = basic_exception;
 		using MethodNotImplemented = basic_exception;
 		using UnexpectedEnumValue = basic_exception;
-		suing DefaultException = basic_exception;
+		using DefaultException = basic_exception;
 #endif
 
 		template<typename T, T error_number>
