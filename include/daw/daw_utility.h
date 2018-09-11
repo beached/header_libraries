@@ -879,7 +879,7 @@ namespace daw {
 	}
 
 	template<typename T>
-	constexpr size_t const bsizeof = sizeof( remove_cvref_t<T> )*8;	
+	constexpr size_t const bsizeof = static_cast<size_t>( sizeof( remove_cvref_t<T> )*8U );
 } // namespace daw
 
 template<typename... Ts>
