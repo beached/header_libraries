@@ -51,63 +51,82 @@ namespace daw {
 	public:
 		explicit constexpr indexed_iterator( T *container, size_t pos = 0 ) noexcept
 		  : m_pointer( container )
-		  , m_position( static_cast<difference_type>( pos ) ) {}
+		  , m_position( static_cast<difference_type>( pos ) ) {
+
+			daw::exception::dbg_precondition_check( pos <= m_pointer->size( ) );
+		}
 
 		constexpr indexed_iterator &operator+=( std::ptrdiff_t n ) noexcept {
+			daw::exception::dbg_precondition_check(
+			  static_cast<size_type>( m_position + n ) <= m_pointer->size( ) );
+
 			m_position += n;
 			return *this;
 		}
 
 		constexpr indexed_iterator &operator-=( std::ptrdiff_t n ) noexcept {
+			daw::exception::dbg_precondition_check( m_position - n >= 0 );
+
 			m_position -= n;
 			return *this;
 		}
 
 		constexpr reference operator*( ) noexcept {
+			daw::exception::dbg_precondition_check( m_position >= 0 );
 			daw::exception::dbg_precondition_check(
-			  0 <= m_position &&
 			  static_cast<size_type>( m_position ) <= m_pointer->size( ) );
+
 			return ( *m_pointer )[static_cast<size_type>( m_position )];
 		}
 
 		constexpr const_reference operator*( ) const noexcept {
+			daw::exception::dbg_precondition_check( m_position >= 0 );
 			daw::exception::dbg_precondition_check(
-			  0 <= m_position &&
 			  static_cast<size_type>( m_position ) <= m_pointer->size( ) );
+
 			return ( *m_pointer )[static_cast<size_type>( m_position )];
 		}
 
 		constexpr pointer operator->( ) noexcept {
+			daw::exception::dbg_precondition_check( m_position >= 0 );
 			daw::exception::dbg_precondition_check(
-			  0 <= m_position &&
 			  static_cast<size_type>( m_position ) <= m_pointer->size( ) );
+
 			return &( *m_pointer )[static_cast<size_type>( m_position )];
 		}
 
 		constexpr const_pointer operator->( ) const noexcept {
+			daw::exception::dbg_precondition_check( m_position >= 0 );
 			daw::exception::dbg_precondition_check(
-			  0 <= m_position &&
 			  static_cast<size_type>( m_position ) <= m_pointer->size( ) );
+
 			return &( *m_pointer )[static_cast<size_type>( m_position )];
 		}
 
 		constexpr indexed_iterator &operator++( ) noexcept {
+			daw::exception::dbg_precondition_check(
+			  static_cast<size_type>( m_position ) <= m_pointer->size( ) );
+
 			++m_position;
 			return *this;
 		}
 
 		constexpr indexed_iterator operator++( int ) noexcept {
+			daw::exception::dbg_precondition_check(
+			  static_cast<size_type>( m_position ) <= m_pointer->size( ) );
 			auto result = indexed_iterator( *this );
 			++m_position;
 			return result;
 		}
 
 		constexpr indexed_iterator &operator--( ) noexcept {
+			daw::exception::dbg_precondition_check( m_position >= 0 );
 			--m_position;
 			return *this;
 		}
 
 		constexpr indexed_iterator operator--( int ) noexcept {
+			daw::exception::dbg_precondition_check( m_position >= 0 );
 			auto result = indexed_iterator( *this );
 			--m_position;
 			return result;
@@ -115,13 +134,15 @@ namespace daw {
 
 		constexpr indexed_iterator operator+( std::ptrdiff_t n ) const noexcept {
 			daw::exception::dbg_precondition_check( m_position + n >= 0 );
-			auto result = indexed_iterator( m_pointer, static_cast<size_t>( m_position + n ) );
+			auto result =
+			  indexed_iterator( m_pointer, static_cast<size_t>( m_position + n ) );
 			return result;
 		}
 
 		constexpr indexed_iterator operator-( std::ptrdiff_t n ) const noexcept {
 			daw::exception::dbg_precondition_check( m_position - n >= 0 );
-			auto result = indexed_iterator( m_pointer, static_cast<size_t>( m_position - n ) );
+			auto result =
+			  indexed_iterator( m_pointer, static_cast<size_t>( m_position - n ) );
 			return result;
 		}
 
@@ -147,7 +168,8 @@ namespace daw {
 			daw::exception::dbg_precondition_check( lhs.m_pointer == rhs.m_pointer );
 			daw::exception::dbg_precondition_check( lhs.m_position >= 0 );
 			daw::exception::dbg_precondition_check( rhs.m_position >= 0 );
-			daw::exception::dbg_precondition_check( lhs.m_position >= rhs.m_position );
+			daw::exception::dbg_precondition_check( lhs.m_position >=
+			                                        rhs.m_position );
 
 			return lhs.m_position - rhs.m_position;
 		}
@@ -160,11 +182,11 @@ namespace daw {
 
 	template<typename T, std::enable_if_t<daw::is_rvalue_reference_v<T>,
 	                                      std::nullptr_t> = nullptr>
-	constexpr auto ibegin( T &&container ) noexcept = delete;
+	constexpr auto ibegin( T && ) noexcept = delete;
 
 	template<typename T, std::enable_if_t<daw::is_rvalue_reference_v<T>,
 	                                      std::nullptr_t> = nullptr>
-	constexpr auto ibegin( T const &&container ) noexcept = delete;
+	constexpr auto ibegin( T const && ) noexcept = delete;
 
 	template<typename T>
 	constexpr auto ibegin( T const &container ) noexcept {
@@ -191,11 +213,11 @@ namespace daw {
 
 	template<typename T, std::enable_if_t<daw::is_rvalue_reference_v<T>,
 	                                      std::nullptr_t> = nullptr>
-	constexpr auto iend( T &&container ) noexcept = delete;
+	constexpr auto iend( T && ) noexcept = delete;
 
 	template<typename T, std::enable_if_t<daw::is_rvalue_reference_v<T>,
 	                                      std::nullptr_t> = nullptr>
-	constexpr auto iend( T const &&container ) noexcept = delete;
+	constexpr auto iend( T const && ) noexcept = delete;
 
 	template<typename T>
 	constexpr auto iend( T const &container ) noexcept {
@@ -216,17 +238,17 @@ namespace daw {
 	constexpr auto ciend( T const &&container ) noexcept = delete;
 
 	template<typename T, size_t N>
-	constexpr auto ibegin( T (&container)[N] ) noexcept {
+	constexpr auto ibegin( T ( &container )[N] ) noexcept {
 		return std::begin( container );
 	}
 
 	template<typename T, size_t N>
-	constexpr auto ibegin( T const (&container)[N] ) noexcept {
+	constexpr auto ibegin( T const ( &container )[N] ) noexcept {
 		return std::begin( container );
 	}
 
 	template<typename T, size_t N>
-	constexpr auto cibegin( T const (&container)[N] ) noexcept {
+	constexpr auto cibegin( T const ( &container )[N] ) noexcept {
 		return std::cbegin( container );
 	}
 

@@ -29,61 +29,61 @@
 #include "daw/iterator/daw_indexed_iterator.h"
 
 constexpr bool array_test_001( ) {
-		std::array<int, 7> numbers = {1, 2, 3, 4, 5, 6, 7};
-		auto f = daw::ibegin( numbers );
-		return *f == 1;
+	std::array<int, 7> numbers = {1, 2, 3, 4, 5, 6, 7};
+	auto f = daw::ibegin( numbers );
+	return *f == 1;
 }
 static_assert( array_test_001, "" );
 
 constexpr bool array_test_002( ) {
-		std::array<int, 7> numbers = {1, 2, 3, 4, 5, 6, 7};
-		auto f = daw::ibegin( numbers );
-		auto l = daw::iend( numbers );
-		return daw::distance( f, l ) == 7;
+	std::array<int, 7> numbers = {1, 2, 3, 4, 5, 6, 7};
+	auto f = daw::ibegin( numbers );
+	auto l = daw::iend( numbers );
+	return daw::distance( f, l ) == 7;
 }
 static_assert( array_test_002, "" );
 
 constexpr bool array_test_003( ) {
-		std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
-		auto f = daw::ibegin( numbers );
-		return *f == 1;
+	std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
+	auto f = daw::ibegin( numbers );
+	return *f == 1;
 }
 static_assert( array_test_003, "" );
 
 constexpr bool array_test_004( ) {
-		std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
-		auto f = daw::ibegin( numbers );
-		auto l = daw::iend( numbers );
-		return daw::distance( f, l ) == 7;
+	std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
+	auto f = daw::ibegin( numbers );
+	auto l = daw::iend( numbers );
+	return daw::distance( f, l ) == 7;
 }
 static_assert( array_test_004, "" );
 
-constexpr bool carray_test_001( ) {
-		int numbers[7] = {1, 2, 3, 4, 5, 6, 7};
-		auto f = daw::ibegin( numbers );
-		return *f == 1;
+constexpr bool array_test_005( ) {
+	std::array<int, 7> numbers = {1, 2, 3, 4, 5, 6, 7};
+	auto f = daw::cibegin( numbers );
+	return *f == 1;
 }
-static_assert( carray_test_001, "" );
+static_assert( array_test_005, "" );
 
-constexpr bool carray_test_002( ) {
-	int numbers[7] = {1, 2, 3, 4, 5, 6, 7};
-		auto f = daw::ibegin( numbers );
-		auto l = daw::iend( numbers );
-		return daw::distance( f, l ) == 7;
+constexpr bool array_test_006( ) {
+	std::array<int, 7> numbers = {1, 2, 3, 4, 5, 6, 7};
+	auto f = daw::cibegin( numbers );
+	auto l = daw::ciend( numbers );
+	return daw::distance( f, l ) == 7;
 }
-static_assert( carray_test_002, "" );
+static_assert( array_test_006, "" );
 
-constexpr bool carray_test_003( ) {
-		int const numbers[7] = {1, 2, 3, 4, 5, 6, 7};
-		auto f = daw::ibegin( numbers );
-		return *f == 1;
+constexpr bool array_test_007( ) {
+	std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
+	auto f = daw::cibegin( numbers );
+	return *f == 1;
 }
-static_assert( carray_test_003, "" );
+static_assert( array_test_007, "" );
 
-constexpr bool carray_test_004( ) {
-	int const numbers[7] = {1, 2, 3, 4, 5, 6, 7};
-		auto f = daw::ibegin( numbers );
-		auto l = daw::iend( numbers );
-		return daw::distance( f, l ) == 7;
+constexpr bool array_test_008( ) {
+	std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
+	auto f = daw::cibegin( numbers );
+	auto l = daw::ciend( numbers );
+	return daw::distance( f, l ) == 7;
 }
-static_assert( carray_test_004, "" );
+static_assert( array_test_008, "" );
