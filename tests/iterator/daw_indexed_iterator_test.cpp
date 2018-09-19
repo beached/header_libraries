@@ -104,6 +104,15 @@ constexpr bool inc_test_002( ) {
 }
 static_assert( inc_test_002, "" );
 
+constexpr bool inc_test_003( ) {
+	std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
+	auto it = daw::cibegin( numbers );
+	it += 2;
+	return *it == 3;
+}
+static_assert( inc_test_003, "" );
+
+
 constexpr bool dec_test_001( ) {
 	std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
 	auto it = daw::ciend( numbers );
@@ -119,6 +128,15 @@ constexpr bool dec_test_002( ) {
 	return *it == 7;
 }
 static_assert( dec_test_002, "" );
+
+constexpr bool dec_test_003( ) {
+	std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
+	auto it = daw::ciend( numbers );
+	it -= 2;
+	return *it == 6;
+}
+static_assert( dec_test_003, "" );
+
 
 struct A {
 	constexpr bool t( ) const {
@@ -141,4 +159,6 @@ constexpr bool operator_arrow_002( ) {
 	return it->t( );
 }
 static_assert( operator_arrow_002(), "" );
+
+
 
