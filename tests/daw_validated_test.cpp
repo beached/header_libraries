@@ -232,4 +232,3 @@ BOOST_AUTO_TEST_CASE( throwing_validator_001 ) {
 
 	BOOST_REQUIRE_THROW( value_t( 2 ), std::runtime_error );
 }
-

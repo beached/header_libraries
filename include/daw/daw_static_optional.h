@@ -344,8 +344,11 @@ namespace daw {
 	}; // namespace daw
 
 	template<typename T>
-	void swap( static_optional<T> &lhs, static_optional<T> &rhs ) noexcept {
-		lhs.swap( rhs );
+	constexpr void swap( static_optional<T> &lhs,
+	                     static_optional<T> &rhs ) noexcept {
+		auto tmp = std::move( lhs );
+		lhs = std::move( rhs );
+		rhs = std::move( tmp );
 	}
 
 	template<typename T, typename... Args>

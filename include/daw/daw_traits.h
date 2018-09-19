@@ -22,8 +22,8 @@
 
 #pragma once
 
-#include <cstdint>
 #include <cstddef>
+#include <cstdint>
 #include <deque>
 #include <iterator>
 #include <list>

@@ -157,8 +157,7 @@ namespace daw {
 		}
 
 #ifndef NOSTRING
-		basic_static_string &
-		append( std::basic_string<CharT, Traits> const &str ) {
+		basic_static_string &append( std::basic_string<CharT, Traits> const &str ) {
 			if( m_data.size( ) + str.size( ) > capacity( ) ) {
 				throw std::out_of_range{
 				  "Attempt to append basic_static_string past end"};

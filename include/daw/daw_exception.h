@@ -46,7 +46,7 @@ namespace daw {
 	namespace exception {
 		struct basic_exception {
 			template<typename Arg>
-			constexpr basic_exception( Arg ) noexcept { }
+			constexpr basic_exception( Arg ) noexcept {}
 
 			constexpr basic_exception( ) noexcept = default;
 		};
@@ -55,7 +55,7 @@ namespace daw {
 
 		constexpr bool may_throw_v = MAY_THROW_EXCEPTIONS;
 
-#if MAY_THROW_EXCEPTIONS 
+#if MAY_THROW_EXCEPTIONS
 		using NotImplemented = std::runtime_error;
 		using FatalError = std::runtime_error;
 		using NullPtrAccessException = std::runtime_error;
@@ -105,11 +105,13 @@ namespace daw {
 #endif
 		}
 
-		template<typename ExceptionType = DefaultException, typename Arg, typename... Args>
-		[[noreturn]] void daw_throw( Arg && arg, Args &&... args ) {
+		template<typename ExceptionType = DefaultException, typename Arg,
+		         typename... Args>
+		[[noreturn]] void daw_throw( Arg &&arg, Args &&... args ) {
 #if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) ||                  \
   defined( _CPPUNWIND )
-			throw ExceptionType( std::forward<Arg>( arg ), std::forward<Args>( args )... );
+			throw ExceptionType( std::forward<Arg>( arg ),
+			                     std::forward<Args>( args )... );
 #else
 			std::terminate( );
 #endif

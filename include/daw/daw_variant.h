@@ -32,7 +32,7 @@
 #include <typeindex>
 #include <typeinfo>
 #include <unordered_map>
-#include <utilty>
+#include <utility>
 
 #include "daw_algorithm.h"
 #include "daw_exception.h"
@@ -92,7 +92,7 @@ namespace daw {
 	} // namespace has_to_string
 	template<typename T>
 	constexpr bool has_to_string_v = daw::is_detected_v<has_to_string::check, T>;
-#else 
+#else
 	constexpr bool has_to_string_v = false;
 #endif
 
@@ -198,7 +198,7 @@ namespace daw {
 		using to_string_t =
 		  std::function<std::string( variant_t<Types...> const & )>;
 #else
-		using to_string_t = void*;
+		using to_string_t = void *;
 #endif
 		using compare_t = std::function<int( variant_t<Types...> const &,
 		                                     variant_t<Types...> const & )>;

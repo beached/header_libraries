@@ -29,8 +29,8 @@
 #include <type_traits>
 #include <utility>
 
-#include "daw_traits.h"
 #include "cpp_17.h"
+#include "daw_traits.h"
 
 namespace daw {
 	template<size_t HashBytes>

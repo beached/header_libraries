@@ -103,6 +103,7 @@ set( TESTED_ITERATOR_HEADERS_PREFIXES
 	daw_checked_iterator_proxy
 	daw_circular_iterator
 	daw_integer_iterator
+	daw_indexed_iterator
 	daw_output_stream_iterator
 	daw_random_iterator
 	daw_reverse_iterator

@@ -759,11 +759,12 @@ namespace is_character_001 {
 	static_assert( daw::traits::is_character_v<char>, "" );
 	static_assert( daw::traits::is_character_v<wchar_t>, "" );
 	static_assert( !daw::traits::is_character_v<int>, "" );
-}
+} // namespace is_character_001
 
 namespace last_type_001 {
-	static_assert( daw::is_same_v<daw::traits::last_type_t<int, bool, char, void, float>, float>, "" );
+	static_assert(
+	  daw::is_same_v<daw::traits::last_type_t<int, bool, char, void, float>,
+	                 float>,
+	  "" );
 	static_assert( daw::is_same_v<daw::traits::last_type_t<int>, int>, "" );
-}
-
-
+} // namespace last_type_001
