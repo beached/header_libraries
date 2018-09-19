@@ -248,7 +248,6 @@ namespace daw {
 
 	private:
 		T *m_pointer;
-		size_type m_end;
 		difference_type m_position;
 
 	public:
