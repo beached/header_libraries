@@ -113,58 +113,42 @@ namespace daw {
 			return result;
 		}
 
-		constexpr indexed_iterator operator+( difference_type n ) noexcept {
-			auto result = indexed_iterator( *this );
-			result.m_position += n;
+		constexpr indexed_iterator operator+( std::ptrdiff_t n ) const noexcept {
+			daw::exception::dbg_precondition_check( m_position + n >= 0 );
+			auto result = indexed_iterator( m_pointer, static_cast<size_t>( m_position + n ) );
 			return result;
 		}
 
-		constexpr indexed_iterator operator-( difference_type n ) noexcept {
-			auto result = indexed_iterator( *this );
-			result.m_position -= n;
+		constexpr indexed_iterator operator-( std::ptrdiff_t n ) const noexcept {
+			daw::exception::dbg_precondition_check( m_position - n >= 0 );
+			auto result = indexed_iterator( m_pointer, static_cast<size_t>( m_position - n ) );
 			return result;
 		}
 
-		constexpr friend bool operator==( indexed_iterator const &lhs,
-		                                  indexed_iterator const &rhs ) noexcept {
-			return std::tie( lhs.m_pointer, lhs.m_position ) ==
-			       std::tie( rhs.m_pointer, rhs.m_position );
+		constexpr int compare( indexed_iterator const &rhs ) const noexcept {
+			daw::exception::dbg_precondition_check(
+			  std::equal_to<>{}( m_pointer, rhs.m_pointer ) );
+			daw::exception::dbg_precondition_check( m_position >= 0 );
+			daw::exception::dbg_precondition_check( rhs.m_position >= 0 );
+
+			auto const result = m_position - rhs.m_position;
+			if( result < 0 ) {
+				return -1;
+			}
+			if( result > 0 ) {
+				return 1;
+			}
+			return 0;
 		}
 
-		constexpr friend bool operator!=( indexed_iterator const &lhs,
-		                                  indexed_iterator const &rhs ) noexcept {
-			return std::tie( lhs.m_pointer, lhs.m_position ) !=
-			       std::tie( rhs.m_pointer, rhs.m_position );
-		}
-
-		constexpr friend bool operator<( indexed_iterator const &lhs,
-		                                 indexed_iterator const &rhs ) noexcept {
-			return std::tie( lhs.m_pointer, lhs.m_position ) <
-			       std::tie( rhs.m_pointer, rhs.m_position );
-		}
-
-		constexpr friend bool operator>( indexed_iterator const &lhs,
-		                                 indexed_iterator const &rhs ) noexcept {
-			return std::tie( lhs.m_pointer, lhs.m_position ) >
-			       std::tie( rhs.m_pointer, rhs.m_position );
-		}
-
-		constexpr friend bool operator<=( indexed_iterator const &lhs,
-		                                  indexed_iterator const &rhs ) noexcept {
-			return std::tie( lhs.m_pointer, lhs.m_position ) <=
-			       std::tie( rhs.m_pointer, rhs.m_position );
-		}
-
-		constexpr friend bool operator>=( indexed_iterator const &lhs,
-		                                  indexed_iterator const &rhs ) noexcept {
-			return std::tie( lhs.m_pointer, lhs.m_position ) >=
-			       std::tie( rhs.m_pointer, rhs.m_position );
-		}
-
-		constexpr friend difference_type
+		constexpr friend std::ptrdiff_t
 		operator-( indexed_iterator const &lhs,
 		           indexed_iterator const &rhs ) noexcept {
 			daw::exception::dbg_precondition_check( lhs.m_pointer == rhs.m_pointer );
+			daw::exception::dbg_precondition_check( lhs.m_position >= 0 );
+			daw::exception::dbg_precondition_check( rhs.m_position >= 0 );
+			daw::exception::dbg_precondition_check( lhs.m_position >= rhs.m_position );
+
 			return lhs.m_position - rhs.m_position;
 		}
 	}; // indexed_iterator
@@ -231,181 +215,85 @@ namespace daw {
 	                                      std::nullptr_t> = nullptr>
 	constexpr auto ciend( T const &&container ) noexcept = delete;
 
-	template<typename T>
-	struct indexed_iterator<T *> {
-		using difference_type = std::ptrdiff_t;
-
-		// using decltype should allow for c arrays
-		using value_type = std::remove_reference_t<decltype(
-		  std::declval<T *>( )[std::declval<size_t>( )] )>;
-
-		using pointer = value_type *;
-		using const_pointer = std::remove_const_t<value_type> const *;
-		using iterator_category = std::random_access_iterator_tag;
-		using reference = value_type &;
-		using const_reference = std::remove_const_t<value_type> const &;
-		using size_type = size_t;
-
-	private:
-		T *m_pointer;
-		difference_type m_position;
-
-	public:
-		explicit constexpr indexed_iterator( T *container, size_t pos = 0 ) noexcept
-		  : m_pointer( container )
-		  , m_position( static_cast<difference_type>( pos ) ) {}
-
-		constexpr indexed_iterator &operator+=( std::ptrdiff_t n ) noexcept {
-			m_position += n;
-			return *this;
-		}
-
-		constexpr indexed_iterator &operator-=( std::ptrdiff_t n ) noexcept {
-			m_position -= n;
-			return *this;
-		}
-
-		constexpr reference operator*( ) noexcept {
-			daw::exception::dbg_precondition_check( 0 <= m_position );
-			return m_pointer[static_cast<size_type>( m_position )];
-		}
-
-		constexpr const_reference operator*( ) const noexcept {
-			daw::exception::dbg_precondition_check( 0 <= m_position );
-			return m_pointer[static_cast<size_type>( m_position )];
-		}
-
-		constexpr pointer operator->( ) noexcept {
-			daw::exception::dbg_precondition_check( 0 <= m_position );
-			return &m_pointer[static_cast<size_type>( m_position )];
-		}
-
-		constexpr const_pointer operator->( ) const noexcept {
-			daw::exception::dbg_precondition_check( 0 <= m_position );
-			return &m_pointer[static_cast<size_type>( m_position )];
-		}
-
-		constexpr indexed_iterator &operator++( ) noexcept {
-			++m_position;
-			return *this;
-		}
-
-		constexpr indexed_iterator operator++( int ) noexcept {
-			auto result = indexed_iterator( *this );
-			++m_position;
-			return result;
-		}
-
-		constexpr indexed_iterator &operator--( ) noexcept {
-			--m_position;
-			return *this;
-		}
-
-		constexpr indexed_iterator operator--( int ) noexcept {
-			auto result = indexed_iterator( *this );
-			--m_position;
-			return result;
-		}
-
-		constexpr indexed_iterator operator+( difference_type n ) noexcept {
-			auto result = indexed_iterator( *this );
-			result.m_position += n;
-			return result;
-		}
-
-		constexpr indexed_iterator operator-( difference_type n ) noexcept {
-			auto result = indexed_iterator( *this );
-			result.m_position -= n;
-			return result;
-		}
-
-		constexpr friend bool operator==( indexed_iterator const &lhs,
-		                                  indexed_iterator const &rhs ) noexcept {
-			return std::tie( lhs.m_pointer, lhs.m_position ) ==
-			       std::tie( rhs.m_pointer, rhs.m_position );
-		}
-
-		constexpr friend bool operator!=( indexed_iterator const &lhs,
-		                                  indexed_iterator const &rhs ) noexcept {
-			return std::tie( lhs.m_pointer, lhs.m_position ) !=
-			       std::tie( rhs.m_pointer, rhs.m_position );
-		}
-
-		constexpr friend bool operator<( indexed_iterator const &lhs,
-		                                 indexed_iterator const &rhs ) noexcept {
-			return std::tie( lhs.m_pointer, lhs.m_position ) <
-			       std::tie( rhs.m_pointer, rhs.m_position );
-		}
-
-		constexpr friend bool operator>( indexed_iterator const &lhs,
-		                                 indexed_iterator const &rhs ) noexcept {
-			return std::tie( lhs.m_pointer, lhs.m_position ) >
-			       std::tie( rhs.m_pointer, rhs.m_position );
-		}
-
-		constexpr friend bool operator<=( indexed_iterator const &lhs,
-		                                  indexed_iterator const &rhs ) noexcept {
-			return std::tie( lhs.m_pointer, lhs.m_position ) <=
-			       std::tie( rhs.m_pointer, rhs.m_position );
-		}
-
-		constexpr friend bool operator>=( indexed_iterator const &lhs,
-		                                  indexed_iterator const &rhs ) noexcept {
-			return std::tie( lhs.m_pointer, lhs.m_position ) >=
-			       std::tie( rhs.m_pointer, rhs.m_position );
-		}
-
-		constexpr friend difference_type
-		operator-( indexed_iterator const &lhs,
-		           indexed_iterator const &rhs ) noexcept {
-			daw::exception::dbg_precondition_check( lhs.m_pointer == rhs.m_pointer );
-			return lhs.m_position - rhs.m_position;
-		}
-	}; // indexed_iterator<T*>
-
-	template<typename T>
-	constexpr auto ibegin( T *container ) noexcept {
-		return indexed_iterator<T *>( container );
+	template<typename T, size_t N>
+	constexpr auto ibegin( T (&container)[N] ) noexcept {
+		return std::begin( container );
 	}
 
-	template<typename T>
-	constexpr auto ibegin( T const *container ) noexcept {
-		return indexed_iterator<T const *>( container );
+	template<typename T, size_t N>
+	constexpr auto ibegin( T const (&container)[N] ) noexcept {
+		return std::begin( container );
 	}
 
-	template<typename T>
-	constexpr auto cibegin( T const *container ) noexcept {
-		return indexed_iterator<T const *>( container );
-	}
-
-	template<typename T>
-	constexpr auto iend( T *container, size_t container_size ) noexcept {
-		return indexed_iterator<T *>( container, container_size );
+	template<typename T, size_t N>
+	constexpr auto cibegin( T const (&container)[N] ) noexcept {
+		return std::cbegin( container );
 	}
 
 	template<typename T, size_t N>
 	constexpr auto iend( T ( &container )[N] ) noexcept {
-		return indexed_iterator<T *>( container, N );
-	}
-
-	template<typename T>
-	constexpr auto iend( T const *container, size_t container_size ) noexcept {
-		return indexed_iterator<T const *>( container, container_size );
+		return std::end( container );
 	}
 
 	template<typename T, size_t N>
 	constexpr auto iend( T const ( &container )[N] ) noexcept {
-		return indexed_iterator<T const *>( container, N );
-	}
-
-	template<typename T>
-	constexpr auto ciend( T const *container, size_t container_size ) noexcept {
-		return indexed_iterator<T const *>( container, container_size );
+		return std::end( container );
 	}
 
 	template<typename T, size_t N>
 	constexpr auto ciend( T const ( &container )[N] ) noexcept {
-		return indexed_iterator<T const *>( container, N );
+		return std::cend( container );
 	}
 
+	template<typename T>
+	constexpr bool operator==( indexed_iterator<T> const &lhs,
+	                           indexed_iterator<T> const &rhs ) noexcept {
+		return lhs.compare( rhs ) == 0;
+	}
+
+	template<
+	  typename T, typename U,
+	  std::enable_if_t<!daw::is_convertible_v<T, U>, std::nullptr_t> = nullptr>
+	constexpr bool operator==( indexed_iterator<T> const &,
+	                           indexed_iterator<T> const & ) noexcept {
+		return false;
+	}
+
+	template<typename T>
+	constexpr bool operator!=( indexed_iterator<T> const &lhs,
+	                           indexed_iterator<T> const &rhs ) noexcept {
+		return lhs.compare( rhs ) != 0;
+	}
+
+	template<
+	  typename T, typename U,
+	  std::enable_if_t<!daw::is_convertible_v<T, U>, std::nullptr_t> = nullptr>
+	constexpr bool operator!=( indexed_iterator<T> const &,
+	                           indexed_iterator<T> const & ) noexcept {
+		return true;
+	}
+
+	template<typename T>
+	constexpr bool operator<( indexed_iterator<T> const &lhs,
+	                          indexed_iterator<T> const &rhs ) noexcept {
+		return lhs.compare( rhs ) < 0;
+	}
+
+	template<typename T>
+	constexpr bool operator>( indexed_iterator<T> const &lhs,
+	                          indexed_iterator<T> const &rhs ) noexcept {
+		return lhs.compare( rhs ) > 0;
+	}
+
+	template<typename T>
+	constexpr bool operator<=( indexed_iterator<T> const &lhs,
+	                           indexed_iterator<T> const &rhs ) noexcept {
+		return lhs.compare( rhs ) <= 0;
+	}
+
+	template<typename T>
+	constexpr bool operator>=( indexed_iterator<T> const &lhs,
+	                           indexed_iterator<T> const &rhs ) noexcept {
+		return lhs.compare( rhs ) >= 0;
+	}
 } // namespace daw
