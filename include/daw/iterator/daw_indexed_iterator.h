@@ -111,7 +111,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr indexed_iterator operator++( int ) noexcept {
+		constexpr const indexed_iterator operator++( int ) noexcept {
 			daw::exception::dbg_precondition_check(
 			  static_cast<size_type>( m_position ) <= m_pointer->size( ) );
 
@@ -127,7 +127,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr indexed_iterator operator--( int ) noexcept {
+		constexpr const indexed_iterator operator--( int ) noexcept {
 			daw::exception::dbg_precondition_check( m_position >= 0 );
 
 			auto result = indexed_iterator( *this );
