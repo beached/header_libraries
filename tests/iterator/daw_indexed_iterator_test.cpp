@@ -41,5 +41,19 @@ constexpr bool array_test_002( ) {
 		auto l = daw::iend( numbers );
 		return daw::distance( f, l ) == 7;
 }
-
 static_assert( array_test_002, "" );
+
+constexpr bool carray_test_001( ) {
+		int numbers[7] = {1, 2, 3, 4, 5, 6, 7};
+		auto f = daw::ibegin( numbers );
+		return *f == 1;
+}
+static_assert( carray_test_001, "" );
+
+constexpr bool carray_test_002( ) {
+	int numbers[7] = {1, 2, 3, 4, 5, 6, 7};
+		auto f = daw::ibegin( numbers );
+		auto l = daw::iend( numbers );
+		return daw::distance( f, l ) == 7;
+}
+static_assert( carray_test_002, "" );
