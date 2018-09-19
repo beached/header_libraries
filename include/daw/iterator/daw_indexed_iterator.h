@@ -76,7 +76,7 @@ namespace daw {
 			daw::exception::dbg_precondition_check(
 			  static_cast<size_type>( m_position ) <= m_pointer->size( ) );
 
-			return ( *m_pointer )[static_cast<size_type>( m_position )];
+			return m_pointer->operator[]( static_cast<size_type>( m_position ) );
 		}
 
 		constexpr const_reference operator*( ) const noexcept {
@@ -84,7 +84,7 @@ namespace daw {
 			daw::exception::dbg_precondition_check(
 			  static_cast<size_type>( m_position ) <= m_pointer->size( ) );
 
-			return ( *m_pointer )[static_cast<size_type>( m_position )];
+			return m_pointer->operator[]( static_cast<size_type>( m_position ) );
 		}
 
 		constexpr pointer operator->( ) noexcept {
@@ -92,7 +92,7 @@ namespace daw {
 			daw::exception::dbg_precondition_check(
 			  static_cast<size_type>( m_position ) <= m_pointer->size( ) );
 
-			return &( *m_pointer )[static_cast<size_type>( m_position )];
+			return &m_pointer->operator[]( static_cast<size_type>( m_position ) );
 		}
 
 		constexpr const_pointer operator->( ) const noexcept {
@@ -100,7 +100,7 @@ namespace daw {
 			daw::exception::dbg_precondition_check(
 			  static_cast<size_type>( m_position ) <= m_pointer->size( ) );
 
-			return &( *m_pointer )[static_cast<size_type>( m_position )];
+			return &m_pointer->operator[]( static_cast<size_type>( m_position ) );
 		}
 
 		constexpr indexed_iterator &operator++( ) noexcept {

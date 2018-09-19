@@ -87,3 +87,58 @@ constexpr bool array_test_008( ) {
 	return daw::distance( f, l ) == 7;
 }
 static_assert( array_test_008, "" );
+
+constexpr bool inc_test_001( ) {
+	std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
+	auto it = daw::cibegin( numbers );
+	++it;
+	return *it == 2;
+}
+static_assert( inc_test_001, "" );
+
+constexpr bool inc_test_002( ) {
+	std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
+	auto it = daw::cibegin( numbers );
+	it++;
+	return *it == 2;
+}
+static_assert( inc_test_002, "" );
+
+constexpr bool dec_test_001( ) {
+	std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
+	auto it = daw::ciend( numbers );
+	--it;
+	return *it == 7;
+}
+static_assert( dec_test_001, "" );
+
+constexpr bool dec_test_002( ) {
+	std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
+	auto it = daw::ciend( numbers );
+	it--;
+	return *it == 7;
+}
+static_assert( dec_test_002, "" );
+
+struct A {
+	constexpr bool t( ) const {
+		return true;
+	}
+};
+
+constexpr bool operator_arrow_001( ) {
+	std::array<A, 5> as = {A{},A{},A{},A{},A{}};
+	auto it = daw::ibegin( as );
+
+	return it->t( );
+}
+static_assert( operator_arrow_001(), "" );
+
+constexpr bool operator_arrow_002( ) {
+	std::array<A, 5> const as = {A{},A{},A{},A{},A{}};
+	auto it = daw::cibegin( as );
+
+	return it->t( );
+}
+static_assert( operator_arrow_002(), "" );
+

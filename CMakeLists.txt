@@ -6,7 +6,7 @@ find_package( Boost 1.58.0 COMPONENTS system filesystem regex unit_test_framewor
 
 find_package( Threads )
 
-set( CMAKE_CXX_STANDARD 14 CACHE STRING "The C++ standard whose features are requested.")
+set( CMAKE_CXX_STANDARD 17 CACHE STRING "The C++ standard whose features are requested.")
 add_definitions( -DBOOST_TEST_DYN_LINK -DBOOST_ALL_NO_LIB -DBOOST_ALL_DYN_LINK )
 
 if( ${CMAKE_CXX_COMPILER_ID} STREQUAL 'MSVC' )
