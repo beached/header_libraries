@@ -151,7 +151,8 @@ namespace daw {
 			return result;
 		}
 
-		constexpr difference_type compare( indexed_iterator const &rhs ) const noexcept {
+		constexpr difference_type compare( indexed_iterator const &rhs ) const
+		  noexcept {
 			daw::exception::dbg_precondition_check(
 			  std::equal_to<>{}( m_pointer, rhs.m_pointer ) );
 			daw::exception::dbg_precondition_check( m_position >= 0 );
@@ -173,67 +174,31 @@ namespace daw {
 		}
 	}; // indexed_iterator
 
-	template<typename T>
-	constexpr auto ibegin( T &container ) noexcept {
-		return indexed_iterator<T>( &container );
+	template<typename T, std::enable_if_t<std::is_lvalue_reference_v<T>,
+	                                      std::nullptr_t> = nullptr>
+	constexpr auto ibegin( T &&container ) noexcept {
+		return indexed_iterator<std::remove_reference_t<T>>( &container );
 	}
 
-	template<typename T, std::enable_if_t<daw::is_rvalue_reference_v<T>,
+	template<typename T, std::enable_if_t<std::is_lvalue_reference_v<T>,
 	                                      std::nullptr_t> = nullptr>
-	constexpr auto ibegin( T && ) noexcept = delete;
-
-	template<typename T, std::enable_if_t<daw::is_rvalue_reference_v<T>,
-	                                      std::nullptr_t> = nullptr>
-	constexpr auto ibegin( T const && ) noexcept = delete;
-
-	template<typename T>
-	constexpr auto ibegin( T const &container ) noexcept {
-		return indexed_iterator<T const>( &container );
+	constexpr auto cibegin( T &&container ) noexcept {
+		return indexed_iterator<daw::remove_cvref_t<T> const>( &container );
 	}
 
-	template<typename T>
-	constexpr auto cibegin( T const &container ) noexcept {
-		return indexed_iterator<T const>( &container );
+	template<typename T, std::enable_if_t<std::is_lvalue_reference_v<T>,
+	                                      std::nullptr_t> = nullptr>
+	constexpr auto iend( T &&container ) noexcept {
+		return indexed_iterator<std::remove_reference_t<T>>( &container,
+		                                                     container.size( ) );
 	}
 
-	template<typename T, std::enable_if_t<daw::is_rvalue_reference_v<T>,
+	template<typename T, std::enable_if_t<std::is_lvalue_reference_v<T>,
 	                                      std::nullptr_t> = nullptr>
-	constexpr auto cibegin( T &&container ) noexcept = delete;
-
-	template<typename T, std::enable_if_t<daw::is_rvalue_reference_v<T>,
-	                                      std::nullptr_t> = nullptr>
-	constexpr auto cibegin( T const &&container ) noexcept = delete;
-
-	template<typename T>
-	constexpr auto iend( T &container ) noexcept {
-		return indexed_iterator<T>( &container, container.size( ) );
+	constexpr auto ciend( T &&container ) noexcept {
+		return indexed_iterator<daw::remove_cvref_t<T> const>( &container,
+		                                                       container.size( ) );
 	}
-
-	template<typename T, std::enable_if_t<daw::is_rvalue_reference_v<T>,
-	                                      std::nullptr_t> = nullptr>
-	constexpr auto iend( T && ) noexcept = delete;
-
-	template<typename T, std::enable_if_t<daw::is_rvalue_reference_v<T>,
-	                                      std::nullptr_t> = nullptr>
-	constexpr auto iend( T const && ) noexcept = delete;
-
-	template<typename T>
-	constexpr auto iend( T const &container ) noexcept {
-		return indexed_iterator<T const>( &container, container.size( ) );
-	}
-
-	template<typename T>
-	constexpr auto ciend( T const &container ) noexcept {
-		return indexed_iterator<T const>( &container, container.size( ) );
-	}
-
-	template<typename T, std::enable_if_t<daw::is_rvalue_reference_v<T>,
-	                                      std::nullptr_t> = nullptr>
-	constexpr auto ciend( T &&container ) noexcept = delete;
-
-	template<typename T, std::enable_if_t<daw::is_rvalue_reference_v<T>,
-	                                      std::nullptr_t> = nullptr>
-	constexpr auto ciend( T const &&container ) noexcept = delete;
 
 	template<typename T, size_t N>
 	constexpr auto ibegin( T ( &container )[N] ) noexcept {
@@ -243,6 +208,11 @@ namespace daw {
 	template<typename T, size_t N>
 	constexpr auto ibegin( T const ( &container )[N] ) noexcept {
 		return std::begin( container );
+	}
+
+	template<typename T, size_t N>
+	constexpr auto cibegin( T ( &container )[N] ) noexcept {
+		return std::cbegin( container );
 	}
 
 	template<typename T, size_t N>
@@ -258,6 +228,11 @@ namespace daw {
 	template<typename T, size_t N>
 	constexpr auto iend( T const ( &container )[N] ) noexcept {
 		return std::end( container );
+	}
+
+	template<typename T, size_t N>
+	constexpr auto ciend( T ( &container )[N] ) noexcept {
+		return std::cend( container );
 	}
 
 	template<typename T, size_t N>
