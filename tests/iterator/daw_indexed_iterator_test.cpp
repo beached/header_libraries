@@ -235,7 +235,6 @@ namespace {
 	}
 	static_assert( carray_ciend_002( ), "" );
 
-
 	constexpr bool operator_equal_001( ) {
 		std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
 		auto f = daw::ibegin( numbers );
@@ -244,7 +243,6 @@ namespace {
 		return f == l;
 	}
 	static_assert( operator_equal_001( ), "" );
-
 
 	constexpr bool operator_not_equal_001( ) {
 		std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
@@ -281,7 +279,6 @@ namespace {
 	}
 	static_assert( operator_less_equal_002( ), "" );
 
-
 	constexpr bool operator_greater_001( ) {
 		std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
 		auto f = daw::ibegin( numbers );
@@ -307,6 +304,5 @@ namespace {
 		return f >= f;
 	}
 	static_assert( operator_greater_equal_002( ), "" );
-
 
 } // namespace
