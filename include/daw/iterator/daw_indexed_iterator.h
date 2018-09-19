@@ -33,7 +33,7 @@ namespace daw {
 	struct indexed_iterator {
 		using difference_type = std::ptrdiff_t;
 
-		// using decltype should allow for c arrays
+		// don't want to depend on value_type being there
 		using value_type = std::remove_reference_t<decltype(
 		  std::declval<T>( )[std::declval<size_t>( )] )>;
 
@@ -114,6 +114,7 @@ namespace daw {
 		constexpr indexed_iterator operator++( int ) noexcept {
 			daw::exception::dbg_precondition_check(
 			  static_cast<size_type>( m_position ) <= m_pointer->size( ) );
+
 			auto result = indexed_iterator( *this );
 			++m_position;
 			return result;
@@ -121,12 +122,14 @@ namespace daw {
 
 		constexpr indexed_iterator &operator--( ) noexcept {
 			daw::exception::dbg_precondition_check( m_position >= 0 );
+
 			--m_position;
 			return *this;
 		}
 
 		constexpr indexed_iterator operator--( int ) noexcept {
 			daw::exception::dbg_precondition_check( m_position >= 0 );
+
 			auto result = indexed_iterator( *this );
 			--m_position;
 			return result;
@@ -134,6 +137,7 @@ namespace daw {
 
 		constexpr indexed_iterator operator+( std::ptrdiff_t n ) const noexcept {
 			daw::exception::dbg_precondition_check( m_position + n >= 0 );
+
 			auto result =
 			  indexed_iterator( m_pointer, static_cast<size_t>( m_position + n ) );
 			return result;
@@ -141,25 +145,19 @@ namespace daw {
 
 		constexpr indexed_iterator operator-( std::ptrdiff_t n ) const noexcept {
 			daw::exception::dbg_precondition_check( m_position - n >= 0 );
+
 			auto result =
 			  indexed_iterator( m_pointer, static_cast<size_t>( m_position - n ) );
 			return result;
 		}
 
-		constexpr int compare( indexed_iterator const &rhs ) const noexcept {
+		constexpr difference_type compare( indexed_iterator const &rhs ) const noexcept {
 			daw::exception::dbg_precondition_check(
 			  std::equal_to<>{}( m_pointer, rhs.m_pointer ) );
 			daw::exception::dbg_precondition_check( m_position >= 0 );
 			daw::exception::dbg_precondition_check( rhs.m_position >= 0 );
 
-			auto const result = m_position - rhs.m_position;
-			if( result < 0 ) {
-				return -1;
-			}
-			if( result > 0 ) {
-				return 1;
-			}
-			return 0;
+			return m_position - rhs.m_position;
 		}
 
 		constexpr friend std::ptrdiff_t
