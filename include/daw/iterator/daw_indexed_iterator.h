@@ -174,28 +174,40 @@ namespace daw {
 		}
 	}; // indexed_iterator
 
-	template<typename T, std::enable_if_t<std::is_lvalue_reference_v<T>,
-	                                      std::nullptr_t> = nullptr>
+	template<typename T>
 	constexpr auto ibegin( T &&container ) noexcept {
+		static_assert( std::is_lvalue_reference_v<T>,
+		               "Passing a temporary to ibegin will cause errors via "
+		               "dangling references" );
+
 		return indexed_iterator<std::remove_reference_t<T>>( &container );
 	}
 
-	template<typename T, std::enable_if_t<std::is_lvalue_reference_v<T>,
-	                                      std::nullptr_t> = nullptr>
+	template<typename T>
 	constexpr auto cibegin( T &&container ) noexcept {
+		static_assert( std::is_lvalue_reference_v<T>,
+									 "Passing a temporary to cibegin will cause errors via "
+									 "dangling references" );
+
 		return indexed_iterator<daw::remove_cvref_t<T> const>( &container );
 	}
 
-	template<typename T, std::enable_if_t<std::is_lvalue_reference_v<T>,
-	                                      std::nullptr_t> = nullptr>
+	template<typename T>
 	constexpr auto iend( T &&container ) noexcept {
+		static_assert( std::is_lvalue_reference_v<T>,
+									 "Passing a temporary to iend will cause errors via "
+									 "dangling references" );
+
 		return indexed_iterator<std::remove_reference_t<T>>( &container,
 		                                                     container.size( ) );
 	}
 
-	template<typename T, std::enable_if_t<std::is_lvalue_reference_v<T>,
-	                                      std::nullptr_t> = nullptr>
+	template<typename T>
 	constexpr auto ciend( T &&container ) noexcept {
+		static_assert( std::is_lvalue_reference_v<T>,
+									 "Passing a temporary to ciend will cause errors via "
+									 "dangling references" );
+
 		return indexed_iterator<daw::remove_cvref_t<T> const>( &container,
 		                                                       container.size( ) );
 	}
