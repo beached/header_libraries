@@ -84,29 +84,25 @@ namespace daw {
 		return std::forward<T>( t );
 	}
 
-	template<typename T0, typename T1>
-	constexpr auto min( T0 &&val1, T1 &&val2 ) noexcept
-	  -> std::common_type_t<T0, T1> {
-		if( val1 < val2 ) {
-			return std::forward<T0>( val1 );
+	template<typename T>
+	constexpr decltype( auto ) min( T &&val1, T &&val2 ) noexcept {
+			
+		if( std::less_equal<>{}( val1, val2 ) ) {
+			return std::forward<T>( val1 );
 		}
-		return std::forward<T1>( val2 );
+		return std::forward<T>( val2 );
 	}
 
-	template<typename T0, typename T1, typename... Ts,
+	template<typename T, typename... Ts,
 	         std::enable_if_t<( sizeof...( Ts ) != 0 ), std::nullptr_t> = nullptr>
-	constexpr auto min( T0 &&val1, T1 &&val2, Ts &&... vs ) noexcept
-	  -> std::common_type_t<T0, T1, Ts...> {
-		auto tmp = min( std::forward<Ts>( vs )... );
-		if( val1 < val2 ) {
-			if( val1 < tmp ) {
-				return std::forward<T0>( val1 );
-			}
-			return tmp;
-		} else if( val2 < tmp ) {
-			return std::forward<T1>( val2 );
+	constexpr decltype( auto ) min( T &&val1, Ts &&... vs ) noexcept {
+
+		auto&& tmp = min( std::forward<Ts>( vs )... );
+
+		if( std::less_equal<>{}( val1, tmp ) ) {
+			return std::forward<T>( val1 );
 		}
-		return tmp;
+		return std::forward<decltype(tmp)>( tmp );
 	}
 
 	namespace math {
