@@ -37,7 +37,7 @@ namespace daw {
 			         std::enable_if_t<is_convertible_v<remove_cvref_t<U>, T>,
 			                          std::nullptr_t> = nullptr>
 			constexpr T operator( )( U &&result ) const noexcept {
-				return std::forward<U>( result );
+				return static_cast<T>( std::forward<U>( result ) );
 			}
 
 			template<typename U,
