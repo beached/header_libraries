@@ -160,21 +160,39 @@ namespace daw {
 		///
 		namespace impl {
 			template<typename T, typename... Types>
-			struct is_one_of : public std::false_type {};
+			struct is_one_of : std::false_type {};
 
 			template<typename T, typename Type>
-			struct is_one_of<T, Type> : public std::is_same<T, Type> {};
+			struct is_one_of<T, Type> : std::is_same<T, Type> {};
 
 			template<typename T, typename Type, typename... Types>
 			struct is_one_of<T, Type, Types...>
-			  : public std::integral_constant<bool, is_same_v<T, Type> ||
-			                                          is_one_of<T, Types...>::value> {
-			};
-
+				: daw::disjunction<std::is_same<T, Type>, is_one_of<T, Types...>> {};
 		} // namespace impl
 
 		template<typename T, typename... Types>
+		using is_one_of_t = typename impl::is_one_of<T, Types...>::type;
+
+		template<typename T, typename... Types>
 		constexpr bool is_one_of_v = impl::is_one_of<T, Types...>::value;
+
+		namespace impl {
+			template<typename...>
+			struct can_convert_from: std::false_type {};
+
+			template<typename To, typename From>
+			struct can_convert_from<To, From>: std::is_convertible<From, To> {};
+
+			template<typename To, typename From, typename... Froms>
+			struct can_convert_from<To, From, Froms...>
+			  : daw::disjunction<std::is_convertible<From, To>,
+			                     can_convert_from<To, Froms...>> {};
+		}
+		template<typename To, typename... Froms>
+		using can_convert_from_t = typename impl::can_convert_from<To, Froms...>::type;
+
+		template<typename To, typename... Froms>
+		constexpr bool can_convert_from_v = impl::can_convert_from<To, Froms...>::value;
 
 		namespace details {
 			template<typename>

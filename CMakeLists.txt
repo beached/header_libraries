@@ -83,6 +83,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_union_pair
 	daw_utility
 	daw_validated
+	daw_variant_cast
 	daw_value_ptr
 	not_null
 )
