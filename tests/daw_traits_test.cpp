@@ -490,11 +490,13 @@ namespace is_iterator_005 {
 
 namespace is_iterator_006 {
 	using iter_t = int const *const;
+	static_assert( !daw::impl::is_incrementable_v<iter_t>, "" );
 	static_assert( !daw::is_iterator_v<iter_t>, "" );
 } // namespace is_iterator_006
 
 namespace is_iterator_007 {
 	using iter_t = typename std::unordered_map<int, int>::iterator;
+	static_assert( daw::is_iterator<iter_t>( ), "" );
 	static_assert( daw::is_copy_constructible_v<iter_t>, "" );
 	static_assert( daw::is_copy_assignable_v<iter_t>, "" );
 	static_assert( daw::is_destructible_v<iter_t>, "" );

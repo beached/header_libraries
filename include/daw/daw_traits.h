@@ -167,7 +167,7 @@ namespace daw {
 
 			template<typename T, typename Type, typename... Types>
 			struct is_one_of<T, Type, Types...>
-				: daw::disjunction<std::is_same<T, Type>, is_one_of<T, Types...>> {};
+			  : daw::disjunction<std::is_same<T, Type>, is_one_of<T, Types...>> {};
 		} // namespace impl
 
 		template<typename T, typename... Types>
@@ -178,21 +178,23 @@ namespace daw {
 
 		namespace impl {
 			template<typename...>
-			struct can_convert_from: std::false_type {};
+			struct can_convert_from : std::false_type {};
 
 			template<typename To, typename From>
-			struct can_convert_from<To, From>: std::is_convertible<From, To> {};
+			struct can_convert_from<To, From> : std::is_convertible<From, To> {};
 
 			template<typename To, typename From, typename... Froms>
 			struct can_convert_from<To, From, Froms...>
 			  : daw::disjunction<std::is_convertible<From, To>,
 			                     can_convert_from<To, Froms...>> {};
-		}
+		} // namespace impl
 		template<typename To, typename... Froms>
-		using can_convert_from_t = typename impl::can_convert_from<To, Froms...>::type;
+		using can_convert_from_t =
+		  typename impl::can_convert_from<To, Froms...>::type;
 
 		template<typename To, typename... Froms>
-		constexpr bool can_convert_from_v = impl::can_convert_from<To, Froms...>::value;
+		constexpr bool can_convert_from_v =
+		  impl::can_convert_from<To, Froms...>::value;
 
 		namespace details {
 			template<typename>
@@ -696,6 +698,7 @@ namespace daw {
 			template<typename T>
 			using is_incrementable = decltype( ++std::declval<T &>( ) );
 		} // namespace is_iter
+
 		template<typename T>
 		constexpr bool is_incrementable_v =
 		  is_same_v<T &, daw::detected_t<is_iter::is_incrementable, T>>;
@@ -724,30 +727,6 @@ namespace daw {
 		  has_value_type_v<T> &&has_difference_type_v<T> &&has_reference_v<T>
 		    &&has_pointer_v<T> &&has_iterator_category_v<T>;
 	} // namespace impl
-
-	// TODO: add is_swappable after c++17. Cannot do in C++14
-	template<typename Iterator>
-	constexpr bool is_iterator_v =
-	  is_copy_constructible_v<Iterator> &&is_copy_assignable_v<Iterator>
-	    &&is_destructible_v<Iterator> &&impl::has_iterator_trait_types_v<Iterator>
-	      &&is_dereferenceable_v<Iterator> &&impl::is_incrementable_v<Iterator>;
-
-	template<typename OutputIterator, typename T>
-	constexpr bool is_output_iterator_v =
-	  is_iterator_v<OutputIterator> &&is_assignable_iterator_v<OutputIterator, T>;
-
-	template<typename InputIterator,
-	         typename T =
-	           std::decay_t<decltype( *std::declval<InputIterator>( ) )>>
-	constexpr bool is_input_iterator_v =
-	  is_iterator_v<InputIterator> &&is_equality_comparable_v<InputIterator>
-	    &&is_convertible_v<decltype( *std::declval<InputIterator>( ) ), T>;
-
-	template<typename ForwardIterator,
-	         typename T =
-	           std::decay_t<decltype( *std::declval<ForwardIterator>( ) )>>
-	constexpr bool is_forward_iterator_v = is_input_iterator_v<ForwardIterator, T>
-	  &&is_default_constructible_v<ForwardIterator>;
 
 	//////////////////////////////////////////////////////////////////////////
 	/// Summary: is like a regular type see
@@ -824,6 +803,22 @@ namespace daw {
 			  decltype( std::declval<T>( ) / std::declval<U>( ) );
 
 			template<typename T, typename U>
+			using has_compound_assignment_add_operator =
+			  decltype( std::declval<T &>( ) += std::declval<U>( ) );
+
+			template<typename T, typename U>
+			using has_compound_assignment_sub_operator =
+			  decltype( std::declval<T &>( ) -= std::declval<U>( ) );
+
+			template<typename T, typename U>
+			using has_compound_assignment_mul_operator =
+			  decltype( std::declval<T &>( ) *= std::declval<U>( ) );
+
+			template<typename T, typename U>
+			using has_compound_assignment_div_operator =
+			  decltype( std::declval<T &>( ) /= std::declval<U>( ) );
+
+			template<typename T, typename U>
 			using has_modulus_operator =
 			  decltype( std::declval<T>( ) % std::declval<U>( ) );
 
@@ -849,6 +844,23 @@ namespace daw {
 		template<typename T, typename U = T>
 		constexpr bool has_division_operator_v =
 		  daw::is_detected_v<detectors::has_division_operator, T, U>;
+
+		template<typename T, typename U>
+		constexpr bool has_compound_assignment_add_operator_v =
+		  daw::is_detected_v<detectors::has_compound_assignment_add_operator, T, U>;
+
+		template<typename T, typename U>
+		constexpr bool has_compound_assignment_sub_operator_v =
+		  daw::is_detected_v<detectors::has_compound_assignment_sub_operator, T, U>;
+
+		template<typename T, typename U>
+		constexpr bool has_compound_assignment_mul_operator_v =
+		  daw::is_detected_v<detectors::has_compound_assignment_mul_operator, T,
+		                     U>;
+
+		template<typename T, typename U>
+		constexpr bool has_compound_assignment_div_operator_v =
+		  daw::is_detected_v<detectors::has_compound_assignment_div_operator, T, U>;
 
 		template<typename T, typename U = T>
 		constexpr bool has_modulus_operator_v =
@@ -1071,6 +1083,180 @@ namespace daw {
 		using last_type_t =
 		  std::tuple_element_t<sizeof...( Args ), std::tuple<Arg, Args...>>;
 	} // namespace traits
+
+	// Iterator Concepts
+	// is_iterator
+	template<typename Iterator>
+	constexpr bool is_iterator( ) noexcept {
+		static_assert( is_copy_constructible_v<Iterator>,
+		               "Iterator is not copy constructable" );
+		static_assert( is_copy_assignable_v<Iterator>,
+		               "Iterator is not copy assignable" );
+		static_assert( is_destructible_v<Iterator>,
+		               "Iterator is not destructable" );
+		static_assert( is_dereferenceable_v<Iterator>,
+		               "Iterator is not dereferenceable" );
+		static_assert( impl::is_incrementable_v<Iterator>,
+		               "Iterator is not incrementable" );
+		static_assert( impl::has_value_type_v<Iterator>,
+		               "Iterator does not expose value_type type alias" );
+		static_assert( impl::has_difference_type_v<Iterator>,
+		               "Iterator does not expose difference type alias" );
+		static_assert( impl::has_reference_v<Iterator>,
+		               "Iterator does not expose reference type alias" );
+		static_assert( impl::has_pointer_v<Iterator>,
+		               "Iterator does not expose pointer type alias" );
+		static_assert( impl::has_iterator_category_v<Iterator>,
+		               "Iterator does not expose iterator category type alias" );
+#ifdef __cpp_lib_is_swappable
+		static_assert( std::is_swappable_v<Iterator>, "Iterator is not swappable" );
+#endif
+		return true;
+	}
+
+	template<typename Iterator>
+	constexpr bool is_iterator_v =
+	  is_copy_constructible_v<Iterator> &&is_copy_assignable_v<Iterator>
+	    &&is_destructible_v<Iterator> &&impl::is_incrementable_v<Iterator> &&
+	      impl::has_value_type_v<Iterator> &&impl::has_difference_type_v<Iterator>
+	        &&impl::has_reference_v<Iterator> &&impl::has_pointer_v<Iterator>
+	          &&impl::has_iterator_category_v<Iterator>
+#ifdef __cpp_lib_is_swappable
+	            &&std::is_swappable_v<Iterator>
+#endif
+	  ;
+
+	// is_output_iterator
+	template<typename OutputIterator, typename T>
+	constexpr bool is_output_iterator( ) noexcept {
+		is_iterator<OutputIterator>( );
+		static_assert( is_assignable_iterator_v<OutputIterator, T>,
+		               "OutputIterator is not assignable" );
+		return true;
+	}
+
+	template<typename OutputIterator, typename T>
+	constexpr bool is_output_iterator_v =
+	  is_iterator_v<OutputIterator> &&is_assignable_iterator_v<OutputIterator, T>;
+
+	// is_input_iterator
+	template<typename InputIterator>
+	constexpr bool is_input_iterator( ) noexcept {
+		is_iterator<InputIterator>( );
+
+		using T = decltype( *std::declval<InputIterator>( ) );
+		using U = remove_cvref_t<T>;
+
+		static_assert( is_equality_comparable_v<InputIterator, U>,
+		               "InputIterator is not equality_comparable" );
+
+		static_assert(
+		  is_convertible_v<T, U>,
+		  "InputIterator's dereferenced value is not convertible to itself" );
+		return true;
+	}
+
+	template<typename InputIterator,
+	         typename T =
+	           std::decay_t<decltype( *std::declval<InputIterator>( ) )>>
+	constexpr bool is_input_iterator_v =
+	  is_iterator_v<InputIterator> &&is_equality_comparable_v<InputIterator>
+	    &&is_convertible_v<decltype( *std::declval<InputIterator>( ) ), T>;
+
+	// is_forward_iterator
+	template<typename ForwardIterator>
+	constexpr bool is_forward_iterator( ) noexcept {
+		is_input_iterator<ForwardIterator>( );
+		is_output_iterator<ForwardIterator>( );
+
+		static_assert( is_default_constructible_v<ForwardIterator>,
+		               "ForwardIterator is not default constructible" );
+		// Cannot express MultiPass // auto b = a; *a++; *b;
+		return true;
+	}
+
+	template<typename ForwardIterator,
+	         typename T =
+	           std::decay_t<decltype( *std::declval<ForwardIterator>( ) )>>
+	constexpr bool is_forward_iterator_v = is_input_iterator_v<ForwardIterator, T>
+	  &&is_default_constructible_v<ForwardIterator>;
+
+	// is_bidirectional_iterator
+	template<typename BitdirectionalIterator>
+	constexpr bool is_bidirectional_iterator( ) noexcept {
+		is_forward_iterator<BitdirectionalIterator>( );
+		static_assert( traits::has_decrement_operator_v<BitdirectionalIterator>,
+		               "BitdirectionalIterator does not have decrement operator" );
+		return true;
+	}
+
+	template<typename BitdirectionalIterator>
+	constexpr bool is_bidirectional_iterator_v =
+	  is_forward_iterator_v<BitdirectionalIterator>
+	    &&traits::has_decrement_operator_v<BitdirectionalIterator>;
+
+	// is_random_iterator
+	template<typename RandomIterator>
+	constexpr bool is_random_iterator( ) noexcept {
+		is_bidirectional_iterator<RandomIterator>( );
+		// Mathematics
+		static_assert(
+		  traits::has_addition_operator_v<RandomIterator, int>,
+		  "RandomIterator does not support addition with integer types" );
+		static_assert(
+		  traits::has_addition_operator_v<int, RandomIterator>,
+		  "RandomIterator does not support addition with integer types" );
+		static_assert(
+		  traits::has_addition_operator_v<RandomIterator>,
+		  "RandomIterator does not support addition with RandomIterators" );
+		static_assert(
+		  traits::has_subtraction_operator_v<RandomIterator, int>,
+		  "RandomIterator does not support subtraction with integer types" );
+		static_assert(
+		  traits::has_subtraction_operator_v<int, RandomIterator>,
+		  "RandomIterator does not support subtraction with integer types" );
+		static_assert(
+		  traits::has_subtraction_operator_v<RandomIterator>,
+		  "RandomIterator does not support subtraction with RandomIterators" );
+		// Compound Assignment
+		static_assert(
+		  traits::has_compound_assignment_add_operator_v<RandomIterator, int>,
+		  "RandomIterator does not support compound assignment "
+		  "addition += operations" );
+		static_assert(
+		  traits::has_compound_assignment_sub_operator_v<RandomIterator, int>,
+		  "RandomIterator does not support compound assignment "
+		  "subtraction -= operations" );
+		// Comparison
+		static_assert( is_less_than_comparable_v<RandomIterator>,
+		               "RandomIterator does not support comparison < operations" );
+		static_assert( is_greater_than_comparable_v<RandomIterator>,
+		               "RandomIterator does not support comparison > operations" );
+		static_assert( is_equal_less_than_comparable_v<RandomIterator>,
+		               "RandomIterator does not support comparison <= operations" );
+		static_assert( is_equal_greater_than_comparable_v<RandomIterator>,
+		               "RandomIterator does not support comparison >= operations" );
+		// Subscript
+		static_assert( traits::has_integer_subscript_v<RandomIterator>,
+		               "RandomIterator does not support subscript operator" );
+		return true;
+	}
+
+	template<typename RandomIterator>
+	constexpr bool is_random_iterator_v = is_bidirectional_iterator_v<
+	  RandomIterator> &&traits::has_addition_operator_v<RandomIterator, int>
+	  &&traits::has_addition_operator_v<
+	    int, RandomIterator> &&traits::has_addition_operator_v<RandomIterator>
+	    &&traits::has_subtraction_operator_v<RandomIterator, int>
+	      &&traits::has_subtraction_operator_v<int, RandomIterator>
+	        &&traits::has_subtraction_operator_v<RandomIterator> &&
+	          traits::has_compound_assignment_add_operator_v<RandomIterator, int>
+	            &&traits::has_compound_assignment_sub_operator_v<
+	              RandomIterator, int> &&is_less_than_comparable_v<RandomIterator>
+	              &&is_greater_than_comparable_v<RandomIterator>
+	                &&is_equal_less_than_comparable_v<RandomIterator>
+	                  &&is_equal_greater_than_comparable_v<RandomIterator>
+	                    &&traits::has_integer_subscript_v<RandomIterator>;
 
 	template<bool B, typename T = std::nullptr_t>
 	using required = std::enable_if_t<B, T>;
