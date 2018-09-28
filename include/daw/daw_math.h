@@ -84,18 +84,18 @@ namespace daw {
 		return std::forward<T>( t );
 	}
 
-	template<typename T>
-	constexpr decltype( auto ) min( T &&val1, T &&val2 ) noexcept {
+	template<typename T0, typename T1>
+	constexpr auto min( T0 &&val1, T1 &&val2 ) noexcept -> std::common_type_t<T0, T1> {
 			
 		if( std::less_equal<>{}( val1, val2 ) ) {
-			return std::forward<T>( val1 );
+			return std::forward<T0>( val1 );
 		}
-		return std::forward<T>( val2 );
+		return std::forward<T1>( val2 );
 	}
 
 	template<typename T, typename... Ts,
 	         std::enable_if_t<( sizeof...( Ts ) != 0 ), std::nullptr_t> = nullptr>
-	constexpr decltype( auto ) min( T &&val1, Ts &&... vs ) noexcept {
+	constexpr auto min( T &&val1, Ts &&... vs ) noexcept -> std::common_type_t<T, Ts...> {
 
 		auto&& tmp = min( std::forward<Ts>( vs )... );
 
