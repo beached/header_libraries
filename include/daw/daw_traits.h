@@ -577,8 +577,13 @@ namespace daw {
 	  impl::is_nothrow_callable_test<Function, Args...>( );
 
 	namespace impl {
+		template<typename, typename = std::nullptr_t>
+		struct void_function;
+
 		template<typename Function>
-		struct void_function {
+		struct void_function<Function,
+		  std::enable_if_t<is_default_constructible_v<Function>, std::nullptr_t>> {
+
 			Function function;
 
 			constexpr void_function( ) noexcept(
@@ -606,6 +611,36 @@ namespace daw {
 				function( std::forward<Args>( args )... );
 			}
 		};
+
+		template<typename Function>
+		struct void_function<Function,
+		  std::enable_if_t<!is_default_constructible_v<Function>, std::nullptr_t>> {
+
+			Function function;
+
+			explicit constexpr void_function( Function const &func ) noexcept(
+			  is_nothrow_copy_constructible_v<Function> )
+			  : function( func ) {}
+
+			explicit constexpr void_function( Function &&func ) noexcept(
+			  is_nothrow_move_constructible_v<Function> )
+			  : function( std::move( func ) ) {}
+
+			explicit constexpr operator bool( ) noexcept(
+			  noexcept( static_cast<bool>( std::declval<Function>( ) ) ) ) {
+
+				return static_cast<bool>( function );
+			}
+
+			template<typename... Args,
+			         std::enable_if_t<daw::is_callable_v<Function, Args...>,
+			                          std::nullptr_t> = nullptr>
+			constexpr void operator( )( Args &&... args ) noexcept(
+			  daw::is_nothrow_callable_v<Function, Args...> ) {
+				function( std::forward<Args>( args )... );
+			}
+		};
+
 	} // namespace impl
 
 	template<typename Function>
