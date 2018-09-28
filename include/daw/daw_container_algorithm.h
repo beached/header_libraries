@@ -30,13 +30,54 @@
 #include "daw_algorithm.h"
 #include "daw_math.h"
 #include "daw_traits.h"
+#include "cpp_17.h"
 
 namespace daw {
 	namespace container {
 		namespace impl {
 			template<typename Container>
 			using has_size_method = decltype( std::declval<Container>( ).size( ) );
-		}
+
+			namespace adl_test {
+				
+			}
+			template<typename Container>
+			constexpr bool is_nothrow_begin( ) noexcept {
+				using std::begin;
+				return noexcept( begin( std::declval<Container>( ) ) );
+			}
+
+			template<typename Container>
+			constexpr decltype( auto )
+			adl_begin( Container &&c ) noexcept( is_nothrow_begin<Container>( ) ) {
+				using std::begin;
+				return begin( c );
+			}
+
+			template<typename Container>
+			constexpr bool is_nothrow_end( ) noexcept {
+				using std::end;
+				return noexcept( end( std::declval<Container>( ) ) );
+			}
+
+			template<typename Container>
+			constexpr decltype( auto )
+			adl_end( Container &&c ) noexcept( is_nothrow_end<Container>( ) ) {
+				using std::end;
+				return end( c );
+			}
+
+			template<typename Container>
+			constexpr bool is_nothrow_sortable( ) noexcept {
+				return noexcept( std::sort( adl_begin( std::declval<Container>( ) ), adl_end( std::declval<Container>( ) ) ) );
+			}
+
+			template<typename Container, typename Predicate>
+			constexpr bool is_nothrow_sortable( ) noexcept {
+				return noexcept( std::sort( adl_begin( std::declval<Container>( ) ), adl_end( std::declval<Container>( ) ), std::declval<Predicate>( ) ) );
+			}
+
+		} // namespace impl
 
 		template<typename T, size_t N>
 		constexpr size_t container_size( T const ( & )[N] ) noexcept {
@@ -51,29 +92,27 @@ namespace daw {
 			return static_cast<size_t>( c.size( ) );
 		}
 
-		template<typename Container,
-		         std::enable_if_t<daw::traits::is_container_like_v<Container>,
-		                          std::nullptr_t> = nullptr>
-		void sort( Container &container ) noexcept( noexcept(
-		  std::sort( std::begin( container ), std::end( container ) ) ) ) {
+		template<typename Sortable>
+		void sort( Sortable &container ) noexcept(
+		  impl::is_nothrow_sortable<Sortable>( ) ) {
 
-			std::sort( std::begin( container ), std::end( container ) );
+			static_assert( daw::is_sortable_container_v<Sortable>, "" );
+			using std::begin;
+			using std::end;
+			std::sort( begin( container ), end( container ) );
 		}
 
-		template<typename Container, typename Compare,
-		         std::enable_if_t<daw::traits::is_container_like_v<Container>,
-		                          std::nullptr_t> = nullptr>
-		void sort( Container &container, Compare compare ) noexcept( noexcept(
-		  std::sort( std::begin( container ), std::end( container ), compare ) ) ) {
-			static_assert(
-			  daw::is_binary_predicate_v<Compare,
-			                             decltype( *std::begin( container ) ),
-			                             decltype( *std::begin( container ) )>,
-			  "Compare does not satisfy the Binary Predicate concept.  See "
-			  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate for more "
-			  "information" );
+		template<typename Sortable, typename Compare>
+		void sort( Sortable &container, Compare && compare ) noexcept( impl::is_nothrow_sortable<Sortable, Compare>( ) ) {
+			using std::begin;
+			using std::end;
+			using value_type = remove_cvref_t<decltype(*begin( container ) )>;
 
-			std::sort( std::begin( container ), std::end( container ), compare );
+			static_assert( daw::is_sortable_container_v<Sortable>, "" );
+			static_assert(
+			  daw::is_binary_predicate_v<Compare, value_type, value_type>, "" );
+
+			std::sort( begin( container ), end( container ), std::forward<Compare>( compare ) );
 		}
 
 		template<typename Container,
@@ -92,15 +131,14 @@ namespace daw {
 		  noexcept( std::stable_sort( std::begin( container ),
 		                              std::end( container ), compare ) ) ) {
 
-			static_assert(
-			  daw::is_binary_predicate_v<Compare,
-			                             decltype( *std::begin( container ) ),
-			                             decltype( *std::end( container ) )>,
-			  "Compare does not satisfy the Binary Predicate concept.  See "
-			  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate for more "
-			  "information" );
+			using std::begin;
+			using std::end;
+			using value_type = remove_cvref_t<decltype(*begin( container ) )>;
 
-			std::stable_sort( std::begin( container ), std::end( container ),
+			static_assert(
+			  daw::is_binary_predicate_v<Compare, value_type, value_type>, "" );
+
+			std::stable_sort( begin( container ), end( container ),
 			                  compare );
 		}
 
@@ -349,16 +387,14 @@ namespace daw {
 		max_element( Container &container, Compare compare ) noexcept(
 		  noexcept( std::max_element( std::begin( container ),
 		                              std::end( container ), compare ) ) ) {
+			using std::begin;
+			using std::end;
+			using value_type = remove_cvref_t<decltype(*begin( container ) )>;
 
 			static_assert(
-			  daw::is_binary_predicate_v<Compare,
-			                             decltype( *std::begin( container ) ),
-			                             decltype( *std::end( container ) )>,
-			  "Compare does not satisfy the Binary Predicate concept.  See "
-			  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate for more "
-			  "information" );
+			  daw::is_binary_predicate_v<Compare, value_type, value_type>, "" );
 
-			return std::max_element( std::begin( container ), std::end( container ),
+			return std::max_element( begin( container ), end( container ),
 			                         compare );
 		}
 
@@ -370,15 +406,14 @@ namespace daw {
 		  noexcept( std::max_element( std::begin( container ),
 		                              std::end( container ), compare ) ) ) {
 
-			static_assert(
-			  daw::is_binary_predicate_v<Compare,
-			                             decltype( *std::begin( container ) ),
-			                             decltype( *std::end( container ) )>,
-			  "Compare does not satisfy the Binary Predicate concept.  See "
-			  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate for more "
-			  "information" );
+			using std::begin;
+			using std::end;
+			using value_type = remove_cvref_t<decltype(*begin( container ) )>;
 
-			return std::max_element( std::begin( container ), std::end( container ),
+			static_assert(
+			  daw::is_binary_predicate_v<Compare, value_type, value_type>, "" );
+
+			return std::max_element( begin( container ), end( container ),
 			                         compare );
 		}
 

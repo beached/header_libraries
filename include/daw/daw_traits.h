@@ -285,9 +285,43 @@ namespace daw {
 		template<typename T>
 		constexpr bool isnt_string_v = !is_string_v<T>;
 
-		template<typename T>
+		namespace detectors {
+			template<typename T>
+			using std_begin_detector = decltype( std::begin( std::declval<T>( ) ) );
+
+			template<typename T>
+			using adl_begin_detector = decltype( begin( std::declval<T>( ) ) );
+
+			template<typename T>
+			using std_end_detector = decltype( std::end( std::declval<T>( ) ) );
+
+			template<typename T>
+			using adl_end_detector = decltype( end( std::declval<T>( ) ) );
+		}
+		template<typename Container>
+		constexpr bool has_begin =
+		  is_detected_v<detectors::std_begin_detector, Container> or
+		  is_detected_v<detectors::adl_begin_detector, Container>;
+
+		template<typename Container>
+		constexpr bool has_end =
+		  is_detected_v<detectors::std_end_detector, Container> or
+		  is_detected_v<detectors::adl_end_detector, Container>;
+
+		template<typename Container>
 		constexpr bool is_container_like_v =
-		  all_true_v<has_begin_member_v<T>, has_end_member_v<T>>;
+		  has_begin<Container> and has_end<Container>;
+
+		template<typename Container>
+		constexpr bool is_container_like_test( ) noexcept {
+			static_assert( is_container_like_v<Container>, "Container does not fullfill the Container concept" );
+			static_assert( has_begin<Container>, "Container does not have a begin( Container ) or std::begin( Container ) overload" );
+			static_assert( has_end<Container>, "Container does not have a end( Container ) or std::end( Container ) overload" );
+			return true;
+		}
+
+		template<typename Container>
+		constexpr bool is_container_like = is_container_like_test<Container>( );
 
 		template<typename T>
 		constexpr bool is_container_not_string_v =
@@ -669,6 +703,18 @@ namespace daw {
 
 	template<typename BinaryPredicate, typename T, typename U = T>
 	constexpr bool is_binary_predicate_v = is_predicate_v<BinaryPredicate, T, U>;
+
+	template<typename BinaryPredicate, typename T, typename U = T>
+	constexpr bool is_binary_predicate_test( ) noexcept {
+		static_assert( is_binary_predicate_v<BinaryPredicate, T, U>, 
+			  "BinaryPredicate does not satisfy the Binary Predicate concept.  See "
+			  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate for more "
+			  "information" );
+		return true;
+	}
+
+	template<typename BinaryPredicate, typename T, typename U = T>
+	constexpr bool is_binary_predicate = is_binary_predicate_test<BinaryPredicate, T, U>( );
 
 	template<typename UnaryPredicate, typename T>
 	constexpr bool is_unary_predicate_v = is_predicate_v<UnaryPredicate, T>;
@@ -1335,6 +1381,22 @@ namespace daw {
 	template<typename RandomIterator>
 	constexpr bool
 	  is_random_iterator = is_random_iterator_test<RandomIterator>( );
+
+	template<typename Sortable>
+	constexpr bool is_sortable_container_v = all_true_v<
+	  traits::is_container_like_v<Sortable>,
+	  is_random_iterator_v<decltype( std::begin( std::declval<Sortable>( ) ) )>>;
+
+	template<typename Sortable>
+	constexpr bool is_sortable_container_test( ) noexcept {
+		static_assert( is_sortable_container_v<Sortable>, "Sortable does not fullfill the requirements of the Sortable concept" );
+	  static_assert( traits::is_container_like<Sortable>, "Sortable does not fullfill the requirements of the Container concept" );
+
+		using sortable_iterator_t = decltype( std::begin( std::declval<Sortable>( ) ) );
+	  static_assert( is_random_iterator<sortable_iterator_t>, "" );
+
+		return true;
+	}
 
 	template<bool B, typename T = std::nullptr_t>
 	using required = std::enable_if_t<B, T>;
