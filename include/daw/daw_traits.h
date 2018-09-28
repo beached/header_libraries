@@ -1230,6 +1230,10 @@ namespace daw {
 
 	template<typename RandomIterator>
 	constexpr bool is_random_iterator_test( ) noexcept {
+		static_assert(
+		  is_random_iterator_v<RandomIterator>,
+		  "RandomIterator does not fullfill the RandomIterator concept.  See "
+		  "https://en.cppreference.com/w/cpp/named_req/RandomAccessIterator" );
 		is_bidirectional_iterator_test<RandomIterator>( );
 		// Mathematics
 		static_assert(
@@ -1265,7 +1269,7 @@ namespace daw {
 		// Subscript
 		static_assert( traits::has_integer_subscript_v<RandomIterator>,
 		               "RandomIterator does not support subscript operator" );
-		return is_random_iterator_v<RandomIterator>; 
+		return is_random_iterator_v<RandomIterator>;
 	}
 
 	template<typename RandomIterator>
