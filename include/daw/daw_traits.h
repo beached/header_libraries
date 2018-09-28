@@ -855,8 +855,7 @@ namespace daw {
 
 		template<typename T, typename U>
 		constexpr bool has_compound_assignment_mul_operator_v =
-		  daw::is_detected_v<detectors::has_compound_assignment_mul_operator, T,
-		                     U>;
+		  daw::is_detected_v<detectors::has_compound_assignment_mul_operator, T, U>;
 
 		template<typename T, typename U>
 		constexpr bool has_compound_assignment_div_operator_v =
@@ -1130,7 +1129,8 @@ namespace daw {
 	  ;
 
 	// is_output_iterator
-	template<typename OutputIterator, typename T = typename std::iterator_traits<OutputIterator>::value_type>
+	template<typename OutputIterator, typename T = typename std::iterator_traits<
+	                                    OutputIterator>::value_type>
 	constexpr bool is_output_iterator_test( ) noexcept {
 		is_iterator_test<OutputIterator>( );
 		static_assert( is_assignable_iterator_v<OutputIterator, T>,
@@ -1138,11 +1138,14 @@ namespace daw {
 		return true;
 	}
 
-	template<typename OutputIterator, typename T = typename std::iterator_traits<OutputIterator>::value_type>
-	constexpr bool is_output_iterator = is_output_iterator_test<OutputIterator, T>( );
+	template<typename OutputIterator, typename T = typename std::iterator_traits<
+	                                    OutputIterator>::value_type>
+	constexpr bool
+	  is_output_iterator = is_output_iterator_test<OutputIterator, T>( );
 
-
-	template<typename OutputIterator, typename T = typename std::iterator_traits<OutputIterator>::value_type>
+	template<typename OutputIterator,
+	         typename T =
+	           typename std::iterator_traits<OutputIterator>::value_type>
 	constexpr bool is_output_iterator_v =
 	  is_iterator_v<OutputIterator> &&is_assignable_iterator_v<OutputIterator, T>;
 
@@ -1201,7 +1204,8 @@ namespace daw {
 	}
 
 	template<typename BidirectionalIterator>
-	constexpr bool is_bidirectional_iterator = is_bidirectional_iterator_test<BidirectionalIterator>( );
+	constexpr bool is_bidirectional_iterator =
+	  is_bidirectional_iterator_test<BidirectionalIterator>( );
 
 	template<typename BitdirectionalIterator>
 	constexpr bool is_bidirectional_iterator_v =
@@ -1209,6 +1213,21 @@ namespace daw {
 	    &&traits::has_decrement_operator_v<BitdirectionalIterator>;
 
 	// is_random_iterator
+	template<typename RandomIterator>
+	constexpr bool is_random_iterator_v = daw::all_true_v<
+	  is_bidirectional_iterator_v<RandomIterator>,
+	  traits::has_addition_operator_v<RandomIterator, int>,
+	  traits::has_addition_operator_v<int, RandomIterator>,
+	  traits::has_subtraction_operator_v<RandomIterator, int>,
+	  traits::has_subtraction_operator_v<RandomIterator>,
+	  traits::has_compound_assignment_add_operator_v<RandomIterator, int>,
+	  traits::has_compound_assignment_sub_operator_v<RandomIterator, int>,
+	  is_less_than_comparable_v<RandomIterator>,
+	  is_greater_than_comparable_v<RandomIterator>,
+	  is_equal_less_than_comparable_v<RandomIterator>,
+	  is_equal_greater_than_comparable_v<RandomIterator>,
+	  traits::has_integer_subscript_v<RandomIterator>>;
+
 	template<typename RandomIterator>
 	constexpr bool is_random_iterator_test( ) noexcept {
 		is_bidirectional_iterator_test<RandomIterator>( );
@@ -1246,27 +1265,12 @@ namespace daw {
 		// Subscript
 		static_assert( traits::has_integer_subscript_v<RandomIterator>,
 		               "RandomIterator does not support subscript operator" );
-		return true;
+		return is_random_iterator_v<RandomIterator>; 
 	}
 
 	template<typename RandomIterator>
-	constexpr bool is_random_iterator = is_random_iterator_test<RandomIterator>( );
-
-	template<typename RandomIterator>
-	constexpr bool is_random_iterator_v = is_bidirectional_iterator_v<
-	  RandomIterator> &&traits::has_addition_operator_v<RandomIterator, int>
-	  &&traits::has_addition_operator_v<
-	    int, RandomIterator> &&traits::has_addition_operator_v<RandomIterator>
-	    &&traits::has_subtraction_operator_v<RandomIterator, int>
-	      &&traits::has_subtraction_operator_v<int, RandomIterator>
-	        &&traits::has_subtraction_operator_v<RandomIterator> &&
-	          traits::has_compound_assignment_add_operator_v<RandomIterator, int>
-	            &&traits::has_compound_assignment_sub_operator_v<
-	              RandomIterator, int> &&is_less_than_comparable_v<RandomIterator>
-	              &&is_greater_than_comparable_v<RandomIterator>
-	                &&is_equal_less_than_comparable_v<RandomIterator>
-	                  &&is_equal_greater_than_comparable_v<RandomIterator>
-	                    &&traits::has_integer_subscript_v<RandomIterator>;
+	constexpr bool
+	  is_random_iterator = is_random_iterator_test<RandomIterator>( );
 
 	template<bool B, typename T = std::nullptr_t>
 	using required = std::enable_if_t<B, T>;
