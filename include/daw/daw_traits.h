@@ -1193,11 +1193,9 @@ namespace daw {
 	constexpr bool is_input_iterator = is_input_iterator_test<InputIterator>( );
 
 	// is_forward_iterator
-	template<typename ForwardIterator,
-	         typename T =
-	           std::decay_t<decltype( *std::declval<ForwardIterator>( ) )>>
+	template<typename ForwardIterator>
 	constexpr bool is_forward_iterator_v =
-	  all_true_v<is_input_iterator_v<ForwardIterator, T>,
+	  all_true_v<is_iterator_v<ForwardIterator>,
 	             is_default_constructible_v<ForwardIterator>>;
 
 	template<typename ForwardIterator>
@@ -1207,8 +1205,7 @@ namespace daw {
 		  "ForwardIterator does not fullfill the RandomIterator concept.  See "
 		  "https://en.cppreference.com/w/cpp/named_req/ForwardIterator" );
 
-		is_input_iterator_test<ForwardIterator>( );
-		is_output_iterator_test<ForwardIterator>( );
+		is_iterator_test<ForwardIterator>( );
 
 		static_assert( is_default_constructible_v<ForwardIterator>,
 		               "ForwardIterator is not default constructible" );
