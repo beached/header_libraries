@@ -22,6 +22,7 @@
 
 #include <cstdint>
 #include <iostream>
+#include <list>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -496,7 +497,7 @@ namespace is_iterator_006 {
 
 namespace is_iterator_007 {
 	using iter_t = typename std::unordered_map<int, int>::iterator;
-	static_assert( daw::is_iterator<iter_t>( ), "" );
+	static_assert( daw::is_iterator<iter_t>, "" );
 	static_assert( daw::is_copy_constructible_v<iter_t>, "" );
 	static_assert( daw::is_copy_assignable_v<iter_t>, "" );
 	static_assert( daw::is_destructible_v<iter_t>, "" );
@@ -515,10 +516,19 @@ namespace is_iterator_008 {
 	static_assert( daw::is_iterator_v<iter_t>, "" );
 } // namespace is_iterator_008
 
+namespace is_random_iterator_001 {
+	using iter_t = typename std::vector<int>::iterator;
+	static_assert( daw::is_random_iterator<iter_t>, "" );
+} // namespace is_random_iterator_001
+
+namespace is_random_iterator_002 {
+	using iter_t = typename std::list<int>::iterator;
+	static_assert( !daw::is_random_iterator_v<iter_t>, "" );
+} // namespace is_random_iterator_002
+
 namespace is_output_iterator_001 {
 	using iter_t = typename std::vector<int>::iterator;
-	constexpr auto const test_value = daw::is_output_iterator_v<iter_t, int>;
-	static_assert( test_value, "" );
+	static_assert( daw::is_output_iterator_v<iter_t, int>, "" );
 } // namespace is_output_iterator_001
 
 namespace is_output_iterator_002 {

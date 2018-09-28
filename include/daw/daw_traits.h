@@ -1087,7 +1087,7 @@ namespace daw {
 	// Iterator Concepts
 	// is_iterator
 	template<typename Iterator>
-	constexpr bool is_iterator( ) noexcept {
+	constexpr bool is_iterator_test( ) noexcept {
 		static_assert( is_copy_constructible_v<Iterator>,
 		               "Iterator is not copy constructable" );
 		static_assert( is_copy_assignable_v<Iterator>,
@@ -1115,6 +1115,9 @@ namespace daw {
 	}
 
 	template<typename Iterator>
+	constexpr bool is_iterator = is_iterator_test<Iterator>( );
+
+	template<typename Iterator>
 	constexpr bool is_iterator_v =
 	  is_copy_constructible_v<Iterator> &&is_copy_assignable_v<Iterator>
 	    &&is_destructible_v<Iterator> &&impl::is_incrementable_v<Iterator> &&
@@ -1127,27 +1130,31 @@ namespace daw {
 	  ;
 
 	// is_output_iterator
-	template<typename OutputIterator, typename T>
-	constexpr bool is_output_iterator( ) noexcept {
-		is_iterator<OutputIterator>( );
+	template<typename OutputIterator, typename T = typename std::iterator_traits<OutputIterator>::value_type>
+	constexpr bool is_output_iterator_test( ) noexcept {
+		is_iterator_test<OutputIterator>( );
 		static_assert( is_assignable_iterator_v<OutputIterator, T>,
 		               "OutputIterator is not assignable" );
 		return true;
 	}
 
-	template<typename OutputIterator, typename T>
+	template<typename OutputIterator, typename T = typename std::iterator_traits<OutputIterator>::value_type>
+	constexpr bool is_output_iterator = is_output_iterator_test<OutputIterator, T>( );
+
+
+	template<typename OutputIterator, typename T = typename std::iterator_traits<OutputIterator>::value_type>
 	constexpr bool is_output_iterator_v =
 	  is_iterator_v<OutputIterator> &&is_assignable_iterator_v<OutputIterator, T>;
 
 	// is_input_iterator
 	template<typename InputIterator>
-	constexpr bool is_input_iterator( ) noexcept {
-		is_iterator<InputIterator>( );
+	constexpr bool is_input_iterator_test( ) noexcept {
+		is_iterator_test<InputIterator>( );
 
 		using T = decltype( *std::declval<InputIterator>( ) );
 		using U = remove_cvref_t<T>;
 
-		static_assert( is_equality_comparable_v<InputIterator, U>,
+		static_assert( is_equality_comparable_v<InputIterator>,
 		               "InputIterator is not equality_comparable" );
 
 		static_assert(
@@ -1155,6 +1162,9 @@ namespace daw {
 		  "InputIterator's dereferenced value is not convertible to itself" );
 		return true;
 	}
+
+	template<typename InputIterator>
+	constexpr bool is_input_iterator = is_input_iterator_test<InputIterator>( );
 
 	template<typename InputIterator,
 	         typename T =
@@ -1165,9 +1175,9 @@ namespace daw {
 
 	// is_forward_iterator
 	template<typename ForwardIterator>
-	constexpr bool is_forward_iterator( ) noexcept {
-		is_input_iterator<ForwardIterator>( );
-		is_output_iterator<ForwardIterator>( );
+	constexpr bool is_forward_iterator_test( ) noexcept {
+		is_input_iterator_test<ForwardIterator>( );
+		is_output_iterator_test<ForwardIterator>( );
 
 		static_assert( is_default_constructible_v<ForwardIterator>,
 		               "ForwardIterator is not default constructible" );
@@ -1182,13 +1192,16 @@ namespace daw {
 	  &&is_default_constructible_v<ForwardIterator>;
 
 	// is_bidirectional_iterator
-	template<typename BitdirectionalIterator>
-	constexpr bool is_bidirectional_iterator( ) noexcept {
-		is_forward_iterator<BitdirectionalIterator>( );
-		static_assert( traits::has_decrement_operator_v<BitdirectionalIterator>,
-		               "BitdirectionalIterator does not have decrement operator" );
+	template<typename BidirectionalIterator>
+	constexpr bool is_bidirectional_iterator_test( ) noexcept {
+		is_forward_iterator_test<BidirectionalIterator>( );
+		static_assert( traits::has_decrement_operator_v<BidirectionalIterator>,
+		               "BidirectionalIterator does not have decrement operator" );
 		return true;
 	}
+
+	template<typename BidirectionalIterator>
+	constexpr bool is_bidirectional_iterator = is_bidirectional_iterator_test<BidirectionalIterator>( );
 
 	template<typename BitdirectionalIterator>
 	constexpr bool is_bidirectional_iterator_v =
@@ -1197,8 +1210,8 @@ namespace daw {
 
 	// is_random_iterator
 	template<typename RandomIterator>
-	constexpr bool is_random_iterator( ) noexcept {
-		is_bidirectional_iterator<RandomIterator>( );
+	constexpr bool is_random_iterator_test( ) noexcept {
+		is_bidirectional_iterator_test<RandomIterator>( );
 		// Mathematics
 		static_assert(
 		  traits::has_addition_operator_v<RandomIterator, int>,
@@ -1207,13 +1220,7 @@ namespace daw {
 		  traits::has_addition_operator_v<int, RandomIterator>,
 		  "RandomIterator does not support addition with integer types" );
 		static_assert(
-		  traits::has_addition_operator_v<RandomIterator>,
-		  "RandomIterator does not support addition with RandomIterators" );
-		static_assert(
 		  traits::has_subtraction_operator_v<RandomIterator, int>,
-		  "RandomIterator does not support subtraction with integer types" );
-		static_assert(
-		  traits::has_subtraction_operator_v<int, RandomIterator>,
 		  "RandomIterator does not support subtraction with integer types" );
 		static_assert(
 		  traits::has_subtraction_operator_v<RandomIterator>,
@@ -1241,6 +1248,9 @@ namespace daw {
 		               "RandomIterator does not support subscript operator" );
 		return true;
 	}
+
+	template<typename RandomIterator>
+	constexpr bool is_random_iterator = is_random_iterator_test<RandomIterator>( );
 
 	template<typename RandomIterator>
 	constexpr bool is_random_iterator_v = is_bidirectional_iterator_v<

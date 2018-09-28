@@ -58,23 +58,22 @@ BOOST_AUTO_TEST_CASE( daw_hex_test_003 ) {
 	std::cout << "Output: " << a_str << '\n';
 }
 
-constexpr bool to_hex_test_004( ) noexcept {
-	uint32_t const a = 0xFF00FFFF;
-	char result[9] = {0};
-	char const expected[] = "FF00FFFF";
-	char *ptr = result;
-	daw::hex( a, ptr );
-	for( size_t n = 0; n < 8; ++n ) {
-		if( result[n] != expected[n] ) {
-			return false;
+namespace daw_hex_test_004 {
+	constexpr bool to_hex_test_004( ) noexcept {
+		uint32_t const a = 0xFF00FFFF;
+		char result[9] = {0};
+		char const expected[] = "FF00FFFF";
+		char *ptr = result;
+		daw::hex( a, ptr );
+		for( size_t n = 0; n < 8; ++n ) {
+			if( result[n] != expected[n] ) {
+				return false;
+			}
 		}
+		return true;
 	}
-	return true;
-}
-
-BOOST_AUTO_TEST_CASE( daw_hex_test_004 ) {
-	BOOST_REQUIRE( to_hex_test_004( ) );
-}
+	static_assert( to_hex_test_004( ), "" );
+} // namespace daw_hex_test_004
 
 BOOST_AUTO_TEST_CASE( daw_hex_test_005 ) {
 	uint32_t const a = 0x789ABCDE;
@@ -84,22 +83,20 @@ BOOST_AUTO_TEST_CASE( daw_hex_test_005 ) {
 	BOOST_REQUIRE_EQUAL( a_str, "789ABCDE" );
 }
 
-BOOST_AUTO_TEST_CASE( daw_pack_index_of_001 ) {
-	constexpr auto const pack_pos =
-	  daw::pack_index_of_v<int, std::string, bool, float, int, long>;
-	BOOST_REQUIRE_EQUAL( pack_pos, 3 );
+namespace daw_pack_index_of_001 {
+	static_assert(
+	  daw::pack_index_of_v<int, std::string, bool, float, int, long> == 3, "" );
 }
 
-BOOST_AUTO_TEST_CASE( daw_pack_index_of_002 ) {
-	constexpr auto const pack_pos =
-	  daw::pack_index_of_v<double, std::string, bool, float, int, long>;
-	BOOST_REQUIRE_EQUAL( pack_pos, 5 );
+namespace daw_pack_index_of_002 {
+	static_assert(
+	  daw::pack_index_of_v<double, std::string, bool, float, int, long> == 5,
+	  "" );
 }
 
-BOOST_AUTO_TEST_CASE( daw_pack_index_of_003 ) {
-	constexpr auto const pack_pos =
-	  daw::pack_index_of_v<bool, std::string, bool, float, int, long>;
-	BOOST_REQUIRE_EQUAL( pack_pos, 1 );
+namespace daw_pack_index_of_003 {
+	static_assert(
+	  daw::pack_index_of_v<bool, std::string, bool, float, int, long> == 1, "" );
 }
 
 /*
@@ -133,7 +130,7 @@ BOOST_AUTO_TEST_CASE( daw_pack_type_at_001 ) {
 	std::cout << tst << '\n';
 }
 
-BOOST_AUTO_TEST_CASE( construct_a_deps ) {
+namespace construct_a_deps {
 	static_assert( daw::is_constructible_v<std::vector<int>, size_t, int>,
 	               "Vector should be normal constructable" );
 
@@ -156,7 +153,7 @@ BOOST_AUTO_TEST_CASE( construct_a_deps ) {
 	  daw::impl::should_use_aggregate_construction_v<
 	    daw::use_aggregate_construction<std::array<int, 2>>>,
 	  "aggregate_construction<array> should be aggregate constructable" );
-}
+} // namespace construct_a_deps
 
 BOOST_AUTO_TEST_CASE( construct_a_001 ) {
 	auto tmp = daw::construct_from<std::vector<int>>(
