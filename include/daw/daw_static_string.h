@@ -179,7 +179,7 @@ namespace daw {
 		}
 #endif
 
-		template<typename Iterator, std::enable_if_t<daw::is_iterator_v<Iterator>,
+		template<typename Iterator, std::enable_if_t<traits::is_iterator_v<Iterator>,
 		                                             std::nullptr_t> = nullptr>
 		constexpr basic_static_string &append( Iterator first,
 		                                       Iterator const last ) {
@@ -467,7 +467,7 @@ namespace daw {
 		  noexcept( noexcept(
 		    std::declval<UnaryPredicate>( )( std::declval<value_type>( ) ) ) ) {
 
-			static_assert( daw::is_unary_predicate_v<UnaryPredicate, CharT>,
+			static_assert( traits::is_unary_predicate_v<UnaryPredicate, CharT>,
 			               "UnaryPredicate p does not fullfill the requires of a "
 			               "unary predicate concept.  See "
 			               "http://en.cppreference.com/w/cpp/concept/Predicate" );
@@ -481,7 +481,7 @@ namespace daw {
 		  noexcept( noexcept(
 		    std::declval<UnaryPredicate>( )( std::declval<value_type>( ) ) ) ) {
 
-			static_assert( daw::is_unary_predicate_v<UnaryPredicate, CharT>,
+			static_assert( traits::is_unary_predicate_v<UnaryPredicate, CharT>,
 			               "UnaryPredicate p does not fullfill the requires of a "
 			               "unary predicate concept.  See "
 			               "http://en.cppreference.com/w/cpp/concept/Predicate" );
@@ -1224,7 +1224,7 @@ namespace daw {
 	auto split(
 	  daw::basic_static_string<CharT, N, Traits, InternalSizeType> const &str,
 	  UnaryPredicate pred ) {
-		static_assert( daw::is_unary_predicate_v<UnaryPredicate, CharT>,
+		static_assert( traits::is_unary_predicate_v<UnaryPredicate, CharT>,
 		               "UnaryPredicate p does not fullfill the requires of a unary "
 		               "predicate concept.  See "
 		               "http://en.cppreference.com/w/cpp/concept/Predicate" );

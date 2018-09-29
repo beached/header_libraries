@@ -50,7 +50,7 @@ namespace daw {
 	  Container &container, Iterator &it,
 	  ptrdiff_t distance ) noexcept( noexcept( daw::advance( it, distance ) ) ) {
 
-		static_assert( is_iterator_v<Iterator>,
+		static_assert( traits::is_iterator_v<Iterator>,
 		               "Iterator passed to advance does not fullfill the concept "
 		               "of an Iterator. "
 		               "http://en.cppreference.com/w/cpp/concept/Iterator" );
@@ -79,7 +79,7 @@ namespace daw {
 	  Container const &container, Iterator &it,
 	  ptrdiff_t distance ) noexcept( noexcept( daw::advance( it, distance ) ) ) {
 
-		static_assert( is_iterator_v<Iterator>,
+		static_assert( traits::is_iterator_v<Iterator>,
 		               "Iterator passed to advance does not fullfill the concept "
 		               "of an Iterator. "
 		               "http://en.cppreference.com/w/cpp/concept/Iterator" );
@@ -107,7 +107,7 @@ namespace daw {
 	constexpr Iterator
 	safe_next( Iterator it, Iterator const last,
 	           size_t n = 1 ) noexcept( noexcept( daw::next( it, n ) ) ) {
-		static_assert( is_iterator_v<Iterator>,
+		static_assert( traits::is_iterator_v<Iterator>,
 		               "Iterator passed to advance does not fullfill the concept "
 		               "of an Iterator. "
 		               "http://en.cppreference.com/w/cpp/concept/Iterator" );
@@ -128,7 +128,7 @@ namespace daw {
 	constexpr Iterator
 	safe_prev( Iterator it, Iterator first,
 	           size_t n = 1 ) noexcept( noexcept( daw::prev( it, n ) ) ) {
-		static_assert( is_iterator_v<Iterator>,
+		static_assert( traits::is_iterator_v<Iterator>,
 		               "Iterator passed to advance does not fullfill the concept "
 		               "of an Iterator. "
 		               "http://en.cppreference.com/w/cpp/concept/Iterator" );
@@ -470,7 +470,7 @@ namespace daw {
 		                             UnaryPredicate pred ) {
 
 			static_assert(
-			  daw::is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
+			  daw::traits::is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
 			  "pred does not satisfy the Unary Predicate concept.  See "
 			  "http://en.cppreference.com/w/cpp/concept/Predicate for more "
 			  "information" );
@@ -490,7 +490,7 @@ namespace daw {
 		constexpr auto find_first_of( Iterator first, Iterator last,
 		                              UnaryPredicate pred ) {
 			static_assert(
-			  daw::is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
+			  daw::traits::is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
 			  "pred does not satisfy the Unary Predicate concept.  See "
 			  "http://en.cppreference.com/w/cpp/concept/Predicate for more "
 			  "information" );
@@ -508,7 +508,7 @@ namespace daw {
 		constexpr auto find_first_range_of( Iterator first, Iterator last,
 		                                    UnaryPredicate pred ) {
 			static_assert(
-			  daw::is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
+			  daw::traits::is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
 			  "pred does not satisfy the Unary Predicate concept.  See "
 			  "http://en.cppreference.com/w/cpp/concept/Predicate for more "
 			  "information" );
@@ -543,9 +543,10 @@ namespace daw {
 		constexpr bool
 		satisfies_one( Value value,
 		               UnaryPredicate func ) noexcept( noexcept( func( value ) ) ) {
-			static_assert( is_unary_predicate_v<UnaryPredicate, decltype( value )>,
-			               "UnaryPredicate must take one value and return a bool "
-			               "e.g. func( value ) must be valid" );
+			static_assert(
+			  traits::is_unary_predicate_v<UnaryPredicate, decltype( value )>,
+			  "UnaryPredicate must take one value and return a bool "
+			  "e.g. func( value ) must be valid" );
 			return func( value );
 		}
 
@@ -559,9 +560,10 @@ namespace daw {
 		constexpr bool satisfies_one( Value value, UnaryPredicate func,
 		                              UnaryPredicates... funcs ) {
 
-			static_assert( is_unary_predicate_v<UnaryPredicate, decltype( value )>,
-			               "UnaryPredicate must take one value and return a bool "
-			               "e.g. func( value ) must be valid" );
+			static_assert(
+			  traits::is_unary_predicate_v<UnaryPredicate, decltype( value )>,
+			  "UnaryPredicate must take one value and return a bool "
+			  "e.g. func( value ) must be valid" );
 
 			return func( value ) || satisfies_one( value, funcs... );
 		}
@@ -575,19 +577,20 @@ namespace daw {
 		/// value in range
 		template<typename Iterator, typename LastType, typename UnaryPredicate,
 		         typename... UnaryPredicates,
-		         std::enable_if_t<
-		           (daw::is_dereferenceable_v<LastType> &&
-		            daw::is_equality_comparable_v<daw::traits::deref_t<LastType>>),
-		           std::nullptr_t> = nullptr>
+		         std::enable_if_t<(traits::is_dereferenceable_v<LastType> &&
+		                           traits::is_equality_comparable_v<
+		                             daw::traits::deref_t<LastType>>),
+		                          std::nullptr_t> = nullptr>
 		constexpr bool satisfies_one(
 		  Iterator first, LastType last, UnaryPredicate func,
 		  UnaryPredicates... funcs ) noexcept( noexcept( satisfies_one( *first,
 		                                                                func,
 		                                                                funcs... ) ) ) {
 
-			static_assert( is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
-			               "UnaryPredicate must take one value and return a bool "
-			               "e.g. func( *first ) must be valid" );
+			static_assert(
+			  traits::is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
+			  "UnaryPredicate must take one value and return a bool "
+			  "e.g. func( *first ) must be valid" );
 
 			while( first != last ) {
 				if( satisfies_one( *first, func, funcs... ) ) {
@@ -606,9 +609,10 @@ namespace daw {
 		constexpr bool
 		satisfies_all( Value value,
 		               UnaryPredicate func ) noexcept( noexcept( func( value ) ) ) {
-			static_assert( is_unary_predicate_v<UnaryPredicate, decltype( value )>,
-			               "UnaryPredicate must take one value and return a bool "
-			               "e.g. func( value ) must be valid" );
+			static_assert(
+			  traits::is_unary_predicate_v<UnaryPredicate, decltype( value )>,
+			  "UnaryPredicate must take one value and return a bool "
+			  "e.g. func( value ) must be valid" );
 			return func( value );
 		}
 
@@ -622,7 +626,7 @@ namespace daw {
 		constexpr bool satisfies_all( Value value, UnaryPredicate func,
 		                              UnaryPredicates... funcs ) {
 
-			static_assert( is_unary_predicate_v<UnaryPredicate, Value>,
+			static_assert( traits::is_unary_predicate_v<UnaryPredicate, Value>,
 			               "UnaryPredicate must take one value and return a bool "
 			               "e.g. func( value ) must be valid" );
 
@@ -639,19 +643,20 @@ namespace daw {
 		/// value in range
 		template<typename Iterator, typename LastType, typename UnaryPredicate,
 		         typename... UnaryPredicates,
-		         std::enable_if_t<
-		           (daw::is_dereferenceable_v<LastType> &&
-		            daw::is_equality_comparable_v<daw::traits::deref_t<LastType>>),
-		           std::nullptr_t> = nullptr>
+		         std::enable_if_t<(traits::is_dereferenceable_v<LastType> &&
+		                           traits::is_equality_comparable_v<
+		                             daw::traits::deref_t<LastType>>),
+		                          std::nullptr_t> = nullptr>
 		constexpr bool satisfies_all(
 		  Iterator first, LastType last, UnaryPredicate func,
 		  UnaryPredicates... funcs ) noexcept( noexcept( satisfies_one( *first,
 		                                                                func,
 		                                                                funcs... ) ) ) {
 
-			static_assert( is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
-			               "UnaryPredicate must take one value and return a bool "
-			               "e.g. func( *first ) must be valid" );
+			static_assert(
+			  traits::is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
+			  "UnaryPredicate must take one value and return a bool "
+			  "e.g. func( *first ) must be valid" );
 
 			while( first != last ) {
 				if( !satisfies_all( *first, func, funcs... ) ) {
@@ -840,13 +845,13 @@ namespace daw {
 		                                     comp( *first2, *first1 ) ) ) {
 
 			static_assert(
-			  is_compare_v<Compare, decltype( *first1 ), decltype( *first2 )>,
+			  traits::is_compare_v<Compare, decltype( *first1 ), decltype( *first2 )>,
 			  "Compare function does not meet the requirements of the Compare "
 			  "concept. "
 			  "http://en.cppreference.com/w/cpp/concept/Compare" );
 
 			static_assert(
-			  is_compare_v<Compare, decltype( *first2 ), decltype( *first1 )>,
+			  traits::is_compare_v<Compare, decltype( *first2 ), decltype( *first1 )>,
 			  "Compare function does not meet the requirements of the Compare "
 			  "concept. "
 			  "http://en.cppreference.com/w/cpp/concept/Compare" );
@@ -920,15 +925,16 @@ namespace daw {
 		              TransformFunction trans ) {
 
 			static_assert(
-			  is_iterator_v<InputIterator>,
+			  traits::is_iterator_v<InputIterator>,
 			  "first is does not satisfy the requirements of an Iterator" );
 			static_assert(
-			  is_iterator_v<OutputIterator>,
+			  traits::is_iterator_v<OutputIterator>,
 			  "first_out is does not satisfy the requirements of an Iterator" );
-			static_assert( is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
-			               "pred does not satisfy the Unary Predicate concept.  See "
-			               "http://en.cppreference.com/w/cpp/concept/Predicate for "
-			               "more information" );
+			static_assert(
+			  traits::is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
+			  "pred does not satisfy the Unary Predicate concept.  See "
+			  "http://en.cppreference.com/w/cpp/concept/Predicate for "
+			  "more information" );
 
 			static_assert( is_callable_v<TransformFunction, decltype( *first )>,
 			               "TransformFunction does not accept a single argument of "
@@ -1202,7 +1208,7 @@ namespace daw {
 		       Compare comp ) noexcept( noexcept( comp( *first1, *first2 ) ) ) {
 
 			static_assert(
-			  is_compare_v<Compare, decltype( *first1 ), decltype( *first2 )>,
+			  traits::is_compare_v<Compare, decltype( *first1 ), decltype( *first2 )>,
 			  "Compare function does not meet the requirements of the Compare "
 			  "concept. "
 			  "http://en.cppreference.com/w/cpp/concept/Compare" );
@@ -1245,7 +1251,7 @@ namespace daw {
 		        LastType last ) noexcept( noexcept( swapper( *first, *middle ) ) ) {
 
 			static_assert(
-			  is_forward_iterator_v<ForwardIterator>,
+			  traits::is_forward_iterator_v<ForwardIterator>,
 			  "ForwardIterator passed to rotate does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
@@ -1301,7 +1307,7 @@ namespace daw {
 		                                                          *nth ) ) ) {
 
 			static_assert(
-			  is_compare_v<Compare, decltype( *first ), decltype( *nth )>,
+			  traits::is_compare_v<Compare, decltype( *first ), decltype( *nth )>,
 			  "Compare function does not meet the requirements of the Compare "
 			  "concept. "
 			  "http://en.cppreference.com/w/cpp/concept/Compare" );
@@ -1325,7 +1331,7 @@ namespace daw {
 		Compare> constexpr void quick_sort( RandomIterator1 first, RandomIterator2
 		const last, Compare comp ) noexcept {
 
-		  static_assert( is_compare_v<Compare, decltype( *first )>,
+		  static_assert( traits::is_compare_v<Compare, decltype( *first )>,
 		                 "Compare function does not meet the requirements of the
 		Compare concept. " "http://en.cppreference.com/w/cpp/concept/Compare" );
 
@@ -1360,7 +1366,7 @@ namespace daw {
 		  ForwardIterator last ) noexcept( noexcept( *first < next( *first ) ) ) {
 
 			static_assert(
-			  is_forward_iterator_v<ForwardIterator>,
+			  traits::is_forward_iterator_v<ForwardIterator>,
 			  "ForwardIterator passed to rotate does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
@@ -1391,12 +1397,12 @@ namespace daw {
 		  Compare comp ) noexcept( noexcept( comp( *first, *first ) ) ) {
 
 			static_assert(
-			  is_forward_iterator_v<ForwardIterator>,
+			  traits::is_forward_iterator_v<ForwardIterator>,
 			  "ForwardIterator passed to rotate does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
 
-			static_assert( is_compare_v<Compare, decltype( *first )>,
+			static_assert( traits::is_compare_v<Compare, decltype( *first )>,
 			               "Compare function does not meet the requirements of the "
 			               "Compare concept. "
 			               "http://en.cppreference.com/w/cpp/concept/Compare" );
@@ -1417,7 +1423,7 @@ namespace daw {
 		  noexcept( next( first ) ) && noexcept( ++first ) ) {
 
 			static_assert(
-			  is_forward_iterator_v<ForwardIterator>,
+			  traits::is_forward_iterator_v<ForwardIterator>,
 			  "ForwardIterator passed to rotate does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
@@ -1438,12 +1444,12 @@ namespace daw {
 		           Compare comp ) noexcept( noexcept( comp( *first, *first ) ) ) {
 
 			static_assert(
-			  is_forward_iterator_v<ForwardIterator>,
+			  traits::is_forward_iterator_v<ForwardIterator>,
 			  "ForwardIterator passed to rotate does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
 
-			static_assert( is_compare_v<Compare, decltype( *first )>,
+			static_assert( traits::is_compare_v<Compare, decltype( *first )>,
 			               "Compare function does not meet the requirements of the "
 			               "Compare concept. "
 			               "http://en.cppreference.com/w/cpp/concept/Compare" );
@@ -1475,9 +1481,10 @@ namespace daw {
 		  UnaryOperation unary_op ) noexcept( noexcept( *first_out++ =
 		                                                  unary_op( *first++ ) ) ) {
 
-			static_assert( is_unary_predicate_v<UnaryOperation, decltype( *first )>,
-			               "UnaryOperation must take one value of the dereferenced "
-			               "type of first e.g. unary_op( *first ) must be valid" );
+			static_assert(
+			  traits::is_unary_predicate_v<UnaryOperation, decltype( *first )>,
+			  "UnaryOperation must take one value of the dereferenced "
+			  "type of first e.g. unary_op( *first ) must be valid" );
 
 			while( first != last ) {
 				*first_out++ = unary_op( *first++ );
@@ -1492,7 +1499,7 @@ namespace daw {
 		    binary_op ) noexcept( noexcept( init = binary_op( init, *first++ ) ) ) {
 
 			static_assert(
-			  is_binary_predicate_v<BinaryOperation, T, decltype( *first )>,
+			  traits::is_binary_predicate_v<BinaryOperation, T, decltype( *first )>,
 			  "BinaryOperation passed to reduce must take two values referenced by "
 			  "first. e.g binary_op( "
 			  "init, *first) ) "
@@ -1521,25 +1528,26 @@ namespace daw {
 		                                                map_func( *first1,
 		                                                          *first2 ) ) ) ) {
 
-			static_assert( is_iterator_v<InputIterator1>,
+			static_assert( traits::is_iterator_v<InputIterator1>,
 			               "Iterator1 passed to rotate does not meet the "
 			               "requirements of the Iterator concept "
 			               "http://en.cppreference.com/w/cpp/concept/Iterator" );
 
-			static_assert( is_iterator_v<InputIterator2>,
+			static_assert( traits::is_iterator_v<InputIterator2>,
 			               "Iterator2 passed to rotate does not meet the "
 			               "requirements of the Iterator concept "
 			               "http://en.cppreference.com/w/cpp/concept/Iterator" );
 
-			static_assert( is_binary_predicate_v<MapFunction, decltype( *first1 ),
-			                                     decltype( *first2 )>,
-			               "BinaryOperation map_func passed take two values "
-			               "referenced by first. e.g map_func( *first1, "
-			               "*first2 ) must be valid" );
+			static_assert(
+			  traits::is_binary_predicate_v<MapFunction, decltype( *first1 ),
+			                                decltype( *first2 )>,
+			  "BinaryOperation map_func passed take two values "
+			  "referenced by first. e.g map_func( *first1, "
+			  "*first2 ) must be valid" );
 
 			static_assert(
-			  is_binary_predicate_v<ReduceFunction, T,
-			                        decltype( map_func( *first1, *first2 ) )>,
+			  traits::is_binary_predicate_v<ReduceFunction, T,
+			                                decltype( map_func( *first1, *first2 ) )>,
 			  "BinaryOperation reduce_func must take two values referenced by first. "
 			  "e.g reduce_func( init, "
 			  "map_func( *first1, *first2 ) ) must be valid" );
@@ -1558,13 +1566,13 @@ namespace daw {
 		  ForwardIterator2 s_last ) noexcept( noexcept( *first == *s_first ) ) {
 
 			static_assert(
-			  is_forward_iterator_v<ForwardIterator1>,
+			  traits::is_forward_iterator_v<ForwardIterator1>,
 			  "ForwardIterator1 passed to rotate does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
 
 			static_assert(
-			  is_forward_iterator_v<ForwardIterator2>,
+			  traits::is_forward_iterator_v<ForwardIterator2>,
 			  "ForwardIterator2 passed to rotate does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
@@ -1592,19 +1600,19 @@ namespace daw {
 		        Compare comp ) noexcept( noexcept( !comp( *first, *s_first ) ) ) {
 
 			static_assert(
-			  is_forward_iterator_v<ForwardIterator1>,
+			  traits::is_forward_iterator_v<ForwardIterator1>,
 			  "ForwardIterator1 passed to rotate does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
 
 			static_assert(
-			  is_forward_iterator_v<ForwardIterator2>,
+			  traits::is_forward_iterator_v<ForwardIterator2>,
 			  "ForwardIterator2 passed to rotate does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
 
 			static_assert(
-			  is_compare_v<Compare, decltype( *first ), decltype( *s_first )>,
+			  traits::is_compare_v<Compare, decltype( *first ), decltype( *s_first )>,
 			  "Compare function does not meet the requirements of the Compare "
 			  "concept. "
 			  "http://en.cppreference.com/w/cpp/concept/Compare" );
@@ -1641,7 +1649,7 @@ namespace daw {
 		  BinaryOperation binary_op ) noexcept( noexcept( binary_op( init,
 		                                                             *first ) ) ) {
 
-			static_assert( is_iterator_v<InputIterator>,
+			static_assert( traits::is_iterator_v<InputIterator>,
 			               "Iterator passed to rotate does not meet the requirements "
 			               "of the Iterator concept "
 			               "http://en.cppreference.com/w/cpp/concept/Iterator" );
@@ -1677,7 +1685,7 @@ namespace daw {
 		/// and second max(a, b)
 		template<typename T, typename Compare>
 		constexpr std::pair<T, T> minmax_item( T a, T b, Compare comp ) noexcept {
-			static_assert( is_compare_v<Compare, T>,
+			static_assert( traits::is_compare_v<Compare, T>,
 			               "Compare function does not meet the requirements of the "
 			               "Compare concept. "
 			               "http://en.cppreference.com/w/cpp/concept/Compare" );
@@ -1693,13 +1701,13 @@ namespace daw {
 		  Compare comp ) noexcept( noexcept( comp( *first, *first ) ) ) {
 
 			static_assert(
-			  is_forward_iterator_v<ForwardIterator>,
+			  traits::is_forward_iterator_v<ForwardIterator>,
 			  "ForwardIterator passed to rotate does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
 
 			static_assert(
-			  is_compare_v<Compare, decltype( *first ), decltype( *first )>,
+			  traits::is_compare_v<Compare, decltype( *first ), decltype( *first )>,
 			  "Compare function does not meet the requirements of the Compare "
 			  "concept. "
 			  "http://en.cppreference.com/w/cpp/concept/Compare" );
@@ -1757,7 +1765,7 @@ namespace daw {
 		  noexcept( minmax_element( first, last, std::less<>{} ) ) ) {
 
 			static_assert(
-			  is_forward_iterator_v<ForwardIterator>,
+			  traits::is_forward_iterator_v<ForwardIterator>,
 			  "ForwardIterator passed to rotate does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );

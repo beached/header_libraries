@@ -137,8 +137,9 @@ namespace daw {
 
 		constexpr indexed_iterator operator+( std::ptrdiff_t n ) const noexcept {
 			auto const new_pos = m_position + n;
-			daw::exception::dbg_precondition_check( new_pos >= 0 &&
-			                                        new_pos < static_cast<std::ptrdiff_t>( m_pointer->size( ) ) );
+			daw::exception::dbg_precondition_check(
+			  new_pos >= 0 &&
+			  new_pos < static_cast<std::ptrdiff_t>( m_pointer->size( ) ) );
 			auto result =
 			  indexed_iterator( m_pointer, static_cast<size_t>( new_pos ) );
 			return result;
@@ -146,8 +147,9 @@ namespace daw {
 
 		constexpr indexed_iterator next( std::ptrdiff_t n = 0 ) const noexcept {
 			auto const new_pos = m_position + n;
-			daw::exception::dbg_precondition_check( new_pos >= 0 &&
-			                                        new_pos < static_cast<std::ptrdiff_t>( m_pointer->size( ) ) );
+			daw::exception::dbg_precondition_check(
+			  new_pos >= 0 &&
+			  new_pos < static_cast<std::ptrdiff_t>( m_pointer->size( ) ) );
 			auto result =
 			  indexed_iterator( m_pointer, static_cast<size_t>( new_pos ) );
 			return result;
@@ -155,16 +157,18 @@ namespace daw {
 
 		constexpr indexed_iterator &advance( std::ptrdiff_t n = 0 ) noexcept {
 			auto const new_pos = m_position + n;
-			daw::exception::dbg_precondition_check( new_pos >= 0 &&
-			                                        new_pos < static_cast<std::ptrdiff_t>( m_pointer->size( ) ) );
+			daw::exception::dbg_precondition_check(
+			  new_pos >= 0 &&
+			  new_pos < static_cast<std::ptrdiff_t>( m_pointer->size( ) ) );
 			m_position = new_pos;
 			return *this;
 		}
 
 		constexpr indexed_iterator operator-( std::ptrdiff_t n ) const noexcept {
 			auto const new_pos = m_position - n;
-			daw::exception::dbg_precondition_check( new_pos >= 0 &&
-			                                        new_pos < static_cast<std::ptrdiff_t>( m_pointer->size( ) ) );
+			daw::exception::dbg_precondition_check(
+			  new_pos >= 0 &&
+			  new_pos < static_cast<std::ptrdiff_t>( m_pointer->size( ) ) );
 
 			auto result =
 			  indexed_iterator( m_pointer, static_cast<size_t>( new_pos ) );
@@ -173,8 +177,9 @@ namespace daw {
 
 		constexpr indexed_iterator prev( std::ptrdiff_t n = 0 ) const noexcept {
 			auto const new_pos = m_position - n;
-			daw::exception::dbg_precondition_check( new_pos >= 0 &&
-			                                        new_pos < static_cast<std::ptrdiff_t>( m_pointer->size( ) ) );
+			daw::exception::dbg_precondition_check(
+			  new_pos >= 0 &&
+			  new_pos < static_cast<std::ptrdiff_t>( m_pointer->size( ) ) );
 			auto result =
 			  indexed_iterator( m_pointer, static_cast<size_t>( new_pos ) );
 			return result;

@@ -36,6 +36,8 @@
 #include <vector>
 
 #include "cpp_17.h"
+#include "impl/daw_traits_concepts.h"
+#include "impl/daw_traits_impl.h"
 
 namespace daw {
 	namespace traits {
@@ -46,7 +48,7 @@ namespace daw {
 		/// Summary:	Return the largest sizeof in list of types.  Used to pad
 		///				unions and small value optimization
 		///
-		template<typename... Args>
+		template<typename...>
 		struct max_sizeof;
 
 		template<typename First>
@@ -59,8 +61,9 @@ namespace daw {
 		template<typename First, typename... Args>
 		struct max_sizeof<First, Args...> {
 			using next = typename max_sizeof<Args...>::type;
-			using type = typename std::conditional<sizeof( First ) >= sizeof( next ),
-			                                       First, next>::type;
+			using type =
+			  typename std::conditional<( sizeof( First ) >= sizeof( next ) ), First,
+			                            next>::type;
 			static const size_t value = sizeof( type );
 		};
 
@@ -68,52 +71,45 @@ namespace daw {
 		using max_sizeof_t = typename max_sizeof<Types...>::type;
 
 		template<typename... Types>
-		constexpr auto const max_sizeof_v = max_sizeof<Types...>::value;
+		constexpr size_t max_sizeof_v = max_sizeof<Types...>::value;
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	Returns true if all values passed are true
 		///
 		template<typename BoolType,
-		         typename std::enable_if<!is_integral_v<BoolType>, long>::type = 0>
+		         std::enable_if_t<is_convertible_v<BoolType, bool>,
+		                          std::nullptr_t> = nullptr>
 		constexpr bool are_true( BoolType b1 ) noexcept {
-			return b1 == true;
-		}
-
-		template<typename IntLike,
-		         typename std::enable_if<is_integral_v<IntLike>, long>::type = 0>
-		constexpr bool are_true( IntLike b1 ) noexcept {
-			return b1 != 0;
+			return static_cast<bool>( b1 );
 		}
 
 		template<typename BoolType1, typename BoolType2>
 		constexpr bool are_true( BoolType1 b1, BoolType2 b2 ) noexcept {
-			return are_true( b1 ) && are_true( b2 );
+			return are_true( b1 ) and are_true( b2 );
 		}
 
 		template<typename BoolType1, typename BoolType2, typename... Booleans>
 		constexpr bool are_true( BoolType1 b1, BoolType2 b2,
 		                         Booleans... others ) noexcept {
-			return are_true( b1, b2 ) && are_true( others... );
+			return are_true( b1, b2 ) and are_true( others... );
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	Are all template parameters the same type
 		///
-		namespace impl {
-			template<typename T, typename... Rest>
-			struct are_same_types : std::false_type {};
+		template<typename T, typename... Rest>
+		struct are_same_types : std::false_type {};
 
-			template<typename T, typename First>
-			struct are_same_types<T, First> : std::is_same<T, First> {};
+		template<typename T, typename First>
+		struct are_same_types<T, First> : std::is_same<T, First> {};
 
-			template<typename T, typename First, typename... Rest>
-			struct are_same_types<T, First, Rest...>
-			  : std::integral_constant<bool, is_same_v<T, First> ||
-			                                   are_same_types<T, Rest...>::value> {};
-		} // namespace impl
+		template<typename T, typename First, typename... Rest>
+		struct are_same_types<T, First, Rest...>
+		  : std::integral_constant<bool, is_same_v<T, First> or
+		                                   are_same_types<T, Rest...>::value> {};
 
 		template<typename T, typename... Rest>
-		constexpr bool are_same_types_v = impl::are_same_types<T, Rest...>::value;
+		CXINLINE bool are_same_types_v = are_same_types<T, Rest...>::value;
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	A sequence of bool values
@@ -126,10 +122,10 @@ namespace daw {
 		///
 		template<bool... Bools>
 		using bool_and = std::is_same<bool_sequence<Bools...>,
-		                              bool_sequence<( Bools || true )...>>;
+		                              bool_sequence<( Bools or true )...>>;
 
 		template<bool... Bools>
-		constexpr bool bool_and_v = bool_and<Bools...>::value;
+		CXINLINE bool bool_and_v = bool_and<Bools...>::value;
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	Integral constant with result of or'ing all bool's supplied
@@ -139,7 +135,7 @@ namespace daw {
 		  std::integral_constant<bool, ( !bool_and<!Bools...>::value )>;
 
 		template<bool... Bools>
-		constexpr bool bool_or_v = bool_or<Bools...>::value;
+		CXINLINE bool bool_or_v = bool_or<Bools...>::value;
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	Similar to enable_if but enabled when any of the
@@ -158,43 +154,38 @@ namespace daw {
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	Is type T on of the other types
 		///
-		namespace impl {
-			template<typename T, typename... Types>
-			struct is_one_of : std::false_type {};
+		template<typename T, typename... Types>
+		struct is_one_of : std::false_type {};
 
-			template<typename T, typename Type>
-			struct is_one_of<T, Type> : std::is_same<T, Type> {};
+		template<typename T, typename Type>
+		struct is_one_of<T, Type> : std::is_same<T, Type> {};
 
-			template<typename T, typename Type, typename... Types>
-			struct is_one_of<T, Type, Types...>
-			  : daw::disjunction<std::is_same<T, Type>, is_one_of<T, Types...>> {};
-		} // namespace impl
+		template<typename T, typename Type, typename... Types>
+		struct is_one_of<T, Type, Types...>
+		  : daw::disjunction<std::is_same<T, Type>, is_one_of<T, Types...>> {};
 
 		template<typename T, typename... Types>
-		using is_one_of_t = typename impl::is_one_of<T, Types...>::type;
+		using is_one_of_t = typename is_one_of<T, Types...>::type;
 
 		template<typename T, typename... Types>
-		constexpr bool is_one_of_v = impl::is_one_of<T, Types...>::value;
+		CXINLINE bool is_one_of_v = is_one_of<T, Types...>::value;
 
-		namespace impl {
-			template<typename...>
-			struct can_convert_from : std::false_type {};
+		template<typename...>
+		struct can_convert_from : std::false_type {};
 
-			template<typename To, typename From>
-			struct can_convert_from<To, From> : std::is_convertible<From, To> {};
+		template<typename To, typename From>
+		struct can_convert_from<To, From> : std::is_convertible<From, To> {};
 
-			template<typename To, typename From, typename... Froms>
-			struct can_convert_from<To, From, Froms...>
-			  : daw::disjunction<std::is_convertible<From, To>,
-			                     can_convert_from<To, Froms...>> {};
-		} // namespace impl
-		template<typename To, typename... Froms>
-		using can_convert_from_t =
-		  typename impl::can_convert_from<To, Froms...>::type;
+		template<typename To, typename From, typename... Froms>
+		struct can_convert_from<To, From, Froms...>
+		  : daw::disjunction<std::is_convertible<From, To>,
+		                     can_convert_from<To, Froms...>> {};
 
 		template<typename To, typename... Froms>
-		constexpr bool can_convert_from_v =
-		  impl::can_convert_from<To, Froms...>::value;
+		using can_convert_from_t = typename can_convert_from<To, Froms...>::type;
+
+		template<typename To, typename... Froms>
+		CXINLINE bool can_convert_from_v = can_convert_from<To, Froms...>::value;
 
 		namespace details {
 			template<typename>
@@ -210,60 +201,21 @@ namespace daw {
 // check will look for begin( ) If you want to check args you could do the
 // following METHOD_CHECKER_ANY( has_index_operation, operator[], (
 // std::declval<size_t>( ) ) )
-#define METHOD_CHECKER_ANY( name, fn, args )                                   \
+#define METHOD_CHECKER_ANY( name, fn )                                         \
 	namespace impl {                                                             \
-		template<typename T, typename = void>                                      \
-		struct name : std::false_type {};                                          \
-                                                                               \
-		template<typename T>                                                       \
-		struct name<T, typename std::enable_if_t<!is_same_v<                       \
-		                 decltype( std::declval<T>( ).fn args ) *, void>>>         \
-		  : std::true_type {};                                                     \
+		template<typename T, typename... Args>                                     \
+		using name =                                                               \
+		  decltype( std::declval<T>( ).fn( std::declval<Args>( )... ) );           \
 	}                                                                            \
-                                                                               \
-	template<typename T>                                                         \
-	constexpr bool name##_v = impl::name<T>::value;
-		  // END METHOD_CHECKER_ANY
+	template<typename T, typename... Args>                                       \
+	constexpr bool name##_v = is_detected_v<impl::name, T, Args...>;             \
+	// END METHOD_CHECKER_ANY
 
-		/*
-		#define GENERATE_HAS_MEMBER_FUNCTION_TRAIT( MemberName ) \
-		  namespace impl { \
-		    template<typename T, typename = void> \
-		    class has_##MemberName##_member_impl : public std::false_type {}; \
-		                                                                                                                       \
-		    template<typename T> \
-		    class has_##MemberName##_member_impl<T, typename
-		std::enable_if_t<is_class_v<T>>> { \
-		      struct Fallback { \
-		        int MemberName; \
-		      }; \
-		      struct Derived : T, Fallback {}; \
-		                                                                                                                       \
-		      template<typename U, U> \
-		      struct Check; \
-		                                                                                                                       \
-		      using ArrayOfOne = char[1]; \
-		      using ArrayOfTwo = char[2]; \
-		                                                                                                                       \
-		      template<typename U> \
-		      static ArrayOfOne &func( Check<int Fallback::*, &U::MemberName> * ); \
-		      template<typename U> \
-		      static ArrayOfTwo &func( ... ); \
-		                                                                                                                       \
-		    public: \
-		      using type = has_##MemberName##_member_impl; \
-		      enum { value = sizeof( func<Derived>( 0 ) ) == 2 }; \
-		    }; \
-		  } \
-		  template<typename T> \ using has_##MemberName##_member_v =
-		::daw::traits::impl::has_##MemberName##_member_impl::value;
-		*/
-
+		// decltype( std::declval<typename T::MemberName>( ) );
 #define HAS_STATIC_TYPE_MEMBER( MemberName )                                   \
 	namespace detectors {                                                        \
 		template<typename T>                                                       \
-		using MemberName##_member =                                                \
-		  decltype( std::declval<typename T::MemberName>( ) );                     \
+		using MemberName##_member = typename T::MemberName;                        \
 	}                                                                            \
 	template<typename T>                                                         \
 	constexpr bool has_##MemberName##_member_v =                                 \
@@ -274,68 +226,39 @@ namespace daw {
 		HAS_STATIC_TYPE_MEMBER( mapped_type );
 		HAS_STATIC_TYPE_MEMBER( iterator );
 
-		METHOD_CHECKER_ANY( has_begin_member, begin, ( ) );
-		METHOD_CHECKER_ANY( has_end_member, end, ( ) );
-		METHOD_CHECKER_ANY( has_substr_member, substr, ( 0, 1 ) );
-
-		template<typename T>
-		constexpr bool is_string_v = all_true_v<is_convertible_v<T, std::string> ||
-		                                        is_convertible_v<T, std::wstring>>;
-
-		template<typename T>
-		constexpr bool isnt_string_v = !is_string_v<T>;
+		METHOD_CHECKER_ANY( has_begin_member, begin );
+		METHOD_CHECKER_ANY( has_end_member, end );
 
 		namespace detectors {
 			template<typename T>
-			using std_begin_detector = decltype( std::begin( std::declval<T>( ) ) );
-
-			template<typename T>
-			using adl_begin_detector = decltype( begin( std::declval<T>( ) ) );
-
-			template<typename T>
-			using std_end_detector = decltype( std::end( std::declval<T>( ) ) );
-
-			template<typename T>
-			using adl_end_detector = decltype( end( std::declval<T>( ) ) );
+			using has_substr_member = decltype( std::declval<T>( ).substr(
+			  std::declval<size_t>( ), std::declval<size_t>( ) ) );
 		}
-		template<typename Container>
-		constexpr bool has_begin =
-		  is_detected_v<detectors::std_begin_detector, Container> or
-		  is_detected_v<detectors::adl_begin_detector, Container>;
-
-		template<typename Container>
-		constexpr bool has_end =
-		  is_detected_v<detectors::std_end_detector, Container> or
-		  is_detected_v<detectors::adl_end_detector, Container>;
-
-		template<typename Container>
-		constexpr bool is_container_like_v =
-		  has_begin<Container> and has_end<Container>;
-
-		template<typename Container>
-		constexpr bool is_container_like_test( ) noexcept {
-			static_assert( is_container_like_v<Container>, "Container does not fullfill the Container concept" );
-			static_assert( has_begin<Container>, "Container does not have a begin( Container ) or std::begin( Container ) overload" );
-			static_assert( has_end<Container>, "Container does not have a end( Container ) or std::end( Container ) overload" );
-			return true;
-		}
-
-		template<typename Container>
-		constexpr bool is_container_like = is_container_like_test<Container>( );
 
 		template<typename T>
-		constexpr bool is_container_not_string_v =
+		CXINLINE bool has_substr_member_v =
+		  is_detected_v<detectors::has_substr_member, T>;
+
+		template<typename T>
+		CXINLINE bool is_string_v = all_true_v<is_convertible_v<T, std::string> or
+		                                       is_convertible_v<T, std::wstring>>;
+
+		template<typename T>
+		CXINLINE bool isnt_string_v = !is_string_v<T>;
+
+		template<typename T>
+		CXINLINE bool is_container_not_string_v =
 		  all_true_v<isnt_string_v<T>, is_container_like_v<T>>;
 
 		template<typename T>
-		constexpr bool is_map_like_v =
+		CXINLINE bool is_map_like_v =
 		  all_true_v<is_container_like_v<T>, has_mapped_type_member_v<T>>;
 
 		template<typename T>
-		constexpr bool isnt_map_like_v = !is_map_like_v<T>;
+		CXINLINE bool isnt_map_like_v = !is_map_like_v<T>;
 
 		template<typename T>
-		constexpr bool is_vector_like_not_string_v =
+		CXINLINE bool is_vector_like_not_string_v =
 		  all_true_v<is_container_not_string_v<T>, isnt_map_like_v<T>>;
 
 		template<typename T>
@@ -346,7 +269,7 @@ namespace daw {
 		using static_not_t = typename static_not<T>::type;
 
 		template<typename T>
-		constexpr bool static_not_v = static_not<T>::value;
+		CXINLINE bool static_not_v = static_not<T>::value;
 
 #define GENERATE_IS_STD_CONTAINER1( ContainerName )                            \
 	template<typename T>                                                         \
@@ -372,25 +295,25 @@ namespace daw {
 #undef GENERATE_IS_STD_CONTAINER2
 
 		template<typename T>
-		constexpr bool is_single_item_container_v =
+		CXINLINE bool is_single_item_container_v =
 		  any_true_v<is_vector_v<T>, is_list_v<T>, is_set_v<T>, is_deque_v<T>,
 		             is_unordered_set_v<T>>;
 
 		template<typename T>
-		constexpr bool is_container_v =
+		CXINLINE bool is_container_v =
 		  any_true_v<is_vector_v<T>, is_list_v<T>, is_set_v<T>, is_deque_v<T>,
 		             is_unordered_set_v<T>, is_map_v<T>, is_unordered_map_v<T>>;
 
 		template<typename T>
-		constexpr bool is_map_type_v =
+		CXINLINE bool is_map_type_v =
 		  any_true_v<is_map_v<T>, is_unordered_map_v<T>>;
 
 		template<typename T>
-		constexpr bool is_numberic_v =
+		CXINLINE bool is_numberic_v =
 		  any_true_v<is_floating_point_v<T>, is_integral_v<T>>;
 
 		template<typename T>
-		constexpr bool is_container_or_array_v =
+		CXINLINE bool is_container_or_array_v =
 		  any_true_v<is_container_v<T>, is_array_v<T>>;
 
 		namespace detectors {
@@ -399,11 +322,11 @@ namespace daw {
 			  decltype( std::declval<OutStream>( ) << std::declval<T>( ) );
 		}
 		template<typename OutStream, typename T>
-		constexpr bool is_streamable_v =
+		CXINLINE bool is_streamable_v =
 		  daw::is_detected_v<detectors::streamable, OutStream &, T>;
 
 		template<template<class> class Base, typename Derived>
-		constexpr bool is_mixed_from_v = is_base_of_v<Base<Derived>, Derived>;
+		CXINLINE bool is_mixed_from_v = is_base_of_v<Base<Derived>, Derived>;
 
 		template<std::size_t I, typename T, typename... Ts>
 		struct nth_element_impl {
@@ -428,7 +351,7 @@ namespace daw {
 		} // namespace impl
 
 		template<typename T>
-		constexpr bool has_to_string_v =
+		CXINLINE bool has_to_string_v =
 		  decltype( impl::has_to_string( std::declval<T>( ), 1 ) )::value;
 
 		namespace operators {
@@ -477,27 +400,27 @@ namespace daw {
 			} // namespace impl
 
 			template<typename L, typename R = L>
-			constexpr bool has_op_eq_v = decltype( impl::has_op_eq_impl(
+			CXINLINE bool has_op_eq_v = decltype( impl::has_op_eq_impl(
 			  std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
 
 			template<typename L, typename R = L>
-			constexpr bool has_op_ne_v = decltype( impl::has_op_ne_impl(
+			CXINLINE bool has_op_ne_v = decltype( impl::has_op_ne_impl(
 			  std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
 
 			template<typename L, typename R = L>
-			constexpr bool has_op_lt_v = decltype( impl::has_op_lt_impl(
+			CXINLINE bool has_op_lt_v = decltype( impl::has_op_lt_impl(
 			  std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
 
 			template<typename L, typename R = L>
-			constexpr bool has_op_le_v = decltype( impl::has_op_le_impl(
+			CXINLINE bool has_op_le_v = decltype( impl::has_op_le_impl(
 			  std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
 
 			template<typename L, typename R = L>
-			constexpr bool has_op_gt_v = decltype( impl::has_op_gt_impl(
+			CXINLINE bool has_op_gt_v = decltype( impl::has_op_gt_impl(
 			  std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
 
 			template<typename L, typename R = L>
-			constexpr bool has_op_ge_v = decltype( impl::has_op_ge_impl(
+			CXINLINE bool has_op_ge_v = decltype( impl::has_op_ge_impl(
 			  std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
 
 		} // namespace operators
@@ -505,67 +428,12 @@ namespace daw {
 		template<typename T, typename U>
 		constexpr inline bool not_self( ) {
 			using decayed_t = typename std::decay_t<T>;
-			return !is_same_v<decayed_t, U> && !is_base_of_v<U, decayed_t>;
+			return !is_same_v<decayed_t, U> and !is_base_of_v<U, decayed_t>;
 		}
 	} // namespace traits
 
 	template<typename T>
 	using make_fp = std::add_pointer_t<T>;
-
-	namespace detectors {
-		template<typename Function, typename... Args>
-		using callable_with =
-		  decltype( std::declval<Function>( )( std::declval<Args>( )... ) );
-
-		template<typename BinaryPredicate, typename T, typename U = T>
-		using binary_predicate = callable_with<BinaryPredicate, T, U>;
-
-		template<typename UnaryPredicate, typename T>
-		using unary_predicate = callable_with<UnaryPredicate, T>;
-
-		template<typename T, typename U>
-		using equality_comparable =
-		  decltype( std::declval<T>( ) == std::declval<U>( ) );
-
-		template<typename T, typename U>
-		using inequality_comparable =
-		  decltype( std::declval<T>( ) != std::declval<U>( ) );
-
-		template<typename T, typename U>
-		using less_than_comparable =
-		  decltype( std::declval<T>( ) < std::declval<U>( ) );
-
-		template<typename T, typename U>
-		using equal_less_than_comparable =
-		  decltype( std::declval<T>( ) <= std::declval<U>( ) );
-
-		template<typename T, typename U>
-		using greater_than_comparable =
-		  decltype( std::declval<T>( ) > std::declval<U>( ) );
-
-		template<typename T, typename U>
-		using equal_greater_than_comparable =
-		  decltype( std::declval<T>( ) >= std::declval<U>( ) );
-
-		namespace details {
-			template<typename T, typename U>
-			void swap( T &lhs, U &rhs ) {
-				using std::swap;
-				swap( lhs, rhs );
-			}
-		} // namespace details
-
-		template<typename T>
-		using swappable =
-		  decltype( details::swap( std::declval<T>( ), std::declval<T>( ) ) );
-
-		template<typename Iterator, typename T>
-		using assignable =
-		  decltype( *std::declval<Iterator>( ) = std::declval<T>( ) );
-
-		template<typename T>
-		using dereferenceable = decltype( *std::declval<T>( ) );
-	} // namespace detectors
 
 	namespace impl {
 		template<typename...>
@@ -576,19 +444,19 @@ namespace daw {
 	} // namespace impl
 
 	template<typename... Args>
-	constexpr bool is_single_void_arg_v =
+	CXINLINE bool is_single_void_arg_v =
 	  impl::is_single_void_arg_t<Args...>::value;
 
 	template<typename Function, typename... Args>
-	constexpr bool is_callable_v =
-	  is_detected_v<detectors::callable_with, Function, Args...> ||
-	  ( is_single_void_arg_v<Args...> &&
-	    is_detected_v<detectors::callable_with, Function> );
+	CXINLINE bool is_callable_v =
+	  is_detected_v<traits::detectors::callable_with, Function, Args...> or
+	  ( is_single_void_arg_v<Args...> and
+	    is_detected_v<traits::detectors::callable_with, Function> );
 
 	template<typename Result, typename Function, typename... Args>
-	constexpr bool is_callable_convertible_v =
-	  is_detected_convertible_v<Result, detectors::callable_with, Function,
-	                            Args...>;
+	CXINLINE bool is_callable_convertible_v =
+	  is_detected_convertible_v<Result, traits::detectors::callable_with,
+	                            Function, Args...>;
 
 	namespace impl {
 		template<typename Function, typename... Args,
@@ -607,7 +475,7 @@ namespace daw {
 	} // namespace impl
 
 	template<typename Function, typename... Args>
-	constexpr bool is_nothrow_callable_v =
+	CXINLINE bool is_nothrow_callable_v =
 	  impl::is_nothrow_callable_test<Function, Args...>( );
 
 	namespace impl {
@@ -615,7 +483,8 @@ namespace daw {
 		struct void_function;
 
 		template<typename Function>
-		struct void_function<Function,
+		struct void_function<
+		  Function,
 		  std::enable_if_t<is_default_constructible_v<Function>, std::nullptr_t>> {
 
 			Function function;
@@ -642,12 +511,14 @@ namespace daw {
 			                          std::nullptr_t> = nullptr>
 			constexpr void operator( )( Args &&... args ) noexcept(
 			  daw::is_nothrow_callable_v<Function, Args...> ) {
+
 				function( std::forward<Args>( args )... );
 			}
 		};
 
 		template<typename Function>
-		struct void_function<Function,
+		struct void_function<
+		  Function,
 		  std::enable_if_t<!is_default_constructible_v<Function>, std::nullptr_t>> {
 
 			Function function;
@@ -684,130 +555,9 @@ namespace daw {
 		return impl::void_function<Function>( std::forward<Function>( func ) );
 	}
 
-	template<typename T>
-	using is_dereferenceable_t =
-	  typename is_detected<detectors::dereferenceable, T>::type;
-
-	template<typename T>
-	constexpr bool is_dereferenceable_v =
-	  is_detected_v<detectors::dereferenceable, T>;
-
 	template<typename Function, typename... Args>
-	using is_callable_t =
-	  typename is_detected<detectors::callable_with, Function, Args...>::type;
-
-	template<typename Predicate, typename... Args>
-	constexpr bool is_predicate_v =
-	  is_detected_convertible_v<bool, detectors::callable_with, Predicate,
-	                            Args...>;
-
-	template<typename BinaryPredicate, typename T, typename U = T>
-	constexpr bool is_binary_predicate_v = is_predicate_v<BinaryPredicate, T, U>;
-
-	template<typename BinaryPredicate, typename T, typename U = T>
-	constexpr bool is_binary_predicate_test( ) noexcept {
-		static_assert( is_binary_predicate_v<BinaryPredicate, T, U>, 
-			  "BinaryPredicate does not satisfy the Binary Predicate concept.  See "
-			  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate for more "
-			  "information" );
-		return true;
-	}
-
-	template<typename BinaryPredicate, typename T, typename U = T>
-	constexpr bool is_binary_predicate = is_binary_predicate_test<BinaryPredicate, T, U>( );
-
-	template<typename UnaryPredicate, typename T>
-	constexpr bool is_unary_predicate_v = is_predicate_v<UnaryPredicate, T>;
-
-	template<typename Compare, typename T, typename U = T>
-	constexpr bool is_compare_v = is_binary_predicate_v<Compare, T, U>;
-
-	template<typename T, typename U = T>
-	constexpr bool is_equality_comparable_v =
-	  is_detected_convertible_v<bool, detectors::equality_comparable, T, U>;
-
-	template<typename T, typename U = T>
-	constexpr bool is_inequality_comparable_v =
-	  is_detected_convertible_v<bool, detectors::inequality_comparable, T, U>;
-
-	template<typename T, typename U = T>
-	constexpr bool is_less_than_comparable_v =
-	  is_detected_convertible_v<bool, detectors::less_than_comparable, T, U>;
-
-	template<typename T, typename U = T>
-	constexpr bool is_equal_less_than_comparable_v =
-	  is_detected_convertible_v<bool, detectors::equal_less_than_comparable, T,
-	                            U>;
-
-	template<typename T, typename U = T>
-	constexpr bool is_greater_than_comparable_v =
-	  is_detected_convertible_v<bool, detectors::greater_than_comparable, T, U>;
-
-	template<typename T, typename U = T>
-	constexpr bool is_equal_greater_than_comparable_v =
-	  is_detected_convertible_v<bool, detectors::equal_greater_than_comparable, T,
-	                            U>;
-
-	template<typename Iterator,
-	         typename T = typename std::iterator_traits<Iterator>::value_type>
-	constexpr bool is_assignable_iterator_v =
-	  is_detected_v<detectors::assignable, Iterator, T>;
-
-	template<typename L, typename R>
-	constexpr bool is_comparable_v =
-	  is_equality_comparable_v<L, R> &&is_equality_comparable_v<R, L>;
-
-	namespace impl {
-		namespace is_iter {
-			template<typename T>
-			using has_value_type = typename std::iterator_traits<T>::value_type;
-
-			template<typename T>
-			using has_difference_type =
-			  typename std::iterator_traits<T>::difference_type;
-
-			template<typename T>
-			using has_reference = typename std::iterator_traits<T>::reference;
-
-			template<typename T>
-			using has_pointer = typename std::iterator_traits<T>::pointer;
-
-			template<typename T>
-			using has_iterator_category =
-			  typename std::iterator_traits<T>::iterator_category;
-
-			template<typename T>
-			using is_incrementable = decltype( ++std::declval<T &>( ) );
-		} // namespace is_iter
-
-		template<typename T>
-		constexpr bool is_incrementable_v =
-		  is_same_v<T &, daw::detected_t<is_iter::is_incrementable, T>>;
-
-		template<typename T>
-		constexpr bool has_value_type_v =
-		  daw::is_detected_v<is_iter::has_value_type, T>;
-
-		template<typename T>
-		constexpr bool has_difference_type_v =
-		  daw::is_detected_v<is_iter::has_difference_type, T>;
-
-		template<typename T>
-		constexpr bool has_reference_v =
-		  daw::is_detected_v<is_iter::has_reference, T>;
-
-		template<typename T>
-		constexpr bool has_pointer_v = daw::is_detected_v<is_iter::has_pointer, T>;
-
-		template<typename T>
-		constexpr bool has_iterator_category_v =
-		  daw::is_detected_v<is_iter::has_iterator_category, T>;
-
-		template<typename T>
-		constexpr bool has_iterator_trait_types_v =
-		  has_value_type_v<T> &&has_difference_type_v<T> &&has_reference_v<T>
-		    &&has_pointer_v<T> &&has_iterator_category_v<T>;
-	} // namespace impl
+	using is_callable_t = typename is_detected<traits::detectors::callable_with,
+	                                           Function, Args...>::type;
 
 	//////////////////////////////////////////////////////////////////////////
 	/// Summary: is like a regular type see
@@ -815,16 +565,16 @@ namespace daw {
 	/// Now using C++'s defition of Regular
 	/// http://en.cppreference.com/w/cpp/experimental/ranges/concepts/Regular
 	template<typename T>
-	constexpr bool is_regular_v =
+	CXINLINE bool is_regular_v =
 	  all_true_v<is_default_constructible_v<T>, is_copy_constructible_v<T>,
 	             is_move_constructible_v<T>, is_copy_assignable_v<T>,
-	             is_move_assignable_v<T>, is_equality_comparable_v<T>,
-	             is_inequality_comparable_v<T>>;
+	             is_move_assignable_v<T>, traits::is_equality_comparable_v<T>,
+	             traits::is_inequality_comparable_v<T>>;
 
 	struct nothing {};
 
 	template<typename To, typename... From>
-	constexpr bool are_convertible_to_v =
+	CXINLINE bool are_convertible_to_v =
 	  all_true_v<is_convertible_v<From, To>...>;
 
 	template<size_t N, typename... Args>
@@ -844,152 +594,24 @@ namespace daw {
 	using if_else_t = typename type_if_else<Condition, IfTrue, IfFalse>::type;
 
 	namespace traits {
-		namespace detectors {
-			template<typename T>
-			using has_integer_subscript = decltype( std::declval<T>( )[0] );
-
-			template<typename T>
-			using has_size =
-			  decltype( std::declval<size_t &>( ) = std::declval<T>( ).size( ) );
-
-			template<typename T>
-			using is_array_array = decltype( std::declval<T>( )[0][0] );
-
-			template<typename T>
-			using has_empty =
-			  decltype( std::declval<bool &>( ) = std::declval<T>( ).empty( ) );
-
-			template<typename T>
-			using has_append_operator = decltype(
-			  std::declval<T &>( ) += std::declval<has_integer_subscript<T>>( ) );
-
-			template<typename T>
-			using has_append =
-			  decltype( std::declval<T>( ).append( std::declval<T>( ) ) );
-
-			template<typename T, typename U>
-			using has_addition_operator =
-			  decltype( std::declval<T>( ) + std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using has_subtraction_operator =
-			  decltype( std::declval<T>( ) - std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using has_multiplication_operator =
-			  decltype( std::declval<T>( ) * std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using has_division_operator =
-			  decltype( std::declval<T>( ) / std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using has_compound_assignment_add_operator =
-			  decltype( std::declval<T &>( ) += std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using has_compound_assignment_sub_operator =
-			  decltype( std::declval<T &>( ) -= std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using has_compound_assignment_mul_operator =
-			  decltype( std::declval<T &>( ) *= std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using has_compound_assignment_div_operator =
-			  decltype( std::declval<T &>( ) /= std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using has_modulus_operator =
-			  decltype( std::declval<T>( ) % std::declval<U>( ) );
-
-			template<typename T>
-			using has_increment_operator = decltype( ++std::declval<T &>( ) );
-
-			template<typename T>
-			using has_decrement_operator = decltype( --std::declval<T &>( ) );
-		} // namespace detectors
-
-		template<typename T, typename U = T>
-		constexpr bool has_addition_operator_v =
-		  daw::is_detected_v<detectors::has_addition_operator, T, U>;
-
-		template<typename T, typename U = T>
-		constexpr bool has_subtraction_operator_v =
-		  daw::is_detected_v<detectors::has_subtraction_operator, T, U>;
-
-		template<typename T, typename U = T>
-		constexpr bool has_multiplication_operator_v =
-		  daw::is_detected_v<detectors::has_multiplication_operator, T, U>;
-
-		template<typename T, typename U = T>
-		constexpr bool has_division_operator_v =
-		  daw::is_detected_v<detectors::has_division_operator, T, U>;
-
-		template<typename T, typename U>
-		constexpr bool has_compound_assignment_add_operator_v =
-		  daw::is_detected_v<detectors::has_compound_assignment_add_operator, T, U>;
-
-		template<typename T, typename U>
-		constexpr bool has_compound_assignment_sub_operator_v =
-		  daw::is_detected_v<detectors::has_compound_assignment_sub_operator, T, U>;
-
-		template<typename T, typename U>
-		constexpr bool has_compound_assignment_mul_operator_v =
-		  daw::is_detected_v<detectors::has_compound_assignment_mul_operator, T, U>;
-
-		template<typename T, typename U>
-		constexpr bool has_compound_assignment_div_operator_v =
-		  daw::is_detected_v<detectors::has_compound_assignment_div_operator, T, U>;
-
-		template<typename T, typename U = T>
-		constexpr bool has_modulus_operator_v =
-		  daw::is_detected_v<detectors::has_modulus_operator, T, U>;
-
-		template<typename T>
-		constexpr bool has_increment_operator_v =
-		  daw::is_detected_v<detectors::has_increment_operator, T>;
-
-		template<typename T>
-		constexpr bool has_decrement_operator_v =
-		  daw::is_detected_v<detectors::has_decrement_operator, T>;
 
 		template<typename String>
-		constexpr bool has_integer_subscript_v =
-		  daw::is_detected_v<detectors::has_integer_subscript, String>;
-
-		template<typename String>
-		constexpr bool has_size_memberfn_v =
-		  daw::is_detected_v<detectors::has_size, String>;
-
-		template<typename String>
-		constexpr bool has_empty_memberfn_v =
-		  daw::is_detected_v<detectors::has_empty, String>;
-
-		template<typename String>
-		constexpr bool has_append_memberfn_v =
-		  daw::is_detected_v<detectors::has_append, String>;
-
-		template<typename String>
-		constexpr bool has_append_operator_v =
-		  daw::is_detected_v<detectors::has_append_operator, String>;
-
-		template<typename String>
-		constexpr bool is_not_array_array_v =
+		CXINLINE bool is_not_array_array_v =
 		  !daw::is_detected_v<detectors::is_array_array, String>;
 
 		template<typename String>
-		constexpr bool is_string_view_like_v = is_container_like_v<String const> &&
-		  has_integer_subscript_v<String const> &&has_size_memberfn_v<String const>
-		    &&has_empty_memberfn_v<String const> &&is_not_array_array_v<String>;
+		CXINLINE bool is_string_view_like_v =
+		  is_container_like_v<String const> and has_integer_subscript_v<
+		    String const> and has_size_memberfn_v<String const>
+		    and has_empty_memberfn_v<String const> and is_not_array_array_v<String>;
 
 		template<typename String>
-		constexpr bool is_string_like_v = is_string_view_like_v<String>
-		  &&has_append_operator_v<String> &&has_append_memberfn_v<String>
-		    &&is_container_like_v<String> &&has_integer_subscript_v<String>;
+		CXINLINE bool is_string_like_v = is_string_view_like_v<String>
+		  and has_append_operator_v<String> and has_append_memberfn_v<String>
+		    and is_container_like_v<String> and has_integer_subscript_v<String>;
 
 		template<typename Container, size_t ExpectedSize>
-		constexpr bool is_value_size_equal_v =
+		CXINLINE bool is_value_size_equal_v =
 		  sizeof( *std::cbegin( std::declval<Container>( ) ) ) == ExpectedSize;
 
 		namespace impl {
@@ -1005,15 +627,15 @@ namespace daw {
 
 			template<typename T1, typename T2, typename... Ts>
 			struct are_unique<T1, T2, Ts...>
-			  : std::integral_constant<bool, are_unique<T1, T2>::value &&
-			                                   are_unique<T1, Ts...>::value &&
+			  : std::integral_constant<bool, are_unique<T1, T2>::value and
+			                                   are_unique<T1, Ts...>::value and
 			                                   are_unique<T2, Ts...>::value> {};
 		} // namespace impl
 
 		template<typename... Ts>
 		using are_unique_t = impl::are_unique<Ts...>;
 		template<typename... Ts>
-		constexpr bool are_unique_v = are_unique_t<Ts...>::value;
+		CXINLINE bool are_unique_v = are_unique_t<Ts...>::value;
 
 		namespace impl {
 			template<typename...>
@@ -1026,13 +648,14 @@ namespace daw {
 			struct isnt_cv_ref<T, Ts...>
 			  : std::integral_constant<
 			      bool,
-			      ( !any_true_v<is_const_v<T>, is_reference_v<T>, is_volatile_v<T>> &&
+			      ( !any_true_v<is_const_v<T>, is_reference_v<T>,
+			                    is_volatile_v<T>> and
 			        is_same_v<std::true_type, typename isnt_cv_ref<Ts...>::type> )> {
 			};
 		} // namespace impl
 
 		template<typename... Ts>
-		constexpr bool isnt_cv_ref_v = impl::isnt_cv_ref<Ts...>::value;
+		CXINLINE bool isnt_cv_ref_v = impl::isnt_cv_ref<Ts...>::value;
 
 		template<typename T>
 		using deref_t = decltype( *std::declval<T>( ) );
@@ -1072,14 +695,14 @@ namespace daw {
 		// Tests if type T is the same as the first argument in Args or if args is
 		// empty it is false
 		template<typename T, typename... Args>
-		constexpr bool is_first_type_v = is_first_type<T, Args...>::value;
+		CXINLINE bool is_first_type_v = is_first_type<T, Args...>::value;
 
 		template<typename... Ts>
-		constexpr bool is_tuple_v = is_detected_v<impl::detect_is_tuple, Ts...>;
+		CXINLINE bool is_tuple_v = is_detected_v<impl::detect_is_tuple, Ts...>;
 
 		namespace impl {}
 		template<typename T, typename... Args>
-		constexpr bool is_init_list_constructible_v = all_true_v<
+		CXINLINE bool is_init_list_constructible_v = all_true_v<
 		  are_same_types_v<Args...>,
 		  daw::is_constructible_v<T, std::initializer_list<first_type<Args...>>>>;
 
@@ -1088,62 +711,62 @@ namespace daw {
 			using has_char_type_detect = typename T::char_type;
 
 			template<typename T>
-			constexpr bool has_char_type_v =
-			  daw::is_detected_v<has_char_type_detect, T>;
-
-			template<typename T>
 			using has_adjustfield_detect = decltype( T::adjustfield );
-
-			template<typename T>
-			constexpr bool has_adjustfield_v =
-			  daw::is_detected_v<has_adjustfield_detect, T>;
 
 			template<typename T>
 			using has_left_detect = decltype( T::left );
 
 			template<typename T>
-			constexpr bool has_left_v = daw::is_detected_v<has_left_detect, T>;
-
-			template<typename T>
 			using has_fill_member_detect = decltype( std::declval<T>( ).fill( ) );
 
 			template<typename T>
-			constexpr bool has_fill_member_v =
-			  daw::is_detected_v<has_fill_member_detect, T>;
-
-			template<typename T>
 			using has_good_member_detect = decltype( std::declval<T>( ).good( ) );
-
-			template<typename T>
-			constexpr bool has_good_member_v =
-			  daw::is_detected_v<has_good_member_detect, T>;
 
 			template<typename T, typename CharT>
 			using has_write_member_detect = decltype( std::declval<T>( ).write(
 			  std::declval<CharT const *>( ), std::declval<int>( ) ) );
 
-			template<typename T, typename CharT>
-			constexpr bool has_write_member_v =
-			  daw::is_detected_v<has_write_member_detect, T, CharT>;
-
 			template<typename T>
 			using has_width_member_detect = decltype( std::declval<T>( ).width( ) );
-
-			template<typename T>
-			constexpr bool has_width_member_v =
-			  daw::is_detected_v<has_width_member_detect, T>;
 
 			template<typename T>
 			using has_flags_member_detect = decltype( std::declval<T>( ).flags( ) );
 
 			template<typename T>
-			constexpr bool has_flags_member_v =
+			CXINLINE bool has_adjustfield_v =
+			  daw::is_detected_v<has_adjustfield_detect, T>;
+
+			template<typename T>
+			CXINLINE bool has_left_v = daw::is_detected_v<has_left_detect, T>;
+
+			template<typename T>
+			CXINLINE bool has_char_type_v =
+			  daw::is_detected_v<has_char_type_detect, T>;
+
+			template<typename T>
+			CXINLINE bool has_fill_member_v =
+			  daw::is_detected_v<has_fill_member_detect, T>;
+
+			template<typename T>
+			CXINLINE bool has_good_member_v =
+			  daw::is_detected_v<has_good_member_detect, T>;
+
+			template<typename T, typename CharT>
+			CXINLINE bool has_write_member_v =
+			  daw::is_detected_v<has_write_member_detect, T, CharT>;
+
+			template<typename T>
+			CXINLINE bool has_width_member_v =
+			  daw::is_detected_v<has_width_member_detect, T>;
+
+			template<typename T>
+			CXINLINE bool has_flags_member_v =
 			  daw::is_detected_v<has_flags_member_detect, T>;
 
 		} // namespace ostream_detectors
 
 		template<typename T>
-		constexpr bool is_ostream_like_lite_v =
+		CXINLINE bool is_ostream_like_lite_v =
 		  all_true_v<ostream_detectors::has_char_type_v<T>,
 		             ostream_detectors::has_adjustfield_v<T>,
 		             ostream_detectors::has_fill_member_v<T>,
@@ -1152,251 +775,17 @@ namespace daw {
 		             ostream_detectors::has_flags_member_v<T>>;
 
 		template<typename T, typename CharT>
-		constexpr bool is_ostream_like_v =
+		CXINLINE bool is_ostream_like_v =
 		  all_true_v<is_ostream_like_lite_v<T>,
 		             ostream_detectors::has_write_member_v<T, CharT>>;
 
 		template<typename T>
-		constexpr bool is_character_v = is_one_of_v<T, char, wchar_t>;
+		CXINLINE bool is_character_v = is_one_of_v<T, char, wchar_t>;
 
 		template<typename Arg, typename... Args>
 		using last_type_t =
 		  std::tuple_element_t<sizeof...( Args ), std::tuple<Arg, Args...>>;
 	} // namespace traits
-
-	// Iterator Concepts
-	// is_iterator
-	template<typename Iterator>
-	constexpr bool is_iterator_v = all_true_v<
-	  is_copy_constructible_v<Iterator>, is_copy_assignable_v<Iterator>,
-	  is_destructible_v<Iterator>, impl::is_incrementable_v<Iterator>,
-	  impl::has_value_type_v<Iterator>, impl::has_difference_type_v<Iterator>,
-	  impl::has_reference_v<Iterator>, impl::has_pointer_v<Iterator>,
-	  impl::has_iterator_category_v<Iterator>
-#ifdef __cpp_lib_is_swappable
-	  ,
-	  std::is_swappable_v<Iterator>
-#endif
-	  >;
-
-	template<typename Iterator>
-	constexpr bool is_iterator_test( ) noexcept {
-		static_assert(
-		  is_iterator_v<Iterator>,
-		  "Iterator does not fullfill the RandomIterator concept.  See "
-		  "https://en.cppreference.com/w/cpp/named_req/Iterator" );
-
-		static_assert( is_copy_constructible_v<Iterator>,
-		               "Iterator is not copy constructable" );
-		static_assert( is_copy_assignable_v<Iterator>,
-		               "Iterator is not copy assignable" );
-		static_assert( is_destructible_v<Iterator>,
-		               "Iterator is not destructable" );
-		static_assert( is_dereferenceable_v<Iterator>,
-		               "Iterator is not dereferenceable" );
-		static_assert( impl::is_incrementable_v<Iterator>,
-		               "Iterator is not incrementable" );
-		static_assert( impl::has_value_type_v<Iterator>,
-		               "Iterator does not expose value_type type alias" );
-		static_assert( impl::has_difference_type_v<Iterator>,
-		               "Iterator does not expose difference type alias" );
-		static_assert( impl::has_reference_v<Iterator>,
-		               "Iterator does not expose reference type alias" );
-		static_assert( impl::has_pointer_v<Iterator>,
-		               "Iterator does not expose pointer type alias" );
-		static_assert( impl::has_iterator_category_v<Iterator>,
-		               "Iterator does not expose iterator category type alias" );
-#ifdef __cpp_lib_is_swappable
-		static_assert( std::is_swappable_v<Iterator>, "Iterator is not swappable" );
-#endif
-		return true;
-	}
-
-	template<typename Iterator>
-	constexpr bool is_iterator = is_iterator_test<Iterator>( );
-
-	// is_output_iterator
-	template<typename OutputIterator,
-	         typename T =
-	           typename std::iterator_traits<OutputIterator>::value_type>
-	constexpr bool is_output_iterator_v =
-	  all_true_v<is_iterator_v<OutputIterator>,
-	             is_assignable_iterator_v<OutputIterator, T>>;
-
-	template<typename OutputIterator, typename T = typename std::iterator_traits<
-	                                    OutputIterator>::value_type>
-	constexpr bool is_output_iterator_test( ) noexcept {
-		static_assert(
-		  is_output_iterator_v<OutputIterator>,
-		  "OutputIterator does not fullfill the RandomIterator concept.  See "
-		  "https://en.cppreference.com/w/cpp/named_req/OutputIterator" );
-		is_iterator_test<OutputIterator>( );
-		static_assert( is_assignable_iterator_v<OutputIterator, T>,
-		               "OutputIterator is not assignable" );
-		return true;
-	}
-
-	template<typename OutputIterator, typename T = typename std::iterator_traits<
-	                                    OutputIterator>::value_type>
-	constexpr bool
-	  is_output_iterator = is_output_iterator_test<OutputIterator, T>( );
-
-	// is_input_iterator
-	template<typename InputIterator,
-	         typename T =
-	           std::decay_t<decltype( *std::declval<InputIterator>( ) )>>
-	constexpr bool is_input_iterator_v = all_true_v<
-	  is_iterator_v<InputIterator>, is_equality_comparable_v<InputIterator>,
-	  is_convertible_v<decltype( *std::declval<InputIterator>( ) ), T>>;
-
-	template<typename InputIterator>
-	constexpr bool is_input_iterator_test( ) noexcept {
-		static_assert(
-		  is_input_iterator_v<InputIterator>,
-		  "InputIterator does not fullfill the RandomIterator concept.  See "
-		  "https://en.cppreference.com/w/cpp/named_req/InputIterator" );
-
-		is_iterator_test<InputIterator>( );
-
-		using T = decltype( *std::declval<InputIterator>( ) );
-		using U = remove_cvref_t<T>;
-
-		static_assert( is_equality_comparable_v<InputIterator>,
-		               "InputIterator is not equality_comparable" );
-
-		static_assert(
-		  is_convertible_v<T, U>,
-		  "InputIterator's dereferenced value is not convertible to itself" );
-		return true;
-	}
-
-	template<typename InputIterator>
-	constexpr bool is_input_iterator = is_input_iterator_test<InputIterator>( );
-
-	// is_forward_iterator
-	template<typename ForwardIterator>
-	constexpr bool is_forward_iterator_v =
-	  all_true_v<is_iterator_v<ForwardIterator>,
-	             is_default_constructible_v<ForwardIterator>>;
-
-	template<typename ForwardIterator>
-	constexpr bool is_forward_iterator_test( ) noexcept {
-		static_assert(
-		  is_forward_iterator_v<ForwardIterator>,
-		  "ForwardIterator does not fullfill the RandomIterator concept.  See "
-		  "https://en.cppreference.com/w/cpp/named_req/ForwardIterator" );
-
-		is_iterator_test<ForwardIterator>( );
-
-		static_assert( is_default_constructible_v<ForwardIterator>,
-		               "ForwardIterator is not default constructible" );
-		// Cannot express MultiPass // auto b = a; *a++; *b;
-		return true;
-	}
-
-	// is_bidirectional_iterator
-	template<typename BitdirectionalIterator>
-	constexpr bool is_bidirectional_iterator_v =
-	  all_true_v<is_forward_iterator_v<BitdirectionalIterator>,
-	             traits::has_decrement_operator_v<BitdirectionalIterator>>;
-
-	template<typename BidirectionalIterator>
-	constexpr bool is_bidirectional_iterator_test( ) noexcept {
-		static_assert(
-		  is_bidirectional_iterator_v<BidirectionalIterator>,
-		  "BidirectionalIterator does not fullfill the RandomIterator concept.  "
-		  "See "
-		  "https://en.cppreference.com/w/cpp/named_req/BidirectionalIterator" );
-
-		is_forward_iterator_test<BidirectionalIterator>( );
-		static_assert( traits::has_decrement_operator_v<BidirectionalIterator>,
-		               "BidirectionalIterator does not have decrement operator" );
-		return true;
-	}
-
-	template<typename BidirectionalIterator>
-	constexpr bool is_bidirectional_iterator =
-	  is_bidirectional_iterator_test<BidirectionalIterator>( );
-
-	// is_random_iterator
-	template<typename RandomIterator>
-	constexpr bool is_random_iterator_v = daw::all_true_v<
-	  is_bidirectional_iterator_v<RandomIterator>,
-	  traits::has_addition_operator_v<RandomIterator, int>,
-	  traits::has_addition_operator_v<int, RandomIterator>,
-	  traits::has_subtraction_operator_v<RandomIterator, int>,
-	  traits::has_subtraction_operator_v<RandomIterator>,
-	  traits::has_compound_assignment_add_operator_v<RandomIterator, int>,
-	  traits::has_compound_assignment_sub_operator_v<RandomIterator, int>,
-	  is_less_than_comparable_v<RandomIterator>,
-	  is_greater_than_comparable_v<RandomIterator>,
-	  is_equal_less_than_comparable_v<RandomIterator>,
-	  is_equal_greater_than_comparable_v<RandomIterator>,
-	  traits::has_integer_subscript_v<RandomIterator>>;
-
-	template<typename RandomIterator>
-	constexpr bool is_random_iterator_test( ) noexcept {
-		static_assert(
-		  is_random_iterator_v<RandomIterator>,
-		  "RandomIterator does not fullfill the RandomIterator concept.  See "
-		  "https://en.cppreference.com/w/cpp/named_req/RandomAccessIterator" );
-		is_bidirectional_iterator_test<RandomIterator>( );
-		// Mathematics
-		static_assert(
-		  traits::has_addition_operator_v<RandomIterator, int>,
-		  "RandomIterator does not support addition with integer types" );
-		static_assert(
-		  traits::has_addition_operator_v<int, RandomIterator>,
-		  "RandomIterator does not support addition with integer types" );
-		static_assert(
-		  traits::has_subtraction_operator_v<RandomIterator, int>,
-		  "RandomIterator does not support subtraction with integer types" );
-		static_assert(
-		  traits::has_subtraction_operator_v<RandomIterator>,
-		  "RandomIterator does not support subtraction with RandomIterators" );
-		// Compound Assignment
-		static_assert(
-		  traits::has_compound_assignment_add_operator_v<RandomIterator, int>,
-		  "RandomIterator does not support compound assignment "
-		  "addition += operations" );
-		static_assert(
-		  traits::has_compound_assignment_sub_operator_v<RandomIterator, int>,
-		  "RandomIterator does not support compound assignment "
-		  "subtraction -= operations" );
-		// Comparison
-		static_assert( is_less_than_comparable_v<RandomIterator>,
-		               "RandomIterator does not support comparison < operations" );
-		static_assert( is_greater_than_comparable_v<RandomIterator>,
-		               "RandomIterator does not support comparison > operations" );
-		static_assert( is_equal_less_than_comparable_v<RandomIterator>,
-		               "RandomIterator does not support comparison <= operations" );
-		static_assert( is_equal_greater_than_comparable_v<RandomIterator>,
-		               "RandomIterator does not support comparison >= operations" );
-		// Subscript
-		static_assert( traits::has_integer_subscript_v<RandomIterator>,
-		               "RandomIterator does not support subscript operator" );
-		return true;
-	}
-
-	template<typename RandomIterator>
-	constexpr bool
-	  is_random_iterator = is_random_iterator_test<RandomIterator>( );
-
-	template<typename Sortable>
-	constexpr bool is_sortable_container_v = all_true_v<
-	  traits::is_container_like_v<Sortable>,
-	  is_random_iterator_v<decltype( std::begin( std::declval<Sortable>( ) ) )>>;
-
-	template<typename Sortable>
-	constexpr bool is_sortable_container_test( ) noexcept {
-		static_assert( is_sortable_container_v<Sortable>, "Sortable does not fullfill the requirements of the Sortable concept" );
-	  static_assert( traits::is_container_like<Sortable>, "Sortable does not fullfill the requirements of the Container concept" );
-
-		using sortable_iterator_t = decltype( std::begin( std::declval<Sortable>( ) ) );
-	  static_assert( is_random_iterator<sortable_iterator_t>, "" );
-
-		return true;
-	}
 
 	template<bool B, typename T = std::nullptr_t>
 	using required = std::enable_if_t<B, T>;
@@ -1423,15 +812,21 @@ namespace daw {
 			delete_default_constructor_if( ) = delete;
 
 			~delete_default_constructor_if( ) noexcept = default;
+
 			constexpr delete_default_constructor_if( non_constructor ) noexcept {}
+
 			constexpr delete_default_constructor_if(
 			  delete_default_constructor_if const & ) {}
+
 			constexpr delete_default_constructor_if &
+
 			operator=( delete_default_constructor_if const & ) noexcept {
 				return *this;
 			}
+
 			constexpr delete_default_constructor_if(
 			  delete_default_constructor_if && ) noexcept {}
+
 			constexpr delete_default_constructor_if &
 			operator=( delete_default_constructor_if && ) noexcept {
 				return *this;
@@ -1457,6 +852,7 @@ namespace daw {
 			}
 			constexpr delete_copy_constructor_if(
 			  delete_copy_constructor_if && ) noexcept {}
+
 			constexpr delete_copy_constructor_if &
 			operator=( delete_copy_constructor_if && ) noexcept {
 				return *this;
@@ -1475,12 +871,17 @@ namespace daw {
 			operator=( delete_copy_assignment_if const & ) = delete;
 
 			constexpr delete_copy_assignment_if( non_constructor ) noexcept {}
+
 			constexpr delete_copy_assignment_if( ) noexcept {}
+
 			~delete_copy_assignment_if( ) noexcept = default;
+
 			constexpr delete_copy_assignment_if(
 			  delete_copy_assignment_if const & ) noexcept {}
+
 			constexpr delete_copy_assignment_if(
 			  delete_copy_assignment_if && ) noexcept {}
+
 			constexpr delete_copy_assignment_if &
 			operator=( delete_copy_assignment_if && ) noexcept {
 				return *this;

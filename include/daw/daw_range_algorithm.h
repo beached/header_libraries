@@ -34,7 +34,7 @@
 namespace daw {
 	namespace algorithm {
 		template<typename Container,
-		         std::enable_if_t<daw::traits::is_container_like_v<Container>,
+		         std::enable_if_t<traits::is_container_like_v<Container>,
 		                          std::nullptr_t> = nullptr>
 		Container &sort( Container &container ) noexcept( noexcept(
 		  std::sort( std::begin( container ), std::end( container ) ) ) ) {
@@ -44,14 +44,14 @@ namespace daw {
 		}
 
 		template<typename Container, typename Compare,
-		         std::enable_if_t<daw::traits::is_container_like_v<Container>,
+		         std::enable_if_t<traits::is_container_like_v<Container>,
 		                          std::nullptr_t> = nullptr>
 		Container &sort( Container &container, Compare compare ) noexcept( noexcept(
 		  std::sort( std::begin( container ), std::end( container ), compare ) ) ) {
 			static_assert(
-			  daw::is_binary_predicate_v<Compare,
-			                             decltype( *std::begin( container ) ),
-			                             decltype( *std::end( container ) )>,
+			  traits::is_binary_predicate_v<Compare,
+			                                decltype( *std::begin( container ) ),
+			                                decltype( *std::end( container ) )>,
 			  "Compare does not satisfy the Binary Predicate concept.  See "
 			  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate for more "
 			  "information" );
@@ -61,7 +61,7 @@ namespace daw {
 		}
 
 		template<typename Container,
-		         std::enable_if_t<daw::traits::is_container_like_v<Container>,
+		         std::enable_if_t<traits::is_container_like_v<Container>,
 		                          std::nullptr_t> = nullptr>
 		Container &stable_sort( Container &container ) noexcept( noexcept(
 		  std::stable_sort( std::begin( container ), std::end( container ) ) ) ) {
@@ -71,16 +71,16 @@ namespace daw {
 		}
 
 		template<typename Container, typename Compare,
-		         std::enable_if_t<daw::traits::is_container_like_v<Container>,
+		         std::enable_if_t<traits::is_container_like_v<Container>,
 		                          std::nullptr_t> = nullptr>
 		Container &stable_sort( Container &container, Compare compare ) noexcept(
 		  noexcept( std::stable_sort( std::begin( container ),
 		                              std::end( container ), compare ) ) ) {
 
 			static_assert(
-			  daw::is_binary_predicate_v<Compare,
-			                             decltype( *std::begin( container ) ),
-			                             decltype( *std::end( container ) )>,
+			  traits::is_binary_predicate_v<Compare,
+			                                decltype( *std::begin( container ) ),
+			                                decltype( *std::end( container ) )>,
 			  "Compare does not satisfy the Binary Predicate concept.  See "
 			  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate for more "
 			  "information" );
@@ -91,7 +91,7 @@ namespace daw {
 		}
 
 		template<typename Container, typename Value,
-		         std::enable_if_t<daw::traits::is_container_like_v<Container>,
+		         std::enable_if_t<traits::is_container_like_v<Container>,
 		                          std::nullptr_t> = nullptr>
 		decltype( auto ) find( Container &container, Value const &value ) noexcept(
 		  noexcept( std::find( std::begin( container ), std::end( container ),
@@ -101,7 +101,7 @@ namespace daw {
 		}
 
 		template<typename Container, typename Value,
-		         std::enable_if_t<daw::traits::is_container_like_v<Container>,
+		         std::enable_if_t<traits::is_container_like_v<Container>,
 		                          std::nullptr_t> = nullptr>
 		decltype( auto )
 		find( Container const &container, Value const &value ) noexcept( noexcept(
@@ -111,16 +111,16 @@ namespace daw {
 		}
 
 		template<typename Container, typename UnaryPredicate,
-		         std::enable_if_t<daw::traits::is_container_like_v<Container>,
+		         std::enable_if_t<traits::is_container_like_v<Container>,
 		                          std::nullptr_t> = nullptr>
 		decltype( auto )
 		find_if( Container &container, UnaryPredicate pred ) noexcept( noexcept(
 		  std::find_if( std::begin( container ), std::end( container ), pred ) ) ) {
 
 			static_assert(
-			  daw::is_unary_predicate_v<UnaryPredicate,
-			                            decltype( *std::begin( container ) ),
-			                            decltype( *std::end( container ) )>,
+			  traits::is_unary_predicate_v<UnaryPredicate,
+			                               decltype( *std::begin( container ) ),
+			                               decltype( *std::end( container ) )>,
 			  "Compare does not satisfy the Unary Predicate concept.  See "
 			  "http://en.cppreference.com/w/cpp/concept/Predicate for more "
 			  "information" );
@@ -130,7 +130,7 @@ namespace daw {
 		}
 
 		template<typename Container, typename UnaryPredicate,
-		         std::enable_if_t<daw::traits::is_container_like_v<Container>,
+		         std::enable_if_t<traits::is_container_like_v<Container>,
 		                          std::nullptr_t> = nullptr>
 		decltype( auto )
 		find_if( Container const &container, UnaryPredicate pred ) noexcept(
@@ -138,9 +138,9 @@ namespace daw {
 		                          pred ) ) ) {
 
 			static_assert(
-			  daw::is_unary_predicate_v<UnaryPredicate,
-			                            decltype( *std::begin( container ) ),
-			                            decltype( *std::end( container ) )>,
+			  traits::is_unary_predicate_v<UnaryPredicate,
+			                               decltype( *std::begin( container ) ),
+			                               decltype( *std::end( container ) )>,
 			  "Compare does not satisfy the Unary Predicate concept.  See "
 			  "http://en.cppreference.com/w/cpp/concept/Predicate for more "
 			  "information" );
@@ -194,7 +194,7 @@ namespace daw {
 		}
 
 		template<typename Container, typename UnaryOperator,
-		         std::enable_if_t<daw::traits::is_container_like_v<Container>,
+		         std::enable_if_t<traits::is_container_like_v<Container>,
 		                          std::nullptr_t> = nullptr>
 		auto map( Container const &container, UnaryOperator unary_operator ) {
 
@@ -212,10 +212,10 @@ namespace daw {
 			return result;
 		}
 
-		template<typename Container, typename OutputIterator,
-		         typename UnaryOperator,
-		         std::enable_if_t<daw::traits::is_container_like_v<Container>,
-		                          std::nullptr_t> = nullptr>
+		template<
+		  typename Container, typename OutputIterator, typename UnaryOperator,
+		  std::enable_if_t<traits::is_container_like_v<Container>, std::nullptr_t> =
+		    nullptr>
 		void
 		map( Container const &container, OutputIterator &first_out,
 		     UnaryOperator
@@ -241,10 +241,10 @@ namespace daw {
 			                first_out, unary_operator );
 		}
 
-		template<typename Container, typename OutputIterator,
-		         typename UnaryOperator,
-		         std::enable_if_t<daw::traits::is_container_like_v<Container>,
-		                          std::nullptr_t> = nullptr>
+		template<
+		  typename Container, typename OutputIterator, typename UnaryOperator,
+		  std::enable_if_t<traits::is_container_like_v<Container>, std::nullptr_t> =
+		    nullptr>
 		void
 		map( Container const &container, OutputIterator &&first_out,
 		     UnaryOperator
@@ -266,7 +266,7 @@ namespace daw {
 
 		// max_element
 		template<typename Container, typename UnaryOperator,
-		         std::enable_if_t<daw::traits::is_container_like_v<Container>,
+		         std::enable_if_t<traits::is_container_like_v<Container>,
 		                          std::nullptr_t> = nullptr>
 		decltype( auto ) max_element( Container &container ) noexcept( noexcept(
 		  std::max_element( std::cbegin( container ), std::cend( container ) ) ) ) {
@@ -275,10 +275,10 @@ namespace daw {
 			                         std::cend( container ) );
 		}
 
-		template<typename Container, typename OutputIterator,
-		         typename UnaryOperator,
-		         std::enable_if_t<daw::traits::is_container_like_v<Container>,
-		                          std::nullptr_t> = nullptr>
+		template<
+		  typename Container, typename OutputIterator, typename UnaryOperator,
+		  std::enable_if_t<traits::is_container_like_v<Container>, std::nullptr_t> =
+		    nullptr>
 		decltype( auto ) max_element( Container const &container ) noexcept(
 		  noexcept( std::max_element( std::cbegin( container ),
 		                              std::cend( container ) ) ) ) {
@@ -288,7 +288,7 @@ namespace daw {
 		}
 
 		template<typename Container, typename Compare,
-		         std::enable_if_t<daw::traits::is_container_like_v<Container>,
+		         std::enable_if_t<traits::is_container_like_v<Container>,
 		                          std::nullptr_t> = nullptr>
 		decltype( auto )
 		max_element( Container &container, Compare compare ) noexcept(
@@ -296,9 +296,9 @@ namespace daw {
 		                              std::end( container ), compare ) ) ) {
 
 			static_assert(
-			  daw::is_binary_predicate_v<Compare,
-			                             decltype( *std::begin( container ) ),
-			                             decltype( *std::end( container ) )>,
+			  traits::is_binary_predicate_v<Compare,
+			                                decltype( *std::begin( container ) ),
+			                                decltype( *std::end( container ) )>,
 			  "Compare does not satisfy the Binary Predicate concept.  See "
 			  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate for more "
 			  "information" );
@@ -308,7 +308,7 @@ namespace daw {
 		}
 
 		template<typename Container, typename Compare,
-		         std::enable_if_t<daw::traits::is_container_like_v<Container>,
+		         std::enable_if_t<traits::is_container_like_v<Container>,
 		                          std::nullptr_t> = nullptr>
 		decltype( auto )
 		max_element( Container const &container, Compare compare ) noexcept(
@@ -316,9 +316,9 @@ namespace daw {
 		                              std::end( container ), compare ) ) ) {
 
 			static_assert(
-			  daw::is_binary_predicate_v<Compare,
-			                             decltype( *std::begin( container ) ),
-			                             decltype( *std::end( container ) )>,
+			  traits::is_binary_predicate_v<Compare,
+			                                decltype( *std::begin( container ) ),
+			                                decltype( *std::end( container ) )>,
 			  "Compare does not satisfy the Binary Predicate concept.  See "
 			  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate for more "
 			  "information" );

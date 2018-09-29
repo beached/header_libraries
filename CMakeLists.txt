@@ -88,6 +88,11 @@ set( TESTED_HEADERS_PREFIXES
 	not_null
 )
 
+set( UNTESTED_HEADER_IMPL 
+	daw_traits_concepts
+	daw_traits_impl
+)
+
 set( TESTED_PARALLEL_HEADERS_PREFIXES
 	daw_copy_mutex
 	daw_latch
@@ -194,6 +199,10 @@ foreach( CUR_PREFIX ${DEV_HEADER_FILES} )
 	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/${CUR_PREFIX}.h ${TEST_FOLDER}/${CUR_PREFIX}_test.cpp )
 	target_link_libraries( ${CUR_PREFIX}_test_bin test_main ${Boost_LIBRARIES} ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
 	add_dependencies( check ${CUR_PREFIX}_test_bin )
+endforeach( CUR_PREFIX )
+
+foreach( CUR_PREFIX ${UNTESTED_HEADER_IMPL} )
+	install( FILES "${HEADER_FOLDER}/daw/impl/${CUR_PREFIX}" DESTINATION include/daw/impl )
 endforeach( CUR_PREFIX )
 
 foreach( CUR_PREFIX ${UNTESTED_HEADER_FILES} )

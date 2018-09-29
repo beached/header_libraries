@@ -27,10 +27,10 @@
 #include <iterator>
 #include <numeric>
 
+#include "cpp_17.h"
 #include "daw_algorithm.h"
 #include "daw_math.h"
 #include "daw_traits.h"
-#include "cpp_17.h"
 
 namespace daw {
 	namespace container {
@@ -38,9 +38,7 @@ namespace daw {
 			template<typename Container>
 			using has_size_method = decltype( std::declval<Container>( ).size( ) );
 
-			namespace adl_test {
-				
-			}
+			namespace adl_test {}
 			template<typename Container>
 			constexpr bool is_nothrow_begin( ) noexcept {
 				using std::begin;
@@ -69,12 +67,15 @@ namespace daw {
 
 			template<typename Container>
 			constexpr bool is_nothrow_sortable( ) noexcept {
-				return noexcept( std::sort( adl_begin( std::declval<Container>( ) ), adl_end( std::declval<Container>( ) ) ) );
+				return noexcept( std::sort( adl_begin( std::declval<Container>( ) ),
+				                            adl_end( std::declval<Container>( ) ) ) );
 			}
 
 			template<typename Container, typename Predicate>
 			constexpr bool is_nothrow_sortable( ) noexcept {
-				return noexcept( std::sort( adl_begin( std::declval<Container>( ) ), adl_end( std::declval<Container>( ) ), std::declval<Predicate>( ) ) );
+				return noexcept( std::sort( adl_begin( std::declval<Container>( ) ),
+				                            adl_end( std::declval<Container>( ) ),
+				                            std::declval<Predicate>( ) ) );
 			}
 
 		} // namespace impl
@@ -96,23 +97,25 @@ namespace daw {
 		void sort( Sortable &container ) noexcept(
 		  impl::is_nothrow_sortable<Sortable>( ) ) {
 
-			static_assert( daw::is_sortable_container_v<Sortable>, "" );
+			static_assert( traits::is_sortable_container_v<Sortable>, "" );
 			using std::begin;
 			using std::end;
 			std::sort( begin( container ), end( container ) );
 		}
 
 		template<typename Sortable, typename Compare>
-		void sort( Sortable &container, Compare && compare ) noexcept( impl::is_nothrow_sortable<Sortable, Compare>( ) ) {
+		void sort( Sortable &container, Compare &&compare ) noexcept(
+		  impl::is_nothrow_sortable<Sortable, Compare>( ) ) {
 			using std::begin;
 			using std::end;
-			using value_type = remove_cvref_t<decltype(*begin( container ) )>;
+			using value_type = remove_cvref_t<decltype( *begin( container ) )>;
 
-			static_assert( daw::is_sortable_container_v<Sortable>, "" );
+			static_assert( traits::is_sortable_container_v<Sortable>, "" );
 			static_assert(
-			  daw::is_binary_predicate_v<Compare, value_type, value_type>, "" );
+			  traits::is_binary_predicate_v<Compare, value_type, value_type>, "" );
 
-			std::sort( begin( container ), end( container ), std::forward<Compare>( compare ) );
+			std::sort( begin( container ), end( container ),
+			           std::forward<Compare>( compare ) );
 		}
 
 		template<typename Container,
@@ -133,13 +136,12 @@ namespace daw {
 
 			using std::begin;
 			using std::end;
-			using value_type = remove_cvref_t<decltype(*begin( container ) )>;
+			using value_type = remove_cvref_t<decltype( *begin( container ) )>;
 
 			static_assert(
-			  daw::is_binary_predicate_v<Compare, value_type, value_type>, "" );
+			  traits::is_binary_predicate_v<Compare, value_type, value_type>, "" );
 
-			std::stable_sort( begin( container ), end( container ),
-			                  compare );
+			std::stable_sort( begin( container ), end( container ), compare );
 		}
 
 		template<typename Container, typename Value,
@@ -170,8 +172,8 @@ namespace daw {
 		  std::find_if( std::begin( container ), std::end( container ), pred ) ) ) {
 
 			static_assert(
-			  daw::is_unary_predicate_v<UnaryPredicate,
-			                            decltype( *std::begin( container ) )>,
+			  traits::is_unary_predicate_v<UnaryPredicate,
+			                               decltype( *std::begin( container ) )>,
 			  "Compare does not satisfy the Unary Predicate concept.  See "
 			  "http://en.cppreference.com/w/cpp/concept/Predicate for more "
 			  "information" );
@@ -208,8 +210,8 @@ namespace daw {
 		                             std::end( container ) ) ) ) {
 
 			static_assert(
-			  daw::is_unary_predicate_v<UnaryPredicate,
-			                            decltype( *std::begin( container ) )>,
+			  traits::is_unary_predicate_v<UnaryPredicate,
+			                               decltype( *std::begin( container ) )>,
 			  "Compare does not satisfy the Unary Predicate concept.  See "
 			  "http://en.cppreference.com/w/cpp/concept/Predicate for more "
 			  "information" );
@@ -228,8 +230,8 @@ namespace daw {
 		                            pred ) ) ) {
 
 			static_assert(
-			  daw::is_unary_predicate_v<UnaryPredicate,
-			                            decltype( *std::begin( container ) )>,
+			  traits::is_unary_predicate_v<UnaryPredicate,
+			                               decltype( *std::begin( container ) )>,
 			  "Compare does not satisfy the Unary Predicate concept.  See "
 			  "http://en.cppreference.com/w/cpp/concept/Predicate for more "
 			  "information" );
@@ -247,8 +249,8 @@ namespace daw {
 		                                   std::end( container ), pred ) ) ) {
 
 			static_assert(
-			  daw::is_unary_predicate_v<UnaryPredicate,
-			                            decltype( *std::begin( container ) )>,
+			  traits::is_unary_predicate_v<UnaryPredicate,
+			                               decltype( *std::begin( container ) )>,
 			  "Compare does not satisfy the Unary Predicate concept.  See "
 			  "http://en.cppreference.com/w/cpp/concept/Predicate for more "
 			  "information" );
@@ -389,13 +391,12 @@ namespace daw {
 		                              std::end( container ), compare ) ) ) {
 			using std::begin;
 			using std::end;
-			using value_type = remove_cvref_t<decltype(*begin( container ) )>;
+			using value_type = remove_cvref_t<decltype( *begin( container ) )>;
 
 			static_assert(
-			  daw::is_binary_predicate_v<Compare, value_type, value_type>, "" );
+			  traits::is_binary_predicate_v<Compare, value_type, value_type>, "" );
 
-			return std::max_element( begin( container ), end( container ),
-			                         compare );
+			return std::max_element( begin( container ), end( container ), compare );
 		}
 
 		template<typename Container, typename Compare,
@@ -408,18 +409,17 @@ namespace daw {
 
 			using std::begin;
 			using std::end;
-			using value_type = remove_cvref_t<decltype(*begin( container ) )>;
+			using value_type = remove_cvref_t<decltype( *begin( container ) )>;
 
 			static_assert(
-			  daw::is_binary_predicate_v<Compare, value_type, value_type>, "" );
+			  traits::is_binary_predicate_v<Compare, value_type, value_type>, "" );
 
-			return std::max_element( begin( container ), end( container ),
-			                         compare );
+			return std::max_element( begin( container ), end( container ), compare );
 		}
 
 		template<typename Container, typename Value,
 		         std::enable_if_t<daw::traits::is_container_like_v<Container> &&
-		                            !daw::is_unary_predicate_v<
+		                            !traits::is_unary_predicate_v<
 		                              Value, decltype( *std::cbegin(
 		                                       std::declval<Container>( ) ) )>,
 		                          std::nullptr_t> = nullptr>
@@ -435,7 +435,7 @@ namespace daw {
 		template<
 		  typename Container, typename UnaryPredicate,
 		  std::enable_if_t<daw::traits::is_container_like_v<Container> &&
-		                     daw::is_unary_predicate_v<
+		                     traits::is_unary_predicate_v<
 		                       UnaryPredicate, decltype( *std::cbegin(
 		                                         std::declval<Container>( ) ) )>,
 		                   std::nullptr_t> = nullptr>
@@ -479,8 +479,8 @@ namespace daw {
 		                                  OutputIterator destination,
 		                                  UnaryPredicate pred ) {
 			static_assert(
-			  daw::is_unary_predicate_v<UnaryPredicate,
-			                            decltype( *std::begin( source ) )>,
+			  traits::is_unary_predicate_v<UnaryPredicate,
+			                               decltype( *std::begin( source ) )>,
 			  "Compare does not satisfy the Unary Predicate concept.  See "
 			  "http://en.cppreference.com/w/cpp/concept/Predicate for more "
 			  "information" );
@@ -503,8 +503,8 @@ namespace daw {
 		constexpr void copy_n( Container const &source, size_t count,
 		                       OutputIterator destination ) {
 			static_assert(
-			  daw::is_unary_predicate_v<UnaryPredicate,
-			                            decltype( *std::begin( source ) )>,
+			  traits::is_unary_predicate_v<UnaryPredicate,
+			                               decltype( *std::begin( source ) )>,
 			  "Compare does not satisfy the Unary Predicate concept.  See "
 			  "http://en.cppreference.com/w/cpp/concept/Predicate for more "
 			  "information" );

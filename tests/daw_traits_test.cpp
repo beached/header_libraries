@@ -32,16 +32,16 @@
 #include "daw/daw_traits.h"
 
 namespace daw_traits_is_equality_comparable {
-	static_assert( daw::is_equality_comparable_v<std::string>,
+	static_assert( daw::traits::is_equality_comparable_v<std::string>,
 	               "1. std::string should report as being equality comparable" );
-	static_assert( daw::is_equality_comparable_v<std::vector<std::string>>,
+	static_assert( daw::traits::is_equality_comparable_v<std::vector<std::string>>,
 	               "2. std::vector should report as being equality comparable" );
 
 	struct NotEqual {
 		int x;
 	};
 	static_assert(
-	  !daw::is_equality_comparable_v<NotEqual>,
+	  !daw::traits::is_equality_comparable_v<NotEqual>,
 	  "3. NotEqual struct should not report as being equality comparable" );
 
 	class NotEqual2 {
@@ -58,7 +58,7 @@ namespace daw_traits_is_equality_comparable {
 	};
 
 	static_assert(
-	  !daw::is_equality_comparable_v<NotEqual2>,
+	  !daw::traits::is_equality_comparable_v<NotEqual2>,
 	  "4. NotEqual2 struct should not report as being equality comparable" );
 
 } // namespace daw_traits_is_equality_comparable
@@ -427,7 +427,7 @@ struct test_binary_pred_t {
 };
 
 namespace binary_predicate_002 {
-	using a_t = daw::is_detected<daw::detectors::callable_with,
+	using a_t = daw::is_detected<daw::traits::detectors::callable_with,
 	                             test_binary_pred_t, int, int>;
 	constexpr auto const a = daw::is_convertible_v<a_t, bool>;
 	static_assert( a, "a: Not callable with (int, int )" );
@@ -436,11 +436,11 @@ namespace binary_predicate_002 {
 	static_assert( b, "b: Not callable with (int, int )" );
 
 	constexpr auto const c =
-	  daw::is_detected_convertible_v<bool, daw::detectors::callable_with,
+	  daw::is_detected_convertible_v<bool, daw::traits::detectors::callable_with,
 	                                 test_binary_pred_t, int, int>;
 	static_assert( c, "c: Not callable with (int, int )" );
 
-	static_assert( daw::is_predicate_v<test_binary_pred_t, int, int>,
+	static_assert( daw::traits::is_predicate_v<test_binary_pred_t, int, int>,
 	               "Not a binary predicate" );
 } // namespace binary_predicate_002
 
@@ -449,14 +449,14 @@ namespace is_iterator_001 {
 	static_assert( daw::is_copy_constructible_v<iter_t>, "" );
 	static_assert( daw::is_copy_assignable_v<iter_t>, "" );
 	static_assert( daw::is_destructible_v<iter_t>, "" );
-	static_assert( daw::impl::has_iterator_trait_types_v<iter_t>, "" );
-	static_assert( daw::is_dereferenceable_v<iter_t>, "" );
-	static_assert( daw::impl::is_incrementable_v<iter_t>, "" );
+	static_assert( daw::traits::impl::has_iterator_trait_types_v<iter_t>, "" );
+	static_assert( daw::traits::is_dereferenceable_v<iter_t>, "" );
+	static_assert( daw::traits::impl::is_incrementable_v<iter_t>, "" );
 } // namespace is_iterator_001
 
 namespace is_iterator_002 {
 	using iter_t = int const *;
-	static_assert( daw::is_iterator_v<iter_t>, "" );
+	static_assert( daw::traits::is_iterator_v<iter_t>, "" );
 } // namespace is_iterator_002
 
 namespace is_iterator_003 {
@@ -464,19 +464,19 @@ namespace is_iterator_003 {
 	static_assert( daw::is_copy_constructible_v<iter_t>, "" );
 	static_assert( daw::is_copy_assignable_v<iter_t>, "" );
 	static_assert( daw::is_destructible_v<iter_t>, "" );
-	static_assert( daw::impl::has_value_type_v<iter_t>, "" );
-	static_assert( daw::impl::has_difference_type_v<iter_t>, "" );
-	static_assert( daw::impl::has_reference_v<iter_t>, "" );
-	static_assert( daw::impl::has_pointer_v<iter_t>, "" );
-	static_assert( daw::impl::has_iterator_category_v<iter_t>, "" );
-	static_assert( daw::impl::has_iterator_trait_types_v<iter_t>, "" );
-	static_assert( daw::is_dereferenceable_v<iter_t>, "" );
-	static_assert( daw::impl::is_incrementable_v<iter_t>, "" );
+	static_assert( daw::traits::impl::has_value_type_v<iter_t>, "" );
+	static_assert( daw::traits::impl::has_difference_type_v<iter_t>, "" );
+	static_assert( daw::traits::impl::has_reference_v<iter_t>, "" );
+	static_assert( daw::traits::impl::has_pointer_v<iter_t>, "" );
+	static_assert( daw::traits::impl::has_iterator_category_v<iter_t>, "" );
+	static_assert( daw::traits::impl::has_iterator_trait_types_v<iter_t>, "" );
+	static_assert( daw::traits::is_dereferenceable_v<iter_t>, "" );
+	static_assert( daw::traits::impl::is_incrementable_v<iter_t>, "" );
 } // namespace is_iterator_003
 
 namespace is_iterator_004 {
 	using iter_t = typename std::vector<int>::iterator;
-	static_assert( daw::is_iterator_v<iter_t>, "" );
+	static_assert( daw::traits::is_iterator_v<iter_t>, "" );
 } // namespace is_iterator_004
 
 namespace is_iterator_005 {
@@ -484,104 +484,104 @@ namespace is_iterator_005 {
 	static_assert( daw::is_copy_constructible_v<iter_t>, "" );
 	static_assert( !daw::is_copy_assignable_v<iter_t>, "" );
 	static_assert( daw::is_destructible_v<iter_t>, "" );
-	static_assert( !daw::impl::has_iterator_trait_types_v<iter_t>, "" );
-	static_assert( daw::is_dereferenceable_v<iter_t>, "" );
-	static_assert( !daw::impl::is_incrementable_v<iter_t>, "" );
+	static_assert( !daw::traits::impl::has_iterator_trait_types_v<iter_t>, "" );
+	static_assert( daw::traits::is_dereferenceable_v<iter_t>, "" );
+	static_assert( !daw::traits::impl::is_incrementable_v<iter_t>, "" );
 } // namespace is_iterator_005
 
 namespace is_iterator_006 {
 	using iter_t = int const *const;
-	static_assert( !daw::impl::is_incrementable_v<iter_t>, "" );
-	static_assert( !daw::is_iterator_v<iter_t>, "" );
+	static_assert( !daw::traits::impl::is_incrementable_v<iter_t>, "" );
+	static_assert( !daw::traits::is_iterator_v<iter_t>, "" );
 } // namespace is_iterator_006
 
 namespace is_iterator_007 {
 	using iter_t = typename std::unordered_map<int, int>::iterator;
-	static_assert( daw::is_iterator<iter_t>, "" );
+	static_assert( daw::traits::is_iterator<iter_t>, "" );
 	static_assert( daw::is_copy_constructible_v<iter_t>, "" );
 	static_assert( daw::is_copy_assignable_v<iter_t>, "" );
 	static_assert( daw::is_destructible_v<iter_t>, "" );
-	static_assert( daw::impl::has_value_type_v<iter_t>, "" );
-	static_assert( daw::impl::has_difference_type_v<iter_t>, "" );
-	static_assert( daw::impl::has_reference_v<iter_t>, "" );
-	static_assert( daw::impl::has_pointer_v<iter_t>, "" );
-	static_assert( daw::impl::has_iterator_category_v<iter_t>, "" );
-	static_assert( daw::impl::has_iterator_trait_types_v<iter_t>, "" );
-	static_assert( daw::is_dereferenceable_v<iter_t>, "" );
-	static_assert( daw::impl::is_incrementable_v<iter_t>, "" );
+	static_assert( daw::traits::impl::has_value_type_v<iter_t>, "" );
+	static_assert( daw::traits::impl::has_difference_type_v<iter_t>, "" );
+	static_assert( daw::traits::impl::has_reference_v<iter_t>, "" );
+	static_assert( daw::traits::impl::has_pointer_v<iter_t>, "" );
+	static_assert( daw::traits::impl::has_iterator_category_v<iter_t>, "" );
+	static_assert( daw::traits::impl::has_iterator_trait_types_v<iter_t>, "" );
+	static_assert( daw::traits::is_dereferenceable_v<iter_t>, "" );
+	static_assert( daw::traits::impl::is_incrementable_v<iter_t>, "" );
 } // namespace is_iterator_007
 
 namespace is_iterator_008 {
 	using iter_t = typename std::unordered_map<int, int>::iterator;
-	static_assert( daw::is_iterator_v<iter_t>, "" );
+	static_assert( daw::traits::is_iterator_v<iter_t>, "" );
 } // namespace is_iterator_008
 
 namespace is_random_iterator_001 {
 	using iter_t = typename std::vector<int>::iterator;
-	static_assert( daw::is_random_iterator<iter_t>, "" );
+	static_assert( daw::traits::is_random_iterator<iter_t>, "" );
 } // namespace is_random_iterator_001
 
 namespace is_random_iterator_002 {
 	using iter_t = typename std::list<int>::iterator;
-	static_assert( !daw::is_random_iterator_v<iter_t>, "" );
+	static_assert( !daw::traits::is_random_iterator_v<iter_t>, "" );
 } // namespace is_random_iterator_002
 
 namespace is_output_iterator_001 {
 	using iter_t = typename std::vector<int>::iterator;
-	static_assert( daw::is_output_iterator_v<iter_t, int>, "" );
+	static_assert( daw::traits::is_output_iterator_v<iter_t, int>, "" );
 } // namespace is_output_iterator_001
 
 namespace is_output_iterator_002 {
 	using iter_t = std::back_insert_iterator<std::vector<int>>;
-	constexpr auto const test_value = daw::is_output_iterator_v<iter_t, int>;
+	constexpr auto const test_value = daw::traits::is_output_iterator_v<iter_t, int>;
 	static_assert( test_value, "" );
 } // namespace is_output_iterator_002
 
 namespace is_output_iterator_003 {
 	using iter_t = decltype( std::ostream_iterator<int>{std::cout} );
-	constexpr auto const test_value = daw::is_output_iterator_v<iter_t, int>;
+	constexpr auto const test_value = daw::traits::is_output_iterator_v<iter_t, int>;
 	static_assert( test_value, "" );
 } // namespace is_output_iterator_003
 
 namespace is_output_iterator_004 {
 	using iter_t = decltype( std::istream_iterator<int>{std::cin} );
-	static_assert( !daw::is_output_iterator_v<iter_t, int>, "" );
+	static_assert( !daw::traits::is_output_iterator_v<iter_t, int>, "" );
 } // namespace is_output_iterator_004
 
 namespace is_output_iterator_005 {
 	using iter_t = typename std::vector<int>::const_iterator;
-	static_assert( !daw::is_output_iterator_v<iter_t, int>, "" );
+	static_assert( !daw::traits::is_output_iterator_v<iter_t, int>, "" );
 } // namespace is_output_iterator_005
 
 namespace is_input_iterator_001 {
 	using iter_t = typename std::vector<int>::iterator;
-	static_assert( daw::is_equality_comparable_v<iter_t>, "" );
+	static_assert( daw::traits::is_equality_comparable_v<iter_t>, "" );
 
 	static_assert(
 	  daw::is_convertible_v<decltype( *std::declval<iter_t>( ) ), int>, "" );
 
-	static_assert( daw::is_input_iterator_v<iter_t, int>, "" );
+	static_assert( daw::traits::is_input_iterator_v<iter_t, int>, "" );
 } // namespace is_input_iterator_001
 
 namespace is_input_iterator_002 {
 	using iter_t = std::back_insert_iterator<std::vector<int>>;
-	static_assert( !daw::is_input_iterator_v<iter_t, int>, "" );
+	static_assert( !daw::traits::is_input_iterator_v<iter_t, int>, "" );
 } // namespace is_input_iterator_002
 
 namespace is_input_iterator_003 {
 	using iter_t = decltype( std::ostream_iterator<int>{std::cout} );
-	static_assert( !daw::is_input_iterator_v<iter_t, int>, "" );
+	static_assert( !daw::traits::is_input_iterator_v<iter_t, int>, "" );
 } // namespace is_input_iterator_003
 
 namespace is_input_iterator_004 {
 	using iter_t = decltype( std::istream_iterator<int>{std::cin} );
-	constexpr auto const test_value = daw::is_input_iterator_v<iter_t, int>;
+	constexpr auto const test_value = daw::traits::is_input_iterator_v<iter_t, int>;
 	static_assert( test_value, "" );
 } // namespace is_input_iterator_004
 
 namespace is_input_iterator_005 {
 	using iter_t = typename std::vector<int>::const_iterator;
-	constexpr auto const test_value = daw::is_input_iterator_v<iter_t, int>;
+	constexpr auto const test_value = daw::traits::is_input_iterator_v<iter_t, int>;
 	static_assert( test_value, "" );
 } // namespace is_input_iterator_005
 

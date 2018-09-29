@@ -97,7 +97,7 @@ namespace daw {
 		                                *std::declval<InputIt>( ),
 		                                *std::declval<ForwardIt>( ) ) ) ) {
 			static_assert(
-			  daw::is_binary_predicate_v<
+			  traits::is_binary_predicate_v<
 			    BinaryPredicate, typename std::iterator_traits<InputIt>::value_type>,
 			  "BinaryPredicate p does not fullfill the requires of a binary "
 			  "predicate concept.  See "
@@ -121,7 +121,7 @@ namespace daw {
 		                                *std::declval<InputIt>( ),
 		                                *std::declval<ForwardIt>( ) ) ) ) {
 			static_assert(
-			  daw::is_binary_predicate_v<
+			  traits::is_binary_predicate_v<
 			    BinaryPredicate, typename std::iterator_traits<InputIt>::value_type>,
 			  "BinaryPredicate p does not fullfill the requires of a binary "
 			  "predicate concept.  See "
@@ -148,7 +148,7 @@ namespace daw {
 		  noexcept(
 		    std::declval<UnaryPredicate>( )( *std::declval<InputIt>( ) ) ) ) {
 			static_assert(
-			  daw::is_unary_predicate_v<
+			  traits::is_unary_predicate_v<
 			    UnaryPredicate, typename std::iterator_traits<InputIt>::value_type>,
 			  "UnaryPredicate p does not fullfill the requires of a unary predicate "
 			  "concept.  See "
@@ -169,7 +169,7 @@ namespace daw {
 		                              declval<UnaryPredicate>( )(
 		                                *std::declval<InputIt>( ) ) ) ) {
 			static_assert(
-			  daw::is_unary_predicate_v<
+			  traits::is_unary_predicate_v<
 			    UnaryPredicate, typename std::iterator_traits<InputIt>::value_type>,
 			  "UnaryPredicate p does not fullfill the requires of a unary predicate "
 			  "concept.  See "
@@ -188,7 +188,7 @@ namespace daw {
 		inline void sv_insert_fill_chars( OStream &os, std::size_t n ) {
 			using CharT = typename OStream::char_type;
 			static_assert(
-			  daw::traits::ostream_detectors::has_write_member_v<OStream, CharT>,
+			  traits::ostream_detectors::has_write_member_v<OStream, CharT>,
 			  "OStream Must has write member" );
 
 			std::array<CharT, 8> fill_chars = {0};

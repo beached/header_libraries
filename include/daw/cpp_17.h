@@ -28,6 +28,12 @@
 #include <type_traits>
 #include <utility>
 
+#if defined( __cplusplus ) and __cplusplus >= 201703L
+#define CXINLINE constexpr inline
+#else
+#define CXINLINE constexpr
+#endif
+
 namespace daw {
 	template<typename...>
 	struct voider {
@@ -38,154 +44,154 @@ namespace daw {
 	using void_t = typename voider<Ts...>::type;
 
 	template<typename T>
-	constexpr bool is_nothrow_copy_constructible_v =
+	CXINLINE bool is_nothrow_copy_constructible_v =
 	  std::is_nothrow_copy_constructible<T>::value;
 
 	template<typename T>
-	constexpr bool is_nothrow_move_constructible_v =
+	CXINLINE bool is_nothrow_move_constructible_v =
 	  std::is_nothrow_move_constructible<T>::value;
 
 	template<typename T>
-	constexpr bool is_nothrow_default_constructible_v =
+	CXINLINE bool is_nothrow_default_constructible_v =
 	  std::is_nothrow_default_constructible<T>::value;
 
 	template<typename T>
-	constexpr bool is_destructible_v = std::is_destructible<T>::value;
+	CXINLINE bool is_destructible_v = std::is_destructible<T>::value;
 
 	template<typename T>
-	constexpr bool is_trivially_destructible_v =
+	CXINLINE bool is_trivially_destructible_v =
 	  std::is_trivially_destructible<T>::value;
 
 	template<typename T>
-	constexpr bool is_nothrow_destructible_v =
+	CXINLINE bool is_nothrow_destructible_v =
 	  std::is_nothrow_destructible<T>::value;
 
 	template<class T, class... Args>
-	constexpr bool is_nothrow_constructible_v =
+	CXINLINE bool is_nothrow_constructible_v =
 	  std::is_nothrow_constructible<T, Args...>::value;
 
 	template<typename T>
-	constexpr bool is_pointer_v = std::is_pointer<T>::value;
+	CXINLINE bool is_pointer_v = std::is_pointer<T>::value;
 
 	template<typename T>
-	constexpr bool is_unsigned_v = std::is_unsigned<T>::value;
+	CXINLINE bool is_unsigned_v = std::is_unsigned<T>::value;
 
 	template<typename T>
-	constexpr bool is_signed_v = std::is_signed<T>::value;
+	CXINLINE bool is_signed_v = std::is_signed<T>::value;
 
 	template<typename T>
-	constexpr bool is_enum_v = std::is_enum<T>::value;
+	CXINLINE bool is_enum_v = std::is_enum<T>::value;
 
 	template<typename T>
-	constexpr bool is_floating_point_v = std::is_floating_point<T>::value;
+	CXINLINE bool is_floating_point_v = std::is_floating_point<T>::value;
 
 	template<typename T>
-	constexpr bool is_integral_v = std::is_integral<T>::value;
+	CXINLINE bool is_integral_v = std::is_integral<T>::value;
 
 	template<typename T>
-	constexpr bool is_array_v = std::is_array<T>::value;
+	CXINLINE bool is_array_v = std::is_array<T>::value;
 
 	template<typename Lhs, typename Rhs>
-	constexpr bool is_assignable_v = std::is_assignable<Lhs, Rhs>::value;
+	CXINLINE bool is_assignable_v = std::is_assignable<Lhs, Rhs>::value;
 
 	template<typename T>
-	constexpr bool is_trivial_v = std::is_trivial<T>::value;
+	CXINLINE bool is_trivial_v = std::is_trivial<T>::value;
 
 	template<typename T, typename U>
-	constexpr bool is_trivially_assignable_v =
+	CXINLINE bool is_trivially_assignable_v =
 	  std::is_trivially_assignable<T, U>::value;
 
 	template<typename T, typename U>
-	constexpr bool is_nothrow_assignable_v =
+	CXINLINE bool is_nothrow_assignable_v =
 	  std::is_nothrow_assignable<T, U>::value;
 
 	template<typename From, typename To>
-	constexpr bool is_convertible_v = std::is_convertible<From, To>::value;
+	CXINLINE bool is_convertible_v = std::is_convertible<From, To>::value;
 
 	template<typename T, typename... Args>
-	constexpr bool is_constructible_v = std::is_constructible<T, Args...>::value;
+	CXINLINE bool is_constructible_v = std::is_constructible<T, Args...>::value;
 
 	template<typename T, typename U>
-	constexpr bool is_same_v = std::is_same<T, U>::value;
+	CXINLINE bool is_same_v = std::is_same<T, U>::value;
 
 	template<typename T>
-	constexpr bool is_default_constructible_v =
+	CXINLINE bool is_default_constructible_v =
 	  std::is_default_constructible<T>::value;
 
 	template<typename T>
-	constexpr bool is_copy_constructible_v = std::is_copy_constructible<T>::value;
+	CXINLINE bool is_copy_constructible_v = std::is_copy_constructible<T>::value;
 
 	template<typename T>
-	constexpr bool is_copy_assignable_v = std::is_copy_assignable<T>::value;
+	CXINLINE bool is_copy_assignable_v = std::is_copy_assignable<T>::value;
 
 	template<typename T>
-	constexpr bool is_move_constructible_v = std::is_move_constructible<T>::value;
+	CXINLINE bool is_move_constructible_v = std::is_move_constructible<T>::value;
 
 	template<typename T>
-	constexpr bool is_move_assignable_v = std::is_move_assignable<T>::value;
+	CXINLINE bool is_move_assignable_v = std::is_move_assignable<T>::value;
 
 	template<typename T>
-	constexpr bool is_const_v = std::is_const<T>::value;
+	CXINLINE bool is_const_v = std::is_const<T>::value;
 
 	template<typename T>
-	constexpr bool is_rvalue_reference_v = std::is_rvalue_reference<T>::value;
+	CXINLINE bool is_rvalue_reference_v = std::is_rvalue_reference<T>::value;
 
 	template<class T>
 	constexpr size_t tuple_size_v = std::tuple_size<T>::value;
 
 	template<typename T>
-	constexpr bool is_function_v = std::is_function<T>::value;
+	CXINLINE bool is_function_v = std::is_function<T>::value;
 
 	template<typename Base, typename Derived>
-	constexpr bool is_base_of_v = std::is_base_of<Base, Derived>::value;
+	CXINLINE bool is_base_of_v = std::is_base_of<Base, Derived>::value;
 
 	template<typename T>
-	constexpr bool is_class_v = std::is_class<T>::value;
+	CXINLINE bool is_class_v = std::is_class<T>::value;
 
 	template<typename T>
-	constexpr bool is_member_pointer_v = std::is_member_pointer<T>::value;
+	CXINLINE bool is_member_pointer_v = std::is_member_pointer<T>::value;
 
 	template<typename T>
-	constexpr bool is_reference_v = std::is_reference<T>::value;
+	CXINLINE bool is_reference_v = std::is_reference<T>::value;
 
 	template<typename T>
-	constexpr bool is_volatile_v = std::is_volatile<T>::value;
+	CXINLINE bool is_volatile_v = std::is_volatile<T>::value;
 
 	template<typename T>
-	constexpr bool is_trivially_copyable_v = std::is_trivially_copyable<T>::value;
+	CXINLINE bool is_trivially_copyable_v = std::is_trivially_copyable<T>::value;
 
 	template<typename T>
 	using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 
 	template<typename T>
-	constexpr bool is_trivially_move_assignable_v =
+	CXINLINE bool is_trivially_move_assignable_v =
 	  std::is_trivially_move_assignable<T>::value;
 
 	template<typename T>
-	constexpr bool is_nothrow_move_assignable_v =
+	CXINLINE bool is_nothrow_move_assignable_v =
 	  std::is_nothrow_move_assignable<T>::value;
 
 	template<typename T>
-	constexpr bool is_nothrow_copy_assignable_v =
+	CXINLINE bool is_nothrow_copy_assignable_v =
 	  std::is_nothrow_copy_assignable<T>::value;
 
 	template<typename T>
-	constexpr bool is_void_v = std::is_void<T>::value;
+	CXINLINE bool is_void_v = std::is_void<T>::value;
 
 	template<typename T>
-	constexpr bool is_pod_v = std::is_pod<T>::value;
+	CXINLINE bool is_pod_v = std::is_pod<T>::value;
 
 	template<typename T>
-	constexpr bool is_arithmetic_v = std::is_arithmetic<T>::value;
+	CXINLINE bool is_arithmetic_v = std::is_arithmetic<T>::value;
 
 	template<bool B>
 	using bool_constant = std::integral_constant<bool, B>;
 
 	template<bool B>
-	constexpr bool bool_consant_v = bool_constant<B>::value;
+	CXINLINE bool bool_consant_v = bool_constant<B>::value;
 
 	template<typename B>
-	struct negation : std::integral_constant<bool, !bool( B::value )> {};
+	struct negation : bool_constant<!bool( B::value )> {};
 
 	template<typename...>
 	struct conjunction : std::true_type {};
@@ -195,13 +201,14 @@ namespace daw {
 
 	template<typename B1, typename... Bn>
 	struct conjunction<B1, Bn...>
-	  : std::conditional_t<bool( B1::value ), conjunction<Bn...>, B1> {};
+	  : std::conditional_t<static_cast<bool>( B1::value ), conjunction<Bn...>,
+	                       B1> {};
 
 	template<typename... T>
 	using conjunction_t = typename conjunction<T...>::type;
 
 	template<typename... T>
-	constexpr bool const conjunction_v = conjunction<T...>::value;
+	CXINLINE bool const conjunction_v = conjunction<T...>::value;
 
 	// base case; actually only used for empty pack
 	template<bool... values>
@@ -216,7 +223,7 @@ namespace daw {
 	struct all_true<false, values...> : std::false_type {};
 
 	template<bool... values>
-	constexpr bool all_true_v = all_true<values...>::value;
+	CXINLINE bool all_true_v = all_true<values...>::value;
 
 	namespace impl {
 		template<bool value>
@@ -228,12 +235,13 @@ namespace daw {
 		  bool value, bool... values,
 		  std::enable_if_t<( sizeof...( values ) > 0 ), std::nullptr_t> = nullptr>
 		constexpr bool any_true( ) noexcept {
-			return value || any_true<values...>( );
+
+			return value or any_true<values...>( );
 		}
 	} // namespace impl
 
 	template<bool... values>
-	constexpr bool any_true_v = impl::any_true<values...>( );
+	CXINLINE bool any_true_v = impl::any_true<values...>( );
 
 	namespace impl {
 		template<typename Function>
@@ -286,7 +294,7 @@ namespace daw {
 	} // namespace impl
 
 	template<typename T>
-	constexpr bool is_reference_wrapper_v = impl::is_reference_wrapper<T>::value;
+	CXINLINE bool is_reference_wrapper_v = impl::is_reference_wrapper<T>::value;
 
 	template<typename T>
 	constexpr std::add_const_t<T> &as_const( T &t ) noexcept {
@@ -326,7 +334,7 @@ namespace daw {
 	using detected_or = impl::detector<Default, void, Op, Args...>;
 
 	template<template<class...> class Op, class... Args>
-	constexpr bool is_detected_v = is_detected<Op, Args...>::value;
+	CXINLINE bool is_detected_v = is_detected<Op, Args...>::value;
 
 	template<class Default, template<class...> class Op, class... Args>
 	using detected_or_t = typename detected_or<Default, Op, Args...>::type;
@@ -335,7 +343,7 @@ namespace daw {
 	using is_detected_exact = std::is_same<Expected, detected_t<Op, Args...>>;
 
 	template<class Expected, template<class...> class Op, class... Args>
-	constexpr bool is_detected_exact_v =
+	CXINLINE bool is_detected_exact_v =
 	  is_detected_exact<Expected, Op, Args...>::value;
 
 	template<class To, template<class...> class Op, class... Args>
@@ -343,7 +351,7 @@ namespace daw {
 	  std::is_convertible<detected_t<Op, Args...>, To>;
 
 	template<class To, template<class...> class Op, class... Args>
-	constexpr bool is_detected_convertible_v =
+	CXINLINE bool is_detected_convertible_v =
 	  is_detected_convertible<To, Op, Args...>::value;
 
 	template<typename T, typename U = T>
@@ -359,12 +367,31 @@ namespace daw {
 		return c.size( );
 	}
 
+#ifdef __cpp_lib_is_swappable
+	template<typename T>
+	CXINLINE bool is_swappable_v = std::is_swappable_v<T>;
+#else
+	namespace detectors {
+		template<typename T>
+		using detect_std_swap =
+		  decltype( std::swap( std::declval<T &>( ), std::declval<T &>( ) ) );
+
+		template<typename T>
+		using detect_adl_swap =
+		  decltype( swap( std::declval<T &>( ), std::declval<T &>( ) ) );
+	} // namespace detectors
+
+	template<typename T>
+	CXINLINE bool is_swappable_v = is_detected_v<detectors::detect_std_swap, T> or
+	                               is_detected_v<detectors::detect_adl_swap, T>;
+#endif
+
 	namespace impl {
 		template<typename Base, typename T, typename Derived, typename... Args>
 		auto
 		INVOKE( T Base::*pmf, Derived &&ref, Args &&... args ) noexcept( noexcept(
 		  ( std::forward<Derived>( ref ).*pmf )( std::forward<Args>( args )... ) ) )
-		  -> std::enable_if_t<daw::is_function_v<T> &&
+		  -> std::enable_if_t<daw::is_function_v<T> and
 		                        daw::is_base_of_v<Base, std::decay_t<Derived>>,
 		                      decltype( ( std::forward<Derived>( ref ).*pmf )(
 		                        std::forward<Args>( args )... ) )> {
@@ -377,7 +404,7 @@ namespace daw {
 		INVOKE( T Base::*pmf, RefWrap &&ref, Args &&... args ) noexcept(
 		  noexcept( ( ref.get( ).*pmf )( std::forward<Args>( args )... ) ) )
 		  -> std::enable_if_t<
-		    daw::is_function_v<T> && is_reference_wrapper_v<std::decay_t<RefWrap>>,
+		    daw::is_function_v<T> and is_reference_wrapper_v<std::decay_t<RefWrap>>,
 		    decltype( ( ref.get( ).*pmf )( std::forward<Args>( args )... ) )> {
 
 			return ( ref.get( ).*pmf )( std::forward<Args>( args )... );
@@ -388,8 +415,8 @@ namespace daw {
 		INVOKE( T Base::*pmf, Pointer &&ptr, Args &&... args ) noexcept(
 		  noexcept( ( ( *std::forward<Pointer>( ptr ) ).*
 		              pmf )( std::forward<Args>( args )... ) ) )
-		  -> std::enable_if_t<daw::is_function_v<T> &&
-		                        !is_reference_wrapper_v<std::decay_t<Pointer>> &&
+		  -> std::enable_if_t<daw::is_function_v<T> and
+		                        !is_reference_wrapper_v<std::decay_t<Pointer>> and
 		                        !daw::is_base_of_v<Base, std::decay_t<Pointer>>,
 		                      decltype( ( ( *std::forward<Pointer>( ptr ) ).*pmf )(
 		                        std::forward<Args>( args )... ) )> {
@@ -401,7 +428,7 @@ namespace daw {
 		template<typename Base, typename T, typename Derived>
 		constexpr auto INVOKE( T Base::*pmd, Derived &&ref ) noexcept(
 		  noexcept( std::forward<Derived>( ref ).*pmd ) )
-		  -> std::enable_if_t<!daw::is_function_v<T> &&
+		  -> std::enable_if_t<!daw::is_function_v<T> and
 		                        daw::is_base_of_v<Base, std::decay_t<Derived>>,
 		                      decltype( std::forward<Derived>( ref ).*pmd )> {
 
@@ -412,7 +439,7 @@ namespace daw {
 		constexpr auto
 		INVOKE( T Base::*pmd,
 		        RefWrap &&ref ) noexcept( noexcept( ref.get( ).*pmd ) )
-		  -> std::enable_if_t<!daw::is_function_v<T> &&
+		  -> std::enable_if_t<!daw::is_function_v<T> and
 		                        is_reference_wrapper_v<std::decay_t<RefWrap>>,
 		                      decltype( ref.get( ).*pmd )> {
 			return ref.get( ).*pmd;
@@ -421,8 +448,8 @@ namespace daw {
 		template<typename Base, typename T, typename Pointer>
 		constexpr auto INVOKE( T Base::*pmd, Pointer &&ptr ) noexcept(
 		  noexcept( ( *std::forward<Pointer>( ptr ) ).*pmd ) )
-		  -> std::enable_if_t<!daw::is_function_v<T> &&
-		                        !is_reference_wrapper_v<std::decay_t<Pointer>> &&
+		  -> std::enable_if_t<!daw::is_function_v<T> and
+		                        !is_reference_wrapper_v<std::decay_t<Pointer>> and
 		                        !daw::is_base_of_v<Base, std::decay_t<Pointer>>,
 		                      decltype( ( *std::forward<Pointer>( ptr ) ).*pmd )> {
 			return ( *std::forward<Pointer>( ptr ) ).*pmd;
@@ -502,6 +529,7 @@ namespace daw {
 		constexpr ptrdiff_t
 		distance_impl( InputIterator first, InputIterator last,
 		               std::input_iterator_tag ) noexcept( noexcept( ++first ) ) {
+
 			ptrdiff_t count = 0;
 			while( first != last ) {
 				++count;
@@ -514,6 +542,7 @@ namespace daw {
 		constexpr ptrdiff_t distance_impl(
 		  Iterator1 first, Iterator2 last,
 		  std::random_access_iterator_tag ) noexcept( noexcept( last - first ) ) {
+
 			return last - first;
 		}
 
@@ -521,6 +550,7 @@ namespace daw {
 		constexpr void
 		advance( Iterator &first, Distance n,
 		         std::input_iterator_tag ) noexcept( noexcept( ++first ) ) {
+
 			while( n-- ) {
 				++first;
 			}
@@ -529,8 +559,9 @@ namespace daw {
 		template<typename Iterator, typename Distance>
 		constexpr void
 		advance( Iterator &first, Distance n,
-		         std::bidirectional_iterator_tag ) noexcept( noexcept( ++first ) &&
+		         std::bidirectional_iterator_tag ) noexcept( noexcept( ++first ) and
 		                                                     noexcept( --first ) ) {
+
 			if( n >= 0 ) {
 				while( n-- ) {
 					++first;
@@ -650,7 +681,7 @@ namespace daw {
 	using disjunction_t = typename disjunction<B...>::type;
 
 	template<typename... B>
-	constexpr bool disjunction_v = disjunction<B...>::value;
+	CXINLINE bool disjunction_v = disjunction<B...>::value;
 
 	namespace details {
 
@@ -687,7 +718,7 @@ namespace daw {
 	  : details::do_is_nothrow_convertible<From, To>::type {};
 
 	template<typename From, typename To>
-	constexpr bool is_nothrow_convertible_v =
+	CXINLINE bool is_nothrow_convertible_v =
 	  is_nothrow_convertible<From, To>::value;
 
 	template<class T>

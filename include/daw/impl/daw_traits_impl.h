@@ -1,0 +1,331 @@
+// The MIT License (MIT)
+//
+// Copyright (c) 2018 Darrell Wright
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+#pragma once
+
+namespace daw {
+	namespace traits {
+		namespace detectors {
+			template<typename Function, typename... Args>
+			using callable_with =
+			  decltype( std::declval<Function>( )( std::declval<Args>( )... ) );
+
+			template<typename BinaryPredicate, typename T, typename U = T>
+			using binary_predicate = callable_with<BinaryPredicate, T, U>;
+
+			template<typename UnaryPredicate, typename T>
+			using unary_predicate = callable_with<UnaryPredicate, T>;
+
+			template<typename T, typename U>
+			using less_than_comparable =
+			  decltype( std::declval<T>( ) < std::declval<U>( ) );
+
+			template<typename T, typename U>
+			using equal_less_than_comparable =
+			  decltype( std::declval<T>( ) <= std::declval<U>( ) );
+
+			template<typename T, typename U>
+			using greater_than_comparable =
+			  decltype( std::declval<T>( ) > std::declval<U>( ) );
+
+			template<typename T, typename U>
+			using equal_greater_than_comparable =
+			  decltype( std::declval<T>( ) >= std::declval<U>( ) );
+
+			namespace details {
+				template<typename T, typename U>
+				void swap( T &lhs, U &rhs ) {
+					using std::swap;
+					swap( lhs, rhs );
+				}
+			} // namespace details
+
+			template<typename T>
+			using swappable =
+			  decltype( details::swap( std::declval<T>( ), std::declval<T>( ) ) );
+
+			template<typename Iterator, typename T>
+			using assignable =
+			  decltype( *std::declval<Iterator>( ) = std::declval<T>( ) );
+
+			template<typename T, typename U>
+			using equality_comparable =
+			  decltype( std::declval<T>( ) == std::declval<U>( ) );
+
+			template<typename T, typename U>
+			using inequality_comparable =
+			  decltype( std::declval<T>( ) != std::declval<U>( ) );
+
+			template<typename T>
+			using std_begin_detector = decltype( std::begin( std::declval<T>( ) ) );
+
+			template<typename T>
+			using adl_begin_detector = decltype( begin( std::declval<T>( ) ) );
+
+			template<typename T>
+			using std_end_detector = decltype( std::end( std::declval<T>( ) ) );
+
+			template<typename T>
+			using adl_end_detector = decltype( end( std::declval<T>( ) ) );
+
+			template<typename T>
+			using dereferenceable = decltype( *std::declval<T>( ) );
+
+			template<typename T>
+			using has_integer_subscript = decltype( std::declval<T>( )[0] );
+
+			template<typename T>
+			using has_size =
+			  decltype( std::declval<size_t &>( ) = std::declval<T>( ).size( ) );
+
+			template<typename T>
+			using is_array_array = decltype( std::declval<T>( )[0][0] );
+
+			template<typename T>
+			using has_empty =
+			  decltype( std::declval<bool &>( ) = std::declval<T>( ).empty( ) );
+
+			template<typename T>
+			using has_append_operator = decltype(
+			  std::declval<T &>( ) += std::declval<has_integer_subscript<T>>( ) );
+
+			template<typename T>
+			using has_append =
+			  decltype( std::declval<T>( ).append( std::declval<T>( ) ) );
+
+			template<typename T, typename U>
+			using has_addition_operator =
+			  decltype( std::declval<T>( ) + std::declval<U>( ) );
+
+			template<typename T, typename U>
+			using has_subtraction_operator =
+			  decltype( std::declval<T>( ) - std::declval<U>( ) );
+
+			template<typename T, typename U>
+			using has_multiplication_operator =
+			  decltype( std::declval<T>( ) * std::declval<U>( ) );
+
+			template<typename T, typename U>
+			using has_division_operator =
+			  decltype( std::declval<T>( ) / std::declval<U>( ) );
+
+			template<typename T, typename U>
+			using has_compound_assignment_add_operator =
+			  decltype( std::declval<T &>( ) += std::declval<U>( ) );
+
+			template<typename T, typename U>
+			using has_compound_assignment_sub_operator =
+			  decltype( std::declval<T &>( ) -= std::declval<U>( ) );
+
+			template<typename T, typename U>
+			using has_compound_assignment_mul_operator =
+			  decltype( std::declval<T &>( ) *= std::declval<U>( ) );
+
+			template<typename T, typename U>
+			using has_compound_assignment_div_operator =
+			  decltype( std::declval<T &>( ) /= std::declval<U>( ) );
+
+			template<typename T, typename U>
+			using has_modulus_operator =
+			  decltype( std::declval<T>( ) % std::declval<U>( ) );
+
+			template<typename T>
+			using has_increment_operator = decltype( ++std::declval<T &>( ) );
+
+			template<typename T>
+			using has_decrement_operator = decltype( --std::declval<T &>( ) );
+		} // namespace detectors
+
+		template<typename T, typename U = T>
+		CXINLINE bool has_addition_operator_v =
+		  daw::is_detected_v<detectors::has_addition_operator, T, U>;
+
+		template<typename T, typename U = T>
+		CXINLINE bool has_subtraction_operator_v =
+		  daw::is_detected_v<detectors::has_subtraction_operator, T, U>;
+
+		template<typename T, typename U = T>
+		CXINLINE bool has_multiplication_operator_v =
+		  daw::is_detected_v<detectors::has_multiplication_operator, T, U>;
+
+		template<typename T, typename U = T>
+		CXINLINE bool has_division_operator_v =
+		  daw::is_detected_v<detectors::has_division_operator, T, U>;
+
+		template<typename T, typename U>
+		CXINLINE bool has_compound_assignment_add_operator_v =
+		  daw::is_detected_v<detectors::has_compound_assignment_add_operator, T, U>;
+
+		template<typename T, typename U>
+		CXINLINE bool has_compound_assignment_sub_operator_v =
+		  daw::is_detected_v<detectors::has_compound_assignment_sub_operator, T, U>;
+
+		template<typename T, typename U>
+		CXINLINE bool has_compound_assignment_mul_operator_v =
+		  daw::is_detected_v<detectors::has_compound_assignment_mul_operator, T, U>;
+
+		template<typename T, typename U>
+		CXINLINE bool has_compound_assignment_div_operator_v =
+		  daw::is_detected_v<detectors::has_compound_assignment_div_operator, T, U>;
+
+		template<typename T, typename U = T>
+		CXINLINE bool has_modulus_operator_v =
+		  daw::is_detected_v<detectors::has_modulus_operator, T, U>;
+
+		template<typename T>
+		CXINLINE bool has_increment_operator_v =
+		  daw::is_detected_v<detectors::has_increment_operator, T>;
+
+		template<typename T>
+		CXINLINE bool has_decrement_operator_v =
+		  daw::is_detected_v<detectors::has_decrement_operator, T>;
+
+		template<typename String>
+		CXINLINE bool has_integer_subscript_v =
+		  daw::is_detected_v<detectors::has_integer_subscript, String>;
+
+		template<typename String>
+		CXINLINE bool has_size_memberfn_v =
+		  daw::is_detected_v<detectors::has_size, String>;
+
+		template<typename String>
+		CXINLINE bool has_empty_memberfn_v =
+		  daw::is_detected_v<detectors::has_empty, String>;
+
+		template<typename String>
+		CXINLINE bool has_append_memberfn_v =
+		  daw::is_detected_v<detectors::has_append, String>;
+
+		template<typename String>
+		CXINLINE bool has_append_operator_v =
+		  daw::is_detected_v<detectors::has_append_operator, String>;
+
+		template<typename T, typename U = T>
+		CXINLINE bool is_equality_comparable_v =
+		  is_detected_convertible_v<bool, detectors::equality_comparable, T, U>;
+
+		template<typename T, typename U = T>
+		CXINLINE bool is_inequality_comparable_v =
+		  is_detected_convertible_v<bool, detectors::inequality_comparable, T, U>;
+
+		template<typename T, typename U = T>
+		CXINLINE bool is_less_than_comparable_v =
+		  is_detected_convertible_v<bool, detectors::less_than_comparable, T, U>;
+
+		template<typename T, typename U = T>
+		CXINLINE bool is_equal_less_than_comparable_v =
+		  is_detected_convertible_v<bool, detectors::equal_less_than_comparable, T,
+		                            U>;
+
+		template<typename T, typename U = T>
+		CXINLINE bool is_greater_than_comparable_v =
+		  is_detected_convertible_v<bool, detectors::greater_than_comparable, T, U>;
+
+		template<typename T, typename U = T>
+		CXINLINE bool is_equal_greater_than_comparable_v =
+		  is_detected_convertible_v<bool, detectors::equal_greater_than_comparable,
+		                            T, U>;
+
+		template<typename Iterator,
+		         typename T = typename std::iterator_traits<Iterator>::value_type>
+		CXINLINE bool is_assignable_iterator_v =
+		  is_detected_v<detectors::assignable, Iterator, T>;
+
+		template<typename L, typename R>
+		CXINLINE bool is_comparable_v =
+		  is_equality_comparable_v<L, R> and is_equality_comparable_v<R, L>;
+
+		template<typename Container>
+		CXINLINE bool has_begin =
+		  is_detected_v<detectors::std_begin_detector, Container> or
+		  is_detected_v<detectors::adl_begin_detector, Container>;
+
+		template<typename Container>
+		CXINLINE bool has_end =
+		  is_detected_v<detectors::std_end_detector, Container> or
+		  is_detected_v<detectors::adl_end_detector, Container>;
+
+		template<typename Container>
+		CXINLINE bool is_container_like_v =
+		  has_begin<Container> and has_end<Container>;
+
+		namespace impl {
+			namespace is_iter {
+				template<typename T>
+				using has_value_type = typename std::iterator_traits<T>::value_type;
+
+				template<typename T>
+				using has_difference_type =
+				  typename std::iterator_traits<T>::difference_type;
+
+				template<typename T>
+				using has_reference = typename std::iterator_traits<T>::reference;
+
+				template<typename T>
+				using has_pointer = typename std::iterator_traits<T>::pointer;
+
+				template<typename T>
+				using has_iterator_category =
+				  typename std::iterator_traits<T>::iterator_category;
+
+				template<typename T>
+				using is_incrementable = decltype( ++std::declval<T &>( ) );
+			} // namespace is_iter
+
+			template<typename T>
+			CXINLINE bool is_incrementable_v =
+			  is_same_v<T &, daw::detected_t<is_iter::is_incrementable, T>>;
+
+			template<typename T>
+			CXINLINE bool has_value_type_v =
+			  daw::is_detected_v<is_iter::has_value_type, T>;
+
+			template<typename T>
+			CXINLINE bool has_difference_type_v =
+			  daw::is_detected_v<is_iter::has_difference_type, T>;
+
+			template<typename T>
+			CXINLINE bool has_reference_v =
+			  daw::is_detected_v<is_iter::has_reference, T>;
+
+			template<typename T>
+			CXINLINE bool has_pointer_v = daw::is_detected_v<is_iter::has_pointer, T>;
+
+			template<typename T>
+			CXINLINE bool has_iterator_category_v =
+			  daw::is_detected_v<is_iter::has_iterator_category, T>;
+
+			template<typename T>
+			CXINLINE bool has_iterator_trait_types_v =
+			  has_value_type_v<T> and has_difference_type_v<T> and has_reference_v<T>
+			    and has_pointer_v<T> and has_iterator_category_v<T>;
+		} // namespace impl
+		template<typename T>
+		using is_dereferenceable_t =
+		  typename is_detected<detectors::dereferenceable, T>::type;
+
+		template<typename T>
+		CXINLINE bool is_dereferenceable_v =
+		  is_detected_v<detectors::dereferenceable, T>;
+
+	} // namespace traits
+} // namespace daw

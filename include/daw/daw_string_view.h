@@ -311,9 +311,10 @@ namespace daw {
 		/// indicates with true when to stop
 		/// @param pred predicate to determine where to split
 		/// @return substring from beginning to position marked by predicate
-		template<typename UnaryPredicate,
-		         std::enable_if_t<is_unary_predicate_v<UnaryPredicate, CharT>,
-		                          std::nullptr_t> = nullptr>
+		template<
+		  typename UnaryPredicate,
+		  std::enable_if_t<traits::is_unary_predicate_v<UnaryPredicate, CharT>,
+		                   std::nullptr_t> = nullptr>
 		constexpr basic_string_view pop_front( UnaryPredicate pred ) noexcept(
 		  noexcept( pred( std::declval<CharT>( ) ) ) ) {
 
@@ -362,9 +363,10 @@ namespace daw {
 		/// indicates with true when to stop
 		/// @param pred predicate to determine where to split
 		/// @return substring from last position marked by predicate to end
-		template<typename UnaryPredicate,
-		         std::enable_if_t<is_unary_predicate_v<UnaryPredicate, CharT>,
-		                          std::nullptr_t> = nullptr>
+		template<
+		  typename UnaryPredicate,
+		  std::enable_if_t<traits::is_unary_predicate_v<UnaryPredicate, CharT>,
+		                   std::nullptr_t> = nullptr>
 		constexpr basic_string_view pop_back( UnaryPredicate pred ) noexcept(
 		  noexcept( pred( std::declval<CharT>( ) ) ) ) {
 
@@ -617,7 +619,7 @@ namespace daw {
 		                                      size_type const pos = 0 ) const
 		  noexcept( noexcept(
 		    std::declval<UnaryPredicate>( )( std::declval<value_type>( ) ) ) ) {
-			static_assert( daw::is_unary_predicate_v<UnaryPredicate, CharT>,
+			static_assert( traits::is_unary_predicate_v<UnaryPredicate, CharT>,
 			               "UnaryPredicate p does not fullfill the requires of a "
 			               "unary predicate concept.  See "
 			               "http://en.cppreference.com/w/cpp/concept/Predicate" );
@@ -637,7 +639,7 @@ namespace daw {
 		                                          size_type const pos = 0 ) const
 		  noexcept( noexcept(
 		    std::declval<UnaryPredicate>( )( std::declval<value_type>( ) ) ) ) {
-			static_assert( daw::is_unary_predicate_v<UnaryPredicate, CharT>,
+			static_assert( traits::is_unary_predicate_v<UnaryPredicate, CharT>,
 			               "UnaryPredicate p does not fullfill the requires of a "
 			               "unary predicate concept.  See "
 			               "http://en.cppreference.com/w/cpp/concept/Predicate" );
@@ -708,7 +710,7 @@ namespace daw {
 		template<typename UnaryPredicate>
 		constexpr size_type find_last_of_if( UnaryPredicate pred,
 		                                     size_type pos = npos ) const noexcept {
-			static_assert( daw::is_unary_predicate_v<UnaryPredicate, CharT>,
+			static_assert( traits::is_unary_predicate_v<UnaryPredicate, CharT>,
 			               "UnaryPredicate p does not fullfill the requires of a "
 			               "unary predicate concept.  See "
 			               "http://en.cppreference.com/w/cpp/concept/Predicate" );
@@ -1240,7 +1242,7 @@ namespace daw {
 
 	template<typename CharT, typename Traits, typename InternalSizeType,
 	         typename UnaryPredicate,
-	         std::enable_if_t<daw::is_unary_predicate_v<UnaryPredicate, CharT>,
+	         std::enable_if_t<traits::is_unary_predicate_v<UnaryPredicate, CharT>,
 	                          std::nullptr_t> = nullptr>
 	auto split( daw::basic_string_view<CharT, Traits, InternalSizeType> str,
 	            UnaryPredicate pred ) {

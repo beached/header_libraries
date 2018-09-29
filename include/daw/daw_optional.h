@@ -298,7 +298,7 @@ namespace daw {
 
 		template<typename T>
 		friend bool operator==( optional const &lhs, optional<T> const &rhs ) {
-			static_assert( daw::is_inequality_comparable_v<value_type, T>,
+			static_assert( traits::is_inequality_comparable_v<value_type, T>,
 			               "Types are not equality comparable" );
 			if( lhs ) {
 				if( rhs ) {
@@ -314,7 +314,7 @@ namespace daw {
 
 		template<typename T>
 		friend bool operator==( optional const &lhs, T const &rhs ) {
-			static_assert( daw::is_inequality_comparable_v<value_type, T>,
+			static_assert( traits::is_inequality_comparable_v<value_type, T>,
 			               "Types are not equality comparable" );
 			if( lhs ) {
 				return lhs.get( ) == rhs;
@@ -324,7 +324,7 @@ namespace daw {
 
 		template<typename T>
 		friend bool operator!=( optional const &lhs, optional<T> const &rhs ) {
-			static_assert( daw::is_inequality_comparable_v<value_type, T>,
+			static_assert( traits::is_inequality_comparable_v<value_type, T>,
 			               "Types are not inequality comparable" );
 			if( lhs ) {
 				if( rhs ) {
@@ -340,7 +340,7 @@ namespace daw {
 
 		template<typename T>
 		friend bool operator!=( optional const &lhs, T const &rhs ) {
-			static_assert( daw::is_inequality_comparable_v<value_type, T>,
+			static_assert( traits::is_inequality_comparable_v<value_type, T>,
 			               "Types are not inequality comparable" );
 			if( lhs ) {
 				return lhs.get( ) != rhs;
@@ -350,7 +350,7 @@ namespace daw {
 
 		template<typename T>
 		friend bool operator<( optional const &lhs, optional<T> const &rhs ) {
-			static_assert( daw::is_less_than_comparable_v<value_type, T>,
+			static_assert( traits::is_less_than_comparable_v<value_type, T>,
 			               "Types are not less than comparable" );
 			if( lhs ) {
 				if( rhs ) {
@@ -366,7 +366,7 @@ namespace daw {
 
 		template<typename T>
 		friend bool operator<( optional const &lhs, T const &rhs ) {
-			static_assert( daw::is_less_than_comparable_v<value_type, T>,
+			static_assert( traits::is_less_than_comparable_v<value_type, T>,
 			               "Types are not less than comparable" );
 			if( lhs ) {
 				return lhs.get( ) < rhs;
@@ -376,7 +376,7 @@ namespace daw {
 
 		template<typename T>
 		friend bool operator>( optional const &lhs, optional<T> const &rhs ) {
-			static_assert( daw::is_greater_than_comparable_v<value_type, T>,
+			static_assert( traits::is_greater_than_comparable_v<value_type, T>,
 			               "Types are not greater than comparable" );
 			if( lhs ) {
 				if( rhs ) {
@@ -392,7 +392,7 @@ namespace daw {
 
 		template<typename T>
 		friend bool operator>( optional const &lhs, T const &rhs ) {
-			static_assert( daw::is_greater_than_comparable_v<value_type, T>,
+			static_assert( traits::is_greater_than_comparable_v<value_type, T>,
 			               "Types are not greater than comparable" );
 			if( lhs ) {
 				return lhs.get( ) > rhs;
@@ -402,7 +402,7 @@ namespace daw {
 
 		template<typename T>
 		friend bool operator<=( optional const &lhs, optional<T> const &rhs ) {
-			static_assert( daw::is_equal_less_than_comparable_v<value_type, T>,
+			static_assert( traits::is_equal_less_than_comparable_v<value_type, T>,
 			               "Types are not equal_less than comparable" );
 			if( lhs ) {
 				if( rhs ) {
@@ -418,7 +418,7 @@ namespace daw {
 
 		template<typename T>
 		friend bool operator<=( optional const &lhs, T const &rhs ) {
-			static_assert( daw::is_equal_less_than_comparable_v<value_type, T>,
+			static_assert( traits::is_equal_less_than_comparable_v<value_type, T>,
 			               "Types are not equal_less than comparable" );
 			if( lhs ) {
 				return lhs.get( ) <= rhs;
@@ -428,7 +428,7 @@ namespace daw {
 
 		template<typename T>
 		friend bool operator>=( optional const &lhs, optional<T> const &rhs ) {
-			static_assert( daw::is_equal_greater_than_comparable_v<value_type, T>,
+			static_assert( traits::is_equal_greater_than_comparable_v<value_type, T>,
 			               "Types are not equal_greater than comparable" );
 			if( lhs ) {
 				if( rhs ) {
@@ -444,7 +444,7 @@ namespace daw {
 
 		template<typename T>
 		friend bool operator>=( optional const &lhs, T const &rhs ) {
-			static_assert( daw::is_equal_greater_than_comparable_v<value_type, T>,
+			static_assert( traits::is_equal_greater_than_comparable_v<value_type, T>,
 			               "Types are not equal_greater than comparable" );
 			if( lhs ) {
 				return lhs.get( ) >= rhs;
@@ -468,7 +468,7 @@ namespace daw {
 
 	template<typename T, typename U>
 	bool operator!=( optional<T> const &lhs, U const &rhs ) {
-		static_assert( daw::is_inequality_comparable_v<T, U>,
+		static_assert( traits::is_inequality_comparable_v<T, U>,
 		               "Types are not inequality comparable" );
 		if( lhs ) {
 			return lhs != rhs;
@@ -478,7 +478,7 @@ namespace daw {
 
 	template<typename T, typename U>
 	bool operator<( optional<T> const &lhs, U const &rhs ) {
-		static_assert( daw::is_inequality_comparable_v<T, U>,
+		static_assert( traits::is_inequality_comparable_v<T, U>,
 		               "Types are not less than comparable" );
 		if( lhs ) {
 			return lhs < rhs;
@@ -488,7 +488,7 @@ namespace daw {
 
 	template<typename T, typename U>
 	bool operator>( optional<T> const &lhs, U const &rhs ) {
-		static_assert( daw::is_inequality_comparable_v<T, U>,
+		static_assert( traits::is_inequality_comparable_v<T, U>,
 		               "Types are not greater than comparable" );
 		if( lhs ) {
 			return lhs > rhs;
@@ -498,7 +498,7 @@ namespace daw {
 
 	template<typename T, typename U>
 	bool operator<=( optional<T> const &lhs, U const &rhs ) {
-		static_assert( daw::is_inequality_comparable_v<T, U>,
+		static_assert( traits::is_inequality_comparable_v<T, U>,
 		               "Types are not equal less than comparable" );
 		if( lhs ) {
 			return lhs <= rhs;
@@ -508,7 +508,7 @@ namespace daw {
 
 	template<typename T, typename U>
 	bool operator>=( optional<T> const &lhs, U const &rhs ) {
-		static_assert( daw::is_inequality_comparable_v<T, U>,
+		static_assert( traits::is_inequality_comparable_v<T, U>,
 		               "Types are not equal greater than comparable" );
 		if( lhs ) {
 			return lhs >= rhs;

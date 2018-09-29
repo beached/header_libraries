@@ -85,8 +85,9 @@ namespace daw {
 	}
 
 	template<typename T0, typename T1>
-	constexpr auto min( T0 &&val1, T1 &&val2 ) noexcept -> std::common_type_t<T0, T1> {
-			
+	constexpr auto min( T0 &&val1, T1 &&val2 ) noexcept
+	  -> std::common_type_t<T0, T1> {
+
 		if( std::less_equal<>{}( val1, val2 ) ) {
 			return std::forward<T0>( val1 );
 		}
@@ -95,14 +96,15 @@ namespace daw {
 
 	template<typename T, typename... Ts,
 	         std::enable_if_t<( sizeof...( Ts ) != 0 ), std::nullptr_t> = nullptr>
-	constexpr auto min( T &&val1, Ts &&... vs ) noexcept -> std::common_type_t<T, Ts...> {
+	constexpr auto min( T &&val1, Ts &&... vs ) noexcept
+	  -> std::common_type_t<T, Ts...> {
 
-		auto&& tmp = min( std::forward<Ts>( vs )... );
+		auto &&tmp = min( std::forward<Ts>( vs )... );
 
 		if( std::less_equal<>{}( val1, tmp ) ) {
 			return std::forward<T>( val1 );
 		}
-		return std::forward<decltype(tmp)>( tmp );
+		return std::forward<decltype( tmp )>( tmp );
 	}
 
 	namespace math {
