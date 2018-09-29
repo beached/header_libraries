@@ -53,8 +53,7 @@ namespace daw {
 
 	template<typename Value>
 	struct static_optional {
-		static_assert( is_nothrow_destructible_v<Value> ||
-		                 daw::is_trivial_v<Value>,
+		static_assert( is_nothrow_destructible_v<Value> || daw::is_trivial_v<Value>,
 		               "static_optional can only be used for types that are "
 		               "nothrow destructable or trivial" );
 

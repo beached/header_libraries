@@ -324,6 +324,19 @@ namespace daw {
 		  is_detected_convertible_v<bool, traits::detectors::callable_with,
 		                            Predicate, Args...>;
 
+		template<typename Predicate, typename... Args>
+		constexpr bool is_predicate_test( ) noexcept {
+			static_assert(
+			  is_predicate_v<Predicate, Args...>,
+			  "Predicate does not satisfy the  Predicate concept.  See "
+			  "http://en.cppreference.com/w/cpp/concept/Predicate for more "
+			  "information" );
+			return true;
+		}
+
+		template<typename Predicate, typename... Args>
+		CXINLINE bool is_predicate = is_predicate_test<Predicate, Args...>( );
+
 		template<typename BinaryPredicate, typename T, typename U = T>
 		CXINLINE bool is_binary_predicate_v = is_predicate_v<BinaryPredicate, T, U>;
 
@@ -341,11 +354,25 @@ namespace daw {
 		CXINLINE bool
 		  is_binary_predicate = is_binary_predicate_test<BinaryPredicate, T, U>( );
 
+		template<typename Compare, typename T, typename U = T>
+		CXINLINE bool is_compare_v = is_binary_predicate_v<Compare, T, U>;
+
 		template<typename UnaryPredicate, typename T>
 		CXINLINE bool is_unary_predicate_v = is_predicate_v<UnaryPredicate, T>;
 
-		template<typename Compare, typename T, typename U = T>
-		CXINLINE bool is_compare_v = is_binary_predicate_v<Compare, T, U>;
+		template<typename UnaryPredicate, typename T, typename U = T>
+		constexpr bool is_unary_predicate_test( ) noexcept {
+			static_assert(
+			  is_unary_predicate_v<UnaryPredicate, T, U>,
+			  "UnaryPredicate does not satisfy the Unary Predicate concept.  See "
+			  "http://en.cppreference.com/w/cpp/concept/UnaryPredicate for more "
+			  "information" );
+			return true;
+		}
+
+		template<typename UnaryPredicate, typename T, typename U = T>
+		CXINLINE bool
+		  is_unary_predicate = is_unary_predicate_test<UnaryPredicate, T, U>( );
 
 	} // namespace traits
 } // namespace daw

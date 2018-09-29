@@ -178,8 +178,8 @@ namespace daw {
 
 		template<typename T, typename Arg>
 		constexpr bool is_a( T const &value, Arg const &tst ) noexcept {
-			// static_assert( traits::is_comparable_v<T, Arg>, "value is not comparable
-			// to tst" );
+			// static_assert( traits::is_comparable_v<T, Arg>, "value is not
+			// comparable to tst" );
 			using val_t = typename daw::traits::max_sizeof<T, Arg>::type;
 			return ( static_cast<val_t>( value ) == static_cast<val_t>( tst ) );
 		}
@@ -415,9 +415,10 @@ namespace daw {
 		constexpr auto from_to( ForwardIterator first, ForwardIterator last,
 		                        StartFrom &&start_from, GoUntil &&go_until,
 		                        bool throw_if_end_reached = false )
-		  -> std::enable_if_t<traits::is_comparable_v<decltype( *first ), StartFrom> &&
-		                        traits::is_comparable_v<decltype( *first ), GoUntil>,
-		                      find_result_t<ForwardIterator>> {
+		  -> std::enable_if_t<
+		    traits::is_comparable_v<decltype( *first ), StartFrom> &&
+		      traits::is_comparable_v<decltype( *first ), GoUntil>,
+		    find_result_t<ForwardIterator>> {
 
 			auto start =
 			  until_value( first, last, std::forward<StartFrom>( start_from ) );
