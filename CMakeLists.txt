@@ -202,7 +202,7 @@ foreach( CUR_PREFIX ${DEV_HEADER_FILES} )
 endforeach( CUR_PREFIX )
 
 foreach( CUR_PREFIX ${UNTESTED_HEADER_IMPL} )
-	install( FILES "${HEADER_FOLDER}/daw/impl/${CUR_PREFIX}" DESTINATION include/daw/impl )
+	install( FILES "${HEADER_FOLDER}/daw/impl/${CUR_PREFIX}.h" DESTINATION include/daw/impl )
 endforeach( CUR_PREFIX )
 
 foreach( CUR_PREFIX ${UNTESTED_HEADER_FILES} )
