@@ -64,7 +64,7 @@ namespace daw_traits_is_equality_comparable {
 } // namespace daw_traits_is_equality_comparable
 
 namespace daw_traits_is_regular {
-	static_assert( daw::is_regular_v<std::string>,
+	static_assert( daw::traits::is_regular_v<std::string>,
 	               "1. std::string should report as being regular" );
 	struct NotRegular {
 		int x;
@@ -77,7 +77,7 @@ namespace daw_traits_is_regular {
 		NotRegular &operator=( NotRegular && ) = delete;
 	};
 
-	static_assert( !daw::is_regular_v<NotRegular>,
+	static_assert( !daw::traits::is_regular_v<NotRegular>,
 	               "2. struct NotRegular should report as being regular" );
 } // namespace daw_traits_is_regular
 
@@ -355,16 +355,16 @@ namespace daw_traits_is_callable {
 	static auto const blah = []( auto t ) noexcept {
 		return t;
 	};
-	static_assert( daw::is_callable_v<decltype( blah ), int>,
+	static_assert( daw::traits::is_callable_v<decltype( blah ), int>,
 	               "blah should be callable" );
 
-	constexpr auto val2 = daw::is_callable_v<decltype( &f ), int>;
+	constexpr auto val2 = daw::traits::is_callable_v<decltype( &f ), int>;
 	static_assert( val2, "f should be callable with an int" );
 
-	constexpr auto val3 = !daw::is_callable_v<decltype( &f ), TestYesOS>;
+	constexpr auto val3 = !daw::traits::is_callable_v<decltype( &f ), TestYesOS>;
 	static_assert( val3, "f should be callable with an non-int" );
 
-	constexpr auto val4 = !daw::is_callable_v<TestYesOS, int>;
+	constexpr auto val4 = !daw::traits::is_callable_v<TestYesOS, int>;
 	static_assert( val4, "TestYesOS should not be callable" );
 
 	auto const blah2 = []( ) noexcept {
@@ -372,16 +372,16 @@ namespace daw_traits_is_callable {
 	};
 	using T = decltype( blah2 );
 
-	constexpr bool const b1 = daw::is_callable_v<T, void>;
+	constexpr bool const b1 = daw::traits::is_callable_v<T, void>;
 	static_assert(
 	  b1,
 	  "is_callable_v<decltype( blah2 ) should be callable with a single void" );
 
-	constexpr bool const b2 = daw::is_callable_v<T>;
+	constexpr bool const b2 = daw::traits::is_callable_v<T>;
 	static_assert(
 	  b2, "is_callable_v<decltype( blah2 ) should be callable with zero args" );
 
-	constexpr bool const b3 = daw::is_callable_v<T, int>;
+	constexpr bool const b3 = daw::traits::is_callable_v<T, int>;
 	static_assert( !b3, "blah2 should not be callable with an int arg" );
 } // namespace daw_traits_is_callable
 
@@ -432,7 +432,7 @@ namespace binary_predicate_002 {
 	constexpr auto const a = daw::is_convertible_v<a_t, bool>;
 	static_assert( a, "a: Not callable with (int, int )" );
 
-	constexpr auto const b = daw::is_callable_v<test_binary_pred_t, int, int>;
+	constexpr auto const b = daw::traits::is_callable_v<test_binary_pred_t, int, int>;
 	static_assert( b, "b: Not callable with (int, int )" );
 
 	constexpr auto const c =
@@ -518,12 +518,12 @@ namespace is_iterator_008 {
 
 namespace is_random_iterator_001 {
 	using iter_t = typename std::vector<int>::iterator;
-	static_assert( daw::traits::is_random_iterator<iter_t>, "" );
+	static_assert( daw::traits::is_random_access_iterator<iter_t>, "" );
 } // namespace is_random_iterator_001
 
 namespace is_random_iterator_002 {
 	using iter_t = typename std::list<int>::iterator;
-	static_assert( !daw::traits::is_random_iterator_v<iter_t>, "" );
+	static_assert( !daw::traits::is_random_access_iterator_v<iter_t>, "" );
 } // namespace is_random_iterator_002
 
 namespace is_output_iterator_001 {
@@ -586,12 +586,12 @@ namespace is_input_iterator_005 {
 } // namespace is_input_iterator_005
 
 namespace are_convertible_to_v_001 {
-	static_assert( daw::are_convertible_to_v<int, char, short, unsigned>, "" );
+	static_assert( daw::traits::are_convertible_to_v<int, char, short, unsigned>, "" );
 }
 
 namespace are_convertible_to_v_002 {
 	static_assert(
-	  !daw::are_convertible_to_v<int, char, short, unsigned, std::string>, "" );
+	  !daw::traits::are_convertible_to_v<int, char, short, unsigned, std::string>, "" );
 }
 
 namespace type_n_t_test_001 {
@@ -717,7 +717,7 @@ namespace is_callable_convertible_001 {
 		return 2.0 * d;
 	};
 	static_assert(
-	  daw::is_callable_convertible_v<double, decltype( func ), double>, "" );
+	  daw::traits::is_callable_convertible_v<double, decltype( func ), double>, "" );
 } // namespace is_callable_convertible_001
 
 namespace all_true_001 {
@@ -744,9 +744,9 @@ namespace is_nothrow_callable_001 {
 		constexpr void operator( )( X );
 		constexpr void operator( )( int ) noexcept;
 	};
-	static_assert( daw::is_nothrow_callable_v<A, int>, "" );
+	static_assert( daw::traits::is_nothrow_callable_v<A, int>, "" );
 
-	static_assert( !daw::is_nothrow_callable_v<A, X>, "" );
+	static_assert( !daw::traits::is_nothrow_callable_v<A, X>, "" );
 } // namespace is_nothrow_callable_001
 
 BOOST_AUTO_TEST_CASE( daw_traits_enable_if_any ) {

@@ -199,7 +199,7 @@ namespace daw {
 		auto map( Container const &container, UnaryOperator unary_operator ) {
 
 			static_assert(
-			  daw::is_callable_v<UnaryOperator,
+			  traits::is_callable_v<UnaryOperator,
 			                     decltype( *std::cbegin( container ) )>,
 			  "UnaryOperator is not callable with the values stored in Container" );
 
@@ -227,7 +227,7 @@ namespace daw {
 		                                                unary_operator ) ) ) {
 
 			static_assert(
-			  daw::is_callable_v<UnaryOperator,
+			  traits::is_callable_v<UnaryOperator,
 			                     decltype( *std::cbegin( container ) )>,
 			  "UnaryOperator is not callable with the values stored in Container" );
 
@@ -256,7 +256,7 @@ namespace daw {
 		                                                unary_operator ) ) ) {
 
 			static_assert(
-			  daw::is_callable_v<UnaryOperator,
+			  traits::is_callable_v<UnaryOperator,
 			                     decltype( *std::cbegin( container ) )>,
 			  "UnaryOperator is not callable with the values stored in Container" );
 

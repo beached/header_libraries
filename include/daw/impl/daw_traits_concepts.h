@@ -51,7 +51,7 @@ namespace daw {
 		/// Now using C++'s definition of Regular
 		/// http://en.cppreference.com/w/cpp/experimental/ranges/concepts/Regular
 		template<typename T>
-		constexpr bool is_regular_v =
+		CXINLINE bool is_regular_v =
 		  all_true_v<is_default_constructible_v<T>, is_copy_constructible_v<T>,
 		             is_move_constructible_v<T>, is_copy_assignable_v<T>,
 		             is_move_assignable_v<T>, is_equality_comparable_v<T>,
@@ -79,12 +79,12 @@ namespace daw {
 		}
 
 		template<typename T>
-		constexpr bool is_regular = is_regular_test<T>( );
+		CXINLINE bool is_regular = is_regular_test<T>( );
 
 		// Iterator Concepts
 		// is_iterator
 		template<typename Iterator>
-		constexpr bool is_iterator_v = all_true_v<
+		CXINLINE bool is_iterator_v = all_true_v<
 		  is_copy_constructible_v<Iterator>, is_copy_assignable_v<Iterator>,
 		  is_destructible_v<Iterator>, impl::is_incrementable_v<Iterator>,
 		  impl::has_value_type_v<Iterator>, impl::has_difference_type_v<Iterator>,
@@ -123,13 +123,13 @@ namespace daw {
 		}
 
 		template<typename Iterator>
-		constexpr bool is_iterator = is_iterator_test<Iterator>( );
+		CXINLINE bool is_iterator = is_iterator_test<Iterator>( );
 
 		// is_output_iterator
 		template<typename OutputIterator,
 		         typename T =
 		           typename std::iterator_traits<OutputIterator>::value_type>
-		constexpr bool is_output_iterator_v =
+		CXINLINE bool is_output_iterator_v =
 		  all_true_v<is_iterator_v<OutputIterator>,
 		             is_assignable_iterator_v<OutputIterator, T>>;
 
@@ -138,8 +138,8 @@ namespace daw {
 		  typename T = typename std::iterator_traits<OutputIterator>::value_type>
 		constexpr bool is_output_iterator_test( ) noexcept {
 			static_assert(
-			  is_output_iterator_v<OutputIterator>,
-			  "OutputIterator does not fullfill the RandomIterator concept.  See "
+			  is_output_iterator_v<OutputIterator, T>,
+			  "OutputIterator does not fullfill the OutputIterator concept.  See "
 			  "https://en.cppreference.com/w/cpp/named_req/OutputIterator" );
 			is_iterator_test<OutputIterator>( );
 			static_assert( is_assignable_iterator_v<OutputIterator, T>,
@@ -150,14 +150,14 @@ namespace daw {
 		template<
 		  typename OutputIterator,
 		  typename T = typename std::iterator_traits<OutputIterator>::value_type>
-		constexpr bool
+		CXINLINE bool
 		  is_output_iterator = is_output_iterator_test<OutputIterator, T>( );
 
 		// is_input_iterator
 		template<typename InputIterator,
 		         typename T =
 		           std::decay_t<decltype( *std::declval<InputIterator>( ) )>>
-		constexpr bool is_input_iterator_v = all_true_v<
+		CXINLINE bool is_input_iterator_v = all_true_v<
 		  is_iterator_v<InputIterator>, is_equality_comparable_v<InputIterator>,
 		  is_convertible_v<decltype( *std::declval<InputIterator>( ) ), T>>;
 
@@ -165,7 +165,7 @@ namespace daw {
 		constexpr bool is_input_iterator_test( ) noexcept {
 			static_assert(
 			  is_input_iterator_v<InputIterator>,
-			  "InputIterator does not fullfill the RandomIterator concept.  See "
+			  "InputIterator does not fullfill the InputIterator concept.  See "
 			  "https://en.cppreference.com/w/cpp/named_req/InputIterator" );
 
 			is_iterator_test<InputIterator>( );
@@ -183,18 +183,42 @@ namespace daw {
 		}
 
 		template<typename InputIterator>
-		constexpr bool is_input_iterator = is_input_iterator_test<InputIterator>( );
+		CXINLINE bool is_input_iterator = is_input_iterator_test<InputIterator>( );
+
+		template<typename InOutIterator,
+		         typename T =
+		           typename std::iterator_traits<InOutIterator>::value_type>
+		CXINLINE bool is_inout_iterator_v =
+		  all_true_v<is_input_iterator_v<InOutIterator>,
+		             is_output_iterator_v<InOutIterator, T>>;
+
+		template<typename InOutIterator, typename T = typename std::iterator_traits<
+		                                   InOutIterator>::value_type>
+		constexpr bool is_inout_iterator_test( ) noexcept {
+			static_assert( is_inout_iterator_v<InOutIterator, T>,
+			               "InOutIterator does not fullfill the Input and Output "
+			               "Iterator concepts" );
+			is_input_iterator_test<InOutIterator>( );
+			is_output_iterator_test<InOutIterator, T>( );
+
+			return true;
+		}
+
+		template<typename InOutIterator, typename T = typename std::iterator_traits<
+		                                   InOutIterator>::value_type>
+		CXINLINE bool
+		  is_inout_iterator = is_input_iterator_test<InOutIterator, T>( );
 
 		// is_forward_iterator
 		template<typename ForwardIterator>
-		constexpr bool is_forward_iterator_v =
+		CXINLINE bool is_forward_access_iterator_v =
 		  all_true_v<is_iterator_v<ForwardIterator>,
 		             is_default_constructible_v<ForwardIterator>>;
 
 		template<typename ForwardIterator>
-		constexpr bool is_forward_iterator_test( ) noexcept {
+		constexpr bool is_forward_access_iterator_test( ) noexcept {
 			static_assert(
-			  is_forward_iterator_v<ForwardIterator>,
+			  is_forward_access_iterator_v<ForwardIterator>,
 			  "ForwardIterator does not fullfill the RandomIterator concept.  See "
 			  "https://en.cppreference.com/w/cpp/named_req/ForwardIterator" );
 
@@ -206,34 +230,34 @@ namespace daw {
 			return true;
 		}
 
-		// is_bidirectional_iterator
+		// is_bidirectional_access_iterator
 		template<typename BidirectionalIterator>
-		constexpr bool is_bidirectional_iterator_v =
-		  all_true_v<is_forward_iterator_v<BidirectionalIterator>,
+		CXINLINE bool is_bidirectional_access_iterator_v =
+		  all_true_v<is_forward_access_iterator_v<BidirectionalIterator>,
 		             traits::has_decrement_operator_v<BidirectionalIterator>>;
 
 		template<typename BidirectionalIterator>
-		constexpr bool is_bidirectional_iterator_test( ) noexcept {
+		CXINLINE bool is_bidirectional_access_iterator_test( ) noexcept {
 			static_assert(
-			  is_bidirectional_iterator_v<BidirectionalIterator>,
+			  is_bidirectional_access_iterator_v<BidirectionalIterator>,
 			  "BidirectionalIterator does not fullfill the RandomIterator concept.  "
 			  "See "
 			  "https://en.cppreference.com/w/cpp/named_req/BidirectionalIterator" );
 
-			is_forward_iterator_test<BidirectionalIterator>( );
+			is_forward_access_iterator_test<BidirectionalIterator>( );
 			static_assert( traits::has_decrement_operator_v<BidirectionalIterator>,
 			               "BidirectionalIterator does not have decrement operator" );
 			return true;
 		}
 
 		template<typename BidirectionalIterator>
-		constexpr bool is_bidirectional_iterator =
-		  is_bidirectional_iterator_test<BidirectionalIterator>( );
+		CXINLINE bool is_bidirectional_access_iterator =
+		  is_bidirectional_access_iterator_test<BidirectionalIterator>( );
 
-		// is_random_iterator
+		// is_random_access_iterator
 		template<typename RandomIterator>
-		constexpr bool is_random_iterator_v = daw::all_true_v<
-		  is_bidirectional_iterator_v<RandomIterator>,
+		CXINLINE bool is_random_access_iterator_v = daw::all_true_v<
+		  is_bidirectional_access_iterator_v<RandomIterator>,
 		  traits::has_addition_operator_v<RandomIterator, int>,
 		  traits::has_addition_operator_v<int, RandomIterator>,
 		  traits::has_subtraction_operator_v<RandomIterator, int>,
@@ -247,12 +271,12 @@ namespace daw {
 		  traits::has_integer_subscript_v<RandomIterator>>;
 
 		template<typename RandomIterator>
-		constexpr bool is_random_iterator_test( ) noexcept {
+		constexpr bool is_random_access_iterator_test( ) noexcept {
 			static_assert(
-			  is_random_iterator_v<RandomIterator>,
+			  is_random_access_iterator_v<RandomIterator>,
 			  "RandomIterator does not fullfill the RandomIterator concept.  See "
 			  "https://en.cppreference.com/w/cpp/named_req/RandomAccessIterator" );
-			is_bidirectional_iterator_test<RandomIterator>( );
+			is_bidirectional_access_iterator_test<RandomIterator>( );
 			// Mathematics
 			static_assert(
 			  traits::has_addition_operator_v<RandomIterator, int>,
@@ -295,13 +319,13 @@ namespace daw {
 		}
 
 		template<typename RandomIterator>
-		constexpr bool
-		  is_random_iterator = is_random_iterator_test<RandomIterator>( );
+		CXINLINE bool is_random_access_iterator =
+		  is_random_access_iterator_test<RandomIterator>( );
 
 		template<typename Sortable>
-		constexpr bool is_sortable_container_v =
+		CXINLINE bool is_sortable_container_v =
 		  all_true_v<traits::is_container_like_v<Sortable>,
-		             is_random_iterator_v<decltype(
+		             is_random_access_iterator_v<decltype(
 		               std::begin( std::declval<Sortable>( ) ) )>>;
 
 		template<typename Sortable>
@@ -315,7 +339,7 @@ namespace daw {
 
 			using sortable_iterator_t =
 			  decltype( std::begin( std::declval<Sortable>( ) ) );
-			static_assert( is_random_iterator<sortable_iterator_t>, "" );
+			static_assert( is_random_access_iterator<sortable_iterator_t>, "" );
 
 			return true;
 		}
@@ -360,19 +384,19 @@ namespace daw {
 		template<typename UnaryPredicate, typename T>
 		CXINLINE bool is_unary_predicate_v = is_predicate_v<UnaryPredicate, T>;
 
-		template<typename UnaryPredicate, typename T, typename U = T>
+		template<typename UnaryPredicate, typename T>
 		constexpr bool is_unary_predicate_test( ) noexcept {
 			static_assert(
-			  is_unary_predicate_v<UnaryPredicate, T, U>,
+			  is_unary_predicate_v<UnaryPredicate, T>,
 			  "UnaryPredicate does not satisfy the Unary Predicate concept.  See "
 			  "http://en.cppreference.com/w/cpp/concept/UnaryPredicate for more "
 			  "information" );
 			return true;
 		}
 
-		template<typename UnaryPredicate, typename T, typename U = T>
+		template<typename UnaryPredicate, typename T>
 		CXINLINE bool
-		  is_unary_predicate = is_unary_predicate_test<UnaryPredicate, T, U>( );
+		  is_unary_predicate = is_unary_predicate_test<UnaryPredicate, T>( );
 
 	} // namespace traits
 } // namespace daw

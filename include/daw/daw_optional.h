@@ -201,38 +201,25 @@ namespace daw {
 		using pointer_const = value_type const *;
 
 	private:
-		impl::value_storage<value_type> m_value;
+		impl::value_storage<value_type> m_value{ };
 
 	public:
-		optional( )
-		  : m_value{} {}
 
 		optional( nothing )
 		  : m_value{} {}
-		optional( optional const &other )
-		  : m_value{other.m_value} {}
-
-		optional( optional &&other ) noexcept
-		  : m_value{std::move( other.m_value )} {}
 
 		explicit optional( value_type value )
 		  : m_value{std::move( value )} {}
 
-		optional &operator=( optional const &rhs ) {
-			if( this != &rhs ) {
-				m_value = rhs.m_value;
-			}
-			return *this;
-		}
+		optional( ) = default;
+		optional( optional const & ) = default;
+		optional( optional && ) noexcept = default;
+		optional &operator=( optional const & ) = default;
+		optional &operator=( optional &&rhs ) noexcept = default;
 
 		template<typename... Args>
 		void emplace( Args &&... args ) {
 			m_value = value_type{std::forward<Args>( args )...};
-		}
-
-		optional &operator=( optional &&rhs ) noexcept {
-			m_value = std::move( rhs.m_value );
-			return *this;
 		}
 
 		optional &operator=( nothing && ) noexcept {

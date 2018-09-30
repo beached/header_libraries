@@ -139,7 +139,7 @@ namespace daw {
 		// std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename... Args,
-		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
+		         std::enable_if_t<traits::is_callable_v<Function, Args...>,
 		                          std::nullptr_t> = nullptr>
 		static checked_expected_t from_code( Function func, Args &&... args ) {
 			try {
@@ -222,8 +222,7 @@ namespace daw {
 
 	}; // class checked_expected_t
 
-	static_assert( daw::is_regular_v<checked_expected_t<int>>,
-	               "checked_expected_t isn't regular" );
+	static_assert( traits::is_regular<checked_expected_t<int>>, "" );
 
 	template<typename... ExpectedExceptions>
 	struct checked_expected_t<void, ExpectedExceptions...> {

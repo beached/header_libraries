@@ -282,9 +282,10 @@ namespace daw {
 		                                                std::forward<T>( init ),
 		                                                oper ) ) ) {
 
-			static_assert( daw::is_callable_v<BinaryOperation, T,
-			                                  decltype( *std::cbegin( container ) )>,
-			               "Invalid BinaryOperation" );
+			static_assert(
+			  traits::is_callable_v<BinaryOperation, T,
+			                        decltype( *std::cbegin( container ) )>,
+			  "Invalid BinaryOperation" );
 
 			return std::accumulate( std::cbegin( container ), std::cend( container ),
 			                        std::forward<T>( init ), oper );
@@ -300,8 +301,8 @@ namespace daw {
 		                            unary_operator ) ) ) {
 
 			static_assert(
-			  daw::is_callable_v<UnaryOperator,
-			                     decltype( *std::cbegin( container ) )>,
+			  traits::is_callable_v<UnaryOperator,
+			                        decltype( *std::cbegin( container ) )>,
 			  "UnaryOperator is not callable with the values stored in Container" );
 
 			return std::transform( std::cbegin( container ), std::cend( container ),
@@ -323,8 +324,8 @@ namespace daw {
 		                                             unary_operator ) ) ) {
 
 			static_assert(
-			  daw::is_callable_v<UnaryOperator,
-			                     decltype( *std::cbegin( container ) )>,
+			  traits::is_callable_v<UnaryOperator,
+			                        decltype( *std::cbegin( container ) )>,
 			  "UnaryOperator is not callable with the values stored in Container" );
 
 			static_assert(
@@ -352,8 +353,8 @@ namespace daw {
 		                                             unary_operator ) ) ) {
 
 			static_assert(
-			  daw::is_callable_v<UnaryOperator,
-			                     decltype( *std::cbegin( container ) )>,
+			  traits::is_callable_v<UnaryOperator,
+			                        decltype( *std::cbegin( container ) )>,
 			  "UnaryOperator is not callable with the values stored in Container" );
 
 			std::transform( std::cbegin( container ), std::cend( container ),
@@ -530,7 +531,7 @@ namespace daw {
 
 			using value_t = std::decay_t<typename std::iterator_traits<decltype(
 			  std::begin( container ) )>::value_type>;
-			static_assert( daw::is_callable_v<Function, value_t, size_t>,
+			static_assert( traits::is_callable_v<Function, value_t, size_t>,
 			               "Supplied function does not satisfy requirements of "
 			               "taking arguments of type (value_t, size_t)" );
 
@@ -546,7 +547,7 @@ namespace daw {
 		  noexcept( func( *std::begin( container ), std::declval<size_t>( ) ) ) ) {
 			using value_t = std::decay_t<typename std::iterator_traits<decltype(
 			  std::begin( container ) )>::value_type>;
-			static_assert( daw::is_callable_v<Function, value_t, size_t>,
+			static_assert( traits::is_callable_v<Function, value_t, size_t>,
 			               "Supplied function does not satisfy requirements of "
 			               "taking arguments of type (value_t, size_t)" );
 			for_each_with_pos( container, 0, container_size( container ), func );
@@ -564,9 +565,14 @@ namespace daw {
 		template<typename Container, typename Function>
 		constexpr void for_each_subset(
 		  Container &container, size_t first, size_t const last,
-		  Function func ) noexcept( noexcept( func( container,
-		                                            std::declval<size_t>( ) ) ) ) {
-			static_assert( daw::is_callable_v<Function, Container, size_t>,
+		  Function
+		    func ) noexcept( traits::is_nothrow_callable_v<Function, Container,
+		                                                   size_t> ) {
+
+			static_assert( traits::has_integer_subscript_v<Container>,
+			               "Container is required to have a subscript operator that "
+			               "takes integral types" );
+			static_assert( traits::is_callable_v<Function, Container, size_t>,
 			               "Supplied function does not satisfy requirements of "
 			               "taking arguments of type (Container, size_t)" );
 

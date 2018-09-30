@@ -46,7 +46,7 @@ namespace daw {
 		  : m_func( std::forward<Func>( func ) ) {}
 
 		template<typename... Args,
-		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
+		         std::enable_if_t<traits::is_callable_v<Function, Args...>,
 		                          std::nullptr_t> = nullptr>
 		constexpr auto operator( )( Args &&... args ) const noexcept(
 		  noexcept( std::declval<Function>( )( std::declval<Args>( )... ) ) )
@@ -56,7 +56,7 @@ namespace daw {
 		}
 
 		template<typename... Args,
-		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
+		         std::enable_if_t<traits::is_callable_v<Function, Args...>,
 		                          std::nullptr_t> = nullptr>
 		constexpr auto operator( )( Args &&... args ) noexcept(
 		  noexcept( std::declval<Function>( )( std::declval<Args>( )... ) ) )
@@ -86,14 +86,14 @@ namespace daw {
 	}
 
 	template<typename... Args, typename OverloadSet,
-	         std::enable_if_t<daw::is_callable_v<OverloadSet, Args...>,
+	         std::enable_if_t<traits::is_callable_v<OverloadSet, Args...>,
 	                          std::nullptr_t> = nullptr>
 	decltype( auto ) empty_overload( OverloadSet &&overload_set ) {
 		return std::forward<OverloadSet>( overload_set );
 	}
 
 	template<typename... Args, typename OverloadSet,
-	         std::enable_if_t<!daw::is_callable_v<OverloadSet, Args...>,
+	         std::enable_if_t<!traits::is_callable_v<OverloadSet, Args...>,
 	                          std::nullptr_t> = nullptr>
 	decltype( auto ) empty_overload( OverloadSet &&overload_set ) {
 		return overload( std::forward<OverloadSet>( overload_set ),

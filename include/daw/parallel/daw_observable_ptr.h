@@ -298,7 +298,7 @@ namespace daw {
 		}
 
 		template<typename Callable,
-		         std::enable_if_t<daw::is_callable_v<Callable, T const &>,
+		         std::enable_if_t<traits::is_callable_v<Callable, T const &>,
 		                          std::nullptr_t> = nullptr>
 		decltype( auto ) lock( Callable &&c ) const
 		  noexcept( noexcept( c( std::declval<T const &>( ) ) ) ) {
@@ -314,7 +314,7 @@ namespace daw {
 		}
 
 		template<typename Callable,
-		         std::enable_if_t<daw::is_callable_v<Callable, T &>,
+		         std::enable_if_t<traits::is_callable_v<Callable, T &>,
 		                          std::nullptr_t> = nullptr>
 		decltype( auto )
 		lock( Callable &&c ) noexcept( noexcept( c( std::declval<T &>( ) ) ) ) {

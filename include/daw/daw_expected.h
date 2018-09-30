@@ -119,7 +119,7 @@ namespace daw {
 	private:
 		template<class Function, typename... Args,
 		         std::enable_if_t<
-		           daw::is_callable_convertible_v<value_type, Function, Args...>,
+		           traits::is_callable_convertible_v<value_type, Function, Args...>,
 		           std::nullptr_t> = nullptr>
 		static boost::variant<std::exception_ptr, value_type>
 		variant_from_code( Function &&func, Args &&... args ) {
@@ -131,7 +131,7 @@ namespace daw {
 	public:
 		template<class Function, typename... Args,
 		         std::enable_if_t<
-		           daw::is_callable_convertible_v<value_type, Function, Args...>,
+		           traits::is_callable_convertible_v<value_type, Function, Args...>,
 		           std::nullptr_t> = nullptr>
 		explicit expected_t( Function &&func, Args &&... args )
 		  : m_value( variant_from_code( std::forward<Function>( func ),
@@ -139,7 +139,7 @@ namespace daw {
 
 		template<class Function, typename... Args,
 		         std::enable_if_t<
-		           daw::is_callable_convertible_v<value_type, Function, Args...>,
+		           traits::is_callable_convertible_v<value_type, Function, Args...>,
 		           std::nullptr_t> = nullptr>
 		static expected_t from_code( Function &&func, Args &&... args ) {
 			auto result = expected_t( );
@@ -159,19 +159,19 @@ namespace daw {
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor &&visitor ) {
 			static_assert(
-			  daw::is_callable_v<Visitor, value_type &>,
+			  traits::is_callable_v<Visitor, value_type &>,
 			  "Visitor must be callable with the variants expected value_type &" );
-			static_assert( daw::is_callable_v<Visitor, std::exception_ptr>,
+			static_assert( traits::is_callable_v<Visitor, std::exception_ptr>,
 			               "Visitor must be callable with std::exception_ptr" );
 			return boost::apply_visitor( std::forward<Visitor>( visitor ), m_value );
 		}
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor &&visitor ) const {
-			static_assert( daw::is_callable_v<Visitor, value_type const &>,
+			static_assert( traits::is_callable_v<Visitor, value_type const &>,
 			               "Visitor must be callable with the variants expected "
 			               "value_type const &" );
-			static_assert( daw::is_callable_v<Visitor, std::exception_ptr>,
+			static_assert( traits::is_callable_v<Visitor, std::exception_ptr>,
 			               "Visitor must be callable with std::exception_ptr" );
 			return boost::apply_visitor( std::forward<Visitor>( visitor ), m_value );
 		}
@@ -298,8 +298,7 @@ namespace daw {
 		}
 	}; // namespace daw
 
-	static_assert( daw::is_regular_v<expected_t<int>>,
-	               "expected_t isn't regular" );
+	static_assert( traits::is_regular<expected_t<int>>, "" );
 
 	namespace impl {
 		struct void_value_t {};
@@ -382,14 +381,14 @@ namespace daw {
 
 	public:
 		template<class Function, typename... Args,
-		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
+		         std::enable_if_t<traits::is_callable_v<Function, Args...>,
 		                          std::nullptr_t> = nullptr>
 		explicit expected_t( Function &&func, Args &&... args )
 		  : m_value( variant_from_code( std::forward<Function>( func ),
 		                                std::forward<Args>( args )... ) ) {}
 
 		template<class Function, typename... Args,
-		         std::enable_if_t<daw::is_callable_v<Function, Args...>,
+		         std::enable_if_t<traits::is_callable_v<Function, Args...>,
 		                          std::nullptr_t> = nullptr>
 		static expected_t from_code( Function &&func, Args &&... args ) {
 			auto result = expected_t( );
@@ -408,9 +407,9 @@ namespace daw {
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor &&visitor ) {
-			static_assert( daw::is_callable_v<Visitor>,
+			static_assert( traits::is_callable_v<Visitor>,
 			               "Visitor must be callable without arguments" );
-			static_assert( daw::is_callable_v<Visitor, std::exception_ptr>,
+			static_assert( traits::is_callable_v<Visitor, std::exception_ptr>,
 			               "Visitor must be callable with std::exception_ptr" );
 			auto const vis =
 			  daw::overload( [&]( value_type const & ) mutable noexcept(
@@ -424,9 +423,9 @@ namespace daw {
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor &&visitor ) const {
-			static_assert( daw::is_callable_v<Visitor>,
+			static_assert( traits::is_callable_v<Visitor>,
 			               "Visitor must be callable without arguments" );
-			static_assert( daw::is_callable_v<Visitor, std::exception_ptr>,
+			static_assert( traits::is_callable_v<Visitor, std::exception_ptr>,
 			               "Visitor must be callable with std::exception_ptr" );
 			auto const vis =
 			  daw::overload( [&]( value_type const & ) noexcept(
@@ -506,7 +505,7 @@ namespace daw {
 	template<typename Result, typename Function, typename... Args>
 	expected_t<Result> expected_from_code( Function &&func, Args &&... args ) {
 		static_assert(
-		  daw::is_callable_convertible_v<Result, Function, Args...>,
+		  traits::is_callable_convertible_v<Result, Function, Args...>,
 		  "Must be able to convert result of func to expected result type" );
 
 		auto result = expected_t<Result>( );

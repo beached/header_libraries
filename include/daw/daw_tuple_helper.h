@@ -341,7 +341,7 @@ namespace daw {
 			struct call_func {
 				Func func;
 
-				template<typename Arg, std::enable_if_t<daw::is_callable_v<Func, Arg>,
+				template<typename Arg, std::enable_if_t<traits::is_callable_v<Func, Arg>,
 				                                        std::nullptr_t> = nullptr>
 				constexpr void
 				operator( )( Arg &&value ) noexcept( noexcept( func( value ) ) ) {

@@ -924,19 +924,12 @@ namespace daw {
 		              OutputIterator first_out, UnaryPredicate pred,
 		              TransformFunction trans ) {
 
-			static_assert(
-			  traits::is_iterator_v<InputIterator>,
-			  "first is does not satisfy the requirements of an Iterator" );
-			static_assert(
-			  traits::is_iterator_v<OutputIterator>,
-			  "first_out is does not satisfy the requirements of an Iterator" );
-			static_assert(
-			  traits::is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
-			  "pred does not satisfy the Unary Predicate concept.  See "
-			  "http://en.cppreference.com/w/cpp/concept/Predicate for "
-			  "more information" );
+			traits::is_forward_access_iterator_test<InputIterator>( );
+			traits::is_input_iterator_test<InputIterator>( );
+			traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
+			traits::is_output_iterator_test<OutputIterator, decltype( pred( *first ) )>( );
 
-			static_assert( is_callable_v<TransformFunction, decltype( *first )>,
+			static_assert( traits::is_callable_v<TransformFunction, decltype( *first )>,
 			               "TransformFunction does not accept a single argument of "
 			               "the dereferenced type of first" );
 
@@ -973,7 +966,7 @@ namespace daw {
 		  UnaryOperation unary_op ) noexcept( noexcept( *first_out =
 		                                                  unary_op( *first ) ) ) {
 
-			static_assert( is_callable_v<UnaryOperation, decltype( *first )>,
+			static_assert( traits::is_callable_v<UnaryOperation, decltype( *first )>,
 			               "UnaryOperation does not accept a single argument of the "
 			               "dereferenced type of first" );
 
@@ -1010,7 +1003,7 @@ namespace daw {
 		  UnaryOperation unary_op ) noexcept( noexcept( *first_out =
 		                                                  unary_op( *first ) ) ) {
 
-			static_assert( is_callable_v<UnaryOperation, decltype( *first )>,
+			static_assert( traits::is_callable_v<UnaryOperation, decltype( *first )>,
 			               "UnaryOperation does not accept a single argument of the "
 			               "dereferenced type of first" );
 
@@ -1251,7 +1244,7 @@ namespace daw {
 		        LastType last ) noexcept( noexcept( swapper( *first, *middle ) ) ) {
 
 			static_assert(
-			  traits::is_forward_iterator_v<ForwardIterator>,
+			  traits::is_forward_access_iterator_v<ForwardIterator>,
 			  "ForwardIterator passed to rotate does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
@@ -1366,7 +1359,7 @@ namespace daw {
 		  ForwardIterator last ) noexcept( noexcept( *first < next( *first ) ) ) {
 
 			static_assert(
-			  traits::is_forward_iterator_v<ForwardIterator>,
+			  traits::is_forward_access_iterator_v<ForwardIterator>,
 			  "ForwardIterator passed to rotate does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
@@ -1397,7 +1390,7 @@ namespace daw {
 		  Compare comp ) noexcept( noexcept( comp( *first, *first ) ) ) {
 
 			static_assert(
-			  traits::is_forward_iterator_v<ForwardIterator>,
+			  traits::is_forward_access_iterator_v<ForwardIterator>,
 			  "ForwardIterator passed to rotate does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
@@ -1423,7 +1416,7 @@ namespace daw {
 		  noexcept( next( first ) ) && noexcept( ++first ) ) {
 
 			static_assert(
-			  traits::is_forward_iterator_v<ForwardIterator>,
+			  traits::is_forward_access_iterator_v<ForwardIterator>,
 			  "ForwardIterator passed to rotate does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
@@ -1444,7 +1437,7 @@ namespace daw {
 		           Compare comp ) noexcept( noexcept( comp( *first, *first ) ) ) {
 
 			static_assert(
-			  traits::is_forward_iterator_v<ForwardIterator>,
+			  traits::is_forward_access_iterator_v<ForwardIterator>,
 			  "ForwardIterator passed to rotate does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
@@ -1566,13 +1559,13 @@ namespace daw {
 		  ForwardIterator2 s_last ) noexcept( noexcept( *first == *s_first ) ) {
 
 			static_assert(
-			  traits::is_forward_iterator_v<ForwardIterator1>,
+			  traits::is_forward_access_iterator_v<ForwardIterator1>,
 			  "ForwardIterator1 passed to rotate does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
 
 			static_assert(
-			  traits::is_forward_iterator_v<ForwardIterator2>,
+			  traits::is_forward_access_iterator_v<ForwardIterator2>,
 			  "ForwardIterator2 passed to rotate does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
@@ -1600,13 +1593,13 @@ namespace daw {
 		        Compare comp ) noexcept( noexcept( !comp( *first, *s_first ) ) ) {
 
 			static_assert(
-			  traits::is_forward_iterator_v<ForwardIterator1>,
+			  traits::is_forward_access_iterator_v<ForwardIterator1>,
 			  "ForwardIterator1 passed to rotate does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
 
 			static_assert(
-			  traits::is_forward_iterator_v<ForwardIterator2>,
+			  traits::is_forward_access_iterator_v<ForwardIterator2>,
 			  "ForwardIterator2 passed to rotate does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
@@ -1701,7 +1694,7 @@ namespace daw {
 		  Compare comp ) noexcept( noexcept( comp( *first, *first ) ) ) {
 
 			static_assert(
-			  traits::is_forward_iterator_v<ForwardIterator>,
+			  traits::is_forward_access_iterator_v<ForwardIterator>,
 			  "ForwardIterator passed to rotate does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
@@ -1765,7 +1758,7 @@ namespace daw {
 		  noexcept( minmax_element( first, last, std::less<>{} ) ) ) {
 
 			static_assert(
-			  traits::is_forward_iterator_v<ForwardIterator>,
+			  traits::is_forward_access_iterator_v<ForwardIterator>,
 			  "ForwardIterator passed to rotate does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );

@@ -37,14 +37,14 @@ namespace daw {
 	namespace impl {
 		template<typename T>
 		union static_optional_storage {
-			static_assert( is_nothrow_destructible_v<T> || daw::is_trivial_v<T>,
+			static_assert( is_nothrow_destructible_v<T> or daw::is_trivial_v<T>,
 			               "static_optional_storage can only be used for types that "
 			               "are nothrow destructable or trivial" );
 
 			T value;
-			daw::nothing empty_value;
+			nothing empty_value;
 
-			constexpr static_optional_storage( daw::nothing ) noexcept
+			constexpr static_optional_storage( nothing ) noexcept
 			  : empty_value{} {}
 			constexpr static_optional_storage( T v ) noexcept
 			  : value{std::move( v )} {}
@@ -53,7 +53,7 @@ namespace daw {
 
 	template<typename Value>
 	struct static_optional {
-		static_assert( is_nothrow_destructible_v<Value> || daw::is_trivial_v<Value>,
+		static_assert( is_nothrow_destructible_v<Value> or daw::is_trivial_v<Value>,
 		               "static_optional can only be used for types that are "
 		               "nothrow destructable or trivial" );
 
@@ -79,10 +79,10 @@ namespace daw {
 
 	public:
 		constexpr static_optional( ) noexcept
-		  : m_value{daw::nothing{}}
+		  : m_value{nothing{}}
 		  , m_occupied{false} {}
-		explicit constexpr static_optional( daw::nothing ) noexcept
-		  : m_value{daw::nothing{}}
+		explicit constexpr static_optional( nothing ) noexcept
+		  : m_value{nothing{}}
 		  , m_occupied{false} {}
 
 		template<
@@ -122,16 +122,17 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr static_optional &operator=( daw::nothing ) noexcept {
-			m_value = daw::nothing{};
+		constexpr static_optional &operator=( nothing ) noexcept {
+			m_value = nothing{};
 			m_occupied = false;
 			return *this;
 		}
 
-		template<typename T, std::enable_if_t<
-		                       !daw::is_same_v<static_optional, std::decay_t<T>> &&
-		                         !daw::is_same_v<daw::nothing, std::decay_t<T>>,
-		                       std::nullptr_t> = nullptr>
+		template<typename T,
+		         std::enable_if_t<
+		           all_true_v<!daw::is_same_v<static_optional, std::decay_t<T>>,
+		                      !daw::is_same_v<nothing, std::decay_t<T>>>,
+		           std::nullptr_t> = nullptr>
 		constexpr static_optional &operator=( T value ) noexcept {
 			m_value = std::move( value );
 			m_occupied = true;
