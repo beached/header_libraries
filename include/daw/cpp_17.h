@@ -30,8 +30,10 @@
 
 #if defined( __cplusplus ) and __cplusplus >= 201703L
 #define CXINLINE constexpr inline
+#define NODISCARD [[nodiscard]]
 #else
 #define CXINLINE constexpr
+#defien NODISCARD
 #endif
 
 namespace daw {
@@ -506,8 +508,8 @@ namespace daw {
 #undef min
 #endif
 			template<typename T, typename U>
-			constexpr std::common_type_t<T, U> min( T const &lhs,
-			                                        U const &rhs ) noexcept {
+			NODISCARD constexpr std::common_type_t<T, U>
+			min( T const &lhs, U const &rhs ) noexcept {
 				if( lhs <= rhs ) {
 					return lhs;
 				}
@@ -526,7 +528,7 @@ namespace daw {
 		} // namespace math
 
 		template<typename InputIterator>
-		constexpr ptrdiff_t
+		NODISCARD constexpr ptrdiff_t
 		distance_impl( InputIterator first, InputIterator last,
 		               std::input_iterator_tag ) noexcept( noexcept( ++first ) ) {
 
@@ -539,7 +541,7 @@ namespace daw {
 		}
 
 		template<typename Iterator1, typename Iterator2>
-		constexpr ptrdiff_t distance_impl(
+		NODISCARD constexpr ptrdiff_t distance_impl(
 		  Iterator1 first, Iterator2 last,
 		  std::random_access_iterator_tag ) noexcept( noexcept( last - first ) ) {
 
@@ -551,7 +553,17 @@ namespace daw {
 		advance( Iterator &first, Distance n,
 		         std::input_iterator_tag ) noexcept( noexcept( ++first ) ) {
 
-			while( n-- ) {
+			while( n-- > 0 ) {
+				++first;
+			}
+		}
+
+		template<typename Iterator, typename Distance>
+		constexpr void
+		advance( Iterator &first, Distance n,
+		         std::output_iterator_tag ) noexcept( noexcept( ++first ) ) {
+
+			while( n-- > 0 ) {
 				++first;
 			}
 		}
@@ -563,11 +575,11 @@ namespace daw {
 		                                                     noexcept( --first ) ) {
 
 			if( n >= 0 ) {
-				while( n-- ) {
+				while( n-- > 0 ) {
 					++first;
 				}
 			} else {
-				while( ++n ) {
+				while( ++n < 0 ) {
 					--first;
 				}
 			}
@@ -593,7 +605,8 @@ namespace daw {
 	/// @return	a ptrdiff_t of how many steps apart iterators are.  If Iterators
 	/// are RandomAccess it may be <0, otherwise always greater
 	template<typename Iterator>
-	constexpr ptrdiff_t distance( Iterator first, Iterator second ) noexcept(
+	NODISCARD constexpr ptrdiff_t
+	distance( Iterator first, Iterator second ) noexcept(
 	  noexcept( impl::distance_impl(
 	    first, second,
 	    typename std::iterator_traits<Iterator>::iterator_category{} ) ) ) {
@@ -625,7 +638,8 @@ namespace daw {
 	/// @param n how far to move forward
 	/// @return The resulting iterator of advancing it n steps
 	template<typename Iterator>
-	constexpr Iterator next( Iterator it, ptrdiff_t n = 1 ) noexcept {
+	NODISCARD constexpr Iterator next( Iterator it, ptrdiff_t n = 1 ) noexcept {
+
 		impl::advance(
 		  it, n, typename std::iterator_traits<Iterator>::iterator_category{} );
 		return it;
@@ -638,14 +652,16 @@ namespace daw {
 	/// @param n how far to move backward
 	/// @return The resulting iterator of advancing it n steps
 	template<typename Iterator>
-	constexpr Iterator prev( Iterator it, ptrdiff_t n = 1 ) noexcept {
+	NODISCARD constexpr Iterator prev( Iterator it, ptrdiff_t n = 1 ) noexcept {
+
 		impl::advance(
 		  it, -n, typename std::iterator_traits<Iterator>::iterator_category{} );
 		return it;
 	}
 
 	template<typename To, typename From>
-	To bit_cast( From &&from ) noexcept( is_nothrow_constructible_v<To> ) {
+	NODISCARD To
+	bit_cast( From &&from ) noexcept( is_nothrow_constructible_v<To> ) {
 
 		static_assert( is_trivially_copyable_v<remove_cvref_t<From>>,
 		               "From type must be trivially copiable" );
@@ -661,7 +677,7 @@ namespace daw {
 	}
 
 	template<typename To, typename From>
-	To bit_cast( From const *const from ) noexcept(
+	NODISCARD To bit_cast( From const *const from ) noexcept(
 	  is_nothrow_constructible_v<To> ) {
 
 		return bit_cast<To>( *from );
