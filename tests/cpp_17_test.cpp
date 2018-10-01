@@ -108,6 +108,13 @@ namespace advance_003 {
 	static_assert( test_advance_zero( ), "" );
 }
 
+namespace trivially_destructable_001 {
+	struct Foo {
+		~Foo( ) = default;
+	};
+	static_assert( daw::is_trivially_destructible_v<Foo>, "" );
+}
+
 BOOST_AUTO_TEST_CASE( bit_cast_001 ) {
 	constexpr uint32_t const tst = 0x89AB'CDEF;
 	auto const f = daw::bit_cast<float>( tst );

@@ -195,39 +195,42 @@ namespace daw {
 		}
 
 		namespace impl {
-			struct midpoint {
-				template<typename IteratorType>
-				constexpr IteratorType operator( )( IteratorType const &a,
-				                                    IteratorType const &b ) const {
-					daw::exception::precondition_check(
-					  a <= b,
-					  " Cannot find a midpoint unless the first parameter is <= the "
-					  "second" );
+			template<typename ForwardIterator>
+			constexpr ForwardIterator midpoint( ForwardIterator a,
+			                                    ForwardIterator b ) {
 
-					return daw::next( a, daw::distance( a, b ) / 2 );
-				}
-			};
+				traits::is_forward_access_iterator_test<ForwardIterator>( );
+				daw::exception::precondition_check(
+				  a <= b,
+				  " Cannot find a midpoint unless the first parameter is <= the "
+				  "second" );
+
+				return daw::next( a, daw::distance( a, b ) / 2 );
+			}
 		} // namespace impl
-		template<typename ForwardIterator, typename Value, typename Predicate>
+
+		template<typename ForwardIterator, typename Value,
+		         typename Predicate = std::less<>>
 		constexpr ForwardIterator
 		binary_search( ForwardIterator first, ForwardIterator const last,
-		               Value &&value, Predicate less_than ) {
+		               Value &&value, Predicate less_than = Predicate{} ) {
 
 			traits::is_forward_access_iterator_test<ForwardIterator>( );
 			traits::is_input_iterator_test<ForwardIterator>( );
 			traits::is_predicate_test<Predicate, decltype( *first ), Value>( );
 
 			exception::precondition_check(
-			  first < last, ": First position must be less than second" );
+			  std::less<>{}( first, last ),
+			  ": First position must be less than second" );
 
 			auto it_last = last;
 
 			while( first < it_last ) {
-				auto mid = impl::midpoint{}( first, it_last );
-				if( less_than( mid, value ) ) {
+				auto const mid = impl::midpoint( first, it_last );
+				if( less_than( *mid, value ) ) {
 					first = mid;
 					daw::advance( first, 1 );
-				} else if( less_than( value, mid ) ) {
+				} else if( less_than( value, *mid ) ) {
 					it_last = mid;
 				} else { // equal
 					return mid;
@@ -297,10 +300,12 @@ namespace daw {
 				Fwd &fwd;
 				explicit Reverser_generic( Fwd &fwd_ )
 				  : fwd( fwd_ ) {}
+
 				typedef std::reverse_iterator<typename Fwd::iterator> reverse_iterator;
 				reverse_iterator begin( ) {
 					return reverse_iterator( std::end( fwd ) );
 				}
+
 				reverse_iterator end( ) {
 					return reverse_iterator( std::begin( fwd ) );
 				}
@@ -398,7 +403,8 @@ namespace daw {
 
 			traits::is_input_iterator_test<InputIt1>( );
 			traits::is_input_iterator_test<InputIt2>( );
-			traits::is_output_iterator_test<OutputIt, decltype( func( *first1, *first2 ) )>( );
+			traits::is_output_iterator_test<OutputIt,
+			                                decltype( func( *first1, *first2 ) )>( );
 
 			while( first1 != last1 ) {
 				*first_out = func( *first1, *first2 );
@@ -418,7 +424,8 @@ namespace daw {
 			traits::is_input_iterator_test<InputIt1>( );
 			traits::is_input_iterator_test<InputIt2>( );
 			traits::is_input_iterator_test<InputIt3>( );
-			traits::is_output_iterator_test<OutputIt, decltype( func( *first1, *first2, *first3 ) )>( );
+			traits::is_output_iterator_test<
+			  OutputIt, decltype( func( *first1, *first2, *first3 ) )>( );
 
 			while( first1 != last1 ) {
 				*first_out = func( *first1, *first2, *first3 );
@@ -441,7 +448,8 @@ namespace daw {
 			traits::is_input_iterator_test<InputIt2>( );
 			traits::is_input_iterator_test<InputIt3>( );
 			traits::is_input_iterator_test<InputIt4>( );
-			traits::is_output_iterator_test<OutputIt, decltype( func( *first1, *first2, *first3, *first4 ) )>( );
+			traits::is_output_iterator_test<
+			  OutputIt, decltype( func( *first1, *first2, *first3, *first4 ) )>( );
 
 			while( first1 != last1 ) {
 				*first_out = func( *first1, *first2, *first3, *first4 );
@@ -466,7 +474,9 @@ namespace daw {
 			traits::is_input_iterator_test<InputIt3>( );
 			traits::is_input_iterator_test<InputIt4>( );
 			traits::is_input_iterator_test<InputIt5>( );
-			traits::is_output_iterator_test<OutputIt, decltype( func( *first1, *first2, *first3, *first4, *first5 ) )>( );
+			traits::is_output_iterator_test<OutputIt,
+			                                decltype( func( *first1, *first2, *first3,
+			                                                *first4, *first5 ) )>( );
 
 			while( first1 != last1 ) {
 				*first_out = func( *first1, *first2, *first3, *first4, *first5 );
@@ -567,13 +577,16 @@ constexpr auto find_first_range_of( Iterator first, Iterator const last,
 template<typename Iterator, typename Value>
 auto split( Iterator first, Iterator last, Value const &value ) {
 
+	traits::is_iterator_test<Iterator>( );
 	using value_type = daw::traits::root_type_t<decltype( *first )>;
-	std::vector<std::vector<value_type>> result;
-	std::vector<value_type> temp;
+
+	auto result = std::vector<std::vector<value_type>>( );
+	auto temp = std::vector<value_type>( );
+
 	for( auto it = first; it != last; ++it ) {
 		if( value == *it ) {
 			result.push_back( std::move( temp ) );
-			temp = std::vector<value_type>{};
+			temp.clear( ); // TODO: Not sure if necessary, need to check
 		} else {
 			temp.push_back( *it );
 		}
@@ -589,10 +602,9 @@ template<typename Value, typename UnaryPredicate>
 constexpr bool
 satisfies_one( Value value,
                UnaryPredicate func ) noexcept( noexcept( func( value ) ) ) {
-	static_assert(
-	  traits::is_unary_predicate_v<UnaryPredicate, decltype( value )>,
-	  "UnaryPredicate must take one value and return a bool "
-	  "e.g. func( value ) must be valid" );
+
+	traits::is_unary_predicate_test<UnaryPredicate, Value>( );
+
 	return func( value );
 }
 
@@ -605,12 +617,9 @@ template<typename Value, typename UnaryPredicate, typename... UnaryPredicates>
 constexpr bool satisfies_one( Value value, UnaryPredicate func,
                               UnaryPredicates... funcs ) {
 
-	static_assert(
-	  traits::is_unary_predicate_v<UnaryPredicate, decltype( value )>,
-	  "UnaryPredicate must take one value and return a bool "
-	  "e.g. func( value ) must be valid" );
+	traits::is_unary_predicate_test<UnaryPredicate, Value>( );
 
-	return func( value ) || satisfies_one( value, funcs... );
+	return func( value ) or satisfies_one( value, funcs... );
 }
 
 /// @brief Returns true if any function returns true for any value in range
@@ -620,27 +629,25 @@ constexpr bool satisfies_one( Value value, UnaryPredicate func,
 /// @param funcs UnaryPredicates that return true/false
 /// @return True if any of the func/funcs return true(e.g. like OR) for any
 /// value in range
-template<typename Iterator, typename LastType, typename UnaryPredicate,
+template<typename Iterator, typename Iterator2, typename UnaryPredicate,
          typename... UnaryPredicates,
-         std::enable_if_t<
-           (traits::is_dereferenceable_v<LastType> &&
-            traits::is_equality_comparable_v<daw::traits::deref_t<LastType>>),
-           std::nullptr_t> = nullptr>
+         std::enable_if_t<all_true_v<traits::is_dereferenceable_v<Iterator2>,
+                                     traits::is_equality_comparable_v<
+                                       daw::traits::deref_t<Iterator2>>>,
+                          std::nullptr_t> = nullptr>
 constexpr bool satisfies_one(
-  Iterator first, LastType last, UnaryPredicate func,
+  Iterator first, Iterator2 last, UnaryPredicate func,
   UnaryPredicates... funcs ) noexcept( noexcept( satisfies_one( *first, func,
                                                                 funcs... ) ) ) {
 
-	static_assert(
-	  traits::is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
-	  "UnaryPredicate must take one value and return a bool "
-	  "e.g. func( *first ) must be valid" );
+	traits::is_iterator_test<Iterator>( );
+	traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
 
 	while( first != last ) {
 		if( satisfies_one( *first, func, funcs... ) ) {
 			return true;
 		}
-		++first;
+		first = daw::next( first );
 	}
 	return false;
 }
@@ -673,7 +680,7 @@ constexpr bool satisfies_all( Value value, UnaryPredicate func,
 	               "UnaryPredicate must take one value and return a bool "
 	               "e.g. func( value ) must be valid" );
 
-	return func( value ) && satisfies_all( value, funcs... );
+	return func( value ) and satisfies_all( value, funcs... );
 }
 
 /// @brief Returns true if all function(s) returns true for all values in
@@ -684,27 +691,24 @@ constexpr bool satisfies_all( Value value, UnaryPredicate func,
 /// @param funcs UnaryPredicates that return true/false
 /// @return True if any of the func/funcs return true(e.g. like OR) for any
 /// value in range
-template<typename Iterator, typename LastType, typename UnaryPredicate,
+template<typename Iterator, typename Iterator2, typename UnaryPredicate,
          typename... UnaryPredicates,
-         std::enable_if_t<
-           (traits::is_dereferenceable_v<LastType> &&
-            traits::is_equality_comparable_v<daw::traits::deref_t<LastType>>),
-           std::nullptr_t> = nullptr>
+         std::enable_if_t<all_true_v<traits::is_dereferenceable_v<Iterator2>,
+                                     traits::is_equality_comparable_v<
+                                       daw::traits::deref_t<Iterator2>>>,
+                          std::nullptr_t> = nullptr>
 constexpr bool satisfies_all(
-  Iterator first, LastType last, UnaryPredicate func,
+  Iterator first, Iterator2 last, UnaryPredicate func,
   UnaryPredicates... funcs ) noexcept( noexcept( satisfies_one( *first, func,
                                                                 funcs... ) ) ) {
 
-	static_assert(
-	  traits::is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
-	  "UnaryPredicate must take one value and return a bool "
-	  "e.g. func( *first ) must be valid" );
+	traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
 
 	while( first != last ) {
 		if( !satisfies_all( *first, func, funcs... ) ) {
 			return false;
 		}
-		++first;
+		first = daw::next( first );
 	}
 	return true;
 }
@@ -726,7 +730,7 @@ namespace impl {
 
 		template<typename T>
 		constexpr bool operator( )( T &&value ) const {
-			return m_lower <= value && value <= m_upper;
+			return m_lower <= value and value <= m_upper;
 		}
 	}; // in_range
 
@@ -897,17 +901,17 @@ constexpr bool lexicographical_compare(
 	  "concept. "
 	  "http://en.cppreference.com/w/cpp/concept/Compare" );
 
-	while( ( first1 != last1 ) && ( first2 != last2 ) ) {
+	while( ( first1 != last1 ) and ( first2 != last2 ) ) {
 		if( comp( *first1, *first2 ) ) {
 			return true;
 		}
 		if( comp( *first2, *first1 ) ) {
 			return false;
 		}
-		++first1;
-		++first2;
+		first1 = daw::next( first1 );
+		first2 = daw::next( first2 );
 	}
-	return ( first1 == last1 ) && ( first2 != last2 );
+	return ( first1 == last1 ) and ( first2 != last2 );
 }
 
 /// @brief Returns true if the first range [first1, last1) is
@@ -935,15 +939,15 @@ constexpr bool lexicographical_compare(
 		if( *first2 < *first1 ) {
 			return false;
 		}
-		++first1;
-		++first2;
+		first1 = daw::next( first1 );
+		first2 = daw::next( first2 );
 	}
-	return ( first1 == last1 ) && ( first2 != last2 );
+	return ( first1 == last1 ) and ( first2 != last2 );
 }
 
 /// @brief Apply the TransformFunction on the value referenced by range
 /// [first, last) when the predicate returns true for that value
-/// @tparam InputIterator Type of Iterator for start of range
+/// @tparam ForwardIterator Type of Iterator for start of range
 /// @tparam LastType Type for representing end of range
 /// @tparam OutputIterator Iterator for output range
 /// @tparam UnaryPredicate A unary predicate that takes the dereferenced
@@ -958,15 +962,15 @@ constexpr bool lexicographical_compare(
 /// @param trans transform function to convert from input range to output
 /// range
 /// @return The end of the output range
-template<typename InputIterator, typename LastType, typename OutputIterator,
+template<typename ForwardIterator, typename LastType, typename OutputIterator,
          typename UnaryPredicate, typename TransformFunction>
-constexpr OutputIterator transform_if( InputIterator first, LastType const last,
-                                       OutputIterator first_out,
-                                       UnaryPredicate pred,
-                                       TransformFunction trans ) {
+constexpr OutputIterator
+transform_if( ForwardIterator first, LastType const last,
+              OutputIterator first_out, UnaryPredicate pred,
+              TransformFunction trans ) {
 
-	traits::is_forward_access_iterator_test<InputIterator>( );
-	traits::is_input_iterator_test<InputIterator>( );
+	traits::is_forward_access_iterator_test<ForwardIterator>( );
+	traits::is_input_iterator_test<ForwardIterator>( );
 	traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
 	traits::is_output_iterator_test<OutputIterator,
 	                                decltype( pred( *first ) )>( );
@@ -983,7 +987,7 @@ constexpr OutputIterator transform_if( InputIterator first, LastType const last,
 		if( pred( *first ) ) {
 			*first_out = trans( *first );
 		}
-		++first;
+		first = daw::next( first );
 	}
 	return first_out;
 }
@@ -1055,8 +1059,8 @@ constexpr OutputIterator transform(
 
 	while( first != last ) {
 		*first_out = unary_op( *first );
-		++first;
-		++first_out;
+		first = daw::next( first );
+		first_out = daw::next( first_out );
 	}
 	return first_out;
 }
@@ -1084,7 +1088,7 @@ constexpr OutputIterator transform_it(
 
 	while( first != last ) {
 		first_out = binary_op( *first, first_out );
-		++first;
+		first = daw::next( first );
 	}
 	return first_out;
 }

@@ -39,6 +39,14 @@ BOOST_AUTO_TEST_CASE( daw_safe_advance_test_001 ) {
 	BOOST_REQUIRE( ans2 );
 }
 
+constexpr bool binary_search_001( ) noexcept {
+	int arry[10] = { 1, 5, 10, 15, 16, 17, 18, 19, 20, 21 };
+	auto pos = daw::algorithm::binary_search( arry, arry + 10, 17 );
+
+	return *pos == 17;
+}
+static_assert( binary_search_001( ), "" );
+
 BOOST_AUTO_TEST_CASE( daw_safe_advance_test_002 ) {
 	std::vector<int> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	auto it = std::begin( a );

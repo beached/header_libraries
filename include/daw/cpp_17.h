@@ -642,7 +642,7 @@ namespace daw {
 
 		impl::advance(
 		  it, n, typename std::iterator_traits<Iterator>::iterator_category{} );
-		return it;
+		return std::move( it );
 	}
 
 	/// @brief Move iterator backward n steps, if n > 0, only defined for types
@@ -656,7 +656,7 @@ namespace daw {
 
 		impl::advance(
 		  it, -n, typename std::iterator_traits<Iterator>::iterator_category{} );
-		return it;
+		return std::move( it );
 	}
 
 	template<typename To, typename From>
