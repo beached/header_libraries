@@ -1455,8 +1455,8 @@ is_sorted_until( ForwardIterator first, ForwardIterator last,
 
 template<typename ForwardIterator, typename LastType>
 constexpr bool is_sorted( ForwardIterator first, LastType last ) noexcept(
-  noexcept( *first < *next( first ) && *first < *last && first != last ) &&
-  noexcept( daw::next( first ) ) && noexcept( ++first ) ) {
+  noexcept( *first < *daw::next( first ) and *first < *last and first != last ) and 
+  noexcept( daw::next( first ) ) and noexcept( ++first ) ) {
 
 	traits::is_forward_access_iterator_test<ForwardIterator>( );
 
@@ -1509,9 +1509,9 @@ template<typename InputIterator, typename OutputIterator,
          typename UnaryOperation>
 constexpr void
 map( InputIterator first, InputIterator const last, OutputIterator first_out,
-     UnaryOperation unary_op ) noexcept( noexcept( *next( first_out ) =
+     UnaryOperation unary_op ) noexcept( noexcept( *daw::next( first_out ) =
                                                      unary_op(
-                                                       *next( first ) ) ) ) {
+                                                       *daw::next( first ) ) ) ) {
 
 	traits::is_input_iterator_test<InputIterator>( );
 	traits::is_output_iterator_test<OutputIterator>( );
