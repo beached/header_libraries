@@ -33,7 +33,7 @@
 #define NODISCARD [[nodiscard]]
 #else
 #define CXINLINE constexpr
-#defien NODISCARD
+#define NODISCARD
 #endif
 
 namespace daw {
