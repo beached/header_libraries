@@ -89,6 +89,7 @@ set( TESTED_HEADERS_PREFIXES
 )
 
 set( UNTESTED_HEADER_IMPL 
+	daw_math_impl
 	daw_traits_concepts
 	daw_traits_impl
 )

@@ -381,6 +381,17 @@ namespace daw {
 		template<typename Compare, typename T, typename U = T>
 		CXINLINE bool is_compare_v = is_binary_predicate_v<Compare, T, U>;
 
+		template<typename Compare, typename T, typename U = T>
+		constexpr bool is_compare_test( ) noexcept {
+			static_assert(
+			  is_compare_v<Compare, T, U>,
+			  "Compare function does not meet the requirements of the Compare "
+			  "concept. "
+			  "http://en.cppreference.com/w/cpp/concept/Compare" );
+
+			return true;
+		}
+
 		template<typename UnaryPredicate, typename T>
 		CXINLINE bool is_unary_predicate_v = is_predicate_v<UnaryPredicate, T>;
 

@@ -184,6 +184,7 @@ namespace daw {
 		           nullptr>
 		constexpr basic_static_string &append( Iterator first,
 		                                       Iterator const last ) {
+			
 			if( m_data.size( ) + static_cast<size_t>( daw::distance( first, last ) ) >
 			    capacity( ) ) {
 				throw std::out_of_range{

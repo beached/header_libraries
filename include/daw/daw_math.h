@@ -38,75 +38,9 @@
 #include "daw/daw_scope_guard.h"
 #include "daw/daw_traits.h"
 #include "daw/daw_utility.h"
+#include "daw/impl/daw_math_impl.h"
 
 namespace daw {
-	template<typename Float, std::enable_if_t<daw::is_floating_point_v<Float>,
-	                                          std::nullptr_t> = nullptr>
-	constexpr Float float_abs( Float f ) {
-		if( f < 0 ) {
-			return -f;
-		}
-		return f;
-	}
-
-	template<typename T>
-	constexpr T max( T &&t ) noexcept {
-		return std::forward<T>( t );
-	}
-
-	template<typename T0, typename T1>
-	constexpr auto max( T0 &&val1, T1 &&val2 ) noexcept
-	  -> std::common_type_t<T0, T1> {
-		if( val1 > val2 ) {
-			return std::forward<T0>( val1 );
-		}
-		return std::forward<T1>( val2 );
-	}
-
-	template<typename T0, typename T1, typename... Ts,
-	         std::enable_if_t<( sizeof...( Ts ) != 0 ), std::nullptr_t> = nullptr>
-	constexpr auto max( T0 &&val1, T1 &&val2, Ts &&... vs ) noexcept
-	  -> std::common_type_t<T0, T1, Ts...> {
-		auto tmp = max( std::forward<Ts>( vs )... );
-		if( val1 > val2 ) {
-			if( val1 > tmp ) {
-				return std::forward<T0>( val1 );
-			}
-			return tmp;
-		} else if( val2 > tmp ) {
-			return std::forward<T1>( val2 );
-		}
-		return tmp;
-	}
-
-	template<typename T>
-	constexpr decltype( auto ) min( T &&t ) noexcept {
-		return std::forward<T>( t );
-	}
-
-	template<typename T0, typename T1>
-	constexpr auto min( T0 &&val1, T1 &&val2 ) noexcept
-	  -> std::common_type_t<T0, T1> {
-
-		if( std::less_equal<>{}( val1, val2 ) ) {
-			return std::forward<T0>( val1 );
-		}
-		return std::forward<T1>( val2 );
-	}
-
-	template<typename T, typename... Ts,
-	         std::enable_if_t<( sizeof...( Ts ) != 0 ), std::nullptr_t> = nullptr>
-	constexpr auto min( T &&val1, Ts &&... vs ) noexcept
-	  -> std::common_type_t<T, Ts...> {
-
-		auto &&tmp = min( std::forward<Ts>( vs )... );
-
-		if( std::less_equal<>{}( val1, tmp ) ) {
-			return std::forward<T>( val1 );
-		}
-		return std::forward<decltype( tmp )>( tmp );
-	}
-
 	namespace math {
 		template<typename Float>
 		struct int_for_float {

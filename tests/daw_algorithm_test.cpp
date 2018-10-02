@@ -140,10 +140,10 @@ BOOST_AUTO_TEST_CASE( daw_safe_prev_test_001 ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_safe_prev_test_002 ) {
-	std::vector<int> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	auto it = daw::safe_prev( std::end( a ), std::begin( a ), a.size( ) + 5 );
+	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	auto it = daw::safe_prev( a.data( ) + a.size( ), a.data( ), a.size( ) + 5 );
 
-	bool const ans = it == std::begin( a );
+	bool const ans = it == a.data( );
 	BOOST_REQUIRE( ans );
 }
 

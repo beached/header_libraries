@@ -34,9 +34,9 @@ namespace daw {
 	class string_split_iterator {
 		static constexpr size_t const npos = std::basic_string<CharT>::npos;
 
-		daw::basic_string_view<CharT> m_str;
-		std::basic_string<CharT> m_delemiter;
-		size_t m_pos;
+		daw::basic_string_view<CharT> m_str{};
+		std::basic_string<CharT> m_delemiter{};
+		size_t m_pos{};
 
 		size_t find_next( ) const noexcept {
 			if( m_str.empty( ) ) {
@@ -56,11 +56,12 @@ namespace daw {
 
 	public:
 		using iterator_category = std::forward_iterator_tag;
+		using value_type = daw::basic_string_view<CharT>;
+		using reference = daw::basic_string_view<CharT>;
+		using pointer = daw::basic_string_view<CharT>;
+		using difference_type = ptrdiff_t;
 
-		string_split_iterator( ) noexcept
-		  : m_str{}
-		  , m_delemiter{}
-		  , m_pos{npos} {}
+		string_split_iterator( ) noexcept = default;
 
 		string_split_iterator( daw::basic_string_view<CharT> str,
 		                       std::basic_string<CharT> delemiter ) noexcept
@@ -73,13 +74,6 @@ namespace daw {
 		  : m_str{make_string_view( str )}
 		  , m_delemiter{std::move( delemiter )}
 		  , m_pos{0} {}
-
-		string_split_iterator( string_split_iterator const & ) = default;
-		string_split_iterator( string_split_iterator && ) noexcept = default;
-		string_split_iterator &operator=( string_split_iterator const & ) = default;
-		string_split_iterator &
-		operator=( string_split_iterator && ) noexcept = default;
-		~string_split_iterator( ) noexcept = default;
 
 		string_split_iterator &operator++( ) noexcept {
 			move_next( );
@@ -128,11 +122,10 @@ namespace daw {
 		using iterator = string_split_iterator<CharT>;
 
 	private:
-		iterator m_first;
+		iterator m_first{};
 
 	public:
-		string_split_range( ) noexcept
-		  : m_first{} {}
+		string_split_range( ) noexcept = default;
 
 		string_split_range( daw::basic_string_view<CharT> str,
 		                    std::string delemiter ) noexcept
@@ -141,12 +134,6 @@ namespace daw {
 		string_split_range( std::basic_string<CharT> const &str,
 		                    std::string delemiter ) noexcept
 		  : m_first{str, std::move( delemiter )} {}
-
-		string_split_range( string_split_range const & ) = default;
-		string_split_range( string_split_range && ) = default;
-		string_split_range &operator=( string_split_range const & ) = default;
-		string_split_range &operator=( string_split_range && ) = default;
-		~string_split_range( ) noexcept = default;
 
 		iterator begin( ) const {
 			return m_first;

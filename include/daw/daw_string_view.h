@@ -74,6 +74,9 @@ namespace daw {
 		                                       ForwardIterator const last,
 		                                       basic_string_view sv ) const
 		  noexcept {
+			traits::is_forward_access_iterator_test<ForwardIterator>( );
+			traits::is_input_iterator_test<ForwardIterator>( );
+
 			while( first != last ) {
 				auto it = sv.cbegin( );
 				for( size_t n = 0; n < sv.size( ); ++n ) {
@@ -81,7 +84,7 @@ namespace daw {
 						return first;
 					}
 				}
-				++first;
+				first = next( first );
 			}
 			return last;
 		}
@@ -619,10 +622,9 @@ namespace daw {
 		                                      size_type const pos = 0 ) const
 		  noexcept( noexcept(
 		    std::declval<UnaryPredicate>( )( std::declval<value_type>( ) ) ) ) {
-			static_assert( traits::is_unary_predicate_v<UnaryPredicate, CharT>,
-			               "UnaryPredicate p does not fullfill the requires of a "
-			               "unary predicate concept.  See "
-			               "http://en.cppreference.com/w/cpp/concept/Predicate" );
+
+			traits::is_unary_predicate_test<UnaryPredicate, CharT>( );
+
 			if( pos >= size( ) ) {
 				return npos;
 			}
@@ -639,10 +641,9 @@ namespace daw {
 		                                          size_type const pos = 0 ) const
 		  noexcept( noexcept(
 		    std::declval<UnaryPredicate>( )( std::declval<value_type>( ) ) ) ) {
-			static_assert( traits::is_unary_predicate_v<UnaryPredicate, CharT>,
-			               "UnaryPredicate p does not fullfill the requires of a "
-			               "unary predicate concept.  See "
-			               "http://en.cppreference.com/w/cpp/concept/Predicate" );
+
+			traits::is_unary_predicate_test<UnaryPredicate, CharT>( );
+
 			if( pos >= size( ) ) {
 				return npos;
 			}
@@ -710,10 +711,9 @@ namespace daw {
 		template<typename UnaryPredicate>
 		constexpr size_type find_last_of_if( UnaryPredicate pred,
 		                                     size_type pos = npos ) const noexcept {
-			static_assert( traits::is_unary_predicate_v<UnaryPredicate, CharT>,
-			               "UnaryPredicate p does not fullfill the requires of a "
-			               "unary predicate concept.  See "
-			               "http://en.cppreference.com/w/cpp/concept/Predicate" );
+
+			traits::is_unary_predicate_test<UnaryPredicate, CharT>( );
+
 			if( pos >= m_size ) {
 				pos = 0;
 			} else {
@@ -939,10 +939,13 @@ namespace daw {
 	}
 
 	template<
-	  typename Iterator,
-	  typename CharT = std::decay_t<decltype( *std::declval<Iterator>( ) )>,
+	  typename RandomIterator,
+	  typename CharT = std::decay_t<decltype( *std::declval<RandomIterator>( ) )>,
 	  typename TraitsT = std::char_traits<CharT>>
-	constexpr auto make_string_view_it( Iterator first, Iterator last ) noexcept {
+	constexpr auto make_string_view_it( RandomIterator first, RandomIterator last ) noexcept {
+		traits::is_random_access_iterator_test<RandomIterator>( );
+		traits::is_input_iterator_test<RandomIterator>( );
+
 		using sv_t = basic_string_view<CharT, TraitsT>;
 		using size_type = typename sv_t::size_type;
 		return sv_t{&( *first ),

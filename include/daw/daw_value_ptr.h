@@ -45,34 +45,37 @@ namespace daw {
 
 		template<typename U = value_type, typename... Args>
 		static pointer make_ptr( Args &&... args ) noexcept(
-		  daw::is_nothrow_constructible_v<value_type, Args...> ) {
+		  is_nothrow_constructible_v<value_type, Args...> ) {
 
 			return new U( std::forward<Args>( args )... );
 		}
+
 		struct private_constructor {};
 
 		constexpr explicit value_ptr( private_constructor ) noexcept {}
 
 	public:
-		template<typename... Args,
-		         std::enable_if_t<(daw::is_constructible_v<value_type, Args...> &&
-		                           !daw::traits::is_first_type_v<
-		                             value_ptr, std::decay_t<Args>...>),
-		                          std::nullptr_t> = nullptr>
+		template<
+		  typename... Args,
+		  std::enable_if_t<
+		    all_true_v<is_constructible_v<value_type, Args...>,
+		               !traits::is_first_type_v<value_ptr, std::decay_t<Args>...>>,
+		    std::nullptr_t> = nullptr>
 		explicit value_ptr( Args &&... args ) noexcept(
-		  daw::is_nothrow_constructible_v<value_type, Args...> )
+		  is_nothrow_constructible_v<value_type, Args...> )
 		  : enable_default_constructor<T>( impl::non_constructor{} )
 		  , enable_copy_constructor<T>( impl::non_constructor{} )
 		  , enable_copy_assignment<T>( impl::non_constructor{} )
 		  , m_value( make_ptr( std::forward<Args>( args )... ) ) {}
 
-		template<typename U, typename... Args,
-		         std::enable_if_t<(daw::is_constructible_v<value_type, Args...> &&
-		                           !daw::traits::is_first_type_v<
-		                             value_ptr, std::decay_t<Args>...>),
-		                          std::nullptr_t> = nullptr>
+		template<
+		  typename U, typename... Args,
+		  std::enable_if_t<
+		    all_true_v<is_constructible_v<value_type, Args...>,
+		               !traits::is_first_type_v<value_ptr, std::decay_t<Args>...>>,
+		    std::nullptr_t> = nullptr>
 		static value_ptr emplace( Args &&... args ) noexcept(
-		  daw::is_nothrow_constructible_v<value_type, Args...> ) {
+		  is_nothrow_constructible_v<value_type, Args...> ) {
 
 			auto result = value_ptr( private_constructor{} );
 			result.m_value = make_ptr<U>( std::forward<Args>( args )... );
@@ -186,7 +189,7 @@ namespace daw {
 
 		template<typename T, typename U, typename V = void>
 		using has_compare_equality =
-		  std::enable_if_t<daw::is_detected_v<has_compare_equality_test, T, U>, V>;
+		  std::enable_if_t<is_detected_v<has_compare_equality_test, T, U>, V>;
 
 		template<typename T, typename U>
 		using has_compare_inequality_test =
@@ -194,8 +197,7 @@ namespace daw {
 
 		template<typename T, typename U, typename V = void>
 		using has_compare_inequality =
-		  std::enable_if_t<daw::is_detected_v<has_compare_inequality_test, T, U>,
-		                   V>;
+		  std::enable_if_t<is_detected_v<has_compare_inequality_test, T, U>, V>;
 
 		template<typename T, typename U>
 		using has_compare_greater_test =
@@ -203,7 +205,7 @@ namespace daw {
 
 		template<typename T, typename U, typename V = void>
 		using has_compare_greater =
-		  std::enable_if_t<daw::is_detected_v<has_compare_greater_test, T, U>, V>;
+		  std::enable_if_t<is_detected_v<has_compare_greater_test, T, U>, V>;
 
 		template<typename T, typename U>
 		using has_compare_greater_equal_test =
@@ -211,8 +213,7 @@ namespace daw {
 
 		template<typename T, typename U, typename V = void>
 		using has_compare_greater_equal =
-		  std::enable_if_t<daw::is_detected_v<has_compare_greater_equal_test, T, U>,
-		                   V>;
+		  std::enable_if_t<is_detected_v<has_compare_greater_equal_test, T, U>, V>;
 
 		template<typename T, typename U>
 		using has_compare_less_test =
@@ -220,7 +221,7 @@ namespace daw {
 
 		template<typename T, typename U, typename V = void>
 		using has_compare_less =
-		  std::enable_if_t<daw::is_detected_v<has_compare_less_test, T, U>, V>;
+		  std::enable_if_t<is_detected_v<has_compare_less_test, T, U>, V>;
 
 		template<typename T, typename U>
 		using has_compare_less_equal_test =
@@ -228,8 +229,7 @@ namespace daw {
 
 		template<typename T, typename U, typename V = void>
 		using has_compare_less_equal =
-		  std::enable_if_t<daw::is_detected_v<has_compare_less_equal_test, T, U>,
-		                   V>;
+		  std::enable_if_t<is_detected_v<has_compare_less_equal_test, T, U>, V>;
 	} // namespace value_ptr_impl
 
 	template<typename T, typename U,
@@ -290,8 +290,7 @@ namespace daw {
 namespace std {
 	template<typename T>
 	struct hash<daw::value_ptr<T>>
-	  : std::enable_if_t<daw::traits::is_callable_v<std::hash<T>, T>,
-	                     daw::impl::empty_t> {
+	  : std::enable_if_t<daw::traits::is_callable_v<std::hash<T>, T>, daw::impl::empty_t> {
 
 		template<typename Arg>
 		size_t operator( )( Arg &&arg ) const {
