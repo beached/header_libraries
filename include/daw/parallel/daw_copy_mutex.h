@@ -38,7 +38,8 @@ namespace daw {
 		  : m_mutex( std::make_unique<Mutex>( ) ) {}
 
 		copiable_mutex &operator=( copiable_mutex const & ) {
-			m_mutex.reset( std::make_unique<Mutex>( ) );
+			// The caller should ensure locks are held if needed  
+			//m_mutex.reset( std::make_unique<Mutex>( ) );
 			return *this;
 		}
 
