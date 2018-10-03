@@ -28,8 +28,13 @@
 #include <iterator>
 #include <limits>
 #include <stdexcept>
+
 #ifndef NOSTRING
 #include <string>
+#if defined(__cpp_lib_string_view)
+#include <string_view>
+#endif
+
 #endif
 #include <vector>
 
@@ -121,6 +126,11 @@ namespace daw {
 
 		basic_string_view( std::basic_string<CharT, Traits> const &str ) noexcept
 		  : basic_string_view{str.data( ), str.size( )} {}
+#if defined(__cpp_lib_string_view)
+		constexpr basic_string_view( std::basic_string_view<CharT, Traits> sv ) noexcept
+			: m_first( sv.data( ) )
+			, m_size( sv.size( ) ) {}
+#endif
 #endif
 	private:
 		/// If you really want to do this, use to_string_view as storing the address
@@ -164,6 +174,11 @@ namespace daw {
 			return to_string( );
 		}
 
+#if defined(__cpp_lib_string_view)
+		constexpr operator std::basic_string_view<CharT, Traits>( ) const {
+			return { m_first, m_size };
+		}
+#endif
 		template<typename ChrT, typename TrtsT, typename Allocator>
 		basic_string_view(
 		  std::basic_string<ChrT, TrtsT, Allocator> const &str ) noexcept
