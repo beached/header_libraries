@@ -456,12 +456,12 @@ namespace daw {
 
 #if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) ||                  \
   defined( _CPPUNWIND )
-		template<typeaname Exception, typename... Args>
+		template<typename Exception, typename... Args>
 		std::exception_ptr make_exception_ptr( Args&&... args ) noexcept {
 			try {
 				throw Exception{ std::forward<Args>( args )... };
 			} catch( ... ) {
-				return std::current_exception;
+				return std::current_exception( );
 			}
 			std::terminate( );
 		}
