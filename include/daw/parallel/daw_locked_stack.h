@@ -22,8 +22,8 @@
 
 #pragma once
 
-#include <boost/optional.hpp>
 #include <mutex>
+#include <optional>
 #include <vector>
 
 #include "../daw_value_ptr.h"
@@ -45,13 +45,13 @@ namespace daw {
 		  , m_mutex( )
 		  , m_items( ) {}
 
-		boost::optional<value_type> try_pop_back( ) {
+		std::optional<value_type> try_pop_back( ) {
 			if( !m_semaphore.try_wait( ) ) {
-				return {};
+				return std::nullopt;
 			}
 			std::lock_guard<std::mutex> lock( *m_mutex );
 			if( m_items.empty( ) ) {
-				return {};
+				return std::nullopt;
 			}
 			auto result = m_items.back( );
 			m_items.pop_back( );

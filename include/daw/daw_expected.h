@@ -22,12 +22,12 @@
 
 #pragma once
 
-#include <boost/variant.hpp>
 #include <cstddef>
 #include <exception>
 #include <stdexcept>
 #include <string>
 #include <utility>
+#include <variant>
 
 #include "cpp_17.h"
 #include "daw_exception.h"
@@ -36,9 +36,6 @@
 #include "daw_utility.h"
 
 namespace daw {
-	struct exptr {
-		void *ptr;
-	};
 	template<class T>
 	struct expected_t {
 		using value_type = T;
@@ -48,8 +45,8 @@ namespace daw {
 		using const_pointer = value_type const *;
 
 	private:
-		boost::variant<std::exception_ptr, value_type> m_value =
-		  std::exception_ptr{nullptr};
+		std::variant<std::exception_ptr, value_type> m_value =
+		  std::exception_ptr(nullptr);
 
 	public:
 		struct exception_tag {};
@@ -121,7 +118,7 @@ namespace daw {
 		         std::enable_if_t<
 		           traits::is_callable_convertible_v<value_type, Function, Args...>,
 		           std::nullptr_t> = nullptr>
-		static boost::variant<std::exception_ptr, value_type>
+		static std::variant<std::exception_ptr, value_type>
 		variant_from_code( Function &&func, Args &&... args ) {
 			try {
 				return func( std::forward<Args>( args )... );
@@ -163,7 +160,7 @@ namespace daw {
 			  "Visitor must be callable with the variants expected value_type &" );
 			static_assert( traits::is_callable_v<Visitor, std::exception_ptr>,
 			               "Visitor must be callable with std::exception_ptr" );
-			return boost::apply_visitor( std::forward<Visitor>( visitor ), m_value );
+			return std::visit( std::forward<Visitor>( visitor ), m_value );
 		}
 
 		template<typename Visitor>
@@ -173,18 +170,18 @@ namespace daw {
 			               "value_type const &" );
 			static_assert( traits::is_callable_v<Visitor, std::exception_ptr>,
 			               "Visitor must be callable with std::exception_ptr" );
-			return boost::apply_visitor( std::forward<Visitor>( visitor ), m_value );
+			return std::visit( std::forward<Visitor>( visitor ), m_value );
 		}
 
 		bool has_value( ) const {
-			return boost::apply_visitor(
+			return std::visit(
 			  daw::overload( []( value_type const & ) noexcept { return true; },
 			                 []( std::exception_ptr ) noexcept { return false; } ),
 			  m_value );
 		}
 
 		bool has_exception( ) const {
-			return boost::apply_visitor(
+			return std::visit(
 			  overload( []( value_type const & ) noexcept { return false; },
 			            []( std::exception_ptr ptr ) noexcept {
 				            return ( ptr != nullptr );
@@ -193,11 +190,11 @@ namespace daw {
 		}
 
 		std::exception_ptr get_exception_ptr( ) {
-			return boost::get<std::exception_ptr>( m_value );
+			return std::get<std::exception_ptr>( m_value );
 		}
 
 		bool empty( ) const {
-			return boost::apply_visitor(
+			return std::visit(
 			  overload( []( value_type const & ) noexcept { return false; },
 			            []( std::exception_ptr ptr ) noexcept {
 				            return ( ptr == nullptr );
@@ -214,17 +211,17 @@ namespace daw {
 		}
 
 		void throw_if_exception( ) const {
-			boost::apply_visitor( overload( []( value_type const & ) noexcept {},
-			                                []( std::exception_ptr ptr ) {
-				                                if( ptr != nullptr ) {
-					                                std::rethrow_exception( ptr );
-				                                }
-			                                } ),
-			                      m_value );
+			std::visit( overload( []( value_type const & ) noexcept {},
+			                      []( std::exception_ptr ptr ) {
+				                      if( ptr != nullptr ) {
+					                      std::rethrow_exception( ptr );
+				                      }
+			                      } ),
+			            m_value );
 		}
 
 		reference get( ) {
-			return boost::apply_visitor(
+			return std::visit(
 			  daw::overload(
 			    []( reference value ) noexcept->reference { return value; },
 			    []( std::exception_ptr ptr ) -> reference {
@@ -238,7 +235,7 @@ namespace daw {
 		}
 
 		const_reference get( ) const {
-			return boost::apply_visitor(
+			return std::visit(
 			  daw::overload( []( const_reference value ) noexcept->const_reference {
 				  return value;
 			  },
@@ -261,7 +258,7 @@ namespace daw {
 		}
 
 		pointer operator->( ) {
-			return boost::apply_visitor(
+			return std::visit(
 			  daw::overload( []( reference value ) noexcept->pointer {
 				  return std::addressof( value );
 			  },
@@ -272,7 +269,7 @@ namespace daw {
 		}
 
 		const_pointer operator->( ) const {
-			return boost::apply_visitor(
+			return std::visit(
 			  daw::overload( []( const_reference value ) noexcept->const_pointer {
 				  return std::addressof( value );
 			  },
@@ -298,10 +295,12 @@ namespace daw {
 		}
 	}; // namespace daw
 
-	static_assert( traits::is_regular<expected_t<int>>, "" );
+	static_assert( traits::is_regular<expected_t<int>> );
 
 	namespace impl {
-		struct void_value_t {};
+		struct void_value_t {
+			constexpr void_value_t( ) noexcept = default;
+		};
 		constexpr bool operator==( void_value_t, void_value_t ) noexcept {
 			return true;
 		}
@@ -314,7 +313,7 @@ namespace daw {
 		struct exception_tag {};
 
 	private:
-		boost::variant<value_type, std::exception_ptr> m_value =
+		std::variant<std::exception_ptr, value_type> m_value =
 		  std::exception_ptr{nullptr};
 
 		expected_t( bool b )
@@ -328,6 +327,7 @@ namespace daw {
 		~expected_t( ) = default;
 		expected_t( expected_t const & ) = default;
 		expected_t &operator=( expected_t const & ) = default;
+
 		expected_t( expected_t &&other ) noexcept
 		  : m_value( std::exchange( other.m_value, std::exception_ptr{nullptr} ) ) {
 		}
@@ -345,7 +345,7 @@ namespace daw {
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////
 		expected_t &operator=( bool ) {
-			m_value = value_type{};
+			m_value = daw::construct_a<value_type>{}( );
 			return *this;
 		}
 
@@ -371,7 +371,7 @@ namespace daw {
 
 	private:
 		template<class Function, typename... Args>
-		static boost::variant<std::exception_ptr, value_type>
+		static std::variant<std::exception_ptr, value_type>
 		variant_from_code( Function &&func, Args &&... args ) {
 			try {
 				func( std::forward<Args>( args )... );
@@ -418,7 +418,7 @@ namespace daw {
 			                   noexcept( visitor( ) ) ) { return visitor( ); },
 			                 [&]( std::exception_ptr ptr ) mutable noexcept( noexcept(
 			                   visitor( ptr ) ) ) { return visitor( ptr ); } );
-			return boost::apply_visitor( vis, m_value );
+			return std::visit( vis, m_value );
 		}
 
 		template<typename Visitor>
@@ -433,18 +433,18 @@ namespace daw {
 			                 [&]( std::exception_ptr ptr ) noexcept( noexcept(
 			                   visitor( ptr ) ) ) { return visitor( ptr ); } );
 
-			return boost::apply_visitor( vis, m_value );
+			return std::visit( vis, m_value );
 		}
 
 		bool has_value( ) const noexcept {
-			return boost::apply_visitor(
+			return std::visit(
 			  overload( []( value_type const & ) noexcept { return true; },
 			            []( std::exception_ptr ) noexcept { return false; } ),
 			  m_value );
 		}
 
 		bool has_exception( ) const noexcept {
-			return boost::apply_visitor(
+			return std::visit(
 			  overload( []( value_type const & ) noexcept { return false; },
 			            []( std::exception_ptr ptr ) noexcept {
 				            return ( ptr != nullptr );
@@ -453,11 +453,11 @@ namespace daw {
 		}
 
 		std::exception_ptr get_exception_ptr( ) {
-			return boost::get<std::exception_ptr>( m_value );
+			return std::get<std::exception_ptr>( m_value );
 		}
 
 		bool empty( ) const noexcept {
-			return boost::apply_visitor(
+			return std::visit(
 			  overload( []( value_type const & ) noexcept { return false; },
 			            []( std::exception_ptr ptr ) noexcept {
 				            return ( ptr == nullptr );
@@ -470,26 +470,25 @@ namespace daw {
 		}
 
 		void throw_if_exception( ) const {
-			boost::apply_visitor( overload( []( value_type const & ) noexcept {},
-			                                []( std::exception_ptr ptr ) {
-				                                if( ptr != nullptr ) {
-					                                std::rethrow_exception( ptr );
-				                                }
-			                                } ),
-			                      m_value );
+			std::visit( overload( []( value_type const & ) noexcept {},
+			                      []( std::exception_ptr ptr ) {
+				                      if( ptr != nullptr ) {
+					                      std::rethrow_exception( ptr );
+				                      }
+			                      } ),
+			            m_value );
 		}
 
 		void get( ) const {
-			boost::apply_visitor(
-			  overload( []( value_type const & ) noexcept {},
-			            []( std::exception_ptr ptr ) {
-				            if( ptr != nullptr ) {
-					            std::rethrow_exception( ptr );
-				            }
-				            daw::exception::daw_throw<std::logic_error>(
-				              "Unexpected empty state" );
-			            } ),
-			  m_value );
+			std::visit( overload( []( value_type const & ) noexcept {},
+			                      []( std::exception_ptr ptr ) {
+				                      if( ptr != nullptr ) {
+					                      std::rethrow_exception( ptr );
+				                      }
+				                      daw::exception::daw_throw<std::logic_error>(
+				                        "Unexpected empty state" );
+			                      } ),
+			            m_value );
 		}
 
 		std::string get_exception_message( ) const noexcept {
