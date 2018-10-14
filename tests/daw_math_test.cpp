@@ -30,6 +30,22 @@
 #include "daw/boost_test.h"
 #include "daw/daw_math.h"
 
+static_assert( daw::math::abs( std::numeric_limits<uintmax_t>::max( ) ) ==
+                 std::numeric_limits<uintmax_t>::max( ),
+               "" );
+
+static_assert( daw::math::abs( std::numeric_limits<intmax_t>::max( ) ) ==
+                 std::numeric_limits<intmax_t>::max( ),
+               "" );
+
+static_assert( daw::math::abs( std::numeric_limits<uint8_t>::min( ) ) == 0,
+               "" );
+
+static_assert(
+  daw::math::abs( std::numeric_limits<intmax_t>::min( ) ) ==
+    static_cast<uintmax_t>( std::numeric_limits<intmax_t>::max( ) ) + 1ULL,
+  "" );
+
 void show( std::string value ) {
 	const auto width = std::numeric_limits<double>::digits10;
 	std::cout << std::setiosflags( std::ios::fixed ) << std::setw( width + 2 )

@@ -137,17 +137,50 @@ namespace daw {
 			return static_cast<T>( rnd * rnd_by );
 		}
 
-		template<typename T>
+		template<typename T,
+		         std::enable_if_t<!is_integral_v<T>, std::nullptr_t> = nullptr>
 		constexpr T abs( T t ) noexcept {
-			return t >= 0 ? t : -t;
+			return t < static_cast<T>( 0 ) ? -t : t;
+		}
+
+		template<typename T = uintmax_t>
+		constexpr T pow2( T n ) noexcept {
+			T result = 1;
+			while( n-- > 0 ) {
+				result *= 2ULL;
+			}
+			return result;
+		}
+
+		template<typename SignedInteger,
+		         std::enable_if_t<all_true_v<is_integral_v<SignedInteger>,
+		                                     is_signed_v<SignedInteger>>,
+		                          std::nullptr_t> = nullptr>
+		constexpr uintmax_t abs( SignedInteger v ) noexcept {
+			// This accounts for when negating the number is out of range 
+			if( v == std::numeric_limits<intmax_t>::min( ) ) {
+				return pow2<uintmax_t>( bsizeof<intmax_t> - 1 );
+			}
+			if( v < 0 ) {
+				v = -v;
+			}
+			return static_cast<uintmax_t>( v );
+		}
+
+		template<typename UnsignedInteger,
+		         std::enable_if_t<all_true_v<is_integral_v<UnsignedInteger>,
+		                                     !is_signed_v<UnsignedInteger>>,
+		                          std::nullptr_t> = nullptr>
+		constexpr UnsignedInteger abs( UnsignedInteger &&v ) noexcept {
+			return std::forward<UnsignedInteger>( v );
 		}
 
 		template<typename T>
 		constexpr uintmax_t factorial( T t ) noexcept {
-			t = abs( t );
+			uintmax_t count = abs( t );
 			uintmax_t result = 1;
-			for( ; t > 0; --t ) {
-				result *= static_cast<uintmax_t>( t );
+			for( ; count > 0; --count ) {
+				result *= count;
 			}
 			return result;
 		}
