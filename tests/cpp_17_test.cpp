@@ -26,6 +26,10 @@
 
 #include "daw/cpp_17.h"
 
+constexpr int plus( int a, int b ) { return a + b; }
+
+static_assert( daw::apply( plus, std::make_tuple( 1, 2 ) ) == 3 );
+
 namespace void_t_tests {
 	void test2( int ) {}
 	struct X {};

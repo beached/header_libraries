@@ -25,7 +25,6 @@
 #include <iterator>
 
 namespace daw {
-
 	template<typename Iterator>
 	struct reverse_iterator {
 		using value_type = typename std::iterator_traits<Iterator>::value_type;
