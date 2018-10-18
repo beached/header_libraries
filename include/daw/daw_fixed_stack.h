@@ -163,7 +163,7 @@ namespace daw {
 		}
 
 		constexpr bool can_move_front( size_type how_many ) noexcept {
-			return m_first > 0 && m_index >= N - how_many;
+			return m_first > 0 and m_index >= N - how_many;
 		}
 
 	public:

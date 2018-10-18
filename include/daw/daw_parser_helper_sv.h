@@ -36,7 +36,7 @@ namespace daw {
 		find_first_of( daw::basic_string_view<CharT, TraitsT> const str,
 		               CharT const value ) noexcept {
 			auto it = str.cbegin( );
-			while( it != str.cend( ) && *it != value ) {
+			while( it != str.cend( ) and *it != value ) {
 				++it;
 			}
 			return it;
@@ -47,7 +47,7 @@ namespace daw {
 		  daw::basic_string_view<CharT, TraitsT> str,
 		  Predicate pred ) noexcept( noexcept( pred( CharT{} ) ) ) {
 			auto it = str.cbegin( );
-			while( it != str.cend( ) && !pred( *it ) ) {
+			while( it != str.cend( ) and !pred( *it ) ) {
 				++it;
 			}
 			return it;
@@ -56,7 +56,7 @@ namespace daw {
 		template<typename CharT, typename TraitsT>
 		constexpr daw::basic_string_view<CharT, TraitsT>
 		trim_left( daw::basic_string_view<CharT, TraitsT> str ) noexcept {
-			while( !str.empty( ) && is_unicode_whitespace( str.front( ) ) ) {
+			while( !str.empty( ) and is_unicode_whitespace( str.front( ) ) ) {
 				str.remove_prefix( );
 			}
 			return str;
@@ -65,7 +65,7 @@ namespace daw {
 		template<typename CharT, typename TraitsT>
 		constexpr daw::basic_string_view<CharT, TraitsT>
 		trim_right( daw::basic_string_view<CharT, TraitsT> str ) noexcept {
-			while( !str.empty( ) && is_unicode_whitespace( str.back( ) ) ) {
+			while( !str.empty( ) and is_unicode_whitespace( str.back( ) ) ) {
 				str.remove_suffix( );
 			}
 			return str;
@@ -103,7 +103,7 @@ namespace daw {
 			         std::enable_if_t<( sizeof...( check_vals ) != 0 ),
 			                          std::nullptr_t> = nullptr>
 			constexpr bool check( char const c ) const noexcept {
-				return c == check_val || check<check_vals...>( c );
+				return c == check_val or check<check_vals...>( c );
 			}
 
 		public:

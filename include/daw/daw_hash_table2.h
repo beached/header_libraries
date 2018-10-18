@@ -230,7 +230,7 @@ namespace daw {
 		reference operator[]( Key const &key ) {
 			auto const hash = hash_fn<Key>( key );
 			auto is_found = lookup( hash );
-			if( ( !is_found && is_found.position == m_hashes.size( ) ) ||
+			if( ( !is_found and is_found.position == m_hashes.size( ) ) or
 			    should_resize( is_found.lookup_cost, m_hashes.size( ) ) ) {
 				resize_tables( );
 				is_found = lookup( hash );

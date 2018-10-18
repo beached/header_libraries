@@ -74,7 +74,7 @@ namespace daw {
 		~checked_iterator_proxy_t( ) = default;
 
 		checked_iterator_proxy_t &operator++( ) {
-			if( is_flag_set( check_increment ) && current == last ) {
+			if( is_flag_set( check_increment ) and current == last ) {
 				daw::exception::daw_throw<std::out_of_range>(
 				  "Attempt to increment iterator past end of range" );
 			}
@@ -89,7 +89,7 @@ namespace daw {
 		}
 
 		checked_iterator_proxy_t &operator--( ) {
-			if( is_flag_set( check_decrement ) && current == first ) {
+			if( is_flag_set( check_decrement ) and current == first ) {
 				throw std::out_of_range(
 				  "Attempt to decrement iterator past beginning of range" );
 			}
@@ -104,7 +104,7 @@ namespace daw {
 		}
 
 		auto &operator*( ) {
-			if( is_flag_set( check_dereference ) && current == last ) {
+			if( is_flag_set( check_dereference ) and current == last ) {
 				throw std::out_of_range(
 				  "Attempt to dereference an iterator at end of range" );
 			}
@@ -112,7 +112,7 @@ namespace daw {
 		}
 
 		auto const &operator*( ) const {
-			if( is_flag_set( check_dereference ) && current == last ) {
+			if( is_flag_set( check_dereference ) and current == last ) {
 				throw std::out_of_range(
 				  "Attempt to dereference an iterator at end of range" );
 			}
@@ -120,7 +120,7 @@ namespace daw {
 		}
 
 		auto &operator-> ( ) {
-			if( is_flag_set( check_dereference ) && current == last ) {
+			if( is_flag_set( check_dereference ) and current == last ) {
 				throw std::out_of_range(
 				  "Attempt to access members an iterator at end of range" );
 			}
@@ -128,7 +128,7 @@ namespace daw {
 		}
 
 		auto const &operator-> ( ) const {
-			if( is_flag_set( check_dereference ) && current == last ) {
+			if( is_flag_set( check_dereference ) and current == last ) {
 				throw std::out_of_range(
 				  "Attempt to access members an iterator at end of range" );
 			}

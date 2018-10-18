@@ -115,34 +115,34 @@ namespace daw {
 			auto const pos = m_pos + n;
 
 			daw::exception::precondition_check<std::out_of_range>(
-			  0 < pos && pos < m_argc, "Attempt to access invalid argument" );
+			  0 < pos and pos < m_argc, "Attempt to access invalid argument" );
 
 			return std::string_view( m_argv[pos] );
 		}
 
 		constexpr bool at_end( ) const noexcept {
-			return m_argv == nullptr || m_pos >= m_argc;
+			return m_argv == nullptr or m_pos >= m_argc;
 		}
 
 		constexpr bool operator==( arg_iterator_t const &rhs ) const noexcept {
 			if( m_argv == rhs.m_argv ) {
 				return m_pos == rhs.m_pos;
 			}
-			return at_end( ) && rhs.at_end( );
+			return at_end( ) and rhs.at_end( );
 		}
 
 		constexpr bool operator!=( arg_iterator_t const &rhs ) const noexcept {
 			if( m_argv == rhs.m_argv ) {
 				return m_pos != rhs.m_pos;
 			}
-			return !( at_end( ) && rhs.at_end( ) );
+			return !( at_end( ) and rhs.at_end( ) );
 		}
 
 		constexpr bool operator<( arg_iterator_t const &rhs ) const noexcept {
 			if( m_argv == rhs.m_argv ) {
 				return m_argc < rhs.m_argc;
 			}
-			return !at_end( ) && rhs.at_end( );
+			return !at_end( ) and rhs.at_end( );
 		}
 
 		constexpr bool operator<=( arg_iterator_t const &rhs ) const noexcept {
@@ -183,7 +183,7 @@ namespace daw {
 		}
 
 		constexpr operator bool( ) const noexcept {
-			return 0 <= m_pos && m_pos < m_argc;
+			return 0 <= m_pos and m_pos < m_argc;
 		}
 	};
 } // namespace daw

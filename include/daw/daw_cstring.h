@@ -107,7 +107,7 @@ namespace daw {
 
 		~CString( ) noexcept {
 			auto tmp = std::exchange( m_data, nullptr );
-			if( m_local_string && nullptr != tmp ) {
+			if( m_local_string and nullptr != tmp ) {
 				m_local_string = false;
 				m_size = 0;
 				delete[] tmp;
@@ -148,7 +148,7 @@ namespace daw {
 		}
 
 		constexpr bool empty( ) const noexcept {
-			return nullptr == m_data || 0 == m_size;
+			return nullptr == m_data or 0 == m_size;
 		}
 
 		explicit constexpr operator bool( ) const noexcept {

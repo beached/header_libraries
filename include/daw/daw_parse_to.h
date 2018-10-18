@@ -63,7 +63,7 @@ namespace daw {
 						is_neg = true;
 						str.remove_prefix( );
 					}
-					while( count > 0 && !str.empty( ) && is_number( str.front( ) ) ) {
+					while( count > 0 and !str.empty( ) and is_number( str.front( ) ) ) {
 						result *= static_cast<Result>( 10 );
 						result += static_cast<Result>( str.front( ) - '0' );
 						--count;
@@ -88,10 +88,10 @@ namespace daw {
 
 			} // namespace helpers
 
-			template<typename T,
-			         std::enable_if_t<(!is_same_v<T, char> && is_integral_v<T> &&
-			                           is_signed_v<T> && !is_enum_v<T>),
-			                          std::nullptr_t> = nullptr>
+			template<typename T, std::enable_if_t<
+			                       all_true_v<!is_same_v<T, char>, is_integral_v<T>,
+			                                  is_signed_v<T>, !is_enum_v<T>>,
+			                       std::nullptr_t> = nullptr>
 			constexpr T parse_to_value( daw::string_view str, tag<T> ) {
 				daw::exception::precondition_check<empty_input_exception>(
 				  !str.empty( ) );
@@ -99,7 +99,7 @@ namespace daw {
 			}
 
 			template<typename T,
-			         std::enable_if_t<is_integral_v<T> && is_unsigned_v<T>,
+			         std::enable_if_t<all_true_v<is_integral_v<T>, is_unsigned_v<T>>,
 			                          std::nullptr_t> = nullptr>
 			constexpr T parse_to_value( daw::string_view str, tag<T> ) {
 				daw::exception::precondition_check<empty_input_exception>(
@@ -110,7 +110,7 @@ namespace daw {
 
 			namespace impl {
 				constexpr bool is_quote( char const last_char, char const c ) noexcept {
-					return last_char != '\\' && c == '"';
+					return last_char != '\\' and c == '"';
 				}
 			} // namespace impl
 
@@ -141,7 +141,7 @@ namespace daw {
 				str.remove_prefix( );
 				auto const first = str.cbegin( );
 				char last_char = str.pop_front( );
-				while( !str.empty( ) && !impl::is_quote( last_char, str.front( ) ) ) {
+				while( !str.empty( ) and !impl::is_quote( last_char, str.front( ) ) ) {
 					last_char = str.pop_front( );
 				}
 				daw::exception::precondition_check<missing_expected_quotes_exception>(
@@ -242,7 +242,7 @@ namespace daw {
 				sv_size_t n = 0;
 				size_t const sz = str.size( );
 
-				while( n < sz && not_unicode_whitespace( str[n] ) ) {
+				while( n < sz and not_unicode_whitespace( str[n] ) ) {
 					++n;
 				}
 				if( n == sz ) {
@@ -252,7 +252,7 @@ namespace daw {
 					return result_t{n, n + 1};
 				}
 				auto const f = n;
-				while( n < sz && is_unicode_whitespace( str[n] ) ) {
+				while( n < sz and is_unicode_whitespace( str[n] ) ) {
 					++n;
 				}
 				return result_t{f, n};

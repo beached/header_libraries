@@ -100,7 +100,7 @@ namespace daw {
 
 		friend bool operator==( string_split_iterator const &lhs,
 		                        string_split_iterator const &rhs ) noexcept {
-			if( ( lhs.m_pos == npos && npos == rhs.m_pos ) ) {
+			if( ( lhs.m_pos == npos and npos == rhs.m_pos ) ) {
 				return true;
 			}
 			return std::tie( lhs.m_str, lhs.m_pos, lhs.m_delemiter ) ==
@@ -109,7 +109,7 @@ namespace daw {
 
 		friend bool operator!=( string_split_iterator const &lhs,
 		                        string_split_iterator const &rhs ) noexcept {
-			if( ( lhs.m_pos == npos && npos == rhs.m_pos ) ) {
+			if( ( lhs.m_pos == npos and npos == rhs.m_pos ) ) {
 				return false;
 			}
 			return std::tie( lhs.m_str, lhs.m_pos, lhs.m_delemiter ) !=

@@ -276,7 +276,7 @@ namespace daw {
 			if( a == b ) { // shortcut, handles infinities
 				return true;
 			}
-			if( a == 0 || b == 0 || diff < std::numeric_limits<T>::min_exponent ) {
+			if( a == 0 or b == 0 or diff < std::numeric_limits<T>::min_exponent ) {
 				// a or b is zero or both are extremely close to it
 				// 			// relative error is less meaningful here
 				return diff < ( std::numeric_limits<T>::epsilon( ) *

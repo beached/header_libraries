@@ -168,7 +168,7 @@ namespace daw {
 		}
 
 		bool empty( ) const noexcept {
-			return !( has_value( ) || has_exception( ) );
+			return !( has_value( ) or has_exception( ) );
 		}
 
 		explicit operator bool( ) const noexcept {
@@ -360,7 +360,7 @@ namespace daw {
 		}
 
 		bool empty( ) const noexcept {
-			return !( has_value( ) || has_exception( ) );
+			return !( has_value( ) or has_exception( ) );
 		}
 
 		explicit operator bool( ) const noexcept {

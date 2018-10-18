@@ -314,14 +314,14 @@ namespace daw {
 	}
 
 	constexpr char AsciiUpper( char chr ) noexcept {
-		if( 'a' <= chr && chr <= 'z' ) {
+		if( 'a' <= chr and chr <= 'z' ) {
 			return chr & ~static_cast<char>( 32 );
 		}
 		return chr;
 	}
 
 	constexpr char AsciiLower( char chr ) noexcept {
-		if( 'A' <= chr && chr <= 'Z' ) {
+		if( 'A' <= chr and chr <= 'Z' ) {
 			return chr | static_cast<char>( 32 );
 		}
 		return chr;

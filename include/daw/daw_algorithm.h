@@ -389,7 +389,7 @@ namespace daw {
 
 		template<typename ValueType, typename... Values>
 		constexpr bool are_equal( ValueType v1, ValueType v2, Values... others ) {
-			return are_equal( v1, v2 ) && are_equal( others... );
+			return are_equal( v1, v2 ) and are_equal( others... );
 		}
 
 		template<typename ForwardIterator>
@@ -959,7 +959,7 @@ constexpr bool lexicographical_compare(
 	traits::is_input_iterator_test<InputIterator1>( );
 	traits::is_input_iterator_test<InputIterator2>( );
 
-	while( ( first1 != last1 ) && ( first2 != last2 ) ) {
+	while( ( first1 != last1 ) and ( first2 != last2 ) ) {
 		if( *first1 < *first2 ) {
 			return true;
 		}
@@ -1303,7 +1303,7 @@ equal( InputIterator1 first1, LastType1 last1, InputIterator2 first2,
 		first1 = daw::next( first1 );
 		first2 = daw::next( first2 );
 	}
-	return !( first1 != last1 ) && !( first2 != last2 );
+	return !( first1 != last1 ) and !( first2 != last2 );
 }
 
 /// @brief constexpr version of std::swap
@@ -1515,7 +1515,7 @@ constexpr bool is_sorted( ForwardIterator first, LastType last ) noexcept(
 		return true;
 	}
 	auto next_it = daw::next( first );
-	while( ( next_it != last ) && !( *next_it < *first ) ) {
+	while( ( next_it != last ) and !( *next_it < *first ) ) {
 		first = daw::next( first );
 		next_it = daw::next( next_it );
 	}
@@ -1535,7 +1535,7 @@ is_sorted( ForwardIterator first, LastType last,
 		return true;
 	}
 	auto next_it = daw::next( first );
-	while( ( next_it != last ) && !( *next_it < *first ) ) {
+	while( ( next_it != last ) and !( *next_it < *first ) ) {
 		first = daw::next( first );
 		next_it = daw::next( next_it );
 	}
@@ -1859,7 +1859,7 @@ constexpr OutputIterator set_intersection(
   OutputIterator d_first ) noexcept( noexcept( *first2 < *first1 ) &&
                                      noexcept( *first1 < *first2 ) ) {
 
-	while( first1 != last1 && first2 != last2 ) {
+	while( first1 != last1 and first2 != last2 ) {
 		if( *first1 < *first2 ) {
 			++first1;
 		} else {

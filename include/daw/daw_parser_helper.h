@@ -84,7 +84,7 @@ namespace daw {
 
 			constexpr bool empty( bool throw_on_empty ) {
 				daw::exception::precondition_check<ParserEmptyException>(
-				  !( throw_on_empty && empty( ) ) );
+				  !( throw_on_empty and empty( ) ) );
 				return false;
 			}
 
@@ -187,7 +187,7 @@ namespace daw {
 		template<typename T, typename Arg, typename... Args>
 		constexpr bool is_a( T const &value, Arg const &tst,
 		                     Args const &... tsts ) noexcept {
-			return is_a( value, tst ) || is_a( value, tsts... );
+			return is_a( value, tst ) or is_a( value, tsts... );
 		}
 
 		template<typename Arg>
@@ -325,7 +325,7 @@ namespace daw {
 		constexpr bool is_true( T &&value, Predicate &&predicate,
 		                        Predicates &&... predicates ) {
 			return is_true( std::forward<Predicate>( predicate ),
-			                std::forward<T>( value ) ) ||
+			                std::forward<T>( value ) ) or
 			       is_true( std::forward<T>( value ),
 			                std::forward<Predicates>( predicates )... );
 		}
@@ -358,7 +358,7 @@ namespace daw {
 			constexpr auto const z = static_cast<val_t>( 'z' );
 			constexpr auto const Z = static_cast<val_t>( 'Z' );
 			auto const tmp = static_cast<val_t>( value );
-			return ( a <= tmp && tmp <= z ) || ( A <= tmp && tmp <= Z );
+			return ( a <= tmp and tmp <= z ) or ( A <= tmp and tmp <= Z );
 		}
 
 		template<typename T, typename Min, typename Max>
@@ -375,13 +375,13 @@ namespace daw {
 
 		template<typename T>
 		constexpr bool is_hex( T const &value ) noexcept {
-			return in_range( value, '0', '9' ) || in_range( value, 'a', 'f' ) ||
+			return in_range( value, '0', '9' ) or in_range( value, 'a', 'f' ) or
 			       in_range( value, 'A', 'F' );
 		}
 
 		template<typename T>
 		constexpr bool is_alphanumeric( T &&value ) noexcept {
-			return is_alpha( std::forward<T>( value ) ) ||
+			return is_alpha( std::forward<T>( value ) ) or
 			       is_number( std::forward<T>( value ) );
 		}
 
@@ -429,7 +429,7 @@ namespace daw {
 			  until_value( start.last, last, std::forward<GoUntil>( go_until ) );
 
 			daw::exception::precondition_check<ParserException>(
-			  !( throw_if_end_reached && !finish ) );
+			  !( throw_if_end_reached and !finish ) );
 
 			auto result = make_find_result( start.last, finish.last );
 			result.found = !result.empty( );
@@ -454,7 +454,7 @@ namespace daw {
 			auto finish = until( start.last, last, is_last );
 
 			daw::exception::precondition_check<ParserException>(
-			  !( throw_if_end_reached && !finish ) );
+			  !( throw_if_end_reached and !finish ) );
 
 			auto result = make_find_result( start.last, finish.last );
 			result.found = !result.empty( );
@@ -598,7 +598,7 @@ namespace daw {
 			auto start = trim_left( first, last );
 			auto finish = trim_right( start.first, last );
 			return make_find_result( start.first, finish.last,
-			                         static_cast<bool>( start ) ||
+			                         static_cast<bool>( start ) or
 			                           static_cast<bool>( finish ) );
 		}
 
@@ -624,10 +624,10 @@ namespace daw {
 				}
 				bool result = true;
 				for( auto it = m_last_values.begin( );
-				     result && it != m_last_values.end( ); ++it ) {
-					result = result && is_a( *( it ), '\r' );
+				     result and it != m_last_values.end( ); ++it ) {
+					result = result and is_a( *( it ), '\r' );
 					++it;
-					result = result && is_a( *( it ), '\n' );
+					result = result and is_a( *( it ), '\n' );
 				}
 				return result;
 			}
@@ -726,7 +726,7 @@ namespace daw {
 		constexpr bool starts_with( ForwardIterator1 first1, ForwardIterator1 last1,
 		                            ForwardIterator2 first2, ForwardIterator2 last2,
 		                            BinaryPredicate pred ) {
-			while( first1 != last1 && first2 != last2 ) {
+			while( first1 != last1 and first2 != last2 ) {
 				if( !pred( *first1, *first2 ) ) {
 					return false;
 				}
@@ -742,7 +742,7 @@ namespace daw {
 		               Value const &value ) {
 			auto result = until_value( first, last, value );
 			bool found = static_cast<bool>( result );
-			while( result && result.end( ) != last ) {
+			while( result and result.end( ) != last ) {
 				auto tmp = until_value( std::next( result.end( ) ), last, value );
 				result.found = static_cast<bool>( tmp );
 				if( tmp ) {
@@ -766,7 +766,7 @@ namespace daw {
 			auto new_end = std::next( result.first );
 			while( new_end != last ) {
 				auto seq_pos = std::next( std::begin( values ) );
-				while( seq_pos != std::end( values ) && new_end != last &&
+				while( seq_pos != std::end( values ) and new_end != last and
 				       *seq_pos == *new_end ) {
 					if( *new_end == first_val ) {
 						last_first = new_end;

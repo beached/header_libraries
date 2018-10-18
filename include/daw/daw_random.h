@@ -31,7 +31,7 @@ namespace daw {
 	namespace impl {
 		inline auto get_seed( ) -> std::default_random_engine::result_type {
 			std::default_random_engine::result_type lo{};
-#if defined( __i386__ ) || defined( __x86_64__ )
+#if defined( __i386__ ) or defined( __x86_64__ )
 			__asm__ __volatile__( "rdtsc" : "=a"( lo ) );
 #endif
 			return lo;

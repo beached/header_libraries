@@ -190,13 +190,13 @@ namespace daw {
 
 			bool operator( )( StringType const &src, const char ending ) const
 			  noexcept {
-				return 0 < src.size( ) && ending == src[src.size( ) - 1];
+				return 0 < src.size( ) and ending == src[src.size( ) - 1];
 			}
 
 			bool operator( )( StringType const &src, StringType const &ending ) const
 			  noexcept {
 				auto pos = src.find_last_of( ending );
-				return details::string_t::npos != pos && pos == src.size( ) - 1;
+				return details::string_t::npos != pos and pos == src.size( ) - 1;
 			}
 		};
 

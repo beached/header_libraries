@@ -178,7 +178,7 @@ namespace daw {
 			auto const hash = hash_fn( std::forward<Key>( key ) );
 			auto const is_found = lookup( hash );
 			daw::exception::daw_throw_on_true(
-			  !is_found && is_found.position == m_hashes.size( ),
+			  !is_found and is_found.position == m_hashes.size( ),
 			  "Fixed hash table does not have enough space to allocate all entries" );
 			m_hashes[is_found.position] = hash;
 			m_values[is_found.position] = std::move( value );
@@ -203,7 +203,7 @@ namespace daw {
 			auto const hash = hash_fn( std::forward<Key>( key ) );
 			auto const is_found = lookup( hash );
 			daw::exception::daw_throw_on_true(
-			  !is_found && is_found.position == m_hashes.size( ),
+			  !is_found and is_found.position == m_hashes.size( ),
 			  "Fixed hash table does not have enough space to allocate all entries" );
 			m_hashes[is_found.position] = hash;
 			return m_values[is_found.position];

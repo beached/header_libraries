@@ -194,11 +194,11 @@ namespace daw {
 			std::array<CharT, 8> fill_chars = {0};
 			fill_chars.fill( os.fill( ) );
 
-			for( ; n >= fill_chars.size( ) && os.good( ); n -= fill_chars.size( ) ) {
+			for( ; n >= fill_chars.size( ) and os.good( ); n -= fill_chars.size( ) ) {
 				os.write( fill_chars.data( ),
 				          static_cast<intmax_t>( fill_chars.size( ) ) );
 			}
-			if( n > 0 && os.good( ) ) {
+			if( n > 0 and os.good( ) ) {
 				os.write( fill_chars.data( ), static_cast<intmax_t>( n ) );
 			}
 		}

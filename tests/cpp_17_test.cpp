@@ -26,7 +26,9 @@
 
 #include "daw/cpp_17.h"
 
-constexpr int plus( int a, int b ) { return a + b; }
+constexpr int plus( int a, int b ) {
+	return a + b;
+}
 
 static_assert( daw::apply( plus, std::make_tuple( 1, 2 ) ) == 3 );
 
@@ -80,44 +82,43 @@ namespace is_array_v_001 {
 	static_assert( !daw::is_array_v<float>, "" );
 } // namespace is_array_v_001
 
-
 namespace advance_001 {
 	constexpr bool test_advance_pos( ) {
-		int a[11] = {0,1,2,3,4,5,6,7,8,9,0};
+		int a[11] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
 		auto first = &a[0];
 		daw::advance( first, 4 );
 		return *first == 4;
 	}
 	static_assert( test_advance_pos( ), "" );
-}
+} // namespace advance_001
 
 namespace advance_002 {
 	constexpr bool test_advance_neg( ) {
-		int a[11] = {0,1,2,3,4,5,6,7,8,9,0};
+		int a[11] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
 		auto first = &a[0];
 		daw::advance( first, 4 );
 		daw::advance( first, -4 );
 		return *first == 0;
 	}
 	static_assert( test_advance_neg( ), "" );
-}
+} // namespace advance_002
 
 namespace advance_003 {
 	constexpr bool test_advance_zero( ) {
-		int a[11] = {0,1,2,3,4,5,6,7,8,9,0};
+		int a[11] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
 		auto first = &a[0];
 		daw::advance( first, 0 );
 		return *first == 0;
 	}
 	static_assert( test_advance_zero( ), "" );
-}
+} // namespace advance_003
 
 namespace trivially_destructable_001 {
 	struct Foo {
 		~Foo( ) = default;
 	};
 	static_assert( daw::is_trivially_destructible_v<Foo>, "" );
-}
+} // namespace trivially_destructable_001
 
 BOOST_AUTO_TEST_CASE( bit_cast_001 ) {
 	constexpr uint32_t const tst = 0x89AB'CDEF;

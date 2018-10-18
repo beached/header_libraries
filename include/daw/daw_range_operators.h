@@ -66,9 +66,9 @@ namespace daw {
                                                                                \
 						template<                                                          \
 						  typename Container, typename... ClauseArgs,                      \
-						  typename ::std::enable_if_t<                                     \
-						    !::daw::range::is_range_reference_v<Container> &&              \
-						    !::daw::range::is_range_collection_v<Container>> * = nullptr,  \
+						  typename ::std::enable_if_t<daw::all_true_v<                          \
+						    !::daw::range::is_range_reference_v<Container>,                \
+						    !::daw::range::is_range_collection_v<Container>>> * = nullptr, \
 						  typename = void>                                                 \
 						static auto clause_name##_helper( Container const &container,      \
 						                                  ClauseArgs &&... clause_args ) { \
@@ -142,9 +142,9 @@ namespace daw {
 		}                                                                          \
 	}                                                                            \
 	template<typename Container, typename... Args,                               \
-	         typename ::std::enable_if_t<                                        \
-	           !::daw::range::is_range_reference_v<Container> &&                 \
-	           !::daw::range::is_range_collection_v<Container>> * = nullptr,     \
+	         typename ::std::enable_if_t<daw::all_true_v<                             \
+	           !::daw::range::is_range_reference_v<Container>,                   \
+	           !::daw::range::is_range_collection_v<Container>>> * = nullptr,    \
 	         typename = void>                                                    \
 	auto operator<<(                                                             \
 	  Container &&container,                                                     \

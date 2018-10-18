@@ -205,7 +205,7 @@ namespace daw {
 
 		public:
 			static void remove_observer( control_block_t *cb ) {
-				if( cb && cb->remove_observer(
+				if( cb and cb->remove_observer(
 				            std::lock_guard<std::mutex>( cb->m_is_borrowed ) ) ) {
 
 					destruct_cb( cb );
@@ -213,7 +213,7 @@ namespace daw {
 			}
 
 			static void remove_owner( control_block_t *cb ) {
-				if( cb && cb->remove_owner(
+				if( cb and cb->remove_owner(
 				            std::lock_guard<std::mutex>( cb->m_is_borrowed ) ) ) {
 
 					destruct_cb( cb );
@@ -344,7 +344,7 @@ namespace daw {
 		}
 
 		explicit operator bool( ) const {
-			return m_control_block != nullptr && !m_control_block->expired( );
+			return m_control_block != nullptr and !m_control_block->expired( );
 		}
 
 		observer_ptr<T> get_observer( ) const {
@@ -459,7 +459,7 @@ namespace daw {
 		}
 
 		explicit operator bool( ) const {
-			return m_control_block != nullptr && !m_control_block->expired( );
+			return m_control_block != nullptr and !m_control_block->expired( );
 		}
 
 		explicit operator observer_ptr<T>( ) const {

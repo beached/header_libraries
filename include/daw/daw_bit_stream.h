@@ -60,7 +60,7 @@ namespace daw {
 	    bool operator==( bit_stream_iterator const & rhs ) const {
 	        return (std::tie( m_bit_stream, m_bit_stream->m_first,
 	m_bit_stream->m_left_overs ) == std::tie( rhs.m_bit_stream,
-	rhs.m_bit_stream->m_first, rhs.m_bit_stream->m_left_overs )) || (is_end ||
+	rhs.m_bit_stream->m_first, rhs.m_bit_stream->m_left_overs )) or (is_end or
 	!valid)
 	    }
 
@@ -181,7 +181,7 @@ namespace daw {
 		                                   "Attempt to pop less than 1 bits" );
 
 		auto cur_val = pop_value<TestValue>( bs );
-		while( bs && cur_val != v ) {
+		while( bs and cur_val != v ) {
 			cur_val = pop_value<TestValue>( bs );
 		}
 		daw::exception::dbg_throw_on_true( cur_val != v,
@@ -191,7 +191,7 @@ namespace daw {
 	template<typename BitStream, typename TestValue>
 	void skip_until( BitStream &bs, TestValue const &v ) {
 		auto cur_val = bs.pop_bits( );
-		while( bs && cur_val != v ) {
+		while( bs and cur_val != v ) {
 			cur_val = bs.pop_bits( );
 		}
 		daw::exception::dbg_throw_on_true( cur_val != v,

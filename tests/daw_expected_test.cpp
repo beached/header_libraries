@@ -55,8 +55,8 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 	static_assert( daw::traits::is_callable_v<decltype( X ), int>,
 	               "is_callable_v broke" );
 
-	daw::expected_t<void> f([]( ) { std::cout << "Hello\n"; });
-	daw::expected_t<void> g([]( int ) { std::cout << "Hello\n"; }, 5);
+	daw::expected_t<void> f( []( ) { std::cout << "Hello\n"; } );
+	daw::expected_t<void> g( []( int ) { std::cout << "Hello\n"; }, 5 );
 	// daw::expected_t<int> h{ []( int x ) { std::cout << "Hello\n"; return x*x;
 	// }, 5 };
 

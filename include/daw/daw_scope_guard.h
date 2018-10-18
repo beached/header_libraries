@@ -51,7 +51,7 @@ namespace daw {
 			return *this;
 		}
 
-#if !defined( MAY_THROW_EXCEPTIONS ) || MAY_THROW_EXCEPTIONS
+#if !defined( MAY_THROW_EXCEPTIONS ) or MAY_THROW_EXCEPTIONS
 		~ScopeGuard( ) noexcept {
 			if( m_is_active ) {
 				try {
@@ -72,7 +72,7 @@ namespace daw {
 		}
 
 		constexpr bool operator==( const ScopeGuard &rhs ) const noexcept {
-			return rhs.m_function == m_function && rhs.m_is_active == m_is_active;
+			return rhs.m_function == m_function and rhs.m_is_active == m_is_active;
 		}
 	}; // class ScopeGuard
 

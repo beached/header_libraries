@@ -197,7 +197,7 @@ namespace daw {
 
 		constexpr friend bool operator!=( circular_iterator const &lhs,
 		                                  circular_iterator const &rhs ) noexcept {
-			return lhs.m_position != rhs.m_position ||
+			return lhs.m_position != rhs.m_position or
 			       lhs.m_container != rhs.m_container;
 		}
 

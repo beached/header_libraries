@@ -53,9 +53,10 @@ namespace daw {
 		constexpr bool can_cast_to_string_v =
 		  daw::is_detected_v<can_cast_to_string, T>;
 
-		template<typename T,
-		         std::enable_if_t<(has_to_string_v<T> && !can_cast_to_string_v<T>),
-		                          std::nullptr_t> = nullptr>
+		template<
+		  typename T,
+		  std::enable_if_t<all_true_v<has_to_string_v<T>, !can_cast_to_string_v<T>>,
+		                   std::nullptr_t> = nullptr>
 		inline std::string to_string( T const &value ) {
 			return value.to_string( );
 		}

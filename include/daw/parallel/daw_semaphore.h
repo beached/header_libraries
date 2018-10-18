@@ -80,13 +80,13 @@ namespace daw {
 				}
 			}
 			auto lock = std::unique_lock<Mutex>( *m_mutex );
-			m_condition->wait( lock, [&]( ) { return m_latched && m_count > 0; } );
+			m_condition->wait( lock, [&]( ) { return m_latched and m_count > 0; } );
 			--m_count;
 		}
 
 		bool try_wait( ) {
 			auto lock = std::unique_lock<Mutex>( *m_mutex );
-			if( m_latched && m_count > 0 ) {
+			if( m_latched and m_count > 0 ) {
 				--m_count;
 				return true;
 			}
@@ -97,7 +97,7 @@ namespace daw {
 		auto wait_for( std::chrono::duration<Rep, Period> const &rel_time ) {
 			auto lock = std::unique_lock<Mutex>( *m_mutex );
 			auto status = m_condition->wait_for(
-			  lock, rel_time, [&]( ) { return m_latched && m_count > 0; } );
+			  lock, rel_time, [&]( ) { return m_latched and m_count > 0; } );
 			if( status ) {
 				--m_count;
 			}
@@ -109,7 +109,7 @@ namespace daw {
 		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) {
 			auto lock = std::unique_lock<Mutex>( *m_mutex );
 			auto status = m_condition->wait_until(
-			  lock, timeout_time, [&]( ) { return m_latched && m_count > 0; } );
+			  lock, timeout_time, [&]( ) { return m_latched and m_count > 0; } );
 			if( status ) {
 				--m_count;
 			}

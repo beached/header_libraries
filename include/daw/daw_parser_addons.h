@@ -30,7 +30,7 @@ namespace daw {
 		template<typename ForwardIterator>
 		constexpr auto find_number( ForwardIterator first, ForwardIterator last ) {
 			auto const is_first = []( auto const &v ) {
-				return is_a( '-', v ) || is_number( v );
+				return is_a( '-', v ) or is_number( v );
 			};
 
 			bool has_decimal = false;
@@ -57,7 +57,7 @@ namespace daw {
 			  '-' != *first, "Negative values are unsupported" );
 
 			result = 0;
-			for( ; first != last && count > 0; ++first, --count ) {
+			for( ; first != last and count > 0; ++first, --count ) {
 				result *= static_cast<Result>( 10 );
 				Result val = static_cast<Result>( *first ) - static_cast<Result>( '0' );
 				result += val;
@@ -80,7 +80,7 @@ namespace daw {
 				is_neg = true;
 				++first;
 			}
-			for( ; first != last && count > 0; ++first, --count ) {
+			for( ; first != last and count > 0; ++first, --count ) {
 				result *= static_cast<Result>( 10 );
 				Result val = *first - '0';
 				result += val;
@@ -106,7 +106,7 @@ namespace daw {
 			++it;
 			bool found = false;
 			while( it != last ) {
-				if( ( found = is_a( *it, quote_char ) ) && !is_escape( *last_it ) ) {
+				if( ( found = is_a( *it, quote_char ) ) and !is_escape( *last_it ) ) {
 					break;
 				}
 				last_it = it++;

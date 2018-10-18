@@ -267,7 +267,7 @@ namespace daw {
 		}
 
 		constexpr bool empty( ) const noexcept {
-			return m_first == nullptr || 0 == m_size;
+			return m_first == nullptr or 0 == m_size;
 		}
 
 		constexpr explicit operator bool( ) const noexcept {
@@ -483,7 +483,7 @@ namespace daw {
 			if( lhs.size( ) > rhs.size( ) ) {
 				return 1;
 			}
-			while( !lhs.empty( ) && !rhs.empty( ) ) {
+			while( !lhs.empty( ) and !rhs.empty( ) ) {
 				if( lhs.front( ) != rhs.front( ) ) {
 					if( lhs.front( ) < rhs.front( ) ) {
 						return -1;
@@ -590,7 +590,7 @@ namespace daw {
 		constexpr size_type find_first_of( basic_string_view const v,
 		                                   size_type const pos = 0 ) const
 		  noexcept {
-			if( pos >= size( ) || v.empty( ) ) {
+			if( pos >= size( ) or v.empty( ) ) {
 				return npos;
 			}
 			auto const iter = details::find_first_of(
@@ -604,7 +604,7 @@ namespace daw {
 
 		constexpr size_type search( basic_string_view const v,
 		                            size_type const pos = 0 ) const noexcept {
-			if( pos + v.size( ) >= size( ) || v.empty( ) ) {
+			if( pos + v.size( ) >= size( ) or v.empty( ) ) {
 				return npos;
 			}
 			auto const iter = details::search( cbegin( ) + pos, cend( ), v.cbegin( ),
@@ -617,7 +617,7 @@ namespace daw {
 
 		constexpr size_type search_last( basic_string_view const v,
 		                                 size_type const pos = 0 ) const noexcept {
-			if( pos + v.size( ) >= size( ) || v.empty( ) ) {
+			if( pos + v.size( ) >= size( ) or v.empty( ) ) {
 				return npos;
 			}
 			auto last_pos = pos;

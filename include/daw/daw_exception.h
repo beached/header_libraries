@@ -29,8 +29,8 @@
 #include <type_traits>
 #include <utility>
 
-#if !defined( NODEBUGTHROW ) &&                                                \
-  ( defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) ||                  \
+#if !defined( NODEBUGTHROW ) and                                               \
+  ( defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
     defined( _CPPUNWIND ) )
 
 #define MAY_THROW_EXCEPTIONS true
@@ -84,7 +84,7 @@ namespace daw {
 		  std::enable_if_t<std::is_default_constructible<ExceptionType>::value,
 		                   std::nullptr_t> = nullptr>
 		[[noreturn]] void daw_throw( ) {
-#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) ||                  \
+#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
   defined( _CPPUNWIND )
 			throw ExceptionType( );
 #else
@@ -97,7 +97,7 @@ namespace daw {
 		  std::enable_if_t<!std::is_default_constructible<ExceptionType>::value,
 		                   std::nullptr_t> = nullptr>
 		[[noreturn]] void daw_throw( ) {
-#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) ||                  \
+#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
   defined( _CPPUNWIND )
 			throw ExceptionType( "" );
 #else
@@ -108,7 +108,7 @@ namespace daw {
 		template<typename ExceptionType = DefaultException, typename Arg,
 		         typename... Args>
 		[[noreturn]] void daw_throw( Arg &&arg, Args &&... args ) {
-#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) ||                  \
+#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
   defined( _CPPUNWIND )
 			throw ExceptionType( std::forward<Arg>( arg ),
 			                     std::forward<Args>( args )... );
@@ -195,7 +195,7 @@ namespace daw {
 		template<typename ExceptionType = AssertException>
 		constexpr void dbg_throw_on_false( bool test ) {
 			if( !static_cast<bool>( test ) ) {
-#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) ||                  \
+#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
   defined( _CPPUNWIND )
 				throw ExceptionType{};
 #else
@@ -442,19 +442,19 @@ namespace daw {
 
 		template<typename Function, typename... Args>
 		void no_exception( Function func, Args &&... args ) noexcept {
-#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) ||                  \
+#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
   defined( _CPPUNWIND )
 			try {
 #endif
 				func( std::forward<Args>( args )... );
-#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) ||                  \
+#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
   defined( _CPPUNWIND )
 			} catch( ... ) {}
 #endif
 		}
 
 
-#if defined( __cpp_exceptions ) || defined( __EXCEPTIONS ) ||                  \
+#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
   defined( _CPPUNWIND )
 		template<typename Exception, typename... Args>
 		std::exception_ptr make_exception_ptr( Args&&... args ) noexcept {

@@ -92,13 +92,13 @@ namespace daw {
 	template<typename Iterator>
 	constexpr bool operator==( splitter_range_t<Iterator> const &lhs,
 	                           splitter_range_t<Iterator> const &rhs ) noexcept {
-		return lhs.m_first == rhs.m_first && lhs.m_last == rhs.m_last;
+		return lhs.m_first == rhs.m_first and lhs.m_last == rhs.m_last;
 	}
 
 	template<typename Iterator>
 	constexpr bool operator!=( splitter_range_t<Iterator> const &lhs,
 	                           splitter_range_t<Iterator> const &rhs ) noexcept {
-		return lhs.m_first != rhs.m_first || lhs.m_last != rhs.m_last;
+		return lhs.m_first != rhs.m_first or lhs.m_last != rhs.m_last;
 	}
 
 	template<typename Iterator, typename Splitter, typename...>

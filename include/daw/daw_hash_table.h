@@ -204,7 +204,7 @@ namespace daw {
 		}
 
 		bool valid( ) const {
-			return at_end( ) || !m_position->empty( );
+			return at_end( ) or !m_position->empty( );
 		}
 
 		hash_table_item_iterator operator++( int ) {
@@ -215,7 +215,7 @@ namespace daw {
 
 		hash_table_item_iterator &operator--( ) {
 			--m_position;
-			while( m_position > m_begin && !m_position->good( ) ) {
+			while( m_position > m_begin and !m_position->good( ) ) {
 				--m_position;
 			}
 			return *this;
@@ -479,7 +479,7 @@ namespace daw {
 
 		static priv_iterator find_item_by_hash_or_create( size_t hash,
 		                                                  hash_table &tbl ) {
-			if( tbl.empty( ) ||
+			if( tbl.empty( ) or
 			    ( ( tbl.m_load * 100 ) / tbl.m_values.size( ) ) > tbl.m_max_load ) {
 				tbl.grow_table( );
 			}
