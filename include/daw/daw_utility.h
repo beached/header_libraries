@@ -881,6 +881,12 @@ namespace daw {
 	template<typename T>
 	constexpr size_t const
 	  bsizeof = static_cast<size_t>( sizeof( remove_cvref_t<T> ) * 8U );
+
+	/// Checks if value is in the range [lower, upper)
+	template<typename Value, typename LowerBound, typename UpperBound>
+	constexpr bool in_range( Value && value, LowerBound && lower, UpperBound && upper ) noexcept( noexcept( lower <= value && value < upper ) ) {
+		return std::forward<LowerBound>( lower ) <= value && value < std::forward<UpperBound>( upper );
+	}
 } // namespace daw
 
 template<typename... Ts>
