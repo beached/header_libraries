@@ -20,11 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <string>
+
 #include "daw/daw_piecewise_factory.h"
 
 struct A {
 	int a = 0;
 	int b = 0;
+};
+
+struct B: A {
+    std::string c = "";
 };
 
 constexpr bool test( bool b ) noexcept {
@@ -35,10 +41,18 @@ constexpr bool test( bool b ) noexcept {
 	}
 }
 
-constexpr auto test_001( ) noexcept {
+constexpr A test_001( ) noexcept {
 	auto tmp = daw::piecewise_factory_t<A, int, int>{};
 	tmp.set<0>( 5 );
 	tmp.set( 1, 6 );
+	return tmp( );
+}
+
+B test_002( ) noexcept {
+	auto tmp = daw::piecewise_factory_t<B, int, int, std::string>{};
+	tmp.set<0>( 5 );
+	tmp.set( 1, 6 );
+	tmp.set( 2, "Hello" );
 	return tmp( );
 }
 
@@ -47,5 +61,9 @@ constexpr extern A const a = test_001( );
 int main( ) {
 	static_assert( a.a == 5 );
 	static_assert( a.b == 6 );
+	B b = test_002( );
+	if( b.c != "Hello" ) {
+	    return 1;
+	}
 	return 0;
 }
