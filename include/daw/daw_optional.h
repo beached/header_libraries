@@ -201,10 +201,9 @@ namespace daw {
 		using pointer_const = value_type const *;
 
 	private:
-		impl::value_storage<value_type> m_value{ };
+		impl::value_storage<value_type> m_value{};
 
 	public:
-
 		optional( nothing )
 		  : m_value{} {}
 

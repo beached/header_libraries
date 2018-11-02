@@ -458,8 +458,8 @@ namespace daw {
 	/// @param delemiter split what string arguments on
 	/// @return result of callable
 	/*	template<typename... Args, typename Callable,
-	           std::enable_if_t<traits::is_callable_v<Callable, Args...>, std::nullptr_t>
-	   = nullptr>
+	           std::enable_if_t<traits::is_callable_v<Callable, Args...>,
+	   std::nullptr_t> = nullptr>
 	             */
 	template<typename... Args, typename Callable>
 	constexpr decltype( auto ) apply_string( Callable &&callable,
@@ -481,7 +481,8 @@ namespace daw {
 	/*
 	template<
 	  typename Arg, typename Callable,
-	  std::enable_if_t<traits::is_callable_v<Callable, Arg>, std::nullptr_t> = nullptr>
+	  std::enable_if_t<traits::is_callable_v<Callable, Arg>, std::nullptr_t> =
+	nullptr>
 	  */
 	template<typename Arg, typename Callable>
 	constexpr decltype( auto ) apply_string( Callable &&callable,

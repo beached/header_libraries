@@ -710,8 +710,8 @@ constexpr bool satisfies_all( Value value, UnaryPredicate &&func,
 	traits::is_unary_predicate_test<UnaryPredicate, Value>( );
 
 	auto const result = std::forward<UnaryPredicate>( func )( value );
-	return result and
-	       satisfies_all( std::move( value ), std::forward<UnaryPredicates>( funcs )... );
+	return result and satisfies_all( std::move( value ),
+	                                 std::forward<UnaryPredicates>( funcs )... );
 }
 
 /// @brief Returns true if all function(s) returns true for all values in
@@ -920,10 +920,10 @@ constexpr bool lexicographical_compare(
   Compare comp ) noexcept( noexcept( comp( *first1, *first2 ) !=
                                      comp( *first2, *first1 ) ) ) {
 
-  traits::is_input_iterator_test<InputIterator1>( );
+	traits::is_input_iterator_test<InputIterator1>( );
 	traits::is_input_iterator_test<InputIterator2>( );
 	traits::is_compare_test<Compare, decltype( *first1 ), decltype( *first2 )>( );
-  traits::is_compare_test<Compare, decltype( *first2 ), decltype( *first1 )>( );
+	traits::is_compare_test<Compare, decltype( *first2 ), decltype( *first1 )>( );
 
 	while( ( first1 != last1 ) and ( first2 != last2 ) ) {
 		if( comp( *first1, *first2 ) ) {
@@ -1035,12 +1035,13 @@ constexpr OutputIterator transform_n(
   UnaryOperation unary_op ) noexcept( noexcept( *first_out =
                                                   unary_op( *first ) ) ) {
 
-  traits::is_input_iterator_test<InputIterator>( );
+	traits::is_input_iterator_test<InputIterator>( );
 	static_assert( traits::is_callable_v<UnaryOperation, decltype( *first )>,
 	               "UnaryOperation does not accept a single argument of the "
 	               "dereferenced type of first" );
 
-	traits::is_output_iterator_test<OutputIterator, decltype( unary_op( *first ) )>( );
+	traits::is_output_iterator_test<OutputIterator,
+	                                decltype( unary_op( *first ) )>( );
 
 	while( count-- > 0 ) {
 		*first_out = unary_op( *first );

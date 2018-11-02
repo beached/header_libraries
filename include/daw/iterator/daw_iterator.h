@@ -26,7 +26,7 @@
 
 namespace daw {
 	template<typename Iterator>
-	constexpr std::move_iterator<Iterator> make_move_iterator( Iterator && i ) {
+	constexpr std::move_iterator<Iterator> make_move_iterator( Iterator &&i ) {
 		traits::is_iterator_test<Iterator>( );
 
 		return std::move_iterator<Iterator>( std::forward<Iterator>( i ) );

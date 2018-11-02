@@ -46,7 +46,7 @@ namespace daw {
 
 	private:
 		std::variant<std::exception_ptr, value_type> m_value =
-		  std::exception_ptr(nullptr);
+		  std::exception_ptr( nullptr );
 
 	public:
 		struct exception_tag {};

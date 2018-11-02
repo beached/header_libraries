@@ -38,7 +38,7 @@ namespace in_range_test {
 	static_assert( !daw::in_range( 15, -10, 10 ) );
 	static_assert( daw::in_range( -10, -10, 10 ) );
 	static_assert( !daw::in_range( 10, -10, 10 ) );
-}
+} // namespace in_range_test
 
 BOOST_AUTO_TEST_CASE( daw_utility_append_test ) {
 	std::vector<int> a{1, 2, 3, 4, 5};

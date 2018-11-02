@@ -290,7 +290,8 @@ namespace daw {
 namespace std {
 	template<typename T>
 	struct hash<daw::value_ptr<T>>
-	  : std::enable_if_t<daw::traits::is_callable_v<std::hash<T>, T>, daw::impl::empty_t> {
+	  : std::enable_if_t<daw::traits::is_callable_v<std::hash<T>, T>,
+	                     daw::impl::empty_t> {
 
 		template<typename Arg>
 		size_t operator( )( Arg &&arg ) const {

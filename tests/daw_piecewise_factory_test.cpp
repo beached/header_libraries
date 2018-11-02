@@ -38,17 +38,14 @@ constexpr bool test( bool b ) noexcept {
 constexpr auto test_001( ) noexcept {
 	auto tmp = daw::piecewise_factory_t<A, int, int>{};
 	tmp.set<0>( 5 );
-	tmp.set<1>( 6 );
+	tmp.set( 1, 6 );
 	return tmp( );
 }
 
+constexpr extern A const a = test_001( );
+
 int main( ) {
-	auto a = test_001( );
-	if( a.a != 5 ) {
-		return 1;
-	};
-	if( a.b != 6 ) {
-		return 2;
-	};
+	static_assert( a.a == 5 );
+	static_assert( a.b == 6 );
 	return 0;
 }

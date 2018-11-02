@@ -157,7 +157,7 @@ namespace daw {
 		                                     is_signed_v<SignedInteger>>,
 		                          std::nullptr_t> = nullptr>
 		constexpr uintmax_t abs( SignedInteger v ) noexcept {
-			// This accounts for when negating the number is out of range 
+			// This accounts for when negating the number is out of range
 			if( v == std::numeric_limits<intmax_t>::min( ) ) {
 				return pow2<uintmax_t>( bsizeof<intmax_t> - 1 );
 			}

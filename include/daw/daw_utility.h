@@ -884,8 +884,12 @@ namespace daw {
 
 	/// Checks if value is in the range [lower, upper)
 	template<typename Value, typename LowerBound, typename UpperBound>
-	constexpr bool in_range( Value && value, LowerBound && lower, UpperBound && upper ) noexcept( noexcept( lower <= value && value < upper ) ) {
-		return std::forward<LowerBound>( lower ) <= value && value < std::forward<UpperBound>( upper );
+	constexpr bool
+	in_range( Value &&value, LowerBound &&lower,
+	          UpperBound &&upper ) noexcept( noexcept( lower <= value &&
+	                                                   value < upper ) ) {
+		return std::forward<LowerBound>( lower ) <= value &&
+		       value < std::forward<UpperBound>( upper );
 	}
 } // namespace daw
 

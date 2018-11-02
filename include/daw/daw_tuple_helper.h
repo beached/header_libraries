@@ -342,8 +342,9 @@ namespace daw {
 			struct call_func {
 				Func func;
 
-				template<typename Arg, std::enable_if_t<traits::is_callable_v<Func, Arg>,
-				                                        std::nullptr_t> = nullptr>
+				template<typename Arg,
+				         std::enable_if_t<traits::is_callable_v<Func, Arg>,
+				                          std::nullptr_t> = nullptr>
 				constexpr void
 				operator( )( Arg &&value ) noexcept( noexcept( func( value ) ) ) {
 					func( std::forward<Arg>( value ) );
@@ -392,13 +393,15 @@ namespace daw {
 
 	namespace detail {
 		template<class T, class Tuple, std::size_t... I>
-		constexpr T make_from_tuple_impl( Tuple &&t, std::index_sequence<I...>, std::true_type ) {
+		constexpr T make_from_tuple_impl( Tuple &&t, std::index_sequence<I...>,
+		                                  std::true_type ) {
 			return T{std::get<I>( std::forward<Tuple>( t ) )...};
 		}
 
 		template<class T, class Tuple, std::size_t... I>
-		constexpr T make_from_tuple_impl( Tuple &&t, std::index_sequence<I...>, std::false_type ) {
-			return T(std::get<I>( std::forward<Tuple>( t ) )...);
+		constexpr T make_from_tuple_impl( Tuple &&t, std::index_sequence<I...>,
+		                                  std::false_type ) {
+			return T( std::get<I>( std::forward<Tuple>( t ) )... );
 		}
 	} // namespace detail
 
@@ -407,6 +410,7 @@ namespace daw {
 		return detail::make_from_tuple_impl<T>(
 		  std::forward<Tuple>( t ),
 		  std::make_index_sequence<
-		    std::tuple_size_v<std::remove_reference_t<Tuple>>>{}, std::is_aggregate<T>{} );
+		    std::tuple_size_v<std::remove_reference_t<Tuple>>>{},
+		  std::is_aggregate<T>{} );
 	}
 } // namespace daw

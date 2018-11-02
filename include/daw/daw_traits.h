@@ -627,5 +627,4 @@ namespace daw {
 		  std::tuple_element_t<sizeof...( Args ), std::tuple<Arg, Args...>>;
 	} // namespace traits
 
-
 } // namespace daw

@@ -206,7 +206,7 @@ namespace daw {
 		public:
 			static void remove_observer( control_block_t *cb ) {
 				if( cb and cb->remove_observer(
-				            std::lock_guard<std::mutex>( cb->m_is_borrowed ) ) ) {
+				             std::lock_guard<std::mutex>( cb->m_is_borrowed ) ) ) {
 
 					destruct_cb( cb );
 				}
@@ -214,7 +214,7 @@ namespace daw {
 
 			static void remove_owner( control_block_t *cb ) {
 				if( cb and cb->remove_owner(
-				            std::lock_guard<std::mutex>( cb->m_is_borrowed ) ) ) {
+				             std::lock_guard<std::mutex>( cb->m_is_borrowed ) ) ) {
 
 					destruct_cb( cb );
 				}

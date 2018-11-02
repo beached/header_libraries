@@ -200,7 +200,7 @@ namespace daw {
 
 			static_assert(
 			  traits::is_callable_v<UnaryOperator,
-			                     decltype( *std::cbegin( container ) )>,
+			                        decltype( *std::cbegin( container ) )>,
 			  "UnaryOperator is not callable with the values stored in Container" );
 
 			using result_t = std::vector<decltype(
@@ -228,7 +228,7 @@ namespace daw {
 
 			static_assert(
 			  traits::is_callable_v<UnaryOperator,
-			                     decltype( *std::cbegin( container ) )>,
+			                        decltype( *std::cbegin( container ) )>,
 			  "UnaryOperator is not callable with the values stored in Container" );
 
 			static_assert(
@@ -257,7 +257,7 @@ namespace daw {
 
 			static_assert(
 			  traits::is_callable_v<UnaryOperator,
-			                     decltype( *std::cbegin( container ) )>,
+			                        decltype( *std::cbegin( container ) )>,
 			  "UnaryOperator is not callable with the values stored in Container" );
 
 			std::transform( std::cbegin( container ), std::cend( container ),

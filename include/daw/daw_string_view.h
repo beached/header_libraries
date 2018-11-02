@@ -31,7 +31,7 @@
 
 #ifndef NOSTRING
 #include <string>
-#if defined(__cpp_lib_string_view)
+#if defined( __cpp_lib_string_view )
 #include <string_view>
 #endif
 
@@ -126,10 +126,11 @@ namespace daw {
 
 		basic_string_view( std::basic_string<CharT, Traits> const &str ) noexcept
 		  : basic_string_view{str.data( ), str.size( )} {}
-#if defined(__cpp_lib_string_view)
-		constexpr basic_string_view( std::basic_string_view<CharT, Traits> sv ) noexcept
-			: m_first( sv.data( ) )
-			, m_size( sv.size( ) ) {}
+#if defined( __cpp_lib_string_view )
+		constexpr basic_string_view(
+		  std::basic_string_view<CharT, Traits> sv ) noexcept
+		  : m_first( sv.data( ) )
+		  , m_size( sv.size( ) ) {}
 #endif
 #endif
 	private:
@@ -174,9 +175,9 @@ namespace daw {
 			return to_string( );
 		}
 
-#if defined(__cpp_lib_string_view)
+#if defined( __cpp_lib_string_view )
 		constexpr operator std::basic_string_view<CharT, Traits>( ) const {
-			return { m_first, m_size };
+			return {m_first, m_size};
 		}
 #endif
 		template<typename ChrT, typename TrtsT, typename Allocator>
@@ -957,7 +958,8 @@ namespace daw {
 	  typename RandomIterator,
 	  typename CharT = std::decay_t<decltype( *std::declval<RandomIterator>( ) )>,
 	  typename TraitsT = std::char_traits<CharT>>
-	constexpr auto make_string_view_it( RandomIterator first, RandomIterator last ) noexcept {
+	constexpr auto make_string_view_it( RandomIterator first,
+	                                    RandomIterator last ) noexcept {
 		traits::is_random_access_iterator_test<RandomIterator>( );
 		traits::is_input_iterator_test<RandomIterator>( );
 
