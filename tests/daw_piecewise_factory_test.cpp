@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 #include <string>
+#include <iostream>
 
 #include "daw/daw_piecewise_factory.h"
 
@@ -59,6 +60,13 @@ B test_002( ) noexcept {
 constexpr extern A const a = test_001( );
 
 int main( ) {
+    std::cout << "sizeof daw::piecewise_factory_t<A, int, int> is " << sizeof( daw::piecewise_factory_t<A, int, int> ) << '\n';
+    std::cout << "sizeof tuple<int, int> is " << sizeof( std::tuple<int, int> ) << '\n';
+    std::cout << "sizeof int is " << sizeof( int ) << '\n';
+    std::cout << "sizeof tuple<optional<int>, optional<int>> is " << sizeof( std::tuple<std::optional<int>, std::optional<int>> ) << '\n';
+    std::cout << "sizeof optional<int> is " << sizeof( std::optional<int> ) << '\n';
+    std::cout << "sizeof optional<char> is " << sizeof( std::optional<char> ) << '\n';
+    std::cout << "sizeof variant<monostate,int> is " << sizeof( std::variant<std::monostate, int> ) << '\n';
 	static_assert( a.a == 5 );
 	static_assert( a.b == 6 );
 	B b = test_002( );

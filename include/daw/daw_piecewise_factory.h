@@ -54,8 +54,8 @@ namespace daw {
 			daw::exception::daw_throw<std::out_of_range>( );
 		}
 
-		template<typename T>
-		constexpr T remove_optional_func( std::optional<T> );
+		template<template<class> class T, class Arg>
+		constexpr Arg remove_layer_func(T<Arg>);
 
 		template<size_t N, size_t ArgSize, typename Tuple, typename Value,
 		         std::enable_if_t<( N < ArgSize ), std::nullptr_t> = nullptr>
@@ -64,8 +64,8 @@ namespace daw {
 				set_tuple<N + 1, ArgSize>( index, tp, std::forward<Value>( value ) );
 				return;
 			}
-			using value_t = decltype( remove_optional_func(
-			  std::declval<std::tuple_element_t<N, Tuple>>( ) ) );
+			using value_t = decltype(remove_layer_func(
+                    std::declval<std::tuple_element_t<N, Tuple>>()) );
 
 			auto const setter =
 			  overloaded{[&]( value_t const &v ) { std::get<N>( tp ) = v; },
@@ -135,7 +135,6 @@ namespace daw {
 
 		template<typename Value>
 		constexpr void set( size_t index, Value &&value ) {
-			// TOOD: static_assert if Value isn't in Args...
 			impl::set_tuple<0, sizeof...( Args )>( index, m_args,
 			                                       std::forward<Value>( value ) );
 		}
