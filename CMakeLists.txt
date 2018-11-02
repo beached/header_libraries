@@ -62,7 +62,6 @@ set( TESTED_HEADERS_PREFIXES
 	daw_parse_to
 	daw_parser_helper
 	daw_parser_helper_sv
-	daw_piecewise_factory
 	daw_poly_vector
 	daw_random
 	daw_read_file
@@ -87,6 +86,11 @@ set( TESTED_HEADERS_PREFIXES
 	daw_variant_cast
 	daw_value_ptr
 	not_null
+)
+
+
+set( TESTED_HEADERS_PREFIXES_NB
+	daw_piecewise_factory
 )
 
 set( UNTESTED_HEADER_IMPL 
@@ -176,6 +180,14 @@ foreach( CUR_PREFIX ${TESTED_HEADERS_PREFIXES} )
 	install( FILES "${HEADER_FOLDER}/daw/${CUR_PREFIX}.h" DESTINATION include/daw )
 	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/${CUR_PREFIX}.h ${TEST_FOLDER}/${CUR_PREFIX}_test.cpp )
 	target_link_libraries( ${CUR_PREFIX}_test_bin test_main ${Boost_LIBRARIES} ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
+	add_test( ${CUR_PREFIX}_test ${CUR_PREFIX}_test_bin )
+	add_dependencies( check ${CUR_PREFIX}_test_bin )
+endforeach( CUR_PREFIX )
+
+foreach( CUR_PREFIX ${TESTED_HEADERS_PREFIXES_NB} )
+	install( FILES "${HEADER_FOLDER}/daw/${CUR_PREFIX}.h" DESTINATION include/daw )
+	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/${CUR_PREFIX}.h ${TEST_FOLDER}/${CUR_PREFIX}_test.cpp )
+	target_link_libraries( ${CUR_PREFIX}_test_bin test_main ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
 	add_test( ${CUR_PREFIX}_test ${CUR_PREFIX}_test_bin )
 	add_dependencies( check ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )

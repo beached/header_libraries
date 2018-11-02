@@ -43,7 +43,12 @@ constexpr auto test_001( ) noexcept {
 }
 
 int main( ) {
-	constexpr auto a = test_001( );
-	static_assert( a.a == 5 );
-	static_assert( a.b == 6 );
+	auto a = test_001( );
+	if( a.a != 5 ) {
+		return 1;
+	};
+	if( a.b != 6 ) {
+		return 2;
+	};
+	return 0;
 }
