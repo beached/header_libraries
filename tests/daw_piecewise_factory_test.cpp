@@ -21,7 +21,6 @@
 // SOFTWARE.
 
 #include <string>
-#include <iostream>
 
 #include "daw/daw_piecewise_factory.h"
 
@@ -30,8 +29,8 @@ struct A {
 	int b = 0;
 };
 
-struct B: A {
-    std::string c = "";
+struct B : A {
+	std::string c = "";
 };
 
 constexpr bool test( bool b ) noexcept {
@@ -42,14 +41,22 @@ constexpr bool test( bool b ) noexcept {
 	}
 }
 
-constexpr A test_001( ) noexcept {
+B test_001() noexcept {
+	auto tmp = daw::piecewise_factory_late_t<B, int, int, std::string>{};
+	tmp.set<0>( 5 );
+	tmp.set( 1, 6 );
+	tmp.set<2>( []( ) { return "Hello"; } );
+	return tmp( );
+}
+
+constexpr A test_002() noexcept {
 	auto tmp = daw::piecewise_factory_t<A, int, int>{};
 	tmp.set<0>( 5 );
 	tmp.set( 1, 6 );
 	return tmp( );
 }
 
-B test_002( ) noexcept {
+B test_003() noexcept {
 	auto tmp = daw::piecewise_factory_t<B, int, int, std::string>{};
 	tmp.set<0>( 5 );
 	tmp.set( 1, 6 );
@@ -57,21 +64,29 @@ B test_002( ) noexcept {
 	return tmp( );
 }
 
-constexpr extern A const a = test_001( );
+constexpr A test_004( ) noexcept {
+	auto tmp = daw::piecewise_factory_t<A, int, int>{};
+	tmp.set<0>( 5 );
+	tmp.set( 1, 6 );
+	return std::move( tmp )( );
+}
+
+constexpr extern A const a = test_002( );
+constexpr extern A const b = test_004( );
 
 int main( ) {
-    std::cout << "sizeof daw::piecewise_factory_t<A, int, int> is " << sizeof( daw::piecewise_factory_t<A, int, int> ) << '\n';
-    std::cout << "sizeof tuple<int, int> is " << sizeof( std::tuple<int, int> ) << '\n';
-    std::cout << "sizeof int is " << sizeof( int ) << '\n';
-    std::cout << "sizeof tuple<optional<int>, optional<int>> is " << sizeof( std::tuple<std::optional<int>, std::optional<int>> ) << '\n';
-    std::cout << "sizeof optional<int> is " << sizeof( std::optional<int> ) << '\n';
-    std::cout << "sizeof optional<char> is " << sizeof( std::optional<char> ) << '\n';
-    std::cout << "sizeof variant<monostate,int> is " << sizeof( std::variant<std::monostate, int> ) << '\n';
+	B c = test_001();
+	if( c.c != "Hello" ) {
+		return 3;
+	}
 	static_assert( a.a == 5 );
 	static_assert( a.b == 6 );
-	B b = test_002( );
-	if( b.c != "Hello" ) {
-	    return 1;
+	static_assert( b.a == 5 );
+	static_assert( b.b == 6 );
+	B d = test_003();
+	if( d.c != "Hello" ) {
+		return 1;
 	}
+
 	return 0;
 }

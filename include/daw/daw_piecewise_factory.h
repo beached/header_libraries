@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <functional>
 #include <optional>
 #include <tuple>
 #include <variant>
@@ -33,110 +34,204 @@
 
 namespace daw {
 	namespace impl {
+		template<typename T, typename U>
+		remove_cvref_t<T> remove_layer_func( std::variant<T, U> );
+
+		template<typename T>
+		remove_cvref_t<T> remove_layer_func( T );
+
 		template<typename... Ts>
 		struct overloaded : Ts... {
 			using Ts::operator( )...;
 		};
-
 		template<typename... Ts>
 		overloaded( Ts... )->overloaded<Ts...>;
 
-		template<typename F, typename Tuple, std::size_t... I>
-		constexpr decltype( auto )
-		piecewise_applier_impl( F &&f, Tuple &&t, std::index_sequence<I...> ) {
-			return daw::invoke( std::forward<F>( f ),
-			                    ( *( std::get<I>( std::forward<Tuple>( t ) ) ) )... );
+		template<typename T>
+		struct process_args_t {
+			constexpr T operator( )( T const &value ) const {
+				return value;
+			}
+			constexpr T operator( )( T &&value ) const {
+				return std::move( value );
+			}
+
+			template<typename Callable,
+			         std::enable_if_t<
+			           std::is_convertible_v<
+			             decltype( std::declval<remove_cvref_t<Callable>>( )( ) ), T>,
+			           std::nullptr_t> = nullptr>
+			constexpr T operator( )( Callable &&f ) const {
+				return std::forward<Callable>( f )( );
+			}
+			T operator( )( std::monostate ) const {
+				daw::exception::daw_throw<std::invalid_argument>(
+				  "Value cannot be empty" );
+			}
+		};
+
+		template<typename T>
+		constexpr T &&get_value( T &&value ) {
+			return std::forward<T>( value );
 		}
 
-		template<size_t N, size_t ArgSize, typename Tuple, typename Value,
-		         std::enable_if_t<( N >= ArgSize ), std::nullptr_t> = nullptr>
-		constexpr void set_tuple( size_t, Tuple &, Value && ) {
+		template<typename... Args>
+		constexpr auto get_value( std::variant<Args...> const &value ) {
+			using T = decltype( remove_layer_func( value ) );
+			return std::visit( process_args_t<T>{}, value );
+		}
+
+		template<typename... Args>
+		constexpr auto get_value( std::variant<Args...> &&value ) {
+			using T = decltype( remove_layer_func( value ) );
+			return std::visit( process_args_t<T>{}, std::move( value ) );
+		}
+
+		template<size_t N, typename... Args>
+		constexpr auto process_args( std::tuple<Args...> const &tp ) {
+			return get_value( *std::get<N>( tp ) );
+		}
+
+		template<size_t N, typename... Args>
+		constexpr auto process_args( std::tuple<Args...> &&tp ) {
+			return get_value( *std::get<N>( std::move( tp ) ) );
+		}
+
+		template<typename T, typename... Args, std::size_t... I>
+		constexpr T piecewise_applier_impl( std::tuple<Args...> const &tp,
+		                                    std::index_sequence<I...> ) {
+
+			return construct_a<T>{}( process_args<I>( tp )... );
+		}
+
+		template<typename T, typename... Args, std::size_t... I>
+		constexpr T piecewise_applier_impl( std::tuple<Args...> &&tp,
+		                                    std::index_sequence<I...> ) {
+
+			return construct_a<T>{}( process_args<I>( std::move( tp ) )... );
+		}
+
+		template<
+		  size_t N, bool, typename... Args, typename Value,
+		  std::enable_if_t<( N >= sizeof...( Args ) ), std::nullptr_t> = nullptr>
+		void set_tuple( size_t, std::tuple<Args...> &, Value && ) {
 			daw::exception::daw_throw<std::out_of_range>( );
 		}
 
-		template<template<class> class T, class Arg>
-		constexpr Arg remove_layer_func(T<Arg>);
-
-		template<size_t N, size_t ArgSize, typename Tuple, typename Value,
-		         std::enable_if_t<( N < ArgSize ), std::nullptr_t> = nullptr>
-		constexpr void set_tuple( size_t index, Tuple &tp, Value &&value ) {
+		template<
+		  size_t N, bool use_late, typename... Args, typename Value,
+		  std::enable_if_t<( N < sizeof...( Args ) ), std::nullptr_t> = nullptr>
+		constexpr void set_tuple( size_t index, std::tuple<Args...> &tp,
+		                          Value &&value ) {
 			if( N != index ) {
-				set_tuple<N + 1, ArgSize>( index, tp, std::forward<Value>( value ) );
+				set_tuple<N + 1, use_late>( index, tp, std::forward<Value>( value ) );
 				return;
 			}
-			using value_t = decltype(remove_layer_func(
-                    std::declval<std::tuple_element_t<N, Tuple>>()) );
+			using tp_val_t = decltype( std::get<N>( tp ) );
+			using value_t = decltype( remove_layer_func( std::declval<tp_val_t>( ) ) );
 
-			auto const setter =
-			  overloaded{[&]( value_t const &v ) { std::get<N>( tp ) = v; },
-			             [&]( value_t &&v ) { std::get<N>( tp ) = std::move( v ); },
-			             []( ... ) noexcept {}};
+			auto const setter = overloaded{
+			  [&]( value_t const &v ) { std::get<N>( tp ) = value_t{v}; },
+			  [&]( value_t &&v ) { std::get<N>( tp ) = value_t{std::move( v )}; },
+			  [&]( std::function<value_t( )> const &f ) {
+				  std::get<N>( tp ) = value_t{f( )};
+			  },
+			  [&]( std::function<value_t( )> &&f ) {
+				  std::get<N>( tp ) = value_t{std::move( f )( )};
+			  },
+			  []( ... ) noexcept {}};
 
 			setter( std::forward<Value>( value ) );
 		}
+
+		template<typename T, typename... Args>
+		constexpr T piecewise_applier( std::tuple<Args...> const &tp ) {
+			return piecewise_applier_impl<T>(
+			  tp, std::make_index_sequence<sizeof...( Args )>{} );
+		}
+
+		template<typename T, typename... Args>
+		constexpr T piecewise_applier( std::tuple<Args...> &&tp ) {
+			return piecewise_applier_impl<T>(
+			  std::move( tp ), std::make_index_sequence<sizeof...( Args )>{} );
+		}
+
+		template<typename T, bool use_late, typename... Args>
+		struct piecewise_factory_impl_t {
+		protected:
+			using ttype_t =
+			  std::conditional_t<use_late,
+			                     std::tuple<std::optional<
+			                       std::variant<Args, std::function<Args( )>>>...>,
+			                     std::tuple<std::optional<Args>...>>;
+
+			ttype_t m_args;
+
+		public:
+			constexpr T operator( )( ) const & {
+				return piecewise_applier<T>( m_args );
+			}
+
+			constexpr T operator( )( ) & {
+				return piecewise_applier<T>( m_args );
+			}
+
+			constexpr T operator( )( ) && {
+				return piecewise_applier<T>( std::move( m_args ) );
+			}
+
+		private:
+			template<size_t N>
+			using arg_at_t = std::tuple_element_t<N, std::tuple<Args...>>;
+
+		public:
+			template<size_t N>
+			constexpr void set( arg_at_t<N> const &value ) {
+
+				std::get<N>( m_args ) = value;
+			}
+
+			template<size_t N>
+			constexpr void set( arg_at_t<N> &&value ) {
+
+				std::get<N>( m_args ) = std::move( value );
+			}
+
+			template<typename Value>
+			constexpr void set( size_t index, Value &&value ) {
+				set_tuple<0, use_late>( index, m_args, std::forward<Value>( value ) );
+			}
+		};
 	} // namespace impl
 
-	template<typename F, typename... Args>
-	constexpr decltype( auto ) piecewise_applier( F &&f,
-	                                              std::tuple<Args...> const &t ) {
-		return impl::piecewise_applier_impl(
-		  std::forward<F>( f ), t, std::make_index_sequence<sizeof...( Args )>{} );
-	}
+	template<typename T, typename... Args>
+	struct piecewise_factory_late_t
+	  : private impl::piecewise_factory_impl_t<T, true, Args...> {
 
-	template<typename F, typename... Args>
-	constexpr decltype( auto ) piecewise_applier( F &&f,
-	                                              std::tuple<Args...> &&t ) {
-		return impl::piecewise_applier_impl(
-		  std::forward<F>( f ), std::move( t ),
-		  std::make_index_sequence<sizeof...( Args )>{} );
-	}
+		using impl::piecewise_factory_impl_t<T, true,
+		                                     Args...>::piecewise_factory_impl_t;
+		using impl::piecewise_factory_impl_t<T, true, Args...>::set;
+		using impl::piecewise_factory_impl_t<T, true, Args...>::operator( );
+
+		template<size_t N, typename Callable,
+		         std::enable_if_t<
+		           std::is_convertible_v<decltype( std::declval<Callable>( )( ) ),
+		                                 traits::nth_type<N, Args...>>,
+		           std::nullptr_t> = nullptr>
+		void set( Callable &&f ) {
+			std::function<traits::nth_type<N, Args...>( )> func =
+			  std::forward<Callable>( f );
+			std::get<N>( this->m_args ) = std::move( func );
+		}
+	};
 
 	template<typename T, typename... Args>
-	class piecewise_factory_t {
-		std::tuple<std::optional<Args>...> m_args;
+	struct piecewise_factory_t
+	  : private impl::piecewise_factory_impl_t<T, false, Args...> {
 
-	public:
-		constexpr T
-		operator( )( ) const &noexcept( is_nothrow_constructible_v<T, Args...> ) {
-			return piecewise_applier(
-			  []( Args const &... args ) { return construct_a<T>{}( args... ); },
-			  m_args );
-		}
-
-		constexpr T operator( )( ) &
-		  noexcept( is_nothrow_constructible_v<T, Args...> ) {
-			return piecewise_applier(
-			  []( Args const &... args ) { return construct_a<T>{}( args... ); },
-			  m_args );
-		}
-
-		constexpr T operator( )( ) &&
-		  noexcept( is_nothrow_constructible_v<T, Args...> ) {
-			return piecewise_applier(
-			  []( Args &&... args ) {
-				  return construct_a<T>{}( std::move( args )... );
-			  },
-			  std::move( m_args ) );
-		}
-
-		template<size_t N>
-		constexpr void
-		set( typename std::tuple_element<N, std::tuple<Args...>>::type const
-		       &arg ) noexcept( is_nothrow_copy_constructible_v<decltype( arg )> ) {
-			std::get<N>( m_args ) = arg;
-		}
-
-		template<size_t N>
-		constexpr void
-		set( typename std::tuple_element<N, std::tuple<Args...>>::type &&
-		       arg ) noexcept( is_nothrow_move_constructible_v<decltype( arg )> ) {
-			std::get<N>( m_args ) = std::move( arg );
-		}
-
-		template<typename Value>
-		constexpr void set( size_t index, Value &&value ) {
-			impl::set_tuple<0, sizeof...( Args )>( index, m_args,
-			                                       std::forward<Value>( value ) );
-		}
+		using impl::piecewise_factory_impl_t<T, false,
+		                                     Args...>::piecewise_factory_impl_t;
+		using impl::piecewise_factory_impl_t<T, false, Args...>::set;
+		using impl::piecewise_factory_impl_t<T, false, Args...>::operator( );
 	};
 } // namespace daw

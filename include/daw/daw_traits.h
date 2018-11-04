@@ -625,6 +625,8 @@ namespace daw {
 		template<typename Arg, typename... Args>
 		using last_type_t =
 		  std::tuple_element_t<sizeof...( Args ), std::tuple<Arg, Args...>>;
-	} // namespace traits
 
+		template<size_t N, typename... Args>
+		using nth_type = std::tuple_element_t<N, std::tuple<Args...>>;
+	} // namespace traits
 } // namespace daw
