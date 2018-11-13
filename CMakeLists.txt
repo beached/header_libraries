@@ -68,6 +68,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_read_only
 	daw_safe_string
 	daw_scope_guard
+	daw_sip_hash
 	daw_size_literals
 	daw_span
 	daw_static_array
