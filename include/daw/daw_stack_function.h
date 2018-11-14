@@ -31,13 +31,22 @@
 namespace daw {
 	template<size_t N, typename Base>
 	struct function_storage {
-		std::aligned_storage_t<N> m_data{};
+		std::aligned_storage_t<N> m_data;
 
-		constexpr function_storage( ) noexcept = default;
-		constexpr function_storage( function_storage const & ) = default;
-		constexpr function_storage( function_storage && ) = default;
-		function_storage &operator=( function_storage const & ) = default;
-		function_storage &operator=( function_storage && ) = default;
+		// TODO look at noexcept stuff
+		function_storage( function_storage const & ) noexcept = default;
+		function_storage( function_storage && ) noexcept = default;
+
+		function_storage & operator=( function_storage const & rhs ) {
+			if( this == &rhs ) {
+				return *this;
+			}
+			clean( );
+			m_data = rhs.m_data;
+			return *this;
+		}
+			
+		function_storage &operator=( function_storage && ) noexcept = default;
 
 		template<typename Func>
 		function_storage( Func &&f ) {
@@ -52,8 +61,12 @@ namespace daw {
 			return reinterpret_cast<Base const *>( &m_data );
 		}
 
-		~function_storage( ) {
+		void clean( ) {
 			ptr( )->~Base( );
+		}
+
+		~function_storage( ) {
+			clean( );
 		}
 
 		template<typename Func>
@@ -89,6 +102,7 @@ namespace daw {
 		struct function_base {
 			virtual Result operator( )( FuncArgs... ) const = 0;
 			virtual Result operator( )( FuncArgs... ) = 0;
+			virtual bool empty( ) const = 0;
 
 			function_base( ) noexcept = default;
 			virtual ~function_base( ) = default;
@@ -98,19 +112,23 @@ namespace daw {
 			function_base &operator=( function_base && ) noexcept = default;
 		};
 
+		struct empty_child final: function_base {
+			[[noreturn]]
+			Result operator( )( FuncArgs... ) const noexcept override { std::terminate( ); }
+			[[noreturn]]
+			Result operator( )( FuncArgs... ) noexcept override { std::terminate( ); }
+
+			bool empty( ) const override { return true; }
+		};
+
 		template<typename Func>
-		struct function_child : function_base {
+		struct function_child final: function_base {
 			Func m_func;
 
 			template<typename F>
-			function_child( F &&func )
+			function_child( F &&func ) noexcept(
+			  std::is_nothrow_constructible_v<Func, F> )
 			  : m_func( std::forward<F>( func ) ) {}
-
-			~function_child( ) override = default;
-			function_child( function_child const & ) = default;
-			function_child( function_child && ) = default;
-			function_child &operator=( function_child const & ) = default;
-			function_child &operator=( function_child && ) = default;
 
 			Result operator( )( FuncArgs... args ) override {
 				return m_func( std::move( args )... );
@@ -119,14 +137,19 @@ namespace daw {
 			Result operator( )( FuncArgs... args ) const override {
 				return m_func( std::move( args )... );
 			}
+
+			bool empty( ) const override { return false; }
 		};
 
 		function_storage<MaxSize, function_base> m_storage;
 
 	public:
+		basic_function( ) noexcept: m_storage( empty_child{} ) {} 
+
 		template<typename Func>
 		basic_function( Func &&f )
 		  : m_storage( function_child<Func>( std::forward<Func>( f ) ) ) {
+
 			static_assert(
 			  sizeof( std::decay_t<Func> ) <= MaxSize,
 			  "Attempt to store a function that is larger than MaxSize." );
@@ -151,6 +174,10 @@ namespace daw {
 		template<typename... Args>
 		Result operator( )( Args &&... args ) const {
 			return ( *m_storage )( std::forward<Args>( args )... );
+		}
+
+		bool empty( ) const {
+			return m_storage->empty( );
 		}
 	};
 } // namespace daw

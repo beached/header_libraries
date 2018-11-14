@@ -39,6 +39,7 @@ int main( ) {
 	std::cout << func( ) << '\n';
 	func = &strfunc;
 	std::cout << func( ) << '\n';
+	daw::basic_function<100, int()> f{};
 	return 0;
 }
 
