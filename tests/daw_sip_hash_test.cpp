@@ -86,6 +86,9 @@ int main( ) {
 	          << daw::utility::format_seconds(
 	               t0 / ( static_cast<double>( REPEATS ) * 64.0 ) )
 	          << " per test.\n";
+
+	std::string const msg = "This is a test";
+	std::cout << "Hash of '" << msg << "' is " << daw::siphash24( msg.data( ), msg.size( ), key.data( ) ) << '\n';
 	return 0;
 }
 
