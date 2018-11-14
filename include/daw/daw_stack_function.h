@@ -101,10 +101,10 @@ namespace daw {
 		template<typename Func>
 		struct function_child : function_base {
 			Func m_func;
-			function_child( Func const &func )
-			  : m_func( func ) {}
-			function_child( Func &&func )
-			  : m_func( std::move( func ) ) {}
+
+			template<typename F>
+			function_child( F &&func )
+			  : m_func( std::forward<F>( func ) ) {}
 
 			~function_child( ) override = default;
 			function_child( function_child const & ) = default;
@@ -126,7 +126,22 @@ namespace daw {
 	public:
 		template<typename Func>
 		basic_function( Func &&f )
-		  : m_storage( function_child<Func>( std::forward<Func>( f ) ) ) {}
+		  : m_storage( function_child<Func>( std::forward<Func>( f ) ) ) {
+			static_assert(
+			  sizeof( std::decay_t<Func> ) <= MaxSize,
+			  "Attempt to store a function that is larger than MaxSize." );
+		}
+
+		template<typename Func>
+		basic_function &operator=( Func &&f ) {
+			static_assert(
+			  sizeof( std::decay_t<Func> ) <= MaxSize,
+			  "Attempt to store a function that is larger than MaxSize." );
+
+			m_storage = function_storage<MaxSize, function_base>(
+			  function_child<Func>( std::forward<Func>( f ) ) );
+			return *this;
+		}
 
 		template<typename... Args>
 		Result operator( )( Args &&... args ) {

@@ -71,8 +71,8 @@ set( TESTED_HEADERS_PREFIXES
 	daw_sip_hash
 	daw_size_literals
 	daw_span
+	daw_stack_function
 	daw_static_array
-	daw_static_function
 	daw_static_optional
 	daw_static_string
 	daw_string

@@ -24,15 +24,20 @@
 #include <iostream>
 #include <string>
 
-#include "daw/daw_static_function.h"
+#include "daw/daw_stack_function.h"
+
+std::string strfunc( ) { 
+	return "Goodbye";
+}
 
 int main( ) {
 	daw::basic_function<100, std::string( )> func = []( ) -> std::string { return "Hello"; };
 	daw::basic_function<100, std::string( )> const func2 = []( ) -> std::string { return "Hello2"; };
 
 	std::cout << func( ) << '\n' << func2( ) << '\n';
-	func = []( ) -> std::string { return "Goodbye"; };
-
+	func = strfunc;
+	std::cout << func( ) << '\n';
+	func = &strfunc;
 	std::cout << func( ) << '\n';
 	return 0;
 }
