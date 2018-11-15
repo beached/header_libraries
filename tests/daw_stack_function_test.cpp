@@ -69,6 +69,14 @@ int main( ) {
 	f2 = sf;
 	std::cout << "f2 empty(std::function that is empty) state:" << (f2.empty( ) ? "empty" : "not empty" ) << '\n';
 
+	daw::basic_function<100, void( )> vf1 = []( ) {
+		std::cout << "void( )\n";
+	};
+	vf1( );
+	daw::basic_function<100, void( )> const cvf1 = []( ) {
+		std::cout << "void( )\n";
+	};
+	cvf1( );
 	return 0;
 }
 

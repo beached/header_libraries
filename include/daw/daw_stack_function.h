@@ -112,13 +112,7 @@ namespace daw {
 				return ptr( );
 			}
 		};
-	} // namespace func_impl
-
-	template<size_t, typename>
-	class basic_function;
-
-	template<size_t MaxSize, typename Result, typename... FuncArgs>
-	class basic_function<MaxSize, Result( FuncArgs... )> {
+		template<typename Result, typename... FuncArgs>
 		struct function_base {
 			virtual Result operator( )( FuncArgs... ) const = 0;
 			virtual Result operator( )( FuncArgs... ) = 0;
@@ -132,7 +126,8 @@ namespace daw {
 			function_base &operator=( function_base && ) noexcept = default;
 		};
 
-		struct empty_child final : function_base {
+		template<typename Result, typename... FuncArgs>
+		struct empty_child final : function_base<Result, FuncArgs...> {
 			[[noreturn]] Result operator( )( FuncArgs... ) const override {
 				daw::exception::daw_throw<std::bad_function_call>( );
 			}
@@ -145,8 +140,11 @@ namespace daw {
 			}
 		};
 
-		template<typename Func>
-		struct function_child final : function_base {
+		template<typename...>
+		struct function_child;
+
+		template<typename Func, typename Result, typename... FuncArgs>
+		struct function_child<Func, Result, FuncArgs...> final : function_base<Result, FuncArgs...> {
 			Func m_func;
 
 			template<typename F>
@@ -171,6 +169,19 @@ namespace daw {
 				return false;
 			}
 		};
+	} // namespace func_impl
+
+	template<size_t, typename>
+	class basic_function;
+
+	template<size_t MaxSize, typename Result, typename... FuncArgs>
+	class basic_function<MaxSize, Result( FuncArgs... )> {
+		using function_base = func_impl::function_base<Result, FuncArgs...>;
+		using empty_child = func_impl::empty_child<Result, FuncArgs...>;
+
+		template<typename Func>
+		using function_child = func_impl::function_child<Func, Result, FuncArgs...>;
+
 
 		func_impl::function_storage<MaxSize, function_base> m_storage;
 
@@ -257,13 +268,21 @@ namespace daw {
 		template<typename... Args>
 		Result operator( )( Args &&... args ) {
 			function_base &f = *m_storage;
-			return f( std::forward<Args>( args )... );
+			if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
+				f(std::forward<Args>(args)...);
+			} else {
+				return f(std::forward<Args>(args)...);
+			}
 		}
 
 		template<typename... Args>
 		Result operator( )( Args &&... args ) const {
 			function_base const &f = *m_storage;
-			return f( std::forward<Args>( args )... );
+			if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
+				f(std::forward<Args>(args)...);
+			} else {
+				return f(std::forward<Args>(args)...);
+			}
 		}
 
 		bool empty( ) const {
