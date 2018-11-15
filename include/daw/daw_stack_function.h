@@ -144,7 +144,8 @@ namespace daw {
 		struct function_child;
 
 		template<typename Func, typename Result, typename... FuncArgs>
-		struct function_child<Func, Result, FuncArgs...> final : function_base<Result, FuncArgs...> {
+		struct function_child<Func, Result, FuncArgs...> final
+		  : function_base<Result, FuncArgs...> {
 			Func m_func;
 
 			template<typename F>
@@ -153,11 +154,19 @@ namespace daw {
 			  : m_func( std::forward<F>( func ) ) {}
 
 			Result operator( )( FuncArgs... args ) override {
-				return m_func( std::move( args )... );
+				if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
+					m_func( std::move( args )... );
+				} else {
+					return m_func( std::move( args )... );
+				}
 			}
 
 			Result operator( )( FuncArgs... args ) const override {
-				return m_func( std::move( args )... );
+				if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
+					m_func( std::move( args )... );
+				} else {
+					return m_func( std::move( args )... );
+				}
 			}
 
 			bool empty( ) const override {
@@ -181,7 +190,6 @@ namespace daw {
 
 		template<typename Func>
 		using function_child = func_impl::function_child<Func, Result, FuncArgs...>;
-
 
 		func_impl::function_storage<MaxSize, function_base> m_storage;
 
@@ -269,9 +277,9 @@ namespace daw {
 		Result operator( )( Args &&... args ) {
 			function_base &f = *m_storage;
 			if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
-				f(std::forward<Args>(args)...);
+				f( std::forward<Args>( args )... );
 			} else {
-				return f(std::forward<Args>(args)...);
+				return f( std::forward<Args>( args )... );
 			}
 		}
 
@@ -279,9 +287,9 @@ namespace daw {
 		Result operator( )( Args &&... args ) const {
 			function_base const &f = *m_storage;
 			if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
-				f(std::forward<Args>(args)...);
+				f( std::forward<Args>( args )... );
 			} else {
-				return f(std::forward<Args>(args)...);
+				return f( std::forward<Args>( args )... );
 			}
 		}
 
