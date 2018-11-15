@@ -56,9 +56,19 @@ int main( ) {
 	std::cout << func( ) << '\n';
 	daw::basic_function<100, int()> f{};
 	daw::basic_function<100, std::string()> f2( callable{} );
+	std::cout << "f2 empty state:" << (f2.empty( ) ? "empty" : "not empty" ) << '\n';
 	std::cout << f2( ) << '\n';
 	f2 = daw::basic_function<100, std::string()>{};
-	std::cout << f2( ) << '\n';
+	try {
+		std::cout << f2() << '\n';
+	} catch( std::bad_function_call const & ) {
+		std::cout << "Successfully caught bad_function_call on empty function\n";
+	}
+	std::cout << "f2 empty state:" << (f2.empty( ) ? "empty" : "not empty" ) << '\n';
+	std::function<std::string( )> sf{};
+	f2 = sf;
+	std::cout << "f2 empty(std::function that is empty) state:" << (f2.empty( ) ? "empty" : "not empty" ) << '\n';
+
 	return 0;
 }
 
