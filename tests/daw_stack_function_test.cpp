@@ -26,9 +26,24 @@
 
 #include "daw/daw_stack_function.h"
 
-std::string strfunc( ) { 
+std::string strfunc( ) {
 	return "Goodbye";
 }
+
+struct callable  {
+	template<typename... Args>
+	std::string operator( )( Args&&... ) const noexcept {
+		return "callable";
+	}
+	callable( ) noexcept = default;
+	callable( callable const & ) noexcept = default;
+	callable( callable && ) noexcept = default;
+	callable & operator=( callable const & ) noexcept = default;
+	callable & operator=( callable && ) noexcept = default;
+	~callable( ) {
+		std::cout << "~operator( )\n";
+	}
+};
 
 int main( ) {
 	daw::basic_function<100, std::string( )> func = []( ) -> std::string { return "Hello"; };
@@ -40,6 +55,10 @@ int main( ) {
 	func = &strfunc;
 	std::cout << func( ) << '\n';
 	daw::basic_function<100, int()> f{};
+	daw::basic_function<100, std::string()> f2( callable{} );
+	std::cout << f2( ) << '\n';
+	f2 = daw::basic_function<100, std::string()>{};
+	std::cout << f2( ) << '\n';
 	return 0;
 }
 
