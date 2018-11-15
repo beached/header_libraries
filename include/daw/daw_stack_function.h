@@ -155,17 +155,17 @@ namespace daw {
 
 			Result operator( )( FuncArgs... args ) override {
 				if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
-					m_func( std::move( args )... );
+					std::invoke( m_func, std::move( args )... );
 				} else {
-					return m_func( std::move( args )... );
+					return std::invoke( m_func, std::move( args )... );
 				}
 			}
 
 			Result operator( )( FuncArgs... args ) const override {
 				if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
-					m_func( std::move( args )... );
+					std::invoke( m_func, std::move( args )... );
 				} else {
-					return m_func( std::move( args )... );
+					return std::invoke( m_func, std::move( args )... );
 				}
 			}
 
