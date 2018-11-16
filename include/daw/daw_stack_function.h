@@ -31,32 +31,12 @@
 #include "daw_traits.h"
 
 namespace daw {
-	template<typename...>
-	class mutable_capture;
-
-	template<typename T, typename U, typename...Ts>
-	class mutable_capture<T, U, Ts...> {
-		mutable std::tuple<T, U, Ts...> m_values;
-	public:
-		constexpr mutable_capture( T t, U u, Ts... values ): m_values( std::move( t ), std::move( u ), std::move( values )... ) { }
-
-		template<size_t N>
-		constexpr auto & get( ) const & {
-			return std::get<N>( m_values );
-		}
-
-		template<size_t N>
-		constexpr auto && get( ) const && {
-			return std::get<N>( m_values );
-		}
-	};
-
 	template<typename T>
-	class mutable_capture<T> {
+	class mutable_capture {
 		mutable T m_value;
 	public:
-		template<typename U, std::enable_if_t<std::is_same_v<T, std::decay_t<U>>, std::nullptr_t> = nullptr>
-		constexpr mutable_capture( U && value ): m_value( std::forward<U>( value ) ) { }
+		constexpr mutable_capture( T const & value ): m_value( value ) { }
+		constexpr mutable_capture( T && value ): m_value( std::move( value ) ) { }
 
 		constexpr operator T & ( ) const & noexcept {
 			return m_value;
@@ -79,7 +59,8 @@ namespace daw {
 		}
 	};
 
-	template<typename...Ts> mutable_capture( Ts... ) -> mutable_capture<Ts...>;
+	template<typename T> mutable_capture( T const & ) -> mutable_capture<T>;
+	template<typename T> mutable_capture( T && ) -> mutable_capture<T>;
 
 	namespace func_impl {
 		template<typename T>
