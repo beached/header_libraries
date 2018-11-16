@@ -242,6 +242,8 @@ namespace daw {
 			static_assert(
 			  sizeof( std::decay_t<Func> ) <= MaxSize,
 			  "Attempt to store a function that is larger than MaxSize." );
+			static_assert( std::is_invocable_r_v<Result, Func, FuncArgs...>,
+			               "Function isn't callable with FuncArgs" );
 		}
 
 		template<typename Func, std::enable_if_t<std::is_function_v<Func>,
@@ -251,6 +253,8 @@ namespace daw {
 			static_assert(
 			  sizeof( std::decay_t<Func> ) <= MaxSize,
 			  "Attempt to store a function that is larger than MaxSize." );
+			static_assert( std::is_invocable_r_v<Result, Func, FuncArgs...>,
+			               "Function isn't callable with FuncArgs" );
 		}
 
 		template<typename Func, std::enable_if_t<!std::is_function_v<Func>,
@@ -259,6 +263,8 @@ namespace daw {
 			static_assert(
 			  sizeof( std::decay_t<Func> ) <= MaxSize,
 			  "Attempt to store a function that is larger than MaxSize." );
+			static_assert( std::is_invocable_r_v<Result, Func, FuncArgs...>,
+			               "Function isn't callable with FuncArgs" );
 			m_storage = store_if_not_empty( std::forward<Func>( f ) );
 			return *this;
 		}
@@ -269,6 +275,8 @@ namespace daw {
 			static_assert(
 			  sizeof( std::decay_t<Func> ) <= MaxSize,
 			  "Attempt to store a function that is larger than MaxSize." );
+			static_assert( std::is_invocable_r_v<Result, Func, FuncArgs...>,
+			               "Function isn't callable with FuncArgs" );
 			m_storage = store_if_not_empty( fp );
 			return *this;
 		}
