@@ -181,10 +181,10 @@ namespace daw {
 	} // namespace func_impl
 
 	template<size_t, typename>
-	class basic_function;
+	class function;
 
 	template<size_t MaxSize, typename Result, typename... FuncArgs>
-	class basic_function<MaxSize, Result( FuncArgs... )> {
+	class function<MaxSize, Result( FuncArgs... )> {
 		using function_base = func_impl::function_base<Result, FuncArgs...>;
 		using empty_child = func_impl::empty_child<Result, FuncArgs...>;
 
@@ -228,15 +228,15 @@ namespace daw {
 		}
 
 	public:
-		basic_function( ) noexcept
+		function( ) noexcept
 		  : m_storage( empty_child{} ) {}
 
-		basic_function( std::nullptr_t )
+		function( std::nullptr_t )
 		  : m_storage( empty_child{} ) {}
 
 		template<typename Func, std::enable_if_t<!std::is_function_v<Func>,
 		                                         std::nullptr_t> = nullptr>
-		basic_function( Func &&f )
+		function( Func &&f )
 		  : m_storage( store_if_not_empty( std::forward<Func>( f ) ) ) {
 
 			static_assert(
@@ -248,7 +248,7 @@ namespace daw {
 
 		template<typename Func, std::enable_if_t<std::is_function_v<Func>,
 		                                         std::nullptr_t> = nullptr>
-		basic_function( Func fp )
+		function( Func fp )
 		  : m_storage( store_if_not_empty( fp ) ) {
 			static_assert(
 			  sizeof( std::decay_t<Func> ) <= MaxSize,
@@ -259,7 +259,7 @@ namespace daw {
 
 		template<typename Func, std::enable_if_t<!std::is_function_v<Func>,
 		                                         std::nullptr_t> = nullptr>
-		basic_function &operator=( Func &&f ) {
+		function &operator=( Func &&f ) {
 			static_assert(
 			  sizeof( std::decay_t<Func> ) <= MaxSize,
 			  "Attempt to store a function that is larger than MaxSize." );
@@ -271,7 +271,7 @@ namespace daw {
 
 		template<typename Func, std::enable_if_t<std::is_function_v<Func>,
 		                                         std::nullptr_t> = nullptr>
-		basic_function &operator=( Func fp ) {
+		function &operator=( Func fp ) {
 			static_assert(
 			  sizeof( std::decay_t<Func> ) <= MaxSize,
 			  "Attempt to store a function that is larger than MaxSize." );

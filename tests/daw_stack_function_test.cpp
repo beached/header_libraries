@@ -46,19 +46,19 @@ struct callable  {
 };
 
 int main( ) {
-	daw::basic_function<100, std::string( )> func = []( ) -> std::string { return "Hello"; };
-	daw::basic_function<100, std::string( )> const func2 = []( ) -> std::string { return "Hello2"; };
+	daw::function<100, std::string( )> func = []( ) -> std::string { return "Hello"; };
+	daw::function<100, std::string( )> const func2 = []( ) -> std::string { return "Hello2"; };
 
 	std::cout << func( ) << '\n' << func2( ) << '\n';
 	func = strfunc;
 	std::cout << func( ) << '\n';
 	func = &strfunc;
 	std::cout << func( ) << '\n';
-	daw::basic_function<100, int()> f{};
-	daw::basic_function<100, std::string()> f2( callable{} );
+	daw::function<100, int()> f{};
+	daw::function<100, std::string()> f2( callable{} );
 	std::cout << "f2 empty state:" << (f2.empty( ) ? "empty" : "not empty" ) << '\n';
 	std::cout << f2( ) << '\n';
-	f2 = daw::basic_function<100, std::string()>{};
+	f2 = daw::function<100, std::string()>{};
 	try {
 		std::cout << f2() << '\n';
 	} catch( std::bad_function_call const & ) {
@@ -69,11 +69,11 @@ int main( ) {
 	f2 = sf;
 	std::cout << "f2 empty(std::function that is empty) state:" << (f2.empty( ) ? "empty" : "not empty" ) << '\n';
 
-	daw::basic_function<100, void( )> vf1 = []( ) {
+	daw::function<100, void( )> vf1 = []( ) {
 		std::cout << "void( )\n";
 	};
 	vf1( );
-	daw::basic_function<100, void( )> const cvf1 = []( ) {
+	daw::function<100, void( )> const cvf1 = []( ) {
 		std::cout << "void( )\n";
 	};
 	cvf1( );
