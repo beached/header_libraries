@@ -43,7 +43,7 @@ namespace daw {
 			return m_value;
 		}
 
-		constexpr operator T && ( ) const && noexcept {
+		constexpr operator T ( ) const && noexcept {
 			return std::move( m_value );
 		}
 
@@ -51,7 +51,7 @@ namespace daw {
 			return m_value;
 		}
 
-		constexpr T && operator*( ) const && noexcept {
+		constexpr T operator*( ) const && noexcept {
 			return std::move( m_value );
 		}
 
