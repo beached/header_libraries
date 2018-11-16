@@ -73,6 +73,10 @@ namespace daw {
 		constexpr T && operator*( ) const && noexcept {
 			return std::move( m_value );
 		}
+
+		constexpr T * operator->( ) const noexcept {
+			return &m_value;
+		}
 	};
 
 	template<typename...Ts> mutable_capture( Ts... ) -> mutable_capture<Ts...>;
