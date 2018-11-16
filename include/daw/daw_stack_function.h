@@ -35,8 +35,8 @@ namespace daw {
 	class mutable_capture {
 		mutable T m_value;
 	public:
-		constexpr mutable_capture( T const & value ): m_value( value ) { }
-		constexpr mutable_capture( T && value ): m_value( std::move( value ) ) { }
+		explicit constexpr mutable_capture( T const & value ): m_value( value ) { }
+		explicit constexpr mutable_capture( T && value ): m_value( std::move( value ) ) { }
 
 		constexpr operator T & ( ) const & noexcept {
 			return m_value;
