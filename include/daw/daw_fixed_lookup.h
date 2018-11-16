@@ -117,15 +117,7 @@ namespace daw {
 				constexpr lookup_result_t( hash_value_t pos, bool is_found ) noexcept
 				  : position{pos}
 				  , found{is_found} {}
-				constexpr lookup_result_t( ) noexcept = delete;
-				constexpr lookup_result_t( lookup_result_t const & ) noexcept = default;
-				constexpr lookup_result_t( lookup_result_t && ) noexcept = default;
-				constexpr lookup_result_t &
-				operator=( lookup_result_t const & ) noexcept = default;
-				constexpr lookup_result_t &
-				operator=( lookup_result_t && ) noexcept = default;
-				~lookup_result_t( ) = default;
-
+				  
 				constexpr operator bool( ) const noexcept {
 					return found;
 				}
@@ -152,17 +144,6 @@ namespace daw {
 	public:
 		constexpr fixed_lookup( ) noexcept(
 		  noexcept( daw::is_nothrow_default_constructible_v<value_t> ) ) = default;
-
-		constexpr fixed_lookup( fixed_lookup const &other ) = default;
-		constexpr fixed_lookup &operator=( fixed_lookup const &other ) = default;
-
-		constexpr fixed_lookup( fixed_lookup &&other ) noexcept(
-		  noexcept( daw::is_nothrow_move_constructible_v<value_t> ) ) = default;
-
-		constexpr fixed_lookup &operator=( fixed_lookup &&other ) noexcept(
-		  noexcept( daw::is_nothrow_move_constructible_v<value_t> ) ) = default;
-
-		~fixed_lookup( ) = default;
 
 		template<typename Key>
 		constexpr hash_value_t find_existing( Key &&key ) const {
