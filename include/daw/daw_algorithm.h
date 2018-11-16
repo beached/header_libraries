@@ -26,6 +26,7 @@
 #include <cstddef>
 #include <functional>
 #include <iterator>
+#include <optional>
 #include <stdexcept>
 #include <type_traits>
 #include <utility>
@@ -37,6 +38,27 @@
 #include "impl/daw_math_impl.h"
 
 namespace daw {
+	template<typename Map, typename Key>
+	constexpr decltype( auto ) try_get( Map & container, Key &&k ) {
+		auto pos = container.find( std::forward<Key>( k ) );
+		using result_t = daw::remove_cvref_t<decltype( *pos )>;
+		if( pos == std::end( container ) ) {
+			return std::optional<result_t>{};
+		}
+		return std::optional<result_t>( std::in_place, *pos );
+	}
+
+	template<typename Map, typename Key>
+	constexpr decltype( auto ) try_get( Map const & container, Key &&k ) {
+		auto pos = container.find( std::forward<Key>( k ) );
+		using result_t = daw::remove_cvref_t<decltype( *pos )>;
+		if( pos == std::end( container ) ) {
+			return std::optional<result_t>{};
+		}
+		return std::optional<result_t>( std::in_place, *pos );
+	}
+
+
 	// Iterator movement functions
 	namespace impl {
 		template<typename Iterator, typename Iterator2, typename Iterator3,
@@ -252,8 +274,7 @@ namespace daw {
 			traits::is_predicate_test<Predicate, decltype( *first ), Value>( );
 
 			exception::precondition_check(
-			  std::less<>{}( first, last ),
-			  ": First position must be less than second" );
+			  first < last, ": First position must be less than second" );
 
 			auto it_last = last;
 
