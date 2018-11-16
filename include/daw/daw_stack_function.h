@@ -36,6 +36,7 @@ namespace daw {
 		mutable T m_value;
 	public:
 		explicit constexpr mutable_capture( T const & value ): m_value( value ) { }
+		explicit constexpr mutable_capture( T & value ): m_value( value ) { }
 		explicit constexpr mutable_capture( T && value ): m_value( std::move( value ) ) { }
 
 		constexpr operator T & ( ) const & noexcept {
@@ -60,6 +61,7 @@ namespace daw {
 	};
 
 	template<typename T> mutable_capture( T const & ) -> mutable_capture<T>;
+	template<typename T> mutable_capture( T & ) -> mutable_capture<T>;
 	template<typename T> mutable_capture( T && ) -> mutable_capture<T>;
 
 	namespace func_impl {
