@@ -73,10 +73,13 @@ int main( ) {
 		std::cout << "void( )\n";
 	};
 	vf1( );
-	daw::function<100, void( )> const cvf1 = []( ) {
+	daw::function<150, void( )> const cvf1 = []( ) {
 		std::cout << "void( )\n";
 	};
 	cvf1( );
+
+	daw::function<2000, void( )> fcvf1 = [cvf1=daw::mutable_capture( cvf1 )]( ) { (*cvf1)( ); };
+	fcvf1( );
 	return 0;
 }
 

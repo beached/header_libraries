@@ -31,6 +31,52 @@
 #include "daw_traits.h"
 
 namespace daw {
+	template<typename...>
+	class mutable_capture;
+
+	template<typename T, typename U, typename...Ts>
+	class mutable_capture<T, U, Ts...> {
+		mutable std::tuple<T, U, Ts...> m_values;
+	public:
+		constexpr mutable_capture( T t, U u, Ts... values ): m_values( std::move( t ), std::move( u ), std::move( values )... ) { }
+
+		template<size_t N>
+		constexpr auto & get( ) const & {
+			return std::get<N>( m_values );
+		}
+
+		template<size_t N>
+		constexpr auto && get( ) const && {
+			return std::get<N>( m_values );
+		}
+	};
+
+	template<typename T>
+	class mutable_capture<T> {
+		mutable T m_value;
+	public:
+		template<typename U, std::enable_if_t<std::is_same_v<T, std::decay_t<U>>, std::nullptr_t> = nullptr>
+		constexpr mutable_capture( U && value ): m_value( std::forward<U>( value ) ) { }
+
+		constexpr operator T & ( ) const & noexcept {
+			return m_value;
+		}
+
+		constexpr operator T && ( ) const && noexcept {
+			return std::move( m_value );
+		}
+
+		constexpr T & operator*( ) const & noexcept {
+			return m_value;
+		}
+
+		constexpr T && operator*( ) const && noexcept {
+			return std::move( m_value );
+		}
+	};
+
+	template<typename...Ts> mutable_capture( Ts... ) -> mutable_capture<Ts...>;
+
 	namespace func_impl {
 		template<typename T>
 		using is_boolable_detect =
@@ -47,11 +93,10 @@ namespace daw {
 		inline constexpr bool has_empty_member_v =
 		  daw::is_detected_v<has_empty_member_detect, T>;
 
-		template<size_t N, typename Base>
+		template<size_t StorageSize, typename Base>
 		struct function_storage {
-			std::aligned_storage_t<N> m_data{};
+			std::aligned_storage_t<StorageSize> m_data;
 
-			// TODO look at noexcept stuff
 			function_storage( function_storage const & ) noexcept = default;
 			function_storage( function_storage && ) noexcept = default;
 
@@ -66,8 +111,12 @@ namespace daw {
 
 			function_storage &operator=( function_storage && ) noexcept = default;
 
-			template<typename Func>
+			template<
+			  typename Func,
+			  std::enable_if_t<!std::is_same_v<std::decay_t<Func>, function_storage>,
+			                   std::nullptr_t> = nullptr>
 			function_storage( Func &&f ) {
+				static_assert( sizeof( std::decay_t<Func> ) <= StorageSize );
 				store( std::forward<Func>( f ) );
 			}
 
@@ -89,9 +138,9 @@ namespace daw {
 
 			template<typename Func>
 			void store( Func &&f ) {
+				static_assert( sizeof( std::decay_t<Func> ) <= StorageSize );
 				static_assert( std::is_base_of_v<Base, Func>,
 				               "Can only store children of func_base" );
-				static_assert( sizeof( Func ) <= N, "Function object is too big" );
 				new( &m_data )
 				  daw::remove_cvref_t<std::decay_t<Func>>( std::forward<Func>( f ) );
 			}
@@ -112,6 +161,7 @@ namespace daw {
 				return ptr( );
 			}
 		};
+
 		template<typename Result, typename... FuncArgs>
 		struct function_base {
 			virtual Result operator( )( FuncArgs... ) const = 0;
@@ -146,26 +196,35 @@ namespace daw {
 		template<typename Func, typename Result, typename... FuncArgs>
 		struct function_child<Func, Result, FuncArgs...> final
 		  : function_base<Result, FuncArgs...> {
+
 			Func m_func;
 
-			template<typename F>
+			template<typename F, std::enable_if_t<
+			                       !std::is_same_v<std::decay_t<F>, function_child>,
+			                       std::nullptr_t> = nullptr>
 			function_child( F &&func ) noexcept(
 			  std::is_nothrow_constructible_v<Func, F> )
 			  : m_func( std::forward<F>( func ) ) {}
 
 			Result operator( )( FuncArgs... args ) override {
+				daw::exception::precondition_check<std::bad_function_call>( !empty( ) );
 				if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
-					std::invoke( m_func, std::move( args )... );
+					//std::invoke( m_func, std::move( args )... );
+					m_func( args...);
 				} else {
-					return std::invoke( m_func, std::move( args )... );
+					//return std::invoke( m_func, std::move( args )... );
+					return m_func( args... );
 				}
 			}
 
 			Result operator( )( FuncArgs... args ) const override {
+				daw::exception::precondition_check<std::bad_function_call>( !empty( ) );
 				if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
-					std::invoke( m_func, std::move( args )... );
+					//std::invoke( m_func, std::move( args )... );
+					m_func( args... );
 				} else {
-					return std::invoke( m_func, std::move( args )... );
+					//return std::invoke( m_func, std::move( args )... );
+					return m_func( args... );
 				}
 			}
 
@@ -178,25 +237,11 @@ namespace daw {
 				return false;
 			}
 		};
-	} // namespace func_impl
 
-	template<size_t, typename>
-	class function;
-
-	template<size_t MaxSize, typename Result, typename... FuncArgs>
-	class function<MaxSize, Result( FuncArgs... )> {
-		using function_base = func_impl::function_base<Result, FuncArgs...>;
-		using empty_child = func_impl::empty_child<Result, FuncArgs...>;
-
-		template<typename Func>
-		using function_child = func_impl::function_child<Func, Result, FuncArgs...>;
-
-		func_impl::function_storage<MaxSize, function_base> m_storage;
-
-		template<typename Func, std::enable_if_t<!std::is_function_v<Func>,
-		                                         std::nullptr_t> = nullptr>
-		static func_impl::function_storage<MaxSize, function_base>
-		store_if_not_empty( Func &&f ) {
+		template<size_t MaxSize, typename function_base, typename function_child,
+		         typename empty_child, typename Func>
+		function_storage<MaxSize, function_base> store_if_not_empty( Func &&f ) {
+			static_assert( sizeof( std::decay_t<Func> ) <= MaxSize );
 			if constexpr( func_impl::has_empty_member_v<Func> ) {
 				if( f.empty( ) ) {
 					return {empty_child( )};
@@ -214,17 +259,36 @@ namespace daw {
 #pragma GCC diagnostic pop
 #endif
 			}
-			return {function_child<Func>( std::forward<Func>( f ) )};
+			return {function_child( std::forward<Func>( f ) )};
 		}
 
-		template<typename Func, std::enable_if_t<std::is_function_v<Func>,
-		                                         std::nullptr_t> = nullptr>
-		static func_impl::function_storage<MaxSize, function_base>
-		store_if_not_empty( Func fp ) {
-			if( !static_cast<bool>( fp ) ) {
-				return {empty_child( )};
-			}
-			return {function_child<Func>( fp )};
+		template<size_t Sz, size_t MaxSz>
+		constexpr void validate_size( ) {
+			static_assert( Sz <= MaxSz,
+			               "Size of function is larger than allocated space" );
+		}
+
+	} // namespace func_impl
+
+	template<size_t, typename>
+	class function;
+
+	template<size_t MaxSize, typename Result, typename... FuncArgs>
+	class function<MaxSize, Result( FuncArgs... )> {
+		using function_base = func_impl::function_base<Result, FuncArgs...>;
+		using empty_child = func_impl::empty_child<Result, FuncArgs...>;
+
+		template<typename Func>
+		using function_child = func_impl::function_child<Func, Result, FuncArgs...>;
+
+		func_impl::function_storage<MaxSize, function_base> m_storage;
+
+		template<typename Func>
+		decltype( auto ) store_if_not_empty( Func &&f ) {
+			func_impl::validate_size<sizeof( std::decay_t<Func> ), MaxSize>( );
+			return func_impl::store_if_not_empty<MaxSize, function_base,
+			                                     function_child<Func>, empty_child>(
+			  std::forward<Func>( f ) );
 		}
 
 	public:
@@ -234,55 +298,62 @@ namespace daw {
 		function( std::nullptr_t )
 		  : m_storage( empty_child{} ) {}
 
-		template<typename Func, std::enable_if_t<!std::is_function_v<Func>,
-		                                         std::nullptr_t> = nullptr>
+		function( function const & ) = default;
+		function( function && ) noexcept = default;
+		function &operator=( function const & ) = default;
+		function &operator=( function && ) noexcept = default;
+		~function( ) = default;
+
+		template<size_t N,
+		         std::enable_if_t<( N <= MaxSize ), std::nullptr_t> = nullptr>
+		function( function<N, Result( FuncArgs... )> const &other )
+		  : m_storage( *other.m_storage ) {}
+
+		template<size_t N,
+		         std::enable_if_t<( N > MaxSize ), std::nullptr_t> = nullptr>
+		function( function<N, Result( FuncArgs... )> const &other ) = delete;
+
+		template<size_t N,
+		         std::enable_if_t<( N <= MaxSize ), std::nullptr_t> = nullptr>
+		function &operator=( function<N, Result( FuncArgs... )> const &other ) {
+			m_storage = *other.m_storage;
+			return *this;
+		}
+
+		template<size_t N,
+		         std::enable_if_t<( N > MaxSize ), std::nullptr_t> = nullptr>
+		function &
+		operator=( function<N, Result( FuncArgs... )> const &other ) = delete;
+
+		template<typename Func,
+		         std::enable_if_t<
+		           daw::all_true_v<!std::is_same_v<std::decay_t<Func>, function>,
+		                           !std::is_function_v<Func>>,
+		           std::nullptr_t> = nullptr>
 		function( Func &&f )
 		  : m_storage( store_if_not_empty( std::forward<Func>( f ) ) ) {
 
-			static_assert(
-			  sizeof( std::decay_t<Func> ) <= MaxSize,
-			  "Attempt to store a function that is larger than MaxSize." );
+			func_impl::validate_size<sizeof( std::decay_t<Func> ), MaxSize>( );
 			static_assert( std::is_invocable_r_v<Result, Func, FuncArgs...>,
 			               "Function isn't callable with FuncArgs" );
 		}
 
-		template<typename Func, std::enable_if_t<std::is_function_v<Func>,
-		                                         std::nullptr_t> = nullptr>
-		function( Func fp )
-		  : m_storage( store_if_not_empty( fp ) ) {
-			static_assert(
-			  sizeof( std::decay_t<Func> ) <= MaxSize,
-			  "Attempt to store a function that is larger than MaxSize." );
-			static_assert( std::is_invocable_r_v<Result, Func, FuncArgs...>,
-			               "Function isn't callable with FuncArgs" );
-		}
-
-		template<typename Func, std::enable_if_t<!std::is_function_v<Func>,
-		                                         std::nullptr_t> = nullptr>
+		template<typename Func,
+		         std::enable_if_t<
+		           daw::all_true_v<!std::is_same_v<std::decay_t<Func>, function>,
+		                           !std::is_function_v<Func>>,
+		           std::nullptr_t> = nullptr>
 		function &operator=( Func &&f ) {
-			static_assert(
-			  sizeof( std::decay_t<Func> ) <= MaxSize,
-			  "Attempt to store a function that is larger than MaxSize." );
+			func_impl::validate_size<sizeof( std::decay_t<Func> ), MaxSize>( );
 			static_assert( std::is_invocable_r_v<Result, Func, FuncArgs...>,
 			               "Function isn't callable with FuncArgs" );
 			m_storage = store_if_not_empty( std::forward<Func>( f ) );
 			return *this;
 		}
 
-		template<typename Func, std::enable_if_t<std::is_function_v<Func>,
-		                                         std::nullptr_t> = nullptr>
-		function &operator=( Func fp ) {
-			static_assert(
-			  sizeof( std::decay_t<Func> ) <= MaxSize,
-			  "Attempt to store a function that is larger than MaxSize." );
-			static_assert( std::is_invocable_r_v<Result, Func, FuncArgs...>,
-			               "Function isn't callable with FuncArgs" );
-			m_storage = store_if_not_empty( fp );
-			return *this;
-		}
-
 		template<typename... Args>
 		Result operator( )( Args &&... args ) {
+			daw::exception::precondition_check<std::bad_function_call>( !empty( ) );
 			function_base &f = *m_storage;
 			if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
 				f( std::forward<Args>( args )... );
@@ -293,6 +364,7 @@ namespace daw {
 
 		template<typename... Args>
 		Result operator( )( Args &&... args ) const {
+			daw::exception::precondition_check<std::bad_function_call>( !empty( ) );
 			function_base const &f = *m_storage;
 			if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
 				f( std::forward<Args>( args )... );
