@@ -50,11 +50,9 @@ namespace daw {
 			return new U( std::forward<Args>( args )... );
 		}
 
-		struct private_constructor {};
-
-		constexpr explicit value_ptr( private_constructor ) noexcept {}
-
 	public:
+		constexpr explicit value_ptr( std::nullopt_t ) noexcept {}
+
 		template<
 		  typename... Args,
 		  std::enable_if_t<
@@ -77,7 +75,7 @@ namespace daw {
 		static value_ptr emplace( Args &&... args ) noexcept(
 		  is_nothrow_constructible_v<value_type, Args...> ) {
 
-			auto result = value_ptr( private_constructor{} );
+			auto result = value_ptr( std::nullopt );
 			result.m_value = make_ptr<U>( std::forward<Args>( args )... );
 			return result;
 		}
@@ -121,10 +119,7 @@ namespace daw {
 		}
 
 		void reset( ) noexcept( is_nothrow_destructible_v<value_type> ) {
-			auto tmp = std::exchange( m_value, nullptr );
-			if( tmp ) {
-				delete tmp;
-			}
+			delete std::exchange( m_value, nullptr );
 		}
 
 		template<typename... Args,
