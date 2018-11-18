@@ -37,6 +37,7 @@
 #include <tuple>
 #include <type_traits>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include "daw_algorithm.h"
@@ -893,31 +894,44 @@ namespace daw {
 	}
 
 	// A variant
-	template<size_t, typename R>
+	template<size_t, size_t, typename R>
 	[[noreturn]] constexpr R visit_nt( ... ) {
 		std::terminate( );
 	}
 
-	template<
-	  size_t N, typename R, template<class> class Variant, class... Args,
-	  typename Visitor,
-	  std::enable_if_t<( N < sizeof...( Args ) ), std::nullptr_t> = nullptr>
-	constexpr R visit_nt( Variant<Args...> const &v, Visitor &&vis ) {
+	template<size_t N, size_t MaxN, typename R, typename Variant,
+	         typename Visitor,
+	         std::enable_if_t<( N < MaxN ), std::nullptr_t> = nullptr>
+	constexpr R visit_nt( Variant &&var, Visitor &&vis ) {
 		using namespace std;
-		if( v.index( ) == N ) {
-			return std::forward<Visitor>( vis )( get<N>( v ) );
+		if( var.index( ) == N ) {
+			return std::forward<Visitor>( vis )(
+			  get<N>( std::forward<Variant>( var ) ) );
 		}
-		return visit_nt<N + 1, R>( v, std::forward<Visitor>( vis ) );
+		return visit_nt<N + 1, MaxN, R>( std::forward<Variant>( var ),
+		                                 std::forward<Visitor>( vis ) );
 	}
 
-	template<template<class> class Variant, class... Args, typename Visitor>
-	constexpr auto visit_nt( Variant<Args...> const &v, Visitor &&vis ) {
+	template<class... Args, typename Visitor>
+	constexpr auto visit_nt( std::variant<Args...> const &var, Visitor &&vis ) {
 		using namespace std;
-		using result_t = decltype( vis( get<0>( v ) ) );
-		if( v.index( ) == 0 ) {
-			return std::forward<Visitor>( vis )( get<0>( v ) );
+		using result_t = decltype( vis( get<0>( var ) ) );
+		if( var.index( ) == 0 ) {
+			return std::forward<Visitor>( vis )( get<0>( var ) );
 		}
-		return visit_nt<1, result_t>( v, std::forward<Visitor>( vis ) );
+		return visit_nt<1, sizeof...( Args ), result_t>(
+		  var, std::forward<Visitor>( vis ) );
+	}
+
+	template<class... Args, typename Visitor>
+	constexpr auto visit_nt( std::variant<Args...> &&var, Visitor &&vis ) {
+		using namespace std;
+		using result_t = decltype( std::forward<Visitor>( vis )( get<0>( std::move( var ) ) ) );
+		if( var.index( ) == 0 ) {
+			return std::forward<Visitor>( vis )( get<0>( std::move( var ) ) );
+		}
+		return visit_nt<1, sizeof...( Args ), result_t>(
+		  std::move( var ), std::forward<Visitor>( vis ) );
 	}
 } // namespace daw
 
