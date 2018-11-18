@@ -891,6 +891,31 @@ namespace daw {
 		return std::forward<LowerBound>( lower ) <= value &&
 		       value < std::forward<UpperBound>( upper );
 	}
+
+	// A variant 
+	template<size_t, typename R>
+	[[noreturn]] constexpr R visit_nt( ... ) {
+		std::terminate( );
+	}
+
+	template<
+	  size_t N, typename R, typename... Args, typename Visitor,
+	  std::enable_if_t<( N < sizeof...( Args ) ), std::nullptr_t> = nullptr>
+	constexpr R visit_nt( std::variant<Args...> const &v, Visitor &&vis ) {
+		if( v.index( ) == N ) {
+			return std::forward<Visitor>( vis )( std::get<N>( v ) );
+		}
+		return visit_nt<N + 1, R>( v, std::forward<Visitor>( vis ) );
+	}
+
+	template<typename... Args, typename Visitor>
+	constexpr auto visit_nt( std::variant<Args...> const &v, Visitor &&vis ) {
+		using result_t = decltype( vis( std::get<0>( v ) ) );
+		if( v.index( ) == 0 ) {
+			return std::forward<Visitor>( vis )( std::get<0>( v ) );
+		}
+		return visit_nt<1, result_t>( v, std::forward<Visitor>( vis ) );
+	}
 } // namespace daw
 
 template<typename... Ts>
