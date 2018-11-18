@@ -903,80 +903,45 @@ namespace daw {
 	         typename Visitor,
 	         std::enable_if_t<( N < MaxN ), std::nullptr_t> = nullptr>
 	constexpr R visit_nt( Variant &&var, Visitor &&vis ) {
-		if constexpr( std::is_same_v<R, void> ) {
-			if( var.index( ) == N ) {
-				std::forward<Visitor>( vis )(
-				  std::get<N>( std::forward<Variant>( var ) ) );
-				return;
-			}
-			visit_nt<N + 1, MaxN, R>( std::forward<Variant>( var ),
-			                          std::forward<Visitor>( vis ) );
-		} else {
-			if( var.index( ) == N ) {
-				return std::forward<Visitor>( vis )(
-				  std::get<N>( std::forward<Variant>( var ) ) );
-			}
-			return visit_nt<N + 1, MaxN, R>( std::forward<Variant>( var ),
-			                                 std::forward<Visitor>( vis ) );
+		if( var.index( ) == N ) {
+			return std::forward<Visitor>( vis )(
+			  std::get<N>( std::forward<Variant>( var ) ) );
 		}
+		return visit_nt<N + 1, MaxN, R>( std::forward<Variant>( var ),
+		                                 std::forward<Visitor>( vis ) );
 	}
 
 	template<class... Args, typename Visitor>
 	constexpr auto visit_nt( std::variant<Args...> const &var, Visitor &&vis ) {
 		using result_t = decltype( vis( std::get<0>( var ) ) );
-		if constexpr( std::is_same_v<result_t, void> ) {
-			if( var.index( ) == 0 ) {
-				std::forward<Visitor>( vis )( std::get<0>( var ) );
-				return;
-			}
-			visit_nt<1, sizeof...( Args ), result_t>( var,
-			                                          std::forward<Visitor>( vis ) );
-		} else {
-			if( var.index( ) == 0 ) {
-				return std::forward<Visitor>( vis )( std::get<0>( var ) );
-			}
-			return visit_nt<1, sizeof...( Args ), result_t>(
-			  var, std::forward<Visitor>( vis ) );
+
+		if( var.index( ) == 0 ) {
+			return std::forward<Visitor>( vis )( std::get<0>( var ) );
 		}
+		return visit_nt<1, sizeof...( Args ), result_t>(
+		  var, std::forward<Visitor>( vis ) );
 	}
 
 	template<class... Args, typename Visitor>
 	constexpr auto visit_nt( std::variant<Args...> &var, Visitor &&vis ) {
 		using result_t = decltype( vis( std::get<0>( var ) ) );
-		if constexpr( std::is_same_v<result_t, void> ) {
-			if( var.index( ) == 0 ) {
-				std::forward<Visitor>( vis )( std::get<0>( var ) );
-				return;
-			}
-			visit_nt<1, sizeof...( Args ), result_t>( var,
-			                                          std::forward<Visitor>( vis ) );
-		} else {
-			if( var.index( ) == 0 ) {
-				return std::forward<Visitor>( vis )( std::get<0>( var ) );
-			}
-			return visit_nt<1, sizeof...( Args ), result_t>(
-			  var, std::forward<Visitor>( vis ) );
+
+		if( var.index( ) == 0 ) {
+			return std::forward<Visitor>( vis )( std::get<0>( var ) );
 		}
+		return visit_nt<1, sizeof...( Args ), result_t>(
+		  var, std::forward<Visitor>( vis ) );
 	}
 
 	template<class... Args, typename Visitor>
 	constexpr auto visit_nt( std::variant<Args...> &&var, Visitor &&vis ) {
 		using result_t = decltype( vis( std::get<0>( var ) ) );
-		if constexpr( std::is_same_v<result_t, void> ) {
-			if( var.index( ) == 0 ) {
-				std::forward<Visitor>( vis )( std::get<0>( std::move( var ) ) );
-				return;
-			}
-			visit_nt<1, sizeof...( Args ), result_t>( std::move( var ),
-			                                          std::forward<Visitor>( vis ) );
-		} else {
-			std::forward<Visitor>( vis )( std::get<0>( std::move( var ) ) );
-			if( var.index( ) == 0 ) {
-				return std::forward<Visitor>( vis )( std::get<0>( std::move( var ) ) );
-			}
-			return visit_nt<1, sizeof...( Args ), result_t>(
-			  std::move( var ), std::forward<Visitor>( vis ) );
+
+		if( var.index( ) == 0 ) {
+			return std::forward<Visitor>( vis )( std::get<0>( std::move( var ) ) );
 		}
+		return visit_nt<1, sizeof...( Args ), result_t>(
+		  std::move( var ), std::forward<Visitor>( vis ) );
 	}
 } // namespace daw
 
