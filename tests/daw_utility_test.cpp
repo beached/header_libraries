@@ -211,3 +211,19 @@ BOOST_AUTO_TEST_CASE( as_char_array_001 ) {
 	BOOST_REQUIRE_EQUAL( 0x43, ary[1] );
 	BOOST_REQUIRE_EQUAL( 0x21, ary[0] );
 }
+
+BOOST_AUTO_TEST_CASE( visit_nt_001 ) {
+	std::variant<int, double> a = 5.5;
+	auto result = daw::visit_nt( a, []( auto v ) { return v == 5.5; } );
+	BOOST_REQUIRE( result );
+}
+
+BOOST_AUTO_TEST_CASE( visit_nt_002 ) {
+	std::variant<int, double> a = 5.5;
+	std::optional<bool> result{};
+	daw::visit_nt( a, [&result]( auto v ) {
+		result = (v == 5.5);
+	} );
+	BOOST_REQUIRE( result );
+	BOOST_REQUIRE( *result );
+}
