@@ -263,6 +263,24 @@ namespace daw {
 			}
 		} // namespace impl
 
+		template<typename ForwardIterator, typename Value, typename Compare = std::less<>>
+		constexpr ForwardIterator lower_bound( ForwardIterator first, ForwardIterator last, Value && value, Compare cmp = {} ) {
+			// Precondition checks
+			traits::is_forward_access_iterator_test<ForwardIterator>( );
+			traits::is_input_iterator_test<ForwardIterator>( );
+			traits::is_predicate_test<Compare, decltype( *first ), Value>( );
+
+			while( first != last ) {
+				auto mid = std::next( first, std::distance( first, last ) / 2 );
+				if( cmp( *mid, value ) ) {
+					first = next( mid );
+				} else {
+					last = mid;
+				}
+			}
+			return first;
+		}
+
 		template<typename ForwardIterator, typename Value,
 		         typename Predicate = std::less<>>
 		constexpr ForwardIterator
