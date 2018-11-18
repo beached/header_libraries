@@ -200,7 +200,7 @@ namespace daw {
 	}
 
 	template<typename T1, typename D1, typename T2, typename D2>
-	constexpr bool operator<( nullptr_t,
+	constexpr bool operator<( std::nullptr_t,
 	                          copiable_unique_ptr<T1, D1> const &rhs ) noexcept {
 
 		return std::less<typename copiable_unique_ptr<T1, D1>::pointer>(
