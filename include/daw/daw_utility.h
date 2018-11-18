@@ -903,7 +903,7 @@ namespace daw {
 	         typename Visitor,
 	         std::enable_if_t<( N < MaxN ), std::nullptr_t> = nullptr>
 	constexpr R visit_nt( Variant &&var, Visitor &&vis ) {
-		if constexpr( std::is_same_v<std::decay_t<R>, void> ) {
+		if constexpr( std::is_same_v<R, void> ) {
 			if( var.index( ) == N ) {
 				std::forward<Visitor>( vis )(
 				  std::get<N>( std::forward<Variant>( var ) ) );
@@ -924,7 +924,7 @@ namespace daw {
 	template<class... Args, typename Visitor>
 	constexpr auto visit_nt( std::variant<Args...> const &var, Visitor &&vis ) {
 		using result_t = decltype( vis( std::get<0>( var ) ) );
-		if constexpr( std::is_same_v<std::decay_t<result_t>, void> ) {
+		if constexpr( std::is_same_v<result_t, void> ) {
 			if( var.index( ) == 0 ) {
 				std::forward<Visitor>( vis )( std::get<0>( var ) );
 				return;
@@ -943,7 +943,7 @@ namespace daw {
 	template<class... Args, typename Visitor>
 	constexpr auto visit_nt( std::variant<Args...> &var, Visitor &&vis ) {
 		using result_t = decltype( vis( std::get<0>( var ) ) );
-		if constexpr( std::is_same_v<std::decay_t<result_t>, void> ) {
+		if constexpr( std::is_same_v<result_t, void> ) {
 			if( var.index( ) == 0 ) {
 				std::forward<Visitor>( vis )( std::get<0>( var ) );
 				return;
@@ -962,7 +962,7 @@ namespace daw {
 	template<class... Args, typename Visitor>
 	constexpr auto visit_nt( std::variant<Args...> &&var, Visitor &&vis ) {
 		using result_t = decltype( vis( std::get<0>( var ) ) );
-		if constexpr( std::is_same_v<std::decay_t<result_t>, void> ) {
+		if constexpr( std::is_same_v<result_t, void> ) {
 			if( var.index( ) == 0 ) {
 				std::forward<Visitor>( vis )( std::get<0>( std::move( var ) ) );
 				return;
