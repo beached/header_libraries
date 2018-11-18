@@ -924,6 +924,17 @@ namespace daw {
 	}
 
 	template<class... Args, typename Visitor>
+	constexpr auto visit_nt( std::variant<Args...> &var, Visitor &&vis ) {
+		using namespace std;
+		using result_t = decltype( vis( get<0>( var ) ) );
+		if( var.index( ) == 0 ) {
+			return std::forward<Visitor>( vis )( get<0>( var ) );
+		}
+		return visit_nt<1, sizeof...( Args ), result_t>(
+		  var, std::forward<Visitor>( vis ) );
+	}
+
+	template<class... Args, typename Visitor>
 	constexpr auto visit_nt( std::variant<Args...> &&var, Visitor &&vis ) {
 		using namespace std;
 		using result_t = decltype( std::forward<Visitor>( vis )( get<0>( std::move( var ) ) ) );
