@@ -899,20 +899,20 @@ namespace daw {
 	}
 
 	template<
-	  size_t N, typename R, typename... Args, typename Visitor,
+	  size_t N, typename R, template<class> class Variant, class... Args, typename Visitor,
 	  std::enable_if_t<( N < sizeof...( Args ) ), std::nullptr_t> = nullptr>
-	constexpr R visit_nt( std::variant<Args...> const &v, Visitor &&vis ) {
+	constexpr R visit_nt( Variant<Args...> const &v, Visitor &&vis ) {
 		if( v.index( ) == N ) {
-			return std::forward<Visitor>( vis )( std::get<N>( v ) );
+			return std::forward<Visitor>( vis )( get<N>( v ) );
 		}
 		return visit_nt<N + 1, R>( v, std::forward<Visitor>( vis ) );
 	}
 
-	template<typename... Args, typename Visitor>
-	constexpr auto visit_nt( std::variant<Args...> const &v, Visitor &&vis ) {
-		using result_t = decltype( vis( std::get<0>( v ) ) );
+	template<template<class> class Variant, class... Args, typename Visitor>
+	constexpr auto visit_nt( Variant<Args...> const &v, Visitor &&vis ) {
+		using result_t = decltype( vis( get<0>( v ) ) );
 		if( v.index( ) == 0 ) {
-			return std::forward<Visitor>( vis )( std::get<0>( v ) );
+			return std::forward<Visitor>( vis )( get<0>( v ) );
 		}
 		return visit_nt<1, result_t>( v, std::forward<Visitor>( vis ) );
 	}
