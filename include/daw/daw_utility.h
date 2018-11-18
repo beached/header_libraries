@@ -892,16 +892,18 @@ namespace daw {
 		       value < std::forward<UpperBound>( upper );
 	}
 
-	// A variant 
+	// A variant
 	template<size_t, typename R>
 	[[noreturn]] constexpr R visit_nt( ... ) {
 		std::terminate( );
 	}
 
 	template<
-	  size_t N, typename R, template<class> class Variant, class... Args, typename Visitor,
+	  size_t N, typename R, template<class> class Variant, class... Args,
+	  typename Visitor,
 	  std::enable_if_t<( N < sizeof...( Args ) ), std::nullptr_t> = nullptr>
 	constexpr R visit_nt( Variant<Args...> const &v, Visitor &&vis ) {
+		using namespace std;
 		if( v.index( ) == N ) {
 			return std::forward<Visitor>( vis )( get<N>( v ) );
 		}
@@ -910,6 +912,7 @@ namespace daw {
 
 	template<template<class> class Variant, class... Args, typename Visitor>
 	constexpr auto visit_nt( Variant<Args...> const &v, Visitor &&vis ) {
+		using namespace std;
 		using result_t = decltype( vis( get<0>( v ) ) );
 		if( v.index( ) == 0 ) {
 			return std::forward<Visitor>( vis )( get<0>( v ) );
