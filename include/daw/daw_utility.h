@@ -903,10 +903,9 @@ namespace daw {
 	         typename Visitor,
 	         std::enable_if_t<( N < MaxN ), std::nullptr_t> = nullptr>
 	constexpr R visit_nt( Variant &&var, Visitor &&vis ) {
-		using namespace std;
 		if( var.index( ) == N ) {
 			return std::forward<Visitor>( vis )(
-			  get<N>( std::forward<Variant>( var ) ) );
+			  std::get<N>( std::forward<Variant>( var ) ) );
 		}
 		return visit_nt<N + 1, MaxN, R>( std::forward<Variant>( var ),
 		                                 std::forward<Visitor>( vis ) );
@@ -914,10 +913,9 @@ namespace daw {
 
 	template<class... Args, typename Visitor>
 	constexpr auto visit_nt( std::variant<Args...> const &var, Visitor &&vis ) {
-		using namespace std;
-		using result_t = decltype( vis( get<0>( var ) ) );
+		using result_t = decltype( vis( std::get<0>( var ) ) );
 		if( var.index( ) == 0 ) {
-			return std::forward<Visitor>( vis )( get<0>( var ) );
+			return std::forward<Visitor>( vis )( std::get<0>( var ) );
 		}
 		return visit_nt<1, sizeof...( Args ), result_t>(
 		  var, std::forward<Visitor>( vis ) );
@@ -925,10 +923,9 @@ namespace daw {
 
 	template<class... Args, typename Visitor>
 	constexpr auto visit_nt( std::variant<Args...> &var, Visitor &&vis ) {
-		using namespace std;
-		using result_t = decltype( vis( get<0>( var ) ) );
+		using result_t = decltype( vis( std::get<0>( var ) ) );
 		if( var.index( ) == 0 ) {
-			return std::forward<Visitor>( vis )( get<0>( var ) );
+			return std::forward<Visitor>( vis )( std::get<0>( var ) );
 		}
 		return visit_nt<1, sizeof...( Args ), result_t>(
 		  var, std::forward<Visitor>( vis ) );
@@ -936,10 +933,10 @@ namespace daw {
 
 	template<class... Args, typename Visitor>
 	constexpr auto visit_nt( std::variant<Args...> &&var, Visitor &&vis ) {
-		using namespace std;
-		using result_t = decltype( std::forward<Visitor>( vis )( get<0>( std::move( var ) ) ) );
+		using result_t = decltype(
+		  std::forward<Visitor>( vis )( std::get<0>( std::move( var ) ) ) );
 		if( var.index( ) == 0 ) {
-			return std::forward<Visitor>( vis )( get<0>( std::move( var ) ) );
+			return std::forward<Visitor>( vis )( std::get<0>( std::move( var ) ) );
 		}
 		return visit_nt<1, sizeof...( Args ), result_t>(
 		  std::move( var ), std::forward<Visitor>( vis ) );
