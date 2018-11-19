@@ -744,4 +744,10 @@ namespace daw {
 
 		return std::forward<T>( v );
 	}
+
+	template<class ForwardIterator1, class ForwardIterator2>
+	constexpr void iter_swap( ForwardIterator1 lhs, ForwardIterator2 rhs ) {
+		using std::swap;
+		swap( *lhs, *rhs );
+	}
 } // namespace daw
