@@ -285,7 +285,7 @@ namespace daw {
 
 		template<typename InputIterator, typename UnaryPredicate>
 		constexpr InputIterator find_if( InputIterator first, InputIterator last,
-		                               UnaryPredicate && unary_predicate ) {
+		                                 UnaryPredicate &&unary_predicate ) {
 			traits::is_input_iterator_test<InputIterator>( );
 			traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
 
@@ -299,8 +299,9 @@ namespace daw {
 		}
 
 		template<typename InputIterator, typename UnaryPredicate>
-		constexpr InputIterator find_if_not( InputIterator first, InputIterator last,
-		                               UnaryPredicate && unary_predicate ) {
+		constexpr InputIterator find_if_not( InputIterator first,
+		                                     InputIterator last,
+		                                     UnaryPredicate &&unary_predicate ) {
 			traits::is_input_iterator_test<InputIterator>( );
 			traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
 
@@ -314,9 +315,9 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator, typename UnaryPredicate>
-		constexpr ForwardIterator
-		partition_semistable( ForwardIterator first, ForwardIterator last,
-		                      UnaryPredicate &&unary_predicate ) {
+		constexpr ForwardIterator partition( ForwardIterator first,
+		                                     ForwardIterator last,
+		                                     UnaryPredicate &&unary_predicate ) {
 			// Precondition checks
 			traits::is_forward_access_iterator_test<ForwardIterator>( );
 			traits::is_input_iterator_test<ForwardIterator>( );
