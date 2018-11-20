@@ -1681,6 +1681,7 @@ namespace daw {
 			}
 		}
 
+
 		template<typename InputIterator1, typename InputIterator2,
 		         typename OutputIterator, typename BinaryOperation>
 		constexpr void
