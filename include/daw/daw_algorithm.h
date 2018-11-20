@@ -1681,14 +1681,13 @@ namespace daw {
 			}
 		}
 
-
 		template<typename InputIterator1, typename InputIterator2,
 		         typename OutputIterator, typename BinaryOperation>
 		constexpr void
 		map( InputIterator1 first1, InputIterator1 const last1,
 		     InputIterator2 first2, OutputIterator first_out,
 		     BinaryOperation
-		       Binary_op ) noexcept( noexcept( *daw::next( first_out ) =
+		       binary_op ) noexcept( noexcept( *daw::next( first_out ) =
 		                                         binary_op(
 		                                           *daw::next( first1 ),
 		                                           *daw::next( first2 ) ) ) ) {
@@ -1700,7 +1699,7 @@ namespace daw {
 			                                 decltype( *first2 )>( );
 
 			while( first1 != last1 ) {
-				*first_out = unary_op( *first1, *first2 );
+				*first_out = binary_op( *first1, *first2 );
 				first1 = daw::next( first1 );
 				first2 = daw::next( first2 );
 				first_out = daw::next( first_out );
