@@ -29,13 +29,19 @@
 #include "daw/daw_span.h"
 
 BOOST_AUTO_TEST_CASE( daw_span_test_001 ) {
-	constexpr auto const a = daw::make_span( "This is a test" );
+	constexpr auto const a = daw::span( "This is a test" );
 	for( auto c : a ) {
 		std::cout << c;
 	}
 	std::cout << '\n';
 
 	int const barry[] = {1, 2, 3, 4, 5};
-	auto const b = daw::make_span( barry );
+	auto const b = daw::span( barry );
 	BOOST_REQUIRE_EQUAL( b.size( ), 5 );
+}
+
+BOOST_AUTO_TEST_CASE( daw_span_test_002 ) {
+	std::array<int, 5> a = { 1, 2, 3, 4, 5 };
+	daw::span<int> s_a( a.data( ), a.size( ) );
+	auto const sc_a = s_a;
 }
