@@ -22,21 +22,13 @@
 
 #pragma once
 
-#include <algorithm>
 #include <cstddef>
-#include <cstdint>
-#include <cstdlib>
 #include <iterator>
 #include <limits>
 #include <stdexcept>
 
-#include "cpp_17.h"
-#include "daw_algorithm.h"
 #include "daw_exception.h"
-#include "daw_fnv1a_hash.h"
 #include "daw_math.h"
-#include "daw_utility.h"
-#include "iterator/daw_iterator.h"
 
 namespace daw {
 	template<typename T, typename = void>
