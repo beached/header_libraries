@@ -54,7 +54,6 @@ namespace daw {
 		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 		using size_type = size_t;
 		using difference_type = std::ptrdiff_t;
-		using is_daw_span = std::true_type;
 
 		static inline constexpr bool const has_mutable_pointer = false;
 
@@ -110,19 +109,19 @@ namespace daw {
 		}
 
 		constexpr const_reverse_iterator rbegin( ) const noexcept {
-			return std::make_reverse_iterator( m_first + m_size );
+			return std::make_reverse_iterator( end( ) );
 		}
 
 		constexpr const_reverse_iterator crbegin( ) const noexcept {
-			return std::make_reverse_iterator( m_first + m_size );
+			return std::make_reverse_iterator( cend( ) );
 		}
 
 		constexpr const_reverse_iterator rend( ) const noexcept {
-			return std::make_reverse_iterator( m_first );
+			return std::make_reverse_iterator( begin( ) );
 		}
 
 		constexpr const_reverse_iterator crend( ) const noexcept {
-			return std::make_reverse_iterator( m_first );
+			return std::make_reverse_iterator( cend( ) );
 		}
 
 		constexpr const_reference operator[]( size_type pos ) const noexcept {
@@ -236,7 +235,6 @@ namespace daw {
 		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 		using size_type = size_t;
 		using difference_type = std::ptrdiff_t;
-		using is_daw_span = std::true_type;
 
 		static inline constexpr bool const has_mutable_pointer = true;
 
@@ -340,27 +338,27 @@ namespace daw {
 		}
 
 		constexpr reverse_iterator rbegin( ) noexcept {
-			return std::make_reverse_iterator( m_first + m_size );
+			return std::make_reverse_iterator( end( ) );
 		}
 
 		constexpr const_reverse_iterator rbegin( ) const noexcept {
-			return std::make_reverse_iterator( m_first + m_size );
+			return std::make_reverse_iterator( end( ) );
 		}
 
 		constexpr const_reverse_iterator crbegin( ) const noexcept {
-			return std::make_reverse_iterator( m_first + m_size );
+			return std::make_reverse_iterator( cend( ) );
 		}
 
 		constexpr reverse_iterator rend( ) noexcept {
-			return std::make_reverse_iterator( m_first );
+			return std::make_reverse_iterator( begin( ) );
 		}
 
 		constexpr const_reverse_iterator rend( ) const noexcept {
-			return std::make_reverse_iterator( m_first );
+			return std::make_reverse_iterator( begin( ) );
 		}
 
 		constexpr const_reverse_iterator crend( ) const noexcept {
-			return std::make_reverse_iterator( m_first );
+			return std::make_reverse_iterator( cbegin( ) );
 		}
 
 		constexpr reference operator[]( size_type pos ) noexcept {
@@ -526,7 +524,4 @@ namespace daw {
 	span( Container const & )
 	  ->span<daw::remove_cvref_t<
 	    decltype( *std::data( std::declval<Container>( ) ) )> const>;
-
-	template<typename T>
-	using view = span<T const>;
 } // namespace daw

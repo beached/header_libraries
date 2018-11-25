@@ -88,9 +88,11 @@ set( TESTED_HEADERS_PREFIXES
 	not_null
 )
 
+#No boost test
 set( TESTED_HEADERS_PREFIXES_NB
 	daw_piecewise_factory
 	daw_span
+	daw_view
 )
 
 set( UNTESTED_HEADER_IMPL 
