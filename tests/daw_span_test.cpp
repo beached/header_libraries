@@ -60,8 +60,41 @@ static_assert( copy_const_span_of_const( ) );
 static_assert( !std::is_constructible_v<daw::span<int>, daw::span<int const> const> );
 static_assert( !std::is_convertible_v<daw::span<int const> const, daw::span<int>> );
 
-static_assert( std::is_constructible_v<daw::span<int>, std::nullptr_t>, "Can construct a span from null");
-static_assert( std::is_constructible_v<daw::span<int>, std::nullptr_t, size_t>, "Can construct a span from null and size");
+constexpr bool construct_from_nullptr_const() {
+	daw::span<int const> const a( nullptr );
+	return a.data( ) == nullptr and a.size( ) == 0;
+}
+static_assert(construct_from_nullptr_const() );
+
+constexpr bool construct_from_nullptr_and_zero_const() {
+	daw::span<int const> const a( nullptr, 0 );
+	return a.data( ) == nullptr and a.size( ) == 0;
+}
+static_assert(construct_from_nullptr_and_zero_const() );
+
+constexpr bool construct_from_nullptr_and_non_zero_const() {
+	daw::span<int const> const a( nullptr, 5 );
+	return a.data( ) == nullptr and a.size( ) == 0;
+}
+static_assert(construct_from_nullptr_and_non_zero_const() );
+
+constexpr bool construct_from_nullptr() {
+	daw::span<int> const a( nullptr );
+	return a.data( ) == nullptr and a.size( ) == 0;
+}
+static_assert(construct_from_nullptr() );
+
+constexpr bool construct_from_nullptr_and_zero() {
+	daw::span<int> const a( nullptr, 0 );
+	return a.data( ) == nullptr and a.size( ) == 0;
+}
+static_assert(construct_from_nullptr_and_zero() );
+
+constexpr bool construct_from_nullptr_and_non_zero() {
+	daw::span<int> const a( nullptr, 5 );
+	return a.data( ) == nullptr and a.size( ) == 0;
+}
+static_assert(construct_from_nullptr_and_non_zero() );
 
 BOOST_AUTO_TEST_CASE( daw_span_test_001 ) {
 	constexpr auto const a = daw::span( "This is a test" );

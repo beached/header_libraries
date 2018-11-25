@@ -78,7 +78,7 @@ namespace daw {
 
 		constexpr span( pointer ptr, size_type count ) noexcept
 		  : m_first( ptr )
-		  , m_size( count ) {}
+		  , m_size( ptr == nullptr ? 0 : count ) {}
 
 		constexpr span( pointer first, pointer last ) noexcept
 		  : m_first( first )
@@ -132,11 +132,11 @@ namespace daw {
 			return std::make_reverse_iterator( m_first );
 		}
 
-		constexpr const_reference operator[]( size_type const pos ) const noexcept {
+		constexpr const_reference operator[]( size_type pos ) const noexcept {
 			return m_first[pos];
 		}
 
-		constexpr const_reference at( size_type const pos ) const {
+		constexpr const_reference at( size_type pos ) const {
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos < m_size, "Attempt to access span past end" );
 
@@ -167,7 +167,7 @@ namespace daw {
 			return nullptr == m_first or 0 == m_size;
 		}
 
-		constexpr void remove_prefix( size_type const n ) noexcept {
+		constexpr void remove_prefix( size_type n ) noexcept {
 			m_first += n;
 			m_size -= n;
 		}
@@ -176,7 +176,7 @@ namespace daw {
 			remove_prefix( 1 );
 		}
 
-		constexpr void remove_suffix( size_type const n ) noexcept {
+		constexpr void remove_suffix( size_type n ) noexcept {
 			m_size -= n;
 		}
 
@@ -203,14 +203,14 @@ namespace daw {
 		}
 
 		constexpr span subspan(
-		  size_type const pos = 0,
-		  size_type const count = std::numeric_limits<size_type>::max( ) ) const {
+		  size_type pos = 0,
+		  size_type count = std::numeric_limits<size_type>::max( ) ) const {
 
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos < size( ), "Attempt to access span past end" );
 
-			auto const rcount = daw::min( count, size( ) - pos );
-			return {data( ) + pos, rcount};
+			count = daw::min( count, size( ) - pos );
+			return {data( ) + pos, count};
 		}
 	};
 
@@ -250,7 +250,7 @@ namespace daw {
 
 		constexpr span( pointer ptr, size_type count ) noexcept
 		  : m_first( ptr )
-		  , m_size( count ) {}
+		  , m_size( ptr == nullptr ? 0 : count ) {}
 
 		constexpr span( pointer first, pointer last ) noexcept
 		  : m_first( first )
@@ -350,21 +350,21 @@ namespace daw {
 			return std::make_reverse_iterator( m_first );
 		}
 
-		constexpr reference operator[]( size_type const pos ) noexcept {
+		constexpr reference operator[]( size_type pos ) noexcept {
 			return m_first[pos];
 		}
 
-		constexpr const_reference operator[]( size_type const pos ) const noexcept {
+		constexpr const_reference operator[]( size_type pos ) const noexcept {
 			return m_first[pos];
 		}
 
-		constexpr reference at( size_type const pos ) {
+		constexpr reference at( size_type pos ) {
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos < m_size, "Attempt to access span past end" );
 			return m_first[pos];
 		}
 
-		constexpr const_reference at( size_type const pos ) const {
+		constexpr const_reference at( size_type pos ) const {
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos < m_size, "Attempt to access span past end" );
 
@@ -407,7 +407,7 @@ namespace daw {
 			return nullptr == m_first or 0 == m_size;
 		}
 
-		constexpr void remove_prefix( size_type const n ) noexcept {
+		constexpr void remove_prefix( size_type n ) noexcept {
 			m_first += n;
 			m_size -= n;
 		}
@@ -416,7 +416,7 @@ namespace daw {
 			remove_prefix( 1 );
 		}
 
-		constexpr void remove_suffix( size_type const n ) noexcept {
+		constexpr void remove_suffix( size_type n ) noexcept {
 			m_size -= n;
 		}
 
@@ -443,25 +443,25 @@ namespace daw {
 		}
 
 		constexpr span subspan(
-		  size_type const pos = 0,
-		  size_type const count = std::numeric_limits<size_type>::max( ) ) {
+		  size_type pos = 0,
+		  size_type count = std::numeric_limits<size_type>::max( ) ) {
 
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos < size( ), "Attempt to access span past end" );
 
-			auto const rcount = daw::min( count, size( ) - pos );
-			return {data( ) + pos, rcount};
+			count = daw::min( count, size( ) - pos );
+			return {data( ) + pos, count};
 		}
 
 		constexpr span subspan(
-		  size_type const pos = 0,
-		  size_type const count = std::numeric_limits<size_type>::max( ) ) const {
+		  size_type pos = 0,
+		  size_type count = std::numeric_limits<size_type>::max( ) ) const {
 
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos < size( ), "Attempt to access span past end" );
 
-			auto const rcount = daw::min( count, size( ) - pos );
-			return {data( ) + pos, rcount};
+			count = daw::min( count, size( ) - pos );
+			return {data( ) + pos, count};
 		}
 	};
 
