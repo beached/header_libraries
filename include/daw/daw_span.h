@@ -96,12 +96,9 @@ namespace daw {
 		  : m_first( std::data( c ) )
 		  , m_size( std::size( c ) ) {}
 
+		// For symmetry with non-const span
 		constexpr span copy( ) const noexcept {
-			return {m_first, m_size};
-		}
-
-		constexpr iterator begin( ) noexcept {
-			return m_first;
+			return {data( ), size( )};
 		}
 
 		constexpr const_iterator begin( ) const noexcept {
@@ -112,20 +109,12 @@ namespace daw {
 			return m_first;
 		}
 
-		constexpr iterator end( ) noexcept {
-			return m_first + m_size;
-		}
-
 		constexpr const_iterator end( ) const noexcept {
 			return m_first + m_size;
 		}
 
 		constexpr const_iterator cend( ) const noexcept {
 			return m_first + m_size;
-		}
-
-		constexpr reverse_iterator rbegin( ) noexcept {
-			return daw::make_reverse_iterator( m_first + m_size );
 		}
 
 		constexpr const_reverse_iterator rbegin( ) const noexcept {
@@ -136,10 +125,6 @@ namespace daw {
 			return daw::make_reverse_iterator( m_first + m_size );
 		}
 
-		constexpr reverse_iterator rend( ) noexcept {
-			return daw::make_reverse_iterator( m_first );
-		}
-
 		constexpr const_reverse_iterator rend( ) const noexcept {
 			return daw::make_reverse_iterator( m_first );
 		}
@@ -148,17 +133,7 @@ namespace daw {
 			return daw::make_reverse_iterator( m_first );
 		}
 
-		constexpr reference operator[]( size_type const pos ) noexcept {
-			return m_first[pos];
-		}
-
 		constexpr const_reference operator[]( size_type const pos ) const noexcept {
-			return m_first[pos];
-		}
-
-		constexpr reference at( size_type const pos ) {
-			daw::exception::precondition_check<std::out_of_range>(
-			  pos < m_size, "Attempt to access span past end" );
 			return m_first[pos];
 		}
 
@@ -169,24 +144,12 @@ namespace daw {
 			return m_first[pos];
 		}
 
-		constexpr reference front( ) noexcept {
-			return *m_first;
-		}
-
 		constexpr const_reference front( ) const noexcept {
 			return *m_first;
 		}
 
-		constexpr reference back( ) noexcept {
-			return *std::next( m_first, m_size - 1 );
-		}
-
 		constexpr const_reference back( ) const noexcept {
 			return *std::next( m_first, m_size - 1 );
-		}
-
-		constexpr pointer data( ) noexcept {
-			return m_first;
 		}
 
 		constexpr const_pointer data( ) const noexcept {
@@ -245,10 +208,10 @@ namespace daw {
 		  size_type const count = std::numeric_limits<size_type>::max( ) ) const {
 
 			daw::exception::precondition_check<std::out_of_range>(
-			  pos < m_size, "Attempt to access span past end" );
+			  pos < size( ), "Attempt to access span past end" );
 
-			auto const rcount = daw::min( count, m_size - pos );
-			return {m_first + pos, rcount};
+			auto const rcount = daw::min( count, size( ) - pos );
+			return {data( ) + pos, rcount};
 		}
 	};
 
@@ -331,13 +294,13 @@ namespace daw {
 
 		// Conversion to const T span
 		constexpr operator span<T const>( ) const noexcept {
-			return {m_first, m_size};
+			return {data( ), size( )};
 		}
 
 		// If one really wants to get mutable span
 		// from a const span
 		constexpr span copy( ) const noexcept {
-			return {m_first, m_size};
+			return {m_first, size( )};
 		}
 
 		constexpr iterator begin( ) noexcept {
@@ -482,13 +445,24 @@ namespace daw {
 
 		constexpr span subspan(
 		  size_type const pos = 0,
+		  size_type const count = std::numeric_limits<size_type>::max( ) ) {
+
+			daw::exception::precondition_check<std::out_of_range>(
+			  pos < size( ), "Attempt to access span past end" );
+
+			auto const rcount = daw::min( count, size( ) - pos );
+			return {data( ) + pos, rcount};
+		}
+
+		constexpr span subspan(
+		  size_type const pos = 0,
 		  size_type const count = std::numeric_limits<size_type>::max( ) ) const {
 
 			daw::exception::precondition_check<std::out_of_range>(
-			  pos < m_size, "Attempt to access span past end" );
+			  pos < size( ), "Attempt to access span past end" );
 
-			auto const rcount = daw::min( count, m_size - pos );
-			return {m_first + pos, rcount};
+			auto const rcount = daw::min( count, size( ) - pos );
+			return {data( ) + pos, rcount};
 		}
 	};
 
@@ -512,16 +486,3 @@ namespace daw {
 	using view = span<T const>;
 } // namespace daw
 
-namespace std {
-	template<typename T>
-	struct hash<daw::span<T>> {
-		size_t operator( )( daw::span<T> s ) noexcept {
-			auto const tot_size = sizeof( T ) + sizeof( decltype( s.size( ) ) );
-			char vals[tot_size];
-			*reinterpret_cast<T *>( &vals[0] ) = s.data( );
-			*reinterpret_cast<decltype( s.size( ) )>( &vals[sizeof( T )] ) =
-			  s.size( );
-			return daw::fnv1a_hash( vals, tot_size );
-		}
-	};
-} // namespace std
