@@ -188,6 +188,9 @@ namespace daw {
 		}
 
 		constexpr bool pop( T &value ) noexcept {
+			if( empty( ) ) {
+				return false;
+			}
 			value = back( );
 			remove_suffix( );
 			return true;
@@ -431,6 +434,9 @@ namespace daw {
 		}
 
 		constexpr bool pop( T &value ) noexcept {
+			if( empty( ) ) {
+				return false;
+			}
 			value = back( );
 			remove_suffix( );
 			return true;
