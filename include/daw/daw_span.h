@@ -183,9 +183,21 @@ namespace daw {
 			return result;
 		}
 
+		constexpr span<T const> pop_front( size_t n ) {
+			auto result = subspan( 0, n );
+			remove_prefix( n );
+			return result;
+		}
+
 		constexpr T pop_back( ) noexcept( std::is_nothrow_assignable_v<T> ) {
 			auto result = back( );
 			remove_suffix( );
+			return result;
+		}
+
+		constexpr span<T const> pop_back( size_t n ) {
+			auto result = subspan( size( ) - n, n );
+			remove_suffix( n );
 			return result;
 		}
 
@@ -253,7 +265,8 @@ namespace daw {
 		constexpr span( pointer first, const_pointer last ) noexcept
 		  : m_first( first )
 		  , m_size( std::distance( static_cast<const_pointer>( first ), last ) > 0
-		              ? static_cast<size_type>( std::distance( static_cast<const_pointer>( first ), last ) )
+		              ? static_cast<size_type>( std::distance(
+		                  static_cast<const_pointer>( first ), last ) )
 		              : 0 ) {}
 
 		template<size_t N>
@@ -430,9 +443,21 @@ namespace daw {
 			return result;
 		}
 
+		constexpr span<T> pop_front( size_t n ) noexcept {
+			auto result = subspan( 0, n );
+			remove_prefix( n );
+			return result;
+		}
+
 		constexpr T pop_back( ) noexcept( std::is_nothrow_assignable_v<T> ) {
 			auto result = back( );
 			remove_suffix( );
+			return result;
+		}
+
+		constexpr span<T> pop_back( size_t n ) {
+			auto result = subspan( size( ) - n, n );
+			remove_suffix( n );
 			return result;
 		}
 

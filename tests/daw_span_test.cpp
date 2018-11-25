@@ -197,8 +197,8 @@ static_assert( ctad_ptr_size( ) );
 
 constexpr bool ctad_ptr_ptr_const_01( ) {
 	std::array<int const, 5> arry = {1, 2, 3, 4, 5};
-	int const * ptr1 = arry.data( );
-	int const * ptr2 = arry.data( ) + arry.size( );
+	int const *ptr1 = arry.data( );
+	int const *ptr2 = arry.data( ) + arry.size( );
 	daw::span a( ptr1, ptr2 );
 
 	return !a.has_mutable_pointer and a.data( ) == arry.data( ) and
@@ -209,8 +209,8 @@ static_assert( ctad_ptr_ptr_const_01( ) );
 
 constexpr bool ctad_ptr_ptr_const_02( ) {
 	std::array<int, 5> arry = {1, 2, 3, 4, 5};
-	int const * ptr1 = arry.data( );
-	int * ptr2 = arry.data( ) + arry.size( );
+	int const *ptr1 = arry.data( );
+	int *ptr2 = arry.data( ) + arry.size( );
 	daw::span a( ptr1, ptr2 );
 
 	return !a.has_mutable_pointer and a.data( ) == arry.data( ) and
@@ -221,8 +221,8 @@ static_assert( ctad_ptr_ptr_const_02( ) );
 
 constexpr bool ctad_ptr_ptr_01( ) {
 	std::array<int, 5> arry = {1, 2, 3, 4, 5};
-	int * ptr1 = arry.data( );
-	int * ptr2 = arry.data( ) + arry.size( );
+	int *ptr1 = arry.data( );
+	int *ptr2 = arry.data( ) + arry.size( );
 	daw::span a( ptr1, ptr2 );
 
 	return a.has_mutable_pointer and a.data( ) == arry.data( ) and
@@ -233,8 +233,8 @@ static_assert( ctad_ptr_ptr_01( ) );
 
 constexpr bool ctad_ptr_ptr_02( ) {
 	std::array<int, 5> arry = {1, 2, 3, 4, 5};
-	int * ptr1 = arry.data( );
-	int const * ptr2 = arry.data( ) + arry.size( );
+	int *ptr1 = arry.data( );
+	int const *ptr2 = arry.data( ) + arry.size( );
 	daw::span a( ptr1, ptr2 );
 
 	return a.has_mutable_pointer and a.data( ) == arry.data( ) and
@@ -243,4 +243,6 @@ constexpr bool ctad_ptr_ptr_02( ) {
 }
 static_assert( ctad_ptr_ptr_02( ) );
 
-int main( ) { return 0; }
+int main( ) {
+	return 0;
+}

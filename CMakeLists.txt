@@ -69,7 +69,6 @@ set( TESTED_HEADERS_PREFIXES
 	daw_scope_guard
 	daw_sip_hash
 	daw_size_literals
-	daw_span
 	daw_stack_function
 	daw_static_array
 	daw_static_optional
@@ -89,9 +88,9 @@ set( TESTED_HEADERS_PREFIXES
 	not_null
 )
 
-
 set( TESTED_HEADERS_PREFIXES_NB
 	daw_piecewise_factory
+	daw_span
 )
 
 set( UNTESTED_HEADER_IMPL 
