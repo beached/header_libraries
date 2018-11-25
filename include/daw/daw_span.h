@@ -175,19 +175,19 @@ namespace daw {
 			remove_suffix( 1 );
 		}
 
-		constexpr T pop_front( ) noexcept {
+		constexpr T pop_front( ) noexcept( std::is_nothrow_assignable_v<T> ) {
 			auto result = front( );
 			remove_prefix( );
 			return result;
 		}
 
-		constexpr T pop_back( ) noexcept {
+		constexpr T pop_back( ) noexcept( std::is_nothrow_assignable_v<T> ) {
 			auto result = back( );
 			remove_suffix( );
 			return result;
 		}
 
-		constexpr bool pop( T &value ) noexcept {
+		constexpr bool pop( T &value ) noexcept( std::is_nothrow_assignable_v<T> ) {
 			if( empty( ) ) {
 				return false;
 			}
@@ -421,19 +421,19 @@ namespace daw {
 			remove_suffix( 1 );
 		}
 
-		constexpr T pop_front( ) noexcept {
+		constexpr T pop_front( ) noexcept( is_nothrow_assignable_v<T> ) {
 			auto result = front( );
 			remove_prefix( );
 			return result;
 		}
 
-		constexpr T pop_back( ) noexcept {
+		constexpr T pop_back( ) noexcept( std::is_nothrow_assignable_v<T> ) {
 			auto result = back( );
 			remove_suffix( );
 			return result;
 		}
 
-		constexpr bool pop( T &value ) noexcept {
+		constexpr bool pop( T &value ) noexcept( std::is_nothrow_assignable_v<T> ) {
 			if( empty( ) ) {
 				return false;
 			}
