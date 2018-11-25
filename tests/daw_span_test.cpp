@@ -181,6 +181,75 @@ constexpr bool copy_to_mutable( ) {
 }
 static_assert( copy_to_mutable( ) );
 
+constexpr bool ctad_ptr_size_const( ) {
+	std::array<int const, 5> arry = {1, 2, 3, 4, 5};
+	daw::span a( arry.data( ), arry.size( ) );
+
+	return !a.has_mutable_pointer and a.data( ) == arry.data( ) and
+	       a.size( ) == arry.size( ) and
+	       a.size_bytes( ) == ( a.size( ) * sizeof( int ) );
+}
+static_assert( ctad_ptr_size_const( ) );
+
+constexpr bool ctad_ptr_size( ) {
+	std::array<int, 5> arry = {1, 2, 3, 4, 5};
+	daw::span a( arry.data( ), arry.size( ) );
+
+	return a.has_mutable_pointer and a.data( ) == arry.data( ) and
+	       a.size( ) == arry.size( ) and
+	       a.size_bytes( ) == ( a.size( ) * sizeof( int ) );
+}
+static_assert( ctad_ptr_size( ) );
+
+constexpr bool ctad_ptr_ptr_const_01( ) {
+	std::array<int const, 5> arry = {1, 2, 3, 4, 5};
+	int const * ptr1 = arry.data( );
+	int const * ptr2 = arry.data( ) + arry.size( );
+	daw::span a( ptr1, ptr2 );
+
+	return !a.has_mutable_pointer and a.data( ) == arry.data( ) and
+	       a.size( ) == arry.size( ) and
+	       a.size_bytes( ) == ( a.size( ) * sizeof( int ) );
+}
+static_assert( ctad_ptr_ptr_const_01( ) );
+
+constexpr bool ctad_ptr_ptr_const_02( ) {
+	std::array<int, 5> arry = {1, 2, 3, 4, 5};
+	int const * ptr1 = arry.data( );
+	int * ptr2 = arry.data( ) + arry.size( );
+	daw::span a( ptr1, ptr2 );
+
+	return !a.has_mutable_pointer and a.data( ) == arry.data( ) and
+	       a.size( ) == arry.size( ) and
+	       a.size_bytes( ) == ( a.size( ) * sizeof( int ) );
+}
+static_assert( ctad_ptr_ptr_const_02( ) );
+
+constexpr bool ctad_ptr_ptr_01( ) {
+	std::array<int, 5> arry = {1, 2, 3, 4, 5};
+	int * ptr1 = arry.data( );
+	int * ptr2 = arry.data( ) + arry.size( );
+	daw::span a( ptr1, ptr2 );
+
+	return a.has_mutable_pointer and a.data( ) == arry.data( ) and
+	       a.size( ) == arry.size( ) and
+	       a.size_bytes( ) == ( a.size( ) * sizeof( int ) );
+}
+static_assert( ctad_ptr_ptr_01( ) );
+
+constexpr bool ctad_ptr_ptr_02( ) {
+	std::array<int, 5> arry = {1, 2, 3, 4, 5};
+	int * ptr1 = arry.data( );
+	int const * ptr2 = arry.data( ) + arry.size( );
+	daw::span a( ptr1, ptr2 );
+
+	return a.has_mutable_pointer and a.data( ) == arry.data( ) and
+	       a.size( ) == arry.size( ) and
+	       a.size_bytes( ) == ( a.size( ) * sizeof( int ) );
+}
+static_assert( ctad_ptr_ptr_02( ) );
+
+
 BOOST_AUTO_TEST_CASE( daw_span_test_001 ) {
 	constexpr auto const a = daw::span( "This is a test" );
 	for( auto c : a ) {

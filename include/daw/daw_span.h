@@ -250,10 +250,10 @@ namespace daw {
 		  : m_first( ptr )
 		  , m_size( ptr == nullptr ? 0 : count ) {}
 
-		constexpr span( pointer first, pointer last ) noexcept
+		constexpr span( pointer first, const_pointer last ) noexcept
 		  : m_first( first )
-		  , m_size( std::distance( first, last ) > 0
-		              ? static_cast<size_type>( std::distance( first, last ) )
+		  , m_size( std::distance( static_cast<const_pointer>( first ), last ) > 0
+		              ? static_cast<size_type>( std::distance( static_cast<const_pointer>( first ), last ) )
 		              : 0 ) {}
 
 		template<size_t N>
@@ -471,8 +471,26 @@ namespace daw {
 	template<typename T>
 	span( T *, size_t )->span<T>;
 
+	template<typename T>
+	span( T const *, size_t )->span<T const>;
+
 	template<typename T, size_t N>
 	span( T ( & )[N] )->span<T>;
+
+	template<typename T>
+	span( T *, T * )->span<T>;
+
+	template<typename T>
+	span( T *, T const * )->span<T>;
+
+	template<typename T>
+	span( T const *, T const * )->span<T const>;
+
+	template<typename T>
+	span( T const *, T * )->span<T const>;
+
+	template<typename T, size_t N>
+	span( T const ( & )[N] )->span<T const>;
 
 	template<typename Container>
 	span( Container & )
