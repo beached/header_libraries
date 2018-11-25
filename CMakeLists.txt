@@ -32,7 +32,6 @@ set( TESTED_HEADERS_PREFIXES
 	cpp_17
 	daw_algorithm
 	daw_array
-	daw_array_view
 	daw_benchmark
 	daw_bit
 	daw_bit_queues
