@@ -20,12 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cstdint>
-#include <cstdlib>
-#include <iostream>
-#include <string>
-
-#include "daw/boost_test.h"
 #include "daw/daw_span.h"
 
 // Test trait
@@ -249,22 +243,4 @@ constexpr bool ctad_ptr_ptr_02( ) {
 }
 static_assert( ctad_ptr_ptr_02( ) );
 
-
-BOOST_AUTO_TEST_CASE( daw_span_test_001 ) {
-	constexpr auto const a = daw::span( "This is a test" );
-	for( auto c : a ) {
-		std::cout << c;
-	}
-	std::cout << '\n';
-
-	int const barry[] = {1, 2, 3, 4, 5};
-	auto const b = daw::span( barry );
-	BOOST_REQUIRE_EQUAL( b.size( ), 5 );
-}
-
-BOOST_AUTO_TEST_CASE( daw_span_test_002 ) {
-	std::array<int, 5> a = {1, 2, 3, 4, 5};
-	daw::span<int> s_a( a.data( ), a.size( ) );
-	auto const sc_a = s_a;
-	(void)sc_a;
-}
+int main( ) { return 0; }
