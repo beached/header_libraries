@@ -196,6 +196,9 @@ namespace daw {
 		}
 
 		constexpr view pop_front( size_t n ) {
+			if( n > size( ) ) {
+				n = size( );
+			}
 			auto result = view( m_first, std::next( m_first, n ) );
 			remove_prefix( n );
 			return result;
@@ -208,6 +211,9 @@ namespace daw {
 		}
 
 		constexpr view pop_back( size_t n ) {
+			if( n > size( ) ) {
+				n = size( );
+			}
 			auto result = view( std::prev( m_last, n ), m_last );
 			remove_suffix( n );
 			return result;
