@@ -55,6 +55,7 @@ namespace daw {
 		using difference_type = std::ptrdiff_t;
 		using is_daw_span = std::true_type;
 
+		static inline constexpr bool const has_mutable_pointer = false;
 	private:
 		const_pointer m_first = nullptr;
 		size_type m_size = 0;
@@ -220,6 +221,7 @@ namespace daw {
 		using difference_type = std::ptrdiff_t;
 		using is_daw_span = std::true_type;
 
+		static inline constexpr bool const has_mutable_pointer = true;
 	private:
 		pointer m_first = nullptr;
 		size_type m_size = 0;
