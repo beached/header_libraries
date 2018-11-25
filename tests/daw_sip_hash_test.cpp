@@ -62,7 +62,7 @@ int main( ) {
 	                                  8, 9, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F};
 
 	auto const plaintext = []( ) {
-		std::array<char, 64> result {};
+		std::array<char, 64> result{};
 		for( size_t i = 0ULL; i < 64ULL; ++i ) {
 			result[i] = static_cast<char>( i );
 		}
@@ -88,7 +88,7 @@ int main( ) {
 	          << " per test.\n";
 
 	std::string const msg = "This is a test";
-	std::cout << "Hash of '" << msg << "' is " << daw::siphash24( msg.data( ), msg.size( ), key.data( ) ) << '\n';
+	std::cout << "Hash of '" << msg << "' is "
+	          << daw::siphash24( msg.data( ), msg.size( ), key.data( ) ) << '\n';
 	return 0;
 }
-

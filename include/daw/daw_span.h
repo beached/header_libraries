@@ -26,6 +26,7 @@
 #include <iterator>
 #include <limits>
 #include <stdexcept>
+#include <type_traits>
 
 #include "daw_exception.h"
 #include "daw_math.h"
@@ -56,6 +57,7 @@ namespace daw {
 		using is_daw_span = std::true_type;
 
 		static inline constexpr bool const has_mutable_pointer = false;
+
 	private:
 		const_pointer m_first = nullptr;
 		size_type m_size = 0;
@@ -225,6 +227,7 @@ namespace daw {
 		using is_daw_span = std::true_type;
 
 		static inline constexpr bool const has_mutable_pointer = true;
+
 	private:
 		pointer m_first = nullptr;
 		size_type m_size = 0;
@@ -484,4 +487,3 @@ namespace daw {
 	template<typename T>
 	using view = span<T const>;
 } // namespace daw
-
