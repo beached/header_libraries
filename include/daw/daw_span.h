@@ -47,20 +47,16 @@ namespace daw {
 	template<typename T>
 	struct span<T, std::enable_if_t<std::is_const_v<T>>> {
 		using value_type = daw::remove_cvref_t<T>;
-		using pointer = value_type const *;
 		using const_pointer = value_type const *;
-		using reference = value_type const &;
 		using const_reference = value_type const &;
-		using iterator = pointer;
 		using const_iterator = const_pointer;
-		using reverse_iterator = std::reverse_iterator<iterator>;
 		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 		using size_type = size_t;
 		using difference_type = std::ptrdiff_t;
 		using is_daw_span = std::true_type;
 
 	private:
-		pointer m_first = nullptr;
+		const_pointer m_first = nullptr;
 		size_type m_size = 0;
 
 	public:
@@ -68,13 +64,15 @@ namespace daw {
 		explicit constexpr span( std::nullptr_t ) noexcept {}
 		constexpr span( std::nullptr_t, size_type ) noexcept {}
 
-		constexpr span( pointer ptr, size_type count ) noexcept
+		constexpr span( const_pointer ptr, size_type count ) noexcept
 		  : m_first( ptr )
 		  , m_size( ptr == nullptr ? 0 : count ) {}
 
-		constexpr span( pointer first, pointer last ) noexcept
+		constexpr span( const_pointer first, const_pointer last ) noexcept
 		  : m_first( first )
-		  , m_size( last - first ) {}
+		  , m_size( std::distance( first, last ) > 0
+		              ? static_cast<size_type>( std::distance( first, last ) )
+		              : 0 ) {}
 
 		template<size_t N>
 		explicit constexpr span( value_type const ( &arr )[N] ) noexcept
@@ -194,9 +192,9 @@ namespace daw {
 			return true;
 		}
 
-		constexpr span subspan(
-		  size_type pos = 0,
-		  size_type count = std::numeric_limits<size_type>::max( ) ) const {
+		constexpr span
+		subspan( size_type pos = 0,
+		         size_type count = std::numeric_limits<size_type>::max( ) ) const {
 
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos < size( ), "Attempt to access span past end" );
@@ -246,7 +244,9 @@ namespace daw {
 
 		constexpr span( pointer first, pointer last ) noexcept
 		  : m_first( first )
-		  , m_size( last - first ) {}
+		  , m_size( std::distance( first, last ) > 0
+		              ? static_cast<size_type>( std::distance( first, last ) )
+		              : 0 ) {}
 
 		template<size_t N>
 		explicit constexpr span( value_type ( &arr )[N] ) noexcept
@@ -260,13 +260,13 @@ namespace daw {
 		  , m_size( std::size( c ) ) {}
 
 		// Only allow copy constructing from non-const span's.
-		// This prevents the copy constructor loop hole
+		// This prevents the copy constructor loophole
 		constexpr span( span &other ) noexcept
 		  : m_first( other.m_first )
 		  , m_size( other.m_size ) {}
 
 		// Only allow copy assignment from non-const span's.
-		// This prevents the copy constructor loop hole
+		// This prevents the copy constructor loophole
 		constexpr span &operator=( span &rhs ) noexcept {
 			m_first = rhs.m_first;
 			m_size = rhs.m_size;
@@ -434,9 +434,9 @@ namespace daw {
 			return true;
 		}
 
-		constexpr span subspan(
-		  size_type pos = 0,
-		  size_type count = std::numeric_limits<size_type>::max( ) ) {
+		constexpr span
+		subspan( size_type pos = 0,
+		         size_type count = std::numeric_limits<size_type>::max( ) ) {
 
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos < size( ), "Attempt to access span past end" );
@@ -445,9 +445,9 @@ namespace daw {
 			return {data( ) + pos, count};
 		}
 
-		constexpr span subspan(
-		  size_type pos = 0,
-		  size_type count = std::numeric_limits<size_type>::max( ) ) const {
+		constexpr span
+		subspan( size_type pos = 0,
+		         size_type count = std::numeric_limits<size_type>::max( ) ) const {
 
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos < size( ), "Attempt to access span past end" );
