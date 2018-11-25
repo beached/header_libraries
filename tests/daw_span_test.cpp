@@ -28,6 +28,41 @@
 #include "daw/boost_test.h"
 #include "daw/daw_span.h"
 
+// Test trait
+static_assert( daw::is_daw_span_v<daw::span<int>> );
+static_assert( daw::is_daw_span_v<daw::span<int const>> );
+static_assert( !daw::is_daw_span_v<int> );
+
+static_assert( !std::is_constructible_v<daw::span<int>, daw::span<int> const> );
+
+constexpr bool copy_non_const_span() {
+	daw::span<int> a{};
+	daw::span<int> b = a;
+	return b.data( ) == nullptr and b.size( ) == 0;
+}
+static_assert(copy_non_const_span() );
+
+constexpr bool copy_span_of_const( ) {
+	daw::span<int const> a{};
+	daw::span<int const> b = a;
+	return b.data( ) == nullptr and b.size( ) == 0;
+}
+static_assert( copy_span_of_const( ) );
+
+constexpr bool copy_const_span_of_const( ) {
+	daw::span<int const> const a{};
+	daw::span<int const> b = a;
+	return b.data( ) == nullptr and b.size( ) == 0;
+}
+static_assert( copy_const_span_of_const( ) );
+
+// Ensure that one cannot convert or construct a non_const T from a const T span
+static_assert( !std::is_constructible_v<daw::span<int>, daw::span<int const> const> );
+static_assert( !std::is_convertible_v<daw::span<int const> const, daw::span<int>> );
+
+static_assert( std::is_constructible_v<daw::span<int>, std::nullptr_t>, "Can construct a span from null");
+static_assert( std::is_constructible_v<daw::span<int>, std::nullptr_t, size_t>, "Can construct a span from null and size");
+
 BOOST_AUTO_TEST_CASE( daw_span_test_001 ) {
 	constexpr auto const a = daw::span( "This is a test" );
 	for( auto c : a ) {

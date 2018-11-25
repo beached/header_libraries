@@ -40,15 +40,25 @@
 #include "iterator/daw_reverse_iterator.h"
 
 namespace daw {
-	template<typename T, typename = std::nullptr_t>
+	template<typename T, typename = void>
 	struct span;
 
+	template<typename>
+	struct is_daw_span_t : std::false_type {};
+
 	template<typename T>
-	struct span<T, std::enable_if_t<daw::is_const_v<std::remove_reference_t<T>>, std::nullptr_t>> {
-		using value_type = std::remove_reference_t<T>;
-		using pointer = value_type *;
+	struct is_daw_span_t<::daw::span<T>> : std::true_type {};
+
+	template<typename T>
+	inline constexpr bool const is_daw_span_v = is_daw_span_t<T>::value;
+
+	// Const T
+	template<typename T>
+	struct span<T, std::enable_if_t<daw::is_const_v<T>>> {
+		using value_type = daw::remove_cvref_t<T>;
+		using pointer = value_type const *;
 		using const_pointer = value_type const *;
-		using reference = value_type &;
+		using reference = value_type const &;
 		using const_reference = value_type const &;
 		using iterator = pointer;
 		using const_iterator = const_pointer;
@@ -56,6 +66,7 @@ namespace daw {
 		using const_reverse_iterator = daw::reverse_iterator<const_iterator>;
 		using size_type = size_t;
 		using difference_type = std::ptrdiff_t;
+		using is_daw_span = std::true_type;
 
 	private:
 		pointer m_first = nullptr;
@@ -79,13 +90,14 @@ namespace daw {
 		  : m_first( arr )
 		  , m_size( N ) {}
 
-		template<typename Container>
+		template<typename Container, std::enable_if_t<!is_daw_span_v<Container>,
+		                                              std::nullptr_t> = nullptr>
 		explicit constexpr span( Container const &c ) noexcept
 		  : m_first( std::data( c ) )
 		  , m_size( std::size( c ) ) {}
 
 		constexpr span copy( ) const noexcept {
-			return { m_first, m_size };
+			return {m_first, m_size};
 		}
 
 		constexpr iterator begin( ) noexcept {
@@ -228,29 +240,7 @@ namespace daw {
 			return true;
 		}
 
-		constexpr void resize( size_type const n ) noexcept {
-			m_size = n;
-		}
-
-		constexpr size_type copy( T *dest, size_type const count,
-		                          size_type const pos = 0 ) const {
-
-			daw::exception::precondition_check<std::out_of_range>(
-			  pos < m_size, "Attempt to access span past end" );
-
-			size_type const rlen = daw::min( count, m_size - pos );
-			auto src = m_first + pos;
-			for( size_t n = 0; n < rlen; ++n ) {
-				dest[n] = src[n];
-			}
-			return rlen;
-		}
-
-		constexpr void fill( const_reference value ) noexcept {
-			daw::algorithm::fill_n( m_first, m_size, value );
-		}
-
-		constexpr span subset(
+		constexpr span subspan(
 		  size_type const pos = 0,
 		  size_type const count = std::numeric_limits<size_type>::max( ) ) const {
 
@@ -258,27 +248,14 @@ namespace daw {
 			  pos < m_size, "Attempt to access span past end" );
 
 			auto const rcount = daw::min( count, m_size - pos );
-			return span{m_first + pos, rcount};
-		}
-
-	private:
-		constexpr size_type reverse_distance( const_reverse_iterator first,
-		                                      const_reverse_iterator last ) const
-		  noexcept {
-			// Portability note here: std::distance is not NOEXCEPT, but calling it
-			// with a span::reverse_iterator will not throw. return
-			// static_cast<size_type>( ( m_size - 1u ) - static_cast<size_type>(
-			// std::distance( first, last ) )
-			// );
-			return static_cast<size_type>(
-			  ( m_size ) - static_cast<size_type>( std::distance( first, last ) ) );
+			return {m_first + pos, rcount};
 		}
 	};
 
-	// T non-const span, can only copy from  copy freely
+	// non-const T span
 	template<typename T>
-	struct span<T, std::enable_if_t<!daw::is_const_v<std::remove_reference_t<T>>, std::nullptr_t>> {
-		using value_type = std::remove_reference_t<T>;
+	struct span<T, std::enable_if_t<!std::is_const_v<T>>> {
+		using value_type = daw::remove_cvref_t<T>;
 		using pointer = value_type *;
 		using const_pointer = value_type const *;
 		using reference = value_type &;
@@ -289,6 +266,7 @@ namespace daw {
 		using const_reverse_iterator = daw::reverse_iterator<const_iterator>;
 		using size_type = size_t;
 		using difference_type = std::ptrdiff_t;
+		using is_daw_span = std::true_type;
 
 	private:
 		pointer m_first = nullptr;
@@ -296,31 +274,17 @@ namespace daw {
 
 	public:
 		constexpr span( ) noexcept = default;
-		explicit constexpr span( std::nullptr_t ) noexcept {}
-		constexpr span( std::nullptr_t, size_type ) noexcept {}
-
-		constexpr span( span & other ) noexcept: m_first( other.m_first ), m_size( other.m_size ) { }
-		constexpr span& operator=( span & rhs ) noexcept {
-			m_first = rhs.m_first;
-			m_size = rhs.m_size;
-			return *this;
-		}
-
 		constexpr span( span && ) noexcept = default;
-		constexpr span& operator=( span && ) noexcept = default;
+		constexpr span &operator=( span && ) noexcept = default;
 		~span( ) = default;
 
-		constexpr operator span<T const>( ) const noexcept {
-			return { m_first, m_size };
-		}
+		// Workaround for is_constructible check.  Have not found out
+		// why it cannot see that this cannot happen.
+		template<typename U>
+		explicit span( span<U const> const & ) = delete;
 
-		constexpr span copy( ) const noexcept {
-			return { m_first, m_size };
-		}
-
-		// Attempt to copy a const span to a non-const span
-		span( span const & ) = delete;
-		span & operator=( span const & ) = delete;
+		explicit constexpr span( std::nullptr_t ) noexcept {}
+		constexpr span( std::nullptr_t, size_type ) noexcept {}
 
 		constexpr span( pointer ptr, size_type count ) noexcept
 		  : m_first( ptr )
@@ -335,10 +299,46 @@ namespace daw {
 		  : m_first( arr )
 		  , m_size( N ) {}
 
-		template<typename Container>
+		template<typename Container, std::enable_if_t<!is_daw_span_v<Container>,
+		                                              std::nullptr_t> = nullptr>
 		explicit constexpr span( Container &c ) noexcept
 		  : m_first( std::data( c ) )
 		  , m_size( std::size( c ) ) {}
+
+		// Only allow copy constructing from non-const span's.
+		// This prevents the copy constructor loop hole
+		constexpr span( span &other ) noexcept
+		  : m_first( other.m_first )
+		  , m_size( other.m_size ) {}
+
+		// Only allow copy assignment from non-const span's.
+		// This prevents the copy constructor loop hole
+		constexpr span &operator=( span &rhs ) noexcept {
+			m_first = rhs.m_first;
+			m_size = rhs.m_size;
+			return *this;
+		}
+
+		// Explicitly delete copy construction from a const span
+		// This prevents span const -> span loophole.
+		// Use copy member if this is desired
+		span( span const & ) = delete;
+
+		// Explicitly delete copy assignment from a const span
+		// This prevents span const -> span loophole.
+		// Use copy member if this is desired
+		span &operator=( span const & ) = delete;
+
+		// Conversion to const T span
+		constexpr operator span<T const>( ) const noexcept {
+			return {m_first, m_size};
+		}
+
+		// If one really wants to get mutable span
+		// from a const span
+		constexpr span copy( ) const noexcept {
+			return {m_first, m_size};
+		}
 
 		constexpr iterator begin( ) noexcept {
 			return m_first;
@@ -480,29 +480,7 @@ namespace daw {
 			return true;
 		}
 
-		constexpr void resize( size_type const n ) noexcept {
-			m_size = n;
-		}
-
-		constexpr size_type copy( T *dest, size_type const count,
-		                          size_type const pos = 0 ) const {
-
-			daw::exception::precondition_check<std::out_of_range>(
-			  pos < m_size, "Attempt to access span past end" );
-
-			size_type const rlen = daw::min( count, m_size - pos );
-			auto src = m_first + pos;
-			for( size_t n = 0; n < rlen; ++n ) {
-				dest[n] = src[n];
-			}
-			return rlen;
-		}
-
-		constexpr void fill( const_reference value ) noexcept {
-			daw::algorithm::fill_n( m_first, m_size, value );
-		}
-
-		constexpr span subset(
+		constexpr span subspan(
 		  size_type const pos = 0,
 		  size_type const count = std::numeric_limits<size_type>::max( ) ) const {
 
@@ -510,34 +488,25 @@ namespace daw {
 			  pos < m_size, "Attempt to access span past end" );
 
 			auto const rcount = daw::min( count, m_size - pos );
-			return span{m_first + pos, rcount};
-		}
-
-	private:
-		constexpr size_type reverse_distance( const_reverse_iterator first,
-		                                      const_reverse_iterator last ) const
-		  noexcept {
-			// Portability note here: std::distance is not NOEXCEPT, but calling it
-			// with a span::reverse_iterator will not throw. return
-			// static_cast<size_type>( ( m_size - 1u ) - static_cast<size_type>(
-			// std::distance( first, last ) )
-			// );
-			return static_cast<size_type>(
-			  ( m_size ) - static_cast<size_type>( std::distance( first, last ) ) );
+			return {m_first + pos, rcount};
 		}
 	};
 
 	template<typename T>
-	span( T *, size_t ) -> span<T>;
+	span( T *, size_t )->span<T>;
 
 	template<typename T, size_t N>
-	span( T (&)[N] ) -> span<T>;
+	span( T ( & )[N] )->span<T>;
 
 	template<typename Container>
-	span( Container & ) -> span<std::remove_reference_t<decltype( *std::data( std::declval<Container>( ) ) )>>;
+	span( Container & )
+	  ->span<std::remove_reference_t<
+	    decltype( *std::data( std::declval<Container>( ) ) )>>;
 
 	template<typename Container>
-	span( Container const & ) -> span<daw::remove_cvref_t<decltype( *std::data( std::declval<Container>( ) ) )> const>;
+	span( Container const & )
+	  ->span<daw::remove_cvref_t<
+	    decltype( *std::data( std::declval<Container>( ) ) )> const>;
 
 	template<typename T>
 	using view = span<T const>;
