@@ -88,13 +88,11 @@ namespace daw {
 
 	template<typename T>
 	class lockable_value_t {
-		mutable daw::value_ptr<std::mutex> m_mutex;
-		daw::value_ptr<T> m_value;
+		mutable daw::value_ptr<std::mutex> m_mutex{};
+		daw::value_ptr<T> m_value{};
 
 	public:
-		lockable_value_t( ) noexcept( is_nothrow_default_constructible_v<T> )
-		  : m_mutex( )
-		  , m_value( ) {}
+		lockable_value_t( ) noexcept( is_nothrow_default_constructible_v<T> ) = default;
 
 		template<typename U, std::enable_if_t<
 		                       !daw::traits::is_first_type_v<lockable_value_t, U>,
