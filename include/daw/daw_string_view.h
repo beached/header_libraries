@@ -495,13 +495,13 @@ namespace daw {
 					case -1: return -1;
 				}
 			}
+			if( lhs.empty( ) and rhs.empty( ) ) {
+				return 0; 
+			}
 			if( lhs.empty( ) ) {
 				return -1;
 			}
-			if( rhs.empty( ) ) {
-				return 1;
-			}
-			return 0;
+			return 1;
 		}
 
 		constexpr int compare( basic_string_view const rhs ) const noexcept {
