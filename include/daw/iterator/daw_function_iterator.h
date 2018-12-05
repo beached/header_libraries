@@ -31,14 +31,14 @@ namespace daw {
 	/// This is like std::back_intsert_iterator
 	///
 	template<typename Function>
-	struct function_iterator {
+	struct function_iterator final {
 		using iterator_category = std::output_iterator_tag;
 		using value_type = void;
 		using difference_type = void;
 		using pointer = void;
 		using reference = void;
 
-	protected:
+	private:
 		Function m_function;
 
 	public:
@@ -50,8 +50,11 @@ namespace daw {
 		  daw::is_nothrow_copy_constructible_v<Function> )
 		  : m_function( function ) {}
 
-		template<typename T>
-		function_iterator &operator=( T &&val ) {
+		template<typename T,
+		         std::enable_if_t<
+		           !daw::is_same_v<daw::remove_cvref_t<T>, function_iterator>,
+		           std::nullptr_t> = nullptr>
+		constexpr function_iterator &operator=( T &&val ) {
 			m_function( std::forward<T>( val ) );
 			return *this;
 		}

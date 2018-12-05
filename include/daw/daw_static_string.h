@@ -45,6 +45,7 @@
 #include "daw_string_view.h"
 #include "daw_traits.h"
 #include "iterator/daw_iterator.h"
+#include "iterator/daw_back_inserter.h"
 #include "iterator/daw_reverse_iterator.h"
 
 namespace daw {
@@ -151,7 +152,7 @@ namespace daw {
 			  m_data.size( ) + sv.size( ) <= capacity( ),
 			  "Attempt to append basic_static_string past end" );
 
-			daw::container::copy( sv, std::back_inserter( m_data ) );
+			daw::container::copy( sv, daw::back_inserter( m_data ) );
 			*m_data.end( ) = 0;
 			return *this;
 		}
@@ -162,7 +163,7 @@ namespace daw {
 				throw std::out_of_range{
 				  "Attempt to append basic_static_string past end"};
 			}
-			daw::container::copy( str, std::back_inserter( m_data ) );
+			daw::container::copy( str, daw::back_inserter( m_data ) );
 			*m_data.end( ) = 0;
 			return *this;
 		}
@@ -173,7 +174,7 @@ namespace daw {
 				throw std::out_of_range{
 				  "Attempt to append basic_static_string past end"};
 			}
-			daw::container::copy( str, std::back_inserter( m_data ) );
+			daw::container::copy( str, daw::back_inserter( m_data ) );
 			*m_data.end( ) = 0;
 			return *this;
 		}
@@ -190,7 +191,7 @@ namespace daw {
 				throw std::out_of_range{
 				  "Attempt to append basic_static_string past end"};
 			}
-			daw::algorithm::copy( first, last, std::back_inserter( m_data ) );
+			daw::algorithm::copy( first, last, daw::back_inserter( m_data ) );
 			*m_data.end( ) = 0;
 			return *this;
 		}
@@ -513,7 +514,7 @@ namespace daw {
 		std::basic_string<value_type, traits_type> to_string( ) const {
 			std::basic_string<value_type, traits_type> result;
 			result.reserve( size( ) );
-			daw::algorithm::copy_n( data( ), std::back_inserter( result ), size( ) );
+			daw::algorithm::copy_n( data( ), daw::back_inserter( result ), size( ) );
 			return result;
 		}
 #endif

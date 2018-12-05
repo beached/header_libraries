@@ -28,6 +28,9 @@
 #include <vector>
 
 #include "daw/iterator/daw_back_inserter.h"
+#include "daw/daw_traits.h"
+
+static_assert( daw::traits::is_output_iterator_test<std::remove_cvref_t<decltype( daw::back_inserter( std::declval<std::vector<int> &>( ) ) )>> );
 
 BOOST_AUTO_TEST_CASE( vector_test_001 ) {
 	std::vector<int> v{};

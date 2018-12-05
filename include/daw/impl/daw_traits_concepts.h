@@ -95,7 +95,7 @@ namespace daw {
 		constexpr bool is_iterator_test( ) noexcept {
 			static_assert(
 			  is_iterator_v<Iterator>,
-			  "Iterator does not fullfill the RandomIterator concept.  See "
+			  "Iterator does not fullfill the Iterator concept.  See "
 			  "https://en.cppreference.com/w/cpp/named_req/Iterator" );
 
 			static_assert( is_copy_constructible_v<Iterator>,
