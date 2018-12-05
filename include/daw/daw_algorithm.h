@@ -2015,5 +2015,33 @@ namespace daw {
 				++start_value;
 			}
 		}
+
+		template<typename ForwardIterator, typename T>
+		constexpr ForwardIterator
+		remove_if( ForwardIterator first, ForwardIterator last, T const &value ) {
+			first = std::find( first, last, value );
+			if( first != last ) {
+				for( ForwardIterator i = first; ++i != last; ) {
+					if( !( *i == value ) ) {
+						*first++ = std::move( *i );
+					}
+				}
+			}
+			return first;
+		}
+
+		template<class ForwardIterator, class UnaryPredicate>
+		constexpr ForwardIterator
+		remove_if( ForwardIterator first, ForwardIterator last, UnaryPredicate p ) {
+			first = std::find_if( first, last, p );
+			if( first != last ) {
+				for( ForwardIterator i = first; ++i != last; ) {
+					if( !p( *i ) ) {
+						*first++ = std::move( *i );
+					}
+				}
+			}
+			return first;
+		}
 	} // namespace algorithm
 } // namespace daw
