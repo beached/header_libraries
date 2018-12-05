@@ -114,6 +114,7 @@ set( TESTED_PARALLEL_HEADERS_PREFIXES
 
 set( TESTED_ITERATOR_HEADERS_PREFIXES
 	daw_argument_iterator
+	daw_back_inserter
 	daw_checked_iterator_proxy
 	daw_circular_iterator
 	daw_integer_iterator
