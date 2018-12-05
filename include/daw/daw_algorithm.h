@@ -2019,7 +2019,7 @@ namespace daw {
 		template<typename ForwardIterator, typename T>
 		constexpr ForwardIterator
 		remove( ForwardIterator first, ForwardIterator last, T const &value ) {
-			first = std::find( first, last, value );
+			first = daw::find( first, last, value );
 			if( first != last ) {
 				for( ForwardIterator i = first; ++i != last; ) {
 					if( !( *i == value ) ) {
@@ -2033,7 +2033,7 @@ namespace daw {
 		template<class ForwardIterator, class UnaryPredicate>
 		constexpr ForwardIterator
 		remove_if( ForwardIterator first, ForwardIterator last, UnaryPredicate p ) {
-			first = std::find_if( first, last, p );
+			first = daw::find_if( first, last, p );
 			if( first != last ) {
 				for( ForwardIterator i = first; ++i != last; ) {
 					if( !p( *i ) ) {
