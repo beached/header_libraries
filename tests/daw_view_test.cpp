@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017-2018 Darrell Wright
+// Copyright (c) 2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -20,21 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cstdint>
-#include <cstdlib>
-#include <iostream>
-#include <string>
+#include <array>
+#include <vector>
 
-#include "daw/boost_test.h"
-#include "daw/daw_array_view.h"
+#include "daw/daw_exception.h"
+#include "daw/daw_view.h"
 
-BOOST_AUTO_TEST_CASE( daw_array_view_test_001 ) {
-	constexpr auto const a = daw::make_array_view( "This is a test" );
-	for( auto c : a ) {
-		std::cout << c;
-	}
-	std::cout << '\n';
+constexpr bool test_const_iterator_01( ) {
+	using arry_t = std::array<int, 5>;
+	arry_t arry = {1, 2, 3, 4, 5};
+	daw::view a( arry.begin( ), arry.end( ) );
+	return std::is_same_v<typename arry_t::const_iterator,
+	                      decltype( a )::const_iterator>;
+}
+static_assert( test_const_iterator_01( ) );
 
-	auto const b = daw::make_array_view( {1, 2, 3, 4, 5} );
-	BOOST_REQUIRE_EQUAL( b.size( ), 5 );
+int main( ) {
+	return 0;
 }

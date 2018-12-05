@@ -943,6 +943,46 @@ namespace daw {
 		return visit_nt<1, sizeof...( Args ), result_t>(
 		  std::move( var ), std::forward<Visitor>( vis ) );
 	}
+
+	template<typename T>
+	class mutable_capture {
+		mutable T m_value;
+
+	public:
+		explicit constexpr mutable_capture( T const &value )
+		  : m_value( value ) {}
+		explicit constexpr mutable_capture( T &value )
+		  : m_value( value ) {}
+		explicit constexpr mutable_capture( T &&value )
+		  : m_value( std::move( value ) ) {}
+
+		constexpr operator T &( ) const &noexcept {
+			return m_value;
+		}
+
+		constexpr operator T( ) const &&noexcept {
+			return std::move( m_value );
+		}
+
+		constexpr T &operator*( ) const &noexcept {
+			return m_value;
+		}
+
+		constexpr T operator*( ) const &&noexcept {
+			return std::move( m_value );
+		}
+
+		constexpr T *operator->( ) const noexcept {
+			return &m_value;
+		}
+	};
+
+	template<typename T>
+	mutable_capture( T const & )->mutable_capture<T>;
+	template<typename T>
+	mutable_capture( T & )->mutable_capture<T>;
+	template<typename T>
+	mutable_capture( T && )->mutable_capture<T>;
 } // namespace daw
 
 template<typename... Ts>

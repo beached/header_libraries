@@ -117,7 +117,7 @@ namespace daw {
 				constexpr lookup_result_t( hash_value_t pos, bool is_found ) noexcept
 				  : position{pos}
 				  , found{is_found} {}
-				  
+
 				constexpr operator bool( ) const noexcept {
 					return found;
 				}

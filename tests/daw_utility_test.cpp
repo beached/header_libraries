@@ -221,9 +221,7 @@ BOOST_AUTO_TEST_CASE( visit_nt_001 ) {
 BOOST_AUTO_TEST_CASE( visit_nt_002 ) {
 	std::variant<int, double> a = 5.5;
 	std::optional<bool> result{};
-	daw::visit_nt( a, [&result]( auto v ) {
-		result = (v == 5.5);
-	} );
+	daw::visit_nt( a, [&result]( auto v ) { result = ( v == 5.5 ); } );
 	BOOST_REQUIRE( result );
 	BOOST_REQUIRE( *result );
 }

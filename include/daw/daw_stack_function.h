@@ -29,41 +29,9 @@
 
 #include "daw_exception.h"
 #include "daw_traits.h"
+#include "daw_utility.h"
 
 namespace daw {
-	template<typename T>
-	class mutable_capture {
-		mutable T m_value;
-	public:
-		explicit constexpr mutable_capture( T const & value ): m_value( value ) { }
-		explicit constexpr mutable_capture( T & value ): m_value( value ) { }
-		explicit constexpr mutable_capture( T && value ): m_value( std::move( value ) ) { }
-
-		constexpr operator T & ( ) const & noexcept {
-			return m_value;
-		}
-
-		constexpr operator T ( ) const && noexcept {
-			return std::move( m_value );
-		}
-
-		constexpr T & operator*( ) const & noexcept {
-			return m_value;
-		}
-
-		constexpr T operator*( ) const && noexcept {
-			return std::move( m_value );
-		}
-
-		constexpr T * operator->( ) const noexcept {
-			return &m_value;
-		}
-	};
-
-	template<typename T> mutable_capture( T const & ) -> mutable_capture<T>;
-	template<typename T> mutable_capture( T & ) -> mutable_capture<T>;
-	template<typename T> mutable_capture( T && ) -> mutable_capture<T>;
-
 	namespace func_impl {
 		template<typename T>
 		using is_boolable_detect =
@@ -196,10 +164,10 @@ namespace daw {
 			Result operator( )( FuncArgs... args ) override {
 				daw::exception::precondition_check<std::bad_function_call>( !empty( ) );
 				if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
-					//std::invoke( m_func, std::move( args )... );
-					m_func( args...);
+					// std::invoke( m_func, std::move( args )... );
+					m_func( args... );
 				} else {
-					//return std::invoke( m_func, std::move( args )... );
+					// return std::invoke( m_func, std::move( args )... );
 					return m_func( args... );
 				}
 			}
@@ -207,10 +175,10 @@ namespace daw {
 			Result operator( )( FuncArgs... args ) const override {
 				daw::exception::precondition_check<std::bad_function_call>( !empty( ) );
 				if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
-					//std::invoke( m_func, std::move( args )... );
+					// std::invoke( m_func, std::move( args )... );
 					m_func( args... );
 				} else {
-					//return std::invoke( m_func, std::move( args )... );
+					// return std::invoke( m_func, std::move( args )... );
 					return m_func( args... );
 				}
 			}

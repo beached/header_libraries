@@ -128,7 +128,8 @@ namespace daw {
 				return;
 			}
 			using tp_val_t = decltype( std::get<N>( tp ) );
-			using value_t = decltype( remove_layer_func( std::declval<tp_val_t>( ) ) );
+			using value_t =
+			  decltype( remove_layer_func( std::declval<tp_val_t>( ) ) );
 
 			auto const setter = overloaded{
 			  [&]( value_t const &v ) { std::get<N>( tp ) = value_t{v}; },

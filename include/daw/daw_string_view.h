@@ -476,25 +476,32 @@ namespace daw {
 			return basic_string_view{&m_first[pos], rcount};
 		}
 
-		static constexpr int compare( basic_string_view lhs,
-		                              basic_string_view rhs ) noexcept {
-			if( lhs.size( ) < rhs.size( ) ) {
+	private:
+		static constexpr int cmp( CharT lhs, CharT rhs ) noexcept {
+			if( lhs < rhs ) {
 				return -1;
 			}
-			if( lhs.size( ) > rhs.size( ) ) {
+			if( lhs > rhs ) {
 				return 1;
 			}
-			while( !lhs.empty( ) and !rhs.empty( ) ) {
-				if( lhs.front( ) != rhs.front( ) ) {
-					if( lhs.front( ) < rhs.front( ) ) {
-						return -1;
-					}
-					return 1;
-				}
-				lhs.remove_prefix( );
-				rhs.remove_prefix( );
-			}
 			return 0;
+		}
+	public:
+		static constexpr int compare( basic_string_view lhs,
+		                              basic_string_view rhs ) noexcept {
+			while( !lhs.empty( ) and !rhs.empty( ) ) {
+				switch( cmp( lhs.pop_front( ), rhs.pop_front( ) ) ) {
+					case 1: return 1;
+					case -1: return -1;
+				}
+			}
+			if( lhs.empty( ) and rhs.empty( ) ) {
+				return 0; 
+			}
+			if( lhs.empty( ) ) {
+				return -1;
+			}
+			return 1;
 		}
 
 		constexpr int compare( basic_string_view const rhs ) const noexcept {

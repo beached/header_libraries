@@ -60,7 +60,7 @@ namespace daw {
 		}
 
 		template<typename Byte>
-		constexpr uint64_t to_u64( Byte const * const ptr ) noexcept {
+		constexpr uint64_t to_u64( Byte const *const ptr ) noexcept {
 			static_assert( sizeof( Byte ) == 1U );
 			return static_cast<uint64_t>( ptr[0] ) |
 			       static_cast<uint64_t>( ptr[1] ) << 8U |
@@ -73,13 +73,14 @@ namespace daw {
 		}
 
 		template<typename Byte>
-		constexpr std::array<uint64_t, 2> key_to_u64( Byte const * const key ) noexcept {
+		constexpr std::array<uint64_t, 2>
+		key_to_u64( Byte const *const key ) noexcept {
 			return {to_little_endian( to_u64( &key[0] ) ),
 			        to_little_endian( to_u64( &key[8] ) )};
 		}
 
 		template<typename Left, typename Right>
-		constexpr void set_pt( Left & pt, Right const & m ) noexcept {
+		constexpr void set_pt( Left &pt, Right const &m ) noexcept {
 			static_assert( sizeof( pt[0] ) == 1U );
 			static_assert( sizeof( m[0] ) == 1U );
 			using T = daw::remove_cvref_t<decltype( pt[0] )>;
@@ -92,7 +93,7 @@ namespace daw {
 
 	template<typename Byte>
 	constexpr uint64_t siphash24( Byte const *first, size_t sz,
-	                              Byte const * const key ) {
+	                              Byte const *const key ) {
 		static_assert( sizeof( Byte ) == 1U );
 		auto const k = sip_impl::key_to_u64( key );
 
@@ -101,7 +102,7 @@ namespace daw {
 		uint64_t v2 = k[0] ^ 0x6c7967656e657261ULL;
 		uint64_t v3 = k[1] ^ 0x7465646279746573ULL;
 
-		daw::span<char const> data_in( first, sz ); 
+		daw::span<char const> data_in( first, sz );
 		while( data_in.size( ) >= 8 ) {
 			auto mi = sip_impl::to_u64( data_in.data( ) );
 			data_in.remove_prefix( 8 );
@@ -110,7 +111,7 @@ namespace daw {
 			v0 ^= mi;
 		}
 
-		std::array<uint8_t, 8> pt {};
+		std::array<uint8_t, 8> pt{};
 		switch( data_in.size( ) ) {
 		case 7:
 			pt[6] = static_cast<uint8_t>( data_in[6] );
@@ -145,4 +146,3 @@ namespace daw {
 		return ( v0 ^ v1 ) ^ ( v2 ^ v3 );
 	}
 } // namespace daw
-
