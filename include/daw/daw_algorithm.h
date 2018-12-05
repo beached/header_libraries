@@ -2006,5 +2006,14 @@ namespace daw {
 			}
 			return d_first;
 		}
+
+		template<typename Iterator, typename EndIterator, typename T>
+		constexpr void iota( Iterator first, EndIterator last, T start_value ) {
+			while( first != last ) {
+				*first = start_value;
+				daw::advance( first, 1 );
+				++start_value;
+			}
+		}
 	} // namespace algorithm
 } // namespace daw
