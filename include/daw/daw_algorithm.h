@@ -283,6 +283,17 @@ namespace daw {
 			return first;
 		}
 
+		template<class InputIterator, class T>
+		constexpr InputIterator find( InputIterator first, InputIterator last,
+		                              T const &value ) {
+			for( ; first != last; ++first ) {
+				if( *first == value ) {
+					return first;
+				}
+			}
+			return last;
+		}
+
 		template<typename InputIterator, typename UnaryPredicate>
 		constexpr InputIterator find_if( InputIterator first, InputIterator last,
 		                                 UnaryPredicate &&unary_predicate ) {
@@ -2019,7 +2030,7 @@ namespace daw {
 		template<typename ForwardIterator, typename T>
 		constexpr ForwardIterator
 		remove( ForwardIterator first, ForwardIterator last, T const &value ) {
-			first = daw::find( first, last, value );
+			first = daw::algorithm::find( first, last, value );
 			if( first != last ) {
 				for( ForwardIterator i = first; ++i != last; ) {
 					if( !( *i == value ) ) {
@@ -2033,7 +2044,7 @@ namespace daw {
 		template<class ForwardIterator, class UnaryPredicate>
 		constexpr ForwardIterator
 		remove_if( ForwardIterator first, ForwardIterator last, UnaryPredicate p ) {
-			first = daw::find_if( first, last, p );
+			first = daw::algorithm::find_if( first, last, p );
 			if( first != last ) {
 				for( ForwardIterator i = first; ++i != last; ) {
 					if( !p( *i ) ) {
