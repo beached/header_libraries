@@ -1853,16 +1853,16 @@ namespace daw {
 		constexpr T accumulate( InputIterator first, InputIterator last,
 		                        T init ) noexcept {
 			for( ; first != last; ++first ) {
-				init = init + *first;
+				init = std::move( init ) + *first;
 			}
-			return init;
+			return std::move( init );
 		}
 
 		template<typename InputIterator, typename LastType, typename T,
 		         typename BinaryOperation>
 		constexpr T accumulate(
 		  InputIterator first, LastType last, T init,
-		  BinaryOperation binary_op ) noexcept( noexcept( binary_op( init,
+		  BinaryOperation binary_op ) noexcept( noexcept( binary_op( std::move( init ),
 		                                                             *first ) ) ) {
 
 			static_assert( traits::is_iterator_v<InputIterator>,
@@ -1871,7 +1871,7 @@ namespace daw {
 			               "http://en.cppreference.com/w/cpp/concept/Iterator" );
 
 			while( first != last ) {
-				init = binary_op( init, *first );
+				init = binary_op( std::move( init ), *first );
 				++first;
 			}
 			return init;
