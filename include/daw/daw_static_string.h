@@ -641,6 +641,14 @@ namespace daw {
 		constexpr bool ends_with( const_pointer s ) const noexcept {
 			return ends_with( basic_static_string{s} );
 		}
+
+		constexpr iterator erase( const_iterator pos ) {
+			return m_data.erase( pos );
+		}
+
+		constexpr iterator erase( const_iterator first, const_iterator last ) {
+			return m_data.erase( first, last );
+		}
 	}; // basic_static_string
 
 	using static_string = basic_static_string<char, 100>;
