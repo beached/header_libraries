@@ -492,9 +492,9 @@ namespace daw {
 			while( src != last ) {
 				if( pred( *src ) ) {
 					*destination = *src;
-					std::advance( destination, 1 );
+					++destination;
 				}
-				std::advance( src, 1 );
+				++src;
 			}
 			return destination;
 		}

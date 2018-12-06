@@ -1285,9 +1285,9 @@ namespace daw {
 			while( first != last ) {
 				if( pred( *first ) ) {
 					*destination = *first;
-					std::advance( destination, 1 );
+					++destination;
 				}
-				std::advance( first, 1 );
+				++first;
 			}
 			return destination;
 		}
