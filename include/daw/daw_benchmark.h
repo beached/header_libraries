@@ -201,7 +201,8 @@ namespace daw {
 
 			auto const finish = std::chrono::high_resolution_clock::now( );
 			daw::do_not_optimize( result );
-			auto const duration = std::chrono::duration<double>( finish - start ).count( );
+			auto const duration =
+			  std::chrono::duration<double>( finish - start ).count( );
 			if( duration < min_time ) {
 				min_time = duration;
 			}
@@ -212,5 +213,14 @@ namespace daw {
 		          << utility::format_seconds( avg_time, 2 ) << " with a minimum of "
 		          << utility::format_seconds( min_time, 2 ) << '\n';
 		return result;
+	}
+
+	template<typename T, typename U>
+	constexpr void expecting( T &&expected_result, U &&result ) noexcept {
+		if( expected_result != result ) {
+			std::cerr << "Invalid result. Expecting '" << expected_result
+			          << "' but got '" << result << "'\n";
+			std::terminate( );
+		}
 	}
 } // namespace daw
