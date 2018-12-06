@@ -181,6 +181,10 @@ namespace daw {
 		return result;
 	}
 
+	namespace bench_impl {
+		template<typename... Args>
+		constexpr void expander( Args&&... ) noexcept { }
+	}
 	template<size_t Runs, typename Test, typename... Args>
 	auto bench_n_test( std::string title, Test test_callable,
 	                   Args &&... args ) noexcept {
@@ -190,10 +194,11 @@ namespace daw {
 
 		result_t result{};
 		double min_time = std::numeric_limits<double>::max( );
-		double avg_time = 0.0;
+		double max_time = 0.0;
 
+		auto const total_start = std::chrono::high_resolution_clock::now( );
 		for( size_t n = 0; n < Runs; ++n ) {
-			(void)std::make_tuple( daw::do_not_optimize( args )... );
+			bench_impl::expander( (daw::do_not_optimize( args ),1)... );
 			auto const start = std::chrono::high_resolution_clock::now( );
 
 			result = daw::expected_from_code( std::move( test_callable ),
@@ -206,12 +211,19 @@ namespace daw {
 			if( duration < min_time ) {
 				min_time = duration;
 			}
-			avg_time += duration;
+			if( duration > max_time ) {
+				max_time = duration;
+			}
 		}
-		avg_time /= static_cast<double>( Runs );
-		std::cout << title << " took an average of "
-		          << utility::format_seconds( avg_time, 2 ) << " with a minimum of "
-		          << utility::format_seconds( min_time, 2 ) << '\n';
+		auto const total_finish = std::chrono::high_resolution_clock::now( );
+		auto total_time = std::chrono::duration<double>( total_finish - total_start ).count( );
+		auto avg_time = total_time / static_cast<double>( Runs );
+		std::cout << title 
+							<< "	runs: " << Runs << '\n'
+							<< "	total: " << utility::format_seconds( total_time, 2 ) << '\n'
+							<< "	avg: " << utility::format_seconds( avg_time, 2 ) << '\n'
+		          << "	min: " << utility::format_seconds( min_time, 2 ) << "\n"
+		          << "	max: " << utility::format_seconds( max_time, 2 ) << "\n";
 		return result;
 	}
 
