@@ -1261,6 +1261,38 @@ namespace daw {
 		}
 
 		/// @brief Copy input range [first, last) to output range [first_out,
+		/// first_out + std::distance( first, last ))
+		/// @tparam InputIterator type of Iterator of input range
+		/// @tparam LastType type of Iterator marking end of input range
+		/// @tparam OutputIterator type of iterator for output range
+		/// @tparam UnaryPredicate type predicate determining if to copy element
+		/// @param first start of input range
+		/// @param last end of input range
+		/// @param destination first item in output range
+		/// @param pred A unary predicate that determines if a copy is done
+		/// @return end of output range written to
+		template<typename InputIterator, typename LastType, typename OutputIterator,
+		         typename UnaryPredicate>
+		constexpr OutputIterator copy_if( InputIterator first, LastType last,
+		                                  OutputIterator destination,
+		                                  UnaryPredicate pred ) {
+			static_assert(
+			  traits::is_unary_predicate_v<UnaryPredicate, decltype( *first )>,
+			  "Compare does not satisfy the Unary Predicate concept.  See "
+			  "http://en.cppreference.com/w/cpp/concept/Predicate for more "
+			  "information" );
+
+			while( first != last ) {
+				if( pred( *first ) ) {
+					*destination = *first;
+					std::advance( destination, 1 );
+				}
+				std::advance( first, 1 );
+			}
+			return destination;
+		}
+
+		/// @brief Copy input range [first, last) to output range [first_out,
 		/// first_out + count)
 		/// @tparam InputIterator type of Iterator of input range
 		/// @tparam OutputIterator type of iterator for output range
