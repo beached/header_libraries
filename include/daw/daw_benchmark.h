@@ -193,12 +193,14 @@ namespace daw {
 		double avg_time = 0;
 
 		for( size_t n = 0; n < Runs; ++n ) {
+			(void)std::make_tuple( daw::do_not_optimize( args )... );
 			auto const start = std::chrono::high_resolution_clock::now( );
 
 			result = daw::expected_from_code( std::move( test_callable ),
 			                                  std::forward<Args>( args )... );
 
 			auto const finish = std::chrono::high_resolution_clock::now( );
+			daw::do_not_optimize( result );
 			auto const duration = std::chrono::duration<double>( finish - start ).count( );
 			if( duration < min_time ) {
 				min_time = duration;
