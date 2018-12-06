@@ -29,14 +29,40 @@
 
 namespace daw {
 	enum class keep_n_order { ascending, descending };
+	namespace keep_n_impl {
+		template<keep_n_order Order, typename Function>
+		struct keep_n_pred {
+			Function func = {};
+
+			constexpr keep_n_pred( ) noexcept( std::is_nothrow_constructible_v<Function> ) = default;
+			constexpr keep_n_pred( Function const & f ) noexcept( std::is_nothrow_copy_constructible_v<Function> ): func( f ) {}
+			constexpr keep_n_pred( Function && f ) noexcept( std::is_nothrow_move_constructible_v<Function> ): func( std::move( f ) ) {}
+
+			template<typename... Args>
+			constexpr decltype( auto ) operator( )( Args&&... args ) {
+				if constexpr( Order == keep_n_order::ascending ) {
+					return func( std::forward<Args>( args )... );
+				} else {
+					return !func( std::forward<Args>( args )... );
+				}
+			}
+
+			template<typename... Args>
+			constexpr decltype( auto ) operator( )( Args&&... args ) const {
+				if constexpr( Order == keep_n_order::ascending ) {
+					return func( std::forward<Args>( args )... );
+				} else {
+					return !func( std::forward<Args>( args )... );
+				}
+			}
+		};
+	}
 
 	template<typename T, size_t MaxItems,
-	         keep_n_order Order = keep_n_order::ascending>
+	         keep_n_order Order = keep_n_order::ascending, typename Predicate=std::less<>>
 	class keep_n {
 		using values_type = std::array<T, MaxItems>;
-		using pred_t = std::conditional_t<Order == keep_n_order::ascending,
-		                                  std::less<>, std::greater<>>;
-
+		static constexpr auto const m_pred = keep_n_impl::keep_n_pred<Order, Predicate>{ };
 	public:
 		using value_type = typename values_type::value_type;
 		using difference_type = typename values_type::difference_type;
@@ -59,7 +85,7 @@ namespace daw {
 
 		constexpr void insert( value_type const &v ) {
 			for( int n = 0; n < MaxItems; ++n ) {
-				if( pred_t{}( v, m_values[n] ) ) {
+				if( m_pred( v, m_values[n] ) ) {
 					for( size_t m = MaxItems - 1; m > n; --m ) {
 						m_values[m] = std::move( m_values[m - 1] );
 					}
@@ -71,7 +97,7 @@ namespace daw {
 
 		constexpr void insert( value_type &&v ) {
 			for( size_t n = 0; n < MaxItems; ++n ) {
-				if( pred_t{}( v, m_values[n] ) ) {
+				if( m_pred( v, m_values[n] ) ) {
 					for( size_t m = MaxItems - 1; m > n; --m ) {
 						m_values[m] = std::move( m_values[m - 1] );
 					}
