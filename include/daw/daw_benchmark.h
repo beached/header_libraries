@@ -180,4 +180,35 @@ namespace daw {
 		}
 		return result;
 	}
+
+	template<size_t Runs, typename Test, typename... Args>
+	auto bench_n_test( std::string title, Test test_callable,
+	                   Args &&... args ) noexcept {
+		static_assert( Runs > 0 );
+		using result_t = daw::remove_cvref_t<decltype( daw::expected_from_code(
+		  std::move( test_callable ), std::forward<Args>( args )... ) )>;
+
+		result_t result{};
+		double min_time = std::numeric_limits<double>::max( );
+		double avg_time = 0;
+
+		for( size_t n = 0; n < Runs; ++n ) {
+			auto const start = std::chrono::high_resolution_clock::now( );
+
+			result = daw::expected_from_code( std::move( test_callable ),
+			                                  std::forward<Args>( args )... );
+
+			auto const finish = std::chrono::high_resolution_clock::now( );
+			auto const duration = std::chrono::duration<double>( finish - start ).count( );
+			if( duration < min_time ) {
+				min_time = duration;
+			}
+			avg_time += duration;
+		}
+		avg_time /= static_cast<double>( Runs );
+		std::cout << title << " took an average of "
+		          << utility::format_seconds( avg_time, 2 ) << " with a minimum of "
+		          << utility::format_seconds( min_time, 2 ) << '\n';
+		return result;
+	}
 } // namespace daw
