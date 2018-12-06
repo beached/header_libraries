@@ -190,8 +190,8 @@ namespace daw {
 
 		result_t result{};
 		double min_time = std::numeric_limits<double>::max( );
-		double avg_time = 0;
 
+		auto const total_start = std::chrono::high_resolution_clock::now( );
 		for( size_t n = 0; n < Runs; ++n ) {
 			(void)std::make_tuple( daw::do_not_optimize( args )... );
 			auto const start = std::chrono::high_resolution_clock::now( );
@@ -206,9 +206,9 @@ namespace daw {
 			if( duration < min_time ) {
 				min_time = duration;
 			}
-			avg_time += duration;
 		}
-		avg_time /= static_cast<double>( Runs );
+		auto const total_finish = std::chrono::high_resolution_clock::now( );
+		auto avg_time = std::chrono::duration<double>( total_finish - total_start ).count( )/ static_cast<double>( Runs );
 		std::cout << title << " took an average of "
 		          << utility::format_seconds( avg_time, 2 ) << " with a minimum of "
 		          << utility::format_seconds( min_time, 2 ) << '\n';
