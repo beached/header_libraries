@@ -34,12 +34,17 @@ namespace daw {
 		struct keep_n_pred {
 			Function func = {};
 
-			constexpr keep_n_pred( ) noexcept( std::is_nothrow_constructible_v<Function> ) = default;
-			constexpr keep_n_pred( Function const & f ) noexcept( std::is_nothrow_copy_constructible_v<Function> ): func( f ) {}
-			constexpr keep_n_pred( Function && f ) noexcept( std::is_nothrow_move_constructible_v<Function> ): func( std::move( f ) ) {}
+			constexpr keep_n_pred( ) noexcept(
+			  std::is_nothrow_constructible_v<Function> ) = default;
+			constexpr keep_n_pred( Function const &f ) noexcept(
+			  std::is_nothrow_copy_constructible_v<Function> )
+			  : func( f ) {}
+			constexpr keep_n_pred( Function &&f ) noexcept(
+			  std::is_nothrow_move_constructible_v<Function> )
+			  : func( std::move( f ) ) {}
 
 			template<typename... Args>
-			constexpr decltype( auto ) operator( )( Args&&... args ) {
+			constexpr decltype( auto ) operator( )( Args &&... args ) {
 				if constexpr( Order == keep_n_order::ascending ) {
 					return func( std::forward<Args>( args )... );
 				} else {
@@ -48,7 +53,7 @@ namespace daw {
 			}
 
 			template<typename... Args>
-			constexpr decltype( auto ) operator( )( Args&&... args ) const {
+			constexpr decltype( auto ) operator( )( Args &&... args ) const {
 				if constexpr( Order == keep_n_order::ascending ) {
 					return func( std::forward<Args>( args )... );
 				} else {
@@ -56,13 +61,16 @@ namespace daw {
 				}
 			}
 		};
-	}
+	} // namespace keep_n_impl
 
 	template<typename T, size_t MaxItems,
-	         keep_n_order Order = keep_n_order::ascending, typename Predicate=std::less<>>
+	         keep_n_order Order = keep_n_order::ascending,
+	         typename Predicate = std::less<>>
 	class keep_n {
 		using values_type = std::array<T, MaxItems>;
-		static constexpr auto const m_pred = keep_n_impl::keep_n_pred<Order, Predicate>{ };
+		static constexpr auto const m_pred =
+		  keep_n_impl::keep_n_pred<Order, Predicate>{};
+
 	public:
 		using value_type = typename values_type::value_type;
 		using difference_type = typename values_type::difference_type;
@@ -144,4 +152,3 @@ namespace daw {
 		}
 	};
 } // namespace daw
-

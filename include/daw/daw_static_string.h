@@ -44,8 +44,8 @@
 #include "daw_string_impl.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
-#include "iterator/daw_iterator.h"
 #include "iterator/daw_back_inserter.h"
+#include "iterator/daw_iterator.h"
 #include "iterator/daw_reverse_iterator.h"
 
 namespace daw {

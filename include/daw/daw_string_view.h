@@ -486,17 +486,20 @@ namespace daw {
 			}
 			return 0;
 		}
+
 	public:
 		static constexpr int compare( basic_string_view lhs,
 		                              basic_string_view rhs ) noexcept {
 			while( !lhs.empty( ) and !rhs.empty( ) ) {
 				switch( cmp( lhs.pop_front( ), rhs.pop_front( ) ) ) {
-					case 1: return 1;
-					case -1: return -1;
+				case 1:
+					return 1;
+				case -1:
+					return -1;
 				}
 			}
 			if( lhs.empty( ) and rhs.empty( ) ) {
-				return 0; 
+				return 0;
 			}
 			if( lhs.empty( ) ) {
 				return -1;
