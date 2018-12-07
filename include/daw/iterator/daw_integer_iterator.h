@@ -35,25 +35,12 @@ namespace daw {
 		using reference = value_type const &;
 		using iterator_category = std::input_iterator_tag;
 
-		value_type current_value;
+		value_type current_value = 0;
 
-		constexpr integer_range_iterator( ) noexcept
-		  : current_value{std::numeric_limits<T>::max( )} {}
+		constexpr integer_range_iterator( ) noexcept = default;
+
 		constexpr integer_range_iterator( value_type start_value ) noexcept
 		  : current_value{start_value} {}
-		constexpr integer_range_iterator( value_type start_value,
-		                                  value_type last_value ) noexcept
-		  : current_value{start_value} {}
-		~integer_range_iterator( ) noexcept = default;
-
-		constexpr integer_range_iterator(
-		  integer_range_iterator const & ) noexcept = default;
-		constexpr integer_range_iterator &
-		operator=( integer_range_iterator const & ) noexcept = default;
-		constexpr integer_range_iterator( integer_range_iterator && ) noexcept =
-		  default;
-		constexpr integer_range_iterator &
-		operator=( integer_range_iterator && ) noexcept = default;
 
 		constexpr reference operator*( ) const noexcept {
 			return current_value;
