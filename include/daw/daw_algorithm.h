@@ -1704,6 +1704,17 @@ namespace daw {
 			}
 		}
 
+		template<typename ForwardIterator, typename LastType, typename T>
+		constexpr void fill( ForwardIterator first, LastType last,
+		                       T &&value ) noexcept {
+
+			traits::is_forward_access_iterator_test<ForwardIterator>( );
+			while( first != last ) {
+				*first = value;
+				++first;
+			}
+		}
+
 		template<typename InputIterator, typename OutputIterator,
 		         typename UnaryOperation>
 		constexpr void
