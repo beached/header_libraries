@@ -2097,5 +2097,22 @@ namespace daw {
 			}
 			return first;
 		}
+
+		template<typename Compare=std::equal_to<>>
+		struct all_equal {	
+			template<typename Iterator, typename LastType>
+			constexpr bool operator( )( Iterator first, LastType last ) const {
+				auto it = std::next( first );
+				while( first != last and it != last ) {
+					if( !Compare{}( *first, *it ) ) {
+						return false;
+					}
+					std::advance( first, 1 );
+					std::advance( it, 1 );
+				}
+				return true;
+			}
+		};
+			
 	} // namespace algorithm
 } // namespace daw

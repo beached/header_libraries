@@ -1,4 +1,3 @@
-
 // The MIT License (MIT)
 //
 // Copyright (c) 2018 Darrell Wright
@@ -21,21 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
+#include "daw/daw_keep_n.h"
+#include "daw/daw_benchmark.h"
 
-#include <algorithm>
-#include <array>
-#include <vector>
+namespace daw {
+	constexpr bool keep_n_test_001( ) {
+		daw::keep_n<int, 3> top3( std::numeric_limits<int>::max( ) );
+		top3.insert( 5 );
+		top3.insert( 0 );
+		top3.insert( 1 );
+		top3.insert( 50 );
+		top3.insert( -50 );
 
-#include "daw/iterator/daw_back_inserter.h"
-#include "daw/daw_traits.h"
+		expecting( -50, top3[0] );
+		expecting( 0, top3[1] );
+		expecting( 1, top3[2] );
+		return true;
+	}
+}
 
-static_assert( daw::traits::is_output_iterator_test<daw::remove_cvref_t<decltype( daw::back_inserter( std::declval<std::vector<int> &>( ) ) )>> );
-
-BOOST_AUTO_TEST_CASE( vector_test_001 ) {
-	std::vector<int> v{};
-	std::array<int, 5> a = {1, 2, 3, 4, 5};
-	std::copy( begin( a ), end( a ), daw::back_inserter( v ) );
-	BOOST_REQUIRE( std::equal( begin( a ), end( a ), begin( v ), end( v ) ) );
+int main( ) {
+	daw::keep_n_test_001( );
 }
 
