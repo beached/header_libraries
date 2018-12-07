@@ -57,6 +57,19 @@ namespace daw {
 		}
 		return std::optional<result_t>( std::in_place, *pos );
 	}
+	template<
+	  typename Distance, typename Iterator>
+	constexpr void advance_many( Distance d, Iterator it ) {
+		std::advance( it, d );	
+	}
+
+	template<
+	  typename Distance, typename Iterator, typename... Iterators,
+	  std::enable_if_t<( sizeof...( Iterators ) > 0 ), std::nullptr_t> = nullptr>
+	constexpr void advance_many( Distance d, Iterator it, Iterators... its ) {
+		std::advance( it, d );
+		advance_many( d, its... );
+	}
 
 	// Iterator movement functions
 	namespace impl {
@@ -2113,6 +2126,18 @@ namespace daw {
 				return true;
 			}
 		};
-			
+
+		template<typename Function, typename Iterator1, typename LastType,
+		         typename OutputIterator, typename... Iterators>
+		constexpr void cartesian_product( Function func, Iterator1 first1,
+		                                  LastType last1, OutputIterator out_it,
+		                                  Iterators... its ) {
+
+			while( first1 != last1 ) {
+				*out_it = func( *first1, *its... );
+
+				daw::advance_many( 1, first1, its... );
+			}
+		}
 	} // namespace algorithm
 } // namespace daw
