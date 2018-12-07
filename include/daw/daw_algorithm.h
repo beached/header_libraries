@@ -57,10 +57,9 @@ namespace daw {
 		}
 		return std::optional<result_t>( std::in_place, *pos );
 	}
-	template<
-	  typename Distance, typename Iterator>
+	template<typename Distance, typename Iterator>
 	constexpr void advance_many( Distance d, Iterator it ) {
-		std::advance( it, d );	
+		std::advance( it, d );
 	}
 
 	template<
@@ -1719,7 +1718,7 @@ namespace daw {
 
 		template<typename ForwardIterator, typename LastType, typename T>
 		constexpr void fill( ForwardIterator first, LastType last,
-		                       T &&value ) noexcept {
+		                     T &&value ) noexcept {
 
 			traits::is_forward_access_iterator_test<ForwardIterator>( );
 			while( first != last ) {
@@ -1927,10 +1926,11 @@ namespace daw {
 
 		template<typename InputIterator, typename LastType, typename T,
 		         typename BinaryOperation>
-		constexpr T accumulate(
-		  InputIterator first, LastType last, T init,
-		  BinaryOperation binary_op ) noexcept( noexcept( binary_op( std::move( init ),
-		                                                             *first ) ) ) {
+		constexpr T
+		accumulate( InputIterator first, LastType last, T init,
+		            BinaryOperation
+		              binary_op ) noexcept( noexcept( binary_op( std::move( init ),
+		                                                         *first ) ) ) {
 
 			static_assert( traits::is_iterator_v<InputIterator>,
 			               "Iterator passed to rotate does not meet the requirements "
@@ -2084,8 +2084,8 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator, typename T>
-		constexpr ForwardIterator
-		remove( ForwardIterator first, ForwardIterator last, T const &value ) {
+		constexpr ForwardIterator remove( ForwardIterator first,
+		                                  ForwardIterator last, T const &value ) {
 			first = daw::algorithm::find( first, last, value );
 			if( first != last ) {
 				for( ForwardIterator i = first; ++i != last; ) {
@@ -2111,8 +2111,8 @@ namespace daw {
 			return first;
 		}
 
-		template<typename Compare=std::equal_to<>>
-		struct all_equal {	
+		template<typename Compare = std::equal_to<>>
+		struct all_equal {
 			template<typename Iterator, typename LastType>
 			constexpr bool operator( )( Iterator first, LastType last ) const {
 				auto it = std::next( first );
@@ -2129,15 +2129,26 @@ namespace daw {
 
 		template<typename Function, typename Iterator1, typename LastType,
 		         typename OutputIterator, typename... Iterators>
-		constexpr void cartesian_product( Function func, Iterator1 first1,
-		                                  LastType last1, OutputIterator out_it,
-		                                  Iterators... its ) {
+		constexpr void cartesian_product_map( Function func, Iterator1 first1,
+		                                      LastType last1, OutputIterator out_it,
+		                                      Iterators... its ) {
 
 			while( first1 != last1 ) {
 				*out_it = func( *first1, *its... );
-
 				daw::advance_many( 1, first1, its... );
 			}
 		}
+
+		template<typename Function, typename Iterator1, typename LastType,
+		         typename... Iterators>
+		constexpr void cartesian_product( Function func, Iterator1 first1,
+		                                  LastType last1, Iterators... its ) {
+
+			while( first1 != last1 ) {
+				func( *first1, *its... );
+				daw::advance_many( 1, first1, its... );
+			}
+		}
+
 	} // namespace algorithm
 } // namespace daw
