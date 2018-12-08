@@ -131,52 +131,61 @@ namespace daw {
 
 	template<typename T>
 	class graph_node_t {
-		graph_t<T> *m_graph;
-		node_id_t m_node_id;
+		graph_t<T> *m_graph = nullptr;
+		node_id_t m_node_id{};
 
 	public:
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
 		using edges_t = typename graph_impl::graph_node_impl_t<T>::edges_t;
+
+		constexpr graph_node_t( ) noexcept = default;
 
 		graph_node_t( graph_t<T> *graph_ptr, node_id_t Id ) noexcept
 		  : m_graph( graph_ptr )
 		  , m_node_id( Id ) {}
 
 		node_id_t id( ) const {
+			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).id( );
 		}
 
 		reference value( ) {
+			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).value( );
 		}
 
 		const_reference value( ) const {
+			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).value( );
 		}
 
 		edges_t &incoming_edges( ) {
+			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).incoming_edges( );
 		}
 
 		edges_t const &incoming_edges( ) const {
+			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).incoming_edges( );
 		}
 
 		edges_t &outgoing_edges( ) {
+			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).outgoing_edges( );
 		}
 
 		edges_t const &outgoing_edges( ) const {
+			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).outgoing_edges( );
 		}
 	};
 
 	template<typename T>
 	class const_graph_node_t {
-		graph_t<T> const *m_graph;
-		node_id_t m_node_id;
+		graph_t<T> const *m_graph = nullptr;
+		node_id_t m_node_id{};
 
 	public:
 		using value_type = T;
@@ -184,23 +193,29 @@ namespace daw {
 		using const_reference = value_type const &;
 		using edges_t = typename graph_impl::graph_node_impl_t<T>::edges_t;
 
+		constexpr const_graph_node_t( ) noexcept = default;
+
 		const_graph_node_t( graph_t<T> *graph_ptr, node_id_t Id ) noexcept
 		  : m_graph( graph_ptr )
 		  , m_node_id( Id ) {}
 
 		node_id_t id( ) const {
+			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).id( );
 		}
 
 		const_reference value( ) const {
+			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).value( );
 		}
 
 		edges_t const &incoming_edges( ) const {
+			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).incoming_edges( );
 		}
 
 		edges_t const &outgoing_edges( ) const {
+			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).outgoing_edges( );
 		}
 	};

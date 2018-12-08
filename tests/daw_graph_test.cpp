@@ -25,6 +25,8 @@
 #include "daw/daw_benchmark.h"
 
 int main( ) {
+	constexpr daw::node_id_t null_id{};
+	constexpr daw::graph_node_t<int> null_node{};
 	{
 		daw::graph_t<int> graph{};
 		auto n0_id = graph.add_node(5);
