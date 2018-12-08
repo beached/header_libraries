@@ -99,7 +99,7 @@ namespace daw {
 			edges_t m_incoming_edges{};
 			edges_t m_outgoing_edges{};
 		public:
-			graph_node_impl_t( node_id_t id, T &&value ) noexcept
+			constexpr graph_node_impl_t( node_id_t id, T &&value ) noexcept
 			  : m_id( id )
 			  , m_value( std::move( value ) ) {
 
@@ -108,6 +108,14 @@ namespace daw {
 
 			node_id_t id( ) const {
 				return m_id;
+			}
+
+			bool empty( ) const {
+				return !static_cast<bool>( m_id );
+			}
+
+			explicit operator bool( ) const noexcept {
+				return static_cast<bool>( m_id );
 			}
 
 			reference value( ) {
@@ -184,6 +192,14 @@ namespace daw {
 			return m_graph;
 		}
 
+		constexpr bool empty( ) const noexcept {
+			return m_graph == nullptr or !static_cast<bool>( m_node_id );
+		}
+
+		explicit constexpr operator bool( ) const noexcept {
+			return m_graph != nullptr and static_cast<bool>( m_node_id );
+		}
+
 		const_reference value( ) const {
 			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).value( );
@@ -244,6 +260,14 @@ namespace daw {
 
 		constexpr graph_t<T> const * graph( ) const noexcept {
 			return m_graph;
+		}
+
+		constexpr bool empty( ) const noexcept {
+			return m_graph == nullptr or !static_cast<bool>( m_node_id );
+		}
+
+		explicit constexpr operator bool( ) const noexcept {
+			return m_graph != nullptr and static_cast<bool>( m_node_id );
 		}
 
 		reference value( ) {
