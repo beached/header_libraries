@@ -33,24 +33,32 @@
 #include "daw_utility.h"
 
 namespace daw {
-	struct node_id_t {
+	class node_id_t {
 		static inline constexpr size_t const NO_ID = std::numeric_limits<size_t>::max( );
-		size_t value = NO_ID;
-
+		size_t m_value = NO_ID;
+	public:
 		constexpr node_id_t( ) noexcept = default;
-		constexpr node_id_t( size_t id ) noexcept: value( id ) {}
+		explicit constexpr node_id_t( size_t id ) noexcept: m_value( id ) {}
+
+		constexpr explicit operator bool( ) const noexcept {
+			return m_value != NO_ID;
+		}
+
+		constexpr size_t value( ) const noexcept {
+			return m_value;
+		}
 	};
 
 	constexpr bool operator==( node_id_t lhs, node_id_t rhs ) noexcept {
-		return lhs.value == rhs.value;
+		return lhs.value( ) == rhs.value( );
 	}
 
 	constexpr bool operator!=( node_id_t lhs, node_id_t rhs ) noexcept {
-		return lhs.value != rhs.value;
+		return lhs.value( ) != rhs.value( );
 	}
 
 	constexpr bool operator<( node_id_t lhs, node_id_t rhs ) noexcept {
-		return lhs.value < rhs.value;
+		return lhs.value( ) < rhs.value( );
 	}
 }
 
@@ -58,7 +66,7 @@ namespace std {
 	template<>
 	struct hash<daw::node_id_t> {
 		size_t operator( )( daw::node_id_t id ) const noexcept {
-			return std::hash<size_t>{}( id.value );
+			return std::hash<size_t>{}( id.value( ) );
 		}
 	};
 }
@@ -306,14 +314,14 @@ namespace daw {
 		}
 
 		bool has_node( node_id_t id ) const {
-			return m_nodes.count( id.value ) > 0;
+			return m_nodes.count( id.value( ) ) > 0;
 		}
 
 		// Be very careful when storing as the node
 		// can be removed
 		raw_node_t &get_raw_node( node_id_t id ) {
 			daw::exception::dbg_precondition_check( has_node( id ) );
-			auto pos = m_nodes.find( id.value );
+			auto pos = m_nodes.find( id.value( ) );
 			return pos->second;
 		}
 
@@ -321,7 +329,7 @@ namespace daw {
 		// can be removed
 		raw_node_t const &get_raw_node( node_id_t id ) const {
 			daw::exception::dbg_precondition_check( has_node( id ) );
-			auto pos = m_nodes.find( id.value );
+			auto pos = m_nodes.find( id.value( ) );
 			return pos->second;
 		}
 
@@ -373,7 +381,7 @@ namespace daw {
 			for( auto n_id : node.outgoing_edges( ) ) {
 				get_node( n_id ).incoming_edges( ).erase( id );
 			}
-			m_nodes.erase( id.value );
+			m_nodes.erase( id.value( ) );
 		}
 
 		void remove_directed_edge( node_id_t from, node_id_t to ) {
