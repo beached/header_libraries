@@ -48,6 +48,10 @@ namespace daw {
 	constexpr bool operator!=( node_id_t lhs, node_id_t rhs ) noexcept {
 		return lhs.value != rhs.value;
 	}
+
+	constexpr bool operator<( node_id_t lhs, node_id_t rhs ) noexcept {
+		return lhs.value < rhs.value;
+	}
 }
 
 namespace std {
@@ -179,13 +183,20 @@ namespace daw {
 		template<typename Rhs>
 		constexpr bool operator==( Rhs const & rhs ) noexcept {
 			static_assert( is_graph_node_v<Rhs>, "Can only do comparison with another graph node proxy" );
-			return m_node_id == rhs.id( ) and  m_graph == rhs.graph( );
+			return m_node_id == rhs.id( ) or std::equal_to<>{}( m_graph, rhs.graph( ) );
 		}
 
 		template<typename Rhs>
 		constexpr bool operator!=( Rhs const & rhs ) noexcept {
 			static_assert( is_graph_node_v<Rhs>, "Can only do comparison with another graph node proxy" );
-			return m_node_id != rhs.id( ) or m_graph != rhs.graph( );
+			return m_node_id != rhs.id( ) or std::not_equal_to<>{}( m_graph, rhs.graph( ) );
+		}
+
+		template<typename Rhs>
+		constexpr bool operator<( Rhs const & rhs ) noexcept {
+			static_assert( is_graph_node_v<Rhs>, "Can only do comparison with another graph node proxy" );
+			daw::exception::dbg_precondition_check( std::equal_to<>{}( m_graph, rhs.graph( ) ) );
+			return m_node_id < rhs.id( );
 		}
 	};
 
@@ -249,13 +260,20 @@ namespace daw {
 		template<typename Rhs>
 		constexpr bool operator==( Rhs const & rhs ) noexcept {
 			static_assert( is_graph_node_v<Rhs>, "Can only do comparison with another graph node proxy" );
-			return m_node_id == rhs.id( ) and  m_graph == rhs.graph( );
+			return m_node_id == rhs.id( ) or std::equal_to<>{}( m_graph, rhs.graph( ) );
 		}
 
 		template<typename Rhs>
 		constexpr bool operator!=( Rhs const & rhs ) noexcept {
 			static_assert( is_graph_node_v<Rhs>, "Can only do comparison with another graph node proxy" );
-			return m_node_id != rhs.id( ) or m_graph != rhs.graph( );
+			return m_node_id != rhs.id( ) or std::not_equal_to<>{}( m_graph, rhs.graph( ) );
+		}
+
+		template<typename Rhs>
+		constexpr bool operator<( Rhs const & rhs ) noexcept {
+			static_assert( is_graph_node_v<Rhs>, "Can only do comparison with another graph node proxy" );
+			daw::exception::dbg_precondition_check( std::equal_to<>{}( m_graph, rhs.graph( ) ) );
+			return m_node_id < rhs.id( );
 		}
 
 		constexpr operator const_graph_node_t<T>( ) const noexcept {
