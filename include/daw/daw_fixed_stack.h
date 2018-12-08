@@ -255,33 +255,33 @@ namespace daw {
 		}
 
 		constexpr iterator erase( const_iterator pos ) {
-				auto first = std::next( begin( ), std::distance( cbegin( ), pos ) );
-				auto last = std::next( first, 1 );
-				while( last != end( ) ) {
-					daw::iter_swap( first, last );	
-					std::advance( first, 1 );
-					std::advance( last, 1 );
-				}
-				resize( size( ) - 1 );
-				if( pos == cend( ) ) {
-					return end( );
-				}
-				return std::next( begin( ), std::distance( cbegin( ), pos ) + 1 );
+			auto first = std::next( begin( ), std::distance( cbegin( ), pos ) );
+			auto last = std::next( first, 1 );
+			while( last != end( ) ) {
+				daw::iter_swap( first, last );
+				std::advance( first, 1 );
+				std::advance( last, 1 );
+			}
+			resize( size( ) - 1 );
+			if( pos == cend( ) ) {
+				return end( );
+			}
+			return std::next( begin( ), std::distance( cbegin( ), pos ) + 1 );
 		}
 
 		constexpr iterator erase( const_iterator first, const_iterator last ) {
-				auto first1 = std::next( begin( ), std::distance( cbegin( ), first ) );
-				auto first2 = std::next( begin( ), std::distance( cbegin( ), last) );
-				while( first2 != end( ) ) {
-					daw::iter_swap( first1, first2 );	
-					std::advance( first1, 1 );
-					std::advance( first2, 1 );
-				}
-				resize( size( ) - std::distance( first, last ) );
-				if( last == cend( ) ) {
-					return end( );
-				}
-				return std::next( begin( ), std::distance( cbegin( ), last ) + 1 );
+			auto first1 = std::next( begin( ), std::distance( cbegin( ), first ) );
+			auto first2 = std::next( begin( ), std::distance( cbegin( ), last ) );
+			while( first2 != end( ) ) {
+				daw::iter_swap( first1, first2 );
+				std::advance( first1, 1 );
+				std::advance( first2, 1 );
+			}
+			resize( size( ) - std::distance( first, last ) );
+			if( last == cend( ) ) {
+				return end( );
+			}
+			return std::next( begin( ), std::distance( cbegin( ), last ) + 1 );
 		}
 
 		constexpr void zero( ) noexcept {

@@ -183,8 +183,8 @@ namespace daw {
 
 	namespace bench_impl {
 		template<typename... Args>
-		constexpr void expander( Args&&... ) noexcept { }
-	}
+		constexpr void expander( Args &&... ) noexcept {}
+	} // namespace bench_impl
 	template<size_t Runs, typename Test, typename... Args>
 	auto bench_n_test( std::string title, Test test_callable,
 	                   Args &&... args ) noexcept {
@@ -198,7 +198,7 @@ namespace daw {
 
 		auto const total_start = std::chrono::high_resolution_clock::now( );
 		for( size_t n = 0; n < Runs; ++n ) {
-			bench_impl::expander( (daw::do_not_optimize( args ),1)... );
+			bench_impl::expander( ( daw::do_not_optimize( args ), 1 )... );
 			auto const start = std::chrono::high_resolution_clock::now( );
 
 			result = daw::expected_from_code( std::move( test_callable ),
@@ -216,12 +216,13 @@ namespace daw {
 			}
 		}
 		auto const total_finish = std::chrono::high_resolution_clock::now( );
-		auto total_time = std::chrono::duration<double>( total_finish - total_start ).count( );
+		auto total_time =
+		  std::chrono::duration<double>( total_finish - total_start ).count( );
 		auto avg_time = total_time / static_cast<double>( Runs );
 		std::cout << title << '\n'
-							<< "	runs: " << Runs << '\n'
-							<< "	total: " << utility::format_seconds( total_time, 2 ) << '\n'
-							<< "	avg: " << utility::format_seconds( avg_time, 2 ) << '\n'
+		          << "	runs: " << Runs << '\n'
+		          << "	total: " << utility::format_seconds( total_time, 2 ) << '\n'
+		          << "	avg: " << utility::format_seconds( avg_time, 2 ) << '\n'
 		          << "	min: " << utility::format_seconds( min_time, 2 ) << "\n"
 		          << "	max: " << utility::format_seconds( max_time, 2 ) << "\n";
 		return result;
@@ -229,9 +230,18 @@ namespace daw {
 
 	template<typename T, typename U>
 	constexpr void expecting( T &&expected_result, U &&result ) noexcept {
+
 		if( expected_result != result ) {
 			std::cerr << "Invalid result. Expecting '" << expected_result
-			          << "' but got '" << result << "'\n";
+								<< "' but got '" << result << "'\n";
+			std::terminate( );
+		}
+	}
+
+	template<typename Bool>
+	constexpr void expecting( Bool &&expected_result ) noexcept {
+		if( !static_cast<bool>( expected_result ) ) {
+			std::cerr << "Invalid result. Expecting true\n";
 			std::terminate( );
 		}
 	}

@@ -90,6 +90,7 @@ set( TESTED_HEADERS_PREFIXES
 
 #No boost test
 set( TESTED_HEADERS_PREFIXES_NB
+	daw_graph
 	daw_keep_n
 	daw_piecewise_factory
 	daw_span

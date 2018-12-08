@@ -236,7 +236,8 @@ namespace daw {
 	};
 
 	template<typename BidirectionalIterator>
-	view( BidirectionalIterator, BidirectionalIterator )->view<BidirectionalIterator>;
+	view( BidirectionalIterator, BidirectionalIterator )
+	  ->view<BidirectionalIterator>;
 
 	template<typename>
 	struct is_daw_view_t : std::false_type {};
