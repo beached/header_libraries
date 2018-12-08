@@ -92,7 +92,8 @@ namespace daw {
 		daw::value_ptr<T> m_value{};
 
 	public:
-		lockable_value_t( ) noexcept( is_nothrow_default_constructible_v<T> ) = default;
+		lockable_value_t( ) noexcept( is_nothrow_default_constructible_v<T> ) =
+		  default;
 
 		template<typename U, std::enable_if_t<
 		                       !daw::traits::is_first_type_v<lockable_value_t, U>,

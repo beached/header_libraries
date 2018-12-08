@@ -27,6 +27,7 @@
 
 #include "daw/boost_test.h"
 #include "daw/daw_algorithm.h"
+#include "daw/daw_benchmark.h"
 
 BOOST_AUTO_TEST_CASE( daw_safe_advance_test_001 ) {
 	std::vector<int> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -211,12 +212,12 @@ BOOST_AUTO_TEST_CASE( daw_begin_at_test_004 ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_transform_many ) {
-	std::vector<uint32_t> in1 = {1, 3, 5, 7, 9};
-	std::vector<uint32_t> in2 = {0, 2, 4, 6, 8};
+	std::array<uint32_t, 5> in1 = {1, 3, 5, 7, 9};
+	std::array<uint32_t, 5> in2 = {0, 2, 4, 6, 8};
 	std::vector<uint32_t> out{};
 
 	daw::algorithm::transform_many(
-	  in1.begin( ), in1.end( ), in2.begin( ), std::back_inserter( out ),
+	  begin( in1 ), end( in1 ), begin( in2 ), std::back_inserter( out ),
 	  []( auto const &v1, auto const &v2 ) { return v1 + v2; } );
 
 	BOOST_REQUIRE_MESSAGE( out.size( ) == in1.size( ),
@@ -708,4 +709,22 @@ BOOST_AUTO_TEST_CASE( daw_minmax_item_test_002 ) {
 	  a, b, []( auto const &lhs, auto const &rhs ) { return lhs.v < rhs.v; } );
 	BOOST_REQUIRE_EQUAL( ans.first.v, -100 );
 	BOOST_REQUIRE_EQUAL( ans.second.v, 5 );
+}
+
+namespace {
+	constexpr bool cartesian_product_test_001() {
+		std::array<int, 5> a = {1, 2, 3, 4, 5};
+		std::array<int, 5> b = {9, 8, 7, 6, 5};
+		std::array<int, 5> c = {10, 20, 30, 40, 50};
+		// Sum of all is 200
+		int sum = 0;
+		daw::algorithm::cartesian_product([&sum](auto... vals) {
+			sum += (vals+...);
+		}, begin(a), end(a), begin(b), begin(c));
+
+		daw::expecting(200, sum);
+		return true;
+	}
+
+	static_assert(cartesian_product_test_001());
 }
