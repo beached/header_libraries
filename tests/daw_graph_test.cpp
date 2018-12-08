@@ -32,7 +32,7 @@ int main( ) {
 		daw::graph_t<int> graph{};
 		auto n0_id = graph.add_node(5);
 		daw::expecting(n0_id != null_id);
-		
+
 		daw::expecting(graph.has_node(n0_id));
 
 		daw::expecting( graph.get_node( n0_id ) != null_node );
