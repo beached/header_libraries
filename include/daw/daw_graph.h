@@ -33,9 +33,20 @@
 #include "daw_utility.h"
 
 namespace daw {
+	template<typename T>
+	struct graph_t;
+
 	class node_id_t {
 		static inline constexpr size_t const NO_ID = std::numeric_limits<size_t>::max( );
 		size_t m_value = NO_ID;
+
+		constexpr size_t value( ) const noexcept {
+			daw::exception::dbg_precondition_check( m_value != NO_ID );
+			return m_value;
+		}
+
+		template<typename T>
+		friend struct graph_t;
 	public:
 		constexpr node_id_t( ) noexcept = default;
 		explicit constexpr node_id_t( size_t id ) noexcept: m_value( id ) {}
@@ -44,29 +55,29 @@ namespace daw {
 			return m_value != NO_ID;
 		}
 
-		constexpr size_t value( ) const noexcept {
-			return m_value;
+		size_t hash( ) const noexcept {
+			return std::hash<size_t>{}( m_value );
+		}
+
+		constexpr bool operator==( node_id_t rhs ) const noexcept {
+			return m_value == rhs.m_value;
+		}
+
+		constexpr bool operator!=( node_id_t rhs ) const noexcept {
+			return m_value != rhs.m_value;
+		}
+
+		constexpr bool operator<( node_id_t rhs ) const noexcept {
+			return m_value < rhs.m_value;
 		}
 	};
-
-	constexpr bool operator==( node_id_t lhs, node_id_t rhs ) noexcept {
-		return lhs.value( ) == rhs.value( );
-	}
-
-	constexpr bool operator!=( node_id_t lhs, node_id_t rhs ) noexcept {
-		return lhs.value( ) != rhs.value( );
-	}
-
-	constexpr bool operator<( node_id_t lhs, node_id_t rhs ) noexcept {
-		return lhs.value( ) < rhs.value( );
-	}
 }
 
 namespace std {
 	template<>
 	struct hash<daw::node_id_t> {
 		size_t operator( )( daw::node_id_t id ) const noexcept {
-			return std::hash<size_t>{}( id.value( ) );
+			return std::hash<size_t>{}( id.hash( ) );
 		}
 	};
 }
@@ -90,7 +101,10 @@ namespace daw {
 		public:
 			graph_node_impl_t( node_id_t id, T &&value ) noexcept
 			  : m_id( id )
-			  , m_value( std::move( value ) ) {}
+			  , m_value( std::move( value ) ) {
+
+				daw::exception::dbg_precondition_check( id );
+			}
 
 			node_id_t id( ) const {
 				return m_id;
@@ -137,9 +151,6 @@ namespace daw {
 			return *m_id;
 		}
 	};
-
-	template<typename T>
-	struct graph_t;
 
 	template<typename>
 	struct graph_node_proxies: std::false_type {};
