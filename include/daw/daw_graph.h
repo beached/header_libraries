@@ -368,7 +368,7 @@ namespace daw {
 			to_node.incoming_edges( ).erase( from );
 		}
 
-		void remove_edge( node_id_t node0_id, node_id_t node1_id ) {
+		void remove_edges( node_id_t node0_id, node_id_t node1_id ) {
 			daw::exception::dbg_precondition_check( has_node( node0_id ) );
 			daw::exception::dbg_precondition_check( has_node( node1_id ) );
 

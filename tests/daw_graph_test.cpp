@@ -81,7 +81,7 @@ int main( ) {
 		daw::expecting( graph.get_raw_node( n2 ).incoming_edges().count( n0 ), 1ULL );
 		daw::expecting( graph.get_raw_node( n0 ).outgoing_edges().count( n2 ), 1ULL );
 
-		graph.remove_edge( n0, n1 );
+		graph.remove_edges( n0, n1 );
 		daw::expecting( graph.get_raw_node( n0 ).incoming_edges().count( n1 ), 0U );
 		daw::expecting( graph.get_raw_node( n1 ).incoming_edges().count( n0 ), 0U );
 		daw::expecting( graph.get_raw_node( n0 ).outgoing_edges().count( n1 ), 0U );
