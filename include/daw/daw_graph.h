@@ -129,6 +129,12 @@ namespace daw {
 	template<typename T>
 	struct graph_t;
 
+	template<typename>
+	struct graph_node_proxies: std::false_type {};
+
+	template<typename T>
+	inline constexpr bool is_graph_node_v = graph_node_proxies<T>::value;
+
 	template<typename T>
 	class graph_node_t {
 		graph_t<T> *m_graph = nullptr;
@@ -146,9 +152,12 @@ namespace daw {
 		  : m_graph( graph_ptr )
 		  , m_node_id( Id ) {}
 
-		node_id_t id( ) const {
-			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
-			return m_graph->get_raw_node( m_node_id ).id( );
+		constexpr node_id_t id( ) const noexcept {
+			return m_node_id;
+		}
+
+		constexpr graph_t<T> const * graph( ) const noexcept {
+			return m_graph;
 		}
 
 		reference value( ) {
@@ -180,7 +189,22 @@ namespace daw {
 			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).outgoing_edges( );
 		}
+
+		template<typename Rhs>
+		constexpr bool operator==( Rhs const & rhs ) noexcept {
+			static_assert( is_graph_node_v<Rhs>, "Can only do comparison with another graph node proxy" );
+			return m_node_id == rhs.id( ) and  m_graph == rhs.graph( );
+		}
+
+		template<typename Rhs>
+		constexpr bool operator!=( Rhs const & rhs ) noexcept {
+			static_assert( is_graph_node_v<Rhs>, "Can only do comparison with another graph node proxy" );
+			return m_node_id != rhs.id( ) or m_graph != rhs.graph( );
+		}
 	};
+
+	template<typename T>
+	struct graph_node_proxies<graph_node_t<T>>: std::true_type {};
 
 	template<typename T>
 	class const_graph_node_t {
@@ -199,9 +223,12 @@ namespace daw {
 		  : m_graph( graph_ptr )
 		  , m_node_id( Id ) {}
 
-		node_id_t id( ) const {
-			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
-			return m_graph->get_raw_node( m_node_id ).id( );
+		constexpr node_id_t id( ) const noexcept {
+			return m_node_id;
+		}
+
+		constexpr graph_t<T> const * graph( ) const noexcept {
+			return m_graph;
 		}
 
 		const_reference value( ) const {
@@ -218,7 +245,22 @@ namespace daw {
 			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).outgoing_edges( );
 		}
+
+		template<typename Rhs>
+		constexpr bool operator==( Rhs const & rhs ) noexcept {
+			static_assert( is_graph_node_v<Rhs>, "Can only do comparison with another graph node proxy" );
+			return m_node_id == rhs.id( ) and  m_graph == rhs.graph( );
+		}
+
+		template<typename Rhs>
+		constexpr bool operator!=( Rhs const & rhs ) noexcept {
+			static_assert( is_graph_node_v<Rhs>, "Can only do comparison with another graph node proxy" );
+			return m_node_id != rhs.id( ) or m_graph != rhs.graph( );
+		}
 	};
+
+	template<typename T>
+	struct graph_node_proxies<const_graph_node_t<T>>: std::true_type {};
 
 	template<typename T>
 	struct graph_t {
@@ -310,6 +352,28 @@ namespace daw {
 				get_node( n_id ).incoming_edges( ).erase( id );
 			}
 			m_nodes.erase( id.value );
+		}
+
+		void remove_directed_edge( node_id_t from, node_id_t to ) {
+			daw::exception::dbg_precondition_check( has_node( from ) );
+			daw::exception::dbg_precondition_check( has_node( to ) );
+
+			raw_node_t & from_node = get_raw_node( from );
+			raw_node_t & to_node = get_raw_node( to );
+			from_node.outgoing_edges( ).erase( to );
+			to_node.incoming_edges( ).erase( from );
+		}
+
+		void remove_edge( node_id_t node0_id, node_id_t node1_id ) {
+			daw::exception::dbg_precondition_check( has_node( node0_id ) );
+			daw::exception::dbg_precondition_check( has_node( node1_id ) );
+
+			raw_node_t & inode0 = get_raw_node( node0_id );
+			raw_node_t & node1 = get_raw_node( node1_id );
+			inode0.outgoing_edges( ).erase( node1_id );
+			inode0.incoming_edges( ).erase( node1_id );
+			node1.outgoing_edges( ).erase( node0_id );
+			node1.incoming_edges( ).erase( node0_id );
 		}
 
 		template<typename Compare = std::equal_to<>>
