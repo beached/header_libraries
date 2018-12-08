@@ -293,6 +293,17 @@ namespace daw {
 			m_nodes.erase( id.value );
 		}
 
+		template<typename Compare = std::equal_to<>>
+		std::vector<node_id_t> find_by_value( T const & value, Compare compare = Compare{} ) const {
+			std::vector<node_id_t> result{};
+			for( auto const & node: m_nodes ) {
+				if( daw::invoke( compare, node.second.value( ), value ) ) {
+					result.push_back( node.second.id( ) );
+				}
+			}
+			return result;
+		}
+
 		template<typename Predicate>
 		std::vector<node_id_t> find( Predicate&& pred ) const {
 			static_assert( std::is_invocable_v<Predicate, raw_node_t const &>, "Predicate must accept a node as argument" );

@@ -54,5 +54,9 @@ int main( ) {
 	} );
 	daw::expecting( roots.size( ), 2ULL );
 
+	auto nodes = graph.find_by_value( 1000 );
+	daw::expecting( nodes.size( ), 1ULL );
+	daw::expecting( graph.has_node( nodes.front( ) ) );
+	daw::expecting( graph.get_node( nodes.front( ) ).value( ), 1000 );
 	return static_cast<int>( n0_id.value );
 }
