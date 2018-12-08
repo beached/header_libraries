@@ -34,7 +34,11 @@
 
 namespace daw {
 	struct node_id_t {
-		size_t value;
+		static inline constexpr size_t const NO_ID = std::numeric_limits<size_t>::max( );
+		size_t value = NO_ID;
+
+		constexpr node_id_t( ) noexcept = default;
+		constexpr node_id_t( size_t id ) noexcept: value( id ) {}
 	};
 
 	constexpr bool operator==( node_id_t lhs, node_id_t rhs ) noexcept {
