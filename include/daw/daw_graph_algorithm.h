@@ -34,9 +34,9 @@
 #include "cpp_17.h"
 
 namespace daw {
-	struct NoSort {};
-
 	namespace graph_alg_impl {
+		struct NoSort {};
+
 		template<typename Graph, typename Node>
 		auto get_child_nodes( Graph &&graph, Node &&node ) {
 			using node_t =
@@ -50,20 +50,18 @@ namespace daw {
 		}
 	} // namespace graph_alg_impl
 
-	template<typename T, typename Function, typename Compare = NoSort>
+	template<typename T, typename Function, typename Compare = daw::graph_alg_impl::NoSort>
 	void topological_sorted_for_each( graph_t<T> &graph, Function &&func,
 	                                  Compare comp = Compare{} ) {
 
-		constexpr bool perform_sort_v = !std::is_same_v<Compare, NoSort>;
+		constexpr bool perform_sort_v = !std::is_same_v<Compare, daw::graph_alg_impl::NoSort>;
 		// Find all nodes that do not have incoming entries
-		std::vector<daw::graph_node_t<T>> root_nodes{};
-		{
-			auto root_node_ids = graph.find(
-			  []( auto const &node ) { return node.incoming_edges( ).empty( ); } );
-
-			root_nodes.reserve( root_node_ids.size( ) );
+		std::vector<daw::graph_node_t<T>> root_nodes = [&graph]( ) {
+			auto root_node_ids = graph.find_roots( );
+			std::vector<daw::graph_node_t<T>> result{};
+			result.reserve( root_node_ids.size( ) );
 			std::transform( begin( root_node_ids ), end( root_node_ids ),
-			                std::back_inserter( root_nodes ),
+			                std::back_inserter( result ),
 			                [&]( node_id_t id ) { return graph.get_node( id ); } );
 		}
 
@@ -130,31 +128,21 @@ namespace daw {
 		}
 	}
 
-	template<typename T, typename Function, typename Compare = NoSort>
+	template<typename T, typename Function, typename Compare = daw::graph_alg_impl::NoSort>
 	void topological_sorted_for_each( graph_t<T> const &graph, Function &&func,
 	                                  Compare comp = Compare{} ) {
 
-		constexpr bool perform_sort_v = !std::is_same_v<Compare, NoSort>;
+		constexpr bool perform_sort_v = !std::is_same_v<Compare, daw::graph_alg_impl::NoSort>;
 		// Find all nodes that do not have incoming entries
-		std::vector<daw::const_graph_node_t<T>> root_nodes{};
-		{
-			auto root_node_ids = graph.find(
-			  []( auto const &node ) { return node.incoming_edges( ).empty( ); } );
-
-			root_nodes.reserve( root_node_ids.size( ) );
+		std::vector<daw::const_graph_node_t<T>> root_nodes = [&graph]( ) {
+			auto root_node_ids = graph.find_roots( );
+			std::vector<daw::const_graph_node_t<T>> result{};
+			result.reserve( root_node_ids.size( ) );
 			std::transform( begin( root_node_ids ), end( root_node_ids ),
-			                std::back_inserter( root_nodes ),
+			                std::back_inserter( result ),
 			                [&]( node_id_t id ) { return graph.get_node( id ); } );
 		}
-
-		if constexpr( perform_sort_v ) {
-			std::sort( begin( root_nodes ), end( root_nodes ),
-			           [&]( auto &&... args ) {
-				           return !daw::invoke(
-				             comp, std::forward<decltype( args )>( args )... );
-			           } );
-		}
-
+			
 		std::unordered_map<node_id_t, std::vector<node_id_t>> excluded_edges{};
 
 		auto const exclude_edge = [&]( node_id_t from, node_id_t to ) {

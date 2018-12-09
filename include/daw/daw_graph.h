@@ -521,6 +521,16 @@ namespace daw {
 			} );
 			return result;
 		}
+
+		std::vector<node_id_t> find_roots( ) const {
+			return find(
+			  []( auto const &node ) { return node.incoming_edges( ).empty( ); } );
+		}
+
+		std::vector<node_id_t> find_leaves( ) const {
+			return find(
+			  []( auto const &node ) { return node.outgoing_edges( ).empty( ); } );
+		}
 	};
 
 } // namespace daw
