@@ -25,29 +25,60 @@
 #include "daw/daw_graph.h"
 #include "daw/daw_graph_algorithm.h"
 
-void test_topoligical_for_each_001( daw::graph_t<char> & graph ) {
+void test_topoligical_walk_001( daw::graph_t<char> &graph ) {
 	std::string result{};
-	daw::topological_sorted_for_each( graph, [&result]( auto const & node ) {
-		result.push_back( node.value( ) );
-	}, []( auto const & lhs, auto const & rhs ) {
-		return lhs.value( ) < rhs.value( );
-	} );
+	daw::topological_sorted_walk(
+	  graph, [&result]( auto const &node ) { result.push_back( node.value( ) ); },
+	  []( auto const &lhs, auto const &rhs ) {
+		  return lhs.value( ) < rhs.value( );
+	  } );
 
 	daw::expecting( "CABDFE", result );
 }
 
-void test_topoligical_for_each_002( daw::graph_t<char> const & graph ) {
+void test_topoligical_walk_002( daw::graph_t<char> const &graph ) {
 	std::string result{};
-	daw::topological_sorted_for_each( graph, [&result]( auto const & node ) {
-		result.push_back( node.value( ) );
-	}, []( auto const & lhs, auto const & rhs ) {
-		return lhs.value( ) < rhs.value( );
-	} );
+	daw::topological_sorted_walk(
+	  graph, [&result]( auto const &node ) { result.push_back( node.value( ) ); },
+	  []( auto const &lhs, auto const &rhs ) {
+		  return lhs.value( ) < rhs.value( );
+	  } );
 
 	daw::expecting( "CABDFE", result );
 }
 
+void test_bfs_walk_001( daw::graph_t<char> const &graph,
+                        daw::node_id_t root_id ) {
+	std::string result{};
+	daw::bfs_walk( graph, root_id, [&result]( auto &&node ) {
+		result.push_back( node.value( ) );
+	} );
+	daw::expecting( "CFAEDB", result );
+}
 
+void test_bfs_walk_002( daw::graph_t<char> &graph, daw::node_id_t root_id ) {
+	std::string result{};
+	daw::bfs_walk( graph, root_id, [&result]( auto &&node ) {
+		result.push_back( node.value( ) );
+	} );
+	daw::expecting( "CFAEDB", result );
+}
+void test_dfs_walk_001( daw::graph_t<char> const &graph,
+                        daw::node_id_t root_id ) {
+	std::string result{};
+	daw::dfs_walk( graph, root_id, [&result]( auto &&node ) {
+		result.push_back( node.value( ) );
+	} );
+	daw::expecting( "CABEDF", result );
+}
+
+void test_dfs_walk_002( daw::graph_t<char> &graph, daw::node_id_t root_id ) {
+	std::string result{};
+	daw::dfs_walk( graph, root_id, [&result]( auto &&node ) {
+		result.push_back( node.value( ) );
+	} );
+	daw::expecting( "CABEDF", result );
+}
 
 int main( ) {
 	daw::graph_t<char> graph{};
@@ -64,6 +95,10 @@ int main( ) {
 	graph.add_directed_edge( nB, nE );
 	graph.add_directed_edge( nF, nE );
 
-	test_topoligical_for_each_001( graph );
-	test_topoligical_for_each_002( graph );
+	test_topoligical_walk_001( graph );
+	test_topoligical_walk_002( graph );
+	test_bfs_walk_001( graph, nC );
+	test_bfs_walk_002( graph, nC );
+	test_dfs_walk_001( graph, nC );
+	test_dfs_walk_002( graph, nC );
 }

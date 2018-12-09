@@ -158,7 +158,7 @@ namespace daw {
 
 	public:
 		constexpr invalid_node_exception( ) noexcept = default;
-		constexpr invalid_node_exception( size_t Id ) noexcept
+		explicit constexpr invalid_node_exception( size_t Id ) noexcept
 		  : m_id( Id ) {}
 
 		constexpr bool has_id( ) const {

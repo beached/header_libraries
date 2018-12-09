@@ -30,8 +30,8 @@
 #include <utility>
 #include <vector>
 
-#include "daw_graph.h"
 #include "cpp_17.h"
+#include "daw_graph.h"
 
 namespace daw {
 	namespace graph_alg_impl {
@@ -48,153 +48,184 @@ namespace daw {
 			}
 			return result;
 		}
+
+		template<typename Node, typename T, typename Graph, typename Function,
+		         typename Compare>
+		void topological_sorted_walk( Graph &&graph, Function &&func,
+		                              Compare comp = Compare{} ) {
+
+			constexpr bool perform_sort_v =
+			  !std::is_same_v<Compare, daw::graph_alg_impl::NoSort>;
+			// Find all nodes that do not have incoming entries
+			std::vector<Node> root_nodes = [&graph]( ) {
+				auto root_node_ids = graph.find_roots( );
+				std::vector<Node> result{};
+				result.reserve( root_node_ids.size( ) );
+				std::transform( std::begin( root_node_ids ), std::end( root_node_ids ),
+				                std::back_inserter( result ),
+				                [&]( node_id_t id ) { return graph.get_node( id ); } );
+				return result;
+			}( );
+
+			if constexpr( perform_sort_v ) {
+				std::sort( std::begin( root_nodes ), std::end( root_nodes ),
+				           [&]( auto &&... args ) {
+					           return !daw::invoke(
+					             comp, std::forward<decltype( args )>( args )... );
+				           } );
+			}
+
+			std::unordered_map<node_id_t, std::vector<node_id_t>> excluded_edges{};
+
+			auto const exclude_edge = [&]( node_id_t from, node_id_t to ) {
+				auto &child = excluded_edges[to];
+				auto pos = std::find( std::begin( child ), std::end( child ), from );
+				if( pos == std::end( child ) ) {
+					child.push_back( from );
+				}
+			};
+
+			auto const has_parent_nodes = [&]( node_id_t n_id ) {
+				auto incoming = graph.get_raw_node( n_id ).incoming_edges( );
+				if( incoming.empty( ) ) {
+					return false;
+				}
+				if( excluded_edges.count( n_id ) == 0 ) {
+					return true;
+				}
+				for( auto ex_id : excluded_edges[n_id] ) {
+					incoming.erase( ex_id );
+				}
+				return !incoming.empty( );
+			};
+
+			while( !root_nodes.empty( ) ) {
+				auto node = root_nodes.back( );
+				root_nodes.pop_back( );
+				daw::invoke( func, node );
+
+				{
+					auto child_nodes = graph_alg_impl::get_child_nodes( graph, node );
+					if constexpr( perform_sort_v ) {
+						std::sort( std::begin( child_nodes ), std::end( child_nodes ),
+						           [&]( auto &&... args ) {
+							           return !daw::invoke(
+							             comp, std::forward<decltype( args )>( args )... );
+						           } );
+					}
+					for( auto child : child_nodes ) {
+						exclude_edge( node.id( ), child.id( ) );
+						if( !has_parent_nodes( child.id( ) ) ) {
+							root_nodes.push_back( child );
+						}
+					}
+				}
+				if constexpr( perform_sort_v ) {
+					std::sort( std::begin( root_nodes ), std::end( root_nodes ),
+					           [&]( auto &&... args ) {
+						           return !daw::invoke(
+						             comp, std::forward<decltype( args )>( args )... );
+					           } );
+				}
+			}
+		}
+	} // namespace graph_alg_impl
+	template<typename T, typename Function,
+	         typename Compare = daw::graph_alg_impl::NoSort>
+	void topological_sorted_walk( daw::graph_t<T> const &graph, Function &&func,
+	                              Compare comp = Compare{} ) {
+
+		using Node = std::remove_reference_t<decltype(
+		  graph.get_node( std::declval<daw::node_id_t>( ) ) )>;
+
+		graph_alg_impl::topological_sorted_walk<Node, T>(
+		  graph, std::forward<Function>( func ), std::move( comp ) );
+	}
+
+	template<typename T, typename Function,
+	         typename Compare = daw::graph_alg_impl::NoSort>
+	void topological_sorted_walk( daw::graph_t<T> &graph, Function &&func,
+	                              Compare comp = Compare{} ) {
+
+		using Node = std::remove_reference_t<decltype(
+		  graph.get_node( std::declval<daw::node_id_t>( ) ) )>;
+
+		graph_alg_impl::topological_sorted_walk<Node, T>(
+		  graph, std::forward<Function>( func ), std::move( comp ) );
+	}
+
+	namespace graph_alg_impl {
+		template<typename T, typename Graph, typename Function>
+		void bfs_walk( Graph &&graph, daw::node_id_t start_node_id,
+		               Function &&func ) {
+			std::unordered_set<daw::node_id_t> visited{};
+			std::deque<daw::node_id_t> path{};
+			path.push_back( start_node_id );
+
+			while( !path.empty( ) ) {
+				auto current_node = graph.get_node( path.front( ) );
+				path.pop_front( );
+				daw::invoke( func, current_node );
+				visited.insert( current_node.id( ) );
+				std::copy_if( std::begin( current_node.outgoing_edges( ) ),
+				              std::end( current_node.outgoing_edges( ) ),
+				              std::back_inserter( path ), [&]( auto const &n_id ) {
+					              return visited.count( n_id ) == 0;
+				              } );
+			}
+		}
+
+		template<typename T, typename Graph, typename Function>
+		void dfs_walk( Graph &&graph, daw::node_id_t start_node_id,
+		               Function &&func ) {
+			std::unordered_set<daw::node_id_t> visited{};
+			std::vector<daw::node_id_t> path{};
+			path.push_back( start_node_id );
+
+			while( !path.empty( ) ) {
+				auto current_node = graph.get_node( path.back( ) );
+				path.pop_back( );
+				daw::invoke( func, current_node );
+				visited.insert( current_node.id( ) );
+				std::copy_if( std::begin( current_node.outgoing_edges( ) ),
+				              std::end( current_node.outgoing_edges( ) ),
+				              std::back_inserter( path ), [&]( auto const &n_id ) {
+					              return visited.count( n_id ) == 0;
+				              } );
+			}
+		}
 	} // namespace graph_alg_impl
 
-	template<typename T, typename Function, typename Compare = daw::graph_alg_impl::NoSort>
-	void topological_sorted_for_each( graph_t<T> &graph, Function &&func,
-	                                  Compare comp = Compare{} ) {
+	template<typename T, typename Function>
+	void bfs_walk( daw::graph_t<T> const &graph, daw::node_id_t start_node_id,
+	               Function &&func ) {
 
-		constexpr bool perform_sort_v = !std::is_same_v<Compare, daw::graph_alg_impl::NoSort>;
-		// Find all nodes that do not have incoming entries
-		std::vector<daw::graph_node_t<T>> root_nodes = [&graph]( ) {
-			auto root_node_ids = graph.find_roots( );
-			std::vector<daw::graph_node_t<T>> result{};
-			result.reserve( root_node_ids.size( ) );
-			std::transform( begin( root_node_ids ), end( root_node_ids ),
-			                std::back_inserter( result ),
-			                [&]( node_id_t id ) { return graph.get_node( id ); } );
-		}
-
-		if constexpr( perform_sort_v ) {
-			std::sort( begin( root_nodes ), end( root_nodes ),
-			           [&]( auto &&... args ) {
-				           return !daw::invoke(
-				             comp, std::forward<decltype( args )>( args )... );
-			           } );
-		}
-
-		std::unordered_map<node_id_t, std::vector<node_id_t>> excluded_edges{};
-
-		auto const exclude_edge = [&]( node_id_t from, node_id_t to ) {
-			auto &child = excluded_edges[to];
-			auto pos = std::find( begin( child ), end( child ), from );
-			if( pos == end( child ) ) {
-				child.push_back( from );
-			}
-		};
-
-		auto const has_parent_nodes = [&]( node_id_t n_id ) {
-			auto incoming = graph.get_raw_node( n_id ).incoming_edges( );
-			if( incoming.empty( ) ) {
-				return false;
-			}
-			if( excluded_edges.count( n_id ) == 0 ) {
-				return true;
-			}
-			for( auto ex_id : excluded_edges[n_id] ) {
-				incoming.erase( ex_id );
-			}
-			return !incoming.empty( );
-		};
-
-		while( !root_nodes.empty( ) ) {
-			auto node = root_nodes.back( );
-			root_nodes.pop_back( );
-			daw::invoke( func, node );
-
-			{
-				auto child_nodes = graph_alg_impl::get_child_nodes( graph, node );
-				if constexpr( perform_sort_v ) {
-					std::sort( begin( child_nodes ), end( child_nodes ),
-					           [&]( auto &&... args ) {
-						           return !daw::invoke(
-						             comp, std::forward<decltype( args )>( args )... );
-					           } );
-				}
-				for( auto child : child_nodes ) {
-					exclude_edge( node.id( ), child.id( ) );
-					if( !has_parent_nodes( child.id( ) ) ) {
-						root_nodes.push_back( child );
-					}
-				}
-			}
-			if constexpr( perform_sort_v ) {
-				std::sort( begin( root_nodes ), end( root_nodes ),
-				           [&]( auto &&... args ) {
-					           return !daw::invoke(
-					             comp, std::forward<decltype( args )>( args )... );
-				           } );
-			}
-		}
+		graph_alg_impl::bfs_walk<T>( graph, start_node_id,
+		                             std::forward<Function>( func ) );
 	}
 
-	template<typename T, typename Function, typename Compare = daw::graph_alg_impl::NoSort>
-	void topological_sorted_for_each( graph_t<T> const &graph, Function &&func,
-	                                  Compare comp = Compare{} ) {
+	template<typename T, typename Function>
+	void bfs_walk( daw::graph_t<T> &graph, daw::node_id_t start_node_id,
+	               Function &&func ) {
 
-		constexpr bool perform_sort_v = !std::is_same_v<Compare, daw::graph_alg_impl::NoSort>;
-		// Find all nodes that do not have incoming entries
-		std::vector<daw::const_graph_node_t<T>> root_nodes = [&graph]( ) {
-			auto root_node_ids = graph.find_roots( );
-			std::vector<daw::const_graph_node_t<T>> result{};
-			result.reserve( root_node_ids.size( ) );
-			std::transform( begin( root_node_ids ), end( root_node_ids ),
-			                std::back_inserter( result ),
-			                [&]( node_id_t id ) { return graph.get_node( id ); } );
-		}
-			
-		std::unordered_map<node_id_t, std::vector<node_id_t>> excluded_edges{};
-
-		auto const exclude_edge = [&]( node_id_t from, node_id_t to ) {
-			auto &child = excluded_edges[to];
-			auto pos = std::find( begin( child ), end( child ), from );
-			if( pos == end( child ) ) {
-				child.push_back( from );
-			}
-		};
-
-		auto const has_parent_nodes = [&]( node_id_t n_id ) {
-			auto incoming = graph.get_raw_node( n_id ).incoming_edges( );
-			if( incoming.empty( ) ) {
-				return false;
-			}
-			if( excluded_edges.count( n_id ) == 0 ) {
-				return true;
-			}
-			for( auto ex_id : excluded_edges[n_id] ) {
-				incoming.erase( ex_id );
-			}
-			return !incoming.empty( );
-		};
-
-		while( !root_nodes.empty( ) ) {
-			auto node = root_nodes.back( );
-			root_nodes.pop_back( );
-			daw::invoke( func, node );
-
-			{
-				auto child_nodes = graph_alg_impl::get_child_nodes( graph, node );
-				if constexpr( perform_sort_v ) {
-					std::sort( begin( child_nodes ), end( child_nodes ),
-					           [&]( auto &&... args ) {
-						           return !daw::invoke(
-						             comp, std::forward<decltype( args )>( args )... );
-					           } );
-				}
-				for( auto child : child_nodes ) {
-					exclude_edge( node.id( ), child.id( ) );
-					if( !has_parent_nodes( child.id( ) ) ) {
-						root_nodes.push_back( child );
-					}
-				}
-			}
-			if constexpr( perform_sort_v ) {
-				std::sort( begin( root_nodes ), end( root_nodes ),
-				           [&]( auto &&... args ) {
-					           return !daw::invoke(
-					             comp, std::forward<decltype( args )>( args )... );
-				           } );
-			}
-		}
+		graph_alg_impl::bfs_walk<T>( graph, start_node_id,
+		                             std::forward<Function>( func ) );
 	}
+
+	template<typename T, typename Function>
+	void dfs_walk( daw::graph_t<T> const &graph, daw::node_id_t start_node_id,
+	               Function &&func ) {
+
+		graph_alg_impl::dfs_walk<T>( graph, start_node_id,
+		                             std::forward<Function>( func ) );
+	}
+
+	template<typename T, typename Function>
+	void dfs_walk( daw::graph_t<T> &graph, daw::node_id_t start_node_id,
+	               Function &&func ) {
+
+		graph_alg_impl::dfs_walk<T>( graph, start_node_id,
+		                             std::forward<Function>( func ) );
+	}
+
 } // namespace daw
