@@ -23,7 +23,7 @@
 
 #include "daw/daw_benchmark.h"
 #include "daw/daw_graph.h"
-#include "daw/daw_graph_algorithms.h"
+#include "daw/daw_graph_algorithm.h"
 
 void test_topoligical_for_each_001( daw::graph_t<char> & graph ) {
 	std::string result{};

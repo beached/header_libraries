@@ -26,7 +26,6 @@
 #include <set>
 
 #include "daw_graph.h"
-#include "daw_graph_algorithms.h"
 
 namespace daw {
 	struct NoSort {};
