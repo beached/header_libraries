@@ -218,7 +218,7 @@ namespace daw {
 		auto const total_finish = std::chrono::high_resolution_clock::now( );
 		auto total_time =
 		  std::chrono::duration<double>( total_finish - total_start ).count( );
-		auto avg_time = total_time / static_cast<double>( Runs );
+		auto avg_time = Runs >= 10 ? (total_time-max_time) / static_cast<double>( Runs-1 ) : total_time / static_cast<double>( Runs );
 		std::cout << title << '\n'
 		          << "	runs: " << Runs << '\n'
 		          << "	total: " << utility::format_seconds( total_time, 2 ) << '\n'
