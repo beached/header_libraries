@@ -63,21 +63,22 @@ void test_bfs_walk_002( daw::graph_t<char> &graph, daw::node_id_t root_id ) {
 	} );
 	daw::expecting( "CFAEDB", result );
 }
-void test_dfs_walk_001( daw::graph_t<char> const &graph,
+void test_dfs_walk_001( daw::graph_t<char> &graph,
                         daw::node_id_t root_id ) {
 	std::string result{};
 	daw::dfs_walk( graph, root_id, [&result]( auto &&node ) {
 		result.push_back( node.value( ) );
+		++node.value( );
 	} );
 	daw::expecting( "CABEDF", result );
 }
 
-void test_dfs_walk_002( daw::graph_t<char> &graph, daw::node_id_t root_id ) {
+void test_dfs_walk_002( daw::graph_t<char> const &graph, daw::node_id_t root_id ) {
 	std::string result{};
 	daw::dfs_walk( graph, root_id, [&result]( auto &&node ) {
 		result.push_back( node.value( ) );
 	} );
-	daw::expecting( "CABEDF", result );
+		daw::expecting( "DBCFEG", result );
 }
 
 int main( ) {
