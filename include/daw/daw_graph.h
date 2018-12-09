@@ -85,7 +85,7 @@ namespace std {
 namespace daw {
 	namespace graph_impl {
 		template<typename T>
-		class graph_node_impl_t {
+		class node_impl_t {
 			node_id_t m_id;
 			T m_value;
 
@@ -99,7 +99,7 @@ namespace daw {
 			edges_t m_incoming_edges{};
 			edges_t m_outgoing_edges{};
 		public:
-			constexpr graph_node_impl_t( node_id_t id, T &&value ) noexcept
+			constexpr node_impl_t( node_id_t id, T &&value ) noexcept
 			  : m_id( id )
 			  , m_value( std::move( value ) ) {
 
@@ -176,7 +176,7 @@ namespace daw {
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
-		using edges_t = typename graph_impl::graph_node_impl_t<T>::edges_t;
+		using edges_t = typename graph_impl::node_impl_t<T>::edges_t;
 
 		constexpr const_graph_node_t( ) noexcept = default;
 
@@ -246,7 +246,7 @@ namespace daw {
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
-		using edges_t = typename graph_impl::graph_node_impl_t<T>::edges_t;
+		using edges_t = typename graph_impl::node_impl_t<T>::edges_t;
 
 		constexpr graph_node_t( ) noexcept = default;
 
@@ -329,7 +329,7 @@ namespace daw {
 
 	template<typename T>
 	struct graph_t {
-		using raw_node_t = graph_impl::graph_node_impl_t<T>;
+		using raw_node_t = graph_impl::node_impl_t<T>;
 
 	private:
 		size_t cur_id = 0;
@@ -342,7 +342,7 @@ namespace daw {
 		node_id_t add_node( Args &&... args ) {
 			auto const id = cur_id++;
 			m_nodes.emplace( std::make_pair(
-			  id, graph_impl::graph_node_impl_t<T>(
+			  id, graph_impl::node_impl_t<T>(
 			        node_id_t{ id }, daw::construct_a<T>{}( std::forward<Args>( args )... ) ) ) );
 
 			return node_id_t{ id };
