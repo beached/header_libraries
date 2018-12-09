@@ -25,6 +25,30 @@
 #include "daw/daw_graph.h"
 #include "daw/daw_graph_algorithms.h"
 
+void test_topoligical_for_each_001( daw::graph_t<char> & graph ) {
+	std::string result{};
+	daw::topological_sorted_for_each( graph, [&result]( auto const & node ) {
+		result.push_back( node.value( ) );
+	}, []( auto const & lhs, auto const & rhs ) {
+		return lhs.value( ) < rhs.value( );
+	} );
+
+	daw::expecting( "CABDFE", result );
+}
+
+void test_topoligical_for_each_002( daw::graph_t<char> const & graph ) {
+	std::string result{};
+	daw::topological_sorted_for_each( graph, [&result]( auto const & node ) {
+		result.push_back( node.value( ) );
+	}, []( auto const & lhs, auto const & rhs ) {
+		return lhs.value( ) < rhs.value( );
+	} );
+
+	daw::expecting( "CABDFE", result );
+}
+
+
+
 int main( ) {
 	daw::graph_t<char> graph{};
 	auto nA = graph.add_node( 'A' );
@@ -40,13 +64,6 @@ int main( ) {
 	graph.add_directed_edge( nB, nE );
 	graph.add_directed_edge( nF, nE );
 
-
-	std::string result{};
-	daw::topological_sorted_for_each( graph, [&result]( auto const & node ) {
-		result.push_back( node.value( ) );
-	}, []( auto const & lhs, auto const & rhs ) {
-		return lhs.value( ) < rhs.value( );
-	} );
-
-	daw::expecting( "CABDFE", result );
+	test_topoligical_for_each_001( graph );
+	test_topoligical_for_each_002( graph );
 }

@@ -125,4 +125,83 @@ namespace daw {
 		}
 	}
 
+	template<typename T, typename Function, typename Compare = NoSort>
+	void topological_sorted_for_each( graph_t<T> const &graph, Function &&func,
+	                                  Compare comp = Compare{} ) {
+
+		constexpr bool perform_sort_v = !std::is_same_v<Compare, NoSort>;
+		// Find all nodes that do not have incoming entries
+		std::vector<daw::const_graph_node_t<T>> root_nodes{};
+		{
+			auto root_node_ids = graph.find(
+			  []( auto const &node ) { return node.incoming_edges( ).empty( ); } );
+
+			root_nodes.reserve( root_node_ids.size( ) );
+			std::transform( begin( root_node_ids ), end( root_node_ids ),
+			                std::back_inserter( root_nodes ),
+			                [&]( node_id_t id ) { return graph.get_node( id ); } );
+		}
+
+		if constexpr( perform_sort_v ) {
+			std::sort( begin( root_nodes ), end( root_nodes ),
+			           [&]( auto &&... args ) {
+				           return !daw::invoke(
+				             comp, std::forward<decltype( args )>( args )... );
+			           } );
+		}
+
+		std::unordered_map<node_id_t, std::vector<node_id_t>> excluded_edges{};
+
+		auto const exclude_edge = [&]( node_id_t from, node_id_t to ) {
+			auto &child = excluded_edges[to];
+			auto pos = std::find( begin( child ), end( child ), from );
+			if( pos == end( child ) ) {
+				child.push_back( from );
+			}
+		};
+
+		auto const has_parent_nodes = [&]( node_id_t n_id ) {
+			auto incoming = graph.get_raw_node( n_id ).incoming_edges( );
+			if( incoming.empty( ) ) {
+				return false;
+			}
+			if( excluded_edges.count( n_id ) == 0 ) {
+				return true;
+			}
+			for( auto ex_id : excluded_edges[n_id] ) {
+				incoming.erase( ex_id );
+			}
+			return !incoming.empty( );
+		};
+
+		while( !root_nodes.empty( ) ) {
+			auto node = root_nodes.back( );
+			root_nodes.pop_back( );
+			daw::invoke( func, node );
+
+			{
+				auto child_nodes = graph_alg_impl::get_child_nodes( graph, node );
+				if constexpr( perform_sort_v ) {
+					std::sort( begin( child_nodes ), end( child_nodes ),
+					           [&]( auto &&... args ) {
+						           return !daw::invoke(
+						             comp, std::forward<decltype( args )>( args )... );
+					           } );
+				}
+				for( auto child : child_nodes ) {
+					exclude_edge( node.id( ), child.id( ) );
+					if( !has_parent_nodes( child.id( ) ) ) {
+						root_nodes.push_back( child );
+					}
+				}
+			}
+			if constexpr( perform_sort_v ) {
+				std::sort( begin( root_nodes ), end( root_nodes ),
+				           [&]( auto &&... args ) {
+					           return !daw::invoke(
+					             comp, std::forward<decltype( args )>( args )... );
+				           } );
+			}
+		}
+	}
 } // namespace daw
