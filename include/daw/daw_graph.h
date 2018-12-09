@@ -359,6 +359,8 @@ namespace daw {
 	template<typename T>
 	struct graph_t {
 		using raw_node_t = graph_impl::node_impl_t<T>;
+		using node_t = graph_node_t<T>;
+		using const_node_t = const_graph_node_t<T>;
 
 	private:
 		size_t cur_id = 0;
@@ -398,14 +400,14 @@ namespace daw {
 			return pos->second;
 		}
 
-		const_graph_node_t<T> get_node( node_id_t id ) const {
+		const_node_t get_node( node_id_t id ) const {
 			daw::exception::dbg_precondition_check( has_node( id ) );
-			return const_graph_node_t<T>( this, id );
+			return const_node_t( this, id );
 		}
 
-		graph_node_t<T> get_node( node_id_t id ) {
+		node_t get_node( node_id_t id ) {
 			daw::exception::dbg_precondition_check( has_node( id ) );
-			return graph_node_t<T>( this, id );
+			return node_t( this, id );
 		}
 
 		size_t size( ) const {
