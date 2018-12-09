@@ -55,10 +55,7 @@ int main( ) {
 		graph.add_node(1000);
 
 		auto roots = graph.find([](auto const &node) {
-			if (node.incoming_edges().empty()) {
-				return true;
-			}
-			return false;
+			return node.incoming_edges().empty();
 		});
 		daw::expecting(roots.size(), 2ULL);
 

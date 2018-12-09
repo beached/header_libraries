@@ -37,7 +37,8 @@ namespace daw {
 	struct graph_t;
 
 	class node_id_t {
-		static inline constexpr size_t const NO_ID = std::numeric_limits<size_t>::max( );
+		static inline constexpr size_t const NO_ID =
+		  std::numeric_limits<size_t>::max( );
 		size_t m_value = NO_ID;
 
 		constexpr size_t value( ) const noexcept {
@@ -47,9 +48,11 @@ namespace daw {
 
 		template<typename T>
 		friend struct graph_t;
+
 	public:
 		constexpr node_id_t( ) noexcept = default;
-		explicit constexpr node_id_t( size_t id ) noexcept: m_value( id ) {}
+		explicit constexpr node_id_t( size_t id ) noexcept
+		  : m_value( id ) {}
 
 		constexpr explicit operator bool( ) const noexcept {
 			return m_value != NO_ID;
@@ -71,7 +74,7 @@ namespace daw {
 			return m_value < rhs.m_value;
 		}
 	};
-}
+} // namespace daw
 
 namespace std {
 	template<>
@@ -80,7 +83,7 @@ namespace std {
 			return std::hash<size_t>{}( id.hash( ) );
 		}
 	};
-}
+} // namespace std
 
 namespace daw {
 	namespace graph_impl {
@@ -98,6 +101,7 @@ namespace daw {
 		private:
 			edges_t m_incoming_edges{};
 			edges_t m_outgoing_edges{};
+
 		public:
 			constexpr node_impl_t( node_id_t id, T &&value ) noexcept
 			  : m_id( id )
@@ -126,19 +130,19 @@ namespace daw {
 				return m_value;
 			}
 
-			edges_t & incoming_edges( ) {
+			edges_t &incoming_edges( ) {
 				return m_incoming_edges;
 			}
 
-			edges_t const & incoming_edges( ) const {
+			edges_t const &incoming_edges( ) const {
 				return m_incoming_edges;
 			}
 
-			edges_t & outgoing_edges( ) {
+			edges_t &outgoing_edges( ) {
 				return m_outgoing_edges;
 			}
 
-			edges_t const & outgoing_edges( ) const {
+			edges_t const &outgoing_edges( ) const {
 				return m_outgoing_edges;
 			}
 		};
@@ -161,11 +165,10 @@ namespace daw {
 	};
 
 	template<typename>
-	struct graph_node_proxies: std::false_type {};
+	struct graph_node_proxies : std::false_type {};
 
 	template<typename T>
 	inline constexpr bool is_graph_node_v = graph_node_proxies<T>::value;
-
 
 	template<typename T>
 	class const_graph_node_t {
@@ -180,7 +183,7 @@ namespace daw {
 
 		constexpr const_graph_node_t( ) noexcept = default;
 
-		const_graph_node_t( graph_t<T> *graph_ptr, node_id_t Id ) noexcept
+		const_graph_node_t( graph_t<T> const *graph_ptr, node_id_t Id ) noexcept
 		  : m_graph( graph_ptr )
 		  , m_node_id( Id ) {}
 
@@ -188,7 +191,7 @@ namespace daw {
 			return m_node_id;
 		}
 
-		constexpr graph_t<T> const * graph( ) const noexcept {
+		constexpr graph_t<T> const *graph( ) const noexcept {
 			return m_graph;
 		}
 
@@ -201,42 +204,51 @@ namespace daw {
 		}
 
 		const_reference value( ) const {
-			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
+			daw::exception::dbg_precondition_check<invalid_node_exception>(
+			  m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).value( );
 		}
 
 		edges_t const &incoming_edges( ) const {
-			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
+			daw::exception::dbg_precondition_check<invalid_node_exception>(
+			  m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).incoming_edges( );
 		}
 
 		edges_t const &outgoing_edges( ) const {
-			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
+			daw::exception::dbg_precondition_check<invalid_node_exception>(
+			  m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).outgoing_edges( );
 		}
 
 		template<typename Rhs>
-		constexpr bool operator==( Rhs const & rhs ) noexcept {
-			static_assert( is_graph_node_v<Rhs>, "Can only do comparison with another graph node proxy" );
-			return m_node_id == rhs.id( ) or std::equal_to<>{}( m_graph, rhs.graph( ) );
+		constexpr bool operator==( Rhs const &rhs ) noexcept {
+			static_assert( is_graph_node_v<Rhs>,
+			               "Can only do comparison with another graph node proxy" );
+			return m_node_id == rhs.id( ) or
+			       std::equal_to<>{}( m_graph, rhs.graph( ) );
 		}
 
 		template<typename Rhs>
-		constexpr bool operator!=( Rhs const & rhs ) noexcept {
-			static_assert( is_graph_node_v<Rhs>, "Can only do comparison with another graph node proxy" );
-			return m_node_id != rhs.id( ) or std::not_equal_to<>{}( m_graph, rhs.graph( ) );
+		constexpr bool operator!=( Rhs const &rhs ) noexcept {
+			static_assert( is_graph_node_v<Rhs>,
+			               "Can only do comparison with another graph node proxy" );
+			return m_node_id != rhs.id( ) or
+			       std::not_equal_to<>{}( m_graph, rhs.graph( ) );
 		}
 
 		template<typename Rhs>
-		constexpr bool operator<( Rhs const & rhs ) noexcept {
-			static_assert( is_graph_node_v<Rhs>, "Can only do comparison with another graph node proxy" );
-			daw::exception::dbg_precondition_check( std::equal_to<>{}( m_graph, rhs.graph( ) ) );
+		constexpr bool operator<( Rhs const &rhs ) noexcept {
+			static_assert( is_graph_node_v<Rhs>,
+			               "Can only do comparison with another graph node proxy" );
+			daw::exception::dbg_precondition_check(
+			  std::equal_to<>{}( m_graph, rhs.graph( ) ) );
 			return m_node_id < rhs.id( );
 		}
 	};
 
 	template<typename T>
-	struct graph_node_proxies<const_graph_node_t<T>>: std::true_type {};
+	struct graph_node_proxies<const_graph_node_t<T>> : std::true_type {};
 	template<typename T>
 	class graph_node_t {
 		graph_t<T> *m_graph = nullptr;
@@ -258,7 +270,7 @@ namespace daw {
 			return m_node_id;
 		}
 
-		constexpr graph_t<T> const * graph( ) const noexcept {
+		constexpr graph_t<T> const *graph( ) const noexcept {
 			return m_graph;
 		}
 
@@ -271,51 +283,63 @@ namespace daw {
 		}
 
 		reference value( ) {
-			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
+			daw::exception::dbg_precondition_check<invalid_node_exception>(
+			  m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).value( );
 		}
 
 		const_reference value( ) const {
-			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
+			daw::exception::dbg_precondition_check<invalid_node_exception>(
+			  m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).value( );
 		}
 
 		edges_t &incoming_edges( ) {
-			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
+			daw::exception::dbg_precondition_check<invalid_node_exception>(
+			  m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).incoming_edges( );
 		}
 
 		edges_t const &incoming_edges( ) const {
-			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
+			daw::exception::dbg_precondition_check<invalid_node_exception>(
+			  m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).incoming_edges( );
 		}
 
 		edges_t &outgoing_edges( ) {
-			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
+			daw::exception::dbg_precondition_check<invalid_node_exception>(
+			  m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).outgoing_edges( );
 		}
 
 		edges_t const &outgoing_edges( ) const {
-			daw::exception::dbg_precondition_check<invalid_node_exception>( m_graph != nullptr and m_node_id != node_id_t{} );
+			daw::exception::dbg_precondition_check<invalid_node_exception>(
+			  m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).outgoing_edges( );
 		}
 
 		template<typename Rhs>
-		constexpr bool operator==( Rhs const & rhs ) noexcept {
-			static_assert( is_graph_node_v<Rhs>, "Can only do comparison with another graph node proxy" );
-			return m_node_id == rhs.id( ) or std::equal_to<>{}( m_graph, rhs.graph( ) );
+		constexpr bool operator==( Rhs const &rhs ) noexcept {
+			static_assert( is_graph_node_v<Rhs>,
+			               "Can only do comparison with another graph node proxy" );
+			return m_node_id == rhs.id( ) or
+			       std::equal_to<>{}( m_graph, rhs.graph( ) );
 		}
 
 		template<typename Rhs>
-		constexpr bool operator!=( Rhs const & rhs ) noexcept {
-			static_assert( is_graph_node_v<Rhs>, "Can only do comparison with another graph node proxy" );
-			return m_node_id != rhs.id( ) or std::not_equal_to<>{}( m_graph, rhs.graph( ) );
+		constexpr bool operator!=( Rhs const &rhs ) noexcept {
+			static_assert( is_graph_node_v<Rhs>,
+			               "Can only do comparison with another graph node proxy" );
+			return m_node_id != rhs.id( ) or
+			       std::not_equal_to<>{}( m_graph, rhs.graph( ) );
 		}
 
 		template<typename Rhs>
-		constexpr bool operator<( Rhs const & rhs ) noexcept {
-			static_assert( is_graph_node_v<Rhs>, "Can only do comparison with another graph node proxy" );
-			daw::exception::dbg_precondition_check( std::equal_to<>{}( m_graph, rhs.graph( ) ) );
+		constexpr bool operator<( Rhs const &rhs ) noexcept {
+			static_assert( is_graph_node_v<Rhs>,
+			               "Can only do comparison with another graph node proxy" );
+			daw::exception::dbg_precondition_check(
+			  std::equal_to<>{}( m_graph, rhs.graph( ) ) );
 			return m_node_id < rhs.id( );
 		}
 
@@ -325,7 +349,7 @@ namespace daw {
 	};
 
 	template<typename T>
-	struct graph_node_proxies<graph_node_t<T>>: std::true_type {};
+	struct graph_node_proxies<graph_node_t<T>> : std::true_type {};
 
 	template<typename T>
 	struct graph_t {
@@ -343,9 +367,10 @@ namespace daw {
 			auto const id = cur_id++;
 			m_nodes.emplace( std::make_pair(
 			  id, graph_impl::node_impl_t<T>(
-			        node_id_t{ id }, daw::construct_a<T>{}( std::forward<Args>( args )... ) ) ) );
+			        node_id_t{id},
+			        daw::construct_a<T>{}( std::forward<Args>( args )... ) ) ) );
 
-			return node_id_t{ id };
+			return node_id_t{id};
 		}
 
 		bool has_node( node_id_t id ) const {
@@ -370,7 +395,7 @@ namespace daw {
 
 		const_graph_node_t<T> get_node( node_id_t id ) const {
 			daw::exception::dbg_precondition_check( has_node( id ) );
-			return graph_node_t<T>( this, id );
+			return const_graph_node_t<T>( this, id );
 		}
 
 		graph_node_t<T> get_node( node_id_t id ) {
@@ -386,8 +411,8 @@ namespace daw {
 			daw::exception::dbg_precondition_check( has_node( from ) );
 			daw::exception::dbg_precondition_check( has_node( to ) );
 
-			auto & n_from = get_raw_node( from );
-			auto & n_to = get_raw_node( to );
+			auto &n_from = get_raw_node( from );
+			auto &n_to = get_raw_node( to );
 
 			n_from.outgoing_edges( ).insert( to );
 			n_to.incoming_edges( ).insert( from );
@@ -397,8 +422,8 @@ namespace daw {
 			daw::exception::dbg_precondition_check( has_node( node0 ) );
 			daw::exception::dbg_precondition_check( has_node( node1 ) );
 
-			auto & n_0 = get_raw_node( node0 );
-			auto & n_1 = get_raw_node( node1 );
+			auto &n_0 = get_raw_node( node0 );
+			auto &n_1 = get_raw_node( node1 );
 
 			n_0.outgoing_edges( ).insert( node1 );
 			n_0.incoming_edges( ).insert( node1 );
@@ -409,7 +434,7 @@ namespace daw {
 		void remove_node( node_id_t id ) {
 			daw::exception::dbg_precondition_check( has_node( id ) );
 
-			auto & node = get_raw_node( id );
+			auto &node = get_raw_node( id );
 			for( auto n_id : node.incoming_edges( ) ) {
 				get_node( n_id ).outgoing_edges( ).erase( id );
 			}
@@ -423,8 +448,8 @@ namespace daw {
 			daw::exception::dbg_precondition_check( has_node( from ) );
 			daw::exception::dbg_precondition_check( has_node( to ) );
 
-			raw_node_t & from_node = get_raw_node( from );
-			raw_node_t & to_node = get_raw_node( to );
+			raw_node_t &from_node = get_raw_node( from );
+			raw_node_t &to_node = get_raw_node( to );
 			from_node.outgoing_edges( ).erase( to );
 			to_node.incoming_edges( ).erase( from );
 		}
@@ -433,8 +458,8 @@ namespace daw {
 			daw::exception::dbg_precondition_check( has_node( node0_id ) );
 			daw::exception::dbg_precondition_check( has_node( node1_id ) );
 
-			raw_node_t & inode0 = get_raw_node( node0_id );
-			raw_node_t & node1 = get_raw_node( node1_id );
+			raw_node_t &inode0 = get_raw_node( node0_id );
+			raw_node_t &node1 = get_raw_node( node1_id );
 			inode0.outgoing_edges( ).erase( node1_id );
 			inode0.incoming_edges( ).erase( node1_id );
 			node1.outgoing_edges( ).erase( node0_id );
@@ -442,9 +467,10 @@ namespace daw {
 		}
 
 		template<typename Compare = std::equal_to<>>
-		std::vector<node_id_t> find_by_value( T const & value, Compare compare = Compare{} ) const {
+		std::vector<node_id_t> find_by_value( T const &value,
+		                                      Compare compare = Compare{} ) const {
 			std::vector<node_id_t> result{};
-			for( auto const & node: m_nodes ) {
+			for( auto const &node : m_nodes ) {
 				if( daw::invoke( compare, node.second.value( ), value ) ) {
 					result.push_back( node.second.id( ) );
 				}
@@ -452,15 +478,40 @@ namespace daw {
 			return result;
 		}
 
-		template<typename Predicate>
-		std::vector<node_id_t> find( Predicate&& pred ) const {
-			static_assert( std::is_invocable_v<Predicate, raw_node_t const &>, "Predicate must accept a node as argument" );
-			std::vector<node_id_t> result{};
-			for( auto const & node: m_nodes ) {
-				if( daw::invoke( pred, node.second ) ) {
-					result.push_back( node.second.id( ) );
+		template<typename Predicate, typename Visitor>
+		void visit( Predicate &&pred, Visitor &&vis ) {
+			static_assert( std::is_invocable_v<Predicate, raw_node_t const &>,
+			               "Predicate must accept a node as argument" );
+			static_assert( std::is_invocable_v<Visitor, raw_node_t &>,
+			               "Visitor must accept a node as argument" );
+			for( auto &node_ref : m_nodes ) {
+				auto node = get_node( node_ref.second.id( ) );
+				if( daw::invoke( pred, node ) ) {
+					daw::invoke( vis, std::move( node ) );
 				}
 			}
+		}
+
+		template<typename Predicate, typename Visitor>
+		void visit( Predicate &&pred, Visitor &&vis ) const {
+			static_assert( std::is_invocable_v<Predicate, raw_node_t const &>,
+			               "Predicate must accept a node as argument" );
+			static_assert( std::is_invocable_v<Visitor, raw_node_t const &>,
+			               "Visitor must accept a node as argument" );
+			for( auto const &node_ref : m_nodes ) {
+				auto node = get_node( node_ref.second.id( ) );
+				if( daw::invoke( pred, node ) ) {
+					daw::invoke( vis, std::move( node ) );
+				}
+			}
+		}
+
+		template<typename Predicate>
+		std::vector<node_id_t> find( Predicate &&pred ) const {
+			std::vector<node_id_t> result{};
+			visit( pred, [&result]( auto const & node ) {
+				result.push_back( node.id( ) );
+			} );
 			return result;
 		}
 	};
