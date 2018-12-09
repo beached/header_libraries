@@ -24,10 +24,15 @@
 #pragma once
 
 #include <cstddef>
-#include <deque>
+#include <functional>
+#include <iterator>
+#include <limits>
 #include <optional>
+#include <type_traits>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
+#include <vector>
 
 #include "daw_exception.h"
 #include "daw_utility.h"

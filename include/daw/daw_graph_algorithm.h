@@ -23,9 +23,15 @@
 
 #pragma once
 
-#include <set>
+#include <algorithm>
+#include <iterator>
+#include <type_traits>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
 #include "daw_graph.h"
+#include "cpp_17.h"
 
 namespace daw {
 	struct NoSort {};
