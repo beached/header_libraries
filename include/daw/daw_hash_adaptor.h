@@ -27,15 +27,15 @@
 #include <vector>
 
 namespace daw {
+	constexpr size_t scale_hash( size_t hash, size_t range_size ) {
+		size_t const prime_a = 18446744073709551557u;
+		size_t const prime_b = 18446744073709551533u;
+		return ( hash * prime_a + prime_b ) % range_size;
+	}
+
 	template<typename Key, typename Hash = std::hash<Key>>
 	class hash_adaptor_t {
 		std::vector<std::optional<Key>> m_indices;
-
-		static constexpr size_t scale_hash( size_t hash, size_t range_size ) {
-			size_t const prime_a = 18446744073709551557u;
-			size_t const prime_b = 18446744073709551533u;
-			return ( hash * prime_a + prime_b ) % range_size;
-		}
 
 		size_t find_index( size_t hash, Key const & key ) {
 			size_t const scaled_hash = scale_hash( hash, m_indices.size( ) );
@@ -87,12 +87,6 @@ namespace daw {
 	template<typename Key, size_t Capacity, typename Hash = std::hash<Key>>
 	class static_hash_adaptor_t {
 		std::array<std::optional<size_t>, Capacity> m_indices{};
-
-		static constexpr size_t scale_hash( size_t hash, size_t range_size ) {
-			size_t const prime_a = 18446744073709551557u;
-			size_t const prime_b = 18446744073709551533u;
-			return ( hash * prime_a + prime_b ) % range_size;
-		}
 
 		constexpr size_t find_index( size_t hash, Key const & key ) const {
 			size_t const scaled_hash = scale_hash( hash, m_indices.size( ) );
