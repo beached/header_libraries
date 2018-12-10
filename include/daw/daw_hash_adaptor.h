@@ -90,6 +90,18 @@ namespace daw {
 			m_indices[index] = std::nullopt;
 			return index;
 		}
+
+		size_t exists( Key &&key ) noexcept {
+			auto const hash = Hash{}( std::move( key ) );
+			auto const index = find_index( hash );
+			return static_cast<bool>( m_indices[index] );
+		}
+
+		size_t exists( Key const &key ) noexcept {
+			auto const hash = Hash{}( key );
+			auto const index = find_index( hash );
+			return static_cast<bool>( m_indices[index] );
+		}
 	};
 
 	template<typename Key, size_t Capacity, typename Hash = std::hash<Key>>
@@ -153,6 +165,18 @@ namespace daw {
 			auto const index = find_index( hash );
 			m_indices[index] = std::nullopt;
 			return index;
+		}
+
+		constexpr size_t exists( Key &&key ) noexcept {
+			auto const hash = Hash{}( std::move( key ) );
+			auto const index = find_index( hash );
+			return static_cast<bool>( m_indices[index] );
+		}
+
+		constexpr size_t exists( Key const &key ) noexcept {
+			auto const hash = Hash{}( key );
+			auto const index = find_index( hash );
+			return static_cast<bool>( m_indices[index] );
 		}
 	};
 } // namespace daw

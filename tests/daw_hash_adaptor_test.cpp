@@ -22,8 +22,9 @@
 
 #include <iostream>
 
-#include "daw/daw_hash_adaptor.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_fnv1a_hash.h"
+#include "daw/daw_hash_adaptor.h"
 
 void test_001( ) {
 	size_t count = 1024ULL;
@@ -43,6 +44,53 @@ constexpr bool test_002( ) {
 }
 static_assert( test_002( ) );
 
+bool test_003( ) {
+	size_t count = 1024ULL;
+	daw::hash_adaptor_t<size_t> adapt( count );
+	for( size_t n = 0; n < count; ++n ) {
+		adapt.set_hash( n );
+	}
+	for( size_t n = 0; n < count; ++n ) {
+		if( !adapt.exists( n ) ) {
+			return false;
+		}
+	}
+	return true;
+}
+
+constexpr bool test_004( ) {
+	size_t count = 1024ULL;
+	daw::static_hash_adaptor_t<size_t, 1024ULL, daw::fnv1a_hash_t> adapt{};
+	for( size_t n = 0; n < count; ++n ) {
+		adapt.set_hash( n );
+	}
+	for( size_t n = 0; n < count; ++n ) {
+		if( !adapt.exists( n ) ) {
+			return false;
+		}
+	}
+	return true;
+}
+static_assert( test_004( ) );
+
+constexpr bool test_005( ) {
+	size_t count = 1024ULL;
+	daw::static_hash_adaptor_t<size_t, 1024ULL, daw::fnv1a_hash_t> adapt{};
+	for( size_t n = 0; n < count; n+=2 ) {
+		adapt.set_hash( n );
+	}
+	for( size_t n = 0; n < count; ++n ) {
+		if( !adapt.exists( n ) and n%2 == 0 ) {
+			return false;
+		}
+	}
+	return true;
+}
+static_assert( test_005( ) );
+
+
+
 int main( ) {
 	test_001( );
+	daw::expecting( test_003( ) );
 }
