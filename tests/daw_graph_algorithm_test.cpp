@@ -63,22 +63,40 @@ void test_bfs_walk_002( daw::graph_t<char> &graph, daw::node_id_t root_id ) {
 	} );
 	daw::expecting( "CFAEDB", result );
 }
-void test_dfs_walk_001( daw::graph_t<char> &graph,
-                        daw::node_id_t root_id ) {
+void test_dfs_walk_001( daw::graph_t<char> graph, daw::node_id_t root_id ) {
 	std::string result{};
 	daw::dfs_walk( graph, root_id, [&result]( auto &&node ) {
 		result.push_back( node.value( ) );
 		++node.value( );
 	} );
 	daw::expecting( "CABEDF", result );
+
+	result.clear( );
+	daw::dfs_walk( graph, root_id, [&result]( auto &&node ) {
+		result.push_back( node.value( ) );
+	} );
+	daw::expecting( "DBCFEG", result );
 }
 
-void test_dfs_walk_002( daw::graph_t<char> const &graph, daw::node_id_t root_id ) {
+void test_dfs_walk_002( daw::graph_t<char> const &graph,
+                        daw::node_id_t root_id ) {
 	std::string result{};
 	daw::dfs_walk( graph, root_id, [&result]( auto &&node ) {
 		result.push_back( node.value( ) );
 	} );
-		daw::expecting( "DBCFEG", result );
+	daw::expecting( "CABEDF", result );
+}
+
+void test_mst_001( daw::graph_t<char> graph, daw::node_id_t root_id ) {
+	std::string result{};
+	daw::mst( graph );
+
+	daw::topological_sorted_walk(
+	  graph, [&result]( auto const &node ) { result.push_back( node.value( ) ); },
+	  []( auto const &lhs, auto const &rhs ) {
+		  return lhs.value( ) < rhs.value( );
+	  } );
+	daw::expecting( "CABDEF", result );
 }
 
 int main( ) {
@@ -102,4 +120,5 @@ int main( ) {
 	test_bfs_walk_002( graph, nC );
 	test_dfs_walk_001( graph, nC );
 	test_dfs_walk_002( graph, nC );
+	test_mst_001( graph, nC );
 }
