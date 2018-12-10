@@ -1,0 +1,159 @@
+// The MIT License (MIT)
+//
+// Copyright (c) 2018 Darrell Wright
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+#pragma once
+
+#include <functional>
+#include <optional>
+#include <vector>
+
+namespace daw {
+	template<typename Key, typename Hash = std::hash<Key>>
+	class hash_adaptor_t {
+		std::vector<std::optional<size_t>> m_indices;
+
+		static constexpr size_t scale_hash( size_t hash, size_t range_size ) {
+			size_t const prime_a = 18446744073709551557u;
+			size_t const prime_b = 18446744073709551533u;
+			return ( hash * prime_a + prime_b ) % range_size;
+		}
+
+		size_t find_index( size_t hash ) {
+			size_t const scaled_hash = scale_hash( hash, m_indices.size( ) );
+
+			for( size_t n = scaled_hash; n < m_indices.size( ); ++n ) {
+				if( !m_indices[n] ) {
+					return n;
+				}
+				if( *m_indices[n] == hash ) {
+					return n;
+				}
+			}
+			for( size_t n = 0; n < scaled_hash; ++n ) {
+				if( !m_indices[n] ) {
+					return n;
+				}
+				if( *m_indices[n] == hash ) {
+					return n;
+				}
+			}
+			throw std::out_of_range( "Hash table is full" );
+		}
+
+	public:
+		hash_adaptor_t( size_t range_size ) noexcept
+		  : m_indices( range_size, std::nullopt ) {}
+
+		size_t set_hash( Key &&key ) {
+			auto const hash = Hash{}( std::move( key ) );
+			auto const index = find_index( hash );
+			m_indices[index] = hash;
+			return index;
+		}
+
+		size_t set_hash( Key const &key ) {
+			auto const hash = Hash{}( key );
+			auto const index = find_index( hash );
+			m_indices[index] = hash;
+			return index;
+		}
+
+		size_t clear_hash( Key &&key ) {
+			auto const hash = Hash{}( std::move( key ) );
+			auto const index = find_index( hash );
+			m_indices[index] = std::nullopt;
+			return index;
+		}
+
+		size_t clear_hash( Key const &key ) {
+			auto const hash = Hash{}( key );
+			auto const index = find_index( hash );
+			m_indices[index] = std::nullopt;
+			return index;
+		}
+	};
+
+	template<typename Key, size_t Capacity, typename Hash = std::hash<Key>>
+	class static_hash_adaptor_t {
+		std::array<std::optional<size_t>, Capacity> m_indices{};
+
+		static constexpr size_t scale_hash( size_t hash, size_t range_size ) {
+			size_t const prime_a = 18446744073709551557u;
+			size_t const prime_b = 18446744073709551533u;
+			return ( hash * prime_a + prime_b ) % range_size;
+		}
+
+		constexpr size_t find_index( size_t hash ) const {
+			size_t const scaled_hash = scale_hash( hash, m_indices.size( ) );
+
+			for( size_t n = scaled_hash; n < m_indices.size( ); ++n ) {
+				if( !m_indices[n] ) {
+					return n;
+				}
+				if( *m_indices[n] == hash ) {
+					return n;
+				}
+			}
+			for( size_t n = 0; n < scaled_hash; ++n ) {
+				if( !m_indices[n] ) {
+					return n;
+				}
+				if( *m_indices[n] == hash ) {
+					return n;
+				}
+			}
+			std::terminate( );
+		}
+
+	public:
+		constexpr static_hash_adaptor_t( ) noexcept = default;
+
+		constexpr size_t set_hash( Key &&key ) noexcept {
+			auto const hash = Hash{}( std::move( key ) );
+			auto const index = find_index( hash );
+			m_indices[index] = hash;
+			return index;
+		}
+
+		constexpr size_t set_hash( Key const &key ) noexcept {
+			auto const hash = Hash{}( key );
+			auto const index = find_index( hash );
+			m_indices[index] = hash;
+			return index;
+		}
+
+		constexpr size_t clear_hash( Key &&key ) noexcept {
+			auto const hash = Hash{}( std::move( key ) );
+			auto const index = find_index( hash );
+			m_indices[index] = std::nullopt;
+			return index;
+		}
+
+		constexpr size_t clear_hash( Key const &key ) noexcept {
+			auto const hash = Hash{}( key );
+			auto const index = find_index( hash );
+			m_indices[index] = std::nullopt;
+			return index;
+		}
+	};
+} // namespace daw
+

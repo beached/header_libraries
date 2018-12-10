@@ -92,6 +92,7 @@ set( TESTED_HEADERS_PREFIXES
 set( TESTED_HEADERS_PREFIXES_NB
 	daw_graph
 	daw_graph_algorithm
+	daw_hash_adaptor
 	daw_keep_n
 	daw_piecewise_factory
 	daw_span
