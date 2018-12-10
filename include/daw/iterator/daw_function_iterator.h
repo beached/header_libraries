@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include "../cpp_17.h"
 #include "../daw_algorithm.h"
 #include "../daw_traits.h"
 
@@ -55,7 +56,7 @@ namespace daw {
 		           !daw::is_same_v<daw::remove_cvref_t<T>, function_iterator>,
 		           std::nullptr_t> = nullptr>
 		constexpr function_iterator &operator=( T &&val ) {
-			m_function( std::forward<T>( val ) );
+			daw::invoke( m_function, std::forward<T>( val ) );
 			return *this;
 		}
 
