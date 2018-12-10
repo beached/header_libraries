@@ -193,9 +193,28 @@ namespace daw {
 		  std::move( test_callable ), std::forward<Args>( args )... ) )>;
 
 		result_t result{};
+		
+		double base_time = std::numeric_limits<double>::max( );
+		{
+			for( size_t n = 0; n < 1000; ++n ) {
+				bench_impl::expander( ( daw::do_not_optimize( args ), 1 )... );
+
+				int a = 0;
+				daw::do_not_optimize( a );
+				auto const start = std::chrono::high_resolution_clock::now( );
+				auto r = daw::expected_from_code( [a]( ) { return a * a; } );
+				auto const finish = std::chrono::high_resolution_clock::now( );
+				daw::do_not_optimize( r );
+				auto const duration =
+				  std::chrono::duration<double>( finish - start ).count( );
+				if( duration < base_time ) {
+					base_time = duration;
+				}
+			}
+		}
 		double min_time = std::numeric_limits<double>::max( );
 		double max_time = 0.0;
-
+	
 		auto const total_start = std::chrono::high_resolution_clock::now( );
 		for( size_t n = 0; n < Runs; ++n ) {
 			bench_impl::expander( ( daw::do_not_optimize( args ), 1 )... );
@@ -216,9 +235,14 @@ namespace daw {
 			}
 		}
 		auto const total_finish = std::chrono::high_resolution_clock::now( );
+		min_time -= base_time;
+		max_time -= base_time;
 		auto total_time =
-		  std::chrono::duration<double>( total_finish - total_start ).count( );
+		  std::chrono::duration<double>( total_finish - total_start ).count( ) -
+		  static_cast<double>( Runs ) * base_time;
+
 		auto avg_time = Runs >= 10 ? (total_time-max_time) / static_cast<double>( Runs-1 ) : total_time / static_cast<double>( Runs );
+		avg_time -= base_time;
 		std::cout << title << '\n'
 		          << "	runs: " << Runs << '\n'
 		          << "	total: " << utility::format_seconds( total_time, 2 ) << '\n'
