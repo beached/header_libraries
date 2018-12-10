@@ -29,7 +29,7 @@
 namespace daw {
 	template<typename Key, typename Hash = std::hash<Key>>
 	class hash_adaptor_t {
-		std::vector<std::optional<size_t>> m_indices;
+		std::vector<std::optional<Key>> m_indices;
 
 		static constexpr size_t scale_hash( size_t hash, size_t range_size ) {
 			size_t const prime_a = 18446744073709551557u;
@@ -37,14 +37,14 @@ namespace daw {
 			return ( hash * prime_a + prime_b ) % range_size;
 		}
 
-		size_t find_index( size_t hash ) {
+		size_t find_index( size_t hash, Key const & key ) {
 			size_t const scaled_hash = scale_hash( hash, m_indices.size( ) );
 
 			for( size_t n = scaled_hash; n < m_indices.size( ); ++n ) {
 				if( !m_indices[n] ) {
 					return n;
 				}
-				if( *m_indices[n] == hash ) {
+				if( *m_indices[n] == key ) {
 					return n;
 				}
 			}
@@ -52,7 +52,7 @@ namespace daw {
 				if( !m_indices[n] ) {
 					return n;
 				}
-				if( *m_indices[n] == hash ) {
+				if( *m_indices[n] == key ) {
 					return n;
 				}
 			}
@@ -63,43 +63,23 @@ namespace daw {
 		hash_adaptor_t( size_t range_size ) noexcept
 		  : m_indices( range_size, std::nullopt ) {}
 
-		size_t set_hash( Key &&key ) {
-			auto const hash = Hash{}( std::move( key ) );
-			auto const index = find_index( hash );
-			m_indices[index] = hash;
-			return index;
-		}
-
 		size_t set_hash( Key const &key ) {
 			auto const hash = Hash{}( key );
-			auto const index = find_index( hash );
-			m_indices[index] = hash;
-			return index;
-		}
-
-		size_t clear_hash( Key &&key ) {
-			auto const hash = Hash{}( std::move( key ) );
-			auto const index = find_index( hash );
-			m_indices[index] = std::nullopt;
+			auto const index = find_index( hash, key );
+			m_indices[index] = key;
 			return index;
 		}
 
 		size_t clear_hash( Key const &key ) {
 			auto const hash = Hash{}( key );
-			auto const index = find_index( hash );
+			auto const index = find_index( hash, key );
 			m_indices[index] = std::nullopt;
 			return index;
 		}
 
-		size_t exists( Key &&key ) noexcept {
-			auto const hash = Hash{}( std::move( key ) );
-			auto const index = find_index( hash );
-			return static_cast<bool>( m_indices[index] );
-		}
-
 		size_t exists( Key const &key ) noexcept {
 			auto const hash = Hash{}( key );
-			auto const index = find_index( hash );
+			auto const index = find_index( hash, key );
 			return static_cast<bool>( m_indices[index] );
 		}
 	};
@@ -114,14 +94,14 @@ namespace daw {
 			return ( hash * prime_a + prime_b ) % range_size;
 		}
 
-		constexpr size_t find_index( size_t hash ) const {
+		constexpr size_t find_index( size_t hash, Key const & key ) const {
 			size_t const scaled_hash = scale_hash( hash, m_indices.size( ) );
 
 			for( size_t n = scaled_hash; n < m_indices.size( ); ++n ) {
 				if( !m_indices[n] ) {
 					return n;
 				}
-				if( *m_indices[n] == hash ) {
+				if( *m_indices[n] == key ) {
 					return n;
 				}
 			}
@@ -129,7 +109,7 @@ namespace daw {
 				if( !m_indices[n] ) {
 					return n;
 				}
-				if( *m_indices[n] == hash ) {
+				if( *m_indices[n] == key ) {
 					return n;
 				}
 			}
@@ -139,43 +119,23 @@ namespace daw {
 	public:
 		constexpr static_hash_adaptor_t( ) noexcept = default;
 
-		constexpr size_t set_hash( Key &&key ) noexcept {
-			auto const hash = Hash{}( std::move( key ) );
-			auto const index = find_index( hash );
-			m_indices[index] = hash;
-			return index;
-		}
-
 		constexpr size_t set_hash( Key const &key ) noexcept {
 			auto const hash = Hash{}( key );
-			auto const index = find_index( hash );
-			m_indices[index] = hash;
-			return index;
-		}
-
-		constexpr size_t clear_hash( Key &&key ) noexcept {
-			auto const hash = Hash{}( std::move( key ) );
-			auto const index = find_index( hash );
-			m_indices[index] = std::nullopt;
+			auto const index = find_index( hash, key );
+			m_indices[index] = key;
 			return index;
 		}
 
 		constexpr size_t clear_hash( Key const &key ) noexcept {
 			auto const hash = Hash{}( key );
-			auto const index = find_index( hash );
+			auto const index = find_index( hash, key );
 			m_indices[index] = std::nullopt;
 			return index;
 		}
 
-		constexpr size_t exists( Key &&key ) noexcept {
-			auto const hash = Hash{}( std::move( key ) );
-			auto const index = find_index( hash );
-			return static_cast<bool>( m_indices[index] );
-		}
-
 		constexpr size_t exists( Key const &key ) noexcept {
 			auto const hash = Hash{}( key );
-			auto const index = find_index( hash );
+			auto const index = find_index( hash, key );
 			return static_cast<bool>( m_indices[index] );
 		}
 	};
