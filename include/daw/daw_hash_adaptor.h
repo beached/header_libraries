@@ -63,24 +63,28 @@ namespace daw {
 		hash_adaptor_t( size_t range_size ) noexcept
 		  : m_indices( range_size, std::nullopt ) {}
 
-		size_t set_hash( Key const &key ) {
+		size_t insert( Key const &key ) {
 			auto const hash = Hash{}( key );
 			auto const index = find_index( hash, key );
 			m_indices[index] = key;
 			return index;
 		}
 
-		size_t clear_hash( Key const &key ) {
+		size_t erase( Key const &key ) {
 			auto const hash = Hash{}( key );
 			auto const index = find_index( hash, key );
 			m_indices[index] = std::nullopt;
 			return index;
 		}
 
-		size_t exists( Key const &key ) noexcept {
+		bool exists( Key const &key ) noexcept {
 			auto const hash = Hash{}( key );
 			auto const index = find_index( hash, key );
-			return static_cast<bool>( m_indices[index] );
+			return static_cast<bool>( m_indices[index] ) ? 1 : 0;
+		}
+
+		bool count( Key const & key ) noexcept {
+			return exists( key ) ? 1 : 0;
 		}
 	};
 
@@ -113,24 +117,28 @@ namespace daw {
 	public:
 		constexpr static_hash_adaptor_t( ) noexcept = default;
 
-		constexpr size_t set_hash( Key const &key ) noexcept {
+		constexpr size_t insert( Key const &key ) noexcept {
 			auto const hash = Hash{}( key );
 			auto const index = find_index( hash, key );
 			m_indices[index] = key;
 			return index;
 		}
 
-		constexpr size_t clear_hash( Key const &key ) noexcept {
+		constexpr size_t erase( Key const &key ) noexcept {
 			auto const hash = Hash{}( key );
 			auto const index = find_index( hash, key );
 			m_indices[index] = std::nullopt;
 			return index;
 		}
 
-		constexpr size_t exists( Key const &key ) noexcept {
+		constexpr bool exists( Key const &key ) noexcept {
 			auto const hash = Hash{}( key );
 			auto const index = find_index( hash, key );
 			return static_cast<bool>( m_indices[index] );
+		}
+
+		constexpr bool count( Key const & key ) noexcept {
+			return exists( key ) ? 1 : 0;
 		}
 	};
 } // namespace daw

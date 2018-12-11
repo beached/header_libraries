@@ -30,7 +30,7 @@ void test_001( ) {
 	size_t count = 1024ULL;
 	daw::hash_adaptor_t<size_t> adapt( count );
 	for( size_t n = 0; n < count; ++n ) {
-		adapt.set_hash( n );
+		adapt.insert( n );
 	}
 }
 
@@ -38,7 +38,7 @@ constexpr bool test_002( ) {
 	size_t count = 1024ULL;
 	daw::static_hash_adaptor_t<size_t, 1024ULL, daw::fnv1a_hash_t> adapt{};
 	for( size_t n = 0; n < count; ++n ) {
-		adapt.set_hash( n );
+		adapt.insert( n );
 	}
 	return true;
 }
@@ -48,7 +48,7 @@ bool test_003( ) {
 	size_t count = 1024ULL;
 	daw::hash_adaptor_t<size_t> adapt( count );
 	for( size_t n = 0; n < count; ++n ) {
-		adapt.set_hash( n );
+		adapt.insert( n );
 	}
 	for( size_t n = 0; n < count; ++n ) {
 		if( !adapt.exists( n ) ) {
@@ -62,7 +62,7 @@ constexpr bool test_004( ) {
 	size_t count = 1024ULL;
 	daw::static_hash_adaptor_t<size_t, 1024ULL, daw::fnv1a_hash_t> adapt{};
 	for( size_t n = 0; n < count; ++n ) {
-		adapt.set_hash( n );
+		adapt.insert( n );
 	}
 	for( size_t n = 0; n < count; ++n ) {
 		if( !adapt.exists( n ) ) {
@@ -77,7 +77,7 @@ constexpr bool test_005( ) {
 	size_t count = 1024ULL;
 	daw::static_hash_adaptor_t<size_t, 1024ULL, daw::fnv1a_hash_t> adapt{};
 	for( size_t n = 0; n < count; n+=2 ) {
-		adapt.set_hash( n );
+		adapt.insert( n );
 	}
 	for( size_t n = 0; n < count; ++n ) {
 		if( !adapt.exists( n ) and n%2 == 0 ) {
