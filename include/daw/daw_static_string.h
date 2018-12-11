@@ -212,6 +212,16 @@ namespace daw {
 			return *this;
 		}
 #endif
+		template<CharT>
+		constexpr basic_static_string & operator=( daw::basic_string_view<CharT> sv ) noexcept {
+			daw::exception::precondition_check<std::out_of_range>(
+			  sv.size( ) > size( ), "Attempt to copy an excess of data" );
+
+			clear( );
+			daw::algorithm::copy( sv.begin( ), sv.end( ), daw::back_inserter( *this ) );
+			return *this;
+		}
+
 		constexpr iterator begin( ) noexcept {
 			return m_data.begin( );
 		}
