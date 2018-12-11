@@ -37,7 +37,7 @@ namespace daw {
 	class hash_adaptor_t {
 		std::vector<std::optional<Key>> m_indices;
 
-		size_t find_index( size_t hash, Key const & key ) {
+		std::optional<size_t> find_index( size_t hash, Key const & key ) {
 			size_t const scaled_hash = scale_hash( hash, m_indices.size( ) );
 
 			for( size_t n = scaled_hash; n < m_indices.size( ); ++n ) {
@@ -56,7 +56,7 @@ namespace daw {
 					return n;
 				}
 			}
-			throw std::out_of_range( "Hash table is full" );
+			return {};
 		}
 
 	public:
@@ -66,13 +66,19 @@ namespace daw {
 		size_t insert( Key const &key ) {
 			auto const hash = Hash{}( key );
 			auto const index = find_index( hash, key );
-			m_indices[index] = key;
-			return index;
+			if( !index ) {
+				throw std::out_of_range( "Hash table is full" );
+			}
+			m_indices[*index] = key;
+			return *index;
 		}
 
-		size_t erase( Key const &key ) {
+		std::optional<size_t> erase( Key const &key ) {
 			auto const hash = Hash{}( key );
 			auto const index = find_index( hash, key );
+			if( !index ) {
+				return {};
+			}
 			m_indices[index] = std::nullopt;
 			return index;
 		}
@@ -80,7 +86,7 @@ namespace daw {
 		bool exists( Key const &key ) noexcept {
 			auto const hash = Hash{}( key );
 			auto const index = find_index( hash, key );
-			return static_cast<bool>( m_indices[index] ) ? 1 : 0;
+			return static_cast<bool>( index ) and static_cast<bool>( m_indices[*index] );
 		}
 
 		bool count( Key const & key ) noexcept {
@@ -92,7 +98,7 @@ namespace daw {
 	class static_hash_adaptor_t {
 		std::array<std::optional<size_t>, Capacity> m_indices{};
 
-		constexpr size_t find_index( size_t hash, Key const & key ) const {
+		constexpr std::optional<size_t> find_index( size_t hash, Key const & key ) const {
 			size_t const scaled_hash = scale_hash( hash, m_indices.size( ) );
 
 			for( size_t n = scaled_hash; n < m_indices.size( ); ++n ) {
@@ -111,7 +117,7 @@ namespace daw {
 					return n;
 				}
 			}
-			std::terminate( );
+			return {};
 		}
 
 	public:
@@ -120,21 +126,28 @@ namespace daw {
 		constexpr size_t insert( Key const &key ) noexcept {
 			auto const hash = Hash{}( key );
 			auto const index = find_index( hash, key );
-			m_indices[index] = key;
-			return index;
+			if( !index ) {
+				// Full
+				std::terminate( );
+			}
+			m_indices[*index] = key;
+			return *index;
 		}
 
-		constexpr size_t erase( Key const &key ) noexcept {
+		constexpr std::optional<size_t> erase( Key const &key ) noexcept {
 			auto const hash = Hash{}( key );
 			auto const index = find_index( hash, key );
-			m_indices[index] = std::nullopt;
-			return index;
+			if( !index ) {
+				return {};
+			}
+			m_indices[*index] = std::nullopt;
+			return *index;
 		}
 
 		constexpr bool exists( Key const &key ) noexcept {
 			auto const hash = Hash{}( key );
 			auto const index = find_index( hash, key );
-			return static_cast<bool>( m_indices[index] );
+			return static_cast<bool>( index ) and static_cast<bool>( m_indices[*index] );
 		}
 
 		constexpr bool count( Key const & key ) noexcept {
