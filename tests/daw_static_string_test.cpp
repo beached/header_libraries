@@ -81,6 +81,17 @@ namespace daw {
 		  "string and static_string should be equal" );
 	}
 
+	BOOST_AUTO_TEST_CASE( daw_static_string_erase_index ) {
+		std::string a = "This is a test";
+		auto b = daw::make_static_string_it( a.begin( ), a.end( ) );
+		a.erase( 2, 2 );
+		b.erase( 2, 2 );
+
+		BOOST_REQUIRE_MESSAGE(
+		  std::equal( a.begin( ), a.end( ), b.begin( ), b.end( ) ),
+		  "string and static_string should be equal" );
+	}
+
 	BOOST_AUTO_TEST_CASE( daw_static_string_make_static_string_vector ) {
 		std::string a = "This is a test";
 		std::vector<char> b;

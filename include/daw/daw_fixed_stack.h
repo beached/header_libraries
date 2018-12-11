@@ -38,6 +38,7 @@ namespace daw {
 		using pointer = value_type *;
 		using const_pointer = value_type const *;
 		using size_type = size_t;
+		using difference_type = intmax_t;
 
 	private:
 		size_t m_index;
@@ -277,7 +278,13 @@ namespace daw {
 				std::advance( first1, 1 );
 				std::advance( first2, 1 );
 			}
-			resize( size( ) - std::distance( first, last ) );
+			auto const dist = std::distance( first, last );
+
+			daw::exception::dbg_precondition_check<std::out_of_range>(
+			  static_cast<difference_type>( size( ) ) > dist and dist >= 0,
+			  "Attempt to resize past capacity of fix_stack" );
+
+			resize( size( ) - static_cast<size_type>( dist ) );
 			if( last == cend( ) ) {
 				return end( );
 			}

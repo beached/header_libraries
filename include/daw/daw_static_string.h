@@ -649,6 +649,20 @@ namespace daw {
 		constexpr iterator erase( const_iterator first, const_iterator last ) {
 			return m_data.erase( first, last );
 		}
+
+		constexpr basic_static_string &erase( size_type index = 0,
+		                                      size_type count = npos ) {
+
+			auto const first =
+			  std::next( begin( ), static_cast<difference_type>( index ) );
+			auto const last =
+			  count == npos
+			    ? end( )
+			    : std::next( first, static_cast<difference_type>( count ) );
+
+			m_data.erase( first, last );
+			return *this;
+		}
 	}; // basic_static_string
 
 	using static_string = basic_static_string<char, 100>;
