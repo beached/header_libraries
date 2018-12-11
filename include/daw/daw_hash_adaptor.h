@@ -108,7 +108,7 @@ namespace daw {
 
 	template<typename Key, size_t Capacity, typename Hash = std::hash<Key>>
 	class static_hash_adaptor_t {
-		std::array<std::optional<size_t>, Capacity> m_indices{};
+		std::array<std::optional<Key>, Capacity> m_indices{};
 
 		constexpr std::optional<size_t> find_index( size_t hash, Key const & key ) const {
 			size_t const scaled_hash = scale_hash( hash, m_indices.size( ) );
