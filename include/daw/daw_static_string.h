@@ -94,16 +94,16 @@ namespace daw {
 
 #ifndef NOSTRING
 		template<typename Allocator>
-		basic_static_string(
+		explicit basic_static_string(
 		  std::basic_string<CharT, Traits, Allocator> const &str ) noexcept
 		  : m_data( str.data( ), str.size( ) ) {}
 
 		template<typename ChrT, typename TrtsT, typename Allocator>
-		basic_static_string(
+		explicit basic_static_string(
 		  std::basic_string<ChrT, TrtsT, Allocator> const &str ) noexcept
 		  : m_data( str.data( ), static_cast<size_type_internal>( str.size( ) ) ) {}
 
-		basic_static_string( std::basic_string<CharT, Traits> const &str ) noexcept
+		explicit basic_static_string( std::basic_string<CharT, Traits> const &str ) noexcept
 		  : m_data( str.data( ), str.size( ) ) {}
 #endif
 		// TODO: determine if I want this or not
@@ -212,9 +212,6 @@ namespace daw {
 			return *this;
 		}
 #endif
-		explicit basic_static_string( daw::basic_string_view<CharT> sv ) noexcept
-		  : m_data( sv.data( ), sv.size( ) ) {}
-
 		constexpr iterator begin( ) noexcept {
 			return m_data.begin( );
 		}
