@@ -92,6 +92,18 @@ namespace daw {
 		bool count( Key const & key ) noexcept {
 			return exists( key ) ? 1 : 0;
 		}
+
+		size_t capacity( ) const noexcept {
+			return m_indices.size( ); 
+		}
+
+		size_t size( ) const noexcept {
+			return daw::algorithm::accumulate(
+			  std::begin( m_indices ), std::end( m_indices ), 0ULL,
+			  []( auto const &opt ) {
+				  return static_cast<bool>( opt ) ? 1ULL : 0ULL;
+			  } );
+		}
 	};
 
 	template<typename Key, size_t Capacity, typename Hash = std::hash<Key>>
@@ -152,6 +164,18 @@ namespace daw {
 
 		constexpr bool count( Key const & key ) noexcept {
 			return exists( key ) ? 1 : 0;
+		}
+
+		static constexpr size_t capacity( ) noexcept {
+			return Capacity;
+		}
+
+		constexpr size_t size( ) const noexcept {
+			return daw::algorithm::accumulate(
+			  std::begin( m_indices ), std::end( m_indices ), 0ULL,
+			  []( auto const &opt ) {
+				  return static_cast<bool>( opt ) ? 1ULL : 0ULL;
+			  } );
 		}
 	};
 } // namespace daw
