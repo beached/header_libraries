@@ -26,7 +26,7 @@
 #include <functional>
 namespace daw {
 	namespace algorithm_impl {
-	// Sorting networks are from http://pages.ripco.net/~jgamble/nw.html
+		// Sorting networks are from http://pages.ripco.net/~jgamble/nw.html
 
 		template<intmax_t Pos0, intmax_t Pos1, typename Iterator,
 		         typename Compare = std::less<>>
@@ -317,5 +317,18 @@ namespace daw {
 		algorithm_impl::swap_if<11, 12>( first );
 		algorithm_impl::swap_if<6, 7>( first );
 		algorithm_impl::swap_if<8, 9>( first );
+	}
+
+	template<typename Iterator, typename Compare = std::less<>>
+	constexpr void sort_5( Iterator first, Compare comp = Compare{} ) noexcept {
+		algorithm_impl::swap_if<0, 1>( first );
+		algorithm_impl::swap_if<3, 4>( first );
+		algorithm_impl::swap_if<2, 4>( first );
+		algorithm_impl::swap_if<2, 3>( first );
+		algorithm_impl::swap_if<0, 3>( first );
+		algorithm_impl::swap_if<0, 2>( first );
+		algorithm_impl::swap_if<1, 4>( first );
+		algorithm_impl::swap_if<1, 3>( first );
+		algorithm_impl::swap_if<1, 2>( first );
 	}
 } // namespace daw
