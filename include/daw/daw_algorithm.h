@@ -994,6 +994,27 @@ namespace daw {
 			return ( first1 == last1 ) and ( first2 != last2 );
 		}
 
+		template<typename InputIterator1, typename LastType1,
+		         typename InputIterator2, typename LastType2, typename LessCompare = std::less<>, typename Equality = std::equal_to<>>
+		constexpr int less_compare_range( InputIterator1 first1, LastType1 last1, InputIterator2 first2, LastType2 last2, LessCompare less_comp = LessCompare{}, Equality eq = Equality{}) {
+			while( first1 != last1 and first2 != last2 ) {
+				if( !daw::invoke( eq, *first1, *first2 ) ) {
+					if( daw::invoke( less_comp, *first1, *first2 ) ) {
+						return -1;
+					}
+					return 1;
+				}
+			}
+			if( first1 == last1 and first2 == last2 ) {
+				return 0;
+			}
+			if( first1 == last1 ) {
+				return -1;
+			}
+			return 1;
+		}
+
+
 		/// @brief Apply the TransformFunction on the value referenced by range
 		/// [first, last) when the predicate returns true for that value
 		/// @tparam ForwardIterator Type of Iterator for start of range
