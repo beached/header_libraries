@@ -1004,6 +1004,8 @@ namespace daw {
 					}
 					return 1;
 				}
+				++first1;
+				++first2;
 			}
 			if( first1 == last1 and first2 == last2 ) {
 				return 0;
