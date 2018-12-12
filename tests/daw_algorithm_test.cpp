@@ -728,3 +728,4 @@ namespace {
 
 	static_assert(cartesian_product_test_001());
 }
+

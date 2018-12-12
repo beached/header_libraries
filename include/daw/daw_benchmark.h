@@ -184,7 +184,14 @@ namespace daw {
 	namespace bench_impl {
 		template<typename... Args>
 		constexpr void expander( Args &&... ) noexcept {}
+
+		template<typename T>
+		constexpr T copy_arg( T const &value ) {
+			return value;
+		}
 	} // namespace bench_impl
+
+	// Test N runs
 	template<size_t Runs, typename Test, typename... Args>
 	auto bench_n_test( std::string title, Test test_callable,
 	                   Args &&... args ) noexcept {
@@ -193,7 +200,7 @@ namespace daw {
 		  std::move( test_callable ), std::forward<Args>( args )... ) )>;
 
 		result_t result{};
-		
+
 		double base_time = std::numeric_limits<double>::max( );
 		{
 			for( size_t n = 0; n < 1000; ++n ) {
@@ -214,7 +221,7 @@ namespace daw {
 		}
 		double min_time = std::numeric_limits<double>::max( );
 		double max_time = 0.0;
-	
+
 		auto const total_start = std::chrono::high_resolution_clock::now( );
 		for( size_t n = 0; n < Runs; ++n ) {
 			bench_impl::expander( ( daw::do_not_optimize( args ), 1 )... );
@@ -241,7 +248,9 @@ namespace daw {
 		  std::chrono::duration<double>( total_finish - total_start ).count( ) -
 		  static_cast<double>( Runs ) * base_time;
 
-		auto avg_time = Runs >= 10 ? (total_time-max_time) / static_cast<double>( Runs-1 ) : total_time / static_cast<double>( Runs );
+		auto avg_time =
+		  Runs >= 10 ? ( total_time - max_time ) / static_cast<double>( Runs - 1 )
+		             : total_time / static_cast<double>( Runs );
 		avg_time -= base_time;
 		std::cout << title << '\n'
 		          << "	runs: " << Runs << '\n'
@@ -257,7 +266,7 @@ namespace daw {
 
 		if( expected_result != result ) {
 			std::cerr << "Invalid result. Expecting '" << expected_result
-								<< "' but got '" << result << "'\n";
+			          << "' but got '" << result << "'\n";
 			std::terminate( );
 		}
 	}

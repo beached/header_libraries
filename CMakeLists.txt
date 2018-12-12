@@ -95,6 +95,7 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_hash_adaptor
 	daw_keep_n
 	daw_piecewise_factory
+	daw_sort_n
 	daw_span
 	daw_view
 )
