@@ -26,6 +26,8 @@
 #include <functional>
 namespace daw {
 	namespace algorithm_impl {
+	// Sorting networks are from http://pages.ripco.net/~jgamble/nw.html
+
 		template<intmax_t Pos0, intmax_t Pos1, typename Iterator,
 		         typename Compare = std::less<>>
 		constexpr void swap_if( Iterator first,
