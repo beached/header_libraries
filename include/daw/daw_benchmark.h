@@ -273,7 +273,7 @@ namespace daw {
 			          << "' but got '" << result << "'\n";
 		}
 
-				template<typename T, typename U,
+		template<typename T, typename U,
 		         std::enable_if_t<!(is_streamable_v<T> and is_streamable_v<U>),
 		                          std::nullptr_t> = nullptr>
 		void output_expected_error( T &&expected_result, U &&result ) {
