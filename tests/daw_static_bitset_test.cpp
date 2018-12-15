@@ -26,9 +26,14 @@
 #include "daw/daw_static_bitset.h"
 
 int main( ) {
-	constexpr daw::static_bitset<128> a( 128U );
+	daw::static_bitset<128> a( std::numeric_limits<uintmax_t>::max( ) );
 	daw::static_bitset<128> b( "10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" );
 
+	std::cout << a.to_string( ) << '\n';
+	std::cout << b.to_string( ) << '\n';
+	auto ac = a.one_count( );
+	auto bc = b.one_count( );
+	auto bz = b.zero_count( );
 	daw::expecting( ( static_cast<void>( a ), true ) );
 	daw::expecting( ( static_cast<void>( b ), true ) );
 }

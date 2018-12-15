@@ -49,10 +49,9 @@ namespace daw {
 
 		constexpr auto high_part( uintmax_t value ) noexcept {
 			using value_t = half_max_t<uintmax_t>;
-			auto const high_mask =
-			  daw::get_right_mask<uintmax_t>( bsizeof<uintmax_t> - bsizeof<value_t> );
+			auto const high_mask = daw::get_right_mask<uintmax_t>( bsizeof<uintmax_t> - bsizeof<value_t> );
 
-			return static_cast<value_t>( value bitand high_mask );
+			return static_cast<value_t>( (value bitand high_mask) >> bsizeof<value_t> );
 		}
 
 		constexpr auto overflow( uintmax_t &carry ) noexcept {
@@ -64,6 +63,7 @@ namespace daw {
 	} // namespace bitset_impl
 	template<size_t MaxBitCapacity>
 	class static_bitset {
+		size_t m_capacity = MaxBitCapacity;
 		static_assert( MaxBitCapacity > 0 );
 		using value_t = bitset_impl::half_max_t<uintmax_t>;
 
@@ -75,18 +75,64 @@ namespace daw {
 		std::array<value_t, m_element_capacity> m_data{};
 
 		struct bit_address_t {
-			size_t index;
-			size_t bit;
+			value_t index;
+			value_t bit;
 		};
 
 		constexpr bit_address_t get_address( size_t index ) noexcept {
 			bit_address_t result{};
-			result.index = index / daw::bsizeof<value_t>;
-			result.bit = index - result.index * daw::bsizeof<value_t>;
+			result.index = static_cast<value_t>( index / daw::bsizeof<value_t> );
+
+			result.bit =
+			  static_cast<value_t>( index - result.index * daw::bsizeof<value_t> );
+
 			return result;
 		}
 
-		static constexpr void set_bit( value_t &value, size_t bit ) noexcept {}
+		static constexpr void set_bit( value_t &value, value_t bit ) noexcept {
+			value |= static_cast<value_t>( bit << 1U );
+		}
+
+		static constexpr void clear_bit( value_t &value, value_t bit ) noexcept {
+			value &= static_cast<value_t>( ~static_cast<value_t>( bit << 1U ) );
+		}
+
+		static constexpr bool get_bit( value_t &value, value_t bit ) noexcept {
+			return ( value & static_cast<value_t>( bit << 1U ) ) != 0U;
+		}
+
+		static constexpr size_t count_ones(value_t value) noexcept {
+			size_t count = 0;
+			while( value ) {
+				value &= value - 1U;
+				++count;
+			}
+			return count;
+		}
+
+		static constexpr size_t count_zeros( value_t value ) noexcept {
+			return bsizeof<value_t> - count_ones( value );
+		}
+
+		template<size_t N>
+		static constexpr size_t
+		count_ones( std::array<value_t, N> const & values ) noexcept {
+			size_t count = 0;
+			for( size_t n = 0; n < N; ++n ) {
+				count += count_ones(values[n]);
+			}
+			return count;
+		}
+
+		template<size_t N>
+		static constexpr size_t
+		count_zeros( std::array<value_t, N> const & values ) noexcept {
+			size_t count = 0;
+			for( size_t n = 0; n < N; ++n ) {
+				count += count_zeros(values[n]);
+			}
+			return count;
+		}
 
 	public:
 		struct static_bitset_iterator;
@@ -120,11 +166,11 @@ namespace daw {
 			daw::exception::precondition_check<std::overflow_error>(
 			  binary_sv.size( ) <= MaxBitCapacity );
 
-			size_t cur_idx = 0;
-			while( !binary_sv.empty( ) && cur_idx < m_element_capacity ) {
-				value_t tmp = 0;
+			size_t cur_idx = 0U;
+			while( !binary_sv.empty( ) and cur_idx < m_element_capacity ) {
+				value_t tmp = 0U;
 				value_t cur_val = 1U;
-				for( size_t n = 0; n < daw::bsizeof<value_t> && !binary_sv.empty( );
+				for( size_t n = 0U; n < daw::bsizeof<value_t> and !binary_sv.empty( );
 				     ++n ) {
 					switch( binary_sv.pop_back( ) ) {
 					case '1':
@@ -141,13 +187,86 @@ namespace daw {
 			}
 		}
 
+		/// Enable a specific bit in the bitset
+		/// \param index bit position in set
 		constexpr void set_bit( size_t index ) noexcept {
 			auto const loc = get_address( index );
+			set_bit( m_data[loc.index], loc.bit );
 		}
+
+		/// Disable a specific bit in the bitset
+		/// \param index bit position in set
+		constexpr void clear_bit( size_t index ) noexcept {
+			auto const loc = get_address( index );
+			clear_bit( m_data[loc.index], loc.bit );
+		}
+
+		/// Get a specific bit from the bitset
+		/// \param index bit position in set
+		constexpr bool get_bit( size_t index ) noexcept {
+			auto const loc = get_address( index );
+			return get_bit( m_data[loc.index], loc.bit );
+		}
+
+		/// Set all bits to zero
+		constexpr void clear( ) noexcept {
+			for( auto &v : m_data ) {
+				v = 0U;
+			}
+		}
+
 		struct static_bitset_iterator {};
 		struct static_bitset_const_iterator {};
 		struct reference {};
 		struct const_reference {};
+
+		constexpr size_t one_count( ) const noexcept {
+			return count_ones( m_data );
+		}
+
+		constexpr size_t zero_count( ) const noexcept {
+			return count_zeros( m_data );
+		}
+
+		std::string to_string( ) const {
+			std::string result( MaxBitCapacity, '0' );
+			size_t pos = m_capacity - 1;
+			for( size_t index=0; index < m_data.size( ); ++index ) {
+				auto value = m_data[index];
+				if( !value ) {
+					pos -= daw::bsizeof<value_t>;
+					continue;
+				}
+				while (value) {
+					auto tmp = value & 1U;
+					if (tmp == 1) {
+						result[pos] = '1';
+					}
+					value >>= 1U;
+					--pos;
+				}
+			}
+			return result;
+		}
+
+		constexpr iterator begin( ) noexcept;
+		constexpr const_iterator begin( ) const noexcept;
+		constexpr const_iterator cbegin( ) const noexcept;
+
+		constexpr iterator end( ) noexcept;
+		constexpr const_iterator end( ) const noexcept;
+		constexpr const_iterator cend( ) const noexcept;
+
+		constexpr reverse_iterator rbegin( ) noexcept;
+		constexpr const_reverse_iterator rbegin( ) const noexcept;
+		constexpr const_reverse_iterator crbegin( ) const noexcept;
+
+		constexpr reverse_iterator rend( ) noexcept;
+		constexpr const_reverse_iterator rend( ) const noexcept;
+		constexpr const_reverse_iterator crend( ) const noexcept;
+
+		constexpr reference operator[]( size_t index ) noexcept;
+		constexpr const_reference operator[]( size_t index ) const noexcept;
 	};
 
 } // namespace daw

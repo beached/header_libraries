@@ -113,7 +113,7 @@ namespace daw {
 	} // namespace utility
 
 	template<typename Func>
-	void show_benchmark( size_t data_size_bytes, std::string title, Func func,
+	void show_benchmark( size_t data_size_bytes, std::string const & title, Func func,
 	                     size_t data_prec = 1, size_t time_prec = 0,
 	                     size_t item_count = 1 ) noexcept {
 		double const t = benchmark( func );
@@ -148,7 +148,7 @@ namespace daw {
 	}
 
 	template<typename Test, typename... Args>
-	auto bench_test( std::string title, Test test_callable,
+	auto bench_test( std::string const & title, Test test_callable,
 	                 Args &&... args ) noexcept {
 		auto const start = std::chrono::high_resolution_clock::now( );
 		auto result = daw::expected_from_code( std::move( test_callable ),
@@ -161,7 +161,7 @@ namespace daw {
 	}
 
 	template<typename Test, typename... Args>
-	auto bench_test2( std::string title, Test test_callable, size_t item_count,
+	auto bench_test2( std::string const & title, Test test_callable, size_t item_count,
 	                  Args &&... args ) noexcept {
 		auto const start = std::chrono::high_resolution_clock::now( );
 		auto result = daw::expected_from_code( std::move( test_callable ),
@@ -184,16 +184,11 @@ namespace daw {
 	namespace bench_impl {
 		template<typename... Args>
 		constexpr void expander( Args &&... ) noexcept {}
-
-		template<typename T>
-		constexpr T copy_arg( T const &value ) {
-			return value;
-		}
 	} // namespace bench_impl
 
 	// Test N runs
 	template<size_t Runs, typename Test, typename... Args>
-	auto bench_n_test( std::string title, Test test_callable,
+	auto bench_n_test( std::string const & title, Test test_callable,
 	                   Args &&... args ) noexcept {
 		static_assert( Runs > 0 );
 		using result_t = daw::remove_cvref_t<decltype( daw::expected_from_code(
