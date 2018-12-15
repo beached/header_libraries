@@ -34,6 +34,14 @@ int main( ) {
 	auto ac = a.one_count( );
 	auto bc = b.one_count( );
 	auto bz = b.zero_count( );
+
+	auto c = a | b;
+	std::cout << c.to_string( ) << '\n';
+	auto cc = c.one_count( );
+	auto d = c & a;
+	std::cout << d.to_string( ) << '\n';
+	auto dc = d.one_count( );
+	daw::expecting( a, d );
 	daw::expecting( ( static_cast<void>( a ), true ) );
 	daw::expecting( ( static_cast<void>( b ), true ) );
 }

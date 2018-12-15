@@ -113,8 +113,8 @@ namespace daw {
 	} // namespace utility
 
 	template<typename Func>
-	void show_benchmark( size_t data_size_bytes, std::string const & title, Func func,
-	                     size_t data_prec = 1, size_t time_prec = 0,
+	void show_benchmark( size_t data_size_bytes, std::string const &title,
+	                     Func func, size_t data_prec = 1, size_t time_prec = 0,
 	                     size_t item_count = 1 ) noexcept {
 		double const t = benchmark( func );
 		double const t_per_item = t / static_cast<double>( item_count );
@@ -148,7 +148,7 @@ namespace daw {
 	}
 
 	template<typename Test, typename... Args>
-	auto bench_test( std::string const & title, Test test_callable,
+	auto bench_test( std::string const &title, Test test_callable,
 	                 Args &&... args ) noexcept {
 		auto const start = std::chrono::high_resolution_clock::now( );
 		auto result = daw::expected_from_code( std::move( test_callable ),
@@ -161,8 +161,8 @@ namespace daw {
 	}
 
 	template<typename Test, typename... Args>
-	auto bench_test2( std::string const & title, Test test_callable, size_t item_count,
-	                  Args &&... args ) noexcept {
+	auto bench_test2( std::string const &title, Test test_callable,
+	                  size_t item_count, Args &&... args ) noexcept {
 		auto const start = std::chrono::high_resolution_clock::now( );
 		auto result = daw::expected_from_code( std::move( test_callable ),
 		                                       std::forward<Args>( args )... );
@@ -188,7 +188,7 @@ namespace daw {
 
 	// Test N runs
 	template<size_t Runs, typename Test, typename... Args>
-	auto bench_n_test( std::string const & title, Test test_callable,
+	auto bench_n_test( std::string const &title, Test test_callable,
 	                   Args &&... args ) noexcept {
 		static_assert( Runs > 0 );
 		using result_t = daw::remove_cvref_t<decltype( daw::expected_from_code(
@@ -256,14 +256,37 @@ namespace daw {
 		return result;
 	}
 
-	template<typename T, typename U>
-	constexpr void expecting( T &&expected_result, U &&result ) noexcept {
+	namespace expecting_impl {
+		template<typename T>
+		using detect_streamable =
+		  decltype( std::declval<std::ios &>( ) << std::declval<T const &>( ) );
 
-		if( expected_result != result ) {
+		template<typename T>
+		inline constexpr bool is_streamable_v =
+		  daw::is_detected_v<detect_streamable, T>;
+
+		template<typename T, typename U,
+		         std::enable_if_t<(is_streamable_v<T> and is_streamable_v<U>),
+		                          std::nullptr_t> = nullptr>
+		void output_expected_error( T &&expected_result, U &&result ) {
 			std::cerr << "Invalid result. Expecting '" << expected_result
 			          << "' but got '" << result << "'\n";
-			std::terminate( );
 		}
+
+				template<typename T, typename U,
+		         std::enable_if_t<!(is_streamable_v<T> and is_streamable_v<U>),
+		                          std::nullptr_t> = nullptr>
+		void output_expected_error( T &&expected_result, U &&result ) {
+			std::cerr << "Invalid or unexpected result\n";
+		}
+	} // namespace expecting_impl
+	template<typename T, typename U>
+	constexpr void expecting( T &&expected_result, U &&result ) noexcept {
+		if( std::equal_to<>{}( expected_result, result ) ) {
+			return;
+		}
+		expecting_impl::output_expected_error( expected_result, result );
+		std::terminate( );
 	}
 
 	template<typename Bool>

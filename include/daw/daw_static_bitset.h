@@ -267,6 +267,103 @@ namespace daw {
 
 		constexpr reference operator[]( size_t index ) noexcept;
 		constexpr const_reference operator[]( size_t index ) const noexcept;
+
+
+
+		template<size_t MaxRhs>
+		constexpr static_bitset<std::max( MaxBitCapacity, MaxRhs )> operator|( static_bitset<MaxRhs> const & rhs ) const noexcept {
+			static_bitset<std::max( MaxBitCapacity, MaxRhs )> result{};
+			size_t n = 0;
+			for( ; n<m_data.size( ) and n<rhs.m_data.size( ); ++n ) {
+				result.m_data[n] = m_data[n] | rhs.m_data[n];
+			}
+			for( ; n<m_data.size( ); ++n ) {
+				result.m_data[n] = m_data[n];
+			}
+			for( ; n<rhs.m_data.size( ); ++n ) {
+				result.m_data[n] = rhs.m_data[n];
+			}
+			return result;
+		}
+
+		template<size_t MaxRhs>
+		constexpr static_bitset<std::max( MaxBitCapacity, MaxRhs )> operator&( static_bitset<MaxRhs> const & rhs ) const noexcept {
+			static_bitset<std::max( MaxBitCapacity, MaxRhs )> result{};
+			size_t n = 0;
+			for( ; n<m_data.size( ) and n<rhs.m_data.size( ); ++n ) {
+				result.m_data[n] = m_data[n] & rhs.m_data[n];
+			}
+			return result;
+		}
+
+		template<size_t MaxRhs>
+		constexpr static_bitset<std::max( MaxBitCapacity, MaxRhs )> operator^( static_bitset<MaxRhs> const & rhs ) const noexcept {
+			static_bitset<std::max( MaxBitCapacity, MaxRhs )> result{};
+			size_t n = 0;
+			for( ; n<m_data.size( ) and n<rhs.m_data.size( ); ++n ) {
+				result.m_data[n] = m_data[n] ^ rhs.m_data[n];
+			}
+			// A xor 0
+			for( ; n<m_data.size( ); ++n ) {
+				result.m_data[n] = m_data[n] ^ 0U;
+			}
+			for( ; n<rhs.m_data.size( ); ++n ) {
+				result.m_data[n] = 0U ^ rhs.m_data[n];
+			}
+			return result;
+		}
+
+		constexpr static_bitset operator~( ) const noexcept {
+			static_bitset result{};
+			for( size_t n=0; n<m_data.size( ); ++n ) {
+				result.m_data[n] = ~m_data[n];
+			}
+			return result;
+		}
+
+		template<size_t MaxRhs>
+		constexpr bool operator==( static_bitset<MaxRhs> const & rhs ) const noexcept {
+			size_t const last = std::min( m_data.size( ), rhs.m_data.size( ) );
+			size_t n=0;
+			for( ; n<last; ++n ) {
+					if( m_data[n] != rhs.m_data[n] ) {
+						return false;
+					}
+			}
+			for( ; n<m_data.size( ); ++n ) {
+				if( m_data[n] != 0U ) {
+					return false;
+				}
+			}
+			for( ;n<rhs.m_data.size( ); ++n ) {
+				if( 0U != rhs.m_data[n] ) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		template<size_t MaxRhs>
+		constexpr bool operator!=( static_bitset<MaxRhs> const & rhs ) const noexcept {
+			size_t const last = std::min( m_data.size( ), rhs.m_data.size( ) );
+			size_t n=0;
+			for( ; n<last; ++n ) {
+					if( m_data[n] != rhs.m_data[n] ) {
+						return true;
+					}
+			}
+			for( ; n<m_data.size( ); ++n ) {
+				if( m_data[n] != 0U ) {
+					return true;
+				}
+			}
+			for( ;n<rhs.m_data.size( ); ++n ) {
+				if( 0U != rhs.m_data[n] ) {
+					return true;
+				}
+			}
+			return false;
+		}
 	};
 
 } // namespace daw
