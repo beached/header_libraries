@@ -276,7 +276,7 @@ namespace daw {
 		template<typename T, typename U,
 		         std::enable_if_t<!(is_streamable_v<T> and is_streamable_v<U>),
 		                          std::nullptr_t> = nullptr>
-		void output_expected_error( T &&expected_result, U &&result ) {
+		constexpr void output_expected_error( T &&expected_result, U &&result ) {
 			std::cerr << "Invalid or unexpected result\n";
 		}
 	} // namespace expecting_impl
@@ -296,3 +296,4 @@ namespace daw {
 		}
 	}
 } // namespace daw
+

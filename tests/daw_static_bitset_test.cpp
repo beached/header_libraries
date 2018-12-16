@@ -28,46 +28,46 @@
 
 int main( ) {
 	daw::static_bitset<128> a( std::numeric_limits<uintmax_t>::max( ) );
-	daw::static_bitset<128> b( "10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" );
 
-	daw::static_bitset<128> b2( 0U, 0b1000000000000000000000000000000000000000000000000000000000000000 );
-	daw::expecting( 127U, b2.zero_count( ) );
+	static_assert( []( ) {
+		daw::static_bitset<128> b(
+				"10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" );
+		daw::expecting( 1U, b.one_count( ));
+		daw::expecting( 127U, b.zero_count( ));
+		return true;
+	}( ) );
 
-	std::cout << a.to_string( ) << '\n';
-	std::cout << b.to_string( ) << '\n';
+	static_assert( []( ) constexpr {
+		daw::static_bitset<128> b2( 0U, 0b1000000000000000000000000000000000000000000000000000000000000000 );
+		daw::expecting( 127U == b2.zero_count( ));
+		return true;
+	}( ) );
+
 	auto ac = a.one_count( );
-	auto bc = b.one_count( );
-	auto bz = b.zero_count( );
-
-	auto c = a | b;
-	std::cout << c << '\n';
-	std::cout << c.to_string( daw::fmt_hex ) << '\n';
-	auto cc = c.one_count( );
-	auto d = c & a;
-	std::cout << d << '\n';
-	std::cout << d.to_string( daw::fmt_hex ) << '\n';
-	auto dc = d.one_count( );
-	daw::expecting( a, d );
-	daw::expecting( ( static_cast<void>( a ), true ) );
-	daw::expecting( ( static_cast<void>( b ), true ) );
 
 	daw::static_bitset<64> e( 0xFFFF'FFFF'FFFF'FFFF );
 	e <<= 5U;
 	std::cout << e << '\n';
 
-	daw::static_bitset<64> f( 0xFFFF'FFFF'FFFF'FFFF );
-	f >>= 33U;
-	daw::expecting( 31U, f.one_count( ) );
-	std::cout << f << '\n';
+	static_assert( []( ) {
+		daw::static_bitset<64> f( 0xFFFF'FFFF'FFFF'FFFF );
+		f >>= 33U;
+		daw::expecting( 31U, f.one_count( ));
+		return true;
+	}( ) );
+
 	daw::static_bitset<64> g( 0xFFFF'FFFF'FFFF'FFFF );
 	g >>= 64;
 	daw::expecting( 0U, g.one_count( ) );
 
 
-	// Top bit masking to BitWidth
-	daw::static_bitset<16> h1( 0xDEAD'BEEF );
-	daw::static_bitset<16> h2( 0xBEEF );
-	daw::expecting( h1, h2 );
+	static_assert( []( ) {
+		// Top bit masking to BitWidth
+		daw::static_bitset<16> h1( 0xDEAD'BEEF );
+		daw::static_bitset<16> h2( 0xBEEF );
+		daw::expecting( h1, h2 );
+		return true;
+	}( ) );
 
 	std::cout << '\n';
 }
