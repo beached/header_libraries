@@ -30,8 +30,8 @@ int main( ) {
 	daw::static_bitset<128> a( std::numeric_limits<uintmax_t>::max( ) );
 	daw::static_bitset<128> b( "10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" );
 
-	daw::static_bitset<128> b2( 0xA000'0000'0000'0000, 0U );
-	daw::expecting( 128U, b2.one_count( ) );
+	daw::static_bitset<128> b2( 0U, 0b1000000000000000000000000000000000000000000000000000000000000000 );
+	daw::expecting( 127U, b2.zero_count( ) );
 
 	std::cout << a.to_string( ) << '\n';
 	std::cout << b.to_string( ) << '\n';
@@ -62,5 +62,12 @@ int main( ) {
 	daw::static_bitset<64> g( 0xFFFF'FFFF'FFFF'FFFF );
 	g >>= 64;
 	daw::expecting( 0U, g.one_count( ) );
+
+
+	// Top bit masking to BitWidth
+	daw::static_bitset<16> h1( 0xDEAD'BEEF );
+	daw::static_bitset<16> h2( 0xBEEF );
+	daw::expecting( h1, h2 );
+
 	std::cout << '\n';
 }
