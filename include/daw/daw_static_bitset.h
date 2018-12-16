@@ -24,11 +24,13 @@
 
 #include <array>
 #include <cstdint>
+#include <iosfwd>
 #include <iterator>
 #include <vector>
 
 #include "daw_bit.h"
 #include "daw_string_view.h"
+#include "daw_traits.h"
 #include "daw_utility.h"
 
 namespace daw {
@@ -49,9 +51,11 @@ namespace daw {
 
 		constexpr auto high_part( uintmax_t value ) noexcept {
 			using value_t = half_max_t<uintmax_t>;
-			auto const high_mask = daw::get_right_mask<uintmax_t>( bsizeof<uintmax_t> - bsizeof<value_t> );
+			auto const high_mask =
+			  daw::get_right_mask<uintmax_t>( bsizeof<uintmax_t> - bsizeof<value_t> );
 
-			return static_cast<value_t>( (value bitand high_mask) >> bsizeof<value_t> );
+			return static_cast<value_t>( ( value bitand high_mask ) >>
+			                             bsizeof<value_t> );
 		}
 
 		constexpr auto overflow( uintmax_t &carry ) noexcept {
@@ -60,17 +64,39 @@ namespace daw {
 			carry >>= bsizeof<value_t>;
 			return result;
 		}
+
+		constexpr char get_low_nibble( uint8_t value ) noexcept {
+			value &= 0x0F;
+			if( value >= 10U ) {
+				return 'A' + ( value - 10U );
+			}
+			return '0' + value;
+		}
+		constexpr char get_high_nibble( uint8_t value ) noexcept {
+			value = ( value & 0xF0 ) >> 4U;
+			if( value >= 10U ) {
+				return 'A' + ( value - 10U );
+			}
+			return '0' + value;
+		}
+		struct fmt_binary_t {};
+		struct fmt_hex_t {};
+		struct fmt_decimal_t {};
+
 	} // namespace bitset_impl
-	template<size_t MaxBitCapacity>
+	inline constexpr bitset_impl::fmt_binary_t const fmt_binary{};
+	inline constexpr bitset_impl::fmt_hex_t const fmt_hex{};
+	inline constexpr bitset_impl::fmt_decimal_t const fmt_decimal{};
+
+	template<size_t BitWidth>
 	class static_bitset {
-		size_t m_capacity = MaxBitCapacity;
-		static_assert( MaxBitCapacity > 0 );
-		using value_t = bitset_impl::half_max_t<uintmax_t>;
+		size_t m_capacity = BitWidth;
+		static_assert( BitWidth > 0 );
+		using value_t = uintmax_t;
 
 		static constexpr size_t const m_element_capacity =
-		  (MaxBitCapacity / daw::bsizeof<value_t>)+(
-		    MaxBitCapacity -
-		    ((MaxBitCapacity / daw::bsizeof<value_t>)*daw::bsizeof<value_t>));
+		  (BitWidth / daw::bsizeof<value_t>)+(
+		    BitWidth - ((BitWidth / daw::bsizeof<value_t>)*daw::bsizeof<value_t>));
 
 		std::array<value_t, m_element_capacity> m_data{};
 
@@ -101,7 +127,7 @@ namespace daw {
 			return ( value & static_cast<value_t>( bit << 1U ) ) != 0U;
 		}
 
-		static constexpr size_t count_ones(value_t value) noexcept {
+		static constexpr size_t count_ones( value_t value ) noexcept {
 			size_t count = 0;
 			while( value ) {
 				value &= value - 1U;
@@ -116,20 +142,20 @@ namespace daw {
 
 		template<size_t N>
 		static constexpr size_t
-		count_ones( std::array<value_t, N> const & values ) noexcept {
+		count_ones( std::array<value_t, N> const &values ) noexcept {
 			size_t count = 0;
 			for( size_t n = 0; n < N; ++n ) {
-				count += count_ones(values[n]);
+				count += count_ones( values[n] );
 			}
 			return count;
 		}
 
 		template<size_t N>
 		static constexpr size_t
-		count_zeros( std::array<value_t, N> const & values ) noexcept {
+		count_zeros( std::array<value_t, N> const &values ) noexcept {
 			size_t count = 0;
 			for( size_t n = 0; n < N; ++n ) {
-				count += count_zeros(values[n]);
+				count += count_zeros( values[n] );
 			}
 			return count;
 		}
@@ -151,20 +177,20 @@ namespace daw {
 		///
 		constexpr static_bitset( ) noexcept = default;
 
-		/// Construct a bitset from a unsigned integer
-		///
-		/// \param value An unsinged integer of the maximum size the system supports
-		constexpr static_bitset( uintmax_t value ) noexcept
-		  : m_data{bitset_impl::low_part( value ),
-		           bitset_impl::high_part( value )} {}
+		template<typename... Unsigned,
+		         std::enable_if_t<
+		           ( ( sizeof...( Unsigned ) + 1 ) * bsizeof<value_t> <= BitWidth ),
+		           std::nullptr_t> = nullptr>
+		constexpr static_bitset( uintmax_t value, Unsigned... values ) noexcept
+		  : m_data{value, values...} {}
 
 		/// Construct a bitset from a string of zeros and ones
 		///
 		/// \param binary_sv A string like type convertable to string_view that
 		/// consists of zeros and ones
-		constexpr static_bitset( daw::string_view binary_sv ) {
+		static_bitset( daw::string_view binary_sv ) {
 			daw::exception::precondition_check<std::overflow_error>(
-			  binary_sv.size( ) <= MaxBitCapacity );
+			  binary_sv.size( ) <= BitWidth  );
 
 			size_t cur_idx = 0U;
 			while( !binary_sv.empty( ) and cur_idx < m_element_capacity ) {
@@ -181,7 +207,7 @@ namespace daw {
 					default:
 						throw std::invalid_argument( "binary_sv" );
 					}
-					cur_val *= 2U;
+					cur_val *= 2ULL;
 				}
 				m_data[cur_idx++] = tmp;
 			}
@@ -228,22 +254,41 @@ namespace daw {
 			return count_zeros( m_data );
 		}
 
-		std::string to_string( ) const {
-			std::string result( MaxBitCapacity, '0' );
+		std::string to_string( bitset_impl::fmt_binary_t = fmt_binary ) const {
+			std::string result( BitWidth, '0' );
 			size_t pos = m_capacity - 1;
-			for( size_t index=0; index < m_data.size( ); ++index ) {
+			for( size_t index = 0; index < m_data.size( ); ++index ) {
 				auto value = m_data[index];
 				if( !value ) {
 					pos -= daw::bsizeof<value_t>;
 					continue;
 				}
-				while (value) {
+				while( value ) {
 					auto tmp = value & 1U;
-					if (tmp == 1) {
+					if( tmp == 1 ) {
 						result[pos] = '1';
 					}
 					value >>= 1U;
 					--pos;
+				}
+			}
+			return result;
+		}
+
+		std::string to_string( bitset_impl::fmt_hex_t ) const {
+			std::string result( m_data.size( ) * sizeof( value_t ) * 2U, '0' );
+			size_t pos = m_data.size( ) * sizeof( value_t ) * 2U - 1U;
+			for( size_t index = 0; index < m_data.size( ); ++index ) {
+				auto value = m_data[index];
+				if( !value ) {
+					pos -= sizeof( value_t ) * 2U;
+					continue;
+				}
+				for( size_t bpos = 0; bpos < sizeof( value_t ); ++bpos ) {
+					uint8_t const tmp = static_cast<uint8_t>( value & 0xFF );
+					value >>= 8U;
+					result[pos--] = bitset_impl::get_low_nibble( tmp );
+					result[pos--] = bitset_impl::get_high_nibble( tmp );
 				}
 			}
 			return result;
@@ -268,46 +313,47 @@ namespace daw {
 		constexpr reference operator[]( size_t index ) noexcept;
 		constexpr const_reference operator[]( size_t index ) const noexcept;
 
-
-
-		template<size_t MaxRhs>
-		constexpr static_bitset<std::max( MaxBitCapacity, MaxRhs )> operator|( static_bitset<MaxRhs> const & rhs ) const noexcept {
-			static_bitset<std::max( MaxBitCapacity, MaxRhs )> result{};
+		template<size_t BitWidthRhs>
+		constexpr static_bitset<std::max( BitWidth, BitWidthRhs )>
+		operator|( static_bitset<BitWidthRhs> const &rhs ) const noexcept {
+			static_bitset<std::max( BitWidth, BitWidthRhs )> result{};
 			size_t n = 0;
-			for( ; n<m_data.size( ) and n<rhs.m_data.size( ); ++n ) {
+			for( ; n < m_data.size( ) and n < rhs.m_data.size( ); ++n ) {
 				result.m_data[n] = m_data[n] | rhs.m_data[n];
 			}
-			for( ; n<m_data.size( ); ++n ) {
+			for( ; n < m_data.size( ); ++n ) {
 				result.m_data[n] = m_data[n];
 			}
-			for( ; n<rhs.m_data.size( ); ++n ) {
+			for( ; n < rhs.m_data.size( ); ++n ) {
 				result.m_data[n] = rhs.m_data[n];
 			}
 			return result;
 		}
 
-		template<size_t MaxRhs>
-		constexpr static_bitset<std::max( MaxBitCapacity, MaxRhs )> operator&( static_bitset<MaxRhs> const & rhs ) const noexcept {
-			static_bitset<std::max( MaxBitCapacity, MaxRhs )> result{};
+		template<size_t BitWidthRhs>
+		constexpr static_bitset<std::max( BitWidth, BitWidthRhs )>
+		operator&( static_bitset<BitWidthRhs> const &rhs ) const noexcept {
+			static_bitset<std::max( BitWidth, BitWidthRhs )> result{};
 			size_t n = 0;
-			for( ; n<m_data.size( ) and n<rhs.m_data.size( ); ++n ) {
+			for( ; n < m_data.size( ) and n < rhs.m_data.size( ); ++n ) {
 				result.m_data[n] = m_data[n] & rhs.m_data[n];
 			}
 			return result;
 		}
 
-		template<size_t MaxRhs>
-		constexpr static_bitset<std::max( MaxBitCapacity, MaxRhs )> operator^( static_bitset<MaxRhs> const & rhs ) const noexcept {
-			static_bitset<std::max( MaxBitCapacity, MaxRhs )> result{};
+		template<size_t BitWidthRhs>
+		constexpr static_bitset<std::max( BitWidth, BitWidthRhs )>
+		operator^( static_bitset<BitWidthRhs> const &rhs ) const noexcept {
+			static_bitset<std::max( BitWidth, BitWidthRhs )> result{};
 			size_t n = 0;
-			for( ; n<m_data.size( ) and n<rhs.m_data.size( ); ++n ) {
+			for( ; n < m_data.size( ) and n < rhs.m_data.size( ); ++n ) {
 				result.m_data[n] = m_data[n] ^ rhs.m_data[n];
 			}
 			// A xor 0
-			for( ; n<m_data.size( ); ++n ) {
+			for( ; n < m_data.size( ); ++n ) {
 				result.m_data[n] = m_data[n] ^ 0U;
 			}
-			for( ; n<rhs.m_data.size( ); ++n ) {
+			for( ; n < rhs.m_data.size( ); ++n ) {
 				result.m_data[n] = 0U ^ rhs.m_data[n];
 			}
 			return result;
@@ -315,27 +361,28 @@ namespace daw {
 
 		constexpr static_bitset operator~( ) const noexcept {
 			static_bitset result{};
-			for( size_t n=0; n<m_data.size( ); ++n ) {
+			for( size_t n = 0; n < m_data.size( ); ++n ) {
 				result.m_data[n] = ~m_data[n];
 			}
 			return result;
 		}
 
-		template<size_t MaxRhs>
-		constexpr bool operator==( static_bitset<MaxRhs> const & rhs ) const noexcept {
+		template<size_t BitWidthRhs>
+		constexpr bool operator==( static_bitset<BitWidthRhs> const &rhs ) const
+		  noexcept {
 			size_t const last = std::min( m_data.size( ), rhs.m_data.size( ) );
-			size_t n=0;
-			for( ; n<last; ++n ) {
-					if( m_data[n] != rhs.m_data[n] ) {
-						return false;
-					}
+			size_t n = 0;
+			for( ; n < last; ++n ) {
+				if( m_data[n] != rhs.m_data[n] ) {
+					return false;
+				}
 			}
-			for( ; n<m_data.size( ); ++n ) {
+			for( ; n < m_data.size( ); ++n ) {
 				if( m_data[n] != 0U ) {
 					return false;
 				}
 			}
-			for( ;n<rhs.m_data.size( ); ++n ) {
+			for( ; n < rhs.m_data.size( ); ++n ) {
 				if( 0U != rhs.m_data[n] ) {
 					return false;
 				}
@@ -343,27 +390,107 @@ namespace daw {
 			return true;
 		}
 
-		template<size_t MaxRhs>
-		constexpr bool operator!=( static_bitset<MaxRhs> const & rhs ) const noexcept {
+		template<size_t BitWidthRhs>
+		constexpr bool operator!=( static_bitset<BitWidthRhs> const &rhs ) const
+		  noexcept {
 			size_t const last = std::min( m_data.size( ), rhs.m_data.size( ) );
-			size_t n=0;
-			for( ; n<last; ++n ) {
-					if( m_data[n] != rhs.m_data[n] ) {
-						return true;
-					}
+			size_t n = 0;
+			for( ; n < last; ++n ) {
+				if( m_data[n] != rhs.m_data[n] ) {
+					return true;
+				}
 			}
-			for( ; n<m_data.size( ); ++n ) {
+			for( ; n < m_data.size( ); ++n ) {
 				if( m_data[n] != 0U ) {
 					return true;
 				}
 			}
-			for( ;n<rhs.m_data.size( ); ++n ) {
+			for( ; n < rhs.m_data.size( ); ++n ) {
 				if( 0U != rhs.m_data[n] ) {
 					return true;
 				}
 			}
 			return false;
 		}
+
+		constexpr static_bitset &operator<<=( size_t bits ) noexcept {
+			if( bits >= BitWidth ) {
+				clear( );
+				return *this;
+			}
+			if( bits < bsizeof<value_t> ) {
+				value_t carry = 0U;
+				for( size_t n = 0; n < m_data.size( ); ++n ) {
+					value_t next_carry =
+					  ( m_data[n] & daw::get_right_mask<value_t>( bits ) ) >>
+					  ( bsizeof<value_t> - bits );
+					m_data[n] <<= bits;
+					m_data[n] |= carry;
+					carry = next_carry;
+				}
+				return *this;
+			}
+			if( bits == bsizeof<value_t> ) {
+				for( size_t n = m_data.size( ); n > 0; --n ) {
+					auto pos = n - 1;
+					m_data[pos] = m_data[pos - 1];
+				}
+				m_data[0] = 0U;
+				return *this;
+			}
+			while( bits >= bsizeof<value_t> ) {
+				operator<<=( bsizeof<value_t> );
+				bits -= bsizeof<value_t>;
+			}
+			return operator<<=( bits );
+		}
+
+		constexpr static_bitset &operator>>=( size_t bits ) noexcept {
+			if( bits >= BitWidth ) {
+				clear( );
+				return *this;
+			}
+			if( bits == 0U ) {
+				return *this;
+			}
+			if( bits < bsizeof<value_t> ) {
+				value_t carry = 0U;
+				for( size_t n = m_data.size( ); n > 0; --n ) {
+					auto const pos = n - 1;
+					value_t next_carry =
+					  ( m_data[pos] & daw::get_left_mask<value_t>( bits ) )
+					  << ( bsizeof<value_t> - bits );
+					m_data[pos] >>= bits;
+					m_data[pos] |= carry;
+					carry = next_carry;
+				}
+				return *this;
+			}
+			if( bits == bsizeof<value_t> ) {
+				for( size_t n = 0; n < m_data.size( ); ++n ) {
+					m_data[n] = m_data[n + 1];
+				}
+				m_data.back( ) = 0U;
+				return *this;
+			}
+			while( bits >= bsizeof<value_t> ) {
+				operator>>=( bsizeof<value_t> );
+				bits -= bsizeof<value_t>;
+			}
+			return operator>>=( bits );
+		}
 	};
 
+	template<size_t BitWidth>
+	inline std::string to_string( static_bitset<BitWidth> const &bs ) {
+		return bs.to_string( );
+	}
+
+	template<size_t BitWidth>
+	inline std::ostream &operator<<( std::ostream &os,
+	                                 static_bitset<BitWidth> const &bs ) {
+
+		os << bs.to_string( );
+		return os;
+	}
 } // namespace daw

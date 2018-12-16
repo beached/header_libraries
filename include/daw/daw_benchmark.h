@@ -282,11 +282,10 @@ namespace daw {
 	} // namespace expecting_impl
 	template<typename T, typename U>
 	constexpr void expecting( T &&expected_result, U &&result ) noexcept {
-		if( std::equal_to<>{}( expected_result, result ) ) {
-			return;
+		if( !std::equal_to<>{}( expected_result, result ) ) {
+			expecting_impl::output_expected_error( expected_result, result );
+			std::terminate( );
 		}
-		expecting_impl::output_expected_error( expected_result, result );
-		std::terminate( );
 	}
 
 	template<typename Bool>

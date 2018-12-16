@@ -58,7 +58,6 @@ set( TESTED_HEADERS_PREFIXES
 	daw_optional
 	daw_optional_poly
 	daw_overload
-	daw_parse_to
 	daw_parser_helper
 	daw_parser_helper_sv
 	daw_poly_vector
@@ -94,6 +93,7 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_graph_algorithm
 	daw_hash_adaptor
 	daw_keep_n
+    daw_parse_to
 	daw_piecewise_factory
 	daw_sort_n
 	daw_static_bitset
@@ -105,7 +105,7 @@ set( TESTED_ITERATOR_HEADERS_PREFIXES_NB
 	daw_sorted_insert_iterator
 )
 
-set( UNTESTED_HEADER_IMPL 
+set( UNTESTED_HEADER_IMPL
 	daw_math_impl
 	daw_traits_concepts
 	daw_traits_impl

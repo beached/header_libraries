@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 #include <iostream>
+#include <bitset>
 
 #include "daw/daw_benchmark.h"
 #include "daw/daw_static_bitset.h"
@@ -29,6 +30,9 @@ int main( ) {
 	daw::static_bitset<128> a( std::numeric_limits<uintmax_t>::max( ) );
 	daw::static_bitset<128> b( "10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" );
 
+	daw::static_bitset<128> b2( 0xA000'0000'0000'0000, 0U );
+	daw::expecting( 128U, b2.one_count( ) );
+
 	std::cout << a.to_string( ) << '\n';
 	std::cout << b.to_string( ) << '\n';
 	auto ac = a.one_count( );
@@ -36,12 +40,27 @@ int main( ) {
 	auto bz = b.zero_count( );
 
 	auto c = a | b;
-	std::cout << c.to_string( ) << '\n';
+	std::cout << c << '\n';
+	std::cout << c.to_string( daw::fmt_hex ) << '\n';
 	auto cc = c.one_count( );
 	auto d = c & a;
-	std::cout << d.to_string( ) << '\n';
+	std::cout << d << '\n';
+	std::cout << d.to_string( daw::fmt_hex ) << '\n';
 	auto dc = d.one_count( );
 	daw::expecting( a, d );
 	daw::expecting( ( static_cast<void>( a ), true ) );
 	daw::expecting( ( static_cast<void>( b ), true ) );
+
+	daw::static_bitset<64> e( 0xFFFF'FFFF'FFFF'FFFF );
+	e <<= 5U;
+	std::cout << e << '\n';
+
+	daw::static_bitset<64> f( 0xFFFF'FFFF'FFFF'FFFF );
+	f >>= 33U;
+	daw::expecting( 31U, f.one_count( ) );
+	std::cout << f << '\n';
+	daw::static_bitset<64> g( 0xFFFF'FFFF'FFFF'FFFF );
+	g >>= 64;
+	daw::expecting( 0U, g.one_count( ) );
+	std::cout << '\n';
 }
