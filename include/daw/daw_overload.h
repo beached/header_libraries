@@ -25,6 +25,7 @@
 #include <cstddef>
 #include <utility>
 
+#include "cpp_17.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -52,7 +53,7 @@ namespace daw {
 		  noexcept( std::declval<Function>( )( std::declval<Args>( )... ) ) )
 		  -> decltype( std::declval<Function>( )( std::declval<Args>( )... ) ) {
 
-			return m_func( std::forward<Args>( args )... );
+			return daw::invoke( m_func, std::forward<Args>( args )... );
 		}
 
 		template<typename... Args,
@@ -62,7 +63,7 @@ namespace daw {
 		  noexcept( std::declval<Function>( )( std::declval<Args>( )... ) ) )
 		  -> decltype( std::declval<Function>( )( std::declval<Args>( )... ) ) {
 
-			return m_func( std::forward<Args>( args )... );
+			return daw::invoke( m_func, std::forward<Args>( args )... );
 		}
 	};
 
