@@ -916,8 +916,10 @@ namespace daw {
 	}
 
 	template<class... Args, typename Visitor, typename... Visitors>
-	constexpr auto visit_nt( std::variant<Args...> const &var, Visitor &&vis, Visitors&&... visitors ) {
-		auto ol = daw::overload( std::forward<Visitor>( vis ), std::forward<Visitors>( visitors )... );
+	constexpr auto visit_nt( std::variant<Args...> const &var, Visitor &&vis,
+	                         Visitors &&... visitors ) {
+		auto ol = daw::overload( std::forward<Visitor>( vis ),
+		                         std::forward<Visitors>( visitors )... );
 		using result_t = decltype( std::move( ol ), std::get<0>( var ) );
 
 		if( var.index( ) == 0 ) {
@@ -927,8 +929,10 @@ namespace daw {
 	}
 
 	template<class... Args, typename Visitor, typename... Visitors>
-	constexpr auto visit_nt( std::variant<Args...> &var, Visitor &&vis, Visitors&&... visitors ) {
-		auto ol = daw::overload( std::forward<Visitor>( vis ), std::forward<Visitors>( visitors )... );
+	constexpr auto visit_nt( std::variant<Args...> &var, Visitor &&vis,
+	                         Visitors &&... visitors ) {
+		auto ol = daw::overload( std::forward<Visitor>( vis ),
+		                         std::forward<Visitors>( visitors )... );
 		using result_t =
 		  decltype( daw::invoke( std::move( ol ), std::get<0>( var ) ) );
 
@@ -939,16 +943,18 @@ namespace daw {
 	}
 
 	template<class... Args, typename Visitor, typename... Visitors>
-	constexpr auto visit_nt( std::variant<Args...> &&var, Visitor &&vis, Visitors&&...visitors ) {
-		auto ol = daw::overload( std::forward<Visitor>( vis ), std::forward<Visitors>( visitors )... );
+	constexpr auto visit_nt( std::variant<Args...> &&var, Visitor &&vis,
+	                         Visitors &&... visitors ) {
+		auto ol = daw::overload( std::forward<Visitor>( vis ),
+		                         std::forward<Visitors>( visitors )... );
 		using result_t = decltype(
 		  daw::invoke( std::move( ol ), std::move( std::get<0>( var ) ) ) );
 
 		if( var.index( ) == 0 ) {
 			return daw::invoke( std::move( ol ), std::get<0>( std::move( var ) ) );
 		}
-		return visit_nt<1, sizeof...( Args ), result_t>(
-		  std::move( var ), std::move( ol ) );
+		return visit_nt<1, sizeof...( Args ), result_t>( std::move( var ),
+		                                                 std::move( ol ) );
 	}
 
 	template<typename T>
