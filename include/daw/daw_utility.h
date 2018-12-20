@@ -916,8 +916,9 @@ namespace daw {
 	}
 
 	template<class... Args, typename Visitor, typename... Visitors>
-	constexpr auto visit_nt( std::variant<Args...> const &var, Visitor &&vis,
-	                         Visitors &&... visitors ) {
+	constexpr decltype( auto ) visit_nt( std::variant<Args...> const &var,
+	                                     Visitor &&vis,
+	                                     Visitors &&... visitors ) {
 		auto ol = daw::overload( std::forward<Visitor>( vis ),
 		                         std::forward<Visitors>( visitors )... );
 		using result_t =
@@ -930,8 +931,9 @@ namespace daw {
 	}
 
 	template<class... Args, typename Visitor, typename... Visitors>
-	constexpr auto visit_nt( std::variant<Args...> &var, Visitor &&vis,
-	                         Visitors &&... visitors ) {
+	constexpr decltype( auto ) visit_nt( std::variant<Args...> &var,
+	                                     Visitor &&vis,
+	                                     Visitors &&... visitors ) {
 		auto ol = daw::overload( std::forward<Visitor>( vis ),
 		                         std::forward<Visitors>( visitors )... );
 		using result_t =
@@ -944,8 +946,9 @@ namespace daw {
 	}
 
 	template<class... Args, typename Visitor, typename... Visitors>
-	constexpr auto visit_nt( std::variant<Args...> &&var, Visitor &&vis,
-	                         Visitors &&... visitors ) {
+	constexpr decltype( auto ) visit_nt( std::variant<Args...> &&var,
+	                                     Visitor &&vis,
+	                                     Visitors &&... visitors ) {
 		auto ol = daw::overload( std::forward<Visitor>( vis ),
 		                         std::forward<Visitors>( visitors )... );
 		using result_t = decltype(
