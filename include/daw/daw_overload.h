@@ -32,12 +32,12 @@ namespace daw {
 	// overload_t/overload create a callable with the overloads of operator( )
 	// provided
 	//
-  template<typename... Args>
-  struct overload : public Args... {
-    using Args::operator( )...;
+	template<typename... Args>
+	struct overload : public Args... {
+		using Args::operator( )...;
 
-    constexpr overload( Args &&... args ) noexcept(
-      daw::all_true_v<std::is_nothrow_constructible_v<Args, Args>...> )
-      : Args{std::forward<Args>( args )}... {}
-  };
+		constexpr overload( Args &&... args ) noexcept(
+		  daw::all_true_v<std::is_nothrow_constructible_v<Args, Args>...> )
+		  : Args{std::forward<Args>( args )}... {}
+	};
 } // namespace daw
