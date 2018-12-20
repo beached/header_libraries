@@ -29,6 +29,7 @@
 #include <string>
 
 #include "daw_expected.h"
+#include "daw_string_view.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -282,8 +283,12 @@ namespace daw {
 	} // namespace expecting_impl
 	template<typename T, typename U>
 	constexpr void expecting( T &&expected_result, U &&result ) noexcept {
-		if( !std::equal_to<>{}( expected_result, result ) ) {
-			expecting_impl::output_expected_error( expected_result, result );
+		if( !( expected_result == result ) ) {
+			if constexpr( !daw::string_view( __VERSION__ )
+			                 .starts_with(
+			                   daw::string_view( "4.2.1 Compatible Apple LLVM" ) ) ) {
+				expecting_impl::output_expected_error( expected_result, result );
+			}
 			std::terminate( );
 		}
 	}
@@ -296,4 +301,3 @@ namespace daw {
 		}
 	}
 } // namespace daw
-

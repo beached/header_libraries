@@ -43,19 +43,15 @@ namespace daw {
 
 		constexpr auto low_part( uintmax_t value ) noexcept {
 			using value_t = half_max_t<uintmax_t>;
-			auto const lower_mask =
-			  daw::get_left_mask<uintmax_t>( bsizeof<uintmax_t> - bsizeof<value_t> );
+			auto const msb_mask =
+			  daw::mask_msb<uintmax_t>( bsizeof<uintmax_t> - bsizeof<value_t> );
 
-			return static_cast<value_t>( value bitand lower_mask );
+			return static_cast<value_t>( value bitand msb_mask );
 		}
 
 		constexpr auto high_part( uintmax_t value ) noexcept {
 			using value_t = half_max_t<uintmax_t>;
-			auto const high_mask =
-			  daw::get_right_mask<uintmax_t>( bsizeof<uintmax_t> - bsizeof<value_t> );
-
-			return static_cast<value_t>( ( value bitand high_mask ) >>
-			                             bsizeof<value_t> );
+			return static_cast<value_t>( value >> bsizeof<value_t> );
 		}
 
 		constexpr auto overflow( uintmax_t &carry ) noexcept {
@@ -103,11 +99,14 @@ namespace daw {
 		constexpr value_t get_diff_mask( ) noexcept {
 			size_t bw = BitWidth;
 			if( bw > bsizeof<value_t> ) {
-				auto const fact = bw / bsizeof<value_t>;
-				bw = bsizeof<value_t> * fact;
+				bw %= bsizeof<value_t>;
+			} else if( bw < bsizeof<value_t> ) {
+				bw = bsizeof<value_t> - bw;
 			}
-			auto const bits_to_mask = bsizeof<value_t> - bw;
-			return daw::get_left_mask<value_t>( bits_to_mask );
+			if( bw ==  ) {
+				return std::numeric_limits<value_t>::max( );
+			}
+			return daw::mask_msb<value_t>( bw );
 		}
 	} // namespace bitset_impl
 	inline constexpr bitset_impl::fmt_binary_t const fmt_binary{};
@@ -206,7 +205,7 @@ namespace daw {
 		/// \param value lowest bytes in bitset
 		/// \param values bytes in bitset from lowest(left) to highest(right)
 		template<typename... Unsigned>
-		explicit constexpr static_bitset( uintmax_t value,
+		explicit static_bitset( uintmax_t value,
 		                                  Unsigned... values ) noexcept
 		  : m_data{value, values...} {
 
@@ -385,7 +384,7 @@ namespace daw {
 			for( ; n < SZ; ++n ) {
 				m_data[n] &= rhs.m_data[n];
 			}
-			for( ;n < m_data.size( ); ++n ) {
+			for( ; n < m_data.size( ); ++n ) {
 				m_data[n] = 0U;
 			}
 			return *this;
@@ -515,9 +514,8 @@ namespace daw {
 				value_t carry = 0U;
 				for( size_t n = m_data.size( ); n > 0; --n ) {
 					auto const pos = n - 1;
-					value_t next_carry =
-					  ( m_data[pos] & daw::get_left_mask<value_t>( bits ) )
-					  << ( bsizeof<value_t> - bits );
+					value_t next_carry = ( m_data[pos] & daw::mask_msb<value_t>( bits ) )
+					                     << ( bsizeof<value_t> - bits );
 					m_data[pos] >>= bits;
 					m_data[pos] |= carry;
 					carry = next_carry;

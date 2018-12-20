@@ -28,13 +28,31 @@
 
 namespace daw {
 	template<typename T>
-	constexpr T get_left_mask( size_t left_zero_bits ) noexcept {
+	[[deprecated( "Use mask_msb" )]] constexpr T
+	get_left_mask( size_t left_zero_bits ) noexcept {
 		return static_cast<T>( std::numeric_limits<T>::max( ) >> left_zero_bits );
 	}
 
 	template<typename T>
-	constexpr T get_right_mask( size_t right_zero_bits ) noexcept {
+	constexpr T mask_msb( size_t bit_count ) noexcept {
+		if( bit_count >= daw::bsizeof<T> ) {
+			return static_cast<T>( 0 );
+		}
+		return static_cast<T>( std::numeric_limits<T>::max( ) >> bit_count );
+	}
+
+	template<typename T>
+	[[deprecated( "Use mask_lsb" )]] constexpr T
+	get_right_mask( size_t right_zero_bits ) noexcept {
 		return static_cast<T>( std::numeric_limits<T>::max( ) << right_zero_bits );
+	}
+
+	template<typename T>
+	constexpr T mask_lsb( size_t bit_count ) noexcept {
+		if( bit_count >= daw::bsizeof<T> ) {
+			return static_cast<T>( 0 );
+		}
+		return static_cast<T>( std::numeric_limits<T>::max( ) << bit_count );
 	}
 
 	template<typename Bit, typename... Bits>

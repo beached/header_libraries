@@ -40,6 +40,7 @@
 #include <variant>
 #include <vector>
 
+#include "cpp_17.h"
 #include "daw_algorithm.h"
 #include "daw_exception.h"
 #include "daw_random.h"
@@ -895,7 +896,9 @@ namespace daw {
 
 	// A variant
 	template<size_t, size_t, typename R, typename... Args>
-	[[noreturn]] constexpr R visit_nt( Args &&... ) {
+	[[noreturn]] constexpr R visit_nt( Args &&... ) noexcept {
+		// This will never be called, it is there to ensure the non-called path will
+		// look like it can be called
 		std::terminate( );
 	}
 
@@ -904,8 +907,8 @@ namespace daw {
 	         std::enable_if_t<( N < MaxN ), std::nullptr_t> = nullptr>
 	constexpr R visit_nt( Variant &&var, Visitor &&vis ) {
 		if( var.index( ) == N ) {
-			return std::forward<Visitor>( vis )(
-			  std::get<N>( std::forward<Variant>( var ) ) );
+			return daw::invoke( std::forward<Visitor>( vis ),
+			                    std::get<N>( std::forward<Variant>( var ) ) );
 		}
 		return visit_nt<N + 1, MaxN, R>( std::forward<Variant>( var ),
 		                                 std::forward<Visitor>( vis ) );
@@ -913,10 +916,11 @@ namespace daw {
 
 	template<class... Args, typename Visitor>
 	constexpr auto visit_nt( std::variant<Args...> const &var, Visitor &&vis ) {
-		using result_t = decltype( vis( std::get<0>( var ) ) );
+		using result_t = decltype(
+		  daw::invoke( std::forward<Visitor>( vis ), std::get<0>( var ) ) );
 
 		if( var.index( ) == 0 ) {
-			return std::forward<Visitor>( vis )( std::get<0>( var ) );
+			return daw::invoke( std::forward<Visitor>( vis ), std::get<0>( var ) );
 		}
 		return visit_nt<1, sizeof...( Args ), result_t>(
 		  var, std::forward<Visitor>( vis ) );
@@ -924,10 +928,11 @@ namespace daw {
 
 	template<class... Args, typename Visitor>
 	constexpr auto visit_nt( std::variant<Args...> &var, Visitor &&vis ) {
-		using result_t = decltype( vis( std::get<0>( var ) ) );
+		using result_t = decltype(
+		  daw::invoke( std::forward<Visitor>( vis ), std::get<0>( var ) ) );
 
 		if( var.index( ) == 0 ) {
-			return std::forward<Visitor>( vis )( std::get<0>( var ) );
+			return daw::invoke( std::forward<Visitor>( vis ), std::get<0>( var ) );
 		}
 		return visit_nt<1, sizeof...( Args ), result_t>(
 		  var, std::forward<Visitor>( vis ) );
@@ -935,10 +940,12 @@ namespace daw {
 
 	template<class... Args, typename Visitor>
 	constexpr auto visit_nt( std::variant<Args...> &&var, Visitor &&vis ) {
-		using result_t = decltype( vis( std::get<0>( var ) ) );
+		using result_t = decltype( daw::invoke( std::forward<Visitor>( vis ),
+		                                        std::move( std::get<0>( var ) ) ) );
 
 		if( var.index( ) == 0 ) {
-			return std::forward<Visitor>( vis )( std::get<0>( std::move( var ) ) );
+			return daw::invoke( std::forward<Visitor>( vis ),
+			                    std::get<0>( std::move( var ) ) );
 		}
 		return visit_nt<1, sizeof...( Args ), result_t>(
 		  std::move( var ), std::forward<Visitor>( vis ) );
