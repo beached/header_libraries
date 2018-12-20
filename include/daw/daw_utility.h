@@ -43,6 +43,7 @@
 #include "cpp_17.h"
 #include "daw_algorithm.h"
 #include "daw_exception.h"
+#include "daw_overload.h"
 #include "daw_random.h"
 #include "daw_traits.h"
 
@@ -914,41 +915,40 @@ namespace daw {
 		                                 std::forward<Visitor>( vis ) );
 	}
 
-	template<class... Args, typename Visitor>
-	constexpr auto visit_nt( std::variant<Args...> const &var, Visitor &&vis ) {
-		using result_t = decltype(
-		  daw::invoke( std::forward<Visitor>( vis ), std::get<0>( var ) ) );
+	template<class... Args, typename Visitor, typename... Visitors>
+	constexpr auto visit_nt( std::variant<Args...> const &var, Visitor &&vis, Visitors&&... visitors ) {
+		auto ol = daw::overload( std::forward<Visitor>( vis ), std::forward<Visitors>( visitors )... );
+		using result_t = decltype( std::move( ol ), std::get<0>( var ) );
 
 		if( var.index( ) == 0 ) {
-			return daw::invoke( std::forward<Visitor>( vis ), std::get<0>( var ) );
+			return daw::invoke( std::move( ol ), std::get<0>( var ) );
 		}
-		return visit_nt<1, sizeof...( Args ), result_t>(
-		  var, std::forward<Visitor>( vis ) );
+		return visit_nt<1, sizeof...( Args ), result_t>( var, std::move( ol ) );
 	}
 
-	template<class... Args, typename Visitor>
-	constexpr auto visit_nt( std::variant<Args...> &var, Visitor &&vis ) {
-		using result_t = decltype(
-		  daw::invoke( std::forward<Visitor>( vis ), std::get<0>( var ) ) );
+	template<class... Args, typename Visitor, typename... Visitors>
+	constexpr auto visit_nt( std::variant<Args...> &var, Visitor &&vis, Visitors&&... visitors ) {
+		auto ol = daw::overload( std::forward<Visitor>( vis ), std::forward<Visitors>( visitors )... );
+		using result_t =
+		  decltype( daw::invoke( std::move( ol ), std::get<0>( var ) ) );
 
 		if( var.index( ) == 0 ) {
-			return daw::invoke( std::forward<Visitor>( vis ), std::get<0>( var ) );
+			return daw::invoke( std::move( ol ), std::get<0>( var ) );
 		}
-		return visit_nt<1, sizeof...( Args ), result_t>(
-		  var, std::forward<Visitor>( vis ) );
+		return visit_nt<1, sizeof...( Args ), result_t>( var, std::move( ol ) );
 	}
 
-	template<class... Args, typename Visitor>
-	constexpr auto visit_nt( std::variant<Args...> &&var, Visitor &&vis ) {
-		using result_t = decltype( daw::invoke( std::forward<Visitor>( vis ),
-		                                        std::move( std::get<0>( var ) ) ) );
+	template<class... Args, typename Visitor, typename... Visitors>
+	constexpr auto visit_nt( std::variant<Args...> &&var, Visitor &&vis, Visitors&&...visitors ) {
+		auto ol = daw::overload( std::forward<Visitor>( vis ), std::forward<Visitors>( visitors )... );
+		using result_t = decltype(
+		  daw::invoke( std::move( ol ), std::move( std::get<0>( var ) ) ) );
 
 		if( var.index( ) == 0 ) {
-			return daw::invoke( std::forward<Visitor>( vis ),
-			                    std::get<0>( std::move( var ) ) );
+			return daw::invoke( std::move( ol ), std::get<0>( std::move( var ) ) );
 		}
 		return visit_nt<1, sizeof...( Args ), result_t>(
-		  std::move( var ), std::forward<Visitor>( vis ) );
+		  std::move( var ), std::move( ol ) );
 	}
 
 	template<typename T>

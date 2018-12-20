@@ -22,22 +22,26 @@
 
 #pragma once
 
-#include <cstddef>
+#include <type_traits>
 #include <utility>
-
-#include "cpp_17.h"
-#include "daw_traits.h"
 
 namespace daw {
 	// overload_t/overload create a callable with the overloads of operator( )
 	// provided
 	//
+	namespace overload_impl {
+		template<typename T>
+		inline constexpr bool const is_nothrow_constructible_v =
+		  std::is_nothrow_constructible_v<T, T>;
+	}
+
 	template<typename... Args>
-	struct overload : public Args... {
+	class overload : private Args... {
+	public:
 		using Args::operator( )...;
 
 		constexpr overload( Args &&... args ) noexcept(
-		  daw::all_true_v<std::is_nothrow_constructible_v<Args, Args>...> )
+		  (... && overload_impl::is_nothrow_constructible_v<Args>))
 		  : Args{std::forward<Args>( args )}... {}
 	};
 } // namespace daw
