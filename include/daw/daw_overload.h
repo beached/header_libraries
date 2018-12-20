@@ -32,72 +32,12 @@ namespace daw {
 	// overload_t/overload create a callable with the overloads of operator( )
 	// provided
 	//
-	template<typename... Functions>
-	struct overload_t;
+  template<typename... Args>
+  struct overload : public Args... {
+    using Args::operator( )...;
 
-	template<typename Function>
-	struct overload_t<Function> {
-	private:
-		mutable Function m_func;
-
-	public:
-		template<typename Func, std::enable_if_t<daw::is_same_v<Func, Function>,
-		                                         std::nullptr_t> = nullptr>
-		constexpr overload_t( Func &&func )
-		  : m_func( std::forward<Func>( func ) ) {}
-
-		template<typename... Args,
-		         std::enable_if_t<traits::is_callable_v<Function, Args...>,
-		                          std::nullptr_t> = nullptr>
-		constexpr auto operator( )( Args &&... args ) const noexcept(
-		  noexcept( std::declval<Function>( )( std::declval<Args>( )... ) ) )
-		  -> decltype( std::declval<Function>( )( std::declval<Args>( )... ) ) {
-
-			return daw::invoke( m_func, std::forward<Args>( args )... );
-		}
-
-		template<typename... Args,
-		         std::enable_if_t<traits::is_callable_v<Function, Args...>,
-		                          std::nullptr_t> = nullptr>
-		constexpr auto operator( )( Args &&... args ) noexcept(
-		  noexcept( std::declval<Function>( )( std::declval<Args>( )... ) ) )
-		  -> decltype( std::declval<Function>( )( std::declval<Args>( )... ) ) {
-
-			return daw::invoke( m_func, std::forward<Args>( args )... );
-		}
-	};
-
-	template<typename Function, typename... Functions>
-	struct overload_t<Function, Functions...> : public overload_t<Function>,
-	                                            public overload_t<Functions...> {
-		using overload_t<Function>::operator( );
-		using overload_t<Functions...>::operator( );
-
-		template<
-		  typename Func, typename... Funcs,
-		  std::enable_if_t<!daw::is_function_v<Func>, std::nullptr_t> = nullptr>
-		constexpr overload_t( Func &&func, Funcs &&... funcs )
-		  : overload_t<Func>( std::forward<Func>( func ) )
-		  , overload_t<Funcs...>( std::forward<Funcs>( funcs )... ) {}
-	};
-
-	template<typename... Functions>
-	constexpr auto overload( Functions &&... funcs ) {
-		return overload_t<Functions...>{std::forward<Functions>( funcs )...};
-	}
-
-	template<typename... Args, typename OverloadSet,
-	         std::enable_if_t<traits::is_callable_v<OverloadSet, Args...>,
-	                          std::nullptr_t> = nullptr>
-	decltype( auto ) empty_overload( OverloadSet &&overload_set ) {
-		return std::forward<OverloadSet>( overload_set );
-	}
-
-	template<typename... Args, typename OverloadSet,
-	         std::enable_if_t<!traits::is_callable_v<OverloadSet, Args...>,
-	                          std::nullptr_t> = nullptr>
-	decltype( auto ) empty_overload( OverloadSet &&overload_set ) {
-		return overload( std::forward<OverloadSet>( overload_set ),
-		                 []( Args && ... ) mutable noexcept {} );
-	}
+    constexpr overload( Args &&... args ) noexcept(
+      daw::all_true_v<std::is_nothrow_constructible_v<Args, Args>...> )
+      : Args{std::forward<Args>( args )}... {}
+  };
 } // namespace daw
