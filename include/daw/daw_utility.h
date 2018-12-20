@@ -920,7 +920,8 @@ namespace daw {
 	                         Visitors &&... visitors ) {
 		auto ol = daw::overload( std::forward<Visitor>( vis ),
 		                         std::forward<Visitors>( visitors )... );
-		using result_t = decltype( std::move( ol ), std::get<0>( var ) );
+		using result_t =
+		  decltype( daw::invoke( std::move( ol ), std::get<0>( var ) ) );
 
 		if( var.index( ) == 0 ) {
 			return daw::invoke( std::move( ol ), std::get<0>( var ) );
