@@ -26,6 +26,8 @@
 #include <optional>
 #include <vector>
 
+#include "daw_fnv1a_hash.h"
+
 namespace daw {
 	constexpr size_t scale_hash( size_t hash, size_t range_size ) {
 		size_t const prime_a = 18446744073709551557u;
@@ -106,7 +108,7 @@ namespace daw {
 		}
 	};
 
-	template<typename Key, size_t Capacity, typename Hash = std::hash<Key>>
+	template<typename Key, size_t Capacity, typename Hash = daw::fnv1a_hash_t>
 	class static_hash_adaptor_t {
 		std::array<std::optional<Key>, Capacity> m_indices{};
 
