@@ -48,7 +48,6 @@
 #include "daw_traits.h"
 
 namespace daw {
-	
 	 /// Convert a value to an rvalue.
 	 /// \param  value  A thing of arbitrary type.
 	 /// \return The parameter cast to an rvalue-reference to allow moving it.
