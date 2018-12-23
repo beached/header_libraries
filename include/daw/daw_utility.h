@@ -53,7 +53,8 @@ namespace daw {
 	 /// \param  value  A thing of arbitrary type.
 	 /// \return The parameter cast to an rvalue-reference to allow moving it.
 	 template<typename T,
-	          std::enable_if_t<!std::is_const_v<T>, std::nullptr_t> = nullptr>
+	          std::enable_if_t<!std::is_const_v<std::remove_reference_t<T>>,
+	                           std::nullptr_t> = nullptr>
 	 constexpr std::remove_reference_t<T> &&move( T &&value ) noexcept {
 
 		 return static_cast<typename std::remove_reference_t<T> &&>( value );
