@@ -22,7 +22,6 @@
 
 #pragma once
 
-#include <initializer_list>
 #include <utility>
 
 #include "cpp_17.h"
@@ -40,10 +39,11 @@ namespace daw {
 	public:
 		constexpr static_hash_map( ) noexcept = default;
 
+		template<size_t ItemCount>
 		constexpr static_hash_map(
-		  std::initializer_list<std::pair<Key, Value>> init_values ) {
+		  std::pair<Key, Value> const ( &init_values )[ItemCount] ) noexcept {
 
-			daw::exception::precondition_check( init_values.size( ) <= N );
+			static_assert( ItemCount <= N );
 			for( auto const &kv : init_values ) {
 				insert( kv.first, kv.second );
 			}
@@ -100,11 +100,7 @@ namespace daw {
 	template<typename Key, typename Value, size_t N>
 	constexpr auto 
 	make_static_hash_map( std::pair<Key, Value> const (&items)[N] ) noexcept {
-		static_hash_map<Key, Value, N> result{};
-		for( auto const &item : items ) {
-			result.insert( std::move( item.first ), std::move( item.second ) );
-		}
-		return result;
+		return static_hash_map<Key, Value, N>( items );
 	}
 } // namespace daw
 
