@@ -68,10 +68,11 @@ namespace daw {
 		}
 
 		constexpr Value const &operator[]( Key const &key ) const noexcept {
-			if( !m_hashes.exits( key ) ) {
+			auto const index = m_hashes.find( key );
+			if( !index ) {
 				std::terminate( );
 			}
-			return m_values[m_hashes.insert( key )];
+			return m_values[*index];
 		}
 
 		constexpr bool count( Key const &key ) noexcept {

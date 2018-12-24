@@ -134,18 +134,24 @@ namespace daw {
 			}
 			return {};
 		}
-
 	public:
+
 		constexpr static_hash_adaptor_t( ) noexcept = default;
 
-		constexpr size_t insert( Key const &key ) noexcept {
+		constexpr std::optional<size_t> find( Key const &key ) const noexcept {
 			auto const hash = Hash{}( key );
-			auto const index = find_index( hash, key );
+			return find_index( hash, key );
+		}
+
+		constexpr size_t insert( Key const &key ) noexcept {
+			auto const index = find( key );
 			if( !index ) {
 				// Full
 				std::terminate( );
 			}
-			m_indices[*index] = key;
+			if( !m_indices[*index] ) {
+				m_indices[*index] = key;
+			}
 			return *index;
 		}
 

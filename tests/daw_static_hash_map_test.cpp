@@ -24,7 +24,7 @@
 #include "daw/daw_string_view.h"
 
 int main( ) {
-	daw::static_hash_map<uint16_t, daw::string_view, 13> status_codes{
+	constexpr daw::static_hash_map<uint16_t, daw::string_view, 13> status_codes{
 	  {{100, "Continue"},
 	   {101, "Switching Protocols"},
 	   {102, "Processing"},
