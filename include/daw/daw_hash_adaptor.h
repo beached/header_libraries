@@ -26,6 +26,7 @@
 #include <optional>
 #include <vector>
 
+#include "daw_algorithm.h"
 #include "daw_fnv1a_hash.h"
 
 namespace daw {
