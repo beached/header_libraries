@@ -26,12 +26,13 @@
 #include <utility>
 
 #include "cpp_17.h"
+#include "daw_fnv1a_hash.h"
 #include "daw_hash_adaptor.h"
 #include "daw_traits.h"
-#include "daw_fnv1a_hash.h"
 
 namespace daw {
-	template<typename Key, typename Value, size_t N, typename Hash = daw::fnv1a_hash_t>
+	template<typename Key, typename Value, size_t N,
+	         typename Hash = daw::fnv1a_hash_t>
 	class static_hash_map {
 		daw::static_hash_adaptor_t<Key, N, Hash> m_hashes{};
 		std::array<Value, N> m_values{};
@@ -95,5 +96,15 @@ namespace daw {
 			return m_hashes.size( );
 		}
 	};
+
+	template<typename Key, typename Value, size_t N>
+	constexpr auto 
+	make_static_hash_map( std::pair<Key, Value> const (&items)[N] ) noexcept {
+		static_hash_map<Key, Value, N> result{};
+		for( auto const &item : items ) {
+			result.insert( std::move( item.first ), std::move( item.second ) );
+		}
+		return result;
+	}
 } // namespace daw
 

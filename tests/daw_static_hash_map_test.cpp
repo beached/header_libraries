@@ -3,14 +3,14 @@
 // Copyright (c) 2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -38,9 +38,26 @@ namespace {
 	                {207, "Multi-Status"},
 	                {208, "Already Reported"},
 	                {226, "IM Used"}}};
+
+	constexpr auto const status_codes2 =
+	  daw::make_static_hash_map<uint16_t, daw::string_view>(
+	    {{100, "Continue"},
+	     {101, "Switching Protocols"},
+	     {102, "Processing"},
+	     {200, "OK"},
+	     {201, "Created"},
+	     {202, "Accepted"},
+	     {203, "Non-Authoritative Information"},
+	     {204, "No Content"},
+	     {205, "Reset Content"},
+	     {206, "Partial Content"},
+	     {207, "Multi-Status"},
+	     {208, "Already Reported"},
+	     {226, "IM Used"}} );
 } // namespace
 
 int main( ) {
-	return static_cast<int>( status_codes[204].size( ) );
+	return static_cast<int>( status_codes[204].size( ) ) +
+	       static_cast<int>( status_codes2[101].size( ) );
 }
 
