@@ -26,6 +26,7 @@
 #undef max
 #endif // max
 
+#include <atomic>
 #include <cmath>
 #include <cstddef>
 #include <functional>
@@ -1011,6 +1012,34 @@ namespace daw {
 	mutable_capture( T & )->mutable_capture<T>;
 	template<typename T>
 	mutable_capture( T && )->mutable_capture<T>;
+
+	template<typename T>
+	class countable_resource_t {
+		static std::atomic<T> m_resource_count;
+
+	public:
+		countable_resource_t( ) noexcept {
+			++m_resource_count;
+		}
+
+		countable_resource_t( countable_resource_t const & ) noexcept {
+			++m_resource_count;
+		}
+
+		countable_resource_t &operator=( countable_resource_t const & ) noexcept {
+			++m_resource_count;
+		}
+
+		~countable_resource_t( ) {
+			--m_resource_count;
+		}
+
+		static T value( ) noexcept {
+			return m_resource_count.load( );
+		}
+	};
+	template<typename T>
+	std::atomic<T> countable_resource_t<T>::m_resource_count = {};
 } // namespace daw
 
 template<typename... Ts>

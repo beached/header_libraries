@@ -111,24 +111,24 @@ namespace daw {
 
 	template<typename Key, size_t Capacity, typename Hash = daw::fnv1a_hash_t>
 	class static_hash_adaptor_t {
-		std::array<std::optional<Key>, Capacity> m_indices{};
+		std::array<std::pair<Key, bool>, Capacity> m_indices{};
 
 		constexpr std::optional<size_t> find_index( size_t hash, Key const & key ) const {
 			size_t const scaled_hash = scale_hash( hash, m_indices.size( ) );
 
 			for( size_t n = scaled_hash; n < m_indices.size( ); ++n ) {
-				if( !m_indices[n] ) {
+				if( !m_indices[n].second ) {
 					return n;
 				}
-				if( *m_indices[n] == key ) {
+				if( m_indices[n].first == key ) {
 					return n;
 				}
 			}
 			for( size_t n = 0; n < scaled_hash; ++n ) {
-				if( !m_indices[n] ) {
+				if( !m_indices[n].second ) {
 					return n;
 				}
-				if( *m_indices[n] == key ) {
+				if( m_indices[n].first == key ) {
 					return n;
 				}
 			}
@@ -149,8 +149,9 @@ namespace daw {
 				// Full
 				std::terminate( );
 			}
-			if( !m_indices[*index] ) {
-				m_indices[*index] = key;
+			if( !m_indices[*index].second ) {
+				m_indices[*index].first = key;
+				m_indices[*index].second = true;
 			}
 			return *index;
 		}
@@ -161,14 +162,14 @@ namespace daw {
 			if( !index ) {
 				return {};
 			}
-			m_indices[*index] = std::nullopt;
+			m_indices[*index].second = false;
 			return *index;
 		}
 
 		constexpr bool exists( Key const &key ) noexcept {
 			auto const hash = Hash{}( key );
 			auto const index = find_index( hash, key );
-			return static_cast<bool>( index ) and static_cast<bool>( m_indices[*index] );
+			return static_cast<bool>( index ) and m_indices[*index].second;
 		}
 
 		constexpr bool count( Key const & key ) noexcept {
@@ -183,7 +184,7 @@ namespace daw {
 			return daw::algorithm::accumulate(
 			  std::begin( m_indices ), std::end( m_indices ), 0ULL,
 			  []( auto const &opt ) {
-				  return static_cast<bool>( opt ) ? 1ULL : 0ULL;
+				  return opt.second ? 1ULL : 0ULL;
 			  } );
 		}
 	};
