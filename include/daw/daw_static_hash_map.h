@@ -75,6 +75,14 @@ namespace daw {
 			return m_values[*index];
 		}
 
+		constexpr std::optional<Value> try_get( Key const &key ) const noexcept {
+			auto const index = m_hashes.find( key );
+			if( !index ) {
+				return {};
+			}
+			return m_values[*index];
+		}
+
 		constexpr bool count( Key const &key ) noexcept {
 			return m_hashes.count( key );
 		}
