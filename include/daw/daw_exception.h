@@ -334,16 +334,16 @@ namespace daw {
 		}
 
 		template<typename ExceptionType = DefaultException>
-		constexpr void daw_throw_value_on_true( ExceptionType const &test ) {
+		constexpr void daw_throw_value_on_true( ExceptionType &&test ) {
 			if( static_cast<bool>( test ) ) {
-				daw_throw<ExceptionType>( );
+				daw_throw<ExceptionType>( std::forward<ExceptionType>( test ) );
 			}
 		}
 
 		template<typename ExceptionType>
 		constexpr void daw_throw_value_on_false( ExceptionType const &test ) {
 			if( !static_cast<bool>( test ) ) {
-				daw_throw<ExceptionType>( );
+				daw_throw<ExceptionType>( std::forward<ExceptionType>( test ) );
 			}
 		}
 
