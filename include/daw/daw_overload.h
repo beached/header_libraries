@@ -25,6 +25,8 @@
 #include <type_traits>
 #include <utility>
 
+#include "cpp_17.h"
+
 namespace daw {
 	// overload_t/overload create a callable with the overloads of operator( )
 	// provided
@@ -41,7 +43,7 @@ namespace daw {
 		using Args::operator( )...;
 
 		constexpr overload( Args &&... args ) noexcept(
-		  (... && overload_impl::is_nothrow_constructible_v<Args>))
+		  (daw::all_true_v<overload_impl::is_nothrow_constructible_v<Args>...>))
 		  : Args{std::forward<Args>( args )}... {}
 	};
 } // namespace daw
