@@ -628,5 +628,33 @@ namespace daw {
 
 		template<size_t N, typename... Args>
 		using nth_type = std::tuple_element_t<N, std::tuple<Args...>>;
+
+		template<typename A, typename B, typename... C>
+		struct pack_index_of
+		  : std::integral_constant<int, std::is_same<A, B>{}
+		                                  ? 0
+		                                  : ( pack_index_of<A, C...>{} == -1
+		                                        ? -1
+		                                        : 1 + pack_index_of<A, C...>{} )> {
+		};
+
+		template<typename... Args>
+		struct pack_list {
+			static constexpr size_t const size = sizeof...( Args );
+		};
+
+		template<typename A, typename B>
+		struct pack_index_of<A, B>
+		  : std::integral_constant<int, std::is_same<A, B>{} - 1> {};
+
+		template<typename T, typename... Pack>
+		struct pack_index_of<T, pack_list<Pack...>>
+			: pack_index_of<T, Pack...> {};
+
+		template<typename T, typename... Pack>
+		CXINLINE auto pack_index_of_v = pack_index_of<T, Pack...>::value;
+
+		template<typename T, typename... Pack>
+		CXINLINE bool pack_exits_v = pack_index_of_v<T, Pack...> >= 0;
 	} // namespace traits
 } // namespace daw

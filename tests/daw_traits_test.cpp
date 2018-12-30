@@ -826,3 +826,4 @@ namespace last_type_001 {
 	  "" );
 	static_assert( daw::is_same_v<daw::traits::last_type_t<int>, int>, "" );
 } // namespace last_type_001
+
