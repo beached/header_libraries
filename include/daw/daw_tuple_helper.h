@@ -400,9 +400,12 @@ namespace daw {
 
 			template<typename Func, typename Arg>
 			constexpr void apply_func_impl( Func &&func, Arg &&arg ) noexcept(
-			  noexcept( daw::invoke( std::forward<Func>( func ), std::forward<Arg>( arg ) ) ) ) {
+			  std::is_nothrow_invocable_v<Func, Arg> ) {
 
-				daw::invoke( std::forward<Func>( func ), std::forward<Arg>( arg ) );
+				if constexpr( std::is_invocable_v<Func, Arg> ) {
+					(void)daw::invoke( std::forward<Func>( func ),
+					                   std::forward<Arg>( arg ) );
+				}
 			}
 
 			template<typename Func>
@@ -438,9 +441,11 @@ namespace daw {
 			template<typename Tuple, typename Func, size_t... Is>
 			constexpr void apply_at_impl( Tuple &&tp, size_t index, Func &&func,
 			                              std::index_sequence<Is...> ) {
-				::Unused( ( apply_func<Is>( index, func, tp ) && ... ) );
+				Unused(
+				  ( apply_func<Is>( index, func,
+				                    std::get<Is>( std::forward<Tuple>( tp ) ) ) &&
+				    ... ) );
 			}
-
 		} // namespace apply_at_thlp_impls
 
 		template<typename... Args, typename... Funcs>

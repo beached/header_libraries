@@ -87,9 +87,9 @@ BOOST_AUTO_TEST_CASE( daw_optional_poly_test_03 ) {
 		int blah;
 		virtual ~base_t( ) = default;
 		base_t( base_t const & ) = default;
-		base_t( base_t && ) noexcept = default;
+		//base_t( base_t && ) noexcept = default;
 		base_t &operator=( base_t const & ) = default;
-		base_t &operator=( base_t && ) noexcept = default;
+		//base_t &operator=( base_t && ) noexcept = default;
 		base_t( )
 		  : blah{123} {}
 		virtual int get( ) const {

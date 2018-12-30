@@ -50,6 +50,9 @@
 #include "daw_traits.h"
 #include "daw_visit.h"
 
+template<typename... Ts>
+constexpr void Unused( Ts &&... ) noexcept {}
+
 namespace daw {
 	/// Convert a value to an rvalue.
 	/// \param  value  A thing of arbitrary type.
@@ -531,20 +534,10 @@ namespace daw {
 		}
 	}
 
-#ifdef __clang__
-#ifndef __ICC // icpc defines the __clang__ macro
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wextra-semi-stmt"
-#endif
-#endif
 	constexpr void breakpoint( ) noexcept {
-		;
+		int const x = 0;
+		Unused( x );
 	}
-#ifdef __clang__
-#ifndef __ICC // icpc defines the __clang__ macro
-#pragma clang diagnostic pop
-#endif
-#endif
 
 	template<typename Iterator1, typename Iterator2, typename OutputIterator>
 	constexpr OutputIterator cxpr_copy( Iterator1 first_in,
@@ -988,7 +981,4 @@ namespace daw {
 	template<typename T>
 	std::atomic<T> countable_resource_t<T>::m_resource_count = {};
 } // namespace daw
-
-template<typename... Ts>
-constexpr void Unused( Ts &&... ) noexcept {}
 

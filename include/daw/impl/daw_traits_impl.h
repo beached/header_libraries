@@ -65,7 +65,7 @@ namespace daw {
 
 			template<typename Iterator, typename T>
 			using assignable =
-			  decltype( *std::declval<Iterator &>( ) = std::declval<T>( ) );
+			  decltype( *std::declval<Iterator>( ) = std::declval<T>( ) );
 
 			template<typename T, typename U>
 			using equality_comparable =
