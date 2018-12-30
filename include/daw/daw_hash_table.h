@@ -32,6 +32,7 @@
 #include "daw_exception.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_heap_array.h"
+#include "daw_swap.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
 
@@ -436,12 +437,10 @@ namespace daw {
 					++load;
 					auto pos = find_item_by_hash( current_item.hash, new_hash_table );
 					daw::exception::daw_throw_on_false( pos != new_hash_table.cend( ) );
-					using std::swap;
-					swap( *pos, current_item );
+					daw::cswap( *pos, current_item );
 				}
 			}
-			using std::swap;
-			swap( old_table, new_hash_table );
+			daw::cswap( old_table, new_hash_table );
 			return load;
 		}
 
@@ -616,12 +615,11 @@ namespace daw {
 		}
 
 		void swap( hash_table &rhs ) noexcept {
-			using std::swap;
-			swap( m_values, rhs.m_values );
-			swap( m_load, rhs.m_load );
-			swap( m_growth_counter, rhs.m_growth_counter );
-			swap( m_resize_ratio, rhs.m_resize_ratio );
-			swap( m_max_load, rhs.m_max_load );
+			daw::cswap( m_values, rhs.m_values );
+			daw::cswap( m_load, rhs.m_load );
+			daw::cswap( m_growth_counter, rhs.m_growth_counter );
+			daw::cswap( m_resize_ratio, rhs.m_resize_ratio );
+			daw::cswap( m_max_load, rhs.m_max_load );
 		}
 
 		template<typename Key>

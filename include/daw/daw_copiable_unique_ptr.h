@@ -27,6 +27,7 @@
 #include <type_traits>
 #include <utility>
 
+#include "daw_swap.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -54,12 +55,12 @@ namespace daw {
 	public:
 		constexpr copiable_unique_ptr( ) noexcept = default;
 		constexpr copiable_unique_ptr( copiable_unique_ptr &&other ) noexcept
-		  : m_value( std::exchange( other.m_value, nullptr ) ) {}
+		  : m_value( daw::exchange( other.m_value, nullptr ) ) {}
 
 		constexpr copiable_unique_ptr &
 		operator=( copiable_unique_ptr &&rhs ) noexcept {
 			auto tmp = m_value;
-			m_value = std::exchange( rhs.m_value, tmp );
+			m_value = daw::exchange( rhs.m_value, tmp );
 			return *this;
 		}
 
@@ -86,7 +87,7 @@ namespace daw {
 		}
 
 		void reset( ) {
-			auto tmp = std::exchange( m_value, nullptr );
+			auto tmp = daw::exchange( m_value, nullptr );
 			if( tmp ) {
 				Deleter( )( tmp );
 			}
@@ -97,17 +98,16 @@ namespace daw {
 		}
 
 		pointer release( ) noexcept {
-			return std::exchange( m_value, nullptr );
+			return daw::exchange( m_value, nullptr );
 		}
 
 		explicit constexpr operator bool( ) const noexcept {
 			return static_cast<bool>( m_value );
 		}
 
-		constexpr friend void swap( copiable_unique_ptr &lhs,
-		                            copiable_unique_ptr &rhs ) noexcept {
-			pointer tmp = lhs.m_value;
-			lhs.m_value = std::exchange( rhs.m_value, tmp );
+		constexpr void swap( copiable_unique_ptr &rhs ) noexcept {
+			pointer tmp = m_value;
+			m_value = daw::exchange( rhs.m_value, tmp );
 		}
 
 		constexpr pointer get( ) noexcept {
@@ -134,6 +134,11 @@ namespace daw {
 			return m_value;
 		}
 	};
+
+	template<typename T, typename Deleter>
+	constexpr	void swap( copiable_unique_ptr<T, Deleter> & lhs, copiable_unique_ptr<T, Deleter> & rhs ) noexcept {
+		lhs.swap( rhs );
+	}
 
 	template<typename T, typename... Args>
 	copiable_unique_ptr<T> make_copiable_unique_ptr( Args &&... args ) noexcept(

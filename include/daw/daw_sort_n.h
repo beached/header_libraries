@@ -24,6 +24,9 @@
 
 #include <algorithm>
 #include <functional>
+
+#include "daw_swap.h"
+
 namespace daw {
 	namespace algorithm_impl {
 		// Sorting networks are from http://pages.ripco.net/~jgamble/nw.html
@@ -35,7 +38,7 @@ namespace daw {
 			auto const f = std::next( first, Pos0 );
 			auto const l = std::next( first, Pos1 );
 			if( !comp( *f, *l ) ) {
-				std::iter_swap( f, l );
+				daw::iter_swap( f, l );
 			}
 		}
 	} // namespace algorithm_impl

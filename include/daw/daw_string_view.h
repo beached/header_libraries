@@ -449,9 +449,8 @@ namespace daw {
 		}
 
 		constexpr void swap( basic_string_view &v ) noexcept {
-			using std::swap;
-			swap( m_first, v.m_first );
-			swap( m_size, v.m_size );
+			daw::cswap( m_first, v.m_first );
+			daw::cswap( m_size, v.m_size );
 		}
 
 		size_type copy( CharT *dest, size_type const count,
@@ -908,6 +907,14 @@ namespace daw {
 			return ends_with( basic_string_view{s} );
 		}
 	}; // basic_string_view
+
+	template<typename CharT, typename Traits, typename InternalSizeType>
+	constexpr void
+	swap( basic_string_view<CharT, Traits, InternalSizeType> &lhs,
+	      basic_string_view<CharT, Traits, InternalSizeType> &rhs ) noexcept {
+
+		lhs.swap( rhs );
+	}
 
 #ifndef NOSTRING
 	template<typename Chr, typename Tr, typename Alloc>

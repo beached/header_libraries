@@ -30,6 +30,7 @@
 #include <utility>
 
 #include "daw_exception.h"
+#include "daw_swap.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -120,9 +121,8 @@ namespace daw {
 			  , m_occupied( std::exchange( other.m_occupied, false ) ) {}
 
 			void swap( value_storage &rhs ) noexcept {
-				using std::swap;
-				swap( m_data, rhs.m_data );
-				swap( m_occupied, rhs.m_occupied );
+				daw::cswap( m_data, rhs.m_data );
+				daw::cswap( m_occupied, rhs.m_occupied );
 			}
 
 			value_storage &operator=( value_storage const &rhs ) {

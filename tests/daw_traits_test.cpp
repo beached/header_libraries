@@ -30,6 +30,7 @@
 #include "daw/boost_test.h"
 #include "daw/daw_string_view.h"
 #include "daw/daw_traits.h"
+#include "daw/daw_utility.h"
 
 namespace daw_traits_is_equality_comparable {
 	static_assert( daw::traits::is_equality_comparable_v<std::string>,
@@ -353,9 +354,21 @@ constexpr int f( int ) noexcept {
 }
 
 namespace daw_traits_is_callable {
-	static auto const blah = []( auto t ) noexcept {
+#ifdef __clang__
+#ifndef __ICC // icpc defines the __clang__ macro
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
+#endif
+#endif
+	auto const blah = []( auto t ) noexcept {
 		return t;
 	};
+#ifdef __clang__
+#ifndef __ICC // icpc defines the __clang__ macro
+#pragma clang diagnostic pop
+#endif
+#endif
+
 	static_assert( daw::traits::is_callable_v<decltype( blah ), int>,
 	               "blah should be callable" );
 
@@ -368,9 +381,22 @@ namespace daw_traits_is_callable {
 	constexpr auto val4 = !daw::traits::is_callable_v<TestYesOS, int>;
 	static_assert( val4, "TestYesOS should not be callable" );
 
+#ifdef __clang__
+#ifndef __ICC // icpc defines the __clang__ macro
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
+#endif
+#endif
 	auto const blah2 = []( ) noexcept {
 		return true;
 	};
+#ifdef __clang__
+#ifndef __ICC // icpc defines the __clang__ macro
+#pragma clang diagnostic pop
+#endif
+#endif
+
+
 	using T = decltype( blah2 );
 
 	constexpr bool const b1 = daw::traits::is_callable_v<T, void>;
@@ -721,9 +747,20 @@ namespace is_tuple_test_004 {
 }
 
 namespace is_callable_convertible_001 {
+#ifdef __clang__
+#ifndef __ICC // icpc defines the __clang__ macro
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
+#endif
+#endif
 	auto const func = []( auto d ) noexcept {
 		return 2.0 * d;
 	};
+#ifdef __clang__
+#ifndef __ICC // icpc defines the __clang__ macro
+#pragma clang diagnostic pop
+#endif
+#endif
 	static_assert(
 	  daw::traits::is_callable_convertible_v<double, decltype( func ), double>,
 	  "" );

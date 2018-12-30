@@ -29,6 +29,7 @@
 #include "daw_newhelper.h"
 #include "daw_operators.h"
 #include "daw_scope_guard.h"
+#include "daw_swap.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -54,7 +55,7 @@ namespace daw {
 		  , m_local_string{false} {}
 
 	public:
-		CString( CharT const *ptr, bool do_copy, size_t const length )
+		constexpr CString( CharT const *ptr, bool do_copy, size_t const length )
 		  : m_data{ptr}
 		  , m_size{0 == length ? string_length( ptr ) : length}
 		  , m_local_string{do_copy} {
@@ -67,7 +68,7 @@ namespace daw {
 			}
 		}
 
-		CString( CharT const *ptr, bool do_copy )
+		constexpr CString( CharT const *ptr, bool do_copy )
 		  : CString{ptr, do_copy, 0} {}
 
 		constexpr CString( CharT const *ptr )
@@ -95,14 +96,13 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr CString( CString &&value ) noexcept = default;
-		constexpr CString &operator=( CString &&rhs ) noexcept = default;
+		constexpr CString( CString && ) noexcept = default;
+		constexpr CString &operator=( CString && ) noexcept = default;
 
 		void swap( CString &rhs ) noexcept {
-			using std::swap;
-			swap( m_data, rhs.m_data );
-			swap( m_size, rhs.m_size );
-			swap( m_local_string, rhs.m_local_string );
+			daw::cswap( m_data, rhs.m_data );
+			daw::cswap( m_size, rhs.m_size );
+			daw::cswap( m_local_string, rhs.m_local_string );
 		}
 
 		~CString( ) noexcept {

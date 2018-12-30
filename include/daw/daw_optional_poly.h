@@ -130,8 +130,8 @@ namespace daw {
 			return *this;
 		}
 
-		friend void swap( optional_poly &lhs, optional_poly &rhs ) noexcept {
-			lhs.m_value.swap( rhs.m_value );
+		void swap( optional_poly &rhs ) noexcept {
+			m_value.swap( rhs.m_value );
 		}
 
 		bool empty( ) const noexcept {
@@ -173,8 +173,12 @@ namespace daw {
 		void reset( ) {
 			m_value.reset( );
 		}
-
 	}; // class optional_poly
+
+	template<typename T>
+	void swap( daw::optional_poly<T> & lhs, daw::optional_poly<T> & rhs ) noexcept {
+		lhs.swap( rhs );
+	}
 
 	template<typename T, typename... Args>
 	auto make_optional_poly( Args &&... args ) {

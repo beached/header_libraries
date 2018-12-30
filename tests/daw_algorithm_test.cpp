@@ -661,14 +661,6 @@ BOOST_AUTO_TEST_CASE( daw_equal_test_008 ) {
 	                          []( auto lhs, auto rhs ) { return lhs == rhs; } ) );
 }
 
-BOOST_AUTO_TEST_CASE( daw_swapper_test_001 ) {
-	std::string a{"a"};
-	std::string b{"b"};
-	daw::algorithm::swapper( a, b );
-	BOOST_REQUIRE_EQUAL( a, "b" );
-	BOOST_REQUIRE_EQUAL( b, "a" );
-}
-
 BOOST_AUTO_TEST_CASE( daw_rotate_test_001 ) {
 	std::vector<int> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	daw::algorithm::rotate( a.begin( ), std::next( a.begin( ), 5 ), a.end( ) );

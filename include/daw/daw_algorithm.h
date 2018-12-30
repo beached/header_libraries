@@ -34,6 +34,7 @@
 
 #include "cpp_17.h"
 #include "daw_exception.h"
+#include "daw_swap.h"
 #include "daw_traits.h"
 #include "impl/daw_math_impl.h"
 
@@ -517,6 +518,34 @@ namespace daw {
 			return are_equal( v1, v2 ) and are_equal( others... );
 		}
 
+		/// @brief Performs a left rotation on a range of elements.
+		/// @tparam ForwardIterator type of Iterator for items in range
+		/// @tparam LastType type that is equal to ForwardIterator when end of range
+		/// reached
+		/// @param first first item in range
+		/// @param middle middle of range, first item in new range
+		/// @param last last item in range
+		template<typename ForwardIterator, typename LastType>
+		constexpr void rotate(
+		  ForwardIterator first, ForwardIterator middle,
+		  LastType last ) noexcept( noexcept( daw::cswap( *first, *middle ) ) ) {
+
+			traits::is_forward_access_iterator_test<ForwardIterator>( );
+			traits::is_inout_iterator_test<ForwardIterator>( );
+
+			ForwardIterator tmp = middle;
+			while( first != tmp ) {
+				daw::cswap( *first, *tmp );
+				++first;
+				++tmp;
+				if( tmp == last ) {
+					tmp = middle;
+				} else if( first == middle ) {
+					middle = tmp;
+				}
+			}
+		}
+
 		template<typename ForwardIterator>
 		constexpr std::pair<ForwardIterator, ForwardIterator>
 		slide( ForwardIterator first, ForwardIterator last,
@@ -526,11 +555,11 @@ namespace daw {
 			traits::is_input_iterator_test<ForwardIterator>( );
 
 			if( target < first ) {
-				return std::make_pair( target, std::rotate( target, first, last ) );
+				return std::make_pair( target, daw::algorithm::rotate( target, first, last ) );
 			}
 
 			if( last < target ) {
-				return std::make_pair( std::rotate( first, last, target ), target );
+				return std::make_pair( daw::algorithm::rotate( first, last, target ), target );
 			}
 
 			return std::make_pair( first, last );
@@ -967,12 +996,14 @@ namespace daw {
 		/// @return true of range 1 is lexigraphically less than range 2 using
 		/// supplied comparison
 		template<typename InputIterator1, typename LastType1,
-		         typename InputIterator2, typename LastType2, typename Compare = std::less<>>
+		         typename InputIterator2, typename LastType2,
+		         typename Compare = std::less<>>
 		constexpr bool lexicographical_compare(
 		  InputIterator1 first1, LastType1 last1, InputIterator2 first2,
 		  LastType2 last2,
 		  Compare comp = Compare{} ) noexcept( noexcept( comp( *first1, *first2 ) !=
-		                                     comp( *first2, *first1 ) ) ) {
+		                                                 comp( *first2,
+		                                                       *first1 ) ) ) {
 
 			traits::is_input_iterator_test<InputIterator1>( );
 			traits::is_input_iterator_test<InputIterator2>( );
@@ -995,8 +1026,13 @@ namespace daw {
 		}
 
 		template<typename InputIterator1, typename LastType1,
-		         typename InputIterator2, typename LastType2, typename LessCompare = std::less<>, typename Equality = std::equal_to<>>
-		constexpr int compare_range( InputIterator1 first1, LastType1 last1, InputIterator2 first2, LastType2 last2, LessCompare less_comp = LessCompare{}, Equality eq = Equality{}) {
+		         typename InputIterator2, typename LastType2,
+		         typename LessCompare = std::less<>,
+		         typename Equality = std::equal_to<>>
+		constexpr int compare_range( InputIterator1 first1, LastType1 last1,
+		                             InputIterator2 first2, LastType2 last2,
+		                             LessCompare less_comp = LessCompare{},
+		                             Equality eq = Equality{} ) {
 			while( first1 != last1 and first2 != last2 ) {
 				if( !daw::invoke( eq, *first1, *first2 ) ) {
 					if( daw::invoke( less_comp, *first1, *first2 ) ) {
@@ -1015,7 +1051,6 @@ namespace daw {
 			}
 			return 1;
 		}
-
 
 		/// @brief Apply the TransformFunction on the value referenced by range
 		/// [first, last) when the predicate returns true for that value
@@ -1363,53 +1398,6 @@ namespace daw {
 			return !( first1 != last1 ) and !( first2 != last2 );
 		}
 
-		/// @brief constexpr version of std::swap
-		/// @tparam T first type to swap
-		/// @tparam U second type to swap
-		/// @param lhs first value to swap
-		/// @param rhs second value to swap
-		template<typename T, typename U,
-		         std::enable_if_t<
-		           all_true_v<is_convertible_v<T, U>, is_convertible_v<U, T>>,
-		           std::nullptr_t> = nullptr>
-		[[deprecated( "Use std::swap" )]] constexpr void
-		swapper( T &lhs, U &rhs ) noexcept(
-		  is_nothrow_move_assignable_v<T> and is_nothrow_move_assignable_v<U> ) {
-
-			auto tmp = std::move( lhs );
-			lhs = std::move( rhs );
-			rhs = std::move( tmp );
-		}
-
-		/// @brief Performs a left rotation on a range of elements.
-		/// @tparam ForwardIterator type of Iterator for items in range
-		/// @tparam LastType type that is equal to ForwardIterator when end of range
-		/// reached
-		/// @param first first item in range
-		/// @param middle middle of range, first item in new range
-		/// @param last last item in range
-		template<typename ForwardIterator, typename LastType>
-		constexpr void
-		rotate( ForwardIterator first, ForwardIterator middle,
-		        LastType last ) noexcept( noexcept( swapper( *first, *middle ) ) ) {
-
-			traits::is_forward_access_iterator_test<ForwardIterator>( );
-			traits::is_inout_iterator_test<ForwardIterator>( );
-
-			ForwardIterator tmp = middle;
-			while( first != tmp ) {
-				using std::swap;
-				swap( *first, *tmp );
-				++first;
-				++tmp;
-				if( tmp == last ) {
-					tmp = middle;
-				} else if( first == middle ) {
-					middle = tmp;
-				}
-			}
-		}
-
 		/// @brief Returns an iterator pointing to the first element in the range
 		/// [first, last) that is greater than value, or last if no such element is
 		/// found.
@@ -1451,8 +1439,8 @@ namespace daw {
 		constexpr void nth_element(
 		  RandomIterator first, RandomIterator nth, RandomIterator const last,
 		  Compare comp = Compare{} ) noexcept( noexcept( comp( *first, *nth ) ) &&
-		                                       noexcept( swapper( *first,
-		                                                          *nth ) ) ) {
+		                                       noexcept( daw::cswap( *first,
+		                                                             *nth ) ) ) {
 
 			traits::is_random_access_iterator_test<RandomIterator>( );
 			traits::is_inout_iterator_test<RandomIterator>( );
@@ -1468,7 +1456,7 @@ namespace daw {
 				while( j != last ) {
 					if( daw::invoke( comp, *j, *min_idx ) ) {
 						min_idx = j;
-						swapper( *first, *min_idx );
+						daw::cswap( *first, *min_idx );
 					}
 					++j;
 				}
@@ -1640,12 +1628,12 @@ namespace daw {
 		                                                          *first2 ) ) ) ) {
 
 			static_assert( traits::is_iterator_v<InputIterator1>,
-			               "Iterator1 passed to rotate does not meet the "
+			               "Iterator1 passed to map_reduce does not meet the "
 			               "requirements of the Iterator concept "
 			               "http://en.cppreference.com/w/cpp/concept/Iterator" );
 
 			static_assert( traits::is_iterator_v<InputIterator2>,
-			               "Iterator2 passed to rotate does not meet the "
+			               "Iterator2 passed to map_reduce does not meet the "
 			               "requirements of the Iterator concept "
 			               "http://en.cppreference.com/w/cpp/concept/Iterator" );
 
@@ -1682,13 +1670,13 @@ namespace daw {
 
 			static_assert(
 			  traits::is_forward_access_iterator_v<ForwardIterator1>,
-			  "ForwardIterator1 passed to rotate does not meet the requirements of "
+			  "ForwardIterator1 passed to search does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
 
 			static_assert(
 			  traits::is_forward_access_iterator_v<ForwardIterator2>,
-			  "ForwardIterator2 passed to rotate does not meet the requirements of "
+			  "ForwardIterator2 passed to search does not meet the requirements of "
 			  "the ForwardIterator concept "
 			  "http://en.cppreference.com/w/cpp/concept/ForwardIterator" );
 
@@ -1724,7 +1712,7 @@ namespace daw {
 		}
 
 		template<typename InputIterator, typename LastType, typename T,
-		         typename BinaryOperation = std::plus<>>
+		         typename BinaryOperation = std::plus<>, std::enable_if_t<!daw::traits::is_container_like_v<InputIterator>, std::nullptr_t> = nullptr>
 		constexpr T accumulate(
 		  InputIterator first, LastType last, T init,
 		  BinaryOperation binary_op =
@@ -1732,7 +1720,7 @@ namespace daw {
 		                                                       *first ) ) ) {
 
 			static_assert( traits::is_iterator_v<InputIterator>,
-			               "Iterator passed to rotate does not meet the requirements "
+			               "Iterator passed to accumulate does not meet the requirements "
 			               "of the Iterator concept "
 			               "http://en.cppreference.com/w/cpp/concept/Iterator" );
 
@@ -2005,8 +1993,6 @@ namespace daw {
 			}
 			return first_out;
 		}
-#include <algorithm>
-#include <functional>
 
 		namespace algorithm_impl {
 			template<intmax_t Pos0, intmax_t Pos1, typename Iterator,
@@ -2016,9 +2002,10 @@ namespace daw {
 				auto const f = std::next( first, Pos0 );
 				auto const l = std::next( first, Pos1 );
 				if( !comp( *f, *l ) ) {
-					std::iter_swap( f, l );
+					daw::iter_swap( f, l );
 				}
 			}
 		} // namespace algorithm_impl
-	} // namespace algorithm
+	}   // namespace algorithm
 } // namespace daw
+

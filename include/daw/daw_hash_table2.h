@@ -28,6 +28,7 @@
 #include "daw_exception.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_heap_array.h"
+#include "daw_swap.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -172,8 +173,7 @@ namespace daw {
 					new_tbl[m_hashes[n]] = std::move( m_values[n] );
 				}
 			}
-			using std::swap;
-			swap( *this, new_tbl );
+			daw::cswap( *this, new_tbl );
 		}
 
 		void resize_tables( ) {
@@ -203,16 +203,9 @@ namespace daw {
 			daw::exception::daw_throw_on_false( m_values.size( ) > 0 );
 		}
 
-		hash_table( hash_table const & ) = default;
-		hash_table( hash_table && ) noexcept = default;
-		hash_table &operator=( hash_table const & ) = default;
-		hash_table &operator=( hash_table && ) noexcept = default;
-		~hash_table( ) = default;
-
 		void swap( hash_table &rhs ) noexcept {
-			using std::swap;
-			swap( m_hashes, rhs.m_hashes );
-			swap( m_values, rhs.m_values );
+			daw::cswap( m_hashes, rhs.m_hashes );
+			daw::cswap( m_values, rhs.m_values );
 		}
 
 		template<typename Key>

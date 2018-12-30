@@ -27,6 +27,7 @@
 #include <utility>
 
 #include "daw_exception.h"
+#include "daw_swap.h"
 
 namespace daw {
 	template<typename T>
@@ -65,14 +66,14 @@ namespace daw {
 		}
 
 		constexpr heap_array( heap_array &&other ) noexcept
-		  : m_begin{std::exchange( other.m_begin, nullptr )}
-		  , m_end{std::exchange( other.m_begin, nullptr )}
-		  , m_size{std::exchange( other.m_size, 0 )} {}
+		  : m_begin( daw::exchange( other.m_begin, nullptr ) )
+		  , m_end( daw::exchange( other.m_begin, nullptr ) )
+		  , m_size( daw::exchange( other.m_size, 0ULL ) ) {}
 
 		constexpr heap_array &operator=( heap_array &&rhs ) noexcept {
-			m_begin = std::exchange( rhs.m_begin, nullptr );
-			m_end = std::exchange( rhs.m_end, nullptr );
-			m_size = std::exchange( rhs.m_size, 0 );
+			m_begin = daw::exchange( rhs.m_begin, nullptr );
+			m_end = daw::exchange( rhs.m_end, nullptr );
+			m_size = daw::exchange( rhs.m_size, 0ULL );
 			return *this;
 		}
 
@@ -101,8 +102,7 @@ namespace daw {
 		heap_array &operator=( std::initializer_list<value_type> const &values ) {
 			heap_array tmp( values.size( ) );
 			std::copy_n( values.begin( ), values.size( ), tmp.m_begin );
-			using std::swap;
-			swap( *this, tmp );
+			daw::cswap( *this, tmp );
 			return *this;
 		}
 
@@ -116,7 +116,7 @@ namespace daw {
 
 		constexpr void clear( ) noexcept {
 			if( nullptr != m_begin ) {
-				auto tmp = std::exchange( m_begin, nullptr );
+				auto tmp = daw::exchange( m_begin, nullptr );
 				m_size = 0;
 				m_end = nullptr;
 				delete[] tmp;
@@ -124,10 +124,9 @@ namespace daw {
 		}
 
 		constexpr void swap( heap_array &rhs ) noexcept {
-			using std::swap;
-			swap( m_begin, rhs.m_begin );
-			swap( m_end, rhs.m_end );
-			swap( m_size, rhs.m_size );
+			daw::cswap( m_begin, rhs.m_begin );
+			daw::cswap( m_end, rhs.m_end );
+			daw::cswap( m_size, rhs.m_size );
 		}
 
 		~heap_array( ) {

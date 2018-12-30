@@ -27,6 +27,7 @@
 
 #include "cpp_17.h"
 #include "daw_exception.h"
+#include "daw_swap.h"
 
 namespace daw {
 	template<typename T>
@@ -51,7 +52,7 @@ namespace daw {
 		}
 
 		constexpr void clear( ) {
-			auto tmp = std::exchange( m_data, nullptr );
+			auto tmp = daw::exchange( m_data, nullptr );
 			m_size = 0;
 			if( tmp ) {
 				delete[] tmp;
@@ -61,8 +62,8 @@ namespace daw {
 	public:
 		constexpr unique_array_t( ) noexcept = default;
 		constexpr unique_array_t( unique_array_t &&other ) noexcept
-		  : m_data( std::exchange( other.m_data, nullptr ) )
-		  , m_size( std::exchange( other.m_size, 0 ) ) {}
+		  : m_data( daw::exchange( other.m_data, nullptr ) )
+		  , m_size( daw::exchange( other.m_size, 0 ) ) {}
 
 		constexpr unique_array_t &operator=( unique_array_t &&rhs ) noexcept {
 			if( this == &rhs ) {
@@ -72,8 +73,8 @@ namespace daw {
 			if( !rhs.m_data ) {
 				return *this;
 			}
-			m_data = std::exchange( rhs.m_data, nullptr );
-			m_size = std::exchange( rhs.m_size, 0 );
+			m_data = daw::exchange( rhs.m_data, nullptr );
+			m_size = daw::exchange( rhs.m_size, 0 );
 			return *this;
 		}
 

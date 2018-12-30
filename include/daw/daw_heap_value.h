@@ -25,6 +25,7 @@
 #include <memory>
 #include <type_traits>
 
+#include "daw_swap.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -40,9 +41,14 @@ namespace daw {
 		using pointer = value_t *;
 		using const_pointer = value_t *const;
 
-		std::unique_ptr<value_t> m_value;
+		std::unique_ptr<value_t> m_value{std::make_unique<value_t>( )};
 
 	public:
+		heap_value( ) = default;
+		heap_value( heap_value && ) noexcept = default;
+		heap_value &operator=( heap_value && ) noexcept = default;
+		~heap_value( ) = default;
+
 		heap_value( heap_value const &other )
 		  : m_value{std::make_unique<value_t>( *other.m_value )} {}
 
@@ -52,13 +58,6 @@ namespace daw {
 			}
 			return *this;
 		}
-
-		heap_value( )
-		  : m_value{std::make_unique<value_t>( )} {}
-
-		heap_value( heap_value && ) = default;
-		heap_value &operator=( heap_value && ) = default;
-		~heap_value( ) = default;
 
 		// Make this less perfect so that we can still do copy/move construction
 		template<typename Arg, typename = std::enable_if_t<
@@ -71,9 +70,8 @@ namespace daw {
 		  : m_value{std::make_unique<value_t>( std::forward<Arg>( arg ),
 		                                       std::forward<Args>( args )... )} {}
 
-		friend void swap( heap_value &lhs, heap_value &rhs ) noexcept {
-			using std::swap;
-			swap( lhs.m_value, rhs.m_value );
+		void swap( heap_value &rhs ) noexcept {
+			daw::cswap( m_value, rhs.m_value );
 		}
 
 		reference get( ) {
@@ -128,6 +126,11 @@ namespace daw {
 			return m_value->operator[]( std::forward<Args>( args )... );
 		}
 	};
+
+	template<typename T>
+	void swap( heap_value<T> &lhs, heap_value<T> &rhs ) noexcept {
+		lhs.swap( rhs );
+	}
 
 	template<typename T, typename U>
 	bool operator==( heap_value<T> const &lhs, heap_value<U> const &rhs ) {

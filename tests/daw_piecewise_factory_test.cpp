@@ -55,6 +55,12 @@ constexpr A test_002( ) noexcept {
 	tmp.set( 1, 6 );
 	return tmp( );
 }
+constexpr bool test_002_test( ) noexcept {
+	A a{ 5, 6 };
+	auto const tmp = test_002( );
+	return a.a == tmp.a and a.b == tmp.b;
+}
+static_assert( test_002_test( ) );
 
 B test_003( ) noexcept {
 	auto tmp = daw::piecewise_factory_t<B, int, int, std::string>{};
@@ -71,18 +77,18 @@ constexpr A test_004( ) noexcept {
 	return std::move( tmp )( );
 }
 
-constexpr extern A const a = test_002( );
-constexpr extern A const b = test_004( );
+constexpr bool test_004_test( ) noexcept {
+	A a{ 5, 6 };
+	auto const tmp = test_004( );
+	return a.a == tmp.a and a.b == tmp.b;
+}
+static_assert( test_004_test( ) );
 
 int main( ) {
 	B c = test_001( );
 	if( c.c != "Hello" ) {
 		return 3;
 	}
-	static_assert( a.a == 5 );
-	static_assert( a.b == 6 );
-	static_assert( b.a == 5 );
-	static_assert( b.b == 6 );
 	B d = test_003( );
 	if( d.c != "Hello" ) {
 		return 1;

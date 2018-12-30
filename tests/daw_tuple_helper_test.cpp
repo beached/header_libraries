@@ -27,10 +27,10 @@
 #include "daw/boost_test.h"
 #include "daw/daw_tuple_helper.h"
 
-using namespace daw::tuple::operators;
 using namespace daw::tuple;
 
 BOOST_AUTO_TEST_CASE( daw_tuple_operators001 ) {
+	using namespace daw::tuple::operators;
 	auto t1 = std::make_tuple( 1.0, 2.0, 3.0 );
 	auto res1 = t1 * 2.0;
 	auto res2 = 2.0 * t1;
@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE( daw_tuple_helpers_001 ) {
 
 BOOST_AUTO_TEST_CASE( runtime_get_test_001 ) {
 	constexpr auto tp = std::make_tuple( "hello", 3ULL, 3.545, true );
-	auto i = 0;
-	daw::tuple::apply_at( 1, tp, [&i]( int value ) { i = value; } );
+	auto i = 0ULL;
+	daw::tuple::apply_at( tp, 1, [&i]( unsigned long long value ) { i = value; } );
 	BOOST_REQUIRE_EQUAL( 3, i );
 }

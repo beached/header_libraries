@@ -69,8 +69,8 @@ namespace {
 			auto x = daw::construct_from<X, int, int64_t, uint64_t>(
 			  "1,-14334,3434234", "," );
 			daw::expecting( x.a, 1 );
-			daw::expecting( x.b, -14334 );
-			daw::expecting( x.c, 3434234 );
+			daw::expecting( x.b, -14334LL );
+			daw::expecting( x.c, 3434234ULL );
 			return true;
 		}( ) );
 	} // namespace daw_values_from_stream_004_ns

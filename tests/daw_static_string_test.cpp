@@ -183,7 +183,7 @@ namespace daw {
 
 	BOOST_AUTO_TEST_CASE( tc002 ) {
 		std::string str = "Hello world";
-		daw::static_string view = str;
+		auto view = static_cast<daw::static_string>( str );
 
 		BOOST_TEST_MESSAGE( "Constructs a non-empty string" );
 		{ BOOST_REQUIRE( FALSE( view.empty( ) ) ); }
@@ -719,7 +719,7 @@ namespace daw {
 
 	BOOST_AUTO_TEST_CASE( daw_static_string_split_005 ) {
 		std::string b_str;
-		daw::static_string b = b_str;
+		daw::static_string b = static_cast<daw::static_string>( b_str );
 		auto const str_splt = split( b, "," );
 		BOOST_REQUIRE( str_splt.empty( ) );
 	}

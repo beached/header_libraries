@@ -29,6 +29,7 @@
 #include <memory>
 
 #include "daw_string_view.h"
+#include "daw_swap.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -117,12 +118,10 @@ namespace daw {
 				  static_cast<boost::iostreams::stream_offset>( position ) );
 			}
 
-			friend void swap( memory_mapped_file_t &lhs,
-			                  memory_mapped_file_t &rhs ) noexcept {
-				using std::swap;
-				swap( lhs.m_file_path, rhs.m_file_path );
-				swap( lhs.m_mf_params, rhs.m_mf_params );
-				swap( lhs.m_mf_file, rhs.m_mf_file );
+			void swap( memory_mapped_file_t &rhs ) noexcept {
+				daw::cswap( m_file_path, rhs.m_file_path );
+				daw::cswap( m_mf_params, rhs.m_mf_params );
+				daw::cswap( m_mf_file, rhs.m_mf_file );
 			}
 
 			size_t size( ) const {
@@ -155,6 +154,11 @@ namespace daw {
 				  std::next( m_mf_file.data( ), size( ) ) );
 			}
 		}; // memory_mapped_file_t
+
+		template<typename T>
+		void swap( memory_mapped_file_t<T> & lhs, memory_mapped_file_t<T> & rhs ) noexcept {
+			lhs.swap( rhs );
+		}
 
 		template<typename T>
 		using MemoryMappedFile = memory_mapped_file_t<T>;

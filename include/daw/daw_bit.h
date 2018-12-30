@@ -25,6 +25,7 @@
 #include <limits>
 
 #include "daw_traits.h"
+#include "daw_utility.h"
 
 namespace daw {
 	template<typename T>

@@ -67,7 +67,7 @@ namespace daw {
 		using difference_type = std::ptrdiff_t;
 
 	private:
-		daw::fixed_stack_t<CharT, Capacity + 1> m_data;
+		daw::fixed_stack_t<CharT, Capacity + 1> m_data{};
 
 	public:
 		static constexpr size_type_internal const npos =
@@ -77,8 +77,9 @@ namespace daw {
 		  Capacity <= static_cast<size_t>( npos ),
 		  "InternalSizeType is insufficient to represent capacity of string" );
 
-		constexpr basic_static_string( ) noexcept
-		  : m_data{} {}
+		// Constructors
+
+		constexpr basic_static_string( ) noexcept = default;
 
 		constexpr basic_static_string( std::nullptr_t ) noexcept = delete;
 		constexpr basic_static_string( std::nullptr_t,
@@ -93,18 +94,10 @@ namespace daw {
 		  : m_data( str.data( ), daw::min( count, N ) ) {}
 
 #ifndef NOSTRING
-		template<typename Allocator>
+		template<typename Tr, typename Al>
 		explicit basic_static_string(
-		  std::basic_string<CharT, Traits, Allocator> const &str ) noexcept
-		  : m_data( str.data( ), str.size( ) ) {}
-
-		template<typename ChrT, typename TrtsT, typename Allocator>
-		explicit basic_static_string(
-		  std::basic_string<ChrT, TrtsT, Allocator> const &str ) noexcept
+		  std::basic_string<CharT, Tr, Al> const &str ) noexcept
 		  : m_data( str.data( ), static_cast<size_type_internal>( str.size( ) ) ) {}
-
-		explicit basic_static_string( std::basic_string<CharT, Traits> const &str ) noexcept
-		  : m_data( str.data( ), str.size( ) ) {}
 #endif
 		// TODO: determine if I want this or not
 		// basic_static_string( std::basic_string<CharT, Traits> &&str ) noexcept =
@@ -112,14 +105,20 @@ namespace daw {
 
 		constexpr basic_static_string( const_pointer str_ptr ) noexcept
 		  : m_data( str_ptr, details::strlen<size_type_internal>( str_ptr ) ) {}
+
+		template<size_t Len>
+		constexpr basic_static_string( const_pointer ( &str_ptr )[Len] ) noexcept
+		  : m_data( str_ptr, Len - 1 ) {}
+
+		// End of Construtors
 #ifndef NOSTRING
-		operator std::basic_string<CharT, Traits>( ) const {
+		operator std::basic_string<CharT>( ) const {
 			return to_string( );
 		}
 #endif
 		operator daw::basic_string_view<CharT, Traits>( ) const {
-			return daw::basic_string_view<CharT, Traits>{m_data.data( ),
-			                                             m_data.size( )};
+			return daw::basic_string_view<CharT, Traits>( m_data.data( ),
+			                                              m_data.size( ) );
 		}
 
 		constexpr bool full( ) noexcept {
@@ -205,10 +204,10 @@ namespace daw {
 		}
 
 #ifndef NOSTRING
-		template<typename ChrT, typename TrtsT, typename Allocator>
-		basic_static_string &
-		operator=( std::basic_string<ChrT, TrtsT, Allocator> const &str ) noexcept {
-			m_data = basic_static_string{str.data( ), str.size( )};
+		template<typename TrtsT, typename Allocator>
+		basic_static_string &operator=(
+		  std::basic_string<CharT, TrtsT, Allocator> const &str ) noexcept {
+			m_data = basic_static_string( str.data( ), str.size( ) );
 			return *this;
 		}
 #endif
@@ -349,7 +348,6 @@ namespace daw {
 		}
 
 		constexpr void swap( basic_static_string &v ) noexcept {
-			using std::swap;
 			swap( m_data, v.m_data );
 		}
 
@@ -665,6 +663,12 @@ namespace daw {
 		}
 	}; // basic_static_string
 
+	template<typename CharT, size_t N>
+	constexpr void swap( basic_static_string<CharT, N> &lhs,
+	                     basic_static_string<CharT, N> &rhs ) noexcept {
+		lhs.swap( rhs );
+	}
+
 	using static_string = basic_static_string<char, 100>;
 	using wstatic_string = basic_static_string<wchar_t, 100>;
 	using u16static_string = basic_static_string<char16_t, 100>;
@@ -895,42 +899,42 @@ namespace daw {
 	constexpr bool
 	operator==( daw::basic_static_string<CharT, Capacity, Traits> const &lhs,
 	            std::basic_string<CharT, Traits> const &rhs ) noexcept {
-		return lhs.compare( rhs ) == 0;
+		return lhs.compare( static_cast<daw::basic_static_string<CharT, Capacity, Traits>>( rhs ) ) == 0;
 	}
 
 	template<typename CharT, size_t Capacity, typename Traits>
 	constexpr bool
 	operator!=( daw::basic_static_string<CharT, Capacity, Traits> const &lhs,
 	            std::basic_string<CharT, Traits> const &rhs ) noexcept {
-		return lhs.compare( rhs ) != 0;
+		return lhs.compare( static_cast<daw::basic_static_string<CharT, Capacity, Traits>>( rhs ) ) != 0;
 	}
 
 	template<typename CharT, size_t Capacity, typename Traits>
 	constexpr bool
 	operator<( daw::basic_static_string<CharT, Capacity, Traits> const &lhs,
 	           std::basic_string<CharT, Traits> const &rhs ) noexcept {
-		return lhs.compare( rhs ) < 0;
+		return lhs.compare( static_cast<daw::basic_static_string<CharT, Capacity, Traits>>( rhs ) ) < 0;
 	}
 
 	template<typename CharT, size_t Capacity, typename Traits>
 	constexpr bool
 	operator<=( daw::basic_static_string<CharT, Capacity, Traits> const &lhs,
 	            std::basic_string<CharT, Traits> const &rhs ) noexcept {
-		return lhs.compare( rhs ) <= 0;
+		return lhs.compare( static_cast<daw::basic_static_string<CharT, Capacity, Traits>>( rhs ) ) <= 0;
 	}
 
 	template<typename CharT, size_t Capacity, typename Traits>
 	constexpr bool
 	operator>( daw::basic_static_string<CharT, Capacity, Traits> const &lhs,
 	           std::basic_string<CharT, Traits> const &rhs ) noexcept {
-		return lhs.compare( rhs ) > 0;
+		return lhs.compare( static_cast<daw::basic_static_string<CharT, Capacity, Traits>>( rhs ) ) > 0;
 	}
 
 	template<typename CharT, size_t Capacity, typename Traits>
 	constexpr bool
 	operator>=( daw::basic_static_string<CharT, Capacity, Traits> const &lhs,
 	            std::basic_string<CharT, Traits> const &rhs ) noexcept {
-		return lhs.compare( rhs ) >= 0;
+		return lhs.compare( static_cast<daw::basic_static_string<CharT, Capacity, Traits>>( rhs ) ) >= 0;
 	}
 
 	// std::basic_string / daw::basic_static_string

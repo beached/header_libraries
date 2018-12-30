@@ -33,12 +33,13 @@
 #include <initializer_list>
 #include <limits>
 #include <memory>
+#include <optional>
 #include <random>
 #include <string>
+#include <string_view>
 #include <tuple>
 #include <type_traits>
 #include <utility>
-#include <variant>
 #include <vector>
 
 #include "cpp_17.h"
@@ -47,18 +48,19 @@
 #include "daw_overload.h"
 #include "daw_random.h"
 #include "daw_traits.h"
+#include "daw_visit.h"
 
 namespace daw {
-	 /// Convert a value to an rvalue.
-	 /// \param  value  A thing of arbitrary type.
-	 /// \return The parameter cast to an rvalue-reference to allow moving it.
-	 template<typename T,
-	          std::enable_if_t<!std::is_const_v<std::remove_reference_t<T>>,
-	                           std::nullptr_t> = nullptr>
-	 constexpr std::remove_reference_t<T> &&move( T &&value ) noexcept {
+	/// Convert a value to an rvalue.
+	/// \param  value  A thing of arbitrary type.
+	/// \return The parameter cast to an rvalue-reference to allow moving it.
+	template<typename T,
+	         std::enable_if_t<!std::is_const_v<std::remove_reference_t<T>>,
+	                          std::nullptr_t> = nullptr>
+	constexpr std::remove_reference_t<T> &&move( T &&value ) noexcept {
 
-		 return static_cast<typename std::remove_reference_t<T> &&>( value );
-	 }
+		return static_cast<typename std::remove_reference_t<T> &&>( value );
+	}
 
 	namespace impl {
 		template<typename ResultType, typename... ArgTypes>
@@ -529,9 +531,20 @@ namespace daw {
 		}
 	}
 
+#ifdef __clang__
+#ifndef __ICC // icpc defines the __clang__ macro
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wextra-semi-stmt"
+#endif
+#endif
 	constexpr void breakpoint( ) noexcept {
 		;
 	}
+#ifdef __clang__
+#ifndef __ICC // icpc defines the __clang__ macro
+#pragma clang diagnostic pop
+#endif
+#endif
 
 	template<typename Iterator1, typename Iterator2, typename OutputIterator>
 	constexpr OutputIterator cxpr_copy( Iterator1 first_in,
@@ -907,72 +920,6 @@ namespace daw {
 		       value < std::forward<UpperBound>( upper );
 	}
 
-	// A variant
-	template<size_t, size_t, typename R, typename... Args>
-	[[noreturn]] constexpr R visit_nt( Args &&... ) noexcept {
-		// This will never be called, it is there to ensure the non-called path will
-		// look like it can be called
-		std::terminate( );
-	}
-
-	template<size_t N, size_t MaxN, typename R, typename Variant,
-	         typename Visitor,
-	         std::enable_if_t<( N < MaxN ), std::nullptr_t> = nullptr>
-	constexpr R visit_nt( Variant &&var, Visitor &&vis ) {
-		if( var.index( ) == N ) {
-			return daw::invoke( std::forward<Visitor>( vis ),
-			                    std::get<N>( std::forward<Variant>( var ) ) );
-		}
-		return visit_nt<N + 1, MaxN, R>( std::forward<Variant>( var ),
-		                                 std::forward<Visitor>( vis ) );
-	}
-
-	template<class... Args, typename Visitor, typename... Visitors>
-	constexpr decltype( auto ) visit_nt( std::variant<Args...> const &var,
-	                                     Visitor &&vis,
-	                                     Visitors &&... visitors ) {
-		auto ol = daw::overload( std::forward<Visitor>( vis ),
-		                         std::forward<Visitors>( visitors )... );
-		using result_t =
-		  decltype( daw::invoke( std::move( ol ), std::get<0>( var ) ) );
-
-		if( var.index( ) == 0 ) {
-			return daw::invoke( std::move( ol ), std::get<0>( var ) );
-		}
-		return visit_nt<1, sizeof...( Args ), result_t>( var, std::move( ol ) );
-	}
-
-	template<class... Args, typename Visitor, typename... Visitors>
-	constexpr decltype( auto ) visit_nt( std::variant<Args...> &var,
-	                                     Visitor &&vis,
-	                                     Visitors &&... visitors ) {
-		auto ol = daw::overload( std::forward<Visitor>( vis ),
-		                         std::forward<Visitors>( visitors )... );
-		using result_t =
-		  decltype( daw::invoke( std::move( ol ), std::get<0>( var ) ) );
-
-		if( var.index( ) == 0 ) {
-			return daw::invoke( std::move( ol ), std::get<0>( var ) );
-		}
-		return visit_nt<1, sizeof...( Args ), result_t>( var, std::move( ol ) );
-	}
-
-	template<class... Args, typename Visitor, typename... Visitors>
-	constexpr decltype( auto ) visit_nt( std::variant<Args...> &&var,
-	                                     Visitor &&vis,
-	                                     Visitors &&... visitors ) {
-		auto ol = daw::overload( std::forward<Visitor>( vis ),
-		                         std::forward<Visitors>( visitors )... );
-		using result_t = decltype(
-		  daw::invoke( std::move( ol ), std::move( std::get<0>( var ) ) ) );
-
-		if( var.index( ) == 0 ) {
-			return daw::invoke( std::move( ol ), std::get<0>( std::move( var ) ) );
-		}
-		return visit_nt<1, sizeof...( Args ), result_t>( std::move( var ),
-		                                                 std::move( ol ) );
-	}
-
 	template<typename T>
 	class mutable_capture {
 		mutable T m_value;
@@ -1044,3 +991,4 @@ namespace daw {
 
 template<typename... Ts>
 constexpr void Unused( Ts &&... ) noexcept {}
+

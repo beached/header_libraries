@@ -140,9 +140,9 @@ namespace daw {
 			return std::exchange( m_value, nullptr );
 		}
 
-		friend void swap( value_ptr &lhs, value_ptr &rhs ) noexcept {
-			using std::swap;
-			swap( lhs.m_value, rhs.m_value );
+		void swap( value_ptr &rhs ) noexcept {
+			auto tmp = m_value;
+			m_value = std::exchange( rhs.m_value, tmp );
 		}
 
 		pointer get( ) noexcept {
@@ -177,6 +177,11 @@ namespace daw {
 			return *m_value;
 		}
 	};
+
+	template<typename T>
+	void swap( value_ptr<T> & lhs, value_ptr<T> & rhs ) noexcept {
+		lhs.swap( rhs );
+	}
 
 	namespace value_ptr_impl {
 		template<typename T, typename U>

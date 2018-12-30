@@ -26,6 +26,7 @@
 #include "daw_algorithm.h"
 #include "daw_math.h"
 #include "daw_static_array.h"
+#include "daw_swap.h"
 
 namespace daw {
 	template<typename T, size_t N>

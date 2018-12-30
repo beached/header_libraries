@@ -25,6 +25,7 @@
 #include <random>
 
 #include "daw_exception.h"
+#include "daw_swap.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -76,8 +77,7 @@ namespace daw {
 
 		diff_t n = last - first;
 		for( diff_t i = n - 1; i > 0; --i ) {
-			using std::swap;
-			swap( first[i], first[randint<diff_t>( 0, i )] );
+			daw::cswap( first[i], first[randint<diff_t>( 0, i )] );
 		}
 	}
 

@@ -356,13 +356,6 @@ namespace daw {
 	CXINLINE bool is_detected_convertible_v =
 	  is_detected_convertible<To, Op, Args...>::value;
 
-	template<typename T, typename U = T>
-	constexpr T exchange( T &obj, U &&new_value ) noexcept {
-		T old_value = std::move( obj );
-		obj = std::forward<U>( new_value );
-		return old_value;
-	}
-
 	template<typename Container>
 	constexpr decltype( auto )
 	size( Container const &c ) noexcept( noexcept( c.size( ) ) ) {
@@ -474,6 +467,17 @@ namespace daw {
 
 	template<typename F, typename... ArgTypes>
 	constexpr decltype( auto ) invoke( F &&f, ArgTypes &&... args )
+	  // exception specification for QoI
+	  noexcept( noexcept( impl::INVOKE( std::forward<F>( f ),
+	                                    std::forward<ArgTypes>( args )... ) ) ) {
+
+		return impl::INVOKE( std::forward<F>( f ),
+		                     std::forward<ArgTypes>( args )... );
+	}
+
+	template<typename F, typename... ArgTypes>
+	constexpr decltype( auto ) invoke( F &&f,
+	                                   std::reference_wrapper<ArgTypes>... args )
 	  // exception specification for QoI
 	  noexcept( noexcept( impl::INVOKE( std::forward<F>( f ),
 	                                    std::forward<ArgTypes>( args )... ) ) ) {
@@ -744,10 +748,5 @@ namespace daw {
 
 		return std::forward<T>( v );
 	}
-
-	template<class ForwardIterator1, class ForwardIterator2>
-	constexpr void iter_swap( ForwardIterator1 lhs, ForwardIterator2 rhs ) {
-		using std::swap;
-		swap( *lhs, *rhs );
-	}
 } // namespace daw
+

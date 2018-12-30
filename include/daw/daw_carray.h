@@ -30,18 +30,10 @@
 
 #include "daw_algorithm.h"
 #include "daw_exception.h"
+#include "daw_swap.h"
 
 namespace daw {
 	namespace details {
-		template<typename T>
-		constexpr void
-		swap( T &lhs,
-		      T &rhs ) noexcept( noexcept( T( std::declval<T const &>( ) ) ) ) {
-			T tmp = lhs;
-			lhs = std::move( rhs );
-			rhs = std::move( tmp );
-		}
-
 		template<typename T, typename Arg>
 		constexpr void assign_to( T *ptr, Arg &&arg ) noexcept(
 		  noexcept( T( std::declval<Arg &&>( ) ) ) ) {
@@ -237,19 +229,10 @@ namespace daw {
 		  noexcept( T( std::declval<T const &>( ) ) ) ) {
 			std::fill( begin( ), end( ), value );
 		}
-
-		constexpr void swap( carray &rhs ) noexcept( noexcept(
-		  details::swap( std::declval<T &>( ), std::declval<T &>( ) ) ) ) {
-			using details::swap;
-			for( size_t n = 0; n < N; ++n ) {
-				swap( ptr( )[n], rhs.ptr( )[n] );
-			}
-		}
 	}; // carray
 
 	template<typename T, size_t N>
-	constexpr void swap( carray<T, N> &lhs, carray<T, N> &rhs ) noexcept(
-	  noexcept( details::swap( std::declval<T &>( ), std::declval<T &>( ) ) ) ) {
-		lhs.swap( rhs );
+	constexpr void swap( carray<T, N> &lhs, carray<T, N> &rhs ) noexcept( std::is_nothrow_move_assignable_v<T> ) {
+		daw::swap_ranges( lhs.begin( ), lhs.end( ), rhs.begin( ) );
 	}
 } // namespace daw

@@ -31,6 +31,7 @@
 #include <utility>
 
 #include "daw_exception.h"
+#include "daw_swap.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -347,8 +348,7 @@ namespace daw {
 	constexpr void swap( static_optional<T> &lhs,
 	                     static_optional<T> &rhs ) noexcept {
 		auto tmp = std::move( lhs );
-		lhs = std::move( rhs );
-		rhs = std::move( tmp );
+		lhs = daw::exchange( std::move( rhs ), std::move( tmp ) );
 	}
 
 	template<typename T, typename... Args>

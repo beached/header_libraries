@@ -96,7 +96,7 @@ set( TESTED_HEADERS_PREFIXES_NB
   daw_parse_to
 	daw_piecewise_factory
 	daw_sort_n
-	daw_static_bitset
+	#	daw_static_bitset
 	daw_static_hash_map
 	daw_span
 	daw_view
@@ -110,6 +110,7 @@ set( UNTESTED_HEADER_IMPL
 	daw_math_impl
 	daw_traits_concepts
 	daw_traits_impl
+	daw_visit
 )
 
 set( TESTED_PARALLEL_HEADERS_PREFIXES

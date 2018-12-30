@@ -34,6 +34,7 @@
 #include "daw_overload.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
+#include "daw_visit.h"
 
 namespace daw {
 	template<class T>
@@ -160,7 +161,7 @@ namespace daw {
 			  "Visitor must be callable with the variants expected value_type &" );
 			static_assert( traits::is_callable_v<Visitor, std::exception_ptr>,
 			               "Visitor must be callable with std::exception_ptr" );
-			return std::visit( std::forward<Visitor>( visitor ), m_value );
+			return daw::visit_nt( m_value, std::forward<Visitor>( visitor ) );
 		}
 
 		template<typename Visitor>
@@ -170,23 +171,19 @@ namespace daw {
 			               "value_type const &" );
 			static_assert( traits::is_callable_v<Visitor, std::exception_ptr>,
 			               "Visitor must be callable with std::exception_ptr" );
-			return std::visit( std::forward<Visitor>( visitor ), m_value );
+			return daw::visit_nt( m_value, std::forward<Visitor>( visitor ) );
 		}
 
 		bool has_value( ) const {
-			return std::visit(
-			  daw::overload( []( value_type const & ) noexcept { return true; },
-			                 []( std::exception_ptr ) noexcept { return false; } ),
-			  m_value );
+			return daw::visit_nt(
+			  m_value, []( value_type const & ) noexcept { return true; },
+			  []( std::exception_ptr ) noexcept { return false; } );
 		}
 
 		bool has_exception( ) const {
-			return std::visit(
-			  overload( []( value_type const & ) noexcept { return false; },
-			            []( std::exception_ptr ptr ) noexcept {
-				            return ( ptr != nullptr );
-			            } ),
-			  m_value );
+			return daw::visit_nt(
+			  m_value, []( value_type const & ) noexcept { return false; },
+			  []( std::exception_ptr ptr ) noexcept { return ( ptr != nullptr ); } );
 		}
 
 		std::exception_ptr get_exception_ptr( ) {
@@ -194,12 +191,9 @@ namespace daw {
 		}
 
 		bool empty( ) const {
-			return std::visit(
-			  overload( []( value_type const & ) noexcept { return false; },
-			            []( std::exception_ptr ptr ) noexcept {
-				            return ( ptr == nullptr );
-			            } ),
-			  m_value );
+			return daw::visit_nt(
+			  m_value, []( value_type const & ) noexcept { return false; },
+			  []( std::exception_ptr ptr ) noexcept { return ( ptr == nullptr ); } );
 		}
 
 		explicit operator bool( ) const {
@@ -211,42 +205,37 @@ namespace daw {
 		}
 
 		void throw_if_exception( ) const {
-			std::visit( overload( []( value_type const & ) noexcept {},
-			                      []( std::exception_ptr ptr ) {
-				                      if( ptr != nullptr ) {
-					                      std::rethrow_exception( ptr );
-				                      }
-			                      } ),
-			            m_value );
+			daw::visit_nt( m_value, []( value_type const & ) noexcept {},
+			               []( std::exception_ptr ptr ) {
+				               if( ptr != nullptr ) {
+					               std::rethrow_exception( ptr );
+				               }
+			               } );
 		}
 
 		reference get( ) {
-			return std::visit(
-			  daw::overload(
-			    []( reference value ) noexcept->reference { return value; },
-			    []( std::exception_ptr ptr ) -> reference {
-				    if( ptr != nullptr ) {
-					    std::rethrow_exception( ptr );
-				    }
-				    daw::exception::daw_throw<std::logic_error>(
-				      "Unexpected empty state" );
-			    } ),
-			  m_value );
+			return daw::visit_nt(
+			  m_value, []( reference value ) noexcept->reference { return value; },
+			  []( std::exception_ptr ptr ) -> reference {
+				  if( ptr != nullptr ) {
+					  std::rethrow_exception( ptr );
+				  }
+				  daw::exception::daw_throw<std::logic_error>(
+				    "Unexpected empty state" );
+			  } );
 		}
 
 		const_reference get( ) const {
-			return std::visit(
-			  daw::overload( []( const_reference value ) noexcept->const_reference {
-				  return value;
-			  },
-			                 []( std::exception_ptr ptr ) -> const_reference {
-				                 if( ptr != nullptr ) {
-					                 std::rethrow_exception( ptr );
-				                 }
-				                 daw::exception::daw_throw<std::logic_error>(
-				                   "Unexpected empty state" );
-			                 } ),
-			  m_value );
+			return daw::visit_nt(
+			  m_value,
+			  []( const_reference value ) noexcept->const_reference { return value; },
+			  []( std::exception_ptr ptr ) -> const_reference {
+				  if( ptr != nullptr ) {
+					  std::rethrow_exception( ptr );
+				  }
+				  daw::exception::daw_throw<std::logic_error>(
+				    "Unexpected empty state" );
+			  } );
 		}
 
 		reference operator*( ) {
@@ -258,29 +247,26 @@ namespace daw {
 		}
 
 		pointer operator->( ) {
-			return std::visit(
-			  daw::overload( []( reference value ) noexcept->pointer {
-				  return std::addressof( value );
-			  },
-			                 []( std::exception_ptr ptr ) -> pointer {
-				                 std::rethrow_exception( ptr );
-			                 } ),
-			  m_value );
+			return daw::visit_nt( m_value, []( reference value ) noexcept->pointer {
+				return std::addressof( value );
+			},
+			                      []( std::exception_ptr ptr ) -> pointer {
+				                      std::rethrow_exception( ptr );
+			                      } );
 		}
 
 		const_pointer operator->( ) const {
-			return std::visit(
-			  daw::overload( []( const_reference value ) noexcept->const_pointer {
+			return daw::visit_nt(
+			  m_value, []( const_reference value ) noexcept->const_pointer {
 				  return std::addressof( value );
 			  },
-			                 []( std::exception_ptr ptr ) -> const_pointer {
-				                 if( ptr != nullptr ) {
-					                 std::rethrow_exception( ptr );
-				                 }
-				                 daw::exception::daw_throw<std::logic_error>(
-				                   "Unexpected empty state" );
-			                 } ),
-			  m_value );
+			  []( std::exception_ptr ptr ) -> const_pointer {
+				  if( ptr != nullptr ) {
+					  std::rethrow_exception( ptr );
+				  }
+				  daw::exception::daw_throw<std::logic_error>(
+				    "Unexpected empty state" );
+			  } );
 		}
 
 		std::string get_exception_message( ) const {
@@ -411,14 +397,13 @@ namespace daw {
 			               "Visitor must be callable without arguments" );
 			static_assert( traits::is_callable_v<Visitor, std::exception_ptr>,
 			               "Visitor must be callable with std::exception_ptr" );
-			auto const vis =
-			  daw::overload( [&]( value_type const & ) mutable noexcept(
-			                   noexcept( visitor( ) ) ) { return visitor( ); },
-			                 [&]( value_type && ) mutable noexcept(
-			                   noexcept( visitor( ) ) ) { return visitor( ); },
-			                 [&]( std::exception_ptr ptr ) mutable noexcept( noexcept(
-			                   visitor( ptr ) ) ) { return visitor( ptr ); } );
-			return std::visit( vis, m_value );
+			return daw::visit_nt( m_value,
+			               [&]( value_type const & ) mutable noexcept(
+			                 noexcept( visitor( ) ) ) { return visitor( ); },
+			               [&]( value_type && ) mutable noexcept(
+			                 noexcept( visitor( ) ) ) { return visitor( ); },
+			               [&]( std::exception_ptr ptr ) mutable noexcept( noexcept(
+			                 visitor( ptr ) ) ) { return visitor( ptr ); } );
 		}
 
 		template<typename Visitor>
@@ -427,29 +412,23 @@ namespace daw {
 			               "Visitor must be callable without arguments" );
 			static_assert( traits::is_callable_v<Visitor, std::exception_ptr>,
 			               "Visitor must be callable with std::exception_ptr" );
-			auto const vis =
-			  daw::overload( [&]( value_type const & ) noexcept(
-			                   noexcept( visitor( ) ) ) { return visitor( ); },
-			                 [&]( std::exception_ptr ptr ) noexcept( noexcept(
-			                   visitor( ptr ) ) ) { return visitor( ptr ); } );
-
-			return std::visit( vis, m_value );
+			return daw::visit_nt( m_value,
+			               [&]( value_type const & ) noexcept(
+			                 noexcept( visitor( ) ) ) { return visitor( ); },
+			               [&]( std::exception_ptr ptr ) noexcept( noexcept(
+			                 visitor( ptr ) ) ) { return visitor( ptr ); } );
 		}
 
 		bool has_value( ) const noexcept {
-			return std::visit(
-			  overload( []( value_type const & ) noexcept { return true; },
-			            []( std::exception_ptr ) noexcept { return false; } ),
-			  m_value );
+			return daw::visit_nt(
+			  m_value, []( value_type const & ) noexcept { return true; },
+			  []( std::exception_ptr ) noexcept { return false; } );
 		}
 
 		bool has_exception( ) const noexcept {
-			return std::visit(
-			  overload( []( value_type const & ) noexcept { return false; },
-			            []( std::exception_ptr ptr ) noexcept {
-				            return ( ptr != nullptr );
-			            } ),
-			  m_value );
+			return daw::visit_nt(
+			  m_value, []( value_type const & ) noexcept { return false; },
+			  []( std::exception_ptr ptr ) noexcept { return ( ptr != nullptr ); } );
 		}
 
 		std::exception_ptr get_exception_ptr( ) {
@@ -457,12 +436,9 @@ namespace daw {
 		}
 
 		bool empty( ) const noexcept {
-			return std::visit(
-			  overload( []( value_type const & ) noexcept { return false; },
-			            []( std::exception_ptr ptr ) noexcept {
-				            return ( ptr == nullptr );
-			            } ),
-			  m_value );
+			return daw::visit_nt(
+			  m_value, []( value_type const & ) noexcept { return false; },
+			  []( std::exception_ptr ptr ) noexcept { return ( ptr == nullptr ); } );
 		}
 
 		explicit operator bool( ) const noexcept {
@@ -470,25 +446,23 @@ namespace daw {
 		}
 
 		void throw_if_exception( ) const {
-			std::visit( overload( []( value_type const & ) noexcept {},
-			                      []( std::exception_ptr ptr ) {
-				                      if( ptr != nullptr ) {
-					                      std::rethrow_exception( ptr );
-				                      }
-			                      } ),
-			            m_value );
+			daw::visit_nt( m_value, []( value_type const & ) noexcept {},
+			               []( std::exception_ptr ptr ) {
+				               if( ptr != nullptr ) {
+					               std::rethrow_exception( ptr );
+				               }
+			               } );
 		}
 
 		void get( ) const {
-			std::visit( overload( []( value_type const & ) noexcept {},
-			                      []( std::exception_ptr ptr ) {
-				                      if( ptr != nullptr ) {
-					                      std::rethrow_exception( ptr );
-				                      }
-				                      daw::exception::daw_throw<std::logic_error>(
-				                        "Unexpected empty state" );
-			                      } ),
-			            m_value );
+			daw::visit_nt( m_value, []( value_type const & ) noexcept {},
+			               []( std::exception_ptr ptr ) {
+				               if( ptr != nullptr ) {
+					               std::rethrow_exception( ptr );
+				               }
+				               daw::exception::daw_throw<std::logic_error>(
+				                 "Unexpected empty state" );
+			               } );
 		}
 
 		std::string get_exception_message( ) const noexcept {
@@ -532,3 +506,4 @@ namespace daw {
 		return expected_t<Result>( ptr );
 	}
 } // namespace daw
+
