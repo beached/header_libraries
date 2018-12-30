@@ -58,21 +58,23 @@ namespace daw {
 				  std::ref( std::get<Tpos>( std::forward<Tuple>( tp ) ) ) );
 			}
 		} // namespace thlp_impl
+	}   // namespace tuple
 
-		template<typename... Args>
-		constexpr auto get( std::tuple<Args...> &tp, size_t index ) noexcept {
-			using result_t =
-			  std::variant<std::reference_wrapper<std::remove_reference_t<Args>>...>;
-			return thlp_impl::get_impl<0, result_t>( tp, index );
-		}
+	template<typename... Args>
+	constexpr auto get( std::tuple<Args...> &tp, size_t index ) noexcept {
+		using result_t =
+		  std::variant<std::reference_wrapper<std::remove_reference_t<Args>>...>;
+		return ::daw::tuple::thlp_impl::get_impl<0, result_t>( tp, index );
+	}
 
-		template<typename... Args>
-		constexpr auto get( std::tuple<Args...> const &tp, size_t index ) noexcept {
-			using result_t = std::variant<
-			  std::reference_wrapper<std::remove_reference_t<Args> const>...>;
-			return thlp_impl::get_impl<0, result_t>( tp, index );
-		}
+	template<typename... Args>
+	constexpr auto get( std::tuple<Args...> const &tp, size_t index ) noexcept {
+		using result_t = std::variant<
+		  std::reference_wrapper<std::remove_reference_t<Args> const>...>;
+		return ::daw::tuple::thlp_impl::get_impl<0, result_t>( tp, index );
+	}
 
+	namespace tuple {
 		namespace thlp_impl {
 			template<typename T1, typename F>
 			constexpr bool for_each( T1 &&t1, F &&f ) {
@@ -441,10 +443,9 @@ namespace daw {
 			template<typename Tuple, typename Func, size_t... Is>
 			constexpr void apply_at_impl( Tuple &&tp, size_t index, Func &&func,
 			                              std::index_sequence<Is...> ) {
-				Unused(
-				  ( apply_func<Is>( index, func,
-				                    std::get<Is>( std::forward<Tuple>( tp ) ) ) &&
-				    ... ) );
+				Unused( ( apply_func<Is>( index, func,
+				                          std::get<Is>( std::forward<Tuple>( tp ) ) ) &&
+				          ... ) );
 			}
 		} // namespace apply_at_thlp_impls
 
