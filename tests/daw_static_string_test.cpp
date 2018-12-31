@@ -69,6 +69,7 @@ namespace daw {
 		daw::static_string a = "A test";
 		tmp_e result = tmp_e::b;
 		auto str = do_something( a, result );
+		::Unused( str );
 		BOOST_REQUIRE( result == tmp_e::a );
 	}
 
@@ -783,6 +784,7 @@ namespace daw {
 
 	BOOST_AUTO_TEST_CASE( daw_static_string_constexpr_001 ) {
 		constexpr daw::static_string a = "This is a test";
+		::Unused( a );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_static_string_overfull_001 ) {

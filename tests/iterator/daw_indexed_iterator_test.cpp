@@ -35,7 +35,7 @@ namespace {
 		return *f == 1;
 	}
 
-	static_assert( array_test_001, "" );
+	static_assert( array_test_001( ), "" );
 
 	constexpr bool array_test_002( ) noexcept {
 		std::array<int, 7> numbers = {1, 2, 3, 4, 5, 6, 7};
@@ -44,7 +44,7 @@ namespace {
 		return daw::distance( f, l ) == 7;
 	}
 
-	static_assert( array_test_002, "" );
+	static_assert( array_test_002( ), "" );
 
 	constexpr bool array_test_003( ) noexcept {
 		std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
@@ -52,7 +52,7 @@ namespace {
 		return *f == 1;
 	}
 
-	static_assert( array_test_003, "" );
+	static_assert( array_test_003( ), "" );
 
 	constexpr bool array_test_004( ) noexcept {
 		std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
@@ -61,7 +61,7 @@ namespace {
 		return daw::distance( f, l ) == 7;
 	}
 
-	static_assert( array_test_004, "" );
+	static_assert( array_test_004( ), "" );
 
 	constexpr bool array_test_005( ) noexcept {
 		std::array<int, 7> numbers = {1, 2, 3, 4, 5, 6, 7};
@@ -69,7 +69,7 @@ namespace {
 		return *f == 1;
 	}
 
-	static_assert( array_test_005, "" );
+	static_assert( array_test_005( ), "" );
 
 	constexpr bool array_test_006( ) noexcept {
 		std::array<int, 7> numbers = {1, 2, 3, 4, 5, 6, 7};
@@ -78,7 +78,7 @@ namespace {
 		return daw::distance( f, l ) == 7;
 	}
 
-	static_assert( array_test_006, "" );
+	static_assert( array_test_006( ), "" );
 
 	constexpr bool array_test_007( ) noexcept {
 		std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
@@ -86,7 +86,7 @@ namespace {
 		return *f == 1;
 	}
 
-	static_assert( array_test_007, "" );
+	static_assert( array_test_007( ), "" );
 
 	constexpr bool array_test_008( ) noexcept {
 		std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
@@ -95,7 +95,7 @@ namespace {
 		return daw::distance( f, l ) == 7;
 	}
 
-	static_assert( array_test_008, "" );
+	static_assert( array_test_008( ), "" );
 
 	constexpr bool inc_test_001( ) noexcept {
 		std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
@@ -104,7 +104,7 @@ namespace {
 		return *it == 2;
 	}
 
-	static_assert( inc_test_001, "" );
+	static_assert( inc_test_001( ), "" );
 
 	constexpr bool inc_test_002( ) noexcept {
 		std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
@@ -113,7 +113,7 @@ namespace {
 		return *it == 2;
 	}
 
-	static_assert( inc_test_002, "" );
+	static_assert( inc_test_002( ), "" );
 
 	constexpr bool inc_test_003( ) noexcept {
 		std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
@@ -122,7 +122,7 @@ namespace {
 		return *it == 3;
 	}
 
-	static_assert( inc_test_003, "" );
+	static_assert( inc_test_003( ), "" );
 
 	constexpr bool dec_test_001( ) noexcept {
 		std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
@@ -131,7 +131,7 @@ namespace {
 		return *it == 7;
 	}
 
-	static_assert( dec_test_001, "" );
+	static_assert( dec_test_001( ), "" );
 
 	constexpr bool dec_test_002( ) noexcept {
 		std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
@@ -140,7 +140,7 @@ namespace {
 		return *it == 7;
 	}
 
-	static_assert( dec_test_002, "" );
+	static_assert( dec_test_002( ), "" );
 
 	constexpr bool dec_test_003( ) noexcept {
 		std::array<int, 7> const numbers = {1, 2, 3, 4, 5, 6, 7};
@@ -149,7 +149,7 @@ namespace {
 		return *it == 6;
 	}
 
-	static_assert( dec_test_003, "" );
+	static_assert( dec_test_003( ), "" );
 
 	struct A {
 		constexpr bool t( ) const {

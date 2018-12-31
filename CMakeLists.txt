@@ -96,7 +96,7 @@ set( TESTED_HEADERS_PREFIXES_NB
   daw_parse_to
 	daw_piecewise_factory
 	daw_sort_n
-	daw_static_bitset
+#	daw_static_bitset
 	daw_static_hash_map
 	daw_span
 	daw_view

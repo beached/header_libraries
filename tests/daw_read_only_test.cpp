@@ -25,6 +25,7 @@
 #include "daw/boost_test.h"
 #include "daw/daw_read_only.h"
 #include "daw/daw_traits.h"
+#include "daw/daw_utility.h"
 
 namespace test_01 {
 	template<typename T>
@@ -54,6 +55,7 @@ namespace test_02 {
 		daw::read_only<int> c{2};
 		daw::read_only<int> d{1};
 		daw::read_only<int> e = 5;
+		::Unused( e );
 
 		daw::read_only<A> x{};
 		x->c( );

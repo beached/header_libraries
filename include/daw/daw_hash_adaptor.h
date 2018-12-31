@@ -40,7 +40,7 @@ namespace daw {
 	class hash_adaptor_t {
 		std::vector<std::optional<Key>> m_indices;
 
-		std::optional<size_t> find_index( size_t hash, Key const &key ) {
+		std::optional<size_t> find_index( size_t hash, Key const &key ) const {
 			size_t const scaled_hash = scale_hash( hash, m_indices.size( ) );
 
 			for( size_t n = scaled_hash; n < m_indices.size( ); ++n ) {
