@@ -84,7 +84,7 @@ namespace daw {
 			return m_values[*index];
 		}
 
-		constexpr bool count( Key const &key ) noexcept {
+		constexpr bool count( Key const &key ) const noexcept {
 			return m_hashes.count( key );
 		}
 
