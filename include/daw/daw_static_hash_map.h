@@ -60,7 +60,7 @@ namespace daw {
 			m_values[index] = std::forward<V>( value );
 		}
 
-		constexpr bool exists( Key const &key ) noexcept {
+		constexpr bool exists( Key const &key ) const noexcept {
 			return m_hashes.exists( key );
 		}
 
