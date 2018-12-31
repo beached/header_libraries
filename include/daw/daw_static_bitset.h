@@ -103,7 +103,7 @@ namespace daw {
 			} else if( bw < bsizeof<value_t> ) {
 				bw = bsizeof<value_t> - bw;
 			}
-			if( bw ==  ) {
+			if( bw == ) {
 				return std::numeric_limits<value_t>::max( );
 			}
 			return daw::mask_msb<value_t>( bw );
@@ -205,8 +205,7 @@ namespace daw {
 		/// \param value lowest bytes in bitset
 		/// \param values bytes in bitset from lowest(left) to highest(right)
 		template<typename... Unsigned>
-		explicit static_bitset( uintmax_t value,
-		                                  Unsigned... values ) noexcept
+		explicit static_bitset( uintmax_t value, Unsigned... values ) noexcept
 		  : m_data{value, values...} {
 
 			// Ensure that we do not have any data on the high bits that should not

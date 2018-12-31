@@ -176,7 +176,7 @@ namespace daw {
 	}; // class optional_poly
 
 	template<typename T>
-	void swap( daw::optional_poly<T> & lhs, daw::optional_poly<T> & rhs ) noexcept {
+	void swap( daw::optional_poly<T> &lhs, daw::optional_poly<T> &rhs ) noexcept {
 		lhs.swap( rhs );
 	}
 

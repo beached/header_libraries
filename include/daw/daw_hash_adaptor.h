@@ -40,7 +40,7 @@ namespace daw {
 	class hash_adaptor_t {
 		std::vector<std::optional<Key>> m_indices;
 
-		std::optional<size_t> find_index( size_t hash, Key const & key ) {
+		std::optional<size_t> find_index( size_t hash, Key const &key ) {
 			size_t const scaled_hash = scale_hash( hash, m_indices.size( ) );
 
 			for( size_t n = scaled_hash; n < m_indices.size( ); ++n ) {
@@ -89,15 +89,16 @@ namespace daw {
 		bool exists( Key const &key ) noexcept {
 			auto const hash = Hash{}( key );
 			auto const index = find_index( hash, key );
-			return static_cast<bool>( index ) and static_cast<bool>( m_indices[*index] );
+			return static_cast<bool>( index ) and
+			       static_cast<bool>( m_indices[*index] );
 		}
 
-		bool count( Key const & key ) noexcept {
+		bool count( Key const &key ) noexcept {
 			return exists( key ) ? 1 : 0;
 		}
 
 		size_t capacity( ) const noexcept {
-			return m_indices.size( ); 
+			return m_indices.size( );
 		}
 
 		size_t size( ) const noexcept {
@@ -113,7 +114,8 @@ namespace daw {
 	class static_hash_adaptor_t {
 		std::array<std::pair<Key, bool>, Capacity> m_indices{};
 
-		constexpr std::optional<size_t> find_index( size_t hash, Key const & key ) const {
+		constexpr std::optional<size_t> find_index( size_t hash,
+		                                            Key const &key ) const {
 			size_t const scaled_hash = scale_hash( hash, m_indices.size( ) );
 
 			for( size_t n = scaled_hash; n < m_indices.size( ); ++n ) {
@@ -134,8 +136,8 @@ namespace daw {
 			}
 			return {};
 		}
-	public:
 
+	public:
 		constexpr static_hash_adaptor_t( ) noexcept = default;
 
 		constexpr std::optional<size_t> find( Key const &key ) const noexcept {
@@ -172,7 +174,7 @@ namespace daw {
 			return static_cast<bool>( index ) and m_indices[*index].second;
 		}
 
-		constexpr bool count( Key const & key ) noexcept {
+		constexpr bool count( Key const &key ) noexcept {
 			return exists( key ) ? 1 : 0;
 		}
 
@@ -183,10 +185,7 @@ namespace daw {
 		constexpr size_t size( ) const noexcept {
 			return daw::algorithm::accumulate(
 			  std::begin( m_indices ), std::end( m_indices ), 0ULL,
-			  []( auto const &opt ) {
-				  return opt.second ? 1ULL : 0ULL;
-			  } );
+			  []( auto const &opt ) { return opt.second ? 1ULL : 0ULL; } );
 		}
 	};
 } // namespace daw
-

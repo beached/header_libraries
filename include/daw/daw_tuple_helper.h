@@ -54,7 +54,7 @@ namespace daw {
 				if( index != Tpos ) {
 					return get_impl<Tpos + 1, Result>( std::forward<Tuple>( tp ), index );
 				}
-				return Result(
+				return daw::construct_a<Result>{}(
 				  std::ref( std::get<Tpos>( std::forward<Tuple>( tp ) ) ) );
 			}
 		} // namespace thlp_impl

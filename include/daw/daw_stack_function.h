@@ -202,7 +202,7 @@ namespace daw {
 					return {empty_child( )};
 				}
 			} else if constexpr( func_impl::is_boolable_v<Func> ) {
-#if defined(__GNUC__) && !defined(__clang__)
+#if defined( __GNUC__ ) && !defined( __clang__ )
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wnonnull-compare"
 #pragma GCC diagnostic ignored "-Waddress"
@@ -210,7 +210,7 @@ namespace daw {
 				if( !static_cast<bool>( f ) ) {
 					return {empty_child( )};
 				}
-#if defined(__GNUC__) && !defined(__clang__)
+#if defined( __GNUC__ ) && !defined( __clang__ )
 #pragma GCC diagnostic pop
 #endif
 			}

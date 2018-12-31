@@ -555,11 +555,13 @@ namespace daw {
 			traits::is_input_iterator_test<ForwardIterator>( );
 
 			if( target < first ) {
-				return std::make_pair( target, daw::algorithm::rotate( target, first, last ) );
+				return std::make_pair( target,
+				                       daw::algorithm::rotate( target, first, last ) );
 			}
 
 			if( last < target ) {
-				return std::make_pair( daw::algorithm::rotate( first, last, target ), target );
+				return std::make_pair( daw::algorithm::rotate( first, last, target ),
+				                       target );
 			}
 
 			return std::make_pair( first, last );
@@ -1712,17 +1714,20 @@ namespace daw {
 		}
 
 		template<typename InputIterator, typename LastType, typename T,
-		         typename BinaryOperation = std::plus<>, std::enable_if_t<!daw::traits::is_container_like_v<InputIterator>, std::nullptr_t> = nullptr>
+		         typename BinaryOperation = std::plus<>,
+		         std::enable_if_t<!daw::traits::is_container_like_v<InputIterator>,
+		                          std::nullptr_t> = nullptr>
 		constexpr T accumulate(
 		  InputIterator first, LastType last, T init,
 		  BinaryOperation binary_op =
 		    BinaryOperation{} ) noexcept( noexcept( binary_op( std::move( init ),
 		                                                       *first ) ) ) {
 
-			static_assert( traits::is_iterator_v<InputIterator>,
-			               "Iterator passed to accumulate does not meet the requirements "
-			               "of the Iterator concept "
-			               "http://en.cppreference.com/w/cpp/concept/Iterator" );
+			static_assert(
+			  traits::is_iterator_v<InputIterator>,
+			  "Iterator passed to accumulate does not meet the requirements "
+			  "of the Iterator concept "
+			  "http://en.cppreference.com/w/cpp/concept/Iterator" );
 
 			while( first != last ) {
 				init = daw::invoke( binary_op, std::move( init ), *first );
@@ -2008,4 +2013,3 @@ namespace daw {
 		} // namespace algorithm_impl
 	}   // namespace algorithm
 } // namespace daw
-

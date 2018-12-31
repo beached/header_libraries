@@ -397,13 +397,16 @@ namespace daw {
 			               "Visitor must be callable without arguments" );
 			static_assert( traits::is_callable_v<Visitor, std::exception_ptr>,
 			               "Visitor must be callable with std::exception_ptr" );
-			return daw::visit_nt( m_value,
-			               [&]( value_type const & ) mutable noexcept(
-			                 noexcept( visitor( ) ) ) { return visitor( ); },
-			               [&]( value_type && ) mutable noexcept(
-			                 noexcept( visitor( ) ) ) { return visitor( ); },
-			               [&]( std::exception_ptr ptr ) mutable noexcept( noexcept(
-			                 visitor( ptr ) ) ) { return visitor( ptr ); } );
+			return daw::visit_nt(
+			  m_value,
+			  [&]( value_type const & ) mutable noexcept( noexcept( visitor( ) ) ) {
+				  return visitor( );
+			  },
+			  [&]( value_type && ) mutable noexcept( noexcept( visitor( ) ) ) {
+				  return visitor( );
+			  },
+			  [&]( std::exception_ptr ptr ) mutable noexcept(
+			    noexcept( visitor( ptr ) ) ) { return visitor( ptr ); } );
 		}
 
 		template<typename Visitor>
@@ -413,10 +416,10 @@ namespace daw {
 			static_assert( traits::is_callable_v<Visitor, std::exception_ptr>,
 			               "Visitor must be callable with std::exception_ptr" );
 			return daw::visit_nt( m_value,
-			               [&]( value_type const & ) noexcept(
-			                 noexcept( visitor( ) ) ) { return visitor( ); },
-			               [&]( std::exception_ptr ptr ) noexcept( noexcept(
-			                 visitor( ptr ) ) ) { return visitor( ptr ); } );
+			                      [&]( value_type const & ) noexcept(
+			                        noexcept( visitor( ) ) ) { return visitor( ); },
+			                      [&]( std::exception_ptr ptr ) noexcept( noexcept(
+			                        visitor( ptr ) ) ) { return visitor( ptr ); } );
 		}
 
 		bool has_value( ) const noexcept {
@@ -506,4 +509,3 @@ namespace daw {
 		return expected_t<Result>( ptr );
 	}
 } // namespace daw
-

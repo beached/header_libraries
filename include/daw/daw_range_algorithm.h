@@ -188,13 +188,14 @@ namespace daw {
 		}
 
 		template<typename Container, typename T, typename BinaryOperator,
-		         std::enable_if_t<
-		           daw::traits::is_container_like_v<std::remove_reference_t<Container>>,
-		           std::nullptr_t> = nullptr>
+		         std::enable_if_t<daw::traits::is_container_like_v<
+		                            std::remove_reference_t<Container>>,
+		                          std::nullptr_t> = nullptr>
 		constexpr T accumulate( Container const &container, T init,
 		                        BinaryOperator oper ) {
-			return daw::algorithm::accumulate( std::begin( container ), std::end( container ),
-			                        std::move( init ), oper );
+			return daw::algorithm::accumulate( std::begin( container ),
+			                                   std::end( container ),
+			                                   std::move( init ), oper );
 		}
 
 		template<typename Container, typename UnaryOperator,

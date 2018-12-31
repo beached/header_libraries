@@ -97,10 +97,10 @@ namespace daw {
 		}
 	};
 
-	template<typename Key, typename Value, typename Hash=daw::fnv1a_hash_t, size_t N>
-	constexpr auto 
-	make_static_hash_map( std::pair<Key, Value> const (&items)[N] ) noexcept {
+	template<typename Key, typename Value, typename Hash = daw::fnv1a_hash_t,
+	         size_t N>
+	constexpr auto
+	make_static_hash_map( std::pair<Key, Value> const ( &items )[N] ) noexcept {
 		return static_hash_map<Key, Value, N>( items );
 	}
 } // namespace daw
-

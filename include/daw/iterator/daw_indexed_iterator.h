@@ -346,4 +346,3 @@ namespace daw {
 		return lhs.compare( rhs ) >= 0;
 	}
 } // namespace daw
-

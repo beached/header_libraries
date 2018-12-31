@@ -126,4 +126,3 @@ namespace daw {
 		daw::swap_ranges( lhs.begin( ), lhs.end( ), rhs.begin( ) );
 	}
 } // namespace daw
-

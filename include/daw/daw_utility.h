@@ -981,4 +981,3 @@ namespace daw {
 	template<typename T>
 	std::atomic<T> countable_resource_t<T>::m_resource_count = {};
 } // namespace daw
-

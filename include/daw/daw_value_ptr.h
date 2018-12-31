@@ -179,7 +179,7 @@ namespace daw {
 	};
 
 	template<typename T>
-	void swap( value_ptr<T> & lhs, value_ptr<T> & rhs ) noexcept {
+	void swap( value_ptr<T> &lhs, value_ptr<T> &rhs ) noexcept {
 		lhs.swap( rhs );
 	}
 

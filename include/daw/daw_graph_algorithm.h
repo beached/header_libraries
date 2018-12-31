@@ -183,7 +183,9 @@ namespace daw {
 				auto current_id = path.back( );
 				path.pop_back( );
 				if( visited.count( current_id.second ) > 0 ) {
-					daw::exception::precondition_check( current_id.first.has_value( ), "I assumed that the root would have been first visited");
+					daw::exception::precondition_check(
+					  current_id.first.has_value( ),
+					  "I assumed that the root would have been first visited" );
 					graph.remove_directed_edge( *current_id.first, current_id.second );
 					continue;
 				}

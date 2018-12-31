@@ -136,7 +136,8 @@ namespace daw {
 	};
 
 	template<typename T, typename Deleter>
-	constexpr	void swap( copiable_unique_ptr<T, Deleter> & lhs, copiable_unique_ptr<T, Deleter> & rhs ) noexcept {
+	constexpr void swap( copiable_unique_ptr<T, Deleter> &lhs,
+	                     copiable_unique_ptr<T, Deleter> &rhs ) noexcept {
 		lhs.swap( rhs );
 	}
 

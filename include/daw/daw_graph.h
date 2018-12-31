@@ -516,7 +516,7 @@ namespace daw {
 		template<typename Predicate>
 		std::vector<node_id_t> find( Predicate &&pred ) const {
 			std::vector<node_id_t> result{};
-			visit( pred, [&result]( auto const & node ) {
+			visit( pred, [&result]( auto const &node ) {
 				result.push_back( node.id( ) );
 			} );
 			return result;

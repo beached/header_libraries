@@ -156,7 +156,8 @@ namespace daw {
 		}; // memory_mapped_file_t
 
 		template<typename T>
-		void swap( memory_mapped_file_t<T> & lhs, memory_mapped_file_t<T> & rhs ) noexcept {
+		void swap( memory_mapped_file_t<T> &lhs,
+		           memory_mapped_file_t<T> &rhs ) noexcept {
 			lhs.swap( rhs );
 		}
 

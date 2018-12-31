@@ -232,7 +232,9 @@ namespace daw {
 	}; // carray
 
 	template<typename T, size_t N>
-	constexpr void swap( carray<T, N> &lhs, carray<T, N> &rhs ) noexcept( std::is_nothrow_move_assignable_v<T> ) {
+	constexpr void
+	swap( carray<T, N> &lhs,
+	      carray<T, N> &rhs ) noexcept( std::is_nothrow_move_assignable_v<T> ) {
 		daw::swap_ranges( lhs.begin( ), lhs.end( ), rhs.begin( ) );
 	}
 } // namespace daw

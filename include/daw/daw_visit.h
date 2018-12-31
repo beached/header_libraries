@@ -103,4 +103,3 @@ namespace daw {
 		                                                 std::move( ol ) );
 	}
 } // namespace daw
-

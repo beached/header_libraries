@@ -899,42 +899,54 @@ namespace daw {
 	constexpr bool
 	operator==( daw::basic_static_string<CharT, Capacity, Traits> const &lhs,
 	            std::basic_string<CharT, Traits> const &rhs ) noexcept {
-		return lhs.compare( static_cast<daw::basic_static_string<CharT, Capacity, Traits>>( rhs ) ) == 0;
+		return lhs.compare(
+		         static_cast<daw::basic_static_string<CharT, Capacity, Traits>>(
+		           rhs ) ) == 0;
 	}
 
 	template<typename CharT, size_t Capacity, typename Traits>
 	constexpr bool
 	operator!=( daw::basic_static_string<CharT, Capacity, Traits> const &lhs,
 	            std::basic_string<CharT, Traits> const &rhs ) noexcept {
-		return lhs.compare( static_cast<daw::basic_static_string<CharT, Capacity, Traits>>( rhs ) ) != 0;
+		return lhs.compare(
+		         static_cast<daw::basic_static_string<CharT, Capacity, Traits>>(
+		           rhs ) ) != 0;
 	}
 
 	template<typename CharT, size_t Capacity, typename Traits>
 	constexpr bool
 	operator<( daw::basic_static_string<CharT, Capacity, Traits> const &lhs,
 	           std::basic_string<CharT, Traits> const &rhs ) noexcept {
-		return lhs.compare( static_cast<daw::basic_static_string<CharT, Capacity, Traits>>( rhs ) ) < 0;
+		return lhs.compare(
+		         static_cast<daw::basic_static_string<CharT, Capacity, Traits>>(
+		           rhs ) ) < 0;
 	}
 
 	template<typename CharT, size_t Capacity, typename Traits>
 	constexpr bool
 	operator<=( daw::basic_static_string<CharT, Capacity, Traits> const &lhs,
 	            std::basic_string<CharT, Traits> const &rhs ) noexcept {
-		return lhs.compare( static_cast<daw::basic_static_string<CharT, Capacity, Traits>>( rhs ) ) <= 0;
+		return lhs.compare(
+		         static_cast<daw::basic_static_string<CharT, Capacity, Traits>>(
+		           rhs ) ) <= 0;
 	}
 
 	template<typename CharT, size_t Capacity, typename Traits>
 	constexpr bool
 	operator>( daw::basic_static_string<CharT, Capacity, Traits> const &lhs,
 	           std::basic_string<CharT, Traits> const &rhs ) noexcept {
-		return lhs.compare( static_cast<daw::basic_static_string<CharT, Capacity, Traits>>( rhs ) ) > 0;
+		return lhs.compare(
+		         static_cast<daw::basic_static_string<CharT, Capacity, Traits>>(
+		           rhs ) ) > 0;
 	}
 
 	template<typename CharT, size_t Capacity, typename Traits>
 	constexpr bool
 	operator>=( daw::basic_static_string<CharT, Capacity, Traits> const &lhs,
 	            std::basic_string<CharT, Traits> const &rhs ) noexcept {
-		return lhs.compare( static_cast<daw::basic_static_string<CharT, Capacity, Traits>>( rhs ) ) >= 0;
+		return lhs.compare(
+		         static_cast<daw::basic_static_string<CharT, Capacity, Traits>>(
+		           rhs ) ) >= 0;
 	}
 
 	// std::basic_string / daw::basic_static_string

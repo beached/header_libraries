@@ -24,8 +24,8 @@
 
 #include <utility>
 
-#include "daw_traits.h"
 #include "daw_swap.h"
+#include "daw_traits.h"
 
 namespace daw {
 	template<typename FunctionType>

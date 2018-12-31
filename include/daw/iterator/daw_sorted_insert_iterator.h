@@ -22,8 +22,8 @@
 
 #pragma once
 
-#include <functional>
 #include <deque>
+#include <functional>
 #include <list>
 #include <vector>
 
@@ -57,11 +57,10 @@ namespace daw {
 	                                              Compare compare = Compare{} ) {
 		return daw::make_function_iterator(
 		  [&c, compare = std::move( compare )]( auto &&value ) {
-			auto const pos = std::lower_bound( std::begin( c ), std::end( c ), value, compare );
-			c.emplace( pos, std::forward<decltype( value )>( value ) );
+			  auto const pos =
+			    std::lower_bound( std::begin( c ), std::end( c ), value, compare );
+			  c.emplace( pos, std::forward<decltype( value )>( value ) );
 		  } );
 	}
 
-
 } // namespace daw
-

@@ -648,8 +648,7 @@ namespace daw {
 		  : std::integral_constant<int, std::is_same<A, B>{} - 1> {};
 
 		template<typename T, typename... Pack>
-		struct pack_index_of<T, pack_list<Pack...>>
-			: pack_index_of<T, Pack...> {};
+		struct pack_index_of<T, pack_list<Pack...>> : pack_index_of<T, Pack...> {};
 
 		template<typename T, typename... Pack>
 		CXINLINE auto pack_index_of_v = pack_index_of<T, Pack...>::value;
