@@ -164,6 +164,7 @@ set( UNTESTED_HEADER_FILES
 	daw_range_type.h
 	daw_reference.h
 	daw_string_impl.h
+	daw_swap.h
 	daw_variant.h
 	daw_variant2.h
 	daw_visit.h
