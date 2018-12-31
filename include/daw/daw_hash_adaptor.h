@@ -86,14 +86,14 @@ namespace daw {
 			return index;
 		}
 
-		bool exists( Key const &key ) noexcept {
+		bool exists( Key const &key ) const noexcept {
 			auto const hash = Hash{}( key );
 			auto const index = find_index( hash, key );
 			return static_cast<bool>( index ) and
 			       static_cast<bool>( m_indices[*index] );
 		}
 
-		bool count( Key const &key ) noexcept {
+		bool count( Key const &key ) const noexcept {
 			return exists( key ) ? 1 : 0;
 		}
 
@@ -168,13 +168,13 @@ namespace daw {
 			return *index;
 		}
 
-		constexpr bool exists( Key const &key ) noexcept {
+		constexpr bool exists( Key const &key ) const noexcept {
 			auto const hash = Hash{}( key );
 			auto const index = find_index( hash, key );
 			return static_cast<bool>( index ) and m_indices[*index].second;
 		}
 
-		constexpr bool count( Key const &key ) noexcept {
+		constexpr bool count( Key const &key ) const noexcept {
 			return exists( key ) ? 1 : 0;
 		}
 
