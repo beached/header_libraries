@@ -465,14 +465,14 @@ namespace daw {
 		}
 	} // namespace impl
 
-	template<typename F, typename... ArgTypes>
-	constexpr decltype( auto ) invoke( F &&f, ArgTypes &&... args )
+	template<typename F, typename... Args, std::enable_if_t<!daw::all_true_v<is_reference_wrapper_v<Args>...>, std::nullptr_t> = nullptr>
+	constexpr decltype( auto ) invoke( F &&f, Args &&... args )
 	  // exception specification for QoI
 	  noexcept( noexcept( impl::INVOKE( std::forward<F>( f ),
-	                                    std::forward<ArgTypes>( args )... ) ) ) {
+	                                    std::forward<Args>( args )... ) ) ) {
 
 		return impl::INVOKE( std::forward<F>( f ),
-		                     std::forward<ArgTypes>( args )... );
+		                     std::forward<Args>( args )... );
 	}
 
 	template<typename F, typename... ArgTypes>
