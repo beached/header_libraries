@@ -27,6 +27,8 @@
 #include <limits>
 #include <type_traits>
 
+#include "daw_move.h"
+
 namespace daw {
 	enum class keep_n_order { ascending, descending };
 	namespace keep_n_impl {
@@ -41,7 +43,7 @@ namespace daw {
 			  : func( f ) {}
 			constexpr keep_n_pred( Function &&f ) noexcept(
 			  std::is_nothrow_move_constructible_v<Function> )
-			  : func( std::move( f ) ) {}
+			  : func( daw::move( f ) ) {}
 
 			template<typename... Args>
 			constexpr decltype( auto ) operator( )( Args &&... args ) {
@@ -95,7 +97,7 @@ namespace daw {
 			for( int n = 0; n < MaxItems; ++n ) {
 				if( m_pred( v, m_values[n] ) ) {
 					for( size_t m = MaxItems - 1; m > n; --m ) {
-						m_values[m] = std::move( m_values[m - 1] );
+						m_values[m] = daw::move( m_values[m - 1] );
 					}
 					m_values[n] = v;
 					break;
@@ -107,9 +109,9 @@ namespace daw {
 			for( size_t n = 0; n < MaxItems; ++n ) {
 				if( m_pred( v, m_values[n] ) ) {
 					for( size_t m = MaxItems - 1; m > n; --m ) {
-						m_values[m] = std::move( m_values[m - 1] );
+						m_values[m] = daw::move( m_values[m - 1] );
 					}
-					m_values[n] = std::move( v );
+					m_values[n] = daw::move( v );
 					break;
 				}
 			}

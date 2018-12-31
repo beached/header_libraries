@@ -25,6 +25,7 @@
 #include <limits>
 
 #include "daw_fnv1a_hash.h"
+#include "daw_move.h"
 
 namespace daw {
 	template<typename T, size_t Capacity>
@@ -42,8 +43,8 @@ namespace daw {
 			  , value{} {}
 
 			constexpr hash_item( size_t h, value_type v )
-			  : hash_value{std::move( h )}
-			  , value{std::move( v )} {}
+			  : hash_value{daw::move( h )}
+			  , value{daw::move( v )} {}
 
 		}; // hash_item
 
@@ -122,7 +123,7 @@ namespace daw {
 				auto const hash = hash_fn( item.first );
 				auto const pos = find_impl( hash );
 				m_values[pos].hash_value = hash;
-				m_values[pos].value = std::move( item.second );
+				m_values[pos].value = daw::move( item.second );
 			}
 		}
 
@@ -133,7 +134,7 @@ namespace daw {
 				auto const hash = hash_fn( item.first );
 				auto const pos = find_impl( hash );
 				m_values[pos].hash_value = hash;
-				m_values[pos].value = std::move( item.second );
+				m_values[pos].value = daw::move( item.second );
 			}
 		}
 

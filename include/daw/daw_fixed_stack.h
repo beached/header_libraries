@@ -25,6 +25,7 @@
 #include "cpp_17.h"
 #include "daw_algorithm.h"
 #include "daw_math.h"
+#include "daw_move.h"
 #include "daw_static_array.h"
 #include "daw_swap.h"
 
@@ -181,7 +182,7 @@ namespace daw {
 			if( can_move_front( 1 ) ) {
 				do_move_to_front( );
 			}
-			m_stack[m_index++] = std::move( value );
+			m_stack[m_index++] = daw::move( value );
 		}
 
 		constexpr void push_back( const_pointer ptr, size_type sz ) noexcept {

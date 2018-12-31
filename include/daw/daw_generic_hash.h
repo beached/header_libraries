@@ -30,6 +30,7 @@
 #include <utility>
 
 #include "cpp_17.h"
+#include "daw_move.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -239,7 +240,7 @@ namespace daw {
 	         typename Allocator>
 	auto
 	generic_hash( std::basic_string<CharT, Traits, Allocator> &&str ) noexcept {
-		auto tmp = std::move( str );
+		auto tmp = daw::move( str );
 		return generic_hash<HashBytes>( tmp.data( ), tmp.size( ) );
 	}
 #endif

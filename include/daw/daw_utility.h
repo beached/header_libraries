@@ -45,6 +45,7 @@
 #include "cpp_17.h"
 #include "daw_algorithm.h"
 #include "daw_exception.h"
+#include "daw_move.h"
 #include "daw_overload.h"
 #include "daw_random.h"
 #include "daw_traits.h"
@@ -54,17 +55,6 @@ template<typename... Ts>
 constexpr void Unused( Ts &&... ) noexcept {}
 
 namespace daw {
-	/// Convert a value to an rvalue.
-	/// \param  value  A thing of arbitrary type.
-	/// \return The parameter cast to an rvalue-reference to allow moving it.
-	template<typename T,
-	         std::enable_if_t<!std::is_const_v<std::remove_reference_t<T>>,
-	                          std::nullptr_t> = nullptr>
-	constexpr std::remove_reference_t<T> &&move( T &&value ) noexcept {
-
-		return static_cast<typename std::remove_reference_t<T> &&>( value );
-	}
-
 	namespace impl {
 		template<typename ResultType, typename... ArgTypes>
 		struct make_function_pointer_impl {
@@ -130,7 +120,7 @@ namespace daw {
 			constexpr EqualToImpl &operator=( EqualToImpl && ) noexcept = default;
 
 			constexpr EqualToImpl( T value )
-			  : m_value( std::move( value ) ) {}
+			  : m_value( daw::move( value ) ) {}
 
 			constexpr bool operator( )( T const &value ) noexcept {
 				return m_value == value;
@@ -139,7 +129,7 @@ namespace daw {
 	}    // namespace impl
 	template<typename T>
 	constexpr impl::EqualToImpl<T> equal_to( T value ) {
-		return impl::EqualToImpl<T>( std::move( value ) );
+		return impl::EqualToImpl<T>( daw::move( value ) );
 	}
 
 	template<typename T>
@@ -352,7 +342,7 @@ namespace daw {
 	AsciiUpper( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
 		daw::algorithm::map( str.cbegin( ), str.cend( ), str.begin( ), [
 		]( CharType c ) noexcept { return AsciiUpper( c ); } );
-		return std::move( str );
+		return daw::move( str );
 	}
 
 	template<typename CharType, typename Traits, typename Allocator>
@@ -360,7 +350,7 @@ namespace daw {
 	AsciiLower( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
 		daw::algorithm::map( str.cbegin( ), str.cend( ), str.begin( ), [
 		]( CharType c ) noexcept { return AsciiLower( c ); } );
-		return std::move( str );
+		return daw::move( str );
 	}
 
 	/*
@@ -554,7 +544,7 @@ namespace daw {
 	                                    Iterator2 const last_in,
 	                                    OutputIterator first_out ) {
 		while( first_in != last_in ) {
-			*first_out++ = std::move( *first_in++ );
+			*first_out++ = daw::move( *first_in++ );
 		}
 		return first_out;
 	}
@@ -794,9 +784,9 @@ namespace daw {
 	template<typename Destination, typename... Args>
 	constexpr decltype( auto )
 	construct_from( std::tuple<Args...> &&args ) noexcept(
-	  noexcept( daw::apply( construct_a<Destination>{}, std::move( args ) ) ) ) {
+	  noexcept( daw::apply( construct_a<Destination>{}, daw::move( args ) ) ) ) {
 
-		return daw::apply( construct_a<Destination>{}, std::move( args ) );
+		return daw::apply( construct_a<Destination>{}, daw::move( args ) );
 	}
 
 	template<typename Destination, typename... Args>
@@ -923,14 +913,14 @@ namespace daw {
 		explicit constexpr mutable_capture( T &value )
 		  : m_value( value ) {}
 		explicit constexpr mutable_capture( T &&value )
-		  : m_value( std::move( value ) ) {}
+		  : m_value( daw::move( value ) ) {}
 
 		constexpr operator T &( ) const &noexcept {
 			return m_value;
 		}
 
 		constexpr operator T( ) const &&noexcept {
-			return std::move( m_value );
+			return daw::move( m_value );
 		}
 
 		constexpr T &operator*( ) const &noexcept {
@@ -938,7 +928,7 @@ namespace daw {
 		}
 
 		constexpr T operator*( ) const &&noexcept {
-			return std::move( m_value );
+			return daw::move( m_value );
 		}
 
 		constexpr T *operator->( ) const noexcept {

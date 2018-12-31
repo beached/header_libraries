@@ -155,6 +155,7 @@ set( UNTESTED_HEADER_FILES
 	daw_bit_stream.h
 	daw_common_mixins.h
 	daw_function.h
+	daw_move.h
 	daw_newhelper.h
 	daw_operators.h
 	daw_parser_addons.h

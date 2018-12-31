@@ -28,6 +28,8 @@
 #include <type_traits>
 #include <utility>
 
+#include "daw_move.h"
+
 #if defined( __cplusplus ) and __cplusplus >= 201703L
 #define CXINLINE constexpr inline
 #define NODISCARD [[nodiscard]]
@@ -256,7 +258,7 @@ namespace daw {
 
 			explicit constexpr not_fn_t( Function &&func ) noexcept(
 			  is_nothrow_move_constructible_v<Function> )
-			  : m_function{std::move( func )} {}
+			  : m_function{daw::move( func )} {}
 
 			explicit constexpr not_fn_t( Function const &func ) noexcept(
 			  is_nothrow_copy_constructible_v<Function> )
@@ -465,14 +467,15 @@ namespace daw {
 		}
 	} // namespace impl
 
-	template<typename F, typename... Args, std::enable_if_t<!daw::all_true_v<is_reference_wrapper_v<Args>...>, std::nullptr_t> = nullptr>
+	template<typename F, typename... Args,
+	         std::enable_if_t<!daw::all_true_v<is_reference_wrapper_v<Args>...>,
+	                          std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) invoke( F &&f, Args &&... args )
 	  // exception specification for QoI
 	  noexcept( noexcept( impl::INVOKE( std::forward<F>( f ),
 	                                    std::forward<Args>( args )... ) ) ) {
 
-		return impl::INVOKE( std::forward<F>( f ),
-		                     std::forward<Args>( args )... );
+		return impl::INVOKE( std::forward<F>( f ), std::forward<Args>( args )... );
 	}
 
 	template<typename F, typename... ArgTypes>
@@ -500,9 +503,9 @@ namespace daw {
 		if constexpr( std::tuple_size_v<Tuple> == 0 ) {
 			return daw::invoke( std::forward<F>( f ) );
 		} else {
-		return impl::apply_impl(
-		  std::forward<F>( f ), std::forward<Tuple>( t ),
-		  std::make_index_sequence<daw::tuple_size_v<std::decay_t<Tuple>>>{} );
+			return impl::apply_impl(
+			  std::forward<F>( f ), std::forward<Tuple>( t ),
+			  std::make_index_sequence<daw::tuple_size_v<std::decay_t<Tuple>>>{} );
 		}
 	}
 
@@ -650,7 +653,7 @@ namespace daw {
 
 		impl::advance(
 		  it, n, typename std::iterator_traits<Iterator>::iterator_category{} );
-		return std::move( it );
+		return daw::move( it );
 	}
 
 	/// @brief Move iterator backward n steps, if n > 0, only defined for types
@@ -664,7 +667,7 @@ namespace daw {
 
 		impl::advance(
 		  it, -n, typename std::iterator_traits<Iterator>::iterator_category{} );
-		return std::move( it );
+		return daw::move( it );
 	}
 
 	template<typename To, typename From>

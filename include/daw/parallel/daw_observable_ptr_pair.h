@@ -24,6 +24,7 @@
 
 #include <new>
 
+#include "../daw_move.h"
 #include "../daw_static_array.h"
 #include "../daw_traits.h"
 #include "../daw_union_pair.h"
@@ -52,11 +53,11 @@ namespace daw {
 		  : m_ptrs{observable_ptr<T>{ptr}} {}
 
 		observable_ptr_pair( observable_ptr_pair &&other ) noexcept
-		  : m_ptrs{std::move( other.m_ptrs )} {}
+		  : m_ptrs{daw::move( other.m_ptrs )} {}
 
 		observable_ptr_pair &operator=( observable_ptr_pair &&rhs ) noexcept {
 			if( this != &rhs ) {
-				m_ptrs = std::move( rhs.m_ptrs );
+				m_ptrs = daw::move( rhs.m_ptrs );
 			}
 			return *this;
 		}
@@ -77,12 +78,12 @@ namespace daw {
 
 		template<typename Visitor>
 		decltype( auto ) apply_visitor( Visitor vis ) {
-			return m_ptrs.visit( std::move( vis ) );
+			return m_ptrs.visit( daw::move( vis ) );
 		}
 
 		template<typename Visitor>
 		decltype( auto ) apply_visitor( Visitor vis ) const {
-			return m_ptrs.visit( std::move( vis ) );
+			return m_ptrs.visit( daw::move( vis ) );
 		}
 
 		template<typename Visitor>
@@ -142,7 +143,7 @@ namespace daw {
 		template<typename Callable>
 		decltype( auto ) lock( Callable c ) const {
 			return apply_visitor( [&c]( auto const &obs_ptr ) {
-				return obs_ptr.lock( std::move( c ) );
+				return obs_ptr.lock( daw::move( c ) );
 			} );
 		}
 	};

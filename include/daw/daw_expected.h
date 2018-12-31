@@ -31,6 +31,7 @@
 
 #include "cpp_17.h"
 #include "daw_exception.h"
+#include "daw_move.h"
 #include "daw_overload.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
@@ -79,13 +80,13 @@ namespace daw {
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////
 		explicit expected_t( value_type &&value )
-		  : m_value( std::move( value ) ) {}
+		  : m_value( daw::move( value ) ) {}
 
 		explicit expected_t( value_type const &value )
 		  : m_value( value ) {}
 
 		expected_t &operator=( value_type &&value ) {
-			m_value = std::move( value );
+			m_value = daw::move( value );
 			return *this;
 		}
 

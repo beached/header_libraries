@@ -32,6 +32,7 @@
 
 #include "cpp_17.h"
 #include "daw_graph.h"
+#include "daw_move.h"
 
 namespace daw {
 	namespace graph_alg_impl {
@@ -211,7 +212,7 @@ namespace daw {
 		  graph.get_node( std::declval<daw::node_id_t>( ) ) )>;
 
 		graph_alg_impl::topological_sorted_walk<Node, T>(
-		  graph, std::forward<Function>( func ), std::move( comp ) );
+		  graph, std::forward<Function>( func ), daw::move( comp ) );
 	}
 
 	template<typename T, typename Function,
@@ -223,7 +224,7 @@ namespace daw {
 		  graph.get_node( std::declval<daw::node_id_t>( ) ) )>;
 
 		graph_alg_impl::topological_sorted_walk<Node, T>(
-		  graph, std::forward<Function>( func ), std::move( comp ) );
+		  graph, std::forward<Function>( func ), daw::move( comp ) );
 	}
 
 	template<typename T, typename Function>

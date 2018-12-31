@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 #include "cpp_17.h"
+#include "daw_move.h"
 
 #pragma once
 
@@ -44,7 +45,7 @@ namespace daw {
 
 		constexpr read_only( rvalue_reference value ) noexcept(
 		  daw::is_nothrow_move_constructible_v<T> )
-		  : m_value( std::move( value ) ) {}
+		  : m_value( daw::move( value ) ) {}
 
 		constexpr read_only( const_reference value ) noexcept(
 		  daw::is_nothrow_copy_constructible_v<T> )
@@ -70,7 +71,7 @@ namespace daw {
 		}
 
 		constexpr value_type move_out( ) noexcept {
-			return std::move( m_value );
+			return daw::move( m_value );
 		}
 	}; // read_only
 } // namespace daw

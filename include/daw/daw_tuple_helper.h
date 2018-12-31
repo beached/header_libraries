@@ -32,6 +32,7 @@
 
 #include "cpp_17.h"
 #include "daw_math.h"
+#include "daw_move.h"
 #include "daw_static_array.h"
 #include "daw_utility.h"
 
@@ -128,7 +129,7 @@ namespace daw {
 				constexpr print_t( std::ostream &os, char separator = ',' )
 				  : m_os{os}
 				  , m_is_first{true}
-				  , m_separator{std::move( separator )} {}
+				  , m_separator{daw::move( separator )} {}
 
 				void reset( ) {
 					m_is_first = true;
@@ -432,11 +433,11 @@ namespace daw {
 
 			template<size_t N, typename Func, typename Arg>
 			constexpr bool apply_func( size_t idx, Func func, Arg &&arg ) noexcept(
-			  noexcept( apply_func_impl( std::move( func ),
+			  noexcept( apply_func_impl( daw::move( func ),
 			                             std::forward<Arg>( arg ) ) ) ) {
 
 				if( N == idx ) {
-					apply_func_impl( std::move( func ), std::forward<Arg>( arg ) );
+					apply_func_impl( daw::move( func ), std::forward<Arg>( arg ) );
 				}
 				return true;
 			}
@@ -469,7 +470,7 @@ namespace daw {
 		constexpr void apply_at( std::tuple<Args...> &&tp, size_t index,
 		                         Funcs &&... funcs ) {
 			apply_at_thlp_impls::apply_at_impl(
-			  std::move( tp ), index,
+			  daw::move( tp ), index,
 			  daw::overload( std::forward<Funcs>( funcs )... ) );
 		}
 	} // namespace tuple

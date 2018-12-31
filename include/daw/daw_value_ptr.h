@@ -28,6 +28,7 @@
 #include <type_traits>
 #include <utility>
 
+#include "daw_move.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -89,9 +90,9 @@ namespace daw {
 		  , m_value( make_ptr( *other.m_value ) ) {}
 
 		value_ptr( value_ptr &&other ) noexcept
-		  : enable_default_constructor<T>( std::move( other ) )
-		  , enable_copy_constructor<T>( std::move( other ) )
-		  , enable_copy_assignment<T>( std::move( other ) )
+		  : enable_default_constructor<T>( daw::move( other ) )
+		  , enable_copy_constructor<T>( daw::move( other ) )
+		  , enable_copy_assignment<T>( daw::move( other ) )
 		  , m_value( std::exchange( other.m_value, nullptr ) ) {}
 
 		value_ptr &operator=( value_ptr const &rhs ) noexcept(
@@ -115,7 +116,7 @@ namespace daw {
 		value_ptr &operator=( value_type &&rhs ) noexcept(
 		  is_nothrow_move_assignable_v<value_type> ) {
 
-			*m_value = std::move( rhs );
+			*m_value = daw::move( rhs );
 			return *this;
 		}
 

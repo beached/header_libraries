@@ -43,6 +43,7 @@
 #include "daw_fnv1a_hash.h"
 #include "daw_generic_hash.h"
 #include "daw_math.h"
+#include "daw_move.h"
 #include "daw_string_impl.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
@@ -164,8 +165,8 @@ namespace daw {
 		}
 
 		constexpr basic_string_view &operator=( basic_string_view &&rhs ) noexcept {
-			m_first = std::move( rhs.m_first );
-			m_size = std::move( rhs.m_size );
+			m_first = daw::move( rhs.m_first );
+			m_size = daw::move( rhs.m_size );
 			return *this;
 		}
 
@@ -338,7 +339,7 @@ namespace daw {
 		constexpr basic_string_view pop_front( UnaryPredicate pred ) noexcept(
 		  noexcept( pred( std::declval<CharT>( ) ) ) ) {
 
-			auto pos = find_first_of_if( std::move( pred ) );
+			auto pos = find_first_of_if( daw::move( pred ) );
 			auto result = pop_front( pos );
 			remove_prefix( find_predicate_result_size( pred ) );
 			return result;
@@ -390,7 +391,7 @@ namespace daw {
 		constexpr basic_string_view pop_back( UnaryPredicate pred ) noexcept(
 		  noexcept( pred( std::declval<CharT>( ) ) ) ) {
 
-			auto pos = find_last_of_if( std::move( pred ) );
+			auto pos = find_last_of_if( daw::move( pred ) );
 			if( pos == npos ) {
 				auto result{*this};
 				remove_prefix( npos );
@@ -1291,7 +1292,7 @@ namespace daw {
 		public:
 			sv_arry_t(
 			  std::vector<daw::basic_string_view<CharT, Traits, InternalSizeType>> v )
-			  : data{std::move( v )} {}
+			  : data{daw::move( v )} {}
 			sv_arry_t( ) = delete;
 			sv_arry_t( sv_arry_t const & ) = default;
 			sv_arry_t( sv_arry_t && ) = default;
@@ -1367,7 +1368,7 @@ namespace daw {
 			last_pos = str.cbegin( );
 		}
 		v.shrink_to_fit( );
-		return sv_arry_t{std::move( v )};
+		return sv_arry_t{daw::move( v )};
 	}
 
 	template<typename CharT, typename Traits, typename InternalSizeType>

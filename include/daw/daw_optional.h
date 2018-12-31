@@ -30,6 +30,7 @@
 #include <utility>
 
 #include "daw_exception.h"
+#include "daw_move.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
 
@@ -73,10 +74,10 @@ namespace daw {
 
 			void store( value_type value ) {
 				if( m_occupied ) {
-					*ptr( ) = std::move( value );
+					*ptr( ) = daw::move( value );
 				} else {
 					m_occupied = true;
-					new( raw_ptr( ) ) value_type{std::move( value )};
+					new( raw_ptr( ) ) value_type{daw::move( value )};
 				}
 			}
 
@@ -109,7 +110,7 @@ namespace daw {
 			value_storage( value_type value )
 			  : m_data{0}
 			  , m_occupied( true ) {
-				store( std::move( value ) );
+				store( daw::move( value ) );
 			}
 
 			value_storage( value_storage const &other ) noexcept
@@ -117,7 +118,7 @@ namespace daw {
 			  , m_occupied( other.m_occupied ) {}
 
 			value_storage( value_storage &&other ) noexcept
-			  : m_data( std::move( other.m_data ) )
+			  : m_data( daw::move( other.m_data ) )
 			  , m_occupied( std::exchange( other.m_occupied, false ) ) {}
 
 			void swap( value_storage &rhs ) noexcept {
@@ -136,7 +137,7 @@ namespace daw {
 
 			value_storage &operator=( value_storage &&rhs ) noexcept {
 				m_occupied = false;
-				m_data = std::move( rhs.m_data );
+				m_data = daw::move( rhs.m_data );
 				m_occupied = std::exchange( rhs.m_occupied, false );
 				return *this;
 			}
@@ -144,11 +145,11 @@ namespace daw {
 			value_storage &operator=( value_type value ) {
 				if( m_occupied ) {
 					m_occupied = false;
-					*ptr( ) = std::move( value );
+					*ptr( ) = daw::move( value );
 					m_occupied = true;
 				} else {
 					m_occupied = false;
-					store( std::move( value ) );
+					store( daw::move( value ) );
 					m_occupied = true;
 				}
 				return *this;
@@ -208,7 +209,7 @@ namespace daw {
 		  : m_value{} {}
 
 		explicit optional( value_type value )
-		  : m_value{std::move( value )} {}
+		  : m_value{daw::move( value )} {}
 
 		optional( ) = default;
 		optional( optional const & ) = default;
@@ -231,7 +232,7 @@ namespace daw {
 		}
 
 		optional &operator=( value_type value ) {
-			m_value = std::move( value );
+			m_value = daw::move( value );
 			return *this;
 		}
 

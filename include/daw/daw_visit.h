@@ -29,6 +29,7 @@
 #include <variant>
 
 #include "cpp_17.h"
+#include "daw_move.h"
 
 namespace daw {
 	template<size_t, size_t, typename R, typename... Args>
@@ -64,12 +65,12 @@ namespace daw {
 		auto ol = daw::overload( std::forward<Visitor>( vis ),
 		                         std::forward<Visitors>( visitors )... );
 		using result_t =
-		  decltype( daw::invoke( std::move( ol ), std::get<0>( var ) ) );
+		  decltype( daw::invoke( daw::move( ol ), std::get<0>( var ) ) );
 
 		if( var.index( ) == 0 ) {
-			return daw::invoke( std::move( ol ), std::get<0>( var ) );
+			return daw::invoke( daw::move( ol ), std::get<0>( var ) );
 		}
-		return visit_nt<1, sizeof...( Args ), result_t>( var, std::move( ol ) );
+		return visit_nt<1, sizeof...( Args ), result_t>( var, daw::move( ol ) );
 	}
 
 	template<class... Args, typename Visitor, typename... Visitors>
@@ -79,12 +80,12 @@ namespace daw {
 		auto ol = daw::overload( std::forward<Visitor>( vis ),
 		                         std::forward<Visitors>( visitors )... );
 		using result_t =
-		  decltype( daw::invoke( std::move( ol ), std::get<0>( var ) ) );
+		  decltype( daw::invoke( daw::move( ol ), std::get<0>( var ) ) );
 
 		if( var.index( ) == 0 ) {
-			return daw::invoke( std::move( ol ), std::get<0>( var ) );
+			return daw::invoke( daw::move( ol ), std::get<0>( var ) );
 		}
-		return visit_nt<1, sizeof...( Args ), result_t>( var, std::move( ol ) );
+		return visit_nt<1, sizeof...( Args ), result_t>( var, daw::move( ol ) );
 	}
 
 	template<class... Args, typename Visitor, typename... Visitors>
@@ -94,12 +95,12 @@ namespace daw {
 		auto ol = daw::overload( std::forward<Visitor>( vis ),
 		                         std::forward<Visitors>( visitors )... );
 		using result_t = decltype(
-		  daw::invoke( std::move( ol ), std::move( std::get<0>( var ) ) ) );
+		  daw::invoke( daw::move( ol ), daw::move( std::get<0>( var ) ) ) );
 
 		if( var.index( ) == 0 ) {
-			return daw::invoke( std::move( ol ), std::get<0>( std::move( var ) ) );
+			return daw::invoke( daw::move( ol ), std::get<0>( daw::move( var ) ) );
 		}
-		return visit_nt<1, sizeof...( Args ), result_t>( std::move( var ),
-		                                                 std::move( ol ) );
+		return visit_nt<1, sizeof...( Args ), result_t>( daw::move( var ),
+		                                                 daw::move( ol ) );
 	}
 } // namespace daw

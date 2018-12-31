@@ -27,6 +27,7 @@
 #include <type_traits>
 
 #include "daw_exception.h"
+#include "daw_move.h"
 
 namespace daw {
 	namespace view_impl {
@@ -74,8 +75,8 @@ namespace daw {
 
 	public:
 		constexpr view( BidirectionalIterator first, BidirectionalIterator last )
-		  : m_first( std::move( first ) )
-		  , m_last( std::move( last ) )
+		  : m_first( daw::move( first ) )
+		  , m_last( daw::move( last ) )
 		  , m_size( std::distance( m_first, m_last ) ) {}
 
 		constexpr bool empty( ) const {

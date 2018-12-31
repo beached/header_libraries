@@ -28,6 +28,7 @@
 #include <numeric>
 #include <type_traits>
 
+#include "daw_move.h"
 #include "daw_range.h"
 #include "daw_traits.h"
 
@@ -184,7 +185,7 @@ namespace daw {
 		template<typename Container, typename T>
 		T accumulate( Container const &container, T init ) {
 			return std::accumulate( std::begin( container ), std::end( container ),
-			                        std::move( init ) );
+			                        daw::move( init ) );
 		}
 
 		template<typename Container, typename T, typename BinaryOperator,
@@ -195,7 +196,7 @@ namespace daw {
 		                        BinaryOperator oper ) {
 			return daw::algorithm::accumulate( std::begin( container ),
 			                                   std::end( container ),
-			                                   std::move( init ), oper );
+			                                   daw::move( init ), oper );
 		}
 
 		template<typename Container, typename UnaryOperator,

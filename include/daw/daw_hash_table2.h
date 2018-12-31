@@ -28,6 +28,7 @@
 #include "daw_exception.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_heap_array.h"
+#include "daw_move.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
 
@@ -170,7 +171,7 @@ namespace daw {
 			hash_table new_tbl{new_size};
 			for( size_t n = 0; n < m_hashes.size( ); ++n ) {
 				if( m_hashes[n] >= impl::sentinals::sentinals_size ) {
-					new_tbl[m_hashes[n]] = std::move( m_values[n] );
+					new_tbl[m_hashes[n]] = daw::move( m_values[n] );
 				}
 			}
 			daw::cswap( *this, new_tbl );

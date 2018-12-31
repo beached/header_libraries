@@ -584,21 +584,21 @@ BOOST_AUTO_TEST_CASE( daw_copy_n_test_001 ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_move_test_001 ) {
-	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::vector<int> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	auto expected_b = a;
 	std::vector<int> b{};
 
-	daw::algorithm::move( a.cbegin( ), a.cend( ), std::back_inserter( b ) );
+	daw::algorithm::move( a.begin( ), a.end( ), std::back_inserter( b ) );
 	BOOST_REQUIRE( std::equal( expected_b.cbegin( ), expected_b.cend( ),
 	                           b.cbegin( ), b.cend( ) ) );
 }
 
 BOOST_AUTO_TEST_CASE( daw_move_n_test_001 ) {
-	std::vector<int> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::vector<int>  a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	std::vector<int> b{};
 	std::vector<int> const expected_b = {0, 1, 2, 3, 4, 5};
 
-	daw::algorithm::move_n( a.cbegin( ), std::back_inserter( b ), 6 );
+	daw::algorithm::move_n( a.begin( ), std::back_inserter( b ), 6 );
 	BOOST_REQUIRE( std::equal( b.cbegin( ), b.cend( ), expected_b.cbegin( ),
 	                           expected_b.cend( ) ) );
 }

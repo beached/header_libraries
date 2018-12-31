@@ -29,6 +29,7 @@
 
 #include "cpp_17.h"
 #include "daw_exception.h"
+#include "daw_move.h"
 
 namespace daw {
 	struct visit_null_union_pair_exception {};
@@ -126,7 +127,7 @@ namespace daw {
 		constexpr union_pair_t( Type0 &&ptr ) noexcept
 		  : type( data_types::type_nothing ) {
 
-			store_type0( std::move( ptr ) );
+			store_type0( daw::move( ptr ) );
 		}
 
 		constexpr union_pair_t( Type0 const &ptr )
@@ -141,7 +142,7 @@ namespace daw {
 		}
 
 		constexpr union_pair_t &operator=( Type0 &&val ) noexcept {
-			store_type0( std::move( val ) );
+			store_type0( daw::move( val ) );
 			return *this;
 		}
 
@@ -151,14 +152,14 @@ namespace daw {
 		}
 
 		constexpr union_pair_t &operator=( Type1 &&val ) noexcept {
-			store_type1( std::move( val ) );
+			store_type1( daw::move( val ) );
 			return *this;
 		}
 
 		constexpr union_pair_t( Type1 &&ptr ) noexcept
 		  : type( data_types::type_nothing ) {
 
-			store_type1( std::move( ptr ) );
+			store_type1( daw::move( ptr ) );
 		}
 
 		constexpr union_pair_t( Type1 const &ptr )
@@ -188,10 +189,10 @@ namespace daw {
 
 			switch( other.type ) {
 			case data_types::type_0:
-				store_type0( std::move( *other.get_type0_ptr( ) ) );
+				store_type0( daw::move( *other.get_type0_ptr( ) ) );
 				break;
 			case data_types::type_1:
-				store_type1( std::move( *other.get_type1_ptr( ) ) );
+				store_type1( daw::move( *other.get_type1_ptr( ) ) );
 				break;
 			case data_types::type_nothing:
 				nothing = nullptr;
@@ -220,10 +221,10 @@ namespace daw {
 			if( this != &rhs ) {
 				switch( rhs.type ) {
 				case data_types::type_0:
-					store_type0( std::move( *rhs.get_type0_ptr( ) ) );
+					store_type0( daw::move( *rhs.get_type0_ptr( ) ) );
 					break;
 				case data_types::type_1:
-					store_type1( std::move( *rhs.get_type1_ptr( ) ) );
+					store_type1( daw::move( *rhs.get_type1_ptr( ) ) );
 					break;
 				case data_types::type_nothing:
 					clear( );

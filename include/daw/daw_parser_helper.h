@@ -30,6 +30,7 @@
 #include <vector>
 
 #include "daw_exception.h"
+#include "daw_move.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
 
@@ -43,9 +44,9 @@ namespace daw {
 
 			parser_result( ) = default;
 			parser_result( T value, Iterator f, Iterator l )
-			  : first{std::move( f )}
-			  , last{std::move( l )}
-			  , result{std::move( value )} {}
+			  : first{daw::move( f )}
+			  , last{daw::move( l )}
+			  , result{daw::move( value )} {}
 
 			~parser_result( );
 			parser_result( parser_result const & ) = default;
@@ -247,7 +248,7 @@ namespace daw {
 
 		public:
 			constexpr in_t( daw::string_view values ) noexcept
-			  : container{std::move( values )} {}
+			  : container{daw::move( values )} {}
 
 			template<typename U>
 			constexpr bool operator( )( U const &value ) const noexcept {
@@ -256,7 +257,7 @@ namespace daw {
 		}; // in_t
 
 		constexpr auto in( daw::string_view container ) noexcept {
-			return in_t{std::move( container )};
+			return in_t{daw::move( container )};
 		}
 
 		/* old
@@ -265,7 +266,7 @@ namespace daw {
 		    std::vector<T> container;
 
 		  public:
-		    in_t( std::vector<T> values ) : container{std::move( values )} {}
+		    in_t( std::vector<T> values ) : container{daw::move( values )} {}
 
 		    template<typename U>
 		    bool operator( )( U const &value ) const {
@@ -275,7 +276,7 @@ namespace daw {
 
 		template<typename T>
 		auto in( std::vector<T> container ) {
-		    return in_t<T>{std::move( container )};
+		    return in_t<T>{daw::move( container )};
 		}
 
 		template<typename T, size_t N>
@@ -284,7 +285,7 @@ namespace daw {
 		    std::vector<value_t> values;
 		    std::copy_n( std::begin( container ), N, std::back_inserter( values ) );
 
-		    return in_t<value_t>{std::move( values )};
+		    return in_t<value_t>{daw::move( values )};
 		}
 
 		template<typename Container>
@@ -294,7 +295,7 @@ namespace daw {
 		    std::copy( std::begin( container ), std::end( container ),
 		std::back_inserter( values ) );
 
-		    return in_t<value_t>{std::move( values )};
+		    return in_t<value_t>{daw::move( values )};
 		}
 		*/
 
@@ -638,7 +639,7 @@ namespace daw {
 			  , m_count{count} {}
 
 			bool operator( )( value_type const &v ) {
-				m_last_values.push_back( std::move( v ) );
+				m_last_values.push_back( daw::move( v ) );
 				while( m_last_values.size( ) > 4 ) {
 					m_last_values.pop_front( );
 				}
@@ -653,7 +654,7 @@ namespace daw {
 
 			public:
 				constexpr negate_t( Predicate pred )
-				  : predicate{std::move( pred )} {}
+				  : predicate{daw::move( pred )} {}
 
 				template<typename... Args>
 				constexpr bool operator( )( Args &&... args ) const {
@@ -669,7 +670,7 @@ namespace daw {
 
 		template<typename Predicate>
 		constexpr auto negate( Predicate predicate ) {
-			return impl::negate_t<Predicate>{std::move( predicate )};
+			return impl::negate_t<Predicate>{daw::move( predicate )};
 		}
 
 		template<typename T>
@@ -681,7 +682,7 @@ namespace daw {
 
 		public:
 			matcher_t( std::vector<value_t> to_match )
-			  : m_to_match{std::move( to_match )} {}
+			  : m_to_match{daw::move( to_match )} {}
 
 			template<typename ForwardIterator>
 			find_result_t<ForwardIterator> operator( )( ForwardIterator first,
@@ -706,7 +707,7 @@ namespace daw {
 			std::vector<value_t> values;
 			std::copy( container.begin( ), container.end( ),
 			           std::back_inserter( values ) );
-			return matcher_t<value_t>{std::move( values )};
+			return matcher_t<value_t>{daw::move( values )};
 		}
 
 		template<typename T, size_t N>
@@ -714,7 +715,7 @@ namespace daw {
 			using value_t = daw::traits::root_type_t<T>;
 			std::vector<value_t> values;
 			std::copy_n( container, N, std::back_inserter( values ) );
-			return matcher_t<value_t>{std::move( values )};
+			return matcher_t<value_t>{daw::move( values )};
 		}
 
 		///

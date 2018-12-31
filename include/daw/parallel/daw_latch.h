@@ -26,6 +26,7 @@
 #include <cstdint>
 
 #include "../daw_exception.h"
+#include "../daw_move.h"
 #include "../daw_value_ptr.h"
 #include "daw_condition_variable.h"
 
@@ -125,7 +126,7 @@ namespace daw {
 
 		explicit basic_shared_latch( basic_latch<Mutex, ConditionVariable> &&sem )
 		  : latch( std::make_shared<basic_latch<Mutex, ConditionVariable>>(
-		      std::move( sem ) ) ) {}
+		      daw::move( sem ) ) ) {}
 
 		void notify( ) {
 			latch->notify( );

@@ -27,6 +27,7 @@
 #include <list>
 #include <vector>
 
+#include "../daw_move.h"
 #include "daw_function_iterator.h"
 
 namespace daw {
@@ -34,7 +35,7 @@ namespace daw {
 	decltype( auto ) make_sorted_insert_iterator( std::vector<Args...> &c,
 	                                              Compare compare = Compare{} ) {
 		return daw::make_function_iterator(
-		  [&c, compare = std::move( compare )]( auto &&value ) {
+		  [&c, compare = daw::move( compare )]( auto &&value ) {
 			  c.emplace(
 			    std::lower_bound( std::begin( c ), std::end( c ), value, compare ),
 			    std::forward<decltype( value )>( value ) );
@@ -45,7 +46,7 @@ namespace daw {
 	decltype( auto ) make_sorted_insert_iterator( std::deque<Args...> &c,
 	                                              Compare compare = Compare{} ) {
 		return daw::make_function_iterator(
-		  [&c, compare = std::move( compare )]( auto &&value ) {
+		  [&c, compare = daw::move( compare )]( auto &&value ) {
 			  c.emplace(
 			    std::lower_bound( std::begin( c ), std::end( c ), value, compare ),
 			    std::forward<decltype( value )>( value ) );
@@ -56,7 +57,7 @@ namespace daw {
 	decltype( auto ) make_sorted_insert_iterator( std::list<Args...> &c,
 	                                              Compare compare = Compare{} ) {
 		return daw::make_function_iterator(
-		  [&c, compare = std::move( compare )]( auto &&value ) {
+		  [&c, compare = daw::move( compare )]( auto &&value ) {
 			  auto const pos =
 			    std::lower_bound( std::begin( c ), std::end( c ), value, compare );
 			  c.emplace( pos, std::forward<decltype( value )>( value ) );

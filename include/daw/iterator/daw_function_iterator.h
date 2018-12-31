@@ -24,6 +24,7 @@
 
 #include "../cpp_17.h"
 #include "../daw_algorithm.h"
+#include "../daw_move.h"
 #include "../daw_traits.h"
 
 namespace daw {
@@ -45,7 +46,7 @@ namespace daw {
 	public:
 		constexpr function_iterator( Function &&function ) noexcept(
 		  daw::is_nothrow_move_constructible_v<Function> )
-		  : m_function( std::move( function ) ) {}
+		  : m_function( daw::move( function ) ) {}
 
 		constexpr function_iterator( Function const &function ) noexcept(
 		  daw::is_nothrow_copy_constructible_v<Function> )

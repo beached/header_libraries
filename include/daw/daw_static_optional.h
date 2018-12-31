@@ -31,6 +31,7 @@
 #include <utility>
 
 #include "daw_exception.h"
+#include "daw_move.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
 
@@ -48,7 +49,7 @@ namespace daw {
 			constexpr static_optional_storage( nothing ) noexcept
 			  : empty_value{} {}
 			constexpr static_optional_storage( T v ) noexcept
-			  : value{std::move( v )} {}
+			  : value{daw::move( v )} {}
 		};
 	} // namespace impl
 
@@ -105,7 +106,7 @@ namespace daw {
 		  , m_occupied{other.m_occupied} {}
 
 		constexpr static_optional( static_optional &&other ) noexcept
-		  : m_value{std::move( other.m_value )}
+		  : m_value{daw::move( other.m_value )}
 		  , m_occupied{daw::exchange( other.m_occupied, false )} {}
 
 		constexpr static_optional &
@@ -118,7 +119,7 @@ namespace daw {
 		}
 
 		constexpr static_optional &operator=( static_optional &&rhs ) noexcept {
-			m_value = std::move( rhs.m_value );
+			m_value = daw::move( rhs.m_value );
 			m_occupied = daw::exchange( rhs.m_occupied, false );
 			return *this;
 		}
@@ -135,7 +136,7 @@ namespace daw {
 		                      !daw::is_same_v<nothing, std::decay_t<T>>>,
 		           std::nullptr_t> = nullptr>
 		constexpr static_optional &operator=( T value ) noexcept {
-			m_value = std::move( value );
+			m_value = daw::move( value );
 			m_occupied = true;
 			return *this;
 		}
@@ -347,8 +348,8 @@ namespace daw {
 	template<typename T>
 	constexpr void swap( static_optional<T> &lhs,
 	                     static_optional<T> &rhs ) noexcept {
-		auto tmp = std::move( lhs );
-		lhs = daw::exchange( std::move( rhs ), std::move( tmp ) );
+		auto tmp = daw::move( lhs );
+		lhs = daw::exchange( daw::move( rhs ), daw::move( tmp ) );
 	}
 
 	template<typename T, typename... Args>

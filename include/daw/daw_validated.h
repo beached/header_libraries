@@ -26,6 +26,7 @@
 #include <type_traits>
 #include <utility>
 
+#include "daw_move.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
 
@@ -81,7 +82,7 @@ namespace daw {
 		}
 
 		constexpr validated &operator=( value_t &&rhs ) {
-			m_value = validate( std::move( rhs ) );
+			m_value = validate( daw::move( rhs ) );
 			return *this;
 		}
 
@@ -90,7 +91,7 @@ namespace daw {
 		}
 
 		constexpr value_t &&get( ) && noexcept {
-			return std::move( m_value );
+			return daw::move( m_value );
 		}
 
 		constexpr operator const_reference( ) const noexcept {

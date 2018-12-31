@@ -28,6 +28,7 @@
 #include <type_traits>
 
 #include "daw_exception.h"
+#include "daw_move.h"
 
 namespace daw {
 	template<typename T, size_t capacity>
@@ -93,7 +94,7 @@ namespace daw {
 		void push_back( T value ) {
 			daw::exception::dbg_throw_on_true<std::out_of_range>(
 			  full( ), "Attempt to push_back on a full stack" );
-			*m_head++ = std::move( value );
+			*m_head++ = daw::move( value );
 		}
 
 		const_reference back( ) const {
@@ -121,7 +122,7 @@ namespace daw {
 		value_type pop_back( ) {
 			daw::exception::dbg_throw_on_true<std::out_of_range>(
 			  empty( ), "Attempt to pop an empty stack" );
-			return std::move( *--m_head );
+			return daw::move( *--m_head );
 		}
 	}; // bounded_stack_t
 } // namespace daw

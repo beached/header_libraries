@@ -35,6 +35,7 @@
 #include <vector>
 
 #include "daw_exception.h"
+#include "daw_move.h"
 #include "daw_utility.h"
 
 namespace daw {
@@ -110,7 +111,7 @@ namespace daw {
 		public:
 			constexpr node_impl_t( node_id_t id, T &&value ) noexcept
 			  : m_id( id )
-			  , m_value( std::move( value ) ) {
+			  , m_value( daw::move( value ) ) {
 
 				daw::exception::dbg_precondition_check( id );
 			}
@@ -494,7 +495,7 @@ namespace daw {
 			for( auto &node_ref : m_nodes ) {
 				auto node = get_node( node_ref.second.id( ) );
 				if( daw::invoke( pred, node ) ) {
-					daw::invoke( vis, std::move( node ) );
+					daw::invoke( vis, daw::move( node ) );
 				}
 			}
 		}
@@ -508,7 +509,7 @@ namespace daw {
 			for( auto const &node_ref : m_nodes ) {
 				auto node = get_node( node_ref.second.id( ) );
 				if( daw::invoke( pred, node ) ) {
-					daw::invoke( vis, std::move( node ) );
+					daw::invoke( vis, daw::move( node ) );
 				}
 			}
 		}

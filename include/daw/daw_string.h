@@ -35,6 +35,7 @@
 #include <vector>
 
 #include "daw_exception.h"
+#include "daw_move.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -408,7 +409,7 @@ namespace daw {
 				BasicString( BasicString && ) noexcept = default;
 
 				BasicString( value_type other )
-				  : m_string{std::move( other )} {}
+				  : m_string{daw::move( other )} {}
 
 				~BasicString( ) = default;
 
@@ -417,7 +418,7 @@ namespace daw {
 				BasicString &operator=( BasicString && ) noexcept = default;
 
 				BasicString &operator=( value_type rhs ) {
-					m_string = std::move( rhs );
+					m_string = daw::move( rhs );
 					return *this;
 				}
 

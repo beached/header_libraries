@@ -26,6 +26,7 @@
 
 #include "../cpp_17.h"
 #include "../daw_algorithm.h"
+#include "../daw_move.h"
 #include "../daw_utility.h"
 
 namespace daw {
@@ -82,7 +83,7 @@ namespace daw {
 		constexpr zip_iterator &operator=( zip_iterator && ) noexcept = default;
 
 		constexpr zip_iterator( Iterators... args )
-		  : m_values{std::move( args )...} {}
+		  : m_values{daw::move( args )...} {}
 
 		constexpr types_t &as_tuple( ) noexcept {
 			return m_values;

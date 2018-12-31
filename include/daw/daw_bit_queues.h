@@ -27,6 +27,7 @@
 
 #include "daw_bit.h"
 #include "daw_exception.h"
+#include "daw_move.h"
 
 namespace daw {
 	struct bit_queue_source_little_endian {};
@@ -51,7 +52,7 @@ namespace daw {
 		  , m_queue{0} {}
 		constexpr explicit basic_bit_queue( queue_type v ) noexcept
 		  : m_size{sizeof( m_queue ) * 8}
-		  , m_queue{std::move( v )} {}
+		  , m_queue{daw::move( v )} {}
 
 		constexpr size_t size( ) const noexcept {
 			return m_size;
@@ -146,7 +147,7 @@ namespace daw {
 		  : m_queue{} {}
 
 		constexpr explicit basic_nibble_queue( queue_type v ) noexcept
-		  : m_queue{std::move( v )} {}
+		  : m_queue{daw::move( v )} {}
 
 		constexpr size_t capacity( ) const noexcept {
 			return m_queue.capacity( ) / 4;

@@ -30,10 +30,12 @@
 #include <utility>
 #include <variant>
 
+#include "daw_move.h"
+
 namespace daw {
 	template<typename T, typename U = T>
 	constexpr T exchange( T &obj, U &&new_value ) noexcept {
-		T old_value = std::move( obj );
+		T old_value = daw::move( obj );
 		obj = std::forward<U>( new_value );
 		return old_value;
 	}
@@ -41,24 +43,24 @@ namespace daw {
 	template<typename T, typename U>
 	constexpr void cswap( std::pair<T, U> &lhs, std::pair<T, U> &rhs ) noexcept(
 	  std::is_nothrow_move_assignable_v<std::pair<T, U>> ) {
-		auto tmp = std::move( lhs );
-		lhs = daw::exchange( rhs, std::move( tmp ) );
+		auto tmp = daw::move( lhs );
+		lhs = daw::exchange( rhs, daw::move( tmp ) );
 	}
 
 	template<typename... Args>
 	constexpr void
 	cswap( std::tuple<Args...> &lhs, std::tuple<Args...> &rhs ) noexcept(
 	  std::is_nothrow_move_assignable_v<std::tuple<Args...>> ) {
-		auto tmp = std::move( lhs );
-		lhs = daw::exchange( rhs, std::move( tmp ) );
+		auto tmp = daw::move( lhs );
+		lhs = daw::exchange( rhs, daw::move( tmp ) );
 	}
 
 	template<typename... Args>
 	constexpr void
 	cswap( std::variant<Args...> &lhs, std::variant<Args...> &rhs ) noexcept(
 	  std::is_nothrow_move_assignable_v<std::variant<Args...>> ) {
-		auto tmp = std::move( lhs );
-		lhs = daw::exchange( rhs, std::move( tmp ) );
+		auto tmp = daw::move( lhs );
+		lhs = daw::exchange( rhs, daw::move( tmp ) );
 	}
 
 	template<typename... Args>
@@ -68,15 +70,15 @@ namespace daw {
 	         &rhs ) noexcept( std::
 	                            is_nothrow_move_assignable_v<
 	                              std::basic_string_view<Args...>> ) {
-		auto tmp = std::move( lhs );
-		lhs = daw::exchange( rhs, std::move( tmp ) );
+		auto tmp = daw::move( lhs );
+		lhs = daw::exchange( rhs, daw::move( tmp ) );
 	}
 
 	template<typename T>
 	constexpr void cswap( std::optional<T> &lhs, std::optional<T> &rhs ) noexcept(
 	  std::is_nothrow_move_assignable_v<std::optional<T>> ) {
-		auto tmp = std::move( lhs );
-		lhs = daw::exchange( rhs, std::move( tmp ) );
+		auto tmp = daw::move( lhs );
+		lhs = daw::exchange( rhs, daw::move( tmp ) );
 	}
 
 	template<typename T>
@@ -90,8 +92,8 @@ namespace daw {
 			auto tmp = lhs;
 			lhs = daw::exchange( rhs, tmp );
 		} else if constexpr( std::is_scalar_v<std::remove_reference_t<T>> ) {
-			auto tmp = std::move( lhs );
-			lhs = daw::exchange( std::move( rhs ), std::move( tmp ) );
+			auto tmp = daw::move( lhs );
+			lhs = daw::exchange( daw::move( rhs ), daw::move( tmp ) );
 		} else {
 			using std::swap;
 			swap( lhs, rhs );

@@ -34,6 +34,7 @@
 
 #include "cpp_17.h"
 #include "daw_exception.h"
+#include "daw_move.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
 #include "impl/daw_math_impl.h"
@@ -678,7 +679,7 @@ namespace daw {
 
 			for( auto it = first; it != last; ++it ) {
 				if( value == *it ) {
-					result.push_back( std::move( temp ) );
+					result.push_back( daw::move( temp ) );
 					temp.clear( );
 				} else {
 					temp.push_back( *it );
@@ -1301,14 +1302,14 @@ namespace daw {
 		constexpr OutputIterator move(
 		  InputIterator first, LastType const last,
 		  OutputIterator first_out ) noexcept( noexcept( *first_out =
-		                                                   std::move( *first ) ) ) {
+		                                                   daw::move( *first ) ) ) {
 
 			traits::is_input_iterator_test<InputIterator>( );
 			traits::is_output_iterator_test<OutputIterator,
-			                                decltype( std::move( *first ) )>( );
+			                                decltype( daw::move( *first ) )>( );
 
 			while( first != last ) {
-				*first_out = std::move( *first );
+				*first_out = daw::move( *first );
 				++first;
 				++first_out;
 			}
@@ -1326,14 +1327,14 @@ namespace daw {
 		template<typename InputIterator, typename OutputIterator>
 		constexpr OutputIterator move_n(
 		  InputIterator first, OutputIterator first_out,
-		  size_t count ) noexcept( noexcept( *first_out = std::move( *first ) ) ) {
+		  size_t count ) noexcept( noexcept( *first_out = daw::move( *first ) ) ) {
 
 			traits::is_input_iterator_test<InputIterator>( );
 			traits::is_output_iterator_test<OutputIterator,
-			                                decltype( std::move( *first ) )>( );
+			                                decltype( daw::move( *first ) )>( );
 
 			while( count-- > 0 ) {
-				*first_out = std::move( *first );
+				*first_out = daw::move( *first );
 				++first;
 				++first_out;
 			}
@@ -1615,7 +1616,7 @@ namespace daw {
 				init = daw::invoke( binary_op, init, *first );
 				++first;
 			}
-			return std::move( init );
+			return daw::move( init );
 		}
 
 		template<typename InputIterator1, typename InputIterator1Last,
@@ -1708,9 +1709,9 @@ namespace daw {
 		constexpr T accumulate( InputIterator first, InputIterator last,
 		                        T init ) noexcept {
 			for( ; first != last; ++first ) {
-				init = std::move( init ) + *first;
+				init = daw::move( init ) + *first;
 			}
-			return std::move( init );
+			return daw::move( init );
 		}
 
 		template<typename InputIterator, typename LastType, typename T,
@@ -1720,7 +1721,7 @@ namespace daw {
 		constexpr T accumulate(
 		  InputIterator first, LastType last, T init,
 		  BinaryOperation binary_op =
-		    BinaryOperation{} ) noexcept( noexcept( binary_op( std::move( init ),
+		    BinaryOperation{} ) noexcept( noexcept( binary_op( daw::move( init ),
 		                                                       *first ) ) ) {
 
 			static_assert(
@@ -1730,10 +1731,10 @@ namespace daw {
 			  "http://en.cppreference.com/w/cpp/concept/Iterator" );
 
 			while( first != last ) {
-				init = daw::invoke( binary_op, std::move( init ), *first );
+				init = daw::invoke( binary_op, daw::move( init ), *first );
 				++first;
 			}
-			return std::move( init );
+			return daw::move( init );
 		}
 
 		/// @brief return the min and max of two items sorted
@@ -1752,9 +1753,9 @@ namespace daw {
 			               "Compare concept. "
 			               "http://en.cppreference.com/w/cpp/concept/Compare" );
 			if( daw::invoke( comp, b, a ) ) {
-				return std::pair<T, T>{std::move( b ), std::move( a )};
+				return std::pair<T, T>{daw::move( b ), daw::move( a )};
 			}
-			return std::pair<T, T>{std::move( a ), std::move( b )};
+			return std::pair<T, T>{daw::move( a ), daw::move( b )};
 		}
 
 		template<typename ForwardIterator, typename LastType,
@@ -1857,7 +1858,7 @@ namespace daw {
 			if( first != last ) {
 				for( ForwardIterator i = first; ++i != last; ) {
 					if( !( *i == value ) ) {
-						*first++ = std::move( *i );
+						*first++ = daw::move( *i );
 					}
 				}
 			}
@@ -1872,7 +1873,7 @@ namespace daw {
 			if( first != last ) {
 				for( ForwardIterator i = first; ++i != last; ) {
 					if( !daw::invoke( pred, *i ) ) {
-						*first++ = std::move( *i );
+						*first++ = daw::move( *i );
 					}
 				}
 			}
@@ -1918,7 +1919,7 @@ namespace daw {
 		transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2,
 		                OutputIt first_out, Func func ) {
 
-			return cartesian_product_map( std::move( func ), first1, last1, first_out,
+			return cartesian_product_map( daw::move( func ), first1, last1, first_out,
 			                              first2 );
 		}
 
@@ -1928,7 +1929,7 @@ namespace daw {
 		transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2,
 		                InputIt3 first3, OutputIt first_out, Func func ) {
 
-			return cartesian_product_map( std::move( func ), first1, last1, first_out,
+			return cartesian_product_map( daw::move( func ), first1, last1, first_out,
 			                              first2, first3 );
 		}
 
@@ -1939,7 +1940,7 @@ namespace daw {
 		                InputIt3 first3, InputIt4 first4, OutputIt first_out,
 		                Func func ) {
 
-			return cartesian_product_map( std::move( func ), first1, last1, first_out,
+			return cartesian_product_map( daw::move( func ), first1, last1, first_out,
 			                              first2, first3, first4 );
 		}
 
@@ -1951,7 +1952,7 @@ namespace daw {
 		                InputIt3 first3, InputIt4 first4, InputIt4 first5,
 		                OutputIt first_out, Func func ) {
 
-			return cartesian_product_map( std::move( func ), first1, last1, first_out,
+			return cartesian_product_map( daw::move( func ), first1, last1, first_out,
 			                              first2, first3, first4, first5 );
 		}
 
@@ -1990,7 +1991,7 @@ namespace daw {
 			++first_out;
 			++first;
 			while( first != last ) {
-				sum = daw::invoke( op, std::move( sum ), *first );
+				sum = daw::invoke( op, daw::move( sum ), *first );
 				++first;
 
 				*first_out = sum;

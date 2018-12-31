@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include "../daw_move.h"
+
 namespace daw {
 	namespace traits {
 		namespace detectors {
@@ -398,7 +400,7 @@ namespace daw {
 
 			explicit constexpr void_function( Function &&func ) noexcept(
 			  is_nothrow_move_constructible_v<Function> )
-			  : function( std::move( func ) ) {}
+			  : function( daw::move( func ) ) {}
 
 			explicit constexpr operator bool( ) noexcept(
 			  noexcept( static_cast<bool>( std::declval<Function>( ) ) ) ) {
@@ -429,7 +431,7 @@ namespace daw {
 
 			explicit constexpr void_function( Function &&func ) noexcept(
 			  is_nothrow_move_constructible_v<Function> )
-			  : function( std::move( func ) ) {}
+			  : function( daw::move( func ) ) {}
 
 			explicit constexpr operator bool( ) noexcept(
 			  noexcept( static_cast<bool>( std::declval<Function>( ) ) ) ) {

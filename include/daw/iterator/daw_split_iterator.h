@@ -25,6 +25,7 @@
 #include <string>
 
 #include "../daw_algorithm.h"
+#include "../daw_move.h"
 #include "../daw_traits.h"
 #include "daw_reverse_iterator.h"
 
@@ -195,9 +196,9 @@ namespace daw {
 		  , m_splitter{other.m_splitter} {}
 
 		constexpr split_it( split_it &&other ) noexcept
-		  : m_data{std::move( other.m_data )}
-		  , m_position{std::move( other.m_position )}
-		  , m_splitter{std::move( other.m_splitter )} {}
+		  : m_data{daw::move( other.m_data )}
+		  , m_position{daw::move( other.m_position )}
+		  , m_splitter{daw::move( other.m_splitter )} {}
 
 		constexpr split_it &operator=( split_it const &rhs ) noexcept {
 			if( this != &rhs ) {
@@ -210,9 +211,9 @@ namespace daw {
 
 		constexpr split_it &operator=( split_it &&rhs ) noexcept {
 			if( this != &rhs ) {
-				m_data = std::move( rhs.m_data );
-				m_position = std::move( rhs.m_position );
-				m_splitter = std::move( rhs.m_splitter );
+				m_data = daw::move( rhs.m_data );
+				m_position = daw::move( rhs.m_position );
+				m_splitter = daw::move( rhs.m_splitter );
 			}
 			return *this;
 		}
@@ -425,9 +426,9 @@ namespace daw {
 		  , m_splitter{other.m_splitter} {}
 
 		constexpr split_it( split_it &&other ) noexcept
-		  : m_data{std::move( other.m_data )}
-		  , m_position{std::move( other.m_position )}
-		  , m_splitter{std::move( other.m_splitter )} {}
+		  : m_data{daw::move( other.m_data )}
+		  , m_position{daw::move( other.m_position )}
+		  , m_splitter{daw::move( other.m_splitter )} {}
 
 		constexpr split_it &operator=( split_it const &rhs ) noexcept {
 			if( this != &rhs ) {
@@ -440,9 +441,9 @@ namespace daw {
 
 		constexpr split_it &operator=( split_it &&rhs ) noexcept {
 			if( this != &rhs ) {
-				m_data = std::move( rhs.m_data );
-				m_position = std::move( rhs.m_position );
-				m_splitter = std::move( rhs.m_splitter );
+				m_data = daw::move( rhs.m_data );
+				m_position = daw::move( rhs.m_position );
+				m_splitter = daw::move( rhs.m_splitter );
 			}
 			return *this;
 		}
@@ -592,6 +593,6 @@ namespace daw {
 		  typename std::basic_string<CharT, Traits, Allocator>::iterator;
 
 		return split_it<iterator, SpltT>( str.begin( ), str.end( ),
-		                                  SpltT{std::move( divider )} );
+		                                  SpltT{daw::move( divider )} );
 	}
 } // namespace daw

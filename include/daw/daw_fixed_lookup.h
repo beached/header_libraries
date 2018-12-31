@@ -27,6 +27,7 @@
 
 #include "daw_exception.h"
 #include "daw_generic_hash.h"
+#include "daw_move.h"
 #include "daw_static_array.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
@@ -162,7 +163,7 @@ namespace daw {
 			  !is_found and is_found.position == m_hashes.size( ),
 			  "Fixed hash table does not have enough space to allocate all entries" );
 			m_hashes[is_found.position] = hash;
-			m_values[is_found.position] = std::move( value );
+			m_values[is_found.position] = daw::move( value );
 			return is_found.position;
 		}
 

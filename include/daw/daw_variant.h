@@ -36,6 +36,7 @@
 
 #include "daw_algorithm.h"
 #include "daw_exception.h"
+#include "daw_move.h"
 #include "daw_operators.h"
 #include "daw_static_array.h"
 #include "daw_traits.h"
@@ -66,7 +67,7 @@ namespace daw {
 		         typename Allocator = ::std::allocator<CharT>>
 		std::basic_string<CharT, Traits, Allocator>
 		to_string( ::std::basic_string<CharT, Traits, Allocator> s ) {
-			return std::move( s );
+			return daw::move( s );
 		}
 		std::string to_string( ... ) {
 			daw::exception::daw_throw(
@@ -271,10 +272,10 @@ namespace daw {
 			  : m_value{empty_type( )} {}
 
 			stored_type_t( std::type_index ti ) noexcept
-			  : m_value{std::move( ti )} {}
+			  : m_value{daw::move( ti )} {}
 
 			stored_type_t &operator=( std::type_index ti ) noexcept {
-				m_value = std::move( ti );
+				m_value = daw::move( ti );
 				return *this;
 			}
 
@@ -398,7 +399,7 @@ namespace daw {
 		variant_t( T value )
 		  : variant_t{} {
 
-			store( std::move( value ) );
+			store( daw::move( value ) );
 		}
 
 		~variant_t( ) {
@@ -414,7 +415,7 @@ namespace daw {
 
 		template<typename T, typename = std::enable_if_t<is_valid_type<T>>>
 		variant_t &operator=( T value ) {
-			store( std::move( value ) );
+			store( daw::move( value ) );
 			return *this;
 		}
 

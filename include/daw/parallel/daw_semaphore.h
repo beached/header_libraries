@@ -27,6 +27,7 @@
 #include <memory>
 #include <mutex>
 
+#include "../daw_move.h"
 #include "../daw_value_ptr.h"
 
 namespace daw {
@@ -144,7 +145,7 @@ namespace daw {
 		  basic_semaphore<Mutex, ConditionVariable> &&sem )
 		  : m_semaphore(
 		      std::make_shared<basic_semaphore<Mutex, ConditionVariable>>(
-		        std::move( sem ) ) ) {}
+		        daw::move( sem ) ) ) {}
 
 		void notify( ) {
 			m_semaphore->notify( );
@@ -197,8 +198,8 @@ namespace daw {
 		T value;
 
 		waitable_value( shared_semaphore sem, T val )
-		  : semaphore( std::move( sem ) )
-		  , value( std::move( val ) ) {}
+		  : semaphore( daw::move( sem ) )
+		  , value( daw::move( val ) ) {}
 
 		void wait( ) {
 			semaphore.wait( );
@@ -207,6 +208,6 @@ namespace daw {
 
 	template<typename T>
 	auto make_waitable_value( shared_semaphore sem, T value ) {
-		return waitable_value<T>{std::move( sem ), std::move( value )};
+		return waitable_value<T>{daw::move( sem ), daw::move( value )};
 	}
 } // namespace daw

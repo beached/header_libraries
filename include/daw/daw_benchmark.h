@@ -29,6 +29,7 @@
 #include <string>
 
 #include "daw_expected.h"
+#include "daw_move.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
 
@@ -152,7 +153,7 @@ namespace daw {
 	auto bench_test( std::string const &title, Test test_callable,
 	                 Args &&... args ) noexcept {
 		auto const start = std::chrono::high_resolution_clock::now( );
-		auto result = daw::expected_from_code( std::move( test_callable ),
+		auto result = daw::expected_from_code( daw::move( test_callable ),
 		                                       std::forward<Args>( args )... );
 		auto const finish = std::chrono::high_resolution_clock::now( );
 		std::chrono::duration<double> const duration = finish - start;
@@ -165,7 +166,7 @@ namespace daw {
 	auto bench_test2( std::string const &title, Test test_callable,
 	                  size_t item_count, Args &&... args ) noexcept {
 		auto const start = std::chrono::high_resolution_clock::now( );
-		auto result = daw::expected_from_code( std::move( test_callable ),
+		auto result = daw::expected_from_code( daw::move( test_callable ),
 		                                       std::forward<Args>( args )... );
 		auto const finish = std::chrono::high_resolution_clock::now( );
 		std::chrono::duration<double> const duration = finish - start;
@@ -193,7 +194,7 @@ namespace daw {
 	                   Args &&... args ) noexcept {
 		static_assert( Runs > 0 );
 		using result_t = daw::remove_cvref_t<decltype( daw::expected_from_code(
-		  std::move( test_callable ), std::forward<Args>( args )... ) )>;
+		  daw::move( test_callable ), std::forward<Args>( args )... ) )>;
 
 		result_t result{};
 
@@ -223,7 +224,7 @@ namespace daw {
 			bench_impl::expander( ( daw::do_not_optimize( args ), 1 )... );
 			auto const start = std::chrono::high_resolution_clock::now( );
 
-			result = daw::expected_from_code( std::move( test_callable ),
+			result = daw::expected_from_code( daw::move( test_callable ),
 			                                  std::forward<Args>( args )... );
 
 			auto const finish = std::chrono::high_resolution_clock::now( );

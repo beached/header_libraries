@@ -25,6 +25,7 @@
 #include <string>
 
 #include "daw_algorithm.h"
+#include "daw_move.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
 #include "iterator/daw_reverse_iterator.h"
@@ -66,13 +67,13 @@ namespace daw {
 		string_split_iterator( daw::basic_string_view<CharT> str,
 		                       std::basic_string<CharT> delemiter ) noexcept
 		  : m_str{str}
-		  , m_delemiter{std::move( delemiter )}
+		  , m_delemiter{daw::move( delemiter )}
 		  , m_pos{0} {}
 
 		string_split_iterator( std::basic_string<CharT> const &str,
 		                       std::basic_string<CharT> delemiter ) noexcept
 		  : m_str{make_string_view( str )}
-		  , m_delemiter{std::move( delemiter )}
+		  , m_delemiter{daw::move( delemiter )}
 		  , m_pos{0} {}
 
 		string_split_iterator &operator++( ) noexcept {
@@ -129,11 +130,11 @@ namespace daw {
 
 		string_split_range( daw::basic_string_view<CharT> str,
 		                    std::string delemiter ) noexcept
-		  : m_first{str, std::move( delemiter )} {}
+		  : m_first{str, daw::move( delemiter )} {}
 
 		string_split_range( std::basic_string<CharT> const &str,
 		                    std::string delemiter ) noexcept
-		  : m_first{str, std::move( delemiter )} {}
+		  : m_first{str, daw::move( delemiter )} {}
 
 		iterator begin( ) const {
 			return m_first;
@@ -157,7 +158,7 @@ namespace daw {
 	                   Delemiter delemiter ) noexcept {
 
 		std::basic_string<CharT> d = delemiter;
-		return string_split_range<CharT>{str, std::move( d )};
+		return string_split_range<CharT>{str, daw::move( d )};
 	}
 
 	template<typename CharT, typename Delemiter>
@@ -165,7 +166,7 @@ namespace daw {
 	                   Delemiter delemiter ) noexcept {
 
 		std::basic_string<CharT> d = delemiter;
-		return string_split_range<CharT>{std::move( str ), std::move( d )};
+		return string_split_range<CharT>{daw::move( str ), daw::move( d )};
 	}
 
 	template<typename CharT, size_t N, typename Delemiter>
@@ -173,7 +174,7 @@ namespace daw {
 
 		daw::basic_string_view<CharT> sv{str};
 		std::basic_string<CharT> d = delemiter;
-		return string_split_range<CharT>{std::move( sv ), std::move( d )};
+		return string_split_range<CharT>{daw::move( sv ), daw::move( d )};
 	}
 
 } // namespace daw

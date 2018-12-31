@@ -24,6 +24,7 @@
 
 #include <utility>
 
+#include "daw_move.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
 
@@ -39,15 +40,15 @@ namespace daw {
 		ScopeGuard &operator=( const ScopeGuard & ) = delete;
 
 		constexpr ScopeGuard( FunctionType f ) noexcept
-		  : m_function{std::move( f )}
+		  : m_function{daw::move( f )}
 		  , m_is_active{true} {}
 
 		constexpr ScopeGuard( ScopeGuard &&other ) noexcept
-		  : m_function{std::move( other.m_function )}
+		  : m_function{daw::move( other.m_function )}
 		  , m_is_active{daw::exchange( other.m_is_active, false )} {}
 
 		constexpr ScopeGuard &operator=( ScopeGuard &&rhs ) noexcept {
-			m_function = std::move( rhs.m_function );
+			m_function = daw::move( rhs.m_function );
 			m_is_active = daw::exchange( rhs.m_is_active, false );
 			return *this;
 		}
@@ -79,6 +80,6 @@ namespace daw {
 
 	template<typename FunctionType>
 	constexpr ScopeGuard<FunctionType> on_scope_exit( FunctionType f ) noexcept {
-		return ScopeGuard<FunctionType>( std::move( f ) );
+		return ScopeGuard<FunctionType>( daw::move( f ) );
 	}
 } // namespace daw

@@ -24,6 +24,8 @@
 
 #include <iterator>
 
+#include "../daw_move.h"
+
 namespace daw {
 	template<typename Iterator>
 	struct reverse_iterator {
@@ -43,7 +45,7 @@ namespace daw {
 		  : m_base{} {}
 
 		constexpr explicit reverse_iterator( Iterator it )
-		  : m_base{std::move( it )} {}
+		  : m_base{daw::move( it )} {}
 
 		template<typename U>
 		constexpr reverse_iterator( const reverse_iterator<U> &other )
@@ -176,6 +178,6 @@ namespace daw {
 
 	template<typename Iterator>
 	constexpr reverse_iterator<Iterator> make_reverse_iterator( Iterator i ) {
-		return reverse_iterator<Iterator>{std::move( i )};
+		return reverse_iterator<Iterator>{daw::move( i )};
 	}
 } // namespace daw

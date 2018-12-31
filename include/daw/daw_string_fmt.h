@@ -27,6 +27,7 @@
 #include <utility>
 
 #include "daw_exception.h"
+#include "daw_move.h"
 #include "daw_parser_helper_sv.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
@@ -124,6 +125,6 @@ namespace daw {
 
 	template<typename... Args>
 	std::string fmt( std::string format_str, Args &&... args ) {
-		return fmt_t{std::move( format_str )}( std::forward<Args>( args )... );
+		return fmt_t{daw::move( format_str )}( std::forward<Args>( args )... );
 	}
 } // namespace daw

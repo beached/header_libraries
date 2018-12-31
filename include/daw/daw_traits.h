@@ -653,10 +653,10 @@ namespace daw {
 		using pop_list_front = pack_list_front<Args...>;
 
 		template<typename T, typename... Args>
-		using push_list_back = pack_list<Args..., T>;	
+		using push_list_back = pack_list<Args..., T>;
 
 		template<typename T, typename... Args>
-		using push_list_front = pack_list<T, Args...>;	
+		using push_list_front = pack_list<T, Args...>;
 
 		template<typename A, typename B>
 		struct pack_index_of<A, B>

@@ -41,6 +41,7 @@
 #include "daw_fixed_stack.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_generic_hash.h"
+#include "daw_move.h"
 #include "daw_string_impl.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
@@ -1206,7 +1207,7 @@ namespace daw {
 	operator+( std::basic_string<CharT, Traits, Allocator> lhs,
 	           daw::basic_static_string<CharT, Capacity, Traits> const &rhs ) {
 		lhs.append( rhs.cbegin( ), rhs.cend( ) );
-		return std::move( lhs );
+		return daw::move( lhs );
 	}
 #endif
 
@@ -1234,14 +1235,14 @@ namespace daw {
 	auto operator+( daw::basic_static_string<CharT, Capacity, Traits> lhs,
 	                std::basic_string<CharT, Traits, Allocator> const &rhs ) {
 		lhs.append( rhs );
-		return std::move( lhs );
+		return daw::move( lhs );
 	}
 
 	template<typename CharT, size_t Capacity, typename Traits, typename Allocator>
 	auto operator+( daw::basic_static_string<CharT, Capacity, Traits> lhs,
 	                std::basic_string<CharT, Traits, Allocator> &&rhs ) {
-		lhs.append( std::move( rhs ) );
-		return std::move( lhs );
+		lhs.append( daw::move( rhs ) );
+		return daw::move( lhs );
 	}
 #endif
 
@@ -1250,14 +1251,14 @@ namespace daw {
 	                CharT ( &rhs )[N] ) {
 		static_assert( Capacity < ( N - 1 ), "Not enough space to perform append" );
 		lhs.append( daw::basic_string_view<CharT, Traits>{rhs} );
-		return std::move( lhs );
+		return daw::move( lhs );
 	}
 
 	template<typename CharT, size_t Capacity, typename Traits>
 	auto operator+( daw::basic_static_string<CharT, Capacity, Traits> lhs,
 	                CharT const *rhs ) {
 		lhs.append( daw::basic_string_view<CharT, Traits>{rhs} );
-		return std::move( lhs );
+		return daw::move( lhs );
 	}
 
 	template<typename CharT, size_t N, typename Traits, typename InternalSizeType,
@@ -1271,7 +1272,7 @@ namespace daw {
 		               "http://en.cppreference.com/w/cpp/concept/Predicate" );
 
 		return split( daw::string_view{str.data( ), str.size( )},
-		              std::move( pred ) );
+		              daw::move( pred ) );
 	}
 
 	template<typename CharT, size_t N, typename Traits, typename InternalSizeType,
