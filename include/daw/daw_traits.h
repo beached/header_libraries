@@ -643,6 +643,21 @@ namespace daw {
 			static constexpr size_t const size = sizeof...( Args );
 		};
 
+		template<typename T, typename... Args>
+		struct pack_list_front {
+			using front = T;
+			using back = pack_list<Args...>;
+		};
+
+		template<typename... Args>
+		using pop_list_front = pack_list_front<Args...>;
+
+		template<typename T, typename... Args>
+		using push_list_back = pack_list<Args..., T>;	
+
+		template<typename T, typename... Args>
+		using push_list_front = pack_list<T, Args...>;	
+
 		template<typename A, typename B>
 		struct pack_index_of<A, B>
 		  : std::integral_constant<int, std::is_same<A, B>{} - 1> {};
