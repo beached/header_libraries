@@ -110,7 +110,6 @@ set( UNTESTED_HEADER_IMPL
 	daw_math_impl
 	daw_traits_concepts
 	daw_traits_impl
-	daw_visit
 )
 
 set( TESTED_PARALLEL_HEADERS_PREFIXES
@@ -167,6 +166,7 @@ set( UNTESTED_HEADER_FILES
 	daw_string_impl.h
 	daw_variant.h
 	daw_variant2.h
+	daw_visit.h
 	daw_zipcontainer.h
 )
 
