@@ -71,7 +71,7 @@ namespace daw {
 		using const_reverse_iterator = daw::reverse_iterator<const_iterator>;
 		using size_type = size_t;
 		using difference_type = std::ptrdiff_t;
-		static constexpr ptrdiff_t const extent = Extent; 
+		static constexpr ptrdiff_t const extent = Extent;
 
 	private:
 		const_pointer m_first;
@@ -101,7 +101,7 @@ namespace daw {
 		static constexpr size_type const npos =
 		  std::numeric_limits<size_type>::max( );
 
-		// Constructors
+		// constructors
 		constexpr basic_string_view( ) noexcept
 		  : m_first{nullptr}
 		  , m_size{0} {}
@@ -113,9 +113,10 @@ namespace daw {
 		  : m_first{nullptr}
 		  , m_size{0} {}
 
-		constexpr basic_string_view( const_pointer s, size_type count ) noexcept
+		constexpr basic_string_view( const_pointer s,
+		                             size_type count = npos ) noexcept
 		  : m_first{s}
-		  , m_size{static_cast<size_type>( count )} {}
+		  , m_size{count == npos ? details::strlen<size_type>( s ) : count} {}
 
 		constexpr basic_string_view( basic_string_view sv,
 		                             size_type count ) noexcept
@@ -123,7 +124,8 @@ namespace daw {
 		  , m_size{static_cast<size_type>( count )} {}
 
 		template<size_t N>
-		constexpr basic_string_view( CharT const ( &cstr )[N + 1] ) noexcept
+		explicit constexpr basic_string_view(
+		  CharT const ( &cstr )[N + 1] ) noexcept
 		  : m_first( cstr )
 		  , m_size( N ){};
 #ifndef NOSTRING
@@ -141,8 +143,14 @@ namespace daw {
 		  , m_size( sv.size( ) ) {}
 #endif
 #endif
-		constexpr basic_string_view( const_pointer s ) noexcept
-		  : basic_string_view{s, details::strlen<size_type>( s )} {}
+		template<ptrdiff_t Ex, std::enable_if_t<( Extent == dynamic_string_size and
+		                                          Ex != dynamic_string_size ),
+		                                        std::nullptr_t> = nullptr>
+		constexpr basic_string_view &
+		operator=( basic_string_view<CharT, Traits, Ex> rhs ) noexcept {
+			m_first = rhs.m_first;
+			m_size = rhs.m_size;
+		}
 
 	private:
 		/// If you really want to do this, use to_string_view as storing the address
@@ -159,8 +167,15 @@ namespace daw {
 		to_string_view( std::basic_string<Chr, Tr, Alloc> &&str ) noexcept;
 #endif
 		//
-		//
+		// END OF constructors
 	public:
+		template<typename Tr, ptrdiff_t Ex,
+		         std::enable_if_t<( Ex == dynamic_string_size and Ex != Extent ),
+		                          std::nullptr_t> = nullptr>
+		constexpr operator basic_string_view<CharT, Tr, Ex>( ) noexcept {
+			return {m_first, m_size};
+		};
+
 #ifndef NOSTRING
 		operator std::basic_string<CharT, Traits>( ) const {
 			return to_string( );
@@ -917,11 +932,9 @@ namespace daw {
 	  ->daw::basic_string_view<CharT, Traits>;
 #endif
 #endif
-	template<typename CharT>
-	basic_string_view( CharT const *s )->basic_string_view<CharT>;
-
 	template<typename CharT, size_t N>
-	basic_string_view( CharT const ( &cstr )[N] )->basic_string_view<CharT>;
+	basic_string_view( CharT const ( &cstr )[N] )
+	  ->basic_string_view<CharT, std::char_traits<CharT>, N - 1>;
 	//
 	//
 	template<typename CharT, typename Traits>

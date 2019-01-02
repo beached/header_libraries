@@ -24,6 +24,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <string>
 
 namespace daw {
 	inline constexpr ptrdiff_t const dynamic_string_size = -1;

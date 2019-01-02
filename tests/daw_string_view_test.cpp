@@ -1013,4 +1013,8 @@ namespace daw {
 		s.remove_prefix( );
 	}
 #endif
+
+
+	static_assert( basic_string_view( "This is a test" ).extent == 14 );
+
 } // namespace daw
