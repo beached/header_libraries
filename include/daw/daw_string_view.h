@@ -57,7 +57,7 @@ namespace daw {
 		return 1;
 	}
 
-	template<typename CharT, typename Traits>
+	template<typename CharT, typename Traits, ptrdiff_t Extent>
 	struct basic_string_view final {
 		using traits_type = Traits;
 		using value_type = CharT;
@@ -71,6 +71,7 @@ namespace daw {
 		using const_reverse_iterator = daw::reverse_iterator<const_iterator>;
 		using size_type = size_t;
 		using difference_type = std::ptrdiff_t;
+		static constexpr ptrdiff_t const extent = Extent; 
 
 	private:
 		const_pointer m_first;
