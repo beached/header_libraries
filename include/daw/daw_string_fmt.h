@@ -74,7 +74,7 @@ namespace daw {
 				template<uint8_t Cnt, uint8_t Sz, typename... Args,
 				         std::enable_if_t<( Cnt >= Sz ), std::nullptr_t> = nullptr>
 				inline std::string get_arg_impl( uint8_t const, Args &&... ) {
-					daw::exception::daw_throw<daw::invalid_string_fmt_index>( );
+					daw::exception::daw_throw<invalid_string_fmt_index>( );
 				}
 
 				template<uint8_t Cnt, uint8_t Sz, typename Arg, typename... Args,
@@ -82,7 +82,7 @@ namespace daw {
 				std::string get_arg_impl( uint8_t const idx, Arg &&arg,
 				                          Args &&... args ) {
 					if( Cnt == idx ) {
-						using daw::sf_impl::to_string;
+						using daw::string_fmt::v1::sf_impl::to_string;
 						using std::to_string;
 						return to_string( std::forward<Arg>( arg ) );
 					}

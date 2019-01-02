@@ -100,6 +100,7 @@ namespace daw {
 		static constexpr size_type const npos =
 		  std::numeric_limits<size_type>::max( );
 
+		// Constructors
 		constexpr basic_string_view( ) noexcept
 		  : m_first{nullptr}
 		  , m_size{0} {}
@@ -120,6 +121,10 @@ namespace daw {
 		  : m_first{sv.m_first}
 		  , m_size{static_cast<size_type>( count )} {}
 
+		template<size_t N>
+		constexpr basic_string_view( CharT const ( &cstr )[N + 1] ) noexcept
+		  : m_first( cstr )
+		  , m_size( N ){};
 #ifndef NOSTRING
 		template<typename Allocator>
 		basic_string_view( std::basic_string<CharT, Traits, Allocator> const &str )
@@ -138,23 +143,6 @@ namespace daw {
 		constexpr basic_string_view( const_pointer s ) noexcept
 		  : basic_string_view{s, details::strlen<size_type>( s )} {}
 
-		constexpr basic_string_view( basic_string_view const &other ) noexcept =
-		  default;
-		constexpr basic_string_view( basic_string_view &&other ) noexcept = default;
-
-		constexpr basic_string_view &
-		operator=( basic_string_view const &rhs ) noexcept {
-			m_first = rhs.m_first;
-			m_size = rhs.m_size;
-			return *this;
-		}
-
-		constexpr basic_string_view &operator=( basic_string_view &&rhs ) noexcept {
-			m_first = daw::move( rhs.m_first );
-			m_size = daw::move( rhs.m_size );
-			return *this;
-		}
-
 	private:
 		/// If you really want to do this, use to_string_view as storing the address
 		/// of temporaries is often a mistake
@@ -169,9 +157,9 @@ namespace daw {
 		friend basic_string_view<Chr, Tr>
 		to_string_view( std::basic_string<Chr, Tr, Alloc> &&str ) noexcept;
 #endif
+		//
+		//
 	public:
-		~basic_string_view( ) = default;
-
 #ifndef NOSTRING
 		operator std::basic_string<CharT, Traits>( ) const {
 			return to_string( );
@@ -931,6 +919,8 @@ namespace daw {
 	template<typename CharT>
 	basic_string_view( CharT const *s )->basic_string_view<CharT>;
 
+	template<typename CharT, size_t N>
+	basic_string_view( CharT const ( &cstr )[N] )->basic_string_view<CharT>;
 	//
 	//
 	template<typename CharT, typename Traits>
