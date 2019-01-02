@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2018 Darrell Wright
+// Copyright (c) 2018-2019 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -22,13 +22,14 @@
 
 #pragma once
 
-#include <cstdint>
 #include <cstddef>
+#include <cstdint>
 
 namespace daw {
-	inline constexpr ptrdiff_t const dynamic_string_size = -1;	
+	inline constexpr ptrdiff_t const dynamic_string_size = -1;
 
-	template<typename CharT, typename Traits = std::char_traits<CharT>>
+	template<typename CharT, typename Traits = std::char_traits<CharT>,
+	         ptrdiff_t Extent = dynamic_string_size>
 	struct basic_string_view;
 
 	using string_view = basic_string_view<char>;
