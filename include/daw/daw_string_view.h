@@ -124,10 +124,10 @@ namespace daw {
 		  , m_size{static_cast<size_type>( count )} {}
 
 		template<size_t N>
-		explicit constexpr basic_string_view(
-		  CharT const ( &cstr )[N + 1] ) noexcept
+		constexpr basic_string_view(
+		  CharT const ( &cstr )[N] ) noexcept
 		  : m_first( cstr )
-		  , m_size( N ){};
+		  , m_size( N-1 ){};
 #ifndef NOSTRING
 		template<typename Allocator>
 		basic_string_view( std::basic_string<CharT, Traits, Allocator> const &str )
@@ -148,8 +148,9 @@ namespace daw {
 		                                        std::nullptr_t> = nullptr>
 		constexpr basic_string_view &
 		operator=( basic_string_view<CharT, Traits, Ex> rhs ) noexcept {
-			m_first = rhs.m_first;
-			m_size = rhs.m_size;
+			m_first = rhs.data( );
+			m_size = rhs.size( );
+			return *this;
 		}
 
 	private:
@@ -914,22 +915,17 @@ namespace daw {
 
 	// CTAD
 	template<typename CharT>
-	basic_string_view( CharT const *s, size_t count )->basic_string_view<CharT>;
-
-	template<typename CharT>
-	basic_string_view( basic_string_view<CharT> sv,
-	                   typename basic_string_view<CharT>::size_type count )
-	  ->basic_string_view<CharT>;
+	basic_string_view( CharT const *s, size_t count )->basic_string_view<CharT, std::char_traits<CharT>, dynamic_string_size>;
 
 #ifndef NOSTRING
 	template<typename CharT, typename Traits, typename Allocator>
 	basic_string_view( std::basic_string<CharT, Traits, Allocator> const &str )
-	  ->basic_string_view<CharT>;
+	  ->basic_string_view<CharT, Traits, dynamic_string_size>;
 
 #if defined( __cpp_lib_string_view )
 	template<typename CharT, typename Traits>
 	basic_string_view( std::basic_string_view<CharT, Traits> sv )
-	  ->daw::basic_string_view<CharT, Traits>;
+	  ->daw::basic_string_view<CharT, Traits, dynamic_string_size>;
 #endif
 #endif
 	template<typename CharT, size_t N>
