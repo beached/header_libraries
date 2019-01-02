@@ -25,13 +25,10 @@
 #include <array>
 #include <cstddef>
 
+#include "daw_string_view_fwd.h"
 #include "daw_traits.h"
 
 namespace daw {
-	template<typename CharT, typename Traits = std::char_traits<CharT>,
-	         typename InternalSizeType = size_t>
-	struct basic_string_view;
-
 	template<typename CharT, size_t Capacity,
 	         typename Traits = std::char_traits<CharT>,
 	         typename InternalSizeType = size_t>

@@ -31,60 +31,60 @@
 #include "daw/daw_string_fmt.h"
 
 BOOST_AUTO_TEST_CASE( stirng_fmt_test_001 ) {
-	std::cout << daw::fmt(
+	std::cout << daw::string_fmt::v1::fmt(
 	  "This is a {0} of the {1} and has been used {2} times for {0}ing\n", "test",
-	  "daw::fmt", 1'000'000 );
+	  "daw::string_fmt::v1::fmt", 1'000'000 );
 }
 
 BOOST_AUTO_TEST_CASE( stirng_fmt_test_002 ) {
-	daw::fmt_t f{
+	daw::string_fmt::v1::fmt_t f{
 	  "This is a {0} of the {1} and has been used {2} times for {0}ing\n"};
-	std::cout << f( "test", "daw::fmt", 1'000'000 );
+	std::cout << f( "test", "daw::string_fmt::v1::fmt", 1'000'000 );
 }
 
 BOOST_AUTO_TEST_CASE( string_fmt_test_single_item_001 ) {
-	auto result = daw::fmt( "{0}", 5 );
+	auto result = daw::string_fmt::v1::fmt( "{0}", 5 );
 
 	BOOST_REQUIRE_EQUAL( result, "5" );
 }
 
 BOOST_AUTO_TEST_CASE( string_fmt_test_recursion_001 ) {
-	auto result = daw::fmt( "{0}", daw::fmt( "{0}", 5 ) );
+	auto result = daw::string_fmt::v1::fmt( "{0}", daw::string_fmt::v1::fmt( "{0}", 5 ) );
 	BOOST_REQUIRE_EQUAL( result, "5" );
 	// auto const ans1 = daw::bench_test( "string_fmt_test_001", [&]( ) {
 	// test_func( ) } ); BOOST_REQUIRE_EQUAL( *ans1, );
 }
 
 BOOST_AUTO_TEST_CASE( string_fmt_test_out_of_range_001 ) {
-	BOOST_REQUIRE_THROW( daw::fmt( "{1}", 5 ), daw::invalid_string_fmt_index );
+	BOOST_REQUIRE_THROW( daw::string_fmt::v1::fmt( "{1}", 5 ), daw::string_fmt::v1::invalid_string_fmt_index );
 }
 
 BOOST_AUTO_TEST_CASE( string_fmt_perf_001 ) {
 	std::cout << "Larger format perf\n";
 	daw::bench_test( "string_fmt perf", [&]( ) {
 		for( size_t n = 0; n < 10'000'000; ++n ) {
-			auto tst = daw::fmt(
+			auto tst = daw::string_fmt::v1::fmt(
 			  "This is a {0} of the {1} and has been used {2} times for {0}ing\n",
-			  "test", "daw::fmt", n );
+			  "test", "daw::string_fmt::v1::fmt", n );
 			daw::do_not_optimize( tst );
 		}
 	} );
 
 	daw::bench_test( "fmt_t perf", [&]( ) {
-		auto const formatter = daw::fmt_t{
+		auto const formatter = daw::string_fmt::v1::fmt_t{
 		  "This is a {0} of the {1} and has been used {2} times for {0}ing\n"};
 		for( size_t n = 0; n < 10'000'000; ++n ) {
-			auto tst = formatter( "test", "daw::fmt", n );
+			auto tst = formatter( "test", "daw::string_fmt::v1::fmt", n );
 			daw::do_not_optimize( tst );
 		}
 	} );
 
 	daw::bench_test( "string_concat perf", [&]( ) {
 		using std::to_string;
-		using daw::impl::to_string;
+		using daw::string_fmt::v1::sf_impl::to_string;
 		for( size_t n = 0; n < 10'000'000; ++n ) {
 			auto tst = "This is a" + to_string( "test" ) + " of the " +
-			           to_string( "daw::fmt" ) + " and has been used " +
+			           to_string( "daw::string_fmt::v1::fmt" ) + " and has been used " +
 			           to_string( n ) + " times for " + to_string( "test" ) + "ing\n";
 			daw::do_not_optimize( tst );
 		}
@@ -95,17 +95,17 @@ BOOST_AUTO_TEST_CASE( string_fmt_perf_002 ) {
 	std::cout << "\n\nSmaller format perf\n";
 	daw::bench_test( "string_fmt perf", [&]( ) {
 		for( size_t n = 0; n < 10'000'000; ++n ) {
-			auto tst = daw::fmt(
-			  "This is a test of the daw::fmt and has been used {2} times for "
+			auto tst = daw::string_fmt::v1::fmt(
+			  "This is a test of the daw::string_fmt::v1::fmt and has been used {2} times for "
 			  "testing\n",
-			  "test", "daw::fmt", n );
+			  "test", "daw::string_fmt::v1::fmt", n );
 			daw::do_not_optimize( tst );
 		}
 	} );
 
 	daw::bench_test( "fmt_t perf", [&]( ) {
-		auto const formatter = daw::fmt_t{
-		  "This is a test of the daw::fmt and has been used {2} times for "
+		auto const formatter = daw::string_fmt::v1::fmt_t{
+		  "This is a test of the daw::string_fmt::v1::fmt and has been used {2} times for "
 		  "testing\n"};
 		for( size_t n = 0; n < 10'000'000; ++n ) {
 			auto tst = formatter( n );
@@ -115,9 +115,9 @@ BOOST_AUTO_TEST_CASE( string_fmt_perf_002 ) {
 
 	daw::bench_test( "string_concat perf", [&]( ) {
 		using std::to_string;
-		using daw::impl::to_string;
+		using daw::string_fmt::v1::sf_impl::to_string;
 		for( size_t n = 0; n < 10'000'000; ++n ) {
-			auto tst = "This is a test of the daw::fmt and has been used " +
+			auto tst = "This is a test of the daw::string_fmt::v1::fmt and has been used " +
 			           to_string( n ) + " times for testing\n";
 			daw::do_not_optimize( tst );
 		}
@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE( string_fmt_has_to_string_001 ) {
 		}
 	};
 	A a{1};
-	auto result = daw::fmt( "Testing {0}", a );
+	auto result = daw::string_fmt::v1::fmt( "Testing {0}", a );
 
 	BOOST_REQUIRE_EQUAL( result, "Testing 1" );
 }

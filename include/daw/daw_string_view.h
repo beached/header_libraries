@@ -45,6 +45,7 @@
 #include "daw_math.h"
 #include "daw_move.h"
 #include "daw_string_impl.h"
+#include "daw_string_view_fwd.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
 #include "iterator/daw_iterator.h"
@@ -56,7 +57,7 @@ namespace daw {
 		return 1;
 	}
 
-	template<typename CharT, typename Traits, typename InternalSizeType>
+	template<typename CharT, typename Traits>
 	struct basic_string_view final {
 		using traits_type = Traits;
 		using value_type = CharT;
@@ -69,12 +70,11 @@ namespace daw {
 		using reverse_iterator = daw::reverse_iterator<iterator>;
 		using const_reverse_iterator = daw::reverse_iterator<const_iterator>;
 		using size_type = size_t;
-		using size_type_internal = InternalSizeType;
 		using difference_type = std::ptrdiff_t;
 
 	private:
 		const_pointer m_first;
-		size_type_internal m_size;
+		size_type m_size;
 
 		template<typename ForwardIterator>
 		constexpr ForwardIterator find_not_of( ForwardIterator first,
@@ -97,8 +97,8 @@ namespace daw {
 		}
 
 	public:
-		static constexpr size_type_internal const npos =
-		  std::numeric_limits<size_type_internal>::max( );
+		static constexpr size_type const npos =
+		  std::numeric_limits<size_type>::max( );
 
 		constexpr basic_string_view( ) noexcept
 		  : m_first{nullptr}
@@ -113,12 +113,12 @@ namespace daw {
 
 		constexpr basic_string_view( const_pointer s, size_type count ) noexcept
 		  : m_first{s}
-		  , m_size{static_cast<size_type_internal>( count )} {}
+		  , m_size{static_cast<size_type>( count )} {}
 
 		constexpr basic_string_view( basic_string_view sv,
 		                             size_type count ) noexcept
 		  : m_first{sv.m_first}
-		  , m_size{static_cast<size_type_internal>( count )} {}
+		  , m_size{static_cast<size_type>( count )} {}
 
 #ifndef NOSTRING
 		template<typename Allocator>
@@ -135,23 +135,8 @@ namespace daw {
 		  , m_size( sv.size( ) ) {}
 #endif
 #endif
-	private:
-		/// If you really want to do this, use to_string_view as storing the address
-		/// of temporaries is often a mistake
-#ifndef NOSTRING
-		template<typename Allocator>
-		basic_string_view(
-		  std::basic_string<CharT, Traits, Allocator> &&str ) noexcept
-		  : m_first{str.data( )}
-		  , m_size{str.size( )} {}
-
-		template<typename Chr, typename Tr, typename Alloc>
-		friend basic_string_view<Chr, Tr>
-		to_string_view( std::basic_string<Chr, Tr, Alloc> &&str ) noexcept;
-#endif
-	public:
 		constexpr basic_string_view( const_pointer s ) noexcept
-		  : basic_string_view{s, details::strlen<size_type_internal>( s )} {}
+		  : basic_string_view{s, details::strlen<size_type>( s )} {}
 
 		constexpr basic_string_view( basic_string_view const &other ) noexcept =
 		  default;
@@ -170,6 +155,21 @@ namespace daw {
 			return *this;
 		}
 
+	private:
+		/// If you really want to do this, use to_string_view as storing the address
+		/// of temporaries is often a mistake
+#ifndef NOSTRING
+		template<typename Allocator>
+		basic_string_view(
+		  std::basic_string<CharT, Traits, Allocator> &&str ) noexcept
+		  : m_first{str.data( )}
+		  , m_size{str.size( )} {}
+
+		template<typename Chr, typename Tr, typename Alloc>
+		friend basic_string_view<Chr, Tr>
+		to_string_view( std::basic_string<Chr, Tr, Alloc> &&str ) noexcept;
+#endif
+	public:
 		~basic_string_view( ) = default;
 
 #ifndef NOSTRING
@@ -185,14 +185,13 @@ namespace daw {
 		template<typename ChrT, typename TrtsT, typename Allocator>
 		basic_string_view(
 		  std::basic_string<ChrT, TrtsT, Allocator> const &str ) noexcept
-		  : basic_string_view{str.data( ),
-		                      static_cast<size_type_internal>( str.size( ) )} {}
+		  : basic_string_view{str.data( ), static_cast<size_type>( str.size( ) )} {}
 
 		template<typename ChrT, typename TrtsT, typename Allocator>
 		basic_string_view &
 		operator=( std::basic_string<ChrT, TrtsT, Allocator> const &str ) noexcept {
 			m_first = str.data( );
-			m_size = static_cast<size_type_internal>( str.size( ) );
+			m_size = static_cast<size_type>( str.size( ) );
 			return *this;
 		}
 #endif
@@ -447,7 +446,7 @@ namespace daw {
 		}
 
 		constexpr void resize( size_t const n ) noexcept {
-			m_size = static_cast<size_type_internal>( n );
+			m_size = static_cast<size_type>( n );
 		}
 
 		constexpr void swap( basic_string_view &v ) noexcept {
@@ -473,7 +472,7 @@ namespace daw {
 				  "Attempt to access basic_string_view past end" );
 			}
 			auto const rcount =
-			  static_cast<size_type_internal>( daw::min( count, m_size - pos ) );
+			  static_cast<size_type>( daw::min( count, m_size - pos ) );
 			return basic_string_view{&m_first[pos], rcount};
 		}
 
@@ -547,7 +546,7 @@ namespace daw {
 			if( cend( ) == result ) {
 				return npos;
 			}
-			return static_cast<size_type_internal>( result - cbegin( ) );
+			return static_cast<size_type>( result - cbegin( ) );
 		}
 
 		constexpr size_type find( value_type const c,
@@ -576,7 +575,7 @@ namespace daw {
 			}
 			for( auto cur = begin( ) + pos;; --cur ) {
 				if( traits_type::compare( cur, v.begin( ), v.size( ) ) == 0 ) {
-					return static_cast<size_type_internal>( cur - begin( ) );
+					return static_cast<size_type>( cur - begin( ) );
 				}
 				if( cur == begin( ) ) {
 					return npos;
@@ -660,7 +659,7 @@ namespace daw {
 			if( cend( ) == iter ) {
 				return npos;
 			}
-			return static_cast<size_type_internal>( iter - cbegin( ) );
+			return static_cast<size_type>( iter - cbegin( ) );
 		}
 
 		template<typename UnaryPredicate>
@@ -679,8 +678,7 @@ namespace daw {
 			if( cend( ) == iter ) {
 				return npos;
 			}
-			return static_cast<size_type_internal>(
-			  std::distance( cbegin( ), iter ) );
+			return static_cast<size_type>( std::distance( cbegin( ), iter ) );
 		}
 
 		constexpr size_type find_first_of( value_type c,
@@ -910,10 +908,34 @@ namespace daw {
 		}
 	}; // basic_string_view
 
-	template<typename CharT, typename Traits, typename InternalSizeType>
-	constexpr void
-	swap( basic_string_view<CharT, Traits, InternalSizeType> &lhs,
-	      basic_string_view<CharT, Traits, InternalSizeType> &rhs ) noexcept {
+	// CTAD
+	template<typename CharT>
+	basic_string_view( CharT const *s, size_t count )->basic_string_view<CharT>;
+
+	template<typename CharT>
+	basic_string_view( basic_string_view<CharT> sv,
+	                   typename basic_string_view<CharT>::size_type count )
+	  ->basic_string_view<CharT>;
+
+#ifndef NOSTRING
+	template<typename CharT, typename Traits, typename Allocator>
+	basic_string_view( std::basic_string<CharT, Traits, Allocator> const &str )
+	  ->basic_string_view<CharT>;
+
+#if defined( __cpp_lib_string_view )
+	template<typename CharT, typename Traits>
+	basic_string_view( std::basic_string_view<CharT, Traits> sv )
+	  ->daw::basic_string_view<CharT, Traits>;
+#endif
+#endif
+	template<typename CharT>
+	basic_string_view( CharT const *s )->basic_string_view<CharT>;
+
+	//
+	//
+	template<typename CharT, typename Traits>
+	constexpr void swap( basic_string_view<CharT, Traits> &lhs,
+	                     basic_string_view<CharT, Traits> &rhs ) noexcept {
 
 		lhs.swap( rhs );
 	}
@@ -926,51 +948,11 @@ namespace daw {
 	}
 #endif
 
-	template<typename CharT>
-	using default_basic_string_view = basic_string_view<CharT>;
-
-	using string_view = basic_string_view<char>;
-	using wstring_view = basic_string_view<wchar_t>;
-	using u16string_view = basic_string_view<char16_t>;
-	using u32string_view = basic_string_view<char32_t>;
-
-	using tiny_string_view =
-	  basic_string_view<char, std::char_traits<char>, uint16_t>;
-	using tiny_wstring_view =
-	  basic_string_view<wchar_t, std::char_traits<wchar_t>, uint16_t>;
-	using tiny_u16string_view =
-	  basic_string_view<char16_t, std::char_traits<char16_t>, uint16_t>;
-	using tiny_u32string_view =
-	  basic_string_view<char32_t, std::char_traits<char32_t>, uint16_t>;
-
-	using small_string_view =
-	  basic_string_view<char, std::char_traits<char>, uint32_t>;
-	using small_wstring_view =
-	  basic_string_view<wchar_t, std::char_traits<wchar_t>, uint32_t>;
-	using small_u16string_view =
-	  basic_string_view<char16_t, std::char_traits<char16_t>, uint32_t>;
-	using small_u32string_view =
-	  basic_string_view<char32_t, std::char_traits<char32_t>, uint32_t>;
-
 	template<typename CharT, typename Traits = std::char_traits<CharT>>
 	constexpr auto make_string_view_it( CharT const *first,
 	                                    CharT const *last ) noexcept {
 		return basic_string_view<CharT, Traits>{
 		  first, static_cast<size_t>( last - first )};
-	}
-
-	template<typename CharT, typename Traits = std::char_traits<CharT>>
-	constexpr auto make_tiny_string_view_it( CharT const *first,
-	                                         CharT const *last ) noexcept {
-		return basic_string_view<CharT, Traits, uint16_t>{
-		  first, static_cast<uint16_t>( last - first )};
-	}
-
-	template<typename CharT, typename Traits = std::char_traits<CharT>>
-	constexpr auto make_small_string_view_it( CharT const *first,
-	                                          CharT const *last ) noexcept {
-		return basic_string_view<CharT, Traits, uint32_t>{
-		  first, static_cast<uint32_t>( last - first )};
 	}
 
 	template<
@@ -1279,19 +1261,16 @@ namespace daw {
 	}
 #endif
 
-	template<typename CharT, typename Traits, typename InternalSizeType,
-	         typename UnaryPredicate,
+	template<typename CharT, typename Traits, typename UnaryPredicate,
 	         std::enable_if_t<traits::is_unary_predicate_v<UnaryPredicate, CharT>,
 	                          std::nullptr_t> = nullptr>
-	auto split( daw::basic_string_view<CharT, Traits, InternalSizeType> str,
-	            UnaryPredicate pred ) {
+	auto split( daw::basic_string_view<CharT, Traits> str, UnaryPredicate pred ) {
 
 		class sv_arry_t {
-			std::vector<daw::basic_string_view<CharT, Traits, InternalSizeType>> data;
+			std::vector<daw::basic_string_view<CharT, Traits>> data;
 
 		public:
-			sv_arry_t(
-			  std::vector<daw::basic_string_view<CharT, Traits, InternalSizeType>> v )
+			sv_arry_t( std::vector<daw::basic_string_view<CharT, Traits>> v )
 			  : data{daw::move( v )} {}
 			sv_arry_t( ) = delete;
 			sv_arry_t( sv_arry_t const & ) = default;
@@ -1356,7 +1335,7 @@ namespace daw {
 #endif
 		};
 
-		std::vector<daw::basic_string_view<CharT, Traits, InternalSizeType>> v;
+		std::vector<daw::basic_string_view<CharT, Traits>> v;
 		auto last_pos = str.cbegin( );
 		while( !str.empty( ) ) {
 			auto sz = daw::min( str.size( ), str.find_first_of_if( pred ) );
@@ -1371,15 +1350,15 @@ namespace daw {
 		return sv_arry_t{daw::move( v )};
 	}
 
-	template<typename CharT, typename Traits, typename InternalSizeType>
-	auto split( daw::basic_string_view<CharT, Traits, InternalSizeType> str,
+	template<typename CharT, typename Traits>
+	auto split( daw::basic_string_view<CharT, Traits> str,
 	            CharT const delemiter ) {
 		return split(
 		  str, [delemiter]( CharT c ) noexcept { return c == delemiter; } );
 	}
 
-	template<typename CharT, typename Traits, typename InternalSizeType, size_t N>
-	auto split( daw::basic_string_view<CharT, Traits, InternalSizeType> str,
+	template<typename CharT, typename Traits, size_t N>
+	auto split( daw::basic_string_view<CharT, Traits> str,
 	            CharT const ( &delemiter )[N] ) {
 		static_assert( N == 2,
 		               "string literal used as delemiter.  One 1 value is "
@@ -1440,16 +1419,15 @@ namespace daw {
 
 	} // namespace string_view_literals
 
-	template<typename CharT, typename Traits, typename InternalSizeType>
-	constexpr size_t fnv1a_hash(
-	  daw::basic_string_view<CharT, Traits, InternalSizeType> sv ) noexcept {
+	template<typename CharT, typename Traits>
+	constexpr size_t
+	fnv1a_hash( daw::basic_string_view<CharT, Traits> sv ) noexcept {
 		return fnv1a_hash( sv.data( ), sv.size( ) );
 	}
 
-	template<size_t HashSize = sizeof( size_t ), typename CharT, typename Traits,
-	         typename InternalSizeType>
-	constexpr size_t generic_hash(
-	  daw::basic_string_view<CharT, Traits, InternalSizeType> sv ) noexcept {
+	template<size_t HashSize = sizeof( size_t ), typename CharT, typename Traits>
+	constexpr size_t
+	generic_hash( daw::basic_string_view<CharT, Traits> sv ) noexcept {
 		return generic_hash<HashSize>( sv.data( ), sv.size( ) );
 	}
 } // namespace daw
@@ -1457,10 +1435,10 @@ namespace daw {
 namespace std {
 	// TODO use same function as string without killing performance of creating a
 	// string
-	template<typename CharT, typename Traits, typename InternalSizeType>
-	struct hash<daw::basic_string_view<CharT, Traits, InternalSizeType>> {
-		constexpr size_t operator( )(
-		  daw::basic_string_view<CharT, Traits, InternalSizeType> s ) noexcept {
+	template<typename CharT, typename Traits>
+	struct hash<daw::basic_string_view<CharT, Traits>> {
+		constexpr size_t
+		operator( )( daw::basic_string_view<CharT, Traits> s ) noexcept {
 			return daw::fnv1a_hash( s );
 		}
 	};
