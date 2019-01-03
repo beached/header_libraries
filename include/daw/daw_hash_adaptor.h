@@ -27,7 +27,6 @@
 #include <vector>
 
 #include "daw_algorithm.h"
-#include "daw_fnv1a_hash.h"
 
 namespace daw {
 	constexpr size_t scale_hash( size_t hash, size_t range_size ) {
@@ -110,7 +109,7 @@ namespace daw {
 		}
 	};
 
-	template<typename Key, size_t Capacity, typename Hash = daw::fnv1a_hash_t>
+	template<typename Key, size_t Capacity, typename Hash = std::hash<Key>>
 	class static_hash_adaptor_t {
 		std::array<std::pair<Key, bool>, Capacity> m_indices{};
 

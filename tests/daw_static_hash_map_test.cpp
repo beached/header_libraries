@@ -20,11 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "daw/daw_fnv1a_hash.h"
 #include "daw/daw_static_hash_map.h"
 #include "daw/daw_string_view.h"
 
 namespace {
-	constexpr daw::static_hash_map<uint16_t, daw::string_view, 13> const
+	constexpr daw::static_hash_map<uint16_t, daw::string_view, 13, daw::fnv1a_hash_t> const
 	  status_codes{{{100, "Continue"},
 	                {101, "Switching Protocols"},
 	                {102, "Processing"},
@@ -40,7 +41,7 @@ namespace {
 	                {226, "IM Used"}}};
 
 	constexpr auto const status_codes2 =
-	  daw::make_static_hash_map<uint16_t, daw::string_view>(
+	  daw::make_static_hash_map<uint16_t, daw::string_view, daw::fnv1a_hash_t>(
 	    {{100, "Continue"},
 	     {101, "Switching Protocols"},
 	     {102, "Processing"},

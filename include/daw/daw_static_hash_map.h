@@ -27,7 +27,6 @@
 #include <utility>
 
 #include "cpp_17.h"
-#include "daw_fnv1a_hash.h"
 #include "daw_hash_adaptor.h"
 #include "daw_traits.h"
 #include "iterator/daw_zipiter.h"
@@ -202,7 +201,7 @@ namespace daw {
 	};
 
 	template<typename Key, typename Value, size_t N,
-	         typename Hash = daw::fnv1a_hash_t,
+	         typename Hash = std::hash<Key>,
 	         typename KeyEqual = std::equal_to<Key>>
 	struct static_hash_map {
 		using key_type = Key;
@@ -367,10 +366,10 @@ namespace daw {
 		}
 	};
 
-	template<typename Key, typename Value, typename Hash = daw::fnv1a_hash_t,
+	template<typename Key, typename Value, typename Hash = std::hash<Key>,
 	         size_t N>
 	constexpr auto
 	make_static_hash_map( std::pair<Key, Value> const ( &items )[N] ) noexcept {
-		return static_hash_map<Key, Value, N>( items );
+		return static_hash_map<Key, Value, N, Hash>( items );
 	}
 } // namespace daw

@@ -36,7 +36,7 @@ void test_001( ) {
 
 constexpr bool test_002( ) {
 	size_t count = 1024ULL;
-	daw::static_hash_adaptor_t<size_t, 1024ULL> adapt{};
+	daw::static_hash_adaptor_t<size_t, 1024ULL, daw::fnv1a_hash_t> adapt{};
 	for( size_t n = 0; n < count; ++n ) {
 		adapt.insert( n );
 	}
