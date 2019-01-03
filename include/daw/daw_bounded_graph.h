@@ -42,8 +42,8 @@
 #include "iterator/daw_back_inserter.h"
 
 namespace daw {
-	template<typename T, size_t MaxVerticesPerNode>
-	struct graph_t;
+	template<typename T, size_t MaxVerticesPerNode, typename Hash=std::hash<T>>
+	struct bounded_graph_t;
 
 	class node_id_t {
 		static inline constexpr size_t const NO_ID =
@@ -56,8 +56,8 @@ namespace daw {
 			return m_value;
 		}
 
-		template<typename T, size_t MaxVerticesPerNode>
-		friend struct graph_t;
+		template<typename T, size_t MaxVerticesPerNode, typename Hash>
+		friend struct bounded_graph_t;
 
 	public:
 		constexpr node_id_t( ) noexcept = default;
@@ -96,7 +96,7 @@ namespace std {
 } // namespace std
 
 namespace daw {
-	namespace graph_impl {
+	namespace bounded_graph_impl {
 		template<typename T, size_t MaxVerticesPerNode>
 		class node_impl_t {
 			node_id_t m_id{};
@@ -159,7 +159,7 @@ namespace daw {
 				return m_outgoing_edges;
 			}
 		};
-	} // namespace graph_impl
+	} // namespace bounded_graph_impl
 
 	class invalid_node_exception {
 		std::optional<size_t> m_id = {};
@@ -178,14 +178,14 @@ namespace daw {
 	};
 
 	template<typename>
-	struct graph_node_proxies : std::false_type {};
+	struct bounded_graph_node_proxies : std::false_type {};
 
 	template<typename T>
-	inline constexpr bool is_graph_node_v = graph_node_proxies<T>::value;
+	inline constexpr bool is_bounded_graph_node_v = bounded_graph_node_proxies<T>::value;
 
-	template<typename T, size_t MaxVerticesPerNode>
+	template<typename T, size_t MaxVerticesPerNode, typename Hash>
 	class const_graph_node_t {
-		graph_t<T, MaxVerticesPerNode> const *m_graph = nullptr;
+		bounded_graph_t<T, MaxVerticesPerNode, Hash> const *m_graph = nullptr;
 		node_id_t m_node_id{};
 
 	public:
@@ -193,11 +193,11 @@ namespace daw {
 		using reference = value_type &;
 		using const_reference = value_type const &;
 		using edges_t =
-		  typename graph_impl::node_impl_t<T, MaxVerticesPerNode>::edges_t;
+		  typename bounded_graph_impl::node_impl_t<T, MaxVerticesPerNode>::edges_t;
 
 		constexpr const_graph_node_t( ) noexcept = default;
 
-		const_graph_node_t( graph_t<T, MaxVerticesPerNode> const *graph_ptr,
+		const_graph_node_t( bounded_graph_t<T, MaxVerticesPerNode, Hash> const *graph_ptr,
 		                    node_id_t Id ) noexcept
 		  : m_graph( graph_ptr )
 		  , m_node_id( Id ) {}
@@ -206,7 +206,7 @@ namespace daw {
 			return m_node_id;
 		}
 
-		constexpr graph_t<T, MaxVerticesPerNode> const *graph( ) const noexcept {
+		constexpr bounded_graph_t<T, MaxVerticesPerNode, Hash> const *graph( ) const noexcept {
 			return m_graph;
 		}
 
@@ -238,7 +238,7 @@ namespace daw {
 
 		template<typename Rhs>
 		constexpr bool operator==( Rhs const &rhs ) noexcept {
-			static_assert( is_graph_node_v<Rhs>,
+			static_assert( is_bounded_graph_node_v<Rhs>,
 			               "Can only do comparison with another graph node proxy" );
 			return m_node_id == rhs.id( ) or
 			       std::equal_to<>{}( m_graph, rhs.graph( ) );
@@ -246,7 +246,7 @@ namespace daw {
 
 		template<typename Rhs>
 		constexpr bool operator!=( Rhs const &rhs ) noexcept {
-			static_assert( is_graph_node_v<Rhs>,
+			static_assert( is_bounded_graph_node_v<Rhs>,
 			               "Can only do comparison with another graph node proxy" );
 			return m_node_id != rhs.id( ) or
 			       std::not_equal_to<>{}( m_graph, rhs.graph( ) );
@@ -254,7 +254,7 @@ namespace daw {
 
 		template<typename Rhs>
 		constexpr bool operator<( Rhs const &rhs ) noexcept {
-			static_assert( is_graph_node_v<Rhs>,
+			static_assert( is_bounded_graph_node_v<Rhs>,
 			               "Can only do comparison with another graph node proxy" );
 			daw::exception::dbg_precondition_check(
 			  std::equal_to<>{}( m_graph, rhs.graph( ) ) );
@@ -262,13 +262,13 @@ namespace daw {
 		}
 	};
 
-	template<typename T, size_t MaxVerticesPerNode>
-	struct graph_node_proxies<const_graph_node_t<T, MaxVerticesPerNode>>
+	template<typename T, size_t MaxVerticesPerNode, typename Hash>
+	struct bounded_graph_node_proxies<const_graph_node_t<T, MaxVerticesPerNode, Hash>>
 	  : std::true_type {};
 
-	template<typename T, size_t MaxVerticesPerNode>
-	class graph_node_t {
-		graph_t<T, MaxVerticesPerNode> *m_graph = nullptr;
+	template<typename T, size_t MaxVerticesPerNode, typename Hash = std::hash<T>>
+	class bounded_graph_node_t {
+		bounded_graph_t<T, MaxVerticesPerNode, Hash> *m_graph = nullptr;
 		node_id_t m_node_id{};
 
 	public:
@@ -276,11 +276,11 @@ namespace daw {
 		using reference = value_type &;
 		using const_reference = value_type const &;
 		using edges_t =
-		  typename graph_impl::node_impl_t<T, MaxVerticesPerNode>::edges_t;
+		  typename bounded_graph_impl::node_impl_t<T, MaxVerticesPerNode>::edges_t;
 
-		constexpr graph_node_t( ) noexcept = default;
+		constexpr bounded_graph_node_t( ) noexcept = default;
 
-		constexpr graph_node_t( graph_t<T, MaxVerticesPerNode> *graph_ptr,
+		constexpr bounded_graph_node_t( bounded_graph_t<T, MaxVerticesPerNode, Hash> *graph_ptr,
 		                        node_id_t Id ) noexcept
 		  : m_graph( graph_ptr )
 		  , m_node_id( Id ) {}
@@ -289,7 +289,7 @@ namespace daw {
 			return m_node_id;
 		}
 
-		constexpr graph_t<T, MaxVerticesPerNode> const *graph( ) const noexcept {
+		constexpr bounded_graph_t<T, MaxVerticesPerNode, Hash> const *graph( ) const noexcept {
 			return m_graph;
 		}
 
@@ -301,37 +301,37 @@ namespace daw {
 			return m_graph != nullptr and static_cast<bool>( m_node_id );
 		}
 
-		reference value( ) {
+		constexpr reference value( ) {
 			daw::exception::dbg_precondition_check<invalid_node_exception>(
 			  m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).value( );
 		}
 
-		const_reference value( ) const {
+		constexpr const_reference value( ) const {
 			daw::exception::dbg_precondition_check<invalid_node_exception>(
 			  m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).value( );
 		}
 
-		edges_t &incoming_edges( ) {
+		constexpr edges_t &incoming_edges( ) {
 			daw::exception::dbg_precondition_check<invalid_node_exception>(
 			  m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).incoming_edges( );
 		}
 
-		edges_t const &incoming_edges( ) const {
+		constexpr edges_t const &incoming_edges( ) const {
 			daw::exception::dbg_precondition_check<invalid_node_exception>(
 			  m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).incoming_edges( );
 		}
 
-		edges_t &outgoing_edges( ) {
+		constexpr edges_t &outgoing_edges( ) {
 			daw::exception::dbg_precondition_check<invalid_node_exception>(
 			  m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).outgoing_edges( );
 		}
 
-		edges_t const &outgoing_edges( ) const {
+		constexpr edges_t const &outgoing_edges( ) const {
 			daw::exception::dbg_precondition_check<invalid_node_exception>(
 			  m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).outgoing_edges( );
@@ -339,7 +339,7 @@ namespace daw {
 
 		template<typename Rhs>
 		constexpr bool operator==( Rhs const &rhs ) noexcept {
-			static_assert( is_graph_node_v<Rhs>,
+			static_assert( is_bounded_graph_node_v<Rhs>,
 			               "Can only do comparison with another graph node proxy" );
 			return m_node_id == rhs.id( ) or
 			       std::equal_to<>{}( m_graph, rhs.graph( ) );
@@ -347,7 +347,7 @@ namespace daw {
 
 		template<typename Rhs>
 		constexpr bool operator!=( Rhs const &rhs ) noexcept {
-			static_assert( is_graph_node_v<Rhs>,
+			static_assert( is_bounded_graph_node_v<Rhs>,
 			               "Can only do comparison with another graph node proxy" );
 			return m_node_id != rhs.id( ) or
 			       std::not_equal_to<>{}( m_graph, rhs.graph( ) );
@@ -355,41 +355,41 @@ namespace daw {
 
 		template<typename Rhs>
 		constexpr bool operator<( Rhs const &rhs ) noexcept {
-			static_assert( is_graph_node_v<Rhs>,
+			static_assert( is_bounded_graph_node_v<Rhs>,
 			               "Can only do comparison with another graph node proxy" );
 			daw::exception::dbg_precondition_check(
 			  std::equal_to<>{}( m_graph, rhs.graph( ) ) );
 			return m_node_id < rhs.id( );
 		}
 
-		constexpr operator const_graph_node_t<T, MaxVerticesPerNode>( ) const
+		constexpr operator const_graph_node_t<T, MaxVerticesPerNode, Hash>( ) const
 		  noexcept {
-			return const_graph_node_t<T, MaxVerticesPerNode>( m_graph, m_node_id );
+			return const_graph_node_t<T, MaxVerticesPerNode, Hash>( m_graph, m_node_id );
 		}
 	};
 
-	template<typename T, size_t MaxVerticesPerNode>
-	struct graph_node_proxies<graph_node_t<T, MaxVerticesPerNode>>
+	template<typename T, size_t MaxVerticesPerNode, typename Hash>
+	struct bounded_graph_node_proxies<bounded_graph_node_t<T, MaxVerticesPerNode, Hash>>
 	  : std::true_type {};
 
-	template<typename T, size_t MaxVerticesPerNode>
-	struct graph_t {
-		using raw_node_t = graph_impl::node_impl_t<T, MaxVerticesPerNode>;
-		using node_t = graph_node_t<T, MaxVerticesPerNode>;
-		using const_node_t = const_graph_node_t<T, MaxVerticesPerNode>;
+	template<typename T, size_t MaxVerticesPerNode, typename Hash>
+	struct bounded_graph_t {
+		using raw_node_t = bounded_graph_impl::node_impl_t<T, MaxVerticesPerNode>;
+		using node_t = bounded_graph_node_t<T, MaxVerticesPerNode, Hash>;
+		using const_node_t = const_graph_node_t<T, MaxVerticesPerNode, Hash>;
 
 	private:
 		size_t cur_id = 0;
-		daw::bounded_hash_map<size_t, raw_node_t, MaxVerticesPerNode> m_nodes{};
+		daw::bounded_hash_map<size_t, raw_node_t, MaxVerticesPerNode, Hash> m_nodes{};
 
 	public:
-		constexpr graph_t( ) noexcept = default;
+		constexpr bounded_graph_t( ) noexcept = default;
 
 		template<typename... Args>
 		constexpr node_id_t add_node( Args &&... args ) {
 			auto const id = cur_id++;
 			m_nodes.insert(
-			  id, graph_impl::node_impl_t<T, MaxVerticesPerNode>(
+			  id, bounded_graph_impl::node_impl_t<T, MaxVerticesPerNode>(
 			        node_id_t{id},
 			        daw::construct_a<T>{}( std::forward<Args>( args )... ) ) );
 
@@ -494,11 +494,11 @@ namespace daw {
 		find_by_value( T const &value, Compare compare = Compare{} ) const {
 			daw::fixed_stack_t<node_id_t, MaxVerticesPerNode> result{};
 
-			daw::algorithm::copy_if(
-			  std::cbegin( m_nodes ), std::cend( m_nodes ),
-			  daw::back_inserter( result ), [&]( auto const &node ) {
-				  return daw::invoke( compare, node.second.value( ), value );
-			  } );
+			for( auto const & node: m_nodes ) {
+				if( daw::invoke( compare, node.value.value( ), value ) ) {
+					result.push_back( node.value.id( ) );
+				}
+			}
 			return result;
 		}
 
@@ -509,7 +509,7 @@ namespace daw {
 			static_assert( std::is_invocable_v<Visitor, raw_node_t &>,
 			               "Visitor must accept a node as argument" );
 			for( auto &node_ref : m_nodes ) {
-				auto node = get_node( node_ref.second.id( ) );
+				auto node = get_node( node_ref.value.id( ) );
 				if( daw::invoke( pred, node ) ) {
 					daw::invoke( vis, daw::move( node ) );
 				}
@@ -523,7 +523,7 @@ namespace daw {
 			static_assert( std::is_invocable_v<Visitor, raw_node_t const &>,
 			               "Visitor must accept a node as argument" );
 			for( auto const &node_ref : m_nodes ) {
-				auto node = get_node( node_ref.second.id( ) );
+				auto node = get_node( node_ref.value.id( ) );
 				if( daw::invoke( pred, node ) ) {
 					daw::invoke( vis, daw::move( node ) );
 				}

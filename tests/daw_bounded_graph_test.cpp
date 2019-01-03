@@ -23,14 +23,16 @@
 
 #include "daw/daw_benchmark.h"
 #include "daw/daw_bounded_graph.h"
+#include "daw/daw_fnv1a_hash.h"
 
 int main( ) {
 	constexpr size_t const MaxNodes = 100U;
-	constexpr auto f1 = []( ) constexpr {
+	auto f1 = []( ) {
 		constexpr daw::node_id_t null_id{};
-		constexpr daw::graph_node_t<int, MaxNodes> null_node{};
+		constexpr daw::bounded_graph_node_t<int, MaxNodes, daw::fnv1a_hash_t>
+		  null_node{};
 
-		daw::graph_t<int, MaxNodes> graph{};
+		daw::bounded_graph_t<int, MaxNodes, daw::fnv1a_hash_t> graph{};
 		auto n0_id = graph.add_node( 5 );
 		daw::expecting( n0_id != null_id );
 
@@ -44,10 +46,11 @@ int main( ) {
 		graph.remove_node( n0_id );
 		daw::expecting( !graph.has_node( n0_id ) );
 		return true;
-	}
-	( );
+	}( );
+	::Unused( f1 );
+
 	{
-		daw::graph_t<int, MaxNodes> graph{};
+		daw::bounded_graph_t<int, MaxNodes, daw::fnv1a_hash_t> graph{};
 		auto n0_id = graph.add_node( 5 );
 		auto n1_id = graph.add_node( 6 );
 		graph.add_directed_edge( n0_id, n1_id );
@@ -67,7 +70,7 @@ int main( ) {
 		daw::expecting( graph.get_node( nodes.front( ) ).value( ), 1000 );
 	}
 	{
-		daw::graph_t<int, MaxNodes> graph{};
+		daw::bounded_graph_t<int, MaxNodes, daw::fnv1a_hash_t> graph{};
 		auto n0 = graph.add_node( 0 );
 		auto n1 = graph.add_node( 1 );
 		auto n2 = graph.add_node( 2 );

@@ -28,6 +28,7 @@
 #include <utility>
 
 #include "cpp_17.h"
+#include "daw_algorithm.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -35,6 +36,7 @@ namespace daw {
 	struct key_value_t {
 		Key key{};
 		Value value{};
+
 		constexpr key_value_t( ) noexcept(
 		  std::is_nothrow_default_constructible_v<Key>
 		    and std::is_nothrow_default_constructible_v<Value> ) = default;
@@ -66,12 +68,16 @@ namespace daw {
 			return has_value;
 		}
 	};
+	template<typename Key, typename Value>
+	struct bounded_hash_map_iterator;
 
 	template<typename Key, typename Value>
 	struct const_bounded_hash_map_iterator {
 		using difference_type = std::ptrdiff_t;
 		using value_type = key_value_t<Key, Value>;
+		using pointer = value_type const *;
 		using const_pointer = value_type const *;
+		using reference = value_type const &;
 		using const_reference = value_type const &;
 		using iterator_category = std::bidirectional_iterator_tag;
 
@@ -123,6 +129,29 @@ namespace daw {
 			auto result = *this;
 			operator--( );
 			return result;
+		}
+
+		friend struct bounded_hash_map_iterator<Key, Value>;
+		constexpr int compare( const_bounded_hash_map_iterator const &rhs ) const
+		  noexcept {
+			if( m_position == rhs.m_position ) {
+				return 0;
+			}
+			if( m_position < rhs.m_position ) {
+				return -1;
+			}
+			return 1;
+		}
+
+		constexpr int
+		compare( bounded_hash_map_iterator<Key, Value> const &rhs ) const noexcept {
+			if( m_position == rhs.m_position ) {
+				return 0;
+			}
+			if( m_position < rhs.m_position ) {
+				return -1;
+			}
+			return 1;
 		}
 	};
 
@@ -198,7 +227,87 @@ namespace daw {
 		  noexcept {
 			return {m_first, m_last, m_position};
 		}
+
+		friend struct const_bounded_hash_map_iterator<Key, Value>;
+		constexpr int
+		compare( const_bounded_hash_map_iterator<Key, Value> const &rhs ) const
+		  noexcept {
+			if( m_position == rhs.m_position ) {
+				return 0;
+			}
+			if( m_position < rhs.m_position ) {
+				return -1;
+			}
+			return 1;
+		}
+
+		constexpr int compare( bounded_hash_map_iterator const &rhs ) const
+		  noexcept {
+			if( m_position == rhs.m_position ) {
+				return 0;
+			}
+			if( m_position < rhs.m_position ) {
+				return -1;
+			}
+			return 1;
+		}
 	};
+
+	template<typename Key, typename Value>
+	constexpr bool
+	operator==( bounded_hash_map_iterator<Key, Value> const &lhs,
+	            bounded_hash_map_iterator<Key, Value> const &rhs ) noexcept {
+		return lhs.compare( rhs ) == 0;
+	}
+
+	template<typename Key, typename Value>
+	constexpr bool operator==(
+	  const_bounded_hash_map_iterator<Key, Value> const &lhs,
+	  const_bounded_hash_map_iterator<Key, Value> const &rhs ) noexcept {
+		return lhs.compare( rhs ) == 0;
+	}
+
+	template<typename Key, typename Value>
+	constexpr bool operator==(
+	  bounded_hash_map_iterator<Key, Value> const &lhs,
+	  const_bounded_hash_map_iterator<Key, Value> const &rhs ) noexcept {
+		return lhs.compare( rhs ) == 0;
+	}
+
+	template<typename Key, typename Value>
+	constexpr bool
+	operator==( const_bounded_hash_map_iterator<Key, Value> const &lhs,
+	            bounded_hash_map_iterator<Key, Value> const &rhs ) noexcept {
+		return lhs.compare( rhs ) == 0;
+	}
+
+	template<typename Key, typename Value>
+	constexpr bool
+	operator!=( bounded_hash_map_iterator<Key, Value> const &lhs,
+	            bounded_hash_map_iterator<Key, Value> const &rhs ) noexcept {
+		return lhs.compare( rhs ) != 0;
+	}
+
+	template<typename Key, typename Value>
+	constexpr bool operator!=(
+	  const_bounded_hash_map_iterator<Key, Value> const &lhs,
+	  const_bounded_hash_map_iterator<Key, Value> const &rhs ) noexcept {
+		return lhs.compare( rhs ) != 0;
+	}
+
+	template<typename Key, typename Value>
+	constexpr bool operator!=(
+	  bounded_hash_map_iterator<Key, Value> const &lhs,
+	  const_bounded_hash_map_iterator<Key, Value> const &rhs ) noexcept {
+		return lhs.compare( rhs ) != 0;
+	}
+
+	template<typename Key, typename Value>
+	constexpr bool
+	operator!=( const_bounded_hash_map_iterator<Key, Value> const &lhs,
+	            bounded_hash_map_iterator<Key, Value> const &rhs ) noexcept {
+		return lhs.compare( rhs ) != 0;
+	}
 
 	template<typename Key, typename Value, size_t N,
 	         typename Hash = std::hash<Key>,
@@ -293,7 +402,7 @@ namespace daw {
 				item.has_value = true;
 				item.kv.key = std::forward<K>( key );
 				item.kv.value = Value{};
-			};
+			}
 			return item.kv.value;
 		}
 
@@ -301,7 +410,7 @@ namespace daw {
 			decltype( auto ) item = m_data[*find_index( key )];
 			if( !item ) {
 				std::terminate( );
-			};
+			}
 			return item.kv.value;
 		}
 
@@ -337,6 +446,12 @@ namespace daw {
 				  }
 				  return std::forward<decltype( init )>( init );
 			  } );
+		}
+
+		constexpr size_type empty( ) const noexcept {
+			return daw::algorithm::find_if( std::cbegin( m_data ), std::cend( m_data ), []( auto const & value ) {
+				return value;
+			}) == std::cend( m_data );
 		}
 
 		constexpr iterator begin( ) noexcept {
@@ -381,6 +496,14 @@ namespace daw {
 			}
 			return {m_data.data( ), m_data.data( ) + m_data.size( ), &m_data[*idx]};
 		}
+
+		constexpr void erase( Key const &key ) noexcept {
+			auto idx = find_index( key );
+			if( idx ) {
+				m_data[*idx].has_value = false;
+				// m_data[*idx].kv = key_value_t{}
+			}
+		}
 	};
 
 	template<typename Key, typename Value, typename Hash = std::hash<Key>,
@@ -390,4 +513,3 @@ namespace daw {
 		return bounded_hash_map<Key, Value, N, Hash>( items );
 	}
 } // namespace daw
-
