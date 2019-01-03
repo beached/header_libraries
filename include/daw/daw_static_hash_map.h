@@ -288,6 +288,15 @@ namespace daw {
 			return item.value;
 		}
 
+		template<typename K>
+		constexpr mapped_type const &operator[]( K &&key ) const noexcept {
+			decltype( auto ) item = m_data[*find_index( key )];
+			if( !item ) {
+				std::terminate( );
+			};
+			return item.value;
+		}
+
 		constexpr std::optional<mapped_type> try_get( Key const &key ) const
 		  noexcept {
 			auto idx = find_index( key );
