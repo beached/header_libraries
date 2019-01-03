@@ -29,8 +29,8 @@
 #include "daw_exception.h"
 #include "daw_move.h"
 #include "daw_parser_helper_sv.h"
-#include "daw_string_view.h"
 #include "daw_static_string.h"
+#include "daw_string_view.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -135,7 +135,7 @@ namespace daw {
 			}
 		} // namespace v1
 	}   // namespace string_fmt
-	using string_fmt::v1::fmt_t;
 	using string_fmt::v1::fmt;
+	using string_fmt::v1::fmt_t;
 	using string_fmt::v1::invalid_string_fmt_index;
 } // namespace daw

@@ -594,7 +594,7 @@ BOOST_AUTO_TEST_CASE( daw_move_test_001 ) {
 }
 
 BOOST_AUTO_TEST_CASE( daw_move_n_test_001 ) {
-	std::vector<int>  a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::vector<int> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	std::vector<int> b{};
 	std::vector<int> const expected_b = {0, 1, 2, 3, 4, 5};
 
@@ -704,20 +704,19 @@ BOOST_AUTO_TEST_CASE( daw_minmax_item_test_002 ) {
 }
 
 namespace {
-	constexpr bool cartesian_product_test_001() {
+	constexpr bool cartesian_product_test_001( ) {
 		std::array<int, 5> a = {1, 2, 3, 4, 5};
 		std::array<int, 5> b = {9, 8, 7, 6, 5};
 		std::array<int, 5> c = {10, 20, 30, 40, 50};
 		// Sum of all is 200
 		int sum = 0;
-		daw::algorithm::cartesian_product([&sum](auto... vals) {
-			sum += (vals+...);
-		}, begin(a), end(a), begin(b), begin(c));
+		daw::algorithm::cartesian_product(
+		  [&sum]( auto... vals ) { sum += ( vals + ... ); }, begin( a ), end( a ),
+		  begin( b ), begin( c ) );
 
-		daw::expecting(200, sum);
+		daw::expecting( 200, sum );
 		return true;
 	}
 
-	static_assert(cartesian_product_test_001());
-}
-
+	static_assert( cartesian_product_test_001( ) );
+} // namespace

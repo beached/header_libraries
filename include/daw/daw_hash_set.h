@@ -29,15 +29,15 @@
 #include "daw_algorithm.h"
 
 namespace daw {
-	constexpr size_t scale_hash( size_t hash, size_t range_size ) {
-		size_t const prime_a = 18446744073709551557u;
-		size_t const prime_b = 18446744073709551533u;
-		return ( hash * prime_a + prime_b ) % range_size;
-	}
-
 	template<typename Key, typename Hash = std::hash<Key>>
-	class hash_adaptor_t {
+	class hash_set_t {
 		std::vector<std::optional<Key>> m_indices;
+
+		static constexpr size_t scale_hash( size_t hash, size_t range_size ) {
+			size_t const prime_a = 18446744073709551557u;
+			size_t const prime_b = 18446744073709551533u;
+			return ( hash * prime_a + prime_b ) % range_size;
+		}
 
 		std::optional<size_t> find_index( size_t hash, Key const &key ) const {
 			size_t const scaled_hash = scale_hash( hash, m_indices.size( ) );
@@ -62,7 +62,7 @@ namespace daw {
 		}
 
 	public:
-		hash_adaptor_t( size_t range_size ) noexcept
+		hash_set_t( size_t range_size ) noexcept
 		  : m_indices( range_size, std::nullopt ) {}
 
 		size_t insert( Key const &key ) {
@@ -106,85 +106,6 @@ namespace daw {
 			  []( auto const &opt ) {
 				  return static_cast<bool>( opt ) ? 1ULL : 0ULL;
 			  } );
-		}
-	};
-
-	template<typename Key, size_t Capacity, typename Hash = std::hash<Key>>
-	class static_hash_adaptor_t {
-		std::array<std::pair<Key, bool>, Capacity> m_indices{};
-
-		constexpr std::optional<size_t> find_index( size_t hash,
-		                                            Key const &key ) const {
-			size_t const scaled_hash = scale_hash( hash, m_indices.size( ) );
-
-			for( size_t n = scaled_hash; n < m_indices.size( ); ++n ) {
-				if( !m_indices[n].second ) {
-					return n;
-				}
-				if( m_indices[n].first == key ) {
-					return n;
-				}
-			}
-			for( size_t n = 0; n < scaled_hash; ++n ) {
-				if( !m_indices[n].second ) {
-					return n;
-				}
-				if( m_indices[n].first == key ) {
-					return n;
-				}
-			}
-			return {};
-		}
-
-	public:
-		constexpr static_hash_adaptor_t( ) noexcept = default;
-
-		constexpr std::optional<size_t> find( Key const &key ) const noexcept {
-			auto const hash = Hash{}( key );
-			return find_index( hash, key );
-		}
-
-		constexpr size_t insert( Key const &key ) noexcept {
-			auto const index = find( key );
-			if( !index ) {
-				// Full
-				std::terminate( );
-			}
-			if( !m_indices[*index].second ) {
-				m_indices[*index].first = key;
-				m_indices[*index].second = true;
-			}
-			return *index;
-		}
-
-		constexpr std::optional<size_t> erase( Key const &key ) noexcept {
-			auto const hash = Hash{}( key );
-			auto const index = find_index( hash, key );
-			if( !index ) {
-				return {};
-			}
-			m_indices[*index].second = false;
-			return *index;
-		}
-
-		constexpr bool exists( Key const &key ) const noexcept {
-			auto const hash = Hash{}( key );
-			auto const index = find_index( hash, key );
-			return static_cast<bool>( index ) and m_indices[*index].second;
-		}
-
-		constexpr bool count( Key const &key ) const noexcept {
-			return exists( key ) ? 1 : 0;
-		}
-
-		static constexpr size_t capacity( ) noexcept {
-			return Capacity;
-		}
-
-		constexpr size_t size( ) const noexcept {
-			return daw::algorithm::accumulate(
-			  std::begin( m_indices ), std::end( m_indices ), 0ULL,
-			  []( auto const &opt ) { return opt.second ? 1ULL : 0ULL; } );
 		}
 	};
 } // namespace daw

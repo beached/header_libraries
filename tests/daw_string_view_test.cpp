@@ -1016,14 +1016,14 @@ namespace daw {
 	static_assert( basic_string_view( "This is a test" ).extent == 14 );
 
 	template<size_t N>
-	constexpr bool extent_test_001( char const (&str)[N] ) noexcept {
+	constexpr bool extent_test_001( char const ( &str )[N] ) noexcept {
 		basic_string_view sv( str );
 		return sv.extent >= 0;
 	}
 	static_assert( extent_test_001( "this is a test" ) );
 
 	template<size_t N>
-	constexpr bool extent_to_dynamic_001( char const (&str)[N] ) noexcept {
+	constexpr bool extent_to_dynamic_001( char const ( &str )[N] ) noexcept {
 		basic_string_view sv( str );
 		string_view sv2{};
 		sv2 = sv;

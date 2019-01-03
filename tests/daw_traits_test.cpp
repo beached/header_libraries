@@ -396,7 +396,6 @@ namespace daw_traits_is_callable {
 #endif
 #endif
 
-
 	using T = decltype( blah2 );
 
 	constexpr bool const b1 = daw::traits::is_callable_v<T, void>;
@@ -826,4 +825,3 @@ namespace last_type_001 {
 	  "" );
 	static_assert( daw::is_same_v<daw::traits::last_type_t<int>, int>, "" );
 } // namespace last_type_001
-

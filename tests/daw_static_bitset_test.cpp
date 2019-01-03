@@ -40,7 +40,7 @@ bool test_001( ) noexcept {
 	  0U, 0b1000000000000000000000000000000000000000000000000000000000000000 );
 	return 127U == b2.zero_count( );
 };
-//static_assert( test_001( ) );
+// static_assert( test_001( ) );
 
 bool test_002( ) noexcept {
 	daw::static_bitset<64> f( 0xFFFF'FFFF'FFFF'FFFF );
@@ -48,7 +48,7 @@ bool test_002( ) noexcept {
 	daw::expecting( 31U, f.one_count( ) );
 	return true;
 };
-//static_assert( test_002( ) );
+// static_assert( test_002( ) );
 
 int main( ) {
 	auto tst2 = test_002( );
@@ -63,14 +63,14 @@ int main( ) {
 	daw::static_bitset<64> g( 0xFFFF'FFFF'FFFF'FFFF );
 	g >>= 64;
 	daw::expecting( 0U, g.one_count( ) );
-/*
-	static_assert( []( ) {
-		// Top bit masking to BitWidth
-		daw::static_bitset<16> h1( 0xDEAD'BEEF );
-		daw::static_bitset<16> h2( 0xBEEF );
-		daw::expecting( h1, h2 );
-		return true;
-	}( ) );*/
+	/*
+	  static_assert( []( ) {
+	    // Top bit masking to BitWidth
+	    daw::static_bitset<16> h1( 0xDEAD'BEEF );
+	    daw::static_bitset<16> h2( 0xBEEF );
+	    daw::expecting( h1, h2 );
+	    return true;
+	  }( ) );*/
 
 	std::cout << '\n';
 }

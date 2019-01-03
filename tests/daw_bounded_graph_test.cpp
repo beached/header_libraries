@@ -1,7 +1,7 @@
 
 // The MIT License (MIT)
 //
-// Copyright (c) 2018-2019 Darrell Wright
+// Copyright (c) 2019 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -22,14 +22,15 @@
 // SOFTWARE.
 
 #include "daw/daw_benchmark.h"
-#include "daw/daw_graph.h"
+#include "daw/daw_bounded_graph.h"
 
 int main( ) {
-	{
+	constexpr size_t const MaxNodes = 100U;
+	constexpr auto f1 = []( ) constexpr {
 		constexpr daw::node_id_t null_id{};
-		constexpr daw::graph_node_t<int> null_node{};
+		constexpr daw::graph_node_t<int, MaxNodes> null_node{};
 
-		daw::graph_t<int> graph{};
+		daw::graph_t<int, MaxNodes> graph{};
 		auto n0_id = graph.add_node( 5 );
 		daw::expecting( n0_id != null_id );
 
@@ -42,9 +43,11 @@ int main( ) {
 
 		graph.remove_node( n0_id );
 		daw::expecting( !graph.has_node( n0_id ) );
+		return true;
 	}
+	( );
 	{
-		daw::graph_t<int> graph{};
+		daw::graph_t<int, MaxNodes> graph{};
 		auto n0_id = graph.add_node( 5 );
 		auto n1_id = graph.add_node( 6 );
 		graph.add_directed_edge( n0_id, n1_id );
@@ -64,7 +67,7 @@ int main( ) {
 		daw::expecting( graph.get_node( nodes.front( ) ).value( ), 1000 );
 	}
 	{
-		daw::graph_t<int> graph{};
+		daw::graph_t<int, MaxNodes> graph{};
 		auto n0 = graph.add_node( 0 );
 		auto n1 = graph.add_node( 1 );
 		auto n2 = graph.add_node( 2 );

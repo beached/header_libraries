@@ -103,6 +103,7 @@ BOOST_AUTO_TEST_CASE( daw_tuple_helpers_001 ) {
 BOOST_AUTO_TEST_CASE( runtime_get_test_001 ) {
 	constexpr auto tp = std::make_tuple( "hello", 3ULL, 3.545, true );
 	auto i = 0ULL;
-	daw::tuple::apply_at( tp, 1, [&i]( unsigned long long value ) { i = value; } );
+	daw::tuple::apply_at( tp, 1,
+	                      [&i]( unsigned long long value ) { i = value; } );
 	BOOST_REQUIRE_EQUAL( 3, i );
 }

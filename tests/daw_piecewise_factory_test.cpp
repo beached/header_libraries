@@ -56,7 +56,7 @@ constexpr A test_002( ) noexcept {
 	return tmp( );
 }
 constexpr bool test_002_test( ) noexcept {
-	A a{ 5, 6 };
+	A a{5, 6};
 	auto const tmp = test_002( );
 	return a.a == tmp.a and a.b == tmp.b;
 }
@@ -78,7 +78,7 @@ constexpr A test_004( ) noexcept {
 }
 
 constexpr bool test_004_test( ) noexcept {
-	A a{ 5, 6 };
+	A a{5, 6};
 	auto const tmp = test_004( );
 	return a.a == tmp.a and a.b == tmp.b;
 }

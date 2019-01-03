@@ -20,21 +20,50 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include <iostream>
 
-#include <cstddef>
-#include <cstdint>
-#include <string>
+#include "daw/daw_benchmark.h"
+#include "daw/daw_bounded_hash_set.h"
+#include "daw/daw_fnv1a_hash.h"
 
-namespace daw {
-	inline constexpr ptrdiff_t const dynamic_string_size = -1;
+constexpr bool test_002( ) {
+	size_t count = 1024ULL;
+	daw::bounded_hash_set_t<size_t, 1024ULL, daw::fnv1a_hash_t> adapt{};
+	for( size_t n = 0; n < count; ++n ) {
+		adapt.insert( n );
+	}
+	return true;
+}
+static_assert( test_002( ) );
 
-	template<typename CharT, typename Traits = std::char_traits<CharT>,
-	         ptrdiff_t Extent = dynamic_string_size>
-	struct basic_string_view;
+constexpr bool test_004( ) {
+	size_t count = 1024ULL;
+	daw::bounded_hash_set_t<size_t, 1024ULL, daw::fnv1a_hash_t> adapt{};
+	for( size_t n = 0; n < count; ++n ) {
+		adapt.insert( n );
+	}
+	for( size_t n = 0; n < count; ++n ) {
+		if( !adapt.exists( n ) ) {
+			return false;
+		}
+	}
+	return true;
+}
+static_assert( test_004( ) );
 
-	using string_view = basic_string_view<char>;
-	using wstring_view = basic_string_view<wchar_t>;
-	using u16string_view = basic_string_view<char16_t>;
-	using u32string_view = basic_string_view<char32_t>;
-} // namespace daw
+constexpr bool test_005( ) {
+	size_t count = 1024ULL;
+	daw::bounded_hash_set_t<size_t, 1024ULL, daw::fnv1a_hash_t> adapt{};
+	for( size_t n = 0; n < count; n += 2 ) {
+		adapt.insert( n );
+	}
+	for( size_t n = 0; n < count; ++n ) {
+		if( !adapt.exists( n ) and n % 2 == 0 ) {
+			return false;
+		}
+	}
+	return true;
+}
+static_assert( test_005( ) );
+
+int main( ) {}

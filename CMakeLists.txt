@@ -89,16 +89,17 @@ set( TESTED_HEADERS_PREFIXES
 
 #No boost test
 set( TESTED_HEADERS_PREFIXES_NB
+	#daw_bounded_graph
+	daw_bounded_hash_map
+	daw_bounded_hash_set
 	daw_graph
 	daw_graph_algorithm
-	daw_hash_adaptor
+	daw_hash_set
 	daw_keep_n
   daw_parse_to
 	daw_piecewise_factory
 	daw_sort_n
 #	daw_static_bitset
-#daw_static_graph
-	daw_static_hash_map
 	daw_span
 	daw_view
 )

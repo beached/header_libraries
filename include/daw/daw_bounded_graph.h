@@ -32,11 +32,12 @@
 #include <utility>
 
 #include "daw_algorithm.h"
+#include "daw_bounded_hash_map.h"
+#include "daw_bounded_hash_set.h"
 #include "daw_exception.h"
-#include "daw_fnv1a_hash.h"
 #include "daw_fixed_stack.h"
+#include "daw_fnv1a_hash.h"
 #include "daw_move.h"
-#include "daw_static_hash_map.h"
 #include "daw_utility.h"
 #include "iterator/daw_back_inserter.h"
 
@@ -105,7 +106,8 @@ namespace daw {
 			using value_type = T;
 			using reference = value_type &;
 			using const_reference = value_type const &;
-			using edges_t = daw::static_hash_adaptor_t<node_id_t, MaxVerticesPerNode, std::hash<daw::node_id_t>>;
+			using edges_t = daw::bounded_hash_set_t<node_id_t, MaxVerticesPerNode,
+			                                        std::hash<daw::node_id_t>>;
 
 		private:
 			edges_t m_incoming_edges{};
@@ -190,11 +192,13 @@ namespace daw {
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
-		using edges_t = typename graph_impl::node_impl_t<T, MaxVerticesPerNode>::edges_t;
+		using edges_t =
+		  typename graph_impl::node_impl_t<T, MaxVerticesPerNode>::edges_t;
 
 		constexpr const_graph_node_t( ) noexcept = default;
 
-		const_graph_node_t( graph_t<T, MaxVerticesPerNode> const *graph_ptr, node_id_t Id ) noexcept
+		const_graph_node_t( graph_t<T, MaxVerticesPerNode> const *graph_ptr,
+		                    node_id_t Id ) noexcept
 		  : m_graph( graph_ptr )
 		  , m_node_id( Id ) {}
 
@@ -271,7 +275,8 @@ namespace daw {
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
-		using edges_t = typename graph_impl::node_impl_t<T, MaxVerticesPerNode>::edges_t;
+		using edges_t =
+		  typename graph_impl::node_impl_t<T, MaxVerticesPerNode>::edges_t;
 
 		constexpr graph_node_t( ) noexcept = default;
 
@@ -357,7 +362,8 @@ namespace daw {
 			return m_node_id < rhs.id( );
 		}
 
-		constexpr operator const_graph_node_t<T, MaxVerticesPerNode>( ) const noexcept {
+		constexpr operator const_graph_node_t<T, MaxVerticesPerNode>( ) const
+		  noexcept {
 			return const_graph_node_t<T, MaxVerticesPerNode>( m_graph, m_node_id );
 		}
 	};
@@ -374,7 +380,7 @@ namespace daw {
 
 	private:
 		size_t cur_id = 0;
-		daw::static_hash_map<size_t, raw_node_t, MaxVerticesPerNode> m_nodes{};
+		daw::bounded_hash_map<size_t, raw_node_t, MaxVerticesPerNode> m_nodes{};
 
 	public:
 		constexpr graph_t( ) noexcept = default;
@@ -484,13 +490,15 @@ namespace daw {
 		}
 
 		template<typename Compare = std::equal_to<>>
-		constexpr daw::fixed_stack_t<node_id_t, MaxVerticesPerNode> find_by_value( T const &value,
-		                                      Compare compare = Compare{} ) const {
+		constexpr daw::fixed_stack_t<node_id_t, MaxVerticesPerNode>
+		find_by_value( T const &value, Compare compare = Compare{} ) const {
 			daw::fixed_stack_t<node_id_t, MaxVerticesPerNode> result{};
 
-			daw::algorithm::copy_if( std::cbegin( m_nodes ), std::cend( m_nodes ), daw::back_inserter( result ), [&]( auto const & node ) {
-				return daw::invoke( compare, node.second.value( ), value );
-			});
+			daw::algorithm::copy_if(
+			  std::cbegin( m_nodes ), std::cend( m_nodes ),
+			  daw::back_inserter( result ), [&]( auto const &node ) {
+				  return daw::invoke( compare, node.second.value( ), value );
+			  } );
 			return result;
 		}
 
@@ -523,7 +531,8 @@ namespace daw {
 		}
 
 		template<typename Predicate>
-		constexpr daw::fixed_stack_t<node_id_t, MaxVerticesPerNode> find( Predicate &&pred ) const {
+		constexpr daw::fixed_stack_t<node_id_t, MaxVerticesPerNode>
+		find( Predicate &&pred ) const {
 			daw::fixed_stack_t<node_id_t, MaxVerticesPerNode> result{};
 			visit( pred, [&result]( auto const &node ) {
 				result.push_back( node.id( ) );
@@ -531,12 +540,14 @@ namespace daw {
 			return result;
 		}
 
-		constexpr daw::fixed_stack_t<node_id_t, MaxVerticesPerNode> find_roots( ) const {
+		constexpr daw::fixed_stack_t<node_id_t, MaxVerticesPerNode>
+		find_roots( ) const {
 			return find(
 			  []( auto const &node ) { return node.incoming_edges( ).empty( ); } );
 		}
 
-		constexpr daw::fixed_stack_t<node_id_t, MaxVerticesPerNode> find_leaves( ) const {
+		constexpr daw::fixed_stack_t<node_id_t, MaxVerticesPerNode>
+		find_leaves( ) const {
 			return find(
 			  []( auto const &node ) { return node.outgoing_edges( ).empty( ); } );
 		}

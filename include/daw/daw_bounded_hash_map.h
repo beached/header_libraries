@@ -22,14 +22,13 @@
 
 #pragma once
 
-#include <optional>
 #include <memory>
+#include <numeric>
+#include <optional>
 #include <utility>
 
 #include "cpp_17.h"
-#include "daw_hash_adaptor.h"
 #include "daw_traits.h"
-#include "iterator/daw_zipiter.h"
 
 namespace daw {
 	template<typename Key, typename Value>
@@ -49,16 +48,16 @@ namespace daw {
 	};
 
 	template<typename Key, typename Value>
-	struct static_hash_map_item_t {
+	struct bounded_hash_map_item_t {
 		bool has_value = false;
 		key_value_t<Key, Value> kv{};
 
-		constexpr static_hash_map_item_t( ) noexcept(
+		constexpr bounded_hash_map_item_t( ) noexcept(
 		  std::is_nothrow_default_constructible_v<key_value_t<Key, Value>> ) =
 		  default;
 
 		template<typename K, typename V>
-		constexpr static_hash_map_item_t( K &&k, V &&v ) noexcept(
+		constexpr bounded_hash_map_item_t( K &&k, V &&v ) noexcept(
 		  std::is_nothrow_constructible_v<key_value_t<Key, Value>, Key, Value> )
 		  : has_value( true )
 		  , kv( std::forward<K>( k ), std::forward<V>( v ) ) {}
@@ -69,7 +68,7 @@ namespace daw {
 	};
 
 	template<typename Key, typename Value>
-	struct const_static_hash_map_iterator {
+	struct const_bounded_hash_map_iterator {
 		using difference_type = std::ptrdiff_t;
 		using value_type = key_value_t<Key, Value>;
 		using const_pointer = value_type const *;
@@ -77,15 +76,15 @@ namespace daw {
 		using iterator_category = std::bidirectional_iterator_tag;
 
 	private:
-		static_hash_map_item_t<Key, Value> const *const m_first;
-		static_hash_map_item_t<Key, Value> const *const m_last;
-		static_hash_map_item_t<Key, Value> const *m_position;
+		bounded_hash_map_item_t<Key, Value> const *const m_first;
+		bounded_hash_map_item_t<Key, Value> const *const m_last;
+		bounded_hash_map_item_t<Key, Value> const *m_position;
 
 	public:
-		constexpr const_static_hash_map_iterator(
-		  static_hash_map_item_t<Key, Value> const *first,
-		  static_hash_map_item_t<Key, Value> const *last,
-		  static_hash_map_item_t<Key, Value> const *pos ) noexcept
+		constexpr const_bounded_hash_map_iterator(
+		  bounded_hash_map_item_t<Key, Value> const *first,
+		  bounded_hash_map_item_t<Key, Value> const *last,
+		  bounded_hash_map_item_t<Key, Value> const *pos ) noexcept
 		  : m_first( first )
 		  , m_last( last )
 		  , m_position( pos ) {}
@@ -98,7 +97,7 @@ namespace daw {
 			return std::addressof( m_position->kv );
 		}
 
-		constexpr const_static_hash_map_iterator &operator++( ) noexcept {
+		constexpr const_bounded_hash_map_iterator &operator++( ) noexcept {
 			++m_position;
 			while( !m_position and m_position <= m_last ) {
 				++m_position;
@@ -106,13 +105,13 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr const_static_hash_map_iterator operator++( int ) noexcept {
+		constexpr const_bounded_hash_map_iterator operator++( int ) noexcept {
 			auto result = *this;
 			operator++( );
 			return result;
 		}
 
-		constexpr const_static_hash_map_iterator &operator--( ) noexcept {
+		constexpr const_bounded_hash_map_iterator &operator--( ) noexcept {
 			--m_position;
 			while( !m_position and m_position >= m_first ) {
 				--m_position;
@@ -120,7 +119,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr const_static_hash_map_iterator operator--( int ) noexcept {
+		constexpr const_bounded_hash_map_iterator operator--( int ) noexcept {
 			auto result = *this;
 			operator--( );
 			return result;
@@ -128,7 +127,7 @@ namespace daw {
 	};
 
 	template<typename Key, typename Value>
-	struct static_hash_map_iterator {
+	struct bounded_hash_map_iterator {
 		using difference_type = std::ptrdiff_t;
 		using value_type = key_value_t<Key, Value>;
 		using pointer = value_type *;
@@ -138,15 +137,15 @@ namespace daw {
 		using iterator_category = std::bidirectional_iterator_tag;
 
 	private:
-		static_hash_map_item_t<Key, Value> const *const m_first;
-		static_hash_map_item_t<Key, Value> const *const m_last;
-		static_hash_map_item_t<Key, Value> *m_position;
+		bounded_hash_map_item_t<Key, Value> const *const m_first;
+		bounded_hash_map_item_t<Key, Value> const *const m_last;
+		bounded_hash_map_item_t<Key, Value> *m_position;
 
 	public:
-		constexpr static_hash_map_iterator(
-		  static_hash_map_item_t<Key, Value> const *first,
-		  static_hash_map_item_t<Key, Value> const *last,
-		  static_hash_map_item_t<Key, Value> *pos ) noexcept
+		constexpr bounded_hash_map_iterator(
+		  bounded_hash_map_item_t<Key, Value> const *first,
+		  bounded_hash_map_item_t<Key, Value> const *last,
+		  bounded_hash_map_item_t<Key, Value> *pos ) noexcept
 		  : m_first( first )
 		  , m_last( last )
 		  , m_position( pos ) {}
@@ -167,7 +166,7 @@ namespace daw {
 			return std::addressof( m_position->kv );
 		}
 
-		constexpr static_hash_map_iterator &operator++( ) noexcept {
+		constexpr bounded_hash_map_iterator &operator++( ) noexcept {
 			++m_position;
 			while( !m_position and m_position <= m_last ) {
 				++m_position;
@@ -175,13 +174,13 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr static_hash_map_iterator operator++( int ) noexcept {
+		constexpr bounded_hash_map_iterator operator++( int ) noexcept {
 			auto result = *this;
 			operator++( );
 			return result;
 		}
 
-		constexpr static_hash_map_iterator &operator--( ) noexcept {
+		constexpr bounded_hash_map_iterator &operator--( ) noexcept {
 			--m_position;
 			while( !m_position and m_position >= m_first ) {
 				--m_position;
@@ -189,13 +188,14 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr static_hash_map_iterator operator--( int ) noexcept {
+		constexpr bounded_hash_map_iterator operator--( int ) noexcept {
 			auto result = *this;
 			operator--( );
 			return result;
 		}
 
-		constexpr operator const_static_hash_map_iterator<Key, Value>( ) const noexcept {
+		constexpr operator const_bounded_hash_map_iterator<Key, Value>( ) const
+		  noexcept {
 			return {m_first, m_last, m_position};
 		}
 	};
@@ -203,7 +203,7 @@ namespace daw {
 	template<typename Key, typename Value, size_t N,
 	         typename Hash = std::hash<Key>,
 	         typename KeyEqual = std::equal_to<Key>>
-	struct static_hash_map {
+	struct bounded_hash_map {
 		using key_type = Key;
 		using mapped_type = Value;
 		using size_type = size_t;
@@ -215,11 +215,18 @@ namespace daw {
 		using const_reference = value_type const &;
 		using pointer = value_type *;
 		using const_pointer = value_type const *;
-		using iterator = static_hash_map_iterator<Key, Value>;
-		using const_iterator = const_static_hash_map_iterator<Key, Value>;
+		using iterator = bounded_hash_map_iterator<Key, Value>;
+		using const_iterator = const_bounded_hash_map_iterator<Key, Value>;
 
 	private:
-		std::array<static_hash_map_item_t<Key, Value>, N> m_data{};
+		std::array<bounded_hash_map_item_t<Key, Value>, N> m_data{};
+
+		static constexpr size_t scale_hash( size_t hash,
+		                                    size_t range_size ) noexcept {
+			size_t const prime_a = 18446744073709551557u;
+			size_t const prime_b = 18446744073709551533u;
+			return ( hash * prime_a + prime_b ) % range_size;
+		}
 
 		constexpr std::optional<size_type> find_index( Key const &key ) const
 		  noexcept {
@@ -240,16 +247,16 @@ namespace daw {
 		}
 
 	public:
-		constexpr static_hash_map( ) noexcept(
+		constexpr bounded_hash_map( ) noexcept(
 		  std::is_nothrow_default_constructible_v<
-		    static_hash_map_item_t<Key, Value>> ) = default;
+		    bounded_hash_map_item_t<Key, Value>> ) = default;
 
 		template<size_type ItemCount>
-		constexpr static_hash_map(
+		constexpr bounded_hash_map(
 		  std::pair<Key, Value> const ( &init_values )
 		    [ItemCount] ) noexcept( std::
 		                              is_nothrow_constructible_v<
-		                                static_hash_map_item_t<Key, Value>, Key,
+		                                bounded_hash_map_item_t<Key, Value>, Key,
 		                                Value> ) {
 
 			static_assert( ItemCount <= N );
@@ -279,7 +286,8 @@ namespace daw {
 
 		template<typename K>
 		constexpr mapped_type &operator[]( K &&key ) noexcept {
-			static_assert( std::is_convertible_v<std::remove_reference_t<K>, Key>, "Incompatable key passed" );
+			static_assert( std::is_convertible_v<std::remove_reference_t<K>, Key>,
+			               "Incompatable key passed" );
 			decltype( auto ) item = m_data[*find_index( key )];
 			if( !item ) {
 				item.has_value = true;
@@ -378,7 +386,8 @@ namespace daw {
 	template<typename Key, typename Value, typename Hash = std::hash<Key>,
 	         size_t N>
 	constexpr auto
-	make_static_hash_map( std::pair<Key, Value> const ( &items )[N] ) noexcept {
-		return static_hash_map<Key, Value, N, Hash>( items );
+	make_bounded_hash_map( std::pair<Key, Value> const ( &items )[N] ) noexcept {
+		return bounded_hash_map<Key, Value, N, Hash>( items );
 	}
 } // namespace daw
+
