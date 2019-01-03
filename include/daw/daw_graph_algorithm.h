@@ -171,6 +171,7 @@ namespace daw {
 			}
 		}
 	} // namespace graph_alg_impl
+
 	template<typename T, typename Compare = daw::graph_alg_impl::NoSort>
 	void mst( daw::graph_t<T> &graph, Compare comp = Compare{} ) {
 		auto root_ids = graph.find_roots( );

@@ -58,12 +58,12 @@ namespace {
 
 constexpr bool test_const_001( ) noexcept {
 	auto const & hm = status_codes;
+	auto t = *hm.find( 204 );
+	::Unused( t );
 	return hm.exists( 204 );
 }
 static_assert( test_const_001( ) );
 
 int main( ) {
-	return static_cast<int>( status_codes[204].size( ) ) +
-	       static_cast<int>( status_codes2[101].size( ) );
 }
 

@@ -146,8 +146,8 @@ namespace daw {
 #endif
 #endif
 
-		template<ptrdiff_t Ex, std::enable_if_t<( Extent == dynamic_string_size and
-		                                          Ex != dynamic_string_size ),
+		template<ptrdiff_t Ex, std::enable_if_t<( Extent == daw::dynamic_string_size and
+		                                          Ex != daw::dynamic_string_size ),
 		                                        std::nullptr_t> = nullptr>
 		constexpr basic_string_view &
 		operator=( basic_string_view<CharT, Traits, Ex> rhs ) noexcept {
@@ -174,7 +174,7 @@ namespace daw {
 		// END OF constructors
 	public:
 		template<typename Tr, ptrdiff_t Ex,
-		         std::enable_if_t<( Ex == dynamic_string_size and Ex != Extent ),
+		         std::enable_if_t<( Ex == daw::dynamic_string_size and Ex != Extent ),
 		                          std::nullptr_t> = nullptr>
 		constexpr operator basic_string_view<CharT, Tr, Ex>( ) noexcept {
 			return {m_first, m_size};
@@ -919,17 +919,17 @@ namespace daw {
 	// CTAD
 	template<typename CharT>
 	basic_string_view( CharT const *s, size_t count )
-	  ->basic_string_view<CharT, std::char_traits<CharT>, dynamic_string_size>;
+	  ->basic_string_view<CharT, std::char_traits<CharT>, daw::dynamic_string_size>;
 
 #ifndef NOSTRING
 	template<typename CharT, typename Traits, typename Allocator>
 	basic_string_view( std::basic_string<CharT, Traits, Allocator> const &str )
-	  ->basic_string_view<CharT, Traits, dynamic_string_size>;
+	  ->basic_string_view<CharT, Traits, daw::dynamic_string_size>;
 
 #if defined( __cpp_lib_string_view )
 	template<typename CharT, typename Traits>
 	basic_string_view( std::basic_string_view<CharT, Traits> sv )
-	  ->daw::basic_string_view<CharT, Traits, dynamic_string_size>;
+	  ->daw::basic_string_view<CharT, Traits, daw::dynamic_string_size>;
 #endif
 #endif
 	template<typename CharT, size_t N>

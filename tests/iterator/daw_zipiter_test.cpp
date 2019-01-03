@@ -32,9 +32,9 @@ constexpr bool test( ) {
 	daw::static_array_t<uint8_t, 10> a{9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
 	daw::static_array_t<uint8_t, 10> b{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
-	auto zi = daw::make_zip_iterator( a.begin( ), b.begin( ) );
+	auto zi = daw::zip_iterator( a.begin( ), b.begin( ) );
 	++zi;
-	return *get<0>( zi ) == 8 && *get<1>( zi ) == 2;
+	return *daw::get<0>( zi ) == 8 and std::get<1>( *zi ) == 2;
 }
 
 BOOST_AUTO_TEST_CASE( test_01 ) {
