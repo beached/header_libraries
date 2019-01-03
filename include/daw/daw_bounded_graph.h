@@ -69,21 +69,31 @@ namespace daw {
 		}
 
 		constexpr size_t hash( ) const noexcept {
-			return daw::fnv1a_hash_t{}( m_value );
+			return m_value;	//daw::fnv1a_hash_t{}( m_value );
 		}
 
-		constexpr bool operator==( node_id_t rhs ) const noexcept {
-			return m_value == rhs.m_value;
-		}
-
-		constexpr bool operator!=( node_id_t rhs ) const noexcept {
-			return m_value != rhs.m_value;
-		}
-
-		constexpr bool operator<( node_id_t rhs ) const noexcept {
-			return m_value < rhs.m_value;
+		constexpr int compare( node_id_t const & rhs ) const noexcept {
+			if( m_value == rhs.m_value ) {
+				return 0;
+			}
+			if( m_value < rhs.m_value ) {
+				return -1;
+			}
+			return 1;
 		}
 	};
+
+	constexpr bool operator==( node_id_t const & lhs, node_id_t const & rhs ) noexcept {
+		return lhs.compare( rhs ) == 0;
+	}
+
+	constexpr bool operator!=( node_id_t const & lhs, node_id_t const & rhs ) noexcept {
+		return lhs.compare( rhs ) != 0;
+	}
+
+	constexpr bool operator<( node_id_t const & lhs, node_id_t const & rhs ) noexcept {
+		return lhs.compare( rhs ) < 0;
+	}
 } // namespace daw
 
 namespace std {
@@ -123,39 +133,39 @@ namespace daw {
 				daw::exception::dbg_precondition_check( id );
 			}
 
-			node_id_t id( ) const {
+			constexpr node_id_t id( ) const {
 				return m_id;
 			}
 
-			bool empty( ) const {
+			constexpr bool empty( ) const {
 				return !static_cast<bool>( m_id );
 			}
 
-			explicit operator bool( ) const noexcept {
+			explicit constexpr operator bool( ) const noexcept {
 				return static_cast<bool>( m_id );
 			}
 
-			reference value( ) {
+			constexpr reference value( ) {
 				return m_value;
 			}
 
-			const_reference value( ) const {
+			constexpr const_reference value( ) const {
 				return m_value;
 			}
 
-			edges_t &incoming_edges( ) {
+			constexpr edges_t &incoming_edges( ) {
 				return m_incoming_edges;
 			}
 
-			edges_t const &incoming_edges( ) const {
+			constexpr edges_t const &incoming_edges( ) const {
 				return m_incoming_edges;
 			}
 
-			edges_t &outgoing_edges( ) {
+			constexpr edges_t &outgoing_edges( ) {
 				return m_outgoing_edges;
 			}
 
-			edges_t const &outgoing_edges( ) const {
+			constexpr edges_t const &outgoing_edges( ) const {
 				return m_outgoing_edges;
 			}
 		};
@@ -197,7 +207,7 @@ namespace daw {
 
 		constexpr const_graph_node_t( ) noexcept = default;
 
-		const_graph_node_t( bounded_graph_t<T, MaxVerticesPerNode, Hash> const *graph_ptr,
+		constexpr const_graph_node_t( bounded_graph_t<T, MaxVerticesPerNode, Hash> const *graph_ptr,
 		                    node_id_t Id ) noexcept
 		  : m_graph( graph_ptr )
 		  , m_node_id( Id ) {}
@@ -218,19 +228,19 @@ namespace daw {
 			return m_graph != nullptr and static_cast<bool>( m_node_id );
 		}
 
-		const_reference value( ) const {
+		constexpr const_reference value( ) const {
 			daw::exception::dbg_precondition_check<invalid_node_exception>(
 			  m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).value( );
 		}
 
-		edges_t const &incoming_edges( ) const {
+		constexpr edges_t const &incoming_edges( ) const {
 			daw::exception::dbg_precondition_check<invalid_node_exception>(
 			  m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).incoming_edges( );
 		}
 
-		edges_t const &outgoing_edges( ) const {
+		constexpr edges_t const &outgoing_edges( ) const {
 			daw::exception::dbg_precondition_check<invalid_node_exception>(
 			  m_graph != nullptr and m_node_id != node_id_t{} );
 			return m_graph->get_raw_node( m_node_id ).outgoing_edges( );

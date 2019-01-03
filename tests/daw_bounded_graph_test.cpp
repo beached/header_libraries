@@ -26,8 +26,8 @@
 #include "daw/daw_fnv1a_hash.h"
 
 int main( ) {
-	constexpr size_t const MaxNodes = 100U;
-	auto f1 = []( ) {
+	constexpr size_t const MaxNodes = 10U;
+	constexpr auto f1 = []( ) constexpr {
 		constexpr daw::node_id_t null_id{};
 		constexpr daw::bounded_graph_node_t<int, MaxNodes, daw::fnv1a_hash_t>
 		  null_node{};
