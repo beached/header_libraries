@@ -51,7 +51,7 @@ namespace daw {
 	template<typename Key, typename Value>
 	struct static_hash_map_item_t {
 		bool has_value = false;
-		key_value_t<Key, Value> value{};
+		key_value_t<Key, Value> kv{};
 
 		constexpr static_hash_map_item_t( ) noexcept(
 		  std::is_nothrow_default_constructible_v<key_value_t<Key, Value>> ) =
@@ -61,7 +61,7 @@ namespace daw {
 		constexpr static_hash_map_item_t( K &&k, V &&v ) noexcept(
 		  std::is_nothrow_constructible_v<key_value_t<Key, Value>, Key, Value> )
 		  : has_value( true )
-		  , value( std::forward<K>( k ), std::forward<V>( v ) ) {}
+		  , kv( std::forward<K>( k ), std::forward<V>( v ) ) {}
 
 		explicit constexpr operator bool( ) const noexcept {
 			return has_value;
@@ -91,11 +91,11 @@ namespace daw {
 		  , m_position( pos ) {}
 
 		constexpr const_reference operator*( ) const noexcept {
-			return m_position->value;
+			return m_position->kv;
 		}
 
 		constexpr const_pointer operator->( ) const noexcept {
-			return std::addressof( m_position->value );
+			return std::addressof( m_position->kv );
 		}
 
 		constexpr const_static_hash_map_iterator &operator++( ) noexcept {
@@ -152,19 +152,19 @@ namespace daw {
 		  , m_position( pos ) {}
 
 		constexpr reference operator*( ) noexcept {
-			return m_position->value;
+			return m_position->kv;
 		}
 
 		constexpr const_reference operator*( ) const noexcept {
-			return m_position->value;
+			return m_position->kv;
 		}
 
 		constexpr pointer operator->( ) noexcept {
-			return std::addressof( m_position->value );
+			return std::addressof( m_position->kv );
 		}
 
 		constexpr const_pointer operator->( ) const noexcept {
-			return std::addressof( m_position->value );
+			return std::addressof( m_position->kv );
 		}
 
 		constexpr static_hash_map_iterator &operator++( ) noexcept {
@@ -227,12 +227,12 @@ namespace daw {
 			size_type const scaled_hash = scale_hash( hash, m_data.size( ) );
 
 			for( size_type n = scaled_hash; n < m_data.size( ); ++n ) {
-				if( !m_data[n] or key_equal{}( m_data[n].value.key, key ) ) {
+				if( !m_data[n] or key_equal{}( m_data[n].kv.key, key ) ) {
 					return n;
 				}
 			}
 			for( size_type n = 0; n < scaled_hash; ++n ) {
-				if( !m_data[n] or key_equal{}( m_data[n].value.key, key ) ) {
+				if( !m_data[n] or key_equal{}( m_data[n].kv.key, key ) ) {
 					return n;
 				}
 			}
@@ -267,9 +267,9 @@ namespace daw {
 			decltype( auto ) item = m_data[*find_index( key )];
 			if( !item ) {
 				item.has_value = true;
-				item.value.key = std::forward<K>( key );
+				item.kv.key = std::forward<K>( key );
 			}
-			item.value.value = std::forward<V>( value );
+			item.kv.value = std::forward<V>( value );
 		}
 
 		constexpr bool exists( Key const &key ) const noexcept {
@@ -279,22 +279,22 @@ namespace daw {
 
 		template<typename K>
 		constexpr mapped_type &operator[]( K &&key ) noexcept {
+			static_assert( std::is_convertible_v<std::remove_reference_t<K>, Key>, "Incompatable key passed" );
 			decltype( auto ) item = m_data[*find_index( key )];
 			if( !item ) {
 				item.has_value = true;
-				item.value.key = std::forward<K>( key );
-				item.value.value = Value{};
+				item.kv.key = std::forward<K>( key );
+				item.kv.value = Value{};
 			};
-			return item.value;
+			return item.kv.value;
 		}
 
-		template<typename K>
-		constexpr mapped_type const &operator[]( K &&key ) const noexcept {
+		constexpr mapped_type const &operator[]( Key const &key ) const noexcept {
 			decltype( auto ) item = m_data[*find_index( key )];
 			if( !item ) {
 				std::terminate( );
 			};
-			return item.value;
+			return item.kv.value;
 		}
 
 		constexpr std::optional<mapped_type> try_get( Key const &key ) const
@@ -307,7 +307,7 @@ namespace daw {
 			if( !item ) {
 				return {};
 			}
-			return item.value.value;
+			return item.kv.value;
 		}
 
 		constexpr size_type count( Key const &key ) const noexcept {

@@ -57,6 +57,7 @@ namespace {
 	     {226, "IM Used"}} );
 } // namespace
 
+
 constexpr bool test_const_001( ) noexcept {
 	auto const & hm = status_codes;
 	auto t = *hm.find( 204 );
@@ -64,6 +65,14 @@ constexpr bool test_const_001( ) noexcept {
 	return hm.exists( 204 );
 }
 static_assert( test_const_001( ) );
+
+constexpr int test_const_002( daw::static_hash_map<daw::string_view, int, 100> const & m, daw::string_view k ) noexcept {
+		return m[k];
+}
+
+constexpr int test_const_002( daw::static_hash_map<daw::string_view, int, 100> & m, daw::string_view k ) noexcept {
+		return m[k];
+}
 
 int main( ) {
 }
