@@ -929,10 +929,10 @@ namespace daw {
 	basic_string_view( std::basic_string<CharT, Traits, Allocator> const &str )
 	  ->basic_string_view<CharT, Traits, daw::dynamic_string_size>;
 
-#if defined( __cpp_lib_string_view )
+#if false && defined( __cpp_lib_string_view )
 	template<typename CharT, typename Traits>
-	basic_string_view( std::basic_string_view<CharT, Traits> sv )
-	  ->daw::basic_string_view<CharT, Traits, daw::dynamic_string_size>;
+	::daw::basic_string_view( std::basic_string_view<CharT, Traits> sv )
+	  ->daw::basic_string_view<CharT, Traits>;
 #endif
 #endif
 	template<typename CharT, size_t N>

@@ -52,7 +52,7 @@ namespace daw {
 		size_t m_value = NO_ID;
 
 		constexpr size_t value( ) const noexcept {
-			daw::exception::dbg_precondition_check( m_value != NO_ID );
+			//daw::exception::dbg_precondition_check( m_value != NO_ID );
 			return m_value;
 		}
 

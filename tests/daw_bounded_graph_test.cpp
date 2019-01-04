@@ -1,4 +1,3 @@
-
 // The MIT License (MIT)
 //
 // Copyright (c) 2019 Darrell Wright
@@ -25,30 +24,30 @@
 #include "daw/daw_bounded_graph.h"
 #include "daw/daw_fnv1a_hash.h"
 
+inline constexpr size_t const MaxNodes = 10U;
+
+constexpr bool f1( ) {
+	daw::node_id_t null_id{};
+	daw::bounded_graph_node_t<int, MaxNodes, daw::fnv1a_hash_t> null_node{};
+	daw::bounded_graph_t<int, MaxNodes, daw::fnv1a_hash_t> graph{};
+
+	auto n0_id = graph.add_node( 5 );
+
+	daw::expecting( n0_id != null_id );
+	daw::expecting( graph.has_node( n0_id ) );
+	daw::expecting( graph.get_node( n0_id ) != null_node );
+
+	auto node = graph.get_node( n0_id );
+	daw::expecting( node.value( ), 5 );
+
+	graph.remove_node( n0_id );
+	daw::expecting( !graph.has_node( n0_id ) );
+	return true;
+}
+//static_assert( f1( ) );
+
 int main( ) {
-	constexpr size_t const MaxNodes = 10U;
-	constexpr auto f1 = []( ) constexpr {
-		constexpr daw::node_id_t null_id{};
-		constexpr daw::bounded_graph_node_t<int, MaxNodes, daw::fnv1a_hash_t>
-		  null_node{};
-
-		daw::bounded_graph_t<int, MaxNodes, daw::fnv1a_hash_t> graph{};
-		auto n0_id = graph.add_node( 5 );
-		daw::expecting( n0_id != null_id );
-
-		daw::expecting( graph.has_node( n0_id ) );
-
-		daw::expecting( graph.get_node( n0_id ) != null_node );
-
-		auto node = graph.get_node( n0_id );
-		daw::expecting( node.value( ), 5 );
-
-		graph.remove_node( n0_id );
-		daw::expecting( !graph.has_node( n0_id ) );
-		return true;
-	}( );
-	::Unused( f1 );
-
+	f1( );
 	{
 		daw::bounded_graph_t<int, MaxNodes, daw::fnv1a_hash_t> graph{};
 		auto n0_id = graph.add_node( 5 );
