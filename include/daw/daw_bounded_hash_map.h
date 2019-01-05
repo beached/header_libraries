@@ -110,7 +110,7 @@ namespace daw {
 
 		constexpr const_bounded_hash_map_iterator &operator++( ) noexcept {
 			++m_position;
-			while( !m_position and m_position <= m_last ) {
+			while( !m_position->has_value and m_position < m_last ) {
 				++m_position;
 			}
 			return *this;
@@ -124,7 +124,7 @@ namespace daw {
 
 		constexpr const_bounded_hash_map_iterator &operator--( ) noexcept {
 			--m_position;
-			while( !m_position and m_position >= m_first ) {
+			while( !m_position->has_value and m_position > m_first ) {
 				--m_position;
 			}
 			return *this;
@@ -202,7 +202,7 @@ namespace daw {
 
 		constexpr bounded_hash_map_iterator &operator++( ) noexcept {
 			++m_position;
-			while( !m_position and m_position <= m_last ) {
+			while( !m_position->has_value and m_position < m_last ) {
 				++m_position;
 			}
 			return *this;
@@ -216,7 +216,7 @@ namespace daw {
 
 		constexpr bounded_hash_map_iterator &operator--( ) noexcept {
 			--m_position;
-			while( !m_position and m_position >= m_first ) {
+			while( !m_position->has_value and m_position > m_first ) {
 				--m_position;
 			}
 			return *this;
@@ -333,7 +333,7 @@ namespace daw {
 		using const_iterator = const_bounded_hash_map_iterator<Key, Value>;
 
 	private:
-		std::array<bounded_hash_map_item_t<Key, Value>, N> m_data{};
+		std::array<bounded_hash_map_item_t<Key, Value>, N+1> m_data{};
 
 		static constexpr size_t scale_hash( size_t hash,
 		                                    size_t range_size ) noexcept {
@@ -345,9 +345,9 @@ namespace daw {
 		constexpr std::optional<size_type> find_index( Key const &key ) const
 		  noexcept {
 			size_type const hash = Hash{}( key );
-			size_type const scaled_hash = scale_hash( hash, m_data.size( ) );
+			size_type const scaled_hash = scale_hash( hash, capacity( ) );
 
-			for( size_type n = scaled_hash; n < m_data.size( ); ++n ) {
+			for( size_type n = scaled_hash; n < capacity( ); ++n ) {
 				if( !m_data[n] or key_equal{}( m_data[n].kv.key, key ) ) {
 					return n;
 				}
@@ -464,7 +464,7 @@ namespace daw {
 
 		constexpr iterator begin( ) noexcept {
 			auto it = m_data.data( );
-			auto last = m_data.data( ) + m_data.size( );
+			auto last = m_data.data( ) + capacity( );
 			while( it != last and !it->has_value ) {
 				++it;
 			}
@@ -473,7 +473,7 @@ namespace daw {
 
 		constexpr const_iterator begin( ) const noexcept {
 			auto it = m_data.data( );
-			auto last = m_data.data( ) + m_data.size( );
+			auto last = m_data.data( ) + capacity( );
 			while( it != last and !it->has_value ) {
 				++it;
 			}
@@ -482,7 +482,7 @@ namespace daw {
 
 		constexpr const_iterator cbegin( ) const noexcept {
 			auto it = m_data.data( );
-			auto last = m_data.data( ) + m_data.size( );
+			auto last = m_data.data( ) + capacity( );
 			while( it != last and !it->has_value ) {
 				++it;
 			}
@@ -490,18 +490,18 @@ namespace daw {
 		}
 
 		constexpr iterator end( ) noexcept {
-			return {m_data.data( ), m_data.data( ) + m_data.size( ),
-			        m_data.data( ) + m_data.size( )};
+			return {m_data.data( ), m_data.data( ) + capacity( ),
+			        m_data.data( ) + capacity( )};
 		}
 
 		constexpr const_iterator end( ) const noexcept {
-			return {m_data.data( ), m_data.data( ) + m_data.size( ),
-			        m_data.data( ) + m_data.size( )};
+			return {m_data.data( ), m_data.data( ) + capacity( ),
+			        m_data.data( ) + capacity( )};
 		}
 
 		constexpr const_iterator cend( ) const noexcept {
-			return {m_data.data( ), m_data.data( ) + m_data.size( ),
-			        m_data.data( ) + m_data.size( )};
+			return {m_data.data( ), m_data.data( ) + capacity( ),
+			        m_data.data( ) + capacity( )};
 		}
 
 		constexpr iterator find( Key const &key ) noexcept {
@@ -509,7 +509,7 @@ namespace daw {
 			if( !idx ) {
 				return end( );
 			}
-			return {m_data.data( ), m_data.data( ) + m_data.size( ), &m_data[*idx]};
+			return {m_data.data( ), m_data.data( ) + capacity( ), &m_data[*idx]};
 		}
 
 		constexpr const_iterator find( Key const &key ) const noexcept {
@@ -517,15 +517,13 @@ namespace daw {
 			if( !idx ) {
 				return end( );
 			}
-			return {m_data.data( ), m_data.data( ) + m_data.size( ), &m_data[*idx]};
+			return {m_data.data( ), m_data.data( ) + capacity( ), &m_data[*idx]};
 		}
 
 		constexpr void erase( Key const &key ) noexcept {
 			auto idx = find_index( key );
 			if( idx ) {
 				m_data[*idx] = bounded_hash_map_item_t<Key, Value>( );
-				// m_data[*idx].has_value = false;
-				// m_data[*idx].kv = key_value_t{}
 			}
 		}
 	};

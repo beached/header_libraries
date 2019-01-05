@@ -86,7 +86,7 @@ namespace daw {
 
 		constexpr const_bounded_hash_set_iterator &operator++( ) noexcept {
 			++m_position;
-			while( !m_position->has_value and m_position <= m_last ) {
+			while( !m_position->has_value and m_position < m_last ) {
 				++m_position;
 			}
 			return *this;
@@ -100,7 +100,7 @@ namespace daw {
 
 		constexpr const_bounded_hash_set_iterator &operator--( ) noexcept {
 			--m_position;
-			while( !m_position->has_value and m_position >= m_first ) {
+			while( !m_position->has_value and m_position > m_first ) {
 				--m_position;
 			}
 			return *this;
