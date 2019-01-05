@@ -51,8 +51,8 @@ namespace daw {
 
 	template<typename Key, typename Value>
 	struct bounded_hash_map_item_t {
-		bool has_value = false;
 		key_value_t<Key, Value> kv{};
+		bool has_value = false;
 
 		constexpr bounded_hash_map_item_t( ) noexcept(
 		  std::is_nothrow_default_constructible_v<key_value_t<Key, Value>> ) =
@@ -61,13 +61,18 @@ namespace daw {
 		template<typename K, typename V>
 		constexpr bounded_hash_map_item_t( K &&k, V &&v ) noexcept(
 		  std::is_nothrow_constructible_v<key_value_t<Key, Value>, Key, Value> )
-		  : has_value( true )
-		  , kv( std::forward<K>( k ), std::forward<V>( v ) ) {}
+		  : kv( std::forward<K>( k ), std::forward<V>( v ) )
+		  , has_value( true ) {}
 
 		explicit constexpr operator bool( ) const noexcept {
 			return has_value;
 		}
 	};
+	template<typename Key, typename Value>
+	bounded_hash_map_item_t( Key &&key, Value &&value )
+	  ->bounded_hash_map_item_t<daw::remove_cvref_t<Key>,
+	                            daw::remove_cvref_t<Value>>;
+
 	template<typename Key, typename Value>
 	struct bounded_hash_map_iterator;
 
@@ -380,17 +385,18 @@ namespace daw {
 		                           is_same_v<Value, daw::remove_cvref_t<V>>>,
 		           std::nullptr_t> = nullptr>
 		constexpr void insert( K &&key, V &&value ) noexcept {
-			decltype( auto ) item = m_data[*find_index( key )];
-			if( !item ) {
-				item.has_value = true;
-				item.kv.key = std::forward<K>( key );
-			}
-			item.kv.value = std::forward<V>( value );
+			auto const index = find_index( key );
+			m_data[*index] = bounded_hash_map_item_t( std::forward<K>( key ),
+			                                          std::forward<V>( value ) );
 		}
 
 		constexpr bool exists( Key const &key ) const noexcept {
 			auto idx = find_index( key );
-			return !idx or m_data[*idx];
+			if( idx ) {
+				auto result = static_cast<bool>( m_data[*idx] );
+				return result;
+			}
+			return false;
 		}
 
 		template<typename K>
@@ -449,21 +455,38 @@ namespace daw {
 		}
 
 		constexpr size_type empty( ) const noexcept {
-			return daw::algorithm::find_if( std::cbegin( m_data ), std::cend( m_data ), []( auto const & value ) {
-				return value;
-			}) == std::cend( m_data );
+			return daw::algorithm::find_if( std::cbegin( m_data ),
+			                                std::cend( m_data ),
+			                                []( auto const &value ) {
+				                                return value;
+			                                } ) == std::cend( m_data );
 		}
 
 		constexpr iterator begin( ) noexcept {
-			return {m_data.data( ), m_data.data( ) + m_data.size( ), m_data.data( )};
+			auto it = m_data.data( );
+			auto last = m_data.data( ) + m_data.size( );
+			while( it != last and !it->has_value ) {
+				++it;
+			}
+			return {m_data.data( ), last, it};
 		}
 
 		constexpr const_iterator begin( ) const noexcept {
-			return {m_data.data( ), m_data.data( ) + m_data.size( ), m_data.data( )};
+			auto it = m_data.data( );
+			auto last = m_data.data( ) + m_data.size( );
+			while( it != last and !it->has_value ) {
+				++it;
+			}
+			return {m_data.data( ), last, it};
 		}
 
 		constexpr const_iterator cbegin( ) const noexcept {
-			return {m_data.data( ), m_data.data( ) + m_data.size( ), m_data.data( )};
+			auto it = m_data.data( );
+			auto last = m_data.data( ) + m_data.size( );
+			while( it != last and !it->has_value ) {
+				++it;
+			}
+			return {m_data.data( ), last, it};
 		}
 
 		constexpr iterator end( ) noexcept {
@@ -500,7 +523,8 @@ namespace daw {
 		constexpr void erase( Key const &key ) noexcept {
 			auto idx = find_index( key );
 			if( idx ) {
-				m_data[*idx].has_value = false;
+				m_data[*idx] = bounded_hash_map_item_t<Key, Value>( );
+				// m_data[*idx].has_value = false;
 				// m_data[*idx].kv = key_value_t{}
 			}
 		}

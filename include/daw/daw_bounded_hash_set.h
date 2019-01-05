@@ -33,6 +33,27 @@ namespace daw {
 	struct bounded_hash_set_iterator;
 
 	template<typename Key>
+	struct set_node_t {
+		Key key{};
+		bool has_value = false;
+
+		constexpr set_node_t( ) noexcept(
+		  std::is_nothrow_default_constructible_v<Key> ) = default;
+
+		template<typename K, std::enable_if_t<std::is_convertible_v<K, Key>,
+		                                      std::nullptr_t> = nullptr>
+		constexpr set_node_t( K &&k ) noexcept(
+		  std::is_nothrow_constructible_v<Key, K> )
+		  : key( std::forward<K>( k ) ) {}
+
+		template<typename K>
+		constexpr set_node_t( K &&k, bool HasValue ) noexcept(
+		  std::is_nothrow_constructible_v<Key, K> )
+		  : key( std::forward<K>( k ) )
+		  , has_value( HasValue ) {}
+	};
+
+	template<typename Key>
 	struct const_bounded_hash_set_iterator {
 		using difference_type = std::ptrdiff_t;
 		using value_type = Key;
@@ -43,29 +64,29 @@ namespace daw {
 		using iterator_category = std::bidirectional_iterator_tag;
 
 	private:
-		std::pair<Key, bool> const *const m_first;
-		std::pair<Key, bool> const *const m_last;
-		std::pair<Key, bool> const *m_position;
+		set_node_t<Key> const *const m_first;
+		set_node_t<Key> const *const m_last;
+		set_node_t<Key> const *m_position;
 
 	public:
 		constexpr const_bounded_hash_set_iterator(
-		  std::pair<Key, bool> const *first, std::pair<Key, bool> const *last,
-		  std::pair<Key, bool> const *pos ) noexcept
+		  set_node_t<Key> const *first, set_node_t<Key> const *last,
+		  set_node_t<Key> const *pos ) noexcept
 		  : m_first( first )
 		  , m_last( last )
 		  , m_position( pos ) {}
 
 		constexpr const_reference operator*( ) const noexcept {
-			return m_position->first;
+			return m_position->key;
 		}
 
 		constexpr const_pointer operator->( ) const noexcept {
-			return std::addressof( m_position->first );
+			return std::addressof( m_position->key );
 		}
 
 		constexpr const_bounded_hash_set_iterator &operator++( ) noexcept {
 			++m_position;
-			while( !m_position->second and m_position <= m_last ) {
+			while( !m_position->has_value and m_position <= m_last ) {
 				++m_position;
 			}
 			return *this;
@@ -79,7 +100,7 @@ namespace daw {
 
 		constexpr const_bounded_hash_set_iterator &operator--( ) noexcept {
 			--m_position;
-			while( !m_position->second and m_position >= m_first ) {
+			while( !m_position->has_value and m_position >= m_first ) {
 				--m_position;
 			}
 			return *this;
@@ -92,7 +113,8 @@ namespace daw {
 		}
 
 		friend struct bounded_hash_set_iterator<Key>;
-		constexpr int compare( const_bounded_hash_set_iterator const & rhs ) const noexcept {
+		constexpr int compare( const_bounded_hash_set_iterator const &rhs ) const
+		  noexcept {
 			if( m_position == rhs.m_position ) {
 				return 0;
 			}
@@ -102,7 +124,8 @@ namespace daw {
 			return 1;
 		}
 
-		constexpr int compare( bounded_hash_set_iterator<Key> const & rhs ) const noexcept {
+		constexpr int compare( bounded_hash_set_iterator<Key> const &rhs ) const
+		  noexcept {
 			if( m_position == rhs.m_position ) {
 				return 0;
 			}
@@ -124,37 +147,37 @@ namespace daw {
 		using iterator_category = std::bidirectional_iterator_tag;
 
 	private:
-		std::pair<Key, bool> const *const m_first;
-		std::pair<Key, bool> const *const m_last;
-		std::pair<Key, bool> *m_position;
+		set_node_t<Key> const *const m_first;
+		set_node_t<Key> const *const m_last;
+		set_node_t<Key> *m_position;
 
 	public:
-		constexpr bounded_hash_set_iterator( std::pair<Key, bool> const *first,
-		                                     std::pair<Key, bool> const *last,
-		                                     std::pair<Key, bool> *pos ) noexcept
+		constexpr bounded_hash_set_iterator( set_node_t<Key> const *first,
+		                                     set_node_t<Key> const *last,
+		                                     set_node_t<Key> *pos ) noexcept
 		  : m_first( first )
 		  , m_last( last )
 		  , m_position( pos ) {}
 
 		constexpr reference operator*( ) noexcept {
-			return m_position->first;
+			return m_position->key;
 		}
 
 		constexpr const_reference operator*( ) const noexcept {
-			return m_position->first;
+			return m_position->key;
 		}
 
 		constexpr pointer operator->( ) noexcept {
-			return std::addressof( m_position->first );
+			return std::addressof( m_position->key );
 		}
 
 		constexpr const_pointer operator->( ) const noexcept {
-			return std::addressof( m_position->first );
+			return std::addressof( m_position->key );
 		}
 
 		constexpr bounded_hash_set_iterator &operator++( ) noexcept {
 			++m_position;
-			while( !m_position->second and m_position <= m_last ) {
+			while( !m_position->has_value and m_position <= m_last ) {
 				++m_position;
 			}
 			return *this;
@@ -168,7 +191,7 @@ namespace daw {
 
 		constexpr bounded_hash_set_iterator &operator--( ) noexcept {
 			--m_position;
-			while( !m_position->second and m_position >= m_first ) {
+			while( !m_position->has_value and m_position >= m_first ) {
 				--m_position;
 			}
 			return *this;
@@ -185,17 +208,19 @@ namespace daw {
 		}
 
 		friend struct const_bounded_hash_set_iterator<Key>;
-		constexpr int compare( const_bounded_hash_set_iterator<Key> const & rhs ) const noexcept {
+		constexpr int
+		compare( const_bounded_hash_set_iterator<Key> const &rhs ) const noexcept {
 			if( m_position == rhs.m_position ) {
 				return 0;
 			}
-				if( m_position < rhs.m_position ) {
+			if( m_position < rhs.m_position ) {
 				return -1;
 			}
 			return 1;
 		}
 
-		constexpr int compare( bounded_hash_set_iterator const & rhs ) const noexcept {
+		constexpr int compare( bounded_hash_set_iterator const &rhs ) const
+		  noexcept {
 			if( m_position == rhs.m_position ) {
 				return 0;
 			}
@@ -207,42 +232,58 @@ namespace daw {
 	};
 
 	template<typename Key>
-	constexpr bool operator==( bounded_hash_set_iterator<Key> const & lhs, bounded_hash_set_iterator<Key> const & rhs ) noexcept {
+	constexpr bool
+	operator==( bounded_hash_set_iterator<Key> const &lhs,
+	            bounded_hash_set_iterator<Key> const &rhs ) noexcept {
 		return lhs.compare( rhs ) == 0;
 	}
 
 	template<typename Key>
-	constexpr bool operator==( const_bounded_hash_set_iterator<Key> const & lhs, const_bounded_hash_set_iterator<Key> const & rhs ) noexcept {
+	constexpr bool
+	operator==( const_bounded_hash_set_iterator<Key> const &lhs,
+	            const_bounded_hash_set_iterator<Key> const &rhs ) noexcept {
 		return lhs.compare( rhs ) == 0;
 	}
 
 	template<typename Key>
-	constexpr bool operator==( bounded_hash_set_iterator<Key> const & lhs, const_bounded_hash_set_iterator<Key> const & rhs ) noexcept {
+	constexpr bool
+	operator==( bounded_hash_set_iterator<Key> const &lhs,
+	            const_bounded_hash_set_iterator<Key> const &rhs ) noexcept {
 		return lhs.compare( rhs ) == 0;
 	}
 
 	template<typename Key>
-	constexpr bool operator==( const_bounded_hash_set_iterator<Key> const & lhs, bounded_hash_set_iterator<Key> const & rhs ) noexcept {
+	constexpr bool
+	operator==( const_bounded_hash_set_iterator<Key> const &lhs,
+	            bounded_hash_set_iterator<Key> const &rhs ) noexcept {
 		return lhs.compare( rhs ) == 0;
 	}
 
 	template<typename Key>
-	constexpr bool operator!=( bounded_hash_set_iterator<Key> const & lhs, bounded_hash_set_iterator<Key> const & rhs ) noexcept {
+	constexpr bool
+	operator!=( bounded_hash_set_iterator<Key> const &lhs,
+	            bounded_hash_set_iterator<Key> const &rhs ) noexcept {
 		return lhs.compare( rhs ) != 0;
 	}
 
 	template<typename Key>
-	constexpr bool operator!=( const_bounded_hash_set_iterator<Key> const & lhs, const_bounded_hash_set_iterator<Key> const & rhs ) noexcept {
+	constexpr bool
+	operator!=( const_bounded_hash_set_iterator<Key> const &lhs,
+	            const_bounded_hash_set_iterator<Key> const &rhs ) noexcept {
 		return lhs.compare( rhs ) != 0;
 	}
 
 	template<typename Key>
-	constexpr bool operator!=( bounded_hash_set_iterator<Key> const & lhs, const_bounded_hash_set_iterator<Key> const & rhs ) noexcept {
+	constexpr bool
+	operator!=( bounded_hash_set_iterator<Key> const &lhs,
+	            const_bounded_hash_set_iterator<Key> const &rhs ) noexcept {
 		return lhs.compare( rhs ) != 0;
 	}
 
 	template<typename Key>
-	constexpr bool operator!=( const_bounded_hash_set_iterator<Key> const & lhs, bounded_hash_set_iterator<Key> const & rhs ) noexcept {
+	constexpr bool
+	operator!=( const_bounded_hash_set_iterator<Key> const &lhs,
+	            bounded_hash_set_iterator<Key> const &rhs ) noexcept {
 		return lhs.compare( rhs ) != 0;
 	}
 
@@ -259,7 +300,7 @@ namespace daw {
 		using const_reference = value_type const &;
 		using pointer = value_type *;
 		using const_pointer = value_type const *;
-		using node_type = std::pair<key_type, bool>;
+		using node_type = set_node_t<key_type>;
 		using iterator = bounded_hash_set_iterator<key_type>;
 		using const_iterator = const_bounded_hash_set_iterator<key_type>;
 
@@ -279,18 +320,18 @@ namespace daw {
 			size_type const scaled_hash = scale_hash( hash, m_data.size( ) );
 
 			for( size_type n = scaled_hash; n < m_data.size( ); ++n ) {
-				if( !m_data[n].second ) {
+				if( !m_data[n].has_value ) {
 					return n;
 				}
-				if( key_equal{}( m_data[n].first, key ) ) {
+				if( key_equal{}( m_data[n].key, key ) ) {
 					return n;
 				}
 			}
 			for( size_type n = 0; n < scaled_hash; ++n ) {
-				if( !m_data[n].second ) {
+				if( !m_data[n].has_value ) {
 					return n;
 				}
-				if( key_equal{}( m_data[n].first, key ) ) {
+				if( key_equal{}( m_data[n].key, key ) ) {
 					return n;
 				}
 			}
@@ -307,9 +348,9 @@ namespace daw {
 				// Full
 				std::terminate( );
 			}
-			if( !m_data[*index].second ) {
-				m_data[*index].first = key;
-				m_data[*index].second = true;
+			if( !m_data[*index].has_value ) {
+				m_data[*index].key = key;
+				m_data[*index].has_value = true;
 			}
 			return {m_data.data( ), m_data.data( ) + m_data.size( ),
 			        m_data.data( ) + *index};
@@ -321,9 +362,9 @@ namespace daw {
 				// Full
 				std::terminate( );
 			}
-			if( !m_data[*index].second ) {
-				m_data[*index].first = std::move( key );
-				m_data[*index].second = true;
+			if( !m_data[*index].has_value ) {
+				m_data[*index].key = std::move( key );
+				m_data[*index].has_value = true;
 			}
 			return {m_data.data( ), m_data.data( ) + m_data.size( ),
 			        m_data.data( ) + *index};
@@ -335,15 +376,15 @@ namespace daw {
 			if( !index ) {
 				return {};
 			}
-			// m_data[*index].first = Key{};
-			m_data[*index].second = false;
+			// m_data[*index].key = Key{};
+			m_data[*index].has_value = false;
 			return *index;
 		}
 
 		constexpr bool exists( Key const &key ) const noexcept {
 			auto const hash = hasher{}( key );
 			auto const index = find_index( hash, key );
-			return static_cast<bool>( index ) and m_data[*index].second;
+			return static_cast<bool>( index ) and m_data[*index].has_value;
 		}
 
 		constexpr bool count( Key const &key ) const noexcept {
@@ -357,25 +398,42 @@ namespace daw {
 		constexpr size_type size( ) const noexcept {
 			return daw::algorithm::accumulate(
 			  std::begin( m_data ), std::end( m_data ), 0ULL,
-			  []( auto const &opt ) { return opt.second ? 1ULL : 0ULL; } );
+			  []( auto const &opt ) { return opt.has_value ? 1ULL : 0ULL; } );
 		}
 
 		constexpr size_type empty( ) const noexcept {
-			return daw::algorithm::find_if( std::cbegin( m_data ), std::cend( m_data ), []( auto const & value ) {
-				return value.second;
-			}) == std::cend( m_data );
+			return daw::algorithm::find_if( std::cbegin( m_data ),
+			                                std::cend( m_data ),
+			                                []( auto const &value ) {
+				                                return value.has_value;
+			                                } ) == std::cend( m_data );
 		}
 
 		constexpr iterator begin( ) noexcept {
-			return {m_data.data( ), m_data.data( ) + m_data.size( ), m_data.data( )};
+			auto it = m_data.data( );
+			auto last = m_data.data( ) + m_data.size( );
+			while( it != last and !it->has_value ) {
+				++it;
+			}
+			return {m_data.data( ), last, it};
 		}
 
 		constexpr const_iterator begin( ) const noexcept {
-			return {m_data.data( ), m_data.data( ) + m_data.size( ), m_data.data( )};
+			auto it = m_data.data( );
+			auto last = m_data.data( ) + m_data.size( );
+			while( it != last and !it->has_value ) {
+				++it;
+			}
+			return {m_data.data( ), last, it};
 		}
 
 		constexpr const_iterator cbegin( ) const noexcept {
-			return {m_data.data( ), m_data.data( ) + m_data.size( ), m_data.data( )};
+			auto it = m_data.data( );
+			auto last = m_data.data( ) + m_data.size( );
+			while( it != last and !it->has_value ) {
+				++it;
+			}
+			return {m_data.data( ), last, it};
 		}
 
 		constexpr iterator end( ) noexcept {

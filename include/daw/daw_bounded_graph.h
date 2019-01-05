@@ -42,7 +42,7 @@
 #include "iterator/daw_back_inserter.h"
 
 namespace daw {
-	template<typename T, size_t MaxVerticesPerNode, typename Hash=std::hash<T>>
+	template<typename T, size_t MaxVerticesPerNode, typename Hash = std::hash<T>>
 	struct bounded_graph_t;
 
 	class node_id_t {
@@ -52,7 +52,7 @@ namespace daw {
 		size_t m_value = NO_ID;
 
 		constexpr size_t value( ) const noexcept {
-			//daw::exception::dbg_precondition_check( m_value != NO_ID );
+			daw::exception::dbg_precondition_check( m_value != NO_ID );
 			return m_value;
 		}
 
@@ -69,10 +69,10 @@ namespace daw {
 		}
 
 		constexpr size_t hash( ) const noexcept {
-			return m_value;	//daw::fnv1a_hash_t{}( m_value );
+			return m_value; // daw::fnv1a_hash_t{}( m_value );
 		}
 
-		constexpr int compare( node_id_t const & rhs ) const noexcept {
+		constexpr int compare( node_id_t const &rhs ) const noexcept {
 			if( m_value == rhs.m_value ) {
 				return 0;
 			}
@@ -83,15 +83,18 @@ namespace daw {
 		}
 	};
 
-	constexpr bool operator==( node_id_t const & lhs, node_id_t const & rhs ) noexcept {
+	constexpr bool operator==( node_id_t const &lhs,
+	                           node_id_t const &rhs ) noexcept {
 		return lhs.compare( rhs ) == 0;
 	}
 
-	constexpr bool operator!=( node_id_t const & lhs, node_id_t const & rhs ) noexcept {
+	constexpr bool operator!=( node_id_t const &lhs,
+	                           node_id_t const &rhs ) noexcept {
 		return lhs.compare( rhs ) != 0;
 	}
 
-	constexpr bool operator<( node_id_t const & lhs, node_id_t const & rhs ) noexcept {
+	constexpr bool operator<( node_id_t const &lhs,
+	                          node_id_t const &rhs ) noexcept {
 		return lhs.compare( rhs ) < 0;
 	}
 } // namespace daw
@@ -191,7 +194,8 @@ namespace daw {
 	struct bounded_graph_node_proxies : std::false_type {};
 
 	template<typename T>
-	inline constexpr bool is_bounded_graph_node_v = bounded_graph_node_proxies<T>::value;
+	inline constexpr bool is_bounded_graph_node_v =
+	  bounded_graph_node_proxies<T>::value;
 
 	template<typename T, size_t MaxVerticesPerNode, typename Hash>
 	class const_graph_node_t {
@@ -207,8 +211,9 @@ namespace daw {
 
 		constexpr const_graph_node_t( ) noexcept = default;
 
-		constexpr const_graph_node_t( bounded_graph_t<T, MaxVerticesPerNode, Hash> const *graph_ptr,
-		                    node_id_t Id ) noexcept
+		constexpr const_graph_node_t(
+		  bounded_graph_t<T, MaxVerticesPerNode, Hash> const *graph_ptr,
+		  node_id_t Id ) noexcept
 		  : m_graph( graph_ptr )
 		  , m_node_id( Id ) {}
 
@@ -216,7 +221,8 @@ namespace daw {
 			return m_node_id;
 		}
 
-		constexpr bounded_graph_t<T, MaxVerticesPerNode, Hash> const *graph( ) const noexcept {
+		constexpr bounded_graph_t<T, MaxVerticesPerNode, Hash> const *graph( ) const
+		  noexcept {
 			return m_graph;
 		}
 
@@ -273,8 +279,8 @@ namespace daw {
 	};
 
 	template<typename T, size_t MaxVerticesPerNode, typename Hash>
-	struct bounded_graph_node_proxies<const_graph_node_t<T, MaxVerticesPerNode, Hash>>
-	  : std::true_type {};
+	struct bounded_graph_node_proxies<
+	  const_graph_node_t<T, MaxVerticesPerNode, Hash>> : std::true_type {};
 
 	template<typename T, size_t MaxVerticesPerNode, typename Hash = std::hash<T>>
 	class bounded_graph_node_t {
@@ -290,8 +296,9 @@ namespace daw {
 
 		constexpr bounded_graph_node_t( ) noexcept = default;
 
-		constexpr bounded_graph_node_t( bounded_graph_t<T, MaxVerticesPerNode, Hash> *graph_ptr,
-		                        node_id_t Id ) noexcept
+		constexpr bounded_graph_node_t(
+		  bounded_graph_t<T, MaxVerticesPerNode, Hash> *graph_ptr,
+		  node_id_t Id ) noexcept
 		  : m_graph( graph_ptr )
 		  , m_node_id( Id ) {}
 
@@ -299,7 +306,8 @@ namespace daw {
 			return m_node_id;
 		}
 
-		constexpr bounded_graph_t<T, MaxVerticesPerNode, Hash> const *graph( ) const noexcept {
+		constexpr bounded_graph_t<T, MaxVerticesPerNode, Hash> const *graph( ) const
+		  noexcept {
 			return m_graph;
 		}
 
@@ -374,13 +382,14 @@ namespace daw {
 
 		constexpr operator const_graph_node_t<T, MaxVerticesPerNode, Hash>( ) const
 		  noexcept {
-			return const_graph_node_t<T, MaxVerticesPerNode, Hash>( m_graph, m_node_id );
+			return const_graph_node_t<T, MaxVerticesPerNode, Hash>( m_graph,
+			                                                        m_node_id );
 		}
 	};
 
 	template<typename T, size_t MaxVerticesPerNode, typename Hash>
-	struct bounded_graph_node_proxies<bounded_graph_node_t<T, MaxVerticesPerNode, Hash>>
-	  : std::true_type {};
+	struct bounded_graph_node_proxies<
+	  bounded_graph_node_t<T, MaxVerticesPerNode, Hash>> : std::true_type {};
 
 	template<typename T, size_t MaxVerticesPerNode, typename Hash>
 	struct bounded_graph_t {
@@ -390,20 +399,23 @@ namespace daw {
 
 	private:
 		size_t cur_id = 0;
-		daw::bounded_hash_map<size_t, raw_node_t, MaxVerticesPerNode, Hash> m_nodes{};
+		daw::bounded_hash_map<size_t, raw_node_t, MaxVerticesPerNode, Hash>
+		  m_nodes{};
 
 	public:
 		constexpr bounded_graph_t( ) noexcept = default;
 
 		template<typename... Args>
 		constexpr node_id_t add_node( Args &&... args ) {
-			auto const id = cur_id++;
-			m_nodes.insert(
-			  id, bounded_graph_impl::node_impl_t<T, MaxVerticesPerNode>(
-			        node_id_t{id},
-			        daw::construct_a<T>{}( std::forward<Args>( args )... ) ) );
+			auto const id_value = cur_id++;
+			auto id = node_id_t( id_value );
 
-			return node_id_t{id};
+			m_nodes.insert(
+			  id_value,
+			  bounded_graph_impl::node_impl_t<T, MaxVerticesPerNode>(
+			    id, daw::construct_a<T>{}( std::forward<Args>( args )... ) ) );
+
+			return id;
 		}
 
 		constexpr bool has_node( node_id_t id ) const {
@@ -504,7 +516,7 @@ namespace daw {
 		find_by_value( T const &value, Compare compare = Compare{} ) const {
 			daw::fixed_stack_t<node_id_t, MaxVerticesPerNode> result{};
 
-			for( auto const & node: m_nodes ) {
+			for( auto const &node : m_nodes ) {
 				if( daw::invoke( compare, node.value.value( ), value ) ) {
 					result.push_back( node.value.id( ) );
 				}

@@ -2012,5 +2012,36 @@ namespace daw {
 				}
 			}
 		} // namespace algorithm_impl
-	}   // namespace algorithm
+
+		template<typename From, typename To, typename Query>
+		constexpr void extract_to( From &from, To &to, Query &&q ) {
+			while( auto &&item = from.extract( q ) ) {
+				to.insert( std::move( item ) );
+			}
+		}
+
+		template<typename From, typename To>
+		constexpr void extract_all( From &from, To &to ) {
+			while( !from.empty( ) ) {
+				extract_to( from, to, from.begin( ) );
+			}
+		}
+
+		template<typename From, typename To, typename Predicate>
+		constexpr void extract_matching( From &from, To &to, Predicate &&pred ) {
+			static_assert(
+			  std::is_invocable_v<Predicate, decltype( *std::begin( from ) )> );
+			auto it = std::begin( from );
+			while( it != std::end( from ) ) {
+				if( daw::invoke( pred, *it ) ) {
+					// Iterator is invalidated inside extract_to,
+					// incrementing here ensures that we do not have an
+					// iterator to the current item
+					extract_to( from, to, it++ );
+				} else {
+					++it;
+				}
+			}
+		}
+	} // namespace algorithm
 } // namespace daw

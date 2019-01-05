@@ -27,6 +27,7 @@
 inline constexpr size_t const MaxNodes = 10U;
 
 constexpr bool f1( ) {
+//bool f1( ) {
 	daw::node_id_t null_id{};
 	daw::bounded_graph_node_t<int, MaxNodes, daw::fnv1a_hash_t> null_node{};
 	daw::bounded_graph_t<int, MaxNodes, daw::fnv1a_hash_t> graph{};
@@ -44,7 +45,7 @@ constexpr bool f1( ) {
 	daw::expecting( !graph.has_node( n0_id ) );
 	return true;
 }
-//static_assert( f1( ) );
+static_assert( f1( ) );
 
 int main( ) {
 	f1( );

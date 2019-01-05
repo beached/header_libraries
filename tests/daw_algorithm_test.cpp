@@ -720,3 +720,27 @@ namespace {
 
 	static_assert( cartesian_product_test_001( ) );
 } // namespace
+
+#if defined( __cpp_lib_node_extract )
+BOOST_AUTO_TEST_CASE( daw_extra_to_001 ) {
+	std::unordered_map<int, int> a = {{1, 2}, {3, 4}, {5, 6}};
+	std::unordered_map<int, int> b{};
+
+	BOOST_REQUIRE( a.size( ) == 3 );
+	BOOST_REQUIRE( b.empty( ) );
+
+	daw::algorithm::extract_to( a, b, 3 );
+
+	BOOST_REQUIRE( a.size( ) == 2 );
+	BOOST_REQUIRE( b.size( ) == 1 );
+
+	std::pair<int const, int> c( 3, 4 );
+
+	BOOST_REQUIRE( *std::begin( b ) == c );
+
+	daw::algorithm::extract_all( a, b );
+
+	BOOST_REQUIRE( a.empty( ) );
+	BOOST_REQUIRE( b.size( ) == 3 );
+}
+#endif
