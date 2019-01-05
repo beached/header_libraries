@@ -69,7 +69,6 @@ set( TESTED_HEADERS_PREFIXES
 	daw_sip_hash
 	daw_size_literals
 	daw_stack_function
-	daw_static_array
 	daw_static_optional
 	daw_string
 	daw_string_fmt
@@ -88,6 +87,7 @@ set( TESTED_HEADERS_PREFIXES
 
 #No boost test
 set( TESTED_HEADERS_PREFIXES_NB
+	daw_bounded_array
 	daw_bounded_graph
 	daw_bounded_hash_map
 	daw_bounded_hash_set
@@ -206,7 +206,7 @@ endforeach( CUR_PREFIX )
 foreach( CUR_PREFIX ${TESTED_HEADERS_PREFIXES_NB} )
 	install( FILES "${HEADER_FOLDER}/daw/${CUR_PREFIX}.h" DESTINATION include/daw )
 	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/${CUR_PREFIX}.h ${TEST_FOLDER}/${CUR_PREFIX}_test.cpp )
-	target_link_libraries( ${CUR_PREFIX}_test_bin test_main ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
+	#	target_link_libraries( ${CUR_PREFIX}_test_bin test_main ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
 	add_test( ${CUR_PREFIX}_test ${CUR_PREFIX}_test_bin )
 	add_dependencies( check ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
@@ -214,7 +214,7 @@ endforeach( CUR_PREFIX )
 foreach( CUR_PREFIX ${TESTED_ITERATOR_HEADERS_PREFIXES_NB} )
 	install( FILES "${HEADER_FOLDER}/daw/iterator/${CUR_PREFIX}.h" DESTINATION include/daw/iterator )
 	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/iterator/${CUR_PREFIX}.h ${TEST_FOLDER}/iterator/${CUR_PREFIX}_test.cpp )
-	target_link_libraries( ${CUR_PREFIX}_test_bin test_main ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
+	#	target_link_libraries( ${CUR_PREFIX}_test_bin test_main ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
 	add_test( ${CUR_PREFIX}_test ${CUR_PREFIX}_test_bin )
 	add_dependencies( check ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )

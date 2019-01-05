@@ -20,20 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cstdint>
-#include <cstdlib>
-#include <iostream>
-#include <string>
+#include "daw/daw_bounded_array.h"
 
-#include "daw/boost_test.h"
-#include "daw/daw_static_array.h"
-
-BOOST_AUTO_TEST_CASE( daw_static_array_test_001 ) {
-	daw::static_array_t<int, 5> a = {1, 2, 3, 4, 5};
+constexpr bool daw_bounded_array_test_001( ) {
+	daw::bounded_array_t<int, 5> a = {1, 2, 3, 4, 5};
 	int sum = 0;
 	for( auto c : a ) {
 		sum += c;
-		std::cout << c << ' ';
 	}
-	std::cout << "The sum is " << sum << '\n';
+	return sum == 15;
 }
+static_assert( daw_bounded_array_test_001( ) );
+
+
+int main( ) { }

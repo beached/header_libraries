@@ -28,7 +28,7 @@
 
 namespace daw {
 	template<typename T, size_t N>
-	struct static_array_t {
+	struct bounded_array_t {
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
@@ -107,12 +107,12 @@ namespace daw {
 		constexpr const_reference operator[]( size_type pos ) const noexcept {
 			return m_data[pos];
 		}
-	}; // static_array_t
+	}; // bounded_array_t
 
 	template<typename T, typename U, size_t N>
 	constexpr bool operator==(
-	  static_array_t<T, N> const &lhs,
-	  static_array_t<U, N> const
+	  bounded_array_t<T, N> const &lhs,
+	  bounded_array_t<U, N> const
 	    &rhs ) noexcept( noexcept( daw::algorithm::equal( lhs.cbegin( ),
 	                                                      lhs.cend( ),
 	                                                      rhs.cbegin( ),
@@ -124,8 +124,8 @@ namespace daw {
 
 	template<typename T, typename U, size_t N>
 	constexpr bool operator!=(
-	  static_array_t<T, N> const &lhs,
-	  static_array_t<U, N> const
+	  bounded_array_t<T, N> const &lhs,
+	  bounded_array_t<U, N> const
 	    &rhs ) noexcept( noexcept( daw::algorithm::equal( lhs.cbegin( ),
 	                                                      lhs.cend( ),
 	                                                      rhs.cbegin( ),
