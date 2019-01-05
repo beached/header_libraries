@@ -35,6 +35,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_benchmark
 	daw_bit
 	daw_bit_queues
+	daw_bounded_string
 	daw_bounded_vector
 	daw_carray
 	daw_checked_expected
@@ -70,7 +71,6 @@ set( TESTED_HEADERS_PREFIXES
 	daw_stack_function
 	daw_static_array
 	daw_static_optional
-	daw_static_string
 	daw_string
 	daw_string_fmt
 	daw_string_split_range
@@ -109,6 +109,7 @@ set( TESTED_ITERATOR_HEADERS_PREFIXES_NB
 
 set( UNTESTED_HEADER_IMPL
 	daw_math_impl
+	daw_string_impl
 	daw_traits_concepts
 	daw_traits_impl
 )
@@ -165,7 +166,6 @@ set( UNTESTED_HEADER_FILES
 	daw_range_reference.h
 	daw_range_type.h
 	daw_reference.h
-	daw_string_impl.h
 	daw_string_view_fwd.h
 	daw_swap.h
 	daw_variant.h

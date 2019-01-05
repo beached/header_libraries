@@ -29,7 +29,7 @@
 
 namespace daw {
 	template<typename T, size_t Capacity>
-	struct static_hash_t final {
+	struct static_hash_t {
 		using value_type = std::decay_t<T>;
 		using reference = value_type &;
 		using const_reference = value_type const &;

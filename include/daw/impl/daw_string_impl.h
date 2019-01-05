@@ -25,14 +25,14 @@
 #include <array>
 #include <cstddef>
 
-#include "daw_string_view_fwd.h"
-#include "daw_traits.h"
+#include "../daw_string_view_fwd.h"
+#include "../daw_traits.h"
 
 namespace daw {
 	template<typename CharT, size_t Capacity,
 	         typename Traits = std::char_traits<CharT>,
 	         typename InternalSizeType = size_t>
-	struct basic_static_string;
+	struct basic_bounded_string;
 
 	namespace details {
 		template<class ForwardIt1, class ForwardIt2>
@@ -228,7 +228,7 @@ namespace daw {
 		                          std::nullptr_t> = nullptr>
 		void sv_insert_aligned(
 		  OStream &os,
-		  daw::basic_static_string<CharT, Capacity, Traits> const &str ) {
+		  daw::basic_bounded_string<CharT, Capacity, Traits> const &str ) {
 
 			auto const size = str.size( );
 			auto const alignment_size =

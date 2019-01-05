@@ -108,18 +108,12 @@ namespace daw {
 
 	namespace impl {
 		template<typename T>
-		class EqualToImpl final {
+		class EqualToImpl {
 			T m_value;
 
 		public:
-			EqualToImpl( ) = delete;
-			~EqualToImpl( ) = default;
-			constexpr EqualToImpl( EqualToImpl const & ) = default;
-			constexpr EqualToImpl &operator=( EqualToImpl const & ) = default;
-			constexpr EqualToImpl( EqualToImpl && ) noexcept = default;
-			constexpr EqualToImpl &operator=( EqualToImpl && ) noexcept = default;
-
-			constexpr EqualToImpl( T value )
+			constexpr EqualToImpl( T value ) noexcept(
+			  std::is_nothrow_copy_constructible_v<T> )
 			  : m_value( daw::move( value ) ) {}
 
 			constexpr bool operator( )( T const &value ) noexcept {
@@ -133,19 +127,11 @@ namespace daw {
 	}
 
 	template<typename T>
-	class equal_to_last final {
-		T *m_value;
+	class equal_to_last {
+		T *m_value = nullptr;
 
 	public:
-		~equal_to_last( ) = default;
-		constexpr equal_to_last( equal_to_last const & ) noexcept = default;
-		constexpr equal_to_last( equal_to_last && ) noexcept = default;
-		constexpr equal_to_last &
-		operator=( equal_to_last const & ) noexcept = default;
-		constexpr equal_to_last &operator=( equal_to_last && ) noexcept = default;
-
-		constexpr equal_to_last( ) noexcept
-		  : m_value( nullptr ) {}
+		constexpr equal_to_last( ) noexcept = default;
 
 		bool operator( )( T const &value ) noexcept {
 			bool result = false;
@@ -159,19 +145,15 @@ namespace daw {
 
 	namespace impl {
 		template<typename Function>
-		class NotImpl final {
+		class NotImpl {
 			Function m_function;
 
 		public:
-			NotImpl( Function func )
-			  : m_function( func ) {}
-			~NotImpl( ) = default;
-			NotImpl( NotImpl && ) noexcept = default;
-			NotImpl &operator=( NotImpl const & ) = default;
-			NotImpl &operator=( NotImpl && ) noexcept = default;
+			constexpr NotImpl( Function func ) noexcept( std::is_nothrow_move_constructible_v<Function> )
+			  : m_function( std::move( func ) ) {}
 
 			template<typename... Args>
-			bool operator( )( Args &&... args ) {
+			constexpr bool operator( )( Args &&... args ) {
 				return !m_function( std::forward<Args>( args )... );
 			}
 		}; // class NotImpl

@@ -46,9 +46,9 @@
 #include "daw_generic_hash.h"
 #include "daw_math.h"
 #include "daw_move.h"
-#include "daw_string_impl.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
+#include "impl/daw_string_impl.h"
 #include "iterator/daw_iterator.h"
 #include "iterator/daw_reverse_iterator.h"
 
@@ -59,7 +59,7 @@ namespace daw {
 	}
 
 	template<typename CharT, typename Traits, ptrdiff_t Extent>
-	struct basic_string_view final {
+	struct basic_string_view {
 		using traits_type = Traits;
 		using value_type = CharT;
 		using pointer = CharT *;
