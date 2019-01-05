@@ -35,7 +35,7 @@
 #include "daw_bounded_hash_map.h"
 #include "daw_bounded_hash_set.h"
 #include "daw_exception.h"
-#include "daw_fixed_stack.h"
+#include "daw_bounded_vector.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_move.h"
 #include "daw_utility.h"
@@ -512,9 +512,9 @@ namespace daw {
 		}
 
 		template<typename Compare = std::equal_to<>>
-		constexpr daw::fixed_stack_t<node_id_t, MaxVerticesPerNode>
+		constexpr daw::bounded_vector_t<node_id_t, MaxVerticesPerNode>
 		find_by_value( T const &value, Compare compare = Compare{} ) const {
-			daw::fixed_stack_t<node_id_t, MaxVerticesPerNode> result{};
+			daw::bounded_vector_t<node_id_t, MaxVerticesPerNode> result{};
 
 			for( auto const &node : m_nodes ) {
 				if( daw::invoke( compare, node.value.value( ), value ) ) {
@@ -553,22 +553,22 @@ namespace daw {
 		}
 
 		template<typename Predicate>
-		constexpr daw::fixed_stack_t<node_id_t, MaxVerticesPerNode>
+		constexpr daw::bounded_vector_t<node_id_t, MaxVerticesPerNode>
 		find( Predicate &&pred ) const {
-			daw::fixed_stack_t<node_id_t, MaxVerticesPerNode> result{};
+			daw::bounded_vector_t<node_id_t, MaxVerticesPerNode> result{};
 			visit( pred, [&result]( auto const &node ) {
 				result.push_back( node.id( ) );
 			} );
 			return result;
 		}
 
-		constexpr daw::fixed_stack_t<node_id_t, MaxVerticesPerNode>
+		constexpr daw::bounded_vector_t<node_id_t, MaxVerticesPerNode>
 		find_roots( ) const {
 			return find(
 			  []( auto const &node ) { return node.incoming_edges( ).empty( ); } );
 		}
 
-		constexpr daw::fixed_stack_t<node_id_t, MaxVerticesPerNode>
+		constexpr daw::bounded_vector_t<node_id_t, MaxVerticesPerNode>
 		find_leaves( ) const {
 			return find(
 			  []( auto const &node ) { return node.outgoing_edges( ).empty( ); } );

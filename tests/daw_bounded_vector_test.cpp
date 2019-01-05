@@ -26,10 +26,10 @@
 #include <string>
 
 #include "daw/boost_test.h"
-#include "daw/daw_fixed_stack.h"
+#include "daw/daw_bounded_vector.h"
 
-BOOST_AUTO_TEST_CASE( daw_fixed_stack_test_001 ) {
-	daw::fixed_stack_t<int, 10> a{};
+BOOST_AUTO_TEST_CASE( daw_bounded_vector_test_001 ) {
+	daw::bounded_vector_t<int, 10> a{};
 	a.push_back( 1 );
 	a.push_back( 2 );
 	a.push_back( 4 );
@@ -43,8 +43,8 @@ BOOST_AUTO_TEST_CASE( daw_fixed_stack_test_001 ) {
 	BOOST_REQUIRE_EQUAL( sum, 36 );
 }
 
-BOOST_AUTO_TEST_CASE( daw_fixed_stack_test_002 ) {
-	daw::fixed_stack_t<int, 10> a{};
+BOOST_AUTO_TEST_CASE( daw_bounded_vector_test_002 ) {
+	daw::bounded_vector_t<int, 10> a{};
 	a.push_back( 1 );
 	a.push_back( 2 );
 	a.push_back( 4 );
@@ -61,8 +61,8 @@ BOOST_AUTO_TEST_CASE( daw_fixed_stack_test_002 ) {
 	BOOST_REQUIRE( a.empty( ) );
 }
 
-BOOST_AUTO_TEST_CASE( daw_fixed_stack_test_003 ) {
-	daw::fixed_stack_t<int, 6> a{};
+BOOST_AUTO_TEST_CASE( daw_bounded_vector_test_003 ) {
+	daw::bounded_vector_t<int, 6> a{};
 	a.push_back( 1 );
 	a.push_back( 2 );
 	a.push_back( 4 );
@@ -72,9 +72,9 @@ BOOST_AUTO_TEST_CASE( daw_fixed_stack_test_003 ) {
 	BOOST_REQUIRE( a.full( ) );
 }
 
-namespace daw_fixed_stack_test_004_ns {
+namespace daw_bounded_vector_test_004_ns {
 	constexpr auto cx_test( ) {
-		daw::fixed_stack_t<int, 10> a{};
+		daw::bounded_vector_t<int, 10> a{};
 		a.push_back( 1 );
 		a.push_back( 2 );
 		a.push_back( 4 );
@@ -84,7 +84,7 @@ namespace daw_fixed_stack_test_004_ns {
 		return a;
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_fixed_stack_test_004 ) {
+	BOOST_AUTO_TEST_CASE( daw_bounded_vector_test_004 ) {
 		constexpr auto a = cx_test( );
 		int sum = 0;
 		for( auto c : a ) {
@@ -92,4 +92,4 @@ namespace daw_fixed_stack_test_004_ns {
 		}
 		BOOST_REQUIRE_EQUAL( sum, 36 );
 	}
-} // namespace daw_fixed_stack_test_004_ns
+} // namespace daw_bounded_vector_test_004_ns

@@ -31,7 +31,7 @@
 
 namespace daw {
 	template<typename T, size_t N>
-	struct fixed_stack_t {
+	struct bounded_vector_t {
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
@@ -48,12 +48,12 @@ namespace daw {
 		daw::static_array_t<T, N> m_stack;
 
 	public:
-		constexpr fixed_stack_t( ) noexcept
+		constexpr bounded_vector_t( ) noexcept
 		  : m_index{0}
 		  , m_first{0}
 		  , m_stack{} {}
 
-		constexpr fixed_stack_t( const_pointer ptr, size_type count ) noexcept
+		constexpr bounded_vector_t( const_pointer ptr, size_type count ) noexcept
 		  : m_index{daw::min( count, N )}
 		  , m_first{0}
 		  , m_stack{} {

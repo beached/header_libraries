@@ -38,7 +38,7 @@
 #include "daw_algorithm.h"
 #include "daw_container_algorithm.h"
 #include "daw_exception.h"
-#include "daw_fixed_stack.h"
+#include "daw_bounded_vector.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_generic_hash.h"
 #include "daw_move.h"
@@ -68,7 +68,7 @@ namespace daw {
 		using difference_type = std::ptrdiff_t;
 
 	private:
-		daw::fixed_stack_t<CharT, Capacity + 1> m_data{};
+		daw::bounded_vector_t<CharT, Capacity + 1> m_data{};
 
 	public:
 		static constexpr size_type_internal const npos =

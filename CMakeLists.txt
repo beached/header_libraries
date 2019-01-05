@@ -35,7 +35,7 @@ set( TESTED_HEADERS_PREFIXES
 	daw_benchmark
 	daw_bit
 	daw_bit_queues
-	daw_bounded_stack
+	daw_bounded_vector
 	daw_carray
 	daw_checked_expected
 	daw_clumpy_sparsy
@@ -46,7 +46,6 @@ set( TESTED_HEADERS_PREFIXES
 	daw_exception
 	daw_expected
 	daw_fixed_lookup
-	daw_fixed_stack
 	daw_fnv1a_hash
 	daw_generic_hash
 	daw_hash_table
