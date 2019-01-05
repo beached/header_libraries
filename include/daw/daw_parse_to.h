@@ -30,7 +30,7 @@
 
 #include "daw_function.h"
 #include "daw_parser_helper.h"
-#include "daw_static_array.h"
+#include "daw_bounded_array.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
@@ -183,7 +183,7 @@ namespace daw {
 		namespace impl {
 			template<size_t N, typename... Args>
 			constexpr decltype( auto ) set_value_from_string_view_item(
-			  daw::static_array_t<daw::string_view, sizeof...( Args )> const
+			  daw::bounded_array_t<daw::string_view, sizeof...( Args )> const
 			    &positions ) {
 				using ::daw::parser::converters::parse_to_value;
 				using result_t = daw::pack_type_t<N, Args...>;
@@ -192,7 +192,7 @@ namespace daw {
 
 			template<typename... Args, size_t... Is>
 			constexpr decltype( auto ) set_value_from_string_view(
-			  daw::static_array_t<daw::string_view, sizeof...( Args )> const
+			  daw::bounded_array_t<daw::string_view, sizeof...( Args )> const
 			    &positions,
 			  std::index_sequence<Is...> ) {
 				;
@@ -202,7 +202,7 @@ namespace daw {
 
 			template<typename... Args>
 			constexpr decltype( auto ) set_value_from_string_view(
-			  daw::static_array_t<daw::string_view, sizeof...( Args )> const
+			  daw::bounded_array_t<daw::string_view, sizeof...( Args )> const
 			    &positions ) {
 				return set_value_from_string_view<Args...>(
 				  positions, std::index_sequence_for<Args...>{} );
@@ -279,7 +279,7 @@ namespace daw {
 			template<size_t N, typename Splitter>
 			constexpr auto get_positions( daw::string_view str,
 			                              Splitter &&splitter ) {
-				daw::static_array_t<daw::string_view, N> result{};
+				daw::bounded_array_t<daw::string_view, N> result{};
 				for( auto &item : result ) {
 					auto const pos = splitter( str );
 					item = str.substr( 0, pos.first );

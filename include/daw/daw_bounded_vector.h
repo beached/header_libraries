@@ -26,7 +26,7 @@
 #include "daw_algorithm.h"
 #include "daw_math.h"
 #include "daw_move.h"
-#include "daw_static_array.h"
+#include "daw_bounded_array.h"
 #include "daw_swap.h"
 
 namespace daw {
@@ -45,7 +45,7 @@ namespace daw {
 	private:
 		size_t m_index;
 		size_t m_first;
-		daw::static_array_t<T, N> m_stack;
+		daw::bounded_array_t<T, N> m_stack;
 
 	public:
 		constexpr bounded_vector_t( ) noexcept

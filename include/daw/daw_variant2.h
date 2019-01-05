@@ -26,7 +26,7 @@
 #include <functional>
 #include <typeindex>
 
-#include "daw_static_array.h"
+#include "daw_bounded_array.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
 
@@ -41,7 +41,7 @@ namespace daw {
 			static constexpr size_t const s_buffer_size =
 			  daw::traits::max_sizeof_v<Ts...>;
 			alignas( daw::traits::max_sizeof_t<Ts...> )
-			  daw::static_array_t<char, s_buffer_size> m_data;
+			  daw::bounded_array_t<char, s_buffer_size> m_data;
 
 			constexpr value_storage_t( ) noexcept
 			  : m_data{0} {}
@@ -163,7 +163,7 @@ namespace daw {
 		index_t m_index;
 
 		static auto &get_value_ops( index_t idx ) noexcept {
-			static daw::static_array_t<
+			static daw::bounded_array_t<
 			  variant_impl::variant_value_ops_t<Ts..., empty_variant>,
 			  sizeof...( Ts ) + 1>
 			  s_value_ops{};

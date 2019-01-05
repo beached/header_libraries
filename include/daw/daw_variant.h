@@ -38,7 +38,7 @@
 #include "daw_exception.h"
 #include "daw_move.h"
 #include "daw_operators.h"
-#include "daw_static_array.h"
+#include "daw_bounded_array.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
 
@@ -337,7 +337,7 @@ namespace daw {
 		  daw::traits::max_sizeof_v<Types...>;
 		impl::stored_type_t m_stored_type;
 		alignas( daw::traits::max_sizeof_t<Types...> )
-		  daw::static_array_t<uint8_t, s_buffer_size> m_buffer;
+		  daw::bounded_array_t<uint8_t, s_buffer_size> m_buffer;
 
 		static auto get_helper_funcs( std::type_index idx ) {
 			static auto func_map = get_variant_helpers<Types...>( );

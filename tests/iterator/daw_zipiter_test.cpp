@@ -25,12 +25,12 @@
 #include <cstdint>
 #include <iostream>
 
-#include "daw/daw_static_array.h"
+#include "daw/daw_bounded_array.h"
 #include "daw/iterator/daw_zipiter.h"
 
 constexpr bool test( ) {
-	daw::static_array_t<uint8_t, 10> a{9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
-	daw::static_array_t<uint8_t, 10> b{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	daw::bounded_array_t<uint8_t, 10> a{9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+	daw::bounded_array_t<uint8_t, 10> b{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
 	auto zi = daw::zip_iterator( a.begin( ), b.begin( ) );
 	++zi;
