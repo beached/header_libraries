@@ -33,19 +33,21 @@
 
 namespace daw {
 	namespace sort_impl {
-		// Sorting networks are from http://pages.ripco.net/~jgamble/nw.html
+		namespace {
+			// Sorting networks are from http://pages.ripco.net/~jgamble/nw.html
 
-		template<intmax_t Pos0, intmax_t Pos1, typename RandomIterator,
-		         typename Compare = std::less<>>
-		constexpr void swap_if( RandomIterator first,
-		                        Compare comp = Compare{} ) noexcept {
-			auto const f = std::next( first, Pos0 );
-			auto const l = std::next( first, Pos1 );
-			if( !daw::invoke( comp, *f, *l ) ) {
-				daw::iter_swap( f, l );
+			template<intmax_t Pos0, intmax_t Pos1, typename RandomIterator,
+			         typename Compare = std::less<>>
+			constexpr void swap_if( RandomIterator first,
+			                        Compare comp = Compare{} ) noexcept {
+				auto const f = std::next( first, Pos0 );
+				auto const l = std::next( first, Pos1 );
+				if( !daw::invoke( comp, *f, *l ) ) {
+					daw::iter_swap( f, l );
+				}
 			}
-		}
-	} // namespace sort_impl
+		} // namespace
+	}   // namespace sort_impl
 
 	template<typename RandomIterator, typename Compare = std::less<>>
 	constexpr void sort_32( RandomIterator first,
@@ -360,65 +362,43 @@ namespace daw {
 	}
 
 	namespace sort_impl {
-		template<typename ForwardIterator, typename Compare>
-		constexpr size_t sort_3_impl( ForwardIterator it0, ForwardIterator it1,
-		                              ForwardIterator it2, Compare comp ) {
-			size_t result = 0;
-			if( !daw::invoke( comp, *it1, *it0 ) ) {
-				if( !daw::invoke( comp, *it2, *it1 ) ) {
+		namespace {
+			template<typename ForwardIterator, typename Compare>
+			constexpr size_t sort_3_impl( ForwardIterator it0, ForwardIterator it1,
+			                              ForwardIterator it2, Compare comp ) {
+				size_t result = 0;
+				if( !daw::invoke( comp, *it1, *it0 ) ) {
+					if( !daw::invoke( comp, *it2, *it1 ) ) {
+						return result;
+					}
+					daw::cswap( *it1, *it2 );
+					result = 1;
+					if( daw::invoke( comp, *it1, *it0 ) ) {
+						daw::cswap( *it1, *it0 );
+						result = 2;
+					}
 					return result;
 				}
-				daw::cswap( *it1, *it2 );
+				if( daw::invoke( comp, *it2, *it1 ) ) {
+					daw::cswap( *it2, *it0 );
+					result = 1;
+					return result;
+				}
+				daw::cswap( *it0, *it1 );
 				result = 1;
-				if( daw::invoke( comp, *it1, *it0 ) ) {
-					daw::cswap( *it1, *it0 );
+				if( daw::invoke( comp, *it2, *it1 ) ) {
+					daw::cswap( *it2, *it1 );
 					result = 2;
 				}
 				return result;
 			}
-			if( daw::invoke( comp, *it2, *it1 ) ) {
-				daw::cswap( *it2, *it0 );
-				result = 1;
-				return result;
-			}
-			daw::cswap( *it0, *it1 );
-			result = 1;
-			if( daw::invoke( comp, *it2, *it1 ) ) {
-				daw::cswap( *it2, *it1 );
-				result = 2;
-			}
-			return result;
-		}
 
-		template<typename ForwardIterator, typename Compare>
-		constexpr size_t sort_4_impl( ForwardIterator it0, ForwardIterator it1,
-		                              ForwardIterator it2, ForwardIterator it3,
-		                              Compare comp ) {
+			template<typename ForwardIterator, typename Compare>
+			constexpr size_t sort_4_impl( ForwardIterator it0, ForwardIterator it1,
+			                              ForwardIterator it2, ForwardIterator it3,
+			                              Compare comp ) {
 
-			auto result = sort_3_impl( it0, it1, it2, comp );
-			if( daw::invoke( comp, *it3, *it2 ) ) {
-				daw::cswap( *it3, *it2 );
-				++result;
-				if( daw::invoke( comp, *it2, *it1 ) ) {
-					daw::cswap( *it2, *it1 );
-					++result;
-					if( daw::invoke( comp, *it1, *it0 ) ) {
-						daw::cswap( *it1, *it0 );
-						++result;
-					}
-				}
-			}
-			return result;
-		}
-		template<typename ForwardIterator, typename Compare>
-		constexpr size_t sort_5_impl( ForwardIterator it0, ForwardIterator it1,
-		                              ForwardIterator it2, ForwardIterator it3,
-		                              ForwardIterator it4, Compare comp ) {
-
-			auto result = sort_4_impl( it0, it1, it2, it3, comp );
-			if( daw::invoke( comp, *it4, *it3 ) ) {
-				daw::cswap( *it4, *it3 );
-				++result;
+				auto result = sort_3_impl( it0, it1, it2, comp );
 				if( daw::invoke( comp, *it3, *it2 ) ) {
 					daw::cswap( *it3, *it2 );
 					++result;
@@ -431,79 +411,105 @@ namespace daw {
 						}
 					}
 				}
+				return result;
 			}
-			return result;
-		}
 
-		template<typename RandomIterator, typename Compare = std::less<>>
-		constexpr bool insertion_sort_incomplete( RandomIterator first,
-		                                          RandomIterator last,
-		                                          Compare comp ) {
+			template<typename ForwardIterator, typename Compare>
+			constexpr size_t sort_5_impl( ForwardIterator it0, ForwardIterator it1,
+			                              ForwardIterator it2, ForwardIterator it3,
+			                              ForwardIterator it4, Compare comp ) {
 
-			switch( last - first ) {
-			case 0:
-			case 1:
-				return true;
-			case 2:
-				if( daw::invoke( comp, std::prev( last ), first ) ) {
-					daw::cswap( *last, *first );
-				}
-				return true;
-			case 3:
-				sort_3( first, comp );
-				return true;
-			case 4:
-				sort_4( first, comp );
-				return true;
-			case 5:
-				sort_5( first, comp );
-				return true;
-			}
-			auto j = std::next( first, 2 );
-			sort_3_impl( first, std::next( first ), j, comp );
-
-			uint_fast8_t const limit = 8;
-			uint_fast8_t count = 0;
-			for( auto i = std::next( j ); i != last; ++i ) {
-				if( daw::invoke( comp, *i, *j ) ) {
-					auto t = daw::move( *i );
-					auto k = j;
-					j = i;
-					do {
-						*j = daw::move( *k );
-						j = k;
-					} while( j != first and daw::invoke( comp, t, *--k ) );
-					*j = daw::move( t );
-					if( ++count == limit ) {
-						return std::next( i ) == last;
+				auto result = sort_4_impl( it0, it1, it2, it3, comp );
+				if( daw::invoke( comp, *it4, *it3 ) ) {
+					daw::cswap( *it4, *it3 );
+					++result;
+					if( daw::invoke( comp, *it3, *it2 ) ) {
+						daw::cswap( *it3, *it2 );
+						++result;
+						if( daw::invoke( comp, *it2, *it1 ) ) {
+							daw::cswap( *it2, *it1 );
+							++result;
+							if( daw::invoke( comp, *it1, *it0 ) ) {
+								daw::cswap( *it1, *it0 );
+								++result;
+							}
+						}
 					}
 				}
-				j = i;
+				return result;
 			}
-			return true;
-		}
-		template<typename RandomIterator, typename Compare = std::less<>>
-		constexpr void insertion_sort_3( RandomIterator first, RandomIterator last,
-		                                 Compare comp = Compare{} ) {
 
-			auto j = std::next( first, 2 );
-			::daw::sort_3( first, comp );
-			for( auto i = std::next( j ); i != last; ++i ) {
-				if( daw::invoke( comp, *i, *j ) ) {
-					auto t = daw::move( *i );
-					auto k = j;
-					j = i;
-					do {
-						*j = daw::move( *k );
-						j = k;
-					} while( j != first and daw::invoke( comp, t, *--k ) );
-					*j = daw::move( t );
+			template<typename RandomIterator, typename Compare = std::less<>>
+			constexpr bool insertion_sort_incomplete( RandomIterator first,
+			                                          RandomIterator last,
+			                                          Compare comp ) {
+
+				switch( last - first ) {
+				case 0:
+				case 1:
+					return true;
+				case 2:
+					if( daw::invoke( comp, std::prev( last ), first ) ) {
+						daw::cswap( *last, *first );
+					}
+					return true;
+				case 3:
+					sort_3( first, comp );
+					return true;
+				case 4:
+					sort_4( first, comp );
+					return true;
+				case 5:
+					sort_5( first, comp );
+					return true;
 				}
-				j = i;
-			}
-		}
+				auto j = std::next( first, 2 );
+				sort_3_impl( first, std::next( first ), j, comp );
 
-	} // namespace sort_impl
+				uint_fast8_t const limit = 8;
+				uint_fast8_t count = 0;
+				for( auto i = std::next( j ); i != last; ++i ) {
+					if( daw::invoke( comp, *i, *j ) ) {
+						auto t = daw::move( *i );
+						auto k = j;
+						j = i;
+						do {
+							*j = daw::move( *k );
+							j = k;
+						} while( j != first and daw::invoke( comp, t, *--k ) );
+						*j = daw::move( t );
+						if( ++count == limit ) {
+							return std::next( i ) == last;
+						}
+					}
+					j = i;
+				}
+				return true;
+			}
+
+			template<typename RandomIterator, typename Compare = std::less<>>
+			constexpr void insertion_sort_3( RandomIterator first,
+			                                 RandomIterator last,
+			                                 Compare comp = Compare{} ) {
+
+				auto j = std::next( first, 2 );
+				::daw::sort_3( first, comp );
+				for( auto i = std::next( j ); i != last; ++i ) {
+					if( daw::invoke( comp, *i, *j ) ) {
+						auto t = daw::move( *i );
+						auto k = j;
+						j = i;
+						do {
+							*j = daw::move( *k );
+							j = k;
+						} while( j != first and daw::invoke( comp, t, *--k ) );
+						*j = daw::move( t );
+					}
+					j = i;
+				}
+			}
+		} // namespace
+	}   // namespace sort_impl
 
 	template<typename RandomIterator, typename Compare = std::less<>>
 	constexpr void sort( RandomIterator first, RandomIterator last,
