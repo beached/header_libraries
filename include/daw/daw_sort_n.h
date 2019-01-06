@@ -46,6 +46,15 @@ namespace daw {
 					daw::iter_swap( f, l );
 				}
 			}
+			template<typename ForwardIterator, typename Compare = std::less<>>
+			constexpr size_t swap_if2( ForwardIterator lhs, ForwardIterator rhs,
+			                           Compare comp = Compare{} ) noexcept {
+				if( daw::invoke( comp, *rhs, *lhs ) ) {
+					daw::cswap( *rhs, *lhs );
+					return 1U;
+				}
+				return 0U;
+			}
 		} // namespace
 	}   // namespace sort_impl
 
@@ -371,85 +380,29 @@ namespace daw {
 
 		namespace {
 			template<typename ForwardIterator, typename Compare>
-			constexpr size_t sort_3_impl(
-			  ForwardIterator it0, ForwardIterator it1, ForwardIterator it2,
-			  Compare
-			    comp ) noexcept( is_nothrow_sortable_v<ForwardIterator, Compare> ) {
+			constexpr size_t sort_3_impl( ForwardIterator it0, ForwardIterator it1,
+			                              ForwardIterator it2,
+			                              Compare comp ) noexcept {
 
-				size_t result = 0;
-				if( !daw::invoke( comp, *it1, *it0 ) ) {
-					if( !daw::invoke( comp, *it2, *it1 ) ) {
-						return result;
-					}
-					daw::cswap( *it1, *it2 );
-					result = 1;
-					if( daw::invoke( comp, *it1, *it0 ) ) {
-						daw::cswap( *it1, *it0 );
-						result = 2;
-					}
-					return result;
-				}
-				if( daw::invoke( comp, *it2, *it1 ) ) {
-					daw::cswap( *it2, *it0 );
-					result = 1;
-					return result;
-				}
-				daw::cswap( *it0, *it1 );
-				result = 1;
-				if( daw::invoke( comp, *it2, *it1 ) ) {
-					daw::cswap( *it2, *it1 );
-					result = 2;
-				}
+				auto result = sort_impl::swap_if2( it1, it2, comp );
+				result += sort_impl::swap_if2( it0, it2, comp );
+				result += sort_impl::swap_if2( it0, it1, comp );
 				return result;
 			}
-
 			template<typename ForwardIterator, typename Compare>
-			constexpr size_t sort_4_impl(
-			  ForwardIterator it0, ForwardIterator it1, ForwardIterator it2,
-			  ForwardIterator it3,
-			  Compare
-			    comp ) noexcept( is_nothrow_sortable_v<ForwardIterator, Compare> ) {
-
-				auto result = sort_3_impl( it0, it1, it2, comp );
-				if( daw::invoke( comp, *it3, *it2 ) ) {
-					daw::cswap( *it3, *it2 );
-					++result;
-					if( daw::invoke( comp, *it2, *it1 ) ) {
-						daw::cswap( *it2, *it1 );
-						++result;
-						if( daw::invoke( comp, *it1, *it0 ) ) {
-							daw::cswap( *it1, *it0 );
-							++result;
-						}
-					}
-				}
-				return result;
-			}
-
-			template<typename ForwardIterator, typename Compare>
-			constexpr size_t sort_5_impl(
-			  ForwardIterator it0, ForwardIterator it1, ForwardIterator it2,
-			  ForwardIterator it3, ForwardIterator it4,
-			  Compare
-			    comp ) noexcept( is_nothrow_sortable_v<ForwardIterator, Compare> ) {
-
-				auto result = sort_4_impl( it0, it1, it2, it3, comp );
-				if( daw::invoke( comp, *it4, *it3 ) ) {
-					daw::cswap( *it4, *it3 );
-					++result;
-					if( daw::invoke( comp, *it3, *it2 ) ) {
-						daw::cswap( *it3, *it2 );
-						++result;
-						if( daw::invoke( comp, *it2, *it1 ) ) {
-							daw::cswap( *it2, *it1 );
-							++result;
-							if( daw::invoke( comp, *it1, *it0 ) ) {
-								daw::cswap( *it1, *it0 );
-								++result;
-							}
-						}
-					}
-				}
+			constexpr size_t sort_5_impl( ForwardIterator it0, ForwardIterator it1,
+			                              ForwardIterator it2, ForwardIterator it3,
+			                              ForwardIterator it4,
+			                              Compare comp ) noexcept {
+				auto result = sort_impl::swap_if2( it0, it1, comp );
+				result += sort_impl::swap_if2( it3, it4, comp );
+				result += sort_impl::swap_if2( it2, it4, comp );
+				result += sort_impl::swap_if2( it2, it3, comp );
+				result += sort_impl::swap_if2( it0, it3, comp );
+				result += sort_impl::swap_if2( it0, it2, comp );
+				result += sort_impl::swap_if2( it1, it4, comp );
+				result += sort_impl::swap_if2( it1, it3, comp );
+				result += sort_impl::swap_if2( it1, it2, comp );
 				return result;
 			}
 
@@ -579,7 +532,7 @@ namespace daw {
 			auto m = first;
 			auto lm1 = std::prev( last );
 			auto swap_count = [&]( ) constexpr {
-				difference_type delta = len /2;
+				difference_type delta = len / 2;
 				m += delta;
 				if( len >= 1000 ) {
 					delta /= 2;
