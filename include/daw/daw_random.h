@@ -27,6 +27,7 @@
 #include "daw_exception.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
+#include "daw_utility.h"
 
 namespace daw {
 	namespace impl {
@@ -106,4 +107,46 @@ namespace daw {
 		random_fill( result.begin( ), result.end( ), a, b );
 		return result;
 	}
+
+	namespace cxrand_impl {
+		namespace {
+			constexpr size_t generate_seed( char const * first ) noexcept {
+				size_t result = 1U;
+				while( first and *first != 0 ) {
+					result *= static_cast<size_t>( *first++ );
+				}
+				return result;
+			}
+
+			constexpr size_t generate_seed( ) noexcept {
+				size_t result = __LINE__;
+				result *= generate_seed( __DATE__ );
+				result *= generate_seed( __TIME__ );
+				return result;
+			}
+		} // namespace
+		template<size_t N, std::enable_if_t<( N == 4 ), std::nullptr_t> = nullptr>
+		constexpr size_t rand_lcg( size_t x_prev ) noexcept {
+			return x_prev * 1664525UL + 1013904223UL;
+		}
+
+		template<size_t N, std::enable_if_t<( N == 8 ), std::nullptr_t> = nullptr>
+		constexpr size_t rand_lcg( size_t x_prev ) noexcept {
+			return x_prev * 2862933555777941757ULL + 3037000493ULL;
+		}
+	} // namespace cxrand_impl
+
+	class static_random {
+		size_t m_state =
+		  cxrand_impl::rand_lcg<sizeof( size_t )>( cxrand_impl::generate_seed( ) );
+	public:
+		constexpr static_random( ) noexcept = default;
+		constexpr static_random( size_t seed ) noexcept
+		  : m_state( cxrand_impl::rand_lcg<sizeof( size_t )>( seed ) ) {}
+
+		constexpr size_t operator( )( ) noexcept {
+			m_state = cxrand_impl::rand_lcg<sizeof( size_t )>( m_state );
+			return m_state;
+		}
+	};
 } // namespace daw

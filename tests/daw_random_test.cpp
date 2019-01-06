@@ -74,3 +74,20 @@ BOOST_AUTO_TEST_CASE( daw_make_random_01 ) {
 	}
 	std::cout << "\n\n";
 }
+
+constexpr bool cxrand_test_001( ) {
+	auto rng = daw::static_random( );
+	return rng( ) != rng( );
+}
+
+static_assert( cxrand_test_001( ) );
+
+BOOST_AUTO_TEST_CASE( cxrand_test_002 ) {
+	auto rng = daw::static_random( );
+	for( size_t n = 0; n < 50; ++n ) {
+		size_t num = rng( );
+		num = ( ( num >> 60U ) | ( num & 0xFF ) ) % 100U;
+		std::cout << " " << num;
+	}
+	std::cout << '\n';
+}
