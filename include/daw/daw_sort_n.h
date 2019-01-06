@@ -362,10 +362,20 @@ namespace daw {
 	}
 
 	namespace sort_impl {
+		template<typename ForwardIterator, typename Compare>
+		inline constexpr bool is_nothrow_sortable_v = std::is_nothrow_swappable_v<
+		  typename std::iterator_traits<ForwardIterator>::value_type>
+		  and std::is_nothrow_invocable_v<
+		    Compare, typename std::iterator_traits<ForwardIterator>::value_type,
+		    typename std::iterator_traits<ForwardIterator>::value_type>;
+
 		namespace {
 			template<typename ForwardIterator, typename Compare>
-			constexpr size_t sort_3_impl( ForwardIterator it0, ForwardIterator it1,
-			                              ForwardIterator it2, Compare comp ) {
+			constexpr size_t sort_3_impl(
+			  ForwardIterator it0, ForwardIterator it1, ForwardIterator it2,
+			  Compare
+			    comp ) noexcept( is_nothrow_sortable_v<ForwardIterator, Compare> ) {
+
 				size_t result = 0;
 				if( !daw::invoke( comp, *it1, *it0 ) ) {
 					if( !daw::invoke( comp, *it2, *it1 ) ) {
@@ -394,9 +404,11 @@ namespace daw {
 			}
 
 			template<typename ForwardIterator, typename Compare>
-			constexpr size_t sort_4_impl( ForwardIterator it0, ForwardIterator it1,
-			                              ForwardIterator it2, ForwardIterator it3,
-			                              Compare comp ) {
+			constexpr size_t sort_4_impl(
+			  ForwardIterator it0, ForwardIterator it1, ForwardIterator it2,
+			  ForwardIterator it3,
+			  Compare
+			    comp ) noexcept( is_nothrow_sortable_v<ForwardIterator, Compare> ) {
 
 				auto result = sort_3_impl( it0, it1, it2, comp );
 				if( daw::invoke( comp, *it3, *it2 ) ) {
@@ -415,9 +427,11 @@ namespace daw {
 			}
 
 			template<typename ForwardIterator, typename Compare>
-			constexpr size_t sort_5_impl( ForwardIterator it0, ForwardIterator it1,
-			                              ForwardIterator it2, ForwardIterator it3,
-			                              ForwardIterator it4, Compare comp ) {
+			constexpr size_t sort_5_impl(
+			  ForwardIterator it0, ForwardIterator it1, ForwardIterator it2,
+			  ForwardIterator it3, ForwardIterator it4,
+			  Compare
+			    comp ) noexcept( is_nothrow_sortable_v<ForwardIterator, Compare> ) {
 
 				auto result = sort_4_impl( it0, it1, it2, it3, comp );
 				if( daw::invoke( comp, *it4, *it3 ) ) {
@@ -440,9 +454,10 @@ namespace daw {
 			}
 
 			template<typename RandomIterator, typename Compare = std::less<>>
-			constexpr bool insertion_sort_incomplete( RandomIterator first,
-			                                          RandomIterator last,
-			                                          Compare comp ) {
+			constexpr bool insertion_sort_incomplete(
+			  RandomIterator first, RandomIterator last,
+			  Compare
+			    comp ) noexcept( is_nothrow_sortable_v<RandomIterator, Compare> ) {
 
 				switch( last - first ) {
 				case 0:
@@ -488,9 +503,11 @@ namespace daw {
 			}
 
 			template<typename RandomIterator, typename Compare = std::less<>>
-			constexpr void insertion_sort_3( RandomIterator first,
-			                                 RandomIterator last,
-			                                 Compare comp = Compare{} ) {
+			constexpr void insertion_sort_3(
+			  RandomIterator first, RandomIterator last,
+			  Compare comp =
+			    Compare{} ) noexcept( is_nothrow_sortable_v<RandomIterator,
+			                                                Compare> ) {
 
 				auto j = std::next( first, 2 );
 				::daw::sort_3( first, comp );
@@ -512,12 +529,18 @@ namespace daw {
 	}   // namespace sort_impl
 
 	template<typename RandomIterator, typename Compare = std::less<>>
-	constexpr void sort( RandomIterator first, RandomIterator last,
-	                     Compare comp = Compare{} );
+	constexpr void
+	sort( RandomIterator first, RandomIterator last,
+	      Compare comp =
+	        Compare{} ) noexcept( sort_impl::is_nothrow_sortable_v<RandomIterator,
+	                                                               Compare> );
 
 	template<typename RandomIterator, typename Compare, typename DifferenceType>
-	constexpr bool sort2( RandomIterator &first, RandomIterator &last,
-	                      Compare comp, DifferenceType const limit ) {
+	constexpr bool
+	sort2( RandomIterator &first, RandomIterator &last, Compare comp,
+	       DifferenceType const
+	         limit ) noexcept( sort_impl::is_nothrow_sortable_v<RandomIterator,
+	                                                            Compare> ) {
 		auto len = std::distance( first, last );
 		switch( len ) {
 		case 0:
@@ -652,8 +675,9 @@ namespace daw {
 	}
 
 	template<typename RandomIterator, typename Compare>
-	constexpr void sort( RandomIterator first, RandomIterator last,
-	                     Compare comp ) {
+	constexpr void
+	sort( RandomIterator first, RandomIterator last, Compare comp ) noexcept(
+	  sort_impl::is_nothrow_sortable_v<RandomIterator, Compare> ) {
 
 		using difference_type =
 		  typename std::iterator_traits<RandomIterator>::difference_type;
