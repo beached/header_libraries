@@ -970,32 +970,31 @@ int main( ) {
 		return daw::algorithm::is_sorted( begin( a ), end( a ) );
 	}( ) );
 
-	auto b = []( auto a )  {
+	auto b = []( auto a ) {
 		daw::expecting( !daw::algorithm::is_sorted( begin( a ), end( a ) ) );
 		daw::sort( std::begin( a ), std::end( a ) );
 		return daw::algorithm::is_sorted( begin( a ), end( a ) );
 	}( big_arry );
 
-
 	auto const random_lots = daw::make_random_data<size_t>( 1'000'000 );
 	{
 		auto random_lots_tst = random_lots;
 		daw::sort( std::begin( random_lots_tst ), std::end( random_lots_tst ) );
-		//daw::expecting( daw::algorithm::is_sorted( std::begin( random_lots ),
-		 //                                          std::end( random_lots ) ) );
+		daw::expecting( daw::algorithm::is_sorted( std::begin( random_lots_tst ),
+		                                           std::end( random_lots_tst ) ) );
 	}
 	daw::bench_n_test<100>( "sort_lots daw::sort",
-	                            []( auto container ) {
-		                            daw::sort( std::begin( container ),
-		                                       std::end( container ) );
-		                            daw::do_not_optimize( container );
-	                            },
-	                            random_lots );
+	                        []( auto container ) {
+		                        daw::sort( std::begin( container ),
+		                                   std::end( container ) );
+		                        daw::do_not_optimize( container );
+	                        },
+	                        random_lots );
 	daw::bench_n_test<100>( "sort_lots std::sort",
-	                            []( auto container ) {
-		                            daw::sort( std::begin( container ),
-		                                       std::end( container ) );
-		                            daw::do_not_optimize( container );
-	                            },
-	                            random_lots );
+	                        []( auto container ) {
+		                        std::sort( std::begin( container ),
+		                                   std::end( container ) );
+		                        daw::do_not_optimize( container );
+	                        },
+	                        random_lots );
 }

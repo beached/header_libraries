@@ -464,7 +464,7 @@ namespace daw {
 				case 1:
 					return true;
 				case 2:
-					if( daw::invoke( comp, std::prev( last ), first ) ) {
+					if( daw::invoke( comp, --last, first ) ) {
 						daw::cswap( *last, *first );
 					}
 					return true;
@@ -558,8 +558,8 @@ namespace daw {
 			case 1:
 				return;
 			case 2:
-				if( daw::invoke( comp, std::prev( last ), first ) ) {
-					daw::cswap( *first, *last );
+				if( daw::invoke( comp, *--last, *first ) ) {
+					daw::cswap( *last, *first );
 				}
 				return;
 			case 3:
