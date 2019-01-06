@@ -113,6 +113,7 @@ namespace daw {
 		namespace {
 			constexpr size_t generate_seed( char const *first,
 			                                size_t seed = 0 ) noexcept {
+				// Use djb2 to hash the string to generate seed
 				size_t result = seed == 0 ? 5381U : seed;
 				while( first and *first != 0 ) {
 					result = ( ( result << 5U ) + result ) + static_cast<size_t>( *first++ );
