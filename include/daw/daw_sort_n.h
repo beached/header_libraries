@@ -510,7 +510,7 @@ namespace daw {
 	                     Compare comp = Compare{} );
 
 	template<typename RandomIterator, typename Compare, typename DifferenceType>
-	constexpr bool swap2( RandomIterator &first, RandomIterator &last,
+	constexpr bool sort2( RandomIterator &first, RandomIterator &last,
 	                      Compare comp, DifferenceType const limit ) {
 		auto len = std::distance( first, last );
 		switch( len ) {
@@ -660,6 +660,6 @@ namespace daw {
 		    ? 30
 		    : 6;
 
-		while( swap2( first, last, comp, limit ) ) {}
+		while( sort2( first, last, comp, limit ) ) {}
 	}
 } // namespace daw
