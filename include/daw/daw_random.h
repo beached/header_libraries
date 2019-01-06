@@ -25,6 +25,7 @@
 #include <random>
 
 #include "daw_exception.h"
+#include "daw_fnv1a_hash.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
@@ -110,18 +111,20 @@ namespace daw {
 
 	namespace cxrand_impl {
 		namespace {
-			constexpr size_t generate_seed( char const * first ) noexcept {
-				size_t result = 1U;
+			constexpr size_t generate_seed( char const *first,
+			                                size_t seed = 0 ) noexcept {
+				size_t result = seed == 0 ? 5381U : seed;
 				while( first and *first != 0 ) {
-					result *= static_cast<size_t>( *first++ );
+					result = ( ( result << 5U ) + result ) + static_cast<size_t>( *first++ );
 				}
 				return result;
 			}
 
 			constexpr size_t generate_seed( ) noexcept {
-				size_t result = __LINE__;
-				result *= generate_seed( __DATE__ );
-				result *= generate_seed( __TIME__ );
+				size_t result = generate_seed( __FILE__ );
+				result = generate_seed( __DATE__, result );
+				result = generate_seed( __TIME__, result );
+				result = ( ( result << 5U ) + result ) + __LINE__;
 				return result;
 			}
 		} // namespace
@@ -139,6 +142,7 @@ namespace daw {
 	class static_random {
 		size_t m_state =
 		  cxrand_impl::rand_lcg<sizeof( size_t )>( cxrand_impl::generate_seed( ) );
+
 	public:
 		constexpr static_random( ) noexcept = default;
 		constexpr static_random( size_t seed ) noexcept
@@ -146,7 +150,7 @@ namespace daw {
 
 		constexpr size_t operator( )( ) noexcept {
 			m_state = cxrand_impl::rand_lcg<sizeof( size_t )>( m_state );
-			return m_state;
+			return daw::fnv1a_hash( m_state );
 		}
 	};
 } // namespace daw
