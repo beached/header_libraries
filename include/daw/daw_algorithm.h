@@ -1502,24 +1502,35 @@ namespace daw {
 
 		template<typename ForwardIterator, typename LastType,
 		         typename Compare = std::less<>>
-		constexpr bool
-		is_sorted( ForwardIterator first, LastType last,
-		           Compare comp =
-		             Compare{} ) noexcept( noexcept( comp( *first, *first ) ) ) {
+		constexpr ForwardIterator is_sorted_until(
+		  ForwardIterator first, LastType last,
+		  Compare comp = Compare{} ) noexcept( noexcept( comp( *first,
+		                                                       *first ) ) ) {
 
 			traits::is_forward_access_iterator_test<ForwardIterator>( );
 			traits::is_input_iterator_test<ForwardIterator>( );
 			traits::is_compare_test<Compare, decltype( *first )>( );
 
-			if( !( first != last ) ) {
-				return true;
+			if( first != last ) {
+				auto i = first;
+				while( ++i != last ) {
+					if( daw::invoke( comp, *i, *first ) ) {
+						return i;
+					}
+					first = i;
+				}
 			}
-			auto next_it = daw::next( first );
-			while( next_it != last and !daw::invoke( comp, *next_it, *first ) ) {
-				++first;
-				++next_it;
-			}
-			return !( next_it != last );
+			return last;
+		}
+
+		template<typename ForwardIterator, typename LastType,
+		         typename Compare = std::less<>>
+		constexpr bool
+		is_sorted( ForwardIterator first, LastType last,
+		           Compare comp =
+		             Compare{} ) noexcept( noexcept( comp( *first, *first ) ) ) {
+
+			return ::daw::algorithm::is_sorted_until( first, last, comp ) == last;
 		}
 
 		template<typename ForwardIterator, typename T>

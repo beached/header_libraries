@@ -535,12 +535,21 @@ namespace daw {
 	        Compare{} ) noexcept( sort_impl::is_nothrow_sortable_v<RandomIterator,
 	                                                               Compare> );
 
-	template<typename RandomIterator, typename Compare, typename DifferenceType>
+	template<typename RandomIterator, typename Compare>
 	constexpr bool
-	sort2( RandomIterator &first, RandomIterator &last, Compare comp,
-	       DifferenceType const
-	         limit ) noexcept( sort_impl::is_nothrow_sortable_v<RandomIterator,
-	                                                            Compare> ) {
+	sort2( RandomIterator &first, RandomIterator &last, Compare comp ) noexcept(
+	  sort_impl::is_nothrow_sortable_v<RandomIterator, Compare> ) {
+		using difference_type =
+		  typename std::iterator_traits<RandomIterator>::difference_type;
+		using value_type =
+		  typename std::iterator_traits<RandomIterator>::value_type;
+
+		difference_type const limit =
+		  std::is_trivially_copy_constructible_v<value_type> and
+		      std::is_trivially_copy_assignable_v<value_type>
+		    ? 30
+		    : 6;
+
 		auto len = std::distance( first, last );
 		switch( len ) {
 		case 0:
@@ -568,7 +577,7 @@ namespace daw {
 		auto m = first;
 		auto lm1 = std::prev( last );
 		auto swap_count = [&]( ) constexpr {
-			DifferenceType delta = 0;
+			difference_type delta = 0;
 			delta = len / 2;
 			m += delta;
 			if( len >= 1000 ) {
@@ -679,17 +688,6 @@ namespace daw {
 	sort( RandomIterator first, RandomIterator last, Compare comp ) noexcept(
 	  sort_impl::is_nothrow_sortable_v<RandomIterator, Compare> ) {
 
-		using difference_type =
-		  typename std::iterator_traits<RandomIterator>::difference_type;
-		using value_type =
-		  typename std::iterator_traits<RandomIterator>::value_type;
-
-		difference_type const limit =
-		  std::is_trivially_copy_constructible_v<value_type> and
-		      std::is_trivially_copy_assignable_v<value_type>
-		    ? 30
-		    : 6;
-
-		while( sort2( first, last, comp, limit ) ) {}
+		while( sort2( first, last, comp ) ) {}
 	}
 } // namespace daw
