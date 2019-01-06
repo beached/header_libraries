@@ -536,8 +536,8 @@ namespace daw {
 	                                                               Compare> );
 
 	template<typename RandomIterator, typename Compare>
-	constexpr bool
-	sort2( RandomIterator &first, RandomIterator &last, Compare comp ) noexcept(
+	constexpr void
+	sort( RandomIterator first, RandomIterator last, Compare comp ) noexcept(
 	  sort_impl::is_nothrow_sortable_v<RandomIterator, Compare> ) {
 		using difference_type =
 		  typename std::iterator_traits<RandomIterator>::difference_type;
@@ -550,144 +550,142 @@ namespace daw {
 		    ? 30
 		    : 6;
 
-		auto len = std::distance( first, last );
-		switch( len ) {
-		case 0:
-		case 1:
-			return false;
-		case 2:
-			if( daw::invoke( comp, --last, first ) ) {
-				daw::cswap( *first, *last );
+		while( true ) {
+			bool should_restart = false;
+			auto const len = std::distance( first, last );
+			switch( len ) {
+			case 0:
+			case 1:
+				return;
+			case 2:
+				if( daw::invoke( comp, std::prev( last ), first ) ) {
+					daw::cswap( *first, *last );
+				}
+				return;
+			case 3:
+				sort_3( first, comp );
+				return;
+			case 4:
+				sort_4( first, comp );
+				return;
+			case 5:
+				sort_5( first, comp );
+				return;
 			}
-			return false;
-		case 3:
-			sort_3( first, comp );
-			return false;
-		case 4:
-			sort_4( first, comp );
-			return false;
-		case 5:
-			sort_5( first, comp );
-			return false;
-		}
-		if( len < limit ) {
-			sort_impl::insertion_sort_3( first, last, comp );
-			return false;
-		}
-		auto m = first;
-		auto lm1 = std::prev( last );
-		auto swap_count = [&]( ) constexpr {
-			difference_type delta = 0;
-			delta = len / 2;
-			m += delta;
-			if( len >= 1000 ) {
-				delta /= 2;
-				return sort_impl::sort_5_impl( first, std::next( first, delta ), m,
-				                               std::next( m, delta ), lm1, comp );
+			if( len < limit ) {
+				sort_impl::insertion_sort_3( first, last, comp );
+				return;
 			}
-			return sort_impl::sort_3_impl( first, m, lm1, comp );
-		}
-		( );
+			auto m = first;
+			auto lm1 = std::prev( last );
+			auto swap_count = [&]( ) constexpr {
+				difference_type delta = len /2;
+				m += delta;
+				if( len >= 1000 ) {
+					delta /= 2;
+					return sort_impl::sort_5_impl( first, std::next( first, delta ), m,
+					                               std::next( m, delta ), lm1, comp );
+				}
+				return sort_impl::sort_3_impl( first, m, lm1, comp );
+			}
+			( );
 
-		auto i = first;
-		auto j = lm1;
-		if( !daw::invoke( comp, *i, *m ) ) {
-			while( true ) {
-				if( i == --j ) {
-					++i;
-					j = last;
-					if( !daw::invoke( comp, *first, *--j ) ) {
-						while( true ) {
-							if( i == j ) {
-								return false;
-							}
-							if( daw::invoke( comp, *first, *i ) ) {
-								daw::cswap( *i, *j );
-								++swap_count;
+			auto i = first;
+			auto j = lm1;
+			if( !daw::invoke( comp, *i, *m ) ) {
+				while( !should_restart ) {
+					if( i == --j ) {
+						++i;
+						j = last;
+						if( !daw::invoke( comp, *first, *--j ) ) {
+							while( true ) {
+								if( i == j ) {
+									return;
+								}
+								if( daw::invoke( comp, *first, *i ) ) {
+									daw::cswap( *i, *j );
+									++swap_count;
+									++i;
+									break;
+								}
 								++i;
+							}
+						}
+						if( i == j ) {
+							return;
+						}
+						while( true ) {
+							while( !daw::invoke( comp, *first, *i ) ) {
+								++i;
+							}
+							while( daw::invoke( comp, *first, *--j ) ) {}
+							if( i >= j ) {
 								break;
 							}
+							daw::cswap( *i, *j );
+							++swap_count;
 							++i;
 						}
+						first = i;
+						should_restart = true;
+						continue;
 					}
-					if( i == j ) {
-						return false;
-					}
-					while( true ) {
-						while( !daw::invoke( comp, *first, *i ) ) {
-							++i;
-						}
-						while( daw::invoke( comp, *first, *--j ) ) {}
-						if( i > j ) {
-							break;
-						}
+					if( daw::invoke( comp, *j, *m ) ) {
 						daw::cswap( *i, *j );
 						++swap_count;
+						break;
+					}
+				}
+				if( should_restart ) {
+					continue;
+				}
+			}
+			++i;
+			if( i < j ) {
+				while( true ) {
+					while( daw::invoke( comp, *i, *m ) ) {
 						++i;
 					}
-					first = i;
-					return true;
-				}
-				if( daw::invoke( comp, *j, *m ) ) {
+					while( !daw::invoke( comp, *--j, *m ) ) {}
+					if( i > j ) {
+						break;
+					}
 					daw::cswap( *i, *j );
 					++swap_count;
-					break;
-				}
-			}
-		}
-		++i;
-		if( i < j ) {
-			while( true ) {
-				while( daw::invoke( comp, *i, *m ) ) {
+
+					if( m == i ) {
+						m = j;
+					}
 					++i;
 				}
-				while( !daw::invoke( comp, *--j, *m ) ) {}
-				if( i > j ) {
-					break;
-				}
-				daw::cswap( *i, *j );
+			}
+			if( i != m and daw::invoke( comp, *m, *i ) ) {
+				daw::cswap( *i, *m );
 				++swap_count;
-
-				if( m == i ) {
-					m = j;
-				}
-				++i;
 			}
-		}
-		if( i != m and daw::invoke( comp, *m, *i ) ) {
-			daw::cswap( *i, *m );
-			++swap_count;
-		}
-		if( swap_count == 0 ) {
-			bool const fs = sort_impl::insertion_sort_incomplete( first, i, comp );
-			if( sort_impl::insertion_sort_incomplete( std::next( i ), last, comp ) ) {
-				if( fs ) {
-					return false;
+			if( swap_count == 0 ) {
+				bool const fs = sort_impl::insertion_sort_incomplete( first, i, comp );
+				if( sort_impl::insertion_sort_incomplete( std::next( i ), last,
+				                                          comp ) ) {
+					if( fs ) {
+						return;
+					}
+					last = i;
+					continue;
+				} else {
+					if( fs ) {
+						first = ++i;
+						continue;
+					}
 				}
-				last = i;
-				return true;
+			}
+			if( i - first < last - i ) {
+				::daw::sort( first, i, comp );
+				first = ++i;
 			} else {
-				if( fs ) {
-					first = ++i;
-					return true;
-				}
+				::daw::sort( std::next( i ), last, comp );
+				last = i;
 			}
 		}
-		if( i - first < last - i ) {
-			::daw::sort( first, i, comp );
-			first = ++i;
-		} else {
-			::daw::sort( std::next( i ), last, comp );
-			last = i;
-		}
-		return true;
-	}
-
-	template<typename RandomIterator, typename Compare>
-	constexpr void
-	sort( RandomIterator first, RandomIterator last, Compare comp ) noexcept(
-	  sort_impl::is_nothrow_sortable_v<RandomIterator, Compare> ) {
-
-		while( sort2( first, last, comp ) ) {}
 	}
 } // namespace daw

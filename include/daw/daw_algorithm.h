@@ -1530,7 +1530,9 @@ namespace daw {
 		           Compare comp =
 		             Compare{} ) noexcept( noexcept( comp( *first, *first ) ) ) {
 
-			return ::daw::algorithm::is_sorted_until( first, last, comp ) == last;
+			auto const pos = ::daw::algorithm::is_sorted_until( first, last, comp );
+			auto const dist = daw::distance( first, pos );
+			return pos == last;
 		}
 
 		template<typename ForwardIterator, typename T>
