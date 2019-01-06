@@ -1515,7 +1515,7 @@ namespace daw {
 				return true;
 			}
 			auto next_it = daw::next( first );
-			while( next_it != last and !daw::invoke( *next_it, *first ) ) {
+			while( next_it != last and !daw::invoke( comp, *next_it, *first ) ) {
 				++first;
 				++next_it;
 			}

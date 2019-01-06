@@ -43,8 +43,18 @@ int main( ) {
 		daw::expecting( !std::is_sorted( begin( a ), end( a ) ) );
 		daw::bench_n_test<100'000>( "sort_32 Sort", [a]( ) mutable {
 			daw::do_not_optimize( a );
-			daw::sort_32( begin( a ), end( a ) );
+			daw::sort_32( begin( a ) );
 			daw::do_not_optimize( a );
 		} );
 	}
+
+	static_assert( []( ) {
+		std::array<int, 32> a = {830, 34,  8,   159, 334, 690, 85,  27,
+		                         870, 540, 62,  32,  970, 395, 311, 758,
+		                         192, 503, 738, 42,  74,  527, 788, 662,
+		                         721, 556, 513, 213, 376, 647, 37,  83};
+		daw::expecting( !daw::algorithm::is_sorted( begin( a ), end( a ) ) );
+		daw::sort( std::begin( a ), std::end( a ) );
+		return daw::algorithm::is_sorted( begin( a ), end( a ) );
+	}( ) );
 }
