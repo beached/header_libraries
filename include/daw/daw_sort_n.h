@@ -37,18 +37,17 @@ namespace daw {
 			// Sorting networks are from http://pages.ripco.net/~jgamble/nw.html
 
 			template<intmax_t Pos0, intmax_t Pos1, typename RandomIterator,
-			         typename Compare = std::less<>>
-			constexpr void swap_if( RandomIterator first,
-			                        Compare comp = Compare{} ) noexcept {
+			         typename Compare>
+			constexpr void swap_if( RandomIterator first, Compare &&comp ) noexcept {
 				auto const f = std::next( first, Pos0 );
 				auto const l = std::next( first, Pos1 );
 				if( !daw::invoke( comp, *f, *l ) ) {
 					daw::iter_swap( f, l );
 				}
 			}
-			template<typename ForwardIterator, typename Compare = std::less<>>
+			template<typename ForwardIterator, typename Compare>
 			constexpr size_t swap_if2( ForwardIterator lhs, ForwardIterator rhs,
-			                           Compare comp = Compare{} ) noexcept {
+			                           Compare &&comp ) noexcept {
 				if( daw::invoke( comp, *rhs, *lhs ) ) {
 					daw::cswap( *rhs, *lhs );
 					return 1U;
@@ -60,7 +59,7 @@ namespace daw {
 
 	template<typename RandomIterator, typename Compare = std::less<>>
 	constexpr void sort_32( RandomIterator first,
-	                        Compare comp = Compare{} ) noexcept {
+	                        Compare &&comp = Compare{} ) noexcept {
 		sort_impl::swap_if<0, 1>( first, comp );
 		sort_impl::swap_if<2, 3>( first, comp );
 		sort_impl::swap_if<0, 2>( first, comp );
@@ -276,7 +275,7 @@ namespace daw {
 
 	template<typename RandomIterator, typename Compare = std::less<>>
 	constexpr void sort_16( RandomIterator first,
-	                        Compare comp = Compare{} ) noexcept {
+	                        Compare &&comp = Compare{} ) noexcept {
 		sort_impl::swap_if<0, 1>( first, comp );
 		sort_impl::swap_if<2, 3>( first, comp );
 		sort_impl::swap_if<4, 5>( first, comp );
@@ -340,7 +339,7 @@ namespace daw {
 	}
 	template<typename RandomIterator, typename Compare = std::less<>>
 	constexpr void sort_3( RandomIterator first,
-	                       Compare comp = Compare{} ) noexcept {
+	                       Compare &&comp = Compare{} ) noexcept {
 		sort_impl::swap_if<1, 2>( first, comp );
 		sort_impl::swap_if<0, 2>( first, comp );
 		sort_impl::swap_if<0, 1>( first, comp );
@@ -348,7 +347,7 @@ namespace daw {
 
 	template<typename RandomIterator, typename Compare = std::less<>>
 	constexpr void sort_4( RandomIterator first,
-	                       Compare comp = Compare{} ) noexcept {
+	                       Compare &&comp = Compare{} ) noexcept {
 		sort_impl::swap_if<0, 1>( first, comp );
 		sort_impl::swap_if<2, 3>( first, comp );
 		sort_impl::swap_if<0, 2>( first, comp );
@@ -358,7 +357,7 @@ namespace daw {
 
 	template<typename RandomIterator, typename Compare = std::less<>>
 	constexpr void sort_5( RandomIterator first,
-	                       Compare comp = Compare{} ) noexcept {
+	                       Compare &&comp = Compare{} ) noexcept {
 		sort_impl::swap_if<0, 1>( first, comp );
 		sort_impl::swap_if<3, 4>( first, comp );
 		sort_impl::swap_if<2, 4>( first, comp );
@@ -382,7 +381,7 @@ namespace daw {
 			template<typename ForwardIterator, typename Compare>
 			constexpr size_t sort_3_impl( ForwardIterator it0, ForwardIterator it1,
 			                              ForwardIterator it2,
-			                              Compare comp ) noexcept {
+			                              Compare &&comp ) noexcept {
 
 				auto result = sort_impl::swap_if2( it1, it2, comp );
 				result += sort_impl::swap_if2( it0, it2, comp );
@@ -393,7 +392,7 @@ namespace daw {
 			constexpr size_t sort_5_impl( ForwardIterator it0, ForwardIterator it1,
 			                              ForwardIterator it2, ForwardIterator it3,
 			                              ForwardIterator it4,
-			                              Compare comp ) noexcept {
+			                              Compare &&comp ) noexcept {
 				auto result = sort_impl::swap_if2( it0, it1, comp );
 				result += sort_impl::swap_if2( it3, it4, comp );
 				result += sort_impl::swap_if2( it2, it4, comp );
@@ -410,7 +409,7 @@ namespace daw {
 			constexpr bool insertion_sort_incomplete(
 			  RandomIterator first, RandomIterator last,
 			  Compare
-			    comp ) noexcept( is_nothrow_sortable_v<RandomIterator, Compare> ) {
+			    &&comp ) noexcept( is_nothrow_sortable_v<RandomIterator, Compare> ) {
 
 				switch( last - first ) {
 				case 0:
@@ -458,9 +457,8 @@ namespace daw {
 			template<typename RandomIterator, typename Compare = std::less<>>
 			constexpr void insertion_sort_3(
 			  RandomIterator first, RandomIterator last,
-			  Compare comp =
-			    Compare{} ) noexcept( is_nothrow_sortable_v<RandomIterator,
-			                                                Compare> ) {
+			  Compare
+			    &&comp ) noexcept( is_nothrow_sortable_v<RandomIterator, Compare> ) {
 
 				auto j = std::next( first, 2 );
 				::daw::sort_3( first, comp );
@@ -484,13 +482,13 @@ namespace daw {
 	template<typename RandomIterator, typename Compare = std::less<>>
 	constexpr void
 	sort( RandomIterator first, RandomIterator last,
-	      Compare comp =
+	      Compare && comp =
 	        Compare{} ) noexcept( sort_impl::is_nothrow_sortable_v<RandomIterator,
 	                                                               Compare> );
 
 	template<typename RandomIterator, typename Compare>
 	constexpr void
-	sort( RandomIterator first, RandomIterator last, Compare comp ) noexcept(
+	sort( RandomIterator first, RandomIterator last, Compare &&comp ) noexcept(
 	  sort_impl::is_nothrow_sortable_v<RandomIterator, Compare> ) {
 		using difference_type =
 		  typename std::iterator_traits<RandomIterator>::difference_type;
