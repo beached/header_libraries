@@ -156,24 +156,26 @@ namespace daw {
 			set_exception( std::current_exception( ) );
 		}
 
-		template<typename Visitor>
-		decltype( auto ) visit( Visitor &&visitor ) {
+		template<typename... Visitors>
+		decltype( auto ) visit( Visitors &&... visitors ) {
 			static_assert(
-			  traits::is_callable_v<Visitor, value_type &>,
+			  daw::is_visitable_v<value_type &, Visitors...>,
 			  "Visitor must be callable with the variants expected value_type &" );
-			static_assert( traits::is_callable_v<Visitor, std::exception_ptr>,
+			static_assert( daw::is_visitable_v<std::exception_ptr, Visitors...>,
 			               "Visitor must be callable with std::exception_ptr" );
-			return daw::visit_nt( m_value, std::forward<Visitor>( visitor ) );
+
+			return daw::visit_nt( m_value, std::forward<Visitors>( visitors )... );
 		}
 
-		template<typename Visitor>
-		decltype( auto ) visit( Visitor &&visitor ) const {
-			static_assert( traits::is_callable_v<Visitor, value_type const &>,
-			               "Visitor must be callable with the variants expected "
-			               "value_type const &" );
-			static_assert( traits::is_callable_v<Visitor, std::exception_ptr>,
+		template<typename... Visitors>
+		decltype( auto ) visit( Visitors &&... visitors ) const {
+			static_assert(
+			  daw::is_visitable_v<value_type const &, Visitors...>,
+			  "Visitor must be callable with the variants expected value_type &" );
+			static_assert( daw::is_visitable_v<std::exception_ptr, Visitors...>,
 			               "Visitor must be callable with std::exception_ptr" );
-			return daw::visit_nt( m_value, std::forward<Visitor>( visitor ) );
+
+			return daw::visit_nt( m_value, std::forward<Visitors>( visitors )... );
 		}
 
 		bool has_value( ) const {

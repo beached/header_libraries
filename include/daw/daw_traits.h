@@ -670,5 +670,6 @@ namespace daw {
 
 		template<typename T, typename... Pack>
 		CXINLINE bool pack_exits_v = pack_index_of_v<T, Pack...> >= 0;
+
 	} // namespace traits
 } // namespace daw
