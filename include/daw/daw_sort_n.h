@@ -368,7 +368,67 @@ namespace daw {
 		sort_impl::swap_if<1, 3>( first, comp );
 		sort_impl::swap_if<1, 2>( first, comp );
 	}
+	template<typename RandomIterator, typename Compare = std::less<>>
+	constexpr void sort_6( RandomIterator first,
+	                       Compare &&comp = Compare{} ) noexcept {
+		sort_impl::swap_if<1, 2>( first, comp );
+		sort_impl::swap_if<0, 2>( first, comp );
+		sort_impl::swap_if<0, 1>( first, comp );
+		sort_impl::swap_if<4, 5>( first, comp );
+		sort_impl::swap_if<3, 5>( first, comp );
+		sort_impl::swap_if<3, 4>( first, comp );
+		sort_impl::swap_if<0, 3>( first, comp );
+		sort_impl::swap_if<1, 4>( first, comp );
+		sort_impl::swap_if<2, 5>( first, comp );
+		sort_impl::swap_if<2, 4>( first, comp );
+		sort_impl::swap_if<1, 3>( first, comp );
+		sort_impl::swap_if<2, 3>( first, comp );
+	}
 
+	template<typename RandomIterator, typename Compare = std::less<>>
+	constexpr void sort_7( RandomIterator first,
+	                       Compare &&comp = Compare{} ) noexcept {
+		sort_impl::swap_if<1, 2>( first, comp );
+		sort_impl::swap_if<0, 2>( first, comp );
+		sort_impl::swap_if<0, 1>( first, comp );
+		sort_impl::swap_if<3, 4>( first, comp );
+		sort_impl::swap_if<5, 6>( first, comp );
+		sort_impl::swap_if<3, 5>( first, comp );
+		sort_impl::swap_if<4, 6>( first, comp );
+		sort_impl::swap_if<4, 5>( first, comp );
+		sort_impl::swap_if<0, 4>( first, comp );
+		sort_impl::swap_if<0, 3>( first, comp );
+		sort_impl::swap_if<1, 5>( first, comp );
+		sort_impl::swap_if<2, 6>( first, comp );
+		sort_impl::swap_if<2, 5>( first, comp );
+		sort_impl::swap_if<1, 3>( first, comp );
+		sort_impl::swap_if<2, 4>( first, comp );
+		sort_impl::swap_if<2, 3>( first, comp );
+	}
+
+	template<typename RandomIterator, typename Compare = std::less<>>
+	constexpr void sort_8( RandomIterator first,
+	                       Compare &&comp = Compare{} ) noexcept {
+		sort_impl::swap_if<0, 1>( first, comp );
+		sort_impl::swap_if<2, 3>( first, comp );
+		sort_impl::swap_if<0, 2>( first, comp );
+		sort_impl::swap_if<1, 3>( first, comp );
+		sort_impl::swap_if<1, 2>( first, comp );
+		sort_impl::swap_if<4, 5>( first, comp );
+		sort_impl::swap_if<6, 7>( first, comp );
+		sort_impl::swap_if<4, 6>( first, comp );
+		sort_impl::swap_if<5, 7>( first, comp );
+		sort_impl::swap_if<5, 6>( first, comp );
+		sort_impl::swap_if<0, 4>( first, comp );
+		sort_impl::swap_if<1, 5>( first, comp );
+		sort_impl::swap_if<1, 4>( first, comp );
+		sort_impl::swap_if<2, 6>( first, comp );
+		sort_impl::swap_if<3, 7>( first, comp );
+		sort_impl::swap_if<3, 6>( first, comp );
+		sort_impl::swap_if<2, 4>( first, comp );
+		sort_impl::swap_if<3, 5>( first, comp );
+		sort_impl::swap_if<3, 4>( first, comp );
+	}
 	namespace sort_impl {
 		template<typename ForwardIterator, typename Compare>
 		inline constexpr bool is_nothrow_sortable_v = std::is_nothrow_swappable_v<
@@ -429,6 +489,21 @@ namespace daw {
 				case 5:
 					sort_5( first, comp );
 					return true;
+				case 6:
+					sort_6( first, comp );
+					return true;
+				case 7:
+					sort_7( first, comp );
+					return true;
+				case 8:
+					sort_8( first, comp );
+					return true;
+				case 16:
+					sort_16( first, comp );
+					return true;
+				case 32:
+					sort_32( first, comp );
+					return true;
 				}
 				auto j = std::next( first, 2 );
 				sort_3_impl( first, std::next( first ), j, comp );
@@ -482,7 +557,7 @@ namespace daw {
 	template<typename RandomIterator, typename Compare = std::less<>>
 	constexpr void
 	sort( RandomIterator first, RandomIterator last,
-	      Compare && comp =
+	      Compare &&comp =
 	        Compare{} ) noexcept( sort_impl::is_nothrow_sortable_v<RandomIterator,
 	                                                               Compare> );
 
@@ -521,6 +596,21 @@ namespace daw {
 				return;
 			case 5:
 				sort_5( first, comp );
+				return;
+			case 6:
+				sort_6( first, comp );
+				return;
+			case 7:
+				sort_7( first, comp );
+				return;
+			case 8:
+				sort_8( first, comp );
+				return;
+			case 16:
+				sort_16( first, comp );
+				return;
+			case 32:
+				sort_32( first, comp );
 				return;
 			}
 			if( len < limit ) {
