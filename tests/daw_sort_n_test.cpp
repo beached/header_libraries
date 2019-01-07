@@ -941,9 +941,10 @@ int main( ) {
 	auto const random32 = daw::make_random_data<size_t>( 32 );
 
 	{
+	std::cout << "32 items\n";
 		auto a = random32;
 		daw::expecting( !std::is_sorted( begin( a ), end( a )));
-		daw::bench_n_test<100'000>( "Standard Sort", [a]( ) mutable {
+		daw::bench_n_test<100'000, '\t'>( "Standard Sort", [a]( ) mutable {
 			daw::do_not_optimize( a );
 			std::sort( begin( a ), end( a ));
 			daw::do_not_optimize( a );
@@ -953,7 +954,7 @@ int main( ) {
 	{
 		auto a = random32;
 		daw::expecting( !std::is_sorted( begin( a ), end( a )));
-		daw::bench_n_test<100'000>( "sort_32 Sort", [a]( ) mutable {
+		daw::bench_n_test<100'000, '\t'>( "sort_32 Sort", [a]( ) mutable {
 			daw::do_not_optimize( a );
 			daw::sort_32( begin( a ));
 			daw::do_not_optimize( a );
@@ -962,7 +963,7 @@ int main( ) {
 	{
 		auto a = random32;
 		daw::expecting( !std::is_sorted( begin( a ), end( a )));
-		daw::bench_n_test<100'000>( "daw::sort Sort", [a]( ) mutable {
+		daw::bench_n_test<100'000, '\t'>( "daw::sort Sort", [a]( ) mutable {
 			daw::do_not_optimize( a );
 			daw::sort( begin( a ), end( a ));
 			daw::do_not_optimize( a );
@@ -992,14 +993,14 @@ int main( ) {
 			daw::expecting( daw::algorithm::is_sorted(
 					std::begin( random_lots_tst ), std::end( random_lots_tst )));
 		}
-		daw::bench_n_test<100>( "sort_lots daw::sort",
+		daw::bench_n_test<100, '\t'>( "sort_lots daw::sort",
 														[]( auto container ) {
 															daw::sort( std::begin( container ),
 																				 std::end( container ));
 															daw::do_not_optimize( container );
 														},
 														random_lots );
-		daw::bench_n_test<100>( "sort_lots std::sort",
+		daw::bench_n_test<100, '\t'>( "sort_lots std::sort",
 														[]( auto container ) {
 															std::sort( std::begin( container ),
 																				 std::end( container ));
@@ -1021,14 +1022,14 @@ int main( ) {
 			}
 			return result;
 		}( );
-		daw::bench_n_test<100>( "sort_lots partially sorted parts daw::sort",
+		daw::bench_n_test<100, '\t'>( "sort_lots partially sorted parts daw::sort",
 														[]( auto container ) {
 															daw::sort( std::begin( container ),
 																				 std::end( container ));
 															daw::do_not_optimize( container );
 														},
 														random_lots );
-		daw::bench_n_test<100>( "sort_lots partially sorted parts std::sort",
+		daw::bench_n_test<100, '\t'>( "sort_lots partially sorted parts std::sort",
 														[]( auto container ) {
 															std::sort( std::begin( container ),
 																				 std::end( container ));
@@ -1051,14 +1052,14 @@ int main( ) {
 			}
 			return result;
 		}( );
-		daw::bench_n_test<100>( "sort_lots partially revsorted parts daw::sort",
+		daw::bench_n_test<100, '\t'>( "sort_lots partially revsorted parts daw::sort",
 														[]( auto container ) {
 															daw::sort( std::begin( container ),
 																				 std::end( container ));
 															daw::do_not_optimize( container );
 														},
 														random_lots );
-		daw::bench_n_test<100>( "sort_lots partially revsorted parts std::sort",
+		daw::bench_n_test<100, '\t'>( "sort_lots partially revsorted parts std::sort",
 														[]( auto container ) {
 															std::sort( std::begin( container ),
 																				 std::end( container ));
@@ -1072,14 +1073,14 @@ int main( ) {
 			std::sort( std::begin( result ), std::end( result ));
 			return result;
 		}( );
-		daw::bench_n_test<100>( "sort_lots sorted daw::sort",
+		daw::bench_n_test<100, '\t'>( "sort_lots sorted daw::sort",
 														[]( auto container ) {
 															daw::sort( std::begin( container ),
 																				 std::end( container ));
 															daw::do_not_optimize( container );
 														},
 														random_lots );
-		daw::bench_n_test<100>( "sort_lots sorted std::sort",
+		daw::bench_n_test<100, '\t'>( "sort_lots sorted std::sort",
 														[]( auto container ) {
 															std::sort( std::begin( container ),
 																				 std::end( container ));
@@ -1093,14 +1094,14 @@ int main( ) {
 			std::sort( std::begin( result ), std::end( result ), std::greater<> {} );
 			return result;
 		}( );
-		daw::bench_n_test<100>( "sort_lots rev sorted daw::sort",
+		daw::bench_n_test<100, '\t'>( "sort_lots rev sorted daw::sort",
 														[]( auto container ) {
 															daw::sort( std::begin( container ),
 																				 std::end( container ));
 															daw::do_not_optimize( container );
 														},
 														random_lots );
-		daw::bench_n_test<100>( "sort_lots rev sorted std::sort",
+		daw::bench_n_test<100, '\t'>( "sort_lots rev sorted std::sort",
 														[]( auto container ) {
 															std::sort( std::begin( container ),
 																				 std::end( container ));

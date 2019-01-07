@@ -189,7 +189,7 @@ namespace daw {
 	} // namespace bench_impl
 
 	// Test N runs
-	template<size_t Runs, typename Test, typename... Args>
+	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
 	auto bench_n_test( std::string const &title, Test test_callable,
 	                   Args &&... args ) noexcept {
 		static_assert( Runs > 0 );
@@ -249,12 +249,12 @@ namespace daw {
 		  Runs >= 10 ? ( total_time - max_time ) / static_cast<double>( Runs - 1 )
 		             : total_time / static_cast<double>( Runs );
 		avg_time -= base_time;
-		std::cout << title << '\n'
-		          << "	runs: " << Runs << '\n'
-		          << "	total: " << utility::format_seconds( total_time, 2 ) << '\n'
-		          << "	avg: " << utility::format_seconds( avg_time, 2 ) << '\n'
-		          << "	min: " << utility::format_seconds( min_time, 2 ) << "\n"
-		          << "	max: " << utility::format_seconds( max_time, 2 ) << "\n";
+		std::cout << title << delem
+		          << "	runs: " << Runs << delem
+		          << "	total: " << utility::format_seconds( total_time, 2 ) << delem
+		          << "	avg: " << utility::format_seconds( avg_time, 2 ) << delem
+		          << "	min: " << utility::format_seconds( min_time, 2 ) << delem
+		          << "	max: " << utility::format_seconds( max_time, 2 ) << '\n';
 		return result;
 	}
 

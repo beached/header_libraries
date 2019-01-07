@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <type_traits>
+
 namespace daw {
 	/// Convert a value to an rvalue.
 	/// \param  value  A thing of arbitrary type.
