@@ -116,7 +116,8 @@ namespace daw {
 				// Use djb2 to hash the string to generate seed
 				size_t result = seed == 0 ? 5381U : seed;
 				while( first and *first != 0 ) {
-					result = ( ( result << 5U ) + result ) + static_cast<size_t>( *first++ );
+					result =
+					  ( ( result << 5U ) + result ) + static_cast<size_t>( *first++ );
 				}
 				return result;
 			}
@@ -140,9 +141,11 @@ namespace daw {
 		}
 	} // namespace cxrand_impl
 
-	class static_random {
-		size_t m_state =
-		  cxrand_impl::rand_lcg<sizeof( size_t )>( cxrand_impl::generate_seed( ) );
+	struct static_random {
+		static constexpr auto m_seed = cxrand_impl::generate_seed( );
+
+	private:
+		size_t m_state = cxrand_impl::rand_lcg<sizeof( size_t )>( m_seed );
 
 	public:
 		constexpr static_random( ) noexcept = default;
