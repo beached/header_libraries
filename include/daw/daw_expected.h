@@ -26,6 +26,7 @@
 #include <exception>
 #include <stdexcept>
 #include <string>
+#include <system_error>
 #include <utility>
 #include <variant>
 
