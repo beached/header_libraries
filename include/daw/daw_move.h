@@ -36,11 +36,9 @@ namespace daw {
 		return static_cast<typename std::remove_reference_t<T> &&>( value );
 	}
 
-	template<typename T,
-	         std::enable_if_t<std::is_const_v<std::remove_reference_t<T>>,
-	                          std::nullptr_t> = nullptr>
+	template<typename T>
 	[[noreturn]] constexpr std::remove_reference_t<T> &&
-	move( T &&value ) noexcept {
+	move( T const &value ) noexcept {
 
 		static_assert( std::is_const_v<std::remove_reference_t<T>>,
 		               "Attempt to move const value" );
