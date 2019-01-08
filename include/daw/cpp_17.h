@@ -489,21 +489,32 @@ namespace daw {
 		                     std::forward<ArgTypes>( args )... );
 	}
 
-	namespace impl {
+	namespace apply_impl {
 		template<typename F, typename Tuple, std::size_t... I>
 		constexpr decltype( auto ) apply_impl( F &&f, Tuple &&t,
 		                                       std::index_sequence<I...> ) {
 			return daw::invoke( std::forward<F>( f ),
 			                    std::get<I>( std::forward<Tuple>( t ) )... );
 		}
-	} // namespace impl
 
-	template<typename F, typename Tuple>
+		template<typename>
+		struct is_tuple : std::false_type {};
+
+		template<typename... Args>
+		struct is_tuple<std::tuple<Args...>> : std::true_type {};
+
+		template<typename T>
+		inline constexpr bool is_tuple_v = is_tuple<T>::value;
+	} // namespace apply_impl
+
+	template<
+	  typename F, typename Tuple>
 	constexpr decltype( auto ) apply( F &&f, Tuple &&t ) {
+		static_assert( apply_impl::is_tuple_v<Tuple>, "Attempt to call apply with invalid arguments.  The arguments must be a std::tuple" );
 		if constexpr( std::tuple_size_v<Tuple> == 0 ) {
 			return daw::invoke( std::forward<F>( f ) );
 		} else {
-			return impl::apply_impl(
+			return apply_impl::apply_impl(
 			  std::forward<F>( f ), std::forward<Tuple>( t ),
 			  std::make_index_sequence<daw::tuple_size_v<std::decay_t<Tuple>>>{} );
 		}
