@@ -164,4 +164,26 @@ namespace daw {
 		};
 	};
 #endif
+
+	template<
+	  typename Function,
+	  std::enable_if_t<!std::is_function_v<std::remove_reference_t<Function>>,
+	                   std::nullptr_t> = nullptr>
+	constexpr decltype( auto ) make_callable( Function &&func ) noexcept {
+		return std::forward<Function>( func );
+	}
+
+	template<typename Function, std::enable_if_t<std::is_function_v<Function>,
+	                                             std::nullptr_t> = nullptr>
+	constexpr decltype( auto ) make_callable( Function *func ) noexcept {
+		return [func]( auto &&... args ) noexcept(
+		  std::is_nothrow_invocable_v<Function, decltype( args )...> ) {
+			if constexpr( std::is_same_v<void, std::invoke_result_t<
+			                                     Function, decltype( args )...>> ) {
+				func( std::forward<decltype( args )>( args )... );
+			} else {
+				return func( std::forward<decltype( args )>( args )... );
+			}
+		};
+	}
 } // namespace daw
