@@ -504,6 +504,11 @@ namespace daw {
 		using result_of_t =
 		  decltype( std::declval<Function>( )( std::declval<Args>( )... ) );
 
+		template<typename Function, typename... Args>
+		using invoke_result_t =
+		  decltype( std::declval<Function>( )( std::declval<Args>( )... ) );
+
+
 		namespace impl {
 			template<typename T, typename... Args>
 			struct first_type_impl {
