@@ -395,12 +395,15 @@ namespace daw {
 			set_exception( std::current_exception( ) );
 		}
 
-		template<typename Visitor>
-		decltype( auto ) visit( Visitor &&visitor ) {
-			static_assert( traits::is_callable_v<Visitor>,
+		template<typename... Visitors>
+		decltype( auto ) visit( Visitors &&... visitors ) {
+			auto visitor = daw::overload( std::forward<Visitors>( visitors )... );
+			static_assert( traits::is_callable_v<decltype( visitor )>,
 			               "Visitor must be callable without arguments" );
-			static_assert( traits::is_callable_v<Visitor, std::exception_ptr>,
-			               "Visitor must be callable with std::exception_ptr" );
+			static_assert(
+			  traits::is_callable_v<decltype( visitor ), std::exception_ptr>,
+			  "Visitor must be callable with std::exception_ptr" );
+
 			return daw::visit_nt(
 			  m_value,
 			  [&]( value_type const & ) mutable noexcept( noexcept( visitor( ) ) ) {
@@ -413,17 +416,22 @@ namespace daw {
 			    noexcept( visitor( ptr ) ) ) { return visitor( ptr ); } );
 		}
 
-		template<typename Visitor>
-		decltype( auto ) visit( Visitor &&visitor ) const {
-			static_assert( traits::is_callable_v<Visitor>,
+		template<typename... Visitors>
+		decltype( auto ) visit( Visitors&&... visitors ) const {
+			auto visitor = daw::overload( std::forward<Visitors>( visitors )... );
+			static_assert( traits::is_callable_v<decltype( visitor )>,
 			               "Visitor must be callable without arguments" );
-			static_assert( traits::is_callable_v<Visitor, std::exception_ptr>,
-			               "Visitor must be callable with std::exception_ptr" );
-			return daw::visit_nt( m_value,
-			                      [&]( value_type const & ) noexcept(
-			                        noexcept( visitor( ) ) ) { return visitor( ); },
-			                      [&]( std::exception_ptr ptr ) noexcept( noexcept(
-			                        visitor( ptr ) ) ) { return visitor( ptr ); } );
+			static_assert(
+			  traits::is_callable_v<decltype( visitor ), std::exception_ptr>,
+			  "Visitor must be callable with std::exception_ptr" );
+
+			return daw::visit_nt(
+			  m_value,
+			  [&]( value_type const & ) mutable noexcept( noexcept( visitor( ) ) ) {
+				  return visitor( );
+			  },
+			  [&]( std::exception_ptr ptr ) mutable noexcept(
+			    noexcept( visitor( ptr ) ) ) { return visitor( ptr ); } );
 		}
 
 		bool has_value( ) const noexcept {
