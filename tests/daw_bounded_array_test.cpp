@@ -32,5 +32,4 @@ constexpr bool daw_bounded_array_test_001( ) {
 }
 static_assert( daw_bounded_array_test_001( ) );
 
-
-int main( ) { }
+int main( ) {}

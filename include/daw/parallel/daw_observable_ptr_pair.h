@@ -24,8 +24,8 @@
 
 #include <new>
 
-#include "../daw_move.h"
 #include "../daw_bounded_array.h"
+#include "../daw_move.h"
 #include "../daw_traits.h"
 #include "../daw_union_pair.h"
 #include "daw_observable_ptr.h"

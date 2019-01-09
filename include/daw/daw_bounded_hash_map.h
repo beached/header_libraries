@@ -333,7 +333,7 @@ namespace daw {
 		using const_iterator = const_bounded_hash_map_iterator<Key, Value>;
 
 	private:
-		std::array<bounded_hash_map_item_t<Key, Value>, N+1> m_data{};
+		std::array<bounded_hash_map_item_t<Key, Value>, N + 1> m_data{};
 
 		static constexpr size_t scale_hash( size_t hash,
 		                                    size_t range_size ) noexcept {

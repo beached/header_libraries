@@ -24,9 +24,9 @@
 
 #include "cpp_17.h"
 #include "daw_algorithm.h"
+#include "daw_bounded_array.h"
 #include "daw_math.h"
 #include "daw_move.h"
-#include "daw_bounded_array.h"
 #include "daw_swap.h"
 
 namespace daw {

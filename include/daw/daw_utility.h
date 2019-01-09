@@ -147,7 +147,8 @@ namespace daw {
 			Function m_function;
 
 		public:
-			constexpr NotImpl( Function func ) noexcept( std::is_nothrow_move_constructible_v<Function> )
+			constexpr NotImpl( Function func ) noexcept(
+			  std::is_nothrow_move_constructible_v<Function> )
 			  : m_function( std::move( func ) ) {}
 
 			template<typename... Args>

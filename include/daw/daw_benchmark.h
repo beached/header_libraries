@@ -249,12 +249,12 @@ namespace daw {
 		  Runs >= 10 ? ( total_time - max_time ) / static_cast<double>( Runs - 1 )
 		             : total_time / static_cast<double>( Runs );
 		avg_time -= base_time;
-		std::cout << title << delem
-		          << "	runs: " << Runs << delem
-		          << "	total: " << utility::format_seconds( total_time, 2 ) << delem
-		          << "	avg: " << utility::format_seconds( avg_time, 2 ) << delem
-		          << "	min: " << utility::format_seconds( min_time, 2 ) << delem
-		          << "	max: " << utility::format_seconds( max_time, 2 ) << '\n';
+		std::cout << title << delem << "	runs: " << Runs << delem
+		          << "	total: " << utility::format_seconds( total_time, 2 )
+		          << delem << "	avg: " << utility::format_seconds( avg_time, 2 )
+		          << delem << "	min: " << utility::format_seconds( min_time, 2 )
+		          << delem << "	max: " << utility::format_seconds( max_time, 2 )
+		          << '\n';
 		return result;
 	}
 

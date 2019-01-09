@@ -507,10 +507,11 @@ namespace daw {
 		inline constexpr bool is_tuple_v = is_tuple<T>::value;
 	} // namespace apply_impl
 
-	template<
-	  typename F, typename Tuple>
+	template<typename F, typename Tuple>
 	constexpr decltype( auto ) apply( F &&f, Tuple &&t ) {
-		static_assert( apply_impl::is_tuple_v<Tuple>, "Attempt to call apply with invalid arguments.  The arguments must be a std::tuple" );
+		static_assert( apply_impl::is_tuple_v<Tuple>,
+		               "Attempt to call apply with invalid arguments.  The "
+		               "arguments must be a std::tuple" );
 		if constexpr( std::tuple_size_v<Tuple> == 0 ) {
 			return daw::invoke( std::forward<F>( f ) );
 		} else {

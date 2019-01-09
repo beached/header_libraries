@@ -27,7 +27,8 @@
 namespace daw {
 	namespace move_impl {
 		template<typename T>
-		inline constexpr bool is_movable_v = !std::is_const_v<std::remove_reference_t<T>>;	
+		inline constexpr bool is_movable_v =
+		  !std::is_const_v<std::remove_reference_t<T>>;
 	}
 	/// Convert a value to an rvalue.
 	/// \param  value  A thing of arbitrary type.

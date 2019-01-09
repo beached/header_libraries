@@ -129,7 +129,7 @@ namespace daw {
 		unsigned char const p[] = {'H', 'e', 'l', 'l', 'o', 0};
 		auto sv =
 		  daw::make_bounded_string_it( reinterpret_cast<char const *>( p ),
-		                              reinterpret_cast<char const *>( p ) + 5 );
+		                               reinterpret_cast<char const *>( p ) + 5 );
 		daw::bounded_string p2 = "Hello";
 		BOOST_REQUIRE_EQUAL( sv, p2 );
 	}
@@ -730,7 +730,8 @@ namespace daw {
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_bounded_string_starts_with_001 ) {
-		BOOST_REQUIRE( daw::bounded_string{"This is a test"}.starts_with( "This" ) );
+		BOOST_REQUIRE(
+		  daw::bounded_string{"This is a test"}.starts_with( "This" ) );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_bounded_string_starts_with_002 ) {

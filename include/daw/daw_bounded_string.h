@@ -38,9 +38,9 @@
 #include "impl/daw_string_impl.h"
 
 #include "daw_algorithm.h"
+#include "daw_bounded_vector.h"
 #include "daw_container_algorithm.h"
 #include "daw_exception.h"
-#include "daw_bounded_vector.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_generic_hash.h"
 #include "daw_move.h"
@@ -85,14 +85,14 @@ namespace daw {
 
 		constexpr basic_bounded_string( std::nullptr_t ) noexcept = delete;
 		constexpr basic_bounded_string( std::nullptr_t,
-		                               size_type ) noexcept = delete;
+		                                size_type ) noexcept = delete;
 
 		constexpr basic_bounded_string( const_pointer str_ptr, size_type count )
 		  : m_data( str_ptr, count ) {}
 
 		template<size_t N>
 		constexpr basic_bounded_string( basic_bounded_string<CharT, N> str,
-		                               size_type count )
+		                                size_type count )
 		  : m_data( str.data( ), daw::min( count, N ) ) {}
 
 #ifndef NOSTRING
@@ -159,7 +159,8 @@ namespace daw {
 		}
 
 #ifndef NOSTRING
-		basic_bounded_string &append( std::basic_string<CharT, Traits> const &str ) {
+		basic_bounded_string &
+		append( std::basic_string<CharT, Traits> const &str ) {
 			if( m_data.size( ) + str.size( ) > capacity( ) ) {
 				throw std::out_of_range{
 				  "Attempt to append basic_bounded_string past end"};
@@ -185,7 +186,7 @@ namespace daw {
 		         std::enable_if_t<traits::is_iterator_v<Iterator>, std::nullptr_t> =
 		           nullptr>
 		constexpr basic_bounded_string &append( Iterator first,
-		                                       Iterator const last ) {
+		                                        Iterator const last ) {
 
 			if( m_data.size( ) + static_cast<size_t>( daw::distance( first, last ) ) >
 			    capacity( ) ) {
@@ -363,8 +364,8 @@ namespace daw {
 			return rlen;
 		}
 
-		constexpr basic_bounded_string substr( size_type const pos = 0,
-		                                      size_type const count = npos ) const {
+		constexpr basic_bounded_string
+		substr( size_type const pos = 0, size_type const count = npos ) const {
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos < size( ), "Attempt to access basic_bounded_string past end" );
 
@@ -651,7 +652,7 @@ namespace daw {
 		}
 
 		constexpr basic_bounded_string &erase( size_type index = 0,
-		                                      size_type count = npos ) {
+		                                       size_type count = npos ) {
 
 			auto const first =
 			  std::next( begin( ), static_cast<difference_type>( index ) );
@@ -697,7 +698,7 @@ namespace daw {
 	template<size_t Capacity = 100, typename CharT,
 	         typename Traits = std::char_traits<CharT>>
 	constexpr auto make_bounded_string_it( CharT const *first,
-	                                      CharT const *last ) noexcept {
+	                                       CharT const *last ) noexcept {
 		return basic_bounded_string<CharT, Capacity, Traits>{
 		  first, static_cast<size_t>( last - first )};
 	}
@@ -705,7 +706,7 @@ namespace daw {
 	template<size_t Capacity = 100, typename CharT,
 	         typename Traits = std::char_traits<CharT>>
 	constexpr auto make_tiny_bounded_string_it( CharT const *first,
-	                                           CharT const *last ) noexcept {
+	                                            CharT const *last ) noexcept {
 		return basic_bounded_string<CharT, Capacity, Traits, uint16_t>{
 		  first, static_cast<uint16_t>( last - first )};
 	}
@@ -713,7 +714,7 @@ namespace daw {
 	template<size_t Capacity = 100, typename CharT,
 	         typename Traits = std::char_traits<CharT>>
 	constexpr auto make_small_bounded_string_it( CharT const *first,
-	                                            CharT const *last ) noexcept {
+	                                             CharT const *last ) noexcept {
 		return basic_bounded_string<CharT, Capacity, Traits, uint32_t>{
 		  first, static_cast<uint32_t>( last - first )};
 	}
@@ -723,7 +724,7 @@ namespace daw {
 	  typename CharT = std::decay_t<decltype( *std::declval<Iterator>( ) )>,
 	  typename TraitsT = std::char_traits<CharT>>
 	constexpr auto make_bounded_string_it( Iterator first,
-	                                      Iterator last ) noexcept {
+	                                       Iterator last ) noexcept {
 		using sv_t = basic_bounded_string<CharT, Capacity, TraitsT>;
 		using size_type = typename sv_t::size_type;
 		return sv_t{&( *first ),
@@ -1285,7 +1286,7 @@ namespace daw {
 	template<typename CharT, size_t Capacity, typename Traits,
 	         typename InternalSizeType>
 	auto split( daw::basic_bounded_string<CharT, Capacity, Traits,
-	                                     InternalSizeType> const &str,
+	                                      InternalSizeType> const &str,
 	            CharT const delemiter ) {
 		return split(
 		  str, [delemiter]( CharT c ) noexcept { return c == delemiter; } );
@@ -1300,7 +1301,7 @@ namespace daw {
 	template<typename CharT, size_t Capacity, typename Traits,
 	         typename InternalSizeType, size_t N>
 	auto split( daw::basic_bounded_string<CharT, Capacity, Traits,
-	                                     InternalSizeType> const &str,
+	                                      InternalSizeType> const &str,
 	            CharT const ( &delemiter )[N] ) {
 		static_assert( N == 2,
 		               "string literal used as delemiter.  One 1 value is "
@@ -1317,9 +1318,9 @@ namespace daw {
 
 	template<typename CharT, size_t Capacity, typename Traits,
 	         typename InternalSizeType>
-	constexpr size_t
-	fnv1a_hash( daw::basic_bounded_string<CharT, Capacity, Traits,
-	                                     InternalSizeType> const &str ) noexcept {
+	constexpr size_t fnv1a_hash(
+	  daw::basic_bounded_string<CharT, Capacity, Traits, InternalSizeType> const
+	    &str ) noexcept {
 		return fnv1a_hash( str.data( ), str.size( ) );
 	}
 
