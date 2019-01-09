@@ -88,6 +88,7 @@ set( TESTED_HEADERS_PREFIXES
 #No boost test
 set( TESTED_HEADERS_PREFIXES_NB
 	daw_bounded_array
+	daw_function
 	daw_bounded_graph
 	daw_bounded_hash_map
 	daw_bounded_hash_set

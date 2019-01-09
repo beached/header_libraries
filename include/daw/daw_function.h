@@ -173,33 +173,22 @@ namespace daw {
 		return std::forward<Function>( func );
 	}
 
-	template<
-	  typename Function,
-	  std::enable_if_t<
-	    daw::all_true_v<std::is_function_v<Function>,
-	                    std::is_same_v<void, daw::traits::result_of_t<
-	                                           Function, decltype( args )...>>>,
-	    std::nullptr_t> = nullptr>
-	constexpr decltype( auto ) make_callable( Function *func ) noexcept(
-	  daw::traits::is_nothrow_callable_v<Function, decltype( args )...> ) {
-		return [func]( auto &&... args ) noexcept(
-		  daw::traits::is_nothrow_callable_v<Function, decltype( args )...> ) {
-			func( std::forward<decltype( args )>( args )... );
-		};
-	}
+	namespace function_impl {
+		template<typename Function>
+		struct fp_callable_t {
+			static_assert( std::is_function_v<Function> );
+			Function *fp = nullptr;
 
-	template<
-	  typename Function,
-	  std::enable_if_t<
-	    daw::all_true_v<std::is_function_v<Function>,
-	                    !std::is_same_v<void, daw::traits::result_of_t<
-	                                            Function, decltype( args )...>>>,
-	    std::nullptr_t> = nullptr>
-	constexpr decltype( auto ) make_callable( Function *func ) noexcept(
-	  daw::traits::is_nothrow_callable_v<Function, decltype( args )...> ) {
-		return [func]( auto &&... args ) noexcept(
-		  daw::traits::is_nothrow_callable_v<Function, decltype( args )...> ) {
-			return func( std::forward<decltype( args )>( args )... );
+			template<typename... Args>
+			constexpr decltype( auto ) operator( )( Args &&... args ) noexcept(
+			  daw::traits::is_nothrow_callable_v<Function *, Args...> ) {
+				return fp( std::forward<Args>( args )... );
+			}
 		};
+	} // namespace function_impl
+	template<typename Function, std::enable_if_t<std::is_function_v<Function>,
+	                                             std::nullptr_t> = nullptr>
+	constexpr auto make_callable( Function *func ) noexcept {
+		return function_impl::fp_callable_t<Function>{func};
 	}
 } // namespace daw
