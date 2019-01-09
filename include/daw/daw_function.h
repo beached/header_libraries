@@ -178,7 +178,7 @@ namespace daw {
 	constexpr decltype( auto ) make_callable( Function *func ) noexcept {
 		return [func]( auto &&... args ) noexcept(
 		  daw::traits::is_nothrow_callable_v<Function, decltype( args )...> ) {
-			if constexpr( std::is_same_v<void, daw::invoke_result_t<
+			if constexpr( std::is_same_v<void, daw::traits::result_of_t<
 			                                     Function, decltype( args )...>> ) {
 				func( std::forward<decltype( args )>( args )... );
 			} else {
