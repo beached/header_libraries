@@ -179,13 +179,32 @@ namespace daw {
 			static_assert( std::is_function_v<Function> );
 			Function *fp = nullptr;
 
-			template<typename... Args>
+			template<
+			  typename... Args,
+			  std::enable_if_t<!std::is_same_v<void, daw::traits::invoke_result_t<
+			                                           Function, Args...>>,
+			                   std::nullptr_t> = nullptr>
 			constexpr decltype( auto ) operator( )( Args &&... args ) noexcept(
-			  daw::traits::is_nothrow_callable_v<Function *, Args...> ) {
+			  daw::traits::is_nothrow_callable_v<std::add_pointer_t<Function>,
+			                                     Args...> ) {
+
 				return fp( std::forward<Args>( args )... );
+			}
+
+			template<
+			  typename... Args,
+			  std::enable_if_t<
+			    std::is_same_v<void, daw::traits::invoke_result_t<Function, Args...>>,
+			    std::nullptr_t> = nullptr>
+			constexpr void operator( )( Args &&... args ) noexcept(
+			  daw::traits::is_nothrow_callable_v<std::add_pointer_t<Function>,
+			                                     Args...> ) {
+
+				fp( std::forward<Args>( args )... );
 			}
 		};
 	} // namespace function_impl
+
 	template<typename Function, std::enable_if_t<std::is_function_v<Function>,
 	                                             std::nullptr_t> = nullptr>
 	constexpr auto make_callable( Function *func ) noexcept {

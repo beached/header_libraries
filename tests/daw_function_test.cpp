@@ -23,6 +23,7 @@
 #include "daw/daw_function.h"
 
 constexpr int func( int ) noexcept { return 1; }
+constexpr void func2( int ) noexcept { return; }
 
 constexpr bool test_001( ) {
 	auto call = []( int ) noexcept { return 0; };
@@ -33,6 +34,16 @@ constexpr bool test_001( ) {
 	return c0( 5 ) + c1( 10 ) == 1; 
 }
 static_assert( test_001( ) );
+
+constexpr bool test_002( ) {
+	auto call = []( int ) noexcept { return; };
+
+	daw::make_callable( func2 );
+	daw::make_callable( call );
+
+	return true;
+}
+static_assert( test_002( ) );
 
 
 int main( ) { }
