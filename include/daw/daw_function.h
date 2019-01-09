@@ -177,8 +177,8 @@ namespace daw {
 	                                             std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) make_callable( Function *func ) noexcept {
 		return [func]( auto &&... args ) noexcept(
-		  std::is_nothrow_invocable_v<Function, decltype( args )...> ) {
-			if constexpr( std::is_same_v<void, std::invoke_result_t<
+		  daw::triats::is_nothrow_callable_v<Function, decltype( args )...> ) {
+			if constexpr( std::is_same_v<void, daw::invoke_result_t<
 			                                     Function, decltype( args )...>> ) {
 				func( std::forward<decltype( args )>( args )... );
 			} else {
