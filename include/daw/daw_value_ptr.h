@@ -133,7 +133,7 @@ namespace daw {
 		constexpr value_ptr &operator=( value_type &&rhs ) noexcept(
 		  is_nothrow_move_assignable_v<value_type> ) {
 
-			*m_value = daw::move( *rhs.m_value );
+			*m_value = daw::move( rhs );
 			return *this;
 		}
 
@@ -200,10 +200,10 @@ namespace daw {
 		}
 
 		template<typename, typename>
-		friend struct value_ptr<>;
+		friend struct value_ptr;
 
 		template<typename U>
-		constexpr int compare( value_ptr<U> const &rhs ) noexcept {
+		constexpr int compare( value_ptr<U> const &rhs ) const noexcept {
 			if( !m_value ) {
 				if( !rhs.m_value ) {
 					return 0;
