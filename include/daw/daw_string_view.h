@@ -992,8 +992,13 @@ namespace daw {
 #endif
 
 	template<typename CharT, size_t N>
-	daw::basic_string_view<CharT> make_string_view( CharT const ( &str )[N] ) {
+	constexpr daw::basic_string_view<CharT> make_string_view( CharT const ( &str )[N] ) {
 		return daw::basic_string_view<CharT>{str, N};
+	}
+
+	template<typename CharT>
+	constexpr daw::basic_string_view<CharT> make_string_view( daw::basic_string_view<CharT> sv ) {
+		return sv;
 	}
 	// basic_string_view / something else
 	//

@@ -30,8 +30,7 @@
 
 namespace daw {
 	template<typename CharT, size_t Capacity,
-	         typename Traits = std::char_traits<CharT>,
-	         typename InternalSizeType = size_t>
+	         typename Traits = std::char_traits<CharT>>
 	struct basic_bounded_string;
 
 	namespace details {

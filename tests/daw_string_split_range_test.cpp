@@ -30,19 +30,34 @@
 #include "daw/daw_container_algorithm.h"
 #include "daw/daw_string_split_range.h"
 
+constexpr bool splt_test_000( ) {
+	daw::string_view const str = "This is a test of the split";
+	std::array<daw::string_view, 7> const expected_tst = {
+	  "This", "is", "a", "test", "of", "the", "split"};
+	std::array<daw::string_view, 100> tst{};
+
+	auto rng = daw::split_string( str, " " );
+
+	bool const ans = daw::algorithm::equal(
+	  rng.begin( ), rng.end( ), expected_tst.cbegin( ), expected_tst.cend( ) );
+
+	return ans;
+}
+static_assert( splt_test_000( ) );
+
 BOOST_AUTO_TEST_CASE( string_split_range_001 ) {
 	std::string const str = "This is a test of the split";
 	std::vector<std::string> const expected_tst = {"This", "is",  "a",    "test",
 	                                               "of",   "the", "split"};
 	std::vector<std::string> tst{};
 
-	auto rng = daw::split_string( str, " " );
+	auto rng = daw::split_string( str, ' ' );
 	daw::algorithm::transform( rng.begin( ), rng.end( ),
 	                           std::back_inserter( tst ),
 	                           []( auto sv ) { return sv.to_string( ); } );
 
-	bool const ans = std::equal( tst.cbegin( ), tst.cend( ),
-	                             expected_tst.cbegin( ), expected_tst.cend( ) );
+	bool const ans = daw::algorithm::equal(
+	  tst.cbegin( ), tst.cend( ), expected_tst.cbegin( ), expected_tst.cend( ) );
 	BOOST_REQUIRE( ans );
 }
 

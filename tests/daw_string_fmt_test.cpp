@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE( string_fmt_test_out_of_range_001 ) {
 BOOST_AUTO_TEST_CASE( string_fmt_perf_001 ) {
 	std::cout << "Larger format perf\n";
 	daw::bench_test( "string_fmt perf", [&]( ) {
-		for( size_t n = 0; n < 10'000'000; ++n ) {
+		for( size_t n = 0; n < 1'000'000; ++n ) {
 			auto tst = daw::string_fmt::v1::fmt(
 			  "This is a {0} of the {1} and has been used {2} times for {0}ing\n",
 			  "test", "daw::string_fmt::v1::fmt", n );
@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE( string_fmt_perf_001 ) {
 	daw::bench_test( "fmt_t perf", [&]( ) {
 		auto const formatter = daw::string_fmt::v1::fmt_t{
 		  "This is a {0} of the {1} and has been used {2} times for {0}ing\n"};
-		for( size_t n = 0; n < 10'000'000; ++n ) {
+		for( size_t n = 0; n < 1'000'000; ++n ) {
 			auto tst = formatter( "test", "daw::string_fmt::v1::fmt", n );
 			daw::do_not_optimize( tst );
 		}
@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE( string_fmt_perf_001 ) {
 	daw::bench_test( "string_concat perf", [&]( ) {
 		using std::to_string;
 		using daw::string_fmt::v1::sf_impl::to_string;
-		for( size_t n = 0; n < 10'000'000; ++n ) {
+		for( size_t n = 0; n < 1'000'000; ++n ) {
 			auto tst = "This is a" + to_string( "test" ) + " of the " +
 			           to_string( "daw::string_fmt::v1::fmt" ) +
 			           " and has been used " + to_string( n ) + " times for " +
@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE( string_fmt_perf_001 ) {
 BOOST_AUTO_TEST_CASE( string_fmt_perf_002 ) {
 	std::cout << "\n\nSmaller format perf\n";
 	daw::bench_test( "string_fmt perf", [&]( ) {
-		for( size_t n = 0; n < 10'000'000; ++n ) {
+		for( size_t n = 0; n < 1'000'000; ++n ) {
 			auto tst = daw::string_fmt::v1::fmt(
 			  "This is a test of the daw::string_fmt::v1::fmt and has been used {2} "
 			  "times for "
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE( string_fmt_perf_002 ) {
 		  "This is a test of the daw::string_fmt::v1::fmt and has been used {2} "
 		  "times for "
 		  "testing\n"};
-		for( size_t n = 0; n < 10'000'000; ++n ) {
+		for( size_t n = 0; n < 1'000'000; ++n ) {
 			auto tst = formatter( n );
 			daw::do_not_optimize( tst );
 		}
@@ -121,7 +121,7 @@ BOOST_AUTO_TEST_CASE( string_fmt_perf_002 ) {
 	daw::bench_test( "string_concat perf", [&]( ) {
 		using std::to_string;
 		using daw::string_fmt::v1::sf_impl::to_string;
-		for( size_t n = 0; n < 10'000'000; ++n ) {
+		for( size_t n = 0; n < 1'000'000; ++n ) {
 			auto tst =
 			  "This is a test of the daw::string_fmt::v1::fmt and has been used " +
 			  to_string( n ) + " times for testing\n";

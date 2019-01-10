@@ -51,8 +51,7 @@
 #include "iterator/daw_reverse_iterator.h"
 
 namespace daw {
-	template<typename CharT, size_t Capacity, typename Traits,
-	         typename InternalSizeType>
+	template<typename CharT, size_t Capacity, typename Traits>
 	struct basic_bounded_string {
 		using traits_type = Traits;
 		using value_type = CharT;
@@ -65,19 +64,14 @@ namespace daw {
 		using reverse_iterator = daw::reverse_iterator<iterator>;
 		using const_reverse_iterator = daw::reverse_iterator<const_iterator>;
 		using size_type = size_t;
-		using size_type_internal = InternalSizeType;
 		using difference_type = std::ptrdiff_t;
 
 	private:
 		daw::bounded_vector_t<CharT, Capacity + 1> m_data{};
 
 	public:
-		static constexpr size_type_internal const npos =
-		  std::numeric_limits<size_type_internal>::max( );
-
-		static_assert(
-		  Capacity <= static_cast<size_t>( npos ),
-		  "InternalSizeType is insufficient to represent capacity of string" );
+		static constexpr size_type const npos =
+		  std::numeric_limits<size_type>::max( );
 
 		// Constructors
 
@@ -99,14 +93,14 @@ namespace daw {
 		template<typename Tr, typename Al>
 		explicit basic_bounded_string(
 		  std::basic_string<CharT, Tr, Al> const &str ) noexcept
-		  : m_data( str.data( ), static_cast<size_type_internal>( str.size( ) ) ) {}
+		  : m_data( str.data( ), static_cast<size_type>( str.size( ) ) ) {}
 #endif
 		// TODO: determine if I want this or not
 		// basic_bounded_string( std::basic_string<CharT, Traits> &&str ) noexcept =
 		// delete;
 
 		constexpr basic_bounded_string( const_pointer str_ptr ) noexcept
-		  : m_data( str_ptr, details::strlen<size_type_internal>( str_ptr ) ) {}
+		  : m_data( str_ptr, details::strlen<size_type>( str_ptr ) ) {}
 
 		template<size_t Len>
 		constexpr basic_bounded_string( const_pointer ( &str_ptr )[Len] ) noexcept
@@ -370,7 +364,7 @@ namespace daw {
 			  pos < size( ), "Attempt to access basic_bounded_string past end" );
 
 			auto const rcount =
-			  static_cast<size_type_internal>( daw::min( count, size( ) - pos ) );
+			  static_cast<size_type>( daw::min( count, size( ) - pos ) );
 			return basic_bounded_string{&m_data[pos], rcount};
 		}
 
@@ -677,46 +671,12 @@ namespace daw {
 	using u16bounded_string = basic_bounded_string<char16_t, 100>;
 	using u32bounded_string = basic_bounded_string<char32_t, 100>;
 
-	using tiny_bounded_string =
-	  basic_bounded_string<char, 100, std::char_traits<char>, uint16_t>;
-	using tiny_wbounded_string =
-	  basic_bounded_string<wchar_t, 100, std::char_traits<wchar_t>, uint16_t>;
-	using tiny_u16bounded_string =
-	  basic_bounded_string<char16_t, 100, std::char_traits<char16_t>, uint16_t>;
-	using tiny_u32bounded_string =
-	  basic_bounded_string<char32_t, 100, std::char_traits<char32_t>, uint16_t>;
-
-	using small_bounded_string =
-	  basic_bounded_string<char, 100, std::char_traits<char>, uint32_t>;
-	using small_wbounded_string =
-	  basic_bounded_string<wchar_t, 100, std::char_traits<wchar_t>, uint32_t>;
-	using small_u16bounded_string =
-	  basic_bounded_string<char16_t, 100, std::char_traits<char16_t>, uint32_t>;
-	using small_u32bounded_string =
-	  basic_bounded_string<char32_t, 100, std::char_traits<char32_t>, uint32_t>;
-
 	template<size_t Capacity = 100, typename CharT,
 	         typename Traits = std::char_traits<CharT>>
 	constexpr auto make_bounded_string_it( CharT const *first,
 	                                       CharT const *last ) noexcept {
 		return basic_bounded_string<CharT, Capacity, Traits>{
 		  first, static_cast<size_t>( last - first )};
-	}
-
-	template<size_t Capacity = 100, typename CharT,
-	         typename Traits = std::char_traits<CharT>>
-	constexpr auto make_tiny_bounded_string_it( CharT const *first,
-	                                            CharT const *last ) noexcept {
-		return basic_bounded_string<CharT, Capacity, Traits, uint16_t>{
-		  first, static_cast<uint16_t>( last - first )};
-	}
-
-	template<size_t Capacity = 100, typename CharT,
-	         typename Traits = std::char_traits<CharT>>
-	constexpr auto make_small_bounded_string_it( CharT const *first,
-	                                             CharT const *last ) noexcept {
-		return basic_bounded_string<CharT, Capacity, Traits, uint32_t>{
-		  first, static_cast<uint32_t>( last - first )};
 	}
 
 	template<
@@ -1263,10 +1223,10 @@ namespace daw {
 		return daw::move( lhs );
 	}
 
-	template<typename CharT, size_t N, typename Traits, typename InternalSizeType,
+	template<typename CharT, size_t N, typename Traits,
 	         typename UnaryPredicate>
 	auto split(
-	  daw::basic_bounded_string<CharT, N, Traits, InternalSizeType> const &str,
+	  daw::basic_bounded_string<CharT, N, Traits> const &str,
 	  UnaryPredicate pred ) {
 		static_assert( traits::is_unary_predicate_v<UnaryPredicate, CharT>,
 		               "UnaryPredicate p does not fullfill the requires of a unary "
@@ -1277,31 +1237,24 @@ namespace daw {
 		              daw::move( pred ) );
 	}
 
-	template<typename CharT, size_t N, typename Traits, typename InternalSizeType,
-	         typename UnaryPredicate>
-	auto
-	split( daw::basic_bounded_string<CharT, N, Traits, InternalSizeType> &&str,
-	       UnaryPredicate pred ) = delete;
+	template<typename CharT, size_t N, typename Traits, typename UnaryPredicate>
+	auto split( daw::basic_bounded_string<CharT, N, Traits> &&str,
+	            UnaryPredicate pred ) = delete;
 
-	template<typename CharT, size_t Capacity, typename Traits,
-	         typename InternalSizeType>
-	auto split( daw::basic_bounded_string<CharT, Capacity, Traits,
-	                                      InternalSizeType> const &str,
+	template<typename CharT, size_t Capacity, typename Traits>
+	auto split( daw::basic_bounded_string<CharT, Capacity, Traits> const &str,
 	            CharT const delemiter ) {
 		return split(
 		  str, [delemiter]( CharT c ) noexcept { return c == delemiter; } );
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits,
-	         typename InternalSizeType>
+	template<typename CharT, size_t Capacity, typename Traits>
 	auto split(
-	  daw::basic_bounded_string<CharT, Capacity, Traits, InternalSizeType> &&str,
+	  daw::basic_bounded_string<CharT, Capacity, Traits> &&str,
 	  CharT const delemiter ) = delete;
 
-	template<typename CharT, size_t Capacity, typename Traits,
-	         typename InternalSizeType, size_t N>
-	auto split( daw::basic_bounded_string<CharT, Capacity, Traits,
-	                                      InternalSizeType> const &str,
+	template<typename CharT, size_t Capacity, typename Traits, size_t N>
+	auto split( daw::basic_bounded_string<CharT, Capacity, Traits> const &str,
 	            CharT const ( &delemiter )[N] ) {
 		static_assert( N == 2,
 		               "string literal used as delemiter.  One 1 value is "
@@ -1310,24 +1263,22 @@ namespace daw {
 		  str, [delemiter]( CharT c ) noexcept { return c == delemiter[0]; } );
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits,
-	         typename InternalSizeType, size_t N>
+	template<typename CharT, size_t Capacity, typename Traits, size_t N>
 	auto split(
-	  daw::basic_bounded_string<CharT, Capacity, Traits, InternalSizeType> &&str,
+	  daw::basic_bounded_string<CharT, Capacity, Traits> &&str,
 	  CharT const ( &delemiter )[N] ) = delete;
 
-	template<typename CharT, size_t Capacity, typename Traits,
-	         typename InternalSizeType>
+	template<typename CharT, size_t Capacity, typename Traits>
 	constexpr size_t fnv1a_hash(
-	  daw::basic_bounded_string<CharT, Capacity, Traits, InternalSizeType> const
+	  daw::basic_bounded_string<CharT, Capacity, Traits> const
 	    &str ) noexcept {
 		return fnv1a_hash( str.data( ), str.size( ) );
 	}
 
 	template<size_t HashSize = sizeof( size_t ), typename CharT, size_t Capacity,
-	         typename Traits, typename InternalSizeType>
+	         typename Traits>
 	constexpr size_t generic_hash(
-	  daw::basic_bounded_string<CharT, Capacity, Traits, InternalSizeType> const
+	  daw::basic_bounded_string<CharT, Capacity, Traits> const
 	    &str ) noexcept {
 		return generic_hash<HashSize>( str.data( ), str.size( ) );
 	}
@@ -1365,13 +1316,9 @@ namespace daw {
 namespace std {
 	// TODO use same function as string without killing performance of creating a
 	// string
-	template<typename CharT, size_t Capacity, typename Traits,
-	         typename InternalSizeType>
-	struct hash<
-	  daw::basic_bounded_string<CharT, Capacity, Traits, InternalSizeType>> {
-		constexpr size_t operator( )(
-		  daw::basic_bounded_string<CharT, Capacity, Traits, InternalSizeType> const
-		    &str ) noexcept {
+	template<typename CharT, size_t Capacity, typename Traits>
+	struct hash<daw::basic_bounded_string<CharT, Capacity, Traits>> {
+		constexpr size_t operator( )( daw::basic_bounded_string<CharT, Capacity, Traits> const & str ) const noexcept {
 			return daw::fnv1a_hash( str );
 		}
 	};

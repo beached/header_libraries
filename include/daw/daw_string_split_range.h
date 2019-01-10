@@ -33,26 +33,34 @@
 namespace daw {
 	template<typename CharT>
 	class string_split_iterator {
-		static constexpr size_t const npos = std::basic_string<CharT>::npos;
+		static constexpr size_t const npos = std::numeric_limits<size_t>::max( );
 
 		daw::basic_string_view<CharT> m_str{};
-		std::basic_string<CharT> m_delemiter{};
-		size_t m_pos{};
+		daw::basic_string_view<CharT> m_delemiter{};
+		size_t m_pos = npos;
 
-		size_t find_next( ) const noexcept {
+		constexpr size_t find_next( ) const noexcept {
 			if( m_str.empty( ) ) {
 				return npos;
 			}
-			return m_str.find( daw::make_string_view( m_delemiter ), m_pos );
+			if constexpr( std::is_same_v<CharT, Delemiter> ) {
+				return m_str.find( m_delemiter, m_pos );
+			} else {
+				return m_str.find( daw::make_string_view( m_delemiter ), m_pos );
+			}
 		}
 
-		void move_next( ) {
+		constexpr void move_next( ) {
 			auto next_pos = find_next( );
 			if( next_pos == npos ) {
 				m_pos = npos;
 				return;
 			}
-			m_pos = next_pos + m_delemiter.size( );
+			if constexpr( std::is_same_v<CharT, Delemiter> ) {
+				m_pos = next_pos + 1;
+			} else {
+				m_pos = next_pos + std::size( m_delemiter );
+			}
 		}
 
 	public:
@@ -62,119 +70,179 @@ namespace daw {
 		using pointer = daw::basic_string_view<CharT>;
 		using difference_type = ptrdiff_t;
 
-		string_split_iterator( ) noexcept = default;
+		constexpr string_split_iterator( ) noexcept = default;
 
-		string_split_iterator( daw::basic_string_view<CharT> str,
-		                       std::basic_string<CharT> delemiter ) noexcept
-		  : m_str{str}
-		  , m_delemiter{daw::move( delemiter )}
-		  , m_pos{0} {}
+		constexpr string_split_iterator( daw::basic_string_view<CharT> str,
+		                                 Delemiter delemiter ) noexcept
+		  : m_str( str )
+		  , m_delemiter( delemiter )
+		  , m_pos( 0 ) {}
 
 		string_split_iterator( std::basic_string<CharT> const &str,
-		                       std::basic_string<CharT> delemiter ) noexcept
-		  : m_str{make_string_view( str )}
-		  , m_delemiter{daw::move( delemiter )}
-		  , m_pos{0} {}
+		                       Delemiter delemiter ) noexcept
+		  : m_str( make_string_view( str ) )
+		  , m_delemiter( delemiter )
+		  , m_pos( 0 ) {}
 
-		string_split_iterator &operator++( ) noexcept {
+		constexpr string_split_iterator( daw::basic_string_view<CharT> str,
+		                                 Delemiter &&delemiter ) noexcept
+		  : m_str( str )
+		  , m_delemiter( daw::move( delemiter ) )
+		  , m_pos( 0 ) {}
+
+		string_split_iterator( std::basic_string<CharT> const &str,
+		                       Delemiter &&delemiter ) noexcept
+		  : m_str( make_string_view( str ) )
+		  , m_delemiter( daw::move( delemiter ) )
+		  , m_pos( 0 ) {}
+
+		constexpr string_split_iterator &operator++( ) noexcept {
 			move_next( );
 			return *this;
 		}
 
-		string_split_iterator operator++( int ) const noexcept {
+		constexpr string_split_iterator operator++( int ) const noexcept {
 			string_split_iterator tmp{*this};
 			tmp.move_next( );
 			return tmp;
 		}
 
-		daw::basic_string_view<CharT> operator*( ) const noexcept {
+		constexpr daw::basic_string_view<CharT> operator*( ) const noexcept {
 			auto result{m_str};
 			result.remove_prefix( m_pos );
 			return result.substr( 0, find_next( ) - m_pos );
 		}
 
-		daw::basic_string_view<CharT> operator->( ) const noexcept {
+		constexpr daw::basic_string_view<CharT> operator->( ) const noexcept {
 			auto result{m_str};
 			result.remove_prefix( m_pos );
 			return result.substr( 0, find_next( ) - m_pos );
 		}
 
-		friend bool operator==( string_split_iterator const &lhs,
-		                        string_split_iterator const &rhs ) noexcept {
-			if( ( lhs.m_pos == npos and npos == rhs.m_pos ) ) {
+		constexpr bool equal_to( string_split_iterator const &rhs ) const noexcept {
+			if( m_pos == npos and rhs.m_pos == npos ) {
 				return true;
 			}
-			return std::tie( lhs.m_str, lhs.m_pos, lhs.m_delemiter ) ==
-			       std::tie( rhs.m_str, rhs.m_pos, rhs.m_delemiter );
-		}
-
-		friend bool operator!=( string_split_iterator const &lhs,
-		                        string_split_iterator const &rhs ) noexcept {
-			if( ( lhs.m_pos == npos and npos == rhs.m_pos ) ) {
-				return false;
-			}
-			return std::tie( lhs.m_str, lhs.m_pos, lhs.m_delemiter ) !=
+			return std::tie( m_str, m_pos, m_delemiter ) ==
 			       std::tie( rhs.m_str, rhs.m_pos, rhs.m_delemiter );
 		}
 	};
 
-	template<typename CharT>
+	template<typename CharT, typename Delemiter>
+	string_split_iterator( daw::basic_string_view<CharT>, Delemiter && )
+	  ->string_split_iterator<CharT, std::remove_reference_t<Delemiter>>;
+
+	template<typename CharT, typename Delemiter>
+	string_split_iterator( std::basic_string<CharT>, Delemiter && )
+	  ->string_split_iterator<CharT, std::remove_reference_t<Delemiter>>;
+
+	template<typename CharT, typename DelemiterL, typename DelemiterR>
+	constexpr bool
+	operator==( string_split_iterator<CharT, DelemiterL> const &lhs,
+	            string_split_iterator<CharT, DelemiterR> const &rhs ) noexcept {
+		if constexpr( !std::is_same_v<DelemiterL, DelemiterR> ) {
+			return false;
+		}
+		return lhs.equal_to( rhs );
+	}
+
+	template<typename CharT, typename DelemiterL, typename DelemiterR>
+	constexpr bool
+	operator!=( string_split_iterator<CharT, DelemiterL> const &lhs,
+	            string_split_iterator<CharT, DelemiterR> const &rhs ) noexcept {
+		if constexpr( !std::is_same_v<DelemiterL, DelemiterR> ) {
+			return true;
+		}
+		return !lhs.equal_to( rhs );
+	}
+
+	template<typename CharT, typename Delemiter>
 	struct string_split_range {
-		using iterator = string_split_iterator<CharT>;
+		using iterator = string_split_iterator<CharT, Delemiter>;
 
 	private:
 		iterator m_first{};
 
 	public:
-		string_split_range( ) noexcept = default;
+		constexpr string_split_range( ) noexcept = default;
 
-		string_split_range( daw::basic_string_view<CharT> str,
-		                    std::string delemiter ) noexcept
-		  : m_first{str, daw::move( delemiter )} {}
+		constexpr string_split_range( daw::basic_string_view<CharT> str,
+		                              Delemiter delemiter ) noexcept
+		  : m_first( str, delemiter ) {}
+
+		template<size_t N>
+		constexpr string_split_range( daw::basic_string_view<CharT> str,
+		                              CharT const ( &delemiter )[N] ) noexcept
+		  : m_first( str, daw::basic_string_view<CharT, std::char_traits<CharT>, N>( delemiter ) ) {}
 
 		string_split_range( std::basic_string<CharT> const &str,
-		                    std::string delemiter ) noexcept
-		  : m_first{str, daw::move( delemiter )} {}
+		                    Delemiter delemiter ) noexcept
+		  : m_first( str, delemiter ) {}
 
-		iterator begin( ) const {
+		template<size_t N>
+		string_split_range( std::basic_string<CharT> str,
+		                    CharT const ( &delemiter )[N] ) noexcept
+		  : m_first( str, delemiter ) {}
+
+		constexpr iterator begin( ) const {
 			return m_first;
 		}
 
-		iterator cbegin( ) const {
+		constexpr iterator cbegin( ) const {
 			return m_first;
 		}
 
-		iterator end( ) const {
+		constexpr iterator end( ) const {
 			return iterator{};
 		}
 
-		iterator cend( ) const {
+		constexpr iterator cend( ) const {
 			return iterator{};
 		}
 	};
 
 	template<typename CharT, typename Delemiter>
-	auto split_string( std::basic_string<CharT> const &str,
-	                   Delemiter delemiter ) noexcept {
+	string_split_range( daw::basic_string_view<CharT>, Delemiter && )
+	  ->string_split_range<CharT, std::remove_reference_t<Delemiter>>;
 
-		std::basic_string<CharT> d = delemiter;
-		return string_split_range<CharT>{str, daw::move( d )};
+	template<typename CharT, typename Delemiter>
+	string_split_range( daw::basic_string_view<CharT>, Delemiter const & )
+	  ->string_split_range<CharT, std::remove_reference_t<Delemiter>>;
+
+	template<typename CharT, size_t N>
+	string_split_range( daw::basic_string_view<CharT>, CharT const ( & )[N] )
+	  ->string_split_range<CharT, daw::basic_string_view<CharT>>;
+
+	template<typename CharT, typename Delemiter>
+	string_split_range( std::basic_string<CharT>, Delemiter && )
+	  ->string_split_range<CharT, std::remove_reference_t<Delemiter>>;
+
+	template<typename CharT, typename Delemiter>
+	string_split_range( std::basic_string<CharT>, Delemiter const & )
+	  ->string_split_range<CharT, std::remove_reference_t<Delemiter>>;
+
+	template<typename CharT, size_t N>
+	string_split_range( std::basic_string<CharT>, CharT const ( & )[N] )
+	  ->string_split_range<CharT, daw::basic_string_view<CharT>>;
+
+	template<typename CharT, typename Delemiter>
+	auto split_string( std::basic_string<CharT> const &str,
+	                   Delemiter &&delemiter ) noexcept {
+		return string_split_range( str, std::forward<Delemiter>( delemiter ) );
 	}
 
 	template<typename CharT, typename Delemiter>
-	auto split_string( daw::basic_string_view<CharT> str,
-	                   Delemiter delemiter ) noexcept {
+	constexpr auto split_string( daw::basic_string_view<CharT> str,
+	                             Delemiter &&delemiter ) noexcept {
 
-		std::basic_string<CharT> d = delemiter;
-		return string_split_range<CharT>{daw::move( str ), daw::move( d )};
+		return string_split_range( str, std::forward<Delemiter>( delemiter ) );
 	}
 
 	template<typename CharT, size_t N, typename Delemiter>
-	auto split_string( CharT const ( &str )[N], Delemiter delemiter ) noexcept {
+	constexpr auto split_string( CharT const ( &str )[N],
+	                             Delemiter &&delemiter ) noexcept {
 
-		daw::basic_string_view<CharT> sv{str};
-		std::basic_string<CharT> d = delemiter;
-		return string_split_range<CharT>{daw::move( sv ), daw::move( d )};
+		daw::basic_string_view<CharT, std::char_traits<CharT>, N> sv( str, N );
+		return string_split_range( sv, std::forward<Delemiter>( delemiter ) );
 	}
-
 } // namespace daw
