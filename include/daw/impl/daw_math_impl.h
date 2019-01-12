@@ -88,6 +88,24 @@ namespace daw {
 		return std::forward<T1>( val2 );
 	}
 
+	template<typename T, typename Compare = std::less<>>
+	constexpr decltype( auto ) min_comp( T &&lhs, T &&rhs,
+	                                     Compare &&comp = Compare{} ) {
+		if( comp( lhs, rhs ) ) {
+			return std::forward<T>( lhs );
+		}
+		return std::forward<T>( rhs );
+	}
+
+	template<typename T, typename Compare = std::less<>>
+	constexpr decltype( auto ) max_comp( T &&lhs, T &&rhs,
+	                                     Compare &&comp = Compare{} ) {
+		if( comp( rhs, lhs ) ) {
+			return std::forward<T>( lhs );
+		}
+		return std::forward<T>( rhs );
+	}
+
 	template<typename T, typename... Ts,
 	         std::enable_if_t<( sizeof...( Ts ) != 0 ), std::nullptr_t> = nullptr>
 	constexpr auto min( T &&val1, Ts &&... vs ) noexcept

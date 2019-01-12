@@ -1109,4 +1109,27 @@ int main( ) {
 		                              },
 		                              random_lots );
 	}
+	{
+		auto const random_lots = daw::make_random_data<size_t>( 10'000 );
+		daw::bench_n_test<100, '\t'>( "daw::sort_to",
+		                              []( auto container ) {
+			                              size_t values[10'000];
+			                              daw::sort_to( std::begin( container ),
+			                                            std::end( container ),
+			                                            std::begin( values ) );
+			                              daw::do_not_optimize( container );
+			                              daw::do_not_optimize( values );
+		                              },
+		                              random_lots );
+		daw::bench_n_test<100, '\t'>(
+		  "copy to out and then daw::sort",
+		  []( auto container ) {
+			  std::vector<size_t> values( std::begin( container ),
+			                              std::end( container ) );
+			  daw::sort( std::begin( values ), std::end( values ) );
+			  daw::do_not_optimize( container );
+			  daw::do_not_optimize( values );
+		  },
+		  random_lots );
+	}
 }

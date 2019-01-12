@@ -486,35 +486,19 @@ namespace daw {
 			return basic_string_view{&m_first[pos], rcount};
 		}
 
-	private:
-		static constexpr int cmp( CharT lhs, CharT rhs ) noexcept {
-			if( lhs < rhs ) {
-				return -1;
-			}
-			if( lhs > rhs ) {
-				return 1;
-			}
-			return 0;
-		}
-
 	public:
 		static constexpr int compare( basic_string_view lhs,
 		                              basic_string_view rhs ) noexcept {
-			while( !lhs.empty( ) and !rhs.empty( ) ) {
-				switch( cmp( lhs.pop_front( ), rhs.pop_front( ) ) ) {
-				case 1:
-					return 1;
-				case -1:
+			auto cmp = Traits::compare( lhs.data( ), rhs.data( ), daw::min( lhs.size( ), rhs.size( ) ) );
+			if( cmp == 0 ) {
+				if( lhs.size( ) < rhs.size( ) ) {
 					return -1;
 				}
+				if( rhs.size( ) < lhs.size( ) ) {
+					return 1;
+				}
 			}
-			if( lhs.empty( ) and rhs.empty( ) ) {
-				return 0;
-			}
-			if( lhs.empty( ) ) {
-				return -1;
-			}
-			return 1;
+			return cmp;
 		}
 
 		constexpr int compare( basic_string_view const rhs ) const noexcept {

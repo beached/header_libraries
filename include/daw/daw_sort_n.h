@@ -729,4 +729,15 @@ namespace daw {
 			}
 		}
 	}
+
+	template<typename RandomInputIterator, typename RandomOutputIterator,
+	         typename Compare = std::less<>>
+	RandomOutputIterator
+	sort_to( RandomInputIterator first_in, RandomInputIterator last_in,
+	         RandomOutputIterator first_out, Compare && comp = Compare{} ) {
+
+		auto last_out = daw::algorithm::copy( first_in, last_in, first_out );
+		daw::sort( first_out, last_out, std::forward<Compare>( comp ) );
+		return last_out;
+	}
 } // namespace daw
