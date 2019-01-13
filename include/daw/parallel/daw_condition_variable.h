@@ -27,6 +27,7 @@
 #include <cstdint>
 #include <mutex>
 
+#include "../cpp_17.h"
 #include "../daw_exception.h"
 #include "../daw_value_ptr.h"
 
@@ -42,12 +43,16 @@ namespace daw {
 		  : m_mutex( )
 		  , m_condition( ) {}
 
-		template<typename Int>
+		template<typename Int,
+		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Int>>,
+		                          std::nullptr_t> = nullptr>
 		explicit basic_condition_variable( Int count )
 		  : m_mutex( )
 		  , m_condition( ) {}
 
-		template<typename Int>
+		template<typename Int,
+		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Int>>,
+		                          std::nullptr_t> = nullptr>
 		basic_condition_variable( Int count, bool condition_variableed )
 		  : m_mutex( )
 		  , m_condition( ) {}

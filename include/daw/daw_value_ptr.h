@@ -30,6 +30,7 @@
 
 #include "daw_move.h"
 #include "daw_traits.h"
+#include "daw_swap.h"
 
 namespace daw {
 	namespace value_ptr_impl {
@@ -54,14 +55,7 @@ namespace daw {
 		using const_pointer = value_type const *;
 
 	private:
-		pointer m_value = nullptr;
-
-		template<typename U = value_type, typename... Args>
-		static pointer make_ptr( Args &&... args ) noexcept(
-		  is_nothrow_constructible_v<value_type, Args...> ) {
-
-			return new U( std::forward<Args>( args )... );
-		}
+		std::unique_ptr<value_type> m_value{};
 
 	public:
 		constexpr explicit value_ptr( std::nullopt_t ) noexcept {}
@@ -77,7 +71,7 @@ namespace daw {
 		  : enable_default_constructor<T>( impl::non_constructor{} )
 		  , enable_copy_constructor<T>( impl::non_constructor{} )
 		  , enable_copy_assignment<T>( impl::non_constructor{} )
-		  , m_value( make_ptr( std::forward<Args>( args )... ) ) {}
+		  , m_value( std::make_unique<value_type>( std::forward<Args>( args )... ) ) {}
 
 		template<
 		  typename U, typename... Args,
@@ -88,29 +82,34 @@ namespace daw {
 		static value_ptr emplace( Args &&... args ) noexcept(
 		  is_nothrow_constructible_v<value_type, Args...> ) {
 
-			auto result = value_ptr( std::nullopt );
-			result.m_value = make_ptr<U>( std::forward<Args>( args )... );
+			auto result = value_ptr<value_type>( std::nullopt );
+			result.m_value = std::make_unique<U>( std::forward<Args>( args )... );
 			return result;
 		}
 
 		value_ptr( value_ptr const &other ) noexcept(
-		  noexcept( make_ptr( *other.m_value ) ) )
+		  noexcept( std::make_unique<value_type>( *other.m_value ) ) )
 		  : enable_default_constructor<T>( other )
 		  , enable_copy_constructor<T>( other )
 		  , enable_copy_assignment<T>( other )
-		  , m_value( make_ptr( *other.m_value ) ) {}
+		  , m_value( std::make_unique<value_type>( *other.m_value ) ) {}
 
 		constexpr value_ptr( value_ptr &&other ) noexcept
 		  : enable_default_constructor<T>( daw::move( other ) )
 		  , enable_copy_constructor<T>( daw::move( other ) )
 		  , enable_copy_assignment<T>( daw::move( other ) )
-		  , m_value( std::exchange( other.m_value, nullptr ) ) {}
+		  , m_value( daw::move( other.m_value ) ) {}
 
 		constexpr value_ptr &operator=( value_ptr const &rhs ) noexcept(
 		  is_nothrow_copy_constructible_v<value_type> ) {
 			if( this != rhs ) {
+				if( !m_value and !rhs.m_value ) {
+					return *this;
+				}
 				if( !rhs.m_value ) {
 					reset( );
+				} else if( !m_value ) {
+					m_value = std::make_unique<value_type>( *rhs.m_value );
 				} else {
 					*m_value = *rhs.m_value;
 				}
@@ -119,26 +118,30 @@ namespace daw {
 		}
 
 		constexpr value_ptr &operator=( value_ptr &&rhs ) noexcept {
-			m_value = std::exchange( rhs.m_value, nullptr );
+			if( this != &rhs ) {
+				m_value = std::move( rhs.m_value );
+			}
 			return *this;
 		}
 
-		constexpr value_ptr &operator=( value_type const &rhs ) noexcept(
+		value_ptr &operator=( value_type const &rhs ) noexcept(
 		  is_nothrow_copy_assignable_v<value_type> ) {
-
-			*m_value = rhs;
+			if( !m_value ) {
+				m_value = std::make_unique<value_type>( rhs );
+			} else {
+				*m_value = rhs;
+			}
 			return *this;
 		}
 
-		constexpr value_ptr &operator=( value_type &&rhs ) noexcept(
+		value_ptr &operator=( value_type &&rhs ) noexcept(
 		  is_nothrow_move_assignable_v<value_type> ) {
-
 			*m_value = daw::move( rhs );
 			return *this;
 		}
 
 		constexpr void reset( ) noexcept( is_nothrow_destructible_v<value_type> ) {
-			delete std::exchange( m_value, nullptr );
+			m_value.reset( );
 		}
 
 		template<typename... Args,
@@ -150,25 +153,22 @@ namespace daw {
 			return m_value->operator( )( std::forward<Args>( args )... );
 		}
 
-		~value_ptr( ) noexcept( is_nothrow_destructible_v<value_type> ) {
-			reset( );
-		}
+		~value_ptr( ) noexcept( is_nothrow_destructible_v<value_type> ) = default;
 
 		constexpr pointer release( ) noexcept {
 			return std::exchange( m_value, nullptr );
 		}
 
 		constexpr void swap( value_ptr &rhs ) noexcept {
-			auto tmp = m_value;
-			m_value = std::exchange( rhs.m_value, tmp );
+			daw::cswap( m_value, rhs.m_value );
 		}
 
 		constexpr pointer get( ) noexcept {
-			return m_value;
+			return m_value.get( );
 		}
 
 		constexpr const_pointer get( ) const noexcept {
-			return m_value;
+			return m_value.get( );
 		}
 
 		reference operator*( ) noexcept {
@@ -180,11 +180,11 @@ namespace daw {
 		}
 
 		pointer operator->( ) noexcept {
-			return m_value;
+			return m_value.get( );
 		}
 
 		const_pointer operator->( ) const noexcept {
-			return m_value;
+			return m_value.get( );
 		}
 
 		explicit operator reference( ) noexcept {
@@ -224,7 +224,7 @@ namespace daw {
 	};
 
 	template<typename T>
-	constexpr void swap( value_ptr<T> &lhs, value_ptr<T> &rhs ) noexcept {
+	constexpr void swap( value_ptr<T> &lhs, value_ptr<T> &rhs ) noexcept( noexcept( lhs.swap( rhs ) ) ) {
 		lhs.swap( rhs );
 	}
 
