@@ -736,6 +736,7 @@ BOOST_AUTO_TEST_CASE( daw_extra_to_001 ) {
 
 	std::pair<int const, int> c( 3, 4 );
 
+	BOOST_REQUIRE( !b.empty( ) );
 	BOOST_REQUIRE( *std::begin( b ) == c );
 
 	daw::algorithm::extract_all( a, b );
