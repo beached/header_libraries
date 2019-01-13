@@ -140,9 +140,6 @@ namespace daw {
 	template<typename T>
 	CXINLINE bool is_rvalue_reference_v = std::is_rvalue_reference<T>::value;
 
-	template<class T>
-	constexpr size_t tuple_size_v = std::tuple_size<T>::value;
-
 	template<typename T>
 	CXINLINE bool is_function_v = std::is_function<T>::value;
 
@@ -517,7 +514,7 @@ namespace daw {
 		} else {
 			return apply_impl::apply_impl(
 			  std::forward<F>( f ), std::forward<Tuple>( t ),
-			  std::make_index_sequence<daw::tuple_size_v<std::decay_t<Tuple>>>{} );
+			  std::make_index_sequence<std::tuple_size_v<std::decay_t<Tuple>>>{} );
 		}
 	}
 

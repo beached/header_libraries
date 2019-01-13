@@ -107,3 +107,10 @@ BOOST_AUTO_TEST_CASE( runtime_get_test_001 ) {
 	                      [&i]( unsigned long long value ) { i = value; } );
 	BOOST_REQUIRE_EQUAL( 3, i );
 }
+
+static_assert( daw::tuple_size_v<std::tuple<int, int, int>> == 3 );
+static_assert( daw::tuple_size_v<std::tuple<>> == 0 );
+static_assert( daw::tuple_size_v<std::tuple<int, int, int> const> == 3 );
+static_assert( daw::tuple_size_v<std::tuple<> const> == 0 );
+static_assert( daw::is_empty_tuple_v<std::tuple<>> );
+static_assert( daw::is_empty_tuple_v<std::tuple<> const> );
