@@ -500,10 +500,13 @@ namespace daw {
 
 	namespace tuple_size_impl {
 		template<typename... Args>
-		constexpr auto tuple_size_test( std::tuple<Args...> const && ) noexcept -> std::integral_constant<size_t, sizeof...(Args)>;
-
+		constexpr std::integral_constant<size_t, sizeof...(Args)> tuple_size_test( std::tuple<Args...> const && ) noexcept;
 		template<typename... Args>
-		constexpr auto tuple_size_test( std::tuple<Args...> const & ) noexcept -> std::integral_constant<size_t, sizeof...(Args)>;
+		constexpr std::integral_constant<size_t, sizeof...(Args)> tuple_size_test( std::tuple<Args...> const volatile && ) noexcept;
+		template<typename... Args>
+		constexpr std::integral_constant<size_t, sizeof...(Args)> tuple_size_test( std::tuple<Args...> const & ) noexcept;
+		template<typename... Args>
+		constexpr std::integral_constant<size_t, sizeof...(Args)> tuple_size_test( std::tuple<Args...> const volatile & ) noexcept;
 	}
 
 	template<typename Tuple>
