@@ -168,6 +168,10 @@ namespace daw {
 		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) {
 			return latch->wait_until( timeout_time );
 		}
+
+		explicit operator bool( ) const noexcept {
+			return static_cast<bool>( latch );
+		}
 	}; // basic_shared_latch
 
 	using shared_latch = basic_shared_latch<std::mutex, std::condition_variable>;
