@@ -25,6 +25,7 @@
 #include <atomic>
 #include <cstdint>
 
+#include "../cpp_17.h"
 #include "../daw_exception.h"
 #include "../daw_move.h"
 #include "../daw_value_ptr.h"
@@ -34,11 +35,11 @@ namespace daw {
 	template<typename Mutex, typename ConditionVariable>
 	class basic_latch {
 		// These are in value_ptr's so that the semaphore can be moved
-		daw::condition_variable m_condition;
-		value_ptr<std::atomic_intmax_t> m_count;
+		daw::condition_variable m_condition{};
+		value_ptr<std::atomic_intmax_t> m_count{1};
 
 		auto stop_waiting( ) const {
-			return [&]( ) { return static_cast<intmax_t>( *m_count ) <= 0; };
+			return [&]( ) -> bool { return static_cast<intmax_t>( *m_count ) <= 0; };
 		}
 
 		void decrement( ) {
@@ -46,16 +47,18 @@ namespace daw {
 		}
 
 	public:
-		basic_latch( )
-		  : m_condition( )
-		  , m_count( 1 ) {}
+		basic_latch( ) = default;
 
-		template<typename Int>
+		template<typename Int,
+		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Int>>,
+		                          std::nullptr_t> = nullptr>
 		explicit basic_latch( Int count )
 		  : m_condition( )
 		  , m_count( static_cast<intmax_t>( count ) ) {}
 
-		template<typename Int>
+		template<typename Int,
+		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Int>>,
+		                          std::nullptr_t> = nullptr>
 		basic_latch( Int count, bool latched )
 		  : m_condition( )
 		  , m_count( static_cast<intmax_t>( count ) ) {}
@@ -64,7 +67,9 @@ namespace daw {
 			m_count = 1;
 		}
 
-		template<typename Int>
+		template<typename Int,
+		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Int>>,
+		                          std::nullptr_t> = nullptr>
 		void reset( Int count ) {
 			*m_count = static_cast<intmax_t>( count );
 		}
@@ -114,12 +119,16 @@ namespace daw {
 		basic_shared_latch( )
 		  : latch( std::make_shared<basic_latch<Mutex, ConditionVariable>>( ) ) {}
 
-		template<typename Int>
+		template<typename Int,
+		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Int>>,
+		                          std::nullptr_t> = nullptr>
 		explicit basic_shared_latch( Int count )
 		  : latch(
 		      std::make_shared<basic_latch<Mutex, ConditionVariable>>( count ) ) {}
 
-		template<typename Int>
+		template<typename Int,
+		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Int>>,
+		                          std::nullptr_t> = nullptr>
 		explicit basic_shared_latch( Int count, bool latched )
 		  : latch( std::make_shared<basic_latch<Mutex, ConditionVariable>>(
 		      count, latched ) ) {}
