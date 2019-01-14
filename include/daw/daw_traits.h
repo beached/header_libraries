@@ -626,9 +626,13 @@ namespace daw {
 		template<typename T>
 		CXINLINE bool is_character_v = is_one_of_v<T, char, wchar_t>;
 
-		template<typename Arg, typename... Args>
-		using last_type_t =
-		  std::tuple_element_t<sizeof...( Args ), std::tuple<Arg, Args...>>;
+		template<typename T>
+		struct identity {
+			using type = T;
+		};
+
+		template<typename... Args>
+		using last_type_t = typename decltype( ( identity<Args>{}, ... ) )::type;
 
 		template<size_t N, typename... Args>
 		using nth_type = std::tuple_element_t<N, std::tuple<Args...>>;
