@@ -71,12 +71,6 @@ namespace daw {
 		  , m_delemiter( delemiter )
 		  , m_pos( 0 ) {}
 
-		string_split_iterator( std::basic_string<CharT> const &str,
-		                       daw::basic_string_view<CharT> delemiter ) noexcept
-		  : m_str( make_string_view( str ) )
-		  , m_delemiter( delemiter )
-		  , m_pos( 0 ) {}
-
 		constexpr string_split_iterator &operator++( ) noexcept {
 			move_next( );
 			return *this;
@@ -111,11 +105,6 @@ namespace daw {
 
 	template<typename CharT>
 	string_split_iterator( daw::basic_string_view<CharT>,
-	                       daw::basic_string_view<CharT> )
-	  ->string_split_iterator<CharT>;
-
-	template<typename CharT>
-	string_split_iterator( std::basic_string<CharT>,
 	                       daw::basic_string_view<CharT> )
 	  ->string_split_iterator<CharT>;
 
@@ -171,58 +160,45 @@ namespace daw {
 	  ->string_split_range<CharT>;
 
 	template<typename CharT>
-	auto split_string( std::basic_string<CharT> const &str,
-	                   daw::basic_string_view<CharT> delemiter ) noexcept {
+	string_split_range<CharT>
+	split_string( std::basic_string<CharT> const &str,
+	              daw::basic_string_view<CharT> delemiter ) noexcept {
 
-		return string_split_range( str, delemiter );
+		return {{str.data( ), str.size( )}, delemiter};
 	}
 
 	template<typename CharT>
-	auto split_string( std::basic_string<CharT> const &str,
-	                   std::basic_string<CharT> & delemiter ) noexcept {
+	string_split_range<CharT>
+	split_string( std::basic_string<CharT> const &str,
+	              std::basic_string<CharT> &delemiter ) noexcept {
 
-		return string_split_range( str, daw::basic_string_view<CharT>( delemiter.data( ), delemiter.size( ) ) );
+		return {{str.data( ), str.size( )}, {delemiter.data( ), delemiter.size( )}};
 	}
 
 	template<typename CharT>
-	constexpr auto
+	constexpr string_split_range<CharT>
 	split_string( daw::basic_string_view<CharT> str,
 	              daw::basic_string_view<CharT> delemiter ) noexcept {
 
-		return string_split_range( str, delemiter );
+		return {str, delemiter};
 	}
 
 	template<typename CharT, size_t N>
-	constexpr auto split_string( daw::basic_string_view<CharT> str,
-	                             CharT const ( &delemiter )[N] ) noexcept {
+	constexpr string_split_range<CharT>
+	split_string( daw::basic_string_view<CharT> str,
+	              CharT const ( &delemiter )[N] ) noexcept {
 
-		return string_split_range<CharT>(
-		  str,
-		  daw::basic_string_view<CharT, std::char_traits<CharT>, N>( delemiter ) );
+		return {str, daw::basic_string_view<CharT, std::char_traits<CharT>, N>(
+		               delemiter )};
 	}
 
 	template<typename CharT, size_t N, size_t M>
-	constexpr auto split_string( CharT const ( &str )[N],
-	                             CharT const ( &delemiter )[M] ) noexcept {
+	constexpr string_split_range<CharT>
+	split_string( CharT const ( &str )[N],
+	              CharT const ( &delemiter )[M] ) noexcept {
 
-		return string_split_range<CharT>(
-			daw::basic_string_view<CharT, std::char_traits<CharT>, N>( str ),
-		  daw::basic_string_view<CharT, std::char_traits<CharT>, M>( delemiter ) );
-	}
-
-	template<typename CharT>
-	constexpr auto split_string( daw::basic_string_view<CharT> str,
-	                             CharT delemiter ) noexcept {
-
-		return string_split_range<CharT>(
-		  str, daw::basic_string_view<CharT>( &delemiter, 1 ) );
-	}
-
-	template<typename CharT>
-	constexpr auto split_string( std::basic_string<CharT> str,
-	                             CharT delemiter ) noexcept {
-
-		return string_split_range<CharT>(
-		  str, daw::basic_string_view<CharT>( &delemiter, 1 ) );
+		return {
+		  daw::basic_string_view<CharT, std::char_traits<CharT>, N>( str ),
+		  daw::basic_string_view<CharT, std::char_traits<CharT>, M>( delemiter )};
 	}
 } // namespace daw

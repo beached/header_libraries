@@ -497,4 +497,22 @@ namespace daw {
 		    std::tuple_size_v<std::remove_reference_t<Tuple>>>{},
 		  std::is_aggregate<T>{} );
 	}
+
+	namespace tuple_size_impl {
+		template<typename... Args>
+		constexpr std::integral_constant<size_t, sizeof...(Args)> tuple_size_test( std::tuple<Args...> const && ) noexcept;
+		template<typename... Args>
+		constexpr std::integral_constant<size_t, sizeof...(Args)> tuple_size_test( std::tuple<Args...> const volatile && ) noexcept;
+		template<typename... Args>
+		constexpr std::integral_constant<size_t, sizeof...(Args)> tuple_size_test( std::tuple<Args...> const & ) noexcept;
+		template<typename... Args>
+		constexpr std::integral_constant<size_t, sizeof...(Args)> tuple_size_test( std::tuple<Args...> const volatile & ) noexcept;
+	}
+
+	template<typename Tuple>
+	inline constexpr size_t tuple_size_v = decltype( tuple_size_impl::tuple_size_test( std::declval<Tuple>( ) ) )::value;
+
+	template<typename Tuple>
+	inline constexpr bool is_empty_tuple_v = (tuple_size_v<Tuple> == 0);
+
 } // namespace daw

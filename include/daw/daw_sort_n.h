@@ -23,13 +23,14 @@
 #pragma once
 
 #include <algorithm>
-#include <daw/iterator/daw_random_iterator.h>
 #include <forward_list>
 #include <functional>
 #include <iterator>
 
 #include "daw_swap.h"
 #include "daw_traits.h"
+#include "iterator/daw_random_iterator.h"
+#include "iterator/daw_reverse_iterator.h"
 
 namespace daw {
 	namespace sort_impl {
@@ -729,14 +730,72 @@ namespace daw {
 			}
 		}
 	}
-
-	template<typename RandomInputIterator, typename RandomOutputIterator,
-	         typename Compare = std::less<>>
-	RandomOutputIterator
-	sort_to( RandomInputIterator first_in, RandomInputIterator last_in,
-	         RandomOutputIterator first_out, Compare && comp = Compare{} ) {
+	template<typename InputIterator, typename RandomOutputIterator,
+	         typename Compare = std::less<>,
+	         std::enable_if_t<!std::is_integral_v<typename std::iterator_traits<
+	                            InputIterator>::value_type>,
+	                          std::nullptr_t> = nullptr>
+	constexpr RandomOutputIterator
+	sort_to( InputIterator first_in, InputIterator last_in,
+	         RandomOutputIterator first_out, Compare &&comp = Compare{} ) {
 
 		auto last_out = daw::algorithm::copy( first_in, last_in, first_out );
+		daw::sort( first_out, last_out, std::forward<Compare>( comp ) );
+		return last_out;
+	}
+
+	namespace sort_impl {
+		template<typename ForwardIterator, typename RandomOutputIterator,
+		         typename Compare>
+		constexpr RandomOutputIterator
+		counting_sort( ForwardIterator first_in, ForwardIterator const last_in,
+		               RandomOutputIterator first_out, Compare &&comp ) {
+			using value_t =
+			  typename std::iterator_traits<ForwardIterator>::value_type;
+			bool const is_ascend =
+			  comp( static_cast<value_t>( 0 ), static_cast<value_t>( 1 ) );
+
+			std::array<size_t, 10> counts{};
+			size_t d = 0;
+			for( auto it = first_in; it != last_in; ++it ) {
+				++counts[static_cast<size_t>( ( *it ) % 10 )];
+				++d;
+			}
+			daw::algorithm::partial_sum( std::cbegin( counts ), std::cend( counts ),
+			                             std::begin( counts ) );
+
+			if( is_ascend ) {
+				while( first_in != last_in ) {
+					auto const pos = static_cast<size_t>( *first_in % 10 );
+					first_out[counts[pos] - 1U] = *first_in;
+					--counts[pos];
+					++first_in;
+				}
+			} else {
+				auto rf = daw::make_reverse_iterator( first_out + d );
+				auto const rl = daw::make_reverse_iterator( first_out );
+				while( rf != rl ) {
+					auto const pos = static_cast<size_t>( *first_in % 10 );
+					rf[counts[pos] - 1U] = *first_in;
+					--counts[pos];
+					++rf;
+				}
+			}
+			return first_out + d;
+		}
+	} // namespace sort_impl
+
+	template<typename ForwardIterator, typename RandomOutputIterator,
+	         typename Compare = std::less<>,
+	         std::enable_if_t<std::is_integral_v<typename std::iterator_traits<
+	                            ForwardIterator>::value_type>,
+	                          std::nullptr_t> = nullptr>
+	constexpr RandomOutputIterator
+	sort_to( ForwardIterator first_in, ForwardIterator last_in,
+	         RandomOutputIterator first_out, Compare &&comp = Compare{} ) {
+
+		auto last_out =
+		  sort_impl::counting_sort( first_in, last_in, first_out, comp );
 		daw::sort( first_out, last_out, std::forward<Compare>( comp ) );
 		return last_out;
 	}

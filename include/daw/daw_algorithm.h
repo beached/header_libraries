@@ -2034,7 +2034,7 @@ namespace daw {
 		template<typename From, typename To>
 		constexpr void extract_all( From &from, To &to ) {
 			while( !from.empty( ) ) {
-				extract_to( from, to, from.begin( ) );
+				to.insert( from.extract( std::begin( from ) ) );
 			}
 		}
 

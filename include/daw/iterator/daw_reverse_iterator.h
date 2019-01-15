@@ -32,27 +32,27 @@ namespace daw {
 		using value_type = typename std::iterator_traits<Iterator>::value_type;
 		using difference_type =
 		  typename std::iterator_traits<Iterator>::difference_type;
+		using size_type = size_t;
 		using pointer = typename std::iterator_traits<Iterator>::pointer;
 		using reference = typename std::iterator_traits<Iterator>::reference;
 		using iterator_category =
 		  typename std::iterator_traits<Iterator>::iterator_category;
 
 	private:
-		Iterator m_base;
+		Iterator m_base{};
 
 	public:
-		constexpr reverse_iterator( )
-		  : m_base{} {}
+		constexpr reverse_iterator( ) = default;
 
 		constexpr explicit reverse_iterator( Iterator it )
-		  : m_base{daw::move( it )} {}
+		  : m_base(daw::move( it )) {}
 
 		template<typename U>
-		constexpr reverse_iterator( const reverse_iterator<U> &other )
-		  : m_base{other.m_base} {}
+		constexpr reverse_iterator( reverse_iterator<U> const &other )
+		  : m_base(other.m_base) {}
 
 		template<typename U>
-		constexpr reverse_iterator &operator=( const reverse_iterator<U> &other ) {
+		constexpr reverse_iterator &operator=( reverse_iterator<U> const &other ) {
 			m_base = other.m_base;
 			return *this;
 		}
@@ -62,17 +62,35 @@ namespace daw {
 			return it;
 		}
 
-		constexpr reference operator*( ) const {
+		constexpr Iterator base( ) {
+			Iterator it = m_base;
+			return it;
+		}
+
+		constexpr decltype( auto ) operator*( ) {
 			auto tmp = m_base;
 			return *( --tmp );
 		}
 
-		constexpr pointer operator->( ) const {
+		constexpr decltype( auto ) operator*( ) const {
+			auto tmp = m_base;
+			return *( --tmp );
+		}
+
+		constexpr decltype( auto ) operator->( ) {
 			return &( operator*( ) );
 		}
 
-		constexpr auto operator[]( difference_type n ) const {
-			return *( *this + n );
+		constexpr decltype( auto ) operator->( ) const {
+			return &( operator*( ) );
+		}
+
+		constexpr decltype( auto ) operator[]( size_type n ) {
+			return *( *this + static_cast<difference_type>( n ) );
+		}
+
+		constexpr decltype( auto ) operator[]( size_type n ) const {
+			return *( *this + static_cast<difference_type>( n ) );
 		}
 
 		constexpr reverse_iterator &operator++( ) noexcept {
