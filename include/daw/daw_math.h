@@ -267,7 +267,9 @@ namespace daw {
 #endif
 		template<typename T,
 		         std::enable_if_t<is_floating_point_v<T>, std::nullptr_t> = nullptr>
-		constexpr bool nearly_equal( T const &a, T const &b ) noexcept {
+		constexpr bool
+		nearly_equal( T a, T b,
+		              T epsilon = std::numeric_limits<T>::epsilon( ) ) noexcept {
 			// Code from http://floating-point-gui.de/errors/comparison/
 			auto absA = std::abs( a );
 			auto absB = std::abs( b );
@@ -279,13 +281,12 @@ namespace daw {
 			if( a == 0 or b == 0 or diff < std::numeric_limits<T>::min_exponent ) {
 				// a or b is zero or both are extremely close to it
 				// 			// relative error is less meaningful here
-				return diff < ( std::numeric_limits<T>::epsilon( ) *
-				                std::numeric_limits<T>::min_exponent );
+				return diff < ( epsilon * std::numeric_limits<T>::min_exponent );
 			}
 			// use relative error
 			return diff /
 			         daw::min( ( absA + absB ), std::numeric_limits<T>::max( ) ) <
-			       std::numeric_limits<T>::epsilon( );
+			       epsilon;
 		}
 #ifdef __clang__
 #pragma clang diagnostic pop
