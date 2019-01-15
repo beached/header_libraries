@@ -312,7 +312,7 @@ namespace daw {
 		};
 	}
 
-	template<typename Exception, typename Expression, typename Predicate = expecting_impl::always_true, std::enable_if_t<std::is_invocable_v<Predicate, Exception>, std::nullptr_t> = nullptr>
+	template<typename Exception = std::exception, typename Expression, typename Predicate = expecting_impl::always_true, std::enable_if_t<std::is_invocable_v<Predicate, Exception>, std::nullptr_t> = nullptr>
 	void expecting_exception( Expression&& expression, Predicate pred = Predicate{} ) noexcept {
 		try {
 			daw::invoke( expression );	
