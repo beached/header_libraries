@@ -27,6 +27,7 @@
 #include "../cpp_17.h"
 #include "../daw_algorithm.h"
 #include "../daw_move.h"
+#include "../daw_tuple_helper.h"
 #include "../daw_utility.h"
 
 namespace daw {
@@ -130,7 +131,7 @@ namespace daw {
 		}
 
 		constexpr static size_t size( ) noexcept {
-			return tuple_size_v<Iterators...>;
+			return daw::tuple_size_v<Iterators...>;
 		}
 
 	private:
@@ -147,12 +148,12 @@ namespace daw {
 	public:
 		constexpr decltype( auto ) operator*( ) noexcept {
 			return get_items(
-			  std::make_index_sequence<std::tuple_size_v<types_t>>( ) );
+			  std::make_index_sequence<daw::tuple_size_v<types_t>>( ) );
 		}
 
 		constexpr decltype( auto ) operator*( ) const noexcept {
 			return get_items(
-			  std::make_index_sequence<std::tuple_size_v<types_t>>( ) );
+			  std::make_index_sequence<daw::tuple_size_v<types_t>>( ) );
 		}
 	}; // struct zip_iterator
 
