@@ -28,6 +28,7 @@
 #include <sstream>
 #include <string>
 
+#include "cpp_17.h"
 #include "daw_expected.h"
 #include "daw_move.h"
 #include "daw_string_view.h"
@@ -300,5 +301,30 @@ namespace daw {
 			std::cerr << "Invalid result. Expecting true\n";
 			std::terminate( );
 		}
+	}
+
+	namespace expecting_impl {
+		struct always_true {
+			template<typename... Args>
+			constexpr bool operator( )( Args&&... ) noexcept {
+				return true;
+			}
+		};
+	}
+
+	template<typename Exception, typename Expression, typename Predicate = expecting_impl::always_true, std::enable_if_t<std::is_invocable_v<Predicate, Exception>, std::nullptr_t> = nullptr>
+	void expecting_exception( Expression&& expression, Predicate pred = Predicate{} ) noexcept {
+		try {
+			daw::invoke( expression );	
+		} catch( Exception const & ex ) {
+			if( daw::invoke( pred, ex ) ) {
+				return;
+			}
+			std::cerr << "Failed predicate\n";
+		} catch(...) { 
+			std::cerr << "Unexpected exception\n";	
+			throw;
+		}
+		std::terminate( );
 	}
 } // namespace daw
