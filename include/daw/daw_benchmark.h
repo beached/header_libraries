@@ -36,9 +36,10 @@
 
 namespace daw {
 	template<typename F>
-	double benchmark( F func ) {
+	double benchmark( F &&func ) {
+		static_assert( std::is_invocable_v<F>, "func must accept no arguments" );
 		auto start = std::chrono::high_resolution_clock::now( );
-		func( );
+		daw::invoke( std::forward<F>( func ) );
 		auto finish = std::chrono::high_resolution_clock::now( );
 		std::chrono::duration<double> duration = finish - start;
 		return duration.count( );
@@ -117,9 +118,9 @@ namespace daw {
 
 	template<typename Func>
 	void show_benchmark( size_t data_size_bytes, std::string const &title,
-	                     Func func, size_t data_prec = 1, size_t time_prec = 0,
+	                     Func &&func, size_t data_prec = 1, size_t time_prec = 0,
 	                     size_t item_count = 1 ) noexcept {
-		double const t = benchmark( func );
+		double const t = benchmark( std::forward<Func>( func ) );
 		double const t_per_item = t / static_cast<double>( item_count );
 		std::cout << title << ": took " << utility::format_seconds( t, time_prec )
 		          << ' ';
@@ -151,10 +152,10 @@ namespace daw {
 	}
 
 	template<typename Test, typename... Args>
-	auto bench_test( std::string const &title, Test test_callable,
+	auto bench_test( std::string const &title, Test &&test_callable,
 	                 Args &&... args ) noexcept {
 		auto const start = std::chrono::high_resolution_clock::now( );
-		auto result = daw::expected_from_code( daw::move( test_callable ),
+		auto result = daw::expected_from_code( std::forward<Test>( test_callable ),
 		                                       std::forward<Args>( args )... );
 		auto const finish = std::chrono::high_resolution_clock::now( );
 		std::chrono::duration<double> const duration = finish - start;
@@ -164,10 +165,10 @@ namespace daw {
 	}
 
 	template<typename Test, typename... Args>
-	auto bench_test2( std::string const &title, Test test_callable,
+	auto bench_test2( std::string const &title, Test &&test_callable,
 	                  size_t item_count, Args &&... args ) noexcept {
 		auto const start = std::chrono::high_resolution_clock::now( );
-		auto result = daw::expected_from_code( daw::move( test_callable ),
+		auto result = daw::expected_from_code( std::forward<Test>( test_callable ),
 		                                       std::forward<Args>( args )... );
 		auto const finish = std::chrono::high_resolution_clock::now( );
 		std::chrono::duration<double> const duration = finish - start;
@@ -191,11 +192,11 @@ namespace daw {
 
 	// Test N runs
 	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
-	auto bench_n_test( std::string const &title, Test test_callable,
+	auto bench_n_test( std::string const &title, Test &&test_callable,
 	                   Args &&... args ) noexcept {
 		static_assert( Runs > 0 );
 		using result_t = daw::remove_cvref_t<decltype( daw::expected_from_code(
-		  daw::move( test_callable ), std::forward<Args>( args )... ) )>;
+		  test_callable, std::forward<Args>( args )... ) )>;
 
 		result_t result{};
 
@@ -225,7 +226,7 @@ namespace daw {
 			bench_impl::expander( ( daw::do_not_optimize( args ), 1 )... );
 			auto const start = std::chrono::high_resolution_clock::now( );
 
-			result = daw::expected_from_code( daw::move( test_callable ),
+			result = daw::expected_from_code( std::forward<Test>( test_callable ),
 			                                  std::forward<Args>( args )... );
 
 			auto const finish = std::chrono::high_resolution_clock::now( );
@@ -326,11 +327,11 @@ namespace daw {
 	         std::enable_if_t<std::is_invocable_v<Predicate, Exception>,
 	                          std::nullptr_t> = nullptr>
 	void expecting_exception( Expression &&expression,
-	                          Predicate pred = Predicate{} ) noexcept {
+	                          Predicate &&pred = Predicate{} ) noexcept {
 		try {
-			daw::invoke( expression );
+			daw::invoke( std::forward<Expression>( expression ) );
 		} catch( Exception const &ex ) {
-			if( daw::invoke( pred, ex ) ) {
+			if( daw::invoke( std::forward<Predicate>( pred ), ex ) ) {
 				return;
 			}
 			std::cerr << "Failed predicate\n";
@@ -341,3 +342,4 @@ namespace daw {
 		std::terminate( );
 	}
 } // namespace daw
+
