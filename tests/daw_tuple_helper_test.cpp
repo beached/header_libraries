@@ -24,12 +24,12 @@
 #include <string>
 #include <tuple>
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_tuple_helper.h"
 
 using namespace daw::tuple;
 
-BOOST_AUTO_TEST_CASE( daw_tuple_operators001 ) {
+void daw_tuple_operators001( ) {
 	using namespace daw::tuple::operators;
 	auto t1 = std::make_tuple( 1.0, 2.0, 3.0 );
 	auto res1 = t1 * 2.0;
@@ -71,23 +71,23 @@ BOOST_AUTO_TEST_CASE( daw_tuple_operators001 ) {
 	          << std::endl;
 	std::cout << "result of " << t1 << " / " << t2 << " => " << res3 << std::endl;
 
-	BOOST_REQUIRE( res1 == res2 );
-	BOOST_REQUIRE( res3 == std::make_tuple( 0.25, 1.0, 3.0 ) );
-	BOOST_REQUIRE( res6 == std::make_tuple( 2.0, 3.0, 4.0 ) );
-	BOOST_REQUIRE( res7 == std::make_tuple( 2.0, 3.0, 4.0 ) );
-	BOOST_REQUIRE( res8 == std::make_tuple( 1.0, 0.5, 1.0 / 3.0 ) );
-	BOOST_REQUIRE( res9 == std::make_tuple( 0.5, 1.0, 1.5 ) );
-	BOOST_REQUIRE( res10 == std::make_tuple( 0.0, -1.0, -2.0 ) );
-	BOOST_REQUIRE( res11 == std::make_tuple( 0.0, 1.0, 2.0 ) );
-	BOOST_REQUIRE( res12 == std::make_tuple( 2.0, 4.0, 6.0 ) );
-	BOOST_REQUIRE( res13 == std::make_tuple( 2.0, 4.0, 6.0 ) );
-	BOOST_REQUIRE( res14 == std::make_tuple( 5.0, 4.0, 4.0 ) );
-	BOOST_REQUIRE( res15 == std::make_tuple( -3.0, 0.0, 2.0 ) );
-	BOOST_REQUIRE( res16 == std::make_tuple( 4.0, 4.0, 3.0 ) );
-	BOOST_REQUIRE( res3 == std::make_tuple( 0.25, 1.0, 3.0 ) );
+	daw::expecting( res1 == res2 );
+	daw::expecting( res3 == std::make_tuple( 0.25, 1.0, 3.0 ) );
+	daw::expecting( res6 == std::make_tuple( 2.0, 3.0, 4.0 ) );
+	daw::expecting( res7 == std::make_tuple( 2.0, 3.0, 4.0 ) );
+	daw::expecting( res8 == std::make_tuple( 1.0, 0.5, 1.0 / 3.0 ) );
+	daw::expecting( res9 == std::make_tuple( 0.5, 1.0, 1.5 ) );
+	daw::expecting( res10 == std::make_tuple( 0.0, -1.0, -2.0 ) );
+	daw::expecting( res11 == std::make_tuple( 0.0, 1.0, 2.0 ) );
+	daw::expecting( res12 == std::make_tuple( 2.0, 4.0, 6.0 ) );
+	daw::expecting( res13 == std::make_tuple( 2.0, 4.0, 6.0 ) );
+	daw::expecting( res14 == std::make_tuple( 5.0, 4.0, 4.0 ) );
+	daw::expecting( res15 == std::make_tuple( -3.0, 0.0, 2.0 ) );
+	daw::expecting( res16 == std::make_tuple( 4.0, 4.0, 3.0 ) );
+	daw::expecting( res3 == std::make_tuple( 0.25, 1.0, 3.0 ) );
 }
 
-BOOST_AUTO_TEST_CASE( daw_tuple_helpers_001 ) {
+void daw_tuple_helpers_001( ) {
 	using namespace daw::tuple;
 	auto t1 = std::make_tuple( 5, 4, 3, 1 );
 	auto t2 = std::make_tuple( 1, 2, 4, 8 );
@@ -96,16 +96,16 @@ BOOST_AUTO_TEST_CASE( daw_tuple_helpers_001 ) {
 	auto t_max = max( t1, t2 );
 	std::cout << "min of " << t1 << " and " << t2 << " is " << t_min << std::endl;
 	std::cout << "max of " << t1 << " and " << t2 << " is " << t_max << std::endl;
-	BOOST_REQUIRE( t_min == std::make_tuple( 1, 2, 3, 1 ) );
-	BOOST_REQUIRE( t_max == std::make_tuple( 5, 4, 4, 8 ) );
+	daw::expecting( t_min == std::make_tuple( 1, 2, 3, 1 ) );
+	daw::expecting( t_max == std::make_tuple( 5, 4, 4, 8 ) );
 }
 
-BOOST_AUTO_TEST_CASE( runtime_get_test_001 ) {
+void runtime_get_test_001( ) {
 	constexpr auto tp = std::make_tuple( "hello", 3ULL, 3.545, true );
 	auto i = 0ULL;
 	daw::tuple::apply_at( tp, 1,
 	                      [&i]( unsigned long long value ) { i = value; } );
-	BOOST_REQUIRE_EQUAL( 3, i );
+	daw::expecting( 3ULL, i );
 }
 
 static_assert( daw::tuple_size_v<std::tuple<int, int, int>> == 3 );
@@ -114,3 +114,9 @@ static_assert( daw::tuple_size_v<std::tuple<int, int, int> const> == 3 );
 static_assert( daw::tuple_size_v<std::tuple<> const> == 0 );
 static_assert( daw::is_empty_tuple_v<std::tuple<>> );
 static_assert( daw::is_empty_tuple_v<std::tuple<> const> );
+
+int main( ) {
+	daw_tuple_operators001( );
+	daw_tuple_helpers_001( );
+	runtime_get_test_001( );
+}

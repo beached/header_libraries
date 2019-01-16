@@ -304,5 +304,6 @@ namespace {
 		return f >= f;
 	}
 	static_assert( operator_greater_equal_002( ), "" );
-
 } // namespace
+
+int main( ) {}

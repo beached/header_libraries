@@ -20,11 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
 #include <chrono>
 #include <iostream>
 #include <thread>
 
+#include "daw/daw_benchmark.h"
 #include "daw/parallel/daw_locked_value.h"
 
 struct A {
@@ -41,7 +41,7 @@ struct A {
 	}
 };
 
-BOOST_AUTO_TEST_CASE( test_locked_value01 ) {
+void test_locked_value01( ) {
 	A a;
 
 	auto const worker = [&a]( ) {
@@ -82,7 +82,7 @@ struct B {
 	}
 };
 
-BOOST_AUTO_TEST_CASE( test_lockable_value01 ) {
+void test_lockable_value01( ) {
 	B b;
 
 	auto const worker = [&b]( ) {
@@ -110,10 +110,16 @@ BOOST_AUTO_TEST_CASE( test_lockable_value01 ) {
 	t4.join( );
 }
 
-BOOST_AUTO_TEST_CASE( const_lock_value_01 ) {
+void const_lock_value_01( ) {
 	auto const a = daw::lockable_value_t<int>( 0xDEAD );
 	{
 		auto b = *a;
-		BOOST_REQUIRE_EQUAL( b.get( ), 0xDEAD );
+		daw::expecting( 0xDEAD, b.get( ) );
 	}
+}
+
+int main( ) {
+	test_locked_value01( );
+	test_lockable_value01( );
+	const_lock_value_01( );
 }

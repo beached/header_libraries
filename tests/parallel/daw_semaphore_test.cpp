@@ -20,12 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
-#include <iostream>
-
+#include "daw/daw_benchmark.h"
 #include "daw/parallel/daw_semaphore.h"
 
-BOOST_AUTO_TEST_CASE( test_01 ) {
+void test_01( ) {
 	daw::semaphore sem1;
 	daw::shared_semaphore sem2{std::move( sem1 )};
+}
+
+int main( ) {
+	test_01( );
 }

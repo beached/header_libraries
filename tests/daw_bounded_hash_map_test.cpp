@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "daw/daw_benchmark.h"
 #include "daw/daw_bounded_hash_map.h"
 #include "daw/daw_fnv1a_hash.h"
 #include "daw/daw_string_view.h"

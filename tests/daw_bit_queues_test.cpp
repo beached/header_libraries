@@ -23,27 +23,27 @@
 #include <iostream>
 #include <limits>
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_bit_queues.h"
 
-BOOST_AUTO_TEST_CASE( daw_bit_queues_test_001 ) {
+bool daw_bit_queues_test_001( ) {
 	using value_type = uint16_t;
 	daw::basic_bit_queue<value_type, value_type> test1;
 	test1.push_back( 1, 1 );
-	BOOST_REQUIRE( test1.value( ) == 1 );
-	BOOST_REQUIRE( test1.size( ) == 1 );
-	BOOST_REQUIRE( test1.pop_back( 1 ) == 1 );
+	daw::expecting( test1.value( ) == 1 );
+	daw::expecting( test1.size( ) == 1 );
+	daw::expecting( test1.pop_back( 1 ) == 1 );
 	test1.clear( );
-	BOOST_REQUIRE( test1.value( ) == 0 );
-	BOOST_REQUIRE( test1.size( ) == 0 );
+	daw::expecting( test1.value( ) == 0 );
+	daw::expecting( test1.size( ) == 0 );
 
 	{
 		daw::basic_bit_queue<value_type, value_type> test2;
 		test2.push_back( 2 );
-		BOOST_REQUIRE( test2.value( ) == 2 );
-		BOOST_REQUIRE( test2.size( ) == sizeof( value_type ) * 8 );
+		daw::expecting( test2.value( ) == 2 );
+		daw::expecting( test2.size( ) == sizeof( value_type ) * 8 );
 		auto result = test2.pop_back( 1 );
-		BOOST_REQUIRE( result == 0 );
+		daw::expecting( result == 0 );
 	}
 
 	uint16_t v = 1;
@@ -52,51 +52,54 @@ BOOST_AUTO_TEST_CASE( daw_bit_queues_test_001 ) {
 	for( size_t n = 1; n < sizeof( value_type ) * 8; ++n ) {
 		test1.push_back( 0, 1 );
 		v *= 2;
-		BOOST_REQUIRE( test1.value( ) == v );
+		daw::expecting( test1.value( ) == v );
 	}
 
 	for( size_t n = 1; n < sizeof( value_type ) * 8; ++n ) {
 		int const result = test1.pop_back( 1 );
-		BOOST_REQUIRE( result == 0 );
+		daw::expecting( result == 0 );
 	}
-	BOOST_REQUIRE( test1.value( ) == 1 );
-	BOOST_REQUIRE( test1.size( ) == 1 );
-	BOOST_REQUIRE( test1.pop_back( 1 ) == 1 );
-	BOOST_REQUIRE( test1.empty( ) );
+	daw::expecting( test1.value( ) == 1 );
+	daw::expecting( test1.size( ) == 1 );
+	daw::expecting( test1.pop_back( 1 ) == 1 );
+	daw::expecting( test1.empty( ) );
 
 	v = 1;
 	test1.push_back( 1, 1 );
 	for( size_t n = 1; n < sizeof( value_type ) * 8; ++n ) {
 		test1.push_back( 0, 1 );
 		v *= 2;
-		BOOST_REQUIRE( test1.value( ) == v );
+		daw::expecting( test1.value( ) == v );
 	}
-	BOOST_REQUIRE_EQUAL( test1.pop_front( 1 ), 1 );
+	daw::expecting( test1.pop_front( 1 ), 1 );
 	for( size_t n = 1; n < sizeof( value_type ) * 8; ++n ) {
 		int const result = test1.pop_front( 1 );
-		BOOST_REQUIRE( result == 0 );
+		daw::expecting( result == 0 );
 	}
-	BOOST_REQUIRE( test1.size( ) == 0 );
-	BOOST_REQUIRE( test1.empty( ) );
+	daw::expecting( test1.size( ) == 0 );
+	daw::expecting( test1.empty( ) );
+	return true;
 }
 
-BOOST_AUTO_TEST_CASE( daw_bit_queues_test_002 ) {
+bool daw_bit_queues_test_002( ) {
 	using value_type = uint8_t;
 	daw::basic_bit_queue<value_type, value_type> test1;
 	test1.push_back( std::numeric_limits<value_type>::max( ) );
-	BOOST_REQUIRE( test1.pop_back( 3 ) == 7 );
+	daw::expecting( test1.pop_back( 3 ) == 7 );
+	return true;
 }
 
-BOOST_AUTO_TEST_CASE( daw_bit_queues_test_003 ) {
+bool daw_bit_queues_test_003( ) {
 	using value_type = uint16_t;
 	daw::basic_bit_queue<value_type, value_type> test1;
 	test1.push_back( 37, 4 );
-	BOOST_REQUIRE( test1.value( ) == 5 );
+	daw::expecting( 5U, test1.value( ) );
 	test1.pop_back( 1 );
-	BOOST_REQUIRE( test1.value( ) == 2 );
+	daw::expecting( 2U, test1.value( ) );
+	return true;
 }
 
-BOOST_AUTO_TEST_CASE( daw_nibble_queue_test_001 ) {
+void daw_nibble_queue_test_001( ) {
 	using value_type = uint32_t;
 
 	auto const nibble_to_hex = []( uint8_t c ) -> uint8_t {
@@ -118,4 +121,11 @@ BOOST_AUTO_TEST_CASE( daw_nibble_queue_test_001 ) {
 		}
 		std::cout << str << std::endl;
 	}
+}
+
+int main( ) {
+	daw_bit_queues_test_001( );
+	daw_bit_queues_test_002( );
+	daw_bit_queues_test_003( );
+	daw_nibble_queue_test_001( );
 }

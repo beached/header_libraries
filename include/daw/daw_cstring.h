@@ -39,8 +39,8 @@ namespace daw {
 		size_t m_size;
 		bool m_local_string;
 
-		[[deprecated]]
-		static constexpr size_t string_length( CharT const *ptr ) noexcept {
+		[[deprecated]] static constexpr size_t string_length(
+		  CharT const *ptr ) noexcept {
 			size_t result = 0;
 			while( ptr[result] != 0 ) {
 				++result;
@@ -50,16 +50,15 @@ namespace daw {
 
 		struct no_copy_t {};
 
-		[[deprecated]]
-		constexpr CString( CharT const *ptr, no_copy_t,
-		                   size_t const length ) noexcept
+		[[deprecated]] constexpr CString( CharT const *ptr, no_copy_t,
+		                                  size_t const length ) noexcept
 		  : m_data{ptr}
 		  , m_size{0 == length ? string_length( ptr ) : length}
 		  , m_local_string{false} {}
 
 	public:
-		[[deprecated]]
-		constexpr CString( CharT const *ptr, bool do_copy, size_t const length )
+		[[deprecated]] constexpr CString( CharT const *ptr, bool do_copy,
+		                                  size_t const length )
 		  : m_data{ptr}
 		  , m_size{0 == length ? string_length( ptr ) : length}
 		  , m_local_string{do_copy} {
@@ -72,26 +71,21 @@ namespace daw {
 			}
 		}
 
-		[[deprecated]]
-		constexpr CString( CharT const *ptr, bool do_copy )
+		[[deprecated]] constexpr CString( CharT const *ptr, bool do_copy )
 		  : CString{ptr, do_copy, 0} {}
 
-		[[deprecated]]
-		constexpr CString( CharT const *ptr )
+		[[deprecated]] constexpr CString( CharT const *ptr )
 		  : CString{ptr, no_copy_t{}, 0} {}
 
-		[[deprecated]]
-		constexpr CString( ) noexcept
+		[[deprecated]] constexpr CString( ) noexcept
 		  : m_data{nullptr}
 		  , m_size{0}
 		  , m_local_string{true} {}
 
-		[[deprecated]]
-		CString( CString const &value )
+		[[deprecated]] CString( CString const &value )
 		  : CString{value.m_data, true, value.m_size} {}
 
-		[[deprecated]]
-		CString &operator=( CString const &rhs ) {
+		[[deprecated]] CString &operator=( CString const &rhs ) {
 			if( this != &rhs ) {
 				CString tmp{rhs};
 				tmp.swap( *this );
@@ -99,27 +93,23 @@ namespace daw {
 			return *this;
 		}
 
-		[[deprecated]]
-		CString &operator=( CharT const *ptr ) {
+		[[deprecated]] CString &operator=( CharT const *ptr ) {
 			CString tmp{ptr, true};
 			tmp.swap( *this );
 			return *this;
 		}
 
-		[[deprecated]]
-		constexpr CString( CString && ) noexcept = default;
-		[[deprecated]]
-		constexpr CString &operator=( CString && ) noexcept = default;
+		[[deprecated]] constexpr CString( CString && ) noexcept = default;
+		[[deprecated]] constexpr CString &operator=( CString && ) noexcept =
+		  default;
 
-		[[deprecated]]
-		void swap( CString &rhs ) noexcept {
+		[[deprecated]] void swap( CString & rhs ) noexcept {
 			daw::cswap( m_data, rhs.m_data );
 			daw::cswap( m_size, rhs.m_size );
 			daw::cswap( m_local_string, rhs.m_local_string );
 		}
 
-		[[deprecated]]
-		~CString( ) noexcept {
+		[[deprecated]] ~CString( ) noexcept {
 			auto tmp = std::exchange( m_data, nullptr );
 			if( m_local_string and nullptr != tmp ) {
 				m_local_string = false;
@@ -129,67 +119,56 @@ namespace daw {
 			nullify( );
 		}
 
-		[[deprecated]]
-		constexpr CharT const &operator[]( size_t pos ) const noexcept {
+		[[deprecated]] constexpr CharT const &operator[]( size_t pos )
+		  const noexcept {
 			return m_data[pos];
 		}
 
-		[[deprecated]]
-		constexpr void nullify( ) noexcept {
+		[[deprecated]] constexpr void nullify( ) noexcept {
 			m_data = nullptr;
 			m_size = 0;
 			m_local_string = false;
 		}
 
-		[[deprecated]]
-		constexpr CharT *move( ) noexcept {
+		[[deprecated]] constexpr CharT *move( ) noexcept {
 			auto result = m_data;
 			nullify( );
 			return result;
 		}
 
-		[[deprecated]]
-		constexpr CharT const *get( ) noexcept {
+		[[deprecated]] constexpr CharT const *get( ) noexcept {
 			return m_data;
 		}
 
-		[[deprecated]]
-		std::string to_string( ) const {
+		[[deprecated]] std::string to_string( ) const {
 			return std::string{m_data, m_size};
 		}
 
-		[[deprecated]]
-		constexpr size_t size( ) const noexcept {
+		[[deprecated]] constexpr size_t size( ) const noexcept {
 			return m_size;
 		}
 
-		[[deprecated]]
-		constexpr bool is_null( ) const noexcept {
+		[[deprecated]] constexpr bool is_null( ) const noexcept {
 			return nullptr == m_data;
 		}
 
-		[[deprecated]]
-		constexpr bool empty( ) const noexcept {
+		[[deprecated]] constexpr bool empty( ) const noexcept {
 			return nullptr == m_data or 0 == m_size;
 		}
 
-		[[deprecated]]
-		explicit constexpr operator bool( ) const noexcept {
+		[[deprecated]] explicit constexpr operator bool( ) const noexcept {
 			return !empty( );
 		}
 
-		[[deprecated]]
-		constexpr bool is_local_string( ) const noexcept {
+		[[deprecated]] constexpr bool is_local_string( ) const noexcept {
 			return m_local_string;
 		}
 
-		[[deprecated]]
-		constexpr void take_ownership_of_data( ) noexcept {
+		[[deprecated]] constexpr void take_ownership_of_data( ) noexcept {
 			m_local_string = true;
 		}
 
-		[[deprecated]]
-		auto compare( CString const &rhs ) const noexcept {
+		[[deprecated]] auto compare( CString const &rhs ) const noexcept {
 			return strcmp( m_data, rhs.m_data );
 		}
 
@@ -197,14 +176,13 @@ namespace daw {
 	}; // CString
 
 	template<typename... Args>
-	[[deprecated]]
-	void swap( CString<Args...> &lhs, CString<Args...> &rhs ) noexcept {
+	[[deprecated]] void swap( CString<Args...> &lhs,
+	                          CString<Args...> &rhs ) noexcept {
 		lhs.swap( rhs );
 	}
 
 	template<typename Char>
-	[[deprecated]]
-	std::string to_string( CString<Char> const &str ) {
+	[[deprecated]] std::string to_string( CString<Char> const &str ) {
 		return str.to_string( );
 	}
 

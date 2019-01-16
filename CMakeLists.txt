@@ -29,37 +29,58 @@ set( TEST_FOLDER "tests" )
 include_directories( ${HEADER_FOLDER} )
 
 set( TESTED_HEADERS_PREFIXES
+	daw_bounded_string
+	daw_container_algorithm
+	daw_expected
+	daw_string_view
+	daw_unique_array
+)
+
+#No boost test
+set( TESTED_HEADERS_PREFIXES_NBT
+	daw_memory_mapped_file
+)
+
+#No boost
+set( TESTED_HEADERS_PREFIXES_NB
 	cpp_17
 	daw_algorithm
 	daw_array
 	daw_benchmark
 	daw_bit
 	daw_bit_queues
-	daw_bounded_string
+	daw_bounded_array
+   	daw_bounded_graph
+	daw_bounded_hash_map
+	daw_bounded_hash_set
 	daw_bounded_vector
 	daw_carray
 	daw_checked_expected
 	daw_clumpy_sparsy
-	daw_container_algorithm
 	daw_copiable_unique_ptr
 	daw_cstring
 	daw_endian
 	daw_exception
-	daw_expected
 	daw_fixed_lookup
 	daw_fnv1a_hash
+	daw_function
 	daw_generic_hash
+	daw_graph
+	daw_graph_algorithm
+	daw_hash_set
 	daw_hash_table
 	daw_heap_array
 	daw_heap_value
+	daw_keep_n
 	daw_math
-	daw_memory_mapped_file
 	daw_natural
+	daw_overload
 	daw_optional
 	daw_optional_poly
-	daw_overload
+	daw_parse_to
 	daw_parser_helper
 	daw_parser_helper_sv
+	daw_piecewise_factory
 	daw_poly_vector
 	daw_random
 	daw_read_file
@@ -68,45 +89,25 @@ set( TESTED_HEADERS_PREFIXES
 	daw_scope_guard
 	daw_sip_hash
 	daw_size_literals
+	daw_sort_n
 	daw_stack_function
+#	daw_static_bitset
 	daw_static_optional
 	daw_string
 	daw_string_fmt
 	daw_string_split_range
-	daw_string_view
+	daw_span
 	daw_traits
 	daw_tuple_helper
-	daw_unique_array
 	daw_union_pair
 	daw_utility
 	daw_validated
-	daw_variant_cast
 	daw_value_ptr
+	daw_variant_cast
+	daw_view
 	not_null
 )
 
-#No boost test
-set( TESTED_HEADERS_PREFIXES_NB
-	daw_bounded_array
-	daw_function
-	daw_bounded_graph
-	daw_bounded_hash_map
-	daw_bounded_hash_set
-	daw_graph
-	daw_graph_algorithm
-	daw_hash_set
-	daw_keep_n
-  daw_parse_to
-	daw_piecewise_factory
-	daw_sort_n
-#	daw_static_bitset
-	daw_span
-	daw_view
-)
-
-set( TESTED_ITERATOR_HEADERS_PREFIXES_NB
-	daw_sorted_insert_iterator
-)
 
 set( UNTESTED_HEADER_IMPL
 	daw_math_impl
@@ -116,26 +117,34 @@ set( UNTESTED_HEADER_IMPL
 )
 
 set( TESTED_PARALLEL_HEADERS_PREFIXES
+	daw_observable_ptr_pair
+)
+
+set( TESTED_PARALLEL_HEADERS_PREFIXES_NB
 	daw_copy_mutex
 	daw_latch
 	daw_locked_value
 	daw_observable_ptr
-	daw_observable_ptr_pair
 	daw_scoped_multilock
 	daw_semaphore
 	daw_spin_lock
 )
 
 set( TESTED_ITERATOR_HEADERS_PREFIXES
+	daw_circular_iterator
+)
+
+set( TESTED_ITERATOR_HEADERS_PREFIXES_NB
 	daw_argument_iterator
 	daw_back_inserter
 	daw_checked_iterator_proxy
-	daw_circular_iterator
-	daw_integer_iterator
 	daw_indexed_iterator
+	daw_integer_iterator
 	daw_output_stream_iterator
 	daw_random_iterator
 	daw_reverse_iterator
+	daw_sorted_insert_iterator
+#	daw_split_iterator
 	daw_zipiter
 )
 
@@ -144,13 +153,16 @@ set( DEV_HEADER_FILES
 	daw_hash_table2
 	daw_range
 	daw_range_algorithm
-	daw_range_collection
 	#daw_variant3
 	#	daw_virtual_holder
 )
 
+set( DEV_HEADER_FILES_NB
+	daw_range_collection
+)
+
+
 #set( DEV_ITERATOR_HEADER_FILES
-#	daw_split_iterator
 #)
 
 set( UNTESTED_HEADER_FILES
@@ -196,6 +208,7 @@ add_custom_target( check COMMAND ${CMAKE_CTEST_COMMAND} )
 add_library( test_main EXCLUDE_FROM_ALL ${TEST_FOLDER}/test_main.cpp )
 add_dependencies( check test_main )
 
+#Full Boost
 foreach( CUR_PREFIX ${TESTED_HEADERS_PREFIXES} )
 	install( FILES "${HEADER_FOLDER}/daw/${CUR_PREFIX}.h" DESTINATION include/daw )
 	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/${CUR_PREFIX}.h ${TEST_FOLDER}/${CUR_PREFIX}_test.cpp )
@@ -204,6 +217,16 @@ foreach( CUR_PREFIX ${TESTED_HEADERS_PREFIXES} )
 	add_dependencies( check ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
 
+#No boost test
+foreach( CUR_PREFIX ${TESTED_HEADERS_PREFIXES_NBT} )
+	install( FILES "${HEADER_FOLDER}/daw/${CUR_PREFIX}.h" DESTINATION include/daw )
+	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/${CUR_PREFIX}.h ${TEST_FOLDER}/${CUR_PREFIX}_test.cpp )
+	target_link_libraries( ${CUR_PREFIX}_test_bin ${Boost_LIBRARIES} ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
+	add_test( ${CUR_PREFIX}_test ${CUR_PREFIX}_test_bin )
+	add_dependencies( check ${CUR_PREFIX}_test_bin )
+endforeach( CUR_PREFIX )
+
+#No boost
 foreach( CUR_PREFIX ${TESTED_HEADERS_PREFIXES_NB} )
 	install( FILES "${HEADER_FOLDER}/daw/${CUR_PREFIX}.h" DESTINATION include/daw )
 	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/${CUR_PREFIX}.h ${TEST_FOLDER}/${CUR_PREFIX}_test.cpp )
@@ -235,6 +258,13 @@ foreach( CUR_PREFIX ${TESTED_PARALLEL_HEADERS_PREFIXES} )
 	add_test( ${CUR_PREFIX}_test ${CUR_PREFIX}_test_bin )
 	add_dependencies( check ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
+foreach( CUR_PREFIX ${TESTED_PARALLEL_HEADERS_PREFIXES_NB} )
+	install( FILES "${HEADER_FOLDER}/daw/parallel/${CUR_PREFIX}.h" DESTINATION include/daw/parallel )
+	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/parallel/${CUR_PREFIX}.h ${TEST_FOLDER}/parallel/${CUR_PREFIX}_test.cpp )
+	#	target_link_libraries( ${CUR_PREFIX}_test_bin test_main ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
+	add_test( ${CUR_PREFIX}_test ${CUR_PREFIX}_test_bin )
+	add_dependencies( check ${CUR_PREFIX}_test_bin )
+endforeach( CUR_PREFIX )
 
 foreach( CUR_PREFIX ${DEV_HEADER_FILES} )
 	install( FILES "${HEADER_FOLDER}/daw/${CUR_PREFIX}.h" DESTINATION include/daw )
@@ -242,6 +272,14 @@ foreach( CUR_PREFIX ${DEV_HEADER_FILES} )
 	target_link_libraries( ${CUR_PREFIX}_test_bin test_main ${Boost_LIBRARIES} ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
 	add_dependencies( check ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
+
+foreach( CUR_PREFIX ${DEV_HEADER_FILES_NB} )
+	install( FILES "${HEADER_FOLDER}/daw/${CUR_PREFIX}.h" DESTINATION include/daw )
+	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/${CUR_PREFIX}.h ${TEST_FOLDER}/${CUR_PREFIX}_test.cpp )
+	target_link_libraries( ${CUR_PREFIX}_test_bin ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
+	add_dependencies( check ${CUR_PREFIX}_test_bin )
+endforeach( CUR_PREFIX )
+
 
 foreach( CUR_PREFIX ${UNTESTED_HEADER_IMPL} )
 	install( FILES "${HEADER_FOLDER}/daw/impl/${CUR_PREFIX}.h" DESTINATION include/daw/impl )

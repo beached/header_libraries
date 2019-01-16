@@ -20,13 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/not_null.h"
 
-BOOST_AUTO_TEST_CASE( daw_not_null_test_001 ) {
+void daw_not_null_test_001( ) {
 	auto tst = std::make_unique<int>( 5 );
 	daw::not_null<int *> t = tst.get( );
 	std::unique_ptr<int> tst2;
 
-	BOOST_CHECK_THROW( t = tst2.get( ), daw::exception::NullPtrAccessException );
+	daw::expecting_exception<daw::exception::NullPtrAccessException>(
+	  [&]( ) { t = tst2.get( ); } );
+}
+
+int main( ) {
+	daw_not_null_test_001( );
 }

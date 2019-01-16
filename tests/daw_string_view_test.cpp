@@ -30,6 +30,7 @@
 #include <vector>
 
 #include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_string_view.h"
 
 #define FALSE( b ) ( !( b ) )
@@ -87,7 +88,7 @@ namespace daw {
 		daw::string_view a = "A test";
 		tmp_e result = tmp_e::b;
 		auto str = do_something( a, result );
-		BOOST_REQUIRE( result == tmp_e::a );
+		daw::expecting( result == tmp_e::a );
 	}
 
 #ifndef HASNOSTRING
@@ -95,7 +96,7 @@ namespace daw {
 		std::string a = "This is a test";
 		auto b = daw::make_string_view_it( a.begin( ), a.end( ) );
 
-		BOOST_REQUIRE_MESSAGE(
+		daw::expecting_message(
 		  std::equal( a.begin( ), a.end( ), b.begin( ), b.end( ) ),
 		  "string and string_view should be equal" );
 	}
@@ -107,10 +108,10 @@ namespace daw {
 
 		auto c = daw::make_string_view( b );
 
-		BOOST_REQUIRE_MESSAGE(
+		daw::expecting_message(
 		  std::equal( a.begin( ), a.end( ), b.begin( ), b.end( ) ),
 		  "string and vector should be equal" );
-		BOOST_REQUIRE_MESSAGE(
+		daw::expecting_message(
 		  std::equal( c.begin( ), c.end( ), b.begin( ), b.end( ) ),
 		  "string_view and vector should be equal" );
 	}
@@ -122,14 +123,14 @@ namespace daw {
 		auto const pos = a.find_last_of( "ij" );
 		auto const pos2 = b.find_last_of( "ij" );
 		auto const pos3 = c.find_last_of( "ij" );
-		BOOST_REQUIRE_EQUAL( pos, pos2 );
-		BOOST_REQUIRE_EQUAL( pos, pos3 );
+		daw::expecting( pos, pos2 );
+		daw::expecting( pos, pos3 );
 
 		auto const es = a.find_last_of( "lm" );
 		auto const es2 = b.find_last_of( "lm" );
 		auto const es3 = c.find_last_of( "lm" );
-		BOOST_REQUIRE_EQUAL( es, es2 );
-		BOOST_REQUIRE_EQUAL( es, es3 );
+		daw::expecting( es, es2 );
+		daw::expecting( es, es3 );
 	}
 #endif
 
@@ -139,63 +140,63 @@ namespace daw {
 		  daw::make_string_view_it( reinterpret_cast<char const *>( p ),
 		                            reinterpret_cast<char const *>( p ) + 5 );
 		daw::string_view p2 = "Hello";
-		BOOST_REQUIRE_EQUAL( sv, p2 );
+		daw::expecting( sv, p2 );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_string_view_find_first_of_if_001 ) {
 		daw::string_view const a = "abcdefghijklm";
 		auto pos = a.find_first_of_if( []( auto c ) { return c == 'c'; } );
-		BOOST_REQUIRE_EQUAL( pos, 2 );
+		daw::expecting( 2U, pos );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_string_view_find_first_not_of_if_001 ) {
 		daw::string_view const a = "abcdefghijklm";
 		auto pos = a.find_first_not_of_if( []( auto c ) { return c < 'c'; } );
-		BOOST_REQUIRE_EQUAL( pos, 2 );
+		daw::expecting( 2U, pos );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_string_view_find_first_of_001 ) {
 		daw::string_view const a = "abcdefghijklm";
 		auto pos = a.find_first_of( "def" );
-		BOOST_REQUIRE_EQUAL( pos, 3 );
+		daw::expecting( 3U, pos );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_string_view_find_first_not_of_001 ) {
 		daw::string_view const a = "abcabfghijklm";
 		auto pos = a.find_first_not_of( "abc" );
-		BOOST_REQUIRE_EQUAL( pos, 5 );
+		daw::expecting( 5U, pos );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_string_view_find_last_not_of_001 ) {
 		daw::string_view const a = "abcabfghijklm";
 		auto pos = a.find_last_not_of( "abc" );
-		BOOST_REQUIRE_EQUAL( pos, 3 );
+		daw::expecting( 3U, pos );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_string_view_search_001 ) {
 		daw::string_view const a = "abcdeaaaijklm";
 		auto pos = a.search( "aaa" );
-		BOOST_REQUIRE_EQUAL( pos, 5 );
+		daw::expecting( 5U, pos );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_string_view_search_last_001 ) {
 		daw::string_view const a = "abcdeaaaijklm";
 		auto pos = a.search_last( "aaa" );
-		BOOST_REQUIRE_EQUAL( pos, 5 );
+		daw::expecting( 5U, pos );
 	}
 
 	BOOST_AUTO_TEST_CASE( tc001 ) {
 		daw::string_view view;
 		BOOST_TEST_MESSAGE( "Constructs an empty string" );
 
-		{ BOOST_REQUIRE( view.empty( ) ); }
+		{ daw::expecting( view.empty( ) ); }
 		BOOST_TEST_MESSAGE( "Is 0 bytes in size" );
 
-		{ BOOST_REQUIRE( view.size( ) == 0 ); }
+		{ daw::expecting( view.size( ) == 0 ); }
 
 		BOOST_TEST_MESSAGE( "Points to null" );
 
-		{ BOOST_REQUIRE( view.data( ) == nullptr ); }
+		{ daw::expecting( view.data( ) == nullptr ); }
 	}
 
 	//----------------------------------------------------------------------------
@@ -206,13 +207,13 @@ namespace daw {
 		daw::string_view view = str;
 
 		BOOST_TEST_MESSAGE( "Constructs a non-empty string" );
-		{ BOOST_REQUIRE( FALSE( view.empty( ) ) ); }
+		{ daw::expecting( FALSE( view.empty( ) ) ); }
 
 		BOOST_TEST_MESSAGE( "Has non-zero size" );
-		{ BOOST_REQUIRE( view.size( ) != 0 ); }
+		{ daw::expecting( view.size( ) != 0 ); }
 
 		BOOST_TEST_MESSAGE( "Points to original string" );
-		{ BOOST_REQUIRE( view.data( ) == str.data( ) ); }
+		{ daw::expecting( view.data( ) == str.data( ) ); }
 	}
 #endif
 	//----------------------------------------------------------------------------
@@ -225,35 +226,35 @@ namespace daw {
 		{
 			daw::string_view view = empty_str;
 
-			BOOST_REQUIRE( view.empty( ) );
+			daw::expecting( view.empty( ) );
 		}
 
 		BOOST_TEST_MESSAGE( "Is non-empty with non-empty string" );
 		{
 			daw::string_view view = non_empty_str;
 
-			BOOST_REQUIRE( FALSE( view.empty( ) ) );
+			daw::expecting( FALSE( view.empty( ) ) );
 		}
 
 		BOOST_TEST_MESSAGE( "Is size 0 with empty string" );
 		{
 			daw::string_view view = empty_str;
 
-			BOOST_REQUIRE( view.size( ) == 0 );
+			daw::expecting( view.size( ) == 0 );
 		}
 
 		BOOST_TEST_MESSAGE( "Is not size 0 with non-empty string" );
 		{
 			daw::string_view view = non_empty_str;
 
-			BOOST_REQUIRE( view.size( ) != 0 );
+			daw::expecting( view.size( ) != 0 );
 		}
 
 		BOOST_TEST_MESSAGE( "Points to original string" );
 		{
 			daw::string_view view = non_empty_str;
 
-			BOOST_REQUIRE( view.data( ) == non_empty_str );
+			daw::expecting( view.data( ) == non_empty_str );
 		}
 	}
 
@@ -264,16 +265,16 @@ namespace daw {
 		daw::string_view view = "Hello world";
 
 		BOOST_TEST_MESSAGE( "Is empty with empty string" );
-		{ BOOST_REQUIRE( empty.empty( ) ); }
+		{ daw::expecting( empty.empty( ) ); }
 
 		BOOST_TEST_MESSAGE( "Is non-empty with non-empty string" );
-		{ BOOST_REQUIRE( FALSE( view.empty( ) ) ); }
+		{ daw::expecting( FALSE( view.empty( ) ) ); }
 
 		BOOST_TEST_MESSAGE( "Is size 0 with empty string" );
-		{ BOOST_REQUIRE( empty.size( ) == 0 ); }
+		{ daw::expecting( empty.size( ) == 0 ); }
 
 		BOOST_TEST_MESSAGE( "Is not size 0 with non-empty string" );
-		{ BOOST_REQUIRE( view.size( ) != 0 ); }
+		{ daw::expecting( view.size( ) != 0 ); }
 	}
 
 	//----------------------------------------------------------------------------
@@ -285,13 +286,13 @@ namespace daw {
 		daw::string_view view = str;
 
 		BOOST_TEST_MESSAGE( "Returns non-zero for non-empty string" );
-		{ BOOST_REQUIRE( view.size( ) == std::char_traits<char>::length( str ) ); }
+		{ daw::expecting( view.size( ) == std::char_traits<char>::length( str ) ); }
 
 		BOOST_TEST_MESSAGE( "Returns 0 for empty string" );
 		{
 			view = "";
 
-			BOOST_REQUIRE( view.size( ) == 0 );
+			daw::expecting( view.size( ) == 0 );
 		}
 	}
 
@@ -303,14 +304,14 @@ namespace daw {
 
 		BOOST_TEST_MESSAGE( "Returns non-zero for non-empty string" );
 		{
-			BOOST_REQUIRE( view.length( ) == std::char_traits<char>::length( str ) );
+			daw::expecting( view.length( ) == std::char_traits<char>::length( str ) );
 		}
 
 		BOOST_TEST_MESSAGE( "Returns 0 for empty string" );
 		{
 			view = "";
 
-			BOOST_REQUIRE( view.length( ) == 0 );
+			daw::expecting( view.length( ) == 0 );
 		}
 	}
 
@@ -321,13 +322,13 @@ namespace daw {
 		daw::string_view view = str;
 
 		BOOST_TEST_MESSAGE( "Returns false on non-empty string" );
-		{ BOOST_REQUIRE( FALSE( view.empty( ) ) ); }
+		{ daw::expecting( FALSE( view.empty( ) ) ); }
 
 		BOOST_TEST_MESSAGE( "Returns true on empty string" );
 		{
 			view = "";
 
-			BOOST_REQUIRE( view.empty( ) );
+			daw::expecting( view.empty( ) );
 		}
 	}
 
@@ -340,7 +341,7 @@ namespace daw {
 		daw::string_view view = str;
 
 		BOOST_TEST_MESSAGE( "Points to original data source" );
-		{ BOOST_REQUIRE( view.c_str( ) == str ); }
+		{ daw::expecting( view.c_str( ) == str ); }
 	}
 
 	//----------------------------------------------------------------------------
@@ -350,7 +351,7 @@ namespace daw {
 		daw::string_view view = str;
 
 		BOOST_TEST_MESSAGE( "Points to original data source" );
-		{ BOOST_REQUIRE( view.data( ) == str ); }
+		{ daw::expecting( view.data( ) == str ); }
 	}
 
 	//----------------------------------------------------------------------------
@@ -360,7 +361,7 @@ namespace daw {
 		daw::string_view view = str;
 
 		BOOST_TEST_MESSAGE( "Returns reference to entry at position" );
-		{ BOOST_REQUIRE( &view[0] == str ); }
+		{ daw::expecting( &view[0] == str ); }
 	}
 
 	//----------------------------------------------------------------------------
@@ -370,7 +371,7 @@ namespace daw {
 		daw::string_view view = str;
 
 		BOOST_TEST_MESSAGE( "Returns reference to entry at position" );
-		{ BOOST_REQUIRE( &view.at( 0 ) == str ); }
+		{ daw::expecting( &view.at( 0 ) == str ); }
 
 		BOOST_TEST_MESSAGE( "Throws when out of range" );
 		{ BOOST_REQUIRE_THROW( view.at( 11 ), std::out_of_range ); }
@@ -382,7 +383,7 @@ namespace daw {
 		daw::string_view view = "Hello World";
 
 		BOOST_TEST_MESSAGE( "Returns reference to first character" );
-		{ BOOST_REQUIRE( view.front( ) == 'H' ); }
+		{ daw::expecting( view.front( ) == 'H' ); }
 	}
 
 	//----------------------------------------------------------------------------
@@ -391,7 +392,7 @@ namespace daw {
 		daw::string_view view = "Hello World";
 
 		BOOST_TEST_MESSAGE( "Returns reference to last character" );
-		{ BOOST_REQUIRE( view.back( ) == 'd' ); }
+		{ daw::expecting( view.back( ) == 'd' ); }
 	}
 
 	//----------------------------------------------------------------------------
@@ -405,7 +406,7 @@ namespace daw {
 		{
 			view.remove_prefix( 6 );
 
-			BOOST_REQUIRE( ( view == "World" ) );
+			daw::expecting( ( view == "World" ) );
 		}
 	}
 
@@ -418,8 +419,8 @@ namespace daw {
 		{
 			view.remove_suffix( 6 );
 
-			BOOST_REQUIRE_EQUAL( view, "Hello" );
-			BOOST_REQUIRE( view == "Hello" );
+			daw::expecting( view, "Hello" );
+			daw::expecting( view == "Hello" );
 		}
 	}
 
@@ -435,7 +436,7 @@ namespace daw {
 		{
 			view1.swap( view2 );
 
-			BOOST_REQUIRE(
+			daw::expecting(
 			  ( ( view1.data( ) == str2 ) && ( view2.data( ) == str1 ) ) );
 		}
 	}
@@ -450,10 +451,10 @@ namespace daw {
 		std::string string = view.to_string( );
 
 		BOOST_TEST_MESSAGE( "Copies view to new location in std::string" );
-		{ BOOST_REQUIRE( view.data( ) != string.data( ) ); }
+		{ daw::expecting( view.data( ) != string.data( ) ); }
 
 		BOOST_TEST_MESSAGE( "Copied string contains same contents as view" );
-		{ BOOST_REQUIRE( string == "Hello World" ); }
+		{ daw::expecting( string == "Hello World" ); }
 	}
 	//----------------------------------------------------------------------------
 
@@ -463,10 +464,10 @@ namespace daw {
 		std::string string = static_cast<std::string>( view );
 
 		BOOST_TEST_MESSAGE( "Copies view to new location in std::string" );
-		{ BOOST_REQUIRE( view.data( ) != string.data( ) ); }
+		{ daw::expecting( view.data( ) != string.data( ) ); }
 
 		BOOST_TEST_MESSAGE( "Copied string contains same contents as view" );
-		{ BOOST_REQUIRE( string == "Hello World" ); }
+		{ daw::expecting( string == "Hello World" ); }
 	}
 #endif
 	//----------------------------------------------------------------------------
@@ -488,7 +489,7 @@ namespace daw {
 			char result[11];
 			view.copy( result, 11 );
 
-			BOOST_REQUIRE( std::strncmp( result, "Hello World", 11 ) == 0 );
+			daw::expecting( std::strncmp( result, "Hello World", 11 ) == 0 );
 		}
 
 		BOOST_TEST_MESSAGE( "Copies remaining characters if count > size" );
@@ -496,7 +497,7 @@ namespace daw {
 			char result[11];
 			view.copy( result, 20 );
 
-			BOOST_REQUIRE( std::strncmp( result, "Hello World", 11 ) == 0 );
+			daw::expecting( std::strncmp( result, "Hello World", 11 ) == 0 );
 		}
 
 		BOOST_TEST_MESSAGE( "Copies part of the string" );
@@ -504,7 +505,7 @@ namespace daw {
 			char result[11];
 			view.copy( result, 5 );
 
-			BOOST_REQUIRE( std::strncmp( result, "Hello", 5 ) == 0 );
+			daw::expecting( std::strncmp( result, "Hello", 5 ) == 0 );
 		}
 
 		BOOST_TEST_MESSAGE(
@@ -513,14 +514,14 @@ namespace daw {
 			char result[11];
 			view.copy( result, 10, 6 );
 
-			BOOST_REQUIRE( std::strncmp( result, "World", 5 ) == 0 );
+			daw::expecting( std::strncmp( result, "World", 5 ) == 0 );
 		}
 
 		BOOST_TEST_MESSAGE( "Returns number of characters copied" );
 		{
 			char result[11];
 
-			BOOST_REQUIRE( view.copy( result, 20 ) == 11 );
+			daw::expecting( view.copy( result, 20 ) == 11 );
 		}
 	}
 
@@ -532,26 +533,26 @@ namespace daw {
 		BOOST_TEST_MESSAGE( "Returns the full string when given no args" );
 		{
 			auto substr = view.substr( );
-			BOOST_REQUIRE( substr == "Hello World" );
+			daw::expecting( substr == "Hello World" );
 		}
 
 		BOOST_TEST_MESSAGE( "Returns last part of string" );
 		{
 			auto substr = view.substr( 6 );
-			BOOST_REQUIRE( substr == "World" );
+			daw::expecting( substr == "World" );
 		}
 
 		BOOST_TEST_MESSAGE( "Substring returns at most count characters" );
 		{
 			auto substr = view.substr( 6, 1 );
-			BOOST_REQUIRE_EQUAL( substr, "W" );
-			BOOST_REQUIRE( substr == "W" );
+			daw::expecting( substr, "W" );
+			daw::expecting( substr == "W" );
 		}
 
 		BOOST_TEST_MESSAGE( "Returns up to end of string if length > size" );
 		{
 			auto substr = view.substr( 6, 10 );
-			BOOST_REQUIRE( substr == "World" );
+			daw::expecting( substr == "World" );
 		}
 
 		BOOST_TEST_MESSAGE( "Throws std::out_of_range if pos > size" );
@@ -565,14 +566,14 @@ namespace daw {
 		{
 			daw::string_view view = "Hello World";
 
-			BOOST_REQUIRE( view.compare( "Hello World" ) == 0 );
+			daw::expecting( view.compare( "Hello World" ) == 0 );
 		}
 
 		BOOST_TEST_MESSAGE( "Returns nonzero for different views" );
 		{
 			daw::string_view view = "Hello World";
 
-			BOOST_REQUIRE( view.compare( "Goodbye World" ) != 0 );
+			daw::expecting( view.compare( "Goodbye World" ) != 0 );
 		}
 
 		BOOST_TEST_MESSAGE(
@@ -580,14 +581,14 @@ namespace daw {
 		{
 			daw::string_view view = "Hello World";
 
-			BOOST_REQUIRE( view.compare( "Hello" ) > 0 );
+			daw::expecting( view.compare( "Hello" ) > 0 );
 		}
 
 		BOOST_TEST_MESSAGE( "Returns < 0 for superstring beginning with self" );
 		{
 			daw::string_view view = "Hello";
 
-			BOOST_REQUIRE( view.compare( "Hello World" ) < 0 );
+			daw::expecting( view.compare( "Hello World" ) < 0 );
 		}
 
 		BOOST_TEST_MESSAGE(
@@ -596,7 +597,7 @@ namespace daw {
 		{
 			daw::string_view view = "1234567";
 
-			BOOST_REQUIRE( view.compare( "1234667" ) < 0 );
+			daw::expecting( view.compare( "1234667" ) < 0 );
 		}
 
 		BOOST_TEST_MESSAGE(
@@ -605,7 +606,7 @@ namespace daw {
 		{
 			daw::string_view view = "1234567";
 
-			BOOST_REQUIRE( view.compare( "1234467" ) > 0 );
+			daw::expecting( view.compare( "1234467" ) > 0 );
 		}
 	}
 
@@ -620,42 +621,42 @@ namespace daw {
 			{
 				daw::string_view view2 = "Hello World";
 
-				BOOST_REQUIRE( view == view2 );
+				daw::expecting( view == view2 );
 			}
 
 			BOOST_TEST_MESSAGE(
 			  "Returns true for equal strings with left char array" );
-			{ BOOST_REQUIRE( "Hello World" == view ); }
+			{ daw::expecting( "Hello World" == view ); }
 
 			BOOST_TEST_MESSAGE(
 			  "Returns true for equal strings with right char array" );
-			{ BOOST_REQUIRE( view == "Hello World" ); }
+			{ daw::expecting( view == "Hello World" ); }
 
 			BOOST_TEST_MESSAGE( "Returns true for equal strings with left char ptr" );
 			{
 				const char *str = "Hello World";
-				BOOST_REQUIRE( str == view );
+				daw::expecting( str == view );
 			}
 
 			BOOST_TEST_MESSAGE(
 			  "Returns true for equal strings with right char ptr" );
 			{
 				const char *str = "Hello World";
-				BOOST_REQUIRE( view == str );
+				daw::expecting( view == str );
 			}
 #ifndef NOSTRING
 			BOOST_TEST_MESSAGE(
 			  "Returns true for equal strings with left std::string" );
 			{
 				std::string str = "Hello World";
-				BOOST_REQUIRE( str == view );
+				daw::expecting( str == view );
 			}
 
 			BOOST_TEST_MESSAGE(
 			  "Returns true for equal strings with right std::string" );
 			{
 				std::string str = "Hello World";
-				BOOST_REQUIRE( view == str );
+				daw::expecting( view == str );
 			}
 #endif
 		}
@@ -666,29 +667,29 @@ namespace daw {
 			{
 				daw::string_view view2 = "Goodbye World";
 
-				BOOST_REQUIRE( FALSE( view == view2 ) );
+				daw::expecting( FALSE( view == view2 ) );
 			}
 
 			BOOST_TEST_MESSAGE(
 			  "Returns false for non-equal strings with left char array" );
-			{ BOOST_REQUIRE( FALSE( ( "Goodbye World" == view ) ) ); }
+			{ daw::expecting( FALSE( ( "Goodbye World" == view ) ) ); }
 
 			BOOST_TEST_MESSAGE(
 			  "Returns false for non-equal strings with right char array" );
-			{ BOOST_REQUIRE( FALSE( ( view == "Goodbye World" ) ) ); }
+			{ daw::expecting( FALSE( ( view == "Goodbye World" ) ) ); }
 
 			BOOST_TEST_MESSAGE(
 			  "Returns false for non-equal strings with left char ptr" );
 			{
 				const char *str = "Goodbye World";
-				BOOST_REQUIRE( FALSE( str == view ) );
+				daw::expecting( FALSE( str == view ) );
 			}
 
 			BOOST_TEST_MESSAGE(
 			  "Returns false for non-equal strings with right char ptr" );
 			{
 				const char *str = "Goodbye World";
-				BOOST_REQUIRE( FALSE( view == str ) );
+				daw::expecting( FALSE( view == str ) );
 			}
 
 #ifndef NOSTRING
@@ -696,14 +697,14 @@ namespace daw {
 			  "Returns false for non-equal strings with left std::string" );
 			{
 				std::string str = "Goodbye World";
-				BOOST_REQUIRE( FALSE( str == view ) );
+				daw::expecting( FALSE( str == view ) );
 			}
 
 			BOOST_TEST_MESSAGE(
 			  "Returns false for non-equal strings with right std::string" );
 			{
 				std::string str = "Goodbye World";
-				BOOST_REQUIRE( FALSE( view == str ) );
+				daw::expecting( FALSE( view == str ) );
 			}
 
 			BOOST_TEST_MESSAGE( "Two unequal string_views of size 1" );
@@ -712,7 +713,7 @@ namespace daw {
 				std::string str2 = "2";
 				daw::string_view sv1{str1};
 				daw::string_view sv2{str2};
-				BOOST_REQUIRE( FALSE( sv1 == sv2 ) );
+				daw::expecting( FALSE( sv1 == sv2 ) );
 			}
 			BOOST_TEST_MESSAGE( "Two equal string_views of size 1" );
 			{
@@ -720,7 +721,7 @@ namespace daw {
 				std::string str2 = "1";
 				daw::string_view sv1{str1};
 				daw::string_view sv2{str2};
-				BOOST_REQUIRE_EQUAL( sv1, sv2 );
+				daw::expecting( sv1, sv2 );
 			}
 #endif
 		}
@@ -737,29 +738,29 @@ namespace daw {
 			{
 				daw::string_view view2 = "Hello World";
 
-				BOOST_REQUIRE( FALSE( view != view2 ) );
+				daw::expecting( FALSE( view != view2 ) );
 			}
 
 			BOOST_TEST_MESSAGE(
 			  "Returns false for equal strings with left char array" );
-			{ BOOST_REQUIRE( FALSE( "Hello World" != view ) ); }
+			{ daw::expecting( FALSE( "Hello World" != view ) ); }
 
 			BOOST_TEST_MESSAGE(
 			  "Returns false for equal strings with right char array" );
-			{ BOOST_REQUIRE( FALSE( view != "Hello World" ) ); }
+			{ daw::expecting( FALSE( view != "Hello World" ) ); }
 
 			BOOST_TEST_MESSAGE(
 			  "Returns false for equal strings with left char ptr" );
 			{
 				const char *str = "Hello World";
-				BOOST_REQUIRE( FALSE( str != view ) );
+				daw::expecting( FALSE( str != view ) );
 			}
 
 			BOOST_TEST_MESSAGE(
 			  "Returns false for equal strings with right char ptr" );
 			{
 				const char *str = "Hello World";
-				BOOST_REQUIRE( FALSE( view != str ) );
+				daw::expecting( FALSE( view != str ) );
 			}
 
 #ifndef NOSTRING
@@ -767,14 +768,14 @@ namespace daw {
 			  "Returns false for equal strings with left std::string" );
 			{
 				std::string str = "Hello World";
-				BOOST_REQUIRE( FALSE( str != view ) );
+				daw::expecting( FALSE( str != view ) );
 			}
 
 			BOOST_TEST_MESSAGE(
 			  "Returns false for equal strings with right std::string" );
 			{
 				std::string str = "Hello World";
-				BOOST_REQUIRE( FALSE( view != str ) );
+				daw::expecting( FALSE( view != str ) );
 			}
 #endif
 		}
@@ -785,29 +786,29 @@ namespace daw {
 			{
 				daw::string_view view2 = "Goodbye World";
 
-				BOOST_REQUIRE( view != view2 );
+				daw::expecting( view != view2 );
 			}
 
 			BOOST_TEST_MESSAGE(
 			  "Returns true for non-equal strings with left char array" );
-			{ BOOST_REQUIRE( "Goodbye World" != view ); }
+			{ daw::expecting( "Goodbye World" != view ); }
 
 			BOOST_TEST_MESSAGE(
 			  "Returns true for non-equal strings with right char array" );
-			{ BOOST_REQUIRE( view != "Goodbye World" ); }
+			{ daw::expecting( view != "Goodbye World" ); }
 
 			BOOST_TEST_MESSAGE(
 			  "Returns true for non-equal strings with left char ptr" );
 			{
 				const char *str = "Goodbye World";
-				BOOST_REQUIRE( str != view );
+				daw::expecting( str != view );
 			}
 
 			BOOST_TEST_MESSAGE(
 			  "Returns true for non-equal strings with right char ptr" );
 			{
 				const char *str = "Goodbye World";
-				BOOST_REQUIRE( view != str );
+				daw::expecting( view != str );
 			}
 
 #ifndef NOSTRING
@@ -815,14 +816,14 @@ namespace daw {
 			  "Returns true for non-equal strings with left std::string" );
 			{
 				std::string str = "Goodbye World";
-				BOOST_REQUIRE( str != view );
+				daw::expecting( str != view );
 			}
 
 			BOOST_TEST_MESSAGE(
 			  "Returns true for non-equal strings with right std::string" );
 			{
 				std::string str = "Goodbye World";
-				BOOST_REQUIRE( view != str );
+				daw::expecting( view != str );
 			}
 #endif
 		}
@@ -832,7 +833,7 @@ namespace daw {
 	BOOST_AUTO_TEST_CASE( daw_string_view_split_001 ) {
 		std::string str = "This is a test of the split";
 		auto const str_splt = split( daw::string_view{str}, ' ' );
-		BOOST_REQUIRE_EQUAL( str_splt.size( ), 7 );
+		daw::expecting( 7U, str_splt.size( ) );
 		std::cout << str << "\n\n";
 		std::cout << "items:\n";
 		for( auto const &s : str_splt ) {
@@ -845,20 +846,20 @@ namespace daw {
 	BOOST_AUTO_TEST_CASE( daw_string_view_split_002 ) {
 		char const str[] = "This is a test of the split";
 		auto const str_splt = split( daw::string_view{str}, ' ' );
-		BOOST_REQUIRE_EQUAL( str_splt.size( ), 7 );
+		daw::expecting( 7U, str_splt.size( ) );
 	}
 
 #ifndef NOSTRING
 	BOOST_AUTO_TEST_CASE( daw_string_view_split_003 ) {
 		std::string str = "This is a test of the split";
 		auto const str_splt = split( str, []( char c ) { return c == ' '; } );
-		BOOST_REQUIRE_EQUAL( str_splt.size( ), 7 );
+		daw::expecting( 7U, str_splt.size( ) );
 	}
 #endif
 	BOOST_AUTO_TEST_CASE( daw_string_view_split_004 ) {
 		char const str[] = "This is a test of the split";
 		auto const str_splt = split( str, []( char c ) { return c == ' '; } );
-		BOOST_REQUIRE_EQUAL( str_splt.size( ), 7 );
+		daw::expecting( 7U, str_splt.size( ) );
 	}
 
 #ifndef NOSTRING
@@ -866,149 +867,149 @@ namespace daw {
 		std::string b_str;
 		daw::string_view b = b_str;
 		auto const str_splt = split( b, ',' );
-		BOOST_REQUIRE( str_splt.empty( ) );
+		daw::expecting( str_splt.empty( ) );
 	}
 #endif
 	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_001 ) {
-		BOOST_REQUIRE( daw::can_be_string_view<decltype( "Hello" )> );
+		daw::expecting( daw::can_be_string_view<decltype( "Hello" )> );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_starts_with_001 ) {
-		BOOST_REQUIRE( daw::string_view{"This is a test"}.starts_with( "This" ) );
+		daw::expecting( daw::string_view{"This is a test"}.starts_with( "This" ) );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_starts_with_002 ) {
-		BOOST_REQUIRE( daw::string_view{"This is a test"}.starts_with(
+		daw::expecting( daw::string_view{"This is a test"}.starts_with(
 		  daw::string_view{"This"} ) );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_starts_with_003 ) {
-		BOOST_REQUIRE( daw::string_view{"This is a test"}.starts_with( 'T' ) );
+		daw::expecting( daw::string_view{"This is a test"}.starts_with( 'T' ) );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_starts_with_004 ) {
-		BOOST_REQUIRE( !daw::string_view{"This is a test"}.starts_with( "ahis" ) );
+		daw::expecting( !daw::string_view{"This is a test"}.starts_with( "ahis" ) );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_starts_with_005 ) {
-		BOOST_REQUIRE( !daw::string_view{"This is a test"}.starts_with(
+		daw::expecting( !daw::string_view{"This is a test"}.starts_with(
 		  daw::string_view{"ahis"} ) );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_starts_with_006 ) {
-		BOOST_REQUIRE( !daw::string_view{"This is a test"}.starts_with( 'a' ) );
+		daw::expecting( !daw::string_view{"This is a test"}.starts_with( 'a' ) );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_ends_with_001 ) {
-		BOOST_REQUIRE( daw::string_view{"This is a test"}.ends_with( "test" ) );
+		daw::expecting( daw::string_view{"This is a test"}.ends_with( "test" ) );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_ends_with_002 ) {
-		BOOST_REQUIRE( daw::string_view{"This is a test"}.ends_with(
+		daw::expecting( daw::string_view{"This is a test"}.ends_with(
 		  daw::string_view{"test"} ) );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_ends_with_003 ) {
-		BOOST_REQUIRE( daw::string_view{"This is a test"}.ends_with( 't' ) );
+		daw::expecting( daw::string_view{"This is a test"}.ends_with( 't' ) );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_ends_with_004 ) {
-		BOOST_REQUIRE( !daw::string_view{"This is a test"}.ends_with( "aest" ) );
+		daw::expecting( !daw::string_view{"This is a test"}.ends_with( "aest" ) );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_ends_with_005 ) {
-		BOOST_REQUIRE( !daw::string_view{"This is a test"}.ends_with(
+		daw::expecting( !daw::string_view{"This is a test"}.ends_with(
 		  daw::string_view{"aest"} ) );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_can_be_string_view_ends_with_006 ) {
-		BOOST_REQUIRE( !daw::string_view{"This is a test"}.ends_with( 'a' ) );
+		daw::expecting( !daw::string_view{"This is a test"}.ends_with( 'a' ) );
 	}
 
 #ifndef NOSTRING
 	BOOST_AUTO_TEST_CASE( daw_to_string_view_001 ) {
 		auto val = daw::to_string_view( std::to_string( 5 ) ).to_string( );
-		BOOST_REQUIRE_EQUAL( "5", val );
+		daw::expecting( "5", val );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_pop_front_sv_test_001 ) {
 		std::string str = "This is a test";
 		daw::string_view sv{str.data( ), str.size( )};
-		BOOST_REQUIRE_EQUAL( sv.pop_front( " " ), "This" );
-		BOOST_REQUIRE_EQUAL( sv.pop_front( " " ), "is" );
-		BOOST_REQUIRE_EQUAL( sv.pop_front( " " ), "a" );
-		BOOST_REQUIRE_EQUAL( sv.pop_front( " " ), "test" );
-		BOOST_REQUIRE( sv.empty( ) );
+		daw::expecting( sv.pop_front( " " ), "This" );
+		daw::expecting( sv.pop_front( " " ), "is" );
+		daw::expecting( sv.pop_front( " " ), "a" );
+		daw::expecting( sv.pop_front( " " ), "test" );
+		daw::expecting( sv.empty( ) );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_pop_back_count_test_001 ) {
 		std::string str = "This is a test";
 		daw::string_view sv{str.data( ), str.size( )};
 		auto result = sv.pop_back( 4 );
-		BOOST_REQUIRE_EQUAL( result, "test" );
-		BOOST_REQUIRE_EQUAL( sv, "This is a " );
+		daw::expecting( result, "test" );
+		daw::expecting( sv, "This is a " );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_pop_back_sv_test_001 ) {
 		std::string str = "This is a test";
 		daw::string_view sv{str.data( ), str.size( )};
-		BOOST_REQUIRE_EQUAL( sv.pop_back( " " ), "test" );
-		BOOST_REQUIRE_EQUAL( sv.pop_back( " " ), "a" );
-		BOOST_REQUIRE_EQUAL( sv.pop_back( " " ), "is" );
-		BOOST_REQUIRE_EQUAL( sv.pop_back( " " ), "This" );
-		BOOST_REQUIRE( sv.empty( ) );
+		daw::expecting( sv.pop_back( " " ), "test" );
+		daw::expecting( sv.pop_back( " " ), "a" );
+		daw::expecting( sv.pop_back( " " ), "is" );
+		daw::expecting( sv.pop_back( " " ), "This" );
+		daw::expecting( sv.empty( ) );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_pop_front_pred_test_001 ) {
 		std::string str = "This is1a test";
 		daw::string_view sv{str.data( ), str.size( )};
 		auto lhs = sv.pop_front( []( auto c ) { return std::isdigit( c ); } );
-		BOOST_REQUIRE_EQUAL( lhs, "This is" );
-		BOOST_REQUIRE_EQUAL( sv, "a test" );
+		daw::expecting( lhs, "This is" );
+		daw::expecting( sv, "a test" );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_pop_back_pred_test_001 ) {
 		std::string str = "This is1a test";
 		daw::string_view sv{str.data( ), str.size( )};
 		auto rhs = sv.pop_back( []( auto c ) { return std::isdigit( c ); } );
-		BOOST_REQUIRE_EQUAL( sv, "This is" );
-		BOOST_REQUIRE_EQUAL( rhs, "a test" );
+		daw::expecting( sv, "This is" );
+		daw::expecting( rhs, "a test" );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_try_pop_back_sv_test_001 ) {
 		std::string str = "This is a test";
 		daw::string_view sv{str.data( ), str.size( )};
-		BOOST_REQUIRE_EQUAL( sv.try_pop_back( " " ), "test" );
-		BOOST_REQUIRE_EQUAL( sv.try_pop_back( " " ), "a" );
-		BOOST_REQUIRE_EQUAL( sv.try_pop_back( " " ), "is" );
-		BOOST_REQUIRE_EQUAL( sv.try_pop_back( " " ), "" );
-		BOOST_REQUIRE_EQUAL( sv, "This" );
+		daw::expecting( sv.try_pop_back( " " ), "test" );
+		daw::expecting( sv.try_pop_back( " " ), "a" );
+		daw::expecting( sv.try_pop_back( " " ), "is" );
+		daw::expecting( sv.try_pop_back( " " ), "" );
+		daw::expecting( sv, "This" );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_try_pop_back_sv_test_002 ) {
 		std::string str = "This is a test";
 		daw::string_view sv{str.data( ), str.size( )};
 		auto result = sv.try_pop_back( "blah" );
-		BOOST_REQUIRE( result.empty( ) );
-		BOOST_REQUIRE( sv == str );
+		daw::expecting( result.empty( ) );
+		daw::expecting( sv == str );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_try_pop_front_sv_test_001 ) {
 		std::string str = "This is a test";
 		daw::string_view sv{str.data( ), str.size( )};
-		BOOST_REQUIRE_EQUAL( sv.try_pop_front( " " ), "This" );
-		BOOST_REQUIRE_EQUAL( sv.try_pop_front( " " ), "is" );
-		BOOST_REQUIRE_EQUAL( sv.try_pop_front( " " ), "a" );
-		BOOST_REQUIRE( sv.try_pop_front( " " ) != "test" );
-		BOOST_REQUIRE_EQUAL( sv, "test" );
+		daw::expecting( sv.try_pop_front( " " ), "This" );
+		daw::expecting( sv.try_pop_front( " " ), "is" );
+		daw::expecting( sv.try_pop_front( " " ), "a" );
+		daw::expecting( sv.try_pop_front( " " ) != "test" );
+		daw::expecting( sv, "test" );
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_try_pop_front_sv_test_002 ) {
 		std::string str = "This is a test";
 		daw::string_view sv{str.data( ), str.size( )};
 		auto result = sv.try_pop_front( "blah" );
-		BOOST_REQUIRE( result.empty( ) );
-		BOOST_REQUIRE( sv == str );
+		daw::expecting( result.empty( ) );
+		daw::expecting( sv == str );
 		daw::string_view s{};
 		s.remove_prefix( );
 	}

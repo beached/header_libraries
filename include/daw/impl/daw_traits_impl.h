@@ -166,17 +166,17 @@ namespace daw {
 		} // namespace impl
 
 		template<typename... Args>
-		CXINLINE bool is_single_void_arg_v =
+		inline constexpr bool is_single_void_arg_v =
 		  impl::is_single_void_arg_t<Args...>::value;
 
 		template<typename Function, typename... Args>
-		CXINLINE bool is_callable_v =
+		inline constexpr bool is_callable_v =
 		  is_detected_v<traits::detectors::callable_with, Function, Args...> or
 		  ( is_single_void_arg_v<Args...> and
 		    is_detected_v<traits::detectors::callable_with, Function> );
 
 		template<typename Result, typename Function, typename... Args>
-		CXINLINE bool is_callable_convertible_v =
+		inline constexpr bool is_callable_convertible_v =
 		  is_detected_convertible_v<Result, traits::detectors::callable_with,
 		                            Function, Args...>;
 		namespace impl {
@@ -197,7 +197,7 @@ namespace daw {
 		} // namespace impl
 
 		template<typename Function, typename... Args>
-		CXINLINE bool is_nothrow_callable_v =
+		inline constexpr bool is_nothrow_callable_v =
 		  impl::is_nothrow_callable_test<Function, Args...>( );
 
 		template<typename Function, typename... Args>
@@ -208,116 +208,116 @@ namespace daw {
 		using make_fp = std::add_pointer_t<T>;
 
 		template<typename T, typename U = T>
-		CXINLINE bool has_addition_operator_v =
+		inline constexpr bool has_addition_operator_v =
 		  daw::is_detected_v<detectors::has_addition_operator, T, U>;
 
 		template<typename T, typename U = T>
-		CXINLINE bool has_subtraction_operator_v =
+		inline constexpr bool has_subtraction_operator_v =
 		  daw::is_detected_v<detectors::has_subtraction_operator, T, U>;
 
 		template<typename T, typename U = T>
-		CXINLINE bool has_multiplication_operator_v =
+		inline constexpr bool has_multiplication_operator_v =
 		  daw::is_detected_v<detectors::has_multiplication_operator, T, U>;
 
 		template<typename T, typename U = T>
-		CXINLINE bool has_division_operator_v =
+		inline constexpr bool has_division_operator_v =
 		  daw::is_detected_v<detectors::has_division_operator, T, U>;
 
 		template<typename T, typename U>
-		CXINLINE bool has_compound_assignment_add_operator_v =
+		inline constexpr bool has_compound_assignment_add_operator_v =
 		  daw::is_detected_v<detectors::has_compound_assignment_add_operator, T, U>;
 
 		template<typename T, typename U>
-		CXINLINE bool has_compound_assignment_sub_operator_v =
+		inline constexpr bool has_compound_assignment_sub_operator_v =
 		  daw::is_detected_v<detectors::has_compound_assignment_sub_operator, T, U>;
 
 		template<typename T, typename U>
-		CXINLINE bool has_compound_assignment_mul_operator_v =
+		inline constexpr bool has_compound_assignment_mul_operator_v =
 		  daw::is_detected_v<detectors::has_compound_assignment_mul_operator, T, U>;
 
 		template<typename T, typename U>
-		CXINLINE bool has_compound_assignment_div_operator_v =
+		inline constexpr bool has_compound_assignment_div_operator_v =
 		  daw::is_detected_v<detectors::has_compound_assignment_div_operator, T, U>;
 
 		template<typename T, typename U = T>
-		CXINLINE bool has_modulus_operator_v =
+		inline constexpr bool has_modulus_operator_v =
 		  daw::is_detected_v<detectors::has_modulus_operator, T, U>;
 
 		template<typename T>
-		CXINLINE bool has_increment_operator_v =
+		inline constexpr bool has_increment_operator_v =
 		  daw::is_detected_v<detectors::has_increment_operator, T>;
 
 		template<typename T>
-		CXINLINE bool has_decrement_operator_v =
+		inline constexpr bool has_decrement_operator_v =
 		  daw::is_detected_v<detectors::has_decrement_operator, T>;
 
 		template<typename String>
-		CXINLINE bool has_integer_subscript_v =
+		inline constexpr bool has_integer_subscript_v =
 		  daw::is_detected_v<detectors::has_integer_subscript, String>;
 
 		template<typename String>
-		CXINLINE bool has_size_memberfn_v =
+		inline constexpr bool has_size_memberfn_v =
 		  daw::is_detected_v<detectors::has_size, String>;
 
 		template<typename String>
-		CXINLINE bool has_empty_memberfn_v =
+		inline constexpr bool has_empty_memberfn_v =
 		  daw::is_detected_v<detectors::has_empty, String>;
 
 		template<typename String>
-		CXINLINE bool has_append_memberfn_v =
+		inline constexpr bool has_append_memberfn_v =
 		  daw::is_detected_v<detectors::has_append, String>;
 
 		template<typename String>
-		CXINLINE bool has_append_operator_v =
+		inline constexpr bool has_append_operator_v =
 		  daw::is_detected_v<detectors::has_append_operator, String>;
 
 		template<typename T, typename U = T>
-		CXINLINE bool is_equality_comparable_v =
+		inline constexpr bool is_equality_comparable_v =
 		  is_detected_convertible_v<bool, detectors::equality_comparable, T, U>;
 
 		template<typename T, typename U = T>
-		CXINLINE bool is_inequality_comparable_v =
+		inline constexpr bool is_inequality_comparable_v =
 		  is_detected_convertible_v<bool, detectors::inequality_comparable, T, U>;
 
 		template<typename T, typename U = T>
-		CXINLINE bool is_less_than_comparable_v =
+		inline constexpr bool is_less_than_comparable_v =
 		  is_detected_convertible_v<bool, detectors::less_than_comparable, T, U>;
 
 		template<typename T, typename U = T>
-		CXINLINE bool is_equal_less_than_comparable_v =
+		inline constexpr bool is_equal_less_than_comparable_v =
 		  is_detected_convertible_v<bool, detectors::equal_less_than_comparable, T,
 		                            U>;
 
 		template<typename T, typename U = T>
-		CXINLINE bool is_greater_than_comparable_v =
+		inline constexpr bool is_greater_than_comparable_v =
 		  is_detected_convertible_v<bool, detectors::greater_than_comparable, T, U>;
 
 		template<typename T, typename U = T>
-		CXINLINE bool is_equal_greater_than_comparable_v =
+		inline constexpr bool is_equal_greater_than_comparable_v =
 		  is_detected_convertible_v<bool, detectors::equal_greater_than_comparable,
 		                            T, U>;
 
 		template<typename Iterator,
 		         typename T = typename std::iterator_traits<Iterator>::value_type>
-		CXINLINE bool is_assignable_iterator_v =
+		inline constexpr bool is_assignable_iterator_v =
 		  is_detected_v<detectors::assignable, Iterator, T>;
 
 		template<typename L, typename R>
-		CXINLINE bool is_comparable_v =
+		inline constexpr bool is_comparable_v =
 		  is_equality_comparable_v<L, R> and is_equality_comparable_v<R, L>;
 
 		template<typename Container>
-		CXINLINE bool has_begin =
+		inline constexpr bool has_begin =
 		  is_detected_v<detectors::std_begin_detector, Container> or
 		  is_detected_v<detectors::adl_begin_detector, Container>;
 
 		template<typename Container>
-		CXINLINE bool has_end =
+		inline constexpr bool has_end =
 		  is_detected_v<detectors::std_end_detector, Container> or
 		  is_detected_v<detectors::adl_end_detector, Container>;
 
 		template<typename Container>
-		CXINLINE bool is_container_like_v =
+		inline constexpr bool is_container_like_v =
 		  has_begin<Container> and has_end<Container>;
 
 		namespace impl {
@@ -344,30 +344,31 @@ namespace daw {
 			} // namespace is_iter
 
 			template<typename T>
-			CXINLINE bool is_incrementable_v =
+			inline constexpr bool is_incrementable_v =
 			  is_same_v<T &, daw::detected_t<is_iter::is_incrementable, T>>;
 
 			template<typename T>
-			CXINLINE bool has_value_type_v =
+			inline constexpr bool has_value_type_v =
 			  daw::is_detected_v<is_iter::has_value_type, T>;
 
 			template<typename T>
-			CXINLINE bool has_difference_type_v =
+			inline constexpr bool has_difference_type_v =
 			  daw::is_detected_v<is_iter::has_difference_type, T>;
 
 			template<typename T>
-			CXINLINE bool has_reference_v =
+			inline constexpr bool has_reference_v =
 			  daw::is_detected_v<is_iter::has_reference, T>;
 
 			template<typename T>
-			CXINLINE bool has_pointer_v = daw::is_detected_v<is_iter::has_pointer, T>;
+			inline constexpr bool has_pointer_v =
+			  daw::is_detected_v<is_iter::has_pointer, T>;
 
 			template<typename T>
-			CXINLINE bool has_iterator_category_v =
+			inline constexpr bool has_iterator_category_v =
 			  daw::is_detected_v<is_iter::has_iterator_category, T>;
 
 			template<typename T>
-			CXINLINE bool has_iterator_trait_types_v =
+			inline constexpr bool has_iterator_trait_types_v =
 			  has_value_type_v<T> and has_difference_type_v<T> and has_reference_v<T>
 			    and has_pointer_v<T> and has_iterator_category_v<T>;
 		} // namespace impl
@@ -376,7 +377,7 @@ namespace daw {
 		  typename is_detected<detectors::dereferenceable, T>::type;
 
 		template<typename T>
-		CXINLINE bool is_dereferenceable_v =
+		inline constexpr bool is_dereferenceable_v =
 		  is_detected_v<detectors::dereferenceable, T>;
 	} // namespace traits
 

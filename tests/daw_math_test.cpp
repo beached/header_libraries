@@ -27,7 +27,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_math.h"
 
 static_assert( daw::math::abs( std::numeric_limits<uintmax_t>::max( ) ) ==
@@ -59,100 +59,62 @@ void show( double value ) {
 	          << std::right << value;
 }
 
-BOOST_AUTO_TEST_CASE( daw_math_factorial ) {
+void daw_math_factorial( ) {
 	std::cout << "factorial( 5 ) = " << daw::math::factorial( 5 ) << "\n";
-	BOOST_REQUIRE_MESSAGE( daw::math::factorial( 5 ) == 120,
-	                       "1. factorial of 5 should be 120" );
+	daw::expecting_message( daw::math::factorial( 5 ) == 120,
+	                        "1. factorial of 5 should be 120" );
 	std::cout << "factorial( 0 ) = " << daw::math::factorial( 0 ) << "\n";
-	BOOST_REQUIRE_MESSAGE( daw::math::factorial( 0 ) == 1,
-	                       "2. factorial of 0 should return 1" );
+	daw::expecting_message( daw::math::factorial( 0 ) == 1,
+	                        "2. factorial of 0 should return 1" );
 }
 
-BOOST_AUTO_TEST_CASE( daw_math_round_001 ) {
-	constexpr auto five = daw::math::round( 4.6 );
-
-	BOOST_REQUIRE_EQUAL( five, 5 );
-}
-
-BOOST_AUTO_TEST_CASE( daw_math_round_by_001 ) {
-	constexpr auto a = daw::math::round_by( 4.6, 7 );
-
-	BOOST_REQUIRE_EQUAL( a, 7 );
-}
-
-BOOST_AUTO_TEST_CASE( daw_math_round_by_002 ) {
-	constexpr auto a = daw::math::round_by( 4.6, 10 );
-
-	BOOST_REQUIRE_EQUAL( a, 0 );
-}
-
-BOOST_AUTO_TEST_CASE( daw_math_ceil_by_001 ) {
-	constexpr auto a = daw::math::ceil_by( 4.6, 1 );
-
-	BOOST_REQUIRE_EQUAL( a, 5 );
-}
-
-BOOST_AUTO_TEST_CASE( daw_math_ceil_by_002 ) {
-	constexpr auto a = daw::math::ceil_by( 4.6, 10 );
-
-	BOOST_REQUIRE_EQUAL( a, 10 );
-}
-
-BOOST_AUTO_TEST_CASE( daw_math_ceil_by_003 ) {
-	constexpr auto a = daw::math::ceil_by( 6.6, 10 );
-
-	BOOST_REQUIRE_EQUAL( a, 10 );
-}
-
-BOOST_AUTO_TEST_CASE( daw_math_floor_by_001 ) {
-	constexpr auto a = daw::math::floor_by( 4.6, 1 );
-
-	BOOST_REQUIRE_EQUAL( a, 4 );
-}
-
-BOOST_AUTO_TEST_CASE( daw_math_floor_by_002 ) {
-	constexpr auto a = daw::math::floor_by( 14.6, 10 );
-
-	BOOST_REQUIRE_EQUAL( a, 10 );
-}
-
-BOOST_AUTO_TEST_CASE( daw_math_floor_by_003 ) {
-	constexpr auto a = daw::math::floor_by( 6.6, 10 );
-
-	BOOST_REQUIRE_EQUAL( a, 0 );
-}
-
-BOOST_AUTO_TEST_CASE( daw_math_nearly_equal_test ) {
+constexpr bool daw_math_nearly_equal_test( ) {
 	float f1 = 0;
 	float f2 = 0;
-	BOOST_REQUIRE( daw::math::nearly_equal( f1, f2 ) );
+	daw::expecting( daw::math::nearly_equal( f1, f2 ) );
 	f1 = 1.0;
-	BOOST_REQUIRE( !daw::math::nearly_equal( f1, f2 ) );
+	daw::expecting( !daw::math::nearly_equal( f1, f2 ) );
 
 	int i1 = 1;
 	int i2 = 1;
-	BOOST_REQUIRE( daw::math::nearly_equal( i1, i2 ) );
+	daw::expecting( daw::math::nearly_equal( i1, i2 ) );
 	i2 = 2;
-	BOOST_REQUIRE( !daw::math::nearly_equal( i1, i2 ) );
+	daw::expecting( !daw::math::nearly_equal( i1, i2 ) );
+	return true;
 }
 
-BOOST_AUTO_TEST_CASE( daw_math_max_001 ) {
-	BOOST_REQUIRE_EQUAL( daw::max( 5, 3, 100, 3, 4, 0xFFFF, -100 ), 0xFFFF );
-}
+static_assert( daw::math::round( 4.6 ) == 5 );
+static_assert( daw::math::nearly_equal( daw::math::round_by( 4.6, 7 ), 7.0 ) );
+static_assert( daw::math::nearly_equal( daw::math::round_by( 4.6, 10 ), 0.0 ) );
+static_assert( daw::math::nearly_equal( daw::math::ceil_by( 4.6, 1 ), 5.0 ) );
+static_assert( daw::math::nearly_equal( daw::math::ceil_by( 4.6, 10 ), 10.0 ) );
+static_assert( daw::math::nearly_equal( daw::math::ceil_by( 6.6, 10 ), 10.0 ) );
+static_assert( daw::math::nearly_equal( daw::math::floor_by( 4.6, 1 ), 4.0 ) );
+static_assert( daw::math::nearly_equal( daw::math::floor_by( 14.6, 10 ),
+                                        10.0 ) );
+static_assert( daw::math::nearly_equal( daw::math::floor_by( 6.6, 10 ), 0.0 ) );
 
-BOOST_AUTO_TEST_CASE( daw_math_max_002 ) {
-	BOOST_REQUIRE_EQUAL( daw::max( 5, 3, std::numeric_limits<float>::infinity( ),
-	                               100, 3, 4, 0xFFFF, -100 ),
-	                     std::numeric_limits<float>::infinity( ) );
-}
+static_assert( daw_math_nearly_equal_test( ) );
 
-BOOST_AUTO_TEST_CASE( daw_math_min_001 ) {
-	BOOST_REQUIRE_EQUAL( daw::min( 5, 3, 100, 3, 4, -100, 0xFFFF ), -100 );
-}
+static_assert( daw::max( 5, 3, 100, 3, 4, 0xFFFF, -100 ) == 0xFFFF );
 
-BOOST_AUTO_TEST_CASE( daw_math_min_002 ) {
-	BOOST_REQUIRE_EQUAL( daw::min( 5, 3, 100,
-	                               std::numeric_limits<float>::infinity( ), 3, 4,
-	                               -100, 0xFFFF ),
-	                     -100 );
+constexpr bool daw_max_inf_test( ) {
+	daw::expecting( daw::math::nearly_equal(
+	  daw::max( 5, 3, std::numeric_limits<float>::infinity( ), 100, 3, 4, 0xFFFF,
+	            -100 ),
+	  std::numeric_limits<float>::infinity( ) ) );
+	return true;
+}
+// Cannot test in constexpr until clang fixes bug
+// static_assert( daw_max_inf_test( ) );
+
+static_assert( daw::min( 5, 3, 100, 3, 4, -100, 0xFFFF ) == -100 );
+
+static_assert( daw::math::nearly_equal(
+  daw::min( 5, 3, 100, std::numeric_limits<float>::infinity( ), 3, 4, -100,
+            0xFFFF ),
+  -100.0f ) );
+int main( ) {
+	daw_math_factorial( );
+	daw_max_inf_test( );
 }

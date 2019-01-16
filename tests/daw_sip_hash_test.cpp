@@ -57,7 +57,7 @@ namespace {
 	};
 } // namespace
 
-int main( ) {
+void daw_sip_hash_test_001( ) {
 	std::array<char const, 16> key = {0, 1, 2,    3,    4,    5,    6,    7,
 	                                  8, 9, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F};
 
@@ -90,5 +90,8 @@ int main( ) {
 	std::string const msg = "This is a test";
 	std::cout << "Hash of '" << msg << "' is "
 	          << daw::siphash24( msg.data( ), msg.size( ), key.data( ) ) << '\n';
-	return 0;
+}
+
+int main( ) {
+	daw_sip_hash_test_001( );
 }

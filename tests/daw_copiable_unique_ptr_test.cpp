@@ -23,10 +23,10 @@
 #include <iostream>
 #include <mutex>
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_copiable_unique_ptr.h"
 
-BOOST_AUTO_TEST_CASE( daw_copiable_unique_ptr_test_01 ) {
+void daw_copiable_unique_ptr_test_01( ) {
 	struct lrg {
 		size_t a{};
 		size_t b{};
@@ -50,11 +50,11 @@ BOOST_AUTO_TEST_CASE( daw_copiable_unique_ptr_test_01 ) {
 		A &operator=( A const & ) = delete;
 	};
 	auto const a = daw::copiable_unique_ptr<int>( );
-	BOOST_REQUIRE( !a );
+	daw::expecting( !a );
 	auto b = a;
 
 	auto e = daw::make_copiable_unique_ptr<A>( );
-	BOOST_REQUIRE( static_cast<bool>( e ) );
+	daw::expecting( static_cast<bool>( e ) );
 
 	auto f = std::move( e );
 
@@ -64,10 +64,11 @@ BOOST_AUTO_TEST_CASE( daw_copiable_unique_ptr_test_01 ) {
 	*g = 5;
 
 	auto hash_value = std::hash<decltype( g )>{}( g );
+	Unused( hash_value );
 
 	auto i = daw::make_copiable_unique_ptr<std::mutex>( );
 	i.reset( );
-	BOOST_REQUIRE_EQUAL( i.get( ), nullptr );
+	daw::expecting( i.get( ), nullptr );
 }
 
 struct virt_A {
@@ -88,12 +89,17 @@ struct virt_B : virt_A {
 
 virt_B::~virt_B( ) noexcept = default;
 
-BOOST_AUTO_TEST_CASE( virtual_inheritance_test ) {
+void virtual_inheritance_test( ) {
 	using test_t = daw::copiable_unique_ptr<virt_A>;
 	auto a = test_t( new virt_A( ) );
 	auto b = test_t( new virt_B( ) );
 
-	BOOST_REQUIRE( ( *a )( ) != ( *b )( ) );
+	daw::expecting( ( *a )( ) != ( *b )( ) );
 	std::cout << "a: " << ( *a )( ) << ", " << sizeof( virt_A ) << '\n';
 	std::cout << "b: " << ( *b )( ) << ", " << sizeof( virt_B ) << '\n';
+}
+
+int main( ) {
+	daw_copiable_unique_ptr_test_01( );
+	virtual_inheritance_test( );
 }

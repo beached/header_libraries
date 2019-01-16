@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
 #include <algorithm>
 #include <iostream>
 #include <numeric>
@@ -29,53 +28,54 @@
 #include <string_view>
 #include <vector>
 
+#include "daw/daw_benchmark.h"
 #include "daw/iterator/daw_argument_iterator.h"
 
-BOOST_AUTO_TEST_CASE( test_end_001 ) {
+void test_end_001( ) {
 	constexpr auto last = daw::arg_iterator_t( );
-	BOOST_REQUIRE( !last );
+	daw::expecting( !last );
 }
 
-BOOST_AUTO_TEST_CASE( test_range_001 ) {
+void test_range_001( ) {
 	constexpr char const *argv_[] = {"test", "this", "out"};
 	auto const args = daw::arg_iterator_t( 3, argv_ );
-	BOOST_REQUIRE_EQUAL( args.size( ), 3 );
-	BOOST_REQUIRE_EQUAL( args.position( ), 0 );
+	daw::expecting( 3U, args.size( ) );
+	daw::expecting( 0U, args.position( ) );
 }
 
-BOOST_AUTO_TEST_CASE( test_prefix_inc_001 ) {
+void test_prefix_inc_001( ) {
 	constexpr char const *argv_[] = {"test", "this", "out"};
 	auto args = daw::arg_iterator_t( 3, argv_ );
 	++args;
-	BOOST_REQUIRE_EQUAL( args.size( ), 3 );
-	BOOST_REQUIRE_EQUAL( args.position( ), 1 );
-	BOOST_REQUIRE( args != args.end( ) );
+	daw::expecting( 3U, args.size( ) );
+	daw::expecting( 1U, args.position( ) );
+	daw::expecting( args != args.end( ) );
 }
 
-BOOST_AUTO_TEST_CASE( test_postfix_inc_001 ) {
+void test_postfix_inc_001( ) {
 	constexpr char const *argv_[] = {"test", "this", "out"};
 	auto args = daw::arg_iterator_t( 3, argv_ );
 	auto old_args = args++;
-	BOOST_REQUIRE_EQUAL( args.size( ), 3 );
-	BOOST_REQUIRE_EQUAL( args.position( ), 1 );
+	daw::expecting( 3U, args.size( ) );
+	daw::expecting( 1U, args.position( ) );
 
-	BOOST_REQUIRE_EQUAL( old_args.size( ), 3 );
-	BOOST_REQUIRE_EQUAL( old_args.position( ), 0 );
-	BOOST_REQUIRE( args != old_args );
-	BOOST_REQUIRE( args != args.end( ) );
-	BOOST_REQUIRE( old_args != old_args.end( ) );
+	daw::expecting( 3U, old_args.size( ) );
+	daw::expecting( 0U, old_args.position( ) );
+	daw::expecting( args != old_args );
+	daw::expecting( args != args.end( ) );
+	daw::expecting( old_args != old_args.end( ) );
 }
 
-BOOST_AUTO_TEST_CASE( test_accumulate_001 ) {
+void test_accumulate_001( ) {
 	constexpr char const *argv_[] = {"test", "this", "out"};
 	auto const args = daw::arg_iterator_t( 3, argv_ );
 
 	auto result = std::accumulate( args.begin( ), args.end( ), 0,
 	                               []( int i, auto &&sv ) { return i + sv[0]; } );
-	BOOST_REQUIRE_EQUAL( result, 't' + 't' + 'o' );
+	daw::expecting( result, 't' + 't' + 'o' );
 }
 
-BOOST_AUTO_TEST_CASE( test_index_001 ) {
+void test_index_001( ) {
 	constexpr char const *argv_[] = {"test", "this", "out"};
 	auto args = daw::arg_iterator_t( 3, argv_ );
 
@@ -83,5 +83,14 @@ BOOST_AUTO_TEST_CASE( test_index_001 ) {
 	for( int n = 0; n < static_cast<int>( args.size( ) ); ++n ) {
 		sum += args[n][0];
 	}
-	BOOST_REQUIRE_EQUAL( sum, 't' + 't' + 'o' );
+	daw::expecting( sum, 't' + 't' + 'o' );
+}
+
+int main( ) {
+	test_end_001( );
+	test_range_001( );
+	test_prefix_inc_001( );
+	test_postfix_inc_001( );
+	test_accumulate_001( );
+	test_index_001( );
 }

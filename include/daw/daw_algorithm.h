@@ -1094,9 +1094,9 @@ namespace daw {
 			while( first != last ) {
 				if( daw::invoke( pred, *first ) ) {
 					*first_out = daw::invoke( trans, *first );
+					++first_out;
 				}
 				++first;
-				++first_out;
 			}
 			return first_out;
 		}

@@ -20,15 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cstdint>
-#include <cstdlib>
-#include <iostream>
 #include <mutex>
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/parallel/daw_spin_lock.h"
 
-BOOST_AUTO_TEST_CASE( daw_spin_lock_001 ) {
+void daw_spin_lock_001( ) {
 	daw::spin_lock sp{};
 	std::lock_guard<daw::spin_lock> mut{sp};
+}
+
+int main( ) {
+	daw_spin_lock_001( );
 }

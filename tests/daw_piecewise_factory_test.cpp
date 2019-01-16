@@ -22,6 +22,7 @@
 
 #include <string>
 
+#include "daw/daw_benchmark.h"
 #include "daw/daw_piecewise_factory.h"
 
 struct A {

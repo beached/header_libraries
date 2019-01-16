@@ -26,11 +26,10 @@
 #include <type_traits>
 
 #include "daw_exception.h"
-#include "daw_traits.h"
 
 namespace daw {
 	// Adapted from GSL
-	//
+
 	// not_null
 	//
 	// Restricts a pointer or smart pointer to only hold non-null values.

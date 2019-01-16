@@ -1223,11 +1223,9 @@ namespace daw {
 		return daw::move( lhs );
 	}
 
-	template<typename CharT, size_t N, typename Traits,
-	         typename UnaryPredicate>
-	auto split(
-	  daw::basic_bounded_string<CharT, N, Traits> const &str,
-	  UnaryPredicate pred ) {
+	template<typename CharT, size_t N, typename Traits, typename UnaryPredicate>
+	auto split( daw::basic_bounded_string<CharT, N, Traits> const &str,
+	            UnaryPredicate pred ) {
 		static_assert( traits::is_unary_predicate_v<UnaryPredicate, CharT>,
 		               "UnaryPredicate p does not fullfill the requires of a unary "
 		               "predicate concept.  See "
@@ -1249,9 +1247,8 @@ namespace daw {
 	}
 
 	template<typename CharT, size_t Capacity, typename Traits>
-	auto split(
-	  daw::basic_bounded_string<CharT, Capacity, Traits> &&str,
-	  CharT const delemiter ) = delete;
+	auto split( daw::basic_bounded_string<CharT, Capacity, Traits> &&str,
+	            CharT const delemiter ) = delete;
 
 	template<typename CharT, size_t Capacity, typename Traits, size_t N>
 	auto split( daw::basic_bounded_string<CharT, Capacity, Traits> const &str,
@@ -1264,22 +1261,19 @@ namespace daw {
 	}
 
 	template<typename CharT, size_t Capacity, typename Traits, size_t N>
-	auto split(
-	  daw::basic_bounded_string<CharT, Capacity, Traits> &&str,
-	  CharT const ( &delemiter )[N] ) = delete;
+	auto split( daw::basic_bounded_string<CharT, Capacity, Traits> &&str,
+	            CharT const ( &delemiter )[N] ) = delete;
 
 	template<typename CharT, size_t Capacity, typename Traits>
 	constexpr size_t fnv1a_hash(
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const
-	    &str ) noexcept {
+	  daw::basic_bounded_string<CharT, Capacity, Traits> const &str ) noexcept {
 		return fnv1a_hash( str.data( ), str.size( ) );
 	}
 
 	template<size_t HashSize = sizeof( size_t ), typename CharT, size_t Capacity,
 	         typename Traits>
 	constexpr size_t generic_hash(
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const
-	    &str ) noexcept {
+	  daw::basic_bounded_string<CharT, Capacity, Traits> const &str ) noexcept {
 		return generic_hash<HashSize>( str.data( ), str.size( ) );
 	}
 
@@ -1318,7 +1312,9 @@ namespace std {
 	// string
 	template<typename CharT, size_t Capacity, typename Traits>
 	struct hash<daw::basic_bounded_string<CharT, Capacity, Traits>> {
-		constexpr size_t operator( )( daw::basic_bounded_string<CharT, Capacity, Traits> const & str ) const noexcept {
+		constexpr size_t operator( )(
+		  daw::basic_bounded_string<CharT, Capacity, Traits> const &str ) const
+		  noexcept {
 			return daw::fnv1a_hash( str );
 		}
 	};

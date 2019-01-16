@@ -22,11 +22,11 @@
 
 #include <iostream>
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_range.h"
 
 #ifndef WIN32 // Fails on MSVC 2015.2
-BOOST_AUTO_TEST_CASE( daw_range_test01 ) {
+void daw_range_test01( ) {
 	using namespace daw::range::operators;
 	using daw::range::from;
 
@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE( daw_range_test01 ) {
 }
 #endif // WIN32
 
-BOOST_AUTO_TEST_CASE( daw_range_test02 ) {
+void daw_range_test02( ) {
 	using daw::range::from;
 
 	std::vector<int32_t> const t = {-400, 4, -1, 1000, 4, 0, 1, 2,
@@ -65,4 +65,9 @@ BOOST_AUTO_TEST_CASE( daw_range_test02 ) {
 		std::cout << " " << v;
 	}
 	std::cout << " }\n";
+}
+
+int main( ) {
+	daw_range_test01( );
+	daw_range_test02( );
 }

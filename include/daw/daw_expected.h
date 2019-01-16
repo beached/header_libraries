@@ -417,7 +417,7 @@ namespace daw {
 		}
 
 		template<typename... Visitors>
-		decltype( auto ) visit( Visitors&&... visitors ) const {
+		decltype( auto ) visit( Visitors &&... visitors ) const {
 			auto visitor = daw::overload( std::forward<Visitors>( visitors )... );
 			static_assert( traits::is_callable_v<decltype( visitor )>,
 			               "Visitor must be callable without arguments" );

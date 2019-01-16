@@ -25,10 +25,10 @@
 #include <iostream>
 #include <string>
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_bounded_vector.h"
 
-BOOST_AUTO_TEST_CASE( daw_bounded_vector_test_001 ) {
+constexpr bool daw_bounded_vector_test_001( ) {
 	daw::bounded_vector_t<int, 10> a{};
 	a.push_back( 1 );
 	a.push_back( 2 );
@@ -40,28 +40,32 @@ BOOST_AUTO_TEST_CASE( daw_bounded_vector_test_001 ) {
 	for( auto c : a ) {
 		sum += c;
 	}
-	BOOST_REQUIRE_EQUAL( sum, 36 );
+	daw::expecting( sum, 36 );
+	return true;
 }
+static_assert( daw_bounded_vector_test_001( ) );
 
-BOOST_AUTO_TEST_CASE( daw_bounded_vector_test_002 ) {
+constexpr bool daw_bounded_vector_test_002( ) {
 	daw::bounded_vector_t<int, 10> a{};
 	a.push_back( 1 );
 	a.push_back( 2 );
 	a.push_back( 4 );
-	BOOST_REQUIRE_EQUAL( a.back( ), 4 );
-	BOOST_REQUIRE_EQUAL( a.pop_back( ), 4 );
-	BOOST_REQUIRE_EQUAL( a.back( ), 2 );
-	BOOST_REQUIRE_EQUAL( a.size( ), 2 );
-	BOOST_REQUIRE_EQUAL( a.capacity( ), 10 );
-	BOOST_REQUIRE_EQUAL( a.front( ), 1 );
-	BOOST_REQUIRE_EQUAL( *a.cbegin( ), 1 );
-	BOOST_REQUIRE_EQUAL( a.pop_back( ), 2 );
-	BOOST_REQUIRE_EQUAL( a.pop_back( ), 1 );
-	BOOST_REQUIRE_EQUAL( a.size( ), 0 );
-	BOOST_REQUIRE( a.empty( ) );
+	daw::expecting( a.back( ), 4 );
+	daw::expecting( a.pop_back( ), 4 );
+	daw::expecting( a.back( ), 2 );
+	daw::expecting( 2U, a.size( ) );
+	daw::expecting( 10U, a.capacity( ) );
+	daw::expecting( a.front( ), 1 );
+	daw::expecting( *a.cbegin( ), 1 );
+	daw::expecting( a.pop_back( ), 2 );
+	daw::expecting( a.pop_back( ), 1 );
+	daw::expecting( 0U, a.size( ) );
+	daw::expecting( a.empty( ) );
+	return true;
 }
+static_assert( daw_bounded_vector_test_002( ) );
 
-BOOST_AUTO_TEST_CASE( daw_bounded_vector_test_003 ) {
+constexpr bool daw_bounded_vector_test_003( ) {
 	daw::bounded_vector_t<int, 6> a{};
 	a.push_back( 1 );
 	a.push_back( 2 );
@@ -69,8 +73,10 @@ BOOST_AUTO_TEST_CASE( daw_bounded_vector_test_003 ) {
 	a.push_back( 8 );
 	a.push_back( 16 );
 	a.emplace_back( 5 );
-	BOOST_REQUIRE( a.full( ) );
+	daw::expecting( a.full( ) );
+	return true;
 }
+static_assert( daw_bounded_vector_test_003( ) );
 
 namespace daw_bounded_vector_test_004_ns {
 	constexpr auto cx_test( ) {
@@ -84,12 +90,16 @@ namespace daw_bounded_vector_test_004_ns {
 		return a;
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_bounded_vector_test_004 ) {
+	constexpr bool daw_bounded_vector_test_004( ) {
 		constexpr auto a = cx_test( );
 		int sum = 0;
 		for( auto c : a ) {
 			sum += c;
 		}
-		BOOST_REQUIRE_EQUAL( sum, 36 );
+		daw::expecting( sum, 36 );
+		return true;
 	}
+	static_assert( daw_bounded_vector_test_004( ) );
 } // namespace daw_bounded_vector_test_004_ns
+
+int main( ) {}

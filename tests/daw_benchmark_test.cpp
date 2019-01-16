@@ -22,29 +22,35 @@
 
 #include <iostream>
 
-#include "daw/boost_test.h"
 #include "daw/daw_benchmark.h"
 
-BOOST_AUTO_TEST_CASE( daw_benchmark_test_001 ) {
+void daw_benchmark_test_001( ) {
 	std::cout << "Time of: "
 	          << daw::benchmark( []( ) { std::cout << "Hello\n"; } );
 	daw::show_benchmark( 1, "timed", []( ) { std::cout << "Hello\n"; } );
 }
 
-BOOST_AUTO_TEST_CASE( daw_benchmark_test_002 ) {
+void daw_benchmark_test_002( ) {
 	int x = 0;
 	daw::do_not_optimize( x );
 }
 
-BOOST_AUTO_TEST_CASE( daw_bench_test_test_001 ) {
+void daw_bench_test_test_001( ) {
 	auto res = daw::bench_test( "sqr: ", []( auto i ) { return i * i; }, 55 );
-	BOOST_REQUIRE( res.has_value( ) );
-	BOOST_REQUIRE_EQUAL( *res, 3025 );
+	daw::expecting( res.has_value( ) );
+	daw::expecting( 3025, *res );
 }
 
-BOOST_AUTO_TEST_CASE( daw_bench_n_test_test_001 ) {
+void daw_bench_n_test_test_001( ) {
 	auto res =
 	  daw::bench_n_test<100>( "sqr: ", []( auto i ) { return i * i; }, 55 );
-	BOOST_REQUIRE( res.has_value( ) );
-	BOOST_REQUIRE_EQUAL( *res, 3025 );
+	daw::expecting( res.has_value( ) );
+	daw::expecting( 3025, *res );
+}
+
+int main( ) {
+	daw_benchmark_test_001( );
+	daw_benchmark_test_002( );
+	daw_bench_test_test_001( );
+	daw_bench_n_test_test_001( );
 }

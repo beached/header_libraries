@@ -20,20 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
 #include <chrono>
-#include <iostream>
 #include <thread>
 
+#include "daw/daw_benchmark.h"
 #include "daw/parallel/daw_latch.h"
 
-BOOST_AUTO_TEST_CASE( construction_001 ) {
+void construction_001( ) {
 	daw::latch sem1;
 	auto sem1b = daw::latch( );
 	auto sem2 = daw::shared_latch( std::move( sem1 ) );
 }
 
-BOOST_AUTO_TEST_CASE( barrier_001 ) {
+void barrier_001( ) {
 	constexpr size_t const count = 5;
 	auto sem = daw::shared_latch( count );
 	for( size_t n = 0; n < count; ++n ) {
@@ -47,7 +46,13 @@ BOOST_AUTO_TEST_CASE( barrier_001 ) {
 	sem.wait( );
 }
 
-BOOST_AUTO_TEST_CASE( try_wait_001 ) {
+void try_wait_001( ) {
 	auto const sem = daw::latch( 0 );
-	BOOST_REQUIRE( sem.try_wait( ) );
+	daw::expecting( sem.try_wait( ) );
+}
+
+int main( ) {
+	construction_001( );
+	barrier_001( );
+	try_wait_001( );
 }

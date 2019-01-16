@@ -24,17 +24,17 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_random.h"
 
-BOOST_AUTO_TEST_CASE( daw_random_01 ) {
+void daw_random_01( ) {
 	for( auto n = 0; n < 100000; ++n ) {
 		auto v1 = daw::randint( 0, 1000 );
-		BOOST_REQUIRE( 0 <= v1 && v1 <= 1000 );
+		daw::expecting( 0 <= v1 && v1 <= 1000 );
 	}
 }
 
-BOOST_AUTO_TEST_CASE( daw_shuffle_01 ) {
+void daw_shuffle_01( ) {
 	std::vector<int32_t> a;
 	daw::shuffle( a.begin( ), a.end( ) );
 	a.reserve( 40 );
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE( daw_shuffle_01 ) {
 	std::cout << '\n';
 }
 
-BOOST_AUTO_TEST_CASE( daw_fill_01 ) {
+void daw_fill_01( ) {
 	std::vector<int32_t> a;
 	a.resize( 40 );
 	std::cout << "Before: \n";
@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_CASE( daw_fill_01 ) {
 	std::cout << '\n';
 }
 
-BOOST_AUTO_TEST_CASE( daw_make_random_01 ) {
+void daw_make_random_01( ) {
 	using rnd_t = int16_t;
 	auto const r = daw::make_random_data<rnd_t>( 40, 1, 6 );
 	std::cout << "Generated Data: \n";
@@ -79,10 +79,9 @@ constexpr bool cxrand_test_001( ) {
 	auto rng = daw::static_random( );
 	return rng( ) != rng( );
 }
-
 static_assert( cxrand_test_001( ) );
 
-BOOST_AUTO_TEST_CASE( cxrand_test_002 ) {
+void cxrand_test_002( ) {
 	auto rng = daw::static_random( );
 	for( size_t n = 0; n < 50; ++n ) {
 		size_t num = rng( );
@@ -90,4 +89,12 @@ BOOST_AUTO_TEST_CASE( cxrand_test_002 ) {
 		std::cout << " " << num;
 	}
 	std::cout << '\n';
+}
+
+int main( ) {
+	daw_random_01( );
+	daw_shuffle_01( );
+	daw_fill_01( );
+	daw_make_random_01( );
+	cxrand_test_002( );
 }

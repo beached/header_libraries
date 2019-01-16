@@ -29,8 +29,8 @@
 #include <utility>
 
 #include "daw_move.h"
-#include "daw_traits.h"
 #include "daw_swap.h"
+#include "daw_traits.h"
 
 namespace daw {
 	namespace value_ptr_impl {
@@ -71,7 +71,8 @@ namespace daw {
 		  : enable_default_constructor<T>( impl::non_constructor{} )
 		  , enable_copy_constructor<T>( impl::non_constructor{} )
 		  , enable_copy_assignment<T>( impl::non_constructor{} )
-		  , m_value( std::make_unique<value_type>( std::forward<Args>( args )... ) ) {}
+		  , m_value(
+		      std::make_unique<value_type>( std::forward<Args>( args )... ) ) {}
 
 		template<
 		  typename U, typename... Args,
@@ -224,7 +225,9 @@ namespace daw {
 	};
 
 	template<typename T>
-	constexpr void swap( value_ptr<T> &lhs, value_ptr<T> &rhs ) noexcept( noexcept( lhs.swap( rhs ) ) ) {
+	constexpr void
+	swap( value_ptr<T> &lhs,
+	      value_ptr<T> &rhs ) noexcept( noexcept( lhs.swap( rhs ) ) ) {
 		lhs.swap( rhs );
 	}
 
@@ -346,4 +349,3 @@ namespace std {
 		}
 	};
 } // namespace std
-

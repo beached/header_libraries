@@ -22,10 +22,10 @@
 
 #include <iostream>
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_safe_string.h"
 
-BOOST_AUTO_TEST_CASE( daw_safe_string_test_01 ) {
+void daw_safe_string_test_01( ) {
 	auto s =
 	  daw::make_safe_string( "This is an \\ \"unsafe string", []( auto un ) {
 		  for( auto &c : un ) {
@@ -39,4 +39,8 @@ BOOST_AUTO_TEST_CASE( daw_safe_string_test_01 ) {
 		  return un;
 	  } );
 	std::cout << s.get( ) << std::endl;
+}
+
+int main( ) {
+	daw_safe_string_test_01( );
 }

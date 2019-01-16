@@ -20,14 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
-#include <chrono>
-#include <iostream>
 #include <thread>
 
+#include "daw/daw_benchmark.h"
 #include "daw/parallel/daw_scoped_multilock.h"
 
-BOOST_AUTO_TEST_CASE( daw_scoped_multilock_001 ) {
+void daw_scoped_multilock_001( ) {
 	std::mutex m1;
 	std::mutex m2;
 	bool result1 = false;
@@ -45,6 +43,10 @@ BOOST_AUTO_TEST_CASE( daw_scoped_multilock_001 ) {
 	}};
 
 	th.join( );
-	BOOST_REQUIRE_MESSAGE( result1, "m1 wasn't locked" );
-	BOOST_REQUIRE_MESSAGE( result2, "m2 wasn't locked" );
+	daw::expecting_message( result1, "m1 wasn't locked" );
+	daw::expecting_message( result2, "m2 wasn't locked" );
+}
+
+int main( ) {
+	daw_scoped_multilock_001( );
 }

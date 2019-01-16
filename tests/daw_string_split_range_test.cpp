@@ -26,16 +26,14 @@
 #include <string>
 #include <vector>
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_container_algorithm.h"
 #include "daw/daw_string_split_range.h"
-
 
 constexpr bool splt_test_000( ) {
 	daw::string_view const str = "This is a test of the split";
 	std::array<daw::string_view, 7> const expected_tst = {
 	  "This", "is", "a", "test", "of", "the", "split"};
-	std::array<daw::string_view, 100> tst{};
 
 	auto rng = daw::split_string( str, " " );
 
@@ -46,7 +44,7 @@ constexpr bool splt_test_000( ) {
 }
 static_assert( splt_test_000( ) );
 
-BOOST_AUTO_TEST_CASE( string_split_range_001 ) {
+void string_split_range_001( ) {
 	std::string const str = "This is a test of the split";
 	std::vector<std::string> const expected_tst = {"This", "is",  "a",    "test",
 	                                               "of",   "the", "split"};
@@ -54,18 +52,16 @@ BOOST_AUTO_TEST_CASE( string_split_range_001 ) {
 	std::string delem = " ";
 	daw::string_split_range<char> rng = daw::split_string( str, delem );
 
-
 	daw::algorithm::transform( rng.begin( ), rng.end( ),
 	                           std::back_inserter( tst ),
-	                           []( auto sv ) {
-		return sv.to_string( ); } );
+	                           []( auto sv ) { return sv.to_string( ); } );
 
 	bool const ans = daw::algorithm::equal(
 	  tst.cbegin( ), tst.cend( ), expected_tst.cbegin( ), expected_tst.cend( ) );
-	BOOST_REQUIRE( ans );
+	daw::expecting( ans );
 }
 
-BOOST_AUTO_TEST_CASE( string_split_range_002 ) {
+void string_split_range_002( ) {
 	std::vector<std::string> const expected_tst = {"This", "is",  "a",    "test",
 	                                               "of",   "the", "split"};
 	std::vector<std::string> tst{};
@@ -76,10 +72,10 @@ BOOST_AUTO_TEST_CASE( string_split_range_002 ) {
 
 	bool const ans = std::equal( tst.cbegin( ), tst.cend( ),
 	                             expected_tst.cbegin( ), expected_tst.cend( ) );
-	BOOST_REQUIRE( ans );
+	daw::expecting( ans );
 }
 
-BOOST_AUTO_TEST_CASE( string_split_range_003 ) {
+void string_split_range_003( ) {
 	std::vector<std::string> const expected_tst = {"This", "is",  "a",    "test",
 	                                               "of",   "the", "split"};
 	std::vector<std::string> tst{};
@@ -91,5 +87,11 @@ BOOST_AUTO_TEST_CASE( string_split_range_003 ) {
 
 	bool const ans = std::equal( tst.cbegin( ), tst.cend( ),
 	                             expected_tst.cbegin( ), expected_tst.cend( ) );
-	BOOST_REQUIRE( ans );
+	daw::expecting( ans );
+}
+
+int main( ) {
+	string_split_range_001( );
+	string_split_range_002( );
+	string_split_range_003( );
 }

@@ -22,6 +22,7 @@
 
 #include <variant>
 
+#include "daw/daw_benchmark.h"
 #include "daw/daw_variant_cast.h"
 
 constexpr bool test_01( ) noexcept {
@@ -39,3 +40,5 @@ constexpr bool test_02( ) noexcept {
 }
 
 static_assert( test_02( ), "" );
+
+int main( ) {}

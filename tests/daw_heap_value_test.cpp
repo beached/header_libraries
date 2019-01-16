@@ -22,10 +22,10 @@
 
 #include <iostream>
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_heap_value.h"
 
-BOOST_AUTO_TEST_CASE( daw_heap_value_test_01 ) {
+void daw_heap_value_test_01( ) {
 	struct lrg {
 		size_t a;
 		size_t b;
@@ -48,37 +48,24 @@ BOOST_AUTO_TEST_CASE( daw_heap_value_test_01 ) {
 	daw::heap_value<int> d{1};
 
 	// a & b
-	auto test_01 = !( a == b );
-	auto test_02 = !( b == a );
-	auto test_03 = a != b;
-	auto test_04 = b != a;
-	auto test_05 = a < b;
-	auto test_06 = !( b < a );
-	auto test_07 = a <= b;
-	auto test_08 = !( b <= a );
-	auto test_09 = !( a >= b );
-	auto test_10 = b >= a;
-	auto test_11 = b == d;
-	auto test_12 = b != c;
-	auto test_13 = b < c;
-	auto test_14 = b <= c;
-	auto test_15 = c > b;
-	auto test_16 = c >= b;
+	daw::expecting( !( a == b ) );
+	daw::expecting( !( b == a ) );
+	daw::expecting( a != b );
+	daw::expecting( b != a );
+	daw::expecting( a < b );
+	daw::expecting( !( b < a ) );
+	daw::expecting( a <= b );
+	daw::expecting( !( b <= a ) );
+	daw::expecting( !( a >= b ) );
+	daw::expecting( b >= a );
+	daw::expecting( b == d );
+	daw::expecting( b != c );
+	daw::expecting( b < c );
+	daw::expecting( b <= c );
+	daw::expecting( c > b );
+	daw::expecting( c >= b );
+}
 
-	BOOST_REQUIRE( test_01 );
-	BOOST_REQUIRE( test_02 );
-	BOOST_REQUIRE( test_03 );
-	BOOST_REQUIRE( test_04 );
-	BOOST_REQUIRE( test_05 );
-	BOOST_REQUIRE( test_06 );
-	BOOST_REQUIRE( test_07 );
-	BOOST_REQUIRE( test_08 );
-	BOOST_REQUIRE( test_09 );
-	BOOST_REQUIRE( test_10 );
-	BOOST_REQUIRE( test_11 );
-	BOOST_REQUIRE( test_12 );
-	BOOST_REQUIRE( test_13 );
-	BOOST_REQUIRE( test_14 );
-	BOOST_REQUIRE( test_15 );
-	BOOST_REQUIRE( test_16 );
+int main( ) {
+	daw_heap_value_test_01( );
 }

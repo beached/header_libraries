@@ -23,27 +23,28 @@
 #pragma once
 
 #include <type_traits>
-#include <utility>
 
 #include "cpp_17.h"
+#include "daw_traits.h"
 
 namespace daw {
 	// overload_t/overload create a callable with the overloads of operator( )
 	// provided
 	//
-	namespace overload_impl {
-		template<typename T>
-		inline constexpr bool const is_nothrow_constructible_v =
-		  std::is_nothrow_constructible_v<T, T>;
-	}
+	template<class... Fs>
+	struct overload : Fs... {
+		template<class... Ts,
+		         std::enable_if_t<
+		           (sizeof...( Ts ) != 1U or
+		            !std::is_same_v<overload, std::remove_reference_t<
+		                                        daw::traits::first_type<Ts...>>>),
+		           std::nullptr_t> = nullptr>
+		constexpr overload( Ts &&... ts )
+		  : Fs{std::forward<Ts>( ts )}... {}
 
-	template<typename... Args>
-	class overload : private Args... {
-	public:
-		using Args::operator( )...;
-
-		constexpr overload( Args &&... args ) noexcept(
-		  (daw::all_true_v<overload_impl::is_nothrow_constructible_v<Args>...>))
-		  : Args{std::forward<Args>( args )}... {}
+		using Fs::operator( )...;
 	};
+
+	template<class... Ts>
+	overload( Ts &&... )->overload<std::remove_reference_t<Ts>...>;
 } // namespace daw

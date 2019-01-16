@@ -24,6 +24,7 @@
 #include <iostream>
 #include <string>
 
+#include "daw/daw_benchmark.h"
 #include "daw/daw_stack_function.h"
 
 std::string strfunc( ) {
@@ -45,7 +46,7 @@ struct callable {
 	}
 };
 
-int main( ) {
+void stack_function_test_001( ) {
 	daw::function<100, std::string( )> func = []( ) -> std::string {
 		return "Hello";
 	};
@@ -84,5 +85,8 @@ int main( ) {
 	daw::function<2000, void( )> fcvf1 =
 	  [cvf1 = daw::mutable_capture( cvf1 )]( ) { ( *cvf1 )( ); };
 	fcvf1( );
-	return 0;
+}
+
+int main( ) {
+	stack_function_test_001( );
 }

@@ -23,22 +23,19 @@
 #include "daw/daw_benchmark.h"
 #include "daw/daw_keep_n.h"
 
-namespace daw {
-	constexpr bool keep_n_test_001( ) {
-		daw::keep_n<int, 3> top3( std::numeric_limits<int>::max( ) );
-		top3.insert( 5 );
-		top3.insert( 0 );
-		top3.insert( 1 );
-		top3.insert( 50 );
-		top3.insert( -50 );
+constexpr bool keep_n_test_001( ) {
+	daw::keep_n<int, 3> top3( std::numeric_limits<int>::max( ) );
+	top3.insert( 5 );
+	top3.insert( 0 );
+	top3.insert( 1 );
+	top3.insert( 50 );
+	top3.insert( -50 );
 
-		expecting( -50, top3[0] );
-		expecting( 0, top3[1] );
-		expecting( 1, top3[2] );
-		return true;
-	}
-} // namespace daw
-
-int main( ) {
-	daw::keep_n_test_001( );
+	daw::expecting( -50, top3[0] );
+	daw::expecting( 0, top3[1] );
+	daw::expecting( 1, top3[2] );
+	return true;
 }
+static_assert( keep_n_test_001( ) );
+
+int main( ) {}

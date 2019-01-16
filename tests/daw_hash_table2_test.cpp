@@ -126,7 +126,7 @@ std::endl; std::cout << "Generating Keys" << std::endl; auto keys = integerKeys(
         assert( key == set[key] );
     }
 
-    BOOST_REQUIRE( set.begin( ).valid( ) );
+    daw::expecting( set.begin( ).valid( ) );
 
     std::vector<value_type> values;
 
@@ -135,7 +135,7 @@ std::endl; std::cout << "Generating Keys" << std::endl; auto keys = integerKeys(
     std::sort( keys.begin( ), keys.end( ) );
     std::sort( values.begin( ), values.end( ) );
 
-    BOOST_REQUIRE( std::equal( keys.begin( ), keys.end( ), values.begin( ),
+    daw::expecting( std::equal( keys.begin( ), keys.end( ), values.begin( ),
 values.end( ) ) );
 
     std::cout << "Done" << std::endl;

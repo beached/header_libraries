@@ -20,14 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_endian.h"
 
-BOOST_AUTO_TEST_CASE( to_host_order_001 ) {
+constexpr bool to_host_order_001( ) {
 	if( daw::endian::native == daw::endian::little ) {
 		constexpr uint16_t value = 0x1234;
 		constexpr auto value2 = daw::to_big_endian( value );
-		BOOST_REQUIRE( value != value2 );
-		BOOST_REQUIRE_EQUAL( value2, 0x3412 );
+		daw::expecting( value != value2 );
+		daw::expecting( value2, 0x3412 );
 	}
+	return true;
 }
+static_assert( to_host_order_001( ) );
+
+int main( ) {}

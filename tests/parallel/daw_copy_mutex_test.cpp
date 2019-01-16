@@ -22,11 +22,15 @@
 
 #include <mutex>
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/parallel/daw_copy_mutex.h"
 
-BOOST_AUTO_TEST_CASE( daw_copiable_mutex_test_01 ) {
+void daw_copiable_mutex_test_01( ) {
 	daw::copiable_mutex<std::mutex> m;
 	auto n = std::move( m );
 	std::lock_guard<daw::copiable_mutex<std::mutex>> lck{n};
+}
+
+int main( ) {
+	daw_copiable_mutex_test_01( );
 }

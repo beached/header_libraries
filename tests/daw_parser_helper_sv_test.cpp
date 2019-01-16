@@ -20,14 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
 #include <iostream>
 
+#include "daw/daw_benchmark.h"
 #include "daw/daw_parser_helper_sv.h"
 
-BOOST_AUTO_TEST_CASE( test_in_t_test_001 ) {
+constexpr bool test_in_t_test_001( ) {
 	daw::parser::char_in_t<' ', '1'> tst{};
-	BOOST_REQUIRE( tst( ' ' ) );
-	BOOST_REQUIRE( !tst( '#' ) );
-	BOOST_REQUIRE( tst( '1' ) );
+	daw::expecting( tst( ' ' ) );
+	daw::expecting( !tst( '#' ) );
+	daw::expecting( tst( '1' ) );
+	return true;
 }
+static_assert( test_in_t_test_001( ) );
+
+int main( ) {}

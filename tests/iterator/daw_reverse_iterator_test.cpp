@@ -20,16 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
-#include <iostream>
+#include <array>
 
+#include "daw/daw_algorithm.h"
+#include "daw/daw_benchmark.h"
 #include "daw/iterator/daw_reverse_iterator.h"
 
-BOOST_AUTO_TEST_CASE( reverse_iterator_test_001 ) {
-	std::vector<int> a = {1, 2, 3, 4, 5, 6};
-	auto rend = daw::make_reverse_iterator( a.begin( ) );
-	auto rbegin = daw::make_reverse_iterator( a.end( ) );
-	for( ; rbegin != rend; ++rbegin ) {
-		std::cout << ' ' << *rbegin << '\n';
-	}
+constexpr bool reverse_iterator_test_001( ) {
+	std::array<int, 6> a = {1, 2, 3, 4, 5, 6};
+	std::array<int, 6> b{};
+	auto first = daw::make_reverse_iterator( a.end( ) );
+	auto last = daw::make_reverse_iterator( a.begin( ) );
+	auto first_out = daw::make_reverse_iterator( b.end( ) );
+	daw::algorithm::copy( first, last, first_out );
+	return daw::algorithm::equal( a.begin( ), a.end( ), b.begin( ) );
 }
+static_assert( reverse_iterator_test_001( ) );
+
+int main( ) {}

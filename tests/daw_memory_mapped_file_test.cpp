@@ -21,8 +21,9 @@
 // SOFTWARE.
 
 #include <fstream>
+#include <string>
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_memory_mapped_file.h"
 
 template<typename String>
@@ -34,7 +35,11 @@ void create_file( String &&str ) {
 	fs << "This is a test\n";
 }
 
-BOOST_AUTO_TEST_CASE( daw_memory_mapped_file ) {
-	create_file( "./blah.txt" );
-	daw::filesystem::memory_mapped_file_t<uint8_t> test{"./blah.txt"};
+void daw_memory_mapped_file_001( std::string const &file_name ) {
+	create_file( file_name );
+	daw::filesystem::memory_mapped_file_t<uint8_t> test( file_name );
+}
+
+int main( ) {
+	daw_memory_mapped_file_001( "./blah.txt" );
 }

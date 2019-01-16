@@ -22,10 +22,10 @@
 
 #include <iostream>
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_static_optional.h"
 
-BOOST_AUTO_TEST_CASE( daw_optional_test_01 ) {
+void daw_optional_test_01( ) {
 	std::cout << "sizeof( size_t ) -> " << sizeof( size_t );
 	std::cout << " sizeof( int ) -> " << sizeof( int );
 	std::cout << " sizeof( daw::static_optional<int> ) -> "
@@ -57,5 +57,9 @@ BOOST_AUTO_TEST_CASE( daw_optional_test_01 ) {
 	daw::static_optional<int> d{1};
 	d = 2;
 	d = 1;
-	BOOST_REQUIRE_EQUAL( b, d );
+	daw::expecting( b, d );
+}
+
+int main( ) {
+	daw_optional_test_01( );
 }

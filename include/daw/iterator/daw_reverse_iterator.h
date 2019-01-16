@@ -45,11 +45,11 @@ namespace daw {
 		constexpr reverse_iterator( ) = default;
 
 		constexpr explicit reverse_iterator( Iterator it )
-		  : m_base(daw::move( it )) {}
+		  : m_base( daw::move( it ) ) {}
 
 		template<typename U>
 		constexpr reverse_iterator( reverse_iterator<U> const &other )
-		  : m_base(other.m_base) {}
+		  : m_base( other.m_base ) {}
 
 		template<typename U>
 		constexpr reverse_iterator &operator=( reverse_iterator<U> const &other ) {
@@ -77,11 +77,11 @@ namespace daw {
 			return *( --tmp );
 		}
 
-		constexpr decltype( auto ) operator->( ) {
+		constexpr decltype( auto ) operator-> ( ) {
 			return &( operator*( ) );
 		}
 
-		constexpr decltype( auto ) operator->( ) const {
+		constexpr decltype( auto ) operator-> ( ) const {
 			return &( operator*( ) );
 		}
 

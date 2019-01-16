@@ -22,11 +22,11 @@
 
 #include <iostream>
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_overload.h"
 #include "daw/daw_traits.h"
 
-BOOST_AUTO_TEST_CASE( daw_overload_001 ) {
+void daw_overload_001( ) {
 	struct A {
 		auto operator( )( int64_t a ) const {
 			std::cout << "A->int\n";
@@ -48,45 +48,47 @@ BOOST_AUTO_TEST_CASE( daw_overload_001 ) {
 
 	auto fn = daw::overload( A{}, B{}, C{} );
 
-	BOOST_REQUIRE_EQUAL( fn( 1 ), 0 );
-	BOOST_REQUIRE_EQUAL( fn( std::string{"Hello"} ), 1 );
-	BOOST_REQUIRE_EQUAL( fn( true, false ), 2 );
+	daw::expecting( fn( 1 ), 0 );
+	daw::expecting( fn( std::string{"Hello"} ), 1 );
+	daw::expecting( fn( true, false ), 2 );
 
 	auto const fn2 = daw::overload( A{}, B{}, C{} );
 
-	BOOST_REQUIRE_EQUAL( fn2( 1 ), 0 );
-	BOOST_REQUIRE_EQUAL( fn2( std::string{"Hello"} ), 1 );
-	BOOST_REQUIRE_EQUAL( fn2( true, false ), 2 );
+	daw::expecting( fn2( 1 ), 0 );
+	daw::expecting( fn2( std::string{"Hello"} ), 1 );
+	daw::expecting( fn2( true, false ), 2 );
 }
 
-/*
-BOOST_AUTO_TEST_CASE( daw_overload_002 ) {
-  auto ov =
-    daw::overload( []( int i ) { return i * 2; },
-                   []( std::string const &s ) { return s.size( ); } );
-  auto const ov2 =
-    daw::overload( ov, []( std::error_code ec ) { return ec.value( ); } );
+void daw_overload_002( ) {
+	auto ov = daw::overload( []( int i ) { return i * 2; },
+	                         []( std::string const &s ) { return s.size( ); } );
+	auto const ov2 =
+	  daw::overload( ov, []( std::error_code ec ) { return ec.value( ); } );
 
-  BOOST_REQUIRE( ov2( 1 ) == 2 );
-  BOOST_REQUIRE( ov2( "hi" ) == 2 );
-  BOOST_REQUIRE( ov2( std::error_code( ) ) == 0 );
+	daw::expecting( ov2( 1 ) == 2 );
+	daw::expecting( ov2( "hi" ) == 2 );
+	daw::expecting( ov2( std::error_code( ) ) == 0 );
 }
 
-BOOST_AUTO_TEST_CASE( daw_empty_overload_001 ) {
-  auto ov =
-    daw::overload( []( int i ) { return i * 2; },
-                   []( std::string const &s ) { return s.size( ); } );
-  auto ov2 =
-    daw::overload( ov, []( std::error_code ec ) { return ec.value( ); } );
+void daw_empty_overload_001( ) {
+	auto ov = daw::overload( []( int i ) { return i * 2; },
+	                         []( std::string const &s ) { return s.size( ); } );
+	auto ov2 =
+	  daw::overload( ov, []( std::error_code ec ) { return ec.value( ); } );
 
-  BOOST_REQUIRE( ov2( 1 ) == 2 );
-  BOOST_REQUIRE( ov2( "hi" ) == 2 );
-  BOOST_REQUIRE( ov2( std::error_code( ) ) == 0 );
-  struct A {};
-  bool const can_a = daw::is_callable_v<decltype( ov2 ), A>;
-  BOOST_REQUIRE( !can_a );
-  // auto ov3 = daw::empty_overload<A>( ov2 );
-  // bool const can_a2 = daw::is_callable_v<decltype( ov3 ), A>;
-  // BOOST_REQUIRE( can_a2 );
+	daw::expecting( ov2( 1 ) == 2 );
+	daw::expecting( ov2( "hi" ) == 2 );
+	daw::expecting( ov2( std::error_code( ) ) == 0 );
+	struct A {};
+	bool const can_a = daw::traits::is_callable_v<decltype( ov2 ), A>;
+	daw::expecting( !can_a );
+	// auto ov3 = daw::empty_overload<A>( ov2 );
+	// bool const can_a2 = daw::traits::is_callable_v<decltype( ov3 ), A>;
+	// daw::expecting( can_a2 );
 }
-*/
+
+int main( ) {
+	daw_overload_001( );
+	daw_overload_002( );
+	daw_empty_overload_001( );
+}

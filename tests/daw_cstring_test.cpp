@@ -20,18 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <iostream>
-
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_cstring.h"
 
-BOOST_AUTO_TEST_CASE( daw_cstring_01 ) {
+void daw_cstring_01( ) {
 	daw::cstring a = "a";
 	daw::cstring aa = "aa";
 	daw::cstring bb = "bb";
 
-	BOOST_REQUIRE( a == a );
-	BOOST_REQUIRE( a != aa );
-	BOOST_REQUIRE( a < aa );
-	BOOST_REQUIRE( bb > a );
+	daw::expecting( a == a );
+	daw::expecting( a != aa );
+	daw::expecting( a < aa );
+	daw::expecting( bb > a );
+}
+
+int main( ) {
+	daw_cstring_01( );
 }

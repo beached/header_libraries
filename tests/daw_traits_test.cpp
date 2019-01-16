@@ -27,7 +27,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_string_view.h"
 #include "daw/daw_traits.h"
 #include "daw/daw_utility.h"
@@ -663,15 +663,18 @@ constexpr bool test_string( ) noexcept {
 
 namespace string_concept_test_001 {
 	constexpr bool const b = test_string<std::string>( );
-}
+	static_assert( b == b );
+} // namespace string_concept_test_001
 
 namespace string_view_concept_test_001 {
 	constexpr bool const b = test_string_view<daw::string_view>( );
-}
+	static_assert( b == b );
+} // namespace string_view_concept_test_001
 
 namespace string_view_concept_test_002 {
 	constexpr bool const b = test_string_view<std::string>( );
-}
+	static_assert( b == b );
+} // namespace string_view_concept_test_002
 
 namespace is_member_size_equal_v {
 	static_assert(
@@ -794,19 +797,20 @@ namespace is_nothrow_callable_001 {
 	static_assert( !daw::traits::is_nothrow_callable_v<A, X>, "" );
 } // namespace is_nothrow_callable_001
 
-BOOST_AUTO_TEST_CASE( daw_traits_enable_if_any ) {
+void daw_traits_enable_if_any( ) {
 	{
 		auto const result = enable_if_any_func_test( std::string( "" ) );
-		BOOST_REQUIRE_MESSAGE( !result,
-		                       "1. Enable if any should have defaulted to string "
-		                       "only with a std::string value" );
+		daw::expecting_message( !result,
+		                        "1. Enable if any should have defaulted to string "
+		                        "only with a std::string value" );
 	} // namespace daw_traits_enable_if_any)
 	{
 		auto const result = enable_if_any_func_test( std::string( ), true, 134,
 		                                             std::string( "dfd" ) );
-		BOOST_REQUIRE_MESSAGE( result,
-		                       "2. Enable if any should have ran templated version "
-		                       "with multiple params including a boolean" );
+		daw::expecting_message(
+		  result,
+		  "2. Enable if any should have ran templated version "
+		  "with multiple params including a boolean" );
 	}
 	static_assert( enable_if_any_func_test( false ),
 	               "3. Enable if any should have worked with a false" );
@@ -825,3 +829,7 @@ namespace last_type_001 {
 	  "" );
 	static_assert( daw::is_same_v<daw::traits::last_type_t<int>, int>, "" );
 } // namespace last_type_001
+
+int main( ) {
+	daw_traits_enable_if_any( );
+}

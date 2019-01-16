@@ -20,11 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_clumpy_sparsy.h"
 
-BOOST_AUTO_TEST_CASE( clumpy_sparsy_test_001 ) {
+void clumpy_sparsy_test_001( ) {
+#warning Empty Test
 	/*	daw::clumpy_sparsy<int> t;
 	    auto b = t.begin( );
 	    b == b;*/
+}
+
+int main( ) {
+	clumpy_sparsy_test_001( );
 }

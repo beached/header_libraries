@@ -87,7 +87,6 @@ namespace daw {
 			traits::is_input_iterator_test<ForwardIterator>( );
 
 			while( first != last ) {
-				auto it = sv.cbegin( );
 				for( size_t n = 0; n < sv.size( ); ++n ) {
 					if( *first == sv[0] ) {
 						return first;
@@ -489,7 +488,8 @@ namespace daw {
 	public:
 		static constexpr int compare( basic_string_view lhs,
 		                              basic_string_view rhs ) noexcept {
-			auto cmp = Traits::compare( lhs.data( ), rhs.data( ), daw::min( lhs.size( ), rhs.size( ) ) );
+			auto cmp = Traits::compare( lhs.data( ), rhs.data( ),
+			                            daw::min( lhs.size( ), rhs.size( ) ) );
 			if( cmp == 0 ) {
 				if( lhs.size( ) < rhs.size( ) ) {
 					return -1;
@@ -976,12 +976,14 @@ namespace daw {
 #endif
 
 	template<typename CharT, size_t N>
-	constexpr daw::basic_string_view<CharT> make_string_view( CharT const ( &str )[N] ) {
+	constexpr daw::basic_string_view<CharT>
+	make_string_view( CharT const ( &str )[N] ) {
 		return daw::basic_string_view<CharT>{str, N};
 	}
 
 	template<typename CharT>
-	constexpr daw::basic_string_view<CharT> make_string_view( daw::basic_string_view<CharT> sv ) {
+	constexpr daw::basic_string_view<CharT>
+	make_string_view( daw::basic_string_view<CharT> sv ) {
 		return sv;
 	}
 	// basic_string_view / something else

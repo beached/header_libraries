@@ -23,10 +23,10 @@
 #include <iostream>
 #include <mutex>
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_value_ptr.h"
 
-BOOST_AUTO_TEST_CASE( daw_value_ptr_test_01 ) {
+void daw_value_ptr_test_01( ) {
 	struct lrg {
 		size_t a{};
 		size_t b{};
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE( daw_value_ptr_test_01 ) {
 	auto d = daw::value_ptr<int>( 1 );
 
 	// a & b
-	BOOST_REQUIRE_EQUAL( *a, 0 );
+	daw::expecting( *a, 0 );
 	auto test_01 = !( a == b );
 	auto test_02 = !( b == a );
 	auto test_03 = a != b;
@@ -67,22 +67,22 @@ BOOST_AUTO_TEST_CASE( daw_value_ptr_test_01 ) {
 	auto test_15 = c > b;
 	auto test_16 = c >= b;
 
-	BOOST_REQUIRE( test_01 );
-	BOOST_REQUIRE( test_02 );
-	BOOST_REQUIRE( test_03 );
-	BOOST_REQUIRE( test_04 );
-	BOOST_REQUIRE( test_05 );
-	BOOST_REQUIRE( test_06 );
-	BOOST_REQUIRE( test_07 );
-	BOOST_REQUIRE( test_08 );
-	BOOST_REQUIRE( test_09 );
-	BOOST_REQUIRE( test_10 );
-	BOOST_REQUIRE( test_11 );
-	BOOST_REQUIRE( test_12 );
-	BOOST_REQUIRE( test_13 );
-	BOOST_REQUIRE( test_14 );
-	BOOST_REQUIRE( test_15 );
-	BOOST_REQUIRE( test_16 );
+	daw::expecting( test_01 );
+	daw::expecting( test_02 );
+	daw::expecting( test_03 );
+	daw::expecting( test_04 );
+	daw::expecting( test_05 );
+	daw::expecting( test_06 );
+	daw::expecting( test_07 );
+	daw::expecting( test_08 );
+	daw::expecting( test_09 );
+	daw::expecting( test_10 );
+	daw::expecting( test_11 );
+	daw::expecting( test_12 );
+	daw::expecting( test_13 );
+	daw::expecting( test_14 );
+	daw::expecting( test_15 );
+	daw::expecting( test_16 );
 
 	struct A {
 		constexpr A( ) noexcept {}
@@ -99,6 +99,7 @@ BOOST_AUTO_TEST_CASE( daw_value_ptr_test_01 ) {
 	g = 5;
 
 	auto hash_value = std::hash<decltype( g )>{}( g );
+	Unused( hash_value );
 
 	auto i = daw::value_ptr<std::mutex>( );
 	i.reset( );
@@ -127,12 +128,17 @@ struct virt_B : virt_A {
 
 virt_B::~virt_B( ) noexcept = default;
 
-BOOST_AUTO_TEST_CASE( virtual_inheritance_test ) {
+void virtual_inheritance_test( ) {
 	using test_t = daw::value_ptr<virt_A>;
 	auto a = test_t( );
 	auto b = test_t::emplace<virt_B>( );
 
-	BOOST_REQUIRE( a( ) != b( ) );
+	daw::expecting( a( ) != b( ) );
 	std::cout << "a: " << a( ) << ", " << sizeof( virt_A ) << '\n';
 	std::cout << "b: " << b( ) << ", " << sizeof( virt_B ) << '\n';
+}
+
+int main( ) {
+	daw_value_ptr_test_01( );
+	virtual_inheritance_test( );
 }

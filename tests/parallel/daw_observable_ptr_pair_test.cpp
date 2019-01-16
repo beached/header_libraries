@@ -21,8 +21,8 @@
 // SOFTWARE.
 
 #include "daw/boost_test.h"
-#include <iostream>
 
+#include "daw/daw_benchmark.h"
 #include "daw/parallel/daw_observable_ptr_pair.h"
 
 BOOST_AUTO_TEST_CASE( test_001 ) {
@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE( test_001 ) {
 
 	obs.lock( []( int &val ) { val = 5; } );
 
-	BOOST_REQUIRE_EQUAL( *p, 5 );
+	daw::expecting( 5, *p );
 }
 
 BOOST_AUTO_TEST_CASE( test_002 ) {
@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE( test_002 ) {
 			*lck = 5;
 		}
 	}
-	BOOST_REQUIRE_EQUAL( *p, 5 );
+	daw::expecting( 5, *p );
 }
 
 BOOST_AUTO_TEST_CASE( test_003 ) {
@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE( test_003 ) {
 
 	obs.lock( []( int &val ) { val = 5; } );
 
-	BOOST_REQUIRE_EQUAL( *t, 5 );
+	daw::expecting( 5, *t );
 }
 
 BOOST_AUTO_TEST_CASE( test_004 ) {
@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE( test_004 ) {
 
 	auto const obs = t.get_observer( );
 
-	BOOST_REQUIRE_EQUAL( obs.borrow( )->load( ), 0 );
+	daw::expecting( 0, obs.borrow( )->load( ) );
 }
 
 namespace {
@@ -86,32 +86,32 @@ namespace {
 BOOST_AUTO_TEST_CASE( test_operator_arrow_005 ) {
 	auto tmp = daw::make_observable_ptr_pair<test_t>( 5 );
 	auto v = tmp->value;
-	BOOST_REQUIRE_EQUAL( 5, v );
+	daw::expecting( 5, v );
 }
 
 BOOST_AUTO_TEST_CASE( test_visit_006 ) {
 	auto const tmp = daw::make_observable_ptr_pair<test_t>( 5 );
 	auto const res = tmp.visit( []( auto v ) { return v.value; } );
-	BOOST_REQUIRE_EQUAL( 5, res );
+	daw::expecting( 5, res );
 }
 
 BOOST_AUTO_TEST_CASE( test_apply_visitor_007 ) {
 	auto const tmp = daw::make_observable_ptr_pair<test_t>( 5 );
 	auto const res =
 	  tmp.apply_visitor( []( auto const &ptr ) { return ptr->value; } );
-	BOOST_REQUIRE_EQUAL( 5, res );
+	daw::expecting( 5, res );
 }
 
 BOOST_AUTO_TEST_CASE( test_visit_008 ) {
 	auto tmp = daw::make_observable_ptr_pair<test_t>( 5 );
 	tmp.visit( []( auto &v ) -> int & { return v.value; } ) = 6;
 	auto const res = tmp.visit( []( auto v ) -> int { return v.value; } );
-	BOOST_REQUIRE_EQUAL( 6, res );
+	daw::expecting( 6, res );
 }
 
 BOOST_AUTO_TEST_CASE( test_visit_009 ) {
 	auto tmp = daw::make_observable_ptr_pair<test_t>( 5 );
 	tmp.visit( []( auto &v ) { v.set_value( 6 ); } );
 	auto const res = tmp.visit( []( auto v ) -> int { return v.value; } );
-	BOOST_REQUIRE_EQUAL( 6, res );
+	daw::expecting( 6, res );
 }

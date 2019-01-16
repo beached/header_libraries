@@ -24,10 +24,10 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/iterator/daw_split_iterator.h"
 
-BOOST_AUTO_TEST_CASE( split_it_001 ) {
+void split_it_001( ) {
 	std::string str = "This is a test of the split";
 	auto it = daw::make_split_it( str, ' ' );
 
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE( split_it_001 ) {
 	}
 }
 
-BOOST_AUTO_TEST_CASE( split_it_002 ) {
+void split_it_002( ) {
 	std::string str = "t  j ";
 	auto it = daw::make_split_it( str, ' ' );
 
@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE( split_it_002 ) {
 	}
 }
 
-BOOST_AUTO_TEST_CASE( split_it_003 ) {
+void split_it_003( ) {
 	std::string str = "This is a test of the split";
 	auto it = daw::make_split_it( str, ' ' );
 	auto const last = it.make_end( );
@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE( split_it_003 ) {
 	}
 }
 
-BOOST_AUTO_TEST_CASE( split_it_004 ) {
+void split_it_004( ) {
 	std::string str = "This is a test of the split";
 	auto it = daw::make_split_it( str, ' ' );
 	auto const last = daw::split_it<char>{};
@@ -71,7 +71,14 @@ BOOST_AUTO_TEST_CASE( split_it_004 ) {
 		++it;
 		--it;
 		auto sv_prev = *it;
-		BOOST_REQUIRE_EQUAL( sv, sv_prev );
+		daw::expecting( sv, sv_prev );
 		++it;
 	}
+}
+
+int main( ) {
+	split_it_001( );
+	split_it_002( );
+	split_it_003( );
+	split_it_004( );
 }

@@ -28,7 +28,7 @@
 #include <tuple>
 #include <typeinfo>
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_utility.h"
 
 namespace in_range_test {
@@ -40,28 +40,28 @@ namespace in_range_test {
 	static_assert( !daw::in_range( 10, -10, 10 ) );
 } // namespace in_range_test
 
-BOOST_AUTO_TEST_CASE( daw_utility_append_test ) {
+void daw_utility_append_test( ) {
 	std::vector<int> a{1, 2, 3, 4, 5};
 	daw::append( a, 6, 7, 8, 9 );
-	BOOST_REQUIRE( a.size( ) == 9 );
+	daw::expecting( a.size( ) == 9 );
 }
 
-BOOST_AUTO_TEST_CASE( daw_hex_test_001 ) {
+void daw_hex_test_001( ) {
 	uint32_t const a = 0xFF00FFFF;
 	std::string a_str;
 	daw::hex( a, std::back_inserter( a_str ) );
 	std::cout << "Output: " << a_str << '\n';
-	BOOST_REQUIRE_EQUAL( a_str, "FF00FFFF" );
+	daw::expecting( a_str, "FF00FFFF" );
 }
 
-BOOST_AUTO_TEST_CASE( daw_hex_test_002 ) {
+void daw_hex_test_002( ) {
 	std::vector<uint32_t> vec_a( 10, 0xFF00FFFF );
 	std::string a_str;
 	daw::hex( vec_a.cbegin( ), vec_a.cend( ), std::back_inserter( a_str ) );
 	std::cout << "Output: " << a_str << '\n';
 }
 
-BOOST_AUTO_TEST_CASE( daw_hex_test_003 ) {
+void daw_hex_test_003( ) {
 	std::string a_str;
 	daw::hex( "abcdef", std::back_inserter( a_str ) );
 	std::cout << "Output: " << a_str << '\n';
@@ -84,12 +84,12 @@ namespace daw_hex_test_004 {
 	static_assert( to_hex_test_004( ), "" );
 } // namespace daw_hex_test_004
 
-BOOST_AUTO_TEST_CASE( daw_hex_test_005 ) {
+void daw_hex_test_005( ) {
 	uint32_t const a = 0x789ABCDE;
 	std::string a_str;
 	daw::hex( a, std::back_inserter( a_str ) );
 	std::cout << "Output: " << a_str << '\n';
-	BOOST_REQUIRE_EQUAL( a_str, "789ABCDE" );
+	daw::expecting( a_str, "789ABCDE" );
 }
 
 namespace daw_pack_index_of_001 {
@@ -109,15 +109,16 @@ namespace daw_pack_index_of_003 {
 }
 
 /*
-BOOST_AUTO_TEST_CASE( daw_get_pack_value_001 ) {
+constexpr bool daw_get_pack_value_001( ) {
   constexpr auto const tst = daw::daw_get_pack_value( 2, "a", true, 4 );
 
   static_assert( daw::is_same_v<decltype( tst ), bool>, "Expected a bool" );
-  BOOST_REQUIRE( tst );
+  return tst;
 }
+static_assert( daw_get_pack_value_001( ) );
 */
 
-BOOST_AUTO_TEST_CASE( daw_pack_type_at_001 ) {
+void daw_pack_type_at_001( ) {
 	using tst_t =
 	  daw::pack_type_at<5, double, float, std::string, char, char *, int, void *>;
 
@@ -126,7 +127,7 @@ BOOST_AUTO_TEST_CASE( daw_pack_type_at_001 ) {
 	          << typeid( tst_t ).name( ) << '\n';
 	std::cout << "type id name of int: " << typeid( int ).name( ) << '\n';
 	constexpr bool tst = daw::is_same_v<int, tst_t>;
-	BOOST_REQUIRE( tst );
+	daw::expecting( tst );
 
 	constexpr size_t pos = daw::pack_index_of_v<int, double, float, std::string,
 	                                            char, char *, int, void *>;
@@ -134,7 +135,7 @@ BOOST_AUTO_TEST_CASE( daw_pack_type_at_001 ) {
 	             "char, char *, int, void *> should be 5: "
 	          << 5 << '\n';
 
-	BOOST_REQUIRE_EQUAL( pos, 5 );
+	daw::expecting( 5U, pos );
 
 	std::cout << tst << '\n';
 }
@@ -164,64 +165,81 @@ namespace construct_a_deps {
 	  "aggregate_construction<array> should be aggregate constructable" );
 } // namespace construct_a_deps
 
-BOOST_AUTO_TEST_CASE( construct_a_001 ) {
+void construct_a_001( ) {
 	auto tmp = daw::construct_from<std::vector<int>>(
 	  std::make_tuple( static_cast<size_t>( 2 ), 5 ) );
 
 	static_assert(
 	  daw::is_same_v<std::decay_t<decltype( tmp )>, std::vector<int>>,
 	  "Invalid types" );
-	BOOST_REQUIRE_EQUAL( tmp.size( ), 2 );
-	BOOST_REQUIRE_EQUAL( tmp[0], 5 );
-	BOOST_REQUIRE_EQUAL( tmp[1], 5 );
+	daw::expecting( 2U, tmp.size( ) );
+	daw::expecting( 5, tmp[0] );
+	daw::expecting( 5, tmp[1] );
 }
 
-BOOST_AUTO_TEST_CASE( construct_a_002 ) {
+void construct_a_002( ) {
 	auto tmp =
 	  daw::construct_from<daw::use_aggregate_construction<std::vector<int>>>(
 	    std::make_tuple( 1, 2, 3, 4 ) );
 	static_assert(
 	  daw::is_same_v<std::decay_t<decltype( tmp )>, std::vector<int>>,
 	  "Invalid types" );
-	BOOST_REQUIRE_EQUAL( tmp.size( ), 4 );
-	BOOST_REQUIRE_EQUAL( tmp[0], 1 );
-	BOOST_REQUIRE_EQUAL( tmp[1], 2 );
-	BOOST_REQUIRE_EQUAL( tmp[2], 3 );
-	BOOST_REQUIRE_EQUAL( tmp[3], 4 );
+	daw::expecting( 4U, tmp.size( ) );
+	daw::expecting( 1, tmp[0] );
+	daw::expecting( 2, tmp[1] );
+	daw::expecting( 3, tmp[2] );
+	daw::expecting( 4, tmp[3] );
 }
 
-BOOST_AUTO_TEST_CASE( construct_a_003 ) {
+void construct_a_003( ) {
 	auto tmp =
 	  daw::construct_from<daw::use_aggregate_construction<std::array<int, 4>>>(
 	    std::make_tuple( 1, 2, 3, 4 ) );
 	static_assert(
 	  daw::is_same_v<std::decay_t<decltype( tmp )>, std::array<int, 4>>,
 	  "Invalid types" );
-	BOOST_REQUIRE_EQUAL( tmp.size( ), 4 );
-	BOOST_REQUIRE_EQUAL( tmp[0], 1 );
-	BOOST_REQUIRE_EQUAL( tmp[1], 2 );
-	BOOST_REQUIRE_EQUAL( tmp[2], 3 );
-	BOOST_REQUIRE_EQUAL( tmp[3], 4 );
+	daw::expecting( 4U, tmp.size( ) );
+	daw::expecting( tmp[0], 1 );
+	daw::expecting( tmp[1], 2 );
+	daw::expecting( tmp[2], 3 );
+	daw::expecting( tmp[3], 4 );
 }
 
-BOOST_AUTO_TEST_CASE( as_char_array_001 ) {
+void as_char_array_001( ) {
 	uint16_t const value = 0x43'21;
 	auto const ary = daw::as_char_array( value );
 
-	BOOST_REQUIRE_EQUAL( 0x43, ary[1] );
-	BOOST_REQUIRE_EQUAL( 0x21, ary[0] );
+	daw::expecting( 0x43, ary[1] );
+	daw::expecting( 0x21, ary[0] );
 }
 
-BOOST_AUTO_TEST_CASE( visit_nt_001 ) {
+constexpr bool visit_nt_001( ) {
 	std::variant<int, double> a = 5.5;
 	auto result = daw::visit_nt( a, []( auto v ) { return v == 5.5; } );
-	BOOST_REQUIRE( result );
+	daw::expecting( result );
+	return true;
 }
+static_assert( visit_nt_001( ) );
 
-BOOST_AUTO_TEST_CASE( visit_nt_002 ) {
+constexpr bool visit_nt_002( ) {
 	std::variant<int, double> a = 5.5;
 	std::optional<bool> result{};
 	daw::visit_nt( a, [&result]( auto v ) { result = ( v == 5.5 ); } );
-	BOOST_REQUIRE( result );
-	BOOST_REQUIRE( *result );
+	daw::expecting( result );
+	daw::expecting( *result );
+	return true;
+}
+static_assert( visit_nt_002( ) );
+
+int main( ) {
+	daw_utility_append_test( );
+	daw_hex_test_001( );
+	daw_hex_test_002( );
+	daw_hex_test_003( );
+	daw_hex_test_005( );
+	daw_pack_type_at_001( );
+	construct_a_001( );
+	construct_a_002( );
+	construct_a_003( );
+	as_char_array_001( );
 }

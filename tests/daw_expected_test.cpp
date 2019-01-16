@@ -24,6 +24,7 @@
 #include <stdexcept>
 
 #include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_expected.h"
 
 daw::expected_t<int> divide( int v ) {
@@ -61,25 +62,25 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 
 	auto h = divide( 0 );
 	auto i = divide( 2 );
-	BOOST_REQUIRE( h.has_exception( ) );
-	BOOST_REQUIRE( !h.has_value( ) );
-	BOOST_REQUIRE( !i.has_exception( ) );
-	BOOST_REQUIRE( i.has_value( ) );
+	daw::expecting( h.has_exception( ) );
+	daw::expecting( !h.has_value( ) );
+	daw::expecting( !i.has_exception( ) );
+	daw::expecting( i.has_value( ) );
 	// a & b
 	auto test_01 = !( a == b );
 	auto test_02 = !( b == a );
 
 	auto j = divide( 0 );
-	BOOST_REQUIRE( j.has_exception( ) );
-	BOOST_REQUIRE( !j.has_value( ) );
+	daw::expecting( j.has_exception( ) );
+	daw::expecting( !j.has_value( ) );
 
-	BOOST_REQUIRE( test_01 );
-	BOOST_REQUIRE( test_02 );
+	daw::expecting( test_01 );
+	daw::expecting( test_02 );
 
 	auto const k = daw::expected_from_code( []( auto x ) { return x * x; }, 5 );
-	BOOST_REQUIRE( !k.empty( ) );
-	BOOST_REQUIRE( k.has_value( ) );
-	BOOST_REQUIRE( k.get( ) == 25 );
+	daw::expecting( !k.empty( ) );
+	daw::expecting( k.has_value( ) );
+	daw::expecting( k.get( ) == 25 );
 }
 
 struct L {
@@ -91,24 +92,24 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_02 ) {
 
 	auto l = daw::expected_t<L>( []( ) { return L{5}; }( ) );
 	auto a = l->a == 5;
-	BOOST_REQUIRE( a );
+	daw::expecting( a );
 
 	auto m = daw::expected_from_code( []( ) -> L { return L{6}; } );
 	auto ma = m->a == 6;
-	BOOST_REQUIRE( ma );
+	daw::expecting( ma );
 
 	auto o = m.visit(
 	  daw::overload( []( L const &value ) -> bool { return value.a == 6; },
 	                 []( L &&value ) -> bool { return value.a == 6; },
 	                 []( std::exception_ptr ) -> bool { return false; } ) );
-	BOOST_REQUIRE( o );
+	daw::expecting( o );
 
 	auto const m2 = m;
 	auto p = m2.visit(
 	  daw::overload( []( L const &value ) -> bool { return value.a == 6; },
 	                 []( L &&value ) -> bool { return value.a == 6; },
 	                 []( std::exception_ptr ) -> bool { return false; } ) );
-	BOOST_REQUIRE( p );
+	daw::expecting( p );
 
 	m.visit(
 	  daw::overload( []( L && ) { std::cout << "valueRR\n"; },
@@ -123,34 +124,34 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_02 ) {
 	auto q = f.visit(
 	  daw::overload( []( ) -> bool { return true; },
 	                 []( std::exception_ptr ) -> bool { return false; } ) );
-	BOOST_REQUIRE( q );
+	daw::expecting( q );
 
 	auto const f2 = f;
 	auto r = f2.visit(
 	  daw::overload( []( ) -> bool { return true; },
 	                 []( std::exception_ptr ) -> bool { return false; } ) );
-	BOOST_REQUIRE( r );
+	daw::expecting( r );
 }
 
 BOOST_AUTO_TEST_CASE( daw_expected_test_copy_001 ) {
 	auto tmp = daw::expected_t<std::string>( );
 	tmp = "This is a test";
-	BOOST_REQUIRE( tmp.has_value( ) );
-	BOOST_REQUIRE( !tmp.has_exception( ) );
-	BOOST_REQUIRE( !tmp.empty( ) );
-	BOOST_REQUIRE( tmp.get( ) == "This is a test" );
+	daw::expecting( tmp.has_value( ) );
+	daw::expecting( !tmp.has_exception( ) );
+	daw::expecting( !tmp.empty( ) );
+	daw::expecting( tmp.get( ) == "This is a test" );
 	auto tmp2 = daw::expected_t<std::string>( );
 	tmp2 = tmp;
-	BOOST_REQUIRE( tmp.has_value( ) == tmp2.has_value( ) );
-	BOOST_REQUIRE( tmp.has_exception( ) == tmp2.has_exception( ) );
-	BOOST_REQUIRE( tmp.empty( ) == tmp2.empty( ) );
-	BOOST_REQUIRE( tmp.get( ) == tmp2.get( ) );
+	daw::expecting( tmp.has_value( ) == tmp2.has_value( ) );
+	daw::expecting( tmp.has_exception( ) == tmp2.has_exception( ) );
+	daw::expecting( tmp.empty( ) == tmp2.empty( ) );
+	daw::expecting( tmp.get( ) == tmp2.get( ) );
 
 	auto tmp3 = daw::expected_t<std::string>( tmp );
-	BOOST_REQUIRE( tmp.has_value( ) == tmp3.has_value( ) );
-	BOOST_REQUIRE( tmp.has_exception( ) == tmp3.has_exception( ) );
-	BOOST_REQUIRE( tmp.empty( ) == tmp3.empty( ) );
-	BOOST_REQUIRE( tmp.get( ) == tmp3.get( ) );
+	daw::expecting( tmp.has_value( ) == tmp3.has_value( ) );
+	daw::expecting( tmp.has_exception( ) == tmp3.has_exception( ) );
+	daw::expecting( tmp.empty( ) == tmp3.empty( ) );
+	daw::expecting( tmp.get( ) == tmp3.get( ) );
 }
 
 BOOST_AUTO_TEST_CASE( daw_expected_test_copy_002 ) {
@@ -158,23 +159,23 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_copy_002 ) {
 	try {
 		throw std::exception{};
 	} catch( ... ) { tmp.set_exception( ); }
-	BOOST_REQUIRE( !tmp.has_value( ) );
-	BOOST_REQUIRE( tmp.has_exception( ) );
-	BOOST_REQUIRE( !tmp.empty( ) );
+	daw::expecting( !tmp.has_value( ) );
+	daw::expecting( tmp.has_exception( ) );
+	daw::expecting( !tmp.empty( ) );
 	BOOST_REQUIRE_EXCEPTION( tmp.get( ), std::exception,
 	                         []( auto && ) { return true; } );
 	auto tmp2 = daw::expected_t<std::string>( );
 	tmp2 = tmp;
-	BOOST_REQUIRE( tmp.has_value( ) == tmp2.has_value( ) );
-	BOOST_REQUIRE( tmp.has_exception( ) == tmp2.has_exception( ) );
-	BOOST_REQUIRE( tmp.empty( ) == tmp2.empty( ) );
+	daw::expecting( tmp.has_value( ) == tmp2.has_value( ) );
+	daw::expecting( tmp.has_exception( ) == tmp2.has_exception( ) );
+	daw::expecting( tmp.empty( ) == tmp2.empty( ) );
 	BOOST_REQUIRE_EXCEPTION( tmp2.get( ), std::exception,
 	                         []( auto && ) { return true; } );
 
 	auto tmp3 = daw::expected_t<std::string>( tmp );
-	BOOST_REQUIRE( tmp.has_value( ) == tmp3.has_value( ) );
-	BOOST_REQUIRE( tmp.has_exception( ) == tmp3.has_exception( ) );
-	BOOST_REQUIRE( tmp.empty( ) == tmp3.empty( ) );
+	daw::expecting( tmp.has_value( ) == tmp3.has_value( ) );
+	daw::expecting( tmp.has_exception( ) == tmp3.has_exception( ) );
+	daw::expecting( tmp.empty( ) == tmp3.empty( ) );
 	BOOST_REQUIRE_EXCEPTION( tmp3.get( ), std::exception,
 	                         []( auto && ) { return true; } );
 }
@@ -182,36 +183,36 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_copy_002 ) {
 BOOST_AUTO_TEST_CASE( daw_expected_test_move_assignment_001 ) {
 	auto tmp = daw::expected_t<std::string>( );
 	tmp = "This is a test";
-	BOOST_REQUIRE( tmp.has_value( ) );
-	BOOST_REQUIRE( !tmp.has_exception( ) );
-	BOOST_REQUIRE( !tmp.empty( ) );
-	BOOST_REQUIRE( tmp.get( ) == "This is a test" );
+	daw::expecting( tmp.has_value( ) );
+	daw::expecting( !tmp.has_exception( ) );
+	daw::expecting( !tmp.empty( ) );
+	daw::expecting( tmp.get( ) == "This is a test" );
 	auto tmp2 = daw::expected_t<std::string>( );
 	tmp2 = std::move( tmp );
-	BOOST_REQUIRE( !tmp.has_value( ) );
-	BOOST_REQUIRE( !tmp.has_exception( ) );
-	BOOST_REQUIRE( tmp.empty( ) );
-	BOOST_REQUIRE( tmp2.has_value( ) );
-	BOOST_REQUIRE( !tmp2.has_exception( ) );
-	BOOST_REQUIRE( !tmp2.empty( ) );
-	BOOST_REQUIRE( tmp2.get( ) == "This is a test" );
+	daw::expecting( !tmp.has_value( ) );
+	daw::expecting( !tmp.has_exception( ) );
+	daw::expecting( tmp.empty( ) );
+	daw::expecting( tmp2.has_value( ) );
+	daw::expecting( !tmp2.has_exception( ) );
+	daw::expecting( !tmp2.empty( ) );
+	daw::expecting( tmp2.get( ) == "This is a test" );
 }
 
 BOOST_AUTO_TEST_CASE( daw_expected_test_move_construction_001 ) {
 	auto tmp = daw::expected_t<std::string>( );
 	tmp = "This is a test";
-	BOOST_REQUIRE( tmp.has_value( ) );
-	BOOST_REQUIRE( !tmp.has_exception( ) );
-	BOOST_REQUIRE( !tmp.empty( ) );
-	BOOST_REQUIRE( tmp.get( ) == "This is a test" );
+	daw::expecting( tmp.has_value( ) );
+	daw::expecting( !tmp.has_exception( ) );
+	daw::expecting( !tmp.empty( ) );
+	daw::expecting( tmp.get( ) == "This is a test" );
 	auto tmp2 = daw::expected_t<std::string>( std::move( tmp ) );
-	BOOST_REQUIRE( !tmp.has_value( ) );
-	BOOST_REQUIRE( !tmp.has_exception( ) );
-	BOOST_REQUIRE( tmp.empty( ) );
-	BOOST_REQUIRE( tmp2.has_value( ) );
-	BOOST_REQUIRE( !tmp2.has_exception( ) );
-	BOOST_REQUIRE( !tmp2.empty( ) );
-	BOOST_REQUIRE( tmp2.get( ) == "This is a test" );
+	daw::expecting( !tmp.has_value( ) );
+	daw::expecting( !tmp.has_exception( ) );
+	daw::expecting( tmp.empty( ) );
+	daw::expecting( tmp2.has_value( ) );
+	daw::expecting( !tmp2.has_exception( ) );
+	daw::expecting( !tmp2.empty( ) );
+	daw::expecting( tmp2.get( ) == "This is a test" );
 }
 
 BOOST_AUTO_TEST_CASE( daw_expected_test_move_assignment_002 ) {
@@ -219,20 +220,20 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_move_assignment_002 ) {
 	try {
 		throw std::exception{};
 	} catch( ... ) { tmp.set_exception( ); }
-	BOOST_REQUIRE( !tmp.has_value( ) );
-	BOOST_REQUIRE( tmp.has_exception( ) );
-	BOOST_REQUIRE( !tmp.empty( ) );
+	daw::expecting( !tmp.has_value( ) );
+	daw::expecting( tmp.has_exception( ) );
+	daw::expecting( !tmp.empty( ) );
 	BOOST_REQUIRE_EXCEPTION( tmp.get( ), std::exception,
 	                         []( auto && ) { return true; } );
 
 	auto tmp2 = daw::expected_t<std::string>( );
 	tmp2 = std::move( tmp );
-	BOOST_REQUIRE( !tmp.has_value( ) );
-	BOOST_REQUIRE( !tmp.has_exception( ) );
-	BOOST_REQUIRE( tmp.empty( ) );
-	BOOST_REQUIRE( !tmp2.has_value( ) );
-	BOOST_REQUIRE( tmp2.has_exception( ) );
-	BOOST_REQUIRE( !tmp2.empty( ) );
+	daw::expecting( !tmp.has_value( ) );
+	daw::expecting( !tmp.has_exception( ) );
+	daw::expecting( tmp.empty( ) );
+	daw::expecting( !tmp2.has_value( ) );
+	daw::expecting( tmp2.has_exception( ) );
+	daw::expecting( !tmp2.empty( ) );
 	BOOST_REQUIRE_EXCEPTION( tmp2.get( ), std::exception,
 	                         []( auto && ) { return true; } );
 }
@@ -242,19 +243,19 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_move_construction_002 ) {
 	try {
 		throw std::exception{};
 	} catch( ... ) { tmp.set_exception( ); }
-	BOOST_REQUIRE( !tmp.has_value( ) );
-	BOOST_REQUIRE( tmp.has_exception( ) );
-	BOOST_REQUIRE( !tmp.empty( ) );
+	daw::expecting( !tmp.has_value( ) );
+	daw::expecting( tmp.has_exception( ) );
+	daw::expecting( !tmp.empty( ) );
 	BOOST_REQUIRE_EXCEPTION( tmp.get( ), std::exception,
 	                         []( auto && ) { return true; } );
 
 	auto tmp2 = daw::expected_t<std::string>( std::move( tmp ) );
-	BOOST_REQUIRE( !tmp.has_value( ) );
-	BOOST_REQUIRE( !tmp.has_exception( ) );
-	BOOST_REQUIRE( tmp.empty( ) );
-	BOOST_REQUIRE( !tmp2.has_value( ) );
-	BOOST_REQUIRE( tmp2.has_exception( ) );
-	BOOST_REQUIRE( !tmp2.empty( ) );
+	daw::expecting( !tmp.has_value( ) );
+	daw::expecting( !tmp.has_exception( ) );
+	daw::expecting( tmp.empty( ) );
+	daw::expecting( !tmp2.has_value( ) );
+	daw::expecting( tmp2.has_exception( ) );
+	daw::expecting( !tmp2.empty( ) );
 	BOOST_REQUIRE_EXCEPTION( tmp2.get( ), std::exception,
 	                         []( auto && ) { return true; } );
 }

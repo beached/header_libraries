@@ -20,12 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <boost/unordered_map.hpp>
 #include <cstdint>
 #include <iostream>
 #include <string>
+#include <unordered_map>
 
-#include "daw/boost_test.h"
 #include "daw/daw_benchmark.h"
 #include "daw/daw_hash_table.h"
 #include "daw/daw_tuple_helper.h"
@@ -126,7 +125,7 @@ std::endl; std::cout << "Generating Keys" << std::endl; auto keys = integerKeys(
         assert( key == set[key] );
     }
 
-    BOOST_REQUIRE( set.begin( ).valid( ) );
+    daw::expecting( set.begin( ).valid( ) );
 
     std::vector<value_type> values;
 
@@ -135,7 +134,7 @@ std::endl; std::cout << "Generating Keys" << std::endl; auto keys = integerKeys(
     std::sort( keys.begin( ), keys.end( ) );
     std::sort( values.begin( ), values.end( ) );
 
-    BOOST_REQUIRE( std::equal( keys.begin( ), keys.end( ), values.begin( ),
+    daw::expecting( std::equal( keys.begin( ), keys.end( ), values.begin( ),
 values.end( ) ) );
 
     std::cout << "Done" << std::endl;
@@ -292,3 +291,5 @@ best_factor << ", resize ratio of " << best_ratio << " with results of " << best
 << '\n';
 }
 */
+
+int main( ) {}

@@ -20,17 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_carray.h"
 
 struct A {
 	A( ) = delete;
 };
 
-BOOST_AUTO_TEST_CASE( daw_heap_array_testing ) {
+void daw_heap_array_testing( ) {
 	daw::carray<int, 6> t = {1, 2, 3, 4, 5, 6};
-
 	daw::carray<A, 100> s;
+	daw::expecting( 4, t[3] );
+}
 
-	assert( t[3] == 4 );
+int main( ) {
+	daw_heap_array_testing( );
 }

@@ -20,11 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_read_file.h"
 #include <iostream>
 
-BOOST_AUTO_TEST_CASE( daw_read_file_001 ) {
+void daw_read_file_001( ) {
 	auto f = daw::read_file( "./daw_utility_test_bin" );
 	std::cout << f.size( ) << '\n';
+}
+
+int main( ) {
+	daw_read_file_001( );
 }

@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
 #include <iostream>
 
+#include "daw/daw_benchmark.h"
 #include "daw/daw_scope_guard.h"
 
 struct oe_t {
@@ -35,8 +35,12 @@ struct oe_t {
 	}
 };
 
-BOOST_AUTO_TEST_CASE( scope_guard_001 ) {
+void scope_guard_001( ) {
 	bool is_run = false;
 	{ auto sg = daw::on_scope_exit( oe_t( &is_run ) ); }
-	BOOST_REQUIRE_EQUAL( is_run, true );
+	daw::expecting( is_run, true );
+}
+
+int main( ) {
+	scope_guard_001( );
 }

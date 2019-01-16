@@ -51,7 +51,7 @@ namespace daw {
 		/// Now using C++'s definition of Regular
 		/// http://en.cppreference.com/w/cpp/experimental/ranges/concepts/Regular
 		template<typename T>
-		CXINLINE bool is_regular_v =
+		inline constexpr bool is_regular_v =
 		  all_true_v<is_default_constructible_v<T>, is_copy_constructible_v<T>,
 		             is_move_constructible_v<T>, is_copy_assignable_v<T>,
 		             is_move_assignable_v<T>, is_equality_comparable_v<T>,
@@ -79,12 +79,12 @@ namespace daw {
 		}
 
 		template<typename T>
-		CXINLINE bool is_regular = is_regular_test<T>( );
+		inline constexpr bool is_regular = is_regular_test<T>( );
 
 		// Iterator Concepts
 		// is_iterator
 		template<typename Iterator>
-		CXINLINE bool is_iterator_v = all_true_v<
+		inline constexpr bool is_iterator_v = all_true_v<
 		  is_copy_constructible_v<Iterator>, is_copy_assignable_v<Iterator>,
 		  is_destructible_v<Iterator>, impl::is_incrementable_v<Iterator>,
 		  impl::has_value_type_v<Iterator>, impl::has_difference_type_v<Iterator>,
@@ -122,13 +122,13 @@ namespace daw {
 		}
 
 		template<typename Iterator>
-		CXINLINE bool is_iterator = is_iterator_test<Iterator>( );
+		inline constexpr bool is_iterator = is_iterator_test<Iterator>( );
 
 		// is_output_iterator
 		template<typename OutputIterator,
 		         typename T =
 		           typename std::iterator_traits<OutputIterator>::value_type>
-		CXINLINE bool is_output_iterator_v =
+		inline constexpr bool is_output_iterator_v =
 		  all_true_v<is_iterator_v<OutputIterator>,
 		             is_assignable_iterator_v<OutputIterator, T>>;
 
@@ -149,14 +149,14 @@ namespace daw {
 		template<
 		  typename OutputIterator,
 		  typename T = typename std::iterator_traits<OutputIterator>::value_type>
-		CXINLINE bool
+		inline constexpr bool
 		  is_output_iterator = is_output_iterator_test<OutputIterator, T>( );
 
 		// is_input_iterator
 		template<typename InputIterator,
 		         typename T =
 		           std::decay_t<decltype( *std::declval<InputIterator>( ) )>>
-		CXINLINE bool is_input_iterator_v = all_true_v<
+		inline constexpr bool is_input_iterator_v = all_true_v<
 		  is_iterator_v<InputIterator>, is_equality_comparable_v<InputIterator>,
 		  is_convertible_v<decltype( *std::declval<InputIterator>( ) ), T>>;
 
@@ -182,12 +182,13 @@ namespace daw {
 		}
 
 		template<typename InputIterator>
-		CXINLINE bool is_input_iterator = is_input_iterator_test<InputIterator>( );
+		inline constexpr bool
+		  is_input_iterator = is_input_iterator_test<InputIterator>( );
 
 		template<typename InOutIterator,
 		         typename T =
 		           typename std::iterator_traits<InOutIterator>::value_type>
-		CXINLINE bool is_inout_iterator_v =
+		inline constexpr bool is_inout_iterator_v =
 		  all_true_v<is_input_iterator_v<InOutIterator>,
 		             is_output_iterator_v<InOutIterator, T>>;
 
@@ -205,12 +206,12 @@ namespace daw {
 
 		template<typename InOutIterator, typename T = typename std::iterator_traits<
 		                                   InOutIterator>::value_type>
-		CXINLINE bool
+		inline constexpr bool
 		  is_inout_iterator = is_input_iterator_test<InOutIterator, T>( );
 
 		// is_forward_iterator
 		template<typename ForwardIterator>
-		CXINLINE bool is_forward_access_iterator_v =
+		inline constexpr bool is_forward_access_iterator_v =
 		  all_true_v<is_iterator_v<ForwardIterator>,
 		             is_default_constructible_v<ForwardIterator>>;
 
@@ -231,12 +232,12 @@ namespace daw {
 
 		// is_bidirectional_access_iterator
 		template<typename BidirectionalIterator>
-		CXINLINE bool is_bidirectional_access_iterator_v =
+		inline constexpr bool is_bidirectional_access_iterator_v =
 		  all_true_v<is_forward_access_iterator_v<BidirectionalIterator>,
 		             traits::has_decrement_operator_v<BidirectionalIterator>>;
 
 		template<typename BidirectionalIterator>
-		CXINLINE bool is_bidirectional_access_iterator_test( ) noexcept {
+		inline constexpr bool is_bidirectional_access_iterator_test( ) noexcept {
 			static_assert(
 			  is_bidirectional_access_iterator_v<BidirectionalIterator>,
 			  "BidirectionalIterator does not fullfill the RandomIterator concept.  "
@@ -250,12 +251,12 @@ namespace daw {
 		}
 
 		template<typename BidirectionalIterator>
-		CXINLINE bool is_bidirectional_access_iterator =
+		inline constexpr bool is_bidirectional_access_iterator =
 		  is_bidirectional_access_iterator_test<BidirectionalIterator>( );
 
 		// is_random_access_iterator
 		template<typename RandomIterator>
-		CXINLINE bool is_random_access_iterator_v = daw::all_true_v<
+		inline constexpr bool is_random_access_iterator_v = daw::all_true_v<
 		  is_bidirectional_access_iterator_v<RandomIterator>,
 		  traits::has_addition_operator_v<RandomIterator, int>,
 		  traits::has_addition_operator_v<int, RandomIterator>,
@@ -318,11 +319,11 @@ namespace daw {
 		}
 
 		template<typename RandomIterator>
-		CXINLINE bool is_random_access_iterator =
+		inline constexpr bool is_random_access_iterator =
 		  is_random_access_iterator_test<RandomIterator>( );
 
 		template<typename Sortable>
-		CXINLINE bool is_sortable_container_v =
+		inline constexpr bool is_sortable_container_v =
 		  all_true_v<traits::is_container_like_v<Sortable>,
 		             is_random_access_iterator_v<decltype(
 		               std::begin( std::declval<Sortable>( ) ) )>>;
@@ -343,7 +344,7 @@ namespace daw {
 			return true;
 		}
 		template<typename Predicate, typename... Args>
-		CXINLINE bool is_predicate_v =
+		inline constexpr bool is_predicate_v =
 		  is_detected_convertible_v<bool, traits::detectors::callable_with,
 		                            Predicate, Args...>;
 
@@ -358,10 +359,12 @@ namespace daw {
 		}
 
 		template<typename Predicate, typename... Args>
-		CXINLINE bool is_predicate = is_predicate_test<Predicate, Args...>( );
+		inline constexpr bool
+		  is_predicate = is_predicate_test<Predicate, Args...>( );
 
 		template<typename BinaryPredicate, typename T, typename U = T>
-		CXINLINE bool is_binary_predicate_v = is_predicate_v<BinaryPredicate, T, U>;
+		inline constexpr bool is_binary_predicate_v =
+		  is_predicate_v<BinaryPredicate, T, U>;
 
 		template<typename BinaryPredicate, typename T, typename U = T>
 		constexpr bool is_binary_predicate_test( ) noexcept {
@@ -374,11 +377,11 @@ namespace daw {
 		}
 
 		template<typename BinaryPredicate, typename T, typename U = T>
-		CXINLINE bool
+		inline constexpr bool
 		  is_binary_predicate = is_binary_predicate_test<BinaryPredicate, T, U>( );
 
 		template<typename Compare, typename T, typename U = T>
-		CXINLINE bool is_compare_v = is_binary_predicate_v<Compare, T, U>;
+		inline constexpr bool is_compare_v = is_binary_predicate_v<Compare, T, U>;
 
 		template<typename Compare, typename T, typename U = T>
 		constexpr bool is_compare_test( ) noexcept {
@@ -392,7 +395,8 @@ namespace daw {
 		}
 
 		template<typename UnaryPredicate, typename T>
-		CXINLINE bool is_unary_predicate_v = is_predicate_v<UnaryPredicate, T>;
+		inline constexpr bool is_unary_predicate_v =
+		  is_predicate_v<UnaryPredicate, T>;
 
 		template<typename UnaryPredicate, typename T>
 		constexpr bool is_unary_predicate_test( ) noexcept {
@@ -405,7 +409,7 @@ namespace daw {
 		}
 
 		template<typename UnaryPredicate, typename T>
-		CXINLINE bool
+		inline constexpr bool
 		  is_unary_predicate = is_unary_predicate_test<UnaryPredicate, T>( );
 
 	} // namespace traits

@@ -20,23 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <algorithm>
-#include <cctype>
-#include <cstdint>
-#include <cstdlib>
-#include <iostream>
+#include <string>
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_string.h"
 
-BOOST_AUTO_TEST_CASE( make_string_testing ) {
+void make_string_testing( ) {
 	std::string a = "a b c d e f";
 	auto b = daw::string::split_if( a, &isspace );
 
-	BOOST_REQUIRE_EQUAL( b.size( ), 6 );
+	daw::expecting( 6U, b.size( ) );
 }
 
-BOOST_AUTO_TEST_CASE( string_fmt_test_001 ) {
+void string_fmt_test_001( ) {
 	auto result = daw::string::fmt( "This is {0} test", "a" );
-	BOOST_REQUIRE_EQUAL( result, "This is a test" );
+	daw::expecting( "This is a test", result );
+}
+
+int main( ) {
+	make_string_testing( );
+	string_fmt_test_001( );
 }

@@ -25,30 +25,39 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "daw/boost_test.h"
+#include "daw/daw_algorithm.h"
 #include "daw/daw_array.h"
+#include "daw/daw_benchmark.h"
 
 using namespace std::literals::string_literals;
 
-BOOST_AUTO_TEST_CASE( make_array_testing ) {
-	constexpr auto const t = daw::make_array( 1, 2, 3, 4, 5, 6 );
+constexpr bool make_array_testing( ) {
+	auto const t = daw::make_array( 1, 2, 3, 4, 5, 6 );
 
-	auto pos = std::find( t.begin( ), t.end( ), 4 );
-	assert( *pos == 4 );
+	auto pos = daw::algorithm::find( t.begin( ), t.end( ), 4 );
+	daw::expecting( 4, *pos );
+	return true;
 }
+static_assert( make_array_testing( ) );
 
-BOOST_AUTO_TEST_CASE( to_array_testing ) {
+constexpr bool to_array_testing( ) {
 	int s[] = {1, 2, 3, 4, 5, 6};
 
 	auto const t = daw::to_array( s );
-	auto pos = std::find( t.begin( ), t.end( ), 4 );
-	assert( *pos == 4 );
+	auto pos = daw::algorithm::find( t.begin( ), t.end( ), 4 );
+	daw::expecting( 4, *pos );
+	return true;
 }
+static_assert( to_array_testing( ) );
 
-BOOST_AUTO_TEST_CASE( make_string_array_testing ) {
+void make_string_array_testing( ) {
 	auto const t = daw::make_string_array( "1", "2", "3", "4", "5", "6" );
 
-	auto pos = std::find( t.begin( ), t.end( ), "4" );
-	assert( pos->size( ) == 1 );
-	assert( *pos == "4" );
+	auto pos = daw::algorithm::find( t.begin( ), t.end( ), "4" );
+	daw::expecting( 1U, pos->size( ) );
+	daw::expecting( "4", *pos );
+}
+
+int main( ) {
+	make_string_array_testing( );
 }

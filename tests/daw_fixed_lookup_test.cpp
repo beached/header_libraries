@@ -24,18 +24,17 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "daw/boost_test.h"
 #include "daw/daw_benchmark.h"
 #include "daw/daw_fixed_lookup.h"
 
-BOOST_AUTO_TEST_CASE( daw_fixed_lookup_001 ) {
+void daw_fixed_lookup_001( ) {
 	daw::fixed_lookup<int, 100> blah{};
 	blah['a'] = 5;
 	blah["hello"] = 6;
-	BOOST_REQUIRE_EQUAL( blah['a'], 5 );
-	BOOST_REQUIRE_EQUAL( blah["hello"], 6 );
-	BOOST_REQUIRE( blah['a'] != blah["hello"] );
-	BOOST_REQUIRE_EQUAL( blah['a'], blah['a'] );
+	daw::expecting( blah['a'], 5 );
+	daw::expecting( blah["hello"], 6 );
+	daw::expecting( blah['a'] != blah["hello"] );
+	daw::expecting( blah['a'], blah['a'] );
 	std::cout << blah['a'] << " " << blah["hello"] << '\n';
 }
 
@@ -57,21 +56,24 @@ constexpr auto too_many( ) {
 	return blah;
 }
 
-BOOST_AUTO_TEST_CASE( daw_fixed_lookup_002 ) {
+constexpr bool daw_fixed_lookup_002( ) {
 	constexpr auto values2 = get_map( );
 	daw::fixed_lookup<int, 10> blah{};
 	blah['a'] = 1;
 	blah['2'] = 3;
 	blah[4] = 4;
-	BOOST_REQUIRE_EQUAL( values2['a'], blah['a'] );
+	daw::expecting( values2['a'], blah['a'] );
+	return true;
 }
+static_assert( daw_fixed_lookup_002( ) );
 
-BOOST_AUTO_TEST_CASE( daw_make_fixed_lookup_001 ) {
-	constexpr auto values =
-	  daw::make_fixed_lookup<int>( "hello", 3, 5, 6, "why oh why" );
-	BOOST_REQUIRE_EQUAL( values.size( ), values.capacity( ) );
-	BOOST_REQUIRE_EQUAL( values.size( ), 5 );
+constexpr bool daw_make_fixed_lookup_001( ) {
+	auto values = daw::make_fixed_lookup<int>( "hello", 3, 5, 6, "why oh why" );
+	daw::expecting( values.size( ), values.capacity( ) );
+	daw::expecting( 5U, values.size( ) );
+	return true;
 }
+static_assert( daw_make_fixed_lookup_001( ) );
 
 template<typename ValueType, ValueType SZ, size_t HashSize>
 void do_test( ) {
@@ -129,16 +131,18 @@ void do_test( ) {
 		                     }
 	                     },
 	                     2, 2, SZ );
-	BOOST_REQUIRE_EQUAL( sum1, sum2 );
-	BOOST_REQUIRE_EQUAL( sum1, sum3 );
+	daw::expecting( sum1, sum2 );
+	daw::expecting( sum1, sum3 );
 	std::cout << "sum1: " << sum1 << " sum2: " << sum2 << " sum3: " << sum3
 	          << '\n';
 }
 
-BOOST_AUTO_TEST_CASE( daw_fixed_lookup_bench_001 ) {
+void daw_fixed_lookup_bench_001( ) {
 	do_test<int64_t, 15'000, 8>( );
+	do_test<int32_t, 30'000, 4>( );
 }
 
-BOOST_AUTO_TEST_CASE( daw_fixed_lookup_bench_002 ) {
-	do_test<int32_t, 30'000, 4>( );
+int main( ) {
+	daw_fixed_lookup_001( );
+	daw_fixed_lookup_bench_001( );
 }

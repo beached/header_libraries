@@ -21,10 +21,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
 #include <iostream>
 
 #include "daw/cpp_17.h"
+#include "daw/daw_benchmark.h"
 
 constexpr int plus( int a, int b ) {
 	return a + b;
@@ -36,19 +36,21 @@ namespace void_t_tests {
 	void test2( int ) {}
 	struct X {};
 
-	bool fn2( ... ) {
+	constexpr bool fn2( ... ) {
 		return true;
 	}
 
 	template<typename T, typename = daw::void_t<decltype( fn( T{} ) )>>
-	bool fn2( T ) {
+	constexpr bool fn2( T ) {
 		return false;
 	}
 
-	BOOST_AUTO_TEST_CASE( void_t_test_001 ) {
+	constexpr bool void_t_test_001( ) {
 		auto const b1 = fn2( X{} );
-		BOOST_REQUIRE( b1 );
+		daw::expecting( b1 );
+		return true;
 	}
+	static_assert( void_t_test_001( ) );
 } // namespace void_t_tests
 
 namespace cpp_17_test_01 {
@@ -120,27 +122,27 @@ namespace trivially_destructable_001 {
 	static_assert( daw::is_trivially_destructible_v<Foo>, "" );
 } // namespace trivially_destructable_001
 
-BOOST_AUTO_TEST_CASE( bit_cast_001 ) {
+void bit_cast_001( ) {
 	constexpr uint32_t const tst = 0x89AB'CDEF;
 	auto const f = daw::bit_cast<float>( tst );
 	auto const i = daw::bit_cast<uint32_t>( f );
-	BOOST_REQUIRE_EQUAL( tst, i );
+	daw::expecting( tst, i );
 }
 
-BOOST_AUTO_TEST_CASE( bit_cast_002 ) {
+void bit_cast_002( ) {
 	constexpr uint32_t const tst = 0x89AB'CDEF;
 	auto const f = daw::bit_cast<float>( &tst );
 	auto const i = daw::bit_cast<uint32_t>( f );
-	BOOST_REQUIRE_EQUAL( tst, i );
+	daw::expecting( tst, i );
 }
 
-BOOST_AUTO_TEST_CASE( bit_cast_003 ) {
+void bit_cast_003( ) {
 	constexpr uint64_t const as_bin =
 	  0b0'01111111111'0000000000000000000000000000000000000000000000000000; // double
 	                                                                        // 1
 	constexpr double const as_dbl = 1.0;
 	bool const b1 = daw::bit_cast<uint64_t>( as_dbl ) == as_bin;
-	BOOST_REQUIRE( b1 );
+	daw::expecting( b1 );
 
 	constexpr uint64_t const as_bin2 =
 	  0b1'10000000000'0000000000000000000000000000000000000000000000000000; // double
@@ -148,7 +150,7 @@ BOOST_AUTO_TEST_CASE( bit_cast_003 ) {
 	constexpr double const as_dbl2 = -2.0;
 
 	bool const b2 = daw::bit_cast<uint64_t>( as_dbl2 ) == as_bin2;
-	BOOST_REQUIRE( b1 );
+	daw::expecting( b1 );
 }
 
 namespace is_nothrow_convertible_001 {
@@ -187,3 +189,9 @@ namespace decay_copy_001 {
 	                              decltype( daw::decay_copy( cd ) )>,
 	               "Results should be the same, double" );
 } // namespace decay_copy_001
+
+int main( ) {
+	bit_cast_001( );
+	bit_cast_002( );
+	bit_cast_003( );
+}

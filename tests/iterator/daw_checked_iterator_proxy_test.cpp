@@ -20,12 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
 #include <iostream>
 
+#include "daw/daw_benchmark.h"
 #include "daw/iterator/daw_checked_iterator_proxy.h"
 
-BOOST_AUTO_TEST_CASE( daw_checked_iterator_proxy_001 ) {
+void daw_checked_iterator_proxy_001( ) {
 	std::vector<int> const test = {0, 1, 2, 3, 4};
 
 	for( auto it = daw::make_checked_iterator_proxy( test.begin( ), test.end( ) );
@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE( daw_checked_iterator_proxy_001 ) {
 	}
 }
 
-BOOST_AUTO_TEST_CASE( daw_checked_iterator_proxy_002 ) {
+void daw_checked_iterator_proxy_002( ) {
 	std::vector<int> const test = {0, 1, 2, 3, 4};
 
 	bool result = false;
@@ -48,6 +48,11 @@ BOOST_AUTO_TEST_CASE( daw_checked_iterator_proxy_002 ) {
 		result = true;
 		std::cout << "Expected exception with message: " << ex.what( ) << '\n';
 	}
-	BOOST_REQUIRE_MESSAGE(
+	daw::expecting_message(
 	  result, "Expected an out_of_range exception but didn't get one" );
+}
+
+int main( ) {
+	daw_checked_iterator_proxy_001( );
+	daw_checked_iterator_proxy_002( );
 }

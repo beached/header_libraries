@@ -270,10 +270,23 @@ namespace daw {
 		constexpr bool
 		nearly_equal( T a, T b,
 		              T epsilon = std::numeric_limits<T>::epsilon( ) ) noexcept {
+			if( a != a ) {
+				if( b != b ) {
+					return true; // both NaN
+				}
+				return false;
+			}
+			if( b != b ) {
+				return false;
+			}
 			// Code from http://floating-point-gui.de/errors/comparison/
-			auto absA = std::abs( a );
-			auto absB = std::abs( b );
-			auto diff = std::abs( a - b );
+			auto absA = daw::math::abs( a );
+			auto absB = daw::math::abs( b );
+			auto diff = daw::math::abs( a - b );
+			if( diff != diff ) {
+				// both numbers where either max or min
+				return true;
+			}
 
 			if( a == b ) { // shortcut, handles infinities
 				return true;

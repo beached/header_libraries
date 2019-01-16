@@ -20,15 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
-#include <iostream>
-
 #include "daw/daw_benchmark.h"
 #include "daw/daw_range_collection.h"
 
-BOOST_AUTO_TEST_CASE( test_01 ) {
+void test_01( ) {
 	std::vector<int> a = {1, 2, 3, 4, 5};
 	using namespace daw::range;
 	auto tst = from( a );
 	daw::do_not_optimize( tst );
+}
+
+int main( ) {
+	test_01( );
 }

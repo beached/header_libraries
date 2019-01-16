@@ -20,12 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
 #include <iostream>
 
+#include "daw/daw_benchmark.h"
 #include "daw/parallel/daw_observable_ptr.h"
 
-BOOST_AUTO_TEST_CASE( test_001 ) {
+void test_001( ) {
 	int *p = new int{4};
 	daw::observable_ptr<int> t{p};
 
@@ -33,10 +33,10 @@ BOOST_AUTO_TEST_CASE( test_001 ) {
 
 	obs.lock( []( int &val ) { val = 5; } );
 
-	BOOST_REQUIRE_EQUAL( *p, 5 );
+	daw::expecting( 5, *p );
 }
 
-BOOST_AUTO_TEST_CASE( test_002 ) {
+void test_002( ) {
 	int *p = new int{4};
 	daw::observable_ptr<int> t{p};
 
@@ -47,27 +47,26 @@ BOOST_AUTO_TEST_CASE( test_002 ) {
 			*lck = 5;
 		}
 	}
-	BOOST_REQUIRE_EQUAL( *p, 5 );
+	daw::expecting( 5, *p );
 }
 
-BOOST_AUTO_TEST_CASE( test_003 ) {
+void test_003( ) {
 	auto t = daw::make_observable_ptr<int>( 4 );
 
 	auto obs = t.get_observer( );
 
 	obs.lock( []( int &val ) { val = 5; } );
 
-	BOOST_REQUIRE_EQUAL( *t, 5 );
+	daw::expecting( 5, *t );
 }
 
-BOOST_AUTO_TEST_CASE( test_004 ) {
-
+void test_004( ) {
 	auto t = daw::make_observable_ptr<std::atomic_int_least8_t>(
 	  static_cast<int_least8_t>( 0 ) );
 
 	auto const obs = t.get_observer( );
 
-	BOOST_REQUIRE_EQUAL( obs.borrow( )->load( ), 0 );
+	daw::expecting( 0, obs.borrow( )->load( ) );
 }
 
 namespace {
@@ -80,8 +79,16 @@ namespace {
 	};
 } // namespace
 
-BOOST_AUTO_TEST_CASE( test_005 ) {
+void test_005( ) {
 	test_005_t tmp{};
 	auto v = tmp.value->load( );
-	BOOST_REQUIRE_EQUAL( 0, v );
+	daw::expecting( 0, v );
+}
+
+int main( ) {
+	test_001( );
+	test_002( );
+	test_003( );
+	test_004( );
+	test_005( );
 }

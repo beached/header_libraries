@@ -22,18 +22,16 @@
 
 #include <algorithm>
 #include <array>
-#include <cstdint>
-#include <cstdlib>
 #include <iostream>
 
 #include "daw/iterator/daw_output_stream_iterator.h"
 
-int main( int, char ** ) {
-
+void test_output_stream_001( ) {
 	auto osi = daw::make_output_stream_iterator( std::cout );
 	std::array<int, 5> a = {0, 1, 2, 3, 4};
-
 	std::copy( a.cbegin( ), a.cend( ), osi );
+}
 
-	return EXIT_SUCCESS;
+int main( ) {
+	test_output_stream_001( );
 }

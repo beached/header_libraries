@@ -20,14 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <algorithm>
-#include <cstdint>
-#include <cstdlib>
-#include <iostream>
-
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_unique_array.h"
 
-BOOST_AUTO_TEST_CASE( daw_unique_array_test_001 ) {
+void daw_unique_array_test_001( ) {
 	daw::unique_array_t<int> blah{15};
+}
+
+int main( ) {
+	daw_unique_array_test_001( );
 }

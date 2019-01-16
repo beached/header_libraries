@@ -937,8 +937,7 @@ constexpr std::array<int, 10'000> big_arry = {
   95582, 2500,  5822,   67530, 78654, 54910, 69369, 3197,  75584, 44728, 18529,
   76602};
 
-int main( ) {
-	/*
+void sort_n_test_001( ) {
 	auto const random32 = daw::make_random_data<size_t>( 32 );
 
 	{
@@ -1113,12 +1112,13 @@ int main( ) {
 		                              },
 		                              random_lots );
 	}
-	 */
 	{
 		static_assert( []( ) {
 			std::array<int, std::size( big_arry )> out_test{};
-			daw::sort_to( std::cbegin( big_arry ), std::cend( big_arry ), out_test.data( ) );
-			return daw::algorithm::is_sorted( std::cbegin( out_test ), std::cend( out_test ) );
+			daw::sort_to( std::cbegin( big_arry ), std::cend( big_arry ),
+			              out_test.data( ) );
+			return daw::algorithm::is_sorted( std::cbegin( out_test ),
+			                                  std::cend( out_test ) );
 		}( ) );
 		auto const random_lots = daw::make_random_data<size_t>( 10'000 );
 		daw::bench_n_test<100, '\t'>( "10,000, daw::sort_to                  ",
@@ -1166,23 +1166,25 @@ int main( ) {
 		  random_lots );
 	}
 	// Desc
-		{
+	{
 		static_assert( []( ) constexpr {
 			std::array<int, std::size( big_arry )> out_test{};
-			daw::sort_to( std::cbegin( big_arry ), std::cend( big_arry ), out_test.data( ), std::greater<>{} );
-			return daw::algorithm::is_sorted( std::cbegin( out_test ), std::cend( out_test ), std::greater<>{} );
+			daw::sort_to( std::cbegin( big_arry ), std::cend( big_arry ),
+			              out_test.data( ), std::greater<>{} );
+			return daw::algorithm::is_sorted(
+			  std::cbegin( out_test ), std::cend( out_test ), std::greater<>{} );
 		}( ) );
 		auto const random_lots = daw::make_random_data<size_t>( 10'000 );
-		daw::bench_n_test<100, '\t'>( "10,000, daw::sort_to                  ",
-		                              []( auto container ) {
-			                              size_t values[10'000];
-			                              daw::sort_to( std::begin( container ),
-			                                            std::end( container ),
-			                                            std::begin( values ), std::greater<>{} );
-			                              daw::do_not_optimize( container );
-			                              daw::do_not_optimize( values );
-		                              },
-		                              random_lots );
+		daw::bench_n_test<100, '\t'>(
+		  "10,000, daw::sort_to                  ",
+		  []( auto container ) {
+			  size_t values[10'000];
+			  daw::sort_to( std::begin( container ), std::end( container ),
+			                std::begin( values ), std::greater<>{} );
+			  daw::do_not_optimize( container );
+			  daw::do_not_optimize( values );
+		  },
+		  random_lots );
 		daw::bench_n_test<100, '\t'>(
 		  "10,000, copy & daw::sort              ",
 		  []( auto container ) {
@@ -1196,16 +1198,16 @@ int main( ) {
 	}
 	{
 		auto const random_lots = daw::make_random_data<size_t>( 1'000'000 );
-		daw::bench_n_test<100, '\t'>( "1,000,000, daw::sort_to               ",
-		                              []( auto container ) {
-			                              size_t values[1'000'000];
-			                              daw::sort_to( std::begin( container ),
-			                                            std::end( container ),
-			                                            std::begin( values ), std::greater<>{} );
-			                              daw::do_not_optimize( container );
-			                              daw::do_not_optimize( values );
-		                              },
-		                              random_lots );
+		daw::bench_n_test<100, '\t'>(
+		  "1,000,000, daw::sort_to               ",
+		  []( auto container ) {
+			  size_t values[1'000'000];
+			  daw::sort_to( std::begin( container ), std::end( container ),
+			                std::begin( values ), std::greater<>{} );
+			  daw::do_not_optimize( container );
+			  daw::do_not_optimize( values );
+		  },
+		  random_lots );
 		daw::bench_n_test<100, '\t'>(
 		  "1,000,000, copy & daw::sort           ",
 		  []( auto container ) {
@@ -1217,4 +1219,8 @@ int main( ) {
 		  },
 		  random_lots );
 	}
+}
+
+int main( ) {
+	sort_n_test_001( );
 }

@@ -34,21 +34,18 @@ void test_001( ) {
 	}
 }
 
-bool test_003( ) {
+void test_003( ) {
 	size_t count = 1024ULL;
 	daw::hash_set_t<size_t> adapt( count );
 	for( size_t n = 0; n < count; ++n ) {
 		adapt.insert( n );
 	}
 	for( size_t n = 0; n < count; ++n ) {
-		if( !adapt.exists( n ) ) {
-			return false;
-		}
+		daw::expecting( adapt.exists( n ) );
 	}
-	return true;
 }
 
 int main( ) {
 	test_001( );
-	daw::expecting( test_003( ) );
+	test_003( );
 }

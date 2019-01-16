@@ -385,55 +385,57 @@ namespace daw {
 	template<typename T>
 	using non_owning_ptr = T;
 
+	/*
 	// Acts like a reference, but has a strong no-null guarantee
 	// Non-owning
 	template<typename T>
 	class not_null {
-		T *m_ptr;
+	  T *m_ptr;
 
 	public:
-		not_null( ) = delete;
-		~not_null( ) = default;
-		constexpr not_null( not_null const & ) noexcept = default;
-		constexpr not_null( not_null && ) noexcept = default;
-		constexpr not_null &operator=( not_null const & ) noexcept = default;
-		constexpr not_null &operator=( not_null && ) noexcept = default;
+	  not_null( ) = delete;
+	  ~not_null( ) = default;
+	  constexpr not_null( not_null const & ) noexcept = default;
+	  constexpr not_null( not_null && ) noexcept = default;
+	  constexpr not_null &operator=( not_null const & ) noexcept = default;
+	  constexpr not_null &operator=( not_null && ) noexcept = default;
 
-		constexpr not_null( T *ptr )
-		  : m_ptr{ptr} {
-			daw::exception::daw_throw_on_null( ptr, "ptr cannot be null" );
-		}
+	  constexpr not_null( T *ptr )
+	    : m_ptr{ptr} {
+	    daw::exception::daw_throw_on_null( ptr, "ptr cannot be null" );
+	  }
 
-		explicit constexpr operator bool( ) const noexcept {
-			return true;
-		}
+	  explicit constexpr operator bool( ) const noexcept {
+	    return true;
+	  }
 
-		constexpr T *operator->( ) noexcept {
-			return m_ptr;
-		}
+	  constexpr T *operator->( ) noexcept {
+	    return m_ptr;
+	  }
 
-		constexpr T const *operator->( ) const noexcept {
-			return m_ptr;
-		}
+	  constexpr T const *operator->( ) const noexcept {
+	    return m_ptr;
+	  }
 
-		constexpr T *get( ) noexcept {
-			return m_ptr;
-		}
+	  constexpr T *get( ) noexcept {
+	    return m_ptr;
+	  }
 
-		constexpr T const *get( ) const noexcept {
-			return m_ptr;
-		}
+	  constexpr T const *get( ) const noexcept {
+	    return m_ptr;
+	  }
 
-		friend constexpr bool operator==( not_null const &lhs,
-		                                  not_null const &rhs ) noexcept {
-			return lhs.m_ptr == rhs.m_ptr;
-		}
+	  friend constexpr bool operator==( not_null const &lhs,
+	                                    not_null const &rhs ) noexcept {
+	    return lhs.m_ptr == rhs.m_ptr;
+	  }
 
-		friend constexpr bool operator!=( not_null const &lhs,
-		                                  not_null const &rhs ) noexcept {
-			return lhs.m_ptr != rhs.m_ptr;
-		}
+	  friend constexpr bool operator!=( not_null const &lhs,
+	                                    not_null const &rhs ) noexcept {
+	    return lhs.m_ptr != rhs.m_ptr;
+	  }
 	}; // not_null
+	*/
 
 	template<typename Arg, typename... Args>
 	auto make_initializer_list( Arg &&arg, Args &&... args ) {

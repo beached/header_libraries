@@ -20,49 +20,56 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
-#include <iostream>
-
+#include "daw/daw_benchmark.h"
 #include "daw/daw_generic_hash.h"
 
-BOOST_AUTO_TEST_CASE( test_01 ) {
-	constexpr auto const c1 = daw::generic_hash( "Hello" );
-	constexpr auto const c2 = daw::generic_hash( "Hello" );
-	constexpr auto const c3 = daw::generic_hash( 5 );
-	constexpr auto const c4 = daw::generic_hash( 0xFF00FF00FF00FF );
-	std::cout << c1 << " " << c2 << " " << c3 << " " << c4 << '\n';
-	BOOST_REQUIRE_EQUAL( c1, c2 );
-	BOOST_REQUIRE( c1 != c3 );
+constexpr bool test_01( ) {
+	auto const c1 = daw::generic_hash( "Hello" );
+	auto const c2 = daw::generic_hash( "Hello" );
+	auto const c3 = daw::generic_hash( 5 );
+	auto const c4 = daw::generic_hash( 0xFF00FF00FF00FF );
+	daw::expecting( c1, c2 );
+	daw::expecting( c1 != c3 );
+	daw::expecting( c1 != c4 );
+	return true;
 }
+static_assert( test_01( ) );
 
 /*
-BOOST_AUTO_TEST_CASE( test_16_01 ) {
-  constexpr auto const c1 = daw::generic_hash<2>( "Hello" );
-  constexpr auto const c2 = daw::generic_hash<2>( "Hello" );
-  constexpr auto const c3 = daw::generic_hash<2>( 5 );
-  constexpr auto const c4 = daw::generic_hash<2>( 0xFF00FF00FF00FF );
-  std::cout << c1 << " " << c2 << " " << c3 << " " << c4 << '\n';
-  BOOST_REQUIRE_EQUAL( c1, c2 );
-  BOOST_REQUIRE( c1 != c3 );
+constexpr bool test_16_01( ) {
+  auto const c1 = daw::generic_hash<2>( "Hello" );
+  auto const c2 = daw::generic_hash<2>( "Hello" );
+  auto const c3 = daw::generic_hash<2>( 5 );
+  auto const c4 = daw::generic_hash<2>( 0xFF00FF00FF00FF );
+  daw::expecting( c1, c2 );
+  daw::expecting( c1 != c3 );
+  return true;
 }
+static_assert( test_16_01( ) );
 */
 
-BOOST_AUTO_TEST_CASE( test_32_01 ) {
-	constexpr auto const c1 = daw::generic_hash<4>( "Hello" );
-	constexpr auto const c2 = daw::generic_hash<4>( "Hello" );
-	constexpr auto const c3 = daw::generic_hash<4>( 5 );
-	constexpr auto const c4 = daw::generic_hash<4>( 0xFF00FF00FF00FF );
-	std::cout << c1 << " " << c2 << " " << c3 << " " << c4 << '\n';
-	BOOST_REQUIRE_EQUAL( c1, c2 );
-	BOOST_REQUIRE( c1 != c3 );
+constexpr bool test_32_01( ) {
+	auto const c1 = daw::generic_hash<4>( "Hello" );
+	auto const c2 = daw::generic_hash<4>( "Hello" );
+	auto const c3 = daw::generic_hash<4>( 5 );
+	auto const c4 = daw::generic_hash<4>( 0xFF00FF00FF00FF );
+	daw::expecting( c1, c2 );
+	daw::expecting( c1 != c3 );
+	daw::expecting( c1 != c4 );
+	return true;
 }
+static_assert( test_32_01( ) );
 
-BOOST_AUTO_TEST_CASE( test_64_01 ) {
-	constexpr auto const c1 = daw::generic_hash<8>( "Hello" );
-	constexpr auto const c2 = daw::generic_hash<8>( "Hello" );
-	constexpr auto const c3 = daw::generic_hash<8>( 5 );
-	constexpr auto const c4 = daw::generic_hash<8>( 0xFF00FF00FF00FF );
-	std::cout << c1 << " " << c2 << " " << c3 << " " << c4 << '\n';
-	BOOST_REQUIRE_EQUAL( c1, c2 );
-	BOOST_REQUIRE( c1 != c3 );
+constexpr bool test_64_01( ) {
+	auto const c1 = daw::generic_hash<8>( "Hello" );
+	auto const c2 = daw::generic_hash<8>( "Hello" );
+	auto const c3 = daw::generic_hash<8>( 5 );
+	auto const c4 = daw::generic_hash<8>( 0xFF00FF00FF00FF );
+	daw::expecting( c1, c2 );
+	daw::expecting( c1 != c3 );
+	daw::expecting( c1 != c4 );
+	return true;
 }
+static_assert( test_64_01( ) );
+
+int main( ) {}

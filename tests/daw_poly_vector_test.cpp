@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_poly_vector.h"
 
 struct A {
@@ -45,7 +45,11 @@ struct B : public A {
 };
 B::~B( ) {}
 
-BOOST_AUTO_TEST_CASE( daw_poly_vector_01 ) {
+void daw_poly_vector_01( ) {
 	daw::poly_vector_t<A> test;
 	test.push_back( B{} );
+}
+
+int main( ) {
+	daw_poly_vector_01( );
 }

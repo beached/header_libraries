@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "daw/daw_benchmark.h"
 #include "daw/daw_span.h"
 
 // Test trait
@@ -243,6 +244,4 @@ constexpr bool ctad_ptr_ptr_02( ) {
 }
 static_assert( ctad_ptr_ptr_02( ) );
 
-int main( ) {
-	return 0;
-}
+int main( ) {}

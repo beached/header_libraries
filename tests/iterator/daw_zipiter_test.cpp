@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
 #include <algorithm>
 #include <cstdint>
 #include <iostream>
@@ -36,8 +35,6 @@ constexpr bool test( ) {
 	++zi;
 	return *daw::get<0>( zi ) == 8 and std::get<1>( *zi ) == 2;
 }
+static_assert( test( ) );
 
-BOOST_AUTO_TEST_CASE( test_01 ) {
-	constexpr bool result = test( );
-	BOOST_REQUIRE( result );
-}
+int main( ) {}

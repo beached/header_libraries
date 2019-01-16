@@ -24,10 +24,10 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/iterator/daw_random_iterator.h"
 
-BOOST_AUTO_TEST_CASE( daw_random_iterator_01 ) {
+void daw_random_iterator_01( ) {
 	int numbers[] = {1, 2, 3, 4, 5, 6, 7};
 
 	auto first = daw::make_random_iterator( numbers );
@@ -66,11 +66,16 @@ struct test_t {
 	}
 };
 
-BOOST_AUTO_TEST_CASE( daw_random_iterator_02 ) {
+void daw_random_iterator_02( ) {
 	int numbers[] = {1, 2, 3, 4, 5, 6, 7};
 	test_t<int> test{numbers, numbers + 7};
 
 	for( auto const &i : test ) {
 		std::cout << i << '\n';
 	}
+}
+
+int main( ) {
+	daw_random_iterator_01( );
+	daw_random_iterator_02( );
 }

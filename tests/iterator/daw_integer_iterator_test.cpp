@@ -20,15 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
-#include <iostream>
-
+#include "daw/daw_benchmark.h"
 #include "daw/iterator/daw_integer_iterator.h"
 
-BOOST_AUTO_TEST_CASE( integer_range_01 ) {
+constexpr bool integer_range_01( ) {
 	int sum = 0;
 	for( auto s : daw::integer_range<int>( 5, 10 ) ) {
 		sum += s;
 	}
-	BOOST_REQUIRE_EQUAL( sum, 35 );
+	return 35 == sum;
 }
+static_assert( integer_range_01( ) );
+
+int main( ) {}

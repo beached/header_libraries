@@ -20,15 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_heap_array.h"
 
 using namespace std::literals::string_literals;
 
-BOOST_AUTO_TEST_CASE( daw_heap_array_testing ) {
+void daw_heap_array_testing( ) {
 	daw::heap_array<int> t{};
 	t = {1, 2, 3, 4, 5, 6};
 
 	auto pos = t.find_first_of( 4 );
-	assert( *pos == 4 );
+	daw::expecting( 4, *pos );
+}
+
+int main( ) {
+	daw_heap_array_testing( );
 }

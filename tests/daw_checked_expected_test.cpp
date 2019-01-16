@@ -23,8 +23,9 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_checked_expected.h"
+#include "daw/daw_utility.h"
 
 daw::checked_expected_t<int, std::runtime_error> divide( int v ) noexcept {
 	try {
@@ -57,7 +58,7 @@ int divide3( int v ) {
 	return 4 / v;
 }
 
-BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
+void daw_expected_test_01( ) {
 	std::cout << "sizeof( size_t ) -> " << sizeof( size_t );
 	std::cout << " sizeof( int ) -> " << sizeof( int );
 	std::cout << " sizeof( daw::checked_expected_t<int> ) -> "
@@ -92,33 +93,34 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 
 	try {
 		int i3 = daw::checked_from_code<std::runtime_error>( divide3, 5 );
+		Unused( i3 );
 	} catch( std::runtime_error const & ) {
 		throw std::runtime_error{"This shouldn't happen"};
 	} catch( ... ) {}
 
-	BOOST_REQUIRE( h.has_exception( ) );
-	BOOST_REQUIRE( !h.has_value( ) );
-	BOOST_REQUIRE( h2.has_exception( ) );
-	BOOST_REQUIRE( !h2.has_value( ) );
-	BOOST_REQUIRE( !i.has_exception( ) );
-	BOOST_REQUIRE( i.has_value( ) );
+	daw::expecting( h.has_exception( ) );
+	daw::expecting( !h.has_value( ) );
+	daw::expecting( h2.has_exception( ) );
+	daw::expecting( !h2.has_value( ) );
+	daw::expecting( !i.has_exception( ) );
+	daw::expecting( i.has_value( ) );
 	// a & b
 	auto test_01 = !( a == b );
 	auto test_02 = !( b == a );
 
 	daw::checked_expected_t<int, std::runtime_error> j{&divide, 0};
-	BOOST_REQUIRE( j.has_exception( ) );
-	BOOST_REQUIRE( !j.has_value( ) );
+	daw::expecting( j.has_exception( ) );
+	daw::expecting( !j.has_value( ) );
 
-	BOOST_REQUIRE( test_01 );
-	BOOST_REQUIRE( test_02 );
+	daw::expecting( test_01 );
+	daw::expecting( test_02 );
 
 	struct L {
 		int a;
 	};
 
 	daw::checked_expected_t<L> l{[]( ) { return L{5}; }};
-	BOOST_REQUIRE( l->a == 5 );
+	daw::expecting( l->a == 5 );
 
 	auto m = daw::make_checked_function<int, std::runtime_error>( []( int ii ) {
 		if( ii == 0 ) {
@@ -129,11 +131,15 @@ BOOST_AUTO_TEST_CASE( daw_expected_test_01 ) {
 		return 100 / ii;
 	} );
 	auto t = m( 0 );
-	BOOST_REQUIRE( t.has_exception( ) );
-	BOOST_REQUIRE( !t.has_value( ) );
+	daw::expecting( t.has_exception( ) );
+	daw::expecting( !t.has_value( ) );
 	bool did_throw = false;
 	try {
 		m( 105 );
 	} catch( ... ) { did_throw = true; }
-	BOOST_REQUIRE( did_throw );
+	daw::expecting( did_throw );
+}
+
+int main( ) {
+	daw_expected_test_01( );
 }

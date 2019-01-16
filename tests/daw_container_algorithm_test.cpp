@@ -29,16 +29,18 @@
 #include <vector>
 
 #include "daw/boost_test.h"
+#include "daw/daw_benchmark.h"
 #include "daw/daw_container_algorithm.h"
 
 BOOST_AUTO_TEST_CASE( container_algorithm_accumulate ) {
 	std::vector<int> test( 100, 1 );
 	auto const sum = daw::container::accumulate( test, 0 );
-	BOOST_REQUIRE_EQUAL( test.size( ), sum );
+	daw::expecting( sum >= 0 );
+	daw::expecting( test.size( ), static_cast<size_t>( sum ) );
 
 	auto const product = daw::container::accumulate(
 	  test, 1, []( auto lhs, auto rhs ) { return lhs * rhs; } );
-	BOOST_REQUIRE_EQUAL( product, 1 );
+	daw::expecting( product, 1 );
 }
 
 BOOST_AUTO_TEST_CASE( container_algorithm_transform ) {
@@ -53,14 +55,14 @@ BOOST_AUTO_TEST_CASE( container_algorithm_transform ) {
 	auto const sum1 = daw::container::accumulate( test_vec, 0 );
 	auto const sum2 = daw::container::accumulate( result, 0 );
 
-	BOOST_REQUIRE_EQUAL( sum1 * 2, sum2 );
+	daw::expecting( sum1 * 2, sum2 );
 }
 
 BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_sort ) {
 	std::vector<int64_t> v1{1000};
 	std::iota( std::begin( v1 ), std::end( v1 ), 1 );
 	daw::container::sort( v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
-	BOOST_REQUIRE( std::is_sorted( v1.cbegin( ), v1.cend( ) ) );
+	daw::expecting( std::is_sorted( v1.cbegin( ), v1.cend( ) ) );
 }
 
 BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_stable_sort ) {
@@ -68,7 +70,7 @@ BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_stable_sort ) {
 	std::iota( std::begin( v1 ), std::end( v1 ), 1 );
 	daw::container::stable_sort( v1,
 	                             []( auto lhs, auto rhs ) { return lhs < rhs; } );
-	BOOST_REQUIRE( std::is_sorted( v1.cbegin( ), v1.cend( ) ) );
+	daw::expecting( std::is_sorted( v1.cbegin( ), v1.cend( ) ) );
 }
 
 BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_max_element ) {
@@ -83,8 +85,8 @@ BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_copy_001 ) {
 	std::iota( std::begin( a1 ), std::end( a1 ), 2 );
 	std::array<int, 100> a2{};
 	daw::container::copy( a1, a2.begin( ) );
-	BOOST_REQUIRE( std::equal( std::cbegin( a1 ), std::cend( a1 ),
-	                           std::cbegin( a2 ), std::cend( a2 ) ) );
+	daw::expecting( std::equal( std::cbegin( a1 ), std::cend( a1 ),
+	                            std::cbegin( a2 ), std::cend( a2 ) ) );
 }
 
 BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_copy_n_001 ) {
@@ -92,8 +94,8 @@ BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_copy_n_001 ) {
 	std::iota( std::begin( a1 ), std::end( a1 ), 2 );
 	std::array<int, 100> a2{};
 	daw::container::copy_n( a1, 100, a2.begin( ) );
-	BOOST_REQUIRE( std::equal( std::cbegin( a1 ), std::cend( a1 ),
-	                           std::cbegin( a2 ), std::cend( a2 ) ) );
+	daw::expecting( std::equal( std::cbegin( a1 ), std::cend( a1 ),
+	                            std::cbegin( a2 ), std::cend( a2 ) ) );
 }
 
 BOOST_AUTO_TEST_CASE( daw_for_each_pos_001 ) {
@@ -148,7 +150,7 @@ namespace daw_for_each_subset_002_ns {
 	BOOST_AUTO_TEST_CASE( daw_for_each_subset_002 ) {
 		constexpr int blah[] = {0, 1, 2, 3, 4};
 		constexpr auto sum = find_sum( blah );
-		BOOST_REQUIRE_EQUAL( sum, 6 );
+		daw::expecting( sum, 6 );
 	}
 } // namespace daw_for_each_subset_002_ns
 
@@ -159,5 +161,5 @@ BOOST_AUTO_TEST_CASE( daw_append_001 ) {
 	daw::container::append( b, a );
 	auto const tst =
 	  std::equal( expect.cbegin( ), expect.cend( ), a.cbegin( ), a.cend( ) );
-	BOOST_REQUIRE( tst );
+	daw::expecting( tst );
 }

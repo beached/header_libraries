@@ -109,7 +109,7 @@ namespace daw {
 		                                   are_same_types<T, Rest...>::value> {};
 
 		template<typename T, typename... Rest>
-		CXINLINE bool are_same_types_v = are_same_types<T, Rest...>::value;
+		inline constexpr bool are_same_types_v = are_same_types<T, Rest...>::value;
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	A sequence of bool values
@@ -125,7 +125,7 @@ namespace daw {
 		                              bool_sequence<( Bools or true )...>>;
 
 		template<bool... Bools>
-		CXINLINE bool bool_and_v = bool_and<Bools...>::value;
+		inline constexpr bool bool_and_v = bool_and<Bools...>::value;
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	Integral constant with result of or'ing all bool's supplied
@@ -135,7 +135,7 @@ namespace daw {
 		  std::integral_constant<bool, ( !bool_and<!Bools...>::value )>;
 
 		template<bool... Bools>
-		CXINLINE bool bool_or_v = bool_or<Bools...>::value;
+		inline constexpr bool bool_or_v = bool_or<Bools...>::value;
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	Similar to enable_if but enabled when any of the
@@ -168,7 +168,7 @@ namespace daw {
 		using is_one_of_t = typename is_one_of<T, Types...>::type;
 
 		template<typename T, typename... Types>
-		CXINLINE bool is_one_of_v = is_one_of<T, Types...>::value;
+		inline constexpr bool is_one_of_v = is_one_of<T, Types...>::value;
 
 		template<typename...>
 		struct can_convert_from : std::false_type {};
@@ -185,7 +185,8 @@ namespace daw {
 		using can_convert_from_t = typename can_convert_from<To, Froms...>::type;
 
 		template<typename To, typename... Froms>
-		CXINLINE bool can_convert_from_v = can_convert_from<To, Froms...>::value;
+		inline constexpr bool can_convert_from_v =
+		  can_convert_from<To, Froms...>::value;
 
 		namespace details {
 			template<typename>
@@ -236,29 +237,30 @@ namespace daw {
 		}
 
 		template<typename T>
-		CXINLINE bool has_substr_member_v =
+		inline constexpr bool has_substr_member_v =
 		  is_detected_v<detectors::has_substr_member, T>;
 
 		template<typename T>
-		CXINLINE bool is_string_v = all_true_v<is_convertible_v<T, std::string> or
-		                                       is_convertible_v<T, std::wstring>>;
+		inline constexpr bool is_string_v =
+		  all_true_v<is_convertible_v<T, std::string> or
+		             is_convertible_v<T, std::wstring>>;
 
 		template<typename T>
-		CXINLINE bool isnt_string_v = !is_string_v<T>;
+		inline constexpr bool isnt_string_v = !is_string_v<T>;
 
 		template<typename T>
-		CXINLINE bool is_container_not_string_v =
+		inline constexpr bool is_container_not_string_v =
 		  all_true_v<isnt_string_v<T>, is_container_like_v<T>>;
 
 		template<typename T>
-		CXINLINE bool is_map_like_v =
+		inline constexpr bool is_map_like_v =
 		  all_true_v<is_container_like_v<T>, has_mapped_type_member_v<T>>;
 
 		template<typename T>
-		CXINLINE bool isnt_map_like_v = !is_map_like_v<T>;
+		inline constexpr bool isnt_map_like_v = !is_map_like_v<T>;
 
 		template<typename T>
-		CXINLINE bool is_vector_like_not_string_v =
+		inline constexpr bool is_vector_like_not_string_v =
 		  all_true_v<is_container_not_string_v<T>, isnt_map_like_v<T>>;
 
 		template<typename T>
@@ -269,7 +271,7 @@ namespace daw {
 		using static_not_t = typename static_not<T>::type;
 
 		template<typename T>
-		CXINLINE bool static_not_v = static_not<T>::value;
+		inline constexpr bool static_not_v = static_not<T>::value;
 
 #define GENERATE_IS_STD_CONTAINER1( ContainerName )                            \
 	template<typename T>                                                         \
@@ -295,25 +297,25 @@ namespace daw {
 #undef GENERATE_IS_STD_CONTAINER2
 
 		template<typename T>
-		CXINLINE bool is_single_item_container_v =
+		inline constexpr bool is_single_item_container_v =
 		  any_true_v<is_vector_v<T>, is_list_v<T>, is_set_v<T>, is_deque_v<T>,
 		             is_unordered_set_v<T>>;
 
 		template<typename T>
-		CXINLINE bool is_container_v =
+		inline constexpr bool is_container_v =
 		  any_true_v<is_vector_v<T>, is_list_v<T>, is_set_v<T>, is_deque_v<T>,
 		             is_unordered_set_v<T>, is_map_v<T>, is_unordered_map_v<T>>;
 
 		template<typename T>
-		CXINLINE bool is_map_type_v =
+		inline constexpr bool is_map_type_v =
 		  any_true_v<is_map_v<T>, is_unordered_map_v<T>>;
 
 		template<typename T>
-		CXINLINE bool is_numberic_v =
+		inline constexpr bool is_numberic_v =
 		  any_true_v<is_floating_point_v<T>, is_integral_v<T>>;
 
 		template<typename T>
-		CXINLINE bool is_container_or_array_v =
+		inline constexpr bool is_container_or_array_v =
 		  any_true_v<is_container_v<T>, is_array_v<T>>;
 
 		namespace detectors {
@@ -322,11 +324,12 @@ namespace daw {
 			  decltype( std::declval<OutStream>( ) << std::declval<T>( ) );
 		}
 		template<typename OutStream, typename T>
-		CXINLINE bool is_streamable_v =
+		inline constexpr bool is_streamable_v =
 		  daw::is_detected_v<detectors::streamable, OutStream &, T>;
 
 		template<template<class> class Base, typename Derived>
-		CXINLINE bool is_mixed_from_v = is_base_of_v<Base<Derived>, Derived>;
+		inline constexpr bool is_mixed_from_v =
+		  is_base_of_v<Base<Derived>, Derived>;
 
 		template<std::size_t I, typename T, typename... Ts>
 		struct nth_element_impl {
@@ -351,7 +354,7 @@ namespace daw {
 		} // namespace impl
 
 		template<typename T>
-		CXINLINE bool has_to_string_v =
+		inline constexpr bool has_to_string_v =
 		  decltype( impl::has_to_string( std::declval<T>( ), 1 ) )::value;
 
 		namespace operators {
@@ -400,27 +403,27 @@ namespace daw {
 			} // namespace impl
 
 			template<typename L, typename R = L>
-			CXINLINE bool has_op_eq_v = decltype( impl::has_op_eq_impl(
+			inline constexpr bool has_op_eq_v = decltype( impl::has_op_eq_impl(
 			  std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
 
 			template<typename L, typename R = L>
-			CXINLINE bool has_op_ne_v = decltype( impl::has_op_ne_impl(
+			inline constexpr bool has_op_ne_v = decltype( impl::has_op_ne_impl(
 			  std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
 
 			template<typename L, typename R = L>
-			CXINLINE bool has_op_lt_v = decltype( impl::has_op_lt_impl(
+			inline constexpr bool has_op_lt_v = decltype( impl::has_op_lt_impl(
 			  std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
 
 			template<typename L, typename R = L>
-			CXINLINE bool has_op_le_v = decltype( impl::has_op_le_impl(
+			inline constexpr bool has_op_le_v = decltype( impl::has_op_le_impl(
 			  std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
 
 			template<typename L, typename R = L>
-			CXINLINE bool has_op_gt_v = decltype( impl::has_op_gt_impl(
+			inline constexpr bool has_op_gt_v = decltype( impl::has_op_gt_impl(
 			  std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
 
 			template<typename L, typename R = L>
-			CXINLINE bool has_op_ge_v = decltype( impl::has_op_ge_impl(
+			inline constexpr bool has_op_ge_v = decltype( impl::has_op_ge_impl(
 			  std::declval<L>( ), std::declval<R>( ), 1 ) )::value;
 
 		} // namespace operators
@@ -432,26 +435,26 @@ namespace daw {
 		}
 
 		template<typename To, typename... From>
-		CXINLINE bool are_convertible_to_v =
+		inline constexpr bool are_convertible_to_v =
 		  all_true_v<is_convertible_v<From, To>...>;
 
 		template<typename String>
-		CXINLINE bool is_not_array_array_v =
+		inline constexpr bool is_not_array_array_v =
 		  !daw::is_detected_v<detectors::is_array_array, String>;
 
 		template<typename String>
-		CXINLINE bool is_string_view_like_v =
+		inline constexpr bool is_string_view_like_v =
 		  is_container_like_v<String const> and has_integer_subscript_v<
 		    String const> and has_size_memberfn_v<String const>
 		    and has_empty_memberfn_v<String const> and is_not_array_array_v<String>;
 
 		template<typename String>
-		CXINLINE bool is_string_like_v = is_string_view_like_v<String>
+		inline constexpr bool is_string_like_v = is_string_view_like_v<String>
 		  and has_append_operator_v<String> and has_append_memberfn_v<String>
 		    and is_container_like_v<String> and has_integer_subscript_v<String>;
 
 		template<typename Container, size_t ExpectedSize>
-		CXINLINE bool is_value_size_equal_v =
+		inline constexpr bool is_value_size_equal_v =
 		  sizeof( *std::cbegin( std::declval<Container>( ) ) ) == ExpectedSize;
 
 		namespace impl {
@@ -475,7 +478,7 @@ namespace daw {
 		template<typename... Ts>
 		using are_unique_t = impl::are_unique<Ts...>;
 		template<typename... Ts>
-		CXINLINE bool are_unique_v = are_unique_t<Ts...>::value;
+		inline constexpr bool are_unique_v = are_unique_t<Ts...>::value;
 
 		namespace impl {
 			template<typename...>
@@ -495,7 +498,7 @@ namespace daw {
 		} // namespace impl
 
 		template<typename... Ts>
-		CXINLINE bool isnt_cv_ref_v = impl::isnt_cv_ref<Ts...>::value;
+		inline constexpr bool isnt_cv_ref_v = impl::isnt_cv_ref<Ts...>::value;
 
 		template<typename T>
 		using deref_t = decltype( *std::declval<T>( ) );
@@ -539,14 +542,15 @@ namespace daw {
 		// Tests if type T is the same as the first argument in Args or if args is
 		// empty it is false
 		template<typename T, typename... Args>
-		CXINLINE bool is_first_type_v = is_first_type<T, Args...>::value;
+		inline constexpr bool is_first_type_v = is_first_type<T, Args...>::value;
 
 		template<typename... Ts>
-		CXINLINE bool is_tuple_v = is_detected_v<impl::detect_is_tuple, Ts...>;
+		inline constexpr bool is_tuple_v =
+		  is_detected_v<impl::detect_is_tuple, Ts...>;
 
 		namespace impl {}
 		template<typename T, typename... Args>
-		CXINLINE bool is_init_list_constructible_v = all_true_v<
+		inline constexpr bool is_init_list_constructible_v = all_true_v<
 		  are_same_types_v<Args...>,
 		  daw::is_constructible_v<T, std::initializer_list<first_type<Args...>>>>;
 
@@ -577,40 +581,40 @@ namespace daw {
 			using has_flags_member_detect = decltype( std::declval<T>( ).flags( ) );
 
 			template<typename T>
-			CXINLINE bool has_adjustfield_v =
+			inline constexpr bool has_adjustfield_v =
 			  daw::is_detected_v<has_adjustfield_detect, T>;
 
 			template<typename T>
-			CXINLINE bool has_left_v = daw::is_detected_v<has_left_detect, T>;
+			inline constexpr bool has_left_v = daw::is_detected_v<has_left_detect, T>;
 
 			template<typename T>
-			CXINLINE bool has_char_type_v =
+			inline constexpr bool has_char_type_v =
 			  daw::is_detected_v<has_char_type_detect, T>;
 
 			template<typename T>
-			CXINLINE bool has_fill_member_v =
+			inline constexpr bool has_fill_member_v =
 			  daw::is_detected_v<has_fill_member_detect, T>;
 
 			template<typename T>
-			CXINLINE bool has_good_member_v =
+			inline constexpr bool has_good_member_v =
 			  daw::is_detected_v<has_good_member_detect, T>;
 
 			template<typename T, typename CharT>
-			CXINLINE bool has_write_member_v =
+			inline constexpr bool has_write_member_v =
 			  daw::is_detected_v<has_write_member_detect, T, CharT>;
 
 			template<typename T>
-			CXINLINE bool has_width_member_v =
+			inline constexpr bool has_width_member_v =
 			  daw::is_detected_v<has_width_member_detect, T>;
 
 			template<typename T>
-			CXINLINE bool has_flags_member_v =
+			inline constexpr bool has_flags_member_v =
 			  daw::is_detected_v<has_flags_member_detect, T>;
 
 		} // namespace ostream_detectors
 
 		template<typename T>
-		CXINLINE bool is_ostream_like_lite_v =
+		inline constexpr bool is_ostream_like_lite_v =
 		  all_true_v<ostream_detectors::has_char_type_v<T>,
 		             ostream_detectors::has_adjustfield_v<T>,
 		             ostream_detectors::has_fill_member_v<T>,
@@ -619,12 +623,12 @@ namespace daw {
 		             ostream_detectors::has_flags_member_v<T>>;
 
 		template<typename T, typename CharT>
-		CXINLINE bool is_ostream_like_v =
+		inline constexpr bool is_ostream_like_v =
 		  all_true_v<is_ostream_like_lite_v<T>,
 		             ostream_detectors::has_write_member_v<T, CharT>>;
 
 		template<typename T>
-		CXINLINE bool is_character_v = is_one_of_v<T, char, wchar_t>;
+		inline constexpr bool is_character_v = is_one_of_v<T, char, wchar_t>;
 
 		template<typename T>
 		struct identity {
@@ -674,9 +678,9 @@ namespace daw {
 		struct pack_index_of<T, pack_list<Pack...>> : pack_index_of<T, Pack...> {};
 
 		template<typename T, typename... Pack>
-		CXINLINE auto pack_index_of_v = pack_index_of<T, Pack...>::value;
+		inline constexpr auto pack_index_of_v = pack_index_of<T, Pack...>::value;
 
 		template<typename T, typename... Pack>
-		CXINLINE bool pack_exits_v = pack_index_of_v<T, Pack...> >= 0;
+		inline constexpr bool pack_exits_v = pack_index_of_v<T, Pack...> >= 0;
 	} // namespace traits
 } // namespace daw
