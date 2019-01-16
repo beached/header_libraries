@@ -31,7 +31,6 @@ include_directories( ${HEADER_FOLDER} )
 set( TESTED_HEADERS_PREFIXES
 	daw_bounded_string
 	daw_string_view
-	daw_unique_array
 )
 
 #No boost test
@@ -100,6 +99,7 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_traits
 	daw_tuple_helper
 	daw_union_pair
+	daw_unique_array
 	daw_utility
 	daw_validated
 	daw_value_ptr
