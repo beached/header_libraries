@@ -1748,6 +1748,22 @@ namespace daw {
 			return daw::move( init );
 		}
 
+		template<class ForwardIterator, typename Compare = std::less<>>
+		constexpr ForwardIterator max_element( ForwardIterator first, ForwardIterator last, Compare &&comp = Compare{} ) {
+			if( first == last ) {
+				return last;
+			}
+			auto largest = first;
+			++first;
+			while( first != last ) {
+				if( daw::invoke( comp, *largest, *first ) ) { 
+					largest = first;
+				}
+				++first;
+			}
+			return largest;
+		}
+
 		/// @brief return the min and max of two items sorted
 		///	@tparam T of items to evaluate
 		/// @tparam Compare predicate that returns true if lhs < rhs
@@ -1833,18 +1849,18 @@ namespace daw {
 
 		template<typename InputIterator1, typename LastType1,
 		         typename InputIterator2, typename LastType2,
-		         typename OutputIterator>
+		         typename OutputIterator, typename Compare = std::less<>>
 		constexpr OutputIterator set_intersection(
 		  InputIterator1 first1, LastType1 last1, InputIterator2 first2,
 		  LastType2 last2,
-		  OutputIterator d_first ) noexcept( noexcept( *first2 < *first1 ) &&
-		                                     noexcept( *first1 < *first2 ) ) {
+		  OutputIterator d_first, Compare&& comp = Compare{} ) noexcept( noexcept( comp( *first2, *first1 ) ) and 
+		                                     noexcept( comp( *first1, *first2 ) ) ) {
 
 			while( first1 != last1 and first2 != last2 ) {
-				if( std::less<>{}( *first1, *first2 ) ) {
+				if( daw::invoke( comp, *first1, *first2 ) ) {
 					++first1;
 				} else {
-					if( !std::less<>{}( *first2, *first1 ) ) {
+					if( !daw::invoke( comp, *first2, *first1 ) ) {
 						*d_first++ = *first1++;
 					}
 					++first2;

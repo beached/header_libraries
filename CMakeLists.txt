@@ -30,8 +30,6 @@ include_directories( ${HEADER_FOLDER} )
 
 set( TESTED_HEADERS_PREFIXES
 	daw_bounded_string
-	daw_container_algorithm
-	daw_expected
 	daw_string_view
 	daw_unique_array
 )
@@ -57,10 +55,12 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_carray
 	daw_checked_expected
 	daw_clumpy_sparsy
+	daw_container_algorithm
 	daw_copiable_unique_ptr
 	daw_cstring
 	daw_endian
 	daw_exception
+	daw_expected
 	daw_fixed_lookup
 	daw_fnv1a_hash
 	daw_function

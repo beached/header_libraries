@@ -28,11 +28,10 @@
 #include <unordered_map>
 #include <vector>
 
-#include "daw/boost_test.h"
 #include "daw/daw_benchmark.h"
 #include "daw/daw_container_algorithm.h"
 
-BOOST_AUTO_TEST_CASE( container_algorithm_accumulate ) {
+void container_algorithm_accumulate( ) {
 	std::vector<int> test( 100, 1 );
 	auto const sum = daw::container::accumulate( test, 0 );
 	daw::expecting( sum >= 0 );
@@ -43,7 +42,7 @@ BOOST_AUTO_TEST_CASE( container_algorithm_accumulate ) {
 	daw::expecting( product, 1 );
 }
 
-BOOST_AUTO_TEST_CASE( container_algorithm_transform ) {
+void container_algorithm_transform( ) {
 	std::vector<int> test_vec{boost::counting_iterator<int>( 1 ),
 	                          boost::counting_iterator<int>( 100 )};
 	std::vector<int> result{};
@@ -58,47 +57,54 @@ BOOST_AUTO_TEST_CASE( container_algorithm_transform ) {
 	daw::expecting( sum1 * 2, sum2 );
 }
 
-BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_sort ) {
-	std::vector<int64_t> v1{1000};
-	std::iota( std::begin( v1 ), std::end( v1 ), 1 );
+void daw_container_algorithm_test_sort( ) {
+	std::array<int64_t, 1000> v1{};
+	daw::algorithm::iota( std::begin( v1 ), std::end( v1 ), 1 );
 	daw::container::sort( v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
 	daw::expecting( std::is_sorted( v1.cbegin( ), v1.cend( ) ) );
 }
 
-BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_stable_sort ) {
-	std::vector<int64_t> v1{1000};
-	std::iota( std::begin( v1 ), std::end( v1 ), 1 );
+void daw_container_algorithm_test_stable_sort( ) {
+	std::array<int64_t, 1000> v1{};
+	daw::algorithm::iota( std::begin( v1 ), std::end( v1 ), 1 );
 	daw::container::stable_sort( v1,
 	                             []( auto lhs, auto rhs ) { return lhs < rhs; } );
 	daw::expecting( std::is_sorted( v1.cbegin( ), v1.cend( ) ) );
 }
 
-BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_max_element ) {
-	std::vector<int64_t> v1{1000};
-	std::iota( std::begin( v1 ), std::end( v1 ), 1 );
-	daw::container::max_element( v1,
-	                             []( auto lhs, auto rhs ) { return lhs < rhs; } );
+constexpr bool daw_container_algorithm_test_max_element( ) {
+	std::array<int64_t, 10> v1{};
+	daw::algorithm::iota( std::begin( v1 ), std::end( v1 ), 1 );
+	auto ans = daw::container::max_element(
+	  v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
+	daw::expecting( 10, *ans );
+	return true;
 }
+static_assert( daw_container_algorithm_test_max_element( ) );
 
-BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_copy_001 ) {
+constexpr bool daw_container_algorithm_test_copy_001( ) {
 	std::array<int, 100> a1{};
-	std::iota( std::begin( a1 ), std::end( a1 ), 2 );
+	daw::algorithm::iota( std::begin( a1 ), std::end( a1 ), 2 );
 	std::array<int, 100> a2{};
 	daw::container::copy( a1, a2.begin( ) );
-	daw::expecting( std::equal( std::cbegin( a1 ), std::cend( a1 ),
+	daw::expecting( daw::algorithm::equal( std::cbegin( a1 ), std::cend( a1 ),
 	                            std::cbegin( a2 ), std::cend( a2 ) ) );
+	return true;
 }
+static_assert( daw_container_algorithm_test_copy_001( ) );
 
-BOOST_AUTO_TEST_CASE( daw_container_algorithm_test_copy_n_001 ) {
+constexpr bool daw_container_algorithm_test_copy_n_001( ) {
 	std::array<int, 100> a1{};
-	std::iota( std::begin( a1 ), std::end( a1 ), 2 );
+	daw::algorithm::iota( std::begin( a1 ), std::end( a1 ), 2 );
 	std::array<int, 100> a2{};
 	daw::container::copy_n( a1, 100, a2.begin( ) );
-	daw::expecting( std::equal( std::cbegin( a1 ), std::cend( a1 ),
+	daw::expecting( daw::algorithm::equal( std::cbegin( a1 ), std::cend( a1 ),
 	                            std::cbegin( a2 ), std::cend( a2 ) ) );
+	return true;
 }
+static_assert( daw_container_algorithm_test_copy_n_001( ) );
 
-BOOST_AUTO_TEST_CASE( daw_for_each_pos_001 ) {
+void daw_for_each_pos_001( ) {
 	std::array<int, 5> const blah = {0, 1, 2, 3, 4};
 	daw::container::for_each_with_pos( blah, []( auto const &value, size_t pos ) {
 		std::cout << pos << ": " << value << '\n';
@@ -119,7 +125,7 @@ namespace daw_for_each_with_pos_002_ns {
 	};
 } // namespace daw_for_each_with_pos_002_ns
 
-BOOST_AUTO_TEST_CASE( daw_for_each_subset_001 ) {
+void daw_for_each_subset_001( ) {
 	std::array<int, 5> const blah = {0, 1, 2, 3, 4};
 	daw::container::for_each_subset( blah, 1, 4,
 	                                 []( auto &container, size_t pos ) {
@@ -147,19 +153,32 @@ namespace daw_for_each_subset_002_ns {
 		return sum;
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_for_each_subset_002 ) {
-		constexpr int blah[] = {0, 1, 2, 3, 4};
-		constexpr auto sum = find_sum( blah );
-		daw::expecting( sum, 6 );
+	constexpr bool daw_for_each_subset_002( ) {
+		int blah[] = {0, 1, 2, 3, 4};
+		auto sum = find_sum( blah );
+		daw::expecting( 6, sum );
+		return true;
 	}
+	static_assert( daw_for_each_subset_002( ) );
 } // namespace daw_for_each_subset_002_ns
 
-BOOST_AUTO_TEST_CASE( daw_append_001 ) {
+void daw_append_001( ) {
 	std::vector<int> a = {1, 2, 3};
 	std::vector<int> const b = {4, 5, 6};
 	std::vector<int> const expect = {1, 2, 3, 4, 5, 6};
 	daw::container::append( b, a );
 	auto const tst =
-	  std::equal( expect.cbegin( ), expect.cend( ), a.cbegin( ), a.cend( ) );
+	  daw::algorithm::equal( expect.cbegin( ), expect.cend( ), a.cbegin( ), a.cend( ) );
 	daw::expecting( tst );
 }
+
+int main( ) {
+	container_algorithm_accumulate( );
+	container_algorithm_transform( );
+	daw_container_algorithm_test_sort( );
+	daw_container_algorithm_test_stable_sort( );
+	daw_for_each_pos_001( );
+	daw_for_each_subset_001( );
+	daw_append_001( );
+}
+
