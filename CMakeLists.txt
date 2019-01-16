@@ -47,7 +47,7 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_bit
 	daw_bit_queues
 	daw_bounded_array
-   	daw_bounded_graph
+ 	daw_bounded_graph
 	daw_bounded_hash_map
 	daw_bounded_hash_set
 	daw_bounded_vector
@@ -67,7 +67,7 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_graph
 	daw_graph_algorithm
 	daw_hash_set
-	daw_hash_table
+	#	daw_hash_table
 	daw_heap_array
 	daw_heap_value
 	daw_keep_n
