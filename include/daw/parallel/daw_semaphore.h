@@ -31,6 +31,18 @@
 #include "../daw_value_ptr.h"
 
 namespace daw {
+	template<typename>
+	struct is_semaphore: std::false_type {};
+	
+	template<typename T>
+	inline constexpr bool is_semaphore_v = is_semaphore<T>::value;	
+
+	template<typename>
+	struct is_shared_semaphore: std::false_type {};
+
+	template<typename T>
+	inline constexpr bool is_shared_semaphore_v = is_shared_semaphore<T>::value;	
+
 	template<typename Mutex, typename ConditionVariable>
 	class basic_semaphore {
 		value_ptr<Mutex> m_mutex;
@@ -117,6 +129,8 @@ namespace daw {
 			return status;
 		}
 	}; // basic_semaphore
+	template<typename Mutex, typename ConditionVariable>
+	struct is_semaphore<basic_semaphore<Mutex, ConditionVariable>>: std::true_type {};
 
 	using semaphore = basic_semaphore<std::mutex, std::condition_variable>;
 
@@ -180,6 +194,9 @@ namespace daw {
 		}
 	}; // basic_shared_semaphore
 
+	template<typename Mutex, typename ConditionVariable>
+	struct is_shared_semaphore<basic_shared_semaphore<Mutex, ConditionVariable>>: std::true_type {};
+
 	using shared_semaphore =
 	  basic_shared_semaphore<std::mutex, std::condition_variable>;
 
@@ -210,4 +227,5 @@ namespace daw {
 	auto make_waitable_value( shared_semaphore sem, T value ) {
 		return waitable_value<T>{daw::move( sem ), daw::move( value )};
 	}
+
 } // namespace daw
