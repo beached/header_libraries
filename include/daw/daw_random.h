@@ -142,13 +142,21 @@ namespace daw {
 	} // namespace cxrand_impl
 
 	struct static_random {
+#ifdef USE_CXSEED		
 		static constexpr auto m_seed = cxrand_impl::generate_seed( );
+#endif
 
 	private:
+#ifdef USE_CXSEED		
 		size_t m_state = cxrand_impl::rand_lcg<sizeof( size_t )>( m_seed );
+#else
+		size_t m_state;
+#endif
 
 	public:
+#ifdef USE_CXSEED		
 		constexpr static_random( ) noexcept = default;
+#endif	
 		constexpr static_random( size_t seed ) noexcept
 		  : m_state( cxrand_impl::rand_lcg<sizeof( size_t )>( seed ) ) {}
 

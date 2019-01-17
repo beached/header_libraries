@@ -25,6 +25,7 @@
 #include <iostream>
 
 #include "daw/daw_benchmark.h"
+#define USE_CXSEED
 #include "daw/daw_random.h"
 
 void daw_random_01( ) {
