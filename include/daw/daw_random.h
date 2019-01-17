@@ -110,6 +110,7 @@ namespace daw {
 	}
 
 	namespace cxrand_impl {
+#ifdef USE_CXSEED		
 		namespace {
 			constexpr size_t generate_seed( char const *first,
 			                                size_t seed = 0 ) noexcept {
@@ -130,6 +131,7 @@ namespace daw {
 				return result;
 			}
 		} // namespace
+#endif	
 		template<size_t N, std::enable_if_t<( N == 4 ), std::nullptr_t> = nullptr>
 		constexpr size_t rand_lcg( size_t x_prev ) noexcept {
 			return x_prev * 1664525UL + 1013904223UL;
