@@ -27,6 +27,7 @@
 #include <memory>
 #include <mutex>
 
+#include "../cpp_17.h"
 #include "../daw_move.h"
 #include "../daw_value_ptr.h"
 
@@ -35,13 +36,13 @@ namespace daw {
 	struct is_semaphore: std::false_type {};
 	
 	template<typename T>
-	inline constexpr bool is_semaphore_v = is_semaphore<T>::value;	
+	inline constexpr bool is_semaphore_v = is_semaphore<daw::remove_cvref_t<T>>::value;	
 
 	template<typename>
 	struct is_shared_semaphore: std::false_type {};
 
 	template<typename T>
-	inline constexpr bool is_shared_semaphore_v = is_shared_semaphore<T>::value;	
+	inline constexpr bool is_shared_semaphore_v = is_shared_semaphore<daw::remove_cvref_t<T>>::value;	
 
 	template<typename Mutex, typename ConditionVariable>
 	class basic_semaphore {

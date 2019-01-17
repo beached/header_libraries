@@ -36,13 +36,13 @@ namespace daw {
 	struct is_latch: std::false_type {};
 	
 	template<typename T>
-	inline constexpr bool is_latch_v = is_latch<T>::value;	
+	inline constexpr bool is_latch_v = is_latch<daw::remove_cvref_t<T>>::value;	
 
 	template<typename>
 	struct is_shared_latch: std::false_type {};
 
 	template<typename T>
-	inline constexpr bool is_shared_latch_v = is_shared_latch<T>::value;	
+	inline constexpr bool is_shared_latch_v = is_shared_latch<daw::remove_cvref_t<T>>::value;	
 
 	template<typename Mutex, typename ConditionVariable>
 	class basic_latch {
