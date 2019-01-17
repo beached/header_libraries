@@ -32,6 +32,18 @@
 #include "daw_condition_variable.h"
 
 namespace daw {
+	template<typename>
+	struct is_latch: std::false_type {};
+	
+	template<typename T>
+	inline constexpr bool is_latch_v = is_latch<T>::value;	
+
+	template<typename>
+	struct is_shared_latch: std::false_type {};
+
+	template<typename T>
+	inline constexpr bool is_shared_latch_v = is_shared_latch<T>::value;	
+
 	template<typename Mutex, typename ConditionVariable>
 	class basic_latch {
 		// These are in value_ptr's so that the semaphore can be moved
@@ -109,6 +121,9 @@ namespace daw {
 		}
 	}; // basic_latch
 
+	template<typename Mutex, typename ConditionVariable>
+	struct is_latch<basic_latch<Mutex, ConditionVariable>>: std::true_type {};
+
 	using latch = basic_latch<std::mutex, std::condition_variable>;
 
 	template<typename Mutex, typename ConditionVariable>
@@ -173,6 +188,8 @@ namespace daw {
 			return static_cast<bool>( latch );
 		}
 	}; // basic_shared_latch
+	template<typename Mutex, typename ConditionVariable>
+	struct is_shared_latch<basic_shared_latch<Mutex, ConditionVariable>>: std::true_type {};
 
 	using shared_latch = basic_shared_latch<std::mutex, std::condition_variable>;
 
