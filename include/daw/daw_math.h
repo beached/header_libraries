@@ -152,19 +152,19 @@ namespace daw {
 			return result;
 		}
 
-		template<typename SignedInteger,
+		template<typename Result = uintmax_t, typename SignedInteger,
 		         std::enable_if_t<all_true_v<is_integral_v<SignedInteger>,
 		                                     is_signed_v<SignedInteger>>,
 		                          std::nullptr_t> = nullptr>
-		constexpr uintmax_t abs( SignedInteger v ) noexcept {
+		constexpr Result abs( SignedInteger v ) noexcept {
 			// This accounts for when negating the number is out of range
-			if( v == std::numeric_limits<intmax_t>::min( ) ) {
-				return pow2<uintmax_t>( bsizeof<intmax_t> - 1 );
+			if( static_cast<intmax_t>( v ) == std::numeric_limits<intmax_t>::min( ) ) {
+				return pow2<Result>( bsizeof<intmax_t> - 1 );
 			}
 			if( v < 0 ) {
 				v = -v;
 			}
-			return static_cast<uintmax_t>( v );
+			return static_cast<Result>( v );
 		}
 
 		template<typename UnsignedInteger,
