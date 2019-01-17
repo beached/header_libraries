@@ -43,7 +43,7 @@ namespace daw {
 		struct numeric_overflow_exception : invalid_input_exception {};
 
 		namespace converters {
-			constexpr char parse_to_value( daw::string_view str, tag<char> ) {
+			constexpr char parse_to_value( daw::string_view str, tag_t<char> ) {
 				daw::exception::precondition_check<empty_input_exception>(
 				  !str.empty( ) );
 				return str.front( );
@@ -92,7 +92,7 @@ namespace daw {
 			                       all_true_v<!is_same_v<T, char>, is_integral_v<T>,
 			                                  is_signed_v<T>, !is_enum_v<T>>,
 			                       std::nullptr_t> = nullptr>
-			constexpr T parse_to_value( daw::string_view str, tag<T> ) {
+			constexpr T parse_to_value( daw::string_view str, tag_t<T> ) {
 				daw::exception::precondition_check<empty_input_exception>(
 				  !str.empty( ) );
 				return helpers::parse_int<T>( str );
@@ -101,7 +101,7 @@ namespace daw {
 			template<typename T,
 			         std::enable_if_t<all_true_v<is_integral_v<T>, is_unsigned_v<T>>,
 			                          std::nullptr_t> = nullptr>
-			constexpr T parse_to_value( daw::string_view str, tag<T> ) {
+			constexpr T parse_to_value( daw::string_view str, tag_t<T> ) {
 				daw::exception::precondition_check<empty_input_exception>(
 				  !str.empty( ) );
 
@@ -118,7 +118,7 @@ namespace daw {
 			struct unquoted_string_view {};
 
 			constexpr daw::string_view parse_to_value( daw::string_view str,
-			                                           tag<unquoted_string_view> ) {
+			                                           tag_t<unquoted_string_view> ) {
 				daw::exception::precondition_check<empty_input_exception>(
 				  !str.empty( ) );
 
@@ -126,7 +126,7 @@ namespace daw {
 			}
 
 			constexpr daw::string_view parse_to_value( daw::string_view str,
-			                                           tag<daw::string_view> ) {
+			                                           tag_t<daw::string_view> ) {
 				daw::exception::precondition_check<empty_input_exception>(
 				  !str.empty( ) );
 
@@ -151,29 +151,29 @@ namespace daw {
 			}
 
 			inline std::string parse_to_value( daw::string_view str,
-			                                   tag<std::string> ) {
-				return parse_to_value( str, tag<daw::string_view>{} ).to_string( );
+			                                   tag_t<std::string> ) {
+				return parse_to_value( str, tag<daw::string_view> ).to_string( );
 			}
 
 			inline std::string parse_to_value( daw::string_view str,
-			                                   tag<unquoted_string> ) {
-				return parse_to_value( str, tag<unquoted_string_view>{} ).to_string( );
+			                                   tag_t<unquoted_string> ) {
+				return parse_to_value( str, tag<unquoted_string_view> ).to_string( );
 			}
 
-			inline float parse_to_value( daw::string_view str, tag<float> ) {
+			inline float parse_to_value( daw::string_view str, tag_t<float> ) {
 				auto const s = str.to_string( );
 				char **end = nullptr;
 				return strtof( s.c_str( ), end );
 			}
 
-			inline double parse_to_value( daw::string_view str, tag<double> ) {
+			inline double parse_to_value( daw::string_view str, tag_t<double> ) {
 				auto const s = str.to_string( );
 				char **end = nullptr;
 				return strtod( s.c_str( ), end );
 			}
 
 			inline long double parse_to_value( daw::string_view str,
-			                                   tag<long double> ) {
+			                                   tag_t<long double> ) {
 				auto const s = str.to_string( );
 				char **end = nullptr;
 				return strtold( s.c_str( ), end );
@@ -187,7 +187,7 @@ namespace daw {
 			    &positions ) {
 				using ::daw::parser::converters::parse_to_value;
 				using result_t = daw::pack_type_t<N, Args...>;
-				return parse_to_value( positions[N], tag<result_t>{} );
+				return parse_to_value( positions[N], tag<result_t> );
 			}
 
 			template<typename... Args, size_t... Is>
@@ -269,7 +269,7 @@ namespace daw {
 			template<typename T>
 			constexpr decltype( auto ) parse_result_of_test( ) noexcept {
 				using namespace ::daw::parser::converters;
-				return parse_to_value( daw::string_view( ), tag<T>{} );
+				return parse_to_value( daw::string_view( ), tag<T> );
 			}
 
 			template<typename T>

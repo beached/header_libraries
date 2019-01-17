@@ -22,6 +22,7 @@
 
 #include "daw/daw_benchmark.h"
 #include "daw/daw_carray.h"
+#include "daw/daw_utility.h"
 
 struct A {
 	A( ) = delete;
@@ -29,7 +30,8 @@ struct A {
 
 void daw_heap_array_testing( ) {
 	daw::carray<int, 6> t = {1, 2, 3, 4, 5, 6};
-	daw::carray<A, 100> s;
+	daw::carray<A, 100> s{};
+	Unused( s );
 	daw::expecting( 4, t[3] );
 }
 

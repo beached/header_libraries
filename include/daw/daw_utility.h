@@ -693,7 +693,10 @@ namespace daw {
 	constexpr size_t pack_index_of_v = pack_index_of<T, Ts...>::value;
 
 	template<typename... Args>
-	struct tag {};
+	struct tag_t {};
+
+	template<typename... Args>
+	constexpr tag_t<Args...> tag = tag_t<Args...>{};
 
 	template<typename T>
 	struct use_aggregate_construction {

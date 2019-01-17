@@ -133,7 +133,7 @@ namespace {
 	struct invalid_e_colour_exception {};
 
 	constexpr e_colours parse_to_value( daw::string_view str,
-	                                    daw::tag<e_colours> ) {
+	                                    daw::tag_t<e_colours> ) {
 		daw::exception::daw_throw_on_true(
 		  str.empty( ), "Attempt to parse an e_colour from an empty string_view" );
 		switch( str.front( ) ) {
@@ -203,7 +203,7 @@ namespace {
 		};
 
 		constexpr ClassTest parse_to_value( daw::string_view str,
-		                                    daw::tag<ClassTest> ) {
+		                                    daw::tag_t<ClassTest> ) {
 			return daw::construct_from<ClassTest, int>( str );
 		}
 
