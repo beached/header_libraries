@@ -25,19 +25,14 @@
 #include <type_traits>
 
 namespace daw {
-	namespace move_impl {
-		template<typename T>
-		inline constexpr bool is_movable_v =
-		  !std::is_const_v<std::remove_reference_t<T>>;
-	}
 	/// Convert a value to an rvalue.
 	/// \param  value  A thing of arbitrary type.
 	/// \return The parameter cast to an rvalue-reference to allow moving it.
 	template<typename T>
 	constexpr std::remove_reference_t<T> &&move( T &&value ) noexcept {
-		static_assert( move_impl::is_movable_v<decltype( value )>,
+		static_assert( not std::is_const_v<std::remove_reference_t<T>>,
 		               "Attempt to move const value" );
-		static_assert( !std::is_rvalue_reference_v<decltype( value )>,
+		static_assert( not std::is_rvalue_reference_v<decltype( value )>,
 		               "Value is already an rvalue" );
 		return static_cast<typename std::remove_reference_t<T> &&>( value );
 	}
