@@ -46,7 +46,16 @@ struct callable {
 	}
 };
 
+static daw::function<100, int( int )> func_001 = []( int x ) -> int {
+	return x*x;
+};
+
 void stack_function_test_001( ) {
+	auto result = func_001( 4 );
+	daw::expecting( 16, result );
+}
+
+void stack_function_test_002( ) {
 	daw::function<100, std::string( )> func = []( ) -> std::string {
 		return "Hello";
 	};
@@ -89,4 +98,6 @@ void stack_function_test_001( ) {
 
 int main( ) {
 	stack_function_test_001( );
+	stack_function_test_002( );
 }
+

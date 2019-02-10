@@ -26,6 +26,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
+#include <iosfwd>
 #include <iterator>
 #include <limits>
 #include <stdexcept>
