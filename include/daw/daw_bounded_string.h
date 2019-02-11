@@ -66,6 +66,7 @@ namespace daw {
 		using const_reverse_iterator = daw::reverse_iterator<const_iterator>;
 		using size_type = size_t;
 		using difference_type = std::ptrdiff_t;
+		static constexpr size_t const extent = Capacity; 
 
 	private:
 		daw::bounded_vector_t<CharT, Capacity + 1> m_data{};

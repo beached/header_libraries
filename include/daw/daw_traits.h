@@ -36,6 +36,7 @@
 #include <vector>
 
 #include "cpp_17.h"
+#include "daw_enable_if.h"
 #include "impl/daw_traits_concepts.h"
 #include "impl/daw_traits_impl.h"
 
@@ -77,8 +78,7 @@ namespace daw {
 		/// Summary:	Returns true if all values passed are true
 		///
 		template<typename BoolType,
-		         std::enable_if_t<is_convertible_v<BoolType, bool>,
-		                          std::nullptr_t> = nullptr>
+		         daw::enable_if_t<is_convertible_v<BoolType, bool>> = nullptr>
 		constexpr bool are_true( BoolType b1 ) noexcept {
 			return static_cast<bool>( b1 );
 		}

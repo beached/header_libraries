@@ -33,6 +33,7 @@
 #include <vector>
 
 #include "cpp_17.h"
+#include "daw_enable_if.h"
 #include "daw_exception.h"
 #include "daw_move.h"
 #include "daw_swap.h"
@@ -76,10 +77,10 @@ namespace daw {
 
 	// Iterator movement functions
 	namespace impl {
-		template<typename Iterator, typename Iterator2, typename Iterator3,
-		         typename Distance,
-		         std::enable_if_t<!traits::is_random_access_iterator<Iterator>,
-		                          std::nullptr_t> = nullptr>
+		template<
+		  typename Iterator, typename Iterator2, typename Iterator3,
+		  typename Distance,
+		  daw::enable_if_t<!traits::is_random_access_iterator<Iterator>> = nullptr>
 		constexpr void safe_advance_impl( Iterator2 const first, Iterator &it,
 		                                  Iterator3 const last,
 		                                  Distance dist ) noexcept {
@@ -91,10 +92,10 @@ namespace daw {
 			for( ; it != first and dist < 0; ++dist, --it ) {}
 		}
 
-		template<typename Iterator, typename Iterator2, typename Iterator3,
-		         typename Distance,
-		         std::enable_if_t<traits::is_random_access_iterator<Iterator>,
-		                          std::nullptr_t> = nullptr>
+		template<
+		  typename Iterator, typename Iterator2, typename Iterator3,
+		  typename Distance,
+		  daw::enable_if_t<traits::is_random_access_iterator<Iterator>> = nullptr>
 		constexpr void safe_advance_impl( Iterator2 const first, Iterator &it,
 		                                  Iterator3 const last,
 		                                  Distance dist ) noexcept {
@@ -239,9 +240,8 @@ namespace daw {
 			return lhs;
 		}
 
-		template<
-		  typename Lhs, typename... Ts,
-		  std::enable_if_t<( sizeof...( Ts ) > 0 ), std::nullptr_t> = nullptr>
+		template<typename Lhs, typename... Ts,
+		         daw::enable_if_t<( sizeof...( Ts ) > 0 )> = nullptr>
 		constexpr auto const &min_item( Lhs const &lhs,
 		                                Ts const &... ts ) noexcept {
 			auto const &rhs = min_item( ts... );
@@ -253,9 +253,8 @@ namespace daw {
 			return lhs;
 		}
 
-		template<
-		  typename Lhs, typename... Ts,
-		  std::enable_if_t<( sizeof...( Ts ) > 0 ), std::nullptr_t> = nullptr>
+		template<typename Lhs, typename... Ts,
+		         daw::enable_if_t<( sizeof...( Ts ) > 0 )> = nullptr>
 		constexpr auto const &max_item( Lhs const &lhs,
 		                                Ts const &... ts ) noexcept {
 			auto const &rhs = max_item( ts... );
@@ -730,10 +729,10 @@ namespace daw {
 		template<
 		  typename Iterator, typename Iterator2, typename UnaryPredicate,
 		  typename... UnaryPredicates,
-		  std::enable_if_t<all_true_v<traits::is_dereferenceable_v<Iterator2>,
-		                              traits::is_equality_comparable_v<
-		                                daw::traits::deref_t<Iterator2>>>,
-		                   std::nullptr_t> = nullptr>
+		  daw::enable_if_t<all_true_v<
+		    traits::is_dereferenceable_v<Iterator2>,
+		    traits::is_equality_comparable_v<daw::traits::deref_t<Iterator2>>>> =
+		    nullptr>
 		constexpr bool satisfies_one(
 		  Iterator first, Iterator2 last, UnaryPredicate &&func,
 		  UnaryPredicates
@@ -797,10 +796,10 @@ namespace daw {
 		template<
 		  typename Iterator, typename Iterator2, typename UnaryPredicate,
 		  typename... UnaryPredicates,
-		  std::enable_if_t<all_true_v<traits::is_dereferenceable_v<Iterator2>,
-		                              traits::is_equality_comparable_v<
-		                                daw::traits::deref_t<Iterator2>>>,
-		                   std::nullptr_t> = nullptr>
+		  daw::enable_if_t<all_true_v<
+		    traits::is_dereferenceable_v<Iterator2>,
+		    traits::is_equality_comparable_v<daw::traits::deref_t<Iterator2>>>> =
+		    nullptr>
 		constexpr bool satisfies_all(
 		  Iterator first, Iterator2 last, UnaryPredicate &&func,
 		  UnaryPredicates
@@ -845,8 +844,8 @@ namespace daw {
 				Value m_value;
 
 			public:
-				template<typename V, std::enable_if_t<std::is_convertible_v<V, Value>,
-				                                      std::nullptr_t> = nullptr>
+				template<typename V,
+				         daw::enable_if_t<std::is_convertible_v<V, Value>> = nullptr>
 				constexpr equal_to( V &&value )
 				  : m_value( std::forward<V>( value ) ) {}
 
@@ -861,8 +860,8 @@ namespace daw {
 				Value m_value;
 
 			public:
-				template<typename V, std::enable_if_t<std::is_convertible_v<V, Value>,
-				                                      std::nullptr_t> = nullptr>
+				template<typename V,
+				         daw::enable_if_t<std::is_convertible_v<V, Value>> = nullptr>
 				constexpr less_than( V &&value )
 				  : m_value( std::forward<V>( value ) ) {}
 
@@ -877,8 +876,8 @@ namespace daw {
 				Value m_value;
 
 			public:
-				template<typename V, std::enable_if_t<std::is_convertible_v<V, Value>,
-				                                      std::nullptr_t> = nullptr>
+				template<typename V,
+				         daw::enable_if_t<std::is_convertible_v<V, Value>> = nullptr>
 				constexpr greater_than( V &&value )
 				  : m_value( std::forward<V>( value ) ) {}
 
@@ -893,8 +892,8 @@ namespace daw {
 				Value m_value;
 
 			public:
-				template<typename V, std::enable_if_t<std::is_convertible_v<V, Value>,
-				                                      std::nullptr_t> = nullptr>
+				template<typename V,
+				         daw::enable_if_t<std::is_convertible_v<V, Value>> = nullptr>
 				constexpr greater_than_or_equal_to( V &&value )
 				  : m_value( std::forward<V>( value ) ) {}
 
@@ -909,8 +908,8 @@ namespace daw {
 				Value m_value;
 
 			public:
-				template<typename V, std::enable_if_t<std::is_convertible_v<V, Value>,
-				                                      std::nullptr_t> = nullptr>
+				template<typename V,
+				         daw::enable_if_t<std::is_convertible_v<V, Value>> = nullptr>
 				constexpr less_than_or_equal_to( V &&value )
 				  : m_value( std::forward<V>( value ) ) {}
 
@@ -1727,8 +1726,8 @@ namespace daw {
 
 		template<typename InputIterator, typename LastType, typename T,
 		         typename BinaryOperation = std::plus<>,
-		         std::enable_if_t<!daw::traits::is_container_like_v<InputIterator>,
-		                          std::nullptr_t> = nullptr>
+		         daw::enable_if_t<
+		           !daw::traits::is_container_like_v<InputIterator>> = nullptr>
 		constexpr T accumulate(
 		  InputIterator first, LastType last, T init,
 		  BinaryOperation binary_op =
@@ -1749,14 +1748,16 @@ namespace daw {
 		}
 
 		template<class ForwardIterator, typename Compare = std::less<>>
-		constexpr ForwardIterator max_element( ForwardIterator first, ForwardIterator last, Compare &&comp = Compare{} ) {
+		constexpr ForwardIterator max_element( ForwardIterator first,
+		                                       ForwardIterator last,
+		                                       Compare &&comp = Compare{} ) {
 			if( first == last ) {
 				return last;
 			}
 			auto largest = first;
 			++first;
 			while( first != last ) {
-				if( daw::invoke( comp, *largest, *first ) ) { 
+				if( daw::invoke( comp, *largest, *first ) ) {
 					largest = first;
 				}
 				++first;
@@ -1852,9 +1853,10 @@ namespace daw {
 		         typename OutputIterator, typename Compare = std::less<>>
 		constexpr OutputIterator set_intersection(
 		  InputIterator1 first1, LastType1 last1, InputIterator2 first2,
-		  LastType2 last2,
-		  OutputIterator d_first, Compare&& comp = Compare{} ) noexcept( noexcept( comp( *first2, *first1 ) ) and 
-		                                     noexcept( comp( *first1, *first2 ) ) ) {
+		  LastType2 last2, OutputIterator d_first,
+		  Compare &&comp =
+		    Compare{} ) noexcept( noexcept( comp( *first2, *first1 ) ) and
+		                          noexcept( comp( *first1, *first2 ) ) ) {
 
 			while( first1 != last1 and first2 != last2 ) {
 				if( daw::invoke( comp, *first1, *first2 ) ) {

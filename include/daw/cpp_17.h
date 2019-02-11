@@ -28,6 +28,7 @@
 #include <type_traits>
 #include <utility>
 
+#include "daw_enable_if.h"
 #include "daw_move.h"
 
 namespace daw {
@@ -231,9 +232,8 @@ namespace daw {
 			return value;
 		}
 
-		template<
-		  bool value, bool... values,
-		  std::enable_if_t<( sizeof...( values ) > 0 ), std::nullptr_t> = nullptr>
+		template<bool value, bool... values,
+		         daw::enable_if_t<( sizeof...( values ) > 0 )> = nullptr>
 		constexpr bool any_true( ) noexcept {
 
 			return value or any_true<values...>( );
@@ -466,8 +466,8 @@ namespace daw {
 	} // namespace impl
 
 	template<typename F, typename... Args,
-	         std::enable_if_t<!daw::all_true_v<is_reference_wrapper_v<Args>...>,
-	                          std::nullptr_t> = nullptr>
+	         daw::enable_if_t<!daw::all_true_v<is_reference_wrapper_v<Args>...>> =
+	           nullptr>
 	constexpr decltype( auto ) invoke( F &&f, Args &&... args )
 	  // exception specification for QoI
 	  noexcept( noexcept( impl::INVOKE( std::forward<F>( f ),
