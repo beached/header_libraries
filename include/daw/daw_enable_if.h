@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 #pragma once
+#include <cstddef>
 
 namespace daw {
 	template<bool>
