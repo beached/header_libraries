@@ -1,5 +1,4 @@
 // The MIT License (MIT)
-// w much of a difference
 //
 // Copyright (c) 2013-2019 Darrell Wright
 //
@@ -276,19 +275,29 @@ namespace daw {
 			return true;
 		}
 
-		template<typename ExceptionType = AssertException, typename Bool,
+		struct Terminator {};
+
+		template<typename ExceptionType = Terminator, typename Bool,
 		         typename... Args>
 		constexpr void precondition_check( Bool &&condition, Args &&... args ) {
 			if( !static_cast<bool>( condition ) ) {
-				daw_throw<ExceptionType>( std::forward<Args>( args )... );
+				if constexpr( std::is_same_v<Terminator, ExceptionType> ) {
+					std::terminate( );
+				} else {
+					daw_throw<ExceptionType>( std::forward<Args>( args )... );
+				}
 			}
 		}
 
-		template<typename ExceptionType = AssertException, typename Bool,
+		template<typename ExceptionType = Terminator, typename Bool,
 		         typename... Args>
 		constexpr void dbg_precondition_check( Bool &&condition, Args &&... args ) {
 			if( !static_cast<bool>( condition ) ) {
-				debug_throw<ExceptionType>( std::forward<Args>( args )... );
+				if constexpr( std::is_same_v<Terminator, ExceptionType> ) {
+					std::terminate( );
+				} else {
+					debug_throw<ExceptionType>( std::forward<Args>( args )... );
+				}
 			}
 		}
 
