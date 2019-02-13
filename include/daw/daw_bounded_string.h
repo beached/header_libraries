@@ -1316,16 +1316,16 @@ namespace daw {
 		return os;
 	}
 
-	template<typename CharT, typename Traits, ptrdiff_t Extent>
+	template<typename CharT, size_t Capacity, typename Traits>
 	constexpr size_t
-	fnv1a_hash( daw::basic_bounded_string<CharT, Traits, Extent> sv ) noexcept {
+	fnv1a_hash( daw::basic_bounded_string<CharT, Capacity, Traits> sv ) noexcept {
 		return fnv1a_hash( sv.data( ), sv.size( ) );
 	}
 
-	template<size_t HashSize = sizeof( size_t ), typename CharT, typename Traits,
-	         ptrdiff_t Extent>
-	constexpr size_t
-	generic_hash( daw::basic_bounded_string<CharT, Traits, Extent> sv ) noexcept {
+	template<size_t HashSize = sizeof( size_t ), typename CharT, size_t capacity,
+	         typename Traits>
+	constexpr size_t generic_hash(
+	  daw::basic_bounded_string<CharT, Capacity, Traits> sv ) noexcept {
 		return generic_hash<HashSize>( sv.data( ), sv.size( ) );
 	}
 
