@@ -488,7 +488,22 @@ namespace daw {
 	public:
 		static constexpr int compare( basic_string_view lhs,
 		                              basic_string_view rhs ) noexcept {
-			auto cmp = Traits::compare( lhs.data( ), rhs.data( ),
+			auto const str_compare = []( CharT const * p0, CharT const * p1, size_t len ) {
+				auto const last = p0 + len;
+				while( p0 != last ) {
+					if( *p0 != *p1 ) {
+						if( *p0 < *p1 ) {
+							return -1;
+						}
+						return 1;
+					}
+					++p0;
+					++p1;
+				}
+				return 0;
+			};
+
+			auto cmp = str_compare( lhs.data( ), rhs.data( ),
 			                            daw::min( lhs.size( ), rhs.size( ) ) );
 			if( cmp == 0 ) {
 				if( lhs.size( ) < rhs.size( ) ) {

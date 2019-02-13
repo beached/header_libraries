@@ -830,7 +830,7 @@ namespace daw {
 		auto t2 = static_cast<daw::basic_bounded_string<char, 100>>( t1 );
 		return t1 == t2;	
 	}
-	//static_assert( convert_bigger( ) );
+	static_assert( convert_bigger( ) );
 	
 	BOOST_AUTO_TEST_CASE( big ) {
 		BOOST_REQUIRE( convert_bigger( ) );
