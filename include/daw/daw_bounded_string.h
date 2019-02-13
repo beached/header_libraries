@@ -326,6 +326,11 @@ namespace daw {
 			return !m_data.empty( );
 		}
 
+		template<size_t NewSize>
+		constexpr operator basic_bounded_string<CharT, NewSize>( ) const noexcept {
+			return {data( ), size( )};
+		}
+
 		constexpr void remove_suffix( size_type n ) {
 			m_data.resize( m_data.size( ) - n );
 			*m_data.end( ) = 0;
