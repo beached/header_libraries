@@ -349,7 +349,7 @@ namespace daw {
 			traits::is_input_iterator_test<ForwardIterator>( );
 			traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
 
-			first = std::find_if_not( first, last, unary_predicate );
+			first = find_if_not( first, last, unary_predicate );
 			if( first == last ) {
 				return first;
 			}
@@ -2071,6 +2071,21 @@ namespace daw {
 					++it;
 				}
 			}
+		}
+
+		template<class InputIt, class UnaryPredicate>
+		constexpr bool all_of( InputIt first, InputIt last, UnaryPredicate &&p ) {
+			return find_if_not( first, last,
+			                         std::forward<UnaryPredicate>( p ) ) == last;
+		}
+
+		template<class InputIt, class UnaryPredicate>
+		constexpr bool any_of( InputIt first, InputIt last, UnaryPredicate && p ) {
+			return find_if( first, last, std::forward<UnaryPredicate>( p ) ) != last;
+		}
+		template<class InputIt, class UnaryPredicate>
+		constexpr bool none_of( InputIt first, InputIt last, UnaryPredicate && p ) {
+			return find_if( first, last, std::forward<UnaryPredicate>( p ) ) == last;
 		}
 	} // namespace algorithm
 } // namespace daw
