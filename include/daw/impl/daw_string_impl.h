@@ -29,8 +29,7 @@
 #include "../daw_traits.h"
 
 namespace daw {
-	template<typename CharT, size_t Capacity,
-	         typename Traits = std::char_traits<CharT>>
+	template<typename CharT, size_t Capacity>
 	struct basic_bounded_string;
 
 	namespace details {
@@ -222,12 +221,12 @@ namespace daw {
 			}
 		}
 
-		template<typename CharT, size_t Capacity, typename Traits, typename OStream,
+		template<typename CharT, size_t Capacity, typename OStream,
 		         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,
 		                          std::nullptr_t> = nullptr>
 		void sv_insert_aligned(
 		  OStream &os,
-		  daw::basic_bounded_string<CharT, Capacity, Traits> const &str ) {
+		  daw::basic_bounded_string<CharT, Capacity> const &str ) {
 
 			auto const size = str.size( );
 			auto const alignment_size =

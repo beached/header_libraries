@@ -52,9 +52,8 @@
 #include "iterator/daw_reverse_iterator.h"
 
 namespace daw {
-	template<typename CharT, size_t Capacity, typename Traits>
+	template<typename CharT, size_t Capacity>
 	struct basic_bounded_string {
-		using traits_type = Traits;
 		using value_type = CharT;
 		using pointer = CharT *;
 		using const_pointer = value_type const *;
@@ -66,7 +65,7 @@ namespace daw {
 		using const_reverse_iterator = daw::reverse_iterator<const_iterator>;
 		using size_type = size_t;
 		using difference_type = std::ptrdiff_t;
-		static constexpr size_t const extent = Capacity; 
+		static constexpr size_t const extent = Capacity;
 
 	private:
 		daw::bounded_vector_t<CharT, Capacity + 1> m_data{};
@@ -98,7 +97,7 @@ namespace daw {
 		  : m_data( str.data( ), static_cast<size_type>( str.size( ) ) ) {}
 #endif
 		// TODO: determine if I want this or not
-		// basic_bounded_string( std::basic_string<CharT, Traits> &&str ) noexcept =
+		// basic_bounded_string( std::basic_string<CharT> &&str ) noexcept =
 		// delete;
 
 		constexpr basic_bounded_string( const_pointer str_ptr ) noexcept
@@ -114,9 +113,8 @@ namespace daw {
 			return to_string( );
 		}
 #endif
-		operator daw::basic_string_view<CharT, Traits>( ) const {
-			return daw::basic_string_view<CharT, Traits>( m_data.data( ),
-			                                              m_data.size( ) );
+		operator daw::basic_string_view<CharT>( ) const {
+			return daw::basic_string_view<CharT>( m_data.data( ), m_data.size( ) );
 		}
 
 		constexpr bool full( ) noexcept {
@@ -143,8 +141,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr basic_bounded_string &
-		append( basic_string_view<CharT, Traits> sv ) {
+		constexpr basic_bounded_string &append( basic_string_view<CharT> sv ) {
 			daw::exception::precondition_check<std::out_of_range>(
 			  m_data.size( ) + sv.size( ) <= capacity( ),
 			  "Attempt to append basic_bounded_string past end" );
@@ -155,8 +152,7 @@ namespace daw {
 		}
 
 #ifndef NOSTRING
-		basic_bounded_string &
-		append( std::basic_string<CharT, Traits> const &str ) {
+		basic_bounded_string &append( std::basic_string<CharT> const &str ) {
 			if( m_data.size( ) + str.size( ) > capacity( ) ) {
 				throw std::out_of_range{
 				  "Attempt to append basic_bounded_string past end"};
@@ -166,8 +162,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr basic_bounded_string &
-		append( std::basic_string<CharT, Traits> &&str ) {
+		constexpr basic_bounded_string &append( std::basic_string<CharT> &&str ) {
 			if( m_data.size( ) + str.size( ) > capacity( ) ) {
 				throw std::out_of_range{
 				  "Attempt to append basic_bounded_string past end"};
@@ -198,7 +193,7 @@ namespace daw {
 		constexpr basic_bounded_string &
 		append( T const &t, size_type pos,
 		        size_type count = basic_bounded_string::npos ) {
-			daw::basic_string_view<CharT, Traits> tmp = t;
+			daw::basic_string_view<CharT> tmp = t;
 			return append( tmp.substr( pos, count ) );
 		}
 
@@ -375,15 +370,12 @@ namespace daw {
 			return basic_bounded_string{&m_data[pos], rcount};
 		}
 
-		constexpr int compare( basic_bounded_string const v ) const noexcept {
-			return daw::string_view{data( ), size( )}.compare(
-			  daw::string_view{v.data( ), v.size( )} );
-		}
-		
 		template<size_t CapL, size_t CapR>
-		static constexpr int compare( basic_bounded_string<CharT, CapL> const & lhs,
-		                              basic_bounded_string<CharT, CapR> const & rhs ) noexcept {
-			auto const str_compare = []( CharT const * p0, CharT const * p1, size_t len ) {
+		static constexpr int
+		compare( basic_bounded_string<CharT, CapL> const &lhs,
+		         basic_bounded_string<CharT, CapR> const &rhs ) noexcept {
+			auto const str_compare = []( CharT const *p0, CharT const *p1,
+			                             size_t len ) {
 				auto const last = p0 + len;
 				while( p0 != last ) {
 					if( *p0 != *p1 ) {
@@ -399,7 +391,7 @@ namespace daw {
 			};
 
 			auto cmp = str_compare( lhs.data( ), rhs.data( ),
-			                            daw::min( lhs.size( ), rhs.size( ) ) );
+			                        daw::min( lhs.size( ), rhs.size( ) ) );
 			if( cmp == 0 ) {
 				if( lhs.size( ) < rhs.size( ) ) {
 					return -1;
@@ -411,10 +403,55 @@ namespace daw {
 			return cmp;
 		}
 
+		template<size_t CapL>
+		static constexpr int compare( basic_bounded_string<CharT, CapL> const &lhs,
+		                              CharT const *rhs_ptr,
+		                              size_t rhs_size ) noexcept {
+			auto const str_compare = []( CharT const *p0, CharT const *p1,
+			                             size_t len ) {
+				auto const last = p0 + len;
+				while( p0 != last ) {
+					if( *p0 != *p1 ) {
+						if( *p0 < *p1 ) {
+							return -1;
+						}
+						return 1;
+					}
+					++p0;
+					++p1;
+				}
+				return 0;
+			};
+
+			auto cmp =
+			  str_compare( lhs.data( ), rhs_ptr, daw::min( lhs.size( ), rhs_size ) );
+			if( cmp == 0 ) {
+				if( lhs.size( ) < rhs_size ) {
+					return -1;
+				}
+				if( rhs_size < lhs.size( ) ) {
+					return 1;
+				}
+			}
+			return cmp;
+		}
+
 		template<size_t CapR>
-		constexpr int compare( basic_bounded_string<CharT, CapR> const & rhs ) {
+		constexpr int
+		compare( basic_bounded_string<CharT, CapR> const &rhs ) const {
 			return compare( *this, rhs );
 		}
+
+		template<size_t CapR>
+		constexpr int compare( basic_string_view<CharT> rhs ) const {
+			return compare( *this, rhs.data( ), rhs.size( ) );
+		}
+
+#ifndef NOSTRING
+		int compare( std::basic_string<CharT> const &rhs ) const {
+			return compare( *this, rhs.data( ), rhs.size( ) );
+		}
+#endif
 
 		template<size_t CapR>
 		constexpr int compare( size_type const pos1, size_type const count1,
@@ -424,14 +461,16 @@ namespace daw {
 
 		template<size_t CapR>
 		constexpr int compare( size_type const pos1, size_type const count1,
-		                       basic_bounded_string<CharT, CapR> const v, size_type const pos2,
+		                       basic_bounded_string<CharT, CapR> const v,
+		                       size_type const pos2,
 		                       size_type const count2 ) const {
 			return substr( pos1, count1 ).compare( v.substr( pos2, count2 ) );
 		}
 
 		constexpr int compare( const_pointer s ) const noexcept {
 			// TODO fix not best way
-			return compare( *this, basic_bounded_string( s ) );
+			basic_string_view<CharT> rhs( s );
+			return basic_bounded_string::compare( *this, rhs.data( ), rhs.size( ) );
 		}
 
 		constexpr int compare( size_type const pos1, size_type const count1,
@@ -441,8 +480,7 @@ namespace daw {
 
 		constexpr int compare( size_type const pos1, size_type const count1,
 		                       const_pointer s, size_type const count2 ) const {
-			auto lhs = substr( pos1, count1 );
-			return compare( lhs.data( ), lhs.size( ), s, count2 );
+			return basic_bounded_string::compare( substr( pos1, count1 ), s, count2 );
 		}
 
 		constexpr size_type find( basic_bounded_string const v,
@@ -553,8 +591,8 @@ namespace daw {
 		}
 
 #ifndef NOSTRING
-		std::basic_string<value_type, traits_type> to_string( ) const {
-			std::basic_string<value_type, traits_type> result;
+		std::basic_string<value_type> to_string( ) const {
+			std::basic_string<value_type> result;
 			result.reserve( size( ) );
 			daw::algorithm::copy_n( data( ), daw::back_inserter( result ), size( ) );
 			return result;
@@ -708,7 +746,7 @@ namespace daw {
 	}; // basic_bounded_string
 
 	template<typename CharT, size_t N>
-	basic_bounded_string( CharT const (&)[N] ) -> basic_bounded_string<CharT, N>;
+	basic_bounded_string( CharT const ( & )[N] )->basic_bounded_string<CharT, N>;
 
 	template<typename CharT, size_t N>
 	constexpr void swap( basic_bounded_string<CharT, N> &lhs,
@@ -721,37 +759,34 @@ namespace daw {
 	using u16bounded_string = basic_bounded_string<char16_t, 100>;
 	using u32bounded_string = basic_bounded_string<char32_t, 100>;
 
-	template<size_t Capacity = 100, typename CharT,
-	         typename Traits = std::char_traits<CharT>>
+	template<size_t Capacity = 100, typename CharT>
 	constexpr auto make_bounded_string_it( CharT const *first,
 	                                       CharT const *last ) noexcept {
-		return basic_bounded_string<CharT, Capacity, Traits>{
+		return basic_bounded_string<CharT, Capacity>{
 		  first, static_cast<size_t>( last - first )};
 	}
 
 	template<
 	  size_t Capacity = 100, typename Iterator,
-	  typename CharT = std::decay_t<decltype( *std::declval<Iterator>( ) )>,
-	  typename TraitsT = std::char_traits<CharT>>
+	  typename CharT = std::decay_t<decltype( *std::declval<Iterator>( ) )>>
 	constexpr auto make_bounded_string_it( Iterator first,
 	                                       Iterator last ) noexcept {
-		using sv_t = basic_bounded_string<CharT, Capacity, TraitsT>;
+		using sv_t = basic_bounded_string<CharT, Capacity>;
 		using size_type = typename sv_t::size_type;
 		return sv_t{&( *first ),
 		            static_cast<size_type>( daw::distance( first, last ) )};
 	}
 
-	template<size_t Capacity = 100, typename CharT, typename Allocator,
-	         typename Traits = std::char_traits<CharT>>
-	auto make_bounded_string( std::vector<CharT, Allocator> const &v ) noexcept {
-		return basic_bounded_string<CharT, Capacity, Traits>{v.data( ), v.size( )};
+	template<size_t Capacity = 100, typename CharT>
+	auto make_bounded_string( std::vector<CharT> const &v ) noexcept {
+		return basic_bounded_string<CharT, Capacity>{v.data( ), v.size( )};
 	}
 
 #ifndef NOSTRING
-	template<size_t Capacity = 100, typename CharT, typename Traits>
-	daw::basic_bounded_string<CharT, Capacity, Traits>
-	make_bounded_string( std::basic_string<CharT, Traits> const &str ) {
-		return daw::basic_bounded_string<CharT, Capacity, Traits>{str};
+	template<size_t Capacity = 100, typename CharT>
+	daw::basic_bounded_string<CharT, Capacity>
+	make_bounded_string( std::basic_string<CharT> const &str ) {
+		return daw::basic_bounded_string<CharT, Capacity>{str};
 	}
 #endif
 
@@ -763,518 +798,498 @@ namespace daw {
 
 	// basic_bounded_string / basic_bounded_string
 	//
-	template<typename CharT, size_t CapacityL, size_t CapacityR, typename Traits>
-	constexpr bool operator==(
-	  basic_bounded_string<CharT, CapacityL, Traits> const &lhs,
-	  basic_bounded_string<CharT, CapacityR, Traits> const &rhs ) noexcept {
+	template<typename CharT, size_t CapacityL, size_t CapacityR>
+	constexpr bool
+	operator==( basic_bounded_string<CharT, CapacityL> const &lhs,
+	            basic_bounded_string<CharT, CapacityR> const &rhs ) noexcept {
 
 		return lhs.compare( rhs ) == 0;
 	}
 
-	template<typename CharT, size_t CapacityL, size_t CapacityR, typename Traits>
-	constexpr bool operator!=(
-	  basic_bounded_string<CharT, CapacityL, Traits> const &lhs,
-	  basic_bounded_string<CharT, CapacityR, Traits> const &rhs ) noexcept {
+	template<typename CharT, size_t CapacityL, size_t CapacityR>
+	constexpr bool
+	operator!=( basic_bounded_string<CharT, CapacityL> const &lhs,
+	            basic_bounded_string<CharT, CapacityR> const &rhs ) noexcept {
 
 		return lhs.compare( rhs ) != 0;
 	}
 
-	template<typename CharT, size_t CapacityL, size_t CapacityR, typename Traits>
-	constexpr bool operator<(
-	  basic_bounded_string<CharT, CapacityL, Traits> const &lhs,
-	  basic_bounded_string<CharT, CapacityR, Traits> const &rhs ) noexcept {
+	template<typename CharT, size_t CapacityL, size_t CapacityR>
+	constexpr bool
+	operator<( basic_bounded_string<CharT, CapacityL> const &lhs,
+	           basic_bounded_string<CharT, CapacityR> const &rhs ) noexcept {
 
 		return lhs.compare( rhs ) < 0;
 	}
 
-	template<typename CharT, size_t CapacityL, size_t CapacityR, typename Traits>
-	constexpr bool operator<=(
-	  basic_bounded_string<CharT, CapacityL, Traits> const &lhs,
-	  basic_bounded_string<CharT, CapacityR, Traits> const &rhs ) noexcept {
+	template<typename CharT, size_t CapacityL, size_t CapacityR>
+	constexpr bool
+	operator<=( basic_bounded_string<CharT, CapacityL> const &lhs,
+	            basic_bounded_string<CharT, CapacityR> const &rhs ) noexcept {
 
 		return lhs.compare( rhs ) <= 0;
 	}
 
-	template<typename CharT, size_t CapacityL, size_t CapacityR, typename Traits>
-	constexpr bool operator>(
-	  basic_bounded_string<CharT, CapacityL, Traits> const &lhs,
-	  basic_bounded_string<CharT, CapacityR, Traits> const &rhs ) noexcept {
+	template<typename CharT, size_t CapacityL, size_t CapacityR>
+	constexpr bool
+	operator>( basic_bounded_string<CharT, CapacityL> const &lhs,
+	           basic_bounded_string<CharT, CapacityR> const &rhs ) noexcept {
 
 		return lhs.compare( rhs ) > 0;
 	}
 
-	template<typename CharT, size_t CapacityL, size_t CapacityR, typename Traits>
-	constexpr bool operator>=(
-	  basic_bounded_string<CharT, CapacityL, Traits> const &lhs,
-	  basic_bounded_string<CharT, CapacityR, Traits> const &rhs ) noexcept {
+	template<typename CharT, size_t CapacityL, size_t CapacityR>
+	constexpr bool
+	operator>=( basic_bounded_string<CharT, CapacityL> const &lhs,
+	            basic_bounded_string<CharT, CapacityR> const &rhs ) noexcept {
 
 		return lhs.compare( rhs ) >= 0;
 	}
 
 	// basic_bounded_string / basic_string_view
 	//
-	template<typename CharT, size_t Capacity, typename Traits>
+	template<typename CharT, size_t Capacity>
 	constexpr bool
-	operator==( daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
-	            daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	operator==( daw::basic_bounded_string<CharT, Capacity> const &lhs,
+	            daw::basic_string_view<CharT> rhs ) noexcept {
 
 		return lhs.compare( rhs.data( ), rhs.size( ) ) == 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
+	template<typename CharT, size_t Capacity>
 	constexpr bool
-	operator!=( daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
-	            daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	operator!=( daw::basic_bounded_string<CharT, Capacity> const &lhs,
+	            daw::basic_string_view<CharT> rhs ) noexcept {
 
 		return lhs.compare( rhs.data( ), rhs.size( ) ) != 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
+	template<typename CharT, size_t Capacity>
 	constexpr bool
-	operator<( daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
-	           daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	operator<( daw::basic_bounded_string<CharT, Capacity> const &lhs,
+	           daw::basic_string_view<CharT> rhs ) noexcept {
 
 		return lhs.compare( rhs.data( ), rhs.size( ) ) < 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
+	template<typename CharT, size_t Capacity>
 	constexpr bool
-	operator<=( daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
-	            daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	operator<=( daw::basic_bounded_string<CharT, Capacity> const &lhs,
+	            daw::basic_string_view<CharT> rhs ) noexcept {
 
 		return lhs.compare( rhs.data( ), rhs.size( ) ) <= 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
+	template<typename CharT, size_t Capacity>
 	constexpr bool
-	operator>( daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
-	           daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	operator>( daw::basic_bounded_string<CharT, Capacity> const &lhs,
+	           daw::basic_string_view<CharT> rhs ) noexcept {
 
 		return lhs.compare( rhs.data( ), rhs.size( ) ) > 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
+	template<typename CharT, size_t Capacity>
 	constexpr bool
-	operator>=( daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
-	            daw::basic_string_view<CharT, Traits> rhs ) noexcept {
+	operator>=( daw::basic_bounded_string<CharT, Capacity> const &lhs,
+	            daw::basic_string_view<CharT> rhs ) noexcept {
 
 		return lhs.compare( rhs.data( ), rhs.size( ) ) >= 0;
 	}
 
 	// daw::basic_string_view / daw::basic_bounded_string
 	//
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool operator==(
-	  daw::basic_string_view<CharT, Traits> const &lhs,
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
+	template<typename CharT, size_t Capacity>
+	constexpr bool
+	operator==( daw::basic_string_view<CharT> const &lhs,
+	            daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
 		return lhs.compare( rhs ) == 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool operator!=(
-	  daw::basic_string_view<CharT, Traits> const &lhs,
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
+	template<typename CharT, size_t Capacity>
+	constexpr bool
+	operator!=( daw::basic_string_view<CharT> const &lhs,
+	            daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
+
 		return lhs.compare( rhs ) != 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool operator<(
-	  daw::basic_string_view<CharT, Traits> const &lhs,
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
+	template<typename CharT, size_t Capacity>
+	constexpr bool
+	operator<( daw::basic_string_view<CharT> const &lhs,
+	           daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
 		return lhs.compare( rhs ) < 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool operator<=(
-	  daw::basic_string_view<CharT, Traits> const &lhs,
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
+	template<typename CharT, size_t Capacity>
+	constexpr bool
+	operator<=( daw::basic_string_view<CharT> const &lhs,
+	            daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
 		return lhs.compare( rhs ) <= 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool operator>(
-	  daw::basic_string_view<CharT, Traits> const &lhs,
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
+	template<typename CharT, size_t Capacity>
+	constexpr bool
+	operator>( daw::basic_string_view<CharT> const &lhs,
+	           daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
 		return lhs.compare( rhs ) > 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool operator>=(
-	  daw::basic_string_view<CharT, Traits> const &lhs,
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
+	template<typename CharT, size_t Capacity>
+	constexpr bool
+	operator>=( daw::basic_string_view<CharT> const &lhs,
+	            daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
 		return lhs.compare( rhs ) >= 0;
 	}
 
 #ifndef NOSTRING
 	// basic_bounded_string / basic_string
 	//
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool
-	operator==( daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
-	            std::basic_string<CharT, Traits> const &rhs ) noexcept {
-		return lhs.compare(
-		         static_cast<daw::basic_bounded_string<CharT, Capacity, Traits>>(
-		           rhs ) ) == 0;
+	template<typename CharT, size_t Capacity>
+	bool operator==( daw::basic_bounded_string<CharT, Capacity> const &lhs,
+	                 std::basic_string<CharT> const &rhs ) noexcept {
+
+		return lhs.compare( rhs ) == 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool
-	operator!=( daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
-	            std::basic_string<CharT, Traits> const &rhs ) noexcept {
-		return lhs.compare(
-		         static_cast<daw::basic_bounded_string<CharT, Capacity, Traits>>(
-		           rhs ) ) != 0;
+	template<typename CharT, size_t Capacity>
+	bool operator!=( daw::basic_bounded_string<CharT, Capacity> const &lhs,
+	                 std::basic_string<CharT> const &rhs ) noexcept {
+
+		return lhs.compare( rhs ) != 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool
-	operator<( daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
-	           std::basic_string<CharT, Traits> const &rhs ) noexcept {
-		return lhs.compare(
-		         static_cast<daw::basic_bounded_string<CharT, Capacity, Traits>>(
-		           rhs ) ) < 0;
+	template<typename CharT, size_t Capacity>
+	bool operator<( daw::basic_bounded_string<CharT, Capacity> const &lhs,
+	                std::basic_string<CharT> const &rhs ) noexcept {
+
+		return lhs.compare( rhs ) < 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool
-	operator<=( daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
-	            std::basic_string<CharT, Traits> const &rhs ) noexcept {
-		return lhs.compare(
-		         static_cast<daw::basic_bounded_string<CharT, Capacity, Traits>>(
-		           rhs ) ) <= 0;
+	template<typename CharT, size_t Capacity>
+	bool operator<=( daw::basic_bounded_string<CharT, Capacity> const &lhs,
+	                 std::basic_string<CharT> const &rhs ) noexcept {
+
+		return lhs.compare( rhs ) <= 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool
-	operator>( daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
-	           std::basic_string<CharT, Traits> const &rhs ) noexcept {
-		return lhs.compare(
-		         static_cast<daw::basic_bounded_string<CharT, Capacity, Traits>>(
-		           rhs ) ) > 0;
+	template<typename CharT, size_t Capacity>
+	bool operator>( daw::basic_bounded_string<CharT, Capacity> const &lhs,
+	                std::basic_string<CharT> const &rhs ) noexcept {
+
+		return lhs.compare( rhs ) > 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool
-	operator>=( daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
-	            std::basic_string<CharT, Traits> const &rhs ) noexcept {
-		return lhs.compare(
-		         static_cast<daw::basic_bounded_string<CharT, Capacity, Traits>>(
-		           rhs ) ) >= 0;
+	template<typename CharT, size_t Capacity>
+	bool operator>=( daw::basic_bounded_string<CharT, Capacity> const &lhs,
+	                 std::basic_string<CharT> const &rhs ) noexcept {
+
+		return lhs.compare( rhs ) >= 0;
 	}
 
 	// std::basic_string / daw::basic_bounded_string
 	//
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool operator==(
-	  std::basic_string<CharT, Traits> const &lhs,
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs.data( ), lhs.size( )}
-		         .compare( rhs ) == 0;
+	template<typename CharT, size_t Capacity>
+	constexpr bool
+	operator==( std::basic_string<CharT> const &lhs,
+	            daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
+
+		return rhs.compare( lhs ) == 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool operator!=(
-	  std::basic_string<CharT, Traits> const &lhs,
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs.data( ), lhs.size( )}
-		         .compare( rhs ) != 0;
+	template<typename CharT, size_t Capacity>
+	constexpr bool
+	operator!=( std::basic_string<CharT> const &lhs,
+	            daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
+
+		return rhs.compare( lhs ) != 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool operator<(
-	  std::basic_string<CharT, Traits> const &lhs,
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs.data( ), lhs.size( )}
-		         .compare( rhs ) < 0;
+	template<typename CharT, size_t Capacity>
+	constexpr bool
+	operator<( std::basic_string<CharT> const &lhs,
+	           daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
+
+		return rhs.compare( lhs ) > 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool operator<=(
-	  std::basic_string<CharT, Traits> const &lhs,
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs.data( ), lhs.size( )}
-		         .compare( rhs ) <= 0;
+	template<typename CharT, size_t Capacity>
+	constexpr bool
+	operator<=( std::basic_string<CharT> const &lhs,
+	            daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
+
+		return rhs.compare( lhs ) >= 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool operator>(
-	  std::basic_string<CharT, Traits> const &lhs,
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs.data( ), lhs.size( )}
-		         .compare( rhs ) > 0;
+	template<typename CharT, size_t Capacity>
+	constexpr bool
+	operator>( std::basic_string<CharT> const &lhs,
+	           daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
+
+		return rhs.compare( lhs ) < 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool operator>=(
-	  std::basic_string<CharT, Traits> const &lhs,
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs.data( ), lhs.size( )}
-		         .compare( rhs ) >= 0;
+	template<typename CharT, size_t Capacity>
+	constexpr bool
+	operator>=( std::basic_string<CharT> const &lhs,
+	            daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
+
+		return rhs.compare( lhs ) <= 0;
 	}
 #endif
 	// daw::basic_bounded_string / char const *
 	//
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool operator==(
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
-	  typename daw::basic_bounded_string<CharT, Capacity, Traits>::const_pointer
-	    rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs.data( ), lhs.size( )}
-		         .compare( rhs ) == 0;
+	template<typename CharT, size_t Capacity>
+	constexpr bool
+	operator==( daw::basic_bounded_string<CharT, Capacity> const &lhs,
+	            typename daw::basic_bounded_string<CharT, Capacity>::const_pointer
+	              rhs ) noexcept {
+		return daw::basic_string_view<CharT>{lhs.data( ), lhs.size( )}.compare(
+		         rhs ) == 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool operator!=(
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
-	  typename daw::basic_bounded_string<CharT, Capacity, Traits>::const_pointer
-	    rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs.data( ), lhs.size( )}
-		         .compare( rhs ) != 0;
+	template<typename CharT, size_t Capacity>
+	constexpr bool
+	operator!=( daw::basic_bounded_string<CharT, Capacity> const &lhs,
+	            typename daw::basic_bounded_string<CharT, Capacity>::const_pointer
+	              rhs ) noexcept {
+		return daw::basic_string_view<CharT>{lhs.data( ), lhs.size( )}.compare(
+		         rhs ) != 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool operator<(
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
-	  typename daw::basic_bounded_string<CharT, Capacity, Traits>::const_pointer
-	    rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs.data( ), lhs.size( )}
-		         .compare( rhs ) < 0;
+	template<typename CharT, size_t Capacity>
+	constexpr bool
+	operator<( daw::basic_bounded_string<CharT, Capacity> const &lhs,
+	           typename daw::basic_bounded_string<CharT, Capacity>::const_pointer
+	             rhs ) noexcept {
+		return daw::basic_string_view<CharT>{lhs.data( ), lhs.size( )}.compare(
+		         rhs ) < 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool operator<=(
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
-	  typename daw::basic_bounded_string<CharT, Capacity, Traits>::const_pointer
-	    rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs.data( ), lhs.size( )}
-		         .compare( rhs ) <= 0;
+	template<typename CharT, size_t Capacity>
+	constexpr bool
+	operator<=( daw::basic_bounded_string<CharT, Capacity> const &lhs,
+	            typename daw::basic_bounded_string<CharT, Capacity>::const_pointer
+	              rhs ) noexcept {
+		return daw::basic_string_view<CharT>{lhs.data( ), lhs.size( )}.compare(
+		         rhs ) <= 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool operator>(
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
-	  typename daw::basic_bounded_string<CharT, Capacity, Traits>::const_pointer
-	    rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs.data( ), lhs.size( )}
-		         .compare( rhs ) > 0;
+	template<typename CharT, size_t Capacity>
+	constexpr bool
+	operator>( daw::basic_bounded_string<CharT, Capacity> const &lhs,
+	           typename daw::basic_bounded_string<CharT, Capacity>::const_pointer
+	             rhs ) noexcept {
+		return daw::basic_string_view<CharT>{lhs.data( ), lhs.size( )}.compare(
+		         rhs ) > 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr bool operator>=(
-	  daw::basic_bounded_string<CharT, Capacity, Traits> lhs,
-	  typename daw::basic_bounded_string<CharT, Capacity, Traits>::const_pointer
-	    rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs.data( ), lhs.size( )}
-		         .compare( rhs ) >= 0;
+	template<typename CharT, size_t Capacity>
+	constexpr bool
+	operator>=( daw::basic_bounded_string<CharT, Capacity> lhs,
+	            typename daw::basic_bounded_string<CharT, Capacity>::const_pointer
+	              rhs ) noexcept {
+		return daw::basic_string_view<CharT>{lhs.data( ), lhs.size( )}.compare(
+		         rhs ) >= 0;
 	}
 
 	// char const * / daw::basic_bounded_string
 	//
-	template<typename CharT, size_t Capacity, typename Traits>
+	template<typename CharT, size_t Capacity>
 	constexpr bool operator==(
-	  typename daw::basic_bounded_string<CharT, Capacity, Traits>::const_pointer
-	    lhs,
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) == 0;
+	  typename daw::basic_bounded_string<CharT, Capacity>::const_pointer lhs,
+	  daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
+		return daw::basic_string_view<CharT>{lhs}.compare( rhs ) == 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
+	template<typename CharT, size_t Capacity>
 	constexpr bool operator!=(
-	  typename daw::basic_bounded_string<CharT, Capacity, Traits>::const_pointer
-	    lhs,
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) != 0;
+	  typename daw::basic_bounded_string<CharT, Capacity>::const_pointer lhs,
+	  daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
+		return daw::basic_string_view<CharT>{lhs}.compare( rhs ) != 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
+	template<typename CharT, size_t Capacity>
 	constexpr bool operator<(
-	  typename daw::basic_bounded_string<CharT, Capacity, Traits>::const_pointer
-	    lhs,
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) < 0;
+	  typename daw::basic_bounded_string<CharT, Capacity>::const_pointer lhs,
+	  daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
+		return daw::basic_string_view<CharT>{lhs}.compare( rhs ) < 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
+	template<typename CharT, size_t Capacity>
 	constexpr bool operator<=(
-	  typename daw::basic_bounded_string<CharT, Capacity, Traits>::const_pointer
-	    lhs,
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) <= 0;
+	  typename daw::basic_bounded_string<CharT, Capacity>::const_pointer lhs,
+	  daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
+		return daw::basic_string_view<CharT>{lhs}.compare( rhs ) <= 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
+	template<typename CharT, size_t Capacity>
 	constexpr bool operator>(
-	  typename daw::basic_bounded_string<CharT, Capacity, Traits>::const_pointer
-	    lhs,
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) > 0;
+	  typename daw::basic_bounded_string<CharT, Capacity>::const_pointer lhs,
+	  daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
+		return daw::basic_string_view<CharT>{lhs}.compare( rhs ) > 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
+	template<typename CharT, size_t Capacity>
 	constexpr bool operator>=(
-	  typename daw::basic_bounded_string<CharT, Capacity, Traits>::const_pointer
-	    lhs,
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) >= 0;
+	  typename daw::basic_bounded_string<CharT, Capacity>::const_pointer lhs,
+	  daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
+		return daw::basic_string_view<CharT>{lhs}.compare( rhs ) >= 0;
 	}
 
 	// daw::basic_bounded_string / char const[N]
 	//
-	template<typename CharT, size_t Capacity, typename Traits, size_t N>
+	template<typename CharT, size_t Capacity, size_t N>
 	constexpr bool
-	operator==( daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
+	operator==( daw::basic_bounded_string<CharT, Capacity> const &lhs,
 	            CharT const ( &rhs )[N] ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs.data( ), lhs.size( )}
-		         .compare( rhs ) == 0;
+		return daw::basic_string_view<CharT>{lhs.data( ), lhs.size( )}.compare(
+		         rhs ) == 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits, size_t N>
+	template<typename CharT, size_t Capacity, size_t N>
 	constexpr bool
-	operator!=( daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
+	operator!=( daw::basic_bounded_string<CharT, Capacity> const &lhs,
 	            CharT const ( &rhs )[N] ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs.data( ), lhs.size( )}
-		         .compare( rhs ) != 0;
+		return daw::basic_string_view<CharT>{lhs.data( ), lhs.size( )}.compare(
+		         rhs ) != 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits, size_t N>
+	template<typename CharT, size_t Capacity, size_t N>
 	constexpr bool
-	operator<( daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
+	operator<( daw::basic_bounded_string<CharT, Capacity> const &lhs,
 	           CharT const ( &rhs )[N] ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs.data( ), lhs.size( )}
-		         .compare( rhs ) < 0;
+		return daw::basic_string_view<CharT>{lhs.data( ), lhs.size( )}.compare(
+		         rhs ) < 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits, size_t N>
+	template<typename CharT, size_t Capacity, size_t N>
 	constexpr bool
-	operator<=( daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
+	operator<=( daw::basic_bounded_string<CharT, Capacity> const &lhs,
 	            CharT const ( &rhs )[N] ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs.data( ), lhs.size( )}
-		         .compare( rhs ) <= 0;
+		return daw::basic_string_view<CharT>{lhs.data( ), lhs.size( )}.compare(
+		         rhs ) <= 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits, size_t N>
+	template<typename CharT, size_t Capacity, size_t N>
 	constexpr bool
-	operator>( daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
+	operator>( daw::basic_bounded_string<CharT, Capacity> const &lhs,
 	           CharT const ( &rhs )[N] ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs.data( ), lhs.size( )}
-		         .compare( rhs ) > 0;
+		return daw::basic_string_view<CharT>{lhs.data( ), lhs.size( )}.compare(
+		         rhs ) > 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits, size_t N>
+	template<typename CharT, size_t Capacity, size_t N>
 	constexpr bool
-	operator>=( daw::basic_bounded_string<CharT, Capacity, Traits> const &lhs,
+	operator>=( daw::basic_bounded_string<CharT, Capacity> const &lhs,
 	            CharT const ( &rhs )[N] ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs.data( ), lhs.size( )}
-		         .compare( rhs ) >= 0;
+		return daw::basic_string_view<CharT>{lhs.data( ), lhs.size( )}.compare(
+		         rhs ) >= 0;
 	}
 
 	// char const[N] / daw::basic_bounded_string
 	//
-	template<typename CharT, size_t Capacity, typename Traits, size_t N>
-	constexpr bool operator==(
-	  CharT const ( &lhs )[N],
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) == 0;
+	template<typename CharT, size_t Capacity, size_t N>
+	constexpr bool
+	operator==( CharT const ( &lhs )[N],
+	            daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
+		return daw::basic_string_view<CharT>{lhs}.compare( rhs ) == 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits, size_t N>
-	constexpr bool operator!=(
-	  CharT const ( &lhs )[N],
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) != 0;
+	template<typename CharT, size_t Capacity, size_t N>
+	constexpr bool
+	operator!=( CharT const ( &lhs )[N],
+	            daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
+		return daw::basic_string_view<CharT>{lhs}.compare( rhs ) != 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits, size_t N>
-	constexpr bool operator<(
-	  CharT const ( &lhs )[N],
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) < 0;
+	template<typename CharT, size_t Capacity, size_t N>
+	constexpr bool
+	operator<( CharT const ( &lhs )[N],
+	           daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
+		return daw::basic_string_view<CharT>{lhs}.compare( rhs ) < 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits, size_t N>
-	constexpr bool operator<=(
-	  CharT const ( &lhs )[N],
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) <= 0;
+	template<typename CharT, size_t Capacity, size_t N>
+	constexpr bool
+	operator<=( CharT const ( &lhs )[N],
+	            daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
+		return daw::basic_string_view<CharT>{lhs}.compare( rhs ) <= 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits, size_t N>
-	constexpr bool operator>(
-	  CharT const ( &lhs )[N],
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) > 0;
+	template<typename CharT, size_t Capacity, size_t N>
+	constexpr bool
+	operator>( CharT const ( &lhs )[N],
+	           daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
+		return daw::basic_string_view<CharT>{lhs}.compare( rhs ) > 0;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits, size_t N>
-	constexpr bool operator>=(
-	  CharT const ( &lhs )[N],
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) noexcept {
-		return daw::basic_string_view<CharT, Traits>{lhs}.compare( rhs ) >= 0;
+	template<typename CharT, size_t Capacity, size_t N>
+	constexpr bool
+	operator>=( CharT const ( &lhs )[N],
+	            daw::basic_bounded_string<CharT, Capacity> const &rhs ) noexcept {
+		return daw::basic_string_view<CharT>{lhs}.compare( rhs ) >= 0;
 	}
 
 	/// Appending
 #ifndef NOSTRING
-	template<typename CharT, size_t Capacity, typename Traits, typename Allocator>
-	auto
-	operator+( std::basic_string<CharT, Traits, Allocator> lhs,
-	           daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) {
+	template<typename CharT, size_t Capacity, typename Allocator>
+	auto operator+( std::basic_string<CharT, Allocator> lhs,
+	                daw::basic_bounded_string<CharT, Capacity> const &rhs ) {
 		lhs.append( rhs.cbegin( ), rhs.cend( ) );
 		return daw::move( lhs );
 	}
 #endif
 
-	template<typename CharT, typename Traits, size_t N, size_t Capacity>
-	auto
-	operator+( CharT ( &lhs )[N],
-	           daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) {
+	template<typename CharT, size_t N, size_t Capacity>
+	auto operator+( CharT ( &lhs )[N],
+	                daw::basic_bounded_string<CharT, Capacity> const &rhs ) {
 		static_assert( N > Capacity, "Not enough space to perform append" );
-		daw::basic_bounded_string<CharT, Capacity, Traits> result{lhs, N};
+		daw::basic_bounded_string<CharT, Capacity> result{lhs, N};
 		result.append( rhs.cbegin( ), rhs.cend( ) );
 		return result;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	auto
-	operator+( CharT const *lhs,
-	           daw::basic_bounded_string<CharT, Capacity, Traits> const &rhs ) {
-		daw::basic_bounded_string<CharT, Capacity, Traits> result{lhs};
+	template<typename CharT, size_t Capacity>
+	auto operator+( CharT const *lhs,
+	                daw::basic_bounded_string<CharT, Capacity> const &rhs ) {
+		daw::basic_bounded_string<CharT, Capacity> result{lhs};
 		result.append( rhs.cbegin( ), rhs.cend( ) );
 		return result;
 	}
 
 #ifndef NOSTRING
-	template<typename CharT, size_t Capacity, typename Traits, typename Allocator>
-	auto operator+( daw::basic_bounded_string<CharT, Capacity, Traits> lhs,
-	                std::basic_string<CharT, Traits, Allocator> const &rhs ) {
+	template<typename CharT, size_t Capacity, typename Allocator>
+	auto operator+( daw::basic_bounded_string<CharT, Capacity> lhs,
+	                std::basic_string<CharT, Allocator> const &rhs ) {
 		lhs.append( rhs );
 		return daw::move( lhs );
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits, typename Allocator>
-	auto operator+( daw::basic_bounded_string<CharT, Capacity, Traits> lhs,
-	                std::basic_string<CharT, Traits, Allocator> &&rhs ) {
+	template<typename CharT, size_t Capacity, typename Allocator>
+	auto operator+( daw::basic_bounded_string<CharT, Capacity> lhs,
+	                std::basic_string<CharT, Allocator> &&rhs ) {
 		lhs.append( daw::move( rhs ) );
 		return daw::move( lhs );
 	}
 #endif
 
-	template<typename CharT, size_t Capacity, typename Traits, size_t N>
-	auto operator+( daw::basic_bounded_string<CharT, Capacity, Traits> lhs,
+	template<typename CharT, size_t Capacity, size_t N>
+	auto operator+( daw::basic_bounded_string<CharT, Capacity> lhs,
 	                CharT ( &rhs )[N] ) {
 		static_assert( Capacity < ( N - 1 ), "Not enough space to perform append" );
-		lhs.append( daw::basic_string_view<CharT, Traits>{rhs} );
+		lhs.append( daw::basic_string_view<CharT>{rhs} );
 		return daw::move( lhs );
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	auto operator+( daw::basic_bounded_string<CharT, Capacity, Traits> lhs,
+	template<typename CharT, size_t Capacity>
+	auto operator+( daw::basic_bounded_string<CharT, Capacity> lhs,
 	                CharT const *rhs ) {
-		lhs.append( daw::basic_string_view<CharT, Traits>{rhs} );
+		lhs.append( daw::basic_string_view<CharT>{rhs} );
 		return daw::move( lhs );
 	}
 
-	template<typename CharT, size_t N, typename Traits, typename UnaryPredicate>
-	auto split( daw::basic_bounded_string<CharT, N, Traits> const &str,
+	template<typename CharT, size_t N, typename UnaryPredicate>
+	auto split( daw::basic_bounded_string<CharT, N> const &str,
 	            UnaryPredicate pred ) {
 		static_assert( traits::is_unary_predicate_v<UnaryPredicate, CharT>,
 		               "UnaryPredicate p does not fullfill the requires of a unary "
@@ -1285,23 +1300,23 @@ namespace daw {
 		              daw::move( pred ) );
 	}
 
-	template<typename CharT, size_t N, typename Traits, typename UnaryPredicate>
-	auto split( daw::basic_bounded_string<CharT, N, Traits> &&str,
+	template<typename CharT, size_t N, typename UnaryPredicate>
+	auto split( daw::basic_bounded_string<CharT, N> &&str,
 	            UnaryPredicate pred ) = delete;
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	auto split( daw::basic_bounded_string<CharT, Capacity, Traits> const &str,
+	template<typename CharT, size_t Capacity>
+	auto split( daw::basic_bounded_string<CharT, Capacity> const &str,
 	            CharT const delemiter ) {
 		return split(
 		  str, [delemiter]( CharT c ) noexcept { return c == delemiter; } );
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	auto split( daw::basic_bounded_string<CharT, Capacity, Traits> &&str,
+	template<typename CharT, size_t Capacity>
+	auto split( daw::basic_bounded_string<CharT, Capacity> &&str,
 	            CharT const delemiter ) = delete;
 
-	template<typename CharT, size_t Capacity, typename Traits, size_t N>
-	auto split( daw::basic_bounded_string<CharT, Capacity, Traits> const &str,
+	template<typename CharT, size_t Capacity, size_t N>
+	auto split( daw::basic_bounded_string<CharT, Capacity> const &str,
 	            CharT const ( &delemiter )[N] ) {
 		static_assert( N == 2,
 		               "string literal used as delemiter.  One 1 value is "
@@ -1310,20 +1325,19 @@ namespace daw {
 		  str, [delemiter]( CharT c ) noexcept { return c == delemiter[0]; } );
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits, size_t N>
-	auto split( daw::basic_bounded_string<CharT, Capacity, Traits> &&str,
+	template<typename CharT, size_t Capacity, size_t N>
+	auto split( daw::basic_bounded_string<CharT, Capacity> &&str,
 	            CharT const ( &delemiter )[N] ) = delete;
 
-	template<typename CharT, size_t Capacity, typename Traits>
-	constexpr size_t fnv1a_hash(
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &str ) noexcept {
+	template<typename CharT, size_t Capacity>
+	constexpr size_t
+	fnv1a_hash( daw::basic_bounded_string<CharT, Capacity> const &str ) noexcept {
 		return fnv1a_hash( str.data( ), str.size( ) );
 	}
 
-	template<size_t HashSize = sizeof( size_t ), typename CharT, size_t Capacity,
-	         typename Traits>
+	template<size_t HashSize = sizeof( size_t ), typename CharT, size_t Capacity>
 	constexpr size_t generic_hash(
-	  daw::basic_bounded_string<CharT, Capacity, Traits> const &str ) noexcept {
+	  daw::basic_bounded_string<CharT, Capacity> const &str ) noexcept {
 		return generic_hash<HashSize>( str.data( ), str.size( ) );
 	}
 
@@ -1337,12 +1351,11 @@ namespace daw {
 	constexpr bool can_be_bounded_string =
 	  daw::is_detected_v<detectors::can_be_bounded_string, String>;
 
-	template<typename OStream, typename CharT, size_t Capacity, typename Traits,
+	template<typename OStream, typename CharT, size_t Capacity,
 	         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,
 	                          std::nullptr_t> = nullptr>
-	OStream &
-	operator<<( OStream &os,
-	            daw::basic_bounded_string<CharT, Capacity, Traits> const &str ) {
+	OStream &operator<<( OStream &os,
+	                     daw::basic_bounded_string<CharT, Capacity> const &str ) {
 		if( os.good( ) ) {
 			auto const size = static_cast<ptrdiff_t>( str.size( ) );
 			auto const w = static_cast<ptrdiff_t>( os.width( ) );
@@ -1356,16 +1369,15 @@ namespace daw {
 		return os;
 	}
 
-	template<typename CharT, size_t Capacity, typename Traits>
+	template<typename CharT, size_t Capacity>
 	constexpr size_t
-	fnv1a_hash( daw::basic_bounded_string<CharT, Capacity, Traits> sv ) noexcept {
+	fnv1a_hash( daw::basic_bounded_string<CharT, Capacity> sv ) noexcept {
 		return fnv1a_hash( sv.data( ), sv.size( ) );
 	}
 
-	template<size_t HashSize = sizeof( size_t ), typename CharT, size_t Capacity,
-	         typename Traits>
-	constexpr size_t generic_hash(
-	  daw::basic_bounded_string<CharT, Capacity, Traits> sv ) noexcept {
+	template<size_t HashSize = sizeof( size_t ), typename CharT, size_t Capacity>
+	constexpr size_t
+	generic_hash( daw::basic_bounded_string<CharT, Capacity> sv ) noexcept {
 		return generic_hash<HashSize>( sv.data( ), sv.size( ) );
 	}
 
@@ -1374,10 +1386,10 @@ namespace daw {
 namespace std {
 	// TODO use same function as string without killing performance of creating a
 	// string
-	template<typename CharT, size_t Capacity, typename Traits>
-	struct hash<daw::basic_bounded_string<CharT, Capacity, Traits>> {
-		constexpr size_t operator( )(
-		  daw::basic_bounded_string<CharT, Capacity, Traits> const &str ) const
+	template<typename CharT, size_t Capacity>
+	struct hash<daw::basic_bounded_string<CharT, Capacity>> {
+		constexpr size_t
+		operator( )( daw::basic_bounded_string<CharT, Capacity> const &str ) const
 		  noexcept {
 			return daw::fnv1a_hash( str );
 		}
