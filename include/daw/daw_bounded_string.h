@@ -105,7 +105,7 @@ namespace daw {
 		  : m_data( str_ptr, details::strlen<size_type>( str_ptr ) ) {}
 
 		template<size_t Len>
-		constexpr basic_bounded_string( const_pointer ( &str_ptr )[Len] ) noexcept
+		constexpr basic_bounded_string( value_type ( &str_ptr )[Len] ) noexcept
 		  : m_data( str_ptr, Len - 1 ) {}
 
 		// End of Construtors
