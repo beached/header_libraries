@@ -759,7 +759,7 @@ namespace daw {
 	namespace impl {
 		template<typename T, typename... Args>
 		using can_construct_a_detect =
-		  decltype( std::declval<daw::construct_a<T>>( )( std::declval<Args>... ) );
+		  decltype( std::declval<daw::construct_a<T>>( )( std::declval<Args>( )... ) );
 
 		template<typename... Args>
 		constexpr void is_tuple_test( std::tuple<Args...> const & ) noexcept;
