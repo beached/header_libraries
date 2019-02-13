@@ -31,20 +31,16 @@ namespace daw {
 	// overload_t/overload create a callable with the overloads of operator( )
 	// provided
 	//
-	template<class... Fs>
+	template<typename... Fs>
 	struct overload : Fs... {
-		template<class... Ts,
-		         std::enable_if_t<
-		           (sizeof...( Ts ) != 1U or
-		            !std::is_same_v<overload, std::remove_reference_t<
-		                                        daw::traits::first_type<Ts...>>>),
-		           std::nullptr_t> = nullptr>
+
+		template<typename... Ts>
 		constexpr overload( Ts &&... ts )
 		  : Fs{std::forward<Ts>( ts )}... {}
 
 		using Fs::operator( )...;
 	};
 
-	template<class... Ts>
-	overload( Ts &&... )->overload<std::remove_reference_t<Ts>...>;
+	template<typename... Fs>
+	overload( Fs... )->overload<Fs...>;
 } // namespace daw

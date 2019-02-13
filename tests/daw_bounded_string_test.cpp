@@ -817,4 +817,11 @@ namespace daw {
 		constexpr auto str = cxcopy_tester( );
 		daw::expecting( str, "String b" );
 	}
+
+	constexpr auto ctad_test( ) noexcept {
+		daw::basic_bounded_string blah = "Hello";
+		daw::expecting( blah.extent, 6 );
+		return true;
+	}
+	static_assert( ctad_test( ) );
 } // namespace daw

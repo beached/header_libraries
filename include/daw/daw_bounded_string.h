@@ -663,6 +663,9 @@ namespace daw {
 	}; // basic_bounded_string
 
 	template<typename CharT, size_t N>
+	basic_bounded_string( CharT const (&)[N] ) -> basic_bounded_string<CharT, N>;
+
+	template<typename CharT, size_t N>
 	constexpr void swap( basic_bounded_string<CharT, N> &lhs,
 	                     basic_bounded_string<CharT, N> &rhs ) noexcept {
 		lhs.swap( rhs );
