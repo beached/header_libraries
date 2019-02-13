@@ -31,10 +31,9 @@
 
 namespace daw {
 	namespace parser {
-		template<typename CharT, typename TraitsT>
-		constexpr auto
-		find_first_of( daw::basic_string_view<CharT, TraitsT> const str,
-		               CharT const value ) noexcept {
+		template<typename CharT>
+		constexpr auto find_first_of( daw::basic_string_view<CharT> const str,
+		                              CharT const value ) noexcept {
 			auto it = str.cbegin( );
 			while( it != str.cend( ) and *it != value ) {
 				++it;
@@ -42,9 +41,9 @@ namespace daw {
 			return it;
 		}
 
-		template<typename CharT, typename TraitsT, typename Predicate>
+		template<typename CharT, typename Predicate>
 		constexpr auto find_first_of_when(
-		  daw::basic_string_view<CharT, TraitsT> str,
+		  daw::basic_string_view<CharT> str,
 		  Predicate pred ) noexcept( noexcept( pred( CharT{} ) ) ) {
 			auto it = str.cbegin( );
 			while( it != str.cend( ) and !pred( *it ) ) {
@@ -53,40 +52,39 @@ namespace daw {
 			return it;
 		}
 
-		template<typename CharT, typename TraitsT>
-		constexpr daw::basic_string_view<CharT, TraitsT>
-		trim_left( daw::basic_string_view<CharT, TraitsT> str ) noexcept {
+		template<typename CharT>
+		constexpr daw::basic_string_view<CharT>
+		trim_left( daw::basic_string_view<CharT> str ) noexcept {
 			while( !str.empty( ) and is_unicode_whitespace( str.front( ) ) ) {
 				str.remove_prefix( );
 			}
 			return str;
 		}
 
-		template<typename CharT, typename TraitsT>
-		constexpr daw::basic_string_view<CharT, TraitsT>
-		trim_right( daw::basic_string_view<CharT, TraitsT> str ) noexcept {
+		template<typename CharT>
+		constexpr daw::basic_string_view<CharT>
+		trim_right( daw::basic_string_view<CharT> str ) noexcept {
 			while( !str.empty( ) and is_unicode_whitespace( str.back( ) ) ) {
 				str.remove_suffix( );
 			}
 			return str;
 		}
 
-		template<typename CharT, typename TraitsT>
-		constexpr daw::basic_string_view<CharT, TraitsT>
-		trim( daw::basic_string_view<CharT, TraitsT> str ) noexcept {
+		template<typename CharT>
+		constexpr daw::basic_string_view<CharT>
+		trim( daw::basic_string_view<CharT> str ) noexcept {
 			return trim_right( trim_left( str ) );
 		}
 
-		template<typename Int, typename CharT, typename TraitsT>
-		constexpr Int
-		parse_unsigned_int( daw::basic_string_view<CharT, TraitsT> str ) {
+		template<typename Int, typename CharT>
+		constexpr Int parse_unsigned_int( daw::basic_string_view<CharT> str ) {
 			Int i = 0;
 			daw::parser::parse_unsigned_int( str.cbegin( ), str.cend( ), i );
 			return i;
 		}
 
-		template<typename Int, typename CharT, typename TraitsT>
-		constexpr Int parse_int( daw::basic_string_view<CharT, TraitsT> str ) {
+		template<typename Int, typename CharT>
+		constexpr Int parse_int( daw::basic_string_view<CharT> str ) {
 			Int i = 0;
 			daw::parser::parse_int( str.cbegin( ), str.cend( ), i );
 			return i;
