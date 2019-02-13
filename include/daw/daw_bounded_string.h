@@ -1315,6 +1315,20 @@ namespace daw {
 		}
 		return os;
 	}
+
+	template<typename CharT, typename Traits, ptrdiff_t Extent>
+	constexpr size_t
+	fnv1a_hash( daw::basic_bounded_string<CharT, Traits, Extent> sv ) noexcept {
+		return fnv1a_hash( sv.data( ), sv.size( ) );
+	}
+
+	template<size_t HashSize = sizeof( size_t ), typename CharT, typename Traits,
+	         ptrdiff_t Extent>
+	constexpr size_t
+	generic_hash( daw::basic_bounded_string<CharT, Traits, Extent> sv ) noexcept {
+		return generic_hash<HashSize>( sv.data( ), sv.size( ) );
+	}
+
 } // namespace daw
 
 namespace std {
