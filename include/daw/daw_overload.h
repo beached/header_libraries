@@ -34,9 +34,8 @@ namespace daw {
 	template<typename... Fs>
 	struct overload : Fs... {
 
-		template<typename... Ts>
-		constexpr overload( Ts &&... ts )
-		  : Fs{std::forward<Ts>( ts )}... {}
+		constexpr overload( Fs... fs )
+		  : Fs{std::move( ts )}... {}
 
 		using Fs::operator( )...;
 	};
