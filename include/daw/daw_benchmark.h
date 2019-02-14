@@ -227,8 +227,8 @@ namespace daw {
 			bench_impl::expander( ( daw::do_not_optimize( args ), 1 )... );
 			auto const start = std::chrono::high_resolution_clock::now( );
 
-			result = daw::expected_from_code( std::forward<Test>( test_callable ),
-			                                  std::forward<Args>( args )... );
+			result =
+			  daw::expected_from_code( std::forward<Test>( test_callable ), args... );
 
 			auto const finish = std::chrono::high_resolution_clock::now( );
 			daw::do_not_optimize( result );
