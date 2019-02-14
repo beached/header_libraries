@@ -109,7 +109,7 @@ namespace daw {
 
 		// End of Construtors
 #ifndef NOSTRING
-		operator std::basic_string<CharT>( ) const {
+		explicit operator std::basic_string<CharT>( ) const {
 			return to_string( );
 		}
 #endif
@@ -442,7 +442,6 @@ namespace daw {
 			return compare( *this, rhs );
 		}
 
-		template<size_t CapR>
 		constexpr int compare( basic_string_view<CharT> rhs ) const {
 			return compare( *this, rhs.data( ), rhs.size( ) );
 		}
