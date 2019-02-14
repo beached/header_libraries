@@ -23,6 +23,7 @@
 #pragma once
 
 #include <chrono>
+#include <functional>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -39,7 +40,7 @@ namespace daw {
 	double benchmark( F &&func ) {
 		static_assert( std::is_invocable_v<F>, "func must accept no arguments" );
 		auto start = std::chrono::high_resolution_clock::now( );
-		daw::invoke( std::forward<F>( func ) );
+		std::invoke( std::forward<F>( func ) );
 		auto finish = std::chrono::high_resolution_clock::now( );
 		std::chrono::duration<double> duration = finish - start;
 		return duration.count( );
@@ -329,9 +330,9 @@ namespace daw {
 	void expecting_exception( Expression &&expression,
 	                          Predicate &&pred = Predicate{} ) noexcept {
 		try {
-			daw::invoke( std::forward<Expression>( expression ) );
+			std::invoke( std::forward<Expression>( expression ) );
 		} catch( Exception const &ex ) {
-			if( daw::invoke( std::forward<Predicate>( pred ), ex ) ) {
+			if( std::invoke( std::forward<Predicate>( pred ), ex ) ) {
 				return;
 			}
 			std::cerr << "Failed predicate\n";
