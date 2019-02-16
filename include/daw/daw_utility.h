@@ -739,8 +739,7 @@ namespace daw {
 		constexpr auto operator( )( Args &&... args ) const
 		  noexcept( daw::is_nothrow_constructible_v<T, Args...> ) {
 
-			T result = {std::forward<Args>( args )...};
-			return result;
+			return T{std::forward<Args>( args )...};
 		}
 	};
 
@@ -751,8 +750,7 @@ namespace daw {
 		constexpr T operator( )( Args &&... args ) const
 		  noexcept( daw::is_nothrow_constructible_v<T, Args...> ) {
 
-			T result = {std::forward<Args>( args )...};
-			return result;
+			return T{std::forward<Args>( args )...};
 		}
 	};
 
