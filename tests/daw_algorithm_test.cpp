@@ -794,6 +794,24 @@ void daw_extract_to_001( ) {
 #endif
 }
 
+constexpr bool do_n_1_test( ) {
+	int n = 0;
+	daw::algorithm::do_n<100>( [&n] { ++n; } );
+	daw::expecting( 100, n );
+	return true;
+}
+static_assert( do_n_1_test( ) );
+
+constexpr bool do_n_2_test( ) {
+	int n = 0;
+	daw::algorithm::do_n( 100, [&n] { ++n; } );
+	daw::expecting( 100, n );
+	return true;
+}
+static_assert( do_n_2_test( ) );
+
+
+
 int main( ) {
 	daw_extract_to_001( );
 }

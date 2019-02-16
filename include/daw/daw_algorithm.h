@@ -2075,17 +2075,36 @@ namespace daw {
 
 		template<class InputIt, class UnaryPredicate>
 		constexpr bool all_of( InputIt first, InputIt last, UnaryPredicate &&p ) {
-			return find_if_not( first, last,
-			                         std::forward<UnaryPredicate>( p ) ) == last;
+			return find_if_not( first, last, std::forward<UnaryPredicate>( p ) ) ==
+			       last;
 		}
 
 		template<class InputIt, class UnaryPredicate>
-		constexpr bool any_of( InputIt first, InputIt last, UnaryPredicate && p ) {
+		constexpr bool any_of( InputIt first, InputIt last, UnaryPredicate &&p ) {
 			return find_if( first, last, std::forward<UnaryPredicate>( p ) ) != last;
 		}
 		template<class InputIt, class UnaryPredicate>
-		constexpr bool none_of( InputIt first, InputIt last, UnaryPredicate && p ) {
+		constexpr bool none_of( InputIt first, InputIt last, UnaryPredicate &&p ) {
 			return find_if( first, last, std::forward<UnaryPredicate>( p ) ) == last;
+		}
+
+		template<size_t count, typename Function, typename... Args>
+		constexpr void do_n( Function &&func, Args &&... args ) noexcept(
+		  std::is_nothrow_invocable_v<Function, Args...> ) {
+			daw::invoke( func, args... );
+			if constexpr( count > 1 ) {
+				do_n<count - 1>( std::forward<Function>( func ),
+				                 std::forward<Args>( args )... );
+			}
+		}
+
+		template<typename Function, typename... Args>
+		constexpr void
+		do_n( size_t count, Function &&func, Args &&... args ) noexcept(
+		  std::is_nothrow_invocable_v<Function, Args...> ) {
+			while( count-- > 0 ) {
+				daw::invoke( func, args... );
+			}
 		}
 	} // namespace algorithm
 } // namespace daw
