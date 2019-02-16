@@ -2088,14 +2088,22 @@ namespace daw {
 			return find_if( first, last, std::forward<UnaryPredicate>( p ) ) == last;
 		}
 
+		namespace algorithm_impl {
+			template<typename Function, typename... Args, size_t... Is>
+			constexpr void do_n(
+			  Function &&func, Args &&... args,
+			  std::index_sequence<
+			    Is...> ) noexcept( std::is_nothrow_invocable_v<Function, Args...> ) {
+				(void)( ( daw::invoke( func, args... ), Is ) + ... );
+			}
+		} // namespace algorithm_impl
+
 		template<size_t count, typename Function, typename... Args>
 		constexpr void do_n( Function &&func, Args &&... args ) noexcept(
 		  std::is_nothrow_invocable_v<Function, Args...> ) {
-			daw::invoke( func, args... );
-			if constexpr( count > 1 ) {
-				do_n<count - 1>( std::forward<Function>( func ),
-				                 std::forward<Args>( args )... );
-			}
+			algorithm_impl::do_n( std::forward<Function>( func ),
+			                      std::forward<Args>( args )...,
+			                      std::make_index_sequence<count>{} );
 		}
 
 		template<typename Function, typename... Args>
