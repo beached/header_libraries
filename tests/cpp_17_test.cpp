@@ -190,6 +190,9 @@ namespace decay_copy_001 {
 	               "Results should be the same, double" );
 } // namespace decay_copy_001
 
+static_assert( daw::any_true_v<false, false, true> );
+static_assert( !daw::any_true_v<false, false, false> );
+
 int main( ) {
 	bit_cast_001( );
 	bit_cast_002( );

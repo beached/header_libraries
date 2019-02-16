@@ -227,16 +227,9 @@ namespace daw {
 	inline constexpr bool all_true_v = all_true<values...>::value;
 
 	namespace impl {
-		template<bool value>
+		template<bool... values>
 		constexpr bool any_true( ) noexcept {
-			return value;
-		}
-
-		template<bool value, bool... values,
-		         daw::enable_if_t<( sizeof...( values ) > 0 )> = nullptr>
-		constexpr bool any_true( ) noexcept {
-
-			return value or any_true<values...>( );
+			return (static_cast<bool>( values ) or ...);
 		}
 	} // namespace impl
 

@@ -165,10 +165,10 @@ namespace daw {
 			Result operator( )( FuncArgs... args ) override {
 				daw::exception::precondition_check<std::bad_function_call>( !empty( ) );
 				if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
-					// std::invoke( m_func, daw::move( args )... );
+					// daw::invoke( m_func, daw::move( args )... );
 					m_func( args... );
 				} else {
-					// return std::invoke( m_func, daw::move( args )... );
+					// return daw::invoke( m_func, daw::move( args )... );
 					return m_func( args... );
 				}
 			}
@@ -176,10 +176,10 @@ namespace daw {
 			Result operator( )( FuncArgs... args ) const override {
 				daw::exception::precondition_check<std::bad_function_call>( !empty( ) );
 				if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
-					// std::invoke( m_func, daw::move( args )... );
+					// daw::invoke( m_func, daw::move( args )... );
 					m_func( args... );
 				} else {
-					// return std::invoke( m_func, daw::move( args )... );
+					// return daw::invoke( m_func, daw::move( args )... );
 					return m_func( args... );
 				}
 			}

@@ -92,16 +92,9 @@ namespace daw {
 
 		template<char... vals>
 		class char_in_t {
-			template<char check_val>
+			template<char check_val, char... check_vals>
 			constexpr bool check( char const c ) const noexcept {
-				return c == check_val;
-			}
-
-			template<char check_val, char... check_vals,
-			         std::enable_if_t<( sizeof...( check_vals ) != 0 ),
-			                          std::nullptr_t> = nullptr>
-			constexpr bool check( char const c ) const noexcept {
-				return c == check_val or check<check_vals...>( c );
+				return ( c == check_val ) or ( ( c == check_vals ) or ... );
 			}
 
 		public:
