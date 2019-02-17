@@ -607,6 +607,10 @@ namespace daw {
 			return rfind( basic_string_view{s}, pos );
 		}
 
+		/// Find the first item in v that is in string
+		/// \param v A range of characters to look for
+		/// \param pos Starting position to start searching
+		/// \return position of first item in v or npos
 		constexpr size_type find_first_of( basic_string_view const v,
 		                                   size_type const pos = 0 ) const
 		  noexcept {
