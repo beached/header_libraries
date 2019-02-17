@@ -2094,14 +2094,18 @@ namespace daw {
 			  Function &&func, Args &&... args,
 			  std::index_sequence<
 			    Is...> ) noexcept( std::is_nothrow_invocable_v<Function, Args...> ) {
-				(void)( ( daw::invoke( func, args... ), Is ) + ... );
+				if constexpr( sizeof...( Is ) > 0 ) {
+					(void)( ( daw::invoke( func, args... ), Is ) + ... );
+				}
 			}
 
 			template<typename Function, size_t... Is>
 			constexpr void
 			do_n_arg( Function &&func, std::index_sequence<Is...> ) noexcept(
-			  std::is_nothrow_invocable_v<Function, size_t> ) {
-				(void)( ( daw::invoke( func, Is ), 0 ) + ... );
+				if constexpr( sizeof...( Is ) > 0 ) {
+				std::is_nothrow_invocable_v<Function, size_t> ) {
+					(void)( ( daw::invoke( func, Is ), 0 ) + ... );
+				}
 			}
 
 		} // namespace algorithm_impl
