@@ -43,20 +43,16 @@ namespace daw {
 		using difference_type = intmax_t;
 
 	private:
-		size_t m_index;
-		size_t m_first;
-		daw::bounded_array_t<T, N> m_stack;
+		size_t m_index = 0;
+		size_t m_first = 0;
+		daw::bounded_array_t<T, N> m_stack{};
 
 	public:
-		constexpr bounded_vector_t( ) noexcept
-		  : m_index{0}
-		  , m_first{0}
-		  , m_stack{} {}
+		constexpr bounded_vector_t( ) noexcept = default;
 
 		constexpr bounded_vector_t( const_pointer ptr, size_type count ) noexcept
-		  : m_index{daw::min( count, N )}
-		  , m_first{0}
-		  , m_stack{} {
+		  : m_index{daw::min( count, N )} {
+
 			daw::algorithm::copy_n( ptr, m_stack.begin( ), daw::min( count, N ) );
 		}
 
