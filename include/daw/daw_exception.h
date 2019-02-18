@@ -85,7 +85,7 @@ namespace daw {
 		[[noreturn]] void daw_throw( ) {
 #if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
   defined( _CPPUNWIND )
-			throw ExceptionType( );
+			throw ExceptionType{};
 #else
 			std::terminate( );
 #endif
