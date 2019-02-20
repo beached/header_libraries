@@ -80,6 +80,7 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_parser_helper
 	daw_parser_helper_sv
 	daw_piecewise_factory
+	daw_poly_value
 	daw_poly_vector
 	daw_random
 	daw_read_file

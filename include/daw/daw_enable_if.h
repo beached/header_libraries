@@ -31,8 +31,8 @@ namespace daw {
 	struct enable_if<true> {
 		using type = std::nullptr_t;
 	};
-	
-	template<bool B>
-	using enable_if_t = typename enable_if<B>::type;
+
+	template<bool... B>
+	using enable_if_t = typename enable_if<( B and ... )>::type;
 } // namespace daw
 
