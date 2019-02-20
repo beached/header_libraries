@@ -31,7 +31,7 @@
 
 namespace daw {
 	namespace poly_value_impl {
-		template<typename BaseClass, typename Child>
+		template<typename BaseClass, typename Child = BaseClass>
 		std::function<
 		  std::unique_ptr<BaseClass>( std::unique_ptr<BaseClass> const &rhs )>
 		make_copier( ) {
@@ -73,7 +73,10 @@ namespace daw {
 		  : m_ptr( std::make_unique<T>( std::forward<Args>( args )... ) )
 		  , m_copier( poly_value_impl::make_copier<BaseClass, T>( ) ) {}
 
-		poly_value( ) = default;
+		poly_value( )
+		  : m_ptr( std::make_unique<BaseClass>( ) )
+		  , m_copier( poly_value_impl::make_copier<BaseClass>( ) ) {}
+
 		poly_value( poly_value && ) noexcept = default;
 		poly_value &operator=( poly_value && ) noexcept = default;
 		~poly_value( ) noexcept = default;
@@ -156,4 +159,3 @@ namespace daw {
 		return {construct_emplace<ChildClass>, std::forward<Args>( args )...};
 	}
 } // namespace daw
-

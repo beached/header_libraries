@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 #include "daw/daw_poly_value.h"
+#include "daw/daw_benchmark.h"
 
 struct Base {
 	Base( ) = default;
@@ -43,5 +44,9 @@ struct Child: Base {
 int main( ) {
 	auto v0 = daw::poly_value<Base>( );
 	auto v1 = daw::poly_value<Base>( daw::construct_emplace<Child> );
+	daw::expecting( 'B', v0->get( ) );
+	daw::expecting( 'C', v1->get( ) );
+	v0 = v1;
+	daw::expecting( 'C', v0->get( ) );
 }
 
