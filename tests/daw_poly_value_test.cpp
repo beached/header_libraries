@@ -66,12 +66,20 @@ char func2( Base b ) {
 	return b.get( );
 }
 
-char func3( Base & b ) {
+char func3( Base &b ) {
 	return b.get( );
 }
 
-char func4( Base const & b ) {
+char func4( Base const &b ) {
 	return b.get( );
+}
+
+char func5( Base *b ) {
+	return b->get( );
+}
+
+char func6( Base const *b ) {
+	return b->get( );
 }
 
 int main( ) {
@@ -100,8 +108,10 @@ int main( ) {
 	Child c{};
 	daw::expecting( 'B', func( b ) );
 	daw::expecting( 'C', func( c ) );
-
-	daw::expecting( 'C', func2( v3 ) );
+	auto v4 = daw::poly_value<Base>( );
+	daw::expecting( 'B', func2( v4 ) );
 	daw::expecting( 'C', func3( v3 ) );
 	daw::expecting( 'C', func4( v3 ) );
+	daw::expecting( 'C', func5( v3 ) );
+	daw::expecting( 'C', func6( v3 ) );
 }

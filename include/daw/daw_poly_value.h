@@ -169,7 +169,7 @@ namespace daw {
 		}
 
 		operator BaseClass *( ) noexcept {
-			return static_cast<BaseClass const *>( m_ptr.get( ) );
+			return static_cast<BaseClass *>( m_ptr.get( ) );
 		}
 	};
 
