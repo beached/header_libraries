@@ -163,6 +163,14 @@ namespace daw {
 		operator BaseClass &&( ) && noexcept {
 			return *m_ptr;
 		}
+
+		operator BaseClass const *( ) const noexcept {
+			return static_cast<BaseClass const *>( m_ptr.get( ) );
+		}
+
+		operator BaseClass *( ) noexcept {
+			return static_cast<BaseClass const *>( m_ptr.get( ) );
+		}
 	};
 
 	template<typename BaseClass, typename ChildClass = BaseClass,
