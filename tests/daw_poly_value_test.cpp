@@ -62,6 +62,18 @@ char func( daw::poly_value<Base> const &p ) {
 	return p->get( );
 }
 
+char func2( Base b ) {
+	return b.get( );
+}
+
+char func3( Base & b ) {
+	return b.get( );
+}
+
+char func4( Base const & b ) {
+	return b.get( );
+}
+
 int main( ) {
 	auto v0 = daw::poly_value<Base>( );
 	auto v1 = daw::poly_value<Base>( daw::construct_emplace<Child> );
@@ -88,4 +100,9 @@ int main( ) {
 	Child c{};
 	daw::expecting( 'B', func( b ) );
 	daw::expecting( 'C', func( c ) );
+
+	auto v4 = daw::poly_value<Base>( );
+	daw::expecting( 'C', func2( v4 ) );
+	daw::expecting( 'C', func3( v3 ) );
+	daw::expecting( 'C', func4( v3 ) );
 }

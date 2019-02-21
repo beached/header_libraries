@@ -24,15 +24,17 @@
 #include <cstddef>
 
 namespace daw {
-	template<bool>
-	struct enable_if {};
+	namespace enable_if_impl {
+		template<bool>
+		struct enable_if {
+		};
 
-	template<>
-	struct enable_if<true> {
-		using type = std::nullptr_t;
-	};
-
+		template<>
+		struct enable_if<true> {
+			using type = std::nullptr_t;
+		};
+	}
 	template<bool... B>
-	using enable_if_t = typename enable_if<( B and ... )>::type;
+	using enable_if_t = typename enable_if_impl::enable_if<( B and ... )>::type;
 } // namespace daw
 

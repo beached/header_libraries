@@ -152,27 +152,16 @@ namespace daw {
 			return m_ptr.get( );
 		}
 
-		template<typename B, daw::enable_if<std::is_base_of_v<
-		                       BaseClass, daw::remove_cvref_t<B>>> = nullptr>
-		operator poly_value<B>( ) const {
-			return *this;
+		operator BaseClass &( ) & noexcept {
+			return *m_ptr;
 		}
 
-		template<typename B, daw::enable_if<std::is_base_of_v<
-		                       BaseClass, daw::remove_cvref_t<B>>> = nullptr>
-		operator B const &( ) const & {
-			return *this;
-		}
-		template<typename B, daw::enable_if<std::is_base_of_v<
-		                       BaseClass, daw::remove_cvref_t<B>>> = nullptr>
-		operator B &( ) & {
-			return *this;
+		operator BaseClass const &( ) const & noexcept {
+			return *m_ptr;
 		}
 
-		template<typename B, daw::enable_if<std::is_base_of_v<
-		                       BaseClass, daw::remove_cvref_t<B>>> = nullptr>
-		operator B &&( ) && {
-			return *this;
+		operator BaseClass &&( ) && noexcept {
+			return *m_ptr;
 		}
 	};
 
