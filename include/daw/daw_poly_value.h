@@ -151,6 +151,11 @@ namespace daw {
 		BaseClass *operator->( ) {
 			return m_ptr.get( );
 		}
+
+		template<typename B>
+		operator poly_value<B>( ) const {
+			return *this;
+		}
 	};
 
 	template<typename BaseClass, typename ChildClass = BaseClass,

@@ -52,10 +52,15 @@ struct Child2 : Base {
 	Child2( Child2 && ) = default;
 	Child2 &operator=( Child2 const & ) = default;
 	Child2 &operator=( Child2 && ) = default;
-	~Child2( ) {
-		*ptr = true;
-	}
+	~Child2( );
 };
+Child2::~Child2( ) {
+	*ptr = true;
+}
+
+char func( daw::poly_value<Base> const &p ) {
+	return p->get( );
+}
 
 int main( ) {
 	auto v0 = daw::poly_value<Base>( );
@@ -70,4 +75,17 @@ int main( ) {
 		auto v2 = daw::poly_value<Base>( ptr );
 	}
 	daw::expecting( destructed );
+
+	daw::expecting( 'C', func( v0 ) );
+
+	auto v3 = daw::poly_value<Child>( );
+	daw::expecting( 'C', func( v0 ) );
+
+	daw::expecting( 'B', func( new Base( ) ) );
+	daw::expecting( 'C', func( new Child( ) ) );
+
+	Base b{};
+	Child c{};
+	daw::expecting( 'B', func( b ) );
+	daw::expecting( 'C', func( c ) );
 }
