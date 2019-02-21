@@ -101,8 +101,7 @@ int main( ) {
 	daw::expecting( 'B', func( b ) );
 	daw::expecting( 'C', func( c ) );
 
-	auto v4 = daw::poly_value<Base>( );
-	daw::expecting( 'C', func2( v4 ) );
+	daw::expecting( 'C', func2( v3 ) );
 	daw::expecting( 'C', func3( v3 ) );
 	daw::expecting( 'C', func4( v3 ) );
 }
