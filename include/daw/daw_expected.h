@@ -306,7 +306,7 @@ namespace daw {
 		std::variant<std::exception_ptr, value_type> m_value =
 		  std::exception_ptr{nullptr};
 
-		expected_t( bool b )
+		expected_t( bool )
 		  : m_value( value_type{} ) {}
 
 	public:

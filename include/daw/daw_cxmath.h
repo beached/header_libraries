@@ -24,6 +24,7 @@
 
 #include <cstdint>
 #include <limits>
+#include <optional>
 
 #include "daw_do_n.h"
 #include "daw_enable_if.h"
@@ -200,6 +201,36 @@ namespace daw {
 				        f};
 			}
 
+			constexpr std::optional<int16_t> fexp( float const f ) noexcept {
+				// Once c++20 use bit_cast
+				if( f == 0.0f ) {
+					return 0;
+				} else if( f > std::numeric_limits<float>::max( ) ) {
+					return std::nullopt;
+				} else if( f < -std::numeric_limits<float>::max( ) ) {
+					return std::nullopt;
+				} else if( f != f ) {
+					return std::nullopt;
+				}
+				int32_t exponent = 254;
+				float abs_f = f < 0 ? -f : f;
+
+				while( abs_f < 0x1p87f ) {
+					abs_f *= 0x1p41f;
+					exponent -= 41;
+				}
+
+				auto const a = static_cast<uint64_t>( abs_f * 0x1p-64f );
+				auto lz = static_cast<int32_t>( count_leading_zeroes( a ) );
+				exponent -= lz;
+
+				if( exponent >= 0 ) {
+					return exponent - 127;
+				}
+				// return -127;
+				return {};
+			}
+
 			constexpr float setxp( float X, int16_t exponent ) noexcept {
 				auto const bit_parts = bits( X );
 				auto const exp_diff = exponent - ( bit_parts.exponent( ) );
@@ -214,13 +245,13 @@ namespace daw {
 		         daw::enable_if_t<std::is_integral_v<Integer>> = nullptr>
 		constexpr bool is_odd( Integer i ) noexcept {
 			return ( static_cast<uint32_t>( i ) & 1U ) == 1U;
-		};
+		}
 
 		template<typename Integer,
 		         daw::enable_if_t<std::is_integral_v<Integer>> = nullptr>
 		constexpr bool is_even( Integer i ) noexcept {
 			return ( static_cast<uint32_t>( i ) & 1U ) == 0U;
-		};
+		}
 
 		template<typename Float,
 		         daw::enable_if_t<std::is_floating_point_v<Float>> = nullptr>
@@ -241,16 +272,14 @@ namespace daw {
 
 		constexpr float sqrt( float const x ) noexcept {
 			size_t const iterations = 3;
-			auto const parts = math_impl::bits( x );
-			if( parts.is_negative( ) ) {
+			if( x < 0.0f ) {
 				return std::numeric_limits<float>::quiet_NaN( );
 			}
-			switch( parts.raw_value( ) ) {
-			case math_impl::float_parts_t::PosInf:
-			case math_impl::float_parts_t::NaN:
+			auto const exp = math_impl::fexp( x );
+			if( !exp ) {
 				return x;
 			}
-			auto const N = parts.exponent( );
+			auto const N = *exp;
 			auto const f = math_impl::setxp( x, 0 );
 
 			if( is_odd( N ) ) {

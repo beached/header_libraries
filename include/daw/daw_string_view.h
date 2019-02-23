@@ -129,7 +129,7 @@ namespace daw {
 		template<size_t N>
 		constexpr basic_string_view( CharT const ( &cstr )[N] ) noexcept
 		  : m_first( cstr )
-		  , m_size( N - 1 ){};
+		  , m_size( N - 1 ){}
 
 #ifndef NOSTRING
 		template<typename Allocator>
@@ -179,7 +179,7 @@ namespace daw {
 		                   std::nullptr_t> = nullptr>
 		constexpr operator basic_string_view<CharT, Tr, Ex>( ) noexcept {
 			return {m_first, m_size};
-		};
+		}
 
 #ifndef NOSTRING
 		operator std::basic_string<CharT, Traits>( ) const {

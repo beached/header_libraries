@@ -209,8 +209,8 @@ namespace daw {
 		  decltype( std::declval<T>( ).fn( std::declval<Args>( )... ) );           \
 	}                                                                            \
 	template<typename T, typename... Args>                                       \
-	constexpr bool name##_v = is_detected_v<impl::name, T, Args...>;             \
-	// END METHOD_CHECKER_ANY
+	constexpr bool name##_v =                                                    \
+	  is_detected_v<impl::name, T, Args...> // END METHOD_CHECKER_ANY
 
 		// decltype( std::declval<typename T::MemberName>( ) );
 #define HAS_STATIC_TYPE_MEMBER( MemberName )                                   \
@@ -220,7 +220,7 @@ namespace daw {
 	}                                                                            \
 	template<typename T>                                                         \
 	constexpr bool has_##MemberName##_member_v =                                 \
-	  is_detected_v<detectors::MemberName##_member, T>;
+	  is_detected_v<detectors::MemberName##_member, T>
 
 		HAS_STATIC_TYPE_MEMBER( type );
 		HAS_STATIC_TYPE_MEMBER( value_type );
@@ -276,7 +276,7 @@ namespace daw {
 #define GENERATE_IS_STD_CONTAINER1( ContainerName )                            \
 	template<typename T>                                                         \
 	constexpr bool is_##ContainerName##_v =                                      \
-	  is_same_v<T, std::ContainerName<typename T::value_type>>;
+	  is_same_v<T, std::ContainerName<typename T::value_type>>
 
 		GENERATE_IS_STD_CONTAINER1( vector );
 		GENERATE_IS_STD_CONTAINER1( list );
@@ -289,7 +289,7 @@ namespace daw {
 #define GENERATE_IS_STD_CONTAINER2( ContainerName )                            \
 	template<typename T>                                                         \
 	constexpr bool is_##ContainerName##_v = is_same_v<                           \
-	  T, std::ContainerName<typename T::key_type, typename T::mapped_type>>;
+	  T, std::ContainerName<typename T::key_type, typename T::mapped_type>>
 
 		GENERATE_IS_STD_CONTAINER2( map );
 		GENERATE_IS_STD_CONTAINER2( unordered_map );

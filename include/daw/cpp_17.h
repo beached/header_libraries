@@ -699,6 +699,17 @@ namespace daw {
 		return bit_cast<To>( *from );
 	}
 
+	template<typename T, typename Iterator, typename Function>
+	void bit_cast_for_each(
+	  Iterator first, Iterator last,
+	  Function &&func ) noexcept( noexcept( func( std::declval<T>( ) ) ) ) {
+
+		while( first != last ) {
+			daw::invoke( func, bit_cast<T>( *first ) );
+			++first;
+		}
+	}
+
 	template<typename...>
 	struct disjunction : std::false_type {};
 

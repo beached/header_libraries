@@ -80,12 +80,22 @@ int main( ) {
 	auto const nums =
 	  daw::make_random_data<int32_t, std::vector<float>>( 1'000, -1'000, 1'000 );
 
-
-		daw::bench_n_test<100'000>( "daw::math::math_impl::bits",
+	daw::bench_n_test<100'000>(
+	  "daw::math::math_impl::bits",
+	  []( auto &&floats ) {
+		  float sum = 0.0f;
+		  for( auto num : floats ) {
+			  sum += daw::math::math_impl::bits( num ).raw_value( );
+		  }
+		  daw::do_not_optimize( sum );
+		  return sum;
+	  },
+	  nums );
+	daw::bench_n_test<100'000>( "daw::math::math_impl::fexp",
 	                            []( auto &&floats ) {
-		                            float sum = 0.0f;
+		                            intmax_t sum = 0.0f;
 		                            for( auto num : floats ) {
-			                            sum += daw::math::math_impl::bits( num ).raw_value( );
+			                            sum += *daw::math::math_impl::fexp( num );
 		                            }
 		                            daw::do_not_optimize( sum );
 		                            return sum;
