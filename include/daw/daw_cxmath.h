@@ -26,6 +26,7 @@
 #include <limits>
 
 #include "daw_do_n.h"
+#include "daw_enable_if.h"
 
 namespace daw {
 	namespace math {
@@ -71,16 +72,41 @@ namespace daw {
 				return result;
 			}
 
-			struct float_parts_t {
-				uint32_t raw_value{};
-				float float_value{};
+			class float_parts_t {
+				uint32_t m_raw_value{};
+				float m_float_value{};
 
-				constexpr bool sign( ) const noexcept {
-					return ( raw_value >> 31U ) == 0U; // (-1)^S  0=pos, 1=neg
+			public:
+				static constexpr uint32_t const PosInf = 0x7F80'0000;
+				static constexpr uint32_t const NegInf = 0xFF80'0000;
+				static constexpr uint32_t const NaN = 0x7FC0'0000;
+
+				constexpr float_parts_t( uint32_t i, float f ) noexcept
+				  : m_raw_value( i )
+				  , m_float_value( f ) {}
+
+				constexpr uint32_t raw_value( ) const noexcept {
+					return m_raw_value;
+				}
+
+				constexpr uint32_t float_value( ) const noexcept {
+					return m_float_value;
+				}
+
+				constexpr bool sign_bit( ) const noexcept {
+					return ( m_raw_value >> 31U ) == 0U; // (-1)^S  0=pos, 1=neg
+				}
+
+				constexpr bool is_positive( ) const noexcept {
+					return sign_bit( );
+				}
+
+				constexpr bool is_negative( ) const noexcept {
+					return !sign_bit( );
 				}
 
 				constexpr uint8_t raw_exponent( ) const noexcept {
-					return ( 0b01111111100000000000000000000000 & raw_value ) >> 23U;
+					return ( 0b01111111100000000000000000000000 & m_raw_value ) >> 23U;
 				}
 
 				constexpr int16_t exponent( ) const noexcept {
@@ -89,19 +115,35 @@ namespace daw {
 				}
 
 				constexpr uint32_t raw_significand( ) const noexcept {
-					return 0b00000000011111111111111111111111 & raw_value;
+					return 0b00000000011111111111111111111111 & m_raw_value;
 				}
 
 				constexpr float significand( ) const noexcept {
-					float result = float_value;
-					if( float_value < 0.0f ) {
+					float result = m_float_value;
+					if( m_float_value < 0.0f ) {
 						result = -result;
 					}
 					auto const e = exponent( );
 					if( e < 0 ) {
-						return result * pow( 2.0f, -e );
+						return result * ::daw::math::math_impl::pow( 2.0f, -e );
 					}
-					return result / pow( 2.0f, -e );
+					return result / ::daw::math::math_impl::pow( 2.0f, -e );
+				}
+
+				constexpr bool is_pos_inf( ) const noexcept {
+					return m_raw_value == PosInf;
+				}
+
+				constexpr bool is_neg_inf( ) const noexcept {
+					return m_raw_value == NegInf;
+				}
+
+				constexpr bool is_inf( ) const noexcept {
+					return is_pos_inf( ) or is_neg_inf( );
+				}
+
+				constexpr bool is_nan( ) const noexcept {
+					return m_raw_value == NaN;
 				}
 			};
 
@@ -150,13 +192,25 @@ namespace daw {
 			}
 		} // namespace math_impl
 
+		template<typename Number, daw::enable_if_t<std::is_arithmetic_v<Number>> = nullptr>
+		constexpr Number abs( Number n ) noexcept {
+			if( n < 0 ) {
+				return -n;
+			}
+			return n;
+		};
+
 		constexpr float sqrt( float x ) noexcept {
 			size_t const iterations = 3;
-			if( x <= 0 ) {
-				if( x == 0 ) {
-					return 0.0f;
-				}
+			auto const parts = math_impl::bits( x );
+			if( parts.is_negative( ) ) {
 				return std::numeric_limits<float>::quiet_NaN( );
+			}
+			switch( parts.raw_value( ) ) {
+			case math_impl::float_parts_t::PosInf:
+			case math_impl::float_parts_t::NegInf:
+			case math_impl::float_parts_t::NaN:
+				return x;
 			}
 			auto N = math_impl::bits( x ).exponent( );
 			auto f = math_impl::setxp( x, 0 );
@@ -165,7 +219,7 @@ namespace daw {
 			daw::algorithm::do_n<iterations>(
 			  [&]( ) { y = 0.5f * ( y + ( f / y ) ); } );
 
-			if( N % 2 == 1 ) {
+			if( abs( N ) % 2 == 1 ) {
 				y = y * math_impl::sqrt0_5<float>;
 				++N;
 			}

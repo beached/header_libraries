@@ -3,14 +3,14 @@
 // Copyright (c) 2019 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -26,23 +26,31 @@
 
 #include "daw/daw_cxmath.h"
 
-static_assert( daw::math::math_impl::bits( 2.0f ).raw_value == 0x4000'0000U );
-static_assert( daw::math::math_impl::bits( 234324.34375f ).raw_value == 0x4864'd516U );
-static_assert( daw::math::math_impl::bits( -1.99999988079071044921875f ).raw_value ==  0xbfff'ffffU );
-static_assert( daw::math::math_impl::bits( 0.0f ).raw_value == 0x0000'0000U );
+static_assert( daw::math::math_impl::bits( 2.0f ).raw_value( ) ==
+               0x4000'0000U );
+static_assert( daw::math::math_impl::bits( 234324.34375f ).raw_value( ) ==
+               0x4864'd516U );
+static_assert( daw::math::math_impl::bits( -1.99999988079071044921875f )
+                 .raw_value( ) == 0xbfff'ffffU );
+static_assert( daw::math::math_impl::bits( 0.0f ).raw_value( ) ==
+               0x0000'0000U );
 
 static_assert( daw::math::sqrt( 4.0f ) == 2.0f );
 
+void out_sqrt( float f ) {
+	std::cout.precision( std::numeric_limits<float>::max_digits10 );
+	std::cout << daw::math::sqrt( f ) << ' ' << std::sqrt( f ) << '\n';
+}
+
 int main( ) {
 	std::cout.precision( std::numeric_limits<float>::max_digits10 );
-	float f;
-	f = -1.0f; std::cout.precision( std::numeric_limits<float>::max_digits10 ); std::cout << daw::math::sqrt( f ) << ' ' << std::sqrt( f ) <<  '\n';
-	f = 0; std::cout.precision( std::numeric_limits<float>::max_digits10 ); std::cout << daw::math::sqrt( f ) << ' ' << std::sqrt( f ) <<  '\n';
-	f = 1.0f; std::cout.precision( std::numeric_limits<float>::max_digits10 ); std::cout << daw::math::sqrt( f ) << ' ' << std::sqrt( f ) <<  '\n';
-	f = 2.0f; std::cout.precision( std::numeric_limits<float>::max_digits10 ); std::cout << daw::math::sqrt( f ) << ' ' << std::sqrt( f ) <<  '\n';
-	f = 3.0f; std::cout.precision( std::numeric_limits<float>::max_digits10 ); std::cout << daw::math::sqrt( f ) << ' ' << std::sqrt( f ) <<  '\n';
-	f = 4.0f; std::cout.precision( std::numeric_limits<float>::max_digits10 ); std::cout << daw::math::sqrt( f ) << ' ' << std::sqrt( f ) <<  '\n';
-	f = 5.0f; std::cout.precision( std::numeric_limits<float>::max_digits10 ); std::cout << daw::math::sqrt( f ) << ' ' << std::sqrt( f ) <<  '\n';
-	f = 100.0f; std::cout.precision( std::numeric_limits<float>::max_digits10 ); std::cout << daw::math::sqrt( f ) << ' ' << std::sqrt( f ) <<  '\n';
+	out_sqrt( -1.0f );
+	out_sqrt( 0.1f );
+	out_sqrt( 0.01f );
+	out_sqrt( 2.0f );
+	out_sqrt( 3.0f );
+	out_sqrt( 4.0f );
+	out_sqrt( 5.0f );
+	out_sqrt( 100.0f );
 	return 0;
 }
