@@ -56,7 +56,7 @@ namespace daw {
 				v |= v >> 32;
 				v = ( v >> 1 ) + 1;
 
-				return 63 - bit_position[( v * 0x0218a392cd3d5dbf ) >> 58]; // [3]
+				return 63U - bit_position[( v * 0x021'8a39'2cd3'd5dbf ) >> 58U]; // [3]
 			}
 
 			constexpr float pow( float b, int32_t exp ) noexcept {
@@ -106,7 +106,7 @@ namespace daw {
 				}
 
 				constexpr uint8_t raw_exponent( ) const noexcept {
-					return ( 0b01111111100000000000000000000000 & m_raw_value ) >> 23U;
+					return ( 0b0111'1111'1000'0000'0000'0000'0000'0000 & m_raw_value ) >> 23U;
 				}
 
 				constexpr int16_t exponent( ) const noexcept {
@@ -115,7 +115,7 @@ namespace daw {
 				}
 
 				constexpr uint32_t raw_significand( ) const noexcept {
-					return 0b00000000011111111111111111111111 & m_raw_value;
+					return 0b0000'0000'0111'1111'1111'1111'1111'1111 & m_raw_value;
 				}
 
 				constexpr float significand( ) const noexcept {
@@ -154,13 +154,13 @@ namespace daw {
 					return {0, f}; // also matches -0.0f and gives wrong result
 				} else if( f > std::numeric_limits<float>::max( ) ) {
 					// infinity
-					return {0x7f800000, f};
+					return {0x7f80'0000, f};
 				} else if( f < -std::numeric_limits<float>::max( ) ) {
 					// negative infinity
 					return {0xff800000, f};
 				} else if( f != f ) {
 					// NaN
-					return {0x7fc00000, f};
+					return {0x7fc0'0000, f};
 				}
 				bool sign = f < 0.0f;
 				float abs_f = sign ? -f : f;
