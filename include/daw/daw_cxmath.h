@@ -282,10 +282,15 @@ namespace daw {
 				return x;
 			}
 			auto const N = *exp;
+			if( x == std::numeric_limits<float>::min( ) or
+			    x == std::numeric_limits<float>::max( ) ) {
+				return fexp2( 1.0f, N / 2 );
+			}
 			auto const f = fexp2( x, 0 );
 
 			if( is_odd( N ) ) {
-				auto const y = math_impl::sqrt_newt<iterations>( f ) / math_impl::sqrt2<float>;
+				auto const y =
+				  math_impl::sqrt_newt<iterations>( f ) / math_impl::sqrt2<float>;
 				return y * fpow2( ( N + 1 ) / 2 );
 			}
 			return math_impl::sqrt_newt<iterations>( f ) * fpow2( N / 2 );
