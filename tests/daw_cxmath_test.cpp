@@ -39,12 +39,13 @@ static_assert( daw::math::sqrt( 4.0f ) == 2.0f );
 
 void out_sqrt( float f ) {
 	auto result = daw::math::sqrt( f );
-	auto diff = f - ( result * result );
+	auto E = ( daw::math::sqrt( f * f ) - f ) / f;
 	auto cm = std::sqrt( f );
-	auto diff2 = f - ( cm * cm );
+	auto E2 = ( std::sqrt( f * f ) - f ) / f;
+
 	std::cout.precision( std::numeric_limits<float>::max_digits10 );
-	std::cout << f << "-> (" << result << ", " << cm << ") diff: (" << diff
-	          << ", " << diff2 << ")\n";
+	std::cout << f << "-> (" << result << ", " << cm << ") E: (" << E << ", "
+	          << E2 << ")\n";
 }
 
 int main( ) {
