@@ -39,7 +39,8 @@ static_assert( daw::math::sqrt( 4.0f ) == 2.0f );
 
 void out_sqrt( float f ) {
 	std::cout.precision( std::numeric_limits<float>::max_digits10 );
-	std::cout << daw::math::sqrt( f ) << ' ' << std::sqrt( f ) << '\n';
+	std::cout << f << ' ' << daw::math::sqrt( f ) << ' ' << std::sqrt( f )
+	          << '\n';
 }
 
 int main( ) {
@@ -51,6 +52,11 @@ int main( ) {
 	out_sqrt( 3.0f );
 	out_sqrt( 4.0f );
 	out_sqrt( 5.0f );
+	out_sqrt( 27.0f );
+	out_sqrt( 64.0f );
 	out_sqrt( 100.0f );
+	out_sqrt( std::numeric_limits<float>::infinity( ) );
+	out_sqrt( -std::numeric_limits<float>::infinity( ) );
+	out_sqrt( std::numeric_limits<float>::quiet_NaN( ) );
 	return 0;
 }

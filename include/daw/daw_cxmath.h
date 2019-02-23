@@ -89,7 +89,7 @@ namespace daw {
 					return m_raw_value;
 				}
 
-				constexpr uint32_t float_value( ) const noexcept {
+				constexpr float float_value( ) const noexcept {
 					return m_float_value;
 				}
 
@@ -152,11 +152,14 @@ namespace daw {
 				if( f == 0.0f ) {
 					return {0, f}; // also matches -0.0f and gives wrong result
 				} else if( f > std::numeric_limits<float>::max( ) ) {
+					// infinity
 					return {0x7f800000, f};
 				} else if( f < -std::numeric_limits<float>::max( ) ) {
+					// negative infinity
 					return {0xff800000, f};
-				} else if( f != f ) {     // NaN
-					return {0x7fc00000, f}; // This is my NaN...
+				} else if( f != f ) {
+					// NaN
+					return {0x7fc00000, f};
 				}
 				bool sign = f < 0.0f;
 				float abs_f = sign ? -f : f;
@@ -192,8 +195,26 @@ namespace daw {
 			}
 		} // namespace math_impl
 
-		template<typename Number, daw::enable_if_t<std::is_arithmetic_v<Number>> = nullptr>
-		constexpr Number abs( Number n ) noexcept {
+		template<typename Float,
+		         daw::enable_if_t<std::is_floating_point_v<Float>> = nullptr>
+		constexpr Float abs( Float f ) noexcept {
+			if( f < 0.0f ) {
+				return -f;
+			}
+			return f;
+		}
+
+		template<typename Unsigned,
+		         daw::enable_if_t<std::is_integral_v<Unsigned>,
+		                          !std::is_signed_v<Unsigned>> = nullptr>
+		constexpr Unsigned abs( Unsigned n ) noexcept {
+			return n;
+		};
+
+		template<typename Signed,
+		         daw::enable_if_t<std::is_integral_v<Signed>,
+		                          std::is_signed_v<Signed>> = nullptr>
+		constexpr Signed abs( Signed n ) noexcept {
 			if( n < 0 ) {
 				return -n;
 			}
@@ -208,7 +229,6 @@ namespace daw {
 			}
 			switch( parts.raw_value( ) ) {
 			case math_impl::float_parts_t::PosInf:
-			case math_impl::float_parts_t::NegInf:
 			case math_impl::float_parts_t::NaN:
 				return x;
 			}
