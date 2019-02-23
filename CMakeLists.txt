@@ -13,11 +13,11 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL 'MSVC' )
 	add_definitions( -DNOMINMAX -DD_WIN32_WINNT=0x0601 )
 else( )
 	if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang" )
-		add_compile_options( -march=native -fconstexpr-steps=10271242 -pthread -Weverything -Wno-c++98-compat -Wno-deprecated-declarations -Wno-covered-switch-default -Wno-padded -Wno-exit-time-destructors -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-missing-noreturn -Wno-missing-prototypes -Wno-disabled-macro-expansion -Wno-missing-braces -Wno-extra-semi)
+		add_compile_options( -march=native -fconstexpr-steps=10271242 -pthread -Wall -Wextra -pedantic -Weverything -Wno-c++98-compat -Wno-deprecated-declarations -Wno-covered-switch-default -Wno-padded -Wno-exit-time-destructors -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-missing-noreturn -Wno-missing-prototypes -Wno-disabled-macro-expansion -Wno-missing-braces -Wno-extra-semi)
 		set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -DDEBUG")
 		set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -g -O3")
 	elseif( ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" )
-		add_compile_options(-march=native -pthread -Wall -Wno-deprecated-declarations -Wduplicated-cond -Wlogical-op -Wnull-dereference -Wold-style-cast -Wshadow)
+		add_compile_options(-march=native -pthread -Wall -Wextra -pedantic -Wno-deprecated-declarations -Wduplicated-cond -Wlogical-op -Wnull-dereference -Wold-style-cast -Wshadow)
 		set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -DDEBUG")
 		set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -g -O3")
 	endif( )
@@ -57,6 +57,7 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_container_algorithm
 	daw_copiable_unique_ptr
 	daw_cstring
+	daw_cxmath
 	daw_endian
 	daw_exception
 	daw_expected
@@ -170,6 +171,7 @@ set( UNTESTED_HEADER_FILES
 	boost_test.h
 	daw_bit_stream.h
 	daw_common_mixins.h
+	daw_do_n.h
 	daw_enable_if.h
 	daw_function.h
 	daw_move.h

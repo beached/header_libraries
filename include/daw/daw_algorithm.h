@@ -33,6 +33,7 @@
 #include <vector>
 
 #include "cpp_17.h"
+#include "daw_do_n.h"
 #include "daw_enable_if.h"
 #include "daw_exception.h"
 #include "daw_move.h"
@@ -2086,63 +2087,6 @@ namespace daw {
 		template<class InputIt, class UnaryPredicate>
 		constexpr bool none_of( InputIt first, InputIt last, UnaryPredicate &&p ) {
 			return find_if( first, last, std::forward<UnaryPredicate>( p ) ) == last;
-		}
-
-		namespace algorithm_impl {
-			template<typename Function, typename... Args, size_t... Is>
-			constexpr void do_n(
-			  Function &&func, Args &&... args,
-			  std::index_sequence<
-			    Is...> ) noexcept( std::is_nothrow_invocable_v<Function, Args...> ) {
-
-				if constexpr( sizeof...( Is ) > 0 ) {
-					(void)( ( daw::invoke( func, args... ), Is ) + ... );
-				}
-			}
-
-			template<typename Function, size_t... Is>
-			constexpr void
-			do_n_arg( Function &&func, std::index_sequence<Is...> ) noexcept(
-			  std::is_nothrow_invocable_v<Function, size_t> ) {
-
-				if constexpr( sizeof...( Is ) > 0 ) {
-					(void)( ( daw::invoke( func, Is ), 0 ) + ... );
-				}
-			}
-
-		} // namespace algorithm_impl
-
-		template<size_t count, typename Function, typename... Args>
-		constexpr void do_n( Function &&func, Args &&... args ) noexcept(
-		  std::is_nothrow_invocable_v<Function, Args...> ) {
-			algorithm_impl::do_n( std::forward<Function>( func ),
-			                      std::forward<Args>( args )...,
-			                      std::make_index_sequence<count>{} );
-		}
-
-		template<typename Function, typename... Args>
-		constexpr void
-		do_n( size_t count, Function &&func, Args &&... args ) noexcept(
-		  std::is_nothrow_invocable_v<Function, Args...> ) {
-			while( count-- > 0 ) {
-				daw::invoke( func, args... );
-			}
-		}
-
-		template<typename Function, typename... Args>
-		constexpr void do_n_arg( size_t count, Function &&func ) noexcept(
-		  std::is_nothrow_invocable_v<Function, size_t> ) {
-			size_t n = 0;
-			while( n < count ) {
-				daw::invoke( func, n++ );
-			}
-		}
-
-		template<size_t count, typename Function, typename... Args>
-		constexpr void do_n_arg( Function &&func ) noexcept(
-		  std::is_nothrow_invocable_v<Function, size_t> ) {
-			algorithm_impl::do_n_arg( std::forward<Function>( func ),
-			                          std::make_index_sequence<count>{} );
 		}
 	} // namespace algorithm
 } // namespace daw

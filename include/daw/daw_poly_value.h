@@ -49,11 +49,11 @@ namespace daw {
 	template<typename T = void>
 	inline constexpr construct_emplace_t<T> construct_emplace{};
 
-	template<typename BaseClass>
-	class poly_value : public daw::enable_default_constructor<BaseClass>,
-	                   public daw::enable_copy_constructor<BaseClass>,
-	                   public daw::enable_copy_assignment<BaseClass> {
-		std::unique_ptr<BaseClass> m_ptr;
+	template<typename BaseClass, typename Deleter = std::default_delete<BaseClass>, bool AllowDefaultConstruction = true, bool AllowCopy = true>
+	class poly_value : public daw::enable_default_constructor<BaseClass, AllowDefaultConstruction>,
+	                   public daw::enable_copy_constructor<BaseClass, AllowCopy>,
+	                   public daw::enable_copy_assignment<BaseClass, AllowCopy> {
+		std::unique_ptr<BaseClass, Deleter> m_ptr;
 		std::function<std::unique_ptr<BaseClass>(
 		  std::unique_ptr<BaseClass> const &rhs )>
 		  m_copier;
@@ -129,7 +129,15 @@ namespace daw {
 		  : m_ptr( std::unique_ptr<T>( other ) )
 		  , m_copier( poly_value_impl::make_copier<BaseClass, T>( ) ) {}
 
-		template<typename T, daw::enable_if_t<std::is_base_of_v<T>> = nullptr>
+
+			template<typename T, typename D,
+		         daw::enable_if_t<std::is_base_of_v<BaseClass, T>> = nullptr>
+		poly_value( T *other, D&& deleter )
+		  : m_ptr( std::unique_ptr<T>( other ), std::forward<D>( deleter ) )
+		  , m_copier( poly_value_impl::make_copier<BaseClass, T>( ) ) {}
+
+		template<typename T,
+		         daw::enable_if_t<std::is_base_of_v<BaseClass, T>> = nullptr>
 		poly_value &operator=( T *rhs ) {
 			m_ptr = std::unique_ptr<T>( rhs );
 			m_copier = poly_value_impl::make_copier<BaseClass, T>( );

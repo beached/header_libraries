@@ -575,17 +575,17 @@ namespace daw {
 		};
 	} // namespace impl
 
-	template<typename T>
+	template<typename T, bool B = true>
 	using enable_default_constructor =
-	  impl::delete_default_constructor_if<!is_default_constructible_v<T>>;
+	  impl::delete_default_constructor_if<!is_default_constructible_v<T> and B>;
 
-	template<typename T>
+	template<typename T, bool B = true>
 	using enable_copy_constructor =
-	  impl::delete_copy_constructor_if<!is_copy_constructible_v<T>>;
+	  impl::delete_copy_constructor_if<!is_copy_constructible_v<T> and B>;
 
-	template<typename T>
+	template<typename T, bool B = true>
 	using enable_copy_assignment =
-	  impl::delete_copy_assignment_if<!is_copy_assignable_v<T>>;
+	  impl::delete_copy_assignment_if<!is_copy_assignable_v<T> and B>;
 
 	struct nothing {};
 } // namespace daw
