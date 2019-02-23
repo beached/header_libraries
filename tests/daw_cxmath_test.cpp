@@ -24,7 +24,9 @@
 #include <iostream>
 #include <limits>
 
+#include "daw/daw_benchmark.h"
 #include "daw/daw_cxmath.h"
+#include "daw/daw_random.h"
 
 static_assert( daw::math::math_impl::bits( 2.0f ).raw_value( ) ==
                0x4000'0000U );
@@ -40,6 +42,10 @@ static_assert( daw::math::copy_sign( 2.0f, 1 ) == 2.0f );
 static_assert( daw::math::copy_sign( 2.0f, -1 ) == -2.0f );
 static_assert( daw::math::copy_sign( -2.0f, -1 ) == -2.0f );
 static_assert( daw::math::copy_sign( -2.0f, 1 ) == 2.0f );
+static_assert( daw::math::math_impl::pow2( -1 ) == 0.5f );
+static_assert( daw::math::math_impl::pow2( -2 ) == 0.25f );
+static_assert( daw::math::math_impl::pow2( 1 ) == 2.0f );
+static_assert( daw::math::math_impl::pow2( 2 ) == 4.0f );
 
 void out_sqrt( float f ) {
 	auto result = daw::math::sqrt( f );
@@ -70,5 +76,41 @@ int main( ) {
 	out_sqrt( std::numeric_limits<float>::infinity( ) );
 	out_sqrt( -std::numeric_limits<float>::infinity( ) );
 	out_sqrt( std::numeric_limits<float>::quiet_NaN( ) );
+
+	auto const nums =
+	  daw::make_random_data<int32_t, std::vector<float>>( 1'000, -1'000, 1'000 );
+
+
+		daw::bench_n_test<100'000>( "daw::math::math_impl::bits",
+	                            []( auto &&floats ) {
+		                            float sum = 0.0f;
+		                            for( auto num : floats ) {
+			                            sum += daw::math::math_impl::bits( num ).raw_value( );
+		                            }
+		                            daw::do_not_optimize( sum );
+		                            return sum;
+	                            },
+	                            nums );
+	daw::bench_n_test<100'000>( "daw::math::sqrt",
+	                            []( auto &&floats ) {
+		                            float sum = 0.0f;
+		                            for( auto num : floats ) {
+			                            sum += daw::math::sqrt( num );
+		                            }
+		                            daw::do_not_optimize( sum );
+		                            return sum;
+	                            },
+	                            nums );
+	daw::bench_n_test<100'000>( "std::sqrt",
+	                            []( auto &&floats ) {
+		                            float sum = 0.0f;
+		                            for( auto num : floats ) {
+			                            sum += std::sqrt( num );
+		                            }
+		                            daw::do_not_optimize( sum );
+		                            return sum;
+	                            },
+	                            nums );
+
 	return 0;
 }

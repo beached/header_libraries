@@ -101,7 +101,8 @@ namespace daw {
 
 		static_assert( daw::is_integral_v<IntType>,
 		               "IntType must be a valid integral type" );
-		daw::exception::daw_throw_on_false( a <= b, "a <= b must be true" );
+
+		daw::exception::precondition_check( a <= b, "a <= b must be true" );
 
 		Result result{};
 		result.resize( count );
@@ -110,7 +111,7 @@ namespace daw {
 	}
 
 	namespace cxrand_impl {
-#ifdef USE_CXSEED		
+#ifdef USE_CXSEED
 		namespace {
 			constexpr size_t generate_seed( char const *first,
 			                                size_t seed = 0 ) noexcept {
@@ -131,7 +132,7 @@ namespace daw {
 				return result;
 			}
 		} // namespace
-#endif	
+#endif
 		template<size_t N, std::enable_if_t<( N == 4 ), std::nullptr_t> = nullptr>
 		constexpr size_t rand_lcg( size_t x_prev ) noexcept {
 			return x_prev * 1664525UL + 1013904223UL;
@@ -144,21 +145,21 @@ namespace daw {
 	} // namespace cxrand_impl
 
 	struct static_random {
-#ifdef USE_CXSEED		
+#ifdef USE_CXSEED
 		static constexpr auto m_seed = cxrand_impl::generate_seed( );
 #endif
 
 	private:
-#ifdef USE_CXSEED		
+#ifdef USE_CXSEED
 		size_t m_state = cxrand_impl::rand_lcg<sizeof( size_t )>( m_seed );
 #else
 		size_t m_state;
 #endif
 
 	public:
-#ifdef USE_CXSEED		
+#ifdef USE_CXSEED
 		constexpr static_random( ) noexcept = default;
-#endif	
+#endif
 		constexpr static_random( size_t seed ) noexcept
 		  : m_state( cxrand_impl::rand_lcg<sizeof( size_t )>( seed ) ) {}
 

@@ -41,7 +41,7 @@ namespace daw {
 
 			// Based on code from
 			// https://graphics.stanford.edu/~seander/bithacks.html
-			constexpr int count_leading_zeroes( uint64_t v ) noexcept {
+			constexpr uint32_t count_leading_zeroes( uint64_t v ) noexcept {
 				char const bit_position[64] = {
 				  0,  1,  2,  7,  3,  13, 8,  19, 4,  25, 14, 28, 9,  34, 20, 40,
 				  5,  17, 26, 38, 15, 46, 29, 48, 10, 31, 35, 54, 21, 50, 41, 57,
@@ -56,7 +56,9 @@ namespace daw {
 				v |= v >> 32;
 				v = ( v >> 1 ) + 1;
 
-				return 63U - bit_position[( v * 0x021'8a39'2cd3'd5dbf ) >> 58U]; // [3]
+				return 63U -
+				       static_cast<uint32_t>(
+				         bit_position[( v * 0x021'8a39'2cd3'd5dbf ) >> 58U] ); // [3]
 			}
 
 			constexpr float pow( float b, int32_t exp ) noexcept {
@@ -68,6 +70,17 @@ namespace daw {
 				while( exp > 0 ) {
 					result *= b;
 					exp--;
+				}
+				return result;
+			}
+
+			constexpr float pow2( int32_t exp ) noexcept {
+				if( exp >= 0 ) {
+					return static_cast<float>( 1ULL << static_cast<uint64_t>( exp ) );
+				}
+				float result = 1.0f;
+				while( exp++ < 0 ) {
+					result *= 0.5f;
 				}
 				return result;
 			}
@@ -106,7 +119,8 @@ namespace daw {
 				}
 
 				constexpr uint8_t raw_exponent( ) const noexcept {
-					return ( 0b0111'1111'1000'0000'0000'0000'0000'0000 & m_raw_value ) >> 23U;
+					return ( 0b0111'1111'1000'0000'0000'0000'0000'0000 & m_raw_value ) >>
+					       23U;
 				}
 
 				constexpr int16_t exponent( ) const noexcept {
@@ -125,9 +139,9 @@ namespace daw {
 					}
 					auto const e = exponent( );
 					if( e < 0 ) {
-						return result * ::daw::math::math_impl::pow( 2.0f, -e );
+						return result * ::daw::math::math_impl::pow2( -e );
 					}
-					return result / ::daw::math::math_impl::pow( 2.0f, -e );
+					return result / ::daw::math::math_impl::pow2( -e );
 				}
 
 				constexpr bool is_pos_inf( ) const noexcept {
@@ -164,7 +178,7 @@ namespace daw {
 				}
 				bool sign = f < 0.0f;
 				float abs_f = sign ? -f : f;
-				int16_t exponent = 254;
+				int32_t exponent = 254;
 
 				while( abs_f < 0x1p87f ) {
 					abs_f *= 0x1p41f;
@@ -172,7 +186,7 @@ namespace daw {
 				}
 
 				auto const a = static_cast<uint64_t>( abs_f * 0x1p-64f );
-				auto lz = count_leading_zeroes( a );
+				auto lz = static_cast<int32_t>( count_leading_zeroes( a ) );
 				exponent -= lz;
 
 				if( exponent <= 0 ) {
@@ -190,11 +204,23 @@ namespace daw {
 				auto const bit_parts = bits( X );
 				auto const exp_diff = exponent - ( bit_parts.exponent( ) );
 				if( exp_diff > 0 ) {
-					return pow( 2.0f, exp_diff ) * X;
+					return pow2( exp_diff ) * X;
 				}
-				return X / pow( 2.0f, -exp_diff );
+				return X / pow2( -exp_diff );
 			}
 		} // namespace math_impl
+
+		template<typename Integer,
+		         daw::enable_if_t<std::is_integral_v<Integer>> = nullptr>
+		constexpr bool is_odd( Integer i ) noexcept {
+			return ( static_cast<uint32_t>( i ) & 1U ) == 1U;
+		};
+
+		template<typename Integer,
+		         daw::enable_if_t<std::is_integral_v<Integer>> = nullptr>
+		constexpr bool is_even( Integer i ) noexcept {
+			return ( static_cast<uint32_t>( i ) & 1U ) == 0U;
+		};
 
 		template<typename Float,
 		         daw::enable_if_t<std::is_floating_point_v<Float>> = nullptr>
@@ -205,24 +231,15 @@ namespace daw {
 			return f;
 		}
 
-		template<typename Unsigned,
-		         daw::enable_if_t<std::is_integral_v<Unsigned>,
-		                          !std::is_signed_v<Unsigned>> = nullptr>
-		constexpr Unsigned abs( Unsigned n ) noexcept {
-			return n;
-		};
+		template<size_t iterations>
+		constexpr float newt( float const f ) noexcept {
+			auto y = 0.41731f + 0.59016f * f;
+			daw::algorithm::do_n<iterations>(
+			  [&]( ) { y = 0.5f * ( y + ( f / y ) ); } );
+			return y;
+		}
 
-		template<typename Signed,
-		         daw::enable_if_t<std::is_integral_v<Signed>,
-		                          std::is_signed_v<Signed>> = nullptr>
-		constexpr Signed abs( Signed n ) noexcept {
-			if( n < 0 ) {
-				return -n;
-			}
-			return n;
-		};
-
-		constexpr float sqrt( float x ) noexcept {
+		constexpr float sqrt( float const x ) noexcept {
 			size_t const iterations = 3;
 			auto const parts = math_impl::bits( x );
 			if( parts.is_negative( ) ) {
@@ -233,18 +250,14 @@ namespace daw {
 			case math_impl::float_parts_t::NaN:
 				return x;
 			}
-			auto N = math_impl::bits( x ).exponent( );
-			auto f = math_impl::setxp( x, 0 );
+			auto const N = parts.exponent( );
+			auto const f = math_impl::setxp( x, 0 );
 
-			auto y = 0.41731f + 0.59016f * f;
-			daw::algorithm::do_n<iterations>(
-			  [&]( ) { y = 0.5f * ( y + ( f / y ) ); } );
-
-			if( abs( N ) % 2 == 1 ) {
-				y = y * math_impl::sqrt0_5<float>;
-				++N;
+			if( is_odd( N ) ) {
+				auto const y = newt<iterations>( f ) / math_impl::sqrt2<float>;
+				return y * math_impl::pow2( ( N + 1 ) / 2 );
 			}
-			return y * math_impl::pow( 2.0f, N / 2 );
+			return newt<iterations>( f ) * math_impl::pow2( N / 2 );
 		}
 
 		template<typename Number, typename Number2,
@@ -263,9 +276,16 @@ namespace daw {
 			return x;
 		}
 
-		template<typename Number>
+		template<typename Number,
+		         daw::enable_if_t<std::is_signed_v<Number>> = nullptr>
 		constexpr bool signbit( Number n ) noexcept {
-			return n >= 0;
+			return n < 0;
+		}
+
+		template<typename Number,
+		         daw::enable_if_t<!std::is_signed_v<Number>> = nullptr>
+		constexpr bool signbit( Number n ) noexcept {
+			return false;
 		}
 	} // namespace math
 } // namespace daw
