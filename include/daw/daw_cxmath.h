@@ -149,6 +149,7 @@ namespace daw {
 
 			// From: http://brnz.org/hbr/?p=1518
 			constexpr float_parts_t bits( float const f ) noexcept {
+				// Once c++20 use bit_cast
 				if( f == 0.0f ) {
 					return {0, f}; // also matches -0.0f and gives wrong result
 				} else if( f > std::numeric_limits<float>::max( ) ) {
@@ -244,6 +245,27 @@ namespace daw {
 				++N;
 			}
 			return y * math_impl::pow( 2.0f, N / 2 );
+		}
+
+		template<typename Number, typename Number2,
+		         daw::enable_if_t<std::is_arithmetic_v<Number>,
+		                          std::is_arithmetic_v<Number2>> = nullptr>
+		constexpr Number copy_sign( Number x, Number2 s ) noexcept {
+			if( s < 0 ) {
+				if( x < 0 ) {
+					return x;
+				}
+				return -x;
+			}
+			if( x < 0 ) {
+				return -x;
+			}
+			return x;
+		}
+
+		template<typename Number>
+		constexpr bool signbit( Number n ) noexcept {
+			return n >= 0;
 		}
 	} // namespace math
 } // namespace daw

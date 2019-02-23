@@ -36,6 +36,10 @@ static_assert( daw::math::math_impl::bits( 0.0f ).raw_value( ) ==
                0x0000'0000U );
 
 static_assert( daw::math::sqrt( 4.0f ) == 2.0f );
+static_assert( daw::math::copy_sign( 2.0f, 1 ) == 2.0f );
+static_assert( daw::math::copy_sign( 2.0f, -1 ) == -2.0f );
+static_assert( daw::math::copy_sign( -2.0f, -1 ) == -2.0f );
+static_assert( daw::math::copy_sign( -2.0f, 1 ) == 2.0f );
 
 void out_sqrt( float f ) {
 	auto result = daw::math::sqrt( f );
@@ -52,6 +56,7 @@ int main( ) {
 	std::cout.precision( std::numeric_limits<float>::max_digits10 );
 	out_sqrt( -1.0f );
 	out_sqrt( 0.1f );
+	out_sqrt( 0.5f );
 	out_sqrt( 0.01f );
 	out_sqrt( 2.0f );
 	out_sqrt( 3.0f );
@@ -60,6 +65,8 @@ int main( ) {
 	out_sqrt( 27.0f );
 	out_sqrt( 64.0f );
 	out_sqrt( 100.0f );
+	out_sqrt( std::numeric_limits<float>::min( ) );
+	out_sqrt( std::numeric_limits<float>::max( ) );
 	out_sqrt( std::numeric_limits<float>::infinity( ) );
 	out_sqrt( -std::numeric_limits<float>::infinity( ) );
 	out_sqrt( std::numeric_limits<float>::quiet_NaN( ) );
