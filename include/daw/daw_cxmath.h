@@ -31,7 +31,7 @@
 
 namespace daw {
 	namespace math {
-		constexpr std::optional<int16_t> exp2( float const f ) noexcept;
+		constexpr std::optional<int16_t> fexp2( float const f ) noexcept;
 		constexpr float fpow2( int32_t exp ) noexcept;
 
 		namespace math_impl {
@@ -203,7 +203,7 @@ namespace daw {
 		} // namespace math_impl
 
 		constexpr float fexp2( float X, int16_t exponent ) noexcept {
-			auto const exp_diff = exponent - *exp2( X );
+			auto const exp_diff = exponent - *fexp2( X );
 			if( exp_diff > 0 ) {
 				return fpow2( exp_diff ) * X;
 			}
@@ -221,7 +221,7 @@ namespace daw {
 			return result;
 		}
 
-		constexpr std::optional<int16_t> exp2( float const f ) noexcept {
+		constexpr std::optional<int16_t> fexp2( float const f ) noexcept {
 			// Once c++20 use bit_cast
 			if( f == 0.0f ) {
 				return 0;
@@ -277,7 +277,7 @@ namespace daw {
 			if( x < 0.0f ) {
 				return std::numeric_limits<float>::quiet_NaN( );
 			}
-			auto const exp = exp2( x );
+			auto const exp = fexp2( x );
 			if( !exp ) {
 				return x;
 			}
