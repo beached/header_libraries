@@ -150,8 +150,8 @@ namespace daw {
 			}
 		} // namespace math_impl
 
-		template<size_t iterations = 3>
 		constexpr float sqrt( float x ) noexcept {
+			size_t const iterations = 3;
 			if( x <= 0 ) {
 				if( x == 0 ) {
 					return 0.0f;
