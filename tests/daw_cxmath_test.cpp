@@ -42,10 +42,10 @@ static_assert( daw::math::copy_sign( 2.0f, 1 ) == 2.0f );
 static_assert( daw::math::copy_sign( 2.0f, -1 ) == -2.0f );
 static_assert( daw::math::copy_sign( -2.0f, -1 ) == -2.0f );
 static_assert( daw::math::copy_sign( -2.0f, 1 ) == 2.0f );
-static_assert( daw::math::math_impl::pow2( -1 ) == 0.5f );
-static_assert( daw::math::math_impl::pow2( -2 ) == 0.25f );
-static_assert( daw::math::math_impl::pow2( 1 ) == 2.0f );
-static_assert( daw::math::math_impl::pow2( 2 ) == 4.0f );
+static_assert( daw::math::fpow2( -1 ) == 0.5f );
+static_assert( daw::math::fpow2( -2 ) == 0.25f );
+static_assert( daw::math::fpow2( 1 ) == 2.0f );
+static_assert( daw::math::fpow2( 2 ) == 4.0f );
 
 void out_sqrt( float f ) {
 	auto result = daw::math::sqrt( f );

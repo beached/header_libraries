@@ -32,6 +32,7 @@
 namespace daw {
 	namespace math {
 		constexpr std::optional<int16_t> exp2( float const f ) noexcept;
+		constexpr float fpow2( int32_t exp ) noexcept;
 
 		namespace math_impl {
 			template<typename Float>
@@ -73,17 +74,6 @@ namespace daw {
 				while( exp > 0 ) {
 					result *= b;
 					exp--;
-				}
-				return result;
-			}
-
-			constexpr float pow2( int32_t exp ) noexcept {
-				if( exp >= 0 ) {
-					return static_cast<float>( 1ULL << static_cast<uint64_t>( exp ) );
-				}
-				float result = 1.0f;
-				while( exp++ < 0 ) {
-					result *= 0.5f;
 				}
 				return result;
 			}
@@ -142,9 +132,9 @@ namespace daw {
 					}
 					auto const e = exponent( );
 					if( e < 0 ) {
-						return result * ::daw::math::math_impl::pow2( -e );
+						return result * ::daw::math::fpow2( -e );
 					}
-					return result / ::daw::math::math_impl::pow2( -e );
+					return result / ::daw::math::fpow2( -e );
 				}
 
 				constexpr bool is_pos_inf( ) const noexcept {
@@ -203,14 +193,34 @@ namespace daw {
 				        f};
 			}
 
-			constexpr float setxp( float X, int16_t exponent ) noexcept {
-				auto const exp_diff = exponent - *exp2( X );
-				if( exp_diff > 0 ) {
-					return pow2( exp_diff ) * X;
-				}
-				return X / pow2( -exp_diff );
+			template<size_t iterations>
+			constexpr float sqrt_newt( float const f ) noexcept {
+				auto y = 0.41731f + 0.59016f * f;
+				daw::algorithm::do_n<iterations>(
+				  [&]( ) { y = 0.5f * ( y + ( f / y ) ); } );
+				return y;
 			}
 		} // namespace math_impl
+
+		constexpr float fexp2( float X, int16_t exponent ) noexcept {
+			auto const exp_diff = exponent - *exp2( X );
+			if( exp_diff > 0 ) {
+				return fpow2( exp_diff ) * X;
+			}
+			return X / fpow2( -exp_diff );
+		}
+
+		constexpr float fpow2( int32_t exp ) noexcept {
+			if( exp >= 0 ) {
+				return static_cast<float>( 1ULL << static_cast<uint64_t>( exp ) );
+			}
+			float result = 1.0f;
+			while( exp++ < 0 ) {
+				result *= 0.5f;
+			}
+			return result;
+		}
+
 		constexpr std::optional<int16_t> exp2( float const f ) noexcept {
 			// Once c++20 use bit_cast
 			if( f == 0.0f ) {
@@ -262,14 +272,6 @@ namespace daw {
 			return f;
 		}
 
-		template<size_t iterations>
-		constexpr float newt( float const f ) noexcept {
-			auto y = 0.41731f + 0.59016f * f;
-			daw::algorithm::do_n<iterations>(
-			  [&]( ) { y = 0.5f * ( y + ( f / y ) ); } );
-			return y;
-		}
-
 		constexpr float sqrt( float const x ) noexcept {
 			size_t const iterations = 3;
 			if( x < 0.0f ) {
@@ -280,13 +282,13 @@ namespace daw {
 				return x;
 			}
 			auto const N = *exp;
-			auto const f = math_impl::setxp( x, 0 );
+			auto const f = fexp2( x, 0 );
 
 			if( is_odd( N ) ) {
-				auto const y = newt<iterations>( f ) / math_impl::sqrt2<float>;
-				return y * math_impl::pow2( ( N + 1 ) / 2 );
+				auto const y = math_impl::sqrt_newt<iterations>( f ) / math_impl::sqrt2<float>;
+				return y * fpow2( ( N + 1 ) / 2 );
 			}
-			return newt<iterations>( f ) * math_impl::pow2( N / 2 );
+			return math_impl::sqrt_newt<iterations>( f ) * fpow2( N / 2 );
 		}
 
 		template<typename Number, typename Number2,
