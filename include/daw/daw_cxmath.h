@@ -228,12 +228,11 @@ namespace daw {
 					return exponent - 127;
 				}
 				// return -127;
-				return {};
+				return std::nullopt;
 			}
 
 			constexpr float setxp( float X, int16_t exponent ) noexcept {
-				auto const bit_parts = bits( X );
-				auto const exp_diff = exponent - ( bit_parts.exponent( ) );
+				auto const exp_diff = exponent - *fexp( X );
 				if( exp_diff > 0 ) {
 					return pow2( exp_diff ) * X;
 				}
