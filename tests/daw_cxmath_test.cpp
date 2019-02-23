@@ -31,10 +31,13 @@ static_assert( daw::math::math_impl::bits( 234324.34375f ).raw_value == 0x4864'd
 static_assert( daw::math::math_impl::bits( -1.99999988079071044921875f ).raw_value ==  0xbfff'ffffU );
 static_assert( daw::math::math_impl::bits( 0.0f ).raw_value == 0x0000'0000U );
 
+static_assert( daw::math::sqrt( 4.0f ) == 2.0f );
 
 int main( ) {
 	std::cout.precision( std::numeric_limits<float>::max_digits10 );
 	float f;
+	f = -1.0f; std::cout.precision( std::numeric_limits<float>::max_digits10 ); std::cout << daw::math::sqrt( f ) << ' ' << std::sqrt( f ) <<  '\n';
+	f = 0; std::cout.precision( std::numeric_limits<float>::max_digits10 ); std::cout << daw::math::sqrt( f ) << ' ' << std::sqrt( f ) <<  '\n';
 	f = 1.0f; std::cout.precision( std::numeric_limits<float>::max_digits10 ); std::cout << daw::math::sqrt( f ) << ' ' << std::sqrt( f ) <<  '\n';
 	f = 2.0f; std::cout.precision( std::numeric_limits<float>::max_digits10 ); std::cout << daw::math::sqrt( f ) << ' ' << std::sqrt( f ) <<  '\n';
 	f = 3.0f; std::cout.precision( std::numeric_limits<float>::max_digits10 ); std::cout << daw::math::sqrt( f ) << ' ' << std::sqrt( f ) <<  '\n';

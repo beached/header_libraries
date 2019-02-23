@@ -152,8 +152,11 @@ namespace daw {
 
 		template<size_t iterations = 3>
 		constexpr float sqrt( float x ) noexcept {
-			if( x <= 0.0f ) {
-				return 0.0;
+			if( x <= 0 ) {
+				if( x == 0 ) {
+					return 0.0f;
+				}
+				return std::numeric_limits<float>::quiet_NaN( );
 			}
 			auto N = math_impl::bits( x ).exponent( );
 			auto f = math_impl::setxp( x, 0 );
