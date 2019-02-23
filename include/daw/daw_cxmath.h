@@ -31,6 +31,8 @@
 
 namespace daw {
 	namespace math {
+		constexpr std::optional<int16_t> exp2( float const f ) noexcept;
+
 		namespace math_impl {
 			template<typename Float>
 			inline constexpr auto sqrt2 = static_cast<Float>(
@@ -201,44 +203,43 @@ namespace daw {
 				        f};
 			}
 
-			constexpr std::optional<int16_t> fexp( float const f ) noexcept {
-				// Once c++20 use bit_cast
-				if( f == 0.0f ) {
-					return 0;
-				} else if( f > std::numeric_limits<float>::max( ) ) {
-					return std::nullopt;
-				} else if( f < -std::numeric_limits<float>::max( ) ) {
-					return std::nullopt;
-				} else if( f != f ) {
-					return std::nullopt;
-				}
-				int32_t exponent = 254;
-				float abs_f = f < 0 ? -f : f;
-
-				while( abs_f < 0x1p87f ) {
-					abs_f *= 0x1p41f;
-					exponent -= 41;
-				}
-
-				auto const a = static_cast<uint64_t>( abs_f * 0x1p-64f );
-				auto lz = static_cast<int32_t>( count_leading_zeroes( a ) );
-				exponent -= lz;
-
-				if( exponent >= 0 ) {
-					return exponent - 127;
-				}
-				// return -127;
-				return std::nullopt;
-			}
-
 			constexpr float setxp( float X, int16_t exponent ) noexcept {
-				auto const exp_diff = exponent - *fexp( X );
+				auto const exp_diff = exponent - *exp2( X );
 				if( exp_diff > 0 ) {
 					return pow2( exp_diff ) * X;
 				}
 				return X / pow2( -exp_diff );
 			}
 		} // namespace math_impl
+		constexpr std::optional<int16_t> exp2( float const f ) noexcept {
+			// Once c++20 use bit_cast
+			if( f == 0.0f ) {
+				return 0;
+			} else if( f > std::numeric_limits<float>::max( ) ) {
+				return std::nullopt;
+			} else if( f < -std::numeric_limits<float>::max( ) ) {
+				return std::nullopt;
+			} else if( f != f ) {
+				return std::nullopt;
+			}
+			int32_t exponent = 254;
+			float abs_f = f < 0 ? -f : f;
+
+			while( abs_f < 0x1p87f ) {
+				abs_f *= 0x1p41f;
+				exponent -= 41;
+			}
+
+			auto const a = static_cast<uint64_t>( abs_f * 0x1p-64f );
+			auto lz = static_cast<int32_t>( math_impl::count_leading_zeroes( a ) );
+			exponent -= lz;
+
+			if( exponent >= 0 ) {
+				return exponent - 127;
+			}
+			// return -127;
+			return std::nullopt;
+		}
 
 		template<typename Integer,
 		         daw::enable_if_t<std::is_integral_v<Integer>> = nullptr>
@@ -274,7 +275,7 @@ namespace daw {
 			if( x < 0.0f ) {
 				return std::numeric_limits<float>::quiet_NaN( );
 			}
-			auto const exp = math_impl::fexp( x );
+			auto const exp = exp2( x );
 			if( !exp ) {
 				return x;
 			}

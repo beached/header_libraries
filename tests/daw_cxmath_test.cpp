@@ -95,7 +95,7 @@ int main( ) {
 	                            []( auto &&floats ) {
 		                            intmax_t sum = 0.0f;
 		                            for( auto num : floats ) {
-			                            sum += *daw::math::math_impl::fexp( num );
+			                            sum += *daw::math::exp2( num );
 		                            }
 		                            daw::do_not_optimize( sum );
 		                            return sum;
