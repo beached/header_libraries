@@ -229,7 +229,7 @@ namespace daw {
 	namespace impl {
 		template<bool... values>
 		constexpr bool any_true( ) noexcept {
-			return (static_cast<bool>( values ) or ...);
+			return ( static_cast<bool>( values ) or ... );
 		}
 	} // namespace impl
 
@@ -707,6 +707,23 @@ namespace daw {
 		while( first != last ) {
 			daw::invoke( func, bit_cast<T>( *first ) );
 			++first;
+		}
+	}
+
+	template<typename T, typename U = deduced_type, typename Iterator,
+	         typename OutputIterator, typename Function>
+	void bit_cast_transform( Iterator first, Iterator last,
+	                         OutputIterator first_out, Function &&func ) {
+
+		using out_t = std::conditional_t<
+		  std::is_same_v<U, deduced_type>,
+		  typename std::iterator_traits<OutputIterator>::value_type, U>;
+
+		while( first != last ) {
+			*first_out =
+			  bit_cast<out_t>( std::invoke( func, bit_cast<T>( *first ) ) );
+			++first;
+			++first_out;
 		}
 	}
 
