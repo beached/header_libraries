@@ -192,14 +192,6 @@ namespace daw {
 				          ( static_cast<uint32_t>( exponent ) << 23U ) | significand,
 				        f};
 			}
-
-			template<size_t iterations>
-			constexpr float sqrt_newt( float const f ) noexcept {
-				auto y = 0.41731f + 0.59016f * f;
-				daw::algorithm::do_n<iterations>(
-				  [&]( ) { y = 0.5f * ( y + ( f / y ) ); } );
-				return y;
-			}
 		} // namespace cxmath_impl
 
 		constexpr float fexp2( float X, int16_t exponent ) noexcept {
@@ -273,7 +265,6 @@ namespace daw {
 		}
 
 		constexpr float sqrt( float const x ) noexcept {
-			size_t const iterations = 3;
 			if( x < 0.0f ) {
 				return std::numeric_limits<float>::quiet_NaN( );
 			}
@@ -288,12 +279,14 @@ namespace daw {
 			}
 			auto const f = fexp2( x, 0 );
 
+			auto y = 0.41731f + ( 0.59016f * f );
+			auto const z = y + ( f / y );
+			y = ( 0.25f * z ) + ( f / z );
 			if( is_odd( N ) ) {
-				auto const y =
-				  cxmath_impl::sqrt_newt<iterations>( f ) / cxmath_impl::sqrt2<float>;
+				y /= cxmath_impl::sqrt2<float>;
 				return y * fpow2( ( N + 1 ) / 2 );
 			}
-			return cxmath_impl::sqrt_newt<iterations>( f ) * fpow2( N / 2 );
+			return y * fpow2( N / 2 );
 		}
 
 		template<typename Number, typename Number2,
