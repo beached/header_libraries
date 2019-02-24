@@ -28,28 +28,28 @@
 #include "daw/daw_cxmath.h"
 #include "daw/daw_random.h"
 
-static_assert( daw::math::math_impl::bits( 2.0f ).raw_value( ) ==
+static_assert( daw::cxmath::cxmath_impl::bits( 2.0f ).raw_value( ) ==
                0x4000'0000U );
-static_assert( daw::math::math_impl::bits( 234324.34375f ).raw_value( ) ==
+static_assert( daw::cxmath::cxmath_impl::bits( 234324.34375f ).raw_value( ) ==
                0x4864'd516U );
-static_assert( daw::math::math_impl::bits( -1.99999988079071044921875f )
+static_assert( daw::cxmath::cxmath_impl::bits( -1.99999988079071044921875f )
                  .raw_value( ) == 0xbfff'ffffU );
-static_assert( daw::math::math_impl::bits( 0.0f ).raw_value( ) ==
+static_assert( daw::cxmath::cxmath_impl::bits( 0.0f ).raw_value( ) ==
                0x0000'0000U );
 
-static_assert( daw::math::sqrt( 4.0f ) == 2.0f );
-static_assert( daw::math::copy_sign( 2.0f, 1 ) == 2.0f );
-static_assert( daw::math::copy_sign( 2.0f, -1 ) == -2.0f );
-static_assert( daw::math::copy_sign( -2.0f, -1 ) == -2.0f );
-static_assert( daw::math::copy_sign( -2.0f, 1 ) == 2.0f );
-static_assert( daw::math::fpow2( -1 ) == 0.5f );
-static_assert( daw::math::fpow2( -2 ) == 0.25f );
-static_assert( daw::math::fpow2( 1 ) == 2.0f );
-static_assert( daw::math::fpow2( 2 ) == 4.0f );
+static_assert( daw::cxmath::sqrt( 4.0f ) == 2.0f );
+static_assert( daw::cxmath::copy_sign( 2.0f, 1 ) == 2.0f );
+static_assert( daw::cxmath::copy_sign( 2.0f, -1 ) == -2.0f );
+static_assert( daw::cxmath::copy_sign( -2.0f, -1 ) == -2.0f );
+static_assert( daw::cxmath::copy_sign( -2.0f, 1 ) == 2.0f );
+static_assert( daw::cxmath::fpow2( -1 ) == 0.5f );
+static_assert( daw::cxmath::fpow2( -2 ) == 0.25f );
+static_assert( daw::cxmath::fpow2( 1 ) == 2.0f );
+static_assert( daw::cxmath::fpow2( 2 ) == 4.0f );
 
 void out_sqrt( float f ) {
-	auto result = daw::math::sqrt( f );
-	auto E = ( daw::math::sqrt( f * f ) - f ) / f;
+	auto result = daw::cxmath::sqrt( f );
+	auto E = ( daw::cxmath::sqrt( f * f ) - f ) / f;
 	auto cm = std::sqrt( f );
 	auto E2 = ( std::sqrt( f * f ) - f ) / f;
 
@@ -81,31 +81,31 @@ int main( ) {
 	  daw::make_random_data<int32_t, std::vector<float>>( 1'000, -1'000, 1'000 );
 
 	daw::bench_n_test<100'000>(
-	  "daw::math::math_impl::bits",
+	  "daw::cxmath::cxmath_impl::bits",
 	  []( auto &&floats ) {
 		  float sum = 0.0f;
 		  for( auto num : floats ) {
-			  sum += daw::math::math_impl::bits( num ).raw_value( );
+			  sum += daw::cxmath::cxmath_impl::bits( num ).raw_value( );
 		  }
 		  daw::do_not_optimize( sum );
 		  return sum;
 	  },
 	  nums );
-	daw::bench_n_test<100'000>( "daw::math::math_impl::fexp",
+	daw::bench_n_test<100'000>( "daw::cxmath::cxmath_impl::fexp",
 	                            []( auto &&floats ) {
 		                            intmax_t sum = 0.0f;
 		                            for( auto num : floats ) {
-			                            sum += *daw::math::fexp2( num );
+			                            sum += *daw::cxmath::fexp2( num );
 		                            }
 		                            daw::do_not_optimize( sum );
 		                            return sum;
 	                            },
 	                            nums );
-	daw::bench_n_test<100'000>( "daw::math::sqrt",
+	daw::bench_n_test<100'000>( "daw::cxmath::sqrt",
 	                            []( auto &&floats ) {
 		                            float sum = 0.0f;
 		                            for( auto num : floats ) {
-			                            sum += daw::math::sqrt( num );
+			                            sum += daw::cxmath::sqrt( num );
 		                            }
 		                            daw::do_not_optimize( sum );
 		                            return sum;

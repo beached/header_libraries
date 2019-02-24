@@ -30,11 +30,11 @@
 #include "daw_enable_if.h"
 
 namespace daw {
-	namespace math {
+	namespace cxmath {
 		constexpr std::optional<int16_t> fexp2( float const f ) noexcept;
 		constexpr float fpow2( int32_t exp ) noexcept;
 
-		namespace math_impl {
+		namespace cxmath_impl {
 			template<typename Float>
 			inline constexpr auto sqrt2 = static_cast<Float>(
 			  1.4142135623730950488016887242096980785696718753769480L );
@@ -132,9 +132,9 @@ namespace daw {
 					}
 					auto const e = exponent( );
 					if( e < 0 ) {
-						return result * ::daw::math::fpow2( -e );
+						return result * ::daw::cxmath::fpow2( -e );
 					}
-					return result / ::daw::math::fpow2( -e );
+					return result / ::daw::cxmath::fpow2( -e );
 				}
 
 				constexpr bool is_pos_inf( ) const noexcept {
@@ -200,7 +200,7 @@ namespace daw {
 				  [&]( ) { y = 0.5f * ( y + ( f / y ) ); } );
 				return y;
 			}
-		} // namespace math_impl
+		} // namespace cxmath_impl
 
 		constexpr float fexp2( float X, int16_t exponent ) noexcept {
 			auto const exp_diff = exponent - *fexp2( X );
@@ -241,7 +241,7 @@ namespace daw {
 			}
 
 			auto const a = static_cast<uint64_t>( abs_f * 0x1p-64f );
-			auto lz = static_cast<int32_t>( math_impl::count_leading_zeroes( a ) );
+			auto lz = static_cast<int32_t>( cxmath_impl::count_leading_zeroes( a ) );
 			exponent -= lz;
 
 			if( exponent >= 0 ) {
@@ -290,10 +290,10 @@ namespace daw {
 
 			if( is_odd( N ) ) {
 				auto const y =
-				  math_impl::sqrt_newt<iterations>( f ) / math_impl::sqrt2<float>;
+				  cxmath_impl::sqrt_newt<iterations>( f ) / cxmath_impl::sqrt2<float>;
 				return y * fpow2( ( N + 1 ) / 2 );
 			}
-			return math_impl::sqrt_newt<iterations>( f ) * fpow2( N / 2 );
+			return cxmath_impl::sqrt_newt<iterations>( f ) * fpow2( N / 2 );
 		}
 
 		template<typename Number, typename Number2,
@@ -323,5 +323,5 @@ namespace daw {
 		constexpr bool signbit( Number n ) noexcept {
 			return false;
 		}
-	} // namespace math
+	} // namespace cxmath
 } // namespace daw
