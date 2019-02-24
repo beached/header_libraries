@@ -23,6 +23,7 @@
 #pragma once
 
 #include <cstddef>
+#include <cstring>
 #include <iterator>
 #include <tuple>
 #include <type_traits>
@@ -710,6 +711,8 @@ namespace daw {
 		}
 	}
 
+	struct deduced_type{};
+
 	template<typename T, typename U = deduced_type, typename Iterator,
 	         typename OutputIterator, typename Function>
 	void bit_cast_transform( Iterator first, Iterator last,
@@ -721,7 +724,22 @@ namespace daw {
 
 		while( first != last ) {
 			*first_out =
-			  bit_cast<out_t>( std::invoke( func, bit_cast<T>( *first ) ) );
+			  bit_cast<out_t>( daw::invoke( func, bit_cast<T>( *first ) ) );
+			++first;
+			++first_out;
+		}
+	}
+
+	template<typename T = deduced_type, typename Iterator,
+	         typename OutputIterator>
+	void bit_cast_copy( Iterator first, Iterator last,
+	                    OutputIterator first_out ) {
+		using out_t = std::conditional_t<
+		  std::is_same_v<T, deduced_type>,
+		  typename std::iterator_traits<OutputIterator>::value_type, T>;
+
+		while( first != last ) {
+			*first_out = bit_cast<out_t>( *first );
 			++first;
 			++first_out;
 		}
