@@ -197,7 +197,7 @@ namespace daw {
 			constexpr Float pow2_impl2( intmax_t exp ) noexcept {
 				bool is_neg = exp < 0;
 				exp = is_neg ? -exp : exp;
-				auto const max_shft = daw::min( static_cast<size_t>( std::numeric_limits<Float>::max_exponent10 ), (sizeof( size_t ) * 8ULL)-1ULL );
+				auto const max_shft = daw::min( static_cast<size_t>( std::numeric_limits<Float>::max_exponent10 ), (sizeof( size_t ) * 8ULL) );
 				Float result = 1.0;
 
 				while( static_cast<size_t>( exp ) >= max_shft ) {
@@ -220,7 +220,7 @@ namespace daw {
 				std::array<Float, max_e - min_e> result{};
 				intmax_t n = max_e - min_e;
 				while( n-- > 0 ) {
-					result[n] = pow2_impl2<Float>( n + min_e );
+					result[static_cast<size_t>( n )] = pow2_impl2<Float>( n + min_e );
 				}
 				return result;
 			}
@@ -231,8 +231,8 @@ namespace daw {
 			public:
 				template<typename Result>
 				static constexpr Result get( intmax_t pos ) noexcept {
-					auto const zero = m_tbl.size( ) / 2;
-					return static_cast<Result>( m_tbl[zero + pos] );
+					auto const zero = static_cast<intmax_t>( m_tbl.size( ) / 2ULL );
+					return static_cast<Result>( m_tbl[static_cast<size_t>(zero + pos)] );
 				}
 			};
 		} // namespace cxmath_impl
