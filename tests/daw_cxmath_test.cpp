@@ -36,7 +36,6 @@ static_assert( daw::cxmath::cxmath_impl::bits( -1.99999988079071044921875f )
                  .raw_value( ) == 0xbfff'ffffU );
 static_assert( daw::cxmath::cxmath_impl::bits( 0.0f ).raw_value( ) ==
                0x0000'0000U );
-
 static_assert( daw::cxmath::sqrt( 4.0f ) == 2.0f );
 static_assert( daw::cxmath::copy_sign( 2.0f, 1 ) == 2.0f );
 static_assert( daw::cxmath::copy_sign( 2.0f, -1 ) == -2.0f );
@@ -52,10 +51,11 @@ void out_sqrt( float f ) {
 	auto E = ( daw::cxmath::sqrt( f * f ) - f ) / f;
 	auto cm = std::sqrt( f );
 	auto E2 = ( std::sqrt( f * f ) - f ) / f;
+	auto diff = result - cm;
 
 	std::cout.precision( std::numeric_limits<float>::max_digits10 );
 	std::cout << f << "-> (" << result << ", " << cm << ") E: (" << E << ", "
-	          << E2 << ")\n";
+	          << E2 << ") diff: " << diff << '\n';
 }
 
 int main( ) {
@@ -91,7 +91,22 @@ int main( ) {
 		  return sum;
 	  },
 	  nums );
-	daw::bench_n_test<100'000>( "daw::cxmath::cxmath_impl::fexp",
+
+	daw::bench_n_test<100'000>(
+	  "daw::cxmath::fpow2",
+	  []( auto &&floats ) {
+		  float sum = 0.0;
+		  for( auto num : floats ) {
+			  sum += daw::cxmath::fpow2( static_cast<int32_t>( num ) );
+		  }
+		  daw::do_not_optimize( sum );
+		  return sum;
+	  },
+	  daw::make_random_data<int32_t, std::vector<float>>(
+	    1'000, std::numeric_limits<float>::min_exponent10,
+	    std::numeric_limits<float>::max_exponent10 ) );
+
+	daw::bench_n_test<100'000>( "daw::cxmath::fexp2",
 	                            []( auto &&floats ) {
 		                            intmax_t sum = 0.0f;
 		                            for( auto num : floats ) {

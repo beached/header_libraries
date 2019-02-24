@@ -32,16 +32,8 @@
 
 namespace daw {
 	namespace impl {
-		inline auto get_seed( ) -> std::default_random_engine::result_type {
-			std::default_random_engine::result_type lo{};
-#if defined( __i386__ ) or defined( __x86_64__ )
-			__asm__ __volatile__( "rdtsc" : "=a"( lo ) );
-#endif
-			return lo;
-		}
-
-		inline auto global_rng( ) -> std::default_random_engine & {
-			thread_local std::default_random_engine e{get_seed( )};
+		static inline std::default_random_engine & global_rng( ) {
+			static thread_local auto e = std::default_random_engine( );
 			return e;
 		}
 	} // namespace impl
@@ -65,7 +57,7 @@ namespace daw {
 	}
 
 	inline void reseed( ) {
-		impl::global_rng( ).seed( impl::get_seed( ) );
+		impl::global_rng( ) = std::default_random_engine( );
 	}
 
 	inline void reseed( std::default_random_engine::result_type value ) {
