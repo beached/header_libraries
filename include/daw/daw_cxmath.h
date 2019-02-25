@@ -323,12 +323,6 @@ namespace daw {
 				return x;
 			}
 			auto const N = *exp;
-			if( x == std::numeric_limits<float>::min( ) ) {
-				return fpow2( N / 2 );
-			}
-			if( x == std::numeric_limits<float>::max( ) ) {
-				return fpow2( N / 2 ) * 2.0f;
-			}
 			auto const f = fexp2( x, 0 );
 
 			auto y = 0.41731f + ( 0.59016f * f );
