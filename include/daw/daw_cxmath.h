@@ -259,11 +259,17 @@ namespace daw {
 			// Once c++20 use bit_cast
 			if( f == 0.0f ) {
 				return 0;
-			} else if( f > std::numeric_limits<float>::max( ) ) {
+			}
+			if( f > std::numeric_limits<float>::max( ) ) {
+				// inf
 				return std::nullopt;
-			} else if( f < -std::numeric_limits<float>::max( ) ) {
+			}
+			if( f < -std::numeric_limits<float>::max( ) ) {
+				// -inf
 				return std::nullopt;
-			} else if( f != f ) {
+			}
+			if( f != f ) {
+				// NaN
 				return std::nullopt;
 			}
 			int32_t exponent = 254;
