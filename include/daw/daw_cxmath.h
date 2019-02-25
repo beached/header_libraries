@@ -197,15 +197,17 @@ namespace daw {
 			constexpr Float pow2_impl2( intmax_t exp ) noexcept {
 				bool is_neg = exp < 0;
 				exp = is_neg ? -exp : exp;
-				auto const max_shft = daw::min( static_cast<size_t>( std::numeric_limits<Float>::max_exponent10 ), (sizeof( size_t ) * 8ULL) );
+				auto const max_shft = daw::min(
+				  static_cast<size_t>( std::numeric_limits<Float>::max_exponent10 ),
+				  ( sizeof( size_t ) * 8ULL ) );
 				Float result = 1.0;
 
 				while( static_cast<size_t>( exp ) >= max_shft ) {
-					result *=	static_cast<Float>( std::numeric_limits<size_t>::max( ) );
+					result *= static_cast<Float>( std::numeric_limits<size_t>::max( ) );
 					exp -= max_shft;
 				}
 				if( exp > 0 ) {
-					result *=	static_cast<Float>( 1ULL << static_cast<size_t>( exp ) );
+					result *= static_cast<Float>( 1ULL << static_cast<size_t>( exp ) );
 				}
 				if( is_neg && result != 0.0 ) {
 					result = static_cast<Float>( 1.0 ) / result;
@@ -228,13 +230,23 @@ namespace daw {
 			template<typename Float>
 			class pow2_t {
 				static constexpr std::array const m_tbl = calc_pow2s<Float>( );
+
 			public:
 				template<typename Result>
 				static constexpr Result get( intmax_t pos ) noexcept {
 					auto const zero = static_cast<intmax_t>( m_tbl.size( ) / 2ULL );
-					return static_cast<Result>( m_tbl[static_cast<size_t>(zero + pos)] );
+					return static_cast<Result>(
+					  m_tbl[static_cast<size_t>( zero + pos )] );
 				}
 			};
+			constexpr float fexp3( float X, int16_t exponent, int16_t old_exponent ) noexcept {
+				auto const exp_diff = exponent - old_exponent;
+				if( exp_diff > 0 ) {
+					return fpow2( exp_diff ) * X;
+				}
+				return X / fpow2( -exp_diff );
+			}
+
 		} // namespace cxmath_impl
 
 		template<int32_t exp>
@@ -244,7 +256,7 @@ namespace daw {
 
 		constexpr float fpow2( int32_t exp ) noexcept {
 			return cxmath_impl::pow2_t<double>::get<float>( exp );
-			//return cxmath_impl::pow2_impl2<float>( exp );
+			// return cxmath_impl::pow2_impl2<float>( exp );
 		}
 
 		constexpr float fexp2( float X, int16_t exponent ) noexcept {
@@ -323,7 +335,7 @@ namespace daw {
 				return x;
 			}
 			auto const N = *exp;
-			auto const f = fexp2( x, 0 );
+			auto const f = cxmath_impl::fexp3( x, 0, N );
 
 			auto y = 0.41731f + ( 0.59016f * f );
 			auto const z = y + ( f / y );
