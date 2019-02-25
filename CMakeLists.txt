@@ -144,6 +144,7 @@ set( TESTED_ITERATOR_HEADERS_PREFIXES_NB
 	daw_integer_iterator
 	daw_output_stream_iterator
 	daw_random_iterator
+	daw_repeat_n_char_iterator
 	daw_reverse_iterator
 	daw_sorted_insert_iterator
 #	daw_split_iterator

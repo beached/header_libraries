@@ -239,7 +239,8 @@ namespace daw {
 					  m_tbl[static_cast<size_t>( zero + pos )] );
 				}
 			};
-			constexpr float fexp3( float X, int16_t exponent, int16_t old_exponent ) noexcept {
+			constexpr float fexp3( float X, int16_t exponent,
+			                       int16_t old_exponent ) noexcept {
 				auto const exp_diff = exponent - old_exponent;
 				if( exp_diff > 0 ) {
 					return fpow2( exp_diff ) * X;
@@ -337,10 +338,10 @@ namespace daw {
 			auto const N = *exp;
 			auto const f = cxmath_impl::fexp3( x, 0, N );
 
-			auto y = 0.41731f + ( 0.59016f * f );
-			auto const z = y + ( f / y );
-			y = ( 0.25f * z ) + ( f / z );
-			y = 0.5f * ( y + ( f / y ) );
+			auto const y0 = ( 0.41731f + ( 0.59016f * f ) );
+			auto const z = ( y0 + ( f / y0 ) );
+			auto const y2 = ( 0.25f * z ) + ( f / z );
+			auto y = 0.5f * ( y2 + ( f / y2 ) );
 
 			if( is_odd( N ) ) {
 				y /= cxmath_impl::sqrt2<float>;
