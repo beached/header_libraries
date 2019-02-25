@@ -28,6 +28,12 @@
 #include "daw/daw_cxmath.h"
 #include "daw/daw_random.h"
 
+template<typename Float>
+constexpr bool flt_eql_exact( Float lhs, Float rhs ) noexcept {
+	// Gets rid of warnings for things we know
+	return !( lhs < rhs ) and !( rhs < lhs );
+}
+
 static_assert( daw::cxmath::cxmath_impl::bits( 2.0f ).raw_value( ) ==
                0x4000'0000U );
 static_assert( daw::cxmath::cxmath_impl::bits( 234324.34375f ).raw_value( ) ==
@@ -36,15 +42,15 @@ static_assert( daw::cxmath::cxmath_impl::bits( -1.99999988079071044921875f )
                  .raw_value( ) == 0xbfff'ffffU );
 static_assert( daw::cxmath::cxmath_impl::bits( 0.0f ).raw_value( ) ==
                0x0000'0000U );
-static_assert( daw::cxmath::sqrt( 4.0f ) == 2.0f );
-static_assert( daw::cxmath::copy_sign( 2.0f, 1 ) == 2.0f );
-static_assert( daw::cxmath::copy_sign( 2.0f, -1 ) == -2.0f );
-static_assert( daw::cxmath::copy_sign( -2.0f, -1 ) == -2.0f );
-static_assert( daw::cxmath::copy_sign( -2.0f, 1 ) == 2.0f );
-static_assert( daw::cxmath::fpow2( -1 ) == 0.5f );
-static_assert( daw::cxmath::fpow2( -2 ) == 0.25f );
-static_assert( daw::cxmath::fpow2( 1 ) == 2.0f );
-static_assert( daw::cxmath::fpow2( 2 ) == 4.0f );
+static_assert( flt_eql_exact( daw::cxmath::sqrt( 4.0f ), 2.0f ) );
+static_assert( flt_eql_exact( daw::cxmath::copy_sign( 2.0f, 1 ), 2.0f ) );
+static_assert( flt_eql_exact( daw::cxmath::copy_sign( 2.0f, -1 ), -2.0f ) );
+static_assert( flt_eql_exact( daw::cxmath::copy_sign( -2.0f, -1 ), -2.0f ) );
+static_assert( flt_eql_exact( daw::cxmath::copy_sign( -2.0f, 1 ), 2.0f ) );
+static_assert( flt_eql_exact( daw::cxmath::fpow2( -1 ), 0.5f ) );
+static_assert( flt_eql_exact( daw::cxmath::fpow2( -2 ), 0.25f ) );
+static_assert( flt_eql_exact( daw::cxmath::fpow2( 1 ), 2.0f ) );
+static_assert( flt_eql_exact( daw::cxmath::fpow2( 2 ), 4.0f ) );
 
 void out_sqrt( float f ) {
 	auto result = daw::cxmath::sqrt( f );
@@ -116,7 +122,7 @@ int main( ) {
 		                            return sum;
 	                            },
 	                            nums );
-		daw::bench_n_test<100'000>( "daw::cxmath::fexp2( flt, 0 )",
+	daw::bench_n_test<100'000>( "daw::cxmath::fexp2( flt, 0 )",
 	                            []( auto &&floats ) {
 		                            float sum = 0.0f;
 		                            for( auto num : floats ) {
