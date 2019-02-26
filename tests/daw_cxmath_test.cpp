@@ -51,6 +51,7 @@ static_assert( flt_eql_exact( daw::cxmath::fpow2( -1 ), 0.5f ) );
 static_assert( flt_eql_exact( daw::cxmath::fpow2( -2 ), 0.25f ) );
 static_assert( flt_eql_exact( daw::cxmath::fpow2( 1 ), 2.0f ) );
 static_assert( flt_eql_exact( daw::cxmath::fpow2( 2 ), 4.0f ) );
+static_assert( flt_eql_exact( daw::cxmath::dpow2( 0 ), 1.0 ) );
 
 void out_sqrt( float f ) {
 	auto result = daw::cxmath::sqrt( f );
@@ -65,6 +66,9 @@ void out_sqrt( float f ) {
 }
 
 int main( ) {
+	std::cout << "pow10( -1 ) -> " << daw::cxmath::dpow10( -1 ) << '\n';
+	std::cout << "pow10( -2 ) -> " << daw::cxmath::dpow10( -2 ) << '\n';
+	std::cout << "pow10( -3 ) -> " << daw::cxmath::dpow10( -3 ) << '\n';
 	std::cout.precision( std::numeric_limits<float>::max_digits10 );
 	out_sqrt( -1.0f );
 	out_sqrt( 0.1f );

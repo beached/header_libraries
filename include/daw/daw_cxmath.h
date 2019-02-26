@@ -318,7 +318,7 @@ namespace daw {
 		}
 
 		template<int32_t exp>
-		constexpr float dpow2( ) noexcept {
+		constexpr double dpow2( ) noexcept {
 			return cxmath_impl::pow2_t<double>::get( exp );
 		}
 
@@ -328,7 +328,7 @@ namespace daw {
 		}
 
 		template<int32_t exp>
-		constexpr float dpow10( ) noexcept {
+		constexpr double dpow10( ) noexcept {
 			return cxmath_impl::pow10_t<double>::get( exp );
 		}
 
@@ -336,7 +336,7 @@ namespace daw {
 			return cxmath_impl::pow2_t<double>::get<float>( exp );
 		}
 
-		constexpr float dpow2( int32_t exp ) noexcept {
+		constexpr double dpow2( int32_t exp ) noexcept {
 			return cxmath_impl::pow2_t<double>::get( exp );
 		}
 
@@ -344,7 +344,7 @@ namespace daw {
 			return cxmath_impl::pow10_t<double>::get<float>( exp );
 		}
 
-		constexpr float dpow10( int32_t exp ) noexcept {
+		constexpr double dpow10( int32_t exp ) noexcept {
 			return cxmath_impl::pow10_t<double>::get( exp );
 		}
 
