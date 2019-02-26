@@ -383,7 +383,7 @@ namespace daw {
 			return cxmath_impl::fpow10_t<double>::get( exp );
 		}
 
-		constexpr uintmax_t dpow10( size_t exp ) noexcept {
+		constexpr uintmax_t pow10( size_t exp ) noexcept {
 			return cxmath_impl::fpow10_t<uintmax_t>::get( exp );
 		}
 
