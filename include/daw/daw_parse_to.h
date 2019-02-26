@@ -52,7 +52,7 @@ namespace daw {
 			namespace helpers {
 				template<typename Result>
 				constexpr Result parse_int( daw::string_view &str ) {
-					intmax_t count = std::numeric_limits<Result>::digits10;
+					intmax_t count = std::numeric_limits<Result>::digits;
 					Result result = 0;
 					bool is_neg = false;
 					if( '-' == str.front( ) ) {
