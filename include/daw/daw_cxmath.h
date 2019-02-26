@@ -215,7 +215,7 @@ namespace daw {
 				return result;
 			}
 
-			constexpr size_t pow10_impl( uint8_t exp ) noexcept {
+			constexpr size_t pow10_impl( int exp ) noexcept {
 				// exp is < floor( log10( numeric_limits<size_t>::max( ) ) )
 				size_t result = 1ULL;
 				while( exp-- > 0 ) {
@@ -224,17 +224,23 @@ namespace daw {
 				return result;
 			}
 
+			template<int exp>
+			constexpr size_t pow10_impl( ) noexcept {
+				return pow10_impl( exp );
+			}
+
 			template<typename Float>
 			constexpr Float pow10_impl2( intmax_t exp ) noexcept {
 				bool is_neg = exp < 0;
 				exp = is_neg ? -exp : exp;
-				auto const max_spow = daw::min(
-				  static_cast<size_t>( std::numeric_limits<Float>::max_exponent10 ),
-				  static_cast<size_t>( std::numeric_limits<size_t>::max_digits10 ) );
+
+				auto const max_spow =
+				  daw::min( std::numeric_limits<Float>::max_exponent10,
+				            std::numeric_limits<size_t>::digits10 );
 				Float result = 1.0;
 
-				while( static_cast<size_t>( exp ) >= max_spow ) {
-					result *= static_cast<Float>( pow10_impl( max_spow ) );
+				while( exp >= max_spow ) {
+					result *= static_cast<Float>( pow10_impl<max_spow>( ) );
 					exp -= max_spow;
 				}
 				if( exp > 0 ) {
@@ -328,7 +334,18 @@ namespace daw {
 
 		constexpr float fpow2( int32_t exp ) noexcept {
 			return cxmath_impl::pow2_t<double>::get<float>( exp );
-			// return cxmath_impl::pow2_impl2<float>( exp );
+		}
+
+		constexpr float dpow2( int32_t exp ) noexcept {
+			return cxmath_impl::pow2_t<double>::get( exp );
+		}
+
+		constexpr float fpow10( int32_t exp ) noexcept {
+			return cxmath_impl::pow10_t<double>::get<float>( exp );
+		}
+
+		constexpr float dpow10( int32_t exp ) noexcept {
+			return cxmath_impl::pow10_t<double>::get( exp );
 		}
 
 		constexpr float fexp2( float X, int16_t exponent ) noexcept {
