@@ -230,7 +230,7 @@ namespace daw {
 			}
 
 			template<typename Float>
-			constexpr Float pow10_impl2( intmax_t exp ) noexcept {
+			constexpr Float fpow10_impl2( intmax_t exp ) noexcept {
 				bool is_neg = exp < 0;
 				exp = is_neg ? -exp : exp;
 
@@ -252,6 +252,15 @@ namespace daw {
 				return result;
 			}
 
+			template<typename Integer>
+			constexpr Integer pow10_impl2( intmax_t exp ) noexcept {
+				Integer result = 1;
+				while( exp-- > 0 ) {
+					result *= 10;
+				}
+				return result;
+			}
+
 			template<typename Float>
 			constexpr auto calc_pow2s( ) noexcept {
 				intmax_t const min_e = std::numeric_limits<Float>::min_exponent10;
@@ -265,13 +274,23 @@ namespace daw {
 			}
 
 			template<typename Float>
-			constexpr auto calc_pow10s( ) noexcept {
+			constexpr auto calc_fpow10s( ) noexcept {
 				intmax_t const min_e = std::numeric_limits<Float>::min_exponent10;
 				intmax_t const max_e = std::numeric_limits<Float>::max_exponent10;
 				std::array<Float, max_e - min_e> result{};
 				intmax_t n = max_e - min_e;
 				while( n-- > 0 ) {
-					result[static_cast<size_t>( n )] = pow10_impl2<Float>( n + min_e );
+					result[static_cast<size_t>( n )] = fpow10_impl2<Float>( n + min_e );
+				}
+				return result;
+			}
+
+			template<typename Integer> 
+			constexpr auto calc_pow10s( ) noexcept {
+				std::array<Integer, std::numeric_limits<Integer>::digits10> result{};
+				intmax_t n = std::numeric_limits<Integer>::digits10; 
+				while( n-- > 0 ) {
+					result[static_cast<size_t>( n )] = pow10_impl2<Integer>( n );
 				}
 				return result;
 			}
@@ -290,8 +309,8 @@ namespace daw {
 			};
 
 			template<typename Float>
-			class pow10_t {
-				static constexpr std::array const m_tbl = calc_pow10s<Float>( );
+			class fpow10_t {
+				static constexpr std::array const m_tbl = calc_fpow10s<Float>( );
 
 			public:
 				template<typename Result = Float>
@@ -299,6 +318,17 @@ namespace daw {
 					auto const zero = static_cast<intmax_t>( m_tbl.size( ) / 2ULL );
 					return static_cast<Result>(
 					  m_tbl[static_cast<size_t>( zero + pos )] );
+				}
+			};
+
+			template<typename Integer>
+			class pow10_t {
+				static constexpr std::array const m_tbl = calc_pow10s<Integer>( );
+
+			public:
+				template<typename Result = Integer>
+				static constexpr Result get( size_t pos ) noexcept {
+					return static_cast<Result>( m_tbl[pos] );
 				}
 			};
 
@@ -324,12 +354,17 @@ namespace daw {
 
 		template<int32_t exp>
 		constexpr float fpow10( ) noexcept {
-			return cxmath_impl::pow10_t<double>::get<float>( exp );
+			return cxmath_impl::fpow10_t<double>::get<float>( exp );
 		}
 
 		template<int32_t exp>
 		constexpr double dpow10( ) noexcept {
-			return cxmath_impl::pow10_t<double>::get( exp );
+			return cxmath_impl::fpow10_t<double>::get( exp );
+		}
+
+		template<size_t exp>
+		constexpr uintmax_t pow10( ) noexcept {
+			return cxmath_impl::fpow10_t<uintmax_t>::get( exp );
 		}
 
 		constexpr float fpow2( int32_t exp ) noexcept {
@@ -341,11 +376,15 @@ namespace daw {
 		}
 
 		constexpr float fpow10( int32_t exp ) noexcept {
-			return cxmath_impl::pow10_t<double>::get<float>( exp );
+			return cxmath_impl::fpow10_t<double>::get<float>( exp );
 		}
 
 		constexpr double dpow10( int32_t exp ) noexcept {
-			return cxmath_impl::pow10_t<double>::get( exp );
+			return cxmath_impl::fpow10_t<double>::get( exp );
+		}
+
+		constexpr uintmax_t dpow10( size_t exp ) noexcept {
+			return cxmath_impl::fpow10_t<uintmax_t>::get( exp );
 		}
 
 		constexpr float fexp2( float X, int16_t exponent ) noexcept {
