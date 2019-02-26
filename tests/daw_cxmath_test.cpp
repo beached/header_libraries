@@ -52,6 +52,7 @@ static_assert( flt_eql_exact( daw::cxmath::fpow2( -2 ), 0.25f ) );
 static_assert( flt_eql_exact( daw::cxmath::fpow2( 1 ), 2.0f ) );
 static_assert( flt_eql_exact( daw::cxmath::fpow2( 2 ), 4.0f ) );
 static_assert( flt_eql_exact( daw::cxmath::dpow2( 0 ), 1.0 ) );
+static_assert( daw::cxmath::pow10_v<5> == 100000 );
 
 void out_sqrt( float f ) {
 	auto result = daw::cxmath::sqrt( f );

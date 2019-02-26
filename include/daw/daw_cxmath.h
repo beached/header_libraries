@@ -343,29 +343,19 @@ namespace daw {
 		} // namespace cxmath_impl
 
 		template<int32_t exp>
-		constexpr float fpow2( ) noexcept {
-			return cxmath_impl::pow2_t<double>::get<float>( exp );
-		}
+		constexpr float fpow2_v = cxmath_impl::pow2_t<double>::get<float>( exp );
 
 		template<int32_t exp>
-		constexpr double dpow2( ) noexcept {
-			return cxmath_impl::pow2_t<double>::get( exp );
-		}
+		constexpr double dpow2_v = cxmath_impl::pow2_t<double>::get( exp );
 
 		template<int32_t exp>
-		constexpr float fpow10( ) noexcept {
-			return cxmath_impl::fpow10_t<double>::get<float>( exp );
-		}
+		constexpr float fpow10_v = cxmath_impl::fpow10_t<double>::get<float>( exp );
 
 		template<int32_t exp>
-		constexpr double dpow10( ) noexcept {
-			return cxmath_impl::fpow10_t<double>::get( exp );
-		}
+		constexpr double dpow10_v = cxmath_impl::fpow10_t<double>::get( exp );
 
 		template<size_t exp>
-		constexpr uintmax_t pow10( ) noexcept {
-			return cxmath_impl::fpow10_t<uintmax_t>::get( exp );
-		}
+		constexpr uintmax_t pow10_v = cxmath_impl::pow10_t<uintmax_t>::get( exp );
 
 		constexpr float fpow2( int32_t exp ) noexcept {
 			return cxmath_impl::pow2_t<double>::get<float>( exp );
@@ -384,7 +374,7 @@ namespace daw {
 		}
 
 		constexpr uintmax_t pow10( size_t exp ) noexcept {
-			return cxmath_impl::fpow10_t<uintmax_t>::get( exp );
+			return cxmath_impl::pow10_t<uintmax_t>::get( exp );
 		}
 
 		constexpr float fexp2( float X, int16_t exponent ) noexcept {
