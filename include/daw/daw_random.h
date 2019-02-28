@@ -82,7 +82,7 @@ namespace daw {
 		               "IntType must be a valid integral type" );
 		daw::exception::daw_throw_on_false( a <= b, "a <= b must be true" );
 		while( first != last ) {
-			*first++ = randint( a, b );
+			*first++ = randint<IntType>( a, b );
 		}
 	}
 
