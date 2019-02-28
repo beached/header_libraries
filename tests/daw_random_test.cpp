@@ -35,6 +35,13 @@ void daw_random_01( ) {
 	}
 }
 
+void daw_random_02( ) {
+	for( auto n = 0; n < 100000; ++n ) {
+		auto v1 = daw::randint<int64_t>( std::numeric_limits<int64_t>::min( ), std::numeric_limits<int64_t>::max( ) );
+		daw::expecting( std::numeric_limits<int64_t>::min( ) <= v1 && v1 <= std::numeric_limits<int64_t>::max( ) );
+	}
+}
+
 void daw_shuffle_01( ) {
 	std::vector<int32_t> a;
 	daw::shuffle( a.begin( ), a.end( ) );
@@ -94,6 +101,7 @@ void cxrand_test_002( ) {
 
 int main( ) {
 	daw_random_01( );
+	daw_random_02( );
 	daw_shuffle_01( );
 	daw_fill_01( );
 	daw_make_random_01( );
