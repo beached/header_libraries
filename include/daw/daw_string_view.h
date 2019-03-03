@@ -117,9 +117,7 @@ namespace daw {
 		constexpr basic_string_view( const_pointer s,
 		                             size_type count = npos ) noexcept
 		  : m_first( s )
-		  , m_size( s == nullptr
-		              ? 0
-		              : count == npos ? details::strlen<size_type>( s ) : count ) {}
+		  , m_size( details::sstrlen<size_type>( s, count, npos ) ) {}
 
 		constexpr basic_string_view( basic_string_view sv,
 		                             size_type count ) noexcept

@@ -83,6 +83,29 @@ namespace daw {
 			return static_cast<SizeT>( pos - str );
 		}
 
+		template<typename SizeT>
+		constexpr SizeT sstrlen( std::nullptr_t, SizeT, SizeT ) noexcept {
+			return 0;
+		}
+
+		template<typename SizeT, typename CharT>
+		constexpr SizeT sstrlen( CharT const * const str, SizeT count, SizeT npos ) noexcept {
+			auto pos = str;
+#ifndef __GNUC__
+			// Bug in C++ says this isn't a constexpr
+			if( nullptr == pos ) {
+				return 0ULL;
+			}
+#endif
+			if( count != npos ) {
+				return count;
+			}
+			while( *( pos ) != 0 ) {
+				++pos;
+			}
+			return static_cast<SizeT>( pos - str );
+		}
+
 		template<typename InputIt, typename ForwardIt, typename BinaryPredicate>
 		constexpr InputIt find_first_of(
 		  InputIt first, InputIt last, ForwardIt s_first, ForwardIt s_last,
@@ -224,9 +247,9 @@ namespace daw {
 		template<typename CharT, size_t Capacity, typename OStream,
 		         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,
 		                          std::nullptr_t> = nullptr>
-		void sv_insert_aligned(
-		  OStream &os,
-		  daw::basic_bounded_string<CharT, Capacity> const &str ) {
+		void
+		sv_insert_aligned( OStream &os,
+		                   daw::basic_bounded_string<CharT, Capacity> const &str ) {
 
 			auto const size = str.size( );
 			auto const alignment_size =
