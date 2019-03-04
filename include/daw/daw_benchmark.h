@@ -261,6 +261,78 @@ namespace daw {
 		return result;
 	}
 
+	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
+	auto bench_n_test_mbs( std::string const &title, size_t bytes, Test &&test_callable,
+	                   Args &&... args ) noexcept {
+		static_assert( Runs > 0 );
+		using result_t = daw::remove_cvref_t<decltype( daw::expected_from_code(
+		  test_callable, std::forward<Args>( args )... ) )>;
+
+		result_t result{};
+
+		double base_time = std::numeric_limits<double>::max( );
+		{
+			for( size_t n = 0; n < 1000; ++n ) {
+				bench_impl::expander( ( daw::do_not_optimize( args ), 1 )... );
+
+				int a = 0;
+				daw::do_not_optimize( a );
+				auto const start = std::chrono::high_resolution_clock::now( );
+				auto r = daw::expected_from_code( [a]( ) { return a * a; } );
+				auto const finish = std::chrono::high_resolution_clock::now( );
+				daw::do_not_optimize( r );
+				auto const duration =
+				  std::chrono::duration<double>( finish - start ).count( );
+				if( duration < base_time ) {
+					base_time = duration;
+				}
+			}
+		}
+		double min_time = std::numeric_limits<double>::max( );
+		double max_time = 0.0;
+
+		auto const total_start = std::chrono::high_resolution_clock::now( );
+		for( size_t n = 0; n < Runs; ++n ) {
+			bench_impl::expander( ( daw::do_not_optimize( args ), 1 )... );
+			auto const start = std::chrono::high_resolution_clock::now( );
+
+			result =
+			  daw::expected_from_code( std::forward<Test>( test_callable ), args... );
+
+			auto const finish = std::chrono::high_resolution_clock::now( );
+			daw::do_not_optimize( result );
+			auto const duration =
+			  std::chrono::duration<double>( finish - start ).count( );
+			if( duration < min_time ) {
+				min_time = duration;
+			}
+			if( duration > max_time ) {
+				max_time = duration;
+			}
+		}
+		auto const total_finish = std::chrono::high_resolution_clock::now( );
+		min_time -= base_time;
+		max_time -= base_time;
+		auto total_time =
+		  std::chrono::duration<double>( total_finish - total_start ).count( ) -
+		  static_cast<double>( Runs ) * base_time;
+
+		auto avg_time =
+		  Runs >= 10 ? ( total_time - max_time ) / static_cast<double>( Runs - 1 )
+		             : total_time / static_cast<double>( Runs );
+		avg_time -= base_time;
+		std::cout << title << delem << "	runs: " << Runs << delem
+		          << "	total: " << utility::format_seconds( total_time, 2 )
+		          << delem << "	avg: " << utility::format_seconds( avg_time, 2 )
+		          << " -> " << utility::to_bytes_per_second( bytes, avg_time, 2 )
+		          << delem << "	min: " << utility::format_seconds( min_time, 2 )
+		          << " -> " << utility::to_bytes_per_second( bytes, min_time, 2 )
+		          << delem << "	max: " << utility::format_seconds( max_time, 2 )
+		          << " -> " << utility::to_bytes_per_second( bytes, max_time, 2 )
+		          << '\n';
+		return result;
+	}
+
 	namespace expecting_impl {
 		template<typename T>
 		using detect_streamable =
