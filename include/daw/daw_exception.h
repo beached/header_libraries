@@ -310,23 +310,27 @@ namespace daw {
 			}
 		}
 #ifndef NODEBUGTHROW
-	} // namespace exception
-} // namespace daw
 		template<typename Bool, typename... Args>
 		constexpr void dbg_precondition_check( Bool &&condition, Args &&... args ) {
-			std::terminate( );
+			if( !condition ) {
+		    std::terminate( );
+	    }
 		}
 
 		template<typename Bool, typename... Args>
 		constexpr void dbg_postcondition_check( Bool &&condition,
 		                                        Args &&... args ) {
-			std::terminate( );
+			if( !condition ) {
+		    std::terminate( );
+	    }
 		}
-    namespace daw {
-	    namespace exception {
 #else
-#define dbg_precondition_check( cond,... ) ;
-#define dbg_postcondition_check( cond,... ) ;
+		template<typename Bool, typename... Args>
+		constexpr void dbg_precondition_check( Bool &&, Args &&... ) {}
+
+		template<typename Bool, typename... Args>
+		constexpr void dbg_postcondition_check( Bool &&,
+		                                        Args &&... ) {}
 #endif
 		template<typename ExceptionType = AssertException, typename ValueType,
 		         typename... Args, typename Bool>
