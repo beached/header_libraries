@@ -122,7 +122,8 @@ namespace daw {
 			daw_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
 #else
-#define debug_throw( args ) ;
+		template<typename ExceptionType = DefaultException, typename...Args>
+		constexpr void debug_throw( Args &&... ) {}
 #endif
 
 #ifndef NODEBUGTHROW
@@ -135,7 +136,10 @@ namespace daw {
 			}
 		}
 #else
-#define dbg_throw_on_null( value, args ) ;
+		template<typename ExceptionType = NullPtrAccessException,
+		         typename ValueType, typename...Args>
+		constexpr void dbg_throw_on_null( ValueType &&, Args &&... ) {}
+
 #endif
 
 #ifndef NODEBUGTHROW
@@ -149,7 +153,12 @@ namespace daw {
 			return value;
 		}
 #else
-#define dbg_throw_on_null_or_return( value, args ) ( value );
+		template<typename ExceptionType = NullPtrAccessException,
+		         typename ValueType, typename...Args>
+		constexpr ValueType *dbg_throw_on_null_or_return( ValueType *value,
+		                                                  Args &&... args ) {
+			return value;
+		}
 #endif
 
 #ifndef NODEBUGTHROW
