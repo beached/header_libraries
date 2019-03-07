@@ -309,8 +309,9 @@ namespace daw {
 				}
 			}
 		}
-
 #ifndef NODEBUGTHROW
+	} // namespace exception
+} // namespace daw
 		template<typename Bool, typename... Args>
 		constexpr void dbg_precondition_check( Bool &&condition, Args &&... args ) {
 			std::terminate( );
@@ -321,10 +322,11 @@ namespace daw {
 		                                        Args &&... args ) {
 			std::terminate( );
 		}
+    namespace daw {
+	    namespace exception {
 #else
 #define dbg_precondition_check( cond,... ) ;
 #define dbg_postcondition_check( cond,... ) ;
-
 #endif
 		template<typename ExceptionType = AssertException, typename ValueType,
 		         typename... Args, typename Bool>
@@ -498,4 +500,4 @@ namespace daw {
 		}
 #endif
 	} // namespace exception
-} // namespace daw
+  } // namespace daw
