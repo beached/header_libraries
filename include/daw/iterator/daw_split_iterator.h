@@ -109,9 +109,10 @@ namespace daw {
 	struct split_it<
 	  Iterator, Splitter,
 	  std::enable_if_t<
-	    !is_same_v<std::decay_t<decltype( *std::declval<Iterator>( ) )>, char>>> {
+	    !is_same_v<char, typename std::iterator_traits<Iterator>::value_type>>> {
+
 		using CharT = typename std::iterator_traits<Iterator>::value_type;
-		static_assert( daw::is_unary_predicate_v<Splitter, CharT>,
+		static_assert( daw::traits::is_unary_predicate_v<Splitter, CharT>,
 		               "Splitter does not fullfill the roll of a Unary Predicate "
 		               "that takes a CharT as it's argument" );
 		using iterator_category = std::bidirectional_iterator_tag;
@@ -339,9 +340,10 @@ namespace daw {
 	struct split_it<
 	  Iterator, Splitter,
 	  std::enable_if_t<
-	    is_same_v<std::decay_t<decltype( *std::declval<Iterator>( ) )>, char>>> {
-		using CharT = typename std::iterator_traits<Iterator>::value_type;
-		static_assert( daw::is_unary_predicate_v<Splitter, CharT>,
+	    is_same_v<char, typename std::iterator_traits<Iterator>::value_type>>> {
+
+		using CharT = char;
+		static_assert( daw::traits::is_unary_predicate_v<Splitter, CharT>,
 		               "Splitter does not fullfill the roll of a Unary Predicate "
 		               "that takes a CharT as it's argument" );
 		using iterator_category = std::bidirectional_iterator_tag;
@@ -568,17 +570,17 @@ namespace daw {
 	namespace impl {
 		template<typename String>
 		using string_char_t =
-		  std::decay_t<decltype( *std::cbegin( std::declval<String>( ) ) )>;
+		  daw::remove_cvref_t<decltype( *std::cbegin( std::declval<String>( ) ) )>;
 
 		template<typename Splitter, typename String>
 		constexpr bool is_splitter_v =
-		  daw::is_unary_predicate_v<Splitter, string_char_t<String>>;
+		  daw::traits::is_unary_predicate_v<Splitter, string_char_t<String>>;
 	} // namespace impl
 
 	template<typename String, typename Splitter,
 	         daw::required<impl::is_splitter_v<Splitter, String>> = nullptr>
 	constexpr auto make_split_it( String &sv, Splitter &&splitter ) noexcept {
-		using IterT = decltype( std::begin( sv ) );
+		using IterT = daw::remove_cvref_t<decltype( std::begin( sv ) )>;
 		auto result = split_it<IterT, Splitter>{std::begin( sv ), std::end( sv ),
 		                                        std::forward<Splitter>( splitter )};
 		return result;
@@ -586,13 +588,12 @@ namespace daw {
 
 	template<typename CharT, typename Traits, typename Allocator>
 	constexpr auto
-	make_split_it( std::basic_string<CharT, Traits, Allocator> const &str,
+	make_split_it( std::basic_string<CharT, Traits, Allocator> &str,
 	               CharT divider ) noexcept {
 		using SpltT = char_splitter_t<CharT>;
-		using iterator =
-		  typename std::basic_string<CharT, Traits, Allocator>::iterator;
+		using iterator = daw::remove_cvref_t<decltype( str.begin( ) )>;
 
 		return split_it<iterator, SpltT>( str.begin( ), str.end( ),
-		                                  SpltT{daw::move( divider )} );
+		                                  SpltT{ divider } );
 	}
 } // namespace daw

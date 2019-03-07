@@ -291,7 +291,31 @@ namespace daw {
 
 		template<typename ExceptionType = Terminator, typename Bool,
 		         typename... Args>
+		constexpr void postcondition_check( Bool &&condition, Args &&... args ) {
+			if( !static_cast<bool>( condition ) ) {
+				if constexpr( std::is_same_v<Terminator, ExceptionType> ) {
+					std::terminate( );
+				} else {
+					daw_throw<ExceptionType>( std::forward<Args>( args )... );
+				}
+			}
+		}
+
+		template<typename ExceptionType = Terminator, typename Bool,
+		         typename... Args>
 		constexpr void dbg_precondition_check( Bool &&condition, Args &&... args ) {
+			if( !static_cast<bool>( condition ) ) {
+				if constexpr( std::is_same_v<Terminator, ExceptionType> ) {
+					std::terminate( );
+				} else {
+					debug_throw<ExceptionType>( std::forward<Args>( args )... );
+				}
+			}
+		}
+
+		template<typename ExceptionType = Terminator, typename Bool,
+		         typename... Args>
+		constexpr void dbg_postcondition_check( Bool &&condition, Args &&... args ) {
 			if( !static_cast<bool>( condition ) ) {
 				if constexpr( std::is_same_v<Terminator, ExceptionType> ) {
 					std::terminate( );
