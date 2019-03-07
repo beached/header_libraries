@@ -310,30 +310,22 @@ namespace daw {
 			}
 		}
 
-		template<typename ExceptionType = Terminator, typename Bool,
-		         typename... Args>
+#ifndef NODEBUGTHROW
+		template<typename Bool, typename... Args>
 		constexpr void dbg_precondition_check( Bool &&condition, Args &&... args ) {
-			if( !static_cast<bool>( condition ) ) {
-				if constexpr( std::is_same_v<Terminator, ExceptionType> ) {
-					std::terminate( );
-				} else {
-					debug_throw<ExceptionType>( std::forward<Args>( args )... );
-				}
-			}
+			std::terminate( );
 		}
 
-		template<typename ExceptionType = Terminator, typename Bool,
-		         typename... Args>
-		constexpr void dbg_postcondition_check( Bool &&condition, Args &&... args ) {
-			if( !static_cast<bool>( condition ) ) {
-				if constexpr( std::is_same_v<Terminator, ExceptionType> ) {
-					std::terminate( );
-				} else {
-					debug_throw<ExceptionType>( std::forward<Args>( args )... );
-				}
-			}
+		template<typename Bool, typename... Args>
+		constexpr void dbg_postcondition_check( Bool &&condition,
+		                                        Args &&... args ) {
+			std::terminate( );
 		}
+#else
+#define dbg_precondition_check( cond,... ) ;
+#define dbg_postcondition_check( cond,... ) ;
 
+#endif
 		template<typename ExceptionType = AssertException, typename ValueType,
 		         typename... Args, typename Bool>
 		constexpr ValueType daw_throw_on_false_or_return( ValueType &&value,
