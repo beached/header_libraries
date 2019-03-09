@@ -89,21 +89,18 @@ namespace daw {
 		}
 
 		template<typename SizeT, typename CharT>
-		constexpr SizeT sstrlen( CharT const * const str, SizeT count, SizeT npos ) noexcept {
-			auto pos = str;
+		constexpr SizeT sstrlen( CharT const *const str, SizeT count,
+		                         SizeT npos ) noexcept {
 #ifndef __GNUC__
 			// Bug in C++ says this isn't a constexpr
-			if( nullptr == pos ) {
+			if( nullptr == str ) {
 				return 0ULL;
 			}
 #endif
 			if( count != npos ) {
 				return count;
 			}
-			while( *( pos ) != 0 ) {
-				++pos;
-			}
-			return static_cast<SizeT>( pos - str );
+			return strlen<SizeT>( str );
 		}
 
 		template<typename InputIt, typename ForwardIt, typename BinaryPredicate>
