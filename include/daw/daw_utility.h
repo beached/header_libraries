@@ -756,8 +756,8 @@ namespace daw {
 
 	namespace impl {
 		template<typename T, typename... Args>
-		using can_construct_a_detect =
-		  decltype( std::declval<daw::construct_a<T>>( )( std::declval<Args>( )... ) );
+		using can_construct_a_detect = decltype(
+		  std::declval<daw::construct_a<T>>( )( std::declval<Args>( )... ) );
 
 		template<typename... Args>
 		constexpr void is_tuple_test( std::tuple<Args...> const & ) noexcept;
@@ -962,4 +962,41 @@ namespace daw {
 	};
 	template<typename T>
 	std::atomic<T> countable_resource_t<T>::m_resource_count = {};
+
+	namespace utility_impl {
+		template<typename T>
+		class is_value_utility_impl;
+	}
+	template<typename T>
+	constexpr auto is_value( T &&value )
+	  -> ::daw::utility_impl::is_value_utility_impl<decltype( value )> {
+		return ::daw::utility_impl::is_value_utility_impl<decltype( value )>(
+		  std::forward<T>( value ) );
+	}
+
+	namespace utility_impl {
+		template<typename T>
+		class is_value_utility_impl {
+			T m_value;
+			constexpr is_value_utility_impl( T const &v )
+			  : m_value( v ) {}
+
+			template<typename U>
+			friend constexpr auto ::daw::is_value( U &&v )
+			  -> ::daw::utility_impl::is_value_utility_impl<decltype( v )>;
+
+		public:
+			is_value_utility_impl( is_value_utility_impl const & ) = delete;
+			is_value_utility_impl( is_value_utility_impl && ) = delete;
+			is_value_utility_impl &
+			operator=( is_value_utility_impl const & ) = delete;
+			is_value_utility_impl &operator=( is_value_utility_impl && ) = delete;
+			~is_value_utility_impl( ) = default;
+
+			template<typename... Args>
+			constexpr bool in( Args &&... args ) const && {
+				return ( ( m_value == args ) or ... );
+			}
+		};
+	} // namespace utility_impl
 } // namespace daw
