@@ -471,6 +471,10 @@ namespace daw {
 	template<typename Key, typename Hash = std::hash<Key>, size_t N>
 	constexpr auto
 	make_bounded_hash_set( Key const ( &items )[N] ) noexcept {
-		return bounded_hash_set_t<Key, N, Hash>( items );
+		auto result = bounded_hash_set_t<Key, N, Hash>{};
+		for( auto item: items ) {
+			result.insert( item );
+		}
+		return result;
 	}
 } // namespace daw

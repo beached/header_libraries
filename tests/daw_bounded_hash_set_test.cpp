@@ -23,6 +23,7 @@
 #include "daw/daw_benchmark.h"
 #include "daw/daw_bounded_hash_set.h"
 #include "daw/daw_fnv1a_hash.h"
+#include "daw/daw_string_view.h"
 
 constexpr bool test_002( ) {
 	size_t count = 1024ULL;
@@ -63,5 +64,13 @@ constexpr bool test_005( ) {
 	return true;
 }
 static_assert( test_005( ) );
+
+constexpr bool make_hash_set_001( ) {
+	auto hs = daw::make_bounded_hash_set<daw::string_view>( {"hello", "there"} );
+	return hs.count( "hello" ) != 0;
+}
+static_assert( make_hash_set_001( ) );
+
+
 
 int main( ) {}
