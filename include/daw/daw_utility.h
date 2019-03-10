@@ -967,23 +967,31 @@ namespace daw {
 		template<typename T>
 		class value_is_utility_impl;
 	}
+
 	template<typename T>
 	constexpr auto value_is( T &&value )
-	  -> ::daw::utility_impl::value_is_utility_impl<decltype( value )> {
-		return ::daw::utility_impl::value_is_utility_impl<decltype( value )>(
-		  std::forward<T>( value ) );
+	  -> ::daw::utility_impl::value_is_utility_impl<
+	    std::remove_reference_t<decltype( value )>> {
+
+		return {std::forward<T>( value )};
 	}
 
 	namespace utility_impl {
 		template<typename T>
 		class value_is_utility_impl {
-			T m_value;
+			T * m_value;
+
 			constexpr value_is_utility_impl( T const &v )
-			  : m_value( v ) {}
+			  : m_value( &v ) {}
+			constexpr value_is_utility_impl( T &v )
+			  : m_value( &v ) {}
+			constexpr value_is_utility_impl( T &&v )
+			  : m_value( &v ) {}
 
 			template<typename U>
 			friend constexpr auto ::daw::value_is( U &&v )
-			  -> ::daw::utility_impl::value_is_utility_impl<decltype( v )>;
+			  -> ::daw::utility_impl::value_is_utility_impl<
+			    std::remove_reference_t<decltype( v )>>;
 
 		public:
 			value_is_utility_impl( value_is_utility_impl const & ) = delete;
@@ -994,8 +1002,13 @@ namespace daw {
 			~value_is_utility_impl( ) = default;
 
 			template<typename... Args>
-			constexpr bool in( Args &&... args ) const && {
-				return ( ( m_value == args ) or ... );
+			constexpr bool one_of( Args &&... args ) const && {
+				return ( ( *m_value == args ) or ... );
+			}
+
+			template<typename... Args>
+			constexpr bool none_of( Args &&... args ) const && {
+				return ( ( *m_value != args ) and ... );
 			}
 		};
 	} // namespace utility_impl

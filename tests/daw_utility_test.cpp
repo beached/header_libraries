@@ -231,11 +231,17 @@ constexpr bool visit_nt_002( ) {
 }
 static_assert( visit_nt_002( ) );
 
-constexpr bool value_is_001( ) {
+constexpr bool value_is_one_of_001( ) {
 	int value = 134;
-	return daw::value_is( value ).in( 1, 2, 3, 134 );
+	return daw::value_is( value ).one_of( 1, 2, 3, 134 );
 }
-static_assert( value_is_001( ) );
+static_assert( value_is_one_of_001( ) );
+constexpr bool value_is_none_of_001( ) {
+	int value = 134;
+	return daw::value_is( value ).none_of( 1, 2, 3, 4 );
+}
+static_assert( value_is_none_of_001( ) );
+
 
 int main( ) {
 	daw_utility_append_test( );
