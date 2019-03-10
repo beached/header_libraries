@@ -467,4 +467,10 @@ namespace daw {
 			return {m_data.data( ), m_data.data( ) + m_data.size( ), &m_data[*idx]};
 		}
 	};
+
+	template<typename Key, typename Hash = std::hash<Key>, size_t N>
+	constexpr auto
+	make_bounded_hash_set( Key const ( &items )[N] ) noexcept {
+		return bounded_hash_set_t<Key, N, Hash>( items );
+	}
 } // namespace daw
