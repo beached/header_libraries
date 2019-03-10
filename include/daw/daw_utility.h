@@ -965,33 +965,33 @@ namespace daw {
 
 	namespace utility_impl {
 		template<typename T>
-		class is_value_utility_impl;
+		class value_is_utility_impl;
 	}
 	template<typename T>
-	constexpr auto is_value( T &&value )
-	  -> ::daw::utility_impl::is_value_utility_impl<decltype( value )> {
-		return ::daw::utility_impl::is_value_utility_impl<decltype( value )>(
+	constexpr auto value_is( T &&value )
+	  -> ::daw::utility_impl::value_is_utility_impl<decltype( value )> {
+		return ::daw::utility_impl::value_is_utility_impl<decltype( value )>(
 		  std::forward<T>( value ) );
 	}
 
 	namespace utility_impl {
 		template<typename T>
-		class is_value_utility_impl {
+		class value_is_utility_impl {
 			T m_value;
-			constexpr is_value_utility_impl( T const &v )
+			constexpr value_is_utility_impl( T const &v )
 			  : m_value( v ) {}
 
 			template<typename U>
-			friend constexpr auto ::daw::is_value( U &&v )
-			  -> ::daw::utility_impl::is_value_utility_impl<decltype( v )>;
+			friend constexpr auto ::daw::value_is( U &&v )
+			  -> ::daw::utility_impl::value_is_utility_impl<decltype( v )>;
 
 		public:
-			is_value_utility_impl( is_value_utility_impl const & ) = delete;
-			is_value_utility_impl( is_value_utility_impl && ) = delete;
-			is_value_utility_impl &
-			operator=( is_value_utility_impl const & ) = delete;
-			is_value_utility_impl &operator=( is_value_utility_impl && ) = delete;
-			~is_value_utility_impl( ) = default;
+			value_is_utility_impl( value_is_utility_impl const & ) = delete;
+			value_is_utility_impl( value_is_utility_impl && ) = delete;
+			value_is_utility_impl &
+			operator=( value_is_utility_impl const & ) = delete;
+			value_is_utility_impl &operator=( value_is_utility_impl && ) = delete;
+			~value_is_utility_impl( ) = default;
 
 			template<typename... Args>
 			constexpr bool in( Args &&... args ) const && {

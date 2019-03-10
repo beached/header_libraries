@@ -231,6 +231,12 @@ constexpr bool visit_nt_002( ) {
 }
 static_assert( visit_nt_002( ) );
 
+constexpr bool value_is_001( ) {
+	int value = 134;
+	return daw::value_is( value ).in( 1, 2, 3, 134 );
+}
+static_assert( value_is_001( ) );
+
 int main( ) {
 	daw_utility_append_test( );
 	daw_hex_test_001( );
