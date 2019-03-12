@@ -353,10 +353,11 @@ namespace daw {
 		template<typename T, typename U,
 		         std::enable_if_t<!(is_streamable_v<T> and is_streamable_v<U>),
 		                          std::nullptr_t> = nullptr>
-		constexpr void output_expected_error( T &&expected_result, U &&result ) {
+		constexpr void output_expected_error( T &&, U && ) {
 			std::cerr << "Invalid or unexpected result\n";
 		}
 	} // namespace expecting_impl
+
 	template<typename T, typename U>
 	constexpr void expecting( T &&expected_result, U &&result ) noexcept {
 		if( !( expected_result == result ) ) {
@@ -400,7 +401,7 @@ namespace daw {
 	         std::enable_if_t<std::is_invocable_v<Predicate, Exception>,
 	                          std::nullptr_t> = nullptr>
 	void expecting_exception( Expression &&expression,
-	                          Predicate &&pred = Predicate{} ) noexcept {
+	                          Predicate &&pred = Predicate{} ) {
 		try {
 			daw::invoke( std::forward<Expression>( expression ) );
 		} catch( Exception const &ex ) {

@@ -39,10 +39,16 @@ Base::~Base( ) = default;
 
 struct Child : Base {
 	Child( ) = default;
+	Child( Child const & ) = default;
+	Child( Child && ) = default;
+	Child &operator=( Child const & ) = default;
+	Child &operator=( Child && ) = default;
+	~Child( ) override;
 	char get( ) const override {
 		return 'C';
 	}
 };
+Child::~Child( ) {}
 
 struct Child2 : Base {
 	bool *ptr = nullptr;

@@ -39,7 +39,7 @@ namespace daw {
 		using reference = value_t &;
 		using const_reference = value_t const &;
 		using pointer = value_t *;
-		using const_pointer = value_t *const;
+		using const_pointer = value_t const *;
 
 		std::unique_ptr<value_t> m_value{std::make_unique<value_t>( )};
 

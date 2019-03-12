@@ -66,7 +66,8 @@ constexpr bool test_005( ) {
 static_assert( test_005( ) );
 
 constexpr bool make_hash_set_001( ) {
-	auto hs = daw::make_bounded_hash_set<daw::string_view>( {"hello", "there"} );
+	using namespace daw::string_view_literals;
+	auto hs = daw::make_bounded_hash_set<daw::string_view>( {"hello"_sv, "there"_sv} );
 	return hs.count( "hello" ) != 0;
 }
 static_assert( make_hash_set_001( ) );

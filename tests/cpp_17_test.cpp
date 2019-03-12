@@ -150,6 +150,7 @@ void bit_cast_003( ) {
 	constexpr double const as_dbl2 = -2.0;
 
 	bool const b2 = daw::bit_cast<uint64_t>( as_dbl2 ) == as_bin2;
+	::Unused( b2 );
 	daw::expecting( b1 );
 }
 

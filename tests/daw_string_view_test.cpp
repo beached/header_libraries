@@ -88,6 +88,7 @@ namespace daw {
 		daw::string_view a = "A test";
 		tmp_e result = tmp_e::b;
 		auto str = do_something( a, result );
+		::Unused( str );
 		daw::expecting( result == tmp_e::a );
 	}
 

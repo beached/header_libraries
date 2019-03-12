@@ -173,7 +173,7 @@ namespace daw {
 	} // namespace graph_alg_impl
 
 	template<typename T, typename Compare = daw::graph_alg_impl::NoSort>
-	void mst( daw::graph_t<T> &graph, Compare comp = Compare{} ) {
+	void mst( daw::graph_t<T> &graph, Compare /*TODO comp*/ = Compare{} ) {
 		auto root_ids = graph.find_roots( );
 		for( auto start_node_id : root_ids ) {
 			std::unordered_set<daw::node_id_t> visited{};

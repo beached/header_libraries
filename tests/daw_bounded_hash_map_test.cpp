@@ -61,6 +61,7 @@ namespace {
 
 constexpr bool test_const_001( ) noexcept {
 	auto const &hm = status_codes;
+	::Unused( status_codes2 );
 	auto t = *hm.find( 204 );
 	::Unused( t );
 	return hm.exists( 204 );

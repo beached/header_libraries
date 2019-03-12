@@ -28,19 +28,19 @@
 
 void daw_overload_001( ) {
 	struct A {
-		auto operator( )( int64_t a ) const {
+		auto operator( )( int64_t ) const {
 			std::cout << "A->int\n";
 			return 0;
 		}
 	};
 	struct B {
-		auto operator( )( std::string b ) const {
+		auto operator( )( std::string ) const {
 			std::cout << "B->std::string\n";
 			return 1;
 		}
 	};
 	struct C {
-		auto operator( )( bool b, bool c ) const {
+		auto operator( )( bool, bool ) const {
 			std::cout << "D->bool\n";
 			return 2;
 		}

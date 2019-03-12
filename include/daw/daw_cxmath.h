@@ -215,7 +215,7 @@ namespace daw {
 				return result;
 			}
 
-			constexpr size_t pow10_impl( int exp ) noexcept {
+			constexpr size_t pow10_impl( intmax_t exp ) noexcept {
 				// exp is < floor( log10( numeric_limits<size_t>::max( ) ) )
 				size_t result = 1ULL;
 				while( exp-- > 0 ) {
@@ -224,7 +224,7 @@ namespace daw {
 				return result;
 			}
 
-			template<int exp>
+			template<intmax_t exp>
 			constexpr size_t pow10_impl( ) noexcept {
 				return pow10_impl( exp );
 			}

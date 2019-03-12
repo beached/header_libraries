@@ -147,7 +147,7 @@ bool enable_if_any_func_test( std::string, ... ) {
 
 template<typename... Args, typename = typename daw::traits::enable_if_any<
                              bool, std::is_same<bool, Args>::value...>::type>
-constexpr bool enable_if_any_func_test( Args... args ) {
+constexpr bool enable_if_any_func_test( Args... ) {
 	return true;
 }
 
@@ -157,7 +157,7 @@ constexpr bool enable_if_all_func_test( bool ) {
 
 template<typename... Args, typename = typename daw::traits::enable_if_all<
                              bool, std::is_same<bool, Args>::value...>::type>
-constexpr bool enable_if_all_func_test( Args... args ) {
+constexpr bool enable_if_all_func_test( Args... ) {
 	return true;
 }
 

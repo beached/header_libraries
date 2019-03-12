@@ -820,7 +820,7 @@ namespace daw {
 
 	constexpr bool ctad_test( ) {
 		daw::basic_bounded_string blah = "Hello";
-		daw::expecting( blah.extent, 6 );
+		daw::expecting( blah.extent, 6U );
 		return true;
 	}
 	static_assert( ctad_test( ) );

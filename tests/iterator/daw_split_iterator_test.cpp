@@ -22,6 +22,8 @@
 
 #include <cstdint>
 #include <cstdlib>
+#include <iterator>
+#include <string>
 #include <iostream>
 
 #include "daw/daw_benchmark.h"

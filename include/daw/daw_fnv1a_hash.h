@@ -90,8 +90,7 @@ namespace daw {
 		template<typename T>
 		constexpr size_t operator( )( T const *const ptr ) const noexcept {
 			auto hash = impl::fnv_offset( );
-			auto bptr = static_cast<uint8_t const *const>(
-			  static_cast<void const *const>( ptr ) );
+			auto bptr = static_cast<uint8_t const *const>( ptr );
 			for( size_t n = 0; n < sizeof( T ); ++n ) {
 				hash = hash ^ static_cast<size_t>( bptr[n] );
 				hash *= impl::fnv_prime( );

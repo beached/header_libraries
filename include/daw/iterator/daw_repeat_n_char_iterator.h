@@ -26,7 +26,6 @@
 #include <limits>
 
 namespace daw {
-
 	template<typename CharT = char>
 	struct repeat_n_char_iterator {
 		using value_type = CharT;
@@ -106,10 +105,16 @@ namespace daw {
 			return tmp;
 		}
 
-		constexpr ptrdiff_t operator-( repeat_n_char_iterator const & rhs ) const noexcept {
+		constexpr ptrdiff_t operator-( repeat_n_char_iterator const &rhs ) const
+		  noexcept {
 			return rhs.m_position - m_position;
 		}
 	};
+
+	template<typename T = char>
+	constexpr auto repeat_n_char_end( ) noexcept {
+		return repeat_n_char_iterator<T>( );
+	}
 
 	template<typename CharT>
 	constexpr bool

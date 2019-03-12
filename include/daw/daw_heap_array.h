@@ -222,8 +222,10 @@ namespace daw {
 		constexpr iterator find_first_of( const_reference value,
 		                                  const_iterator start_at ) const {
 			*m_end = value;
-			while( *start_at != value ) {
-				++start_at;
+			if( start_at != nullptr ) {
+				while( *start_at != value ) {
+					++start_at;
+				}
 			}
 			return const_cast<iterator>( start_at );
 		}

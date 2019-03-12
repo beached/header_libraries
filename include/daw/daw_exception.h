@@ -180,7 +180,7 @@ namespace daw {
 			return true;
 		}
 #else
-#define dbg_throw_on_false_or_return( test, ... ) ( test );
+#define dbg_throw_on_false_or_return( test, ... ) ( test )
 #endif
 
 #ifndef NODEBUGTHROW
@@ -213,10 +213,10 @@ namespace daw {
 		}
 #else
 		template<typename... T>
-		constexpr void dbg_throw_on_false( T... ) noexcept {};
+		constexpr void dbg_throw_on_false( T... ) noexcept {}
 
 		template<typename... T>
-		constexpr void DebugAssert( T... ) noexcept {};
+		constexpr void DebugAssert( T... ) noexcept {}
 #endif
 
 		template<typename ExceptionType = AssertException, typename ValueType,
@@ -310,7 +310,7 @@ namespace daw {
 			}
 		}
 #ifndef NODEBUGTHROW
-		template<typename Bool, typename... Args>
+		template<typename Exception = AssertException, typename Bool, typename... Args>
 		constexpr void dbg_precondition_check( Bool &&condition, Args &&... args ) {
 			if( !condition ) {
 		    std::terminate( );
@@ -325,7 +325,7 @@ namespace daw {
 	    }
 		}
 #else
-		template<typename Bool, typename... Args>
+		template<typename Exception = AssertException, typename Bool, typename... Args>
 		constexpr void dbg_precondition_check( Bool &&, Args &&... ) {}
 
 		template<typename Bool, typename... Args>

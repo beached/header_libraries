@@ -166,7 +166,7 @@ void struct_bad_001( ) {
 }
 
 struct test_class2_validator_t {
-	constexpr bool operator( )( std::unique_ptr<int> &c ) noexcept {
+	constexpr bool operator( )( std::unique_ptr<int> & ) noexcept {
 		return true;
 	}
 };

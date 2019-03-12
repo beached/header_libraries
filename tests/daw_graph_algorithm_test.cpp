@@ -27,11 +27,13 @@
 
 void test_topoligical_walk_001( daw::graph_t<char> &graph ) {
 	std::string result{};
-	daw::topological_sorted_walk(
-	  graph, [&result]( auto const &node ) { result.push_back( node.value( ) ); },
-	  []( auto const &lhs, auto const &rhs ) {
-		  return lhs.value( ) < rhs.value( );
-	  } );
+	daw::topological_sorted_walk( graph,
+	                              [&result]( auto const &node ) {
+		                              result.push_back( node.value( ) );
+	                              },
+	                              []( auto const &lhs, auto const &rhs ) {
+		                              return lhs.value( ) < rhs.value( );
+	                              } );
 
 	daw::expecting( "CABDFE", result );
 }
@@ -87,7 +89,7 @@ void test_dfs_walk_002( daw::graph_t<char> const &graph,
 	daw::expecting( "CABEDF", result );
 }
 
-void test_mst_001( daw::graph_t<char> graph, daw::node_id_t root_id ) {
+void test_mst_001( daw::graph_t<char> graph, daw::node_id_t ) {
 	std::string result{};
 	daw::mst( graph );
 

@@ -145,7 +145,7 @@ namespace daw {
 					last_char = str.pop_front( );
 				}
 				daw::exception::precondition_check<missing_expected_quotes_exception>(
-				  str.front( ) == '"' );
+				  str.data( ) != nullptr and str.front( ) == '"' );
 
 				return daw::make_string_view_it( first, str.cbegin( ) );
 			}

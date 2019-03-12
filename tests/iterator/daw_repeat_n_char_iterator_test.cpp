@@ -40,7 +40,7 @@ int main( ) {
 	daw::bench_n_test<100'000>( "append string( first, last )", []( ) {
 		std::string sm = "This is a test";
 		daw::do_not_optimize( sm );
-		sm.append( daw::repeat_n_char_iterator( 16, ' ' ), daw::repeat_n_char_iterator( ) );
+		sm.append( daw::repeat_n_char_iterator( 16, ' ' ), daw::repeat_n_char_end( ) );
 		daw::do_not_optimize( sm );
 	} );
 
@@ -58,7 +58,7 @@ int main( ) {
 		daw::do_not_optimize( sm );
 		for( size_t n=0; n<100; ++n ) {
 			sm.append( daw::repeat_n_char_iterator( 16, ' ' ),
-			           daw::repeat_n_char_iterator( ) );
+			           daw::repeat_n_char_end( ) );
 		}
 		daw::do_not_optimize( sm );
 	} );
@@ -77,7 +77,7 @@ int main( ) {
 		daw::do_not_optimize( sm );
 		for( size_t n=0; n<100; ++n ) {
 			sm.append( daw::repeat_n_char_iterator( 16, ' ' ),
-			           daw::repeat_n_char_iterator( ) );
+			           daw::repeat_n_char_end( ) );
 		}
 		daw::do_not_optimize( sm );
 	} );
@@ -95,8 +95,7 @@ int main( ) {
 		std::string sm = "This is a tesdfkjsdflksjdflksdjfsdlkfjsdlfkjsdflksdjflsdkfjsdlkfjsdlfkjsdflksdjfsldkfjsdlkfjsdflksjflksdjfsdlkfjdsflksjdfldkjt";
 		daw::do_not_optimize( sm );
 		for( size_t n=0; n<100; ++n ) {
-			sm.append( daw::repeat_n_char_iterator( 16, ' ' ),
-			           daw::repeat_n_char_iterator( ) );
+			sm.append( daw::repeat_n_char_iterator( 16, ' ' ), daw::repeat_n_char_end( ) );
 		}
 		daw::do_not_optimize( sm );
 	} );
