@@ -23,9 +23,9 @@
 #pragma once
 
 #include <cstddef>
-#include <list>
 #include <memory>
 #include <stdexcept>
+#include <vector>
 #include <utility>
 
 #include "daw_algorithm.h"
@@ -96,9 +96,9 @@ namespace daw {
 	} // namespace ordered_map_impl
 	// Use linear searching for key, keep values in insertion order
 	template<typename Key, typename Value, typename Compare = std::less<Key>,
-	         typename Allocator = std::allocator<std::pair<Key const, Value>>,
+	         typename Allocator = std::allocator<std::pair<Key, Value>>,
 	         typename Container =
-	           std::list<std::pair<Key const, Value>, Allocator>>
+	           std::vector<std::pair<Key, Value>, Allocator>>
 	struct ordered_map {
 		using key_type = Key;
 		using mapped_type = Value;
