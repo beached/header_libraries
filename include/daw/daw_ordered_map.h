@@ -314,7 +314,7 @@ namespace daw {
 		constexpr std::pair<iterator, bool> insert( P &&value ) {
 			auto pos = find( std::get<0>( value ) );
 			if( pos == end( ) ) {
-				m_values.insert(
+				pos = m_values.insert(
 				  pos, daw::construct_a<value_type>{}( std::forward<P>( value ) ) );
 				return {pos, true};
 			}
@@ -324,7 +324,7 @@ namespace daw {
 		constexpr std::pair<iterator, bool> insert( value_type const &value ) {
 			auto pos = find( value.first );
 			if( pos == end( ) ) {
-				m_values.insert( pos, value );
+				pos = m_values.insert( pos, value );
 				return {pos, true};
 			}
 			return {pos, false};
@@ -334,7 +334,7 @@ namespace daw {
 		constexpr reference operator[]( K const &key ) {
 			auto pos = find( key );
 			if( pos == end( ) ) {
-				insert( value_type( key, mapped_type{} ) );
+				pos = insert( value_type( key, mapped_type{} ) ).first;
 			}
 			return pos->second;
 		}
