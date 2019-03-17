@@ -77,6 +77,7 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_overload
 	daw_optional
 	daw_optional_poly
+	daw_ordered_map
 	daw_parse_to
 	daw_parser_helper
 	daw_parser_helper_sv
