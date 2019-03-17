@@ -30,6 +30,7 @@
 
 #include "daw_algorithm.h"
 #include "daw_enable_if.h"
+#include "daw_utility.h"
 
 namespace daw {
 	namespace ordered_map_impl {
@@ -313,7 +314,8 @@ namespace daw {
 		constexpr std::pair<iterator, bool> insert( P &&value ) {
 			auto pos = find( std::get<0>( value ) );
 			if( pos == end( ) ) {
-				m_values.insert( pos, value_type{std::forward<P>( value )} );
+				m_values.insert(
+				  pos, daw::construct_a<value_type>{}( std::forward<P>( value ) ) );
 				return {pos, true};
 			}
 			return {pos, false};
