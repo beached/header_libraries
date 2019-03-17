@@ -126,12 +126,12 @@ namespace daw {
 			return beginer( m_values );
 		}
 
-		constexpr iterator begin( ) const noexcept {
+		constexpr const_iterator begin( ) const noexcept {
 			using namespace ::daw::ordered_map_impl;
 			return beginer( m_values );
 		}
 
-		constexpr iterator cbegin( ) const noexcept {
+		constexpr const_iterator cbegin( ) const noexcept {
 			using namespace ::daw::ordered_map_impl;
 			return cbeginer( m_values );
 		}
@@ -141,12 +141,12 @@ namespace daw {
 			return rbeginer( m_values );
 		}
 
-		constexpr iterator rbegin( ) const noexcept {
+		constexpr const_iterator rbegin( ) const noexcept {
 			using namespace ::daw::ordered_map_impl;
 			return rbeginer( m_values );
 		}
 
-		constexpr iterator crbegin( ) const noexcept {
+		constexpr const_iterator crbegin( ) const noexcept {
 			using namespace ::daw::ordered_map_impl;
 			return crbeginer( m_values );
 		}
@@ -156,12 +156,12 @@ namespace daw {
 			return ender( m_values );
 		}
 
-		constexpr iterator end( ) const noexcept {
+		constexpr const_iterator end( ) const noexcept {
 			using namespace ::daw::ordered_map_impl;
 			return ender( m_values );
 		}
 
-		constexpr iterator cend( ) const noexcept {
+		constexpr const_iterator cend( ) const noexcept {
 			using namespace ::daw::ordered_map_impl;
 			return cender( m_values );
 		}
@@ -171,12 +171,12 @@ namespace daw {
 			return render( m_values );
 		}
 
-		constexpr iterator rend( ) const noexcept {
+		constexpr const_iterator rend( ) const noexcept {
 			using namespace ::daw::ordered_map_impl;
 			return render( m_values );
 		}
 
-		constexpr iterator crend( ) const noexcept {
+		constexpr const_iterator crend( ) const noexcept {
 			using namespace ::daw::ordered_map_impl;
 			return crender( m_values );
 		}
