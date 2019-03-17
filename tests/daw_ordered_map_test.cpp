@@ -20,10 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "daw/daw_benchmark.h"
 #include "daw/daw_ordered_map.h"
 
 int main( ) {
 	daw::ordered_map<std::string, int> dict{};
 
 	dict.insert( {"hello", 5} );
+
+	daw::expecting( !dict.empty( ) );
+	daw::expecting( dict.size( ), 1U );
+	daw::expecting( dict.front( ), dict.back( ) );
 }

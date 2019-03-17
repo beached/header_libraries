@@ -88,7 +88,7 @@ namespace daw {
 		}
 
 		template<typename Container>
-		decltype( auto ) sizeer( Container &&c ) noexcept {
+		decltype( auto ) sizer( Container &&c ) noexcept {
 			using std::size;
 			return size( c );
 		}
@@ -107,8 +107,8 @@ namespace daw {
 		using difference_type = typename values_type::difference_type;
 		using key_compare = Compare;
 		using allocator_type = Allocator;
-		using reference = typename values_type::reference;
-		using const_reference = typename values_type::const_reference;
+		using reference = mapped_type &;
+		using const_reference = mapped_type const &;
 		using pointer = typename values_type::pointer;
 		using const_pointer = typename values_type::const_pointer;
 		using iterator = typename values_type::iterator;
@@ -179,6 +179,22 @@ namespace daw {
 		constexpr const_iterator crend( ) const noexcept {
 			using namespace ::daw::ordered_map_impl;
 			return crender( m_values );
+		}
+
+		constexpr decltype(auto) front( ) noexcept {
+			return m_values.front( );
+		}
+
+		constexpr decltype(auto) front( ) const noexcept {
+			return m_values.front( );
+		}
+
+		constexpr decltype(auto) back( ) noexcept {
+			return m_values.back( );
+		}
+
+		constexpr decltype(auto) back( ) const noexcept {
+			return m_values.back( );
 		}
 
 		constexpr bool empty( ) const noexcept {
