@@ -682,5 +682,15 @@ namespace daw {
 
 		template<typename T, typename... Pack>
 		inline constexpr bool pack_exits_v = pack_index_of_v<T, Pack...> >= 0;
+
+		template<template<typename...> typename Template, typename Type>
+		struct is_instance_of : std::false_type {};
+
+		template<template<typename...> typename Template, typename... Args>
+		struct is_instance_of<Template, Template<Args...>> : std::true_type {};
+
+		template<template<typename...> typename Template, typename Type>
+		inline constexpr bool is_instance_of_v =
+		  is_instance_of<Template, Type>::value;
 	} // namespace traits
 } // namespace daw

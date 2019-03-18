@@ -24,6 +24,7 @@
 #include <iostream>
 #include <list>
 #include <string>
+#include <tuple>
 #include <unordered_map>
 #include <vector>
 
@@ -829,6 +830,12 @@ namespace last_type_001 {
 	  "" );
 	static_assert( daw::is_same_v<daw::traits::last_type_t<int>, int>, "" );
 } // namespace last_type_001
+
+static_assert( daw::traits::is_instance_of_v<std::basic_string, std::string> );
+static_assert( daw::traits::is_instance_of_v<std::tuple, std::tuple<int, double>> );
+
+static_assert( !daw::traits::is_instance_of_v<std::tuple, std::vector<int>> );
+static_assert( !daw::traits::is_instance_of_v<std::vector, std::tuple<int, double>> );
 
 int main( ) {
 	daw_traits_enable_if_any( );
