@@ -142,6 +142,7 @@ set( TESTED_ITERATOR_HEADERS_PREFIXES_NB
 	daw_back_inserter
 	daw_checked_iterator_proxy
 	daw_indexed_iterator
+	daw_inserter
 	daw_integer_iterator
 	daw_output_stream_iterator
 	daw_random_iterator

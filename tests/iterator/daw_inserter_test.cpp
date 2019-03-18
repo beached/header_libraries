@@ -1,7 +1,6 @@
-
 // The MIT License (MIT)
 //
-// Copyright (c) 2018-2019 Darrell Wright
+// Copyright (c) 2019 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -23,22 +22,24 @@
 
 #include <algorithm>
 #include <array>
-#include <vector>
+#include <unordered_map>
 
 #include "daw/daw_benchmark.h"
 #include "daw/daw_traits.h"
-#include "daw/iterator/daw_back_inserter.h"
+#include "daw/iterator/daw_inserter.h"
 
 static_assert( daw::traits::is_output_iterator_test<
                daw::remove_cvref_t<decltype(
-                 daw::back_inserter( std::declval<std::vector<int> &>( ) ) )>,
+                 daw::inserter( std::declval<std::vector<int> &>( ) ) )>,
                int>( ) );
 
 void vector_test_001( ) {
-	std::vector<int> v{};
+	std::unordered_map<int, int> v{};
 	std::array<int, 5> a = {1, 2, 3, 4, 5};
-	std::copy( begin( a ), end( a ), daw::back_inserter( v ) );
-	daw::expecting( std::equal( begin( a ), end( a ), begin( v ), end( v ) ) );
+	std::transform(
+	  begin( a ), end( a ), daw::inserter( v ),
+	  []( auto const &val ) { return std::pair<int const, int>( val, val ); } );
+	daw::expecting( a.size( ), v.size( ) );
 }
 
 int main( ) {

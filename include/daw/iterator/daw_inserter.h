@@ -1,7 +1,6 @@
-
 // The MIT License (MIT)
 //
-// Copyright (c) 2018-2019 Darrell Wright
+// Copyright (c) 2019 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -26,13 +25,13 @@
 #include <type_traits>
 #include <utility>
 
-#include "../cpp_17.h"
-#include "../daw_enable_if.h"
 #include "daw_function_iterator.h"
+#include "../daw_enable_if.h"
+#include "../cpp_17.h"
 
 namespace daw {
 	template<typename Container>
-	struct back_inserter_iterator final {
+	struct inserter_iterator final {
 		using iterator_category = std::output_iterator_tag;
 		using value_type = void;
 		using difference_type = void;
@@ -43,32 +42,32 @@ namespace daw {
 		Container *m_container;
 
 	public:
-		constexpr back_inserter_iterator( Container &c ) noexcept
+		constexpr inserter_iterator( Container &c ) noexcept
 		  : m_container( &c ) {}
 
 		template<typename T,
-		         daw::enable_if_t<!daw::is_same_v<
-		           daw::remove_cvref_t<T>, back_inserter_iterator>> = nullptr>
-		constexpr back_inserter_iterator &operator=( T &&val ) {
-			m_container->push_back( std::forward<T>( val ) );
+		         daw::enable_if_t<!std::is_same_v<daw::remove_cvref_t<T>,
+		                                          inserter_iterator>> = nullptr>
+		constexpr inserter_iterator &operator=( T &&val ) {
+			m_container->insert( std::forward<T>( val ) );
 			return *this;
 		}
 
-		constexpr back_inserter_iterator &operator*( ) noexcept {
+		constexpr inserter_iterator &operator*( ) noexcept {
 			return *this;
 		}
 
-		constexpr back_inserter_iterator &operator++( ) noexcept {
+		constexpr inserter_iterator &operator++( ) noexcept {
 			return *this;
 		}
 
-		constexpr back_inserter_iterator &operator++( int ) noexcept {
+		constexpr inserter_iterator &operator++( int ) noexcept {
 			return *this;
 		}
 	};
 
 	template<typename Container>
-	constexpr auto back_inserter( Container &c ) {
-		return back_inserter_iterator<Container>( c );
+	constexpr auto inserter( Container &c ) {
+		return inserter_iterator<Container>( c );
 	}
 } // namespace daw
