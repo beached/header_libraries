@@ -242,8 +242,42 @@ constexpr bool value_is_none_of_001( ) {
 }
 static_assert( value_is_none_of_001( ) );
 
-static_assert( daw::narrow_cast<char>( 5 ) == 5 );
-static_assert( daw::narrow_cast<char>( 127 ) == 127 );
+// S S
+// Bigger -> Smaller
+static_assert( daw::narrow_cast<int32_t>( static_cast<int64_t>( std::numeric_limits<int32_t>::max( ) ) ) == std::numeric_limits<int32_t>::max( ) );
+static_assert( daw::narrow_cast<int32_t>( static_cast<int64_t>( std::numeric_limits<int32_t>::min( ) ) ) == std::numeric_limits<int32_t>::min( ) );
+static_assert( daw::narrow_cast<int32_t>( 0LL ) == 0 );
+// Smaller -> Bigger
+static_assert( daw::narrow_cast<int32_t>( std::numeric_limits<int8_t>::max( ) ) == std::numeric_limits<int8_t>::max( ) );
+static_assert( daw::narrow_cast<int32_t>( std::numeric_limits<int8_t>::min( ) ) == std::numeric_limits<int8_t>::min( ) );
+static_assert( daw::narrow_cast<int64_t>( 0 ) == 0 );
+// Same Size
+static_assert( daw::narrow_cast<int>( std::numeric_limits<int>::max( ) ) == std::numeric_limits<int>::max( ) );
+
+// S U
+// Bigger -> Smaller
+static_assert( daw::narrow_cast<int16_t>( static_cast<uint32_t>( std::numeric_limits<int16_t>::max( ) ) ) == std::numeric_limits<int16_t>::max( ) );
+static_assert( daw::narrow_cast<int32_t>( static_cast<uint64_t>( 0 ) ) == 0 );
+// Smaller -> Bigger
+static_assert( daw::narrow_cast<int64_t>( std::numeric_limits<uint32_t>::max( ) ) == std::numeric_limits<uint32_t>::max( ) );
+static_assert( daw::narrow_cast<int64_t>( static_cast<uint32_t>( 0 ) ) == 0 );
+static_assert( daw::narrow_cast<int>( static_cast<unsigned int>( std::numeric_limits<int>::max( ) ) ) == std::numeric_limits<int>::max( ) );
+
+// U S
+// Bigger -> Smaller
+static_assert( daw::narrow_cast<int16_t>( static_cast<uint32_t>( std::numeric_limits<int16_t>::max( ) ) ) == std::numeric_limits<int16_t>::max( ) );
+static_assert( daw::narrow_cast<int16_t>( static_cast<uint32_t>( 0 ) ) == 0 );	
+// Smaller -> Bigger
+static_assert( daw::narrow_cast<int64_t>( std::numeric_limits<uint32_t>::max( ) ) == std::numeric_limits<uint32_t>::max( ) );
+static_assert( daw::narrow_cast<int64_t>( static_cast<uint32_t>( 0 ) ) == 0 );	
+
+// U U
+// Bigger -> Smaller
+static_assert( daw::narrow_cast<uint16_t>( static_cast<uint32_t>( std::numeric_limits<uint16_t>::max( ) ) ) == std::numeric_limits<uint16_t>::max( ) );
+static_assert( daw::narrow_cast<uint16_t>( static_cast<uint32_t>( 0 ) ) == 0 );	
+// Smaller -> Bigger
+static_assert( daw::narrow_cast<uint64_t>( std::numeric_limits<uint32_t>::max( ) ) == std::numeric_limits<uint32_t>::max( ) );
+static_assert( daw::narrow_cast<uint64_t>( static_cast<uint32_t>( 0 ) ) == 0 );	
 
 int main( ) {
 	daw_utility_append_test( );
