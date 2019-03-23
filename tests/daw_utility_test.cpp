@@ -242,6 +242,8 @@ constexpr bool value_is_none_of_001( ) {
 }
 static_assert( value_is_none_of_001( ) );
 
+static_assert( daw::narrow_cast<char>( 5 ) == 5 );
+static_assert( daw::narrow_cast<char>( 127 ) == 127 );
 
 int main( ) {
 	daw_utility_append_test( );

@@ -979,7 +979,7 @@ namespace daw {
 	namespace utility_impl {
 		template<typename T>
 		class value_is_utility_impl {
-			T * m_value;
+			T *m_value;
 
 			constexpr value_is_utility_impl( T const &v )
 			  : m_value( &v ) {}
@@ -1012,4 +1012,47 @@ namespace daw {
 			}
 		};
 	} // namespace utility_impl
+
+	template<typename Integer, typename T>
+	constexpr Integer narrow_cast( T value ) noexcept {
+		if constexpr( std::is_signed_v<T> ) {
+			if constexpr( std::is_signed_v<Integer> ) {
+				if constexpr( sizeof( T ) <= sizeof( Integer ) ) {
+					return value;
+				} else if( value <=
+				           static_cast<T>( std::numeric_limits<Integer>::max( ) ) ) {
+					return static_cast<Integer>( value );
+				} else {
+					daw::exception::daw_throw<std::out_of_range>( "value" );
+				}
+			} else if constexpr( sizeof( T ) <= sizeof( Integer ) ) {
+				if( value >= 0 ) {
+					return value;
+				}
+				daw::exception::daw_throw<std::out_of_range>( "value" );
+			} else {
+				if( value >= 0 and
+				    value <= static_cast<T>( std::numeric_limits<Integer>::max( ) ) ) {
+					return value;
+				}
+				daw::exception::daw_throw<std::out_of_range>( "value" );
+			}
+		} else if constexpr( std::is_signed_v<Integer> ) {
+			if constexpr( sizeof( T ) < sizeof( Integer ) ) {
+				return static_cast<Integer>( value );
+			} else {
+				if( value <= static_cast<T>( std::numeric_limits<Integer>::max( ) ) ) {
+					return static_cast<Integer>( value );
+				}
+				daw::exception::daw_throw<std::out_of_range>( "value" );
+			}
+		} else if constexpr( sizeof( T ) <= sizeof( Integer ) ) {
+			return static_cast<Integer>( value );
+		} else {
+			if( value <= static_cast<T>( std::numeric_limits<Integer>::max( ) ) ) {
+				return static_cast<Integer>( value );
+			}
+			daw::exception::daw_throw<std::out_of_range>( "value" );
+		}
+	}
 } // namespace daw
