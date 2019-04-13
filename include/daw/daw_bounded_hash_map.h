@@ -390,12 +390,7 @@ namespace daw {
 			                                          std::forward<V>( value ) );
 		}
 
-		template<typename K, typename V,
-		         std::enable_if_t<
-		           daw::all_true_v<std::is_same_v<Key, daw::remove_cvref_t<K>>,
-		                           is_same_v<Value, daw::remove_cvref_t<V>>>,
-		           std::nullptr_t> = nullptr>
-		constexpr void insert( std::pair<K, V> const & item ) noexcept {
+		constexpr void insert( std::pair<Key const, Value> const & item ) noexcept {
 			auto const index = find_index( item.first );
 			m_data[*index] = bounded_hash_map_item_t( item.first, item.second );
 		}
