@@ -452,7 +452,7 @@ namespace daw {
 		constexpr size_type size( ) const noexcept {
 			using std::cbegin;
 			using std::cend;
-			return std::accumulate(
+			return daw::algorithm::accumulate(
 			  cbegin( m_data ), cend( m_data ), 0ULL, []( auto &&init, auto &&v ) {
 				  if( v ) {
 					  return std::forward<decltype( init )>( init ) + 1ULL;
