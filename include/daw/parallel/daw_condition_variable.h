@@ -22,40 +22,21 @@
 
 #pragma once
 
-#include <atomic>
 #include <condition_variable>
 #include <cstdint>
+#include <memory>
 #include <mutex>
-
-#include "../cpp_17.h"
-#include "../daw_exception.h"
-#include "../daw_value_ptr.h"
 
 namespace daw {
 	template<typename Mutex, typename ConditionVariable>
 	class basic_condition_variable {
 		// These are in value_ptr's so that the semaphore can be moved
-		mutable value_ptr<Mutex> m_mutex;
-		value_ptr<ConditionVariable> m_condition;
+		std::unique_ptr<Mutex> m_mutex = std::make_unique<Mutex>( );
+		std::unique_ptr<ConditionVariable> m_condition =
+		  std::make_unique<ConditionVariable>( );
 
 	public:
-		basic_condition_variable( )
-		  : m_mutex( )
-		  , m_condition( ) {}
-
-		template<typename Int,
-		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Int>>,
-		                          std::nullptr_t> = nullptr>
-		explicit basic_condition_variable( Int count )
-		  : m_mutex( )
-		  , m_condition( ) {}
-
-		template<typename Int,
-		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Int>>,
-		                          std::nullptr_t> = nullptr>
-		basic_condition_variable( Int count, bool condition_variableed )
-		  : m_mutex( )
-		  , m_condition( ) {}
+		basic_condition_variable( ) = default;
 
 		void notify_all( ) {
 			m_condition->notify_all( );
@@ -72,14 +53,15 @@ namespace daw {
 		}
 
 		template<typename Rep, typename Period, typename Predicate>
-		auto wait_for( std::chrono::duration<Rep, Period> const &rel_time,
-		               Predicate &&pred ) {
+		decltype( auto )
+		wait_for( std::chrono::duration<Rep, Period> const &rel_time,
+		          Predicate &&pred ) {
 			auto lock = std::unique_lock<Mutex>( *m_mutex );
 			return m_condition->wait_for( lock, rel_time, pred );
 		}
 
 		template<typename Clock, typename Duration, typename Predicate>
-		auto
+		decltype( auto )
 		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time,
 		            Predicate &&pred ) {
 			auto lock = std::unique_lock<Mutex>( *m_mutex );

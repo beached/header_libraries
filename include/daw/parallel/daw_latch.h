@@ -33,21 +33,23 @@
 
 namespace daw {
 	template<typename>
-	struct is_latch: std::false_type {};
-	
+	struct is_latch : std::false_type {};
+
 	template<typename T>
-	inline constexpr bool is_latch_v = is_latch<daw::remove_cvref_t<T>>::value;	
+	inline constexpr bool is_latch_v = is_latch<daw::remove_cvref_t<T>>::value;
 
 	template<typename>
-	struct is_shared_latch: std::false_type {};
+	struct is_shared_latch : std::false_type {};
 
 	template<typename T>
-	inline constexpr bool is_shared_latch_v = is_shared_latch<daw::remove_cvref_t<T>>::value;	
+	inline constexpr bool is_shared_latch_v =
+	  is_shared_latch<daw::remove_cvref_t<T>>::value;
 
 	template<typename Mutex, typename ConditionVariable>
 	class basic_latch {
 		daw::condition_variable m_condition{};
-		std::unique_ptr<std::atomic_intmax_t> m_count = std::make_unique<std::atomic_intmax_t>( 1 );
+		std::unique_ptr<std::atomic_intmax_t> m_count =
+		  std::make_unique<std::atomic_intmax_t>( 1 );
 
 		auto stop_waiting( ) const {
 			return [&]( ) -> bool { return static_cast<intmax_t>( *m_count ) <= 0; };
@@ -60,20 +62,19 @@ namespace daw {
 	public:
 		basic_latch( ) = default;
 
-		template<typename Int,
-		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Int>>,
-		                          std::nullptr_t> = nullptr>
+		template<typename Int, std::enable_if_t<std::is_integral_v<Int>,
+		                                        std::nullptr_t> = nullptr>
 		explicit basic_latch( Int count )
 		  : m_condition( )
 		  , m_count( std::make_unique<std::atomic_intmax_t>(
 		      static_cast<intmax_t>( count ) ) ) {}
 
-		template<typename Int,
-		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Int>>,
-		                          std::nullptr_t> = nullptr>
+		template<typename Int, std::enable_if_t<std::is_integral_v<Int>,
+		                                        std::nullptr_t> = nullptr>
 		basic_latch( Int count, bool latched )
 		  : m_condition( )
-		  , m_count( std::make_unique<std::atomic_intmax_t>( static_cast<intmax_t>( count ) ) ) {}
+		  , m_count( std::make_unique<std::atomic_intmax_t>(
+		      static_cast<intmax_t>( count ) ) ) {}
 
 		void reset( ) {
 			*m_count = 1;
@@ -110,47 +111,43 @@ namespace daw {
 		}
 
 		template<typename Rep, typename Period>
-		auto wait_for( std::chrono::duration<Rep, Period> const &rel_time ) {
+		decltype( auto )
+		wait_for( std::chrono::duration<Rep, Period> const &rel_time ) {
 			return m_condition.wait_for( rel_time, stop_waiting( ) );
 		}
 
 		template<typename Clock, typename Duration>
-		auto
+		decltype( auto )
 		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) {
 			return m_condition.wait_until( timeout_time, stop_waiting( ) );
 		}
 	}; // basic_latch
 
 	template<typename Mutex, typename ConditionVariable>
-	struct is_latch<basic_latch<Mutex, ConditionVariable>>: std::true_type {};
+	struct is_latch<basic_latch<Mutex, ConditionVariable>> : std::true_type {};
 
 	using latch = basic_latch<std::mutex, std::condition_variable>;
 
 	template<typename Mutex, typename ConditionVariable>
 	class basic_shared_latch {
-		std::shared_ptr<basic_latch<Mutex, ConditionVariable>> latch;
+		using latch_t = basic_latch<Mutex, ConditionVariable>;
+		std::shared_ptr<latch_t> latch = std::make_shared<latch_t>( );
 
 	public:
-		basic_shared_latch( )
-		  : latch( std::make_shared<basic_latch<Mutex, ConditionVariable>>( ) ) {}
+		basic_shared_latch( ) = default;
 
-		template<typename Int,
-		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Int>>,
-		                          std::nullptr_t> = nullptr>
+		template<typename Int, std::enable_if_t<std::is_integral_v<Int>,
+		                                        std::nullptr_t> = nullptr>
 		explicit basic_shared_latch( Int count )
-		  : latch(
-		      std::make_shared<basic_latch<Mutex, ConditionVariable>>( count ) ) {}
+		  : latch( std::make_shared<latch_t>( count ) ) {}
 
-		template<typename Int,
-		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Int>>,
-		                          std::nullptr_t> = nullptr>
+		template<typename Int, std::enable_if_t<std::is_integral_v<Int>,
+		                                        std::nullptr_t> = nullptr>
 		explicit basic_shared_latch( Int count, bool latched )
-		  : latch( std::make_shared<basic_latch<Mutex, ConditionVariable>>(
-		      count, latched ) ) {}
+		  : latch( std::make_shared<latch_t>( count, latched ) ) {}
 
 		explicit basic_shared_latch( basic_latch<Mutex, ConditionVariable> &&sem )
-		  : latch( std::make_shared<basic_latch<Mutex, ConditionVariable>>(
-		      daw::move( sem ) ) ) {}
+		  : latch( std::make_shared<latch_t>( daw::move( sem ) ) ) {}
 
 		void notify( ) {
 			latch->notify( );
@@ -188,8 +185,10 @@ namespace daw {
 			return static_cast<bool>( latch );
 		}
 	}; // basic_shared_latch
+
 	template<typename Mutex, typename ConditionVariable>
-	struct is_shared_latch<basic_shared_latch<Mutex, ConditionVariable>>: std::true_type {};
+	struct is_shared_latch<basic_shared_latch<Mutex, ConditionVariable>>
+	  : std::true_type {};
 
 	using shared_latch = basic_shared_latch<std::mutex, std::condition_variable>;
 
