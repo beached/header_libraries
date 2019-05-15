@@ -24,11 +24,11 @@
 
 #include <atomic>
 #include <cstdint>
+#include <memory>
 
 #include "../cpp_17.h"
 #include "../daw_exception.h"
 #include "../daw_move.h"
-#include "../daw_value_ptr.h"
 #include "daw_condition_variable.h"
 
 namespace daw {
@@ -46,9 +46,8 @@ namespace daw {
 
 	template<typename Mutex, typename ConditionVariable>
 	class basic_latch {
-		// These are in value_ptr's so that the semaphore can be moved
 		daw::condition_variable m_condition{};
-		value_ptr<std::atomic_intmax_t> m_count{1};
+		std::unique_ptr<std::atomic_intmax_t> m_count = std::make_unique<std::atomic_intmax_t>( 1 );
 
 		auto stop_waiting( ) const {
 			return [&]( ) -> bool { return static_cast<intmax_t>( *m_count ) <= 0; };
@@ -66,17 +65,18 @@ namespace daw {
 		                          std::nullptr_t> = nullptr>
 		explicit basic_latch( Int count )
 		  : m_condition( )
-		  , m_count( static_cast<intmax_t>( count ) ) {}
+		  , m_count( std::make_unique<std::atomic_intmax_t>(
+		      static_cast<intmax_t>( count ) ) ) {}
 
 		template<typename Int,
 		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Int>>,
 		                          std::nullptr_t> = nullptr>
 		basic_latch( Int count, bool latched )
 		  : m_condition( )
-		  , m_count( static_cast<intmax_t>( count ) ) {}
+		  , m_count( std::make_unique<std::atomic_intmax_t>( static_cast<intmax_t>( count ) ) ) {}
 
 		void reset( ) {
-			m_count = 1;
+			*m_count = 1;
 		}
 
 		template<typename Int,
