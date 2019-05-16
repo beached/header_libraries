@@ -164,34 +164,41 @@ namespace daw {
 		  : latch( std::make_shared<latch_t>( daw::move( sem ) ) ) {}
 
 		void notify( ) {
+			assert( latch );
 			latch->notify( );
 		}
 
 		void add_notifier( ) {
+			assert( latch );
 			latch->add_notifier( );
 		}
 
 		void set_latch( ) {
+			assert( latch );
 			latch->set_latch( );
 		}
 
 		void wait( ) {
+			assert( latch );
 			latch->wait( );
 		}
 
 		bool try_wait( ) const {
+			assert( latch );
 			return latch->try_wait( );
 		}
 
 		template<typename Rep, typename Period>
 		decltype( auto )
 		wait_for( std::chrono::duration<Rep, Period> const &rel_time ) {
+			assert( latch );
 			return latch->wait_for( rel_time );
 		}
 
 		template<typename Clock, typename Duration>
 		decltype( auto )
 		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) {
+			assert( latch );
 			return latch->wait_until( timeout_time );
 		}
 
