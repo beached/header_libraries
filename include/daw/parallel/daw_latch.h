@@ -23,6 +23,7 @@
 #pragma once
 
 #include <atomic>
+#include <cassert>
 #include <cstdint>
 #include <memory>
 
@@ -62,28 +63,35 @@ namespace daw {
 	public:
 		basic_latch( ) = default;
 
-		template<typename Int, std::enable_if_t<std::is_integral_v<Int>,
-		                                        std::nullptr_t> = nullptr>
-		explicit basic_latch( Int count )
+		template<typename Integer>
+		explicit basic_latch( Integer count )
 		  : m_condition( )
 		  , m_count( std::make_unique<std::atomic_intmax_t>(
-		      static_cast<intmax_t>( count ) ) ) {}
+		      static_cast<intmax_t>( count ) ) ) {
 
-		template<typename Int, std::enable_if_t<std::is_integral_v<Int>,
-		                                        std::nullptr_t> = nullptr>
-		basic_latch( Int count, bool latched )
+			static_assert( std::is_integral_v<Integer> );
+			assert( count >= 0 );
+		}
+
+		template<typename Integer>
+		basic_latch( Integer count, bool latched )
 		  : m_condition( )
 		  , m_count( std::make_unique<std::atomic_intmax_t>(
-		      static_cast<intmax_t>( count ) ) ) {}
+		      static_cast<intmax_t>( count ) ) ) {
+
+			static_assert( std::is_integral_v<Integer> );
+			assert( count >= 0 );
+		}
 
 		void reset( ) {
 			*m_count = 1;
 		}
 
-		template<typename Int,
-		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Int>>,
-		                          std::nullptr_t> = nullptr>
-		void reset( Int count ) {
+		template<typename Integer>
+		void reset( Integer count ) {
+			static_assert( std::is_integral_v<Integer> );
+			assert( count >= 0 );
+
 			*m_count = static_cast<intmax_t>( count );
 		}
 
@@ -136,15 +144,21 @@ namespace daw {
 	public:
 		basic_shared_latch( ) = default;
 
-		template<typename Int, std::enable_if_t<std::is_integral_v<Int>,
-		                                        std::nullptr_t> = nullptr>
-		explicit basic_shared_latch( Int count )
-		  : latch( std::make_shared<latch_t>( count ) ) {}
+		template<typename Integer>
+		explicit basic_shared_latch( Integer count )
+		  : latch( std::make_shared<latch_t>( count ) ) {
 
-		template<typename Int, std::enable_if_t<std::is_integral_v<Int>,
-		                                        std::nullptr_t> = nullptr>
-		explicit basic_shared_latch( Int count, bool latched )
-		  : latch( std::make_shared<latch_t>( count, latched ) ) {}
+			static_assert( std::is_integral_v<Integer> );
+			assert( count >= 0 );
+		}
+
+		template<typename Integer>
+		basic_shared_latch( Integer count, bool latched )
+		  : latch( std::make_shared<latch_t>( count, latched ) ) {
+
+			static_assert( std::is_integral_v<Integer> );
+			assert( count >= 0 );
+		}
 
 		explicit basic_shared_latch( basic_latch<Mutex, ConditionVariable> &&sem )
 		  : latch( std::make_shared<latch_t>( daw::move( sem ) ) ) {}
