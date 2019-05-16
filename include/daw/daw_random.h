@@ -32,9 +32,8 @@
 
 namespace daw {
 	namespace impl {
-		static inline std::default_random_engine & global_rng( ) {
-			std::random_device r{};
-			static thread_local auto e = std::default_random_engine( r( ) );
+		static inline auto & global_rng( ) {
+			static thread_local auto e = std::mt19937_64( std::random_device{}( ) );
 			return e;
 		}
 	} // namespace impl
@@ -58,7 +57,7 @@ namespace daw {
 	}
 
 	inline void reseed( ) {
-		impl::global_rng( ) = std::default_random_engine( );
+		impl::global_rng( ) = std::mt19937_64( );
 	}
 
 	inline void reseed( std::default_random_engine::result_type value ) {
