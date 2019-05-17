@@ -224,8 +224,7 @@ namespace daw {
 				  if( ptr != nullptr ) {
 					  std::rethrow_exception( ptr );
 				  }
-				  daw::exception::daw_throw<std::logic_error>(
-				    "Unexpected empty state" );
+					std::terminate( );	// how do we get a null exception_ptr
 			  } );
 		}
 
@@ -237,8 +236,7 @@ namespace daw {
 				  if( ptr != nullptr ) {
 					  std::rethrow_exception( ptr );
 				  }
-				  daw::exception::daw_throw<std::logic_error>(
-				    "Unexpected empty state" );
+					std::terminate( );	// how do we get a null exception_ptr
 			  } );
 		}
 
@@ -251,12 +249,16 @@ namespace daw {
 		}
 
 		pointer operator->( ) {
-			return daw::visit_nt( m_value, []( reference value ) noexcept->pointer {
-				return std::addressof( value );
-			},
-			                      []( std::exception_ptr ptr ) -> pointer {
-				                      std::rethrow_exception( ptr );
-			                      } );
+			return daw::visit_nt(
+			  m_value, []( reference value ) noexcept->pointer {
+				  return std::addressof( value );
+			  },
+			  []( std::exception_ptr ptr ) -> pointer {
+				  if( ptr != nullptr ) {
+					  std::rethrow_exception( ptr );
+				  }
+					std::terminate( );	// how do we get a null exception_ptr
+			  } );
 		}
 
 		const_pointer operator->( ) const {
@@ -268,12 +270,11 @@ namespace daw {
 				  if( ptr != nullptr ) {
 					  std::rethrow_exception( ptr );
 				  }
-				  daw::exception::daw_throw<std::logic_error>(
-				    "Unexpected empty state" );
+					std::terminate( );	// how do we get a null exception_ptr
 			  } );
 		}
 
-		std::string get_exception_message( ) const {
+		std::string get_exception_message( ) const noexcept {
 			auto result = std::string( );
 			try {
 				throw_if_exception( );
