@@ -97,6 +97,7 @@ void daw_expected_test_02( ) {
 	auto ma = m->a == 6;
 	daw::expecting( ma );
 
+	/*
 	auto o = m.visit(
 	  daw::overload( []( L const &value ) -> bool { return value.a == 6; },
 	                 []( L &&value ) -> bool { return value.a == 6; },
@@ -124,12 +125,13 @@ void daw_expected_test_02( ) {
 	  daw::overload( []( ) -> bool { return true; },
 	                 []( std::exception_ptr ) -> bool { return false; } ) );
 	daw::expecting( q );
-
+	
 	auto const f2 = f;
 	auto r = f2.visit(
 	  daw::overload( []( ) -> bool { return true; },
 	                 []( std::exception_ptr ) -> bool { return false; } ) );
 	daw::expecting( r );
+	*/
 }
 
 void daw_expected_test_copy_001( ) {

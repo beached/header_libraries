@@ -25,6 +25,7 @@
 #include <cassert>
 #include <cstddef>
 #include <exception>
+#include <optional>
 #include <stdexcept>
 #include <string>
 #include <system_error>
@@ -40,6 +41,28 @@
 #include "daw_visit.h"
 
 namespace daw {
+	namespace impl {
+		struct empty_value_t {};
+		bool operator==( empty_value_t, empty_value_t ) noexcept {
+			return true;
+		}
+		bool operator>=( empty_value_t, empty_value_t ) noexcept {
+			return true;
+		}
+		bool operator<=( empty_value_t, empty_value_t ) noexcept {
+			return true;
+		}
+		bool operator!=( empty_value_t, empty_value_t ) noexcept {
+			return false;
+		}
+		bool operator>( empty_value_t, empty_value_t ) noexcept {
+			return false;
+		}
+		bool operator<( empty_value_t, empty_value_t ) noexcept {
+			return false;
+		}
+	} // namespace impl
+
 	template<class T>
 	struct expected_t {
 		using value_type = T;
@@ -49,39 +72,40 @@ namespace daw {
 		using const_pointer = value_type const *;
 
 	private:
-		struct empty_value_t {};
-		std::variant<empty_value_t, std::exception_ptr, value_type> m_value{};
+		std::variant<impl::empty_value_t, std::exception_ptr, value_type> m_value{};
 
 	public:
 		struct exception_tag {};
-		constexpr expected_t( ) = default;
+		expected_t( ) = default;
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: No value, aka null
 		//////////////////////////////////////////////////////////////////////////
-		friend constexpr bool operator==( expected_t const &lhs, expected_t const &rhs ) noexcept {
+		friend bool operator==( expected_t const &lhs,
+		                        expected_t const &rhs ) noexcept {
 			return lhs.m_value == rhs.m_value;
 		}
 
-		friend constexpr bool operator!=( expected_t const &lhs, expected_t const &rhs ) noexcept {
+		friend bool operator!=( expected_t const &lhs,
+		                        expected_t const &rhs ) noexcept {
 			return lhs.m_value != rhs.m_value;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////
-		explicit constexpr expected_t( value_type &&value )
+		explicit expected_t( value_type &&value )
 		  : m_value( daw::move( value ) ) {}
 
-		explicit constexpr expected_t( value_type const &value )
+		explicit expected_t( value_type const &value )
 		  : m_value( value ) {}
 
-		constexpr expected_t &operator=( value_type &&value ) {
+		expected_t &operator=( value_type &&value ) {
 			m_value = daw::move( value );
 			return *this;
 		}
 
-		constexpr expected_t &operator=( value_type const &value ) {
+		expected_t &operator=( value_type const &value ) {
 			m_value = value;
 			return *this;
 		}
@@ -94,8 +118,8 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr void clear( ) noexcept {
-			m_value = empty_value_t{};
+		void clear( ) noexcept {
+			m_value = impl::empty_value_t{};
 		}
 
 		template<typename ExceptionType>
@@ -111,7 +135,7 @@ namespace daw {
 		         std::enable_if_t<
 		           traits::is_callable_convertible_v<value_type, Function, Args...>,
 		           std::nullptr_t> = nullptr>
-		static std::variant<std::exception_ptr, value_type>
+		static std::variant<impl::empty_value_t, std::exception_ptr, value_type>
 		variant_from_code( Function &&func, Args &&... args ) {
 			try {
 				return func( std::forward<Args>( args )... );
@@ -146,71 +170,80 @@ namespace daw {
 			set_exception( std::current_exception( ) );
 		}
 
+		/*
 		template<typename... Visitors>
-		constexpr decltype( auto ) visit( Visitors &&... visitors ) {
-			static_assert(
-			  daw::is_visitable_v<value_type &, Visitors...>,
-			  "Visitor must be callable with the variants expected value_type &" );
-			static_assert( daw::is_visitable_v<std::exception_ptr, Visitors...>,
-			               "Visitor must be callable with std::exception_ptr" );
+		 decltype( auto ) visit( Visitors &&... visitors ) {
+		  static_assert(
+		    daw::is_visitable_v<value_type &, Visitors...>,
+		    "Visitor must be callable with the variants expected value_type &" );
+		  static_assert( daw::is_visitable_v<std::exception_ptr, Visitors...>,
+		                 "Visitor must be callable with std::exception_ptr" );
 
-			return daw::visit_nt( m_value, std::forward<Visitors>( visitors )... );
+		  auto visitor = daw::overload( std::forward<Visitors>( visitors )... );
+		  using result_t = decltype( daw::invoke( visitor, std::declval<value_type>(
+		) ) ); return daw::visit_nt( std::move( visitor ),
+		    []( empty_value_t ) -> result_t { std::terminate( ); } );
 		}
 
 		template<typename... Visitors>
-		constexpr decltype( auto ) visit( Visitors &&... visitors ) const {
-			static_assert(
-			  daw::is_visitable_v<value_type const &, Visitors...>,
-			  "Visitor must be callable with the variants expected value_type &" );
-			static_assert( daw::is_visitable_v<std::exception_ptr, Visitors...>,
-			               "Visitor must be callable with std::exception_ptr" );
+		 decltype( auto ) visit( Visitors &&... visitors ) const {
+		  static_assert(
+		    daw::is_visitable_v<value_type const &, Visitors...>,
+		    "Visitor must be callable with the variants expected value_type &" );
+		  static_assert( daw::is_visitable_v<std::exception_ptr, Visitors...>,
+		                 "Visitor must be callable with std::exception_ptr" );
 
-			return daw::visit_nt( m_value, std::forward<Visitors>( visitors )... );
+		  auto visitor = daw::overload( std::forward<Visitors>( visitors )... );
+		  using result_t = decltype( daw::invoke( visitor, std::declval<value_type>(
+		) ) ); return daw::visit_nt( std::move( visitor ),
+		    []( empty_value_t ) -> result_t { std::terminate( ); } );
 		}
-
+		*/
 		bool has_value( ) const {
-			return m_value.index( ) == 2U;
+			return std::holds_alternative<value_type>( m_value );
 		}
 
 		bool has_exception( ) const {
-			return m_value.index( ) == 1U;
+			return std::holds_alternative<std::exception_ptr>( m_value );
 		}
 
-		std::exception_ptr get_exception_ptr( ) noexcept {
-			return std::get<1U>( m_value );
+		std::exception_ptr get_exception_ptr( ) const noexcept {
+			return std::get<std::exception_ptr>( m_value );
 		}
 
-		constexpr bool empty( ) const noexcept {
-			return m_value.index( ) == 0U;
+		bool empty( ) const noexcept {
+			return std::holds_alternative<impl::empty_value_t>( m_value );
 		}
 
-		constexpr explicit operator bool( ) const noexcept {
+		explicit operator bool( ) const noexcept {
 			return !empty( );
 		}
 
-		constexpr explicit operator value_type( ) const {
+		explicit operator value_type( ) const {
 			return get( );
 		}
 
 		void throw_if_exception( ) const {
-			if( m_value.index( ) != 0 ) {
+			if( !has_exception( ) ) {
 				return;
 			}
-			std::exception_ptr ptr = std::get<0>( m_value );
-			if( ptr == nullptr ) {
-				return;
-			}
-			std::rethrow_exception( ptr );
+			std::rethrow_exception( std::get<std::exception_ptr>( m_value ) );
 		}
 
 		reference get( ) {
+			if( empty( ) ) {
+				std::terminate( );
+			}
 			throw_if_exception( );
-			return std::get<2U>( m_value );
+			return std::get<value_type>( m_value );
 		}
 
 		const_reference get( ) const {
+			if( empty( ) ) {
+				std::terminate( );
+			}
 			throw_if_exception( );
-			return std::get<2U>( m_value );
+			return std::get<value_type>( m_value );
 		}
 
 		reference operator*( ) {
@@ -222,13 +255,11 @@ namespace daw {
 		}
 
 		pointer operator->( ) {
-			throw_if_exception( );
-			return &std::get<2U>( m_value );
+			return &( get( ) );
 		}
 
 		const_pointer operator->( ) const {
-			throw_if_exception( );
-			return &std::get<2U>( m_value );
+			return &( get( ) );
 		}
 
 		std::string get_exception_message( ) const noexcept {
@@ -241,16 +272,29 @@ namespace daw {
 			}
 			return result;
 		}
-	}; // namespace daw
+	};
 
 	static_assert( traits::is_regular<expected_t<int>> );
 
 	namespace impl {
-		struct void_value_t {
-			constexpr void_value_t( ) noexcept = default;
-		};
-		constexpr bool operator==( void_value_t, void_value_t ) noexcept {
+		struct void_value_t {};
+		bool operator==( void_value_t, void_value_t ) noexcept {
 			return true;
+		}
+		bool operator>=( void_value_t, void_value_t ) noexcept {
+			return true;
+		}
+		bool operator<=( void_value_t, void_value_t ) noexcept {
+			return true;
+		}
+		bool operator!=( void_value_t, void_value_t ) noexcept {
+			return false;
+		}
+		bool operator>( void_value_t, void_value_t ) noexcept {
+			return false;
+		}
+		bool operator<( void_value_t, void_value_t ) noexcept {
+			return false;
 		}
 	} // namespace impl
 
@@ -261,54 +305,58 @@ namespace daw {
 		struct exception_tag {};
 
 	private:
-		std::variant<std::exception_ptr, value_type> m_value =
-		  std::exception_ptr{nullptr};
+		std::variant<impl::empty_value_t, std::exception_ptr, value_type> m_value{};
 
-		expected_t( bool )
+		expected_t( bool ) noexcept
 		  : m_value( value_type{} ) {}
 
 	public:
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: No value, aka null
 		//////////////////////////////////////////////////////////////////////////
-		expected_t( ) = default;
+		expected_t( ) noexcept = default;
 
-		friend bool operator==( expected_t const &lhs, expected_t const &rhs ) {
+		friend bool operator==( expected_t const &lhs,
+		                        expected_t const &rhs ) noexcept {
 			return lhs.m_value == rhs.m_value;
+		}
+		friend bool operator!=( expected_t const &lhs,
+		                        expected_t const &rhs ) noexcept {
+			return lhs.m_value != rhs.m_value;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////
-		expected_t &operator=( bool ) {
-			m_value = daw::construct_a<value_type>{}( );
+		expected_t &operator=( bool ) noexcept {
+			m_value = value_type{};
 			return *this;
 		}
 
-		void clear( ) {
-			m_value = std::exception_ptr{nullptr};
+		void clear( ) noexcept {
+			m_value = impl::empty_value_t{};
 		}
 
-		explicit expected_t( std::exception_ptr ptr )
+		explicit expected_t( std::exception_ptr ptr ) noexcept
 		  : m_value( ptr ) {}
 
-		expected_t &operator=( std::exception_ptr ptr ) {
+		expected_t &operator=( std::exception_ptr ptr ) noexcept {
 			m_value = ptr;
 			return *this;
 		}
 
 		template<typename ExceptionType>
-		expected_t( exception_tag, ExceptionType &&ex )
+		expected_t( exception_tag, ExceptionType &&ex ) noexcept
 		  : m_value(
 		      std::make_exception_ptr( std::forward<ExceptionType>( ex ) ) ) {}
 
-		explicit expected_t( exception_tag )
+		explicit expected_t( exception_tag ) noexcept
 		  : m_value( std::current_exception( ) ) {}
 
 	private:
 		template<class Function, typename... Args>
-		static std::variant<std::exception_ptr, value_type>
-		variant_from_code( Function &&func, Args &&... args ) {
+		static std::variant<impl::empty_value_t, std::exception_ptr, value_type>
+		variant_from_code( Function &&func, Args &&... args ) noexcept {
 			try {
 				func( std::forward<Args>( args )... );
 				return impl::void_value_t( );
@@ -317,83 +365,85 @@ namespace daw {
 
 	public:
 		template<class Function, typename... Args,
-		         std::enable_if_t<traits::is_callable_v<Function, Args...>,
+		         std::enable_if_t<std::is_invocable_v<Function, Args...>,
 		                          std::nullptr_t> = nullptr>
-		explicit expected_t( Function &&func, Args &&... args )
+		explicit expected_t( Function &&func, Args &&... args ) noexcept
 		  : m_value( variant_from_code( std::forward<Function>( func ),
 		                                std::forward<Args>( args )... ) ) {}
 
 		template<class Function, typename... Args,
-		         std::enable_if_t<traits::is_callable_v<Function, Args...>,
+		         std::enable_if_t<std::is_invocable_v<Function, Args...>,
 		                          std::nullptr_t> = nullptr>
-		static expected_t from_code( Function &&func, Args &&... args ) {
+		static expected_t from_code( Function &&func, Args &&... args ) noexcept {
 			auto result = expected_t( );
 			result.m_value = variant_from_code( std::forward<Function>( func ),
 			                                    std::forward<Args>( args )... );
 			return result;
 		}
 
-		void set_exception( std::exception_ptr ptr ) {
+		void set_exception( std::exception_ptr ptr ) noexcept {
 			m_value = ptr;
 		}
 
-		void set_exception( ) {
+		void set_exception( ) noexcept {
 			set_exception( std::current_exception( ) );
 		}
 
+		/*
 		template<typename... Visitors>
 		decltype( auto ) visit( Visitors &&... visitors ) {
-			auto visitor = daw::overload( std::forward<Visitors>( visitors )... );
-			static_assert( traits::is_callable_v<decltype( visitor )>,
-			               "Visitor must be callable without arguments" );
-			static_assert(
-			  traits::is_callable_v<decltype( visitor ), std::exception_ptr>,
-			  "Visitor must be callable with std::exception_ptr" );
+		  auto visitor = daw::overload( std::forward<Visitors>( visitors )... );
+		  static_assert( std::is_invocable_v<decltype( visitor )>,
+		                 "Visitor must be callable without arguments" );
+		  static_assert(
+		    std::is_invocable_v<decltype( visitor ), std::exception_ptr>,
+		    "Visitor must be callable with std::exception_ptr" );
 
-			return daw::visit_nt(
-			  m_value,
-			  [&]( value_type const & ) mutable noexcept( noexcept( visitor( ) ) ) {
-				  return visitor( );
-			  },
-			  [&]( value_type && ) mutable noexcept( noexcept( visitor( ) ) ) {
-				  return visitor( );
-			  },
-			  [&]( std::exception_ptr ptr ) mutable noexcept(
-			    noexcept( visitor( ptr ) ) ) { return visitor( ptr ); } );
+		  return daw::visit_nt(
+		    m_value,
+		    [&]( value_type const & ) mutable noexcept( noexcept( visitor( ) ) ) {
+		      return visitor( );
+		    },
+		    [&]( value_type && ) mutable noexcept( noexcept( visitor( ) ) ) {
+		      return visitor( );
+		    },
+		    [&]( std::exception_ptr ptr ) mutable noexcept(
+		      noexcept( visitor( ptr ) ) ) { return visitor( ptr ); } );
 		}
 
 		template<typename... Visitors>
 		decltype( auto ) visit( Visitors &&... visitors ) const {
-			auto visitor = daw::overload( std::forward<Visitors>( visitors )... );
-			static_assert( traits::is_callable_v<decltype( visitor )>,
-			               "Visitor must be callable without arguments" );
-			static_assert(
-			  traits::is_callable_v<decltype( visitor ), std::exception_ptr>,
-			  "Visitor must be callable with std::exception_ptr" );
+		  auto visitor = daw::overload( std::forward<Visitors>( visitors )... );
+		  static_assert( std::is_invocable_v<decltype( visitor )>,
+		                 "Visitor must be callable without arguments" );
+		  static_assert(
+		    std::is_invocable_v<decltype( visitor ), std::exception_ptr>,
+		    "Visitor must be callable with std::exception_ptr" );
 
-			return daw::visit_nt(
-			  m_value,
-			  [&]( value_type const & ) mutable noexcept( noexcept( visitor( ) ) ) {
-				  return visitor( );
-			  },
-			  [&]( std::exception_ptr ptr ) mutable noexcept(
-			    noexcept( visitor( ptr ) ) ) { return visitor( ptr ); } );
+		  return daw::visit_nt(
+		    m_value,
+		    [&]( value_type const & ) mutable noexcept( noexcept( visitor( ) ) ) {
+		      return visitor( );
+		    },
+		    [&]( std::exception_ptr ptr ) mutable noexcept(
+		      noexcept( visitor( ptr ) ) ) { return visitor( ptr ); } );
 		}
+		*/
 
 		bool has_value( ) const noexcept {
-			return m_value.index( ) == 1U;
+			return std::holds_alternative<value_type>( m_value );
 		}
 
 		bool has_exception( ) const noexcept {
-			return m_value.index( ) == 0U and std::get<0U>( m_value ) != nullptr;
+			return std::holds_alternative<std::exception_ptr>( m_value );
 		}
 
-		std::exception_ptr get_exception_ptr( ) {
-			return std::get<0U>( m_value );
+		std::exception_ptr get_exception_ptr( ) const noexcept {
+			return std::get<std::exception_ptr>( m_value );
 		}
 
 		bool empty( ) const noexcept {
-			return m_value.index( ) == 0U and std::get<0U>( m_value ) == nullptr;
+			return std::holds_alternative<impl::empty_value_t>( m_value );
 		}
 
 		explicit operator bool( ) const noexcept {
@@ -401,17 +451,16 @@ namespace daw {
 		}
 
 		void throw_if_exception( ) const {
-			if( m_value.index( ) != 0 ) {
+			if( !has_exception( ) ) {
 				return;
 			}
-			std::exception_ptr ptr = std::get<0>( m_value );
-			if( ptr == nullptr ) {
-				return;
-			}
-			std::rethrow_exception( ptr );
+			std::rethrow_exception( std::get<std::exception_ptr>( m_value ) );
 		}
 
 		void get( ) const {
+			if( empty( ) ) {
+				std::terminate( );
+			}
 			throw_if_exception( );
 		}
 
