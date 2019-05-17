@@ -188,9 +188,6 @@ void daw_expected_test_move_assignment_001( ) {
 	daw::expecting( tmp.get( ) == "This is a test" );
 	auto tmp2 = daw::expected_t<std::string>( );
 	tmp2 = std::move( tmp );
-	daw::expecting( !tmp.has_value( ) );
-	daw::expecting( !tmp.has_exception( ) );
-	daw::expecting( tmp.empty( ) );
 	daw::expecting( tmp2.has_value( ) );
 	daw::expecting( !tmp2.has_exception( ) );
 	daw::expecting( !tmp2.empty( ) );
@@ -205,9 +202,6 @@ void daw_expected_test_move_construction_001( ) {
 	daw::expecting( !tmp.empty( ) );
 	daw::expecting( tmp.get( ) == "This is a test" );
 	auto tmp2 = daw::expected_t<std::string>( std::move( tmp ) );
-	daw::expecting( !tmp.has_value( ) );
-	daw::expecting( !tmp.has_exception( ) );
-	daw::expecting( tmp.empty( ) );
 	daw::expecting( tmp2.has_value( ) );
 	daw::expecting( !tmp2.has_exception( ) );
 	daw::expecting( !tmp2.empty( ) );
@@ -226,9 +220,6 @@ void daw_expected_test_move_assignment_002( ) {
 
 	auto tmp2 = daw::expected_t<std::string>( );
 	tmp2 = std::move( tmp );
-	daw::expecting( !tmp.has_value( ) );
-	daw::expecting( !tmp.has_exception( ) );
-	daw::expecting( tmp.empty( ) );
 	daw::expecting( !tmp2.has_value( ) );
 	daw::expecting( tmp2.has_exception( ) );
 	daw::expecting( !tmp2.empty( ) );
@@ -246,9 +237,6 @@ void daw_expected_test_move_construction_002( ) {
 	daw::expecting_exception( [&]( ) { tmp.get( ); } );
 
 	auto tmp2 = daw::expected_t<std::string>( std::move( tmp ) );
-	daw::expecting( !tmp.has_value( ) );
-	daw::expecting( !tmp.has_exception( ) );
-	daw::expecting( tmp.empty( ) );
 	daw::expecting( !tmp2.has_value( ) );
 	daw::expecting( tmp2.has_exception( ) );
 	daw::expecting( !tmp2.empty( ) );

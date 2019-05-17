@@ -55,17 +55,6 @@ namespace daw {
 	public:
 		struct exception_tag {};
 		expected_t( ) = default;
-		~expected_t( ) = default;
-		expected_t( expected_t const & ) = default;
-		expected_t &operator=( expected_t const & ) = default;
-		expected_t( expected_t &&other ) noexcept
-		  : m_value( std::exchange( other.m_value, std::exception_ptr{nullptr} ) ) {
-		}
-
-		expected_t &operator=( expected_t &&rhs ) noexcept {
-			m_value = std::exchange( rhs.m_value, std::exception_ptr{nullptr} );
-			return *this;
-		}
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: No value, aka null
@@ -110,11 +99,11 @@ namespace daw {
 		}
 
 		template<typename ExceptionType>
-		expected_t( exception_tag, ExceptionType &&ex )
+		expected_t( exception_tag, ExceptionType &&ex ) noexcept
 		  : m_value(
 		      std::make_exception_ptr( std::forward<ExceptionType>( ex ) ) ) {}
 
-		explicit expected_t( exception_tag )
+		explicit expected_t( exception_tag ) noexcept
 		  : m_value( std::current_exception( ) ) {}
 
 	private:
@@ -180,25 +169,19 @@ namespace daw {
 		}
 
 		bool has_value( ) const {
-			return daw::visit_nt(
-			  m_value, []( value_type const & ) noexcept { return true; },
-			  []( std::exception_ptr ) noexcept { return false; } );
+			return m_value.index( ) == 1U;
 		}
 
 		bool has_exception( ) const {
-			return daw::visit_nt(
-			  m_value, []( value_type const & ) noexcept { return false; },
-			  []( std::exception_ptr ptr ) noexcept { return ( ptr != nullptr ); } );
+			return m_value.index( ) == 0U and std::get<0>( m_value ) != nullptr;
 		}
 
 		std::exception_ptr get_exception_ptr( ) {
-			return std::get<std::exception_ptr>( m_value );
+			return std::get<0U>( m_value );
 		}
 
 		bool empty( ) const {
-			return daw::visit_nt(
-			  m_value, []( value_type const & ) noexcept { return false; },
-			  []( std::exception_ptr ptr ) noexcept { return ( ptr == nullptr ); } );
+			return m_value.index( ) == 0U and std::get<0>( m_value ) == nullptr;
 		}
 
 		explicit operator bool( ) const {
@@ -210,31 +193,24 @@ namespace daw {
 		}
 
 		void throw_if_exception( ) const {
-			daw::visit_nt( m_value, []( value_type const & ) noexcept {},
-			               []( std::exception_ptr ptr ) {
-				               if( ptr != nullptr ) {
-					               std::rethrow_exception( ptr );
-				               }
-			               } );
+			if( m_value.index( ) != 0 ) {
+				return;
+			}
+			std::exception_ptr ptr = std::get<0>( m_value );
+			if( ptr == nullptr ) {
+				return;
+			}
+			std::rethrow_exception( ptr );
 		}
 
 		reference get( ) {
-			return daw::visit_nt(
-			  m_value, []( reference value ) noexcept->reference { return value; },
-			  []( std::exception_ptr ptr ) -> reference {
-				  assert( ptr != nullptr );
-				  std::rethrow_exception( ptr );
-			  } );
+			throw_if_exception( );
+			return std::get<1>( m_value );
 		}
 
 		const_reference get( ) const {
-			return daw::visit_nt(
-			  m_value,
-			  []( const_reference value ) noexcept->const_reference { return value; },
-			  []( std::exception_ptr ptr ) -> const_reference {
-				  assert( ptr != nullptr );
-				  std::rethrow_exception( ptr );
-			  } );
+			throw_if_exception( );
+			return std::get<1>( m_value );
 		}
 
 		reference operator*( ) {
@@ -246,25 +222,13 @@ namespace daw {
 		}
 
 		pointer operator->( ) {
-			return daw::visit_nt(
-			  m_value, []( reference value ) noexcept->pointer {
-				  return std::addressof( value );
-			  },
-			  []( std::exception_ptr ptr ) -> pointer {
-				  assert( ptr != nullptr );
-				  std::rethrow_exception( ptr );
-			  } );
+			throw_if_exception( );
+			return &std::get<1>( m_value );
 		}
 
 		const_pointer operator->( ) const {
-			return daw::visit_nt(
-			  m_value, []( const_reference value ) noexcept->const_pointer {
-				  return std::addressof( value );
-			  },
-			  []( std::exception_ptr ptr ) -> const_pointer {
-				  assert( ptr != nullptr );
-				  std::rethrow_exception( ptr );
-			  } );
+			throw_if_exception( );
+			return &std::get<1>( m_value );
 		}
 
 		std::string get_exception_message( ) const noexcept {
@@ -308,18 +272,6 @@ namespace daw {
 		/// Summary: No value, aka null
 		//////////////////////////////////////////////////////////////////////////
 		expected_t( ) = default;
-		~expected_t( ) = default;
-		expected_t( expected_t const & ) = default;
-		expected_t &operator=( expected_t const & ) = default;
-
-		expected_t( expected_t &&other ) noexcept
-		  : m_value( std::exchange( other.m_value, std::exception_ptr{nullptr} ) ) {
-		}
-
-		expected_t &operator=( expected_t &&rhs ) noexcept {
-			m_value = std::exchange( rhs.m_value, std::exception_ptr{nullptr} );
-			return *this;
-		}
 
 		friend bool operator==( expected_t const &lhs, expected_t const &rhs ) {
 			return lhs.m_value == rhs.m_value;
@@ -429,25 +381,19 @@ namespace daw {
 		}
 
 		bool has_value( ) const noexcept {
-			return daw::visit_nt(
-			  m_value, []( value_type const & ) noexcept { return true; },
-			  []( std::exception_ptr ) noexcept { return false; } );
+			return m_value.index( ) == 1U;
 		}
 
 		bool has_exception( ) const noexcept {
-			return daw::visit_nt(
-			  m_value, []( value_type const & ) noexcept { return false; },
-			  []( std::exception_ptr ptr ) noexcept { return ( ptr != nullptr ); } );
+			return m_value.index( ) == 0U and std::get<0U>( m_value ) != nullptr;
 		}
 
 		std::exception_ptr get_exception_ptr( ) {
-			return std::get<std::exception_ptr>( m_value );
+			return std::get<0U>( m_value );
 		}
 
 		bool empty( ) const noexcept {
-			return daw::visit_nt(
-			  m_value, []( value_type const & ) noexcept { return false; },
-			  []( std::exception_ptr ptr ) noexcept { return ( ptr == nullptr ); } );
+			return m_value.index( ) == 0U and std::get<0U>( m_value ) == nullptr;
 		}
 
 		explicit operator bool( ) const noexcept {
@@ -455,23 +401,18 @@ namespace daw {
 		}
 
 		void throw_if_exception( ) const {
-			daw::visit_nt( m_value, []( value_type const & ) noexcept {},
-			               []( std::exception_ptr ptr ) {
-				               if( ptr != nullptr ) {
-					               std::rethrow_exception( ptr );
-				               }
-			               } );
+			if( m_value.index( ) != 0 ) {
+				return;
+			}
+			std::exception_ptr ptr = std::get<0>( m_value );
+			if( ptr == nullptr ) {
+				return;
+			}
+			std::rethrow_exception( ptr );
 		}
 
 		void get( ) const {
-			daw::visit_nt( m_value, []( value_type const & ) noexcept {},
-			               []( std::exception_ptr ptr ) {
-				               if( ptr != nullptr ) {
-					               std::rethrow_exception( ptr );
-				               }
-				               daw::exception::daw_throw<std::logic_error>(
-				                 "Unexpected empty state" );
-			               } );
+			throw_if_exception( );
 		}
 
 		std::string get_exception_message( ) const noexcept {
@@ -515,3 +456,4 @@ namespace daw {
 		return expected_t<Result>( ptr );
 	}
 } // namespace daw
+
