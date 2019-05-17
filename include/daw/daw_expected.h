@@ -49,53 +49,53 @@ namespace daw {
 		using const_pointer = value_type const *;
 
 	private:
-		std::variant<std::exception_ptr, value_type> m_value =
-		  std::exception_ptr( nullptr );
+		struct empty_value_t {};
+		std::variant<empty_value_t, std::exception_ptr, value_type> m_value{};
 
 	public:
 		struct exception_tag {};
-		expected_t( ) = default;
+		constexpr expected_t( ) = default;
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: No value, aka null
 		//////////////////////////////////////////////////////////////////////////
-		friend bool operator==( expected_t const &lhs, expected_t const &rhs ) {
+		friend constexpr bool operator==( expected_t const &lhs, expected_t const &rhs ) noexcept {
 			return lhs.m_value == rhs.m_value;
 		}
 
-		friend bool operator!=( expected_t const &lhs, expected_t const &rhs ) {
+		friend constexpr bool operator!=( expected_t const &lhs, expected_t const &rhs ) noexcept {
 			return lhs.m_value != rhs.m_value;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////
-		explicit expected_t( value_type &&value )
+		explicit constexpr expected_t( value_type &&value )
 		  : m_value( daw::move( value ) ) {}
 
-		explicit expected_t( value_type const &value )
+		explicit constexpr expected_t( value_type const &value )
 		  : m_value( value ) {}
 
-		expected_t &operator=( value_type &&value ) {
+		constexpr expected_t &operator=( value_type &&value ) {
 			m_value = daw::move( value );
 			return *this;
 		}
 
-		expected_t &operator=( value_type const &value ) {
+		constexpr expected_t &operator=( value_type const &value ) {
 			m_value = value;
 			return *this;
 		}
 
-		expected_t( std::exception_ptr ptr )
+		expected_t( std::exception_ptr ptr ) noexcept
 		  : m_value( ptr ) {}
 
-		expected_t &operator=( std::exception_ptr ptr ) {
+		expected_t &operator=( std::exception_ptr ptr ) noexcept {
 			m_value = ptr;
 			return *this;
 		}
 
-		void clear( ) {
-			m_value = std::exception_ptr{nullptr};
+		constexpr void clear( ) noexcept {
+			m_value = empty_value_t{};
 		}
 
 		template<typename ExceptionType>
@@ -138,16 +138,16 @@ namespace daw {
 			return result;
 		}
 
-		void set_exception( std::exception_ptr ptr ) {
+		void set_exception( std::exception_ptr ptr ) noexcept {
 			m_value = ptr;
 		}
 
-		void set_exception( ) {
+		void set_exception( ) noexcept {
 			set_exception( std::current_exception( ) );
 		}
 
 		template<typename... Visitors>
-		decltype( auto ) visit( Visitors &&... visitors ) {
+		constexpr decltype( auto ) visit( Visitors &&... visitors ) {
 			static_assert(
 			  daw::is_visitable_v<value_type &, Visitors...>,
 			  "Visitor must be callable with the variants expected value_type &" );
@@ -158,7 +158,7 @@ namespace daw {
 		}
 
 		template<typename... Visitors>
-		decltype( auto ) visit( Visitors &&... visitors ) const {
+		constexpr decltype( auto ) visit( Visitors &&... visitors ) const {
 			static_assert(
 			  daw::is_visitable_v<value_type const &, Visitors...>,
 			  "Visitor must be callable with the variants expected value_type &" );
@@ -169,26 +169,26 @@ namespace daw {
 		}
 
 		bool has_value( ) const {
-			return m_value.index( ) == 1U;
+			return m_value.index( ) == 2U;
 		}
 
 		bool has_exception( ) const {
-			return m_value.index( ) == 0U and std::get<0>( m_value ) != nullptr;
+			return m_value.index( ) == 1U;
 		}
 
-		std::exception_ptr get_exception_ptr( ) {
-			return std::get<0U>( m_value );
+		std::exception_ptr get_exception_ptr( ) noexcept {
+			return std::get<1U>( m_value );
 		}
 
-		bool empty( ) const {
-			return m_value.index( ) == 0U and std::get<0>( m_value ) == nullptr;
+		constexpr bool empty( ) const noexcept {
+			return m_value.index( ) == 0U;
 		}
 
-		explicit operator bool( ) const {
+		constexpr explicit operator bool( ) const noexcept {
 			return !empty( );
 		}
 
-		explicit operator value_type( ) const {
+		constexpr explicit operator value_type( ) const {
 			return get( );
 		}
 
@@ -205,12 +205,12 @@ namespace daw {
 
 		reference get( ) {
 			throw_if_exception( );
-			return std::get<1>( m_value );
+			return std::get<2U>( m_value );
 		}
 
 		const_reference get( ) const {
 			throw_if_exception( );
-			return std::get<1>( m_value );
+			return std::get<2U>( m_value );
 		}
 
 		reference operator*( ) {
@@ -223,12 +223,12 @@ namespace daw {
 
 		pointer operator->( ) {
 			throw_if_exception( );
-			return &std::get<1>( m_value );
+			return &std::get<2U>( m_value );
 		}
 
 		const_pointer operator->( ) const {
 			throw_if_exception( );
-			return &std::get<1>( m_value );
+			return &std::get<2U>( m_value );
 		}
 
 		std::string get_exception_message( ) const noexcept {
@@ -456,4 +456,3 @@ namespace daw {
 		return expected_t<Result>( ptr );
 	}
 } // namespace daw
-
