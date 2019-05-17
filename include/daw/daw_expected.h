@@ -43,22 +43,10 @@
 namespace daw {
 	namespace impl {
 		struct empty_value_t {};
-		bool operator==( empty_value_t, empty_value_t ) noexcept {
+		inline bool operator==( empty_value_t, empty_value_t ) noexcept {
 			return true;
 		}
-		bool operator>=( empty_value_t, empty_value_t ) noexcept {
-			return true;
-		}
-		bool operator<=( empty_value_t, empty_value_t ) noexcept {
-			return true;
-		}
-		bool operator!=( empty_value_t, empty_value_t ) noexcept {
-			return false;
-		}
-		bool operator>( empty_value_t, empty_value_t ) noexcept {
-			return false;
-		}
-		bool operator<( empty_value_t, empty_value_t ) noexcept {
+		inline bool operator!=( empty_value_t, empty_value_t ) noexcept {
 			return false;
 		}
 	} // namespace impl
@@ -278,22 +266,10 @@ namespace daw {
 
 	namespace impl {
 		struct void_value_t {};
-		bool operator==( void_value_t, void_value_t ) noexcept {
+		inline bool operator==( void_value_t, void_value_t ) noexcept {
 			return true;
 		}
-		bool operator>=( void_value_t, void_value_t ) noexcept {
-			return true;
-		}
-		bool operator<=( void_value_t, void_value_t ) noexcept {
-			return true;
-		}
-		bool operator!=( void_value_t, void_value_t ) noexcept {
-			return false;
-		}
-		bool operator>( void_value_t, void_value_t ) noexcept {
-			return false;
-		}
-		bool operator<( void_value_t, void_value_t ) noexcept {
+		inline bool operator!=( void_value_t, void_value_t ) noexcept {
 			return false;
 		}
 	} // namespace impl
