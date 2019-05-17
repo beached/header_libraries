@@ -48,11 +48,11 @@ namespace daw {
 		if( var.index( ) == N ) {
 			if constexpr( daw::is_reference_wrapper_v<decltype(
 			                std::get<N>( std::forward<Variant>( var ) ) )> ) {
-				return daw::invoke(
+				return std::invoke(
 				  std::forward<Visitor>( vis ),
 				  std::get<N>( std::forward<Variant>( var ) ).get( ) );
 			} else {
-				return daw::invoke( std::forward<Visitor>( vis ),
+				return std::invoke( std::forward<Visitor>( vis ),
 				                    std::get<N>( std::forward<Variant>( var ) ) );
 			}
 		}
@@ -67,10 +67,10 @@ namespace daw {
 		auto ol = daw::overload( std::forward<Visitor>( vis ),
 		                         std::forward<Visitors>( visitors )... );
 		using result_t =
-		  decltype( daw::invoke( daw::move( ol ), std::get<0>( var ) ) );
+		  decltype( std::invoke( daw::move( ol ), std::get<0>( var ) ) );
 
 		if( var.index( ) == 0 ) {
-			return daw::invoke( daw::move( ol ), std::get<0>( var ) );
+			return std::invoke( daw::move( ol ), std::get<0>( var ) );
 		}
 		return visit_nt<1, sizeof...( Args ), result_t>( var, daw::move( ol ) );
 	}
@@ -82,10 +82,10 @@ namespace daw {
 		auto ol = daw::overload( std::forward<Visitor>( vis ),
 		                         std::forward<Visitors>( visitors )... );
 		using result_t =
-		  decltype( daw::invoke( daw::move( ol ), std::get<0>( var ) ) );
+		  decltype( std::invoke( daw::move( ol ), std::get<0>( var ) ) );
 
 		if( var.index( ) == 0 ) {
-			return daw::invoke( daw::move( ol ), std::get<0>( var ) );
+			return std::invoke( daw::move( ol ), std::get<0>( var ) );
 		}
 		return visit_nt<1, sizeof...( Args ), result_t>( var, daw::move( ol ) );
 	}
@@ -97,10 +97,10 @@ namespace daw {
 		auto ol = daw::overload( std::forward<Visitor>( vis ),
 		                         std::forward<Visitors>( visitors )... );
 		using result_t = decltype(
-		  daw::invoke( daw::move( ol ), daw::move( std::get<0>( var ) ) ) );
+		  std::invoke( daw::move( ol ), daw::move( std::get<0>( var ) ) ) );
 
 		if( var.index( ) == 0 ) {
-			return daw::invoke( daw::move( ol ), std::get<0>( daw::move( var ) ) );
+			return std::invoke( daw::move( ol ), std::get<0>( daw::move( var ) ) );
 		}
 		return visit_nt<1, sizeof...( Args ), result_t>( daw::move( var ),
 		                                                 daw::move( ol ) );
