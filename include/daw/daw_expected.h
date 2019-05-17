@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <cassert>
 #include <cstddef>
 #include <exception>
 #include <stdexcept>
@@ -221,10 +222,8 @@ namespace daw {
 			return daw::visit_nt(
 			  m_value, []( reference value ) noexcept->reference { return value; },
 			  []( std::exception_ptr ptr ) -> reference {
-				  if( ptr != nullptr ) {
-					  std::rethrow_exception( ptr );
-				  }
-					std::terminate( );	// how do we get a null exception_ptr
+				  assert( ptr != nullptr );
+				  std::rethrow_exception( ptr );
 			  } );
 		}
 
@@ -233,10 +232,8 @@ namespace daw {
 			  m_value,
 			  []( const_reference value ) noexcept->const_reference { return value; },
 			  []( std::exception_ptr ptr ) -> const_reference {
-				  if( ptr != nullptr ) {
-					  std::rethrow_exception( ptr );
-				  }
-					std::terminate( );	// how do we get a null exception_ptr
+				  assert( ptr != nullptr );
+				  std::rethrow_exception( ptr );
 			  } );
 		}
 
@@ -254,10 +251,8 @@ namespace daw {
 				  return std::addressof( value );
 			  },
 			  []( std::exception_ptr ptr ) -> pointer {
-				  if( ptr != nullptr ) {
-					  std::rethrow_exception( ptr );
-				  }
-					std::terminate( );	// how do we get a null exception_ptr
+				  assert( ptr != nullptr );
+				  std::rethrow_exception( ptr );
 			  } );
 		}
 
@@ -267,10 +262,8 @@ namespace daw {
 				  return std::addressof( value );
 			  },
 			  []( std::exception_ptr ptr ) -> const_pointer {
-				  if( ptr != nullptr ) {
-					  std::rethrow_exception( ptr );
-				  }
-					std::terminate( );	// how do we get a null exception_ptr
+				  assert( ptr != nullptr );
+				  std::rethrow_exception( ptr );
 			  } );
 		}
 
