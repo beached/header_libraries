@@ -723,7 +723,7 @@ namespace daw {
 	///	try aggregate.
 	/// @tparam T type of value to construct
 	template<typename T>
-	struct construct_a {
+	struct construct_a_t {
 		template<typename... Args,
 		         std::enable_if_t<daw::is_constructible_v<T, Args...>,
 		                          std::nullptr_t> = nullptr>
@@ -744,7 +744,7 @@ namespace daw {
 	};
 
 	template<typename T>
-	struct construct_a<daw::use_aggregate_construction<T>> {
+	struct construct_a_t<daw::use_aggregate_construction<T>> {
 
 		template<typename... Args>
 		constexpr T operator( )( Args &&... args ) const
@@ -753,11 +753,13 @@ namespace daw {
 			return T{std::forward<Args>( args )...};
 		}
 	};
+	template<typename T>
+	inline constexpr construct_a_t<T> construct_a = construct_a_t<T>{};
 
 	namespace impl {
 		template<typename T, typename... Args>
 		using can_construct_a_detect = decltype(
-		  std::declval<daw::construct_a<T>>( )( std::declval<Args>( )... ) );
+		  std::declval<daw::construct_a_t<T>>( )( std::declval<Args>( )... ) );
 
 		template<typename... Args>
 		constexpr void is_tuple_test( std::tuple<Args...> const & ) noexcept;
@@ -776,17 +778,17 @@ namespace daw {
 	template<typename Destination, typename... Args>
 	constexpr decltype( auto )
 	construct_from( std::tuple<Args...> &&args ) noexcept(
-	  noexcept( daw::apply( construct_a<Destination>{}, daw::move( args ) ) ) ) {
+	  noexcept( daw::apply( construct_a<Destination>, daw::move( args ) ) ) ) {
 
-		return daw::apply( construct_a<Destination>{}, daw::move( args ) );
+		return daw::apply( construct_a<Destination>, daw::move( args ) );
 	}
 
 	template<typename Destination, typename... Args>
 	constexpr decltype( auto )
 	construct_from( std::tuple<Args...> const &args ) noexcept(
-	  noexcept( daw::apply( construct_a<Destination>{}, args ) ) ) {
+	  noexcept( daw::apply( construct_a<Destination>, args ) ) ) {
 
-		return daw::apply( construct_a<Destination>{}, args );
+		return daw::apply( construct_a<Destination>, args );
 	}
 
 	/*

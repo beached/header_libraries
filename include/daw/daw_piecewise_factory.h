@@ -102,14 +102,14 @@ namespace daw {
 		constexpr T piecewise_applier_impl( std::tuple<Args...> const &tp,
 		                                    std::index_sequence<I...> ) {
 
-			return construct_a<T>{}( process_args<I>( tp )... );
+			return construct_a<T>( process_args<I>( tp )... );
 		}
 
 		template<typename T, typename... Args, std::size_t... I>
 		constexpr T piecewise_applier_impl( std::tuple<Args...> &&tp,
 		                                    std::index_sequence<I...> ) {
 
-			return construct_a<T>{}( process_args<I>( daw::move( tp ) )... );
+			return construct_a<T>( process_args<I>( daw::move( tp ) )... );
 		}
 
 		template<

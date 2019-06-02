@@ -413,7 +413,7 @@ namespace daw {
 			m_nodes.insert(
 			  id_value,
 			  bounded_graph_impl::node_impl_t<T, MaxVerticesPerNode>(
-			    id, daw::construct_a<T>{}( std::forward<Args>( args )... ) ) );
+			    id, daw::construct_a<T>( std::forward<Args>( args )... ) ) );
 
 			return id;
 		}

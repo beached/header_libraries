@@ -343,7 +343,7 @@ namespace daw {
 	constexpr decltype( auto ) construct_from( daw::string_view str,
 	                                           Splitter &&splitter ) {
 
-		return daw::apply( daw::construct_a<Destination>{},
+		return daw::apply( daw::construct_a<Destination>,
 		                   parser::parse_to<ExpectedArgs...>(
 		                     str, std::forward<Splitter>( splitter ) ) );
 	}

@@ -315,7 +315,7 @@ namespace daw {
 			auto pos = find( std::get<0>( value ) );
 			if( pos == end( ) ) {
 				pos = m_values.insert(
-				  pos, daw::construct_a<value_type>{}( std::forward<P>( value ) ) );
+				  pos, daw::construct_a<value_type>( std::forward<P>( value ) ) );
 				return {pos, true};
 			}
 			return {pos, false};

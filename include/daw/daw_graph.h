@@ -376,7 +376,7 @@ namespace daw {
 			m_nodes.emplace( std::make_pair(
 			  id, graph_impl::node_impl_t<T>(
 			        node_id_t{id},
-			        daw::construct_a<T>{}( std::forward<Args>( args )... ) ) ) );
+			        daw::construct_a<T>( std::forward<Args>( args )... ) ) ) );
 
 			return node_id_t{id};
 		}
