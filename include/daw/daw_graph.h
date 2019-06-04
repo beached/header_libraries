@@ -415,6 +415,10 @@ namespace daw {
 			return m_nodes.size( );
 		}
 
+		bool empty( ) const {
+			return size( ) == 0U;
+		}
+
 		void add_directed_edge( node_id_t from, node_id_t to ) {
 			daw::exception::dbg_precondition_check( has_node( from ) );
 			daw::exception::dbg_precondition_check( has_node( to ) );
