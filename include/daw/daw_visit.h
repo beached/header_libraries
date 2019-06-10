@@ -47,7 +47,8 @@ namespace daw {
 			                                 std::forward<Visitor>( vis ) );
 		}
 #if defined( __clang__ )
-		std::abort( );
+		// Unreachable
+		//std::abort( );
 #endif
 	}
 
