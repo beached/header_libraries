@@ -46,10 +46,6 @@ namespace daw {
 			return visit_nt<N + 1, MaxN, R>( std::forward<Variant>( var ),
 			                                 std::forward<Visitor>( vis ) );
 		}
-#if defined( __clang__ )
-		// Unreachable
-		//std::abort( );
-#endif
 	}
 
 	template<class... Args, typename Visitor, typename... Visitors>
