@@ -34,30 +34,21 @@
 #include "daw_overload.h"
 
 namespace daw {
-	template<size_t, size_t, typename R, typename... Args>
-	[[noreturn]] constexpr R visit_nt( Args &&... ) noexcept {
-		// This will never be called, it is there to ensure the non-called path will
-		// look like it can be called
-		std::terminate( );
-	}
-
 	template<size_t N, size_t MaxN, typename R, typename Variant,
 	         typename Visitor,
 	         std::enable_if_t<( N < MaxN ), std::nullptr_t> = nullptr>
 	constexpr R visit_nt( Variant &&var, Visitor &&vis ) {
 		if( var.index( ) == N ) {
-			if constexpr( daw::is_reference_wrapper_v<decltype(
-			                std::get<N>( std::forward<Variant>( var ) ) )> ) {
-				return daw::invoke(
-				  std::forward<Visitor>( vis ),
-				  std::get<N>( std::forward<Variant>( var ) ).get( ) );
-			} else {
-				return daw::invoke( std::forward<Visitor>( vis ),
-				                    std::get<N>( std::forward<Variant>( var ) ) );
-			}
+			return std::forward<Visitor>( vis )(
+			  std::get<N>( std::forward<Variant>( var ) ) );
 		}
-		return visit_nt<N + 1, MaxN, R>( std::forward<Variant>( var ),
-		                                 std::forward<Visitor>( vis ) );
+		if constexpr( N + 1 < MaxN ) {
+			return visit_nt<N + 1, MaxN, R>( std::forward<Variant>( var ),
+			                                 std::forward<Visitor>( vis ) );
+		}
+#if defined( __clang__ )
+		std::abort( );
+#endif
 	}
 
 	template<class... Args, typename Visitor, typename... Visitors>
@@ -69,10 +60,8 @@ namespace daw {
 		using result_t =
 		  decltype( daw::invoke( daw::move( ol ), std::get<0>( var ) ) );
 
-		if( var.index( ) == 0 ) {
-			return daw::invoke( daw::move( ol ), std::get<0>( var ) );
-		}
-		return visit_nt<1, sizeof...( Args ), result_t>( var, daw::move( ol ) );
+		static_assert(sizeof...(Args) > 0);
+		return visit_nt<0, sizeof...( Args ), result_t>( var, daw::move( ol ) );
 	}
 
 	template<class... Args, typename Visitor, typename... Visitors>
@@ -84,10 +73,8 @@ namespace daw {
 		using result_t =
 		  decltype( daw::invoke( daw::move( ol ), std::get<0>( var ) ) );
 
-		if( var.index( ) == 0 ) {
-			return daw::invoke( daw::move( ol ), std::get<0>( var ) );
-		}
-		return visit_nt<1, sizeof...( Args ), result_t>( var, daw::move( ol ) );
+		static_assert(sizeof...(Args) > 0);
+		return visit_nt<0, sizeof...( Args ), result_t>( var, daw::move( ol ) );
 	}
 
 	template<class... Args, typename Visitor, typename... Visitors>
@@ -99,10 +86,8 @@ namespace daw {
 		using result_t = decltype(
 		  daw::invoke( daw::move( ol ), daw::move( std::get<0>( var ) ) ) );
 
-		if( var.index( ) == 0 ) {
-			return daw::invoke( daw::move( ol ), std::get<0>( daw::move( var ) ) );
-		}
-		return visit_nt<1, sizeof...( Args ), result_t>( daw::move( var ),
+		static_assert(sizeof...(Args) > 0);
+		return visit_nt<0, sizeof...( Args ), result_t>( daw::move( var ),
 		                                                 daw::move( ol ) );
 	}
 
