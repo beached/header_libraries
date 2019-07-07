@@ -113,7 +113,7 @@ namespace daw {
 			return to_string( );
 		}
 #endif
-		operator daw::basic_string_view<CharT>( ) const {
+		constexpr operator daw::basic_string_view<CharT>( ) const {
 			return daw::basic_string_view<CharT>( m_data.data( ), m_data.size( ) );
 		}
 
