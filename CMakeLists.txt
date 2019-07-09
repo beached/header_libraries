@@ -10,7 +10,7 @@ set( CMAKE_CXX_STANDARD 17 CACHE STRING "The C++ standard whose features are req
 add_definitions( -DBOOST_TEST_DYN_LINK -DBOOST_ALL_NO_LIB -DBOOST_ALL_DYN_LINK )
 
 if( ${CMAKE_CXX_COMPILER_ID} STREQUAL 'MSVC' )
-	add_definitions( -DNOMINMAX -DD_WIN32_WINNT=0x0601 )
+	add_definitions( -DNOMINMAX -DD_WIN32_WINNT=0x0601 -permissive- )
 else( )
 	if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang" )
 		add_compile_options( -march=native -fconstexpr-steps=10271242 -pthread -Wall -Wextra -pedantic -Weverything -Wno-c++98-compat -Wno-deprecated-declarations -Wno-covered-switch-default -Wno-padded -Wno-exit-time-destructors -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-missing-noreturn -Wno-missing-prototypes -Wno-disabled-macro-expansion -Wno-missing-braces -Wno-extra-semi)
