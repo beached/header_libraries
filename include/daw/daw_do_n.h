@@ -27,14 +27,6 @@
 namespace daw {
 	namespace algorithm {
 		namespace algorithm_impl {
-#ifdef _MSC_VER
-			template<typename F, typename... Args>
-			constexpr void invoker( F &&func, Args &&... args ) noexcept(
-			  noexcept( std::forward<F>( func )( std::forward<Args>( args )... ) ) ) {
-
-				(void)std::forward<F>( func )( std::forward<Args>( args )... );
-			}
-#endif
 			template<typename Function, typename... Args, size_t... Is>
 			constexpr void do_n(
 			  Function &&func, Args &&... args,
@@ -42,11 +34,7 @@ namespace daw {
 			    Is...> ) noexcept( std::is_nothrow_invocable_v<Function, Args...> ) {
 
 				if constexpr( sizeof...( Is ) > 0 ) {
-#ifndef _MSC_VER
 					(void)( ( daw::invoke( func, args... ), Is ) + ... );
-#else
-					(void)( ( invoker( func, args... ), Is ) + ... );
-#endif
 				}
 			}
 
@@ -56,11 +44,7 @@ namespace daw {
 			  std::is_nothrow_invocable_v<Function, size_t> ) {
 
 				if constexpr( sizeof...( Is ) > 0 ) {
-#ifndef _MSC_VER
 					(void)( ( daw::invoke( func, Is ), 0 ) + ... );
-#else
-					(void)( ( invoker( func, Is ), 0 ) + ... );
-#endif
 				}
 			}
 
@@ -79,11 +63,7 @@ namespace daw {
 		do_n( size_t count, Function &&func, Args &&... args ) noexcept(
 		  std::is_nothrow_invocable_v<Function, Args...> ) {
 			while( count-- > 0 ) {
-#ifndef _MSC_VER
 				daw::invoke( func, args... );
-#else
-				algorithm_impl::invoker( func, args... );
-#endif
 			}
 		}
 
@@ -92,11 +72,7 @@ namespace daw {
 		  std::is_nothrow_invocable_v<Function, size_t> ) {
 			size_t n = 0;
 			while( n < count ) {
-#ifndef _MSC_VER
 				daw::invoke( func, n++ );
-#else
-				algorithm_impl::invoker( func, n++ );
-#endif
 			}
 		}
 

@@ -459,6 +459,7 @@ namespace daw {
 		}
 	} // namespace impl
 
+#ifndef _MSC_VER
 	template<typename F, typename... Args,
 	         daw::enable_if_t<!daw::all_true_v<is_reference_wrapper_v<Args>...>> =
 	           nullptr>
@@ -480,7 +481,12 @@ namespace daw {
 		return impl::INVOKE( std::forward<F>( f ),
 		                     std::forward<ArgTypes>( args )... );
 	}
-
+#else
+	template<typename F, typename... Args>
+	constexpr decltype(auto) invoke( F&&f, Args&&... args ) noexcept( noexcept( std::forward<F>( f )( std::forward<Args>( args )... ) ) ) {
+		return std::forward<F>( f )( std::forward<Args>( args )... );
+	}
+#endif
 	namespace apply_impl {
 		template<typename F, typename Tuple, std::size_t... I>
 		constexpr decltype( auto ) apply_impl( F &&f, Tuple &&t,
