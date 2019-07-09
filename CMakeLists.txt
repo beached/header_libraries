@@ -25,7 +25,9 @@ endif( )
 
 set( HEADER_FOLDER "include" )
 set( TEST_FOLDER "tests" )
-if( GLEAN_INSTALL_ROOT ) 
+
+option( GLEAN_INSTALL_ROOT "" )
+if( EXISTS "${GLEAN_INSTALL_ROOT}" ) 
 	message( "using glean dependencies" )
 	message( "installing to ${GLEAN_INSTALL_ROOT}" )
 
