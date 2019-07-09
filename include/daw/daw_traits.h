@@ -643,12 +643,12 @@ namespace daw {
 
 		template<typename A, typename B, typename... C>
 		struct pack_index_of
-		  : std::integral_constant<int, std::is_same<A, B>{}
-		                                  ? 0
-		                                  : ( pack_index_of<A, C...>{} == -1
-		                                        ? -1
-		                                        : 1 + pack_index_of<A, C...>{} )> {
-		};
+		  : std::integral_constant<int,
+		                           ( std::is_same_v<A, B>
+		                               ? 0
+		                               : ( pack_index_of<A, C...>{} == -1
+		                                     ? -1
+		                                     : 1 + pack_index_of<A, C...>{} ) )> {};
 
 		template<typename... Args>
 		struct pack_list {
