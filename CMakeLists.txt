@@ -6,26 +6,9 @@ find_package( Boost 1.58.0 COMPONENTS system filesystem regex unit_test_framewor
 
 find_package( Threads )
 
-set( CMAKE_CXX_STANDARD 17 CACHE STRING "The C++ standard whose features are requested.")
-add_definitions( -DBOOST_TEST_DYN_LINK -DBOOST_ALL_NO_LIB -DBOOST_ALL_DYN_LINK )
+include( "${CMAKE_SOURCE_DIR}/dependent_projects/CMakeListsCompiler.txt" )
 
-if( ${CMAKE_CXX_COMPILER_ID} STREQUAL 'MSVC' )
-	message( "MSVC detected" )
-	add_definitions( -DNOMINMAX -DD_WIN32_WINNT=0x0601 )
-	add_compile_options( /permissive- )
-else( )
-	if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang" )
-		message( "Clang detected" )
-		add_compile_options( -march=native -fconstexpr-steps=10271242 -pthread -Wall -Wextra -pedantic -Weverything -Wno-c++98-compat -Wno-deprecated-declarations -Wno-covered-switch-default -Wno-padded -Wno-exit-time-destructors -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-missing-noreturn -Wno-missing-prototypes -Wno-disabled-macro-expansion -Wno-missing-braces -Wno-extra-semi)
-		set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -DDEBUG -Og -fsanitize=undefined")
-		set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -g -O3 -DNODEBUGTHROW")
-	elseif( ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" )
-		messagse( "Gcc detected" )
-		add_compile_options(-march=native -pthread -Wall -Wextra -pedantic -Wno-deprecated-declarations -Wduplicated-cond -Wlogical-op -Wnull-dereference -Wold-style-cast -Wshadow)
-		set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -DDEBUG -Og -fsanitize=undefined")
-		set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -g -O3 -DNODEBUGTHROW")
-	endif( )
-endif( )
+add_definitions( -DBOOST_TEST_DYN_LINK -DBOOST_ALL_NO_LIB -DBOOST_ALL_DYN_LINK )
 
 set( HEADER_FOLDER "include" )
 set( TEST_FOLDER "tests" )
