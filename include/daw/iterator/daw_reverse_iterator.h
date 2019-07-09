@@ -67,12 +67,12 @@ namespace daw {
 			return it;
 		}
 
-		constexpr decltype( auto ) operator*( ) {
+		constexpr auto operator*( ) -> decltype( *m_base ) {
 			auto tmp = m_base;
 			return *( --tmp );
 		}
 
-		constexpr decltype( auto ) operator*( ) const {
+		constexpr auto operator*( ) const -> decltype( *m_base ) {
 			auto tmp = m_base;
 			return *( --tmp );
 		}
