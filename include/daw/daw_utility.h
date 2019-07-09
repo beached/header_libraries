@@ -321,16 +321,18 @@ namespace daw {
 	template<typename CharType, typename Traits, typename Allocator>
 	constexpr auto
 	AsciiUpper( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
-		daw::algorithm::map( str.cbegin( ), str.cend( ), str.begin( ), [
-		]( CharType c ) noexcept { return AsciiUpper( c ); } );
+		daw::algorithm::map(
+		  str.cbegin( ), str.cend( ), str.begin( ),
+		  []( CharType c ) noexcept { return AsciiUpper( c ); } );
 		return daw::move( str );
 	}
 
 	template<typename CharType, typename Traits, typename Allocator>
 	constexpr auto
 	AsciiLower( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
-		daw::algorithm::map( str.cbegin( ), str.cend( ), str.begin( ), [
-		]( CharType c ) noexcept { return AsciiLower( c ); } );
+		daw::algorithm::map(
+		  str.cbegin( ), str.cend( ), str.begin( ),
+		  []( CharType c ) noexcept { return AsciiLower( c ); } );
 		return daw::move( str );
 	}
 
@@ -798,6 +800,7 @@ namespace daw {
 	 See: https://youtu.be/nXaxk27zwlk?t=2441
 	*/
 
+#ifndef _MSC_VER
 	template<typename T>
 	inline void force_evaluation( T const &value ) {
 		asm volatile( "" : : "r,m"( value ) : "memory" );
@@ -811,7 +814,16 @@ namespace daw {
 		asm volatile( "" : "+m,r"( value ) : : "memory" );
 #endif
 	}
+#else
 
+#pragma optimize( "", off )
+	template<class T>
+	void force_evalutation( T &&datum ) {
+		datum = datum;
+	}
+#pragma optimize( "", on )
+
+#endif
 	template<typename To>
 	constexpr uint8_t value_from_chars(
 	  unsigned char const *ptr,
