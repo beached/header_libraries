@@ -1,0 +1,6 @@
+{
+	"provides": "header_libraries",
+	"build_type": "cmake",
+	"dependencies": [
+	]
+}

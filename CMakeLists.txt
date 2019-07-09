@@ -25,6 +25,13 @@ endif( )
 
 set( HEADER_FOLDER "include" )
 set( TEST_FOLDER "tests" )
+if( GLEAN_INSTALL_ROOT ) 
+	message( "using glean dependencies" )
+	message( "installing to ${GLEAN_INSTALL_ROOT}" )
+
+	include_directories( SYSTEM "${GLEAN_INSTALL_ROOT}/include" )
+	link_directories( "${GLEAN_INSTALL_ROOT}/lib" )
+endif( )
 
 include_directories( ${HEADER_FOLDER} )
 
