@@ -82,7 +82,7 @@ namespace daw {
 #ifndef _MSC_VER
 				daw::invoke( func, args... );
 #else
-				invoker( func, args... );
+				algorithm_impl::invoker( func, args... );
 #endif
 			}
 		}
@@ -95,7 +95,7 @@ namespace daw {
 #ifndef _MSC_VER
 				daw::invoke( func, n++ );
 #else
-				invoker( func, n++ );
+				algorithm_impl::invoker( func, n++ );
 #endif
 			}
 		}
