@@ -641,14 +641,23 @@ namespace daw {
 		template<size_t N, typename... Args>
 		using nth_type = std::tuple_element_t<N, std::tuple<Args...>>;
 
+		namespace pack_index_of_impl {
+			template<typename A, typename B, typename... C>
+			inline constexpr int pack_index_of_calc( ) noexcept {
+				if constexpr( std::is_same_v<A, B> ) {
+					return 0;
+				} else if constexpr( sizeof...( C ) > 0 ) {
+					return pack_index_of_calc<A, C...>( );
+				} else {
+					return -1;
+				}
+			}
+		} // namespace pack_index_of_impl
+
 		template<typename A, typename B, typename... C>
 		struct pack_index_of
-		  : std::integral_constant<int,
-		                           ( std::is_same_v<A, B>
-		                               ? 0
-		                               : ( pack_index_of<A, C...>{} == -1
-		                                     ? -1
-		                                     : 1 + pack_index_of<A, C...>{} ) )> {};
+		  : std::integral_constant<
+		      int, pack_index_of_impl::pack_index_of_calc<A, B, C...>( )> {};
 
 		template<typename... Args>
 		struct pack_list {
