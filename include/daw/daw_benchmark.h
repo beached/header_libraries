@@ -262,8 +262,8 @@ namespace daw {
 	}
 
 	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
-	auto bench_n_test_mbs( std::string const &title, size_t bytes, Test &&test_callable,
-	                   Args &&... args ) noexcept {
+	auto bench_n_test_mbs( std::string const &title, size_t bytes,
+	                       Test &&test_callable, Args &&... args ) noexcept {
 		static_assert( Runs > 0 );
 		using result_t = daw::remove_cvref_t<decltype( daw::expected_from_code(
 		  test_callable, std::forward<Args>( args )... ) )>;
@@ -324,12 +324,13 @@ namespace daw {
 		std::cout << title << delem << "	runs: " << Runs << delem
 		          << "	total: " << utility::format_seconds( total_time, 2 )
 		          << delem << "	avg: " << utility::format_seconds( avg_time, 2 )
-		          << " -> " << utility::to_bytes_per_second( bytes, avg_time, 2 ) << "/s"
-		          << delem << "	min: " << utility::format_seconds( min_time, 2 )
-		          << " -> " << utility::to_bytes_per_second( bytes, min_time, 2 ) << "/s"
+		          << " -> " << utility::to_bytes_per_second( bytes, avg_time, 2 )
+		          << "/s" << delem
+		          << "	min: " << utility::format_seconds( min_time, 2 ) << " -> "
+		          << utility::to_bytes_per_second( bytes, min_time, 2 ) << "/s"
 		          << delem << "	max: " << utility::format_seconds( max_time, 2 )
-		          << " -> " << utility::to_bytes_per_second( bytes, max_time, 2 ) << "/s"
-		          << '\n';
+		          << " -> " << utility::to_bytes_per_second( bytes, max_time, 2 )
+		          << "/s" << '\n';
 		return result;
 	}
 
@@ -361,12 +362,14 @@ namespace daw {
 	template<typename T, typename U>
 	constexpr void expecting( T &&expected_result, U &&result ) noexcept {
 		if( !( expected_result == result ) ) {
+#ifdef __VERSION__
 			if constexpr( !daw::string_view( __VERSION__ )
 			                 .starts_with(
 			                   daw::string_view( "4.2.1 Compatible Apple LLVM" ) ) ) {
 				expecting_impl::output_expected_error( expected_result, result );
 			}
-			std::terminate( );
+#endif
+			std::abort( );
 		}
 	}
 
@@ -374,7 +377,7 @@ namespace daw {
 	constexpr void expecting( Bool &&expected_result ) noexcept {
 		if( !static_cast<bool>( expected_result ) ) {
 			std::cerr << "Invalid result. Expecting true\n";
-			std::terminate( );
+			std::abort( );
 		}
 	}
 
@@ -383,7 +386,7 @@ namespace daw {
 	                                  String &&message ) noexcept {
 		if( !static_cast<bool>( expected_result ) ) {
 			std::cerr << message << '\n';
-			std::terminate( );
+			std::abort( );
 		}
 	}
 
@@ -413,7 +416,7 @@ namespace daw {
 			std::cerr << "Unexpected exception\n";
 			throw;
 		}
-		std::terminate( );
+		std::abort( );
 	}
 } // namespace daw
 
