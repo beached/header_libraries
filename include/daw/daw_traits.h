@@ -647,7 +647,7 @@ namespace daw {
 				if constexpr( std::is_same_v<A, B> ) {
 					return 0;
 				} else if constexpr( sizeof...( C ) > 0 ) {
-					return pack_index_of_calc<A, C...>( );
+					return pack_index_of_calc<A, C...>( ) + 1;
 				} else {
 					return -1;
 				}

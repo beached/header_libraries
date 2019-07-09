@@ -837,6 +837,8 @@ static_assert( daw::traits::is_instance_of_v<std::tuple, std::tuple<int, double>
 static_assert( !daw::traits::is_instance_of_v<std::tuple, std::vector<int>> );
 static_assert( !daw::traits::is_instance_of_v<std::vector, std::tuple<int, double>> );
 
+static_assert( daw::traits::pack_index_of_v<int, double, float, int> == 2 );
+
 int main( ) {
 	daw_traits_enable_if_any( );
 }
