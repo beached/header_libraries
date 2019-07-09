@@ -56,7 +56,11 @@ namespace daw {
 			  std::is_nothrow_invocable_v<Function, size_t> ) {
 
 				if constexpr( sizeof...( Is ) > 0 ) {
+#ifndef _MSC_VER
 					(void)( ( daw::invoke( func, Is ), 0 ) + ... );
+#else
+					(void)( ( invoker( func, Is ), 0 ) + ... );
+#endif
 				}
 			}
 
@@ -75,7 +79,11 @@ namespace daw {
 		do_n( size_t count, Function &&func, Args &&... args ) noexcept(
 		  std::is_nothrow_invocable_v<Function, Args...> ) {
 			while( count-- > 0 ) {
+#ifndef _MSC_VER
 				daw::invoke( func, args... );
+#else
+				invoker( func, args... );
+#endif
 			}
 		}
 
@@ -84,7 +92,11 @@ namespace daw {
 		  std::is_nothrow_invocable_v<Function, size_t> ) {
 			size_t n = 0;
 			while( n < count ) {
+#ifndef _MSC_VER
 				daw::invoke( func, n++ );
+#else
+				invoker( func, n++ );
+#endif
 			}
 		}
 
