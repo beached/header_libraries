@@ -111,8 +111,8 @@ namespace daw::cxmath {
 			}
 
 			constexpr uint8_t raw_exponent( ) const noexcept {
-				return ( 0b0111'1111'1000'0000'0000'0000'0000'0000 & m_raw_value ) >>
-				       23U;
+				return static_cast<uint8_t>(
+				  ( 0b0111'1111'1000'0000'0000'0000'0000'0000 & m_raw_value ) >> 23U );
 			}
 
 			constexpr int16_t exponent( ) const noexcept {
