@@ -29,7 +29,15 @@
 
 namespace daw {
 	template<typename CharT = char>
-	std::basic_string<CharT> read_file( daw::string_view path ) {
+	std::basic_string<CharT> read_file( daw::basic_string_view<char> path ) {
+		auto in_file = std::basic_ifstream<CharT>( path.to_string( ) );
+		daw::exception::Assert( in_file, "Could not open file" );
+
+		return std::string( std::istreambuf_iterator<CharT>{in_file}, {} );
+	}
+
+	template<typename CharT = char>
+	std::basic_string<CharT> read_file( daw::basic_string_view<wchar_t> path ) {
 		auto in_file = std::basic_ifstream<CharT>( path.to_string( ) );
 		daw::exception::Assert( in_file, "Could not open file" );
 
