@@ -518,6 +518,26 @@ namespace daw {
 			}
 		}
 
+		template<typename Visitor>
+		void visit( Visitor &&vis ) {
+			static_assert( std::is_invocable_v<Visitor, raw_node_t &>,
+			               "Visitor must accept a node as argument" );
+			for( auto &node_ref : m_nodes ) {
+				auto node = get_node( node_ref.second.id( ) );
+				daw::invoke( vis, daw::move( node ) );
+			}
+		}
+
+		template<typename Visitor>
+		void visit( Visitor &&vis ) const {
+			static_assert( std::is_invocable_v<Visitor, raw_node_t const &>,
+			               "Visitor must accept a node as argument" );
+			for( auto const &node_ref : m_nodes ) {
+				auto node = get_node( node_ref.second.id( ) );
+				daw::invoke( vis, daw::move( node ) );
+			}
+		}
+
 		template<typename Predicate>
 		std::vector<node_id_t> find( Predicate &&pred ) const {
 			std::vector<node_id_t> result{};
