@@ -681,7 +681,7 @@ namespace daw {
 
 		template<typename A, typename B>
 		struct pack_index_of<A, B>
-		  : std::integral_constant<int, std::is_same<A, B>{} - 1> {};
+		  : std::integral_constant<int, (std::is_same<A, B>{} - 1)> {};
 
 		template<typename T, typename... Pack>
 		struct pack_index_of<T, pack_list<Pack...>> : pack_index_of<T, Pack...> {};
