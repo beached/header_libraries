@@ -573,6 +573,58 @@ namespace daw {
 				return *this;
 			}
 		};
+
+		template<bool>
+		struct delete_move_constructor_if {
+			constexpr delete_move_constructor_if( ) noexcept {}
+			constexpr delete_move_constructor_if( non_constructor ) noexcept {}
+		};
+
+		template<>
+		struct delete_move_constructor_if<true> {
+			delete_move_constructor_if( delete_move_constructor_if const & ) =
+			  default;
+
+			constexpr delete_move_constructor_if( non_constructor ) noexcept {}
+			constexpr delete_move_constructor_if( ) noexcept {}
+			~delete_move_constructor_if( ) noexcept = default;
+			constexpr delete_move_constructor_if &
+			operator=( delete_move_constructor_if const & ) noexcept {
+				return *this;
+			}
+			constexpr delete_move_constructor_if(
+			  delete_move_constructor_if && ) noexcept {}
+
+			constexpr delete_move_constructor_if &
+			operator=( delete_move_constructor_if && ) noexcept = delete;
+		};
+
+		template<bool>
+		struct delete_move_assignment_if {
+			constexpr delete_move_assignment_if( ) noexcept {}
+			constexpr delete_move_assignment_if( non_constructor ) noexcept {}
+		};
+
+		template<>
+		struct delete_move_assignment_if<true> {
+			delete_move_assignment_if &
+			operator=( delete_move_assignment_if const & ) = default;
+
+			constexpr delete_move_assignment_if( non_constructor ) noexcept {}
+
+			constexpr delete_move_assignment_if( ) noexcept {}
+
+			~delete_move_assignment_if( ) noexcept = default;
+
+			constexpr delete_move_assignment_if(
+			  delete_move_assignment_if const & ) noexcept {}
+
+			constexpr delete_move_assignment_if(
+			  delete_move_assignment_if && ) noexcept {}
+
+			constexpr delete_move_assignment_if &
+			operator=( delete_move_assignment_if && ) noexcept = delete;
+		};
 	} // namespace impl
 
 	template<typename T, bool B = true>
@@ -586,6 +638,14 @@ namespace daw {
 	template<typename T, bool B = true>
 	using enable_copy_assignment =
 	  impl::delete_copy_assignment_if<!is_copy_assignable_v<T> and B>;
+
+	template<typename T, bool B = true>
+	using enable_move_constructor =
+	  impl::delete_move_constructor_if<!is_move_constructible_v<T> and B>;
+
+	template<typename T, bool B = true>
+	using enable_move_assignment =
+	  impl::delete_move_assignment_if<!is_move_assignable_v<T> and B>;
 
 	struct nothing {};
 } // namespace daw
