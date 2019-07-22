@@ -111,6 +111,7 @@ set( TESTED_HEADERS_PREFIXES_NB
 
 
 set( UNTESTED_HEADER_IMPL
+	daw_integer_iterator
 	daw_math_impl
 	daw_string_impl
 	daw_traits_concepts

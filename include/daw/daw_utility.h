@@ -321,18 +321,16 @@ namespace daw {
 	template<typename CharType, typename Traits, typename Allocator>
 	constexpr auto
 	AsciiUpper( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
-		daw::algorithm::map(
-		  str.cbegin( ), str.cend( ), str.begin( ),
-		  []( CharType c ) noexcept { return AsciiUpper( c ); } );
+		daw::algorithm::map( str.cbegin( ), str.cend( ), str.begin( ), [
+		]( CharType c ) noexcept { return AsciiUpper( c ); } );
 		return daw::move( str );
 	}
 
 	template<typename CharType, typename Traits, typename Allocator>
 	constexpr auto
 	AsciiLower( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
-		daw::algorithm::map(
-		  str.cbegin( ), str.cend( ), str.begin( ),
-		  []( CharType c ) noexcept { return AsciiLower( c ); } );
+		daw::algorithm::map( str.cbegin( ), str.cend( ), str.begin( ), [
+		]( CharType c ) noexcept { return AsciiLower( c ); } );
 		return daw::move( str );
 	}
 
@@ -386,58 +384,6 @@ namespace daw {
 
 	template<typename T>
 	using non_owning_ptr = T;
-
-	/*
-	// Acts like a reference, but has a strong no-null guarantee
-	// Non-owning
-	template<typename T>
-	class not_null {
-	  T *m_ptr;
-
-	public:
-	  not_null( ) = delete;
-	  ~not_null( ) = default;
-	  constexpr not_null( not_null const & ) noexcept = default;
-	  constexpr not_null( not_null && ) noexcept = default;
-	  constexpr not_null &operator=( not_null const & ) noexcept = default;
-	  constexpr not_null &operator=( not_null && ) noexcept = default;
-
-	  constexpr not_null( T *ptr )
-	    : m_ptr{ptr} {
-	    daw::exception::daw_throw_on_null( ptr, "ptr cannot be null" );
-	  }
-
-	  explicit constexpr operator bool( ) const noexcept {
-	    return true;
-	  }
-
-	  constexpr T *operator->( ) noexcept {
-	    return m_ptr;
-	  }
-
-	  constexpr T const *operator->( ) const noexcept {
-	    return m_ptr;
-	  }
-
-	  constexpr T *get( ) noexcept {
-	    return m_ptr;
-	  }
-
-	  constexpr T const *get( ) const noexcept {
-	    return m_ptr;
-	  }
-
-	  friend constexpr bool operator==( not_null const &lhs,
-	                                    not_null const &rhs ) noexcept {
-	    return lhs.m_ptr == rhs.m_ptr;
-	  }
-
-	  friend constexpr bool operator!=( not_null const &lhs,
-	                                    not_null const &rhs ) noexcept {
-	    return lhs.m_ptr != rhs.m_ptr;
-	  }
-	}; // not_null
-	*/
 
 	template<typename Arg, typename... Args>
 	auto make_initializer_list( Arg &&arg, Args &&... args ) {
@@ -1069,4 +1015,42 @@ namespace daw {
 			daw::exception::daw_throw<std::out_of_range>( "value" );
 		}
 	}
+
+	template<size_t N, size_t pos = 0, typename Arg, typename... Args>
+	constexpr decltype( auto ) pack_get( Arg &&arg, Args &&... args ) noexcept {
+		if constexpr( pos == N ) {
+			return std::forward<Arg>( arg );
+		} else {
+			return pack_get<N, pos + 1>( std::forward<Args>( args )... );
+		}
+	}
+
+	namespace pack_apply_impl {
+		template<size_t pos, typename Function, typename... Args>
+		constexpr auto pack_apply_impl( size_t, Function &&, Args &&... )
+		  -> std::enable_if_t<( pos >= sizeof...( Args ) )> {}
+
+		template<size_t pos, typename Function, typename... Args>
+		constexpr auto pack_apply_impl( size_t N, Function &&func, Args &&... args )
+		  -> std::enable_if_t<( pos < sizeof...( Args ) )> {
+			if( N == pos ) {
+				if constexpr( std::is_invocable_v<Function, decltype( pack_get<pos>(
+				                                              std::forward<Args>(
+				                                                args )... ) )> ) {
+					(void)std::forward<Function>( func )(
+					  pack_get<pos>( std::forward<Args>( args )... ) );
+				}
+			} else {
+				pack_apply_impl<pos + 1>( N, std::forward<Function>( func ),
+				                          std::forward<Args>( args )... );
+			}
+		}
+	} // namespace pack_apply_impl
+
+	template<typename Function, typename... Args>
+	constexpr void pack_apply( size_t N, Function &&func, Args &&... args ) {
+		pack_apply_impl::pack_apply_impl<0>( N, std::forward<Function>( func ),
+		                                     std::forward<Args>( args )... );
+	}
+
 } // namespace daw

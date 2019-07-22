@@ -78,6 +78,10 @@ namespace daw {
 			return *cptr( );
 		}
 
+		value_type rref( ) noexcept {
+			return std::move( *ptr( ) );
+		}
+
 		reference operator*( ) noexcept {
 			return ref( );
 		}

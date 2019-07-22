@@ -32,8 +32,10 @@
 namespace daw {
 	template<typename T, size_t N>
 	struct bounded_vector_t {
-		static_assert( std::is_default_constructible_v<T>, "T must be default constructible" );
-		static_assert( std::is_trivially_destructible_v<T>, "T must be trivially destructible" );
+		static_assert( std::is_default_constructible_v<T>,
+		               "T must be default constructible" );
+		static_assert( std::is_trivially_destructible_v<T>,
+		               "T must be trivially destructible" );
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
@@ -218,7 +220,8 @@ namespace daw {
 			if( can_move_front( sizeof...( Args ) ) ) {
 				do_move_to_front( );
 			}
-			m_stack[m_index++] = value_type{std::forward<Args>( args )...};
+			m_stack[m_index++] =
+			  daw::construct_a<value_type>( std::forward<Args>( args )... );
 		}
 
 		constexpr value_type pop_back( ) noexcept {

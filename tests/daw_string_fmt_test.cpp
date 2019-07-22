@@ -71,26 +71,28 @@ void string_fmt_perf_001( ) {
 		}
 	} );
 
-	daw::bench_test( "fmt_t perf", [&]( ) {
+	std::string tst{};
+	daw::bench_test( "fmt_t perf", [&tst]( ) {
 		auto const formatter = daw::string_fmt::v1::fmt_t{
 		  "This is a {0} of the {1} and has been used {2} times for {0}ing\n"};
 		for( size_t n = 0; n < 1'000'000; ++n ) {
-			auto tst = formatter( "test", "daw::string_fmt::v1::fmt", n );
+			tst = formatter( "test", "daw::string_fmt::v1::fmt", n );
 			daw::do_not_optimize( tst );
 		}
 	} );
+	daw::do_not_optimize( tst );
 
-	daw::bench_test( "string_concat perf", [&]( ) {
+	daw::bench_test( "string_concat perf", [&tst]( ) {
 		using std::to_string;
 		using daw::string_fmt::v1::sf_impl::to_string;
 		for( size_t n = 0; n < 1'000'000; ++n ) {
-			auto tst = "This is a" + to_string( "test" ) + " of the " +
-			           to_string( "daw::string_fmt::v1::fmt" ) +
-			           " and has been used " + to_string( n ) + " times for " +
-			           to_string( "test" ) + "ing\n";
+			tst = "This is a" + to_string( "test" ) + " of the " +
+			      to_string( "daw::string_fmt::v1::fmt" ) + " and has been used " +
+			      to_string( n ) + " times for " + to_string( "test" ) + "ing\n";
 			daw::do_not_optimize( tst );
 		}
 	} );
+	daw::do_not_optimize( tst );
 }
 
 void string_fmt_perf_002( ) {
@@ -107,27 +109,30 @@ void string_fmt_perf_002( ) {
 		}
 	} );
 
-	daw::bench_test( "fmt_t perf", [&]( ) {
+	std::string tst{};
+	daw::bench_test( "fmt_t perf", [&tst]( ) {
 		auto const formatter = daw::string_fmt::v1::fmt_t{
 		  "This is a test of the daw::string_fmt::v1::fmt and has been used {2} "
 		  "times for "
 		  "testing\n"};
 		for( size_t n = 0; n < 1'000'000; ++n ) {
-			auto tst = formatter( n );
+			tst = formatter( n );
 			daw::do_not_optimize( tst );
 		}
 	} );
+	daw::do_not_optimize( tst );
 
-	daw::bench_test( "string_concat perf", [&]( ) {
+	daw::bench_test( "string_concat perf", [&tst]( ) {
 		using std::to_string;
 		using daw::string_fmt::v1::sf_impl::to_string;
 		for( size_t n = 0; n < 1'000'000; ++n ) {
-			auto tst =
+			tst =
 			  "This is a test of the daw::string_fmt::v1::fmt and has been used " +
 			  to_string( n ) + " times for testing\n";
 			daw::do_not_optimize( tst );
 		}
 	} );
+	daw::do_not_optimize( tst );
 }
 
 void string_fmt_has_to_string_001( ) {
@@ -143,7 +148,119 @@ void string_fmt_has_to_string_001( ) {
 	daw::expecting( result, "Testing 1" );
 }
 
+//#########
+void string_fmt2_test_001( ) {
+	std::cout << daw::string_fmt::v2::fmt(
+	  "This is a {0} of the {1} and has been used {2} times for {0}ing\n", "test",
+	  "daw::string_fmt::v2::fmt", 1'000'000 );
+	std::cout << std::endl;
+}
+
+void string_fmt2_test_002( ) {
+	daw::string_fmt::v2::fmt_t f{
+	  "This is a {0} of the {1} and has been used {2} times for {0}ing\n"};
+	std::cout << f( "test", "daw::string_fmt::v2::fmt", 1'000'000 );
+}
+
+void string_fmt2_test_single_item_001( ) {
+	auto result = daw::string_fmt::v2::fmt( "{0}", 5 );
+
+	daw::expecting( result, "5" );
+}
+
+void string_fmt2_test_recursion_001( ) {
+	auto result =
+	  daw::string_fmt::v2::fmt( "{0}", daw::string_fmt::v2::fmt( "{0}", 5 ) );
+	daw::expecting( result, "5" );
+	// auto const ans1 = daw::bench_test( "string_fmt2_test_001", [&]( ) {
+	// test_func( ) } ); daw::expecting( *ans1, );
+}
+
+void string_fmt2_perf_001( ) {
+	std::cout << "Larger format perf\n";
+	daw::bench_test( "string_fmt perf", [&]( ) {
+		for( size_t n = 0; n < 1'000'000; ++n ) {
+			auto tst = daw::string_fmt::v2::fmt(
+			  "This is a {0} of the {1} and has been used {2} times for {0}ing\n",
+			  "test", "daw::string_fmt::v2::fmt", n );
+			daw::do_not_optimize( tst );
+		}
+	} );
+
+	std::string tst{};
+	daw::bench_test( "fmt_t perf", [&tst]( ) {
+		constexpr auto const formatter = daw::string_fmt::v2::fmt_t(
+		  "This is a {0} of the {1} and has been used {2} times for {0}ing\n" );
+		for( size_t n = 0; n < 1'000'000; ++n ) {
+			tst = formatter( "test", "daw::string_fmt::v2::fmt", n );
+			daw::do_not_optimize( tst );
+		}
+	} );
+	daw::do_not_optimize( tst );
+
+	daw::bench_test( "string_concat perf", [&tst]( ) {
+		using std::to_string;
+		using daw::string_fmt::v1::sf_impl::to_string;
+		for( size_t n = 0; n < 1'000'000; ++n ) {
+			tst = "This is a" + to_string( "test" ) + " of the " +
+			      to_string( "daw::string_fmt::v2::fmt" ) + " and has been used " +
+			      to_string( n ) + " times for " + to_string( "test" ) + "ing\n";
+			daw::do_not_optimize( tst );
+		}
+	} );
+	daw::do_not_optimize( tst );
+}
+
+void string_fmt2_perf_002( ) {
+	std::cout << "\n\nSmaller format perf\n";
+	daw::bench_test( "string_fmt perf", [&]( ) {
+		for( size_t n = 0; n < 1'000'000; ++n ) {
+			auto tst = daw::string_fmt::v2::fmt(
+			  "This is a test of the daw::string_fmt::v2::fmt and has been used "
+			  "{2} "
+			  "times for "
+			  "testing\n",
+			  "test", "daw::string_fmt::v2::fmt", n );
+			daw::do_not_optimize( tst );
+		}
+	} );
+
+	std::string tst{};
+	daw::bench_test( "fmt_t perf", [&tst]( ) {
+		constexpr auto const formatter = daw::string_fmt::v2::fmt_t(
+		  "This is a test of the daw::string_fmt::v2::fmt and has been used {2} "
+		  "times for "
+		  "testing\n" );
+		for( size_t n = 0; n < 1'000'000; ++n ) {
+			tst = formatter( n );
+			daw::do_not_optimize( tst );
+		}
+	} );
+	daw::do_not_optimize( tst );
+}
+
+void string_fmt2_has_to_string_001( ) {
+	struct A {
+		int a;
+		explicit operator std::string( ) const {
+			return std::to_string( a );
+		}
+	};
+	A a{1};
+	auto result = daw::string_fmt::v2::fmt( "Testing {0}", a );
+
+	daw::expecting( result, "Testing 1" );
+}
+
+constexpr bool cx_test_001( ) {
+	auto const formatter = daw::string_fmt::v2::fmt_t( "Testing {0}" );
+	(void)formatter;
+	return true;
+}
+static_assert( cx_test_001( ) );
+
 int main( ) {
+	std::cout << "v1\n";
 	string_fmt_test_001( );
 	string_fmt_test_002( );
 	string_fmt_test_single_item_001( );
@@ -152,4 +269,13 @@ int main( ) {
 	string_fmt_perf_001( );
 	string_fmt_perf_002( );
 	string_fmt_has_to_string_001( );
+
+	std::cout << "v2\n\n";
+	string_fmt2_test_001( );
+	string_fmt2_test_002( );
+	string_fmt2_test_single_item_001( );
+	string_fmt2_test_recursion_001( );
+	string_fmt2_perf_001( );
+	string_fmt2_perf_002( );
+	string_fmt2_has_to_string_001( );
 }

@@ -45,6 +45,8 @@ namespace daw {
 		if constexpr( N + 1 < MaxN ) {
 			return visit_nt<N + 1, MaxN, R>( std::forward<Variant>( var ),
 			                                 std::forward<Visitor>( vis ) );
+		} else {
+			std::abort( );
 		}
 	}
 

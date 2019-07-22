@@ -982,12 +982,13 @@ void sort_n_test_001( ) {
 		return daw::algorithm::is_sorted( begin( a ), end( a ) );
 	}( ) );
 
+#ifdef BIGCONSTEXPR
 	static_assert( []( auto a ) {
 		daw::expecting( !daw::algorithm::is_sorted( begin( a ), end( a ) ) );
 		daw::sort( std::begin( a ), std::end( a ) );
 		return daw::algorithm::is_sorted( begin( a ), end( a ) );
 	}( big_arry ) );
-
+#endif
 	{
 		auto const random_lots = daw::make_random_data<size_t>( 1'000'000 );
 		{
@@ -1113,6 +1114,7 @@ void sort_n_test_001( ) {
 		                              random_lots );
 	}
 	{
+#ifdef BIGCONSTEXPR
 		static_assert( []( ) {
 			std::array<int, std::size( big_arry )> out_test{};
 			daw::sort_to( std::cbegin( big_arry ), std::cend( big_arry ),
@@ -1120,6 +1122,7 @@ void sort_n_test_001( ) {
 			return daw::algorithm::is_sorted( std::cbegin( out_test ),
 			                                  std::cend( out_test ) );
 		}( ) );
+#endif
 		auto const random_lots = daw::make_random_data<size_t>( 10'000 );
 		daw::bench_n_test<100, '\t'>( "10,000, daw::sort_to                  ",
 		                              []( auto container ) {
@@ -1167,6 +1170,7 @@ void sort_n_test_001( ) {
 	}
 	// Desc
 	{
+#ifdef BIGCONSTEXPR
 		static_assert( []( ) constexpr {
 			std::array<int, std::size( big_arry )> out_test{};
 			daw::sort_to( std::cbegin( big_arry ), std::cend( big_arry ),
@@ -1174,6 +1178,7 @@ void sort_n_test_001( ) {
 			return daw::algorithm::is_sorted(
 			  std::cbegin( out_test ), std::cend( out_test ), std::greater<>{} );
 		}( ) );
+#endif
 		auto const random_lots = daw::make_random_data<size_t>( 10'000 );
 		daw::bench_n_test<100, '\t'>(
 		  "10,000, daw::sort_to                  ",

@@ -23,15 +23,20 @@
 #pragma once
 
 #include <cstddef>
+#include <limits>
 #include <string>
 #include <utility>
 
+#include "daw_algorithm.h"
 #include "daw_bounded_string.h"
+#include "daw_bounded_vector.h"
 #include "daw_exception.h"
 #include "daw_move.h"
 #include "daw_parser_helper_sv.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
+#include "daw_utility.h"
+#include "impl/daw_int_to_iterator.h"
 
 namespace daw {
 	namespace string_fmt {
@@ -134,8 +139,150 @@ namespace daw {
 				return fmt_t{daw::move( format_str )}( std::forward<Args>( args )... );
 			}
 		} // namespace v1
+		namespace v2 {
+			namespace impl {
+				namespace {
+					using ::daw::string_fmt::v1::sf_impl::to_string;
+					using ::std::to_string;
+					template<typename T>
+					constexpr auto to_string_test( )
+					  -> decltype( to_string( std::declval<T>( ) ) );
+
+					template<typename T>
+					using has_to_string_test = decltype( to_string_test<T>( ) );
+
+					template<typename T>
+					inline constexpr bool has_to_string_v =
+					  ::daw::is_detected_v<has_to_string_test, T>;
+				} // namespace
+				template<typename CharT>
+				struct parse_token {
+					std::variant<std::monostate, daw::basic_string_view<CharT>, size_t>
+					  m_data;
+
+					constexpr parse_token( ) noexcept = default;
+
+					constexpr parse_token( daw::basic_string_view<CharT> sv ) noexcept
+					  : m_data( sv ) {}
+
+					constexpr parse_token( size_t idx ) noexcept
+					  : m_data( idx ) {}
+
+					template<typename OutputIterator, typename... Args>
+					constexpr OutputIterator operator( )( OutputIterator out,
+					                                      Args &&... args ) const {
+						return daw::visit_nt(
+						  m_data, []( std::monostate ) -> OutputIterator { std::abort( ); },
+						  [&out]( daw::basic_string_view<CharT> sv ) {
+							  return daw::algorithm::copy( sv.begin( ), sv.end( ), out );
+						  },
+						  [&]( size_t pos ) {
+							  ::daw::pack_apply(
+							    pos,
+							    [&]( auto &&val ) {
+								    using val_t = decltype( val );
+								    if constexpr( std::is_convertible_v<
+								                    val_t, daw::basic_string_view<CharT>> ) {
+									    auto sv = daw::basic_string_view<CharT>( val );
+									    out = daw::algorithm::copy( sv.begin( ), sv.end( ), out );
+								    } else if constexpr( std::is_convertible_v<
+								                           val_t,
+								                           std::basic_string_view<CharT>> ) {
+									    auto sv = std::basic_string_view<CharT>( val );
+									    out = daw::algorithm::copy( sv.begin( ), sv.end( ), out );
+								    } else if constexpr( std::is_same_v<
+								                           std::basic_string<CharT>,
+								                           daw::remove_cvref_t<val_t>> ) {
+									    out =
+									      daw::algorithm::copy( val.begin( ), val.end( ), out );
+								    } else if constexpr( ::daw::can_to_os_string_int_v<
+								                           daw::remove_cvref_t<val_t>> ) {
+									    out = ::daw::to_os_string_int<CharT>( out, val );
+								    } else if constexpr( has_to_string_v<val_t> ) {
+									    using ::daw::string_fmt::v1::sf_impl::to_string;
+									    using std::to_string;
+									    auto const str = to_string( std::forward<val_t>( val ) );
+									    out =
+									      daw::algorithm::copy( str.begin( ), str.end( ), out );
+								    } else if constexpr( traits::is_streamable_v<val_t> ) {
+									    std::basic_stringstream<CharT> ss{};
+									    ss << val;
+									    auto const str = ss.str( );
+									    out =
+									      daw::algorithm::copy( str.begin( ), str.end( ), out );
+								    }
+							    },
+							    std::forward<Args>( args )... );
+							  return out;
+						  } );
+					}
+				};
+			} // namespace impl
+			template<typename CharT, size_t N>
+			class fmt_t {
+				daw::basic_string_view<CharT> m_fmt_string;
+				::daw::bounded_vector_t<impl::parse_token<CharT>, N/2> m_tokens;
+
+				constexpr static daw::bounded_vector_t<impl::parse_token<CharT>, N/2>
+				parse_tokens( daw::basic_string_view<CharT> msg ) {
+					daw::bounded_vector_t<impl::parse_token<CharT>, N/2> result{};
+					size_t sz = 0;
+					while( !msg.empty( ) and sz < msg.size( ) ) {
+						switch( msg[sz] ) {
+						case static_cast<CharT>( '\\' ):
+							if( sz > 0 ) {
+								result.emplace_back( msg.pop_front( sz ) );
+								sz = 0;
+							}
+							assert( !msg.empty( ) );
+							result.emplace_back( msg.pop_front( 1 ) );
+							continue;
+						case static_cast<CharT>( '{' ): {
+							if( sz > 0 ) {
+								result.emplace_back( msg.pop_front( sz ) );
+								sz = 0;
+							}
+							msg.remove_prefix( );
+							assert( !msg.empty( ) );
+							auto const digit = ::daw::parser::parse_unsigned_int<size_t>(
+							  msg.pop_front( "}" ) );
+							result.emplace_back( digit );
+							continue;
+						}
+						}
+						++sz;
+					}
+					if( sz > 0 ) {
+						result.emplace_back( msg );
+					}
+					return result;
+				}
+
+			public:
+				constexpr fmt_t( CharT const ( &fmt_string )[N] )
+				  : m_fmt_string( fmt_string )
+				  , m_tokens( parse_tokens( m_fmt_string ) ) {}
+
+				template<typename Result = std::basic_string<CharT>, typename... Args>
+				constexpr Result operator( )( Args &&... args ) const {
+					Result result{};
+					auto it = std::back_inserter( result );
+					for( auto const &token : m_tokens ) {
+						it = ( token )( it, std::forward<Args>( args )... );
+					}
+					return result;
+				}
+			};
+
+			template<typename CharT, size_t N, typename... Args>
+			constexpr decltype( auto ) fmt( CharT const ( &format_str )[N],
+			                                Args &&... args ) {
+				auto const formatter = fmt_t( format_str );
+				return formatter( std::forward<Args>( args )... );
+			}
+		} // namespace v2
 	}   // namespace string_fmt
-	using string_fmt::v1::fmt;
-	using string_fmt::v1::fmt_t;
 	using string_fmt::v1::invalid_string_fmt_index;
+	using string_fmt::v2::fmt;
+	using string_fmt::v2::fmt_t;
 } // namespace daw
