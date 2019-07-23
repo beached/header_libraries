@@ -24,6 +24,7 @@
 
 #include <cstddef>
 #include <limits>
+#include <sstream>
 #include <string>
 #include <utility>
 
@@ -217,15 +218,37 @@ namespace daw {
 						  } );
 					}
 				};
+
+				template<typename CharT>
+				constexpr size_t cxstrlen( CharT const *ptr ) noexcept {
+					size_t result = 0;
+					while( ptr[result] != '\0' ) {
+						++result;
+					}
+					return result;
+				}
+
+				struct private_ctor {};
+
+				template<typename T>
+				auto has_reserve_test( )
+				  -> decltype( std::declval<T>( ).reserve( std::declval<size_t>( ) ) );
+
+				template<typename T>
+				using has_reserve_detector = decltype( has_reserve_test<T>( ) );
+
+				template<typename T>
+				inline constexpr bool has_reserve_v =
+				  daw::is_detected_v<has_reserve_detector, T>;
+
 			} // namespace impl
 			template<typename CharT, size_t N>
 			class fmt_t {
-				daw::basic_string_view<CharT> m_fmt_string;
-				::daw::bounded_vector_t<impl::parse_token<CharT>, N/2> m_tokens;
+				::daw::bounded_vector_t<impl::parse_token<CharT>, N / 2> m_tokens;
 
-				constexpr static daw::bounded_vector_t<impl::parse_token<CharT>, N/2>
+				constexpr static daw::bounded_vector_t<impl::parse_token<CharT>, N / 2>
 				parse_tokens( daw::basic_string_view<CharT> msg ) {
-					daw::bounded_vector_t<impl::parse_token<CharT>, N/2> result{};
+					daw::bounded_vector_t<impl::parse_token<CharT>, N / 2> result{};
 					size_t sz = 0;
 					while( !msg.empty( ) and sz < msg.size( ) ) {
 						switch( msg[sz] ) {
@@ -259,13 +282,20 @@ namespace daw {
 				}
 
 			public:
-				constexpr fmt_t( CharT const ( &fmt_string )[N] )
-				  : m_fmt_string( fmt_string )
-				  , m_tokens( parse_tokens( m_fmt_string ) ) {}
+				explicit constexpr fmt_t( CharT const ( &fmt_string )[N] )
+				  : m_tokens( parse_tokens( fmt_string ) ) {}
+
+				constexpr fmt_t( impl::private_ctor, CharT const *fmt_string )
+				  : m_tokens(
+				      parse_tokens( daw::basic_string_view<CharT>( fmt_string, N ) ) ) {
+				}
 
 				template<typename Result = std::basic_string<CharT>, typename... Args>
 				constexpr Result operator( )( Args &&... args ) const {
 					Result result{};
+					if constexpr( impl::has_reserve_v<Result> ) {
+						result.reserve( N * 2U );
+					}
 					auto it = std::back_inserter( result );
 					for( auto const &token : m_tokens ) {
 						it = ( token )( it, std::forward<Args>( args )... );
@@ -275,9 +305,16 @@ namespace daw {
 			};
 
 			template<typename CharT, size_t N, typename... Args>
-			constexpr decltype( auto ) fmt( CharT const ( &format_str )[N],
-			                                Args &&... args ) {
+			constexpr auto fmt( CharT const ( &format_str )[N], Args &&... args ) {
 				auto const formatter = fmt_t( format_str );
+				return formatter( std::forward<Args>( args )... );
+			}
+
+			template<char const *fmt_string, size_t N = impl::cxstrlen( fmt_string ),
+			         typename... Args>
+			constexpr auto fmt( Args &&... args ) {
+				constexpr auto const formatter =
+				  fmt_t<char, N>( impl::private_ctor{}, fmt_string );
 				return formatter( std::forward<Args>( args )... );
 			}
 		} // namespace v2
