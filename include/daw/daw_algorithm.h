@@ -1116,7 +1116,7 @@ namespace daw {
 		/// @return last item in output range
 		template<typename InputIterator, typename OutputIterator,
 		         typename UnaryOperation>
-		constexpr OutputIterator transform_n(
+		constexpr auto transform_n(
 		  InputIterator first, OutputIterator first_out, size_t count,
 		  UnaryOperation unary_op ) noexcept( noexcept( *first_out =
 		                                                  unary_op( *first ) ) ) {
@@ -1134,7 +1134,11 @@ namespace daw {
 				++first;
 				++first_out;
 			}
-			return first_out;
+			struct result_t {
+				InputIterator input;
+				OutputIterator output;
+			};
+			return result_t{first, first_out};
 		}
 
 		/// @brief Transform range [first, last) and output to range [first_out,
@@ -1273,7 +1277,7 @@ namespace daw {
 		/// @param count number of items to copy
 		/// @return end of output range written to
 		template<typename InputIterator, typename OutputIterator>
-		constexpr OutputIterator
+		constexpr auto
 		copy_n( InputIterator first, OutputIterator first_out,
 		        size_t count ) noexcept( noexcept( *first_out = *first ) ) {
 
@@ -1285,7 +1289,11 @@ namespace daw {
 				++first;
 				++first_out;
 			}
-			return first_out;
+			struct result_t {
+				InputIterator input;
+				OutputIterator output;
+			};
+			return result_t{first, first_out};
 		}
 
 		/// @brief Move values from input range [first, last) to output range
@@ -1325,7 +1333,7 @@ namespace daw {
 		/// @param count number of items to move
 		/// @return end of output range written to
 		template<typename InputIterator, typename OutputIterator>
-		constexpr OutputIterator move_n(
+		constexpr auto move_n(
 		  InputIterator first, OutputIterator first_out,
 		  size_t count ) noexcept( noexcept( *first_out = daw::move( *first ) ) ) {
 
@@ -1338,7 +1346,11 @@ namespace daw {
 				++first;
 				++first_out;
 			}
-			return first_out;
+			struct result_t {
+				InputIterator input;
+				OutputIterator output;
+			};
+			return result_t{first, first_out};
 		}
 
 		/// @brief Determine if two ranges [first1, last1) and [first2, first2 +
@@ -1534,7 +1546,7 @@ namespace daw {
 		}
 
 		template<typename ForwardIterator, typename T>
-		constexpr void fill_n( ForwardIterator first, size_t count,
+		constexpr ForwardIterator fill_n( ForwardIterator first, size_t count,
 		                       T &&value ) noexcept {
 
 			traits::is_forward_access_iterator_test<ForwardIterator>( );
@@ -1543,6 +1555,7 @@ namespace daw {
 				*first = value;
 				++first;
 			}
+			return first;
 		}
 
 		template<typename ForwardIterator, typename LastType, typename T>
