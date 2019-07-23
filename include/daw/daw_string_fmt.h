@@ -29,7 +29,6 @@
 #include <utility>
 
 #include "daw_algorithm.h"
-#include "daw_bounded_string.h"
 #include "daw_bounded_vector.h"
 #include "daw_exception.h"
 #include "daw_move.h"
@@ -158,9 +157,7 @@ namespace daw {
 				} // namespace
 				template<typename CharT>
 				struct parse_token {
-					std::variant<std::monostate, daw::basic_string_view<CharT>, CharT,
-					             size_t>
-					  m_data;
+					std::variant<size_t, CharT, daw::basic_string_view<CharT>> m_data;
 
 					constexpr parse_token( ) noexcept = default;
 
@@ -178,11 +175,14 @@ namespace daw {
 					constexpr OutputIterator operator( )( OutputIterator out,
 					                                      Args &&... args ) const {
 						return daw::visit_nt(
-						  m_data, []( std::monostate ) -> OutputIterator { std::abort( ); },
+						  m_data,
 						  [&out]( daw::basic_string_view<CharT> sv ) {
 							  return daw::algorithm::copy( sv.begin( ), sv.end( ), out );
 						  },
-						  [&]( CharT c ) { *out++ = c; return out; },
+						  [&]( CharT c ) {
+							  *out++ = c;
+							  return out;
+						  },
 						  [&]( size_t pos ) {
 							  ::daw::pack_apply(
 							    pos,
@@ -257,32 +257,34 @@ namespace daw {
 					daw::bounded_vector_t<impl::parse_token<CharT>, N / 2> result{};
 					size_t sz = 0;
 					while( !msg.empty( ) and sz < msg.size( ) ) {
+						assert( result.size( ) < result.capacity( ) );
 						switch( msg[sz] ) {
 						case static_cast<CharT>( '\\' ):
 							if( sz > 0 ) {
-								result.emplace_back( msg.pop_front( sz ) );
+								result.emplace_back( impl::parse_token<CharT>( msg.pop_front( sz ) ) );
 								sz = 0;
 							}
 							assert( !msg.empty( ) );
-							result.emplace_back( msg.pop_front( ) );
+							result.emplace_back( impl::parse_token<CharT>( msg.pop_front( ) ) );
 							continue;
 						case static_cast<CharT>( '{' ): {
 							if( sz > 0 ) {
-								result.emplace_back( msg.pop_front( sz ) );
+								result.emplace_back( impl::parse_token<CharT>( msg.pop_front( sz ) ) );
 								sz = 0;
 							}
 							msg.remove_prefix( );
 							assert( !msg.empty( ) );
 							auto const digit = ::daw::parser::parse_unsigned_int<size_t>(
 							  msg.pop_front( "}" ) );
-							result.emplace_back( digit );
+							result.emplace_back( impl::parse_token<CharT>( digit ) );
 							continue;
 						}
 						}
 						++sz;
 					}
 					if( sz > 0 ) {
-						result.emplace_back( msg );
+						assert( result.size( ) < result.capacity( ) ); 
+						result.emplace_back( impl::parse_token<CharT>( msg ) );
 					}
 					return result;
 				}
@@ -309,6 +311,8 @@ namespace daw {
 					return result;
 				}
 			};
+			template<typename CharT, size_t N>
+			fmt_t( CharT const (&)[N] ) -> fmt_t<CharT, N>;
 
 			template<typename CharT, size_t N, typename... Args>
 			constexpr auto fmt( CharT const ( &format_str )[N], Args &&... args ) {
