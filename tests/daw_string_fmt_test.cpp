@@ -223,7 +223,7 @@ void string_fmt2_perf_002( ) {
 void string_fmt2_perf_bounded_string_002( ) {
 	std::cout << "\n\nSmaller format perf(bounded_string)\n";
 	size_t n = 0;
-	daw::bench_n_test<1'000'000>( "\tstring_fmt perf", [&]( ) {
+	daw::bench_n_test<25'000'000>( "\tstring_fmt perf", [&]( ) {
 		static constexpr char const fmt_str[] =
 		  "This is a test of the daw::string_fmt::v2::fmt and has been used "
 		  "{2} "
@@ -235,27 +235,38 @@ void string_fmt2_perf_bounded_string_002( ) {
 	} );
 }
 
+void string_fmt2_perf_bounded_string_002_2( ) {
+	size_t n = 0;
+	daw::do_not_optimize( n );
+	static constexpr char const fmt_str[] =
+	  "This is a test of the daw::string_fmt::v2::fmt and has been used "
+	  "{2} "
+	  "times for "
+	  "testing\n";
+	auto tst = daw::string_fmt::v2::fmt<fmt_str, daw::bounded_string>(
+	  "test", "daw::string_fmt::v2::fmt", n++ );
+	daw::do_not_optimize( tst );
+}
+
 void string_fmt2_perf_003( ) {
 	std::cout << "\n\nSmaller format perf3\n";
 	size_t n = 0;
 	daw::bench_n_test<1'000'000>( "\tstring_fmt perf", [&]( ) {
 		static constexpr char const fmt_str[] =
-		  "This is a test of the daw::string_fmt::v2::fmt and has been used "
-		  "{2} "
-		  "times for "
-		  "testing\n";
+		  "This is a test of the daw::string_fmt::v2::fmt and has been used {2} times for testing\n";
 		auto tst = daw::string_fmt::v2::fmt<fmt_str>(
 		  "test", "daw::string_fmt::v2::fmt", n++ );
 		daw::do_not_optimize( tst );
 	} );
 	n = 0;
 	std::cout << '\n';
-	daw::bench_n_test<1'000'000>( "string append perf", [&]( ) {
-		std::string tst =
-		  "This is a test of the daw::string_fmt::v2::fmt and has been used ";
-		using std::to_string;
-		tst += to_string( n++ );
-		tst += "times for testing\n";
+	daw::bench_n_test<1'000'000>( "sprintf perf", [&]( ) {
+		std::string tst{};
+		tst.resize( 95 );
+		sprintf( tst.data( ),
+		         "This is a test of the daw::string_fmt::v2::fmt and has been used "
+		         "%zu times for testing\n",
+		         n++ );
 		daw::do_not_optimize( tst );
 	} );
 }
@@ -277,7 +288,8 @@ constexpr bool cx_test_001( ) {
 	(void)formatter;
 	return true;
 }
-static_assert( cx_test_001( ) );
+
+//static_assert( cx_test_001( ) );
 
 int main( ) {
 	std::cout << "v1\n";
