@@ -158,15 +158,20 @@ namespace daw {
 				} // namespace
 				template<typename CharT>
 				struct parse_token {
-					std::variant<std::monostate, daw::basic_string_view<CharT>, size_t>
+					std::variant<std::monostate, daw::basic_string_view<CharT>, CharT,
+					             size_t>
 					  m_data;
 
 					constexpr parse_token( ) noexcept = default;
 
-					constexpr parse_token( daw::basic_string_view<CharT> sv ) noexcept
+					explicit constexpr parse_token(
+					  daw::basic_string_view<CharT> sv ) noexcept
 					  : m_data( sv ) {}
 
-					constexpr parse_token( size_t idx ) noexcept
+					explicit constexpr parse_token( CharT c ) noexcept
+					  : m_data( c ) {}
+
+					explicit constexpr parse_token( size_t idx ) noexcept
 					  : m_data( idx ) {}
 
 					template<typename OutputIterator, typename... Args>
@@ -177,6 +182,7 @@ namespace daw {
 						  [&out]( daw::basic_string_view<CharT> sv ) {
 							  return daw::algorithm::copy( sv.begin( ), sv.end( ), out );
 						  },
+						  [&]( CharT c ) { *out++ = c; return out; },
 						  [&]( size_t pos ) {
 							  ::daw::pack_apply(
 							    pos,
@@ -258,7 +264,7 @@ namespace daw {
 								sz = 0;
 							}
 							assert( !msg.empty( ) );
-							result.emplace_back( msg.pop_front( 1 ) );
+							result.emplace_back( msg.pop_front( ) );
 							continue;
 						case static_cast<CharT>( '{' ): {
 							if( sz > 0 ) {
@@ -310,12 +316,14 @@ namespace daw {
 				return formatter( std::forward<Args>( args )... );
 			}
 
-			template<char const *fmt_string, size_t N = impl::cxstrlen( fmt_string ),
-			         typename... Args>
-			constexpr auto fmt( Args &&... args ) {
+			template<char const *fmt_string,
+			         typename Result = std::basic_string<char>,
+			         size_t N = impl::cxstrlen( fmt_string ), typename... Args>
+			constexpr Result fmt( Args &&... args ) {
 				constexpr auto const formatter =
 				  fmt_t<char, N>( impl::private_ctor{}, fmt_string );
-				return formatter( std::forward<Args>( args )... );
+				return formatter.template operator( )<Result>(
+				  std::forward<Args>( args )... );
 			}
 		} // namespace v2
 	}   // namespace string_fmt

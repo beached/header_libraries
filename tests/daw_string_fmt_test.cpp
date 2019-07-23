@@ -27,6 +27,7 @@
 #include <vector>
 
 #include "daw/daw_benchmark.h"
+#include "daw/daw_bounded_string.h"
 #include "daw/daw_string_fmt.h"
 
 void string_fmt_test_001( ) {
@@ -219,6 +220,21 @@ void string_fmt2_perf_002( ) {
 	} );
 }
 
+void string_fmt2_perf_bounded_string_002( ) {
+	std::cout << "\n\nSmaller format perf(bounded_string)\n";
+	size_t n = 0;
+	daw::bench_n_test<1'000'000>( "\tstring_fmt perf", [&]( ) {
+		static constexpr char const fmt_str[] =
+		  "This is a test of the daw::string_fmt::v2::fmt and has been used "
+		  "{2} "
+		  "times for "
+		  "testing\n";
+		auto tst = daw::string_fmt::v2::fmt<fmt_str, daw::bounded_string>(
+		  "test", "daw::string_fmt::v2::fmt", n++ );
+		daw::do_not_optimize( tst );
+	} );
+}
+
 void string_fmt2_perf_003( ) {
 	std::cout << "\n\nSmaller format perf3\n";
 	size_t n = 0;
@@ -235,7 +251,8 @@ void string_fmt2_perf_003( ) {
 	n = 0;
 	std::cout << '\n';
 	daw::bench_n_test<1'000'000>( "string append perf", [&]( ) {
-		std::string tst ="This is a test of the daw::string_fmt::v2::fmt and has been used ";
+		std::string tst =
+		  "This is a test of the daw::string_fmt::v2::fmt and has been used ";
 		using std::to_string;
 		tst += to_string( n++ );
 		tst += "times for testing\n";
@@ -280,6 +297,7 @@ int main( ) {
 	string_fmt2_test_recursion_001( );
 	string_fmt2_perf_001( );
 	string_fmt2_perf_002( );
+	string_fmt2_perf_bounded_string_002( );
 	string_fmt2_perf_003( );
 	string_fmt2_has_to_string_001( );
 }
