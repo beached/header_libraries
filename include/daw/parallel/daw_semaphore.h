@@ -46,8 +46,8 @@ namespace daw {
 
 	template<typename Mutex, typename ConditionVariable>
 	class basic_semaphore {
-		value_ptr<Mutex> m_mutex = {};
-		value_ptr<ConditionVariable> m_condition = {};
+		value_ptr<Mutex> m_mutex = value_ptr<Mutex>( );
+		value_ptr<ConditionVariable> m_condition = value_ptr<ConditionVariable>( );
 		intmax_t m_count = 0;
 		bool m_latched = true;
 
