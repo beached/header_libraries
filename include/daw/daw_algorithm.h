@@ -1036,6 +1036,14 @@ namespace daw {
 		                             InputIterator2 first2, LastType2 last2,
 		                             LessCompare less_comp = LessCompare{},
 		                             Equality eq = Equality{} ) {
+
+			traits::is_input_iterator_test<InputIterator1>( );
+			traits::is_input_iterator_test<InputIterator2>( );
+			static_assert( std::is_invocable_v<LessCompare, decltype( *first1 ),
+			                                   decltype( *first2 )> );
+			static_assert( std::is_invocable_v<Equality, decltype( *first1 ),
+			                                   decltype( *first2 )> );
+
 			while( first1 != last1 and first2 != last2 ) {
 				if( !daw::invoke( eq, *first1, *first2 ) ) {
 					if( daw::invoke( less_comp, *first1, *first2 ) ) {
@@ -1547,7 +1555,7 @@ namespace daw {
 
 		template<typename ForwardIterator, typename T>
 		constexpr ForwardIterator fill_n( ForwardIterator first, size_t count,
-		                       T &&value ) noexcept {
+		                                  T &&value ) noexcept {
 
 			traits::is_forward_access_iterator_test<ForwardIterator>( );
 

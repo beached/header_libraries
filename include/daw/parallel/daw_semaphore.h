@@ -46,8 +46,8 @@ namespace daw {
 
 	template<typename Mutex, typename ConditionVariable>
 	class basic_semaphore {
-		value_ptr<Mutex> m_mutex;
-		value_ptr<ConditionVariable> m_condition;
+		value_ptr<Mutex> m_mutex = {};
+		value_ptr<ConditionVariable> m_condition = {};
 		intmax_t m_count = 0;
 		bool m_latched = true;
 
@@ -56,15 +56,11 @@ namespace daw {
 
 		template<typename Int>
 		explicit basic_semaphore( Int count )
-		  : m_mutex( )
-		  , m_condition( )
 		  , m_count( static_cast<intmax_t>( count ) )
 		  , m_latched( true ) {}
 
 		template<typename Int>
 		basic_semaphore( Int count, bool latched )
-		  : m_mutex( )
-		  , m_condition( )
 		  , m_count( static_cast<intmax_t>( count ) )
 		  , m_latched( latched ) {}
 
