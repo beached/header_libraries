@@ -56,12 +56,12 @@ namespace daw {
 
 		template<typename Int>
 		explicit basic_semaphore( Int count )
-		  , m_count( static_cast<intmax_t>( count ) )
+		  : m_count( static_cast<intmax_t>( count ) )
 		  , m_latched( true ) {}
 
 		template<typename Int>
 		basic_semaphore( Int count, bool latched )
-		  , m_count( static_cast<intmax_t>( count ) )
+		  : m_count( static_cast<intmax_t>( count ) )
 		  , m_latched( latched ) {}
 
 		void notify( ) {
