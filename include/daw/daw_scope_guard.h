@@ -58,7 +58,7 @@ namespace daw {
 			if( m_is_active ) {
 				try {
 					m_function( );
-				} catch( ... ) { std::terminate( ); }
+				} catch( ... ) { std::abort( ); }
 			}
 		}
 #else

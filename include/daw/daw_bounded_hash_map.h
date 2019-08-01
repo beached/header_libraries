@@ -420,7 +420,7 @@ namespace daw {
 		constexpr mapped_type const &operator[]( Key const &key ) const noexcept {
 			decltype( auto ) item = m_data[*find_index( key )];
 			if( !item ) {
-				std::terminate( );
+				std::abort( );
 			}
 			return item.kv.value;
 		}

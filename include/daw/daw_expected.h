@@ -170,7 +170,7 @@ namespace daw {
 		  auto visitor = daw::overload( std::forward<Visitors>( visitors )... );
 		  using result_t = decltype( daw::invoke( visitor, std::declval<value_type>(
 		) ) ); return daw::visit_nt( std::move( visitor ),
-		    []( empty_value_t ) -> result_t { std::terminate( ); } );
+		    []( empty_value_t ) -> result_t { std::abort( ); } );
 		}
 
 		template<typename... Visitors>
@@ -184,7 +184,7 @@ namespace daw {
 		  auto visitor = daw::overload( std::forward<Visitors>( visitors )... );
 		  using result_t = decltype( daw::invoke( visitor, std::declval<value_type>(
 		) ) ); return daw::visit_nt( std::move( visitor ),
-		    []( empty_value_t ) -> result_t { std::terminate( ); } );
+		    []( empty_value_t ) -> result_t { std::abort( ); } );
 		}
 		*/
 		bool has_value( ) const {
@@ -220,7 +220,7 @@ namespace daw {
 
 		reference get( ) {
 			if( empty( ) ) {
-				std::terminate( );
+				std::abort( );
 			}
 			throw_if_exception( );
 			return std::get<value_type>( m_value );
@@ -228,7 +228,7 @@ namespace daw {
 
 		const_reference get( ) const {
 			if( empty( ) ) {
-				std::terminate( );
+				std::abort( );
 			}
 			throw_if_exception( );
 			return std::get<value_type>( m_value );
@@ -435,7 +435,7 @@ namespace daw {
 
 		void get( ) const {
 			if( empty( ) ) {
-				std::terminate( );
+				std::abort( );
 			}
 			throw_if_exception( );
 		}

@@ -158,6 +158,6 @@ namespace daw {
 				return observable_ptr_pair<T>( nullptr );
 			}
 			return observable_ptr_pair<T>( tmp );
-		} catch( std::bad_alloc const & ) { std::terminate( ); }
+		} catch( std::bad_alloc const & ) { std::abort( ); }
 	}
 } // namespace daw

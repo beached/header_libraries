@@ -94,9 +94,9 @@ namespace daw {
 		}
 
 		constexpr void insert( value_type const &v ) {
-			for( int n = 0; n < MaxItems; ++n ) {
+			for( size_t n = 0; n < MaxItems; ++n ) {
 				if( m_pred( v, m_values[n] ) ) {
-					for( size_t m = MaxItems - 1; m > n; --m ) {
+					for( size_t m = (MaxItems - 1U); m > n; --m ) {
 						m_values[m] = daw::move( m_values[m - 1] );
 					}
 					m_values[n] = v;

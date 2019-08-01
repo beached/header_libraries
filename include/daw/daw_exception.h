@@ -87,7 +87,7 @@ namespace daw {
   defined( _CPPUNWIND )
 			throw ExceptionType{};
 #else
-			std::terminate( );
+			std::abort( );
 #endif
 		}
 
@@ -100,7 +100,7 @@ namespace daw {
   defined( _CPPUNWIND )
 			throw ExceptionType( "" );
 #else
-			std::terminate( );
+			std::abort( );
 #endif
 		}
 
@@ -112,7 +112,7 @@ namespace daw {
 			throw ExceptionType( std::forward<Arg>( arg ),
 			                     std::forward<Args>( args )... );
 #else
-			std::terminate( );
+			std::abort( );
 #endif
 		}
 
@@ -207,7 +207,7 @@ namespace daw {
   defined( _CPPUNWIND )
 				throw ExceptionType{};
 #else
-				std::terminate( );
+				std::abort( );
 #endif
 			}
 		}
@@ -291,7 +291,7 @@ namespace daw {
 		constexpr void precondition_check( Bool &&condition, Args &&... args ) {
 			if( !static_cast<bool>( condition ) ) {
 				if constexpr( std::is_same_v<Terminator, ExceptionType> ) {
-					std::terminate( );
+					std::abort( );
 				} else {
 					daw_throw<ExceptionType>( std::forward<Args>( args )... );
 				}
@@ -303,7 +303,7 @@ namespace daw {
 		constexpr void postcondition_check( Bool &&condition, Args &&... args ) {
 			if( !static_cast<bool>( condition ) ) {
 				if constexpr( std::is_same_v<Terminator, ExceptionType> ) {
-					std::terminate( );
+					std::abort( );
 				} else {
 					daw_throw<ExceptionType>( std::forward<Args>( args )... );
 				}
@@ -313,7 +313,7 @@ namespace daw {
 		template<typename Exception = AssertException, typename Bool, typename... Args>
 		constexpr void dbg_precondition_check( Bool &&condition, Args &&... ) {
 			if( !condition ) {
-		    std::terminate( );
+		    std::abort( );
 	    }
 		}
 
@@ -321,7 +321,7 @@ namespace daw {
 		constexpr void dbg_postcondition_check( Bool &&condition,
 		                                        Args &&... ) {
 			if( !condition ) {
-		    std::terminate( );
+		    std::abort( );
 	    }
 		}
 #else
@@ -500,7 +500,7 @@ namespace daw {
 			try {
 				throw Exception{std::forward<Args>( args )...};
 			} catch( ... ) { return std::current_exception( ); }
-			std::terminate( );
+			std::abort( );
 		}
 #endif
 	} // namespace exception
