@@ -171,7 +171,7 @@ namespace daw {
 			assert( count >= 0 );
 		}
 
-	 	auto release( ) {
+	 	basic_latch<Mutex, ConditionVariable> * release( ) {
 			return latch.release( );
 		}
 
@@ -254,12 +254,8 @@ namespace daw {
 		}
 
 		explicit basic_shared_latch(
-		  basic_unique_latch<Mutex, ConditionVariable> &&sem )
-		  : latch( sem.release( ) ) {}
-
-		auto release( ) {
-			return latch.release( );
-		}
+		  basic_unique_latch<Mutex, ConditionVariable> &&other )
+		  : latch( other.release( ) ) {}
 
 		void notify( ) {
 			assert( latch );
