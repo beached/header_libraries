@@ -40,6 +40,13 @@ namespace daw {
 	inline constexpr bool is_latch_v = is_latch<daw::remove_cvref_t<T>>::value;
 
 	template<typename>
+	struct is_unique_latch : std::false_type {};
+
+	template<typename T>
+	inline constexpr bool is_unique_latch_v =
+	  is_unique_latch<daw::remove_cvref_t<T>>::value;
+
+	template<typename>
 	struct is_shared_latch : std::false_type {};
 
 	template<typename T>
@@ -49,50 +56,51 @@ namespace daw {
 	template<typename Mutex, typename ConditionVariable>
 	class basic_latch {
 		daw::condition_variable m_condition{};
-		std::unique_ptr<std::atomic_intmax_t> m_count =
-		  std::make_unique<std::atomic_intmax_t>( 1 );
+		std::atomic_intmax_t m_count = 1;
 
 		auto stop_waiting( ) const {
-			return [&]( ) -> bool { return static_cast<intmax_t>( *m_count ) <= 0; };
+			return [&]( ) -> bool { return static_cast<intmax_t>( m_count ) <= 0; };
 		}
 
 		void decrement( ) {
-			--( *m_count );
+			--m_count;
 		}
 
 	public:
 		basic_latch( ) = default;
 
-		template<typename Integer>
+		template<
+		  typename Integer,
+		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
+		                   std::nullptr_t> = nullptr>
 		explicit basic_latch( Integer count )
-		  : m_condition( )
-		  , m_count( std::make_unique<std::atomic_intmax_t>(
-		      static_cast<intmax_t>( count ) ) ) {
+		  : m_count( static_cast<intmax_t>( count ) ) {
 
-			static_assert( std::is_integral_v<Integer> );
 			assert( count >= 0 );
 		}
 
-		template<typename Integer>
+		template<
+		  typename Integer,
+		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
+		                   std::nullptr_t> = nullptr>
 		basic_latch( Integer count, bool latched )
-		  : m_condition( )
-		  , m_count( std::make_unique<std::atomic_intmax_t>(
-		      static_cast<intmax_t>( count ) ) ) {
+		  : m_count( static_cast<intmax_t>( count ) ) {
 
-			static_assert( std::is_integral_v<Integer> );
 			assert( count >= 0 );
 		}
 
 		void reset( ) {
-			*m_count = 1;
+			m_count = 1;
 		}
 
-		template<typename Integer>
+		template<
+		  typename Integer,
+		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
+		                   std::nullptr_t> = nullptr>
 		void reset( Integer count ) {
-			static_assert( std::is_integral_v<Integer> );
 			assert( count >= 0 );
 
-			*m_count = static_cast<intmax_t>( count );
+			m_count = static_cast<intmax_t>( count );
 		}
 
 		void notify( ) {
@@ -137,6 +145,87 @@ namespace daw {
 	using latch = basic_latch<std::mutex, std::condition_variable>;
 
 	template<typename Mutex, typename ConditionVariable>
+	class basic_unique_latch {
+		using latch_t = basic_latch<Mutex, ConditionVariable>;
+		std::unique_ptr<latch_t> latch = std::make_unique<latch_t>( );
+
+	public:
+		basic_unique_latch( ) = default;
+
+		template<
+		  typename Integer,
+		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
+		                   std::nullptr_t> = nullptr>
+		explicit basic_unique_latch( Integer count )
+		  : latch( std::make_unique<latch_t>( count ) ) {
+
+			assert( count >= 0 );
+		}
+
+		template<typename Integer,
+		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
+		                   std::nullptr_t> = nullptr>
+		basic_unique_latch( Integer count, bool latched )
+		  : latch( std::make_unique<latch_t>( count, latched ) ) {
+
+			assert( count >= 0 );
+		}
+
+	 	auto release( ) {
+			return latch.release( );
+		}
+
+		void notify( ) {
+			assert( latch );
+			latch->notify( );
+		}
+
+		void add_notifier( ) {
+			assert( latch );
+			latch->add_notifier( );
+		}
+
+		void set_latch( ) {
+			assert( latch );
+			latch->set_latch( );
+		}
+
+		void wait( ) {
+			assert( latch );
+			latch->wait( );
+		}
+
+		bool try_wait( ) const {
+			assert( latch );
+			return latch->try_wait( );
+		}
+
+		template<typename Rep, typename Period>
+		decltype( auto )
+		wait_for( std::chrono::duration<Rep, Period> const &rel_time ) {
+			assert( latch );
+			return latch->wait_for( rel_time );
+		}
+
+		template<typename Clock, typename Duration>
+		decltype( auto )
+		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) {
+			assert( latch );
+			return latch->wait_until( timeout_time );
+		}
+
+		explicit operator bool( ) const noexcept {
+			return static_cast<bool>( latch );
+		}
+	}; // basic_unique_latch
+
+	template<typename Mutex, typename ConditionVariable>
+	struct is_unique_latch<basic_unique_latch<Mutex, ConditionVariable>>
+	  : std::true_type {};
+
+	using unique_latch = basic_unique_latch<std::mutex, std::condition_variable>;
+
+	template<typename Mutex, typename ConditionVariable>
 	class basic_shared_latch {
 		using latch_t = basic_latch<Mutex, ConditionVariable>;
 		std::shared_ptr<latch_t> latch = std::make_shared<latch_t>( );
@@ -144,24 +233,33 @@ namespace daw {
 	public:
 		basic_shared_latch( ) = default;
 
-		template<typename Integer>
+		template<
+		  typename Integer,
+		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
+		                   std::nullptr_t> = nullptr>
 		explicit basic_shared_latch( Integer count )
 		  : latch( std::make_shared<latch_t>( count ) ) {
 
-			static_assert( std::is_integral_v<Integer> );
 			assert( count >= 0 );
 		}
 
-		template<typename Integer>
+		template<
+		  typename Integer,
+		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
+		                   std::nullptr_t> = nullptr>
 		basic_shared_latch( Integer count, bool latched )
 		  : latch( std::make_shared<latch_t>( count, latched ) ) {
 
-			static_assert( std::is_integral_v<Integer> );
 			assert( count >= 0 );
 		}
 
-		explicit basic_shared_latch( basic_latch<Mutex, ConditionVariable> &&sem )
-		  : latch( std::make_shared<latch_t>( daw::move( sem ) ) ) {}
+		explicit basic_shared_latch(
+		  basic_unique_latch<Mutex, ConditionVariable> &&sem )
+		  : latch( sem.release( ) ) {}
+
+		auto release( ) {
+			return latch.release( );
+		}
 
 		void notify( ) {
 			assert( latch );
@@ -221,3 +319,4 @@ namespace daw {
 		}
 	}
 } // namespace daw
+

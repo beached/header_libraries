@@ -27,8 +27,8 @@
 #include "daw/parallel/daw_latch.h"
 
 void construction_001( ) {
-	daw::latch sem1;
-	auto sem1b = daw::latch( );
+	daw::unique_latch sem1;
+	auto sem1b = daw::unique_latch( );
 	auto sem2 = daw::shared_latch( std::move( sem1 ) );
 }
 
@@ -47,7 +47,7 @@ void barrier_001( ) {
 }
 
 void try_wait_001( ) {
-	auto const sem = daw::latch( 0 );
+	auto const sem = daw::unique_latch( 0 );
 	daw::expecting( sem.try_wait( ) );
 }
 
