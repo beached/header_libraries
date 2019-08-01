@@ -55,7 +55,7 @@ namespace daw {
 
 	template<typename Mutex, typename ConditionVariable>
 	class basic_latch {
-		daw::condition_variable m_condition{};
+		mutable daw::condition_variable m_condition{};
 		std::atomic_intmax_t m_count = 1;
 
 		auto stop_waiting( ) const {
@@ -113,7 +113,8 @@ namespace daw {
 			m_condition.notify_one( );
 		}
 
-		void wait( ) {
+		void wait( ) const {
+			// Try a spin before we use the heavy guns
 			for( size_t n = 0; n < 100; ++n ) {
 				if( try_wait( ) ) {
 					return;
@@ -134,7 +135,7 @@ namespace daw {
 
 		template<typename Clock, typename Duration>
 		decltype( auto )
-		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) {
+		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) const {
 			return m_condition.wait_until( timeout_time, stop_waiting( ) );
 		}
 	}; // basic_latch
@@ -190,7 +191,7 @@ namespace daw {
 			latch->set_latch( );
 		}
 
-		void wait( ) {
+		void wait( ) const {
 			assert( latch );
 			latch->wait( );
 		}
@@ -202,14 +203,14 @@ namespace daw {
 
 		template<typename Rep, typename Period>
 		decltype( auto )
-		wait_for( std::chrono::duration<Rep, Period> const &rel_time ) {
+		wait_for( std::chrono::duration<Rep, Period> const &rel_time ) const {
 			assert( latch );
 			return latch->wait_for( rel_time );
 		}
 
 		template<typename Clock, typename Duration>
 		decltype( auto )
-		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) {
+		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) const {
 			assert( latch );
 			return latch->wait_until( timeout_time );
 		}
@@ -272,7 +273,7 @@ namespace daw {
 			latch->set_latch( );
 		}
 
-		void wait( ) {
+		void wait( ) const {
 			assert( latch );
 			latch->wait( );
 		}
@@ -284,14 +285,14 @@ namespace daw {
 
 		template<typename Rep, typename Period>
 		decltype( auto )
-		wait_for( std::chrono::duration<Rep, Period> const &rel_time ) {
+		wait_for( std::chrono::duration<Rep, Period> const &rel_time ) const {
 			assert( latch );
 			return latch->wait_for( rel_time );
 		}
 
 		template<typename Clock, typename Duration>
 		decltype( auto )
-		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) {
+		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) const {
 			assert( latch );
 			return latch->wait_until( timeout_time );
 		}
