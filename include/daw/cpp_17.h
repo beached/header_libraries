@@ -269,13 +269,13 @@ namespace daw {
 	} // namespace impl
 
 	template<typename Function>
-	constexpr auto not_fn( Function &&func ) {
+	[[nodiscard]] constexpr auto not_fn( Function &&func ) {
 		using func_t = std::remove_cv_t<std::remove_reference_t<Function>>;
 		return impl::not_fn_t<func_t>( std::forward<Function>( func ) );
 	}
 
 	template<typename Function>
-	constexpr auto not_fn( ) {
+	[[nodiscard]] constexpr auto not_fn( ) {
 		return impl::not_fn_t<Function>( );
 	}
 
@@ -292,7 +292,7 @@ namespace daw {
 	  impl::is_reference_wrapper<T>::value;
 
 	template<typename T>
-	constexpr std::add_const_t<T> &as_const( T &t ) noexcept {
+	[[nodiscard]] constexpr std::add_const_t<T> &as_const( T &t ) noexcept {
 		return t;
 	}
 
@@ -350,7 +350,7 @@ namespace daw {
 	  is_detected_convertible<To, Op, Args...>::value;
 
 	template<typename Container>
-	constexpr decltype( auto )
+	[[nodiscard]] constexpr decltype( auto )
 	size( Container const &c ) noexcept( noexcept( c.size( ) ) ) {
 		return c.size( );
 	}
@@ -377,7 +377,7 @@ namespace daw {
 
 	namespace impl {
 		template<typename Base, typename T, typename Derived, typename... Args>
-		auto
+		[[nodiscard]] auto
 		INVOKE( T Base::*pmf, Derived &&ref, Args &&... args ) noexcept( noexcept(
 		  ( std::forward<Derived>( ref ).*pmf )( std::forward<Args>( args )... ) ) )
 		  -> std::enable_if_t<daw::is_function_v<T> and
@@ -389,7 +389,7 @@ namespace daw {
 		}
 
 		template<typename Base, typename T, typename RefWrap, typename... Args>
-		constexpr auto
+		[[nodiscard]] constexpr auto
 		INVOKE( T Base::*pmf, RefWrap &&ref, Args &&... args ) noexcept(
 		  noexcept( ( ref.get( ).*pmf )( std::forward<Args>( args )... ) ) )
 		  -> std::enable_if_t<
@@ -400,7 +400,7 @@ namespace daw {
 		}
 
 		template<typename Base, typename T, typename Pointer, typename... Args>
-		constexpr auto
+		[[nodiscard]] constexpr auto
 		INVOKE( T Base::*pmf, Pointer &&ptr, Args &&... args ) noexcept(
 		  noexcept( ( ( *std::forward<Pointer>( ptr ) ).*
 		              pmf )( std::forward<Args>( args )... ) ) )
@@ -415,7 +415,7 @@ namespace daw {
 		}
 
 		template<typename Base, typename T, typename Derived>
-		constexpr auto INVOKE( T Base::*pmd, Derived &&ref ) noexcept(
+		[[nodiscard]] constexpr auto INVOKE( T Base::*pmd, Derived &&ref ) noexcept(
 		  noexcept( std::forward<Derived>( ref ).*pmd ) )
 		  -> std::enable_if_t<!daw::is_function_v<T> and
 		                        daw::is_base_of_v<Base, std::decay_t<Derived>>,
@@ -425,7 +425,7 @@ namespace daw {
 		}
 
 		template<typename Base, typename T, typename RefWrap>
-		constexpr auto
+		[[nodiscard]] constexpr auto
 		INVOKE( T Base::*pmd,
 		        RefWrap &&ref ) noexcept( noexcept( ref.get( ).*pmd ) )
 		  -> std::enable_if_t<!daw::is_function_v<T> and
@@ -435,7 +435,7 @@ namespace daw {
 		}
 
 		template<typename Base, typename T, typename Pointer>
-		constexpr auto INVOKE( T Base::*pmd, Pointer &&ptr ) noexcept(
+		[[nodiscard]] constexpr auto INVOKE( T Base::*pmd, Pointer &&ptr ) noexcept(
 		  noexcept( ( *std::forward<Pointer>( ptr ) ).*pmd ) )
 		  -> std::enable_if_t<!daw::is_function_v<T> and
 		                        !is_reference_wrapper_v<std::decay_t<Pointer>> and
@@ -449,7 +449,7 @@ namespace daw {
 		  decltype( std::declval<T>( ).operator( )( std::declval<Args>( )... ) );
 
 		template<typename F, typename... Args>
-		constexpr auto INVOKE( F &&f, Args &&... args ) noexcept(
+		[[nodiscard]] constexpr auto INVOKE( F &&f, Args &&... args ) noexcept(
 		  noexcept( std::forward<F>( f )( std::forward<Args>( args )... ) ) )
 		  -> std::enable_if_t<
 		    !daw::is_member_pointer_v<std::decay_t<F>>,
@@ -463,7 +463,7 @@ namespace daw {
 	template<typename F, typename... Args,
 	         daw::enable_if_t<!daw::all_true_v<is_reference_wrapper_v<Args>...>> =
 	           nullptr>
-	constexpr decltype( auto ) invoke( F &&f, Args &&... args )
+	[[nodiscard]] constexpr decltype( auto ) invoke( F &&f, Args &&... args )
 	  // exception specification for QoI
 	  noexcept( noexcept( impl::INVOKE( std::forward<F>( f ),
 	                                    std::forward<Args>( args )... ) ) ) {
@@ -472,7 +472,7 @@ namespace daw {
 	}
 
 	template<typename F, typename... ArgTypes>
-	constexpr decltype( auto ) invoke( F &&f,
+	[[nodiscard]] constexpr decltype( auto ) invoke( F &&f,
 	                                   std::reference_wrapper<ArgTypes>... args )
 	  // exception specification for QoI
 	  noexcept( noexcept( impl::INVOKE( std::forward<F>( f ),
@@ -483,13 +483,14 @@ namespace daw {
 	}
 #else
 	template<typename F, typename... Args>
-	constexpr decltype(auto) invoke( F&&f, Args&&... args ) noexcept( noexcept( std::forward<F>( f )( std::forward<Args>( args )... ) ) ) {
+	constexpr decltype( auto ) invoke( F &&f, Args &&... args ) noexcept(
+	  noexcept( std::forward<F>( f )( std::forward<Args>( args )... ) ) ) {
 		return std::forward<F>( f )( std::forward<Args>( args )... );
 	}
 #endif
 	namespace apply_impl {
 		template<typename F, typename Tuple, std::size_t... I>
-		constexpr decltype( auto ) apply_impl( F &&f, Tuple &&t,
+		[[nodiscard]] constexpr decltype( auto ) apply_impl( F &&f, Tuple &&t,
 		                                       std::index_sequence<I...> ) {
 			return daw::invoke( std::forward<F>( f ),
 			                    std::get<I>( std::forward<Tuple>( t ) )... );
@@ -506,7 +507,7 @@ namespace daw {
 	} // namespace apply_impl
 
 	template<typename F, typename Tuple>
-	constexpr decltype( auto ) apply( F &&f, Tuple &&t ) {
+	[[nodiscard]] constexpr decltype( auto ) apply( F &&f, Tuple &&t ) {
 		static_assert( apply_impl::is_tuple_v<Tuple>,
 		               "Attempt to call apply with invalid arguments.  The "
 		               "arguments must be a std::tuple" );
@@ -538,7 +539,7 @@ namespace daw {
 			}
 
 			template<typename T, typename U, typename V>
-			constexpr T clamp( T val, U const &min_val, V const &max_val ) noexcept {
+			[[nodiscard]] constexpr T clamp( T val, U const &min_val, V const &max_val ) noexcept {
 				if( val < min_val ) {
 					val = min_val;
 				} else if( val > max_val ) {
@@ -717,7 +718,7 @@ namespace daw {
 		}
 	}
 
-	struct deduced_type{};
+	struct deduced_type {};
 
 	template<typename T, typename U = deduced_type, typename Iterator,
 	         typename OutputIterator, typename Function>
@@ -806,7 +807,7 @@ namespace daw {
 	  is_nothrow_convertible<From, To>::value;
 
 	template<class T>
-	constexpr auto
+	[[nodiscard]] constexpr auto
 	decay_copy( T &&v ) noexcept( is_nothrow_convertible_v<T, std::decay_t<T>> )
 	  -> std::enable_if_t<is_convertible_v<T, std::decay_t<T>>, std::decay_t<T>> {
 
