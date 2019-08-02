@@ -375,7 +375,7 @@ namespace daw {
 		{ daw::expecting( &view.at( 0 ) == str ); }
 
 		BOOST_TEST_MESSAGE( "Throws when out of range" );
-		{ BOOST_REQUIRE_THROW( view.at( 11 ), std::out_of_range ); }
+		{ BOOST_REQUIRE_THROW( (void)view.at( 11 ), std::out_of_range ); }
 	}
 
 	//----------------------------------------------------------------------------
@@ -557,7 +557,7 @@ namespace daw {
 		}
 
 		BOOST_TEST_MESSAGE( "Throws std::out_of_range if pos > size" );
-		{ BOOST_REQUIRE_THROW( view.substr( 15 ), std::out_of_range ); }
+		{ BOOST_REQUIRE_THROW( (void)view.substr( 15 ), std::out_of_range ); }
 	}
 
 	//----------------------------------------------------------------------------
