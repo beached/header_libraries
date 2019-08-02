@@ -58,7 +58,7 @@ namespace daw {
 		mutable daw::condition_variable m_condition{};
 		std::atomic_intmax_t m_count = 1;
 
-		auto stop_waiting( ) const {
+		[[nodiscard]] auto stop_waiting( ) const {
 			return [&]( ) -> bool { return static_cast<intmax_t>( m_count ) <= 0; };
 		}
 
@@ -123,19 +123,19 @@ namespace daw {
 			m_condition.wait( stop_waiting( ) );
 		}
 
-		bool try_wait( ) const {
+		[[nodiscard]] bool try_wait( ) const {
 			return stop_waiting( )( );
 		}
 
 		template<typename Rep, typename Period>
-		decltype( auto )
+		[[nodiscard]] decltype( auto )
 		wait_for( std::chrono::duration<Rep, Period> const &rel_time ) {
 			return m_condition.wait_for( rel_time, stop_waiting( ) );
 		}
 
 		template<typename Clock, typename Duration>
-		decltype( auto )
-		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) const {
+		[[nodiscard]] decltype( auto ) wait_until(
+		  std::chrono::time_point<Clock, Duration> const &timeout_time ) const {
 			return m_condition.wait_until( timeout_time, stop_waiting( ) );
 		}
 	}; // basic_latch
@@ -163,7 +163,8 @@ namespace daw {
 			assert( count >= 0 );
 		}
 
-		template<typename Integer,
+		template<
+		  typename Integer,
 		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
 		                   std::nullptr_t> = nullptr>
 		basic_unique_latch( Integer count, bool latched )
@@ -172,7 +173,7 @@ namespace daw {
 			assert( count >= 0 );
 		}
 
-	 	basic_latch<Mutex, ConditionVariable> * release( ) {
+		basic_latch<Mutex, ConditionVariable> *release( ) {
 			return latch.release( );
 		}
 
@@ -196,26 +197,26 @@ namespace daw {
 			latch->wait( );
 		}
 
-		bool try_wait( ) const {
+		[[nodiscard]] bool try_wait( ) const {
 			assert( latch );
 			return latch->try_wait( );
 		}
 
 		template<typename Rep, typename Period>
-		decltype( auto )
+		[[nodiscard]] decltype( auto )
 		wait_for( std::chrono::duration<Rep, Period> const &rel_time ) const {
 			assert( latch );
 			return latch->wait_for( rel_time );
 		}
 
 		template<typename Clock, typename Duration>
-		decltype( auto )
-		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) const {
+		[[nodiscard]] decltype( auto ) wait_until(
+		  std::chrono::time_point<Clock, Duration> const &timeout_time ) const {
 			assert( latch );
 			return latch->wait_until( timeout_time );
 		}
 
-		explicit operator bool( ) const noexcept {
+		[[nodiscard]] explicit operator bool( ) const noexcept {
 			return static_cast<bool>( latch );
 		}
 	}; // basic_unique_latch
@@ -278,26 +279,26 @@ namespace daw {
 			latch->wait( );
 		}
 
-		bool try_wait( ) const {
+		[[nodiscard]] bool try_wait( ) const {
 			assert( latch );
 			return latch->try_wait( );
 		}
 
 		template<typename Rep, typename Period>
-		decltype( auto )
+		[[nodiscard]] decltype( auto )
 		wait_for( std::chrono::duration<Rep, Period> const &rel_time ) const {
 			assert( latch );
 			return latch->wait_for( rel_time );
 		}
 
 		template<typename Clock, typename Duration>
-		decltype( auto )
-		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) const {
+		[[nodiscard]] decltype( auto ) wait_until(
+		  std::chrono::time_point<Clock, Duration> const &timeout_time ) const {
 			assert( latch );
 			return latch->wait_until( timeout_time );
 		}
 
-		explicit operator bool( ) const noexcept {
+		[[nodiscard]] explicit operator bool( ) const noexcept {
 			return static_cast<bool>( latch );
 		}
 	}; // basic_shared_latch
