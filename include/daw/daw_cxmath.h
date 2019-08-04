@@ -30,7 +30,7 @@
 #include "daw_enable_if.h"
 
 namespace daw::cxmath {
-	constexpr std::optional<int16_t> fexp2( float const f ) noexcept;
+	[[nodiscard]] constexpr std::optional<int16_t> fexp2( float const f ) noexcept;
 	constexpr float fpow2( int32_t exp ) noexcept;
 
 	namespace cxmath_impl {
@@ -44,7 +44,7 @@ namespace daw::cxmath {
 
 		// Based on code from
 		// https://graphics.stanford.edu/~seander/bithacks.html
-		constexpr uint32_t count_leading_zeroes( uint64_t v ) noexcept {
+		[[nodiscard]] constexpr uint32_t count_leading_zeroes( uint64_t v ) noexcept {
 			char const bit_position[64] = {
 			  0,  1,  2,  7,  3,  13, 8,  19, 4,  25, 14, 28, 9,  34, 20, 40,
 			  5,  17, 26, 38, 15, 46, 29, 48, 10, 31, 35, 54, 21, 50, 41, 57,
@@ -64,7 +64,7 @@ namespace daw::cxmath {
 			         bit_position[( v * 0x021'8a39'2cd3'd5dbf ) >> 58U] ); // [3]
 		}
 
-		constexpr float pow( float b, int32_t exp ) noexcept {
+		[[nodiscard]] constexpr float pow( float b, int32_t exp ) noexcept {
 			auto result = 1.0f;
 			while( exp < 0 ) {
 				result /= b;
@@ -90,41 +90,41 @@ namespace daw::cxmath {
 			  : m_raw_value( i )
 			  , m_float_value( f ) {}
 
-			constexpr uint32_t raw_value( ) const noexcept {
+			[[nodiscard]] constexpr uint32_t raw_value( ) const noexcept {
 				return m_raw_value;
 			}
 
-			constexpr float float_value( ) const noexcept {
+			[[nodiscard]] constexpr float float_value( ) const noexcept {
 				return m_float_value;
 			}
 
-			constexpr bool sign_bit( ) const noexcept {
+			[[nodiscard]] constexpr bool sign_bit( ) const noexcept {
 				return ( m_raw_value >> 31U ) == 0U; // (-1)^S  0=pos, 1=neg
 			}
 
-			constexpr bool is_positive( ) const noexcept {
+			[[nodiscard]] constexpr bool is_positive( ) const noexcept {
 				return sign_bit( );
 			}
 
-			constexpr bool is_negative( ) const noexcept {
+			[[nodiscard]] constexpr bool is_negative( ) const noexcept {
 				return !sign_bit( );
 			}
 
-			constexpr uint8_t raw_exponent( ) const noexcept {
+			[[nodiscard]] constexpr uint8_t raw_exponent( ) const noexcept {
 				return static_cast<uint8_t>(
 				  ( 0b0111'1111'1000'0000'0000'0000'0000'0000 & m_raw_value ) >> 23U );
 			}
 
-			constexpr int16_t exponent( ) const noexcept {
+			[[nodiscard]] constexpr int16_t exponent( ) const noexcept {
 				int16_t const bias = 127;
 				return static_cast<int16_t>( raw_exponent( ) ) - bias;
 			}
 
-			constexpr uint32_t raw_significand( ) const noexcept {
+			[[nodiscard]] constexpr uint32_t raw_significand( ) const noexcept {
 				return 0b0000'0000'0111'1111'1111'1111'1111'1111 & m_raw_value;
 			}
 
-			constexpr float significand( ) const noexcept {
+			[[nodiscard]] constexpr float significand( ) const noexcept {
 				float result = m_float_value;
 				if( m_float_value < 0.0f ) {
 					result = -result;
@@ -136,25 +136,25 @@ namespace daw::cxmath {
 				return result / ::daw::cxmath::fpow2( -e );
 			}
 
-			constexpr bool is_pos_inf( ) const noexcept {
+			[[nodiscard]] constexpr bool is_pos_inf( ) const noexcept {
 				return m_raw_value == PosInf;
 			}
 
-			constexpr bool is_neg_inf( ) const noexcept {
+			[[nodiscard]] constexpr bool is_neg_inf( ) const noexcept {
 				return m_raw_value == NegInf;
 			}
 
-			constexpr bool is_inf( ) const noexcept {
+			[[nodiscard]] constexpr bool is_inf( ) const noexcept {
 				return is_pos_inf( ) or is_neg_inf( );
 			}
 
-			constexpr bool is_nan( ) const noexcept {
+			[[nodiscard]] constexpr bool is_nan( ) const noexcept {
 				return m_raw_value == NaN;
 			}
 		};
 
 		// From: http://brnz.org/hbr/?p=1518
-		constexpr float_parts_t bits( float const f ) noexcept {
+		[[nodiscard]] constexpr float_parts_t bits( float const f ) noexcept {
 			// Once c++20 use bit_cast
 			if( f == 0.0f ) {
 				return {0, f}; // also matches -0.0f and gives wrong result
@@ -193,7 +193,7 @@ namespace daw::cxmath {
 		}
 
 		template<typename Float>
-		constexpr Float pow2_impl2( intmax_t exp ) noexcept {
+		[[nodiscard]] constexpr Float pow2_impl2( intmax_t exp ) noexcept {
 			bool is_neg = exp < 0;
 			exp = is_neg ? -exp : exp;
 			auto const max_shft = daw::min(
@@ -214,7 +214,7 @@ namespace daw::cxmath {
 			return result;
 		}
 
-		constexpr size_t pow10_impl( intmax_t exp ) noexcept {
+		[[nodiscard]] constexpr size_t pow10_impl( intmax_t exp ) noexcept {
 			// exp is < floor( log10( numeric_limits<size_t>::max( ) ) )
 			size_t result = 1ULL;
 			while( exp-- > 0 ) {
@@ -224,12 +224,12 @@ namespace daw::cxmath {
 		}
 
 		template<intmax_t exp>
-		constexpr size_t pow10_impl( ) noexcept {
+		[[nodiscard]] constexpr size_t pow10_impl( ) noexcept {
 			return pow10_impl( exp );
 		}
 
 		template<typename Float>
-		constexpr Float fpow10_impl2( intmax_t exp ) noexcept {
+		[[nodiscard]] constexpr Float fpow10_impl2( intmax_t exp ) noexcept {
 			bool is_neg = exp < 0;
 			exp = is_neg ? -exp : exp;
 
@@ -252,7 +252,7 @@ namespace daw::cxmath {
 		}
 
 		template<typename Integer>
-		constexpr Integer pow10_impl2( intmax_t exp ) noexcept {
+		[[nodiscard]] constexpr Integer pow10_impl2( intmax_t exp ) noexcept {
 			Integer result = 1;
 			while( exp-- > 0 ) {
 				result *= 10;
@@ -261,7 +261,7 @@ namespace daw::cxmath {
 		}
 
 		template<typename Float>
-		constexpr auto calc_pow2s( ) noexcept {
+		[[nodiscard]] constexpr auto calc_pow2s( ) noexcept {
 			intmax_t const min_e = std::numeric_limits<Float>::min_exponent10;
 			intmax_t const max_e = std::numeric_limits<Float>::max_exponent10;
 			std::array<Float, max_e - min_e> result{};
@@ -273,7 +273,7 @@ namespace daw::cxmath {
 		}
 
 		template<typename Float>
-		constexpr auto calc_fpow10s( ) noexcept {
+		[[nodiscard]] constexpr auto calc_fpow10s( ) noexcept {
 			intmax_t const min_e = std::numeric_limits<Float>::min_exponent10;
 			intmax_t const max_e = std::numeric_limits<Float>::max_exponent10;
 			std::array<Float, max_e - min_e> result{};
@@ -285,7 +285,7 @@ namespace daw::cxmath {
 		}
 
 		template<typename Integer>
-		constexpr auto calc_pow10s( ) noexcept {
+		[[nodiscard]] constexpr auto calc_pow10s( ) noexcept {
 			std::array<Integer, std::numeric_limits<Integer>::digits10> result{};
 			intmax_t n = std::numeric_limits<Integer>::digits10;
 			while( n-- > 0 ) {
@@ -295,41 +295,41 @@ namespace daw::cxmath {
 		}
 
 		template<typename Float>
-		class pow2_t {
+		class [[nodiscard]] pow2_t {
 			static constexpr std::array const m_tbl = calc_pow2s<Float>( );
 
 		public:
 			template<typename Result = Float>
-			static constexpr Result get( intmax_t pos ) noexcept {
+			[[nodiscard]] static constexpr Result get( intmax_t pos ) noexcept {
 				auto const zero = static_cast<intmax_t>( m_tbl.size( ) / 2ULL );
 				return static_cast<Result>( m_tbl[static_cast<size_t>( zero + pos )] );
 			}
 		};
 
 		template<typename Float>
-		class fpow10_t {
+		class [[nodiscard]] fpow10_t {
 			static constexpr std::array const m_tbl = calc_fpow10s<Float>( );
 
 		public:
 			template<typename Result = Float>
-			static constexpr Result get( intmax_t pos ) noexcept {
+			[[nodiscard]] static constexpr Result get( intmax_t pos ) noexcept {
 				auto const zero = static_cast<intmax_t>( m_tbl.size( ) / 2ULL );
 				return static_cast<Result>( m_tbl[static_cast<size_t>( zero + pos )] );
 			}
 		};
 
 		template<typename Integer>
-		class pow10_t {
+		class [[nodiscard]] pow10_t {
 			static constexpr std::array const m_tbl = calc_pow10s<Integer>( );
 
 		public:
 			template<typename Result = Integer>
-			static constexpr Result get( size_t pos ) noexcept {
+			[[nodiscard]] static constexpr Result get( size_t pos ) noexcept {
 				return static_cast<Result>( m_tbl[pos] );
 			}
 		};
 
-		constexpr float fexp3( float X, int16_t exponent,
+		[[nodiscard]] constexpr float fexp3( float X, int16_t exponent,
 		                       int16_t old_exponent ) noexcept {
 			auto const exp_diff = exponent - old_exponent;
 			if( exp_diff > 0 ) {
@@ -358,23 +358,23 @@ namespace daw::cxmath {
 		return cxmath_impl::pow2_t<double>::get<float>( exp );
 	}
 
-	constexpr double dpow2( int32_t exp ) noexcept {
+	[[nodiscard]] constexpr double dpow2( int32_t exp ) noexcept {
 		return cxmath_impl::pow2_t<double>::get( exp );
 	}
 
-	constexpr float fpow10( int32_t exp ) noexcept {
+	[[nodiscard]] constexpr float fpow10( int32_t exp ) noexcept {
 		return cxmath_impl::fpow10_t<double>::get<float>( exp );
 	}
 
-	constexpr double dpow10( int32_t exp ) noexcept {
+	[[nodiscard]] constexpr double dpow10( int32_t exp ) noexcept {
 		return cxmath_impl::fpow10_t<double>::get( exp );
 	}
 
-	constexpr uintmax_t pow10( size_t exp ) noexcept {
+	[[nodiscard]] constexpr uintmax_t pow10( size_t exp ) noexcept {
 		return cxmath_impl::pow10_t<uintmax_t>::get( exp );
 	}
 
-	constexpr float fexp2( float X, int16_t exponent ) noexcept {
+	[[nodiscard]] constexpr float fexp2( float X, int16_t exponent ) noexcept {
 		auto const exp_diff = exponent - *fexp2( X );
 		if( exp_diff > 0 ) {
 			return fpow2( exp_diff ) * X;
@@ -382,7 +382,7 @@ namespace daw::cxmath {
 		return X / fpow2( -exp_diff );
 	}
 
-	constexpr std::optional<int16_t> fexp2( float const f ) noexcept {
+	[[nodiscard]] constexpr std::optional<int16_t> fexp2( float const f ) noexcept {
 		// Once c++20 use bit_cast
 		if( f == 0.0f ) {
 			return 0;
@@ -420,26 +420,26 @@ namespace daw::cxmath {
 
 	template<typename Integer,
 	         daw::enable_if_t<std::is_integral_v<Integer>> = nullptr>
-	constexpr bool is_odd( Integer i ) noexcept {
+	[[nodiscard]] constexpr bool is_odd( Integer i ) noexcept {
 		return ( static_cast<uint32_t>( i ) & 1U ) == 1U;
 	}
 
 	template<typename Integer,
 	         daw::enable_if_t<std::is_integral_v<Integer>> = nullptr>
-	constexpr bool is_even( Integer i ) noexcept {
+	[[nodiscard]] constexpr bool is_even( Integer i ) noexcept {
 		return ( static_cast<uint32_t>( i ) & 1U ) == 0U;
 	}
 
 	template<typename Float,
 	         daw::enable_if_t<std::is_floating_point_v<Float>> = nullptr>
-	constexpr Float abs( Float f ) noexcept {
+	[[nodiscard]] constexpr Float abs( Float f ) noexcept {
 		if( f < 0.0f ) {
 			return -f;
 		}
 		return f;
 	}
 
-	constexpr float sqrt( float const x ) noexcept {
+	[[nodiscard]] constexpr float sqrt( float const x ) noexcept {
 		if( x < 0.0f ) {
 			return std::numeric_limits<float>::quiet_NaN( );
 		}
@@ -467,7 +467,7 @@ namespace daw::cxmath {
 	template<typename Number, typename Number2,
 	         daw::enable_if_t<std::is_arithmetic_v<Number>,
 	                          std::is_arithmetic_v<Number2>> = nullptr>
-	constexpr Number copy_sign( Number x, Number2 s ) noexcept {
+	[[nodiscard]] constexpr Number copy_sign( Number x, Number2 s ) noexcept {
 		if( s < 0 ) {
 			if( x < 0 ) {
 				return x;
@@ -482,13 +482,13 @@ namespace daw::cxmath {
 
 	template<typename Number,
 	         daw::enable_if_t<std::is_signed_v<Number>> = nullptr>
-	constexpr bool signbit( Number n ) noexcept {
+	[[nodiscard]] constexpr bool signbit( Number n ) noexcept {
 		return n < 0;
 	}
 
 	template<typename Number,
 	         daw::enable_if_t<!std::is_signed_v<Number>> = nullptr>
-	constexpr bool signbit( Number n ) noexcept {
+	[[nodiscard]] constexpr bool signbit( Number n ) noexcept {
 		return false;
 	}
 } // namespace daw::cxmath
