@@ -312,7 +312,9 @@ namespace daw {
 #ifndef NODEBUGTHROW
 		template<typename Exception = AssertException, typename Bool, typename... Args>
 		constexpr void dbg_precondition_check( Bool &&condition, Args &&... ) {
-			if( !condition ) {
+
+			static_assert( std::is_convertible_v<Bool, bool> );
+			if( not static_cast<bool>( condition ) ) {
 		    std::abort( );
 	    }
 		}
@@ -320,9 +322,10 @@ namespace daw {
 		template<typename Bool, typename... Args>
 		constexpr void dbg_postcondition_check( Bool &&condition,
 		                                        Args &&... ) {
-			if( !condition ) {
-		    std::abort( );
-	    }
+			static_assert( std::is_convertible_v<Bool, bool> );
+			if( not static_cast<bool>( condition ) ) {
+				std::abort( );
+			}
 		}
 #else
 		template<typename Exception = AssertException, typename Bool, typename... Args>
