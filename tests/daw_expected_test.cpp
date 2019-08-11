@@ -96,42 +96,6 @@ void daw_expected_test_02( ) {
 	auto m = daw::expected_from_code( []( ) -> L { return L{6}; } );
 	auto ma = m->a == 6;
 	daw::expecting( ma );
-
-	/*
-	auto o = m.visit(
-	  daw::overload( []( L const &value ) -> bool { return value.a == 6; },
-	                 []( L &&value ) -> bool { return value.a == 6; },
-	                 []( std::exception_ptr ) -> bool { return false; } ) );
-	daw::expecting( o );
-
-	auto const m2 = m;
-	auto p = m2.visit(
-	  daw::overload( []( L const &value ) -> bool { return value.a == 6; },
-	                 []( L &&value ) -> bool { return value.a == 6; },
-	                 []( std::exception_ptr ) -> bool { return false; } ) );
-	daw::expecting( p );
-
-	m.visit(
-	  daw::overload( []( L && ) { std::cout << "valueRR\n"; },
-	                 []( L const & ) { std::cout << "valueCR\n"; },
-	                 []( std::exception_ptr ) { std::cout << "except"; } ) );
-
-	m2.visit(
-	  daw::overload( []( L && ) { std::cout << "valueRR\n"; },
-	                 []( L const & ) { std::cout << "valueCR\n"; },
-	                 []( std::exception_ptr ) { std::cout << "except"; } ) );
-
-	auto q = f.visit(
-	  daw::overload( []( ) -> bool { return true; },
-	                 []( std::exception_ptr ) -> bool { return false; } ) );
-	daw::expecting( q );
-	
-	auto const f2 = f;
-	auto r = f2.visit(
-	  daw::overload( []( ) -> bool { return true; },
-	                 []( std::exception_ptr ) -> bool { return false; } ) );
-	daw::expecting( r );
-	*/
 }
 
 void daw_expected_test_copy_001( ) {
@@ -255,4 +219,3 @@ int main( ) {
 	daw_expected_test_move_assignment_002( );
 	daw_expected_test_move_construction_002( );
 }
-
