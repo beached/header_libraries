@@ -120,6 +120,7 @@ set( UNTESTED_HEADER_IMPL
 
 set( TESTED_PARALLEL_HEADERS_PREFIXES
 	daw_observable_ptr_pair
+	daw_shared_mutex
 )
 
 set( TESTED_PARALLEL_HEADERS_PREFIXES_NB
