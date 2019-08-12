@@ -3,14 +3,14 @@
 // Copyright (c) 2019 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -31,8 +31,9 @@ namespace daw {
 	class basic_shared_mutex {
 		std::shared_ptr<Mutex> m_mutex = std::make_shared<Mutex>( );
 
+	public:
 		basic_shared_mutex( ) = default;
-		
+
 		void lock( ) {
 			assert( m_mutex );
 			m_mutex->lock( );
@@ -50,6 +51,5 @@ namespace daw {
 	};
 
 	using shared_mutex = basic_shared_mutex<std::mutex>;
-}
-
+} // namespace daw
 
