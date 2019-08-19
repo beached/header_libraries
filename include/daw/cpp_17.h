@@ -472,8 +472,8 @@ namespace daw {
 	}
 
 	template<typename F, typename... ArgTypes>
-	[[nodiscard]] constexpr decltype( auto ) invoke( F &&f,
-	                                   std::reference_wrapper<ArgTypes>... args )
+	[[nodiscard]] constexpr decltype( auto )
+	invoke( F &&f, std::reference_wrapper<ArgTypes>... args )
 	  // exception specification for QoI
 	  noexcept( noexcept( impl::INVOKE( std::forward<F>( f ),
 	                                    std::forward<ArgTypes>( args )... ) ) ) {
@@ -490,8 +490,8 @@ namespace daw {
 #endif
 	namespace apply_impl {
 		template<typename F, typename Tuple, std::size_t... I>
-		[[nodiscard]] constexpr decltype( auto ) apply_impl( F &&f, Tuple &&t,
-		                                       std::index_sequence<I...> ) {
+		[[nodiscard]] constexpr decltype( auto )
+		apply_impl( F &&f, Tuple &&t, std::index_sequence<I...> ) {
 			return daw::invoke( std::forward<F>( f ),
 			                    std::get<I>( std::forward<Tuple>( t ) )... );
 		}
@@ -539,7 +539,8 @@ namespace daw {
 			}
 
 			template<typename T, typename U, typename V>
-			[[nodiscard]] constexpr T clamp( T val, U const &min_val, V const &max_val ) noexcept {
+			[[nodiscard]] constexpr T clamp( T val, U const &min_val,
+			                                 V const &max_val ) noexcept {
 				if( val < min_val ) {
 					val = min_val;
 				} else if( val > max_val ) {
@@ -813,4 +814,38 @@ namespace daw {
 
 		return std::forward<T>( v );
 	}
+
+	template<typename Function, typename... Params>
+	class bind_front {
+		Function m_func;
+		std::tuple<Params...> m_params;
+
+	public:
+		template<typename F, typename... P>
+		constexpr bind_front( F &&func, P &&... params )
+		  : m_func( std::forward<F>( func ) )
+		  , m_params( std::forward<P>( params )... ) {}
+
+		template<typename... Args>
+		constexpr decltype( auto ) operator( )( Args &&... args ) {
+			static_assert( std::is_invocable_v<Function, Params..., Args...>,
+			               "Arguments are not valid for function" );
+			return std::apply(
+			  m_func, std::tuple_cat( m_params, std::forward_as_tuple(
+			                                      std::forward<Args>( args )... ) ) );
+		}
+
+		template<typename... Args>
+		constexpr decltype( auto ) operator( )( Args &&... args ) const {
+			static_assert( std::is_invocable_v<Function, Params..., Args...>,
+			               "Arguments are not valid for function" );
+			return std::apply(
+			  m_func, std::tuple_cat( m_params, std::forward_as_tuple(
+			                                      std::forward<Args>( args )... ) ) );
+		}
+	};
+
+	template<typename Function, typename... Params>
+	bind_front( Function, Params... )->bind_front<Function, Params...>;
+
 } // namespace daw
