@@ -77,7 +77,7 @@ namespace daw {
 			  std::invoke( std::forward<Visitor>( vis ), std::get<0>( var ) ) );
 
 			static_assert( sizeof...( Args ) > 0 );
-			return visit_nt<sizeof...( Args ) - 1, result_t>(
+			return visit_impl::visit_nt<sizeof...( Args ) - 1, result_t>(
 			  var, std::forward<Visitor>( vis ) );
 
 		} else {
@@ -87,7 +87,8 @@ namespace daw {
 			  decltype( std::invoke( std::move( ol ), std::get<0>( var ) ) );
 
 			static_assert( sizeof...( Args ) > 0 );
-			return visit_nt<sizeof...( Args ) - 1, result_t>( var, std::move( ol ) );
+			return visit_impl::visit_nt<sizeof...( Args ) - 1, result_t>(
+			  var, std::move( ol ) );
 		}
 	}
 
@@ -100,7 +101,7 @@ namespace daw {
 			  std::invoke( std::forward<Visitor>( vis ), std::get<0>( var ) ) );
 
 			static_assert( sizeof...( Args ) > 0 );
-			return visit_nt<sizeof...( Args ) - 1, result_t>(
+			return visit_impl::visit_nt<sizeof...( Args ) - 1, result_t>(
 			  var, std::forward<Visitor>( vis ) );
 		} else {
 			auto ol = visit_impl::overload{std::forward<Visitor>( vis ),
@@ -109,7 +110,8 @@ namespace daw {
 			  decltype( std::invoke( std::move( ol ), std::get<0>( var ) ) );
 
 			static_assert( sizeof...( Args ) > 0 );
-			return visit_nt<sizeof...( Args ) - 1, result_t>( var, std::move( ol ) );
+			return visit_impl::visit_nt<sizeof...( Args ) - 1, result_t>(
+			  var, std::move( ol ) );
 		}
 	}
 
@@ -122,7 +124,7 @@ namespace daw {
 			  std::forward<Visitor>( vis ), std::move( std::get<0>( var ) ) ) );
 
 			static_assert( sizeof...( Args ) > 0 );
-			return visit_nt<sizeof...( Args ) - 1, result_t>(
+			return visit_impl::visit_nt<sizeof...( Args ) - 1, result_t>(
 			  std::move( var ), std::forward<Visitor>( vis ) );
 
 		} else {
@@ -132,8 +134,8 @@ namespace daw {
 			  std::invoke( std::move( ol ), std::move( std::get<0>( var ) ) ) );
 
 			static_assert( sizeof...( Args ) > 0 );
-			return visit_nt<sizeof...( Args ) - 1, result_t>( std::move( var ),
-			                                                  std::move( ol ) );
+			return visit_impl::visit_nt<sizeof...( Args ) - 1, result_t>(
+			  std::move( var ), std::move( ol ) );
 		}
 	}
 
