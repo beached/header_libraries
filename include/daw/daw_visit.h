@@ -32,39 +32,41 @@
 
 namespace daw {
 	namespace visit_impl {
-		template<typename... Fs>
-		struct overload : Fs... {
-			using Fs::operator( )...;
-		};
+		namespace {
+			template<typename... Fs>
+			struct overload : Fs... {
+				using Fs::operator( )...;
+			};
 
-		template<typename... Fs>
-		overload( Fs... )->overload<Fs...>;
-	} // namespace visit_impl
+			template<typename... Fs>
+			overload( Fs... )->overload<Fs...>;
 
-	template<size_t N, typename R, typename Variant, typename Visitor>
-	[[nodiscard]] constexpr R visit_nt( Variant &&var, Visitor &&vis ) {
-		if constexpr( N == 0 ) {
-			if( N != var.index( ) ) {
-				std::abort( );
-			}
-			// If this check isnt there the compiler will generate
-			// exception code, this stops that
-			return std::forward<Visitor>( vis )(
-			  std::get<N>( std::forward<Variant>( var ) ) );
-		} else {
-			if( var.index( ) == N ) {
-				if constexpr( std::is_invocable_v<Visitor,
-				                                  decltype( std::get<N>( var ) )> ) {
+			template<size_t N, typename R, typename Variant, typename Visitor>
+			[[nodiscard]] constexpr R visit_nt( Variant &&var, Visitor &&vis ) {
+				if constexpr( N == 0 ) {
+					if( N != var.index( ) ) {
+						std::abort( );
+					}
+					// If this check isnt there the compiler will generate
+					// exception code, this stops that
 					return std::forward<Visitor>( vis )(
 					  std::get<N>( std::forward<Variant>( var ) ) );
 				} else {
-					std::abort( );
+					if( var.index( ) == N ) {
+						if constexpr( std::is_invocable_v<Visitor, decltype( std::get<N>(
+						                                             var ) )> ) {
+							return std::forward<Visitor>( vis )(
+							  std::get<N>( std::forward<Variant>( var ) ) );
+						} else {
+							std::abort( );
+						}
+					}
+					return visit_nt<N - 1, R>( std::forward<Variant>( var ),
+					                           std::forward<Visitor>( vis ) );
 				}
 			}
-			return visit_nt<N - 1, R>( std::forward<Variant>( var ),
-			                           std::forward<Visitor>( vis ) );
-		}
-	}
+		} // namespace
+	}   // namespace visit_impl
 
 	template<class... Args, typename Visitor, typename... Visitors>
 	[[nodiscard]] constexpr decltype( auto )
