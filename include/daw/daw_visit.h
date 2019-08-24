@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <cassert>
 #include <exception>
 #include <functional>
 #include <memory>
@@ -29,24 +30,39 @@
 #include <utility>
 #include <variant>
 
-#include "cpp_17.h"
-#include "daw_move.h"
-#include "daw_overload.h"
-
 namespace daw {
-	template<size_t N, size_t MaxN, typename R, typename Variant,
-	         typename Visitor,
-	         std::enable_if_t<( N < MaxN ), std::nullptr_t> = nullptr>
+	namespace visit_impl {
+		template<typename... Fs>
+		struct overload : Fs... {
+			using Fs::operator( )...;
+		};
+
+		template<typename... Fs>
+		overload( Fs... )->overload<Fs...>;
+	} // namespace visit_impl
+
+	template<size_t N, typename R, typename Variant, typename Visitor>
 	[[nodiscard]] constexpr R visit_nt( Variant &&var, Visitor &&vis ) {
-		if( var.index( ) == N ) {
+		if constexpr( N == 0 ) {
+			if( N != var.index( ) ) {
+				std::abort( );
+			}
+			// If this check isnt there the compiler will generate
+			// exception code, this stops that
 			return std::forward<Visitor>( vis )(
 			  std::get<N>( std::forward<Variant>( var ) ) );
-		}
-		if constexpr( N + 1 < MaxN ) {
-			return visit_nt<N + 1, MaxN, R>( std::forward<Variant>( var ),
-			                                 std::forward<Visitor>( vis ) );
 		} else {
-			std::abort( );
+			if( var.index( ) == N ) {
+				if constexpr( std::is_invocable_v<Visitor,
+				                                  decltype( std::get<N>( var ) )> ) {
+					return std::forward<Visitor>( vis )(
+					  std::get<N>( std::forward<Variant>( var ) ) );
+				} else {
+					std::abort( );
+				}
+			}
+			return visit_nt<N - 1, R>( std::forward<Variant>( var ),
+			                           std::forward<Visitor>( vis ) );
 		}
 	}
 
@@ -54,43 +70,74 @@ namespace daw {
 	[[nodiscard]] constexpr decltype( auto )
 	visit_nt( std::variant<Args...> const &var, Visitor &&vis,
 	          Visitors &&... visitors ) {
-		auto ol = daw::overload( std::forward<Visitor>( vis ),
-		                         std::forward<Visitors>( visitors )... );
-		using result_t =
-		  decltype( daw::invoke( daw::move( ol ), std::get<0>( var ) ) );
+		if constexpr( sizeof...( Visitors ) == 0 ) {
+			using result_t = decltype(
+			  std::invoke( std::forward<Visitor>( vis ), std::get<0>( var ) ) );
 
-		static_assert( sizeof...( Args ) > 0 );
-		return visit_nt<0, sizeof...( Args ), result_t>( var, daw::move( ol ) );
+			static_assert( sizeof...( Args ) > 0 );
+			return visit_nt<sizeof...( Args ) - 1, result_t>(
+			  var, std::forward<Visitor>( vis ) );
+
+		} else {
+			auto ol = visit_impl::overload{std::forward<Visitor>( vis ),
+			                               std::forward<Visitors>( visitors )...};
+			using result_t =
+			  decltype( std::invoke( std::move( ol ), std::get<0>( var ) ) );
+
+			static_assert( sizeof...( Args ) > 0 );
+			return visit_nt<sizeof...( Args ) - 1, result_t>( var, std::move( ol ) );
+		}
 	}
 
 	template<class... Args, typename Visitor, typename... Visitors>
 	[[nodiscard]] constexpr decltype( auto ) visit_nt( std::variant<Args...> &var,
 	                                                   Visitor &&vis,
 	                                                   Visitors &&... visitors ) {
-		auto ol = daw::overload( std::forward<Visitor>( vis ),
-		                         std::forward<Visitors>( visitors )... );
-		using result_t =
-		  decltype( daw::invoke( daw::move( ol ), std::get<0>( var ) ) );
+		if constexpr( sizeof...( Visitors ) == 0 ) {
+			using result_t = decltype(
+			  std::invoke( std::forward<Visitor>( vis ), std::get<0>( var ) ) );
 
-		static_assert( sizeof...( Args ) > 0 );
-		return visit_nt<0, sizeof...( Args ), result_t>( var, daw::move( ol ) );
+			static_assert( sizeof...( Args ) > 0 );
+			return visit_nt<sizeof...( Args ) - 1, result_t>(
+			  var, std::forward<Visitor>( vis ) );
+		} else {
+			auto ol = visit_impl::overload{std::forward<Visitor>( vis ),
+			                               std::forward<Visitors>( visitors )...};
+			using result_t =
+			  decltype( std::invoke( std::move( ol ), std::get<0>( var ) ) );
+
+			static_assert( sizeof...( Args ) > 0 );
+			return visit_nt<sizeof...( Args ) - 1, result_t>( var, std::move( ol ) );
+		}
 	}
 
 	template<class... Args, typename Visitor, typename... Visitors>
 	[[nodiscard]] constexpr decltype( auto )
 	visit_nt( std::variant<Args...> &&var, Visitor &&vis,
 	          Visitors &&... visitors ) {
-		auto ol = daw::overload( std::forward<Visitor>( vis ),
-		                         std::forward<Visitors>( visitors )... );
-		using result_t = decltype(
-		  daw::invoke( daw::move( ol ), daw::move( std::get<0>( var ) ) ) );
+		if constexpr( sizeof...( Visitors ) == 0 ) {
+			using result_t = decltype( std::invoke(
+			  std::forward<Visitor>( vis ), std::move( std::get<0>( var ) ) ) );
 
-		static_assert( sizeof...( Args ) > 0 );
-		return visit_nt<0, sizeof...( Args ), result_t>( daw::move( var ),
-		                                                 daw::move( ol ) );
+			static_assert( sizeof...( Args ) > 0 );
+			return visit_nt<sizeof...( Args ) - 1, result_t>(
+			  std::move( var ), std::forward<Visitor>( vis ) );
+
+		} else {
+			auto ol = visit_impl::overload{std::forward<Visitor>( vis ),
+			                               std::forward<Visitors>( visitors )...};
+			using result_t = decltype(
+			  std::invoke( std::move( ol ), std::move( std::get<0>( var ) ) ) );
+
+			static_assert( sizeof...( Args ) > 0 );
+			return visit_nt<sizeof...( Args ) - 1, result_t>( std::move( var ),
+			                                                  std::move( ol ) );
+		}
 	}
 
 	template<typename Value, typename... Visitors>
 	inline constexpr bool
 	  is_visitable_v = ( std::is_invocable_v<Visitors, Value> or ... );
+
 } // namespace daw
+
