@@ -42,14 +42,14 @@ namespace in_range_test {
 
 void daw_utility_append_test( ) {
 	std::vector<int> a{1, 2, 3, 4, 5};
-	daw::append( a, 6, 7, 8, 9 );
+	(void)daw::append( a, 6, 7, 8, 9 );
 	daw::expecting( a.size( ) == 9 );
 }
 
 void daw_hex_test_001( ) {
 	uint32_t const a = 0xFF00FFFF;
 	std::string a_str;
-	daw::hex( a, std::back_inserter( a_str ) );
+	(void)daw::hex( a, std::back_inserter( a_str ) );
 	std::cout << "Output: " << a_str << '\n';
 	daw::expecting( a_str, "FF00FFFF" );
 }
@@ -57,13 +57,13 @@ void daw_hex_test_001( ) {
 void daw_hex_test_002( ) {
 	std::vector<uint32_t> vec_a( 10, 0xFF00FFFF );
 	std::string a_str;
-	daw::hex( vec_a.cbegin( ), vec_a.cend( ), std::back_inserter( a_str ) );
+	(void)daw::hex( vec_a.cbegin( ), vec_a.cend( ), std::back_inserter( a_str ) );
 	std::cout << "Output: " << a_str << '\n';
 }
 
 void daw_hex_test_003( ) {
 	std::string a_str;
-	daw::hex( "abcdef", std::back_inserter( a_str ) );
+	(void)daw::hex( "abcdef", std::back_inserter( a_str ) );
 	std::cout << "Output: " << a_str << '\n';
 }
 
@@ -73,7 +73,7 @@ namespace daw_hex_test_004 {
 		char result[9] = {0};
 		char const expected[] = "FF00FFFF";
 		char *ptr = result;
-		daw::hex( a, ptr );
+		(void)daw::hex( a, ptr );
 		for( size_t n = 0; n < 8; ++n ) {
 			if( result[n] != expected[n] ) {
 				return false;
@@ -87,7 +87,7 @@ namespace daw_hex_test_004 {
 void daw_hex_test_005( ) {
 	uint32_t const a = 0x789ABCDE;
 	std::string a_str;
-	daw::hex( a, std::back_inserter( a_str ) );
+	(void)daw::hex( a, std::back_inserter( a_str ) );
 	std::cout << "Output: " << a_str << '\n';
 	daw::expecting( a_str, "789ABCDE" );
 }

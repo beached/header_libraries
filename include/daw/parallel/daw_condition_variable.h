@@ -51,7 +51,7 @@ namespace daw {
 		}
 
 		template<typename Rep, typename Period, typename Predicate>
-		decltype( auto )
+		[[nodiscard]] decltype( auto )
 		wait_for( std::chrono::duration<Rep, Period> const &rel_time,
 		          Predicate &&pred ) {
 			auto lock = std::unique_lock<Mutex>( *m_mutex );
@@ -59,7 +59,7 @@ namespace daw {
 		}
 
 		template<typename Clock, typename Duration, typename Predicate>
-		decltype( auto )
+		[[nodiscard]] decltype( auto )
 		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time,
 		            Predicate &&pred ) {
 			auto lock = std::unique_lock<Mutex>( *m_mutex );
@@ -97,7 +97,7 @@ namespace daw {
 		}
 
 		template<typename Rep, typename Period, typename Predicate>
-		decltype( auto )
+		[[nodiscard]] decltype( auto )
 		wait_for( std::chrono::duration<Rep, Period> const &rel_time,
 		          Predicate &&pred ) {
 
@@ -105,7 +105,7 @@ namespace daw {
 		}
 
 		template<typename Clock, typename Duration, typename Predicate>
-		decltype( auto )
+		[[nodiscard]] decltype( auto )
 		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time,
 		            Predicate &&pred ) {
 			return m_members.wait_for( timeout_time,
@@ -143,7 +143,7 @@ namespace daw {
 		}
 
 		template<typename Rep, typename Period, typename Predicate>
-		decltype( auto )
+		[[nodiscard]] decltype( auto )
 		wait_for( std::chrono::duration<Rep, Period> const &rel_time,
 		          Predicate &&pred ) {
 
@@ -151,7 +151,7 @@ namespace daw {
 		}
 
 		template<typename Clock, typename Duration, typename Predicate>
-		decltype( auto )
+		[[nodiscard]] decltype( auto )
 		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time,
 		            Predicate &&pred ) {
 			return m_members.wait_for( timeout_time,

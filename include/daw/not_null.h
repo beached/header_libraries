@@ -67,15 +67,15 @@ namespace daw {
 		constexpr not_null( not_null<U> const &other )
 		  : not_null( static_cast<T>( other.get( ) ) ) {}
 
-		constexpr T get( ) const {
+		[[nodiscard]] constexpr T get( ) const {
 			return m_ptr;
 		}
 
-		constexpr operator T( ) const {
+		[[nodiscard]] constexpr operator T( ) const {
 			return get( );
 		}
 
-		constexpr T operator->( ) const {
+		[[nodiscard]] constexpr T operator->( ) const {
 			return get( );
 		}
 
@@ -111,7 +111,7 @@ namespace daw {
 namespace std {
 	template<typename T>
 	struct hash<daw::not_null<T>> {
-		std::size_t operator( )( daw::not_null<T> const &value ) const {
+		[[nodiscard]] std::size_t operator( )( daw::not_null<T> const &value ) const {
 			return hash<decltype( *std::declval<T>( ) )>{}( value );
 		}
 	};

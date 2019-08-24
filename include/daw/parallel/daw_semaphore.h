@@ -33,16 +33,18 @@
 
 namespace daw {
 	template<typename>
-	struct is_semaphore: std::false_type {};
-	
+	struct is_semaphore : std::false_type {};
+
 	template<typename T>
-	inline constexpr bool is_semaphore_v = is_semaphore<daw::remove_cvref_t<T>>::value;	
+	inline constexpr bool is_semaphore_v =
+	  is_semaphore<daw::remove_cvref_t<T>>::value;
 
 	template<typename>
-	struct is_shared_semaphore: std::false_type {};
+	struct is_shared_semaphore : std::false_type {};
 
 	template<typename T>
-	inline constexpr bool is_shared_semaphore_v = is_shared_semaphore<daw::remove_cvref_t<T>>::value;	
+	inline constexpr bool is_shared_semaphore_v =
+	  is_shared_semaphore<daw::remove_cvref_t<T>>::value;
 
 	template<typename Mutex, typename ConditionVariable>
 	class basic_semaphore {
@@ -94,7 +96,7 @@ namespace daw {
 			--m_count;
 		}
 
-		bool try_wait( ) {
+		[[nodiscard]] bool try_wait( ) {
 			auto lock = std::unique_lock<Mutex>( *m_mutex );
 			if( m_latched and m_count > 0 ) {
 				--m_count;
@@ -104,7 +106,8 @@ namespace daw {
 		}
 
 		template<typename Rep, typename Period>
-		auto wait_for( std::chrono::duration<Rep, Period> const &rel_time ) {
+		[[nodiscard]] auto
+		wait_for( std::chrono::duration<Rep, Period> const &rel_time ) {
 			auto lock = std::unique_lock<Mutex>( *m_mutex );
 			auto status = m_condition->wait_for(
 			  lock, rel_time, [&]( ) { return m_latched and m_count > 0; } );
@@ -115,7 +118,7 @@ namespace daw {
 		}
 
 		template<typename Clock, typename Duration>
-		auto
+		[[nodiscard]] auto
 		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) {
 			auto lock = std::unique_lock<Mutex>( *m_mutex );
 			auto status = m_condition->wait_until(
@@ -126,8 +129,10 @@ namespace daw {
 			return status;
 		}
 	}; // basic_semaphore
+
 	template<typename Mutex, typename ConditionVariable>
-	struct is_semaphore<basic_semaphore<Mutex, ConditionVariable>>: std::true_type {};
+	struct is_semaphore<basic_semaphore<Mutex, ConditionVariable>>
+	  : std::true_type {};
 
 	using semaphore = basic_semaphore<std::mutex, std::condition_variable>;
 
@@ -174,25 +179,26 @@ namespace daw {
 			m_semaphore->wait( );
 		}
 
-		bool try_wait( ) {
+		[[nodiscard]] bool try_wait( ) {
 			return m_semaphore->try_wait( );
 		}
 
 		template<typename Rep, typename Period>
-		decltype( auto )
+		[[nodiscard]] decltype( auto )
 		wait_for( std::chrono::duration<Rep, Period> const &rel_time ) {
 			return m_semaphore->wait_for( rel_time );
 		}
 
 		template<typename Clock, typename Duration>
-		decltype( auto )
+		[[nodiscard]] decltype( auto )
 		wait_until( std::chrono::time_point<Clock, Duration> const &timeout_time ) {
 			return m_semaphore->wait_until( timeout_time );
 		}
 	}; // basic_shared_semaphore
 
 	template<typename Mutex, typename ConditionVariable>
-	struct is_shared_semaphore<basic_shared_semaphore<Mutex, ConditionVariable>>: std::true_type {};
+	struct is_shared_semaphore<basic_shared_semaphore<Mutex, ConditionVariable>>
+	  : std::true_type {};
 
 	using shared_semaphore =
 	  basic_shared_semaphore<std::mutex, std::condition_variable>;
@@ -221,8 +227,8 @@ namespace daw {
 	};
 
 	template<typename T>
-	auto make_waitable_value( shared_semaphore sem, T value ) {
+	[[nodiscard]] auto make_waitable_value( shared_semaphore sem, T value ) {
 		return waitable_value<T>{daw::move( sem ), daw::move( value )};
 	}
-
 } // namespace daw
+

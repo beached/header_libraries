@@ -194,6 +194,17 @@ namespace decay_copy_001 {
 static_assert( daw::any_true_v<false, false, true> );
 static_assert( !daw::any_true_v<false, false, false> );
 
+constexpr int add_numbers( int const & lhs, int const & rhs ) {
+	return lhs + rhs;
+}
+
+static_assert( []( ) {
+	int a = 5;
+	auto add_to_5 = ::daw::bind_front( &add_numbers, a );
+	daw::expecting( add_to_5( 6 ), 11 );
+	return true;
+}( ) );
+
 int main( ) {
 	bit_cast_001( );
 	bit_cast_002( );

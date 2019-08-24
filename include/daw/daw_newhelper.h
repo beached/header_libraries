@@ -29,7 +29,7 @@
 #include "daw_string.h"
 
 template<typename T, typename... Args>
-T *new_throw( Args &&... args ) {
+[[nodiscard]] T *new_throw( Args &&... args ) {
 	std::unique_ptr<T> result;
 	try {
 		result = std::make_unique<T>( std::forward<Args>( args )... );
@@ -39,7 +39,7 @@ T *new_throw( Args &&... args ) {
 }
 
 template<typename T>
-T *new_array_throw( const size_t size ) {
+[[nodiscard]] T *new_array_throw( const size_t size ) {
 	T *result = nullptr;
 	try {
 		result = new T[size];
@@ -48,3 +48,4 @@ T *new_array_throw( const size_t size ) {
 	  result, daw::string::string_join( "Error allocating ", size, " items" ) );
 	return result;
 }
+

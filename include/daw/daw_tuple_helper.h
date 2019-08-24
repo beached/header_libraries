@@ -44,7 +44,7 @@ namespace daw {
 			           (Tpos >= std::tuple_size_v<std::remove_reference_t<Tuple>>),
 			           std::nullptr_t> = nullptr>
 			[[noreturn]] inline Result get_impl( Tuple &&, size_t ) noexcept {
-				std::terminate( );
+				std::abort( );
 			}
 
 			template<size_t Tpos, typename Result, typename Tuple,

@@ -97,10 +97,10 @@ namespace daw {
 				return 0ULL;
 			}
 #endif
-			if( count != npos ) {
-				return count;
+			if( count == npos ) {
+				count = strlen<SizeT>( str );
 			}
-			return strlen<SizeT>( str );
+			return count;
 		}
 
 		template<typename InputIt, typename ForwardIt, typename BinaryPredicate>

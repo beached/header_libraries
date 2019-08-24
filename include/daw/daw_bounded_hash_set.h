@@ -346,7 +346,7 @@ namespace daw {
 			auto const index = find_index( hasher{}( key ), key );
 			if( !index ) {
 				// Full
-				std::terminate( );
+				std::abort( );
 			}
 			if( !m_data[*index].has_value ) {
 				m_data[*index].key = key;
@@ -360,7 +360,7 @@ namespace daw {
 			auto const index = find_index( key );
 			if( !index ) {
 				// Full
-				std::terminate( );
+				std::abort( );
 			}
 			if( !m_data[*index].has_value ) {
 				m_data[*index].key = std::move( key );

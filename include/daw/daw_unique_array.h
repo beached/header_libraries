@@ -48,7 +48,7 @@ namespace daw {
 		static pointer create_values( size_t n ) noexcept {
 			try {
 				return new value_type[n];
-			} catch( std::bad_alloc const & ) { std::terminate( ); }
+			} catch( std::bad_alloc const & ) { std::abort( ); }
 		}
 
 		constexpr void clear( ) {

@@ -118,7 +118,7 @@ namespace daw {
 	}
 
 	BOOST_AUTO_TEST_CASE( daw_string_view_find_last_of_001 ) {
-		static daw::string_view const a = "abcdefghijklm";
+		auto a = daw::string_view( "abcdefghijklm" );
 		std::string const b = "abcdefghijklm";
 		static boost::string_view const c = "abcdefghijklm";
 		auto const pos = a.find_last_of( "ij" );
@@ -375,7 +375,7 @@ namespace daw {
 		{ daw::expecting( &view.at( 0 ) == str ); }
 
 		BOOST_TEST_MESSAGE( "Throws when out of range" );
-		{ BOOST_REQUIRE_THROW( view.at( 11 ), std::out_of_range ); }
+		{ BOOST_REQUIRE_THROW( (void)view.at( 11 ), std::out_of_range ); }
 	}
 
 	//----------------------------------------------------------------------------
@@ -480,9 +480,9 @@ namespace daw {
 
 		BOOST_TEST_MESSAGE( "Throws std::out_of_range if pos >= view.size()" );
 		{
-			char result[11];
+			char result[12];
 
-			BOOST_REQUIRE_THROW( view.copy( result, 11, 11 ), std::out_of_range );
+			BOOST_REQUIRE_THROW( view.copy( result, 12, 12 ), std::out_of_range );
 		}
 
 		BOOST_TEST_MESSAGE( "Copies entire string" );
@@ -557,7 +557,7 @@ namespace daw {
 		}
 
 		BOOST_TEST_MESSAGE( "Throws std::out_of_range if pos > size" );
-		{ BOOST_REQUIRE_THROW( view.substr( 15 ), std::out_of_range ); }
+		{ BOOST_REQUIRE_THROW( (void)view.substr( 15 ), std::out_of_range ); }
 	}
 
 	//----------------------------------------------------------------------------

@@ -46,7 +46,7 @@ namespace daw {
 		static value_type *create_value( size_t n ) {
 			try {
 				return new value_type[n];
-			} catch( std::bad_alloc const & ) { std::terminate( ); } catch( ... ) {
+			} catch( std::bad_alloc const & ) { std::abort( ); } catch( ... ) {
 				return nullptr;
 			}
 		}
@@ -115,12 +115,10 @@ namespace daw {
 		}
 
 		constexpr void clear( ) noexcept {
-			if( nullptr != m_begin ) {
-				auto tmp = daw::exchange( m_begin, nullptr );
-				m_size = 0;
-				m_end = nullptr;
-				delete[] tmp;
-			}
+			auto tmp = daw::exchange( m_begin, nullptr );
+			m_size = 0;
+			m_end = nullptr;
+			delete[] tmp;
 		}
 
 		constexpr void swap( heap_array &rhs ) noexcept {
@@ -221,6 +219,8 @@ namespace daw {
 
 		constexpr iterator find_first_of( const_reference value,
 		                                  const_iterator start_at ) const {
+			assert( m_begin != nullptr );
+			assert( start_at != nullptr );
 			*m_end = value;
 			if( start_at != nullptr ) {
 				while( *start_at != value ) {

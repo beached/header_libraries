@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2018-2019 Darrell Wright
+// Copyright (c) 2019 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -22,19 +22,34 @@
 
 #pragma once
 
-#include <type_traits>
+#include <memory>
+#include <mutex>
 
 namespace daw {
-	/// Convert a value to an rvalue.
-	/// \param  value  A thing of arbitrary type.
-	/// \return The parameter cast to an rvalue-reference to allow moving it.
-	template<typename T>
-	[[nodiscard]] constexpr std::remove_reference_t<T> &&move( T &&value ) noexcept {
-		static_assert( not std::is_const_v<std::remove_reference_t<T>>,
-		               "Attempt to move const value" );
-		static_assert( not std::is_rvalue_reference_v<decltype( value )>,
-		               "Value is already an rvalue" );
-		return static_cast<typename std::remove_reference_t<T> &&>( value );
-	}
+	// A ref counted mutex
+	template<typename Mutex>
+	class basic_shared_mutex {
+		std::shared_ptr<Mutex> m_mutex = std::make_shared<Mutex>( );
+
+	public:
+		basic_shared_mutex( ) = default;
+
+		void lock( ) {
+			assert( m_mutex );
+			m_mutex->lock( );
+		}
+
+		[[nodiscard]] bool try_lock( ) {
+			assert( m_mutex );
+			m_mutex->try_lock( );
+		}
+
+		void unlock( ) {
+			assert( m_mutex );
+			m_mutex->unlock( );
+		}
+	};
+
+	using shared_mutex = basic_shared_mutex<std::mutex>;
 } // namespace daw
 
