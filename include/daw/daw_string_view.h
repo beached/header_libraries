@@ -62,10 +62,11 @@ namespace daw {
 	struct basic_string_view {
 		using traits_type = Traits;
 		using value_type = CharT;
-		using pointer = CharT *;
-		using const_pointer = value_type const *;
-		using reference = value_type &;
-		using const_reference = value_type const &;
+		using pointer = value_type *;
+		using const_pointer = std::add_const_t<value_type> *;
+		using reference = std::add_lvalue_reference_t<value_type>;
+		using const_reference =
+		  std::add_lvalue_reference_t<std::add_const_t<value_type>>;
 		using const_iterator = const_pointer;
 		using iterator = const_iterator;
 		using reverse_iterator = daw::reverse_iterator<iterator>;
@@ -74,9 +75,12 @@ namespace daw {
 		using difference_type = std::ptrdiff_t;
 		static constexpr ptrdiff_t const extent = Extent;
 
+		template<typename, typename, ptrdiff_t>
+		friend struct basic_string_view;
+
 	private:
 		const_pointer m_first;
-		size_type m_size;
+		const_pointer m_last;
 
 		template<typename ForwardIterator>
 		constexpr ForwardIterator find_not_of( ForwardIterator first,
@@ -104,42 +108,45 @@ namespace daw {
 		// constructors
 		constexpr basic_string_view( ) noexcept
 		  : m_first( nullptr )
-		  , m_size( 0 ) {}
+		  , m_last( nullptr ) {}
 
 		constexpr basic_string_view( std::nullptr_t ) noexcept
 		  : m_first( nullptr )
-		  , m_size( 0 ) {}
+		  , m_last( nullptr ) {}
 
 		constexpr basic_string_view( std::nullptr_t, size_type ) noexcept
 		  : m_first( nullptr )
-		  , m_size( 0 ) {}
+		  , m_last( nullptr ) {}
 
 		constexpr basic_string_view( const_pointer s,
 		                             size_type count = npos ) noexcept
 		  : m_first( s )
-		  , m_size( details::sstrlen<size_type>( s, count, npos ) ) {}
+		  , m_last(
+		      std::next( s, static_cast<ptrdiff_t>(
+		                      details::sstrlen<size_type>( s, count, npos ) ) ) ) {}
 
 		constexpr basic_string_view( basic_string_view sv,
 		                             size_type count ) noexcept
 		  : m_first( sv.m_first )
-		  , m_size( count ) {}
+		  , m_last( std::min( sv.size( ), count ) ) {}
 
 		template<size_t N>
 		constexpr basic_string_view( CharT const ( &cstr )[N] ) noexcept
 		  : m_first( cstr )
-		  , m_size( N - 1 ) {}
+		  , m_last( cstr + ( N - 1 ) ) {}
 
 #ifndef NOSTRING
 		template<typename Allocator>
 		basic_string_view( std::basic_string<CharT, Traits, Allocator> const &str )
 		  : m_first( str.data( ) )
-		  , m_size( str.data( ) == nullptr ? 0 : str.size( ) ) {}
+		  , m_last( str.data( ) == nullptr ? static_cast<CharT const *>( nullptr )
+		                                   : str.data( ) + str.size( ) ) {}
 
 #if defined( __cpp_lib_string_view )
 		constexpr basic_string_view(
 		  std::basic_string_view<CharT, Traits> sv ) noexcept
 		  : m_first( sv.data( ) )
-		  , m_size( sv.size( ) ) {}
+		  , m_last( sv.data( ) + sv.size( ) ) {}
 #endif
 #endif
 
@@ -149,10 +156,15 @@ namespace daw {
 		                          std::nullptr_t> = nullptr>
 		constexpr basic_string_view &
 		operator=( basic_string_view<CharT, Traits, Ex> rhs ) noexcept {
-			m_first = rhs.data( );
-			m_size = rhs.size( );
+			m_first = rhs.m_first;
+			m_last = rhs.m_last;
 			return *this;
 		}
+
+		constexpr basic_string_view( CharT const *first,
+		                             CharT const *last ) noexcept
+		  : m_first( first )
+		  , m_last( last ) {}
 
 	private:
 		/// If you really want to do this, use to_string_view as storing the address
@@ -161,8 +173,8 @@ namespace daw {
 		template<typename Allocator>
 		basic_string_view(
 		  std::basic_string<CharT, Traits, Allocator> &&str ) noexcept
-		  : m_first{str.data( )}
-		  , m_size{str.size( )} {}
+		  : m_first( str.data( ) )
+		  , m_last( str.data( ) + str.size( ) ) {}
 
 		template<typename Chr, typename Tr, typename Alloc>
 		friend basic_string_view<Chr, Tr>
@@ -176,7 +188,7 @@ namespace daw {
 		  std::enable_if_t<( Ex == daw::dynamic_string_size and Ex != Extent ),
 		                   std::nullptr_t> = nullptr>
 		constexpr operator basic_string_view<CharT, Tr, Ex>( ) noexcept {
-			return {m_first, m_size};
+			return {m_first, m_last};
 		}
 
 #ifndef NOSTRING
@@ -186,19 +198,20 @@ namespace daw {
 
 #if defined( __cpp_lib_string_view )
 		constexpr operator std::basic_string_view<CharT, Traits>( ) const {
-			return {m_first, m_size};
+			return {m_first, size( )};
 		}
 #endif
 		template<typename ChrT, typename TrtsT, typename Allocator>
 		basic_string_view(
 		  std::basic_string<ChrT, TrtsT, Allocator> const &str ) noexcept
-		  : basic_string_view{str.data( ), static_cast<size_type>( str.size( ) )} {}
+		  : m_first( str.data( ) )
+		  , m_last( str.data( ) + str.size( ) ) {}
 
 		template<typename ChrT, typename TrtsT, typename Allocator>
 		basic_string_view &
 		operator=( std::basic_string<ChrT, TrtsT, Allocator> const &str ) noexcept {
 			m_first = str.data( );
-			m_size = static_cast<size_type>( str.size( ) );
+			m_last = str.data( ) + str.size( );
 			return *this;
 		}
 #endif
@@ -212,19 +225,19 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr const_iterator end( ) const noexcept {
-			return &m_first[m_size];
+			return m_last;
 		}
 
 		[[nodiscard]] constexpr const_iterator cend( ) const noexcept {
-			return &m_first[m_size];
+			return m_last;
 		}
 
 		[[nodiscard]] constexpr const_reverse_iterator rbegin( ) const noexcept {
-			return daw::make_reverse_iterator( &m_first[m_size] );
+			return daw::make_reverse_iterator( m_last );
 		}
 
 		[[nodiscard]] constexpr const_reverse_iterator crbegin( ) const noexcept {
-			return daw::make_reverse_iterator( &m_first[m_size] );
+			return daw::make_reverse_iterator( m_last );
 		}
 
 		[[nodiscard]] constexpr const_reverse_iterator rend( ) const noexcept {
@@ -241,19 +254,17 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr const_reference at( size_type const pos ) const {
-			if( pos >= m_size ) {
-				daw::exception::daw_throw<std::out_of_range>(
-				  "Attempt to access basic_string_view past end" );
-			}
-			return m_first[pos];
+			daw::exception::precondition_check<std::out_of_range>(
+			  pos < size( ), "Attempt to access basic_string_view past end" );
+			return *std::next( m_first, static_cast<ptrdiff_t>( pos ) );
 		}
 
 		[[nodiscard]] constexpr const_reference front( ) const noexcept {
-			return m_first[0];
+			return *m_first;
 		}
 
 		[[nodiscard]] constexpr const_reference back( ) const noexcept {
-			return m_first[m_size - 1];
+			return *std::prev( m_last );
 		}
 
 		[[nodiscard]] constexpr const_pointer data( ) const noexcept {
@@ -265,19 +276,23 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr size_type size( ) const noexcept {
-			return m_size;
+			if( m_first == nullptr ) {
+				return 0U;
+			}
+			auto const result = distance( m_first, m_last );
+			return static_cast<size_t>( result );
 		}
 
 		[[nodiscard]] constexpr size_type length( ) const noexcept {
-			return m_size;
+			return static_cast<size_t>( std::distance( m_first, m_last ) );
 		}
 
 		[[nodiscard]] constexpr size_type max_size( ) const noexcept {
-			return m_size;
+			return static_cast<size_t>( std::distance( m_first, m_last ) );
 		}
 
 		[[nodiscard]] constexpr bool empty( ) const noexcept {
-			return m_first == nullptr or 0 == m_size;
+			return size( ) == 0;
 		}
 
 		[[nodiscard]] constexpr explicit operator bool( ) const noexcept {
@@ -285,17 +300,17 @@ namespace daw {
 		}
 
 		constexpr void remove_prefix( size_type n ) noexcept {
-			n = daw::min( n, m_size );
-			m_first += n;
-			m_size -= n;
+			m_first =
+			  std::next( m_first, static_cast<ptrdiff_t>( std::min( n, size( ) ) ) );
 		}
 
 		constexpr void remove_prefix( ) noexcept {
 			remove_prefix( 1 );
 		}
 
-		constexpr void remove_suffix( size_type const n ) noexcept {
-			m_size -= n;
+		constexpr void remove_suffix( size_type n ) noexcept {
+			m_last =
+			  std::prev( m_last, static_cast<ptrdiff_t>( std::min( n, size( ) ) ) );
 		}
 
 		constexpr void remove_suffix( ) noexcept {
@@ -303,7 +318,8 @@ namespace daw {
 		}
 
 		constexpr void clear( ) noexcept {
-			m_size = 0;
+			m_first = nullptr;
+			m_last = nullptr;
 		}
 
 		[[nodiscard]] constexpr CharT pop_front( ) noexcept {
@@ -460,34 +476,33 @@ namespace daw {
 		}
 
 		constexpr void resize( size_t const n ) noexcept {
-			m_size = static_cast<size_type>( n );
+			assert( n < size( ) );
+			m_last = std::next( m_first, static_cast<ptrdiff_t>( n ) );
 		}
 
 		constexpr void swap( basic_string_view &v ) noexcept {
 			daw::cswap( m_first, v.m_first );
-			daw::cswap( m_size, v.m_size );
+			daw::cswap( m_last, v.m_last );
 		}
 
 		size_type copy( CharT *dest, size_type const count,
 		                size_type const pos = 0 ) const {
-			if( pos >= m_size ) {
-				daw::exception::daw_throw<std::out_of_range>(
-				  "Attempt to access basic_string_view past end" );
+			daw::exception::precondition_check<std::out_of_range>(
+			  pos <= size( ), "Attempt to access basic_string_view past end" );
+			size_type rlen = std::min( count, size( ) - pos );
+			if( rlen > 0 ) {
+				traits_type::copy( dest, m_first + pos, rlen );
 			}
-			size_type rlen = daw::min( count, m_size - pos );
-			traits_type::copy( dest, m_first + pos, rlen );
 			return rlen;
 		}
 
 		[[nodiscard]] constexpr basic_string_view
 		substr( size_type const pos = 0, size_type const count = npos ) const {
-			if( pos > size( ) ) {
-				daw::exception::daw_throw<std::out_of_range>(
-				  "Attempt to access basic_string_view past end" );
-			}
+			daw::exception::precondition_check<std::out_of_range>(
+			  pos <= size( ), "Attempt to access basic_string_view past end" );
 			auto const rcount =
-			  static_cast<size_type>( daw::min( count, m_size - pos ) );
-			return basic_string_view{&m_first[pos], rcount};
+			  static_cast<size_type>( std::min( count, size( ) - pos ) );
+			return {m_first + pos, m_first + pos + rcount};
 		}
 
 	public:
@@ -510,7 +525,7 @@ namespace daw {
 			};
 
 			auto cmp = str_compare( lhs.data( ), rhs.data( ),
-			                        daw::min( lhs.size( ), rhs.size( ) ) );
+			                        std::min( lhs.size( ), rhs.size( ) ) );
 			if( cmp == 0 ) {
 				if( lhs.size( ) < rhs.size( ) ) {
 					return -1;
@@ -595,7 +610,7 @@ namespace daw {
 			if( size( ) < v.size( ) ) {
 				return npos;
 			}
-			pos = daw::min( pos, size( ) - v.size( ) );
+			pos = std::min( pos, size( ) - v.size( ) );
 			if( v.empty( ) ) {
 				return pos;
 			}
@@ -755,16 +770,16 @@ namespace daw {
 		[[nodiscard]] constexpr size_type find_last_of( basic_string_view s,
 		                                                size_type pos = npos ) const
 		  noexcept {
-			if( s.m_size == 0u ) {
+			if( s.size( ) == 0u ) {
 				return npos;
 			}
-			if( pos >= m_size ) {
+			if( pos >= size( ) ) {
 				pos = 0;
 			} else {
-				pos = m_size - ( pos + 1 );
+				pos = size( ) - ( pos + 1 );
 			}
 			auto iter = std::find_first_of(
-			  crbegin( ) + static_cast<difference_type>( pos ), crend( ),
+			  std::next( crbegin( ), static_cast<difference_type>( pos ) ), crend( ),
 			  s.crbegin( ), s.crend( ), traits_type::eq );
 			return iter == crend( ) ? npos : reverse_distance( crbegin( ), iter );
 		}
@@ -776,10 +791,10 @@ namespace daw {
 
 			traits::is_unary_predicate_test<UnaryPredicate, CharT>( );
 
-			if( pos >= m_size ) {
+			if( pos >= size( ) ) {
 				pos = 0;
 			} else {
-				pos = m_size - ( pos + 1 );
+				pos = size( ) - ( pos + 1 );
 			}
 			auto iter = std::find_if(
 			  crbegin( ) + static_cast<difference_type>( pos ), crend( ), pred );
@@ -789,15 +804,18 @@ namespace daw {
 		[[nodiscard]] constexpr size_type find_last_of( value_type const c,
 		                                                size_type pos = npos ) const
 		  noexcept {
-			if( pos >= m_size ) {
+			if( pos >= size( ) ) {
 				pos = 0;
 			}
-			for( auto n = m_size - 1; n >= pos; --n ) {
-				if( m_first[n] == c ) {
-					return static_cast<size_type>( n );
+			auto first = std::prev( m_last );
+			auto const last = std::next( m_first, pos );
+			while( first != last ) {
+				if( *first == 'c' ) {
+					return static_cast<size_type>( std::distance( m_first, first ) );
+					--first;
 				}
+				return npos;
 			}
-			return npos;
 		}
 
 		template<size_type N>
@@ -831,7 +849,7 @@ namespace daw {
 
 		[[nodiscard]] constexpr size_type
 		find_first_not_of( basic_string_view v, size_type pos = 0 ) const noexcept {
-			if( pos >= m_size ) {
+			if( pos >= size( ) ) {
 				return npos;
 			}
 			if( v.empty( ) ) {
@@ -868,13 +886,13 @@ namespace daw {
 		[[nodiscard]] constexpr size_type
 		find_last_not_of( basic_string_view v, size_type pos = npos ) const
 		  noexcept {
-			if( pos >= m_size ) {
-				pos = m_size - 1;
+			if( pos >= size( ) ) {
+				pos = size( ) - 1;
 			}
 			if( v.empty( ) ) {
 				return pos;
 			}
-			pos = m_size - ( pos + 1 );
+			pos = size( ) - ( pos + 1 );
 			const_reverse_iterator iter =
 			  find_not_of( crbegin( ) + static_cast<intmax_t>( pos ), crend( ), v );
 			if( crend( ) == iter ) {
@@ -1405,7 +1423,7 @@ namespace daw {
 		std::vector<daw::basic_string_view<CharT, Traits>> v;
 		auto last_pos = str.cbegin( );
 		while( !str.empty( ) ) {
-			auto sz = daw::min( str.size( ), str.find_first_of_if( pred ) );
+			auto sz = std::min( str.size( ), str.find_first_of_if( pred ) );
 			v.emplace_back( last_pos, sz );
 			if( sz == str.npos ) {
 				break;
@@ -1420,8 +1438,8 @@ namespace daw {
 	template<typename CharT, typename Traits>
 	[[nodiscard]] auto split( daw::basic_string_view<CharT, Traits> str,
 	                          CharT const delemiter ) {
-		return split(
-		  str, [delemiter]( CharT c ) noexcept { return c == delemiter; } );
+		return split( str,
+		              [delemiter]( CharT c ) noexcept { return c == delemiter; } );
 	}
 
 	template<typename CharT, typename Traits, size_t N>
@@ -1502,8 +1520,8 @@ namespace daw {
 } // namespace daw
 
 namespace std {
-	// TODO use same function as string without killing performance of creating a
-	// string
+	// TODO use same function as string without killing performance of creating
+	// a string
 	template<typename CharT, typename Traits>
 	struct hash<daw::basic_string_view<CharT, Traits>> {
 		[[nodiscard]] constexpr size_t
