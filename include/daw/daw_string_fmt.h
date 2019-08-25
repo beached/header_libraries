@@ -36,6 +36,7 @@
 #include "daw_string_view.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
+#include "daw_visit.h"
 #include "impl/daw_int_to_iterator.h"
 
 namespace daw {
@@ -174,10 +175,10 @@ namespace daw {
 					template<typename OutputIterator, typename... Args>
 					constexpr OutputIterator operator( )( OutputIterator out,
 					                                      Args &&... args ) const {
-						return daw::visit_nt(
+						return ::daw::visit_nt(
 						  m_data,
-						  [&out]( daw::basic_string_view<CharT> sv ) {
-							  return daw::algorithm::copy( sv.begin( ), sv.end( ), out );
+						  [&out]( ::daw::basic_string_view<CharT> sv ) {
+							  return ::daw::algorithm::copy( sv.begin( ), sv.end( ), out );
 						  },
 						  [&]( CharT c ) {
 							  *out++ = c;
@@ -261,15 +262,18 @@ namespace daw {
 						switch( msg[sz] ) {
 						case static_cast<CharT>( '\\' ):
 							if( sz > 0 ) {
-								result.emplace_back( impl::parse_token<CharT>( msg.pop_front( sz ) ) );
+								result.emplace_back(
+								  impl::parse_token<CharT>( msg.pop_front( sz ) ) );
 								sz = 0;
 							}
 							assert( !msg.empty( ) );
-							result.emplace_back( impl::parse_token<CharT>( msg.pop_front( ) ) );
+							result.emplace_back(
+							  impl::parse_token<CharT>( msg.pop_front( ) ) );
 							continue;
 						case static_cast<CharT>( '{' ): {
 							if( sz > 0 ) {
-								result.emplace_back( impl::parse_token<CharT>( msg.pop_front( sz ) ) );
+								result.emplace_back(
+								  impl::parse_token<CharT>( msg.pop_front( sz ) ) );
 								sz = 0;
 							}
 							msg.remove_prefix( );
@@ -283,7 +287,7 @@ namespace daw {
 						++sz;
 					}
 					if( sz > 0 ) {
-						assert( result.size( ) < result.capacity( ) ); 
+						assert( result.size( ) < result.capacity( ) );
 						result.emplace_back( impl::parse_token<CharT>( msg ) );
 					}
 					return result;
@@ -312,7 +316,7 @@ namespace daw {
 				}
 			};
 			template<typename CharT, size_t N>
-			fmt_t( CharT const (&)[N] ) -> fmt_t<CharT, N>;
+			fmt_t( CharT const ( & )[N] )->fmt_t<CharT, N>;
 
 			template<typename CharT, size_t N, typename... Args>
 			constexpr auto fmt( CharT const ( &format_str )[N], Args &&... args ) {

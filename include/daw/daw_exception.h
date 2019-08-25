@@ -313,7 +313,7 @@ namespace daw {
 		template<typename Exception = AssertException, typename Bool, typename... Args>
 		constexpr void dbg_precondition_check( Bool &&condition, Args &&... ) {
 
-			static_assert( std::is_convertible_v<Bool, bool> );
+//			static_assert( std::is_convertible_v<Bool, bool> );
 			if( not static_cast<bool>( condition ) ) {
 		    std::abort( );
 	    }

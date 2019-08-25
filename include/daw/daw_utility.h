@@ -45,9 +45,7 @@
 #include "daw_algorithm.h"
 #include "daw_exception.h"
 #include "daw_move.h"
-#include "daw_overload.h"
 #include "daw_traits.h"
-#include "daw_visit.h"
 
 template<typename... Ts>
 constexpr void Unused( Ts &&... ) noexcept {}
@@ -959,8 +957,8 @@ namespace daw {
 			  : m_value( &v ) {}
 
 			template<typename U>
-			friend /*TODO Apple Clang is mean today [[nodiscard]]*/ constexpr auto ::daw::value_is( U &&v )
-			  -> ::daw::utility_impl::value_is_utility_impl<
+			friend /*TODO Apple Clang is mean today [[nodiscard]]*/ constexpr auto ::
+			  daw::value_is( U &&v ) -> ::daw::utility_impl::value_is_utility_impl<
 			    std::remove_reference_t<decltype( v )>>;
 
 		public:
@@ -1061,8 +1059,7 @@ namespace daw {
 	} // namespace pack_apply_impl
 
 	template<typename Function, typename... Args>
-	constexpr void pack_apply( size_t N, Function &&func,
-	                                         Args &&... args ) {
+	constexpr void pack_apply( size_t N, Function &&func, Args &&... args ) {
 		pack_apply_impl::pack_apply_impl<0>( N, std::forward<Function>( func ),
 		                                     std::forward<Args>( args )... );
 	}

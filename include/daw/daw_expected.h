@@ -38,7 +38,6 @@
 #include "daw_overload.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
-#include "daw_visit.h"
 
 namespace daw {
 	namespace impl {
