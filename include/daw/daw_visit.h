@@ -40,11 +40,13 @@ namespace daw {
 			};
 			template<typename... Fs>
 			overload_t( Fs... )->overload_t<Fs...>;
-
+			
 			template<typename F, typename... Fs>
-			[[nodiscard]] constexpr decltype( auto ) overload( F &&f, Fs &&... fs ) {
+			[[nodiscard]] constexpr decltype( auto )
+			overload( F &&f, Fs &&... fs ) noexcept {
 				if constexpr( sizeof...( Fs ) > 0 ) {
-					return overload_t{std::forward<F>( f ), ::std::forward<Fs>( fs )...};
+					return overload_t{::std::forward<F>( f ),
+					                  ::std::forward<Fs>( fs )...};
 				} else {
 					return ::std::forward<F>( f );
 				}
@@ -94,6 +96,8 @@ namespace daw {
 	//**********************************************
 
 	// Singe visitation visit.  Expects that variant is valid and not empty
+	// The return type assumes that all the visitors have a result convertable
+	// to that of visitor( get<0>( variant ) ) 's result
 	template<typename Variant, typename... Visitors>
 	[[nodiscard]] constexpr decltype( auto ) visit_nt( Variant &&var,
 	                                                   Visitors &&... visitors ) {

@@ -43,7 +43,7 @@ constexpr bool test( bool b ) noexcept {
 }
 
 B test_001( ) noexcept {
-	auto tmp = daw::piecewise_factory_late_t<B, int, int, std::string>{};
+	auto tmp = daw::piecewise_factory_late_t<B, int, int, std::string>( );
 	tmp.set<0>( 5 );
 	tmp.set( 1, 6 );
 	tmp.set<2>( []( ) { return "Hello"; } );
@@ -51,7 +51,7 @@ B test_001( ) noexcept {
 }
 
 constexpr A test_002( ) noexcept {
-	auto tmp = daw::piecewise_factory_t<A, int, int>{};
+	auto tmp = daw::piecewise_factory_t<A, int, int>( );
 	tmp.set<0>( 5 );
 	tmp.set( 1, 6 );
 	return tmp( );
@@ -64,7 +64,7 @@ constexpr bool test_002_test( ) noexcept {
 static_assert( test_002_test( ) );
 
 B test_003( ) noexcept {
-	auto tmp = daw::piecewise_factory_t<B, int, int, std::string>{};
+	auto tmp = daw::piecewise_factory_t<B, int, int, std::string>( );
 	tmp.set<0>( 5 );
 	tmp.set( 1, 6 );
 	tmp.set( 2, "Hello" );
@@ -72,10 +72,10 @@ B test_003( ) noexcept {
 }
 
 constexpr A test_004( ) noexcept {
-	auto tmp = daw::piecewise_factory_t<A, int, int>{};
+	auto tmp = daw::piecewise_factory_t<A, int, int>( );
 	tmp.set<0>( 5 );
 	tmp.set( 1, 6 );
-	return std::move( tmp )( );
+	return daw::move( tmp )( );
 }
 
 constexpr bool test_004_test( ) noexcept {
