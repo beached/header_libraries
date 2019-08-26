@@ -30,7 +30,6 @@
 
 #include "daw/daw_benchmark.h"
 #include "daw/daw_utility.h"
-#include "daw/daw_visit.h"
 
 namespace in_range_test {
 	static_assert( daw::in_range( 5, 0, 10 ) );
@@ -213,25 +212,6 @@ void as_char_array_001( ) {
 	daw::expecting( 0x43, ary[1] );
 	daw::expecting( 0x21, ary[0] );
 }
-
-constexpr bool visit_nt_001( ) {
-	std::variant<int, double> a = 5.5;
-	auto result = ::daw::visit_nt(
-	  a, []( int v ) { return v == 5.5; }, []( double d ) { return d == 5.5; } );
-	daw::expecting( result );
-	return true;
-}
-static_assert( visit_nt_001( ) );
-
-constexpr bool visit_nt_002( ) {
-	std::variant<int, double> a = 5.5;
-	std::optional<bool> result;
-	::daw::visit_nt( a, [&result]( auto v ) { result = ( v == 5.5 ); } );
-	daw::expecting( result );
-	daw::expecting( *result );
-	return true;
-}
-static_assert( visit_nt_002( ) );
 
 constexpr bool value_is_one_of_001( ) {
 	int value = 134;

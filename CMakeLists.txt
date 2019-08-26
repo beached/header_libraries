@@ -106,6 +106,7 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_value_ptr
 	daw_variant_cast
 	daw_view
+	daw_visit
 	not_null
 )
 
@@ -188,7 +189,6 @@ set( UNTESTED_HEADER_FILES
 	daw_swap.h
 	daw_variant.h
 	daw_variant2.h
-	daw_visit.h
 	daw_zipcontainer.h
 )
 
