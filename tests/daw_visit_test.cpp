@@ -23,7 +23,6 @@
 #include <optional>
 #include <variant>
 
-#include "daw/cpp_17.h"
 #include "daw/daw_benchmark.h"
 #include "daw/daw_visit.h"
 
@@ -54,5 +53,15 @@ constexpr bool visit_nt_003( ) {
 	return true;
 }
 static_assert( visit_nt_003( ) );
+
+struct A {
+	constexpr bool operator( )( int ) const {
+		return true;
+	}
+};
+static_assert( ::daw::is_visitable_v<int, A> );
+
+struct B {};
+static_assert( !::daw::is_visitable_v<int, B> );
 
 int main( ) {}
