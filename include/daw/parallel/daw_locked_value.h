@@ -110,11 +110,12 @@ namespace daw {
 		  : m_value( std::forward<T>( value ) ) {}
 
 		locked_value_t<T, Mutex> get( ) {
-			return locked_value_t( *m_mutex, *m_value );
+			return locked_value_t<T, Mutex>( *m_mutex, *m_value );
 		}
 
-		locked_value_t<std::add_const_t<T>, Mutex> get( ) const {
-			return locked_value_t( *m_mutex, ::daw::as_const( *m_value ) );
+		locked_value_t<::std::add_const_t<T>, Mutex> get( ) const {
+			return locked_value_t<::std::add_const_t<T>, Mutex>(
+			  *m_mutex, ::daw::as_const( *m_value ) );
 		}
 
 		locked_value_t<T, Mutex> operator*( ) {
