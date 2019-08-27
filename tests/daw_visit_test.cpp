@@ -54,9 +54,10 @@ constexpr bool visit_nt_003( ) {
 }
 static_assert( visit_nt_003( ) );
 
-constexpr bool func_004( int ) {
+constexpr bool func_004( int ) noexcept {
 	return true;
 }
+
 constexpr bool visit_nt_004( ) {
 	std::variant<int, double> a = 5;
 	auto result = ::daw::visit_nt( a, func_004, []( double ) { return false; } );
@@ -64,6 +65,16 @@ constexpr bool visit_nt_004( ) {
 	return true;
 }
 static_assert( visit_nt_004( ) );
+
+template<typename T>
+constexpr void func_005( T ) {}
+
+constexpr bool visit_nt_005( ) {
+	std::variant<int, double> a = 5;
+	::daw::visit_nt( a, func_005<int>, func_005<double> );
+	return true;
+}
+static_assert( visit_nt_005( ) );
 
 struct A {
 	constexpr bool operator( )( int ) const {

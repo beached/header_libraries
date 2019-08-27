@@ -33,6 +33,7 @@
 namespace daw {
 	namespace visit_impl {
 		namespace {
+
 			// A simple overload class that is constructed via aggregate.
 			template<typename... Fs>
 			struct overload_t : Fs... {
@@ -40,15 +41,16 @@ namespace daw {
 			};
 			template<typename... Fs>
 			overload_t( Fs... )->overload_t<Fs...>;
-			
+
 			template<typename F, typename... Fs>
 			[[nodiscard]] constexpr decltype( auto )
 			overload( F &&f, Fs &&... fs ) noexcept {
 				if constexpr( sizeof...( Fs ) > 0 ) {
-					return overload_t{::std::forward<F>( f ),
-					                  ::std::forward<Fs>( fs )...};
+					return overload_t{
+					  ::daw::traits::lift_func( ::std::forward<F>( f ) ),
+					  ::daw::traits::lift_func( ::std::forward<Fs>( fs ) )...};
 				} else {
-					return ::std::forward<F>( f );
+					return ::daw::traits::lift_func( ::std::forward<F>( f ) );
 				}
 			}
 

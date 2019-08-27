@@ -681,7 +681,7 @@ namespace daw {
 
 		template<typename A, typename B>
 		struct pack_index_of<A, B>
-		  : std::integral_constant<int, (std::is_same<A, B>{} - 1)> {};
+		  : std::integral_constant<int, ( std::is_same<A, B>{} - 1 )> {};
 
 		template<typename T, typename... Pack>
 		struct pack_index_of<T, pack_list<Pack...>> : pack_index_of<T, Pack...> {};
@@ -701,5 +701,89 @@ namespace daw {
 		template<template<typename...> typename Template, typename Type>
 		inline constexpr bool is_instance_of_v =
 		  is_instance_of<Template, Type>::value;
+
+		template<typename F, bool IsNoExcept, typename R, typename... Args>
+		struct lifted_t {
+			F fp;
+
+			constexpr R operator( )( Args... args ) const noexcept( IsNoExcept ) {
+				return fp( std::forward<Args>( args )... );
+			}
+		};
+
+		template<typename>
+		struct func_traits;
+
+		template<typename R, typename... Args>
+		struct func_traits<R( Args... )> {
+			using return_type = R;
+			static constexpr std::size_t arity = sizeof...( Args );
+
+			static constexpr bool is_noexcept = false;
+			template<size_t N>
+			struct argument {
+				static_assert( N < arity, "Attempt to access argument out of range." );
+				using type = typename std::tuple_element<N, std::tuple<Args...>>::type;
+			};
+
+			template<typename Func>
+			static constexpr lifted_t<Func, is_noexcept, R, Args...>
+			lift( Func &&f ) noexcept {
+				return {std::forward<Func>( f )};
+			}
+		};
+
+		template<typename R, typename... Args>
+		struct func_traits<R( Args... ) noexcept> {
+			using return_type = R;
+			static constexpr std::size_t arity = sizeof...( Args );
+
+			static constexpr bool is_noexcept = true;
+			template<size_t N>
+			struct argument {
+				static_assert( N < arity, "Attempt to access argument out of range." );
+				using type = typename std::tuple_element<N, std::tuple<Args...>>::type;
+			};
+
+			template<typename Func>
+			static constexpr lifted_t<Func, is_noexcept, R, Args...>
+			lift( Func &&f ) noexcept {
+				return {std::forward<Func>( f )};
+			}
+		};
+
+		template<class R, class... Args>
+		struct func_traits<R ( * )( Args... )> : public func_traits<R( Args... )> {
+		};
+
+		template<class R, class... Args>
+		struct func_traits<R ( & )( Args... )> : public func_traits<R( Args... )> {
+		};
+
+		template<class R, class... Args>
+		struct func_traits<R ( * )( Args... ) noexcept>
+		  : public func_traits<R( Args... ) noexcept> {};
+
+		template<class R, class... Args>
+		struct func_traits<R ( & )( Args... ) noexcept>
+		  : public func_traits<R( Args... ) noexcept> {};
+
+		template<typename F, size_t N>
+		using func_arg_t = typename func_traits<F>::template argument<N>::type;
+
+		template<typename F>
+		using func_result_t = typename func_traits<F>::return_type;
+
+		template<typename F>
+		[[nodiscard]] constexpr decltype( auto ) lift_func( F &&f ) noexcept {
+			if constexpr( ::std::is_function_v<::daw::remove_cvref_t<F>> ) {
+				using func_t = func_traits<F>;
+				static_assert( func_t::arity == 1,
+				               "Only single argument overloads are supported" );
+				return func_t::lift( std::forward<F>( f ) );
+			} else {
+				return std::forward<F>( f );
+			}
+		}
 	} // namespace traits
 } // namespace daw
