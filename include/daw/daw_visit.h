@@ -50,6 +50,11 @@ namespace daw {
 					  ::daw::traits::lift_func( ::std::forward<F>( f ) ),
 					  ::daw::traits::lift_func( ::std::forward<Fs>( fs ) )...};
 				} else {
+					if constexpr( ::std::is_function_v<::daw::remove_cvref_t<F>> ) {
+						static_assert(
+						  ::daw::traits::func_traits<F>::arity == 1,
+						  "Function pointers only valid for functions with 1 argument" );
+					}
 					return ::daw::traits::lift_func( ::std::forward<F>( f ) );
 				}
 			}
