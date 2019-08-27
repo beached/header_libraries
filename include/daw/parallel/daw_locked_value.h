@@ -30,9 +30,9 @@
 #include "../daw_value_ptr.h"
 
 namespace daw {
-	template<typename T>
+	template<typename T, typename Mutex = std::mutex>
 	class locked_value_t {
-		std::unique_lock<std::mutex> m_lock;
+		std::unique_lock<Mutex> m_lock;
 		std::reference_wrapper<T> m_value;
 
 	public:
@@ -48,7 +48,7 @@ namespace daw {
 		locked_value_t( locked_value_t &&other ) noexcept = default;
 		locked_value_t &operator=( locked_value_t && ) noexcept = default;
 
-		locked_value_t( std::mutex &m, T &value )
+		locked_value_t( Mutex &m, T &value )
 		  : m_lock( m )
 		  , m_value( value ) {}
 
@@ -80,42 +80,48 @@ namespace daw {
 			return &m_value.get( );
 		}
 	}; // locked_value_t
+	template<typename T, typename Mutex>
+	locked_value_t( Mutex, T const & )->locked_value_t<T const, Mutex>;
 
-	template<typename T>
-	locked_value_t<T> make_locked_value( std::mutex &m, T &value ) {
+	template<typename T, typename Mutex>
+	locked_value_t( Mutex, T & )->locked_value_t<T, Mutex>;
+
+	template<typename T, typename Mutex = std::mutex>
+	[[deprecated( "Use CTAD version of locked_value_t" )]] locked_value_t<T>
+	make_locked_value( Mutex &m, T &value ) {
 		return locked_value_t<T>( m, value );
 	}
 
-	template<typename T>
+	template<typename T, typename Mutex = std::mutex>
 	class lockable_value_t {
-		mutable daw::value_ptr<std::mutex> m_mutex{};
+		mutable daw::value_ptr<Mutex> m_mutex{};
 		daw::value_ptr<T> m_value{};
 
 	public:
-		lockable_value_t( ) noexcept( is_nothrow_default_constructible_v<T> ) =
-		  default;
+		lockable_value_t( ) noexcept(
+		  is_nothrow_default_constructible_v<T>
+		    and is_nothrow_default_constructible_v<Mutex> ) = default;
 
 		template<typename U, std::enable_if_t<
 		                       !daw::traits::is_first_type_v<lockable_value_t, U>,
 		                       std::nullptr_t> = nullptr>
 		explicit lockable_value_t( U &&value ) noexcept(
 		  noexcept( daw::value_ptr<T>( std::forward<U>( value ) ) ) )
-		  : m_mutex( )
-		  , m_value( std::forward<T>( value ) ) {}
+		  : m_value( std::forward<T>( value ) ) {}
 
-		locked_value_t<T> get( ) {
-			return make_locked_value( *m_mutex, *m_value );
+		locked_value_t<T, Mutex> get( ) {
+			return locked_value_t( *m_mutex, *m_value );
 		}
 
-		locked_value_t<std::add_const_t<T>> get( ) const {
-			return make_locked_value( *m_mutex, daw::as_const( *m_value ) );
+		locked_value_t<std::add_const_t<T>, Mutex> get( ) const {
+			return locked_value_t( *m_mutex, ::daw::as_const( *m_value ) );
 		}
 
-		locked_value_t<T> operator*( ) {
+		locked_value_t<T, Mutex> operator*( ) {
 			return get( );
 		}
 
-		locked_value_t<T const> operator*( ) const {
+		locked_value_t<T const, Mutex> operator*( ) const {
 			return get( );
 		}
 	}; // lockable_value_t

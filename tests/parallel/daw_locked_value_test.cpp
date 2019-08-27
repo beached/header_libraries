@@ -33,11 +33,11 @@ struct A {
 	std::string str;
 
 	auto get( ) {
-		return daw::make_locked_value( m_mutex, counter );
+		return ::daw::locked_value_t( m_mutex, counter );
 	}
 
 	auto get_str( ) {
-		return daw::make_locked_value( m_mutex, str );
+		return ::daw::locked_value_t( m_mutex, str );
 	}
 };
 
@@ -117,6 +117,15 @@ void const_lock_value_01( ) {
 		daw::expecting( 0xDEAD, b.get( ) );
 	}
 }
+
+void const_lock_value_02( ) {
+	auto const a = daw::lockable_value_t<int, std::recursive_mutex>( 0xDEAD );
+	{
+		auto b = *a;
+		daw::expecting( 0xDEAD, b.get( ) );
+	}
+}
+
 
 int main( ) {
 	test_locked_value01( );
