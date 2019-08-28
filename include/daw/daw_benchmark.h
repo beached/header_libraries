@@ -40,7 +40,7 @@ namespace daw {
 	double benchmark( F &&func ) {
 		static_assert( std::is_invocable_v<F>, "func must accept no arguments" );
 		auto start = std::chrono::high_resolution_clock::now( );
-		daw::invoke( std::forward<F>( func ) );
+		(void)std::forward<F>( func )( );
 		auto finish = std::chrono::high_resolution_clock::now( );
 		std::chrono::duration<double> duration = finish - start;
 		return duration.count( );
@@ -421,9 +421,9 @@ namespace daw {
 	void expecting_exception( Expression &&expression,
 	                          Predicate &&pred = Predicate{} ) {
 		try {
-			daw::invoke( std::forward<Expression>( expression ) );
+			(void)std::forward<Expression>( expression )( );
 		} catch( Exception const &ex ) {
-			if( daw::invoke( std::forward<Predicate>( pred ), ex ) ) {
+			if( std::forward<Predicate>( pred )( ex ) ) {
 				return;
 			}
 			std::cerr << "Failed predicate\n";
