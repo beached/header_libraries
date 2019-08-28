@@ -27,50 +27,6 @@
 #include "daw/daw_benchmark.h"
 #include "daw/parallel/daw_locked_value.h"
 
-struct A {
-	std::mutex m_mutex;
-	int counter = 0;
-	std::string str;
-
-	auto get( ) {
-		return ::daw::locked_value_t( m_mutex, counter );
-	}
-
-	auto get_str( ) {
-		return ::daw::locked_value_t( m_mutex, str );
-	}
-};
-
-void test_locked_value01( ) {
-	A a;
-
-	auto const worker = [&a]( ) {
-		using namespace std::chrono_literals;
-		for( size_t n = 0; n < 3; ++n ) {
-			auto v = a.get( );
-			std::cout << "Starting: " << std::this_thread::get_id( ) << '\n';
-			++( *v );
-			std::cout << "current value: " << *v << '\n';
-			std::this_thread::sleep_for( 1s );
-			std::cout << "Ending: " << std::this_thread::get_id( ) << '\n';
-			v.release( );
-			std::this_thread::sleep_for( 1s );
-		}
-	};
-
-	auto t1 = std::thread( worker );
-	auto t2 = std::thread( worker );
-	auto t3 = std::thread( worker );
-	auto t4 = std::thread( worker );
-
-	t1.join( );
-	t2.join( );
-	t3.join( );
-	t4.join( );
-
-	std::cout << "operator-> tst" << a.get_str( )->empty( ) << '\n';
-}
-
 struct B {
 	daw::lockable_value_t<int> a;
 
@@ -127,7 +83,6 @@ void const_lock_value_02( ) {
 }
 
 int main( ) {
-	test_locked_value01( );
 	test_lockable_value01( );
 	const_lock_value_01( );
 }
