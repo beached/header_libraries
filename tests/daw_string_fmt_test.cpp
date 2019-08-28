@@ -253,7 +253,8 @@ void string_fmt2_perf_003( ) {
 	size_t n = 0;
 	daw::bench_n_test<1'000'000>( "\tstring_fmt perf", [&]( ) {
 		static constexpr char const fmt_str[] =
-		  "This is a test of the daw::string_fmt::v2::fmt and has been used {2} times for testing\n";
+		  "This is a test of the daw::string_fmt::v2::fmt and has been used {2} "
+		  "times for testing\n";
 		auto tst = daw::string_fmt::v2::fmt<fmt_str>(
 		  "test", "daw::string_fmt::v2::fmt", n++ );
 		daw::do_not_optimize( tst );
@@ -289,7 +290,7 @@ constexpr bool cx_test_001( ) {
 	return true;
 }
 
-//static_assert( cx_test_001( ) );
+// static_assert( cx_test_001( ) );
 
 int main( ) {
 	std::cout << "v1\n";

@@ -111,7 +111,8 @@ namespace daw {
 namespace std {
 	template<typename T>
 	struct hash<daw::not_null<T>> {
-		[[nodiscard]] std::size_t operator( )( daw::not_null<T> const &value ) const {
+		[[nodiscard]] std::size_t
+		operator( )( daw::not_null<T> const &value ) const {
 			return hash<decltype( *std::declval<T>( ) )>{}( value );
 		}
 	};

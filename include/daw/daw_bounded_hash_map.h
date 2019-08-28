@@ -390,7 +390,7 @@ namespace daw {
 			                                          std::forward<V>( value ) );
 		}
 
-		constexpr void insert( std::pair<Key const, Value> const & item ) noexcept {
+		constexpr void insert( std::pair<Key const, Value> const &item ) noexcept {
 			auto const index = find_index( item.first );
 			m_data[*index] = bounded_hash_map_item_t( item.first, item.second );
 		}

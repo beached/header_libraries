@@ -231,4 +231,3 @@ namespace daw {
 		return waitable_value<T>{daw::move( sem ), daw::move( value )};
 	}
 } // namespace daw
-

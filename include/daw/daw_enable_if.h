@@ -26,15 +26,13 @@
 namespace daw {
 	namespace enable_if_impl {
 		template<bool>
-		struct enable_if {
-		};
+		struct enable_if {};
 
 		template<>
 		struct enable_if<true> {
 			using type = std::nullptr_t;
 		};
-	}
+	} // namespace enable_if_impl
 	template<bool... B>
 	using enable_if_t = typename enable_if_impl::enable_if<( B and ... )>::type;
 } // namespace daw
-

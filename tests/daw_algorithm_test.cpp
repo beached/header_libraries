@@ -283,8 +283,9 @@ static_assert( daw_map_test_002( ) );
 
 constexpr bool daw_reduce_test_001( ) {
 	int blah[6] = {1, 0, 1, 0, 1, 0};
-	auto const tst = daw::algorithm::reduce( blah, daw::next( blah, 6 ), 0, [
-	]( auto lhs, auto rhs ) noexcept { return lhs + rhs; } );
+	auto const tst = daw::algorithm::reduce(
+	  blah, daw::next( blah, 6 ), 0,
+	  []( auto lhs, auto rhs ) noexcept { return lhs + rhs; } );
 	daw::expecting( 3, tst );
 	return true;
 }
@@ -525,9 +526,10 @@ constexpr bool daw_transform_if_test_001( ) {
 	std::array<int, 6> b{};
 	std::array<int, 6> const expected_b = {-1, 1, 3, 5, 7, 9};
 
-	daw::algorithm::transform_if( a.cbegin( ), a.cend( ), b.data( ),
-	                              []( auto const &v ) { return v % 2 == 0; },
-	                              []( auto const &v ) { return v - 1; } );
+	daw::algorithm::transform_if(
+	  a.cbegin( ), a.cend( ), b.data( ),
+	  []( auto const &v ) { return v % 2 == 0; },
+	  []( auto const &v ) { return v - 1; } );
 
 	daw::expecting( daw::algorithm::equal(
 	  b.cbegin( ), b.cend( ), expected_b.cbegin( ), expected_b.cend( ) ) );
@@ -809,8 +811,6 @@ constexpr bool do_n_2_test( ) {
 	return true;
 }
 static_assert( do_n_2_test( ) );
-
-
 
 int main( ) {
 	daw_extract_to_001( );

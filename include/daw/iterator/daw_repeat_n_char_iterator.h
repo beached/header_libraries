@@ -132,4 +132,3 @@ namespace daw {
 		return !lhs.equal( rhs );
 	}
 } // namespace daw
-

@@ -49,8 +49,8 @@ namespace daw {
 		// TODO: check for UB if values are signed
 		template<typename Value,
 		         std::enable_if_t<is_integral_v<Value>, std::nullptr_t> = nullptr>
-		[[nodiscard]] static constexpr size_t append_hash( size_t current_hash,
-		                                     Value const &value ) noexcept {
+		[[nodiscard]] static constexpr size_t
+		append_hash( size_t current_hash, Value const &value ) noexcept {
 			for( size_t n = 0; n < sizeof( Value ); ++n ) {
 				current_hash ^= static_cast<size_t>(
 				  ( static_cast<size_t>( value ) &
@@ -65,7 +65,8 @@ namespace daw {
 		         std::enable_if_t<
 		           is_integral_v<typename std::iterator_traits<Iterator1>::type>,
 		           std::nullptr_t> = nullptr>
-		[[nodiscard]] constexpr size_t operator( )( Iterator1 first, Iterator2 const last ) const
+		[[nodiscard]] constexpr size_t operator( )( Iterator1 first,
+		                                            Iterator2 const last ) const
 		  noexcept {
 			auto hash = impl::fnv_offset( );
 			while( first != last ) {
@@ -76,19 +77,22 @@ namespace daw {
 
 		template<typename Member, size_t N,
 		         std::enable_if_t<is_integral_v<Member>, std::nullptr_t> = nullptr>
-		[[nodiscard]] constexpr size_t operator( )( Member const ( &member )[N] ) const noexcept {
+		[[nodiscard]] constexpr size_t
+		operator( )( Member const ( &member )[N] ) const noexcept {
 			return operator( )( member,
 			                    std::next( member, static_cast<intmax_t>( N ) ) );
 		}
 
 		template<typename Integral, std::enable_if_t<is_integral_v<Integral>,
 		                                             std::nullptr_t> = nullptr>
-		[[nodiscard]] constexpr size_t operator( )( Integral const value ) const noexcept {
+		[[nodiscard]] constexpr size_t operator( )( Integral const value ) const
+		  noexcept {
 			return append_hash( impl::fnv_offset( ), value );
 		}
 
 		template<typename T>
-		[[nodiscard]] constexpr size_t operator( )( T const *const ptr ) const noexcept {
+		[[nodiscard]] constexpr size_t operator( )( T const *const ptr ) const
+		  noexcept {
 			auto hash = impl::fnv_offset( );
 			auto bptr = static_cast<uint8_t const *const>( ptr );
 			for( size_t n = 0; n < sizeof( T ); ++n ) {
@@ -115,7 +119,8 @@ namespace daw {
 	}
 
 	template<typename CharT>
-	[[nodiscard]] constexpr size_t fnv1a_hash( CharT const *ptr, size_t const len ) noexcept {
+	[[nodiscard]] constexpr size_t fnv1a_hash( CharT const *ptr,
+	                                           size_t const len ) noexcept {
 		auto hash = impl::fnv_offset( );
 		auto const last = std::next( ptr, static_cast<intmax_t>( len ) );
 		while( ptr != last ) {
@@ -127,12 +132,14 @@ namespace daw {
 
 #ifndef NOSTRING
 	template<typename CharT, typename Traits, typename Allocator>
-	[[nodiscard]] size_t fnv1a_hash( std::basic_string<CharT, Traits, Allocator> const &str ) {
+	[[nodiscard]] size_t
+	fnv1a_hash( std::basic_string<CharT, Traits, Allocator> const &str ) {
 		return fnv1a_hash( str.data( ), str.size( ) );
 	}
 
 	template<typename CharT, typename Traits, typename Allocator>
-	[[nodiscard]] size_t fnv1a_hash( std::basic_string<CharT, Traits, Allocator> &&str ) {
+	[[nodiscard]] size_t
+	fnv1a_hash( std::basic_string<CharT, Traits, Allocator> &&str ) {
 		return fnv1a_hash( str.data( ), str.size( ) );
 	}
 #endif
@@ -141,4 +148,3 @@ namespace daw {
 		return fnv1a_hash( ptr, N );
 	}
 } // namespace daw
-

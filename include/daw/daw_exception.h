@@ -122,7 +122,7 @@ namespace daw {
 			daw_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
 #else
-		template<typename ExceptionType = DefaultException, typename...Args>
+		template<typename ExceptionType = DefaultException, typename... Args>
 		constexpr void debug_throw( Args &&... ) {}
 #endif
 
@@ -137,7 +137,7 @@ namespace daw {
 		}
 #else
 		template<typename ExceptionType = NullPtrAccessException,
-		         typename ValueType, typename...Args>
+		         typename ValueType, typename... Args>
 		constexpr void dbg_throw_on_null( ValueType &&, Args &&... ) {}
 
 #endif
@@ -154,7 +154,7 @@ namespace daw {
 		}
 #else
 		template<typename ExceptionType = NullPtrAccessException,
-		         typename ValueType, typename...Args>
+		         typename ValueType, typename... Args>
 		constexpr ValueType *dbg_throw_on_null_or_return( ValueType *value,
 		                                                  Args &&... args ) {
 			return value;
@@ -310,30 +310,30 @@ namespace daw {
 			}
 		}
 #ifndef NODEBUGTHROW
-		template<typename Exception = AssertException, typename Bool, typename... Args>
+		template<typename Exception = AssertException, typename Bool,
+		         typename... Args>
 		constexpr void dbg_precondition_check( Bool &&condition, Args &&... ) {
 
-//			static_assert( std::is_convertible_v<Bool, bool> );
+			//			static_assert( std::is_convertible_v<Bool, bool> );
 			if( not static_cast<bool>( condition ) ) {
-		    std::abort( );
-	    }
+				std::abort( );
+			}
 		}
 
 		template<typename Bool, typename... Args>
-		constexpr void dbg_postcondition_check( Bool &&condition,
-		                                        Args &&... ) {
+		constexpr void dbg_postcondition_check( Bool &&condition, Args &&... ) {
 			static_assert( std::is_convertible_v<Bool, bool> );
 			if( not static_cast<bool>( condition ) ) {
 				std::abort( );
 			}
 		}
 #else
-		template<typename Exception = AssertException, typename Bool, typename... Args>
+		template<typename Exception = AssertException, typename Bool,
+		         typename... Args>
 		constexpr void dbg_precondition_check( Bool &&, Args &&... ) {}
 
 		template<typename Bool, typename... Args>
-		constexpr void dbg_postcondition_check( Bool &&,
-		                                        Args &&... ) {}
+		constexpr void dbg_postcondition_check( Bool &&, Args &&... ) {}
 #endif
 		template<typename ExceptionType = AssertException, typename ValueType,
 		         typename... Args, typename Bool>
@@ -507,4 +507,4 @@ namespace daw {
 		}
 #endif
 	} // namespace exception
-  } // namespace daw
+} // namespace daw

@@ -117,46 +117,50 @@ int main( ) {
 	    1'000, std::numeric_limits<float>::min_exponent10,
 	    std::numeric_limits<float>::max_exponent10 ) );
 
-	daw::bench_n_test<100'000>( "daw::cxmath::fexp2( flt )",
-	                            []( auto &&floats ) {
-		                            intmax_t sum = 0.0f;
-		                            for( auto num : floats ) {
-			                            sum += *daw::cxmath::fexp2( num );
-		                            }
-		                            daw::do_not_optimize( sum );
-		                            return sum;
-	                            },
-	                            nums );
-	daw::bench_n_test<100'000>( "daw::cxmath::fexp2( flt, 0 )",
-	                            []( auto &&floats ) {
-		                            float sum = 0.0f;
-		                            for( auto num : floats ) {
-			                            sum += daw::cxmath::fexp2( num, 0 );
-		                            }
-		                            daw::do_not_optimize( sum );
-		                            return sum;
-	                            },
-	                            nums );
-	daw::bench_n_test<100'000>( "daw::cxmath::sqrt( flt )",
-	                            []( auto &&floats ) {
-		                            float sum = 0.0f;
-		                            for( auto num : floats ) {
-			                            sum += daw::cxmath::sqrt( num );
-		                            }
-		                            daw::do_not_optimize( sum );
-		                            return sum;
-	                            },
-	                            nums );
-	daw::bench_n_test<100'000>( "std::sqrt( flt )",
-	                            []( auto &&floats ) {
-		                            float sum = 0.0f;
-		                            for( auto num : floats ) {
-			                            sum += std::sqrt( num );
-		                            }
-		                            daw::do_not_optimize( sum );
-		                            return sum;
-	                            },
-	                            nums );
+	daw::bench_n_test<100'000>(
+	  "daw::cxmath::fexp2( flt )",
+	  []( auto &&floats ) {
+		  intmax_t sum = 0.0f;
+		  for( auto num : floats ) {
+			  sum += *daw::cxmath::fexp2( num );
+		  }
+		  daw::do_not_optimize( sum );
+		  return sum;
+	  },
+	  nums );
+	daw::bench_n_test<100'000>(
+	  "daw::cxmath::fexp2( flt, 0 )",
+	  []( auto &&floats ) {
+		  float sum = 0.0f;
+		  for( auto num : floats ) {
+			  sum += daw::cxmath::fexp2( num, 0 );
+		  }
+		  daw::do_not_optimize( sum );
+		  return sum;
+	  },
+	  nums );
+	daw::bench_n_test<100'000>(
+	  "daw::cxmath::sqrt( flt )",
+	  []( auto &&floats ) {
+		  float sum = 0.0f;
+		  for( auto num : floats ) {
+			  sum += daw::cxmath::sqrt( num );
+		  }
+		  daw::do_not_optimize( sum );
+		  return sum;
+	  },
+	  nums );
+	daw::bench_n_test<100'000>(
+	  "std::sqrt( flt )",
+	  []( auto &&floats ) {
+		  float sum = 0.0f;
+		  for( auto num : floats ) {
+			  sum += std::sqrt( num );
+		  }
+		  daw::do_not_optimize( sum );
+		  return sum;
+	  },
+	  nums );
 
 	return 0;
 }

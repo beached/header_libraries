@@ -73,13 +73,15 @@ namespace daw {
 			m_is_active = false;
 		}
 
-		[[nodiscard]] constexpr bool operator==( const ScopeGuard &rhs ) const noexcept {
+		[[nodiscard]] constexpr bool operator==( const ScopeGuard &rhs ) const
+		  noexcept {
 			return rhs.m_function == m_function and rhs.m_is_active == m_is_active;
 		}
 	}; // class ScopeGuard
 
 	template<typename FunctionType>
-	[[nodiscard]] constexpr ScopeGuard<FunctionType> on_scope_exit( FunctionType f ) noexcept {
+	[[nodiscard]] constexpr ScopeGuard<FunctionType>
+	on_scope_exit( FunctionType f ) noexcept {
 		return ScopeGuard<FunctionType>( daw::move( f ) );
 	}
 } // namespace daw

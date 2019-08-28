@@ -22,9 +22,9 @@
 
 #include <cstdint>
 #include <cstdlib>
+#include <iostream>
 #include <iterator>
 #include <string>
-#include <iostream>
 
 #include "daw/daw_benchmark.h"
 #include "daw/iterator/daw_split_iterator.h"

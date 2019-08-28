@@ -20,15 +20,43 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/daw_benchmark.h"
-#include "daw/daw_ordered_map.h"
+#pragma once
 
-int main( ) {
-	daw::ordered_map<std::string, int> dict{};
+#include <memory>
+#include <mutex>
 
-	dict.insert( {"hello", 5} );
+namespace daw {
+	// A ref counted mutex
+	template<typename Mutex>
+	class basic_unique_mutex {
+		std::unique_ptr<Mutex> m_mutex = std::make_unique<Mutex>( );
 
-	daw::expecting( !dict.empty( ) );
-	daw::expecting( dict.size( ), 1U );
-	daw::expecting( dict.front( ), dict.back( ) );
-}
+	public:
+		basic_unique_mutex( ) noexcept {}
+
+		void lock( ) {
+			assert( m_mutex );
+			m_mutex->lock( );
+		}
+
+		[[nodiscard]] bool try_lock( ) {
+			assert( m_mutex );
+			m_mutex->try_lock( );
+		}
+
+		void unlock( ) {
+			assert( m_mutex );
+			m_mutex->unlock( );
+		}
+
+		Mutex &get( ) noexcept {
+			return *m_mutex;
+		}
+
+		Mutex const &get( ) const noexcept {
+			return *m_mutex;
+		}
+	};
+
+	using unique_mutex = basic_unique_mutex<std::mutex>;
+} // namespace daw

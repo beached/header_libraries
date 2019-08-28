@@ -63,8 +63,8 @@ namespace daw {
 		                       daw::traits::is_first_type_v<validated, Args...>)),
 		                   std::nullptr_t> = nullptr>
 		constexpr validated( Args &&... args )
-		  : m_value( validate(
-		      construct_a<value_t>( std::forward<Args>( args )... ) ) ) {}
+		  : m_value(
+		      validate( construct_a<value_t>( std::forward<Args>( args )... ) ) ) {}
 
 		// Handle enum's differently as it is UB to go out of range on a c enum
 		template<

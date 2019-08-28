@@ -47,7 +47,7 @@ struct callable {
 };
 
 static daw::function<100, int( int )> func_001 = []( int x ) -> int {
-	return x*x;
+	return x * x;
 };
 
 void stack_function_test_001( ) {
@@ -100,4 +100,3 @@ int main( ) {
 	stack_function_test_001( );
 	stack_function_test_002( );
 }
-

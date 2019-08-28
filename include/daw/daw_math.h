@@ -158,7 +158,8 @@ namespace daw {
 		                          std::nullptr_t> = nullptr>
 		constexpr Result abs( SignedInteger v ) noexcept {
 			// This accounts for when negating the number is out of range
-			if( static_cast<intmax_t>( v ) == std::numeric_limits<intmax_t>::min( ) ) {
+			if( static_cast<intmax_t>( v ) ==
+			    std::numeric_limits<intmax_t>::min( ) ) {
 				return pow2<Result>( bsizeof<intmax_t> - 1 );
 			}
 			if( v < 0 ) {

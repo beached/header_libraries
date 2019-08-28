@@ -25,8 +25,8 @@
 #include <cstddef>
 #include <memory>
 #include <stdexcept>
-#include <vector>
 #include <utility>
+#include <vector>
 
 #include "daw_algorithm.h"
 #include "daw_enable_if.h"
@@ -97,8 +97,7 @@ namespace daw {
 	// Use linear searching for key, keep values in insertion order
 	template<typename Key, typename Value, typename Compare = std::less<Key>,
 	         typename Allocator = std::allocator<std::pair<Key, Value>>,
-	         typename Container =
-	           std::vector<std::pair<Key, Value>, Allocator>>
+	         typename Container = std::vector<std::pair<Key, Value>, Allocator>>
 	struct ordered_map {
 		using key_type = Key;
 		using mapped_type = Value;
@@ -182,19 +181,19 @@ namespace daw {
 			return crender( m_values );
 		}
 
-		constexpr decltype(auto) front( ) noexcept {
+		constexpr decltype( auto ) front( ) noexcept {
 			return m_values.front( );
 		}
 
-		constexpr decltype(auto) front( ) const noexcept {
+		constexpr decltype( auto ) front( ) const noexcept {
 			return m_values.front( );
 		}
 
-		constexpr decltype(auto) back( ) noexcept {
+		constexpr decltype( auto ) back( ) noexcept {
 			return m_values.back( );
 		}
 
-		constexpr decltype(auto) back( ) const noexcept {
+		constexpr decltype( auto ) back( ) const noexcept {
 			return m_values.back( );
 		}
 
@@ -358,4 +357,3 @@ namespace daw {
 		}
 	};
 } // namespace daw
-

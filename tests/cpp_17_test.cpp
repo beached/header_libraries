@@ -194,7 +194,7 @@ namespace decay_copy_001 {
 static_assert( daw::any_true_v<false, false, true> );
 static_assert( !daw::any_true_v<false, false, false> );
 
-constexpr int add_numbers( int const & lhs, int const & rhs ) {
+constexpr int add_numbers( int const &lhs, int const &rhs ) {
 	return lhs + rhs;
 }
 

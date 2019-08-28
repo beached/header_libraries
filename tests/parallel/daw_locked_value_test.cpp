@@ -126,7 +126,6 @@ void const_lock_value_02( ) {
 	}
 }
 
-
 int main( ) {
 	test_locked_value01( );
 	test_lockable_value01( );

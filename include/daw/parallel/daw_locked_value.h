@@ -28,6 +28,7 @@
 
 #include "../cpp_17.h"
 #include "../daw_value_ptr.h"
+#include "daw_unique_mutex.h"
 
 namespace daw {
 	template<typename T, typename Mutex = std::mutex>
@@ -87,35 +88,31 @@ namespace daw {
 	locked_value_t( Mutex, T & )->locked_value_t<T, Mutex>;
 
 	template<typename T, typename Mutex = std::mutex>
-	[[deprecated( "Use CTAD version of locked_value_t" )]] locked_value_t<T>
-	make_locked_value( Mutex &m, T &value ) {
-		return locked_value_t<T>( m, value );
-	}
-
-	template<typename T, typename Mutex = std::mutex>
 	class lockable_value_t {
-		mutable daw::value_ptr<Mutex> m_mutex{};
-		daw::value_ptr<T> m_value{};
+		mutable ::daw::basic_unique_mutex<Mutex> m_mutex =
+		  ::daw::basic_unique_mutex<Mutex>( );
+		::daw::value_ptr<T> m_value = ::daw::value_ptr<T>( );
 
 	public:
 		lockable_value_t( ) noexcept(
-		  is_nothrow_default_constructible_v<T>
-		    and is_nothrow_default_constructible_v<Mutex> ) = default;
+		  is_nothrow_default_constructible_v<::daw::value_ptr<T>> and
+		    is_nothrow_default_constructible_v<::daw::basic_unique_mutex<Mutex>> ) =
+		  default;
 
-		template<typename U, std::enable_if_t<
-		                       !daw::traits::is_first_type_v<lockable_value_t, U>,
-		                       std::nullptr_t> = nullptr>
+		template<typename U,
+		         std::enable_if_t<
+		           not std::is_same_v<lockable_value_t, ::daw::remove_cvref_t<U>>,
+		           std::nullptr_t> = nullptr>
 		explicit lockable_value_t( U &&value ) noexcept(
 		  noexcept( daw::value_ptr<T>( std::forward<U>( value ) ) ) )
-		  : m_value( std::forward<T>( value ) ) {}
+		  : m_value( ::std::forward<U>( value ) ) {}
 
 		locked_value_t<T, Mutex> get( ) {
-			return locked_value_t<T, Mutex>( *m_mutex, *m_value );
+			return {m_mutex.get( ), *m_value};
 		}
 
 		locked_value_t<::std::add_const_t<T>, Mutex> get( ) const {
-			return locked_value_t<::std::add_const_t<T>, Mutex>(
-			  *m_mutex, ::daw::as_const( *m_value ) );
+			return {m_mutex.get( ), ::daw::as_const( *m_value )};
 		}
 
 		locked_value_t<T, Mutex> operator*( ) {

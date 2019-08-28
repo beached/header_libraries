@@ -85,52 +85,58 @@ void do_test( ) {
 	std::vector<value_t> ary{};
 	ary.resize( SZ );
 	hash_map.reserve( SZ );
-	daw::show_benchmark( SZ * sizeof( value_t ), "fixed_lookup(fill)",
-	                     [&]( ) {
-		                     for( value_t n = 0; n < SZ; ++n ) {
-			                     lookup[n] = n;
-		                     }
-	                     },
-	                     2, 2, SZ );
-	daw::show_benchmark( SZ * sizeof( value_t ), "unordered_map(fill)",
-	                     [&]( ) {
-		                     for( value_t n = 0; n < SZ; ++n ) {
-			                     hash_map[n] = n;
-		                     }
-	                     },
-	                     2, 2, SZ );
-	daw::show_benchmark( SZ * sizeof( value_t ), "vector(fill)",
-	                     [&]( ) {
-		                     for( value_t n = 0; n < SZ; ++n ) {
-			                     ary[static_cast<size_t>( n )] = n;
-		                     }
-	                     },
-	                     2, 2, SZ );
+	daw::show_benchmark(
+	  SZ * sizeof( value_t ), "fixed_lookup(fill)",
+	  [&]( ) {
+		  for( value_t n = 0; n < SZ; ++n ) {
+			  lookup[n] = n;
+		  }
+	  },
+	  2, 2, SZ );
+	daw::show_benchmark(
+	  SZ * sizeof( value_t ), "unordered_map(fill)",
+	  [&]( ) {
+		  for( value_t n = 0; n < SZ; ++n ) {
+			  hash_map[n] = n;
+		  }
+	  },
+	  2, 2, SZ );
+	daw::show_benchmark(
+	  SZ * sizeof( value_t ), "vector(fill)",
+	  [&]( ) {
+		  for( value_t n = 0; n < SZ; ++n ) {
+			  ary[static_cast<size_t>( n )] = n;
+		  }
+	  },
+	  2, 2, SZ );
 
 	intmax_t sum1 = 0;
-	daw::show_benchmark( SZ * sizeof( value_t ), "fixed_lookup(summation)",
-	                     [&]( ) {
-		                     for( value_t n = 0; n < SZ; ++n ) {
-			                     sum1 += lookup[n];
-		                     }
-	                     },
-	                     2, 2, SZ );
+	daw::show_benchmark(
+	  SZ * sizeof( value_t ), "fixed_lookup(summation)",
+	  [&]( ) {
+		  for( value_t n = 0; n < SZ; ++n ) {
+			  sum1 += lookup[n];
+		  }
+	  },
+	  2, 2, SZ );
 	intmax_t sum2 = 0;
-	daw::show_benchmark( SZ * sizeof( value_t ), "unordered_map(summation)",
-	                     [&]( ) {
-		                     for( value_t n = 0; n < SZ; ++n ) {
-			                     sum2 += hash_map[n];
-		                     }
-	                     },
-	                     2, 2, SZ );
+	daw::show_benchmark(
+	  SZ * sizeof( value_t ), "unordered_map(summation)",
+	  [&]( ) {
+		  for( value_t n = 0; n < SZ; ++n ) {
+			  sum2 += hash_map[n];
+		  }
+	  },
+	  2, 2, SZ );
 	intmax_t sum3 = 0;
-	daw::show_benchmark( SZ * sizeof( value_t ), "vector(summation)",
-	                     [&]( ) {
-		                     for( value_t n = 0; n < SZ; ++n ) {
-			                     sum3 += ary[static_cast<size_t>( n )];
-		                     }
-	                     },
-	                     2, 2, SZ );
+	daw::show_benchmark(
+	  SZ * sizeof( value_t ), "vector(summation)",
+	  [&]( ) {
+		  for( value_t n = 0; n < SZ; ++n ) {
+			  sum3 += ary[static_cast<size_t>( n )];
+		  }
+	  },
+	  2, 2, SZ );
 	daw::expecting( sum1, sum2 );
 	daw::expecting( sum1, sum3 );
 	std::cout << "sum1: " << sum1 << " sum2: " << sum2 << " sum3: " << sum3

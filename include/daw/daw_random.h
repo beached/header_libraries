@@ -32,7 +32,7 @@
 
 namespace daw {
 	namespace impl {
-		static inline auto & global_rng( ) {
+		static inline auto &global_rng( ) {
 			static thread_local auto e = std::mt19937_64( std::random_device{}( ) );
 			return e;
 		}

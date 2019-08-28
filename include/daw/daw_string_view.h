@@ -1438,8 +1438,8 @@ namespace daw {
 	template<typename CharT, typename Traits>
 	[[nodiscard]] auto split( daw::basic_string_view<CharT, Traits> str,
 	                          CharT const delemiter ) {
-		return split( str,
-		              [delemiter]( CharT c ) noexcept { return c == delemiter; } );
+		return split(
+		  str, [delemiter]( CharT c ) noexcept { return c == delemiter; } );
 	}
 
 	template<typename CharT, typename Traits, size_t N>

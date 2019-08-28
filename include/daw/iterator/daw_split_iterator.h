@@ -594,6 +594,6 @@ namespace daw {
 		using iterator = daw::remove_cvref_t<decltype( str.begin( ) )>;
 
 		return split_it<iterator, SpltT>( str.begin( ), str.end( ),
-		                                  SpltT{ divider } );
+		                                  SpltT{divider} );
 	}
 } // namespace daw

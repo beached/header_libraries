@@ -23,8 +23,8 @@
 #pragma once
 
 #include <algorithm>
-#include <iterator>
 #include <cassert>
+#include <iterator>
 #include <numeric>
 #include <vector>
 

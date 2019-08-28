@@ -58,4 +58,3 @@ int main( int argc, char ** ) {
 	daw::poly_var<Base, C1, C2> val( C1{} );
 	return val->get_num( );
 }
-

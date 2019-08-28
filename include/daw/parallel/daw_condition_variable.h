@@ -162,4 +162,3 @@ namespace daw {
 	using condition_shared_variable =
 	  basic_shared_condition_variable<std::mutex, std::condition_variable>;
 } // namespace daw
-

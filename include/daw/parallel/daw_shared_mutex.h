@@ -32,7 +32,7 @@ namespace daw {
 		std::shared_ptr<Mutex> m_mutex = std::make_shared<Mutex>( );
 
 	public:
-		basic_shared_mutex( ) = default;
+		basic_shared_mutex( ) noexcept {}
 
 		void lock( ) {
 			assert( m_mutex );
@@ -48,8 +48,15 @@ namespace daw {
 			assert( m_mutex );
 			m_mutex->unlock( );
 		}
+
+		Mutex &get( ) noexcept {
+			return *m_mutex;
+		}
+
+		Mutex const &get( ) const noexcept {
+			return *m_mutex;
+		}
 	};
 
 	using shared_mutex = basic_shared_mutex<std::mutex>;
 } // namespace daw
-

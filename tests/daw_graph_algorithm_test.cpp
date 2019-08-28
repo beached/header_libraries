@@ -27,13 +27,11 @@
 
 void test_topoligical_walk_001( daw::graph_t<char> &graph ) {
 	std::string result{};
-	daw::topological_sorted_walk( graph,
-	                              [&result]( auto const &node ) {
-		                              result.push_back( node.value( ) );
-	                              },
-	                              []( auto const &lhs, auto const &rhs ) {
-		                              return lhs.value( ) < rhs.value( );
-	                              } );
+	daw::topological_sorted_walk(
+	  graph, [&result]( auto const &node ) { result.push_back( node.value( ) ); },
+	  []( auto const &lhs, auto const &rhs ) {
+		  return lhs.value( ) < rhs.value( );
+	  } );
 
 	daw::expecting( "CABDFE", result );
 }

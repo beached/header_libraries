@@ -36,14 +36,15 @@ void daw_benchmark_test_002( ) {
 }
 
 void daw_bench_test_test_001( ) {
-	auto res = daw::bench_test( "sqr: ", []( auto i ) { return i * i; }, 55 );
+	auto res = daw::bench_test(
+	  "sqr: ", []( auto i ) { return i * i; }, 55 );
 	daw::expecting( res.has_value( ) );
 	daw::expecting( 3025, *res );
 }
 
 void daw_bench_n_test_test_001( ) {
-	auto res =
-	  daw::bench_n_test<100>( "sqr: ", []( auto i ) { return i * i; }, 55 );
+	auto res = daw::bench_n_test<100>(
+	  "sqr: ", []( auto i ) { return i * i; }, 55 );
 	daw::expecting( res.has_value( ) );
 	daw::expecting( 3025, *res );
 }

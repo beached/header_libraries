@@ -25,9 +25,9 @@
 #include <type_traits>
 #include <utility>
 
-#include "daw_function_iterator.h"
-#include "../daw_enable_if.h"
 #include "../cpp_17.h"
+#include "../daw_enable_if.h"
+#include "daw_function_iterator.h"
 
 namespace daw {
 	template<typename Container>

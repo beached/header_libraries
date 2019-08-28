@@ -48,4 +48,3 @@ template<typename T>
 	  result, daw::string::string_join( "Error allocating ", size, " items" ) );
 	return result;
 }
-

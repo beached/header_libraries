@@ -88,7 +88,7 @@ constexpr bool daw_container_algorithm_test_copy_001( ) {
 	std::array<int, 100> a2{};
 	daw::container::copy( a1, a2.begin( ) );
 	daw::expecting( daw::algorithm::equal( std::cbegin( a1 ), std::cend( a1 ),
-	                            std::cbegin( a2 ), std::cend( a2 ) ) );
+	                                       std::cbegin( a2 ), std::cend( a2 ) ) );
 	return true;
 }
 static_assert( daw_container_algorithm_test_copy_001( ) );
@@ -99,7 +99,7 @@ constexpr bool daw_container_algorithm_test_copy_n_001( ) {
 	std::array<int, 100> a2{};
 	daw::container::copy_n( a1, 100, a2.begin( ) );
 	daw::expecting( daw::algorithm::equal( std::cbegin( a1 ), std::cend( a1 ),
-	                            std::cbegin( a2 ), std::cend( a2 ) ) );
+	                                       std::cbegin( a2 ), std::cend( a2 ) ) );
 	return true;
 }
 static_assert( daw_container_algorithm_test_copy_n_001( ) );
@@ -167,8 +167,8 @@ void daw_append_001( ) {
 	std::vector<int> const b = {4, 5, 6};
 	std::vector<int> const expect = {1, 2, 3, 4, 5, 6};
 	daw::container::append( b, a );
-	auto const tst =
-	  daw::algorithm::equal( expect.cbegin( ), expect.cend( ), a.cbegin( ), a.cend( ) );
+	auto const tst = daw::algorithm::equal( expect.cbegin( ), expect.cend( ),
+	                                        a.cbegin( ), a.cend( ) );
 	daw::expecting( tst );
 }
 
@@ -181,4 +181,3 @@ int main( ) {
 	daw_for_each_subset_001( );
 	daw_append_001( );
 }
-

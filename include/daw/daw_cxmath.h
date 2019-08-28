@@ -30,7 +30,8 @@
 #include "daw_enable_if.h"
 
 namespace daw::cxmath {
-	[[nodiscard]] constexpr std::optional<int16_t> fexp2( float const f ) noexcept;
+	[[nodiscard]] constexpr std::optional<int16_t>
+	fexp2( float const f ) noexcept;
 	constexpr float fpow2( int32_t exp ) noexcept;
 
 	namespace cxmath_impl {
@@ -44,7 +45,8 @@ namespace daw::cxmath {
 
 		// Based on code from
 		// https://graphics.stanford.edu/~seander/bithacks.html
-		[[nodiscard]] constexpr uint32_t count_leading_zeroes( uint64_t v ) noexcept {
+		[[nodiscard]] constexpr uint32_t
+		count_leading_zeroes( uint64_t v ) noexcept {
 			char const bit_position[64] = {
 			  0,  1,  2,  7,  3,  13, 8,  19, 4,  25, 14, 28, 9,  34, 20, 40,
 			  5,  17, 26, 38, 15, 46, 29, 48, 10, 31, 35, 54, 21, 50, 41, 57,
@@ -330,7 +332,7 @@ namespace daw::cxmath {
 		};
 
 		[[nodiscard]] constexpr float fexp3( float X, int16_t exponent,
-		                       int16_t old_exponent ) noexcept {
+		                                     int16_t old_exponent ) noexcept {
 			auto const exp_diff = exponent - old_exponent;
 			if( exp_diff > 0 ) {
 				return fpow2( exp_diff ) * X;
@@ -382,7 +384,8 @@ namespace daw::cxmath {
 		return X / fpow2( -exp_diff );
 	}
 
-	[[nodiscard]] constexpr std::optional<int16_t> fexp2( float const f ) noexcept {
+	[[nodiscard]] constexpr std::optional<int16_t>
+	fexp2( float const f ) noexcept {
 		// Once c++20 use bit_cast
 		if( f == 0.0f ) {
 			return 0;

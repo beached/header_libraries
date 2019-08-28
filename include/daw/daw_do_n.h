@@ -84,4 +84,3 @@ namespace daw {
 		}
 	} // namespace algorithm
 } // namespace daw
-

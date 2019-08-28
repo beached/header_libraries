@@ -434,4 +434,3 @@ namespace daw {
 		std::abort( );
 	}
 } // namespace daw
-

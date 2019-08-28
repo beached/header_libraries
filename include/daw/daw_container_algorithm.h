@@ -364,32 +364,34 @@ namespace daw {
 		template<typename Container, typename UnaryOperator,
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 		                          std::nullptr_t> = nullptr>
-		constexpr decltype( auto ) max_element( Container &container ) noexcept( noexcept(
-		  daw::algorithm::max_element( std::cbegin( container ), std::cend( container ) ) ) ) {
+		constexpr decltype( auto ) max_element( Container &container ) noexcept(
+		  noexcept( daw::algorithm::max_element( std::cbegin( container ),
+		                                         std::cend( container ) ) ) ) {
 
 			return daw::algorithm::max_element( std::cbegin( container ),
-			                         std::cend( container ) );
+			                                    std::cend( container ) );
 		}
 
 		template<typename Container, typename OutputIterator,
 		         typename UnaryOperator,
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 		                          std::nullptr_t> = nullptr>
-		constexpr decltype( auto ) max_element( Container const &container ) noexcept(
+		constexpr decltype( auto )
+		max_element( Container const &container ) noexcept(
 		  noexcept( daw::algorithm::max_element( std::cbegin( container ),
-		                              std::cend( container ) ) ) ) {
+		                                         std::cend( container ) ) ) ) {
 
 			return daw::algorithm::max_element( std::cbegin( container ),
-			                         std::cend( container ) );
+			                                    std::cend( container ) );
 		}
 
 		template<typename Container, typename Compare,
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 		                          std::nullptr_t> = nullptr>
 		constexpr decltype( auto )
-		max_element( Container &container, Compare compare ) noexcept(
-		  noexcept( daw::algorithm::max_element( std::begin( container ),
-		                              std::end( container ), compare ) ) ) {
+		max_element( Container &container, Compare compare ) noexcept( noexcept(
+		  daw::algorithm::max_element( std::begin( container ),
+		                               std::end( container ), compare ) ) ) {
 			using std::begin;
 			using std::end;
 			using value_type = remove_cvref_t<decltype( *begin( container ) )>;
@@ -397,7 +399,8 @@ namespace daw {
 			static_assert(
 			  traits::is_binary_predicate_v<Compare, value_type, value_type>, "" );
 
-			return daw::algorithm::max_element( begin( container ), end( container ), compare );
+			return daw::algorithm::max_element( begin( container ), end( container ),
+			                                    compare );
 		}
 
 		template<typename Container, typename Compare,
@@ -406,7 +409,8 @@ namespace daw {
 		constexpr decltype( auto )
 		max_element( Container const &container, Compare compare ) noexcept(
 		  noexcept( daw::algorithm::max_element( std::begin( container ),
-		                              std::end( container ), compare ) ) ) {
+		                                         std::end( container ),
+		                                         compare ) ) ) {
 
 			using std::begin;
 			using std::end;
@@ -415,7 +419,8 @@ namespace daw {
 			static_assert(
 			  traits::is_binary_predicate_v<Compare, value_type, value_type>, "" );
 
-			return daw::algorithm::max_element( begin( container ), end( container ), compare );
+			return daw::algorithm::max_element( begin( container ), end( container ),
+			                                    compare );
 		}
 
 		template<typename Container, typename Value,
@@ -424,13 +429,14 @@ namespace daw {
 		                              Value, decltype( *std::cbegin(
 		                                       std::declval<Container>( ) ) )>,
 		                          std::nullptr_t> = nullptr>
-		constexpr bool contains( Container const &container, Value &&value ) noexcept(
+		constexpr bool
+		contains( Container const &container, Value &&value ) noexcept(
 		  noexcept( std::find( std::cbegin( container ), std::cend( container ),
 		                       value ) != std::cend( container ) ) ) {
 
-			return daw::algorithm::find( std::cbegin( container ), std::cend( container ),
-			                  std::forward<Value>( value ) ) !=
-			       std::cend( container );
+			return daw::algorithm::find(
+			         std::cbegin( container ), std::cend( container ),
+			         std::forward<Value>( value ) ) != std::cend( container );
 		}
 
 		template<
@@ -440,12 +446,14 @@ namespace daw {
 		                       UnaryPredicate, decltype( *std::cbegin(
 		                                         std::declval<Container>( ) ) )>,
 		                   std::nullptr_t> = nullptr>
-		constexpr bool contains( Container const &container, UnaryPredicate pred ) noexcept(
+		constexpr bool
+		contains( Container const &container, UnaryPredicate pred ) noexcept(
 		  noexcept( std::find_if( std::cbegin( container ), std::cend( container ),
 		                          pred ) != std::cend( container ) ) ) {
 
-			return daw::algorithm::find_if( std::cbegin( container ), std::cend( container ),
-			                     pred ) != std::cend( container );
+			return daw::algorithm::find_if( std::cbegin( container ),
+			                                std::cend( container ),
+			                                pred ) != std::cend( container );
 		}
 
 		template<typename Container, typename OutputIterator,
