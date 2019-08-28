@@ -41,7 +41,7 @@ namespace daw {
 
 		[[nodiscard]] bool try_lock( ) {
 			assert( m_mutex );
-			m_mutex->try_lock( );
+			return m_mutex->try_lock( );
 		}
 
 		void unlock( ) {
