@@ -38,7 +38,7 @@ namespace daw {
 			std::unique_lock<Mutex> m_lock;
 			std::reference_wrapper<T> m_value;
 
-			locked_value_t( std::unique_lock<Mutex> && lck, T &value )
+			locked_value_t( std::unique_lock<Mutex> &&lck, T &value )
 			  : m_lock( std::move( lck ) )
 			  , m_value( value ) {}
 
@@ -90,7 +90,8 @@ namespace daw {
 			std::unique_lock<Mutex> m_lock;
 			std::reference_wrapper<::std::add_const_t<T>> m_value;
 
-			const_locked_value_t( std::unique_lock<Mutex> && lck, ::std::add_const_t<T> &value )
+			const_locked_value_t( std::unique_lock<Mutex> &&lck,
+			                      ::std::add_const_t<T> &value )
 			  : m_lock( std::move( lck ) )
 			  , m_value( value ) {}
 
@@ -104,10 +105,12 @@ namespace daw {
 			using const_pointer = std::add_const_t<T> *;
 
 			const_locked_value_t( const_locked_value_t const &other ) = delete;
-			const_locked_value_t &operator=( const_locked_value_t const &other ) = delete;
+			const_locked_value_t &
+			operator=( const_locked_value_t const &other ) = delete;
 
 			const_locked_value_t( const_locked_value_t &&other ) noexcept = default;
-			const_locked_value_t &operator=( const_locked_value_t && ) noexcept = default;
+			const_locked_value_t &
+			operator=( const_locked_value_t && ) noexcept = default;
 
 			void release( ) noexcept {
 				m_lock.unlock( );
@@ -141,7 +144,7 @@ namespace daw {
 		           not std::is_same_v<lockable_value_t, ::daw::remove_cvref_t<U>>,
 		           std::nullptr_t> = nullptr>
 		explicit lockable_value_t( U &&value ) noexcept(
-		  noexcept( daw::value_ptr<T>( std::forward<U>( value ) ) ) )
+		  noexcept( ::daw::value_ptr<T>( std::forward<U>( value ) ) ) )
 		  : m_value( ::std::forward<U>( value ) ) {}
 
 		locked_value_t get( ) {
@@ -153,19 +156,19 @@ namespace daw {
 		}
 
 		::std::optional<locked_value_t> try_get( ) {
-			auto lck = ::std::unique_lock( m_mutex.get( ), ::std::try_to_lock );	
+			auto lck = ::std::unique_lock( m_mutex.get( ), ::std::try_to_lock );
 			if( not lck.owns_lock( ) ) {
 				return {};
 			}
-			return {::std::move(lck), *m_value};	
+			return {::std::move( lck ), *m_value};
 		}
 
 		::std::optional<const_locked_value_t> try_get( ) const {
-			auto lck = ::std::unique_lock( m_mutex.get( ), ::std::try_to_lock );	
+			auto lck = ::std::unique_lock( m_mutex.get( ), ::std::try_to_lock );
 			if( not lck.owns_lock( ) ) {
 				return {};
 			}
-			return {::std::move(lck), *m_value};	
+			return {::std::move( lck ), *m_value};
 		}
 
 		locked_value_t operator*( ) {

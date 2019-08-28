@@ -28,33 +28,33 @@
 namespace daw {
 	// A ref counted mutex
 	template<typename Mutex>
-	class basic_shared_mutex {
-		std::shared_ptr<Mutex> m_mutex = std::make_shared<Mutex>( );
+	class alignas( alignof( Mutex ) ) basic_shared_mutex {
+		struct member_t {
+			alignas( alignof( Mutex ) ) Mutex data = Mutex( );
+		};
+		std::shared_ptr<member_t> m_mutex = std::make_shared<member_t>( );
 
 	public:
 		basic_shared_mutex( ) noexcept {}
 
 		void lock( ) {
-			assert( m_mutex );
-			m_mutex->lock( );
+			m_mutex->data.lock( );
 		}
 
 		[[nodiscard]] bool try_lock( ) {
-			assert( m_mutex );
-			return m_mutex->try_lock( );
+			return m_mutex->data.try_lock( );
 		}
 
 		void unlock( ) {
-			assert( m_mutex );
-			m_mutex->unlock( );
+			m_mutex->data.unlock( );
 		}
 
 		Mutex &get( ) noexcept {
-			return *m_mutex;
+			return m_mutex->data;
 		}
 
 		Mutex const &get( ) const noexcept {
-			return *m_mutex;
+			return m_mutex->data;
 		}
 	};
 

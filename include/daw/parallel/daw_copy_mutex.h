@@ -27,7 +27,7 @@
 /// This abstracts a mutex but allows for the owning class to be copied.
 namespace daw {
 	template<typename Mutex>
-	class copiable_mutex {
+	class alignas( alignof( Mutex ) ) copiable_mutex {
 		std::unique_ptr<Mutex> m_mutex;
 
 	public:
