@@ -24,6 +24,7 @@
 
 #include <future>
 #include <mutex>
+#include <optional>
 #include <utility>
 
 #include "../cpp_17.h"
@@ -37,8 +38,8 @@ namespace daw {
 			std::unique_lock<Mutex> m_lock;
 			std::reference_wrapper<T> m_value;
 
-			locked_value_t( Mutex &m, T &value )
-			  : m_lock( m )
+			locked_value_t( std::unique_lock<Mutex> && lck, T &value )
+			  : m_lock( std::move( lck ) )
 			  , m_value( value ) {}
 
 			friend lockable_value_t;
@@ -89,8 +90,8 @@ namespace daw {
 			std::unique_lock<Mutex> m_lock;
 			std::reference_wrapper<::std::add_const_t<T>> m_value;
 
-			const_locked_value_t( Mutex &m, ::std::add_const_t<T> &value )
-			  : m_lock( m )
+			const_locked_value_t( std::unique_lock<Mutex> && lck, ::std::add_const_t<T> &value )
+			  : m_lock( std::move( lck ) )
 			  , m_value( value ) {}
 
 			friend lockable_value_t;
@@ -144,11 +145,27 @@ namespace daw {
 		  : m_value( ::std::forward<U>( value ) ) {}
 
 		locked_value_t get( ) {
-			return {m_mutex.get( ), *m_value};
+			return {::std::unique_lock( m_mutex.get( ) ), *m_value};
 		}
 
 		const_locked_value_t get( ) const {
-			return {m_mutex.get( ), *m_value};
+			return {::std::unique_lock( m_mutex.get( ) ), *m_value};
+		}
+
+		::std::optional<locked_value_t> try_get( ) {
+			auto lck = ::std::unique_lock( m_mutex.get( ), ::std::try_to_lock );	
+			if( not lck.owns_lock( ) ) {
+				return {};
+			}
+			return {::std::move(lck), *m_value};	
+		}
+
+		::std::optional<const_locked_value_t> try_get( ) const {
+			auto lck = ::std::unique_lock( m_mutex.get( ), ::std::try_to_lock );	
+			if( not lck.owns_lock( ) ) {
+				return {};
+			}
+			return {::std::move(lck), *m_value};	
 		}
 
 		locked_value_t operator*( ) {
