@@ -201,6 +201,7 @@ set( UNTESTED_PARALLEL_HEADER_FILES
 	daw_condition_variable.h
 	daw_locked_stack.h
 	daw_shared_mutex.h
+	daw_unique_mutex.h
 )
 
 enable_testing( )
