@@ -113,7 +113,7 @@ namespace daw {
 		}
 	}; // basic_condition_variable
 
-	using condition_unique_variable =
+	using unique_condition_variable =
 	  basic_unique_condition_variable<std::mutex, std::condition_variable>;
 
 	template<typename Mutex, typename ConditionVariable>
@@ -159,6 +159,6 @@ namespace daw {
 		}
 	}; // basic_condition_variable
 
-	using condition_shared_variable =
+	using shared_condition_variable =
 	  basic_shared_condition_variable<std::mutex, std::condition_variable>;
 } // namespace daw
