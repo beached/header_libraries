@@ -158,7 +158,6 @@ set( DEV_HEADER_FILES
 	daw_hash_table2
 	daw_range
 	daw_range_algorithm
-	#daw_variant3
 	#	daw_virtual_holder
 )
 
@@ -187,8 +186,6 @@ set( UNTESTED_HEADER_FILES
 	daw_reference.h
 	daw_string_view_fwd.h
 	daw_swap.h
-	daw_variant.h
-	daw_variant2.h
 	daw_zipcontainer.h
 )
 
