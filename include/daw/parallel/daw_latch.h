@@ -55,7 +55,9 @@ namespace daw {
 
 	template<typename Mutex, typename ConditionVariable>
 	class basic_latch {
-		mutable daw::condition_variable m_condition{};
+		mutable ::daw::basic_condition_variable<Mutex, ConditionVariable>
+		  m_condition =
+		    ::daw::basic_condition_variable<Mutex, ConditionVariable>( );
 		std::atomic_intmax_t m_count = 1;
 
 		[[nodiscard]] auto stop_waiting( ) const {
@@ -67,13 +69,18 @@ namespace daw {
 		}
 
 	public:
-		basic_latch( ) = default;
+		basic_latch( ) noexcept(
+		  ::std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
+		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> ) =
+		  default;
 
 		template<
 		  typename Integer,
 		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
 		                   std::nullptr_t> = nullptr>
-		explicit basic_latch( Integer count )
+		explicit basic_latch( Integer count ) noexcept(
+		  ::std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
+		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> )
 		  : m_count( static_cast<intmax_t>( count ) ) {
 
 			assert( count >= 0 );
@@ -83,7 +90,9 @@ namespace daw {
 		  typename Integer,
 		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
 		                   std::nullptr_t> = nullptr>
-		basic_latch( Integer count, bool latched )
+		basic_latch( Integer count, bool latched ) noexcept(
+		  ::std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
+		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> )
 		  : m_count( static_cast<intmax_t>( count ) ) {
 
 			assert( count >= 0 );
@@ -151,13 +160,16 @@ namespace daw {
 		std::unique_ptr<latch_t> latch = std::make_unique<latch_t>( );
 
 	public:
-		basic_unique_latch( ) = default;
+		basic_unique_latch( ) noexcept(
+		  noexcept( ::std::make_unique<latch_t>( ) ) ) = default;
 
 		template<
 		  typename Integer,
 		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
 		                   std::nullptr_t> = nullptr>
-		explicit basic_unique_latch( Integer count )
+		explicit basic_unique_latch( Integer count ) noexcept(
+		  ::std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
+		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> )
 		  : latch( std::make_unique<latch_t>( count ) ) {
 
 			assert( count >= 0 );
@@ -167,7 +179,9 @@ namespace daw {
 		  typename Integer,
 		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
 		                   std::nullptr_t> = nullptr>
-		basic_unique_latch( Integer count, bool latched )
+		basic_unique_latch( Integer count, bool latched ) noexcept(
+		  ::std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
+		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> )
 		  : latch( std::make_unique<latch_t>( count, latched ) ) {
 
 			assert( count >= 0 );
@@ -233,13 +247,16 @@ namespace daw {
 		std::shared_ptr<latch_t> latch = std::make_shared<latch_t>( );
 
 	public:
-		basic_shared_latch( ) = default;
+		basic_shared_latch( ) noexcept(
+		  noexcept( ::std::make_shared<latch_t>( ) ) ) = default;
 
 		template<
 		  typename Integer,
 		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
 		                   std::nullptr_t> = nullptr>
-		explicit basic_shared_latch( Integer count )
+		explicit basic_shared_latch( Integer count ) noexcept(
+		  ::std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
+		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> )
 		  : latch( std::make_shared<latch_t>( count ) ) {
 
 			assert( count >= 0 );
@@ -249,14 +266,16 @@ namespace daw {
 		  typename Integer,
 		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
 		                   std::nullptr_t> = nullptr>
-		basic_shared_latch( Integer count, bool latched )
+		basic_shared_latch( Integer count, bool latched ) noexcept(
+		  ::std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
+		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> )
 		  : latch( std::make_shared<latch_t>( count, latched ) ) {
 
 			assert( count >= 0 );
 		}
 
 		explicit basic_shared_latch(
-		  basic_unique_latch<Mutex, ConditionVariable> &&other )
+		  basic_unique_latch<Mutex, ConditionVariable> &&other ) noexcept
 		  : latch( other.release( ) ) {}
 
 		void notify( ) {

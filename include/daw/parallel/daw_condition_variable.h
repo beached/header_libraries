@@ -26,6 +26,7 @@
 #include <cstdint>
 #include <memory>
 #include <mutex>
+#include <type_traits>
 
 namespace daw {
 	template<typename Mutex, typename ConditionVariable>
@@ -34,7 +35,10 @@ namespace daw {
 		ConditionVariable m_condition{};
 
 	public:
-		basic_condition_variable( ) = default;
+		basic_condition_variable( ) noexcept(
+		  ::std::is_nothrow_default_constructible_v<Mutex>
+		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> ) =
+		  default;
 
 		void notify_all( ) {
 			m_condition.notify_all( );
@@ -77,7 +81,10 @@ namespace daw {
 		    std::make_unique<basic_condition_variable<Mutex, ConditionVariable>>( );
 
 	public:
-		basic_unique_condition_variable( ) = default;
+		basic_unique_condition_variable( ) noexcept(
+		  ::std::is_nothrow_default_constructible_v<Mutex>
+		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> ) =
+		  default;
 
 		basic_condition_variable<Mutex, ConditionVariable> *release( ) {
 			return m_members.release( );
@@ -123,7 +130,9 @@ namespace daw {
 		    std::make_shared<basic_condition_variable<Mutex, ConditionVariable>>( );
 
 	public:
-		basic_shared_condition_variable( ) = default;
+		basic_shared_condition_variable( ) noexcept(
+		  ::std::is_nothrow_default_constructible_v<Mutex>
+		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> ) = default;
 
 		basic_shared_condition_variable(
 		  basic_unique_condition_variable<Mutex, ConditionVariable> &&other )

@@ -32,10 +32,11 @@ namespace daw {
 		struct member_t {
 			alignas( alignof( Mutex ) ) Mutex data = Mutex( );
 		};
-		std::shared_ptr<member_t> m_mutex = std::make_shared<member_t>( );
+		::std::shared_ptr<member_t> m_mutex = ::std::make_shared<member_t>( );
 
 	public:
-		basic_shared_mutex( ) noexcept {}
+		basic_shared_mutex( ) noexcept(
+		  ::std::is_nothrow_default_constructible_v<Mutex> ) {}
 
 		void lock( ) {
 			m_mutex->data.lock( );
