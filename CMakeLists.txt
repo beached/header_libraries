@@ -125,6 +125,7 @@ set( TESTED_PARALLEL_HEADERS_PREFIXES
 
 set( TESTED_PARALLEL_HEADERS_PREFIXES_NB
 	daw_copy_mutex
+	daw_counter
 	daw_latch
 	daw_locked_value
 	daw_observable_ptr
