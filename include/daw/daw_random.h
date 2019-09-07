@@ -46,8 +46,8 @@ namespace daw {
 		using distribution_type = std::uniform_int_distribution<IntType>;
 		using param_type = typename distribution_type::param_type;
 
-		thread_local distribution_type d{};
-		return d( impl::global_rng( ), param_type{a, b} );
+		thread_local auto d = distribution_type( );
+		return d( impl::global_rng( ), param_type( a, b ) );
 	}
 
 	template<typename IntType>
