@@ -88,6 +88,10 @@ namespace daw {
 		decltype( auto ) operator*( ) const noexcept {
 			return *get( );
 		}
+
+		explicit operator bool( ) const noexcept {
+			return static_cast<bool>( get( ) );
+		}
 	};
 
 	template<typename T, typename... Args>
