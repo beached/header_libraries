@@ -3,14 +3,14 @@
 // Copyright (c) 2019 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
+// of this software and associated documentation files( the "Software" ), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
+// sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -32,13 +32,13 @@ namespace daw {
 	public:
 		atomic_unique_ptr( ) noexcept = default;
 
-		atomic_unique_ptr( atomic_unique_ptr && other ) noexcept
-			: m_ptr( other.m_ptr.exchange( nullptr ) ) {} 
+		atomic_unique_ptr( atomic_unique_ptr &&other ) noexcept
+		  : m_ptr( other.m_ptr.exchange( nullptr ) ) {}
 
-		atomic_unique_ptr & operator=( atomic_unique_ptr && rhs ) noexcept {
+		atomic_unique_ptr &operator=( atomic_unique_ptr &&rhs ) noexcept {
 			auto tmp = rhs.m_ptr.exchange( nullptr, ::std::memory_order_acquire );
 			delete m_ptr.exchange( nullptr, ::std::memory_order_acquire );
-			m_ptr.save( tmp, ::std::memory_order_release );
+			m_ptr.store( tmp, ::std::memory_order_release );
 		}
 
 		~atomic_unique_ptr( ) noexcept {
@@ -47,6 +47,47 @@ namespace daw {
 
 		atomic_unique_ptr( atomic_unique_ptr const & ) = delete;
 		atomic_unique_ptr &operator=( atomic_unique_ptr const & ) = delete;
+
+		template<typename U>
+		atomic_unique_ptr( U *ptr ) noexcept
+		  : m_ptr( ptr ) {}
+
+		template<typename U>
+		atomic_unique_ptr &operator=( U *ptr ) noexcept {
+			delete m_ptr.exchange( nullptr, ::std::memory_order_acquire );
+			m_ptr.store( ptr, ::std::memory_order_release );
+			return *this;
+		}
+
+		template<typename U>
+		atomic_unique_ptr( ::std::atomic<U *> ptr ) noexcept
+		  : m_ptr( ptr ) {}
+
+		template<typename U>
+		atomic_unique_ptr &operator=( ::std::atomic<U *> ptr ) noexcept {
+			delete m_ptr.exchange( nullptr, ::std::memory_order_acquire );
+			m_ptr.store( ptr, ::std::memory_order_release );
+		}
+
+		atomic_unique_ptr( ::std::nullptr_t ) noexcept
+		  : m_ptr( nullptr ) {}
+
+		atomic_unique_ptr &operator=( ::std::nullptr_t ) noexcept {
+			delete m_ptr.exchange( nullptr, ::std::memory_order_acquire );
+			return *this;
+		}
+
+		T *get( ) const noexcept {
+			return static_cast<T *>( m_ptr );
+		}
+
+		T *operator->( ) const noexcept {
+			return get( );
+		}
+
+		decltype( auto ) operator*( ) const noexcept {
+			return *get( );
+		}
 	};
-}    // namespace daw
+} // namespace daw
 

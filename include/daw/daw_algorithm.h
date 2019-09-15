@@ -1130,17 +1130,27 @@ namespace daw {
 		                                                  unary_op( *first ) ) ) {
 
 			traits::is_input_iterator_test<InputIterator>( );
-			static_assert( traits::is_callable_v<UnaryOperation, decltype( *first )>,
-			               "UnaryOperation does not accept a single argument of the "
-			               "dereferenced type of first" );
+			static_assert(
+			  traits::is_callable_v<UnaryOperation, decltype( *first )> or
+			    traits::is_callable_v<UnaryOperation, decltype( *first ), size_t>,
+			  "UnaryOperation does not accept a single argument of the "
+			  "dereferenced type of first or with an addditional argument of "
+			  "size_t" );
 
 			traits::is_output_iterator_test<OutputIterator,
 			                                decltype( unary_op( *first ) )>( );
 
-			while( count-- > 0 ) {
-				*first_out = daw::invoke( unary_op, *first );
-				++first;
-				++first_out;
+			if constexpr( traits::is_callable_v<UnaryOperation,
+			                                    decltype( *first )> ) {
+				while( count-- > 0 ) {
+					*first_out = unary_op( *first );
+					++first;
+					++first_out;
+				}
+			} else {
+				for( size_t n = 0U; n < count; ++n, ++first, ++first_out ) {
+					*first_out = *unary_op( *first, n );
+				}
 			}
 			struct result_t {
 				InputIterator input;
