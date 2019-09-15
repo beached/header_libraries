@@ -89,5 +89,16 @@ namespace daw {
 			return *get( );
 		}
 	};
+
+	template<typename T, typename... Args>
+	atomic_unique_ptr<T> make_atomic_unique_ptr( Args &&... args ) {
+		if constexpr( ::std::is_aggregate_v<T> ) {
+			return make_atomic_unique_ptr<T>(
+			  new T{::std::forward<Args>( args )...} );
+		} else {
+			return make_atomic_unique_ptr<T>(
+			  new T( ::std::forward<Args>( args )... ) );
+		}
+	}
 } // namespace daw
 
