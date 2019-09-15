@@ -92,6 +92,21 @@ namespace daw {
 		explicit operator bool( ) const noexcept {
 			return static_cast<bool>( get( ) );
 		}
+
+		T *release( ) noexcept {
+			return m_ptr.exchange( nullptr, ::std::memory_order_acquire );
+		}
+
+		void reset( ) noexcept {
+			delete m_ptr.exchange( nullptr, ::std::memory_order_acquire );
+		}
+
+		template<typename U>
+		void swap( atomic_unique_ptr<U> & other ) noexcept {
+			// TODO: verify this is correct
+			using std::swap;
+			swap( m_ptr, other.m_ptr );
+		}
 	};
 
 	template<typename T, typename... Args>
