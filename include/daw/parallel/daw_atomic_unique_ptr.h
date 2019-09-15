@@ -33,12 +33,11 @@ namespace daw {
 		atomic_unique_ptr( ) noexcept = default;
 
 		atomic_unique_ptr( atomic_unique_ptr &&other ) noexcept
-		  : m_ptr( other.m_ptr.exchange( nullptr ) ) {}
+		  : m_ptr( other.m_ptr.exchange( nullptr, ::std::memory_order_acquire ) ) {}
 
 		atomic_unique_ptr &operator=( atomic_unique_ptr &&rhs ) noexcept {
-			auto tmp = rhs.m_ptr.exchange( nullptr, ::std::memory_order_acquire );
-			delete m_ptr.exchange( nullptr, ::std::memory_order_acquire );
-			m_ptr.store( tmp, ::std::memory_order_release );
+			swap( rhs );
+			return *this;
 		}
 
 		~atomic_unique_ptr( ) noexcept {
@@ -67,6 +66,7 @@ namespace daw {
 		atomic_unique_ptr &operator=( ::std::atomic<U *> ptr ) noexcept {
 			delete m_ptr.exchange( nullptr, ::std::memory_order_acquire );
 			m_ptr.store( ptr, ::std::memory_order_release );
+			return *this;
 		}
 
 		atomic_unique_ptr( ::std::nullptr_t ) noexcept
@@ -104,8 +104,9 @@ namespace daw {
 		template<typename U>
 		void swap( atomic_unique_ptr<U> & other ) noexcept {
 			// TODO: verify this is correct
-			using std::swap;
-			swap( m_ptr, other.m_ptr );
+			auto tmp = other.m_ptr.load( ::std::memory_order_acquire );
+			other.m_ptr.store( m_ptr.load( ::std::memory_order_acquire );
+			m_ptr.store( tmp, ::std::memory_order_release );
 		}
 	};
 
