@@ -51,11 +51,11 @@ namespace daw {
 		atomic_unique_ptr &operator=( atomic_unique_ptr const & ) = delete;
 
 		template<typename U>
-		atomic_unique_ptr( U * ptr ) noexcept
+		explicit atomic_unique_ptr( U * ptr ) noexcept
 		  : m_ptr( ptr ) {}
 
 		template<typename U>
-		atomic_unique_ptr &operator=( U *ptr ) noexcept {
+		explicit atomic_unique_ptr &operator=( U *ptr ) noexcept {
 			delete m_ptr.exchange( static_cast<T *>( nullptr ),
 			                       ::std::memory_order_acquire );
 			m_ptr.store( ptr, ::std::memory_order_release );
@@ -63,11 +63,11 @@ namespace daw {
 		}
 
 		template<typename U>
-		atomic_unique_ptr( ::std::atomic<U *> ptr ) noexcept
+		explicit atomic_unique_ptr( ::std::atomic<U *> ptr ) noexcept
 		  : m_ptr( ptr ) {}
 
 		template<typename U>
-		atomic_unique_ptr &operator=( ::std::atomic<U *> ptr ) noexcept {
+		explicit atomic_unique_ptr &operator=( ::std::atomic<U *> ptr ) noexcept {
 			delete m_ptr.exchange( static_cast<T *>( nullptr ),
 			                       ::std::memory_order_acquire );
 			m_ptr.store( ptr, ::std::memory_order_release );
