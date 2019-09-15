@@ -102,10 +102,10 @@ namespace daw {
 		}
 
 		template<typename U>
-		void swap( atomic_unique_ptr<U> & other ) noexcept {
+		void swap( atomic_unique_ptr<U> &other ) noexcept {
 			// TODO: verify this is correct
 			auto tmp = other.m_ptr.load( ::std::memory_order_acquire );
-			other.m_ptr.store( m_ptr.load( ::std::memory_order_acquire );
+			other.m_ptr.store( m_ptr.load( ::std::memory_order_acquire ) );
 			m_ptr.store( tmp, ::std::memory_order_release );
 		}
 	};
