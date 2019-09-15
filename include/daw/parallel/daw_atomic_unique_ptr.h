@@ -84,7 +84,7 @@ namespace daw {
 		}
 
 		[[nodiscard]] T *get( ) const noexcept {
-			return static_cast<T *>( m_ptr );
+			return m_ptr.load( ::std::memory_order_acquire );
 		}
 
 		[[nodiscard]] T *operator->( ) const noexcept {
