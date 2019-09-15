@@ -51,7 +51,7 @@ namespace daw {
 	} // namespace view_impl
 
 	template<typename BidirectionalIterator>
-	struct view {
+	struct [[nodiscard]] view {
 		using value_type =
 		  typename std::iterator_traits<BidirectionalIterator>::value_type;
 
@@ -79,101 +79,101 @@ namespace daw {
 		  , m_last( daw::move( last ) )
 		  , m_size( std::distance( m_first, m_last ) ) {}
 
-		constexpr bool empty( ) const {
+		[[nodiscard]] constexpr bool empty( ) const {
 			return m_size <= 0;
 		}
 
-		constexpr size_type size( ) const {
+		[[nodiscard]] constexpr size_type size( ) const {
 			if( empty( ) ) {
 				return 0;
 			}
 			return static_cast<size_type>( m_size );
 		}
 
-		constexpr difference_type ssize( ) const {
+		[[nodiscard]] constexpr difference_type ssize( ) const {
 			return m_size;
 		}
 
 		// Iterator access
-		iterator begin( ) {
+		[[nodiscard]] iterator begin( ) {
 			return m_first;
 		}
 
-		const_iterator begin( ) const {
+		[[nodiscard]] const_iterator begin( ) const {
 			return m_first;
 		}
 
-		const_iterator cbegin( ) const {
+		[[nodiscard]] const_iterator cbegin( ) const {
 			return m_first;
 		}
 
-		reverse_iterator rbegin( ) {
+		[[nodiscard]] reverse_iterator rbegin( ) {
 			return std::make_reverse_iterator( end( ) );
 		}
 
-		const_reverse_iterator rbegin( ) const {
+		[[nodiscard]] const_reverse_iterator rbegin( ) const {
 			return std::make_reverse_iterator( end( ) );
 		}
 
-		const_reverse_iterator crbegin( ) const {
+		[[nodiscard]] const_reverse_iterator crbegin( ) const {
 			return std::make_reverse_iterator( cend( ) );
 		}
 
-		iterator end( ) {
+		[[nodiscard]] iterator end( ) {
 			return m_last;
 		}
 
-		const_iterator end( ) const {
+		[[nodiscard]] const_iterator end( ) const {
 			return m_last;
 		}
 
-		const_iterator cend( ) const {
+		[[nodiscard]] const_iterator cend( ) const {
 			return m_last;
 		}
 
-		reverse_iterator rend( ) {
+		[[nodiscard]] reverse_iterator rend( ) {
 			return std::make_reverse_iterator( begin( ) );
 		}
 
-		const_reverse_iterator rend( ) const {
+		[[nodiscard]] const_reverse_iterator rend( ) const {
 			return std::make_reverse_iterator( begin( ) );
 		}
 
-		const_reverse_iterator crend( ) const {
+		[[nodiscard]] const_reverse_iterator crend( ) const {
 			return std::make_reverse_iterator( cbegin( ) );
 		}
 
 		// Data access
-		reference front( ) {
+		[[nodiscard]] reference front( ) {
 			return *m_first;
 		}
 
-		const_reference front( ) const {
+		[[nodiscard]] const_reference front( ) const {
 			return *m_first;
 		}
 
-		reference back( ) {
+		[[nodiscard]] reference back( ) {
 			return *std::prev( m_last );
 		}
 
-		const_reference back( ) const {
+		[[nodiscard]] const_reference back( ) const {
 			return *std::prev( m_last );
 		}
 
-		reference operator[]( size_type index ) {
+		[[nodiscard]] reference operator[]( size_type index ) {
 			return *std::next( m_first, index );
 		}
 
-		const_reference operator[]( size_type index ) const {
+		[[nodiscard]] const_reference operator[]( size_type index ) const {
 			return *std::next( m_first, index );
 		}
 
-		reference at( size_type index ) {
+		[[nodiscard]] reference at( size_type index ) {
 			daw::exception::precondition_check<std::out_of_range>( index < size( ) );
 			return operator[]( index );
 		}
 
-		const_reference at( size_type index ) const {
+		[[nodiscard]] const_reference at( size_type index ) const {
 			daw::exception::precondition_check<std::out_of_range>( index < size( ) );
 			return operator[]( index );
 		}
@@ -196,7 +196,7 @@ namespace daw {
 			remove_suffix( 1 );
 		}
 
-		constexpr view pop_front( size_t n ) {
+		[[nodiscard]] constexpr view pop_front( size_t n ) {
 			if( n > size( ) ) {
 				n = size( );
 			}
@@ -205,13 +205,13 @@ namespace daw {
 			return result;
 		}
 
-		constexpr value_type pop_front( ) {
+		[[nodiscard]] constexpr value_type pop_front( ) {
 			auto result = *m_first;
 			remove_prefix( );
 			return result;
 		}
 
-		constexpr view pop_back( size_t n ) {
+		[[nodiscard]] constexpr view pop_back( size_t n ) {
 			if( n > size( ) ) {
 				n = size( );
 			}
@@ -220,13 +220,13 @@ namespace daw {
 			return result;
 		}
 
-		constexpr value_type pop_back( ) {
+		[[nodiscard]] constexpr value_type pop_back( ) {
 			auto result = back( );
 			remove_suffix( );
 			return result;
 		}
 
-		constexpr bool pop( value_type &result ) {
+		[[nodiscard]] constexpr bool pop( value_type &result ) {
 			if( empty( ) ) {
 				return false;
 			}
