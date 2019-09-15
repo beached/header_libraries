@@ -23,17 +23,19 @@
 #pragma once
 
 #include <atomic>
+#include <memory>
 
 namespace daw {
 	template<typename T>
 	class [[nodiscard]] atomic_unique_ptr {
-		::std::atomic<T *> m_ptr = nullptr;
+		::std::atomic<T *> m_ptr = static_cast<T *>( nullptr );
 
 	public:
 		atomic_unique_ptr( ) noexcept = default;
 
 		atomic_unique_ptr( atomic_unique_ptr && other ) noexcept
-		  : m_ptr( other.m_ptr.exchange( nullptr, ::std::memory_order_acquire ) ) {}
+		  : m_ptr( other.m_ptr.exchange( static_cast<T *>( nullptr ),
+		                                 ::std::memory_order_acquire ) ) {}
 
 		atomic_unique_ptr &operator=( atomic_unique_ptr &&rhs ) noexcept {
 			swap( rhs );
@@ -41,7 +43,8 @@ namespace daw {
 		}
 
 		~atomic_unique_ptr( ) noexcept {
-			delete m_ptr.exchange( nullptr, ::std::memory_order_acquire );
+			delete m_ptr.exchange( static_cast<T *>( nullptr ),
+			                       ::std::memory_order_acquire );
 		}
 
 		atomic_unique_ptr( atomic_unique_ptr const & ) = delete;
@@ -53,7 +56,8 @@ namespace daw {
 
 		template<typename U>
 		atomic_unique_ptr &operator=( U *ptr ) noexcept {
-			delete m_ptr.exchange( nullptr, ::std::memory_order_acquire );
+			delete m_ptr.exchange( static_cast<T *>( nullptr ),
+			                       ::std::memory_order_acquire );
 			m_ptr.store( ptr, ::std::memory_order_release );
 			return *this;
 		}
@@ -64,16 +68,18 @@ namespace daw {
 
 		template<typename U>
 		atomic_unique_ptr &operator=( ::std::atomic<U *> ptr ) noexcept {
-			delete m_ptr.exchange( nullptr, ::std::memory_order_acquire );
+			delete m_ptr.exchange( static_cast<T *>( nullptr ),
+			                       ::std::memory_order_acquire );
 			m_ptr.store( ptr, ::std::memory_order_release );
 			return *this;
 		}
 
 		atomic_unique_ptr( ::std::nullptr_t ) noexcept
-		  : m_ptr( nullptr ) {}
+		  : m_ptr( static_cast<T *>( nullptr ) ) {}
 
 		atomic_unique_ptr &operator=( ::std::nullptr_t ) noexcept {
-			delete m_ptr.exchange( nullptr, ::std::memory_order_acquire );
+			delete m_ptr.exchange( static_cast<T *>( nullptr ),
+			                       ::std::memory_order_acquire );
 			return *this;
 		}
 
@@ -94,11 +100,13 @@ namespace daw {
 		}
 
 		[[nodiscard]] T *release( ) noexcept {
-			return m_ptr.exchange( nullptr, ::std::memory_order_acquire );
+			return m_ptr.exchange( static_cast<T *>( nullptr ),
+			                       ::std::memory_order_acquire );
 		}
 
 		void reset( ) noexcept {
-			delete m_ptr.exchange( nullptr, ::std::memory_order_acquire );
+			delete m_ptr.exchange( static_cast<T *>( nullptr ),
+			                       ::std::memory_order_acquire );
 		}
 
 		template<typename U>
