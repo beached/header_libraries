@@ -23,7 +23,8 @@
 #pragma once
 
 #include <atomic>
-#include <memory>
+#include <cstddef>
+#include <new>
 
 namespace daw {
 	template<typename T>
@@ -84,7 +85,7 @@ namespace daw {
 		}
 
 		[[nodiscard]] T *get( ) const noexcept {
-			return m_ptr.load( ::std::memory_order_acquire );
+			return ::std::launder( m_ptr.load( ::std::memory_order_acquire ) );
 		}
 
 		[[nodiscard]] T *operator->( ) const noexcept {
@@ -100,8 +101,8 @@ namespace daw {
 		}
 
 		[[nodiscard]] T *release( ) noexcept {
-			return m_ptr.exchange( static_cast<T *>( nullptr ),
-			                       ::std::memory_order_acquire );
+			return ::std::launder( m_ptr.exchange( static_cast<T *>( nullptr ),
+			                                       ::std::memory_order_acquire ) );
 		}
 
 		void reset( ) noexcept {
