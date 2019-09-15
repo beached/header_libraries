@@ -1927,14 +1927,32 @@ namespace daw {
 		}
 
 		template<class ForwardIterator, class UnaryPredicate>
-		constexpr ForwardIterator remove_if( ForwardIterator first,
-		                                     ForwardIterator last,
-		                                     UnaryPredicate pred ) {
+		constexpr ForwardIterator remove_if(
+		  ForwardIterator first, ForwardIterator last,
+		  UnaryPredicate&& pred ) noexcept( noexcept( daw::invoke( pred,
+		                                                         *first ) ) ) {
 			first = daw::algorithm::find_if( first, last, pred );
 			if( first != last ) {
 				for( ForwardIterator i = first; ++i != last; ) {
-					if( !daw::invoke( pred, *i ) ) {
-						*first++ = daw::move( *i );
+					if( !::daw::invoke( pred, *i ) ) {
+						*first++ = ::daw::move( *i );
+					}
+				}
+			}
+			return first;
+		}
+
+		template<class ForwardIterator, class UnaryPredicate, typename Function>
+		constexpr ForwardIterator consume_if(
+		  ForwardIterator first, ForwardIterator last,
+		  UnaryPredicate&& pred, Function && func ) noexcept( noexcept( daw::invoke( pred,
+		                                                         *first ) ) ) {
+			first = daw::algorithm::find_if( first, last, pred );
+			if( first != last ) {
+				for( ForwardIterator i = first; ++i != last; ) {
+					if( !::daw::invoke( pred, *i ) ) {
+						(void)::daw::invoke( func, *i );
+						*first++ = ::daw::move( *i );
 					}
 				}
 			}
