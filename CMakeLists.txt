@@ -195,6 +195,7 @@ set( UNTESTED_ITERATOR_HEADER_FILES
 	daw_function_iterator.h
 )
 set( UNTESTED_PARALLEL_HEADER_FILES
+	daw_atomic_unique_ptr.h
 	concurrent_queue.h
 	daw_condition_variable.h
 	daw_locked_stack.h
