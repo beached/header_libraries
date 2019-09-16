@@ -168,6 +168,9 @@ namespace daw {
 #endif
 	}
 #else
+	namespace internal {
+		inline void UseCharPointer( char const volatile* ) {
+		}
 	template<class T>
 	inline void do_not_optimize( T const &value ) {
 		internal::UseCharPointer(
