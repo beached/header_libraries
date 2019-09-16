@@ -134,10 +134,7 @@ namespace daw {
 		::daw::value_ptr<T> m_value = ::daw::value_ptr<T>( );
 
 	public:
-		lockable_value_t( ) noexcept(
-		  is_nothrow_default_constructible_v<::daw::value_ptr<T>> and
-		    is_nothrow_default_constructible_v<::daw::basic_unique_mutex<Mutex>> ) =
-		  default;
+		lockable_value_t( ) = default;
 
 		template<typename U,
 		         std::enable_if_t<

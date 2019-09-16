@@ -69,10 +69,7 @@ namespace daw {
 		}
 
 	public:
-		basic_latch( ) noexcept(
-		  ::std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
-		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> ) =
-		  default;
+		basic_latch( ) = default;
 
 		template<
 		  typename Integer,
