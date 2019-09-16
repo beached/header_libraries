@@ -247,8 +247,7 @@ namespace daw {
 		std::shared_ptr<latch_t> latch = std::make_shared<latch_t>( );
 
 	public:
-		basic_shared_latch( ) noexcept(
-		  noexcept( ::std::make_shared<latch_t>( ) ) ) = default;
+		basic_shared_latch( ) = default;
 
 		template<
 		  typename Integer,
