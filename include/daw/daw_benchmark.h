@@ -169,7 +169,7 @@ namespace daw {
 	}
 #else
 	template<class T>
-	inline void do_not_optimize( Tp const &value ) {
+	inline void do_not_optimize( T const &value ) {
 		internal::UseCharPointer(
 		  &reinterpret_cast<char const volatile &>( value ) );
 		_ReadWriteBarrier( );
