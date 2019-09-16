@@ -308,14 +308,16 @@ namespace daw {
 
 		auto const total_start = std::chrono::high_resolution_clock::now( );
 		for( size_t n = 0; n < Runs; ++n ) {
-			auto tp_args = std::make_tuple( args... );
+			std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
 			daw::do_not_optimize( tp_args );
 			auto const start = std::chrono::high_resolution_clock::now( );
 
-			result =
-			  daw::expected_from_code( [&]( auto && tp ) {
-					return ::daw::apply( test_callable, std::forward<decltype( tp )>( tp ) );
-				}, tp_args );
+			result = daw::expected_from_code(
+			  [&]( auto &&tp ) {
+				  return ::std::apply( test_callable,
+				                       std::forward<decltype( tp )>( tp ) );
+			  },
+			  tp_args );
 
 			auto const finish = std::chrono::high_resolution_clock::now( );
 			daw::do_not_optimize( result );
