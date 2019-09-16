@@ -22,6 +22,9 @@
 
 #pragma once
 #include <cstddef>
+#ifdef MSVC_VERSION
+#include <iso644.h>
+#endif
 
 namespace daw {
 	namespace enable_if_impl {
