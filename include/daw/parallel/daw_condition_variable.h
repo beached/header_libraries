@@ -35,10 +35,7 @@ namespace daw {
 		ConditionVariable m_condition{};
 
 	public:
-		basic_condition_variable( ) noexcept(
-		  ::std::is_nothrow_default_constructible_v<Mutex>
-		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> ) =
-		  default;
+		basic_condition_variable( ) = default;
 
 		void notify_all( ) {
 			m_condition.notify_all( );
