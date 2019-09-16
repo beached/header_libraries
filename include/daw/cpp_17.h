@@ -28,7 +28,7 @@
 #include <tuple>
 #include <type_traits>
 #include <utility>
-#ifdef MSVC_VERSION
+#ifdef _MSC_VER
 #include <iso644.h>
 #endif
 

@@ -22,7 +22,7 @@
 
 #pragma once
 #include <cstddef>
-#ifdef MSVC_VERSION
+#ifdef _MSC_VER
 #include <iso644.h>
 #endif
 
