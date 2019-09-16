@@ -85,7 +85,11 @@ namespace daw {
 		}
 
 		[[nodiscard]] T *get( ) const noexcept {
+#ifdef __cpp_lib_launder
 			return ::std::launder( m_ptr.load( ::std::memory_order_acquire ) );
+#else
+			return m_ptr.load( ::std::memory_order_acquire );
+#endif
 		}
 
 		[[nodiscard]] T *operator->( ) const noexcept {
@@ -101,8 +105,13 @@ namespace daw {
 		}
 
 		[[nodiscard]] T *release( ) noexcept {
+#ifdef __cpp_lib_launder
 			return ::std::launder( m_ptr.exchange( static_cast<T *>( nullptr ),
 			                                       ::std::memory_order_acquire ) );
+#else
+			return m_ptr.exchange( static_cast<T *>( nullptr ),
+			                       ::std::memory_order_acquire );
+#endif
 		}
 
 		void reset( ) noexcept {
