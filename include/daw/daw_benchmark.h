@@ -308,11 +308,14 @@ namespace daw {
 
 		auto const total_start = std::chrono::high_resolution_clock::now( );
 		for( size_t n = 0; n < Runs; ++n ) {
-			bench_impl::expander( ( daw::do_not_optimize( args ), 1 )... );
+			auto tp_args = std::make_tuple( args... );
+			daw::do_not_optimize( tp_args );
 			auto const start = std::chrono::high_resolution_clock::now( );
 
 			result =
-			  daw::expected_from_code( std::forward<Test>( test_callable ), args... );
+			  daw::expected_from_code( [&]( auto && tp ) {
+					return ::daw::apply( test_callable, std::forward<decltype( tp )>( tp ) );
+				}, tp_args );
 
 			auto const finish = std::chrono::high_resolution_clock::now( );
 			daw::do_not_optimize( result );
