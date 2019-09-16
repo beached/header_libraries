@@ -29,7 +29,7 @@
 #include <type_traits>
 #include <utility>
 #ifdef _MSC_VER
-#include <iso644.h>
+#include <iso646.h>
 #endif
 
 #include "daw_enable_if.h"

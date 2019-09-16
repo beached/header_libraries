@@ -23,7 +23,7 @@
 #pragma once
 #include <cstddef>
 #ifdef _MSC_VER
-#include <iso644.h>
+#include <iso646.h>
 #endif
 
 namespace daw {
