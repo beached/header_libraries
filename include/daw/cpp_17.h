@@ -28,9 +28,6 @@
 #include <tuple>
 #include <type_traits>
 #include <utility>
-#ifdef _MSC_VER
-#include <iso646.h>
-#endif
 
 #include "daw_enable_if.h"
 #include "daw_move.h"

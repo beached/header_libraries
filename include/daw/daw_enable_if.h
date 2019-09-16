@@ -22,9 +22,6 @@
 
 #pragma once
 #include <cstddef>
-#ifdef _MSC_VER
-#include <iso646.h>
-#endif
 
 namespace daw {
 	namespace enable_if_impl {

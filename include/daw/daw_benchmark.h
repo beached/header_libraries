@@ -153,6 +153,7 @@ namespace daw {
 	    }
 	  }
 	*/
+#ifndef _MSC_VER
 	template<typename Tp>
 	inline void do_not_optimize( Tp const &value ) {
 		asm volatile( "" : : "r,m"( value ) : "memory" );
@@ -166,7 +167,15 @@ namespace daw {
 		asm volatile( "" : "+m,r"( value ) : : "memory" );
 #endif
 	}
+#else
+	template<class T>
+	inline void do_not_optimize( Tp const &value ) {
+		internal::UseCharPointer(
+		  &reinterpret_cast<char const volatile &>( value ) );
+		_ReadWriteBarrier( );
+	}
 
+#endif
 	template<typename Test, typename... Args>
 	auto bench_test( std::string const &title, Test &&test_callable,
 	                 Args &&... args ) noexcept {

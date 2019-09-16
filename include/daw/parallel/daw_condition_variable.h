@@ -81,10 +81,7 @@ namespace daw {
 		    std::make_unique<basic_condition_variable<Mutex, ConditionVariable>>( );
 
 	public:
-		basic_unique_condition_variable( ) noexcept(
-		  ::std::is_nothrow_default_constructible_v<Mutex>
-		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> ) =
-		  default;
+		basic_unique_condition_variable( ) = default;
 
 		basic_condition_variable<Mutex, ConditionVariable> *release( ) {
 			return m_members.release( );
@@ -130,9 +127,7 @@ namespace daw {
 		    std::make_shared<basic_condition_variable<Mutex, ConditionVariable>>( );
 
 	public:
-		basic_shared_condition_variable( ) noexcept(
-		  ::std::is_nothrow_default_constructible_v<Mutex>
-		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> ) = default;
+		basic_shared_condition_variable( ) = default;
 
 		basic_shared_condition_variable(
 		  basic_unique_condition_variable<Mutex, ConditionVariable> &&other )
