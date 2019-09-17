@@ -88,7 +88,7 @@ namespace daw {
 
 		template<typename T>
 		constexpr void store_type0( T &&value ) {
-			static_assert( daw::is_convertible_v<T, Type0>,
+			static_assert( std::is_convertible_v<T, Type0>,
 			               "Incompatible type T cannot convert to Type0" );
 
 			if( type != data_types::type_0 ) {
@@ -101,7 +101,7 @@ namespace daw {
 
 		template<typename T>
 		constexpr void store_type1( T &&value ) {
-			static_assert( daw::is_convertible_v<T, Type1>,
+			static_assert( std::is_convertible_v<T, Type1>,
 			               "Incompatible type T cannot convert to Type1" );
 
 			if( type != data_types::type_1 ) {

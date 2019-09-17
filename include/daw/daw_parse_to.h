@@ -88,19 +88,20 @@ namespace daw {
 
 			} // namespace helpers
 
-			template<typename T, std::enable_if_t<
-			                       all_true_v<!is_same_v<T, char>, is_integral_v<T>,
-			                                  is_signed_v<T>, !is_enum_v<T>>,
-			                       std::nullptr_t> = nullptr>
+			template<typename T,
+			         std::enable_if_t<
+			           all_true_v<not std::is_same_v<T, char>, std::is_integral_v<T>,
+			                      ::std::is_signed_v<T>, not std::is_enum_v<T>>,
+			           std::nullptr_t> = nullptr>
 			constexpr T parse_to_value( daw::string_view str, tag_t<T> ) {
 				daw::exception::precondition_check<empty_input_exception>(
 				  !str.empty( ) );
 				return helpers::parse_int<T>( str );
 			}
 
-			template<typename T,
-			         std::enable_if_t<all_true_v<is_integral_v<T>, is_unsigned_v<T>>,
-			                          std::nullptr_t> = nullptr>
+			template<typename T, std::enable_if_t<all_true_v<std::is_integral_v<T>,
+			                                                 ::std::is_unsigned_v<T>>,
+			                                      std::nullptr_t> = nullptr>
 			constexpr T parse_to_value( daw::string_view str, tag_t<T> ) {
 				daw::exception::precondition_check<empty_input_exception>(
 				  !str.empty( ) );

@@ -31,7 +31,7 @@ constexpr int plus( int a, int b ) {
 }
 
 static_assert( daw::apply( plus, std::make_tuple( 1, 2 ) ) == 3 );
-
+/*
 namespace void_t_tests {
 	void test2( int ) {}
 	struct X {};
@@ -40,7 +40,7 @@ namespace void_t_tests {
 		return true;
 	}
 
-	template<typename T, typename = daw::void_t<decltype( fn( T{} ) )>>
+	template<typename T, typename = ::std::void_t<decltype( fn( T{} ) )>>
 	constexpr bool fn2( T ) {
 		return false;
 	}
@@ -52,13 +52,15 @@ namespace void_t_tests {
 	}
 	static_assert( void_t_test_001( ) );
 } // namespace void_t_tests
-
+*/
+/*
 namespace cpp_17_test_01 {
 	void test( ) {}
 	struct test2 {};
-	static_assert( daw::is_function_v<decltype( test )>, "" );
-	static_assert( !daw::is_function_v<test2>, "" );
+	static_assert( std::is_function_v<decltype( test )>, "" );
+	static_assert( !std::is_function_v<test2>, "" );
 } // namespace cpp_17_test_01
+*/
 
 namespace not_fn_test {
 	struct not_fn_test {
@@ -76,14 +78,15 @@ namespace not_fn_test {
 	static_assert( !fn2( ), "" );
 } // namespace not_fn_test
 
+/*
 namespace is_array_v_001 {
 	struct A {};
-	static_assert( !daw::is_array_v<A>, "" );
-	static_assert( daw::is_array_v<A[]>, "" );
-	static_assert( daw::is_array_v<A[3]>, "" );
-	static_assert( !daw::is_array_v<float>, "" );
+	static_assert( !std::is_array_v<A>, "" );
+	static_assert( std::is_array_v<A[]>, "" );
+	static_assert( std::is_array_v<A[3]>, "" );
+	static_assert( !std::is_array_v<float>, "" );
 } // namespace is_array_v_001
-
+*/
 namespace advance_001 {
 	constexpr bool test_advance_pos( ) {
 		int a[11] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
@@ -119,7 +122,7 @@ namespace trivially_destructable_001 {
 	struct Foo {
 		~Foo( ) = default;
 	};
-	static_assert( daw::is_trivially_destructible_v<Foo>, "" );
+	static_assert( std::is_trivially_destructible_v<Foo>, "" );
 } // namespace trivially_destructable_001
 
 void bit_cast_001( ) {
@@ -183,10 +186,10 @@ namespace decay_copy_001 {
 	static double const cd = 3.4;
 
 	static_assert(
-	  !daw::is_same_v<decltype( dc_func( d ) ), decltype( dc_func( cd ) )>,
+	  !std::is_same_v<decltype( dc_func( d ) ), decltype( dc_func( cd ) )>,
 	  "Results should be difference, double and double const" );
 
-	static_assert( daw::is_same_v<decltype( daw::decay_copy( d ) ),
+	static_assert( std::is_same_v<decltype( daw::decay_copy( d ) ),
 	                              decltype( daw::decay_copy( cd ) )>,
 	               "Results should be the same, double" );
 } // namespace decay_copy_001

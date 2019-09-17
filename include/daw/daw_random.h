@@ -33,17 +33,18 @@
 namespace daw {
 	namespace impl {
 		static inline auto &global_rng( ) {
-			static thread_local auto e = std::mt19937_64( std::random_device{}( ) );
+			static thread_local auto e =
+			  ::std::mt19937_64( ::std::random_device{}( ) );
 			return e;
 		}
 	} // namespace impl
 
 	template<typename IntType>
 	inline IntType randint( IntType a, IntType b ) {
-		static_assert( daw::is_integral_v<IntType>,
+		static_assert( ::std::is_integral_v<IntType>,
 		               "IntType must be a valid integral type" );
 		daw::exception::daw_throw_on_false( a <= b, "a <= b must be true" );
-		using distribution_type = std::uniform_int_distribution<IntType>;
+		using distribution_type = ::std::uniform_int_distribution<IntType>;
 		using param_type = typename distribution_type::param_type;
 
 		thread_local auto d = distribution_type( );
@@ -52,22 +53,22 @@ namespace daw {
 
 	template<typename IntType>
 	inline IntType randint( ) {
-		return randint<IntType>( std::numeric_limits<IntType>::min( ),
-		                         std::numeric_limits<IntType>::max( ) );
+		return randint<IntType>( ::std::numeric_limits<IntType>::min( ),
+		                         ::std::numeric_limits<IntType>::max( ) );
 	}
 
 	inline void reseed( ) {
-		impl::global_rng( ) = std::mt19937_64( );
+		impl::global_rng( ) = ::std::mt19937_64( );
 	}
 
-	inline void reseed( std::default_random_engine::result_type value ) {
+	inline void reseed( ::std::default_random_engine::result_type value ) {
 		impl::global_rng( ).seed( value );
 	}
 
 	template<typename RandomIterator>
 	void shuffle( RandomIterator first, RandomIterator last ) {
 		using diff_t =
-		  typename std::iterator_traits<RandomIterator>::difference_type;
+		  typename ::std::iterator_traits<RandomIterator>::difference_type;
 
 		diff_t n = last - first;
 		for( diff_t i = n - 1; i > 0; --i ) {
@@ -78,7 +79,7 @@ namespace daw {
 	template<typename IntType, typename ForwardIterator>
 	void random_fill( ForwardIterator first, ForwardIterator const last,
 	                  IntType a, IntType b ) {
-		static_assert( daw::is_integral_v<IntType>,
+		static_assert( ::std::is_integral_v<IntType>,
 		               "IntType must be a valid integral type" );
 		daw::exception::daw_throw_on_false( a <= b, "a <= b must be true" );
 		while( first != last ) {
@@ -86,12 +87,13 @@ namespace daw {
 		}
 	}
 
-	template<typename IntType, typename Result = std::vector<IntType>>
-	Result make_random_data( size_t count,
-	                         IntType a = std::numeric_limits<IntType>::min( ),
-	                         IntType b = std::numeric_limits<IntType>::max( ) ) {
+	template<typename IntType, typename Result = ::std::vector<IntType>>
+	Result
+	make_random_data( size_t count,
+	                  IntType a = ::std::numeric_limits<IntType>::min( ),
+	                  IntType b = ::std::numeric_limits<IntType>::max( ) ) {
 
-		static_assert( daw::is_integral_v<IntType>,
+		static_assert( ::std::is_integral_v<IntType>,
 		               "IntType must be a valid integral type" );
 
 		daw::exception::precondition_check( a <= b, "a <= b must be true" );
@@ -125,12 +127,14 @@ namespace daw {
 			}
 		} // namespace
 #endif
-		template<size_t N, std::enable_if_t<( N == 4 ), std::nullptr_t> = nullptr>
+		template<size_t N,
+		         ::std::enable_if_t<( N == 4 ), ::std::nullptr_t> = nullptr>
 		constexpr size_t rand_lcg( size_t x_prev ) noexcept {
 			return x_prev * 1664525UL + 1013904223UL;
 		}
 
-		template<size_t N, std::enable_if_t<( N == 8 ), std::nullptr_t> = nullptr>
+		template<size_t N,
+		         ::std::enable_if_t<( N == 8 ), ::std::nullptr_t> = nullptr>
 		constexpr size_t rand_lcg( size_t x_prev ) noexcept {
 			return x_prev * 2862933555777941757ULL + 3037000493ULL;
 		}

@@ -238,7 +238,7 @@ namespace daw {
 			  "UnaryOperator is not callable with the values stored in Container" );
 
 			static_assert(
-			  daw::is_convertible_v<decltype(
+			  std::is_convertible_v<decltype(
 			                          unary_operator( *std::cbegin( container ) ) ),
 			                        decltype( *first_out )>,
 			  "Output of UnaryOperator cannot be assigned to *first_out" );

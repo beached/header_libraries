@@ -45,16 +45,16 @@ namespace daw {
 
 	public:
 		constexpr function_iterator( Function &&function ) noexcept(
-		  daw::is_nothrow_move_constructible_v<Function> )
+		  ::std::is_nothrow_move_constructible_v<Function> )
 		  : m_function( daw::move( function ) ) {}
 
 		constexpr function_iterator( Function const &function ) noexcept(
-		  daw::is_nothrow_copy_constructible_v<Function> )
+		  ::std::is_nothrow_copy_constructible_v<Function> )
 		  : m_function( function ) {}
 
 		template<typename T,
 		         std::enable_if_t<
-		           !daw::is_same_v<daw::remove_cvref_t<T>, function_iterator>,
+		           not std::is_same_v<daw::remove_cvref_t<T>, function_iterator>,
 		           std::nullptr_t> = nullptr>
 		constexpr function_iterator &operator=( T &&val ) {
 			daw::invoke( m_function, std::forward<T>( val ) );

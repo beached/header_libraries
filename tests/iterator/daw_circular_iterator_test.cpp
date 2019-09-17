@@ -98,8 +98,8 @@ BOOST_AUTO_TEST_CASE( daw_circular_iterator_008 ) {
 	int a[] = {1, 2, 3, 4};
 	auto it = daw::make_circular_iterator( a );
 	auto it2 = it + 4;
-	constexpr bool tst1 = daw::is_same_v<decltype( *it ), decltype( a[0] )>;
-	constexpr bool tst2 = daw::is_same_v<decltype( it ), decltype( it2 )>;
+	constexpr bool tst1 = ::std::is_same_v<decltype( *it ), decltype( a[0] )>;
+	constexpr bool tst2 = ::std::is_same_v<decltype( it ), decltype( it2 )>;
 	daw::expecting( tst1 );
 	daw::expecting( tst2 );
 }
@@ -108,8 +108,8 @@ BOOST_AUTO_TEST_CASE( daw_circular_iterator_009 ) {
 	int a[] = {1, 2, 3, 4};
 	auto it = daw::make_circular_iterator( a );
 	auto it2 = it + 4;
-	constexpr bool tst1 = daw::is_same_v<decltype( *it ), decltype( a[0] )>;
-	constexpr bool tst2 = daw::is_same_v<decltype( it ), decltype( it2 )>;
+	constexpr bool tst1 = ::std::is_same_v<decltype( *it ), decltype( a[0] )>;
+	constexpr bool tst2 = ::std::is_same_v<decltype( it ), decltype( it2 )>;
 	daw::expecting( tst1 );
 	daw::expecting( tst2 );
 }

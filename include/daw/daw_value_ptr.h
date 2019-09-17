@@ -63,11 +63,11 @@ namespace daw {
 		template<
 		  typename... Args,
 		  std::enable_if_t<
-		    all_true_v<is_constructible_v<value_type, Args...>,
+		    all_true_v<::std::is_constructible_v<value_type, Args...>,
 		               !traits::is_first_type_v<value_ptr, std::decay_t<Args>...>>,
 		    std::nullptr_t> = nullptr>
 		explicit value_ptr( Args &&... args ) noexcept(
-		  is_nothrow_constructible_v<value_type, Args...> )
+		  ::std::is_nothrow_constructible_v<value_type, Args...> )
 		  : enable_default_constructor<T>( impl::non_constructor{} )
 		  , enable_copy_constructor<T>( impl::non_constructor{} )
 		  , enable_copy_assignment<T>( impl::non_constructor{} )
@@ -77,11 +77,11 @@ namespace daw {
 		template<
 		  typename U, typename... Args,
 		  std::enable_if_t<
-		    all_true_v<is_constructible_v<value_type, Args...>,
+		    all_true_v<::std::is_constructible_v<value_type, Args...>,
 		               !traits::is_first_type_v<value_ptr, std::decay_t<Args>...>>,
 		    std::nullptr_t> = nullptr>
 		static value_ptr emplace( Args &&... args ) noexcept(
-		  is_nothrow_constructible_v<value_type, Args...> ) {
+		  ::std::is_nothrow_constructible_v<value_type, Args...> ) {
 
 			auto result = value_ptr<value_type>( std::nullopt );
 			result.m_value = std::make_unique<U>( std::forward<Args>( args )... );
@@ -102,7 +102,7 @@ namespace daw {
 		  , m_value( daw::move( other.m_value ) ) {}
 
 		constexpr value_ptr &operator=( value_ptr const &rhs ) noexcept(
-		  is_nothrow_copy_constructible_v<value_type> ) {
+		  ::std::is_nothrow_copy_constructible_v<value_type> ) {
 			if( this != rhs ) {
 				if( !m_value and !rhs.m_value ) {
 					return *this;
@@ -126,7 +126,7 @@ namespace daw {
 		}
 
 		value_ptr &operator=( value_type const &rhs ) noexcept(
-		  is_nothrow_copy_assignable_v<value_type> ) {
+		  ::std::is_nothrow_copy_assignable_v<value_type> ) {
 			if( !m_value ) {
 				m_value = std::make_unique<value_type>( rhs );
 			} else {
@@ -136,12 +136,13 @@ namespace daw {
 		}
 
 		value_ptr &operator=( value_type &&rhs ) noexcept(
-		  is_nothrow_move_assignable_v<value_type> ) {
+		  ::std::is_nothrow_move_assignable_v<value_type> ) {
 			*m_value = daw::move( rhs );
 			return *this;
 		}
 
-		constexpr void reset( ) noexcept( is_nothrow_destructible_v<value_type> ) {
+		constexpr void
+		reset( ) noexcept( ::std::is_nothrow_destructible_v<value_type> ) {
 			m_value.reset( );
 		}
 
@@ -154,7 +155,8 @@ namespace daw {
 			return m_value->operator( )( std::forward<Args>( args )... );
 		}
 
-		~value_ptr( ) noexcept( is_nothrow_destructible_v<value_type> ) = default;
+		~value_ptr( ) noexcept( ::std::is_nothrow_destructible_v<value_type> ) =
+		  default;
 
 		constexpr pointer release( ) noexcept {
 			return std::exchange( m_value, nullptr );

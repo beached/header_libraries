@@ -31,11 +31,11 @@
 
 constexpr bool daw_safe_advance_test_001( ) {
 	std::array<int, 11> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	auto it = std::begin( a );
+	auto it = ::std::begin( a );
 	daw::safe_advance( a, it, 5 );
-	bool const ans = ( it != std::begin( a ) );
+	bool const ans = ( it != ::std::begin( a ) );
 	daw::expecting( ans );
-	auto it2 = std::next( std::begin( a ), 5 );
+	auto it2 = ::std::next( ::std::begin( a ), 5 );
 	bool const ans2 = it == it2;
 	daw::expecting( ans2 );
 	return true;
@@ -53,16 +53,16 @@ static_assert( binary_search_001( ), "" );
 constexpr bool lower_bound_001( ) noexcept {
 	std::array<int, 10> arry = {1, 5, 10, 15, 16, 17, 18, 19, 20, 21};
 	auto pos =
-	  daw::algorithm::lower_bound( std::begin( arry ), std::end( arry ), 17 );
+	  daw::algorithm::lower_bound( ::std::begin( arry ), ::std::end( arry ), 17 );
 	return *pos == 17;
 }
 static_assert( lower_bound_001( ), "" );
 
 constexpr bool daw_safe_advance_test_002( ) {
 	std::array<int, 11> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	auto it = std::begin( a );
+	auto it = ::std::begin( a );
 	daw::safe_advance( a, it, static_cast<ptrdiff_t>( a.size( ) + 5u ) );
-	bool const ans = ( it == std::end( a ) );
+	bool const ans = ( it == ::std::end( a ) );
 	daw::expecting( ans );
 	return true;
 }
@@ -70,9 +70,9 @@ static_assert( daw_safe_advance_test_002( ) );
 
 constexpr bool daw_safe_advance_test_003( ) {
 	std::array<int, 11> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	auto it = std::begin( a );
+	auto it = ::std::begin( a );
 	daw::safe_advance( a, it, -5 );
-	bool const ans = ( it == std::begin( a ) );
+	bool const ans = ( it == ::std::begin( a ) );
 	daw::expecting( ans );
 	return true;
 }
@@ -80,11 +80,11 @@ static_assert( daw_safe_advance_test_003( ) );
 
 constexpr bool daw_safe_advance_test_004( ) {
 	std::array<int, 11> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	auto it = std::begin( a );
+	auto it = ::std::begin( a );
 	daw::safe_advance( a, it, 5 );
-	bool const ans = ( it != std::begin( a ) );
+	bool const ans = ( it != ::std::begin( a ) );
 	daw::expecting( ans );
-	auto it2 = std::next( std::begin( a ), 5 );
+	auto it2 = ::std::next( ::std::begin( a ), 5 );
 	bool const ans2 = it == it2;
 	daw::expecting( ans2 );
 	return true;
@@ -93,9 +93,9 @@ static_assert( daw_safe_advance_test_004( ) );
 
 constexpr bool daw_safe_advance_test_005( ) {
 	std::array<int, 11> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	auto it = std::begin( a );
+	auto it = ::std::begin( a );
 	daw::safe_advance( a, it, static_cast<ptrdiff_t>( a.size( ) + 5u ) );
-	bool const ans = ( it == std::end( a ) );
+	bool const ans = ( it == ::std::end( a ) );
 	daw::expecting( ans );
 	return true;
 }
@@ -103,9 +103,9 @@ static_assert( daw_safe_advance_test_005( ) );
 
 constexpr bool daw_safe_advance_test_006( ) {
 	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	auto it = std::begin( a );
+	auto it = ::std::begin( a );
 	daw::safe_advance( a, it, -5 );
-	bool const ans = ( it == std::begin( a ) );
+	bool const ans = ( it == ::std::begin( a ) );
 	daw::expecting( ans );
 	return true;
 }
@@ -113,54 +113,54 @@ static_assert( daw_safe_advance_test_006( ) );
 
 constexpr bool daw_safe_next_test_001( ) {
 	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	auto it = daw::safe_next( std::begin( a ), std::end( a ), 5 );
+	auto it = daw::safe_next( ::std::begin( a ), ::std::end( a ), 5 );
 
-	static_assert( daw::is_same_v<decltype( it ), decltype( std::begin( a ) )>,
+	static_assert( ::std::is_same_v<decltype( it ), decltype( ::std::begin( a ) )>,
 	               "Iterator type is changing in safe_next" );
 
-	daw::expecting( it, std::next( std::begin( a ), 5 ) );
+	daw::expecting( it, ::std::next( ::std::begin( a ), 5 ) );
 	return true;
 }
 static_assert( daw_safe_next_test_001( ) );
 
 constexpr bool daw_safe_next_test_002( ) {
 	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	auto it = daw::safe_next( std::begin( a ), std::end( a ), a.size( ) + 5 );
+	auto it = daw::safe_next( ::std::begin( a ), ::std::end( a ), a.size( ) + 5 );
 
-	daw::expecting( it, std::end( a ) );
+	daw::expecting( it, ::std::end( a ) );
 	return true;
 }
 static_assert( daw_safe_next_test_002( ) );
 
 constexpr bool daw_safe_next_test_003( ) {
 	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	auto it = daw::safe_next( std::begin( a ), std::end( a ), 5 );
+	auto it = daw::safe_next( ::std::begin( a ), ::std::end( a ), 5 );
 
-	static_assert( daw::is_same_v<decltype( it ), decltype( std::begin( a ) )>,
+	static_assert( ::std::is_same_v<decltype( it ), decltype( ::std::begin( a ) )>,
 	               "Iterator type is changing in safe_next" );
 
-	daw::expecting( it, std::next( std::begin( a ), 5 ) );
+	daw::expecting( it, ::std::next( ::std::begin( a ), 5 ) );
 	return true;
 }
 static_assert( daw_safe_next_test_003( ) );
 
 constexpr bool daw_safe_next_test_004( ) {
 	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	auto it = daw::safe_next( std::begin( a ), std::end( a ), a.size( ) + 5 );
+	auto it = daw::safe_next( ::std::begin( a ), ::std::end( a ), a.size( ) + 5 );
 
-	daw::expecting( it, std::end( a ) );
+	daw::expecting( it, ::std::end( a ) );
 	return true;
 }
 static_assert( daw_safe_next_test_004( ) );
 
 constexpr bool daw_safe_prev_test_001( ) {
 	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	auto it = daw::safe_prev( std::end( a ), std::begin( a ), 5 );
+	auto it = daw::safe_prev( ::std::end( a ), ::std::begin( a ), 5 );
 
-	static_assert( daw::is_same_v<decltype( it ), decltype( std::begin( a ) )>,
+	static_assert( ::std::is_same_v<decltype( it ), decltype( ::std::begin( a ) )>,
 	               "Iterator type is changing in safe_prev" );
 
-	daw::expecting( it, std::prev( std::end( a ), 5 ) );
+	daw::expecting( it, ::std::prev( ::std::end( a ), 5 ) );
 	return true;
 }
 static_assert( daw_safe_prev_test_001( ) );
@@ -176,21 +176,21 @@ static_assert( daw_safe_prev_test_002( ) );
 
 constexpr bool daw_safe_prev_test_003( ) {
 	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	auto it = daw::safe_prev( std::end( a ), std::begin( a ), 5 );
+	auto it = daw::safe_prev( ::std::end( a ), ::std::begin( a ), 5 );
 
-	static_assert( daw::is_same_v<decltype( it ), decltype( std::begin( a ) )>,
+	static_assert( ::std::is_same_v<decltype( it ), decltype( ::std::begin( a ) )>,
 	               "Iterator type is changing in safe_prev" );
 
-	daw::expecting( it, std::prev( std::end( a ), 5 ) );
+	daw::expecting( it, ::std::prev( ::std::end( a ), 5 ) );
 	return true;
 }
 static_assert( daw_safe_prev_test_003( ) );
 
 constexpr bool daw_safe_prev_test_004( ) {
 	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	auto it = daw::safe_prev( std::end( a ), std::begin( a ), a.size( ) + 5 );
+	auto it = daw::safe_prev( ::std::end( a ), ::std::begin( a ), a.size( ) + 5 );
 
-	daw::expecting( it, std::begin( a ) );
+	daw::expecting( it, ::std::begin( a ) );
 	return true;
 }
 static_assert( daw_safe_prev_test_004( ) );
@@ -199,10 +199,10 @@ constexpr bool daw_begin_at_test_001( ) {
 	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	auto it = daw::begin_at( a, 0 );
 
-	static_assert( daw::is_same_v<decltype( it ), decltype( std::begin( a ) )>,
+	static_assert( ::std::is_same_v<decltype( it ), decltype( ::std::begin( a ) )>,
 	               "Iterator type is changing in begin_at" );
 
-	daw::expecting( it, std::begin( a ) );
+	daw::expecting( it, ::std::begin( a ) );
 	return true;
 }
 static_assert( daw_begin_at_test_001( ) );
@@ -210,7 +210,7 @@ static_assert( daw_begin_at_test_001( ) );
 constexpr bool daw_begin_at_test_002( ) {
 	std::array<int, 11> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	auto it = daw::begin_at( a, 5 );
-	daw::expecting( it, std::next( std::begin( a ), 5 ) );
+	daw::expecting( it, ::std::next( ::std::begin( a ), 5 ) );
 	return true;
 }
 static_assert( daw_begin_at_test_002( ) );
@@ -219,10 +219,10 @@ constexpr bool daw_begin_at_test_003( ) {
 	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	auto it = daw::begin_at( a, 0 );
 
-	static_assert( daw::is_same_v<decltype( it ), decltype( std::begin( a ) )>,
+	static_assert( ::std::is_same_v<decltype( it ), decltype( ::std::begin( a ) )>,
 	               "Iterator type is changing in begin_at" );
 
-	daw::expecting( it, std::begin( a ) );
+	daw::expecting( it, ::std::begin( a ) );
 	return true;
 }
 static_assert( daw_begin_at_test_003( ) );
@@ -230,7 +230,7 @@ static_assert( daw_begin_at_test_003( ) );
 constexpr bool daw_begin_at_test_004( ) {
 	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	auto it = daw::begin_at( a, 5 );
-	daw::expecting( it, std::next( std::begin( a ), 5 ) );
+	daw::expecting( it, ::std::next( ::std::begin( a ), 5 ) );
 	return true;
 }
 static_assert( daw_begin_at_test_004( ) );
@@ -322,7 +322,7 @@ constexpr bool daw_satisfies_one_test_001( ) {
 		  return daw::algorithm::find( v.cbegin( ), v.cend( ), 15 ) != v.cend( );
 	  } );
 
-	static_assert( daw::is_same_v<bool, daw::remove_cvref_t<decltype( ans )>> );
+	static_assert( ::std::is_same_v<bool, daw::remove_cvref_t<decltype( ans )>> );
 	daw::expecting( ans );
 	return true;
 }
@@ -349,7 +349,7 @@ constexpr bool daw_satisfies_one_test_002( ) {
 		  return daw::algorithm::find( v.cbegin( ), v.cend( ), 15 ) != v.cend( );
 	  } );
 
-	static_assert( daw::is_same_v<bool, daw::remove_cvref_t<decltype( ans )>> );
+	static_assert( ::std::is_same_v<bool, daw::remove_cvref_t<decltype( ans )>> );
 	daw::expecting( !ans );
 	return true;
 }
@@ -363,7 +363,7 @@ constexpr bool daw_satisfies_one_test_003( ) {
 	  []( auto v ) { return v == 12; }, []( auto v ) { return v == 13; },
 	  []( auto v ) { return v == 14; }, []( auto v ) { return v == 15; } );
 
-	static_assert( daw::is_same_v<bool, daw::remove_cvref_t<decltype( ans )>> );
+	static_assert( ::std::is_same_v<bool, daw::remove_cvref_t<decltype( ans )>> );
 	daw::expecting( !ans );
 	return true;
 }
@@ -377,7 +377,7 @@ constexpr bool daw_satisfies_one_test_004( ) {
 	  []( auto v ) { return v == 12; }, []( auto v ) { return v == 13; },
 	  []( auto v ) { return v == 5; }, []( auto v ) { return v == 15; } );
 
-	static_assert( daw::is_same_v<bool, daw::remove_cvref_t<decltype( ans )>> );
+	static_assert( ::std::is_same_v<bool, daw::remove_cvref_t<decltype( ans )>> );
 	daw::expecting( ans );
 	return true;
 }
@@ -391,7 +391,7 @@ constexpr bool daw_satisfies_all_test_001( ) {
 	  []( auto const &v ) { return v.front( ) == 0; },
 	  []( auto const &v ) { return v.back( ) == 10; } );
 
-	static_assert( daw::is_same_v<bool, daw::remove_cvref_t<decltype( ans )>> );
+	static_assert( ::std::is_same_v<bool, daw::remove_cvref_t<decltype( ans )>> );
 	daw::expecting( ans );
 	return true;
 }
@@ -405,7 +405,7 @@ constexpr bool daw_satisfies_all_test_002( ) {
 	  []( auto const &v ) { return v.front( ) == 0; },
 	  []( auto const &v ) { return v.back( ) == 11; } );
 
-	static_assert( daw::is_same_v<bool, daw::remove_cvref_t<decltype( ans )>> );
+	static_assert( ::std::is_same_v<bool, daw::remove_cvref_t<decltype( ans )>> );
 	daw::expecting( !ans );
 	return true;
 }
@@ -418,7 +418,7 @@ constexpr bool daw_satisfies_all_test_003( ) {
 	  tst.begin( ), tst.end( ), []( auto v ) { return v < 11; },
 	  []( auto v ) { return v >= 0; }, []( auto v ) { return v % 2 == 0; } );
 
-	static_assert( daw::is_same_v<bool, daw::remove_cvref_t<decltype( ans )>> );
+	static_assert( ::std::is_same_v<bool, daw::remove_cvref_t<decltype( ans )>> );
 	daw::expecting( ans );
 	return true;
 }
@@ -431,7 +431,7 @@ constexpr bool daw_satisfies_all_test_004( ) {
 	  tst.begin( ), tst.end( ), []( auto v ) { return v < 11; },
 	  []( auto v ) { return v >= 0; }, []( auto v ) { return v % 2 == 0; } );
 
-	static_assert( daw::is_same_v<bool, daw::remove_cvref_t<decltype( ans )>> );
+	static_assert( ::std::is_same_v<bool, daw::remove_cvref_t<decltype( ans )>> );
 	daw::expecting( !ans );
 	return true;
 }
@@ -708,7 +708,7 @@ static_assert( daw_equal_test_008( ) );
 
 constexpr bool daw_rotate_test_001( ) {
 	std::array<int, 11> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	daw::algorithm::rotate( a.begin( ), std::next( a.begin( ), 5 ), a.end( ) );
+	daw::algorithm::rotate( a.begin( ), ::std::next( a.begin( ), 5 ), a.end( ) );
 	daw::expecting( 5, a.front( ) );
 	daw::expecting( 4, a.back( ) );
 	daw::expecting( 10, a[5] );
@@ -719,7 +719,7 @@ static_assert( daw_rotate_test_001( ) );
 constexpr bool daw_upper_bound_test_001( ) {
 	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	auto tst = daw::algorithm::upper_bound( a.cbegin( ), a.cend( ), 5 );
-	daw::expecting( tst, std::next( a.cbegin( ), 6 ) );
+	daw::expecting( tst, ::std::next( a.cbegin( ), 6 ) );
 	return true;
 }
 static_assert( daw_upper_bound_test_001( ) );

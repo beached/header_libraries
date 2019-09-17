@@ -39,7 +39,7 @@ namespace daw {
 	namespace impl {
 		template<typename T>
 		union static_optional_storage {
-			static_assert( is_nothrow_destructible_v<T> or daw::is_trivial_v<T>,
+			static_assert( ::std::is_nothrow_destructible_v<T> or ::std::is_trivial_v<T>,
 			               "static_optional_storage can only be used for types that "
 			               "are nothrow destructable or trivial" );
 
@@ -55,7 +55,7 @@ namespace daw {
 
 	template<typename Value>
 	struct static_optional {
-		static_assert( is_nothrow_destructible_v<Value> or daw::is_trivial_v<Value>,
+		static_assert( ::std::is_nothrow_destructible_v<Value> or ::std::is_trivial_v<Value>,
 		               "static_optional can only be used for types that are "
 		               "nothrow destructable or trivial" );
 
@@ -89,7 +89,7 @@ namespace daw {
 
 		template<
 		  typename Arg, typename... Args,
-		  std::enable_if_t<!daw::is_same_v<static_optional, std::decay_t<Arg>>,
+		  std::enable_if_t<!std::is_same_v<static_optional, std::decay_t<Arg>>,
 		                   std::nullptr_t> = nullptr>
 		constexpr static_optional( Arg &&arg,
 		                           Args &&... args ) noexcept( noexcept( value_type{
@@ -132,8 +132,8 @@ namespace daw {
 
 		template<typename T,
 		         std::enable_if_t<
-		           all_true_v<!daw::is_same_v<static_optional, std::decay_t<T>>,
-		                      !daw::is_same_v<nothing, std::decay_t<T>>>,
+		           all_true_v<!std::is_same_v<static_optional, std::decay_t<T>>,
+		                      !std::is_same_v<nothing, std::decay_t<T>>>,
 		           std::nullptr_t> = nullptr>
 		constexpr static_optional &operator=( T value ) noexcept {
 			m_value = daw::move( value );

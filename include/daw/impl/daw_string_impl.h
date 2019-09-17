@@ -24,6 +24,7 @@
 
 #include <array>
 #include <cstddef>
+#include <type_traits>
 
 #include "../daw_string_view_fwd.h"
 #include "../daw_traits.h"
@@ -268,7 +269,7 @@ namespace daw {
 
 		// Make argument a lower priority than T[]
 		template<typename T,
-		         std::enable_if_t<is_pointer_v<T>, std::nullptr_t> = nullptr>
+		         std::enable_if_t<::std::is_pointer_v<T>, std::nullptr_t> = nullptr>
 		struct only_ptr {
 			T *ptr;
 

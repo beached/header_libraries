@@ -78,7 +78,7 @@ namespace daw {
 	template<typename T = void, typename... Args>
 	constexpr auto make_array( Args &&... args ) {
 		using result_t =
-		  std::conditional_t<daw::is_same_v<void, T>,
+		  std::conditional_t<std::is_same_v<void, T>,
 		                     std::common_type_t<std::decay_t<Args>...>, T>;
 		std::array<result_t, sizeof...( Args )> result = {
 		  std::forward<Args>( args )...};

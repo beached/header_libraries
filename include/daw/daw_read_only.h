@@ -28,7 +28,7 @@
 namespace daw {
 	template<typename T>
 	struct read_only {
-		static_assert( !daw::is_reference_v<T>,
+		static_assert( not std::is_reference_v<T>,
 		               "Reference types are not supported" );
 		using value_type = T;
 		using reference = value_type &;
@@ -40,15 +40,15 @@ namespace daw {
 		value_type m_value;
 
 	public:
-		constexpr read_only( ) noexcept( daw::is_nothrow_constructible_v<T> )
+		constexpr read_only( ) noexcept( ::std::is_nothrow_constructible_v<T> )
 		  : m_value( ) {}
 
 		constexpr read_only( rvalue_reference value ) noexcept(
-		  daw::is_nothrow_move_constructible_v<T> )
+		  ::std::is_nothrow_move_constructible_v<T> )
 		  : m_value( daw::move( value ) ) {}
 
 		constexpr read_only( const_reference value ) noexcept(
-		  daw::is_nothrow_copy_constructible_v<T> )
+		  ::std::is_nothrow_copy_constructible_v<T> )
 		  : m_value( value ) {}
 
 		read_only &operator=( const_reference ) = delete;

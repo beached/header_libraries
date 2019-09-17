@@ -31,7 +31,7 @@ namespace daw {
 	template<typename T>
 	[[deprecated( "Use mask_msb" )]] constexpr T
 	get_left_mask( size_t left_zero_bits ) noexcept {
-		return static_cast<T>( std::numeric_limits<T>::max( ) >> left_zero_bits );
+		return static_cast<T>( ::std::numeric_limits<T>::max( ) >> left_zero_bits );
 	}
 
 	template<typename T>
@@ -39,13 +39,14 @@ namespace daw {
 		if( bit_count >= daw::bsizeof<T> ) {
 			return static_cast<T>( 0 );
 		}
-		return static_cast<T>( std::numeric_limits<T>::max( ) >> bit_count );
+		return static_cast<T>( ::std::numeric_limits<T>::max( ) >> bit_count );
 	}
 
 	template<typename T>
 	[[deprecated( "Use mask_lsb" )]] constexpr T
 	get_right_mask( size_t right_zero_bits ) noexcept {
-		return static_cast<T>( std::numeric_limits<T>::max( ) << right_zero_bits );
+		return static_cast<T>( ::std::numeric_limits<T>::max( )
+		                       << right_zero_bits );
 	}
 
 	template<typename T>
@@ -53,12 +54,13 @@ namespace daw {
 		if( bit_count >= daw::bsizeof<T> ) {
 			return static_cast<T>( 0 );
 		}
-		return static_cast<T>( std::numeric_limits<T>::max( ) << bit_count );
+		return static_cast<T>( ::std::numeric_limits<T>::max( ) << bit_count );
 	}
 
 	template<typename Bit, typename... Bits>
 	constexpr auto make_mask( Bit bit, Bits... bits ) noexcept {
-		static_assert( is_integral_v<Bit>, "Only integer types are supported" );
+		static_assert( ::std::is_integral_v<Bit>,
+		               "Only integer types are supported" );
 
 		using expand = int[];
 		static_cast<void>( expand{0, ( ( bit |= bits ), 0 )...} );
@@ -68,10 +70,10 @@ namespace daw {
 	template<typename Integer, typename MaskBit, typename... MaskBits>
 	constexpr bool are_set( Integer value, MaskBit mask_bit,
 	                        MaskBits... mask_bits ) noexcept {
-		static_assert( is_integral_v<Integer>, "Only integer types are supported" );
-		static_assert( is_integral_v<MaskBit>, "Only integer types are supported" );
+		static_assert( ::std::is_integral_v<Integer>, "Only integer types are supported" );
+		static_assert( ::std::is_integral_v<MaskBit>, "Only integer types are supported" );
 
-		using common_t = std::common_type_t<Integer, MaskBit, MaskBits...>;
+		using common_t = ::std::common_type_t<Integer, MaskBit, MaskBits...>;
 
 		return ( static_cast<common_t>( value ) &
 		         make_mask( static_cast<common_t>( mask_bit ),

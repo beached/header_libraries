@@ -47,8 +47,8 @@ namespace daw {
 
 	struct fnv1a_hash_t {
 		// TODO: check for UB if values are signed
-		template<typename Value,
-		         std::enable_if_t<is_integral_v<Value>, std::nullptr_t> = nullptr>
+		template<typename Value, std::enable_if_t<::std::is_integral_v<Value>,
+		                                          std::nullptr_t> = nullptr>
 		[[nodiscard]] static constexpr size_t
 		append_hash( size_t current_hash, Value const &value ) noexcept {
 			for( size_t n = 0; n < sizeof( Value ); ++n ) {
@@ -62,9 +62,9 @@ namespace daw {
 		}
 
 		template<typename Iterator1, typename Iterator2,
-		         std::enable_if_t<
-		           is_integral_v<typename std::iterator_traits<Iterator1>::type>,
-		           std::nullptr_t> = nullptr>
+		         std::enable_if_t<::std::is_integral_v<
+		                            typename std::iterator_traits<Iterator1>::type>,
+		                          std::nullptr_t> = nullptr>
 		[[nodiscard]] constexpr size_t operator( )( Iterator1 first,
 		                                            Iterator2 const last ) const
 		  noexcept {
@@ -75,15 +75,16 @@ namespace daw {
 			return hash;
 		}
 
-		template<typename Member, size_t N,
-		         std::enable_if_t<is_integral_v<Member>, std::nullptr_t> = nullptr>
+		template<
+		  typename Member, size_t N,
+		  std::enable_if_t<::std::is_integral_v<Member>, std::nullptr_t> = nullptr>
 		[[nodiscard]] constexpr size_t
 		operator( )( Member const ( &member )[N] ) const noexcept {
 			return operator( )( member,
 			                    std::next( member, static_cast<intmax_t>( N ) ) );
 		}
 
-		template<typename Integral, std::enable_if_t<is_integral_v<Integral>,
+		template<typename Integral, std::enable_if_t<::std::is_integral_v<Integral>,
 		                                             std::nullptr_t> = nullptr>
 		[[nodiscard]] constexpr size_t operator( )( Integral const value ) const
 		  noexcept {
@@ -104,7 +105,7 @@ namespace daw {
 	};
 
 	template<typename T,
-	         std::enable_if_t<is_integral_v<T>, std::nullptr_t> = nullptr>
+	         std::enable_if_t<::std::is_integral_v<T>, std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr size_t fnv1a_hash( T const value ) noexcept {
 		return fnv1a_hash_t{}( value );
 	}

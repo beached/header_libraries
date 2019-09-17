@@ -361,9 +361,7 @@ namespace daw_traits_is_callable {
 #pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
 #endif
 #endif
-	auto const blah = []( auto t ) noexcept {
-		return t;
-	};
+	auto const blah = []( auto t ) noexcept { return t; };
 #ifdef __clang__
 #ifndef __ICC // icpc defines the __clang__ macro
 #pragma clang diagnostic pop
@@ -388,9 +386,7 @@ namespace daw_traits_is_callable {
 #pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
 #endif
 #endif
-	auto const blah2 = []( ) noexcept {
-		return true;
-	};
+	auto const blah2 = []( ) noexcept { return true; };
 #ifdef __clang__
 #ifndef __ICC // icpc defines the __clang__ macro
 #pragma clang diagnostic pop
@@ -474,9 +470,9 @@ namespace binary_predicate_002 {
 
 namespace is_iterator_001 {
 	using iter_t = int const *;
-	static_assert( daw::is_copy_constructible_v<iter_t>, "" );
-	static_assert( daw::is_copy_assignable_v<iter_t>, "" );
-	static_assert( daw::is_destructible_v<iter_t>, "" );
+	static_assert( std::is_copy_constructible_v<iter_t>, "" );
+	static_assert( std::is_copy_assignable_v<iter_t>, "" );
+	static_assert( std::is_destructible_v<iter_t>, "" );
 	static_assert( daw::traits::impl::has_iterator_trait_types_v<iter_t>, "" );
 	static_assert( daw::traits::is_dereferenceable_v<iter_t>, "" );
 	static_assert( daw::traits::impl::is_incrementable_v<iter_t>, "" );
@@ -489,9 +485,9 @@ namespace is_iterator_002 {
 
 namespace is_iterator_003 {
 	using iter_t = typename std::vector<int>::iterator;
-	static_assert( daw::is_copy_constructible_v<iter_t>, "" );
-	static_assert( daw::is_copy_assignable_v<iter_t>, "" );
-	static_assert( daw::is_destructible_v<iter_t>, "" );
+	static_assert( std::is_copy_constructible_v<iter_t>, "" );
+	static_assert( std::is_copy_assignable_v<iter_t>, "" );
+	static_assert( std::is_destructible_v<iter_t>, "" );
 	static_assert( daw::traits::impl::has_value_type_v<iter_t>, "" );
 	static_assert( daw::traits::impl::has_difference_type_v<iter_t>, "" );
 	static_assert( daw::traits::impl::has_reference_v<iter_t>, "" );
@@ -509,9 +505,9 @@ namespace is_iterator_004 {
 
 namespace is_iterator_005 {
 	using iter_t = int const *const;
-	static_assert( daw::is_copy_constructible_v<iter_t>, "" );
-	static_assert( !daw::is_copy_assignable_v<iter_t>, "" );
-	static_assert( daw::is_destructible_v<iter_t>, "" );
+	static_assert( std::is_copy_constructible_v<iter_t>, "" );
+	static_assert( !std::is_copy_assignable_v<iter_t>, "" );
+	static_assert( std::is_destructible_v<iter_t>, "" );
 	static_assert( !daw::traits::impl::has_iterator_trait_types_v<iter_t>, "" );
 	static_assert( daw::traits::is_dereferenceable_v<iter_t>, "" );
 	static_assert( !daw::traits::impl::is_incrementable_v<iter_t>, "" );
@@ -526,9 +522,9 @@ namespace is_iterator_006 {
 namespace is_iterator_007 {
 	using iter_t = typename std::unordered_map<int, int>::iterator;
 	static_assert( daw::traits::is_iterator<iter_t>, "" );
-	static_assert( daw::is_copy_constructible_v<iter_t>, "" );
-	static_assert( daw::is_copy_assignable_v<iter_t>, "" );
-	static_assert( daw::is_destructible_v<iter_t>, "" );
+	static_assert( std::is_copy_constructible_v<iter_t>, "" );
+	static_assert( std::is_copy_assignable_v<iter_t>, "" );
+	static_assert( std::is_destructible_v<iter_t>, "" );
 	static_assert( daw::traits::impl::has_value_type_v<iter_t>, "" );
 	static_assert( daw::traits::impl::has_difference_type_v<iter_t>, "" );
 	static_assert( daw::traits::impl::has_reference_v<iter_t>, "" );
@@ -630,17 +626,17 @@ namespace are_convertible_to_v_002 {
 
 namespace type_n_t_test_001 {
 	static_assert(
-	  daw::is_same_v<int, daw::type_n_t<2, long, double, int, float>>, "" );
+	  std::is_same_v<int, daw::type_n_t<2, long, double, int, float>>, "" );
 }
 
 namespace if_else_t_001 {
-	static_assert( daw::is_same_v<int, daw::if_else_t<true, int, std::string>>,
+	static_assert( std::is_same_v<int, daw::if_else_t<true, int, std::string>>,
 	               "" );
 }
 
 namespace if_else_t_002 {
 	static_assert(
-	  daw::is_same_v<std::string, daw::if_else_t<false, int, std::string>>, "" );
+	  std::is_same_v<std::string, daw::if_else_t<false, int, std::string>>, "" );
 }
 
 template<typename string_t>
@@ -756,9 +752,7 @@ namespace is_callable_convertible_001 {
 #pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
 #endif
 #endif
-	auto const func = []( auto d ) noexcept {
-		return 2.0 * d;
-	};
+	auto const func = []( auto d ) noexcept { return 2.0 * d; };
 #ifdef __clang__
 #ifndef __ICC // icpc defines the __clang__ macro
 #pragma clang diagnostic pop
@@ -825,10 +819,10 @@ namespace is_character_001 {
 
 namespace last_type_001 {
 	static_assert(
-	  daw::is_same_v<daw::traits::last_type_t<int, bool, char, void, float>,
+	  std::is_same_v<daw::traits::last_type_t<int, bool, char, void, float>,
 	                 float>,
 	  "" );
-	static_assert( daw::is_same_v<daw::traits::last_type_t<int>, int>, "" );
+	static_assert( std::is_same_v<daw::traits::last_type_t<int>, int>, "" );
 } // namespace last_type_001
 
 static_assert( daw::traits::is_instance_of_v<std::basic_string, std::string> );

@@ -116,14 +116,14 @@ namespace daw {
 	} // namespace impl
 
 	template<typename T, std::enable_if_t<(endian::native == endian::little &&
-	                                       daw::is_integral_v<std::decay_t<T>>),
+	                                       std::is_integral_v<std::decay_t<T>>),
 	                                      std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) to_little_endian( T &&value ) noexcept {
 		return std::forward<T>( value );
 	}
 
 	template<typename T, std::enable_if_t<(endian::native != endian::little &&
-	                                       daw::is_integral_v<std::decay_t<T>>),
+	                                       std::is_integral_v<std::decay_t<T>>),
 	                                      std::nullptr_t> = nullptr>
 	constexpr auto to_little_endian( T &&value ) noexcept {
 		return impl::swap_bytes( std::forward<T>( value ),
@@ -131,14 +131,14 @@ namespace daw {
 	}
 
 	template<typename T, std::enable_if_t<(endian::native == endian::big &&
-	                                       daw::is_integral_v<std::decay_t<T>>),
+	                                       std::is_integral_v<std::decay_t<T>>),
 	                                      std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) to_big_endian( T &&value ) noexcept {
 		return std::forward<T>( value );
 	}
 
 	template<typename T, std::enable_if_t<(endian::native != endian::big &&
-	                                       daw::is_integral_v<std::decay_t<T>>),
+	                                       std::is_integral_v<std::decay_t<T>>),
 	                                      std::nullptr_t> = nullptr>
 	constexpr auto to_big_endian( T &&value ) noexcept {
 		return impl::swap_bytes( std::forward<T>( value ),

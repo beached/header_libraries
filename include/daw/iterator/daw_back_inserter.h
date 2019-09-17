@@ -47,7 +47,7 @@ namespace daw {
 		  : m_container( &c ) {}
 
 		template<typename T,
-		         daw::enable_when_t<!daw::is_same_v<
+		         daw::enable_when_t<not std::is_same_v<
 		           daw::remove_cvref_t<T>, back_inserter_iterator>> = nullptr>
 		constexpr back_inserter_iterator &operator=( T &&val ) {
 			m_container->push_back( std::forward<T>( val ) );

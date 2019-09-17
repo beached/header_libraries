@@ -31,7 +31,7 @@ namespace daw {
 	///
 	// A natural number type
 	// An operation that causes overflow is undefined
-	template<typename T, required<is_integral_v<T>> = nullptr>
+	template<typename T, required<::std::is_integral_v<T>> = nullptr>
 	struct natural_t {
 		using value_type = std::decay_t<T>;
 
@@ -55,11 +55,13 @@ namespace daw {
 		constexpr natural_t &operator=( natural_t && ) noexcept = default;
 		~natural_t( ) noexcept = default;
 
-		template<typename Value, required<!is_same_v<natural_t, Value>> = nullptr>
+		template<typename Value,
+		         required<not std::is_same_v<natural_t, Value>> = nullptr>
 		constexpr natural_t( Value &&v )
 		  : m_value( validate( std::forward<Value>( v ) ) ) {}
 
-		template<typename Value, required<!is_same_v<natural_t, Value>> = nullptr>
+		template<typename Value,
+		         required<not std::is_same_v<natural_t, Value>> = nullptr>
 		constexpr natural_t &operator=( Value &&v ) {
 			m_value = validate( std::forward<Value>( v ) );
 			return *this;

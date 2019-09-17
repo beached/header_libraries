@@ -499,7 +499,7 @@ namespace daw {
 		template<typename Fwd>
 		auto reverse( Fwd &&fwd )
 		  -> decltype( details::reverse_impl( fwd, int( 0 ) ) ) {
-			static_assert( !is_rvalue_reference_v<Fwd &&>,
+			static_assert( not std::is_rvalue_reference_v<Fwd &&>,
 			               "Cannot pass rvalue_reference to reverse()" );
 			return details::reverse_impl( fwd, int( 0 ) );
 		}

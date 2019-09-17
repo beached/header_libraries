@@ -61,61 +61,62 @@ namespace daw {
 
 		template<typename Result = int_for_float_t<float>>
 		constexpr Result round( float d ) noexcept {
-			static_assert( daw::is_integral_v<Result>,
+			static_assert( std::is_integral_v<Result>,
 			               "Result type must be integral" );
-			static_assert( daw::is_floating_point_v<float>,
+			static_assert( std::is_floating_point_v<float>,
 			               "Argument must be a floating point type" );
 			return static_cast<Result>( d + 0.5 );
 		}
 
 		template<typename Result = int_for_float_t<double>>
 		constexpr Result round( double d ) noexcept {
-			static_assert( daw::is_integral_v<Result>,
+			static_assert( std::is_integral_v<Result>,
 			               "Result type must be integral" );
-			static_assert( daw::is_floating_point_v<double>,
+			static_assert( std::is_floating_point_v<double>,
 			               "Argument must be a floating point type" );
 			return static_cast<Result>( d + 0.5 );
 		}
 
 		template<typename Result = int_for_float_t<float>>
 		constexpr Result floor( float d ) noexcept {
-			static_assert( daw::is_integral_v<Result>,
+			static_assert( std::is_integral_v<Result>,
 			               "Result type must be integral" );
-			static_assert( daw::is_floating_point_v<float>,
+			static_assert( std::is_floating_point_v<float>,
 			               "Argument must be a floating point type" );
 			return static_cast<Result>( d );
 		}
 
 		template<typename Result = int_for_float_t<double>>
 		constexpr Result floor( double d ) noexcept {
-			static_assert( daw::is_integral_v<Result>,
+			static_assert( std::is_integral_v<Result>,
 			               "Result type must be integral" );
-			static_assert( daw::is_floating_point_v<double>,
+			static_assert( std::is_floating_point_v<double>,
 			               "Argument must be a doubleing point type" );
 			return static_cast<Result>( d );
 		}
 
 		template<typename Result = int_for_float_t<float>>
 		constexpr Result ceil( float d ) noexcept {
-			static_assert( daw::is_integral_v<Result>,
+			static_assert( std::is_integral_v<Result>,
 			               "Result type must be integral" );
-			static_assert( daw::is_floating_point_v<float>,
+			static_assert( std::is_floating_point_v<float>,
 			               "Argument must be a floating point type" );
 			return static_cast<Result>( d + 1.0 );
 		}
 
 		template<typename Result = int_for_float_t<double>>
 		constexpr Result ceil( double d ) noexcept {
-			static_assert( daw::is_integral_v<Result>,
+			static_assert( std::is_integral_v<Result>,
 			               "Result type must be integral" );
-			static_assert( daw::is_floating_point_v<double>,
+			static_assert( std::is_floating_point_v<double>,
 			               "Argument must be a doubleing point type" );
 			return static_cast<Result>( d + 1.0 );
 		}
 
 		template<typename T>
 		constexpr T round_by( T const value, double const rnd_by ) noexcept {
-			static_assert( is_arithmetic_v<T>, "value must be an arithmetic type" );
+			static_assert( ::std::is_arithmetic_v<T>,
+			               "value must be an arithmetic type" );
 			auto const rnd =
 			  static_cast<double>( round( static_cast<double>( value ) / rnd_by ) );
 			return static_cast<T>( rnd * rnd_by );
@@ -123,7 +124,7 @@ namespace daw {
 
 		template<typename T>
 		constexpr T floor_by( T const value, double const rnd_by ) noexcept {
-			static_assert( is_arithmetic_v<T>, "value must be an arithmetic type" );
+			static_assert( ::std::is_arithmetic_v<T>, "value must be an arithmetic type" );
 			auto const rnd =
 			  static_cast<double>( floor( static_cast<double>( value ) / rnd_by ) );
 			return static_cast<T>( rnd * rnd_by );
@@ -131,14 +132,14 @@ namespace daw {
 
 		template<typename T>
 		constexpr T ceil_by( T const value, double const rnd_by ) noexcept {
-			static_assert( is_arithmetic_v<T>, "value must be an arithmetic type" );
+			static_assert( ::std::is_arithmetic_v<T>, "value must be an arithmetic type" );
 			auto const rnd =
 			  static_cast<double>( ceil( static_cast<double>( value ) / rnd_by ) );
 			return static_cast<T>( rnd * rnd_by );
 		}
 
 		template<typename T,
-		         std::enable_if_t<!is_integral_v<T>, std::nullptr_t> = nullptr>
+		         std::enable_if_t<not std::is_integral_v<T>, std::nullptr_t> = nullptr>
 		constexpr T abs( T t ) noexcept {
 			return t < static_cast<T>( 0 ) ? -t : t;
 		}
@@ -153,8 +154,8 @@ namespace daw {
 		}
 
 		template<typename Result = uintmax_t, typename SignedInteger,
-		         std::enable_if_t<all_true_v<is_integral_v<SignedInteger>,
-		                                     is_signed_v<SignedInteger>>,
+		         std::enable_if_t<all_true_v<::std::is_integral_v<SignedInteger>,
+		                                     ::std::is_signed_v<SignedInteger>>,
 		                          std::nullptr_t> = nullptr>
 		constexpr Result abs( SignedInteger v ) noexcept {
 			// This accounts for when negating the number is out of range
@@ -169,8 +170,8 @@ namespace daw {
 		}
 
 		template<typename UnsignedInteger,
-		         std::enable_if_t<all_true_v<is_integral_v<UnsignedInteger>,
-		                                     !is_signed_v<UnsignedInteger>>,
+		         std::enable_if_t<all_true_v<::std::is_integral_v<UnsignedInteger>,
+		                                     not std::is_signed_v<UnsignedInteger>>,
 		                          std::nullptr_t> = nullptr>
 		constexpr UnsignedInteger abs( UnsignedInteger &&v ) noexcept {
 			return std::forward<UnsignedInteger>( v );
@@ -240,7 +241,7 @@ namespace daw {
 
 		template<typename T>
 		constexpr auto sqr( T const &value ) noexcept {
-			static_assert( is_arithmetic_v<T>,
+			static_assert( ::std::is_arithmetic_v<T>,
 			               "Template parameter must be an arithmetic type" );
 			return value * value;
 		}
@@ -256,7 +257,7 @@ namespace daw {
 			return value;
 		}
 
-		template<typename T, std::enable_if_t<!is_floating_point_v<T>,
+		template<typename T, std::enable_if_t<not std::is_floating_point_v<T>,
 		                                      std::nullptr_t> = nullptr>
 		constexpr bool nearly_equal( T const &a, T const &b ) noexcept {
 			return a == b;
@@ -266,8 +267,8 @@ namespace daw {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wfloat-equal"
 #endif
-		template<typename T,
-		         std::enable_if_t<is_floating_point_v<T>, std::nullptr_t> = nullptr>
+		template<typename T, std::enable_if_t<::std::is_floating_point_v<T>,
+		                                      std::nullptr_t> = nullptr>
 		constexpr bool
 		nearly_equal( T a, T b,
 		              T epsilon = std::numeric_limits<T>::epsilon( ) ) noexcept {

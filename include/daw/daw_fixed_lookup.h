@@ -62,7 +62,7 @@ namespace daw {
 	/// is double needed items
 	template<typename Value, size_t N, size_t HashSize = sizeof( size_t )>
 	struct fixed_lookup {
-		static_assert( daw::is_default_constructible_v<Value>,
+		static_assert( std::is_default_constructible_v<Value>,
 		               "Value must be default constructible" );
 		static_assert( N > 0, "Must supply a positive initial_size larger than 0" );
 
@@ -143,8 +143,8 @@ namespace daw {
 		}
 
 	public:
-		constexpr fixed_lookup( ) noexcept(
-		  noexcept( daw::is_nothrow_default_constructible_v<value_t> ) ) = default;
+		constexpr fixed_lookup( ) noexcept( noexcept(
+		  ::std::is_nothrow_default_constructible_v<value_t> ) ) = default;
 
 		template<typename Key>
 		constexpr hash_value_t find_existing( Key &&key ) const {

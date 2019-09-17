@@ -35,7 +35,7 @@
 namespace daw {
 	template<typename T, typename Validator>
 	struct validated {
-		static_assert( is_same_v<T, remove_cvref_t<T>>,
+		static_assert( ::std::is_same_v<T, ::daw::remove_cvref_t<T>>,
 		               "T cannot be cv or ref qualified" );
 		// This is really true for ref qualified T as it allows the value to change
 		// without validation
@@ -56,21 +56,21 @@ namespace daw {
 		}
 
 	public:
-		template<
-		  typename... Args,
-		  std::enable_if_t<( !is_enum_v<value_t> &&
-		                     !(sizeof...( Args ) == 1 &&
-		                       daw::traits::is_first_type_v<validated, Args...>)),
-		                   std::nullptr_t> = nullptr>
+		template<typename... Args,
+		         std::enable_if_t<
+		           ( not std::is_enum_v<value_t> &&
+		             not( sizeof...( Args ) == 1 &&
+		                  daw::traits::is_first_type_v<validated, Args...> ) ),
+		           std::nullptr_t> = nullptr>
 		constexpr validated( Args &&... args )
 		  : m_value(
 		      validate( construct_a<value_t>( std::forward<Args>( args )... ) ) ) {}
 
 		// Handle enum's differently as it is UB to go out of range on a c enum
-		template<
-		  typename... Args,
-		  std::enable_if_t<all_true_v<is_enum_v<value_t>, sizeof...( Args ) < 2>,
-		                   std::nullptr_t> = nullptr>
+		template<typename... Args,
+		         std::enable_if_t<
+		           all_true_v<::std::is_enum_v<value_t>, sizeof...( Args ) < 2>,
+		           std::nullptr_t> = nullptr>
 		constexpr validated( Args &&... args )
 		  : m_value(
 		      static_cast<value_t>( validate( std::underlying_type_t<value_t>(

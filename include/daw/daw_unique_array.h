@@ -84,7 +84,7 @@ namespace daw {
 
 		template<typename... Args>
 		unique_array_t( size_type sz, Args &&... args ) noexcept(
-		  daw::is_nothrow_constructible_v<value_type, Args...> )
+		  std::is_nothrow_constructible_v<value_type, Args...> )
 		  : m_data( create_values( sz ) )
 		  , m_size( sz ) {
 

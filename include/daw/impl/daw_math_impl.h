@@ -34,7 +34,7 @@
 #endif // min
 
 namespace daw {
-	template<typename Float, std::enable_if_t<daw::is_floating_point_v<Float>,
+	template<typename Float, std::enable_if_t<::std::is_floating_point_v<Float>,
 	                                          std::nullptr_t> = nullptr>
 	constexpr Float float_abs( Float f ) {
 		if( f < 0 ) {

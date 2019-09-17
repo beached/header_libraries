@@ -381,8 +381,8 @@ namespace daw {
 
 		template<typename K, typename V,
 		         std::enable_if_t<
-		           daw::all_true_v<std::is_same_v<Key, daw::remove_cvref_t<K>>,
-		                           is_same_v<Value, daw::remove_cvref_t<V>>>,
+		           daw::all_true_v<::std::is_same_v<Key, daw::remove_cvref_t<K>>,
+		                           ::std::is_same_v<Value, daw::remove_cvref_t<V>>>,
 		           std::nullptr_t> = nullptr>
 		constexpr void insert( K &&key, V &&value ) noexcept {
 			auto const index = find_index( key );

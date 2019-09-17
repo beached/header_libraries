@@ -44,7 +44,7 @@ namespace daw {
 
 		template<typename U = value_type, typename... Args>
 		static pointer make_ptr( Args &&... args ) noexcept(
-		  daw::is_nothrow_constructible_v<value_type, Args...> ) {
+		  ::std::is_nothrow_constructible_v<value_type, Args...> ) {
 
 			return new U( std::forward<Args>( args )... );
 		}
@@ -143,7 +143,7 @@ namespace daw {
 
 	template<typename T, typename... Args>
 	copiable_unique_ptr<T> make_copiable_unique_ptr( Args &&... args ) noexcept(
-	  daw::is_nothrow_constructible_v<T, Args...> ) {
+	  ::std::is_nothrow_constructible_v<T, Args...> ) {
 
 		auto ptr = new T( std::forward<Args>( args )... );
 		return {ptr};

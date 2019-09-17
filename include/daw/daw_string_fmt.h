@@ -108,7 +108,7 @@ namespace daw {
 
 			public:
 				template<typename String,
-				         std::enable_if_t<daw::is_convertible_v<String, std::string>,
+				         std::enable_if_t<std::is_convertible_v<String, std::string>,
 				                          std::nullptr_t> = nullptr>
 				fmt_t( String &&format_str )
 				  : m_format_str{std::forward<String>( format_str )} {}

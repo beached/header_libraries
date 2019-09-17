@@ -188,9 +188,10 @@ namespace daw {
 				  std::declval<Function>( )( std::declval<Args>( )... ) );
 			}
 
-			template<typename Function, typename... Args,
-			         std::enable_if_t<!is_callable_v<Function, Args...>,
-			                          std::nullptr_t> = nullptr>
+			template<
+			  typename Function, typename... Args,
+			  std::enable_if_t<not daw::traits::is_callable_v<Function, Args...>,
+			                   std::nullptr_t> = nullptr>
 			constexpr bool is_nothrow_callable_test( ) noexcept {
 				return false;
 			}
@@ -345,7 +346,7 @@ namespace daw {
 
 			template<typename T>
 			inline constexpr bool is_incrementable_v =
-			  is_same_v<T &, daw::detected_t<is_iter::is_incrementable, T>>;
+			  ::std::is_same_v<T &, ::daw::detected_t<is_iter::is_incrementable, T>>;
 
 			template<typename T>
 			inline constexpr bool has_value_type_v =
@@ -387,20 +388,20 @@ namespace daw {
 
 		template<typename Function>
 		struct void_function<
-		  Function,
-		  std::enable_if_t<is_default_constructible_v<Function>, std::nullptr_t>> {
+		  Function, std::enable_if_t<::std::is_default_constructible_v<Function>,
+		                             std::nullptr_t>> {
 
 			Function function;
 
 			constexpr void_function( ) noexcept(
-			  is_nothrow_constructible_v<Function> ) = default;
+			  ::std::is_nothrow_constructible_v<Function> ) = default;
 
 			explicit constexpr void_function( Function const &func ) noexcept(
-			  is_nothrow_copy_constructible_v<Function> )
+			  ::std::is_nothrow_copy_constructible_v<Function> )
 			  : function( func ) {}
 
 			explicit constexpr void_function( Function &&func ) noexcept(
-			  is_nothrow_move_constructible_v<Function> )
+			  ::std::is_nothrow_move_constructible_v<Function> )
 			  : function( daw::move( func ) ) {}
 
 			explicit constexpr operator bool( ) noexcept(
@@ -421,17 +422,17 @@ namespace daw {
 
 		template<typename Function>
 		struct void_function<
-		  Function,
-		  std::enable_if_t<!is_default_constructible_v<Function>, std::nullptr_t>> {
+		  Function, std::enable_if_t<not::std::is_default_constructible_v<Function>,
+		                             std::nullptr_t>> {
 
 			Function function;
 
 			explicit constexpr void_function( Function const &func ) noexcept(
-			  is_nothrow_copy_constructible_v<Function> )
+			  ::std::is_nothrow_copy_constructible_v<Function> )
 			  : function( func ) {}
 
 			explicit constexpr void_function( Function &&func ) noexcept(
-			  is_nothrow_move_constructible_v<Function> )
+			  ::std::is_nothrow_move_constructible_v<Function> )
 			  : function( daw::move( func ) ) {}
 
 			explicit constexpr operator bool( ) noexcept(
@@ -628,24 +629,26 @@ namespace daw {
 	} // namespace impl
 
 	template<typename T, bool B = true>
-	using enable_default_constructor =
-	  impl::delete_default_constructor_if<!is_default_constructible_v<T> and B>;
+	using enable_default_constructor = impl::delete_default_constructor_if<
+	  not::std::is_default_constructible_v<T> and B>;
 
 	template<typename T, bool B = true>
 	using enable_copy_constructor =
-	  impl::delete_copy_constructor_if<!is_copy_constructible_v<T> and B>;
+	  impl::delete_copy_constructor_if<not::std::is_copy_constructible_v<T> and
+	                                   B>;
 
 	template<typename T, bool B = true>
 	using enable_copy_assignment =
-	  impl::delete_copy_assignment_if<!is_copy_assignable_v<T> and B>;
+	  impl::delete_copy_assignment_if<not::std::is_copy_assignable_v<T> and B>;
 
 	template<typename T, bool B = true>
 	using enable_move_constructor =
-	  impl::delete_move_constructor_if<!is_move_constructible_v<T> and B>;
+	  impl::delete_move_constructor_if<not::std::is_move_constructible_v<T> and
+	                                   B>;
 
 	template<typename T, bool B = true>
 	using enable_move_assignment =
-	  impl::delete_move_assignment_if<!is_move_assignable_v<T> and B>;
+	  impl::delete_move_assignment_if<not::std::is_move_assignable_v<T> and B>;
 
 	struct nothing {};
 } // namespace daw

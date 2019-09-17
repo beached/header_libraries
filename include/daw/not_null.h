@@ -48,22 +48,23 @@ namespace daw {
 		T m_ptr;
 
 	public:
-		static_assert( is_assignable_v<T &, std::nullptr_t>,
+		static_assert( ::std::is_assignable_v<T &, std::nullptr_t>,
 		               "T cannot be assigned nullptr." );
 
-		template<typename U,
-		         std::enable_if_t<is_convertible_v<U, T>, std::nullptr_t> = nullptr>
+		template<typename U, std::enable_if_t<::std::is_convertible_v<U, T>,
+		                                      ::std::nullptr_t> = nullptr>
 		constexpr not_null( U ptr )
 		  : m_ptr( static_cast<T>( ptr ) ) {
 
 			daw::exception::daw_throw_on_null( m_ptr, "Cannot be assigned nullptr" );
 		}
 
-		template<typename U,
-		         std::enable_if_t<
-		           all_true_v<!is_same_v<remove_cvref_t<U>, remove_cvref_t<T>>,
-		                      is_convertible_v<U, T>>,
-		           std::nullptr_t> = nullptr>
+		template<
+		  typename U,
+		  std::enable_if_t<all_true_v<not std::is_same_v<::daw::remove_cvref_t<U>,
+		                                                 ::daw::remove_cvref_t<T>>,
+		                              is_convertible_v<U, T>>,
+		                   std::nullptr_t> = nullptr>
 		constexpr not_null( not_null<U> const &other )
 		  : not_null( static_cast<T>( other.get( ) ) ) {}
 
