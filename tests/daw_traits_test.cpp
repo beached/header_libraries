@@ -452,7 +452,7 @@ struct test_binary_pred_t {
 namespace binary_predicate_002 {
 	using a_t = daw::is_detected<daw::traits::detectors::callable_with,
 	                             test_binary_pred_t, int, int>;
-	constexpr auto const a = daw::is_convertible_v<a_t, bool>;
+	constexpr auto const a = std::is_convertible_v<a_t, bool>;
 	static_assert( a, "a: Not callable with (int, int )" );
 
 	constexpr auto const b =
@@ -584,7 +584,7 @@ namespace is_input_iterator_001 {
 	static_assert( daw::traits::is_equality_comparable_v<iter_t>, "" );
 
 	static_assert(
-	  daw::is_convertible_v<decltype( *std::declval<iter_t>( ) ), int>, "" );
+	  ::std::is_convertible_v<decltype( *std::declval<iter_t>( ) ), int>, "" );
 
 	static_assert( daw::traits::is_input_iterator_v<iter_t, int>, "" );
 } // namespace is_input_iterator_001

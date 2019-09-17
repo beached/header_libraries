@@ -135,14 +135,14 @@ namespace daw {
 		  , m_end{last} {}
 
 		template<typename T,
-		         typename = std::enable_if_t<is_convertible_v<T, pointer>>>
+		         typename = std::enable_if_t<::std::is_convertible_v<T, pointer>>>
 		hash_table_item_iterator( hash_table_item_iterator<T> const &other )
 		  : m_begin( other.m_begin )
 		  , m_position( other.m_position )
 		  , m_end( other.m_end ) {}
 
 		template<typename T,
-		         typename = std::enable_if_t<is_convertible_v<T, pointer>>>
+		         typename = std::enable_if_t<::std::is_convertible_v<T, pointer>>>
 		hash_table_item_iterator &
 		operator=( hash_table_item_iterator<T> const &rhs ) {
 			if( this != rhs ) {

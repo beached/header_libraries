@@ -35,14 +35,14 @@ namespace daw {
 		template<typename T>
 		struct variant_visitor_t {
 			template<typename U,
-			         std::enable_if_t<is_convertible_v<remove_cvref_t<U>, T>,
+			         std::enable_if_t<::std::is_convertible_v<remove_cvref_t<U>, T>,
 			                          std::nullptr_t> = nullptr>
 			constexpr T operator( )( U &&result ) const noexcept {
 				return static_cast<T>( std::forward<U>( result ) );
 			}
 
 			template<typename U,
-			         std::enable_if_t<!is_convertible_v<remove_cvref_t<U>, T>,
+			         std::enable_if_t<not std::is_convertible_v<remove_cvref_t<U>, T>,
 			                          std::nullptr_t> = nullptr>
 			T operator( )( U && ) const {
 				throw std::bad_variant_access( );

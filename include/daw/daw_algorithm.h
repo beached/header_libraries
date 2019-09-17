@@ -78,10 +78,10 @@ namespace daw {
 
 	// Iterator movement functions
 	namespace impl {
-		template<
-		  typename Iterator, typename Iterator2, typename Iterator3,
-		  typename Distance,
-		  daw::enable_when_t<!traits::is_random_access_iterator<Iterator>> = nullptr>
+		template<typename Iterator, typename Iterator2, typename Iterator3,
+		         typename Distance,
+		         daw::enable_when_t<!traits::is_random_access_iterator<Iterator>> =
+		           nullptr>
 		constexpr void safe_advance_impl( Iterator2 const first, Iterator &it,
 		                                  Iterator3 const last,
 		                                  Distance dist ) noexcept {
@@ -1649,7 +1649,7 @@ namespace daw {
 			  "must be valid" );
 
 			static_assert(
-			  is_convertible_v<decltype( binary_op( init, *first++ ) ), T>,
+			  ::std::is_convertible_v<decltype( binary_op( init, *first++ ) ), T>,
 			  "Result of BinaryOperation must be convertable to type of value "
 			  "referenced by RandomIterator. "
 			  "e.g. *first = binary_op( *first, *(first + 1) ) must be valid." );
@@ -1929,8 +1929,8 @@ namespace daw {
 		template<class ForwardIterator, class UnaryPredicate>
 		constexpr ForwardIterator remove_if(
 		  ForwardIterator first, ForwardIterator last,
-		  UnaryPredicate&& pred ) noexcept( noexcept( daw::invoke( pred,
-		                                                         *first ) ) ) {
+		  UnaryPredicate &&pred ) noexcept( noexcept( daw::invoke( pred,
+		                                                           *first ) ) ) {
 			first = daw::algorithm::find_if( first, last, pred );
 			if( first != last ) {
 				for( ForwardIterator i = first; ++i != last; ) {
@@ -1944,9 +1944,8 @@ namespace daw {
 
 		template<class ForwardIterator, class UnaryPredicate, typename Function>
 		constexpr ForwardIterator consume_if(
-		  ForwardIterator first, ForwardIterator last,
-		  UnaryPredicate&& pred, Function && func ) noexcept( noexcept( daw::invoke( pred,
-		                                                         *first ) ) ) {
+		  ForwardIterator first, ForwardIterator last, UnaryPredicate &&pred,
+		  Function &&func ) noexcept( noexcept( daw::invoke( pred, *first ) ) ) {
 			first = daw::algorithm::find_if( first, last, pred );
 			if( first != last ) {
 				for( ForwardIterator i = first; ++i != last; ) {

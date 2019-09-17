@@ -63,7 +63,7 @@ namespace daw {
 		  typename U,
 		  std::enable_if_t<all_true_v<not std::is_same_v<::daw::remove_cvref_t<U>,
 		                                                 ::daw::remove_cvref_t<T>>,
-		                              is_convertible_v<U, T>>,
+		                              ::std::is_convertible_v<U, T>>,
 		                   std::nullptr_t> = nullptr>
 		constexpr not_null( not_null<U> const &other )
 		  : not_null( static_cast<T>( other.get( ) ) ) {}

@@ -179,7 +179,7 @@ namespace daw {
 			               "InputIterator is not equality_comparable" );
 
 			static_assert(
-			  is_convertible_v<T, U>,
+			 ::std::is_convertible_v<T, U>,
 			  "InputIterator's dereferenced value is not convertible to itself" );
 			return true;
 		}
