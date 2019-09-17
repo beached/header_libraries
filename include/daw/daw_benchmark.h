@@ -289,9 +289,9 @@ namespace daw {
 		return result;
 	}
 
-	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
-	double bench_n_test_mbs2( std::string const &title, size_t bytes,
-	                          Test &&test_callable, Args &&... args ) noexcept {
+	template<size_t Runs, char delem = '\n', typename Validator, typename Function, typename... Args>
+	double bench_n_test_mbs2( std::string const &title, size_t bytes, Validator && validator,
+	                          Function &&func, Args &&... args ) noexcept {
 		static_assert( Runs > 0 );
 
 		double base_time = std::numeric_limits<double>::max( );
@@ -323,13 +323,17 @@ namespace daw {
 
 			auto result = daw::expected_from_code(
 			  [&]( auto &&tp ) {
-				  return ::std::apply( test_callable,
-				                       std::forward<decltype( tp )>( tp ) );
+				  return ::std::apply( func, std::forward<decltype( tp )>( tp ) );
 			  },
 			  tp_args );
 
 			auto const finish = std::chrono::high_resolution_clock::now( );
 			daw::do_not_optimize( result );
+			if( not validator( result ) ) {
+				std::cerr << "Error validating result\n";
+				std::abort( );
+			}
+
 			auto const duration =
 			  std::chrono::duration<double>( finish - start ).count( );
 			if( duration < min_time ) {
