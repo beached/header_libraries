@@ -461,7 +461,7 @@ namespace daw {
 
 #ifndef _MSC_VER
 	template<typename F, typename... Args,
-	         daw::enable_if_t<!daw::all_true_v<is_reference_wrapper_v<Args>...>> =
+	         daw::enable_when_t<!daw::all_true_v<is_reference_wrapper_v<Args>...>> =
 	           nullptr>
 	[[nodiscard]] constexpr decltype( auto ) invoke( F &&f, Args &&... args )
 	  // exception specification for QoI

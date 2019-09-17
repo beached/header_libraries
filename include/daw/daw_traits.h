@@ -78,7 +78,7 @@ namespace daw {
 		/// Summary:	Returns true if all values passed are true
 		///
 		template<typename BoolType,
-		         daw::enable_if_t<is_convertible_v<BoolType, bool>> = nullptr>
+		         daw::enable_when_t<is_convertible_v<BoolType, bool>> = nullptr>
 		constexpr bool are_true( BoolType b1 ) noexcept {
 			return static_cast<bool>( b1 );
 		}

@@ -63,7 +63,7 @@ namespace daw {
 		  m_copier;
 
 	public:
-		template<typename T, daw::enable_if_t<std::is_base_of_v<
+		template<typename T, daw::enable_when_t<std::is_base_of_v<
 		                       BaseClass, daw::remove_cvref_t<T>>> = nullptr>
 		poly_value( T &&value )
 		  : m_ptr(
@@ -101,7 +101,7 @@ namespace daw {
 		}
 
 		template<typename Child,
-		         daw::enable_if_t<std::is_base_of_v<BaseClass, Child>,
+		         daw::enable_when_t<std::is_base_of_v<BaseClass, Child>,
 		                          !std::is_same_v<BaseClass, Child>,
 		                          std::is_copy_constructible_v<Child>> = nullptr>
 		poly_value( poly_value<Child> const &other )
@@ -109,7 +109,7 @@ namespace daw {
 		  , m_copier( poly_value_impl::make_copier<BaseClass, Child>( ) ) {}
 
 		template<typename Child,
-		         daw::enable_if_t<std::is_base_of_v<BaseClass, Child> and
+		         daw::enable_when_t<std::is_base_of_v<BaseClass, Child> and
 		                          !std::is_same_v<BaseClass, Child>> = nullptr>
 		poly_value &operator=( poly_value<Child> const &rhs ) {
 			m_ptr = std::make_unique<Child>( *rhs.m_ptr );
@@ -117,7 +117,7 @@ namespace daw {
 			return *this;
 		}
 
-		template<typename T, daw::enable_if_t<std::is_base_of_v<
+		template<typename T, daw::enable_when_t<std::is_base_of_v<
 		                       BaseClass, daw::remove_cvref_t<T>>> = nullptr>
 		poly_value &operator=( T &&rhs ) {
 			m_ptr =
@@ -128,19 +128,19 @@ namespace daw {
 		}
 
 		template<typename T,
-		         daw::enable_if_t<std::is_base_of_v<BaseClass, T>> = nullptr>
+		         daw::enable_when_t<std::is_base_of_v<BaseClass, T>> = nullptr>
 		poly_value( T *other )
 		  : m_ptr( std::unique_ptr<T>( other ) )
 		  , m_copier( poly_value_impl::make_copier<BaseClass, T>( ) ) {}
 
 		template<typename T, typename D,
-		         daw::enable_if_t<std::is_base_of_v<BaseClass, T>> = nullptr>
+		         daw::enable_when_t<std::is_base_of_v<BaseClass, T>> = nullptr>
 		poly_value( T *other, D &&deleter )
 		  : m_ptr( std::unique_ptr<T>( other ), std::forward<D>( deleter ) )
 		  , m_copier( poly_value_impl::make_copier<BaseClass, T>( ) ) {}
 
 		template<typename T,
-		         daw::enable_if_t<std::is_base_of_v<BaseClass, T>> = nullptr>
+		         daw::enable_when_t<std::is_base_of_v<BaseClass, T>> = nullptr>
 		poly_value &operator=( T *rhs ) {
 			m_ptr = std::unique_ptr<T>( rhs );
 			m_copier = poly_value_impl::make_copier<BaseClass, T>( );

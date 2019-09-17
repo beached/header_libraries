@@ -34,5 +34,5 @@ namespace daw {
 		};
 	} // namespace enable_if_impl
 	template<bool... B>
-	using enable_if_t = typename enable_if_impl::enable_if<( B and ... )>::type;
+	using enable_when_t = typename enable_if_impl::enable_if<( B and ... )>::type;
 } // namespace daw

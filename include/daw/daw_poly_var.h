@@ -37,12 +37,12 @@ namespace daw {
 
 		constexpr poly_var( ) = default;
 
-		template<typename T, daw::enable_if_t<std::is_constructible_v<
+		template<typename T, daw::enable_when_t<std::is_constructible_v<
 		                       std::variant<Types...>, T>> = nullptr>
 		constexpr poly_var( T &&value )
 		  : m_value( std::forward<T>( value ) ) {}
 
-		template<typename T, daw::enable_if_t<std::is_constructible_v<
+		template<typename T, daw::enable_when_t<std::is_constructible_v<
 		                       std::variant<Types...>, T>> = nullptr>
 		constexpr poly_var &operator=( T &&value ) {
 			m_value = std::forward<T>( value );

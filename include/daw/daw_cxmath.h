@@ -422,19 +422,19 @@ namespace daw::cxmath {
 	}
 
 	template<typename Integer,
-	         daw::enable_if_t<std::is_integral_v<Integer>> = nullptr>
+	         daw::enable_when_t<std::is_integral_v<Integer>> = nullptr>
 	[[nodiscard]] constexpr bool is_odd( Integer i ) noexcept {
 		return ( static_cast<uint32_t>( i ) & 1U ) == 1U;
 	}
 
 	template<typename Integer,
-	         daw::enable_if_t<std::is_integral_v<Integer>> = nullptr>
+	         daw::enable_when_t<std::is_integral_v<Integer>> = nullptr>
 	[[nodiscard]] constexpr bool is_even( Integer i ) noexcept {
 		return ( static_cast<uint32_t>( i ) & 1U ) == 0U;
 	}
 
 	template<typename Float,
-	         daw::enable_if_t<std::is_floating_point_v<Float>> = nullptr>
+	         daw::enable_when_t<std::is_floating_point_v<Float>> = nullptr>
 	[[nodiscard]] constexpr Float abs( Float f ) noexcept {
 		if( f < 0.0f ) {
 			return -f;
@@ -468,7 +468,7 @@ namespace daw::cxmath {
 	}
 
 	template<typename Number, typename Number2,
-	         daw::enable_if_t<std::is_arithmetic_v<Number>,
+	         daw::enable_when_t<std::is_arithmetic_v<Number>,
 	                          std::is_arithmetic_v<Number2>> = nullptr>
 	[[nodiscard]] constexpr Number copy_sign( Number x, Number2 s ) noexcept {
 		if( s < 0 ) {
@@ -484,13 +484,13 @@ namespace daw::cxmath {
 	}
 
 	template<typename Number,
-	         daw::enable_if_t<std::is_signed_v<Number>> = nullptr>
+	         daw::enable_when_t<std::is_signed_v<Number>> = nullptr>
 	[[nodiscard]] constexpr bool signbit( Number n ) noexcept {
 		return n < 0;
 	}
 
 	template<typename Number,
-	         daw::enable_if_t<!std::is_signed_v<Number>> = nullptr>
+	         daw::enable_when_t<!std::is_signed_v<Number>> = nullptr>
 	[[nodiscard]] constexpr bool signbit( Number n ) noexcept {
 		return false;
 	}

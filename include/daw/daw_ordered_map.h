@@ -308,7 +308,7 @@ namespace daw {
 			  } );
 		}
 
-		template<typename P, daw::enable_if_t<
+		template<typename P, daw::enable_when_t<
 		                       std::is_constructible_v<value_type, P &&>> = nullptr>
 		constexpr std::pair<iterator, bool> insert( P &&value ) {
 			auto pos = find( std::get<0>( value ) );
