@@ -169,14 +169,13 @@ namespace daw {
 	}
 #else
 	namespace internal {
-		inline void UseCharPointer( char const volatile* ) {
+		inline void UseCharPointer( char const volatile * ) {}
+		template<class T>
+		inline void do_not_optimize( T const &value ) {
+			internal::UseCharPointer(
+			  &reinterpret_cast<char const volatile &>( value ) );
+			_ReadWriteBarrier( );
 		}
-	template<class T>
-	inline void do_not_optimize( T const &value ) {
-		internal::UseCharPointer(
-		  &reinterpret_cast<char const volatile &>( value ) );
-		_ReadWriteBarrier( );
-	}
 
 #endif
 	template<typename Test, typename... Args>
@@ -290,7 +289,7 @@ namespace daw {
 
 	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
 	double bench_n_test_mbs2( std::string const &title, size_t bytes,
-	                       Test &&test_callable, Args &&... args ) noexcept {
+	                          Test &&test_callable, Args &&... args ) noexcept {
 		static_assert( Runs > 0 );
 
 		double base_time = std::numeric_limits<double>::max( );
