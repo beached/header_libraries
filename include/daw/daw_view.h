@@ -226,7 +226,7 @@ namespace daw {
 			return result;
 		}
 
-		[[nodiscard]] constexpr bool pop( value_type &result ) {
+		[[nodiscard]] constexpr bool pop( value_type & result ) {
 			if( empty( ) ) {
 				return false;
 			}
