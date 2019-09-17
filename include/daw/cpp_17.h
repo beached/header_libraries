@@ -102,11 +102,11 @@ namespace daw {
 	template<typename T, typename U>
 	inline constexpr bool ::std::is_nothrow_assignable_v =
 	  std::is_nothrow_assignable<T, U>::value;
-*/
+
 	template<typename From, typename To>
 	inline constexpr bool is_convertible_v =
 	  ::std::is_convertible<From, To>::value;
-	/*
+
 	  template<typename T, typename... Args>
 	  inline constexpr bool is_constructible_v =
 	    std::is_constructible<T, Args...>::value;
