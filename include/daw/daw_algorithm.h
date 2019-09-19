@@ -2116,15 +2116,18 @@ namespace daw::algorithm {
 		return find_if( first, last, std::forward<UnaryPredicate>( p ) ) == last;
 	}
 
-	template<typename BidirectionalIterator>
+	template<size_t MinSize = 1, typename BidirectionalIterator>
 	::std::vector<::daw::view<BidirectionalIterator>>
 	partition_range( BidirectionalIterator first, BidirectionalIterator last,
 	                 size_t count ) {
-
+		static_assert( MinSize > 0 );
 		auto v = ::daw::view( first, last );
 		auto result = ::std::vector<::daw::view<BidirectionalIterator>>( );
 		result.reserve( count );
-		auto const sz = v.size( ) / count;
+		auto sz = v.size( ) / count;
+		if( sz < MinSize ) {
+			sz = MinSize;
+		}
 		while( count-- > 1 ) {
 			result.push_back( v.pop_front( sz ) );
 		}
@@ -2132,10 +2135,10 @@ namespace daw::algorithm {
 		return result;
 	}
 
-	template<typename BidirectionalIterator>
+	template<size_t MinSize = 1, typename BidirectionalIterator>
 	::std::vector<::daw::view<BidirectionalIterator>>
 	partition_range( ::daw::view<BidirectionalIterator> rng, size_t count ) {
-		return partition_range( rng.begin( ), rng.end( ), count );
+		return partition_range<MinSize>( rng.begin( ), rng.end( ), count );
 	}
 } // namespace daw::algorithm
 
