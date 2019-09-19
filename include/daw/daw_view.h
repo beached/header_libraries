@@ -245,5 +245,5 @@ namespace daw {
 
 	template<typename T>
 	struct is_daw_view_t<::daw::view<T>> : std::true_type {};
-
 } // namespace daw
+
