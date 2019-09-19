@@ -2117,11 +2117,12 @@ namespace daw::algorithm {
 	}
 
 	template<typename BidirectionalIterator>
-	auto partition_range( BidirectionalIterator first, BidirectionalIterator last,
-	                      size_t count ) {
+	::std::vector<BidirectionalIterator>
+	partition_range( BidirectionalIterator first, BidirectionalIterator last,
+	                 size_t count ) {
 
 		auto v = ::daw::view( first, last );
-		auto result = ::std::vector<typename decltype( v )::value_type>( );
+		auto result = ::std::vector<BidirectionalIterator>( );
 		result.reserve( count );
 		auto const sz = v.size( ) / count;
 		while( count-- > 1 ) {
@@ -2131,9 +2132,9 @@ namespace daw::algorithm {
 		return result;
 	}
 
-	template<typename T>
-	::std::vector<::daw::view<T>> partition_range( ::daw::view<T> rng,
-	                                               size_t count ) {
+	template<typename BidirectionalIterator>
+	::std::vector<::daw::view<BidirectionalIterator>>
+	partition_range( ::daw::view<BidirectionalIterator> rng, size_t count ) {
 		return partition_range( rng.begin( ), rng.end( ), count );
 	}
 } // namespace daw::algorithm
