@@ -2140,5 +2140,31 @@ namespace daw::algorithm {
 	partition_range( ::daw::view<BidirectionalIterator> rng, size_t count ) {
 		return partition_range<MinSize>( rng.begin( ), rng.end( ), count );
 	}
+
+	template<typename Iterator, typename Predicate>
+	constexpr ::std::optional<size_t>
+	find_index_if( Iterator first, Iterator last, Predicate &&pred ) {
+		if( first == last ) {
+			return {};
+		}
+		size_t idx = 0;
+		while( first != last ) {
+			if( pred( *first ) ) {
+				return idx;
+			}
+			++idx;
+			++first;
+		}
+		return {};
+	}
+
+	template<typename Iterator, typename T>
+	constexpr ::std::optional<size_t> find_index( Iterator first, Iterator last,
+	                                              T const &value ) {
+
+		return find_index_if( first, last, [&]( auto &&v ) {
+			return std::forward<decltype( v )>( v ) == value;
+		} );
+	}
 } // namespace daw::algorithm
 

@@ -812,6 +812,17 @@ constexpr bool do_n_2_test( ) {
 }
 static_assert( do_n_2_test( ) );
 
+constexpr bool find_index_test( ) {
+	std::array ary = { 1,2,3,4 };
+	auto const f0 = ::daw::algorithm::find_index( ary.begin( ), ary.end( ), 3 );
+	::daw::expecting( f0 );
+	::daw::expecting( *f0, 2U );
+	auto const f1 = ::daw::algorithm::find_index( ary.begin( ), ary.end( ), 100 );
+	::daw::expecting( not f1 );
+	return true;
+}
+static_assert( find_index_test( ) );
+
 int main( ) {
 	daw_extract_to_001( );
 }
