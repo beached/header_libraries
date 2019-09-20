@@ -1167,9 +1167,15 @@ namespace daw::algorithm {
 	         typename UnaryOperation>
 	constexpr OutputIterator transform(
 	  InputIterator first, LastType last, OutputIterator first_out,
-	  UnaryOperation unary_op ) noexcept( noexcept( *first_out =
-	                                                  unary_op( *first ) ) ) {
+	  UnaryOperation unary_op ) noexcept( ::std::
+	                                        is_nothrow_constructible_v<
+	                                          decltype( *first_out ),
+	                                          decltype( unary_op( *first ) )> ) {
 
+		static_assert( ::std::is_convertible_v<decltype( *first_out ),
+		                                       decltype( unary_op( *first ) )>,
+		               "Cannot convert result of unary_op to that of the value "
+		               "type of the output iterator" );
 		traits::is_input_iterator_test<InputIterator>( );
 
 		static_assert( traits::is_callable_v<UnaryOperation, decltype( *first )>,
