@@ -1172,9 +1172,9 @@ namespace daw::algorithm {
 	                                          decltype( *first_out ),
 	                                          decltype( unary_op( *first ) )> ) {
 
-		static_assert( ::std::is_constructible_v<decltype( *first_out ),
-		                                         decltype( unary_op( *first ) )>,
-		               "Cannot convert result of unary_op to that of the value "
+		static_assert( ::std::is_assignable_v<decltype( *first_out ),
+		                                      decltype( unary_op( *first ) )>,
+		               "Cannot assign the result of unary_op to that of the value "
 		               "type of the output iterator" );
 		traits::is_input_iterator_test<InputIterator>( );
 
