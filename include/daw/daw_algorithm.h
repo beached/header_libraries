@@ -1947,16 +1947,16 @@ namespace daw::algorithm {
 
 	template<typename Compare = std::equal_to<>>
 	struct all_equal {
-		template<typename Iterator, typename LastType>
-		constexpr bool operator( )( Iterator first, LastType last,
+		template<typename ForwardIterator, typename LastType>
+		constexpr bool operator( )( ForwardIterator first, LastType last,
 		                            Compare comp = Compare{} ) const {
-			auto it = std::next( first );
-			while( first != last and it != last ) {
-				if( !daw::invoke( comp, *first, *it ) ) {
+			if( first == last ) {
+				return true;
+			}
+			for( auto it = std::next( first ); it != last; ++it ) {
+				if( not comp( *first, *it ) ) {
 					return false;
 				}
-				++first;
-				++it;
 			}
 			return true;
 		}
