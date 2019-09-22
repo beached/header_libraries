@@ -109,6 +109,10 @@ namespace daw {
 			m_count = static_cast<intmax_t>( count );
 		}
 
+		void add_notifier( ) {
+			++m_count;
+		}
+
 		void notify( ) {
 			decrement( );
 			m_condition.notify_all( );
@@ -186,6 +190,11 @@ namespace daw {
 
 		basic_latch<Mutex, ConditionVariable> *release( ) {
 			return latch.release( );
+		}
+
+		void add_notifier( ) {
+			assert( latch );
+			latch->add_notifier( );
 		}
 
 		void notify( ) {
@@ -273,6 +282,11 @@ namespace daw {
 		explicit basic_shared_latch(
 		  basic_unique_latch<Mutex, ConditionVariable> &&other ) noexcept
 		  : latch( other.release( ) ) {}
+
+		void add_notifier( ) {
+			assert( latch );
+			latch->add_notifier( );
+		}
 
 		void notify( ) {
 			assert( latch );
