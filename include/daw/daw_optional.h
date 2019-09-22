@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016-2019 Darrell Wright
+// Copyright (c) 2019 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -22,484 +22,475 @@
 
 #pragma once
 
-#include <array>
-#include <exception>
-#include <stdexcept>
-#include <string>
+#include <functional>
+#include <optional>
 #include <type_traits>
-#include <utility>
 
-#include "daw_exception.h"
-#include "daw_move.h"
-#include "daw_swap.h"
 #include "daw_traits.h"
 
 namespace daw {
-	namespace impl {
-		template<typename T>
-		struct value_storage {
-			using value_type = T;
-			using pointer = value_type *;
-			using const_pointer = value_type const *;
-			using reference = value_type &;
-			using const_reference = value_type const &;
+	inline constexpr ::std::nullopt_t nullopt = ::std::nullopt;
 
-		private:
-			std::array<uint8_t, sizeof( T )> m_data = {0};
-			bool m_occupied = false;
+	template<typename T, typename U = void>
+	struct optional;
 
-			void *raw_ptr( ) noexcept {
-				return static_cast<void *>( m_data.data( ) );
-			}
-
-			void const *raw_ptr( ) const noexcept {
-				return static_cast<void const *>( m_data.data( ) );
-			}
-
-			pointer ptr( ) noexcept {
-				return static_cast<pointer>( raw_ptr( ) );
-			}
-
-			const_pointer ptr( ) const noexcept {
-				return static_cast<const_pointer>( raw_ptr( ) );
-			}
-
-			reference ref( ) noexcept {
-				return *ptr( );
-			}
-
-			const_reference ref( ) const noexcept {
-				return *ptr( );
-			}
-
-			void store( value_type value ) {
-				if( m_occupied ) {
-					*ptr( ) = daw::move( value );
-				} else {
-					m_occupied = true;
-					new( raw_ptr( ) ) value_type{daw::move( value )};
-				}
-			}
-
-			template<typename... Args>
-			void create( Args &&... args ) {
-				if( m_occupied ) {
-					reset( );
-				} else {
-					m_occupied = true;
-					new( raw_ptr( ) ) value_type{std::forward<Args>( args )...};
-				}
-			}
-
-		public:
-			struct default_construct {};
-
-			value_storage( ) noexcept = default;
-
-			value_storage( default_construct )
-			  : m_data( 0 )
-			  , m_occupied( true ) {
-				store( value_type( ) );
-			}
-
-			template<typename... Args>
-			void emplace( Args &&... args ) {
-				create( std::forward<Args>( args )... );
-			}
-
-			value_storage( value_type value )
-			  : m_data{0}
-			  , m_occupied( true ) {
-				store( daw::move( value ) );
-			}
-
-			value_storage( value_storage const &other ) noexcept
-			  : m_data( other.m_data )
-			  , m_occupied( other.m_occupied ) {}
-
-			value_storage( value_storage &&other ) noexcept
-			  : m_data( daw::move( other.m_data ) )
-			  , m_occupied( std::exchange( other.m_occupied, false ) ) {}
-
-			void swap( value_storage &rhs ) noexcept {
-				daw::cswap( m_data, rhs.m_data );
-				daw::cswap( m_occupied, rhs.m_occupied );
-			}
-
-			value_storage &operator=( value_storage const &rhs ) {
-				if( this != &rhs ) {
-					std::copy( rhs.m_data.cbegin( ), rhs.m_data.cend( ),
-					           m_data.begin( ) );
-					m_occupied = rhs.m_occupied;
-				}
-				return *this;
-			}
-
-			value_storage &operator=( value_storage &&rhs ) noexcept {
-				m_occupied = false;
-				m_data = daw::move( rhs.m_data );
-				m_occupied = std::exchange( rhs.m_occupied, false );
-				return *this;
-			}
-
-			value_storage &operator=( value_type value ) {
-				if( m_occupied ) {
-					m_occupied = false;
-					*ptr( ) = daw::move( value );
-					m_occupied = true;
-				} else {
-					m_occupied = false;
-					store( daw::move( value ) );
-					m_occupied = true;
-				}
-				return *this;
-			}
-
-			~value_storage( ) {
-				reset( );
-			}
-
-			void reset( ) {
-				if( m_occupied ) {
-					m_occupied = false;
-					ref( ).~value_type( );
-				}
-			}
-
-			bool empty( ) const noexcept {
-				return !m_occupied;
-			}
-
-			explicit operator bool( ) const noexcept {
-				return m_occupied;
-			}
-
-			reference operator*( ) {
-				daw::exception::daw_throw_on_true( empty( ),
-				                                   "Attempt to access an empty value" );
-				return ref( );
-			}
-
-			const_reference operator*( ) const {
-				daw::exception::daw_throw_on_true( empty( ),
-				                                   "Attempt to access an empty value" );
-				return ref( );
-			}
-		}; // value_storage
-
-		template<typename T>
-		void swap( value_storage<T> &lhs, value_storage<T> &rhs ) noexcept {
-			lhs.swap( rhs );
-		}
-	} // namespace impl
-
-	template<class ValueType>
-	struct optional {
-		using value_type = std::remove_cv_t<std::remove_reference_t<ValueType>>;
-		using reference = value_type &;
-		using const_reference = value_type const &;
-		using pointer = value_type *;
-		using pointer_const = value_type const *;
+	template<typename T>
+	struct optional<T, ::std::enable_if_t<not std::is_reference_v<T>>> {
+		using value_type = T;
+		using reference = ::std::add_lvalue_reference_t<value_type>;
+		using const_reference =
+		  ::std::add_lvalue_reference_t<::std::add_const_t<value_type>>;
+		using rvalue_reference = ::std::add_rvalue_reference_t<value_type>;
+		using const_rvalue_reference =
+		  ::std::add_rvalue_reference_t<::std::add_const_t<value_type>>;
+		using pointer = ::std::add_pointer_t<value_type>;
+		using const_pointer = ::std::add_pointer_t<::std::add_const_t<value_type>>;
 
 	private:
-		impl::value_storage<value_type> m_value{};
+		::std::optional<value_type> m_value = ::std::optional<value_type>( );
 
 	public:
-		optional( nothing )
-		  : m_value{} {}
+		constexpr optional( ) noexcept = default;
+		constexpr optional( ::std::nullopt_t ) noexcept {}
 
-		explicit optional( value_type value )
-		  : m_value{daw::move( value )} {}
-
-		optional( ) = default;
-		optional( optional const & ) = default;
-		optional( optional && ) noexcept = default;
-		optional &operator=( optional const & ) = default;
-		optional &operator=( optional &&rhs ) noexcept = default;
-
-		template<typename... Args>
-		void emplace( Args &&... args ) {
-			m_value = value_type{std::forward<Args>( args )...};
+		constexpr reference operator*( ) & noexcept {
+			return m_value.operator*( );
 		}
 
-		optional &operator=( nothing && ) noexcept {
-			reset( );
-			return *this;
+		constexpr const_reference operator*( ) const &noexcept {
+			return m_value.operator*( );
 		}
 
-		void swap( optional &rhs ) noexcept {
-			m_value.swap( rhs.m_value );
+		constexpr rvalue_reference operator*( ) && noexcept {
+			return ::std::move( m_value ).operator*( );
 		}
 
-		optional &operator=( value_type value ) {
-			m_value = daw::move( value );
-			return *this;
+		constexpr const_rvalue_reference operator*( ) const &&noexcept {
+			return ::std::move( m_value ).operator*( );
 		}
 
-		optional &operator=( nothing ) {
-			reset( );
-			return *this;
+		constexpr pointer operator->( ) noexcept {
+			return &m_value.operator->( );
 		}
 
-		~optional( ) = default;
-
-		bool empty( ) const noexcept {
-			return m_value.empty( );
+		constexpr const_pointer operator->( ) const noexcept {
+			return &m_value.operator->( );
 		}
 
-		bool has_value( ) const noexcept {
-			return static_cast<bool>( m_value );
+		void swap( optional &other ) noexcept(
+		  ::std::is_nothrow_swappable_v<::std::optional<value_type>> ) {
+			using ::std::swap;
+			swap( m_value, other.m_value );
 		}
 
-		explicit operator bool( ) const noexcept {
-			return has_value( );
-		}
-
-		reference get( ) {
-			return *m_value;
-		}
-
-		const_reference get( ) const {
-			return *m_value;
-		}
-
-		reference operator*( ) {
-			return *m_value;
-		}
-
-		const_reference operator*( ) const {
-			return *m_value;
-		}
-
-		pointer operator->( ) {
-			return m_value;
-		}
-
-		pointer_const operator->( ) const {
-			return m_value;
-		}
-
-		void reset( ) {
+		void reset( ) noexcept {
 			m_value.reset( );
 		}
 
-		template<typename T>
-		friend bool operator==( optional const &lhs, optional<T> const &rhs ) {
-			static_assert( traits::is_inequality_comparable_v<value_type, T>,
-			               "Types are not equality comparable" );
-			if( lhs ) {
-				if( rhs ) {
-					return lhs.get( ) == rhs.get( );
-				}
-				return false;
-			}
-			if( rhs ) {
-				return false;
-			}
-			return true;
+		template<typename... Args>
+		reference emplace( Args &&... args ) {
+			return m_value.emplace( ::std::forward<Args>( args )... );
 		}
 
-		template<typename T>
-		friend bool operator==( optional const &lhs, T const &rhs ) {
-			static_assert( traits::is_inequality_comparable_v<value_type, T>,
-			               "Types are not equality comparable" );
-			if( lhs ) {
-				return lhs.get( ) == rhs;
-			}
-			return false;
+		// cannot emplace to a reference
+		template<typename U, typename... Args>
+		reference emplace( ::std::initializer_list<U> ilist, Args &&... args ) {
+			return m_value.emplace( ::std::move( ilist ),
+			                        ::std::forward<Args>( args )... );
 		}
 
-		template<typename T>
-		friend bool operator!=( optional const &lhs, optional<T> const &rhs ) {
-			static_assert( traits::is_inequality_comparable_v<value_type, T>,
-			               "Types are not inequality comparable" );
-			if( lhs ) {
-				if( rhs ) {
-					return lhs.get( ) != rhs.get( );
-				}
-				return true;
-			}
-			if( rhs ) {
-				return true;
-			}
-			return false;
+		constexpr reference value( ) & {
+			return m_value.value( );
 		}
 
-		template<typename T>
-		friend bool operator!=( optional const &lhs, T const &rhs ) {
-			static_assert( traits::is_inequality_comparable_v<value_type, T>,
-			               "Types are not inequality comparable" );
-			if( lhs ) {
-				return lhs.get( ) != rhs;
-			}
-			return false;
+		constexpr const_reference value( ) const & {
+			return m_value.value( );
 		}
 
-		template<typename T>
-		friend bool operator<( optional const &lhs, optional<T> const &rhs ) {
-			static_assert( traits::is_less_than_comparable_v<value_type, T>,
-			               "Types are not less than comparable" );
-			if( lhs ) {
-				if( rhs ) {
-					return lhs.get( ) < rhs.get( );
-				}
-				return false;
-			}
-			if( rhs ) {
-				return true;
-			}
-			return false;
+		constexpr rvalue_reference value( ) && {
+			return ::std::move( m_value ).value( );
 		}
 
-		template<typename T>
-		friend bool operator<( optional const &lhs, T const &rhs ) {
-			static_assert( traits::is_less_than_comparable_v<value_type, T>,
-			               "Types are not less than comparable" );
-			if( lhs ) {
-				return lhs.get( ) < rhs;
-			}
-			return true;
+		constexpr const_rvalue_reference value( ) const && {
+			return ::std::move( m_value ).value( );
 		}
 
-		template<typename T>
-		friend bool operator>( optional const &lhs, optional<T> const &rhs ) {
-			static_assert( traits::is_greater_than_comparable_v<value_type, T>,
-			               "Types are not greater than comparable" );
-			if( lhs ) {
-				if( rhs ) {
-					return lhs.get( ) > rhs.get( );
-				}
-				return true;
-			}
-			if( rhs ) {
-				return false;
-			}
-			return false;
+		constexpr bool has_value( ) const noexcept {
+			return m_value.has_value( );
 		}
 
-		template<typename T>
-		friend bool operator>( optional const &lhs, T const &rhs ) {
-			static_assert( traits::is_greater_than_comparable_v<value_type, T>,
-			               "Types are not greater than comparable" );
-			if( lhs ) {
-				return lhs.get( ) > rhs;
-			}
-			return false;
+		constexpr explicit operator bool( ) const noexcept {
+			return m_value.has_value( );
 		}
 
-		template<typename T>
-		friend bool operator<=( optional const &lhs, optional<T> const &rhs ) {
-			static_assert( traits::is_equal_less_than_comparable_v<value_type, T>,
-			               "Types are not equal_less than comparable" );
-			if( lhs ) {
-				if( rhs ) {
-					return lhs.get( ) <= rhs.get( );
-				}
-				return false;
-			}
-			if( rhs ) {
-				return true;
-			}
-			return true;
+		template<typename U = value_type,
+		         ::std::enable_if_t<
+		           ::daw::all_true_v<
+		             ::std::is_constructible_v<::std::optional<T>, U>,
+		             ::std::is_convertible_v<::daw::remove_cvref_t<U> const &, T>,
+		             not std::is_same_v<::daw::remove_cvref_t<U>, optional<T>>>,
+		           ::std::nullptr_t> = nullptr>
+		constexpr explicit optional( U &&value )
+		  : m_value( ::std::forward<U>( value ) ) {}
+
+		template<typename U = value_type,
+		         ::std::enable_if_t<
+		           ::daw::all_true_v<
+		             ::std::is_constructible_v<::std::optional<T>, U>,
+		             not std::is_convertible_v<::daw::remove_cvref_t<U> const &, T>,
+		             not std::is_same_v<::daw::remove_cvref_t<U>, optional<T>>>,
+		           ::std::nullptr_t> = nullptr>
+		constexpr optional( U &&value )
+		  : m_value( ::std::forward<U>( value ) ) {}
+
+		optional &operator=( ::std::nullopt_t ) noexcept {
+			m_value = nullopt;
+			return *this;
 		}
 
-		template<typename T>
-		friend bool operator<=( optional const &lhs, T const &rhs ) {
-			static_assert( traits::is_equal_less_than_comparable_v<value_type, T>,
-			               "Types are not equal_less than comparable" );
-			if( lhs ) {
-				return lhs.get( ) <= rhs;
-			}
-			return true;
+		template<typename U = T,
+		         ::std::enable_if_t<
+		           not std::is_same_v<::daw::remove_cvref_t<U>, optional<T>>,
+		           ::std::nullptr_t> = nullptr>
+		optional &operator=( U &&value ) {
+			m_value = ::std::forward<U>( value );
+			return *this;
 		}
-
-		template<typename T>
-		friend bool operator>=( optional const &lhs, optional<T> const &rhs ) {
-			static_assert( traits::is_equal_greater_than_comparable_v<value_type, T>,
-			               "Types are not equal_greater than comparable" );
-			if( lhs ) {
-				if( rhs ) {
-					return lhs.get( ) >= rhs.get( );
-				}
-				return true;
-			}
-			if( rhs ) {
-				return false;
-			}
-			return true;
-		}
-
-		template<typename T>
-		friend bool operator>=( optional const &lhs, T const &rhs ) {
-			static_assert( traits::is_equal_greater_than_comparable_v<value_type, T>,
-			               "Types are not equal_greater than comparable" );
-			if( lhs ) {
-				return lhs.get( ) >= rhs;
-			}
-			return false;
-		}
-
-	}; // class optional
+	};
 
 	template<typename T>
-	void swap( optional<T> &lhs, optional<T> &rhs ) noexcept {
-		lhs.swap( rhs );
-	}
+	struct optional<T, ::std::enable_if_t<::std::is_lvalue_reference_v<T>>> {
+		using value_type = ::std::remove_reference_t<T>;
+		using reference = ::std::add_lvalue_reference_t<value_type>;
+		using const_reference =
+		  ::std::add_lvalue_reference_t<::std::add_const_t<value_type>>;
+		using rvalue_reference = ::std::add_rvalue_reference_t<value_type>;
+		using const_rvalue_reference =
+		  ::std::add_rvalue_reference_t<::std::add_const_t<value_type>>;
+		using pointer = ::std::add_pointer_t<value_type>;
+		using const_pointer = ::std::add_pointer_t<::std::add_const_t<value_type>>;
 
-	template<typename T, typename... Args>
-	auto make_optional( Args &&... args ) {
-		optional<T> result{};
-		result.emplace( std::forward<Args>( args )... );
-		return result;
+	private:
+		::std::optional<value_type *> m_value = ::std::optional<value_type *>( );
+
+	public:
+		constexpr optional( ) noexcept = default;
+		constexpr optional( ::std::nullopt_t ) noexcept {}
+
+		constexpr reference operator*( ) noexcept {
+			return *m_value.operator*( );
+		}
+
+		constexpr const_reference operator*( ) const noexcept {
+			return *m_value.operator*( );
+		}
+
+		constexpr pointer operator->( ) noexcept {
+			return m_value.operator->( );
+		}
+
+		constexpr const_pointer operator->( ) const noexcept {
+			return m_value.operator->( );
+		}
+
+		void swap( optional &other ) noexcept {
+			using ::std::swap;
+			swap( m_value, other.m_value );
+		}
+
+		void reset( ) noexcept {
+			m_value.reset( );
+		}
+
+		// cannot emplace to a reference
+		template<typename... Args>
+		reference emplace( Args &&... ) = delete;
+
+		// cannot emplace to a reference
+		template<typename U, typename... Args>
+		reference emplace( ::std::initializer_list<U>, Args &&... ) = delete;
+
+		constexpr reference value( ) {
+			return *m_value.value( );
+		}
+
+		constexpr const_reference value( ) const {
+			return *m_value.value( );
+		}
+
+		constexpr bool has_value( ) const noexcept {
+			return m_value.has_value( );
+		}
+
+		constexpr explicit operator bool( ) const noexcept {
+			return m_value.has_value( );
+		}
+
+		template<typename U = value_type,
+		         ::std::enable_if_t<
+		           ::daw::all_true_v<
+		             ::std::is_constructible_v<pointer, ::daw::remove_cvref_t<U> *>,
+		             not std::is_rvalue_reference_v<U>,
+		             not std::is_same_v<::daw::remove_cvref_t<U>, optional<T>>>,
+		           ::std::nullptr_t> = nullptr>
+		constexpr explicit optional( U &&value )
+		  : m_value( &value ) {}
+
+		optional &operator=( ::std::nullopt_t ) noexcept {
+			m_value = nullopt;
+			return *this;
+		}
+
+		/*
+		template<typename U = T,
+		         ::std::enable_if_t<::daw::all_true_v<not std::is_same_v<
+		                              ::daw::remove_cvref_t<U>, optional<T>>>,
+		                            ::std::nullptr_t> = nullptr>
+		optional &operator=( U &&value ) {
+			if( not m_value ) {
+				m_value = &value;
+			} else {
+				if constexpr( not std::is_const_v<value_type> ) {
+					**m_value = ::std::forward<U>( value );
+				} else {
+					std::abort( );
+				}
+			}
+			return *this;
+		}*/
+	};
+
+	// logical operators
+	template<typename T, typename U>
+	constexpr bool operator==( optional<T> const &lhs, optional<U> const &rhs ) {
+		if( lhs.has_value( ) != rhs.has_value( ) ) {
+			return false;
+		}
+		if( not lhs ) {
+			return true;
+		}
+		return *lhs == *rhs;
 	}
 
 	template<typename T, typename U>
-	bool operator!=( optional<T> const &lhs, U const &rhs ) {
-		static_assert( traits::is_inequality_comparable_v<T, U>,
-		               "Types are not inequality comparable" );
-		if( lhs ) {
-			return lhs != rhs;
+	constexpr bool operator!=( optional<T> const &lhs, optional<U> const &rhs ) {
+		if( lhs.has_value( ) != rhs.has_value( ) ) {
+			return true;
+		}
+		if( not lhs ) {
+			return false;
+		}
+		return *lhs != *rhs;
+	}
+
+	template<typename T, typename U>
+	constexpr bool operator<( optional<T> const &lhs, optional<U> const &rhs ) {
+		if( not rhs ) {
+			return false;
+		}
+		if( not lhs ) {
+			return true;
+		}
+		return *lhs < *rhs;
+	}
+
+	template<typename T, typename U>
+	constexpr bool operator<=( optional<T> const &lhs, optional<U> const &rhs ) {
+		if( not lhs ) {
+			return true;
+		}
+		if( not rhs ) {
+			return false;
+		}
+		return *lhs <= *rhs;
+	}
+
+	template<typename T, typename U>
+	constexpr bool operator>( optional<T> const &lhs, optional<U> const &rhs ) {
+		if( not lhs ) {
+			return false;
+		}
+		if( not rhs ) {
+			return true;
+		}
+		return *lhs > *rhs;
+	}
+
+	template<typename T, typename U>
+	constexpr bool operator>=( optional<T> const &lhs, optional<U> const &rhs ) {
+		if( not rhs ) {
+			return true;
+		}
+		if( not lhs ) {
+			return false;
+		}
+		return *lhs >= *rhs;
+	}
+
+	template<typename T>
+	constexpr bool operator==( optional<T> const &opt,
+	                           ::std::nullopt_t ) noexcept {
+		return not opt;
+	}
+
+	template<typename T>
+	constexpr bool operator==( ::std::nullopt_t,
+	                           optional<T> const &opt ) noexcept {
+		return not opt;
+	}
+
+	template<typename T>
+	constexpr bool operator!=( optional<T> const &opt,
+	                           ::std::nullopt_t ) noexcept {
+		return static_cast<bool>( opt );
+	}
+
+	template<typename T>
+	constexpr bool operator!=( ::std::nullopt_t,
+	                           optional<T> const &opt ) noexcept {
+		return static_cast<bool>( opt );
+	}
+
+	template<typename T>
+	constexpr bool operator<( optional<T> const &, ::std::nullopt_t ) noexcept {
+		return false;
+	}
+
+	template<typename T>
+	constexpr bool operator<( ::std::nullopt_t,
+	                          optional<T> const &opt ) noexcept {
+		return static_cast<bool>( opt );
+	}
+
+	template<typename T>
+	constexpr bool operator<=( optional<T> const &opt,
+	                           ::std::nullopt_t ) noexcept {
+		return not opt;
+	}
+
+	template<typename T>
+	constexpr bool operator<=( ::std::nullopt_t,
+	                           optional<T> const &opt ) noexcept {
+		return true;
+	}
+
+	template<typename T>
+	constexpr bool operator>( optional<T> const &opt,
+	                          ::std::nullopt_t ) noexcept {
+		return static_cast<bool>( opt );
+	}
+
+	template<typename T>
+	constexpr bool operator>( ::std::nullopt_t,
+	                          optional<T> const &opt ) noexcept {
+		return false;
+	}
+
+	template<typename T>
+	constexpr bool operator>=( optional<T> const &opt,
+	                           ::std::nullopt_t ) noexcept {
+		return true;
+	}
+
+	template<typename T>
+	constexpr bool operator>=( ::std::nullopt_t,
+	                           optional<T> const &opt ) noexcept {
+		return static_cast<bool>( opt );
+	}
+
+	template<typename T, typename U>
+	constexpr bool operator==( optional<T> const &opt, U const &value ) {
+		if( opt ) {
+			return *opt == value;
 		}
 		return false;
 	}
 
 	template<typename T, typename U>
-	bool operator<( optional<T> const &lhs, U const &rhs ) {
-		static_assert( traits::is_inequality_comparable_v<T, U>,
-		               "Types are not less than comparable" );
-		if( lhs ) {
-			return lhs < rhs;
+	constexpr bool operator==( T const &value, optional<U> const &opt ) {
+		if( opt ) {
+			return value == *opt;
 		}
 		return false;
 	}
 
 	template<typename T, typename U>
-	bool operator>( optional<T> const &lhs, U const &rhs ) {
-		static_assert( traits::is_inequality_comparable_v<T, U>,
-		               "Types are not greater than comparable" );
-		if( lhs ) {
-			return lhs > rhs;
+	constexpr bool operator!=( optional<T> const &opt, U const &value ) {
+		if( opt ) {
+			return *opt != value;
+		}
+		return true;
+	}
+
+	template<typename T, typename U>
+	constexpr bool operator!=( T const &value, optional<U> const &opt ) {
+		if( opt ) {
+			return value != *opt;
+		}
+		return true;
+	}
+
+	template<typename T, typename U>
+	constexpr bool operator<( optional<T> const &opt, U const &value ) {
+		if( opt ) {
+			return *opt < value;
+		}
+		return true;
+	}
+
+	template<typename T, typename U>
+	constexpr bool operator<( T const &value, optional<U> const &opt ) {
+		if( opt ) {
+			return value < *opt;
 		}
 		return false;
 	}
 
 	template<typename T, typename U>
-	bool operator<=( optional<T> const &lhs, U const &rhs ) {
-		static_assert( traits::is_inequality_comparable_v<T, U>,
-		               "Types are not equal less than comparable" );
-		if( lhs ) {
-			return lhs <= rhs;
+	constexpr bool operator<=( optional<T> const &opt, U const &value ) {
+		if( opt ) {
+			return *opt <= value;
+		}
+		return true;
+	}
+
+	template<typename T, typename U>
+	constexpr bool operator<=( T const &value, optional<U> const &opt ) {
+		if( opt ) {
+			return value <= *opt;
 		}
 		return false;
 	}
 
 	template<typename T, typename U>
-	bool operator>=( optional<T> const &lhs, U const &rhs ) {
-		static_assert( traits::is_inequality_comparable_v<T, U>,
-		               "Types are not equal greater than comparable" );
-		if( lhs ) {
-			return lhs >= rhs;
+	constexpr bool operator>( optional<T> const &opt, U const &value ) {
+		if( opt ) {
+			return *opt > value;
 		}
 		return false;
+	}
+
+	template<typename T, typename U>
+	constexpr bool operator>( T const &value, optional<U> const &opt ) {
+		if( opt ) {
+			return value > *opt;
+		}
+		return true;
+	}
+
+	template<typename T, typename U>
+	constexpr bool operator>=( optional<T> const &opt, U const &value ) {
+		if( opt ) {
+			return *opt >= value;
+		}
+		return false;
+	}
+
+	template<typename T, typename U>
+	constexpr bool operator>=( const T &value, const optional<U> &opt ) {
+		if( opt ) {
+			return *opt > value;
+		}
+		return true;
 	}
 } // namespace daw
