@@ -183,10 +183,6 @@ namespace daw {
 			return !empty( );
 		}
 
-		explicit operator value_type( ) const {
-			return get( );
-		}
-
 		void throw_if_exception( ) const {
 			if( !has_exception( ) ) {
 				return;
