@@ -202,11 +202,6 @@ namespace daw {
 			latch->notify( );
 		}
 
-		void add_notifier( ) {
-			assert( latch );
-			latch->add_notifier( );
-		}
-
 		void set_latch( ) {
 			assert( latch );
 			latch->set_latch( );
