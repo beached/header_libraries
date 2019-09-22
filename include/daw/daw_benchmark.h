@@ -313,7 +313,7 @@ namespace daw {
 			}
 		}
 		double min_time = std::numeric_limits<double>::max( );
-		double max_time = 0.0;
+		double max_time = std::numeric_limits<double>::min( );
 
 		auto const total_start = std::chrono::high_resolution_clock::now( );
 		std::chrono::duration<double> valid_time = std::chrono::seconds( 0 );
@@ -354,10 +354,18 @@ namespace daw {
 		                    ( total_finish - total_start ) - valid_time )
 		                    .count( ) -
 		                  static_cast<double>( Runs ) * base_time;
-		auto avg_time =
-		  Runs >= 10 ? ( total_time - max_time ) / static_cast<double>( Runs - 1 )
-		             : total_time / static_cast<double>( Runs );
-		avg_time -= base_time;
+		auto const avg_time = [&]( ) {
+			if( Runs >= 10 ) {
+				auto result = ( total_time - max_time ) / static_cast<double>( Runs - 1 );
+				result -= base_time;
+				return result;
+			} else {
+				auto result = total_time / static_cast<double>( Runs );
+				result -= base_time;
+				return result;
+			}
+		}( );
+
 		std::cout << title << delem << "	runs: " << Runs << delem
 		          << "	total: " << utility::format_seconds( total_time, 2 )
 		          << delem << "	avg: " << utility::format_seconds( avg_time, 2 )
