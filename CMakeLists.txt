@@ -91,7 +91,6 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_sort_n
 	daw_stack_function
 #	daw_static_bitset
-	daw_static_optional
 	daw_string
 	daw_string_fmt
 	daw_string_split_range
