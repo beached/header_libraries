@@ -316,6 +316,7 @@ namespace daw {
 		double max_time = 0.0;
 
 		auto const total_start = std::chrono::high_resolution_clock::now( );
+		std::chrono::duration<double> valid_time = std::chrono::seconds( 0 );
 		for( size_t n = 0; n < Runs; ++n ) {
 			std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
 			daw::do_not_optimize( tp_args );
@@ -329,10 +330,13 @@ namespace daw {
 
 			auto const finish = std::chrono::high_resolution_clock::now( );
 			daw::do_not_optimize( result );
+
+			auto const valid_start  = std::chrono::high_resolution_clock::now( );
 			if( not validator( result ) ) {
 				std::cerr << "Error validating result\n";
 				std::abort( );
 			}
+			valid_time += std::chrono::duration<double>( std::chrono::high_resolution_clock::now( ) - valid_start );
 
 			auto const duration =
 			  std::chrono::duration<double>( finish - start ).count( );
@@ -346,10 +350,10 @@ namespace daw {
 		auto const total_finish = std::chrono::high_resolution_clock::now( );
 		min_time -= base_time;
 		max_time -= base_time;
-		auto total_time =
-		  std::chrono::duration<double>( total_finish - total_start ).count( ) -
-		  static_cast<double>( Runs ) * base_time;
-
+		auto total_time = std::chrono::duration<double>(
+		                    ( total_finish - total_start ) - valid_time )
+		                    .count( ) -
+		                  static_cast<double>( Runs ) * base_time;
 		auto avg_time =
 		  Runs >= 10 ? ( total_time - max_time ) / static_cast<double>( Runs - 1 )
 		             : total_time / static_cast<double>( Runs );
