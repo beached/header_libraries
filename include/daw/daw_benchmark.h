@@ -290,9 +290,10 @@ namespace daw {
 	}
 
 	template<size_t Runs, char delem = '\n', typename Validator, typename Function, typename... Args>
-	double bench_n_test_mbs2( std::string const &title, size_t bytes, Validator && validator,
+	std::array<double, Runs> bench_n_test_mbs2( std::string const &title, size_t bytes, Validator && validator,
 	                          Function &&func, Args &&... args ) noexcept {
 		static_assert( Runs > 0 );
+		auto results = std::array<double, Runs>{ };
 
 		double base_time = std::numeric_limits<double>::max( );
 		{
@@ -340,6 +341,7 @@ namespace daw {
 
 			auto const duration =
 			  std::chrono::duration<double>( finish - start ).count( );
+			results[n] = duration;
 			if( duration < min_time ) {
 				min_time = duration;
 			}
@@ -376,7 +378,7 @@ namespace daw {
 		          << delem << "	max: " << utility::format_seconds( max_time, 2 )
 		          << " -> " << utility::to_bytes_per_second( bytes, max_time, 2 )
 		          << "/s" << '\n';
-		return min_time;
+		return results;
 	}
 
 	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
