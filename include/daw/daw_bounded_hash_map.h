@@ -24,11 +24,11 @@
 
 #include <memory>
 #include <numeric>
-#include <optional>
 #include <utility>
 
 #include "cpp_17.h"
 #include "daw_algorithm.h"
+#include "daw_optional.h"
 #include "daw_traits.h"
 
 namespace daw {
@@ -342,7 +342,7 @@ namespace daw {
 			return ( hash * prime_a + prime_b ) % range_size;
 		}
 
-		constexpr std::optional<size_type> find_index( Key const &key ) const
+		constexpr daw::optional<size_type> find_index( Key const &key ) const
 		  noexcept {
 			size_type const hash = Hash{}( key );
 			size_type const scaled_hash = scale_hash( hash, capacity( ) );
@@ -425,7 +425,7 @@ namespace daw {
 			return item.kv.value;
 		}
 
-		constexpr std::optional<mapped_type> try_get( Key const &key ) const
+		constexpr daw::optional<mapped_type const &> try_get( Key const &key ) const
 		  noexcept {
 			auto idx = find_index( key );
 			if( !idx ) {

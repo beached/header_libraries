@@ -127,10 +127,10 @@ namespace daw {
 		         ::std::enable_if_t<
 		           ::daw::all_true_v<
 		             ::std::is_constructible_v<::std::optional<T>, U>,
-		             ::std::is_convertible_v<::daw::remove_cvref_t<U> const &, T>,
+		             std::is_convertible_v<::daw::remove_cvref_t<U> const &, T>,
 		             not std::is_same_v<::daw::remove_cvref_t<U>, optional<T>>>,
 		           ::std::nullptr_t> = nullptr>
-		constexpr explicit optional( U &&value )
+		constexpr optional( U &&value )
 		  : m_value( ::std::forward<U>( value ) ) {}
 
 		template<typename U = value_type,
@@ -140,7 +140,7 @@ namespace daw {
 		             not std::is_convertible_v<::daw::remove_cvref_t<U> const &, T>,
 		             not std::is_same_v<::daw::remove_cvref_t<U>, optional<T>>>,
 		           ::std::nullptr_t> = nullptr>
-		constexpr optional( U &&value )
+		constexpr explicit optional( U &&value )
 		  : m_value( ::std::forward<U>( value ) ) {}
 
 		optional &operator=( ::std::nullopt_t ) noexcept {
