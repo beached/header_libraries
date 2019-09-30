@@ -105,6 +105,7 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_value_ptr
 	daw_variant_cast
 	daw_view
+	daw_virtual_base
 	daw_visit
 	not_null
 )

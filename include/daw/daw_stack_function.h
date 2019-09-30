@@ -31,6 +31,7 @@
 #include "daw_move.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
+#include "daw_virtual_base.h"
 
 namespace daw {
 	namespace func_impl {
@@ -119,17 +120,13 @@ namespace daw {
 		};
 
 		template<typename Result, typename... FuncArgs>
-		struct function_base {
+		struct function_base
+		  : ::daw::virtual_base<function_base<Result, FuncArgs...>> {
 			virtual Result operator( )( FuncArgs... ) const = 0;
 			virtual Result operator( )( FuncArgs... ) = 0;
 			virtual bool empty( ) const = 0;
 
 			function_base( ) noexcept = default;
-			virtual ~function_base( ) = default;
-			function_base( function_base const & ) noexcept = default;
-			function_base( function_base && ) noexcept = default;
-			function_base &operator=( function_base const & ) noexcept = default;
-			function_base &operator=( function_base && ) noexcept = default;
 		};
 
 		template<typename Result, typename... FuncArgs>
