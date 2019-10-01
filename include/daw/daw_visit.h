@@ -29,6 +29,7 @@
 #include <variant>
 
 #include "cpp_17.h"
+#include "daw_traits.h"
 
 namespace daw {
 	namespace visit_impl {
