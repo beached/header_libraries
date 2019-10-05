@@ -26,7 +26,11 @@
 
 void daw_read_file_001( ) {
 	auto f = daw::read_file( "./daw_utility_test_bin" );
-	std::cout << f.size( ) << '\n';
+	if( not f ) {
+		std::cerr << "./daw_utility_test_bin does not exist\n";
+		std::abort( );
+	}
+	std::cout << f->size( ) << '\n';
 }
 
 int main( ) {
