@@ -29,17 +29,19 @@
 
 namespace daw {
 	inline std::basic_string<char> read_file( ::daw::basic_string_view<char> p ) {
-		auto in_file = std::basic_ifstream<char>( p.to_string( ) );
+		auto in_file = std::basic_ifstream<char>( p.to_string( ).c_str( ) );
 		daw::exception::Assert( in_file, "Could not open file" );
 
 		return std::string( std::istreambuf_iterator<char>{in_file}, {} );
 	}
 
+#if __has_include( <filesystem> ) and defined( __cpp_lib_filesystem )
 	inline std::basic_string<wchar_t>
 	read_file( ::daw::basic_string_view<wchar_t> p ) {
-		auto in_file = std::basic_ifstream<wchar_t>( p.to_string( ) );
+		auto in_file = std::basic_ifstream<wchar_t>( p.to_string( ).c_str( ) );
 		daw::exception::Assert( in_file, "Could not open file" );
 
 		return std::wstring( std::istreambuf_iterator<wchar_t>{in_file}, {} );
 	}
+#endif
 } // namespace daw
