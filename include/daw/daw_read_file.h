@@ -58,7 +58,7 @@ namespace daw {
 	template<typename CharT>
 	::std::optional<::std::basic_string<wchar_t>>
 	read_wfile( ::std::basic_string<CharT> str ) {
-		return read_file( str.c_str( ) );
+		return read_wfile( str.c_str( ) );
 	}
 } // namespace daw
 
