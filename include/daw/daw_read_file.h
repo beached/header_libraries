@@ -28,19 +28,36 @@
 
 namespace daw {
 	template<typename CharT>
-	::std::optional<::std::basic_string<CharT>> read_file( CharT const *str ) {
-		auto in_file = ::std::basic_ifstream<CharT>( str );
+	::std::optional<::std::basic_string<char>> read_file( CharT const *str ) {
+		auto in_file = ::std::basic_ifstream<char>( str );
 		if( not in_file ) {
 			return {};
 		}
 
-		return ::std::basic_string<CharT>(
-		  ::std::istreambuf_iterator<CharT>( in_file ), {} );
+		return ::std::basic_string<char>(
+		  ::std::istreambuf_iterator<char>( in_file ), {} );
 	}
 
 	template<typename CharT>
-	::std::optional<::std::basic_string<CharT>>
+	::std::optional<::std::basic_string<char>>
 	read_file( ::std::basic_string<CharT> str ) {
+		return read_file( str.c_str( ) );
+	}
+
+	template<typename CharT>
+	::std::optional<::std::basic_string<wchar_t>> read_wfile( CharT const *str ) {
+		auto in_file = ::std::basic_ifstream<wchar_t>( str );
+		if( not in_file ) {
+			return {};
+		}
+
+		return ::std::basic_string<wchar_t>(
+		  ::std::istreambuf_iterator<wchar_t>( in_file ), {} );
+	}
+
+	template<typename CharT>
+	::std::optional<::std::basic_string<wchar_t>>
+	read_wfile( ::std::basic_string<CharT> str ) {
 		return read_file( str.c_str( ) );
 	}
 } // namespace daw
