@@ -1517,6 +1517,15 @@ namespace daw {
 	generic_hash( daw::basic_string_view<CharT, Traits, Extent> sv ) noexcept {
 		return generic_hash<HashSize>( sv.data( ), sv.size( ) );
 	}
+
+#ifndef NOSTRING
+	template<typename CharT, typename... Args>
+	[[nodiscard]] std::basic_string<CharT>
+	to_string( daw::basic_string_view<CharT, Args...> sv ) {
+		return std::basic_string<CharT>( sv.begin( ), sv.end( ) );
+	}
+#endif
+
 } // namespace daw
 
 namespace std {
