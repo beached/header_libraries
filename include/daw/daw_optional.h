@@ -186,11 +186,11 @@ namespace daw {
 		}
 
 		constexpr pointer operator->( ) noexcept {
-			return m_value.operator->( );
+			return m_value.operator*( );
 		}
 
 		constexpr const_pointer operator->( ) const noexcept {
-			return m_value.operator->( );
+			return m_value.operator*( );
 		}
 
 		void swap( optional &other ) noexcept {
