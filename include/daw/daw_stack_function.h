@@ -24,6 +24,7 @@
 
 #include <cstddef>
 #include <functional>
+#include <memory>
 #include <new>
 #include <type_traits>
 
@@ -66,7 +67,14 @@ namespace daw {
 				return *this;
 			}
 
-			function_storage &operator=( function_storage && ) noexcept = default;
+			function_storage &operator=( function_storage &&rhs ) noexcept {
+				if( this == &rhs ) {
+					return *this;
+				}
+				clean( );
+				m_data = std::move( rhs.m_data );
+				return *this;
+			}
 
 			template<
 			  typename Func,
@@ -86,7 +94,7 @@ namespace daw {
 			}
 
 			void clean( ) {
-				ptr( )->~Base( );
+				std::destroy_at( *ptr( ) );
 			}
 
 			~function_storage( ) {
