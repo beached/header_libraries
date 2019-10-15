@@ -94,7 +94,7 @@ namespace daw {
 			}
 
 			void clean( ) {
-				std::destroy_at( *ptr( ) );
+				std::destroy_at( ptr( ) );
 			}
 
 			~function_storage( ) {
@@ -129,7 +129,7 @@ namespace daw {
 
 		template<typename Result, typename... FuncArgs>
 		struct function_base
-		  : ::daw::virtual_base<function_base<Result, FuncArgs...>> {
+		  : daw::virtual_base<function_base<Result, FuncArgs...>> {
 			virtual Result operator( )( FuncArgs... ) const = 0;
 			virtual Result operator( )( FuncArgs... ) = 0;
 			virtual bool empty( ) const = 0;
@@ -156,7 +156,11 @@ namespace daw {
 
 		template<typename Func, typename Result, typename... FuncArgs>
 		struct function_child<Func, Result, FuncArgs...> final
-		  : function_base<Result, FuncArgs...> {
+		  : function_base<Result, FuncArgs...>,
+		    enable_copy_constructor<Func>,
+		    enable_move_constructor<Func>,
+		    enable_copy_assignment<Func>,
+		    enable_move_assignment<Func> {
 
 			Func m_func;
 
