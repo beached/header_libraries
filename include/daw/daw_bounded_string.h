@@ -49,7 +49,6 @@
 #include "daw_traits.h"
 #include "iterator/daw_back_inserter.h"
 #include "iterator/daw_iterator.h"
-#include "iterator/daw_reverse_iterator.h"
 
 namespace daw {
 	template<typename CharT, size_t Capacity>
@@ -61,8 +60,8 @@ namespace daw {
 		using const_reference = value_type const &;
 		using const_iterator = const_pointer;
 		using iterator = const_iterator;
-		using reverse_iterator = daw::reverse_iterator<iterator>;
-		using const_reverse_iterator = daw::reverse_iterator<const_iterator>;
+		using reverse_iterator = std::reverse_iterator<iterator>;
+		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 		using size_type = size_t;
 		using difference_type = std::ptrdiff_t;
 		static constexpr size_t const extent = Capacity;
@@ -234,23 +233,23 @@ namespace daw {
 		}
 
 		constexpr const_reverse_iterator rbegin( ) const noexcept {
-			return daw::make_reverse_iterator( m_data.end( ) );
+			return daw::make_reverse_iterator( end( ) );
 		}
 
 		constexpr const_reverse_iterator crbegin( ) const noexcept {
-			return daw::make_reverse_iterator( m_data.cend( ) );
+			return daw::make_reverse_iterator( cend( ) );
 		}
 
 		constexpr reverse_iterator rend( ) noexcept {
-			return daw::make_reverse_iterator( m_data.begin( ) );
+			return daw::make_reverse_iterator( begin( ) );
 		}
 
 		constexpr const_reverse_iterator rend( ) const noexcept {
-			return daw::make_reverse_iterator( m_data.begin( ) );
+			return daw::make_reverse_iterator( begin( ) );
 		}
 
 		constexpr const_reverse_iterator crend( ) const noexcept {
-			return daw::make_reverse_iterator( m_data.cbegin( ) );
+			return daw::make_reverse_iterator( cbegin( ) );
 		}
 
 		constexpr reference operator[]( size_type const pos ) noexcept {
