@@ -50,7 +50,6 @@
 #include "daw_traits.h"
 #include "impl/daw_string_impl.h"
 #include "iterator/daw_iterator.h"
-#include "iterator/daw_reverse_iterator.h"
 
 namespace daw {
 	template<typename T>
@@ -69,8 +68,8 @@ namespace daw {
 		  std::add_lvalue_reference_t<std::add_const_t<value_type>>;
 		using const_iterator = const_pointer;
 		using iterator = const_iterator;
-		using reverse_iterator = daw::reverse_iterator<iterator>;
-		using const_reverse_iterator = daw::reverse_iterator<const_iterator>;
+		using reverse_iterator = std::reverse_iterator<iterator>;
+		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 		using size_type = size_t;
 		using difference_type = std::ptrdiff_t;
 		static constexpr ptrdiff_t const extent = Extent;
@@ -96,7 +95,7 @@ namespace daw {
 						return first;
 					}
 				}
-				first = next( first );
+				++first;
 			}
 			return last;
 		}
@@ -233,19 +232,19 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr const_reverse_iterator rbegin( ) const noexcept {
-			return daw::make_reverse_iterator( m_last );
+			return std::reverse_iterator( end( ) );
 		}
 
 		[[nodiscard]] constexpr const_reverse_iterator crbegin( ) const noexcept {
-			return daw::make_reverse_iterator( m_last );
+			return std::reverse_iterator( cend( ) );
 		}
 
 		[[nodiscard]] constexpr const_reverse_iterator rend( ) const noexcept {
-			return daw::make_reverse_iterator( m_first );
+			return std::reverse_iterator( begin( ) );
 		}
 
 		[[nodiscard]] constexpr const_reverse_iterator crend( ) const noexcept {
-			return daw::make_reverse_iterator( m_first );
+			return std::reverse_iterator( cbegin( ) );
 		}
 
 		[[nodiscard]] constexpr const_reference
