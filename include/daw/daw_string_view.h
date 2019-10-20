@@ -232,19 +232,19 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr const_reverse_iterator rbegin( ) const noexcept {
-			return std::reverse_iterator( end( ) );
+			return const_reverse_iterator( end( ) );
 		}
 
 		[[nodiscard]] constexpr const_reverse_iterator crbegin( ) const noexcept {
-			return std::reverse_iterator( cend( ) );
+			return const_reverse_iterator( cend( ) );
 		}
 
 		[[nodiscard]] constexpr const_reverse_iterator rend( ) const noexcept {
-			return std::reverse_iterator( begin( ) );
+			return const_reverse_iterator( begin( ) );
 		}
 
 		[[nodiscard]] constexpr const_reverse_iterator crend( ) const noexcept {
-			return std::reverse_iterator( cbegin( ) );
+			return const_reverse_iterator( cbegin( ) );
 		}
 
 		[[nodiscard]] constexpr const_reference

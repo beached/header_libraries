@@ -229,27 +229,27 @@ namespace daw {
 		}
 
 		constexpr reverse_iterator rbegin( ) noexcept {
-			return daw::make_reverse_iterator( m_data.end( ) );
+			return reverse_iterator( m_data.end( ) );
 		}
 
 		constexpr const_reverse_iterator rbegin( ) const noexcept {
-			return daw::make_reverse_iterator( end( ) );
+			return reverse_iterator( end( ) );
 		}
 
 		constexpr const_reverse_iterator crbegin( ) const noexcept {
-			return daw::make_reverse_iterator( cend( ) );
+			return const_reverse_iterator( cend( ) );
 		}
 
 		constexpr reverse_iterator rend( ) noexcept {
-			return daw::make_reverse_iterator( begin( ) );
+			return reverse_iterator( begin( ) );
 		}
 
 		constexpr const_reverse_iterator rend( ) const noexcept {
-			return daw::make_reverse_iterator( begin( ) );
+			return const_reverse_iterator( begin( ) );
 		}
 
 		constexpr const_reverse_iterator crend( ) const noexcept {
-			return daw::make_reverse_iterator( cbegin( ) );
+			return const_reverse_iterator( cbegin( ) );
 		}
 
 		constexpr reference operator[]( size_type const pos ) noexcept {
