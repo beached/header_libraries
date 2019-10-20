@@ -28,6 +28,7 @@
 #include "daw_math.h"
 #include "daw_move.h"
 #include "daw_swap.h"
+#include "iterator/daw_reverse_iterator.h"
 
 namespace daw {
 	template<typename T, size_t N>
@@ -41,6 +42,8 @@ namespace daw {
 		using const_reference = value_type const &;
 		using iterator = value_type *;
 		using const_iterator = value_type const *;
+		using reverse_iterator = daw::reverse_iterator<iterator>;
+		using const_reverse_iterator = daw::reverse_iterator<const_iterator>;
 		using pointer = value_type *;
 		using const_pointer = value_type const *;
 		using size_type = size_t;
@@ -145,6 +148,18 @@ namespace daw {
 			return m_stack.cbegin( ) + m_first;
 		}
 
+		constexpr reverse_iterator rbegin( ) noexcept {
+			return daw::reverse_iterator( end( ) );
+		}
+
+		constexpr const_reverse_iterator rbegin( ) const noexcept {
+			return daw::reverse_iterator( end( ) );
+		}
+
+		constexpr const_reverse_iterator crbegin( ) const noexcept {
+			return daw::reverse_iterator( cend( ) );
+		}
+
 		constexpr iterator end( ) noexcept {
 			return &m_stack[m_index];
 		}
@@ -155,6 +170,18 @@ namespace daw {
 
 		constexpr const_iterator cend( ) const noexcept {
 			return &m_stack[m_index];
+		}
+
+		constexpr reverse_iterator rend( ) noexcept {
+			return daw::reverse_iterator( begin( ) );
+		}
+
+		constexpr const_reverse_iterator rend( ) const noexcept {
+			return daw::reverse_iterator( begin( ) );
+		}
+
+		constexpr const_reverse_iterator crend( ) const noexcept {
+			return daw::reverse_iterator( cbegin( ) );
 		}
 
 	private:
