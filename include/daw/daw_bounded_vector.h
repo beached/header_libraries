@@ -22,13 +22,14 @@
 
 #pragma once
 
+#include <iterator>
+
 #include "cpp_17.h"
 #include "daw_algorithm.h"
 #include "daw_bounded_array.h"
 #include "daw_math.h"
 #include "daw_move.h"
 #include "daw_swap.h"
-#include "iterator/daw_reverse_iterator.h"
 
 namespace daw {
 	template<typename T, size_t N>
@@ -42,8 +43,8 @@ namespace daw {
 		using const_reference = value_type const &;
 		using iterator = value_type *;
 		using const_iterator = value_type const *;
-		using reverse_iterator = daw::reverse_iterator<iterator>;
-		using const_reverse_iterator = daw::reverse_iterator<const_iterator>;
+		using reverse_iterator = std::reverse_iterator<iterator>;
+		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 		using pointer = value_type *;
 		using const_pointer = value_type const *;
 		using size_type = size_t;
