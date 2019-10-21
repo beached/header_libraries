@@ -357,7 +357,7 @@ namespace daw {
 		}
 
 		constexpr iterator insert( Key &&key ) noexcept {
-			auto const index = find_index( key );
+			auto const index = find_index( hasher{}( key ), key );
 			if( !index ) {
 				// Full
 				std::abort( );
