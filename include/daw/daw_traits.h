@@ -42,6 +42,9 @@
 
 namespace daw {
 	namespace traits {
+		template<typename T, typename... Ts>
+		inline constexpr bool all_same_v = ( std::is_same_v<T, Ts> and ... );
+
 		template<typename T>
 		using root_type_t = std::decay_t<std::remove_reference_t<T>>;
 
@@ -77,8 +80,9 @@ namespace daw {
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary:	Returns true if all values passed are true
 		///
-		template<typename BoolType,
-		         daw::enable_when_t<std::is_convertible_v<BoolType, bool>> = nullptr>
+		template<
+		  typename BoolType,
+		  daw::enable_when_t<std::is_convertible_v<BoolType, bool>> = nullptr>
 		constexpr bool are_true( BoolType b1 ) noexcept {
 			return static_cast<bool>( b1 );
 		}

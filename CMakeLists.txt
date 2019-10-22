@@ -60,6 +60,7 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_fixed_lookup
 	daw_fnv1a_hash
 	daw_function
+	daw_function_table
 	daw_generic_hash
 	daw_graph
 	daw_graph_algorithm
