@@ -84,28 +84,28 @@ namespace daw {
 	/// @brief set bits at positions specified by b,bs...
 	template<typename Integer, typename Bit, typename... Bits>
 	constexpr Integer set_bits( Integer i, Bit b, Bits... bs ) noexcept {
-		using expand = int[];
-		b = static_cast<Bit>( 1u << b );
-		static_cast<void>( expand{0, ( ( b |= ( 1u << bs ) ), 0 )...} );
-		return i | static_cast<Integer>( b );
+		constexpr Integer one = static_cast<Integer>(1u);
+		auto result = static_cast<Integer>( one << static_cast<Integer>( b ) );
+		result = ((one << static_cast<Integer>( bs )) | ... | result);
+		return i | result;
 	}
 
 	/// @brief set bits at positions specified by b,bs...
 	template<typename Integer, typename Bit, typename... Bits>
 	constexpr Integer unset_bits( Integer i, Bit b, Bits... bs ) noexcept {
-		using expand = int[];
-		b = static_cast<Bit>( 1u << b );
-		static_cast<void>( expand{0, ( ( b |= ( 1u << bs ) ), 0 )...} );
-		return i & static_cast<Integer>( ~b );
+		constexpr Integer one = static_cast<Integer>(1u);
+		auto result = static_cast<Integer>( one << static_cast<Integer>( b ) );
+		result = ((one << static_cast<Integer>( bs )) | ... | result);
+		return i & ~result;
 	}
 
 	/// @brief get value with all bits but those specified masked out
 	template<typename Integer, typename Bit, typename... Bits>
 	constexpr Integer get_bits( Integer i, Bit b, Bits... bs ) noexcept {
-		using expand = int[];
-		b = static_cast<Bit>( 1u << b );
-		static_cast<void>( expand{0, ( ( b |= ( 1u << bs ) ), 0 )...} );
-		return i & static_cast<Integer>( b );
+		constexpr Integer one = static_cast<Integer>(1u);
+		auto result = static_cast<Integer>( one << static_cast<Integer>( b ) );
+		result = ((one << static_cast<Integer>( bs )) | ... | result);
+		return i & result;
 	}
 
 } // namespace daw
