@@ -23,6 +23,7 @@
 #pragma once
 
 #include <chrono>
+#include <cstdint>
 #include <functional>
 #include <iomanip>
 #include <iostream>
@@ -395,7 +396,7 @@ namespace daw {
 			for( size_t n = 0; n < 1000; ++n ) {
 				bench_impl::expander( ( daw::do_not_optimize( args ), 1 )... );
 
-				int a = 0;
+				intmax_t a = 0;
 				daw::do_not_optimize( a );
 				auto const start = std::chrono::high_resolution_clock::now( );
 				auto r = daw::expected_from_code( [a]( ) { return a * a; } );

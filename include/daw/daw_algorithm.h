@@ -316,7 +316,8 @@ namespace daw::algorithm {
 		traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
 
 		while( first != last ) {
-			if( daw::invoke( unary_predicate, *first ) ) {
+			//if( daw::invoke( unary_predicate, *first ) ) {
+			if( unary_predicate( *first ) ) {
 				return first;
 			}
 			++first;
