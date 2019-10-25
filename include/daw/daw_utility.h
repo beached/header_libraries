@@ -1070,5 +1070,15 @@ namespace daw {
 		pack_apply_impl::pack_apply_impl<0>( N, ::std::forward<Function>( func ),
 		                                     ::std::forward<Args>( args )... );
 	}
-
+	`
+	template<typename T, bool AllowDownSignCast = false, typename U>
+	constexpr decltype(auto) cast( U && v ) {
+		if constexpr( not AllowDownSignCast and (std::is_arithmetic_v<U> and std::is_arithmetic_v<T>) ) {
+			static_assert( std::is_signed_v<U> == std::is_signed_v<T>, "Only matching signs and upcasting supported, use static_cast if this is intentional" );
+			static_assert( sizeof( T ) >= sizeof( U ), "Cannot downcast, use static_cast if this is intentional" );
+		}
+		return static_cast<T>( std::forward<U>( v ) );
+	}
 } // namespace daw
+
+
