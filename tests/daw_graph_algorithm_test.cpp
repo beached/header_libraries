@@ -93,9 +93,8 @@ void test_topoligical_walk_004( ) {
 	  []( auto const &lhs, auto const &rhs ) {
 		  return lhs.value( ) < rhs.value( );
 	  } );
-	auto it = rng.begin( );
-	result.reserve( it.size( ) );
-	std::copy( it, it.end( ), std::back_inserter( result ) );
+	result.reserve( rng.size( ) );
+	std::copy( rng.begin( ), rng.end( ), std::back_inserter( result ) );
 	daw::expecting( "542310", result );
 }
 
