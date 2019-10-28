@@ -72,7 +72,7 @@ void test_topoligical_walk_003( ) {
 	daw::expecting( "542310", result );
 }
 
-void test_topoligical_walk_004( ) {
+void test_topoligical_range_001( ) {
 	daw::graph_t<char> graph{};
 	auto n0 = graph.add_node( '0' );
 	auto n1 = graph.add_node( '1' );
@@ -93,7 +93,7 @@ void test_topoligical_walk_004( ) {
 		  return lhs.value( ) < rhs.value( );
 	  } );
 	result.reserve( rng.size( ) );
-	std::copy( rng.begin( ), rng.end( ), std::back_inserter( result ) );
+	std::transform( rng.begin( ), rng.end( ), std::back_inserter( result ), []( auto && node ) { return node.value( ); } );
 	daw::expecting( "542310", result );
 }
 
@@ -164,7 +164,7 @@ int main( ) {
 	graph.add_directed_edge( nB, nE );
 	graph.add_directed_edge( nF, nE );
 
-	test_topoligical_walk_004( );
+	test_topoligical_range_001( );
 	test_topoligical_walk_003( );
 	test_topoligical_walk_001( graph );
 	test_topoligical_walk_002( graph );

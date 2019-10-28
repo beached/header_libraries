@@ -249,8 +249,7 @@ namespace daw {
 
 	public:
 		using difference_type = std::ptrdiff_t;
-		using value_type =
-		  std::remove_reference_t<decltype( std::declval<Node>( ).value( ) )>;
+		using value_type = Node;
 		using pointer = value_type *;
 		using const_pointer = value_type const *;
 		using iterator_category = std::random_access_iterator_tag;
@@ -292,19 +291,19 @@ namespace daw {
 		}
 
 		reference operator*( ) noexcept {
-			return m_iterator->value( );
+			return *m_iterator;
 		}
 
 		const_reference operator*( ) const noexcept {
-			return m_iterator->value( );
+			return *m_iterator;
 		}
 
 		pointer operator->( ) noexcept {
-			return &( m_iterator->value( ) );
+			return &( *m_iterator );
 		}
 
 		const_pointer operator->( ) const noexcept {
-			return &( m_iterator->value( ) );
+			return &( *m_iterator );
 		}
 
 		topological_sorted_iterator &operator++( ) noexcept {

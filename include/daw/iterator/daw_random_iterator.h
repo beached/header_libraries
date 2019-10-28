@@ -54,12 +54,12 @@ namespace daw {
 			return m_pointer;
 		}
 
-		constexpr RandomIterator &operator+=( std::ptrdiff_t const &n ) {
+		constexpr RandomIterator &operator+=( std::ptrdiff_t n ) {
 			m_pointer += n;
 			return *this;
 		}
 
-		constexpr RandomIterator &operator-=( std::ptrdiff_t const &n ) {
+		constexpr RandomIterator &operator-=( std::ptrdiff_t n ) {
 			m_pointer -= n;
 			return *this;
 		}
