@@ -426,24 +426,24 @@ namespace daw {
 		               "Temporaries are not supported" );
 		auto frst = topological_sorted_iterator<Graph, Compare>(
 		  std::forward<Graph>( g ), std::forward<Compare>( c ) );
-		using iterator_t = std::reverse_iterator<decltype( frst )>;
+		using iterator_t = decltype( frst );
 		struct result_t {
 			iterator_t first;
 			iterator_t last;
 
-			iterator_t begin( ) const {
+			iterator_t rbegin( ) const {
 				return first;
 			}
 
-			std::reverse_iterator<iterator_t> rbegin( ) const {
+			std::reverse_iterator<iterator_t> begin( ) const {
 				return std::reverse_iterator<iterator_t>( first );
 			}
 
-			iterator_t end( ) const {
+			iterator_t rend( ) const {
 				return last;
 			}
 
-			std::reverse_iterator<iterator_t> rend( ) const {
+			std::reverse_iterator<iterator_t> end( ) const {
 				return std::reverse_iterator<iterator_t>( last );
 			}
 
@@ -455,8 +455,8 @@ namespace daw {
 				return first.empty( );
 			}
 		};
-		auto l = iterator_t( frst.end( ) );
-		return result_t{std::move( l ), iterator_t(std::move( frst ))};
+		auto l = frst.end( );
+		return result_t{std::move( frst ), std::move( l )};
 	}
 
 	template<typename T, typename Func,
