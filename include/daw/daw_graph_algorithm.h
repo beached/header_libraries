@@ -420,6 +420,45 @@ namespace daw {
 		return result_t{std::move( frst ), std::move( l )};
 	}
 
+	template<typename Graph, typename Compare = daw::graph_alg_impl::NoSort>
+	auto make_reverse_topological_sorted_range( Graph &&g, Compare c = Compare{} ) {
+		static_assert( not std::is_rvalue_reference_v<Graph>,
+		               "Temporaries are not supported" );
+		auto frst = topological_sorted_iterator<Graph, Compare>(
+		  std::forward<Graph>( g ), std::forward<Compare>( c ) );
+		using iterator_t = std::reverse_iterator<decltype( frst )>;
+		struct result_t {
+			iterator_t first;
+			iterator_t last;
+
+			iterator_t begin( ) const {
+				return first;
+			}
+
+			std::reverse_iterator<iterator_t> rbegin( ) const {
+				return std::reverse_iterator<iterator_t>( first );
+			}
+
+			iterator_t end( ) const {
+				return last;
+			}
+
+			std::reverse_iterator<iterator_t> rend( ) const {
+				return std::reverse_iterator<iterator_t>( last );
+			}
+
+			size_t size( ) const noexcept {
+				return first.size( );
+			}
+
+			bool empty( ) const noexcept {
+				return first.empty( );
+			}
+		};
+		auto l = iterator_t( frst.end( ) );
+		return result_t{std::move( l ), iterator_t(std::move( frst ))};
+	}
+
 	template<typename T, typename Func,
 	         typename Compare = daw::graph_alg_impl::NoSort>
 	void reverse_topological_sorted_walk( daw::graph_t<T> const &known_deps,
