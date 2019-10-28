@@ -89,8 +89,7 @@ void test_topoligical_walk_004( ) {
 
 	std::string result{};
 	auto rng = daw::make_topological_sorted_range(
-	  graph, [&result]( auto const &node ) { result.push_back( node.value( ) ); },
-	  []( auto const &lhs, auto const &rhs ) {
+	  graph, []( auto const &lhs, auto const &rhs ) {
 		  return lhs.value( ) < rhs.value( );
 	  } );
 	result.reserve( rng.size( ) );

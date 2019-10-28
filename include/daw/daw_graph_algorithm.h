@@ -226,8 +226,7 @@ namespace daw {
 		  graph, std::forward<Function>( func ), daw::move( comp ) );
 	}
 
-	template<typename Graph, typename Function,
-	         typename Compare = daw::graph_alg_impl::NoSort>
+	template<typename Graph, typename Compare = daw::graph_alg_impl::NoSort>
 	class topological_sorted_iterator {
 		using Node = std::remove_reference_t<decltype(
 		  std::declval<Graph>( ).get_node( std::declval<daw::node_id_t>( ) ) )>;
@@ -236,8 +235,8 @@ namespace daw {
 		using iterator_t = typename std::vector<Node>::iterator;
 		iterator_t m_iterator;
 
-		template<typename G, typename F, typename C>
-		static std::vector<Node> get_nodes( G &&g, F &&f, C &&c ) {
+		template<typename G, typename C>
+		static std::vector<Node> get_nodes( G &&g, C &&c ) {
 			auto result = std::vector<Node>( );
 			topological_sorted_walk(
 			  std::forward<G>( g ),
@@ -259,17 +258,15 @@ namespace daw {
 		using const_reference = value_type const &;
 
 		topological_sorted_iterator( daw::remove_cvref_t<Graph> const &graph,
-		                             Function &&function, Compare comp = Compare{} )
-		  : m_nodes( std::make_shared<std::vector<Node>>( get_nodes(
-		      std::forward<Graph>( graph ), std::forward<Function>( function ),
-		      std::forward<Compare>( comp ) ) ) )
+		                             Compare comp = Compare{} )
+		  : m_nodes( std::make_shared<std::vector<Node>>(
+		      get_nodes( graph, std::move( comp ) ) ) )
 		  , m_iterator( m_nodes->begin( ) ) {}
 
 		topological_sorted_iterator( daw::remove_cvref_t<Graph> &graph,
-		                             Function &&function, Compare comp = Compare{} )
-		  : m_nodes( std::make_shared<std::vector<Node>>( get_nodes(
-		      std::forward<Graph>( graph ), std::forward<Function>( function ),
-		      std::forward<Compare>( comp ) ) ) )
+		                             Compare comp = Compare{} )
+		  : m_nodes( std::make_shared<std::vector<Node>>(
+		      get_nodes( graph, std::move( comp ) ) ) )
 		  , m_iterator( m_nodes->begin( ) ) {}
 
 		topological_sorted_iterator end( ) {
@@ -384,15 +381,12 @@ namespace daw {
 		}
 	};
 
-	template<typename Graph, typename Function,
-	         typename Compare = daw::graph_alg_impl::NoSort>
-	auto make_topological_sorted_range( Graph &&g, Function &&f,
-	                                    Compare c = Compare{} ) {
+	template<typename Graph, typename Compare = daw::graph_alg_impl::NoSort>
+	auto make_topological_sorted_range( Graph &&g, Compare c = Compare{} ) {
 		static_assert( not std::is_rvalue_reference_v<Graph>,
 		               "Temporaries are not supported" );
-		auto frst = topological_sorted_iterator<Graph, Function, Compare>(
-		  std::forward<Graph>( g ), std::forward<Function>( f ),
-		  std::forward<Compare>( c ) );
+		auto frst = topological_sorted_iterator<Graph, Compare>(
+		  std::forward<Graph>( g ), std::forward<Compare>( c ) );
 		using iterator_t = decltype( frst );
 		struct result_t {
 			iterator_t first;
