@@ -55,12 +55,10 @@ namespace daw {
 		void topological_sorted_walk( Graph &&graph, Function &&func,
 		                              Compare comp = Compare{} ) {
 
-			constexpr bool perform_sort_v =
-			  !std::is_same_v<Compare, daw::graph_alg_impl::NoSort>;
 			// Find all nodes that do not have incoming entries
-			std::vector<Node> root_nodes = [&graph]( ) {
+			std::vector<Node> root_nodes = [&] {
 				auto root_node_ids = graph.find_roots( );
-				std::vector<Node> result{};
+				auto result = std::vector<Node>( );
 				result.reserve( root_node_ids.size( ) );
 				std::transform( std::begin( root_node_ids ), std::end( root_node_ids ),
 				                std::back_inserter( result ),
@@ -68,15 +66,15 @@ namespace daw {
 				return result;
 			}( );
 
+			constexpr bool perform_sort_v =
+			  not std::is_same_v<Compare, daw::graph_alg_impl::NoSort>;
+
 			if constexpr( perform_sort_v ) {
-				std::sort( std::begin( root_nodes ), std::end( root_nodes ),
-				           [&]( auto &&... args ) {
-					           return !daw::invoke(
-					             comp, std::forward<decltype( args )>( args )... );
-				           } );
+				std::sort( std::begin( root_nodes ), std::end( root_nodes ), comp );
 			}
 
-			std::unordered_map<node_id_t, std::vector<node_id_t>> excluded_edges{};
+			auto excluded_edges =
+			  std::unordered_map<node_id_t, std::vector<node_id_t>>( );
 
 			auto const exclude_edge = [&]( node_id_t from, node_id_t to ) {
 				auto &child = excluded_edges[to];
@@ -97,36 +95,31 @@ namespace daw {
 				for( auto ex_id : excluded_edges[n_id] ) {
 					incoming.erase( ex_id );
 				}
-				return !incoming.empty( );
+				return not incoming.empty( );
 			};
 
-			while( !root_nodes.empty( ) ) {
+			while( not root_nodes.empty( ) ) {
 				auto node = root_nodes.back( );
 				root_nodes.pop_back( );
-				daw::invoke( func, node );
-
+				func( node );
 				{
 					auto child_nodes = graph_alg_impl::get_child_nodes( graph, node );
 					if constexpr( perform_sort_v ) {
 						std::sort( std::begin( child_nodes ), std::end( child_nodes ),
 						           [&]( auto &&... args ) {
-							           return !daw::invoke(
-							             comp, std::forward<decltype( args )>( args )... );
+							           return not comp(
+							             std::forward<decltype( args )>( args )... );
 						           } );
 					}
 					for( auto child : child_nodes ) {
 						exclude_edge( node.id( ), child.id( ) );
-						if( !has_parent_nodes( child.id( ) ) ) {
+						if( not has_parent_nodes( child.id( ) ) ) {
 							root_nodes.push_back( child );
 						}
 					}
 				}
 				if constexpr( perform_sort_v ) {
-					std::sort( std::begin( root_nodes ), std::end( root_nodes ),
-					           [&]( auto &&... args ) {
-						           return !daw::invoke(
-						             comp, std::forward<decltype( args )>( args )... );
-					           } );
+					std::sort( std::begin( root_nodes ), std::end( root_nodes ), comp );
 				}
 			}
 		}
@@ -138,10 +131,10 @@ namespace daw {
 			std::deque<daw::node_id_t> path{};
 			path.push_back( start_node_id );
 
-			while( !path.empty( ) ) {
+			while( not path.empty( ) ) {
 				auto current_node = graph.get_node( path.front( ) );
 				path.pop_front( );
-				daw::invoke( func, current_node );
+				func( current_node );
 				visited.insert( current_node.id( ) );
 				std::copy_if( std::begin( current_node.outgoing_edges( ) ),
 				              std::end( current_node.outgoing_edges( ) ),
@@ -158,10 +151,10 @@ namespace daw {
 			std::vector<daw::node_id_t> path{};
 			path.push_back( start_node_id );
 
-			while( !path.empty( ) ) {
+			while( not path.empty( ) ) {
 				auto current_node = graph.get_node( path.back( ) );
 				path.pop_back( );
-				daw::invoke( func, current_node );
+				func( current_node );
 				visited.insert( current_node.id( ) );
 				std::copy_if( std::begin( current_node.outgoing_edges( ) ),
 				              std::end( current_node.outgoing_edges( ) ),
@@ -182,7 +175,7 @@ namespace daw {
 			  path{};
 			path.push_back( {std::nullopt, start_node_id} );
 
-			while( !path.empty( ) ) {
+			while( not path.empty( ) ) {
 				auto current_id = path.back( );
 				path.pop_back( );
 				if( visited.count( current_id.second ) > 0 ) {
@@ -213,6 +206,8 @@ namespace daw {
 		using Node = std::remove_reference_t<decltype(
 		  graph.get_node( std::declval<daw::node_id_t>( ) ) )>;
 
+		static_assert( std::is_invocable_v<Function, Node> );
+
 		graph_alg_impl::topological_sorted_walk<Node, T>(
 		  graph, std::forward<Function>( func ), daw::move( comp ) );
 	}
@@ -225,8 +220,215 @@ namespace daw {
 		using Node = std::remove_reference_t<decltype(
 		  graph.get_node( std::declval<daw::node_id_t>( ) ) )>;
 
+		static_assert( std::is_invocable_v<Function, Node> );
+
 		graph_alg_impl::topological_sorted_walk<Node, T>(
 		  graph, std::forward<Function>( func ), daw::move( comp ) );
+	}
+
+	template<typename Graph, typename Function,
+	         typename Compare = daw::graph_alg_impl::NoSort>
+	class topological_sorted_iterator {
+		using Node = std::remove_reference_t<decltype(
+		  std::declval<Graph>( ).get_node( std::declval<daw::node_id_t>( ) ) )>;
+
+		std::shared_ptr<std::vector<Node>> m_nodes;
+		using iterator_t = typename std::vector<Node>::iterator;
+		iterator_t m_iterator;
+
+		template<typename G, typename F, typename C>
+		static std::vector<Node> get_nodes( G &&g, F &&f, C &&c ) {
+			auto result = std::vector<Node>( );
+			topological_sorted_walk(
+			  std::forward<G>( g ),
+			  [&result]( auto &&n ) {
+				  result.push_back( std::forward<decltype( n )>( n ) );
+			  },
+			  std::forward<C>( c ) );
+			return result;
+		}
+
+	public:
+		using difference_type = std::ptrdiff_t;
+		using value_type =
+		  std::remove_reference_t<decltype( std::declval<Node>( ).value( ) )>;
+		using pointer = value_type *;
+		using const_pointer = value_type const *;
+		using iterator_category = std::random_access_iterator_tag;
+		using reference = value_type &;
+		using const_reference = value_type const &;
+
+		topological_sorted_iterator( daw::remove_cvref_t<Graph> const &graph,
+		                             Function &&function, Compare comp = Compare{} )
+		  : m_nodes( std::make_shared<std::vector<Node>>( get_nodes(
+		      std::forward<Graph>( graph ), std::forward<Function>( function ),
+		      std::forward<Compare>( comp ) ) ) )
+		  , m_iterator( m_nodes->begin( ) ) {}
+
+		topological_sorted_iterator( daw::remove_cvref_t<Graph> &graph,
+		                             Function &&function, Compare comp = Compare{} )
+		  : m_nodes( std::make_shared<std::vector<Node>>( get_nodes(
+		      std::forward<Graph>( graph ), std::forward<Function>( function ),
+		      std::forward<Compare>( comp ) ) ) )
+		  , m_iterator( m_nodes->begin( ) ) {}
+
+		topological_sorted_iterator end( ) {
+			auto result = *this;
+			result.m_iterator = m_nodes->end( );
+			return result;
+		}
+
+		topological_sorted_iterator end( ) const {
+			auto result = *this;
+			result.m_iterator = result.end( );
+			return result;
+		}
+
+		topological_sorted_iterator &operator+=( difference_type n ) noexcept {
+			m_iterator += n;
+			return *this;
+		}
+
+		topological_sorted_iterator &operator-=( difference_type n ) noexcept {
+			m_iterator -= n;
+			return *this;
+		}
+
+		reference operator*( ) noexcept {
+			return m_iterator->value( );
+		}
+
+		const_reference operator*( ) const noexcept {
+			return m_iterator->value( );
+		}
+
+		pointer operator->( ) noexcept {
+			return &( m_iterator->value( ) );
+		}
+
+		const_pointer operator->( ) const noexcept {
+			return &( m_iterator->value( ) );
+		}
+
+		topological_sorted_iterator &operator++( ) noexcept {
+			++m_iterator;
+			return *this;
+		}
+
+		topological_sorted_iterator operator++( int ) noexcept {
+			auto result = *this;
+			++m_iterator;
+			return result;
+		}
+
+		topological_sorted_iterator &operator--( ) noexcept {
+			--m_iterator;
+			return *this;
+		}
+
+		topological_sorted_iterator operator--( int ) noexcept {
+			auto result = *this;
+			--m_iterator;
+			return result;
+		}
+
+		topological_sorted_iterator operator+( difference_type n ) const noexcept {
+			auto result = *this;
+			result.m_iterator += n;
+			return result;
+		}
+
+		topological_sorted_iterator operator-( difference_type n ) const noexcept {
+			auto result = *this;
+			result.m_iterator -= n;
+			return result;
+		}
+
+		size_t size( ) const noexcept {
+			return static_cast<size_t>(
+			  std::distance( m_iterator, m_nodes->end( ) ) );
+		}
+
+		bool empty( ) const noexcept {
+			return m_iterator == m_nodes->end( );
+		}
+
+		friend bool operator==( topological_sorted_iterator const &lhs,
+		                        topological_sorted_iterator const &rhs ) noexcept {
+			return lhs.m_iterator == rhs.m_iterator;
+		}
+
+		friend bool operator!=( topological_sorted_iterator const &lhs,
+		                        topological_sorted_iterator const &rhs ) noexcept {
+			return lhs.m_iterator != rhs.m_iterator;
+		}
+
+		friend bool operator<( topological_sorted_iterator const &lhs,
+		                       topological_sorted_iterator const &rhs ) noexcept {
+			return lhs.m_iterator < rhs.m_iterator;
+		}
+
+		friend bool operator<=( topological_sorted_iterator const &lhs,
+		                        topological_sorted_iterator const &rhs ) noexcept {
+			return lhs.m_iterator <= rhs.m_iterator;
+		}
+
+		friend bool operator>( topological_sorted_iterator const &lhs,
+		                       topological_sorted_iterator const &rhs ) noexcept {
+			return lhs.m_iterator > rhs.m_iterator;
+		}
+
+		friend bool operator>=( topological_sorted_iterator const &lhs,
+		                        topological_sorted_iterator const &rhs ) noexcept {
+			return lhs.m_iterator >= rhs.m_iterator;
+		}
+	};
+
+	template<typename Graph, typename Function,
+	         typename Compare = daw::graph_alg_impl::NoSort>
+	auto make_topological_sorted_range( Graph &&g, Function &&f,
+	                                    Compare c = Compare{} ) {
+		static_assert( not std::is_rvalue_reference_v<Graph>,
+		               "Temporaries are not supported" );
+		auto frst = topological_sorted_iterator<Graph, Function, Compare>(
+		  std::forward<Graph>( g ), std::forward<Function>( f ),
+		  std::forward<Compare>( c ) );
+		using iterator_t = decltype( frst );
+		using const_iterator_t = decltype( std::as_const( frst ) );
+		struct result_t {
+			iterator_t first;
+			iterator_t last;
+
+			iterator_t begin( ) {
+				return first;
+			}
+			const_iterator_t begin( ) const {
+				return first;
+			}
+			const_iterator_t cbegin( ) const {
+				return first;
+			}
+			iterator_t end( ) {
+				return last;
+			}
+			const_iterator_t end( ) const {
+				return last;
+			}
+
+			const_iterator_t cend( ) const {
+				return last;
+			}
+
+			size_t size( ) const noexcept {
+				return first.size( );
+			}
+
+			bool empty( ) const noexcept {
+				return first.empty( );
+			}
+		};
+		auto l = frst.end( );
+		return result_t{std::move( frst ), std::move( l )};
 	}
 
 	template<typename T, typename Func,
@@ -242,7 +444,7 @@ namespace daw {
 		std::reverse( nodes.begin( ), nodes.end( ) );
 		for( auto const &id : nodes ) {
 			auto cur_node = known_deps.get_node( id );
-			(void)daw::invoke( visitor, cur_node );
+			(void)visitor( cur_node );
 		}
 	}
 
@@ -259,7 +461,7 @@ namespace daw {
 		std::reverse( nodes.begin( ), nodes.end( ) );
 		for( auto const &id : nodes ) {
 			auto cur_node = known_deps.get_node( id );
-			(void)daw::invoke( visitor, cur_node );
+			(void)visitor( cur_node );
 		}
 	}
 

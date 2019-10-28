@@ -47,6 +47,58 @@ void test_topoligical_walk_002( daw::graph_t<char> const &graph ) {
 	daw::expecting( "CABDFE", result );
 }
 
+void test_topoligical_walk_003( ) {
+	daw::graph_t<char> graph{};
+	auto n0 = graph.add_node( '0' );
+	auto n1 = graph.add_node( '1' );
+	auto n2 = graph.add_node( '2' );
+	auto n3 = graph.add_node( '3' );
+	auto n4 = graph.add_node( '4' );
+	auto n5 = graph.add_node( '5' );
+	graph.add_directed_edge( n2, n3 );
+	graph.add_directed_edge( n3, n1 );
+	graph.add_directed_edge( n4, n0 );
+	graph.add_directed_edge( n4, n1 );
+	graph.add_directed_edge( n5, n0 );
+	graph.add_directed_edge( n5, n2 );
+
+	std::string result{};
+	daw::topological_sorted_walk(
+	  graph, [&result]( auto const &node ) { result.push_back( node.value( ) ); },
+	  []( auto const &lhs, auto const &rhs ) {
+		  return lhs.value( ) < rhs.value( );
+	  } );
+
+	daw::expecting( "542310", result );
+}
+
+void test_topoligical_walk_004( ) {
+	daw::graph_t<char> graph{};
+	auto n0 = graph.add_node( '0' );
+	auto n1 = graph.add_node( '1' );
+	auto n2 = graph.add_node( '2' );
+	auto n3 = graph.add_node( '3' );
+	auto n4 = graph.add_node( '4' );
+	auto n5 = graph.add_node( '5' );
+	graph.add_directed_edge( n2, n3 );
+	graph.add_directed_edge( n3, n1 );
+	graph.add_directed_edge( n4, n0 );
+	graph.add_directed_edge( n4, n1 );
+	graph.add_directed_edge( n5, n0 );
+	graph.add_directed_edge( n5, n2 );
+
+	std::string result{};
+	auto rng = daw::make_topological_sorted_range(
+	  graph, [&result]( auto const &node ) { result.push_back( node.value( ) ); },
+	  []( auto const &lhs, auto const &rhs ) {
+		  return lhs.value( ) < rhs.value( );
+	  } );
+	auto it = rng.begin( );
+	result.reserve( it.size( ) );
+	std::copy( it, it.end( ), std::back_inserter( result ) );
+	daw::expecting( "542310", result );
+}
+
 void test_bfs_walk_001( daw::graph_t<char> const &graph,
                         daw::node_id_t root_id ) {
 	std::string result{};
@@ -114,6 +166,8 @@ int main( ) {
 	graph.add_directed_edge( nB, nE );
 	graph.add_directed_edge( nF, nE );
 
+	test_topoligical_walk_004( );
+	test_topoligical_walk_003( );
 	test_topoligical_walk_001( graph );
 	test_topoligical_walk_002( graph );
 	test_bfs_walk_001( graph, nC );
