@@ -394,29 +394,24 @@ namespace daw {
 		  std::forward<Graph>( g ), std::forward<Function>( f ),
 		  std::forward<Compare>( c ) );
 		using iterator_t = decltype( frst );
-		using const_iterator_t = decltype( std::as_const( frst ) );
 		struct result_t {
 			iterator_t first;
 			iterator_t last;
 
-			iterator_t begin( ) {
+			iterator_t begin( ) const {
 				return first;
 			}
-			const_iterator_t begin( ) const {
-				return first;
+
+			std::reverse_iterator<iterator_t> rbegin( ) const {
+				return std::reverse_iterator<iterator_t>( first );
 			}
-			const_iterator_t cbegin( ) const {
-				return first;
-			}
-			iterator_t end( ) {
-				return last;
-			}
-			const_iterator_t end( ) const {
+
+			iterator_t end( ) const {
 				return last;
 			}
 
-			const_iterator_t cend( ) const {
-				return last;
+			std::reverse_iterator<iterator_t> rend( ) const {
+				return std::reverse_iterator<iterator_t>( last );
 			}
 
 			size_t size( ) const noexcept {
