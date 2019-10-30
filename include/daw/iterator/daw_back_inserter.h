@@ -32,7 +32,7 @@
 
 namespace daw {
 	template<typename Container>
-	struct back_iterator final {
+	struct back_inserter final {
 		using iterator_category = std::output_iterator_tag;
 		using value_type = void;
 		using difference_type = void;
@@ -43,31 +43,31 @@ namespace daw {
 		Container *m_container;
 
 	public:
-		constexpr back_iterator( Container &c ) noexcept
+		constexpr back_inserter( Container &c ) noexcept
 		  : m_container( &c ) {}
 
 		template<typename T,
 		         daw::enable_when_t<not std::is_same_v<
-		           daw::remove_cvref_t<T>, back_iterator>> = nullptr>
-		constexpr back_iterator &operator=( T &&val ) {
+		           daw::remove_cvref_t<T>, back_inserter>> = nullptr>
+		constexpr back_inserter &operator=( T &&val ) {
 			m_container->push_back( std::forward<T>( val ) );
 			return *this;
 		}
 
-		constexpr back_iterator &operator*( ) noexcept {
+		constexpr back_inserter &operator*( ) noexcept {
 			return *this;
 		}
 
-		constexpr back_iterator &operator++( ) noexcept {
+		constexpr back_inserter &operator++( ) noexcept {
 			return *this;
 		}
 
-		constexpr back_iterator &operator++( int ) noexcept {
+		constexpr back_inserter &operator++( int ) noexcept {
 			return *this;
 		}
 	};
 
 	template<typename Container>
-	back_iterator( Container ) -> back_iterator<Container>;	
+	back_inserter( Container ) -> back_inserter<Container>;	
 } // namespace daw
 
