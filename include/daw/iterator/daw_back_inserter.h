@@ -68,7 +68,8 @@ namespace daw {
 	};
 
 	template<typename Container>
-	constexpr auto back_inserter( Container &c ) {
-		return back_inserter_iterator<Container>( c );
-	}
+	back_inserter_iterator( Container ) -> back_inserter_iterator<Container>;	
+
+	template<typename Container>
+	using back_inserter = back_inserter_iterator<Container>;
 } // namespace daw
