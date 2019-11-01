@@ -325,9 +325,7 @@ namespace daw {
 			auto const start = std::chrono::high_resolution_clock::now( );
 
 			auto result = daw::expected_from_code(
-			  [&]( auto &&tp ) {
-				  return ::std::apply( func, std::forward<decltype( tp )>( tp ) );
-			  },
+			  [&]( auto &&tp ) { return func( std::forward<decltype( tp )>( tp ) ); },
 			  tp_args );
 
 			auto const finish = std::chrono::high_resolution_clock::now( );
@@ -420,8 +418,7 @@ namespace daw {
 
 			result = daw::expected_from_code(
 			  [&]( auto &&tp ) {
-				  return ::std::apply( test_callable,
-				                       std::forward<decltype( tp )>( tp ) );
+				  return test_callable( std::forward<decltype( tp )>( tp ) );
 			  },
 			  tp_args );
 
