@@ -228,7 +228,7 @@ namespace daw {
 		using result_t = daw::remove_cvref_t<decltype( daw::expected_from_code(
 		  test_callable, std::forward<Args>( args )... ) )>;
 
-		result_t result{};
+		result_t result{ };
 
 		double base_time = std::numeric_limits<double>::max( );
 		{
@@ -290,9 +290,12 @@ namespace daw {
 		return result;
 	}
 
-	template<size_t Runs, char delem = '\n', typename Validator, typename Function, typename... Args>
-	std::array<double, Runs> bench_n_test_mbs2( std::string const &title, size_t bytes, Validator && validator,
-	                          Function &&func, Args &&... args ) noexcept {
+	template<size_t Runs, char delem = '\n', typename Validator,
+	         typename Function, typename... Args>
+	std::array<double, Runs>
+	bench_n_test_mbs2( std::string const &title, size_t bytes,
+	                   Validator &&validator, Function &&func,
+	                   Args &&... args ) noexcept {
 		static_assert( Runs > 0 );
 		auto results = std::array<double, Runs>{ };
 
@@ -320,23 +323,45 @@ namespace daw {
 		auto const total_start = std::chrono::high_resolution_clock::now( );
 		std::chrono::duration<double> valid_time = std::chrono::seconds( 0 );
 		for( size_t n = 0; n < Runs; ++n ) {
-			std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
-			daw::do_not_optimize( tp_args );
-			auto const start = std::chrono::high_resolution_clock::now( );
+			std::chrono::time_point<std::chrono::high_resolution_clock> start;
+			using result_t = daw::remove_cvref_t<decltype( func( args... ) )>;
+			result_t result;
+			if constexpr( sizeof...( args ) == 0 ) {
+				start = std::chrono::high_resolution_clock::now( );
+				result =
+				  daw::expected_from_code( [&]( auto &&tp ) { return func( ); } );
+			} else if constexpr( sizeof...( args ) == 1 ) {
+				std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{
+				  args... };
+				daw::do_not_optimize( tp_args );
+				start = std::chrono::high_resolution_clock::now( );
+				result = daw::expected_from_code(
+				  [&]( auto &&tp ) {
+					  return func( std::forward<decltype( tp )>( tp ) );
+				  },
+				  std::get<0>( tp_args ) );
+			} else {
+				std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{
+				  args... };
+				daw::do_not_optimize( tp_args );
+				start = std::chrono::high_resolution_clock::now( );
 
-			auto result = daw::expected_from_code(
-			  [&]( auto &&tp ) { return func( std::forward<decltype( tp )>( tp ) ); },
-			  tp_args );
-
+				result = daw::expected_from_code(
+				  [&]( auto &&tp ) {
+					  return ::std::apply( func, std::forward<decltype( tp )>( tp ) );
+				  },
+				  tp_args );
+			}
 			auto const finish = std::chrono::high_resolution_clock::now( );
 			daw::do_not_optimize( result );
 
-			auto const valid_start  = std::chrono::high_resolution_clock::now( );
+			auto const valid_start = std::chrono::high_resolution_clock::now( );
 			if( not validator( result ) ) {
 				std::cerr << "Error validating result\n";
 				std::abort( );
 			}
-			valid_time += std::chrono::duration<double>( std::chrono::high_resolution_clock::now( ) - valid_start );
+			valid_time += std::chrono::duration<double>(
+			  std::chrono::high_resolution_clock::now( ) - valid_start );
 
 			auto const duration =
 			  std::chrono::duration<double>( finish - start ).count( );
@@ -357,7 +382,8 @@ namespace daw {
 		                  static_cast<double>( Runs ) * base_time;
 		auto const avg_time = [&]( ) {
 			if( Runs >= 10 ) {
-				auto result = ( total_time - max_time ) / static_cast<double>( Runs - 1 );
+				auto result =
+				  ( total_time - max_time ) / static_cast<double>( Runs - 1 );
 				result -= base_time;
 				return result;
 			} else {
@@ -387,7 +413,7 @@ namespace daw {
 		using result_t = daw::remove_cvref_t<decltype( daw::expected_from_code(
 		  test_callable, std::forward<Args>( args )... ) )>;
 
-		result_t result{};
+		result_t result{ };
 
 		double base_time = std::numeric_limits<double>::max( );
 		{
@@ -412,16 +438,31 @@ namespace daw {
 
 		auto const total_start = std::chrono::high_resolution_clock::now( );
 		for( size_t n = 0; n < Runs; ++n ) {
-			std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
-			daw::do_not_optimize( tp_args );
-			auto const start = std::chrono::high_resolution_clock::now( );
-
-			result = daw::expected_from_code(
-			  [&]( auto &&tp ) {
-				  return test_callable( std::forward<decltype( tp )>( tp ) );
-			  },
-			  tp_args );
-
+			std::chrono::time_point<std::chrono::high_resolution_clock> start;
+			if constexpr( sizeof...( args ) == 0 ) {
+				start = std::chrono::high_resolution_clock::now( );
+				result =
+				  daw::expected_from_code( [&]( auto &&tp ) { return test_callable( ); } );
+			} else if constexpr( sizeof...( args ) == 1 ) {
+				std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{
+				  args... };
+				start = std::chrono::high_resolution_clock::now( );
+				result = daw::expected_from_code(
+				  [&]( auto &&tp ) {
+					  return test_callable( std::forward<decltype( tp )>( tp ) );
+				  },
+				  std::get<0>( tp_args ) );
+			} else {
+				std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{
+				  args... };
+				daw::do_not_optimize( tp_args );
+				start = std::chrono::high_resolution_clock::now( );
+				result = daw::expected_from_code(
+				  [&]( auto &&tp ) {
+					  return ::std::apply( test_callable, std::forward<decltype( tp )>( tp ) );
+				  },
+				  tp_args );
+			}
 			auto const finish = std::chrono::high_resolution_clock::now( );
 			daw::do_not_optimize( result );
 			auto const duration =
@@ -527,7 +568,7 @@ namespace daw {
 	         std::enable_if_t<std::is_invocable_v<Predicate, Exception>,
 	                          std::nullptr_t> = nullptr>
 	void expecting_exception( Expression &&expression,
-	                          Predicate &&pred = Predicate{} ) {
+	                          Predicate &&pred = Predicate{ } ) {
 		try {
 			(void)std::forward<Expression>( expression )( );
 		} catch( Exception const &ex ) {
