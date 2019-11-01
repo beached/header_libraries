@@ -1372,12 +1372,6 @@ namespace daw {
 		return os;
 	}
 
-	template<typename CharT, size_t Capacity>
-	constexpr size_t
-	fnv1a_hash( daw::basic_bounded_string<CharT, Capacity> sv ) noexcept {
-		return fnv1a_hash( sv.data( ), sv.size( ) );
-	}
-
 	template<size_t HashSize = sizeof( size_t ), typename CharT, size_t Capacity>
 	constexpr size_t
 	generic_hash( daw::basic_bounded_string<CharT, Capacity> sv ) noexcept {
