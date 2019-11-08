@@ -153,6 +153,7 @@ set( TESTED_ITERATOR_HEADERS_PREFIXES_NB
 	daw_sorted_insert_iterator
 #	daw_split_iterator
 #	daw_zipiter
+	InputIterator
 )
 
 #Still testing and may not work
