@@ -789,5 +789,8 @@ namespace daw {
 				return std::forward<F>( f );
 			}
 		}
+
+		template<typename T>
+		using fn_t = std::add_pointer_t<T>;
 	} // namespace traits
 } // namespace daw

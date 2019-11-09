@@ -30,15 +30,11 @@
 #include <utility>
 #include <vector>
 
+#include "../cpp_17.h"
+#include "../daw_traits.h"
+
 namespace daw {
-
-	template<typename T>
-	using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
-
-	template<typename T>
-	using fn_t = std::add_pointer_t<T>;
-
-	namespace input_iterator_impl {
+	namespace inpit_impl {
 		enum fn_ary_item {
 			OpDel,
 			OpEqual,
@@ -48,44 +44,55 @@ namespace daw {
 			OpClone
 		};
 
-		template<typename Iterator, typename Value>
-		struct InputIteratorImpl {
-			static decltype( auto ) as_orig( std::byte *p ) {
-				return *reinterpret_cast<Iterator *>( p );
-			}
+		template<typename Iterator>
+		static decltype( auto ) as_orig( std::byte *p ) {
+			return *reinterpret_cast<Iterator *>( p );
+		}
 
-			inline static void const *fn_ary[] = {
-			  reinterpret_cast<void *>( +[]( std::byte *p ) -> void {
-				  // op_del
-				  delete reinterpret_cast<Iterator *>( p );
-			  } ),
-			  reinterpret_cast<void *>( +[]( std::byte *l, std::byte *r ) -> bool {
-				  // op_equal
-				  return as_orig( l ) == as_orig( r );
-			  } ),
-			  reinterpret_cast<void *>( +[]( std::byte *l, std::byte *r ) -> bool {
-				  // op_not_equal
-				  return as_orig( l ) != as_orig( r );
-			  } ),
-			  reinterpret_cast<void *>( +[]( std::byte *p ) -> void {
-				  // op_prefix_inc
-				  as_orig( p ) = as_orig( p ) + 1;
-			  } ),
-			  reinterpret_cast<void *>( +[]( std::byte *p ) -> Value const * {
-				  // op_arrow
-				  if constexpr( std::is_pointer_v<Iterator> ) {
-					  return as_orig( p );
-				  } else {
-					  return as_orig( p ).operator->( );
-				  }
-			  } ),
-			  reinterpret_cast<void *>( +[]( std::byte *p ) -> std::byte * {
-				  // op_clone
-				  return reinterpret_cast<std::byte *>(
-				    new Iterator( std::as_const( as_orig( p ) ) ) );
-			  } )};
-		};
-	} // namespace input_iterator_impl
+		using op_del_t = daw::traits::fn_t<void( std::byte * )>;
+		using op_cmp_t = daw::traits::fn_t<bool( std::byte *, std::byte * )>;
+		using op_prefix_inc_t = daw::traits::fn_t<void( std::byte * )>;
+		template<typename Value>
+		using op_arrow_t = daw::traits::fn_t<Value const *( std::byte * )>;
+		using op_clone_t = daw::traits::fn_t<std::byte *( std::byte * )>;
+
+		template<typename Value>
+		using vtable_t = std::tuple<op_del_t, op_cmp_t, op_cmp_t, op_prefix_inc_t,
+		                            op_arrow_t<Value>, op_clone_t>;
+
+		template<typename Iterator, typename Value>
+		static inline constexpr vtable_t<Value> vtable{
+		  +[]( std::byte *p ) -> void {
+			  // op_del
+			  delete reinterpret_cast<Iterator *>( p );
+		  },
+		  +[]( std::byte *l, std::byte *r ) -> bool {
+			  // op_equal
+			  return as_orig<Iterator>( l ) == as_orig<Iterator>( r );
+		  },
+		  +[]( std::byte *l, std::byte *r ) -> bool {
+			  // op_not_equal
+			  return as_orig<Iterator>( l ) != as_orig<Iterator>( r );
+		  },
+		  +[]( std::byte *p ) -> void {
+			  // op_prefix_inc
+			  as_orig<Iterator>( p ) = as_orig<Iterator>( p ) + 1;
+		  },
+		  +[]( std::byte *p ) -> Value const * {
+			  // op_arrow
+			  if constexpr( std::is_pointer_v<Iterator> ) {
+				  return reinterpret_cast<Value const *>( as_orig<Iterator>( p ) );
+			  } else {
+				  return reinterpret_cast<Value const *>(
+				    as_orig<Iterator>( p ).operator->( ) );
+			  }
+		  },
+		  +[]( std::byte *p ) -> std::byte * {
+			  // op_clone
+			  return reinterpret_cast<std::byte *>(
+			    new Iterator( std::as_const( as_orig<Iterator>( p ) ) ) );
+		  }};
+	} // namespace inpit_impl
 
 	template<typename T>
 	struct InputIterator {
@@ -96,41 +103,38 @@ namespace daw {
 		using iterator_category = std::input_iterator_tag;
 
 	private:
+		using op_del_t = daw::traits::fn_t<void( std::byte * )>;
+		using op_cmp_t = daw::traits::fn_t<bool( std::byte *, std::byte * )>;
+		using op_prefix_inc_t = daw::traits::fn_t<void( std::byte * )>;
+		using op_arrow_t = daw::traits::fn_t<pointer( std::byte * )>;
+		using op_clone_t = daw::traits::fn_t<std::byte *( std::byte * )>;
+		using vtable_t = std::tuple<op_del_t, op_cmp_t, op_cmp_t, op_prefix_inc_t,
+		                            op_arrow_t, op_clone_t>;
 		std::byte *m_iterator;
-		void const **m_ops;
-
-		using op_del_t = fn_t<void( std::byte * )>;
-		using op_cmp_t = fn_t<bool( std::byte *, std::byte * )>;
-		using op_prefix_inc_t = fn_t<void( std::byte * )>;
-		using op_arrow_t = fn_t<pointer( std::byte * )>;
-		using op_clone_t = fn_t<std::byte *( std::byte * )>;
+		vtable_t const *m_vtable;
 
 		op_del_t fn_op_del( ) const noexcept {
-			return reinterpret_cast<op_del_t>( m_ops[input_iterator_impl::OpDel] );
+			return std::get<inpit_impl::OpDel>( *m_vtable );
 		}
 
 		op_cmp_t fn_op_equal( ) const noexcept {
-			return reinterpret_cast<op_cmp_t>( m_ops[input_iterator_impl::OpEqual] );
+			return std::get<inpit_impl::OpEqual>( *m_vtable );
 		}
 
 		op_cmp_t fn_op_not_equal( ) const noexcept {
-			return reinterpret_cast<op_cmp_t>(
-			  m_ops[input_iterator_impl::OpNotEqual] );
+			return std::get<inpit_impl::OpNotEqual>( *m_vtable );
 		}
 
 		op_prefix_inc_t fn_op_prefix_inc( ) const noexcept {
-			return reinterpret_cast<op_prefix_inc_t>(
-			  m_ops[input_iterator_impl::OpPrefixInc] );
+			return std::get<inpit_impl::OpPrefixInc>( *m_vtable );
 		}
 
 		op_arrow_t fn_op_arrow( ) const noexcept {
-			return reinterpret_cast<op_arrow_t>(
-			  m_ops[input_iterator_impl::OpArrow] );
+			return std::get<inpit_impl::OpArrow>( *m_vtable );
 		}
 
 		op_clone_t fn_op_clone( ) const noexcept {
-			return reinterpret_cast<op_clone_t>(
-			  m_ops[input_iterator_impl::OpClone] );
+			return std::get<inpit_impl::OpClone>( *m_vtable );
 		}
 
 		template<typename Iterator>
@@ -145,36 +149,43 @@ namespace daw {
 		                          std::nullptr_t> = nullptr>
 		explicit InputIterator( Iterator const &it )
 		  : m_iterator( create( it ) )
-		  , m_ops( input_iterator_impl::InputIteratorImpl<Iterator,
-		                                                  value_type>::fn_ary ) {}
+		  , m_vtable( &inpit_impl::vtable<Iterator, value_type> ) {
+			static_assert(
+			  std::is_same_v<std::remove_cv_t<value_type>,
+			                 typename std::iterator_traits<Iterator>::value_type> );
+		}
 
 		InputIterator( InputIterator const &other )
 		  : m_iterator( other.fn_op_clone( )( other.m_iterator ) )
-		  , m_ops( other.m_ops ) {}
+		  , m_vtable( other.m_vtable ) {}
 
 		InputIterator &operator=( InputIterator const &rhs ) {
 			if( this != &rhs ) {
 				auto tmp = m_iterator;
+#ifdef CAN_THROW
 				try {
+#endif
 					m_iterator = rhs.fn_op_clone( )( rhs.m_iterator );
-					m_ops = rhs.m_ops;
+					m_vtable = rhs.m_vtable;
 					fn_op_del( tmp );
+#ifdef CAN_THROW
 				} catch( ... ) {
 					m_iterator = tmp;
 					throw;
 				}
+#endif
 			}
 			return *this;
 		}
 
 		InputIterator( InputIterator &&other ) noexcept
 		  : m_iterator( std::exchange( other.m_iterator, nullptr ) )
-		  , m_ops( other.m_ops ) {}
+		  , m_vtable( other.m_vtable ) {}
 
 		InputIterator &operator=( InputIterator &&rhs ) noexcept {
 			if( this != &rhs ) {
 				m_iterator = std::exchange( rhs.m_iterator, nullptr );
-				m_ops = rhs.m_ops;
+				m_vtable = rhs.m_vtable;
 			}
 			return *this;
 		}
@@ -204,7 +215,7 @@ namespace daw {
 	private:
 		constexpr static bool same_op_cmp( InputIterator const &lhs,
 		                                   InputIterator const &rhs ) noexcept {
-			return lhs.m_ops == rhs.m_ops;
+			return lhs.m_vtable == rhs.m_vtable;
 		}
 
 	public:
@@ -231,16 +242,20 @@ namespace daw {
 	InputIterator( Iterator )
 	  ->InputIterator<typename std::iterator_traits<Iterator>::value_type>;
 
+	// *****************************************************
 	template<typename T>
 	struct InputRange {
 		using value_type = T;
+		using iterator = InputIterator<value_type>;
+		using const_iterator = InputIterator<std::add_const_t<value_type>>;
+
 		InputIterator<value_type> first;
 		InputIterator<value_type> last;
 
 		template<typename Container,
 		         std::enable_if_t<
 		           (not std::is_rvalue_reference_v<Container> and
-		            not std::is_same_v<InputRange, remove_cvref_t<Container>>),
+		            not std::is_same_v<InputRange, daw::remove_cvref_t<Container>>),
 		           std::nullptr_t> = nullptr>
 		InputRange( Container &&c )
 		  : first( std::begin( c ) )
@@ -270,17 +285,17 @@ namespace daw {
 			return last;
 		}
 	};
+
 	template<typename Iterator>
 	InputRange( Iterator, Iterator )
 	  ->InputRange<typename std::iterator_traits<Iterator>::value_type>;
+
+	template<typename T>
+	InputRange( T *, T * )->InputRange<T>;
+
 	template<typename Container>
 	InputRange( Container )
-	  ->InputRange<std::remove_reference_t<
-	    decltype( *std::begin( std::declval<Container>( ) ) )>>;
-
-	static_assert(
-	  std::is_same_v<
-	    InputIterator<int>::value_type,
-	    typename std::iterator_traits<InputIterator<int>>::value_type> );
+	  ->InputRange<typename std::iterator_traits<
+	    decltype( std::begin( std::declval<Container>( ) ) )>::value_type>;
 
 } // namespace daw

@@ -20,14 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+	#include "daw/daw_string_view.h"
 #include "daw/iterator/InputIterator.h"
 
-auto func( ) {
-	return std::array{1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
-}
-
-int main( ) {
-	auto v = func( );
-	auto rng = daw::InputRange<int>( v );
-	return std::accumulate( v.begin( ), v.end( ), 0 );
+int main( int argc, char **argv ) {
+	int val = 0;
+	for( int n=0; n< argc; ++n ) {
+		auto rng = daw::InputRange( daw::string_view( argv[n] ) );
+		val += std::accumulate( rng.begin( ), rng.end( ), 0 );
+	}
+	return val;
 }
