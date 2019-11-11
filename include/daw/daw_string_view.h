@@ -275,9 +275,6 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr size_type size( ) const noexcept {
-			if( m_first == m_last ) {
-				return 0U;
-			}
 			auto const result = distance( m_first, m_last );
 			return static_cast<size_t>( result );
 		}
