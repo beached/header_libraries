@@ -22,10 +22,12 @@
 
 #pragma once
 #include <array>
+#include <cassert>
 #include <cstddef>
 #include <iterator>
 #include <memory>
 #include <numeric>
+#include <tuple>
 #include <type_traits>
 #include <utility>
 #include <vector>
@@ -34,64 +36,71 @@
 #include "../daw_traits.h"
 
 namespace daw {
-	namespace inpit_impl {
-		enum fn_ary_item {
-			OpDel,
-			OpEqual,
-			OpNotEqual,
-			OpPrefixInc,
-			OpArrow,
-			OpClone
-		};
+	template<typename T>
+	using fn_t = std::add_pointer_t<T>;
 
-		template<typename Iterator>
+	template<typename T>
+	using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
+
+	namespace inpit_impl {
+
+		template<typename It>
 		static decltype( auto ) as_orig( std::byte *p ) {
-			return *reinterpret_cast<Iterator *>( p );
+			return *reinterpret_cast<It *>( p );
 		}
 
-		using op_del_t = daw::traits::fn_t<void( std::byte * )>;
-		using op_cmp_t = daw::traits::fn_t<bool( std::byte *, std::byte * )>;
-		using op_prefix_inc_t = daw::traits::fn_t<void( std::byte * )>;
+		using op_del_t = fn_t<void( std::byte * )>;
+		using op_cmp_t = fn_t<bool( std::byte *, std::byte * )>;
+		using op_inc_t = fn_t<void( std::byte * )>;
 		template<typename Value>
-		using op_arrow_t = daw::traits::fn_t<Value const *( std::byte * )>;
-		using op_clone_t = daw::traits::fn_t<std::byte *( std::byte * )>;
+		using op_arrow_t = fn_t<Value const *( std::byte * )>;
+		using op_clone_t = fn_t<std::byte *( std::byte * )>;
+
+		enum fn_ary_item { OpDel, OpEqual, OpNotEqual, OpInc, OpArrow, OpClone };
 
 		template<typename Value>
-		using vtable_t = std::tuple<op_del_t, op_cmp_t, op_cmp_t, op_prefix_inc_t,
+		using vtable_t = std::tuple<op_del_t, op_cmp_t, op_cmp_t, op_inc_t,
 		                            op_arrow_t<Value>, op_clone_t>;
 
+		template<fn_ary_item Idx, typename Value>
+		decltype( auto ) get( vtable_t<Value> const *tbl ) {
+			return std::get<Idx>( *tbl );
+		}
+
 		template<typename Iterator, typename Value>
-		static inline constexpr vtable_t<Value> vtable{
-		  +[]( std::byte *p ) -> void {
-			  // op_del
-			  delete reinterpret_cast<Iterator *>( p );
-		  },
-		  +[]( std::byte *l, std::byte *r ) -> bool {
-			  // op_equal
-			  return as_orig<Iterator>( l ) == as_orig<Iterator>( r );
-		  },
-		  +[]( std::byte *l, std::byte *r ) -> bool {
-			  // op_not_equal
-			  return as_orig<Iterator>( l ) != as_orig<Iterator>( r );
-		  },
-		  +[]( std::byte *p ) -> void {
-			  // op_prefix_inc
-			  as_orig<Iterator>( p ) = as_orig<Iterator>( p ) + 1;
-		  },
-		  +[]( std::byte *p ) -> Value const * {
-			  // op_arrow
-			  if constexpr( std::is_pointer_v<Iterator> ) {
-				  return reinterpret_cast<Value const *>( as_orig<Iterator>( p ) );
-			  } else {
-				  return reinterpret_cast<Value const *>(
-				    as_orig<Iterator>( p ).operator->( ) );
-			  }
-		  },
-		  +[]( std::byte *p ) -> std::byte * {
-			  // op_clone
-			  return reinterpret_cast<std::byte *>(
-			    new Iterator( std::as_const( as_orig<Iterator>( p ) ) ) );
-		  }};
+		static vtable_t<Value> const *get_vtable( ) noexcept {
+			static constexpr vtable_t<Value> vtable{
+			  +[]( std::byte *p ) -> void {
+				  // op_del
+				  delete reinterpret_cast<Iterator *>( p );
+			  },
+			  +[]( std::byte *l, std::byte *r ) -> bool {
+				  // op_equal
+				  return as_orig<Iterator>( l ) == as_orig<Iterator>( r );
+			  },
+			  +[]( std::byte *l, std::byte *r ) -> bool {
+				  // op_not_equal
+				  return as_orig<Iterator>( l ) != as_orig<Iterator>( r );
+			  },
+			  +[]( std::byte *p ) -> void {
+				  // op_inc
+				  ++as_orig<Iterator>( p );
+			  },
+			  +[]( std::byte *p ) -> Value const * {
+				  // op_arrow
+				  if constexpr( std::is_pointer_v<Iterator> ) {
+					  return as_orig<Iterator>( p );
+				  } else {
+					  return as_orig<Iterator>( p ).operator->( );
+				  }
+			  },
+			  +[]( std::byte *p ) -> std::byte * {
+				  // op_clone
+				  return reinterpret_cast<std::byte *>(
+				    new Iterator( std::as_const( as_orig<Iterator>( p ) ) ) );
+			  }};
+			return &vtable;
+		}
 	} // namespace inpit_impl
 
 	template<typename T>
@@ -103,38 +112,12 @@ namespace daw {
 		using iterator_category = std::input_iterator_tag;
 
 	private:
-		using op_del_t = daw::traits::fn_t<void( std::byte * )>;
-		using op_cmp_t = daw::traits::fn_t<bool( std::byte *, std::byte * )>;
-		using op_prefix_inc_t = daw::traits::fn_t<void( std::byte * )>;
-		using op_arrow_t = daw::traits::fn_t<pointer( std::byte * )>;
-		using op_clone_t = daw::traits::fn_t<std::byte *( std::byte * )>;
-		using vtable_t = std::tuple<op_del_t, op_cmp_t, op_cmp_t, op_prefix_inc_t,
-		                            op_arrow_t, op_clone_t>;
+		using op_clone_t = fn_t<std::byte *( std::byte * )>;
+
 		std::byte *m_iterator;
-		vtable_t const *m_vtable;
-
-		op_del_t fn_op_del( ) const noexcept {
-			return std::get<inpit_impl::OpDel>( *m_vtable );
-		}
-
-		op_cmp_t fn_op_equal( ) const noexcept {
-			return std::get<inpit_impl::OpEqual>( *m_vtable );
-		}
-
-		op_cmp_t fn_op_not_equal( ) const noexcept {
-			return std::get<inpit_impl::OpNotEqual>( *m_vtable );
-		}
-
-		op_prefix_inc_t fn_op_prefix_inc( ) const noexcept {
-			return std::get<inpit_impl::OpPrefixInc>( *m_vtable );
-		}
-
-		op_arrow_t fn_op_arrow( ) const noexcept {
-			return std::get<inpit_impl::OpArrow>( *m_vtable );
-		}
-
+		inpit_impl::vtable_t<value_type> const *m_vtable;
 		op_clone_t fn_op_clone( ) const noexcept {
-			return std::get<inpit_impl::OpClone>( *m_vtable );
+			return inpit_impl::get<inpit_impl::OpClone, value_type>( m_vtable );
 		}
 
 		template<typename Iterator>
@@ -149,7 +132,7 @@ namespace daw {
 		                          std::nullptr_t> = nullptr>
 		explicit InputIterator( Iterator const &it )
 		  : m_iterator( create( it ) )
-		  , m_vtable( &inpit_impl::vtable<Iterator, value_type> ) {
+		  , m_vtable( inpit_impl::get_vtable<Iterator, value_type>( ) ) {
 			static_assert(
 			  std::is_same_v<std::remove_cv_t<value_type>,
 			                 typename std::iterator_traits<Iterator>::value_type> );
@@ -160,21 +143,11 @@ namespace daw {
 		  , m_vtable( other.m_vtable ) {}
 
 		InputIterator &operator=( InputIterator const &rhs ) {
-			if( this != &rhs ) {
-				auto tmp = m_iterator;
-#ifdef CAN_THROW
-				try {
-#endif
-					m_iterator = rhs.fn_op_clone( )( rhs.m_iterator );
-					m_vtable = rhs.m_vtable;
-					fn_op_del( tmp );
-#ifdef CAN_THROW
-				} catch( ... ) {
-					m_iterator = tmp;
-					throw;
-				}
-#endif
-			}
+			// copy first so that if it throws we are cool
+			auto tmp = rhs.fn_op_clone( )( rhs.m_iterator );
+			std::swap( m_iterator, tmp );
+			m_vtable = rhs.m_vtable;
+			inpit_impl::get<inpit_impl::OpDel, value_type>( m_vtable )( tmp );
 			return *this;
 		}
 
@@ -191,24 +164,26 @@ namespace daw {
 		}
 
 		~InputIterator( ) {
-			fn_op_del( )( m_iterator );
+			inpit_impl::get<inpit_impl::OpDel, value_type>( m_vtable )( m_iterator );
 		}
 
 		reference operator*( ) const {
 			return *operator->( );
 		}
 		pointer operator->( ) const {
-			return reinterpret_cast<pointer>( fn_op_arrow( )( m_iterator ) );
+			return reinterpret_cast<pointer>(
+			  inpit_impl::get<inpit_impl::OpArrow, value_type>( m_vtable )(
+			    m_iterator ) );
 		}
 
 		InputIterator &operator++( ) {
-			fn_op_prefix_inc( )( m_iterator );
+			inpit_impl::get<inpit_impl::OpInc, value_type>( m_vtable )( m_iterator );
 			return *this;
 		}
 
 		InputIterator operator++( int ) {
 			auto result = *this;
-			fn_op_prefix_inc( )( m_iterator );
+			inpit_impl::get<inpit_impl::OpInc, value_type>( m_vtable )( m_iterator );
 			return result;
 		}
 
@@ -219,17 +194,20 @@ namespace daw {
 		}
 
 	public:
-		friend bool operator==( InputIterator const &lhs,
-		                        InputIterator const &rhs ) noexcept {
-			return same_op_cmp( lhs, rhs ) and
-			       lhs.fn_op_equal( )( lhs.m_iterator, rhs.m_iterator );
+		bool operator==( InputIterator const &rhs ) const noexcept {
+			// Cannot think of another way right now to safely determine at runtime if
+			// two iterators of erased type are comparable.  So I will disallow it
+			assert( same_op_cmp( *this, rhs ) );
+			return inpit_impl::get<inpit_impl::OpEqual, value_type>( m_vtable )(
+			  m_iterator, rhs.m_iterator );
 		}
 
-		friend bool operator!=( InputIterator const &lhs,
-		                        InputIterator const &rhs ) noexcept {
-			// Should being of diff type be unequal?  I think so
-			return not same_op_cmp( lhs, rhs ) or
-			       lhs.fn_op_not_equal( )( lhs.m_iterator, rhs.m_iterator );
+		bool operator!=( InputIterator const &rhs ) const noexcept {
+			// Cannot think of another way right now to safely determine at runtime if
+			// two iterators of erased type are comparable.  So I will disallow it
+			assert( same_op_cmp( *this, rhs ) );
+			return inpit_impl::get<inpit_impl::OpNotEqual, value_type>( m_vtable )(
+			  m_iterator, rhs.m_iterator );
 		}
 
 		bool are_same_base_iterator_type( InputIterator const &other ) const
@@ -246,16 +224,13 @@ namespace daw {
 	template<typename T>
 	struct InputRange {
 		using value_type = T;
-		using iterator = InputIterator<value_type>;
-		using const_iterator = InputIterator<std::add_const_t<value_type>>;
-
 		InputIterator<value_type> first;
 		InputIterator<value_type> last;
 
 		template<typename Container,
 		         std::enable_if_t<
 		           (not std::is_rvalue_reference_v<Container> and
-		            not std::is_same_v<InputRange, daw::remove_cvref_t<Container>>),
+		            not std::is_same_v<InputRange, remove_cvref_t<Container>>),
 		           std::nullptr_t> = nullptr>
 		InputRange( Container &&c )
 		  : first( std::begin( c ) )
@@ -289,13 +264,9 @@ namespace daw {
 	template<typename Iterator>
 	InputRange( Iterator, Iterator )
 	  ->InputRange<typename std::iterator_traits<Iterator>::value_type>;
-
-	template<typename T>
-	InputRange( T *, T * )->InputRange<T>;
-
 	template<typename Container>
 	InputRange( Container )
-	  ->InputRange<typename std::iterator_traits<
-	    decltype( std::begin( std::declval<Container>( ) ) )>::value_type>;
+	  ->InputRange<std::remove_reference_t<
+	    decltype( *std::begin( std::declval<Container>( ) ) )>>;
 
 } // namespace daw
