@@ -65,7 +65,7 @@ namespace daw {
 	}
 
 	template<typename RandomIterator>
-	void shuffle( RandomIterator first, RandomIterator last ) {
+	inline void shuffle( RandomIterator first, RandomIterator last ) {
 		using diff_t =
 		  typename ::std::iterator_traits<RandomIterator>::difference_type;
 
@@ -76,7 +76,7 @@ namespace daw {
 	}
 
 	template<typename IntType, typename ForwardIterator>
-	void random_fill( ForwardIterator first, ForwardIterator const last,
+	inline void random_fill( ForwardIterator first, ForwardIterator const last,
 	                  IntType a, IntType b ) {
 		static_assert( ::std::is_integral_v<IntType>,
 		               "IntType must be a valid integral type" );
@@ -87,7 +87,7 @@ namespace daw {
 	}
 
 	template<typename IntType, typename Result = ::std::vector<IntType>>
-	Result
+	inline Result
 	make_random_data( size_t count,
 	                  IntType a = ::std::numeric_limits<IntType>::min( ),
 	                  IntType b = ::std::numeric_limits<IntType>::max( ) ) {
