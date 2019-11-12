@@ -92,7 +92,7 @@ namespace daw {
 
 	public:
 		constexpr on_exit_success( Handler &&h ) noexcept(
-		  std::is_move_constructible_v<Handler> )
+		  std::is_nothrow_move_constructible_v<Handler> )
 		  : on_exit_handler( std::move( h ) ) {}
 
 		~on_exit_success( ) noexcept( noexcept( on_exit_handler( ) ) ) {
