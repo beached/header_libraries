@@ -30,15 +30,14 @@
 #include "daw_traits.h"
 #include "daw_utility.h"
 
-namespace daw {
-	namespace impl {
-		static inline auto &global_rng( ) {
-			static thread_local auto e =
-			  ::std::mt19937_64( ::std::random_device{}( ) );
-			return e;
-		}
-	} // namespace impl
+namespace daw::impl {
+	static inline auto &global_rng( ) {
+		static thread_local auto e = ::std::mt19937_64( ::std::random_device{}( ) );
+		return e;
+	}
+} // namespace daw::impl
 
+namespace daw {
 	template<typename IntType>
 	inline IntType randint( IntType a, IntType b ) {
 		static_assert( ::std::is_integral_v<IntType>,
@@ -106,26 +105,24 @@ namespace daw {
 
 	namespace cxrand_impl {
 #ifdef USE_CXSEED
-		namespace {
-			constexpr size_t generate_seed( char const *first,
-			                                size_t seed = 0 ) noexcept {
-				// Use djb2 to hash the string to generate seed
-				size_t result = seed == 0 ? 5381U : seed;
-				while( first and *first != 0 ) {
-					result =
-					  ( ( result << 5U ) + result ) + static_cast<size_t>( *first++ );
-				}
-				return result;
+		constexpr size_t generate_seed( char const *first,
+		                                size_t seed = 0 ) noexcept {
+			// Use djb2 to hash the string to generate seed
+			size_t result = seed == 0 ? 5381U : seed;
+			while( first and *first != 0 ) {
+				result =
+				  ( ( result << 5U ) + result ) + static_cast<size_t>( *first++ );
 			}
+			return result;
+		}
 
-			constexpr size_t generate_seed( ) noexcept {
-				size_t result = generate_seed( __FILE__ );
-				result = generate_seed( __DATE__, result );
-				result = generate_seed( __TIME__, result );
-				result = ( ( result << 5U ) + result ) + __LINE__;
-				return result;
-			}
-		} // namespace
+		constexpr size_t generate_seed( ) noexcept {
+			size_t result = generate_seed( __FILE__ );
+			result = generate_seed( __DATE__, result );
+			result = generate_seed( __TIME__, result );
+			result = ( ( result << 5U ) + result ) + __LINE__;
+			return result;
+		}
 #endif
 		template<size_t N,
 		         ::std::enable_if_t<( N == 4 ), ::std::nullptr_t> = nullptr>
