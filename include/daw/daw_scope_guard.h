@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <exception>
 #include <utility>
 
 #include "daw_move.h"
@@ -86,15 +87,15 @@ namespace daw {
 	}
 
 	template<typename Handler>
-	class scope_success {
+	class on_exit_success {
 		Handler on_exit_handler;
 
 	public:
-		constexpr scope_success( Handler &&h ) noexcept(
+		constexpr on_exit_success( Handler &&h ) noexcept(
 		  std::is_move_constructible_v<Handler> )
 		  : on_exit_handler( std::move( h ) ) {}
 
-		~scope_success( ) noexcept( noexcept( on_exit_handler( ) ) ) {
+		~on_exit_success( ) noexcept( noexcept( on_exit_handler( ) ) ) {
 			if( std::uncaught_exceptions( ) == 0 ) {
 				on_exit_handler( );
 			}
@@ -102,6 +103,6 @@ namespace daw {
 	};
 
 	template<typename Handler>
-	scope_success( Handler )->scope_success<Handler>;
+	on_exit_success( Handler )->on_exit_success<Handler>;
 } // namespace daw
 
