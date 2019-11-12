@@ -84,4 +84,24 @@ namespace daw {
 	on_scope_exit( FunctionType f ) noexcept {
 		return ScopeGuard<FunctionType>( daw::move( f ) );
 	}
+
+	template<typename Handler>
+	class scope_success {
+		Handler on_exit_handler;
+
+	public:
+		constexpr scope_success( Handler &&h ) noexcept(
+		  std::is_move_constructible_v<Handler> )
+		  : on_exit_handler( std::move( h ) ) {}
+
+		~scope_success( ) noexcept( noexcept( on_exit_handler( ) ) ) {
+			if( std::uncaught_exceptions( ) == 0 ) {
+				on_exit_handler( );
+			}
+		}
+	};
+
+	template<typename Handler>
+	scope_success( Handler )->scope_success<Handler>;
 } // namespace daw
+
