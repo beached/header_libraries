@@ -95,6 +95,10 @@ namespace daw {
 		  std::is_nothrow_move_constructible_v<Handler> )
 		  : on_exit_handler( std::move( h ) ) {}
 
+		constexpr on_exit_success( Handler const &h ) noexcept(
+		  std::is_nothrow_copy_constructible_v<Handler> )
+		  : on_exit_handler( std::move( h ) ) {}
+
 		~on_exit_success( ) noexcept( noexcept( on_exit_handler( ) ) ) {
 			if( std::uncaught_exceptions( ) == 0 ) {
 				on_exit_handler( );
