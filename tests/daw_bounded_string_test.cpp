@@ -765,9 +765,8 @@ namespace daw {
 		daw::basic_bounded_string<char, 4> a = "This";
 		try {
 			a.push_back( 'a' );
-		} catch( std::out_of_range const & ) {
-			return;
-		} catch(...) { }
+		} catch( std::out_of_range const & ) { return; } catch( ... ) {
+		}
 
 		puts( "Expected out_of_range exception" );
 		std::abort( );

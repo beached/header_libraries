@@ -93,7 +93,8 @@ void test_topoligical_range_001( ) {
 		  return lhs.value( ) < rhs.value( );
 	  } );
 	result.reserve( rng.size( ) );
-	std::transform( rng.begin( ), rng.end( ), std::back_inserter( result ), []( auto && node ) { return node.value( ); } );
+	std::transform( rng.begin( ), rng.end( ), std::back_inserter( result ),
+	                []( auto &&node ) { return node.value( ); } );
 	daw::expecting( "542310", result );
 }
 

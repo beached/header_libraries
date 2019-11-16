@@ -115,8 +115,9 @@ constexpr bool daw_safe_next_test_001( ) {
 	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	auto it = daw::safe_next( ::std::begin( a ), ::std::end( a ), 5 );
 
-	static_assert( ::std::is_same_v<decltype( it ), decltype( ::std::begin( a ) )>,
-	               "Iterator type is changing in safe_next" );
+	static_assert(
+	  ::std::is_same_v<decltype( it ), decltype( ::std::begin( a ) )>,
+	  "Iterator type is changing in safe_next" );
 
 	daw::expecting( it, ::std::next( ::std::begin( a ), 5 ) );
 	return true;
@@ -136,8 +137,9 @@ constexpr bool daw_safe_next_test_003( ) {
 	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	auto it = daw::safe_next( ::std::begin( a ), ::std::end( a ), 5 );
 
-	static_assert( ::std::is_same_v<decltype( it ), decltype( ::std::begin( a ) )>,
-	               "Iterator type is changing in safe_next" );
+	static_assert(
+	  ::std::is_same_v<decltype( it ), decltype( ::std::begin( a ) )>,
+	  "Iterator type is changing in safe_next" );
 
 	daw::expecting( it, ::std::next( ::std::begin( a ), 5 ) );
 	return true;
@@ -157,8 +159,9 @@ constexpr bool daw_safe_prev_test_001( ) {
 	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	auto it = daw::safe_prev( ::std::end( a ), ::std::begin( a ), 5 );
 
-	static_assert( ::std::is_same_v<decltype( it ), decltype( ::std::begin( a ) )>,
-	               "Iterator type is changing in safe_prev" );
+	static_assert(
+	  ::std::is_same_v<decltype( it ), decltype( ::std::begin( a ) )>,
+	  "Iterator type is changing in safe_prev" );
 
 	daw::expecting( it, ::std::prev( ::std::end( a ), 5 ) );
 	return true;
@@ -178,8 +181,9 @@ constexpr bool daw_safe_prev_test_003( ) {
 	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	auto it = daw::safe_prev( ::std::end( a ), ::std::begin( a ), 5 );
 
-	static_assert( ::std::is_same_v<decltype( it ), decltype( ::std::begin( a ) )>,
-	               "Iterator type is changing in safe_prev" );
+	static_assert(
+	  ::std::is_same_v<decltype( it ), decltype( ::std::begin( a ) )>,
+	  "Iterator type is changing in safe_prev" );
 
 	daw::expecting( it, ::std::prev( ::std::end( a ), 5 ) );
 	return true;
@@ -199,8 +203,9 @@ constexpr bool daw_begin_at_test_001( ) {
 	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	auto it = daw::begin_at( a, 0 );
 
-	static_assert( ::std::is_same_v<decltype( it ), decltype( ::std::begin( a ) )>,
-	               "Iterator type is changing in begin_at" );
+	static_assert(
+	  ::std::is_same_v<decltype( it ), decltype( ::std::begin( a ) )>,
+	  "Iterator type is changing in begin_at" );
 
 	daw::expecting( it, ::std::begin( a ) );
 	return true;
@@ -219,8 +224,9 @@ constexpr bool daw_begin_at_test_003( ) {
 	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	auto it = daw::begin_at( a, 0 );
 
-	static_assert( ::std::is_same_v<decltype( it ), decltype( ::std::begin( a ) )>,
-	               "Iterator type is changing in begin_at" );
+	static_assert(
+	  ::std::is_same_v<decltype( it ), decltype( ::std::begin( a ) )>,
+	  "Iterator type is changing in begin_at" );
 
 	daw::expecting( it, ::std::begin( a ) );
 	return true;
@@ -813,7 +819,7 @@ constexpr bool do_n_2_test( ) {
 static_assert( do_n_2_test( ) );
 
 constexpr bool find_index_test( ) {
-	std::array ary = { 1,2,3,4 };
+	std::array ary = {1, 2, 3, 4};
 	auto const f0 = ::daw::algorithm::find_index( ary.begin( ), ary.end( ), 3 );
 	::daw::expecting( f0 );
 	::daw::expecting( *f0, 2U );

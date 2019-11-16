@@ -31,9 +31,7 @@ constexpr void func2( int ) noexcept {
 }
 
 constexpr bool test_001( ) {
-	auto call = []( int ) noexcept {
-		return 0;
-	};
+	auto call = []( int ) noexcept { return 0; };
 
 	auto c0 = daw::make_callable( func );
 	auto c1 = daw::make_callable( call );
@@ -43,9 +41,7 @@ constexpr bool test_001( ) {
 static_assert( test_001( ) );
 
 constexpr bool test_002( ) {
-	auto call = []( int ) noexcept {
-		return;
-	};
+	auto call = []( int ) noexcept { return; };
 
 	daw::make_callable( func2 );
 	daw::make_callable( call );

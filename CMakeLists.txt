@@ -24,10 +24,6 @@ endif( )
 
 include_directories( ${HEADER_FOLDER} )
 
-set( TESTED_HEADERS_PREFIXES
-	daw_string_view
-)
-
 #No boost test
 set( TESTED_HEADERS_PREFIXES_NBT
 	daw_memory_mapped_file
@@ -95,6 +91,7 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_string
 	daw_string_fmt
 	daw_string_split_range
+	daw_string_view
 	daw_span
 	daw_traits
 	daw_tuple_helper
@@ -110,7 +107,6 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_visit
 	not_null
 )
-
 
 set( UNTESTED_HEADER_IMPL
 	daw_int_to_iterator
@@ -219,15 +215,6 @@ add_dependencies( full test_main )
 add_library( test_main EXCLUDE_FROM_ALL ${TEST_FOLDER}/test_main.cpp )
 add_dependencies( check test_main )
 add_dependencies( check full )
-
-#Full Boost
-foreach( CUR_PREFIX ${TESTED_HEADERS_PREFIXES} )
-	install( FILES "${HEADER_FOLDER}/daw/${CUR_PREFIX}.h" DESTINATION include/daw )
-	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/${CUR_PREFIX}.h ${TEST_FOLDER}/${CUR_PREFIX}_test.cpp )
-	target_link_libraries( ${CUR_PREFIX}_test_bin test_main ${Boost_LIBRARIES} ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
-	add_test( ${CUR_PREFIX}_test ${CUR_PREFIX}_test_bin )
-	add_dependencies( full ${CUR_PREFIX}_test_bin )
-endforeach( CUR_PREFIX )
 
 #No boost test
 foreach( CUR_PREFIX ${TESTED_HEADERS_PREFIXES_NBT} )

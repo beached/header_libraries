@@ -33,32 +33,32 @@ constexpr int plus( int a, int b ) {
 static_assert( daw::apply( plus, std::make_tuple( 1, 2 ) ) == 3 );
 /*
 namespace void_t_tests {
-	void test2( int ) {}
-	struct X {};
+  void test2( int ) {}
+  struct X {};
 
-	constexpr bool fn2( ... ) {
-		return true;
-	}
+  constexpr bool fn2( ... ) {
+    return true;
+  }
 
-	template<typename T, typename = ::std::void_t<decltype( fn( T{} ) )>>
-	constexpr bool fn2( T ) {
-		return false;
-	}
+  template<typename T, typename = ::std::void_t<decltype( fn( T{} ) )>>
+  constexpr bool fn2( T ) {
+    return false;
+  }
 
-	constexpr bool void_t_test_001( ) {
-		auto const b1 = fn2( X{} );
-		daw::expecting( b1 );
-		return true;
-	}
-	static_assert( void_t_test_001( ) );
+  constexpr bool void_t_test_001( ) {
+    auto const b1 = fn2( X{} );
+    daw::expecting( b1 );
+    return true;
+  }
+  static_assert( void_t_test_001( ) );
 } // namespace void_t_tests
 */
 /*
 namespace cpp_17_test_01 {
-	void test( ) {}
-	struct test2 {};
-	static_assert( std::is_function_v<decltype( test )>, "" );
-	static_assert( !std::is_function_v<test2>, "" );
+  void test( ) {}
+  struct test2 {};
+  static_assert( std::is_function_v<decltype( test )>, "" );
+  static_assert( !std::is_function_v<test2>, "" );
 } // namespace cpp_17_test_01
 */
 
@@ -80,11 +80,11 @@ namespace not_fn_test {
 
 /*
 namespace is_array_v_001 {
-	struct A {};
-	static_assert( !std::is_array_v<A>, "" );
-	static_assert( std::is_array_v<A[]>, "" );
-	static_assert( std::is_array_v<A[3]>, "" );
-	static_assert( !std::is_array_v<float>, "" );
+  struct A {};
+  static_assert( !std::is_array_v<A>, "" );
+  static_assert( std::is_array_v<A[]>, "" );
+  static_assert( std::is_array_v<A[3]>, "" );
+  static_assert( !std::is_array_v<float>, "" );
 } // namespace is_array_v_001
 */
 namespace advance_001 {

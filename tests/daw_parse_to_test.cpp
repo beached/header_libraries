@@ -83,9 +83,7 @@ namespace {
 	}( ) );
 
 	static_assert( []( ) {
-		auto const f = []( int a, int b, int c ) noexcept {
-			return a + b + c;
-		};
+		auto const f = []( int a, int b, int c ) noexcept { return a + b + c; };
 		auto result = daw::apply_string2( f, "1,2,3", "," );
 		daw::expecting( result, 6 );
 		return true;
