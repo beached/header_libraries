@@ -66,7 +66,7 @@ namespace daw {
 		return str;
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_bounded_string_contexpr_001 ) {
+	void daw_bounded_string_contexpr_001( ) {
 		daw::bounded_string a = "A test";
 		tmp_e result = tmp_e::b;
 		auto str = do_something( a, result );
@@ -74,7 +74,7 @@ namespace daw {
 		daw::expecting( result == tmp_e::a );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_bounded_string_make_bounded_string_it ) {
+	void daw_bounded_string_make_bounded_string_it( ) {
 		std::string a = "This is a test";
 		auto b = daw::make_bounded_string_it( a.begin( ), a.end( ) );
 
@@ -83,7 +83,7 @@ namespace daw {
 		  "string and bounded_string should be equal" );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_bounded_string_erase_index ) {
+	void daw_bounded_string_erase_index( ) {
 		std::string a = "This is a test";
 		auto b = daw::make_bounded_string_it( a.begin( ), a.end( ) );
 		a.erase( 2, 2 );
@@ -94,7 +94,7 @@ namespace daw {
 		  "string and bounded_string should be equal" );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_bounded_string_make_bounded_string_vector ) {
+	void daw_bounded_string_make_bounded_string_vector( ) {
 		std::string a = "This is a test";
 		std::vector<char> b;
 		std::copy( a.begin( ), a.end( ), std::back_inserter( b ) );
@@ -109,7 +109,7 @@ namespace daw {
 		  "bounded_string and vector should be equal" );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_bounded_string_find_last_of_001 ) {
+	void daw_bounded_string_find_last_of_001( ) {
 		static daw::bounded_string const a = "abcdefghijklm";
 		std::string const b = "abcdefghijklm";
 		static boost::string_view const c = "abcdefghijklm";
@@ -126,7 +126,7 @@ namespace daw {
 		daw::expecting( es, es3 );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_bounded_string_make_test_001 ) {
+	void daw_bounded_string_make_test_001( ) {
 		unsigned char const p[] = {'H', 'e', 'l', 'l', 'o', 0};
 		auto sv =
 		  daw::make_bounded_string_it( reinterpret_cast<char const *>( p ),
@@ -135,43 +135,43 @@ namespace daw {
 		daw::expecting( sv, p2 );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_bounded_string_find_first_of_if_001 ) {
+	void daw_bounded_string_find_first_of_if_001( ) {
 		daw::bounded_string const a = "abcdefghijklm";
 		auto pos = a.find_first_of_if( []( auto c ) { return c == 'c'; } );
 		daw::expecting( 2U, pos );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_bounded_string_find_first_not_of_if_001 ) {
+	void daw_bounded_string_find_first_not_of_if_001( ) {
 		daw::bounded_string const a = "abcdefghijklm";
 		auto pos = a.find_first_not_of_if( []( auto c ) { return c < 'c'; } );
 		daw::expecting( 2U, pos );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_bounded_string_find_first_of_001 ) {
+	void daw_bounded_string_find_first_of_001( ) {
 		daw::bounded_string const a = "abcdefghijklm";
 		auto pos = a.find_first_of( "def" );
 		daw::expecting( 3U, pos );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_bounded_string_find_first_not_of_001 ) {
+	void daw_bounded_string_find_first_not_of_001( ) {
 		daw::bounded_string const a = "abcabfghijklm";
 		auto pos = a.find_first_not_of( "abc" );
 		daw::expecting( 5U, pos );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_bounded_string_search_001 ) {
+	void daw_bounded_string_search_001( ) {
 		daw::bounded_string const a = "abcdeaaaijklm";
 		auto pos = a.search( "aaa" );
 		daw::expecting( 5U, pos );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_bounded_string_search_last_001 ) {
+	void daw_bounded_string_search_last_001( ) {
 		daw::bounded_string const a = "abcdeaaaijklm";
 		auto pos = a.search_last( "aaa" );
 		daw::expecting( 5U, pos );
 	}
 
-	BOOST_AUTO_TEST_CASE( tc001 ) {
+	void tc001( ) {
 		daw::bounded_string view;
 		BOOST_TEST_MESSAGE( "Constructs an empty string" );
 
@@ -183,7 +183,7 @@ namespace daw {
 
 	//----------------------------------------------------------------------------
 
-	BOOST_AUTO_TEST_CASE( tc002 ) {
+	void tc002( ) {
 		std::string str = "Hello world";
 		auto view = static_cast<daw::bounded_string>( str );
 
@@ -196,7 +196,7 @@ namespace daw {
 
 	//----------------------------------------------------------------------------
 
-	BOOST_AUTO_TEST_CASE( tc003 ) {
+	void tc003( ) {
 		auto empty_str = "";
 		auto non_empty_str = "Hello World";
 
@@ -231,7 +231,7 @@ namespace daw {
 
 	//----------------------------------------------------------------------------
 
-	BOOST_AUTO_TEST_CASE( tc004 ) {
+	void tc004( ) {
 		daw::bounded_string empty = "";
 		daw::bounded_string view = "Hello world";
 
@@ -252,7 +252,7 @@ namespace daw {
 	// Capacity
 	//----------------------------------------------------------------------------
 
-	BOOST_AUTO_TEST_CASE( tc004capacity ) {
+	void tc004capacity( ) {
 		const char *str = "Hello World";
 		daw::bounded_string view = str;
 
@@ -269,7 +269,7 @@ namespace daw {
 
 	//----------------------------------------------------------------------------
 
-	BOOST_AUTO_TEST_CASE( tc005capacity ) {
+	void tc005capacity( ) {
 		const char *str = "Hello World";
 		daw::bounded_string view = str;
 
@@ -288,7 +288,7 @@ namespace daw {
 
 	//----------------------------------------------------------------------------
 
-	BOOST_AUTO_TEST_CASE( tc006capacity ) {
+	void tc006capacity( ) {
 		const char *str = "Hello World";
 		daw::bounded_string view = str;
 
@@ -307,7 +307,7 @@ namespace daw {
 	// Element Access
 	//----------------------------------------------------------------------------
 
-	BOOST_AUTO_TEST_CASE( tc011accessor ) {
+	void tc011accessor( ) {
 		daw::bounded_string view = "Hello World";
 
 		BOOST_TEST_MESSAGE( "Returns reference to first character" );
@@ -316,7 +316,7 @@ namespace daw {
 
 	//----------------------------------------------------------------------------
 
-	BOOST_AUTO_TEST_CASE( tc012accessor ) {
+	void tc012accessor( ) {
 		daw::bounded_string view = "Hello World";
 
 		BOOST_TEST_MESSAGE( "Returns reference to last character" );
@@ -327,7 +327,7 @@ namespace daw {
 	// Modifiers
 	//----------------------------------------------------------------------------
 
-	BOOST_AUTO_TEST_CASE( tc014modifier ) {
+	void tc014modifier( ) {
 
 		daw::bounded_string view = "Hello World";
 
@@ -346,7 +346,7 @@ namespace daw {
 	// String Operations
 	//----------------------------------------------------------------------------
 
-	BOOST_AUTO_TEST_CASE( tc016conversion ) {
+	void tc016conversion( ) {
 		daw::bounded_string view = "Hello World";
 
 		std::string string = view.to_string( );
@@ -360,7 +360,7 @@ namespace daw {
 
 	//----------------------------------------------------------------------------
 
-	BOOST_AUTO_TEST_CASE( tc017conversion ) {
+	void tc017conversion( ) {
 		daw::bounded_string view = "Hello World";
 
 		std::string string = static_cast<std::string>( view );
@@ -376,7 +376,7 @@ namespace daw {
 	// Operations
 	//----------------------------------------------------------------------------
 
-	BOOST_AUTO_TEST_CASE( tc018operation ) {
+	void tc018operation( ) {
 		daw::bounded_string const view = "Hello World";
 
 		BOOST_TEST_MESSAGE( "Throws std::out_of_range if pos >= view.size()" );
@@ -430,7 +430,7 @@ namespace daw {
 
 	//----------------------------------------------------------------------------
 
-	BOOST_AUTO_TEST_CASE( tc019operation ) {
+	void tc019operation( ) {
 		daw::bounded_string view = "Hello World";
 
 		BOOST_TEST_MESSAGE( "Returns the full string when given no args" );
@@ -465,7 +465,7 @@ namespace daw {
 
 	//----------------------------------------------------------------------------
 
-	BOOST_AUTO_TEST_CASE( tc020comparison ) {
+	void tc020comparison( ) {
 		BOOST_TEST_MESSAGE( "Returns 0 for identical views" );
 		{
 			daw::bounded_string view = "Hello World";
@@ -516,7 +516,7 @@ namespace daw {
 
 	//----------------------------------------------------------------------------
 
-	BOOST_AUTO_TEST_CASE( tc021comparison ) {
+	void tc021comparison( ) {
 		daw::bounded_string view = "Hello World";
 
 		BOOST_TEST_MESSAGE( "Is equal" );
@@ -613,7 +613,7 @@ namespace daw {
 
 	//----------------------------------------------------------------------------
 
-	BOOST_AUTO_TEST_CASE( tc022comparison ) {
+	void tc022comparison( ) {
 		daw::bounded_string view = "Hello World";
 
 		BOOST_TEST_MESSAGE( "Is equal" );
@@ -709,7 +709,7 @@ namespace daw {
 		}
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_bounded_string_split_001 ) {
+	void daw_bounded_string_split_001( ) {
 		daw::bounded_string str = "This is a test of the split";
 		auto const str_splt = split( str, ' ' );
 		daw::expecting( 7U, str_splt.size( ) );
@@ -721,78 +721,78 @@ namespace daw {
 		std::cout << "\n\n";
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_bounded_string_split_005 ) {
+	void daw_bounded_string_split_005( ) {
 		std::string b_str;
 		daw::bounded_string b = static_cast<daw::bounded_string>( b_str );
 		auto const str_splt = split( b, "," );
 		daw::expecting( str_splt.empty( ) );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_can_be_bounded_string_001 ) {
+	void daw_can_be_bounded_string_001( ) {
 		daw::expecting( daw::can_be_bounded_string<decltype( "Hello" )> );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_can_be_bounded_string_starts_with_001 ) {
+	void daw_can_be_bounded_string_starts_with_001( ) {
 		daw::expecting(
 		  daw::bounded_string{"This is a test"}.starts_with( "This" ) );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_can_be_bounded_string_starts_with_002 ) {
+	void daw_can_be_bounded_string_starts_with_002( ) {
 		daw::expecting( daw::bounded_string{"This is a test"}.starts_with(
 		  daw::bounded_string{"This"} ) );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_can_be_bounded_string_starts_with_003 ) {
+	void daw_can_be_bounded_string_starts_with_003( ) {
 		daw::expecting( daw::bounded_string{"This is a test"}.starts_with( 'T' ) );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_can_be_bounded_string_starts_with_004 ) {
+	void daw_can_be_bounded_string_starts_with_004( ) {
 		daw::expecting(
 		  !daw::bounded_string{"This is a test"}.starts_with( "ahis" ) );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_can_be_bounded_string_starts_with_005 ) {
+	void daw_can_be_bounded_string_starts_with_005( ) {
 		daw::expecting( !daw::bounded_string{"This is a test"}.starts_with(
 		  daw::bounded_string{"ahis"} ) );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_can_be_bounded_string_starts_with_006 ) {
+	void daw_can_be_bounded_string_starts_with_006( ) {
 		daw::expecting( !daw::bounded_string{"This is a test"}.starts_with( 'a' ) );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_can_be_bounded_string_ends_with_001 ) {
+	void daw_can_be_bounded_string_ends_with_001( ) {
 		daw::expecting( daw::bounded_string{"This is a test"}.ends_with( "test" ) );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_can_be_bounded_string_ends_with_002 ) {
+	void daw_can_be_bounded_string_ends_with_002( ) {
 		daw::expecting( daw::bounded_string{"This is a test"}.ends_with(
 		  daw::bounded_string{"test"} ) );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_can_be_bounded_string_ends_with_003 ) {
+	void daw_can_be_bounded_string_ends_with_003( ) {
 		daw::expecting( daw::bounded_string{"This is a test"}.ends_with( 't' ) );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_can_be_bounded_string_ends_with_004 ) {
+	void daw_can_be_bounded_string_ends_with_004( ) {
 		daw::expecting(
 		  !daw::bounded_string{"This is a test"}.ends_with( "aest" ) );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_can_be_bounded_string_ends_with_005 ) {
+	void daw_can_be_bounded_string_ends_with_005( ) {
 		daw::expecting( !daw::bounded_string{"This is a test"}.ends_with(
 		  daw::bounded_string{"aest"} ) );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_can_be_bounded_string_ends_with_006 ) {
+	void daw_can_be_bounded_string_ends_with_006( ) {
 		daw::expecting( !daw::bounded_string{"This is a test"}.ends_with( 'a' ) );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_bounded_string_constexpr_001 ) {
+	void daw_bounded_string_constexpr_001( ) {
 		constexpr daw::bounded_string a = "This is a test";
 		::Unused( a );
 	}
 
-	BOOST_AUTO_TEST_CASE( daw_bounded_string_overfull_001 ) {
+	void daw_bounded_string_overfull_001( ) {
 		daw::basic_bounded_string<char, 4> a = "This";
 		BOOST_CHECK_THROW( a.push_back( 'a' ), std::out_of_range );
 	}
@@ -813,7 +813,7 @@ namespace daw {
 		return cxcopy_cosnt_test( a );
 	}
 
-	BOOST_AUTO_TEST_CASE( constexpr_copy_001 ) {
+	void constexpr_copy_001( ) {
 		constexpr auto str = cxcopy_tester( );
 		daw::expecting( str, "String b" );
 	}
@@ -832,7 +832,58 @@ namespace daw {
 	}
 	static_assert( convert_bigger( ) );
 
-	BOOST_AUTO_TEST_CASE( big ) {
+	void big( ) {
 		BOOST_REQUIRE( convert_bigger( ) );
 	}
 } // namespace daw
+
+int main( ) {
+	daw::daw_bounded_string_contexpr_001( );
+	daw::daw_bounded_string_make_bounded_string_it( );
+	daw::daw_bounded_string_erase_index( );
+	daw::daw_bounded_string_make_bounded_string_vector( );
+	daw::daw_bounded_string_find_last_of_001( );
+	daw::daw_bounded_string_make_test_001( );
+	daw::daw_bounded_string_find_first_of_if_001( );
+	daw::daw_bounded_string_find_first_not_of_if_001( );
+	daw::daw_bounded_string_find_first_of_001( );
+	daw::daw_bounded_string_find_first_not_of_001( );
+	daw::daw_bounded_string_search_001( );
+	daw::daw_bounded_string_search_last_001( );
+	daw::tc001( );
+	daw::tc002( );
+	daw::tc003( );
+	daw::tc004( );
+	daw::tc004capacity( );
+	daw::tc005capacity( );
+	daw::tc006capacity( );
+	daw::tc011accessor( );
+	daw::tc012accessor( );
+	daw::tc014modifier( );
+	daw::tc016conversion( );
+	daw::tc017conversion( );
+	daw::tc018operation( );
+	daw::tc019operation( );
+	daw::tc020comparison( );
+	daw::tc021comparison( );
+	daw::tc022comparison( );
+	daw::daw_bounded_string_split_001( );
+	daw::daw_bounded_string_split_005( );
+	daw::daw_can_be_bounded_string_001( );
+	daw::daw_can_be_bounded_string_starts_with_001( );
+	daw::daw_can_be_bounded_string_starts_with_002( );
+	daw::daw_can_be_bounded_string_starts_with_003( );
+	daw::daw_can_be_bounded_string_starts_with_004( );
+	daw::daw_can_be_bounded_string_starts_with_005( );
+	daw::daw_can_be_bounded_string_starts_with_006( );
+	daw::daw_can_be_bounded_string_ends_with_001( );
+	daw::daw_can_be_bounded_string_ends_with_002( );
+	daw::daw_can_be_bounded_string_ends_with_003( );
+	daw::daw_can_be_bounded_string_ends_with_004( );
+	daw::daw_can_be_bounded_string_ends_with_005( );
+	daw::daw_can_be_bounded_string_ends_with_006( );
+	daw::daw_bounded_string_constexpr_001( );
+	daw::daw_bounded_string_overfull_001( );
+	daw::constexpr_copy_001( );
+	daw::big( );
+}

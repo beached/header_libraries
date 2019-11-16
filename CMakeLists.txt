@@ -25,7 +25,6 @@ endif( )
 include_directories( ${HEADER_FOLDER} )
 
 set( TESTED_HEADERS_PREFIXES
-	daw_bounded_string
 	daw_string_view
 )
 
@@ -46,6 +45,7 @@ set( TESTED_HEADERS_PREFIXES_NB
  	daw_bounded_graph
 	daw_bounded_hash_map
 	daw_bounded_hash_set
+	daw_bounded_string
 	daw_bounded_vector
 	daw_carray
 	daw_checked_expected
