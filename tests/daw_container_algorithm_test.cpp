@@ -21,7 +21,6 @@
 // SOFTWARE.
 
 #include <algorithm>
-#include <boost/iterator/counting_iterator.hpp>
 #include <cstdint>
 #include <iostream>
 #include <string>
@@ -43,12 +42,12 @@ void container_algorithm_accumulate( ) {
 }
 
 void container_algorithm_transform( ) {
-	std::vector<int> test_vec{boost::counting_iterator<int>( 1 ),
-	                          boost::counting_iterator<int>( 100 )};
-	std::vector<int> result{};
-	result.resize( test_vec.size( ) );
+	auto test_vec = std::vector<int>( 100 );
+	std::iota( test_vec.begin( ), test_vec.end( ), 1 );
 
-	daw::container::transform( test_vec, std::back_inserter( result ),
+	auto result = std::vector<int>( test_vec.size( ) );
+
+	daw::container::transform( test_vec, result.data( ),
 	                           []( int const &val ) { return 2 * val; } );
 
 	auto const sum1 = daw::container::accumulate( test_vec, 0 );

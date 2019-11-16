@@ -61,7 +61,6 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_graph
 	daw_graph_algorithm
 	daw_hash_set
-	#	daw_hash_table
 	daw_heap_array
 	daw_heap_value
 	daw_keep_n
@@ -155,13 +154,13 @@ set( TESTED_ITERATOR_HEADERS_PREFIXES_NB
 
 #Still testing and may not work
 set( DEV_HEADER_FILES
-	daw_hash_table2
 	daw_range
-	daw_range_algorithm
 	#	daw_virtual_holder
 )
 
 set( DEV_HEADER_FILES_NB
+	daw_hash_table2
+	daw_range_algorithm
 	daw_range_collection
 )
 
@@ -175,6 +174,7 @@ set( UNTESTED_HEADER_FILES
 	daw_do_n.h
 	daw_enable_if.h
 	daw_function.h
+	daw_hash_table
 	daw_move.h
 	daw_newhelper.h
 	daw_operators.h

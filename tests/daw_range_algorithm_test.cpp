@@ -21,76 +21,82 @@
 // SOFTWARE.
 
 #include <algorithm>
-#include <boost/iterator/counting_iterator.hpp>
 #include <cstdint>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
-#include "daw/boost_test.h"
 #include "daw/daw_benchmark.h"
 #include "daw/daw_range_algorithm.h"
 
-BOOST_AUTO_TEST_CASE( range_algorithm_none_yet ) {
-	BOOST_WARN_MESSAGE( true, "range_algorithm_test unimplemented" );
-}
+namespace daw {
+	void range_algorithm_accumulate( ) {
+		std::vector<int> test( 100, 1 );
+		auto sum = daw::algorithm::accumulate( test, 0 );
+		daw::expecting_message( static_cast<int>( test.size( ) ) == sum,
+		                        "A vector of 1's size should equal it's sum" );
 
-BOOST_AUTO_TEST_CASE( range_algorithm_accumulate ) {
-	std::vector<int> test( 100, 1 );
-	auto sum = daw::algorithm::accumulate( test, 0 );
-	daw::expecting_message( static_cast<int>( test.size( ) ) == sum,
-	                        "A vector of 1's size should equal it's sum" );
+		auto product = daw::algorithm::accumulate(
+		  test, 1, []( int const &lhs, int const &rhs ) { return lhs * rhs; } );
 
-	auto product = daw::algorithm::accumulate(
-	  test, 1, []( int const &lhs, int const &rhs ) { return lhs * rhs; } );
+		daw::expecting_message( 1 == product,
+		                        "The product of a vector of 1's should be 1" );
+	}
 
-	daw::expecting_message( 1 == product,
-	                        "The product of a vector of 1's should be 1" );
-}
+	void range_algorithm_map( ) {
+		auto test_vec = std::vector<int>( 100 );
+		std::iota( test_vec.begin( ), test_vec.end( ), 1 );
 
-BOOST_AUTO_TEST_CASE( range_algorithm_map ) {
-	std::vector<int> test_vec( boost::counting_iterator<int>( 1 ),
-	                           boost::counting_iterator<int>( 100 ) );
+		auto result =
+		  daw::algorithm::map( test_vec, []( int const &val ) { return 2 * val; } );
 
-	auto result =
-	  daw::algorithm::map( test_vec, []( int const &val ) { return 2 * val; } );
+		daw::expecting_message(
+		  test_vec.size( ) == result.size( ),
+		  "Result of map should be of equal size to the input" );
 
-	daw::expecting_message(
-	  test_vec.size( ) == result.size( ),
-	  "Result of map should be of equal size to the input" );
+		auto sum1 = daw::algorithm::accumulate( test_vec, 0 );
+		auto sum2 = daw::algorithm::accumulate( result, 0 );
 
-	auto sum1 = daw::algorithm::accumulate( test_vec, 0 );
-	auto sum2 = daw::algorithm::accumulate( result, 0 );
+		daw::expecting_message(
+		  sum2 == 2 * sum1,
+		  "The result should have double the sum of the test_vec" );
+	}
 
-	daw::expecting_message(
-	  sum2 == 2 * sum1, "The result should have double the sum of the test_vec" );
-}
+	void daw_range_algorithm_test_where1( ) {
+		std::vector<int64_t> t1{1000};
+		std::iota( std::begin( t1 ), std::end( t1 ), 1 );
+		auto result =
+		  daw::algorithm::where( t1, []( auto v ) { return v % 2 == 0; } );
+	}
 
-BOOST_AUTO_TEST_CASE( daw_range_algorithm_test_where1 ) {
-	std::vector<int64_t> t1{1000};
-	std::iota( std::begin( t1 ), std::end( t1 ), 1 );
-	auto result =
-	  daw::algorithm::where( t1, []( auto v ) { return v % 2 == 0; } );
-}
+	void daw_range_algorithm_test_sort( ) {
+		std::vector<int64_t> v1{1000};
+		std::iota( std::begin( v1 ), std::end( v1 ), 1 );
+		daw::algorithm::sort( v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
+		daw::expecting( std::is_sorted( v1.cbegin( ), v1.cend( ) ) );
+	}
 
-BOOST_AUTO_TEST_CASE( daw_range_algorithm_test_sort ) {
-	std::vector<int64_t> v1{1000};
-	std::iota( std::begin( v1 ), std::end( v1 ), 1 );
-	daw::algorithm::sort( v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
-	daw::expecting( std::is_sorted( v1.cbegin( ), v1.cend( ) ) );
-}
+	void daw_range_algorithm_test_stable_sort( ) {
+		std::vector<int64_t> v1{1000};
+		std::iota( std::begin( v1 ), std::end( v1 ), 1 );
+		daw::algorithm::stable_sort(
+		  v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
+		daw::expecting( std::is_sorted( v1.cbegin( ), v1.cend( ) ) );
+	}
 
-BOOST_AUTO_TEST_CASE( daw_range_algorithm_test_stable_sort ) {
-	std::vector<int64_t> v1{1000};
-	std::iota( std::begin( v1 ), std::end( v1 ), 1 );
-	daw::algorithm::stable_sort( v1,
-	                             []( auto lhs, auto rhs ) { return lhs < rhs; } );
-	daw::expecting( std::is_sorted( v1.cbegin( ), v1.cend( ) ) );
-}
+	void daw_range_algorithm_test_max_element( ) {
+		std::vector<int64_t> v1{1000};
+		std::iota( std::begin( v1 ), std::end( v1 ), 1 );
+		daw::algorithm::max_element(
+		  v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
+	}
+} // namespace daw
 
-BOOST_AUTO_TEST_CASE( daw_range_algorithm_test_max_element ) {
-	std::vector<int64_t> v1{1000};
-	std::iota( std::begin( v1 ), std::end( v1 ), 1 );
-	daw::algorithm::max_element( v1,
-	                             []( auto lhs, auto rhs ) { return lhs < rhs; } );
+int main( ) {
+	daw::range_algorithm_accumulate( );
+	daw::range_algorithm_map( );
+	daw::daw_range_algorithm_test_where1( );
+	daw::daw_range_algorithm_test_sort( );
+	daw::daw_range_algorithm_test_stable_sort( );
+	daw::daw_range_algorithm_test_max_element( );
 }
