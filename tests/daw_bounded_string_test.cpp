@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <cstdio>
 #include <cstdlib>
 #include <iostream>
 #include <iterator>
@@ -166,10 +167,10 @@ namespace daw {
 
 	void tc001( ) {
 		daw::bounded_string view;
-		BOOST_TEST_MESSAGE( "Constructs an empty string" );
+		puts( "Constructs an empty string" );
 
 		{ daw::expecting( view.empty( ) ); }
-		BOOST_TEST_MESSAGE( "Is 0 bytes in size" );
+		puts( "Is 0 bytes in size" );
 
 		{ daw::expecting( view.size( ) == 0 ); }
 	}
@@ -180,10 +181,10 @@ namespace daw {
 		std::string str = "Hello world";
 		auto view = static_cast<daw::bounded_string>( str );
 
-		BOOST_TEST_MESSAGE( "Constructs a non-empty string" );
+		puts( "Constructs a non-empty string" );
 		{ daw::expecting( FALSE( view.empty( ) ) ); }
 
-		BOOST_TEST_MESSAGE( "Has non-zero size" );
+		puts( "Has non-zero size" );
 		{ daw::expecting( view.size( ) != 0 ); }
 	}
 
@@ -193,28 +194,28 @@ namespace daw {
 		auto empty_str = "";
 		auto non_empty_str = "Hello World";
 
-		BOOST_TEST_MESSAGE( "Is empty with empty string" );
+		puts( "Is empty with empty string" );
 		{
 			daw::bounded_string view = empty_str;
 
 			daw::expecting( view.empty( ) );
 		}
 
-		BOOST_TEST_MESSAGE( "Is non-empty with non-empty string" );
+		puts( "Is non-empty with non-empty string" );
 		{
 			daw::bounded_string view = non_empty_str;
 
 			daw::expecting( FALSE( view.empty( ) ) );
 		}
 
-		BOOST_TEST_MESSAGE( "Is size 0 with empty string" );
+		puts( "Is size 0 with empty string" );
 		{
 			daw::bounded_string view = empty_str;
 
 			daw::expecting( 0U, view.size( ) );
 		}
 
-		BOOST_TEST_MESSAGE( "Is not size 0 with non-empty string" );
+		puts( "Is not size 0 with non-empty string" );
 		{
 			daw::bounded_string view = non_empty_str;
 
@@ -228,16 +229,16 @@ namespace daw {
 		daw::bounded_string empty = "";
 		daw::bounded_string view = "Hello world";
 
-		BOOST_TEST_MESSAGE( "Is empty with empty string" );
+		puts( "Is empty with empty string" );
 		{ daw::expecting( empty.empty( ) ); }
 
-		BOOST_TEST_MESSAGE( "Is non-empty with non-empty string" );
+		puts( "Is non-empty with non-empty string" );
 		{ daw::expecting( FALSE( view.empty( ) ) ); }
 
-		BOOST_TEST_MESSAGE( "Is size 0 with empty string" );
+		puts( "Is size 0 with empty string" );
 		{ daw::expecting( 0U, empty.size( ) ); }
 
-		BOOST_TEST_MESSAGE( "Is not size 0 with non-empty string" );
+		puts( "Is not size 0 with non-empty string" );
 		{ daw::expecting( view.size( ) != 0U ); }
 	}
 
@@ -249,10 +250,10 @@ namespace daw {
 		const char *str = "Hello World";
 		daw::bounded_string view = str;
 
-		BOOST_TEST_MESSAGE( "Returns non-zero for non-empty string" );
+		puts( "Returns non-zero for non-empty string" );
 		{ daw::expecting( view.size( ) == std::char_traits<char>::length( str ) ); }
 
-		BOOST_TEST_MESSAGE( "Returns 0 for empty string" );
+		puts( "Returns 0 for empty string" );
 		{
 			view = "";
 
@@ -266,12 +267,12 @@ namespace daw {
 		const char *str = "Hello World";
 		daw::bounded_string view = str;
 
-		BOOST_TEST_MESSAGE( "Returns non-zero for non-empty string" );
+		puts( "Returns non-zero for non-empty string" );
 		{
 			daw::expecting( view.length( ) == std::char_traits<char>::length( str ) );
 		}
 
-		BOOST_TEST_MESSAGE( "Returns 0 for empty string" );
+		puts( "Returns 0 for empty string" );
 		{
 			view = "";
 
@@ -285,10 +286,10 @@ namespace daw {
 		const char *str = "Hello World";
 		daw::bounded_string view = str;
 
-		BOOST_TEST_MESSAGE( "Returns false on non-empty string" );
+		puts( "Returns false on non-empty string" );
 		{ daw::expecting( FALSE( view.empty( ) ) ); }
 
-		BOOST_TEST_MESSAGE( "Returns true on empty string" );
+		puts( "Returns true on empty string" );
 		{
 			view = "";
 
@@ -303,7 +304,7 @@ namespace daw {
 	void tc011accessor( ) {
 		daw::bounded_string view = "Hello World";
 
-		BOOST_TEST_MESSAGE( "Returns reference to first character" );
+		puts( "Returns reference to first character" );
 		{ daw::expecting( view.front( ) == 'H' ); }
 	}
 
@@ -312,7 +313,7 @@ namespace daw {
 	void tc012accessor( ) {
 		daw::bounded_string view = "Hello World";
 
-		BOOST_TEST_MESSAGE( "Returns reference to last character" );
+		puts( "Returns reference to last character" );
 		{ daw::expecting( view.back( ) == 'd' ); }
 	}
 
@@ -324,7 +325,7 @@ namespace daw {
 
 		daw::bounded_string view = "Hello World";
 
-		BOOST_TEST_MESSAGE( "Removes last 6 characters" );
+		puts( "Removes last 6 characters" );
 		{
 			view.remove_suffix( 6 );
 
@@ -344,10 +345,10 @@ namespace daw {
 
 		std::string string = view.to_string( );
 
-		BOOST_TEST_MESSAGE( "Copies view to new location in std::string" );
+		puts( "Copies view to new location in std::string" );
 		{ daw::expecting( view.data( ) != string.data( ) ); }
 
-		BOOST_TEST_MESSAGE( "Copied string contains same contents as view" );
+		puts( "Copied string contains same contents as view" );
 		{ daw::expecting( string == "Hello World" ); }
 	}
 
@@ -358,10 +359,10 @@ namespace daw {
 
 		std::string string = static_cast<std::string>( view );
 
-		BOOST_TEST_MESSAGE( "Copies view to new location in std::string" );
+		puts( "Copies view to new location in std::string" );
 		{ daw::expecting( view.data( ) != string.data( ) ); }
 
-		BOOST_TEST_MESSAGE( "Copied string contains same contents as view" );
+		puts( "Copied string contains same contents as view" );
 		{ daw::expecting( string == "Hello World" ); }
 	}
 
@@ -372,7 +373,7 @@ namespace daw {
 	void tc018operation( ) {
 		daw::bounded_string const view = "Hello World";
 
-		BOOST_TEST_MESSAGE( "Throws std::out_of_range if pos >= view.size()" );
+		puts( "Throws std::out_of_range if pos >= view.size()" );
 		{
 			char result[11];
 
@@ -380,7 +381,7 @@ namespace daw {
 			  [&]( ) { view.copy( result, 11, 11 ); } );
 		}
 
-		BOOST_TEST_MESSAGE( "Copies entire string" );
+		puts( "Copies entire string" );
 		{
 			char result[11];
 			view.copy( result, 11 );
@@ -388,7 +389,7 @@ namespace daw {
 			daw::expecting( std::strncmp( result, "Hello World", 11 ) == 0 );
 		}
 
-		BOOST_TEST_MESSAGE( "Copies remaining characters if count > size" );
+		puts( "Copies remaining characters if count > size" );
 		{
 			char result[11];
 			view.copy( result, 20 );
@@ -396,7 +397,7 @@ namespace daw {
 			daw::expecting( 0, std::strncmp( result, "Hello World", 11 ) );
 		}
 
-		BOOST_TEST_MESSAGE( "Copies part of the string" );
+		puts( "Copies part of the string" );
 		{
 			char result[11];
 			view.copy( result, 5 );
@@ -404,8 +405,7 @@ namespace daw {
 			daw::expecting( 0, std::strncmp( result, "Hello", 5 ) );
 		}
 
-		BOOST_TEST_MESSAGE(
-		  "Copies part of the string, offset from the beginning" );
+		puts( "Copies part of the string, offset from the beginning" );
 		{
 			char result[11];
 			view.copy( result, 10, 6 );
@@ -413,7 +413,7 @@ namespace daw {
 			daw::expecting( 0, std::strncmp( result, "World", 5 ) );
 		}
 
-		BOOST_TEST_MESSAGE( "Returns number of characters copied" );
+		puts( "Returns number of characters copied" );
 		{
 			char result[11];
 
@@ -426,32 +426,32 @@ namespace daw {
 	void tc019operation( ) {
 		daw::bounded_string view = "Hello World";
 
-		BOOST_TEST_MESSAGE( "Returns the full string when given no args" );
+		puts( "Returns the full string when given no args" );
 		{
 			auto substr = view.substr( );
 			daw::expecting( substr == "Hello World" );
 		}
 
-		BOOST_TEST_MESSAGE( "Returns last part of string" );
+		puts( "Returns last part of string" );
 		{
 			auto substr = view.substr( 6 );
 			daw::expecting( substr == "World" );
 		}
 
-		BOOST_TEST_MESSAGE( "Substring returns at most count characters" );
+		puts( "Substring returns at most count characters" );
 		{
 			auto substr = view.substr( 6, 1 );
 			daw::expecting( substr, "W" );
 			daw::expecting( substr == "W" );
 		}
 
-		BOOST_TEST_MESSAGE( "Returns up to end of string if length > size" );
+		puts( "Returns up to end of string if length > size" );
 		{
 			auto substr = view.substr( 6, 10 );
 			daw::expecting( substr == "World" );
 		}
 
-		BOOST_TEST_MESSAGE( "Throws std::out_of_range if pos > size" );
+		puts( "Throws std::out_of_range if pos > size" );
 		daw::expecting_exception<std::out_of_range>(
 		  [&view]( ) { view.substr( 15 ); } );
 	}
@@ -459,36 +459,35 @@ namespace daw {
 	//----------------------------------------------------------------------------
 
 	void tc020comparison( ) {
-		BOOST_TEST_MESSAGE( "Returns 0 for identical views" );
+		puts( "Returns 0 for identical views" );
 		{
 			daw::bounded_string view = "Hello World";
 
 			daw::expecting( 0, view.compare( "Hello World" ) );
 		}
 
-		BOOST_TEST_MESSAGE( "Returns nonzero for different views" );
+		puts( "Returns nonzero for different views" );
 		{
 			daw::bounded_string view = "Hello World";
 
 			daw::expecting( view.compare( "Goodbye World" ) != 0 );
 		}
 
-		BOOST_TEST_MESSAGE(
-		  "Returns > 0 for substring beginning with same string" );
+		puts( "Returns > 0 for substring beginning with same string" );
 		{
 			daw::bounded_string view = "Hello World";
 
 			daw::expecting( view.compare( "Hello" ) > 0 );
 		}
 
-		BOOST_TEST_MESSAGE( "Returns < 0 for superstring beginning with self" );
+		puts( "Returns < 0 for superstring beginning with self" );
 		{
 			daw::bounded_string view = "Hello";
 
 			daw::expecting( view.compare( "Hello World" ) < 0 );
 		}
 
-		BOOST_TEST_MESSAGE(
+		puts(
 		  "Returns < 0 for same-sized string compared to character greater than "
 		  "char" );
 		{
@@ -497,7 +496,7 @@ namespace daw {
 			daw::expecting( view.compare( "1234667" ) < 0 );
 		}
 
-		BOOST_TEST_MESSAGE(
+		puts(
 		  "Returns > 0 for same-sized string compared to character less than "
 		  "char" );
 		{
@@ -512,91 +511,80 @@ namespace daw {
 	void tc021comparison( ) {
 		daw::bounded_string view = "Hello World";
 
-		BOOST_TEST_MESSAGE( "Is equal" );
+		puts( "Is equal" );
 		{
-			BOOST_TEST_MESSAGE( "Returns true for equal string views" );
+			puts( "Returns true for equal string views" );
 			{
 				daw::bounded_string view2 = "Hello World";
 
 				daw::expecting( view == view2 );
 			}
 
-			BOOST_TEST_MESSAGE(
-			  "Returns true for equal strings with left char array" );
+			puts( "Returns true for equal strings with left char array" );
 			{ daw::expecting( "Hello World" == view ); }
 
-			BOOST_TEST_MESSAGE(
-			  "Returns true for equal strings with right char array" );
+			puts( "Returns true for equal strings with right char array" );
 			{ daw::expecting( view == "Hello World" ); }
 
-			BOOST_TEST_MESSAGE( "Returns true for equal strings with left char ptr" );
+			puts( "Returns true for equal strings with left char ptr" );
 			{
 				const char *str = "Hello World";
 				daw::expecting( str == view );
 			}
 
-			BOOST_TEST_MESSAGE(
-			  "Returns true for equal strings with right char ptr" );
+			puts( "Returns true for equal strings with right char ptr" );
 			{
 				const char *str = "Hello World";
 				daw::expecting( view == str );
 			}
 
-			BOOST_TEST_MESSAGE(
-			  "Returns true for equal strings with left std::string" );
+			puts( "Returns true for equal strings with left std::string" );
 			{
 				std::string str = "Hello World";
 				daw::expecting( str == view );
 			}
 
-			BOOST_TEST_MESSAGE(
-			  "Returns true for equal strings with right std::string" );
+			puts( "Returns true for equal strings with right std::string" );
 			{
 				std::string str = "Hello World";
 				daw::expecting( view == str );
 			}
 		}
 
-		BOOST_TEST_MESSAGE( "Is not equal" );
+		puts( "Is not equal" );
 		{
-			BOOST_TEST_MESSAGE( "Returns false for non-equal string views" );
+			puts( "Returns false for non-equal string views" );
 			{
 				daw::bounded_string view2 = "Goodbye World";
 
 				daw::expecting( FALSE( view == view2 ) );
 			}
 
-			BOOST_TEST_MESSAGE(
-			  "Returns false for non-equal strings with left char array" );
+			puts( "Returns false for non-equal strings with left char array" );
 			{ daw::expecting( FALSE( ( "Goodbye World" == view ) ) ); }
 
-			BOOST_TEST_MESSAGE(
-			  "Returns false for non-equal strings with right char array" );
+			puts( "Returns false for non-equal strings with right char array" );
 			{ daw::expecting( FALSE( ( view == "Goodbye World" ) ) ); }
 
-			BOOST_TEST_MESSAGE(
-			  "Returns false for non-equal strings with left char ptr" );
+			puts( "Returns false for non-equal strings with left char ptr" );
 			{
 				const char *str = "Goodbye World";
 				daw::expecting( FALSE( str == view ) );
 			}
 
-			BOOST_TEST_MESSAGE(
-			  "Returns false for non-equal strings with right char ptr" );
+			puts( "Returns false for non-equal strings with right char ptr" );
 			{
 				const char *str = "Goodbye World";
 				daw::expecting( FALSE( view == str ) );
 			}
 
-			BOOST_TEST_MESSAGE(
-			  "Returns false for non-equal strings with left std::string" );
+			puts( "Returns false for non-equal strings with left std::string" );
 			{
 				std::string str = "Goodbye World";
 				daw::expecting( FALSE( str == view ) );
 			}
 
-			BOOST_TEST_MESSAGE(
-			  "Returns false for non-equal strings with right std::string" );
+			puts( "Returns false for non-equal strings with right std::string" );
 			{
 				std::string str = "Goodbye World";
 				daw::expecting( FALSE( view == str ) );
@@ -609,92 +597,80 @@ namespace daw {
 	void tc022comparison( ) {
 		daw::bounded_string view = "Hello World";
 
-		BOOST_TEST_MESSAGE( "Is equal" );
+		puts( "Is equal" );
 		{
-			BOOST_TEST_MESSAGE( "Returns false for equal string views" );
+			puts( "Returns false for equal string views" );
 			{
 				daw::bounded_string view2 = "Hello World";
 
 				daw::expecting( FALSE( view != view2 ) );
 			}
 
-			BOOST_TEST_MESSAGE(
-			  "Returns false for equal strings with left char array" );
+			puts( "Returns false for equal strings with left char array" );
 			{ daw::expecting( FALSE( "Hello World" != view ) ); }
 
-			BOOST_TEST_MESSAGE(
-			  "Returns false for equal strings with right char array" );
+			puts( "Returns false for equal strings with right char array" );
 			{ daw::expecting( FALSE( view != "Hello World" ) ); }
 
-			BOOST_TEST_MESSAGE(
-			  "Returns false for equal strings with left char ptr" );
+			puts( "Returns false for equal strings with left char ptr" );
 			{
 				const char *str = "Hello World";
 				daw::expecting( FALSE( str != view ) );
 			}
 
-			BOOST_TEST_MESSAGE(
-			  "Returns false for equal strings with right char ptr" );
+			puts( "Returns false for equal strings with right char ptr" );
 			{
 				const char *str = "Hello World";
 				daw::expecting( FALSE( view != str ) );
 			}
 
-			BOOST_TEST_MESSAGE(
-			  "Returns false for equal strings with left std::string" );
+			puts( "Returns false for equal strings with left std::string" );
 			{
 				std::string str = "Hello World";
 				daw::expecting( FALSE( str != view ) );
 			}
 
-			BOOST_TEST_MESSAGE(
-			  "Returns false for equal strings with right std::string" );
+			puts( "Returns false for equal strings with right std::string" );
 			{
 				std::string str = "Hello World";
 				daw::expecting( FALSE( view != str ) );
 			}
 		}
 
-		BOOST_TEST_MESSAGE( "Is not equal" );
+		puts( "Is not equal" );
 		{
-			BOOST_TEST_MESSAGE( "Returns true for non-equal string views" );
+			puts( "Returns true for non-equal string views" );
 			{
 				daw::bounded_string view2 = "Goodbye World";
 
 				daw::expecting( view != view2 );
 			}
 
-			BOOST_TEST_MESSAGE(
-			  "Returns true for non-equal strings with left char array" );
+			puts( "Returns true for non-equal strings with left char array" );
 			{ daw::expecting( "Goodbye World" != view ); }
 
-			BOOST_TEST_MESSAGE(
-			  "Returns true for non-equal strings with right char array" );
+			puts( "Returns true for non-equal strings with right char array" );
 			{ daw::expecting( view != "Goodbye World" ); }
 
-			BOOST_TEST_MESSAGE(
-			  "Returns true for non-equal strings with left char ptr" );
+			puts( "Returns true for non-equal strings with left char ptr" );
 			{
 				const char *str = "Goodbye World";
 				daw::expecting( str != view );
 			}
 
-			BOOST_TEST_MESSAGE(
-			  "Returns true for non-equal strings with right char ptr" );
+			puts( "Returns true for non-equal strings with right char ptr" );
 			{
 				const char *str = "Goodbye World";
 				daw::expecting( view != str );
 			}
 
-			BOOST_TEST_MESSAGE(
-			  "Returns true for non-equal strings with left std::string" );
+			puts( "Returns true for non-equal strings with left std::string" );
 			{
 				std::string str = "Goodbye World";
 				daw::expecting( str != view );
 			}
 
-			BOOST_TEST_MESSAGE(
-			  "Returns true for non-equal strings with right std::string" );
+			puts( "Returns true for non-equal strings with right std::string" );
 			{
 				std::string str = "Goodbye World";
 				daw::expecting( view != str );
@@ -787,7 +763,14 @@ namespace daw {
 
 	void daw_bounded_string_overfull_001( ) {
 		daw::basic_bounded_string<char, 4> a = "This";
-		BOOST_CHECK_THROW( a.push_back( 'a' ), std::out_of_range );
+		try {
+			a.push_back( 'a' );
+		} catch( std::out_of_range const & ) {
+			return;
+		} catch(...) { }
+
+		puts( "Expected out_of_range exception" );
+		std::abort( );
 	}
 
 	constexpr void cxcopy_test( daw::bounded_string &lhs,
@@ -826,7 +809,7 @@ namespace daw {
 	static_assert( convert_bigger( ) );
 
 	void big( ) {
-		BOOST_REQUIRE( convert_bigger( ) );
+		daw::expecting( convert_bigger( ) );
 	}
 } // namespace daw
 
