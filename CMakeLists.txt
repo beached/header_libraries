@@ -130,14 +130,11 @@ set( TESTED_PARALLEL_HEADERS_PREFIXES_NB
 	daw_spin_lock
 )
 
-set( TESTED_ITERATOR_HEADERS_PREFIXES
-	daw_circular_iterator
-)
-
 set( TESTED_ITERATOR_HEADERS_PREFIXES_NB
 	daw_argument_iterator
 	daw_back_inserter
 	daw_checked_iterator_proxy
+	daw_circular_iterator
 	daw_indexed_iterator
 	daw_inserter
 	daw_end_inserter
@@ -152,14 +149,9 @@ set( TESTED_ITERATOR_HEADERS_PREFIXES_NB
 	InputIterator
 )
 
-#Still testing and may not work
-set( DEV_HEADER_FILES
-	daw_range
-	#	daw_virtual_holder
-)
-
 set( DEV_HEADER_FILES_NB
 	daw_hash_table2
+	daw_range
 	daw_range_algorithm
 	daw_range_collection
 )
@@ -242,14 +234,6 @@ foreach( CUR_PREFIX ${TESTED_ITERATOR_HEADERS_PREFIXES_NB} )
 	add_dependencies( full ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
 
-foreach( CUR_PREFIX ${TESTED_ITERATOR_HEADERS_PREFIXES} )
-	install( FILES "${HEADER_FOLDER}/daw/iterator/${CUR_PREFIX}.h" DESTINATION include/daw/iterator )
-	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/iterator/${CUR_PREFIX}.h ${TEST_FOLDER}/iterator/${CUR_PREFIX}_test.cpp )
-	target_link_libraries( ${CUR_PREFIX}_test_bin test_main ${Boost_LIBRARIES} ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
-	add_test( ${CUR_PREFIX}_test ${CUR_PREFIX}_test_bin )
-	add_dependencies( full ${CUR_PREFIX}_test_bin )
-endforeach( CUR_PREFIX )
-
 foreach( CUR_PREFIX ${TESTED_PARALLEL_HEADERS_PREFIXES} )
 	install( FILES "${HEADER_FOLDER}/daw/parallel/${CUR_PREFIX}.h" DESTINATION include/daw/parallel )
 	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/parallel/${CUR_PREFIX}.h ${TEST_FOLDER}/parallel/${CUR_PREFIX}_test.cpp )
@@ -263,13 +247,6 @@ foreach( CUR_PREFIX ${TESTED_PARALLEL_HEADERS_PREFIXES_NB} )
 	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/parallel/${CUR_PREFIX}.h ${TEST_FOLDER}/parallel/${CUR_PREFIX}_test.cpp )
 	target_link_libraries( ${CUR_PREFIX}_test_bin test_main ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
 	add_test( ${CUR_PREFIX}_test ${CUR_PREFIX}_test_bin )
-	add_dependencies( full ${CUR_PREFIX}_test_bin )
-endforeach( CUR_PREFIX )
-
-foreach( CUR_PREFIX ${DEV_HEADER_FILES} )
-	install( FILES "${HEADER_FOLDER}/daw/${CUR_PREFIX}.h" DESTINATION include/daw )
-	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/${CUR_PREFIX}.h ${TEST_FOLDER}/${CUR_PREFIX}_test.cpp )
-	target_link_libraries( ${CUR_PREFIX}_test_bin test_main ${Boost_LIBRARIES} ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
 	add_dependencies( full ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
 

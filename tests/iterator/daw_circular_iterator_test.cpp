@@ -26,12 +26,11 @@
 #include <iostream>
 #include <vector>
 
-#include "daw/boost_test.h"
 #include "daw/daw_benchmark.h"
 #include "daw/daw_traits.h"
 #include "daw/iterator/daw_circular_iterator.h"
 
-BOOST_AUTO_TEST_CASE( daw_circular_iterator_001 ) {
+void daw_circular_iterator_001( ) {
 	std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7};
 
 	auto first = daw::make_circular_iterator( numbers );
@@ -41,7 +40,7 @@ BOOST_AUTO_TEST_CASE( daw_circular_iterator_001 ) {
 	std::cout << '\n';
 }
 
-BOOST_AUTO_TEST_CASE( daw_circular_iterator_002 ) {
+void daw_circular_iterator_002( ) {
 	std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7};
 
 	auto first = daw::make_circular_iterator( numbers );
@@ -51,7 +50,7 @@ BOOST_AUTO_TEST_CASE( daw_circular_iterator_002 ) {
 	std::cout << '\n';
 }
 
-BOOST_AUTO_TEST_CASE( daw_circular_iterator_003 ) {
+void daw_circular_iterator_003( ) {
 	std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7};
 
 	auto first = daw::make_circular_iterator( numbers );
@@ -62,7 +61,7 @@ BOOST_AUTO_TEST_CASE( daw_circular_iterator_003 ) {
 	std::cout << '\n';
 }
 
-BOOST_AUTO_TEST_CASE( daw_circular_iterator_004 ) {
+void daw_circular_iterator_004( ) {
 	std::vector<int> a;
 	auto it = daw::make_circular_iterator( a );
 	constexpr bool is_move_assignable =
@@ -70,7 +69,7 @@ BOOST_AUTO_TEST_CASE( daw_circular_iterator_004 ) {
 	daw::expecting( is_move_assignable );
 }
 
-BOOST_AUTO_TEST_CASE( daw_circular_iterator_005 ) {
+void daw_circular_iterator_005( ) {
 	std::vector<int> a;
 	auto it = daw::make_circular_iterator( a );
 	constexpr bool is_move_constructible =
@@ -78,23 +77,19 @@ BOOST_AUTO_TEST_CASE( daw_circular_iterator_005 ) {
 	daw::expecting( is_move_constructible );
 }
 
-BOOST_AUTO_TEST_CASE( daw_circular_iterator_006 ) {
+void daw_circular_iterator_006( ) {
 	std::vector<int> a;
 	auto it = daw::make_circular_iterator( a );
-	constexpr bool is_nothrow_move_assignable =
-	  std::is_nothrow_move_assignable<decltype( it )>::value;
-	BOOST_CHECK( is_nothrow_move_assignable );
+	static_assert( std::is_nothrow_move_assignable_v<decltype( it )> );
 }
 
-BOOST_AUTO_TEST_CASE( daw_circular_iterator_007 ) {
+void daw_circular_iterator_007( ) {
 	std::vector<int> a;
 	auto it = daw::make_circular_iterator( a );
-	constexpr bool is_nothrow_move_constructible =
-	  std::is_nothrow_move_constructible<decltype( it )>::value;
-	BOOST_CHECK( is_nothrow_move_constructible );
+	static_assert( std::is_nothrow_move_constructible_v<decltype( it )> );
 }
 
-BOOST_AUTO_TEST_CASE( daw_circular_iterator_008 ) {
+void daw_circular_iterator_008( ) {
 	int a[] = {1, 2, 3, 4};
 	auto it = daw::make_circular_iterator( a );
 	auto it2 = it + 4;
@@ -104,7 +99,7 @@ BOOST_AUTO_TEST_CASE( daw_circular_iterator_008 ) {
 	daw::expecting( tst2 );
 }
 
-BOOST_AUTO_TEST_CASE( daw_circular_iterator_009 ) {
+void daw_circular_iterator_009( ) {
 	int a[] = {1, 2, 3, 4};
 	auto it = daw::make_circular_iterator( a );
 	auto it2 = it + 4;
@@ -114,7 +109,7 @@ BOOST_AUTO_TEST_CASE( daw_circular_iterator_009 ) {
 	daw::expecting( tst2 );
 }
 
-BOOST_AUTO_TEST_CASE( daw_circular_iterator_010 ) {
+void daw_circular_iterator_010( ) {
 	int a[] = {1, 2, 3, 4};
 	auto it = daw::make_circular_iterator( a );
 	using std::swap;
@@ -123,14 +118,14 @@ BOOST_AUTO_TEST_CASE( daw_circular_iterator_010 ) {
 	daw::expecting( a[1], 1 );
 }
 
-BOOST_AUTO_TEST_CASE( daw_circular_iterator_011 ) {
+void daw_circular_iterator_011( ) {
 	int a[] = {1, 2, 3, 4};
 	auto it = daw::make_circular_iterator( a );
 	auto it2 = it + 3;
 	daw::expecting( std::distance( it, it2 ), 3 );
 }
 
-BOOST_AUTO_TEST_CASE( daw_circular_iterator_012 ) {
+void daw_circular_iterator_012( ) {
 	int a[] = {1, 2, 3, 4};
 	auto it = daw::make_circular_iterator( a );
 	auto it2 = it + 3;
@@ -139,7 +134,7 @@ BOOST_AUTO_TEST_CASE( daw_circular_iterator_012 ) {
 	daw::expecting( a[3], 1 );
 }
 
-BOOST_AUTO_TEST_CASE( daw_circular_iterator_013 ) {
+void daw_circular_iterator_013( ) {
 	int a[] = {1, 2, 3, 4};
 	auto it = daw::make_circular_iterator( a );
 	auto const last = it.end( );
@@ -148,4 +143,20 @@ BOOST_AUTO_TEST_CASE( daw_circular_iterator_013 ) {
 	daw::expecting( a[1], 3 );
 	daw::expecting( a[2], 2 );
 	daw::expecting( a[3], 1 );
+}
+
+int main( ) {
+	daw_circular_iterator_001( );
+	daw_circular_iterator_002( );
+	daw_circular_iterator_003( );
+	daw_circular_iterator_004( );
+	daw_circular_iterator_005( );
+	daw_circular_iterator_006( );
+	daw_circular_iterator_007( );
+	daw_circular_iterator_008( );
+	daw_circular_iterator_009( );
+	daw_circular_iterator_010( );
+	daw_circular_iterator_011( );
+	daw_circular_iterator_012( );
+	daw_circular_iterator_013( );
 }
