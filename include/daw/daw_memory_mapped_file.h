@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2013-2019 Darrell Wright
+// Copyright (c) 2019 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -22,168 +22,271 @@
 
 #pragma once
 
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/iostreams/device/mapped_file.hpp>
-#include <cstddef>
-#include <memory>
+#include <cstdio>
+#ifndef WIN32
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <type_traits>
+#include <unistd.h>
+#else
+#include <algorithm>
+#include <cstdio>
+#include <string>
+#include <tchar.h>
+#include <windows.h>
+#endif
+#include <utility>
 
-#include "daw_string_view.h"
-#include "daw_swap.h"
-#include "daw_traits.h"
+namespace daw::filesystem {
+	enum class open_mode : bool { read, read_write };
 
-namespace daw {
-	namespace filesystem {
-		template<typename T>
-		class memory_mapped_file_t {
-			// TODO remove size_t const m_max_buff_size = 1048576;
-			boost::filesystem::path m_file_path;
-			boost::iostreams::mapped_file_params m_mf_params;
-			boost::iostreams::mapped_file m_mf_file;
+#ifndef WIN32
+	template<typename T = char>
+	struct memory_mapped_file_t {
+		using value_type = T;
+		using reference = T &;
+		using const_reference =
+		  std::conditional_t<std::is_const_v<T>, T, T const> &;
+		using pointer = T *;
+		using const_pointer = std::conditional_t<std::is_const_v<T>, T, T const> *;
+		using size_type = size_t;
 
-		public:
-			using value_type = std::decay_t<T>;
-			using pointer = value_type *;
-			using const_pointer = value_type const *;
-			using iterator = value_type *;
-			using const_iterator = value_type const *;
-			using reference = value_type &;
-			using const_reference = value_type const &;
+	private:
+		int m_file = -1;
+		pointer m_ptr = nullptr;
+		size_type m_size = 0;
 
-			memory_mapped_file_t( boost::filesystem::path file_path,
-			                      bool const readonly = true )
-			  : m_file_path{file_path}
-			  , m_mf_params{file_path.string( )} {
+		void cleanup( ) noexcept {
+			if( m_ptr != nullptr ) {
+				munmap( m_ptr, m_size );
+				m_ptr = nullptr;
+			}
+			m_size = 0;
+			if( m_file >= 0 ) {
+				close( m_file );
+				m_file = -1;
+			}
+		}
 
-				m_mf_params.flags = boost::iostreams::mapped_file::mapmode::readwrite;
-				if( readonly ) {
-					// FIXME: seems to crash	m_mf_params.flags =
-					// boost::iostreams::mapped_file::mapmode::readonly;
+	public:
+		constexpr memory_mapped_file_t( ) noexcept = default;
+
+		explicit memory_mapped_file_t( std::string_view file,
+		                             open_mode mode = open_mode::read ) noexcept {
+
+			(void)open( file, mode );
+		}
+
+		[[nodiscard]] bool open( std::string_view file,
+		                         open_mode mode = open_mode::read ) noexcept {
+
+			m_file =
+			  ::open( file.data( ), mode == open_mode::read ? O_RDONLY : O_RDWR );
+			if( m_file < 0 ) {
+				return false;
+			}
+			{
+				auto const fsz = lseek( m_file, 0, SEEK_END );
+				lseek( m_file, 0, SEEK_SET );
+				if( fsz <= 0 ) {
+					cleanup( );
+					return false;
 				}
-				m_mf_params.offset = 0;
-				m_mf_file.open( m_mf_params );
+				m_size = static_cast<size_type>( fsz );
 			}
+			m_ptr = static_cast<pointer>(
+			  mmap( nullptr, m_size,
+			        mode == open_mode::read ? PROT_READ : PROT_READ | PROT_WRITE,
+			        MAP_SHARED, m_file, 0 ) );
 
-			template<typename charT, typename traits>
-			memory_mapped_file_t( daw::basic_string_view<charT, traits> filename,
-			                      bool const readonly = true )
-			  : memory_mapped_file_t{boost::filesystem::path{filename.data( )},
-			                         readonly} {}
+			if( m_ptr == MAP_FAILED ) {
+				m_ptr = nullptr;
+				cleanup( );
+				return false;
+			}
+			return true;
+		}
 
-			memory_mapped_file_t( ) = delete;
+		[[nodiscard]] reference operator[]( size_type pos ) noexcept {
+			return m_ptr[pos];
+		}
 
-			memory_mapped_file_t( memory_mapped_file_t && ) = default;
-			memory_mapped_file_t &operator=( memory_mapped_file_t && ) = default;
+		[[nodiscard]] const_reference operator[]( size_t pos ) const noexcept {
+			return m_ptr[pos];
+		}
 
-			memory_mapped_file_t( memory_mapped_file_t const & ) = delete;
-			memory_mapped_file_t &operator=( memory_mapped_file_t const & ) = delete;
+		[[nodiscard]] constexpr pointer data( ) noexcept {
+			return m_ptr;
+		}
 
-			void close( ) {
-				if( m_mf_file.is_open( ) ) {
-					m_mf_file.close( );
+		[[nodiscard]] constexpr const_pointer data( ) const noexcept {
+			return m_ptr;
+		}
+
+		[[nodiscard]] constexpr size_type size( ) const noexcept {
+			return m_size;
+		}
+
+		constexpr explicit operator bool( ) const noexcept {
+			return m_file >= 0 and m_ptr != nullptr;
+		}
+
+		memory_mapped_file_t( memory_mapped_file_t const & ) = delete;
+		memory_mapped_file_t &operator=( memory_mapped_file_t const & ) = delete;
+
+		memory_mapped_file_t( memory_mapped_file_t &&other ) noexcept
+		  : m_file( std::exchange( other.m_file, -1 ) )
+		  , m_ptr( std::exchange( other.m_ptr, nullptr ) )
+		  , m_size( std::exchange( other.m_size, 0 ) ) {}
+
+		memory_mapped_file_t &operator=( memory_mapped_file_t &&rhs ) noexcept {
+			if( this != &rhs ) {
+				m_file = std::exchange( rhs.m_file, -1 );
+				m_ptr = std::exchange( rhs.m_ptr, nullptr );
+				m_size = std::exchange( rhs.m_size, 0 );
+			}
+			return *this;
+		}
+
+		~memory_mapped_file_t( ) noexcept {
+			cleanup( );
+		}
+	};
+#else
+	namespace mapfile_impl {
+		static constexpr long CreateFileMode( open_mode m ) {
+			if( m == open_mode::read ) {
+				return GENERIC_READ;
+			}
+			return GENERIC_READ | GENERIC_WRITE;
+		}
+
+		static constexpr long PageMode( open_mode m ) {
+			if( m == open_mode::read ) {
+				return PAGE_READONLY;
+			}
+			return PAGE_READWRITE;
+		}
+
+		static constexpr long MapMode( open_mode m ) {
+			if( m == open_mode::read ) {
+				return FILE_MAP_READ;
+			}
+			return FILE_MAP_WRITE;
+		}
+	} // namespace mapfile_impl
+
+	template<typename T = char>
+	struct memory_mapped_file_t {
+		using value_type = T;
+		using reference = T &;
+		using const_reference =
+		  std::conditional_t<std::is_const_v<T>, T, T const> &;
+		using pointer = T *;
+		using const_pointer = std::conditional_t<std::is_const_v<T>, T, T const> *;
+		using size_type = size_t;
+
+	private:
+		HANDLE m_handle = nullptr;
+		size_t m_size = 0;
+		pointer m_ptr = nullptr;
+
+		void cleanup( ) noexcept {
+			m_size = 0;
+			if( auto tmp = std::exchange( m_ptr, nullptr ); tmp ) {
+				UnmapViewOfFile( static_cast<LPVOID>( tmp ) );
+			}
+			if( auto tmp = std::exchange( m_handle, nullptr ); tmp ) {
+				CloseHandle( m_handle );
+			}
+		}
+
+	public:
+		constexpr memory_mapped_file_t( ) noexcept = default;
+
+		memory_mapped_file_t( std::string_view file,
+		                    open_mode mode = open_mode::read ) noexcept {
+
+            (void)open( file, mode );
+		}
+
+		[[nodiscard]] bool open( std::string_view file,
+		                         open_mode mode = open_mode::read ) noexcept {
+
+			{
+				HANDLE file_handle =
+				  CreateFile( file.data( ), mapfile_impl::CreateFileMode( mode ), 0, nullptr,
+				              OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr );
+				if( file_handle == INVALID_HANDLE_VALUE ) {
+					return false;
 				}
+				LARGE_INTEGER fsz;
+				if( not GetFileSizeEx( file_handle, &fsz ) or fsz.QuadPart <= 0 ) {
+					cleanup( );
+					return false;
+				}
+				m_size = static_cast<size_t>( fsz.QuadPart );
+				m_handle = CreateFileMapping( file_handle, nullptr, mapfile_impl::PageMode( mode ),
+				                              fsz.u.HighPart, fsz.u.LowPart, nullptr );
+				if( m_handle == NULL ) {
+					cleanup( );
+					return false;
+				}
+				CloseHandle( file_handle );
 			}
-
-			virtual ~memory_mapped_file_t( ) noexcept {
-				try {
-					close( );
-				} catch( ... ) {}
+			auto ptr = MapViewOfFile( m_handle, mapfile_impl::MapMode( mode ), 0, 0, 0 );
+			if( ptr == nullptr ) {
+				cleanup( );
+				return false;
 			}
-
-			bool is_open( ) const {
-				return m_mf_file.is_open( );
-			}
-
-			explicit operator bool( ) const {
-				return m_mf_file.is_open( );
-			}
-
-			reference operator[]( size_t position ) {
-				return m_mf_file.data( )[position];
-			}
-
-			const_reference operator[]( size_t position ) const {
-				return static_cast<const_reference>( m_mf_file.data( )[position] );
-			}
-
-			pointer data( size_t position = 0 ) {
-				return reinterpret_cast<pointer>(
-				  m_mf_file.data( ) +
-				  static_cast<boost::iostreams::stream_offset>( position ) );
-			}
-
-			const_pointer data( size_t position = 0 ) const {
-				return reinterpret_cast<const_pointer>(
-				  m_mf_file.data( ) +
-				  static_cast<boost::iostreams::stream_offset>( position ) );
-			}
-
-			void swap( memory_mapped_file_t &rhs ) noexcept {
-				daw::cswap( m_file_path, rhs.m_file_path );
-				daw::cswap( m_mf_params, rhs.m_mf_params );
-				daw::cswap( m_mf_file, rhs.m_mf_file );
-			}
-
-			size_t size( ) const {
-				return m_mf_file.size( );
-			}
-
-			iterator begin( ) {
-				return m_mf_file.data( );
-			}
-
-			const_iterator begin( ) const {
-				return reinterpret_cast<const_iterator>( m_mf_file.data( ) );
-			}
-
-			iterator end( ) {
-				return std::next( m_mf_file.data( ), size( ) );
-			}
-
-			const_iterator end( ) const {
-				return reinterpret_cast<const_iterator>(
-				  std::next( m_mf_file.data( ), size( ) ) );
-			}
-
-			const_iterator cbegin( ) const {
-				return reinterpret_cast<const_iterator>( m_mf_file.data( ) );
-			}
-
-			const_iterator cend( ) const {
-				return reinterpret_cast<const_iterator>(
-				  std::next( m_mf_file.data( ), size( ) ) );
-			}
-		}; // memory_mapped_file_t
-
-		template<typename T>
-		void swap( memory_mapped_file_t<T> &lhs,
-		           memory_mapped_file_t<T> &rhs ) noexcept {
-			lhs.swap( rhs );
+			m_ptr = static_cast<pointer>( ptr );
+			return true;
 		}
 
-		template<typename T>
-		using MemoryMappedFile = memory_mapped_file_t<T>;
-
-		template<typename OStream, typename T,
-		         std::enable_if_t<daw::traits::is_ostream_like_lite_v<OStream>,
-		                          std::nullptr_t> = nullptr>
-		OStream &operator<<( OStream &os, memory_mapped_file_t<T> const &mmf ) {
-
-			for( auto const &value : mmf ) {
-				os << mmf;
-			}
-			return os;
+		[[nodiscard]] reference operator[]( size_type pos ) noexcept {
+			return m_ptr[pos];
 		}
 
-		template<typename OStream, typename T,
-		         std::enable_if_t<daw::traits::is_ostream_like_lite_v<OStream>,
-		                          std::nullptr_t> = nullptr>
-		OStream &operator<<( OStream &os, memory_mapped_file_t<T> const &&mmf ) {
-
-			for( auto const &value : mmf ) {
-				os << mmf;
-			}
-			return os;
+		[[nodiscard]] const_reference operator[]( size_t pos ) const noexcept {
+			return m_ptr[pos];
 		}
-	} // namespace filesystem
+
+		[[nodiscard]] constexpr pointer data( ) noexcept {
+			return m_ptr;
+		}
+
+		[[nodiscard]] constexpr const_pointer data( ) const noexcept {
+			return m_ptr;
+		}
+
+		[[nodiscard]] constexpr size_type size( ) const noexcept {
+			return m_size;
+		}
+
+		constexpr explicit operator bool( ) const noexcept {
+			return m_size == 0 or m_ptr == nullptr or m_handle == nullptr;
+		}
+
+		memory_mapped_file_t( memory_mapped_file_t const & ) = delete;
+		memory_mapped_file_t &operator=( memory_mapped_file_t const & ) = delete;
+
+		memory_mapped_file_t( memory_mapped_file_t &&other ) noexcept
+		  : m_handle( std::exchange( other.m_handle, nullptr ) )
+		  , m_size( std::exchange( other.m_size, 0 ) )
+		  , m_ptr( std::exchange( other.m_ptr, nullptr ) ) {}
+
+		memory_mapped_file_t &operator=( memory_mapped_file_t &&rhs ) noexcept {
+			if( this != &rhs ) {
+				m_handle = std::exchange( rhs.m_handle, nullptr );
+				m_size = std::exchange( rhs.m_size, 0 );
+				m_ptr = std::exchange( rhs.m_ptr, nullptr );
+			}
+			return *this;
+		}
+		~memory_mapped_file_t( ) noexcept {
+			cleanup( );
+		}
+	};
+#endif
 } // namespace daw
