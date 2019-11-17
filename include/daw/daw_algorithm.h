@@ -290,7 +290,7 @@ namespace daw::algorithm {
 		while( first != last ) {
 			auto mid = std::next( first, std::distance( first, last ) / 2 );
 			if( cmp( *mid, value ) ) {
-				first = next( mid );
+				first = std::next( mid );
 			} else {
 				last = mid;
 			}
