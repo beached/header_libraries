@@ -5,15 +5,22 @@ A set of header only algorithms, data structures, and utilities I use in many of
 
 ## Building
 to build
-``` bash
+```bash
 mkdir build
 cd build
-cmake ..
+cmake -DCMAKE_BUILD_TYPE=DEBUG ..
+cmake --build . --target full --config Debug
 ```
 
 ## Testing
 To run unit tests
 
-``` bash
-make check
+```bash
+ctest -C Debug
+```
+
+## Installing
+
+```bash
+cmake --install .
 ```
