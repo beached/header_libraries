@@ -13,5 +13,9 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Build and Test
-        run: ./ci_test.sh  
+        working-directory: build
+        run: |
+          cmake -DCMAKE_BUILD_TYPE=Debug ..
+          cmake --build . --config Debug --target full -j 2
+          ctest -C Debug
         
