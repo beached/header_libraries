@@ -90,7 +90,6 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_stack_function
 #	daw_static_bitset
 	daw_string
-	daw_string_fmt
 	daw_string_split_range
 	daw_string_view
 	daw_span
@@ -174,6 +173,7 @@ set( UNTESTED_HEADER_FILES
 	daw_range_reference.h
 	daw_range_type.h
 	daw_reference.h
+	daw_string_fmt.h
 	daw_string_view_fwd.h
 	daw_swap.h
 	daw_zipcontainer.h

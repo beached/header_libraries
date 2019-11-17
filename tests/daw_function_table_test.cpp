@@ -148,10 +148,10 @@ inline constexpr daw::function_table_t<
          }};
 
 int main( int argc, char **argv ) {
-	if( argc < 2 ) {
-		return 1;
-	}
-	auto ptr = "12345678"; // argv[1];
+	char const * ptr = "12345678";
+	if( argc > 1 ) {
+		ptr = argv[1];
+	} 
 	uintmax_t result = ftable( *ptr, 0U, ptr );
 	printf( "%lu\n", result );
 }

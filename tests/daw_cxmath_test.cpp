@@ -90,8 +90,12 @@ int main( ) {
 
 	auto const nums =
 	  daw::make_random_data<int32_t, std::vector<float>>( 1'000, -1'000, 1'000 );
-
-	daw::bench_n_test<100'000>(
+	#ifdef DEBUG
+		constexpr size_t RUNCOUNT = 10'000;
+	#else	
+		constexpr size_t RUNCOUNT = 100'000;
+	#endif
+	daw::bench_n_test<RUNCOUNT>(
 	  "daw::cxmath::cxmath_impl::bits( flt )",
 	  []( auto &&floats ) {
 		  float sum = 0.0f;
@@ -103,7 +107,7 @@ int main( ) {
 	  },
 	  nums );
 
-	daw::bench_n_test<100'000>(
+	daw::bench_n_test<RUNCOUNT>(
 	  "daw::cxmath::fpow2( int )",
 	  []( auto &&floats ) {
 		  float sum = 0.0;
@@ -117,7 +121,7 @@ int main( ) {
 	    1'000, std::numeric_limits<float>::min_exponent10,
 	    std::numeric_limits<float>::max_exponent10 ) );
 
-	daw::bench_n_test<100'000>(
+	daw::bench_n_test<RUNCOUNT>(
 	  "daw::cxmath::fexp2( flt )",
 	  []( auto &&floats ) {
 		  intmax_t sum = 0.0f;
@@ -128,7 +132,7 @@ int main( ) {
 		  return sum;
 	  },
 	  nums );
-	daw::bench_n_test<100'000>(
+	daw::bench_n_test<RUNCOUNT>(
 	  "daw::cxmath::fexp2( flt, 0 )",
 	  []( auto &&floats ) {
 		  float sum = 0.0f;
@@ -139,7 +143,7 @@ int main( ) {
 		  return sum;
 	  },
 	  nums );
-	daw::bench_n_test<100'000>(
+	daw::bench_n_test<RUNCOUNT>(
 	  "daw::cxmath::sqrt( flt )",
 	  []( auto &&floats ) {
 		  float sum = 0.0f;
@@ -150,7 +154,7 @@ int main( ) {
 		  return sum;
 	  },
 	  nums );
-	daw::bench_n_test<100'000>(
+	daw::bench_n_test<RUNCOUNT>(
 	  "std::sqrt( flt )",
 	  []( auto &&floats ) {
 		  float sum = 0.0f;

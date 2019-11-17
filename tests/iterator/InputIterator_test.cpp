@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 #include <cassert>
+#include <iostream>
 #include <numeric>
 
 #include "daw/daw_string_view.h"
@@ -40,5 +41,6 @@ int main( int argc, char **argv ) {
 		auto rng = daw::InputRange( daw::string_view( argv[n] ) );
 		val += std::accumulate( rng.begin( ), rng.end( ), 0 );
 	}
-	return val;
+	std::cout << "Total: " << val << '\n';
 }
+
