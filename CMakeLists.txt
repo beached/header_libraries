@@ -23,6 +23,8 @@ endif( )
 include_directories( ${HEADER_FOLDER} )
 
 if( Boost_FOUND ) 
+include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
+
 #No boost test
 set( TESTED_HEADERS_PREFIXES_NBT
 	daw_bit_queues
@@ -192,9 +194,6 @@ set( UNTESTED_PARALLEL_HEADER_FILES
 
 enable_testing( )
 
-include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
-link_directories( ${Boost_LIBRARY_DIRS} )
-
 #set( CMAKE_CTEST_COMMAND ctest -V )
 add_custom_target( check COMMAND ${CMAKE_CTEST_COMMAND} )
 add_custom_target( full )
@@ -210,7 +209,6 @@ foreach( CUR_PREFIX ${TESTED_HEADERS_PREFIXES_NBT} )
 endforeach( CUR_PREFIX )
 endif( )
 
-#No boost
 foreach( CUR_PREFIX ${TESTED_HEADERS_PREFIXES_NB} )
 	install( FILES "${HEADER_FOLDER}/daw/${CUR_PREFIX}.h" DESTINATION include/daw )
 	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/${CUR_PREFIX}.h ${TEST_FOLDER}/${CUR_PREFIX}_test.cpp )
