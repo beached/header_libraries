@@ -18,8 +18,6 @@ jobs:
       run: |        
         sudo apt update
         sudo apt install clang-9
-    - name: Run make_deps
-      run: ./make_deps.sh
     - name: Build and Test
       run: ./ci_test.sh
        
