@@ -13,6 +13,5 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Build and Test
-        working-directory: build
         run: ./ci_test.sh
         
