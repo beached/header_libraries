@@ -29,41 +29,38 @@ namespace daw {
 		namespace algorithm_impl {
 			template<typename Function, typename... Args, size_t... Is>
 			constexpr void do_n(
-			  Function &&func, Args &&... args,
-			  std::index_sequence<
-			    Is...> ) noexcept( std::is_nothrow_invocable_v<Function, Args...> ) {
-
+			  Function &&func,
+			  std::integer_sequence<size_t,
+			                        Is...>, Args &&... args ) noexcept( noexcept( func( args... ) ) ) {
 				if constexpr( sizeof...( Is ) > 0 ) {
-					(void)( ( daw::invoke( func, args... ), Is ) + ... );
+					(void)( ( func( args... ), Is ) + ... );
 				}
 			}
 
 			template<typename Function, size_t... Is>
-			constexpr void
-			do_n_arg( Function &&func, std::index_sequence<Is...> ) noexcept(
-			  std::is_nothrow_invocable_v<Function, size_t> ) {
-
+			constexpr void do_n_arg(
+			  Function &&func,
+			  std::integer_sequence<size_t,
+			                        Is...> ) noexcept( noexcept( func( 0ULL ) ) ) {
 				if constexpr( sizeof...( Is ) > 0 ) {
-					(void)( ( daw::invoke( func, Is ), 0 ) + ... );
+					(void)( ( func( Is ), 0 ) + ... );
 				}
 			}
-
 		} // namespace algorithm_impl
 
 		template<size_t count, typename Function, typename... Args>
-		constexpr void do_n( Function &&func, Args &&... args ) noexcept(
-		  std::is_nothrow_invocable_v<Function, Args...> ) {
+		constexpr void do_n( Function &&func, Args &&... args ) {
 			algorithm_impl::do_n( std::forward<Function>( func ),
-			                      std::forward<Args>( args )...,
-			                      std::make_index_sequence<count>{} );
-		}
+			                      std::make_integer_sequence<size_t, count>{},
+			                      std::forward<Args>( args )... );
+		}	
 
 		template<typename Function, typename... Args>
 		constexpr void
 		do_n( size_t count, Function &&func, Args &&... args ) noexcept(
 		  std::is_nothrow_invocable_v<Function, Args...> ) {
 			while( count-- > 0 ) {
-				daw::invoke( func, args... );
+				func( args... );
 			}
 		}
 
@@ -72,7 +69,7 @@ namespace daw {
 		  std::is_nothrow_invocable_v<Function, size_t> ) {
 			size_t n = 0;
 			while( n < count ) {
-				daw::invoke( func, n++ );
+				func( n++ );
 			}
 		}
 

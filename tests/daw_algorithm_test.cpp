@@ -804,8 +804,8 @@ void daw_extract_to_001( ) {
 
 constexpr bool do_n_1_test( ) {
 	int n = 0;
-	daw::algorithm::do_n<100>( [&n] { ++n; } );
-	daw::expecting( 100, n );
+	daw::algorithm::do_n<20>( [&n] { ++n; } );
+	daw::expecting( 20, n );
 	return true;
 }
 static_assert( do_n_1_test( ) );
