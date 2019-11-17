@@ -162,7 +162,7 @@ set( UNTESTED_HEADER_FILES
 	daw_do_n.h
 	daw_enable_if.h
 	daw_function.h
-	daw_hash_table
+	daw_hash_table.h
 	daw_move.h
 	daw_newhelper.h
 	daw_operators.h
