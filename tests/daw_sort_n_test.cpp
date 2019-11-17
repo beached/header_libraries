@@ -938,8 +938,7 @@ constexpr std::array<int, 10'000> big_arry = {
   76602};
 
 void sort_n_test_001( ) {
-#ifdef DEBUG
-#warning DEBUG Build
+#if defined( DEBUG ) or not defined( NDEBUG )
 	constexpr size_t DATASIZE = 100'000;
 	constexpr size_t NUMRUNS = 10'000;
 #else

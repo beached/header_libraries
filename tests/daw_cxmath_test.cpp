@@ -90,7 +90,7 @@ int main( ) {
 
 	auto const nums =
 	  daw::make_random_data<int32_t, std::vector<float>>( 1'000, -1'000, 1'000 );
-	#ifdef DEBUG
+	#if defined( DEBUG ) or not defined( NDEBUG )
 		constexpr size_t RUNCOUNT = 10'000;
 	#else	
 		constexpr size_t RUNCOUNT = 100'000;
