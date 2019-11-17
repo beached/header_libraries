@@ -22,7 +22,6 @@
 
 #pragma once
 
-#include <boost/lexical_cast.hpp>
 #include <cstddef>
 #include <cstdlib>
 #include <iomanip>
@@ -55,10 +54,26 @@ void clear( std::basic_stringstream<CharT, Traits> &ss ) {
 namespace daw {
 	namespace string {
 		namespace details {
+			template<typename To, typename From>
+			To lexical_cast( From const &from ) {
+				std::stringstream ss;
+				ss << from;
+				To result;
+				ss >> result;
+				return result;
+			}
+
 			template<typename Arg>
 			std::vector<details::string_t> unknowns_to_string( Arg arg ) {
 				std::vector<details::string_t> result;
-				result.emplace_back( boost::lexical_cast<details::string_t>( arg ) );
+				if constexpr( std::is_same_v<Arg, std::string> ) {
+					result.emplace_back( std::move( arg ) );
+				} else if constexpr( std::is_pointer_v<Arg> ) {
+					result.emplace_back( arg );
+				} else {
+					using std::to_string;
+					result.emplace_back( to_string( arg ) );
+				}
 				return result;
 			}
 
@@ -67,7 +82,14 @@ namespace daw {
 			                                                   Args... args ) {
 				std::vector<details::string_t> result;
 				result.reserve( sizeof...( args ) + 1 );
-				result.emplace_back( boost::lexical_cast<details::string_t>( arg ) );
+				using std::to_string;
+				if constexpr( std::is_same_v<Arg, std::string> ) {
+					result.emplace_back( std::move( arg ) );
+				} else if constexpr( std::is_pointer_v<Arg> ) {
+					result.emplace_back( arg );
+				} else {
+					result.emplace_back( to_string( arg ) );
+				}
 				auto result2 = unknowns_to_string( args... );
 				result.insert( std::end( result ), std::begin( result2 ),
 				               std::end( result2 ) );
@@ -152,7 +174,18 @@ namespace daw {
 
 		template<typename Arg>
 		details::string_t to_string( Arg const &arg ) {
-			return boost::lexical_cast<details::string_t>( arg );
+			if constexpr( std::is_same_v<Arg, std::string> ) {
+				return arg; 
+			} else if constexpr( std::is_pointer_v<Arg> ) {
+				return details::string_t( arg );
+			} else {
+				return std::to_string( arg );
+			}
+		}
+
+		template<size_t N>
+		details::string_t to_string( char const (&sl)[N] ) {
+			return std::string( sl );
 		}
 
 		template<typename Arg>
@@ -230,13 +263,17 @@ namespace daw {
 				} else {
 					auto delims = split( sm[1].str( ), ':' );
 					if( 1 >= delims.size( ) ) {
-						ss << arguments[boost::lexical_cast<size_t>( sm[1].str( ) )];
+						std::stringstream ss2;
+						ss2 << sm[1].str( );
+						size_t v;
+						ss2 >> v;
+						ss << arguments[v];
 					} else if( 2 == delims.size( ) ) {
 						// Assumes the argument at pos is a double.  If not, will crash
-						size_t pos = boost::lexical_cast<size_t>( delims[0] );
-						int precision = boost::lexical_cast<int>( delims[1] );
+						size_t pos = details::lexical_cast<size_t>( delims[0] );
+						int precision = details::lexical_cast<int>( delims[1] );
 						ss << std::fixed << std::setprecision( precision )
-						   << boost::lexical_cast<double>( arguments[pos] );
+						   << details::lexical_cast<double>( arguments[pos] );
 					} else {
 						daw::exception::daw_throw<std::out_of_range>(
 						  fmt( "Unknown string format.  Too many colons(", delims.size( ),

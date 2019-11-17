@@ -22,7 +22,6 @@
 
 #pragma once
 
-#include <boost/iterator/iterator_facade.hpp>
 #include <cstdint>
 #include <vector>
 
@@ -30,7 +29,7 @@
 
 namespace daw {
 	template<typename T>
-	class clumpy_sparsy_iterator;
+	struct clumpy_sparsy_iterator;
 
 	template<typename T>
 	using clumpy_sparsy_const_iterator = clumpy_sparsy_iterator<T const>;
@@ -44,11 +43,7 @@ namespace daw {
 
 		public:
 			Chunk( ) = default;
-			~Chunk( ) = default;
-			Chunk( Chunk const & ) = default;
-			Chunk( Chunk && ) = default;
-			Chunk &operator=( Chunk const & ) = default;
-			Chunk &operator=( Chunk && ) = default;
+
 			size_t size( ) const {
 				return m_items.size( );
 			}
@@ -147,17 +142,33 @@ namespace daw {
 	}; // class clumpy_sparsy
 
 	template<typename T>
-	class clumpy_sparsy_iterator
-	  : public boost::iterator_facade<clumpy_sparsy_iterator<T>, T,
-	                                  boost::random_access_traversal_tag> {
-		size_t m_position;
-		clumpy_sparsy<T> *m_items;
+	struct clumpy_sparsy_iterator {
+		using difference_type = std::ptrdiff_t;
+		using size_type = std::size_t;
+		using value_type = typename clumpy_sparsy<T>::value_type;
+		using pointer = std::add_pointer_t<value_type>;
+		using const_pointer = std::add_pointer_t<std::add_const_t<value_type>>;
+		using iterator_category = std::random_access_iterator_tag;
+		using reference = typename clumpy_sparsy<T>::reference;
+		using const_reference = typename clumpy_sparsy<T>::const_reference;
 
+	private:
+		size_t m_position = std::numeric_limits<size_t>::max( );
+		clumpy_sparsy<T> *m_items = nullptr;
+
+	public:
+		constexpr clumpy_sparsy_iterator( ) noexcept = default;
+
+		constexpr clumpy_sparsy_iterator( clumpy_sparsy<T> *items,
+		                                  size_t position = 0 ) noexcept
+		  : m_position( items ? position : std::numeric_limits<size_t>::max( ) )
+		  , m_items( items ? items : nullptr ) {}
+
+	private:
 		auto as_tuple( ) {
 			return std::tie( m_position, m_items );
 		}
 
-		friend class boost::iterator_core_access;
 		void increment( ) {
 			if( m_items->size( ) == m_position ) {
 				return;
@@ -176,7 +187,7 @@ namespace daw {
 			return as_tuple( ) == other.as_tuple( );
 		}
 
-		auto &dereference( ) const {
+		decltype( auto ) dereference( ) const {
 			return ( *m_items )[m_position];
 		}
 
@@ -199,13 +210,103 @@ namespace daw {
 			}
 		}
 
-	public:
-		clumpy_sparsy_iterator( )
-		  : m_position( std::numeric_limits<size_t>::max( ) )
-		  , m_items( nullptr ) {}
-		clumpy_sparsy_iterator( clumpy_sparsy<T> *items, size_t position = 0 )
-		  : m_position( position )
-		  , m_items( items ) {}
+		reference operator*( ) {
+			return dereference( );
+		}
+
+		pointer operator->( ) {
+			return &dereference( );
+		}
+
+		const_reference operator*( ) const {
+			return dereference( );
+		}
+
+		const_pointer operator->( ) const {
+			return &dereference( );
+		}
+
+		clumpy_sparsy_iterator &operator++( ) {
+			increment( );
+			return *this;
+		}
+
+		clumpy_sparsy_iterator operator++( int ) {
+			auto result = *this;
+			increment( );
+			return result;
+		}
+
+		clumpy_sparsy_iterator &operator--( ) {
+			decrement( );
+			return *this;
+		}
+
+		clumpy_sparsy_iterator operator--( int ) {
+			clumpy_sparsy_iterator result = *this;
+			decrement( );
+			return result;
+		}
+
+		clumpy_sparsy_iterator &operator+=( difference_type n ) {
+			advance( n );
+			return *this;
+		}
+
+		clumpy_sparsy_iterator &operator-=( difference_type n ) {
+			advance( -n );
+			return *this;
+		}
+
+		clumpy_sparsy_iterator operator+( difference_type n ) const noexcept {
+			auto result = *this;
+			advance( n );
+			return result;
+		}
+
+		clumpy_sparsy_iterator operator-( difference_type n ) const noexcept {
+			clumpy_sparsy_iterator result = *this;
+			advance( -n );
+			return result;
+		}
+
+		reference operator[]( size_type n ) noexcept {
+			return ( *m_items )[m_position + n];
+		}
+
+		const_reference operator[]( size_type n ) const noexcept {
+			return ( *m_items )[m_position + n];
+		}
+
+		friend bool operator==( clumpy_sparsy_iterator const &lhs,
+		                        clumpy_sparsy_iterator const &rhs ) {
+			return lhs.ptr == rhs.ptr;
+		}
+
+		friend bool operator!=( clumpy_sparsy_iterator const &lhs,
+		                        clumpy_sparsy_iterator const &rhs ) {
+			return lhs.ptr != rhs.ptr;
+		}
+
+		friend bool operator<( clumpy_sparsy_iterator const &lhs,
+		                       clumpy_sparsy_iterator const &rhs ) {
+			return lhs.ptr < rhs.ptr;
+		}
+
+		friend bool operator<=( clumpy_sparsy_iterator const &lhs,
+		                        clumpy_sparsy_iterator const &rhs ) {
+			return lhs.ptr <= rhs.ptr;
+		}
+
+		friend bool operator>( clumpy_sparsy_iterator const &lhs,
+		                       clumpy_sparsy_iterator const &rhs ) {
+			return lhs.ptr > rhs.ptr;
+		}
+
+		friend bool operator>=( clumpy_sparsy_iterator const &lhs,
+		                        clumpy_sparsy_iterator const &rhs ) {
+			return lhs.ptr >= rhs.ptr;
+		}
 	}; // class clumpy_sparsy_iterator
 
 } // namespace daw

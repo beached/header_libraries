@@ -2,13 +2,11 @@ cmake_minimum_required( VERSION 3.10 )
 
 project( header_libraries )
 
-find_package( Boost 1.58.0 COMPONENTS system filesystem regex unit_test_framework iostreams REQUIRED )
+find_package( Boost 1.60.0 )
 
 find_package( Threads )
 
 include( "${CMAKE_SOURCE_DIR}/dependent_projects/CMakeListsCompiler.txt" )
-
-add_definitions( -DBOOST_TEST_DYN_LINK -DBOOST_ALL_NO_LIB -DBOOST_ALL_DYN_LINK )
 
 set( HEADER_FOLDER "include" )
 set( TEST_FOLDER "tests" )
@@ -24,10 +22,12 @@ endif( )
 
 include_directories( ${HEADER_FOLDER} )
 
+if( Boost_FOUND ) 
 #No boost test
 set( TESTED_HEADERS_PREFIXES_NBT
-	daw_memory_mapped_file
+	daw_bit_queues
 )
+endif( )
 
 #No boost
 set( TESTED_HEADERS_PREFIXES_NB
@@ -36,7 +36,6 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_array
 	daw_benchmark
 	daw_bit
-	daw_bit_queues
 	daw_bounded_array
  	daw_bounded_graph
 	daw_bounded_hash_map
@@ -65,6 +64,7 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_heap_value
 	daw_keep_n
 	daw_math
+	daw_memory_mapped_file
 	daw_natural
 	daw_overload
 	daw_optional
@@ -157,7 +157,6 @@ set( DEV_HEADER_FILES_NB
 #)
 
 set( UNTESTED_HEADER_FILES
-	boost_test.h
 	daw_bit_stream.h
 	daw_common_mixins.h
 	daw_do_n.h
@@ -199,26 +198,23 @@ link_directories( ${Boost_LIBRARY_DIRS} )
 #set( CMAKE_CTEST_COMMAND ctest -V )
 add_custom_target( check COMMAND ${CMAKE_CTEST_COMMAND} )
 add_custom_target( full )
-add_dependencies( full test_main )
 
-add_library( test_main EXCLUDE_FROM_ALL ${TEST_FOLDER}/test_main.cpp )
-add_dependencies( check test_main )
-add_dependencies( check full )
-
-#No boost test
+if( Boost_FOUND )
+#Boost Headers Needed
 foreach( CUR_PREFIX ${TESTED_HEADERS_PREFIXES_NBT} )
 	install( FILES "${HEADER_FOLDER}/daw/${CUR_PREFIX}.h" DESTINATION include/daw )
 	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/${CUR_PREFIX}.h ${TEST_FOLDER}/${CUR_PREFIX}_test.cpp )
-	target_link_libraries( ${CUR_PREFIX}_test_bin ${Boost_LIBRARIES} ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
+	#	target_link_libraries( ${CUR_PREFIX}_test_bin ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
 	add_test( ${CUR_PREFIX}_test ${CUR_PREFIX}_test_bin )
 	add_dependencies( full ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
+endif( )
 
 #No boost
 foreach( CUR_PREFIX ${TESTED_HEADERS_PREFIXES_NB} )
 	install( FILES "${HEADER_FOLDER}/daw/${CUR_PREFIX}.h" DESTINATION include/daw )
 	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/${CUR_PREFIX}.h ${TEST_FOLDER}/${CUR_PREFIX}_test.cpp )
-	#	target_link_libraries( ${CUR_PREFIX}_test_bin test_main ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
+	#	target_link_libraries( ${CUR_PREFIX}_test_bin ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
 	add_test( ${CUR_PREFIX}_test ${CUR_PREFIX}_test_bin )
 	add_dependencies( full ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
@@ -226,7 +222,7 @@ endforeach( CUR_PREFIX )
 foreach( CUR_PREFIX ${TESTED_ITERATOR_HEADERS_PREFIXES_NB} )
 	install( FILES "${HEADER_FOLDER}/daw/iterator/${CUR_PREFIX}.h" DESTINATION include/daw/iterator )
 	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/iterator/${CUR_PREFIX}.h ${TEST_FOLDER}/iterator/${CUR_PREFIX}_test.cpp )
-	#	target_link_libraries( ${CUR_PREFIX}_test_bin test_main ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
+	#	target_link_libraries( ${CUR_PREFIX}_test_bin ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
 	add_test( ${CUR_PREFIX}_test ${CUR_PREFIX}_test_bin )
 	add_dependencies( full ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
@@ -234,7 +230,7 @@ endforeach( CUR_PREFIX )
 foreach( CUR_PREFIX ${TESTED_PARALLEL_HEADERS_PREFIXES_NB} )
 	install( FILES "${HEADER_FOLDER}/daw/parallel/${CUR_PREFIX}.h" DESTINATION include/daw/parallel )
 	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/parallel/${CUR_PREFIX}.h ${TEST_FOLDER}/parallel/${CUR_PREFIX}_test.cpp )
-	target_link_libraries( ${CUR_PREFIX}_test_bin test_main ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
+	target_link_libraries( ${CUR_PREFIX}_test_bin ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
 	add_test( ${CUR_PREFIX}_test ${CUR_PREFIX}_test_bin )
 	add_dependencies( full ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
