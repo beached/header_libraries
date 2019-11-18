@@ -234,12 +234,12 @@ namespace daw {
 		template<bool skip_multiple>
 		struct basic_whitespace_splitter {
 			constexpr auto operator( )( daw::string_view str ) const {
-				using sv_size_t = typename daw::string_view::size_type;
 				struct result_t {
-					sv_size_t first;
-					sv_size_t last;
+					typename daw::string_view::size_type first;
+					typename daw::string_view::size_type last;
 				};
 
+				using sv_size_t = typename daw::string_view::size_type;
 				sv_size_t n = 0;
 				size_t const sz = str.size( );
 

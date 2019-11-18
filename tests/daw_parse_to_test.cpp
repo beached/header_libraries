@@ -29,14 +29,15 @@
 #include "daw/daw_parse_to.h"
 
 namespace {
-	static_assert( []( ) {
+	constexpr bool parse_to_000( ) {
 		auto vals = daw::parser::parse_to<int, int, int, int>( "0,1,2,3", "," );
 		daw::expecting( std::get<0>( vals ), 0 );
 		daw::expecting( std::get<1>( vals ), 1 );
 		daw::expecting( std::get<2>( vals ), 2 );
 		daw::expecting( std::get<3>( vals ), 3 );
 		return true;
-	}( ) );
+	}
+	static_assert( parse_to_000( ) );
 
 	void daw_parse_to_001( ) {
 		auto const vals = daw::parser::parse_to<int, std::string, int, int>(
@@ -47,7 +48,7 @@ namespace {
 		daw::expecting( std::get<3>( vals ), 3 );
 	}
 
-	static_assert( []( ) {
+	constexpr bool parse_to_002( ) {
 		daw::string_view const str = R"(0,"hello there",2,3)";
 		auto const vals =
 		  daw::parser::parse_to<int, daw::string_view, int, int>( str, "," );
@@ -56,7 +57,8 @@ namespace {
 		daw::expecting( std::get<2>( vals ), 2 );
 		daw::expecting( std::get<3>( vals ), 3 );
 		return true;
-	}( ) );
+	}
+	static_assert( parse_to_002( ) );
 
 	namespace daw_values_from_stream_004_ns {
 		struct X {
@@ -65,52 +67,66 @@ namespace {
 			uint64_t c;
 		};
 
-		static_assert( []( ) {
+		constexpr bool from_stream_004( ) {
 			auto x = daw::construct_from<X, int, int64_t, uint64_t>(
 			  "1,-14334,3434234", "," );
 			daw::expecting( x.a, 1 );
 			daw::expecting( x.b, -14334LL );
 			daw::expecting( x.c, 3434234ULL );
 			return true;
-		}( ) );
+		}
+		static_assert( from_stream_004( ) );
 	} // namespace daw_values_from_stream_004_ns
 
-	static_assert( []( ) {
+	constexpr bool parse_to_003( ) {
 		auto const f = []( int a, int b, int c ) { return a + b + c; };
 		auto result = daw::apply_string2( f, "1,2,3", "," );
 		daw::expecting( result, 6 );
 		return true;
-	}( ) );
+	}
+	static_assert( parse_to_003( ) );
 
-	static_assert( []( ) {
-		auto const f = []( int a, int b, int c ) noexcept { return a + b + c; };
+#ifndef WIN32
+	constexpr bool parse_to_004( ) {
+		auto const f = []( int a, int b, int c ) noexcept {
+			return a + b + c;
+		};
 		auto result = daw::apply_string2( f, "1,2,3", "," );
 		daw::expecting( result, 6 );
 		return true;
-	}( ) );
+	}
+	// Workaround
+	static_assert( parse_to_004( ) );
+#endif
 
-	static_assert( []( ) {
+	constexpr bool parse_to_005( ) {
 		auto const f = []( int a, int b, int c ) { return a + b + c; };
 		auto const result = daw::apply_string<int, int, int>( f, "1,2,3", "," );
 		daw::expecting( result, 6 );
 		return true;
-	}( ) );
+	}
+	static_assert( parse_to_005( ) );
 
-	static_assert( []( ) {
+// Workaround
+#ifndef WIN32
+	constexpr bool parse_to_006( ) {
 		auto const f = []( int a, int b, int c ) { return a + b + c; };
 		auto const result =
 		  daw::apply_string2( f, "1	2  3", daw::parser::whitespace_splitter{} );
 		daw::expecting( result, 6 );
 		return true;
-	}( ) );
+	}
+	static_assert( parse_to_006( ) );
 
-	static_assert( []( ) {
+	constexpr bool parse_to_007( ) {
 		auto const f = []( int a, int b, int c ) { return a + b + c; };
 		auto const result = daw::apply_string<int, int, int>(
 		  f, "1  2     3", daw::parser::whitespace_splitter{} );
 		daw::expecting( result, 6 );
 		return true;
-	}( ) );
+	}
+	static_assert( parse_to_007( ) );
+#endif
 
 	void daw_values_from_stream_001( ) {
 		std::string str = "this 1 1.234 test";
@@ -159,13 +175,17 @@ namespace {
 			return get_value( a ) + get_value( b );
 		}
 
-		static_assert( []( ) {
+		// Workaround
+#ifndef WIN32
+		constexpr bool parse_to_enum_001( ) {
 			auto result = daw::apply_string<e_colours, e_colours>(
 			  []( e_colours a, e_colours b ) { return sum_colours( a, b ); },
 			  "green blue", daw::parser::whitespace_splitter{} );
 			daw::expecting( result, 12 );
 			return true;
-		}( ) );
+		}
+		static_assert( parse_to_enum_001( ) );
+#endif
 
 		struct callable_t {
 			constexpr int operator( )( e_colours a, e_colours b ) const noexcept {
@@ -173,15 +193,18 @@ namespace {
 			}
 		};
 
-		static_assert( []( ) {
+		constexpr bool parse_to_enum_002( ) {
 			auto const result = daw::apply_string<e_colours, e_colours>(
 			  callable_t( ), "green blue", " " );
 
 			daw::expecting( result, 12 );
 			return true;
-		}( ) );
+		}
+		static_assert( parse_to_enum_002( ) );
 
-		static_assert( []( ) {
+// Workaround
+#ifndef WIN32
+		constexpr bool parse_to_enum_003( ) {
 			auto result = daw::apply_string<e_colours, e_colours, int>(
 			  []( e_colours a, e_colours b, int c ) {
 				  return sum_colours( a, b ) + c;
@@ -189,7 +212,8 @@ namespace {
 			  "green blue 534", daw::parser::whitespace_splitter{} );
 			daw::expecting( result, 546 );
 			return true;
-		}( ) );
+		}
+		static_assert( parse_to_enum_003( ) );
 
 		struct ClassTest {
 			int value = 0;
@@ -211,12 +235,14 @@ namespace {
 			}
 		};
 
-		static_assert( []( ) {
+		constexpr bool parse_to_enum_004( ) {
 			constexpr auto result = daw::apply_string<e_colours, ClassTest>(
 			  e_colours_call{}, "green 54", daw::parser::whitespace_splitter{} );
 			daw::expecting( result, 58 );
 			return true;
-		}( ) );
+		}
+		static_assert( parse_to_enum_004( ) );
+#endif
 	} // namespace daw_parse_to_enum_001_ns
 } // namespace
 

@@ -48,30 +48,30 @@ namespace daw {
 			overload( F &&f, Fs &&... fs ) noexcept {
 				if constexpr( sizeof...( Fs ) > 0 ) {
 					return overload_t{
-					  ::daw::traits::lift_func( ::std::forward<F>( f ) ),
-					  ::daw::traits::lift_func( ::std::forward<Fs>( fs ) )...};
+					  daw::traits::lift_func( std::forward<F>( f ) ),
+					  daw::traits::lift_func( std::forward<Fs>( fs ) )...};
 				} else {
-					if constexpr( ::std::is_function_v<::daw::remove_cvref_t<F>> ) {
+					if constexpr( std::is_function_v<daw::remove_cvref_t<F>> ) {
 						static_assert(
-						  ::daw::traits::func_traits<F>::arity == 1,
+						  daw::traits::func_traits<F>::arity == 1,
 						  "Function pointers only valid for functions with 1 argument" );
 					}
-					return ::daw::traits::lift_func( ::std::forward<F>( f ) );
+					return daw::traits::lift_func( std::forward<F>( f ) );
 				}
 			}
 
 			template<size_t N, typename R, typename Variant, typename Visitor>
 			[[nodiscard]] constexpr R visit_nt( Variant &&var, Visitor &&vis ) {
-				using ::std::get;
+				using std::get;
 				if constexpr( N == 0 ) {
 					// If this check isnt there the compiler will generate
 					// exception code, this stops that
 					if( N != var.index( ) or
 					    not std::is_invocable_v<Visitor, decltype( get<N>( var ) )> ) {
-						::std::abort( );
+						std::abort( );
 					}
-					return ::std::forward<Visitor>( vis )(
-					  get<N>( ::std::forward<Variant>( var ) ) );
+					return std::forward<Visitor>( vis )(
+					  get<N>( std::forward<Variant>( var ) ) );
 				} else {
 					if( var.index( ) == N ) {
 						if( not std::is_invocable_v<Visitor, decltype( get<N>( var ) )> ) {
@@ -79,11 +79,11 @@ namespace daw {
 						}
 						// If this check isnt there the compiler will generate
 						// exception code, this stops that
-						return ::std::forward<Visitor>( vis )(
-						  get<N>( ::std::forward<Variant>( var ) ) );
+						return std::forward<Visitor>( vis )(
+						  get<N>( std::forward<Variant>( var ) ) );
 					}
-					return visit_nt<N - 1, R>( ::std::forward<Variant>( var ),
-					                           ::std::forward<Visitor>( vis ) );
+					return visit_nt<N - 1, R>( std::forward<Variant>( var ),
+					                           std::forward<Visitor>( vis ) );
 				}
 			}
 
@@ -97,7 +97,7 @@ namespace daw {
 
 			template<typename Variant>
 			inline constexpr size_t get_var_size_v =
-			  get_var_size<::daw::remove_cvref_t<Variant>>::value;
+			  get_var_size<daw::remove_cvref_t<Variant>>::value;
 
 		} // namespace
 	}   // namespace visit_impl
@@ -110,16 +110,16 @@ namespace daw {
 	[[nodiscard]] constexpr decltype( auto ) visit_nt( Variant &&var,
 	                                                   Visitors &&... visitors ) {
 
-		constexpr size_t var_sz = ::daw::visit_impl::get_var_size_v<Variant>;
+		constexpr size_t var_sz = daw::visit_impl::get_var_size_v<Variant>;
 		static_assert( var_sz > 0 );
-		using ::std::get;
+		using std::get;
 		using result_t =
-		  decltype( ::daw::visit_impl::overload( ::std::forward<Visitors>(
-		    visitors )... )( get<0>( ::std::forward<Variant>( var ) ) ) );
+		  decltype( daw::visit_impl::overload( std::forward<Visitors>(
+		    visitors )... )( get<0>( std::forward<Variant>( var ) ) ) );
 
-		return ::daw::visit_impl::visit_nt<var_sz - 1, result_t>(
-		  ::std::forward<Variant>( var ),
-		  ::daw::visit_impl::overload( ::std::forward<Visitors>( visitors )... ) );
+		return daw::visit_impl::visit_nt<var_sz - 1, result_t>(
+		  std::forward<Variant>( var ),
+		  daw::visit_impl::overload( std::forward<Visitors>( visitors )... ) );
 	}
 
 	// Singe visitation visit with user choosable result.  Expects that variant is
@@ -128,16 +128,16 @@ namespace daw {
 	[[nodiscard]] constexpr Result visit_nt( Variant &&var,
 	                                         Visitors &&... visitors ) {
 
-		constexpr size_t var_sz = ::daw::visit_impl::get_var_size_v<Variant>;
+		constexpr size_t var_sz = daw::visit_impl::get_var_size_v<Variant>;
 		static_assert( var_sz > 0 );
 
-		return ::daw::visit_impl::visit_nt<var_sz - 1, Result>(
-		  ::std::forward<Variant>( var ),
-		  ::daw::visit_impl::overload( ::std::forward<Visitors>( visitors )... ) );
+		return daw::visit_impl::visit_nt<var_sz - 1, Result>(
+		  std::forward<Variant>( var ),
+		  daw::visit_impl::overload( std::forward<Visitors>( visitors )... ) );
 	}
 
 	template<typename Value, typename... Visitors>
 	inline constexpr bool
-	  is_visitable_v = ( ::std::is_invocable_v<Visitors, Value> or ... );
+	  is_visitable_v = ( std::is_invocable_v<Visitors, Value> or ... );
 
 } // namespace daw

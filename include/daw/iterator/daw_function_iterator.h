@@ -33,7 +33,7 @@ namespace daw {
 	/// This is like std::back_intsert_iterator
 	///
 	template<typename Function>
-	struct function_iterator final {
+	struct function_iterator {
 		using iterator_category = std::output_iterator_tag;
 		using value_type = void;
 		using difference_type = void;
@@ -44,20 +44,15 @@ namespace daw {
 		Function m_function;
 
 	public:
-		constexpr function_iterator( Function &&function ) noexcept(
-		  ::std::is_nothrow_move_constructible_v<Function> )
+		constexpr function_iterator( Function function )
 		  : m_function( daw::move( function ) ) {}
-
-		constexpr function_iterator( Function const &function ) noexcept(
-		  ::std::is_nothrow_copy_constructible_v<Function> )
-		  : m_function( function ) {}
 
 		template<typename T,
 		         std::enable_if_t<
 		           not std::is_same_v<daw::remove_cvref_t<T>, function_iterator>,
 		           std::nullptr_t> = nullptr>
 		constexpr function_iterator &operator=( T &&val ) {
-			daw::invoke( m_function, std::forward<T>( val ) );
+			(void)m_function( std::forward<T>( val ) );
 			return *this;
 		}
 
@@ -73,6 +68,8 @@ namespace daw {
 			return *this;
 		}
 	};
+	template<typename Function>
+	function_iterator( Function )->function_iterator<Function>;
 
 	///
 	/// Create a function_iterator with supplied function

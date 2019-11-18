@@ -154,8 +154,7 @@ namespace daw {
 		std::unique_ptr<latch_t> latch = std::make_unique<latch_t>( );
 
 	public:
-		basic_unique_latch( ) noexcept(
-		  noexcept( ::std::make_unique<latch_t>( ) ) ) = default;
+		constexpr basic_unique_latch( ) = default;
 
 		template<
 		  typename Integer,

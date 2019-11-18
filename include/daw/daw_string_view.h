@@ -57,6 +57,11 @@ namespace daw {
 		return 1;
 	}
 
+	namespace sv_impl {
+		template<typename T>
+		constexpr bool is_dynamic_sv_v = T::extent == dynamic_string_size;
+	} // namespace sv_impl
+
 	template<typename CharT, typename Traits, ptrdiff_t Extent>
 	struct basic_string_view {
 		using traits_type = Traits;
@@ -72,7 +77,7 @@ namespace daw {
 		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 		using size_type = size_t;
 		using difference_type = std::ptrdiff_t;
-		static constexpr ptrdiff_t const extent = Extent;
+		static constexpr ptrdiff_t extent = Extent;
 
 		template<typename, typename, ptrdiff_t>
 		friend struct basic_string_view;
@@ -149,16 +154,19 @@ namespace daw {
 #endif
 #endif
 
-		template<ptrdiff_t Ex,
-		         std::enable_if_t<( Extent == daw::dynamic_string_size and
-		                            Ex != daw::dynamic_string_size ),
-		                          std::nullptr_t> = nullptr>
-		constexpr basic_string_view &
-		operator=( basic_string_view<CharT, Traits, Ex> rhs ) noexcept {
+#ifndef WIN32
+		template<ptrdiff_t Ex>
+		constexpr auto
+		operator=( basic_string_view<CharT, Traits, Ex> rhs ) noexcept
+		  -> std::enable_if_t<sv_impl::is_dynamic_sv_v<basic_string_view> and
+		                        Ex != extent,
+		                      basic_string_view &> {
+
 			m_first = rhs.m_first;
 			m_last = rhs.m_last;
 			return *this;
 		}
+#endif
 
 		constexpr basic_string_view( CharT const *first,
 		                             CharT const *last ) noexcept
@@ -1434,8 +1442,8 @@ namespace daw {
 	template<typename CharT, typename Traits>
 	[[nodiscard]] auto split( daw::basic_string_view<CharT, Traits> str,
 	                          CharT const delemiter ) {
-		return split(
-		  str, [delemiter]( CharT c ) noexcept { return c == delemiter; } );
+		return split( str,
+		              [delemiter]( CharT c ) noexcept { return c == delemiter; } );
 	}
 
 	template<typename CharT, typename Traits, size_t N>

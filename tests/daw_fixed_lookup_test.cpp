@@ -73,7 +73,10 @@ constexpr bool daw_make_fixed_lookup_001( ) {
 	daw::expecting( 5U, values.size( ) );
 	return true;
 }
-static_assert( daw_make_fixed_lookup_001( ) );
+// WORKAROUND
+#ifndef WIN32
+	static_assert( daw_make_fixed_lookup_001( ) );
+#endif
 
 template<typename ValueType, ValueType SZ, size_t HashSize>
 void do_test( ) {
@@ -149,6 +152,7 @@ void daw_fixed_lookup_bench_001( ) {
 }
 
 int main( ) {
+	daw_make_fixed_lookup_001( );
 	daw_fixed_lookup_001( );
 	daw_fixed_lookup_bench_001( );
 }

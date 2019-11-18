@@ -28,7 +28,7 @@
 
 namespace daw {
 	template<typename T>
-	struct function_info : public function_info<decltype( &T::operator( ) )> {};
+	struct function_info : function_info<decltype( &T::operator( ) )> {};
 	// For generic types, directly use the result of the signature of its
 	// 'operator()'
 

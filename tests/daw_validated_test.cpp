@@ -38,10 +38,16 @@ struct int_validator_t {
 
 void int_range_test_good_001( ) {
 	using value_t = daw::validated<int, int_validator_t<int, 0, 100>>;
-	static_assert( value_t( 0 ) == 0, "" );
-	static_assert( value_t( 100 ) == 100, "" );
-	static_assert( value_t( 0 ) == 0, "" );
-
+// Workaround
+#ifdef WIN32
+	daw::expecting( 0, value_t( 0 ).get( ) );
+	daw::expecting( 100, value_t( 100 ).get( ) );
+	daw::expecting( 0, value_t( 0 ).get( ) );
+#else
+	static_assert( value_t( 0 ).get( ) == 0 );
+	static_assert( value_t( 100 ).get( ) == 100 );
+	static_assert( value_t( 0 ).get( ) == 0 );
+#endif
 	value_t tmp4 = 5;
 	daw::expecting( tmp4, 5 );
 	tmp4 = 100;
@@ -89,9 +95,9 @@ struct enum_validator_t {
 constexpr bool enum_test_good_001( ) {
 	using value_t = daw::validated<enum_t, enum_validator_t>;
 	auto tmp = value_t( 1 );
-	daw::expecting( tmp == enum_t::orange );
-	daw::expecting( value_t( enum_t::apple ) == enum_t::apple );
-	daw::expecting( value_t( ) == enum_t::apple );
+	daw::expecting( tmp.get( ), enum_t::orange );
+	daw::expecting( value_t( enum_t::apple ).get( ), enum_t::apple );
+	daw::expecting( value_t( ).get( ), enum_t::apple );
 	return true;
 }
 static_assert( enum_test_good_001( ) );
@@ -117,10 +123,10 @@ struct no_repeat_container {
 
 constexpr bool array_good_001( ) {
 	using value_t = daw::validated<std::array<int, 5>, no_repeat_container>;
-	value_t tmp( 0, 1, 2, 3, 4 );
+	value_t tmp( std::in_place, 0, 1, 2, 3, 4 );
 	daw::expecting( 5U, tmp.get( ).size( ) );
 
-	std::array<int, 5> tmp2 = value_t( 0, 1, 2, 3, 4 );
+	std::array<int, 5> tmp2 = value_t( std::in_place, 0, 1, 2, 3, 4 );
 	daw::expecting( tmp2[0], 0 );
 	daw::expecting( tmp2[1], 1 );
 	daw::expecting( tmp2[2], 2 );
@@ -133,7 +139,7 @@ static_assert( array_good_001( ) );
 void array_bad_001( ) {
 	using value_t = daw::validated<std::array<int, 5>, no_repeat_container>;
 	daw::expecting_exception<std::out_of_range>(
-	  []( ) { value_t( 1, 1, 2, 3, 4 ); } );
+	  []( ) { value_t( std::in_place, 1, 1, 2, 3, 4 ); } );
 }
 
 struct test_class_t {

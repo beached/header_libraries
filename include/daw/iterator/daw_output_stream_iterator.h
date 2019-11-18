@@ -25,9 +25,29 @@
 #include "daw_function_iterator.h"
 
 namespace daw {
+	namespace osi_impl {
+		template<typename OutputStream>
+		struct osi_callable {
+			OutputStream *ptr;
+
+			constexpr osi_callable( OutputStream &os ) noexcept
+			  : ptr( &os ) {}
+
+			template<typename T>
+			constexpr decltype( auto ) operator( )( T &&value ) const {
+				return ( *ptr ) << std::forward<T>( value );
+			}
+
+			template<typename T>
+			constexpr decltype( auto ) operator( )( T &&value ) {
+				return ( *ptr ) << std::forward<T>( value );
+			}
+		};
+	} // namespace osi_impl
+
 	template<typename OutputStream>
-	auto make_output_stream_iterator( OutputStream &strm ) {
-		return make_function_iterator( [&strm]( auto &&val ) noexcept(
-		  noexcept( strm << val ) ) { strm << val; } );
+	constexpr function_iterator<osi_impl::osi_callable<OutputStream>>
+	make_output_stream_iterator( OutputStream &strm ) {
+		return {osi_impl::osi_callable<OutputStream>( strm )};
 	}
 } // namespace daw

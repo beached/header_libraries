@@ -1423,7 +1423,7 @@ namespace daw::algorithm {
 			++first1;
 			++first2;
 		}
-		return !( first1 != last1 ) and !( first2 != last2 );
+		return first1 == last1 and first2 == last2;
 	}
 
 	/// @brief Returns an iterator pointing to the first element in the range

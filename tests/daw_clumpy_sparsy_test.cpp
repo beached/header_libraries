@@ -24,7 +24,6 @@
 #include "daw/daw_clumpy_sparsy.h"
 
 void clumpy_sparsy_test_001( ) {
-#warning Empty Test
 	/*	daw::clumpy_sparsy<int> t;
 	    auto b = t.begin( );
 	    b == b;*/
