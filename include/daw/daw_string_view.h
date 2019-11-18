@@ -57,6 +57,11 @@ namespace daw {
 		return 1;
 	}
 
+	namespace sv_impl {
+		template<typename T>
+		constexpr bool is_dynamic_sv_v = T::extent == dynamic_string_size;
+	} // namespace sv_impl
+
 	template<typename CharT, typename Traits, ptrdiff_t Extent>
 	struct basic_string_view {
 		using traits_type = Traits;
@@ -153,7 +158,8 @@ namespace daw {
 		template<ptrdiff_t Ex>
 		constexpr auto
 		operator=( basic_string_view<CharT, Traits, Ex> rhs ) noexcept
-		  -> std::enable_if_t<basic_string_view::extent == dynamic_string_size,
+		  -> std::enable_if_t<sv_impl::is_dynamic_sv_v<basic_string_view> and
+		                        Ex != extent,
 		                      basic_string_view &> {
 
 			m_first = rhs.m_first;
@@ -1436,8 +1442,8 @@ namespace daw {
 	template<typename CharT, typename Traits>
 	[[nodiscard]] auto split( daw::basic_string_view<CharT, Traits> str,
 	                          CharT const delemiter ) {
-		return split(
-		  str, [delemiter]( CharT c ) noexcept { return c == delemiter; } );
+		return split( str,
+		              [delemiter]( CharT c ) noexcept { return c == delemiter; } );
 	}
 
 	template<typename CharT, typename Traits, size_t N>

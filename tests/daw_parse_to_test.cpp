@@ -118,14 +118,14 @@ namespace {
 	}
 	static_assert( parse_to_006( ) );
 
-	constexpr bool parse_to_006( ) {
+	constexpr bool parse_to_007( ) {
 		auto const f = []( int a, int b, int c ) { return a + b + c; };
 		auto const result = daw::apply_string<int, int, int>(
 		  f, "1  2     3", daw::parser::whitespace_splitter{} );
 		daw::expecting( result, 6 );
 		return true;
 	}
-	static_assert( parse_to_006( ) );
+	static_assert( parse_to_007( ) );
 #endif
 
 	void daw_values_from_stream_001( ) {
