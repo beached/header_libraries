@@ -939,11 +939,11 @@ constexpr std::array<int, 10'000> big_arry = {
 
 void sort_n_test_001( ) {
 #if defined( DEBUG ) or not defined( NDEBUG )
-	constexpr size_t DATASIZE = 100'000;
-	constexpr size_t NUMRUNS = 10'000;
+#define DATASIZE 100'000
+#define NUMRUNS 10'000
 #else
-	constexpr size_t DATASIZE = 1'000'000;
-	constexpr size_t NUMRUNS = 100'000;
+#define DATASIZE 1'000'000
+#define NUMRUNS 100'000
 #endif
 
 	auto const random32 = daw::make_random_data<size_t>( 32 );
@@ -1005,14 +1005,14 @@ void sort_n_test_001( ) {
 			daw::expecting( daw::algorithm::is_sorted(
 			  std::begin( random_lots_tst ), std::end( random_lots_tst ) ) );
 		}
-		daw::bench_n_test<NUMRUNS/1000, '\t'>(
+		daw::bench_n_test<NUMRUNS / 1000, '\t'>(
 		  "daw::sort                  ",
 		  []( auto container ) {
 			  daw::sort( std::begin( container ), std::end( container ) );
 			  daw::do_not_optimize( container );
 		  },
 		  random_lots );
-		daw::bench_n_test<NUMRUNS/1000, '\t'>(
+		daw::bench_n_test<NUMRUNS / 1000, '\t'>(
 		  "std::sort                  ",
 		  []( auto container ) {
 			  std::sort( std::begin( container ), std::end( container ) );
@@ -1034,14 +1034,14 @@ void sort_n_test_001( ) {
 			}
 			return result;
 		}( );
-		daw::bench_n_test<NUMRUNS/1000, '\t'>(
+		daw::bench_n_test<NUMRUNS / 1000, '\t'>(
 		  "part sorted segs, daw::sort",
 		  []( auto container ) {
 			  daw::sort( std::begin( container ), std::end( container ) );
 			  daw::do_not_optimize( container );
 		  },
 		  random_lots );
-		daw::bench_n_test<NUMRUNS/1000, '\t'>(
+		daw::bench_n_test<NUMRUNS / 1000, '\t'>(
 		  "part sorted segs, std::sort",
 		  []( auto container ) {
 			  std::sort( std::begin( container ), std::end( container ) );
@@ -1064,14 +1064,14 @@ void sort_n_test_001( ) {
 			}
 			return result;
 		}( );
-		daw::bench_n_test<NUMRUNS/1000, '\t'>(
+		daw::bench_n_test<NUMRUNS / 1000, '\t'>(
 		  "part rev segs daw::sort    ",
 		  []( auto container ) {
 			  daw::sort( std::begin( container ), std::end( container ) );
 			  daw::do_not_optimize( container );
 		  },
 		  random_lots );
-		daw::bench_n_test<NUMRUNS/1000, '\t'>(
+		daw::bench_n_test<NUMRUNS / 1000, '\t'>(
 		  "part rev segs std::sort    ",
 		  []( auto container ) {
 			  std::sort( std::begin( container ), std::end( container ) );
@@ -1086,14 +1086,14 @@ void sort_n_test_001( ) {
 			return result;
 		}( );
 		std::cout << "DataSize: " << DATASIZE << '\n';
-		daw::bench_n_test<NUMRUNS/1000, '\t'>(
+		daw::bench_n_test<NUMRUNS / 1000, '\t'>(
 		  "sorted daw::sort           ",
 		  []( auto container ) {
 			  daw::sort( std::begin( container ), std::end( container ) );
 			  daw::do_not_optimize( container );
 		  },
 		  random_lots );
-		daw::bench_n_test<NUMRUNS/1000, '\t'>(
+		daw::bench_n_test<NUMRUNS / 1000, '\t'>(
 		  "sorted std::sort           ",
 		  []( auto container ) {
 			  std::sort( std::begin( container ), std::end( container ) );
@@ -1107,14 +1107,14 @@ void sort_n_test_001( ) {
 			std::sort( std::begin( result ), std::end( result ), std::greater<>{} );
 			return result;
 		}( );
-		daw::bench_n_test<NUMRUNS/1000, '\t'>(
+		daw::bench_n_test<NUMRUNS / 1000, '\t'>(
 		  "rev sorted daw::sort       ",
 		  []( auto container ) {
 			  daw::sort( std::begin( container ), std::end( container ) );
 			  daw::do_not_optimize( container );
 		  },
 		  random_lots );
-		daw::bench_n_test<NUMRUNS/1000, '\t'>(
+		daw::bench_n_test<NUMRUNS / 1000, '\t'>(
 		  "rev sorted std::sort        ",
 		  []( auto container ) {
 			  std::sort( std::begin( container ), std::end( container ) );
@@ -1133,7 +1133,7 @@ void sort_n_test_001( ) {
 		}( ) );
 #endif
 		auto const random_lots = daw::make_random_data<size_t>( 10'000 );
-		daw::bench_n_test<NUMRUNS/1000, '\t'>(
+		daw::bench_n_test<NUMRUNS / 1000, '\t'>(
 		  "daw::sort_to                  ",
 		  []( auto container ) {
 			  size_t values[10'000];
@@ -1143,7 +1143,7 @@ void sort_n_test_001( ) {
 			  daw::do_not_optimize( values );
 		  },
 		  random_lots );
-		daw::bench_n_test<NUMRUNS/1000, '\t'>(
+		daw::bench_n_test<NUMRUNS / 1000, '\t'>(
 		  "copy & daw::sort              ",
 		  []( auto container ) {
 			  std::vector<size_t> values( std::begin( container ),
@@ -1156,7 +1156,7 @@ void sort_n_test_001( ) {
 	}
 	{
 		auto const random_lots = daw::make_random_data<size_t>( DATASIZE );
-		daw::bench_n_test<NUMRUNS/1000, '\t'>(
+		daw::bench_n_test<NUMRUNS / 1000, '\t'>(
 		  "daw::sort_to               ",
 		  []( auto container ) {
 			  size_t values[DATASIZE];
@@ -1166,7 +1166,7 @@ void sort_n_test_001( ) {
 			  daw::do_not_optimize( values );
 		  },
 		  random_lots );
-		daw::bench_n_test<NUMRUNS/1000, '\t'>(
+		daw::bench_n_test<NUMRUNS / 1000, '\t'>(
 		  "copy & daw::sort           ",
 		  []( auto container ) {
 			  std::vector<size_t> values( std::begin( container ),
@@ -1189,7 +1189,7 @@ void sort_n_test_001( ) {
 		}( ) );
 #endif
 		auto const random_lots = daw::make_random_data<size_t>( 10'000 );
-		daw::bench_n_test<NUMRUNS/1000, '\t'>(
+		daw::bench_n_test<NUMRUNS / 1000, '\t'>(
 		  "daw::sort_to                  ",
 		  []( auto container ) {
 			  size_t values[10'000];
@@ -1199,7 +1199,7 @@ void sort_n_test_001( ) {
 			  daw::do_not_optimize( values );
 		  },
 		  random_lots );
-		daw::bench_n_test<NUMRUNS/1000, '\t'>(
+		daw::bench_n_test<NUMRUNS / 1000, '\t'>(
 		  "copy & daw::sort              ",
 		  []( auto container ) {
 			  std::vector<size_t> values( std::begin( container ),
@@ -1212,7 +1212,7 @@ void sort_n_test_001( ) {
 	}
 	{
 		auto const random_lots = daw::make_random_data<size_t>( DATASIZE );
-		daw::bench_n_test<NUMRUNS/1000, '\t'>(
+		daw::bench_n_test<NUMRUNS / 1000, '\t'>(
 		  "daw::sort_to               ",
 		  []( auto container ) {
 			  size_t values[DATASIZE];
@@ -1222,7 +1222,7 @@ void sort_n_test_001( ) {
 			  daw::do_not_optimize( values );
 		  },
 		  random_lots );
-		daw::bench_n_test<NUMRUNS/1000, '\t'>(
+		daw::bench_n_test<NUMRUNS / 1000, '\t'>(
 		  "copy & daw::sort           ",
 		  []( auto container ) {
 			  std::vector<size_t> values( std::begin( container ),

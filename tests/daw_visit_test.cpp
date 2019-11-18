@@ -64,7 +64,9 @@ constexpr bool visit_nt_004( ) {
 	daw::expecting( result );
 	return true;
 }
+#ifndef WIN32
 static_assert( visit_nt_004( ) );
+#endif
 
 template<typename T>
 constexpr void func_005( T ) {}
@@ -74,7 +76,9 @@ constexpr bool visit_nt_005( ) {
 	::daw::visit_nt( a, func_005<int>, func_005<double> );
 	return true;
 }
+#ifndef WIN32
 static_assert( visit_nt_005( ) );
+#endif
 
 struct A {
 	constexpr bool operator( )( int ) const {
@@ -86,4 +90,8 @@ static_assert( ::daw::is_visitable_v<int, A> );
 struct B {};
 static_assert( !::daw::is_visitable_v<int, B> );
 
-int main( ) {}
+int main( ) {
+	visit_nt_004( );
+	visit_nt_005( );
+}
+

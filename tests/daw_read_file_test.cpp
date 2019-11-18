@@ -22,10 +22,12 @@
 
 #include "daw/daw_benchmark.h"
 #include "daw/daw_read_file.h"
-#include <iostream>
 
-void daw_read_file_001( ) {
-	auto f = daw::read_file( "./daw_utility_test_bin" );
+#include <iostream>
+#include <string>
+
+void daw_read_file_001( std::string s ) {
+	auto f = daw::read_file( s );
 	if( not f ) {
 		std::cerr << "./daw_utility_test_bin does not exist\n";
 		std::abort( );
@@ -33,6 +35,6 @@ void daw_read_file_001( ) {
 	std::cout << f->size( ) << '\n';
 }
 
-int main( ) {
-	daw_read_file_001( );
+int main( int, char** argv ) {
+	daw_read_file_001( argv[0] );
 }

@@ -28,8 +28,8 @@
 
 void test_output_stream_001( ) {
 	auto osi = daw::make_output_stream_iterator( std::cout );
-	std::array<int, 5> a = {0, 1, 2, 3, 4};
-	std::copy( a.cbegin( ), a.cend( ), osi );
+	auto a = std::array{0, 1, 2, 3, 4};
+	std::copy( a.begin( ), a.end( ), osi );
 }
 
 int main( ) {

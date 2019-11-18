@@ -121,7 +121,7 @@ namespace daw {
 	template<typename Func>
 	void show_benchmark( size_t data_size_bytes, std::string const &title,
 	                     Func &&func, size_t data_prec = 1, size_t time_prec = 0,
-	                     size_t item_count = 1 ) noexcept {
+	                     size_t item_count = 1 ) {
 		double const t = benchmark( std::forward<Func>( func ) );
 		double const t_per_item = t / static_cast<double>( item_count );
 		std::cout << title << ": took " << utility::format_seconds( t, time_prec )
@@ -183,7 +183,7 @@ namespace daw {
 #endif
 	template<typename Test, typename... Args>
 	auto bench_test( std::string const &title, Test &&test_callable,
-	                 Args &&... args ) noexcept {
+	                 Args &&... args ) {
 		auto const start = std::chrono::high_resolution_clock::now( );
 		auto result = daw::expected_from_code( std::forward<Test>( test_callable ),
 		                                       std::forward<Args>( args )... );
@@ -196,7 +196,7 @@ namespace daw {
 
 	template<typename Test, typename... Args>
 	auto bench_test2( std::string const &title, Test &&test_callable,
-	                  size_t item_count, Args &&... args ) noexcept {
+	                  size_t item_count, Args &&... args ) {
 		auto const start = std::chrono::high_resolution_clock::now( );
 		auto result = daw::expected_from_code( std::forward<Test>( test_callable ),
 		                                       std::forward<Args>( args )... );
@@ -217,7 +217,7 @@ namespace daw {
 
 	namespace bench_impl {
 		template<typename... Args>
-		constexpr void expander( Args &&... ) noexcept {}
+		constexpr void expander( Args &&... ) {}
 	} // namespace bench_impl
 
 	// Test N runs
@@ -524,7 +524,7 @@ namespace daw {
 	} // namespace expecting_impl
 
 	template<typename T, typename U>
-	constexpr void expecting( T &&expected_result, U &&result ) noexcept {
+	constexpr void expecting( T &&expected_result, U &&result )  {
 		if( !( expected_result == result ) ) {
 #ifdef __VERSION__
 			if constexpr( !daw::string_view( __VERSION__ )
@@ -538,7 +538,7 @@ namespace daw {
 	}
 
 	template<typename Bool>
-	constexpr void expecting( Bool &&expected_result ) noexcept {
+	constexpr void expecting( Bool &&expected_result ) {
 		if( !static_cast<bool>( expected_result ) ) {
 			std::cerr << "Invalid result. Expecting true\n";
 			std::abort( );
@@ -547,7 +547,7 @@ namespace daw {
 
 	template<typename Bool, typename String>
 	constexpr void expecting_message( Bool &&expected_result,
-	                                  String &&message ) noexcept {
+	                                  String &&message ) {
 		if( !static_cast<bool>( expected_result ) ) {
 			std::cerr << message << '\n';
 			std::abort( );

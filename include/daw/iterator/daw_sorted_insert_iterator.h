@@ -31,37 +31,74 @@
 #include "daw_function_iterator.h"
 
 namespace daw {
+	namespace si_impl {
+		// Workaround
+		// MSVC had issues with lambdas
+		template<typename Compare, typename... VecArgs>
+		struct sorted_iterator_vector_callable {
+			std::vector<VecArgs...> *ptr;
+			Compare compare;
+
+			template<typename T>
+			constexpr void operator( )( T &&value ) const {
+				auto pos = std::lower_bound( std::begin( *ptr ), std::end( *ptr ),
+				                             value, compare );
+				ptr->emplace( std::move( pos ),
+				              std::forward<decltype( value )>( value ) );
+			}
+		};
+
+		template<typename Compare, typename... VecArgs>
+		struct sorted_iterator_deque_callable {
+			std::deque<VecArgs...> *ptr;
+			Compare compare;
+
+			template<typename T>
+			constexpr void operator( )( T &&value ) const {
+				auto pos = std::lower_bound( std::begin( *ptr ), std::end( *ptr ),
+				                             value, compare );
+				ptr->emplace( std::move( pos ),
+				              std::forward<decltype( value )>( value ) );
+			}
+		};
+
+		template<typename Compare, typename... VecArgs>
+		struct sorted_iterator_list_callable {
+			std::list<VecArgs...> *ptr;
+			Compare compare;
+
+			template<typename T>
+			constexpr void operator( )( T &&value ) const {
+				auto const pos = std::lower_bound( std::begin( *ptr ), std::end( *ptr ),
+				                                   value, compare );
+				ptr->emplace( std::move( pos ),
+				              std::forward<decltype( value )>( value ) );
+			}
+		};
+
+	} // namespace si_impl
+
 	template<typename... Args, typename Compare = std::less<>>
-	decltype( auto ) make_sorted_insert_iterator( std::vector<Args...> &c,
-	                                              Compare compare = Compare{} ) {
+	auto make_sorted_insert_iterator( std::vector<Args...> &c,
+	                                  Compare compare = Compare{} ) {
 		return daw::make_function_iterator(
-		  [&c, compare = daw::move( compare )]( auto &&value ) {
-			  c.emplace(
-			    std::lower_bound( std::begin( c ), std::end( c ), value, compare ),
-			    std::forward<decltype( value )>( value ) );
-		  } );
+		  si_impl::sorted_iterator_vector_callable<Compare, Args...>{
+		    &c, std::move( compare )} );
 	}
 
 	template<typename... Args, typename Compare = std::less<>>
-	decltype( auto ) make_sorted_insert_iterator( std::deque<Args...> &c,
-	                                              Compare compare = Compare{} ) {
+	auto make_sorted_insert_iterator( std::deque<Args...> &c,
+	                                  Compare compare = Compare{} ) {
 		return daw::make_function_iterator(
-		  [&c, compare = daw::move( compare )]( auto &&value ) {
-			  c.emplace(
-			    std::lower_bound( std::begin( c ), std::end( c ), value, compare ),
-			    std::forward<decltype( value )>( value ) );
-		  } );
+		  si_impl::sorted_iterator_deque_callable<Compare, Args...>{
+		    &c, std::move( compare )} );
 	}
 
 	template<typename... Args, typename Compare = std::less<>>
 	decltype( auto ) make_sorted_insert_iterator( std::list<Args...> &c,
 	                                              Compare compare = Compare{} ) {
 		return daw::make_function_iterator(
-		  [&c, compare = daw::move( compare )]( auto &&value ) {
-			  auto const pos =
-			    std::lower_bound( std::begin( c ), std::end( c ), value, compare );
-			  c.emplace( pos, std::forward<decltype( value )>( value ) );
-		  } );
+		  si_impl::sorted_iterator_list_callable<Compare, Args...>{
+		    &c, std::move( compare )} );
 	}
-
 } // namespace daw

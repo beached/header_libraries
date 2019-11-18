@@ -27,7 +27,7 @@
 #include "daw/parallel/daw_latch.h"
 
 void construction_001( ) {
-	daw::unique_latch sem1;
+	auto sem1 = daw::unique_latch( );
 	auto sem1b = daw::unique_latch( );
 	auto sem2 = daw::shared_latch( std::move( sem1 ) );
 }

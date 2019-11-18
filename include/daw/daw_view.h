@@ -95,85 +95,85 @@ namespace daw {
 		}
 
 		// Iterator access
-		[[nodiscard]] iterator begin( ) {
+		[[nodiscard]] constexpr iterator begin( ) {
 			return m_first;
 		}
 
-		[[nodiscard]] const_iterator begin( ) const {
+		[[nodiscard]] constexpr const_iterator begin( ) const {
 			return m_first;
 		}
 
-		[[nodiscard]] const_iterator cbegin( ) const {
+		[[nodiscard]] constexpr const_iterator cbegin( ) const {
 			return m_first;
 		}
 
-		[[nodiscard]] reverse_iterator rbegin( ) {
+		[[nodiscard]] constexpr reverse_iterator rbegin( ) {
 			return std::make_reverse_iterator( end( ) );
 		}
 
-		[[nodiscard]] const_reverse_iterator rbegin( ) const {
+		[[nodiscard]] constexpr const_reverse_iterator rbegin( ) const {
 			return std::make_reverse_iterator( end( ) );
 		}
 
-		[[nodiscard]] const_reverse_iterator crbegin( ) const {
+		[[nodiscard]] constexpr const_reverse_iterator crbegin( ) const {
 			return std::make_reverse_iterator( cend( ) );
 		}
 
-		[[nodiscard]] iterator end( ) {
+		[[nodiscard]] constexpr iterator end( ) {
 			return m_last;
 		}
 
-		[[nodiscard]] const_iterator end( ) const {
+		[[nodiscard]] constexpr const_iterator end( ) const {
 			return m_last;
 		}
 
-		[[nodiscard]] const_iterator cend( ) const {
+		[[nodiscard]] constexpr const_iterator cend( ) const {
 			return m_last;
 		}
 
-		[[nodiscard]] reverse_iterator rend( ) {
+		[[nodiscard]] constexpr reverse_iterator rend( ) {
 			return std::make_reverse_iterator( begin( ) );
 		}
 
-		[[nodiscard]] const_reverse_iterator rend( ) const {
+		[[nodiscard]] constexpr const_reverse_iterator rend( ) const {
 			return std::make_reverse_iterator( begin( ) );
 		}
 
-		[[nodiscard]] const_reverse_iterator crend( ) const {
+		[[nodiscard]] constexpr const_reverse_iterator crend( ) const {
 			return std::make_reverse_iterator( cbegin( ) );
 		}
 
 		// Data access
-		[[nodiscard]] reference front( ) {
+		[[nodiscard]] constexpr reference front( ) {
 			return *m_first;
 		}
 
-		[[nodiscard]] const_reference front( ) const {
+		[[nodiscard]] constexpr const_reference front( ) const {
 			return *m_first;
 		}
 
-		[[nodiscard]] reference back( ) {
+		[[nodiscard]] constexpr reference back( ) {
 			return *std::prev( m_last );
 		}
 
-		[[nodiscard]] const_reference back( ) const {
+		[[nodiscard]] constexpr const_reference back( ) const {
 			return *std::prev( m_last );
 		}
 
-		[[nodiscard]] reference operator[]( size_type index ) {
+		[[nodiscard]] constexpr reference operator[]( size_type index ) {
 			return *std::next( m_first, index );
 		}
 
-		[[nodiscard]] const_reference operator[]( size_type index ) const {
+		[[nodiscard]] constexpr const_reference operator[]( size_type index ) const {
 			return *std::next( m_first, index );
 		}
 
-		[[nodiscard]] reference at( size_type index ) {
+		[[nodiscard]] constexpr reference at( size_type index ) {
 			daw::exception::precondition_check<std::out_of_range>( index < size( ) );
 			return operator[]( index );
 		}
 
-		[[nodiscard]] const_reference at( size_type index ) const {
+		[[nodiscard]] constexpr const_reference at( size_type index ) const {
 			daw::exception::precondition_check<std::out_of_range>( index < size( ) );
 			return operator[]( index );
 		}

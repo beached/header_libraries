@@ -1009,12 +1009,15 @@ namespace daw {
 		s.remove_prefix( );
 	}
 #endif
-	static_assert( basic_string_view( "This is a test" ).extent == 14 );
+// Workaround
+#ifndef WIN32
+	static_assert( decltype( basic_string_view( "This is a test" ) )::extent ==
+	               14 );
 
 	template<size_t N>
 	constexpr bool extent_test_001( char const ( &str )[N] ) noexcept {
 		basic_string_view sv( str );
-		return sv.extent >= 0;
+		return decltype( sv )::extent >= 0;
 	}
 	static_assert( extent_test_001( "this is a test" ) );
 
@@ -1023,9 +1026,11 @@ namespace daw {
 		basic_string_view sv( str );
 		string_view sv2{};
 		sv2 = sv;
-		return sv.extent >= 0 and sv2.extent == daw::dynamic_string_size;
+		return decltype( sv )::extent >= 0 and
+		       decltype( sv2 )::extent == daw::dynamic_string_size;
 	}
 	static_assert( extent_to_dynamic_001( "Testing testing 1 2 3" ) );
+#endif
 } // namespace daw
 
 int main( ) {

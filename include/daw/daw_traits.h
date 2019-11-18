@@ -125,8 +125,7 @@ namespace daw {
 		/// Summary:	Integral constant with result of and'ing all bool's supplied
 		///
 		template<bool... Bools>
-		using bool_and = std::is_same<bool_sequence<Bools...>,
-		                              bool_sequence<( Bools or true )...>>;
+		using bool_and = std::integral_constant<bool, ( Bools and ... )>;
 
 		template<bool... Bools>
 		inline constexpr bool bool_and_v = bool_and<Bools...>::value;
@@ -135,8 +134,7 @@ namespace daw {
 		/// Summary:	Integral constant with result of or'ing all bool's supplied
 		///
 		template<bool... Bools>
-		using bool_or =
-		  std::integral_constant<bool, ( !bool_and<!Bools...>::value )>;
+		using bool_or = std::integral_constant<bool, ( Bools or ... )>;
 
 		template<bool... Bools>
 		inline constexpr bool bool_or_v = bool_or<Bools...>::value;

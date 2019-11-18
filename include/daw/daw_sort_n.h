@@ -619,7 +619,7 @@ namespace daw {
 			}
 			auto m = first;
 			auto lm1 = std::prev( last );
-			auto swap_count = [&]( ) constexpr {
+			auto swap_count = [&] {
 				difference_type delta = len / 2;
 				m += delta;
 				if( len >= 1000 ) {
@@ -628,8 +628,7 @@ namespace daw {
 					                               std::next( m, delta ), lm1, comp );
 				}
 				return sort_impl::sort_3_impl( first, m, lm1, comp );
-			}
-			( );
+			}( );
 
 			auto i = first;
 			auto j = lm1;

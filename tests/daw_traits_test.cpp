@@ -135,10 +135,10 @@ namespace daw_traits_bool_or {
 	               "3. A true in bool_or should return true" );
 
 	// Seems to fail in MSVC 2013, not clang++ or g++
-	static_assert( !daw::traits::bool_or<false>::value,
+	static_assert( not daw::traits::bool_or<false>::value,
 	               "4. A false in bool_or should return false" );
 
-	static_assert( !daw::traits::bool_or<false, false>::value,
+	static_assert( not daw::traits::bool_or<false, false>::value,
 	               "5. Two false's in bool_or should return false" );
 } // namespace daw_traits_bool_or
 

@@ -55,7 +55,7 @@ namespace daw {
 		constexpr auto
 		swap_bytes( T &&value,
 		            std::integral_constant<size_t, sizeof( uint16_t )> ) noexcept {
-			return static_cast<std::decay_t<T>>(
+			return static_cast<daw::remove_cvref_t<T>>(
 			  static_cast<uint16_t>(
 			    ( static_cast<uint16_t>( value ) >> static_cast<uint16_t>( 8 ) ) &
 			    static_cast<uint16_t>( 0x00FF ) ) |
@@ -68,7 +68,7 @@ namespace daw {
 		constexpr auto
 		swap_bytes( T &&value,
 		            std::integral_constant<size_t, sizeof( uint32_t )> ) noexcept {
-			return static_cast<std::decay_t<T>>(
+			return static_cast<daw::remove_cvref_t<T>>(
 			  static_cast<uint32_t>(
 			    ( static_cast<uint32_t>( value ) >> static_cast<uint32_t>( 24 ) ) &
 			    static_cast<uint32_t>( 0x0000'00FF ) ) |
@@ -87,7 +87,7 @@ namespace daw {
 		constexpr auto
 		swap_bytes( T &&value,
 		            std::integral_constant<size_t, sizeof( uint64_t )> ) noexcept {
-			return static_cast<std::decay_t<T>>(
+			return static_cast<daw::remove_cvref_t<T>>(
 			  static_cast<uint64_t>(
 			    ( static_cast<uint64_t>( value ) >> static_cast<uint64_t>( 56 ) ) &
 			    static_cast<uint64_t>( 0x0000'0000'0000'00FF ) ) |
@@ -115,30 +115,33 @@ namespace daw {
 		}
 	} // namespace impl
 
-	template<typename T, std::enable_if_t<(endian::native == endian::little &&
-	                                       std::is_integral_v<std::decay_t<T>>),
+	template<typename T, std::enable_if_t<(endian::native == endian::little and 
+	                                       std::is_integral_v<daw::remove_cvref_t<T>>),
 	                                      std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) to_little_endian( T &&value ) noexcept {
 		return std::forward<T>( value );
 	}
 
-	template<typename T, std::enable_if_t<(endian::native != endian::little &&
-	                                       std::is_integral_v<std::decay_t<T>>),
-	                                      std::nullptr_t> = nullptr>
-	constexpr auto to_little_endian( T &&value ) noexcept {
+	template<typename T>
+	constexpr auto to_little_endian( T &&value ) noexcept
+	  -> std::enable_if_t<(endian::native != endian::little and
+	                       std::is_integral_v<daw::remove_cvref_t<T>>),
+	                      decltype( value )> {
+
 		return impl::swap_bytes( std::forward<T>( value ),
 		                         std::integral_constant<size_t, sizeof( T )>{} );
-	}
+	}	
 
-	template<typename T, std::enable_if_t<(endian::native == endian::big &&
-	                                       std::is_integral_v<std::decay_t<T>>),
-	                                      std::nullptr_t> = nullptr>
-	constexpr decltype( auto ) to_big_endian( T &&value ) noexcept {
+	template<typename T>
+	constexpr auto to_big_endian( T &&value ) noexcept
+	  -> std::enable_if_t<(endian::native == endian::big and
+	                       std::is_integral_v<daw::remove_cvref_t<T>>),
+	                      decltype( value )> {
 		return std::forward<T>( value );
-	}
+	}	
 
-	template<typename T, std::enable_if_t<(endian::native != endian::big &&
-	                                       std::is_integral_v<std::decay_t<T>>),
+	template<typename T, std::enable_if_t<(endian::native != endian::big and
+	                                       std::is_integral_v<daw::remove_cvref_t<T>>),
 	                                      std::nullptr_t> = nullptr>
 	constexpr auto to_big_endian( T &&value ) noexcept {
 		return impl::swap_bytes( std::forward<T>( value ),

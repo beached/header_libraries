@@ -65,10 +65,7 @@ namespace daw {
 		}
 
 	public:
-		basic_counter( ) noexcept(
-		  ::std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
-		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> ) =
-		  default;
+		basic_counter( ) = default;
 
 		template<
 		  typename Integer,
@@ -164,8 +161,7 @@ namespace daw {
 		std::unique_ptr<counter_t> counter = std::make_unique<counter_t>( );
 
 	public:
-		basic_unique_counter( ) noexcept(
-		  noexcept( ::std::make_unique<counter_t>( ) ) ) = default;
+		basic_unique_counter( ) = default;
 
 		template<
 		  typename Integer,

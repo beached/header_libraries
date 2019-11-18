@@ -45,7 +45,7 @@ namespace daw {
 		using const_pointer = value_t const *;
 
 	private:
-		value_t m_value;
+		value_t m_value{};
 
 		template<typename U>
 		constexpr decltype( auto ) validate( U &&value ) {
@@ -55,26 +55,30 @@ namespace daw {
 			return std::forward<U>( value );
 		}
 
-	public:
-		template<typename... Args,
-		         std::enable_if_t<
-		           ( not std::is_enum_v<value_t> &&
-		             not( sizeof...( Args ) == 1 &&
-		                  daw::traits::is_first_type_v<validated, Args...> ) ),
-		           std::nullptr_t> = nullptr>
-		constexpr validated( Args &&... args )
-		  : m_value(
-		      validate( construct_a<value_t>( std::forward<Args>( args )... ) ) ) {}
+		template<typename U, typename... Args>
+		constexpr U make_value( Args &&... args ) {
+			if constexpr( std::is_enum_v<U> ) {
+				return static_cast<value_t>( validate(
+				  std::underlying_type_t<value_t>( std::forward<Args>( args )... ) ) );
+			} else {
+				return daw::construct_a<U>( std::forward<Args>( args )... );
+			}
+		}
 
-		// Handle enum's differently as it is UB to go out of range on a c enum
-		template<typename... Args,
+	public:
+		constexpr validated( ) = default;
+
+		template<typename U,
 		         std::enable_if_t<
-		           all_true_v<::std::is_enum_v<value_t>, sizeof...( Args ) < 2>,
+		           not std::is_same_v<daw::remove_cvref_t<U>, validated> and
+		             not std::is_same_v<daw::remove_cvref_t<U>, std::in_place_t>,
 		           std::nullptr_t> = nullptr>
-		constexpr validated( Args &&... args )
-		  : m_value(
-		      static_cast<value_t>( validate( std::underlying_type_t<value_t>(
-		        std::forward<Args>( args )... ) ) ) ) {}
+		constexpr validated( U &&v )
+		  : m_value( make_value<value_t>( std::forward<U>( v ) ) ) {}
+
+		template<typename... Args>
+		constexpr validated( std::in_place_t, Args &&... args )
+		  : m_value( make_value<value_t>( std::forward<Args>( args )... ) ) {}
 
 		constexpr validated &operator=( const_reference rhs ) {
 			m_value = validate( rhs );
@@ -90,7 +94,7 @@ namespace daw {
 			return m_value;
 		}
 
-		constexpr value_t &&get( ) && noexcept {
+		constexpr value_t get( ) && noexcept {
 			return daw::move( m_value );
 		}
 
@@ -105,5 +109,5 @@ namespace daw {
 		constexpr const_pointer operator->( ) const noexcept {
 			return &m_value;
 		}
-	};
+	}; // namespace daw
 } // namespace daw

@@ -25,6 +25,7 @@
 #include "daw/daw_benchmark.h"
 #include "daw/daw_range.h"
 
+// Workaround
 #ifndef WIN32 // Fails on MSVC 2015.2
 void daw_range_test01( ) {
 	using namespace daw::range::operators;
@@ -68,6 +69,9 @@ void daw_range_test02( ) {
 }
 
 int main( ) {
+// Workaround
+#ifndef WIN32
 	daw_range_test01( );
+#endif
 	daw_range_test02( );
 }
