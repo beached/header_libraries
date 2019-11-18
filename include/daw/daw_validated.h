@@ -49,7 +49,7 @@ namespace daw {
 
 		template<typename U>
 		constexpr decltype( auto ) validate( U &&value ) {
-			if( !Validator{}( value ) ) {
+			if( not Validator{}( value ) ) {
 				throw std::out_of_range( "Argument did not pass validation" );
 			}
 			return std::forward<U>( value );
@@ -61,7 +61,7 @@ namespace daw {
 				return static_cast<value_t>( validate(
 				  std::underlying_type_t<value_t>( std::forward<Args>( args )... ) ) );
 			} else {
-				return daw::construct_a<U>( std::forward<Args>( args )... );
+				return validate( daw::construct_a<U>( std::forward<Args>( args )... ) );
 			}
 		}
 
