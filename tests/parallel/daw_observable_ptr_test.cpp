@@ -27,7 +27,7 @@
 
 void test_001( ) {
 	int *p = new int{4};
-	daw::observable_ptr<int> t{p};
+	auto t = daw::observable_ptr<int>( p );
 
 	auto obs = t.get_observer( );
 
@@ -38,7 +38,7 @@ void test_001( ) {
 
 void test_002( ) {
 	int *p = new int{4};
-	daw::observable_ptr<int> t{p};
+	auto t = daw::observable_ptr<int>( p );
 
 	auto obs = t.get_observer( );
 	{
