@@ -351,7 +351,7 @@ namespace daw {
 		}
 
 		void throw_if_exception( ) const {
-			if( !has_exception( ) ) {
+			if( not has_exception( ) ) {
 				return;
 			}
 			std::rethrow_exception( std::get<std::exception_ptr>( m_value ) );
@@ -366,10 +366,12 @@ namespace daw {
 
 		std::string get_exception_message( ) const noexcept {
 			std::string result{};
+#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or defined( _CPPUNWIND )
 			try {
 				throw_if_exception( );
 			} catch( std::exception const &e ) { result = e.what( ); } catch( ... ) {
 			}
+#endif
 			return result;
 		}
 	}; // class expected_t<void>

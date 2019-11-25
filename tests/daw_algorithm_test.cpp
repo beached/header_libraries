@@ -241,6 +241,7 @@ constexpr bool daw_begin_at_test_004( ) {
 }
 static_assert( daw_begin_at_test_004( ) );
 
+/*
 constexpr bool daw_transform_many( ) {
 	std::array<uint32_t, 5> in1 = {1, 3, 5, 7, 9};
 	std::array<uint32_t, 5> in2 = {0, 2, 4, 6, 8};
@@ -255,6 +256,7 @@ constexpr bool daw_transform_many( ) {
 	return true;
 }
 static_assert( daw_transform_many( ) );
+*/
 
 constexpr bool daw_map_test_001( ) {
 	std::array<int, 6> blah = {23, 5, 2, -1, 100, -1000};

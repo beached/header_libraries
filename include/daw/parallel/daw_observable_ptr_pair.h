@@ -23,11 +23,10 @@
 #pragma once
 
 #include <new>
+#include <variant>
 
-#include "../daw_bounded_array.h"
 #include "../daw_move.h"
-#include "../daw_traits.h"
-#include "../daw_union_pair.h"
+#include "../daw_visit.h"
 #include "daw_observable_ptr.h"
 
 namespace daw {
@@ -43,7 +42,8 @@ namespace daw {
 
 	template<typename T>
 	class observable_ptr_pair {
-		union_pair_t<observable_ptr<T>, observer_ptr<T>> m_ptrs;
+		// union_pair_t<observable_ptr<T>, observer_ptr<T>> m_ptrs;
+		std::variant<observable_ptr<T>, observer_ptr<T>> m_ptrs;
 
 	public:
 		observable_ptr_pair( )
@@ -63,38 +63,41 @@ namespace daw {
 		}
 
 		observable_ptr_pair( observable_ptr_pair const &other )
-		  : m_ptrs{other.m_ptrs.visit( []( auto const &v ) -> decltype( auto ) {
-			  return v.get_observer( );
-		  } )} {}
+		  : m_ptrs{
+		      daw::visit_nt( other.m_ptrs, []( auto const &v ) -> decltype( auto ) {
+			      return v.get_observer( );
+		      } )} {}
 
 		observable_ptr_pair &operator=( observable_ptr_pair const &rhs ) {
 			if( this != &rhs ) {
-				m_ptrs = rhs.m_ptrs.visit( []( auto const &v ) -> decltype( auto ) {
-					return v.get_observer( );
-				} );
+				m_ptrs =
+				  daw::visit_nt( rhs.m_ptrs, []( auto const &v ) -> decltype( auto ) {
+					  return v.get_observer( );
+				  } );
 			}
 			return *this;
 		}
 
 		template<typename Visitor>
 		decltype( auto ) apply_visitor( Visitor vis ) {
-			return m_ptrs.visit( daw::move( vis ) );
+			return daw::visit_nt( m_ptrs, daw::move( vis ) );
 		}
 
 		template<typename Visitor>
 		decltype( auto ) apply_visitor( Visitor vis ) const {
-			return m_ptrs.visit( daw::move( vis ) );
+			return daw::visit_nt( m_ptrs, daw::move( vis ) );
 		}
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor vis ) {
-			return m_ptrs.visit(
-			  [&]( auto &p ) -> decltype( auto ) { return vis( *p.borrow( ) ); } );
+			return daw::visit_nt( m_ptrs, [&]( auto &p ) -> decltype( auto ) {
+				return vis( *p.borrow( ) );
+			} );
 		}
 
 		template<typename Visitor>
 		decltype( auto ) visit( Visitor vis ) const {
-			return m_ptrs.visit( [&]( auto const &p ) -> decltype( auto ) {
+			return daw::visit_nt( m_ptrs, [&]( auto const &p ) -> decltype( auto ) {
 				return vis( *p.borrow( ) );
 			} );
 		}
