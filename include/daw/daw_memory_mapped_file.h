@@ -124,6 +124,30 @@ namespace daw::filesystem {
 			return m_ptr;
 		}
 
+		[[nodiscard]] constexpr pointer begin( ) noexcept {
+			return m_ptr;
+		}
+
+		[[nodiscard]] constexpr const_pointer begin( ) const noexcept {
+			return m_ptr;
+		}
+
+		[[nodiscard]] constexpr const_pointer cbegin( ) const noexcept {
+			return m_ptr;
+		}
+
+		[[nodiscard]] constexpr pointer end( ) noexcept {
+			return m_ptr + static_cast<ptrdiff_t>( m_size );
+		}
+
+		[[nodiscard]] constexpr const_pointer end( ) const noexcept {
+			return m_ptr + static_cast<ptrdiff_t>( m_size );
+		}
+
+		[[nodiscard]] constexpr const_pointer cend( ) const noexcept {
+			return m_ptr + static_cast<ptrdiff_t>( m_size );
+		}
+
 		[[nodiscard]] constexpr size_type size( ) const noexcept {
 			return m_size;
 		}
