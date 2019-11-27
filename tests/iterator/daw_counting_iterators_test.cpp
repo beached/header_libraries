@@ -20,7 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <daw/daw_algorithm.h>
 #include <daw/daw_benchmark.h>
+#include <daw/daw_random.h>
 #include <daw/iterator/daw_counting_iterators.h>
 
 constexpr bool fwd_ary_test_001( ) {
@@ -85,4 +87,20 @@ constexpr bool bidir_ary_test_002( ) {
 }
 static_assert( bidir_ary_test_002( ) );
 
-int main( ) {}
+int main( ) {
+	auto data = daw::make_random_data<int>( 1'000'000 );
+	daw::bench_n_test<100>(
+	  "Average Calc via counting iterator",
+	  []( std::vector<int> values ) {
+		  daw::do_not_optimize( values );
+		  auto first = daw::forward_counting_iterator( values.begin( ) );
+		  auto result = 0LL;
+		  while( first != values.end( ) ) {
+		  	result+= *first;
+		  	++first;
+		  }
+		  daw::do_not_optimize( result );
+			return result / first.distance( );
+	  },
+	  data );
+}

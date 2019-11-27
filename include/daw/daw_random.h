@@ -86,6 +86,15 @@ namespace daw {
 		}
 	}
 
+	/***
+	 * Generate Random Numbers
+	 * @tparam IntType type of integral to make
+	 * @tparam Result Container type to hold values
+	 * @param count How many to make
+	 * @param a lower bound of random numbers
+	 * @param b upper bound of random numbers
+	 * @return container with values
+	 */
 	template<typename IntType, typename Result = ::std::vector<IntType>>
 	inline Result
 	make_random_data( size_t count,

@@ -316,7 +316,7 @@ namespace daw::algorithm {
 		traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
 
 		while( first != last ) {
-			//if( daw::invoke( unary_predicate, *first ) ) {
+			// if( daw::invoke( unary_predicate, *first ) ) {
 			if( unary_predicate( *first ) ) {
 				return first;
 			}
@@ -1745,6 +1745,19 @@ namespace daw::algorithm {
 		return daw::move( init );
 	}
 
+	/***
+	 * Accumulate values in range
+	 * @tparam InputIterator type of first iterator argument
+	 * @tparam LastType type of sentinal marking end of range
+	 * @tparam T initial value to start accumulating at
+	 * @tparam BinaryOperation Callable that takes the current sum and next value
+	 * and returns the new sum
+	 * @param first beginning position in range
+	 * @param last end of range
+	 * @param init initial value of sum
+	 * @param binary_op operation to run
+	 * @return sum of values
+	 */
 	template<typename InputIterator, typename LastType, typename T,
 	         typename BinaryOperation = std::plus<>,
 	         daw::enable_when_t<
@@ -1755,11 +1768,13 @@ namespace daw::algorithm {
 	    BinaryOperation{} ) noexcept( noexcept( binary_op( daw::move( init ),
 	                                                       *first ) ) ) {
 
+	    	/*
 		static_assert(
 		  traits::is_iterator_v<InputIterator>,
 		  "Iterator passed to accumulate does not meet the requirements "
 		  "of the Iterator concept "
 		  "http://en.cppreference.com/w/cpp/concept/Iterator" );
+			*/
 
 		while( first != last ) {
 			init = daw::invoke( binary_op, daw::move( init ), *first );
@@ -2174,4 +2189,3 @@ namespace daw::algorithm {
 		} );
 	}
 } // namespace daw::algorithm
-
