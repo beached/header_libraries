@@ -36,6 +36,7 @@
 #include <tchar.h>
 #include <windows.h>
 #endif
+#include <string_view>
 #include <utility>
 
 namespace daw::filesystem {
@@ -310,6 +311,14 @@ namespace daw::filesystem {
 		}
 		~memory_mapped_file_t( ) noexcept {
 			cleanup( );
+		}
+
+		operator std::string_view( ) const {
+			return {data( ), size( )}; 
+		}
+
+		operator std::string_view( ) {
+			return {data( ), size( )}; 
 		}
 	};
 #endif
