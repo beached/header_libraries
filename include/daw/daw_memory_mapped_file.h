@@ -177,6 +177,14 @@ namespace daw::filesystem {
 		~memory_mapped_file_t( ) noexcept {
 			cleanup( );
 		}
+
+		operator std::string_view( ) const {
+			return {data( ), size( )}; 
+		}
+
+		operator std::string_view( ) {
+			return {data( ), size( )}; 
+		}
 	};
 #else
 	namespace mapfile_impl {
@@ -294,6 +302,7 @@ namespace daw::filesystem {
 		}
 
 		memory_mapped_file_t( memory_mapped_file_t const & ) = delete;
+
 		memory_mapped_file_t &operator=( memory_mapped_file_t const & ) = delete;
 
 		memory_mapped_file_t( memory_mapped_file_t &&other ) noexcept
@@ -309,6 +318,7 @@ namespace daw::filesystem {
 			}
 			return *this;
 		}
+
 		~memory_mapped_file_t( ) noexcept {
 			cleanup( );
 		}
