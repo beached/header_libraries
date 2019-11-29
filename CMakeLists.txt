@@ -163,6 +163,7 @@ set( DEV_HEADER_FILES_NB
 
 set( UNTESTED_HEADER_FILES
 	daw_bit_stream.h
+	daw_cfile.h
 	daw_common_mixins.h
 	daw_do_n.h
 	daw_enable_if.h
