@@ -247,16 +247,16 @@ namespace daw {
 		                              ::daw::remove_cvref_t<U>, optional<T>>>,
 		                            ::std::nullptr_t> = nullptr>
 		optional &operator=( U &&value ) {
-			if( not m_value ) {
-				m_value = &value;
-			} else {
-				if constexpr( not std::is_const_v<value_type> ) {
-					**m_value = ::std::forward<U>( value );
-				} else {
-					std::abort( );
-				}
-			}
-			return *this;
+		  if( not m_value ) {
+		    m_value = &value;
+		  } else {
+		    if constexpr( not std::is_const_v<value_type> ) {
+		      **m_value = ::std::forward<U>( value );
+		    } else {
+		      std::abort( );
+		    }
+		  }
+		  return *this;
 		}*/
 	};
 

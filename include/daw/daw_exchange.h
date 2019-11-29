@@ -1,7 +1,6 @@
-
 // The MIT License (MIT)
 //
-// Copyright (c) 2018-2019 Darrell Wright
+// Copyright (c) 2019 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -23,49 +22,13 @@
 
 #pragma once
 
-#include <type_traits>
-#include <utility>
-
-#include "../cpp_17.h"
-#include "../daw_enable_if.h"
-#include "daw_function_iterator.h"
+#include "daw_move.h"
 
 namespace daw {
-	template<typename Container>
-	struct back_inserter final {
-		using iterator_category = std::output_iterator_tag;
-		using value_type = void;
-		using difference_type = void;
-		using pointer = void;
-		using reference = void;
-
-	private:
-		Container *m_container;
-
-	public:
-		constexpr back_inserter( Container &c ) noexcept
-		  : m_container( &c ) {}
-
-		template<typename T, daw::enable_when_t<not std::is_same_v<
-		                       daw::remove_cvref_t<T>, back_inserter>> = nullptr>
-		constexpr back_inserter &operator=( T &&val ) {
-			m_container->push_back( std::forward<T>( val ) );
-			return *this;
-		}
-
-		constexpr back_inserter &operator*( ) noexcept {
-			return *this;
-		}
-
-		constexpr back_inserter &operator++( ) noexcept {
-			return *this;
-		}
-
-		constexpr back_inserter &operator++( int ) noexcept {
-			return *this;
-		}
-	};
-
-	template<typename Container>
-	back_inserter( Container )->back_inserter<Container>;
+	template<typename T, typename U = T>
+	constexpr T exchange( T &obj, U &&new_value ) noexcept {
+		T old_value = daw::move( obj );
+		obj = std::forward<U>( new_value );
+		return old_value;
+	}
 } // namespace daw

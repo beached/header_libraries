@@ -30,6 +30,7 @@
 #include <utility>
 
 #include "daw_exception.h"
+#include "daw_exchange.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_heap_array.h"
 #include "daw_move.h"
@@ -106,7 +107,7 @@ namespace daw {
 
 			hash_table_item &operator=( hash_table_item &&rhs ) noexcept {
 				if( this != &rhs ) {
-					hash = std::exchange( rhs.hash, Sentinals::sentinal_empty );
+					hash = daw::exchange( rhs.hash, Sentinals::sentinal_empty );
 					value = daw::move( rhs.value );
 				}
 				return *this;

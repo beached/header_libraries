@@ -21,18 +21,12 @@
 // SOFTWARE.
 
 #pragma once
-
-namespace daw {
 #include <cstdio>
 #include <utility>
 
-	template<class T, class U = T>
-	constexpr T exchange( T &obj, U &&new_value ) noexcept {
-		T old_value = std::move( obj );
-		obj = std::forward<U>( new_value );
-		return old_value;
-	}
+#include "daw_exchange.h"
 
+namespace daw {
 	class CFile {
 		FILE *ptr = nullptr;
 
@@ -68,4 +62,3 @@ namespace daw {
 		}
 	};
 } // namespace daw
-

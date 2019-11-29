@@ -420,7 +420,8 @@ namespace daw {
 	}
 
 	template<typename Graph, typename Compare = daw::graph_alg_impl::NoSort>
-	auto make_reverse_topological_sorted_range( Graph &&g, Compare c = Compare{} ) {
+	auto make_reverse_topological_sorted_range( Graph &&g,
+	                                            Compare c = Compare{} ) {
 		static_assert( not std::is_rvalue_reference_v<Graph>,
 		               "Temporaries are not supported" );
 		auto frst = topological_sorted_iterator<Graph, Compare>(

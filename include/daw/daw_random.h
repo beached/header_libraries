@@ -77,7 +77,7 @@ namespace daw {
 
 	template<typename IntType, typename ForwardIterator>
 	inline void random_fill( ForwardIterator first, ForwardIterator const last,
-	                  IntType a, IntType b ) {
+	                         IntType a, IntType b ) {
 		static_assert( ::std::is_integral_v<IntType>,
 		               "IntType must be a valid integral type" );
 		daw::exception::daw_throw_on_false( a <= b, "a <= b must be true" );

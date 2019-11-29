@@ -27,6 +27,7 @@
 
 #include "cpp_17.h"
 #include "daw_exception.h"
+#include "daw_exchange.h"
 #include "daw_swap.h"
 
 namespace daw {

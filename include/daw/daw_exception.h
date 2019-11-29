@@ -500,4 +500,3 @@ namespace daw::exception {
 	}
 #endif
 } // namespace daw::exception
-

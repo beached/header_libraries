@@ -28,6 +28,7 @@
 #include <type_traits>
 #include <utility>
 
+#include "daw_exchange.h"
 #include "daw_move.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
@@ -159,7 +160,7 @@ namespace daw {
 		  default;
 
 		constexpr pointer release( ) noexcept {
-			return std::exchange( m_value, nullptr );
+			return daw::exchange( m_value, nullptr );
 		}
 
 		constexpr void swap( value_ptr &rhs ) noexcept {

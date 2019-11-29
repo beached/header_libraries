@@ -102,15 +102,15 @@ namespace daw {
 
 		template<typename Child,
 		         daw::enable_when_t<std::is_base_of_v<BaseClass, Child>,
-		                          !std::is_same_v<BaseClass, Child>,
-		                          std::is_copy_constructible_v<Child>> = nullptr>
+		                            !std::is_same_v<BaseClass, Child>,
+		                            std::is_copy_constructible_v<Child>> = nullptr>
 		poly_value( poly_value<Child> const &other )
 		  : m_ptr( std::make_unique<Child>( *other.m_ptr ) )
 		  , m_copier( poly_value_impl::make_copier<BaseClass, Child>( ) ) {}
 
 		template<typename Child,
 		         daw::enable_when_t<std::is_base_of_v<BaseClass, Child> and
-		                          !std::is_same_v<BaseClass, Child>> = nullptr>
+		                            !std::is_same_v<BaseClass, Child>> = nullptr>
 		poly_value &operator=( poly_value<Child> const &rhs ) {
 			m_ptr = std::make_unique<Child>( *rhs.m_ptr );
 			m_copier = poly_value_impl::make_copier<BaseClass, Child>( );

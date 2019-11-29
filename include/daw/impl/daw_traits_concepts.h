@@ -36,9 +36,10 @@ namespace daw {
 			static_assert( has_begin<Container>,
 			               "Container does not have a begin( Container ) or "
 			               "std::begin( Container ) overload" );
-			static_assert( has_end<Container>,
-			               "Container does not have a end( Container ) or ::std::end( "
-			               "Container ) overload" );
+			static_assert(
+			  has_end<Container>,
+			  "Container does not have a end( Container ) or ::std::end( "
+			  "Container ) overload" );
 			return true;
 		}
 
@@ -88,11 +89,12 @@ namespace daw {
 		// is_iterator
 		template<typename Iterator>
 		inline constexpr bool is_iterator_v = all_true_v<
-		  ::std::is_copy_constructible_v<Iterator>, ::std::is_copy_assignable_v<Iterator>,
-		  ::std::is_destructible_v<Iterator>, impl::is_incrementable_v<Iterator>,
-		  impl::has_value_type_v<Iterator>, impl::has_difference_type_v<Iterator>,
-		  impl::has_reference_v<Iterator>, impl::has_pointer_v<Iterator>,
-		  impl::has_iterator_category_v<Iterator>, is_swappable_v<Iterator>>;
+		  ::std::is_copy_constructible_v<Iterator>,
+		  ::std::is_copy_assignable_v<Iterator>, ::std::is_destructible_v<Iterator>,
+		  impl::is_incrementable_v<Iterator>, impl::has_value_type_v<Iterator>,
+		  impl::has_difference_type_v<Iterator>, impl::has_reference_v<Iterator>,
+		  impl::has_pointer_v<Iterator>, impl::has_iterator_category_v<Iterator>,
+		  is_swappable_v<Iterator>>;
 
 		template<typename Iterator>
 		constexpr bool is_iterator_test( ) noexcept {
@@ -179,7 +181,7 @@ namespace daw {
 			               "InputIterator is not equality_comparable" );
 
 			static_assert(
-			 ::std::is_convertible_v<T, U>,
+			  ::std::is_convertible_v<T, U>,
 			  "InputIterator's dereferenced value is not convertible to itself" );
 			return true;
 		}
@@ -195,8 +197,9 @@ namespace daw {
 		  all_true_v<is_input_iterator_v<InOutIterator>,
 		             is_output_iterator_v<InOutIterator, T>>;
 
-		template<typename InOutIterator, typename T = typename ::std::iterator_traits<
-		                                   InOutIterator>::value_type>
+		template<
+		  typename InOutIterator,
+		  typename T = typename ::std::iterator_traits<InOutIterator>::value_type>
 		constexpr bool is_inout_iterator_test( ) noexcept {
 			static_assert( is_inout_iterator_v<InOutIterator, T>,
 			               "InOutIterator does not fullfill the Input and Output "
@@ -207,8 +210,9 @@ namespace daw {
 			return true;
 		}
 
-		template<typename InOutIterator, typename T = typename ::std::iterator_traits<
-		                                   InOutIterator>::value_type>
+		template<
+		  typename InOutIterator,
+		  typename T = typename ::std::iterator_traits<InOutIterator>::value_type>
 		inline constexpr bool
 		  is_inout_iterator = is_input_iterator_test<InOutIterator, T>( );
 

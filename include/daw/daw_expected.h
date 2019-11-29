@@ -130,12 +130,13 @@ namespace daw {
 		           traits::is_callable_convertible_v<value_type, Function, Args...>,
 		           std::nullptr_t> = nullptr>
 		static variant_type variant_from_code( Function &&func, Args &&... args ) {
-#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or defined( _CPPUNWIND )
+#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
+  defined( _CPPUNWIND )
 			try {
 				return func( std::forward<Args>( args )... );
 			} catch( ... ) { return std::current_exception( ); }
 #else
-				return func( std::forward<Args>( args )... );
+			return func( std::forward<Args>( args )... );
 #endif
 		}
 
@@ -228,7 +229,8 @@ namespace daw {
 
 		std::string get_exception_message( ) const noexcept {
 			auto result = std::string( );
-#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or defined( _CPPUNWIND )
+#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
+  defined( _CPPUNWIND )
 			try {
 				throw_if_exception( );
 			} catch( std::system_error const &e ) {
@@ -304,13 +306,14 @@ namespace daw {
 		template<class Function, typename... Args>
 		static variant_type variant_from_code( Function &&func,
 		                                       Args &&... args ) noexcept {
-#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or defined( _CPPUNWIND )
+#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
+  defined( _CPPUNWIND )
 			try {
 				func( std::forward<Args>( args )... );
 				return impl::ExpectedTag<impl::Void>( );
 			} catch( ... ) { return std::current_exception( ); }
 #else
-				func( std::forward<Args>( args )... );
+			func( std::forward<Args>( args )... );
 #endif
 		}
 
@@ -376,7 +379,8 @@ namespace daw {
 
 		std::string get_exception_message( ) const noexcept {
 			std::string result{};
-#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or defined( _CPPUNWIND )
+#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
+  defined( _CPPUNWIND )
 			try {
 				throw_if_exception( );
 			} catch( std::exception const &e ) { result = e.what( ); } catch( ... ) {

@@ -175,7 +175,7 @@ namespace daw {
 		template<typename Arg>
 		details::string_t to_string( Arg const &arg ) {
 			if constexpr( std::is_same_v<Arg, std::string> ) {
-				return arg; 
+				return arg;
 			} else if constexpr( std::is_pointer_v<Arg> ) {
 				return details::string_t( arg );
 			} else {
@@ -184,7 +184,7 @@ namespace daw {
 		}
 
 		template<size_t N>
-		details::string_t to_string( char const (&sl)[N] ) {
+		details::string_t to_string( char const ( &sl )[N] ) {
 			return std::string( sl );
 		}
 

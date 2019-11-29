@@ -28,10 +28,9 @@ namespace daw {
 	namespace algorithm {
 		namespace algorithm_impl {
 			template<typename Function, typename... Args, size_t... Is>
-			constexpr void do_n(
-			  Function &&func,
-			  std::integer_sequence<size_t,
-			                        Is...>, Args &&... args ) noexcept( noexcept( func( args... ) ) ) {
+			constexpr void
+			do_n( Function &&func, std::integer_sequence<size_t, Is...>,
+			      Args &&... args ) noexcept( noexcept( func( args... ) ) ) {
 				if constexpr( sizeof...( Is ) > 0 ) {
 					(void)( ( func( args... ), Is ) + ... );
 				}
@@ -53,7 +52,7 @@ namespace daw {
 			algorithm_impl::do_n( std::forward<Function>( func ),
 			                      std::make_integer_sequence<size_t, count>{},
 			                      std::forward<Args>( args )... );
-		}	
+		}
 
 		template<typename Function, typename... Args>
 		constexpr void

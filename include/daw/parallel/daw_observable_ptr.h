@@ -26,6 +26,7 @@
 #include <cstdint>
 #include <mutex>
 
+#include "../daw_exchange.h"
 #include "../daw_expected.h"
 #include "../daw_traits.h"
 
@@ -50,21 +51,21 @@ namespace daw {
 			locked_ptr &operator=( locked_ptr const & ) = delete;
 
 			constexpr locked_ptr( locked_ptr &&other ) noexcept
-			  : m_ptr( std::exchange( other.m_ptr, nullptr ) )
-			  , m_lockable( std::exchange( other.m_lockable, nullptr ) ) {}
+			  : m_ptr( daw::exchange( other.m_ptr, nullptr ) )
+			  , m_lockable( daw::exchange( other.m_lockable, nullptr ) ) {}
 
 			constexpr locked_ptr &operator=( locked_ptr &&rhs ) noexcept {
 				if( this != &rhs ) {
 					reset( );
-					m_ptr = std::exchange( rhs.m_ptr, nullptr );
-					m_lockable = std::exchange( rhs.m_ptr, nullptr );
+					m_ptr = daw::exchange( rhs.m_ptr, nullptr );
+					m_lockable = daw::exchange( rhs.m_ptr, nullptr );
 				}
 				return *this;
 			}
 
 			constexpr void reset( ) noexcept {
 				m_ptr = nullptr;
-				if( auto tmp = std::exchange( m_lockable, nullptr ); tmp ) {
+				if( auto tmp = daw::exchange( m_lockable, nullptr ); tmp ) {
 					tmp->unlock( );
 				}
 			}
@@ -116,7 +117,7 @@ namespace daw {
 
 			void destruct_if_should( std::lock_guard<std::mutex> const & ) {
 				if( m_ptr_destruct.load( ) ) {
-					delete std::exchange( m_ptr, nullptr );
+					delete daw::exchange( m_ptr, nullptr );
 				}
 			}
 
@@ -243,7 +244,7 @@ namespace daw {
 		  : m_control_block( cb ) {}
 
 		void reset( ) {
-			auto tmp = std::exchange( m_control_block, nullptr );
+			auto tmp = daw::exchange( m_control_block, nullptr );
 			if( tmp ) {
 				try {
 					impl::control_block_t<T>::remove_observer( tmp );
@@ -270,11 +271,11 @@ namespace daw {
 		}
 
 		constexpr observer_ptr( observer_ptr &&other ) noexcept
-		  : m_control_block( std::exchange( other.m_control_block, nullptr ) ) {}
+		  : m_control_block( daw::exchange( other.m_control_block, nullptr ) ) {}
 
 		constexpr observer_ptr &operator=( observer_ptr &&rhs ) noexcept {
 			if( this != &rhs ) {
-				m_control_block = std::exchange( rhs.m_control_block, nullptr );
+				m_control_block = daw::exchange( rhs.m_control_block, nullptr );
 			}
 			return *this;
 		}
@@ -367,17 +368,17 @@ namespace daw {
 		observable_ptr &operator=( observable_ptr const & ) = delete;
 
 		observable_ptr( observable_ptr &&other ) noexcept
-		  : m_control_block( std::exchange( other.m_control_block, nullptr ) ) {}
+		  : m_control_block( daw::exchange( other.m_control_block, nullptr ) ) {}
 
 		observable_ptr &operator=( observable_ptr &&rhs ) noexcept {
 			if( this != &rhs ) {
-				m_control_block = std::exchange( rhs.m_control_block, nullptr );
+				m_control_block = daw::exchange( rhs.m_control_block, nullptr );
 			}
 			return *this;
 		}
 
 		~observable_ptr( ) noexcept {
-			auto tmp = std::exchange( m_control_block, nullptr );
+			auto tmp = daw::exchange( m_control_block, nullptr );
 			try {
 				if( tmp ) {
 					impl::control_block_t<T>::remove_owner( tmp );

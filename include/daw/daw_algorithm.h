@@ -1768,13 +1768,13 @@ namespace daw::algorithm {
 	    BinaryOperation{} ) noexcept( noexcept( binary_op( daw::move( init ),
 	                                                       *first ) ) ) {
 
-	    	/*
-		static_assert(
-		  traits::is_iterator_v<InputIterator>,
-		  "Iterator passed to accumulate does not meet the requirements "
-		  "of the Iterator concept "
-		  "http://en.cppreference.com/w/cpp/concept/Iterator" );
-			*/
+		/*
+static_assert(
+	traits::is_iterator_v<InputIterator>,
+	"Iterator passed to accumulate does not meet the requirements "
+	"of the Iterator concept "
+	"http://en.cppreference.com/w/cpp/concept/Iterator" );
+	*/
 
 		while( first != last ) {
 			init = daw::invoke( binary_op, daw::move( init ), *first );

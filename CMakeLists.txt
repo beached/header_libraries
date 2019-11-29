@@ -167,6 +167,7 @@ set( UNTESTED_HEADER_FILES
 	daw_common_mixins.h
 	daw_do_n.h
 	daw_enable_if.h
+	daw_exchange.h
 	daw_function.h
 	daw_hash_table.h
 	daw_move.h
