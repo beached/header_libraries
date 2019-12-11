@@ -358,7 +358,7 @@ namespace daw {
 				std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
 				daw::do_not_optimize( tp_args );
 				start = std::chrono::high_resolution_clock::now( );
-				result = daw::expected_from_code(
+				result = *daw::expected_from_code(
 				  [&]( auto &&tp ) {
 					  return func( std::forward<decltype( tp )>( tp ) );
 				  },
