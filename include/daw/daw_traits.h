@@ -804,7 +804,7 @@ namespace daw {
 		 * @tparam Ts Types to SFINAE off of
 		 */
 		template<typename T, typename... Ts>
-		using something_t = typename make_something<T, Ts...>::type;
+		using something_t = typename traits_impl::make_something<T, Ts...>::type;
 
 	} // namespace traits
 } // namespace daw

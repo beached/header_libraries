@@ -23,6 +23,7 @@
 #pragma once
 
 #include <atomic>
+#include <immintrin.h>
 
 namespace daw {
 	class spin_lock {
@@ -30,11 +31,13 @@ namespace daw {
 
 	public:
 		inline bool try_lock( ) noexcept {
-			return !m_flag.test_and_set( std::memory_order_acquire );
+			return not m_flag.test_and_set( std::memory_order_acquire );
 		}
 
 		inline void lock( ) noexcept {
-			while( !try_lock( ) ) {}
+			while( not try_lock( ) ) {
+				_mm_pause( );
+			}
 		}
 
 		inline void unlock( ) noexcept {
