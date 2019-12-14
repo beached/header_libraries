@@ -33,6 +33,7 @@
 #include <vector>
 
 #include "../cpp_17.h"
+#include "../daw_exchange.h"
 #include "../daw_traits.h"
 
 namespace daw {
@@ -152,12 +153,12 @@ namespace daw {
 		}
 
 		InputIterator( InputIterator &&other ) noexcept
-		  : m_iterator( std::exchange( other.m_iterator, nullptr ) )
+		  : m_iterator( daw::exchange( other.m_iterator, nullptr ) )
 		  , m_vtable( other.m_vtable ) {}
 
 		InputIterator &operator=( InputIterator &&rhs ) noexcept {
 			if( this != &rhs ) {
-				m_iterator = std::exchange( rhs.m_iterator, nullptr );
+				m_iterator = daw::exchange( rhs.m_iterator, nullptr );
 				m_vtable = rhs.m_vtable;
 			}
 			return *this;

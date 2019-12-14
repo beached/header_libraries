@@ -61,4 +61,3 @@ namespace daw {
 		return read_wfile( str.c_str( ) );
 	}
 } // namespace daw
-

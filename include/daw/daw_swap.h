@@ -30,16 +30,11 @@
 #include <utility>
 #include <variant>
 
+#include "daw_exchange.h"
 #include "daw_move.h"
+#include "daw_swap.h"
 
 namespace daw {
-	template<typename T, typename U = T>
-	constexpr T exchange( T &obj, U &&new_value ) noexcept {
-		T old_value = daw::move( obj );
-		obj = std::forward<U>( new_value );
-		return old_value;
-	}
-
 	template<typename T, typename U>
 	constexpr void cswap( std::pair<T, U> &lhs, std::pair<T, U> &rhs ) noexcept(
 	  std::is_nothrow_move_assignable_v<std::pair<T, U>> ) {
@@ -101,10 +96,13 @@ namespace daw {
 	}
 
 	template<typename ForwardIterator1, typename ForwardIterator2>
-	constexpr void iter_swap(
-	  ForwardIterator1 lhs,
-	  ForwardIterator2 rhs ) noexcept( noexcept( cswap( *lhs, *rhs ) ) ) {
-		cswap( *lhs, *rhs );
+	constexpr void
+	iter_swap( ForwardIterator1 lhs, ForwardIterator2 rhs ) noexcept(
+	  std::is_nothrow_move_assignable_v<decltype( *lhs )>
+	    and std::is_nothrow_move_assignable_v<decltype( *rhs )> ) {
+		auto tmp = std::move( *lhs );
+		*lhs = std::move( *rhs );
+		*rhs = std::move( tmp );
 	}
 
 	template<typename ForwardIterator1, typename ForwardIterator2>

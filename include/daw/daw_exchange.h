@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017-2019 Darrell Wright
+// Copyright (c) 2019 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -22,26 +22,13 @@
 
 #pragma once
 
-#include <atomic>
-#include <immintrin.h>
+#include "daw_move.h"
 
 namespace daw {
-	class spin_lock {
-		std::atomic_flag m_flag = ATOMIC_FLAG_INIT;
-
-	public:
-		inline bool try_lock( ) noexcept {
-			return not m_flag.test_and_set( std::memory_order_acquire );
-		}
-
-		inline void lock( ) noexcept {
-			while( not try_lock( ) ) {
-				_mm_pause( );
-			}
-		}
-
-		inline void unlock( ) noexcept {
-			m_flag.clear( std::memory_order_release );
-		}
-	};
+	template<typename T, typename U = T>
+	constexpr T exchange( T &obj, U &&new_value ) noexcept {
+		T old_value = daw::move( obj );
+		obj = std::forward<U>( new_value );
+		return old_value;
+	}
 } // namespace daw

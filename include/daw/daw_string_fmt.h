@@ -212,7 +212,8 @@ namespace daw {
 									    auto const str = to_string( std::forward<val_t>( val ) );
 									    out =
 									      daw::algorithm::copy( str.begin( ), str.end( ), out );
-								    } else if constexpr( traits::is_streamable_v<std::istream &, val_t> ) {
+								    } else if constexpr( traits::is_streamable_v<std::istream &,
+								                                                 val_t> ) {
 									    std::basic_stringstream<CharT> ss{};
 									    ss << val;
 									    auto const str = ss.str( );

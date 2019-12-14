@@ -41,14 +41,14 @@ namespace daw {
 			constexpr void swap_if( RandomIterator first, Compare &&comp ) noexcept {
 				auto const f = std::next( first, Pos0 );
 				auto const l = std::next( first, Pos1 );
-				if( !daw::invoke( comp, *f, *l ) ) {
+				if( not comp( *f, *l ) ) {
 					daw::iter_swap( f, l );
 				}
 			}
 			template<typename ForwardIterator, typename Compare>
 			constexpr size_t swap_if2( ForwardIterator lhs, ForwardIterator rhs,
 			                           Compare &&comp ) noexcept {
-				if( daw::invoke( comp, *rhs, *lhs ) ) {
+				if( comp( *rhs, *lhs ) ) {
 					daw::cswap( *rhs, *lhs );
 					return 1U;
 				}
@@ -476,7 +476,7 @@ namespace daw {
 				case 1:
 					return true;
 				case 2:
-					if( daw::invoke( comp, --last, first ) ) {
+					if( comp( *( --last ), *first ) ) {
 						daw::cswap( *last, *first );
 					}
 					return true;
@@ -511,14 +511,14 @@ namespace daw {
 				uint_fast8_t const limit = 8;
 				uint_fast8_t count = 0;
 				for( auto i = std::next( j ); i != last; ++i ) {
-					if( daw::invoke( comp, *i, *j ) ) {
+					if( comp( *i, *j ) ) {
 						auto t = daw::move( *i );
 						auto k = j;
 						j = i;
 						do {
 							*j = daw::move( *k );
 							j = k;
-						} while( j != first and daw::invoke( comp, t, *--k ) );
+						} while( j != first and comp( t, *--k ) );
 						*j = daw::move( t );
 						if( ++count == limit ) {
 							return std::next( i ) == last;
@@ -536,16 +536,16 @@ namespace daw {
 			    &&comp ) noexcept( is_nothrow_sortable_v<RandomIterator, Compare> ) {
 
 				auto j = std::next( first, 2 );
-				::daw::sort_3( first, comp );
+				daw::sort_3( first, comp );
 				for( auto i = std::next( j ); i != last; ++i ) {
-					if( daw::invoke( comp, *i, *j ) ) {
+					if( comp( *i, *j ) ) {
 						auto t = daw::move( *i );
 						auto k = j;
 						j = i;
 						do {
 							*j = daw::move( *k );
 							j = k;
-						} while( j != first and daw::invoke( comp, t, *--k ) );
+						} while( j != first and comp( t, *--k ) );
 						*j = daw::move( t );
 					}
 					j = i;
@@ -584,7 +584,7 @@ namespace daw {
 			case 1:
 				return;
 			case 2:
-				if( daw::invoke( comp, *--last, *first ) ) {
+				if( comp( *( --last ), *first ) ) {
 					daw::cswap( *last, *first );
 				}
 				return;
@@ -632,17 +632,17 @@ namespace daw {
 
 			auto i = first;
 			auto j = lm1;
-			if( !daw::invoke( comp, *i, *m ) ) {
-				while( !should_restart ) {
+			if( not comp( *i, *m ) ) {
+				while( not should_restart ) {
 					if( i == --j ) {
 						++i;
 						j = last;
-						if( !daw::invoke( comp, *first, *--j ) ) {
+						if( not comp( *first, *( --j ) ) ) {
 							while( true ) {
 								if( i == j ) {
 									return;
 								}
-								if( daw::invoke( comp, *first, *i ) ) {
+								if( comp( *first, *i ) ) {
 									daw::cswap( *i, *j );
 									++swap_count;
 									++i;
@@ -655,10 +655,10 @@ namespace daw {
 							return;
 						}
 						while( true ) {
-							while( !daw::invoke( comp, *first, *i ) ) {
+							while( not comp( *first, *i ) ) {
 								++i;
 							}
-							while( daw::invoke( comp, *first, *--j ) ) {}
+							while( comp( *first, *--j ) ) {}
 							if( i >= j ) {
 								break;
 							}
@@ -670,7 +670,7 @@ namespace daw {
 						should_restart = true;
 						continue;
 					}
-					if( daw::invoke( comp, *j, *m ) ) {
+					if( comp( *j, *m ) ) {
 						daw::cswap( *i, *j );
 						++swap_count;
 						break;
@@ -683,10 +683,10 @@ namespace daw {
 			++i;
 			if( i < j ) {
 				while( true ) {
-					while( daw::invoke( comp, *i, *m ) ) {
+					while( comp( *i, *m ) ) {
 						++i;
 					}
-					while( !daw::invoke( comp, *--j, *m ) ) {}
+					while( not comp( *( --j ), *m ) ) {}
 					if( i > j ) {
 						break;
 					}
@@ -699,7 +699,7 @@ namespace daw {
 					++i;
 				}
 			}
-			if( i != m and daw::invoke( comp, *m, *i ) ) {
+			if( i != m and comp( *m, *i ) ) {
 				daw::cswap( *i, *m );
 				++swap_count;
 			}
@@ -720,19 +720,21 @@ namespace daw {
 				}
 			}
 			if( i - first < last - i ) {
-				::daw::sort( first, i, comp );
+				daw::sort( first, i, comp );
 				first = ++i;
 			} else {
-				::daw::sort( std::next( i ), last, comp );
+				daw::sort( std::next( i ), last, comp );
 				last = i;
 			}
 		}
 	}
-	template<typename InputIterator, typename RandomOutputIterator,
-	         typename Compare = std::less<>,
-	         std::enable_if_t<!std::is_integral_v<typename std::iterator_traits<
-	                            InputIterator>::value_type>,
-	                          std::nullptr_t> = nullptr>
+
+	template<
+	  typename InputIterator, typename RandomOutputIterator,
+	  typename Compare = std::less<>,
+	  std::enable_if_t<not std::is_integral_v<typename std::iterator_traits<
+	                     InputIterator>::value_type>,
+	                   std::nullptr_t> = nullptr>
 	constexpr RandomOutputIterator
 	sort_to( InputIterator first_in, InputIterator last_in,
 	         RandomOutputIterator first_out, Compare &&comp = Compare{} ) {

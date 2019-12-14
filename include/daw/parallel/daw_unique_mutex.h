@@ -59,4 +59,4 @@ namespace daw {
 	};
 
 	using unique_mutex = basic_unique_mutex<std::mutex>;
-}
+} // namespace daw

@@ -25,6 +25,7 @@
 #include <exception>
 #include <utility>
 
+#include "daw_exchange.h"
 #include "daw_move.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
@@ -109,4 +110,3 @@ namespace daw {
 	template<typename Handler>
 	on_exit_success( Handler )->on_exit_success<Handler>;
 } // namespace daw
-

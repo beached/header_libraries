@@ -26,6 +26,7 @@
 #include <string>
 
 #include "daw_algorithm.h"
+#include "daw_exchange.h"
 #include "daw_newhelper.h"
 #include "daw_operators.h"
 #include "daw_scope_guard.h"
@@ -110,7 +111,7 @@ namespace daw {
 		}
 
 		[[deprecated]] ~CString( ) noexcept {
-			auto tmp = std::exchange( m_data, nullptr );
+			auto tmp = daw::exchange( m_data, nullptr );
 			if( m_local_string and nullptr != tmp ) {
 				m_local_string = false;
 				m_size = 0;

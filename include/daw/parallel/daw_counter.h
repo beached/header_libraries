@@ -37,7 +37,8 @@ namespace daw {
 	struct is_counter : std::false_type {};
 
 	template<typename T>
-	inline constexpr bool is_counter_v = is_counter<daw::remove_cvref_t<T>>::value;
+	inline constexpr bool is_counter_v =
+	  is_counter<daw::remove_cvref_t<T>>::value;
 
 	template<typename>
 	struct is_unique_counter : std::false_type {};
@@ -151,7 +152,8 @@ namespace daw {
 	}; // basic_counter
 
 	template<typename Mutex, typename ConditionVariable>
-	struct is_counter<basic_counter<Mutex, ConditionVariable>> : std::true_type {};
+	struct is_counter<basic_counter<Mutex, ConditionVariable>> : std::true_type {
+	};
 
 	using counter = basic_counter<std::mutex, std::condition_variable>;
 
@@ -239,7 +241,8 @@ namespace daw {
 	struct is_unique_counter<basic_unique_counter<Mutex, ConditionVariable>>
 	  : std::true_type {};
 
-	using unique_counter = basic_unique_counter<std::mutex, std::condition_variable>;
+	using unique_counter =
+	  basic_unique_counter<std::mutex, std::condition_variable>;
 
 	template<typename Mutex, typename ConditionVariable>
 	class basic_shared_counter {
@@ -320,7 +323,7 @@ namespace daw {
 		[[nodiscard]] explicit operator bool( ) const noexcept {
 			return static_cast<bool>( counter );
 		}
-		
+
 		void increment( ) {
 			counter->increment( );
 		}
@@ -334,11 +337,12 @@ namespace daw {
 	struct is_shared_counter<basic_shared_counter<Mutex, ConditionVariable>>
 	  : std::true_type {};
 
-	using shared_counter = basic_shared_counter<std::mutex, std::condition_variable>;
+	using shared_counter =
+	  basic_shared_counter<std::mutex, std::condition_variable>;
 
 	template<typename Mutex, typename ConditionVariable>
-	void wait_all(
-	  std::initializer_list<basic_counter<Mutex, ConditionVariable>> semaphores ) {
+	void wait_all( std::initializer_list<basic_counter<Mutex, ConditionVariable>>
+	                 semaphores ) {
 		for( auto &sem : semaphores ) {
 			sem->wait( );
 		}

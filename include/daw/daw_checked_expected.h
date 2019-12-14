@@ -29,6 +29,7 @@
 
 #include "cpp_17.h"
 #include "daw_exception.h"
+#include "daw_exchange.h"
 #include "daw_move.h"
 #include "daw_optional.h"
 #include "daw_traits.h"
@@ -244,8 +245,8 @@ namespace daw {
 		/// Summary: No value, aka null
 		//////////////////////////////////////////////////////////////////////////
 		checked_expected_t( checked_expected_t &&other ) noexcept
-		  : m_exception{std::exchange( other.m_exception, nullptr )}
-		  , m_value{std::exchange( other.m_value, false )} {}
+		  : m_exception{daw::exchange( other.m_exception, nullptr )}
+		  , m_value{daw::exchange( other.m_value, false )} {}
 
 		checked_expected_t( checked_expected_t const &other )
 		  : m_exception{}

@@ -220,7 +220,17 @@ namespace daw {
 		constexpr void expander( Args &&... ) {}
 	} // namespace bench_impl
 
-	// Test N runs
+	/***
+	 *
+	 * @tparam Runs Number of runs to do
+	 * @tparam delem delemiter in output
+	 * @tparam Test Callable type to benchmark
+	 * @tparam Args types passed to callable
+	 * @param title Title of benchmark
+	 * @param test_callable callable to benchmark
+	 * @param args arg values to pass to callable
+	 * @return last value from callable
+	 */
 	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
 	auto bench_n_test( std::string const &title, Test &&test_callable,
 	                   Args &&... args ) noexcept {
@@ -228,7 +238,7 @@ namespace daw {
 		using result_t = daw::remove_cvref_t<decltype( daw::expected_from_code(
 		  test_callable, std::forward<Args>( args )... ) )>;
 
-		result_t result{ };
+		result_t result{};
 
 		double base_time = std::numeric_limits<double>::max( );
 		{
@@ -290,6 +300,20 @@ namespace daw {
 		return result;
 	}
 
+	/***
+	 *
+	 * @tparam Runs Number of runs
+	 * @tparam delem Delemiter in output
+	 * @tparam Validator Callable to validate results
+	 * @tparam Function Callable type to be timed
+	 * @tparam Args types to pass to callable
+	 * @param title Title for output
+	 * @param bytes Size of data in bytes
+	 * @param validator validatio object that takes func's result as arg
+	 * @param func Callable value to bench
+	 * @param args args values to pass to func
+	 * @return last result timing counts of runs
+	 */
 	template<size_t Runs, char delem = '\n', typename Validator,
 	         typename Function, typename... Args>
 	std::array<double, Runs>
@@ -297,7 +321,7 @@ namespace daw {
 	                   Validator &&validator, Function &&func,
 	                   Args &&... args ) noexcept {
 		static_assert( Runs > 0 );
-		auto results = std::array<double, Runs>{ };
+		auto results = std::array<double, Runs>{};
 
 		double base_time = std::numeric_limits<double>::max( );
 		{
@@ -331,18 +355,16 @@ namespace daw {
 				result =
 				  daw::expected_from_code( [&]( auto &&tp ) { return func( ); } );
 			} else if constexpr( sizeof...( args ) == 1 ) {
-				std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{
-				  args... };
+				std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
 				daw::do_not_optimize( tp_args );
 				start = std::chrono::high_resolution_clock::now( );
-				result = daw::expected_from_code(
+				result = *daw::expected_from_code(
 				  [&]( auto &&tp ) {
 					  return func( std::forward<decltype( tp )>( tp ) );
 				  },
 				  std::get<0>( tp_args ) );
 			} else {
-				std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{
-				  args... };
+				std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
 				daw::do_not_optimize( tp_args );
 				start = std::chrono::high_resolution_clock::now( );
 
@@ -413,7 +435,7 @@ namespace daw {
 		using result_t = daw::remove_cvref_t<decltype( daw::expected_from_code(
 		  test_callable, std::forward<Args>( args )... ) )>;
 
-		result_t result{ };
+		result_t result{};
 
 		double base_time = std::numeric_limits<double>::max( );
 		{
@@ -441,11 +463,10 @@ namespace daw {
 			std::chrono::time_point<std::chrono::high_resolution_clock> start;
 			if constexpr( sizeof...( args ) == 0 ) {
 				start = std::chrono::high_resolution_clock::now( );
-				result =
-				  daw::expected_from_code( [&]( auto &&tp ) { return test_callable( ); } );
+				result = daw::expected_from_code(
+				  [&]( auto &&tp ) { return test_callable( ); } );
 			} else if constexpr( sizeof...( args ) == 1 ) {
-				std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{
-				  args... };
+				std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
 				start = std::chrono::high_resolution_clock::now( );
 				result = daw::expected_from_code(
 				  [&]( auto &&tp ) {
@@ -453,13 +474,13 @@ namespace daw {
 				  },
 				  std::get<0>( tp_args ) );
 			} else {
-				std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{
-				  args... };
+				std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
 				daw::do_not_optimize( tp_args );
 				start = std::chrono::high_resolution_clock::now( );
 				result = daw::expected_from_code(
 				  [&]( auto &&tp ) {
-					  return ::std::apply( test_callable, std::forward<decltype( tp )>( tp ) );
+					  return ::std::apply( test_callable,
+					                       std::forward<decltype( tp )>( tp ) );
 				  },
 				  tp_args );
 			}
@@ -524,7 +545,7 @@ namespace daw {
 	} // namespace expecting_impl
 
 	template<typename T, typename U>
-	constexpr void expecting( T &&expected_result, U &&result )  {
+	constexpr void expecting( T &&expected_result, U &&result ) {
 		if( !( expected_result == result ) ) {
 #ifdef __VERSION__
 			if constexpr( !daw::string_view( __VERSION__ )
@@ -546,8 +567,7 @@ namespace daw {
 	}
 
 	template<typename Bool, typename String>
-	constexpr void expecting_message( Bool &&expected_result,
-	                                  String &&message ) {
+	constexpr void expecting_message( Bool &&expected_result, String &&message ) {
 		if( !static_cast<bool>( expected_result ) ) {
 			std::cerr << message << '\n';
 			std::abort( );
@@ -568,7 +588,7 @@ namespace daw {
 	         std::enable_if_t<std::is_invocable_v<Predicate, Exception>,
 	                          std::nullptr_t> = nullptr>
 	void expecting_exception( Expression &&expression,
-	                          Predicate &&pred = Predicate{ } ) {
+	                          Predicate &&pred = Predicate{} ) {
 		try {
 			(void)std::forward<Expression>( expression )( );
 		} catch( Exception const &ex ) {

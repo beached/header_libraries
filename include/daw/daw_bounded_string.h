@@ -746,15 +746,18 @@ namespace daw {
 	template<typename CharT, size_t N>
 	basic_bounded_string( CharT const ( & )[N] )->basic_bounded_string<CharT, N>;
 
-	template<typename... Chars, std::enable_if_t<daw::traits::all_same_v<char, Chars...>, std::nullptr_t> = nullptr>
-	basic_bounded_string( Chars... ) -> basic_bounded_string<char, sizeof...(Chars)>;	
+	template<typename... Chars,
+	         std::enable_if_t<daw::traits::all_same_v<char, Chars...>,
+	                          std::nullptr_t> = nullptr>
+	basic_bounded_string( Chars... )
+	  ->basic_bounded_string<char, sizeof...( Chars )>;
 
 	template<typename CharT, size_t N>
 	constexpr void swap( basic_bounded_string<CharT, N> &lhs,
 	                     basic_bounded_string<CharT, N> &rhs ) noexcept {
 		lhs.swap( rhs );
 	}
-	
+
 	using bounded_string = basic_bounded_string<char, 100>;
 	using wbounded_string = basic_bounded_string<wchar_t, 100>;
 	using u16bounded_string = basic_bounded_string<char16_t, 100>;
@@ -1313,8 +1316,8 @@ namespace daw {
 	template<typename CharT, size_t Capacity>
 	auto split( daw::basic_bounded_string<CharT, Capacity> const &str,
 	            CharT const delemiter ) {
-		return split(
-		  str, [delemiter]( CharT c ) noexcept { return c == delemiter; } );
+		return split( str,
+		              [delemiter]( CharT c ) noexcept { return c == delemiter; } );
 	}
 
 	template<typename CharT, size_t Capacity>

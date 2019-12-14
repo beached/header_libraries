@@ -73,6 +73,7 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_keep_n
 	daw_math
 	daw_memory_mapped_file
+	daw_min_perfect_hash
 	daw_natural
 	daw_overload
 	daw_optional
@@ -92,6 +93,7 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_size_literals
 	daw_sort_n
 	daw_stack_function
+	daw_stack_quick_sort
 #	daw_static_bitset
 	daw_string
 	daw_string_split_range
@@ -137,6 +139,7 @@ set( TESTED_ITERATOR_HEADERS_PREFIXES_NB
 	daw_back_inserter
 	daw_checked_iterator_proxy
 	daw_circular_iterator
+	daw_counting_iterators
 	daw_indexed_iterator
 	daw_inserter
 	daw_end_inserter
@@ -162,9 +165,11 @@ set( DEV_HEADER_FILES_NB
 
 set( UNTESTED_HEADER_FILES
 	daw_bit_stream.h
+	daw_cfile.h
 	daw_common_mixins.h
 	daw_do_n.h
 	daw_enable_if.h
+	daw_exchange.h
 	daw_function.h
 	daw_hash_table.h
 	daw_move.h

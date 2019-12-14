@@ -469,7 +469,7 @@ namespace daw::cxmath {
 
 	template<typename Number, typename Number2,
 	         daw::enable_when_t<std::is_arithmetic_v<Number>,
-	                          std::is_arithmetic_v<Number2>> = nullptr>
+	                            std::is_arithmetic_v<Number2>> = nullptr>
 	[[nodiscard]] constexpr Number copy_sign( Number x, Number2 s ) noexcept {
 		if( s < 0 ) {
 			if( x < 0 ) {

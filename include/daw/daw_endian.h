@@ -115,9 +115,10 @@ namespace daw {
 		}
 	} // namespace impl
 
-	template<typename T, std::enable_if_t<(endian::native == endian::little and 
-	                                       std::is_integral_v<daw::remove_cvref_t<T>>),
-	                                      std::nullptr_t> = nullptr>
+	template<typename T,
+	         std::enable_if_t<(endian::native == endian::little and
+	                           std::is_integral_v<daw::remove_cvref_t<T>>),
+	                          std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) to_little_endian( T &&value ) noexcept {
 		return std::forward<T>( value );
 	}
@@ -130,7 +131,7 @@ namespace daw {
 
 		return impl::swap_bytes( std::forward<T>( value ),
 		                         std::integral_constant<size_t, sizeof( T )>{} );
-	}	
+	}
 
 	template<typename T>
 	constexpr auto to_big_endian( T &&value ) noexcept
@@ -138,11 +139,12 @@ namespace daw {
 	                       std::is_integral_v<daw::remove_cvref_t<T>>),
 	                      decltype( value )> {
 		return std::forward<T>( value );
-	}	
+	}
 
-	template<typename T, std::enable_if_t<(endian::native != endian::big and
-	                                       std::is_integral_v<daw::remove_cvref_t<T>>),
-	                                      std::nullptr_t> = nullptr>
+	template<typename T,
+	         std::enable_if_t<(endian::native != endian::big and
+	                           std::is_integral_v<daw::remove_cvref_t<T>>),
+	                          std::nullptr_t> = nullptr>
 	constexpr auto to_big_endian( T &&value ) noexcept {
 		return impl::swap_bytes( std::forward<T>( value ),
 		                         std::integral_constant<size_t, sizeof( T )>{} );

@@ -46,9 +46,8 @@ namespace daw {
 		constexpr back_inserter( Container &c ) noexcept
 		  : m_container( &c ) {}
 
-		template<typename T,
-		         daw::enable_when_t<not std::is_same_v<
-		           daw::remove_cvref_t<T>, back_inserter>> = nullptr>
+		template<typename T, daw::enable_when_t<not std::is_same_v<
+		                       daw::remove_cvref_t<T>, back_inserter>> = nullptr>
 		constexpr back_inserter &operator=( T &&val ) {
 			m_container->push_back( std::forward<T>( val ) );
 			return *this;
@@ -68,6 +67,5 @@ namespace daw {
 	};
 
 	template<typename Container>
-	back_inserter( Container ) -> back_inserter<Container>;	
+	back_inserter( Container )->back_inserter<Container>;
 } // namespace daw
-

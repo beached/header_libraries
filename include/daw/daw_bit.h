@@ -70,8 +70,10 @@ namespace daw {
 	template<typename Integer, typename MaskBit, typename... MaskBits>
 	constexpr bool are_set( Integer value, MaskBit mask_bit,
 	                        MaskBits... mask_bits ) noexcept {
-		static_assert( ::std::is_integral_v<Integer>, "Only integer types are supported" );
-		static_assert( ::std::is_integral_v<MaskBit>, "Only integer types are supported" );
+		static_assert( ::std::is_integral_v<Integer>,
+		               "Only integer types are supported" );
+		static_assert( ::std::is_integral_v<MaskBit>,
+		               "Only integer types are supported" );
 
 		using common_t = ::std::common_type_t<Integer, MaskBit, MaskBits...>;
 
@@ -84,27 +86,27 @@ namespace daw {
 	/// @brief set bits at positions specified by b,bs...
 	template<typename Integer, typename Bit, typename... Bits>
 	constexpr Integer set_bits( Integer i, Bit b, Bits... bs ) noexcept {
-		constexpr Integer one = static_cast<Integer>(1u);
+		constexpr Integer one = static_cast<Integer>( 1u );
 		auto result = static_cast<Integer>( one << static_cast<Integer>( b ) );
-		result = ((one << static_cast<Integer>( bs )) | ... | result);
+		result = ( ( one << static_cast<Integer>( bs ) ) | ... | result );
 		return i | result;
 	}
 
 	/// @brief set bits at positions specified by b,bs...
 	template<typename Integer, typename Bit, typename... Bits>
 	constexpr Integer unset_bits( Integer i, Bit b, Bits... bs ) noexcept {
-		constexpr Integer one = static_cast<Integer>(1u);
+		constexpr Integer one = static_cast<Integer>( 1u );
 		auto result = static_cast<Integer>( one << static_cast<Integer>( b ) );
-		result = ((one << static_cast<Integer>( bs )) | ... | result);
+		result = ( ( one << static_cast<Integer>( bs ) ) | ... | result );
 		return i & ~result;
 	}
 
 	/// @brief get value with all bits but those specified masked out
 	template<typename Integer, typename Bit, typename... Bits>
 	constexpr Integer get_bits( Integer i, Bit b, Bits... bs ) noexcept {
-		constexpr Integer one = static_cast<Integer>(1u);
+		constexpr Integer one = static_cast<Integer>( 1u );
 		auto result = static_cast<Integer>( one << static_cast<Integer>( b ) );
-		result = ((one << static_cast<Integer>( bs )) | ... | result);
+		result = ( ( one << static_cast<Integer>( bs ) ) | ... | result );
 		return i & result;
 	}
 

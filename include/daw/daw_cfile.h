@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017-2019 Darrell Wright
+// Copyright (c) 2019 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -21,27 +21,44 @@
 // SOFTWARE.
 
 #pragma once
+#include <cstdio>
+#include <utility>
 
-#include <atomic>
-#include <immintrin.h>
+#include "daw_exchange.h"
 
 namespace daw {
-	class spin_lock {
-		std::atomic_flag m_flag = ATOMIC_FLAG_INIT;
+	class CFile {
+		FILE *ptr = nullptr;
 
 	public:
-		inline bool try_lock( ) noexcept {
-			return not m_flag.test_and_set( std::memory_order_acquire );
+		constexpr CFile( ) noexcept = default;
+		explicit constexpr CFile( FILE *f ) noexcept
+		  : ptr( f ) {}
+
+		constexpr CFile( CFile &&other ) noexcept
+		  : ptr( exchange( other.ptr, nullptr ) ) {}
+
+		constexpr CFile &operator=( CFile &&rhs ) noexcept {
+			if( this != &rhs ) {
+				ptr = exchange( rhs.ptr, nullptr );
+			}
+			return *this;
 		}
 
-		inline void lock( ) noexcept {
-			while( not try_lock( ) ) {
-				_mm_pause( );
+		constexpr FILE *get( ) const noexcept {
+			return ptr;
+		}
+		constexpr FILE *release( ) noexcept {
+			return exchange( ptr, nullptr );
+		}
+
+		constexpr void close( ) {
+			if( auto tmp = exchange( ptr, nullptr ); tmp ) {
+				fclose( tmp );
 			}
 		}
-
-		inline void unlock( ) noexcept {
-			m_flag.clear( std::memory_order_release );
+		~CFile( ) {
+			close( );
 		}
 	};
 } // namespace daw

@@ -213,6 +213,16 @@ namespace daw {
 			m_stack[m_index++] = daw::move( value );
 		}
 
+		/**
+		 * This gets around things like std::pair not having constexpr operator=
+		 * @return position of pushed value
+		 */
+		constexpr size_t push_back( ) noexcept {
+			if( can_move_front( 1 ) ) {
+				do_move_to_front( );
+			}
+			return m_index++;
+		}
 		constexpr void push_back( const_pointer ptr, size_type sz ) noexcept {
 			if( can_move_front( sz ) ) {
 				do_move_to_front( );

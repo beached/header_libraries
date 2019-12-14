@@ -124,7 +124,8 @@ namespace daw {
 
 		template<typename T>
 		constexpr T floor_by( T const value, double const rnd_by ) noexcept {
-			static_assert( ::std::is_arithmetic_v<T>, "value must be an arithmetic type" );
+			static_assert( ::std::is_arithmetic_v<T>,
+			               "value must be an arithmetic type" );
 			auto const rnd =
 			  static_cast<double>( floor( static_cast<double>( value ) / rnd_by ) );
 			return static_cast<T>( rnd * rnd_by );
@@ -132,14 +133,15 @@ namespace daw {
 
 		template<typename T>
 		constexpr T ceil_by( T const value, double const rnd_by ) noexcept {
-			static_assert( ::std::is_arithmetic_v<T>, "value must be an arithmetic type" );
+			static_assert( ::std::is_arithmetic_v<T>,
+			               "value must be an arithmetic type" );
 			auto const rnd =
 			  static_cast<double>( ceil( static_cast<double>( value ) / rnd_by ) );
 			return static_cast<T>( rnd * rnd_by );
 		}
 
-		template<typename T,
-		         std::enable_if_t<not std::is_integral_v<T>, std::nullptr_t> = nullptr>
+		template<typename T, std::enable_if_t<not std::is_integral_v<T>,
+		                                      std::nullptr_t> = nullptr>
 		constexpr T abs( T t ) noexcept {
 			return t < static_cast<T>( 0 ) ? -t : t;
 		}

@@ -790,5 +790,21 @@ namespace daw {
 
 		template<typename T>
 		using fn_t = std::add_pointer_t<T>;
+
+		namespace traits_impl {
+			template<typename T, typename... Ts>
+			struct make_something {
+				using type = T;
+			};
+		} // namespace traits_impl
+
+		/***
+		 * Similar to void T, will always be T
+		 * @tparam T Type to always be
+		 * @tparam Ts Types to SFINAE off of
+		 */
+		template<typename T, typename... Ts>
+		using something_t = typename traits_impl::make_something<T, Ts...>::type;
+
 	} // namespace traits
 } // namespace daw

@@ -77,7 +77,7 @@ namespace daw {
 
 	template<typename IntType, typename ForwardIterator>
 	inline void random_fill( ForwardIterator first, ForwardIterator const last,
-	                  IntType a, IntType b ) {
+	                         IntType a, IntType b ) {
 		static_assert( ::std::is_integral_v<IntType>,
 		               "IntType must be a valid integral type" );
 		daw::exception::daw_throw_on_false( a <= b, "a <= b must be true" );
@@ -86,6 +86,15 @@ namespace daw {
 		}
 	}
 
+	/***
+	 * Generate Random Numbers
+	 * @tparam IntType type of integral to make
+	 * @tparam Result Container type to hold values
+	 * @param count How many to make
+	 * @param a lower bound of random numbers
+	 * @param b upper bound of random numbers
+	 * @return container with values
+	 */
 	template<typename IntType, typename Result = ::std::vector<IntType>>
 	inline Result
 	make_random_data( size_t count,

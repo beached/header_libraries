@@ -71,6 +71,7 @@ namespace daw {
 			auto hash = impl::fnv_offset( );
 			while( first != last ) {
 				hash = append_hash( hash, *first );
+				++first;
 			}
 			return hash;
 		}
