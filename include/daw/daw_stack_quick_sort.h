@@ -63,7 +63,7 @@ namespace daw {
 	} // namespace quick_sort_impl
 
 	template<typename RandomIterator, typename Compare = std::less<>>
-	void quick_sort( RandomIterator f, RandomIterator l,
+	constexpr void quick_sort( RandomIterator f, RandomIterator l,
 	                 Compare cmp = Compare{} ) {
 
 		constexpr size_t tree_size = sizeof( size_t ) * 8U * 2U;
@@ -78,7 +78,7 @@ namespace daw {
 			sort_stack.pop_back( );
 
 			auto const dist = std::distance( first, last );
-			if( dist < 2 ) {
+			if( dist <= 1 ) {
 				return;
 			}
 			auto const mid = std::next( first, dist / 2 );

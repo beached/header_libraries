@@ -32,6 +32,7 @@
 
 #include "daw_exchange.h"
 #include "daw_move.h"
+#include "daw_swap.h"
 
 namespace daw {
 	template<typename T, typename U>
@@ -95,10 +96,13 @@ namespace daw {
 	}
 
 	template<typename ForwardIterator1, typename ForwardIterator2>
-	constexpr void iter_swap(
-	  ForwardIterator1 lhs,
-	  ForwardIterator2 rhs ) noexcept( noexcept( cswap( *lhs, *rhs ) ) ) {
-		cswap( *lhs, *rhs );
+	constexpr void
+	iter_swap( ForwardIterator1 lhs, ForwardIterator2 rhs ) noexcept(
+	  std::is_nothrow_move_assignable_v<decltype( *lhs )>
+	    and std::is_nothrow_move_assignable_v<decltype( *rhs )> ) {
+		auto tmp = std::move( *lhs );
+		*lhs = std::move( *rhs );
+		*rhs = std::move( tmp );
 	}
 
 	template<typename ForwardIterator1, typename ForwardIterator2>

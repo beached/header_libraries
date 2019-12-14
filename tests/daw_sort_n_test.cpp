@@ -1001,9 +1001,12 @@ void sort_n_test_001( ) {
 		auto const random_lots = daw::make_random_data<size_t>( DATASIZE );
 		{
 			auto random_lots_tst = random_lots;
-			daw::sort( std::begin( random_lots_tst ), std::end( random_lots_tst ) );
-			daw::expecting( daw::algorithm::is_sorted(
-			  std::begin( random_lots_tst ), std::end( random_lots_tst ) ) );
+			auto first = random_lots_tst.data( );
+			auto last = random_lots_tst.data( ) +
+			            static_cast<ptrdiff_t>( random_lots_tst.size( ) );
+			daw::sort( first, last );
+
+			daw::expecting( std::is_sorted( first, last ) );
 		}
 		daw::bench_n_test<NUMRUNS / 1000, '\t'>(
 		  "daw::sort                  ",

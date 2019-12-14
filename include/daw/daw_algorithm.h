@@ -316,7 +316,6 @@ namespace daw::algorithm {
 		traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
 
 		while( first != last ) {
-			// if( daw::invoke( unary_predicate, *first ) ) {
 			if( unary_predicate( *first ) ) {
 				return first;
 			}
@@ -324,7 +323,6 @@ namespace daw::algorithm {
 		}
 		return last;
 	}
-
 	template<typename InputIterator, typename UnaryPredicate>
 	constexpr InputIterator find_if_not( InputIterator first, InputIterator last,
 	                                     UnaryPredicate &&unary_predicate ) {
@@ -332,7 +330,7 @@ namespace daw::algorithm {
 		traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
 
 		while( first != last ) {
-			if( !daw::invoke( unary_predicate, *first ) ) {
+			if( not unary_predicate( *first ) ) {
 				return first;
 			}
 			++first;
@@ -355,7 +353,7 @@ namespace daw::algorithm {
 		}
 
 		for( auto it = std::next( first ); it != last; ++it ) {
-			if( daw::invoke( unary_predicate, *it ) ) {
+			if( unary_predicate( *it ) ) {
 				daw::iter_swap( it, first );
 				++first;
 			}
@@ -380,10 +378,10 @@ namespace daw::algorithm {
 
 		while( first < it_last ) {
 			auto const mid = impl::midpoint( first, it_last );
-			if( daw::invoke( less_than, *mid, value ) ) {
+			if( less_than( *mid, value ) ) {
 				first = mid;
 				daw::advance( first, 1 );
-			} else if( daw::invoke( less_than, value, *mid ) ) {
+			} else if( less_than( value, *mid ) ) {
 				it_last = mid;
 			} else { // equal
 				return mid;
@@ -577,8 +575,7 @@ namespace daw::algorithm {
 
 		auto start =
 		  std::stable_partition( first, target, [&predicate]( auto &&... args ) {
-			  return !daw::invoke( predicate,
-			                       std::forward<decltype( args )>( args )... );
+			  return not predicate( std::forward<decltype( args )>( args )... );
 		  } );
 
 		auto finish = std::stable_partition( target, last, predicate );
@@ -627,7 +624,7 @@ namespace daw::algorithm {
 
 		auto prev = last;
 		while( first != last ) {
-			if( !daw::invoke( pred, *first ) ) {
+			if( not pred( *first ) ) {
 				break;
 			}
 			prev = first;
@@ -645,7 +642,7 @@ namespace daw::algorithm {
 		traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
 
 		while( first != last ) {
-			if( daw::invoke( pred, *first ) ) {
+			if( pred( *first ) ) {
 				break;
 			}
 			++first;
@@ -1168,13 +1165,13 @@ namespace daw::algorithm {
 	         typename UnaryOperation>
 	constexpr OutputIterator transform(
 	  InputIterator first, LastType last, OutputIterator first_out,
-	  UnaryOperation unary_op ) noexcept( ::std::
+	  UnaryOperation unary_op ) noexcept( std::
 	                                        is_nothrow_constructible_v<
 	                                          decltype( *first_out ),
 	                                          decltype( unary_op( *first ) )> ) {
 
-		static_assert( ::std::is_assignable_v<decltype( *first_out ),
-		                                      decltype( unary_op( *first ) )>,
+		static_assert( std::is_assignable_v<decltype( *first_out ),
+		                                    decltype( unary_op( *first ) )>,
 		               "Cannot assign the result of unary_op to that of the value "
 		               "type of the output iterator" );
 		traits::is_input_iterator_test<InputIterator>( );
@@ -1551,7 +1548,7 @@ namespace daw::algorithm {
 	  ForwardIterator first, LastType last,
 	  Compare comp = Compare{} ) noexcept( noexcept( comp( *first, *first ) ) ) {
 
-		return ::daw::algorithm::is_sorted_until( first, last, comp ) == last;
+		return daw::algorithm::is_sorted_until( first, last, comp ) == last;
 	}
 
 	template<typename ForwardIterator, typename T>
@@ -1638,7 +1635,7 @@ namespace daw::algorithm {
 		  "must be valid" );
 
 		static_assert(
-		  ::std::is_convertible_v<decltype( binary_op( init, *first++ ) ), T>,
+		  std::is_convertible_v<decltype( binary_op( init, *first++ ) ), T>,
 		  "Result of BinaryOperation must be convertable to type of value "
 		  "referenced by RandomIterator. "
 		  "e.g. *first = binary_op( *first, *(first + 1) ) must be valid." );
@@ -1937,8 +1934,8 @@ static_assert(
 		first = daw::algorithm::find_if( first, last, pred );
 		if( first != last ) {
 			for( ForwardIterator i = first; ++i != last; ) {
-				if( !::daw::invoke( pred, *i ) ) {
-					*first++ = ::daw::move( *i );
+				if( !daw::invoke( pred, *i ) ) {
+					*first++ = daw::move( *i );
 				}
 			}
 		}
@@ -1952,9 +1949,9 @@ static_assert(
 		first = daw::algorithm::find_if( first, last, pred );
 		if( first != last ) {
 			for( ForwardIterator i = first; ++i != last; ) {
-				if( !::daw::invoke( pred, *i ) ) {
-					(void)::daw::invoke( func, *i );
-					*first++ = ::daw::move( *i );
+				if( !daw::invoke( pred, *i ) ) {
+					(void)daw::invoke( func, *i );
+					*first++ = daw::move( *i );
 				}
 			}
 		}
@@ -2125,13 +2122,14 @@ static_assert(
 
 	template<class InputIt, class UnaryPredicate>
 	constexpr bool all_of( InputIt first, InputIt last, UnaryPredicate &&p ) {
-		return find_if_not( first, last, std::forward<UnaryPredicate>( p ) ) ==
-		       last;
+		return daw::algorithm::find_if_not(
+		         first, last, std::forward<UnaryPredicate>( p ) ) == last;
 	}
 
 	template<class InputIt, class UnaryPredicate>
 	constexpr bool any_of( InputIt first, InputIt last, UnaryPredicate &&p ) {
-		return find_if( first, last, std::forward<UnaryPredicate>( p ) ) != last;
+		return daw::algorithm::find_if( first, last,
+		                                std::forward<UnaryPredicate>( p ) ) != last;
 	}
 	template<class InputIt, class UnaryPredicate>
 	constexpr bool none_of( InputIt first, InputIt last, UnaryPredicate &&p ) {
@@ -2139,12 +2137,12 @@ static_assert(
 	}
 
 	template<size_t MinSize = 1, typename BidirectionalIterator>
-	::std::vector<::daw::view<BidirectionalIterator>>
+	std::vector<daw::view<BidirectionalIterator>>
 	partition_range( BidirectionalIterator first, BidirectionalIterator last,
 	                 size_t count ) {
 		static_assert( MinSize > 0 );
-		auto v = ::daw::view( first, last );
-		auto result = ::std::vector<::daw::view<BidirectionalIterator>>( );
+		auto v = daw::view( first, last );
+		auto result = std::vector<daw::view<BidirectionalIterator>>( );
 		result.reserve( count );
 		auto sz = v.size( ) / count;
 		if( sz < MinSize ) {
@@ -2158,14 +2156,14 @@ static_assert(
 	}
 
 	template<size_t MinSize = 1, typename BidirectionalIterator>
-	::std::vector<::daw::view<BidirectionalIterator>>
-	partition_range( ::daw::view<BidirectionalIterator> rng, size_t count ) {
+	std::vector<daw::view<BidirectionalIterator>>
+	partition_range( daw::view<BidirectionalIterator> rng, size_t count ) {
 		return partition_range<MinSize>( rng.begin( ), rng.end( ), count );
 	}
 
 	template<typename Iterator, typename Predicate>
-	constexpr ::std::optional<size_t>
-	find_index_if( Iterator first, Iterator last, Predicate &&pred ) {
+	constexpr std::optional<size_t> find_index_if( Iterator first, Iterator last,
+	                                               Predicate &&pred ) {
 		if( first == last ) {
 			return {};
 		}
@@ -2181,11 +2179,28 @@ static_assert(
 	}
 
 	template<typename Iterator, typename T>
-	constexpr ::std::optional<size_t> find_index( Iterator first, Iterator last,
-	                                              T const &value ) {
+	constexpr std::optional<size_t> find_index( Iterator first, Iterator last,
+	                                            T const &value ) {
 
 		return find_index_if( first, last, [&]( auto &&v ) {
 			return std::forward<decltype( v )>( v ) == value;
 		} );
+	}
+
+	template<typename RandomIterator, typename Compare = std::less<>>
+	RandomIterator find_unsorted( RandomIterator first, RandomIterator last,
+	                              Compare comp = Compare{} ) {
+		auto second = std::next( first );
+		auto second_last = std::prev( last );
+
+		auto result = std::mismatch( first, second_last, second,
+		                             [&]( auto const &lhs, auto const &rhs ) {
+			                             return not comp( rhs, lhs );
+		                             } )
+		                .first;
+		if( result == second_last ) {
+			return last;
+		}
+		return result;
 	}
 } // namespace daw::algorithm

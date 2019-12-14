@@ -476,7 +476,7 @@ namespace daw {
 				case 1:
 					return true;
 				case 2:
-					if( comp( --last, first ) ) {
+					if( comp( *( --last ), *first ) ) {
 						daw::cswap( *last, *first );
 					}
 					return true;
@@ -632,12 +632,12 @@ namespace daw {
 
 			auto i = first;
 			auto j = lm1;
-			if( comp( *i, *m ) ) {
+			if( not comp( *i, *m ) ) {
 				while( not should_restart ) {
 					if( i == --j ) {
 						++i;
 						j = last;
-						if( not comp( *first, *--j ) ) {
+						if( not comp( *first, *( --j ) ) ) {
 							while( true ) {
 								if( i == j ) {
 									return;
@@ -686,7 +686,7 @@ namespace daw {
 					while( comp( *i, *m ) ) {
 						++i;
 					}
-					while( not comp( *--j, *m ) ) {}
+					while( not comp( *( --j ), *m ) ) {}
 					if( i > j ) {
 						break;
 					}
