@@ -23,6 +23,10 @@
 #include "daw/daw_benchmark.h"
 #include "daw/daw_fnv1a_hash.h"
 #include "daw/daw_min_perfect_hash.h"
+#include "daw/daw_string_view.h"
+
+#include <cstdint>
+#include <unordered_map>
 
 struct IntHasher {
 	template<typename Integer>
@@ -94,7 +98,108 @@ char const *lookup( int key ) {
 	return ph[key];
 }
 
+constexpr uint32_t u32( char const ( &str )[5] ) {
+	uint32_t result = static_cast<uint32_t>( str[0] );
+	for( size_t n = 1; n < 4; ++n ) {
+		result <<= 8U;
+		result |= static_cast<uint32_t>( str[n] );
+	}
+	return result;
+}
+
+inline constexpr std::pair<uint32_t, bool> values[16]{
+  {u32( "INFO" ), true}, {u32( "CONN" ), true}, {u32( "PUB " ), true},
+  {u32( "SUB " ), true}, {u32( "UNSU" ), true}, {u32( "PING" ), true},
+  {u32( "PONG" ), true}, {u32( "+OK " ), true}, {u32( "-ERR" ), true},
+  {u32( "AUTH" ), true}, {u32( "PUSH" ), true}, {u32( "ADD " ), true},
+  {u32( "DECR" ), true}, {u32( "SET " ), true}, {u32( "GET " ), true},
+  {u32( "QUIT" ), true}};
+
+inline constexpr std::pair<std::string_view, bool> values2[16]{
+  {"INFO"sv, true}, {"CONN"sv, true}, {"PUB "sv, true}, {"SUB "sv, true},
+  {"UNSU"sv, true}, {"PING"sv, true}, {"PONG"sv, true}, {"+OK "sv, true},
+  {"-ERR"sv, true}, {"AUTH"sv, true}, {"PUSH"sv, true}, {"ADD "sv, true},
+  {"DECR"sv, true}, {"SET "sv, true}, {"GET "sv, true}, {"QUIT"sv, true}};
+
+void test_min_perf_hash( ) {
+	constexpr auto hm =
+	  daw::perfect_hash_table<16, uint32_t, bool, HashMe>( values );
+	daw::bench_n_test<10000>(
+	  "Minimal Perfect HashMap - uint32_t key",
+	  [&]( auto m ) {
+		  daw::do_not_optimize( m );
+		  size_t result = 0;
+		  daw::do_not_optimize( result );
+		  for( auto &k : values ) {
+			  result += static_cast<size_t>( m[k.first] );
+		  }
+		  daw::do_not_optimize( result );
+	  },
+	  hm );
+}
+
+struct CXHash {
+	constexpr size_t operator( )( std::string_view s ) const {
+		return std::hash<daw::string_view>{}( {s.data( ), s.size( )} );
+	}
+};
+
+void test_min_perf_hash2( ) {
+	auto hm = daw::perfect_hash_table<16, std::string_view, bool,
+	                                  std::hash<std::string_view>>( values2 );
+	daw::bench_n_test<10000>(
+	  "Minimal Perfect HashMap - uint32_t key",
+	  [&]( auto m ) {
+		  daw::do_not_optimize( m );
+		  size_t result = 0;
+		  daw::do_not_optimize( result );
+		  for( auto &k : values2 ) {
+			  result += static_cast<size_t>( m[k.first] );
+		  }
+		  daw::do_not_optimize( result );
+	  },
+	  hm );
+}
+
+void test_unorderd_map( ) {
+	auto const hm = std::unordered_map<uint32_t, bool>( std::begin( values ),
+	                                                    std::end( values ) );
+	daw::bench_n_test<10000>(
+	  "std::unordered_map - uint32_t key",
+	  [&]( auto m ) {
+		  daw::do_not_optimize( m );
+		  size_t result = 0;
+		  daw::do_not_optimize( result );
+		  for( auto &k : values ) {
+			  result += static_cast<size_t>( m[k.first] );
+		  }
+		  daw::do_not_optimize( result );
+	  },
+	  hm );
+}
+
+void test_unorderd_map2( ) {
+	auto const hm = std::unordered_map<std::string_view, bool>(
+	  std::begin( values2 ), std::end( values2 ) );
+	daw::bench_n_test<10000>(
+	  "std::unordered_map - string_view key",
+	  [&]( auto m ) {
+		  daw::do_not_optimize( m );
+		  size_t result = 0;
+		  daw::do_not_optimize( result );
+		  for( auto &k : values2 ) {
+			  result += static_cast<size_t>( m[k.first] );
+		  }
+		  daw::do_not_optimize( result );
+	  },
+	  hm );
+}
+
 int main( ) {
 	daw::expecting( ph.contains( 207 ) );
+	test_min_perf_hash( );
+	test_unorderd_map( );
+	// test_min_perf_hash2( );
+	test_unorderd_map2( );
 	return 0;
 }
