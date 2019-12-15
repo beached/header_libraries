@@ -22,6 +22,7 @@
 
 #include "daw/daw_benchmark.h"
 #include "daw/daw_fnv1a_hash.h"
+#include "daw/daw_metro_hash.h"
 #include "daw/daw_min_perfect_hash.h"
 #include "daw/daw_string_view.h"
 
@@ -121,9 +122,17 @@ inline constexpr std::pair<std::string_view, bool> values2[16]{
   {"-ERR"sv, true}, {"AUTH"sv, true}, {"PUSH"sv, true}, {"ADD "sv, true},
   {"DECR"sv, true}, {"SET "sv, true}, {"GET "sv, true}, {"QUIT"sv, true}};
 
+template<size_t N>
+using matching_unsigned_t = std::conditional_t<
+  N == 64, uint64_t,
+  std::conditional_t<
+    N == 32, uint32_t,
+    std::conditional_t<N == 16, uint16_t,
+                       std::conditional_t<N == 8, uint8_t, uintmax_t>>>>;
+
 void test_min_perf_hash( ) {
 	constexpr auto hm =
-	  daw::perfect_hash_table<16, uint32_t, bool, HashMe>( values );
+	  daw::perfect_hash_table<16, uint32_t, bool, IntHasher>( values );
 	daw::bench_n_test<10000>(
 	  "Minimal Perfect HashMap - uint32_t key",
 	  [&]( auto m ) {
@@ -138,17 +147,30 @@ void test_min_perf_hash( ) {
 	  hm );
 }
 
-struct CXHash {
-	constexpr size_t operator( )( std::string_view s ) const {
-		return std::hash<daw::string_view>{}( {s.data( ), s.size( )} );
+struct MetroHash {
+	template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
+	                                            std::nullptr_t> = nullptr>
+	constexpr size_t operator( )( Integer value, size_t seed = 0 ) const {
+		using int_t = matching_unsigned_t<sizeof( Integer )>;
+		std::array<char, sizeof( Integer )> buff{};
+		for( size_t n = 0; n < sizeof( Integer ); ++n ) {
+			int_t mask = 0xFFU << ( 8U * n );
+			buff[n] =
+			  static_cast<int_t>( static_cast<int_t>( value & mask ) >> ( 8U * n ) );
+		}
+		return daw::metro::hash64(
+		  daw::view<char const *>( buff.begin( ), buff.end( ) ), seed );
+	}
+	constexpr size_t operator( )( std::string_view sv, size_t seed = 0 ) const {
+		return daw::metro::hash64( {sv.begin( ), sv.end( )}, seed );
 	}
 };
 
 void test_min_perf_hash2( ) {
-	auto hm = daw::perfect_hash_table<16, std::string_view, bool,
-	                                  std::hash<std::string_view>>( values2 );
+	constexpr auto hm =
+	  daw::perfect_hash_table<16, std::string_view, bool, MetroHash>( values2 );
 	daw::bench_n_test<10000>(
-	  "Minimal Perfect HashMap - uint32_t key",
+	  "Minimal Perfect HashMap - string_view key",
 	  [&]( auto m ) {
 		  daw::do_not_optimize( m );
 		  size_t result = 0;
@@ -182,7 +204,24 @@ void test_unorderd_map2( ) {
 	auto const hm = std::unordered_map<std::string_view, bool>(
 	  std::begin( values2 ), std::end( values2 ) );
 	daw::bench_n_test<10000>(
-	  "std::unordered_map - string_view key",
+	  "std::unordered_map - string_view key - std::hash",
+	  [&]( auto m ) {
+		  daw::do_not_optimize( m );
+		  size_t result = 0;
+		  daw::do_not_optimize( result );
+		  for( auto &k : values2 ) {
+			  result += static_cast<size_t>( m[k.first] );
+		  }
+		  daw::do_not_optimize( result );
+	  },
+	  hm );
+}
+
+void test_unorderd_map3( ) {
+	auto const hm = std::unordered_map<std::string_view, bool, MetroHash>(
+	  std::begin( values2 ), std::end( values2 ) );
+	daw::bench_n_test<10000>(
+	  "std::unordered_map - string_view key - MetroHash",
 	  [&]( auto m ) {
 		  daw::do_not_optimize( m );
 		  size_t result = 0;
@@ -199,7 +238,8 @@ int main( ) {
 	daw::expecting( ph.contains( 207 ) );
 	test_min_perf_hash( );
 	test_unorderd_map( );
-	// test_min_perf_hash2( );
+	test_min_perf_hash2( );
 	test_unorderd_map2( );
+	test_unorderd_map3( );
 	return 0;
 }

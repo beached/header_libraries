@@ -71,7 +71,7 @@ namespace daw {
 	// https://blog.demofox.org/2015/12/14/o1-data-lookups-with-minimal-perfect-hashing/
 	// and https://blog.gopheracademy.com/advent-2017/mphf/
 	template<size_t N, typename Key, typename Value,
-	         typename Hasher = fnv1a_hash_t,
+	         typename Hasher = std::hash<Key>,
 	         typename KeyEqual = std::equal_to<Key>>
 	struct perfect_hash_table {
 		static_assert( std::is_default_constructible_v<Key> );

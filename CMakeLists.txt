@@ -73,6 +73,7 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_keep_n
 	daw_math
 	daw_memory_mapped_file
+	daw_metro_hash
 	daw_min_perfect_hash
 	daw_natural
 	daw_overload
