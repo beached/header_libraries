@@ -75,14 +75,34 @@ namespace daw {
 	  return {std::forward<Types>( t )...};
 	}
 	*/
-	template<typename T = void, typename... Args>
+	namespace make_array_impl {
+		struct unspecified_type {};
+	} // namespace make_array_impl
+	template<
+	  typename T = make_array_impl::unspecified_type, typename... Args,
+	  std::enable_if_t<not std::is_same_v<T, void>, std::nullptr_t> = nullptr>
 	constexpr auto make_array( Args &&... args ) {
-		using result_t =
-		  std::conditional_t<std::is_same_v<void, T>,
-		                     std::common_type_t<std::decay_t<Args>...>, T>;
-		std::array<result_t, sizeof...( Args )> result = {
-		  std::forward<Args>( args )...};
-		return result;
+		constexpr size_t sz = sizeof...( Args );
+		if constexpr( std::is_same_v<T, make_array_impl::unspecified_type> ) {
+
+			using result_t = std::common_type_t<daw::remove_cvref_t<Args>...>;
+			return std::array<result_t, sz>{std::forward<Args>( args )...};
+		} else {
+			return std::array<T, sz>{std::forward<Args>( args )...};
+		}
+	}
+	namespace make_array_impl {
+		template<typename T, size_t N, size_t... Is>
+		constexpr auto make_array_impl( T const( &&arry )[N],
+		                                std::index_sequence<Is...> ) {
+			return std::array<T, N>{std::move( arry[Is] )...};
+		}
+	} // namespace make_array_impl
+
+	template<typename T, size_t N>
+	constexpr auto make_array( T const( &&arry )[N] ) {
+		return make_array_impl::make_array_impl( std::move( arry ),
+		                                         std::make_index_sequence<N>{} );
 	}
 
 	template<typename... Ts>

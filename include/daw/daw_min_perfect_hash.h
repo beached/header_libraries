@@ -124,7 +124,11 @@ namespace daw {
 		}
 
 		static constexpr hash_result call_hash( Key const &key, salt_type seed ) {
-			return static_cast<hash_result>( seed ) ^ Hasher {}( key );
+			if constexpr( std::is_invocable_v<Hasher, Key, hash_result> ) {
+				return Hasher{}( key, static_cast<hash_result>( seed ) );
+			} else {
+				return static_cast<hash_result>( seed ) ^ Hasher {}( key );
+			}
 		}
 
 		static constexpr hash_result first_hash( Key const &key ) {
@@ -189,8 +193,8 @@ namespace daw {
 		}
 
 	public:
-		explicit constexpr perfect_hash_table(
-		  std::pair<Key, Value> const ( &data )[N] ) {
+		template<typename Iterator>
+		constexpr perfect_hash_table( Iterator const first, Iterator const last ) {
 			using buckets_t = std::array<bucket_t, m_num_buckets>;
 			buckets_t buckets{};
 
@@ -198,9 +202,9 @@ namespace daw {
 				buckets[i].bucket_index = i;
 			}
 
-			for( auto const &p : data ) {
-				auto bucket = static_cast<size_type>( first_hash( p.first ) );
-				buckets[bucket].items.push_back( &p );
+			for( Iterator it = first; it != last; ++it ) {
+				auto bucket = static_cast<size_type>( first_hash( it->first ) );
+				buckets[bucket].items.push_back( &( *it ) );
 			}
 
 			daw::sort(
@@ -215,6 +219,10 @@ namespace daw {
 				find_salt_for_bucket( b, slots_claimed );
 			}
 		}
+
+		explicit constexpr perfect_hash_table(
+		  std::pair<Key, Value> const ( &data )[N] )
+		  : perfect_hash_table( data, data + static_cast<ptrdiff_t>( N ) ) {}
 
 		[[nodiscard]] constexpr iterator begin( ) noexcept {
 			return m_data.data( );
