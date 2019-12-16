@@ -152,10 +152,11 @@ namespace daw {
 
 			for( salt_type salt = 0;; ++salt ) {
 				daw::bounded_vector_t<hash_result, N> slots_this_bucket{};
+
 				bool const success = daw::algorithm::all_of(
 				  bucket.items.begin( ), bucket.items.end( ),
 				  [&]( value_type const *item ) -> bool {
-					  hash_result slot_wanted = call_hash( item->first, salt ) % N;
+					  hash_result const slot_wanted = call_hash( item->first, salt ) % N;
 					  if( slots_claimed[static_cast<size_type>( slot_wanted )] ) {
 						  return false;
 					  }
@@ -167,6 +168,7 @@ namespace daw {
 					  slots_this_bucket.push_back( slot_wanted );
 					  return true;
 				  } );
+
 				if( success ) {
 					m_salts[bucket.bucket_index] = salt;
 					for( size_type i = 0; i < bucket.items.size( ); ++i ) {
@@ -180,6 +182,7 @@ namespace daw {
 					return;
 				}
 			}
+			std::abort( );
 		}
 
 		constexpr size_type find_data_index( Key const &key ) const {
@@ -195,12 +198,11 @@ namespace daw {
 	public:
 		constexpr perfect_hash_table( std::pair<Key, Value> const *first,
 		                              std::pair<Key, Value> const *last ) {
-			using buckets_t = std::array<bucket_t, m_num_buckets>;
-			buckets_t buckets{};
+			std::array<bucket_t, m_num_buckets> buckets{};
 
-			for( size_type i = 0; i < m_num_buckets; ++i ) {
-				buckets[i].bucket_index = i;
-			}
+			daw::algorithm::iota(
+			  buckets.begin( ), buckets.end( ), static_cast<size_type>( 0 ),
+			  []( auto &i, size_type num ) { i.bucket_index = num; } );
 
 			for( auto it = first; it != last; ++it ) {
 				auto bucket = static_cast<size_type>( first_hash( it->first ) );
@@ -214,6 +216,7 @@ namespace daw {
 			std::array<bool, N> slots_claimed{};
 			for( auto &b : buckets ) {
 				if( b.items.empty( ) ) {
+					// Buckets are sorted in desc order, we have processed them all
 					break;
 				}
 				find_salt_for_bucket( b, slots_claimed );

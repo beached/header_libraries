@@ -1912,6 +1912,16 @@ static_assert(
 		}
 	}
 
+	template<typename Iterator, typename EndIterator, typename T, typename Setter>
+	constexpr void iota( Iterator first, EndIterator last, T start_value,
+	                     Setter setter ) {
+		while( first != last ) {
+			setter( *first, start_value );
+			++first;
+			++start_value;
+		}
+	}
+
 	template<typename ForwardIterator, typename T>
 	constexpr ForwardIterator remove( ForwardIterator first, ForwardIterator last,
 	                                  T const &value ) {
