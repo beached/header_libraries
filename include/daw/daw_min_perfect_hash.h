@@ -105,7 +105,7 @@ namespace daw {
 			daw::bounded_vector_t<std::pair<Key, Value> const *, N> items{};
 
 			constexpr bool operator>( bucket_t const &rhs ) const {
-				return bucket_index > bucket_index;
+				return bucket_index > rhs.bucket_index;
 			}
 		};
 
@@ -113,7 +113,7 @@ namespace daw {
 		  min_perf_hash_impl::get_bucket_count( N );
 		static constexpr size_type m_bucket_mask = m_num_buckets - 1;
 
-		using values_t = std::array<value_type, N>;
+		using values_t = value_type[N];
 		//***************
 		std::array<salt_type, m_num_buckets> m_salts{};
 		values_t m_data{};
@@ -124,11 +124,11 @@ namespace daw {
 		}
 
 		static constexpr hash_result call_hash( Key const &key, salt_type seed ) {
-			if constexpr( std::is_invocable_v<Hasher, Key, hash_result> ) {
-				return Hasher{}( key, static_cast<hash_result>( seed ) );
-			} else {
-				return static_cast<hash_result>( seed ) ^ Hasher {}( key );
-			}
+			/*if constexpr( std::is_invocable_v<Hasher, Key, hash_result> ) {
+			  return Hasher{}( key, static_cast<hash_result>( seed ) );
+			} else {*/
+			return static_cast<hash_result>( seed ) ^ Hasher {}( key );
+			//}
 		}
 
 		static constexpr hash_result first_hash( Key const &key ) {
@@ -193,8 +193,8 @@ namespace daw {
 		}
 
 	public:
-		template<typename Iterator>
-		constexpr perfect_hash_table( Iterator const first, Iterator const last ) {
+		constexpr perfect_hash_table( std::pair<Key, Value> const *first,
+		                              std::pair<Key, Value> const *last ) {
 			using buckets_t = std::array<bucket_t, m_num_buckets>;
 			buckets_t buckets{};
 
@@ -202,9 +202,9 @@ namespace daw {
 				buckets[i].bucket_index = i;
 			}
 
-			for( Iterator it = first; it != last; ++it ) {
+			for( auto it = first; it != last; ++it ) {
 				auto bucket = static_cast<size_type>( first_hash( it->first ) );
-				buckets[bucket].items.push_back( &( *it ) );
+				buckets[bucket].items.push_back( it );
 			}
 
 			daw::sort(
@@ -225,27 +225,27 @@ namespace daw {
 		  : perfect_hash_table( data, data + static_cast<ptrdiff_t>( N ) ) {}
 
 		[[nodiscard]] constexpr iterator begin( ) noexcept {
-			return m_data.data( );
+			return std::data( m_data );
 		}
 
 		[[nodiscard]] constexpr const_iterator begin( ) const noexcept {
-			return m_data.data( );
+			return std::data( m_data );
 		}
 
 		[[nodiscard]] constexpr const_iterator cbegin( ) const noexcept {
-			return m_data.data( );
+			return std::data( m_data );
 		}
 
 		[[nodiscard]] constexpr iterator end( ) noexcept {
-			return m_data.data( ) + static_cast<ptrdiff_t>( N );
+			return std::data( m_data ) + static_cast<ptrdiff_t>( N );
 		}
 
 		[[nodiscard]] constexpr const_iterator end( ) const noexcept {
-			return m_data.data( ) + static_cast<ptrdiff_t>( N );
+			return std::data( m_data ) + static_cast<ptrdiff_t>( N );
 		}
 
 		[[nodiscard]] constexpr const_iterator cend( ) const noexcept {
-			return m_data.data( ) + static_cast<ptrdiff_t>( N );
+			return std::data( m_data ) + static_cast<ptrdiff_t>( N );
 		}
 
 		[[nodiscard]] constexpr const_iterator find( Key const &key ) const {
@@ -274,12 +274,14 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr mapped_type &operator[]( Key const &key ) {
-			return m_data[find_data_index( key )].second;
+			auto const idx = find_data_index( key );
+			return m_data[idx].second;
 		}
 
 		[[nodiscard]] constexpr mapped_type const &
 		operator[]( Key const &key ) const {
-			return m_data[find_data_index( key )].second;
+			auto const idx = find_data_index( key );
+			return m_data[idx].second;
 		}
 	}; // namespace daw
 

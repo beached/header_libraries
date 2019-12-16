@@ -130,10 +130,11 @@ using matching_unsigned_t = std::conditional_t<
     std::conditional_t<N == 16, uint16_t,
                        std::conditional_t<N == 8, uint8_t, uintmax_t>>>>;
 
+template<size_t Runs>
 void test_min_perf_hash( ) {
-	constexpr auto hm =
+	constexpr auto phm_values =
 	  daw::perfect_hash_table<16, uint32_t, bool, IntHasher>( values );
-	daw::bench_n_test<10000>(
+	daw::bench_n_test<Runs>(
 	  "Minimal Perfect HashMap - uint32_t key",
 	  [&]( auto m ) {
 		  daw::do_not_optimize( m );
@@ -144,32 +145,28 @@ void test_min_perf_hash( ) {
 		  }
 		  daw::do_not_optimize( result );
 	  },
-	  hm );
+	  phm_values );
 }
 
 struct MetroHash {
 	template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
 	                                            std::nullptr_t> = nullptr>
 	constexpr size_t operator( )( Integer value, size_t seed = 0 ) const {
-		using int_t = matching_unsigned_t<sizeof( Integer )>;
-		std::array<char, sizeof( Integer )> buff{};
-		for( size_t n = 0; n < sizeof( Integer ); ++n ) {
-			int_t mask = 0xFFU << ( 8U * n );
-			buff[n] =
-			  static_cast<int_t>( static_cast<int_t>( value & mask ) >> ( 8U * n ) );
-		}
-		return daw::metro::hash64(
-		  daw::view<char const *>( buff.begin( ), buff.end( ) ), seed );
+		auto ptr = daw::bit_cast<char const( * )[sizeof( Integer )]>( &value );
+		auto const sz = static_cast<ptrdiff_t>( sizeof( Integer ) );
+		return daw::metro::hash64( daw::view<char const *>{ptr, ptr + sz}, seed );
 	}
+
 	constexpr size_t operator( )( std::string_view sv, size_t seed = 0 ) const {
 		return daw::metro::hash64( {sv.begin( ), sv.end( )}, seed );
 	}
 };
 
+template<size_t Runs>
 void test_min_perf_hash2( ) {
-	constexpr auto hm =
+	constexpr auto phm_values2 =
 	  daw::perfect_hash_table<16, std::string_view, bool, MetroHash>( values2 );
-	daw::bench_n_test<10000>(
+	daw::bench_n_test<Runs>(
 	  "Minimal Perfect HashMap - string_view key",
 	  [&]( auto m ) {
 		  daw::do_not_optimize( m );
@@ -177,16 +174,18 @@ void test_min_perf_hash2( ) {
 		  daw::do_not_optimize( result );
 		  for( auto &k : values2 ) {
 			  result += static_cast<size_t>( m[k.first] );
+			  daw::do_not_optimize( result );
 		  }
 		  daw::do_not_optimize( result );
 	  },
-	  hm );
+	  phm_values2 );
 }
 
+template<size_t Runs>
 void test_unorderd_map( ) {
-	auto const hm = std::unordered_map<uint32_t, bool>( std::begin( values ),
-	                                                    std::end( values ) );
-	daw::bench_n_test<10000>(
+	auto const hm_values = std::unordered_map<uint32_t, bool>(
+	  std::begin( values ), std::end( values ) );
+	daw::bench_n_test<Runs>(
 	  "std::unordered_map - uint32_t key",
 	  [&]( auto m ) {
 		  daw::do_not_optimize( m );
@@ -194,16 +193,18 @@ void test_unorderd_map( ) {
 		  daw::do_not_optimize( result );
 		  for( auto &k : values ) {
 			  result += static_cast<size_t>( m[k.first] );
+			  daw::do_not_optimize( result );
 		  }
 		  daw::do_not_optimize( result );
 	  },
-	  hm );
+	  hm_values );
 }
 
+template<size_t Runs>
 void test_unorderd_map2( ) {
-	auto const hm = std::unordered_map<std::string_view, bool>(
+	auto const hm_values2 = std::unordered_map<std::string_view, bool>(
 	  std::begin( values2 ), std::end( values2 ) );
-	daw::bench_n_test<10000>(
+	daw::bench_n_test<Runs>(
 	  "std::unordered_map - string_view key - std::hash",
 	  [&]( auto m ) {
 		  daw::do_not_optimize( m );
@@ -211,16 +212,18 @@ void test_unorderd_map2( ) {
 		  daw::do_not_optimize( result );
 		  for( auto &k : values2 ) {
 			  result += static_cast<size_t>( m[k.first] );
+			  daw::do_not_optimize( result );
 		  }
 		  daw::do_not_optimize( result );
 	  },
-	  hm );
+	  hm_values2 );
 }
 
+template<size_t Runs>
 void test_unorderd_map3( ) {
-	auto const hm = std::unordered_map<std::string_view, bool, MetroHash>(
+	auto const hm_values2 = std::unordered_map<std::string_view, bool, MetroHash>(
 	  std::begin( values2 ), std::end( values2 ) );
-	daw::bench_n_test<10000>(
+	daw::bench_n_test<Runs>(
 	  "std::unordered_map - string_view key - MetroHash",
 	  [&]( auto m ) {
 		  daw::do_not_optimize( m );
@@ -228,10 +231,11 @@ void test_unorderd_map3( ) {
 		  daw::do_not_optimize( result );
 		  for( auto &k : values2 ) {
 			  result += static_cast<size_t>( m[k.first] );
+			  daw::do_not_optimize( result );
 		  }
 		  daw::do_not_optimize( result );
 	  },
-	  hm );
+	  hm_values2 );
 }
 
 template<typename T0, typename T1, size_t N, size_t... Is>
@@ -306,12 +310,23 @@ inline constexpr auto http_response_codes =
      {510, "Not Extended"},
      {511, "Network Authentication Required"}} ) );
 
+template<typename Hm, typename Arry>
+bool validate( Hm &&hm, Arry const &ary ) {
+	for( auto const &item : ary ) {
+		auto result = hm[item.first];
+		daw::expecting( result == item.second );
+	}
+	return true;
+}
+
+template<size_t Runs>
 void test_min_perf_hash3( ) {
-	constexpr auto hm =
+	auto phm_resp =
 	  daw::perfect_hash_table<std::tuple_size_v<decltype( http_response_codes )>,
-	                          std::string_view, uint16_t, MetroHash>(
+	                          std::string_view, uint16_t, std::hash<std::string_view>>(
 	    http_response_codes.begin( ), http_response_codes.end( ) );
-	daw::bench_n_test<10000>(
+	validate( phm_resp, http_response_codes );
+	daw::bench_n_test<Runs>(
 	  "Minimal Perfect HashMap - string_view key - larger http resp code - "
 	  "MetroHash",
 	  [&]( auto m ) {
@@ -320,17 +335,19 @@ void test_min_perf_hash3( ) {
 		  daw::do_not_optimize( result );
 		  for( auto &k : http_response_codes ) {
 			  result += static_cast<size_t>( m[k.first] == k.second );
+			  daw::do_not_optimize( result );
 		  }
 		  daw::do_not_optimize( result );
 	  },
-	  hm );
+	  phm_resp );
 }
 
+template<size_t Runs>
 void test_unorderd_map4( ) {
-	auto hm = std::unordered_map<std::string_view, uint16_t>(
+	auto hm_resp = std::unordered_map<std::string_view, uint16_t>(
 	  http_response_codes.begin( ), http_response_codes.end( ) );
 
-	daw::bench_n_test<10000>(
+	daw::bench_n_test<Runs>(
 	  "unordered_map - string_view key - larger http resp code - std::hash",
 	  [&]( auto m ) {
 		  daw::do_not_optimize( m );
@@ -338,20 +355,34 @@ void test_unorderd_map4( ) {
 		  daw::do_not_optimize( result );
 		  for( auto &k : http_response_codes ) {
 			  result += static_cast<size_t>( m[k.first] == k.second );
+			  daw::do_not_optimize( result );
 		  }
 		  daw::do_not_optimize( result );
 	  },
-	  hm );
+	  hm_resp );
+}
+
+extern uint16_t http_test_daw( std::string_view sv ) {
+	constexpr auto phm_resp =
+	  daw::perfect_hash_table<std::tuple_size_v<decltype( http_response_codes )>,
+	                          std::string_view, uint16_t, MetroHash>(
+	    http_response_codes.begin( ), http_response_codes.end( ) );
+	return phm_resp[sv];
 }
 
 int main( ) {
 	daw::expecting( ph.contains( 207 ) );
-	test_min_perf_hash( );
-	test_unorderd_map( );
-	test_min_perf_hash2( );
-	test_unorderd_map2( );
-	test_unorderd_map3( );
-	test_min_perf_hash3( );
-	test_unorderd_map4( );
+#if defined( DEBUG )
+	constexpr size_t Runs = 100;
+#else
+	constexpr size_t Runs = 100'000;
+#endif
+	test_min_perf_hash<Runs>( );
+	test_unorderd_map<Runs>( );
+	test_min_perf_hash2<Runs>( );
+	test_unorderd_map2<Runs>( );
+	test_unorderd_map3<Runs>( );
+	test_min_perf_hash3<Runs>( );
+	test_unorderd_map4<Runs>( );
 	return 0;
 }
