@@ -31,7 +31,7 @@
 
 namespace daw {
 	namespace min_perf_hash_impl {
-		constexpr size_t get_bucket_count( size_t sz ) {
+		[[nodiscard]] constexpr size_t get_bucket_count( size_t sz ) {
 			size_t ret = 1U;
 			do {
 				ret = ret << 1U;
@@ -48,11 +48,28 @@ namespace daw {
 
 		template<size_t N>
 		using matching_signed_t = std::conditional_t<
-		  N == 64, int64_t,
+		  N == 8, int64_t,
 		  std::conditional_t<
-		    N == 32, int32_t,
-		    std::conditional_t<N == 16, int16_t,
-		                       std::conditional_t<N == 8, int8_t, intmax_t>>>>;
+		    N == 4, int32_t,
+		    std::conditional_t<N == 2, int16_t,
+		                       std::conditional_t<N == 1, int8_t, intmax_t>>>>;
+
+		[[nodiscard]] constexpr size_t big_prime( ) noexcept {
+			return is_64bit_v ? 1099511628211ULL : 16777619UL;
+		}
+
+		template<typename hash_type>
+		[[nodiscard]] static constexpr hash_type
+		append_hash( hash_type current_hash, hash_type value ) noexcept {
+			for( hash_type n = 0; n < sizeof( hash_type ); ++n ) {
+				current_hash ^= static_cast<hash_type>(
+				  ( static_cast<hash_type>( value ) &
+				    ( static_cast<hash_type>( 0xFF ) << ( n * 8u ) ) ) >>
+				  ( n * 8u ) );
+				current_hash *= static_cast<hash_type>( big_prime( ) );
+			}
+			return current_hash;
+		}
 	} // namespace min_perf_hash_impl
 
 	// *****************************************************
@@ -104,8 +121,8 @@ namespace daw {
 			size_type bucket_index = 0;
 			daw::bounded_vector_t<std::pair<Key, Value> const *, N> items{};
 
-			constexpr bool operator>( bucket_t const &rhs ) const {
-				return bucket_index > rhs.bucket_index;
+			[[nodiscard]] constexpr bool operator>( bucket_t const &rhs ) const {
+				return items.size( ) > rhs.items.size( );
 			}
 		};
 
@@ -119,19 +136,46 @@ namespace daw {
 		values_t m_data{};
 		//***************
 
-		static constexpr hash_result call_hash( Key const &key ) {
-			return Hasher{}( key );
+		[[nodiscard]] static constexpr hash_result
+		scale_hash( hash_result hash ) noexcept {
+			if constexpr( sizeof( hash_result ) >= 8U ) {
+				constexpr hash_result prime_a = 18'446'744'073'709'551'557ULL;
+				constexpr hash_result prime_b = 18'446'744'073'709'551'533ULL;
+				return ( hash * prime_a + prime_b ) % N;
+			} else if constexpr( sizeof( hash_result ) == 4U ) {
+				constexpr hash_result prime_a = 2'147'483'647ULL;
+				constexpr hash_result prime_b = 4'294'967'291ULL;
+				return ( hash * prime_a + prime_b ) % N;
+			} else if constexpr( sizeof( hash_result ) == 2U ) {
+				constexpr hash_result prime_a = 65'521ULL;
+				constexpr hash_result prime_b = 65'519ULL;
+				return ( hash * prime_a + prime_b ) % N;
+			} else {
+				constexpr hash_result prime_a = 241ULL;
+				constexpr hash_result prime_b = 251ULL;
+				return ( hash * prime_a + prime_b ) % N;
+			}
 		}
 
-		static constexpr hash_result call_hash( Key const &key, salt_type seed ) {
+		[[nodiscard]] static constexpr hash_result call_hash( Key const &key ) {
+			return scale_hash( Hasher{}( key ) );
+		}
+
+		[[nodiscard]] static constexpr hash_result call_hash( Key const &key,
+		                                                      salt_type seed ) {
 			/*if constexpr( std::is_invocable_v<Hasher, Key, hash_result> ) {
 			  return Hasher{}( key, static_cast<hash_result>( seed ) );
 			} else {*/
-			return static_cast<hash_result>( seed ) ^ Hasher {}( key );
-			//}
+			return scale_hash( min_perf_hash_impl::append_hash(
+			  Hasher{}( key ), static_cast<hash_result>( seed ) ) );
+			return static_cast<hash_result>(
+			  static_cast<hash_result>( static_cast<hash_result>( seed ) *
+			                            min_perf_hash_impl::big_prime( ) ) ^
+			  Hasher{}( key ) );
+			// }
 		}
 
-		static constexpr hash_result first_hash( Key const &key ) {
+		[[nodiscard]] static constexpr hash_result first_hash( Key const &key ) {
 			return call_hash( key ) & m_bucket_mask;
 		}
 
@@ -141,8 +185,7 @@ namespace daw {
 				for( size_type i = 0; i < slots_claimed.size( ); ++i ) {
 					if( not slots_claimed[i] ) {
 						slots_claimed[i] = true;
-						m_salts[bucket.bucket_index] =
-						  ( static_cast<salt_type>( i ) + 1 ) * -1;
+						m_salts[bucket.bucket_index] = -( static_cast<salt_type>( i ) + 1 );
 						m_data[i].first = bucket.items[0]->first;
 						m_data[i].second = bucket.items[0]->second;
 						return;
@@ -153,10 +196,10 @@ namespace daw {
 			for( salt_type salt = 0;; ++salt ) {
 				daw::bounded_vector_t<hash_result, N> slots_this_bucket{};
 
-				bool const success = daw::algorithm::all_of(
+				size_t const count_with_one = daw::algorithm::count_if(
 				  bucket.items.begin( ), bucket.items.end( ),
 				  [&]( value_type const *item ) -> bool {
-					  hash_result const slot_wanted = call_hash( item->first, salt ) % N;
+					  hash_result const slot_wanted = call_hash( item->first, salt );
 					  if( slots_claimed[static_cast<size_type>( slot_wanted )] ) {
 						  return false;
 					  }
@@ -169,7 +212,7 @@ namespace daw {
 					  return true;
 				  } );
 
-				if( success ) {
+				if( count_with_one == bucket.items.size( ) ) {
 					m_salts[bucket.bucket_index] = salt;
 					for( size_type i = 0; i < bucket.items.size( ); ++i ) {
 						m_data[static_cast<size_type>( slots_this_bucket[i] )].first =
@@ -185,14 +228,14 @@ namespace daw {
 			std::abort( );
 		}
 
-		constexpr size_type find_data_index( Key const &key ) const {
+		[[nodiscard]] constexpr size_type find_data_index( Key const &key ) const {
 			auto bucket = static_cast<size_type>( first_hash( key ) );
 			auto salt = m_salts[static_cast<size_type>( bucket )];
 
 			if( salt < 0 ) {
-				return static_cast<size_type>( ( salt * -1 ) - 1 );
+				return static_cast<size_type>( ( -salt ) - 1 );
 			}
-			return static_cast<size_type>( call_hash( key, salt ) ) % N;
+			return static_cast<size_type>( call_hash( key, salt ) );
 		}
 
 	public:

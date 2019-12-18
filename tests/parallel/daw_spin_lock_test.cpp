@@ -26,8 +26,8 @@
 #include "daw/parallel/daw_spin_lock.h"
 
 void daw_spin_lock_001( ) {
-	daw::spin_lock sp{};
-	std::lock_guard<daw::spin_lock> mut{sp};
+	auto sp = daw::spin_lock( );
+	auto mut = std::lock_guard<daw::spin_lock>( sp );
 }
 
 int main( ) {

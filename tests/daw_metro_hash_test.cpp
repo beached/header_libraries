@@ -47,7 +47,7 @@ int main( int argc, char **argv ) {
 
 	std::cout << std::hex << h0 << '\n';
 	std::cout << std::hex << h1 << '\n';
-	auto h = daw::metro::hash64(
+	auto const h = daw::metro::hash64(
 	  daw::view<char const *>( argv[0], argv[0] + strlen( argv[0] ) ), 0 );
 	std::cout << std::hex << h << '\n';
 }

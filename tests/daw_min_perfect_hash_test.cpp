@@ -130,9 +130,18 @@ using matching_unsigned_t = std::conditional_t<
     std::conditional_t<N == 16, uint16_t,
                        std::conditional_t<N == 8, uint8_t, uintmax_t>>>>;
 
+template<typename Hm, typename Arry>
+bool validate( Hm &&hm, Arry const &ary ) {
+	for( auto const &item : ary ) {
+		auto result = hm[item.first];
+		daw::expecting( result == item.second );
+	}
+	return true;
+}
+
 template<size_t Runs>
 void test_min_perf_hash( ) {
-	constexpr auto phm_values =
+	auto phm_values =
 	  daw::perfect_hash_table<16, uint32_t, bool, IntHasher>( values );
 	daw::bench_n_test<Runs>(
 	  "Minimal Perfect HashMap - uint32_t key",
@@ -146,6 +155,11 @@ void test_min_perf_hash( ) {
 		  daw::do_not_optimize( result );
 	  },
 	  phm_values );
+
+	for( auto &k : values ) {
+		auto const r = phm_values[k.first];
+		daw::expecting( r == k.second );
+	}
 }
 
 struct MetroHash {
@@ -164,7 +178,7 @@ struct MetroHash {
 
 template<size_t Runs>
 void test_min_perf_hash2( ) {
-	constexpr auto phm_values2 =
+	auto phm_values2 =
 	  daw::perfect_hash_table<16, std::string_view, bool, MetroHash>( values2 );
 	daw::bench_n_test<Runs>(
 	  "Minimal Perfect HashMap - string_view key",
@@ -310,20 +324,12 @@ inline constexpr auto http_response_codes =
      {510, "Not Extended"},
      {511, "Network Authentication Required"}} ) );
 
-template<typename Hm, typename Arry>
-bool validate( Hm &&hm, Arry const &ary ) {
-	for( auto const &item : ary ) {
-		auto result = hm[item.first];
-		daw::expecting( result == item.second );
-	}
-	return true;
-}
-
 template<size_t Runs>
 void test_min_perf_hash3( ) {
 	auto phm_resp =
 	  daw::perfect_hash_table<std::tuple_size_v<decltype( http_response_codes )>,
-	                          std::string_view, uint16_t, std::hash<std::string_view>>(
+	                          std::string_view, uint16_t,
+	                          std::hash<std::string_view>>(
 	    http_response_codes.begin( ), http_response_codes.end( ) );
 	validate( phm_resp, http_response_codes );
 	daw::bench_n_test<Runs>(

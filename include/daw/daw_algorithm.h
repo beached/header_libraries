@@ -2213,4 +2213,23 @@ static_assert(
 		}
 		return result;
 	}
+
+	/***
+	 * Count the number of times the predicate returns true
+	 * @param first beginning of range
+	 * @param last end of range
+	 * @param pred unary predicate
+	 * @return count of the number of times the prediate returns true
+	 */
+	template<typename Iterator, typename Last, typename Predicate>
+	constexpr size_t count_if( Iterator first, Last last, Predicate pred ) {
+		size_t result = 0;
+		while( first != last ) {
+			if( pred( *first ) ) {
+				++result;
+			}
+			++first;
+		}
+		return result;
+	}
 } // namespace daw::algorithm

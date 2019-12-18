@@ -22,14 +22,14 @@
 
 #pragma once
 
-#include <iterator>
-
 #include "cpp_17.h"
 #include "daw_algorithm.h"
-#include "daw_bounded_array.h"
 #include "daw_math.h"
 #include "daw_move.h"
 #include "daw_swap.h"
+
+#include <array>
+#include <iterator>
 
 namespace daw {
 	template<typename T, size_t N>
@@ -53,7 +53,7 @@ namespace daw {
 	private:
 		size_t m_index = 0;
 		size_t m_first = 0;
-		daw::bounded_array_t<T, N> m_stack{};
+		std::array<T, N> m_stack{};
 
 	public:
 		constexpr bounded_vector_t( ) noexcept = default;
