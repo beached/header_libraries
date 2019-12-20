@@ -25,7 +25,6 @@
 #include "daw_do_n.h"
 #include "daw_view.h"
 
-#include <array>
 #include <cstddef>
 #include <cstdint>
 

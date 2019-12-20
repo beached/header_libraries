@@ -22,9 +22,10 @@
 
 #pragma once
 
-#include <cstddef>
-
 #include "daw_algorithm.h"
+
+#include <cstddef>
+#include <cstdint>
 
 namespace daw {
 	template<typename T, size_t N>

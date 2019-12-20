@@ -20,10 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <mutex>
-
-#include "daw/daw_benchmark.h"
 #include "daw/parallel/daw_copy_mutex.h"
+
+#include <mutex>
+#include <type_traits>
 
 void daw_copiable_mutex_test_01( ) {
 	daw::copiable_mutex<std::mutex> m;

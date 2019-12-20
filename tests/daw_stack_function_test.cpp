@@ -20,12 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <functional>
-#include <iostream>
-#include <string>
-
 #include "daw/daw_benchmark.h"
 #include "daw/daw_stack_function.h"
+#include "daw/daw_utility.h"
+
+#include <functional>
+#include <iostream>
 
 std::string strfunc( ) {
 	return "Goodbye";

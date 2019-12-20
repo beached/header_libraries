@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/daw_benchmark.h"
 #include "daw/iterator/daw_integer_iterator.h"
 
 constexpr bool integer_range_01( ) {

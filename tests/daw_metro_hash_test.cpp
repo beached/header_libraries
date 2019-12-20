@@ -22,7 +22,9 @@
 
 #include "daw/daw_metro_hash.h"
 #include "daw/daw_string_view.h"
+#include "daw/daw_view.h"
 
+#include <cstring>
 #include <iostream>
 
 inline constexpr daw::string_view test_value =

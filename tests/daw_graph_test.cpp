@@ -1,4 +1,3 @@
-
 // The MIT License (MIT)
 //
 // Copyright (c) 2018-2019 Darrell Wright
@@ -23,6 +22,11 @@
 
 #include "daw/daw_benchmark.h"
 #include "daw/daw_graph.h"
+
+#include <functional>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 
 int main( ) {
 	{

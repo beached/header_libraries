@@ -21,7 +21,9 @@
 // SOFTWARE.
 
 #include <chrono>
+#include <cstddef>
 #include <thread>
+#include <utility>
 
 #include "daw/daw_benchmark.h"
 #include "daw/parallel/daw_latch.h"

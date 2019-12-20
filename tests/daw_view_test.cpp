@@ -20,11 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <array>
-
 #include "daw/daw_algorithm.h"
 #include "daw/daw_benchmark.h"
 #include "daw/daw_view.h"
+
+#include <array>
+#include <functional>
 
 constexpr bool test_const_iterator_01( ) {
 	using arry_t = std::array<int, 5>;
@@ -33,10 +34,10 @@ constexpr bool test_const_iterator_01( ) {
 	daw::expecting( a.size( ) == 5 );
 	daw::expecting( *arry.begin( ) == 1 );
 	daw::expecting( a.size( ), arry.size( ) );
-	
+
 	daw::expecting(
 	  daw::algorithm::equal( arry.begin( ), arry.end( ), a.begin( ), a.end( ) ) );
-		
+
 	return true;
 }
 

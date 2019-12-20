@@ -20,14 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <algorithm>
-#include <cstdint>
-#include <cstdlib>
-#include <iostream>
-
 #include "daw/daw_algorithm.h"
 #include "daw/daw_array.h"
 #include "daw/daw_benchmark.h"
+
+#include <array>
+#include <string>
 
 using namespace std::literals::string_literals;
 

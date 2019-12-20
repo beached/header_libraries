@@ -20,6 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "daw/daw_benchmark.h"
+#include "daw/daw_string_view.h"
+#include "daw/daw_utility.h"
+
+#include <algorithm>
+#include <cctype>
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
@@ -27,10 +33,8 @@
 #ifndef NOSTRING
 #include <string>
 #endif
+#include <stdexcept>
 #include <vector>
-
-#include "daw/daw_benchmark.h"
-#include "daw/daw_string_view.h"
 
 #define FALSE( b ) ( !( b ) )
 namespace daw {

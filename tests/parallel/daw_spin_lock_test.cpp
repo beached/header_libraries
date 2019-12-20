@@ -22,7 +22,6 @@
 
 #include <mutex>
 
-#include "daw/daw_benchmark.h"
 #include "daw/parallel/daw_spin_lock.h"
 
 void daw_spin_lock_001( ) {

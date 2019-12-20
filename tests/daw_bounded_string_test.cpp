@@ -20,17 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "daw/daw_benchmark.h"
+#include "daw/daw_bounded_string.h"
+#include "daw/daw_string_view.h"
+#include "daw/daw_string_view_fwd.h"
+#include "daw/daw_utility.h"
+
+#include <algorithm>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <iostream>
 #include <iterator>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
-#include "daw/daw_benchmark.h"
-#include "daw/daw_bounded_string.h"
-
-#define FALSE( b ) ( !( b ) )
+#define FALSE( b ) ( not( b ) )
 namespace daw {
 	enum class tmp_e { a, b, c };
 

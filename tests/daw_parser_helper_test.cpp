@@ -20,13 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <iostream>
-#include <string>
-
 #include "daw/daw_benchmark.h"
 #include "daw/daw_parser_addons.h"
 #include "daw/daw_parser_helper.h"
 #include "daw/daw_string_view.h"
+
+#include <cstdint>
+#include <iostream>
+#include <string>
 
 void daw_parser_helper001( ) {
 	static std::string uint_test = "43453";

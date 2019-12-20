@@ -20,11 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <fstream>
-#include <string>
-
-#include "daw/daw_benchmark.h"
 #include "daw/daw_memory_mapped_file.h"
+
+#include <cstdint>
+#include <fstream>
+#include <type_traits>
 
 template<typename String>
 void create_file( String &&str ) {

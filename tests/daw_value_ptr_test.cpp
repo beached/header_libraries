@@ -20,11 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "daw/daw_benchmark.h"
+#include "daw/daw_traits.h"
+#include "daw/daw_utility.h"
+#include "daw/daw_value_ptr.h"
+
+#include <cstddef>
 #include <iostream>
 #include <mutex>
-
-#include "daw/daw_benchmark.h"
-#include "daw/daw_value_ptr.h"
+#include <type_traits>
 
 void daw_value_ptr_test_01( ) {
 	struct lrg {

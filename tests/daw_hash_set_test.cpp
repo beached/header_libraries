@@ -20,11 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <iostream>
-
 #include "daw/daw_benchmark.h"
-#include "daw/daw_fnv1a_hash.h"
 #include "daw/daw_hash_set.h"
+
+#include <cstddef>
 
 void test_001( ) {
 	size_t count = 1024ULL;

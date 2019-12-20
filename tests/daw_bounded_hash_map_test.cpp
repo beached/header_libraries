@@ -20,10 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/daw_benchmark.h"
 #include "daw/daw_bounded_hash_map.h"
 #include "daw/daw_fnv1a_hash.h"
 #include "daw/daw_string_view.h"
+#include "daw/daw_utility.h"
+
+#include <cstddef>
+#include <cstdint>
 
 namespace {
 	constexpr daw::bounded_hash_map<uint16_t, daw::string_view, 13,

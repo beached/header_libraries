@@ -20,23 +20,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "daw/cpp_17.h"
 #include "daw/daw_array.h"
 #include "daw/daw_benchmark.h"
 #include "daw/daw_fnv1a_hash.h"
 #include "daw/daw_metro_hash.h"
 #include "daw/daw_min_perfect_hash.h"
+#include "daw/daw_view.h"
 
+#include <array>
+#include <cstddef>
 #include <cstdint>
+#include <iterator>
+#include <string>
+#include <string_view>
+#include <tuple>
+#include <type_traits>
 #include <unordered_map>
+#include <utility>
 
 struct IntHasher {
 	template<typename Integer>
 	constexpr size_t operator( )( Integer const &i, size_t seed ) const {
-		return static_cast<size_t>( i ) ^ seed;
+		return daw::min_perf_hash_impl::hash_combine( seed,
+		                                              static_cast<size_t>( i ) );
 	}
 	template<typename Integer>
 	constexpr size_t operator( )( Integer const &i ) const {
-		return static_cast<size_t>( i ) ^ daw::impl::fnv_prime( );
+		return daw::min_perf_hash_impl::hash_combine( daw::impl::fnv_prime( ),
+		                                              static_cast<size_t>( i ) );
 	}
 };
 
@@ -381,7 +393,7 @@ int main( ) {
 #if defined( DEBUG )
 	constexpr size_t Runs = 100;
 #else
-	constexpr size_t Runs = 100'000;
+	constexpr size_t Runs = 100'00;
 #endif
 	test_min_perf_hash<Runs>( );
 	test_unorderd_map<Runs>( );

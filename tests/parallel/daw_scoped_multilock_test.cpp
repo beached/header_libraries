@@ -20,10 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <thread>
-
 #include "daw/daw_benchmark.h"
 #include "daw/parallel/daw_scoped_multilock.h"
+
+#include <mutex>
+#include <thread>
 
 void daw_scoped_multilock_001( ) {
 	std::mutex m1;

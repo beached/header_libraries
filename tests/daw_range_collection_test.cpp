@@ -22,6 +22,9 @@
 
 #include "daw/daw_benchmark.h"
 #include "daw/daw_range_collection.h"
+#include "daw/daw_range_common.h"
+
+#include <vector>
 
 void test_01( ) {
 	std::vector<int> a = {1, 2, 3, 4, 5};

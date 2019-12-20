@@ -20,10 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <iostream>
-
 #include "daw/daw_benchmark.h"
 #include "daw/daw_range.h"
+
+#include <cstdint>
+#include <iostream>
+#include <vector>
 
 // Workaround
 #ifndef WIN32 // Fails on MSVC 2015.2

@@ -20,15 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cstdint>
-#include <cstdlib>
+#include "daw/daw_benchmark.h"
+#include "daw/daw_string_split_range.h"
+
+#include <algorithm>
+#include <array>
+#include <functional>
 #include <iostream>
+#include <iterator>
 #include <string>
 #include <vector>
-
-#include "daw/daw_benchmark.h"
-#include "daw/daw_container_algorithm.h"
-#include "daw/daw_string_split_range.h"
 
 constexpr bool splt_test_000( ) {
 	daw::string_view const str = "This is a test of the split";

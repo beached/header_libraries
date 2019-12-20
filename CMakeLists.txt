@@ -74,7 +74,6 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_math
 	daw_memory_mapped_file
 	daw_metro_hash
-	daw_min_perfect_hash
 	daw_natural
 	daw_overload
 	daw_optional
@@ -174,6 +173,7 @@ set( UNTESTED_HEADER_FILES
 	daw_function.h
 	daw_hash_table.h
 	daw_move.h
+	daw_min_perfect_hash.h
 	daw_newhelper.h
 	daw_operators.h
 	daw_parser_addons.h

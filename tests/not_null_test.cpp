@@ -21,7 +21,10 @@
 // SOFTWARE.
 
 #include "daw/daw_benchmark.h"
+#include "daw/daw_exception.h"
 #include "daw/not_null.h"
+
+#include <memory>
 
 void daw_not_null_test_001( ) {
 	auto tst = std::make_unique<int>( 5 );

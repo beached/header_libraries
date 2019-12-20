@@ -1,4 +1,3 @@
-
 // The MIT License (MIT)
 //
 // Copyright (c) 2018-2019 Darrell Wright
@@ -21,9 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "daw/daw_algorithm.h"
 #include "daw/daw_benchmark.h"
 #include "daw/daw_random.h"
 #include "daw/daw_sort_n.h"
+
+#include <algorithm>
+#include <array>
+#include <cstddef>
+#include <ctime>
+#include <functional>
+#include <iostream>
+#include <iterator>
+#include <vector>
 
 constexpr std::array<int, 10'000> big_arry = {
   40392, 38833, 69188,  5567,  99890, 11400, 91118, 49640, 38362, 26301, 60647,

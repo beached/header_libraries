@@ -20,10 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <variant>
-
-#include "daw/daw_benchmark.h"
 #include "daw/daw_variant_cast.h"
+
+#include <variant>
 
 constexpr bool test_01( ) noexcept {
 	std::variant<int, float> f = 5;
@@ -31,7 +30,7 @@ constexpr bool test_01( ) noexcept {
 	return daw::variant_cast<int>( f ) == 5;
 }
 
-static_assert( test_01( ), "" );
+static_assert( test_01( ) );
 
 constexpr bool test_02( ) noexcept {
 	std::variant<int, float> f = 5;
@@ -39,6 +38,6 @@ constexpr bool test_02( ) noexcept {
 	return daw::variant_cast<unsigned long long>( f ) == 5;
 }
 
-static_assert( test_02( ), "" );
+static_assert( test_02( ) );
 
 int main( ) {}

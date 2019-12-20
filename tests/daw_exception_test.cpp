@@ -20,11 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <iostream>
-#include <memory>
-
 #include "daw/daw_benchmark.h"
 #include "daw/daw_exception.h"
+
+#include <exception>
+#include <memory>
 
 void test_01( ) {
 	daw::expecting( []( ) {

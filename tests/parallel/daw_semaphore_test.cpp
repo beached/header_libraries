@@ -20,8 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/daw_benchmark.h"
 #include "daw/parallel/daw_semaphore.h"
+
+#include <utility>
 
 void test_01( ) {
 	daw::semaphore sem1;

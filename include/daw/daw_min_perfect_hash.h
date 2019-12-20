@@ -46,30 +46,19 @@ namespace daw {
 			return is_64bit_v ? 1099511628211ULL : 16777619UL;
 		}
 
-		template<size_t N>
-		using matching_signed_t = std::conditional_t<
-		  N == 8, int64_t,
-		  std::conditional_t<
-		    N == 4, int32_t,
-		    std::conditional_t<N == 2, int16_t,
-		                       std::conditional_t<N == 1, int8_t, intmax_t>>>>;
-
 		[[nodiscard]] constexpr size_t big_prime( ) noexcept {
 			return is_64bit_v ? 1099511628211ULL : 16777619UL;
 		}
 
-		template<typename hash_type>
-		[[nodiscard]] static constexpr hash_type
-		append_hash( hash_type current_hash, hash_type value ) noexcept {
-			for( hash_type n = 0; n < sizeof( hash_type ); ++n ) {
-				current_hash ^= static_cast<hash_type>(
-				  ( static_cast<hash_type>( value ) &
-				    ( static_cast<hash_type>( 0xFF ) << ( n * 8u ) ) ) >>
-				  ( n * 8u ) );
-				current_hash *= static_cast<hash_type>( big_prime( ) );
-			}
-			return current_hash;
+		template<typename hash_result>
+		[[nodiscard]] static constexpr hash_result
+		hash_combine( hash_result seed, hash_result hash ) noexcept {
+			uintmax_t const s = seed;
+			uintmax_t const h = hash;
+			return static_cast<hash_result>(
+			  s ^ ( h + 0x9e3779b9ULL + ( s << 6U ) + ( s >> 2U ) ) );
 		}
+
 	} // namespace min_perf_hash_impl
 
 	// *****************************************************
@@ -105,8 +94,7 @@ namespace daw {
 		using const_refernce = value_type const &;
 		using pointer = value_type *;
 		using hash_result = daw::remove_cvref_t<std::invoke_result_t<Hasher, Key>>;
-		using salt_type =
-		  min_perf_hash_impl::matching_signed_t<sizeof( hash_result )>;
+		using salt_type = intmax_t;
 		using iterator =
 		  perfect_hash_table_iterator<N, Key, Value, Hasher, KeyEqual>;
 		using const_iterator =
@@ -117,13 +105,10 @@ namespace daw {
 		                                                KeyEqual>;
 
 	private:
+		template<typename ForwardIterator>
 		struct bucket_t {
 			size_type bucket_index = 0;
-			daw::bounded_vector_t<std::pair<Key, Value> const *, N> items{};
-
-			[[nodiscard]] constexpr bool operator>( bucket_t const &rhs ) const {
-				return items.size( ) > rhs.items.size( );
-			}
+			daw::bounded_vector_t<ForwardIterator, N> items{};
 		};
 
 		static constexpr size_type m_num_buckets =
@@ -138,23 +123,7 @@ namespace daw {
 
 		[[nodiscard]] static constexpr hash_result
 		scale_hash( hash_result hash ) noexcept {
-			if constexpr( sizeof( hash_result ) >= 8U ) {
-				constexpr hash_result prime_a = 18'446'744'073'709'551'557ULL;
-				constexpr hash_result prime_b = 18'446'744'073'709'551'533ULL;
-				return ( hash * prime_a + prime_b ) % N;
-			} else if constexpr( sizeof( hash_result ) == 4U ) {
-				constexpr hash_result prime_a = 2'147'483'647ULL;
-				constexpr hash_result prime_b = 4'294'967'291ULL;
-				return ( hash * prime_a + prime_b ) % N;
-			} else if constexpr( sizeof( hash_result ) == 2U ) {
-				constexpr hash_result prime_a = 65'521ULL;
-				constexpr hash_result prime_b = 65'519ULL;
-				return ( hash * prime_a + prime_b ) % N;
-			} else {
-				constexpr hash_result prime_a = 241ULL;
-				constexpr hash_result prime_b = 251ULL;
-				return ( hash * prime_a + prime_b ) % N;
-			}
+			return static_cast<hash_result>( hash % N );
 		}
 
 		[[nodiscard]] static constexpr hash_result call_hash( Key const &key ) {
@@ -166,23 +135,21 @@ namespace daw {
 			/*if constexpr( std::is_invocable_v<Hasher, Key, hash_result> ) {
 			  return Hasher{}( key, static_cast<hash_result>( seed ) );
 			} else {*/
-			return scale_hash( min_perf_hash_impl::append_hash(
-			  Hasher{}( key ), static_cast<hash_result>( seed ) ) );
-			return static_cast<hash_result>(
-			  static_cast<hash_result>( static_cast<hash_result>( seed ) *
-			                            min_perf_hash_impl::big_prime( ) ) ^
-			  Hasher{}( key ) );
-			// }
+			return scale_hash( min_perf_hash_impl::hash_combine(
+			  static_cast<hash_result>( seed ), Hasher{}( key ) ) );
 		}
 
 		[[nodiscard]] static constexpr hash_result first_hash( Key const &key ) {
-			return call_hash( key ) & m_bucket_mask;
+			return static_cast<hash_result>( Hasher{}(key)&m_bucket_mask );
 		}
 
-		constexpr void find_salt_for_bucket( bucket_t const &bucket,
-		                                     std::array<bool, N> &slots_claimed ) {
+		template<typename ForwardIterator>
+		constexpr void
+		find_salt_for_bucket( bucket_t<ForwardIterator> const &bucket,
+		                      std::array<bool, N> &slots_claimed ) {
 			if( bucket.items.size( ) == 1 ) {
 				for( size_type i = 0; i < slots_claimed.size( ); ++i ) {
+					// Find first unclaimed index
 					if( not slots_claimed[i] ) {
 						slots_claimed[i] = true;
 						m_salts[bucket.bucket_index] = -( static_cast<salt_type>( i ) + 1 );
@@ -191,16 +158,18 @@ namespace daw {
 						return;
 					}
 				}
+				// No unclaimed spots, this should never happen
+				std::abort( );
 			}
 
 			for( salt_type salt = 0;; ++salt ) {
 				daw::bounded_vector_t<hash_result, N> slots_this_bucket{};
 
-				size_t const count_with_one = daw::algorithm::count_if(
+				size_t const true_count = daw::algorithm::count_if(
 				  bucket.items.begin( ), bucket.items.end( ),
 				  [&]( value_type const *item ) -> bool {
 					  hash_result const slot_wanted = call_hash( item->first, salt );
-					  if( slots_claimed[static_cast<size_type>( slot_wanted )] ) {
+					  if( slots_claimed[slot_wanted] ) {
 						  return false;
 					  }
 					  if( daw::algorithm::find( slots_this_bucket.begin( ),
@@ -212,7 +181,7 @@ namespace daw {
 					  return true;
 				  } );
 
-				if( count_with_one == bucket.items.size( ) ) {
+				if( true_count == bucket.items.size( ) ) {
 					m_salts[bucket.bucket_index] = salt;
 					for( size_type i = 0; i < bucket.items.size( ); ++i ) {
 						m_data[static_cast<size_type>( slots_this_bucket[i] )].first =
@@ -239,30 +208,45 @@ namespace daw {
 		}
 
 	public:
-		constexpr perfect_hash_table( std::pair<Key, Value> const *first,
-		                              std::pair<Key, Value> const *last ) {
-			std::array<bucket_t, m_num_buckets> buckets{};
+		/***
+		 * Construct a perfect_hash_table from a range of pair like items that have
+		 * the key in their first member and the value in their second member
+		 *
+		 * @tparam ForwardIterator points to a range of items with a std::pair like
+		 * type
+		 * @param first Start of range, inclusive
+		 * @param last End of range, exclusive
+		 */
+		template<typename ForwardIterator>
+		constexpr perfect_hash_table( ForwardIterator first,
+		                              ForwardIterator last ) {
+			std::array<bucket_t<ForwardIterator>, m_num_buckets> buckets{};
+
+			static_assert( std::is_default_constructible_v<ForwardIterator> );
 
 			daw::algorithm::iota(
 			  buckets.begin( ), buckets.end( ), static_cast<size_type>( 0 ),
 			  []( auto &i, size_type num ) { i.bucket_index = num; } );
 
 			for( auto it = first; it != last; ++it ) {
-				auto bucket = static_cast<size_type>( first_hash( it->first ) );
+				auto const bucket = static_cast<size_type>( first_hash( it->first ) );
 				buckets[bucket].items.push_back( it );
 			}
 
-			daw::sort(
-			  buckets.begin( ), buckets.end( ),
-			  []( bucket_t const &lhs, bucket_t const &rhs ) { return lhs > rhs; } );
+			daw::sort( buckets.begin( ), buckets.end( ),
+			           []( auto const &lhs, auto const &rhs ) {
+				           return lhs.items.size( ) > rhs.items.size( );
+			           } );
 
 			std::array<bool, N> slots_claimed{};
-			for( auto &b : buckets ) {
-				if( b.items.empty( ) ) {
-					// Buckets are sorted in desc order, we have processed them all
+
+			for( auto &bucket : buckets ) {
+				if( bucket.items.empty( ) ) {
+					// Buckets are sorted in desc order by item count, we have processed
+					// them all
 					break;
 				}
-				find_salt_for_bucket( b, slots_claimed );
+				find_salt_for_bucket( bucket, slots_claimed );
 			}
 		}
 

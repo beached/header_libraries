@@ -22,18 +22,18 @@
 
 #pragma once
 
-#include <cstddef>
-#include <iterator>
-#include <string>
-#include <tuple>
-#include <utility>
-
 #include "daw_bounded_array.h"
 #include "daw_function.h"
 #include "daw_parser_helper.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
+
+#include <cstddef>
+#include <iterator>
+#include <string>
+#include <tuple>
+#include <utility>
 
 namespace daw {
 	namespace parser {
@@ -196,7 +196,6 @@ namespace daw {
 			  daw::bounded_array_t<daw::string_view, sizeof...( Args )> const
 			    &positions,
 			  std::index_sequence<Is...> ) {
-				;
 				return std::make_tuple(
 				  set_value_from_string_view_item<Is, Args...>( positions )... );
 			}

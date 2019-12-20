@@ -20,15 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "daw/daw_benchmark.h"
+#include "daw/iterator/daw_circular_iterator.h"
+
 #include <algorithm>
 #include <cstdint>
 #include <cstdlib>
 #include <iostream>
+#include <iterator>
+#include <type_traits>
 #include <vector>
-
-#include "daw/daw_benchmark.h"
-#include "daw/daw_traits.h"
-#include "daw/iterator/daw_circular_iterator.h"
 
 void daw_circular_iterator_001( ) {
 	std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7};

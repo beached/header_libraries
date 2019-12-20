@@ -23,6 +23,8 @@
 #include "daw/daw_benchmark.h"
 #include "daw/daw_virtual_base.h"
 
+#include <memory>
+
 struct B : daw::virtual_base<B> {
 	B( ) = default;
 	virtual int func( ) {

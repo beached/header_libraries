@@ -21,10 +21,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <iostream>
-
 #include "daw/cpp_17.h"
 #include "daw/daw_benchmark.h"
+#include "daw/daw_utility.h"
+
+#include <cstdint>
+#include <tuple>
+#include <type_traits>
+#include <utility>
 
 constexpr int plus( int a, int b ) {
 	return a + b;

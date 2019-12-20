@@ -20,16 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <array>
-#include <cmath>
-#include <iostream>
-#include <sstream>
-#include <system_error>
-#include <tuple>
-#include <typeinfo>
-
 #include "daw/daw_benchmark.h"
 #include "daw/daw_utility.h"
+
+#include <array>
+#include <cstddef>
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <tuple>
+#include <type_traits>
+#include <typeinfo>
+#include <vector>
 
 namespace in_range_test {
 	static_assert( daw::in_range( 5, 0, 10 ) );

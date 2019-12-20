@@ -22,14 +22,13 @@
 
 #pragma once
 
-#include <future>
-#include <mutex>
-#include <optional>
-#include <utility>
-
 #include "../cpp_17.h"
 #include "../daw_value_ptr.h"
 #include "daw_unique_mutex.h"
+
+#include <mutex>
+#include <optional>
+#include <utility>
 
 namespace daw {
 	template<typename T, typename Mutex = std::mutex>
@@ -47,9 +46,9 @@ namespace daw {
 		public:
 			using value_type = T;
 			using reference = T &;
-			using const_reference = ::std::add_const_t<T> &;
+			using const_reference = std::add_const_t<T> &;
 			using pointer = T *;
-			using const_pointer = ::std::add_const_t<T> const *;
+			using const_pointer = std::add_const_t<T> const *;
 
 			locked_value_t( locked_value_t const &other ) = delete;
 			locked_value_t &operator=( locked_value_t const &other ) = delete;
@@ -88,18 +87,18 @@ namespace daw {
 
 		class const_locked_value_t {
 			std::unique_lock<Mutex> m_lock;
-			std::reference_wrapper<::std::add_const_t<T>> m_value;
+			std::reference_wrapper<std::add_const_t<T>> m_value;
 
 			const_locked_value_t( std::unique_lock<Mutex> &&lck,
-			                      ::std::add_const_t<T> &value )
+			                      std::add_const_t<T> &value )
 			  : m_lock( std::move( lck ) )
 			  , m_value( value ) {}
 
 			friend lockable_value_t;
 
 		public:
-			using value_type = ::std::add_const_t<T>;
-			using reference = ::std::add_const_t<T> &;
+			using value_type = std::add_const_t<T>;
+			using reference = std::add_const_t<T> &;
 			using const_reference = std::add_const_t<T> &;
 			using pointer = std::add_const_t<T> *;
 			using const_pointer = std::add_const_t<T> *;
@@ -129,43 +128,43 @@ namespace daw {
 			}
 		}; // locked_value_t
 
-		mutable ::daw::basic_unique_mutex<Mutex> m_mutex =
-		  ::daw::basic_unique_mutex<Mutex>( );
-		::daw::value_ptr<T> m_value = ::daw::value_ptr<T>( );
+		mutable daw::basic_unique_mutex<Mutex> m_mutex =
+		  daw::basic_unique_mutex<Mutex>( );
+		daw::value_ptr<T> m_value = daw::value_ptr<T>( );
 
 	public:
 		lockable_value_t( ) = default;
 
 		template<typename U,
 		         std::enable_if_t<
-		           not std::is_same_v<lockable_value_t, ::daw::remove_cvref_t<U>>,
+		           not std::is_same_v<lockable_value_t, daw::remove_cvref_t<U>>,
 		           std::nullptr_t> = nullptr>
 		explicit lockable_value_t( U &&value ) noexcept(
-		  noexcept( ::daw::value_ptr<T>( std::forward<U>( value ) ) ) )
-		  : m_value( ::std::forward<U>( value ) ) {}
+		  noexcept( daw::value_ptr<T>( std::forward<U>( value ) ) ) )
+		  : m_value( std::forward<U>( value ) ) {}
 
 		locked_value_t get( ) {
-			return {::std::unique_lock( m_mutex.get( ) ), *m_value};
+			return {std::unique_lock<Mutex>( m_mutex.get( ) ), *m_value};
 		}
 
 		const_locked_value_t get( ) const {
-			return {::std::unique_lock( m_mutex.get( ) ), *m_value};
+			return {std::unique_lock<Mutex>( m_mutex.get( ) ), *m_value};
 		}
 
-		::std::optional<locked_value_t> try_get( ) {
-			auto lck = ::std::unique_lock( m_mutex.get( ), ::std::try_to_lock );
+		std::optional<locked_value_t> try_get( ) {
+			auto lck = std::unique_lock<Mutex>( m_mutex.get( ), std::try_to_lock );
 			if( not lck.owns_lock( ) ) {
 				return {};
 			}
-			return {::std::move( lck ), *m_value};
+			return {std::move( lck ), *m_value};
 		}
 
-		::std::optional<const_locked_value_t> try_get( ) const {
-			auto lck = ::std::unique_lock( m_mutex.get( ), ::std::try_to_lock );
+		std::optional<const_locked_value_t> try_get( ) const {
+			auto lck = std::unique_lock<Mutex>( m_mutex.get( ), std::try_to_lock );
 			if( not lck.owns_lock( ) ) {
 				return {};
 			}
-			return {::std::move( lck ), *m_value};
+			return {std::move( lck ), *m_value};
 		}
 
 		locked_value_t operator*( ) {

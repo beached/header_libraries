@@ -20,13 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cstdint>
-#include <cstdlib>
-#include <iostream>
-
 #include "daw/daw_benchmark.h"
 #define USE_CXSEED
 #include "daw/daw_random.h"
+
+#include <cstdint>
+#include <cstdlib>
+#include <iostream>
+#include <limits>
+#include <vector>
 
 void daw_random_01( ) {
 	for( auto n = 0; n < 100000; ++n ) {

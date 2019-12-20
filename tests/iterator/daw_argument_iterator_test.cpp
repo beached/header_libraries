@@ -20,16 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <algorithm>
-#include <iostream>
-#include <numeric>
-#include <stdexcept>
-#include <string>
-#include <string_view>
-#include <vector>
-
 #include "daw/daw_benchmark.h"
 #include "daw/iterator/daw_argument_iterator.h"
+
+#include <cstddef>
+#include <numeric>
+#include <string_view>
 
 void test_end_001( ) {
 	constexpr auto last = daw::arg_iterator_t( );

@@ -20,9 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <iostream>
-
 #include "daw/daw_benchmark.h"
+#include "daw/daw_exception.h"
 #include "daw/daw_natural.h"
 #include "daw/daw_utility.h"
 

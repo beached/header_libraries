@@ -20,12 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <iostream>
-#include <string>
-#include <tuple>
-
 #include "daw/daw_benchmark.h"
 #include "daw/daw_tuple_helper.h"
+
+#include <iostream>
+#include <tuple>
 
 using namespace daw::tuple;
 

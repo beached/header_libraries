@@ -2221,9 +2221,11 @@ static_assert(
 	 * @param pred unary predicate
 	 * @return count of the number of times the prediate returns true
 	 */
-	template<typename Iterator, typename Last, typename Predicate>
-	constexpr size_t count_if( Iterator first, Last last, Predicate pred ) {
-		size_t result = 0;
+	template<typename ResultType = size_t, typename Iterator, typename Last,
+	         typename Predicate>
+	constexpr ResultType count_if( Iterator first, Last last, Predicate pred ) {
+		static_assert( std::is_integral_v<ResultType> );
+		ResultType result = 0;
 		while( first != last ) {
 			if( pred( *first ) ) {
 				++result;

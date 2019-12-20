@@ -20,12 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "daw/daw_benchmark.h"
+#include "daw/daw_fixed_lookup.h"
+
 #include <cstdint>
 #include <cstdlib>
 #include <iostream>
-
-#include "daw/daw_benchmark.h"
-#include "daw/daw_fixed_lookup.h"
+#include <unordered_map>
+#include <vector>
 
 void daw_fixed_lookup_001( ) {
 	daw::fixed_lookup<int, 100> blah{};
@@ -75,7 +77,7 @@ constexpr bool daw_make_fixed_lookup_001( ) {
 }
 // WORKAROUND
 #ifndef WIN32
-	static_assert( daw_make_fixed_lookup_001( ) );
+static_assert( daw_make_fixed_lookup_001( ) );
 #endif
 
 template<typename ValueType, ValueType SZ, size_t HashSize>

@@ -20,10 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <iostream>
-
 #include "daw/daw_benchmark.h"
 #include "daw/daw_heap_value.h"
+
+#include <cstdint>
+#include <iostream>
 
 void daw_heap_value_test_01( ) {
 	struct lrg {

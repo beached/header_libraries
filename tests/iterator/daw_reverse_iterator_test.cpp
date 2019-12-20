@@ -20,11 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <array>
-
 #include "daw/daw_algorithm.h"
-#include "daw/daw_benchmark.h"
 #include "daw/iterator/daw_reverse_iterator.h"
+
+#include <array>
 
 constexpr bool reverse_iterator_test_001( ) {
 	std::array<int, 6> a = {1, 2, 3, 4, 5, 6};

@@ -20,14 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cstdint>
-#include <unordered_map>
-#include <iostream>
-#include <string>
-
-#include "daw/daw_benchmark.h"
 #include "daw/daw_hash_table2.h"
-#include "daw/daw_tuple_helper.h"
+
+#include <cstdint>
+#include <iostream>
+#include <new>
+#include <string>
 
 using namespace std::literals::string_literals;
 void daw_hash_table_testing( ) {
@@ -53,4 +51,3 @@ void daw_hash_table_testing( ) {
 int main( ) {
 	daw_hash_table_testing( );
 }
-

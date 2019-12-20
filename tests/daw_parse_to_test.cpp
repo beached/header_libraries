@@ -20,13 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <sstream>
-#include <string>
-
 #include "daw/daw_benchmark.h"
+#include "daw/daw_bounded_array.h"
 #include "daw/daw_exception.h"
 #include "daw/daw_math.h"
 #include "daw/daw_parse_to.h"
+#include "daw/daw_string_view.h"
+#include "daw/daw_string_view_fwd.h"
+#include "daw/daw_utility.h"
+
+#include <cstdint>
+#include <sstream>
+#include <string>
+#include <tuple>
 
 namespace {
 	constexpr bool parse_to_000( ) {
@@ -88,9 +94,7 @@ namespace {
 
 #ifndef WIN32
 	constexpr bool parse_to_004( ) {
-		auto const f = []( int a, int b, int c ) noexcept {
-			return a + b + c;
-		};
+		auto const f = []( int a, int b, int c ) noexcept { return a + b + c; };
 		auto result = daw::apply_string2( f, "1,2,3", "," );
 		daw::expecting( result, 6 );
 		return true;
