@@ -22,32 +22,95 @@
 
 #pragma once
 
+#include "daw/daw_bounded_array.h"
 #include "daw/daw_bounded_vector.h"
 #include "daw/daw_fnv1a_hash.h"
 #include "daw_algorithm.h"
 #include "daw_sort_n.h"
 
+#include <cstddef>
+#include <functional>
+#include <limits>
+#include <new>
+#include <type_traits>
 #include <utility>
 
 namespace daw {
-	namespace min_perf_hash_impl {
-		[[nodiscard]] constexpr size_t get_bucket_count( size_t sz ) {
+	namespace mph_impl {
+		template<size_t Bits>
+		constexpr auto determine_opt_sz( ) {
+			constexpr size_t sz = [] {
+				std::pair<uint8_t, size_t> sizes[] = {{8U, Bits % 8U},
+				                                      {16U, Bits % 16U},
+				                                      {32U, Bits % 32U},
+				                                      {64U, Bits % 64U}};
+				size_t min_pos = 0;
+				daw::algorithm::do_n_arg<3>( [&]( size_t n ) {
+					++n;
+					if( sizes[n].second < sizes[min_pos].second ) {
+						min_pos = n;
+					} else if( sizes[n].second == sizes[min_pos].second and
+					           sizes[n].first > sizes[min_pos].first ) {
+						min_pos = n;
+					}
+				} );
+				return sizes[min_pos].first;
+			}( );
+			if constexpr( sz == 8U ) {
+				return uint8_t{};
+			} else if constexpr( sz == 16U ) {
+				return uint16_t{};
+			} else if constexpr( sz == 32U ) {
+				return uint32_t{};
+			} else if constexpr( sz == 64U ) {
+				return uint64_t{};
+			};
+		}
+
+		template<size_t Bits>
+		using opt_type_t =
+		  std::remove_reference_t<decltype( determine_opt_sz<Bits>( ) )>;
+
+		template<size_t Bits>
+		class static_bitset {
+			using values_type = opt_type_t<Bits>;
+			inline static constexpr size_t m_bits_per_bin =
+			  sizeof( values_type ) * 8U;
+			inline static constexpr size_t m_bins = Bits / m_bits_per_bin;
+
+			bounded_array_t<values_type, m_bins> m_values{};
+
+		public:
+			constexpr static_bitset( ) noexcept = default;
+
+			constexpr void set_bit( size_t idx ) noexcept {
+				auto const bin = idx / m_bits_per_bin;
+				auto const item = idx - ( bin * m_bits_per_bin );
+				auto const mask = 1U << item;
+				m_values[bin] |= mask;
+			}
+
+			constexpr bool operator[]( size_t idx ) const noexcept {
+				auto const bin = idx / m_bits_per_bin;
+				auto const item = idx - ( bin * m_bits_per_bin );
+				auto const mask = ~( 1U << item );
+				return ( m_values[bin] & mask ) != 0;
+			}
+		};
+		template<size_t N>
+		[[nodiscard]] constexpr size_t next_pow2( ) {
 			size_t ret = 1U;
-			do {
-				ret = ret << 1U;
-				sz = sz >> 1U;
-			} while( sz != 0 );
-			return ret >> 1U;
+
+			for( size_t sz = N; sz > 0; sz >>= 1U ) {
+				ret <<= 1U;
+			}
+			return ret;
 		}
 
-		constexpr bool is_64bit_v = sizeof( size_t ) == sizeof( uint64_t );
-
-		[[nodiscard]] constexpr size_t fnv_prime( ) noexcept {
-			return is_64bit_v ? 1099511628211ULL : 16777619UL;
-		}
-
-		[[nodiscard]] constexpr size_t big_prime( ) noexcept {
-			return is_64bit_v ? 1099511628211ULL : 16777619UL;
+		template<size_t N>
+		[[nodiscard]] constexpr size_t get_bucket_count( ) {
+			static_assert( N > 0 );
+			return next_pow2<N>( ) >> 1U;
 		}
 
 		template<typename hash_result>
@@ -56,10 +119,9 @@ namespace daw {
 			uintmax_t const s = seed;
 			uintmax_t const h = hash;
 			return static_cast<hash_result>(
-			  s ^ ( h + 0x9e3779b9ULL + ( s << 6U ) + ( s >> 2U ) ) );
+			  s ^ ( h + 0x9e3779b9ULL + ( s << 6ULL ) + ( s >> 2ULL ) ) );
 		}
-
-	} // namespace min_perf_hash_impl
+	} // namespace mph_impl
 
 	// *****************************************************
 	// Forward Declare for Iterator
@@ -86,15 +148,20 @@ namespace daw {
 		static_assert( std::is_trivially_copyable_v<Value> );
 		using key_type = Key;
 		using mapped_type = Value;
-		using value_type = std::pair<key_type, mapped_type>;
 		using size_type = std::size_t;
 		using difference_type = std::ptrdiff_t;
 		using key_equal = KeyEqual;
-		using reference = value_type &;
-		using const_refernce = value_type const &;
-		using pointer = value_type *;
+		using reference = std::pair<key_type const &, mapped_type &>;
+		using const_reference = std::pair<key_type const &, mapped_type const &>;
+
+		using key_type_pointer = key_type const *;
+		using mapped_type_pointer = mapped_type *;
+		using const_mapped_type_pointer = mapped_type const *;
 		using hash_result = daw::remove_cvref_t<std::invoke_result_t<Hasher, Key>>;
 		using salt_type = intmax_t;
+		static size_t constexpr m_data_size = mph_impl::next_pow2<N>( );
+		static_assert( m_data_size <= static_cast<size_t>(
+		                                std::numeric_limits<salt_type>::max( ) ) );
 		using iterator =
 		  perfect_hash_table_iterator<N, Key, Value, Hasher, KeyEqual>;
 		using const_iterator =
@@ -104,110 +171,6 @@ namespace daw {
 		friend ::daw::const_perfect_hash_table_iterator<N, Key, Value, Hasher,
 		                                                KeyEqual>;
 
-	private:
-		template<typename ForwardIterator>
-		struct bucket_t {
-			size_type bucket_index = 0;
-			daw::bounded_vector_t<ForwardIterator, N> items{};
-		};
-
-		static constexpr size_type m_num_buckets =
-		  min_perf_hash_impl::get_bucket_count( N );
-		static constexpr size_type m_bucket_mask = m_num_buckets - 1;
-
-		using values_t = value_type[N];
-		//***************
-		std::array<salt_type, m_num_buckets> m_salts{};
-		values_t m_data{};
-		//***************
-
-		[[nodiscard]] static constexpr hash_result
-		scale_hash( hash_result hash ) noexcept {
-			return static_cast<hash_result>( hash % N );
-		}
-
-		[[nodiscard]] static constexpr hash_result call_hash( Key const &key ) {
-			return scale_hash( Hasher{}( key ) );
-		}
-
-		[[nodiscard]] static constexpr hash_result call_hash( Key const &key,
-		                                                      salt_type seed ) {
-			/*if constexpr( std::is_invocable_v<Hasher, Key, hash_result> ) {
-			  return Hasher{}( key, static_cast<hash_result>( seed ) );
-			} else {*/
-			return scale_hash( min_perf_hash_impl::hash_combine(
-			  static_cast<hash_result>( seed ), Hasher{}( key ) ) );
-		}
-
-		[[nodiscard]] static constexpr hash_result first_hash( Key const &key ) {
-			return static_cast<hash_result>( Hasher{}(key)&m_bucket_mask );
-		}
-
-		template<typename ForwardIterator>
-		constexpr void
-		find_salt_for_bucket( bucket_t<ForwardIterator> const &bucket,
-		                      std::array<bool, N> &slots_claimed ) {
-			if( bucket.items.size( ) == 1 ) {
-				for( size_type i = 0; i < slots_claimed.size( ); ++i ) {
-					// Find first unclaimed index
-					if( not slots_claimed[i] ) {
-						slots_claimed[i] = true;
-						m_salts[bucket.bucket_index] = -( static_cast<salt_type>( i ) + 1 );
-						m_data[i].first = bucket.items[0]->first;
-						m_data[i].second = bucket.items[0]->second;
-						return;
-					}
-				}
-				// No unclaimed spots, this should never happen
-				std::abort( );
-			}
-
-			for( salt_type salt = 0;; ++salt ) {
-				daw::bounded_vector_t<hash_result, N> slots_this_bucket{};
-
-				size_t const true_count = daw::algorithm::count_if(
-				  bucket.items.begin( ), bucket.items.end( ),
-				  [&]( value_type const *item ) -> bool {
-					  hash_result const slot_wanted = call_hash( item->first, salt );
-					  if( slots_claimed[slot_wanted] ) {
-						  return false;
-					  }
-					  if( daw::algorithm::find( slots_this_bucket.begin( ),
-					                            slots_this_bucket.end( ), slot_wanted ) !=
-					      slots_this_bucket.end( ) ) {
-						  return false;
-					  }
-					  slots_this_bucket.push_back( slot_wanted );
-					  return true;
-				  } );
-
-				if( true_count == bucket.items.size( ) ) {
-					m_salts[bucket.bucket_index] = salt;
-					for( size_type i = 0; i < bucket.items.size( ); ++i ) {
-						m_data[static_cast<size_type>( slots_this_bucket[i] )].first =
-						  bucket.items[i]->first;
-						m_data[static_cast<size_type>( slots_this_bucket[i] )].second =
-						  bucket.items[i]->second;
-						slots_claimed[static_cast<size_type>( slots_this_bucket[i] )] =
-						  true;
-					}
-					return;
-				}
-			}
-			std::abort( );
-		}
-
-		[[nodiscard]] constexpr size_type find_data_index( Key const &key ) const {
-			auto bucket = static_cast<size_type>( first_hash( key ) );
-			auto salt = m_salts[static_cast<size_type>( bucket )];
-
-			if( salt < 0 ) {
-				return static_cast<size_type>( ( -salt ) - 1 );
-			}
-			return static_cast<size_type>( call_hash( key, salt ) );
-		}
-
-	public:
 		/***
 		 * Construct a perfect_hash_table from a range of pair like items that have
 		 * the key in their first member and the value in their second member
@@ -220,7 +183,7 @@ namespace daw {
 		template<typename ForwardIterator>
 		constexpr perfect_hash_table( ForwardIterator first,
 		                              ForwardIterator last ) {
-			std::array<bucket_t<ForwardIterator>, m_num_buckets> buckets{};
+			bounded_array_t<bucket_t<ForwardIterator>, m_num_buckets> buckets{};
 
 			static_assert( std::is_default_constructible_v<ForwardIterator> );
 
@@ -229,7 +192,7 @@ namespace daw {
 			  []( auto &i, size_type num ) { i.bucket_index = num; } );
 
 			for( auto it = first; it != last; ++it ) {
-				auto const bucket = static_cast<size_type>( first_hash( it->first ) );
+				auto const bucket = scale_hash<m_num_buckets>( call_hash( it->first ) );
 				buckets[bucket].items.push_back( it );
 			}
 
@@ -238,7 +201,7 @@ namespace daw {
 				           return lhs.items.size( ) > rhs.items.size( );
 			           } );
 
-			std::array<bool, N> slots_claimed{};
+			bounded_array_t<bool, m_data_size> slots_claimed{};
 
 			for( auto &bucket : buckets ) {
 				if( bucket.items.empty( ) ) {
@@ -254,36 +217,13 @@ namespace daw {
 		  std::pair<Key, Value> const ( &data )[N] )
 		  : perfect_hash_table( data, data + static_cast<ptrdiff_t>( N ) ) {}
 
-		[[nodiscard]] constexpr iterator begin( ) noexcept {
-			return std::data( m_data );
-		}
-
-		[[nodiscard]] constexpr const_iterator begin( ) const noexcept {
-			return std::data( m_data );
-		}
-
-		[[nodiscard]] constexpr const_iterator cbegin( ) const noexcept {
-			return std::data( m_data );
-		}
-
-		[[nodiscard]] constexpr iterator end( ) noexcept {
-			return std::data( m_data ) + static_cast<ptrdiff_t>( N );
-		}
-
-		[[nodiscard]] constexpr const_iterator end( ) const noexcept {
-			return std::data( m_data ) + static_cast<ptrdiff_t>( N );
-		}
-
-		[[nodiscard]] constexpr const_iterator cend( ) const noexcept {
-			return std::data( m_data ) + static_cast<ptrdiff_t>( N );
-		}
-
-		[[nodiscard]] constexpr const_iterator find( Key const &key ) const {
+		[[nodiscard]] constexpr const_mapped_type_pointer
+		find( Key const &key ) const {
 			size_type const data_index = find_data_index( key );
-			if( key_equal{}( m_data[data_index].first, key ) ) {
-				return &m_data[data_index];
+			if( m_set[data_index] ) {
+				return &m_values[data_index];
 			}
-			return end( );
+			return nullptr;
 		}
 
 		[[nodiscard]] constexpr size_type size( ) const noexcept {
@@ -292,292 +232,131 @@ namespace daw {
 
 		[[nodiscard]] constexpr bool contains( Key const &key ) const noexcept {
 			size_type const data_index = find_data_index( key );
-			return key_equal{}( m_data[data_index].first, key );
+			return m_set[data_index];
 		}
 
-		[[nodiscard]] constexpr iterator find( Key const &key ) {
+		[[nodiscard]] constexpr mapped_type_pointer find( Key const &key ) {
 			size_type const data_index = find_data_index( key );
-			if( key_equal{}( m_data[data_index].first, key ) ) {
-				return &m_data[data_index];
+			if( m_set[data_index] ) {
+				return &m_values[data_index];
 			}
-			return end( );
+			return nullptr;
 		}
 
 		[[nodiscard]] constexpr mapped_type &operator[]( Key const &key ) {
 			auto const idx = find_data_index( key );
-			return m_data[idx].second;
+			return m_values[idx];
 		}
 
 		[[nodiscard]] constexpr mapped_type const &
 		operator[]( Key const &key ) const {
 			auto const idx = find_data_index( key );
-			return m_data[idx].second;
+			return m_values[idx];
 		}
+
+	private:
+		template<typename ForwardIterator>
+		struct bucket_t {
+			size_type bucket_index = 0;
+			daw::bounded_vector_t<ForwardIterator, m_data_size> items{};
+		};
+
+		static constexpr size_type m_num_buckets = mph_impl::get_bucket_count<N>( );
+
+		//***************
+		alignas( 64 ) bounded_array_t<salt_type, m_num_buckets> m_salts{};
+		alignas( 64 ) bounded_array_t<mapped_type, m_data_size> m_values{};
+		alignas( 64 ) mph_impl::static_bitset<m_data_size> m_set{};
+		//***************
+
+		template<size_type Space = m_data_size>
+		[[nodiscard]] static constexpr size_type
+		scale_hash( hash_result hash ) noexcept {
+			return static_cast<hash_result>( hash % Space );
+		}
+
+		[[nodiscard]] static constexpr hash_result call_hash( Key const &key ) {
+			return Hasher{}( key );
+		}
+
+		[[nodiscard]] static constexpr hash_result call_hash( Key const &key,
+		                                                      salt_type seed ) {
+			return mph_impl::hash_combine( static_cast<hash_result>( seed ),
+			                               Hasher{}( key ) );
+		}
+
+		template<typename ForwardIterator>
+		constexpr void
+		find_salt_for_bucket( bucket_t<ForwardIterator> const &bucket,
+		                      bounded_array_t<bool, m_data_size> &slots_claimed ) {
+			if( bucket.items.size( ) == 1 ) {
+				auto const pos = daw::algorithm::find_index_of(
+				  slots_claimed.cbegin( ), slots_claimed.cend( ), false );
+				if( pos == slots_claimed.size( ) ) {
+					// Should never happen, there should always be at least one unclaimed
+					// slot
+					std::abort( );
+				}
+				slots_claimed[pos] = true;
+				m_salts[bucket.bucket_index] = -( static_cast<salt_type>( pos ) + 1 );
+				m_set.set_bit( pos );
+				m_values[pos] = bucket.items[0]->second;
+			}
+
+			for( size_type s = 0;;
+			     s = ( s + 7 ) % static_cast<size_type>(
+			                       std::numeric_limits<salt_type>::max( ) ) ) {
+				salt_type const salt = static_cast<salt_type>( s );
+				daw::bounded_vector_t<hash_result, m_data_size> slots_this_bucket{};
+
+				auto const success = daw::algorithm::all_of(
+				  bucket.items.begin( ), bucket.items.end( ),
+				  [&]( auto const *const item ) -> bool {
+					  hash_result const slot_wanted =
+					    scale_hash( call_hash( item->first, salt ) );
+					  if( slots_claimed[slot_wanted] ) {
+						  return false;
+					  }
+					  if( daw::algorithm::find( slots_this_bucket.begin( ),
+					                            slots_this_bucket.end( ), slot_wanted ) !=
+					      slots_this_bucket.end( ) ) {
+						  return false;
+					  }
+					  slots_this_bucket.push_back( slot_wanted );
+					  return true;
+				  } );
+
+				if( success ) {
+					m_salts[bucket.bucket_index] = salt;
+					for( size_type i = 0; i < bucket.items.size( ); ++i ) {
+						auto const pos = static_cast<size_t>( slots_this_bucket[i] );
+						m_set.set_bit( pos );
+						m_values[pos] = bucket.items[i]->second;
+						slots_claimed[pos] = true;
+					}
+					return;
+				}
+			}
+			std::abort( );
+		}
+
+		[[nodiscard]] constexpr size_type find_data_index( Key const &key ) const {
+			size_type const hash = call_hash( key );
+			auto const salt = m_salts[scale_hash<m_num_buckets>( hash )];
+
+			if( salt < 0 ) {
+				return static_cast<size_type>( ( -salt ) - 1 );
+			}
+			return scale_hash( mph_impl::hash_combine<hash_result>(
+			  static_cast<hash_result>( salt ), hash ) );
+		}
+
 	}; // namespace daw
 
-	// *****************************************************
-	// Perfect Hash Table Iterator
-	template<size_t N, typename Key, typename Value, typename Hasher,
-	         typename KeyEqual>
-	class perfect_hash_table_iterator {
-		using hash_table_t = perfect_hash_table<N, Key, Value, Hasher, KeyEqual>;
-		friend hash_table_t;
-
-	public:
-		using difference_type = std::ptrdiff_t;
-		using size_type = std::size_t;
-		using value_type = typename hash_table_t::value_type;
-		using pointer = std::add_pointer_t<value_type>;
-		using const_pointer = std::add_pointer_t<std::add_const_t<value_type>>;
-		using iterator_category = std::random_access_iterator_tag;
-		using reference = std::add_lvalue_reference_t<value_type>;
-		using const_reference =
-		  std::add_lvalue_reference_t<std::add_const_t<value_type>>;
-
-	private:
-		pointer m_item;
-		constexpr perfect_hash_table_iterator( pointer item )
-		  : m_item( item ) {}
-
-		[[nodiscard]] constexpr decltype( auto ) ptr( ) {
-			return m_item;
-		}
-
-		[[nodiscard]] constexpr decltype( auto ) ptr( ) const {
-			return m_item;
-		}
-
-	public:
-		[[nodiscard]] constexpr reference operator*( ) {
-			return *ptr( );
-		}
-
-		[[nodiscard]] constexpr pointer operator->( ) {
-			return ptr( );
-		}
-
-		[[nodiscard]] constexpr const_reference operator*( ) const {
-			return *ptr( );
-		}
-
-		[[nodiscard]] constexpr const_pointer operator->( ) const {
-			return ptr( );
-		}
-
-		constexpr perfect_hash_table_iterator &operator++( ) {
-			++m_item;
-			return *this;
-		}
-
-		constexpr perfect_hash_table_iterator operator++( int ) & {
-			perfect_hash_table_iterator result = *this;
-			++m_item;
-			return result;
-		}
-
-		constexpr perfect_hash_table_iterator &operator--( ) {
-			--m_item;
-			return *this;
-		}
-
-		constexpr perfect_hash_table_iterator operator--( int ) & {
-			perfect_hash_table_iterator result = *this;
-			--m_item;
-			return result;
-		}
-
-		[[nodiscard]] constexpr perfect_hash_table_iterator &
-		operator+=( difference_type n ) {
-			m_item += n;
-			return *this;
-		}
-
-		[[nodiscard]] constexpr perfect_hash_table_iterator &
-		operator-=( difference_type n ) {
-			m_item -= n;
-			return *this;
-		}
-
-		[[nodiscard]] constexpr perfect_hash_table_iterator
-		operator+( difference_type n ) const noexcept {
-			perfect_hash_table_iterator result = *this;
-			m_item += n;
-			return result;
-		}
-
-		[[nodiscard]] constexpr perfect_hash_table_iterator
-		operator-( difference_type n ) const noexcept {
-			perfect_hash_table_iterator result = *this;
-			m_item -= n;
-			return result;
-		}
-
-		[[nodiscard]] constexpr reference operator[]( size_type n ) noexcept {
-			return *( m_item + static_cast<difference_type>( n ) );
-		}
-
-		[[nodiscard]] constexpr const_reference operator[]( size_type n ) const
-		  noexcept {
-			return *( m_item + static_cast<difference_type>( n ) );
-		}
-
-		[[nodiscard]] constexpr friend bool
-		operator==( perfect_hash_table_iterator const &lhs,
-		            perfect_hash_table_iterator const &rhs ) {
-			return lhs.m_item == rhs.m_item;
-		}
-
-		[[nodiscard]] constexpr friend bool
-		operator!=( perfect_hash_table_iterator const &lhs,
-		            perfect_hash_table_iterator const &rhs ) {
-			return lhs.m_item != rhs.m_item;
-		}
-
-		[[nodiscard]] constexpr friend bool
-		operator<( perfect_hash_table_iterator const &lhs,
-		           perfect_hash_table_iterator const &rhs ) {
-			return lhs.m_item < rhs.m_item;
-		}
-
-		[[nodiscard]] constexpr friend bool
-		operator<=( perfect_hash_table_iterator const &lhs,
-		            perfect_hash_table_iterator const &rhs ) {
-			return lhs.m_item <= rhs.m_item;
-		}
-
-		[[nodiscard]] constexpr friend bool
-		operator>( perfect_hash_table_iterator const &lhs,
-		           perfect_hash_table_iterator const &rhs ) {
-			return lhs.m_item > rhs.m_item;
-		}
-
-		[[nodiscard]] constexpr friend bool
-		operator>=( perfect_hash_table_iterator const &lhs,
-		            perfect_hash_table_iterator const &rhs ) {
-			return lhs.m_item >= rhs.m_item;
-		}
-	};
-
-	template<size_t N, typename Key, typename Value, typename Hasher,
-	         typename KeyEqual>
-	class const_perfect_hash_table_iterator {
-		using hash_table_t = perfect_hash_table<N, Key, Value, Hasher, KeyEqual>;
-		friend hash_table_t;
-		using pointer = typename hash_table_t::value_type const *;
-
-	public:
-		using difference_type = std::ptrdiff_t;
-		using size_type = std::size_t;
-		using value_type = typename std::add_const_t<hash_table_t>::value_type;
-		using const_pointer = std::add_pointer_t<std::add_const_t<value_type>>;
-		using iterator_category = std::random_access_iterator_tag;
-		using const_reference =
-		  std::add_lvalue_reference_t<std::add_const_t<value_type>>;
-
-	private:
-		pointer m_item;
-		constexpr const_perfect_hash_table_iterator( pointer item )
-		  : m_item( item ) {}
-
-		[[nodiscard]] constexpr decltype( auto ) ptr( ) const {
-			return m_item;
-		}
-
-	public:
-		[[nodiscard]] constexpr const_reference operator*( ) const {
-			return *ptr( );
-		}
-
-		[[nodiscard]] constexpr const_pointer operator->( ) const {
-			return ptr( );
-		}
-
-		constexpr const_perfect_hash_table_iterator &operator++( ) {
-			++m_item;
-			return *this;
-		}
-
-		constexpr const_perfect_hash_table_iterator operator++( int ) & {
-			const_perfect_hash_table_iterator result = *this;
-			++m_item;
-			return result;
-		}
-		constexpr const_perfect_hash_table_iterator &operator--( ) {
-			--m_item;
-			return *this;
-		}
-
-		constexpr const_perfect_hash_table_iterator operator--( int ) & {
-			const_perfect_hash_table_iterator result = *this;
-			--m_item;
-			return result;
-		}
-
-		[[nodiscard]] constexpr const_perfect_hash_table_iterator &
-		operator+=( difference_type n ) {
-			m_item += n;
-			return *this;
-		}
-
-		[[nodiscard]] constexpr const_perfect_hash_table_iterator &
-		operator-=( difference_type n ) {
-			m_item -= n;
-			return *this;
-		}
-
-		[[nodiscard]] constexpr const_perfect_hash_table_iterator
-		operator+( difference_type n ) const noexcept {
-			const_perfect_hash_table_iterator result = *this;
-			m_item += n;
-			return result;
-		}
-
-		[[nodiscard]] constexpr const_perfect_hash_table_iterator
-		operator-( difference_type n ) const noexcept {
-			const_perfect_hash_table_iterator result = *this;
-			m_item -= n;
-			return result;
-		}
-
-		[[nodiscard]] constexpr const_reference operator[]( size_type n ) const
-		  noexcept {
-			return *( m_item + static_cast<difference_type>( n ) );
-		}
-
-		[[nodiscard]] constexpr friend bool
-		operator==( const_perfect_hash_table_iterator const &lhs,
-		            const_perfect_hash_table_iterator const &rhs ) {
-			return lhs.m_item == rhs.m_item;
-		}
-
-		[[nodiscard]] constexpr friend bool
-		operator!=( const_perfect_hash_table_iterator const &lhs,
-		            const_perfect_hash_table_iterator const &rhs ) {
-			return lhs.m_item != rhs.m_item;
-		}
-
-		[[nodiscard]] constexpr friend bool
-		operator<( const_perfect_hash_table_iterator const &lhs,
-		           const_perfect_hash_table_iterator const &rhs ) {
-			return lhs.m_item < rhs.m_item;
-		}
-
-		[[nodiscard]] constexpr friend bool
-		operator<=( const_perfect_hash_table_iterator const &lhs,
-		            const_perfect_hash_table_iterator const &rhs ) {
-			return lhs.m_item <= rhs.m_item;
-		}
-
-		[[nodiscard]] constexpr friend bool
-		operator>( const_perfect_hash_table_iterator const &lhs,
-		           const_perfect_hash_table_iterator const &rhs ) {
-			return lhs.m_item > rhs.m_item;
-		}
-
-		[[nodiscard]] constexpr friend bool
-		operator>=( const_perfect_hash_table_iterator const &lhs,
-		            const_perfect_hash_table_iterator const &rhs ) {
-			return lhs.m_item >= rhs.m_item;
-		}
-	};
+	template<typename Hasher, typename Key, typename Value, size_t N>
+	constexpr auto
+	make_perfect_hash_table( std::pair<Key, Value> const ( &data )[N] ) {
+		return perfect_hash_table<N, Key, Value, Hasher>(
+		  data, data + static_cast<ptrdiff_t>( N ) );
+	}
 } // namespace daw

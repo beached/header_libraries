@@ -111,28 +111,18 @@ namespace daw {
 	}; // bounded_array_t
 
 	template<typename T, typename U, size_t N>
-	constexpr bool operator==(
-	  bounded_array_t<T, N> const &lhs,
-	  bounded_array_t<U, N> const
-	    &rhs ) noexcept( noexcept( daw::algorithm::equal( lhs.cbegin( ),
-	                                                      lhs.cend( ),
-	                                                      rhs.cbegin( ),
-	                                                      rhs.cend( ) ) ) ) {
+	constexpr bool operator==( bounded_array_t<T, N> const &lhs,
+	                           bounded_array_t<U, N> const &rhs ) {
 
 		return daw::algorithm::equal( lhs.cbegin( ), lhs.cend( ), rhs.cbegin( ),
 		                              rhs.cend( ) );
 	}
 
 	template<typename T, typename U, size_t N>
-	constexpr bool operator!=(
-	  bounded_array_t<T, N> const &lhs,
-	  bounded_array_t<U, N> const
-	    &rhs ) noexcept( noexcept( daw::algorithm::equal( lhs.cbegin( ),
-	                                                      lhs.cend( ),
-	                                                      rhs.cbegin( ),
-	                                                      rhs.cend( ) ) ) ) {
+	constexpr bool operator!=( bounded_array_t<T, N> const &lhs,
+	                           bounded_array_t<U, N> const &rhs ) {
 
-		return !daw::algorithm::equal( lhs.cbegin( ), lhs.cend( ), rhs.cbegin( ),
+		return not daw::algorithm::equal( lhs.cbegin( ), lhs.cend( ), rhs.cbegin( ),
 		                               rhs.cend( ) );
 	}
 

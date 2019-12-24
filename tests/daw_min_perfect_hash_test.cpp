@@ -41,26 +41,21 @@
 
 struct IntHasher {
 	template<typename Integer>
-	constexpr size_t operator( )( Integer const &i, size_t seed ) const {
-		return daw::min_perf_hash_impl::hash_combine( seed,
-		                                              static_cast<size_t>( i ) );
-	}
-	template<typename Integer>
 	constexpr size_t operator( )( Integer const &i ) const {
-		return daw::min_perf_hash_impl::hash_combine( daw::impl::fnv_prime( ),
-		                                              static_cast<size_t>( i ) );
+		return static_cast<size_t>( i );
 	}
 };
 
 struct HashMe {
 	template<typename Value>
 	constexpr size_t operator( )( Value const &v, size_t seed ) const {
-		if constexpr( std::is_integral_v<Value> ) {
-			return IntHasher{}( v, seed );
-		} else {
-			return daw::fnv1a_hash_t{}( v, seed );
-		}
+		/*if constexpr( std::is_integral_v<Value> ) {
+		  return IntHasher{}( v, seed );
+		} else {*/
+		return daw::fnv1a_hash_t::append_hash( seed, v );
+		//	}
 	}
+
 	template<typename Value>
 	constexpr size_t operator( )( Value const &v ) const {
 		if constexpr( std::is_integral_v<Value> ) {
@@ -71,44 +66,77 @@ struct HashMe {
 	}
 };
 
-inline constexpr std::pair<int, char const *> data_items[13] = {
-  {100, "Continue"},
-  {101, "Switching Protocols"},
-  {102, "Processing"},
-  {200, "OK"},
-  {201, "Created"},
-  {202, "Accepted"},
-  {203, "Non-Authoritative Information"},
-  {204, "No Content"},
-  {205, "Reset Content"},
-  {206, "Partial Content"},
-  {207, "Multi-Status"},
-  {208, "Already Reported"},
-  {226, "IM Used"}};
+struct MetroHash {
+	template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
+	                                            std::nullptr_t> = nullptr>
+	constexpr size_t operator( )( Integer value, size_t seed = 0 ) const {
+		char buff[sizeof( Integer )]{};
+		for( size_t n = 0; n < sizeof( Integer ); ++n ) {
+			buff[n] = static_cast<char>(
+			  ( static_cast<uintmax_t>( value ) >> ( n * 8ULL ) ) & 0xFFULL );
+		}
+		char const *first = buff;
+		auto const sz = static_cast<ptrdiff_t>( sizeof( Integer ) );
+		char const *last = first + sz;
+		return daw::metro::hash64( daw::view<char const *>( first, last ), seed );
+	}
 
-inline constexpr auto ph =
-  daw::perfect_hash_table<13, int, char const *, HashMe>( data_items );
+	constexpr size_t operator( )( std::string_view sv, size_t seed = 0 ) const {
+		return daw::metro::hash64( {sv.begin( ), sv.end( )}, seed );
+	}
+};
+template<size_t N>
+using matching_unsigned_t = std::conditional_t<
+  N == 64, uint64_t,
+  std::conditional_t<
+    N == 32, uint32_t,
+    std::conditional_t<N == 16, uint16_t,
+                       std::conditional_t<N == 8, uint8_t, uintmax_t>>>>;
+
+template<typename Hm, typename Arry>
+bool validate( Hm &&hm, Arry const &ary ) {
+	for( auto const &item : ary ) {
+		auto result = hm[item.first];
+		daw::expecting( result == item.second );
+	}
+	return true;
+}
 
 using namespace std::string_view_literals;
-static_assert( ph[100] == "Continue"sv );
-static_assert( ph[101] == "Switching Protocols"sv );
-static_assert( ph[102] == "Processing"sv );
-static_assert( ph[200] == "OK"sv );
-static_assert( ph[201] == "Created"sv );
-static_assert( ph[202] == "Accepted"sv );
-static_assert( ph[203] == "Non-Authoritative Information"sv );
-static_assert( ph[204] == "No Content"sv );
-static_assert( ph[205] == "Reset Content"sv );
-static_assert( ph[206] == "Partial Content"sv );
-static_assert( ph[207] == "Multi-Status"sv );
-static_assert( ph[208] == "Already Reported"sv );
-static_assert( ph[226] == "IM Used"sv );
-static_assert( ph.find( 1234 ) == ph.end( ) );
-static_assert( not ph.contains( 1234 ) );
-static_assert( ph.contains( 204 ) );
+constexpr bool test_001( ) {
+	constexpr auto ph =
+	  daw::make_perfect_hash_table<IntHasher, int, char const *>(
+	    {{100, "Continue"},
+	     {101, "Switching Protocols"},
+	     {102, "Processing"},
+	     {200, "OK"},
+	     {201, "Created"},
+	     {202, "Accepted"},
+	     {203, "Non-Authoritative Information"},
+	     {204, "No Content"},
+	     {205, "Reset Content"},
+	     {206, "Partial Content"},
+	     {207, "Multi-Status"},
+	     {208, "Already Reported"},
+	     {226, "IM Used"}} );
 
-char const *lookup( int key ) {
-	return ph[key];
+	daw::expecting( "Continue"sv, ph[100] );
+	daw::expecting( "Switching Protocols"sv, ph[101] );
+	daw::expecting( "Processing"sv, ph[102] );
+	daw::expecting( "OK"sv, ph[200] );
+	daw::expecting( "Created"sv, ph[201] );
+	daw::expecting( "Accepted"sv, ph[202] );
+	daw::expecting( "Non-Authoritative Information"sv, ph[203] );
+	daw::expecting( "No Content"sv, ph[204] );
+	daw::expecting( "Reset Content"sv, ph[205] );
+	daw::expecting( "Partial Content"sv, ph[206] );
+	daw::expecting( "Multi-Status"sv, ph[207] );
+	daw::expecting( "Already Reported"sv, ph[208] );
+	daw::expecting( "IM Used"sv, ph[226] );
+	daw::expecting( nullptr, ph.find( 1234 ) );
+	daw::expecting( not ph.contains( 1234 ) );
+	daw::expecting( ph.contains( 204 ) );
+	return true;
 }
 
 constexpr uint32_t u32( char const ( &str )[5] ) {
@@ -134,27 +162,10 @@ inline constexpr std::pair<std::string_view, bool> values2[16]{
   {"-ERR"sv, true}, {"AUTH"sv, true}, {"PUSH"sv, true}, {"ADD "sv, true},
   {"DECR"sv, true}, {"SET "sv, true}, {"GET "sv, true}, {"QUIT"sv, true}};
 
-template<size_t N>
-using matching_unsigned_t = std::conditional_t<
-  N == 64, uint64_t,
-  std::conditional_t<
-    N == 32, uint32_t,
-    std::conditional_t<N == 16, uint16_t,
-                       std::conditional_t<N == 8, uint8_t, uintmax_t>>>>;
-
-template<typename Hm, typename Arry>
-bool validate( Hm &&hm, Arry const &ary ) {
-	for( auto const &item : ary ) {
-		auto result = hm[item.first];
-		daw::expecting( result == item.second );
-	}
-	return true;
-}
-
 template<size_t Runs>
 void test_min_perf_hash( ) {
-	auto phm_values =
-	  daw::perfect_hash_table<16, uint32_t, bool, IntHasher>( values );
+	auto const phm_values =
+	  daw::make_perfect_hash_table<IntHasher, uint32_t, bool>( values );
 	daw::bench_n_test<Runs>(
 	  "Minimal Perfect HashMap - uint32_t key",
 	  [&]( auto m ) {
@@ -173,20 +184,6 @@ void test_min_perf_hash( ) {
 		daw::expecting( r == k.second );
 	}
 }
-
-struct MetroHash {
-	template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
-	                                            std::nullptr_t> = nullptr>
-	constexpr size_t operator( )( Integer value, size_t seed = 0 ) const {
-		auto ptr = daw::bit_cast<char const( * )[sizeof( Integer )]>( &value );
-		auto const sz = static_cast<ptrdiff_t>( sizeof( Integer ) );
-		return daw::metro::hash64( daw::view<char const *>{ptr, ptr + sz}, seed );
-	}
-
-	constexpr size_t operator( )( std::string_view sv, size_t seed = 0 ) const {
-		return daw::metro::hash64( {sv.begin( ), sv.end( )}, seed );
-	}
-};
 
 template<size_t Runs>
 void test_min_perf_hash2( ) {
@@ -381,20 +378,21 @@ void test_unorderd_map4( ) {
 }
 
 extern uint16_t http_test_daw( std::string_view sv ) {
-	constexpr auto phm_resp =
+	auto phm_resp =
 	  daw::perfect_hash_table<std::tuple_size_v<decltype( http_response_codes )>,
 	                          std::string_view, uint16_t, MetroHash>(
 	    http_response_codes.begin( ), http_response_codes.end( ) );
 	return phm_resp[sv];
 }
 
-int main( ) {
-	daw::expecting( ph.contains( 207 ) );
 #if defined( DEBUG )
-	constexpr size_t Runs = 100;
+inline constexpr size_t Runs = 100;
 #else
-	constexpr size_t Runs = 100'00;
+inline constexpr size_t Runs = 100'00;
 #endif
+
+int main( ) {
+	test_001( );
 	test_min_perf_hash<Runs>( );
 	test_unorderd_map<Runs>( );
 	test_min_perf_hash2<Runs>( );

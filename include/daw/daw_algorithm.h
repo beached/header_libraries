@@ -1365,28 +1365,36 @@ namespace daw::algorithm {
 		return result_t{first, first_out};
 	}
 
-	/// @brief Determine if two ranges [first1, last1) and [first2, first2 +
-	/// std::distance( first1, last1 )) are equal
+	/// @brief Determine if two ranges [first1, last1) and [first2, last2) using
+	/// pred
 	/// @tparam InputIterator1 type of Iterator of first input range
-	/// @tparam LastType type of Iterator marking end of first input range
+	/// @tparam LastType1 type of Iterator marking end of first input range
 	/// @tparam InputIterator2 type of Iterator of second input range
+	/// @tparam LastType2 type of Iterator marking end of second input range
+	/// @tparam Compare type of predicate fullfilling Compare concept
 	/// @param first1 start of first input range
 	/// @param last1 end of first input range
 	/// @param first2 start of second input range
+	/// @param last2 end of second input range
+	/// @param comp predicate to determine equality of elements
 	/// @return true if both ranges are equal
-	template<typename InputIterator1, typename LastType, typename InputIterator2>
-	constexpr bool
-	equal( InputIterator1 first1, LastType last1,
-	       InputIterator2 first2 ) noexcept( noexcept( *first1 == *first2 ) ) {
+	template<typename InputIterator1, typename LastType1, typename InputIterator2,
+	         typename LastType2, typename Compare = std::equal_to<>>
+	constexpr bool equal( InputIterator1 first1, LastType1 last1,
+	                      InputIterator2 first2, LastType2 last2,
+	                      Compare comp = Compare{} ) {
 
 		traits::is_input_iterator_test<InputIterator1>( );
 		traits::is_input_iterator_test<InputIterator2>( );
+		traits::is_compare_test<Compare, decltype( *first1 ),
+		                        decltype( *first2 )>( );
 
-		while( first1 != last1 and std::equal_to<>{}( *first1, *first2 ) ) {
+		while( ( first1 != last1 ) and ( first2 != last2 ) and
+		       daw::invoke( comp, *first1, *first2 ) ) {
 			++first1;
 			++first2;
 		}
-		return !( first1 != last1 );
+		return first1 == last1 and first2 == last2;
 	}
 
 	/// @brief Determine if two ranges [first1, last1) and [first2, last2) using
@@ -1403,12 +1411,10 @@ namespace daw::algorithm {
 	/// @param comp predicate to determine equality of elements
 	/// @return true if both ranges are equal
 	template<typename InputIterator1, typename LastType1, typename InputIterator2,
-	         typename LastType2, typename Compare = std::equal_to<>>
-	constexpr bool
-	equal( InputIterator1 first1, LastType1 last1, InputIterator2 first2,
-	       LastType2 last2,
-	       Compare comp = Compare{} ) noexcept( noexcept( comp( *first1,
-	                                                            *first2 ) ) ) {
+	         typename LastType2, typename Compare = std::not_equal_to<>>
+	constexpr bool not_equal( InputIterator1 first1, LastType1 last1,
+	                          InputIterator2 first2, LastType2 last2,
+	                          Compare comp = Compare{} ) {
 
 		traits::is_input_iterator_test<InputIterator1>( );
 		traits::is_input_iterator_test<InputIterator2>( );
@@ -1416,11 +1422,57 @@ namespace daw::algorithm {
 		                        decltype( *first2 )>( );
 
 		while( ( first1 != last1 ) and ( first2 != last2 ) and
-		       daw::invoke( comp, *first1, *first2 ) ) {
+		       comp( *first1, *first2 ) ) {
 			++first1;
 			++first2;
 		}
 		return first1 == last1 and first2 == last2;
+	}
+
+	/// @brief Determine if two ranges [first1, last1) and [first2, first2 +
+	/// std::distance( first1, last1 )) are equal
+	/// @tparam InputIterator1 type of Iterator of first input range
+	/// @tparam LastType type of Iterator marking end of first input range
+	/// @tparam InputIterator2 type of Iterator of second input range
+	/// @param first1 start of first input range
+	/// @param last1 end of first input range
+	/// @param first2 start of second input range
+	/// @return true if both ranges are equal
+	template<typename InputIterator1, typename LastType, typename InputIterator2>
+	constexpr bool equal( InputIterator1 first1, LastType last1,
+	                      InputIterator2 first2 ) {
+
+		traits::is_input_iterator_test<InputIterator1>( );
+		traits::is_input_iterator_test<InputIterator2>( );
+
+		while( first1 != last1 and std::equal_to<>{}( *first1, *first2 ) ) {
+			++first1;
+			++first2;
+		}
+		return !( first1 != last1 );
+	}
+
+	/// @brief Determine if two ranges [first1, last1) and [first2, first2 +
+	/// std::distance( first1, last1 )) are equal
+	/// @tparam InputIterator1 type of Iterator of first input range
+	/// @tparam LastType type of Iterator marking end of first input range
+	/// @tparam InputIterator2 type of Iterator of second input range
+	/// @param first1 start of first input range
+	/// @param last1 end of first input range
+	/// @param first2 start of second input range
+	/// @return true if both ranges are equal
+	template<typename InputIterator1, typename LastType, typename InputIterator2>
+	constexpr bool not_equal( InputIterator1 first1, LastType last1,
+	                          InputIterator2 first2 ) {
+
+		traits::is_input_iterator_test<InputIterator1>( );
+		traits::is_input_iterator_test<InputIterator2>( );
+
+		while( first1 != last1 and std::not_equal_to<>{}( *first1, *first2 ) ) {
+			++first1;
+			++first2;
+		}
+		return !( first1 != last1 );
 	}
 
 	/// @brief Returns an iterator pointing to the first element in the range
@@ -2233,5 +2285,25 @@ static_assert(
 			++first;
 		}
 		return result;
+	}
+
+	template<typename Iterator, typename IteratorLast, typename Value>
+	constexpr size_t find_index_of( Iterator first, IteratorLast last,
+	                                Value const &v ) {
+		auto const beggining = first;
+		while( first != last and *first != v ) {
+			++first;
+		}
+		return static_cast<size_t>( std::distance( beggining, first ) );
+	}
+
+	template<typename Iterator, typename IteratorLast, typename Predicate>
+	constexpr size_t find_index_of_if( Iterator first, IteratorLast last,
+	                                   Predicate pred ) {
+		auto const beginning = first;
+		while( first != last and not pred( *first ) ) {
+			++first;
+		}
+		return static_cast<size_t>( std::distance( beginning, first ) );
 	}
 } // namespace daw::algorithm
