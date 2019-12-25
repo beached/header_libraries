@@ -20,14 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cstddef>
-#include <cstdio>
-#include <cstdlib>
-#include <tuple>
-#include <type_traits>
-#include <variant>
-
 #include "daw/daw_function_table.h"
+
+#include <cstdint>
+#include <cstdio>
+#include <type_traits>
 
 using parser_func_t = std::add_pointer_t<uintmax_t( uintmax_t, char const * )>;
 
@@ -148,10 +145,10 @@ inline constexpr daw::function_table_t<
          }};
 
 int main( int argc, char **argv ) {
-	char const * ptr = "12345678";
+	char const *ptr = "12345678";
 	if( argc > 1 ) {
 		ptr = argv[1];
-	} 
+	}
 	uintmax_t result = ftable( *ptr, 0U, ptr );
 	printf( "%lu\n", result );
 }

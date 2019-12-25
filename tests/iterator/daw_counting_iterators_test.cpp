@@ -20,10 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <daw/daw_algorithm.h>
 #include <daw/daw_benchmark.h>
 #include <daw/daw_random.h>
 #include <daw/iterator/daw_counting_iterators.h>
+
+#include <array>
+#include <vector>
 
 constexpr bool fwd_ary_test_001( ) {
 	std::array nums = {1, 2, 3, 4, 5, 6, 7};
@@ -96,11 +98,11 @@ int main( ) {
 		  auto first = daw::forward_counting_iterator( values.begin( ) );
 		  auto result = 0LL;
 		  while( first != values.end( ) ) {
-		  	result+= *first;
-		  	++first;
+			  result += *first;
+			  ++first;
 		  }
 		  daw::do_not_optimize( result );
-			return result / first.distance( );
+		  return result / first.distance( );
 	  },
 	  data );
 }

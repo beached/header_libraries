@@ -23,18 +23,19 @@
 #include "daw/daw_benchmark.h"
 #include "daw/daw_read_file.h"
 
+#include <cstdlib>
+#include <fstream>
 #include <iostream>
+#include <optional>
 #include <string>
+#include <type_traits>
 
 void daw_read_file_001( std::string s ) {
 	auto f = daw::read_file( s );
-	if( not f ) {
-		std::cerr << "./daw_utility_test_bin does not exist\n";
-		std::abort( );
-	}
+	daw::expecting_message( f, "./daw_utility_test_bin does not exist" );
 	std::cout << f->size( ) << '\n';
 }
 
-int main( int, char** argv ) {
+int main( int, char **argv ) {
 	daw_read_file_001( argv[0] );
 }

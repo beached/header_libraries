@@ -20,10 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <string>
-
-#include "daw/daw_benchmark.h"
+#include "daw/daw_move.h"
 #include "daw/daw_piecewise_factory.h"
+
+#include <exception>
+#include <functional>
+#include <string>
 
 struct A {
 	int a = 0;
@@ -38,7 +40,7 @@ constexpr bool test( bool b ) noexcept {
 	if( b ) {
 		return true;
 	} else {
-		std::terminate( );
+		std::abort( );
 	}
 }
 

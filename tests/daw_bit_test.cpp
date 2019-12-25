@@ -20,11 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cstdint>
-#include <iostream>
-
-#include "daw/daw_benchmark.h"
 #include "daw/daw_bit.h"
+
+#include <cstdint>
 
 static_assert( daw::get_left_mask<uint8_t>( 5 ) == 0b00000111 );
 static_assert( daw::get_right_mask<uint8_t>( 5 ) == 0b11100000 );

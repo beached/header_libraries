@@ -23,6 +23,8 @@
 #include "daw/daw_benchmark.h"
 #include "daw/daw_endian.h"
 
+#include <cstdint>
+
 constexpr bool to_host_order_001( ) {
 	if( daw::endian::native == daw::endian::little ) {
 		constexpr uint16_t value = 0x1234;

@@ -20,11 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "daw/iterator/daw_output_stream_iterator.h"
+
 #include <algorithm>
 #include <array>
 #include <iostream>
-
-#include "daw/iterator/daw_output_stream_iterator.h"
 
 void test_output_stream_001( ) {
 	auto osi = daw::make_output_stream_iterator( std::cout );

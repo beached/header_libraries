@@ -20,7 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/daw_benchmark.h"
+#include <new>
+
 #include "daw/daw_unique_array.h"
 
 void daw_unique_array_test_001( ) {

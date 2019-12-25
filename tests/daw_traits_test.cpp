@@ -20,18 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cstdint>
-#include <iostream>
-#include <list>
-#include <string>
-#include <tuple>
-#include <unordered_map>
-#include <vector>
-
+#include "daw/cpp_17.h"
 #include "daw/daw_benchmark.h"
 #include "daw/daw_string_view.h"
 #include "daw/daw_traits.h"
-#include "daw/daw_utility.h"
+
+#include <array>
+#include <cstddef>
+#include <cstdint>
+#include <iostream>
+#include <iterator>
+#include <list>
+#include <string>
+#include <tuple>
+#include <type_traits>
+#include <unordered_map>
+#include <vector>
 
 namespace daw_traits_is_equality_comparable {
 	static_assert( daw::traits::is_equality_comparable_v<std::string>,

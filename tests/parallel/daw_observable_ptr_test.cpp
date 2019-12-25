@@ -20,10 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <iostream>
-
 #include "daw/daw_benchmark.h"
 #include "daw/parallel/daw_observable_ptr.h"
+
+#include <atomic>
+#include <cstdint>
 
 void test_001( ) {
 	int *p = new int{4};

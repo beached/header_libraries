@@ -20,11 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <iostream>
-#include <limits>
-
 #include "daw/daw_benchmark.h"
 #include "daw/daw_bit_queues.h"
+
+#include <cstddef>
+#include <cstdint>
+#include <iostream>
+#include <limits>
+#include <stdexcept>
 
 bool daw_bit_queues_test_001( ) {
 	using value_type = uint16_t;

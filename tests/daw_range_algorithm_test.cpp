@@ -20,14 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <algorithm>
-#include <cstdint>
-#include <string>
-#include <unordered_map>
-#include <vector>
-
+#include "daw/daw_algorithm.h"
 #include "daw/daw_benchmark.h"
 #include "daw/daw_range_algorithm.h"
+
+#include <algorithm>
+#include <cstdint>
+#include <iterator>
+#include <numeric>
+#include <vector>
 
 namespace daw {
 	void range_algorithm_accumulate( ) {

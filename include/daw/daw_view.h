@@ -22,34 +22,34 @@
 
 #pragma once
 
+#include "daw_exception.h"
+#include "daw_move.h"
+
 #include <iterator>
 #include <stdexcept>
 #include <type_traits>
 
-#include "daw_exception.h"
-#include "daw_move.h"
+namespace daw::view_impl {
+	template<typename T>
+	struct const_iterator_test {
+		using type = T;
+	};
+
+	template<typename T>
+	struct const_iterator_test<T const *> {
+		using type = T const *;
+	};
+
+	template<typename T>
+	struct const_iterator_test<T *> {
+		using type = T const *;
+	};
+
+	template<typename T>
+	using get_const_iterator_t = typename const_iterator_test<T>::type;
+} // namespace daw::view_impl
 
 namespace daw {
-	namespace view_impl {
-		template<typename T>
-		struct const_iterator_test {
-			using type = T;
-		};
-
-		template<typename T>
-		struct const_iterator_test<T const *> {
-			using type = T const *;
-		};
-
-		template<typename T>
-		struct const_iterator_test<T *> {
-			using type = T const *;
-		};
-
-		template<typename T>
-		using get_const_iterator_t = typename const_iterator_test<T>::type;
-	} // namespace view_impl
-
 	template<typename BidirectionalIterator>
 	struct [[nodiscard]] view {
 		using value_type =
@@ -92,6 +92,14 @@ namespace daw {
 
 		[[nodiscard]] constexpr difference_type ssize( ) const {
 			return m_size;
+		}
+
+		[[nodiscard]] constexpr iterator data( ) {
+			return m_first;
+		}
+
+		[[nodiscard]] constexpr const_iterator data( ) const {
+			return m_first;
 		}
 
 		// Iterator access
@@ -181,11 +189,11 @@ namespace daw {
 
 		constexpr void remove_prefix( size_type n ) {
 			m_size -= static_cast<difference_type>( n );
-			std::advance( m_first, n );
+			std::advance( m_first, static_cast<difference_type>( n ) );
 		}
 
 		constexpr void remove_prefix( ) {
-			remove_prefix( 1 );
+			remove_prefix( 1U );
 		}
 
 		constexpr void remove_suffix( size_type n ) {

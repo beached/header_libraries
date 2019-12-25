@@ -20,45 +20,36 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/daw_benchmark.h"
-#include "daw/daw_poly_var.h"
+#include "daw/daw_metro_hash.h"
+#include "daw/daw_string_view.h"
+#include "daw/daw_view.h"
 
+#include <cstring>
 #include <iostream>
 
-namespace {
-	struct Base {
-		Base( ) = default;
-		virtual ~Base( ) = default;
-		Base( Base const & ) = default;
-		Base( Base && ) = default;
-		Base &operator=( Base const & ) = default;
-		Base &operator=( Base && ) = default;
+inline constexpr daw::string_view test_value =
+  "012345678901234567890123456789012345678901234567890123456789012";
 
-		virtual int get_num( ) = 0;
-	};
+inline constexpr auto h0 =
+  daw::metro::hash64( {test_value.begin( ), test_value.end( )}, 0 );
+inline constexpr auto h1 =
+  daw::metro::hash64( {test_value.begin( ), test_value.end( )}, 1 );
 
-	struct C1 : Base {
-		C1( ) = default;
-		int get_num( ) override {
-			return 1;
-		}
-	};
+// const uint8_t MetroHash64::test_seed_0[8] = {0x6B, 0x75, 0x3D, 0xAE,
+//                                             0x06, 0x70, 0x4B, 0xAD};
+// const uint8_t MetroHash64::test_seed_1[8] = {0x3B, 0x0D, 0x48, 0x1C,
+//                                             0xF4, 0xB9, 0xB8, 0xDF};
 
-	struct C2 : Base {
-		C2( ) = default;
-		int get_num( ) override {
-			return 2;
-		}
-	};
-} // namespace
+// static_assert( h0 == 0x658F'044F'5C73'0E40ULL );
+// static_assert( h0 == 0x073CAAB960623211 );
 
-int main( int argc, char ** ) {
-	if( argc % 2 == 0 ) {
-		daw::poly_var<Base, C1, C2> val( C2{} );
-		std::cout << "result: " << val->get_num( ) << '\n';
-		return 0;
-	}
-	daw::poly_var<Base, C1, C2> val( C1{} );
-	std::cout << "result: " << val->get_num( ) << '\n';
-	return 0;
+int main( int argc, char **argv ) {
+	(void)h0;
+	(void)h1;
+
+	std::cout << std::hex << h0 << '\n';
+	std::cout << std::hex << h1 << '\n';
+	auto const h = daw::metro::hash64(
+	  daw::view<char const *>( argv[0], argv[0] + strlen( argv[0] ) ), 0 );
+	std::cout << std::hex << h << '\n';
 }

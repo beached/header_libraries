@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <iostream>
-
 #include "daw/static_hash_table.h"
+
+#include <iostream>
 
 int main( int, char ** ) {
 	constexpr static daw::static_hash_t<size_t, 2> const values = {

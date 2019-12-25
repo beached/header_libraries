@@ -23,6 +23,8 @@
 #include "daw/daw_benchmark.h"
 #include "daw/daw_ordered_map.h"
 
+#include <string>
+
 int main( ) {
 	daw::ordered_map<std::string, int> dict{};
 

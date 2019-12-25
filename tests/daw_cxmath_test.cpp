@@ -20,13 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cmath>
-#include <iostream>
-#include <limits>
-
 #include "daw/daw_benchmark.h"
 #include "daw/daw_cxmath.h"
 #include "daw/daw_random.h"
+
+#include <cmath>
+#include <cstddef>
+#include <cstdint>
+#include <iostream>
+#include <limits>
+#include <vector>
 
 template<typename Float>
 constexpr bool flt_eql_exact( Float lhs, Float rhs ) noexcept {
@@ -90,11 +93,11 @@ int main( ) {
 
 	auto const nums =
 	  daw::make_random_data<int32_t, std::vector<float>>( 1'000, -1'000, 1'000 );
-	#if defined( DEBUG ) or not defined( NDEBUG )
-		constexpr size_t RUNCOUNT = 10'000;
-	#else	
-		constexpr size_t RUNCOUNT = 100'000;
-	#endif
+#if defined( DEBUG ) or not defined( NDEBUG )
+	constexpr size_t RUNCOUNT = 10'000;
+#else
+	constexpr size_t RUNCOUNT = 100'000;
+#endif
 	daw::bench_n_test<RUNCOUNT>(
 	  "daw::cxmath::cxmath_impl::bits( flt )",
 	  []( auto &&floats ) {

@@ -20,10 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <string>
-
 #include "daw/daw_benchmark.h"
 #include "daw/daw_string.h"
+
+#include <cctype>
+#include <string>
+#include <vector>
 
 void make_string_testing( ) {
 	std::string a = "a b c d e f";

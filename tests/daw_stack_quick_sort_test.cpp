@@ -25,14 +25,21 @@
 #include "daw/daw_stack_quick_sort.h"
 
 #include <algorithm>
+#include <cstddef>
 #include <cstdint>
 #include <iostream>
 #include <iterator>
+#include <type_traits>
 #include <vector>
 
 using value_type = uint64_t;
 inline size_t constexpr MAX_VALUES = 1'048'576U;
-static auto const rnd_values = daw::make_random_data<value_type>( MAX_VALUES );
+
+auto const &get_random_data( ) {
+	static auto const rnd_values =
+	  daw::make_random_data<value_type>( MAX_VALUES );
+	return rnd_values;
+}
 
 template<typename T>
 std::vector<T> copy_n_values( std::vector<T> const &vals, size_t n ) {
@@ -44,7 +51,7 @@ std::vector<T> copy_n_values( std::vector<T> const &vals, size_t n ) {
 
 template<size_t N>
 void test_perf_comp( ) {
-	auto const values = copy_n_values( rnd_values, N );
+	auto const values = copy_n_values( get_random_data( ), N );
 	daw::do_not_optimize( values );
 	auto const validator = []( auto const &v ) {
 		auto unsorted_pos = std::adjacent_find(

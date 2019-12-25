@@ -20,14 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <array>
-#include <cstdint>
-#include <iterator>
-#include <string>
-#include <unordered_map>
-
 #include "daw/daw_algorithm.h"
 #include "daw/daw_benchmark.h"
+
+#include <algorithm>
+#include <array>
+#include <cstddef>
+#include <ctime>
+#include <functional>
+#include <iostream>
+#include <iterator>
+#include <unordered_map>
+#include <vector>
 
 constexpr bool daw_safe_advance_test_001( ) {
 	std::array<int, 11> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -243,17 +247,17 @@ static_assert( daw_begin_at_test_004( ) );
 
 /*
 constexpr bool daw_transform_many( ) {
-	std::array<uint32_t, 5> in1 = {1, 3, 5, 7, 9};
-	std::array<uint32_t, 5> in2 = {0, 2, 4, 6, 8};
-	std::array<uint32_t, 5> out{};
+  std::array<uint32_t, 5> in1 = {1, 3, 5, 7, 9};
+  std::array<uint32_t, 5> in2 = {0, 2, 4, 6, 8};
+  std::array<uint32_t, 5> out{};
 
-	daw::algorithm::transform_many(
-	  begin( in1 ), end( in1 ), begin( in2 ), out.data( ),
-	  []( auto const &v1, auto const &v2 ) { return v1 + v2; } );
+  daw::algorithm::transform_many(
+    begin( in1 ), end( in1 ), begin( in2 ), out.data( ),
+    []( auto const &v1, auto const &v2 ) { return v1 + v2; } );
 
-	daw::expecting_message( out.size( ) == in1.size( ),
-	                        "1. Incorrect size on output" );
-	return true;
+  daw::expecting_message( out.size( ) == in1.size( ),
+                          "1. Incorrect size on output" );
+  return true;
 }
 static_assert( daw_transform_many( ) );
 */

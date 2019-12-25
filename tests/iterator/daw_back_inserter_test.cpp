@@ -21,13 +21,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <algorithm>
-#include <array>
-#include <vector>
-
 #include "daw/daw_benchmark.h"
 #include "daw/daw_traits.h"
 #include "daw/iterator/daw_back_inserter.h"
+
+#include <algorithm>
+#include <array>
+#include <iterator>
+#include <type_traits>
+#include <vector>
 
 static_assert( daw::traits::is_output_iterator_test<
                daw::remove_cvref_t<decltype(

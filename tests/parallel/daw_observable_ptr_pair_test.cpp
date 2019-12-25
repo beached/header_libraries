@@ -21,7 +21,11 @@
 // SOFTWARE.
 
 #include "daw/daw_benchmark.h"
+#include "daw/parallel/daw_observable_ptr.h"
 #include "daw/parallel/daw_observable_ptr_pair.h"
+
+#include <atomic>
+#include <new>
 
 void test_001( ) {
 	int *p = new int{4};
@@ -125,4 +129,3 @@ int main( ) {
 	test_visit_008( );
 	test_visit_009( );
 }
-

@@ -20,18 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "daw/daw_string_view.h"
+#include "daw/iterator/InputIterator.h"
+
 #include <cassert>
 #include <iostream>
 #include <numeric>
-
-#include "daw/daw_string_view.h"
-#include "daw/iterator/InputIterator.h"
 
 void test_001( ) {
 	std::array tbl = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 	daw::InputRange rng{tbl};
 	auto result = std::accumulate( rng.begin( ), rng.end( ), 0 );
 	assert( result == 45 );
+	(void)result;
 };
 
 int main( int argc, char **argv ) {
@@ -43,4 +44,3 @@ int main( int argc, char **argv ) {
 	}
 	std::cout << "Total: " << val << '\n';
 }
-

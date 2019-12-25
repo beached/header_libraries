@@ -11,7 +11,8 @@ jobs:
     runs-on: [windows-latest]
     steps:
       - uses: actions/checkout@v1
-      - name: Build and Test
-        run: ./ci_test_windows.cmd
-        shell: cmd
+      - name: Build
+        run: .\ci_scripts\ci_windows_build.cmd
+      - name: Test
+        run: .\ci_scripts\ci_windows_test.cmd
 

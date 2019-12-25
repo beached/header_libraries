@@ -21,9 +21,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "daw/daw_algorithm.h"
 #include "daw/daw_benchmark.h"
 #include "daw/daw_graph.h"
 #include "daw/daw_graph_algorithm.h"
+
+#include <iosfwd>
+#include <iterator>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 void test_topoligical_walk_001( daw::graph_t<char> &graph ) {
 	std::string result{};

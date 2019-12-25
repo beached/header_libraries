@@ -20,11 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <iostream>
-#include <mutex>
-
 #include "daw/daw_benchmark.h"
 #include "daw/daw_copiable_unique_ptr.h"
+#include "daw/daw_utility.h"
+
+#include <cstddef>
+#include <iostream>
+#include <mutex>
+#include <type_traits>
 
 void daw_copiable_unique_ptr_test_01( ) {
 	struct lrg {

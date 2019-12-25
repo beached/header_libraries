@@ -24,6 +24,9 @@
 #include "daw/daw_bounded_graph.h"
 #include "daw/daw_fnv1a_hash.h"
 
+#include <cstddef>
+#include <functional>
+
 inline constexpr size_t const MaxNodes = 10U;
 
 constexpr bool f1( ) {

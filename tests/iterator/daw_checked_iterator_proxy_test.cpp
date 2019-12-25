@@ -20,10 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <iostream>
-
 #include "daw/daw_benchmark.h"
 #include "daw/iterator/daw_checked_iterator_proxy.h"
+
+#include <iostream>
+#include <stdexcept>
+#include <vector>
 
 void daw_checked_iterator_proxy_001( ) {
 	std::vector<int> const test = {0, 1, 2, 3, 4};

@@ -20,13 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <array>
-#include <cassert>
-#include <cstdint>
-#include <iostream>
-
 #include "daw/daw_benchmark.h"
 #include "daw/daw_sip_hash.h"
+
+#include <array>
+#include <cassert>
+#include <cstddef>
+#include <cstdint>
+#include <iostream>
 
 namespace {
 	inline constexpr size_t const REPEATS = 1000U;

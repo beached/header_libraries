@@ -29,6 +29,7 @@
 #include <vector>
 
 #include "daw_bit.h"
+#include "daw_bounded_array.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
@@ -103,7 +104,7 @@ namespace daw {
 			} else if( bw < bsizeof<value_t> ) {
 				bw = bsizeof<value_t> - bw;
 			}
-			if( bw == ) {
+			if( bw == 0 ) {
 				return std::numeric_limits<value_t>::max( );
 			}
 			return daw::mask_msb<value_t>( bw );
@@ -121,7 +122,7 @@ namespace daw {
 		static constexpr size_t const m_element_capacity =
 		  bitset_impl::get_elements_needed<BitWidth, value_t>( );
 
-		std::array<value_t, m_element_capacity> m_data{};
+		bounded_array_t<value_t, m_element_capacity> m_data{};
 
 		struct bit_address_t {
 			value_t index;
@@ -478,7 +479,7 @@ namespace daw {
 				value_t carry = 0U;
 				for( size_t n = 0; n < m_data.size( ); ++n ) {
 					value_t next_carry =
-					  ( m_data[n] & daw::get_right_mask<value_t>( bits ) ) >>
+					  ( m_data[n] & daw::mask_lsb<value_t>( bits ) ) >>
 					  ( bsizeof<value_t> - bits );
 					m_data[n] <<= bits;
 					m_data[n] |= carry;

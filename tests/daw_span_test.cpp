@@ -20,21 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/daw_benchmark.h"
 #include "daw/daw_span.h"
+
+#include <array>
+#include <iterator>
+#include <type_traits>
 
 // Test trait
 static_assert( daw::is_daw_span_v<daw::span<int>> );
 static_assert( daw::is_daw_span_v<daw::span<int const>> );
-static_assert( !daw::is_daw_span_v<int> );
+static_assert( not daw::is_daw_span_v<int> );
 
-static_assert( !std::is_constructible_v<daw::span<int>, daw::span<int> const> );
+static_assert( not std::is_constructible_v<daw::span<int>, daw::span<int> const> );
 
 // Ensure that one cannot convert or construct a non_const T from a const T span
 static_assert(
-  !std::is_constructible_v<daw::span<int>, daw::span<int const> const> );
+  not std::is_constructible_v<daw::span<int>, daw::span<int const> const> );
 static_assert(
-  !std::is_convertible_v<daw::span<int const> const, daw::span<int>> );
+  not std::is_convertible_v<daw::span<int const> const, daw::span<int>> );
 
 constexpr bool construct_from_nullptr_const( ) {
 	daw::span<int const> const a( nullptr );
@@ -163,7 +166,7 @@ constexpr bool copy_const_span_of_const( ) {
 }
 static_assert( copy_const_span_of_const( ) );
 
-static_assert( !daw::span<int const>::has_mutable_pointer );
+static_assert( not daw::span<int const>::has_mutable_pointer );
 static_assert( daw::span<int>::has_mutable_pointer );
 
 constexpr bool copy_to_mutable( ) {
@@ -180,7 +183,7 @@ constexpr bool ctad_ptr_size_const( ) {
 	std::array<int const, 5> arry = {1, 2, 3, 4, 5};
 	daw::span a( arry.data( ), arry.size( ) );
 
-	return !a.has_mutable_pointer and a.data( ) == arry.data( ) and
+	return not a.has_mutable_pointer and a.data( ) == arry.data( ) and
 	       a.size( ) == arry.size( ) and
 	       a.size_bytes( ) == ( a.size( ) * sizeof( int ) );
 }
@@ -202,7 +205,7 @@ constexpr bool ctad_ptr_ptr_const_01( ) {
 	int const *ptr2 = arry.data( ) + arry.size( );
 	daw::span a( ptr1, ptr2 );
 
-	return !a.has_mutable_pointer and a.data( ) == arry.data( ) and
+	return not a.has_mutable_pointer and a.data( ) == arry.data( ) and
 	       a.size( ) == arry.size( ) and
 	       a.size_bytes( ) == ( a.size( ) * sizeof( int ) );
 }
@@ -214,7 +217,7 @@ constexpr bool ctad_ptr_ptr_const_02( ) {
 	int *ptr2 = arry.data( ) + arry.size( );
 	daw::span a( ptr1, ptr2 );
 
-	return !a.has_mutable_pointer and a.data( ) == arry.data( ) and
+	return not a.has_mutable_pointer and a.data( ) == arry.data( ) and
 	       a.size( ) == arry.size( ) and
 	       a.size_bytes( ) == ( a.size( ) * sizeof( int ) );
 }

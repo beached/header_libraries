@@ -92,6 +92,17 @@ namespace daw {
 			return append_hash( impl::fnv_offset( ), value );
 		}
 
+		[[nodiscard]] constexpr size_t operator( )( char const *ptr ) const
+		  noexcept {
+			auto hash = impl::fnv_offset( );
+			while( *ptr != '\0' ) {
+				hash = hash ^ static_cast<size_t>( *ptr );
+				hash *= impl::fnv_prime( );
+				++ptr;
+			}
+			return hash;
+		}
+
 		template<typename T>
 		[[nodiscard]] constexpr size_t operator( )( T const *const ptr ) const
 		  noexcept {

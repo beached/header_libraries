@@ -20,15 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <algorithm>
-#include <cstdint>
-#include <iostream>
-#include <string>
-#include <unordered_map>
-#include <vector>
-
+#include "daw/daw_algorithm.h"
 #include "daw/daw_benchmark.h"
 #include "daw/daw_container_algorithm.h"
+
+#include <algorithm>
+#include <array>
+#include <cstddef>
+#include <cstdint>
+#include <ctime>
+#include <functional>
+#include <iostream>
+#include <iterator>
+#include <vector>
 
 void container_algorithm_accumulate( ) {
 	std::vector<int> test( 100, 1 );

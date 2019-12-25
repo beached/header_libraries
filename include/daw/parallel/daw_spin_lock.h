@@ -31,7 +31,7 @@ namespace daw {
 
 	public:
 		inline bool try_lock( ) noexcept {
-			return not m_flag.test_and_set( std::memory_order_acquire );
+			return not m_flag.test_and_set( );
 		}
 
 		inline void lock( ) noexcept {

@@ -20,13 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <array>
-#include <memory>
-#include <stdexcept>
-
+#include "daw/daw_algorithm.h"
 #include "daw/daw_benchmark.h"
+#include "daw/daw_move.h"
 #include "daw/daw_utility.h"
 #include "daw/daw_validated.h"
+
+#include <array>
+#include <iterator>
+#include <memory>
+#include <stdexcept>
+#include <type_traits>
+#include <utility>
 
 template<typename T, T min_value, T max_value>
 struct int_validator_t {
