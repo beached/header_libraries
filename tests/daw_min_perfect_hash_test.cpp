@@ -82,7 +82,7 @@ struct MetroHash {
 	}
 
 	constexpr size_t operator( )( std::string_view sv, size_t seed = 0 ) const {
-		return daw::metro::hash64( {sv.begin( ), sv.end( )}, seed );
+		return daw::metro::hash64( daw::view( sv.begin( ), sv.end( ) ), seed );
 	}
 };
 template<size_t N>
@@ -104,21 +104,20 @@ bool validate( Hm &&hm, Arry const &ary ) {
 
 using namespace std::string_view_literals;
 constexpr bool test_001( ) {
-	auto ph =
-	  daw::make_perfect_hash_table<IntHasher, int, char const *>(
-	    {{100, "Continue"},
-	     {101, "Switching Protocols"},
-	     {102, "Processing"},
-	     {200, "OK"},
-	     {201, "Created"},
-	     {202, "Accepted"},
-	     {203, "Non-Authoritative Information"},
-	     {204, "No Content"},
-	     {205, "Reset Content"},
-	     {206, "Partial Content"},
-	     {207, "Multi-Status"},
-	     {208, "Already Reported"},
-	     {226, "IM Used"}} );
+	auto ph = daw::make_perfect_hash_table<IntHasher, int, char const *>(
+	  {{100, "Continue"},
+	   {101, "Switching Protocols"},
+	   {102, "Processing"},
+	   {200, "OK"},
+	   {201, "Created"},
+	   {202, "Accepted"},
+	   {203, "Non-Authoritative Information"},
+	   {204, "No Content"},
+	   {205, "Reset Content"},
+	   {206, "Partial Content"},
+	   {207, "Multi-Status"},
+	   {208, "Already Reported"},
+	   {226, "IM Used"}} );
 
 	daw::expecting( "Continue"sv, ph[100] );
 	daw::expecting( "Switching Protocols"sv, ph[101] );
