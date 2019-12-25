@@ -78,7 +78,7 @@ namespace daw {
 			  sizeof( values_type ) * 8U;
 			inline static constexpr size_t m_bins = Bits / m_bits_per_bin;
 
-			bounded_array_t<values_type, m_bins> m_values{};
+			daw::array<values_type, m_bins> m_values{};
 
 		public:
 			constexpr static_bitset( ) noexcept = default;
@@ -116,22 +116,13 @@ namespace daw {
 		template<typename hash_result>
 		[[nodiscard]] static constexpr hash_result
 		hash_combine( hash_result seed, hash_result hash ) noexcept {
-			uintmax_t const s = seed;
+
+			uintmax_t const s = seed + 1;
 			uintmax_t const h = hash;
 			return static_cast<hash_result>(
 			  s ^ ( h + 0x9e3779b9ULL + ( s << 6ULL ) + ( s >> 2ULL ) ) );
 		}
 	} // namespace mph_impl
-
-	// *****************************************************
-	// Forward Declare for Iterator
-	template<size_t N, typename Key, typename Value, typename Hasher,
-	         typename KeyEqual>
-	class perfect_hash_table_iterator;
-
-	template<size_t N, typename Key, typename Value, typename Hasher,
-	         typename KeyEqual>
-	class const_perfect_hash_table_iterator;
 
 	//*********************************************************************
 	// Minimal Perfect Hash Table
@@ -140,7 +131,7 @@ namespace daw {
 	// and https://blog.gopheracademy.com/advent-2017/mphf/
 	template<size_t N, typename Key, typename Value,
 	         typename Hasher = std::hash<Key>,
-	         typename KeyEqual = std::equal_to<Key>>
+	         typename KeyEqual = std::equal_to<>>
 	struct perfect_hash_table {
 		static_assert( std::is_default_constructible_v<Key> );
 		static_assert( std::is_default_constructible_v<Value> );
@@ -150,10 +141,9 @@ namespace daw {
 		using mapped_type = Value;
 		using size_type = std::size_t;
 		using difference_type = std::ptrdiff_t;
-		using key_equal = KeyEqual;
 		using reference = std::pair<key_type const &, mapped_type &>;
 		using const_reference = std::pair<key_type const &, mapped_type const &>;
-
+		using key_equal = KeyEqual;
 		using key_type_pointer = key_type const *;
 		using mapped_type_pointer = mapped_type *;
 		using const_mapped_type_pointer = mapped_type const *;
@@ -162,14 +152,6 @@ namespace daw {
 		static size_t constexpr m_data_size = mph_impl::next_pow2<N>( );
 		static_assert( m_data_size <= static_cast<size_t>(
 		                                std::numeric_limits<salt_type>::max( ) ) );
-		using iterator =
-		  perfect_hash_table_iterator<N, Key, Value, Hasher, KeyEqual>;
-		using const_iterator =
-		  const_perfect_hash_table_iterator<N, Key, Value, Hasher, KeyEqual>;
-
-		friend ::daw::perfect_hash_table_iterator<N, Key, Value, Hasher, KeyEqual>;
-		friend ::daw::const_perfect_hash_table_iterator<N, Key, Value, Hasher,
-		                                                KeyEqual>;
 
 		/***
 		 * Construct a perfect_hash_table from a range of pair like items that have
@@ -183,7 +165,7 @@ namespace daw {
 		template<typename ForwardIterator>
 		constexpr perfect_hash_table( ForwardIterator first,
 		                              ForwardIterator last ) {
-			bounded_array_t<bucket_t<ForwardIterator>, m_num_buckets> buckets{};
+			daw::array<bucket_t<ForwardIterator>, m_num_buckets> buckets{};
 
 			static_assert( std::is_default_constructible_v<ForwardIterator> );
 
@@ -201,16 +183,16 @@ namespace daw {
 				           return lhs.items.size( ) > rhs.items.size( );
 			           } );
 
-			bounded_array_t<bool, m_data_size> slots_claimed{};
+			daw::array<bool, m_data_size> slots_claimed{};
 
-			for( auto &bucket : buckets ) {
-				if( bucket.items.empty( ) ) {
-					// Buckets are sorted in desc order by item count, we have processed
-					// them all
-					break;
-				}
-				find_salt_for_bucket( bucket, slots_claimed );
-			}
+			std::find_if( buckets.cbegin( ), buckets.cend( ),
+			              [&]( auto const &bucket ) {
+				              if( bucket.items.empty( ) ) {
+					              return true;
+				              }
+				              find_salt_for_bucket( bucket, slots_claimed );
+				              return false;
+			              } );
 		}
 
 		explicit constexpr perfect_hash_table(
@@ -219,9 +201,9 @@ namespace daw {
 
 		[[nodiscard]] constexpr const_mapped_type_pointer
 		find( Key const &key ) const {
-			size_type const data_index = find_data_index( key );
-			if( m_set[data_index] ) {
-				return &m_values[data_index];
+			size_type const pos = find_data_index( key );
+			if( key_equal{}( key, m_keys[pos] ) ) {
+				return &m_values[pos];
 			}
 			return nullptr;
 		}
@@ -231,14 +213,14 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr bool contains( Key const &key ) const noexcept {
-			size_type const data_index = find_data_index( key );
-			return m_set[data_index];
+			size_type const pos = find_data_index( key );
+			return key_equal{}( key, m_keys[pos] );
 		}
 
 		[[nodiscard]] constexpr mapped_type_pointer find( Key const &key ) {
-			size_type const data_index = find_data_index( key );
-			if( m_set[data_index] ) {
-				return &m_values[data_index];
+			size_type const pos = find_data_index( key );
+			if( key_equal{}( key, m_keys[pos] ) ) {
+				return &m_values[pos];
 			}
 			return nullptr;
 		}
@@ -264,9 +246,9 @@ namespace daw {
 		static constexpr size_type m_num_buckets = mph_impl::get_bucket_count<N>( );
 
 		//***************
-		alignas( 64 ) bounded_array_t<salt_type, m_num_buckets> m_salts{};
-		alignas( 64 ) bounded_array_t<mapped_type, m_data_size> m_values{};
-		alignas( 64 ) mph_impl::static_bitset<m_data_size> m_set{};
+		daw::array<salt_type, m_num_buckets> m_salts{};
+		daw::array<mapped_type, m_data_size> m_values{};
+		daw::array<key_type, m_data_size> m_keys{};
 		//***************
 
 		template<size_type Space = m_data_size>
@@ -288,7 +270,7 @@ namespace daw {
 		template<typename ForwardIterator>
 		constexpr void
 		find_salt_for_bucket( bucket_t<ForwardIterator> const &bucket,
-		                      bounded_array_t<bool, m_data_size> &slots_claimed ) {
+		                      daw::array<bool, m_data_size> &slots_claimed ) {
 			if( bucket.items.size( ) == 1 ) {
 				auto const pos = daw::algorithm::find_index_of(
 				  slots_claimed.cbegin( ), slots_claimed.cend( ), false );
@@ -299,14 +281,11 @@ namespace daw {
 				}
 				slots_claimed[pos] = true;
 				m_salts[bucket.bucket_index] = -( static_cast<salt_type>( pos ) + 1 );
-				m_set.set_bit( pos );
+				m_keys[pos] = bucket.items[0]->first;
 				m_values[pos] = bucket.items[0]->second;
 			}
 
-			for( size_type s = 0;;
-			     s = ( s + 7 ) % static_cast<size_type>(
-			                       std::numeric_limits<salt_type>::max( ) ) ) {
-				salt_type const salt = static_cast<salt_type>( s );
+			for( salt_type salt = 1;; ++salt ) {
 				daw::bounded_vector_t<hash_result, m_data_size> slots_this_bucket{};
 
 				auto const success = daw::algorithm::all_of(
@@ -314,12 +293,10 @@ namespace daw {
 				  [&]( auto const *const item ) -> bool {
 					  hash_result const slot_wanted =
 					    scale_hash( call_hash( item->first, salt ) );
-					  if( slots_claimed[slot_wanted] ) {
-						  return false;
-					  }
-					  if( daw::algorithm::find( slots_this_bucket.begin( ),
-					                            slots_this_bucket.end( ), slot_wanted ) !=
-					      slots_this_bucket.end( ) ) {
+					  if( slots_claimed[slot_wanted] or
+					      ( daw::algorithm::find(
+					          slots_this_bucket.begin( ), slots_this_bucket.end( ),
+					          slot_wanted ) != slots_this_bucket.end( ) ) ) {
 						  return false;
 					  }
 					  slots_this_bucket.push_back( slot_wanted );
@@ -330,14 +307,13 @@ namespace daw {
 					m_salts[bucket.bucket_index] = salt;
 					for( size_type i = 0; i < bucket.items.size( ); ++i ) {
 						auto const pos = static_cast<size_t>( slots_this_bucket[i] );
-						m_set.set_bit( pos );
+						m_keys[pos] = bucket.items[i]->first;
 						m_values[pos] = bucket.items[i]->second;
 						slots_claimed[pos] = true;
 					}
 					return;
 				}
 			}
-			std::abort( );
 		}
 
 		[[nodiscard]] constexpr size_type find_data_index( Key const &key ) const {

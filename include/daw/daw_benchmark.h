@@ -537,7 +537,7 @@ namespace daw {
 		}
 
 		template<typename T, typename U,
-		         std::enable_if_t<!(is_streamable_v<T> and is_streamable_v<U>),
+		         std::enable_if_t<not( is_streamable_v<T> and is_streamable_v<U> ),
 		                          std::nullptr_t> = nullptr>
 		constexpr void output_expected_error( T &&, U && ) {
 			std::cerr << "Invalid or unexpected result\n";
@@ -546,11 +546,11 @@ namespace daw {
 
 	template<typename T, typename U>
 	constexpr void expecting( T &&expected_result, U &&result ) {
-		if( !( expected_result == result ) ) {
+		if( not( expected_result == result ) ) {
 #ifdef __VERSION__
-			if constexpr( !daw::string_view( __VERSION__ )
-			                 .starts_with(
-			                   daw::string_view( "4.2.1 Compatible Apple LLVM" ) ) ) {
+			if constexpr( not daw::string_view( __VERSION__ )
+			                    .starts_with( daw::string_view(
+			                      "4.2.1 Compatible Apple LLVM" ) ) ) {
 				expecting_impl::output_expected_error( expected_result, result );
 			}
 #endif
@@ -560,7 +560,7 @@ namespace daw {
 
 	template<typename Bool>
 	constexpr void expecting( Bool &&expected_result ) {
-		if( !static_cast<bool>( expected_result ) ) {
+		if( not static_cast<bool>( expected_result ) ) {
 			std::cerr << "Invalid result. Expecting true\n";
 			std::abort( );
 		}
@@ -568,7 +568,7 @@ namespace daw {
 
 	template<typename Bool, typename String>
 	constexpr void expecting_message( Bool &&expected_result, String &&message ) {
-		if( !static_cast<bool>( expected_result ) ) {
+		if( not static_cast<bool>( expected_result ) ) {
 			std::cerr << message << '\n';
 			std::abort( );
 		}

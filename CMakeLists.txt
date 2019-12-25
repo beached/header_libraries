@@ -74,7 +74,6 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_math
 	daw_memory_mapped_file
 	daw_metro_hash
-	daw_min_perfect_hash
 	daw_natural
 	daw_overload
 	daw_optional
@@ -94,7 +93,6 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_size_literals
 	daw_sort_n
 	daw_stack_function
-	daw_stack_quick_sort
 #	daw_static_bitset
 	daw_string
 	daw_string_split_range
@@ -157,6 +155,8 @@ set( TESTED_ITERATOR_HEADERS_PREFIXES_NB
 set( DEV_HEADER_FILES_NB
 	daw_hash_table2
 	daw_range
+	daw_min_perfect_hash
+	daw_stack_quick_sort
 	daw_range_algorithm
 	daw_range_collection
 )

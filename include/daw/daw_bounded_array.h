@@ -29,7 +29,7 @@
 
 namespace daw {
 	template<typename T, size_t N>
-	struct bounded_array_t {
+	struct array {
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
@@ -108,22 +108,24 @@ namespace daw {
 		constexpr const_reference operator[]( size_type pos ) const noexcept {
 			return m_data[pos];
 		}
-	}; // bounded_array_t
+	}; // array
 
 	template<typename T, typename U, size_t N>
-	constexpr bool operator==( bounded_array_t<T, N> const &lhs,
-	                           bounded_array_t<U, N> const &rhs ) {
+	constexpr bool operator==( array<T, N> const &lhs,
+	                           array<U, N> const &rhs ) {
 
 		return daw::algorithm::equal( lhs.cbegin( ), lhs.cend( ), rhs.cbegin( ),
 		                              rhs.cend( ) );
 	}
 
 	template<typename T, typename U, size_t N>
-	constexpr bool operator!=( bounded_array_t<T, N> const &lhs,
-	                           bounded_array_t<U, N> const &rhs ) {
+	constexpr bool operator!=( array<T, N> const &lhs,
+	                           array<U, N> const &rhs ) {
 
 		return not daw::algorithm::equal( lhs.cbegin( ), lhs.cend( ), rhs.cbegin( ),
 		                               rhs.cend( ) );
 	}
 
+	template<typename T, size_t N>
+	using bounded_array_t = daw::array<T, N>;
 } // namespace daw

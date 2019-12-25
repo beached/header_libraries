@@ -104,7 +104,7 @@ bool validate( Hm &&hm, Arry const &ary ) {
 
 using namespace std::string_view_literals;
 constexpr bool test_001( ) {
-	constexpr auto ph =
+	auto ph =
 	  daw::make_perfect_hash_table<IntHasher, int, char const *>(
 	    {{100, "Continue"},
 	     {101, "Switching Protocols"},
