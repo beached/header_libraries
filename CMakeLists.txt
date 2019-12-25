@@ -126,11 +126,14 @@ set( TESTED_PARALLEL_HEADERS_PREFIXES_NB
 	daw_counter
 	daw_latch
 	daw_locked_value
-	daw_observable_ptr
-	daw_observable_ptr_pair
 	daw_scoped_multilock
 	daw_semaphore
 	daw_spin_lock
+)
+
+set( DEV_PARALLEL_HEADERS_PREFIXES_NB
+	daw_observable_ptr
+	daw_observable_ptr_pair
 )
 
 set( TESTED_ITERATOR_HEADERS_PREFIXES_NB
@@ -248,6 +251,13 @@ foreach( CUR_PREFIX ${TESTED_PARALLEL_HEADERS_PREFIXES_NB} )
 	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/parallel/${CUR_PREFIX}.h ${TEST_FOLDER}/parallel/${CUR_PREFIX}_test.cpp )
 	target_link_libraries( ${CUR_PREFIX}_test_bin ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
 	add_test( ${CUR_PREFIX}_test ${CUR_PREFIX}_test_bin )
+	add_dependencies( full ${CUR_PREFIX}_test_bin )
+endforeach( CUR_PREFIX )
+
+foreach( CUR_PREFIX ${DEV_PARALLEL_HEADERS_PREFIXES_NB} )
+	install( FILES "${HEADER_FOLDER}/daw/parallel/${CUR_PREFIX}.h" DESTINATION include/daw/parallel )
+	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/parallel/${CUR_PREFIX}.h ${TEST_FOLDER}/parallel/${CUR_PREFIX}_test.cpp )
+	target_link_libraries( ${CUR_PREFIX}_test_bin ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
 	add_dependencies( full ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
 
