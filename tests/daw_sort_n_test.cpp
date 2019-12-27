@@ -949,7 +949,7 @@
 void sort_n_test_001( ) {
 #if defined( DEBUG ) or not defined( NDEBUG )
 #define DATASIZE 100'000
-#define NUMRUNS 10'000
+#define NUMRUNS 1'000
 #else
 #define DATASIZE 1'000'000
 #define NUMRUNS 100'000
