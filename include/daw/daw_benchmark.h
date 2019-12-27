@@ -170,8 +170,10 @@ namespace daw {
 	}
 #else
 	namespace internal {
-		inline void UseCharPointer( char const volatile * ) {}
-	} // namespace internal
+		namespace {
+			[[maybe_unused]] constexpr void UseCharPointer( char const volatile * ) {}
+		} // namespace
+	}   // namespace internal
 
 	template<class T>
 	inline void do_not_optimize( T const &value ) {
@@ -216,9 +218,11 @@ namespace daw {
 	}
 
 	namespace bench_impl {
-		template<typename... Args>
-		constexpr void expander( Args &&... ) {}
-	} // namespace bench_impl
+		namespace {
+			template<typename... Args>
+			[[maybe_unused]] constexpr void expander( Args &&... ) {}
+		} // namespace
+	}   // namespace bench_impl
 
 	/***
 	 *
@@ -520,32 +524,35 @@ namespace daw {
 	}
 
 	namespace expecting_impl {
-		template<typename T>
-		using detect_streamable =
-		  decltype( std::declval<std::ios &>( ) << std::declval<T const &>( ) );
+		namespace {
+			template<typename T>
+			using detect_streamable =
+			  decltype( std::declval<std::ios &>( ) << std::declval<T const &>( ) );
 
-		template<typename T>
-		inline constexpr bool is_streamable_v =
-		  daw::is_detected_v<detect_streamable, T>;
+			template<typename T>
+			inline constexpr bool is_streamable_v =
+			  daw::is_detected_v<detect_streamable, T>;
 
-		template<typename T, typename U,
-		         std::enable_if_t<(is_streamable_v<T> and is_streamable_v<U>),
-		                          std::nullptr_t> = nullptr>
-		void output_expected_error( T &&expected_result, U &&result ) {
-			std::cerr << "Invalid result. Expecting '" << expected_result
-			          << "' but got '" << result << "'\n";
-		}
+			template<typename T, typename U,
+			         std::enable_if_t<(is_streamable_v<T> and is_streamable_v<U>),
+			                          std::nullptr_t> = nullptr>
+			[[maybe_unused]] void output_expected_error( T &&expected_result, U &&result ) {
+				std::cerr << "Invalid result. Expecting '" << expected_result
+				          << "' but got '" << result << "'\n";
+			}
 
-		template<typename T, typename U,
-		         std::enable_if_t<not( is_streamable_v<T> and is_streamable_v<U> ),
-		                          std::nullptr_t> = nullptr>
-		constexpr void output_expected_error( T &&, U && ) {
-			std::cerr << "Invalid or unexpected result\n";
-		}
-	} // namespace expecting_impl
+			template<
+			  typename T, typename U,
+			  std::enable_if_t<not( is_streamable_v<T> and is_streamable_v<U> ),
+			                   std::nullptr_t> = nullptr>
+			[[maybe_unused]] constexpr void output_expected_error( T &&, U && ) {
+				std::cerr << "Invalid or unexpected result\n";
+			}
+		} // namespace
+	}   // namespace expecting_impl
 
 	template<typename T, typename U>
-	constexpr void expecting( T &&expected_result, U &&result ) {
+	[[maybe_unused]] constexpr void expecting( T &&expected_result, U &&result ) {
 		if( not( expected_result == result ) ) {
 #ifdef __VERSION__
 			if constexpr( not daw::string_view( __VERSION__ )
@@ -559,7 +566,7 @@ namespace daw {
 	}
 
 	template<typename Bool>
-	constexpr void expecting( Bool &&expected_result ) {
+	[[maybe_unused]] constexpr void expecting( Bool &&expected_result ) {
 		if( not static_cast<bool>( expected_result ) ) {
 			std::cerr << "Invalid result. Expecting true\n";
 			std::abort( );
@@ -567,7 +574,7 @@ namespace daw {
 	}
 
 	template<typename Bool, typename String>
-	constexpr void expecting_message( Bool &&expected_result, String &&message ) {
+	[[maybe_unused]] constexpr void expecting_message( Bool &&expected_result, String &&message ) {
 		if( not static_cast<bool>( expected_result ) ) {
 			std::cerr << message << '\n';
 			std::abort( );
@@ -575,13 +582,15 @@ namespace daw {
 	}
 
 	namespace expecting_impl {
-		struct always_true {
-			template<typename... Args>
-			constexpr bool operator( )( Args &&... ) noexcept {
-				return true;
-			}
-		};
-	} // namespace expecting_impl
+		namespace {
+			struct always_true {
+				template<typename... Args>
+				[[nodiscard, maybe_unused]] constexpr bool operator( )( Args &&... ) noexcept {
+					return true;
+				}
+			};
+		} // namespace
+	}   // namespace expecting_impl
 
 	template<typename Exception = std::exception, typename Expression,
 	         typename Predicate = expecting_impl::always_true,

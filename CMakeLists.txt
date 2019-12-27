@@ -55,7 +55,6 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_clumpy_sparsy
 	daw_container_algorithm
 	daw_copiable_unique_ptr
-	daw_cstring
 	daw_cxmath
 	daw_endian
 	daw_exception
@@ -156,6 +155,7 @@ set( TESTED_ITERATOR_HEADERS_PREFIXES_NB
 )
 
 set( DEV_HEADER_FILES_NB
+	daw_cstring
 	daw_hash_table2
 	daw_range
 	daw_min_perfect_hash
@@ -258,14 +258,12 @@ foreach( CUR_PREFIX ${DEV_PARALLEL_HEADERS_PREFIXES_NB} )
 	install( FILES "${HEADER_FOLDER}/daw/parallel/${CUR_PREFIX}.h" DESTINATION include/daw/parallel )
 	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/parallel/${CUR_PREFIX}.h ${TEST_FOLDER}/parallel/${CUR_PREFIX}_test.cpp )
 	target_link_libraries( ${CUR_PREFIX}_test_bin ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
-	add_dependencies( full ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
 
 foreach( CUR_PREFIX ${DEV_HEADER_FILES_NB} )
 	install( FILES "${HEADER_FOLDER}/daw/${CUR_PREFIX}.h" DESTINATION include/daw )
 	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/${CUR_PREFIX}.h ${TEST_FOLDER}/${CUR_PREFIX}_test.cpp )
 	target_link_libraries( ${CUR_PREFIX}_test_bin ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
-	add_dependencies( full ${CUR_PREFIX}_test_bin )
 endforeach( CUR_PREFIX )
 
 foreach( CUR_PREFIX ${UNTESTED_HEADER_IMPL} )
