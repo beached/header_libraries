@@ -41,7 +41,7 @@ namespace daw {
 				using Fs::operator( )...;
 			};
 			template<typename... Fs>
-			[[maybe_unused]] overload_t( Fs... )->overload_t<Fs...>;
+			overload_t( Fs... )->overload_t<Fs...>;
 
 			template<typename F, typename... Fs>
 			[[nodiscard, maybe_unused]] constexpr decltype( auto )
