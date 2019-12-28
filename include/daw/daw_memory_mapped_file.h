@@ -22,7 +22,10 @@
 
 #pragma once
 
+#include "daw_exchange.h"
+
 #include <cstdio>
+#include <cstddef>
 #ifndef WIN32
 #include <fcntl.h>
 #include <sys/mman.h>
@@ -38,8 +41,6 @@
 #endif
 #include <string_view>
 #include <utility>
-
-#include "daw_exchange.h"
 
 namespace daw::filesystem {
 	enum class open_mode : bool { read, read_write };
