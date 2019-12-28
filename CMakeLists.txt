@@ -127,12 +127,12 @@ set( TESTED_PARALLEL_HEADERS_PREFIXES_NB
 	daw_locked_value
 	daw_scoped_multilock
 	daw_semaphore
-	daw_spin_lock
 )
 
 set( DEV_PARALLEL_HEADERS_PREFIXES_NB
 	daw_observable_ptr
 	daw_observable_ptr_pair
+	daw_spin_lock
 )
 
 set( TESTED_ITERATOR_HEADERS_PREFIXES_NB
