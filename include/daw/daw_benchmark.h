@@ -37,13 +37,16 @@
 #include "daw_traits.h"
 
 namespace daw {
+	namespace benchmark_impl {
+		using second_duration = std::chrono::duration<double>;
+	}
 	template<typename F>
 	double benchmark( F &&func ) {
 		static_assert( std::is_invocable_v<F>, "func must accept no arguments" );
-		auto start = std::chrono::high_resolution_clock::now( );
+		auto start = std::chrono::steady_clock::now( );
 		(void)std::forward<F>( func )( );
-		auto finish = std::chrono::high_resolution_clock::now( );
-		std::chrono::duration<double> duration = finish - start;
+		auto finish = std::chrono::steady_clock::now( );
+		benchmark_impl::second_duration duration = finish - start;
 		return duration.count( );
 	}
 
@@ -186,11 +189,11 @@ namespace daw {
 	template<typename Test, typename... Args>
 	auto bench_test( std::string const &title, Test &&test_callable,
 	                 Args &&... args ) {
-		auto const start = std::chrono::high_resolution_clock::now( );
+		auto const start = std::chrono::steady_clock::now( );
 		auto result = daw::expected_from_code( std::forward<Test>( test_callable ),
 		                                       std::forward<Args>( args )... );
-		auto const finish = std::chrono::high_resolution_clock::now( );
-		std::chrono::duration<double> const duration = finish - start;
+		auto const finish = std::chrono::steady_clock::now( );
+		benchmark_impl::second_duration const duration = finish - start;
 		std::cout << title << " took "
 		          << utility::format_seconds( duration.count( ), 2 ) << '\n';
 		return result;
@@ -199,11 +202,11 @@ namespace daw {
 	template<typename Test, typename... Args>
 	auto bench_test2( std::string const &title, Test &&test_callable,
 	                  size_t item_count, Args &&... args ) {
-		auto const start = std::chrono::high_resolution_clock::now( );
+		auto const start = std::chrono::steady_clock::now( );
 		auto result = daw::expected_from_code( std::forward<Test>( test_callable ),
 		                                       std::forward<Args>( args )... );
-		auto const finish = std::chrono::high_resolution_clock::now( );
-		std::chrono::duration<double> const duration = finish - start;
+		auto const finish = std::chrono::steady_clock::now( );
+		benchmark_impl::second_duration const duration = finish - start;
 		std::cout << title << " took "
 		          << utility::format_seconds( duration.count( ), 2 );
 		if( item_count > 1 ) {
@@ -251,12 +254,15 @@ namespace daw {
 
 				int a = 0;
 				daw::do_not_optimize( a );
-				auto const start = std::chrono::high_resolution_clock::now( );
-				auto r = daw::expected_from_code( [a]( ) { return a * a; } );
-				auto const finish = std::chrono::high_resolution_clock::now( );
+				auto const start = std::chrono::steady_clock::now( );
+				auto r = daw::expected_from_code( [a]( ) mutable {
+					daw::do_not_optimize( a );
+					return a * a;
+				} );
+				auto const finish = std::chrono::steady_clock::now( );
 				daw::do_not_optimize( r );
 				auto const duration =
-				  std::chrono::duration<double>( finish - start ).count( );
+				  benchmark_impl::second_duration( finish - start ).count( );
 				if( duration < base_time ) {
 					base_time = duration;
 				}
@@ -265,18 +271,17 @@ namespace daw {
 		double min_time = std::numeric_limits<double>::max( );
 		double max_time = 0.0;
 
-		auto const total_start = std::chrono::high_resolution_clock::now( );
+		auto const total_start = std::chrono::steady_clock::now( );
 		for( size_t n = 0; n < Runs; ++n ) {
 			bench_impl::expander( ( daw::do_not_optimize( args ), 1 )... );
-			auto const start = std::chrono::high_resolution_clock::now( );
+			auto const start = std::chrono::steady_clock::now( );
 
 			result =
 			  daw::expected_from_code( std::forward<Test>( test_callable ), args... );
 
-			auto const finish = std::chrono::high_resolution_clock::now( );
+			auto const finish = std::chrono::steady_clock::now( );
 			daw::do_not_optimize( result );
-			auto const duration =
-			  std::chrono::duration<double>( finish - start ).count( );
+			auto const duration = benchmark_impl::second_duration( finish - start ).count( );
 			if( duration < min_time ) {
 				min_time = duration;
 			}
@@ -284,11 +289,11 @@ namespace daw {
 				max_time = duration;
 			}
 		}
-		auto const total_finish = std::chrono::high_resolution_clock::now( );
+		auto const total_finish = std::chrono::steady_clock::now( );
 		min_time -= base_time;
 		max_time -= base_time;
 		auto total_time =
-		  std::chrono::duration<double>( total_finish - total_start ).count( ) -
+		  benchmark_impl::second_duration( total_finish - total_start ).count( ) -
 		  static_cast<double>( Runs ) * base_time;
 
 		auto avg_time =
@@ -334,12 +339,15 @@ namespace daw {
 
 				int a = 0;
 				daw::do_not_optimize( a );
-				auto const start = std::chrono::high_resolution_clock::now( );
-				auto r = daw::expected_from_code( [a]( ) { return a * a; } );
-				auto const finish = std::chrono::high_resolution_clock::now( );
+				auto const start = std::chrono::steady_clock::now( );
+				auto r = daw::expected_from_code( [a]( ) mutable {
+					daw::do_not_optimize( a );
+					return a * a;
+				} );
+				auto const finish = std::chrono::steady_clock::now( );
 				daw::do_not_optimize( r );
 				auto const duration =
-				  std::chrono::duration<double>( finish - start ).count( );
+				  benchmark_impl::second_duration( finish - start ).count( );
 				if( duration < base_time ) {
 					base_time = duration;
 				}
@@ -348,20 +356,20 @@ namespace daw {
 		double min_time = std::numeric_limits<double>::max( );
 		double max_time = std::numeric_limits<double>::min( );
 
-		auto const total_start = std::chrono::high_resolution_clock::now( );
-		std::chrono::duration<double> valid_time = std::chrono::seconds( 0 );
+		auto const total_start = std::chrono::steady_clock::now( );
+		benchmark_impl::second_duration valid_time = std::chrono::seconds( 0 );
 		for( size_t n = 0; n < Runs; ++n ) {
-			std::chrono::time_point<std::chrono::high_resolution_clock> start;
+			std::chrono::time_point<std::chrono::steady_clock> start;
 			using result_t = daw::remove_cvref_t<decltype( func( args... ) )>;
 			result_t result;
 			if constexpr( sizeof...( args ) == 0 ) {
-				start = std::chrono::high_resolution_clock::now( );
+				start = std::chrono::steady_clock::now( );
 				result =
 				  daw::expected_from_code( [&]( auto &&tp ) { return func( ); } );
 			} else if constexpr( sizeof...( args ) == 1 ) {
 				std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
 				daw::do_not_optimize( tp_args );
-				start = std::chrono::high_resolution_clock::now( );
+				start = std::chrono::steady_clock::now( );
 				result = *daw::expected_from_code(
 				  [&]( auto &&tp ) {
 					  return func( std::forward<decltype( tp )>( tp ) );
@@ -370,7 +378,7 @@ namespace daw {
 			} else {
 				std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
 				daw::do_not_optimize( tp_args );
-				start = std::chrono::high_resolution_clock::now( );
+				start = std::chrono::steady_clock::now( );
 
 				result = daw::expected_from_code(
 				  [&]( auto &&tp ) {
@@ -378,19 +386,18 @@ namespace daw {
 				  },
 				  tp_args );
 			}
-			auto const finish = std::chrono::high_resolution_clock::now( );
+			auto const finish = std::chrono::steady_clock::now( );
 			daw::do_not_optimize( result );
 
-			auto const valid_start = std::chrono::high_resolution_clock::now( );
+			auto const valid_start = std::chrono::steady_clock::now( );
 			if( not validator( result ) ) {
 				std::cerr << "Error validating result\n";
 				std::abort( );
 			}
-			valid_time += std::chrono::duration<double>(
-			  std::chrono::high_resolution_clock::now( ) - valid_start );
+			valid_time += benchmark_impl::second_duration(
+			  std::chrono::steady_clock::now( ) - valid_start );
 
-			auto const duration =
-			  std::chrono::duration<double>( finish - start ).count( );
+			auto const duration = benchmark_impl::second_duration( finish - start ).count( );
 			results[n] = duration;
 			if( duration < min_time ) {
 				min_time = duration;
@@ -399,13 +406,13 @@ namespace daw {
 				max_time = duration;
 			}
 		}
-		auto const total_finish = std::chrono::high_resolution_clock::now( );
+		auto const total_finish = std::chrono::steady_clock::now( );
 		min_time -= base_time;
 		max_time -= base_time;
-		auto total_time = std::chrono::duration<double>(
-		                    ( total_finish - total_start ) - valid_time )
-		                    .count( ) -
-		                  static_cast<double>( Runs ) * base_time;
+		auto total_time =
+		  benchmark_impl::second_duration( ( total_finish - total_start ) - valid_time )
+		    .count( ) -
+		  static_cast<double>( Runs ) * base_time;
 		auto const avg_time = [&]( ) {
 			if( Runs >= 10 ) {
 				auto result =
@@ -448,12 +455,15 @@ namespace daw {
 
 				intmax_t a = 0;
 				daw::do_not_optimize( a );
-				auto const start = std::chrono::high_resolution_clock::now( );
-				auto r = daw::expected_from_code( [a]( ) { return a * a; } );
-				auto const finish = std::chrono::high_resolution_clock::now( );
+				auto const start = std::chrono::steady_clock::now( );
+				auto r = daw::expected_from_code( [a]( ) mutable {
+					daw::do_not_optimize( a );
+					return a * a;
+				} );
+				auto const finish = std::chrono::steady_clock::now( );
 				daw::do_not_optimize( r );
 				auto const duration =
-				  std::chrono::duration<double>( finish - start ).count( );
+				  benchmark_impl::second_duration( finish - start ).count( );
 				if( duration < base_time ) {
 					base_time = duration;
 				}
@@ -462,16 +472,16 @@ namespace daw {
 		double min_time = std::numeric_limits<double>::max( );
 		double max_time = 0.0;
 
-		auto const total_start = std::chrono::high_resolution_clock::now( );
+		auto const total_start = std::chrono::steady_clock::now( );
 		for( size_t n = 0; n < Runs; ++n ) {
-			std::chrono::time_point<std::chrono::high_resolution_clock> start;
+			std::chrono::time_point<std::chrono::steady_clock> start;
 			if constexpr( sizeof...( args ) == 0 ) {
-				start = std::chrono::high_resolution_clock::now( );
+				start = std::chrono::steady_clock::now( );
 				result = daw::expected_from_code(
 				  [&]( auto &&tp ) { return test_callable( ); } );
 			} else if constexpr( sizeof...( args ) == 1 ) {
 				std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
-				start = std::chrono::high_resolution_clock::now( );
+				start = std::chrono::steady_clock::now( );
 				result = daw::expected_from_code(
 				  [&]( auto &&tp ) {
 					  return test_callable( std::forward<decltype( tp )>( tp ) );
@@ -480,7 +490,7 @@ namespace daw {
 			} else {
 				std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
 				daw::do_not_optimize( tp_args );
-				start = std::chrono::high_resolution_clock::now( );
+				start = std::chrono::steady_clock::now( );
 				result = daw::expected_from_code(
 				  [&]( auto &&tp ) {
 					  return ::std::apply( test_callable,
@@ -488,10 +498,9 @@ namespace daw {
 				  },
 				  tp_args );
 			}
-			auto const finish = std::chrono::high_resolution_clock::now( );
+			auto const finish = std::chrono::steady_clock::now( );
 			daw::do_not_optimize( result );
-			auto const duration =
-			  std::chrono::duration<double>( finish - start ).count( );
+			auto const duration = benchmark_impl::second_duration( finish - start ).count( );
 			if( duration < min_time ) {
 				min_time = duration;
 			}
@@ -499,11 +508,11 @@ namespace daw {
 				max_time = duration;
 			}
 		}
-		auto const total_finish = std::chrono::high_resolution_clock::now( );
+		auto const total_finish = std::chrono::steady_clock::now( );
 		min_time -= base_time;
 		max_time -= base_time;
 		auto total_time =
-		  std::chrono::duration<double>( total_finish - total_start ).count( ) -
+		  benchmark_impl::second_duration( total_finish - total_start ).count( ) -
 		  static_cast<double>( Runs ) * base_time;
 
 		auto avg_time =
@@ -536,7 +545,8 @@ namespace daw {
 			template<typename T, typename U,
 			         std::enable_if_t<(is_streamable_v<T> and is_streamable_v<U>),
 			                          std::nullptr_t> = nullptr>
-			[[maybe_unused]] void output_expected_error( T &&expected_result, U &&result ) {
+			[[maybe_unused]] void output_expected_error( T &&expected_result,
+			                                             U &&result ) {
 				std::cerr << "Invalid result. Expecting '" << expected_result
 				          << "' but got '" << result << "'\n";
 			}
@@ -574,7 +584,8 @@ namespace daw {
 	}
 
 	template<typename Bool, typename String>
-	[[maybe_unused]] constexpr void expecting_message( Bool &&expected_result, String &&message ) {
+	[[maybe_unused]] constexpr void expecting_message( Bool &&expected_result,
+	                                                   String &&message ) {
 		if( not static_cast<bool>( expected_result ) ) {
 			std::cerr << message << '\n';
 			std::abort( );
@@ -585,7 +596,8 @@ namespace daw {
 		namespace {
 			struct always_true {
 				template<typename... Args>
-				[[nodiscard, maybe_unused]] constexpr bool operator( )( Args &&... ) noexcept {
+				[[nodiscard, maybe_unused]] constexpr bool
+				operator( )( Args &&... ) noexcept {
 					return true;
 				}
 			};
