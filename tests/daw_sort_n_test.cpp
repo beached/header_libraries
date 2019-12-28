@@ -34,7 +34,7 @@
 #include <iterator>
 #include <vector>
 
-constexpr std::array<int, 10'000> big_arry = {
+[[maybe_unused]] constexpr std::array<int, 10'000> big_arry = {
   40392, 38833, 69188,  5567,  99890, 11400, 91118, 49640, 38362, 26301, 60647,
   45175, 8266,  93379,  89521, 23284, 98716, 54253, 28528, 58914, 83745, 3326,
   21034, 16309, 70453,  96724, 72985, 956,   96755, 24010, 18998, 65007, 50945,
@@ -949,7 +949,7 @@ constexpr std::array<int, 10'000> big_arry = {
 void sort_n_test_001( ) {
 #if defined( DEBUG ) or not defined( NDEBUG )
 #define DATASIZE 100'000
-#define NUMRUNS 10'000
+#define NUMRUNS 1'000
 #else
 #define DATASIZE 1'000'000
 #define NUMRUNS 100'000

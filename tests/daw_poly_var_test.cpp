@@ -32,7 +32,7 @@ namespace {
 		Base( Base const & ) = default;
 		Base( Base && ) = default;
 		Base &operator=( Base const & ) = default;
-		Base &operator=( Base && ) = default;
+		[[maybe_unused]] Base &operator=( Base && ) = default;
 
 		virtual int get_num( ) = 0;
 	};

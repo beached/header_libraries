@@ -186,8 +186,8 @@ namespace decay_copy_001 {
 		return x;
 	}
 
-	static double d = 5.6;
-	static double const cd = 3.4;
+	[[maybe_unused]] static double d = 5.6;
+	[[maybe_unused]] static double const cd = 3.4;
 
 	static_assert(
 	  !std::is_same_v<decltype( dc_func( d ) ), decltype( dc_func( cd ) )>,

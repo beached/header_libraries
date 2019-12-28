@@ -426,7 +426,7 @@ namespace daw {
 
 			auto pos = find_last_of_if( daw::move( pred ) );
 			if( pos == npos ) {
-				auto result{*this};
+				auto result = *this;
 				remove_prefix( npos );
 				return result;
 			}
@@ -444,7 +444,7 @@ namespace daw {
 		try_pop_front( basic_string_view where ) noexcept {
 			auto pos = find( where );
 			if( pos == npos ) {
-				return basic_string_view{};
+				return basic_string_view();
 			}
 			auto result = pop_front( pos );
 			remove_prefix( where.size( ) );
@@ -460,7 +460,7 @@ namespace daw {
 		try_pop_back( basic_string_view where ) noexcept {
 			auto pos = rfind( where );
 			if( pos == npos ) {
-				return basic_string_view{};
+				return basic_string_view();
 			}
 			auto result = substr( pos + where.size( ) );
 			remove_suffix( size( ) - pos );
@@ -543,7 +543,7 @@ namespace daw {
 
 		[[nodiscard]] constexpr int compare( basic_string_view const rhs ) const
 		  noexcept {
-			basic_string_view lhs{*this};
+			basic_string_view lhs = *this;
 			return compare( lhs, rhs );
 		}
 
@@ -814,7 +814,7 @@ namespace daw {
 			auto first = std::prev( m_last );
 			auto const last = std::next( m_first, pos );
 			while( first != last ) {
-				if( *first == 'c' ) {
+				if( *first == c ) {
 					return static_cast<size_type>( std::distance( m_first, first ) );
 					--first;
 				}

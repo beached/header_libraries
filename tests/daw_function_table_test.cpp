@@ -96,52 +96,52 @@ inline constexpr daw::function_table_t<
          +[]( uintmax_t n, char const *c ) {
 	         n = n * 10U + 0;
 	         ++c;
-	         return ftable( *c, n, c );
+	         return ftable( static_cast<size_t>( *c ), n, c );
          },
          +[]( uintmax_t n, char const *c ) {
 	         n = n * 10U + 1;
 	         ++c;
-	         return ftable( *c, n, c );
+	         return ftable( static_cast<size_t>( *c ), n, c );
          },
          +[]( uintmax_t n, char const *c ) {
 	         n = n * 10U + 2;
 	         ++c;
-	         return ftable( *c, n, c );
+	         return ftable( static_cast<size_t>( *c ), n, c );
          },
          +[]( uintmax_t n, char const *c ) {
 	         n = n * 10U + 3;
 	         ++c;
-	         return ftable( *c, n, c );
+	         return ftable( static_cast<size_t>( *c ), n, c );
          },
          +[]( uintmax_t n, char const *c ) {
 	         n = n * 10U + 4;
 	         ++c;
-	         return ftable( *c, n, c );
+	         return ftable( static_cast<size_t>( *c ), n, c );
          },
          +[]( uintmax_t n, char const *c ) {
 	         n = n * 10U + 5;
 	         ++c;
-	         return ftable( *c, n, c );
+	         return ftable( static_cast<size_t>( *c ), n, c );
          },
          +[]( uintmax_t n, char const *c ) {
 	         n = n * 10U + 6;
 	         ++c;
-	         return ftable( *c, n, c );
+	         return ftable( static_cast<size_t>( *c ), n, c );
          },
          +[]( uintmax_t n, char const *c ) {
 	         n = n * 10U + 7;
 	         ++c;
-	         return ftable( *c, n, c );
+	         return ftable( static_cast<size_t>( *c ), n, c );
          },
          +[]( uintmax_t n, char const *c ) {
 	         n = n * 10U + 8;
 	         ++c;
-	         return ftable( *c, n, c );
+	         return ftable( static_cast<size_t>( *c ), n, c );
          },
          +[]( uintmax_t n, char const *c ) {
 	         n = n * 10U + 9;
 	         ++c;
-	         return ftable( *c, n, c );
+	         return ftable( static_cast<size_t>( *c ), n, c );
          }};
 
 int main( int argc, char **argv ) {
@@ -149,6 +149,6 @@ int main( int argc, char **argv ) {
 	if( argc > 1 ) {
 		ptr = argv[1];
 	}
-	uintmax_t result = ftable( *ptr, 0U, ptr );
+	uintmax_t result = ftable( static_cast<size_t>( *ptr ), 0U, ptr );
 	printf( "%lu\n", result );
 }

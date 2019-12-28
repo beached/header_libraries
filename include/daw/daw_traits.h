@@ -206,9 +206,11 @@ namespace daw {
 // std::declval<size_t>( ) ) )
 #define METHOD_CHECKER_ANY( name, fn )                                         \
 	namespace impl {                                                             \
-		template<typename T, typename... Args>                                     \
-		using name =                                                               \
-		  decltype( std::declval<T>( ).fn( std::declval<Args>( )... ) );           \
+		namespace {                                                                \
+			template<typename T, typename... Args>                                   \
+			using name =                                                             \
+			  decltype( std::declval<T>( ).fn( std::declval<Args>( )... ) );         \
+		}                                                                          \
 	}                                                                            \
 	template<typename T, typename... Args>                                       \
 	constexpr bool name##_v =                                                    \
@@ -333,27 +335,34 @@ namespace daw {
 		inline constexpr bool is_mixed_from_v =
 		  ::std::is_base_of_v<Base<Derived>, Derived>;
 
-		template<std::size_t I, typename T, typename... Ts>
-		struct nth_element_impl {
-			using type = typename nth_element_impl<I - 1, Ts...>::type;
-		};
+		namespace impl {
+			namespace {
+				template<std::size_t I, typename T, typename... Ts>
+				struct nth_element_impl {
+					using type = typename nth_element_impl<I - 1, Ts...>::type;
+				};
 
-		template<typename T, typename... Ts>
-		struct nth_element_impl<0, T, Ts...> {
-			using type = T;
-		};
+				template<typename T, typename... Ts>
+				struct nth_element_impl<0, T, Ts...> {
+					using type = T;
+				};
+			} // namespace
+		}   // namespace impl
 
 		template<std::size_t I, typename... Ts>
-		using nth_element = typename nth_element_impl<I, Ts...>::type;
+		using nth_element = typename impl::nth_element_impl<I, Ts...>::type;
 
 		namespace impl {
-			template<typename T>
-			auto has_to_string( T const &, long ) -> std::false_type;
+			namespace {
+				template<typename T>
+				[[maybe_unused]] auto has_to_string( T const &, long )
+				  -> std::false_type;
 
-			template<typename T>
-			auto has_to_string( T const &lhs, int )
-			  -> std::is_convertible<decltype( lhs.to_string( ) ), std::string>;
-		} // namespace impl
+				template<typename T>
+				[[maybe_unused]] auto has_to_string( T const &lhs, int )
+				  -> std::is_convertible<decltype( lhs.to_string( ) ), std::string>;
+			} // namespace
+		}   // namespace impl
 
 		template<typename T>
 		inline constexpr bool has_to_string_v =
@@ -361,48 +370,62 @@ namespace daw {
 
 		namespace operators {
 			namespace impl {
-				template<typename L, typename R>
-				auto has_op_eq_impl( L const &, R const &, long ) -> std::false_type;
+				namespace {
+					template<typename L, typename R>
+					[[maybe_unused]] auto has_op_eq_impl( L const &, R const &, long )
+					  -> std::false_type;
 
-				template<typename L, typename R>
-				auto has_op_eq_impl( L const &lhs, R const &rhs, int )
-				  -> std::is_convertible<decltype( lhs == rhs ), bool>;
+					template<typename L, typename R>
+					[[maybe_unused]] auto has_op_eq_impl( L const &lhs, R const &rhs,
+					                                      int )
+					  -> std::is_convertible<decltype( lhs == rhs ), bool>;
 
-				template<typename L, typename R>
-				auto has_op_ne_impl( L const &, R const &, long ) -> std::false_type;
+					template<typename L, typename R>
+					[[maybe_unused]] auto has_op_ne_impl( L const &, R const &, long )
+					  -> std::false_type;
 
-				template<typename L, typename R>
-				auto has_op_ne_impl( L const &lhs, R const &rhs, int )
-				  -> std::is_convertible<decltype( lhs != rhs ), bool>;
+					template<typename L, typename R>
+					[[maybe_unused]] auto has_op_ne_impl( L const &lhs, R const &rhs,
+					                                      int )
+					  -> std::is_convertible<decltype( lhs != rhs ), bool>;
 
-				template<typename L, typename R>
-				auto has_op_lt_impl( L const &, R const &, long ) -> std::false_type;
+					template<typename L, typename R>
+					[[maybe_unused]] auto has_op_lt_impl( L const &, R const &, long )
+					  -> std::false_type;
 
-				template<typename L, typename R>
-				auto has_op_lt_impl( L const &lhs, R const &rhs, int )
-				  -> std::is_convertible<decltype( lhs < rhs ), bool>;
+					template<typename L, typename R>
+					[[maybe_unused]] auto has_op_lt_impl( L const &lhs, R const &rhs,
+					                                      int )
+					  -> std::is_convertible<decltype( lhs < rhs ), bool>;
 
-				template<typename L, typename R>
-				auto has_op_le_impl( L const &, R const &, long ) -> std::false_type;
+					template<typename L, typename R>
+					[[maybe_unused]] auto has_op_le_impl( L const &, R const &, long )
+					  -> std::false_type;
 
-				template<typename L, typename R>
-				auto has_op_le_impl( L const &lhs, R const &rhs, int )
-				  -> std::is_convertible<decltype( lhs <= rhs ), bool>;
+					template<typename L, typename R>
+					[[maybe_unused]] auto has_op_le_impl( L const &lhs, R const &rhs,
+					                                      int )
+					  -> std::is_convertible<decltype( lhs <= rhs ), bool>;
 
-				template<typename L, typename R>
-				auto has_op_gt_impl( L const &, R const &, long ) -> std::false_type;
+					template<typename L, typename R>
+					[[maybe_unused]] auto has_op_gt_impl( L const &, R const &, long )
+					  -> std::false_type;
 
-				template<typename L, typename R>
-				auto has_op_gt_impl( L const &lhs, R const &rhs, int )
-				  -> std::is_convertible<decltype( lhs > rhs ), bool>;
+					template<typename L, typename R>
+					[[maybe_unused]] auto has_op_gt_impl( L const &lhs, R const &rhs,
+					                                      int )
+					  -> std::is_convertible<decltype( lhs > rhs ), bool>;
 
-				template<typename L, typename R>
-				auto has_op_ge_impl( L const &, R const &, long ) -> std::false_type;
+					template<typename L, typename R>
+					[[maybe_unused]] auto has_op_ge_impl( L const &, R const &, long )
+					  -> std::false_type;
 
-				template<typename L, typename R>
-				auto has_op_ge_impl( L const &lhs, R const &rhs, int )
-				  -> std::is_convertible<decltype( lhs >= rhs ), bool>;
-			} // namespace impl
+					template<typename L, typename R>
+					[[maybe_unused]] auto has_op_ge_impl( L const &lhs, R const &rhs,
+					                                      int )
+					  -> std::is_convertible<decltype( lhs >= rhs ), bool>;
+				} // namespace
+			}   // namespace impl
 
 			template<typename L, typename R = L>
 			inline constexpr bool has_op_eq_v = decltype( impl::has_op_eq_impl(
@@ -461,22 +484,24 @@ namespace daw {
 		  sizeof( *std::cbegin( std::declval<Container>( ) ) ) == ExpectedSize;
 
 		namespace impl {
-			template<typename... Ts>
-			struct are_unique;
+			namespace {
+				template<typename... Ts>
+				struct are_unique;
 
-			template<typename T1>
-			struct are_unique<T1> : std::true_type {};
+				template<typename T1>
+				struct are_unique<T1> : std::true_type {};
 
-			template<typename T1, typename T2>
-			struct are_unique<T1, T2>
-			  : std::integral_constant<bool, not std::is_same_v<T1, T2>> {};
+				template<typename T1, typename T2>
+				struct are_unique<T1, T2>
+				  : std::integral_constant<bool, not std::is_same_v<T1, T2>> {};
 
-			template<typename T1, typename T2, typename... Ts>
-			struct are_unique<T1, T2, Ts...>
-			  : std::integral_constant<bool, are_unique<T1, T2>::value and
-			                                   are_unique<T1, Ts...>::value and
-			                                   are_unique<T2, Ts...>::value> {};
-		} // namespace impl
+				template<typename T1, typename T2, typename... Ts>
+				struct are_unique<T1, T2, Ts...>
+				  : std::integral_constant<bool, are_unique<T1, T2>::value and
+				                                   are_unique<T1, Ts...>::value and
+				                                   are_unique<T2, Ts...>::value> {};
+			} // namespace
+		}   // namespace impl
 
 		template<typename... Ts>
 		using are_unique_t = impl::are_unique<Ts...>;
@@ -484,20 +509,23 @@ namespace daw {
 		inline constexpr bool are_unique_v = are_unique_t<Ts...>::value;
 
 		namespace impl {
-			template<typename...>
-			struct isnt_cv_ref;
+			namespace {
+				template<typename...>
+				struct isnt_cv_ref;
 
-			template<>
-			struct isnt_cv_ref<> : std::true_type {};
+				template<>
+				struct isnt_cv_ref<> : std::true_type {};
 
-			template<typename T, typename... Ts>
-			struct isnt_cv_ref<T, Ts...>
-			  : std::integral_constant<
-			      bool, ( !any_true_v<::std::is_const_v<T>, ::std::is_reference_v<T>,
-			                          ::std::is_volatile_v<T>> and
-			              ::std::is_same_v<std::true_type,
-			                               typename isnt_cv_ref<Ts...>::type> )> {};
-		} // namespace impl
+				template<typename T, typename... Ts>
+				struct isnt_cv_ref<T, Ts...>
+				  : std::integral_constant<
+				      bool,
+				      ( !any_true_v<::std::is_const_v<T>, ::std::is_reference_v<T>,
+				                    ::std::is_volatile_v<T>> and
+				        ::std::is_same_v<std::true_type,
+				                         typename isnt_cv_ref<Ts...>::type> )> {};
+			} // namespace
+		}   // namespace impl
 
 		template<typename... Ts>
 		inline constexpr bool isnt_cv_ref_v = impl::isnt_cv_ref<Ts...>::value;
@@ -514,22 +542,28 @@ namespace daw {
 		  decltype( std::declval<Function>( )( std::declval<Args>( )... ) );
 
 		namespace impl {
-			template<typename T, typename... Args>
-			struct first_type_impl {
-				using type = T;
-			};
-		} // namespace impl
+			namespace {
+				template<typename T, typename... Args>
+				struct first_type_impl {
+					using type = T;
+				};
+			} // namespace
+		}   // namespace impl
 
 		template<typename... Args>
 		using first_type = typename impl::first_type_impl<Args...>::type;
 
 		namespace impl {
-			template<typename... Ts>
-			constexpr void tuple_test( std::tuple<Ts...> const & ) noexcept {}
+			namespace {
+				template<typename... Ts>
+				[[maybe_unused]] constexpr void
+				tuple_test( std::tuple<Ts...> const & ) noexcept {}
 
-			template<typename... Ts>
-			using detect_is_tuple = decltype( tuple_test( std::declval<Ts>( )... ) );
-		} // namespace impl
+				template<typename... Ts>
+				using detect_is_tuple =
+				  decltype( tuple_test( std::declval<Ts>( )... ) );
+			} // namespace
+		}   // namespace impl
 
 		template<typename...>
 		struct is_first_type;
@@ -550,70 +584,71 @@ namespace daw {
 		inline constexpr bool is_tuple_v =
 		  is_detected_v<impl::detect_is_tuple, Ts...>;
 
-		namespace impl {}
 		template<typename T, typename... Args>
 		inline constexpr bool is_init_list_constructible_v = all_true_v<
 		  are_same_types_v<Args...>,
 		  ::std::is_constructible_v<T, std::initializer_list<first_type<Args...>>>>;
 
 		namespace ostream_detectors {
-			template<typename T>
-			using has_char_type_detect = typename T::char_type;
+			namespace {
+				template<typename T>
+				using has_char_type_detect = typename T::char_type;
 
-			template<typename T>
-			using has_adjustfield_detect = decltype( T::adjustfield );
+				template<typename T>
+				using has_adjustfield_detect = decltype( T::adjustfield );
 
-			template<typename T>
-			using has_left_detect = decltype( T::left );
+				template<typename T>
+				using has_left_detect = decltype( T::left );
 
-			template<typename T>
-			using has_fill_member_detect = decltype( std::declval<T>( ).fill( ) );
+				template<typename T>
+				using has_fill_member_detect = decltype( std::declval<T>( ).fill( ) );
 
-			template<typename T>
-			using has_good_member_detect = decltype( std::declval<T>( ).good( ) );
+				template<typename T>
+				using has_good_member_detect = decltype( std::declval<T>( ).good( ) );
 
-			template<typename T, typename CharT>
-			using has_write_member_detect = decltype( std::declval<T>( ).write(
-			  std::declval<CharT const *>( ), std::declval<int>( ) ) );
+				template<typename T, typename CharT>
+				using has_write_member_detect = decltype( std::declval<T>( ).write(
+				  std::declval<CharT const *>( ), std::declval<int>( ) ) );
 
-			template<typename T>
-			using has_width_member_detect = decltype( std::declval<T>( ).width( ) );
+				template<typename T>
+				using has_width_member_detect = decltype( std::declval<T>( ).width( ) );
 
-			template<typename T>
-			using has_flags_member_detect = decltype( std::declval<T>( ).flags( ) );
+				template<typename T>
+				using has_flags_member_detect = decltype( std::declval<T>( ).flags( ) );
 
-			template<typename T>
-			inline constexpr bool has_adjustfield_v =
-			  daw::is_detected_v<has_adjustfield_detect, T>;
+				template<typename T>
+				inline constexpr bool has_adjustfield_v =
+				  daw::is_detected_v<has_adjustfield_detect, T>;
 
-			template<typename T>
-			inline constexpr bool has_left_v = daw::is_detected_v<has_left_detect, T>;
+				template<typename T>
+				inline constexpr bool has_left_v =
+				  daw::is_detected_v<has_left_detect, T>;
 
-			template<typename T>
-			inline constexpr bool has_char_type_v =
-			  daw::is_detected_v<has_char_type_detect, T>;
+				template<typename T>
+				inline constexpr bool has_char_type_v =
+				  daw::is_detected_v<has_char_type_detect, T>;
 
-			template<typename T>
-			inline constexpr bool has_fill_member_v =
-			  daw::is_detected_v<has_fill_member_detect, T>;
+				template<typename T>
+				inline constexpr bool has_fill_member_v =
+				  daw::is_detected_v<has_fill_member_detect, T>;
 
-			template<typename T>
-			inline constexpr bool has_good_member_v =
-			  daw::is_detected_v<has_good_member_detect, T>;
+				template<typename T>
+				inline constexpr bool has_good_member_v =
+				  daw::is_detected_v<has_good_member_detect, T>;
 
-			template<typename T, typename CharT>
-			inline constexpr bool has_write_member_v =
-			  daw::is_detected_v<has_write_member_detect, T, CharT>;
+				template<typename T, typename CharT>
+				inline constexpr bool has_write_member_v =
+				  daw::is_detected_v<has_write_member_detect, T, CharT>;
 
-			template<typename T>
-			inline constexpr bool has_width_member_v =
-			  daw::is_detected_v<has_width_member_detect, T>;
+				template<typename T>
+				inline constexpr bool has_width_member_v =
+				  daw::is_detected_v<has_width_member_detect, T>;
 
-			template<typename T>
-			inline constexpr bool has_flags_member_v =
-			  daw::is_detected_v<has_flags_member_detect, T>;
-
-		} // namespace ostream_detectors
+				template<typename T>
+				inline constexpr bool has_flags_member_v =
+				  daw::is_detected_v<has_flags_member_detect, T>;
+			} // namespace
+		}   // namespace ostream_detectors
 
 		template<typename T>
 		inline constexpr bool is_ostream_like_lite_v =
@@ -644,17 +679,19 @@ namespace daw {
 		using nth_type = std::tuple_element_t<N, std::tuple<Args...>>;
 
 		namespace pack_index_of_impl {
-			template<typename A, typename B, typename... C>
-			inline constexpr int pack_index_of_calc( ) noexcept {
-				if constexpr( std::is_same_v<A, B> ) {
-					return 0;
-				} else if constexpr( sizeof...( C ) > 0 ) {
-					return pack_index_of_calc<A, C...>( ) + 1;
-				} else {
-					return -1;
+			namespace {
+				template<typename A, typename B, typename... C>
+				[[maybe_unused]] constexpr int pack_index_of_calc( ) noexcept {
+					if constexpr( std::is_same_v<A, B> ) {
+						return 0;
+					} else if constexpr( sizeof...( C ) > 0 ) {
+						return pack_index_of_calc<A, C...>( ) + 1;
+					} else {
+						return -1;
+					}
 				}
-			}
-		} // namespace pack_index_of_impl
+			} // namespace
+		}   // namespace pack_index_of_impl
 
 		template<typename A, typename B, typename... C>
 		struct pack_index_of
@@ -792,11 +829,13 @@ namespace daw {
 		using fn_t = std::add_pointer_t<T>;
 
 		namespace traits_impl {
-			template<typename T, typename... Ts>
-			struct make_something {
-				using type = T;
-			};
-		} // namespace traits_impl
+			namespace {
+				template<typename T, typename... Ts>
+				struct make_something {
+					using type = T;
+				};
+			} // namespace
+		}   // namespace traits_impl
 
 		/***
 		 * Similar to void T, will always be T
