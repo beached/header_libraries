@@ -338,5 +338,13 @@ namespace daw {
 				m_stack[n] = 0;
 			}
 		}
+
+		constexpr void swap( bounded_vector_t & rhs ) {
+			daw::cswap( m_index, rhs.m_index );
+			daw::cswap( m_first, rhs.m_first );
+			for( size_t n=0; n<size( ); ++n ) {
+				daw::cswap( operator[]( n ), rhs[n] );
+			}
+		}
 	};
 } // namespace daw
