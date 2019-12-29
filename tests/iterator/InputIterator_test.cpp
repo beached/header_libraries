@@ -33,7 +33,7 @@ void test_001( ) {
 	auto result = std::accumulate( rng.begin( ), rng.end( ), 0 );
 	assert( result == 45 );
 	(void)result;
-};
+}
 
 int main( int argc, char **argv ) {
 	test_001( );

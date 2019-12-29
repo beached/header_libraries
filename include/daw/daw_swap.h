@@ -30,11 +30,21 @@
 #include <utility>
 #include <variant>
 
+#include "cpp_17.h"
 #include "daw_exchange.h"
 #include "daw_move.h"
 #include "daw_swap.h"
 
 namespace daw {
+	namespace impl {
+		namespace {
+			template<typename T, typename U>
+			using has_swap_test = decltype( std::declval<T &>( ).swap( std::declval<U&>( ) ) ) ;
+		
+			template<typename T, typename U = T>
+			inline constexpr bool has_member_swap_v = daw::is_detected_v<has_swap_test, T, U>;
+		}
+	}
 	template<typename T, typename U>
 	constexpr void cswap( std::pair<T, U> &lhs, std::pair<T, U> &rhs ) noexcept(
 	  std::is_nothrow_move_assignable_v<std::pair<T, U>> ) {
@@ -89,6 +99,8 @@ namespace daw {
 		} else if constexpr( std::is_scalar_v<std::remove_reference_t<T>> ) {
 			auto tmp = daw::move( lhs );
 			lhs = daw::exchange( daw::move( rhs ), daw::move( tmp ) );
+		} else if constexpr( impl::has_member_swap_v<std::remove_reference_t<T>> ) {
+			lhs.swap( rhs );
 		} else {
 			using std::swap;
 			swap( lhs, rhs );
