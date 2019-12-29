@@ -285,7 +285,7 @@ namespace daw::exception {
 	template<typename ExceptionType = Terminator, typename Bool, typename... Args>
 	constexpr void precondition_check( Bool &&condition, Args &&... args ) {
 		if( !static_cast<bool>( condition ) ) {
-			if constexpr( std::is_same_v<Terminator, ExceptionType> ) {
+			if constexpr( std::is_same<Terminator, ExceptionType>::value ) {
 				std::abort( );
 			} else {
 				daw_throw<ExceptionType>( std::forward<Args>( args )... );
@@ -296,7 +296,7 @@ namespace daw::exception {
 	template<typename ExceptionType = Terminator, typename Bool, typename... Args>
 	constexpr void postcondition_check( Bool &&condition, Args &&... args ) {
 		if( !static_cast<bool>( condition ) ) {
-			if constexpr( std::is_same_v<Terminator, ExceptionType> ) {
+			if constexpr( std::is_same<Terminator, ExceptionType>::value ) {
 				std::abort( );
 			} else {
 				daw_throw<ExceptionType>( std::forward<Args>( args )... );
@@ -308,7 +308,7 @@ namespace daw::exception {
 	         typename... Args>
 	constexpr void dbg_precondition_check( Bool &&condition, Args &&... ) {
 
-		//			static_assert( std::is_convertible_v<Bool, bool> );
+		//			static_assert( std::is_convertible<Bool, bool>::value );
 		if( not static_cast<bool>( condition ) ) {
 			std::abort( );
 		}
@@ -316,7 +316,7 @@ namespace daw::exception {
 
 	template<typename Bool, typename... Args>
 	constexpr void dbg_postcondition_check( Bool &&condition, Args &&... ) {
-		static_assert( std::is_convertible_v<Bool, bool> );
+		static_assert( std::is_convertible<Bool, bool>::value );
 		if( not static_cast<bool>( condition ) ) {
 			std::abort( );
 		}
