@@ -77,9 +77,10 @@ namespace daw::exception {
 	struct errno_exception : public basic_exception,
 	                         public std::integral_constant<T, error_number> {};
 
-	template<typename ExceptionType = DefaultException,
-	         std::enable_if_t<std::is_default_constructible<ExceptionType>::value,
-	                          std::nullptr_t> = nullptr>
+	template<
+	  typename ExceptionType = DefaultException,
+	  typename std::enable_if<std::is_default_constructible<ExceptionType>::value,
+	                          std::nullptr_t>::type = nullptr>
 	[[noreturn]] void daw_throw( ) {
 #if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
   defined( _CPPUNWIND )
@@ -89,10 +90,10 @@ namespace daw::exception {
 #endif
 	}
 
-	template<
-	  typename ExceptionType = DefaultException,
-	  std::enable_if_t<!std::is_default_constructible<ExceptionType>::value,
-	                   std::nullptr_t> = nullptr>
+	template<typename ExceptionType = DefaultException,
+	         typename std::enable_if<
+	           !std::is_default_constructible<ExceptionType>::value,
+	           std::nullptr_t>::type = nullptr>
 	[[noreturn]] void daw_throw( ) {
 #if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
   defined( _CPPUNWIND )
@@ -444,7 +445,8 @@ namespace daw::exception {
 
 	template<
 	  typename ExceptionType = AssertException, typename Bool, typename... Args,
-	  std::enable_if_t<( sizeof...( Args ) > 0 ), std::nullptr_t> = nullptr>
+	  typename std::enable_if<( sizeof...( Args ) > 0 ), std::nullptr_t>::type =
+	    nullptr>
 	constexpr void daw_throw_on_true( Bool &&test, Args &&... args ) {
 		if( static_cast<bool>( std::forward<Bool>( test ) ) ) {
 			daw_throw<ExceptionType>( std::forward<Args>( args )... );

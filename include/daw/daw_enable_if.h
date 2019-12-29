@@ -22,17 +22,34 @@
 
 #pragma once
 #include <cstddef>
+#include <type_traits>
 
 namespace daw {
 	namespace enable_if_impl {
-		template<bool>
-		struct enable_if {};
+		namespace {
+			template<class...>
+			struct conjunction : std::true_type {};
 
-		template<>
-		struct enable_if<true> {
-			using type = std::nullptr_t;
-		};
-	} // namespace enable_if_impl
+			template<class B1>
+			struct conjunction<B1> : B1 {};
+
+			template<class B1, class... Bn>
+			struct conjunction<B1, Bn...>
+			  : std::conditional<bool( B1::value ), conjunction<Bn...>, B1>::type {};
+
+			template<bool>
+			struct enable_if {};
+
+			template<>
+			struct enable_if<true> {
+				using type = std::nullptr_t;
+			};
+		} // namespace
+	}   // namespace enable_if_impl
 	template<bool... B>
 	using enable_when_t = typename enable_if_impl::enable_if<( B and ... )>::type;
+
+	template<typename... Traits>
+	using enable_when_all_t = typename enable_if_impl::enable_if<
+	  enable_if_impl::conjunction<Traits...>::value>::type;
 } // namespace daw

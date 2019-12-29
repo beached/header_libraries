@@ -478,9 +478,8 @@ namespace daw {
 			if( bits < bsizeof<value_t> ) {
 				value_t carry = 0U;
 				for( size_t n = 0; n < m_data.size( ); ++n ) {
-					value_t next_carry =
-					  ( m_data[n] & daw::mask_lsb<value_t>( bits ) ) >>
-					  ( bsizeof<value_t> - bits );
+					value_t next_carry = ( m_data[n] & daw::mask_lsb<value_t>( bits ) ) >>
+					                     ( bsizeof<value_t> - bits );
 					m_data[n] <<= bits;
 					m_data[n] |= carry;
 					carry = next_carry;

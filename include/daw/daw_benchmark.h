@@ -281,7 +281,8 @@ namespace daw {
 
 			auto const finish = std::chrono::steady_clock::now( );
 			daw::do_not_optimize( result );
-			auto const duration = benchmark_impl::second_duration( finish - start ).count( );
+			auto const duration =
+			  benchmark_impl::second_duration( finish - start ).count( );
 			if( duration < min_time ) {
 				min_time = duration;
 			}
@@ -397,7 +398,8 @@ namespace daw {
 			valid_time += benchmark_impl::second_duration(
 			  std::chrono::steady_clock::now( ) - valid_start );
 
-			auto const duration = benchmark_impl::second_duration( finish - start ).count( );
+			auto const duration =
+			  benchmark_impl::second_duration( finish - start ).count( );
 			results[n] = duration;
 			if( duration < min_time ) {
 				min_time = duration;
@@ -409,10 +411,10 @@ namespace daw {
 		auto const total_finish = std::chrono::steady_clock::now( );
 		min_time -= base_time;
 		max_time -= base_time;
-		auto total_time =
-		  benchmark_impl::second_duration( ( total_finish - total_start ) - valid_time )
-		    .count( ) -
-		  static_cast<double>( Runs ) * base_time;
+		auto total_time = benchmark_impl::second_duration(
+		                    ( total_finish - total_start ) - valid_time )
+		                    .count( ) -
+		                  static_cast<double>( Runs ) * base_time;
 		auto const avg_time = [&]( ) {
 			if( Runs >= 10 ) {
 				auto result =
@@ -500,7 +502,8 @@ namespace daw {
 			}
 			auto const finish = std::chrono::steady_clock::now( );
 			daw::do_not_optimize( result );
-			auto const duration = benchmark_impl::second_duration( finish - start ).count( );
+			auto const duration =
+			  benchmark_impl::second_duration( finish - start ).count( );
 			if( duration < min_time ) {
 				min_time = duration;
 			}

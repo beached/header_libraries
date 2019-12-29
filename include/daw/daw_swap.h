@@ -39,12 +39,14 @@ namespace daw {
 	namespace impl {
 		namespace {
 			template<typename T, typename U>
-			using has_swap_test = decltype( std::declval<T &>( ).swap( std::declval<U&>( ) ) ) ;
-		
+			using has_swap_test =
+			  decltype( std::declval<T &>( ).swap( std::declval<U &>( ) ) );
+
 			template<typename T, typename U = T>
-			inline constexpr bool has_member_swap_v = daw::is_detected_v<has_swap_test, T, U>;
-		}
-	}
+			inline constexpr bool has_member_swap_v =
+			  daw::is_detected_v<has_swap_test, T, U>;
+		} // namespace
+	}   // namespace impl
 	template<typename T, typename U>
 	constexpr void cswap( std::pair<T, U> &lhs, std::pair<T, U> &rhs ) noexcept(
 	  std::is_nothrow_move_assignable_v<std::pair<T, U>> ) {

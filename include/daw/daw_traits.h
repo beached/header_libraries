@@ -191,13 +191,15 @@ namespace daw {
 		  can_convert_from<To, Froms...>::value;
 
 		namespace details {
-			template<typename>
-			struct type_sink {
-				using type = void;
-			}; // consumes a type, and makes it `void`
-			template<typename T>
-			using type_sink_t = typename type_sink<T>::type;
-		} // namespace details
+			namespace {
+				template<typename>
+				struct type_sink {
+					using type = void;
+				}; // consumes a type, and makes it `void`
+				template<typename T>
+				using type_sink_t = typename type_sink<T>::type;
+			} // namespace
+		}   // namespace details
 
 // Build a check for the precence of a member
 // Can be used like METHOD_CHECKER_ANY( has_begin_method, begin, ( ) ) and the

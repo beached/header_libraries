@@ -24,8 +24,8 @@
 
 #include "daw_exchange.h"
 
-#include <cstdio>
 #include <cstddef>
+#include <cstdio>
 #ifndef WIN32
 #include <fcntl.h>
 #include <sys/mman.h>
@@ -51,9 +51,10 @@ namespace daw::filesystem {
 		using value_type = T;
 		using reference = T &;
 		using const_reference =
-		  std::conditional_t<std::is_const_v<T>, T, T const> &;
+		  typename std::conditional<std::is_const<T>::value, T, T const>::type &;
 		using pointer = T *;
-		using const_pointer = std::conditional_t<std::is_const_v<T>, T, T const> *;
+		using const_pointer =
+		  typename std::conditional<std::is_const<T>::value, T, T const>::type *;
 		using size_type = size_t;
 
 	private:
@@ -218,9 +219,10 @@ namespace daw::filesystem {
 		using value_type = T;
 		using reference = T &;
 		using const_reference =
-		  std::conditional_t<std::is_const_v<T>, T, T const> &;
+		  typename std::conditional<std::is_const<T>::value, T, T const>::type &;
 		using pointer = T *;
-		using const_pointer = std::conditional_t<std::is_const_v<T>, T, T const> *;
+		using const_pointer =
+		  typename std::conditional<std::is_const<T>::value, T, T const>::type *;
 		using size_type = size_t;
 
 	private:

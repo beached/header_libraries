@@ -43,7 +43,7 @@ namespace daw {
 	inline constexpr bool bool_consant_v = bool_constant<B>::value;
 
 	template<typename B>
-	struct negation : bool_constant<!bool( B::value )> {};
+	struct negation : bool_constant<not bool( B::value )> {};
 
 	template<typename...>
 	struct conjunction : std::true_type {};
@@ -99,26 +99,28 @@ namespace daw {
 				[[maybe_unused]] constexpr not_fn_t( ) noexcept(
 				  std::is_nothrow_constructible_v<Function> ) = default;
 
-				[[maybe_unused]] explicit constexpr not_fn_t( Function &&func ) noexcept(
-				  ::std::is_nothrow_move_constructible_v<Function> )
+				[[maybe_unused]] explicit constexpr not_fn_t(
+				  Function
+				    &&func ) noexcept( std::is_nothrow_move_constructible_v<Function> )
 				  : m_function{daw::move( func )} {}
 
-				[[maybe_unused]] explicit constexpr not_fn_t( Function const &func ) noexcept(
-				  ::std::is_nothrow_copy_constructible_v<Function> )
+				[[maybe_unused]] explicit constexpr not_fn_t(
+				  Function const
+				    &func ) noexcept( std::is_nothrow_copy_constructible_v<Function> )
 				  : m_function{func} {}
 
 				template<typename... Args>
 				[[nodiscard, maybe_unused]] constexpr decltype( auto )
-				operator( )( Args &&... args ) noexcept(
-				  noexcept( !std::declval<Function>( )( std::declval<Args>( )... ) ) ) {
-					return !m_function( std::forward<Args>( args )... );
+				operator( )( Args &&... args ) noexcept( noexcept(
+				  not std::declval<Function>( )( std::declval<Args>( )... ) ) ) {
+					return not m_function( std::forward<Args>( args )... );
 				}
 
 				template<typename... Args>
 				[[nodiscard, maybe_unused]] constexpr decltype( auto )
-				operator( )( Args &&... args ) const noexcept(
-				  noexcept( !std::declval<Function>( )( std::declval<Args>( )... ) ) ) {
-					return !m_function( std::forward<Args>( args )... );
+				operator( )( Args &&... args ) const noexcept( noexcept(
+				  not std::declval<Function>( )( std::declval<Args>( )... ) ) ) {
+					return not m_function( std::forward<Args>( args )... );
 				}
 			};
 		} // namespace
@@ -135,20 +137,17 @@ namespace daw {
 		return impl::not_fn_t<Function>( );
 	}
 
-	namespace impl {
-		namespace {
-			template<typename T>
-			struct is_reference_wrapper : std::false_type {};
+	template<typename T>
+	struct is_reference_wrapper : std::false_type {};
 
-			template<typename U>
-			struct is_reference_wrapper<std::reference_wrapper<U>> : std::true_type {
-			};
-		} // namespace
-	}   // namespace impl
+	template<typename U>
+	struct is_reference_wrapper<std::reference_wrapper<U>> : std::true_type {};
 
 	template<typename T>
-	inline constexpr bool is_reference_wrapper_v =
-	  impl::is_reference_wrapper<T>::value;
+	using not_trait = std::integral_constant<bool, not T::value>;
+
+	template<typename T>
+	inline constexpr bool is_reference_wrapper_v = is_reference_wrapper<T>::value;
 
 	template<typename T>
 	[[nodiscard, maybe_unused]] constexpr std::add_const_t<T> &
@@ -173,7 +172,7 @@ namespace daw {
 			};
 
 			template<class Default, template<class...> class Op, class... Args>
-			struct detector<Default, ::std::void_t<Op<Args...>>, Op, Args...> {
+			struct detector<Default, std::void_t<Op<Args...>>, Op, Args...> {
 				using value_t = std::true_type;
 				using type = Op<Args...>;
 			};
@@ -246,10 +245,11 @@ namespace daw {
 			INVOKE( T Base::*pmf, Derived &&ref, Args &&... args ) noexcept(
 			  noexcept( ( std::forward<Derived>( ref ).*
 			              pmf )( std::forward<Args>( args )... ) ) )
-			  -> std::enable_if_t<std::is_function_v<T> and
-			                        std::is_base_of_v<Base, std::decay_t<Derived>>,
-			                      decltype( ( std::forward<Derived>( ref ).*pmf )(
-			                        std::forward<Args>( args )... ) )> {
+			  -> std::enable_if_t<
+			    std::conjunction_v<std::is_function<T>,
+			                       std::is_base_of<Base, std::decay_t<Derived>>>,
+			    decltype( ( std::forward<Derived>( ref ).*
+			                pmf )( std::forward<Args>( args )... ) )> {
 				return ( std::forward<Derived>( ref ).*
 				         pmf )( std::forward<Args>( args )... );
 			}
@@ -259,8 +259,8 @@ namespace daw {
 			INVOKE( T Base::*pmf, RefWrap &&ref, Args &&... args ) noexcept(
 			  noexcept( ( ref.get( ).*pmf )( std::forward<Args>( args )... ) ) )
 			  -> std::enable_if_t<
-			    std::is_function_v<T> and
-			      is_reference_wrapper_v<std::decay_t<RefWrap>>,
+			    std::conjunction_v<std::is_function<T>,
+			                       is_reference_wrapper<std::decay_t<RefWrap>>>,
 			    decltype( ( ref.get( ).*pmf )( std::forward<Args>( args )... ) )> {
 
 				return ( ref.get( ).*pmf )( std::forward<Args>( args )... );
@@ -272,9 +272,10 @@ namespace daw {
 			  noexcept( ( ( *std::forward<Pointer>( ptr ) ).*
 			              pmf )( std::forward<Args>( args )... ) ) )
 			  -> std::enable_if_t<
-			    std::is_function_v<T> and
-			      !is_reference_wrapper_v<std::decay_t<Pointer>> and
-			      !std::is_base_of_v<Base, std::decay_t<Pointer>>,
+			    std::conjunction_v<
+			      std::is_function<T>,
+			      not_trait<is_reference_wrapper<std::decay_t<Pointer>>>,
+			      not_trait<std::is_base_of<Base, std::decay_t<Pointer>>>>,
 			    decltype( ( ( *std::forward<Pointer>( ptr ) ).*
 			                pmf )( std::forward<Args>( args )... ) )> {
 
@@ -287,9 +288,10 @@ namespace daw {
 			INVOKE( T Base::*pmd,
 			        Derived &&ref ) noexcept( noexcept( std::forward<Derived>( ref ).*
 			                                            pmd ) )
-			  -> std::enable_if_t<!std::is_function_v<T> and
-			                        std::is_base_of_v<Base, std::decay_t<Derived>>,
-			                      decltype( std::forward<Derived>( ref ).*pmd )> {
+			  -> std::enable_if_t<
+			    std::conjunction_v<not_trait<std::is_function<T>>,
+			                       std::is_base_of<Base, std::decay_t<Derived>>>,
+			    decltype( std::forward<Derived>( ref ).*pmd )> {
 
 				return std::forward<Derived>( ref ).*pmd;
 			}
@@ -298,9 +300,10 @@ namespace daw {
 			[[nodiscard, maybe_unused]] constexpr auto
 			INVOKE( T Base::*pmd,
 			        RefWrap &&ref ) noexcept( noexcept( ref.get( ).*pmd ) )
-			  -> std::enable_if_t<!std::is_function_v<T> and
-			                        is_reference_wrapper_v<std::decay_t<RefWrap>>,
-			                      decltype( ref.get( ).*pmd )> {
+			  -> std::enable_if_t<
+			    std::conjunction_v<not_trait<std::is_function<T>>,
+			                       is_reference_wrapper<std::decay_t<RefWrap>>>,
+			    decltype( ref.get( ).*pmd )> {
 				return ref.get( ).*pmd;
 			}
 
@@ -308,11 +311,12 @@ namespace daw {
 			[[nodiscard, maybe_unused]] constexpr auto
 			INVOKE( T Base::*pmd, Pointer &&ptr ) noexcept(
 			  noexcept( ( *std::forward<Pointer>( ptr ) ).*pmd ) )
-			  -> std::enable_if_t<!std::is_function_v<T> and
-			                        !is_reference_wrapper_v<std::decay_t<Pointer>> and
-			                        !std::is_base_of_v<Base, std::decay_t<Pointer>>,
-			                      decltype( ( *std::forward<Pointer>( ptr ) ).*
-			                                pmd )> {
+			  -> std::enable_if_t<
+			    std::conjunction_v<
+			      not_trait<std::is_function<T>>,
+			      not_trait<is_reference_wrapper<std::decay_t<Pointer>>>,
+			      not_trait<std::is_base_of<Base, std::decay_t<Pointer>>>>,
+			    decltype( ( *std::forward<Pointer>( ptr ) ).*pmd )> {
 				return ( *std::forward<Pointer>( ptr ) ).*pmd;
 			}
 
@@ -325,7 +329,7 @@ namespace daw {
 			INVOKE( F &&f, Args &&... args ) noexcept(
 			  noexcept( std::forward<F>( f )( std::forward<Args>( args )... ) ) )
 			  -> std::enable_if_t<
-			    !std::is_member_pointer_v<std::decay_t<F>>,
+			    not std::is_member_pointer_v<std::decay_t<F>>,
 			    decltype( std::forward<F>( f )( std::forward<Args>( args )... ) )> {
 
 				return std::forward<F>( f )( std::forward<Args>( args )... );
@@ -335,8 +339,8 @@ namespace daw {
 
 #ifndef _MSC_VER
 	template<typename F, typename... Args,
-	         daw::enable_when_t<
-	           !daw::all_true_v<is_reference_wrapper_v<Args>...>> = nullptr>
+	         daw::enable_when_t<std::conjunction_v<
+	           not_trait<is_reference_wrapper<Args>>...>> = nullptr>
 	[[nodiscard, maybe_unused]] constexpr decltype( auto )
 	invoke( F &&f, Args &&... args )
 	  // exception specification for QoI
@@ -566,15 +570,15 @@ namespace daw {
 
 	template<typename To, typename From>
 	[[nodiscard, maybe_unused]] To
-	bit_cast( From &&from ) noexcept( ::std::is_nothrow_constructible_v<To> ) {
+	bit_cast( From &&from ) noexcept( std::is_nothrow_constructible_v<To> ) {
 
-		static_assert( ::std::is_trivially_copyable_v<remove_cvref_t<From>>,
+		static_assert( std::is_trivially_copyable_v<remove_cvref_t<From>>,
 		               "From type must be trivially copiable" );
-		static_assert( ::std::is_trivially_copyable_v<remove_cvref_t<To>>,
+		static_assert( std::is_trivially_copyable_v<remove_cvref_t<To>>,
 		               "To type must be trivially copiable" );
 		static_assert( sizeof( From ) == sizeof( To ),
 		               "Sizes of From and To types must be the same" );
-		static_assert( ::std::is_default_constructible_v<To>,
+		static_assert( std::is_default_constructible_v<To>,
 		               "To type must be default constructible" );
 
 		auto result = std::aligned_storage_t<sizeof( To ), alignof( To )>{};
@@ -583,7 +587,7 @@ namespace daw {
 
 	template<typename To, typename From>
 	[[nodiscard, maybe_unused]] To bit_cast( From const *const from ) noexcept(
-	  ::std::is_nothrow_constructible_v<To> ) {
+	  std::is_nothrow_constructible_v<To> ) {
 
 		return bit_cast<To>( *from );
 	}
@@ -692,7 +696,7 @@ namespace daw {
 	template<class T>
 	[[nodiscard, maybe_unused]] constexpr auto
 	decay_copy( T &&v ) noexcept( is_nothrow_convertible_v<T, std::decay_t<T>> )
-	  -> std::enable_if_t<::std::is_convertible_v<T, std::decay_t<T>>,
+	  -> std::enable_if_t<std::is_convertible_v<T, std::decay_t<T>>,
 	                      std::decay_t<T>> {
 
 		return std::forward<T>( v );
