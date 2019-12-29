@@ -186,7 +186,7 @@ namespace daw {
 
 			daw::array<bool, m_data_size> slots_claimed{};
 
-			std::find_if( buckets.cbegin( ), buckets.cend( ),
+			daw::algorithm::find_if( buckets.cbegin( ), buckets.cend( ),
 			              [&]( auto const &bucket ) {
 				              if( bucket.items.empty( ) ) {
 					              return true;
