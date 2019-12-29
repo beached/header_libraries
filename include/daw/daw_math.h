@@ -115,7 +115,7 @@ namespace daw {
 
 		template<typename T>
 		constexpr T round_by( T const value, double const rnd_by ) noexcept {
-			static_assert( ::std::is_arithmetic_v<T>,
+			static_assert( std::is_arithmetic_v<T>,
 			               "value must be an arithmetic type" );
 			auto const rnd =
 			  static_cast<double>( round( static_cast<double>( value ) / rnd_by ) );
@@ -124,7 +124,7 @@ namespace daw {
 
 		template<typename T>
 		constexpr T floor_by( T const value, double const rnd_by ) noexcept {
-			static_assert( ::std::is_arithmetic_v<T>,
+			static_assert( std::is_arithmetic_v<T>,
 			               "value must be an arithmetic type" );
 			auto const rnd =
 			  static_cast<double>( floor( static_cast<double>( value ) / rnd_by ) );
@@ -133,7 +133,7 @@ namespace daw {
 
 		template<typename T>
 		constexpr T ceil_by( T const value, double const rnd_by ) noexcept {
-			static_assert( ::std::is_arithmetic_v<T>,
+			static_assert( std::is_arithmetic_v<T>,
 			               "value must be an arithmetic type" );
 			auto const rnd =
 			  static_cast<double>( ceil( static_cast<double>( value ) / rnd_by ) );
@@ -156,8 +156,8 @@ namespace daw {
 		}
 
 		template<typename Result = uintmax_t, typename SignedInteger,
-		         std::enable_if_t<all_true_v<::std::is_integral_v<SignedInteger>,
-		                                     ::std::is_signed_v<SignedInteger>>,
+		         std::enable_if_t<all_true_v<std::is_integral_v<SignedInteger>,
+		                                     std::is_signed_v<SignedInteger>>,
 		                          std::nullptr_t> = nullptr>
 		constexpr Result abs( SignedInteger v ) noexcept {
 			// This accounts for when negating the number is out of range
@@ -172,7 +172,7 @@ namespace daw {
 		}
 
 		template<typename UnsignedInteger,
-		         std::enable_if_t<all_true_v<::std::is_integral_v<UnsignedInteger>,
+		         std::enable_if_t<all_true_v<std::is_integral_v<UnsignedInteger>,
 		                                     not std::is_signed_v<UnsignedInteger>>,
 		                          std::nullptr_t> = nullptr>
 		constexpr UnsignedInteger abs( UnsignedInteger &&v ) noexcept {
@@ -243,7 +243,7 @@ namespace daw {
 
 		template<typename T>
 		constexpr auto sqr( T const &value ) noexcept {
-			static_assert( ::std::is_arithmetic_v<T>,
+			static_assert( std::is_arithmetic_v<T>,
 			               "Template parameter must be an arithmetic type" );
 			return value * value;
 		}
@@ -269,7 +269,7 @@ namespace daw {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wfloat-equal"
 #endif
-		template<typename T, std::enable_if_t<::std::is_floating_point_v<T>,
+		template<typename T, std::enable_if_t<std::is_floating_point_v<T>,
 		                                      std::nullptr_t> = nullptr>
 		constexpr bool
 		nearly_equal( T a, T b,

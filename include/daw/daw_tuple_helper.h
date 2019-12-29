@@ -65,14 +65,14 @@ namespace daw {
 	constexpr auto get( std::tuple<Args...> &tp, size_t index ) noexcept {
 		using result_t =
 		  std::variant<std::reference_wrapper<std::remove_reference_t<Args>>...>;
-		return ::daw::tuple::thlp_impl::get_impl<0, result_t>( tp, index );
+		return daw::tuple::thlp_impl::get_impl<0, result_t>( tp, index );
 	}
 
 	template<typename... Args>
 	constexpr auto get( std::tuple<Args...> const &tp, size_t index ) noexcept {
 		using result_t = std::variant<
 		  std::reference_wrapper<std::remove_reference_t<Args> const>...>;
-		return ::daw::tuple::thlp_impl::get_impl<0, result_t>( tp, index );
+		return daw::tuple::thlp_impl::get_impl<0, result_t>( tp, index );
 	}
 
 	namespace tuple {

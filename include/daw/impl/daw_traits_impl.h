@@ -27,143 +27,147 @@
 namespace daw {
 	namespace traits {
 		namespace detectors {
-			template<typename Function, typename... Args>
-			using callable_with =
-			  decltype( std::declval<Function>( )( std::declval<Args>( )... ) );
+			namespace {
+				template<typename Function, typename... Args>
+				using callable_with =
+				  decltype( std::declval<Function>( )( std::declval<Args>( )... ) );
 
-			template<typename BinaryPredicate, typename T, typename U = T>
-			using binary_predicate = callable_with<BinaryPredicate, T, U>;
+				template<typename BinaryPredicate, typename T, typename U = T>
+				using binary_predicate = callable_with<BinaryPredicate, T, U>;
 
-			template<typename UnaryPredicate, typename T>
-			using unary_predicate = callable_with<UnaryPredicate, T>;
+				template<typename UnaryPredicate, typename T>
+				using unary_predicate = callable_with<UnaryPredicate, T>;
 
-			template<typename T, typename U>
-			using less_than_comparable =
-			  decltype( std::declval<T>( ) < std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using equal_less_than_comparable =
-			  decltype( std::declval<T>( ) <= std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using greater_than_comparable =
-			  decltype( std::declval<T>( ) > std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using equal_greater_than_comparable =
-			  decltype( std::declval<T>( ) >= std::declval<U>( ) );
-
-			namespace details {
 				template<typename T, typename U>
-				void swap( T &lhs, U &rhs ) {
-					using std::swap;
-					swap( lhs, rhs );
-				}
-			} // namespace details
+				using less_than_comparable =
+				  decltype( std::declval<T>( ) < std::declval<U>( ) );
 
-			template<typename T>
-			using swappable =
-			  decltype( details::swap( std::declval<T>( ), std::declval<T>( ) ) );
+				template<typename T, typename U>
+				using equal_less_than_comparable =
+				  decltype( std::declval<T>( ) <= std::declval<U>( ) );
 
-			template<typename Iterator, typename T>
-			using assignable =
-			  decltype( *std::declval<Iterator>( ) = std::declval<T>( ) );
+				template<typename T, typename U>
+				using greater_than_comparable =
+				  decltype( std::declval<T>( ) > std::declval<U>( ) );
 
-			template<typename T, typename U>
-			using equality_comparable =
-			  decltype( std::declval<T>( ) == std::declval<U>( ) );
+				template<typename T, typename U>
+				using equal_greater_than_comparable =
+				  decltype( std::declval<T>( ) >= std::declval<U>( ) );
 
-			template<typename T, typename U>
-			using inequality_comparable =
-			  decltype( std::declval<T>( ) != std::declval<U>( ) );
+				namespace details {
+					template<typename T, typename U>
+					[[maybe_unused]] void swap( T &lhs, U &rhs ) {
+						using std::swap;
+						swap( lhs, rhs );
+					}
+				} // namespace details
 
-			template<typename T>
-			using std_begin_detector = decltype( std::begin( std::declval<T>( ) ) );
+				template<typename T>
+				using swappable =
+				  decltype( details::swap( std::declval<T>( ), std::declval<T>( ) ) );
 
-			template<typename T>
-			using adl_begin_detector = decltype( begin( std::declval<T>( ) ) );
+				template<typename Iterator, typename T>
+				using assignable =
+				  decltype( *std::declval<Iterator>( ) = std::declval<T>( ) );
 
-			template<typename T>
-			using std_end_detector = decltype( std::end( std::declval<T>( ) ) );
+				template<typename T, typename U>
+				using equality_comparable =
+				  decltype( std::declval<T>( ) == std::declval<U>( ) );
 
-			template<typename T>
-			using adl_end_detector = decltype( end( std::declval<T>( ) ) );
+				template<typename T, typename U>
+				using inequality_comparable =
+				  decltype( std::declval<T>( ) != std::declval<U>( ) );
 
-			template<typename T>
-			using dereferenceable = decltype( *std::declval<T>( ) );
+				template<typename T>
+				using std_begin_detector = decltype( std::begin( std::declval<T>( ) ) );
 
-			template<typename T>
-			using has_integer_subscript = decltype( std::declval<T>( )[0] );
+				template<typename T>
+				using adl_begin_detector = decltype( begin( std::declval<T>( ) ) );
 
-			template<typename T>
-			using has_size =
-			  decltype( std::declval<size_t &>( ) = std::declval<T>( ).size( ) );
+				template<typename T>
+				using std_end_detector = decltype( std::end( std::declval<T>( ) ) );
 
-			template<typename T>
-			using is_array_array = decltype( std::declval<T>( )[0][0] );
+				template<typename T>
+				using adl_end_detector = decltype( end( std::declval<T>( ) ) );
 
-			template<typename T>
-			using has_empty =
-			  decltype( std::declval<bool &>( ) = std::declval<T>( ).empty( ) );
+				template<typename T>
+				using dereferenceable = decltype( *std::declval<T>( ) );
 
-			template<typename T>
-			using has_append_operator = decltype(
-			  std::declval<T &>( ) += std::declval<has_integer_subscript<T>>( ) );
+				template<typename T>
+				using has_integer_subscript = decltype( std::declval<T>( )[0] );
 
-			template<typename T>
-			using has_append =
-			  decltype( std::declval<T>( ).append( std::declval<T>( ) ) );
+				template<typename T>
+				using has_size =
+				  decltype( std::declval<size_t &>( ) = std::declval<T>( ).size( ) );
 
-			template<typename T, typename U>
-			using has_addition_operator =
-			  decltype( std::declval<T>( ) + std::declval<U>( ) );
+				template<typename T>
+				using is_array_array = decltype( std::declval<T>( )[0][0] );
 
-			template<typename T, typename U>
-			using has_subtraction_operator =
-			  decltype( std::declval<T>( ) - std::declval<U>( ) );
+				template<typename T>
+				using has_empty =
+				  decltype( std::declval<bool &>( ) = std::declval<T>( ).empty( ) );
 
-			template<typename T, typename U>
-			using has_multiplication_operator =
-			  decltype( std::declval<T>( ) * std::declval<U>( ) );
+				template<typename T>
+				using has_append_operator = decltype(
+				  std::declval<T &>( ) += std::declval<has_integer_subscript<T>>( ) );
 
-			template<typename T, typename U>
-			using has_division_operator =
-			  decltype( std::declval<T>( ) / std::declval<U>( ) );
+				template<typename T>
+				using has_append =
+				  decltype( std::declval<T>( ).append( std::declval<T>( ) ) );
 
-			template<typename T, typename U>
-			using has_compound_assignment_add_operator =
-			  decltype( std::declval<T &>( ) += std::declval<U>( ) );
+				template<typename T, typename U>
+				using has_addition_operator =
+				  decltype( std::declval<T>( ) + std::declval<U>( ) );
 
-			template<typename T, typename U>
-			using has_compound_assignment_sub_operator =
-			  decltype( std::declval<T &>( ) -= std::declval<U>( ) );
+				template<typename T, typename U>
+				using has_subtraction_operator =
+				  decltype( std::declval<T>( ) - std::declval<U>( ) );
 
-			template<typename T, typename U>
-			using has_compound_assignment_mul_operator =
-			  decltype( std::declval<T &>( ) *= std::declval<U>( ) );
+				template<typename T, typename U>
+				using has_multiplication_operator =
+				  decltype( std::declval<T>( ) * std::declval<U>( ) );
 
-			template<typename T, typename U>
-			using has_compound_assignment_div_operator =
-			  decltype( std::declval<T &>( ) /= std::declval<U>( ) );
+				template<typename T, typename U>
+				using has_division_operator =
+				  decltype( std::declval<T>( ) / std::declval<U>( ) );
 
-			template<typename T, typename U>
-			using has_modulus_operator =
-			  decltype( std::declval<T>( ) % std::declval<U>( ) );
+				template<typename T, typename U>
+				using has_compound_assignment_add_operator =
+				  decltype( std::declval<T &>( ) += std::declval<U>( ) );
 
-			template<typename T>
-			using has_increment_operator = decltype( ++std::declval<T &>( ) );
+				template<typename T, typename U>
+				using has_compound_assignment_sub_operator =
+				  decltype( std::declval<T &>( ) -= std::declval<U>( ) );
 
-			template<typename T>
-			using has_decrement_operator = decltype( --std::declval<T &>( ) );
-		} // namespace detectors
+				template<typename T, typename U>
+				using has_compound_assignment_mul_operator =
+				  decltype( std::declval<T &>( ) *= std::declval<U>( ) );
+
+				template<typename T, typename U>
+				using has_compound_assignment_div_operator =
+				  decltype( std::declval<T &>( ) /= std::declval<U>( ) );
+
+				template<typename T, typename U>
+				using has_modulus_operator =
+				  decltype( std::declval<T>( ) % std::declval<U>( ) );
+
+				template<typename T>
+				using has_increment_operator = decltype( ++std::declval<T &>( ) );
+
+				template<typename T>
+				using has_decrement_operator = decltype( --std::declval<T &>( ) );
+			} // namespace
+		}   // namespace detectors
 
 		namespace impl {
-			template<typename...>
-			struct is_single_void_arg_t : std::false_type {};
+			namespace {
+				template<typename...>
+				struct is_single_void_arg_t : std::false_type {};
 
-			template<>
-			struct is_single_void_arg_t<void> : std::true_type {};
-		} // namespace impl
+				template<>
+				struct is_single_void_arg_t<void> : std::true_type {};
+			} // namespace
+		}   // namespace impl
 
 		template<typename... Args>
 		inline constexpr bool is_single_void_arg_v =
@@ -180,22 +184,24 @@ namespace daw {
 		  is_detected_convertible_v<Result, traits::detectors::callable_with,
 		                            Function, Args...>;
 		namespace impl {
-			template<typename Function, typename... Args,
-			         std::enable_if_t<is_callable_v<Function, Args...>,
-			                          std::nullptr_t> = nullptr>
-			constexpr bool is_nothrow_callable_test( ) noexcept {
-				return noexcept(
-				  std::declval<Function>( )( std::declval<Args>( )... ) );
-			}
+			namespace {
+				template<typename Function, typename... Args,
+				         std::enable_if_t<is_callable_v<Function, Args...>,
+				                          std::nullptr_t> = nullptr>
+				constexpr bool is_nothrow_callable_test( ) noexcept {
+					return noexcept(
+					  std::declval<Function>( )( std::declval<Args>( )... ) );
+				}
 
-			template<
-			  typename Function, typename... Args,
-			  std::enable_if_t<not daw::traits::is_callable_v<Function, Args...>,
-			                   std::nullptr_t> = nullptr>
-			constexpr bool is_nothrow_callable_test( ) noexcept {
-				return false;
-			}
-		} // namespace impl
+				template<
+				  typename Function, typename... Args,
+				  std::enable_if_t<not daw::traits::is_callable_v<Function, Args...>,
+				                   std::nullptr_t> = nullptr>
+				constexpr bool is_nothrow_callable_test( ) noexcept {
+					return false;
+				}
+			} // namespace
+		}   // namespace impl
 
 		template<typename Function, typename... Args>
 		inline constexpr bool is_nothrow_callable_v =
@@ -273,6 +279,10 @@ namespace daw {
 		  daw::is_detected_v<detectors::has_append_operator, String>;
 
 		template<typename T, typename U = T>
+		using is_equality_comparable =
+		  is_detected_convertible<bool, detectors::equality_comparable, T, U>;
+
+		template<typename T, typename U = T>
 		inline constexpr bool is_equality_comparable_v =
 		  is_detected_convertible_v<bool, detectors::equality_comparable, T, U>;
 
@@ -346,7 +356,7 @@ namespace daw {
 
 			template<typename T>
 			inline constexpr bool is_incrementable_v =
-			  ::std::is_same_v<T &, ::daw::detected_t<is_iter::is_incrementable, T>>;
+			  std::is_same_v<T &, daw::detected_t<is_iter::is_incrementable, T>>;
 
 			template<typename T>
 			inline constexpr bool has_value_type_v =
@@ -378,6 +388,9 @@ namespace daw {
 		  typename is_detected<detectors::dereferenceable, T>::type;
 
 		template<typename T>
+		using is_dereferenceable = is_detected<detectors::dereferenceable, T>;
+
+		template<typename T>
 		inline constexpr bool is_dereferenceable_v =
 		  is_detected_v<detectors::dereferenceable, T>;
 	} // namespace traits
@@ -388,20 +401,20 @@ namespace daw {
 
 		template<typename Function>
 		struct void_function<
-		  Function, std::enable_if_t<::std::is_default_constructible_v<Function>,
+		  Function, std::enable_if_t<std::is_default_constructible_v<Function>,
 		                             std::nullptr_t>> {
 
 			Function function;
 
 			constexpr void_function( ) noexcept(
-			  ::std::is_nothrow_constructible_v<Function> ) = default;
+			  std::is_nothrow_constructible_v<Function> ) = default;
 
 			explicit constexpr void_function( Function const &func ) noexcept(
-			  ::std::is_nothrow_copy_constructible_v<Function> )
+			  std::is_nothrow_copy_constructible_v<Function> )
 			  : function( func ) {}
 
 			explicit constexpr void_function( Function &&func ) noexcept(
-			  ::std::is_nothrow_move_constructible_v<Function> )
+			  std::is_nothrow_move_constructible_v<Function> )
 			  : function( daw::move( func ) ) {}
 
 			explicit constexpr operator bool( ) noexcept(
@@ -422,17 +435,17 @@ namespace daw {
 
 		template<typename Function>
 		struct void_function<
-		  Function, std::enable_if_t<not::std::is_default_constructible_v<Function>,
+		  Function, std::enable_if_t<not std::is_default_constructible_v<Function>,
 		                             std::nullptr_t>> {
 
 			Function function;
 
 			explicit constexpr void_function( Function const &func ) noexcept(
-			  ::std::is_nothrow_copy_constructible_v<Function> )
+			  std::is_nothrow_copy_constructible_v<Function> )
 			  : function( func ) {}
 
 			explicit constexpr void_function( Function &&func ) noexcept(
-			  ::std::is_nothrow_move_constructible_v<Function> )
+			  std::is_nothrow_move_constructible_v<Function> )
 			  : function( daw::move( func ) ) {}
 
 			explicit constexpr operator bool( ) noexcept(
@@ -486,169 +499,181 @@ namespace daw {
 	template<size_t N, typename... Args>
 	using pack_type_t = typename pack_type<N, Args...>::type;
 	namespace impl {
-		struct non_constructor {};
+		namespace {
+			struct non_constructor {};
 
-		template<bool>
-		struct delete_default_constructor_if {
-			constexpr delete_default_constructor_if( ) noexcept {}
-			constexpr delete_default_constructor_if( non_constructor ) noexcept {}
-		};
+			template<bool>
+			struct delete_default_constructor_if {
+				constexpr delete_default_constructor_if( ) noexcept {}
+				constexpr delete_default_constructor_if( non_constructor ) noexcept {}
+			};
 
-		template<>
-		struct delete_default_constructor_if<true> {
-			delete_default_constructor_if( ) = delete;
+			template<>
+			struct delete_default_constructor_if<true> {
+				delete_default_constructor_if( ) = delete;
 
-			~delete_default_constructor_if( ) noexcept = default;
+				[[maybe_unused]] ~delete_default_constructor_if( ) noexcept = default;
 
-			constexpr delete_default_constructor_if( non_constructor ) noexcept {}
+				[[maybe_unused]] constexpr delete_default_constructor_if(
+				  non_constructor ) noexcept {}
 
-			constexpr delete_default_constructor_if(
-			  delete_default_constructor_if const & ) {}
+				[[maybe_unused]] constexpr delete_default_constructor_if(
+				  delete_default_constructor_if const & ) {}
 
-			constexpr delete_default_constructor_if &
+				[[maybe_unused]] constexpr delete_default_constructor_if &
+				operator=( delete_default_constructor_if const & ) noexcept {
+					return *this;
+				}
 
-			operator=( delete_default_constructor_if const & ) noexcept {
-				return *this;
-			}
+				[[maybe_unused]] constexpr delete_default_constructor_if(
+				  delete_default_constructor_if && ) noexcept {}
 
-			constexpr delete_default_constructor_if(
-			  delete_default_constructor_if && ) noexcept {}
+				[[maybe_unused]] constexpr delete_default_constructor_if &
+				operator=( delete_default_constructor_if && ) noexcept {
+					return *this;
+				}
+			};
 
-			constexpr delete_default_constructor_if &
-			operator=( delete_default_constructor_if && ) noexcept {
-				return *this;
-			}
-		};
+			template<bool>
+			struct delete_copy_constructor_if {
+				constexpr delete_copy_constructor_if( ) noexcept {}
+				constexpr delete_copy_constructor_if( non_constructor ) noexcept {}
+			};
 
-		template<bool>
-		struct delete_copy_constructor_if {
-			constexpr delete_copy_constructor_if( ) noexcept {}
-			constexpr delete_copy_constructor_if( non_constructor ) noexcept {}
-		};
+			template<>
+			struct delete_copy_constructor_if<true> {
+				delete_copy_constructor_if( delete_copy_constructor_if const & ) =
+				  delete;
 
-		template<>
-		struct delete_copy_constructor_if<true> {
-			delete_copy_constructor_if( delete_copy_constructor_if const & ) = delete;
+				[[maybe_unused]] constexpr delete_copy_constructor_if(
+				  non_constructor ) noexcept {}
 
-			constexpr delete_copy_constructor_if( non_constructor ) noexcept {}
-			constexpr delete_copy_constructor_if( ) noexcept {}
-			~delete_copy_constructor_if( ) noexcept = default;
-			constexpr delete_copy_constructor_if &
-			operator=( delete_copy_constructor_if const & ) noexcept {
-				return *this;
-			}
-			constexpr delete_copy_constructor_if(
-			  delete_copy_constructor_if && ) noexcept {}
+				[[maybe_unused]] constexpr delete_copy_constructor_if( ) noexcept {}
 
-			constexpr delete_copy_constructor_if &
-			operator=( delete_copy_constructor_if && ) noexcept {
-				return *this;
-			}
-		};
+				[[maybe_unused]] ~delete_copy_constructor_if( ) noexcept = default;
 
-		template<bool>
-		struct delete_copy_assignment_if {
-			constexpr delete_copy_assignment_if( ) noexcept {}
-			constexpr delete_copy_assignment_if( non_constructor ) noexcept {}
-		};
+				[[maybe_unused]] constexpr delete_copy_constructor_if &
+				operator=( delete_copy_constructor_if const & ) noexcept {
+					return *this;
+				}
 
-		template<>
-		struct delete_copy_assignment_if<true> {
-			delete_copy_assignment_if &
-			operator=( delete_copy_assignment_if const & ) = delete;
+				[[maybe_unused]] constexpr delete_copy_constructor_if(
+				  delete_copy_constructor_if && ) noexcept {}
 
-			constexpr delete_copy_assignment_if( non_constructor ) noexcept {}
+				[[maybe_unused]] constexpr delete_copy_constructor_if &
+				operator=( delete_copy_constructor_if && ) noexcept {
+					return *this;
+				}
+			};
 
-			constexpr delete_copy_assignment_if( ) noexcept {}
+			template<bool>
+			struct delete_copy_assignment_if {
+				constexpr delete_copy_assignment_if( ) noexcept {}
+				constexpr delete_copy_assignment_if( non_constructor ) noexcept {}
+			};
 
-			~delete_copy_assignment_if( ) noexcept = default;
+			template<>
+			struct delete_copy_assignment_if<true> {
+				delete_copy_assignment_if &
+				operator=( delete_copy_assignment_if const & ) = delete;
 
-			constexpr delete_copy_assignment_if(
-			  delete_copy_assignment_if const & ) noexcept {}
+				[[maybe_unused]] constexpr delete_copy_assignment_if(
+				  non_constructor ) noexcept {}
 
-			constexpr delete_copy_assignment_if(
-			  delete_copy_assignment_if && ) noexcept {}
+				[[maybe_unused]] constexpr delete_copy_assignment_if( ) noexcept {}
 
-			constexpr delete_copy_assignment_if &
-			operator=( delete_copy_assignment_if && ) noexcept {
-				return *this;
-			}
-		};
+				[[maybe_unused]] ~delete_copy_assignment_if( ) noexcept = default;
 
-		template<bool>
-		struct delete_move_constructor_if {
-			constexpr delete_move_constructor_if( ) noexcept {}
-			constexpr delete_move_constructor_if( non_constructor ) noexcept {}
-		};
+				[[maybe_unused]] constexpr delete_copy_assignment_if(
+				  delete_copy_assignment_if const & ) noexcept {}
 
-		template<>
-		struct delete_move_constructor_if<true> {
-			delete_move_constructor_if( delete_move_constructor_if const & ) =
-			  default;
+				[[maybe_unused]] constexpr delete_copy_assignment_if(
+				  delete_copy_assignment_if && ) noexcept {}
 
-			constexpr delete_move_constructor_if( non_constructor ) noexcept {}
-			constexpr delete_move_constructor_if( ) noexcept {}
-			~delete_move_constructor_if( ) noexcept = default;
-			constexpr delete_move_constructor_if &
-			operator=( delete_move_constructor_if const & ) noexcept {
-				return *this;
-			}
-			constexpr delete_move_constructor_if(
-			  delete_move_constructor_if && ) noexcept {}
+				[[maybe_unused]] constexpr delete_copy_assignment_if &
+				operator=( delete_copy_assignment_if && ) noexcept {
+					return *this;
+				}
+			};
 
-			constexpr delete_move_constructor_if &
-			operator=( delete_move_constructor_if && ) noexcept = delete;
-		};
+			template<bool>
+			struct delete_move_constructor_if {
+				constexpr delete_move_constructor_if( ) noexcept {}
+				constexpr delete_move_constructor_if( non_constructor ) noexcept {}
+			};
 
-		template<bool>
-		struct delete_move_assignment_if {
-			constexpr delete_move_assignment_if( ) noexcept {}
-			constexpr delete_move_assignment_if( non_constructor ) noexcept {}
-		};
+			template<>
+			struct delete_move_constructor_if<true> {
+				delete_move_constructor_if( delete_move_constructor_if const & ) =
+				  default;
 
-		template<>
-		struct delete_move_assignment_if<true> {
-			delete_move_assignment_if &
-			operator=( delete_move_assignment_if const & ) = default;
+				[[maybe_unused]] constexpr delete_move_constructor_if(
+				  non_constructor ) noexcept {}
 
-			constexpr delete_move_assignment_if( non_constructor ) noexcept {}
+				[[maybe_unused]] constexpr delete_move_constructor_if( ) noexcept {}
 
-			constexpr delete_move_assignment_if( ) noexcept {}
+				[[maybe_unused]] ~delete_move_constructor_if( ) noexcept = default;
 
-			~delete_move_assignment_if( ) noexcept = default;
+				[[maybe_unused]] constexpr delete_move_constructor_if &
+				operator=( delete_move_constructor_if const & ) noexcept {
+					return *this;
+				}
+				[[maybe_unused]] constexpr delete_move_constructor_if(
+				  delete_move_constructor_if && ) noexcept {}
 
-			constexpr delete_move_assignment_if(
-			  delete_move_assignment_if const & ) noexcept {}
+				constexpr delete_move_constructor_if &
+				operator=( delete_move_constructor_if && ) noexcept = delete;
+			};
 
-			constexpr delete_move_assignment_if(
-			  delete_move_assignment_if && ) noexcept {}
+			template<bool>
+			struct delete_move_assignment_if {
+				constexpr delete_move_assignment_if( ) noexcept {}
+				constexpr delete_move_assignment_if( non_constructor ) noexcept {}
+			};
 
-			constexpr delete_move_assignment_if &
-			operator=( delete_move_assignment_if && ) noexcept = delete;
-		};
-	} // namespace impl
+			template<>
+			struct delete_move_assignment_if<true> {
+				[[maybe_unused]] delete_move_assignment_if &
+				operator=( delete_move_assignment_if const & ) = default;
+
+				[[maybe_unused]] constexpr delete_move_assignment_if(
+				  non_constructor ) noexcept {}
+
+				[[maybe_unused]] constexpr delete_move_assignment_if( ) noexcept {}
+
+				[[maybe_unused]] ~delete_move_assignment_if( ) noexcept = default;
+
+				[[maybe_unused]] constexpr delete_move_assignment_if(
+				  delete_move_assignment_if const & ) noexcept {}
+
+				[[maybe_unused]] constexpr delete_move_assignment_if(
+				  delete_move_assignment_if && ) noexcept {}
+
+				constexpr delete_move_assignment_if &
+				operator=( delete_move_assignment_if && ) noexcept = delete;
+			};
+		} // namespace
+	}   // namespace impl
 
 	template<typename T, bool B = true>
 	using enable_default_constructor = impl::delete_default_constructor_if<
-	  not::std::is_default_constructible_v<T> and B>;
+	  not std::is_default_constructible_v<T> and B>;
 
 	template<typename T, bool B = true>
 	using enable_copy_constructor =
-	  impl::delete_copy_constructor_if<not::std::is_copy_constructible_v<T> and
-	                                   B>;
+	  impl::delete_copy_constructor_if<not std::is_copy_constructible_v<T> and B>;
 
 	template<typename T, bool B = true>
 	using enable_copy_assignment =
-	  impl::delete_copy_assignment_if<not::std::is_copy_assignable_v<T> and B>;
+	  impl::delete_copy_assignment_if<not std::is_copy_assignable_v<T> and B>;
 
 	template<typename T, bool B = true>
 	using enable_move_constructor =
-	  impl::delete_move_constructor_if<not::std::is_move_constructible_v<T> and
-	                                   B>;
+	  impl::delete_move_constructor_if<not std::is_move_constructible_v<T> and B>;
 
 	template<typename T, bool B = true>
 	using enable_move_assignment =
-	  impl::delete_move_assignment_if<not::std::is_move_assignable_v<T> and B>;
+	  impl::delete_move_assignment_if<not std::is_move_assignable_v<T> and B>;
 
 	struct nothing {};
 } // namespace daw

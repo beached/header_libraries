@@ -36,10 +36,9 @@ namespace daw {
 			static_assert( has_begin<Container>,
 			               "Container does not have a begin( Container ) or "
 			               "std::begin( Container ) overload" );
-			static_assert(
-			  has_end<Container>,
-			  "Container does not have a end( Container ) or ::std::end( "
-			  "Container ) overload" );
+			static_assert( has_end<Container>,
+			               "Container does not have a end( Container ) or std::end( "
+			               "Container ) overload" );
 			return true;
 		}
 
@@ -53,11 +52,11 @@ namespace daw {
 		/// http://en.cppreference.com/w/cpp/experimental/ranges/concepts/Regular
 		template<typename T>
 		inline constexpr bool is_regular_v =
-		  all_true_v<::std::is_default_constructible_v<T>,
-		             ::std::is_copy_constructible_v<T>,
-		             ::std::is_move_constructible_v<T>,
-		             ::std::is_copy_assignable_v<T>, ::std::is_move_assignable_v<T>,
-		             is_equality_comparable_v<T>, is_inequality_comparable_v<T>>;
+		  all_true_v<std::is_default_constructible_v<T>,
+		             std::is_copy_constructible_v<T>,
+		             std::is_move_constructible_v<T>, std::is_copy_assignable_v<T>,
+		             std::is_move_assignable_v<T>, is_equality_comparable_v<T>,
+		             is_inequality_comparable_v<T>>;
 
 		template<typename T>
 		constexpr bool is_regular_test( ) noexcept {
@@ -65,16 +64,14 @@ namespace daw {
 			               "T does not fullfill the concept of a regular type. See "
 			               "http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/"
 			               "p0840r0.html" );
-			static_assert( ::std::is_default_constructible_v<T>,
+			static_assert( std::is_default_constructible_v<T>,
 			               "T is not default constructable" );
-			static_assert( ::std::is_copy_constructible_v<T>,
+			static_assert( std::is_copy_constructible_v<T>,
 			               "T is not copy constructible" );
-			static_assert( ::std::is_move_constructible_v<T>,
+			static_assert( std::is_move_constructible_v<T>,
 			               "T is not move constructible" );
-			static_assert( ::std::is_copy_assignable_v<T>,
-			               "T is not copy assignable" );
-			static_assert( ::std::is_move_assignable_v<T>,
-			               "T is not move assignable" );
+			static_assert( std::is_copy_assignable_v<T>, "T is not copy assignable" );
+			static_assert( std::is_move_assignable_v<T>, "T is not move assignable" );
 			static_assert( is_equality_comparable_v<T>,
 			               "T is not equality comparable" );
 			static_assert( is_inequality_comparable_v<T>,
@@ -89,8 +86,8 @@ namespace daw {
 		// is_iterator
 		template<typename Iterator>
 		inline constexpr bool is_iterator_v = all_true_v<
-		  ::std::is_copy_constructible_v<Iterator>,
-		  ::std::is_copy_assignable_v<Iterator>, ::std::is_destructible_v<Iterator>,
+		  std::is_copy_constructible_v<Iterator>,
+		  std::is_copy_assignable_v<Iterator>, std::is_destructible_v<Iterator>,
 		  impl::is_incrementable_v<Iterator>, impl::has_value_type_v<Iterator>,
 		  impl::has_difference_type_v<Iterator>, impl::has_reference_v<Iterator>,
 		  impl::has_pointer_v<Iterator>, impl::has_iterator_category_v<Iterator>,
@@ -102,11 +99,11 @@ namespace daw {
 			               "Iterator does not fullfill the Iterator concept.  See "
 			               "https://en.cppreference.com/w/cpp/named_req/Iterator" );
 
-			static_assert( ::std::is_copy_constructible_v<Iterator>,
+			static_assert( std::is_copy_constructible_v<Iterator>,
 			               "Iterator is not copy constructable" );
-			static_assert( ::std::is_copy_assignable_v<Iterator>,
+			static_assert( std::is_copy_assignable_v<Iterator>,
 			               "Iterator is not copy assignable" );
-			static_assert( ::std::is_destructible_v<Iterator>,
+			static_assert( std::is_destructible_v<Iterator>,
 			               "Iterator is not destructable" );
 			static_assert( is_dereferenceable_v<Iterator>,
 			               "Iterator is not dereferenceable" );
@@ -132,14 +129,14 @@ namespace daw {
 		// is_output_iterator
 		template<typename OutputIterator,
 		         typename T =
-		           typename ::std::iterator_traits<OutputIterator>::value_type>
+		           typename std::iterator_traits<OutputIterator>::value_type>
 		inline constexpr bool is_output_iterator_v =
 		  all_true_v<is_iterator_v<OutputIterator>,
 		             is_assignable_iterator_v<OutputIterator, T>>;
 
 		template<
 		  typename OutputIterator,
-		  typename T = typename ::std::iterator_traits<OutputIterator>::value_type>
+		  typename T = typename std::iterator_traits<OutputIterator>::value_type>
 		constexpr bool is_output_iterator_test( ) noexcept {
 			static_assert(
 			  is_output_iterator_v<OutputIterator, T>,
@@ -153,17 +150,17 @@ namespace daw {
 
 		template<
 		  typename OutputIterator,
-		  typename T = typename ::std::iterator_traits<OutputIterator>::value_type>
+		  typename T = typename std::iterator_traits<OutputIterator>::value_type>
 		inline constexpr bool
 		  is_output_iterator = is_output_iterator_test<OutputIterator, T>( );
 
 		// is_input_iterator
 		template<typename InputIterator,
 		         typename T =
-		           ::std::decay_t<decltype( *std::declval<InputIterator>( ) )>>
+		           std::decay_t<decltype( *std::declval<InputIterator>( ) )>>
 		inline constexpr bool is_input_iterator_v = all_true_v<
 		  is_iterator_v<InputIterator>, is_equality_comparable_v<InputIterator>,
-		  ::std::is_convertible_v<decltype( *std::declval<InputIterator>( ) ), T>>;
+		  std::is_convertible_v<decltype( *std::declval<InputIterator>( ) ), T>>;
 
 		template<typename InputIterator>
 		constexpr bool is_input_iterator_test( ) noexcept {
@@ -181,7 +178,7 @@ namespace daw {
 			               "InputIterator is not equality_comparable" );
 
 			static_assert(
-			  ::std::is_convertible_v<T, U>,
+			  std::is_convertible_v<T, U>,
 			  "InputIterator's dereferenced value is not convertible to itself" );
 			return true;
 		}
@@ -192,14 +189,13 @@ namespace daw {
 
 		template<typename InOutIterator,
 		         typename T =
-		           typename ::std::iterator_traits<InOutIterator>::value_type>
+		           typename std::iterator_traits<InOutIterator>::value_type>
 		inline constexpr bool is_inout_iterator_v =
 		  all_true_v<is_input_iterator_v<InOutIterator>,
 		             is_output_iterator_v<InOutIterator, T>>;
 
-		template<
-		  typename InOutIterator,
-		  typename T = typename ::std::iterator_traits<InOutIterator>::value_type>
+		template<typename InOutIterator, typename T = typename std::iterator_traits<
+		                                   InOutIterator>::value_type>
 		constexpr bool is_inout_iterator_test( ) noexcept {
 			static_assert( is_inout_iterator_v<InOutIterator, T>,
 			               "InOutIterator does not fullfill the Input and Output "
@@ -210,9 +206,8 @@ namespace daw {
 			return true;
 		}
 
-		template<
-		  typename InOutIterator,
-		  typename T = typename ::std::iterator_traits<InOutIterator>::value_type>
+		template<typename InOutIterator, typename T = typename std::iterator_traits<
+		                                   InOutIterator>::value_type>
 		inline constexpr bool
 		  is_inout_iterator = is_input_iterator_test<InOutIterator, T>( );
 
@@ -220,7 +215,7 @@ namespace daw {
 		template<typename ForwardIterator>
 		inline constexpr bool is_forward_access_iterator_v =
 		  all_true_v<is_iterator_v<ForwardIterator>,
-		             ::std::is_default_constructible_v<ForwardIterator>>;
+		             std::is_default_constructible_v<ForwardIterator>>;
 
 		template<typename ForwardIterator>
 		constexpr bool is_forward_access_iterator_test( ) noexcept {
@@ -231,7 +226,7 @@ namespace daw {
 
 			is_iterator_test<ForwardIterator>( );
 
-			static_assert( ::std::is_default_constructible_v<ForwardIterator>,
+			static_assert( std::is_default_constructible_v<ForwardIterator>,
 			               "ForwardIterator is not default constructible" );
 			// Cannot express MultiPass // auto b = a; *a++; *b;
 			return true;
@@ -333,7 +328,7 @@ namespace daw {
 		inline constexpr bool is_sortable_container_v =
 		  all_true_v<traits::is_container_like_v<Sortable>,
 		             is_random_access_iterator_v<decltype(
-		               ::std::begin( ::std::declval<Sortable>( ) ) )>>;
+		               std::begin( std::declval<Sortable>( ) ) )>>;
 
 		template<typename Sortable>
 		constexpr bool is_sortable_container_test( ) noexcept {
@@ -345,7 +340,7 @@ namespace daw {
 			               "Container concept" );
 
 			using sortable_iterator_t =
-			  decltype( ::std::begin( ::std::declval<Sortable>( ) ) );
+			  decltype( std::begin( std::declval<Sortable>( ) ) );
 			static_assert( is_random_access_iterator<sortable_iterator_t>, "" );
 
 			return true;

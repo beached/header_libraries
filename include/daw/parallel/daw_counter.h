@@ -56,9 +56,8 @@ namespace daw {
 
 	template<typename Mutex, typename ConditionVariable>
 	class basic_counter {
-		mutable ::daw::basic_condition_variable<Mutex, ConditionVariable>
-		  m_condition =
-		    ::daw::basic_condition_variable<Mutex, ConditionVariable>( );
+		mutable daw::basic_condition_variable<Mutex, ConditionVariable>
+		  m_condition = daw::basic_condition_variable<Mutex, ConditionVariable>( );
 		std::atomic_intmax_t m_count = 0;
 
 		[[nodiscard]] auto stop_waiting( ) const {
@@ -68,25 +67,23 @@ namespace daw {
 	public:
 		basic_counter( ) = default;
 
-		template<
-		  typename Integer,
-		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
-		                   std::nullptr_t> = nullptr>
+		template<typename Integer,
+		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Integer>>,
+		                          std::nullptr_t> = nullptr>
 		explicit basic_counter( Integer count ) noexcept(
-		  ::std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
-		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> )
+		  std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
+		    and std::is_nothrow_default_constructible_v<ConditionVariable> )
 		  : m_count( static_cast<intmax_t>( count ) ) {
 
 			assert( count >= 0 );
 		}
 
-		template<
-		  typename Integer,
-		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
-		                   std::nullptr_t> = nullptr>
+		template<typename Integer,
+		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Integer>>,
+		                          std::nullptr_t> = nullptr>
 		basic_counter( Integer count, bool countered ) noexcept(
-		  ::std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
-		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> )
+		  std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
+		    and std::is_nothrow_default_constructible_v<ConditionVariable> )
 		  : m_count( static_cast<intmax_t>( count ) ) {
 
 			assert( count >= 0 );
@@ -104,10 +101,9 @@ namespace daw {
 			m_count = 0;
 		}
 
-		template<
-		  typename Integer,
-		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
-		                   std::nullptr_t> = nullptr>
+		template<typename Integer,
+		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Integer>>,
+		                          std::nullptr_t> = nullptr>
 		void reset( Integer count ) {
 			assert( count >= 0 );
 
@@ -165,25 +161,23 @@ namespace daw {
 	public:
 		basic_unique_counter( ) = default;
 
-		template<
-		  typename Integer,
-		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
-		                   std::nullptr_t> = nullptr>
+		template<typename Integer,
+		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Integer>>,
+		                          std::nullptr_t> = nullptr>
 		explicit basic_unique_counter( Integer count ) noexcept(
-		  ::std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
-		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> )
+		  std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
+		    and std::is_nothrow_default_constructible_v<ConditionVariable> )
 		  : counter( std::make_unique<counter_t>( count ) ) {
 
 			assert( count >= 0 );
 		}
 
-		template<
-		  typename Integer,
-		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
-		                   std::nullptr_t> = nullptr>
+		template<typename Integer,
+		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Integer>>,
+		                          std::nullptr_t> = nullptr>
 		basic_unique_counter( Integer count, bool countered ) noexcept(
-		  ::std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
-		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> )
+		  std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
+		    and std::is_nothrow_default_constructible_v<ConditionVariable> )
 		  : counter( std::make_unique<counter_t>( count, countered ) ) {
 
 			assert( count >= 0 );
@@ -251,27 +245,25 @@ namespace daw {
 
 	public:
 		basic_shared_counter( ) noexcept(
-		  noexcept( ::std::make_shared<counter_t>( ) ) ) = default;
+		  noexcept( std::make_shared<counter_t>( ) ) ) = default;
 
-		template<
-		  typename Integer,
-		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
-		                   std::nullptr_t> = nullptr>
+		template<typename Integer,
+		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Integer>>,
+		                          std::nullptr_t> = nullptr>
 		explicit basic_shared_counter( Integer count ) noexcept(
-		  ::std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
-		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> )
+		  std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
+		    and std::is_nothrow_default_constructible_v<ConditionVariable> )
 		  : counter( std::make_shared<counter_t>( count ) ) {
 
 			assert( count >= 0 );
 		}
 
-		template<
-		  typename Integer,
-		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
-		                   std::nullptr_t> = nullptr>
+		template<typename Integer,
+		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Integer>>,
+		                          std::nullptr_t> = nullptr>
 		basic_shared_counter( Integer count, bool countered ) noexcept(
-		  ::std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
-		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> )
+		  std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
+		    and std::is_nothrow_default_constructible_v<ConditionVariable> )
 		  : counter( std::make_shared<counter_t>( count, countered ) ) {
 
 			assert( count >= 0 );

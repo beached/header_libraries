@@ -35,7 +35,7 @@
 namespace daw {
 	template<typename T, typename Validator>
 	struct validated {
-		static_assert( ::std::is_same_v<T, ::daw::remove_cvref_t<T>>,
+		static_assert( std::is_same_v<T, daw::remove_cvref_t<T>>,
 		               "T cannot be cv or ref qualified" );
 		// This is really true for ref qualified T as it allows the value to change
 		// without validation

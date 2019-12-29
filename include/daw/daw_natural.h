@@ -31,7 +31,7 @@ namespace daw {
 	///
 	// A natural number type
 	// An operation that causes overflow is undefined
-	template<typename T, required<::std::is_integral_v<T>> = nullptr>
+	template<typename T, required<std::is_integral_v<T>> = nullptr>
 	struct natural_t {
 		using value_type = std::decay_t<T>;
 

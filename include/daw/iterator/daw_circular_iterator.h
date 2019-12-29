@@ -60,9 +60,9 @@ namespace daw {
 
 	private:
 		static_assert(
-		  ::std::is_same_v<
-		    ::std::random_access_iterator_tag,
-		    typename ::std::iterator_traits<iterator>::iterator_category>,
+		  std::is_same_v<
+		    std::random_access_iterator_tag,
+		    typename std::iterator_traits<iterator>::iterator_category>,
 		  "Container iterators must be randomly accessable" );
 
 		Container *m_container;

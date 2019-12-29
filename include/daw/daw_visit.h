@@ -34,6 +34,11 @@
 namespace daw {
 	namespace visit_impl {
 		namespace {
+			namespace test {
+				struct Tst {
+					[[maybe_unused]] constexpr void operator( )( int n ) const {}
+				};
+			} // namespace test
 
 			// A simple overload class that is constructed via aggregate.
 			template<typename... Fs>

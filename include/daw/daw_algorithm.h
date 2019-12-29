@@ -79,49 +79,51 @@ namespace daw {
 
 	// Iterator movement functions
 	namespace impl {
-		template<typename Iterator, typename Iterator2, typename Iterator3,
-		         typename Distance,
-		         daw::enable_when_t<!traits::is_random_access_iterator<Iterator>> =
-		           nullptr>
-		constexpr void safe_advance_impl( Iterator2 const first, Iterator &it,
-		                                  Iterator3 const last,
-		                                  Distance dist ) noexcept {
+		namespace {
+			template<typename Iterator, typename Iterator2, typename Iterator3,
+			         typename Distance,
+			         daw::enable_when_t<
+			           not traits::is_random_access_iterator<Iterator>> = nullptr>
+			constexpr void safe_advance_impl( Iterator2 const first, Iterator &it,
+			                                  Iterator3 const last,
+			                                  Distance dist ) noexcept {
 
-			// Move it forward towards last
-			for( ; it != last and dist > 0; --dist, ++it ) {}
+				// Move it forward towards last
+				for( ; it != last and dist > 0; --dist, ++it ) {}
 
-			// Move it backwards towards first
-			for( ; it != first and dist < 0; ++dist, --it ) {}
-		}
+				// Move it backwards towards first
+				for( ; it != first and dist < 0; ++dist, --it ) {}
+			}
 
-		template<
-		  typename Iterator, typename Iterator2, typename Iterator3,
-		  typename Distance,
-		  daw::enable_when_t<traits::is_random_access_iterator<Iterator>> = nullptr>
-		constexpr void safe_advance_impl( Iterator2 const first, Iterator &it,
-		                                  Iterator3 const last,
-		                                  Distance dist ) noexcept {
+			template<typename Iterator, typename Iterator2, typename Iterator3,
+			         typename Distance,
+			         daw::enable_when_t<traits::is_random_access_iterator<Iterator>> =
+			           nullptr>
+			constexpr void safe_advance_impl( Iterator2 const first, Iterator &it,
+			                                  Iterator3 const last,
+			                                  Distance dist ) noexcept {
 
-			if( dist < 0 ) {
-				auto const dist_to_first = it - first;
-				if( dist_to_first < 0 ) {
-					it = first;
+				if( dist < 0 ) {
+					auto const dist_to_first = it - first;
+					if( dist_to_first < 0 ) {
+						it = first;
+						return;
+					}
+					dist = -dist;
+					it -= daw::min( static_cast<ptrdiff_t>( dist_to_first ),
+					                static_cast<ptrdiff_t>( dist ) );
 					return;
 				}
-				dist = -dist;
-				it -= daw::min( static_cast<ptrdiff_t>( dist_to_first ),
+				auto const dist_to_last = last - it;
+				if( dist_to_last < 0 ) {
+					it = last;
+					return;
+				}
+				it += daw::min( static_cast<ptrdiff_t>( dist_to_last ),
 				                static_cast<ptrdiff_t>( dist ) );
-				return;
 			}
-			auto const dist_to_last = last - it;
-			if( dist_to_last < 0 ) {
-				it = last;
-				return;
-			}
-			it += daw::min( static_cast<ptrdiff_t>( dist_to_last ),
-			                static_cast<ptrdiff_t>( dist ) );
-		}
-	} // namespace impl
+		} // namespace
+	}   // namespace impl
 
 	/// @brief Advance Iterator within the bounds of container
 	/// @tparam Container Container type who's iterators are of type Iterator
@@ -722,13 +724,12 @@ namespace daw::algorithm {
 	/// @param funcs UnaryPredicates that return true/false
 	/// @return True if any of the func/funcs return true(e.g. like OR) for any
 	/// value in range
-	template<
-	  typename Iterator, typename Iterator2, typename UnaryPredicate,
-	  typename... UnaryPredicates,
-	  daw::enable_when_t<all_true_v<
-	    traits::is_dereferenceable_v<Iterator2>,
-	    traits::is_equality_comparable_v<daw::traits::deref_t<Iterator2>>>> =
-	    nullptr>
+	template<typename Iterator, typename Iterator2, typename UnaryPredicate,
+	         typename... UnaryPredicates,
+	         daw::enable_when_t<std::conjunction_v<
+	           traits::is_dereferenceable<Iterator2>,
+	           traits::is_equality_comparable<daw::traits::deref_t<Iterator2>>>> =
+	           nullptr>
 	constexpr bool satisfies_one(
 	  Iterator first, Iterator2 last, UnaryPredicate &&func,
 	  UnaryPredicates
@@ -788,13 +789,12 @@ namespace daw::algorithm {
 	/// @param funcs UnaryPredicates that return true/false
 	/// @return True if any of the func/funcs return true(e.g. like OR) for any
 	/// value in range
-	template<
-	  typename Iterator, typename Iterator2, typename UnaryPredicate,
-	  typename... UnaryPredicates,
-	  daw::enable_when_t<all_true_v<
-	    traits::is_dereferenceable_v<Iterator2>,
-	    traits::is_equality_comparable_v<daw::traits::deref_t<Iterator2>>>> =
-	    nullptr>
+	template<typename Iterator, typename Iterator2, typename UnaryPredicate,
+	         typename... UnaryPredicates,
+	         daw::enable_when_t<std::conjunction_v<
+	           traits::is_dereferenceable<Iterator2>,
+	           traits::is_equality_comparable<daw::traits::deref_t<Iterator2>>>> =
+	           nullptr>
 	constexpr bool satisfies_all(
 	  Iterator first, Iterator2 last, UnaryPredicate &&func,
 	  UnaryPredicates
@@ -804,7 +804,7 @@ namespace daw::algorithm {
 		traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
 
 		while( first != last ) {
-			if( !satisfies_all( *first, func, funcs... ) ) {
+			if( not satisfies_all( *first, func, funcs... ) ) {
 				return false;
 			}
 			++first;
@@ -1036,7 +1036,7 @@ namespace daw::algorithm {
 		  std::is_invocable_v<Equality, decltype( *first1 ), decltype( *first2 )> );
 
 		while( first1 != last1 and first2 != last2 ) {
-			if( !daw::invoke( eq, *first1, *first2 ) ) {
+			if( not daw::invoke( eq, *first1, *first2 ) ) {
 				if( daw::invoke( less_comp, *first1, *first2 ) ) {
 					return -1;
 				}
@@ -1449,7 +1449,7 @@ namespace daw::algorithm {
 			++first1;
 			++first2;
 		}
-		return !( first1 != last1 );
+		return not( first1 != last1 );
 	}
 
 	/// @brief Determine if two ranges [first1, last1) and [first2, first2 +
@@ -1472,7 +1472,7 @@ namespace daw::algorithm {
 			++first1;
 			++first2;
 		}
-		return !( first1 != last1 );
+		return not( first1 != last1 );
 	}
 
 	/// @brief Returns an iterator pointing to the first element in the range
@@ -1500,7 +1500,7 @@ namespace daw::algorithm {
 			auto it = first;
 			auto step = count / 2;
 			daw::advance( it, step );
-			if( !daw::invoke( comp, value, *it ) ) {
+			if( not daw::invoke( comp, value, *it ) ) {
 				++it;
 				first = it;
 				count -= step + 1;
@@ -1523,7 +1523,7 @@ namespace daw::algorithm {
 
 		traits::is_compare_test<Compare, decltype( *first ), decltype( *nth )>( );
 
-		if( !( first != last ) ) {
+		if( not( first != last ) ) {
 			return;
 		}
 		while( first != nth ) {
@@ -1558,7 +1558,7 @@ namespace daw::algorithm {
 		traits::is_input_iterator_test<ForwardIterator>( );
 		traits::is_compare_test<Compare, decltype( *first )>( );
 
-		if( !( first != last ) ) {
+		if( not( first != last ) ) {
 			return last;
 		}
 		auto next_it = daw::next( first );
@@ -1748,8 +1748,8 @@ namespace daw::algorithm {
 	constexpr ForwardIterator1
 	search( ForwardIterator1 first, ForwardIterator1 last,
 	        ForwardIterator2 s_first, ForwardIterator2 s_last,
-	        Compare comp = Compare{} ) noexcept( noexcept( !comp( *first,
-	                                                              *s_first ) ) ) {
+	        Compare comp =
+	          Compare{} ) noexcept( noexcept( not comp( *first, *s_first ) ) ) {
 
 		static_assert(
 		  traits::is_forward_access_iterator_v<ForwardIterator1>,
@@ -1778,7 +1778,7 @@ namespace daw::algorithm {
 				if( it == last ) {
 					return last;
 				}
-				if( !daw::invoke( comp, *it, *s_it ) ) {
+				if( not daw::invoke( comp, *it, *s_it ) ) {
 					break;
 				}
 			}
@@ -1810,7 +1810,7 @@ namespace daw::algorithm {
 	template<typename InputIterator, typename LastType, typename T,
 	         typename BinaryOperation = std::plus<>,
 	         daw::enable_when_t<
-	           !daw::traits::is_container_like_v<InputIterator>> = nullptr>
+	           not daw::traits::is_container_like_v<InputIterator>> = nullptr>
 	constexpr T accumulate(
 	  InputIterator first, LastType last, T init,
 	  BinaryOperation binary_op =
@@ -1886,11 +1886,11 @@ static_assert(
 			ForwardIterator max_element;
 		} result{first, first};
 
-		if( !( first != last ) ) {
+		if( not( first != last ) ) {
 			return result;
 		}
 		++first;
-		if( !( first != last ) ) {
+		if( not( first != last ) ) {
 			return result;
 		}
 		if( daw::invoke( comp, *first, *result.min_element ) ) {
@@ -1903,10 +1903,10 @@ static_assert(
 		while( first != last ) {
 			auto i = first;
 			first = daw::next( first );
-			if( !( first != last ) ) {
+			if( not( first != last ) ) {
 				if( daw::invoke( comp, *i, *result.min_element ) ) {
 					result.min_element = i;
-				} else if( !daw::invoke( comp, *i, *result.max_element ) ) {
+				} else if( not daw::invoke( comp, *i, *result.max_element ) ) {
 					result.max_element = i;
 				}
 				break;
@@ -1915,14 +1915,14 @@ static_assert(
 					if( daw::invoke( comp, *first, *result.min_element ) ) {
 						result.min_element = first;
 					}
-					if( !( daw::invoke( comp, *i, *result.max_element ) ) ) {
+					if( not( daw::invoke( comp, *i, *result.max_element ) ) ) {
 						result.max_element = i;
 					}
 				} else {
 					if( daw::invoke( comp, *i, *result.min_element ) ) {
 						result.min_element = i;
 					}
-					if( !( daw::invoke( comp, *first, *result.max_element ) ) ) {
+					if( not( daw::invoke( comp, *first, *result.max_element ) ) ) {
 						result.max_element = first;
 					}
 				}
@@ -1946,7 +1946,7 @@ static_assert(
 			if( daw::invoke( comp, *first1, *first2 ) ) {
 				++first1;
 			} else {
-				if( !daw::invoke( comp, *first2, *first1 ) ) {
+				if( not daw::invoke( comp, *first2, *first1 ) ) {
 					*d_first++ = *first1++;
 				}
 				++first2;
@@ -1980,7 +1980,7 @@ static_assert(
 		first = daw::algorithm::find( first, last, value );
 		if( first != last ) {
 			for( ForwardIterator i = first; ++i != last; ) {
-				if( !( *i == value ) ) {
+				if( not( *i == value ) ) {
 					*first++ = daw::move( *i );
 				}
 			}
@@ -1996,7 +1996,7 @@ static_assert(
 		first = daw::algorithm::find_if( first, last, pred );
 		if( first != last ) {
 			for( ForwardIterator i = first; ++i != last; ) {
-				if( !daw::invoke( pred, *i ) ) {
+				if( not daw::invoke( pred, *i ) ) {
 					*first++ = daw::move( *i );
 				}
 			}
@@ -2011,7 +2011,7 @@ static_assert(
 		first = daw::algorithm::find_if( first, last, pred );
 		if( first != last ) {
 			for( ForwardIterator i = first; ++i != last; ) {
-				if( !daw::invoke( pred, *i ) ) {
+				if( not daw::invoke( pred, *i ) ) {
 					(void)daw::invoke( func, *i );
 					*first++ = daw::move( *i );
 				}
@@ -2145,7 +2145,7 @@ static_assert(
 		                        Compare comp = Compare{} ) noexcept {
 			auto const f = std::next( first, Pos0 );
 			auto const l = std::next( first, Pos1 );
-			if( !comp( *f, *l ) ) {
+			if( not comp( *f, *l ) ) {
 				daw::iter_swap( f, l );
 			}
 		}
@@ -2160,7 +2160,7 @@ static_assert(
 
 	template<typename From, typename To>
 	constexpr void extract_all( From &from, To &to ) {
-		while( !from.empty( ) ) {
+		while( not from.empty( ) ) {
 			to.insert( from.extract( std::begin( from ) ) );
 		}
 	}

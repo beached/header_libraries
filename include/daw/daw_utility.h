@@ -52,31 +52,33 @@ constexpr void Unused( Ts &&... ) noexcept {}
 
 namespace daw {
 	namespace impl {
-		template<typename ResultType, typename... ArgTypes>
-		struct make_function_pointer_impl {
-			using type = typename ::std::add_pointer<ResultType( ArgTypes... )>::type;
-		};
+		namespace {
+			template<typename ResultType, typename... ArgTypes>
+			struct make_function_pointer_impl {
+				using type = typename std::add_pointer<ResultType( ArgTypes... )>::type;
+			};
 
-		template<typename ResultType, typename ClassType, typename... ArgTypes>
-		struct make_pointer_to_member_function_impl {
-			using type = ResultType ( ClassType::* )( ArgTypes... );
-		};
+			template<typename ResultType, typename ClassType, typename... ArgTypes>
+			struct make_pointer_to_member_function_impl {
+				using type = ResultType ( ClassType::* )( ArgTypes... );
+			};
 
-		template<typename ResultType, typename ClassType, typename... ArgTypes>
-		struct make_pointer_to_volatile_member_function_impl {
-			using type = ResultType ( ClassType::* )( ArgTypes... ) volatile;
-		};
+			template<typename ResultType, typename ClassType, typename... ArgTypes>
+			struct make_pointer_to_volatile_member_function_impl {
+				using type = ResultType ( ClassType::* )( ArgTypes... ) volatile;
+			};
 
-		template<typename ResultType, typename ClassType, typename... ArgTypes>
-		struct make_pointer_to_const_member_function_impl {
-			using type = ResultType ( ClassType::* )( ArgTypes... ) const;
-		};
+			template<typename ResultType, typename ClassType, typename... ArgTypes>
+			struct make_pointer_to_const_member_function_impl {
+				using type = ResultType ( ClassType::* )( ArgTypes... ) const;
+			};
 
-		template<typename ResultType, typename ClassType, typename... ArgTypes>
-		struct make_pointer_to_const_volatile_member_function_impl {
-			using type = ResultType ( ClassType::* )( ArgTypes... ) const volatile;
-		};
-	} // namespace impl
+			template<typename ResultType, typename ClassType, typename... ArgTypes>
+			struct make_pointer_to_const_volatile_member_function_impl {
+				using type = ResultType ( ClassType::* )( ArgTypes... ) const volatile;
+			};
+		} // namespace
+	}   // namespace impl
 
 	template<typename ResultType, typename... ArgTypes>
 	using function_pointer_t =
@@ -103,20 +105,22 @@ namespace daw {
 	    ResultType, ClassType, ArgTypes...>::type;
 
 	namespace impl {
-		template<typename T>
-		class EqualToImpl {
-			T m_value;
+		namespace {
+			template<typename T>
+			class EqualToImpl {
+				T m_value;
 
-		public:
-			constexpr EqualToImpl( T value ) noexcept(
-			  ::std::is_nothrow_copy_constructible_v<T> )
-			  : m_value( daw::move( value ) ) {}
+			public:
+				constexpr EqualToImpl( T value ) noexcept(
+				  std::is_nothrow_copy_constructible_v<T> )
+				  : m_value( daw::move( value ) ) {}
 
-			[[nodiscard]] constexpr bool operator( )( T const &value ) noexcept {
-				return m_value == value;
-			}
-		}; // class EqualToImpl
-	}    // namespace impl
+				[[nodiscard]] constexpr bool operator( )( T const &value ) noexcept {
+					return m_value == value;
+				}
+			}; // class EqualToImpl
+		}    // namespace
+	}      // namespace impl
 	template<typename T>
 	constexpr impl::EqualToImpl<T> equal_to( T value ) {
 		return impl::EqualToImpl<T>( daw::move( value ) );
@@ -140,21 +144,23 @@ namespace daw {
 	}; // class equal_to_last
 
 	namespace impl {
-		template<typename Function>
-		class NotImpl {
-			Function m_function;
+		namespace {
+			template<typename Function>
+			class NotImpl {
+				Function m_function;
 
-		public:
-			constexpr NotImpl( Function func ) noexcept(
-			  ::std::is_nothrow_move_constructible_v<Function> )
-			  : m_function( ::std::move( func ) ) {}
+			public:
+				constexpr NotImpl( Function func ) noexcept(
+				  std::is_nothrow_move_constructible_v<Function> )
+				  : m_function( std::move( func ) ) {}
 
-			template<typename... Args>
-			[[nodiscard]] constexpr bool operator( )( Args &&... args ) {
-				return !m_function( ::std::forward<Args>( args )... );
-			}
-		}; // class NotImpl
-	}    // namespace impl
+				template<typename... Args>
+				[[nodiscard]] constexpr bool operator( )( Args &&... args ) {
+					return !m_function( std::forward<Args>( args )... );
+				}
+			}; // class NotImpl
+		}    // namespace
+	}      // namespace impl
 
 	template<typename Function>
 	[[nodiscard]] impl::NotImpl<Function> Not( Function func ) {
@@ -170,8 +176,8 @@ namespace daw {
 	template<typename ClassType, typename ReturnType, typename... Args>
 	struct function_traits<ReturnType ( ClassType::* )( Args... ) const> {
 		static constexpr size_t arity = sizeof...( Args );
-		using type = ::std::function<ReturnType( Args... )>;
-		using arg_types = ::std::tuple<Args...>;
+		using type = std::function<ReturnType( Args... )>;
+		using arg_types = std::tuple<Args...>;
 		using result_type = ReturnType;
 	};
 
@@ -179,8 +185,8 @@ namespace daw {
 	template<typename ClassType, typename ReturnType, typename... Args>
 	struct function_traits<ReturnType ( ClassType::* )( Args... )> {
 		static constexpr size_t arity = sizeof...( Args );
-		using type = ::std::function<ReturnType( Args... )>;
-		using arg_types = ::std::tuple<Args...>;
+		using type = std::function<ReturnType( Args... )>;
+		using arg_types = std::tuple<Args...>;
 		using result_type = ReturnType;
 	};
 
@@ -188,10 +194,10 @@ namespace daw {
 	template<typename ReturnType, typename... Args>
 	struct function_traits<ReturnType ( * )( Args... )> {
 		static constexpr size_t arity = sizeof...( Args );
-		using type = ::std::function<ReturnType( Args... )>;
-		using root_type = ::std::function<daw::traits::root_type_t<ReturnType>(
+		using type = std::function<ReturnType( Args... )>;
+		using root_type = std::function<daw::traits::root_type_t<ReturnType>(
 		  daw::traits::root_type_t<Args>... )>;
-		using arg_types = ::std::tuple<Args...>;
+		using arg_types = std::tuple<Args...>;
 		using result_type = ReturnType;
 	};
 	template<typename F>
@@ -209,21 +215,21 @@ namespace daw {
 
 	// handles bind & multiple function call operator()'s
 	template<typename ReturnType, typename... Args, class T>
-	[[nodiscard]] auto make_function( T &&t ) -> ::std::function<
-	  decltype( ReturnType( t( ::std::declval<Args>( )... ) ) )( Args... )> {
+	[[nodiscard]] auto make_function( T &&t ) -> std::function<
+	  decltype( ReturnType( t( std::declval<Args>( )... ) ) )( Args... )> {
 		return {std::forward<T>( t )};
 	}
 
 	// handles explicit overloads
 	template<typename ReturnType, typename... Args>
-	[[nodiscard]] ::std::function<ReturnType( Args... )>
+	[[nodiscard]] std::function<ReturnType( Args... )>
 	make_function( ReturnType ( *p )( Args... ) ) {
 		return {p};
 	}
 
 	// handles explicit overloads
 	template<typename ReturnType, typename... Args, typename ClassType>
-	[[nodiscard]] ::std::function<ReturnType( Args... )>
+	[[nodiscard]] std::function<ReturnType( Args... )>
 	make_function( ReturnType ( ClassType::*p )( Args... ) ) {
 		return {p};
 	}
@@ -232,14 +238,14 @@ namespace daw {
 	// Strip const/volatile/reference from types
 	template<typename ReturnType, typename... Args, class T>
 	[[nodiscard]] auto make_root_function( T &&t )
-	  -> ::std::function<decltype( daw::traits::root_type_t<ReturnType>( t(
-	    ::std::declval<daw::traits::root_type_t<Args>>( )... ) ) )( Args... )> {
+	  -> std::function<decltype( daw::traits::root_type_t<ReturnType>(
+	    t( std::declval<daw::traits::root_type_t<Args>>( )... ) ) )( Args... )> {
 		return {std::forward<T>( t )};
 	}
 
 	// handles explicit overloads
 	template<typename ReturnType, typename... Args>
-	[[nodiscard]] ::std::function<
+	[[nodiscard]] std::function<
 	  daw::traits::root_type_t<ReturnType>( daw::traits::root_type_t<Args>... )>
 	make_function( ReturnType ( *p )( Args... ) ) {
 		return {p};
@@ -247,7 +253,7 @@ namespace daw {
 
 	// handles explicit overloads
 	template<typename ReturnType, typename... Args, typename ClassType>
-	[[nodiscard]] ::std::function<
+	[[nodiscard]] std::function<
 	  daw::traits::root_type_t<ReturnType>( daw::traits::root_type_t<Args>... )>
 	make_function( ReturnType ( ClassType::*p )( Args... ) ) {
 		return {p};
@@ -256,30 +262,30 @@ namespace daw {
 
 	// handles explicit overloads
 	template<typename ReturnType, typename... Args, typename ClassType>
-	[[nodiscard]] ::std::function<ReturnType( Args... )>
+	[[nodiscard]] std::function<ReturnType( Args... )>
 	make_std_function( ReturnType ( ClassType::*p )( Args... ) ) {
 		return {p};
 	}
 
 	template<typename T>
 	[[nodiscard]] constexpr T
-	copy( T &&value ) noexcept( ::std::is_nothrow_copy_constructible<T>::value ) {
+	copy( T &&value ) noexcept( std::is_nothrow_copy_constructible<T>::value ) {
 		return value;
 	}
 
 	template<typename T>
-	[[nodiscard]] ::std::vector<T> copy_vector( ::std::vector<T> const &container,
-	                                            size_t num_items ) {
+	[[nodiscard]] std::vector<T> copy_vector( std::vector<T> const &container,
+	                                          size_t num_items ) {
 		daw::exception::daw_throw_on_false(
 		  num_items <= container.size( ),
 		  "Cannot copy more items than are in container" );
 		std::vector<T> result;
 		result.reserve( num_items );
 
-		std::copy( ::std::begin( container ),
-		           ::std::next( ::std::begin( container ),
-		                        static_cast<intmax_t>( num_items ) ),
-		           ::std::back_inserter( result ) );
+		std::copy(
+		  std::begin( container ),
+		  std::next( std::begin( container ), static_cast<intmax_t>( num_items ) ),
+		  std::back_inserter( result ) );
 
 		return result;
 	}
@@ -289,17 +295,17 @@ namespace daw {
 	}
 
 	template<typename Iterator1, typename Iterator2, typename Pred>
-	[[nodiscard]] ::std::vector<Iterator1>
+	[[nodiscard]] std::vector<Iterator1>
 	find_all_where( Iterator1 first, Iterator2 const last, Pred predicate ) {
 		std::vector<Iterator1> results{};
-		std::copy_if( first, last, ::std::back_inserter( results ), predicate );
+		std::copy_if( first, last, std::back_inserter( results ), predicate );
 		return results;
 	}
 
 	template<typename T, typename Pred>
 	[[nodiscard]] decltype( auto ) find_all_where( T const &values,
 	                                               Pred predicate ) {
-		return find_all_where( ::std::cbegin( values ), ::std::cend( values ),
+		return find_all_where( std::cbegin( values ), std::cend( values ),
 		                       predicate );
 	}
 
@@ -319,7 +325,7 @@ namespace daw {
 
 	template<typename CharType, typename Traits, typename Allocator>
 	[[nodiscard]] constexpr auto
-	AsciiUpper( ::std::basic_string<CharType, Traits, Allocator> str ) noexcept {
+	AsciiUpper( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
 		daw::algorithm::map(
 		  str.cbegin( ), str.cend( ), str.begin( ),
 		  []( CharType c ) noexcept { return AsciiUpper( c ); } );
@@ -328,7 +334,7 @@ namespace daw {
 
 	template<typename CharType, typename Traits, typename Allocator>
 	[[nodiscard]] constexpr auto
-	AsciiLower( ::std::basic_string<CharType, Traits, Allocator> str ) noexcept {
+	AsciiLower( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
 		daw::algorithm::map(
 		  str.cbegin( ), str.cend( ), str.begin( ),
 		  []( CharType c ) noexcept { return AsciiLower( c ); } );
@@ -338,8 +344,8 @@ namespace daw {
 	/*
 	template<typename Iterator>
 	[[nodiscard]] constexpr bool equal_nc( Iterator first, Iterator last,
-	                         ::daw::string_view upper_value ) noexcept {
-	  if( static_cast<size_t>( ::std::distance( first, last ) ) !=
+	                         daw::string_view upper_value ) noexcept {
+	  if( static_cast<size_t>( std::distance( first, last ) ) !=
 	      upper_value.size( ) ) {
 	    return false;
 	  }
@@ -354,26 +360,28 @@ namespace daw {
 	*/
 
 	namespace details {
-		template<typename T>
-		struct RunIfValid {
-			::std::weak_ptr<T> m_link;
-			RunIfValid( ::std::weak_ptr<T> w_ptr )
-			  : m_link( w_ptr ) {}
+		namespace {
+			template<typename T>
+			struct RunIfValid {
+				std::weak_ptr<T> m_link;
+				RunIfValid( std::weak_ptr<T> w_ptr )
+				  : m_link( w_ptr ) {}
 
-			template<typename Function>
-			[[nodiscard]] bool operator( )( Function func ) {
-				if( auto s_ptr = m_link.lock( ) ) {
-					func( s_ptr );
-					return true;
-				} else {
-					return false;
+				template<typename Function>
+				[[nodiscard]] bool operator( )( Function func ) {
+					if( auto s_ptr = m_link.lock( ) ) {
+						func( s_ptr );
+						return true;
+					} else {
+						return false;
+					}
 				}
-			}
-		};
-	} // namespace details
+			};
+		} // namespace
+	}   // namespace details
 
 	template<typename T>
-	[[nodiscard]] auto RunIfValid( ::std::weak_ptr<T> w_ptr ) {
+	[[nodiscard]] auto RunIfValid( std::weak_ptr<T> w_ptr ) {
 		return details::RunIfValid<T>( w_ptr );
 	}
 
@@ -388,8 +396,8 @@ namespace daw {
 
 	template<typename Arg, typename... Args>
 	[[nodiscard]] auto make_initializer_list( Arg &&arg, Args &&... args ) {
-		return ::std::initializer_list<Arg>{std::forward<Arg>( arg ),
-		                                    ::std::forward<Args>( args )...};
+		return std::initializer_list<Arg>{std::forward<Arg>( arg ),
+		                                  std::forward<Args>( args )...};
 	}
 
 	template<typename Container, typename... Args>
@@ -402,16 +410,16 @@ namespace daw {
 	template<typename Container, typename Item>
 	[[nodiscard]] constexpr bool contains( Container const &container,
 	                                       Item const &item ) noexcept {
-		return ::std::find( ::std::cbegin( container ), ::std::cend( container ),
-		                    item ) != ::std::cend( container );
+		return std::find( std::cbegin( container ), std::cend( container ),
+		                  item ) != std::cend( container );
 	}
 
 	template<typename Container, typename Item>
 	[[nodiscard]] constexpr decltype( auto )
 	index_of( Container const &container, Item const &item ) noexcept {
 		auto const pos =
-		  ::std::find( ::std::begin( container ), ::std::end( container ), item );
-		return ::std::distance( ::std::begin( container ), pos );
+		  std::find( std::begin( container ), std::end( container ), item );
+		return std::distance( std::begin( container ), pos );
 	}
 
 	[[nodiscard]] constexpr auto or_all( ) noexcept {
@@ -445,14 +453,14 @@ namespace daw {
 
 	template<typename IntegerDest, typename IntegerSource>
 	[[nodiscard]] constexpr bool can_fit( IntegerSource const value ) noexcept {
-		static_assert( ::std::is_integral_v<IntegerDest>,
+		static_assert( std::is_integral_v<IntegerDest>,
 		               "Must supply an integral type" );
-		static_assert( ::std::is_integral_v<IntegerSource>,
+		static_assert( std::is_integral_v<IntegerSource>,
 		               "Must supply an integral type" );
 		if( value >= 0 ) {
-			return value <= ::std::numeric_limits<IntegerDest>::max( );
-		} else if( ::std::numeric_limits<IntegerDest>::is_signed ) {
-			return value >= ::std::numeric_limits<IntegerDest>::min( );
+			return value <= std::numeric_limits<IntegerDest>::max( );
+		} else if( std::numeric_limits<IntegerDest>::is_signed ) {
+			return value >= std::numeric_limits<IntegerDest>::min( );
 		} else {
 			return false;
 		}
@@ -484,23 +492,24 @@ namespace daw {
 	}
 
 	namespace impl {
-		[[nodiscard]] constexpr char get_nibble( uint8_t c ) noexcept {
-			c &= 0x0F;
-			if( c < 10 ) {
-				return static_cast<char>( '0' + c );
+		namespace {
+			[[nodiscard]] constexpr char get_nibble( uint8_t c ) noexcept {
+				c &= 0x0F;
+				if( c < 10 ) {
+					return static_cast<char>( '0' + c );
+				}
+				return static_cast<char>( 'A' + ( c - 10 ) );
 			}
-			return static_cast<char>( 'A' + ( c - 10 ) );
-		}
 
-		[[nodiscard]] constexpr char get_lc_nibble( uint8_t c ) noexcept {
-			c &= 0x0F;
-			if( c < 10 ) {
-				return static_cast<char>( '0' + c );
+			[[nodiscard]] constexpr char get_lc_nibble( uint8_t c ) noexcept {
+				c &= 0x0F;
+				if( c < 10 ) {
+					return static_cast<char>( '0' + c );
+				}
+				return static_cast<char>( 'a' + ( c - 10 ) );
 			}
-			return static_cast<char>( 'a' + ( c - 10 ) );
-		}
-
-	} // namespace impl
+		} // namespace
+	}   // namespace impl
 
 	template<typename OutputIterator>
 	[[nodiscard]] constexpr OutputIterator hex( char c,
@@ -520,9 +529,8 @@ namespace daw {
 		return it_out;
 	}
 
-	template<
-	  typename T, typename OutputIterator,
-	  ::std::enable_if_t<::std::is_integral_v<T>, ::std::nullptr_t> = nullptr>
+	template<typename T, typename OutputIterator,
+	         std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr OutputIterator hex( T const &val,
 	                                            OutputIterator it_out ) noexcept {
 		for( size_t n = sizeof( T ); n > 0; --n ) {
@@ -531,9 +539,8 @@ namespace daw {
 		return it_out;
 	}
 
-	template<
-	  typename T, typename OutputIterator,
-	  ::std::enable_if_t<!std::is_integral_v<T>, ::std::nullptr_t> = nullptr>
+	template<typename T, typename OutputIterator,
+	         std::enable_if_t<not std::is_integral_v<T>, std::nullptr_t> = nullptr>
 	[[nodiscard]] OutputIterator hex( T const &val,
 	                                  OutputIterator it_out ) noexcept {
 		auto chr_ptr = reinterpret_cast<char const *>( &val );
@@ -543,12 +550,11 @@ namespace daw {
 		return it_out;
 	}
 
-	template<
-	  typename ForwardIterator1, typename ForwardIterator2,
-	  typename OutputIterator,
-	  ::std::enable_if_t<std::is_integral_v<typename ::std::iterator_traits<
-	                       ForwardIterator1>::value_type>,
-	                     ::std::nullptr_t> = nullptr>
+	template<typename ForwardIterator1, typename ForwardIterator2,
+	         typename OutputIterator,
+	         std::enable_if_t<std::is_integral_v<typename std::iterator_traits<
+	                            ForwardIterator1>::value_type>,
+	                          std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr OutputIterator
 	hex( ForwardIterator1 first_in, ForwardIterator2 const last_in,
 	     OutputIterator first_out ) noexcept {
@@ -574,12 +580,11 @@ namespace daw {
 		return hex( str, N - 1, first_out );
 	}
 
-	template<
-	  typename ForwardIterator1, typename ForwardIterator2,
-	  typename OutputIterator,
-	  ::std::enable_if_t<!std::is_integral_v<typename ::std::iterator_traits<
-	                       ForwardIterator1>::value_type>,
-	                     ::std::nullptr_t> = nullptr>
+	template<typename ForwardIterator1, typename ForwardIterator2,
+	         typename OutputIterator,
+	         std::enable_if_t<not std::is_integral_v<typename std::iterator_traits<
+	                            ForwardIterator1>::value_type>,
+	                          std::nullptr_t> = nullptr>
 	[[nodiscard]] OutputIterator hex( ForwardIterator1 first_in,
 	                                  ForwardIterator2 const last_in,
 	                                  OutputIterator first_out ) noexcept {
@@ -595,7 +600,7 @@ namespace daw {
 		struct range_t {
 			using iterator = Iterator;
 			using difference_type =
-			  typename ::std::iterator_traits<iterator>::difference_type;
+			  typename std::iterator_traits<iterator>::difference_type;
 
 			iterator m_first;
 			iterator m_last;
@@ -639,16 +644,16 @@ namespace daw {
 	struct pack_index_of;
 
 	template<typename T, typename... Ts>
-	struct pack_index_of<T, Ts...> : ::std::integral_constant<size_t, 0> {};
+	struct pack_index_of<T, Ts...> : std::integral_constant<size_t, 0> {};
 
 	template<typename T, typename U, typename... Ts>
 	struct pack_index_of<T, U, Ts...>
-	  : ::std::integral_constant<
+	  : std::integral_constant<
 	      size_t,
-	      ( ::std::is_same_v<T, U> ? 0 : 1 + pack_index_of<T, Ts...>::value )> {};
+	      ( std::is_same_v<T, U> ? 0 : 1 + pack_index_of<T, Ts...>::value )> {};
 
 	template<size_t N, typename... Ts>
-	using pack_type_at = ::std::tuple_element_t<N, ::std::tuple<Ts...>>;
+	using pack_type_at = std::tuple_element_t<N, std::tuple<Ts...>>;
 
 	template<typename T, typename... Ts>
 	constexpr size_t pack_index_of_v = pack_index_of<T, Ts...>::value;
@@ -667,18 +672,20 @@ namespace daw {
 	};
 
 	namespace impl {
-		template<typename T>
-		constexpr int should_use_aggregate_construction_test(
-		  use_aggregate_construction<T> const & ) noexcept;
+		namespace {
+			template<typename T>
+			constexpr int should_use_aggregate_construction_test(
+			  use_aggregate_construction<T> const & ) noexcept;
 
-		template<typename T>
-		using should_use_aggregate_construction_detect = decltype(
-		  should_use_aggregate_construction_test( ::std::declval<T>( ) ) );
+			template<typename T>
+			using should_use_aggregate_construction_detect = decltype(
+			  should_use_aggregate_construction_test( std::declval<T>( ) ) );
 
-		template<typename T>
-		constexpr bool should_use_aggregate_construction_v =
-		  daw::is_detected_v<should_use_aggregate_construction_detect, T>;
-	} // namespace impl
+			template<typename T>
+			constexpr bool should_use_aggregate_construction_v =
+			  daw::is_detected_v<should_use_aggregate_construction_detect, T>;
+		} // namespace
+	}   // namespace impl
 
 	/// @brief Construct a value.  If normal ( ) construction does not work
 	///	try aggregate.
@@ -686,17 +693,17 @@ namespace daw {
 	template<typename T>
 	struct construct_a_t {
 		template<typename... Args,
-		         ::std::enable_if_t<::std::is_constructible_v<T, Args...>,
-		                            ::std::nullptr_t> = nullptr>
+		         std::enable_if_t<std::is_constructible_v<T, Args...>,
+		                          std::nullptr_t> = nullptr>
 		[[nodiscard]] constexpr T operator( )( Args &&... args ) const
 		  noexcept( std::is_nothrow_constructible_v<T, Args...> ) {
 
-			return T( ::std::forward<Args>( args )... );
+			return T( std::forward<Args>( args )... );
 		}
 
 		template<typename... Args,
-		         ::std::enable_if_t<not std::is_constructible_v<T, Args...>,
-		                            ::std::nullptr_t> = nullptr>
+		         std::enable_if_t<not std::is_constructible_v<T, Args...>,
+		                          std::nullptr_t> = nullptr>
 		[[nodiscard]] constexpr auto operator( )( Args &&... args ) const
 		  noexcept( std::is_nothrow_constructible_v<T, Args...> ) {
 
@@ -709,28 +716,30 @@ namespace daw {
 
 		template<typename... Args>
 		[[nodiscard]] constexpr T operator( )( Args &&... args ) const
-		  noexcept( ::std::is_nothrow_constructible_v<T, Args...> ) {
+		  noexcept( std::is_nothrow_constructible_v<T, Args...> ) {
 
-			return T{::std::forward<Args>( args )...};
+			return T{std::forward<Args>( args )...};
 		}
 	};
 	template<typename T>
 	inline constexpr construct_a_t<T> construct_a = construct_a_t<T>{};
 
 	namespace impl {
-		template<typename T, typename... Args>
-		using can_construct_a_detect = decltype(
-		  ::std::declval<daw::construct_a_t<T>>( )( ::std::declval<Args>( )... ) );
+		namespace {
+			template<typename T, typename... Args>
+			using can_construct_a_detect = decltype(
+			  std::declval<daw::construct_a_t<T>>( )( std::declval<Args>( )... ) );
 
-		template<typename... Args>
-		constexpr void is_tuple_test( ::std::tuple<Args...> const & ) noexcept;
+			template<typename... Args>
+			constexpr void is_tuple_test( std::tuple<Args...> const & ) noexcept;
 
-		template<typename T>
-		using is_tuple_detect = decltype( is_tuple_test( ::std::declval<T>( ) ) );
+			template<typename T>
+			using is_tuple_detect = decltype( is_tuple_test( std::declval<T>( ) ) );
 
-		template<typename T>
-		constexpr bool is_tuple_v = daw::is_detected_v<is_tuple_detect, T>;
-	} // namespace impl
+			template<typename T>
+			constexpr bool is_tuple_v = daw::is_detected_v<is_tuple_detect, T>;
+		} // namespace
+	}   // namespace impl
 
 	template<typename T, typename... Args>
 	inline constexpr bool can_construct_a_v =
@@ -738,7 +747,7 @@ namespace daw {
 
 	template<typename Destination, typename... Args>
 	[[nodiscard]] constexpr decltype( auto )
-	construct_from( ::std::tuple<Args...> &&args ) noexcept(
+	construct_from( std::tuple<Args...> &&args ) noexcept(
 	  noexcept( daw::apply( construct_a<Destination>, daw::move( args ) ) ) ) {
 
 		return daw::apply( construct_a<Destination>, daw::move( args ) );
@@ -746,7 +755,7 @@ namespace daw {
 
 	template<typename Destination, typename... Args>
 	[[nodiscard]] constexpr decltype( auto )
-	construct_from( ::std::tuple<Args...> const &args ) noexcept(
+	construct_from( std::tuple<Args...> const &args ) noexcept(
 	  noexcept( daw::apply( construct_a<Destination>, args ) ) ) {
 
 		return daw::apply( construct_a<Destination>, args );
@@ -786,14 +795,14 @@ namespace daw {
 	template<typename To>
 	[[nodiscard]] constexpr uint8_t value_from_chars(
 	  unsigned char const *ptr,
-	  ::std::integral_constant<size_t, sizeof( uint8_t )> ) noexcept {
+	  std::integral_constant<size_t, sizeof( uint8_t )> ) noexcept {
 		return *ptr;
 	}
 
 	template<typename To>
 	[[nodiscard]] constexpr uint16_t value_from_chars(
 	  unsigned char const *ptr,
-	  ::std::integral_constant<size_t, sizeof( uint16_t )> ) noexcept {
+	  std::integral_constant<size_t, sizeof( uint16_t )> ) noexcept {
 		auto result = static_cast<uint16_t>( ( *ptr++ ) << 8U );
 		result |= *ptr;
 		return result;
@@ -802,7 +811,7 @@ namespace daw {
 	template<typename To>
 	[[nodiscard]] constexpr uint32_t value_from_chars(
 	  unsigned char const *ptr,
-	  ::std::integral_constant<size_t, sizeof( uint32_t )> ) noexcept {
+	  std::integral_constant<size_t, sizeof( uint32_t )> ) noexcept {
 		uint32_t result = static_cast<uint32_t>( ( *ptr++ ) << 24U );
 		result |= static_cast<uint32_t>( ( *ptr++ ) << 16U );
 		result |= static_cast<uint32_t>( ( *ptr++ ) << 8U );
@@ -813,7 +822,7 @@ namespace daw {
 	template<typename To>
 	[[nodiscard]] constexpr uint64_t value_from_chars(
 	  unsigned char const *ptr,
-	  ::std::integral_constant<size_t, sizeof( uint64_t )> ) noexcept {
+	  std::integral_constant<size_t, sizeof( uint64_t )> ) noexcept {
 		auto result =
 		  static_cast<uint64_t>( static_cast<uint64_t>( *ptr++ ) << 56U );
 		result |= static_cast<uint64_t>( static_cast<uint64_t>( *ptr++ ) << 48U );
@@ -828,9 +837,9 @@ namespace daw {
 
 	template<typename From>
 	[[nodiscard]] auto as_char_array( From &&from ) noexcept {
-		static_assert( ::std::is_trivially_copyable_v<remove_cvref_t<From>>,
+		static_assert( std::is_trivially_copyable_v<remove_cvref_t<From>>,
 		               "From type must be trivially copiable" );
-		auto result = ::std::array<unsigned char, sizeof( From )>{0};
+		auto result = std::array<unsigned char, sizeof( From )>{0};
 		memcpy( result.data( ), &from, result.size( ) );
 		return result;
 	}
@@ -838,18 +847,18 @@ namespace daw {
 	template<typename To, typename From>
 	[[nodiscard]] auto to_array_of( From &&from ) noexcept {
 		constexpr size_t const num_values = sizeof( From ) / sizeof( To );
-		static_assert( ::std::is_integral_v<std::decay<To>>,
+		static_assert( std::is_integral_v<std::decay<To>>,
 		               "To must be an integer like type" );
 		static_assert( sizeof( From ) == num_values * sizeof( To ),
 		               "Must have integral number of To's in From" );
 
 		auto const as_chars = as_char_array( from );
-		auto result = ::std::array<To, num_values>{0};
+		auto result = std::array<To, num_values>{0};
 
 		for( size_t entry = 0; entry < num_values; ++entry ) {
 			result[entry] =
-			  value_from_chars( ::std::next( as_chars.data( ), entry * sizeof( To ) ),
-			                    ::std::integral_constant<size_t, sizeof( To )>{} );
+			  value_from_chars( std::next( as_chars.data( ), entry * sizeof( To ) ),
+			                    std::integral_constant<size_t, sizeof( To )>{} );
 		}
 		return result;
 	}
@@ -864,8 +873,8 @@ namespace daw {
 	in_range( Value &&value, LowerBound &&lower,
 	          UpperBound &&upper ) noexcept( noexcept( lower <= value &&
 	                                                   value < upper ) ) {
-		return ::std::forward<LowerBound>( lower ) <= value &&
-		       value < ::std::forward<UpperBound>( upper );
+		return std::forward<LowerBound>( lower ) <= value &&
+		       value < std::forward<UpperBound>( upper );
 	}
 
 	template<typename T>
@@ -910,7 +919,7 @@ namespace daw {
 
 	template<typename T>
 	class countable_resource_t {
-		static ::std::atomic<T> m_resource_count;
+		static std::atomic<T> m_resource_count;
 
 	public:
 		countable_resource_t( ) noexcept {
@@ -937,63 +946,68 @@ namespace daw {
 	std::atomic<T> countable_resource_t<T>::m_resource_count = {};
 
 	namespace utility_impl {
-		template<typename T>
-		class value_is_utility_impl;
-	}
+		namespace {
+			template<typename T>
+			class value_is_utility_impl;
+		}
+	} // namespace utility_impl
 
 	template<typename T>
 	[[nodiscard]] constexpr auto value_is( T &&value )
-	  -> ::daw::utility_impl::value_is_utility_impl<
-	    ::std::remove_reference_t<decltype( value )>> {
+	  -> daw::utility_impl::value_is_utility_impl<
+	    std::remove_reference_t<decltype( value )>> {
 
 		return {std::forward<T>( value )};
 	}
 
 	namespace utility_impl {
-		template<typename T>
-		class value_is_utility_impl {
-			T *m_value;
+		namespace {
+			template<typename T>
+			class value_is_utility_impl {
+				T *m_value;
 
-			constexpr value_is_utility_impl( T const &v )
-			  : m_value( &v ) {}
-			constexpr value_is_utility_impl( T &v )
-			  : m_value( &v ) {}
-			constexpr value_is_utility_impl( T &&v )
-			  : m_value( &v ) {}
+				constexpr value_is_utility_impl( T const &v )
+				  : m_value( &v ) {}
+				constexpr value_is_utility_impl( T &v )
+				  : m_value( &v ) {}
+				constexpr value_is_utility_impl( T &&v )
+				  : m_value( &v ) {}
 
-			template<typename U>
-			friend /*TODO Apple Clang is mean today [[nodiscard]]*/ constexpr auto ::
-			  daw::value_is( U &&v ) -> ::daw::utility_impl::value_is_utility_impl<
-			    ::std::remove_reference_t<decltype( v )>>;
+				template<typename U>
+				friend /*TODO Apple Clang is mean today [[nodiscard]]*/
+				  constexpr auto ::daw::value_is( U &&v )
+				    -> daw::utility_impl::value_is_utility_impl<
+				      std::remove_reference_t<decltype( v )>>;
 
-		public:
-			value_is_utility_impl( value_is_utility_impl const & ) = delete;
-			value_is_utility_impl( value_is_utility_impl && ) = delete;
-			value_is_utility_impl &
-			operator=( value_is_utility_impl const & ) = delete;
-			value_is_utility_impl &operator=( value_is_utility_impl && ) = delete;
-			~value_is_utility_impl( ) = default;
+			public:
+				value_is_utility_impl( value_is_utility_impl const & ) = delete;
+				value_is_utility_impl( value_is_utility_impl && ) = delete;
+				value_is_utility_impl &
+				operator=( value_is_utility_impl const & ) = delete;
+				value_is_utility_impl &operator=( value_is_utility_impl && ) = delete;
+				~value_is_utility_impl( ) = default;
 
-			template<typename... Args>
-			[[nodiscard]] constexpr bool one_of( Args &&... args ) const && {
-				return ( ( *m_value == args ) or ... );
-			}
+				template<typename... Args>
+				[[nodiscard]] constexpr bool one_of( Args &&... args ) const && {
+					return ( ( *m_value == args ) or ... );
+				}
 
-			template<typename... Args>
-			[[nodiscard]] constexpr bool none_of( Args &&... args ) const && {
-				return ( ( *m_value != args ) and ... );
-			}
-		};
-	} // namespace utility_impl
+				template<typename... Args>
+				[[nodiscard]] constexpr bool none_of( Args &&... args ) const && {
+					return ( ( *m_value != args ) and ... );
+				}
+			};
+		} // namespace
+	}   // namespace utility_impl
 
 	template<typename Integer, typename T>
 	[[nodiscard]] constexpr Integer narrow_cast( T value ) noexcept {
-		if constexpr( ::std::is_signed_v<T> ) {
-			if constexpr( ::std::is_signed_v<Integer> ) {
+		if constexpr( std::is_signed_v<T> ) {
+			if constexpr( std::is_signed_v<Integer> ) {
 				if constexpr( sizeof( T ) <= sizeof( Integer ) ) {
 					return value;
 				} else if( value <=
-				           static_cast<T>( ::std::numeric_limits<Integer>::max( ) ) ) {
+				           static_cast<T>( std::numeric_limits<Integer>::max( ) ) ) {
 					return static_cast<Integer>( value );
 				} else {
 					daw::exception::daw_throw<std::out_of_range>( "value" );
@@ -1005,18 +1019,16 @@ namespace daw {
 				daw::exception::daw_throw<std::out_of_range>( "value" );
 			} else {
 				if( value >= 0 and
-				    value <=
-				      static_cast<T>( ::std::numeric_limits<Integer>::max( ) ) ) {
+				    value <= static_cast<T>( std::numeric_limits<Integer>::max( ) ) ) {
 					return value;
 				}
 				daw::exception::daw_throw<std::out_of_range>( "value" );
 			}
-		} else if constexpr( ::std::is_signed_v<Integer> ) {
+		} else if constexpr( std::is_signed_v<Integer> ) {
 			if constexpr( sizeof( T ) < sizeof( Integer ) ) {
 				return static_cast<Integer>( value );
 			} else {
-				if( value <=
-				    static_cast<T>( ::std::numeric_limits<Integer>::max( ) ) ) {
+				if( value <= static_cast<T>( std::numeric_limits<Integer>::max( ) ) ) {
 					return static_cast<Integer>( value );
 				}
 				daw::exception::daw_throw<std::out_of_range>( "value" );
@@ -1024,7 +1036,7 @@ namespace daw {
 		} else if constexpr( sizeof( T ) <= sizeof( Integer ) ) {
 			return static_cast<Integer>( value );
 		} else {
-			if( value <= static_cast<T>( ::std::numeric_limits<Integer>::max( ) ) ) {
+			if( value <= static_cast<T>( std::numeric_limits<Integer>::max( ) ) ) {
 				return static_cast<Integer>( value );
 			}
 			daw::exception::daw_throw<std::out_of_range>( "value" );
@@ -1035,40 +1047,42 @@ namespace daw {
 	[[nodiscard]] constexpr decltype( auto )
 	pack_get( Arg &&arg, Args &&... args ) noexcept {
 		if constexpr( pos == N ) {
-			return ::std::forward<Arg>( arg );
+			return std::forward<Arg>( arg );
 		} else {
-			return pack_get<N, pos + 1>( ::std::forward<Args>( args )... );
+			return pack_get<N, pos + 1>( std::forward<Args>( args )... );
 		}
 	}
 
 	namespace pack_apply_impl {
-		template<size_t pos, typename Function, typename... Args>
-		[[nodiscard]] constexpr auto pack_apply_impl( size_t, Function &&,
-		                                              Args &&... )
-		  -> ::std::enable_if_t<( pos >= sizeof...( Args ) )> {}
+		namespace {
+			template<size_t pos, typename Function, typename... Args>
+			[[nodiscard]] constexpr auto pack_apply_impl( size_t, Function &&,
+			                                              Args &&... )
+			  -> std::enable_if_t<( pos >= sizeof...( Args ) )> {}
 
-		template<size_t pos, typename Function, typename... Args>
-		[[nodiscard]] constexpr auto pack_apply_impl( size_t N, Function &&func,
-		                                              Args &&... args )
-		  -> ::std::enable_if_t<( pos < sizeof...( Args ) )> {
-			if( N == pos ) {
-				if constexpr( ::std::is_invocable_v<Function, decltype( pack_get<pos>(
-				                                                ::std::forward<Args>(
-				                                                  args )... ) )> ) {
-					(void)std::forward<Function>( func )(
-					  pack_get<pos>( ::std::forward<Args>( args )... ) );
+			template<size_t pos, typename Function, typename... Args>
+			[[nodiscard]] constexpr auto pack_apply_impl( size_t N, Function &&func,
+			                                              Args &&... args )
+			  -> std::enable_if_t<( pos < sizeof...( Args ) )> {
+				if( N == pos ) {
+					if constexpr( std::is_invocable_v<Function, decltype( pack_get<pos>(
+					                                              std::forward<Args>(
+					                                                args )... ) )> ) {
+						(void)std::forward<Function>( func )(
+						  pack_get<pos>( std::forward<Args>( args )... ) );
+					}
+				} else {
+					pack_apply_impl<pos + 1>( N, std::forward<Function>( func ),
+					                          std::forward<Args>( args )... );
 				}
-			} else {
-				pack_apply_impl<pos + 1>( N, ::std::forward<Function>( func ),
-				                          ::std::forward<Args>( args )... );
 			}
-		}
-	} // namespace pack_apply_impl
+		} // namespace
+	}   // namespace pack_apply_impl
 
 	template<typename Function, typename... Args>
 	constexpr void pack_apply( size_t N, Function &&func, Args &&... args ) {
-		pack_apply_impl::pack_apply_impl<0>( N, ::std::forward<Function>( func ),
-		                                     ::std::forward<Args>( args )... );
+		pack_apply_impl::pack_apply_impl<0>( N, std::forward<Function>( func ),
+		                                     std::forward<Args>( args )... );
 	}
 
 	template<typename T, bool AllowDownSignCast = false, typename U>

@@ -143,8 +143,8 @@ namespace daw {
 		namespace v2 {
 			namespace impl {
 				namespace {
-					using ::daw::string_fmt::v1::sf_impl::to_string;
-					using ::std::to_string;
+					using daw::string_fmt::v1::sf_impl::to_string;
+					using std::to_string;
 					template<typename T>
 					constexpr auto to_string_test( )
 					  -> decltype( to_string( std::declval<T>( ) ) );
@@ -154,7 +154,7 @@ namespace daw {
 
 					template<typename T>
 					inline constexpr bool has_to_string_v =
-					  ::daw::is_detected_v<has_to_string_test, T>;
+					  daw::is_detected_v<has_to_string_test, T>;
 				} // namespace
 				template<typename CharT>
 				struct parse_token {
@@ -175,17 +175,17 @@ namespace daw {
 					template<typename OutputIterator, typename... Args>
 					constexpr OutputIterator operator( )( OutputIterator out,
 					                                      Args &&... args ) const {
-						return ::daw::visit_nt(
+						return daw::visit_nt(
 						  m_data,
-						  [&out]( ::daw::basic_string_view<CharT> sv ) {
-							  return ::daw::algorithm::copy( sv.begin( ), sv.end( ), out );
+						  [&out]( daw::basic_string_view<CharT> sv ) {
+							  return daw::algorithm::copy( sv.begin( ), sv.end( ), out );
 						  },
 						  [&]( CharT c ) {
 							  *out++ = c;
 							  return out;
 						  },
 						  [&]( size_t pos ) {
-							  ::daw::pack_apply(
+							  daw::pack_apply(
 							    pos,
 							    [&]( auto &&val ) {
 								    using val_t = decltype( val );
@@ -203,11 +203,11 @@ namespace daw {
 								                           daw::remove_cvref_t<val_t>> ) {
 									    out =
 									      daw::algorithm::copy( val.begin( ), val.end( ), out );
-								    } else if constexpr( ::daw::can_to_os_string_int_v<
+								    } else if constexpr( daw::can_to_os_string_int_v<
 								                           daw::remove_cvref_t<val_t>> ) {
-									    out = ::daw::to_os_string_int<CharT>( out, val );
+									    out = daw::to_os_string_int<CharT>( out, val );
 								    } else if constexpr( has_to_string_v<val_t> ) {
-									    using ::daw::string_fmt::v1::sf_impl::to_string;
+									    using daw::string_fmt::v1::sf_impl::to_string;
 									    using std::to_string;
 									    auto const str = to_string( std::forward<val_t>( val ) );
 									    out =
@@ -252,7 +252,7 @@ namespace daw {
 			} // namespace impl
 			template<typename CharT, size_t N>
 			class fmt_t {
-				::daw::bounded_vector_t<impl::parse_token<CharT>, N / 2> m_tokens;
+				daw::bounded_vector_t<impl::parse_token<CharT>, N / 2> m_tokens;
 
 				constexpr static daw::bounded_vector_t<impl::parse_token<CharT>, N / 2>
 				parse_tokens( daw::basic_string_view<CharT> msg ) {
@@ -279,8 +279,8 @@ namespace daw {
 							}
 							msg.remove_prefix( );
 							assert( !msg.empty( ) );
-							auto const digit = ::daw::parser::parse_unsigned_int<size_t>(
-							  msg.pop_front( "}" ) );
+							auto const digit =
+							  daw::parser::parse_unsigned_int<size_t>( msg.pop_front( "}" ) );
 							result.emplace_back( impl::parse_token<CharT>( digit ) );
 							continue;
 						}

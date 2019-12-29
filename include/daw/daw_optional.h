@@ -29,29 +29,29 @@
 #include "daw_traits.h"
 
 namespace daw {
-	inline constexpr ::std::nullopt_t nullopt = ::std::nullopt;
+	inline constexpr std::nullopt_t nullopt = std::nullopt;
 
 	template<typename T, typename U = void>
 	struct optional;
 
 	template<typename T>
-	struct optional<T, ::std::enable_if_t<not std::is_reference_v<T>>> {
+	struct optional<T, std::enable_if_t<not std::is_reference_v<T>>> {
 		using value_type = T;
-		using reference = ::std::add_lvalue_reference_t<value_type>;
+		using reference = std::add_lvalue_reference_t<value_type>;
 		using const_reference =
-		  ::std::add_lvalue_reference_t<::std::add_const_t<value_type>>;
-		using rvalue_reference = ::std::add_rvalue_reference_t<value_type>;
+		  std::add_lvalue_reference_t<std::add_const_t<value_type>>;
+		using rvalue_reference = std::add_rvalue_reference_t<value_type>;
 		using const_rvalue_reference =
-		  ::std::add_rvalue_reference_t<::std::add_const_t<value_type>>;
-		using pointer = ::std::add_pointer_t<value_type>;
-		using const_pointer = ::std::add_pointer_t<::std::add_const_t<value_type>>;
+		  std::add_rvalue_reference_t<std::add_const_t<value_type>>;
+		using pointer = std::add_pointer_t<value_type>;
+		using const_pointer = std::add_pointer_t<std::add_const_t<value_type>>;
 
 	private:
-		::std::optional<value_type> m_value = ::std::optional<value_type>( );
+		std::optional<value_type> m_value = std::optional<value_type>( );
 
 	public:
 		constexpr optional( ) noexcept = default;
-		constexpr optional( ::std::nullopt_t ) noexcept {}
+		constexpr optional( std::nullopt_t ) noexcept {}
 
 		constexpr reference operator*( ) & noexcept {
 			return m_value.operator*( );
@@ -62,11 +62,11 @@ namespace daw {
 		}
 
 		constexpr rvalue_reference operator*( ) && noexcept {
-			return ::std::move( m_value ).operator*( );
+			return std::move( m_value ).operator*( );
 		}
 
 		constexpr const_rvalue_reference operator*( ) const &&noexcept {
-			return ::std::move( m_value ).operator*( );
+			return std::move( m_value ).operator*( );
 		}
 
 		constexpr pointer operator->( ) noexcept {
@@ -78,8 +78,8 @@ namespace daw {
 		}
 
 		void swap( optional &other ) noexcept(
-		  ::std::is_nothrow_swappable_v<::std::optional<value_type>> ) {
-			using ::std::swap;
+		  std::is_nothrow_swappable_v<std::optional<value_type>> ) {
+			using std::swap;
 			swap( m_value, other.m_value );
 		}
 
@@ -89,14 +89,14 @@ namespace daw {
 
 		template<typename... Args>
 		reference emplace( Args &&... args ) {
-			return m_value.emplace( ::std::forward<Args>( args )... );
+			return m_value.emplace( std::forward<Args>( args )... );
 		}
 
 		// cannot emplace to a reference
 		template<typename U, typename... Args>
-		reference emplace( ::std::initializer_list<U> ilist, Args &&... args ) {
-			return m_value.emplace( ::std::move( ilist ),
-			                        ::std::forward<Args>( args )... );
+		reference emplace( std::initializer_list<U> ilist, Args &&... args ) {
+			return m_value.emplace( std::move( ilist ),
+			                        std::forward<Args>( args )... );
 		}
 
 		constexpr reference value( ) & {
@@ -108,11 +108,11 @@ namespace daw {
 		}
 
 		constexpr rvalue_reference value( ) && {
-			return ::std::move( m_value ).value( );
+			return std::move( m_value ).value( );
 		}
 
 		constexpr const_rvalue_reference value( ) const && {
-			return ::std::move( m_value ).value( );
+			return std::move( m_value ).value( );
 		}
 
 		constexpr bool has_value( ) const noexcept {
@@ -124,58 +124,58 @@ namespace daw {
 		}
 
 		template<typename U = value_type,
-		         ::std::enable_if_t<
-		           ::daw::all_true_v<
-		             ::std::is_constructible_v<::std::optional<T>, U>,
-		             std::is_convertible_v<::daw::remove_cvref_t<U> const &, T>,
-		             not std::is_same_v<::daw::remove_cvref_t<U>, optional<T>>>,
-		           ::std::nullptr_t> = nullptr>
+		         std::enable_if_t<
+		           daw::all_true_v<
+		             std::is_constructible_v<std::optional<T>, U>,
+		             std::is_convertible_v<daw::remove_cvref_t<U> const &, T>,
+		             not std::is_same_v<daw::remove_cvref_t<U>, optional<T>>>,
+		           std::nullptr_t> = nullptr>
 		constexpr optional( U &&value )
-		  : m_value( ::std::forward<U>( value ) ) {}
+		  : m_value( std::forward<U>( value ) ) {}
 
 		template<typename U = value_type,
-		         ::std::enable_if_t<
-		           ::daw::all_true_v<
-		             ::std::is_constructible_v<::std::optional<T>, U>,
-		             not std::is_convertible_v<::daw::remove_cvref_t<U> const &, T>,
-		             not std::is_same_v<::daw::remove_cvref_t<U>, optional<T>>>,
-		           ::std::nullptr_t> = nullptr>
+		         std::enable_if_t<
+		           daw::all_true_v<
+		             std::is_constructible_v<std::optional<T>, U>,
+		             not std::is_convertible_v<daw::remove_cvref_t<U> const &, T>,
+		             not std::is_same_v<daw::remove_cvref_t<U>, optional<T>>>,
+		           std::nullptr_t> = nullptr>
 		constexpr explicit optional( U &&value )
-		  : m_value( ::std::forward<U>( value ) ) {}
+		  : m_value( std::forward<U>( value ) ) {}
 
-		optional &operator=( ::std::nullopt_t ) noexcept {
+		optional &operator=( std::nullopt_t ) noexcept {
 			m_value = nullopt;
 			return *this;
 		}
 
-		template<typename U = T,
-		         ::std::enable_if_t<
-		           not std::is_same_v<::daw::remove_cvref_t<U>, optional<T>>,
-		           ::std::nullptr_t> = nullptr>
+		template<
+		  typename U = T,
+		  std::enable_if_t<not std::is_same_v<daw::remove_cvref_t<U>, optional<T>>,
+		                   std::nullptr_t> = nullptr>
 		optional &operator=( U &&value ) {
-			m_value = ::std::forward<U>( value );
+			m_value = std::forward<U>( value );
 			return *this;
 		}
 	};
 
 	template<typename T>
-	struct optional<T, ::std::enable_if_t<::std::is_lvalue_reference_v<T>>> {
-		using value_type = ::std::remove_reference_t<T>;
-		using reference = ::std::add_lvalue_reference_t<value_type>;
+	struct optional<T, std::enable_if_t<std::is_lvalue_reference_v<T>>> {
+		using value_type = std::remove_reference_t<T>;
+		using reference = std::add_lvalue_reference_t<value_type>;
 		using const_reference =
-		  ::std::add_lvalue_reference_t<::std::add_const_t<value_type>>;
-		using rvalue_reference = ::std::add_rvalue_reference_t<value_type>;
+		  std::add_lvalue_reference_t<std::add_const_t<value_type>>;
+		using rvalue_reference = std::add_rvalue_reference_t<value_type>;
 		using const_rvalue_reference =
-		  ::std::add_rvalue_reference_t<::std::add_const_t<value_type>>;
-		using pointer = ::std::add_pointer_t<value_type>;
-		using const_pointer = ::std::add_pointer_t<::std::add_const_t<value_type>>;
+		  std::add_rvalue_reference_t<std::add_const_t<value_type>>;
+		using pointer = std::add_pointer_t<value_type>;
+		using const_pointer = std::add_pointer_t<std::add_const_t<value_type>>;
 
 	private:
-		::std::optional<value_type *> m_value = ::std::optional<value_type *>( );
+		std::optional<value_type *> m_value = std::optional<value_type *>( );
 
 	public:
 		constexpr optional( ) noexcept = default;
-		constexpr optional( ::std::nullopt_t ) noexcept {}
+		constexpr optional( std::nullopt_t ) noexcept {}
 
 		constexpr reference operator*( ) noexcept {
 			return *m_value.operator*( );
@@ -194,7 +194,7 @@ namespace daw {
 		}
 
 		void swap( optional &other ) noexcept {
-			using ::std::swap;
+			using std::swap;
 			swap( m_value, other.m_value );
 		}
 
@@ -208,7 +208,7 @@ namespace daw {
 
 		// cannot emplace to a reference
 		template<typename U, typename... Args>
-		reference emplace( ::std::initializer_list<U>, Args &&... ) = delete;
+		reference emplace( std::initializer_list<U>, Args &&... ) = delete;
 
 		constexpr reference value( ) {
 			return *m_value.value( );
@@ -227,31 +227,31 @@ namespace daw {
 		}
 
 		template<typename U = value_type,
-		         ::std::enable_if_t<
-		           ::daw::all_true_v<
-		             ::std::is_constructible_v<pointer, ::daw::remove_cvref_t<U> *>,
+		         std::enable_if_t<
+		           daw::all_true_v<
+		             std::is_constructible_v<pointer, daw::remove_cvref_t<U> *>,
 		             not std::is_rvalue_reference_v<U>,
-		             not std::is_same_v<::daw::remove_cvref_t<U>, optional<T>>>,
-		           ::std::nullptr_t> = nullptr>
+		             not std::is_same_v<daw::remove_cvref_t<U>, optional<T>>>,
+		           std::nullptr_t> = nullptr>
 		constexpr explicit optional( U &&value )
 		  : m_value( &value ) {}
 
-		optional &operator=( ::std::nullopt_t ) noexcept {
+		optional &operator=( std::nullopt_t ) noexcept {
 			m_value = nullopt;
 			return *this;
 		}
 
 		/*
 		template<typename U = T,
-		         ::std::enable_if_t<::daw::all_true_v<not std::is_same_v<
-		                              ::daw::remove_cvref_t<U>, optional<T>>>,
-		                            ::std::nullptr_t> = nullptr>
+		         std::enable_if_t<daw::all_true_v<not std::is_same_v<
+		                              daw::remove_cvref_t<U>, optional<T>>>,
+		                            std::nullptr_t> = nullptr>
 		optional &operator=( U &&value ) {
 		  if( not m_value ) {
 		    m_value = &value;
 		  } else {
 		    if constexpr( not std::is_const_v<value_type> ) {
-		      **m_value = ::std::forward<U>( value );
+		      **m_value = std::forward<U>( value );
 		    } else {
 		      std::abort( );
 		    }
@@ -328,73 +328,62 @@ namespace daw {
 	}
 
 	template<typename T>
-	constexpr bool operator==( optional<T> const &opt,
-	                           ::std::nullopt_t ) noexcept {
+	constexpr bool operator==( optional<T> const &opt, std::nullopt_t ) noexcept {
 		return not opt;
 	}
 
 	template<typename T>
-	constexpr bool operator==( ::std::nullopt_t,
-	                           optional<T> const &opt ) noexcept {
+	constexpr bool operator==( std::nullopt_t, optional<T> const &opt ) noexcept {
 		return not opt;
 	}
 
 	template<typename T>
-	constexpr bool operator!=( optional<T> const &opt,
-	                           ::std::nullopt_t ) noexcept {
+	constexpr bool operator!=( optional<T> const &opt, std::nullopt_t ) noexcept {
 		return static_cast<bool>( opt );
 	}
 
 	template<typename T>
-	constexpr bool operator!=( ::std::nullopt_t,
-	                           optional<T> const &opt ) noexcept {
+	constexpr bool operator!=( std::nullopt_t, optional<T> const &opt ) noexcept {
 		return static_cast<bool>( opt );
 	}
 
 	template<typename T>
-	constexpr bool operator<( optional<T> const &, ::std::nullopt_t ) noexcept {
+	constexpr bool operator<( optional<T> const &, std::nullopt_t ) noexcept {
 		return false;
 	}
 
 	template<typename T>
-	constexpr bool operator<( ::std::nullopt_t,
-	                          optional<T> const &opt ) noexcept {
+	constexpr bool operator<( std::nullopt_t, optional<T> const &opt ) noexcept {
 		return static_cast<bool>( opt );
 	}
 
 	template<typename T>
-	constexpr bool operator<=( optional<T> const &opt,
-	                           ::std::nullopt_t ) noexcept {
+	constexpr bool operator<=( optional<T> const &opt, std::nullopt_t ) noexcept {
 		return not opt;
 	}
 
 	template<typename T>
-	constexpr bool operator<=( ::std::nullopt_t,
-	                           optional<T> const &opt ) noexcept {
+	constexpr bool operator<=( std::nullopt_t, optional<T> const &opt ) noexcept {
 		return true;
 	}
 
 	template<typename T>
-	constexpr bool operator>( optional<T> const &opt,
-	                          ::std::nullopt_t ) noexcept {
+	constexpr bool operator>( optional<T> const &opt, std::nullopt_t ) noexcept {
 		return static_cast<bool>( opt );
 	}
 
 	template<typename T>
-	constexpr bool operator>( ::std::nullopt_t,
-	                          optional<T> const &opt ) noexcept {
+	constexpr bool operator>( std::nullopt_t, optional<T> const &opt ) noexcept {
 		return false;
 	}
 
 	template<typename T>
-	constexpr bool operator>=( optional<T> const &opt,
-	                           ::std::nullopt_t ) noexcept {
+	constexpr bool operator>=( optional<T> const &opt, std::nullopt_t ) noexcept {
 		return true;
 	}
 
 	template<typename T>
-	constexpr bool operator>=( ::std::nullopt_t,
-	                           optional<T> const &opt ) noexcept {
+	constexpr bool operator>=( std::nullopt_t, optional<T> const &opt ) noexcept {
 		return static_cast<bool>( opt );
 	}
 

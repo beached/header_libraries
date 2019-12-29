@@ -55,9 +55,8 @@ namespace daw {
 
 	template<typename Mutex, typename ConditionVariable>
 	class basic_latch {
-		mutable ::daw::basic_condition_variable<Mutex, ConditionVariable>
-		  m_condition =
-		    ::daw::basic_condition_variable<Mutex, ConditionVariable>( );
+		mutable daw::basic_condition_variable<Mutex, ConditionVariable>
+		  m_condition = daw::basic_condition_variable<Mutex, ConditionVariable>( );
 		std::atomic_intmax_t m_count = 1;
 
 		[[nodiscard]] auto stop_waiting( ) const {
@@ -71,32 +70,29 @@ namespace daw {
 	public:
 		basic_latch( ) = default;
 
-		template<
-		  typename Integer,
-		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
-		                   std::nullptr_t> = nullptr>
+		template<typename Integer,
+		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Integer>>,
+		                          std::nullptr_t> = nullptr>
 		explicit basic_latch( Integer count ) noexcept(
-		  ::std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
-		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> )
+		  std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
+		    and std::is_nothrow_default_constructible_v<ConditionVariable> )
 		  : m_count( static_cast<intmax_t>( count ) ) {}
 
-		template<
-		  typename Integer,
-		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
-		                   std::nullptr_t> = nullptr>
+		template<typename Integer,
+		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Integer>>,
+		                          std::nullptr_t> = nullptr>
 		basic_latch( Integer count, bool latched ) noexcept(
-		  ::std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
-		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> )
+		  std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
+		    and std::is_nothrow_default_constructible_v<ConditionVariable> )
 		  : m_count( static_cast<intmax_t>( count ) ) {}
 
 		void reset( ) {
 			m_count = 1;
 		}
 
-		template<
-		  typename Integer,
-		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
-		                   std::nullptr_t> = nullptr>
+		template<typename Integer,
+		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Integer>>,
+		                          std::nullptr_t> = nullptr>
 		void reset( Integer count ) {
 
 			m_count = static_cast<intmax_t>( count );
@@ -156,22 +152,20 @@ namespace daw {
 	public:
 		constexpr basic_unique_latch( ) = default;
 
-		template<
-		  typename Integer,
-		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
-		                   std::nullptr_t> = nullptr>
+		template<typename Integer,
+		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Integer>>,
+		                          std::nullptr_t> = nullptr>
 		explicit basic_unique_latch( Integer count ) noexcept(
-		  ::std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
-		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> )
+		  std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
+		    and std::is_nothrow_default_constructible_v<ConditionVariable> )
 		  : latch( std::make_unique<latch_t>( count ) ) {}
 
-		template<
-		  typename Integer,
-		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
-		                   std::nullptr_t> = nullptr>
+		template<typename Integer,
+		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Integer>>,
+		                          std::nullptr_t> = nullptr>
 		basic_unique_latch( Integer count, bool latched ) noexcept(
-		  ::std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
-		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> )
+		  std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
+		    and std::is_nothrow_default_constructible_v<ConditionVariable> )
 		  : latch( std::make_unique<latch_t>( count, latched ) ) {}
 
 		basic_latch<Mutex, ConditionVariable> *release( ) {
@@ -236,22 +230,20 @@ namespace daw {
 	public:
 		basic_shared_latch( ) = default;
 
-		template<
-		  typename Integer,
-		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
-		                   std::nullptr_t> = nullptr>
+		template<typename Integer,
+		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Integer>>,
+		                          std::nullptr_t> = nullptr>
 		explicit basic_shared_latch( Integer count ) noexcept(
-		  ::std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
-		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> )
+		  std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
+		    and std::is_nothrow_default_constructible_v<ConditionVariable> )
 		  : latch( std::make_shared<latch_t>( count ) ) {}
 
-		template<
-		  typename Integer,
-		  std::enable_if_t<std::is_integral_v<::daw::remove_cvref_t<Integer>>,
-		                   std::nullptr_t> = nullptr>
+		template<typename Integer,
+		         std::enable_if_t<std::is_integral_v<daw::remove_cvref_t<Integer>>,
+		                          std::nullptr_t> = nullptr>
 		basic_shared_latch( Integer count, bool latched ) noexcept(
-		  ::std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
-		    and ::std::is_nothrow_default_constructible_v<ConditionVariable> )
+		  std::is_nothrow_default_constructible_v<std::atomic_intmax_t>
+		    and std::is_nothrow_default_constructible_v<ConditionVariable> )
 		  : latch( std::make_shared<latch_t>( count, latched ) ) {}
 
 		explicit basic_shared_latch(

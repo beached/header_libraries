@@ -91,7 +91,7 @@ namespace daw {
 			template<typename T,
 			         std::enable_if_t<
 			           all_true_v<not std::is_same_v<T, char>, std::is_integral_v<T>,
-			                      ::std::is_signed_v<T>, not std::is_enum_v<T>>,
+			                      std::is_signed_v<T>, not std::is_enum_v<T>>,
 			           std::nullptr_t> = nullptr>
 			constexpr T parse_to_value( daw::string_view str, tag_t<T> ) {
 				daw::exception::precondition_check<empty_input_exception>(
@@ -100,7 +100,7 @@ namespace daw {
 			}
 
 			template<typename T, std::enable_if_t<all_true_v<std::is_integral_v<T>,
-			                                                 ::std::is_unsigned_v<T>>,
+			                                                 std::is_unsigned_v<T>>,
 			                                      std::nullptr_t> = nullptr>
 			constexpr T parse_to_value( daw::string_view str, tag_t<T> ) {
 				daw::exception::precondition_check<empty_input_exception>(
@@ -186,7 +186,7 @@ namespace daw {
 			constexpr decltype( auto ) set_value_from_string_view_item(
 			  daw::bounded_array_t<daw::string_view, sizeof...( Args )> const
 			    &positions ) {
-				using ::daw::parser::converters::parse_to_value;
+				using daw::parser::converters::parse_to_value;
 				using result_t = daw::pack_type_t<N, Args...>;
 				return parse_to_value( positions[N], tag<result_t> );
 			}
@@ -268,7 +268,7 @@ namespace daw {
 		namespace impl {
 			template<typename T>
 			constexpr decltype( auto ) parse_result_of_test( ) noexcept {
-				using namespace ::daw::parser::converters;
+				using namespace daw::parser::converters;
 				return parse_to_value( daw::string_view( ), tag<T> );
 			}
 

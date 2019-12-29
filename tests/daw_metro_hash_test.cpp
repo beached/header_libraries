@@ -43,7 +43,7 @@ inline constexpr auto h1 =
 // static_assert( h0 == 0x658F'044F'5C73'0E40ULL );
 // static_assert( h0 == 0x073CAAB960623211 );
 
-int main( int argc, char **argv ) {
+int main( int, char **argv ) {
 	(void)h0;
 	(void)h1;
 

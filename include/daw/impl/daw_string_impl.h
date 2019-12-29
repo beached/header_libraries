@@ -269,7 +269,7 @@ namespace daw {
 
 		// Make argument a lower priority than T[]
 		template<typename T,
-		         std::enable_if_t<::std::is_pointer_v<T>, std::nullptr_t> = nullptr>
+		         std::enable_if_t<std::is_pointer_v<T>, std::nullptr_t> = nullptr>
 		struct only_ptr {
 			T *ptr;
 

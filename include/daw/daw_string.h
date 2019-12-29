@@ -461,14 +461,14 @@ namespace daw {
 
 				BasicString &search_replace( CharT const *search_for,
 				                             CharT const *replace_with ) {
-					::daw::string::search_replace( m_string, search_for, replace_with );
+					daw::string::search_replace( m_string, search_for, replace_with );
 					return *this;
 				}
 
 				BasicString &trim_left(
 				  std::basic_string<CharT, Traits, Allocator> const &delimiters =
 				    impl::standard_split_delimiters( CharT{} ) ) {
-					::daw::string::trim_left( m_string, delimiters );
+					daw::string::trim_left( m_string, delimiters );
 					return *this;
 				}
 
@@ -516,6 +516,6 @@ namespace daw {
 		}
 	} // namespace string
 
-	using String = ::daw::string::impl::BasicString<char>;
-	using WString = ::daw::string::impl::BasicString<wchar_t>;
+	using String = daw::string::impl::BasicString<char>;
+	using WString = daw::string::impl::BasicString<wchar_t>;
 } // namespace daw

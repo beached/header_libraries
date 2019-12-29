@@ -109,7 +109,7 @@ namespace daw {
 
 		template<typename T, typename First, typename... Rest>
 		struct are_same_types<T, First, Rest...>
-		  : std::integral_constant<bool, ::std::is_same_v<T, First> or
+		  : std::integral_constant<bool, std::is_same_v<T, First> or
 		                                   are_same_types<T, Rest...>::value> {};
 
 		template<typename T, typename... Rest>
@@ -248,8 +248,8 @@ namespace daw {
 
 		template<typename T>
 		inline constexpr bool is_string_v =
-		  all_true_v<::std::is_convertible_v<T, std::string> or
-		             ::std::is_convertible_v<T, std::wstring>>;
+		  all_true_v<std::is_convertible_v<T, std::string> or
+		             std::is_convertible_v<T, std::wstring>>;
 
 		template<typename T>
 		inline constexpr bool isnt_string_v = !is_string_v<T>;
@@ -282,7 +282,7 @@ namespace daw {
 #define GENERATE_IS_STD_CONTAINER1( ContainerName )                            \
 	template<typename T>                                                         \
 	constexpr bool is_##ContainerName##_v =                                      \
-	  ::std::is_same_v<T, std::ContainerName<typename T::value_type>>
+	  std::is_same_v<T, std::ContainerName<typename T::value_type>>
 
 		GENERATE_IS_STD_CONTAINER1( vector );
 		GENERATE_IS_STD_CONTAINER1( list );
@@ -294,7 +294,7 @@ namespace daw {
 
 #define GENERATE_IS_STD_CONTAINER2( ContainerName )                            \
 	template<typename T>                                                         \
-	constexpr bool is_##ContainerName##_v = ::std::is_same_v<                    \
+	constexpr bool is_##ContainerName##_v = std::is_same_v<                      \
 	  T, std::ContainerName<typename T::key_type, typename T::mapped_type>>
 
 		GENERATE_IS_STD_CONTAINER2( map );
@@ -318,11 +318,11 @@ namespace daw {
 
 		template<typename T>
 		inline constexpr bool is_numberic_v =
-		  any_true_v<::std::is_floating_point_v<T>, ::std::is_integral_v<T>>;
+		  any_true_v<std::is_floating_point_v<T>, std::is_integral_v<T>>;
 
 		template<typename T>
 		inline constexpr bool is_container_or_array_v =
-		  any_true_v<is_container_v<T>, ::std::is_array_v<T>>;
+		  any_true_v<is_container_v<T>, std::is_array_v<T>>;
 
 		namespace detectors {
 			template<typename OutStream, typename T>
@@ -335,7 +335,7 @@ namespace daw {
 
 		template<template<class> class Base, typename Derived>
 		inline constexpr bool is_mixed_from_v =
-		  ::std::is_base_of_v<Base<Derived>, Derived>;
+		  std::is_base_of_v<Base<Derived>, Derived>;
 
 		namespace impl {
 			namespace {
@@ -458,13 +458,12 @@ namespace daw {
 		template<typename T, typename U>
 		constexpr inline bool not_self( ) {
 			using decayed_t = typename std::decay_t<T>;
-			return !::std::is_same_v<decayed_t, U> and
-			       !::std::is_base_of_v<U, decayed_t>;
+			return !std::is_same_v<decayed_t, U> and !std::is_base_of_v<U, decayed_t>;
 		}
 
 		template<typename To, typename... From>
 		inline constexpr bool are_convertible_to_v =
-		  all_true_v<::std::is_convertible_v<From, To>...>;
+		  all_true_v<std::is_convertible_v<From, To>...>;
 
 		template<typename String>
 		inline constexpr bool is_not_array_array_v =
@@ -521,11 +520,10 @@ namespace daw {
 				template<typename T, typename... Ts>
 				struct isnt_cv_ref<T, Ts...>
 				  : std::integral_constant<
-				      bool,
-				      ( !any_true_v<::std::is_const_v<T>, ::std::is_reference_v<T>,
-				                    ::std::is_volatile_v<T>> and
-				        ::std::is_same_v<std::true_type,
-				                         typename isnt_cv_ref<Ts...>::type> )> {};
+				      bool, ( !any_true_v<std::is_const_v<T>, std::is_reference_v<T>,
+				                          std::is_volatile_v<T>> and
+				              std::is_same_v<std::true_type,
+				                             typename isnt_cv_ref<Ts...>::type> )> {};
 			} // namespace
 		}   // namespace impl
 
@@ -589,7 +587,7 @@ namespace daw {
 		template<typename T, typename... Args>
 		inline constexpr bool is_init_list_constructible_v = all_true_v<
 		  are_same_types_v<Args...>,
-		  ::std::is_constructible_v<T, std::initializer_list<first_type<Args...>>>>;
+		  std::is_constructible_v<T, std::initializer_list<first_type<Args...>>>>;
 
 		namespace ostream_detectors {
 			namespace {
@@ -817,7 +815,7 @@ namespace daw {
 
 		template<typename F>
 		[[nodiscard]] constexpr decltype( auto ) lift_func( F &&f ) noexcept {
-			if constexpr( ::std::is_function_v<::daw::remove_cvref_t<F>> ) {
+			if constexpr( std::is_function_v<daw::remove_cvref_t<F>> ) {
 				using func_t = func_traits<F>;
 				static_assert( func_t::arity == 1,
 				               "Only single argument overloads are supported" );

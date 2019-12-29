@@ -31,18 +31,17 @@ namespace daw {
 			auto to_vector( Collection const &collection ) {
 				using value_type =
 				  daw::traits::root_type_t<typename Collection::value_type>;
-				::std::vector<value_type> result;
-				::std::copy( ::std::begin( collection ), ::std::end( collection ),
-				             ::std::back_inserter( result ) );
+				std::vector<value_type> result;
+				std::copy( std::begin( collection ), std::end( collection ),
+				           std::back_inserter( result ) );
 				return result;
 			}
 
 			template<typename IteratorF, typename IteratorL>
 			auto to_vector( IteratorF first, IteratorL last ) {
-				using value_type =
-				  typename ::std::iterator_traits<IteratorF>::value_type;
-				::std::vector<value_type> result;
-				::std::copy( first, last, ::std::back_inserter( result ) );
+				using value_type = typename std::iterator_traits<IteratorF>::value_type;
+				std::vector<value_type> result;
+				std::copy( first, last, std::back_inserter( result ) );
 				return result;
 			}
 
