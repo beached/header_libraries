@@ -27,6 +27,7 @@
 #include "daw/daw_fnv1a_hash.h"
 #include "daw_algorithm.h"
 #include "daw_sort_n.h"
+#include "daw_swap.h"
 
 #include <cstddef>
 #include <functional>
@@ -241,6 +242,11 @@ namespace daw {
 		struct bucket_t {
 			size_type bucket_index = 0;
 			daw::bounded_vector_t<ForwardIterator, m_data_size> items{};
+
+			constexpr void swap( bucket_t & rhs ) {
+				daw::cswap( bucket_index, rhs.bucket_index );
+				daw::cswap( items, rhs.items );
+			}
 		};
 
 		static constexpr size_type m_num_buckets = mph_impl::get_bucket_count<N>( );
