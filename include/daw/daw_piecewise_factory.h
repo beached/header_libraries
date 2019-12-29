@@ -74,13 +74,13 @@ namespace daw {
 		template<typename... Args>
 		constexpr auto get_value( std::variant<Args...> const &value ) {
 			using T = decltype( remove_layer_func( value ) );
-			return ::daw::visit_nt( value, process_args_t<T>{} );
+			return daw::visit_nt( value, process_args_t<T>{} );
 		}
 
 		template<typename... Args>
 		constexpr auto get_value( std::variant<Args...> &&value ) {
 			using T = decltype( remove_layer_func( value ) );
-			return ::daw::visit_nt( daw::move( value ), process_args_t<T>{} );
+			return daw::visit_nt( daw::move( value ), process_args_t<T>{} );
 		}
 
 		template<size_t N, typename... Args>
@@ -127,7 +127,7 @@ namespace daw {
 			using value_t =
 			  decltype( remove_layer_func( std::declval<tp_val_t>( ) ) );
 
-			auto const setter = ::daw::overload(
+			auto const setter = daw::overload(
 			  [&]( value_t const &v ) { std::get<N>( tp ) = value_t{v}; },
 			  [&]( value_t &&v ) { std::get<N>( tp ) = value_t{daw::move( v )}; },
 			  [&]( std::function<value_t( )> const &f ) {

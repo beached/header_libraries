@@ -66,14 +66,14 @@ namespace daw {
 					namespace details {                                                  \
 						template<typename... Args>                                         \
 						class clause_name##_t {                                            \
-							::std::tuple<Args...> clause_name##_args;                        \
+							std::tuple<Args...> clause_name##_args;                          \
                                                                                \
-							template<typename Container, typename... ClauseArgs,             \
-							         typename ::std::enable_if_t<all_true_v<                 \
-							           !::daw::range::is_range_reference_v<Container>,       \
-							           !::daw::range::is_range_collection_v<Container>>> * = \
-							           nullptr,                                              \
-							         typename = void>                                        \
+							template<                                                        \
+							  typename Container, typename... ClauseArgs,                    \
+							  typename std::enable_if_t<all_true_v<                          \
+							    !daw::range::is_range_reference_v<Container>,                \
+							    !daw::range::is_range_collection_v<Container>>> * = nullptr, \
+							  typename = void>                                               \
 							static auto                                                      \
 							  clause_name##_helper( Container const &container,              \
 							                        ClauseArgs &&... clause_args ) {         \
@@ -83,8 +83,8 @@ namespace daw {
                                                                                \
 							template<                                                        \
 							  typename Container, typename... ClauseArgs,                    \
-							  typename ::std::enable_if_t<                                   \
-							    ::daw::range::is_range_reference_v<Container>> * = nullptr>  \
+							  typename std::enable_if_t<                                     \
+							    daw::range::is_range_reference_v<Container>> * = nullptr>    \
 							static auto                                                      \
 							  clause_name##_helper( Container container,                     \
 							                        ClauseArgs &&... clause_args ) {         \
@@ -94,8 +94,8 @@ namespace daw {
                                                                                \
 							template<                                                        \
 							  typename Container, typename... ClauseArgs,                    \
-							  typename ::std::enable_if_t<                                   \
-							    ::daw::range::is_range_collection_v<Container>> * = nullptr> \
+							  typename std::enable_if_t<                                     \
+							    daw::range::is_range_collection_v<Container>> * = nullptr>   \
 							static auto                                                      \
 							  clause_name##_helper( Container const &container,              \
 							                        ClauseArgs &&... clause_args ) {         \
@@ -120,16 +120,16 @@ namespace daw {
                                                                                \
 							template<typename Iterator, int... S>                            \
 							auto call_##clause_name(                                         \
-							  ::daw::range::ReferenceRange<Iterator> container,              \
+							  daw::range::ReferenceRange<Iterator> container,                \
 							  seq<S...> ) const {                                            \
 								return clause_name##_helper(                                   \
 								  container, std::get<S>( clause_name##_args )... );           \
 							}                                                                \
                                                                                \
 						public:                                                            \
-							clause_name##_t( ::std::tuple<Args...> &&args )                  \
+							clause_name##_t( std::tuple<Args...> &&args )                    \
 							  : clause_name                                                  \
-							  ##_args( ::std::forward<::std::tuple<Args>>( args )... ) {}    \
+							  ##_args( std::forward<std::tuple<Args>>( args )... ) {}        \
                                                                                \
 							template<typename Container>                                     \
 							auto operator( )( Container &&container ) const {                \
@@ -143,39 +143,39 @@ namespace daw {
 					auto clause_name( Args &&... clause_name##_args ) {                  \
 						std::tuple<Args...> param = std::make_tuple(                       \
 						  std::forward<Args...>( clause_name##_args )... );                \
-						return ::daw::range::parallel::operators::details::                \
-						  clause_name##_t<Args...>( daw::move( param ) );                  \
+						return daw::range::parallel::operators::details::clause_name##_t<  \
+						  Args...>( daw::move( param ) );                                  \
 					}                                                                    \
 				}                                                                      \
 			}                                                                        \
 		}                                                                          \
 	}                                                                            \
 	template<typename Container, typename... Args,                               \
-	         typename ::std::enable_if_t<all_true_v<                             \
-	           !::daw::range::is_range_reference_v<Container>,                   \
-	           !::daw::range::is_range_collection_v<Container>>> * = nullptr,    \
+	         typename std::enable_if_t<all_true_v<                               \
+	           !daw::range::is_range_reference_v<Container>,                     \
+	           !daw::range::is_range_collection_v<Container>>> * = nullptr,      \
 	         typename = void>                                                    \
 	auto operator<<(                                                             \
 	  Container &&container,                                                     \
-	  ::daw::range::parallel::operators::details::clause_name##_t<Args...> const \
+	  daw::range::parallel::operators::details::clause_name##_t<Args...> const   \
 	    &predicate ) {                                                           \
 		return predicate( std::forward<Container>( container ) );                  \
 	}                                                                            \
 	template<typename Container, typename... Args,                               \
-	         typename ::std::enable_if_t<                                        \
-	           ::daw::range::is_range_collection_v<Container>> * = nullptr>      \
+	         typename std::enable_if_t<                                          \
+	           daw::range::is_range_collection_v<Container>> * = nullptr>        \
 	auto operator<<(                                                             \
 	  Container &&container,                                                     \
-	  ::daw::range::parallel::operators::details::clause_name##_t<Args...> const \
+	  daw::range::parallel::operators::details::clause_name##_t<Args...> const   \
 	    &predicate ) {                                                           \
 		return predicate( std::forward<Container>( container ) );                  \
 	}                                                                            \
 	template<typename Container, typename... Args,                               \
-	         typename ::std::enable_if_t<                                        \
-	           ::daw::range::is_range_reference_v<Container>> * = nullptr>       \
+	         typename std::enable_if_t<                                          \
+	           daw::range::is_range_reference_v<Container>> * = nullptr>         \
 	auto operator<<(                                                             \
 	  Container &&container,                                                     \
-	  ::daw::range::parallel::operators::details::clause_name##_t<Args...> const \
+	  daw::range::parallel::operators::details::clause_name##_t<Args...> const   \
 	    &predicate ) {                                                           \
 		return predicate( std::forward<Container>( container ) );                  \
 	}

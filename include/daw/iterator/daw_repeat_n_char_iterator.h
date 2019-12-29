@@ -111,7 +111,7 @@ namespace daw {
 		}
 	};
 	template<typename CharT>
-	repeat_n_char_iterator( size_t, CharT ) -> repeat_n_char_iterator<CharT>;
+	repeat_n_char_iterator( size_t, CharT )->repeat_n_char_iterator<CharT>;
 
 	template<typename T = char>
 	constexpr auto repeat_n_char_end( ) noexcept {

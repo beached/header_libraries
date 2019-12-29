@@ -73,7 +73,7 @@ namespace daw {
 			}
 		}; // class Chunk
 	public:
-		using values_type = ::std::vector<Chunk>;
+		using values_type = std::vector<Chunk>;
 		using value_type = typename values_type::value_type;
 		using reference = typename values_type::reference;
 		using const_reference = typename values_type::reference;

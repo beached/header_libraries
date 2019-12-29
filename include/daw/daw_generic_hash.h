@@ -82,7 +82,7 @@ namespace daw {
 		}
 
 	public:
-		template<typename Value, std::enable_if_t<::std::is_integral_v<Value>,
+		template<typename Value, std::enable_if_t<std::is_integral_v<Value>,
 		                                          std::nullptr_t> = nullptr>
 		static constexpr hash_value_t append_hash( hash_value_t current_hash,
 		                                           Value const & ) noexcept {
@@ -99,7 +99,7 @@ namespace daw {
 		static constexpr size_t const hash_size = 4;
 		static constexpr hash_value_t const hash_init = 2166136261UL;
 
-		template<typename Value, std::enable_if_t<::std::is_integral_v<Value>,
+		template<typename Value, std::enable_if_t<std::is_integral_v<Value>,
 		                                          std::nullptr_t> = nullptr>
 		static constexpr hash_value_t append_hash( hash_value_t current_hash,
 		                                           Value const &value ) noexcept {
@@ -115,7 +115,7 @@ namespace daw {
 		}
 
 		template<typename Iterator1, typename Iterator2,
-		         std::enable_if_t<::std::is_integral_v<
+		         std::enable_if_t<std::is_integral_v<
 		                            typename std::iterator_traits<Iterator1>::type>,
 		                          std::nullptr_t> = nullptr>
 		constexpr hash_value_t operator( )( Iterator1 first,
@@ -128,14 +128,14 @@ namespace daw {
 		}
 		template<
 		  typename Member, size_t N,
-		  std::enable_if_t<::std::is_integral_v<Member>, std::nullptr_t> = nullptr>
+		  std::enable_if_t<std::is_integral_v<Member>, std::nullptr_t> = nullptr>
 		constexpr hash_value_t operator( )( Member const ( &member )[N] ) const
 		  noexcept {
 			return operator( )( member,
 			                    std::next( member, static_cast<intmax_t>( N ) ) );
 		}
 
-		template<typename Integral, std::enable_if_t<::std::is_integral_v<Integral>,
+		template<typename Integral, std::enable_if_t<std::is_integral_v<Integral>,
 		                                             std::nullptr_t> = nullptr>
 		constexpr hash_value_t operator( )( Integral const value ) const noexcept {
 			return append_hash( hash_init, value );
@@ -147,7 +147,7 @@ namespace daw {
 		static constexpr size_t const hash_size = 8;
 		static constexpr hash_value_t const hash_init = 14695981039346656037ULL;
 
-		template<typename Value, std::enable_if_t<::std::is_integral_v<Value>,
+		template<typename Value, std::enable_if_t<std::is_integral_v<Value>,
 		                                          std::nullptr_t> = nullptr>
 		static constexpr hash_value_t append_hash( hash_value_t current_hash,
 		                                           Value const &value ) noexcept {
@@ -163,7 +163,7 @@ namespace daw {
 		}
 
 		template<typename Iterator1, typename Iterator2,
-		         std::enable_if_t<::std::is_integral_v<
+		         std::enable_if_t<std::is_integral_v<
 		                            typename std::iterator_traits<Iterator1>::type>,
 		                          std::nullptr_t> = nullptr>
 		constexpr hash_value_t operator( )( Iterator1 first,
@@ -176,14 +176,14 @@ namespace daw {
 		}
 		template<
 		  typename Member, size_t N,
-		  std::enable_if_t<::std::is_integral_v<Member>, std::nullptr_t> = nullptr>
+		  std::enable_if_t<std::is_integral_v<Member>, std::nullptr_t> = nullptr>
 		constexpr hash_value_t operator( )( Member const ( &member )[N] ) const
 		  noexcept {
 			return operator( )( member,
 			                    std::next( member, static_cast<intmax_t>( N ) ) );
 		}
 
-		template<typename Integral, std::enable_if_t<::std::is_integral_v<Integral>,
+		template<typename Integral, std::enable_if_t<std::is_integral_v<Integral>,
 		                                             std::nullptr_t> = nullptr>
 		constexpr hash_value_t operator( )( Integral const value ) const noexcept {
 			return append_hash( hash_init, value );
@@ -201,7 +201,7 @@ namespace daw {
 	};
 
 	template<size_t HashBytes = sizeof( size_t ), typename T,
-	         std::enable_if_t<::std::is_integral_v<T>, std::nullptr_t> = nullptr>
+	         std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
 	constexpr auto generic_hash( T const value ) noexcept {
 		return generic_hash_t<HashBytes>{}( value );
 	}

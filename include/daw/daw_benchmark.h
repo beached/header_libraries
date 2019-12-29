@@ -368,7 +368,7 @@ namespace daw {
 				result =
 				  daw::expected_from_code( [&]( auto &&tp ) { return func( ); } );
 			} else if constexpr( sizeof...( args ) == 1 ) {
-				std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
+				std::tuple<daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
 				daw::do_not_optimize( tp_args );
 				start = std::chrono::steady_clock::now( );
 				result = *daw::expected_from_code(
@@ -377,13 +377,13 @@ namespace daw {
 				  },
 				  std::get<0>( tp_args ) );
 			} else {
-				std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
+				std::tuple<daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
 				daw::do_not_optimize( tp_args );
 				start = std::chrono::steady_clock::now( );
 
 				result = daw::expected_from_code(
 				  [&]( auto &&tp ) {
-					  return ::std::apply( func, std::forward<decltype( tp )>( tp ) );
+					  return std::apply( func, std::forward<decltype( tp )>( tp ) );
 				  },
 				  tp_args );
 			}
@@ -482,7 +482,7 @@ namespace daw {
 				result = daw::expected_from_code(
 				  [&]( auto &&tp ) { return test_callable( ); } );
 			} else if constexpr( sizeof...( args ) == 1 ) {
-				std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
+				std::tuple<daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
 				start = std::chrono::steady_clock::now( );
 				result = daw::expected_from_code(
 				  [&]( auto &&tp ) {
@@ -490,13 +490,13 @@ namespace daw {
 				  },
 				  std::get<0>( tp_args ) );
 			} else {
-				std::tuple<::daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
+				std::tuple<daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
 				daw::do_not_optimize( tp_args );
 				start = std::chrono::steady_clock::now( );
 				result = daw::expected_from_code(
 				  [&]( auto &&tp ) {
-					  return ::std::apply( test_callable,
-					                       std::forward<decltype( tp )>( tp ) );
+					  return std::apply( test_callable,
+					                     std::forward<decltype( tp )>( tp ) );
 				  },
 				  tp_args );
 			}

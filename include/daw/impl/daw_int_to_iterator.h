@@ -32,7 +32,7 @@ namespace daw {
 	namespace impl {
 		template<typename T, typename Result = daw::remove_cvref_t<T>>
 		constexpr Result num_digits( T value ) noexcept {
-			static_assert( ::std::is_integral_v<Result>,
+			static_assert( std::is_integral_v<Result>,
 			               "Result must be an integer type" );
 			if( value == 0 ) {
 				return static_cast<Result>( 1 );
@@ -47,7 +47,7 @@ namespace daw {
 
 		template<
 		  typename Result, typename Integer,
-		  std::enable_if_t<::std::is_integral_v<Result>, std::nullptr_t> = nullptr>
+		  std::enable_if_t<std::is_integral_v<Result>, std::nullptr_t> = nullptr>
 		constexpr Result pow10( Integer n ) noexcept {
 			uint64_t const vals[10] = {1ULL,
 			                           100ULL,
@@ -175,9 +175,9 @@ namespace daw {
 				return L'0' + static_cast<wchar_t>( value );
 			}
 		};
-		template<typename Result, typename Number,
-		         std::enable_if_t<::std::is_arithmetic_v<Number>, std::nullptr_t> =
-		           nullptr>
+		template<
+		  typename Result, typename Number,
+		  std::enable_if_t<std::is_arithmetic_v<Number>, std::nullptr_t> = nullptr>
 		constexpr uint16_t whole_log10( Number positive_value ) noexcept {
 			Result result = 0;
 			while( positive_value >= 10 ) {
@@ -188,7 +188,7 @@ namespace daw {
 		}
 		// Integer numbers
 		template<typename CharT, typename OutputIterator, typename Integer,
-		         typename Traits = ::daw::impl::char_traits<CharT>,
+		         typename Traits = daw::impl::char_traits<CharT>,
 		         std::enable_if_t<
 		           daw::all_true_v<
 		             not std::is_integral_v<daw::remove_cvref_t<Integer>>,
@@ -203,7 +203,7 @@ namespace daw {
 				if( value == std::numeric_limits<Integer>::min( ) ) {
 					constexpr auto m = min_strings::get(
 					  CharT{}, std::integral_constant<size_t, sizeof( Integer )>{} );
-					return ::daw::algorithm::copy( m.begin( ), m.end( ), it );
+					return daw::algorithm::copy( m.begin( ), m.end( ), it );
 				}
 				*it++ = static_cast<CharT>( '-' );
 				value = -value;
@@ -226,7 +226,7 @@ namespace daw {
 	} // namespace impl
 	template<typename Integer>
 	inline constexpr bool can_to_os_string_int_v =
-	  daw::all_true_v<::std::is_integral_v<daw::remove_cvref_t<Integer>>,
+	  daw::all_true_v<std::is_integral_v<daw::remove_cvref_t<Integer>>,
 	                  not std::is_same_v<bool, daw::remove_cvref_t<Integer>>,
 	                  not std::is_floating_point_v<daw::remove_cvref_t<Integer>>,
 	                  not daw::traits::is_character_v<Integer>>;
@@ -234,7 +234,7 @@ namespace daw {
 	template<
 	  typename CharT, typename OutputIterator, typename Integer,
 	  typename Traits = daw::impl::char_traits<CharT>,
-	  std::enable_if_t<can_to_os_string_int_v<::daw::remove_cvref_t<Integer>>,
+	  std::enable_if_t<can_to_os_string_int_v<daw::remove_cvref_t<Integer>>,
 	                   std::nullptr_t> = nullptr>
 	constexpr OutputIterator to_os_string_int( OutputIterator it,
 	                                           Integer value ) {

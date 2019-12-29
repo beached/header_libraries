@@ -36,24 +36,24 @@ namespace daw {
 	struct span;
 
 	template<typename>
-	struct is_daw_span_t : ::std::false_type {};
+	struct is_daw_span_t : std::false_type {};
 
 	template<typename T>
-	struct is_daw_span_t<::daw::span<T>> : ::std::true_type {};
+	struct is_daw_span_t<daw::span<T>> : std::true_type {};
 
 	template<typename T>
 	inline constexpr bool const is_daw_span_v = is_daw_span_t<T>::value;
 
 	// Const T
 	template<typename T>
-	struct span<T, ::std::enable_if_t<std::is_const_v<T>>> {
+	struct span<T, std::enable_if_t<std::is_const_v<T>>> {
 		using value_type = daw::remove_cvref_t<T>;
 		using const_pointer = value_type const *;
 		using const_reference = value_type const &;
 		using const_iterator = const_pointer;
-		using const_reverse_iterator = ::std::reverse_iterator<const_iterator>;
+		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 		using size_type = size_t;
-		using difference_type = ::std::ptrdiff_t;
+		using difference_type = std::ptrdiff_t;
 
 		static inline constexpr bool const has_mutable_pointer = false;
 
@@ -63,8 +63,8 @@ namespace daw {
 
 	public:
 		constexpr span( ) noexcept = default;
-		explicit constexpr span( ::std::nullptr_t ) noexcept {}
-		constexpr span( ::std::nullptr_t, size_type ) noexcept {}
+		explicit constexpr span( std::nullptr_t ) noexcept {}
+		constexpr span( std::nullptr_t, size_type ) noexcept {}
 
 		constexpr span( const_pointer ptr, size_type count ) noexcept
 		  : m_first( ptr )
@@ -72,8 +72,8 @@ namespace daw {
 
 		constexpr span( const_pointer first, const_pointer last ) noexcept
 		  : m_first( first )
-		  , m_size( ::std::distance( first, last ) > 0
-		              ? static_cast<size_type>( ::std::distance( first, last ) )
+		  , m_size( std::distance( first, last ) > 0
+		              ? static_cast<size_type>( std::distance( first, last ) )
 		              : 0 ) {}
 
 		template<size_t N>
@@ -81,11 +81,11 @@ namespace daw {
 		  : m_first( arr )
 		  , m_size( N ) {}
 
-		template<typename Container, ::std::enable_if_t<!is_daw_span_v<Container>,
-		                                                ::std::nullptr_t> = nullptr>
+		template<typename Container, std::enable_if_t<!is_daw_span_v<Container>,
+		                                              std::nullptr_t> = nullptr>
 		explicit constexpr span( Container const &c ) noexcept
-		  : m_first( ::std::data( c ) )
-		  , m_size( ::std::size( c ) ) {}
+		  : m_first( std::data( c ) )
+		  , m_size( std::size( c ) ) {}
 
 		// For symmetry with non-const span
 		constexpr span copy( ) const noexcept {
@@ -109,19 +109,19 @@ namespace daw {
 		}
 
 		constexpr const_reverse_iterator rbegin( ) const noexcept {
-			return ::std::make_reverse_iterator( end( ) );
+			return std::make_reverse_iterator( end( ) );
 		}
 
 		constexpr const_reverse_iterator crbegin( ) const noexcept {
-			return ::std::make_reverse_iterator( cend( ) );
+			return std::make_reverse_iterator( cend( ) );
 		}
 
 		constexpr const_reverse_iterator rend( ) const noexcept {
-			return ::std::make_reverse_iterator( begin( ) );
+			return std::make_reverse_iterator( begin( ) );
 		}
 
 		constexpr const_reverse_iterator crend( ) const noexcept {
-			return ::std::make_reverse_iterator( cend( ) );
+			return std::make_reverse_iterator( cend( ) );
 		}
 
 		constexpr const_reference operator[]( size_type pos ) const noexcept {
@@ -176,7 +176,7 @@ namespace daw {
 			remove_suffix( 1 );
 		}
 
-		constexpr T pop_front( ) noexcept( ::std::is_nothrow_assignable_v<T> ) {
+		constexpr T pop_front( ) noexcept( std::is_nothrow_assignable_v<T> ) {
 			auto result = front( );
 			remove_prefix( );
 			return result;
@@ -188,7 +188,7 @@ namespace daw {
 			return result;
 		}
 
-		constexpr T pop_back( ) noexcept( ::std::is_nothrow_assignable_v<T> ) {
+		constexpr T pop_back( ) noexcept( std::is_nothrow_assignable_v<T> ) {
 			auto result = back( );
 			remove_suffix( );
 			return result;
@@ -200,8 +200,7 @@ namespace daw {
 			return result;
 		}
 
-		constexpr bool
-		pop( T &value ) noexcept( ::std::is_nothrow_assignable_v<T> ) {
+		constexpr bool pop( T &value ) noexcept( std::is_nothrow_assignable_v<T> ) {
 			if( empty( ) ) {
 				return false;
 			}
@@ -210,9 +209,9 @@ namespace daw {
 			return true;
 		}
 
-		constexpr span subspan(
-		  size_type pos = 0,
-		  size_type count = ::std::numeric_limits<size_type>::max( ) ) const {
+		constexpr span
+		subspan( size_type pos = 0,
+		         size_type count = std::numeric_limits<size_type>::max( ) ) const {
 
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos < size( ), "Attempt to access span past end" );
@@ -224,7 +223,7 @@ namespace daw {
 
 	// non-const T span
 	template<typename T>
-	struct span<T, ::std::enable_if_t<!std::is_const_v<T>>> {
+	struct span<T, std::enable_if_t<!std::is_const_v<T>>> {
 		using value_type = daw::remove_cvref_t<T>;
 		using pointer = value_type *;
 		using const_pointer = value_type const *;
@@ -232,10 +231,10 @@ namespace daw {
 		using const_reference = value_type const &;
 		using iterator = pointer;
 		using const_iterator = const_pointer;
-		using reverse_iterator = ::std::reverse_iterator<iterator>;
-		using const_reverse_iterator = ::std::reverse_iterator<const_iterator>;
+		using reverse_iterator = std::reverse_iterator<iterator>;
+		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 		using size_type = size_t;
-		using difference_type = ::std::ptrdiff_t;
+		using difference_type = std::ptrdiff_t;
 
 		static inline constexpr bool const has_mutable_pointer = true;
 
@@ -249,13 +248,13 @@ namespace daw {
 		constexpr span &operator=( span && ) noexcept = default;
 		~span( ) = default;
 
-		// Workaround for ::std::is_constructible check.  Have not found out
+		// Workaround for std::is_constructible check.  Have not found out
 		// why it cannot see that this cannot happen.
 		template<typename U>
 		explicit span( span<U const> const & ) = delete;
 
-		explicit constexpr span( ::std::nullptr_t ) noexcept {}
-		constexpr span( ::std::nullptr_t, size_type ) noexcept {}
+		explicit constexpr span( std::nullptr_t ) noexcept {}
+		constexpr span( std::nullptr_t, size_type ) noexcept {}
 
 		constexpr span( pointer ptr, size_type count ) noexcept
 		  : m_first( ptr )
@@ -263,8 +262,8 @@ namespace daw {
 
 		constexpr span( pointer first, const_pointer last ) noexcept
 		  : m_first( first )
-		  , m_size( ::std::distance( static_cast<const_pointer>( first ), last ) > 0
-		              ? static_cast<size_type>( ::std::distance(
+		  , m_size( std::distance( static_cast<const_pointer>( first ), last ) > 0
+		              ? static_cast<size_type>( std::distance(
 		                  static_cast<const_pointer>( first ), last ) )
 		              : 0 ) {}
 
@@ -273,11 +272,11 @@ namespace daw {
 		  : m_first( arr )
 		  , m_size( N ) {}
 
-		template<typename Container, ::std::enable_if_t<!is_daw_span_v<Container>,
-		                                                ::std::nullptr_t> = nullptr>
+		template<typename Container, std::enable_if_t<!is_daw_span_v<Container>,
+		                                              std::nullptr_t> = nullptr>
 		explicit constexpr span( Container &c ) noexcept
-		  : m_first( ::std::data( c ) )
-		  , m_size( ::std::size( c ) ) {}
+		  : m_first( std::data( c ) )
+		  , m_size( std::size( c ) ) {}
 
 		// Only allow copy constructing from non-const span's.
 		// This prevents the copy constructor loophole
@@ -339,27 +338,27 @@ namespace daw {
 		}
 
 		constexpr reverse_iterator rbegin( ) noexcept {
-			return ::std::make_reverse_iterator( end( ) );
+			return std::make_reverse_iterator( end( ) );
 		}
 
 		constexpr const_reverse_iterator rbegin( ) const noexcept {
-			return ::std::make_reverse_iterator( end( ) );
+			return std::make_reverse_iterator( end( ) );
 		}
 
 		constexpr const_reverse_iterator crbegin( ) const noexcept {
-			return ::std::make_reverse_iterator( cend( ) );
+			return std::make_reverse_iterator( cend( ) );
 		}
 
 		constexpr reverse_iterator rend( ) noexcept {
-			return ::std::make_reverse_iterator( begin( ) );
+			return std::make_reverse_iterator( begin( ) );
 		}
 
 		constexpr const_reverse_iterator rend( ) const noexcept {
-			return ::std::make_reverse_iterator( begin( ) );
+			return std::make_reverse_iterator( begin( ) );
 		}
 
 		constexpr const_reverse_iterator crend( ) const noexcept {
-			return ::std::make_reverse_iterator( cbegin( ) );
+			return std::make_reverse_iterator( cbegin( ) );
 		}
 
 		constexpr reference operator[]( size_type pos ) noexcept {
@@ -436,7 +435,7 @@ namespace daw {
 			remove_suffix( 1 );
 		}
 
-		constexpr T pop_front( ) noexcept( ::std::is_nothrow_assignable_v<T> ) {
+		constexpr T pop_front( ) noexcept( std::is_nothrow_assignable_v<T> ) {
 			auto result = front( );
 			remove_prefix( );
 			return result;
@@ -448,7 +447,7 @@ namespace daw {
 			return result;
 		}
 
-		constexpr T pop_back( ) noexcept( ::std::is_nothrow_assignable_v<T> ) {
+		constexpr T pop_back( ) noexcept( std::is_nothrow_assignable_v<T> ) {
 			auto result = back( );
 			remove_suffix( );
 			return result;
@@ -460,8 +459,7 @@ namespace daw {
 			return result;
 		}
 
-		constexpr bool
-		pop( T &value ) noexcept( ::std::is_nothrow_assignable_v<T> ) {
+		constexpr bool pop( T &value ) noexcept( std::is_nothrow_assignable_v<T> ) {
 			if( empty( ) ) {
 				return false;
 			}
@@ -472,7 +470,7 @@ namespace daw {
 
 		constexpr span
 		subspan( size_type pos = 0,
-		         size_type count = ::std::numeric_limits<size_type>::max( ) ) {
+		         size_type count = std::numeric_limits<size_type>::max( ) ) {
 
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos < size( ), "Attempt to access span past end" );
@@ -481,9 +479,9 @@ namespace daw {
 			return {data( ) + pos, count};
 		}
 
-		constexpr span subspan(
-		  size_type pos = 0,
-		  size_type count = ::std::numeric_limits<size_type>::max( ) ) const {
+		constexpr span
+		subspan( size_type pos = 0,
+		         size_type count = std::numeric_limits<size_type>::max( ) ) const {
 
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos < size( ), "Attempt to access span past end" );
@@ -520,10 +518,10 @@ namespace daw {
 	template<typename Container>
 	span( Container & )
 	  ->span<std::remove_reference_t<
-	    decltype( *std::data( ::std::declval<Container>( ) ) )>>;
+	    decltype( *std::data( std::declval<Container>( ) ) )>>;
 
 	template<typename Container>
 	span( Container const & )
 	  ->span<daw::remove_cvref_t<
-	    decltype( *std::data( ::std::declval<Container>( ) ) )> const>;
+	    decltype( *std::data( std::declval<Container>( ) ) )> const>;
 } // namespace daw

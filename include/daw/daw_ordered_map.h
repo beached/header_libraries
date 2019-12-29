@@ -122,62 +122,62 @@ namespace daw {
 
 	public:
 		constexpr iterator begin( ) noexcept {
-			using namespace ::daw::ordered_map_impl;
+			using namespace daw::ordered_map_impl;
 			return beginer( m_values );
 		}
 
 		constexpr const_iterator begin( ) const noexcept {
-			using namespace ::daw::ordered_map_impl;
+			using namespace daw::ordered_map_impl;
 			return beginer( m_values );
 		}
 
 		constexpr const_iterator cbegin( ) const noexcept {
-			using namespace ::daw::ordered_map_impl;
+			using namespace daw::ordered_map_impl;
 			return cbeginer( m_values );
 		}
 
 		constexpr iterator rbegin( ) noexcept {
-			using namespace ::daw::ordered_map_impl;
+			using namespace daw::ordered_map_impl;
 			return rbeginer( m_values );
 		}
 
 		constexpr const_iterator rbegin( ) const noexcept {
-			using namespace ::daw::ordered_map_impl;
+			using namespace daw::ordered_map_impl;
 			return rbeginer( m_values );
 		}
 
 		constexpr const_iterator crbegin( ) const noexcept {
-			using namespace ::daw::ordered_map_impl;
+			using namespace daw::ordered_map_impl;
 			return crbeginer( m_values );
 		}
 
 		constexpr iterator end( ) noexcept {
-			using namespace ::daw::ordered_map_impl;
+			using namespace daw::ordered_map_impl;
 			return ender( m_values );
 		}
 
 		constexpr const_iterator end( ) const noexcept {
-			using namespace ::daw::ordered_map_impl;
+			using namespace daw::ordered_map_impl;
 			return ender( m_values );
 		}
 
 		constexpr const_iterator cend( ) const noexcept {
-			using namespace ::daw::ordered_map_impl;
+			using namespace daw::ordered_map_impl;
 			return cender( m_values );
 		}
 
 		constexpr iterator rend( ) noexcept {
-			using namespace ::daw::ordered_map_impl;
+			using namespace daw::ordered_map_impl;
 			return render( m_values );
 		}
 
 		constexpr const_iterator rend( ) const noexcept {
-			using namespace ::daw::ordered_map_impl;
+			using namespace daw::ordered_map_impl;
 			return render( m_values );
 		}
 
 		constexpr const_iterator crend( ) const noexcept {
-			using namespace ::daw::ordered_map_impl;
+			using namespace daw::ordered_map_impl;
 			return crender( m_values );
 		}
 
@@ -198,12 +198,12 @@ namespace daw {
 		}
 
 		constexpr bool empty( ) const noexcept {
-			using namespace ::daw::ordered_map_impl;
+			using namespace daw::ordered_map_impl;
 			return emptyer( m_values );
 		}
 
 		constexpr size_type size( ) const noexcept {
-			using namespace ::daw::ordered_map_impl;
+			using namespace daw::ordered_map_impl;
 			return static_cast<size_type>( sizer( m_values ) );
 		}
 

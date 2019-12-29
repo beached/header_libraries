@@ -133,9 +133,9 @@ namespace daw::cxmath {
 				}
 				auto const e = exponent( );
 				if( e < 0 ) {
-					return result * ::daw::cxmath::fpow2( -e );
+					return result * daw::cxmath::fpow2( -e );
 				}
-				return result / ::daw::cxmath::fpow2( -e );
+				return result / daw::cxmath::fpow2( -e );
 			}
 
 			[[nodiscard]] constexpr bool is_pos_inf( ) const noexcept {

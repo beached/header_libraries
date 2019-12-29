@@ -136,14 +136,14 @@ namespace daw {
 		  , m_end{last} {}
 
 		template<typename T,
-		         typename = std::enable_if_t<::std::is_convertible_v<T, pointer>>>
+		         typename = std::enable_if_t<std::is_convertible_v<T, pointer>>>
 		hash_table_item_iterator( hash_table_item_iterator<T> const &other )
 		  : m_begin( other.m_begin )
 		  , m_position( other.m_position )
 		  , m_end( other.m_end ) {}
 
 		template<typename T,
-		         typename = std::enable_if_t<::std::is_convertible_v<T, pointer>>>
+		         typename = std::enable_if_t<std::is_convertible_v<T, pointer>>>
 		hash_table_item_iterator &
 		operator=( hash_table_item_iterator<T> const &rhs ) {
 			if( this != rhs ) {
@@ -400,14 +400,14 @@ namespace daw {
 		static size_t hash_fn( KeyType &&key ) {
 			static const auto s_hash = []( auto &&k ) {
 				size_t result =
-				  ( daw::fnv1a_hash( ::std::forward<KeyType>( k ) ) %
+				  ( daw::fnv1a_hash( std::forward<KeyType>( k ) ) %
 				    ( std::numeric_limits<size_t>::max( ) -
 				      impl::hash_table_item<value_type>::SentinalsSize ) ) +
 				  impl::hash_table_item<value_type>::SentinalsSize; // Guarantee we
 				                                                    // cannot be zero
 				return result;
 			};
-			return s_hash( ::std::forward<KeyType>( key ) );
+			return s_hash( std::forward<KeyType>( key ) );
 		}
 
 		static size_t hash_fn( char const *c_str ) {

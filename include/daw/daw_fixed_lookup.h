@@ -143,8 +143,8 @@ namespace daw {
 		}
 
 	public:
-		constexpr fixed_lookup( ) noexcept( noexcept(
-		  ::std::is_nothrow_default_constructible_v<value_t> ) ) = default;
+		constexpr fixed_lookup( ) noexcept(
+		  noexcept( std::is_nothrow_default_constructible_v<value_t> ) ) = default;
 
 		template<typename Key>
 		constexpr hash_value_t find_existing( Key &&key ) const {

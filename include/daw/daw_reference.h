@@ -98,7 +98,7 @@ namespace daw {
 	template<typename Iterator>
 	auto to_reference_vector( Iterator first, Iterator last ) {
 		using value_type = daw::traits::root_type_t<decltype( *first )>;
-		using values_type = ::std::vector<::daw::Reference<value_type>>;
+		using values_type = std::vector<daw::Reference<value_type>>;
 
 		values_type result{};
 		while( first != last ) {

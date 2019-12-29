@@ -47,6 +47,7 @@ namespace daw {
 			  daw::is_detected_v<has_swap_test, T, U>;
 		} // namespace
 	}   // namespace impl
+
 	template<typename T, typename U>
 	constexpr void cswap( std::pair<T, U> &lhs, std::pair<T, U> &rhs ) noexcept(
 	  std::is_nothrow_move_assignable_v<std::pair<T, U>> ) {
@@ -89,10 +90,9 @@ namespace daw {
 	}
 
 	template<typename T>
-	constexpr void
-	cswap( T &&lhs,
-	       T &&rhs ) noexcept( std::is_nothrow_move_assignable_v<T>
-	                             and std::is_nothrow_move_constructible_v<T> ) {
+	constexpr void cswap( T &&lhs, T &&rhs ) noexcept(
+	  std::conjunction_v<std::is_nothrow_move_assignable<T>,
+	                     std::is_nothrow_move_constructible<T>> ) {
 		static_assert( !std::is_const_v<std::remove_reference_t<T>>,
 		               "Cannot swap const values" );
 		if constexpr( std::is_trivial_v<std::remove_reference_t<T>> ) {
@@ -112,8 +112,8 @@ namespace daw {
 	template<typename ForwardIterator1, typename ForwardIterator2>
 	constexpr void
 	iter_swap( ForwardIterator1 lhs, ForwardIterator2 rhs ) noexcept(
-	  std::is_nothrow_move_assignable_v<decltype( *lhs )>
-	    and std::is_nothrow_move_assignable_v<decltype( *rhs )> ) {
+	  std::conjunction_v<std::is_nothrow_move_assignable<decltype( *lhs )>,
+	                     std::is_nothrow_move_assignable<decltype( *rhs )>> ) {
 		auto tmp = std::move( *lhs );
 		*lhs = std::move( *rhs );
 		*rhs = std::move( tmp );
@@ -134,8 +134,8 @@ namespace daw {
 
 	template<typename T, size_t N>
 	constexpr void cswap( std::array<T, N> &lhs, std::array<T, N> &rhs ) noexcept(
-	  std::is_nothrow_move_assignable_v<T>
-	    and std::is_nothrow_move_constructible_v<T> ) {
+	  std::conjunction_v<std::is_nothrow_move_assignable<T>,
+	                     std::is_nothrow_move_constructible<T>> ) {
 
 		daw::swap_ranges( lhs.begin( ), lhs.end( ), rhs.begin( ) );
 	}

@@ -40,15 +40,15 @@ namespace daw {
 		value_type m_value;
 
 	public:
-		constexpr read_only( ) noexcept( ::std::is_nothrow_constructible_v<T> )
+		constexpr read_only( ) noexcept( std::is_nothrow_constructible_v<T> )
 		  : m_value( ) {}
 
 		constexpr read_only( rvalue_reference value ) noexcept(
-		  ::std::is_nothrow_move_constructible_v<T> )
+		  std::is_nothrow_move_constructible_v<T> )
 		  : m_value( daw::move( value ) ) {}
 
 		constexpr read_only( const_reference value ) noexcept(
-		  ::std::is_nothrow_copy_constructible_v<T> )
+		  std::is_nothrow_copy_constructible_v<T> )
 		  : m_value( value ) {}
 
 		read_only &operator=( const_reference ) = delete;

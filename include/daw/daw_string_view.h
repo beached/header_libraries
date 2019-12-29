@@ -58,8 +58,10 @@ namespace daw {
 	}
 
 	namespace sv_impl {
-		template<typename T>
-		constexpr bool is_dynamic_sv_v = T::extent == dynamic_string_size;
+		namespace {
+			template<typename T>
+			constexpr bool is_dynamic_sv_v = T::extent == dynamic_string_size;
+		}
 	} // namespace sv_impl
 
 	template<typename CharT, typename Traits, ptrdiff_t Extent>
@@ -987,7 +989,7 @@ namespace daw {
 
 #if false && defined( __cpp_lib_string_view )
 	template<typename CharT, typename Traits>
-	::daw::basic_string_view( std::basic_string_view<CharT, Traits> sv )
+	daw::basic_string_view( std::basic_string_view<CharT, Traits> sv )
 	  ->daw::basic_string_view<CharT, Traits>;
 #endif
 #endif
