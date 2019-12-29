@@ -29,12 +29,13 @@ namespace daw {
 	/// \param  value  A thing of arbitrary type.
 	/// \return The parameter cast to an rvalue-reference to allow moving it.
 	template<typename T>
-	[[nodiscard]] constexpr std::remove_reference_t<T> &&
+	[[nodiscard]] constexpr typename std::remove_reference<T>::type &&
 	move( T &&value ) noexcept {
-		static_assert( not std::is_const_v<std::remove_reference_t<T>>,
-		               "Attempt to move const value" );
-		static_assert( not std::is_rvalue_reference_v<decltype( value )>,
+		static_assert(
+		  not std::is_const<typename std::remove_reference<T>::type>::value,
+		  "Attempt to move const value" );
+		static_assert( not std::is_rvalue_reference<decltype( value )>::value,
 		               "Value is already an rvalue" );
-		return static_cast<typename std::remove_reference_t<T> &&>( value );
+		return static_cast<typename std::remove_reference<T>::type &&>( value );
 	}
 } // namespace daw

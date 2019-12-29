@@ -107,8 +107,8 @@ namespace daw {
 	// The return type assumes that all the visitors have a result convertable
 	// to that of visitor( get<0>( variant ) ) 's result
 	template<typename Variant, typename... Visitors>
-	[[nodiscard, maybe_unused]] constexpr decltype( auto ) visit_nt( Variant &&var,
-	                                                   Visitors &&... visitors ) {
+	[[nodiscard, maybe_unused]] constexpr decltype( auto )
+	visit_nt( Variant &&var, Visitors &&... visitors ) {
 
 		constexpr size_t var_sz = daw::visit_impl::get_var_size_v<Variant>;
 		static_assert( var_sz > 0 );
@@ -125,8 +125,8 @@ namespace daw {
 	// Singe visitation visit with user choosable result.  Expects that variant is
 	// valid and not empty
 	template<typename Result, typename Variant, typename... Visitors>
-	[[nodiscard, maybe_unused]] constexpr Result visit_nt( Variant &&var,
-	                                         Visitors &&... visitors ) {
+	[[nodiscard, maybe_unused]] constexpr Result
+	visit_nt( Variant &&var, Visitors &&... visitors ) {
 
 		constexpr size_t var_sz = daw::visit_impl::get_var_size_v<Variant>;
 		static_assert( var_sz > 0 );

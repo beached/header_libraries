@@ -444,7 +444,7 @@ namespace daw {
 		try_pop_front( basic_string_view where ) noexcept {
 			auto pos = find( where );
 			if( pos == npos ) {
-				return basic_string_view();
+				return basic_string_view( );
 			}
 			auto result = pop_front( pos );
 			remove_prefix( where.size( ) );
@@ -460,7 +460,7 @@ namespace daw {
 		try_pop_back( basic_string_view where ) noexcept {
 			auto pos = rfind( where );
 			if( pos == npos ) {
-				return basic_string_view();
+				return basic_string_view( );
 			}
 			auto result = substr( pos + where.size( ) );
 			remove_suffix( size( ) - pos );

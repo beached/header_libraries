@@ -281,7 +281,8 @@ namespace daw {
 
 			auto const finish = std::chrono::steady_clock::now( );
 			daw::do_not_optimize( result );
-			auto const duration = benchmark_impl::second_duration( finish - start ).count( );
+			auto const duration =
+			  benchmark_impl::second_duration( finish - start ).count( );
 			if( duration < min_time ) {
 				min_time = duration;
 			}
@@ -397,7 +398,8 @@ namespace daw {
 			valid_time += benchmark_impl::second_duration(
 			  std::chrono::steady_clock::now( ) - valid_start );
 
-			auto const duration = benchmark_impl::second_duration( finish - start ).count( );
+			auto const duration =
+			  benchmark_impl::second_duration( finish - start ).count( );
 			results[n] = duration;
 			if( duration < min_time ) {
 				min_time = duration;
@@ -409,10 +411,10 @@ namespace daw {
 		auto const total_finish = std::chrono::steady_clock::now( );
 		min_time -= base_time;
 		max_time -= base_time;
-		auto total_time =
-		  benchmark_impl::second_duration( ( total_finish - total_start ) - valid_time )
-		    .count( ) -
-		  static_cast<double>( Runs ) * base_time;
+		auto total_time = benchmark_impl::second_duration(
+		                    ( total_finish - total_start ) - valid_time )
+		                    .count( ) -
+		                  static_cast<double>( Runs ) * base_time;
 		auto const avg_time = [&]( ) {
 			if( Runs >= 10 ) {
 				auto result =
@@ -500,7 +502,8 @@ namespace daw {
 			}
 			auto const finish = std::chrono::steady_clock::now( );
 			daw::do_not_optimize( result );
-			auto const duration = benchmark_impl::second_duration( finish - start ).count( );
+			auto const duration =
+			  benchmark_impl::second_duration( finish - start ).count( );
 			if( duration < min_time ) {
 				min_time = duration;
 			}
@@ -539,22 +542,22 @@ namespace daw {
 			  decltype( std::declval<std::ios &>( ) << std::declval<T const &>( ) );
 
 			template<typename T>
-			inline constexpr bool is_streamable_v =
-			  daw::is_detected_v<detect_streamable, T>;
+			using is_streamable = daw::is_detected<detect_streamable, T>;
 
-			template<typename T, typename U,
-			         std::enable_if_t<(is_streamable_v<T> and is_streamable_v<U>),
-			                          std::nullptr_t> = nullptr>
+			template<
+			  typename T, typename U,
+			  std::enable_if_t<std::conjunction_v<is_streamable<T>, is_streamable<U>>,
+			                   std::nullptr_t> = nullptr>
 			[[maybe_unused]] void output_expected_error( T &&expected_result,
 			                                             U &&result ) {
 				std::cerr << "Invalid result. Expecting '" << expected_result
 				          << "' but got '" << result << "'\n";
 			}
 
-			template<
-			  typename T, typename U,
-			  std::enable_if_t<not( is_streamable_v<T> and is_streamable_v<U> ),
-			                   std::nullptr_t> = nullptr>
+			template<typename T, typename U,
+			         std::enable_if_t<std::conjunction_v<not_trait<is_streamable<T>>,
+			                                             not_trait<is_streamable<U>>>,
+			                          std::nullptr_t> = nullptr>
 			[[maybe_unused]] constexpr void output_expected_error( T &&, U && ) {
 				std::cerr << "Invalid or unexpected result\n";
 			}

@@ -187,13 +187,13 @@ namespace daw {
 			daw::array<bool, m_data_size> slots_claimed{};
 
 			daw::algorithm::find_if( buckets.cbegin( ), buckets.cend( ),
-			              [&]( auto const &bucket ) {
-				              if( bucket.items.empty( ) ) {
-					              return true;
-				              }
-				              find_salt_for_bucket( bucket, slots_claimed );
-				              return false;
-			              } );
+			                         [&]( auto const &bucket ) {
+				                         if( bucket.items.empty( ) ) {
+					                         return true;
+				                         }
+				                         find_salt_for_bucket( bucket, slots_claimed );
+				                         return false;
+			                         } );
 		}
 
 		explicit constexpr perfect_hash_table(
@@ -243,7 +243,7 @@ namespace daw {
 			size_type bucket_index = 0;
 			daw::bounded_vector_t<ForwardIterator, m_data_size> items{};
 
-			constexpr void swap( bucket_t & rhs ) {
+			constexpr void swap( bucket_t &rhs ) {
 				daw::cswap( bucket_index, rhs.bucket_index );
 				daw::cswap( items, rhs.items );
 			}
