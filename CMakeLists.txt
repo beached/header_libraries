@@ -172,6 +172,7 @@ set( UNTESTED_HEADER_FILES
 	daw_cfile.h
 	daw_common_mixins.h
 	daw_do_n.h
+	daw_do_not_optimize.h
 	daw_enable_if.h
 	daw_exchange.h
 	daw_function.h

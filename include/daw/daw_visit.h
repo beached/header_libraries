@@ -36,7 +36,7 @@ namespace daw {
 		namespace {
 			namespace test {
 				struct Tst {
-					[[maybe_unused]] constexpr void operator( )( int n ) const {}
+					[[maybe_unused]] constexpr void operator( )( int ) const {}
 				};
 			} // namespace test
 
