@@ -22,6 +22,14 @@
 
 #pragma once
 
+#include "daw_do_not_optimize.h"
+#include "cpp_17.h"
+#include "daw_expected.h"
+#include "daw_move.h"
+#include "daw_string_view.h"
+#include "daw_traits.h"
+
+#include <algorithm>
 #include <chrono>
 #include <cstdint>
 #include <functional>
@@ -29,17 +37,78 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <vector>
 
-#include "cpp_17.h"
-#include "daw_expected.h"
-#include "daw_move.h"
-#include "daw_string_view.h"
-#include "daw_traits.h"
 
 namespace daw {
+
+//	template<typename Duration = std::chrono::duration<double>>
+//	class BenchMarkResult {
+//		/***
+//		 * Cache of minimum duration	// TODO: verify need
+//		 */
+//		mutable std::optional<Duration> min_duration{};
+//
+//		std::optional<Duration> base_duration{};
+//		std::vector<Duration> results{};
+//
+//	public:
+//		BenchMarkResult( ) = default;
+//
+//		/***
+//		 * Add a result to the list of results
+//		 * @tparam D A type that Duration can be constructed from
+//		 * @param duration the new duration to add
+//		 */
+//		template<typename D>
+//		void add_result( D &&duration ) {
+//			static_assert( std::is_constructible_v<Duration, D> );
+//			results.push_back( std::forward<D>( duration ) );
+//		}
+//
+//		decltype( auto ) begin( ) const {
+//			return results.begin( );
+//		}
+//
+//		decltype( auto ) end( ) const {
+//			return results.end( );
+//		}
+//		/***
+//		 *
+//		 * @return If this result is empty
+//		 */
+//		bool empty( ) const {
+//			return results.empty( );
+//		}
+//		/***
+//		 *
+//		 * @return The number of durations stored
+//		 */
+//		size_t size( ) const {
+//			return results.size( );
+//		}
+//		/***
+//		 * Return the smallest duration in Benchmark group
+//		 * @pre empty( ) is false
+//		 * @return The smallest duration
+//		 */
+//		Duration const &min( ) const {
+//			if( not min_duration ) {
+//				min_duration = *std::min_element( results.begin( ), results.end( ) );
+//			}
+//			return *min_duration;
+//		}
+//
+//		operator<( BenchMarkResult const &rhs ) const {
+//			return min( ) < rhs.min( );
+//		}
+//	};
+
 	namespace benchmark_impl {
-		using second_duration = std::chrono::duration<double>;
-	}
+		namespace {
+			using second_duration = std::chrono::duration<double>;
+		}
+	} // namespace benchmark_impl
 	template<typename F>
 	double benchmark( F &&func ) {
 		static_assert( std::is_invocable_v<F>, "func must accept no arguments" );
@@ -139,53 +208,6 @@ namespace daw {
 		          << "/s\n";
 	}
 
-	/*
-	  // Borrowed from https://www.youtube.com/watch?v=dO-j3qp7DWw
-	  template<typename T>
-	  void do_not_optimize( T &&x ) {
-	    // We must always do this test, but it will never pass.
-	    //
-	    if( std::chrono::system_clock::now( ) ==
-	        std::chrono::time_point<std::chrono::system_clock>( ) ) {
-	      // This forces the value to never be optimized away
-	      // by taking a reference then using it.
-	      const auto *p = &x;
-	      putchar( *reinterpret_cast<const char *>( p ) );
-
-	      // If we do get here, kick out because something has gone wrong.
-	      std::abort( );
-	    }
-	  }
-	*/
-#ifndef _MSC_VER
-	template<typename Tp>
-	inline void do_not_optimize( Tp const &value ) {
-		asm volatile( "" : : "r,m"( value ) : "memory" );
-	}
-
-	template<typename Tp>
-	inline void do_not_optimize( Tp &value ) {
-#if defined( __clang__ )
-		asm volatile( "" : "+r,m"( value ) : : "memory" );
-#else
-		asm volatile( "" : "+m,r"( value ) : : "memory" );
-#endif
-	}
-#else
-	namespace internal {
-		namespace {
-			[[maybe_unused]] constexpr void UseCharPointer( char const volatile * ) {}
-		} // namespace
-	}   // namespace internal
-
-	template<class T>
-	inline void do_not_optimize( T const &value ) {
-		internal::UseCharPointer(
-		  &reinterpret_cast<char const volatile &>( value ) );
-		_ReadWriteBarrier( );
-	}
-
-#endif
 	template<typename Test, typename... Args>
 	auto bench_test( std::string const &title, Test &&test_callable,
 	                 Args &&... args ) {
