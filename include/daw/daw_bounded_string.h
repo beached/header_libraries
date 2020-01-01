@@ -152,20 +152,18 @@ namespace daw {
 
 #ifndef NOSTRING
 		basic_bounded_string &append( std::basic_string<CharT> const &str ) {
-			if( m_data.size( ) + str.size( ) > capacity( ) ) {
-				throw std::out_of_range{
-				  "Attempt to append basic_bounded_string past end"};
-			}
+			daw::exception::precondition_check<std::out_of_range>(
+			  m_data.size( ) + str.size( ) <= capacity( ),
+			  "Attempt to append basic_bounded_string past end" );
 			daw::container::copy( str, daw::back_inserter( m_data ) );
 			*m_data.end( ) = 0;
 			return *this;
 		}
 
 		constexpr basic_bounded_string &append( std::basic_string<CharT> &&str ) {
-			if( m_data.size( ) + str.size( ) > capacity( ) ) {
-				throw std::out_of_range{
-				  "Attempt to append basic_bounded_string past end"};
-			}
+			daw::exception::precondition_check<std::out_of_range>(
+			  m_data.size( ) + str.size( ) <= capacity( ),
+			  "Attempt to append basic_bounded_string past end" );
 			daw::container::copy( str, daw::back_inserter( m_data ) );
 			*m_data.end( ) = 0;
 			return *this;
@@ -178,11 +176,10 @@ namespace daw {
 		constexpr basic_bounded_string &append( Iterator first,
 		                                        Iterator const last ) {
 
-			if( m_data.size( ) + static_cast<size_t>( daw::distance( first, last ) ) >
-			    capacity( ) ) {
-				throw std::out_of_range{
-				  "Attempt to append basic_bounded_string past end"};
-			}
+			daw::exception::precondition_check<std::out_of_range>(
+			  m_data.size( ) + static_cast<size_t>( daw::distance( first, last ) ) <=
+			    capacity( ),
+			  "Attempt to append basic_bounded_string past end" );
 			daw::algorithm::copy( first, last, daw::back_inserter( m_data ) );
 			*m_data.end( ) = 0;
 			return *this;
