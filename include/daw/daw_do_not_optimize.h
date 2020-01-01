@@ -22,6 +22,10 @@
 
 #pragma once
 
+#ifdef WIN32
+#include <intrin.h>
+#endif
+
 namespace daw {
 	/*
 	  // Borrowed from https://www.youtube.com/watch?v=dO-j3qp7DWw
