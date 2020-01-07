@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2013-2019 Darrell Wright
+// Copyright (c) 2013-2020 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -2305,5 +2305,27 @@ static_assert(
 			++first;
 		}
 		return static_cast<size_t>( std::distance( beginning, first ) );
+	}
+
+	template<typename Iterator, typename Last, typename Value, typename Compare = std::equal_to<>>
+	constexpr bool contains( Iterator first, Last last, Value const & value, Compare cmp = Compare{} ) {
+		while( first != last ) {
+			if( cmp( *first, value ) ) {
+				return true;
+			}
+			++first;
+		}
+		return false;
+	}
+
+	template<typename Iterator, typename Last, typename Predicate>
+	constexpr bool contains_if( Iterator first, Last last, Predicate pred ) {
+		while( first != last ) {
+			if( pred( *first ) ) {
+				return true;
+			}
+			++first;
+		}
+		return false;
 	}
 } // namespace daw::algorithm
