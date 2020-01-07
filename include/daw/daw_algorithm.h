@@ -2319,7 +2319,7 @@ static_assert(
 	}
 
 	template<typename Iterator, typename Last, typename Predicate>
-	constexpr bool contains( Iterator first, Last last, Predicate pred ) {
+	constexpr bool contains_if( Iterator first, Last last, Predicate pred ) {
 		while( first != last ) {
 			if( pred( *first ) ) {
 				return true;
