@@ -45,30 +45,45 @@ namespace daw {
 	    }
 	  }
 	*/
-#ifndef _MSC_VER
-	template<typename Tp>
-	inline void do_not_optimize( Tp const &value ) {
-		asm volatile( "" : : "r,m"( value ) : "memory" );
-	}
+	//#ifndef _MSC_VER
+	//	template<typename Tp>
+	//	inline void do_not_optimize( Tp const &value ) {
+	//		asm volatile( "" : : "r,m"( value ) : "memory" );
+	//	}
+	//
+	//	template<typename Tp>
+	//	inline void do_not_optimize( Tp &value ) {
+	//#if defined( __clang__ )
+	//		asm volatile( "" : "+r,m"( value ) : : "memory" );
+	//#else
+	//		asm volatile( "" : "+m,r"( value ) : : "memory" );
+	//#endif
+	//	}
+	//#else
+	//	namespace internal {
+	//		[[maybe_unused]] constexpr void UseCharPointer( char const volatile * )
+	//{} 	} // namespace internal
+	//
+	//	template<class T>
+	//	inline void do_not_optimize( T const &value ) {
+	//		internal::UseCharPointer(
+	//		  &reinterpret_cast<char const volatile &>( value ) );
+	//		_ReadWriteBarrier( );
+	//	}
+	//#endif
 
-	template<typename Tp>
-	inline void do_not_optimize( Tp &value ) {
-#if defined( __clang__ )
-		asm volatile( "" : "+r,m"( value ) : : "memory" );
-#else
-		asm volatile( "" : "+m,r"( value ) : : "memory" );
-#endif
-	}
-#else
-	namespace internal {
-		[[maybe_unused]] constexpr void UseCharPointer( char const volatile * ) {}
-	} // namespace internal
-
+#ifdef _MSC_VER
+#pragma optimize( "", off )
 	template<class T>
-	inline void do_not_optimize( T const &value ) {
-		internal::UseCharPointer(
-		  &reinterpret_cast<char const volatile &>( value ) );
-		_ReadWriteBarrier( );
+	void do_not_optimize( T &&datum ) {
+		datum = datum;
+	}
+#pragma optimize( "", on )
+#else
+	template<class T>
+	void do_not_optimize( T &&datum ) {
+		asm volatile( "" : "+r"( datum ) );
 	}
 #endif
+
 } // namespace daw
