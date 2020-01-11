@@ -2307,8 +2307,10 @@ static_assert(
 		return static_cast<size_t>( std::distance( beginning, first ) );
 	}
 
-	template<typename Iterator, typename Last, typename Value, typename Compare = std::equal_to<>>
-	constexpr bool contains( Iterator first, Last last, Value const & value, Compare cmp = Compare{} ) {
+	template<typename Iterator, typename Last, typename Value,
+	         typename Compare = std::equal_to<>>
+	constexpr bool contains( Iterator first, Last last, Value const &value,
+	                         Compare cmp = Compare{} ) {
 		while( first != last ) {
 			if( cmp( *first, value ) ) {
 				return true;

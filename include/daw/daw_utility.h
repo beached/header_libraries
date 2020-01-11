@@ -539,8 +539,9 @@ namespace daw {
 		return it_out;
 	}
 
-	template<typename T, typename OutputIterator,
-	         std::enable_if_t<not std::is_integral_v<T>, std::nullptr_t> = nullptr>
+	template<
+	  typename T, typename OutputIterator,
+	  std::enable_if_t<not std::is_integral_v<T>, std::nullptr_t> = nullptr>
 	[[nodiscard]] OutputIterator hex( T const &val,
 	                                  OutputIterator it_out ) noexcept {
 		auto chr_ptr = reinterpret_cast<char const *>( &val );
@@ -580,11 +581,12 @@ namespace daw {
 		return hex( str, N - 1, first_out );
 	}
 
-	template<typename ForwardIterator1, typename ForwardIterator2,
-	         typename OutputIterator,
-	         std::enable_if_t<not std::is_integral_v<typename std::iterator_traits<
-	                            ForwardIterator1>::value_type>,
-	                          std::nullptr_t> = nullptr>
+	template<
+	  typename ForwardIterator1, typename ForwardIterator2,
+	  typename OutputIterator,
+	  std::enable_if_t<not std::is_integral_v<typename std::iterator_traits<
+	                     ForwardIterator1>::value_type>,
+	                   std::nullptr_t> = nullptr>
 	[[nodiscard]] OutputIterator hex( ForwardIterator1 first_in,
 	                                  ForwardIterator2 const last_in,
 	                                  OutputIterator first_out ) noexcept {
