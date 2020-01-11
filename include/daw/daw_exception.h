@@ -51,7 +51,7 @@ namespace daw::exception {
 	struct arithmetic_exception : public basic_exception {};
 	struct not_implemented_exception : public basic_exception {};
 
-	constexpr bool may_throw_v = MAY_THROW_EXCEPTIONS;
+	[[maybe_unused]] constexpr bool may_throw_v = MAY_THROW_EXCEPTIONS;
 
 #if MAY_THROW_EXCEPTIONS
 	using NotImplemented = std::runtime_error;
@@ -498,7 +498,6 @@ namespace daw::exception {
 		try {
 			throw Exception{std::forward<Args>( args )...};
 		} catch( ... ) { return std::current_exception( ); }
-		std::abort( );
 	}
 #endif
 } // namespace daw::exception

@@ -46,7 +46,7 @@ struct callable {
 	}
 };
 
-daw::function<100, int( int )> func_001 = []( int x ) -> int {
+static daw::function<100, int( int )> func_001 = []( int x ) -> int {
 	return x * x;
 };
 

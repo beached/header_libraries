@@ -31,7 +31,8 @@ static_assert( daw::is_daw_span_v<daw::span<int>> );
 static_assert( daw::is_daw_span_v<daw::span<int const>> );
 static_assert( not daw::is_daw_span_v<int> );
 
-static_assert( not std::is_constructible_v<daw::span<int>, daw::span<int> const> );
+static_assert(
+  not std::is_constructible_v<daw::span<int>, daw::span<int> const> );
 
 // Ensure that one cannot convert or construct a non_const T from a const T span
 static_assert(

@@ -477,9 +477,10 @@ namespace is_iterator_001 {
 	static_assert( std::is_copy_constructible_v<iter_t>, "" );
 	static_assert( std::is_copy_assignable_v<iter_t>, "" );
 	static_assert( std::is_destructible_v<iter_t>, "" );
-	static_assert( daw::traits::impl::has_iterator_trait_types_v<iter_t>, "" );
+	static_assert(
+	  daw::traits::traits_details::has_iterator_trait_types_v<iter_t>, "" );
 	static_assert( daw::traits::is_dereferenceable_v<iter_t>, "" );
-	static_assert( daw::traits::impl::is_incrementable_v<iter_t>, "" );
+	static_assert( daw::traits::traits_details::is_incrementable_v<iter_t>, "" );
 } // namespace is_iterator_001
 
 namespace is_iterator_002 {
@@ -492,14 +493,17 @@ namespace is_iterator_003 {
 	static_assert( std::is_copy_constructible_v<iter_t>, "" );
 	static_assert( std::is_copy_assignable_v<iter_t>, "" );
 	static_assert( std::is_destructible_v<iter_t>, "" );
-	static_assert( daw::traits::impl::has_value_type_v<iter_t>, "" );
-	static_assert( daw::traits::impl::has_difference_type_v<iter_t>, "" );
-	static_assert( daw::traits::impl::has_reference_v<iter_t>, "" );
-	static_assert( daw::traits::impl::has_pointer_v<iter_t>, "" );
-	static_assert( daw::traits::impl::has_iterator_category_v<iter_t>, "" );
-	static_assert( daw::traits::impl::has_iterator_trait_types_v<iter_t>, "" );
+	static_assert( daw::traits::traits_details::has_value_type_v<iter_t>, "" );
+	static_assert( daw::traits::traits_details::has_difference_type_v<iter_t>,
+	               "" );
+	static_assert( daw::traits::traits_details::has_reference_v<iter_t>, "" );
+	static_assert( daw::traits::traits_details::has_pointer_v<iter_t>, "" );
+	static_assert( daw::traits::traits_details::has_iterator_category_v<iter_t>,
+	               "" );
+	static_assert(
+	  daw::traits::traits_details::has_iterator_trait_types_v<iter_t>, "" );
 	static_assert( daw::traits::is_dereferenceable_v<iter_t>, "" );
-	static_assert( daw::traits::impl::is_incrementable_v<iter_t>, "" );
+	static_assert( daw::traits::traits_details::is_incrementable_v<iter_t>, "" );
 } // namespace is_iterator_003
 
 namespace is_iterator_004 {
@@ -512,14 +516,15 @@ namespace is_iterator_005 {
 	static_assert( std::is_copy_constructible_v<iter_t>, "" );
 	static_assert( !std::is_copy_assignable_v<iter_t>, "" );
 	static_assert( std::is_destructible_v<iter_t>, "" );
-	static_assert( !daw::traits::impl::has_iterator_trait_types_v<iter_t>, "" );
+	static_assert(
+	  !daw::traits::traits_details::has_iterator_trait_types_v<iter_t>, "" );
 	static_assert( daw::traits::is_dereferenceable_v<iter_t>, "" );
-	static_assert( !daw::traits::impl::is_incrementable_v<iter_t>, "" );
+	static_assert( !daw::traits::traits_details::is_incrementable_v<iter_t>, "" );
 } // namespace is_iterator_005
 
 namespace is_iterator_006 {
 	using iter_t = int const *const;
-	static_assert( !daw::traits::impl::is_incrementable_v<iter_t>, "" );
+	static_assert( !daw::traits::traits_details::is_incrementable_v<iter_t>, "" );
 	static_assert( !daw::traits::is_iterator_v<iter_t>, "" );
 } // namespace is_iterator_006
 
@@ -529,14 +534,17 @@ namespace is_iterator_007 {
 	static_assert( std::is_copy_constructible_v<iter_t>, "" );
 	static_assert( std::is_copy_assignable_v<iter_t>, "" );
 	static_assert( std::is_destructible_v<iter_t>, "" );
-	static_assert( daw::traits::impl::has_value_type_v<iter_t>, "" );
-	static_assert( daw::traits::impl::has_difference_type_v<iter_t>, "" );
-	static_assert( daw::traits::impl::has_reference_v<iter_t>, "" );
-	static_assert( daw::traits::impl::has_pointer_v<iter_t>, "" );
-	static_assert( daw::traits::impl::has_iterator_category_v<iter_t>, "" );
-	static_assert( daw::traits::impl::has_iterator_trait_types_v<iter_t>, "" );
+	static_assert( daw::traits::traits_details::has_value_type_v<iter_t>, "" );
+	static_assert( daw::traits::traits_details::has_difference_type_v<iter_t>,
+	               "" );
+	static_assert( daw::traits::traits_details::has_reference_v<iter_t>, "" );
+	static_assert( daw::traits::traits_details::has_pointer_v<iter_t>, "" );
+	static_assert( daw::traits::traits_details::has_iterator_category_v<iter_t>,
+	               "" );
+	static_assert(
+	  daw::traits::traits_details::has_iterator_trait_types_v<iter_t>, "" );
 	static_assert( daw::traits::is_dereferenceable_v<iter_t>, "" );
-	static_assert( daw::traits::impl::is_incrementable_v<iter_t>, "" );
+	static_assert( daw::traits::traits_details::is_incrementable_v<iter_t>, "" );
 } // namespace is_iterator_007
 
 namespace is_iterator_008 {

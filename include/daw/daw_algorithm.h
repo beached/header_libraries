@@ -78,52 +78,50 @@ namespace daw {
 	}
 
 	// Iterator movement functions
-	namespace impl {
-		namespace {
-			template<typename Iterator, typename Iterator2, typename Iterator3,
-			         typename Distance,
-			         daw::enable_when_t<
-			           not traits::is_random_access_iterator<Iterator>> = nullptr>
-			constexpr void safe_advance_impl( Iterator2 const first, Iterator &it,
-			                                  Iterator3 const last,
-			                                  Distance dist ) noexcept {
+	namespace algorithm_details {
+		template<typename Iterator, typename Iterator2, typename Iterator3,
+		         typename Distance,
+		         daw::enable_when_t<
+		           not traits::is_random_access_iterator<Iterator>> = nullptr>
+		constexpr void safe_advance_impl( Iterator2 const first, Iterator &it,
+		                                  Iterator3 const last,
+		                                  Distance dist ) noexcept {
 
-				// Move it forward towards last
-				for( ; it != last and dist > 0; --dist, ++it ) {}
+			// Move it forward towards last
+			for( ; it != last and dist > 0; --dist, ++it ) {}
 
-				// Move it backwards towards first
-				for( ; it != first and dist < 0; ++dist, --it ) {}
-			}
+			// Move it backwards towards first
+			for( ; it != first and dist < 0; ++dist, --it ) {}
+		}
 
-			template<typename Iterator, typename Iterator2, typename Iterator3,
-			         typename Distance,
-			         daw::enable_when_t<traits::is_random_access_iterator<Iterator>> =
-			           nullptr>
-			constexpr void safe_advance_impl( Iterator2 const first, Iterator &it,
-			                                  Iterator3 const last,
-			                                  Distance dist ) noexcept {
+		template<
+		  typename Iterator, typename Iterator2, typename Iterator3,
+		  typename Distance,
+		  daw::enable_when_t<traits::is_random_access_iterator<Iterator>> = nullptr>
+		constexpr void safe_advance_impl( Iterator2 const first, Iterator &it,
+		                                  Iterator3 const last,
+		                                  Distance dist ) noexcept {
 
-				if( dist < 0 ) {
-					auto const dist_to_first = it - first;
-					if( dist_to_first < 0 ) {
-						it = first;
-						return;
-					}
-					dist = -dist;
-					it -= daw::min( static_cast<ptrdiff_t>( dist_to_first ),
-					                static_cast<ptrdiff_t>( dist ) );
+			if( dist < 0 ) {
+				auto const dist_to_first = it - first;
+				if( dist_to_first < 0 ) {
+					it = first;
 					return;
 				}
-				auto const dist_to_last = last - it;
-				if( dist_to_last < 0 ) {
-					it = last;
-					return;
-				}
-				it += daw::min( static_cast<ptrdiff_t>( dist_to_last ),
+				dist = -dist;
+				it -= daw::min( static_cast<ptrdiff_t>( dist_to_first ),
 				                static_cast<ptrdiff_t>( dist ) );
+				return;
 			}
-		} // namespace
-	}   // namespace impl
+			auto const dist_to_last = last - it;
+			if( dist_to_last < 0 ) {
+				it = last;
+				return;
+			}
+			it += daw::min( static_cast<ptrdiff_t>( dist_to_last ),
+			                static_cast<ptrdiff_t>( dist ) );
+		}
+	} // namespace algorithm_details
 
 	/// @brief Advance Iterator within the bounds of container
 	/// @tparam Container Container type who's iterators are of type Iterator
@@ -142,7 +140,8 @@ namespace daw {
 		using std::begin;
 		using std::end;
 		auto const d = static_cast<ptrdiff_t>( distance );
-		impl::safe_advance_impl( begin( container ), it, end( container ), d );
+		algorithm_details::safe_advance_impl( begin( container ), it,
+		                                      end( container ), d );
 	}
 
 	/// @brief Advance Iterator within the bounds of container
@@ -162,7 +161,8 @@ namespace daw {
 		using std::begin;
 		using std::end;
 		auto const d = static_cast<ptrdiff_t>( distance );
-		impl::safe_advance_impl( begin( container ), it, end( container ), d );
+		algorithm_details::safe_advance_impl( begin( container ), it,
+		                                      end( container ), d );
 	}
 
 	/// @brief Advance iterator n steps forward but do not go past last.
@@ -179,7 +179,7 @@ namespace daw {
 
 		traits::is_iterator_test<Iterator>( );
 		auto const d = static_cast<ptrdiff_t>( n );
-		impl::safe_advance_impl( it, it, last, d );
+		algorithm_details::safe_advance_impl( it, it, last, d );
 		return it;
 	}
 
@@ -197,7 +197,7 @@ namespace daw {
 
 		traits::is_iterator_test<Iterator>( );
 		auto const d = static_cast<ptrdiff_t>( n );
-		impl::safe_advance_impl( first, it, it, -d );
+		algorithm_details::safe_advance_impl( first, it, it, -d );
 		return it;
 	}
 
@@ -264,7 +264,7 @@ namespace daw::algorithm {
 		return lhs > rhs ? lhs : rhs;
 	}
 
-	namespace impl {
+	namespace algorithm_details {
 		template<typename ForwardIterator>
 		constexpr ForwardIterator midpoint( ForwardIterator a, ForwardIterator b ) {
 
@@ -277,7 +277,7 @@ namespace daw::algorithm {
 
 			return daw::next( a, daw::distance( a, b ) / 2 );
 		}
-	} // namespace impl
+	} // namespace algorithm_details
 
 	template<typename ForwardIterator, typename Value,
 	         typename Compare = std::less<>>
@@ -379,7 +379,7 @@ namespace daw::algorithm {
 		auto it_last = last;
 
 		while( first < it_last ) {
-			auto const mid = impl::midpoint( first, it_last );
+			auto const mid = algorithm_details::midpoint( first, it_last );
 			if( less_than( *mid, value ) ) {
 				first = mid;
 				daw::advance( first, 1 );
@@ -448,7 +448,7 @@ namespace daw::algorithm {
 	}
 
 	/// @brief Reverser eg for( auto item: reverse( container ) ) { }
-	namespace details {
+	namespace algorithm_details {
 		template<typename Fwd>
 		struct Reverser_generic {
 			Fwd &fwd;
@@ -494,14 +494,14 @@ namespace daw::algorithm {
 		  -> decltype( fwd.rbegin( ), Reverser_special<Fwd>( fwd ) ) {
 			return Reverser_special<Fwd>( fwd );
 		}
-	} // namespace details
+	} // namespace algorithm_details
 
 	template<typename Fwd>
 	auto reverse( Fwd &&fwd )
-	  -> decltype( details::reverse_impl( fwd, int( 0 ) ) ) {
+	  -> decltype( algorithm_details::reverse_impl( fwd, int( 0 ) ) ) {
 		static_assert( not std::is_rvalue_reference_v<Fwd &&>,
 		               "Cannot pass rvalue_reference to reverse()" );
-		return details::reverse_impl( fwd, int( 0 ) );
+		return algorithm_details::reverse_impl( fwd, int( 0 ) );
 	}
 
 	template<typename ValueType>
@@ -812,7 +812,7 @@ namespace daw::algorithm {
 		return true;
 	}
 
-	namespace impl {
+	namespace algorithm_details {
 		template<typename Lower, typename Upper>
 		class in_range {
 			Lower m_lower;
@@ -912,7 +912,7 @@ namespace daw::algorithm {
 				return std::forward<T>( value ) <= m_value;
 			}
 		}; // less_than_or_equal_to
-	}    // namespace impl
+	}    // namespace algorithm_details
 
 	/// @brief Returns a callable that returns true if the value passed is in
 	/// the range [Lower, Upper]
@@ -922,8 +922,8 @@ namespace daw::algorithm {
 	/// upper]
 	template<typename Lower, typename Upper>
 	constexpr auto in_range( Lower &&lower, Upper &&upper ) {
-		return impl::in_range<Lower, Upper>( std::forward<Lower>( lower ),
-		                                     std::forward<Upper>( upper ) );
+		return algorithm_details::in_range<Lower, Upper>(
+		  std::forward<Lower>( lower ), std::forward<Upper>( upper ) );
 	}
 
 	/// @brief Returns a callable that returns true if value passed is equal to
@@ -933,7 +933,7 @@ namespace daw::algorithm {
 	/// constructed with
 	template<typename Value>
 	constexpr auto equal_to( Value &&value ) {
-		return impl::equal_to<Value>( std::forward<Value>( value ) );
+		return algorithm_details::equal_to<Value>( std::forward<Value>( value ) );
 	}
 
 	/// @brief Returns a callable that returns true if value passed is greater
@@ -943,7 +943,8 @@ namespace daw::algorithm {
 	/// constructed with
 	template<typename Value>
 	constexpr auto greater_than( Value &&value ) {
-		return impl::greater_than<Value>( std::forward<Value>( value ) );
+		return algorithm_details::greater_than<Value>(
+		  std::forward<Value>( value ) );
 	}
 
 	/// @brief Returns a callable that returns true if value passed is greater
@@ -953,7 +954,7 @@ namespace daw::algorithm {
 	/// to value constructed with
 	template<typename Value>
 	constexpr auto greater_than_or_equal_to( Value &&value ) {
-		return impl::greater_than_or_equal_to<Value>(
+		return algorithm_details::greater_than_or_equal_to<Value>(
 		  std::forward<Value>( value ) );
 	}
 
@@ -964,7 +965,7 @@ namespace daw::algorithm {
 	/// constructed with
 	template<typename Value>
 	constexpr auto less_than( Value &&value ) {
-		return impl::less_than<Value>( std::forward<Value>( value ) );
+		return algorithm_details::less_than<Value>( std::forward<Value>( value ) );
 	}
 
 	/// @brief Returns a callable that returns true if value passed is less than
@@ -974,7 +975,8 @@ namespace daw::algorithm {
 	/// value constructed with
 	template<typename Value>
 	constexpr auto less_than_or_equal_to( Value &&value ) {
-		return impl::less_than_or_equal_to<Value>( std::forward<Value>( value ) );
+		return algorithm_details::less_than_or_equal_to<Value>(
+		  std::forward<Value>( value ) );
 	}
 
 	/// @brief Returns true if the first range [first1, last1) is
@@ -2138,7 +2140,7 @@ static_assert(
 		return first_out;
 	}
 
-	namespace algorithm_impl {
+	namespace algorithm_details {
 		template<intmax_t Pos0, intmax_t Pos1, typename Iterator,
 		         typename Compare = std::less<>>
 		constexpr void swap_if( Iterator first,
@@ -2149,7 +2151,7 @@ static_assert(
 				daw::iter_swap( f, l );
 			}
 		}
-	} // namespace algorithm_impl
+	} // namespace algorithm_details
 
 	template<typename From, typename To, typename Query>
 	constexpr void extract_to( From &from, To &to, Query &&q ) {
@@ -2232,7 +2234,7 @@ static_assert(
 		size_t idx = 0;
 		while( first != last ) {
 			if( pred( *first ) ) {
-				return idx;
+				return {idx};
 			}
 			++idx;
 			++first;

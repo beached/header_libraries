@@ -24,59 +24,56 @@
 
 #include "cpp_17.h"
 
-namespace daw {
-	namespace algorithm {
-		namespace algorithm_impl {
-			template<typename Function, typename... Args, size_t... Is>
-			constexpr void
-			do_n( Function &&func, std::integer_sequence<size_t, Is...>,
-			      Args &&... args ) noexcept( noexcept( func( args... ) ) ) {
-				if constexpr( sizeof...( Is ) > 0 ) {
-					(void)( ( func( args... ), Is ) + ... );
-				}
-			}
-
-			template<typename Function, size_t... Is>
-			constexpr void do_n_arg(
-			  Function &&func,
-			  std::integer_sequence<size_t,
-			                        Is...> ) noexcept( noexcept( func( 0ULL ) ) ) {
-				if constexpr( sizeof...( Is ) > 0 ) {
-					(void)( ( func( Is ), 0 ) + ... );
-				}
-			}
-		} // namespace algorithm_impl
-
-		template<size_t count, typename Function, typename... Args>
-		constexpr void do_n( Function &&func, Args &&... args ) {
-			algorithm_impl::do_n( std::forward<Function>( func ),
-			                      std::make_integer_sequence<size_t, count>{},
-			                      std::forward<Args>( args )... );
-		}
-
-		template<typename Function, typename... Args>
+namespace daw::algorithm {
+	namespace do_n_details {
+		template<typename Function, typename... Args, size_t... Is>
 		constexpr void
-		do_n( size_t count, Function &&func, Args &&... args ) noexcept(
-		  std::is_nothrow_invocable_v<Function, Args...> ) {
-			while( count-- > 0 ) {
-				func( args... );
+		do_n( Function &&func, std::integer_sequence<size_t, Is...>,
+		      Args &&... args ) noexcept( noexcept( func( args... ) ) ) {
+			if constexpr( sizeof...( Is ) > 0 ) {
+				(void)( ( func( args... ), Is ) + ... );
 			}
 		}
 
-		template<typename Function, typename... Args>
-		constexpr void do_n_arg( size_t count, Function &&func ) noexcept(
-		  std::is_nothrow_invocable_v<Function, size_t> ) {
-			size_t n = 0;
-			while( n < count ) {
-				func( n++ );
+		template<typename Function, size_t... Is>
+		constexpr void
+		do_n_arg( Function &&func, std::integer_sequence<size_t, Is...> ) noexcept(
+		  noexcept( func( 0ULL ) ) ) {
+			if constexpr( sizeof...( Is ) > 0 ) {
+				(void)( ( func( Is ), 0 ) + ... );
 			}
 		}
+	} // namespace do_n_details
 
-		template<size_t count, typename Function, typename... Args>
-		constexpr void do_n_arg( Function &&func ) noexcept(
-		  std::is_nothrow_invocable_v<Function, size_t> ) {
-			algorithm_impl::do_n_arg( std::forward<Function>( func ),
-			                          std::make_index_sequence<count>{} );
+	template<size_t count, typename Function, typename... Args>
+	constexpr void do_n( Function &&func, Args &&... args ) {
+		do_n_details::do_n( std::forward<Function>( func ),
+		                    std::make_integer_sequence<size_t, count>{},
+		                    std::forward<Args>( args )... );
+	}
+
+	template<typename Function, typename... Args>
+	constexpr void
+	do_n( size_t count, Function &&func, Args &&... args ) noexcept(
+	  std::is_nothrow_invocable_v<Function, Args...> ) {
+		while( count-- > 0 ) {
+			func( args... );
 		}
-	} // namespace algorithm
-} // namespace daw
+	}
+
+	template<typename Function, typename... Args>
+	constexpr void do_n_arg( size_t count, Function &&func ) noexcept(
+	  std::is_nothrow_invocable_v<Function, size_t> ) {
+		size_t n = 0;
+		while( n < count ) {
+			func( n++ );
+		}
+	}
+
+	template<size_t count, typename Function, typename... Args>
+	constexpr void do_n_arg( Function &&func ) noexcept(
+	  std::is_nothrow_invocable_v<Function, size_t> ) {
+		do_n_details::do_n_arg( std::forward<Function>( func ),
+		                        std::make_index_sequence<count>{} );
+	}
+} // namespace daw::algorithm

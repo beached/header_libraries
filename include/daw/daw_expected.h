@@ -39,22 +39,22 @@
 #include "daw_traits.h"
 #include "daw_utility.h"
 
+namespace daw::expected_details {
+	enum expected_value_types : bool { Empty, Void };
+	template<expected_value_types>
+	struct ExpectedTag {
+		ExpectedTag( ) noexcept = default;
+		bool operator==( ExpectedTag const & ) const noexcept {
+			return true;
+		}
+
+		bool operator!=( ExpectedTag const & ) const noexcept {
+			return false;
+		}
+	};
+} // namespace daw::expected_details
+
 namespace daw {
-	namespace impl {
-		enum expected_value_types : bool { Empty, Void };
-		template<expected_value_types>
-		struct ExpectedTag {
-			ExpectedTag( ) noexcept = default;
-			bool operator==( ExpectedTag const & ) const noexcept {
-				return true;
-			}
-
-			bool operator!=( ExpectedTag const & ) const noexcept {
-				return false;
-			}
-		};
-	} // namespace impl
-
 	template<class T>
 	struct expected_t {
 		using value_type = T;
@@ -64,8 +64,9 @@ namespace daw {
 		using const_pointer = value_type const *;
 
 	private:
-		using variant_type = std::variant<impl::ExpectedTag<impl::Empty>,
-		                                  std::exception_ptr, value_type>;
+		using variant_type =
+		  std::variant<expected_details::ExpectedTag<expected_details::Empty>,
+		               std::exception_ptr, value_type>;
 		variant_type m_value{};
 
 	public:
@@ -75,14 +76,12 @@ namespace daw {
 		//////////////////////////////////////////////////////////////////////////
 		/// Summary: No value, aka null
 		//////////////////////////////////////////////////////////////////////////
-		friend bool operator==( expected_t const &lhs,
-		                        expected_t const &rhs ) noexcept {
-			return lhs.m_value == rhs.m_value;
+		bool operator==( expected_t const &rhs ) const noexcept {
+			return m_value == rhs.m_value;
 		}
 
-		friend bool operator!=( expected_t const &lhs,
-		                        expected_t const &rhs ) noexcept {
-			return lhs.m_value != rhs.m_value;
+		bool operator!=( expected_t const &rhs ) const noexcept {
+			return m_value != rhs.m_value;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
@@ -181,7 +180,8 @@ namespace daw {
 		}
 
 		bool empty( ) const noexcept {
-			return std::holds_alternative<impl::ExpectedTag<impl::Empty>>( m_value );
+			return std::holds_alternative<
+			  expected_details::ExpectedTag<expected_details::Empty>>( m_value );
 		}
 
 		explicit operator bool( ) const noexcept {
@@ -246,13 +246,14 @@ namespace daw {
 
 	template<>
 	struct expected_t<void> {
-		using value_type = impl::ExpectedTag<impl::Void>;
+		using value_type = expected_details::ExpectedTag<expected_details::Void>;
 
 		struct exception_tag {};
 
 	private:
-		using variant_type = std::variant<impl::ExpectedTag<impl::Empty>,
-		                                  std::exception_ptr, value_type>;
+		using variant_type =
+		  std::variant<expected_details::ExpectedTag<expected_details::Empty>,
+		               std::exception_ptr, value_type>;
 		variant_type m_value{};
 
 		expected_t( bool ) noexcept
@@ -310,7 +311,7 @@ namespace daw {
   defined( _CPPUNWIND )
 			try {
 				func( std::forward<Args>( args )... );
-				return impl::ExpectedTag<impl::Void>( );
+				return expected_details::ExpectedTag<expected_details::Void>( );
 			} catch( ... ) { return std::current_exception( ); }
 #else
 			func( std::forward<Args>( args )... );
@@ -356,7 +357,8 @@ namespace daw {
 		}
 
 		bool empty( ) const noexcept {
-			return std::holds_alternative<impl::ExpectedTag<impl::Empty>>( m_value );
+			return std::holds_alternative<
+			  expected_details::ExpectedTag<expected_details::Empty>>( m_value );
 		}
 
 		explicit operator bool( ) const noexcept {

@@ -85,13 +85,17 @@ namespace daw {
 		// Iterator Concepts
 		// is_iterator
 		template<typename Iterator>
-		inline constexpr bool is_iterator_v = all_true_v<
-		  std::is_copy_constructible_v<Iterator>,
-		  std::is_copy_assignable_v<Iterator>, std::is_destructible_v<Iterator>,
-		  impl::is_incrementable_v<Iterator>, impl::has_value_type_v<Iterator>,
-		  impl::has_difference_type_v<Iterator>, impl::has_reference_v<Iterator>,
-		  impl::has_pointer_v<Iterator>, impl::has_iterator_category_v<Iterator>,
-		  is_swappable_v<Iterator>>;
+		inline constexpr bool is_iterator_v =
+		  all_true_v<std::is_copy_constructible_v<Iterator>,
+		             std::is_copy_assignable_v<Iterator>,
+		             std::is_destructible_v<Iterator>,
+		             traits_details::is_incrementable_v<Iterator>,
+		             traits_details::has_value_type_v<Iterator>,
+		             traits_details::has_difference_type_v<Iterator>,
+		             traits_details::has_reference_v<Iterator>,
+		             traits_details::has_pointer_v<Iterator>,
+		             traits_details::has_iterator_category_v<Iterator>,
+		             is_swappable_v<Iterator>>;
 
 		template<typename Iterator>
 		constexpr bool is_iterator_test( ) noexcept {
@@ -107,17 +111,17 @@ namespace daw {
 			               "Iterator is not destructable" );
 			static_assert( is_dereferenceable_v<Iterator>,
 			               "Iterator is not dereferenceable" );
-			static_assert( impl::is_incrementable_v<Iterator>,
+			static_assert( traits_details::is_incrementable_v<Iterator>,
 			               "Iterator is not incrementable" );
-			static_assert( impl::has_value_type_v<Iterator>,
+			static_assert( traits_details::has_value_type_v<Iterator>,
 			               "Iterator does not expose value_type type alias" );
-			static_assert( impl::has_difference_type_v<Iterator>,
+			static_assert( traits_details::has_difference_type_v<Iterator>,
 			               "Iterator does not expose difference type alias" );
-			static_assert( impl::has_reference_v<Iterator>,
+			static_assert( traits_details::has_reference_v<Iterator>,
 			               "Iterator does not expose reference type alias" );
-			static_assert( impl::has_pointer_v<Iterator>,
+			static_assert( traits_details::has_pointer_v<Iterator>,
 			               "Iterator does not expose pointer type alias" );
-			static_assert( impl::has_iterator_category_v<Iterator>,
+			static_assert( traits_details::has_iterator_category_v<Iterator>,
 			               "Iterator does not expose iterator category type alias" );
 			static_assert( is_swappable_v<Iterator>, "Iterator is not swappable" );
 			return true;

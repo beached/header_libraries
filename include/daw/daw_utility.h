@@ -51,79 +51,76 @@ template<typename... Ts>
 constexpr void Unused( Ts &&... ) noexcept {}
 
 namespace daw {
-	namespace impl {
-		namespace {
-			template<typename ResultType, typename... ArgTypes>
-			struct make_function_pointer_impl {
-				using type = typename std::add_pointer<ResultType( ArgTypes... )>::type;
-			};
+	namespace utility_details {
+		template<typename ResultType, typename... ArgTypes>
+		struct make_function_pointer_impl {
+			using type = typename std::add_pointer<ResultType( ArgTypes... )>::type;
+		};
 
-			template<typename ResultType, typename ClassType, typename... ArgTypes>
-			struct make_pointer_to_member_function_impl {
-				using type = ResultType ( ClassType::* )( ArgTypes... );
-			};
+		template<typename ResultType, typename ClassType, typename... ArgTypes>
+		struct make_pointer_to_member_function_impl {
+			using type = ResultType ( ClassType::* )( ArgTypes... );
+		};
 
-			template<typename ResultType, typename ClassType, typename... ArgTypes>
-			struct make_pointer_to_volatile_member_function_impl {
-				using type = ResultType ( ClassType::* )( ArgTypes... ) volatile;
-			};
+		template<typename ResultType, typename ClassType, typename... ArgTypes>
+		struct make_pointer_to_volatile_member_function_impl {
+			using type = ResultType ( ClassType::* )( ArgTypes... ) volatile;
+		};
 
-			template<typename ResultType, typename ClassType, typename... ArgTypes>
-			struct make_pointer_to_const_member_function_impl {
-				using type = ResultType ( ClassType::* )( ArgTypes... ) const;
-			};
+		template<typename ResultType, typename ClassType, typename... ArgTypes>
+		struct make_pointer_to_const_member_function_impl {
+			using type = ResultType ( ClassType::* )( ArgTypes... ) const;
+		};
 
-			template<typename ResultType, typename ClassType, typename... ArgTypes>
-			struct make_pointer_to_const_volatile_member_function_impl {
-				using type = ResultType ( ClassType::* )( ArgTypes... ) const volatile;
-			};
-		} // namespace
-	}   // namespace impl
+		template<typename ResultType, typename ClassType, typename... ArgTypes>
+		struct make_pointer_to_const_volatile_member_function_impl {
+			using type = ResultType ( ClassType::* )( ArgTypes... ) const volatile;
+		};
+	} // namespace utility_details
 
 	template<typename ResultType, typename... ArgTypes>
 	using function_pointer_t =
-	  typename impl::make_function_pointer_impl<ResultType, ArgTypes...>::type;
+	  typename utility_details::make_function_pointer_impl<ResultType,
+	                                                       ArgTypes...>::type;
 
 	template<typename ResultType, typename ClassType, typename... ArgTypes>
 	using pointer_to_member_function_t =
-	  typename impl::make_pointer_to_member_function_impl<ResultType, ClassType,
-	                                                      ArgTypes...>::type;
+	  typename utility_details::make_pointer_to_member_function_impl<
+	    ResultType, ClassType, ArgTypes...>::type;
 
 	template<typename ResultType, typename ClassType, typename... ArgTypes>
 	using pointer_to_volatile_member_function_t =
-	  typename impl::make_pointer_to_volatile_member_function_impl<
+	  typename utility_details::make_pointer_to_volatile_member_function_impl<
 	    ResultType, ClassType, ArgTypes...>::type;
 
 	template<typename ResultType, typename ClassType, typename... ArgTypes>
 	using pointer_to_const_member_function_t =
-	  typename impl::make_pointer_to_const_member_function_impl<
+	  typename utility_details::make_pointer_to_const_member_function_impl<
 	    ResultType, ClassType, ArgTypes...>::type;
 
 	template<typename ResultType, typename ClassType, typename... ArgTypes>
-	using pointer_to_const_volatile_member_function_t =
-	  typename impl::make_pointer_to_const_volatile_member_function_impl<
-	    ResultType, ClassType, ArgTypes...>::type;
+	using pointer_to_const_volatile_member_function_t = typename utility_details::
+	  make_pointer_to_const_volatile_member_function_impl<ResultType, ClassType,
+	                                                      ArgTypes...>::type;
 
-	namespace impl {
-		namespace {
-			template<typename T>
-			class EqualToImpl {
-				T m_value;
+	namespace utility_details {
+		template<typename T>
+		class EqualToImpl {
+			T m_value;
 
-			public:
-				constexpr EqualToImpl( T value ) noexcept(
-				  std::is_nothrow_copy_constructible_v<T> )
-				  : m_value( daw::move( value ) ) {}
+		public:
+			constexpr EqualToImpl( T value ) noexcept(
+			  std::is_nothrow_copy_constructible_v<T> )
+			  : m_value( daw::move( value ) ) {}
 
-				[[nodiscard]] constexpr bool operator( )( T const &value ) noexcept {
-					return m_value == value;
-				}
-			}; // class EqualToImpl
-		}    // namespace
-	}      // namespace impl
+			[[nodiscard]] constexpr bool operator( )( T const &value ) noexcept {
+				return m_value == value;
+			}
+		}; // class EqualToImpl
+	}    // namespace utility_details
 	template<typename T>
-	constexpr impl::EqualToImpl<T> equal_to( T value ) {
-		return impl::EqualToImpl<T>( daw::move( value ) );
+	constexpr utility_details::EqualToImpl<T> equal_to( T value ) {
+		return utility_details::EqualToImpl<T>( daw::move( value ) );
 	}
 
 	template<typename T>
@@ -143,28 +140,26 @@ namespace daw {
 		}
 	}; // class equal_to_last
 
-	namespace impl {
-		namespace {
-			template<typename Function>
-			class NotImpl {
-				Function m_function;
+	namespace utility_details {
+		template<typename Function>
+		class NotImpl {
+			Function m_function;
 
-			public:
-				constexpr NotImpl( Function func ) noexcept(
-				  std::is_nothrow_move_constructible_v<Function> )
-				  : m_function( std::move( func ) ) {}
+		public:
+			constexpr NotImpl( Function func ) noexcept(
+			  std::is_nothrow_move_constructible_v<Function> )
+			  : m_function( std::move( func ) ) {}
 
-				template<typename... Args>
-				[[nodiscard]] constexpr bool operator( )( Args &&... args ) {
-					return !m_function( std::forward<Args>( args )... );
-				}
-			}; // class NotImpl
-		}    // namespace
-	}      // namespace impl
+			template<typename... Args>
+			[[nodiscard]] constexpr bool operator( )( Args &&... args ) {
+				return !m_function( std::forward<Args>( args )... );
+			}
+		}; // class NotImpl
+	}    // namespace utility_details
 
 	template<typename Function>
-	[[nodiscard]] impl::NotImpl<Function> Not( Function func ) {
-		return impl::NotImpl<Function>( func );
+	[[nodiscard]] utility_details::NotImpl<Function> Not( Function func ) {
+		return utility_details::NotImpl<Function>( func );
 	}
 
 	// For generic types that are functors, delegate to its 'operator()'
@@ -359,30 +354,28 @@ namespace daw {
 	}
 	*/
 
-	namespace details {
-		namespace {
-			template<typename T>
-			struct RunIfValid {
-				std::weak_ptr<T> m_link;
-				RunIfValid( std::weak_ptr<T> w_ptr )
-				  : m_link( w_ptr ) {}
+	namespace utility_details {
+		template<typename T>
+		struct RunIfValid {
+			std::weak_ptr<T> m_link;
+			RunIfValid( std::weak_ptr<T> w_ptr )
+			  : m_link( w_ptr ) {}
 
-				template<typename Function>
-				[[nodiscard]] bool operator( )( Function func ) {
-					if( auto s_ptr = m_link.lock( ) ) {
-						func( s_ptr );
-						return true;
-					} else {
-						return false;
-					}
+			template<typename Function>
+			[[nodiscard]] bool operator( )( Function func ) {
+				if( auto s_ptr = m_link.lock( ) ) {
+					func( s_ptr );
+					return true;
+				} else {
+					return false;
 				}
-			};
-		} // namespace
-	}   // namespace details
+			}
+		};
+	} // namespace utility_details
 
 	template<typename T>
 	[[nodiscard]] auto RunIfValid( std::weak_ptr<T> w_ptr ) {
-		return details::RunIfValid<T>( w_ptr );
+		return utility_details::RunIfValid<T>( w_ptr );
 	}
 
 	template<typename T>
@@ -491,32 +484,30 @@ namespace daw {
 		return first_out;
 	}
 
-	namespace impl {
-		namespace {
-			[[nodiscard]] constexpr char get_nibble( uint8_t c ) noexcept {
-				c &= 0x0F;
-				if( c < 10 ) {
-					return static_cast<char>( '0' + c );
-				}
-				return static_cast<char>( 'A' + ( c - 10 ) );
+	namespace utility_details {
+		[[nodiscard]] constexpr char get_nibble( uint8_t c ) noexcept {
+			c &= 0x0F;
+			if( c < 10 ) {
+				return static_cast<char>( '0' + c );
 			}
+			return static_cast<char>( 'A' + ( c - 10 ) );
+		}
 
-			[[nodiscard]] constexpr char get_lc_nibble( uint8_t c ) noexcept {
-				c &= 0x0F;
-				if( c < 10 ) {
-					return static_cast<char>( '0' + c );
-				}
-				return static_cast<char>( 'a' + ( c - 10 ) );
+		[[nodiscard]] constexpr char get_lc_nibble( uint8_t c ) noexcept {
+			c &= 0x0F;
+			if( c < 10 ) {
+				return static_cast<char>( '0' + c );
 			}
-		} // namespace
-	}   // namespace impl
+			return static_cast<char>( 'a' + ( c - 10 ) );
+		}
+	} // namespace utility_details
 
 	template<typename OutputIterator>
 	[[nodiscard]] constexpr OutputIterator hex( char c,
 	                                            OutputIterator it_out ) noexcept {
 		uint8_t n = static_cast<uint8_t>( c );
-		*it_out++ = impl::get_nibble( n >> 4 );
-		*it_out++ = impl::get_nibble( n & 0x0F );
+		*it_out++ = utility_details::get_nibble( n >> 4 );
+		*it_out++ = utility_details::get_nibble( n & 0x0F );
 		return it_out;
 	}
 
@@ -524,8 +515,8 @@ namespace daw {
 	[[nodiscard]] constexpr OutputIterator
 	hex_lc( char c, OutputIterator it_out ) noexcept {
 		uint8_t n = static_cast<uint8_t>( c );
-		*it_out++ = impl::get_lc_nibble( n >> 4 );
-		*it_out++ = impl::get_lc_nibble( n & 0x0F );
+		*it_out++ = utility_details::get_lc_nibble( n >> 4 );
+		*it_out++ = utility_details::get_lc_nibble( n & 0x0F );
 		return it_out;
 	}
 
@@ -673,21 +664,19 @@ namespace daw {
 		use_aggregate_construction( ) = delete;
 	};
 
-	namespace impl {
-		namespace {
-			template<typename T>
-			constexpr int should_use_aggregate_construction_test(
-			  use_aggregate_construction<T> const & ) noexcept;
+	namespace utility_details {
+		template<typename T>
+		constexpr int should_use_aggregate_construction_test(
+		  use_aggregate_construction<T> const & ) noexcept;
 
-			template<typename T>
-			using should_use_aggregate_construction_detect = decltype(
-			  should_use_aggregate_construction_test( std::declval<T>( ) ) );
+		template<typename T>
+		using should_use_aggregate_construction_detect =
+		  decltype( should_use_aggregate_construction_test( std::declval<T>( ) ) );
 
-			template<typename T>
-			constexpr bool should_use_aggregate_construction_v =
-			  daw::is_detected_v<should_use_aggregate_construction_detect, T>;
-		} // namespace
-	}   // namespace impl
+		template<typename T>
+		constexpr bool should_use_aggregate_construction_v =
+		  daw::is_detected_v<should_use_aggregate_construction_detect, T>;
+	} // namespace utility_details
 
 	/// @brief Construct a value.  If normal ( ) construction does not work
 	///	try aggregate.
@@ -726,26 +715,24 @@ namespace daw {
 	template<typename T>
 	inline constexpr construct_a_t<T> construct_a = construct_a_t<T>{};
 
-	namespace impl {
-		namespace {
-			template<typename T, typename... Args>
-			using can_construct_a_detect = decltype(
-			  std::declval<daw::construct_a_t<T>>( )( std::declval<Args>( )... ) );
+	namespace utility_details {
+		template<typename T, typename... Args>
+		using can_construct_a_detect = decltype(
+		  std::declval<daw::construct_a_t<T>>( )( std::declval<Args>( )... ) );
 
-			template<typename... Args>
-			constexpr void is_tuple_test( std::tuple<Args...> const & ) noexcept;
+		template<typename... Args>
+		constexpr void is_tuple_test( std::tuple<Args...> const & ) noexcept;
 
-			template<typename T>
-			using is_tuple_detect = decltype( is_tuple_test( std::declval<T>( ) ) );
+		template<typename T>
+		using is_tuple_detect = decltype( is_tuple_test( std::declval<T>( ) ) );
 
-			template<typename T>
-			constexpr bool is_tuple_v = daw::is_detected_v<is_tuple_detect, T>;
-		} // namespace
-	}   // namespace impl
+		template<typename T>
+		constexpr bool is_tuple_v = daw::is_detected_v<is_tuple_detect, T>;
+	} // namespace utility_details
 
 	template<typename T, typename... Args>
 	inline constexpr bool can_construct_a_v =
-	  is_detected_v<impl::can_construct_a_detect, T, Args...>;
+	  is_detected_v<utility_details::can_construct_a_detect, T, Args...>;
 
 	template<typename Destination, typename... Args>
 	[[nodiscard]] constexpr decltype( auto )
@@ -947,60 +934,57 @@ namespace daw {
 	template<typename T>
 	std::atomic<T> countable_resource_t<T>::m_resource_count = {};
 
-	namespace utility_impl {
-		namespace {
-			template<typename T>
-			class value_is_utility_impl;
-		}
-	} // namespace utility_impl
+	namespace utility_details {
+		template<typename T>
+		class value_is_utility_details;
+	} // namespace utility_details
 
 	template<typename T>
 	[[nodiscard]] constexpr auto value_is( T &&value )
-	  -> daw::utility_impl::value_is_utility_impl<
+	  -> daw::utility_details::value_is_utility_details<
 	    std::remove_reference_t<decltype( value )>> {
 
 		return {std::forward<T>( value )};
 	}
 
-	namespace utility_impl {
-		namespace {
-			template<typename T>
-			class value_is_utility_impl {
-				T *m_value;
+	namespace utility_details {
+		template<typename T>
+		class value_is_utility_details {
+			T *m_value;
 
-				constexpr value_is_utility_impl( T const &v )
-				  : m_value( &v ) {}
-				constexpr value_is_utility_impl( T &v )
-				  : m_value( &v ) {}
-				constexpr value_is_utility_impl( T &&v )
-				  : m_value( &v ) {}
+			constexpr value_is_utility_details( T const &v )
+			  : m_value( &v ) {}
+			constexpr value_is_utility_details( T &v )
+			  : m_value( &v ) {}
+			constexpr value_is_utility_details( T &&v )
+			  : m_value( &v ) {}
 
-				template<typename U>
-				friend /*TODO Apple Clang is mean today [[nodiscard]]*/
-				  constexpr auto ::daw::value_is( U &&v )
-				    -> daw::utility_impl::value_is_utility_impl<
-				      std::remove_reference_t<decltype( v )>>;
+			template<typename U>
+			friend /*TODO Apple Clang is mean today [[nodiscard]]*/
+			  constexpr auto ::daw::value_is( U &&v )
+			    -> daw::utility_details::value_is_utility_details<
+			      std::remove_reference_t<decltype( v )>>;
 
-			public:
-				value_is_utility_impl( value_is_utility_impl const & ) = delete;
-				value_is_utility_impl( value_is_utility_impl && ) = delete;
-				value_is_utility_impl &
-				operator=( value_is_utility_impl const & ) = delete;
-				value_is_utility_impl &operator=( value_is_utility_impl && ) = delete;
-				~value_is_utility_impl( ) = default;
+		public:
+			value_is_utility_details( value_is_utility_details const & ) = delete;
+			value_is_utility_details( value_is_utility_details && ) = delete;
+			value_is_utility_details &
+			operator=( value_is_utility_details const & ) = delete;
+			value_is_utility_details &
+			operator=( value_is_utility_details && ) = delete;
+			~value_is_utility_details( ) = default;
 
-				template<typename... Args>
-				[[nodiscard]] constexpr bool one_of( Args &&... args ) const && {
-					return ( ( *m_value == args ) or ... );
-				}
+			template<typename... Args>
+			[[nodiscard]] constexpr bool one_of( Args &&... args ) const && {
+				return ( ( *m_value == args ) or ... );
+			}
 
-				template<typename... Args>
-				[[nodiscard]] constexpr bool none_of( Args &&... args ) const && {
-					return ( ( *m_value != args ) and ... );
-				}
-			};
-		} // namespace
-	}   // namespace utility_impl
+			template<typename... Args>
+			[[nodiscard]] constexpr bool none_of( Args &&... args ) const && {
+				return ( ( *m_value != args ) and ... );
+			}
+		};
+	} // namespace utility_details
 
 	template<typename Integer, typename T>
 	[[nodiscard]] constexpr Integer narrow_cast( T value ) noexcept {
@@ -1055,35 +1039,33 @@ namespace daw {
 		}
 	}
 
-	namespace pack_apply_impl {
-		namespace {
-			template<size_t pos, typename Function, typename... Args>
-			[[nodiscard]] constexpr auto pack_apply_impl( size_t, Function &&,
-			                                              Args &&... )
-			  -> std::enable_if_t<( pos >= sizeof...( Args ) )> {}
+	namespace utility_details {
+		template<size_t pos, typename Function, typename... Args>
+		[[nodiscard]] constexpr auto utility_details( size_t, Function &&,
+		                                              Args &&... )
+		  -> std::enable_if_t<( pos >= sizeof...( Args ) )> {}
 
-			template<size_t pos, typename Function, typename... Args>
-			[[nodiscard]] constexpr auto pack_apply_impl( size_t N, Function &&func,
-			                                              Args &&... args )
-			  -> std::enable_if_t<( pos < sizeof...( Args ) )> {
-				if( N == pos ) {
-					if constexpr( std::is_invocable_v<Function, decltype( pack_get<pos>(
-					                                              std::forward<Args>(
-					                                                args )... ) )> ) {
-						(void)std::forward<Function>( func )(
-						  pack_get<pos>( std::forward<Args>( args )... ) );
-					}
-				} else {
-					pack_apply_impl<pos + 1>( N, std::forward<Function>( func ),
-					                          std::forward<Args>( args )... );
+		template<size_t pos, typename Function, typename... Args>
+		[[nodiscard]] constexpr auto utility_details( size_t N, Function &&func,
+		                                              Args &&... args )
+		  -> std::enable_if_t<( pos < sizeof...( Args ) )> {
+			if( N == pos ) {
+				if constexpr( std::is_invocable_v<Function, decltype( pack_get<pos>(
+				                                              std::forward<Args>(
+				                                                args )... ) )> ) {
+					(void)std::forward<Function>( func )(
+					  pack_get<pos>( std::forward<Args>( args )... ) );
 				}
+			} else {
+				utility_details<pos + 1>( N, std::forward<Function>( func ),
+				                          std::forward<Args>( args )... );
 			}
-		} // namespace
-	}   // namespace pack_apply_impl
+		}
+	} // namespace utility_details
 
 	template<typename Function, typename... Args>
 	constexpr void pack_apply( size_t N, Function &&func, Args &&... args ) {
-		pack_apply_impl::pack_apply_impl<0>( N, std::forward<Function>( func ),
+		utility_details::utility_details<0>( N, std::forward<Function>( func ),
 		                                     std::forward<Args>( args )... );
 	}
 

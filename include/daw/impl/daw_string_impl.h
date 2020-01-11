@@ -204,7 +204,8 @@ namespace daw {
 		inline void sv_insert_fill_chars( OStream &os, std::size_t n ) {
 			using CharT = typename OStream::char_type;
 			static_assert(
-			  traits::ostream_detectors::has_write_member_v<OStream, CharT>,
+			  traits::traits_details::ostream_detectors::has_write_member_v<OStream,
+			                                                                CharT>,
 			  "OStream Must has write member" );
 
 			std::array<CharT, 8> fill_chars = {0};

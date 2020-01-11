@@ -22,29 +22,7 @@
 
 #pragma once
 
-#ifdef WIN32
-#include <intrin.h>
-#endif
-
 namespace daw {
-/*
-	// Borrowed from https://www.youtube.com/watch?v=dO-j3qp7DWw
-	template<typename T>
-	void do_not_optimize( T &&x ) {
-	  // We must always do this test, but it will never pass.
-	  //
-	  if( std::chrono::system_clock::now( ) ==
-	      std::chrono::time_point<std::chrono::system_clock>( ) ) {
-	    // This forces the value to never be optimized away
-	    // by taking a reference then using it.
-	    const auto *p = &x;
-	    putchar( *reinterpret_cast<const char *>( p ) );
-
-	    // If we do get here, kick out because something has gone wrong.
-	    std::abort( );
-	  }
-	}
-*/
 #ifndef _MSC_VER
 	template<typename Tp>
 	inline void do_not_optimize( Tp const &value ) {
@@ -60,18 +38,6 @@ namespace daw {
 #endif
 	}
 #else
-	//	namespace internal {
-	//		[[maybe_unused]] constexpr void UseCharPointer( char const volatile * )
-	//{} 	} // namespace internal
-	//
-	//	template<class T>
-	//	inline void do_not_optimize( T const &value ) {
-	//		internal::UseCharPointer(
-	//		  &reinterpret_cast<char const volatile &>( value ) );
-	//		_ReadWriteBarrier( );
-	//	}
-	//#endif
-
 #pragma optimize( "", off )
 	template<class T>
 	void do_not_optimize( T &&value ) {
@@ -80,8 +46,9 @@ namespace daw {
 #pragma optimize( "", on )
 #endif
 
-	template<typename... Values>
-	void do_not_optimize_values( Values &&... values ) {
+	template<typename... Values, std::enable_if_t<( sizeof...( Values ) != 1 ),
+	                                              std::nullptr_t> = nullptr>
+	void do_not_optimize( Values &&... values ) {
 		if constexpr( sizeof...( Values ) > 0 ) {
 			(void)( ( do_not_optimize( std::forward<Values>( values ) ), 1 ) | ... );
 		}
