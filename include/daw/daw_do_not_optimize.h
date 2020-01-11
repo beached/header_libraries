@@ -80,4 +80,8 @@ namespace daw {
 #pragma optimize( "", on )
 #endif
 
+	template<typename... Values>
+	void do_not_optimize_values( Values &&... values ) {
+		(void)( ( do_not_optimize( std::forward<Values>( values ) ), 1 ) | ... );
+	}
 } // namespace daw
