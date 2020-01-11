@@ -40,77 +40,12 @@
 #include <vector>
 
 namespace daw {
-
-	//	template<typename Duration = std::chrono::duration<double>>
-	//	class BenchMarkResult {
-	//		/***
-	//		 * Cache of minimum duration	// TODO: verify need
-	//		 */
-	//		mutable std::optional<Duration> min_duration{};
-	//
-	//		std::optional<Duration> base_duration{};
-	//		std::vector<Duration> results{};
-	//
-	//	public:
-	//		BenchMarkResult( ) = default;
-	//
-	//		/***
-	//		 * Add a result to the list of results
-	//		 * @tparam D A type that Duration can be constructed from
-	//		 * @param duration the new duration to add
-	//		 */
-	//		template<typename D>
-	//		void add_result( D &&duration ) {
-	//			static_assert( std::is_constructible_v<Duration, D> );
-	//			results.push_back( std::forward<D>( duration ) );
-	//		}
-	//
-	//		decltype( auto ) begin( ) const {
-	//			return results.begin( );
-	//		}
-	//
-	//		decltype( auto ) end( ) const {
-	//			return results.end( );
-	//		}
-	//		/***
-	//		 *
-	//		 * @return If this result is empty
-	//		 */
-	//		bool empty( ) const {
-	//			return results.empty( );
-	//		}
-	//		/***
-	//		 *
-	//		 * @return The number of durations stored
-	//		 */
-	//		size_t size( ) const {
-	//			return results.size( );
-	//		}
-	//		/***
-	//		 * Return the smallest duration in Benchmark group
-	//		 * @pre empty( ) is false
-	//		 * @return The smallest duration
-	//		 */
-	//		Duration const &min( ) const {
-	//			if( not min_duration ) {
-	//				min_duration = *std::min_element( results.begin( ), results.end( )
-	//);
-	//			}
-	//			return *min_duration;
-	//		}
-	//
-	//		operator<( BenchMarkResult const &rhs ) const {
-	//			return min( ) < rhs.min( );
-	//		}
-	//	};
-
 	namespace benchmark_impl {
-		namespace {
-			using second_duration = std::chrono::duration<double>;
-		}
+		using second_duration = std::chrono::duration<double>;
 	} // namespace benchmark_impl
+
 	template<typename F>
-	double benchmark( F &&func ) {
+	[[maybe_unused]] static inline double benchmark( F &&func ) {
 		static_assert( std::is_invocable_v<F>, "func must accept no arguments" );
 		auto start = std::chrono::steady_clock::now( );
 		(void)std::forward<F>( func )( );
@@ -121,7 +56,8 @@ namespace daw {
 
 	namespace utility {
 		template<typename T>
-		std::string format_seconds( T t, size_t prec = 0 ) {
+		[[maybe_unused, nodiscard]] inline std::string
+		format_seconds( T t, size_t prec = 0 ) {
 			std::stringstream ss;
 			ss << std::setprecision( static_cast<int>( prec ) ) << std::fixed;
 			auto val = static_cast<double>( t ) * 1000000000000000.0;
@@ -155,8 +91,8 @@ namespace daw {
 		}
 
 		template<typename Bytes, typename Time = double>
-		std::string to_bytes_per_second( Bytes bytes, Time t = 1.0,
-		                                 size_t prec = 1 ) {
+		[[maybe_unused]] inline std::string
+		to_bytes_per_second( Bytes bytes, Time t = 1.0, size_t prec = 1 ) {
 			std::stringstream ss;
 			ss << std::setprecision( static_cast<int>( prec ) ) << std::fixed;
 			auto val = static_cast<double>( bytes ) / static_cast<double>( t );
@@ -191,9 +127,10 @@ namespace daw {
 	} // namespace utility
 
 	template<typename Func>
-	void show_benchmark( size_t data_size_bytes, std::string const &title,
-	                     Func &&func, size_t data_prec = 1, size_t time_prec = 0,
-	                     size_t item_count = 1 ) {
+	[[maybe_unused]] static void
+	show_benchmark( size_t data_size_bytes, std::string const &title, Func &&func,
+	                size_t data_prec = 1, size_t time_prec = 0,
+	                size_t item_count = 1 ) {
 		double const t = benchmark( std::forward<Func>( func ) );
 		double const t_per_item = t / static_cast<double>( item_count );
 		std::cout << title << ": took " << utility::format_seconds( t, time_prec )
@@ -209,8 +146,9 @@ namespace daw {
 	}
 
 	template<typename Test, typename... Args>
-	auto bench_test( std::string const &title, Test &&test_callable,
-	                 Args &&... args ) {
+	[[maybe_unused]] static auto bench_test( std::string const &title,
+	                                         Test &&test_callable,
+	                                         Args &&... args ) {
 		auto const start = std::chrono::steady_clock::now( );
 		auto result = daw::expected_from_code( std::forward<Test>( test_callable ),
 		                                       std::forward<Args>( args )... );
@@ -222,8 +160,9 @@ namespace daw {
 	}
 
 	template<typename Test, typename... Args>
-	auto bench_test2( std::string const &title, Test &&test_callable,
-	                  size_t item_count, Args &&... args ) {
+	[[maybe_unused]] static auto
+	bench_test2( std::string const &title, Test &&test_callable,
+	             size_t item_count, Args &&... args ) {
 		auto const start = std::chrono::steady_clock::now( );
 		auto result = daw::expected_from_code( std::forward<Test>( test_callable ),
 		                                       std::forward<Args>( args )... );
@@ -254,8 +193,9 @@ namespace daw {
 	 * @return last value from callable
 	 */
 	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
-	auto bench_n_test( std::string const &title, Test &&test_callable,
-	                   Args &&... args ) noexcept {
+	[[maybe_unused]] static auto bench_n_test( std::string const &title,
+	                                           Test &&test_callable,
+	                                           Args &&... args ) noexcept {
 		static_assert( Runs > 0 );
 		using result_t = daw::remove_cvref_t<decltype( daw::expected_from_code(
 		  test_callable, std::forward<Args>( args )... ) )>;
@@ -265,7 +205,7 @@ namespace daw {
 		double base_time = std::numeric_limits<double>::max( );
 		{
 			for( size_t n = 0; n < 1000; ++n ) {
-				do_not_optimize_values( args... );
+				daw::do_not_optimize( args... );
 
 				int a = 0;
 				daw::do_not_optimize( a );
@@ -288,7 +228,7 @@ namespace daw {
 
 		auto const total_start = std::chrono::steady_clock::now( );
 		for( size_t n = 0; n < Runs; ++n ) {
-			do_not_optimize_values( args... );
+			daw::do_not_optimize( args... );
 			auto const start = std::chrono::steady_clock::now( );
 
 			result =
@@ -341,7 +281,7 @@ namespace daw {
 	 */
 	template<size_t Runs, char delem = '\n', typename Validator,
 	         typename Function, typename... Args>
-	std::array<double, Runs>
+	[[maybe_unused]] static std::array<double, Runs>
 	bench_n_test_mbs2( std::string const &title, size_t bytes,
 	                   Validator &&validator, Function &&func,
 	                   Args &&... args ) noexcept {
@@ -351,7 +291,7 @@ namespace daw {
 		double base_time = std::numeric_limits<double>::max( );
 		{
 			for( size_t n = 0; n < 1000; ++n ) {
-				do_not_optimize_values( args... );
+				daw::do_not_optimize( args... );
 
 				int a = 0;
 				daw::do_not_optimize( a );
@@ -378,33 +318,9 @@ namespace daw {
 			std::chrono::time_point<std::chrono::steady_clock> start;
 			using result_t = daw::remove_cvref_t<decltype( func( args... ) )>;
 			result_t result;
-			if constexpr( sizeof...( args ) == 0 ) {
-				start = std::chrono::steady_clock::now( );
-				result =
-				  daw::expected_from_code( [&]( auto &&tp ) { return func( ); } );
-			} else if constexpr( sizeof...( args ) == 1 ) {
-				std::tuple<daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
-				daw::do_not_optimize( tp_args );
-				start = std::chrono::steady_clock::now( );
-				result = *daw::expected_from_code(
-				  [&]( auto &&tp ) {
-					  return func( std::forward<decltype( tp )>( tp ) );
-				  },
-				  std::get<0>( tp_args ) );
-			} else {
-				std::tuple<daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
-				daw::do_not_optimize( tp_args );
-				start = std::chrono::steady_clock::now( );
-
-				result = daw::expected_from_code(
-				  [&]( auto &&tp ) {
-					  return std::apply( func, std::forward<decltype( tp )>( tp ) );
-				  },
-				  tp_args );
-			}
+			result = *daw::expected_from_code( func, args... );
 			auto const finish = std::chrono::steady_clock::now( );
 			daw::do_not_optimize( result );
-
 			auto const valid_start = std::chrono::steady_clock::now( );
 			if( not validator( result ) ) {
 				std::cerr << "Error validating result\n";
@@ -457,18 +373,19 @@ namespace daw {
 	}
 
 	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
-	auto bench_n_test_mbs( std::string const &title, size_t bytes,
-	                       Test &&test_callable, Args &&... args ) noexcept {
+	[[maybe_unused]] static auto
+	bench_n_test_mbs( std::string const &title, size_t bytes,
+	                  Test &&test_callable, Args const &... args ) noexcept {
 		static_assert( Runs > 0 );
-		using result_t = daw::remove_cvref_t<decltype( daw::expected_from_code(
-		  test_callable, std::forward<Args>( args )... ) )>;
+		using result_t = daw::remove_cvref_t<decltype(
+		  daw::expected_from_code( test_callable, args... ) )>;
 
 		result_t result{};
 
 		double base_time = std::numeric_limits<double>::max( );
 		{
 			for( size_t n = 0; n < 1000; ++n ) {
-				do_not_optimize_values( args... );
+				daw::do_not_optimize( args... );
 
 				intmax_t a = 0;
 				daw::do_not_optimize( a );
@@ -491,30 +408,9 @@ namespace daw {
 
 		auto const total_start = std::chrono::steady_clock::now( );
 		for( size_t n = 0; n < Runs; ++n ) {
-			std::chrono::time_point<std::chrono::steady_clock> start;
-			if constexpr( sizeof...( args ) == 0 ) {
-				start = std::chrono::steady_clock::now( );
-				result = daw::expected_from_code(
-				  [&]( auto &&tp ) { return test_callable( ); } );
-			} else if constexpr( sizeof...( args ) == 1 ) {
-				std::tuple<daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
-				start = std::chrono::steady_clock::now( );
-				result = daw::expected_from_code(
-				  [&]( auto &&tp ) {
-					  return test_callable( std::forward<decltype( tp )>( tp ) );
-				  },
-				  std::get<0>( tp_args ) );
-			} else {
-				std::tuple<daw::remove_cvref_t<decltype( args )>...> tp_args{args...};
-				daw::do_not_optimize( tp_args );
-				start = std::chrono::steady_clock::now( );
-				result = daw::expected_from_code(
-				  [&]( auto &&tp ) {
-					  return std::apply( test_callable,
-					                     std::forward<decltype( tp )>( tp ) );
-				  },
-				  tp_args );
-			}
+			std::chrono::time_point<std::chrono::steady_clock> start =
+			  std::chrono::steady_clock::now( );
+			result = daw::expected_from_code( test_callable, args... );
 			auto const finish = std::chrono::steady_clock::now( );
 			daw::do_not_optimize( result );
 			auto const duration =
@@ -550,43 +446,42 @@ namespace daw {
 		return result;
 	}
 
-	namespace expecting_impl {
-		namespace {
-			template<typename T>
-			using detect_streamable =
-			  decltype( std::declval<std::ios &>( ) << std::declval<T const &>( ) );
+	namespace benchmark_impl {
+		template<typename T>
+		using detect_streamable =
+		  decltype( std::declval<std::ios &>( ) << std::declval<T const &>( ) );
 
-			template<typename T>
-			using is_streamable = daw::is_detected<detect_streamable, T>;
+		template<typename T>
+		using is_streamable = daw::is_detected<detect_streamable, T>;
 
-			template<
-			  typename T, typename U,
-			  std::enable_if_t<std::conjunction_v<is_streamable<T>, is_streamable<U>>,
-			                   std::nullptr_t> = nullptr>
-			[[maybe_unused]] void output_expected_error( T &&expected_result,
-			                                             U &&result ) {
-				std::cerr << "Invalid result. Expecting '" << expected_result
-				          << "' but got '" << result << "'\n";
-			}
+		template<
+		  typename T, typename U,
+		  std::enable_if_t<std::conjunction_v<is_streamable<T>, is_streamable<U>>,
+		                   std::nullptr_t> = nullptr>
+		[[maybe_unused]] void output_expected_error( T &&expected_result,
+		                                             U &&result ) {
+			std::cerr << "Invalid result. Expecting '" << expected_result
+			          << "' but got '" << result << "'\n";
+		}
 
-			template<typename T, typename U,
-			         std::enable_if_t<std::conjunction_v<not_trait<is_streamable<T>>,
-			                                             not_trait<is_streamable<U>>>,
-			                          std::nullptr_t> = nullptr>
-			[[maybe_unused]] constexpr void output_expected_error( T &&, U && ) {
-				std::cerr << "Invalid or unexpected result\n";
-			}
-		} // namespace
-	}   // namespace expecting_impl
+		template<typename T, typename U,
+		         std::enable_if_t<std::conjunction_v<not_trait<is_streamable<T>>,
+		                                             not_trait<is_streamable<U>>>,
+		                          std::nullptr_t> = nullptr>
+		[[maybe_unused]] constexpr void output_expected_error( T &&, U && ) {
+			std::cerr << "Invalid or unexpected result\n";
+		}
+	} // namespace benchmark_impl
 
 	template<typename T, typename U>
-	[[maybe_unused]] constexpr void expecting( T &&expected_result, U &&result ) {
+	[[maybe_unused]] static constexpr void expecting( T &&expected_result,
+	                                                  U &&result ) {
 		if( not( expected_result == result ) ) {
 #ifdef __VERSION__
 			if constexpr( not daw::string_view( __VERSION__ )
 			                    .starts_with( daw::string_view(
 			                      "4.2.1 Compatible Apple LLVM" ) ) ) {
-				expecting_impl::output_expected_error( expected_result, result );
+				benchmark_impl::output_expected_error( expected_result, result );
 			}
 #endif
 			std::abort( );
@@ -594,7 +489,8 @@ namespace daw {
 	}
 
 	template<typename Bool>
-	[[maybe_unused]] constexpr void expecting( Bool &&expected_result ) {
+	[[maybe_unused]] static constexpr void
+	expecting( Bool const &expected_result ) {
 		if( not static_cast<bool>( expected_result ) ) {
 			std::cerr << "Invalid result. Expecting true\n";
 			std::abort( );
@@ -602,32 +498,31 @@ namespace daw {
 	}
 
 	template<typename Bool, typename String>
-	[[maybe_unused]] constexpr void expecting_message( Bool &&expected_result,
-	                                                   String &&message ) {
+	[[maybe_unused]] static constexpr void
+	expecting_message( Bool const &expected_result, String &&message ) {
 		if( not static_cast<bool>( expected_result ) ) {
 			std::cerr << message << '\n';
 			std::abort( );
 		}
 	}
 
-	namespace expecting_impl {
-		namespace {
-			struct always_true {
-				template<typename... Args>
-				[[nodiscard, maybe_unused]] constexpr bool
-				operator( )( Args &&... ) noexcept {
-					return true;
-				}
-			};
-		} // namespace
-	}   // namespace expecting_impl
+	namespace benchmark_impl {
+		struct always_true {
+			template<typename... Args>
+			[[nodiscard, maybe_unused]] constexpr bool
+			operator( )( Args &&... ) noexcept {
+				return true;
+			}
+		};
+	} // namespace benchmark_impl
 
 	template<typename Exception = std::exception, typename Expression,
-	         typename Predicate = expecting_impl::always_true,
+	         typename Predicate = benchmark_impl::always_true,
 	         std::enable_if_t<std::is_invocable_v<Predicate, Exception>,
 	                          std::nullptr_t> = nullptr>
-	void expecting_exception( Expression &&expression,
-	                          Predicate &&pred = Predicate{} ) {
+	[[maybe_unused]] static void
+	expecting_exception( Expression &&expression,
+	                     Predicate &&pred = Predicate{} ) {
 		try {
 			(void)std::forward<Expression>( expression )( );
 		} catch( Exception const &ex ) {

@@ -57,12 +57,10 @@ namespace daw {
 		return 1;
 	}
 
-	namespace sv_impl {
-		namespace {
-			template<typename T>
-			constexpr bool is_dynamic_sv_v = T::extent == dynamic_string_size;
-		}
-	} // namespace sv_impl
+	namespace string_view_details {
+		template<typename T>
+		constexpr bool is_dynamic_sv_v = T::extent == dynamic_string_size;
+	} // namespace string_view_details
 
 	template<typename CharT, typename Traits, ptrdiff_t Extent>
 	struct basic_string_view {
@@ -160,9 +158,10 @@ namespace daw {
 		template<ptrdiff_t Ex>
 		constexpr auto
 		operator=( basic_string_view<CharT, Traits, Ex> rhs ) noexcept
-		  -> std::enable_if_t<sv_impl::is_dynamic_sv_v<basic_string_view> and
-		                        Ex != extent,
-		                      basic_string_view &> {
+		  -> std::enable_if_t<
+		    string_view_details::is_dynamic_sv_v<basic_string_view> and
+		      Ex != extent,
+		    basic_string_view &> {
 
 			m_first = rhs.m_first;
 			m_last = rhs.m_last;
@@ -818,10 +817,10 @@ namespace daw {
 			while( first != last ) {
 				if( *first == c ) {
 					return static_cast<size_type>( std::distance( m_first, first ) );
-					--first;
 				}
-				return npos;
+				--first;
 			}
+			return npos;
 		}
 
 		template<size_type N>
@@ -1063,7 +1062,7 @@ namespace daw {
 	}
 	// basic_string_view / something else
 	//
-	namespace detectors {
+	namespace string_view_details::detectors {
 		template<typename T, typename CharT = char,
 		         typename Traits = std::char_traits<CharT>>
 		using can_be_string_view =
@@ -1072,7 +1071,8 @@ namespace daw {
 	template<typename T, typename CharT = char,
 	         typename Traits = std::char_traits<CharT>>
 	constexpr bool can_be_string_view =
-	  daw::is_detected_v<detectors::can_be_string_view, T, CharT, Traits>;
+	  daw::is_detected_v<string_view_details::detectors::can_be_string_view, T,
+	                     CharT, Traits>;
 
 	template<typename CharT, typename Traits>
 	[[nodiscard]] constexpr bool

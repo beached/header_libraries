@@ -25,31 +25,31 @@
 #include <type_traits>
 
 namespace daw {
-	namespace enable_if_impl {
-		namespace {
-			template<class...>
-			struct conjunction : std::true_type {};
+	namespace enable_if_details {
+		template<class...>
+		struct conjunction : std::true_type {};
 
-			template<class B1>
-			struct conjunction<B1> : B1 {};
+		template<class B1>
+		struct conjunction<B1> : B1 {};
 
-			template<class B1, class... Bn>
-			struct conjunction<B1, Bn...>
-			  : std::conditional<bool( B1::value ), conjunction<Bn...>, B1>::type {};
+		template<class B1, class... Bn>
+		struct conjunction<B1, Bn...>
+		  : std::conditional<bool( B1::value ), conjunction<Bn...>, B1>::type {};
 
-			template<bool>
-			struct enable_if {};
+		template<bool>
+		struct enable_if {};
 
-			template<>
-			struct enable_if<true> {
-				using type = std::nullptr_t;
-			};
-		} // namespace
-	}   // namespace enable_if_impl
+		template<>
+		struct enable_if<true> {
+			using type = std::nullptr_t;
+		};
+	} // namespace enable_if_details
+
 	template<bool... B>
-	using enable_when_t = typename enable_if_impl::enable_if<( B and ... )>::type;
+	using enable_when_t =
+	  typename enable_if_details::enable_if<( B and ... )>::type;
 
 	template<typename... Traits>
-	using enable_when_all_t = typename enable_if_impl::enable_if<
-	  enable_if_impl::conjunction<Traits...>::value>::type;
+	using enable_when_all_t = typename enable_if_details::enable_if<
+	  enable_if_details::conjunction<Traits...>::value>::type;
 } // namespace daw

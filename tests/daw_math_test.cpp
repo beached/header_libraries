@@ -32,9 +32,10 @@ static_assert( daw::math::abs( std::numeric_limits<uintmax_t>::max( ) ) ==
                  std::numeric_limits<uintmax_t>::max( ),
                "" );
 
-static_assert( daw::math::abs( std::numeric_limits<intmax_t>::max( ) ) ==
-                 std::numeric_limits<intmax_t>::max( ),
-               "" );
+static_assert(
+  daw::math::abs( std::numeric_limits<intmax_t>::max( ) ) ==
+    static_cast<uintmax_t>( std::numeric_limits<intmax_t>::max( ) ),
+  "" );
 
 static_assert( daw::math::abs( std::numeric_limits<uint8_t>::min( ) ) == 0,
                "" );

@@ -22,6 +22,12 @@
 
 #pragma once
 
+#include "cpp_17.h"
+#include "daw_bounded_array.h"
+#include "daw_math.h"
+#include "daw_move.h"
+#include "daw_utility.h"
+
 #include <cstddef>
 #include <functional>
 #include <iosfwd>
@@ -30,15 +36,9 @@
 #include <utility>
 #include <variant>
 
-#include "cpp_17.h"
-#include "daw_bounded_array.h"
-#include "daw_math.h"
-#include "daw_move.h"
-#include "daw_utility.h"
-
 namespace daw {
 	namespace tuple {
-		namespace thlp_impl {
+		namespace tuple_details {
 			template<size_t Tpos, typename Result, typename Tuple,
 			         std::enable_if_t<
 			           (Tpos >= std::tuple_size_v<std::remove_reference_t<Tuple>>),
@@ -58,25 +58,25 @@ namespace daw {
 				return daw::construct_a<Result>(
 				  std::ref( std::get<Tpos>( std::forward<Tuple>( tp ) ) ) );
 			}
-		} // namespace thlp_impl
+		} // namespace tuple_details
 	}   // namespace tuple
 
 	template<typename... Args>
 	constexpr auto get( std::tuple<Args...> &tp, size_t index ) noexcept {
 		using result_t =
 		  std::variant<std::reference_wrapper<std::remove_reference_t<Args>>...>;
-		return daw::tuple::thlp_impl::get_impl<0, result_t>( tp, index );
+		return daw::tuple::tuple_details::get_impl<0, result_t>( tp, index );
 	}
 
 	template<typename... Args>
 	constexpr auto get( std::tuple<Args...> const &tp, size_t index ) noexcept {
 		using result_t = std::variant<
 		  std::reference_wrapper<std::remove_reference_t<Args> const>...>;
-		return daw::tuple::thlp_impl::get_impl<0, result_t>( tp, index );
+		return daw::tuple::tuple_details::get_impl<0, result_t>( tp, index );
 	}
 
 	namespace tuple {
-		namespace thlp_impl {
+		namespace tuple_details {
 			template<typename T1, typename F>
 			constexpr bool for_each( T1 &&t1, F &&f ) {
 				::Unused(
@@ -144,22 +144,22 @@ namespace daw {
 					m_os << " " << v;
 				}
 			}; // print_t
-		}    // namespace thlp_impl
+		}    // namespace tuple_details
 
 		template<typename... Ts, typename F>
 		constexpr void for_each( std::tuple<Ts...> const &t1, F &&f ) {
-			thlp_impl::for_each( t1, std::forward<F>( f ),
-			                     std::index_sequence_for<Ts...>{} );
+			tuple_details::for_each( t1, std::forward<F>( f ),
+			                         std::index_sequence_for<Ts...>{} );
 		}
 
 		template<typename... Ts, typename F>
 		constexpr void apply( std::tuple<Ts...> &t1, F &&f ) {
-			thlp_impl::for_each( t1, std::forward<F>( f ),
-			                     std::index_sequence_for<Ts...>{} );
+			tuple_details::for_each( t1, std::forward<F>( f ),
+			                         std::index_sequence_for<Ts...>{} );
 		}
 
 		namespace operators {
-			namespace thlp_impl {
+			namespace tuple_details {
 				template<size_t I, typename Result, typename T1, typename T2,
 				         typename F>
 				constexpr bool apply_tuple( Result &&result, T1 &&op1, T2 &&op2,
@@ -287,90 +287,90 @@ namespace daw {
 						return result;
 					}
 				}; // div_t
-			}    // namespace thlp_impl
+			}    // namespace tuple_details
 
 			template<typename... Op1, typename... Op2>
 			constexpr std::tuple<Op1...> operator+( std::tuple<Op1...> const &lhs,
 			                                        std::tuple<Op2...> const &rhs ) {
-				return thlp_impl::apply_tuple_tuple( lhs, rhs,
-				                                     thlp_impl::add_t::get( ) );
+				return tuple_details::apply_tuple_tuple( lhs, rhs,
+				                                         tuple_details::add_t::get( ) );
 			}
 
 			template<typename... Op1, typename T>
 			constexpr std::tuple<Op1...> operator+( T const &lhs,
 			                                        std::tuple<Op1...> const &rhs ) {
-				return thlp_impl::apply_tuple_value2( lhs, rhs,
-				                                      thlp_impl::add_t::get( ) );
+				return tuple_details::apply_tuple_value2(
+				  lhs, rhs, tuple_details::add_t::get( ) );
 			}
 
 			template<typename... Op1, typename T>
 			constexpr std::tuple<Op1...> operator+( std::tuple<Op1...> const &lhs,
 			                                        T const &rhs ) {
-				return thlp_impl::apply_tuple_value( lhs, rhs,
-				                                     thlp_impl::add_t::get( ) );
+				return tuple_details::apply_tuple_value( lhs, rhs,
+				                                         tuple_details::add_t::get( ) );
 			}
 
 			template<typename... Op1, typename... Op2>
 			constexpr std::tuple<Op1...> operator-( std::tuple<Op1...> const &lhs,
 			                                        std::tuple<Op2...> const &rhs ) {
-				return thlp_impl::apply_tuple_tuple( lhs, rhs,
-				                                     thlp_impl::sub_t::get( ) );
+				return tuple_details::apply_tuple_tuple( lhs, rhs,
+				                                         tuple_details::sub_t::get( ) );
 			}
 
 			template<typename... Op1, typename T>
 			constexpr std::tuple<Op1...> operator-( T const &lhs,
 			                                        std::tuple<Op1...> const &rhs ) {
-				return thlp_impl::apply_tuple_value2( lhs, rhs,
-				                                      thlp_impl::sub_t::get( ) );
+				return tuple_details::apply_tuple_value2(
+				  lhs, rhs, tuple_details::sub_t::get( ) );
 			}
 
 			template<typename... Op1, typename T>
 			constexpr std::tuple<Op1...> operator-( std::tuple<Op1...> const &lhs,
 			                                        T const &rhs ) {
-				return thlp_impl::apply_tuple_value( lhs, rhs,
-				                                     thlp_impl::sub_t::get( ) );
+				return tuple_details::apply_tuple_value( lhs, rhs,
+				                                         tuple_details::sub_t::get( ) );
 			}
 
 			template<typename... Op1, typename... Op2>
 			constexpr std::tuple<Op1...> operator*( std::tuple<Op1...> const &lhs,
 			                                        std::tuple<Op2...> const &rhs ) {
-				return thlp_impl::apply_tuple_tuple( lhs, rhs,
-				                                     thlp_impl::mul_t::get( ) );
+				return tuple_details::apply_tuple_tuple( lhs, rhs,
+				                                         tuple_details::mul_t::get( ) );
 			}
 
 			template<typename... Op1, typename T>
 			constexpr std::tuple<Op1...> operator*( T const &lhs,
 			                                        std::tuple<Op1...> const &rhs ) {
-				return thlp_impl::apply_tuple_value2( lhs, rhs,
-				                                      thlp_impl::mul_t::get( ) );
+				return tuple_details::apply_tuple_value2(
+				  lhs, rhs, tuple_details::mul_t::get( ) );
 			}
 
 			template<typename... Op1, typename T>
 			constexpr std::tuple<Op1...> operator*( std::tuple<Op1...> const &lhs,
 			                                        T const &rhs ) {
-				return thlp_impl::apply_tuple_value( lhs, rhs,
-				                                     thlp_impl::mul_t::get( ) );
+				return tuple_details::apply_tuple_value( lhs, rhs,
+				                                         tuple_details::mul_t::get( ) );
 			}
 
 			template<typename... Op1, typename... Op2>
 			constexpr std::tuple<Op1...> operator/( std::tuple<Op1...> const &lhs,
 			                                        std::tuple<Op2...> const &rhs ) {
-				return thlp_impl::apply_tuple_tuple( lhs, rhs,
-				                                     thlp_impl::div_t::get( ) );
+				return tuple_details::apply_tuple_tuple( lhs, rhs,
+				                                         tuple_details::div_t::get( ) );
 			}
 
 			template<typename... Op1, typename T>
 			constexpr std::tuple<Op1...> operator/( T const &lhs,
 			                                        std::tuple<Op1...> const &rhs ) {
-				return thlp_impl::apply_tuple_value2( lhs, rhs,
-				                                      thlp_impl::div_t::get( ) );
+				return tuple_details::apply_tuple_value2(
+				  lhs, rhs, tuple_details::div_t::get( ) );
 			}
 
 			template<typename... Op1, typename T>
 			constexpr std::tuple<Op1...> operator/( std::tuple<Op1...> const &lhs,
 			                                        T const &rhs ) {
-				return thlp_impl::apply_tuple_value( lhs, rhs,
-				                                     thlp_impl::div_t::get( ) );
+				return tuple_details::apply_tuple_value( lhs, rhs,
+				                                         tuple_details::div_t::get( ) );
 			}
 		} // namespace operators
 
@@ -378,7 +378,7 @@ namespace daw {
 		constexpr std::ostream &operator<<( std::ostream &os,
 		                                    std::tuple<Ts...> const &t ) {
 			os << "{";
-			for_each( t, thlp_impl::print_t{os} );
+			for_each( t, tuple_details::print_t{os} );
 			os << " }";
 			return os;
 		}
@@ -386,18 +386,18 @@ namespace daw {
 		template<typename... Ts>
 		constexpr auto min( std::tuple<Ts...> const &a,
 		                    std::tuple<Ts...> const &b ) {
-			return operators::thlp_impl::apply_tuple_tuple(
-			  a, b, daw::tuple::thlp_impl::min_t::get( ) );
+			return operators::tuple_details::apply_tuple_tuple(
+			  a, b, daw::tuple::tuple_details::min_t::get( ) );
 		}
 
 		template<typename... Ts>
 		constexpr auto max( std::tuple<Ts...> const &a,
 		                    std::tuple<Ts...> const &b ) {
-			return operators::thlp_impl::apply_tuple_tuple(
-			  a, b, daw::tuple::thlp_impl::max_t::get( ) );
+			return operators::tuple_details::apply_tuple_tuple(
+			  a, b, daw::tuple::tuple_details::max_t::get( ) );
 		}
 
-		namespace apply_at_thlp_impls {
+		namespace tuple_details {
 			template<typename Func>
 			constexpr void apply_func_impl( Func &&, ... ) noexcept {}
 
@@ -441,6 +441,7 @@ namespace daw {
 				}
 				return true;
 			}
+
 			template<typename Tuple, typename Func, size_t... Is>
 			constexpr void apply_at_impl( Tuple &&tp, size_t index, Func &&func,
 			                              std::index_sequence<Is...> ) {
@@ -448,12 +449,12 @@ namespace daw {
 				                          std::get<Is>( std::forward<Tuple>( tp ) ) ) &&
 				          ... ) );
 			}
-		} // namespace apply_at_thlp_impls
+		} // namespace tuple_details
 
 		template<typename... Args, typename... Funcs>
 		constexpr void apply_at( std::tuple<Args...> const &tp, size_t index,
 		                         Funcs &&... funcs ) {
-			apply_at_thlp_impls::apply_at_impl(
+			tuple_details::apply_at_impl(
 			  tp, index, daw::overload( std::forward<Funcs>( funcs )... ),
 			  std::index_sequence_for<Args...>{} );
 		}
@@ -461,7 +462,7 @@ namespace daw {
 		template<typename... Args, typename... Funcs>
 		constexpr void apply_at( std::tuple<Args...> &tp, size_t index,
 		                         Funcs &&... funcs ) {
-			apply_at_thlp_impls::apply_at_impl(
+			tuple_details::apply_at_impl(
 			  tp, index, daw::overload( std::forward<Funcs>( funcs )... ),
 			  std::index_sequence_for<Args...>{} );
 		}
@@ -469,55 +470,52 @@ namespace daw {
 		template<typename... Args, typename... Funcs>
 		constexpr void apply_at( std::tuple<Args...> &&tp, size_t index,
 		                         Funcs &&... funcs ) {
-			apply_at_thlp_impls::apply_at_impl(
+			tuple_details::apply_at_impl(
 			  daw::move( tp ), index,
 			  daw::overload( std::forward<Funcs>( funcs )... ) );
 		}
-	} // namespace tuple
 
-	namespace thlp_impl {
-		template<class T, class Tuple, std::size_t... I>
-		constexpr T make_from_tuple_impl( Tuple &&t, std::index_sequence<I...>,
-		                                  std::true_type ) {
-			return T{std::get<I>( std::forward<Tuple>( t ) )...};
-		}
+		namespace tuple_details {
+			template<class T, class Tuple, std::size_t... I>
+			constexpr T make_from_tuple_impl( Tuple &&t, std::index_sequence<I...>,
+			                                  std::true_type ) {
+				return T{std::get<I>( std::forward<Tuple>( t ) )...};
+			}
 
-		template<class T, class Tuple, std::size_t... I>
-		constexpr T make_from_tuple_impl( Tuple &&t, std::index_sequence<I...>,
-		                                  std::false_type ) {
-			return T( std::get<I>( std::forward<Tuple>( t ) )... );
-		}
-	} // namespace thlp_impl
+			template<class T, class Tuple, std::size_t... I>
+			constexpr T make_from_tuple_impl( Tuple &&t, std::index_sequence<I...>,
+			                                  std::false_type ) {
+				return T( std::get<I>( std::forward<Tuple>( t ) )... );
+			}
+
+			template<typename... Args>
+			constexpr std::integral_constant<size_t, sizeof...( Args )>
+			tuple_size_test( std::tuple<Args...> const && ) noexcept;
+			template<typename... Args>
+			constexpr std::integral_constant<size_t, sizeof...( Args )>
+			tuple_size_test( std::tuple<Args...> const volatile && ) noexcept;
+			template<typename... Args>
+			constexpr std::integral_constant<size_t, sizeof...( Args )>
+			tuple_size_test( std::tuple<Args...> const & ) noexcept;
+			template<typename... Args>
+			constexpr std::integral_constant<size_t, sizeof...( Args )>
+			tuple_size_test( std::tuple<Args...> const volatile & ) noexcept;
+		} // namespace tuple_details
+	}   // namespace tuple
 
 	template<class T, class Tuple>
 	constexpr T make_from_tuple2( Tuple &&t ) {
-		return thlp_impl::make_from_tuple_impl<T>(
+		return tuple::tuple_details::make_from_tuple_impl<T>(
 		  std::forward<Tuple>( t ),
 		  std::make_index_sequence<
 		    std::tuple_size_v<std::remove_reference_t<Tuple>>>{},
 		  std::is_aggregate<T>{} );
 	}
 
-	namespace tuple_size_impl {
-		template<typename... Args>
-		constexpr std::integral_constant<size_t, sizeof...( Args )>
-		tuple_size_test( std::tuple<Args...> const && ) noexcept;
-		template<typename... Args>
-		constexpr std::integral_constant<size_t, sizeof...( Args )>
-		tuple_size_test( std::tuple<Args...> const volatile && ) noexcept;
-		template<typename... Args>
-		constexpr std::integral_constant<size_t, sizeof...( Args )>
-		tuple_size_test( std::tuple<Args...> const & ) noexcept;
-		template<typename... Args>
-		constexpr std::integral_constant<size_t, sizeof...( Args )>
-		tuple_size_test( std::tuple<Args...> const volatile & ) noexcept;
-	} // namespace tuple_size_impl
-
 	template<typename Tuple>
 	inline constexpr size_t tuple_size_v = decltype(
-	  tuple_size_impl::tuple_size_test( std::declval<Tuple>( ) ) )::value;
+	  tuple::tuple_details::tuple_size_test( std::declval<Tuple>( ) ) )::value;
 
 	template<typename Tuple>
 	inline constexpr bool is_empty_tuple_v = ( tuple_size_v<Tuple> == 0 );
-
 } // namespace daw
