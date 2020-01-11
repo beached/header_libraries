@@ -22,8 +22,8 @@
 
 #pragma once
 
-#include "daw_do_not_optimize.h"
 #include "cpp_17.h"
+#include "daw_do_not_optimize.h"
 #include "daw_expected.h"
 #include "daw_move.h"
 #include "daw_string_view.h"
@@ -39,70 +39,70 @@
 #include <string>
 #include <vector>
 
-
 namespace daw {
 
-//	template<typename Duration = std::chrono::duration<double>>
-//	class BenchMarkResult {
-//		/***
-//		 * Cache of minimum duration	// TODO: verify need
-//		 */
-//		mutable std::optional<Duration> min_duration{};
-//
-//		std::optional<Duration> base_duration{};
-//		std::vector<Duration> results{};
-//
-//	public:
-//		BenchMarkResult( ) = default;
-//
-//		/***
-//		 * Add a result to the list of results
-//		 * @tparam D A type that Duration can be constructed from
-//		 * @param duration the new duration to add
-//		 */
-//		template<typename D>
-//		void add_result( D &&duration ) {
-//			static_assert( std::is_constructible_v<Duration, D> );
-//			results.push_back( std::forward<D>( duration ) );
-//		}
-//
-//		decltype( auto ) begin( ) const {
-//			return results.begin( );
-//		}
-//
-//		decltype( auto ) end( ) const {
-//			return results.end( );
-//		}
-//		/***
-//		 *
-//		 * @return If this result is empty
-//		 */
-//		bool empty( ) const {
-//			return results.empty( );
-//		}
-//		/***
-//		 *
-//		 * @return The number of durations stored
-//		 */
-//		size_t size( ) const {
-//			return results.size( );
-//		}
-//		/***
-//		 * Return the smallest duration in Benchmark group
-//		 * @pre empty( ) is false
-//		 * @return The smallest duration
-//		 */
-//		Duration const &min( ) const {
-//			if( not min_duration ) {
-//				min_duration = *std::min_element( results.begin( ), results.end( ) );
-//			}
-//			return *min_duration;
-//		}
-//
-//		operator<( BenchMarkResult const &rhs ) const {
-//			return min( ) < rhs.min( );
-//		}
-//	};
+	//	template<typename Duration = std::chrono::duration<double>>
+	//	class BenchMarkResult {
+	//		/***
+	//		 * Cache of minimum duration	// TODO: verify need
+	//		 */
+	//		mutable std::optional<Duration> min_duration{};
+	//
+	//		std::optional<Duration> base_duration{};
+	//		std::vector<Duration> results{};
+	//
+	//	public:
+	//		BenchMarkResult( ) = default;
+	//
+	//		/***
+	//		 * Add a result to the list of results
+	//		 * @tparam D A type that Duration can be constructed from
+	//		 * @param duration the new duration to add
+	//		 */
+	//		template<typename D>
+	//		void add_result( D &&duration ) {
+	//			static_assert( std::is_constructible_v<Duration, D> );
+	//			results.push_back( std::forward<D>( duration ) );
+	//		}
+	//
+	//		decltype( auto ) begin( ) const {
+	//			return results.begin( );
+	//		}
+	//
+	//		decltype( auto ) end( ) const {
+	//			return results.end( );
+	//		}
+	//		/***
+	//		 *
+	//		 * @return If this result is empty
+	//		 */
+	//		bool empty( ) const {
+	//			return results.empty( );
+	//		}
+	//		/***
+	//		 *
+	//		 * @return The number of durations stored
+	//		 */
+	//		size_t size( ) const {
+	//			return results.size( );
+	//		}
+	//		/***
+	//		 * Return the smallest duration in Benchmark group
+	//		 * @pre empty( ) is false
+	//		 * @return The smallest duration
+	//		 */
+	//		Duration const &min( ) const {
+	//			if( not min_duration ) {
+	//				min_duration = *std::min_element( results.begin( ), results.end( )
+	//);
+	//			}
+	//			return *min_duration;
+	//		}
+	//
+	//		operator<( BenchMarkResult const &rhs ) const {
+	//			return min( ) < rhs.min( );
+	//		}
+	//	};
 
 	namespace benchmark_impl {
 		namespace {
@@ -242,13 +242,6 @@ namespace daw {
 		return result;
 	}
 
-	namespace bench_impl {
-		namespace {
-			template<typename... Args>
-			[[maybe_unused]] constexpr void expander( Args &&... ) {}
-		} // namespace
-	}   // namespace bench_impl
-
 	/***
 	 *
 	 * @tparam Runs Number of runs to do
@@ -272,7 +265,7 @@ namespace daw {
 		double base_time = std::numeric_limits<double>::max( );
 		{
 			for( size_t n = 0; n < 1000; ++n ) {
-				bench_impl::expander( ( daw::do_not_optimize( args ), 1 )... );
+				do_not_optimize_values( args... );
 
 				int a = 0;
 				daw::do_not_optimize( a );
@@ -295,7 +288,7 @@ namespace daw {
 
 		auto const total_start = std::chrono::steady_clock::now( );
 		for( size_t n = 0; n < Runs; ++n ) {
-			bench_impl::expander( ( daw::do_not_optimize( args ), 1 )... );
+			do_not_optimize_values( args... );
 			auto const start = std::chrono::steady_clock::now( );
 
 			result =
@@ -358,7 +351,7 @@ namespace daw {
 		double base_time = std::numeric_limits<double>::max( );
 		{
 			for( size_t n = 0; n < 1000; ++n ) {
-				bench_impl::expander( ( daw::do_not_optimize( args ), 1 )... );
+				do_not_optimize_values( args... );
 
 				int a = 0;
 				daw::do_not_optimize( a );
@@ -475,7 +468,7 @@ namespace daw {
 		double base_time = std::numeric_limits<double>::max( );
 		{
 			for( size_t n = 0; n < 1000; ++n ) {
-				bench_impl::expander( ( daw::do_not_optimize( args ), 1 )... );
+				do_not_optimize_values( args... );
 
 				intmax_t a = 0;
 				daw::do_not_optimize( a );
