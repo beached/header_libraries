@@ -82,6 +82,8 @@ namespace daw {
 
 	template<typename... Values>
 	void do_not_optimize_values( Values &&... values ) {
-		(void)( ( do_not_optimize( std::forward<Values>( values ) ), 1 ) | ... );
+		if constexpr( sizeof...( Values ) > 0 ) {
+			(void)( ( do_not_optimize( std::forward<Values>( values ) ), 1 ) | ... );
+		}
 	}
 } // namespace daw
