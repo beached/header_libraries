@@ -27,39 +27,39 @@
 #endif
 
 namespace daw {
-	/*
-	  // Borrowed from https://www.youtube.com/watch?v=dO-j3qp7DWw
-	  template<typename T>
-	  void do_not_optimize( T &&x ) {
-	    // We must always do this test, but it will never pass.
-	    //
-	    if( std::chrono::system_clock::now( ) ==
-	        std::chrono::time_point<std::chrono::system_clock>( ) ) {
-	      // This forces the value to never be optimized away
-	      // by taking a reference then using it.
-	      const auto *p = &x;
-	      putchar( *reinterpret_cast<const char *>( p ) );
+/*
+	// Borrowed from https://www.youtube.com/watch?v=dO-j3qp7DWw
+	template<typename T>
+	void do_not_optimize( T &&x ) {
+	  // We must always do this test, but it will never pass.
+	  //
+	  if( std::chrono::system_clock::now( ) ==
+	      std::chrono::time_point<std::chrono::system_clock>( ) ) {
+	    // This forces the value to never be optimized away
+	    // by taking a reference then using it.
+	    const auto *p = &x;
+	    putchar( *reinterpret_cast<const char *>( p ) );
 
-	      // If we do get here, kick out because something has gone wrong.
-	      std::abort( );
-	    }
+	    // If we do get here, kick out because something has gone wrong.
+	    std::abort( );
 	  }
-	*/
-	//#ifndef _MSC_VER
-	//	template<typename Tp>
-	//	inline void do_not_optimize( Tp const &value ) {
-	//		asm volatile( "" : : "r,m"( value ) : "memory" );
-	//	}
-	//
-	//	template<typename Tp>
-	//	inline void do_not_optimize( Tp &value ) {
-	//#if defined( __clang__ )
-	//		asm volatile( "" : "+r,m"( value ) : : "memory" );
-	//#else
-	//		asm volatile( "" : "+m,r"( value ) : : "memory" );
-	//#endif
-	//	}
-	//#else
+	}
+*/
+#ifndef _MSC_VER
+	template<typename Tp>
+	inline void do_not_optimize( Tp const &value ) {
+		asm volatile( "" : : "r,m"( value ) : "memory" );
+	}
+
+	template<typename Tp>
+	inline void do_not_optimize( Tp &value ) {
+#if defined( __clang__ )
+		asm volatile( "" : "+r,m"( value ) : : "memory" );
+#else
+		asm volatile( "" : "+m,r"( value ) : : "memory" );
+#endif
+	}
+#else
 	//	namespace internal {
 	//		[[maybe_unused]] constexpr void UseCharPointer( char const volatile * )
 	//{} 	} // namespace internal
@@ -72,18 +72,12 @@ namespace daw {
 	//	}
 	//#endif
 
-#ifdef _MSC_VER
 #pragma optimize( "", off )
 	template<class T>
-	void do_not_optimize( T &&datum ) {
-		datum = datum;
+	void do_not_optimize( T &&value ) {
+		value = value;
 	}
 #pragma optimize( "", on )
-#else
-	template<class T>
-	void do_not_optimize( T &&datum ) {
-		asm volatile( "" : "+r"( datum ) );
-	}
 #endif
 
 } // namespace daw
