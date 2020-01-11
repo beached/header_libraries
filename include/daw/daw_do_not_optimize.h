@@ -38,10 +38,16 @@ namespace daw {
 #endif
 	}
 #else
+	namespace do_not_optimize_details {
+		[[maybe_unused]] constexpr void UseCharPointer( char const volatile * ) {}
+	} // namespace do_not_optimize_details
+
 #pragma optimize( "", off )
 	template<class T>
-	void do_not_optimize( T &&value ) {
-		value = value;
+	inline void do_not_optimize( T const &value ) {
+		do_not_optimize_details::UseCharPointer(
+		  &reinterpret_cast<char const volatile &>( value ) );
+		_ReadWriteBarrier( );
 	}
 #pragma optimize( "", on )
 #endif
