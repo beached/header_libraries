@@ -1,4 +1,5 @@
 @echo off
+choco install ninja
 md build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Debug -GNinja ..
