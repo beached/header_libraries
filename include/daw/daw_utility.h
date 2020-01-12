@@ -1016,8 +1016,9 @@ namespace daw {
 			} else {
 				if( value <= static_cast<T>( std::numeric_limits<Integer>::max( ) ) ) {
 					return static_cast<Integer>( value );
+				} else {
+					daw::exception::daw_throw<std::out_of_range>( "value" );
 				}
-				daw::exception::daw_throw<std::out_of_range>( "value" );
 			}
 		} else if constexpr( sizeof( T ) <= sizeof( Integer ) ) {
 			return static_cast<Integer>( value );
