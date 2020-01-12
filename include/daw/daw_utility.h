@@ -1014,10 +1014,11 @@ namespace daw {
 			if constexpr( sizeof( T ) < sizeof( Integer ) ) {
 				return static_cast<Integer>( value );
 			} else {
-				if( value <= static_cast<T>( std::numeric_limits<Integer>::max( ) ) ) {
-					return static_cast<Integer>( value );
-				}
-				daw::exception::daw_throw<std::out_of_range>( "value" );
+				daw::exception::precondition_check<std::out_of_range>(
+				  value <= static_cast<T>( std::numeric_limits<Integer>::max( ) ),
+				  "value" );
+
+				return static_cast<Integer>( value );
 			}
 		} else if constexpr( sizeof( T ) <= sizeof( Integer ) ) {
 			return static_cast<Integer>( value );
