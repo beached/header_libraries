@@ -143,20 +143,19 @@ namespace daw {
 		} // namespace v1
 		namespace v2 {
 			namespace string_fmt_details {
-				namespace {
-					using daw::string_fmt::v1::string_fmt_details::to_string;
-					using std::to_string;
-					template<typename T>
-					constexpr auto to_string_test( )
-					  -> decltype( to_string( std::declval<T>( ) ) );
+				using daw::string_fmt::v1::string_fmt_details::to_string;
+				using std::to_string;
+				template<typename T>
+				constexpr auto to_string_test( )
+				  -> decltype( to_string( std::declval<T>( ) ) );
 
-					template<typename T>
-					using has_to_string_test = decltype( to_string_test<T>( ) );
+				template<typename T>
+				using has_to_string_test = decltype( to_string_test<T>( ) );
 
-					template<typename T>
-					inline constexpr bool has_to_string_v =
-					  daw::is_detected_v<has_to_string_test, T>;
-				} // namespace
+				template<typename T>
+				inline constexpr bool has_to_string_v =
+				  daw::is_detected_v<has_to_string_test, T>;
+
 				template<typename CharT>
 				struct parse_token {
 					std::variant<size_t, CharT, daw::basic_string_view<CharT>> m_data;
