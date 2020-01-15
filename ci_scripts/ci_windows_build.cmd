@@ -1,6 +1,5 @@
 REM ##############################
 REM Installing Ninja
-REM choco install ninja
 vcpkg install ninja
 md build
 cd build
