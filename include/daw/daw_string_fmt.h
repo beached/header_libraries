@@ -22,12 +22,6 @@
 
 #pragma once
 
-#include <cstddef>
-#include <limits>
-#include <sstream>
-#include <string>
-#include <utility>
-
 #include "daw_algorithm.h"
 #include "daw_bounded_vector.h"
 #include "daw_exception.h"
@@ -37,7 +31,13 @@
 #include "daw_traits.h"
 #include "daw_utility.h"
 #include "daw_visit.h"
-#include "string_fmt_details/daw_int_to_iterator.h"
+#include "impl/daw_int_to_iterator.h"
+
+#include <cstddef>
+#include <limits>
+#include <sstream>
+#include <string>
+#include <utility>
 
 namespace daw {
 	namespace string_fmt {
