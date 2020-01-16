@@ -2,8 +2,6 @@ cmake_minimum_required( VERSION 3.10 )
 
 project( header_libraries )
 
-find_package( Boost 1.60.0 )
-
 find_package( Threads )
 
 include( "${CMAKE_SOURCE_DIR}/dependent_projects/CMakeListsCompiler.txt" )
@@ -22,15 +20,6 @@ endif( )
 
 include_directories( ${HEADER_FOLDER} )
 
-if( Boost_FOUND ) 
-include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
-
-#Need Boost for code
-set( TESTED_HEADERS_PREFIXES_NBT
-	daw_bit_queues
-)
-endif( )
-
 # These tests crash MSVC
 set( NOTWIN_TESTED_HEADERS_PREFIXES_NB
  	daw_bounded_graph
@@ -40,13 +29,13 @@ set( NOTWIN_TESTED_HEADERS_PREFIXES_NB
 	daw_piecewise_factory
 )
 
-#No boost
 set( TESTED_HEADERS_PREFIXES_NB
 	cpp_17
 	daw_algorithm
 	daw_array
 	daw_benchmark
 	daw_bit
+	daw_bit_queues
 	daw_bounded_array
 	daw_bounded_string
 	daw_bounded_vector
@@ -211,16 +200,6 @@ enable_testing( )
 #set( CMAKE_CTEST_COMMAND ctest -V )
 add_custom_target( check COMMAND ${CMAKE_CTEST_COMMAND} )
 add_custom_target( full )
-
-if( Boost_FOUND )
-#Boost Headers Needed
-foreach( CUR_PREFIX ${TESTED_HEADERS_PREFIXES_NBT} )
-	install( FILES "${HEADER_FOLDER}/daw/${CUR_PREFIX}.h" DESTINATION include/daw )
-	add_executable( ${CUR_PREFIX}_test_bin EXCLUDE_FROM_ALL ${HEADER_FOLDER}/daw/${CUR_PREFIX}.h ${TEST_FOLDER}/${CUR_PREFIX}_test.cpp )
-	add_test( ${CUR_PREFIX}_test ${CUR_PREFIX}_test_bin )
-	add_dependencies( full ${CUR_PREFIX}_test_bin )
-endforeach( CUR_PREFIX )
-endif( )
 
 foreach( CUR_PREFIX ${NOTWIN_TESTED_HEADERS_PREFIXES_NB} )
 	install( FILES "${HEADER_FOLDER}/daw/${CUR_PREFIX}.h" DESTINATION include/daw )
