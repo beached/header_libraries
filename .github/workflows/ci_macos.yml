@@ -14,5 +14,5 @@ jobs:
     - name: Build
       run: ./ci_scripts/ci_macos_build.sh  
     - name: Test
-      run: ./ci_scripts/ci_macos_test.sh  
-      
+      run: ./ci_scripts/ci_macos_test.sh
+
