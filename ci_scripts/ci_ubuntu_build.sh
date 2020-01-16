@@ -1,5 +1,6 @@
 #!/bin/bash
 
+mkdir build
 cd build
 
 echo "Starting full build"
