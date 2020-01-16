@@ -22,10 +22,10 @@
 
 #pragma once
 
-#include <boost/endian/conversion.hpp>
 #include <cstdint>
 
 #include "daw_bit.h"
+#include "daw_endian.h"
 #include "daw_exception.h"
 #include "daw_move.h"
 
@@ -33,26 +33,26 @@ namespace daw {
 	struct bit_queue_source_little_endian {};
 	struct bit_queue_source_big_endian {};
 
-	using bit_queue_source_native_endian = typename std::conditional<
-	  boost::endian::order::native == boost::endian::order::little,
-	  bit_queue_source_little_endian, bit_queue_source_big_endian>::type;
+	using bit_queue_source_native_endian =
+	  typename std::conditional_t<daw::endian::native == daw::endian::little,
+	                              bit_queue_source_little_endian,
+	                              bit_queue_source_big_endian>;
 
 	template<typename queue_type, typename value_type = uint8_t,
 	         typename BitQueueLSB = bit_queue_source_native_endian>
 	class basic_bit_queue {
-		static_assert( std::numeric_limits<queue_type>::is_integer &&
-		                 !std::numeric_limits<queue_type>::is_signed,
+		static_assert( std::is_unsigned_v<queue_type> and
+		                 std::is_unsigned_v<value_type>,
 		               "Only unsigned integral types are supported" );
-		size_t m_size;
-		queue_type m_queue;
+		size_t m_size = 0;
+		queue_type m_queue = 0;
 
 	public:
-		constexpr basic_bit_queue( ) noexcept
-		  : m_size{0}
-		  , m_queue{0} {}
+		constexpr basic_bit_queue( ) = default;
+
 		constexpr explicit basic_bit_queue( queue_type v ) noexcept
-		  : m_size{sizeof( m_queue ) * 8}
-		  , m_queue{daw::move( v )} {}
+		  : m_size( sizeof( m_queue ) * 8 )
+		  , m_queue( daw::move( v ) ) {}
 
 		constexpr size_t size( ) const noexcept {
 			return m_size;
@@ -78,13 +78,13 @@ namespace daw {
 		template<typename T>
 		auto source_to_native_endian( T value,
 		                              bit_queue_source_little_endian ) noexcept {
-			return boost::endian::little_to_native( value );
+			return daw::to_native_endian<daw::endian::little>( value );
 		}
 
 		template<typename T>
 		auto source_to_native_endian( T value,
 		                              bit_queue_source_big_endian ) noexcept {
-			return boost::endian::big_to_native( value );
+			return daw::to_native_endian<daw::endian::big>( value );
 		}
 
 	public:

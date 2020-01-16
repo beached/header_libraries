@@ -33,7 +33,7 @@
 void daw_random_01( ) {
 	for( auto n = 0; n < 100000; ++n ) {
 		auto v1 = daw::randint( 0, 1000 );
-		daw::expecting( 0 <= v1 && v1 <= 1000 );
+		daw::expecting( 0 <= v1 and v1 <= 1000 );
 	}
 }
 
@@ -41,7 +41,7 @@ void daw_random_02( ) {
 	for( auto n = 0; n < 100000; ++n ) {
 		auto v1 = daw::randint<int64_t>( std::numeric_limits<int64_t>::min( ),
 		                                 std::numeric_limits<int64_t>::max( ) );
-		daw::expecting( std::numeric_limits<int64_t>::min( ) <= v1 &&
+		daw::expecting( std::numeric_limits<int64_t>::min( ) <= v1 and
 		                v1 <= std::numeric_limits<int64_t>::max( ) );
 	}
 }
