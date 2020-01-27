@@ -388,6 +388,7 @@ namespace daw {
 		/// @return a substr of size count ending at end of string_view
 		[[nodiscard]] constexpr basic_string_view
 		pop_back( size_t count ) noexcept {
+			count = std::min( count, size( ) ); 
 			basic_string_view result = substr( size( ) - count, npos );
 			remove_suffix( count );
 			return result;
