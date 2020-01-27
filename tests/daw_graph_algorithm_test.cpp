@@ -26,7 +26,7 @@
 #include "daw/daw_graph.h"
 #include "daw/daw_graph_algorithm.h"
 
-#include <iosfwd>
+#include <iostream>
 #include <iterator>
 #include <string>
 #include <unordered_map>
@@ -173,12 +173,16 @@ int main( ) {
 	graph.add_directed_edge( nB, nE );
 	graph.add_directed_edge( nF, nE );
 
+	std::cout << "Starting test_topoligical_range_00\n";
 	test_topoligical_range_001( );
+	std::cout << "Starting test_topoligical_walk_003\n";
 	test_topoligical_walk_003( );
 	// TODO: failing
 	// test_topoligical_walk_001( graph );
 	// test_topoligical_walk_002( graph );
+	std::cout << "Starting test_bfs_walk_001\n";
 	test_bfs_walk_001( graph, nC );
+	std::cout << "Starting test_bfs_walk_002\n";
 	test_bfs_walk_002( graph, nC );
 	// TODO: failing
 	// test_dfs_walk_001( graph, nC );
