@@ -2332,4 +2332,23 @@ static_assert(
 		}
 		return false;
 	}
+
+	template<typename ForwardIterator, typename BinaryPredicate>
+	constexpr ForwardIterator adjacent_find( ForwardIterator first,
+	                                         ForwardIterator last,
+	                                         BinaryPredicate p ) {
+		if( first == last ) {
+			return last;
+		}
+		ForwardIterator next = first;
+		++next;
+		while( next != last ) {
+			if( p( *first, *next ) ) {
+				return first;
+			}
+			++next;
+			++first;
+		}
+		return last;
+	}
 } // namespace daw::algorithm
