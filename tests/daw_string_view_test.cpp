@@ -1040,6 +1040,7 @@ namespace daw {
 		static constexpr daw::string_view sv_cx = "a";
 		static_assert( sv_cx.size( ) == 1 );
 		static_assert( not sv_cx.empty( ) );
+		static_assert( *(sv_cx.data( ) + static_cast<std::ptrdiff_t>( sv_cx.size( ) )) == '\0' );
 		daw::string_view sv_run = "a";
 		if( sv_run != sv_cx ) {
 			std::cerr << "Runtime/Constexpr not the same\n";
