@@ -1035,9 +1035,25 @@ namespace daw {
 	}
 	static_assert( extent_to_dynamic_001( "Testing testing 1 2 3" ) );
 #endif
+
+	bool ensure_same_at_ct( ) {
+		static constexpr daw::string_view sv_cx = "a";
+		static_assert( sv_cx.size( ) == 1 );
+		static_assert( not sv_cx.empty( ) );
+		daw::string_view sv_run = "a";
+		if( sv_run != sv_cx ) {
+			std::cerr << "Runtime/Constexpr not the same\n";
+			std::cerr << "Should have size 1 and not be empty\n";
+			std::cerr << "size( ) = " << sv_cx.size( );
+			std::cerr << " empty( ) = " << sv_cx.empty( ) << '\n'; 
+			return false;
+		}
+		return true;
+	}
 } // namespace daw
 
 int main( ) {
+	daw::expecting( daw::ensure_same_at_ct( ) );
 	daw::daw_string_view_test_001( );
 	daw::daw_string_view_contexpr_001( );
 	daw::daw_string_view_make_string_view_it( );
