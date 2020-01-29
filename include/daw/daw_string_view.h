@@ -616,9 +616,17 @@ namespace daw {
 			return cmp;
 		}
 
-		template<typename Bounds, std::ptrdiff_t Ex>
+		template<typename Bounds, std::ptrdiff_t Ex,
+		         std::enable_if_t<( not std::is_same_v<BoundsType, Bounds> or
+		                            ( Ex != Extent ) ),
+		                          std::nullptr_t> = nullptr>
 		[[nodiscard]] constexpr int
 		compare( basic_string_view<CharT, Bounds, Ex> const rhs ) const {
+			basic_string_view lhs = *this;
+			return compare( lhs, rhs );
+		}
+
+		[[nodiscard]] constexpr int compare( basic_string_view const rhs ) const {
 			basic_string_view lhs = *this;
 			return compare( lhs, rhs );
 		}
