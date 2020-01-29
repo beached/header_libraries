@@ -83,7 +83,9 @@ namespace daw {
 		friend struct ::daw::basic_string_view;
 
 	private:
-		static_assert( is_string_view_bounds_type_v<BoundsType> );
+		static_assert(
+		  is_string_view_bounds_type_v<BoundsType>,
+		  "Invalid BoundType.  Often this is caused by using char_triats" );
 
 		static constexpr auto bp_eq = []( CharT l, CharT r ) { return l == r; };
 
@@ -1092,7 +1094,7 @@ namespace daw {
 #ifndef NOSTRING
 	template<typename CharT, typename Traits, typename Allocator>
 	basic_string_view( std::basic_string<CharT, Traits, Allocator> const &str )
-	  ->basic_string_view<CharT, Traits, daw::dynamic_string_size>;
+	  ->basic_string_view<CharT>;
 
 #if false && defined( __cpp_lib_string_view )
 	template<typename CharT, typename Traits>

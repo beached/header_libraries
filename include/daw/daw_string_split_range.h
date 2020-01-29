@@ -183,22 +183,21 @@ namespace daw {
 		return {str, delemiter};
 	}
 
-	template<typename CharT, size_t N>
+	template<typename CharT, typename Bounds, std::ptrdiff_t Ex, size_t N>
 	constexpr string_split_range<CharT>
-	split_string( daw::basic_string_view<CharT> str,
+	split_string( daw::basic_string_view<CharT, Bounds, Ex> str,
 	              CharT const ( &delemiter )[N] ) noexcept {
 
-		return {str, daw::basic_string_view<CharT, std::char_traits<CharT>, N>(
-		               delemiter )};
+		return {str, daw::basic_string_view<CharT, Bounds, N - 1>( delemiter )};
 	}
 
-	template<typename CharT, size_t N, size_t M>
+	template<typename CharT, typename Bounds = default_string_view_bounds_type,
+	         size_t N, size_t M>
 	constexpr string_split_range<CharT>
 	split_string( CharT const ( &str )[N],
 	              CharT const ( &delemiter )[M] ) noexcept {
 
-		return {
-		  daw::basic_string_view<CharT, std::char_traits<CharT>, N>( str ),
-		  daw::basic_string_view<CharT, std::char_traits<CharT>, M>( delemiter )};
+		return {daw::basic_string_view<CharT, Bounds, N - 1>( str ),
+		        daw::basic_string_view<CharT, Bounds, M - 1>( delemiter )};
 	}
 } // namespace daw
