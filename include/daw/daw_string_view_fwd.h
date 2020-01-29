@@ -29,7 +29,27 @@
 namespace daw {
 	inline constexpr ptrdiff_t const dynamic_string_size = -1;
 
-	template<typename CharT, typename Traits = std::char_traits<CharT>,
+	struct StringViewBoundsPointer : std::bool_constant<true> {};
+	struct StringViewBoundsSize : std::bool_constant<false> {};
+
+	template<typename T>
+	using is_string_view_bounds_type =
+	  std::disjunction<std::is_same<T, StringViewBoundsPointer>,
+	                   std::is_same<T, StringViewBoundsSize>>;
+
+#ifdef _MSC_VER
+	// MSVC has issues with the second item being a pointer
+	using default_string_view_bounds_type = StringViewBoundsSize;
+#else
+	using default_string_view_bounds_type = StringViewBoundsPointer;
+#endif
+
+	template<typename T>
+	inline constexpr bool is_string_view_bounds_type_v =
+	  is_string_view_bounds_type<T>::value;
+
+	template<typename CharT,
+	         typename BoundsType = default_string_view_bounds_type,
 	         ptrdiff_t Extent = dynamic_string_size>
 	struct basic_string_view;
 

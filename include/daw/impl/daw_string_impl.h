@@ -35,9 +35,8 @@ namespace daw {
 
 	namespace details {
 		template<class ForwardIt1, class ForwardIt2>
-		constexpr ForwardIt1
-		search( ForwardIt1 first, ForwardIt1 last, ForwardIt2 s_first,
-		        ForwardIt2 s_last ) noexcept( noexcept( *first == *s_first ) ) {
+		constexpr ForwardIt1 search( ForwardIt1 first, ForwardIt1 last,
+		                             ForwardIt2 s_first, ForwardIt2 s_last ) {
 			for( ;; ++first ) {
 				ForwardIt1 it = first;
 				for( ForwardIt2 s_it = s_first;; ++it, ++s_it ) {
@@ -55,10 +54,9 @@ namespace daw {
 		}
 
 		template<class ForwardIt1, class ForwardIt2, class BinaryPredicate>
-		constexpr ForwardIt1
-		search( ForwardIt1 first, ForwardIt1 last, ForwardIt2 s_first,
-		        ForwardIt2 s_last,
-		        BinaryPredicate p ) noexcept( noexcept( !p( *first, *s_first ) ) ) {
+		constexpr ForwardIt1 search( ForwardIt1 first, ForwardIt1 last,
+		                             ForwardIt2 s_first, ForwardIt2 s_last,
+		                             BinaryPredicate p ) {
 			for( ;; ++first ) {
 				ForwardIt1 it = first;
 				for( ForwardIt2 s_it = s_first;; ++it, ++s_it ) {
@@ -77,6 +75,9 @@ namespace daw {
 
 		template<typename SizeT, typename CharT>
 		constexpr SizeT strlen( CharT const *const str ) noexcept {
+			if( str == nullptr ) {
+				return 0;
+			}
 			auto pos = str;
 			while( *( pos ) != 0 ) {
 				++pos;
@@ -105,13 +106,9 @@ namespace daw {
 		}
 
 		template<typename InputIt, typename ForwardIt, typename BinaryPredicate>
-		constexpr InputIt find_first_of(
-		  InputIt first, InputIt last, ForwardIt s_first, ForwardIt s_last,
-		  BinaryPredicate
-		    p ) noexcept( noexcept( std::
-		                              declval<BinaryPredicate>( )(
-		                                *std::declval<InputIt>( ),
-		                                *std::declval<ForwardIt>( ) ) ) ) {
+		constexpr InputIt find_first_of( InputIt first, InputIt last,
+		                                 ForwardIt s_first, ForwardIt s_last,
+		                                 BinaryPredicate p ) {
 			static_assert(
 			  traits::is_binary_predicate_v<
 			    BinaryPredicate, typename std::iterator_traits<InputIt>::value_type>,
@@ -129,13 +126,9 @@ namespace daw {
 		}
 
 		template<typename InputIt, typename ForwardIt, typename BinaryPredicate>
-		constexpr InputIt find_first_not_of(
-		  InputIt first, InputIt last, ForwardIt s_first, ForwardIt s_last,
-		  BinaryPredicate
-		    p ) noexcept( noexcept( std::
-		                              declval<BinaryPredicate>( )(
-		                                *std::declval<InputIt>( ),
-		                                *std::declval<ForwardIt>( ) ) ) ) {
+		constexpr InputIt find_first_not_of( InputIt first, InputIt last,
+		                                     ForwardIt s_first, ForwardIt s_last,
+		                                     BinaryPredicate p ) {
 			static_assert(
 			  traits::is_binary_predicate_v<
 			    BinaryPredicate, typename std::iterator_traits<InputIt>::value_type>,
@@ -158,11 +151,15 @@ namespace daw {
 			return last;
 		}
 
+		template<typename CharT>
+		constexpr int compare( CharT const *l_ptr, CharT const *r_ptr,
+		                       std::size_t sz ) {
+			return std::char_traits<CharT>::compare( l_ptr, r_ptr, sz );
+		}
+
 		template<typename InputIt, typename UnaryPredicate>
-		constexpr InputIt
-		find_first_of_if( InputIt first, InputIt last, UnaryPredicate p ) noexcept(
-		  noexcept(
-		    std::declval<UnaryPredicate>( )( *std::declval<InputIt>( ) ) ) ) {
+		constexpr InputIt find_first_of_if( InputIt first, InputIt last,
+		                                    UnaryPredicate p ) {
 			static_assert(
 			  traits::is_unary_predicate_v<
 			    UnaryPredicate, typename std::iterator_traits<InputIt>::value_type>,
@@ -178,12 +175,8 @@ namespace daw {
 		}
 
 		template<typename InputIt, typename UnaryPredicate>
-		constexpr InputIt find_first_not_of_if(
-		  InputIt first, InputIt last,
-		  UnaryPredicate
-		    p ) noexcept( noexcept( std::
-		                              declval<UnaryPredicate>( )(
-		                                *std::declval<InputIt>( ) ) ) ) {
+		constexpr InputIt find_first_not_of_if( InputIt first, InputIt last,
+		                                        UnaryPredicate p ) {
 			static_assert(
 			  traits::is_unary_predicate_v<
 			    UnaryPredicate, typename std::iterator_traits<InputIt>::value_type>,
@@ -220,11 +213,12 @@ namespace daw {
 			}
 		}
 
-		template<typename OStream, typename CharT, typename Traits,
+		template<typename OStream, typename CharT, typename Bounds,
+		         std::ptrdiff_t Ex,
 		         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,
 		                          std::nullptr_t> = nullptr>
 		void sv_insert_aligned( OStream &os,
-		                        daw::basic_string_view<CharT, Traits> str ) {
+		                        daw::basic_string_view<CharT, Bounds, Ex> str ) {
 			auto const size = str.size( );
 			auto const alignment_size =
 			  static_cast<std::size_t>( os.width( ) ) - size;
@@ -277,7 +271,7 @@ namespace daw {
 			constexpr only_ptr( T *p ) noexcept
 			  : ptr{p} {}
 
-			constexpr operator T *( ) const noexcept {
+			constexpr operator T *( ) const {
 				return ptr;
 			}
 		};

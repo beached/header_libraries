@@ -340,7 +340,7 @@ namespace daw {
 		daw::string_view view = str;
 
 		puts( "Points to original data source" );
-		{ daw::expecting( view.c_str( ) == str ); }
+		{ daw::expecting( view.data( ) == str ); }
 	}
 
 	//----------------------------------------------------------------------------
@@ -412,8 +412,8 @@ namespace daw {
 		puts( "Removes first n characters" );
 		{
 			view.remove_prefix( 6 );
-
-			daw::expecting( ( view == "World" ) );
+			auto result = view == "World";
+			daw::expecting( result );
 		}
 	}
 
@@ -926,11 +926,6 @@ namespace daw {
 	}
 
 #ifndef NOSTRING
-	void daw_to_string_view_001( ) {
-		auto val = daw::to_string_view( std::to_string( 5 ) ).to_string( );
-		daw::expecting( "5", val );
-	}
-
 	void daw_pop_front_sv_test_001( ) {
 		std::string str = "This is a test";
 		daw::string_view sv{str.data( ), str.size( )};
@@ -1035,9 +1030,28 @@ namespace daw {
 	}
 	static_assert( extent_to_dynamic_001( "Testing testing 1 2 3" ) );
 #endif
+
+	bool ensure_same_at_ct( ) {
+		static constexpr daw::string_view sv_cx = "a";
+		static_assert( sv_cx.size( ) == 1 );
+		static_assert( not sv_cx.empty( ) );
+		static_assert( *( sv_cx.data( ) +
+		                  static_cast<std::ptrdiff_t>( sv_cx.size( ) ) ) == '\0' );
+		static_assert( sv_cx.end( ) - sv_cx.begin( ) == 1 );
+		daw::string_view sv_run = "a";
+		if( sv_run != sv_cx ) {
+			std::cerr << "Runtime/Constexpr not the same\n";
+			std::cerr << "Should have size 1 and not be empty\n";
+			std::cerr << "size( ) = " << sv_cx.size( );
+			std::cerr << " empty( ) = " << sv_cx.empty( ) << '\n';
+			return false;
+		}
+		return true;
+	}
 } // namespace daw
 
 int main( ) {
+	daw::expecting( daw::ensure_same_at_ct( ) );
 	daw::daw_string_view_test_001( );
 	daw::daw_string_view_contexpr_001( );
 	daw::daw_string_view_make_string_view_it( );
@@ -1092,7 +1106,6 @@ int main( ) {
 	daw::daw_can_be_string_view_ends_with_004( );
 	daw::daw_can_be_string_view_ends_with_005( );
 	daw::daw_can_be_string_view_ends_with_006( );
-	daw::daw_to_string_view_001( );
 	daw::daw_pop_front_sv_test_001( );
 	daw::daw_pop_back_count_test_001( );
 	daw::daw_pop_back_sv_test_001( );
