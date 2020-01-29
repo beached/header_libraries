@@ -1088,8 +1088,7 @@ namespace daw {
 	// CTAD
 	template<typename CharT>
 	basic_string_view( CharT const *s, std::size_t count )
-	  ->basic_string_view<CharT, std::char_traits<CharT>,
-	                      daw::dynamic_string_size>;
+	  ->basic_string_view<CharT>;
 
 #ifndef NOSTRING
 	template<typename CharT, typename Traits, typename Allocator>
