@@ -213,11 +213,12 @@ namespace daw {
 			}
 		}
 
-		template<typename OStream, typename CharT, typename Traits,
+		template<typename OStream, typename CharT, typename Bounds,
+		         std::ptrdiff_t Ex,
 		         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,
 		                          std::nullptr_t> = nullptr>
 		void sv_insert_aligned( OStream &os,
-		                        daw::basic_string_view<CharT, Traits> str ) {
+		                        daw::basic_string_view<CharT, Bounds, Ex> str ) {
 			auto const size = str.size( );
 			auto const alignment_size =
 			  static_cast<std::size_t>( os.width( ) ) - size;
