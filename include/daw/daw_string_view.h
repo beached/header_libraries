@@ -280,8 +280,8 @@ namespace daw {
 		}
 
 #if defined( __cpp_lib_string_view )
-		template<typename Bounds, std::ptrdiff_t Ex>
-		constexpr operator std::basic_string_view<CharT, Bounds, Ex>( ) const {
+		template<typename Traits>
+		constexpr operator std::basic_string_view<CharT, Traits>( ) const {
 			return {data( ), size( )};
 		}
 #endif
