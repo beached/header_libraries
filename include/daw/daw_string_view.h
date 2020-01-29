@@ -1417,7 +1417,7 @@ namespace daw {
 	operator+( std::basic_string<CharT, Traits, Allocator> lhs,
 	           daw::basic_string_view<CharT, Bounds, Ex> rhs ) {
 		lhs.reserve( lhs.size( ) + rhs.size( ) );
-		daw::algorithm::copy( rhs.begin( ), rhs.end( ), daw::back_inserter( lhs ) );
+		daw::algorithm::copy( rhs.begin( ), rhs.end( ), std::back_inserter( lhs ) );
 		return lhs;
 	}
 
@@ -1427,10 +1427,10 @@ namespace daw {
 	           daw::basic_string_view<CharT, Bounds, Ex> rhs ) {
 		static_assert( N > 0 );
 		std::basic_string<CharT> result;
-		result.reserve( ( N - 1 ) + result.size( ) );
-		auto dest = daw::back_inserter( result );
+		result.reserve( ( N - 1 ) + rhs.size( ) );
+		auto dest = std::back_inserter( result );
 		daw::algorithm::copy_n( lhs, dest, N - 1 );
-		daw::algorithm::copy( result.begin( ), result.end( ), dest );
+		daw::algorithm::copy( rhs.begin( ), rhs.end( ), dest );
 		return result;
 	}
 
@@ -1439,10 +1439,10 @@ namespace daw {
 	operator+( CharT const *lhs, daw::basic_string_view<CharT, Bounds, Ex> rhs ) {
 		std::size_t const lhs_len = details::strlen<std::size_t>( lhs );
 		std::basic_string<CharT> result;
-		result.reserve( lhs_len + result.size( ) );
-		auto dest = daw::back_inserter( result );
+		result.reserve( lhs_len + rhs.size( ) );
+		auto dest = std::back_inserter( result );
 		daw::algorithm::copy_n( lhs, dest, lhs_len );
-		daw::algorithm::copy( result.begin( ), result.end( ), dest );
+		daw::algorithm::copy( rhs.begin( ), rhs.end( ), dest );
 		return result;
 	}
 
@@ -1454,7 +1454,7 @@ namespace daw {
 		std::basic_string<CharT, Traits, Allocator> result;
 		result.reserve( lhs.size( ) + rhs.size( ) );
 		daw::algorithm::copy( lhs.begin( ), lhs.end( ),
-		                      daw::back_inserter( result ) );
+		                      std::back_inserter( result ) );
 		result += rhs;
 		return result;
 	}
@@ -1465,7 +1465,7 @@ namespace daw {
 		static_assert( N > 0 );
 		std::basic_string<CharT> result;
 		result.reserve( lhs.size( ) + ( N - 1 ) );
-		auto dest = daw::back_inserter( result );
+		auto dest = std::back_inserter( result );
 		daw::algorithm::copy( lhs.begin( ), lhs.end( ), dest );
 		daw::algorithm::copy_n( rhs, dest, N - 1 );
 		return result;
@@ -1477,7 +1477,7 @@ namespace daw {
 		std::size_t const rhs_len = details::strlen<std::size_t>( rhs );
 		std::basic_string<CharT> result;
 		result.reserve( lhs.size( ) + rhs_len );
-		auto dest = daw::back_inserter( result );
+		auto dest = std::back_inserter( result );
 		daw::algorithm::copy( lhs.begin( ), lhs.end( ), dest );
 		daw::algorithm::copy_n( rhs, dest, rhs_len );
 		return result;
