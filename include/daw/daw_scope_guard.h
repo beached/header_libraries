@@ -30,6 +30,12 @@
 #include "daw_swap.h"
 #include "daw_traits.h"
 
+#if defined( __cpp_constexpr_dynamic_alloc )
+#define CXDTOR constexpr
+#else
+#define CXDTOR
+#endif
+
 namespace daw {
 	template<typename FunctionType>
 	class ScopeGuard {
@@ -55,21 +61,12 @@ namespace daw {
 			return *this;
 		}
 
-#if !defined( MAY_THROW_EXCEPTIONS ) or MAY_THROW_EXCEPTIONS
-		~ScopeGuard( ) noexcept {
-			if( m_is_active ) {
-				try {
-					m_function( );
-				} catch( ... ) { std::abort( ); }
-			}
-		}
-#else
-		~ScopeGuard( ) noexcept {
+		CXDTOR ~ScopeGuard( ) noexcept {
 			if( m_is_active ) {
 				m_function( );
 			}
 		}
-#endif
+
 		constexpr void dismiss( ) const noexcept {
 			m_function = nullptr;
 			m_is_active = false;
@@ -100,7 +97,7 @@ namespace daw {
 		  std::is_nothrow_copy_constructible_v<Handler> )
 		  : on_exit_handler( h ) {}
 
-		~on_exit_success( ) noexcept( noexcept( on_exit_handler( ) ) ) {
+		CXDTOR ~on_exit_success( ) noexcept( noexcept( on_exit_handler( ) ) ) {
 			if( std::uncaught_exceptions( ) == 0 ) {
 				on_exit_handler( );
 			}
