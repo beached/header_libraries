@@ -30,10 +30,14 @@
 #include "daw_swap.h"
 #include "daw_traits.h"
 
-#if defined( __cpp_constexpr_dynamic_alloc )
+#if defined( __cpp_constexpr_dynamic_alloc ) and                               \
+  defined( __cpp_lib_is_constant_evaluated )
 #define CXDTOR constexpr
+#define CXEVAL std::is_constant_evaluated( )
+#define HAS_CXSTOR_AND_EVAL
 #else
 #define CXDTOR
+#define CXEVAL
 #endif
 
 namespace daw {
@@ -98,9 +102,17 @@ namespace daw {
 		  : on_exit_handler( h ) {}
 
 		CXDTOR ~on_exit_success( ) noexcept( noexcept( on_exit_handler( ) ) ) {
-			if( std::uncaught_exceptions( ) == 0 ) {
+#if defined( HAS_CXSTOR_AND_EVAL )
+			if( CXEVAL ) {
 				on_exit_handler( );
+			} else {
+#endif
+				if( std::uncaught_exceptions( ) == 0 ) {
+					on_exit_handler( );
+				}
+#if defined( HAS_CXSTOR_AND_EVAL )
 			}
+#endif
 		}
 	};
 
