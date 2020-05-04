@@ -53,7 +53,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr back_inserter &operator*( ) const noexcept {
+		constexpr back_inserter &operator*( ) noexcept {
 			return *this;
 		}
 
