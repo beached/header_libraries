@@ -32,7 +32,7 @@ namespace daw {
 	// provided
 	//
 	template<typename... Fs>
-	struct overload : Fs... {
+	struct overload : private Fs... {
 
 		constexpr overload( Fs... fs )
 		  : Fs{std::move( fs )}... {}

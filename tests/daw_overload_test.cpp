@@ -82,7 +82,7 @@ void daw_empty_overload_001( ) {
 	daw::expecting( ov2( std::error_code( ) ) == 0 );
 	struct A {};
 	bool const can_a = daw::traits::is_callable_v<decltype( ov2 ), A>;
-	daw::expecting( !can_a );
+	daw::expecting( not can_a );
 	// auto ov3 = daw::empty_overload<A>( ov2 );
 	// bool const can_a2 = daw::traits::is_callable_v<decltype( ov3 ), A>;
 	// daw::expecting( can_a2 );
