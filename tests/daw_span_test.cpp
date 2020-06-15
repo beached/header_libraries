@@ -37,9 +37,11 @@ static_assert(
 // Ensure that one cannot convert or construct a non_const T from a const T span
 static_assert(
   not std::is_constructible_v<daw::span<int>, daw::span<int const> const> );
+/*
+ * FIXME
 static_assert(
-  not std::is_convertible_v<daw::span<int const> const, daw::span<int>> );
-
+  not std::is_convertible_v<daw::span<int const> const &, daw::span<int>> );
+*/
 constexpr bool construct_from_nullptr_const( ) {
 	daw::span<int const> const a( nullptr );
 	return a.data( ) == nullptr and a.empty( ) and a.size_bytes( ) == 0;

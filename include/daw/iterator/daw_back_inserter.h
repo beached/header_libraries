@@ -61,7 +61,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr back_inserter &operator++( int ) noexcept {
+		constexpr back_inserter operator++( int ) const noexcept {
 			return *this;
 		}
 	};

@@ -82,14 +82,30 @@ void daw_empty_overload_001( ) {
 	daw::expecting( ov2( std::error_code( ) ) == 0 );
 	struct A {};
 	bool const can_a = daw::traits::is_callable_v<decltype( ov2 ), A>;
-	daw::expecting( !can_a );
+	daw::expecting( not can_a );
 	// auto ov3 = daw::empty_overload<A>( ov2 );
 	// bool const can_a2 = daw::traits::is_callable_v<decltype( ov3 ), A>;
 	// daw::expecting( can_a2 );
 }
 
+namespace daw_lift_overload_001 {
+	int add( int a, int b ) {
+		return a + b;
+	}
+	int add2( int a ) {
+		return a;
+	}
+
+	void test( ) {
+		auto add_set = daw::overload( daw::lift<add>, daw::lift<add2> );
+		static_assert( sizeof( decltype( add_set ) ) == 1 );
+		daw::expecting( add_set( 2, 4 ) == 6 );
+		daw::expecting( add_set( 4 ) == 4 );
+	}
+} // namespace daw_lift_overload_001
 int main( ) {
 	daw_overload_001( );
 	daw_overload_002( );
 	daw_empty_overload_001( );
+	daw_lift_overload_001::test( );
 }

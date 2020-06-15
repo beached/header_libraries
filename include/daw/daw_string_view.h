@@ -228,7 +228,7 @@ namespace daw {
 #endif
 #endif
 
-#ifndef WIN32
+#ifndef _MSC_VER
 		template<typename Bounds, ptrdiff_t Ex>
 		constexpr auto
 		operator=( basic_string_view<CharT, Bounds, Ex> rhs ) noexcept

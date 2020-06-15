@@ -22,6 +22,10 @@
 
 #pragma once
 
+#if defined( _MSC_VER ) 
+#include <intrin.h>
+#endif
+
 namespace daw {
 #ifndef _MSC_VER
 	template<typename Tp>

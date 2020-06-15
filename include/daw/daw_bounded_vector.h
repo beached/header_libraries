@@ -65,6 +65,15 @@ namespace daw {
 			daw::algorithm::copy_n( ptr, m_stack.begin( ), daw::min( count, N ) );
 		}
 
+		template<typename Iterator, typename std::iterator_traits<
+		                              Iterator>::value_type const * = nullptr>
+		constexpr bounded_vector_t( Iterator first, Iterator last ) {
+
+			while( not full( ) and first != last ) {
+				m_stack[m_index++] = *first++;
+			}
+		}
+
 		constexpr bool empty( ) const noexcept {
 			return m_index == m_first;
 		}
