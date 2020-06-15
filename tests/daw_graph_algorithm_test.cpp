@@ -127,8 +127,8 @@ void test_dfs_walk_002( daw::graph_t<char> const &graph,
                         daw::node_id_t root_id ) {
 	std::string result{};
 	daw::dfs_walk( graph, root_id, [&result]( auto &&node ) {
-		result.push_back( node.value( ) );
-	} );
+		result.push_back( node.value( ) ); },
+	  std::less<void>{ } );
 	daw::expecting( "CABEDF", result );
 }
 
