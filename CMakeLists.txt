@@ -166,6 +166,7 @@ set( UNTESTED_HEADER_FILES
 	daw_exchange.h
 	daw_function.h
 	daw_hash_table.h
+	daw_hide.h
 	daw_move.h
 	daw_newhelper.h
 	daw_operators.h
