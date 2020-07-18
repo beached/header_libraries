@@ -15,7 +15,7 @@ ECHO "Setting VCVars"
 
 ECHO "##############################"
 ECHO "Running cmake"
-cmake -DCMAKE_BUILD_TYPE=Debug -GNinja -DCMAKE_CXX_COMPILER=clang-cl.exe -DCMAKE_C_COMPILER=clang-cl.exe ..
+cmake -DCMAKE_BUILD_TYPE=Debug -GNinja -DCMAKE_CXX_COMPILER=C:\Program Files\LLVM\bin\clang-cl.exe -DCMAKE_C_COMPILER=C:\Program Files\LLVM\bin\clang-cl.exe ..
 
 ECHO "##############################"
 ECHO "Building"
