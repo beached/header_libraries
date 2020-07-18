@@ -77,13 +77,13 @@ namespace daw::filesystem {
 	public:
 		constexpr memory_mapped_file_t( ) noexcept = default;
 
-		explicit memory_mapped_file_t( std::string_view file,
+		explicit memory_mapped_file_t( std::basic_string_view<T> file,
 		                               open_mode mode = open_mode::read ) noexcept {
 
 			(void)open( file, mode );
 		}
 
-		[[nodiscard]] bool open( std::string_view file,
+		[[nodiscard]] bool open( std::basic_string_view<T> file,
 		                         open_mode mode = open_mode::read ) noexcept {
 
 			m_file =
@@ -182,11 +182,11 @@ namespace daw::filesystem {
 			cleanup( );
 		}
 
-		operator std::string_view( ) const {
+		operator std::basic_string_view<T>( ) const {
 			return {data( ), size( )};
 		}
 
-		operator std::string_view( ) {
+		operator std::basic_string_view<T>( ) {
 			return {data( ), size( )};
 		}
 	};
@@ -243,13 +243,13 @@ namespace daw::filesystem {
 	public:
 		constexpr memory_mapped_file_t( ) noexcept = default;
 
-		memory_mapped_file_t( std::string_view file,
+		memory_mapped_file_t( std::basic_string_view<T> file,
 		                      open_mode mode = open_mode::read ) noexcept {
 
 			(void)open( file, mode );
 		}
 
-		[[nodiscard]] bool open( std::string_view file,
+		[[nodiscard]] bool open( std::basic_string_view<T> file,
 		                         open_mode mode = open_mode::read ) noexcept {
 
 			{
@@ -330,11 +330,11 @@ namespace daw::filesystem {
 			cleanup( );
 		}
 
-		operator std::string_view( ) const {
+		operator std::basic_string_view<T>( ) const {
 			return {data( ), size( )};
 		}
 
-		operator std::string_view( ) {
+		operator std::basic_string_view<T>( ) {
 			return {data( ), size( )};
 		}
 	};
