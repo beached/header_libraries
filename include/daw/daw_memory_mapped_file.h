@@ -182,11 +182,11 @@ namespace daw::filesystem {
 		}
 
 		operator std::basic_string_view<T>( ) const {
-			return {data( ), size( )};
+			return { data( ), size( ) };
 		}
 
 		operator std::basic_string_view<T>( ) {
-			return {data( ), size( )};
+			return { data( ), size( ) };
 		}
 	};
 #else
@@ -242,7 +242,13 @@ namespace daw::filesystem {
 	public:
 		constexpr memory_mapped_file_t( ) noexcept = default;
 
-		memory_mapped_file_t( std::basic_string_view<T> file,
+		memory_mapped_file_t( std::string_view file,
+		                      open_mode mode = open_mode::read ) noexcept {
+
+			(void)open( file, mode );
+		}
+
+		memory_mapped_file_t( std::wstring_view file,
 		                      open_mode mode = open_mode::read ) noexcept {
 
 			(void)open( file, mode );
@@ -262,7 +268,7 @@ namespace daw::filesystem {
 					return false;
 				}
 				LARGE_INTEGER fsz;
-				if( not::GetFileSizeEx( file_handle, &fsz ) or fsz.QuadPart <= 0 ) {
+				if( not ::GetFileSizeEx( file_handle, &fsz ) or fsz.QuadPart <= 0 ) {
 					cleanup( );
 					return false;
 				}
@@ -297,7 +303,7 @@ namespace daw::filesystem {
 					return false;
 				}
 				LARGE_INTEGER fsz;
-				if( not::GetFileSizeEx( file_handle, &fsz ) or fsz.QuadPart <= 0 ) {
+				if( not ::GetFileSizeEx( file_handle, &fsz ) or fsz.QuadPart <= 0 ) {
 					cleanup( );
 					return false;
 				}
@@ -320,8 +326,6 @@ namespace daw::filesystem {
 			m_ptr = static_cast<pointer>( ptr );
 			return true;
 		}
-
-
 
 		[[nodiscard]] reference operator[]( size_type pos ) noexcept {
 			return m_ptr[pos];
@@ -370,11 +374,11 @@ namespace daw::filesystem {
 		}
 
 		operator std::basic_string_view<T>( ) const {
-			return {data( ), size( )};
+			return { data( ), size( ) };
 		}
 
 		operator std::basic_string_view<T>( ) {
-			return {data( ), size( )};
+			return { data( ), size( ) };
 		}
 	};
 #endif
