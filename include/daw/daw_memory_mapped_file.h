@@ -36,10 +36,9 @@
 #else
 #include <algorithm>
 #include <cstdio>
-#include <fileapi.h>
 #include <string>
 #include <tchar.h>
-#include <winbase.h>
+#include <windows.h>
 #endif
 
 namespace daw::filesystem {
