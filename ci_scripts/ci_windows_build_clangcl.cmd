@@ -1,9 +1,7 @@
 @ECHO OFF
 
 ECHO "##############################"
-ECHO "Installing Ninja"
-vcpkg upgrade
-REM vcpkg install ninja
+ECHO "Installing LLVM"
 choco install llvm
 
 md build

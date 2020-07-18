@@ -757,7 +757,7 @@ namespace daw {
 	 See: https://youtu.be/nXaxk27zwlk?t=2441
 	*/
 
-#ifndef _MSC_VER
+#if not defined( _MSC_VER ) or defined( __clang__ )
 	template<typename T>
 	inline void force_evaluation( T const &value ) {
 		asm volatile( "" : : "r,m"( value ) : "memory" );
