@@ -91,7 +91,7 @@ namespace daw {
 
 	template<size_t N, typename Invokable, typename TpArgs, typename... Args>
 	inline constexpr bool can_call_v =
-	  std::experimental::is_detected_v<can_call_test,
+	  daw::is_detected_v<can_call_test,
 	                                   std::integral_constant<std::size_t, N>,
 	                                   Invokable, TpArgs, Args...>;
 	/*
