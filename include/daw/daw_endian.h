@@ -31,7 +31,7 @@
 
 namespace daw {
 	enum class endian {
-#ifdef _MSC_VER
+#if defined( _MSC_VER ) and not defined( __clang__ )
 		little = 1234,
 		big = 4321,
 		native = little

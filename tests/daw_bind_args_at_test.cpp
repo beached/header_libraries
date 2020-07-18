@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2014-2020 Darrell Wright
+// Copyright (c) Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -20,28 +20,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/daw_memory_mapped_file.h"
+#include "daw/daw_bind_args_at.h"
 
-#include <cstdint>
-#include <fstream>
-#include <string>
-#include <string_view>
+#include <iostream>
 #include <type_traits>
 
-template<typename String>
-void create_file( String &&str ) {
-	std::ofstream fs{std::forward<String>( str )};
-	if( !fs ) {
-		return;
-	}
-	fs << "This is a test\n";
+constexpr int l( int a, int b ) {
+	return a < b;
 }
 
-void daw_memory_mapped_file_001( std::string const &file_name ) {
-	create_file( file_name );
-	daw::filesystem::memory_mapped_file_t<std::uint8_t> test( static_cast<std::string_view>( file_name ) );
-}
+constexpr auto less100 = daw::bind_args_at<1>( &l, 100 );
+constexpr auto less5_100 = daw::bind_args_at<0>( less100, 5 );
+
+struct Display {
+	template<typename Arg, typename... Args>
+	inline void operator( )( Arg const &arg, Args const &... args ) const {
+		auto const show_item = []( auto const &item ) { std::cout << ' ' << item; };
+		std::cout << arg;
+		(void)( ( show_item( args ), 0 ) | ... );
+	}
+
+	constexpr void operator( )( ) const {}
+};
+
+constexpr auto show_some = daw::bind_args_at<5>( Display{}, "Hello", "there" );
+static_assert( not std::is_invocable_v<decltype( show_some ), int, int> );
+static_assert(
+  std::is_invocable_v<decltype( show_some ), int, int, int, int, int> );
 
 int main( ) {
-	(void)daw_memory_mapped_file_001( "./blah.txt" );
+	if( less5_100( ) ) {
+		show_some( 1, 2, 3, 4, 5, 6, 7, 8, 9 );
+		// std::cout << "Good\n";
+	}
 }
