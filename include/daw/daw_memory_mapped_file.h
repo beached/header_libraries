@@ -24,7 +24,10 @@
 
 #include <cstddef>
 #include <cstdio>
-#ifndef _MSC_VER
+#include <string_view>
+#include <utility>
+
+#if not defined( _MSC_VER )
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <sys/types.h>
@@ -33,17 +36,16 @@
 #else
 #include <algorithm>
 #include <cstdio>
+#include <fileapi.h>
 #include <string>
 #include <tchar.h>
-#include <windows.h>
+#include <winbase.h>
 #endif
-#include <string_view>
-#include <utility>
 
 namespace daw::filesystem {
 	enum class open_mode : bool { read, read_write };
 
-#ifndef _MSC_VER
+#if not defined( _MSC_VER )
 	template<typename T = char>
 	struct memory_mapped_file_t {
 		using value_type = T;
@@ -75,13 +77,13 @@ namespace daw::filesystem {
 	public:
 		constexpr memory_mapped_file_t( ) noexcept = default;
 
-		explicit memory_mapped_file_t( std::basic_string_view<T> file,
+		explicit memory_mapped_file_t( std::string_view file,
 		                               open_mode mode = open_mode::read ) noexcept {
 
 			(void)open( file, mode );
 		}
 
-		[[nodiscard]] bool open( std::basic_string_view<T> file,
+		[[nodiscard]] bool open( std::string_view file,
 		                         open_mode mode = open_mode::read ) noexcept {
 
 			m_file =
@@ -231,10 +233,10 @@ namespace daw::filesystem {
 		void cleanup( ) noexcept {
 			m_size = 0;
 			if( auto tmp = std::exchange( m_ptr, nullptr ); tmp ) {
-				UnmapViewOfFile( static_cast<LPVOID>( tmp ) );
+				::UnmapViewOfFile( static_cast<LPVOID>( tmp ) );
 			}
 			if( auto tmp = std::exchange( m_handle, nullptr ); tmp ) {
-				CloseHandle( m_handle );
+				::CloseHandle( m_handle );
 			}
 		}
 
@@ -247,26 +249,30 @@ namespace daw::filesystem {
 			(void)open( file, mode );
 		}
 
-		[[nodiscard]] bool open( std::basic_string_view<T> file,
+		/***
+		 * file must be zero terminated
+		 */
+		template<typename CharT>
+		[[nodiscard]] bool open( std::basic_string_view<CharT> file,
 		                         open_mode mode = open_mode::read ) noexcept {
 
 			{
-				HANDLE file_handle =
-				  CreateFile( file.data( ), mapfile_impl::CreateFileMode( mode ), 0,
-				              nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr );
+				HANDLE file_handle = ::CreateFile(
+				  file.data( ), mapfile_impl::CreateFileMode( mode ), 0, nullptr,
+				  OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr );
 				if( file_handle == INVALID_HANDLE_VALUE ) {
 					return false;
 				}
 				LARGE_INTEGER fsz;
-				if( not GetFileSizeEx( file_handle, &fsz ) or fsz.QuadPart <= 0 ) {
+				if( not::GetFileSizeEx( file_handle, &fsz ) or fsz.QuadPart <= 0 ) {
 					cleanup( );
 					return false;
 				}
 				m_size = static_cast<size_t>( fsz.QuadPart );
-				m_handle = CreateFileMapping( file_handle, nullptr,
-				                              mapfile_impl::PageMode( mode ),
-				                              fsz.u.HighPart, fsz.u.LowPart, nullptr );
-				if( m_handle == NULL ) {
+				m_handle = ::CreateFileMapping(
+				  file_handle, nullptr, mapfile_impl::PageMode( mode ), fsz.u.HighPart,
+				  fsz.u.LowPart, nullptr );
+				if( m_handle == nullptr ) {
 					cleanup( );
 					return false;
 				}
