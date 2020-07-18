@@ -3,7 +3,7 @@
 ECHO "##############################"
 ECHO "Installing Ninja"
 vcpkg upgrade
-vcpkg install ninja
+REM vcpkg install ninja
 choco install llvm
 
 md build
@@ -15,7 +15,7 @@ ECHO "Setting VCVars"
 
 ECHO "##############################"
 ECHO "Running cmake"
-cmake -DCMAKE_BUILD_TYPE=Debug -GNinja -DCMAKE_CXX_COMPILER=C:\Program Files\LLVM\bin\clang-cl.exe -DCMAKE_C_COMPILER=C:\Program Files\LLVM\bin\clang-cl.exe ..
+cmake -DCMAKE_BUILD_TYPE=Debug -GNinja -DCMAKE_CXX_COMPILER="C:\Program Files\LLVM\bin\clang-cl.exe" -DCMAKE_C_COMPILER="C:\Program Files\LLVM\bin\clang-cl.exe" ..
 
 ECHO "##############################"
 ECHO "Building"

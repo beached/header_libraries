@@ -3,7 +3,7 @@
 ECHO "##############################"
 ECHO "Installing Ninja"
 vcpkg upgrade
-vcpkg install ninja
+REM vcpkg install ninja
 
 md build
 cd build
