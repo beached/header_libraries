@@ -251,12 +251,11 @@ namespace daw::filesystem {
 		/***
 		 * file must be zero terminated
 		 */
-		template<typename CharT>
-		[[nodiscard]] bool open( std::basic_string_view<CharT> file,
+		[[nodiscard]] bool open( std::string_view file,
 		                         open_mode mode = open_mode::read ) noexcept {
 
 			{
-				HANDLE file_handle = ::CreateFile(
+				HANDLE file_handle = ::CreateFileA(
 				  file.data( ), mapfile_impl::CreateFileMode( mode ), 0, nullptr,
 				  OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr );
 				if( file_handle == INVALID_HANDLE_VALUE ) {
@@ -286,6 +285,43 @@ namespace daw::filesystem {
 			m_ptr = static_cast<pointer>( ptr );
 			return true;
 		}
+
+		[[nodiscard]] bool open( std::wstring_view file,
+		                         open_mode mode = open_mode::read ) noexcept {
+
+			{
+				HANDLE file_handle = ::CreateFileW(
+				  file.data( ), mapfile_impl::CreateFileMode( mode ), 0, nullptr,
+				  OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr );
+				if( file_handle == INVALID_HANDLE_VALUE ) {
+					return false;
+				}
+				LARGE_INTEGER fsz;
+				if( not::GetFileSizeEx( file_handle, &fsz ) or fsz.QuadPart <= 0 ) {
+					cleanup( );
+					return false;
+				}
+				m_size = static_cast<size_t>( fsz.QuadPart );
+				m_handle = ::CreateFileMapping(
+				  file_handle, nullptr, mapfile_impl::PageMode( mode ), fsz.u.HighPart,
+				  fsz.u.LowPart, nullptr );
+				if( m_handle == nullptr ) {
+					cleanup( );
+					return false;
+				}
+				CloseHandle( file_handle );
+			}
+			auto ptr =
+			  MapViewOfFile( m_handle, mapfile_impl::MapMode( mode ), 0, 0, 0 );
+			if( ptr == nullptr ) {
+				cleanup( );
+				return false;
+			}
+			m_ptr = static_cast<pointer>( ptr );
+			return true;
+		}
+
+
 
 		[[nodiscard]] reference operator[]( size_type pos ) noexcept {
 			return m_ptr[pos];
