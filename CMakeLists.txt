@@ -34,6 +34,7 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_algorithm
 	daw_array
 	daw_benchmark
+	daw_bind_args_at
 	daw_bit
 	daw_bit_queues
 	daw_bounded_array
@@ -166,6 +167,7 @@ set( UNTESTED_HEADER_FILES
 	daw_exchange.h
 	daw_function.h
 	daw_hash_table.h
+	daw_hide.h
 	daw_move.h
 	daw_newhelper.h
 	daw_operators.h

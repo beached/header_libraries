@@ -26,7 +26,7 @@
 
 #include <cstddef>
 #include <cstdio>
-#ifndef WIN32
+#ifndef _MSC_VER
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <sys/types.h>
@@ -45,7 +45,7 @@
 namespace daw::filesystem {
 	enum class open_mode : bool { read, read_write };
 
-#ifndef WIN32
+#ifndef _MSC_VER
 	template<typename T = char>
 	struct memory_mapped_file_t {
 		using value_type = T;
