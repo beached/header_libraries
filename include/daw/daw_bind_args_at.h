@@ -22,16 +22,15 @@
 
 #pragma once
 
-namespace daw {
+#include "daw/cpp_17.h"
+
 #include <cstddef>
 #include <experimental/type_traits>
 #include <iostream>
 #include <tuple>
 #include <utility>
 
-	template<typename T>
-	using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
-
+namespace daw {
 	template<
 	  std::size_t StartN, typename... Args, std::size_t... Is,
 	  std::enable_if_t<( sizeof...( Args ) >= ( sizeof...( Is ) + StartN ) ),
@@ -149,3 +148,5 @@ namespace daw {
 		  std::forward<Invokable>( func ),
 		  std::tuple<std::decay_t<Args>...>( std::forward<Args>( args )... )};
 	}
+}
+
