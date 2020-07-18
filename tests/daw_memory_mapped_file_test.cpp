@@ -37,9 +37,9 @@ void create_file( String &&str ) {
 
 void daw_memory_mapped_file_001( std::string const &file_name ) {
 	create_file( file_name );
-	daw::filesystem::memory_mapped_file_t<uint8_t> test( file_name );
+	daw::filesystem::memory_mapped_file_t<std::uint8_t> test( file_name );
 }
 
 int main( ) {
-	daw_memory_mapped_file_001( "./blah.txt" );
+	(void)daw_memory_mapped_file_001( "./blah.txt" );
 }
