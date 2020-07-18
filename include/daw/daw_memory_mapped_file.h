@@ -22,8 +22,6 @@
 
 #pragma once
 
-#include "daw_exchange.h"
-
 #include <cstddef>
 #include <cstdio>
 #ifndef _MSC_VER
@@ -165,15 +163,15 @@ namespace daw::filesystem {
 		memory_mapped_file_t &operator=( memory_mapped_file_t const & ) = delete;
 
 		memory_mapped_file_t( memory_mapped_file_t &&other ) noexcept
-		  : m_file( daw::exchange( other.m_file, -1 ) )
-		  , m_ptr( daw::exchange( other.m_ptr, nullptr ) )
-		  , m_size( daw::exchange( other.m_size, 0 ) ) {}
+		  : m_file( std::exchange( other.m_file, -1 ) )
+		  , m_ptr( std::exchange( other.m_ptr, nullptr ) )
+		  , m_size( std::exchange( other.m_size, 0 ) ) {}
 
 		memory_mapped_file_t &operator=( memory_mapped_file_t &&rhs ) noexcept {
 			if( this != &rhs ) {
-				m_file = daw::exchange( rhs.m_file, -1 );
-				m_ptr = daw::exchange( rhs.m_ptr, nullptr );
-				m_size = daw::exchange( rhs.m_size, 0 );
+				m_file = std::exchange( rhs.m_file, -1 );
+				m_ptr = std::exchange( rhs.m_ptr, nullptr );
+				m_size = std::exchange( rhs.m_size, 0 );
 			}
 			return *this;
 		}
@@ -232,10 +230,10 @@ namespace daw::filesystem {
 
 		void cleanup( ) noexcept {
 			m_size = 0;
-			if( auto tmp = daw::exchange( m_ptr, nullptr ); tmp ) {
+			if( auto tmp = std::exchange( m_ptr, nullptr ); tmp ) {
 				UnmapViewOfFile( static_cast<LPVOID>( tmp ) );
 			}
-			if( auto tmp = daw::exchange( m_handle, nullptr ); tmp ) {
+			if( auto tmp = std::exchange( m_handle, nullptr ); tmp ) {
 				CloseHandle( m_handle );
 			}
 		}
@@ -313,15 +311,15 @@ namespace daw::filesystem {
 		memory_mapped_file_t &operator=( memory_mapped_file_t const & ) = delete;
 
 		memory_mapped_file_t( memory_mapped_file_t &&other ) noexcept
-		  : m_handle( daw::exchange( other.m_handle, nullptr ) )
-		  , m_size( daw::exchange( other.m_size, 0 ) )
-		  , m_ptr( daw::exchange( other.m_ptr, nullptr ) ) {}
+		  : m_handle( std::exchange( other.m_handle, nullptr ) )
+		  , m_size( std::exchange( other.m_size, 0 ) )
+		  , m_ptr( std::exchange( other.m_ptr, nullptr ) ) {}
 
 		memory_mapped_file_t &operator=( memory_mapped_file_t &&rhs ) noexcept {
 			if( this != &rhs ) {
-				m_handle = daw::exchange( rhs.m_handle, nullptr );
-				m_size = daw::exchange( rhs.m_size, 0 );
-				m_ptr = daw::exchange( rhs.m_ptr, nullptr );
+				m_handle = std::exchange( rhs.m_handle, nullptr );
+				m_size = std::exchange( rhs.m_size, 0 );
+				m_ptr = std::exchange( rhs.m_ptr, nullptr );
 			}
 			return *this;
 		}
