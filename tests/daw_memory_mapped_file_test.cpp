@@ -24,6 +24,8 @@
 
 #include <cstdint>
 #include <fstream>
+#include <string>
+#include <string_view>
 #include <type_traits>
 
 template<typename String>
