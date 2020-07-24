@@ -20,20 +20,36 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "daw/daw_uint64_buffer.h"
+#include "daw/daw_uint_buffer.h"
 
 #include <cassert>
 #include <cstring>
 
 std::uint64_t to_uint64( char const *ptr ) {
 	std::uint64_t result;
-	memcpy( &result, ptr, 8U );
+	memcpy( &result, ptr, sizeof( std::uint64_t ) );
 	return result;
 }
 
+std::uint32_t to_uint32( char const *ptr ) {
+	std::uint32_t result;
+	memcpy( &result, ptr, sizeof( std::uint32_t ) );
+	return result;
+}
+
+std::uint16_t to_uint16( char const *ptr ) {
+	std::uint16_t result;
+	memcpy( &result, ptr, sizeof( std::uint16_t ) );
+	return result;
+}
+
+
+
 int main( ) {
-	constexpr std::uint64_t a =
-	  static_cast<std::uint64_t>( daw::to_uint64_buffer( "0123456789" ) );
-	std::uint64_t b = to_uint64( "0123456789" );
-	assert( a == b );
+	assert( static_cast<std::uint64_t>( daw::to_uint64_buffer( "0123456789" ) ) ==
+	        to_uint64( "0123456789" ) );
+	assert( static_cast<std::uint32_t>( daw::to_uint32_buffer( "0123456789" ) ) ==
+	        to_uint32( "0123456789" ) );
+	assert( static_cast<std::uint16_t>( daw::to_uint16_buffer( "0123456789" ) ) ==
+	        to_uint16( "0123456789" ) );
 }
