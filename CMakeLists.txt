@@ -89,7 +89,7 @@ set( TESTED_HEADERS_PREFIXES_NB
 	daw_span
 	daw_traits
 	daw_tuple_helper
-	daw_uint64_buffer
+	daw_uint_buffer
 	daw_uninitialized_storage
 	daw_union_pair
 	daw_unique_array
