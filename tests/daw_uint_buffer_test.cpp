@@ -43,8 +43,6 @@ std::uint16_t to_uint16( char const *ptr ) {
 	return result;
 }
 
-
-
 int main( ) {
 	assert( static_cast<std::uint64_t>( daw::to_uint64_buffer( "0123456789" ) ) ==
 	        to_uint64( "0123456789" ) );
@@ -52,4 +50,23 @@ int main( ) {
 	        to_uint32( "0123456789" ) );
 	assert( static_cast<std::uint16_t>( daw::to_uint16_buffer( "0123456789" ) ) ==
 	        to_uint16( "0123456789" ) );
+
+	{
+		auto const a = daw::to_uint64_buffer( "0123456789" );
+		auto const b = daw::to_uint64_buffer( "9876543210" );
+		auto c = a & b;
+		(void)c;
+	}
+	{
+		auto const a = daw::to_uint32_buffer( "0123456789" );
+		auto const b = daw::to_uint32_buffer( "9876543210" );
+		auto c = a & b;
+		(void)c;
+	}
+	{
+		auto const a = daw::to_uint16_buffer( "0123456789" );
+		auto const b = daw::to_uint16_buffer( "9876543210" );
+		auto c = a & b;
+		(void)c;
+	}
 }
