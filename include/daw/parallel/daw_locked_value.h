@@ -144,11 +144,11 @@ namespace daw {
 		  : m_value( std::forward<U>( value ) ) {}
 
 		locked_value_t get( ) {
-			return {std::unique_lock<Mutex>( m_mutex.get( ) ), *m_value};
+			return locked_value_t( std::unique_lock<Mutex>( m_mutex.get( ) ), *m_value );
 		}
 
 		const_locked_value_t get( ) const {
-			return {std::unique_lock<Mutex>( m_mutex.get( ) ), *m_value};
+			return const_locked_value_t( std::unique_lock<Mutex>( m_mutex.get( ) ), *m_value );
 		}
 
 		std::optional<locked_value_t> try_get( ) {
@@ -156,7 +156,7 @@ namespace daw {
 			if( not lck.owns_lock( ) ) {
 				return {};
 			}
-			return {std::move( lck ), *m_value};
+			return {locked_value_t( std::move( lck ), *m_value )};
 		}
 
 		std::optional<const_locked_value_t> try_get( ) const {
@@ -164,7 +164,7 @@ namespace daw {
 			if( not lck.owns_lock( ) ) {
 				return {};
 			}
-			return {std::move( lck ), *m_value};
+			return {const_locked_value_t( std::move( lck ), *m_value )};
 		}
 
 		locked_value_t operator*( ) {
