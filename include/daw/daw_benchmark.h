@@ -284,7 +284,7 @@ namespace daw {
 	[[maybe_unused]] static std::array<double, Runs>
 	bench_n_test_mbs2( std::string const &title, size_t bytes,
 	                   Validator &&validator, Function &&func,
-	                   Args &&... args ) noexcept {
+	                   Args const &... args ) noexcept {
 		static_assert( Runs > 0 );
 		auto results = std::array<double, Runs>{ };
 
@@ -313,9 +313,10 @@ namespace daw {
 		benchmark_impl::second_duration valid_time = std::chrono::seconds( 0 );
 		for( size_t n = 0; n < Runs; ++n ) {
 			auto const start = std::chrono::steady_clock::now( );
-			using result_t = daw::remove_cvref_t<decltype( func( args... ) )>;
+			auto tp_args = std::tuple{ args... };
+			using result_t = daw::remove_cvref_t<decltype( std::apply( func, tp_args ) )>;
 			result_t result;
-			result = *daw::expected_from_code( func, args... );
+			result = std::apply( func, tp_args );
 			auto const finish = std::chrono::steady_clock::now( );
 			daw::do_not_optimize( result );
 			auto const valid_start = std::chrono::steady_clock::now( );

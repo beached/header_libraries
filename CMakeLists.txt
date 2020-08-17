@@ -178,6 +178,7 @@ set( UNTESTED_HEADER_FILES
 	daw_range_reference.h
 	daw_range_type.h
 	daw_reference.h
+	daw_sbo.h
 	daw_string_fmt.h
 	daw_string_view_fwd.h
 	daw_swap.h
