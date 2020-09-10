@@ -40,7 +40,7 @@ namespace daw {
 		constexpr integer_range_iterator( ) noexcept = default;
 
 		constexpr integer_range_iterator( value_type start_value ) noexcept
-		  : current_value{start_value} {}
+		  : current_value{ start_value } {}
 
 		constexpr reference operator*( ) const noexcept {
 			return current_value;
@@ -52,7 +52,7 @@ namespace daw {
 		}
 
 		constexpr integer_range_iterator operator++( int ) const noexcept {
-			integer_range_iterator tmp{*this};
+			integer_range_iterator tmp{ *this };
 			++current_value;
 			return tmp;
 		}
@@ -84,7 +84,7 @@ namespace daw {
 		}
 
 		constexpr integer_range( T f, T l ) noexcept
-		  : first{f}
-		  , last{l} {}
+		  : first{ f }
+		  , last{ l } {}
 	};
 } // namespace daw

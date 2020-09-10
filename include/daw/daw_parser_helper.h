@@ -44,9 +44,9 @@ namespace daw {
 
 			parser_result( ) = default;
 			parser_result( T value, Iterator f, Iterator l )
-			  : first{daw::move( f )}
-			  , last{daw::move( l )}
-			  , result{daw::move( value )} {}
+			  : first{ daw::move( f ) }
+			  , last{ daw::move( l ) }
+			  , result{ daw::move( value ) } {}
 
 			~parser_result( );
 			parser_result( parser_result const & ) = default;
@@ -71,9 +71,9 @@ namespace daw {
 
 			constexpr find_result_t( ForwardIterator First, ForwardIterator Last,
 			                         bool Found ) noexcept
-			  : first{First}
-			  , last{Last}
-			  , found{Found} {}
+			  : first{ First }
+			  , last{ Last }
+			  , found{ Found } {}
 
 			constexpr explicit operator bool( ) const noexcept {
 				return found;
@@ -127,7 +127,7 @@ namespace daw {
 		constexpr find_result_t<ForwardIterator>
 		make_find_result( ForwardIterator first, ForwardIterator last,
 		                  bool result = false ) noexcept {
-			return find_result_t<ForwardIterator>{first, last, result};
+			return find_result_t<ForwardIterator>{ first, last, result };
 		}
 
 		template<typename ForwardIterator, typename Predicate>
@@ -197,7 +197,7 @@ namespace daw {
 
 		public:
 			one_of_t( std::initializer_list<Arg> args )
-			  : m_args{args} {}
+			  : m_args{ args } {}
 
 			template<typename T>
 			bool operator( )( T &&value ) const {
@@ -207,7 +207,7 @@ namespace daw {
 
 		template<typename... Arg>
 		auto one_of( Arg &&... args ) {
-			return one_of_t<Arg...>{std::forward<Arg>( args )...};
+			return one_of_t<Arg...>{ std::forward<Arg>( args )... };
 		}
 
 		template<typename ForwardIterator, typename Value, typename... Values>
@@ -248,7 +248,7 @@ namespace daw {
 
 		public:
 			constexpr in_t( daw::string_view values ) noexcept
-			  : container{daw::move( values )} {}
+			  : container{ daw::move( values ) } {}
 
 			template<typename U>
 			constexpr bool operator( )( U const &value ) const noexcept {
@@ -257,7 +257,7 @@ namespace daw {
 		}; // in_t
 
 		constexpr auto in( daw::string_view container ) noexcept {
-			return in_t{daw::move( container )};
+			return in_t{ daw::move( container ) };
 		}
 
 		/* old
@@ -635,8 +635,8 @@ namespace daw {
 
 		public:
 			is_crlf( size_t count = 1 )
-			  : m_last_values{}
-			  , m_count{count} {}
+			  : m_last_values{ }
+			  , m_count{ count } {}
 
 			bool operator( )( value_type const &v ) {
 				m_last_values.push_back( daw::move( v ) );
@@ -654,7 +654,7 @@ namespace daw {
 
 			public:
 				constexpr negate_t( Predicate pred )
-				  : predicate{daw::move( pred )} {}
+				  : predicate{ daw::move( pred ) } {}
 
 				template<typename... Args>
 				constexpr bool operator( )( Args &&... args ) const {
@@ -670,7 +670,7 @@ namespace daw {
 
 		template<typename Predicate>
 		constexpr auto negate( Predicate predicate ) {
-			return impl::negate_t<Predicate>{daw::move( predicate )};
+			return impl::negate_t<Predicate>{ daw::move( predicate ) };
 		}
 
 		template<typename T>
@@ -682,7 +682,7 @@ namespace daw {
 
 		public:
 			matcher_t( std::vector<value_t> to_match )
-			  : m_to_match{daw::move( to_match )} {}
+			  : m_to_match{ daw::move( to_match ) } {}
 
 			template<typename ForwardIterator>
 			find_result_t<ForwardIterator> operator( )( ForwardIterator first,
@@ -707,7 +707,7 @@ namespace daw {
 			std::vector<value_t> values;
 			std::copy( container.begin( ), container.end( ),
 			           std::back_inserter( values ) );
-			return matcher_t<value_t>{daw::move( values )};
+			return matcher_t<value_t>{ daw::move( values ) };
 		}
 
 		template<typename T, size_t N>
@@ -715,7 +715,7 @@ namespace daw {
 			using value_t = daw::traits::root_type_t<T>;
 			std::vector<value_t> values;
 			std::copy_n( container, N, std::back_inserter( values ) );
-			return matcher_t<value_t>{daw::move( values )};
+			return matcher_t<value_t>{ daw::move( values ) };
 		}
 
 		///

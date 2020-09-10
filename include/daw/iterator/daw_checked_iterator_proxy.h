@@ -59,11 +59,11 @@ namespace daw {
 		                          bool CheckIncrement = true,
 		                          bool CheckDecrement = true,
 		                          bool CheckDereference = true )
-		  : current{it_first}
-		  , first{daw::move( it_first )}
-		  , last{daw::move( it_last )}
-		  , flags{
-		      get_flag_value( CheckIncrement, CheckDecrement, CheckDereference )} {}
+		  : current{ it_first }
+		  , first{ daw::move( it_first ) }
+		  , last{ daw::move( it_last ) }
+		  , flags{ get_flag_value( CheckIncrement, CheckDecrement,
+		                           CheckDereference ) } {}
 
 		checked_iterator_proxy_t( checked_iterator_proxy_t const & ) = default;
 		checked_iterator_proxy_t( checked_iterator_proxy_t && ) = default;
@@ -84,7 +84,7 @@ namespace daw {
 		}
 
 		checked_iterator_proxy_t operator++( int ) const {
-			checked_iterator_proxy_t result{*this};
+			checked_iterator_proxy_t result{ *this };
 			++result;
 			return result;
 		}
@@ -99,7 +99,7 @@ namespace daw {
 		}
 
 		checked_iterator_proxy_t operator--( int ) const {
-			checked_iterator_proxy_t result{*this};
+			checked_iterator_proxy_t result{ *this };
 			--result;
 			return result;
 		}
@@ -120,7 +120,7 @@ namespace daw {
 			return *current;
 		}
 
-		auto &operator-> ( ) {
+		auto &operator->( ) {
 			if( is_flag_set( check_dereference ) and current == last ) {
 				throw std::out_of_range(
 				  "Attempt to access members an iterator at end of range" );
@@ -128,7 +128,7 @@ namespace daw {
 			return current.operator->( );
 		}
 
-		auto const &operator-> ( ) const {
+		auto const &operator->( ) const {
 			if( is_flag_set( check_dereference ) and current == last ) {
 				throw std::out_of_range(
 				  "Attempt to access members an iterator at end of range" );
@@ -177,6 +177,6 @@ namespace daw {
 	                                  bool CheckDecrement = true,
 	                                  bool CheckDereference = true ) {
 		return checked_iterator_proxy_t<IteratorFirst, IteratorLast>{
-		  first, last, CheckIncrement, CheckDecrement, CheckDereference};
+		  first, last, CheckIncrement, CheckDecrement, CheckDereference };
 	}
 } // namespace daw

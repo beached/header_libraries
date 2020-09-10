@@ -97,13 +97,13 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr difference_type operator-( arg_iterator_t const &rhs ) const
-		  noexcept {
+		constexpr difference_type
+		operator-( arg_iterator_t const &rhs ) const noexcept {
 			return m_pos - rhs.m_pos;
 		}
 
-		constexpr difference_type operator+( arg_iterator_t const &rhs ) const
-		  noexcept {
+		constexpr difference_type
+		operator+( arg_iterator_t const &rhs ) const noexcept {
 			return m_pos + rhs.m_pos;
 		}
 

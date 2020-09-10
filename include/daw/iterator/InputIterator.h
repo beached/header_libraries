@@ -99,7 +99,7 @@ namespace daw {
 				  // op_clone
 				  return reinterpret_cast<std::byte *>(
 				    new Iterator( std::as_const( as_orig<Iterator>( p ) ) ) );
-			  }};
+			  } };
 			return &vtable;
 		}
 	} // namespace inpit_impl
@@ -211,15 +211,15 @@ namespace daw {
 			  m_iterator, rhs.m_iterator );
 		}
 
-		bool are_same_base_iterator_type( InputIterator const &other ) const
-		  noexcept {
+		bool
+		are_same_base_iterator_type( InputIterator const &other ) const noexcept {
 			return same_op_cmp( *this, other );
 		}
 	};
 
 	template<typename Iterator>
 	InputIterator( Iterator )
-	  ->InputIterator<typename std::iterator_traits<Iterator>::value_type>;
+	  -> InputIterator<typename std::iterator_traits<Iterator>::value_type>;
 
 	// *****************************************************
 	template<typename T>
@@ -264,10 +264,9 @@ namespace daw {
 
 	template<typename Iterator>
 	InputRange( Iterator, Iterator )
-	  ->InputRange<typename std::iterator_traits<Iterator>::value_type>;
+	  -> InputRange<typename std::iterator_traits<Iterator>::value_type>;
 	template<typename Container>
-	InputRange( Container )
-	  ->InputRange<std::remove_reference_t<
-	    decltype( *std::begin( std::declval<Container>( ) ) )>>;
+	InputRange( Container ) -> InputRange<std::remove_reference_t<
+	  decltype( *std::begin( std::declval<Container>( ) ) )>>;
 
 } // namespace daw

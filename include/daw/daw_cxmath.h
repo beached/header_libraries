@@ -51,7 +51,7 @@ namespace daw::cxmath {
 			  0,  1,  2,  7,  3,  13, 8,  19, 4,  25, 14, 28, 9,  34, 20, 40,
 			  5,  17, 26, 38, 15, 46, 29, 48, 10, 31, 35, 54, 21, 50, 41, 57,
 			  63, 6,  12, 18, 24, 27, 33, 39, 16, 37, 45, 47, 30, 53, 49, 56,
-			  62, 11, 23, 32, 36, 44, 52, 55, 61, 22, 43, 51, 60, 42, 59, 58};
+			  62, 11, 23, 32, 36, 44, 52, 55, 61, 22, 43, 51, 60, 42, 59, 58 };
 
 			v |= v >> 1U; // first round down to one less than a power of 2
 			v |= v >> 2U;
@@ -80,8 +80,8 @@ namespace daw::cxmath {
 		}
 
 		class float_parts_t {
-			std::uint32_t m_raw_value{};
-			float m_float_value{};
+			std::uint32_t m_raw_value{ };
+			float m_float_value{ };
 
 		public:
 			static constexpr std::uint32_t const PosInf = 0x7F80'0000;
@@ -159,16 +159,16 @@ namespace daw::cxmath {
 		[[nodiscard]] constexpr float_parts_t bits( float const f ) noexcept {
 			// Once c++20 use bit_cast
 			if( f == 0.0f ) {
-				return {0, f}; // also matches -0.0f and gives wrong result
+				return { 0, f }; // also matches -0.0f and gives wrong result
 			} else if( f > std::numeric_limits<float>::max( ) ) {
 				// infinity
-				return {0x7f80'0000, f};
+				return { 0x7f80'0000, f };
 			} else if( f < -std::numeric_limits<float>::max( ) ) {
 				// negative infinity
-				return {0xff800000, f};
+				return { 0xff800000, f };
 			} else if( f != f ) {
 				// NaN
-				return {0x7fc0'0000, f};
+				return { 0x7fc0'0000, f };
 			}
 			bool sign = f < 0.0f;
 			float abs_f = sign ? -f : f;
@@ -189,9 +189,10 @@ namespace daw::cxmath {
 			}
 
 			std::uint32_t significand = ( a << ( lz + 1 ) ) >> ( 64 - 23 ); // [3]
-			return {( static_cast<std::uint32_t>( sign ? 1U : 0U ) << 31U ) |
-			          ( static_cast<std::uint32_t>( exponent ) << 23U ) | significand,
-			        f};
+			return { ( static_cast<std::uint32_t>( sign ? 1U : 0U ) << 31U ) |
+			           ( static_cast<std::uint32_t>( exponent ) << 23U ) |
+			           significand,
+			         f };
 		}
 
 		template<typename Float>
@@ -266,7 +267,7 @@ namespace daw::cxmath {
 		[[nodiscard]] constexpr auto calc_pow2s( ) noexcept {
 			intmax_t const min_e = std::numeric_limits<Float>::min_exponent10;
 			intmax_t const max_e = std::numeric_limits<Float>::max_exponent10;
-			std::array<Float, max_e - min_e> result{};
+			std::array<Float, max_e - min_e> result{ };
 			intmax_t n = max_e - min_e;
 			while( n-- > 0 ) {
 				result[static_cast<size_t>( n )] = pow2_impl2<Float>( n + min_e );
@@ -278,7 +279,7 @@ namespace daw::cxmath {
 		[[nodiscard]] constexpr auto calc_fpow10s( ) noexcept {
 			intmax_t const min_e = std::numeric_limits<Float>::min_exponent10;
 			intmax_t const max_e = std::numeric_limits<Float>::max_exponent10;
-			std::array<Float, max_e - min_e> result{};
+			std::array<Float, max_e - min_e> result{ };
 			intmax_t n = max_e - min_e;
 			while( n-- > 0 ) {
 				result[static_cast<size_t>( n )] = fpow10_impl2<Float>( n + min_e );
@@ -288,7 +289,7 @@ namespace daw::cxmath {
 
 		template<typename Integer>
 		[[nodiscard]] constexpr auto calc_pow10s( ) noexcept {
-			std::array<Integer, std::numeric_limits<Integer>::digits10> result{};
+			std::array<Integer, std::numeric_limits<Integer>::digits10> result{ };
 			intmax_t n = std::numeric_limits<Integer>::digits10;
 			while( n-- > 0 ) {
 				result[static_cast<size_t>( n )] = pow10_impl2<Integer>( n );
@@ -376,7 +377,8 @@ namespace daw::cxmath {
 		return cxmath_impl::pow10_t<uintmax_t>::get( exp );
 	}
 
-	[[nodiscard]] constexpr float fexp2( float X, std::int16_t exponent ) noexcept {
+	[[nodiscard]] constexpr float fexp2( float X,
+	                                     std::int16_t exponent ) noexcept {
 		auto const exp_diff = exponent - *fexp2( X );
 		if( exp_diff > 0 ) {
 			return fpow2( exp_diff ) * X;

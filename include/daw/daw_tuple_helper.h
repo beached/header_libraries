@@ -99,7 +99,7 @@ namespace daw {
 				}
 
 				static min_t const &get( ) noexcept {
-					static min_t result{};
+					static min_t result{ };
 					return result;
 				}
 			}; // min_t
@@ -113,7 +113,7 @@ namespace daw {
 				}
 
 				static max_t const &get( ) noexcept {
-					static max_t result{};
+					static max_t result{ };
 					return result;
 				}
 			}; // max_t
@@ -127,9 +127,9 @@ namespace daw {
 
 			public:
 				constexpr print_t( std::ostream &os, char separator = ',' )
-				  : m_os{os}
-				  , m_is_first{true}
-				  , m_separator{daw::move( separator )} {}
+				  : m_os{ os }
+				  , m_is_first{ true }
+				  , m_separator{ daw::move( separator ) } {}
 
 				void reset( ) {
 					m_is_first = true;
@@ -149,13 +149,13 @@ namespace daw {
 		template<typename... Ts, typename F>
 		constexpr void for_each( std::tuple<Ts...> const &t1, F &&f ) {
 			tuple_details::for_each( t1, std::forward<F>( f ),
-			                         std::index_sequence_for<Ts...>{} );
+			                         std::index_sequence_for<Ts...>{ } );
 		}
 
 		template<typename... Ts, typename F>
 		constexpr void apply( std::tuple<Ts...> &t1, F &&f ) {
 			tuple_details::for_each( t1, std::forward<F>( f ),
-			                         std::index_sequence_for<Ts...>{} );
+			                         std::index_sequence_for<Ts...>{ } );
 		}
 
 		namespace operators {
@@ -216,7 +216,7 @@ namespace daw {
 				apply_tuple_tuple( std::tuple<Ts...> const &op1,
 				                   std::tuple<Ts...> const &op2, F f ) {
 					std::tuple<Ts...> result;
-					apply_tuple( result, op1, op2, f, std::index_sequence_for<Ts...>{} );
+					apply_tuple( result, op1, op2, f, std::index_sequence_for<Ts...>{ } );
 					return result;
 				}
 
@@ -224,7 +224,8 @@ namespace daw {
 				constexpr std::tuple<Ts...>
 				apply_tuple_value2( T const &op1, std::tuple<Ts...> const &op2, F f ) {
 					std::tuple<Ts...> result;
-					apply_value2( result, op1, op2, f, std::index_sequence_for<Ts...>{} );
+					apply_value2( result, op1, op2, f,
+					              std::index_sequence_for<Ts...>{ } );
 					return result;
 				}
 
@@ -232,7 +233,7 @@ namespace daw {
 				constexpr std::tuple<Ts...>
 				apply_tuple_value( std::tuple<Ts...> const &op1, T const &op2, F f ) {
 					std::tuple<Ts...> result;
-					apply_value( result, op1, op2, f, std::index_sequence_for<Ts...>{} );
+					apply_value( result, op1, op2, f, std::index_sequence_for<Ts...>{ } );
 					return result;
 				}
 
@@ -244,7 +245,7 @@ namespace daw {
 					}
 
 					static add_t const &get( ) {
-						static add_t result{};
+						static add_t result{ };
 						return result;
 					}
 				}; // add_t
@@ -257,7 +258,7 @@ namespace daw {
 					}
 
 					static sub_t const &get( ) {
-						static sub_t result{};
+						static sub_t result{ };
 						return result;
 					}
 				}; // sub_t
@@ -270,7 +271,7 @@ namespace daw {
 					}
 
 					static mul_t const &get( ) {
-						static mul_t result{};
+						static mul_t result{ };
 						return result;
 					}
 				}; // mul_t
@@ -283,7 +284,7 @@ namespace daw {
 					}
 
 					static div_t const &get( ) {
-						static div_t result{};
+						static div_t result{ };
 						return result;
 					}
 				}; // div_t
@@ -378,7 +379,7 @@ namespace daw {
 		constexpr std::ostream &operator<<( std::ostream &os,
 		                                    std::tuple<Ts...> const &t ) {
 			os << "{";
-			for_each( t, tuple_details::print_t{os} );
+			for_each( t, tuple_details::print_t{ os } );
 			os << " }";
 			return os;
 		}
@@ -428,7 +429,7 @@ namespace daw {
 
 			template<typename Func>
 			constexpr call_func<Func> make_call_func( Func &&func ) noexcept {
-				return call_func<Func>{std::forward<Func>( func )};
+				return call_func<Func>{ std::forward<Func>( func ) };
 			}
 
 			template<size_t N, typename Func, typename Arg>
@@ -456,7 +457,7 @@ namespace daw {
 		                         Funcs &&... funcs ) {
 			tuple_details::apply_at_impl(
 			  tp, index, daw::overload( std::forward<Funcs>( funcs )... ),
-			  std::index_sequence_for<Args...>{} );
+			  std::index_sequence_for<Args...>{ } );
 		}
 
 		template<typename... Args, typename... Funcs>
@@ -464,7 +465,7 @@ namespace daw {
 		                         Funcs &&... funcs ) {
 			tuple_details::apply_at_impl(
 			  tp, index, daw::overload( std::forward<Funcs>( funcs )... ),
-			  std::index_sequence_for<Args...>{} );
+			  std::index_sequence_for<Args...>{ } );
 		}
 
 		template<typename... Args, typename... Funcs>
@@ -479,7 +480,7 @@ namespace daw {
 			template<class T, class Tuple, std::size_t... I>
 			constexpr T make_from_tuple_impl( Tuple &&t, std::index_sequence<I...>,
 			                                  std::true_type ) {
-				return T{std::get<I>( std::forward<Tuple>( t ) )...};
+				return T{ std::get<I>( std::forward<Tuple>( t ) )... };
 			}
 
 			template<class T, class Tuple, std::size_t... I>
@@ -508,8 +509,8 @@ namespace daw {
 		return tuple::tuple_details::make_from_tuple_impl<T>(
 		  std::forward<Tuple>( t ),
 		  std::make_index_sequence<
-		    std::tuple_size_v<std::remove_reference_t<Tuple>>>{},
-		  std::is_aggregate<T>{} );
+		    std::tuple_size_v<std::remove_reference_t<Tuple>>>{ },
+		  std::is_aggregate<T>{ } );
 	}
 
 	template<typename Tuple>

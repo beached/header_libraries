@@ -39,12 +39,12 @@ namespace daw {
 			size_t hash_value;
 			value_type value;
 			constexpr hash_item( )
-			  : hash_value{}
-			  , value{} {}
+			  : hash_value{ }
+			  , value{ } {}
 
 			constexpr hash_item( size_t h, value_type v )
-			  : hash_value{daw::move( h )}
-			  , value{daw::move( v )} {}
+			  : hash_value{ daw::move( h ) }
+			  , value{ daw::move( v ) } {}
 
 		}; // hash_item
 
@@ -113,8 +113,8 @@ namespace daw {
 
 	public:
 		constexpr static_hash_t( )
-		  : m_values{} {
-			daw::algorithm::fill_n( m_values.begin( ), Capacity, hash_item{} );
+		  : m_values{ } {
+			daw::algorithm::fill_n( m_values.begin( ), Capacity, hash_item{ } );
 		}
 
 		constexpr static_hash_t(

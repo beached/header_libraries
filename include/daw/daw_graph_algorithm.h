@@ -194,7 +194,7 @@ namespace daw {
 					std::sort( children.begin( ), children.end( ),
 					           [&]( daw::node_id_t left_id, daw::node_id_t right_id ) {
 						           return not ord( graph.get_node( left_id ).value( ),
-						                       graph.get_node( right_id ).value( ) );
+						                           graph.get_node( right_id ).value( ) );
 					           } );
 					path.reserve( path.size( ) + children.size( ) );
 					std::copy( children.begin( ), children.end( ),

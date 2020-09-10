@@ -82,7 +82,7 @@ namespace daw {
 	constexpr auto min( T0 &&val1, T1 &&val2 ) noexcept
 	  -> std::common_type_t<T0, T1> {
 
-		if( std::less_equal<>{}( val1, val2 ) ) {
+		if( std::less_equal<>{ }( val1, val2 ) ) {
 			return std::forward<T0>( val1 );
 		}
 		return std::forward<T1>( val2 );
@@ -90,7 +90,7 @@ namespace daw {
 
 	template<typename T, typename Compare = std::less<>>
 	constexpr decltype( auto ) min_comp( T &&lhs, T &&rhs,
-	                                     Compare &&comp = Compare{} ) {
+	                                     Compare &&comp = Compare{ } ) {
 		if( comp( lhs, rhs ) ) {
 			return std::forward<T>( lhs );
 		}
@@ -99,7 +99,7 @@ namespace daw {
 
 	template<typename T, typename Compare = std::less<>>
 	constexpr decltype( auto ) max_comp( T &&lhs, T &&rhs,
-	                                     Compare &&comp = Compare{} ) {
+	                                     Compare &&comp = Compare{ } ) {
 		if( comp( rhs, lhs ) ) {
 			return std::forward<T>( lhs );
 		}
@@ -113,7 +113,7 @@ namespace daw {
 
 		auto &&tmp = min( std::forward<Ts>( vs )... );
 
-		if( std::less_equal<>{}( val1, tmp ) ) {
+		if( std::less_equal<>{ }( val1, tmp ) ) {
 			return std::forward<T>( val1 );
 		}
 		return std::forward<decltype( tmp )>( tmp );

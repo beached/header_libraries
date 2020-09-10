@@ -37,20 +37,21 @@ namespace daw::algorithm {
 		}
 
 		template<std::size_t by_n, typename Function, std::size_t... Is>
-		DAW_ATTRIBUTE_FLATTEN static inline constexpr void
-		do_n_arg( Function &&func, std::integer_sequence<std::size_t, Is...> ) noexcept(
-		  noexcept( func( 0ULL ) ) ) {
+		DAW_ATTRIBUTE_FLATTEN static inline constexpr void do_n_arg(
+		  Function &&func,
+		  std::integer_sequence<std::size_t,
+		                        Is...> ) noexcept( noexcept( func( 0ULL ) ) ) {
 			if constexpr( sizeof...( Is ) > 0 ) {
-				(void)( ( func( Is*by_n ), 0 ) + ... );
+				(void)( ( func( Is * by_n ), 0 ) + ... );
 			}
 		}
-	} // namespace do_n_detailsDAW_ATTRIBUTE_HIDDEN
+	} // namespace DAW_ATTRIBUTE_HIDDEN
 
 	template<std::size_t count, typename Function, typename... Args>
 	DAW_ATTRIBUTE_FLATTEN static inline constexpr void do_n( Function &&func,
 	                                                         Args &&... args ) {
 		do_n_details::do_n( std::forward<Function>( func ),
-		                    std::make_integer_sequence<std::size_t, count>{},
+		                    std::make_integer_sequence<std::size_t, count>{ },
 		                    std::forward<Args>( args )... );
 	}
 
@@ -73,12 +74,13 @@ namespace daw::algorithm {
 		}
 	}
 
-	template<std::size_t count, std::size_t by_n = 1, typename Function, typename... Args>
+	template<std::size_t count, std::size_t by_n = 1, typename Function,
+	         typename... Args>
 	DAW_ATTRIBUTE_FLATTEN static inline constexpr void
 	do_n_arg( Function &&func ) noexcept(
 	  std::is_nothrow_invocable_v<Function, std::size_t> ) {
 		static_assert( by_n > 0 );
 		do_n_details::do_n_arg<by_n>( std::forward<Function>( func ),
-		                        std::make_index_sequence<count/by_n>{} );
+		                              std::make_index_sequence<count / by_n>{ } );
 	}
 } // namespace daw::algorithm

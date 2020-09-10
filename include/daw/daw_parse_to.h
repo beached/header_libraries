@@ -205,7 +205,7 @@ namespace daw {
 			  daw::bounded_array_t<daw::string_view, sizeof...( Args )> const
 			    &positions ) {
 				return set_value_from_string_view<Args...>(
-				  positions, std::index_sequence_for<Args...>{} );
+				  positions, std::index_sequence_for<Args...>{ } );
 			}
 		} // namespace impl
 
@@ -221,9 +221,9 @@ namespace daw {
 				};
 				auto const pos = str.find( m_delemiter );
 				if( pos < str.size( ) ) {
-					return result_t{pos, pos + m_delemiter.size( )};
+					return result_t{ pos, pos + m_delemiter.size( ) };
 				}
-				return result_t{daw::string_view::npos, daw::string_view::npos};
+				return result_t{ daw::string_view::npos, daw::string_view::npos };
 			}
 		};
 
@@ -246,16 +246,16 @@ namespace daw {
 					++n;
 				}
 				if( n == sz ) {
-					return result_t{daw::string_view::npos, daw::string_view::npos};
+					return result_t{ daw::string_view::npos, daw::string_view::npos };
 				}
 				if( !skip_multiple ) {
-					return result_t{n, n + 1};
+					return result_t{ n, n + 1 };
 				}
 				auto const f = n;
 				while( n < sz and is_unicode_whitespace( str[n] ) ) {
 					++n;
 				}
-				return result_t{f, n};
+				return result_t{ f, n };
 			}
 		};
 
@@ -279,7 +279,7 @@ namespace daw {
 			template<size_t N, typename Splitter>
 			constexpr auto get_positions( daw::string_view str,
 			                              Splitter &&splitter ) {
-				daw::bounded_array_t<daw::string_view, N> result{};
+				daw::bounded_array_t<daw::string_view, N> result{ };
 				for( auto &item : result ) {
 					auto const pos = splitter( str );
 					item = str.substr( 0, pos.first );
@@ -315,7 +315,7 @@ namespace daw {
 		template<typename... Args>
 		constexpr decltype( auto ) parse_to( daw::string_view str,
 		                                     daw::string_view delemiter ) {
-			return parse_to<Args...>( str, default_splitter{delemiter} );
+			return parse_to<Args...>( str, default_splitter{ delemiter } );
 		}
 
 		/// @brief Attempts to parse a string to the values types specified in args
@@ -359,7 +359,7 @@ namespace daw {
 	                                           daw::string_view delemiter ) {
 
 		return construct_from<Destination, ExpectedArgs...>(
-		  str, parser::default_splitter{delemiter} );
+		  str, parser::default_splitter{ delemiter } );
 	}
 
 	/// @brief Contructs an object from the arguments specified in the string
@@ -371,7 +371,7 @@ namespace daw {
 	template<typename Destination, typename ExpectedArg>
 	constexpr decltype( auto ) construct_from( daw::string_view str ) {
 		return construct_from<Destination, ExpectedArg>(
-		  str, parser::default_splitter{" "} );
+		  str, parser::default_splitter{ " " } );
 	}
 
 	namespace impl {
@@ -403,7 +403,7 @@ namespace daw {
 	                                          Splitter &&splitter ) {
 		using ftraits =
 		  typename daw::function_info<std::decay_t<Callable>>::decayed_args_tuple;
-		return impl::apply_string_impl( ftraits{},
+		return impl::apply_string_impl( ftraits{ },
 		                                std::forward<Callable>( callable ), str,
 		                                std::forward<Splitter>( splitter ) );
 	}
@@ -421,7 +421,7 @@ namespace daw {
 	                                          daw::string_view str,
 	                                          daw::string_view delemiter ) {
 		return apply_string2<Callable>( std::forward<Callable>( callable ), str,
-		                                parser::default_splitter{delemiter} );
+		                                parser::default_splitter{ delemiter } );
 	}
 
 	/// @brief Apply the reified string as the types specified as Args... to the
@@ -467,7 +467,7 @@ namespace daw {
 	                                         daw::string_view delemiter ) {
 
 		return apply_string<Args...>( std::forward<Callable>( callable ), str,
-		                              parser::default_splitter{delemiter} );
+		                              parser::default_splitter{ delemiter } );
 	}
 
 	/// @brief Apply the reified string as the types specified as Arg to the
@@ -489,7 +489,7 @@ namespace daw {
 	                                         daw::string_view str ) {
 
 		return apply_string<Arg>( std::forward<Callable>( callable ), str,
-		                          parser::default_splitter{" "} );
+		                          parser::default_splitter{ " " } );
 	}
 
 	namespace detectors {
@@ -511,7 +511,8 @@ namespace daw {
 	                          std::nullptr_t> = nullptr>
 	decltype( auto ) values_from_stream( Stream &&stream, Splitter &&splitter ) {
 
-		auto const str = std::string( std::istreambuf_iterator<char>{stream}, {} );
+		auto const str =
+		  std::string( std::istreambuf_iterator<char>{ stream }, { } );
 		return parser::parse_to<Args...>( daw::string_view( str ),
 		                                  std::forward<Splitter>( splitter ) );
 	}
@@ -545,6 +546,6 @@ namespace daw {
 	decltype( auto ) values_from_stream( Stream &&s,
 	                                     daw::string_view delemiter ) {
 		return values_from_stream<Args...>( std::forward<Stream>( s ),
-		                                    parser::default_splitter{delemiter} );
+		                                    parser::default_splitter{ delemiter } );
 	}
 } // namespace daw

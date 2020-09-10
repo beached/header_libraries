@@ -52,7 +52,7 @@ namespace daw {
 		  std::is_nothrow_constructible_v<T, Args...> ) {
 
 			if constexpr( std::is_aggregate_v<T> ) {
-				new( m_data ) T{std::forward<Args>( args )...};
+				new( m_data ) T{ std::forward<Args>( args )... };
 			} else {
 				new( m_data ) T( std ::forward<Args>( args )... );
 			}

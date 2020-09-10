@@ -89,7 +89,7 @@ namespace daw {
 		  : m_data( create_values( sz ) )
 		  , m_size( sz ) {
 
-			std::fill_n( m_data, m_size, {args...} );
+			std::fill_n( m_data, m_size, { args... } );
 		}
 
 		~unique_array_t( ) noexcept( noexcept( delete[] m_data ) ) {

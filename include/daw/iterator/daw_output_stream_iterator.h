@@ -48,6 +48,6 @@ namespace daw {
 	template<typename OutputStream>
 	constexpr function_iterator<osi_impl::osi_callable<OutputStream>>
 	make_output_stream_iterator( OutputStream &strm ) {
-		return {osi_impl::osi_callable<OutputStream>( strm )};
+		return { osi_impl::osi_callable<OutputStream>( strm ) };
 	}
 } // namespace daw

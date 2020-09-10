@@ -107,10 +107,10 @@ namespace daw {
 			std::atomic_bool m_ptr_destruct = false;
 
 			// This controls access to deleting the control block
-			std::once_flag m_cb_destruct{};
+			std::once_flag m_cb_destruct{ };
 
 			// Pointer has been borrowed
-			mutable std::mutex m_is_borrowed{};
+			mutable std::mutex m_is_borrowed{ };
 
 			// Number of observers alive, cannot delete control block unless this is 0
 			std::atomic<observer_count_t> m_observer_count = 0;
@@ -311,7 +311,7 @@ namespace daw {
 			using result_t = daw::remove_cvref_t<decltype( c( *lck_ptr ) )>;
 
 			if( not lck_ptr ) {
-				return daw::expected_t<result_t>{};
+				return daw::expected_t<result_t>{ };
 			}
 			return daw::expected_t<result_t>::from_code( std::forward<Callable>( c ),
 			                                             *lck_ptr );
@@ -333,7 +333,7 @@ namespace daw {
 			                                             *lck_ptr );
 		}
 
-		decltype( auto ) operator-> ( ) const noexcept {
+		decltype( auto ) operator->( ) const noexcept {
 			return borrow( );
 		}
 
@@ -352,7 +352,7 @@ namespace daw {
 		}
 
 		observer_ptr<T> get_observer( ) const {
-			return observer_ptr<T>{m_control_block};
+			return observer_ptr<T>{ m_control_block };
 		}
 	};
 
@@ -408,7 +408,7 @@ namespace daw {
 			return m_control_block->get( );
 		}
 
-		decltype( auto ) operator-> ( ) const {
+		decltype( auto ) operator->( ) const {
 			return borrow( );
 		}
 
@@ -432,7 +432,7 @@ namespace daw {
 			  daw::remove_cvref_t<decltype( c( std::declval<T const &>( ) ) )>;
 			auto lck_ptr = borrow( );
 			if( not lck_ptr ) {
-				return daw::expected_t<result_t>{};
+				return daw::expected_t<result_t>{ };
 			}
 			T const &r = *lck_ptr;
 			return daw::expected_t<result_t>::from_code( std::forward<Callable>( c ),
@@ -445,7 +445,7 @@ namespace daw {
 			  std::declval<Callable>( )( std::declval<T &>( ) ) )>;
 			auto lck_ptr = borrow( );
 			if( not lck_ptr ) {
-				return daw::expected_t<result_t>{};
+				return daw::expected_t<result_t>{ };
 			}
 			T &r = *lck_ptr;
 			return daw::expected_t<result_t>::from_code( std::forward<Callable>( c ),

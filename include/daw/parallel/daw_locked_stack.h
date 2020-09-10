@@ -62,7 +62,7 @@ namespace daw {
 			m_semaphore.wait( );
 			std::lock_guard<std::mutex> lock( *m_mutex );
 			if( m_items.empty( ) ) {
-				return {};
+				return { };
 			}
 			auto result = m_items.back( );
 			m_items.pop_back( );

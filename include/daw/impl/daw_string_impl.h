@@ -201,7 +201,7 @@ namespace daw {
 			                                                                CharT>,
 			  "OStream Must has write member" );
 
-			std::array<CharT, 8> fill_chars = {0};
+			std::array<CharT, 8> fill_chars = { 0 };
 			fill_chars.fill( os.fill( ) );
 
 			for( ; n >= fill_chars.size( ) and os.good( ); n -= fill_chars.size( ) ) {
@@ -269,7 +269,7 @@ namespace daw {
 			T *ptr;
 
 			constexpr only_ptr( T *p ) noexcept
-			  : ptr{p} {}
+			  : ptr{ p } {}
 
 			constexpr operator T *( ) const {
 				return ptr;

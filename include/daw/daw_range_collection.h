@@ -378,21 +378,21 @@ namespace daw {
 		namespace impl {
 			template<typename ValueType>
 			CollectionRange<ValueType> make_range_collection( ) {
-				return CollectionRange<ValueType>{};
+				return CollectionRange<ValueType>{ };
 			}
 
 			template<typename Container, typename = void>
 			auto make_range_collection( Container const &container ) {
 				using ValueType = impl::cleanup_t<typename std::iterator_traits<
 				  typename Container::iterator>::value_type>;
-				return CollectionRange<ValueType>{container};
+				return CollectionRange<ValueType>{ container };
 			}
 
 			template<typename IteratorF, typename IteratorL>
 			auto make_range_collection( IteratorF first, IteratorL last ) {
 				using ValueType =
 				  impl::cleanup_t<typename std::iterator_traits<IteratorF>::value_type>;
-				return CollectionRange<ValueType>{first, last};
+				return CollectionRange<ValueType>{ first, last };
 			}
 
 			template<typename Iterator>
@@ -400,7 +400,7 @@ namespace daw {
 			  daw::range::ReferenceRange<Iterator> const &collection ) {
 				using ValueType =
 				  impl::cleanup_t<typename std::iterator_traits<Iterator>::value_type>;
-				CollectionRange<ValueType> result{};
+				CollectionRange<ValueType> result{ };
 				std::transform( std::begin( collection ), std::end( collection ),
 				                std::back_inserter( result ),
 				                []( auto const &rv ) { return rv.get( ); } );
@@ -450,7 +450,7 @@ namespace daw {
 
 		template<typename Arg, typename... Args>
 		decltype( auto ) from( Arg &&arg, Args &&... args ) {
-			return impl::from( typename std::is_const<Arg>::type{},
+			return impl::from( typename std::is_const<Arg>::type{ },
 			                   std::forward<Arg>( arg ),
 			                   std::forward<Args>( args )... );
 		}

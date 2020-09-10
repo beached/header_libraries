@@ -186,10 +186,10 @@ namespace daw {
 		}
 
 		template<typename U>
-		constexpr difference_type compare( indexed_iterator<U> const &rhs ) const
-		  noexcept {
+		constexpr difference_type
+		compare( indexed_iterator<U> const &rhs ) const noexcept {
 			daw::exception::dbg_precondition_check(
-			  std::equal_to<>{}( m_pointer, rhs.m_pointer ) );
+			  std::equal_to<>{ }( m_pointer, rhs.m_pointer ) );
 			daw::exception::dbg_precondition_check( m_position >= 0 );
 			daw::exception::dbg_precondition_check( rhs.m_position >= 0 );
 

@@ -37,15 +37,15 @@ namespace daw {
 
 				std::get<N>( results ) = std::make_unique<current_lock_t>(
 				  *current_lockable, std::adopt_lock );
-				make_lock_guard<N + 1, SZ>{}( results, lockables );
+				make_lock_guard<N + 1, SZ>{ }( results, lockables );
 			}
 		};
 
 		template<size_t N>
 		struct make_lock_guard<N, N> {
 			template<typename Results, typename TPLockables>
-			constexpr void operator( )( Results const &, TPLockables const & ) const
-			  noexcept {}
+			constexpr void operator( )( Results const &,
+			                            TPLockables const & ) const noexcept {}
 		};
 	} // namespace details
 
@@ -66,10 +66,10 @@ namespace daw {
 
 	public:
 		scoped_multilock( Lockables &... lockables )
-		  : m_locks{} {
+		  : m_locks{ } {
 			_lock( lockables... );
 			auto args = std::make_tuple<Lockables *...>( &lockables... );
-			details::make_lock_guard<0, sizeof...( Lockables )>{}( m_locks, args );
+			details::make_lock_guard<0, sizeof...( Lockables )>{ }( m_locks, args );
 		}
 
 		~scoped_multilock( ) = default;
@@ -82,6 +82,6 @@ namespace daw {
 
 	template<typename... Lockables>
 	auto make_scoped_multilock( Lockables &... lockables ) {
-		return scoped_multilock<Lockables...>{lockables...};
+		return scoped_multilock<Lockables...>{ lockables... };
 	}
 } // namespace daw

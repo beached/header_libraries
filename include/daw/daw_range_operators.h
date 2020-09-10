@@ -35,7 +35,8 @@
 #include "daw_range_reference.h"
 #include "daw_traits.h"
 
-#if not defined( _MSC_VER ) or defined( __clang__ ) // internal compiler error on at least <= MSVC 2015.3
+#if not defined( _MSC_VER ) or                                                 \
+  defined( __clang__ ) // internal compiler error on at least <= MSVC 2015.3
 
 namespace daw {
 	namespace range {

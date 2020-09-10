@@ -41,10 +41,10 @@ namespace daw {
 		template<size_t Bits>
 		constexpr auto determine_opt_sz( ) {
 			constexpr size_t sz = [] {
-				std::pair<uint8_t, size_t> sizes[] = {{8U, Bits % 8U},
-				                                      {16U, Bits % 16U},
-				                                      {32U, Bits % 32U},
-				                                      {64U, Bits % 64U}};
+				std::pair<uint8_t, size_t> sizes[] = { { 8U, Bits % 8U },
+				                                       { 16U, Bits % 16U },
+				                                       { 32U, Bits % 32U },
+				                                       { 64U, Bits % 64U } };
 				size_t min_pos = 0;
 				daw::algorithm::do_n_arg<3>( [&]( size_t n ) {
 					++n;
@@ -58,13 +58,13 @@ namespace daw {
 				return sizes[min_pos].first;
 			}( );
 			if constexpr( sz == 8U ) {
-				return uint8_t{};
+				return uint8_t{ };
 			} else if constexpr( sz == 16U ) {
-				return uint16_t{};
+				return uint16_t{ };
 			} else if constexpr( sz == 32U ) {
-				return uint32_t{};
+				return uint32_t{ };
 			} else if constexpr( sz == 64U ) {
-				return uint64_t{};
+				return uint64_t{ };
 			};
 		}
 
@@ -79,7 +79,7 @@ namespace daw {
 			  sizeof( values_type ) * 8U;
 			inline static constexpr size_t m_bins = Bits / m_bits_per_bin;
 
-			daw::array<values_type, m_bins> m_values{};
+			daw::array<values_type, m_bins> m_values{ };
 
 		public:
 			constexpr static_bitset( ) noexcept = default;
@@ -166,7 +166,7 @@ namespace daw {
 		template<typename ForwardIterator>
 		constexpr perfect_hash_table( ForwardIterator first,
 		                              ForwardIterator last ) {
-			daw::array<bucket_t<ForwardIterator>, m_num_buckets> buckets{};
+			daw::array<bucket_t<ForwardIterator>, m_num_buckets> buckets{ };
 
 			static_assert( std::is_default_constructible_v<ForwardIterator> );
 
@@ -184,7 +184,7 @@ namespace daw {
 				           return lhs.items.size( ) > rhs.items.size( );
 			           } );
 
-			daw::array<bool, m_data_size> slots_claimed{};
+			daw::array<bool, m_data_size> slots_claimed{ };
 
 			daw::algorithm::find_if( buckets.cbegin( ), buckets.cend( ),
 			                         [&]( auto const &bucket ) {
@@ -203,7 +203,7 @@ namespace daw {
 		[[nodiscard]] constexpr const_mapped_type_pointer
 		find( Key const &key ) const {
 			size_type const pos = find_data_index( key );
-			if( key_equal{}( key, m_keys[pos] ) ) {
+			if( key_equal{ }( key, m_keys[pos] ) ) {
 				return &m_values[pos];
 			}
 			return nullptr;
@@ -215,12 +215,12 @@ namespace daw {
 
 		[[nodiscard]] constexpr bool contains( Key const &key ) const noexcept {
 			size_type const pos = find_data_index( key );
-			return key_equal{}( key, m_keys[pos] );
+			return key_equal{ }( key, m_keys[pos] );
 		}
 
 		[[nodiscard]] constexpr mapped_type_pointer find( Key const &key ) {
 			size_type const pos = find_data_index( key );
-			if( key_equal{}( key, m_keys[pos] ) ) {
+			if( key_equal{ }( key, m_keys[pos] ) ) {
 				return &m_values[pos];
 			}
 			return nullptr;
@@ -241,7 +241,7 @@ namespace daw {
 		template<typename ForwardIterator>
 		struct bucket_t {
 			size_type bucket_index = 0;
-			daw::bounded_vector_t<ForwardIterator, m_data_size> items{};
+			daw::bounded_vector_t<ForwardIterator, m_data_size> items{ };
 
 			constexpr void swap( bucket_t &rhs ) {
 				daw::cswap( bucket_index, rhs.bucket_index );
@@ -252,9 +252,9 @@ namespace daw {
 		static constexpr size_type m_num_buckets = mph_impl::get_bucket_count<N>( );
 
 		//***************
-		daw::array<salt_type, m_num_buckets> m_salts{};
-		daw::array<mapped_type, m_data_size> m_values{};
-		daw::array<key_type, m_data_size> m_keys{};
+		daw::array<salt_type, m_num_buckets> m_salts{ };
+		daw::array<mapped_type, m_data_size> m_values{ };
+		daw::array<key_type, m_data_size> m_keys{ };
 		//***************
 
 		template<size_type Space = m_data_size>
@@ -264,13 +264,13 @@ namespace daw {
 		}
 
 		[[nodiscard]] static constexpr hash_result call_hash( Key const &key ) {
-			return Hasher{}( key );
+			return Hasher{ }( key );
 		}
 
 		[[nodiscard]] static constexpr hash_result call_hash( Key const &key,
 		                                                      salt_type seed ) {
 			return mph_impl::hash_combine( static_cast<hash_result>( seed ),
-			                               Hasher{}( key ) );
+			                               Hasher{ }( key ) );
 		}
 
 		template<typename ForwardIterator>
@@ -292,7 +292,7 @@ namespace daw {
 			}
 
 			for( salt_type salt = 1;; ++salt ) {
-				daw::bounded_vector_t<hash_result, m_data_size> slots_this_bucket{};
+				daw::bounded_vector_t<hash_result, m_data_size> slots_this_bucket{ };
 
 				auto const success = daw::algorithm::all_of(
 				  bucket.items.begin( ), bucket.items.end( ),

@@ -89,7 +89,7 @@ namespace daw {
 
 		// For symmetry with non-const span
 		constexpr span copy( ) const noexcept {
-			return {data( ), size( )};
+			return { data( ), size( ) };
 		}
 
 		constexpr const_iterator begin( ) const noexcept {
@@ -217,7 +217,7 @@ namespace daw {
 			  pos < size( ), "Attempt to access span past end" );
 
 			count = daw::min( count, size( ) - pos );
-			return {data( ) + pos, count};
+			return { data( ) + pos, count };
 		}
 	};
 
@@ -304,13 +304,13 @@ namespace daw {
 
 		// Conversion to const T span
 		constexpr operator span<T const>( ) const noexcept {
-			return {data( ), size( )};
+			return { data( ), size( ) };
 		}
 
 		// If one really wants to get mutable span
 		// from a const span
 		constexpr span copy( ) const noexcept {
-			return {m_first, size( )};
+			return { m_first, size( ) };
 		}
 
 		constexpr iterator begin( ) noexcept {
@@ -476,7 +476,7 @@ namespace daw {
 			  pos < size( ), "Attempt to access span past end" );
 
 			count = daw::min( count, size( ) - pos );
-			return {data( ) + pos, count};
+			return { data( ) + pos, count };
 		}
 
 		constexpr span
@@ -487,41 +487,39 @@ namespace daw {
 			  pos < size( ), "Attempt to access span past end" );
 
 			count = daw::min( count, size( ) - pos );
-			return {data( ) + pos, count};
+			return { data( ) + pos, count };
 		}
 	};
 
 	template<typename T>
-	span( T *, size_t )->span<T>;
+	span( T *, size_t ) -> span<T>;
 
 	template<typename T>
-	span( T const *, size_t )->span<T const>;
+	span( T const *, size_t ) -> span<T const>;
 
 	template<typename T, size_t N>
-	span( T ( & )[N] )->span<T>;
+	span( T ( & )[N] ) -> span<T>;
 
 	template<typename T>
-	span( T *, T * )->span<T>;
+	span( T *, T * ) -> span<T>;
 
 	template<typename T>
-	span( T *, T const * )->span<T>;
+	span( T *, T const * ) -> span<T>;
 
 	template<typename T>
-	span( T const *, T const * )->span<T const>;
+	span( T const *, T const * ) -> span<T const>;
 
 	template<typename T>
-	span( T const *, T * )->span<T const>;
+	span( T const *, T * ) -> span<T const>;
 
 	template<typename T, size_t N>
-	span( T const ( & )[N] )->span<T const>;
+	span( T const ( & )[N] ) -> span<T const>;
 
 	template<typename Container>
-	span( Container & )
-	  ->span<std::remove_reference_t<
-	    decltype( *std::data( std::declval<Container>( ) ) )>>;
+	span( Container & ) -> span<std::remove_reference_t<
+	  decltype( *std::data( std::declval<Container>( ) ) )>>;
 
 	template<typename Container>
-	span( Container const & )
-	  ->span<daw::remove_cvref_t<
-	    decltype( *std::data( std::declval<Container>( ) ) )> const>;
+	span( Container const & ) -> span<daw::remove_cvref_t<
+	  decltype( *std::data( std::declval<Container>( ) ) )> const>;
 } // namespace daw

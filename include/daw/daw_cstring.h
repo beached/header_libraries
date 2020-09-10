@@ -53,16 +53,16 @@ namespace daw {
 
 		[[deprecated]] constexpr CString( CharT const *ptr, no_copy_t,
 		                                  size_t const length ) noexcept
-		  : m_data{ptr}
-		  , m_size{0 == length ? string_length( ptr ) : length}
-		  , m_local_string{false} {}
+		  : m_data{ ptr }
+		  , m_size{ 0 == length ? string_length( ptr ) : length }
+		  , m_local_string{ false } {}
 
 	public:
 		[[deprecated]] constexpr CString( CharT const *ptr, bool do_copy,
 		                                  size_t const length )
-		  : m_data{ptr}
-		  , m_size{0 == length ? string_length( ptr ) : length}
-		  , m_local_string{do_copy} {
+		  : m_data{ ptr }
+		  , m_size{ 0 == length ? string_length( ptr ) : length }
+		  , m_local_string{ do_copy } {
 
 			if( do_copy ) {
 				size_t len = length;
@@ -73,29 +73,29 @@ namespace daw {
 		}
 
 		[[deprecated]] constexpr CString( CharT const *ptr, bool do_copy )
-		  : CString{ptr, do_copy, 0} {}
+		  : CString{ ptr, do_copy, 0 } {}
 
 		[[deprecated]] constexpr CString( CharT const *ptr )
-		  : CString{ptr, no_copy_t{}, 0} {}
+		  : CString{ ptr, no_copy_t{ }, 0 } {}
 
 		[[deprecated]] constexpr CString( ) noexcept
-		  : m_data{nullptr}
-		  , m_size{0}
-		  , m_local_string{true} {}
+		  : m_data{ nullptr }
+		  , m_size{ 0 }
+		  , m_local_string{ true } {}
 
 		[[deprecated]] CString( CString const &value )
-		  : CString{value.m_data, true, value.m_size} {}
+		  : CString{ value.m_data, true, value.m_size } {}
 
 		[[deprecated]] CString &operator=( CString const &rhs ) {
 			if( this != &rhs ) {
-				CString tmp{rhs};
+				CString tmp{ rhs };
 				tmp.swap( *this );
 			}
 			return *this;
 		}
 
 		[[deprecated]] CString &operator=( CharT const *ptr ) {
-			CString tmp{ptr, true};
+			CString tmp{ ptr, true };
 			tmp.swap( *this );
 			return *this;
 		}
@@ -142,7 +142,7 @@ namespace daw {
 		}
 
 		[[deprecated]] std::string to_string( ) const {
-			return std::string{m_data, m_size};
+			return std::string{ m_data, m_size };
 		}
 
 		[[deprecated]] constexpr size_t size( ) const noexcept {

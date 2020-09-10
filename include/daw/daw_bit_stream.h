@@ -91,9 +91,9 @@ namespace daw {
 
 	public:
 		constexpr bit_stream( InputIteratorF first, InputIteratorL last ) noexcept
-		  : m_first{first}
-		  , m_last{last}
-		  , m_left_overs{} {}
+		  : m_first{ first }
+		  , m_last{ last }
+		  , m_left_overs{ } {}
 
 		constexpr bool valid( ) const noexcept {
 			return m_first != m_last;
@@ -202,6 +202,7 @@ namespace daw {
 	         typename InputIteratorF, typename InputIteratorL>
 	constexpr auto make_bit_stream( InputIteratorF first,
 	                                InputIteratorL last ) noexcept {
-		return bit_stream<InputIteratorF, InputIteratorL, BitQueueLSB>{first, last};
+		return bit_stream<InputIteratorF, InputIteratorL, BitQueueLSB>{ first,
+		                                                                last };
 	}
 } // namespace daw

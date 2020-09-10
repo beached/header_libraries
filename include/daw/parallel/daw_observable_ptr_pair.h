@@ -47,13 +47,13 @@ namespace daw {
 
 	public:
 		observable_ptr_pair( )
-		  : m_ptrs{observable_ptr<T>{}} {}
+		  : m_ptrs{ observable_ptr<T>{} } {}
 
 		observable_ptr_pair( T *ptr )
-		  : m_ptrs{observable_ptr<T>{ptr}} {}
+		  : m_ptrs{ observable_ptr<T>{ ptr } } {}
 
 		observable_ptr_pair( observable_ptr_pair &&other ) noexcept
-		  : m_ptrs{daw::move( other.m_ptrs )} {}
+		  : m_ptrs{ daw::move( other.m_ptrs ) } {}
 
 		observable_ptr_pair &operator=( observable_ptr_pair &&rhs ) noexcept {
 			if( this != &rhs ) {
@@ -66,7 +66,7 @@ namespace daw {
 		  : m_ptrs{
 		      daw::visit_nt( other.m_ptrs, []( auto const &v ) -> decltype( auto ) {
 			      return v.get_observer( );
-		      } )} {}
+		      } ) } {}
 
 		observable_ptr_pair &operator=( observable_ptr_pair const &rhs ) {
 			if( this != &rhs ) {
@@ -102,7 +102,7 @@ namespace daw {
 			} );
 		}
 
-		decltype( auto ) operator-> ( ) const {
+		decltype( auto ) operator->( ) const {
 			return apply_visitor(
 			  []( auto const &obs_ptr ) { return obs_ptr.operator->( ); } );
 		}

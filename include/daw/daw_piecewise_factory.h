@@ -74,13 +74,13 @@ namespace daw {
 		template<typename... Args>
 		constexpr auto get_value( std::variant<Args...> const &value ) {
 			using T = decltype( remove_layer_func( value ) );
-			return daw::visit_nt( value, process_args_t<T>{} );
+			return daw::visit_nt( value, process_args_t<T>{ } );
 		}
 
 		template<typename... Args>
 		constexpr auto get_value( std::variant<Args...> &&value ) {
 			using T = decltype( remove_layer_func( value ) );
-			return daw::visit_nt( daw::move( value ), process_args_t<T>{} );
+			return daw::visit_nt( daw::move( value ), process_args_t<T>{ } );
 		}
 
 		template<size_t N, typename... Args>
@@ -128,13 +128,13 @@ namespace daw {
 			  decltype( remove_layer_func( std::declval<tp_val_t>( ) ) );
 
 			auto const setter = daw::overload(
-			  [&]( value_t const &v ) { std::get<N>( tp ) = value_t{v}; },
-			  [&]( value_t &&v ) { std::get<N>( tp ) = value_t{daw::move( v )}; },
+			  [&]( value_t const &v ) { std::get<N>( tp ) = value_t{ v }; },
+			  [&]( value_t &&v ) { std::get<N>( tp ) = value_t{ daw::move( v ) }; },
 			  [&]( std::function<value_t( )> const &f ) {
-				  std::get<N>( tp ) = value_t{f( )};
+				  std::get<N>( tp ) = value_t{ f( ) };
 			  },
 			  [&]( std::function<value_t( )> &&f ) {
-				  std::get<N>( tp ) = value_t{daw::move( f )( )};
+				  std::get<N>( tp ) = value_t{ daw::move( f )( ) };
 			  },
 			  []( ... ) noexcept {} );
 
@@ -144,13 +144,13 @@ namespace daw {
 		template<typename T, typename... Args>
 		constexpr T piecewise_applier( std::tuple<Args...> const &tp ) {
 			return piecewise_applier_impl<T>(
-			  tp, std::make_index_sequence<sizeof...( Args )>{} );
+			  tp, std::make_index_sequence<sizeof...( Args )>{ } );
 		}
 
 		template<typename T, typename... Args>
 		constexpr T piecewise_applier( std::tuple<Args...> &&tp ) {
 			return piecewise_applier_impl<T>(
-			  daw::move( tp ), std::make_index_sequence<sizeof...( Args )>{} );
+			  daw::move( tp ), std::make_index_sequence<sizeof...( Args )>{ } );
 		}
 
 		template<typename T, bool use_late, typename... Args>

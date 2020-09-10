@@ -31,8 +31,8 @@
 namespace daw {
 	template<typename Mutex, typename ConditionVariable>
 	class basic_condition_variable {
-		Mutex m_mutex{};
-		ConditionVariable m_condition{};
+		Mutex m_mutex{ };
+		ConditionVariable m_condition{ };
 
 	public:
 		basic_condition_variable( ) = default;

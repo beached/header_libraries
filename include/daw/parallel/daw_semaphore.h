@@ -228,6 +228,6 @@ namespace daw {
 
 	template<typename T>
 	[[nodiscard]] auto make_waitable_value( shared_semaphore sem, T value ) {
-		return waitable_value<T>{daw::move( sem ), daw::move( value )};
+		return waitable_value<T>{ daw::move( sem ), daw::move( value ) };
 	}
 } // namespace daw

@@ -69,7 +69,7 @@ namespace daw {
 		}
 	};
 	template<typename Function>
-	function_iterator( Function )->function_iterator<Function>;
+	function_iterator( Function ) -> function_iterator<Function>;
 
 	///
 	/// Create a function_iterator with supplied function

@@ -40,10 +40,10 @@ namespace daw {
 
 	public:
 		constexpr RandomIterator( ) noexcept
-		  : m_pointer{nullptr} {} // TODO: Is this the correct behaviour
+		  : m_pointer{ nullptr } {} // TODO: Is this the correct behaviour
 
 		constexpr RandomIterator( T *const ptr ) noexcept
-		  : m_pointer{ptr} {}
+		  : m_pointer{ ptr } {}
 
 		constexpr RandomIterator &operator=( T *const rhs ) noexcept {
 			m_pointer = rhs;
@@ -82,7 +82,7 @@ namespace daw {
 		}
 
 		constexpr RandomIterator operator++( int ) noexcept {
-			auto result = RandomIterator{*this};
+			auto result = RandomIterator{ *this };
 			++m_pointer;
 			return result;
 		}
@@ -93,7 +93,7 @@ namespace daw {
 		}
 
 		constexpr RandomIterator operator--( int ) noexcept {
-			auto result = RandomIterator{*this};
+			auto result = RandomIterator{ *this };
 			--m_pointer;
 			return result;
 		}
@@ -101,7 +101,7 @@ namespace daw {
 		constexpr RandomIterator operator+( std::ptrdiff_t const &n ) noexcept {
 			auto old = this->m_ptr;
 			this->m_ptr += n;
-			auto temp{*this};
+			auto temp{ *this };
 			this->m_ptr = old;
 			return temp;
 		}
@@ -109,7 +109,7 @@ namespace daw {
 		constexpr RandomIterator operator-( std::ptrdiff_t const &n ) noexcept {
 			auto old = this->m_ptr;
 			this->m_ptr -= n;
-			auto temp{*this};
+			auto temp{ *this };
 			this->m_ptr = old;
 			return temp;
 		}
@@ -152,12 +152,12 @@ namespace daw {
 
 	template<typename T>
 	constexpr auto make_random_iterator( T *const ptr ) noexcept {
-		return RandomIterator<T>{ptr};
+		return RandomIterator<T>{ ptr };
 	}
 
 	template<typename T>
 	constexpr auto make_const_random_iterator( T *const ptr ) noexcept {
-		return RandomIterator<T const>{ptr};
+		return RandomIterator<T const>{ ptr };
 	}
 
 } // namespace daw

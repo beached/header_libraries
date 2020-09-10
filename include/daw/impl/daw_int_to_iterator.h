@@ -49,16 +49,16 @@ namespace daw {
 		  typename Result, typename Integer,
 		  std::enable_if_t<std::is_integral_v<Result>, std::nullptr_t> = nullptr>
 		constexpr Result pow10( Integer n ) noexcept {
-			uint64_t const vals[10] = {1ULL,
-			                           100ULL,
-			                           10000ULL,
-			                           1000000ULL,
-			                           100000000ULL,
-			                           10000000000ULL,
-			                           1000000000000ULL,
-			                           100000000000000ULL,
-			                           10000000000000000ULL,
-			                           1000000000000000000ULL};
+			uint64_t const vals[10] = { 1ULL,
+			                            100ULL,
+			                            10000ULL,
+			                            1000000ULL,
+			                            100000000ULL,
+			                            10000000000ULL,
+			                            1000000000000ULL,
+			                            100000000000000ULL,
+			                            10000000000000000ULL,
+			                            1000000000000000000ULL };
 			if( n % 2 == 0 ) {
 				return static_cast<Result>( vals[n / 2] );
 			}
@@ -202,7 +202,7 @@ namespace daw {
 			if( value < 0 ) {
 				if( value == std::numeric_limits<Integer>::min( ) ) {
 					constexpr auto m = min_strings::get(
-					  CharT{}, std::integral_constant<size_t, sizeof( Integer )>{} );
+					  CharT{ }, std::integral_constant<size_t, sizeof( Integer )>{ } );
 					return daw::algorithm::copy( m.begin( ), m.end( ), it );
 				}
 				*it++ = static_cast<CharT>( '-' );

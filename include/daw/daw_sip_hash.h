@@ -75,8 +75,8 @@ namespace daw {
 		template<typename Byte>
 		constexpr std::array<uint64_t, 2>
 		key_to_u64( Byte const *const key ) noexcept {
-			return {to_little_endian( to_u64( &key[0] ) ),
-			        to_little_endian( to_u64( &key[8] ) )};
+			return { to_little_endian( to_u64( &key[0] ) ),
+			         to_little_endian( to_u64( &key[8] ) ) };
 		}
 
 		template<typename Left, typename Right>
@@ -111,7 +111,7 @@ namespace daw {
 			v0 ^= mi;
 		}
 
-		std::array<uint8_t, 8> pt{};
+		std::array<uint8_t, 8> pt{ };
 		switch( data_in.size( ) ) {
 		case 7:
 			pt[6] = static_cast<uint8_t>( data_in[6] );

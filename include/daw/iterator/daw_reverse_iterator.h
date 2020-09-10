@@ -39,7 +39,7 @@ namespace daw {
 		  typename std::iterator_traits<Iterator>::iterator_category;
 
 	private:
-		Iterator m_base{};
+		Iterator m_base{ };
 
 	public:
 		constexpr reverse_iterator( ) = default;
@@ -77,11 +77,11 @@ namespace daw {
 			return *( --tmp );
 		}
 
-		constexpr decltype( auto ) operator-> ( ) {
+		constexpr decltype( auto ) operator->( ) {
 			return &( operator*( ) );
 		}
 
-		constexpr decltype( auto ) operator-> ( ) const {
+		constexpr decltype( auto ) operator->( ) const {
 			return &( operator*( ) );
 		}
 
@@ -99,7 +99,7 @@ namespace daw {
 		}
 
 		constexpr reverse_iterator operator++( int ) noexcept {
-			reverse_iterator tmp{*this};
+			reverse_iterator tmp{ *this };
 			--m_base;
 			return tmp;
 		}
@@ -110,17 +110,17 @@ namespace daw {
 		}
 
 		constexpr reverse_iterator operator--( int ) noexcept {
-			reverse_iterator tmp{*this};
+			reverse_iterator tmp{ *this };
 			++m_base;
 			return tmp;
 		}
 
 		constexpr reverse_iterator operator+( difference_type n ) const {
-			return reverse_iterator{m_base - n};
+			return reverse_iterator{ m_base - n };
 		}
 
 		constexpr reverse_iterator operator-( difference_type n ) const {
-			return reverse_iterator{m_base + n};
+			return reverse_iterator{ m_base + n };
 		}
 
 		constexpr reverse_iterator &operator+=( difference_type n ) {
@@ -139,7 +139,7 @@ namespace daw {
 	operator+( typename reverse_iterator<Iterator>::difference_type n,
 	           reverse_iterator<Iterator> const &it ) {
 
-		return reverse_iterator<Iterator>{it.current - n};
+		return reverse_iterator<Iterator>{ it.current - n };
 	}
 
 	template<typename Iterator>
@@ -147,7 +147,7 @@ namespace daw {
 	operator-( typename reverse_iterator<Iterator>::difference_type n,
 	           reverse_iterator<Iterator> const &it ) {
 
-		return reverse_iterator<Iterator>{it.current + n};
+		return reverse_iterator<Iterator>{ it.current + n };
 	}
 
 	template<class Iterator1, class Iterator2>
@@ -196,6 +196,6 @@ namespace daw {
 
 	template<typename Iterator>
 	constexpr reverse_iterator<Iterator> make_reverse_iterator( Iterator i ) {
-		return reverse_iterator<Iterator>{daw::move( i )};
+		return reverse_iterator<Iterator>{ daw::move( i ) };
 	}
 } // namespace daw

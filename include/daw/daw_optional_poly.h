@@ -64,7 +64,7 @@ namespace daw {
 		optional_poly &operator=( optional_poly && ) noexcept = default;
 
 		optional_poly( optional_poly const &other )
-		  : m_value{make_copy( other.m_value.get( ) )} {}
+		  : m_value{ make_copy( other.m_value.get( ) ) } {}
 
 		optional_poly &operator=( optional_poly const &rhs ) {
 			if( this != &rhs ) {
@@ -75,32 +75,32 @@ namespace daw {
 
 		template<typename... Args>
 		void emplace( Args &&... args ) {
-			m_value.reset( new value_type{std::forward<Args>( args )...} );
+			m_value.reset( new value_type{ std::forward<Args>( args )... } );
 		}
 
 		template<typename T, typename = std::enable_if_t<
 		                       std::is_base_of<value_type, T>::value or
 		                       std::is_same<value_type, T>::value>>
 		optional_poly( T &&value )
-		  : m_value{new std::decay_t<T>{std::forward<T>( value )}} {}
+		  : m_value{ new std::decay_t<T>{ std::forward<T>( value ) } } {}
 
 		template<typename T, typename = std::enable_if_t<
 		                       std::is_base_of<value_type, T>::value or
 		                       std::is_same<value_type, T>::value>>
 		optional_poly( T const &value )
-		  : m_value{new std::decay_t<T>{value}} {}
+		  : m_value{ new std::decay_t<T>{ value } } {}
 
 		template<typename T, typename = std::enable_if_t<
 		                       std::is_base_of<value_type, T>::value or
 		                       std::is_same<value_type, T>::value>>
 		explicit optional_poly( optional_poly<T> const &other )
-		  : m_value{make_copy( other.m_value.get( ) )} {}
+		  : m_value{ make_copy( other.m_value.get( ) ) } {}
 
 		template<typename T, typename = std::enable_if_t<
 		                       std::is_base_of<value_type, T>::value or
 		                       std::is_same<value_type, T>::value>>
 		explicit optional_poly( optional_poly<T> &&other ) noexcept
-		  : m_value{other.m_value.release( )} {}
+		  : m_value{ other.m_value.release( ) } {}
 
 		template<typename T, typename = std::enable_if_t<
 		                       std::is_base_of<value_type, T>::value or
@@ -126,7 +126,7 @@ namespace daw {
 		                            std::is_same<value_type, T>::value ),
 		                          std::nullptr_t> = nullptr>
 		optional_poly &operator=( T const &value ) {
-			m_value.reset( new value_type{value} );
+			m_value.reset( new value_type{ value } );
 			return *this;
 		}
 
@@ -182,7 +182,7 @@ namespace daw {
 
 	template<typename T, typename... Args>
 	auto make_optional_poly( Args &&... args ) {
-		optional_poly<T> result{};
+		optional_poly<T> result{ };
 		result.emplace( std::forward<Args>( args )... );
 		return result;
 	}

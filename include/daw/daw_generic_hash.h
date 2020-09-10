@@ -49,7 +49,7 @@ namespace daw {
 		                                       size_t rshft_bits = 0 ) noexcept {
 			static_assert( sizeof( Result ) <= sizeof( T ),
 			               "result size must be <= to source size" );
-			auto const mask = static_cast<T>( ~( Result{} & 0 ) ) << rshft_bits;
+			auto const mask = static_cast<T>( ~( Result{ } & 0 ) ) << rshft_bits;
 			value &= mask;
 			value >>= rshft_bits;
 			return static_cast<Result>( value );
@@ -129,8 +129,8 @@ namespace daw {
 		template<
 		  typename Member, size_t N,
 		  std::enable_if_t<std::is_integral_v<Member>, std::nullptr_t> = nullptr>
-		constexpr hash_value_t operator( )( Member const ( &member )[N] ) const
-		  noexcept {
+		constexpr hash_value_t
+		operator( )( Member const ( &member )[N] ) const noexcept {
 			return operator( )( member,
 			                    std::next( member, static_cast<intmax_t>( N ) ) );
 		}
@@ -177,8 +177,8 @@ namespace daw {
 		template<
 		  typename Member, size_t N,
 		  std::enable_if_t<std::is_integral_v<Member>, std::nullptr_t> = nullptr>
-		constexpr hash_value_t operator( )( Member const ( &member )[N] ) const
-		  noexcept {
+		constexpr hash_value_t
+		operator( )( Member const ( &member )[N] ) const noexcept {
 			return operator( )( member,
 			                    std::next( member, static_cast<intmax_t>( N ) ) );
 		}
@@ -203,7 +203,7 @@ namespace daw {
 	template<size_t HashBytes = sizeof( size_t ), typename T,
 	         std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
 	constexpr auto generic_hash( T const value ) noexcept {
-		return generic_hash_t<HashBytes>{}( value );
+		return generic_hash_t<HashBytes>{ }( value );
 	}
 
 	template<size_t HashBytes = sizeof( size_t ), typename Iterator,

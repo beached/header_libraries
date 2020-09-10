@@ -45,15 +45,17 @@ namespace daw {
 		basic_safe_string &operator=( basic_safe_string const & ) = default;
 		basic_safe_string &operator=( basic_safe_string && ) = default;
 
-		basic_safe_string( string_type unsafe_string,
-		                   SanitizeFunction sanitize_function = SanitizeFunction{} )
-		  : m_unsafe_string{daw::move( unsafe_string )}
-		  , m_sanitize_function{daw::move( sanitize_function )} {}
+		basic_safe_string(
+		  string_type unsafe_string,
+		  SanitizeFunction sanitize_function = SanitizeFunction{ } )
+		  : m_unsafe_string{ daw::move( unsafe_string ) }
+		  , m_sanitize_function{ daw::move( sanitize_function ) } {}
 
-		basic_safe_string( charT const *const unsafe_cstring,
-		                   SanitizeFunction sanitize_function = SanitizeFunction{} )
-		  : basic_safe_string{string_type{unsafe_cstring},
-		                      daw::move( sanitize_function )} {}
+		basic_safe_string(
+		  charT const *const unsafe_cstring,
+		  SanitizeFunction sanitize_function = SanitizeFunction{ } )
+		  : basic_safe_string{ string_type{ unsafe_cstring },
+		                       daw::move( sanitize_function ) } {}
 
 		basic_safe_string &operator=( string_type unsafe_string ) {
 			m_unsafe_string = daw::move( unsafe_string );
@@ -91,7 +93,7 @@ namespace daw {
 	                       SanitizeFunction &&sanitize_function ) {
 		return basic_safe_string<SanitizeFunction, charT, traits, Alloc>{
 		  daw::move( unsafe_string ),
-		  std::forward<SanitizeFunction>( sanitize_function )};
+		  std::forward<SanitizeFunction>( sanitize_function ) };
 	}
 
 	template<typename SanitizeFunction, typename charT,
@@ -100,6 +102,6 @@ namespace daw {
 	auto make_safe_string( charT const *const unsafe_cstring,
 	                       SanitizeFunction &&sanitize_function ) {
 		return basic_safe_string<SanitizeFunction, charT, traits, Alloc>{
-		  unsafe_cstring, std::forward<SanitizeFunction>( sanitize_function )};
+		  unsafe_cstring, std::forward<SanitizeFunction>( sanitize_function ) };
 	}
 } // namespace daw

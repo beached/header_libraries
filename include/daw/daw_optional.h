@@ -53,7 +53,7 @@ namespace daw {
 		constexpr optional( ) noexcept = default;
 		constexpr optional( std::nullopt_t ) noexcept {}
 
-		constexpr reference operator*( ) & noexcept {
+		constexpr reference operator*( ) &noexcept {
 			return m_value.operator*( );
 		}
 
@@ -61,7 +61,7 @@ namespace daw {
 			return m_value.operator*( );
 		}
 
-		constexpr rvalue_reference operator*( ) && noexcept {
+		constexpr rvalue_reference operator*( ) &&noexcept {
 			return std::move( m_value ).operator*( );
 		}
 

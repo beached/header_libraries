@@ -45,11 +45,11 @@ namespace daw {
 		using const_pointer = value_t const *;
 
 	private:
-		value_t m_value{};
+		value_t m_value{ };
 
 		template<typename U>
 		constexpr decltype( auto ) validate( U &&value ) {
-			if( not Validator{}( value ) ) {
+			if( not Validator{ }( value ) ) {
 				throw std::out_of_range( "Argument did not pass validation" );
 			}
 			return std::forward<U>( value );
@@ -94,7 +94,7 @@ namespace daw {
 			return m_value;
 		}
 
-		constexpr value_t get( ) && noexcept {
+		constexpr value_t get( ) &&noexcept {
 			return daw::move( m_value );
 		}
 

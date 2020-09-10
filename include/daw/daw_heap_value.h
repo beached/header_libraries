@@ -41,7 +41,7 @@ namespace daw {
 		using pointer = value_t *;
 		using const_pointer = value_t const *;
 
-		std::unique_ptr<value_t> m_value{std::make_unique<value_t>( )};
+		std::unique_ptr<value_t> m_value{ std::make_unique<value_t>( ) };
 
 	public:
 		heap_value( ) = default;
@@ -50,7 +50,7 @@ namespace daw {
 		~heap_value( ) = default;
 
 		heap_value( heap_value const &other )
-		  : m_value{std::make_unique<value_t>( *other.m_value )} {}
+		  : m_value{ std::make_unique<value_t>( *other.m_value ) } {}
 
 		heap_value &operator=( heap_value const &rhs ) {
 			if( this != &rhs ) {
@@ -63,12 +63,12 @@ namespace daw {
 		template<typename Arg, typename = std::enable_if_t<
 		                         daw::traits::not_self<Arg, value_t>( )>>
 		heap_value( Arg &&arg )
-		  : m_value{std::make_unique<value_t>( std::forward<Arg>( arg ) )} {}
+		  : m_value{ std::make_unique<value_t>( std::forward<Arg>( arg ) ) } {}
 
 		template<typename Arg, typename... Args>
 		heap_value( Arg &&arg, Args &&... args )
-		  : m_value{std::make_unique<value_t>( std::forward<Arg>( arg ),
-		                                       std::forward<Args>( args )... )} {}
+		  : m_value{ std::make_unique<value_t>( std::forward<Arg>( arg ),
+		                                        std::forward<Args>( args )... ) } {}
 
 		void swap( heap_value &rhs ) noexcept {
 			daw::cswap( m_value, rhs.m_value );

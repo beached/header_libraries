@@ -290,22 +290,22 @@ namespace daw {
 
 			auto slice( size_t first_pos ) {
 				using daw::next;
-				return Range{next( m_begin, first_pos ), next( m_begin, size( ) )};
+				return Range{ next( m_begin, first_pos ), next( m_begin, size( ) ) };
 			}
 
 			auto slice( size_t first_pos ) const {
 				using daw::next;
-				return Range{next( m_begin, first_pos ), next( m_begin, size( ) )};
+				return Range{ next( m_begin, first_pos ), next( m_begin, size( ) ) };
 			}
 
 			auto slice( size_t first_pos, size_t last_pos ) {
 				using daw::next;
-				return Range{next( m_begin, first_pos ), next( m_begin, last_pos )};
+				return Range{ next( m_begin, first_pos ), next( m_begin, last_pos ) };
 			}
 
 			auto slice( size_t first_pos, size_t last_pos ) const {
 				using daw::next;
-				return Range{next( m_begin, first_pos ), next( m_begin, last_pos )};
+				return Range{ next( m_begin, first_pos ), next( m_begin, last_pos ) };
 			}
 
 			auto shrink( size_t new_size ) {
@@ -334,7 +334,7 @@ namespace daw {
 		template<typename Iterator>
 		Range<Iterator> make_range( Iterator first, Iterator last ) {
 			using iterator = typename std::decay_t<Iterator>;
-			return Range<iterator>{first, last};
+			return Range<iterator>{ first, last };
 		}
 
 		template<

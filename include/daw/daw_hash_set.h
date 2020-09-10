@@ -58,7 +58,7 @@ namespace daw {
 					return n;
 				}
 			}
-			return {};
+			return { };
 		}
 
 	public:
@@ -66,7 +66,7 @@ namespace daw {
 		  : m_indices( range_size, std::nullopt ) {}
 
 		size_t insert( Key const &key ) {
-			auto const hash = Hash{}( key );
+			auto const hash = Hash{ }( key );
 			auto const index = find_index( hash, key );
 			if( !index ) {
 				throw std::out_of_range( "Hash table is full" );
@@ -76,17 +76,17 @@ namespace daw {
 		}
 
 		std::optional<size_t> erase( Key const &key ) {
-			auto const hash = Hash{}( key );
+			auto const hash = Hash{ }( key );
 			auto const index = find_index( hash, key );
 			if( !index ) {
-				return {};
+				return { };
 			}
 			m_indices[index] = std::nullopt;
 			return index;
 		}
 
 		bool exists( Key const &key ) const noexcept {
-			auto const hash = Hash{}( key );
+			auto const hash = Hash{ }( key );
 			auto const index = find_index( hash, key );
 			return static_cast<bool>( index ) and
 			       static_cast<bool>( m_indices[*index] );

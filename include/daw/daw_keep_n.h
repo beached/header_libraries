@@ -34,7 +34,7 @@ namespace daw {
 	namespace keep_n_impl {
 		template<keep_n_order Order, typename Function>
 		struct keep_n_pred {
-			Function func = {};
+			Function func = { };
 
 			constexpr keep_n_pred( ) noexcept(
 			  std::is_nothrow_constructible_v<Function> ) = default;
@@ -71,7 +71,7 @@ namespace daw {
 	class keep_n {
 		using values_type = std::array<T, MaxItems>;
 		static constexpr auto const m_pred =
-		  keep_n_impl::keep_n_pred<Order, Predicate>{};
+		  keep_n_impl::keep_n_pred<Order, Predicate>{ };
 
 	public:
 		using value_type = typename values_type::value_type;
@@ -83,7 +83,7 @@ namespace daw {
 		using const_iterator = typename values_type::const_iterator;
 
 	private:
-		values_type m_values{};
+		values_type m_values{ };
 
 	public:
 		constexpr keep_n( value_type const &default_value ) noexcept(

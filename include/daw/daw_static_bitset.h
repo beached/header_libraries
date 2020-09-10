@@ -110,9 +110,9 @@ namespace daw {
 			return daw::mask_msb<value_t>( bw );
 		}
 	} // namespace bitset_impl
-	inline constexpr bitset_impl::fmt_binary_t const fmt_binary{};
-	inline constexpr bitset_impl::fmt_hex_t const fmt_hex{};
-	inline constexpr bitset_impl::fmt_decimal_t const fmt_decimal{};
+	inline constexpr bitset_impl::fmt_binary_t const fmt_binary{ };
+	inline constexpr bitset_impl::fmt_hex_t const fmt_hex{ };
+	inline constexpr bitset_impl::fmt_decimal_t const fmt_decimal{ };
 
 	template<size_t BitWidth>
 	class static_bitset {
@@ -122,7 +122,7 @@ namespace daw {
 		static constexpr size_t const m_element_capacity =
 		  bitset_impl::get_elements_needed<BitWidth, value_t>( );
 
-		bounded_array_t<value_t, m_element_capacity> m_data{};
+		bounded_array_t<value_t, m_element_capacity> m_data{ };
 
 		struct bit_address_t {
 			value_t index;
@@ -130,7 +130,7 @@ namespace daw {
 		};
 
 		constexpr bit_address_t get_address( size_t index ) noexcept {
-			bit_address_t result{};
+			bit_address_t result{ };
 			result.index = static_cast<value_t>( index / daw::bsizeof<value_t> );
 
 			result.bit =
@@ -207,7 +207,7 @@ namespace daw {
 		/// \param values bytes in bitset from lowest(left) to highest(right)
 		template<typename... Unsigned>
 		explicit static_bitset( uintmax_t value, Unsigned... values ) noexcept
-		  : m_data{value, values...} {
+		  : m_data{ value, values... } {
 
 			// Ensure that we do not have any data on the high bits that should not
 			// be there
@@ -248,7 +248,7 @@ namespace daw {
 		  std::enable_if_t<( BitWidth > BitWidthOther ), std::nullptr_t> = nullptr>
 		constexpr static_bitset(
 		  static_bitset<BitWidthOther> const &other ) noexcept
-		  : m_data{other.m_data} {}
+		  : m_data{ other.m_data } {}
 
 		/// Enable a specific bit in the bitset
 		/// \param index bit position in set
@@ -401,7 +401,7 @@ namespace daw {
 		template<size_t BitWidthRhs>
 		constexpr static_bitset<std::max( BitWidth, BitWidthRhs )>
 		operator^( static_bitset<BitWidthRhs> const &rhs ) const noexcept {
-			static_bitset<std::max( BitWidth, BitWidthRhs )> result{};
+			static_bitset<std::max( BitWidth, BitWidthRhs )> result{ };
 			size_t n = 0;
 			for( ; n < m_data.size( ) and n < rhs.m_data.size( ); ++n ) {
 				result.m_data[n] = m_data[n] ^ rhs.m_data[n];
@@ -417,7 +417,7 @@ namespace daw {
 		}
 
 		constexpr static_bitset operator~( ) const noexcept {
-			static_bitset result{};
+			static_bitset result{ };
 			for( size_t n = 0; n < m_data.size( ); ++n ) {
 				result.m_data[n] = ~m_data[n];
 			}
@@ -425,8 +425,8 @@ namespace daw {
 		}
 
 		template<size_t BitWidthRhs>
-		constexpr bool operator==( static_bitset<BitWidthRhs> const &rhs ) const
-		  noexcept {
+		constexpr bool
+		operator==( static_bitset<BitWidthRhs> const &rhs ) const noexcept {
 			size_t const last = std::min( m_data.size( ), rhs.m_data.size( ) );
 			size_t n = 0;
 			for( ; n < last; ++n ) {
@@ -448,8 +448,8 @@ namespace daw {
 		}
 
 		template<size_t BitWidthRhs>
-		constexpr bool operator!=( static_bitset<BitWidthRhs> const &rhs ) const
-		  noexcept {
+		constexpr bool
+		operator!=( static_bitset<BitWidthRhs> const &rhs ) const noexcept {
 			size_t const last = std::min( m_data.size( ), rhs.m_data.size( ) );
 			size_t n = 0;
 			for( ; n < last; ++n ) {

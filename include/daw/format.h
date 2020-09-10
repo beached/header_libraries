@@ -66,8 +66,8 @@ namespace daw {
 
 		public:
 			constexpr brace_splitter_t( )
-			  : m_size{0}
-			  , m_state{0} {}
+			  : m_size{ 0 }
+			  , m_state{ 0 } {}
 
 			constexpr bool operator( )( char c ) {
 				if( m_state == 0 ) {

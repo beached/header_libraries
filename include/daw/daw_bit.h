@@ -62,7 +62,7 @@ namespace daw {
 		               "Only integer types are supported" );
 
 		using expand = int[];
-		static_cast<void>( expand{0, ( ( bit |= bits ), 0 )...} );
+		static_cast<void>( expand{ 0, ( ( bit |= bits ), 0 )... } );
 		return bit;
 	}
 

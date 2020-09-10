@@ -48,7 +48,7 @@ namespace daw {
 
 		template<typename... Ts>
 		static constexpr void increment( std::tuple<Ts...> &tpl ) {
-			increment( tpl, std::index_sequence_for<Ts...>{} );
+			increment( tpl, std::index_sequence_for<Ts...>{ } );
 		}
 
 		template<typename... Ts, std::size_t... Is>
@@ -59,7 +59,7 @@ namespace daw {
 
 		template<typename... Ts>
 		static constexpr void decrement( std::tuple<Ts...> &tpl ) {
-			decrement( tpl, std::index_sequence_for<Ts...>{} );
+			decrement( tpl, std::index_sequence_for<Ts...>{ } );
 		}
 
 		template<typename... Ts, std::size_t... Is>
@@ -71,7 +71,7 @@ namespace daw {
 
 		template<typename... Ts>
 		static constexpr void advance( std::tuple<Ts...> &tpl, intmax_t n ) {
-			advance( tpl, std::index_sequence_for<Ts...>{}, n );
+			advance( tpl, std::index_sequence_for<Ts...>{ }, n );
 		}
 
 	public:
@@ -159,7 +159,7 @@ namespace daw {
 
 	template<typename... Iterators>
 	zip_iterator( Iterators &&... )
-	  ->zip_iterator<std::remove_reference_t<Iterators>...>;
+	  -> zip_iterator<std::remove_reference_t<Iterators>...>;
 
 	template<typename... T>
 	constexpr bool operator==( zip_iterator<T...> const &lhs,
