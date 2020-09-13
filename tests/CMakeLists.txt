@@ -37,7 +37,7 @@ foreach (CUR_TEST IN LISTS all_tests)
 	string(REPLACE ".cpp" "" CUR_TEST_NAME ${CUR_TEST})
 	add_executable(${CUR_TEST_NAME} ${CUR_TEST})
 	target_link_libraries(${CUR_TEST_NAME} PRIVATE daw_test)
-	add_test(${CUR_TEST_NAME} _test ${CUR_TEST_NAME})
+	add_test(${CUR_TEST_NAME}_test ${CUR_TEST_NAME})
 	add_dependencies(full ${CUR_TEST_NAME})
 endforeach ()
 
