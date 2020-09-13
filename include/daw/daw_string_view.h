@@ -89,6 +89,7 @@ namespace daw {
 		static constexpr last_type make_last( const_pointer f,
 		                                      const_pointer l ) noexcept {
 			if constexpr( is_last_a_pointer_v<Bounds> ) {
+				(void)f;
 				return l;
 			} else {
 				return static_cast<last_type>( l - f );
@@ -101,6 +102,7 @@ namespace daw {
 			if constexpr( is_last_a_pointer_v<Bounds> ) {
 				return f + static_cast<difference_type>( s );
 			} else {
+				(void)f;
 				return s;
 			}
 		}
@@ -119,6 +121,7 @@ namespace daw {
 			if constexpr( is_last_a_pointer_v<Bounds> ) {
 				return static_cast<size_type>( l - f );
 			} else {
+				(void)f;
 				return l;
 			}
 		}
