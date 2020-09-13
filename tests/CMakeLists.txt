@@ -133,10 +133,10 @@ find_package( Threads REQUIRED )
 # Allows building all in some IDE's
 add_custom_target(full)
 
-if (MSVC)
+if( MSVC AND NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" )
 	add_definitions(-DNOMINMAX -DD_WIN32_WINNT=0x0601)
 	add_compile_options("/permissive-")
-else ()
+endif()
 
 if( NOT MSVC ) 
 	foreach( CUR_TEST ${NOT_MSVC_TEST_SOURCES} )
