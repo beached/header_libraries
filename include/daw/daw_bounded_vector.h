@@ -54,7 +54,8 @@ namespace daw {
 		template<typename Iterator>
 		constexpr bounded_vector_t( Iterator first, Iterator last ) {
 			auto out = daw::algorithm::copy( first, last, m_stack.begin( ) );
-			m_index = static_cast<std::size_t>( std::distance( m_stack.begin( ), out ) );
+			m_index =
+			  static_cast<std::size_t>( std::distance( m_stack.begin( ), out ) );
 		}
 
 		constexpr bool empty( ) const noexcept {

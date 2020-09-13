@@ -2433,23 +2433,23 @@ namespace daw {
 	constexpr UInt16 rotate_left( UInt16 value ) {
 		static_assert( bits <= 16 );
 		auto tmp = static_cast<unsigned>( value );
-		return to_uint16(( tmp << bits ) | ( tmp >> ( 16U - bits ) ));
+		return to_uint16( ( tmp << bits ) | ( tmp >> ( 16U - bits ) ) );
 	}
 
 	constexpr UInt16 rotate_left( UInt16 value, unsigned bits ) {
 		auto tmp = static_cast<unsigned>( value );
-		return to_uint16(( tmp << bits ) | ( tmp >> ( 16U - bits ) ));
+		return to_uint16( ( tmp << bits ) | ( tmp >> ( 16U - bits ) ) );
 	}
 	template<unsigned bits>
 	constexpr UInt16 rotate_right( UInt16 value ) {
 		static_assert( bits <= 16 );
 		auto tmp = static_cast<unsigned>( value );
-		return static_cast<UInt16>(( tmp >> bits ) | ( tmp << ( 16U - bits ) ));
+		return static_cast<UInt16>( ( tmp >> bits ) | ( tmp << ( 16U - bits ) ) );
 	}
 
 	constexpr UInt16 rotate_right( UInt16 value, unsigned bits ) {
 		auto tmp = static_cast<unsigned>( value );
-		return static_cast<UInt16>(( tmp >> bits ) | ( tmp << ( 16U - bits ) ));
+		return static_cast<UInt16>( ( tmp >> bits ) | ( tmp << ( 16U - bits ) ) );
 	}
 
 	constexpr UInt8 &operator+=( UInt8 &lhs, UInt8 rhs ) noexcept {
@@ -2908,24 +2908,24 @@ namespace daw {
 	constexpr UInt8 rotate_left( UInt8 value ) {
 		static_assert( bits <= 8 );
 		auto tmp = static_cast<unsigned>( value );
-		return static_cast<UInt8>(( tmp << bits ) | ( tmp >> ( 8U - bits ) ));
+		return static_cast<UInt8>( ( tmp << bits ) | ( tmp >> ( 8U - bits ) ) );
 	}
 
 	constexpr UInt8 rotate_left( UInt8 value, unsigned bits ) {
 		auto tmp = static_cast<unsigned>( value );
-		return static_cast<UInt8>(( tmp << bits ) | ( tmp >> ( 8U - bits ) ));
+		return static_cast<UInt8>( ( tmp << bits ) | ( tmp >> ( 8U - bits ) ) );
 	}
 
 	template<unsigned bits>
 	constexpr UInt8 rotate_right( UInt8 value ) {
 		static_assert( bits <= 8 );
 		auto tmp = static_cast<unsigned>( value );
-		return static_cast<UInt8>(( tmp >> bits ) | ( tmp << ( 8U - bits ) ));
+		return static_cast<UInt8>( ( tmp >> bits ) | ( tmp << ( 8U - bits ) ) );
 	}
 
 	constexpr UInt8 rotate_right( UInt8 value, unsigned bits ) {
 		auto tmp = static_cast<unsigned>( value );
-		return static_cast<UInt8>(( tmp >> bits ) | ( tmp << ( 8U - bits ) ));
+		return static_cast<UInt8>( ( tmp >> bits ) | ( tmp << ( 8U - bits ) ) );
 	}
 
 	template<unsigned N>
@@ -3309,4 +3309,4 @@ namespace daw {
 		                    std::numeric_limits<std::uint8_t>::max( ) ) ) );
 		return static_cast<UInt8>( value );
 	}
-}
+} // namespace daw
