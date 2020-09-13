@@ -11,6 +11,7 @@ cmake_minimum_required( VERSION 3.10 )
 project( "header_libraries"
 	VERSION "1.0.0" 
 	DESCRIPTION "Various headers"
+	HOMEPAGE_URL "https://github.com/beached/header_libraries"
 	LANGUAGES C CXX)
 
 set( CMAKE_CXX_STANDARD 17 CACHE STRING "The C++ standard whose features are requested.")
