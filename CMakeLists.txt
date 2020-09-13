@@ -18,24 +18,23 @@ set( CMAKE_CXX_STANDARD 17 CACHE STRING "The C++ standard whose features are req
 set( CMAKE_CXX_STANDARD_REQUIRED ON)
 set( CMAKE_CXX_EXTENSIONS OFF)
 
-option(  DAW_ENABLE_TESTING "Build unit tests" OFF )
+option( DAW_ENABLE_TESTING "Build unit tests" OFF )
 
+include( GNUInstallDirs)
 set( header_libraries_INSTALL_CMAKEDIR
 	"${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake"
 	CACHE STRING
 	"The install directory to use for CMake package config files") 
 
 set( PROJECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
-include( GNUInstallDirs)
 
+add_library( ${PROJECT_NAME} INTERFACE ) 
+add_library( daw::${PROJECT_NAME} ALIAS ${PROJECT_NAME} )
 
-add_library(  ${PROJECT_NAME} INTERFACE ) 
-add_library(  daw::${PROJECT_NAME} ALIAS ${PROJECT_NAME} )
-
-if(  DAW_ENABLE_TESTING )
-	enable_testing(  )
-	add_subdirectory(  tests )
-endif(  )	
+if( DAW_ENABLE_TESTING )
+	enable_testing( )
+	add_subdirectory( tests )
+endif( )	
 
 target_compile_features( ${PROJECT_NAME} INTERFACE cxx_std_17)
 target_include_directories( ${PROJECT_NAME}
