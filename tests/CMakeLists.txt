@@ -133,6 +133,11 @@ find_package( Threads REQUIRED )
 # Allows building all in some IDE's
 add_custom_target(full)
 
+if (MSVC)
+	add_definitions(-DNOMINMAX -DD_WIN32_WINNT=0x0601)
+	add_compile_options("/permissive-")
+else ()
+
 if( NOT MSVC ) 
 	foreach( CUR_TEST ${NOT_MSVC_TEST_SOURCES} )
 		string( REPLACE ".cpp" "" CUR_TEST_NAME ${CUR_TEST} )
