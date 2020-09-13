@@ -2905,21 +2905,25 @@ namespace daw {
 	template<unsigned bits>
 	constexpr UInt8 rotate_left( UInt8 value ) {
 		static_assert( bits <= 8 );
-		return ( value << bits ) | ( value >> ( 8U - bits ) );
+		auto tmp = static_cast<unsigned>( value );
+		return static_cast<UInt8>(( tmp << bits ) | ( tmp >> ( 8U - bits ) ));
 	}
 
 	constexpr UInt8 rotate_left( UInt8 value, unsigned bits ) {
-		return ( value << bits ) | ( value >> ( 8U - bits ) );
+		auto tmp = static_cast<unsigned>( value );
+		return static_cast<UInt8>(( tmp << bits ) | ( tmp >> ( 8U - bits ) ));
 	}
 
 	template<unsigned bits>
 	constexpr UInt8 rotate_right( UInt8 value ) {
 		static_assert( bits <= 8 );
-		return ( value >> bits ) | ( value << ( 8U - bits ) );
+		auto tmp = static_cast<unsigned>( value );
+		return static_cast<UInt8>(( tmp >> bits ) | ( tmp << ( 8U - bits ) ));
 	}
 
 	constexpr UInt8 rotate_right( UInt8 value, unsigned bits ) {
-		return ( value >> bits ) | ( value << ( 8U - bits ) );
+		auto tmp = static_cast<unsigned>( value );
+		return static_cast<UInt8>(( tmp >> bits ) | ( tmp << ( 8U - bits ) ));
 	}
 
 	template<unsigned N>
