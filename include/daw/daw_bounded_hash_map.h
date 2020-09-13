@@ -38,12 +38,12 @@ namespace daw {
 
 		constexpr bounded_hash_map_item_t( ) = default;
 
-		constexpr bounded_hash_map_item_t( key_value_t<Key, Value> &&kv )
-		  : kv( std::move( kv ) )
+		constexpr bounded_hash_map_item_t( key_value_t<Key, Value> &&Kv )
+		  : kv( std::move( Kv ) )
 		  , has_value( true ) {}
 
-		constexpr bounded_hash_map_item_t( key_value_t<Key, Value> const &kv )
-		  : kv( kv )
+		constexpr bounded_hash_map_item_t( key_value_t<Key, Value> const &Kv )
+		  : kv( Kv )
 		  , has_value( true ) {}
 
 		template<typename K, typename V>
