@@ -1,24 +1,10 @@
 // Copyright (c) Darrell Wright
-//
+// 
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
-//
-// Official repository: https://github.com/beached/daw_json_link
-//
-#pragma once
-
-/***
- * Arithmetic Traits
- * This allows us to use the numeric_limits traits to build up the number traits
- * from traits.  If a user supplied type can do what an arithmetic type can, it
- * should work
- */
-
-#include <climits>
-#include <limits>
-#include <type_traits>
-
-// copied from ABSL but allowing the define to be forced
+// 
+// Official repository: https://github.com/beached/header_libraries
+// 
 #if defined( DAW_JSON_NO_INT128 )
 #if defined( DAW_HAS_INT128 )
 #undef DAW_HAS_INT128

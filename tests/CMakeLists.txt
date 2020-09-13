@@ -1,9 +1,9 @@
 # Copyright (c) Darrell Wright
 #
 # Distributed under the Boost Software License, Version 1.0. (See accompanying
-# file LICENSE or copy at http:__www.boost.org_LICENSE_1_0.txt)
+# file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 #
-# Official repository: https:__github.com_beached_header_libraries
+# Official repository: https://github.com/beached/header_libraries
 #
 
 set( TEST_SOURCES

@@ -1,24 +1,10 @@
-//////////////////////////////////////////////////////////////////////////
-/// Summary:	concurrent queue by Anthony Williams from
-///				https://www.justsoftwaresolutions.co.uk/threading/implementing-a-thread-safe-queue-using-condition-variables.html
-///
-//////////////////////////////////////////////////////////////////////////
-
-#pragma once
-
-#include <atomic>
-#include <condition_variable>
-#include <mutex>
-#include <queue>
-
-namespace daw {
-	template<typename Data>
-	class concurrent_queue {
-	private:
-		std::queue<Data> m_queue;
-		mutable std::mutex m_mutex;
-		std::condition_variable m_condition;
-		std::atomic<bool> m_forced_exit;
+// Copyright (c) Darrell Wright
+// 
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
+// 
+// Official repository: https://github.com/beached/header_libraries
+// 
 
 	public:
 		concurrent_queue( )
