@@ -117,8 +117,8 @@ namespace daw {
 		using const_reverse_iterator = typename values_type::const_reverse_iterator;
 
 	private:
-		values_type m_values{};
-		key_compare m_compare{};
+		values_type m_values{ };
+		key_compare m_compare{ };
 
 	public:
 		constexpr iterator begin( ) noexcept {
@@ -242,8 +242,8 @@ namespace daw {
 
 		template<typename InputIterator>
 		constexpr ordered_map( InputIterator first, InputIterator last,
-		                       key_compare const &comp = key_compare{},
-		                       allocator_type const &alloc = allocator_type{} )
+		                       key_compare const &comp = key_compare{ },
+		                       allocator_type const &alloc = allocator_type{ } )
 		  : m_compare( comp )
 		  , m_values( alloc ) {
 
@@ -257,7 +257,7 @@ namespace daw {
 
 		template<typename InputIterator>
 		constexpr ordered_map( InputIterator first, InputIterator last,
-		                       allocator_type const &alloc = allocator_type{} )
+		                       allocator_type const &alloc = allocator_type{ } )
 		  : m_values( alloc ) {
 
 			while( first != last ) {
@@ -315,25 +315,25 @@ namespace daw {
 			if( pos == end( ) ) {
 				pos = m_values.insert(
 				  pos, daw::construct_a<value_type>( std::forward<P>( value ) ) );
-				return {pos, true};
+				return { pos, true };
 			}
-			return {pos, false};
+			return { pos, false };
 		}
 
 		constexpr std::pair<iterator, bool> insert( value_type const &value ) {
 			auto pos = find( value.first );
 			if( pos == end( ) ) {
 				pos = m_values.insert( pos, value );
-				return {pos, true};
+				return { pos, true };
 			}
-			return {pos, false};
+			return { pos, false };
 		}
 
 		template<typename K>
 		constexpr reference operator[]( K const &key ) {
 			auto pos = find( key );
 			if( pos == end( ) ) {
-				pos = insert( value_type( key, mapped_type{} ) ).first;
+				pos = insert( value_type( key, mapped_type{ } ) ).first;
 			}
 			return pos->second;
 		}

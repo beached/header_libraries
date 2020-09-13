@@ -80,25 +80,25 @@ namespace daw {
 
 	template<typename... Args, typename Compare = std::less<>>
 	auto make_sorted_insert_iterator( std::vector<Args...> &c,
-	                                  Compare compare = Compare{} ) {
+	                                  Compare compare = Compare{ } ) {
 		return daw::make_function_iterator(
 		  si_impl::sorted_iterator_vector_callable<Compare, Args...>{
-		    &c, std::move( compare )} );
+		    &c, std::move( compare ) } );
 	}
 
 	template<typename... Args, typename Compare = std::less<>>
 	auto make_sorted_insert_iterator( std::deque<Args...> &c,
-	                                  Compare compare = Compare{} ) {
+	                                  Compare compare = Compare{ } ) {
 		return daw::make_function_iterator(
 		  si_impl::sorted_iterator_deque_callable<Compare, Args...>{
-		    &c, std::move( compare )} );
+		    &c, std::move( compare ) } );
 	}
 
 	template<typename... Args, typename Compare = std::less<>>
 	decltype( auto ) make_sorted_insert_iterator( std::list<Args...> &c,
-	                                              Compare compare = Compare{} ) {
+	                                              Compare compare = Compare{ } ) {
 		return daw::make_function_iterator(
 		  si_impl::sorted_iterator_list_callable<Compare, Args...>{
-		    &c, std::move( compare )} );
+		    &c, std::move( compare ) } );
 	}
 } // namespace daw

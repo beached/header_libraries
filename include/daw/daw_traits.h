@@ -670,7 +670,7 @@ namespace daw::traits {
 	};
 
 	template<typename... Args>
-	using last_type_t = typename decltype( ( identity<Args>{}, ... ) )::type;
+	using last_type_t = typename decltype( ( identity<Args>{ }, ... ) )::type;
 
 	template<size_t N, typename... Args>
 	using nth_type = std::tuple_element_t<N, std::tuple<Args...>>;
@@ -716,7 +716,7 @@ namespace daw::traits {
 
 	template<typename A, typename B>
 	struct pack_index_of<A, B>
-	  : std::integral_constant<int, ( std::is_same<A, B>{} - 1 )> {};
+	  : std::integral_constant<int, ( std::is_same<A, B>{ } - 1 )> {};
 
 	template<typename T, typename... Pack>
 	struct pack_index_of<T, pack_list<Pack...>> : pack_index_of<T, Pack...> {};
@@ -764,7 +764,7 @@ namespace daw::traits {
 		template<typename Func>
 		static constexpr lifted_t<Func, is_noexcept, R, Args...>
 		lift( Func &&f ) noexcept {
-			return {std::forward<Func>( f )};
+			return { std::forward<Func>( f ) };
 		}
 	};
 
@@ -783,7 +783,7 @@ namespace daw::traits {
 		template<typename Func>
 		static constexpr lifted_t<Func, is_noexcept, R, Args...>
 		lift( Func &&f ) noexcept {
-			return {std::forward<Func>( f )};
+			return { std::forward<Func>( f ) };
 		}
 	};
 
@@ -840,8 +840,8 @@ namespace daw::traits {
 	struct no_else {};
 
 	template<bool Bool, typename OnTrue, typename OnFalse = no_else>
-	constexpr decltype( auto ) cxif( OnTrue ot = OnTrue{},
-	                                 OnFalse of = OnFalse{} ) {
+	constexpr decltype( auto ) cxif( OnTrue ot = OnTrue{ },
+	                                 OnFalse of = OnFalse{ } ) {
 		if constexpr( Bool ) {
 			return ot( );
 		} else {

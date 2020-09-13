@@ -67,7 +67,7 @@ namespace daw::metro {
 
 		uint64_t hash = ( seed + k2 ) * k0;
 		if( buff.size( ) >= 32U ) {
-			uint64_t v[4]{hash, hash, hash, hash};
+			uint64_t v[4]{ hash, hash, hash, hash };
 
 			do {
 				v[0] += metro_impl::as_le_uint<uint64_t>( buff.data( ) ) * k0;

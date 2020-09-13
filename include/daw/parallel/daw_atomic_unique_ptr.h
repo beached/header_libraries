@@ -131,7 +131,7 @@ namespace daw {
 	template<typename T, typename... Args>
 	[[nodiscard]] atomic_unique_ptr<T> make_atomic_unique_ptr( Args &&... args ) {
 		if constexpr( std::is_aggregate_v<T> ) {
-			return atomic_unique_ptr<T>( new T{std::forward<Args>( args )...} );
+			return atomic_unique_ptr<T>( new T{ std::forward<Args>( args )... } );
 		} else {
 			return atomic_unique_ptr<T>( new T( std::forward<Args>( args )... ) );
 		}

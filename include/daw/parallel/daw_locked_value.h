@@ -144,27 +144,29 @@ namespace daw {
 		  : m_value( std::forward<U>( value ) ) {}
 
 		locked_value_t get( ) {
-			return locked_value_t( std::unique_lock<Mutex>( m_mutex.get( ) ), *m_value );
+			return locked_value_t( std::unique_lock<Mutex>( m_mutex.get( ) ),
+			                       *m_value );
 		}
 
 		const_locked_value_t get( ) const {
-			return const_locked_value_t( std::unique_lock<Mutex>( m_mutex.get( ) ), *m_value );
+			return const_locked_value_t( std::unique_lock<Mutex>( m_mutex.get( ) ),
+			                             *m_value );
 		}
 
 		std::optional<locked_value_t> try_get( ) {
 			auto lck = std::unique_lock<Mutex>( m_mutex.get( ), std::try_to_lock );
 			if( not lck.owns_lock( ) ) {
-				return {};
+				return { };
 			}
-			return {locked_value_t( std::move( lck ), *m_value )};
+			return { locked_value_t( std::move( lck ), *m_value ) };
 		}
 
 		std::optional<const_locked_value_t> try_get( ) const {
 			auto lck = std::unique_lock<Mutex>( m_mutex.get( ), std::try_to_lock );
 			if( not lck.owns_lock( ) ) {
-				return {};
+				return { };
 			}
-			return {const_locked_value_t( std::move( lck ), *m_value )};
+			return { const_locked_value_t( std::move( lck ), *m_value ) };
 		}
 
 		locked_value_t operator*( ) {

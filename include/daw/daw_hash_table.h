@@ -59,7 +59,7 @@ namespace daw {
 
 			void clear( ) {
 				hash = Sentinals::sentinal_removed;
-				value = value_type{};
+				value = value_type{ };
 			}
 
 			bool empty( ) const noexcept {
@@ -79,20 +79,20 @@ namespace daw {
 			}
 
 			hash_table_item( )
-			  : hash{Sentinals::sentinal_empty}
-			  , value{} {}
+			  : hash{ Sentinals::sentinal_empty }
+			  , value{ } {}
 
 			~hash_table_item( ) = default;
 
 			hash_table_item( hash_table_item const &other )
-			  : hash{( other.hash == Sentinals::sentinal_removed )
-			           ? Sentinals::sentinal_empty
-			           : other.hash}
-			  , value{other.value} {}
+			  : hash{ ( other.hash == Sentinals::sentinal_removed )
+			            ? Sentinals::sentinal_empty
+			            : other.hash }
+			  , value{ other.value } {}
 
 			hash_table_item( hash_table_item &&other ) noexcept
-			  : hash{daw::move( other.hash )}
-			  , value{daw::move( other.value )} {}
+			  : hash{ daw::move( other.hash ) }
+			  , value{ daw::move( other.value ) } {}
 
 			hash_table_item &operator=( hash_table_item const &rhs ) {
 				if( this != &rhs ) {
@@ -131,9 +131,9 @@ namespace daw {
 
 	public:
 		hash_table_item_iterator( pointer first, pointer position, pointer last )
-		  : m_begin{first}
-		  , m_position{position}
-		  , m_end{last} {}
+		  : m_begin{ first }
+		  , m_position{ position }
+		  , m_end{ last } {}
 
 		template<typename T,
 		         typename = std::enable_if_t<std::is_convertible_v<T, pointer>>>
@@ -147,7 +147,7 @@ namespace daw {
 		hash_table_item_iterator &
 		operator=( hash_table_item_iterator<T> const &rhs ) {
 			if( this != rhs ) {
-				hash_table_item_iterator tmp{rhs};
+				hash_table_item_iterator tmp{ rhs };
 				using std::swap;
 				swap( *this, tmp );
 			}
@@ -166,14 +166,14 @@ namespace daw {
 		~hash_table_item_iterator( ) = default;
 
 		hash_table_item_iterator( hash_table_item_iterator const &other ) noexcept
-		  : m_begin{other.m_begin}
-		  , m_position{other.m_position}
-		  , m_end{other.m_end} {}
+		  : m_begin{ other.m_begin }
+		  , m_position{ other.m_position }
+		  , m_end{ other.m_end } {}
 
 		hash_table_item_iterator( hash_table_item_iterator &&other ) noexcept
-		  : m_begin{daw::move( other.m_begin )}
-		  , m_position{daw::move( other.m_position )}
-		  , m_end{daw::move( other.m_end )} {}
+		  : m_begin{ daw::move( other.m_begin ) }
+		  , m_position{ daw::move( other.m_position ) }
+		  , m_end{ daw::move( other.m_end ) } {}
 
 		hash_table_item_iterator &
 		operator=( hash_table_item_iterator const &rhs ) noexcept {
@@ -211,7 +211,7 @@ namespace daw {
 		}
 
 		hash_table_item_iterator operator++( int ) {
-			hash_table_item_iterator result{*this};
+			hash_table_item_iterator result{ *this };
 			++( *this );
 			return result;
 		}
@@ -225,7 +225,7 @@ namespace daw {
 		}
 
 		hash_table_item_iterator operator--( int ) {
-			hash_table_item_iterator result{*this};
+			hash_table_item_iterator result{ *this };
 			--( *this );
 			return result;
 		}
@@ -343,11 +343,11 @@ namespace daw {
 	public:
 		hash_table( size_t start_size, double resize_ratio = 2.0,
 		            size_t max_load_percent = 70 )
-		  : m_resize_ratio{resize_ratio}
-		  , m_load{0}
-		  , m_growth_counter{0}
-		  , m_max_load{max_load_percent}
-		  , m_values{start_size} {
+		  : m_resize_ratio{ resize_ratio }
+		  , m_load{ 0 }
+		  , m_growth_counter{ 0 }
+		  , m_max_load{ max_load_percent }
+		  , m_values{ start_size } {
 
 			daw::exception::daw_throw_on_false( start_size > 0 );
 		}
@@ -366,33 +366,33 @@ namespace daw {
 		hash_table &operator=( hash_table const & ) = default;
 
 		iterator begin( ) {
-			auto result = iterator{priv_begin( ), priv_begin( ), priv_end( )};
+			auto result = iterator{ priv_begin( ), priv_begin( ), priv_end( ) };
 			++result;
 			return result;
 		}
 
 		const_iterator begin( ) const {
-			auto result = const_iterator{priv_begin( ), priv_begin( ), priv_end( )};
+			auto result = const_iterator{ priv_begin( ), priv_begin( ), priv_end( ) };
 			++result;
 			return result;
 		}
 
 		const_iterator cbegin( ) const {
-			auto result = const_iterator{priv_begin( ), priv_begin( ), priv_end( )};
+			auto result = const_iterator{ priv_begin( ), priv_begin( ), priv_end( ) };
 			++result;
 			return result;
 		}
 
 		iterator end( ) {
-			return iterator{priv_begin( ), priv_end( ), priv_end( )};
+			return iterator{ priv_begin( ), priv_end( ), priv_end( ) };
 		}
 
 		const_iterator end( ) const {
-			return iterator{priv_begin( ), priv_end( ), priv_end( )};
+			return iterator{ priv_begin( ), priv_end( ), priv_end( ) };
 		}
 
 		const_iterator cend( ) const {
-			return iterator{priv_begin( ), priv_end( ), priv_end( )};
+			return iterator{ priv_begin( ), priv_end( ), priv_end( ) };
 		}
 
 	private:
@@ -432,7 +432,7 @@ namespace daw {
 		}
 
 		static size_t resize_table( values_type &old_table, size_t new_size ) {
-			values_type new_hash_table{new_size};
+			values_type new_hash_table{ new_size };
 			size_t load = 0;
 			for( auto &&current_item : old_table ) {
 				if( current_item ) {
@@ -531,7 +531,7 @@ namespace daw {
 			auto hash = hash_fn( key );
 			auto pos = find_item_by_hash_or_create( hash, *this );
 			pos->value = daw::move( value );
-			return iterator{priv_begin( ), pos, priv_end( )};
+			return iterator{ priv_begin( ), pos, priv_end( ) };
 		}
 
 		template<typename Key>
@@ -635,14 +635,14 @@ namespace daw {
 		iterator find( Key const &key ) {
 			auto hash = hash_fn( key );
 			auto pos = find_item_by_hash( hash, m_values );
-			return iterator{priv_begin( ), pos, priv_end( )};
+			return iterator{ priv_begin( ), pos, priv_end( ) };
 		}
 
 		template<typename Key>
 		const_iterator find( Key const &key ) const {
 			auto hash = hash_fn( key );
 			auto pos = find_item_by_hash( hash, m_values );
-			return const_iterator{priv_begin( ), pos, priv_end( )};
+			return const_iterator{ priv_begin( ), pos, priv_end( ) };
 		}
 
 		template<typename Key>

@@ -48,7 +48,7 @@ namespace daw {
 		auto pos = container.find( std::forward<Key>( k ) );
 		using result_t = daw::remove_cvref_t<decltype( *pos )>;
 		if( pos == std::end( container ) ) {
-			return std::optional<result_t>{};
+			return std::optional<result_t>{ };
 		}
 		return std::optional<result_t>( std::in_place, *pos );
 	}
@@ -58,7 +58,7 @@ namespace daw {
 		auto pos = container.find( std::forward<Key>( k ) );
 		using result_t = daw::remove_cvref_t<decltype( *pos )>;
 		if( pos == std::end( container ) ) {
-			return std::optional<result_t>{};
+			return std::optional<result_t>{ };
 		}
 		return std::optional<result_t>( std::in_place, *pos );
 	}
@@ -283,7 +283,7 @@ namespace daw::algorithm {
 	         typename Compare = std::less<>>
 	constexpr ForwardIterator lower_bound( ForwardIterator first,
 	                                       ForwardIterator last, Value &&value,
-	                                       Compare cmp = {} ) {
+	                                       Compare cmp = { } ) {
 		// Precondition checks
 		traits::is_forward_access_iterator_test<ForwardIterator>( );
 		traits::is_input_iterator_test<ForwardIterator>( );
@@ -367,7 +367,7 @@ namespace daw::algorithm {
 	         typename Predicate = std::less<>>
 	constexpr ForwardIterator
 	binary_search( ForwardIterator first, ForwardIterator const last,
-	               Value &&value, Predicate less_than = Predicate{} ) {
+	               Value &&value, Predicate less_than = Predicate{ } ) {
 
 		traits::is_forward_access_iterator_test<ForwardIterator>( );
 		traits::is_input_iterator_test<ForwardIterator>( );
@@ -998,9 +998,9 @@ namespace daw::algorithm {
 	constexpr bool lexicographical_compare(
 	  InputIterator1 first1, LastType1 last1, InputIterator2 first2,
 	  LastType2 last2,
-	  Compare comp = Compare{} ) noexcept( noexcept( comp( *first1, *first2 ) !=
-	                                                 comp( *first2,
-	                                                       *first1 ) ) ) {
+	  Compare comp = Compare{ } ) noexcept( noexcept( comp( *first1, *first2 ) !=
+	                                                  comp( *first2,
+	                                                        *first1 ) ) ) {
 
 		traits::is_input_iterator_test<InputIterator1>( );
 		traits::is_input_iterator_test<InputIterator2>( );
@@ -1027,8 +1027,8 @@ namespace daw::algorithm {
 	         typename Equality = std::equal_to<>>
 	constexpr int compare_range( InputIterator1 first1, LastType1 last1,
 	                             InputIterator2 first2, LastType2 last2,
-	                             LessCompare less_comp = LessCompare{},
-	                             Equality eq = Equality{} ) {
+	                             LessCompare less_comp = LessCompare{ },
+	                             Equality eq = Equality{ } ) {
 
 		traits::is_input_iterator_test<InputIterator1>( );
 		traits::is_input_iterator_test<InputIterator2>( );
@@ -1146,7 +1146,7 @@ namespace daw::algorithm {
 			InputIterator input;
 			OutputIterator output;
 		};
-		return result_t{first, first_out};
+		return result_t{ first, first_out };
 	}
 
 	/// @brief Transform range [first, last) and output to range [first_out,
@@ -1307,7 +1307,7 @@ namespace daw::algorithm {
 			InputIterator input;
 			OutputIterator output;
 		};
-		return result_t{first, first_out};
+		return result_t{ first, first_out };
 	}
 
 	/// @brief Move values from input range [first, last) to output range
@@ -1364,7 +1364,7 @@ namespace daw::algorithm {
 			InputIterator input;
 			OutputIterator output;
 		};
-		return result_t{first, first_out};
+		return result_t{ first, first_out };
 	}
 
 	/// @brief Determine if two ranges [first1, last1) and [first2, last2) using
@@ -1384,7 +1384,7 @@ namespace daw::algorithm {
 	         typename LastType2, typename Compare = std::equal_to<>>
 	constexpr bool equal( InputIterator1 first1, LastType1 last1,
 	                      InputIterator2 first2, LastType2 last2,
-	                      Compare comp = Compare{} ) {
+	                      Compare comp = Compare{ } ) {
 
 		traits::is_input_iterator_test<InputIterator1>( );
 		traits::is_input_iterator_test<InputIterator2>( );
@@ -1416,7 +1416,7 @@ namespace daw::algorithm {
 	         typename LastType2, typename Compare = std::not_equal_to<>>
 	constexpr bool not_equal( InputIterator1 first1, LastType1 last1,
 	                          InputIterator2 first2, LastType2 last2,
-	                          Compare comp = Compare{} ) {
+	                          Compare comp = Compare{ } ) {
 
 		traits::is_input_iterator_test<InputIterator1>( );
 		traits::is_input_iterator_test<InputIterator2>( );
@@ -1447,7 +1447,7 @@ namespace daw::algorithm {
 		traits::is_input_iterator_test<InputIterator1>( );
 		traits::is_input_iterator_test<InputIterator2>( );
 
-		while( first1 != last1 and std::equal_to<>{}( *first1, *first2 ) ) {
+		while( first1 != last1 and std::equal_to<>{ }( *first1, *first2 ) ) {
 			++first1;
 			++first2;
 		}
@@ -1470,7 +1470,7 @@ namespace daw::algorithm {
 		traits::is_input_iterator_test<InputIterator1>( );
 		traits::is_input_iterator_test<InputIterator2>( );
 
-		while( first1 != last1 and std::not_equal_to<>{}( *first1, *first2 ) ) {
+		while( first1 != last1 and std::not_equal_to<>{ }( *first1, *first2 ) ) {
 			++first1;
 			++first2;
 		}
@@ -1487,12 +1487,12 @@ namespace daw::algorithm {
 	/// @param value value to compare to
 	/// @return position of first element greater than value or last
 	template<typename ForwardIterator, typename T, typename Compare = std::less<>>
-	constexpr ForwardIterator upper_bound(
-	  ForwardIterator first, ForwardIterator last, T const &value,
-	  Compare comp =
-	    Compare{} ) noexcept( noexcept( daw::advance( first, 1 ) ) and
-	                          noexcept( ++first ) and
-	                          noexcept( daw::distance( first, last ) ) ) {
+	constexpr ForwardIterator
+	upper_bound( ForwardIterator first, ForwardIterator last, T const &value,
+	             Compare comp =
+	               Compare{ } ) noexcept( noexcept( daw::advance( first, 1 ) )
+	                                        and noexcept( ++first ) and noexcept(
+	                                          daw::distance( first, last ) ) ) {
 
 		traits::is_forward_access_iterator_test<ForwardIterator>( );
 		traits::is_input_iterator_test<ForwardIterator>( );
@@ -1516,9 +1516,9 @@ namespace daw::algorithm {
 	template<typename RandomIterator, typename Compare = std::less<>>
 	constexpr void nth_element(
 	  RandomIterator first, RandomIterator nth, RandomIterator const last,
-	  Compare comp = Compare{} ) noexcept( noexcept( comp( *first, *nth ) ) &&
-	                                       noexcept( daw::cswap( *first,
-	                                                             *nth ) ) ) {
+	  Compare comp = Compare{ } ) noexcept( noexcept( comp( *first, *nth ) )
+	                                          &&noexcept( daw::cswap( *first,
+	                                                                  *nth ) ) ) {
 
 		traits::is_random_access_iterator_test<RandomIterator>( );
 		traits::is_inout_iterator_test<RandomIterator>( );
@@ -1554,7 +1554,7 @@ namespace daw::algorithm {
 	template<typename ForwardIterator, typename Compare = std::less<>>
 	constexpr ForwardIterator is_sorted_until(
 	  ForwardIterator first, ForwardIterator last,
-	  Compare comp = Compare{} ) noexcept( noexcept( comp( *first, *first ) ) ) {
+	  Compare comp = Compare{ } ) noexcept( noexcept( comp( *first, *first ) ) ) {
 
 		traits::is_forward_access_iterator_test<ForwardIterator>( );
 		traits::is_input_iterator_test<ForwardIterator>( );
@@ -1578,7 +1578,7 @@ namespace daw::algorithm {
 	         typename Compare = std::less<>>
 	constexpr ForwardIterator is_sorted_until(
 	  ForwardIterator first, LastType last,
-	  Compare comp = Compare{} ) noexcept( noexcept( comp( *first, *first ) ) ) {
+	  Compare comp = Compare{ } ) noexcept( noexcept( comp( *first, *first ) ) ) {
 
 		traits::is_forward_access_iterator_test<ForwardIterator>( );
 		traits::is_input_iterator_test<ForwardIterator>( );
@@ -1600,7 +1600,7 @@ namespace daw::algorithm {
 	         typename Compare = std::less<>>
 	constexpr bool is_sorted(
 	  ForwardIterator first, LastType last,
-	  Compare comp = Compare{} ) noexcept( noexcept( comp( *first, *first ) ) ) {
+	  Compare comp = Compare{ } ) noexcept( noexcept( comp( *first, *first ) ) ) {
 
 		return daw::algorithm::is_sorted_until( first, last, comp ) == last;
 	}
@@ -1751,7 +1751,7 @@ namespace daw::algorithm {
 	search( ForwardIterator1 first, ForwardIterator1 last,
 	        ForwardIterator2 s_first, ForwardIterator2 s_last,
 	        Compare comp =
-	          Compare{} ) noexcept( noexcept( not comp( *first, *s_first ) ) ) {
+	          Compare{ } ) noexcept( noexcept( not comp( *first, *s_first ) ) ) {
 
 		static_assert(
 		  traits::is_forward_access_iterator_v<ForwardIterator1>,
@@ -1816,8 +1816,8 @@ namespace daw::algorithm {
 	constexpr T accumulate(
 	  InputIterator first, LastType last, T init,
 	  BinaryOperation binary_op =
-	    BinaryOperation{} ) noexcept( noexcept( binary_op( daw::move( init ),
-	                                                       *first ) ) ) {
+	    BinaryOperation{ } ) noexcept( noexcept( binary_op( daw::move( init ),
+	                                                        *first ) ) ) {
 
 		/*
 static_assert(
@@ -1837,7 +1837,7 @@ static_assert(
 	template<class ForwardIterator, typename Compare = std::less<>>
 	constexpr ForwardIterator max_element( ForwardIterator first,
 	                                       ForwardIterator last,
-	                                       Compare &&comp = Compare{} ) {
+	                                       Compare &&comp = Compare{ } ) {
 		if( first == last ) {
 			return last;
 		}
@@ -1862,22 +1862,22 @@ static_assert(
 	/// and second max(a, b)
 	template<typename T, typename Compare = std::less<>>
 	constexpr std::pair<T, T> minmax_item( T a, T b,
-	                                       Compare comp = Compare{} ) noexcept {
+	                                       Compare comp = Compare{ } ) noexcept {
 		static_assert( traits::is_compare_v<Compare, T>,
 		               "Compare function does not meet the requirements of the "
 		               "Compare concept. "
 		               "http://en.cppreference.com/w/cpp/concept/Compare" );
 		if( daw::invoke( comp, b, a ) ) {
-			return std::pair<T, T>{daw::move( b ), daw::move( a )};
+			return std::pair<T, T>{ daw::move( b ), daw::move( a ) };
 		}
-		return std::pair<T, T>{daw::move( a ), daw::move( b )};
+		return std::pair<T, T>{ daw::move( a ), daw::move( b ) };
 	}
 
 	template<typename ForwardIterator, typename LastType,
 	         typename Compare = std::less<>>
 	constexpr auto minmax_element(
 	  ForwardIterator first, LastType last,
-	  Compare comp = Compare{} ) noexcept( noexcept( comp( *first, *first ) ) ) {
+	  Compare comp = Compare{ } ) noexcept( noexcept( comp( *first, *first ) ) ) {
 
 		traits::is_forward_access_iterator_test<ForwardIterator>( );
 		traits::is_input_iterator_test<ForwardIterator>( );
@@ -1886,7 +1886,7 @@ static_assert(
 		struct {
 			ForwardIterator min_element;
 			ForwardIterator max_element;
-		} result{first, first};
+		} result{ first, first };
 
 		if( not( first != last ) ) {
 			return result;
@@ -1941,8 +1941,8 @@ static_assert(
 	  InputIterator1 first1, LastType1 last1, InputIterator2 first2,
 	  LastType2 last2, OutputIterator d_first,
 	  Compare &&comp =
-	    Compare{} ) noexcept( noexcept( comp( *first2, *first1 ) ) and
-	                          noexcept( comp( *first1, *first2 ) ) ) {
+	    Compare{ } ) noexcept( noexcept( comp( *first2, *first1 ) )
+	                             and noexcept( comp( *first1, *first2 ) ) ) {
 
 		while( first1 != last1 and first2 != last2 ) {
 			if( daw::invoke( comp, *first1, *first2 ) ) {
@@ -2026,7 +2026,7 @@ static_assert(
 	struct all_equal {
 		template<typename ForwardIterator, typename LastType>
 		constexpr bool operator( )( ForwardIterator first, LastType last,
-		                            Compare comp = Compare{} ) const {
+		                            Compare comp = Compare{ } ) const {
 			if( first == last ) {
 				return true;
 			}
@@ -2116,9 +2116,10 @@ static_assert(
 
 	template<typename InputIterator, typename OutputIterator,
 	         typename BinaryOperator = std::plus<>>
-	constexpr OutputIterator partial_sum( InputIterator first, InputIterator last,
-	                                      OutputIterator first_out,
-	                                      BinaryOperator op = BinaryOperator{} ) {
+	constexpr OutputIterator
+	partial_sum( InputIterator first, InputIterator last,
+	             OutputIterator first_out,
+	             BinaryOperator op = BinaryOperator{ } ) {
 
 		if( first == last ) {
 			return first_out;
@@ -2144,7 +2145,7 @@ static_assert(
 		template<intmax_t Pos0, intmax_t Pos1, typename Iterator,
 		         typename Compare = std::less<>>
 		constexpr void swap_if( Iterator first,
-		                        Compare comp = Compare{} ) noexcept {
+		                        Compare comp = Compare{ } ) noexcept {
 			auto const f = std::next( first, Pos0 );
 			auto const l = std::next( first, Pos1 );
 			if( not comp( *f, *l ) ) {
@@ -2229,17 +2230,17 @@ static_assert(
 	constexpr std::optional<size_t> find_index_if( Iterator first, Iterator last,
 	                                               Predicate &&pred ) {
 		if( first == last ) {
-			return {};
+			return { };
 		}
 		size_t idx = 0;
 		while( first != last ) {
 			if( pred( *first ) ) {
-				return {idx};
+				return { idx };
 			}
 			++idx;
 			++first;
 		}
-		return {};
+		return { };
 	}
 
 	template<typename Iterator, typename T>
@@ -2253,7 +2254,7 @@ static_assert(
 
 	template<typename RandomIterator, typename Compare = std::less<>>
 	RandomIterator find_unsorted( RandomIterator first, RandomIterator last,
-	                              Compare comp = Compare{} ) {
+	                              Compare comp = Compare{ } ) {
 		auto second = std::next( first );
 		auto second_last = std::prev( last );
 
@@ -2312,7 +2313,7 @@ static_assert(
 	template<typename Iterator, typename Last, typename Value,
 	         typename Compare = std::equal_to<>>
 	constexpr bool contains( Iterator first, Last last, Value const &value,
-	                         Compare cmp = Compare{} ) {
+	                         Compare cmp = Compare{ } ) {
 		while( first != last ) {
 			if( cmp( *first, value ) ) {
 				return true;

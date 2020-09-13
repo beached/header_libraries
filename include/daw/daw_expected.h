@@ -67,7 +67,7 @@ namespace daw {
 		using variant_type =
 		  std::variant<expected_details::ExpectedTag<expected_details::Empty>,
 		               std::exception_ptr, value_type>;
-		variant_type m_value{};
+		variant_type m_value{ };
 
 	public:
 		struct exception_tag {};
@@ -254,10 +254,10 @@ namespace daw {
 		using variant_type =
 		  std::variant<expected_details::ExpectedTag<expected_details::Empty>,
 		               std::exception_ptr, value_type>;
-		variant_type m_value{};
+		variant_type m_value{ };
 
 		expected_t( bool ) noexcept
-		  : m_value( value_type{} ) {}
+		  : m_value( value_type{ } ) {}
 
 	public:
 		//////////////////////////////////////////////////////////////////////////
@@ -381,7 +381,7 @@ namespace daw {
 		}
 
 		std::string get_exception_message( ) const noexcept {
-			std::string result{};
+			std::string result{ };
 #if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
   defined( _CPPUNWIND )
 			try {

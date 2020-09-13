@@ -31,11 +31,11 @@ namespace daw {
 	std::optional<std::basic_string<char>> read_file( CharT const *str ) {
 		auto in_file = std::basic_ifstream<char>( str );
 		if( not in_file ) {
-			return {};
+			return { };
 		}
 
 		return std::basic_string<char>( std::istreambuf_iterator<char>( in_file ),
-		                                {} );
+		                                { } );
 	}
 
 	template<typename CharT>
@@ -48,11 +48,11 @@ namespace daw {
 	std::optional<std::basic_string<wchar_t>> read_wfile( CharT const *str ) {
 		auto in_file = std::basic_ifstream<wchar_t>( str );
 		if( not in_file ) {
-			return {};
+			return { };
 		}
 
 		return std::basic_string<wchar_t>(
-		  std::istreambuf_iterator<wchar_t>( in_file ), {} );
+		  std::istreambuf_iterator<wchar_t>( in_file ), { } );
 	}
 
 	template<typename CharT>

@@ -382,8 +382,8 @@ namespace daw {
 	} // namespace cpp_17_details
 
 	template<bool use_invoke = true, typename F, typename Tuple>
-	[[nodiscard, maybe_unused]] inline constexpr decltype( auto ) apply( F &&f,
-	                                                              Tuple &&t ) {
+	[[nodiscard, maybe_unused]] inline constexpr decltype( auto )
+	apply( F &&f, Tuple &&t ) {
 		static_assert( cpp_17_details::is_tuple_v<Tuple>,
 		               "Attempt to call apply with invalid arguments.  The "
 		               "arguments must be a std::tuple" );

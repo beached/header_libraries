@@ -56,7 +56,7 @@ namespace daw {
 		using const_pointer = value_type const *;
 
 	private:
-		std::unique_ptr<value_type> m_value{};
+		std::unique_ptr<value_type> m_value{ };
 
 	public:
 		constexpr explicit value_ptr( std::nullopt_t ) noexcept {}
@@ -69,9 +69,9 @@ namespace daw {
 		    std::nullptr_t> = nullptr>
 		explicit value_ptr( Args &&... args ) noexcept(
 		  std::is_nothrow_constructible_v<value_type, Args...> )
-		  : enable_default_constructor<T>( traits_details::non_constructor{} )
-		  , enable_copy_constructor<T>( traits_details::non_constructor{} )
-		  , enable_copy_assignment<T>( traits_details::non_constructor{} )
+		  : enable_default_constructor<T>( traits_details::non_constructor{ } )
+		  , enable_copy_constructor<T>( traits_details::non_constructor{ } )
+		  , enable_copy_assignment<T>( traits_details::non_constructor{ } )
 		  , m_value(
 		      std::make_unique<value_type>( std::forward<Args>( args )... ) ) {}
 
@@ -217,10 +217,10 @@ namespace daw {
 			if( !rhs.m_value ) {
 				return 1;
 			}
-			if( Compare{}( *m_value, *rhs.m_value ) ) {
+			if( Compare{ }( *m_value, *rhs.m_value ) ) {
 				return -1;
 			}
-			if( Compare{}( *rhs.m_value, *m_value ) ) {
+			if( Compare{ }( *rhs.m_value, *m_value ) ) {
 				return 1;
 			}
 			return 0;
@@ -350,7 +350,7 @@ namespace std {
 
 		template<typename Arg>
 		size_t operator( )( Arg &&arg ) const {
-			return std::hash<T>{}( *std::forward<Arg>( arg ) );
+			return std::hash<T>{ }( *std::forward<Arg>( arg ) );
 		}
 	};
 } // namespace std

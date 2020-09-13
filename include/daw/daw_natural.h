@@ -47,7 +47,7 @@ namespace daw {
 
 	public:
 		constexpr natural_t( ) noexcept
-		  : m_value{1} {}
+		  : m_value{ 1 } {}
 
 		constexpr natural_t( natural_t const & ) noexcept = default;
 		constexpr natural_t( natural_t && ) noexcept = default;
@@ -147,7 +147,7 @@ namespace daw {
 			static_assert( daw::traits::has_addition_operator_v<T, U>,
 			               "Addition operator is not valid" );
 			using result_t = decltype( std::declval<T>( ) + std::declval<U>( ) );
-			natural_t<result_t> result{};
+			natural_t<result_t> result{ };
 			result.m_value = static_cast<T>( lhs ) + static_cast<U>( rhs );
 			return result;
 		}
@@ -158,7 +158,8 @@ namespace daw {
 			static_assert( daw::traits::has_subtraction_operator_v<T, U>,
 			               "Subtraction operator is not valid" );
 			using result_t = decltype( std::declval<T>( ) - std::declval<U>( ) );
-			return natural_t<result_t>{static_cast<T>( lhs ) - static_cast<U>( rhs )};
+			return natural_t<result_t>{ static_cast<T>( lhs ) -
+			                            static_cast<U>( rhs ) };
 		}
 
 		template<typename U>
@@ -167,7 +168,7 @@ namespace daw {
 			static_assert( daw::traits::has_multiplication_operator_v<T, U>,
 			               "Multiplication operator is not valid" );
 			using result_t = decltype( std::declval<T>( ) * std::declval<U>( ) );
-			natural_t<result_t> result{};
+			natural_t<result_t> result{ };
 			result.m_value = static_cast<T>( lhs ) * static_cast<U>( rhs );
 			return result;
 		}
@@ -178,7 +179,7 @@ namespace daw {
 			static_assert( daw::traits::has_division_operator_v<T, U>,
 			               "Division operator is not valid" );
 			using result_t = decltype( std::declval<T>( ) / std::declval<U>( ) );
-			natural_t<result_t> result{};
+			natural_t<result_t> result{ };
 			result.m_value = static_cast<T>( lhs ) / static_cast<U>( rhs );
 			return result;
 		}
@@ -189,7 +190,7 @@ namespace daw {
 			static_assert( daw::traits::has_modulus_operator_v<T, U>,
 			               "Modulus operator is not valid" );
 			using result_t = decltype( std::declval<T>( ) % std::declval<U>( ) );
-			natural_t<result_t> result{};
+			natural_t<result_t> result{ };
 			result.m_value = static_cast<T>( lhs ) % static_cast<U>( rhs );
 			return result;
 		}
@@ -233,7 +234,7 @@ namespace daw {
 
 	namespace literals {
 		constexpr size_t operator"" _N( unsigned long long val ) noexcept {
-			return daw::natural_t<unsigned long long>{val};
+			return daw::natural_t<unsigned long long>{ val };
 		}
 	} // namespace literals
 } // namespace daw

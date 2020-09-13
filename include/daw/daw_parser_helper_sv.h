@@ -44,7 +44,7 @@ namespace daw {
 		template<typename CharT, typename Predicate>
 		constexpr auto find_first_of_when(
 		  daw::basic_string_view<CharT> str,
-		  Predicate pred ) noexcept( noexcept( pred( CharT{} ) ) ) {
+		  Predicate pred ) noexcept( noexcept( pred( CharT{ } ) ) ) {
 			auto it = str.cbegin( );
 			while( it != str.cend( ) and !pred( *it ) ) {
 				++it;

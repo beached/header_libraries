@@ -25,9 +25,9 @@
 #include "daw/cpp_17.h"
 
 #include <cstddef>
-#include <type_traits>
 #include <iostream>
 #include <tuple>
+#include <type_traits>
 #include <utility>
 
 namespace daw {
@@ -38,7 +38,7 @@ namespace daw {
 	constexpr auto split_args_impl( std::tuple<Args...> &&args,
 	                                std::index_sequence<Is...> ) {
 		if constexpr( sizeof...( Args ) == 0 ) {
-			return std::tuple<>{};
+			return std::tuple<>{ };
 		} else {
 			return std::tuple<std::decay_t<decltype( std::get<StartN + Is>( std::move(
 			  args ) ) )>...>( std::get<StartN + Is>( std::move( args ) )... );
@@ -49,8 +49,8 @@ namespace daw {
 	  std::size_t StartN, std::size_t EndN, typename... Args,
 	  std::enable_if_t<( sizeof...( Args ) >= EndN ), std::nullptr_t> = nullptr>
 	constexpr auto split_args( std::tuple<Args...> args ) {
-		return split_args_impl<StartN>( std::move( args ),
-		                                std::make_index_sequence<EndN - StartN>{} );
+		return split_args_impl<StartN>(
+		  std::move( args ), std::make_index_sequence<EndN - StartN>{ } );
 	}
 
 	template<typename Func>
@@ -91,9 +91,8 @@ namespace daw {
 
 	template<size_t N, typename Invokable, typename TpArgs, typename... Args>
 	inline constexpr bool can_call_v =
-	  daw::is_detected_v<can_call_test,
-	                                   std::integral_constant<std::size_t, N>,
-	                                   Invokable, TpArgs, Args...>;
+	  daw::is_detected_v<can_call_test, std::integral_constant<std::size_t, N>,
+	                     Invokable, TpArgs, Args...>;
 	/*
 	    std::conjunction_v<enough_args_t<N, TpArgs, Args...>,
 	                       can_call2<N, Invokable, TpArgs, Args...>>;
@@ -146,7 +145,6 @@ namespace daw {
 		return bind_args_at_fn<N, remove_cvref_t<Invokable>,
 		                       std::tuple<std::decay_t<Args>...>>{
 		  std::forward<Invokable>( func ),
-		  std::tuple<std::decay_t<Args>...>( std::forward<Args>( args )... )};
+		  std::tuple<std::decay_t<Args>...>( std::forward<Args>( args )... ) };
 	}
-}
-
+} // namespace daw

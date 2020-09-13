@@ -192,4 +192,5 @@ nbproject/*
 *.cd
 a.out
 cmake-build-debug/*
+cmake-build-release/*
 /.vs/*

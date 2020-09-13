@@ -147,7 +147,7 @@ namespace daw {
 	  std::is_nothrow_constructible_v<T, Args...> ) {
 
 		auto ptr = new T( std::forward<Args>( args )... );
-		return {ptr};
+		return { ptr };
 	}
 
 	template<typename T1, typename D1, typename T2, typename D2>
@@ -278,12 +278,12 @@ namespace daw {
 namespace std {
 	template<typename T, typename D>
 	struct hash<daw::copiable_unique_ptr<T, D>> {
-		size_t operator( )( daw::copiable_unique_ptr<T, D> const &p ) const
-		  noexcept {
-			return std::hash<T const *>{}( p.get( ) );
+		size_t
+		operator( )( daw::copiable_unique_ptr<T, D> const &p ) const noexcept {
+			return std::hash<T const *>{ }( p.get( ) );
 		}
 		size_t operator( )( daw::copiable_unique_ptr<T, D> &&p ) const noexcept {
-			return std::hash<T const *>{}( p.get( ) );
+			return std::hash<T const *>{ }( p.get( ) );
 		}
 	};
 } // namespace std

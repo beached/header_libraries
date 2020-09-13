@@ -32,7 +32,7 @@
 
 namespace daw::impl {
 	static inline auto &global_rng( ) {
-		static thread_local auto e = std::mt19937_64( std::random_device{}( ) );
+		static thread_local auto e = std::mt19937_64( std::random_device{ }( ) );
 		return e;
 	}
 } // namespace daw::impl
@@ -106,7 +106,7 @@ namespace daw {
 
 		daw::exception::precondition_check( a <= b, "a <= b must be true" );
 
-		Result result{};
+		Result result{ };
 		result.resize( count );
 		random_fill( result.begin( ), result.end( ), a, b );
 		return result;

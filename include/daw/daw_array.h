@@ -35,13 +35,13 @@ namespace daw {
 		template<typename T, std::size_t N, std::size_t... I>
 		constexpr std::array<std::remove_cv_t<T>, N>
 		to_array_impl( T ( &a )[N], std::index_sequence<I...> ) {
-			return {{a[I]...}};
+			return { { a[I]... } };
 		}
 	} // namespace detail
 
 	template<typename T, std::size_t N>
 	constexpr std::array<std::remove_cv_t<T>, N> to_array( T ( &a )[N] ) {
-		return detail::to_array_impl( a, std::make_index_sequence<N>{} );
+		return detail::to_array_impl( a, std::make_index_sequence<N>{ } );
 	}
 	namespace details {
 		template<typename>
@@ -86,27 +86,27 @@ namespace daw {
 		if constexpr( std::is_same_v<T, make_array_impl::unspecified_type> ) {
 
 			using result_t = std::common_type_t<daw::remove_cvref_t<Args>...>;
-			return std::array<result_t, sz>{std::forward<Args>( args )...};
+			return std::array<result_t, sz>{ std::forward<Args>( args )... };
 		} else {
-			return std::array<T, sz>{std::forward<Args>( args )...};
+			return std::array<T, sz>{ std::forward<Args>( args )... };
 		}
 	}
 	namespace make_array_impl {
 		template<typename T, size_t N, size_t... Is>
 		constexpr auto make_array_impl( T const( &&arry )[N],
 		                                std::index_sequence<Is...> ) {
-			return std::array<T, N>{std::move( arry[Is] )...};
+			return std::array<T, N>{ std::move( arry[Is] )... };
 		}
 	} // namespace make_array_impl
 
 	template<typename T, size_t N>
 	constexpr auto make_array( T const( &&arry )[N] ) {
 		return make_array_impl::make_array_impl( std::move( arry ),
-		                                         std::make_index_sequence<N>{} );
+		                                         std::make_index_sequence<N>{ } );
 	}
 
 	template<typename... Ts>
 	std::array<std::string, sizeof...( Ts )> make_string_array( Ts &&... t ) {
-		return {std::string( std::forward<Ts>( t ) )...};
+		return { std::string( std::forward<Ts>( t ) )... };
 	}
 } // namespace daw

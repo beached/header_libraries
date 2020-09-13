@@ -34,7 +34,7 @@ namespace daw {
 
 	template<typename Key>
 	struct set_node_t {
-		Key key{};
+		Key key{ };
 		bool has_value = false;
 
 		constexpr set_node_t( ) noexcept(
@@ -113,8 +113,8 @@ namespace daw {
 		}
 
 		friend struct bounded_hash_set_iterator<Key>;
-		constexpr int compare( const_bounded_hash_set_iterator const &rhs ) const
-		  noexcept {
+		constexpr int
+		compare( const_bounded_hash_set_iterator const &rhs ) const noexcept {
 			if( m_position == rhs.m_position ) {
 				return 0;
 			}
@@ -124,8 +124,8 @@ namespace daw {
 			return 1;
 		}
 
-		constexpr int compare( bounded_hash_set_iterator<Key> const &rhs ) const
-		  noexcept {
+		constexpr int
+		compare( bounded_hash_set_iterator<Key> const &rhs ) const noexcept {
 			if( m_position == rhs.m_position ) {
 				return 0;
 			}
@@ -204,7 +204,7 @@ namespace daw {
 		}
 
 		constexpr operator const_bounded_hash_set_iterator<Key>( ) const noexcept {
-			return {m_first, m_last, m_position};
+			return { m_first, m_last, m_position };
 		}
 
 		friend struct const_bounded_hash_set_iterator<Key>;
@@ -219,8 +219,8 @@ namespace daw {
 			return 1;
 		}
 
-		constexpr int compare( bounded_hash_set_iterator const &rhs ) const
-		  noexcept {
+		constexpr int
+		compare( bounded_hash_set_iterator const &rhs ) const noexcept {
 			if( m_position == rhs.m_position ) {
 				return 0;
 			}
@@ -305,7 +305,7 @@ namespace daw {
 		using const_iterator = const_bounded_hash_set_iterator<key_type>;
 
 	private:
-		std::array<node_type, Capacity> m_data{};
+		std::array<node_type, Capacity> m_data{ };
 
 		static constexpr size_type scale_hash( size_type hash,
 		                                       size_type range_size ) noexcept {
@@ -314,16 +314,15 @@ namespace daw {
 			return ( hash * prime_a + prime_b ) % range_size;
 		}
 
-		constexpr std::optional<size_type> find_index( size_type hash,
-		                                               Key const &key ) const
-		  noexcept {
+		constexpr std::optional<size_type>
+		find_index( size_type hash, Key const &key ) const noexcept {
 			size_type const scaled_hash = scale_hash( hash, m_data.size( ) );
 
 			for( size_type n = scaled_hash; n < m_data.size( ); ++n ) {
 				if( !m_data[n].has_value ) {
 					return n;
 				}
-				if( key_equal{}( m_data[n].key, key ) ) {
+				if( key_equal{ }( m_data[n].key, key ) ) {
 					return n;
 				}
 			}
@@ -331,11 +330,11 @@ namespace daw {
 				if( !m_data[n].has_value ) {
 					return n;
 				}
-				if( key_equal{}( m_data[n].key, key ) ) {
+				if( key_equal{ }( m_data[n].key, key ) ) {
 					return n;
 				}
 			}
-			return {};
+			return { };
 		}
 
 	public:
@@ -343,7 +342,7 @@ namespace daw {
 		  std::is_nothrow_default_constructible_v<Key> ) = default;
 
 		constexpr iterator insert( Key const &key ) noexcept {
-			auto const index = find_index( hasher{}( key ), key );
+			auto const index = find_index( hasher{ }( key ), key );
 			if( !index ) {
 				// Full
 				std::abort( );
@@ -352,12 +351,12 @@ namespace daw {
 				m_data[*index].key = key;
 				m_data[*index].has_value = true;
 			}
-			return {m_data.data( ), m_data.data( ) + m_data.size( ),
-			        m_data.data( ) + *index};
+			return { m_data.data( ), m_data.data( ) + m_data.size( ),
+			         m_data.data( ) + *index };
 		}
 
 		constexpr iterator insert( Key &&key ) noexcept {
-			auto const index = find_index( hasher{}( key ), key );
+			auto const index = find_index( hasher{ }( key ), key );
 			if( !index ) {
 				// Full
 				std::abort( );
@@ -366,15 +365,15 @@ namespace daw {
 				m_data[*index].key = std::move( key );
 				m_data[*index].has_value = true;
 			}
-			return {m_data.data( ), m_data.data( ) + m_data.size( ),
-			        m_data.data( ) + *index};
+			return { m_data.data( ), m_data.data( ) + m_data.size( ),
+			         m_data.data( ) + *index };
 		}
 
 		constexpr std::optional<size_type> erase( Key const &key ) noexcept {
-			auto const hash = hasher{}( key );
+			auto const hash = hasher{ }( key );
 			auto const index = find_index( hash, key );
 			if( !index ) {
-				return {};
+				return { };
 			}
 			// m_data[*index].key = Key{};
 			m_data[*index].has_value = false;
@@ -382,7 +381,7 @@ namespace daw {
 		}
 
 		constexpr bool exists( Key const &key ) const noexcept {
-			auto const hash = hasher{}( key );
+			auto const hash = hasher{ }( key );
 			auto const index = find_index( hash, key );
 			return static_cast<bool>( index ) and m_data[*index].has_value;
 		}
@@ -415,7 +414,7 @@ namespace daw {
 			while( it != last and !it->has_value ) {
 				++it;
 			}
-			return {m_data.data( ), last, it};
+			return { m_data.data( ), last, it };
 		}
 
 		constexpr const_iterator begin( ) const noexcept {
@@ -424,7 +423,7 @@ namespace daw {
 			while( it != last and !it->has_value ) {
 				++it;
 			}
-			return {m_data.data( ), last, it};
+			return { m_data.data( ), last, it };
 		}
 
 		constexpr const_iterator cbegin( ) const noexcept {
@@ -433,30 +432,30 @@ namespace daw {
 			while( it != last and !it->has_value ) {
 				++it;
 			}
-			return {m_data.data( ), last, it};
+			return { m_data.data( ), last, it };
 		}
 
 		constexpr iterator end( ) noexcept {
-			return {m_data.data( ), m_data.data( ) + m_data.size( ),
-			        m_data.data( ) + m_data.size( )};
+			return { m_data.data( ), m_data.data( ) + m_data.size( ),
+			         m_data.data( ) + m_data.size( ) };
 		}
 
 		constexpr const_iterator end( ) const noexcept {
-			return {m_data.data( ), m_data.data( ) + m_data.size( ),
-			        m_data.data( ) + m_data.size( )};
+			return { m_data.data( ), m_data.data( ) + m_data.size( ),
+			         m_data.data( ) + m_data.size( ) };
 		}
 
 		constexpr const_iterator cend( ) const noexcept {
-			return {m_data.data( ), m_data.data( ) + m_data.size( ),
-			        m_data.data( ) + m_data.size( )};
+			return { m_data.data( ), m_data.data( ) + m_data.size( ),
+			         m_data.data( ) + m_data.size( ) };
 		}
 
 		constexpr iterator find( Key const &key ) noexcept {
-			auto idx = find_index( hasher{}( key ), key );
+			auto idx = find_index( hasher{ }( key ), key );
 			if( !idx ) {
 				return end( );
 			}
-			return {m_data.data( ), m_data.data( ) + m_data.size( ), &m_data[*idx]};
+			return { m_data.data( ), m_data.data( ) + m_data.size( ), &m_data[*idx] };
 		}
 
 		constexpr const_iterator find( Key const &key ) const noexcept {
@@ -464,13 +463,13 @@ namespace daw {
 			if( !idx ) {
 				return end( );
 			}
-			return {m_data.data( ), m_data.data( ) + m_data.size( ), &m_data[*idx]};
+			return { m_data.data( ), m_data.data( ) + m_data.size( ), &m_data[*idx] };
 		}
 	};
 
 	template<typename Key, typename Hash = std::hash<Key>, size_t N>
 	constexpr auto make_bounded_hash_set( Key const ( &items )[N] ) noexcept {
-		auto result = bounded_hash_set_t<Key, N, Hash>{};
+		auto result = bounded_hash_set_t<Key, N, Hash>{ };
 		for( auto item : items ) {
 			result.insert( item );
 		}

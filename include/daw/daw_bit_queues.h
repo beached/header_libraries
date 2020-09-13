@@ -96,7 +96,7 @@ namespace daw {
 
 			value &= get_left_mask<value_type>( sizeof( value_type ) * 8 - bits );
 			m_queue <<= bits;
-			m_queue |= source_to_native_endian( value, BitQueueLSB{} );
+			m_queue |= source_to_native_endian( value, BitQueueLSB{ } );
 			m_size += bits;
 		}
 
@@ -144,10 +144,10 @@ namespace daw {
 
 	public:
 		constexpr basic_nibble_queue( ) noexcept
-		  : m_queue{} {}
+		  : m_queue{ } {}
 
 		constexpr explicit basic_nibble_queue( queue_type v ) noexcept
-		  : m_queue{daw::move( v )} {}
+		  : m_queue{ daw::move( v ) } {}
 
 		constexpr size_t capacity( ) const noexcept {
 			return m_queue.capacity( ) / 4;

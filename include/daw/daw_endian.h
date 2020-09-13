@@ -121,7 +121,7 @@ namespace daw {
 			return value;
 		} else {
 			return endian_details::swap_bytes(
-			  value, std::integral_constant<size_t, sizeof( T )>{} );
+			  value, std::integral_constant<size_t, sizeof( T )>{ } );
 		}
 	}
 
@@ -132,7 +132,7 @@ namespace daw {
 			return value;
 		} else {
 			return endian_details::swap_bytes(
-			  value, std::integral_constant<size_t, sizeof( T )>{} );
+			  value, std::integral_constant<size_t, sizeof( T )>{ } );
 		}
 	}
 

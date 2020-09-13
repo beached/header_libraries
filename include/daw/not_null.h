@@ -114,7 +114,7 @@ namespace std {
 	struct hash<daw::not_null<T>> {
 		[[nodiscard]] std::size_t
 		operator( )( daw::not_null<T> const &value ) const {
-			return hash<decltype( *std::declval<T>( ) )>{}( value );
+			return hash<decltype( *std::declval<T>( ) )>{ }( value );
 		}
 	};
 } // namespace std

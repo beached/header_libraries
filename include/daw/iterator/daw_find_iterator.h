@@ -36,12 +36,12 @@ namespace daw {
 		value_type current_value;
 
 		constexpr find_iterator( ) noexcept
-		  : current_value{std::numeric_limits<T>::max( )} {}
+		  : current_value{ std::numeric_limits<T>::max( ) } {}
 		constexpr find_iterator( value_type start_value ) noexcept
-		  : current_value{start_value} {}
+		  : current_value{ start_value } {}
 		constexpr find_iterator( value_type start_value,
 		                         value_type last_value ) noexcept
-		  : current_value{start_value} {}
+		  : current_value{ start_value } {}
 		~find_iterator( ) noexcept = default;
 
 		constexpr find_iterator( find_iterator const & ) noexcept = default;
@@ -60,7 +60,7 @@ namespace daw {
 		}
 
 		constexpr find_iterator operator++( int ) const noexcept {
-			find_iterator tmp{*this};
+			find_iterator tmp{ *this };
 			++current_value;
 			return tmp;
 		}

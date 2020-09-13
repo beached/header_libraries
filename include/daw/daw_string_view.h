@@ -228,7 +228,7 @@ namespace daw {
 #endif
 #endif
 
-#if not defined( _MSC_VER ) or defined( __clang__ ) 
+#if not defined( _MSC_VER ) or defined( __clang__ )
 		template<typename Bounds, ptrdiff_t Ex>
 		constexpr auto
 		operator=( basic_string_view<CharT, Bounds, Ex> rhs ) noexcept
@@ -270,7 +270,7 @@ namespace daw {
 		  std::enable_if_t<( Ex == daw::dynamic_string_size and Ex != Extent ),
 		                   std::nullptr_t> = nullptr>
 		constexpr operator basic_string_view<CharT, Bounds, Ex>( ) noexcept {
-			return {m_first, m_last};
+			return { m_first, m_last };
 		}
 
 #ifndef NOSTRING
@@ -282,7 +282,7 @@ namespace daw {
 #if defined( __cpp_lib_string_view )
 		template<typename Traits>
 		constexpr operator std::basic_string_view<CharT, Traits>( ) const {
-			return {data( ), size( )};
+			return { data( ), size( ) };
 		}
 #endif
 		template<typename Traits, typename Allocator>
@@ -473,7 +473,7 @@ namespace daw {
 		pop_back( basic_string_view where ) {
 			auto pos = rfind( where );
 			if( pos == npos ) {
-				auto result{*this};
+				auto result{ *this };
 				remove_prefix( npos );
 				return result;
 			}
@@ -581,7 +581,7 @@ namespace daw {
 			  pos <= size( ), "Attempt to access basic_string_view past end" );
 			auto const rcount =
 			  static_cast<size_type>( std::min( count, size( ) - pos ) );
-			return {m_first + pos, m_first + pos + rcount};
+			return { m_first + pos, m_first + pos + rcount };
 		}
 
 	public:
@@ -1088,12 +1088,12 @@ namespace daw {
 	// CTAD
 	template<typename CharT>
 	basic_string_view( CharT const *s, std::size_t count )
-	  ->basic_string_view<CharT>;
+	  -> basic_string_view<CharT>;
 
 #ifndef NOSTRING
 	template<typename CharT, typename Traits, typename Allocator>
 	basic_string_view( std::basic_string<CharT, Traits, Allocator> const &str )
-	  ->basic_string_view<CharT>;
+	  -> basic_string_view<CharT>;
 
 #if false && defined( __cpp_lib_string_view )
 	template<typename CharT, typename Traits>
@@ -1103,7 +1103,7 @@ namespace daw {
 #endif
 	template<typename CharT, std::size_t N>
 	basic_string_view( CharT const ( &cstr )[N] )
-	  ->basic_string_view<CharT, default_string_view_bounds_type, N - 1>;
+	  -> basic_string_view<CharT, default_string_view_bounds_type, N - 1>;
 	//
 	//
 	template<typename CharT, typename Bounds, std::ptrdiff_t Ex>
@@ -1136,14 +1136,15 @@ namespace daw {
 		traits::is_random_access_iterator_test<RandomIterator>( );
 		traits::is_input_iterator_test<RandomIterator>( );
 
-		return {std::addressof( *first ), static_cast<std::size_t>( last - first )};
+		return { std::addressof( *first ),
+		         static_cast<std::size_t>( last - first ) };
 	}
 
 	template<typename CharT, typename Bounds = default_string_view_bounds_type,
 	         typename Allocator>
 	[[nodiscard]] basic_string_view<CharT, Bounds>
 	make_string_view( std::vector<CharT, Allocator> const &v ) noexcept {
-		return {v.data( ), v.size( )};
+		return { v.data( ), v.size( ) };
 	}
 
 #ifndef NOSTRING
@@ -1151,7 +1152,7 @@ namespace daw {
 	         typename Traits>
 	[[nodiscard]] daw::basic_string_view<CharT, Bounds>
 	make_string_view( std::basic_string<CharT, Traits> const &str ) {
-		return daw::basic_string_view<CharT, Bounds>{str};
+		return daw::basic_string_view<CharT, Bounds>{ str };
 	}
 #endif
 
@@ -1173,7 +1174,7 @@ namespace daw {
 		template<typename T, typename CharT = char,
 		         typename Bounds = default_string_view_bounds_type>
 		using can_be_string_view =
-		  decltype( daw::basic_string_view<CharT, Bounds>( T{} ) );
+		  decltype( daw::basic_string_view<CharT, Bounds>( T{ } ) );
 	}
 
 	template<typename T, typename CharT = char,
@@ -1549,7 +1550,7 @@ namespace daw {
 				using string_type = std::basic_string<CharT, Traits, Allocator>;
 				using vector_alloc = typename std::allocator_traits<
 				  Allocator>::template rebind_alloc<string_type>;
-				std::vector<string_type, vector_alloc> tmp{};
+				std::vector<string_type, vector_alloc> tmp{ };
 				tmp.reserve( size( ) );
 				for( auto const &s : data ) {
 					tmp.push_back( s.to_string( ) );
@@ -1559,7 +1560,7 @@ namespace daw {
 #endif
 		};
 
-		std::vector<daw::basic_string_view<CharT, Bounds>> v{};
+		std::vector<daw::basic_string_view<CharT, Bounds>> v{ };
 		auto last_pos = str.cbegin( );
 		while( !str.empty( ) ) {
 			auto sz = std::min( str.size( ), str.find_first_of_if( pred ) );
@@ -1624,22 +1625,22 @@ namespace daw {
 	namespace string_view_literals {
 		[[nodiscard]] constexpr string_view
 		operator"" _sv( char const *str, std::size_t len ) noexcept {
-			return daw::string_view{str, len};
+			return daw::string_view{ str, len };
 		}
 
 		[[nodiscard]] constexpr u16string_view
 		operator"" _sv( char16_t const *str, std::size_t len ) noexcept {
-			return daw::u16string_view{str, len};
+			return daw::u16string_view{ str, len };
 		}
 
 		[[nodiscard]] constexpr u32string_view
 		operator"" _sv( char32_t const *str, std::size_t len ) noexcept {
-			return daw::u32string_view{str, len};
+			return daw::u32string_view{ str, len };
 		}
 
 		[[nodiscard]] constexpr wstring_view
 		operator"" _sv( wchar_t const *str, std::size_t len ) noexcept {
-			return daw::wstring_view{str, len};
+			return daw::wstring_view{ str, len };
 		}
 	} // namespace string_view_literals
 
@@ -1662,7 +1663,7 @@ namespace daw {
 	         std::ptrdiff_t Ex>
 	[[nodiscard]] std::basic_string<CharT, Traits, Allocator>
 	to_string( daw::basic_string_view<CharT, Bounds, Ex> sv ) {
-		return {sv.begin( ), sv.end( )};
+		return { sv.begin( ), sv.end( ) };
 	}
 #endif
 } // namespace daw

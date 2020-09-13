@@ -89,32 +89,34 @@ namespace daw {
 
 	public:
 		constexpr circular_iterator( ) noexcept
-		  : m_container{nullptr}
-		  , m_position{0} {}
+		  : m_container{ nullptr }
+		  , m_position{ 0 } {}
 
 		constexpr circular_iterator( Container &container ) noexcept
-		  : m_container{&container}
-		  , m_position{0} {}
+		  : m_container{ &container }
+		  , m_position{ 0 } {}
 
 		constexpr circular_iterator( Container *container ) noexcept
-		  : m_container{container}
-		  , m_position{0} {}
+		  : m_container{ container }
+		  , m_position{ 0 } {}
 
 		constexpr circular_iterator( Container &container, iterator i ) noexcept
-		  : m_container{&container}
-		  , m_position{daw::distance( std::begin( container ), daw::move( i ) )} {}
+		  : m_container{ &container }
+		  , m_position{ daw::distance( std::begin( container ), daw::move( i ) ) } {
+		}
 
 		constexpr circular_iterator( Container *container, iterator i ) noexcept
-		  : m_container{container}
-		  , m_position{daw::distance( std::begin( *container ), daw::move( i ) )} {}
+		  : m_container{ container }
+		  , m_position{
+		      daw::distance( std::begin( *container ), daw::move( i ) ) } {}
 
 		constexpr circular_iterator( circular_iterator const &other ) noexcept
-		  : m_container{other.m_container}
-		  , m_position{other.m_position} {}
+		  : m_container{ other.m_container }
+		  , m_position{ other.m_position } {}
 
 		constexpr circular_iterator( circular_iterator &&other ) noexcept
-		  : m_container{other.m_container}
-		  , m_position{other.m_position} {}
+		  : m_container{ other.m_container }
+		  , m_position{ other.m_position } {}
 
 		constexpr circular_iterator &
 		operator=( circular_iterator const &rhs ) noexcept {
@@ -147,7 +149,7 @@ namespace daw {
 			return *get_iterator( m_position );
 		}
 
-		constexpr decltype( auto ) operator-> ( ) noexcept {
+		constexpr decltype( auto ) operator->( ) noexcept {
 			return *get_iterator( m_position );
 		}
 
@@ -157,7 +159,7 @@ namespace daw {
 		}
 
 		constexpr circular_iterator operator++( int ) noexcept {
-			auto result = circular_iterator{*this};
+			auto result = circular_iterator{ *this };
 			m_position = get_offset( 1 );
 			return result;
 		}
@@ -168,25 +170,25 @@ namespace daw {
 		}
 
 		constexpr circular_iterator operator--( int ) noexcept {
-			auto result = circular_iterator{*this};
+			auto result = circular_iterator{ *this };
 			m_position = get_offset( -1 );
 			return result;
 		}
 
 		constexpr circular_iterator operator+( difference_type n ) noexcept {
-			circular_iterator tmp{*this};
+			circular_iterator tmp{ *this };
 			tmp += n;
 			return tmp;
 		}
 
 		constexpr circular_iterator operator-( difference_type n ) noexcept {
-			circular_iterator tmp{*this};
+			circular_iterator tmp{ *this };
 			tmp -= n;
 			return tmp;
 		}
 
 		constexpr circular_iterator end( ) noexcept {
-			circular_iterator tmp{*this};
+			circular_iterator tmp{ *this };
 			tmp.m_position =
 			  static_cast<difference_type>( impl::container_size( *m_container ) );
 			return tmp;
@@ -242,12 +244,12 @@ namespace daw {
 
 	template<typename Container>
 	constexpr auto make_circular_iterator( Container &container ) noexcept {
-		return circular_iterator<Container>{container};
+		return circular_iterator<Container>{ container };
 	}
 
 	template<typename Container, typename Iterator>
 	constexpr auto make_circular_iterator( Container &container,
 	                                       Iterator it ) noexcept {
-		return circular_iterator<Container>{container, daw::move( it )};
+		return circular_iterator<Container>{ container, daw::move( it ) };
 	}
 } // namespace daw

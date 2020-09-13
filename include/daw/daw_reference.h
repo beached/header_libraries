@@ -100,7 +100,7 @@ namespace daw {
 		using value_type = daw::traits::root_type_t<decltype( *first )>;
 		using values_type = std::vector<daw::Reference<value_type>>;
 
-		values_type result{};
+		values_type result{ };
 		while( first != last ) {
 			result.push_back( daw::ref<value_type>( *first ) );
 		}

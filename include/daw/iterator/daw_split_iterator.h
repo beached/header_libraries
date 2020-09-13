@@ -109,7 +109,7 @@ namespace daw {
 	struct split_it<
 	  Iterator, Splitter,
 	  std::enable_if_t<
-	    !is_same_v<char, typename std::iterator_traits<Iterator>::value_type>>> {
+	    not std::is_same_v<char, typename std::iterator_traits<Iterator>::value_type>>> {
 
 		using CharT = typename std::iterator_traits<Iterator>::value_type;
 		static_assert( daw::traits::is_unary_predicate_v<Splitter, CharT>,
@@ -135,7 +135,7 @@ namespace daw {
 				return 0;
 			}
 			return daw::safe_next( pos, m_data.cend( ),
-			                       impl::splitter_size{}( m_splitter ) );
+			                       impl::splitter_size{ }( m_splitter ) );
 		}
 
 		constexpr void move_prev( ) noexcept {
@@ -146,7 +146,7 @@ namespace daw {
 			}
 			m_position.end( ) =
 			  daw::safe_prev( m_position.cbegin( ), m_data.cbegin( ),
-			                  impl::splitter_size{}( m_splitter ) );
+			                  impl::splitter_size{ }( m_splitter ) );
 			m_position.begin( ) = find_prev( );
 		}
 
@@ -156,12 +156,12 @@ namespace daw {
 			}
 			return daw::algorithm::find_first_of(
 			  daw::safe_next( m_position.end( ), m_data.cend( ) ), m_data.cend( ),
-			  impl::splitter_size{}( m_splitter ) );
+			  impl::splitter_size{ }( m_splitter ) );
 		}
 
 		constexpr void move_next( ) noexcept {
 			if( m_position.end( ) != m_data.cend( ) ) {
-				daw::advance( m_position.end( ), impl::splitter_size{}( m_splitter ) );
+				daw::advance( m_position.end( ), impl::splitter_size{ }( m_splitter ) );
 			}
 			m_position.begin( ) = m_position.end( );
 			m_position.end( ) = find_next( );
@@ -170,9 +170,9 @@ namespace daw {
 	public:
 		constexpr split_it( Iterator first, Iterator last,
 		                    Splitter &&splitter ) noexcept
-		  : m_data{first, last}
-		  , m_position{first, last}
-		  , m_splitter{std::forward<Splitter>( splitter )} {
+		  : m_data{ first, last }
+		  , m_position{ first, last }
+		  , m_splitter{ std::forward<Splitter>( splitter ) } {
 
 			m_position.end( ) = find_next( );
 		}
@@ -185,21 +185,21 @@ namespace daw {
 		              std::forward<Splitter>( splitter ) ) {}
 
 		constexpr split_it( ) noexcept
-		  : m_data{{}, {}}
-		  , m_position{{}, {}}
-		  , m_splitter{} {}
+		  : m_data{ { }, {} }
+		  , m_position{ { }, {} }
+		  , m_splitter{ } {}
 
 		~split_it( ) noexcept = default;
 
 		constexpr split_it( split_it const &other ) noexcept
-		  : m_data{other.m_data}
-		  , m_position{other.m_position}
-		  , m_splitter{other.m_splitter} {}
+		  : m_data{ other.m_data }
+		  , m_position{ other.m_position }
+		  , m_splitter{ other.m_splitter } {}
 
 		constexpr split_it( split_it &&other ) noexcept
-		  : m_data{daw::move( other.m_data )}
-		  , m_position{daw::move( other.m_position )}
-		  , m_splitter{daw::move( other.m_splitter )} {}
+		  : m_data{ daw::move( other.m_data ) }
+		  , m_position{ daw::move( other.m_position ) }
+		  , m_splitter{ daw::move( other.m_splitter ) } {}
 
 		constexpr split_it &operator=( split_it const &rhs ) noexcept {
 			if( this != &rhs ) {
@@ -232,7 +232,7 @@ namespace daw {
 		}
 
 		constexpr split_it operator++( int ) const noexcept {
-			split_it tmp{*this};
+			split_it tmp{ *this };
 			move_next( );
 			return tmp;
 		}
@@ -240,7 +240,7 @@ namespace daw {
 		constexpr split_it operator--( int ) const noexcept {
 			static_assert( impl::can_decrement<Iterator>,
 			               "Supplied Iterator is not Bidirectional" );
-			split_it tmp{*this};
+			split_it tmp{ *this };
 			move_prev( );
 			return tmp;
 		}
@@ -262,7 +262,7 @@ namespace daw {
 		}
 
 		constexpr split_it operator+( ptrdiff_t n ) noexcept {
-			split_it tmp{*this};
+			split_it tmp{ *this };
 			for( ; n > 0; --n ) {
 				move_next( );
 			}
@@ -272,7 +272,7 @@ namespace daw {
 		constexpr split_it operator-( ptrdiff_t n ) noexcept {
 			static_assert( impl::can_decrement<Iterator>,
 			               "Supplied Iterator is not Bidirectional" );
-			split_it tmp{*this};
+			split_it tmp{ *this };
 			for( ; n > 0; --n ) {
 				move_prev( );
 			}
@@ -328,7 +328,7 @@ namespace daw {
 		}
 
 		static constexpr split_it make_end( ) noexcept {
-			return split_it{};
+			return split_it{ };
 		}
 
 		constexpr bool at_end( ) const noexcept {
@@ -340,7 +340,7 @@ namespace daw {
 	struct split_it<
 	  Iterator, Splitter,
 	  std::enable_if_t<
-	    is_same_v<char, typename std::iterator_traits<Iterator>::value_type>>> {
+	    std::is_same_v<char, typename std::iterator_traits<Iterator>::value_type>>> {
 
 		using CharT = char;
 		static_assert( daw::traits::is_unary_predicate_v<Splitter, CharT>,
@@ -366,7 +366,7 @@ namespace daw {
 				return 0;
 			}
 			return daw::safe_next( pos, m_data.cend( ),
-			                       impl::splitter_size{}( m_splitter ) );
+			                       impl::splitter_size{ }( m_splitter ) );
 		}
 
 		constexpr void move_prev( ) noexcept {
@@ -377,7 +377,7 @@ namespace daw {
 			}
 			m_position.end( ) =
 			  daw::safe_prev( m_position.cbegin( ), m_data.cbegin( ),
-			                  impl::splitter_size{}( m_splitter ) );
+			                  impl::splitter_size{ }( m_splitter ) );
 			m_position.begin( ) = find_prev( );
 		}
 
@@ -387,12 +387,12 @@ namespace daw {
 			}
 			return daw::algorithm::find_first_of(
 			  daw::safe_next( m_position.end( ), m_data.cend( ) ), m_data.cend( ),
-			  impl::splitter_size{}( m_splitter ) );
+			  impl::splitter_size{ }( m_splitter ) );
 		}
 
 		constexpr void move_next( ) noexcept {
 			if( m_position.end( ) != m_data.cend( ) ) {
-				daw::advance( m_position.end( ), impl::splitter_size{}( m_splitter ) );
+				daw::advance( m_position.end( ), impl::splitter_size{ }( m_splitter ) );
 			}
 			m_position.begin( ) = m_position.end( );
 			m_position.end( ) = find_next( );
@@ -401,9 +401,9 @@ namespace daw {
 	public:
 		constexpr split_it( Iterator first, Iterator last,
 		                    Splitter &&splitter ) noexcept
-		  : m_data{first, last}
-		  , m_position{first, last}
-		  , m_splitter{std::forward<Splitter>( splitter )} {
+		  : m_data{ first, last }
+		  , m_position{ first, last }
+		  , m_splitter{ std::forward<Splitter>( splitter ) } {
 
 			m_position.end( ) = find_next( );
 		}
@@ -416,21 +416,21 @@ namespace daw {
 		              std::forward<Splitter>( splitter ) ) {}
 
 		constexpr split_it( ) noexcept
-		  : m_data{{}, {}}
-		  , m_position{{}, {}}
-		  , m_splitter{} {}
+		  : m_data{ { }, {} }
+		  , m_position{ { }, {} }
+		  , m_splitter{ } {}
 
 		~split_it( ) noexcept = default;
 
 		constexpr split_it( split_it const &other ) noexcept
-		  : m_data{other.m_data}
-		  , m_position{other.m_position}
-		  , m_splitter{other.m_splitter} {}
+		  : m_data{ other.m_data }
+		  , m_position{ other.m_position }
+		  , m_splitter{ other.m_splitter } {}
 
 		constexpr split_it( split_it &&other ) noexcept
-		  : m_data{daw::move( other.m_data )}
-		  , m_position{daw::move( other.m_position )}
-		  , m_splitter{daw::move( other.m_splitter )} {}
+		  : m_data{ daw::move( other.m_data ) }
+		  , m_position{ daw::move( other.m_position ) }
+		  , m_splitter{ daw::move( other.m_splitter ) } {}
 
 		constexpr split_it &operator=( split_it const &rhs ) noexcept {
 			if( this != &rhs ) {
@@ -463,7 +463,7 @@ namespace daw {
 		}
 
 		constexpr split_it operator++( int ) const noexcept {
-			split_it tmp{*this};
+			split_it tmp{ *this };
 			move_next( );
 			return tmp;
 		}
@@ -471,7 +471,7 @@ namespace daw {
 		constexpr split_it operator--( int ) const noexcept {
 			static_assert( impl::can_decrement<Iterator>,
 			               "Supplied Iterator is not Bidirectional" );
-			split_it tmp{*this};
+			split_it tmp{ *this };
 			move_prev( );
 			return tmp;
 		}
@@ -493,7 +493,7 @@ namespace daw {
 		}
 
 		constexpr split_it operator+( ptrdiff_t n ) noexcept {
-			split_it tmp{*this};
+			split_it tmp{ *this };
 			for( ; n > 0; --n ) {
 				move_next( );
 			}
@@ -503,7 +503,7 @@ namespace daw {
 		constexpr split_it operator-( ptrdiff_t n ) noexcept {
 			static_assert( impl::can_decrement<Iterator>,
 			               "Supplied Iterator is not Bidirectional" );
-			split_it tmp{*this};
+			split_it tmp{ *this };
 			for( ; n > 0; --n ) {
 				move_prev( );
 			}
@@ -559,7 +559,7 @@ namespace daw {
 		}
 
 		static constexpr split_it make_end( ) noexcept {
-			return split_it{};
+			return split_it{ };
 		}
 
 		constexpr bool at_end( ) const noexcept {
@@ -581,8 +581,8 @@ namespace daw {
 	         daw::required<impl::is_splitter_v<Splitter, String>> = nullptr>
 	constexpr auto make_split_it( String &sv, Splitter &&splitter ) noexcept {
 		using IterT = daw::remove_cvref_t<decltype( std::begin( sv ) )>;
-		auto result = split_it<IterT, Splitter>{std::begin( sv ), std::end( sv ),
-		                                        std::forward<Splitter>( splitter )};
+		auto result = split_it<IterT, Splitter>{
+		  std::begin( sv ), std::end( sv ), std::forward<Splitter>( splitter ) };
 		return result;
 	}
 
@@ -594,6 +594,6 @@ namespace daw {
 		using iterator = daw::remove_cvref_t<decltype( str.begin( ) )>;
 
 		return split_it<iterator, SpltT>( str.begin( ), str.end( ),
-		                                  SpltT{divider} );
+		                                  SpltT{ divider } );
 	}
 } // namespace daw

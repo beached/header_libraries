@@ -47,7 +47,7 @@ namespace daw {
 	struct construct_emplace_t {};
 
 	template<typename T = void>
-	inline constexpr construct_emplace_t<T> construct_emplace{};
+	inline constexpr construct_emplace_t<T> construct_emplace{ };
 
 	template<typename BaseClass,
 	         typename Deleter = std::default_delete<BaseClass>,
@@ -163,7 +163,7 @@ namespace daw {
 			return m_ptr.get( );
 		}
 
-		operator BaseClass &( ) & noexcept {
+		operator BaseClass &( ) &noexcept {
 			return *m_ptr;
 		}
 
@@ -171,7 +171,7 @@ namespace daw {
 			return *m_ptr;
 		}
 
-		operator BaseClass &&( ) && noexcept {
+		operator BaseClass &&( ) &&noexcept {
 			return *m_ptr;
 		}
 
@@ -187,6 +187,6 @@ namespace daw {
 	template<typename BaseClass, typename ChildClass = BaseClass,
 	         typename... Args>
 	poly_value<BaseClass> make_poly_value( Args &&... args ) {
-		return {construct_emplace<ChildClass>, std::forward<Args>( args )...};
+		return { construct_emplace<ChildClass>, std::forward<Args>( args )... };
 	}
 } // namespace daw

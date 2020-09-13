@@ -85,18 +85,18 @@ namespace daw {
 
 	template<auto fp>
 	inline constexpr overload_details::lift_t<fp> lift =
-	  overload_details::lift_t<fp>{};
+	  overload_details::lift_t<fp>{ };
 
 	template<typename... Funcs>
 	struct overload : overload_details::fp_wrapper<Funcs>... {
 		using overload_details::fp_wrapper<Funcs>::operator( )...;
 
 		constexpr overload( Funcs... fs )
-		  : overload_details::fp_wrapper<Funcs>{fs}... {}
+		  : overload_details::fp_wrapper<Funcs>{ fs }... {}
 	};
 
 	template<typename... Funcs>
 	overload( Funcs &&... )
-	  ->overload<std::conditional_t<std::is_class_v<remove_cvref_t<Funcs>>,
-	                                remove_cvref_t<Funcs>, Funcs>...>;
+	  -> overload<std::conditional_t<std::is_class_v<remove_cvref_t<Funcs>>,
+	                                 remove_cvref_t<Funcs>, Funcs>...>;
 } // namespace daw

@@ -45,7 +45,7 @@ namespace daw::string {
 
 template<typename CharT, typename Traits = std::char_traits<CharT>>
 void clear( std::basic_stringstream<CharT, Traits> &ss ) {
-	ss.str( std::basic_string<CharT, Traits>{} );
+	ss.str( std::basic_string<CharT, Traits>{ } );
 	ss.clear( );
 }
 
@@ -219,13 +219,13 @@ namespace daw::string {
 			return false;
 		}
 
-		bool operator( )( StringType const &src, const char ending ) const
-		  noexcept {
+		bool operator( )( StringType const &src,
+		                  const char ending ) const noexcept {
 			return 0 < src.size( ) and ending == src[src.size( ) - 1];
 		}
 
-		bool operator( )( StringType const &src, StringType const &ending ) const
-		  noexcept {
+		bool operator( )( StringType const &src,
+		                  StringType const &ending ) const noexcept {
 			auto pos = src.find_last_of( ending );
 			return string_details::string_t::npos != pos and pos == src.size( ) - 1;
 		}
@@ -251,7 +251,7 @@ namespace daw::string {
 		std::stringstream ss;
 		auto const arguments = string_details::unknowns_to_string( arg, args... );
 		std::smatch sm;
-		std::string format{format_};
+		std::string format{ format_ };
 		while( std::regex_search( format, sm, reg ) ) {
 			auto const &prefix = sm.prefix( ).str( );
 			ss << prefix;
@@ -298,7 +298,7 @@ namespace daw::string {
 	auto trim_right_copy(
 	  std::basic_string<CharT, Traits, Allocator> const &str,
 	  std::basic_string<CharT, Traits, Allocator> const &delimiters =
-	    string_details::standard_split_delimiters( CharT{} ) ) {
+	    string_details::standard_split_delimiters( CharT{ } ) ) {
 		if( str.empty( ) ) {
 			return str;
 		}
@@ -310,7 +310,7 @@ namespace daw::string {
 	void
 	trim_right( std::basic_string<CharT, Traits, Allocator> &str,
 	            std::basic_string<CharT, Traits, Allocator> const &delimiters =
-	              string_details::standard_split_delimiters( CharT{} ) ) {
+	              string_details::standard_split_delimiters( CharT{ } ) ) {
 		if( str.empty( ) ) {
 			return;
 		}
@@ -322,7 +322,7 @@ namespace daw::string {
 	auto trim_left_copy(
 	  std::basic_string<CharT, Traits, Allocator> const &str,
 	  std::basic_string<CharT, Traits, Allocator> const &delimiters =
-	    string_details::standard_split_delimiters( CharT{} ) ) {
+	    string_details::standard_split_delimiters( CharT{ } ) ) {
 		if( str.empty( ) ) {
 			return str;
 		}
@@ -334,7 +334,7 @@ namespace daw::string {
 	void
 	trim_left( std::basic_string<CharT, Traits, Allocator> &str,
 	           std::basic_string<CharT, Traits, Allocator> const &delimiters =
-	             string_details::standard_split_delimiters( CharT{} ) ) {
+	             string_details::standard_split_delimiters( CharT{ } ) ) {
 		if( str.empty( ) ) {
 			return;
 		}
@@ -350,7 +350,7 @@ namespace daw::string {
 	         typename Allocator = std::allocator<CharT>>
 	void trim( std::basic_string<CharT, Traits, Allocator> &str,
 	           std::basic_string<CharT, Traits, Allocator> const &delimiters =
-	             string_details::standard_split_delimiters( CharT{} ) ) {
+	             string_details::standard_split_delimiters( CharT{ } ) ) {
 		auto const start = str.find_first_not_of( delimiters );
 		if( std::basic_string<CharT, Traits, Allocator>::npos == start ) {
 			str.clear( );
@@ -366,7 +366,7 @@ namespace daw::string {
 	auto
 	trim_copy( std::basic_string<CharT, Traits, Allocator> str,
 	           std::basic_string<CharT, Traits, Allocator> const &delimiters =
-	             string_details::standard_split_delimiters( CharT{} ) ) {
+	             string_details::standard_split_delimiters( CharT{ } ) ) {
 		trim( str, delimiters );
 		return str;
 	}
@@ -443,7 +443,7 @@ namespace daw::string {
 			BasicString( BasicString && ) noexcept = default;
 
 			BasicString( value_type other )
-			  : m_string{daw::move( other )} {}
+			  : m_string{ daw::move( other ) } {}
 
 			~BasicString( ) = default;
 
@@ -464,21 +464,21 @@ namespace daw::string {
 
 			BasicString &
 			trim_left( std::basic_string<CharT, Traits, Allocator> const &delimiters =
-			             string_details::standard_split_delimiters( CharT{} ) ) {
+			             string_details::standard_split_delimiters( CharT{ } ) ) {
 				daw::string::trim_left( m_string, delimiters );
 				return *this;
 			}
 
 			BasicString &trim_right(
 			  std::basic_string<CharT, Traits, Allocator> const &delimiters =
-			    string_details::standard_split_delimiters( CharT{} ) ) {
+			    string_details::standard_split_delimiters( CharT{ } ) ) {
 				daw::string::trim_right( m_string, delimiters );
 				return *this;
 			}
 
 			BasicString &
 			trim( std::basic_string<CharT, Traits, Allocator> const &delimiters =
-			        string_details::standard_split_delimiters( CharT{} ) ) {
+			        string_details::standard_split_delimiters( CharT{ } ) ) {
 				daw::string::trim( m_string, delimiters );
 				return *this;
 			}

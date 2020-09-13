@@ -209,7 +209,7 @@ namespace daw {
 			static_assert( sizeof( std::decay_t<Func> ) <= MaxSize );
 			if constexpr( func_impl::has_empty_member_v<Func> ) {
 				if( f.empty( ) ) {
-					return {empty_child( )};
+					return { empty_child( ) };
 				}
 			} else if constexpr( func_impl::is_boolable_v<Func> ) {
 #if defined( __GNUC__ ) && !defined( __clang__ )
@@ -218,13 +218,13 @@ namespace daw {
 #pragma GCC diagnostic ignored "-Waddress"
 #endif
 				if( !static_cast<bool>( f ) ) {
-					return {empty_child( )};
+					return { empty_child( ) };
 				}
 #if defined( __GNUC__ ) && !defined( __clang__ )
 #pragma GCC diagnostic pop
 #endif
 			}
-			return {function_child( std::forward<Func>( f ) )};
+			return { function_child( std::forward<Func>( f ) ) };
 		}
 
 		template<size_t Sz, size_t MaxSz>
@@ -258,10 +258,10 @@ namespace daw {
 
 	public:
 		function( ) noexcept
-		  : m_storage( empty_child{} ) {}
+		  : m_storage( empty_child{ } ) {}
 
 		function( std::nullptr_t )
-		  : m_storage( empty_child{} ) {}
+		  : m_storage( empty_child{ } ) {}
 
 		function( function const & ) = default;
 		function( function && ) noexcept = default;

@@ -35,7 +35,7 @@ namespace daw {
 		using difference_type =
 		  typename std::iterator_traits<ForwardIterator>::difference_type;
 
-		ForwardIterator m_iter{};
+		ForwardIterator m_iter{ };
 		difference_type m_distance = 0;
 
 		constexpr forward_counting_iterator( ) = default;
@@ -54,11 +54,11 @@ namespace daw {
 			return *m_iter;
 		}
 
-		constexpr decltype( auto ) operator-> ( ) {
+		constexpr decltype( auto ) operator->( ) {
 			return m_iter;
 		}
 
-		constexpr decltype( auto ) operator-> ( ) const {
+		constexpr decltype( auto ) operator->( ) const {
 			return m_iter;
 		}
 
@@ -112,7 +112,7 @@ namespace daw {
 
 	template<typename ForwardIterator>
 	forward_counting_iterator( ForwardIterator )
-	  ->forward_counting_iterator<ForwardIterator>;
+	  -> forward_counting_iterator<ForwardIterator>;
 
 	template<typename BiDirectionalIterator>
 	struct bidirectional_counting_iterator {
@@ -126,7 +126,7 @@ namespace daw {
 		using difference_type =
 		  typename std::iterator_traits<BiDirectionalIterator>::difference_type;
 
-		BiDirectionalIterator m_iter{};
+		BiDirectionalIterator m_iter{ };
 		difference_type m_distance = 0;
 
 		constexpr bidirectional_counting_iterator( ) = default;
@@ -147,11 +147,11 @@ namespace daw {
 			return *m_iter;
 		}
 
-		constexpr decltype( auto ) operator-> ( ) {
+		constexpr decltype( auto ) operator->( ) {
 			return m_iter;
 		}
 
-		constexpr decltype( auto ) operator-> ( ) const {
+		constexpr decltype( auto ) operator->( ) const {
 			return m_iter;
 		}
 
@@ -224,5 +224,5 @@ namespace daw {
 
 	template<typename BiDirectionalIterator>
 	bidirectional_counting_iterator( BiDirectionalIterator )
-	  ->bidirectional_counting_iterator<BiDirectionalIterator>;
+	  -> bidirectional_counting_iterator<BiDirectionalIterator>;
 } // namespace daw

@@ -52,12 +52,12 @@ namespace daw {
 		ScopeGuard &operator=( const ScopeGuard & ) = delete;
 
 		constexpr ScopeGuard( FunctionType f ) noexcept
-		  : m_function{daw::move( f )}
-		  , m_is_active{true} {}
+		  : m_function{ daw::move( f ) }
+		  , m_is_active{ true } {}
 
 		constexpr ScopeGuard( ScopeGuard &&other ) noexcept
-		  : m_function{daw::move( other.m_function )}
-		  , m_is_active{daw::exchange( other.m_is_active, false )} {}
+		  : m_function{ daw::move( other.m_function ) }
+		  , m_is_active{ daw::exchange( other.m_is_active, false ) } {}
 
 		constexpr ScopeGuard &operator=( ScopeGuard &&rhs ) noexcept {
 			m_function = daw::move( rhs.m_function );
@@ -76,8 +76,8 @@ namespace daw {
 			m_is_active = false;
 		}
 
-		[[nodiscard]] constexpr bool operator==( const ScopeGuard &rhs ) const
-		  noexcept {
+		[[nodiscard]] constexpr bool
+		operator==( const ScopeGuard &rhs ) const noexcept {
 			return rhs.m_function == m_function and rhs.m_is_active == m_is_active;
 		}
 	}; // class ScopeGuard
@@ -117,5 +117,5 @@ namespace daw {
 	};
 
 	template<typename Handler>
-	on_exit_success( Handler )->on_exit_success<Handler>;
+	on_exit_success( Handler ) -> on_exit_success<Handler>;
 } // namespace daw

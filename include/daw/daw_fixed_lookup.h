@@ -116,8 +116,8 @@ namespace daw {
 				bool found;
 
 				constexpr lookup_result_t( hash_value_t pos, bool is_found ) noexcept
-				  : position{pos}
-				  , found{is_found} {}
+				  : position{ pos }
+				  , found{ is_found } {}
 
 				constexpr operator bool( ) const noexcept {
 					return found;
@@ -127,19 +127,19 @@ namespace daw {
 			auto const hash_pos = scale_hash( hash );
 			for( hash_value_t n = hash_pos; n != m_hashes.size( ); ++n ) {
 				if( hash == m_hashes[n] ) {
-					return lookup_result_t{n, true};
+					return lookup_result_t{ n, true };
 				} else if( impl::sentinals::empty == m_hashes[n] ) {
-					return lookup_result_t{n, false};
+					return lookup_result_t{ n, false };
 				}
 			}
 			for( hash_value_t n = 0; n != hash_pos; ++n ) {
 				if( m_hashes[n] == hash ) {
-					return lookup_result_t{n, true};
+					return lookup_result_t{ n, true };
 				} else if( m_hashes[n] == impl::sentinals::empty ) {
-					return lookup_result_t{n, false};
+					return lookup_result_t{ n, false };
 				}
 			}
-			return lookup_result_t{m_hashes.size( ), false};
+			return lookup_result_t{ m_hashes.size( ), false };
 		}
 
 	public:
@@ -200,8 +200,8 @@ namespace daw {
 
 	template<typename Value, size_t HashSize = sizeof( size_t ), typename... Keys>
 	constexpr auto make_fixed_lookup( Keys &&... keys ) noexcept {
-		fixed_lookup<Value, sizeof...( Keys )> result{};
-		auto const lst = {( result[keys] = Value{}, 0 )...};
+		fixed_lookup<Value, sizeof...( Keys )> result{ };
+		auto const lst = { ( result[keys] = Value{ }, 0 )... };
 		Unused( lst );
 		return result;
 	}

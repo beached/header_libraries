@@ -76,11 +76,11 @@ namespace daw {
 
 	public:
 		constexpr carray( ) noexcept
-		  : m_data{} {}
+		  : m_data{ } {}
 
 		constexpr carray( T ( &values )[N] ) noexcept(
 		  noexcept( T( std::declval<T const &>( ) ) ) )
-		  : m_data{} {
+		  : m_data{ } {
 			daw::algorithm::copy_n( values, ptr( ), N );
 		}
 
@@ -93,7 +93,7 @@ namespace daw {
 		template<typename... Args>
 		constexpr carray( Args &&... args ) noexcept( noexcept( details::assign_to(
 		  std::declval<carray>( ).ptr( ), std::declval<Args &&>( )... ) ) )
-		  : m_data{} {
+		  : m_data{ } {
 
 			details::assign_to( ptr( ), std::forward<Args>( args )... );
 		}

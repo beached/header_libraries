@@ -66,7 +66,7 @@ namespace daw {
 		}
 	};
 	template<typename Container>
-	end_inserter_iterator( Container )->end_inserter_iterator<Container>;
+	end_inserter_iterator( Container ) -> end_inserter_iterator<Container>;
 
 	template<typename Container>
 	constexpr auto end_inserter( Container &c ) {

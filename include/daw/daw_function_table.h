@@ -123,11 +123,11 @@ namespace daw {
 		                     std::array<Function, sizeof...( Functions ) + 1U>,
 		                     std::tuple<Function, Functions...>>;
 
-		value_t fns{};
+		value_t fns{ };
 
 		constexpr function_table_t( ) = default;
 		constexpr function_table_t( Function f, Functions... fs )
-		  : fns{f, fs...} {}
+		  : fns{ f, fs... } {}
 
 		template<bool allow_empty = false, typename... Args>
 		constexpr R call( size_t idx, Args &&... args ) const {
@@ -162,6 +162,6 @@ namespace daw {
 	template<typename R = void, typename Function, typename... Functions>
 	constexpr function_table_t<R, Function, Functions...>
 	make_function_table( Function fn, Functions... fns ) {
-		return function_table_t<R, Function, Functions...>{fn, fns...};
+		return function_table_t<R, Function, Functions...>{ fn, fns... };
 	}
 } // namespace daw

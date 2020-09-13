@@ -46,7 +46,7 @@ namespace daw {
 			namespace string_fmt_details {
 				template<size_t N>
 				std::string to_string( char const ( &str )[N] ) {
-					return std::string{str};
+					return std::string{ str };
 				}
 
 				template<typename T>
@@ -111,18 +111,18 @@ namespace daw {
 				         std::enable_if_t<std::is_convertible_v<String, std::string>,
 				                          std::nullptr_t> = nullptr>
 				fmt_t( String &&format_str )
-				  : m_format_str{std::forward<String>( format_str )} {}
+				  : m_format_str{ std::forward<String>( format_str ) } {}
 
 				template<size_t N>
 				fmt_t( char const ( &format_str )[N] )
-				  : m_format_str{std::string{format_str}} {}
+				  : m_format_str{ std::string{ format_str } } {}
 
 				template<typename... Args>
 				std::string operator( )( Args &&... args ) const {
-					std::string result{};
+					std::string result{ };
 					result.reserve( m_format_str.size( ) +
 					                ( sizeof...( args ) * 4 ) ); // WAG for size
-					daw::string_view sv{m_format_str};
+					daw::string_view sv{ m_format_str };
 					result += sv.pop_front( "{" );
 					while( !sv.empty( ) ) {
 						auto const idx_str = sv.pop_front( "}" );
@@ -138,7 +138,8 @@ namespace daw {
 
 			template<typename... Args>
 			std::string fmt( std::string format_str, Args &&... args ) {
-				return fmt_t{daw::move( format_str )}( std::forward<Args>( args )... );
+				return fmt_t{ daw::move( format_str ) }(
+				  std::forward<Args>( args )... );
 			}
 		} // namespace v1
 		namespace v2 {
@@ -214,7 +215,7 @@ namespace daw {
 									      daw::algorithm::copy( str.begin( ), str.end( ), out );
 								    } else if constexpr( traits::is_streamable_v<std::istream &,
 								                                                 val_t> ) {
-									    std::basic_stringstream<CharT> ss{};
+									    std::basic_stringstream<CharT> ss{ };
 									    ss << val;
 									    auto const str = ss.str( );
 									    out =
@@ -259,7 +260,7 @@ namespace daw {
 				  string_fmt_details::parse_token<CharT>, N / 2>
 				parse_tokens( daw::basic_string_view<CharT> msg ) {
 					daw::bounded_vector_t<string_fmt_details::parse_token<CharT>, N / 2>
-					  result{};
+					  result{ };
 					size_t sz = 0;
 					while( !msg.empty( ) and sz < msg.size( ) ) {
 						assert( result.size( ) < result.capacity( ) );
@@ -311,7 +312,7 @@ namespace daw {
 
 				template<typename Result = std::basic_string<CharT>, typename... Args>
 				constexpr Result operator( )( Args &&... args ) const {
-					Result result{};
+					Result result{ };
 					if constexpr( string_fmt_details::has_reserve_v<Result> ) {
 						result.reserve( N * 2U );
 					}
@@ -323,7 +324,7 @@ namespace daw {
 				}
 			};
 			template<typename CharT, size_t N>
-			fmt_t( CharT const ( & )[N] )->fmt_t<CharT, N>;
+			fmt_t( CharT const ( & )[N] ) -> fmt_t<CharT, N>;
 
 			template<typename CharT, size_t N, typename... Args>
 			constexpr auto fmt( CharT const ( &format_str )[N], Args &&... args ) {
@@ -336,7 +337,7 @@ namespace daw {
 			  size_t N = string_fmt_details::cxstrlen( fmt_string ), typename... Args>
 			constexpr Result fmt( Args &&... args ) {
 				constexpr auto const formatter =
-				  fmt_t<char, N>( string_fmt_details::private_ctor{}, fmt_string );
+				  fmt_t<char, N>( string_fmt_details::private_ctor{ }, fmt_string );
 				return formatter.template operator( )<Result>(
 				  std::forward<Args>( args )... );
 			}
