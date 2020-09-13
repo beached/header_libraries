@@ -6,9 +6,9 @@
 # Official repository: https://github.com/beached/header_libraries
 #
 
-cmake_minimum_required(  VERSION 3.12 ) 
+cmake_minimum_required( VERSION 3.10 ) 
 
-project(  "header_libraries"
+project( "header_libraries"
 	VERSION "1.0.0" 
 	DESCRIPTION "Various headers"
 	HOMEPAGE_URL "http://github.com/beached/header_libraries"
@@ -18,59 +18,58 @@ set( CMAKE_CXX_STANDARD 17 CACHE STRING "The C++ standard whose features are req
 set( CMAKE_CXX_STANDARD_REQUIRED ON)
 set( CMAKE_CXX_EXTENSIONS OFF)
 
-option(  DAW_ENABLE_TESTING "Build unit tests" OFF )
+option( DAW_ENABLE_TESTING "Build unit tests" OFF )
 
+include( GNUInstallDirs)
 set( header_libraries_INSTALL_CMAKEDIR
-    "${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake"
-    CACHE STRING
-    "The install directory to use for CMake package config files") 
+	"${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake"
+	CACHE STRING
+	"The install directory to use for CMake package config files") 
 
 set( PROJECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
-include( GNUInstallDirs)
 
+add_library( ${PROJECT_NAME} INTERFACE ) 
+add_library( daw::${PROJECT_NAME} ALIAS ${PROJECT_NAME} )
 
-add_library(  ${PROJECT_NAME} INTERFACE ) 
-add_library(  daw::${PROJECT_NAME} ALIAS ${PROJECT_NAME} )
-
-if(  DAW_ENABLE_TESTING )
-	enable_testing(  )
-	add_subdirectory(  tests )
-endif(  )	
+if( DAW_ENABLE_TESTING )
+	enable_testing( )
+	add_subdirectory( tests )
+endif( )	
 
 target_compile_features( ${PROJECT_NAME} INTERFACE cxx_std_17)
 target_include_directories( ${PROJECT_NAME}
 	INTERFACE
-        "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-        "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
+	"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+	"$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 
 install( TARGETS ${PROJECT_NAME}
-        EXPORT ${PROJECT_NAME}_Targets
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+	EXPORT ${PROJECT_NAME}_Targets
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 
 include( CMakePackageConfigHelpers)
 
 configure_package_config_file( 
-  "${PROJECT_SOURCE_DIR}/cmake/daw_${PROJECT_NAME}Config.cmake.in"
-  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-  INSTALL_DESTINATION
+	"${PROJECT_SOURCE_DIR}/cmake/daw_${PROJECT_NAME}Config.cmake.in"
+	"${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+	INSTALL_DESTINATION
 	${header_libraries_INSTALL_CMAKEDIR} )
 
 write_basic_package_version_file( "${PROJECT_NAME}ConfigVersion.cmake"
-                                 VERSION ${PROJECT_VERSION}
-                                 COMPATIBILITY SameMajorVersion)
+	VERSION ${PROJECT_VERSION}
+	COMPATIBILITY SameMajorVersion)
 
 install( EXPORT ${PROJECT_NAME}_Targets
-        FILE ${PROJECT_NAME}Targets.cmake
-        NAMESPACE daw::
-        DESTINATION ${header_libraries_INSTALL_CMAKEDIR})
+	FILE ${PROJECT_NAME}Targets.cmake
+	NAMESPACE daw::
+	DESTINATION ${header_libraries_INSTALL_CMAKEDIR})
 
 install( FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-              "${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-        DESTINATION ${header_libraries_INSTALL_CMAKEDIR}$ )
+	"${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+	DESTINATION ${header_libraries_INSTALL_CMAKEDIR}$ )
 
 install( DIRECTORY ${PROJECT_SOURCE_DIR}/include DESTINATION include)
 			
