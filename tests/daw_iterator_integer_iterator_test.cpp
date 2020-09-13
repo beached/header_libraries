@@ -29,6 +29,15 @@ constexpr bool integer_range_01( ) {
 	}
 	return 35 == sum;
 }
+#if not defined( MSVC ) or defined( __clang __ )
 static_assert( integer_range_01( ) );
+#endif
 
-int main( ) {}
+int main( ) {
+#if defined( MSVC ) and not defined( __clang __ )
+	if( integer_range_01( ) ) {
+		return 0;
+	}
+	return 1;
+#endif
+}
