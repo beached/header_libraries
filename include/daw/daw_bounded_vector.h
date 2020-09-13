@@ -45,7 +45,7 @@ namespace daw {
 	public:
 		constexpr bounded_vector_t( ) noexcept = default;
 
-		constexpr bounded_vector_t( const_pointer ptr, std::size_type count ) noexcept
+		constexpr bounded_vector_t( const_pointer ptr, size_type count ) noexcept
 		  : m_index{ daw::min( count, N ) } {
 
 			daw::algorithm::copy_n( ptr, m_stack.begin( ), daw::min( count, N ) );
@@ -65,19 +65,19 @@ namespace daw {
 			return m_index - m_first == N;
 		}
 
-		constexpr std::size_type size( ) const noexcept {
+		constexpr size_type size( ) const noexcept {
 			return m_index - m_first;
 		}
 
-		constexpr std::size_type capacity( ) const noexcept {
+		constexpr size_type capacity( ) const noexcept {
 			return N;
 		}
 
-		constexpr bool has_room( std::size_type count ) noexcept {
+		constexpr bool has_room( size_type count ) noexcept {
 			return count + size( ) >= N;
 		}
 
-		constexpr std::size_type available( ) const noexcept {
+		constexpr size_type available( ) const noexcept {
 			return N - size( );
 		}
 
@@ -102,21 +102,21 @@ namespace daw {
 			return m_stack[m_index - 1];
 		}
 
-		constexpr reference operator[]( std::size_type pos ) noexcept {
+		constexpr reference operator[]( size_type pos ) noexcept {
 			return m_stack[m_first + pos];
 		}
 
-		constexpr const_reference operator[]( std::size_type pos ) const noexcept {
+		constexpr const_reference operator[]( size_type pos ) const noexcept {
 			return m_stack[m_first + pos];
 		}
 
-		constexpr reference at( std::size_type pos ) {
+		constexpr reference at( size_type pos ) {
 			daw::exception::precondition_check(
 			  pos < size( ), "Attempt to access past end of fix_stack" );
 			return m_stack[pos + m_first];
 		}
 
-		constexpr const_reference at( std::size_type pos ) const {
+		constexpr const_reference at( size_type pos ) const {
 			daw::exception::precondition_check(
 			  pos < size( ), "Attempt to access past end of fix_stack" );
 			return m_stack[pos + m_first];
@@ -187,7 +187,7 @@ namespace daw {
 			m_first = 0;
 		}
 
-		constexpr bool can_move_front( std::size_type how_many ) noexcept {
+		constexpr bool can_move_front( size_type how_many ) noexcept {
 			return m_first > 0 and m_index >= N - how_many;
 		}
 
@@ -216,7 +216,7 @@ namespace daw {
 			}
 			return m_index++;
 		}
-		constexpr void push_back( const_pointer ptr, std::size_type sz ) noexcept {
+		constexpr void push_back( const_pointer ptr, size_type sz ) noexcept {
 			if( can_move_front( sz ) ) {
 				do_move_to_front( );
 			}
@@ -227,7 +227,7 @@ namespace daw {
 			}
 		}
 
-		constexpr void assign( std::size_type count, const_reference value ) noexcept {
+		constexpr void assign( size_type count, const_reference value ) noexcept {
 			clear( );
 			for( std::size_t n = 0; n < count; ++n ) {
 				push_back( value );
@@ -235,7 +235,7 @@ namespace daw {
 		}
 
 		template<typename Ptr>
-		constexpr void push_back( Ptr const *ptr, std::size_type sz ) noexcept {
+		constexpr void push_back( Ptr const *ptr, size_type sz ) noexcept {
 			if( can_move_front( sz ) ) {
 				do_move_to_front( );
 			}
@@ -259,7 +259,7 @@ namespace daw {
 			return m_stack[--m_index];
 		}
 
-		constexpr void pop_front( std::size_type const count ) {
+		constexpr void pop_front( size_type const count ) {
 			daw::exception::precondition_check<std::out_of_range>(
 			  m_index <= m_index - count, "Attempt to pop_front past end of stack" );
 
@@ -273,7 +273,7 @@ namespace daw {
 			return result;
 		}
 
-		constexpr void resize( std::size_type const count ) {
+		constexpr void resize( size_type const count ) {
 
 			daw::exception::precondition_check<std::out_of_range>(
 			  count <= capacity( ), "Attempt to resize past capacity of fix_stack" );
@@ -282,7 +282,7 @@ namespace daw {
 				if( can_move_front( count ) ) {
 					do_move_to_front( );
 				}
-				for( std::size_type n = size( ); n < count; ++n ) {
+				for( size_type n = size( ); n < count; ++n ) {
 					m_stack[n] = value_type{ };
 				}
 			}
@@ -318,7 +318,7 @@ namespace daw {
 			  static_cast<difference_type>( size( ) ) > dist and dist >= 0,
 			  "Attempt to resize past capacity of fix_stack" );
 
-			resize( size( ) - static_cast<std::size_type>( dist ) );
+			resize( size( ) - static_cast<size_type>( dist ) );
 			if( last == cend( ) ) {
 				return end( );
 			}
