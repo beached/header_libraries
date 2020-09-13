@@ -1,24 +1,10 @@
-// The MIT License (MIT)
+// Copyright (c) Darrell Wright
 //
-// Copyright (c) 2014-2020 Darrell Wright
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to
-// deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
-// sell copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// Official repository: https://github.com/beached/header_libraries
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
 
 #include "daw/cpp_17.h"
 #include "daw/daw_benchmark.h"
@@ -30,7 +16,7 @@
 
 namespace test_01 {
 	template<typename T>
-	using rw_type = decltype( daw::read_only<T>{4} = 5 );
+	using rw_type = decltype( daw::read_only<T>{ 4 } = 5 );
 
 	static_assert( !daw::is_detected_v<rw_type, int>,
 	               "Read only type is assignable, it should not be" );
@@ -49,14 +35,14 @@ namespace test_02 {
 		          << sizeof( daw::read_only<int> );
 		std::cout << " sizeof( daw::read_only<size_t> ) -> "
 		          << sizeof( daw::read_only<size_t> ) << '\n';
-		daw::read_only<int> a{};
-		daw::read_only<int> b{1};
-		daw::read_only<int> c{2};
-		daw::read_only<int> d{1};
+		daw::read_only<int> a{ };
+		daw::read_only<int> b{ 1 };
+		daw::read_only<int> c{ 2 };
+		daw::read_only<int> d{ 1 };
 		daw::read_only<int> e = 5;
 		::Unused( e );
 
-		daw::read_only<A> x{};
+		daw::read_only<A> x{ };
 		x->c( );
 
 		// a & b
@@ -80,7 +66,7 @@ namespace test_02 {
 } // namespace test_02
 
 constexpr bool daw_read_only_test_03( ) {
-	daw::read_only<int> a{5};
+	daw::read_only<int> a{ 5 };
 	int b = a;
 	daw::expecting( a, b );
 	return true;

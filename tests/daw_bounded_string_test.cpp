@@ -1,24 +1,10 @@
-// The MIT License (MIT)
+// Copyright (c) Darrell Wright
 //
-// Copyright (c) 2017-2020 Darrell Wright
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to
-// deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
-// sell copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// Official repository: https://github.com/beached/header_libraries
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
 
 #include "daw/daw_benchmark.h"
 #include "daw/daw_bounded_string.h"
@@ -127,7 +113,7 @@ namespace daw {
 	}
 
 	void daw_bounded_string_make_test_001( ) {
-		unsigned char const p[] = {'H', 'e', 'l', 'l', 'o', 0};
+		unsigned char const p[] = { 'H', 'e', 'l', 'l', 'o', 0 };
 		auto sv =
 		  daw::make_bounded_string_it( reinterpret_cast<char const *>( p ),
 		                               reinterpret_cast<char const *>( p ) + 5 );
@@ -709,57 +695,60 @@ namespace daw {
 
 	void daw_can_be_bounded_string_starts_with_001( ) {
 		daw::expecting(
-		  daw::bounded_string{"This is a test"}.starts_with( "This" ) );
+		  daw::bounded_string{ "This is a test" }.starts_with( "This" ) );
 	}
 
 	void daw_can_be_bounded_string_starts_with_002( ) {
-		daw::expecting( daw::bounded_string{"This is a test"}.starts_with(
-		  daw::bounded_string{"This"} ) );
+		daw::expecting( daw::bounded_string{ "This is a test" }.starts_with(
+		  daw::bounded_string{ "This" } ) );
 	}
 
 	void daw_can_be_bounded_string_starts_with_003( ) {
-		daw::expecting( daw::bounded_string{"This is a test"}.starts_with( 'T' ) );
+		daw::expecting(
+		  daw::bounded_string{ "This is a test" }.starts_with( 'T' ) );
 	}
 
 	void daw_can_be_bounded_string_starts_with_004( ) {
 		daw::expecting(
-		  !daw::bounded_string{"This is a test"}.starts_with( "ahis" ) );
+		  !daw::bounded_string{ "This is a test" }.starts_with( "ahis" ) );
 	}
 
 	void daw_can_be_bounded_string_starts_with_005( ) {
-		daw::expecting( !daw::bounded_string{"This is a test"}.starts_with(
-		  daw::bounded_string{"ahis"} ) );
+		daw::expecting( !daw::bounded_string{ "This is a test" }.starts_with(
+		  daw::bounded_string{ "ahis" } ) );
 	}
 
 	void daw_can_be_bounded_string_starts_with_006( ) {
-		daw::expecting( !daw::bounded_string{"This is a test"}.starts_with( 'a' ) );
+		daw::expecting(
+		  !daw::bounded_string{ "This is a test" }.starts_with( 'a' ) );
 	}
 
 	void daw_can_be_bounded_string_ends_with_001( ) {
-		daw::expecting( daw::bounded_string{"This is a test"}.ends_with( "test" ) );
+		daw::expecting(
+		  daw::bounded_string{ "This is a test" }.ends_with( "test" ) );
 	}
 
 	void daw_can_be_bounded_string_ends_with_002( ) {
-		daw::expecting( daw::bounded_string{"This is a test"}.ends_with(
-		  daw::bounded_string{"test"} ) );
+		daw::expecting( daw::bounded_string{ "This is a test" }.ends_with(
+		  daw::bounded_string{ "test" } ) );
 	}
 
 	void daw_can_be_bounded_string_ends_with_003( ) {
-		daw::expecting( daw::bounded_string{"This is a test"}.ends_with( 't' ) );
+		daw::expecting( daw::bounded_string{ "This is a test" }.ends_with( 't' ) );
 	}
 
 	void daw_can_be_bounded_string_ends_with_004( ) {
 		daw::expecting(
-		  !daw::bounded_string{"This is a test"}.ends_with( "aest" ) );
+		  !daw::bounded_string{ "This is a test" }.ends_with( "aest" ) );
 	}
 
 	void daw_can_be_bounded_string_ends_with_005( ) {
-		daw::expecting( !daw::bounded_string{"This is a test"}.ends_with(
-		  daw::bounded_string{"aest"} ) );
+		daw::expecting( !daw::bounded_string{ "This is a test" }.ends_with(
+		  daw::bounded_string{ "aest" } ) );
 	}
 
 	void daw_can_be_bounded_string_ends_with_006( ) {
-		daw::expecting( !daw::bounded_string{"This is a test"}.ends_with( 'a' ) );
+		daw::expecting( !daw::bounded_string{ "This is a test" }.ends_with( 'a' ) );
 	}
 
 	void daw_bounded_string_constexpr_001( ) {

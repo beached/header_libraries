@@ -1,24 +1,10 @@
-// The MIT License (MIT)
+// Copyright (c) Darrell Wright
 //
-// Copyright (c) 2014-2020 Darrell Wright
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to
-// deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
-// sell copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// Official repository: https://github.com/beached/header_libraries
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
 
 #include "daw/daw_benchmark.h"
 #include "daw/daw_bounded_array.h"
@@ -116,7 +102,7 @@ namespace {
 	constexpr bool parse_to_006( ) {
 		auto const f = []( int a, int b, int c ) { return a + b + c; };
 		auto const result =
-		  daw::apply_string2( f, "1	2  3", daw::parser::whitespace_splitter{} );
+		  daw::apply_string2( f, "1	2  3", daw::parser::whitespace_splitter{ } );
 		daw::expecting( result, 6 );
 		return true;
 	}
@@ -125,7 +111,7 @@ namespace {
 	constexpr bool parse_to_007( ) {
 		auto const f = []( int a, int b, int c ) { return a + b + c; };
 		auto const result = daw::apply_string<int, int, int>(
-		  f, "1  2     3", daw::parser::whitespace_splitter{} );
+		  f, "1  2     3", daw::parser::whitespace_splitter{ } );
 		daw::expecting( result, 6 );
 		return true;
 	}
@@ -134,7 +120,7 @@ namespace {
 
 	void daw_values_from_stream_001( ) {
 		std::string str = "this 1 1.234 test";
-		std::stringstream ss{str};
+		std::stringstream ss{ str };
 		auto vals =
 		  daw::values_from_stream<daw::parser::converters::unquoted_string, int,
 		                          float, daw::parser::converters::unquoted_string>(
@@ -165,7 +151,7 @@ namespace {
 		case 'B':
 			return e_colours::blue;
 		default:
-			throw invalid_e_colour_exception{};
+			throw invalid_e_colour_exception{ };
 		}
 	}
 
@@ -184,7 +170,7 @@ namespace {
 		constexpr bool parse_to_enum_001( ) {
 			auto result = daw::apply_string<e_colours, e_colours>(
 			  []( e_colours a, e_colours b ) { return sum_colours( a, b ); },
-			  "green blue", daw::parser::whitespace_splitter{} );
+			  "green blue", daw::parser::whitespace_splitter{ } );
 			daw::expecting( result, 12 );
 			return true;
 		}
@@ -213,7 +199,7 @@ namespace {
 			  []( e_colours a, e_colours b, int c ) {
 				  return sum_colours( a, b ) + c;
 			  },
-			  "green blue 534", daw::parser::whitespace_splitter{} );
+			  "green blue 534", daw::parser::whitespace_splitter{ } );
 			daw::expecting( result, 546 );
 			return true;
 		}
@@ -241,7 +227,7 @@ namespace {
 
 		constexpr bool parse_to_enum_004( ) {
 			constexpr auto result = daw::apply_string<e_colours, ClassTest>(
-			  e_colours_call{}, "green 54", daw::parser::whitespace_splitter{} );
+			  e_colours_call{ }, "green 54", daw::parser::whitespace_splitter{ } );
 			daw::expecting( result, 58 );
 			return true;
 		}

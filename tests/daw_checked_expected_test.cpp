@@ -1,24 +1,10 @@
-// The MIT License (MIT)
+// Copyright (c) Darrell Wright
 //
-// Copyright (c) 2018-2020 Darrell Wright
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to
-// deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
-// sell copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// Official repository: https://github.com/beached/header_libraries
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
 
 #include "daw/daw_benchmark.h"
 #include "daw/daw_checked_expected.h"
@@ -42,10 +28,10 @@ daw::checked_expected_t<int, std::runtime_error> divide( int v ) noexcept {
 daw::checked_expected_t<int, std::runtime_error> divide2( int v ) {
 	try {
 		if( v == 0 ) {
-			throw std::runtime_error{"division by zero"};
+			throw std::runtime_error{ "division by zero" };
 		}
 		if( v > 4 ) {
-			throw std::exception{};
+			throw std::exception{ };
 		}
 		return 4 / v;
 	} catch( ... ) { return std::current_exception( ); }
@@ -53,10 +39,10 @@ daw::checked_expected_t<int, std::runtime_error> divide2( int v ) {
 
 int divide3( int v ) {
 	if( v == 0 ) {
-		throw std::runtime_error{"division by zero"};
+		throw std::runtime_error{ "division by zero" };
 	}
 	if( v > 4 ) {
-		throw std::exception{};
+		throw std::exception{ };
 	}
 	return 4 / v;
 }
@@ -68,10 +54,10 @@ void daw_expected_test_01( ) {
 	          << sizeof( daw::checked_expected_t<int> );
 	std::cout << " sizeof( daw::checked_expected_t<size_t> ) -> "
 	          << sizeof( daw::checked_expected_t<size_t> ) << '\n';
-	daw::checked_expected_t<int> a{};
-	daw::checked_expected_t<int> b{1};
-	daw::checked_expected_t<int> c{2};
-	daw::checked_expected_t<int> d{1};
+	daw::checked_expected_t<int> a{ };
+	daw::checked_expected_t<int> b{ 1 };
+	daw::checked_expected_t<int> c{ 2 };
+	daw::checked_expected_t<int> d{ 1 };
 	daw::checked_expected_t<void> e;
 	auto X = []( int x ) {
 		std::cout << "Hello\n";
@@ -80,8 +66,8 @@ void daw_expected_test_01( ) {
 	static_assert( daw::traits::is_callable_v<decltype( X ), int>,
 	               "is_callable_v broke" );
 
-	daw::checked_expected_t<void> f{[]( ) { std::cout << "Hello\n"; }};
-	daw::checked_expected_t<void> g{[]( int ) { std::cout << "Hello\n"; }, 5};
+	daw::checked_expected_t<void> f{ []( ) { std::cout << "Hello\n"; } };
+	daw::checked_expected_t<void> g{ []( int ) { std::cout << "Hello\n"; }, 5 };
 	// daw::checked_expected_t<int> h{ []( int x ) { std::cout << "Hello\n";
 	// return x*x; }, 5 };
 
@@ -91,14 +77,14 @@ void daw_expected_test_01( ) {
 	try {
 		auto i2 = divide2( 5 );
 	} catch( std::runtime_error const & ) {
-		throw std::runtime_error{"This shouldn't happen"};
+		throw std::runtime_error{ "This shouldn't happen" };
 	} catch( ... ) {}
 
 	try {
 		int i3 = daw::checked_from_code<std::runtime_error>( divide3, 5 );
 		Unused( i3 );
 	} catch( std::runtime_error const & ) {
-		throw std::runtime_error{"This shouldn't happen"};
+		throw std::runtime_error{ "This shouldn't happen" };
 	} catch( ... ) {}
 
 	daw::expecting( h.has_exception( ) );
@@ -111,7 +97,7 @@ void daw_expected_test_01( ) {
 	auto test_01 = !( a == b );
 	auto test_02 = !( b == a );
 
-	daw::checked_expected_t<int, std::runtime_error> j{&divide, 0};
+	daw::checked_expected_t<int, std::runtime_error> j{ &divide, 0 };
 	daw::expecting( j.has_exception( ) );
 	daw::expecting( !j.has_value( ) );
 
@@ -122,14 +108,14 @@ void daw_expected_test_01( ) {
 		int a;
 	};
 
-	daw::checked_expected_t<L> l{[]( ) { return L{5}; }};
+	daw::checked_expected_t<L> l{ []( ) { return L{ 5 }; } };
 	daw::expecting( l->a == 5 );
 
 	auto m = daw::make_checked_function<int, std::runtime_error>( []( int ii ) {
 		if( ii == 0 ) {
 			throw std::runtime_error( "Attempt to divide by zero" );
 		} else if( ii > 100 ) {
-			throw std::exception{};
+			throw std::exception{ };
 		}
 		return 100 / ii;
 	} );

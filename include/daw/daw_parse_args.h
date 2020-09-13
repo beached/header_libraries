@@ -1,10 +1,24 @@
-// Copyright (c) Darrell Wright
-// 
-// Distributed under the Boost Software License, Version 1.0. (See accompanying
-// file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
-// 
-// Official repository: https://github.com/beached/header_libraries
-// 
+// copyright (c) darrell wright
+//
+// distributed under the boost software license, version 1.0. (see accompanying
+// file license or copy at http://www.boost.org/license_1_0.txt)
+//
+// official repository: https://github.com/beached/daw_json_link
+//
+
+#pragma once
+
+#include <daw/daw_string_view.h>
+
+#include <optional>
+#include <string>
+#include <vector>
+
+namespace daw {
+	namespace parse_arg_details {
+		struct is_ws_t {
+			constexpr bool operator( )( char c ) const {
+				return c <= 0x20;
 			}
 		};
 		inline constexpr auto is_ws = is_ws_t{ };

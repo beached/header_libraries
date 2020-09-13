@@ -1,10 +1,10 @@
 // Copyright (c) Darrell Wright
-// 
+//
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
-// 
+//
 // Official repository: https://github.com/beached/header_libraries
-// 
+//
 
 #pragma once
 
@@ -94,8 +94,8 @@ namespace daw {
 	template<typename Iterator, typename Splitter>
 	struct split_it<
 	  Iterator, Splitter,
-	  std::enable_if_t<
-	    not std::is_same_v<char, typename std::iterator_traits<Iterator>::value_type>>> {
+	  std::enable_if_t<not std::is_same_v<
+	    char, typename std::iterator_traits<Iterator>::value_type>>> {
 
 		using CharT = typename std::iterator_traits<Iterator>::value_type;
 		static_assert( daw::traits::is_unary_predicate_v<Splitter, CharT>,
@@ -325,8 +325,8 @@ namespace daw {
 	template<typename Iterator, typename Splitter>
 	struct split_it<
 	  Iterator, Splitter,
-	  std::enable_if_t<
-	    std::is_same_v<char, typename std::iterator_traits<Iterator>::value_type>>> {
+	  std::enable_if_t<std::is_same_v<
+	    char, typename std::iterator_traits<Iterator>::value_type>>> {
 
 		using CharT = char;
 		static_assert( daw::traits::is_unary_predicate_v<Splitter, CharT>,
