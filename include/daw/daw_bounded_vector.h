@@ -19,7 +19,7 @@
 #include <iterator>
 
 namespace daw {
-	template<typename T, size_t N>
+	template<typename T, std::size_t N>
 	struct bounded_vector_t {
 		static_assert( std::is_default_constructible_v<T>,
 		               "T must be default constructible" );
@@ -34,18 +34,18 @@ namespace daw {
 		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 		using pointer = value_type *;
 		using const_pointer = value_type const *;
-		using size_type = size_t;
+		using std::size_type = std::size_t;
 		using difference_type = intmax_t;
 
 	private:
-		size_t m_index = 0;
-		size_t m_first = 0;
+		std::size_t m_index = 0;
+		std::size_t m_first = 0;
 		bounded_array_t<T, N> m_stack{ };
 
 	public:
 		constexpr bounded_vector_t( ) noexcept = default;
 
-		constexpr bounded_vector_t( const_pointer ptr, size_type count ) noexcept
+		constexpr bounded_vector_t( const_pointer ptr, std::size_type count ) noexcept
 		  : m_index{ daw::min( count, N ) } {
 
 			daw::algorithm::copy_n( ptr, m_stack.begin( ), daw::min( count, N ) );
@@ -54,7 +54,7 @@ namespace daw {
 		template<typename Iterator>
 		constexpr bounded_vector_t( Iterator first, Iterator last ) {
 			auto out = daw::algorithm::copy( first, last, m_stack.begin( ) );
-			m_index = std::distance( m_stack.begin( ), out );
+			m_index = static_cast<std::size_t>( std::distance( m_stack.begin( ), out ) );
 		}
 
 		constexpr bool empty( ) const noexcept {
@@ -65,19 +65,19 @@ namespace daw {
 			return m_index - m_first == N;
 		}
 
-		constexpr size_type size( ) const noexcept {
+		constexpr std::size_type size( ) const noexcept {
 			return m_index - m_first;
 		}
 
-		constexpr size_type capacity( ) const noexcept {
+		constexpr std::size_type capacity( ) const noexcept {
 			return N;
 		}
 
-		constexpr bool has_room( size_type count ) noexcept {
+		constexpr bool has_room( std::size_type count ) noexcept {
 			return count + size( ) >= N;
 		}
 
-		constexpr size_type available( ) const noexcept {
+		constexpr std::size_type available( ) const noexcept {
 			return N - size( );
 		}
 
@@ -102,21 +102,21 @@ namespace daw {
 			return m_stack[m_index - 1];
 		}
 
-		constexpr reference operator[]( size_type pos ) noexcept {
+		constexpr reference operator[]( std::size_type pos ) noexcept {
 			return m_stack[m_first + pos];
 		}
 
-		constexpr const_reference operator[]( size_type pos ) const noexcept {
+		constexpr const_reference operator[]( std::size_type pos ) const noexcept {
 			return m_stack[m_first + pos];
 		}
 
-		constexpr reference at( size_type pos ) {
+		constexpr reference at( std::size_type pos ) {
 			daw::exception::precondition_check(
 			  pos < size( ), "Attempt to access past end of fix_stack" );
 			return m_stack[pos + m_first];
 		}
 
-		constexpr const_reference at( size_type pos ) const {
+		constexpr const_reference at( std::size_type pos ) const {
 			daw::exception::precondition_check(
 			  pos < size( ), "Attempt to access past end of fix_stack" );
 			return m_stack[pos + m_first];
@@ -180,14 +180,14 @@ namespace daw {
 
 	private:
 		constexpr void do_move_to_front( ) noexcept {
-			for( size_t n = m_first; n < m_index; ++n ) {
+			for( std::size_t n = m_first; n < m_index; ++n ) {
 				m_stack[n - m_first] = m_stack[n];
 			}
 			m_index -= m_first;
 			m_first = 0;
 		}
 
-		constexpr bool can_move_front( size_type how_many ) noexcept {
+		constexpr bool can_move_front( std::size_type how_many ) noexcept {
 			return m_first > 0 and m_index >= N - how_many;
 		}
 
@@ -210,38 +210,38 @@ namespace daw {
 		 * This gets around things like std::pair not having constexpr operator=
 		 * @return position of pushed value
 		 */
-		constexpr size_t push_back( ) noexcept {
+		constexpr std::size_t push_back( ) noexcept {
 			if( can_move_front( 1 ) ) {
 				do_move_to_front( );
 			}
 			return m_index++;
 		}
-		constexpr void push_back( const_pointer ptr, size_type sz ) noexcept {
+		constexpr void push_back( const_pointer ptr, std::size_type sz ) noexcept {
 			if( can_move_front( sz ) ) {
 				do_move_to_front( );
 			}
 			auto const start = m_index;
 			m_index += sz;
-			for( size_t n = start; n < m_index; ++n ) {
+			for( std::size_t n = start; n < m_index; ++n ) {
 				m_stack[n] = *ptr++;
 			}
 		}
 
-		constexpr void assign( size_type count, const_reference value ) noexcept {
+		constexpr void assign( std::size_type count, const_reference value ) noexcept {
 			clear( );
-			for( size_t n = 0; n < count; ++n ) {
+			for( std::size_t n = 0; n < count; ++n ) {
 				push_back( value );
 			}
 		}
 
 		template<typename Ptr>
-		constexpr void push_back( Ptr const *ptr, size_type sz ) noexcept {
+		constexpr void push_back( Ptr const *ptr, std::size_type sz ) noexcept {
 			if( can_move_front( sz ) ) {
 				do_move_to_front( );
 			}
 			auto const start = m_index;
 			m_index += sz;
-			for( size_t n = start; n < m_index; ++n ) {
+			for( std::size_t n = start; n < m_index; ++n ) {
 				m_stack[n] = static_cast<value_type>( *ptr++ );
 			}
 		}
@@ -259,7 +259,7 @@ namespace daw {
 			return m_stack[--m_index];
 		}
 
-		constexpr void pop_front( size_type const count ) {
+		constexpr void pop_front( std::size_type const count ) {
 			daw::exception::precondition_check<std::out_of_range>(
 			  m_index <= m_index - count, "Attempt to pop_front past end of stack" );
 
@@ -273,7 +273,7 @@ namespace daw {
 			return result;
 		}
 
-		constexpr void resize( size_type const count ) {
+		constexpr void resize( std::size_type const count ) {
 
 			daw::exception::precondition_check<std::out_of_range>(
 			  count <= capacity( ), "Attempt to resize past capacity of fix_stack" );
@@ -282,7 +282,7 @@ namespace daw {
 				if( can_move_front( count ) ) {
 					do_move_to_front( );
 				}
-				for( size_type n = size( ); n < count; ++n ) {
+				for( std::size_type n = size( ); n < count; ++n ) {
 					m_stack[n] = value_type{ };
 				}
 			}
@@ -318,7 +318,7 @@ namespace daw {
 			  static_cast<difference_type>( size( ) ) > dist and dist >= 0,
 			  "Attempt to resize past capacity of fix_stack" );
 
-			resize( size( ) - static_cast<size_type>( dist ) );
+			resize( size( ) - static_cast<std::size_type>( dist ) );
 			if( last == cend( ) ) {
 				return end( );
 			}
@@ -326,7 +326,7 @@ namespace daw {
 		}
 
 		constexpr void zero( ) noexcept {
-			for( size_t n = 0; n < N; ++n ) {
+			for( std::size_t n = 0; n < N; ++n ) {
 				m_stack[n] = 0;
 			}
 		}
@@ -334,7 +334,7 @@ namespace daw {
 		constexpr void swap( bounded_vector_t &rhs ) {
 			daw::cswap( m_index, rhs.m_index );
 			daw::cswap( m_first, rhs.m_first );
-			for( size_t n = 0; n < size( ); ++n ) {
+			for( std::size_t n = 0; n < size( ); ++n ) {
 				daw::cswap( operator[]( n ), rhs[n] );
 			}
 		}

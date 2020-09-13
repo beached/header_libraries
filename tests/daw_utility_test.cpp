@@ -138,7 +138,7 @@ namespace construct_a_deps {
 	static_assert(
 	  not std::is_constructible_v<
 	    daw::use_aggregate_construction<std::vector<int>>>,
-	  "Type use_aggregate_construction should not be constructible" );
+	  "Type use_aggregate_construction should not be constructable" );
 
 	static_assert( not daw::utility_details::should_use_aggregate_construction_v<
 	                 std::vector<int>>,
