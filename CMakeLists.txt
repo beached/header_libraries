@@ -3,6 +3,10 @@ cmake_minimum_required( VERSION 3.12 )
 set( DAW_HEADER_LIBRARIES_VERSION 1.0.0 )
 set( DAW_HEADER_LIBRARIES_ABI_VERSION 1 )
 
+set(CMAKE_CXX_STANDARD 17 CACHE STRING "The C++ standard whose features are requested.")
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 project( "daw_header_libraries"
 	VERSION "${DAW_HEADER_LIBRARIES_VERSION}" 
 	DESCRIPTION "Various headers"
