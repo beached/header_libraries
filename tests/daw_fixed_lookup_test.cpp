@@ -1,24 +1,10 @@
-// The MIT License (MIT)
+// Copyright (c) Darrell Wright
 //
-// Copyright (c) 2017-2020 Darrell Wright
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to
-// deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
-// sell copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// Official repository: https://github.com/beached/header_libraries
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
 
 #include "daw/daw_benchmark.h"
 #include "daw/daw_fixed_lookup.h"
@@ -30,7 +16,7 @@
 #include <vector>
 
 void daw_fixed_lookup_001( ) {
-	daw::fixed_lookup<int, 100> blah{};
+	daw::fixed_lookup<int, 100> blah{ };
 	blah['a'] = 5;
 	blah["hello"] = 6;
 	daw::expecting( blah['a'], 5 );
@@ -41,7 +27,7 @@ void daw_fixed_lookup_001( ) {
 }
 
 constexpr auto get_map( ) {
-	daw::fixed_lookup<int, 10> blah{};
+	daw::fixed_lookup<int, 10> blah{ };
 	blah['a'] = 1;
 	blah['2'] = 3;
 	blah[4] = 4;
@@ -51,7 +37,7 @@ constexpr auto get_map( ) {
 // Will not compile... on purpose
 template<size_t N>
 constexpr auto too_many( ) {
-	daw::fixed_lookup<int, N> blah{};
+	daw::fixed_lookup<int, N> blah{ };
 	for( size_t n = 0; n <= N; ++n ) {
 		blah[n] = n;
 	}
@@ -60,7 +46,7 @@ constexpr auto too_many( ) {
 
 constexpr bool daw_fixed_lookup_002( ) {
 	constexpr auto values2 = get_map( );
-	daw::fixed_lookup<int, 10> blah{};
+	daw::fixed_lookup<int, 10> blah{ };
 	blah['a'] = 1;
 	blah['2'] = 3;
 	blah[4] = 4;
@@ -85,9 +71,9 @@ void do_test( ) {
 	std::cout << "Testing with SZ = " << SZ << " and hash_size = " << HashSize
 	          << '\n';
 	using value_t = ValueType;
-	daw::fixed_lookup<value_t, SZ * 2> lookup{};
-	std::unordered_map<value_t, value_t> hash_map{};
-	std::vector<value_t> ary{};
+	daw::fixed_lookup<value_t, SZ * 2> lookup{ };
+	std::unordered_map<value_t, value_t> hash_map{ };
+	std::vector<value_t> ary{ };
 	ary.resize( SZ );
 	hash_map.reserve( SZ );
 	daw::show_benchmark(

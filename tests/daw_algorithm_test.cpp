@@ -1,24 +1,10 @@
-// The MIT License (MIT)
+// Copyright (c) Darrell Wright
 //
-// Copyright (c) 2014-2020 Darrell Wright
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to
-// deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
-// sell copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// Official repository: https://github.com/beached/header_libraries
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
 
 #include "daw/daw_algorithm.h"
 #include "daw/daw_benchmark.h"
@@ -34,7 +20,7 @@
 #include <vector>
 
 constexpr bool daw_safe_advance_test_001( ) {
-	std::array<int, 11> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto it = ::std::begin( a );
 	daw::safe_advance( a, it, 5 );
 	bool const ans = ( it != ::std::begin( a ) );
@@ -47,7 +33,7 @@ constexpr bool daw_safe_advance_test_001( ) {
 static_assert( daw_safe_advance_test_001( ) );
 
 constexpr bool binary_search_001( ) noexcept {
-	int arry[10] = {1, 5, 10, 15, 16, 17, 18, 19, 20, 21};
+	int arry[10] = { 1, 5, 10, 15, 16, 17, 18, 19, 20, 21 };
 	auto pos = daw::algorithm::binary_search( arry, arry + 10, 17 );
 
 	return *pos == 17;
@@ -55,7 +41,7 @@ constexpr bool binary_search_001( ) noexcept {
 static_assert( binary_search_001( ), "" );
 
 constexpr bool lower_bound_001( ) noexcept {
-	std::array<int, 10> arry = {1, 5, 10, 15, 16, 17, 18, 19, 20, 21};
+	std::array<int, 10> arry = { 1, 5, 10, 15, 16, 17, 18, 19, 20, 21 };
 	auto pos =
 	  daw::algorithm::lower_bound( ::std::begin( arry ), ::std::end( arry ), 17 );
 	return *pos == 17;
@@ -63,7 +49,7 @@ constexpr bool lower_bound_001( ) noexcept {
 static_assert( lower_bound_001( ), "" );
 
 constexpr bool daw_safe_advance_test_002( ) {
-	std::array<int, 11> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto it = ::std::begin( a );
 	daw::safe_advance( a, it, static_cast<ptrdiff_t>( a.size( ) + 5u ) );
 	bool const ans = ( it == ::std::end( a ) );
@@ -73,7 +59,7 @@ constexpr bool daw_safe_advance_test_002( ) {
 static_assert( daw_safe_advance_test_002( ) );
 
 constexpr bool daw_safe_advance_test_003( ) {
-	std::array<int, 11> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto it = ::std::begin( a );
 	daw::safe_advance( a, it, -5 );
 	bool const ans = ( it == ::std::begin( a ) );
@@ -83,7 +69,7 @@ constexpr bool daw_safe_advance_test_003( ) {
 static_assert( daw_safe_advance_test_003( ) );
 
 constexpr bool daw_safe_advance_test_004( ) {
-	std::array<int, 11> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto it = ::std::begin( a );
 	daw::safe_advance( a, it, 5 );
 	bool const ans = ( it != ::std::begin( a ) );
@@ -96,7 +82,7 @@ constexpr bool daw_safe_advance_test_004( ) {
 static_assert( daw_safe_advance_test_004( ) );
 
 constexpr bool daw_safe_advance_test_005( ) {
-	std::array<int, 11> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto it = ::std::begin( a );
 	daw::safe_advance( a, it, static_cast<ptrdiff_t>( a.size( ) + 5u ) );
 	bool const ans = ( it == ::std::end( a ) );
@@ -106,7 +92,7 @@ constexpr bool daw_safe_advance_test_005( ) {
 static_assert( daw_safe_advance_test_005( ) );
 
 constexpr bool daw_safe_advance_test_006( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto it = ::std::begin( a );
 	daw::safe_advance( a, it, -5 );
 	bool const ans = ( it == ::std::begin( a ) );
@@ -116,7 +102,7 @@ constexpr bool daw_safe_advance_test_006( ) {
 static_assert( daw_safe_advance_test_006( ) );
 
 constexpr bool daw_safe_next_test_001( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto it = daw::safe_next( ::std::begin( a ), ::std::end( a ), 5 );
 
 	static_assert(
@@ -129,7 +115,7 @@ constexpr bool daw_safe_next_test_001( ) {
 static_assert( daw_safe_next_test_001( ) );
 
 constexpr bool daw_safe_next_test_002( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto it = daw::safe_next( ::std::begin( a ), ::std::end( a ), a.size( ) + 5 );
 
 	daw::expecting( it, ::std::end( a ) );
@@ -138,7 +124,7 @@ constexpr bool daw_safe_next_test_002( ) {
 static_assert( daw_safe_next_test_002( ) );
 
 constexpr bool daw_safe_next_test_003( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto it = daw::safe_next( ::std::begin( a ), ::std::end( a ), 5 );
 
 	static_assert(
@@ -151,7 +137,7 @@ constexpr bool daw_safe_next_test_003( ) {
 static_assert( daw_safe_next_test_003( ) );
 
 constexpr bool daw_safe_next_test_004( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto it = daw::safe_next( ::std::begin( a ), ::std::end( a ), a.size( ) + 5 );
 
 	daw::expecting( it, ::std::end( a ) );
@@ -160,7 +146,7 @@ constexpr bool daw_safe_next_test_004( ) {
 static_assert( daw_safe_next_test_004( ) );
 
 constexpr bool daw_safe_prev_test_001( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto it = daw::safe_prev( ::std::end( a ), ::std::begin( a ), 5 );
 
 	static_assert(
@@ -173,7 +159,7 @@ constexpr bool daw_safe_prev_test_001( ) {
 static_assert( daw_safe_prev_test_001( ) );
 
 constexpr bool daw_safe_prev_test_002( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto it = daw::safe_prev( a.data( ) + a.size( ), a.data( ), a.size( ) + 5 );
 
 	daw::expecting( it, a.data( ) );
@@ -182,7 +168,7 @@ constexpr bool daw_safe_prev_test_002( ) {
 static_assert( daw_safe_prev_test_002( ) );
 
 constexpr bool daw_safe_prev_test_003( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto it = daw::safe_prev( ::std::end( a ), ::std::begin( a ), 5 );
 
 	static_assert(
@@ -195,7 +181,7 @@ constexpr bool daw_safe_prev_test_003( ) {
 static_assert( daw_safe_prev_test_003( ) );
 
 constexpr bool daw_safe_prev_test_004( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto it = daw::safe_prev( ::std::end( a ), ::std::begin( a ), a.size( ) + 5 );
 
 	daw::expecting( it, ::std::begin( a ) );
@@ -204,7 +190,7 @@ constexpr bool daw_safe_prev_test_004( ) {
 static_assert( daw_safe_prev_test_004( ) );
 
 constexpr bool daw_begin_at_test_001( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto it = daw::begin_at( a, 0 );
 
 	static_assert(
@@ -217,7 +203,7 @@ constexpr bool daw_begin_at_test_001( ) {
 static_assert( daw_begin_at_test_001( ) );
 
 constexpr bool daw_begin_at_test_002( ) {
-	std::array<int, 11> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto it = daw::begin_at( a, 5 );
 	daw::expecting( it, ::std::next( ::std::begin( a ), 5 ) );
 	return true;
@@ -225,7 +211,7 @@ constexpr bool daw_begin_at_test_002( ) {
 static_assert( daw_begin_at_test_002( ) );
 
 constexpr bool daw_begin_at_test_003( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto it = daw::begin_at( a, 0 );
 
 	static_assert(
@@ -238,7 +224,7 @@ constexpr bool daw_begin_at_test_003( ) {
 static_assert( daw_begin_at_test_003( ) );
 
 constexpr bool daw_begin_at_test_004( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto it = daw::begin_at( a, 5 );
 	daw::expecting( it, ::std::next( ::std::begin( a ), 5 ) );
 	return true;
@@ -263,7 +249,7 @@ static_assert( daw_transform_many( ) );
 */
 
 constexpr bool daw_map_test_001( ) {
-	std::array<int, 6> blah = {23, 5, 2, -1, 100, -1000};
+	std::array<int, 6> blah = { 23, 5, 2, -1, 100, -1000 };
 	daw::algorithm::map( blah.cbegin( ), blah.cend( ), blah.begin( ),
 	                     []( auto val ) { return val % 2 == 0 ? 0 : 1; } );
 
@@ -277,12 +263,12 @@ constexpr bool daw_map_test_001( ) {
 static_assert( daw_map_test_001( ) );
 
 constexpr bool daw_map_test_002( ) {
-	std::array<int, 6> blah = {23, 5, 2, -1, 100, -1000};
+	std::array<int, 6> blah = { 23, 5, 2, -1, 100, -1000 };
 	struct {
 		constexpr int operator( )( int val ) const noexcept {
 			return val % 2 == 0 ? 0 : 1;
 		}
-	} unary_op{};
+	} unary_op{ };
 	daw::algorithm::map( blah.begin( ), blah.end( ), blah.begin( ), unary_op );
 	int result = 0;
 	for( size_t n = 0; n < 6; ++n ) {
@@ -294,7 +280,7 @@ constexpr bool daw_map_test_002( ) {
 static_assert( daw_map_test_002( ) );
 
 constexpr bool daw_reduce_test_001( ) {
-	int blah[6] = {1, 0, 1, 0, 1, 0};
+	int blah[6] = { 1, 0, 1, 0, 1, 0 };
 	auto const tst = daw::algorithm::reduce(
 	  blah, daw::next( blah, 6 ), 0,
 	  []( auto lhs, auto rhs ) noexcept { return lhs + rhs; } );
@@ -304,7 +290,7 @@ constexpr bool daw_reduce_test_001( ) {
 static_assert( daw_reduce_test_001( ) );
 
 constexpr bool daw_minmax_element_test_001( ) {
-	std::array<int, 9> const tst = {1, 3, 2, -1, 100, -50, 1, 5, 2442};
+	std::array<int, 9> const tst = { 1, 3, 2, -1, 100, -50, 1, 5, 2442 };
 	auto result = daw::algorithm::minmax_element( tst.cbegin( ), tst.cend( ) );
 
 	daw::expecting( -50, *( result.min_element ) );
@@ -314,7 +300,7 @@ constexpr bool daw_minmax_element_test_001( ) {
 static_assert( daw_minmax_element_test_001( ) );
 
 constexpr bool daw_satisfies_one_test_001( ) {
-	std::array<int, 11> const tst = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const tst = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
 	auto const ans = daw::algorithm::satisfies_one(
 	  tst,
@@ -341,7 +327,7 @@ constexpr bool daw_satisfies_one_test_001( ) {
 static_assert( daw_satisfies_one_test_001( ) );
 
 constexpr bool daw_satisfies_one_test_002( ) {
-	std::array<int, 11> const tst = {0, 1, 2, 3, 4, 6, 7, 8, 9, 10};
+	std::array<int, 11> const tst = { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10 };
 
 	auto const ans = daw::algorithm::satisfies_one(
 	  tst,
@@ -368,7 +354,7 @@ constexpr bool daw_satisfies_one_test_002( ) {
 static_assert( daw_satisfies_one_test_002( ) );
 
 constexpr bool daw_satisfies_one_test_003( ) {
-	std::array<int, 11> const tst = {0, 1, 2, 3, 4, 6, 7, 8, 9, 10};
+	std::array<int, 11> const tst = { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10 };
 
 	auto const ans = daw::algorithm::satisfies_one(
 	  tst.begin( ), tst.end( ), []( auto v ) { return v == 11; },
@@ -382,7 +368,7 @@ constexpr bool daw_satisfies_one_test_003( ) {
 static_assert( daw_satisfies_one_test_003( ) );
 
 constexpr bool daw_satisfies_one_test_004( ) {
-	std::array<int, 11> const tst = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const tst = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
 	auto const ans = daw::algorithm::satisfies_one(
 	  tst.begin( ), tst.end( ), []( auto v ) { return v == 11; },
@@ -396,7 +382,7 @@ constexpr bool daw_satisfies_one_test_004( ) {
 static_assert( daw_satisfies_one_test_004( ) );
 
 constexpr bool daw_satisfies_all_test_001( ) {
-	std::array<int, 11> const tst = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const tst = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
 	auto const ans = daw::algorithm::satisfies_all(
 	  tst, []( auto const &v ) { return v.size( ) == 11; },
@@ -410,7 +396,7 @@ constexpr bool daw_satisfies_all_test_001( ) {
 static_assert( daw_satisfies_all_test_001( ) );
 
 constexpr bool daw_satisfies_all_test_002( ) {
-	std::array<int, 11> const tst = {0, 1, 2, 3, 4, 6, 7, 8, 9, 10};
+	std::array<int, 11> const tst = { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10 };
 
 	auto const ans = daw::algorithm::satisfies_all(
 	  tst, []( auto const &v ) { return v.size( ) == 11; },
@@ -424,7 +410,7 @@ constexpr bool daw_satisfies_all_test_002( ) {
 static_assert( daw_satisfies_all_test_002( ) );
 
 constexpr bool daw_satisfies_all_test_003( ) {
-	std::array<int, 6> const tst = {0, 2, 4, 6, 8, 10};
+	std::array<int, 6> const tst = { 0, 2, 4, 6, 8, 10 };
 
 	auto const ans = daw::algorithm::satisfies_all(
 	  tst.begin( ), tst.end( ), []( auto v ) { return v < 11; },
@@ -437,7 +423,7 @@ constexpr bool daw_satisfies_all_test_003( ) {
 static_assert( daw_satisfies_all_test_003( ) );
 
 constexpr bool daw_satisfies_all_test_004( ) {
-	std::array<int, 11> const tst = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const tst = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
 	auto const ans = daw::algorithm::satisfies_all(
 	  tst.begin( ), tst.end( ), []( auto v ) { return v < 11; },
@@ -512,8 +498,8 @@ constexpr bool daw_less_than_or_equal_to_test_001( ) {
 static_assert( daw_less_than_or_equal_to_test_001( ) );
 
 constexpr bool daw_lexigraphical_compare_test_001( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	std::array<int, 10> const b = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	std::array<int, 10> const b = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
 	auto ans = daw::algorithm::lexicographical_compare( a.cbegin( ), a.cend( ),
 	                                                    b.cbegin( ), b.cend( ) );
@@ -523,8 +509,8 @@ constexpr bool daw_lexigraphical_compare_test_001( ) {
 static_assert( daw_lexigraphical_compare_test_001( ) );
 
 constexpr bool daw_lexigraphical_compare_test_002( ) {
-	std::array<int, 10> const a = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	std::array<int, 11> const b = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 10> const a = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	std::array<int, 11> const b = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
 	auto ans = daw::algorithm::lexicographical_compare( a.cbegin( ), a.cend( ),
 	                                                    b.cbegin( ), b.cend( ) );
@@ -534,9 +520,9 @@ constexpr bool daw_lexigraphical_compare_test_002( ) {
 static_assert( daw_lexigraphical_compare_test_002( ) );
 
 constexpr bool daw_transform_if_test_001( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	std::array<int, 6> b{};
-	std::array<int, 6> const expected_b = {-1, 1, 3, 5, 7, 9};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	std::array<int, 6> b{ };
+	std::array<int, 6> const expected_b = { -1, 1, 3, 5, 7, 9 };
 
 	daw::algorithm::transform_if(
 	  a.cbegin( ), a.cend( ), b.data( ),
@@ -550,9 +536,9 @@ constexpr bool daw_transform_if_test_001( ) {
 static_assert( daw_transform_if_test_001( ) );
 
 constexpr bool daw_transform_n_test_001( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	std::array<int, 4> b{-1, -1, -1, -1};
-	std::array<int, 4> const expected_b = {0, 2, 4, 6};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	std::array<int, 4> b{ -1, -1, -1, -1 };
+	std::array<int, 4> const expected_b = { 0, 2, 4, 6 };
 
 	daw::algorithm::transform_n( a.cbegin( ), b.data( ), 4,
 	                             []( auto const &v ) { return v * 2; } );
@@ -564,10 +550,10 @@ constexpr bool daw_transform_n_test_001( ) {
 static_assert( daw_transform_n_test_001( ) );
 
 constexpr bool daw_transform_test_001( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	std::array<int, 11> b{};
-	std::array<int, 11> const expected_b = {0,  2,  4,  6,  8, 10,
-	                                        12, 14, 16, 18, 20};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	std::array<int, 11> b{ };
+	std::array<int, 11> const expected_b = { 0,  2,  4,  6,  8, 10,
+	                                         12, 14, 16, 18, 20 };
 
 	daw::algorithm::transform( a.cbegin( ), a.cend( ), b.data( ),
 	                           []( auto const &v ) { return v * 2; } );
@@ -579,10 +565,10 @@ constexpr bool daw_transform_test_001( ) {
 static_assert( daw_transform_test_001( ) );
 
 constexpr bool daw_transform_it_test_001( ) {
-	std::array<int, 6> a = {1, 2, 3, 4, 5, 6};
-	std::array<int, 21> b{};
-	std::array<int, 21> const expected_b = {1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5,
-	                                        5, 5, 5, 5, 6, 6, 6, 6, 6, 6};
+	std::array<int, 6> a = { 1, 2, 3, 4, 5, 6 };
+	std::array<int, 21> b{ };
+	std::array<int, 21> const expected_b = { 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5,
+	                                         5, 5, 5, 5, 6, 6, 6, 6, 6, 6 };
 	daw::algorithm::transform_it(
 	  a.cbegin( ), a.cend( ), b.data( ), []( int a_val, auto out_it ) {
 		  for( size_t n = 0; static_cast<int>( n ) < a_val; ++n ) {
@@ -597,8 +583,8 @@ constexpr bool daw_transform_it_test_001( ) {
 static_assert( daw_transform_it_test_001( ) );
 
 constexpr bool daw_copy_test_001( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	std::array<int, 11> b{};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	std::array<int, 11> b{ };
 
 	daw::algorithm::copy( a.cbegin( ), a.cend( ), b.data( ) );
 	daw::expecting(
@@ -608,9 +594,9 @@ constexpr bool daw_copy_test_001( ) {
 static_assert( daw_copy_test_001( ) );
 
 constexpr bool daw_copy_n_test_001( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	std::array<int, 6> b{};
-	std::array<int, 6> const expected_b = {0, 1, 2, 3, 4, 5};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	std::array<int, 6> b{ };
+	std::array<int, 6> const expected_b = { 0, 1, 2, 3, 4, 5 };
 
 	daw::algorithm::copy_n( a.cbegin( ), b.data( ), 6 );
 	daw::expecting( daw::algorithm::equal(
@@ -620,9 +606,9 @@ constexpr bool daw_copy_n_test_001( ) {
 static_assert( daw_copy_n_test_001( ) );
 
 constexpr bool daw_move_test_001( ) {
-	std::array<int, 11> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto expected_b = a;
-	std::array<int, 11> b{};
+	std::array<int, 11> b{ };
 
 	daw::algorithm::move( a.begin( ), a.end( ), b.data( ) );
 	daw::expecting( daw::algorithm::equal(
@@ -632,9 +618,9 @@ constexpr bool daw_move_test_001( ) {
 static_assert( daw_move_test_001( ) );
 
 constexpr bool daw_move_n_test_001( ) {
-	std::array<int, 11> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	std::array<int, 6> b{};
-	std::array<int, 6> const expected_b = {0, 1, 2, 3, 4, 5};
+	std::array<int, 11> a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	std::array<int, 6> b{ };
+	std::array<int, 6> const expected_b = { 0, 1, 2, 3, 4, 5 };
 
 	daw::algorithm::move_n( a.begin( ), b.data( ), 6 );
 	daw::expecting( daw::algorithm::equal(
@@ -644,7 +630,7 @@ constexpr bool daw_move_n_test_001( ) {
 static_assert( daw_move_n_test_001( ) );
 
 constexpr bool daw_equal_test_001( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto const b = a;
 	daw::expecting(
 	  daw::algorithm::equal( a.cbegin( ), a.cend( ), b.cbegin( ) ) );
@@ -653,8 +639,8 @@ constexpr bool daw_equal_test_001( ) {
 static_assert( daw_equal_test_001( ) );
 
 constexpr bool daw_equal_test_002( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	std::array<int, 11> const b = {0, 1, 2, 3, 4, 1, 6, 7, 8, 9, 10};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	std::array<int, 11> const b = { 0, 1, 2, 3, 4, 1, 6, 7, 8, 9, 10 };
 	daw::expecting(
 	  !daw::algorithm::equal( a.cbegin( ), a.cend( ), b.cbegin( ) ) );
 	return true;
@@ -662,7 +648,7 @@ constexpr bool daw_equal_test_002( ) {
 static_assert( daw_equal_test_002( ) );
 
 constexpr bool daw_equal_test_003( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto const b = a;
 	daw::expecting(
 	  daw::algorithm::equal( a.cbegin( ), a.cend( ), b.cbegin( ), b.cend( ) ) );
@@ -671,8 +657,8 @@ constexpr bool daw_equal_test_003( ) {
 static_assert( daw_equal_test_003( ) );
 
 constexpr bool daw_equal_test_004( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	std::array<int, 11> const b = {0, 1, 2, 3, 4, 1, 6, 7, 8, 9, 10};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	std::array<int, 11> const b = { 0, 1, 2, 3, 4, 1, 6, 7, 8, 9, 10 };
 	daw::expecting(
 	  !daw::algorithm::equal( a.cbegin( ), a.cend( ), b.cbegin( ), b.cend( ) ) );
 	return true;
@@ -680,8 +666,8 @@ constexpr bool daw_equal_test_004( ) {
 static_assert( daw_equal_test_004( ) );
 
 constexpr bool daw_equal_test_005( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	std::array<int, 5> const b = {0, 1, 2, 3, 4};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	std::array<int, 5> const b = { 0, 1, 2, 3, 4 };
 	daw::expecting(
 	  !daw::algorithm::equal( a.cbegin( ), a.cend( ), b.cbegin( ), b.cend( ) ) );
 	return true;
@@ -689,8 +675,8 @@ constexpr bool daw_equal_test_005( ) {
 static_assert( daw_equal_test_005( ) );
 
 constexpr bool daw_equal_test_006( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	std::array<int, 11> const b = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	std::array<int, 11> const b = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	daw::expecting(
 	  daw::algorithm::equal( a.cbegin( ), a.cend( ), b.cbegin( ), b.cend( ),
 	                         []( auto lhs, auto rhs ) { return lhs == rhs; } ) );
@@ -699,8 +685,8 @@ constexpr bool daw_equal_test_006( ) {
 static_assert( daw_equal_test_006( ) );
 
 constexpr bool daw_equal_test_007( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	std::array<int, 11> const b = {0, 1, 2, 5, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	std::array<int, 11> const b = { 0, 1, 2, 5, 4, 5, 6, 7, 8, 9, 10 };
 	daw::expecting(
 	  !daw::algorithm::equal( a.cbegin( ), a.cend( ), b.cbegin( ), b.cend( ),
 	                          []( auto lhs, auto rhs ) { return lhs == rhs; } ) );
@@ -709,8 +695,8 @@ constexpr bool daw_equal_test_007( ) {
 static_assert( daw_equal_test_007( ) );
 
 constexpr bool daw_equal_test_008( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	std::array<int, 10> const b = {0, 1, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	std::array<int, 10> const b = { 0, 1, 3, 4, 5, 6, 7, 8, 9, 10 };
 	daw::expecting(
 	  !daw::algorithm::equal( a.cbegin( ), a.cend( ), b.cbegin( ), b.cend( ),
 	                          []( auto lhs, auto rhs ) { return lhs == rhs; } ) );
@@ -719,7 +705,7 @@ constexpr bool daw_equal_test_008( ) {
 static_assert( daw_equal_test_008( ) );
 
 constexpr bool daw_rotate_test_001( ) {
-	std::array<int, 11> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	daw::algorithm::rotate( a.begin( ), ::std::next( a.begin( ), 5 ), a.end( ) );
 	daw::expecting( 5, a.front( ) );
 	daw::expecting( 4, a.back( ) );
@@ -729,7 +715,7 @@ constexpr bool daw_rotate_test_001( ) {
 static_assert( daw_rotate_test_001( ) );
 
 constexpr bool daw_upper_bound_test_001( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto tst = daw::algorithm::upper_bound( a.cbegin( ), a.cend( ), 5 );
 	daw::expecting( tst, ::std::next( a.cbegin( ), 6 ) );
 	return true;
@@ -737,7 +723,7 @@ constexpr bool daw_upper_bound_test_001( ) {
 static_assert( daw_upper_bound_test_001( ) );
 
 constexpr bool daw_upper_bound_test_002( ) {
-	std::array<int, 11> const a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto tst = daw::algorithm::upper_bound( a.cbegin( ), a.cend( ), 20 );
 	daw::expecting( tst, a.cend( ) );
 	return true;
@@ -758,8 +744,8 @@ constexpr bool daw_minmax_item_test_002( ) {
 	struct A {
 		int v;
 	};
-	A a{5};
-	A b{-100};
+	A a{ 5 };
+	A b{ -100 };
 	auto ans = daw::algorithm::minmax_item(
 	  a, b, []( auto const &lhs, auto const &rhs ) { return lhs.v < rhs.v; } );
 	daw::expecting( -100, ans.first.v );
@@ -769,9 +755,9 @@ constexpr bool daw_minmax_item_test_002( ) {
 static_assert( daw_minmax_item_test_002( ) );
 
 constexpr bool cartesian_product_test_001( ) {
-	std::array<int, 5> a = {1, 2, 3, 4, 5};
-	std::array<int, 5> b = {9, 8, 7, 6, 5};
-	std::array<int, 5> c = {10, 20, 30, 40, 50};
+	std::array<int, 5> a = { 1, 2, 3, 4, 5 };
+	std::array<int, 5> b = { 9, 8, 7, 6, 5 };
+	std::array<int, 5> c = { 10, 20, 30, 40, 50 };
 	// Sum of all is 200
 	int sum = 0;
 	daw::algorithm::cartesian_product(
@@ -785,8 +771,8 @@ static_assert( cartesian_product_test_001( ) );
 
 void daw_extract_to_001( ) {
 #if defined( __cpp_lib_node_extract )
-	std::unordered_map<int, int> a = {{1, 2}, {3, 4}, {5, 6}};
-	std::unordered_map<int, int> b{};
+	std::unordered_map<int, int> a = { { 1, 2 }, { 3, 4 }, { 5, 6 } };
+	std::unordered_map<int, int> b{ };
 
 	daw::expecting( a.size( ) == 3 );
 	daw::expecting( b.empty( ) );
@@ -825,7 +811,7 @@ constexpr bool do_n_2_test( ) {
 static_assert( do_n_2_test( ) );
 
 constexpr bool find_index_test( ) {
-	std::array ary = {1, 2, 3, 4};
+	std::array ary = { 1, 2, 3, 4 };
 	auto const f0 = daw::algorithm::find_index( ary.begin( ), ary.end( ), 3 );
 	daw::expecting( f0 );
 	daw::expecting( *f0, 2U );
@@ -836,7 +822,7 @@ constexpr bool find_index_test( ) {
 static_assert( find_index_test( ) );
 
 constexpr bool adjacent_find_test( ) {
-	std::array ary = {1, 2, 3, 4};
+	std::array ary = { 1, 2, 3, 4 };
 	auto const item = daw::algorithm::adjacent_find(
 	  ary.begin( ), ary.end( ), []( auto lhs, auto rhs ) { return lhs == rhs; } );
 	return item == ary.end( );

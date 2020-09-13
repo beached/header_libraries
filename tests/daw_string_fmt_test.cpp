@@ -1,24 +1,10 @@
-// The MIT License (MIT)
+// Copyright (c) Darrell Wright
 //
-// Copyright (c) 2017-2020 Darrell Wright
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to
-// deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
-// sell copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// Official repository: https://github.com/beached/header_libraries
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
 
 #include <cstdint>
 #include <cstdlib>
@@ -38,7 +24,7 @@ void string_fmt_test_001( ) {
 
 void string_fmt_test_002( ) {
 	daw::string_fmt::v1::fmt_t f{
-	  "This is a {0} of the {1} and has been used {2} times for {0}ing\n"};
+	  "This is a {0} of the {1} and has been used {2} times for {0}ing\n" };
 	std::cout << f( "test", "daw::string_fmt::v1::fmt", 1'000'000 );
 }
 
@@ -74,7 +60,7 @@ void string_fmt_perf_001( ) {
 	n = 0;
 	{
 		auto const formatter = daw::string_fmt::v1::fmt_t{
-		  "This is a {0} of the {1} and has been used {2} times for {0}ing\n"};
+		  "This is a {0} of the {1} and has been used {2} times for {0}ing\n" };
 		daw::bench_n_test<1'000'000>( "fmt_t perf", [&]( ) {
 			auto tst = formatter( "test", "daw::string_fmt::v1::fmt", n++ );
 			daw::do_not_optimize( tst );
@@ -108,7 +94,7 @@ void string_fmt_perf_002( ) {
 	auto const formatter = daw::string_fmt::v1::fmt_t{
 	  "This is a test of the daw::string_fmt::v1::fmt and has been used {2} "
 	  "times for "
-	  "testing\n"};
+	  "testing\n" };
 	n = 0;
 	daw::bench_test( "fmt_t perf", [&]( ) {
 		auto tst = formatter( n++ );
@@ -133,7 +119,7 @@ void string_fmt_has_to_string_001( ) {
 			return std::to_string( a );
 		}
 	};
-	A a{1};
+	A a{ 1 };
 	auto result = daw::string_fmt::v1::fmt( "Testing {0}", a );
 
 	daw::expecting( result, "Testing 1" );
@@ -149,7 +135,7 @@ void string_fmt2_test_001( ) {
 
 void string_fmt2_test_002( ) {
 	daw::string_fmt::v2::fmt_t f{
-	  "This is a {0} of the {1} and has been used {2} times for {0}ing\n"};
+	  "This is a {0} of the {1} and has been used {2} times for {0}ing\n" };
 	std::cout << f( "test", "daw::string_fmt::v2::fmt", 1'000'000 );
 }
 
@@ -262,7 +248,7 @@ void string_fmt2_perf_003( ) {
 	n = 0;
 	std::cout << '\n';
 	daw::bench_n_test<1'000'000>( "sprintf perf", [&]( ) {
-		std::string tst{};
+		std::string tst{ };
 		tst.resize( 95 );
 		sprintf( tst.data( ),
 		         "This is a test of the daw::string_fmt::v2::fmt and has been used "
@@ -278,7 +264,7 @@ void string_fmt2_has_to_string_001( ) {
 			return std::to_string( a );
 		}
 	};
-	A a{1};
+	A a{ 1 };
 	auto result = daw::string_fmt::v2::fmt( "Testing {0}", a );
 
 	daw::expecting( result, "Testing 1" );

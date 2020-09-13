@@ -1,24 +1,10 @@
-// The MIT License (MIT)
+// Copyright (c) Darrell Wright
 //
-// Copyright (c) 2014-2020 Darrell Wright
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to
-// deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
-// sell copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// Official repository: https://github.com/beached/header_libraries
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
 
 #include "daw/daw_benchmark.h"
 #include "daw/daw_traits.h"
@@ -32,11 +18,11 @@
 
 void daw_value_ptr_test_01( ) {
 	struct lrg {
-		size_t a{};
-		size_t b{};
-		size_t c{};
-		size_t d{};
-		size_t e{};
+		size_t a{ };
+		size_t b{ };
+		size_t c{ };
+		size_t d{ };
+		size_t e{ };
 	};
 	std::cout << "sizeof( int ) -> " << sizeof( int ) << '\t';
 	std::cout << "sizeof( daw::value_ptr<int> ) -> "
@@ -102,7 +88,7 @@ void daw_value_ptr_test_01( ) {
 
 	g = 5;
 
-	auto hash_value = std::hash<decltype( g )>{}( g );
+	auto hash_value = std::hash<decltype( g )>{ }( g );
 	Unused( hash_value );
 
 	auto i = daw::value_ptr<std::mutex>( );
@@ -111,7 +97,7 @@ void daw_value_ptr_test_01( ) {
 	static_assert( daw::traits::is_regular<daw::value_ptr<int>>, "" );
 	static_assert( !daw::traits::is_regular_v<daw::value_ptr<std::mutex>>, "" );
 
-	daw::value_ptr<std::mutex> blah{};
+	daw::value_ptr<std::mutex> blah{ };
 }
 
 struct virt_A {

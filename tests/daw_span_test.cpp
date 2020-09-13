@@ -1,24 +1,10 @@
-// The MIT License (MIT)
+// Copyright (c) Darrell Wright
 //
-// Copyright (c) 2017-2020 Darrell Wright
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to
-// deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
-// sell copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// Official repository: https://github.com/beached/header_libraries
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
 
 #include "daw/daw_span.h"
 
@@ -79,7 +65,7 @@ constexpr bool construct_from_nullptr_and_non_zero( ) {
 static_assert( construct_from_nullptr_and_non_zero( ) );
 
 constexpr bool construct_from_pointer_pointer_const( ) {
-	std::array<int const, 5> arry = {1, 2, 3, 4, 5};
+	std::array<int const, 5> arry = { 1, 2, 3, 4, 5 };
 	daw::span<int const> a( arry.data( ), arry.data( ) + arry.size( ) );
 
 	return a.data( ) == arry.data( ) and a.size( ) == arry.size( ) and
@@ -88,7 +74,7 @@ constexpr bool construct_from_pointer_pointer_const( ) {
 static_assert( construct_from_pointer_pointer_const( ) );
 
 constexpr bool construct_from_pointer_pointer( ) {
-	std::array<int, 5> arry = {1, 2, 3, 4, 5};
+	std::array<int, 5> arry = { 1, 2, 3, 4, 5 };
 	daw::span<int> a( arry.data( ), arry.data( ) + arry.size( ) );
 
 	return a.data( ) == arry.data( ) and a.size( ) == arry.size( ) and
@@ -97,7 +83,7 @@ constexpr bool construct_from_pointer_pointer( ) {
 static_assert( construct_from_pointer_pointer( ) );
 
 constexpr bool construct_from_c_array_const( ) {
-	int const arry[] = {1, 2, 3, 4, 5};
+	int const arry[] = { 1, 2, 3, 4, 5 };
 	daw::span<int const> a( arry );
 
 	return a.data( ) == std::data( arry ) and a.size( ) == std::size( arry ) and
@@ -106,7 +92,7 @@ constexpr bool construct_from_c_array_const( ) {
 static_assert( construct_from_c_array_const( ) );
 
 constexpr bool construct_from_c_array( ) {
-	int arry[] = {1, 2, 3, 4, 5};
+	int arry[] = { 1, 2, 3, 4, 5 };
 	daw::span<int> a( arry );
 
 	return a.data( ) == std::data( arry ) and a.size( ) == std::size( arry ) and
@@ -115,7 +101,7 @@ constexpr bool construct_from_c_array( ) {
 static_assert( construct_from_c_array( ) );
 
 constexpr bool construct_from_pointer_size_type_const( ) {
-	int const arry[5] = {1, 2, 3, 4, 5};
+	int const arry[5] = { 1, 2, 3, 4, 5 };
 	int const *ptr = arry;
 	daw::span<int const> a( ptr, 5 );
 
@@ -124,7 +110,7 @@ constexpr bool construct_from_pointer_size_type_const( ) {
 static_assert( construct_from_pointer_size_type_const( ) );
 
 constexpr bool construct_from_pointer_size_type( ) {
-	int arry[5] = {1, 2, 3, 4, 5};
+	int arry[5] = { 1, 2, 3, 4, 5 };
 	int *ptr = arry;
 	daw::span<int> a( ptr, 5 );
 
@@ -133,7 +119,7 @@ constexpr bool construct_from_pointer_size_type( ) {
 static_assert( construct_from_pointer_size_type( ) );
 
 constexpr bool construct_from_container_const( ) {
-	std::array<int const, 5> arry = {1, 2, 3, 4, 5};
+	std::array<int const, 5> arry = { 1, 2, 3, 4, 5 };
 	daw::span<int const> a( arry );
 
 	return a.data( ) == arry.data( ) and a.size( ) == arry.size( );
@@ -141,7 +127,7 @@ constexpr bool construct_from_container_const( ) {
 static_assert( construct_from_container_const( ) );
 
 constexpr bool construct_from_container( ) {
-	std::array<int, 5> arry = {1, 2, 3, 4, 5};
+	std::array<int, 5> arry = { 1, 2, 3, 4, 5 };
 	daw::span<int> a( arry );
 
 	return a.data( ) == arry.data( ) and a.size( ) == arry.size( );
@@ -149,21 +135,21 @@ constexpr bool construct_from_container( ) {
 static_assert( construct_from_container( ) );
 
 constexpr bool copy_non_const_span( ) {
-	daw::span<int> a{};
+	daw::span<int> a{ };
 	daw::span<int> b = a;
 	return b.data( ) == nullptr and b.empty( ) and b.size_bytes( ) == 0;
 }
 static_assert( copy_non_const_span( ) );
 
 constexpr bool copy_span_of_const( ) {
-	daw::span<int const> a{};
+	daw::span<int const> a{ };
 	daw::span<int const> b = a;
 	return b.data( ) == nullptr and b.empty( ) and b.size_bytes( ) == 0;
 }
 static_assert( copy_span_of_const( ) );
 
 constexpr bool copy_const_span_of_const( ) {
-	daw::span<int const> const a{};
+	daw::span<int const> const a{ };
 	daw::span<int const> b = a;
 	return b.data( ) == nullptr and b.empty( ) and b.size_bytes( ) == 0;
 }
@@ -173,8 +159,8 @@ static_assert( not daw::span<int const>::has_mutable_pointer );
 static_assert( daw::span<int>::has_mutable_pointer );
 
 constexpr bool copy_to_mutable( ) {
-	std::array<int, 5> arry = {1, 2, 3, 4, 5};
-	daw::span<int> const a{arry};
+	std::array<int, 5> arry = { 1, 2, 3, 4, 5 };
+	daw::span<int> const a{ arry };
 	auto b = a.copy( );
 	b[0] = 5;
 	(void)b[0];
@@ -183,7 +169,7 @@ constexpr bool copy_to_mutable( ) {
 static_assert( copy_to_mutable( ) );
 
 constexpr bool ctad_ptr_size_const( ) {
-	std::array<int const, 5> arry = {1, 2, 3, 4, 5};
+	std::array<int const, 5> arry = { 1, 2, 3, 4, 5 };
 	daw::span a( arry.data( ), arry.size( ) );
 
 	return not a.has_mutable_pointer and a.data( ) == arry.data( ) and
@@ -193,7 +179,7 @@ constexpr bool ctad_ptr_size_const( ) {
 static_assert( ctad_ptr_size_const( ) );
 
 constexpr bool ctad_ptr_size( ) {
-	std::array<int, 5> arry = {1, 2, 3, 4, 5};
+	std::array<int, 5> arry = { 1, 2, 3, 4, 5 };
 	daw::span a( arry.data( ), arry.size( ) );
 
 	return a.has_mutable_pointer and a.data( ) == arry.data( ) and
@@ -203,7 +189,7 @@ constexpr bool ctad_ptr_size( ) {
 static_assert( ctad_ptr_size( ) );
 
 constexpr bool ctad_ptr_ptr_const_01( ) {
-	std::array<int const, 5> arry = {1, 2, 3, 4, 5};
+	std::array<int const, 5> arry = { 1, 2, 3, 4, 5 };
 	int const *ptr1 = arry.data( );
 	int const *ptr2 = arry.data( ) + arry.size( );
 	daw::span a( ptr1, ptr2 );
@@ -215,7 +201,7 @@ constexpr bool ctad_ptr_ptr_const_01( ) {
 static_assert( ctad_ptr_ptr_const_01( ) );
 
 constexpr bool ctad_ptr_ptr_const_02( ) {
-	std::array<int, 5> arry = {1, 2, 3, 4, 5};
+	std::array<int, 5> arry = { 1, 2, 3, 4, 5 };
 	int const *ptr1 = arry.data( );
 	int *ptr2 = arry.data( ) + arry.size( );
 	daw::span a( ptr1, ptr2 );
@@ -227,7 +213,7 @@ constexpr bool ctad_ptr_ptr_const_02( ) {
 static_assert( ctad_ptr_ptr_const_02( ) );
 
 constexpr bool ctad_ptr_ptr_01( ) {
-	std::array<int, 5> arry = {1, 2, 3, 4, 5};
+	std::array<int, 5> arry = { 1, 2, 3, 4, 5 };
 	int *ptr1 = arry.data( );
 	int *ptr2 = arry.data( ) + arry.size( );
 	daw::span a( ptr1, ptr2 );
@@ -239,7 +225,7 @@ constexpr bool ctad_ptr_ptr_01( ) {
 static_assert( ctad_ptr_ptr_01( ) );
 
 constexpr bool ctad_ptr_ptr_02( ) {
-	std::array<int, 5> arry = {1, 2, 3, 4, 5};
+	std::array<int, 5> arry = { 1, 2, 3, 4, 5 };
 	int *ptr1 = arry.data( );
 	int const *ptr2 = arry.data( ) + arry.size( );
 	daw::span a( ptr1, ptr2 );

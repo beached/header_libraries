@@ -1,24 +1,10 @@
-// The MIT License (MIT)
+// Copyright (c) Darrell Wright
 //
-// Copyright (c) 2018-2020 Darrell Wright
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to
-// deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
-// sell copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// Official repository: https://github.com/beached/header_libraries
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
 
 #include "daw/daw_algorithm.h"
 #include "daw/daw_benchmark.h"
@@ -167,7 +153,7 @@ struct test_class_validator_t {
 
 namespace struct_good_001 {
 	using value_t = daw::validated<test_class_t, test_class_validator_t>;
-	static constexpr value_t a = {2};
+	static constexpr value_t a = { 2 };
 	static_assert( a.get( ).value == 2, "" );
 } // namespace struct_good_001
 
@@ -194,7 +180,7 @@ void struct_move_001( ) {
 constexpr bool operator_star_001( ) {
 	using value_t = daw::validated<test_class_t, test_class_validator_t>;
 
-	constexpr value_t a = {2};
+	constexpr value_t a = { 2 };
 	static_assert( a.get( ).value == 2, "" );
 
 	static_assert( ( *a ).calc( 2 ) == 4, "" );
@@ -202,7 +188,7 @@ constexpr bool operator_star_001( ) {
 
 	daw::expecting( ( *a ).calc( 5 ) != a_tmp.calc( 5 ) );
 
-	constexpr value_t const b = {4};
+	constexpr value_t const b = { 4 };
 	static_assert( b.get( ).value == 4, "" );
 	static_assert( ( *b ).calc( 2 ) == 8, "" );
 
@@ -214,12 +200,12 @@ static_assert( operator_star_001( ) );
 namespace operator_right_arrow_001 {
 	using value_t = daw::validated<test_class_t, test_class_validator_t>;
 
-	static constexpr value_t a = {2};
+	static constexpr value_t a = { 2 };
 	static_assert( a.get( ).value == 2, "" );
 
 	static_assert( a->calc( 2 ) == 4, "" );
 
-	static constexpr value_t const b = {4};
+	static constexpr value_t const b = { 4 };
 	static_assert( b.get( ).value == 4, "" );
 	static_assert( b->calc( 2 ) == 8, "" );
 
@@ -234,7 +220,7 @@ function_argument_test( daw::validated<int, int_validator_t<int, 5, 10>> arg ) {
 void function_argument_001( ) {
 	static_assert( function_argument_test( 6 ) == 12 );
 	daw::expecting_exception<std::out_of_range>(
-	  []( ) { function_argument_test( {15} ); } );
+	  []( ) { function_argument_test( { 15 } ); } );
 }
 
 struct throwing_validator {

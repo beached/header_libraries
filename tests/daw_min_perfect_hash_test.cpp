@@ -1,24 +1,10 @@
-// The MIT License (MIT)
+// Copyright (c) Darrell Wright
 //
-// Copyright (c) 2019-2020 Darrell Wright
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to
-// deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
-// sell copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// Official repository: https://github.com/beached/header_libraries
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
 
 #include "daw/cpp_17.h"
 #include "daw/daw_array.h"
@@ -59,9 +45,9 @@ struct HashMe {
 	template<typename Value>
 	constexpr size_t operator( )( Value const &v ) const {
 		if constexpr( std::is_integral_v<Value> ) {
-			return IntHasher{}( v );
+			return IntHasher{ }( v );
 		} else {
-			return daw::fnv1a_hash_t{}( v );
+			return daw::fnv1a_hash_t{ }( v );
 		}
 	}
 };
@@ -70,7 +56,7 @@ struct MetroHash {
 	template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
 	                                            std::nullptr_t> = nullptr>
 	constexpr size_t operator( )( Integer value, size_t seed = 0 ) const {
-		char buff[sizeof( Integer )]{};
+		char buff[sizeof( Integer )]{ };
 		for( size_t n = 0; n < sizeof( Integer ); ++n ) {
 			buff[n] = static_cast<char>(
 			  ( static_cast<uintmax_t>( value ) >> ( n * 8ULL ) ) & 0xFFULL );
@@ -105,19 +91,19 @@ bool validate( Hm &&hm, Arry const &ary ) {
 using namespace std::string_view_literals;
 constexpr bool test_001( ) {
 	auto ph = daw::make_perfect_hash_table<IntHasher, int, char const *>(
-	  {{100, "Continue"},
-	   {101, "Switching Protocols"},
-	   {102, "Processing"},
-	   {200, "OK"},
-	   {201, "Created"},
-	   {202, "Accepted"},
-	   {203, "Non-Authoritative Information"},
-	   {204, "No Content"},
-	   {205, "Reset Content"},
-	   {206, "Partial Content"},
-	   {207, "Multi-Status"},
-	   {208, "Already Reported"},
-	   {226, "IM Used"}} );
+	  { { 100, "Continue" },
+	    { 101, "Switching Protocols" },
+	    { 102, "Processing" },
+	    { 200, "OK" },
+	    { 201, "Created" },
+	    { 202, "Accepted" },
+	    { 203, "Non-Authoritative Information" },
+	    { 204, "No Content" },
+	    { 205, "Reset Content" },
+	    { 206, "Partial Content" },
+	    { 207, "Multi-Status" },
+	    { 208, "Already Reported" },
+	    { 226, "IM Used" } } );
 
 	daw::expecting( "Continue"sv, ph[100] );
 	daw::expecting( "Switching Protocols"sv, ph[101] );
@@ -148,18 +134,20 @@ constexpr uint32_t u32( char const ( &str )[5] ) {
 }
 
 inline constexpr std::pair<uint32_t, bool> values[16]{
-  {u32( "INFO" ), true}, {u32( "CONN" ), true}, {u32( "PUB " ), true},
-  {u32( "SUB " ), true}, {u32( "UNSU" ), true}, {u32( "PING" ), true},
-  {u32( "PONG" ), true}, {u32( "+OK " ), true}, {u32( "-ERR" ), true},
-  {u32( "AUTH" ), true}, {u32( "PUSH" ), true}, {u32( "ADD " ), true},
-  {u32( "DECR" ), true}, {u32( "SET " ), true}, {u32( "GET " ), true},
-  {u32( "QUIT" ), true}};
+  { u32( "INFO" ), true }, { u32( "CONN" ), true }, { u32( "PUB " ), true },
+  { u32( "SUB " ), true }, { u32( "UNSU" ), true }, { u32( "PING" ), true },
+  { u32( "PONG" ), true }, { u32( "+OK " ), true }, { u32( "-ERR" ), true },
+  { u32( "AUTH" ), true }, { u32( "PUSH" ), true }, { u32( "ADD " ), true },
+  { u32( "DECR" ), true }, { u32( "SET " ), true }, { u32( "GET " ), true },
+  { u32( "QUIT" ), true } };
 
 inline constexpr std::pair<std::string_view, bool> values2[16]{
-  {"INFO"sv, true}, {"CONN"sv, true}, {"PUB "sv, true}, {"SUB "sv, true},
-  {"UNSU"sv, true}, {"PING"sv, true}, {"PONG"sv, true}, {"+OK "sv, true},
-  {"-ERR"sv, true}, {"AUTH"sv, true}, {"PUSH"sv, true}, {"ADD "sv, true},
-  {"DECR"sv, true}, {"SET "sv, true}, {"GET "sv, true}, {"QUIT"sv, true}};
+  { "INFO"sv, true }, { "CONN"sv, true }, { "PUB "sv, true },
+  { "SUB "sv, true }, { "UNSU"sv, true }, { "PING"sv, true },
+  { "PONG"sv, true }, { "+OK "sv, true }, { "-ERR"sv, true },
+  { "AUTH"sv, true }, { "PUSH"sv, true }, { "ADD "sv, true },
+  { "DECR"sv, true }, { "SET "sv, true }, { "GET "sv, true },
+  { "QUIT"sv, true } };
 
 template<size_t Runs>
 void test_min_perf_hash( ) {
@@ -263,74 +251,74 @@ void test_unorderd_map3( ) {
 template<typename T0, typename T1, size_t N, size_t... Is>
 constexpr auto swap_pairs_impl( std::array<std::pair<T0, T1>, N> &&arry,
                                 std::index_sequence<Is...> ) {
-	return std::array<std::pair<T1, T0>, N>{std::pair<T1, T0>{
-	  std::move( arry[Is] ).second, std::move( arry[Is] ).first}...};
+	return std::array<std::pair<T1, T0>, N>{ std::pair<T1, T0>{
+	  std::move( arry[Is] ).second, std::move( arry[Is] ).first }... };
 }
 
 template<typename T0, typename T1, size_t N>
 constexpr auto swap_pairs( std::array<std::pair<T0, T1>, N> &&arry ) {
-	return swap_pairs_impl( std::move( arry ), std::make_index_sequence<N>{} );
+	return swap_pairs_impl( std::move( arry ), std::make_index_sequence<N>{ } );
 }
 
 inline constexpr auto http_response_codes =
   swap_pairs( daw::make_array<std::pair<uint16_t, std::string_view>>(
-    {{100, "Continue"},
-     {101, "Switching Protocols"},
-     {102, "Processing"},
-     {200, "OK"},
-     {201, "Created"},
-     {202, "Accepted"},
-     {203, "Non-Authoritative Information"},
-     {204, "No Content"},
-     {205, "Reset Content"},
-     {206, "Partial Content"},
-     {207, "Multi-Status"},
-     {208, "Already Reported"},
-     {226, "IM Used"},
-     {300, "Multiple Choices"},
-     {301, "Moved Permanently"},
-     {302, "Found"},
-     {303, "See Other"},
-     {304, "Not Modified"},
-     {305, "Use Proxy"},
-     {307, "Temporary Redirect"},
-     {308, "Permanent Redirect"},
-     {400, "Bad Request"},
-     {401, "Unauthorized"},
-     {402, "Payment Required"},
-     {403, "Forbidden"},
-     {404, "Not Found"},
-     {405, "Method Not Allowed"},
-     {406, "Not Acceptable"},
-     {407, "Proxy Authentication Required"},
-     {408, "Request Timeout"},
-     {409, "Conflict"},
-     {410, "Gone"},
-     {411, "Length Required"},
-     {412, "Precondition Failed"},
-     {413, "Payload Too Large"},
-     {414, "URI Too Long"},
-     {415, "Unsupported Media Type"},
-     {416, "Range Not Satisfiable"},
-     {417, "Expectation Failed"},
-     {422, "Unprocessable Entity"},
-     {423, "Locked"},
-     {424, "Failed Dependency"},
-     {426, "Upgrade Required"},
-     {428, "Precondition Required"},
-     {429, "Too Many Requests"},
-     {431, "Request Header Fields Too Large"},
-     {500, "Internal Server Error"},
-     {501, "Not Implemented"},
-     {502, "Bad Gateway"},
-     {503, "Service Unavailable"},
-     {504, "Gateway Timeout"},
-     {505, "HTTP Version Not Supported"},
-     {506, "Variant Also Negotiates"},
-     {507, "Insufficient Storage"},
-     {508, "Loop Detected"},
-     {510, "Not Extended"},
-     {511, "Network Authentication Required"}} ) );
+    { { 100, "Continue" },
+      { 101, "Switching Protocols" },
+      { 102, "Processing" },
+      { 200, "OK" },
+      { 201, "Created" },
+      { 202, "Accepted" },
+      { 203, "Non-Authoritative Information" },
+      { 204, "No Content" },
+      { 205, "Reset Content" },
+      { 206, "Partial Content" },
+      { 207, "Multi-Status" },
+      { 208, "Already Reported" },
+      { 226, "IM Used" },
+      { 300, "Multiple Choices" },
+      { 301, "Moved Permanently" },
+      { 302, "Found" },
+      { 303, "See Other" },
+      { 304, "Not Modified" },
+      { 305, "Use Proxy" },
+      { 307, "Temporary Redirect" },
+      { 308, "Permanent Redirect" },
+      { 400, "Bad Request" },
+      { 401, "Unauthorized" },
+      { 402, "Payment Required" },
+      { 403, "Forbidden" },
+      { 404, "Not Found" },
+      { 405, "Method Not Allowed" },
+      { 406, "Not Acceptable" },
+      { 407, "Proxy Authentication Required" },
+      { 408, "Request Timeout" },
+      { 409, "Conflict" },
+      { 410, "Gone" },
+      { 411, "Length Required" },
+      { 412, "Precondition Failed" },
+      { 413, "Payload Too Large" },
+      { 414, "URI Too Long" },
+      { 415, "Unsupported Media Type" },
+      { 416, "Range Not Satisfiable" },
+      { 417, "Expectation Failed" },
+      { 422, "Unprocessable Entity" },
+      { 423, "Locked" },
+      { 424, "Failed Dependency" },
+      { 426, "Upgrade Required" },
+      { 428, "Precondition Required" },
+      { 429, "Too Many Requests" },
+      { 431, "Request Header Fields Too Large" },
+      { 500, "Internal Server Error" },
+      { 501, "Not Implemented" },
+      { 502, "Bad Gateway" },
+      { 503, "Service Unavailable" },
+      { 504, "Gateway Timeout" },
+      { 505, "HTTP Version Not Supported" },
+      { 506, "Variant Also Negotiates" },
+      { 507, "Insufficient Storage" },
+      { 508, "Loop Detected" },
+      { 510, "Not Extended" },
+      { 511, "Network Authentication Required" } } ) );
 
 template<size_t Runs>
 void test_min_perf_hash3( ) {

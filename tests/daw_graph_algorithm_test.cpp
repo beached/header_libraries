@@ -1,25 +1,10 @@
-
-// The MIT License (MIT)
+// Copyright (c) Darrell Wright
 //
-// Copyright (c) 2018-2020 Darrell Wright
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to
-// deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
-// sell copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// Official repository: https://github.com/beached/header_libraries
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
 
 #include "daw/daw_algorithm.h"
 #include "daw/daw_benchmark.h"
@@ -33,7 +18,7 @@
 #include <vector>
 
 void test_topoligical_walk_001( daw::graph_t<char> &graph ) {
-	std::string result{};
+	std::string result{ };
 	daw::topological_sorted_walk(
 	  graph, [&result]( auto const &node ) { result.push_back( node.value( ) ); },
 	  []( auto const &lhs, auto const &rhs ) {
@@ -44,7 +29,7 @@ void test_topoligical_walk_001( daw::graph_t<char> &graph ) {
 }
 
 void test_topoligical_walk_002( daw::graph_t<char> const &graph ) {
-	std::string result{};
+	std::string result{ };
 	daw::topological_sorted_walk(
 	  graph, [&result]( auto const &node ) { result.push_back( node.value( ) ); },
 	  []( auto const &lhs, auto const &rhs ) {
@@ -55,7 +40,7 @@ void test_topoligical_walk_002( daw::graph_t<char> const &graph ) {
 }
 
 void test_topoligical_walk_003( ) {
-	daw::graph_t<char> graph{};
+	daw::graph_t<char> graph{ };
 	auto n0 = graph.add_node( '0' );
 	auto n1 = graph.add_node( '1' );
 	auto n2 = graph.add_node( '2' );
@@ -69,7 +54,7 @@ void test_topoligical_walk_003( ) {
 	graph.add_directed_edge( n5, n0 );
 	graph.add_directed_edge( n5, n2 );
 
-	std::string result{};
+	std::string result{ };
 	daw::topological_sorted_walk(
 	  graph, [&result]( auto const &node ) { result.push_back( node.value( ) ); },
 	  []( auto const &lhs, auto const &rhs ) {
@@ -80,7 +65,7 @@ void test_topoligical_walk_003( ) {
 }
 
 void test_topoligical_range_001( ) {
-	daw::graph_t<char> graph{};
+	daw::graph_t<char> graph{ };
 	auto n0 = graph.add_node( '0' );
 	auto n1 = graph.add_node( '1' );
 	auto n2 = graph.add_node( '2' );
@@ -94,7 +79,7 @@ void test_topoligical_range_001( ) {
 	graph.add_directed_edge( n5, n0 );
 	graph.add_directed_edge( n5, n2 );
 
-	std::string result{};
+	std::string result{ };
 	auto rng = daw::make_topological_sorted_range(
 	  graph, []( auto const &lhs, auto const &rhs ) {
 		  return lhs.value( ) < rhs.value( );
@@ -108,32 +93,35 @@ void test_topoligical_range_001( ) {
 
 void test_bfs_walk_001( daw::graph_t<char> const &graph,
                         daw::node_id_t root_id ) {
-	std::string result{};
-	daw::bfs_walk( graph, root_id, [&result]( auto &&node ) {
-		result.push_back( node.value( ) );
-	}, std::less<void>{} );
+	std::string result{ };
+	daw::bfs_walk(
+	  graph, root_id,
+	  [&result]( auto &&node ) { result.push_back( node.value( ) ); },
+	  std::less<void>{ } );
 	daw::expecting( "CAFBDEE", result );
 }
 
 void test_dfs_walk_001( daw::graph_t<char> graph, daw::node_id_t root_id ) {
-	std::string result{};
-	daw::dfs_walk( graph, root_id, [&result]( auto &&node ) {
-		result.push_back( node.value( ) );
-	}, std::less<void>{} );
+	std::string result{ };
+	daw::dfs_walk(
+	  graph, root_id,
+	  [&result]( auto &&node ) { result.push_back( node.value( ) ); },
+	  std::less<void>{ } );
 	daw::expecting( "CABEDF", result );
 }
 
 void test_dfs_walk_002( daw::graph_t<char> const &graph,
                         daw::node_id_t root_id ) {
-	std::string result{};
-	daw::dfs_walk( graph, root_id, [&result]( auto &&node ) {
-		result.push_back( node.value( ) ); },
+	std::string result{ };
+	daw::dfs_walk(
+	  graph, root_id,
+	  [&result]( auto &&node ) { result.push_back( node.value( ) ); },
 	  std::less<void>{ } );
 	daw::expecting( "CABEDF", result );
 }
 
 void test_mst_001( daw::graph_t<char> graph, daw::node_id_t ) {
-	std::string result{};
+	std::string result{ };
 	daw::mst( graph );
 
 	daw::topological_sorted_walk(
@@ -145,7 +133,7 @@ void test_mst_001( daw::graph_t<char> graph, daw::node_id_t ) {
 }
 
 int main( ) {
-	daw::graph_t<char> graph{};
+	daw::graph_t<char> graph{ };
 	auto nA = graph.add_node( 'A' );
 	auto nB = graph.add_node( 'B' );
 	auto nC = graph.add_node( 'C' );
@@ -171,5 +159,5 @@ int main( ) {
 	// TODO: failing
 	test_dfs_walk_001( graph, nC );
 	test_dfs_walk_002( graph, nC );
-	//test_mst_001( graph, nC );
+	// test_mst_001( graph, nC );
 }

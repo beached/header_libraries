@@ -1,24 +1,10 @@
-// The MIT License (MIT)
+// Copyright (c) Darrell Wright
 //
-// Copyright (c) 2014-2020 Darrell Wright
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to
-// deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
-// sell copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// Official repository: https://github.com/beached/header_libraries
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
 
 #include "daw/cpp_17.h"
 #include "daw/daw_benchmark.h"
@@ -231,7 +217,7 @@ namespace daw_traits_has_substr_member {
 			return true;
 		}
 	};
-	constexpr T t = {5};
+	constexpr T t = { 5 };
 	static_assert( t.substr( 5, 5 ), "" );
 	static_assert( daw::traits::has_substr_member_v<T>,
 	               "4. struct T should have a substr method" );
@@ -575,14 +561,14 @@ namespace is_output_iterator_002 {
 } // namespace is_output_iterator_002
 
 namespace is_output_iterator_003 {
-	using iter_t = decltype( std::ostream_iterator<int>{std::cout} );
+	using iter_t = decltype( std::ostream_iterator<int>{ std::cout } );
 	constexpr auto const test_value =
 	  daw::traits::is_output_iterator_v<iter_t, int>;
 	static_assert( test_value, "" );
 } // namespace is_output_iterator_003
 
 namespace is_output_iterator_004 {
-	using iter_t = decltype( std::istream_iterator<int>{std::cin} );
+	using iter_t = decltype( std::istream_iterator<int>{ std::cin } );
 	static_assert( !daw::traits::is_output_iterator_v<iter_t, int>, "" );
 } // namespace is_output_iterator_004
 
@@ -607,12 +593,12 @@ namespace is_input_iterator_002 {
 } // namespace is_input_iterator_002
 
 namespace is_input_iterator_003 {
-	using iter_t = decltype( std::ostream_iterator<int>{std::cout} );
+	using iter_t = decltype( std::ostream_iterator<int>{ std::cout } );
 	static_assert( !daw::traits::is_input_iterator_v<iter_t, int>, "" );
 } // namespace is_input_iterator_003
 
 namespace is_input_iterator_004 {
-	using iter_t = decltype( std::istream_iterator<int>{std::cin} );
+	using iter_t = decltype( std::istream_iterator<int>{ std::cin } );
 	constexpr auto const test_value =
 	  daw::traits::is_input_iterator_v<iter_t, int>;
 	static_assert( test_value, "" );

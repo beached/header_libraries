@@ -1,24 +1,10 @@
-// The MIT License (MIT)
+// Copyright (c) Darrell Wright
 //
-// Copyright (c) 2014-2020 Darrell Wright
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to
-// deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
-// sell copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// Official repository: https://github.com/beached/header_libraries
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
 
 #include "daw/daw_benchmark.h"
 #include "daw/daw_expected.h"
@@ -36,7 +22,7 @@ daw::expected_t<int> divide( int v ) {
 		if( 0 == v ) {
 			throw std::runtime_error( "division by zero" );
 		}
-		return daw::expected_t<int>{4 / v};
+		return daw::expected_t<int>{ 4 / v };
 	} catch( ... ) { return std::current_exception( ); }
 }
 
@@ -47,10 +33,10 @@ void daw_expected_test_01( ) {
 	          << sizeof( daw::expected_t<int> );
 	std::cout << " sizeof( daw::expected_t<size_t> ) -> "
 	          << sizeof( daw::expected_t<size_t> ) << '\n';
-	daw::expected_t<int> a{};
-	daw::expected_t<int> b{1};
-	daw::expected_t<int> c{2};
-	daw::expected_t<int> d{1};
+	daw::expected_t<int> a{ };
+	daw::expected_t<int> b{ 1 };
+	daw::expected_t<int> c{ 2 };
+	daw::expected_t<int> d{ 1 };
 	daw::expected_t<void> e;
 	auto X = []( int x ) {
 		std::cout << "Hello\n";
@@ -94,11 +80,11 @@ struct L {
 void daw_expected_test_02( ) {
 	auto f = daw::expected_t<void>( []( ) { std::cout << "Hello\n"; } );
 
-	auto l = daw::expected_t<L>( []( ) { return L{5}; }( ) );
+	auto l = daw::expected_t<L>( []( ) { return L{ 5 }; }( ) );
 	auto a = l->a == 5;
 	daw::expecting( a );
 
-	auto m = daw::expected_from_code( []( ) -> L { return L{6}; } );
+	auto m = daw::expected_from_code( []( ) -> L { return L{ 6 }; } );
 	auto ma = m->a == 6;
 	daw::expecting( ma );
 }
@@ -127,7 +113,7 @@ void daw_expected_test_copy_001( ) {
 void daw_expected_test_copy_002( ) {
 	auto tmp = daw::expected_t<std::string>( );
 	try {
-		throw std::exception{};
+		throw std::exception{ };
 	} catch( ... ) { tmp.set_exception( ); }
 	daw::expecting( !tmp.has_value( ) );
 	daw::expecting( tmp.has_exception( ) );
@@ -182,7 +168,7 @@ void daw_expected_test_move_construction_001( ) {
 void daw_expected_test_move_assignment_002( ) {
 	auto tmp = daw::expected_t<std::string>( );
 	try {
-		throw std::exception{};
+		throw std::exception{ };
 	} catch( ... ) { tmp.set_exception( ); }
 	daw::expecting( !tmp.has_value( ) );
 	daw::expecting( tmp.has_exception( ) );
@@ -200,7 +186,7 @@ void daw_expected_test_move_assignment_002( ) {
 void daw_expected_test_move_construction_002( ) {
 	auto tmp = daw::expected_t<std::string>( );
 	try {
-		throw std::exception{};
+		throw std::exception{ };
 	} catch( ... ) { tmp.set_exception( ); }
 	daw::expecting( !tmp.has_value( ) );
 	daw::expecting( tmp.has_exception( ) );

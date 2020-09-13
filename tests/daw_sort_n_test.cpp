@@ -1,24 +1,10 @@
-// The MIT License (MIT)
+// Copyright (c) Darrell Wright
 //
-// Copyright (c) 2018-2020 Darrell Wright
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files( the "Software" ), to
-// deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and / or
-// sell copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// Official repository: https://github.com/beached/header_libraries
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
 
 #include "daw/daw_algorithm.h"
 #include "daw/daw_benchmark.h"
@@ -944,7 +930,7 @@
   20855, 44788, 55612,  89021, 37767, 92990, 39772, 14677, 11130, 44760, 66439,
   88427, 29873, 91,     11481, 8950,  76595, 6154,  95342, 13940, 47266, 11432,
   95582, 2500,  5822,   67530, 78654, 54910, 69369, 3197,  75584, 44728, 18529,
-  76602};
+  76602 };
 
 void sort_n_test_001( ) {
 #if defined( DEBUG ) or not defined( NDEBUG )
@@ -990,10 +976,10 @@ void sort_n_test_001( ) {
 		                                  } );
 	}
 	static_assert( []( ) {
-		std::array<int, 32> a = {830, 34,  8,   159, 334, 690, 85,  27,
-		                         870, 540, 62,  32,  970, 395, 311, 758,
-		                         192, 503, 738, 42,  74,  527, 788, 662,
-		                         721, 556, 513, 213, 376, 647, 37,  83};
+		std::array<int, 32> a = { 830, 34,  8,   159, 334, 690, 85,  27,
+		                          870, 540, 62,  32,  970, 395, 311, 758,
+		                          192, 503, 738, 42,  74,  527, 788, 662,
+		                          721, 556, 513, 213, 376, 647, 37,  83 };
 		daw::expecting( !daw::algorithm::is_sorted( begin( a ), end( a ) ) );
 		daw::sort( std::begin( a ), std::end( a ) );
 		return daw::algorithm::is_sorted( begin( a ), end( a ) );
@@ -1071,7 +1057,7 @@ void sort_n_test_001( ) {
 				std::sort(
 				  std::next( std::begin( result ), last_n ),
 				  std::next( std::begin( result ), static_cast<ptrdiff_t>( n ) ),
-				  std::greater<>{} );
+				  std::greater<>{ } );
 				last_n = static_cast<ptrdiff_t>( n );
 			}
 			return result;
@@ -1116,7 +1102,7 @@ void sort_n_test_001( ) {
 	{
 		auto const random_lots = []( ) {
 			auto result = daw::make_random_data<size_t>( DATASIZE );
-			std::sort( std::begin( result ), std::end( result ), std::greater<>{} );
+			std::sort( std::begin( result ), std::end( result ), std::greater<>{ } );
 			return result;
 		}( );
 		daw::bench_n_test<NUMRUNS / 1000, '\t'>(
@@ -1137,7 +1123,7 @@ void sort_n_test_001( ) {
 	{
 #ifdef BIGCONSTEXPR
 		static_assert( []( ) {
-			std::array<int, std::size( big_arry )> out_test{};
+			std::array<int, std::size( big_arry )> out_test{ };
 			daw::sort_to( std::cbegin( big_arry ), std::cend( big_arry ),
 			              out_test.data( ) );
 			return daw::algorithm::is_sorted( std::cbegin( out_test ),
@@ -1193,11 +1179,11 @@ void sort_n_test_001( ) {
 	{
 #ifdef BIGCONSTEXPR
 		static_assert( []( ) constexpr {
-			std::array<int, std::size( big_arry )> out_test{};
+			std::array<int, std::size( big_arry )> out_test{ };
 			daw::sort_to( std::cbegin( big_arry ), std::cend( big_arry ),
-			              out_test.data( ), std::greater<>{} );
+			              out_test.data( ), std::greater<>{ } );
 			return daw::algorithm::is_sorted(
-			  std::cbegin( out_test ), std::cend( out_test ), std::greater<>{} );
+			  std::cbegin( out_test ), std::cend( out_test ), std::greater<>{ } );
 		}( ) );
 #endif
 		auto const random_lots = daw::make_random_data<size_t>( 10'000 );
@@ -1206,7 +1192,7 @@ void sort_n_test_001( ) {
 		  []( auto container ) {
 			  size_t values[10'000];
 			  daw::sort_to( std::begin( container ), std::end( container ),
-			                std::begin( values ), std::greater<>{} );
+			                std::begin( values ), std::greater<>{ } );
 			  daw::do_not_optimize( container );
 			  daw::do_not_optimize( values );
 		  },
@@ -1216,7 +1202,8 @@ void sort_n_test_001( ) {
 		  []( auto container ) {
 			  std::vector<size_t> values( std::begin( container ),
 			                              std::end( container ) );
-			  daw::sort( std::begin( values ), std::end( values ), std::greater<>{} );
+			  daw::sort( std::begin( values ), std::end( values ),
+			             std::greater<>{ } );
 			  daw::do_not_optimize( container );
 			  daw::do_not_optimize( values );
 		  },
@@ -1229,7 +1216,7 @@ void sort_n_test_001( ) {
 		  []( auto container ) {
 			  size_t values[DATASIZE];
 			  daw::sort_to( std::begin( container ), std::end( container ),
-			                std::begin( values ), std::greater<>{} );
+			                std::begin( values ), std::greater<>{ } );
 			  daw::do_not_optimize( container );
 			  daw::do_not_optimize( values );
 		  },
@@ -1239,7 +1226,8 @@ void sort_n_test_001( ) {
 		  []( auto container ) {
 			  std::vector<size_t> values( std::begin( container ),
 			                              std::end( container ) );
-			  daw::sort( std::begin( values ), std::end( values ), std::greater<>{} );
+			  daw::sort( std::begin( values ), std::end( values ),
+			             std::greater<>{ } );
 			  daw::do_not_optimize( container );
 			  daw::do_not_optimize( values );
 		  },
