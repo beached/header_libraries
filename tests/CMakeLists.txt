@@ -1,9 +1,9 @@
 # Copyright (c) Darrell Wright
 #
 # Distributed under the Boost Software License, Version 1.0. (See accompanying
-# file LICENSE or copy at http:__www.boost.org_LICENSE_1_0.txt)
+# file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 #
-# Official repository: https:__github.com_beached_header_libraries
+# Official repository: https://github.com/beached/header_libraries
 #
 
 set( TEST_SOURCES
@@ -133,38 +133,31 @@ find_package( Threads REQUIRED )
 # Allows building all in some IDE's
 add_custom_target(full)
 
-if( MSVC AND NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" )
-	add_definitions(-DNOMINMAX -DD_WIN32_WINNT=0x0601)
-	add_compile_options("/permissive-")
-endif()
+add_library(daw_test INTERFACE)
+target_link_libraries(daw_test INTERFACE daw::header_libraries ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT})
+target_compile_options(daw_test INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/permissive->)
 
-if( NOT MSVC ) 
-	foreach( CUR_TEST ${NOT_MSVC_TEST_SOURCES} )
-		string( REPLACE ".cpp" "" CUR_TEST_NAME ${CUR_TEST} )
-		add_executable( ${CUR_TEST_NAME} ${CUR_TEST} )
-		target_include_directories(${CUR_TEST_NAME} PRIVATE ../include)
-		target_link_libraries( ${CUR_TEST_NAME} ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
-		add_test( ${CUR_TEST_NAME}_test ${CUR_TEST_NAME} )
-		add_dependencies( full ${CUR_TEST_NAME} )
-	endforeach( CUR_TEST ${NOT_MSVC_TEST_SOURCES} )
-endif( )
+set(all_tests ${TEST_SOURCES})
 
-foreach( CUR_TEST ${TEST_SOURCES} )
-		string( REPLACE ".cpp" "" CUR_TEST_NAME ${CUR_TEST} )
-		add_executable( ${CUR_TEST_NAME} ${CUR_TEST} )
-		target_include_directories(${CUR_TEST_NAME} PRIVATE ../include)
-		target_link_libraries( ${CUR_TEST_NAME} ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
-		add_test( ${CUR_TEST_NAME}_test ${CUR_TEST_NAME} )
-		add_dependencies( full ${CUR_TEST_NAME} )
-endforeach( CUR_TEST ${TEST_SOURCES} )
+if( NOT CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    list(APPEND all_tests ${NOT_MSVC_TEST_SOURCES})
+endif ()
 
-option( DAW_ENABLE_DEV_TESTING "Build unit tests still in development"  OFF )
-if( DAW_ENABLE_DEV_TESTING )
-	foreach( CUR_TEST ${DEV_TEST_SOURCES} )
-			string( REPLACE ".cpp" "" CUR_TEST_NAME ${CUR_TEST} )
-			add_executable( ${CUR_TEST_NAME} ${CUR_TEST} )
-			target_include_directories(${CUR_TEST_NAME} PRIVATE ../include)
-			target_link_libraries( ${CUR_TEST_NAME} ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
-			add_dependencies( full ${CUR_TEST_NAME} )
-	endforeach( CUR_TEST ${TEST_SOURCES} )
-endif( )
+foreach (CUR_TEST IN LISTS all_tests)
+    string(REPLACE ".cpp" "" CUR_TEST_NAME ${CUR_TEST})
+    add_executable(${CUR_TEST_NAME} ${CUR_TEST})
+    target_link_libraries(${CUR_TEST_NAME} PRIVATE daw_test)
+    add_test(${CUR_TEST_NAME}_test ${CUR_TEST_NAME})
+    add_dependencies( full ${CUR_TEST_NAME} )
+endforeach ()
+
+option(DAW_ENABLE_DEV_TESTING "Build unit tests still in development" OFF)
+if (DAW_ENABLE_DEV_TESTING)
+    foreach (CUR_TEST IN LISTS DEV_TEST_SOURCES)
+        string(REPLACE ".cpp" "" CUR_TEST_NAME ${CUR_TEST})
+        add_executable(${CUR_TEST_NAME} ${CUR_TEST})
+        target_link_libraries(${CUR_TEST_NAME} PRIVATE daw_test)
+        add_dependencies( full ${CUR_TEST_NAME} )
+    endforeach ()
+endif ()
+
