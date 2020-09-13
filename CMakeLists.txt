@@ -13,8 +13,6 @@ project( "daw_header_libraries"
 	HOMEPAGE_URL "http://github.com/beached/header_libraries"
 	LANGUAGES C CXX)
 
-find_package( Threads )
-
 option( DAW_ENABLE_TESTING "Build unit tests"  OFF )
 
 if( DAW_ENABLE_TESTING )
