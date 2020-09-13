@@ -238,9 +238,16 @@ namespace daw {
 		  benchmark_impl::second_duration( total_finish - total_start ).count( ) -
 		  static_cast<double>( Runs ) * base_time;
 
-		auto avg_time =
-		  Runs >= 10 ? ( total_time - max_time ) / static_cast<double>( Runs - 1 )
-		             : total_time / static_cast<double>( Runs );
+		auto avg_time = [&] {
+			if constexpr( Runs >= 10 ) {
+				return ( total_time - max_time ) / static_cast<double>( Runs - 1 );
+			} else if constexpr( Runs > 1 ) {
+				return total_time / static_cast<double>( Runs );
+			} else /* Runs == 1 */ {
+				return (total_time - max_time)/1.0;
+			}
+		}( );
+
 		avg_time -= base_time;
 		std::cout << title << delem << "	runs: " << Runs << delem
 		          << "	total: " << utility::format_seconds( total_time, 2 )
@@ -381,12 +388,12 @@ namespace daw {
 		  static_cast<double>( Runs ) * base_time;
 
 		auto avg_time = [&] {
-			if constexpr( Runs == 1 ) {
-				return total_time - max_time;
-			} else if constexpr( Runs >= 10 ) {
-				return total_time / static_cast<double>( Runs );
-			} else {
+			if constexpr( Runs >= 10 ) {
 				return ( total_time - max_time ) / static_cast<double>( Runs - 1 );
+			} else if constexpr( Runs > 1 ) {
+				return total_time / static_cast<double>( Runs );
+			} else /* Runs == 1 */ {
+				return (total_time - max_time)/1.0;
 			}
 		}( );
 		avg_time -= base_time;
