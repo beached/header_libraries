@@ -2433,7 +2433,7 @@ namespace daw {
 	constexpr UInt16 rotate_left( UInt16 value ) {
 		static_assert( bits <= 16 );
 		auto tmp = static_cast<unsigned>( value );
-		return to_uint16(( value << bits ) | ( value >> ( 16U - bits ) ));
+		return to_uint16(( tmp << bits ) | ( tmp >> ( 16U - bits ) ));
 	}
 
 	constexpr UInt16 rotate_left( UInt16 value, unsigned bits ) {
@@ -2443,11 +2443,13 @@ namespace daw {
 	template<unsigned bits>
 	constexpr UInt16 rotate_right( UInt16 value ) {
 		static_assert( bits <= 16 );
-		return ( value >> bits ) | ( value << ( 16U - bits ) );
+		auto tmp = static_cast<unsigned>( value );
+		return static_cast<UInt16>(( tmp >> bits ) | ( tmp << ( 16U - bits ) ));
 	}
 
 	constexpr UInt16 rotate_right( UInt16 value, unsigned bits ) {
-		return ( value >> bits ) | ( value << ( 16U - bits ) );
+		auto tmp = static_cast<unsigned>( value );
+		return static_cast<UInt16>(( tmp >> bits ) | ( tmp << ( 16U - bits ) ));
 	}
 
 	constexpr UInt8 &operator+=( UInt8 &lhs, UInt8 rhs ) noexcept {
