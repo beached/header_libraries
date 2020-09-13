@@ -24,6 +24,7 @@
 
 #include <limits>
 
+#include "daw_algorithm.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_move.h"
 
@@ -123,7 +124,7 @@ namespace daw {
 				auto const hash = hash_fn( item.first );
 				auto const pos = find_impl( hash );
 				m_values[pos].hash_value = hash;
-				m_values[pos].value = daw::move( item.second );
+				m_values[pos].value = item.second;
 			}
 		}
 

@@ -5,7 +5,7 @@ cd build
 
 echo "#################################"
 echo "Configure Cmake"
-cmake -DCMAKE_BUILD_TYPE=Debug ..
+cmake -DCMAKE_BUILD_TYPE=Debug .. -DDAW_ALLOW_TESTING=On
 
 echo "#################################"
 echo "Starting full build"

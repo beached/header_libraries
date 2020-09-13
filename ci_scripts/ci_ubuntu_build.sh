@@ -5,7 +5,7 @@ cd build
 
 echo "#################################"
 echo "Configure Cmake"
-CC=clang-9 CXX=clang++-9 CXXFLAGS=-stdlib=libc++ cmake -DCMAKE_BUILD_TYPE=Debug ..
+CC=clang-9 CXX=clang++-9 CXXFLAGS=-stdlib=libc++ cmake -DCMAKE_BUILD_TYPE=Debug -DDAW_ALLOW_TESTING=On ..
 
 echo "#################################"
 echo "Starting full build"

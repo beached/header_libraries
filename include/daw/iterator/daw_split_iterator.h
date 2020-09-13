@@ -109,7 +109,7 @@ namespace daw {
 	struct split_it<
 	  Iterator, Splitter,
 	  std::enable_if_t<
-	    !is_same_v<char, typename std::iterator_traits<Iterator>::value_type>>> {
+	    not std::is_same_v<char, typename std::iterator_traits<Iterator>::value_type>>> {
 
 		using CharT = typename std::iterator_traits<Iterator>::value_type;
 		static_assert( daw::traits::is_unary_predicate_v<Splitter, CharT>,
@@ -340,7 +340,7 @@ namespace daw {
 	struct split_it<
 	  Iterator, Splitter,
 	  std::enable_if_t<
-	    is_same_v<char, typename std::iterator_traits<Iterator>::value_type>>> {
+	    std::is_same_v<char, typename std::iterator_traits<Iterator>::value_type>>> {
 
 		using CharT = char;
 		static_assert( daw::traits::is_unary_predicate_v<Splitter, CharT>,

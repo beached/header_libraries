@@ -26,6 +26,7 @@
 #include "daw_bounded_array.h"
 #include "daw_math.h"
 #include "daw_move.h"
+#include "daw_overload.h"
 #include "daw_utility.h"
 
 #include <cstddef>
