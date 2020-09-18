@@ -1071,4 +1071,7 @@ namespace daw {
 		}
 		return static_cast<T>( std::forward<U>( v ) );
 	}
+
+	template<bool Bool_, typename If_, typename Then_>
+	using if_t = typename std::conditional<Bool_, If_, Then_>::type;
 } // namespace daw
