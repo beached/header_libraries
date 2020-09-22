@@ -9,7 +9,7 @@
 cmake_minimum_required( VERSION 3.10 ) 
 
 project( "header_libraries"
-	VERSION "1.0.1" 
+	VERSION "1.0.2" 
 	DESCRIPTION "Various headers"
 	HOMEPAGE_URL "https://github.com/beached/header_libraries"
 	LANGUAGES C CXX)
@@ -71,5 +71,5 @@ install( FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
 	"${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
 	DESTINATION ${header_libraries_INSTALL_CMAKEDIR}$ )
 
-install( DIRECTORY ${PROJECT_SOURCE_DIR}/include DESTINATION include)
+install( DIRECTORY ${PROJECT_SOURCE_DIR}/include/daw DESTINATION include)
 			
