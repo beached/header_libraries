@@ -13,6 +13,8 @@
 #include "daw_string_view.h"
 #include "daw_traits.h"
 
+#include <ciso646>
+
 /// formatter will directly substitute variables into a string
 /// Uses a format like "{0} {1} {0}" which is a zero index array
 /// of the arguments

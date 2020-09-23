@@ -8,14 +8,6 @@
 
 #pragma once
 
-#include <cstddef>
-#include <functional>
-#include <iterator>
-#include <limits>
-#include <optional>
-#include <type_traits>
-#include <utility>
-
 #include "daw_algorithm.h"
 #include "daw_bounded_hash_map.h"
 #include "daw_bounded_hash_set.h"
@@ -25,6 +17,15 @@
 #include "daw_move.h"
 #include "daw_utility.h"
 #include "iterator/daw_back_inserter.h"
+
+#include <ciso646>
+#include <cstddef>
+#include <functional>
+#include <iterator>
+#include <limits>
+#include <optional>
+#include <type_traits>
+#include <utility>
 
 namespace daw {
 	template<typename T, size_t MaxVerticesPerNode, typename Hash = std::hash<T>>

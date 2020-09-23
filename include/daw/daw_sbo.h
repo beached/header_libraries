@@ -8,6 +8,7 @@
 #pragma once
 
 #include <cassert>
+#include <ciso646>
 #include <cstddef>
 #include <cstdio>
 #include <memory>

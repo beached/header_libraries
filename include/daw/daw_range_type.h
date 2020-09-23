@@ -8,15 +8,16 @@
 
 #pragma once
 
-#include <algorithm>
-#include <cassert>
-#include <iterator>
-#include <numeric>
-#include <vector>
-
 #include "daw_algorithm.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
+
+#include <algorithm>
+#include <cassert>
+#include <ciso646>
+#include <iterator>
+#include <numeric>
+#include <vector>
 
 namespace daw {
 	namespace range {

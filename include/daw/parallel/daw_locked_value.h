@@ -12,6 +12,7 @@
 #include "../daw_value_ptr.h"
 #include "daw_unique_mutex.h"
 
+#include <ciso646>
 #include <mutex>
 #include <optional>
 #include <utility>

@@ -8,13 +8,14 @@
 
 #pragma once
 
-#include <cstddef>
-#include <type_traits>
-#include <utility>
-
 #include "daw_move.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
+
+#include <cstddef>
+#include <iso646.h>
+#include <type_traits>
+#include <utility>
 
 /// Provide a class to validate a type T after construction
 /// Validator must return true if the value is valid, false otherwise

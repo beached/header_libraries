@@ -10,6 +10,8 @@
 
 #include "daw_traits.h"
 
+#include <ciso646>
+
 namespace daw {
 	namespace range {
 		namespace impl {

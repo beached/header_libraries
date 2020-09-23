@@ -8,16 +8,17 @@
 
 #pragma once
 
+#include "daw_exchange.h"
+#include "daw_move.h"
+#include "daw_swap.h"
+#include "daw_traits.h"
+
+#include <ciso646>
 #include <cstddef>
 #include <memory>
 #include <optional>
 #include <type_traits>
 #include <utility>
-
-#include "daw_exchange.h"
-#include "daw_move.h"
-#include "daw_swap.h"
-#include "daw_traits.h"
 
 namespace daw {
 	namespace value_ptr_details {

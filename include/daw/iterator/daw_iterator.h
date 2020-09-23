@@ -10,6 +10,8 @@
 
 #include "../impl/daw_traits_concepts.h"
 
+#include <ciso646>
+
 namespace daw {
 	template<typename Iterator>
 	constexpr std::move_iterator<Iterator> make_move_iterator( Iterator &&i ) {

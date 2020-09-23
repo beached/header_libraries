@@ -8,9 +8,6 @@
 
 #pragma once
 
-#include <cstdint>
-#include <string>
-
 #include "daw_algorithm.h"
 #include "daw_exchange.h"
 #include "daw_newhelper.h"
@@ -18,6 +15,10 @@
 #include "daw_scope_guard.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
+
+#include <ciso646>
+#include <cstdint>
+#include <string>
 
 namespace daw {
 	template<typename CharT = char>

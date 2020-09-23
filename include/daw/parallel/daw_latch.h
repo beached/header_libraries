@@ -8,15 +8,16 @@
 
 #pragma once
 
-#include <atomic>
-#include <cassert>
-#include <cstdint>
-#include <memory>
-
 #include "../cpp_17.h"
 #include "../daw_exception.h"
 #include "../daw_move.h"
 #include "daw_condition_variable.h"
+
+#include <atomic>
+#include <cassert>
+#include <ciso646>
+#include <cstdint>
+#include <memory>
 
 namespace daw {
 	template<typename>

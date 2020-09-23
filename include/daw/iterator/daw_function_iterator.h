@@ -13,6 +13,8 @@
 #include "../daw_move.h"
 #include "../daw_traits.h"
 
+#include <ciso646>
+
 namespace daw {
 	///
 	///	An output iterator that calls supplied function when operator= is called

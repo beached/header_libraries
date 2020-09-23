@@ -8,11 +8,12 @@
 
 #pragma once
 
+#include "daw_algorithm.h"
+
+#include <ciso646>
 #include <functional>
 #include <optional>
 #include <vector>
-
-#include "daw_algorithm.h"
 
 namespace daw {
 	template<typename Key, typename Hash = std::hash<Key>>

@@ -8,16 +8,17 @@
 
 #pragma once
 
+#include "cpp_17.h"
+#include "daw_graph.h"
+#include "daw_move.h"
+
 #include <algorithm>
+#include <ciso646>
 #include <iterator>
 #include <type_traits>
 #include <unordered_map>
 #include <utility>
 #include <vector>
-
-#include "cpp_17.h"
-#include "daw_graph.h"
-#include "daw_move.h"
 
 namespace daw {
 	struct UnorderedWalk {

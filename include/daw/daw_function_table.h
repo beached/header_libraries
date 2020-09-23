@@ -8,16 +8,17 @@
 
 #pragma once
 
+#include "daw/cpp_17.h"
+#include "daw/daw_traits.h"
+
 #include <array>
+#include <ciso646>
 #include <cstddef>
 #include <cstdio>
 #include <cstdlib>
 #include <tuple>
 #include <type_traits>
 #include <variant>
-
-#include "daw/cpp_17.h"
-#include "daw/daw_traits.h"
 
 namespace daw {
 	namespace function_table_impl {

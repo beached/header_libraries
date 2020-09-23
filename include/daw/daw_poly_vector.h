@@ -8,10 +8,11 @@
 
 #pragma once
 
-#include <vector>
-
 #include "daw_common_mixins.h"
 #include "daw_heap_value.h"
+
+#include <ciso646>
+#include <vector>
 
 namespace daw {
 	template<typename T>

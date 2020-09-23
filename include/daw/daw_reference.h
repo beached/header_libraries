@@ -8,14 +8,15 @@
 
 #pragma once
 
+#include "daw_algorithm.h"
+#include "daw_traits.h"
+
 #include <algorithm>
+#include <ciso646>
 #include <cstddef>
 #include <iterator>
 #include <numeric>
 #include <vector>
-
-#include "daw_algorithm.h"
-#include "daw_traits.h"
 
 namespace daw {
 	template<typename T>

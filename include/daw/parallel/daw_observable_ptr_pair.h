@@ -8,12 +8,13 @@
 
 #pragma once
 
-#include <new>
-#include <variant>
-
 #include "../daw_move.h"
 #include "../daw_visit.h"
 #include "daw_observable_ptr.h"
+
+#include <ciso646>
+#include <new>
+#include <variant>
 
 namespace daw {
 	namespace impl {

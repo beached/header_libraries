@@ -8,17 +8,18 @@
 
 #pragma once
 
+#include "daw_exception.h"
+#include "daw_move.h"
+#include "daw_string_view.h"
+#include "daw_traits.h"
+
 #include <algorithm>
+#include <ciso646>
 #include <exception>
 #include <list>
 #include <string>
 #include <utility>
 #include <vector>
-
-#include "daw_exception.h"
-#include "daw_move.h"
-#include "daw_string_view.h"
-#include "daw_traits.h"
 
 namespace daw {
 	namespace parser {

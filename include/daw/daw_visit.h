@@ -8,14 +8,15 @@
 
 #pragma once
 
+#include "cpp_17.h"
+#include "daw_traits.h"
+
+#include <ciso646>
 #include <cstdlib>
 #include <functional>
 #include <type_traits>
 #include <utility>
 #include <variant>
-
-#include "cpp_17.h"
-#include "daw_traits.h"
 
 namespace daw {
 	namespace get_nt_details {

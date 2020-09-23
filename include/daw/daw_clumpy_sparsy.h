@@ -8,10 +8,11 @@
 
 #pragma once
 
+#include "daw_algorithm.h"
+
+#include <ciso646>
 #include <cstdint>
 #include <vector>
-
-#include "daw_algorithm.h"
 
 namespace daw {
 	template<typename T>

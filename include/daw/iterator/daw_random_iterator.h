@@ -8,10 +8,10 @@
 
 #pragma once
 
+#include <ciso646>
 #include <iterator>
 
 namespace daw {
-
 	template<typename T>
 	struct RandomIterator {
 		using difference_type = std::ptrdiff_t;

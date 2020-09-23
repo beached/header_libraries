@@ -6,10 +6,10 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#pragma once
+
 #include "cpp_17.h"
 #include "daw_move.h"
-
-#pragma once
 
 namespace daw {
 	template<typename T>

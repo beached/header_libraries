@@ -15,6 +15,7 @@
 #include "daw_sort_n.h"
 #include "daw_swap.h"
 
+#include <ciso646>
 #include <cstddef>
 #include <functional>
 #include <limits>

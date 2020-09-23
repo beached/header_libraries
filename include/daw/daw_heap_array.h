@@ -8,13 +8,14 @@
 
 #pragma once
 
-#include <algorithm>
-#include <stdexcept>
-#include <utility>
-
 #include "daw_exception.h"
 #include "daw_exchange.h"
 #include "daw_swap.h"
+
+#include <algorithm>
+#include <ciso646>
+#include <stdexcept>
+#include <utility>
 
 namespace daw {
 	template<typename T>

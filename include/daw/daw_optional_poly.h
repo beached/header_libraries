@@ -8,14 +8,15 @@
 
 #pragma once
 
+#include "daw_traits.h"
+
+#include <ciso646>
 #include <exception>
 #include <memory>
 #include <stdexcept>
 #include <string>
 #include <type_traits>
 #include <utility>
-
-#include "daw_traits.h"
 
 namespace daw {
 	template<class ValueType>

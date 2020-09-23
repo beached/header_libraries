@@ -8,15 +8,16 @@
 
 #pragma once
 
+#include "daw_algorithm.h"
+#include "daw_exception.h"
+#include "daw_swap.h"
+
 #include <array>
+#include <ciso646>
 #include <cstdint>
 #include <cstdlib>
 #include <iterator>
 #include <stdexcept>
-
-#include "daw_algorithm.h"
-#include "daw_exception.h"
-#include "daw_swap.h"
 
 namespace daw {
 	namespace details {

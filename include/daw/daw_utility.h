@@ -12,7 +12,14 @@
 #undef max
 #endif // max
 
+#include "cpp_17.h"
+#include "daw_algorithm.h"
+#include "daw_exception.h"
+#include "daw_move.h"
+#include "daw_traits.h"
+
 #include <atomic>
+#include <ciso646>
 #include <cmath>
 #include <cstddef>
 #include <functional>
@@ -26,12 +33,6 @@
 #include <type_traits>
 #include <utility>
 #include <vector>
-
-#include "cpp_17.h"
-#include "daw_algorithm.h"
-#include "daw_exception.h"
-#include "daw_move.h"
-#include "daw_traits.h"
 
 template<typename... Ts>
 inline constexpr void Unused( Ts &&... ) noexcept {}

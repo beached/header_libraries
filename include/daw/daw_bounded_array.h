@@ -10,6 +10,7 @@
 
 #include "daw_algorithm.h"
 
+#include <ciso646>
 #include <cstddef>
 #include <cstdint>
 

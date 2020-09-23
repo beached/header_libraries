@@ -8,11 +8,12 @@
 
 #pragma once
 
-#include <exception>
-#include <memory>
-
 #include "daw_exception.h"
 #include "daw_string.h"
+
+#include <ciso646>
+#include <exception>
+#include <memory>
 
 template<typename T, typename... Args>
 [[nodiscard]] T *new_throw( Args &&... args ) {

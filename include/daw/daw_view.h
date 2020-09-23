@@ -11,6 +11,7 @@
 #include "daw_exception.h"
 #include "daw_move.h"
 
+#include <ciso646>
 #include <iterator>
 #include <stdexcept>
 #include <type_traits>

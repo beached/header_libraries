@@ -11,6 +11,7 @@
 #include "daw_string_view.h"
 #include "daw_traits.h"
 
+#include <ciso646>
 #include <cstddef>
 #include <cstdio>
 #include <string_view>

@@ -8,19 +8,20 @@
 
 #pragma once
 
+#include "daw_algorithm.h"
+#include "daw_range_common.h"
+#include "daw_range_reference.h"
+#include "daw_reference.h"
+#include "daw_traits.h"
+
 #include <algorithm>
+#include <ciso646>
 #include <cstddef>
 #include <iterator>
 #include <numeric>
 #include <random>
 #include <utility>
 #include <vector>
-
-#include "daw_algorithm.h"
-#include "daw_range_common.h"
-#include "daw_range_reference.h"
-#include "daw_reference.h"
-#include "daw_traits.h"
 
 namespace daw {
 	namespace range {

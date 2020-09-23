@@ -9,6 +9,7 @@
 #pragma once
 
 #include <atomic>
+#include <ciso646>
 #include <cstddef>
 #include <new>
 

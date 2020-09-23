@@ -8,25 +8,27 @@
 
 #pragma once
 
-#include <string>
-
 #include "../daw_algorithm.h"
 #include "../daw_move.h"
 #include "../daw_traits.h"
 #include "daw_reverse_iterator.h"
 
+#include <ciso646>
+#include <cstddef>
+#include <string>
+
 namespace daw {
 	namespace impl {
 		struct splitter_size {
 			template<typename T,
-			         daw::required<!daw::traits::has_size_memberfn_v<T>> = nullptr>
-			constexpr size_t operator( )( T const & ) noexcept {
+			         daw::required<not daw::traits::has_size_memberfn_v<T>> = nullptr>
+			constexpr std::size_t operator( )( T const & ) noexcept {
 				return 1;
 			}
 
 			template<typename T,
 			         daw::required<daw::traits::has_size_memberfn_v<T>> = nullptr>
-			constexpr size_t
+			constexpr std::size_t
 			operator( )( T const &t ) noexcept( noexcept( t.size( ) ) ) {
 				return t.size( );
 			}

@@ -10,6 +10,8 @@
 
 #include "../daw_move.h"
 
+#include <ciso646>
+
 namespace daw {
 	namespace traits {
 		namespace detectors {

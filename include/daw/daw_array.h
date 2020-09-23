@@ -8,13 +8,14 @@
 
 #pragma once
 
+#include "cpp_17.h"
+
 #include <array>
+#include <ciso646>
 #include <functional>
 #include <string>
 #include <type_traits>
 #include <utility>
-
-#include "cpp_17.h"
 
 namespace daw {
 	namespace detail {

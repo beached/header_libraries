@@ -10,6 +10,8 @@
 
 #include "iterator/daw_zipiter.h"
 
+#include <ciso646>
+
 namespace daw {
 	template<typename... Containers>
 	struct zip_container {

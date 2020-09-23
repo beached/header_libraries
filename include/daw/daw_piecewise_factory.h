@@ -8,11 +8,6 @@
 
 #pragma once
 
-#include <functional>
-#include <optional>
-#include <tuple>
-#include <variant>
-
 #include "cpp_17.h"
 #include "daw_exception.h"
 #include "daw_move.h"
@@ -20,6 +15,12 @@
 #include "daw_traits.h"
 #include "daw_utility.h"
 #include "daw_visit.h"
+
+#include <ciso646>
+#include <functional>
+#include <optional>
+#include <tuple>
+#include <variant>
 
 namespace daw {
 	namespace impl {

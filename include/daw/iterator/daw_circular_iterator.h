@@ -8,11 +8,11 @@
 
 #pragma once
 
-#include <iterator>
-
 #include "../daw_algorithm.h"
 #include "../daw_move.h"
 #include "../daw_traits.h"
+
+#include <iterator>
 
 namespace daw {
 	namespace impl {

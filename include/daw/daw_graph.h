@@ -8,6 +8,11 @@
 
 #pragma once
 
+#include "daw_exception.h"
+#include "daw_move.h"
+#include "daw_utility.h"
+
+#include <ciso646>
 #include <cstddef>
 #include <functional>
 #include <iterator>
@@ -18,10 +23,6 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
-
-#include "daw_exception.h"
-#include "daw_move.h"
-#include "daw_utility.h"
 
 namespace daw {
 	template<typename T>

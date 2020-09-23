@@ -9,6 +9,7 @@
 #pragma once
 
 #include <algorithm>
+#include <ciso646>
 #include <utility>
 
 namespace daw {

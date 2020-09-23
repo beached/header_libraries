@@ -15,6 +15,7 @@
 #include "daw_overload.h"
 #include "daw_utility.h"
 
+#include <ciso646>
 #include <cstddef>
 #include <functional>
 #include <iosfwd>

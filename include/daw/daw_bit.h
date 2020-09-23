@@ -8,10 +8,11 @@
 
 #pragma once
 
-#include <limits>
-
 #include "daw_traits.h"
 #include "daw_utility.h"
+
+#include <ciso646>
+#include <limits>
 
 namespace daw {
 	template<typename T>
