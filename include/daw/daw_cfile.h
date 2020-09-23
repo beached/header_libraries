@@ -7,10 +7,12 @@
 //
 
 #pragma once
-#include <cstdio>
-#include <utility>
 
 #include "daw_exchange.h"
+
+#include <ciso646>
+#include <cstdio>
+#include <utility>
 
 namespace daw {
 	class CFile {

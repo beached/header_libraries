@@ -8,6 +8,12 @@
 
 #pragma once
 
+#include "cpp_17.h"
+#include "daw_enable_if.h"
+#include "impl/daw_traits_concepts.h"
+#include "impl/daw_traits_impl.h"
+
+#include <ciso646>
 #include <cstddef>
 #include <cstdint>
 #include <deque>
@@ -20,11 +26,6 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
-
-#include "cpp_17.h"
-#include "daw_enable_if.h"
-#include "impl/daw_traits_concepts.h"
-#include "impl/daw_traits_impl.h"
 
 namespace daw::traits {
 	template<typename T, typename... Ts>

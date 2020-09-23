@@ -8,11 +8,12 @@
 
 #pragma once
 
-#include <stdexcept>
-#include <string_view>
-
 #include "../daw_exception.h"
 #include "../daw_traits.h"
+
+#include <ciso646>
+#include <stdexcept>
+#include <string_view>
 
 namespace daw {
 	class arg_iterator_t {

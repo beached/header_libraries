@@ -8,11 +8,12 @@
 
 #pragma once
 
-#include <type_traits>
-#include <variant>
-
 #include "daw_enable_if.h"
 #include "daw_visit.h"
+
+#include <ciso646>
+#include <type_traits>
+#include <variant>
 
 namespace daw {
 	template<typename Base, typename... Types>

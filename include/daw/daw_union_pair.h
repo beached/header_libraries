@@ -8,14 +8,15 @@
 
 #pragma once
 
+#include "cpp_17.h"
+#include "daw_exception.h"
+#include "daw_move.h"
+
+#include <ciso646>
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
 #include <utility>
-
-#include "cpp_17.h"
-#include "daw_exception.h"
-#include "daw_move.h"
 
 namespace daw {
 	struct visit_null_union_pair_exception {};

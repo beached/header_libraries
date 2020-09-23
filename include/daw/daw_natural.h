@@ -11,6 +11,8 @@
 #include "daw_exception.h"
 #include "daw_traits.h"
 
+#include <ciso646>
+
 namespace daw {
 	struct invalid_natural_number : public daw::exception::arithmetic_exception {
 	};

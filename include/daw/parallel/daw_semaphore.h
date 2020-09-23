@@ -8,14 +8,15 @@
 
 #pragma once
 
+#include "../cpp_17.h"
+#include "../daw_move.h"
+#include "../daw_value_ptr.h"
+
+#include <ciso646>
 #include <condition_variable>
 #include <cstdint>
 #include <memory>
 #include <mutex>
-
-#include "../cpp_17.h"
-#include "../daw_move.h"
-#include "../daw_value_ptr.h"
 
 namespace daw {
 	template<typename>

@@ -10,6 +10,7 @@
 
 #include "daw_move.h"
 
+#include <ciso646>
 #include <iterator>
 #include <utility>
 

@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <ciso646>
 #include <mutex>
 #include <tuple>
 

@@ -8,17 +8,18 @@
 
 #pragma once
 
-#include <cstddef>
-#include <functional>
-#include <memory>
-#include <new>
-#include <type_traits>
-
 #include "daw_exception.h"
 #include "daw_move.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
 #include "daw_virtual_base.h"
+
+#include <ciso646>
+#include <cstddef>
+#include <functional>
+#include <memory>
+#include <new>
+#include <type_traits>
 
 namespace daw {
 	namespace func_impl {

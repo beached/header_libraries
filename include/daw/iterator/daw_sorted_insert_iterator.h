@@ -8,13 +8,14 @@
 
 #pragma once
 
+#include "../daw_move.h"
+#include "daw_function_iterator.h"
+
+#include <ciso646>
 #include <deque>
 #include <functional>
 #include <list>
 #include <vector>
-
-#include "../daw_move.h"
-#include "daw_function_iterator.h"
 
 namespace daw {
 	namespace si_impl {

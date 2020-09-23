@@ -8,18 +8,19 @@
 
 #pragma once
 
+#include "cpp_17.h"
+#include "daw_exchange.h"
+#include "daw_move.h"
+#include "daw_swap.h"
+
 #include <array>
+#include <ciso646>
 #include <optional>
 #include <string_view>
 #include <tuple>
 #include <type_traits>
 #include <utility>
 #include <variant>
-
-#include "cpp_17.h"
-#include "daw_exchange.h"
-#include "daw_move.h"
-#include "daw_swap.h"
 
 namespace daw {
 	namespace swap_details {

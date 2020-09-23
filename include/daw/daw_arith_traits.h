@@ -9,15 +9,18 @@
 
 #pragma once
 
+#include <ciso646>
+
 #if defined( DAW_JSON_NO_INT128 )
 #if defined( DAW_HAS_INT128 )
 #undef DAW_HAS_INT128
 #endif
 #elif defined( DAW_HAS_INT128 )
 #elif defined( __SIZEOF_INT128__ )
-#if( defined( __clang__ ) && !defined( _WIN32 ) ) ||                           \
-  ( defined( __CUDACC__ ) && __CUDACC_VER_MAJOR__ >= 9 ) ||                    \
-  ( defined( __GNUC__ ) && !defined( __clang__ ) && !defined( __CUDACC__ ) )
+#if( defined( __clang__ ) and not defined( _WIN32 ) ) or                       \
+  ( defined( __CUDACC__ ) and __CUDACC_VER_MAJOR__ >= 9 ) or                   \
+  ( defined( __GNUC__ ) and not defined( __clang__ ) and                       \
+    !defined( __CUDACC__ ) )
 #define DAW_HAS_INT128
 #elif defined( __CUDACC__ )
 // __CUDACC_VER__ is a full version number before CUDA 9, and is defined to a
@@ -55,7 +58,7 @@ namespace daw {
 		  std::round_toward_zero;
 		static constexpr bool is_iec559 = false;
 		static constexpr bool is_bounded = true;
-		// Cannot reasonibly guess as it's imp defined for signed
+		// Cannot reasonably guess as it's imp defined for signed
 		// static constexpr bool is_modulo = true;
 		static constexpr int digits =
 		  static_cast<int>( sizeof( __int128 ) * CHAR_BIT - is_signed );
@@ -66,7 +69,7 @@ namespace daw {
 		static constexpr int min_exponent10 = 0;
 		static constexpr int max_exponent = 0;
 		static constexpr int max_exponent10 = 0;
-		// Cannot reasonibly define
+		// Cannot reasonably define
 		// static constexpr bool traps = true;
 		static constexpr bool tinyness_before = false;
 

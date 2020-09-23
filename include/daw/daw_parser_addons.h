@@ -11,6 +11,8 @@
 #include "daw_exception.h"
 #include "daw_parser_helper.h"
 
+#include <ciso646>
+
 namespace daw {
 	namespace parser {
 		template<typename ForwardIterator>

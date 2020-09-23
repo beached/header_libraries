@@ -8,14 +8,15 @@
 
 #pragma once
 
+#include "daw_exception.h"
+#include "daw_math.h"
+
+#include <ciso646>
 #include <cstddef>
 #include <iterator>
 #include <limits>
 #include <stdexcept>
 #include <type_traits>
-
-#include "daw_exception.h"
-#include "daw_math.h"
 
 namespace daw {
 	template<typename T, typename = void>

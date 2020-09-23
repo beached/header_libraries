@@ -8,12 +8,13 @@
 
 #pragma once
 
+#include "daw_do_n.h"
+#include "daw_enable_if.h"
+
+#include <ciso646>
 #include <cstdint>
 #include <limits>
 #include <optional>
-
-#include "daw_do_n.h"
-#include "daw_enable_if.h"
 
 namespace daw::cxmath {
 	[[nodiscard]] constexpr std::optional<std::int16_t>

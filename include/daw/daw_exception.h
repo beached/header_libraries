@@ -9,6 +9,7 @@
 #pragma once
 
 #include <algorithm>
+#include <ciso646>
 #include <exception>
 #include <iterator>
 #include <type_traits>

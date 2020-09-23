@@ -8,20 +8,6 @@
 
 #pragma once
 
-#include <algorithm>
-#include <cstddef>
-#include <cstdint>
-#include <cstdlib>
-#include <ios>
-#include <iterator>
-#include <limits>
-#include <stdexcept>
-#ifndef NOSTRING
-#include <string>
-#endif
-#include <utility>
-#include <vector>
-
 #include "impl/daw_string_impl.h"
 
 #include "daw_algorithm.h"
@@ -35,6 +21,21 @@
 #include "daw_traits.h"
 #include "iterator/daw_back_inserter.h"
 #include "iterator/daw_iterator.h"
+
+#include <algorithm>
+#include <ciso646>
+#include <cstddef>
+#include <cstdint>
+#include <cstdlib>
+#include <ios>
+#include <iterator>
+#include <limits>
+#include <stdexcept>
+#ifndef NOSTRING
+#include <string>
+#endif
+#include <utility>
+#include <vector>
 
 namespace daw {
 	template<typename CharT, size_t Capacity>

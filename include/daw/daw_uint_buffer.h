@@ -9,6 +9,7 @@
 #pragma once
 
 #include <cassert>
+#include <ciso646>
 #include <climits>
 #include <cstdint>
 #include <limits>

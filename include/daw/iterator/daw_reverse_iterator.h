@@ -8,9 +8,10 @@
 
 #pragma once
 
-#include <iterator>
-
 #include "../daw_move.h"
+
+#include <ciso646>
+#include <iterator>
 
 namespace daw {
 	template<typename Iterator>

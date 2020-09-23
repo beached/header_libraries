@@ -8,12 +8,13 @@
 
 #pragma once
 
-#include <array>
-#include <cstddef>
-#include <type_traits>
-
 #include "../daw_string_view_fwd.h"
 #include "../daw_traits.h"
+
+#include <array>
+#include <ciso646>
+#include <cstddef>
+#include <type_traits>
 
 namespace daw {
 	template<typename CharT, size_t Capacity>

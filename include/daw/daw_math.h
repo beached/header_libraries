@@ -7,17 +7,10 @@
 //
 
 #pragma once
+
 #ifdef max
 #undef max
 #endif // max
-
-#include <cassert>
-#include <cfenv>
-#include <cmath>
-#include <cstddef>
-#include <limits>
-#include <memory>
-#include <utility>
 
 #include "daw/cpp_17.h"
 #include "daw/daw_algorithm.h"
@@ -25,6 +18,15 @@
 #include "daw/daw_traits.h"
 #include "daw/daw_utility.h"
 #include "daw/impl/daw_math_impl.h"
+
+#include <cassert>
+#include <cfenv>
+#include <ciso646>
+#include <cmath>
+#include <cstddef>
+#include <limits>
+#include <memory>
+#include <utility>
 
 namespace daw {
 	namespace math {

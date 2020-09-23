@@ -17,6 +17,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <ciso646>
 #include <cstdint>
 #include <functional>
 #include <iomanip>
@@ -244,7 +245,7 @@ namespace daw {
 			} else if constexpr( Runs > 1 ) {
 				return total_time / static_cast<double>( Runs );
 			} else /* Runs == 1 */ {
-				return (total_time - max_time)/1.0;
+				return ( total_time - max_time ) / 1.0;
 			}
 		}( );
 
@@ -393,7 +394,7 @@ namespace daw {
 			} else if constexpr( Runs > 1 ) {
 				return total_time / static_cast<double>( Runs );
 			} else /* Runs == 1 */ {
-				return (total_time - max_time)/1.0;
+				return ( total_time - max_time ) / 1.0;
 			}
 		}( );
 		avg_time -= base_time;

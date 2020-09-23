@@ -8,12 +8,13 @@
 
 #pragma once
 
-#include <type_traits>
-#include <utility>
-
 #include "../cpp_17.h"
 #include "../daw_enable_if.h"
 #include "daw_function_iterator.h"
+
+#include <ciso646>
+#include <type_traits>
+#include <utility>
 
 namespace daw {
 	template<typename Container>

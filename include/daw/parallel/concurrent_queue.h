@@ -7,6 +7,7 @@
 #pragma once
 
 #include <atomic>
+#include <ciso646>
 #include <condition_variable>
 #include <mutex>
 #include <queue>

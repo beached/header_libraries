@@ -8,11 +8,12 @@
 
 #pragma once
 
-#include <stdexcept>
-#include <type_traits>
-
 #include "../daw_exception.h"
 #include "../daw_move.h"
+
+#include <ciso646>
+#include <stdexcept>
+#include <type_traits>
 
 namespace daw {
 	template<typename IteratorFirst, typename IteratorLast>

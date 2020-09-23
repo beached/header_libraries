@@ -8,13 +8,14 @@
 
 #pragma once
 
-#include <atomic>
-#include <cstdint>
-#include <mutex>
-
 #include "../daw_exchange.h"
 #include "../daw_expected.h"
 #include "../daw_traits.h"
+
+#include <atomic>
+#include <ciso646>
+#include <cstdint>
+#include <mutex>
 
 namespace daw {
 	template<typename T>

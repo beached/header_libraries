@@ -7,8 +7,14 @@
 //
 
 #pragma once
+
+#include "../cpp_17.h"
+#include "../daw_exchange.h"
+#include "../daw_traits.h"
+
 #include <array>
 #include <cassert>
+#include <ciso646>
 #include <cstddef>
 #include <iterator>
 #include <memory>
@@ -17,10 +23,6 @@
 #include <type_traits>
 #include <utility>
 #include <vector>
-
-#include "../cpp_17.h"
-#include "../daw_exchange.h"
-#include "../daw_traits.h"
 
 namespace daw {
 	template<typename T>

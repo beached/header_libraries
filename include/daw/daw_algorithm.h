@@ -8,16 +8,6 @@
 
 #pragma once
 
-#include <algorithm>
-#include <cstddef>
-#include <functional>
-#include <iterator>
-#include <optional>
-#include <stdexcept>
-#include <type_traits>
-#include <utility>
-#include <vector>
-
 #include "cpp_17.h"
 #include "daw_do_n.h"
 #include "daw_enable_if.h"
@@ -27,6 +17,17 @@
 #include "daw_traits.h"
 #include "daw_view.h"
 #include "impl/daw_math_impl.h"
+
+#include <algorithm>
+#include <ciso646>
+#include <cstddef>
+#include <functional>
+#include <iterator>
+#include <optional>
+#include <stdexcept>
+#include <type_traits>
+#include <utility>
+#include <vector>
 
 namespace daw {
 	template<typename Map, typename Key>

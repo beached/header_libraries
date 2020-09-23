@@ -7,6 +7,11 @@
 //
 
 #pragma once
+
+#include "daw_string_view_fwd.h"
+#include "daw_traits.h"
+
+#include <ciso646>
 #include <cstddef>
 #include <cstdint>
 #include <iterator>
@@ -14,9 +19,6 @@
 #include <string>
 #endif
 #include <type_traits>
-
-#include "daw_string_view_fwd.h"
-#include "daw_traits.h"
 
 namespace daw {
 	namespace impl {

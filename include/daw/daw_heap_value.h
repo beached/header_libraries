@@ -8,11 +8,12 @@
 
 #pragma once
 
-#include <memory>
-#include <type_traits>
-
 #include "daw_swap.h"
 #include "daw_traits.h"
+
+#include <ciso646>
+#include <memory>
+#include <type_traits>
 
 namespace daw {
 	/// Heap Value.  Access members via operator-> but copy/move constructors

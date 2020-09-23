@@ -8,12 +8,13 @@
 
 #pragma once
 
+#include "daw_move.h"
+
 #include <array>
+#include <ciso646>
 #include <functional>
 #include <limits>
 #include <type_traits>
-
-#include "daw_move.h"
 
 namespace daw {
 	enum class keep_n_order { ascending, descending };

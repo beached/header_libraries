@@ -11,6 +11,7 @@
 #include "daw_do_n.h"
 #include "daw_view.h"
 
+#include <ciso646>
 #include <cstddef>
 #include <cstdint>
 

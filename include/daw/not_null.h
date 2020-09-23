@@ -8,10 +8,11 @@
 
 #pragma once
 
+#include "daw_exception.h"
+
+#include <ciso646>
 #include <cstddef>
 #include <type_traits>
-
-#include "daw_exception.h"
 
 namespace daw {
 	// Adapted from GSL

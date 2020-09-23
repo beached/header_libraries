@@ -8,6 +8,20 @@
 
 #pragma once
 
+#include "daw_algorithm.h"
+#include "daw_exception.h"
+#include "daw_fnv1a_hash.h"
+#include "daw_generic_hash.h"
+#include "daw_math.h"
+#include "daw_move.h"
+#include "daw_string_view_fwd.h"
+#include "daw_swap.h"
+#include "daw_traits.h"
+#include "impl/daw_string_impl.h"
+#include "iterator/daw_back_inserter.h"
+#include "iterator/daw_iterator.h"
+
+#include <ciso646>
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
@@ -22,21 +36,7 @@
 #endif
 #endif
 
-#include <daw/iterator/daw_back_inserter.h>
 #include <vector>
-
-#include "daw_string_view_fwd.h"
-
-#include "daw_algorithm.h"
-#include "daw_exception.h"
-#include "daw_fnv1a_hash.h"
-#include "daw_generic_hash.h"
-#include "daw_math.h"
-#include "daw_move.h"
-#include "daw_swap.h"
-#include "daw_traits.h"
-#include "impl/daw_string_impl.h"
-#include "iterator/daw_iterator.h"
 
 namespace daw {
 	template<typename T>

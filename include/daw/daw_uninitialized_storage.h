@@ -8,12 +8,13 @@
 
 #pragma once
 
+#include "daw_traits.h"
+
+#include <ciso646>
 #include <cstddef>
 #include <new>
 #include <type_traits>
 #include <utility>
-
-#include "daw_traits.h"
 
 namespace daw {
 	template<typename T>

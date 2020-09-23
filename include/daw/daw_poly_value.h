@@ -8,12 +8,13 @@
 
 #pragma once
 
+#include "daw_enable_if.h"
+#include "daw_traits.h"
+
+#include <ciso646>
 #include <functional>
 #include <memory>
 #include <utility>
-
-#include "daw_enable_if.h"
-#include "daw_traits.h"
 
 namespace daw {
 	namespace poly_value_impl {

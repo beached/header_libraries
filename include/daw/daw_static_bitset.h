@@ -8,17 +8,18 @@
 
 #pragma once
 
-#include <array>
-#include <cstdint>
-#include <iosfwd>
-#include <iterator>
-#include <vector>
-
 #include "daw_bit.h"
 #include "daw_bounded_array.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
+
+#include <array>
+#include <ciso646>
+#include <cstdint>
+#include <iosfwd>
+#include <iterator>
+#include <vector>
 
 namespace daw {
 	namespace bitset_impl {

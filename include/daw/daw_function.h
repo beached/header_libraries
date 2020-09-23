@@ -8,9 +8,10 @@
 
 #pragma once
 
-#include <tuple>
-
 #include "daw_traits.h"
+
+#include <ciso646>
+#include <tuple>
 
 namespace daw {
 	template<typename T>

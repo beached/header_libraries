@@ -8,18 +8,19 @@
 
 #pragma once
 
-#include <algorithm>
-#include <iterator>
-#include <numeric>
-#include <typeinfo>
-#include <utility>
-#include <vector>
-
 #include "daw_algorithm.h"
 #include "daw_move.h"
 #include "daw_range_collection.h"
 #include "daw_range_reference.h"
 #include "daw_traits.h"
+
+#include <algorithm>
+#include <ciso646>
+#include <iterator>
+#include <numeric>
+#include <typeinfo>
+#include <utility>
+#include <vector>
 
 #if not defined( _MSC_VER ) or                                                 \
   defined( __clang__ ) // internal compiler error on at least <= MSVC 2015.3

@@ -8,13 +8,14 @@
 
 #pragma once
 
+#include "daw_bit_queues.h"
+#include "daw_exception.h"
+
+#include <ciso646>
 #include <cstdint>
 #include <iterator>
 #include <stdexcept>
 #include <type_traits>
-
-#include "daw_bit_queues.h"
-#include "daw_exception.h"
 
 namespace daw {
 	/*template<typename InputIteratorF, typename InputIteratorL> class bit_stream;

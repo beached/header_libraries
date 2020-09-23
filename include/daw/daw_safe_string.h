@@ -8,9 +8,10 @@
 
 #pragma once
 
-#include <string>
-
 #include "daw_move.h"
+
+#include <ciso646>
+#include <string>
 
 namespace daw {
 	template<typename SanitizeFunction, typename charT,

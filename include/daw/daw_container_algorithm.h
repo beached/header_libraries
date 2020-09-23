@@ -8,15 +8,16 @@
 
 #pragma once
 
-#include <algorithm>
-#include <cstddef>
-#include <iterator>
-#include <numeric>
-
 #include "cpp_17.h"
 #include "daw_algorithm.h"
 #include "daw_math.h"
 #include "daw_traits.h"
+
+#include <algorithm>
+#include <ciso646>
+#include <cstddef>
+#include <iterator>
+#include <numeric>
 
 namespace daw {
 	namespace container {

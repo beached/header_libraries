@@ -8,12 +8,13 @@
 
 #pragma once
 
-#include <cstddef>
-
 #include "daw_parser_addons.h"
 #include "daw_parser_helper.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
+
+#include <ciso646>
+#include <cstddef>
 
 namespace daw {
 	namespace parser {

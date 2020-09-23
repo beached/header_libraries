@@ -8,11 +8,12 @@
 
 #pragma once
 
+#include "daw_traits.h"
+
+#include <ciso646>
 #include <functional>
 #include <optional>
 #include <type_traits>
-
-#include "daw_traits.h"
 
 namespace daw {
 	inline constexpr std::nullopt_t nullopt = std::nullopt;

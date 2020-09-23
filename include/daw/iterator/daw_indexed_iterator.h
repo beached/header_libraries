@@ -8,11 +8,12 @@
 
 #pragma once
 
-#include <cstddef>
-#include <iterator>
-
 #include "../daw_exception.h"
 #include "../daw_traits.h"
+
+#include <ciso646>
+#include <cstddef>
+#include <iterator>
 
 namespace daw {
 	template<typename T>

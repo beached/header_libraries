@@ -8,15 +8,16 @@
 
 #pragma once
 
+#include "daw_algorithm.h"
+#include "daw_enable_if.h"
+#include "daw_utility.h"
+
+#include <ciso646>
 #include <cstddef>
 #include <memory>
 #include <stdexcept>
 #include <utility>
 #include <vector>
-
-#include "daw_algorithm.h"
-#include "daw_enable_if.h"
-#include "daw_utility.h"
 
 namespace daw {
 	namespace ordered_map_impl {

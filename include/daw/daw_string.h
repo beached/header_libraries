@@ -12,6 +12,7 @@
 #include "daw_move.h"
 #include "daw_traits.h"
 
+#include <ciso646>
 #include <cstddef>
 #include <cstdlib>
 #include <iomanip>

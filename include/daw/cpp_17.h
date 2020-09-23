@@ -8,15 +8,16 @@
 
 #pragma once
 
+#include "daw_enable_if.h"
+#include "daw_move.h"
+
+#include <ciso646>
 #include <cstddef>
 #include <cstring>
 #include <iterator>
 #include <tuple>
 #include <type_traits>
 #include <utility>
-
-#include "daw_enable_if.h"
-#include "daw_move.h"
 
 namespace daw {
 	template<typename T>

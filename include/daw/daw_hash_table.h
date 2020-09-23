@@ -7,14 +7,6 @@
 //
 #pragma once
 
-#include <algorithm>
-#include <functional>
-#include <iterator>
-#include <list>
-#include <numeric>
-#include <string>
-#include <utility>
-
 #include "daw_exception.h"
 #include "daw_exchange.h"
 #include "daw_fnv1a_hash.h"
@@ -23,6 +15,15 @@
 #include "daw_swap.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
+
+#include <algorithm>
+#include <ciso646>
+#include <functional>
+#include <iterator>
+#include <list>
+#include <numeric>
+#include <string>
+#include <utility>
 
 namespace daw {
 	namespace impl {

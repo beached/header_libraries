@@ -7,6 +7,12 @@
 //
 
 #pragma once
+
+#include "cpp_17.h"
+#include "daw_move.h"
+#include "daw_traits.h"
+
+#include <ciso646>
 #include <cstddef>
 #include <cstdint>
 #ifndef NOSTRING
@@ -14,10 +20,6 @@
 #endif
 #include <type_traits>
 #include <utility>
-
-#include "cpp_17.h"
-#include "daw_move.h"
-#include "daw_traits.h"
 
 namespace daw {
 	template<size_t HashBytes>

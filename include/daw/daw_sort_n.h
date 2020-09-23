@@ -8,15 +8,16 @@
 
 #pragma once
 
-#include <algorithm>
-#include <functional>
-#include <iterator>
-
 #include "daw_algorithm.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
 #include "iterator/daw_random_iterator.h"
 #include "iterator/daw_reverse_iterator.h"
+
+#include <algorithm>
+#include <ciso646>
+#include <functional>
+#include <iterator>
 
 namespace daw {
 	namespace sort_n_details {

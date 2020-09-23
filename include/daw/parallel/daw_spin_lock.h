@@ -9,6 +9,7 @@
 #pragma once
 
 #include <atomic>
+#include <ciso646>
 #include <immintrin.h>
 
 namespace daw {

@@ -8,13 +8,14 @@
 
 #pragma once
 
-#include <tuple>
-
 #include "../cpp_17.h"
 #include "../daw_algorithm.h"
 #include "../daw_move.h"
 #include "../daw_tuple_helper.h"
 #include "../daw_utility.h"
+
+#include <ciso646>
+#include <tuple>
 
 namespace daw {
 	template<typename... Iterators>

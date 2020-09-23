@@ -8,13 +8,14 @@
 
 #pragma once
 
-#include <random>
-
 #include "daw_exception.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
+
+#include <ciso646>
+#include <random>
 
 namespace daw::impl {
 	static inline auto &global_rng( ) {

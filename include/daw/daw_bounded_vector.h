@@ -16,6 +16,7 @@
 #include "daw_swap.h"
 
 #include <array>
+#include <ciso646>
 #include <iterator>
 
 namespace daw {

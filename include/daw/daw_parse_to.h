@@ -15,6 +15,7 @@
 #include "daw_traits.h"
 #include "daw_utility.h"
 
+#include <ciso646>
 #include <cstddef>
 #include <iterator>
 #include <string>

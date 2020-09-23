@@ -8,11 +8,12 @@
 
 #pragma once
 
-#include <limits>
-
 #include "daw_algorithm.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_move.h"
+
+#include <ciso646>
+#include <limits>
 
 namespace daw {
 	template<typename T, size_t Capacity>
