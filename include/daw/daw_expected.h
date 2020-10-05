@@ -26,6 +26,17 @@
 #include <utility>
 #include <variant>
 
+#if not( defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or             \
+         defined( _CPPUNWIND ) ) or defined( DAW_NO_EXCEPTIONS )
+#ifdef DAW_USE_EXCEPTIONS
+#undef DAW_USE_EXCEPTIONS
+#endif
+#else
+#ifndef DAW_USE_EXCEPTIONS
+#define DAW_USE_EXCEPTIONS
+#endif
+#endif
+
 namespace daw::expected_details {
 	enum expected_value_types : bool { Empty, Void };
 	template<expected_value_types>
@@ -116,8 +127,7 @@ namespace daw {
 		           traits::is_callable_convertible_v<value_type, Function, Args...>,
 		           std::nullptr_t> = nullptr>
 		static variant_type variant_from_code( Function &&func, Args &&... args ) {
-#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
-  defined( _CPPUNWIND )
+#ifdef DAW_USE_EXCEPTIONS
 			try {
 				return func( std::forward<Args>( args )... );
 			} catch( ... ) { return std::current_exception( ); }
@@ -216,8 +226,7 @@ namespace daw {
 
 		std::string get_exception_message( ) const noexcept {
 			auto result = std::string( );
-#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
-  defined( _CPPUNWIND )
+#ifdef DAW_USE_EXCEPTIONS
 			try {
 				throw_if_exception( );
 			} catch( std::system_error const &e ) {
@@ -294,8 +303,7 @@ namespace daw {
 		template<class Function, typename... Args>
 		static variant_type variant_from_code( Function &&func,
 		                                       Args &&... args ) noexcept {
-#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
-  defined( _CPPUNWIND )
+#ifdef DAW_USE_EXCEPTIONS
 			try {
 				(void)func( std::forward<Args>( args )... );
 				return expected_details::ExpectedTag<expected_details::Void>( );
@@ -369,8 +377,7 @@ namespace daw {
 
 		std::string get_exception_message( ) const noexcept {
 			std::string result{ };
-#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
-  defined( _CPPUNWIND )
+#ifdef DAW_USE_EXCEPTIONS
 			try {
 				throw_if_exception( );
 			} catch( std::exception const &e ) { result = e.what( ); } catch( ... ) {
@@ -411,3 +418,8 @@ namespace daw {
 		return expected_t<Result>( ptr );
 	}
 } // namespace daw
+
+#ifdef DAW_USE_EXCEPTIONS
+#undef DAW_USE_EXCEPTIONS
+#endif
+

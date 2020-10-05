@@ -9,7 +9,7 @@
 cmake_minimum_required( VERSION 3.13 ) 
 
 project( "header_libraries"
-	VERSION "1.1.0" 
+	VERSION "1.1.1" 
 	DESCRIPTION "Various headers"
 	HOMEPAGE_URL "https://github.com/beached/header_libraries"
 	LANGUAGES C CXX)
