@@ -72,12 +72,12 @@ namespace daw {
 			return &( operator*( ) );
 		}
 
-		constexpr decltype( auto ) operator[]( size_type n ) {
-			return *( *this + static_cast<difference_type>( n ) );
+		constexpr decltype( auto ) operator[]( difference_type n ) {
+			return *( *this + n );
 		}
 
-		constexpr decltype( auto ) operator[]( size_type n ) const {
-			return *( *this + static_cast<difference_type>( n ) );
+		constexpr decltype( auto ) operator[]( difference_type n ) const {
+			return *( *this + n );
 		}
 
 		constexpr reverse_iterator &operator++( ) noexcept {

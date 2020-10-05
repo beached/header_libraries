@@ -26,6 +26,17 @@
 #include <string>
 #include <vector>
 
+#if not( defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or             \
+         defined( _CPPUNWIND ) ) or defined( DAW_NO_EXCEPTIONS )
+#ifdef DAW_USE_EXCEPTIONS
+#undef DAW_USE_EXCEPTIONS
+#endif
+#else
+#ifndef DAW_USE_EXCEPTIONS
+#define DAW_USE_EXCEPTIONS
+#endif
+#endif
+
 namespace daw {
 	namespace benchmark_impl {
 		using second_duration = std::chrono::duration<double>;
@@ -605,8 +616,11 @@ namespace daw {
 	[[maybe_unused]] static void
 	expecting_exception( Expression &&expression,
 	                     Predicate &&pred = Predicate{ } ) {
+#ifdef DAW_USE_EXCEPTIONS
 		try {
+#endif
 			(void)std::forward<Expression>( expression )( );
+#ifdef DAW_USE_EXCEPTIONS
 		} catch( Exception const &ex ) {
 			if( std::forward<Predicate>( pred )( ex ) ) {
 				return;
@@ -617,5 +631,10 @@ namespace daw {
 			throw;
 		}
 		std::abort( );
+#endif
 	}
 } // namespace daw
+
+#ifdef DAW_USE_EXCEPTIONS
+#undef DAW_USE_EXCEPTIONS
+#endif

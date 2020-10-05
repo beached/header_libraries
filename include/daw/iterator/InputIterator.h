@@ -31,7 +31,7 @@ namespace daw {
 	template<typename T>
 	using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 
-	namespace inpit_impl {
+	namespace input_impl {
 
 		template<typename It>
 		static decltype( auto ) as_orig( std::byte *p ) {
@@ -104,9 +104,9 @@ namespace daw {
 		using op_clone_t = fn_t<std::byte *( std::byte * )>;
 
 		std::byte *m_iterator;
-		inpit_impl::vtable_t<value_type> const *m_vtable;
+		input_impl::vtable_t<value_type> const *m_vtable;
 		op_clone_t fn_op_clone( ) const noexcept {
-			return inpit_impl::get<inpit_impl::OpClone, value_type>( m_vtable );
+			return input_impl::get<input_impl::OpClone, value_type>( m_vtable );
 		}
 
 		template<typename Iterator>
@@ -121,7 +121,7 @@ namespace daw {
 		                          std::nullptr_t> = nullptr>
 		explicit InputIterator( Iterator const &it )
 		  : m_iterator( create( it ) )
-		  , m_vtable( inpit_impl::get_vtable<Iterator, value_type>( ) ) {
+		  , m_vtable( input_impl::get_vtable<Iterator, value_type>( ) ) {
 			static_assert(
 			  std::is_same_v<std::remove_cv_t<value_type>,
 			                 typename std::iterator_traits<Iterator>::value_type> );
@@ -136,7 +136,7 @@ namespace daw {
 			auto tmp = rhs.fn_op_clone( )( rhs.m_iterator );
 			std::swap( m_iterator, tmp );
 			m_vtable = rhs.m_vtable;
-			inpit_impl::get<inpit_impl::OpDel, value_type>( m_vtable )( tmp );
+			input_impl::get<input_impl::OpDel, value_type>( m_vtable )( tmp );
 			return *this;
 		}
 
@@ -153,7 +153,7 @@ namespace daw {
 		}
 
 		~InputIterator( ) {
-			inpit_impl::get<inpit_impl::OpDel, value_type>( m_vtable )( m_iterator );
+			input_impl::get<input_impl::OpDel, value_type>( m_vtable )( m_iterator );
 		}
 
 		reference operator*( ) const {
@@ -161,18 +161,18 @@ namespace daw {
 		}
 		pointer operator->( ) const {
 			return reinterpret_cast<pointer>(
-			  inpit_impl::get<inpit_impl::OpArrow, value_type>( m_vtable )(
+			  input_impl::get<input_impl::OpArrow, value_type>( m_vtable )(
 			    m_iterator ) );
 		}
 
 		InputIterator &operator++( ) {
-			inpit_impl::get<inpit_impl::OpInc, value_type>( m_vtable )( m_iterator );
+			input_impl::get<input_impl::OpInc, value_type>( m_vtable )( m_iterator );
 			return *this;
 		}
 
 		InputIterator operator++( int ) {
 			auto result = *this;
-			inpit_impl::get<inpit_impl::OpInc, value_type>( m_vtable )( m_iterator );
+			input_impl::get<input_impl::OpInc, value_type>( m_vtable )( m_iterator );
 			return result;
 		}
 
@@ -187,7 +187,7 @@ namespace daw {
 			// Cannot think of another way right now to safely determine at runtime if
 			// two iterators of erased type are comparable.  So I will disallow it
 			assert( same_op_cmp( *this, rhs ) );
-			return inpit_impl::get<inpit_impl::OpEqual, value_type>( m_vtable )(
+			return input_impl::get<input_impl::OpEqual, value_type>( m_vtable )(
 			  m_iterator, rhs.m_iterator );
 		}
 
@@ -195,7 +195,7 @@ namespace daw {
 			// Cannot think of another way right now to safely determine at runtime if
 			// two iterators of erased type are comparable.  So I will disallow it
 			assert( same_op_cmp( *this, rhs ) );
-			return inpit_impl::get<inpit_impl::OpNotEqual, value_type>( m_vtable )(
+			return input_impl::get<input_impl::OpNotEqual, value_type>( m_vtable )(
 			  m_iterator, rhs.m_iterator );
 		}
 
