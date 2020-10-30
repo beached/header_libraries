@@ -111,6 +111,7 @@ namespace daw {
 			auto hash = hash_init;
 			while( first != last ) {
 				hash = append_hash( hash, *first );
+				++first;
 			}
 			return hash;
 		}
@@ -159,6 +160,7 @@ namespace daw {
 			auto hash = hash_init;
 			while( first != last ) {
 				hash = append_hash( hash, *first );
+				++first;
 			}
 			return hash;
 		}

@@ -10,6 +10,7 @@
 
 #include "cpp_17.h"
 #include "daw_traits.h"
+#include "daw_unreachable.h"
 
 #include <ciso646>
 #include <cstdlib>
@@ -84,14 +85,14 @@ namespace daw {
 				// exception code, this stops that
 				if( N != var.index( ) or
 				    not std::is_invocable_v<Visitor, decltype( get_nt<N>( var ) )> ) {
-					std::abort( );
+					DAW_UNREACHABLE( );
 				}
 				return std::forward<Visitor>( vis )(
 				  get_nt<N>( std::forward<Variant>( var ) ) );
 			} else {
 				if( var.index( ) == N ) {
 					if( not std::is_invocable_v<Visitor, decltype( get_nt<N>( var ) )> ) {
-						std::abort( );
+						DAW_UNREACHABLE( );
 					}
 					// If this check isnt there the compiler will generate
 					// exception code, this stops that
