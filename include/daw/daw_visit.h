@@ -47,11 +47,17 @@ namespace daw {
 	}
 
 	namespace visit_details {
-		namespace test {
-			struct Tst {
-				[[maybe_unused]] constexpr void operator( )( int ) const {}
-			};
-		} // namespace test
+		template<typename>
+		struct get_var_size;
+
+		template<template<class...> class Variant, typename... Args>
+		struct get_var_size<Variant<Args...>> {
+			constexpr static inline auto value = sizeof...( Args );
+		};
+
+		template<typename Variant>
+		inline constexpr size_t get_var_size_v =
+		  get_var_size<daw::remove_cvref_t<Variant>>::value;
 
 		// A simple overload class that is constructed via aggregate.
 		template<typename... Fs>
@@ -78,44 +84,144 @@ namespace daw {
 			}
 		}
 
-		template<size_t N, typename R, typename Variant, typename Visitor>
+		template<std::size_t N, typename R, typename Variant, typename Visitor>
 		[[nodiscard]] constexpr R visit_nt( Variant &&var, Visitor &&vis ) {
-			if constexpr( N == 0 ) {
-				// If this check isnt there the compiler will generate
-				// exception code, this stops that
-				if( N != var.index( ) or
-				    not std::is_invocable_v<Visitor, decltype( get_nt<N>( var ) )> ) {
-					DAW_UNREACHABLE( );
-				}
-				return std::forward<Visitor>( vis )(
-				  get_nt<N>( std::forward<Variant>( var ) ) );
-			} else {
-				if( var.index( ) == N ) {
-					if( not std::is_invocable_v<Visitor, decltype( get_nt<N>( var ) )> ) {
-						DAW_UNREACHABLE( );
-					}
-					// If this check isnt there the compiler will generate
-					// exception code, this stops that
+			constexpr std::size_t VSz = get_var_size_v<Variant>;
+			if constexpr( VSz - N >= 8 ) {
+				switch( var.index( ) ) {
+				case 0 + N:
 					return std::forward<Visitor>( vis )(
-					  get_nt<N>( std::forward<Variant>( var ) ) );
+					  get_nt<0 + N>( std::forward<Variant>( var ) ) );
+				case 1 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<1 + N>( std::forward<Variant>( var ) ) );
+				case 2 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<2 + N>( std::forward<Variant>( var ) ) );
+				case 3 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<3 + N>( std::forward<Variant>( var ) ) );
+				case 4 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<4 + N>( std::forward<Variant>( var ) ) );
+				case 5 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<5 + N>( std::forward<Variant>( var ) ) );
+				case 6 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<6 + N>( std::forward<Variant>( var ) ) );
+				case 7 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<7 + N>( std::forward<Variant>( var ) ) );
+				default:
+					return visit_nt<N + 8, R>( std::forward<Variant>( var ),
+					                           std::forward<Visitor>( vis ) );
 				}
-				return visit_nt<N - 1, R>( std::forward<Variant>( var ),
-				                           std::forward<Visitor>( vis ) );
+			} else if constexpr( VSz - N == 7 ) {
+				switch( var.index( ) ) {
+				case 0 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<0 + N>( std::forward<Variant>( var ) ) );
+				case 1 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<1 + N>( std::forward<Variant>( var ) ) );
+				case 2 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<2 + N>( std::forward<Variant>( var ) ) );
+				case 3 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<3 + N>( std::forward<Variant>( var ) ) );
+				case 4 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<4 + N>( std::forward<Variant>( var ) ) );
+				case 5 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<5 + N>( std::forward<Variant>( var ) ) );
+				case 6 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<6 + N>( std::forward<Variant>( var ) ) );
+				}
+			} else if constexpr( VSz - N == 6 ) {
+				switch( var.index( ) ) {
+				case 0 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<0 + N>( std::forward<Variant>( var ) ) );
+				case 1 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<1 + N>( std::forward<Variant>( var ) ) );
+				case 2 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<2 + N>( std::forward<Variant>( var ) ) );
+				case 3 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<3 + N>( std::forward<Variant>( var ) ) );
+				case 4 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<4 + N>( std::forward<Variant>( var ) ) );
+				case 5 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<5 + N>( std::forward<Variant>( var ) ) );
+				}
+			} else if constexpr( VSz - N == 5 ) {
+				switch( var.index( ) ) {
+				case 0 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<0 + N>( std::forward<Variant>( var ) ) );
+				case 1 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<1 + N>( std::forward<Variant>( var ) ) );
+				case 2 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<2 + N>( std::forward<Variant>( var ) ) );
+				case 3 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<3 + N>( std::forward<Variant>( var ) ) );
+				case 4 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<4 + N>( std::forward<Variant>( var ) ) );
+				}
+			} else if constexpr( VSz - N == 4 ) {
+				switch( var.index( ) ) {
+				case 0 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<0 + N>( std::forward<Variant>( var ) ) );
+				case 1 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<1 + N>( std::forward<Variant>( var ) ) );
+				case 2 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<2 + N>( std::forward<Variant>( var ) ) );
+				case 3 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<3 + N>( std::forward<Variant>( var ) ) );
+				}
+			} else if constexpr( VSz - N == 3 ) {
+				switch( var.index( ) ) {
+				case 0 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<0 + N>( std::forward<Variant>( var ) ) );
+				case 1 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<1 + N>( std::forward<Variant>( var ) ) );
+				case 2 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<2 + N>( std::forward<Variant>( var ) ) );
+				}
+			} else if constexpr( VSz - N == 2 ) {
+				switch( var.index( ) ) {
+				case 0 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<0 + N>( std::forward<Variant>( var ) ) );
+				case 1 + N:
+					return std::forward<Visitor>( vis )(
+					  get_nt<1 + N>( std::forward<Variant>( var ) ) );
+				}
+			} else {
+				return std::forward<Visitor>( vis )(
+				  get_nt<0 + N>( std::forward<Variant>( var ) ) );
 			}
+			DAW_UNREACHABLE( );
 		}
-
-		template<typename>
-		struct get_var_size;
-
-		template<template<class...> class Variant, typename... Args>
-		struct get_var_size<Variant<Args...>> {
-			constexpr static inline auto value = sizeof...( Args );
-		};
-
-		template<typename Variant>
-		inline constexpr size_t get_var_size_v =
-		  get_var_size<daw::remove_cvref_t<Variant>>::value;
-
 	} // namespace visit_details
 	//**********************************************
 
@@ -125,14 +231,11 @@ namespace daw {
 	template<typename Variant, typename... Visitors>
 	[[nodiscard, maybe_unused]] constexpr decltype( auto )
 	visit_nt( Variant &&var, Visitors &&... visitors ) {
-
-		constexpr size_t var_sz = daw::visit_details::get_var_size_v<Variant>;
-		static_assert( var_sz > 0 );
 		using result_t =
 		  decltype( daw::visit_details::overload( std::forward<Visitors>(
 		    visitors )... )( get_nt<0>( std::forward<Variant>( var ) ) ) );
 
-		return daw::visit_details::visit_nt<var_sz - 1, result_t>(
+		return daw::visit_details::visit_nt<0, result_t>(
 		  std::forward<Variant>( var ),
 		  daw::visit_details::overload( std::forward<Visitors>( visitors )... ) );
 	}
@@ -142,11 +245,7 @@ namespace daw {
 	template<typename Result, typename Variant, typename... Visitors>
 	[[nodiscard, maybe_unused]] constexpr Result
 	visit_nt( Variant &&var, Visitors &&... visitors ) {
-
-		constexpr size_t var_sz = daw::visit_details::get_var_size_v<Variant>;
-		static_assert( var_sz > 0 );
-
-		return daw::visit_details::visit_nt<var_sz - 1, Result>(
+		return daw::visit_details::visit_nt<0, Result>(
 		  std::forward<Variant>( var ),
 		  daw::visit_details::overload( std::forward<Visitors>( visitors )... ) );
 	}
