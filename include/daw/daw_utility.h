@@ -665,13 +665,24 @@ namespace daw {
 		template<typename T>
 		constexpr bool should_use_aggregate_construction_v =
 		  daw::is_detected_v<should_use_aggregate_construction_detect, T>;
+
+		template<typename T, bool>
+		struct AllocDetail { };
+
+		template<typename T>
+		struct AllocDetail<T, true> {
+			using allocator_type = typename T::allocator_type;
+		};
+
+		template<typename T>
+		using AllocTest = typename T::allocator_type;	
 	} // namespace utility_details
 
 	/// @brief Construct a value.  If normal ( ) construction does not work
 	///	try aggregate.
 	/// @tparam T type of value to construct
 	template<typename T>
-	struct construct_a_t {
+	struct construct_a_t: utility_details::AllocDetail<T, daw::is_detected_v<utility_details::AllocTest, T>> {
 		template<typename... Args,
 		         std::enable_if_t<std::is_constructible_v<T, Args...>,
 		                          std::nullptr_t> = nullptr>
