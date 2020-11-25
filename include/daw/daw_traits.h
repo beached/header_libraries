@@ -835,4 +835,18 @@ namespace daw::traits {
 			return of( );
 		}
 	}
+
+	namespace traits_details {
+		template<typename T, typename... Args>
+		using is_list_constructible_test =
+		  decltype( T{ std::declval<Args>( )... } );
+	}
+	template<typename T, typename... Args>
+	using is_list_constructible =
+	  daw::is_detected<traits_details::is_list_constructible_test, T, Args...>;
+
+	template<typename T, typename... Args>
+	inline constexpr bool is_list_constructible_v =
+	  is_list_constructible<T, Args...>::value;
+
 } // namespace daw::traits
