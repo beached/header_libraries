@@ -139,7 +139,7 @@ namespace daw {
 			  : m_function( std::move( func ) ) {}
 
 			template<typename... Args>
-			[[nodiscard]] inline constexpr bool operator( )( Args &&... args ) {
+			[[nodiscard]] inline constexpr bool operator( )( Args &&...args ) {
 				return !m_function( std::forward<Args>( args )... );
 			}
 		}; // class NotImpl
@@ -377,14 +377,14 @@ namespace daw {
 	using non_owning_ptr = T;
 
 	template<typename Arg, typename... Args>
-	[[nodiscard]] auto make_initializer_list( Arg &&arg, Args &&... args ) {
+	[[nodiscard]] auto make_initializer_list( Arg &&arg, Args &&...args ) {
 		return std::initializer_list<Arg>{ std::forward<Arg>( arg ),
 		                                   std::forward<Args>( args )... };
 	}
 
 	template<typename Container, typename... Args>
 	[[nodiscard]] decltype( auto ) append( Container &container,
-	                                       Args &&... args ) {
+	                                       Args &&...args ) {
 		return container.insert( container.end( ),
 		                         { std::forward<Args>( args )... } );
 	}
@@ -667,7 +667,7 @@ namespace daw {
 		  daw::is_detected_v<should_use_aggregate_construction_detect, T>;
 
 		template<typename T, bool>
-		struct AllocDetail { };
+		struct AllocDetail {};
 
 		template<typename T>
 		struct AllocDetail<T, true> {
@@ -675,27 +675,38 @@ namespace daw {
 		};
 
 		template<typename T>
-		using AllocTest = typename T::allocator_type;	
+		using AllocTest = typename T::allocator_type;
+
+		template<typename T, typename... Args>
+		using brace_construct_test = decltype( T{ std::declval<Args>... } );
+
+		template<typename T, typename... Args>
+		inline constexpr bool is_brace_constructible_v =
+		  daw::is_detected_v<brace_construct_test, T, Args...>;
 	} // namespace utility_details
 
 	/// @brief Construct a value.  If normal ( ) construction does not work
 	///	try aggregate.
 	/// @tparam T type of value to construct
 	template<typename T>
-	struct construct_a_t: utility_details::AllocDetail<T, daw::is_detected_v<utility_details::AllocTest, T>> {
+	struct construct_a_t
+	  : utility_details::AllocDetail<
+	      T, daw::is_detected_v<utility_details::AllocTest, T>> {
 		template<typename... Args,
 		         std::enable_if_t<std::is_constructible_v<T, Args...>,
 		                          std::nullptr_t> = nullptr>
-		[[nodiscard]] inline constexpr T operator( )( Args &&... args ) const
+		[[nodiscard]] inline constexpr T operator( )( Args &&...args ) const
 		  noexcept( std::is_nothrow_constructible_v<T, Args...> ) {
 
 			return T( std::forward<Args>( args )... );
 		}
 
-		template<typename... Args,
-		         std::enable_if_t<not std::is_constructible_v<T, Args...>,
-		                          std::nullptr_t> = nullptr>
-		[[nodiscard]] inline constexpr auto operator( )( Args &&... args ) const
+		template<
+		  typename... Args,
+		  std::enable_if_t<(not std::is_constructible_v<T, Args...> and
+		                    utility_details::is_brace_constructible_v<T, Args...>),
+		                   std::nullptr_t> = nullptr>
+		[[nodiscard]] inline constexpr auto operator( )( Args &&...args ) const
 		  noexcept( std::is_nothrow_constructible_v<T, Args...> ) {
 
 			return T{ std::forward<Args>( args )... };
@@ -706,7 +717,7 @@ namespace daw {
 	struct construct_a_t<daw::use_aggregate_construction<T>> {
 
 		template<typename... Args>
-		[[nodiscard]] inline constexpr T operator( )( Args &&... args ) const
+		[[nodiscard]] inline constexpr T operator( )( Args &&...args ) const
 		  noexcept( std::is_nothrow_constructible_v<T, Args...> ) {
 
 			return T{ std::forward<Args>( args )... };
@@ -975,12 +986,12 @@ namespace daw {
 			~value_is_utility_details( ) = default;
 
 			template<typename... Args>
-			[[nodiscard]] constexpr bool one_of( Args &&... args ) const && {
+			[[nodiscard]] constexpr bool one_of( Args &&...args ) const && {
 				return ( ( *m_value == args ) or ... );
 			}
 
 			template<typename... Args>
-			[[nodiscard]] constexpr bool none_of( Args &&... args ) const && {
+			[[nodiscard]] constexpr bool none_of( Args &&...args ) const && {
 				return ( ( *m_value != args ) and ... );
 			}
 		};
@@ -1031,8 +1042,8 @@ namespace daw {
 	}
 
 	template<size_t N, size_t pos = 0, typename Arg, typename... Args>
-	[[nodiscard]] constexpr decltype( auto )
-	pack_get( Arg &&arg, Args &&... args ) noexcept {
+	[[nodiscard]] constexpr decltype( auto ) pack_get( Arg &&arg,
+	                                                   Args &&...args ) noexcept {
 		if constexpr( pos == N ) {
 			return std::forward<Arg>( arg );
 		} else {
@@ -1048,7 +1059,7 @@ namespace daw {
 
 		template<size_t pos, typename Function, typename... Args>
 		[[nodiscard]] constexpr auto utility_details( size_t N, Function &&func,
-		                                              Args &&... args )
+		                                              Args &&...args )
 		  -> std::enable_if_t<( pos < sizeof...( Args ) )> {
 			if( N == pos ) {
 				if constexpr( std::is_invocable_v<Function, decltype( pack_get<pos>(
@@ -1065,7 +1076,7 @@ namespace daw {
 	} // namespace utility_details
 
 	template<typename Function, typename... Args>
-	constexpr void pack_apply( size_t N, Function &&func, Args &&... args ) {
+	constexpr void pack_apply( size_t N, Function &&func, Args &&...args ) {
 		utility_details::utility_details<0>( N, std::forward<Function>( func ),
 		                                     std::forward<Args>( args )... );
 	}
