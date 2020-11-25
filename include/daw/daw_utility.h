@@ -694,7 +694,7 @@ namespace daw {
 		[[nodiscard]] inline constexpr auto operator( )( Args &&... args ) const
 		  noexcept( traits::is_nothrow_list_constructible_v<T, Args...> )
 		    -> std::enable_if_t<
-		      std::disjunction_v<
+		      std::conjunction_v<
 		        traits::static_not_t<std::is_constructible<T, Args...>>,
 		        traits::is_list_constructible<T, Args...>>,
 		      T> {
