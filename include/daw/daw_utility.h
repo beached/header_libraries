@@ -689,26 +689,21 @@ namespace daw {
 	///	try aggregate.
 	/// @tparam T type of value to construct
 	template<typename T>
-	struct construct_a_t
-	  : utility_details::AllocDetail<
-	      T, daw::is_detected_v<utility_details::AllocTest, T>> {
-		template<typename... Args,
-		         std::enable_if_t<std::is_constructible_v<T, Args...>,
-		                          std::nullptr_t> = nullptr>
-		[[nodiscard]] inline constexpr T operator( )( Args &&...args ) const
-		  noexcept( std::is_nothrow_constructible_v<T, Args...> ) {
-
+	struct construct_a_t {
+		template<typename... Args>
+		[[nodiscard]] inline constexpr auto operator( )( Args &&...args ) const
+		  noexcept( std::is_nothrow_constructible_v<T, Args...> )
+		    -> std::enable_if_t<std::is_constructible_v<T, Args...>, T> {
 			return T( std::forward<Args>( args )... );
 		}
 
-		template<
-		  typename... Args,
-		  std::enable_if_t<(not std::is_constructible_v<T, Args...> and
-		                    utility_details::is_brace_constructible_v<T, Args...>),
-		                   std::nullptr_t> = nullptr>
+		template<typename... Args>
 		[[nodiscard]] inline constexpr auto operator( )( Args &&...args ) const
-		  noexcept( std::is_nothrow_constructible_v<T, Args...> ) {
-
+		  noexcept( std::is_nothrow_constructible_v<T, Args...> )
+		    -> std::enable_if_t<
+		      (not std::is_constructible_v<T, Args...> and
+		       utility_details::is_brace_constructible_v<T, Args...>),
+		      T> {
 			return T{ std::forward<Args>( args )... };
 		}
 	};
@@ -717,12 +712,13 @@ namespace daw {
 	struct construct_a_t<daw::use_aggregate_construction<T>> {
 
 		template<typename... Args>
-		[[nodiscard]] inline constexpr T operator( )( Args &&...args ) const
-		  noexcept( std::is_nothrow_constructible_v<T, Args...> ) {
+		[[nodiscard]] inline constexpr auto operator( )( Args &&...args ) const
+		  noexcept( std::is_nothrow_constructible_v<T, Args...> ) -> T {
 
 			return T{ std::forward<Args>( args )... };
 		}
 	};
+
 	template<typename T>
 	inline constexpr construct_a_t<T> construct_a = construct_a_t<T>{ };
 
