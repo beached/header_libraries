@@ -692,7 +692,7 @@ namespace daw {
 
 		template<typename... Args>
 		[[nodiscard]] inline constexpr auto operator( )( Args &&... args ) const
-		  noexcept( noexcept( T{ std::forward<Args>( args )... } ) )
+		  noexcept( traits::is_nothrow_list_constructible_v<T, Args...> )
 		    -> std::enable_if_t<
 		      std::disjunction_v<
 		        traits::static_not_t<std::is_constructible<T, Args...>>,
