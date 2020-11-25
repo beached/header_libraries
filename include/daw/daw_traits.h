@@ -835,4 +835,43 @@ namespace daw::traits {
 			return of( );
 		}
 	}
+
+	namespace traits_details {
+		template<typename T, typename... Args>
+		using is_list_constructible_test =
+		  decltype( T{ std::declval<Args>( )... } );
+	}
+	template<typename T, typename... Args>
+	using is_list_constructible =
+	  daw::is_detected<traits_details::is_list_constructible_test, T, Args...>;
+
+	template<typename T, typename... Args>
+	inline constexpr bool is_list_constructible_v =
+	  is_list_constructible<T, Args...>::value;
+
+	namespace traits_details {
+		template<bool IsListConstructible, typename T, typename... Args>
+		struct is_nothrow_list_constructible;
+
+		template<typename T, typename... Args>
+		struct is_nothrow_list_constructible<true, T, Args...> {
+			using type =
+			  std::bool_constant<noexcept( T{ std::declval<Args>( )... } )>;
+		};
+
+		template<typename T, typename... Args>
+		struct is_nothrow_list_constructible<false, T, Args...> {
+			using type = std::false_type;
+		};
+
+	} // namespace traits_details
+	template<typename T, typename... Args>
+	struct is_nothrow_list_constructible
+	  : traits_details::is_nothrow_list_constructible<
+	      is_list_constructible_v<T, Args...>, T, Args...>::type {};
+
+	template<typename T, typename... Args>
+	inline constexpr bool is_nothrow_list_constructible_v =
+	  is_nothrow_list_constructible<T, Args...>::value;
+
 } // namespace daw::traits

@@ -676,13 +676,6 @@ namespace daw {
 
 		template<typename T>
 		using AllocTest = typename T::allocator_type;
-
-		template<typename T, typename... Args>
-		using brace_construct_test = decltype( T{ std::declval<Args>( )... } );
-
-		template<typename T, typename... Args>
-		inline constexpr bool is_brace_constructible_v =
-		  daw::is_detected_v<brace_construct_test, T, Args...>;
 	} // namespace utility_details
 
 	/// @brief Construct a value.  If normal ( ) construction does not work
@@ -699,11 +692,13 @@ namespace daw {
 
 		template<typename... Args>
 		[[nodiscard]] inline constexpr auto operator( )( Args &&... args ) const
-		  noexcept( noexcept( T{ std::forward<Args>( args )... } ) )
+		  noexcept( traits::is_nothrow_list_constructible_v<T, Args...> )
 		    -> std::enable_if_t<
-		      (not std::is_constructible_v<T, Args...> and
-		       utility_details::is_brace_constructible_v<T, Args...>),
+		      std::conjunction_v<
+		        traits::static_not_t<std::is_constructible<T, Args...>>,
+		        traits::is_list_constructible<T, Args...>>,
 		      T> {
+
 			return T{ std::forward<Args>( args )... };
 		}
 	};
