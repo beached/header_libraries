@@ -251,8 +251,7 @@ namespace daw::traits {
 	  all_true_v<is_container_not_string_v<T>, isnt_map_like_v<T>>;
 
 	template<typename T>
-	using static_not =
-	  std::conditional<T::value, std::false_type, std::true_type>;
+	using static_not = std::bool_constant<not T::value>;
 
 	template<typename T>
 	using static_not_t = typename static_not<T>::type;
