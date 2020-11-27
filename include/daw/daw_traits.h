@@ -21,6 +21,7 @@
 #include <list>
 #include <map>
 #include <set>
+#include <tuple>
 #include <type_traits>
 #include <unordered_map>
 #include <unordered_set>
@@ -873,4 +874,46 @@ namespace daw::traits {
 	inline constexpr bool is_nothrow_list_constructible_v =
 	  is_nothrow_list_constructible<T, Args...>::value;
 
+	template<typename C>
+	struct class_parts {
+		using class_type = C;
+		static constexpr bool is_templated_class = false;
+
+		template<typename>
+		using has_class_template_parameter = std::false_type;
+	};
+
+	template<template<typename...> class C, typename... Args>
+	struct class_parts<C<Args...>> {
+		using class_type = C<Args...>;
+		using class_template_parameters = std::tuple<Args...>;
+		static constexpr bool is_templated_class = true;
+
+		template<std::size_t Idx>
+		using nth_class_template_parameter =
+		  std::tuple_element_t<Idx, class_template_parameters>;
+
+		template<typename T>
+		using has_class_template_parameter =
+		  std::bool_constant<std::disjunction_v<std::is_same<T, Args>...>>;
+	};
+
+	template<typename T>
+	inline constexpr bool is_templated_class = class_parts<T>::is_templated_class;
+
+	template<std::size_t Idx, typename T>
+	using nth_class_template_parameter =
+	  typename class_parts<T>::template nth_class_template_parameter<Idx>;
+
+	template<typename T>
+	using class_template_parameters =
+	  typename class_parts<T>::class_template_parameters;
+
+	template<typename T, typename Class>
+	using has_class_template_parameter =
+	  typename class_parts<Class>::template has_class_template_parameter<T>;
+
+	template<typename T, typename Class>
+	inline constexpr bool has_class_template_parameter_v =
+	  has_class_template_parameter<T, Class>::value;
 } // namespace daw::traits
