@@ -874,6 +874,38 @@ namespace daw::traits {
 	inline constexpr bool is_nothrow_list_constructible_v =
 	  is_nothrow_list_constructible<T, Args...>::value;
 
+	///
+	// Query the parts of a classes template parameters, if any
+	namespace class_parts_details {
+		template<std::size_t Idx, typename T, typename Tp>
+		constexpr bool update_if_same( std::size_t &result, std::size_t NotFound ) {
+			if constexpr( std::is_same_v<T, std::tuple_element_t<Idx, Tp>> ) {
+				if( result == NotFound ) {
+					result = Idx;
+				}
+			}
+			return result == NotFound;
+		}
+
+		template<std::size_t StartIdx, typename T, typename Tp, std::size_t... Idx>
+		constexpr void find_template_parameter( std::size_t &result,
+		                                        std::index_sequence<Idx...>,
+		                                        std::size_t NotFound ) {
+			(void)( update_if_same<StartIdx + Idx, T, Tp>( result, NotFound ) &&
+			        ... );
+		}
+
+		template<std::size_t StartIdx, typename T, typename... Args>
+		constexpr std::size_t find_template_parameter( std::size_t NotFound ) {
+			static_assert( StartIdx < sizeof...( Args ) );
+			std::size_t result = NotFound;
+			find_template_parameter<StartIdx, T, std::tuple<Args...>>(
+			  result, std::make_index_sequence<sizeof...( Args ) - StartIdx>{ },
+			  NotFound );
+			return result;
+		}
+	} // namespace class_parts_details
+
 	template<typename C>
 	struct class_parts {
 		using class_type = C;
@@ -881,6 +913,12 @@ namespace daw::traits {
 
 		template<typename>
 		using has_class_template_parameter = std::false_type;
+
+		using NotFound =
+		  std::integral_constant<std::size_t, static_cast<std::size_t>( -1 )>;
+
+		template<typename T>
+		using find_class_template_parameter = NotFound;
 	};
 
 	template<template<typename...> class C, typename... Args>
@@ -896,6 +934,15 @@ namespace daw::traits {
 		template<typename T>
 		using has_class_template_parameter =
 		  std::bool_constant<std::disjunction_v<std::is_same<T, Args>...>>;
+
+		using NotFound =
+		  std::integral_constant<std::size_t, static_cast<std::size_t>( -1 )>;
+
+		template<typename T, std::size_t StartIdx = 0>
+		using find_class_template_parameter =
+		  std::integral_constant<std::size_t,
+		                         class_parts_details::find_template_parameter<
+		                           StartIdx, T, Args...>( NotFound{ } )>;
 	};
 
 	template<typename T>
@@ -916,4 +963,13 @@ namespace daw::traits {
 	template<typename T, typename Class>
 	inline constexpr bool has_class_template_parameter_v =
 	  has_class_template_parameter<T, Class>::value;
+
+	template<typename T, typename Class, std::size_t StartIdx = 0>
+	using find_class_template_parameter = typename class_parts<
+	  Class>::template find_class_template_parameter<T, StartIdx>;
+
+	template<typename T, typename Class, std::size_t StartIdx = 0>
+	inline constexpr std::size_t find_class_template_parameter_v =
+	  find_class_template_parameter<T, Class, StartIdx>::value;
 } // namespace daw::traits
+
