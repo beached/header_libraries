@@ -887,6 +887,17 @@ namespace daw::traits {
 			return result == NotFound;
 		}
 
+		template<std::size_t Idx, typename T, typename Tp>
+		constexpr bool update_if_different( std::size_t &result,
+		                                    std::size_t NotFound ) {
+			if constexpr( not std::is_same_v<T, std::tuple_element_t<Idx, Tp>> ) {
+				if( result == NotFound ) {
+					result = Idx;
+				}
+			}
+			return result == NotFound;
+		}
+
 		template<std::size_t StartIdx, typename T, typename Tp, std::size_t... Idx>
 		constexpr void find_template_parameter( std::size_t &result,
 		                                        std::index_sequence<Idx...>,
@@ -903,6 +914,30 @@ namespace daw::traits {
 			  result, std::make_index_sequence<sizeof...( Args ) - StartIdx>{ },
 			  NotFound );
 			return result;
+		}
+
+		template<std::size_t StartIdx, typename Lhs, typename Rhs,
+		         std::size_t... Idx>
+		constexpr std::size_t find_first_mismatch( Lhs *, Rhs *,
+		                                           std::index_sequence<Idx...>,
+		                                           std::size_t NotFound ) {
+			std::size_t result = NotFound;
+			(void)( update_if_different<
+			          StartIdx + Idx, std::tuple_element_t<StartIdx + Idx, Lhs>, Rhs>(
+			          result, NotFound ) &&
+			        ... );
+			return result;
+		}
+
+		template<std::size_t StartIdx, typename Lhs, typename Rhs>
+		constexpr std::size_t find_first_mismatch( Lhs *, Rhs * ) {
+			using TpL = typename Lhs::class_template_parameters;
+			using TpR = typename Rhs::class_template_parameters;
+			constexpr std::size_t Max =
+			  std::min( std::tuple_size_v<TpL>, std::tuple_size_v<TpL> );
+			return find_first_mismatch<StartIdx>(
+			  static_cast<TpL *>( nullptr ), static_cast<TpR *>( nullptr ),
+			  std::make_index_sequence<Max - StartIdx>{ }, Max );
 		}
 	} // namespace class_parts_details
 
@@ -943,6 +978,12 @@ namespace daw::traits {
 		  std::integral_constant<std::size_t,
 		                         class_parts_details::find_template_parameter<
 		                           StartIdx, T, Args...>( NotFound{ } )>;
+		template<typename OtherClass, std::size_t StartIdx = 0>
+		using find_first_mismatched_class_template_parameter =
+		  std::integral_constant<std::size_t,
+		                         class_parts_details::find_first_mismatch<StartIdx>(
+		                           static_cast<class_parts *>( nullptr ),
+		                           static_cast<OtherClass *>( nullptr ) )>;
 	};
 
 	template<typename T>
@@ -971,5 +1012,16 @@ namespace daw::traits {
 	template<typename T, typename Class, std::size_t StartIdx = 0>
 	inline constexpr std::size_t find_class_template_parameter_v =
 	  find_class_template_parameter<T, Class, StartIdx>::value;
-} // namespace daw::traits
 
+	template<typename ClassA, typename ClassB, std::size_t StartIdx = 0>
+	using find_first_mismatched_class_template_parameter =
+	  typename class_parts<ClassA>::
+	    template find_first_mismatched_class_template_parameter<
+	      class_parts<ClassB>, StartIdx>;
+
+	template<typename ClassA, typename ClassB, std::size_t StartIdx = 0>
+	inline constexpr std::size_t
+	  find_first_mismatched_class_template_parameter_v =
+	    find_first_mismatched_class_template_parameter<ClassA, ClassB,
+	                                                   StartIdx>::value;
+} // namespace daw::traits
