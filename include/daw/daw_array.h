@@ -102,10 +102,10 @@ namespace daw {
 		auto md_array_impl( ) {
 			if constexpr( sizeof...( Extents ) > 0 ) {
 				using next_array_t =
-				  std::remove_reference_t<decltype( md_array_impl<T, Extents...>( ) )>;
-				return std::array<next_array_t, Extent>{ };
+				  std::remove_pointer_t<decltype( md_array_impl<T, Extents...>( ) )>;
+				return static_cast<std::array<next_array_t, Extent> *>( nullptr );
 			} else {
-				return std::array<T, Extent>{ };
+				return static_cast<std::array<T, Extent> *>( nullptr );
 			}
 		}
 	} // namespace daw_array_impl
@@ -113,7 +113,7 @@ namespace daw {
 	template<typename T, std::size_t... Extents>
 	struct md_stdarray {
 		static_assert( sizeof...( Extents ) > 0 );
-		using type = std::remove_reference_t<decltype(
+		using type = std::remove_pointer_t<decltype(
 		  daw_array_impl::md_array_impl<T, Extents...>( ) )>;
 	};
 
