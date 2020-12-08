@@ -68,7 +68,7 @@ namespace daw {
 	template<
 	  typename T = make_array_impl::unspecified_type, typename... Args,
 	  std::enable_if_t<not std::is_same_v<T, void>, std::nullptr_t> = nullptr>
-	constexpr auto make_array( Args &&... args ) {
+	constexpr auto make_array( Args &&...args ) {
 		constexpr size_t sz = sizeof...( Args );
 		if constexpr( std::is_same_v<T, make_array_impl::unspecified_type> ) {
 
@@ -93,7 +93,31 @@ namespace daw {
 	}
 
 	template<typename... Ts>
-	std::array<std::string, sizeof...( Ts )> make_string_array( Ts &&... t ) {
+	std::array<std::string, sizeof...( Ts )> make_string_array( Ts &&...t ) {
 		return { std::string( std::forward<Ts>( t ) )... };
 	}
+
+	namespace daw_array_impl {
+		template<typename T, std::size_t Extent, std::size_t... Extents>
+		auto md_array_impl( ) {
+			if constexpr( sizeof...( Extents ) > 0 ) {
+				using next_array_t =
+				  std::remove_reference_t<decltype( md_array_impl<T, Extents...>( ) )>;
+				return std::array<next_array_t, Extent>{ };
+			} else {
+				return std::array<T, Extent>{ };
+			}
+		}
+	} // namespace daw_array_impl
+
+	template<typename T, std::size_t... Extents>
+	struct md_stdarray {
+		static_assert( sizeof...( Extents ) > 0 );
+		using type = std::remove_reference_t<decltype(
+		  daw_array_impl::md_array_impl<T, Extents...>( ) )>;
+	};
+
+	template<typename T, std::size_t... Extents>
+	using md_stdarray_t = typename md_stdarray<T, Extents...>::type;
+
 } // namespace daw

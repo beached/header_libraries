@@ -21,6 +21,7 @@
 #include <list>
 #include <map>
 #include <set>
+#include <tuple>
 #include <type_traits>
 #include <unordered_map>
 #include <unordered_set>
@@ -873,4 +874,154 @@ namespace daw::traits {
 	inline constexpr bool is_nothrow_list_constructible_v =
 	  is_nothrow_list_constructible<T, Args...>::value;
 
+	///
+	// Query the parts of a classes template parameters, if any
+	namespace class_parts_details {
+		template<std::size_t Idx, typename T, typename Tp>
+		constexpr bool update_if_same( std::size_t &result, std::size_t NotFound ) {
+			if constexpr( std::is_same_v<T, std::tuple_element_t<Idx, Tp>> ) {
+				if( result == NotFound ) {
+					result = Idx;
+				}
+			}
+			return result == NotFound;
+		}
+
+		template<std::size_t Idx, typename T, typename Tp>
+		constexpr bool update_if_different( std::size_t &result,
+		                                    std::size_t NotFound ) {
+			if constexpr( not std::is_same_v<T, std::tuple_element_t<Idx, Tp>> ) {
+				if( result == NotFound ) {
+					result = Idx;
+				}
+			}
+			return result == NotFound;
+		}
+
+		template<std::size_t StartIdx, typename T, typename Tp, std::size_t... Idx>
+		constexpr void find_template_parameter( std::size_t &result,
+		                                        std::index_sequence<Idx...>,
+		                                        std::size_t NotFound ) {
+			(void)( update_if_same<StartIdx + Idx, T, Tp>( result, NotFound ) &&
+			        ... );
+		}
+
+		template<std::size_t StartIdx, typename T, typename... Args>
+		constexpr std::size_t find_template_parameter( std::size_t NotFound ) {
+			static_assert( StartIdx < sizeof...( Args ) );
+			std::size_t result = NotFound;
+			find_template_parameter<StartIdx, T, std::tuple<Args...>>(
+			  result, std::make_index_sequence<sizeof...( Args ) - StartIdx>{ },
+			  NotFound );
+			return result;
+		}
+
+		template<std::size_t StartIdx, typename Lhs, typename Rhs,
+		         std::size_t... Idx>
+		constexpr std::size_t find_first_mismatch( Lhs *, Rhs *,
+		                                           std::index_sequence<Idx...>,
+		                                           std::size_t NotFound ) {
+			std::size_t result = NotFound;
+			(void)( update_if_different<
+			          StartIdx + Idx, std::tuple_element_t<StartIdx + Idx, Lhs>, Rhs>(
+			          result, NotFound ) &&
+			        ... );
+			return result;
+		}
+
+		template<std::size_t StartIdx, typename Lhs, typename Rhs>
+		constexpr std::size_t find_first_mismatch( Lhs *, Rhs * ) {
+			using TpL = typename Lhs::class_template_parameters;
+			using TpR = typename Rhs::class_template_parameters;
+			constexpr std::size_t Max =
+			  std::min( std::tuple_size_v<TpL>, std::tuple_size_v<TpL> );
+			return find_first_mismatch<StartIdx>(
+			  static_cast<TpL *>( nullptr ), static_cast<TpR *>( nullptr ),
+			  std::make_index_sequence<Max - StartIdx>{ }, Max );
+		}
+	} // namespace class_parts_details
+
+	template<typename C>
+	struct class_parts {
+		using class_type = C;
+		static constexpr bool is_templated_class = false;
+
+		template<typename>
+		using has_class_template_parameter = std::false_type;
+
+		using NotFound =
+		  std::integral_constant<std::size_t, static_cast<std::size_t>( -1 )>;
+
+		template<typename T>
+		using find_class_template_parameter = NotFound;
+	};
+
+	template<template<typename...> class C, typename... Args>
+	struct class_parts<C<Args...>> {
+		using class_type = C<Args...>;
+		using class_template_parameters = std::tuple<Args...>;
+		static constexpr bool is_templated_class = true;
+
+		template<std::size_t Idx>
+		using nth_class_template_parameter =
+		  std::tuple_element_t<Idx, class_template_parameters>;
+
+		template<typename T>
+		using has_class_template_parameter =
+		  std::bool_constant<std::disjunction_v<std::is_same<T, Args>...>>;
+
+		using NotFound =
+		  std::integral_constant<std::size_t, static_cast<std::size_t>( -1 )>;
+
+		template<typename T, std::size_t StartIdx = 0>
+		using find_class_template_parameter =
+		  std::integral_constant<std::size_t,
+		                         class_parts_details::find_template_parameter<
+		                           StartIdx, T, Args...>( NotFound{ } )>;
+		template<typename OtherClass, std::size_t StartIdx = 0>
+		using find_first_mismatched_class_template_parameter =
+		  std::integral_constant<std::size_t,
+		                         class_parts_details::find_first_mismatch<StartIdx>(
+		                           static_cast<class_parts *>( nullptr ),
+		                           static_cast<OtherClass *>( nullptr ) )>;
+	};
+
+	template<typename T>
+	inline constexpr bool is_templated_class = class_parts<T>::is_templated_class;
+
+	template<std::size_t Idx, typename T>
+	using nth_class_template_parameter =
+	  typename class_parts<T>::template nth_class_template_parameter<Idx>;
+
+	template<typename T>
+	using class_template_parameters =
+	  typename class_parts<T>::class_template_parameters;
+
+	template<typename T, typename Class>
+	using has_class_template_parameter =
+	  typename class_parts<Class>::template has_class_template_parameter<T>;
+
+	template<typename T, typename Class>
+	inline constexpr bool has_class_template_parameter_v =
+	  has_class_template_parameter<T, Class>::value;
+
+	template<typename T, typename Class, std::size_t StartIdx = 0>
+	using find_class_template_parameter = typename class_parts<
+	  Class>::template find_class_template_parameter<T, StartIdx>;
+
+	template<typename T, typename Class, std::size_t StartIdx = 0>
+	inline constexpr std::size_t find_class_template_parameter_v =
+	  find_class_template_parameter<T, Class, StartIdx>::value;
+
+	template<typename ClassA, typename ClassB, std::size_t StartIdx = 0>
+	using find_first_mismatched_class_template_parameter =
+	  typename class_parts<ClassA>::
+	    template find_first_mismatched_class_template_parameter<
+	      class_parts<ClassB>, StartIdx>;
+
+	template<typename ClassA, typename ClassB, std::size_t StartIdx = 0>
+	inline constexpr std::size_t
+	  find_first_mismatched_class_template_parameter_v =
+	    find_first_mismatched_class_template_parameter<ClassA, ClassB,
+	                                                   StartIdx>::value;
 } // namespace daw::traits
