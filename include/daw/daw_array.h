@@ -78,6 +78,7 @@ namespace daw {
 			return std::array<T, sz>{ std::forward<Args>( args )... };
 		}
 	}
+
 	namespace make_array_impl {
 		template<typename T, size_t N, size_t... Is>
 		constexpr auto make_array_impl( T const( &&arry )[N],
@@ -113,11 +114,10 @@ namespace daw {
 	template<typename T, std::size_t... Extents>
 	struct md_stdarray {
 		static_assert( sizeof...( Extents ) > 0 );
-		using type = std::remove_pointer_t<decltype(
-		  daw_array_impl::md_array_impl<T, Extents...>( ) )>;
+		using type = std::remove_pointer_t<
+		  decltype( daw_array_impl::md_array_impl<T, Extents...>( ) )>;
 	};
 
 	template<typename T, std::size_t... Extents>
 	using md_stdarray_t = typename md_stdarray<T, Extents...>::type;
-
 } // namespace daw
