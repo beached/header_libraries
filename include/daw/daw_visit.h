@@ -24,7 +24,7 @@ namespace daw {
 		namespace gi_test {
 			using namespace std;
 			template<typename T>
-			using get_if_test = decltype( get_if<0>( std::declval<T>( ) ) );
+			using get_if_test = decltype( get_if<0>( std::declval<T *>( ) ) );
 		} // namespace gi_test
 		template<typename T>
 		inline constexpr bool has_get_if_v =
@@ -33,20 +33,25 @@ namespace daw {
 
 	template<std::size_t Idx, typename Variant>
 	constexpr decltype( auto ) get_nt( Variant &&var ) {
-		if constexpr( get_nt_details::has_get_if_v<Variant> ) {
-			auto *ptr = std::get_if<Idx>( &var );
+		using namespace std;
+		if constexpr( get_nt_details::has_get_if_v<
+		                std::remove_reference_t<Variant>> ) {
+			auto *ptr = get_if<Idx>( &var );
 			if constexpr( std::is_rvalue_reference_v<Variant> ) {
 				return std::move( *ptr );
 			} else {
 				return *ptr;
 			}
 		} else {
-			using namespace std;
 			return get<Idx>( std::forward<Variant>( var ) );
 		}
 	}
-
 	namespace visit_details {
+		template<typename Variant>
+		constexpr auto get_index( Variant const &v ) {
+			return v.index( );
+		}
+
 		template<typename>
 		struct get_var_size;
 
@@ -69,7 +74,7 @@ namespace daw {
 
 		template<typename F, typename... Fs>
 		[[nodiscard, maybe_unused]] constexpr decltype( auto )
-		overload( F &&f, Fs &&... fs ) noexcept {
+		overload( F &&f, Fs &&...fs ) noexcept {
 			if constexpr( sizeof...( Fs ) > 0 ) {
 				return overload_t{
 				  daw::traits::lift_func( std::forward<F>( f ) ),
@@ -88,7 +93,7 @@ namespace daw {
 		[[nodiscard]] constexpr R visit_nt( Variant &&var, Visitor &&vis ) {
 			constexpr std::size_t VSz = get_var_size_v<Variant>;
 			if constexpr( VSz - N >= 8 ) {
-				switch( var.index( ) ) {
+				switch( get_index( var ) ) {
 				case 0 + N:
 					return std::forward<Visitor>( vis )(
 					  get_nt<0 + N>( std::forward<Variant>( var ) ) );
@@ -118,7 +123,7 @@ namespace daw {
 					                           std::forward<Visitor>( vis ) );
 				}
 			} else if constexpr( VSz - N == 7 ) {
-				switch( var.index( ) ) {
+				switch( get_index( var ) ) {
 				case 0 + N:
 					return std::forward<Visitor>( vis )(
 					  get_nt<0 + N>( std::forward<Variant>( var ) ) );
@@ -142,7 +147,7 @@ namespace daw {
 					  get_nt<6 + N>( std::forward<Variant>( var ) ) );
 				}
 			} else if constexpr( VSz - N == 6 ) {
-				switch( var.index( ) ) {
+				switch( get_index( var ) ) {
 				case 0 + N:
 					return std::forward<Visitor>( vis )(
 					  get_nt<0 + N>( std::forward<Variant>( var ) ) );
@@ -163,7 +168,7 @@ namespace daw {
 					  get_nt<5 + N>( std::forward<Variant>( var ) ) );
 				}
 			} else if constexpr( VSz - N == 5 ) {
-				switch( var.index( ) ) {
+				switch( get_index( var ) ) {
 				case 0 + N:
 					return std::forward<Visitor>( vis )(
 					  get_nt<0 + N>( std::forward<Variant>( var ) ) );
@@ -181,7 +186,7 @@ namespace daw {
 					  get_nt<4 + N>( std::forward<Variant>( var ) ) );
 				}
 			} else if constexpr( VSz - N == 4 ) {
-				switch( var.index( ) ) {
+				switch( get_index( var ) ) {
 				case 0 + N:
 					return std::forward<Visitor>( vis )(
 					  get_nt<0 + N>( std::forward<Variant>( var ) ) );
@@ -196,7 +201,7 @@ namespace daw {
 					  get_nt<3 + N>( std::forward<Variant>( var ) ) );
 				}
 			} else if constexpr( VSz - N == 3 ) {
-				switch( var.index( ) ) {
+				switch( get_index( var ) ) {
 				case 0 + N:
 					return std::forward<Visitor>( vis )(
 					  get_nt<0 + N>( std::forward<Variant>( var ) ) );
@@ -208,7 +213,7 @@ namespace daw {
 					  get_nt<2 + N>( std::forward<Variant>( var ) ) );
 				}
 			} else if constexpr( VSz - N == 2 ) {
-				switch( var.index( ) ) {
+				switch( get_index( var ) ) {
 				case 0 + N:
 					return std::forward<Visitor>( vis )(
 					  get_nt<0 + N>( std::forward<Variant>( var ) ) );
@@ -230,7 +235,7 @@ namespace daw {
 	// to that of visitor( get_nt<0>( variant ) ) 's result
 	template<typename Variant, typename... Visitors>
 	[[nodiscard, maybe_unused]] constexpr decltype( auto )
-	visit_nt( Variant &&var, Visitors &&... visitors ) {
+	visit_nt( Variant &&var, Visitors &&...visitors ) {
 		using result_t =
 		  decltype( daw::visit_details::overload( std::forward<Visitors>(
 		    visitors )... )( get_nt<0>( std::forward<Variant>( var ) ) ) );
@@ -244,7 +249,7 @@ namespace daw {
 	// valid and not empty
 	template<typename Result, typename Variant, typename... Visitors>
 	[[nodiscard, maybe_unused]] constexpr Result
-	visit_nt( Variant &&var, Visitors &&... visitors ) {
+	visit_nt( Variant &&var, Visitors &&...visitors ) {
 		return daw::visit_details::visit_nt<0, Result>(
 		  std::forward<Variant>( var ),
 		  daw::visit_details::overload( std::forward<Visitors>( visitors )... ) );
