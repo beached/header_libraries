@@ -139,7 +139,7 @@ namespace daw {
 			  : m_function( std::move( func ) ) {}
 
 			template<typename... Args>
-			[[nodiscard]] inline constexpr bool operator( )( Args &&... args ) {
+			[[nodiscard]] inline constexpr bool operator( )( Args &&...args ) {
 				return !m_function( std::forward<Args>( args )... );
 			}
 		}; // class NotImpl
@@ -377,14 +377,14 @@ namespace daw {
 	using non_owning_ptr = T;
 
 	template<typename Arg, typename... Args>
-	[[nodiscard]] auto make_initializer_list( Arg &&arg, Args &&... args ) {
+	[[nodiscard]] auto make_initializer_list( Arg &&arg, Args &&...args ) {
 		return std::initializer_list<Arg>{ std::forward<Arg>( arg ),
 		                                   std::forward<Args>( args )... };
 	}
 
 	template<typename Container, typename... Args>
 	[[nodiscard]] decltype( auto ) append( Container &container,
-	                                       Args &&... args ) {
+	                                       Args &&...args ) {
 		return container.insert( container.end( ),
 		                         { std::forward<Args>( args )... } );
 	}
@@ -684,14 +684,14 @@ namespace daw {
 	template<typename T>
 	struct construct_a_t {
 		template<typename... Args>
-		[[nodiscard]] inline constexpr auto operator( )( Args &&... args ) const
+		[[nodiscard]] inline constexpr auto operator( )( Args &&...args ) const
 		  noexcept( std::is_nothrow_constructible_v<T, Args...> )
 		    -> std::enable_if_t<std::is_constructible_v<T, Args...>, T> {
 			return T( std::forward<Args>( args )... );
 		}
 
 		template<typename... Args>
-		[[nodiscard]] inline constexpr auto operator( )( Args &&... args ) const
+		[[nodiscard]] inline constexpr auto operator( )( Args &&...args ) const
 		  noexcept( traits::is_nothrow_list_constructible_v<T, Args...> )
 		    -> std::enable_if_t<
 		      std::conjunction_v<
@@ -707,7 +707,7 @@ namespace daw {
 	struct construct_a_t<daw::use_aggregate_construction<T>> {
 
 		template<typename... Args>
-		[[nodiscard]] inline constexpr auto operator( )( Args &&... args ) const
+		[[nodiscard]] inline constexpr auto operator( )( Args &&...args ) const
 		  noexcept( std::is_nothrow_constructible_v<T, Args...> ) -> T {
 
 			return T{ std::forward<Args>( args )... };
@@ -977,12 +977,12 @@ namespace daw {
 			~value_is_utility_details( ) = default;
 
 			template<typename... Args>
-			[[nodiscard]] constexpr bool one_of( Args &&... args ) const && {
+			[[nodiscard]] constexpr bool one_of( Args &&...args ) const && {
 				return ( ( *m_value == args ) or ... );
 			}
 
 			template<typename... Args>
-			[[nodiscard]] constexpr bool none_of( Args &&... args ) const && {
+			[[nodiscard]] constexpr bool none_of( Args &&...args ) const && {
 				return ( ( *m_value != args ) and ... );
 			}
 		};
@@ -1033,8 +1033,8 @@ namespace daw {
 	}
 
 	template<size_t N, size_t pos = 0, typename Arg, typename... Args>
-	[[nodiscard]] constexpr decltype( auto )
-	pack_get( Arg &&arg, Args &&... args ) noexcept {
+	[[nodiscard]] constexpr decltype( auto ) pack_get( Arg &&arg,
+	                                                   Args &&...args ) noexcept {
 		if constexpr( pos == N ) {
 			return std::forward<Arg>( arg );
 		} else {
@@ -1050,7 +1050,7 @@ namespace daw {
 
 		template<size_t pos, typename Function, typename... Args>
 		[[nodiscard]] constexpr auto utility_details( size_t N, Function &&func,
-		                                              Args &&... args )
+		                                              Args &&...args )
 		  -> std::enable_if_t<( pos < sizeof...( Args ) )> {
 			if( N == pos ) {
 				if constexpr( std::is_invocable_v<Function, decltype( pack_get<pos>(
@@ -1067,7 +1067,7 @@ namespace daw {
 	} // namespace utility_details
 
 	template<typename Function, typename... Args>
-	constexpr void pack_apply( size_t N, Function &&func, Args &&... args ) {
+	constexpr void pack_apply( size_t N, Function &&func, Args &&...args ) {
 		utility_details::utility_details<0>( N, std::forward<Function>( func ),
 		                                     std::forward<Args>( args )... );
 	}

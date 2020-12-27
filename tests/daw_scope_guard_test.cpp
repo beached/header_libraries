@@ -15,7 +15,7 @@ struct oe_t {
 	  : b{ ptr } {}
 
 	constexpr void operator( )( ) noexcept {
-		*b = !*b;
+		*b = not *b;
 	}
 };
 

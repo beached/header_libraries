@@ -34,13 +34,14 @@ void daw_copiable_unique_ptr_test_01( ) {
 	          << sizeof( daw::copiable_unique_ptr<lrg> ) << '\n';
 
 	struct A {
-		constexpr A( ) noexcept {}
+		constexpr A( ) noexcept = default;
 		A( A const & ) = delete;
 		A &operator=( A const & ) = delete;
 	};
 	auto const a = daw::copiable_unique_ptr<int>( );
 	daw::expecting( !a );
 	auto b = a;
+	(void)b;
 
 	auto e = daw::make_copiable_unique_ptr<A>( );
 	daw::expecting( static_cast<bool>( e ) );

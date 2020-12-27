@@ -70,7 +70,7 @@ namespace daw {
 		      !std::is_same_v<zip_iterator, daw::remove_cvref_t<
 		                                      daw::traits::first_type<Its...>>>>,
 		    std::nullptr_t> = nullptr>
-		constexpr zip_iterator( Its &&... its )
+		constexpr zip_iterator( Its &&...its )
 		  : m_values( std::forward<Its>( its )... ) {}
 
 		constexpr types_t &as_tuple( ) noexcept {

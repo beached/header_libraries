@@ -49,7 +49,7 @@ namespace daw {
 
 	template<typename... Values, std::enable_if_t<( sizeof...( Values ) != 1 ),
 	                                              std::nullptr_t> = nullptr>
-	void do_not_optimize( Values &&... values ) {
+	void do_not_optimize( Values &&...values ) {
 		if constexpr( sizeof...( Values ) > 0 ) {
 			(void)( ( do_not_optimize( std::forward<Values>( values ) ), 1 ) | ... );
 		}

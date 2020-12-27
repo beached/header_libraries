@@ -417,7 +417,7 @@ namespace daw {
 			}
 		} // namespace impl
 		template<typename Arg, typename... Args>
-		auto make_range_reference( Arg &&arg, Args &&... args ) {
+		auto make_range_reference( Arg &&arg, Args &&...args ) {
 			return daw::range::impl::make_range_reference(
 			  std::forward<Arg>( arg ), std::forward<Args>( args )... );
 		}

@@ -130,7 +130,7 @@ namespace daw {
 			}
 
 			template<typename... Args>
-			void push_back( Args &&... args ) {
+			void push_back( Args &&...args ) {
 				m_values.push_back( std::forward<Args>( args )... );
 			}
 
@@ -396,7 +396,7 @@ namespace daw {
 		} // namespace impl
 
 		template<typename Arg, typename... Args>
-		decltype( auto ) make_range_collection( Arg &&arg, Args &&... args ) {
+		decltype( auto ) make_range_collection( Arg &&arg, Args &&...args ) {
 			return daw::range::impl::make_range_collection(
 			  std::forward<Arg>( arg ), std::forward<Args>( args )... );
 		}
@@ -422,13 +422,13 @@ namespace daw {
 
 		namespace impl {
 			template<typename Arg, typename... Args>
-			decltype( auto ) from( std::true_type, Arg &&arg, Args &&... args ) {
+			decltype( auto ) from( std::true_type, Arg &&arg, Args &&...args ) {
 				return make_range_reference( std::forward<Arg>( arg ),
 				                             std::forward<Args>( args )... );
 			}
 
 			template<typename Arg, typename... Args>
-			decltype( auto ) from( std::false_type, Arg &&arg, Args &&... args ) {
+			decltype( auto ) from( std::false_type, Arg &&arg, Args &&...args ) {
 				return make_range_collection( std::forward<Arg>( arg ),
 				                              std::forward<Args>( args )... );
 			}
@@ -436,14 +436,14 @@ namespace daw {
 		} // namespace impl
 
 		template<typename Arg, typename... Args>
-		decltype( auto ) from( Arg &&arg, Args &&... args ) {
+		decltype( auto ) from( Arg &&arg, Args &&...args ) {
 			return impl::from( typename std::is_const<Arg>::type{ },
 			                   std::forward<Arg>( arg ),
 			                   std::forward<Args>( args )... );
 		}
 
 		template<typename Arg, typename... Args>
-		auto from_mutable( Arg &&arg, Args &&... args ) {
+		auto from_mutable( Arg &&arg, Args &&...args ) {
 			return impl::from( std::false_type( ), std::forward<Arg>( arg ),
 			                   std::forward<Args>( args )... );
 		}

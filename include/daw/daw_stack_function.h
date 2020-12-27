@@ -72,11 +72,11 @@ namespace daw {
 				store( std::forward<Func>( f ) );
 			}
 
-			Base *ptr( ) noexcept {
+			[[nodiscard]] Base *ptr( ) noexcept {
 				return reinterpret_cast<Base *>( &m_data );
 			}
 
-			Base const *ptr( ) const noexcept {
+			[[nodiscard]] Base const *ptr( ) const noexcept {
 				return reinterpret_cast<Base const *>( &m_data );
 			}
 
@@ -97,19 +97,19 @@ namespace daw {
 				  daw::remove_cvref_t<std::decay_t<Func>>( std::forward<Func>( f ) );
 			}
 
-			Base &operator*( ) noexcept {
+			[[nodiscard]] Base &operator*( ) noexcept {
 				return *ptr( );
 			}
 
-			Base const &operator*( ) const noexcept {
+			[[nodiscard]] Base const &operator*( ) const noexcept {
 				return *ptr( );
 			}
 
-			Base *operator->( ) noexcept {
+			[[nodiscard]] Base *operator->( ) noexcept {
 				return ptr( );
 			}
 
-			Base const *operator->( ) const noexcept {
+			[[nodiscard]] Base const *operator->( ) const noexcept {
 				return ptr( );
 			}
 		};
@@ -129,11 +129,12 @@ namespace daw {
 			[[noreturn]] Result operator( )( FuncArgs... ) const override {
 				daw::exception::daw_throw<std::bad_function_call>( );
 			}
+
 			[[noreturn]] Result operator( )( FuncArgs... ) override {
 				daw::exception::daw_throw<std::bad_function_call>( );
 			}
 
-			bool empty( ) const override {
+			[[nodiscard]] bool empty( ) const override {
 				return true;
 			}
 		};
@@ -180,7 +181,7 @@ namespace daw {
 				}
 			}
 
-			bool empty( ) const override {
+			[[nodiscard]] bool empty( ) const override {
 				if constexpr( func_impl::has_empty_member_v<Func> ) {
 					return m_func.empty( );
 				} else if constexpr( func_impl::is_boolable_v<Func> ) {
@@ -204,7 +205,7 @@ namespace daw {
 #pragma GCC diagnostic ignored "-Wnonnull-compare"
 #pragma GCC diagnostic ignored "-Waddress"
 #endif
-				if( !static_cast<bool>( f ) ) {
+				if( not static_cast<bool>( f ) ) {
 					return { empty_child( ) };
 				}
 #if defined( __GNUC__ ) && !defined( __clang__ )
@@ -304,7 +305,7 @@ namespace daw {
 		}
 
 		template<typename... Args>
-		Result operator( )( Args &&... args ) {
+		Result operator( )( Args &&...args ) {
 			daw::exception::precondition_check<std::bad_function_call>( !empty( ) );
 			function_base &f = *m_storage;
 			if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
@@ -315,7 +316,7 @@ namespace daw {
 		}
 
 		template<typename... Args>
-		Result operator( )( Args &&... args ) const {
+		Result operator( )( Args &&...args ) const {
 			daw::exception::precondition_check<std::bad_function_call>( !empty( ) );
 			function_base const &f = *m_storage;
 			if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
@@ -325,7 +326,7 @@ namespace daw {
 			}
 		}
 
-		bool empty( ) const {
+		[[nodiscard]] bool empty( ) const {
 			return m_storage->empty( );
 		}
 

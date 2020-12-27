@@ -46,7 +46,7 @@ namespace daw {
 
 	template<typename T0, typename T1, typename... Ts,
 	         std::enable_if_t<( sizeof...( Ts ) != 0 ), std::nullptr_t> = nullptr>
-	constexpr auto max( T0 &&val1, T1 &&val2, Ts &&... vs ) noexcept
+	constexpr auto max( T0 &&val1, T1 &&val2, Ts &&...vs ) noexcept
 	  -> std::common_type_t<T0, T1, Ts...> {
 		auto tmp = max( std::forward<Ts>( vs )... );
 		if( val1 > val2 ) {
@@ -95,7 +95,7 @@ namespace daw {
 
 	template<typename T, typename... Ts,
 	         std::enable_if_t<( sizeof...( Ts ) != 0 ), std::nullptr_t> = nullptr>
-	constexpr auto min( T &&val1, Ts &&... vs ) noexcept
+	constexpr auto min( T &&val1, Ts &&...vs ) noexcept
 	  -> std::common_type_t<T, Ts...> {
 
 		auto &&tmp = min( std::forward<Ts>( vs )... );

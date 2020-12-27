@@ -58,7 +58,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr reference operator*( ) noexcept {
+		[[nodiscard]] constexpr reference operator*( ) noexcept {
 			daw::exception::dbg_precondition_check( m_position >= 0 );
 			daw::exception::dbg_precondition_check(
 			  static_cast<size_type>( m_position ) <= m_pointer->size( ) );
@@ -66,7 +66,7 @@ namespace daw {
 			return m_pointer->operator[]( static_cast<size_type>( m_position ) );
 		}
 
-		constexpr const_reference operator*( ) const noexcept {
+		[[nodiscard]] constexpr const_reference operator*( ) const noexcept {
 			daw::exception::dbg_precondition_check( m_position >= 0 );
 			daw::exception::dbg_precondition_check(
 			  static_cast<size_type>( m_position ) <= m_pointer->size( ) );
@@ -74,7 +74,7 @@ namespace daw {
 			return m_pointer->operator[]( static_cast<size_type>( m_position ) );
 		}
 
-		constexpr pointer operator->( ) noexcept {
+		[[nodiscard]] constexpr pointer operator->( ) noexcept {
 			daw::exception::dbg_precondition_check( m_position >= 0 );
 			daw::exception::dbg_precondition_check(
 			  static_cast<size_type>( m_position ) <= m_pointer->size( ) );
@@ -82,7 +82,7 @@ namespace daw {
 			return &m_pointer->operator[]( static_cast<size_type>( m_position ) );
 		}
 
-		constexpr const_pointer operator->( ) const noexcept {
+		[[nodiscard]] constexpr const_pointer operator->( ) const noexcept {
 			daw::exception::dbg_precondition_check( m_position >= 0 );
 			daw::exception::dbg_precondition_check(
 			  static_cast<size_type>( m_position ) <= m_pointer->size( ) );
@@ -98,7 +98,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr const indexed_iterator operator++( int ) noexcept {
+		constexpr indexed_iterator operator++( int ) noexcept {
 			daw::exception::dbg_precondition_check(
 			  static_cast<size_type>( m_position ) <= m_pointer->size( ) );
 
@@ -132,7 +132,8 @@ namespace daw {
 			return result;
 		}
 
-		constexpr indexed_iterator next( difference_type n = 0 ) const noexcept {
+		[[nodiscard]] constexpr indexed_iterator
+		next( difference_type n = 0 ) const noexcept {
 			auto const new_pos = m_position + n;
 			daw::exception::dbg_precondition_check(
 			  new_pos >= 0 &&
@@ -162,7 +163,8 @@ namespace daw {
 			return result;
 		}
 
-		constexpr indexed_iterator prev( difference_type n = 0 ) const noexcept {
+		[[nodiscard]] constexpr indexed_iterator
+		prev( difference_type n = 0 ) const noexcept {
 			auto const new_pos = m_position - n;
 			daw::exception::dbg_precondition_check(
 			  new_pos >= 0 &&
@@ -173,7 +175,7 @@ namespace daw {
 		}
 
 		template<typename U>
-		constexpr difference_type
+		[[nodiscard]] constexpr difference_type
 		compare( indexed_iterator<U> const &rhs ) const noexcept {
 			daw::exception::dbg_precondition_check(
 			  std::equal_to<>{ }( m_pointer, rhs.m_pointer ) );
@@ -204,7 +206,7 @@ namespace daw {
 	}; // indexed_iterator
 
 	template<typename T>
-	constexpr auto ibegin( T &&container ) noexcept {
+	[[nodiscard]] constexpr auto ibegin( T &&container ) noexcept {
 		static_assert( std::is_lvalue_reference_v<T>,
 		               "Passing a temporary to ibegin will cause errors via "
 		               "dangling references" );
@@ -213,7 +215,7 @@ namespace daw {
 	}
 
 	template<typename T>
-	constexpr auto cibegin( T &&container ) noexcept {
+	[[nodiscard]] constexpr auto cibegin( T &&container ) noexcept {
 		static_assert( std::is_lvalue_reference_v<T>,
 		               "Passing a temporary to cibegin will cause errors via "
 		               "dangling references" );
@@ -222,7 +224,7 @@ namespace daw {
 	}
 
 	template<typename T>
-	constexpr auto iend( T &&container ) noexcept {
+	[[nodiscard]] constexpr auto iend( T &&container ) noexcept {
 		static_assert( std::is_lvalue_reference_v<T>,
 		               "Passing a temporary to iend will cause errors via "
 		               "dangling references" );
@@ -232,7 +234,7 @@ namespace daw {
 	}
 
 	template<typename T>
-	constexpr auto ciend( T &&container ) noexcept {
+	[[nodiscard]] constexpr auto ciend( T &&container ) noexcept {
 		static_assert( std::is_lvalue_reference_v<T>,
 		               "Passing a temporary to ciend will cause errors via "
 		               "dangling references" );
@@ -242,42 +244,42 @@ namespace daw {
 	}
 
 	template<typename T, size_t N>
-	constexpr auto ibegin( T ( &container )[N] ) noexcept {
+	[[nodiscard]] constexpr auto ibegin( T ( &container )[N] ) noexcept {
 		return std::begin( container );
 	}
 
 	template<typename T, size_t N>
-	constexpr auto ibegin( T const ( &container )[N] ) noexcept {
+	[[nodiscard]] constexpr auto ibegin( T const ( &container )[N] ) noexcept {
 		return std::begin( container );
 	}
 
 	template<typename T, size_t N>
-	constexpr auto cibegin( T ( &container )[N] ) noexcept {
+	[[nodiscard]] constexpr auto cibegin( T ( &container )[N] ) noexcept {
 		return std::cbegin( container );
 	}
 
 	template<typename T, size_t N>
-	constexpr auto cibegin( T const ( &container )[N] ) noexcept {
+	[[nodiscard]] constexpr auto cibegin( T const ( &container )[N] ) noexcept {
 		return std::cbegin( container );
 	}
 
 	template<typename T, size_t N>
-	constexpr auto iend( T ( &container )[N] ) noexcept {
+	[[nodiscard]] constexpr auto iend( T ( &container )[N] ) noexcept {
 		return std::end( container );
 	}
 
 	template<typename T, size_t N>
-	constexpr auto iend( T const ( &container )[N] ) noexcept {
+	[[nodiscard]] constexpr auto iend( T const ( &container )[N] ) noexcept {
 		return std::end( container );
 	}
 
 	template<typename T, size_t N>
-	constexpr auto ciend( T ( &container )[N] ) noexcept {
+	[[nodiscard]] constexpr auto ciend( T ( &container )[N] ) noexcept {
 		return std::cend( container );
 	}
 
 	template<typename T, size_t N>
-	constexpr auto ciend( T const ( &container )[N] ) noexcept {
+	[[nodiscard]] constexpr auto ciend( T const ( &container )[N] ) noexcept {
 		return std::cend( container );
 	}
 

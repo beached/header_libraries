@@ -63,7 +63,7 @@ namespace daw {
 
 		template<typename R, bool allow_empty, size_t I, typename T,
 		         typename... Args>
-		static constexpr R apply_at_impl( size_t idx, T &&t, Args &&... args ) {
+		static constexpr R apply_at_impl( size_t idx, T &&t, Args &&...args ) {
 			if( idx == I ) {
 				if constexpr( is_t_callable_v<I, T, Args...> ) {
 					return sfinae_get<I>( std::forward<T>( t ) )(
@@ -117,7 +117,7 @@ namespace daw {
 		  : fns{ f, fs... } {}
 
 		template<bool allow_empty = false, typename... Args>
-		constexpr R call( size_t idx, Args &&... args ) const {
+		constexpr R call( size_t idx, Args &&...args ) const {
 			if constexpr( using_array_v ) {
 				return fns[idx]( std::forward<Args>( args )... );
 			} else {
@@ -127,7 +127,7 @@ namespace daw {
 		}
 
 		template<bool allow_empty = false, typename... Args>
-		constexpr R operator( )( size_t idx, Args &&... args ) const {
+		constexpr R operator( )( size_t idx, Args &&...args ) const {
 			return call( idx, std::forward<Args>( args )... );
 		}
 
@@ -147,7 +147,7 @@ namespace daw {
 	};
 
 	template<typename R = void, typename Function, typename... Functions>
-	constexpr function_table_t<R, Function, Functions...>
+	[[nodiscard]] constexpr function_table_t<R, Function, Functions...>
 	make_function_table( Function fn, Functions... fns ) {
 		return function_table_t<R, Function, Functions...>{ fn, fns... };
 	}

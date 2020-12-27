@@ -29,7 +29,7 @@ namespace daw {
 			template<typename... Args,
 			         std::enable_if_t<std::is_invocable_v<decltype( fp ), Args...>,
 			                          std::nullptr_t> = nullptr>
-			inline constexpr ReturnType operator( )( Args &&... args ) const {
+			inline constexpr ReturnType operator( )( Args &&...args ) const {
 				return fp( std::forward<Args>( args )... );
 			}
 		};
@@ -41,7 +41,7 @@ namespace daw {
 			template<typename... Args,
 			         std::enable_if_t<std::is_invocable_v<decltype( fp ), Args...>,
 			                          std::nullptr_t> = nullptr>
-			inline constexpr ReturnType operator( )( Args &&... args ) const {
+			inline constexpr ReturnType operator( )( Args &&...args ) const {
 				return fp( std::forward<Args>( args )... );
 			}
 		};
@@ -62,7 +62,7 @@ namespace daw {
 			template<typename... Args,
 			         std::enable_if_t<std::is_invocable_v<decltype( fp ), Args...>,
 			                          std::nullptr_t> = nullptr>
-			inline constexpr ReturnType operator( )( Args &&... args ) const
+			inline constexpr ReturnType operator( )( Args &&...args ) const
 			  noexcept( noexcept( fp( std::forward<Args>( args )... ) ) ) {
 				return fp( std::forward<Args>( args )... );
 			}

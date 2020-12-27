@@ -33,20 +33,20 @@ namespace daw {
 			  : func( daw::move( f ) ) {}
 
 			template<typename... Args>
-			constexpr decltype( auto ) operator( )( Args &&... args ) {
+			constexpr decltype( auto ) operator( )( Args &&...args ) {
 				if constexpr( Order == keep_n_order::ascending ) {
 					return func( std::forward<Args>( args )... );
 				} else {
-					return !func( std::forward<Args>( args )... );
+					return not func( std::forward<Args>( args )... );
 				}
 			}
 
 			template<typename... Args>
-			constexpr decltype( auto ) operator( )( Args &&... args ) const {
+			constexpr decltype( auto ) operator( )( Args &&...args ) const {
 				if constexpr( Order == keep_n_order::ascending ) {
 					return func( std::forward<Args>( args )... );
 				} else {
-					return !func( std::forward<Args>( args )... );
+					return not func( std::forward<Args>( args )... );
 				}
 			}
 		};
@@ -104,39 +104,40 @@ namespace daw {
 			}
 		}
 
-		constexpr const_reference operator[]( size_type index ) const noexcept {
+		[[nodiscard]] constexpr const_reference
+		operator[]( size_type index ) const noexcept {
 			return m_values[index];
 		}
 
-		constexpr const_iterator begin( ) const noexcept {
+		[[nodiscard]] constexpr const_iterator begin( ) const noexcept {
 			return m_values.begin( );
 		}
 
-		constexpr const_iterator cbegin( ) const noexcept {
+		[[nodiscard]] constexpr const_iterator cbegin( ) const noexcept {
 			return m_values.cbegin( );
 		}
 
-		constexpr const_iterator end( ) const noexcept {
+		[[nodiscard]] constexpr const_iterator end( ) const noexcept {
 			return m_values.end( );
 		}
 
-		constexpr const_iterator cend( ) const noexcept {
+		[[nodiscard]] constexpr const_iterator cend( ) const noexcept {
 			return m_values.cend( );
 		}
 
-		constexpr size_type size( ) const noexcept {
+		[[nodiscard]] constexpr size_type size( ) const noexcept {
 			return MaxItems;
 		}
 
-		constexpr size_type capacity( ) const noexcept {
+		[[nodiscard]] constexpr size_type capacity( ) const noexcept {
 			return MaxItems;
 		}
 
-		constexpr const_reference front( ) const noexcept {
+		[[nodiscard]] constexpr const_reference front( ) const noexcept {
 			return m_values.front( );
 		}
 
-		constexpr const_reference back( ) const noexcept {
+		[[nodiscard]] constexpr const_reference back( ) const noexcept {
 			return m_values.back( );
 		}
 	};

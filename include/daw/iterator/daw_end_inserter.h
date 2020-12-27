@@ -40,7 +40,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr end_inserter_iterator &operator*( ) noexcept {
+		[[nodiscard]] constexpr end_inserter_iterator &operator*( ) noexcept {
 			return *this;
 		}
 
@@ -56,7 +56,7 @@ namespace daw {
 	end_inserter_iterator( Container ) -> end_inserter_iterator<Container>;
 
 	template<typename Container>
-	constexpr auto end_inserter( Container &c ) {
+	[[nodiscard]] constexpr auto end_inserter( Container &c ) {
 		return end_inserter_iterator<Container>( c );
 	}
 } // namespace daw

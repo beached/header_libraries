@@ -53,7 +53,7 @@ namespace daw {
 		  : m_value{ std::make_unique<value_t>( std::forward<Arg>( arg ) ) } {}
 
 		template<typename Arg, typename... Args>
-		heap_value( Arg &&arg, Args &&... args )
+		heap_value( Arg &&arg, Args &&...args )
 		  : m_value{ std::make_unique<value_t>( std::forward<Arg>( arg ),
 		                                        std::forward<Args>( args )... ) } {}
 
@@ -94,22 +94,22 @@ namespace daw {
 		}
 
 		template<typename... Args>
-		auto operator[]( Args &&... args ) {
+		auto operator[]( Args &&...args ) {
 			return m_value->operator[]( std::forward<Args>( args )... );
 		}
 
 		template<typename... Args>
-		auto operator[]( Args &&... args ) const {
+		auto operator[]( Args &&...args ) const {
 			return m_value->operator[]( std::forward<Args>( args )... );
 		}
 
 		template<typename... Args>
-		auto operator( )( Args &&... args ) {
+		auto operator( )( Args &&...args ) {
 			return m_value->operator[]( std::forward<Args>( args )... );
 		}
 
 		template<typename... Args>
-		auto operator( )( Args &&... args ) const {
+		auto operator( )( Args &&...args ) const {
 			return m_value->operator[]( std::forward<Args>( args )... );
 		}
 	};

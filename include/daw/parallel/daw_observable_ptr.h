@@ -460,7 +460,7 @@ namespace daw {
 
 	template<typename T, typename... Args>
 	[[nodiscard]] observable_ptr<T>
-	make_observable_ptr( Args &&... args ) noexcept(
+	make_observable_ptr( Args &&...args ) noexcept(
 	  noexcept( new T( std::forward<Args>( args )... ) ) ) {
 		T *tmp = new T( std::forward<Args>( args )... );
 		if( not tmp ) {

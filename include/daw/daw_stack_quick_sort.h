@@ -20,7 +20,7 @@ namespace daw {
 			Idx idx = 0;
 
 			template<typename... Args>
-			constexpr void push_back( Args &&... args ) {
+			constexpr void push_back( Args &&...args ) {
 				values[idx++] = T{ std::forward<Args>( args )... };
 			}
 

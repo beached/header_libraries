@@ -186,7 +186,7 @@ namespace daw {
 	};
 
 	template<typename Value, size_t HashSize = sizeof( size_t ), typename... Keys>
-	constexpr auto make_fixed_lookup( Keys &&... keys ) noexcept {
+	constexpr auto make_fixed_lookup( Keys &&...keys ) noexcept {
 		fixed_lookup<Value, sizeof...( Keys )> result{ };
 		auto const lst = { ( result[keys] = Value{ }, 0 )... };
 		Unused( lst );

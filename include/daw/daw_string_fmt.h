@@ -73,7 +73,7 @@ namespace daw {
 				template<uint8_t Cnt, uint8_t Sz, typename Arg, typename... Args,
 				         std::enable_if_t<( Cnt < Sz ), std::nullptr_t> = nullptr>
 				std::string get_arg_impl( uint8_t const idx, Arg &&arg,
-				                          Args &&... args ) {
+				                          Args &&...args ) {
 					if( Cnt == idx ) {
 						using daw::string_fmt::v1::string_fmt_details::to_string;
 						using std::to_string;
@@ -84,7 +84,7 @@ namespace daw {
 				}
 
 				template<typename... Args>
-				std::string get_arg( uint8_t const idx, Args &&... args ) {
+				std::string get_arg( uint8_t const idx, Args &&...args ) {
 					return get_arg_impl<0, sizeof...( Args )>(
 					  idx, std::forward<Args>( args )... );
 				}
@@ -105,7 +105,7 @@ namespace daw {
 				  : m_format_str{ std::string{ format_str } } {}
 
 				template<typename... Args>
-				std::string operator( )( Args &&... args ) const {
+				std::string operator( )( Args &&...args ) const {
 					std::string result{ };
 					result.reserve( m_format_str.size( ) +
 					                ( sizeof...( args ) * 4 ) ); // WAG for size
@@ -124,7 +124,7 @@ namespace daw {
 			};
 
 			template<typename... Args>
-			std::string fmt( std::string format_str, Args &&... args ) {
+			std::string fmt( std::string format_str, Args &&...args ) {
 				return fmt_t{ daw::move( format_str ) }(
 				  std::forward<Args>( args )... );
 			}
@@ -162,7 +162,7 @@ namespace daw {
 
 					template<typename OutputIterator, typename... Args>
 					constexpr OutputIterator operator( )( OutputIterator out,
-					                                      Args &&... args ) const {
+					                                      Args &&...args ) const {
 						return daw::visit_nt(
 						  m_data,
 						  [&out]( daw::basic_string_view<CharT> sv ) {
@@ -298,7 +298,7 @@ namespace daw {
 				}
 
 				template<typename Result = std::basic_string<CharT>, typename... Args>
-				constexpr Result operator( )( Args &&... args ) const {
+				constexpr Result operator( )( Args &&...args ) const {
 					Result result{ };
 					if constexpr( string_fmt_details::has_reserve_v<Result> ) {
 						result.reserve( N * 2U );
@@ -314,7 +314,7 @@ namespace daw {
 			fmt_t( CharT const ( & )[N] ) -> fmt_t<CharT, N>;
 
 			template<typename CharT, size_t N, typename... Args>
-			constexpr auto fmt( CharT const ( &format_str )[N], Args &&... args ) {
+			constexpr auto fmt( CharT const ( &format_str )[N], Args &&...args ) {
 				auto const formatter = fmt_t( format_str );
 				return formatter( std::forward<Args>( args )... );
 			}
@@ -322,7 +322,7 @@ namespace daw {
 			template<
 			  char const *fmt_string, typename Result = std::basic_string<char>,
 			  size_t N = string_fmt_details::cxstrlen( fmt_string ), typename... Args>
-			constexpr Result fmt( Args &&... args ) {
+			constexpr Result fmt( Args &&...args ) {
 				constexpr auto const formatter =
 				  fmt_t<char, N>( string_fmt_details::private_ctor{ }, fmt_string );
 				return formatter.template operator( )<Result>(

@@ -20,13 +20,15 @@ namespace daw {
 	class hash_set_t {
 		std::vector<std::optional<Key>> m_indices;
 
-		static constexpr size_t scale_hash( size_t hash, size_t range_size ) {
+		[[nodiscard]] static constexpr size_t scale_hash( size_t hash,
+		                                                  size_t range_size ) {
 			size_t const prime_a = 18446744073709551557u;
 			size_t const prime_b = 18446744073709551533u;
 			return ( hash * prime_a + prime_b ) % range_size;
 		}
 
-		std::optional<size_t> find_index( size_t hash, Key const &key ) const {
+		[[nodiscard]] std::optional<size_t> find_index( size_t hash,
+		                                                Key const &key ) const {
 			size_t const scaled_hash = scale_hash( hash, m_indices.size( ) );
 
 			for( size_t n = scaled_hash; n < m_indices.size( ); ++n ) {
@@ -72,22 +74,22 @@ namespace daw {
 			return index;
 		}
 
-		bool exists( Key const &key ) const noexcept {
+		[[nodiscard]] bool exists( Key const &key ) const noexcept {
 			auto const hash = Hash{ }( key );
 			auto const index = find_index( hash, key );
 			return static_cast<bool>( index ) and
 			       static_cast<bool>( m_indices[*index] );
 		}
 
-		bool count( Key const &key ) const noexcept {
+		[[nodiscard]] bool count( Key const &key ) const noexcept {
 			return exists( key ) ? 1 : 0;
 		}
 
-		size_t capacity( ) const noexcept {
+		[[nodiscard]] size_t capacity( ) const noexcept {
 			return m_indices.size( );
 		}
 
-		size_t size( ) const noexcept {
+		[[nodiscard]] size_t size( ) const noexcept {
 			return daw::algorithm::accumulate(
 			  std::begin( m_indices ), std::end( m_indices ), 0ULL,
 			  []( auto const &opt ) {

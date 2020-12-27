@@ -171,7 +171,7 @@ namespace daw {
 			  std::enable_if_t<!std::is_same_v<void, daw::traits::invoke_result_t<
 			                                           Function, Args...>>,
 			                   std::nullptr_t> = nullptr>
-			constexpr decltype( auto ) operator( )( Args &&... args ) const
+			constexpr decltype( auto ) operator( )( Args &&...args ) const
 			  noexcept( daw::traits::is_nothrow_callable_v<
 			            std::add_pointer_t<Function>, Args...> ) {
 
@@ -183,7 +183,7 @@ namespace daw {
 			  std::enable_if_t<
 			    std::is_same_v<void, daw::traits::invoke_result_t<Function, Args...>>,
 			    std::nullptr_t> = nullptr>
-			constexpr void operator( )( Args &&... args ) const
+			constexpr void operator( )( Args &&...args ) const
 			  noexcept( daw::traits::is_nothrow_callable_v<
 			            std::add_pointer_t<Function>, Args...> ) {
 

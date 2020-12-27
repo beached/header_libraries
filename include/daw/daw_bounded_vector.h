@@ -59,27 +59,27 @@ namespace daw {
 			  static_cast<std::size_t>( std::distance( m_stack.begin( ), out ) );
 		}
 
-		constexpr bool empty( ) const noexcept {
+		[[nodiscard]] constexpr bool empty( ) const noexcept {
 			return m_index == m_first;
 		}
 
-		constexpr bool full( ) const noexcept {
+		[[nodiscard]] constexpr bool full( ) const noexcept {
 			return m_index - m_first == N;
 		}
 
-		constexpr size_type size( ) const noexcept {
+		[[nodiscard]] constexpr size_type size( ) const noexcept {
 			return m_index - m_first;
 		}
 
-		constexpr size_type capacity( ) const noexcept {
+		[[nodiscard]] constexpr size_type capacity( ) const noexcept {
 			return N;
 		}
 
-		constexpr bool has_room( size_type count ) noexcept {
+		[[nodiscard]] constexpr bool has_room( size_type count ) noexcept {
 			return count + size( ) >= N;
 		}
 
-		constexpr size_type available( ) const noexcept {
+		[[nodiscard]] constexpr size_type available( ) const noexcept {
 			return N - size( );
 		}
 
@@ -88,95 +88,96 @@ namespace daw {
 			m_first = 0;
 		}
 
-		constexpr reference front( ) noexcept {
+		[[nodiscard]] constexpr reference front( ) noexcept {
 			return m_stack[m_first];
 		}
 
-		constexpr const_reference front( ) const noexcept {
+		[[nodiscard]] constexpr const_reference front( ) const noexcept {
 			return m_stack[m_first];
 		}
 
-		constexpr reference back( ) noexcept {
+		[[nodiscard]] constexpr reference back( ) noexcept {
 			return m_stack[m_index - 1];
 		}
 
-		constexpr const_reference back( ) const noexcept {
+		[[nodiscard]] constexpr const_reference back( ) const noexcept {
 			return m_stack[m_index - 1];
 		}
 
-		constexpr reference operator[]( size_type pos ) noexcept {
+		[[nodiscard]] constexpr reference operator[]( size_type pos ) noexcept {
 			return m_stack[m_first + pos];
 		}
 
-		constexpr const_reference operator[]( size_type pos ) const noexcept {
+		[[nodiscard]] constexpr const_reference
+		operator[]( size_type pos ) const noexcept {
 			return m_stack[m_first + pos];
 		}
 
-		constexpr reference at( size_type pos ) {
+		[[nodiscard]] constexpr reference at( size_type pos ) {
 			daw::exception::precondition_check(
 			  pos < size( ), "Attempt to access past end of fix_stack" );
 			return m_stack[pos + m_first];
 		}
 
-		constexpr const_reference at( size_type pos ) const {
+		[[nodiscard]] constexpr const_reference at( size_type pos ) const {
 			daw::exception::precondition_check(
 			  pos < size( ), "Attempt to access past end of fix_stack" );
 			return m_stack[pos + m_first];
 		}
 
-		constexpr pointer data( ) noexcept {
+		[[nodiscard]] constexpr pointer data( ) noexcept {
 			return m_stack.data( ) + m_first;
 		}
 
-		constexpr const_pointer data( ) const noexcept {
+		[[nodiscard]] constexpr const_pointer data( ) const noexcept {
 			return m_stack.data( ) + m_first;
 		}
 
-		constexpr iterator begin( ) noexcept {
+		[[nodiscard]] constexpr iterator begin( ) noexcept {
 			return m_stack.begin( ) + m_first;
 		}
 
-		constexpr const_iterator begin( ) const noexcept {
+		[[nodiscard]] constexpr const_iterator begin( ) const noexcept {
 			return m_stack.begin( ) + m_first;
 		}
 
-		constexpr const_iterator cbegin( ) const noexcept {
+		[[nodiscard]] constexpr const_iterator cbegin( ) const noexcept {
 			return m_stack.cbegin( ) + m_first;
 		}
 
-		constexpr reverse_iterator rbegin( ) noexcept {
+		[[nodiscard]] constexpr reverse_iterator rbegin( ) noexcept {
 			return reverse_iterator( end( ) );
 		}
 
-		constexpr const_reverse_iterator rbegin( ) const noexcept {
+		[[nodiscard]] constexpr const_reverse_iterator rbegin( ) const noexcept {
 			return const_reverse_iterator( end( ) );
 		}
 
-		constexpr const_reverse_iterator crbegin( ) const noexcept {
+		[[nodiscard]] constexpr const_reverse_iterator crbegin( ) const noexcept {
 			return const_reverse_iterator( cend( ) );
 		}
 
-		constexpr iterator end( ) noexcept {
+		[[nodiscard]] constexpr iterator end( ) noexcept {
 			return &m_stack[m_index];
 		}
 
-		constexpr const_iterator end( ) const noexcept {
+		[[nodiscard]] constexpr const_iterator end( ) const noexcept {
 			return &m_stack[m_index];
 		}
 
-		constexpr const_iterator cend( ) const noexcept {
+		[[nodiscard]] constexpr const_iterator cend( ) const noexcept {
 			return &m_stack[m_index];
 		}
 
-		constexpr reverse_iterator rend( ) noexcept {
+		[[nodiscard]] constexpr reverse_iterator rend( ) noexcept {
 			return reverse_iterator( begin( ) );
 		}
 
-		constexpr const_reverse_iterator rend( ) const noexcept {
+		[[nodiscard]] constexpr const_reverse_iterator rend( ) const noexcept {
 			return const_reverse_iterator( begin( ) );
 		}
 
-		constexpr const_reverse_iterator crend( ) const noexcept {
+		[[nodiscard]] constexpr const_reverse_iterator crend( ) const noexcept {
 			return const_reverse_iterator( cbegin( ) );
 		}
 
@@ -189,7 +190,7 @@ namespace daw {
 			m_first = 0;
 		}
 
-		constexpr bool can_move_front( size_type how_many ) noexcept {
+		[[nodiscard]] constexpr bool can_move_front( size_type how_many ) noexcept {
 			return m_first > 0 and m_index >= N - how_many;
 		}
 
@@ -218,6 +219,7 @@ namespace daw {
 			}
 			return m_index++;
 		}
+
 		constexpr void push_back( const_pointer ptr, size_type sz ) noexcept {
 			if( can_move_front( sz ) ) {
 				do_move_to_front( );
@@ -249,7 +251,7 @@ namespace daw {
 		}
 
 		template<typename... Args>
-		constexpr void emplace_back( Args &&... args ) noexcept {
+		constexpr void emplace_back( Args &&...args ) noexcept {
 			if( can_move_front( sizeof...( Args ) ) ) {
 				do_move_to_front( );
 			}
@@ -257,7 +259,7 @@ namespace daw {
 			  daw::construct_a<value_type>( std::forward<Args>( args )... );
 		}
 
-		constexpr value_type pop_back( ) noexcept {
+		[[nodiscard]] constexpr value_type pop_back( ) noexcept {
 			return m_stack[--m_index];
 		}
 
@@ -269,7 +271,7 @@ namespace daw {
 		}
 
 		///	take care calling as it is slow
-		constexpr value_type pop_front( ) {
+		[[nodiscard]] constexpr value_type pop_front( ) {
 			auto result = front( );
 			pop_front( 1 );
 			return result;

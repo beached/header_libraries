@@ -408,7 +408,7 @@ namespace daw {
 			template<typename... Args,
 			         std::enable_if_t<traits::is_callable_v<Function, Args...>,
 			                          std::nullptr_t> = nullptr>
-			constexpr void operator( )( Args &&... args ) noexcept(
+			constexpr void operator( )( Args &&...args ) noexcept(
 			  traits::is_nothrow_callable_v<Function, Args...> ) {
 
 				function( std::forward<Args>( args )... );
@@ -439,7 +439,7 @@ namespace daw {
 			template<typename... Args,
 			         std::enable_if_t<traits::is_callable_v<Function, Args...>,
 			                          std::nullptr_t> = nullptr>
-			constexpr void operator( )( Args &&... args ) noexcept(
+			constexpr void operator( )( Args &&...args ) noexcept(
 			  traits::is_nothrow_callable_v<Function, Args...> ) {
 				function( std::forward<Args>( args )... );
 			}
@@ -448,7 +448,7 @@ namespace daw {
 	} // namespace traits_details
 
 	template<typename Function>
-	constexpr auto make_void_function( Function &&func ) noexcept(
+	[[nodiscard]] constexpr auto make_void_function( Function &&func ) noexcept(
 	  noexcept( traits_details::void_function<Function>(
 	    std::forward<Function>( func ) ) ) ) {
 
@@ -487,8 +487,9 @@ namespace daw {
 
 		template<bool>
 		struct delete_default_constructor_if {
-			constexpr delete_default_constructor_if( ) noexcept {}
-			constexpr delete_default_constructor_if( non_constructor ) noexcept {}
+			constexpr delete_default_constructor_if( ) noexcept = default;
+			constexpr explicit delete_default_constructor_if(
+			  non_constructor ) noexcept {}
 		};
 
 		template<>
@@ -501,25 +502,21 @@ namespace daw {
 			  non_constructor ) noexcept {}
 
 			[[maybe_unused]] constexpr delete_default_constructor_if(
-			  delete_default_constructor_if const & ) {}
+			  delete_default_constructor_if const & ) = default;
 
 			[[maybe_unused]] constexpr delete_default_constructor_if &
-			operator=( delete_default_constructor_if const & ) noexcept {
-				return *this;
-			}
+			operator=( delete_default_constructor_if const & ) noexcept = default;
 
 			[[maybe_unused]] constexpr delete_default_constructor_if(
-			  delete_default_constructor_if && ) noexcept {}
+			  delete_default_constructor_if && ) noexcept = default;
 
 			[[maybe_unused]] constexpr delete_default_constructor_if &
-			operator=( delete_default_constructor_if && ) noexcept {
-				return *this;
-			}
+			operator=( delete_default_constructor_if && ) noexcept = default;
 		};
 
 		template<bool>
 		struct delete_copy_constructor_if {
-			constexpr delete_copy_constructor_if( ) noexcept {}
+			constexpr delete_copy_constructor_if( ) noexcept = default;
 			constexpr delete_copy_constructor_if( non_constructor ) noexcept {}
 		};
 
@@ -530,14 +527,13 @@ namespace daw {
 			[[maybe_unused]] constexpr delete_copy_constructor_if(
 			  non_constructor ) noexcept {}
 
-			[[maybe_unused]] constexpr delete_copy_constructor_if( ) noexcept {}
+			[[maybe_unused]] constexpr delete_copy_constructor_if( ) noexcept =
+			  default;
 
 			[[maybe_unused]] ~delete_copy_constructor_if( ) noexcept = default;
 
 			[[maybe_unused]] constexpr delete_copy_constructor_if &
-			operator=( delete_copy_constructor_if const & ) noexcept {
-				return *this;
-			}
+			operator=( delete_copy_constructor_if const & ) noexcept = default;
 
 			[[maybe_unused]] constexpr delete_copy_constructor_if(
 			  delete_copy_constructor_if && ) noexcept {}
@@ -550,7 +546,7 @@ namespace daw {
 
 		template<bool>
 		struct delete_copy_assignment_if {
-			constexpr delete_copy_assignment_if( ) noexcept {}
+			constexpr delete_copy_assignment_if( ) noexcept = default;
 			constexpr delete_copy_assignment_if( non_constructor ) noexcept {}
 		};
 
@@ -562,12 +558,13 @@ namespace daw {
 			[[maybe_unused]] constexpr delete_copy_assignment_if(
 			  non_constructor ) noexcept {}
 
-			[[maybe_unused]] constexpr delete_copy_assignment_if( ) noexcept {}
+			[[maybe_unused]] constexpr delete_copy_assignment_if( ) noexcept =
+			  default;
 
 			[[maybe_unused]] ~delete_copy_assignment_if( ) noexcept = default;
 
 			[[maybe_unused]] constexpr delete_copy_assignment_if(
-			  delete_copy_assignment_if const & ) noexcept {}
+			  delete_copy_assignment_if const & ) noexcept = default;
 
 			[[maybe_unused]] constexpr delete_copy_assignment_if(
 			  delete_copy_assignment_if && ) noexcept {}
@@ -580,7 +577,7 @@ namespace daw {
 
 		template<bool>
 		struct delete_move_constructor_if {
-			constexpr delete_move_constructor_if( ) noexcept {}
+			constexpr delete_move_constructor_if( ) noexcept = default;
 			constexpr delete_move_constructor_if( non_constructor ) noexcept {}
 		};
 
@@ -592,14 +589,13 @@ namespace daw {
 			[[maybe_unused]] constexpr delete_move_constructor_if(
 			  non_constructor ) noexcept {}
 
-			[[maybe_unused]] constexpr delete_move_constructor_if( ) noexcept {}
+			[[maybe_unused]] constexpr delete_move_constructor_if( ) noexcept =
+			  default;
 
 			[[maybe_unused]] ~delete_move_constructor_if( ) noexcept = default;
 
 			[[maybe_unused]] constexpr delete_move_constructor_if &
-			operator=( delete_move_constructor_if const & ) noexcept {
-				return *this;
-			}
+			operator=( delete_move_constructor_if const & ) noexcept = default;
 			[[maybe_unused]] constexpr delete_move_constructor_if(
 			  delete_move_constructor_if && ) noexcept {}
 
@@ -609,7 +605,7 @@ namespace daw {
 
 		template<bool>
 		struct delete_move_assignment_if {
-			constexpr delete_move_assignment_if( ) noexcept {}
+			constexpr delete_move_assignment_if( ) noexcept = default;
 			constexpr delete_move_assignment_if( non_constructor ) noexcept {}
 		};
 
@@ -621,12 +617,13 @@ namespace daw {
 			[[maybe_unused]] constexpr delete_move_assignment_if(
 			  non_constructor ) noexcept {}
 
-			[[maybe_unused]] constexpr delete_move_assignment_if( ) noexcept {}
+			[[maybe_unused]] constexpr delete_move_assignment_if( ) noexcept =
+			  default;
 
 			[[maybe_unused]] ~delete_move_assignment_if( ) noexcept = default;
 
 			[[maybe_unused]] constexpr delete_move_assignment_if(
-			  delete_move_assignment_if const & ) noexcept {}
+			  delete_move_assignment_if const & ) noexcept = default;
 
 			[[maybe_unused]] constexpr delete_move_assignment_if(
 			  delete_move_assignment_if && ) noexcept {}

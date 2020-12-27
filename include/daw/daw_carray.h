@@ -28,7 +28,7 @@ namespace daw {
 		}
 
 		template<typename T, typename Arg, typename... Args>
-		constexpr void assign_to( T *ptr, Arg &&arg, Args &&... args ) noexcept(
+		constexpr void assign_to( T *ptr, Arg &&arg, Args &&...args ) noexcept(
 		  noexcept( T( std::declval<Arg &&>( ) ) ) ) {
 			*ptr = std::forward<Arg>( arg );
 			assign_to( ++ptr, std::forward<Args>( args )... );
@@ -78,7 +78,7 @@ namespace daw {
 		}
 
 		template<typename... Args>
-		constexpr carray( Args &&... args ) noexcept( noexcept( details::assign_to(
+		constexpr carray( Args &&...args ) noexcept( noexcept( details::assign_to(
 		  std::declval<carray>( ).ptr( ), std::declval<Args &&>( )... ) ) )
 		  : m_data{ } {
 
@@ -100,115 +100,118 @@ namespace daw {
 
 		constexpr carray( carray && ) noexcept(
 		  noexcept( T( std::declval<T &&>( ) ) ) ) = default;
+
 		constexpr carray &operator=( carray && ) noexcept(
 		  noexcept( T( std::declval<T &&>( ) ) ) ) = default;
 
-		constexpr reference operator[]( size_type pos ) noexcept {
+		[[nodiscard]] constexpr reference operator[]( size_type pos ) noexcept {
 			return ptr( )[pos];
 		}
 
-		constexpr const_reference operator[]( size_type pos ) const noexcept {
+		[[nodiscard]] constexpr const_reference
+		operator[]( size_type pos ) const noexcept {
 			return ptr( )[pos];
 		}
 
-		constexpr reference at( size_type pos ) {
+		[[nodiscard]] constexpr reference at( size_type pos ) {
 			daw::exception::daw_throw_on_false<std::out_of_range>(
 			  pos < N, "Attemp to access past end of array" );
 			return ptr( )[pos];
 		}
 
-		constexpr const_reference at( size_type pos ) const noexcept {
+		[[nodiscard]] constexpr const_reference at( size_type pos ) const {
 			daw::exception::daw_throw_on_false<std::out_of_range>(
 			  pos < N, "Attemp to access past end of array" );
 			return ptr( )[pos];
 		}
 
-		constexpr pointer begin( ) noexcept {
+		[[nodiscard]] constexpr pointer begin( ) noexcept {
 			return ptr( );
 		}
 
-		constexpr const_pointer begin( ) const noexcept {
+		[[nodiscard]] constexpr const_pointer begin( ) const noexcept {
 			return ptr( );
 		}
 
-		constexpr const_pointer cbegin( ) const noexcept {
+		[[nodiscard]] constexpr const_pointer cbegin( ) const noexcept {
 			return ptr( );
 		}
 
-		constexpr pointer end( ) noexcept {
+		[[nodiscard]] constexpr pointer end( ) noexcept {
 			return &ptr( )[N];
 		}
 
-		constexpr const_pointer end( ) const noexcept {
+		[[nodiscard]] constexpr const_pointer end( ) const noexcept {
 			return &ptr( )[N];
 		}
 
-		constexpr const_pointer cend( ) const noexcept {
+		[[nodiscard]] constexpr const_pointer cend( ) const noexcept {
 			return &ptr( )[N];
 		}
 
-		constexpr auto rbegin( ) noexcept {
+		[[nodiscard]] constexpr auto rbegin( ) noexcept {
 			static_assert( N > 0, "Cannot call rbegin on empty array" );
 			return make_reverse_iterator( &ptr( )[N - 1] );
 		}
 
-		constexpr auto rbegin( ) const noexcept {
+		[[nodiscard]] constexpr auto rbegin( ) const noexcept {
 			static_assert( N > 0, "Cannot call rbegin on empty array" );
 			return make_reverse_iterator( &ptr( )[N - 1] );
 		}
 
-		constexpr auto crbegin( ) const noexcept {
+		[[nodiscard]] constexpr auto crbegin( ) const noexcept {
 			static_assert( N > 0, "Cannot call crbegin on empty array" );
 			return make_reverse_iterator( &ptr( )[N - 1] );
 		}
 
-		constexpr auto rend( ) noexcept {
+		[[nodiscard]] constexpr auto rend( ) noexcept {
 			static_assert( N > 0, "Cannot call rend on empty array" );
 			return make_reverse_iterator( ptr( ) - 1 );
 		}
 
-		constexpr auto rend( ) const noexcept {
+		[[nodiscard]] constexpr auto rend( ) const noexcept {
 			static_assert( N > 0, "Cannot call rend on empty array" );
 			return make_reverse_iterator( ptr( ) - 1 );
 		}
 
-		constexpr auto crend( ) const noexcept {
+		[[nodiscard]] constexpr auto crend( ) const noexcept {
 			static_assert( N > 0, "Cannot call crend on empty array" );
 			return make_reverse_iterator( ptr( ) - 1 );
 		}
 
-		constexpr reference front( ) noexcept {
+		[[nodiscard]] constexpr reference front( ) noexcept {
 			static_assert( N > 0, "Cannot call front on empty array" );
 			return ptr( )[0];
 		}
 
-		constexpr const_reference front( ) const noexcept {
+		[[nodiscard]] constexpr const_reference front( ) const noexcept {
 			static_assert( N > 0, "Cannot call front on empty array" );
 			return ptr( )[0];
 		}
 
-		constexpr reference back( ) noexcept {
-			static_assert( N > 0, "Cannot call back on empty array" );
-			return ptr( )[N - 1];
-		}
-		constexpr const_reference back( ) const noexcept {
+		[[nodiscard]] constexpr reference back( ) noexcept {
 			static_assert( N > 0, "Cannot call back on empty array" );
 			return ptr( )[N - 1];
 		}
 
-		constexpr const_pointer data( ) const noexcept {
+		[[nodiscard]] constexpr const_reference back( ) const noexcept {
+			static_assert( N > 0, "Cannot call back on empty array" );
+			return ptr( )[N - 1];
+		}
+
+		[[nodiscard]] constexpr const_pointer data( ) const noexcept {
 			return ptr( );
 		}
 
-		constexpr size_type size( ) const noexcept {
+		[[nodiscard]] constexpr size_type size( ) const noexcept {
 			return N;
 		}
 
-		constexpr size_type max_size( ) const noexcept {
+		[[nodiscard]] constexpr size_type max_size( ) const noexcept {
 			return N;
 		}
 
-		constexpr bool empty( ) const noexcept {
+		[[nodiscard]] constexpr bool empty( ) const noexcept {
 			return 0 == N;
 		}
 

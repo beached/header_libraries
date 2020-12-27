@@ -38,7 +38,7 @@ namespace daw {
 			m_mutex->lock( );
 		}
 
-		bool try_lock( ) {
+		[[nodiscard]] bool try_lock( ) {
 			return m_mutex->try_lock( );
 		}
 
@@ -46,7 +46,7 @@ namespace daw {
 			return m_mutex->unlock( );
 		}
 
-		decltype( auto ) native_handle( ) {
+		[[nodiscard]] decltype( auto ) native_handle( ) {
 			return m_mutex->native_handle( );
 		}
 

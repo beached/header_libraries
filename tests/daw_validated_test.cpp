@@ -173,7 +173,7 @@ void struct_move_001( ) {
 	auto a = value_t( std::make_unique<int>( 2 ) );
 	std::unique_ptr<int> b( std::move( a ).get( ) );
 
-	daw::expecting( !a.get( ) );
+	daw::expecting( not a.get( ) );
 	daw::expecting( 2, *b );
 }
 
@@ -181,18 +181,18 @@ constexpr bool operator_star_001( ) {
 	using value_t = daw::validated<test_class_t, test_class_validator_t>;
 
 	constexpr value_t a = { 2 };
-	static_assert( a.get( ).value == 2, "" );
+	static_assert( a.get( ).value == 2 );
 
-	static_assert( ( *a ).calc( 2 ) == 4, "" );
+	static_assert( ( *a ).calc( 2 ) == 4 );
 	test_class_t a_tmp = a;
 
 	daw::expecting( ( *a ).calc( 5 ) != a_tmp.calc( 5 ) );
 
 	constexpr value_t const b = { 4 };
-	static_assert( b.get( ).value == 4, "" );
-	static_assert( ( *b ).calc( 2 ) == 8, "" );
+	static_assert( b.get( ).value == 4 );
+	static_assert( ( *b ).calc( 2 ) == 8 );
 
-	static_assert( ( *value_t( 2 ) ).calc( 2 ) == 4, "" );
+	static_assert( ( *value_t( 2 ) ).calc( 2 ) == 4 );
 	return true;
 }
 static_assert( operator_star_001( ) );
@@ -201,15 +201,15 @@ namespace operator_right_arrow_001 {
 	using value_t = daw::validated<test_class_t, test_class_validator_t>;
 
 	static constexpr value_t a = { 2 };
-	static_assert( a.get( ).value == 2, "" );
+	static_assert( a.get( ).value == 2 );
 
-	static_assert( a->calc( 2 ) == 4, "" );
+	static_assert( a->calc( 2 ) == 4 );
 
 	static constexpr value_t const b = { 4 };
-	static_assert( b.get( ).value == 4, "" );
-	static_assert( b->calc( 2 ) == 8, "" );
+	static_assert( b.get( ).value == 4 );
+	static_assert( b->calc( 2 ) == 8 );
 
-	static_assert( value_t( 2 )->calc( 2 ) == 4, "" );
+	static_assert( value_t( 2 )->calc( 2 ) == 4 );
 } // namespace operator_right_arrow_001
 
 constexpr int
@@ -234,7 +234,7 @@ struct throwing_validator {
 
 void throwing_validator_001( ) {
 	using value_t = daw::validated<int, throwing_validator>;
-	static_assert( value_t( 1 ) == 1, "" );
+	static_assert( value_t( 1 ) == 1 );
 
 	daw::expecting_exception<std::runtime_error>( []( ) { value_t( 2 ); } );
 }

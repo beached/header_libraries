@@ -16,7 +16,7 @@ namespace daw::algorithm {
 		template<typename Function, typename... Args, std::size_t... Is>
 		DAW_ATTRIBUTE_FLATTEN static inline constexpr void
 		do_n( Function &&func, std::integer_sequence<std::size_t, Is...>,
-		      Args &&... args ) noexcept( noexcept( func( args... ) ) ) {
+		      Args &&...args ) noexcept( noexcept( func( args... ) ) ) {
 			if constexpr( sizeof...( Is ) > 0 ) {
 				(void)( ( func( args... ), Is ) + ... );
 			}
@@ -35,7 +35,7 @@ namespace daw::algorithm {
 
 	template<std::size_t count, typename Function, typename... Args>
 	DAW_ATTRIBUTE_FLATTEN static inline constexpr void do_n( Function &&func,
-	                                                         Args &&... args ) {
+	                                                         Args &&...args ) {
 		do_n_details::do_n( std::forward<Function>( func ),
 		                    std::make_integer_sequence<std::size_t, count>{ },
 		                    std::forward<Args>( args )... );
@@ -43,7 +43,7 @@ namespace daw::algorithm {
 
 	template<typename Function, typename... Args>
 	DAW_ATTRIBUTE_FLATTEN static inline constexpr void
-	do_n( std::size_t count, Function &&func, Args &&... args ) noexcept(
+	do_n( std::size_t count, Function &&func, Args &&...args ) noexcept(
 	  std::is_nothrow_invocable_v<Function, Args...> ) {
 		while( count-- > 0 ) {
 			func( args... );

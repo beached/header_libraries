@@ -29,7 +29,7 @@ namespace daw {
 		Container *m_container;
 
 	public:
-		constexpr back_inserter( Container &c ) noexcept
+		explicit constexpr back_inserter( Container &c ) noexcept
 		  : m_container( &c ) {}
 
 		template<typename T, daw::enable_when_t<not std::is_same_v<

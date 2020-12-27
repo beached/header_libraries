@@ -282,28 +282,28 @@ namespace daw {
 			return m_data.data( );
 		}
 
-		constexpr size_type capacity( ) const noexcept {
+		[[nodiscard]] constexpr size_type capacity( ) const noexcept {
 			return Capacity;
 		}
 
-		constexpr size_type size( ) const noexcept {
+		[[nodiscard]] constexpr size_type size( ) const noexcept {
 			return m_data.size( );
 		}
 
-		constexpr size_type length( ) const noexcept {
+		[[nodiscard]] constexpr size_type length( ) const noexcept {
 			return m_data.size( );
 		}
 
-		constexpr size_type max_size( ) const noexcept {
+		[[nodiscard]] constexpr size_type max_size( ) const noexcept {
 			return Capacity;
 		}
 
-		constexpr bool empty( ) const noexcept {
+		[[nodiscard]] constexpr bool empty( ) const noexcept {
 			return m_data.empty( );
 		}
 
 		constexpr explicit operator bool( ) const noexcept {
-			return !m_data.empty( );
+			return not m_data.empty( );
 		}
 
 		template<size_t NewSize>

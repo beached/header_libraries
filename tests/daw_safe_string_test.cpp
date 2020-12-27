@@ -19,6 +19,8 @@ void daw_safe_string_test_01( ) {
 			  case '\\':
 				  c = '#';
 				  break;
+			  default:
+				  break;
 			  }
 		  }
 		  return un;

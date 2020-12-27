@@ -43,7 +43,7 @@ namespace daw {
 		}
 
 		template<typename U, typename... Args>
-		constexpr U make_value( Args &&... args ) {
+		constexpr U make_value( Args &&...args ) {
 			if constexpr( std::is_enum_v<U> ) {
 				return static_cast<value_t>( validate(
 				  std::underlying_type_t<value_t>( std::forward<Args>( args )... ) ) );
@@ -64,7 +64,7 @@ namespace daw {
 		  : m_value( make_value<value_t>( std::forward<U>( v ) ) ) {}
 
 		template<typename... Args>
-		constexpr validated( std::in_place_t, Args &&... args )
+		constexpr validated( std::in_place_t, Args &&...args )
 		  : m_value( make_value<value_t>( std::forward<Args>( args )... ) ) {}
 
 		constexpr validated &operator=( const_reference rhs ) {

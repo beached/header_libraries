@@ -184,7 +184,7 @@ namespace daw::string {
 	}
 
 	template<typename Arg1, typename Arg2, typename... Args>
-	auto string_join( Arg1 const &arg1, Arg2 const &arg2, Args const &... args )
+	auto string_join( Arg1 const &arg1, Arg2 const &arg2, Args const &...args )
 	  -> decltype( string_join( string_join( arg1, arg2 ),
 	                            string_join( args... ) ) ) {
 		return string_join( string_join( arg1, arg2 ), string_join( args... ) );
@@ -422,7 +422,7 @@ namespace daw::string {
 			  typename... Args,
 			  std::enable_if_t<daw::is_detected_v<can_construct_string, Args...>,
 			                   std::nullptr_t> = nullptr>
-			BasicString( Args &&... args )
+			BasicString( Args &&...args )
 			  : m_string( std::forward<Args>( args )... ) {}
 
 			BasicString( BasicString const & ) = default;

@@ -21,7 +21,7 @@ namespace daw {
 	public:
 		atomic_unique_ptr( ) noexcept = default;
 
-		atomic_unique_ptr( atomic_unique_ptr && other ) noexcept
+		atomic_unique_ptr( atomic_unique_ptr &&other ) noexcept
 		  : m_ptr( other.m_ptr.exchange( static_cast<T *>( nullptr ),
 		                                 std::memory_order_acquire ) ) {}
 
@@ -39,7 +39,7 @@ namespace daw {
 		atomic_unique_ptr &operator=( atomic_unique_ptr const & ) = delete;
 
 		template<typename U>
-		explicit atomic_unique_ptr( U * ptr ) noexcept
+		explicit atomic_unique_ptr( U *ptr ) noexcept
 		  : m_ptr( ptr ) {}
 
 		template<typename U>
@@ -107,7 +107,7 @@ namespace daw {
 		}
 
 		template<typename U>
-		void swap( atomic_unique_ptr<U> & other ) noexcept {
+		void swap( atomic_unique_ptr<U> &other ) noexcept {
 			// TODO: verify this is correct
 			auto tmp = other.m_ptr.load( std::memory_order_acquire );
 			other.m_ptr.store( m_ptr.load( std::memory_order_acquire ) );
@@ -116,7 +116,7 @@ namespace daw {
 	};
 
 	template<typename T, typename... Args>
-	[[nodiscard]] atomic_unique_ptr<T> make_atomic_unique_ptr( Args &&... args ) {
+	[[nodiscard]] atomic_unique_ptr<T> make_atomic_unique_ptr( Args &&...args ) {
 		if constexpr( std::is_aggregate_v<T> ) {
 			return atomic_unique_ptr<T>( new T{ std::forward<Args>( args )... } );
 		} else {

@@ -17,8 +17,7 @@
 #include <optional>
 
 namespace daw::cxmath {
-	[[nodiscard]] constexpr std::optional<std::int16_t>
-	fexp2( float const f ) noexcept;
+	[[nodiscard]] constexpr std::optional<std::int16_t> fexp2( float f ) noexcept;
 	constexpr float fpow2( int32_t exp ) noexcept;
 
 	namespace cxmath_impl {
@@ -374,7 +373,7 @@ namespace daw::cxmath {
 	}
 
 	[[nodiscard]] constexpr std::optional<std::int16_t>
-	fexp2( float const f ) noexcept {
+	fexp2( float f ) noexcept {
 		// Once c++20 use bit_cast
 		if( f == 0.0f ) {
 			return static_cast<std::int16_t>( 0 );

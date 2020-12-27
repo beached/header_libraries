@@ -324,7 +324,7 @@ namespace daw::traits {
 
 		using sortable_iterator_t =
 		  decltype( std::begin( std::declval<Sortable>( ) ) );
-		static_assert( is_random_access_iterator<sortable_iterator_t>, "" );
+		static_assert( is_random_access_iterator<sortable_iterator_t> );
 
 		return true;
 	}
