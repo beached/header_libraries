@@ -10,26 +10,54 @@
 
 #include <cstddef>
 
-namespace daw {
-	namespace size_literals {
-		constexpr size_t operator"" _KB( unsigned long long val ) noexcept {
-			return val * 1024ull;
-		}
+namespace daw::size_literals {
+	[[nodiscard]] constexpr size_t
+	operator"" _KB( unsigned long long val ) noexcept {
+		return val * 1024ull;
+	}
 
-		constexpr size_t operator"" _MB( unsigned long long val ) noexcept {
-			return val * 1024ull * 1024ull;
-		}
+	[[nodiscard]] constexpr size_t
+	operator"" _MB( unsigned long long val ) noexcept {
+		return val * 1024ull * 1024ull;
+	}
 
-		constexpr size_t operator"" _GB( unsigned long long val ) noexcept {
-			return val * 1024ull * 1024ull * 1024ull;
-		}
+	[[nodiscard]] constexpr size_t
+	operator"" _GB( unsigned long long val ) noexcept {
+		return val * 1024ull * 1024ull * 1024ull;
+	}
 
-		constexpr size_t operator"" _TB( unsigned long long val ) noexcept {
-			return val * 1024ull * 1024ull * 1024ull * 1024ull;
-		}
+	[[nodiscard]] constexpr size_t
+	operator"" _TB( unsigned long long val ) noexcept {
+		return val * 1024ull * 1024ull * 1024ull * 1024ull;
+	}
 
-		constexpr size_t operator"" _PB( unsigned long long val ) noexcept {
-			return val * 1024ull * 1024ull * 1024ull * 1024ull * 1024ull;
-		}
-	} // namespace size_literals
-} // namespace daw
+	[[nodiscard]] constexpr size_t
+	operator"" _PB( unsigned long long val ) noexcept {
+		return val * 1024ull * 1024ull * 1024ull * 1024ull * 1024ull;
+	}
+
+	[[nodiscard]] constexpr size_t
+	operator"" _KiB( unsigned long long val ) noexcept {
+		return val * 1000ull;
+	}
+
+	[[nodiscard]] constexpr size_t
+	operator"" _MiB( unsigned long long val ) noexcept {
+		return val * 1000ull * 1000ull;
+	}
+
+	[[nodiscard]] constexpr size_t
+	operator"" _GiB( unsigned long long val ) noexcept {
+		return val * 1000ull * 1000ull * 1000ull;
+	}
+
+	[[nodiscard]] constexpr size_t
+	operator"" _TiB( unsigned long long val ) noexcept {
+		return val * 1000ull * 1000ull * 1000ull * 1000ull;
+	}
+
+	[[nodiscard]] constexpr size_t
+	operator"" _PiB( unsigned long long val ) noexcept {
+		return val * 1000ull * 1000ull * 1000ull * 1000ull * 1000ull;
+	}
+} // namespace daw::size_literals

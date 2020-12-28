@@ -75,7 +75,7 @@ void daw_value_ptr_test_01( ) {
 	daw::expecting( test_16 );
 
 	struct A {
-		constexpr A( ) noexcept {}
+		constexpr A( ) noexcept = default;
 		A( A const & ) = delete;
 		A &operator=( A const & ) = delete;
 	};
@@ -94,8 +94,8 @@ void daw_value_ptr_test_01( ) {
 	auto i = daw::value_ptr<std::mutex>( );
 	i.reset( );
 
-	static_assert( daw::traits::is_regular<daw::value_ptr<int>>, "" );
-	static_assert( !daw::traits::is_regular_v<daw::value_ptr<std::mutex>>, "" );
+	static_assert( daw::traits::is_regular<daw::value_ptr<int>> );
+	static_assert( not daw::traits::is_regular_v<daw::value_ptr<std::mutex>> );
 
 	daw::value_ptr<std::mutex> blah{ };
 }

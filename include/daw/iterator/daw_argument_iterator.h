@@ -36,7 +36,7 @@ namespace daw {
 		  : m_argc( argc )
 		  , m_argv( argv ) {}
 
-		constexpr std::string_view operator*( ) const noexcept {
+		[[nodiscard]] constexpr std::string_view operator*( ) const noexcept {
 			return std::string_view( m_argv[m_pos] );
 		}
 
@@ -94,11 +94,12 @@ namespace daw {
 			return m_pos + rhs.m_pos;
 		}
 
-		constexpr std::string_view operator[]( difference_type n ) const noexcept {
+		[[nodiscard]] constexpr std::string_view
+		operator[]( difference_type n ) const noexcept {
 			return std::string_view( m_argv[m_pos + n] );
 		}
 
-		constexpr std::string_view at( difference_type n ) const {
+		[[nodiscard]] constexpr std::string_view at( difference_type n ) const {
 			auto const pos = m_pos + n;
 
 			daw::exception::precondition_check<std::out_of_range>(
@@ -107,7 +108,7 @@ namespace daw {
 			return std::string_view( m_argv[pos] );
 		}
 
-		constexpr bool at_end( ) const noexcept {
+		[[nodiscard]] constexpr bool at_end( ) const noexcept {
 			return m_argv == nullptr or m_pos >= m_argc;
 		}
 
@@ -153,23 +154,23 @@ namespace daw {
 			return at_end( );
 		}
 
-		constexpr size_t size( ) const noexcept {
+		[[nodiscard]] constexpr size_t size( ) const noexcept {
 			return static_cast<size_t>( m_argc );
 		}
 
-		constexpr difference_type position( ) const noexcept {
+		[[nodiscard]] constexpr difference_type position( ) const noexcept {
 			return static_cast<difference_type>( m_pos );
 		}
 
-		constexpr arg_iterator_t begin( ) const noexcept {
+		[[nodiscard]] constexpr arg_iterator_t begin( ) const noexcept {
 			return *this;
 		}
 
-		static constexpr arg_iterator_t end( ) noexcept {
+		[[nodiscard]] static constexpr arg_iterator_t end( ) noexcept {
 			return arg_iterator_t( );
 		}
 
-		constexpr operator bool( ) const noexcept {
+		[[nodiscard]] constexpr operator bool( ) const noexcept {
 			return 0 <= m_pos and m_pos < m_argc;
 		}
 	};

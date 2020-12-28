@@ -27,8 +27,8 @@ namespace daw {
 		size_t m_size;
 		bool m_local_string;
 
-		[[deprecated]] static constexpr size_t string_length(
-		  CharT const *ptr ) noexcept {
+		[[deprecated]] static constexpr size_t
+		string_length( CharT const *ptr ) noexcept {
 			size_t result = 0;
 			while( ptr[result] != 0 ) {
 				++result;
@@ -88,10 +88,10 @@ namespace daw {
 		}
 
 		[[deprecated]] constexpr CString( CString && ) noexcept = default;
-		[[deprecated]] constexpr CString &operator=( CString && ) noexcept =
-		  default;
+		[[deprecated]] constexpr CString &
+		operator=( CString && ) noexcept = default;
 
-		[[deprecated]] void swap( CString & rhs ) noexcept {
+		[[deprecated]] void swap( CString &rhs ) noexcept {
 			daw::cswap( m_data, rhs.m_data );
 			daw::cswap( m_size, rhs.m_size );
 			daw::cswap( m_local_string, rhs.m_local_string );
@@ -107,8 +107,8 @@ namespace daw {
 			nullify( );
 		}
 
-		[[deprecated]] constexpr CharT const &operator[]( size_t pos )
-		  const noexcept {
+		[[deprecated]] constexpr CharT const &
+		operator[]( size_t pos ) const noexcept {
 			return m_data[pos];
 		}
 

@@ -159,8 +159,8 @@ namespace daw {
 			return *std::next( m_first, index );
 		}
 
-		[[nodiscard]] constexpr const_reference operator[]( size_type index )
-		  const {
+		[[nodiscard]] constexpr const_reference
+		operator[]( size_type index ) const {
 			return *std::next( m_first, index );
 		}
 
@@ -222,7 +222,7 @@ namespace daw {
 			return result;
 		}
 
-		[[nodiscard]] constexpr bool pop( value_type & result ) {
+		[[nodiscard]] constexpr bool pop( value_type &result ) {
 			if( empty( ) ) {
 				return false;
 			}

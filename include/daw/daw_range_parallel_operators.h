@@ -64,7 +64,7 @@ namespace daw {
 							  typename = void>                                               \
 							static auto                                                      \
 							  clause_name##_helper( Container const &container,              \
-							                        ClauseArgs &&... clause_args ) {         \
+							                        ClauseArgs &&...clause_args ) {          \
 								return from( container )                                       \
 								  .clause_name( std::forward<ClauseArgs>( clause_args )... );  \
 							}                                                                \
@@ -75,7 +75,7 @@ namespace daw {
 							    daw::range::is_range_reference_v<Container>> * = nullptr>    \
 							static auto                                                      \
 							  clause_name##_helper( Container container,                     \
-							                        ClauseArgs &&... clause_args ) {         \
+							                        ClauseArgs &&...clause_args ) {          \
 								return container.clause_name(                                  \
 								  std::forward<ClauseArgs>( clause_args )... );                \
 							}                                                                \
@@ -86,7 +86,7 @@ namespace daw {
 							    daw::range::is_range_collection_v<Container>> * = nullptr>   \
 							static auto                                                      \
 							  clause_name##_helper( Container const &container,              \
-							                        ClauseArgs &&... clause_args ) {         \
+							                        ClauseArgs &&...clause_args ) {          \
 								return container.clause_name(                                  \
 								  std::forward<ClauseArgs>( clause_args )... );                \
 							}                                                                \
@@ -128,7 +128,7 @@ namespace daw {
 					}                                                                    \
                                                                                \
 					template<typename... Args>                                           \
-					auto clause_name( Args &&... clause_name##_args ) {                  \
+					auto clause_name( Args &&...clause_name##_args ) {                   \
 						std::tuple<Args...> param = std::make_tuple(                       \
 						  std::forward<Args...>( clause_name##_args )... );                \
 						return daw::range::parallel::operators::details::clause_name##_t<  \

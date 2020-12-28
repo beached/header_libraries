@@ -59,12 +59,12 @@ namespace not_fn_test {
 		}
 	};
 
-	static_assert( daw::not_fn<not_fn_test>( )( ), "" );
+	static_assert( daw::not_fn<not_fn_test>( )( ) );
 
 	static constexpr auto fn1 = not_fn_test{ true };
 	static constexpr auto const fn2 = daw::not_fn( fn1 );
-	static_assert( fn1( ), "" );
-	static_assert( !fn2( ), "" );
+	static_assert( fn1( ) );
+	static_assert( !fn2( ) );
 } // namespace not_fn_test
 
 /*
@@ -83,7 +83,7 @@ namespace advance_001 {
 		daw::advance( first, 4 );
 		return *first == 4;
 	}
-	static_assert( test_advance_pos( ), "" );
+	static_assert( test_advance_pos( ) );
 } // namespace advance_001
 
 namespace advance_002 {
@@ -94,7 +94,7 @@ namespace advance_002 {
 		daw::advance( first, -4 );
 		return *first == 0;
 	}
-	static_assert( test_advance_neg( ), "" );
+	static_assert( test_advance_neg( ) );
 } // namespace advance_002
 
 namespace advance_003 {
@@ -104,14 +104,14 @@ namespace advance_003 {
 		daw::advance( first, 0 );
 		return *first == 0;
 	}
-	static_assert( test_advance_zero( ), "" );
+	static_assert( test_advance_zero( ) );
 } // namespace advance_003
 
 namespace trivially_destructable_001 {
 	struct Foo {
 		~Foo( ) = default;
 	};
-	static_assert( std::is_trivially_destructible_v<Foo>, "" );
+	static_assert( std::is_trivially_destructible_v<Foo> );
 } // namespace trivially_destructable_001
 
 void bit_cast_001( ) {

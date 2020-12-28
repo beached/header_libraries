@@ -42,7 +42,8 @@ void make_string_array_testing( ) {
 	daw::expecting( "4", *pos );
 }
 
-static_assert( std::is_same_v<std::array<std::array<std::array<int, 5>, 6>, 7>, daw::md_stdarray_t<int, 7, 6, 5>> );
+static_assert( std::is_same_v<std::array<std::array<std::array<int, 5>, 6>, 7>,
+                              daw::md_stdarray_t<int, 7, 6, 5>> );
 
 int main( ) {
 	make_string_array_testing( );

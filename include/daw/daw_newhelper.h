@@ -16,7 +16,7 @@
 #include <memory>
 
 template<typename T, typename... Args>
-[[nodiscard]] T *new_throw( Args &&... args ) {
+[[nodiscard]] T *new_throw( Args &&...args ) {
 	std::unique_ptr<T> result;
 	try {
 		result = std::make_unique<T>( std::forward<Args>( args )... );

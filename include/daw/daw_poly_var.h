@@ -36,24 +36,24 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr Base const &operator*( ) const {
+		[[nodiscard]] constexpr Base const &operator*( ) const {
 			return daw::visit_nt( m_value, []( auto const &value ) {
 				return *static_cast<Base const *>( &value );
 			} );
 		}
 
-		constexpr Base &operator*( ) {
+		[[nodiscard]] constexpr Base &operator*( ) {
 			return daw::visit_nt(
 			  m_value, []( auto &value ) { return *static_cast<Base *>( &value ); } );
 		}
 
-		constexpr Base const *operator->( ) const {
+		[[nodiscard]] constexpr Base const *operator->( ) const {
 			return daw::visit_nt( m_value, []( auto const &value ) {
 				return static_cast<Base const *>( &value );
 			} );
 		}
 
-		constexpr Base *operator->( ) {
+		[[nodiscard]] constexpr Base *operator->( ) {
 			return daw::visit_nt(
 			  m_value, []( auto &value ) { return static_cast<Base *>( &value ); } );
 		}

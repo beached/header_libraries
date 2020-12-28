@@ -27,7 +27,8 @@
 #include <variant>
 
 #if not( defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or             \
-         defined( _CPPUNWIND ) ) or defined( DAW_NO_EXCEPTIONS )
+         defined( _CPPUNWIND ) ) or                                            \
+  defined( DAW_NO_EXCEPTIONS )
 #ifdef DAW_USE_EXCEPTIONS
 #undef DAW_USE_EXCEPTIONS
 #endif
@@ -126,7 +127,8 @@ namespace daw {
 		         std::enable_if_t<
 		           traits::is_callable_convertible_v<value_type, Function, Args...>,
 		           std::nullptr_t> = nullptr>
-		static variant_type variant_from_code( Function &&func, Args &&... args ) {
+		[[nodiscard]] static variant_type variant_from_code( Function &&func,
+		                                                     Args &&...args ) {
 #ifdef DAW_USE_EXCEPTIONS
 			try {
 				return func( std::forward<Args>( args )... );
@@ -141,7 +143,7 @@ namespace daw {
 		         std::enable_if_t<
 		           traits::is_callable_convertible_v<value_type, Function, Args...>,
 		           std::nullptr_t> = nullptr>
-		explicit expected_t( Function &&func, Args &&... args )
+		explicit expected_t( Function &&func, Args &&...args )
 		  : m_value( variant_from_code( std::forward<Function>( func ),
 		                                std::forward<Args>( args )... ) ) {}
 
@@ -149,7 +151,8 @@ namespace daw {
 		         std::enable_if_t<
 		           traits::is_callable_convertible_v<value_type, Function, Args...>,
 		           std::nullptr_t> = nullptr>
-		static expected_t from_code( Function &&func, Args &&... args ) {
+		[[nodiscard]] static expected_t from_code( Function &&func,
+		                                           Args &&...args ) {
 			auto result = expected_t( );
 			result.m_value = variant_from_code( std::forward<Function>( func ),
 			                                    std::forward<Args>( args )... );
@@ -164,19 +167,19 @@ namespace daw {
 			set_exception( std::current_exception( ) );
 		}
 
-		bool has_value( ) const {
+		[[nodiscard]] bool has_value( ) const {
 			return std::holds_alternative<value_type>( m_value );
 		}
 
-		bool has_exception( ) const {
+		[[nodiscard]] bool has_exception( ) const {
 			return std::holds_alternative<std::exception_ptr>( m_value );
 		}
 
-		std::exception_ptr get_exception_ptr( ) const noexcept {
+		[[nodiscard]] std::exception_ptr get_exception_ptr( ) const noexcept {
 			return std::get<std::exception_ptr>( m_value );
 		}
 
-		bool empty( ) const noexcept {
+		[[nodiscard]] bool empty( ) const noexcept {
 			return std::holds_alternative<
 			  expected_details::ExpectedTag<expected_details::Empty>>( m_value );
 		}
@@ -192,7 +195,7 @@ namespace daw {
 			std::rethrow_exception( std::get<std::exception_ptr>( m_value ) );
 		}
 
-		reference get( ) {
+		[[nodiscard]] reference get( ) {
 			if( empty( ) ) {
 				std::abort( );
 			}
@@ -200,7 +203,7 @@ namespace daw {
 			return std::get<value_type>( m_value );
 		}
 
-		const_reference get( ) const {
+		[[nodiscard]] const_reference get( ) const {
 			if( empty( ) ) {
 				std::abort( );
 			}
@@ -208,23 +211,23 @@ namespace daw {
 			return std::get<value_type>( m_value );
 		}
 
-		reference operator*( ) {
+		[[nodiscard]] reference operator*( ) {
 			return get( );
 		}
 
-		const_reference operator*( ) const {
+		[[nodiscard]] const_reference operator*( ) const {
 			return get( );
 		}
 
-		pointer operator->( ) {
+		[[nodiscard]] pointer operator->( ) {
 			return &( get( ) );
 		}
 
-		const_pointer operator->( ) const {
+		[[nodiscard]] const_pointer operator->( ) const {
 			return &( get( ) );
 		}
 
-		std::string get_exception_message( ) const noexcept {
+		[[nodiscard]] std::string get_exception_message( ) const noexcept {
 			auto result = std::string( );
 #ifdef DAW_USE_EXCEPTIONS
 			try {
@@ -301,8 +304,8 @@ namespace daw {
 
 	private:
 		template<class Function, typename... Args>
-		static variant_type variant_from_code( Function &&func,
-		                                       Args &&... args ) noexcept {
+		[[nodiscard]] static variant_type
+		variant_from_code( Function &&func, Args &&...args ) noexcept {
 #ifdef DAW_USE_EXCEPTIONS
 			try {
 				(void)func( std::forward<Args>( args )... );
@@ -318,14 +321,15 @@ namespace daw {
 		template<class Function, typename... Args,
 		         std::enable_if_t<std::is_invocable_v<Function, Args...>,
 		                          std::nullptr_t> = nullptr>
-		explicit expected_t( Function &&func, Args &&... args ) noexcept
+		explicit expected_t( Function &&func, Args &&...args ) noexcept
 		  : m_value( variant_from_code( std::forward<Function>( func ),
 		                                std::forward<Args>( args )... ) ) {}
 
 		template<class Function, typename... Args,
 		         std::enable_if_t<std::is_invocable_v<Function, Args...>,
 		                          std::nullptr_t> = nullptr>
-		static expected_t from_code( Function &&func, Args &&... args ) noexcept {
+		[[nodiscard]] static expected_t from_code( Function &&func,
+		                                           Args &&...args ) noexcept {
 			auto result = expected_t( );
 			result.m_value = variant_from_code( std::forward<Function>( func ),
 			                                    std::forward<Args>( args )... );
@@ -340,19 +344,19 @@ namespace daw {
 			set_exception( std::current_exception( ) );
 		}
 
-		bool has_value( ) const noexcept {
+		[[nodiscard]] bool has_value( ) const noexcept {
 			return std::holds_alternative<value_type>( m_value );
 		}
 
-		bool has_exception( ) const noexcept {
+		[[nodiscard]] bool has_exception( ) const noexcept {
 			return std::holds_alternative<std::exception_ptr>( m_value );
 		}
 
-		std::exception_ptr get_exception_ptr( ) const noexcept {
+		[[nodiscard]] std::exception_ptr get_exception_ptr( ) const noexcept {
 			return std::get<std::exception_ptr>( m_value );
 		}
 
-		bool empty( ) const noexcept {
+		[[nodiscard]] bool empty( ) const noexcept {
 			return std::holds_alternative<
 			  expected_details::ExpectedTag<expected_details::Empty>>( m_value );
 		}
@@ -375,7 +379,7 @@ namespace daw {
 			throw_if_exception( );
 		}
 
-		std::string get_exception_message( ) const noexcept {
+		[[nodiscard]] std::string get_exception_message( ) const noexcept {
 			std::string result{ };
 #ifdef DAW_USE_EXCEPTIONS
 			try {
@@ -388,7 +392,8 @@ namespace daw {
 	}; // class expected_t<void>
 
 	template<typename Result, typename Function, typename... Args>
-	expected_t<Result> expected_from_code( Function &&func, Args &&... args ) {
+	[[nodiscard]] expected_t<Result> expected_from_code( Function &&func,
+	                                                     Args &&...args ) {
 		static_assert(
 		  traits::is_callable_convertible_v<Result, Function, Args...>,
 		  "Must be able to convert result of func to expected result type" );
@@ -400,7 +405,7 @@ namespace daw {
 	}
 
 	template<typename Function, typename... Args>
-	auto expected_from_code( Function &&func, Args &&... args ) {
+	[[nodiscard]] auto expected_from_code( Function &&func, Args &&...args ) {
 		using result_t =
 		  std::decay_t<decltype( func( std::forward<Args>( args )... ) )>;
 
@@ -409,12 +414,13 @@ namespace daw {
 	}
 
 	template<typename Result>
-	expected_t<Result> expected_from_exception( ) {
+	[[nodiscard]] expected_t<Result> expected_from_exception( ) {
 		return expected_t<Result>( std::current_exception( ) );
 	}
 
 	template<typename Result>
-	expected_t<Result> expected_from_exception( std::exception_ptr ptr ) {
+	[[nodiscard]] expected_t<Result>
+	expected_from_exception( std::exception_ptr ptr ) {
 		return expected_t<Result>( ptr );
 	}
 } // namespace daw
@@ -422,4 +428,3 @@ namespace daw {
 #ifdef DAW_USE_EXCEPTIONS
 #undef DAW_USE_EXCEPTIONS
 #endif
-

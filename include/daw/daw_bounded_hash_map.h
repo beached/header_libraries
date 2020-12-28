@@ -438,7 +438,7 @@ namespace daw {
 			return N;
 		}
 
-		constexpr size_type size( ) const {
+		[[nodiscard]] constexpr size_type size( ) const {
 			using std::cbegin;
 			using std::cend;
 			return daw::algorithm::accumulate(
@@ -450,7 +450,7 @@ namespace daw {
 			  } );
 		}
 
-		constexpr size_type empty( ) const {
+		[[nodiscard]] constexpr size_type empty( ) const {
 			return daw::algorithm::find_if( std::cbegin( m_data ),
 			                                std::cend( m_data ),
 			                                []( auto const &value ) {

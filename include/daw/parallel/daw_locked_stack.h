@@ -94,7 +94,7 @@ namespace daw {
 		}
 
 		template<typename... Args>
-		void emplace_back( Args &&... args ) {
+		void emplace_back( Args &&...args ) {
 			std::lock_guard<std::mutex> lock( *m_mutex );
 			m_items.emplace_back( std::forward<Args>( args )... );
 			m_semaphore.notify( );

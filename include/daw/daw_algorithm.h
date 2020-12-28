@@ -58,7 +58,7 @@ namespace daw {
 	template<typename Distance, typename Iterator, typename Iterator2,
 	         typename... Iterators>
 	constexpr void advance_many( Distance d, Iterator &it, Iterator2 &it2,
-	                             Iterators &... its ) {
+	                             Iterators &...its ) {
 
 		daw::advance( it, d );
 		advance_many( d, it2, its... );
@@ -234,7 +234,7 @@ namespace daw::algorithm {
 
 	template<typename Lhs, typename... Ts,
 	         daw::enable_when_t<( sizeof...( Ts ) > 0 )> = nullptr>
-	constexpr auto const &min_item( Lhs const &lhs, Ts const &... ts ) noexcept {
+	constexpr auto const &min_item( Lhs const &lhs, Ts const &...ts ) noexcept {
 		auto const &rhs = min_item( ts... );
 		return lhs < rhs ? lhs : rhs;
 	}
@@ -246,7 +246,7 @@ namespace daw::algorithm {
 
 	template<typename Lhs, typename... Ts,
 	         daw::enable_when_t<( sizeof...( Ts ) > 0 )> = nullptr>
-	constexpr auto const &max_item( Lhs const &lhs, Ts const &... ts ) noexcept {
+	constexpr auto const &max_item( Lhs const &lhs, Ts const &...ts ) noexcept {
 		auto const &rhs = max_item( ts... );
 		return lhs > rhs ? lhs : rhs;
 	}
@@ -563,7 +563,7 @@ namespace daw::algorithm {
 		traits::is_input_iterator_test<ForwardIterator>( );
 
 		auto start =
-		  std::stable_partition( first, target, [&predicate]( auto &&... args ) {
+		  std::stable_partition( first, target, [&predicate]( auto &&...args ) {
 			  return not predicate( std::forward<decltype( args )>( args )... );
 		  } );
 
@@ -585,12 +585,10 @@ namespace daw::algorithm {
 		template<typename Tuple, typename Func>
 		static constexpr void run( std::size_t i, Tuple &&tp, Func &&func ) {
 			constexpr size_t const I = ( N - 1 );
-			switch( i ) {
-			case I:
+			if( i == I ) {
 				daw::invoke( std::forward<Func>( func ),
 				             std::get<I>( std::forward<Tuple>( tp ) ) );
-				break;
-			default:
+			} else {
 				tuple_functor<I>::run( i, std::forward<Tuple>( tp ),
 				                       std::forward<Func>( func ) );
 			}
@@ -695,7 +693,7 @@ namespace daw::algorithm {
 	/// @return True if any of the func/funcs return true(e.g. like OR)
 	template<typename Value, typename UnaryPredicate, typename... UnaryPredicates>
 	constexpr bool satisfies_one( Value &&value, UnaryPredicate &&func,
-	                              UnaryPredicates &&... funcs ) {
+	                              UnaryPredicates &&...funcs ) {
 
 		traits::is_unary_predicate_test<UnaryPredicate, Value>( );
 
@@ -720,8 +718,8 @@ namespace daw::algorithm {
 	constexpr bool satisfies_one(
 	  Iterator first, Iterator2 last, UnaryPredicate &&func,
 	  UnaryPredicates
-	    &&... funcs ) noexcept( noexcept( satisfies_one( *first, func,
-	                                                     funcs... ) ) ) {
+	    &&...funcs ) noexcept( noexcept( satisfies_one( *first, func,
+	                                                    funcs... ) ) ) {
 
 		traits::is_iterator_test<Iterator>( );
 		traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
@@ -757,7 +755,7 @@ namespace daw::algorithm {
 	/// @return True if any of the func/funcs return true(e.g. like OR)
 	template<typename Value, typename UnaryPredicate, typename... UnaryPredicates>
 	constexpr bool satisfies_all( Value &&value, UnaryPredicate &&func,
-	                              UnaryPredicates &&... funcs ) {
+	                              UnaryPredicates &&...funcs ) {
 
 		traits::is_unary_predicate_test<UnaryPredicate, Value>( );
 
@@ -785,8 +783,8 @@ namespace daw::algorithm {
 	constexpr bool satisfies_all(
 	  Iterator first, Iterator2 last, UnaryPredicate &&func,
 	  UnaryPredicates
-	    &&... funcs ) noexcept( noexcept( satisfies_one( *first, func,
-	                                                     funcs... ) ) ) {
+	    &&...funcs ) noexcept( noexcept( satisfies_one( *first, func,
+	                                                    funcs... ) ) ) {
 
 		traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
 

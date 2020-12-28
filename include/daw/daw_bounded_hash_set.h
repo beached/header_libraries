@@ -381,13 +381,13 @@ namespace daw {
 			return Capacity;
 		}
 
-		constexpr size_type size( ) const noexcept {
+		[[nodiscard]] constexpr size_type size( ) const noexcept {
 			return daw::algorithm::accumulate(
 			  std::begin( m_data ), std::end( m_data ), 0ULL,
 			  []( auto const &opt ) { return opt.has_value ? 1ULL : 0ULL; } );
 		}
 
-		constexpr size_type empty( ) const noexcept {
+		[[nodiscard]] constexpr size_type empty( ) const noexcept {
 			return daw::algorithm::find_if( std::cbegin( m_data ),
 			                                std::cend( m_data ),
 			                                []( auto const &value ) {

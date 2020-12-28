@@ -47,12 +47,12 @@ namespace daw {
 		void _lock( Arg const & ) {}
 
 		template<typename Arg1, typename Arg2, typename... Args>
-		void _lock( Arg1 &arg1, Arg2 &arg2, Args &... args ) {
+		void _lock( Arg1 &arg1, Arg2 &arg2, Args &...args ) {
 			std::lock( arg1, arg2, args... );
 		}
 
 	public:
-		scoped_multilock( Lockables &... lockables )
+		scoped_multilock( Lockables &...lockables )
 		  : m_locks{ } {
 			_lock( lockables... );
 			auto args = std::make_tuple<Lockables *...>( &lockables... );
@@ -68,7 +68,7 @@ namespace daw {
 	};
 
 	template<typename... Lockables>
-	auto make_scoped_multilock( Lockables &... lockables ) {
+	[[nodiscard]] auto make_scoped_multilock( Lockables &...lockables ) {
 		return scoped_multilock<Lockables...>{ lockables... };
 	}
 } // namespace daw

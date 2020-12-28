@@ -9,18 +9,18 @@
 #include "daw/daw_poly_vector.h"
 
 struct A {
-	int a;
-	A( ) = default;
-	A( A const & ) = default;
-	A( A && ) = default;
+	int a{ };
+	constexpr A( ) = default;
+	constexpr A( A const & ) = default;
+	constexpr A( A && ) = default;
 	A &operator=( A const & ) = default;
 	A &operator=( A && ) = default;
 	virtual ~A( );
 };
-A::~A( ) {}
+A::~A( ) = default;
 
 struct B : public A {
-	int b;
+	int b{ };
 	B( ) = default;
 	B( B const & ) = default;
 	B( B && ) = default;
@@ -28,7 +28,7 @@ struct B : public A {
 	B &operator=( B && ) = default;
 	~B( ) override;
 };
-B::~B( ) {}
+B::~B( ) = default;
 
 void daw_poly_vector_01( ) {
 	daw::poly_vector_t<A> test;

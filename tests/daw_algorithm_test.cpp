@@ -38,7 +38,7 @@ constexpr bool binary_search_001( ) noexcept {
 
 	return *pos == 17;
 }
-static_assert( binary_search_001( ), "" );
+static_assert( binary_search_001( ) );
 
 constexpr bool lower_bound_001( ) noexcept {
 	std::array<int, 10> arry = { 1, 5, 10, 15, 16, 17, 18, 19, 20, 21 };
@@ -46,7 +46,7 @@ constexpr bool lower_bound_001( ) noexcept {
 	  daw::algorithm::lower_bound( ::std::begin( arry ), ::std::end( arry ), 17 );
 	return *pos == 17;
 }
-static_assert( lower_bound_001( ), "" );
+static_assert( lower_bound_001( ) );
 
 constexpr bool daw_safe_advance_test_002( ) {
 	std::array<int, 11> a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };

@@ -28,7 +28,7 @@ namespace daw {
 		struct NoSort {};
 
 		template<typename Graph, typename Node>
-		auto get_child_nodes( Graph &&graph, Node &&node ) {
+		[[nodiscard]] auto get_child_nodes( Graph &&graph, Node &&node ) {
 			using node_t =
 			  std::remove_reference_t<decltype( graph.get_node( node.id( ) ) )>;
 
@@ -95,7 +95,7 @@ namespace daw {
 					auto child_nodes = graph_alg_impl::get_child_nodes( graph, node );
 					if constexpr( perform_sort_v ) {
 						std::sort( std::begin( child_nodes ), std::end( child_nodes ),
-						           [&]( auto &&... args ) {
+						           [&]( auto &&...args ) {
 							           return not comp(
 							             std::forward<decltype( args )>( args )... );
 						           } );
@@ -293,13 +293,13 @@ namespace daw {
 		      get_nodes( graph, std::move( comp ) ) ) )
 		  , m_iterator( m_nodes->begin( ) ) {}
 
-		topological_sorted_iterator end( ) {
+		[[nodiscard]] topological_sorted_iterator end( ) {
 			auto result = *this;
 			result.m_iterator = m_nodes->end( );
 			return result;
 		}
 
-		topological_sorted_iterator end( ) const {
+		[[nodiscard]] topological_sorted_iterator end( ) const {
 			auto result = *this;
 			result.m_iterator = result.end( );
 			return result;
@@ -315,19 +315,19 @@ namespace daw {
 			return *this;
 		}
 
-		reference operator*( ) noexcept {
+		[[nodiscard]] reference operator*( ) noexcept {
 			return *m_iterator;
 		}
 
-		const_reference operator*( ) const noexcept {
+		[[nodiscard]] const_reference operator*( ) const noexcept {
 			return *m_iterator;
 		}
 
-		pointer operator->( ) noexcept {
+		[[nodiscard]] pointer operator->( ) noexcept {
 			return &( *m_iterator );
 		}
 
-		const_pointer operator->( ) const noexcept {
+		[[nodiscard]] const_pointer operator->( ) const noexcept {
 			return &( *m_iterator );
 		}
 
@@ -365,12 +365,12 @@ namespace daw {
 			return result;
 		}
 
-		size_t size( ) const noexcept {
+		[[nodiscard]] size_t size( ) const noexcept {
 			return static_cast<size_t>(
 			  std::distance( m_iterator, m_nodes->end( ) ) );
 		}
 
-		bool empty( ) const noexcept {
+		[[nodiscard]] bool empty( ) const noexcept {
 			return m_iterator == m_nodes->end( );
 		}
 
@@ -416,27 +416,27 @@ namespace daw {
 			iterator_t first;
 			iterator_t last;
 
-			iterator_t begin( ) const {
+			[[nodiscard]] iterator_t begin( ) const {
 				return first;
 			}
 
-			std::reverse_iterator<iterator_t> rbegin( ) const {
+			[[nodiscard]] std::reverse_iterator<iterator_t> rbegin( ) const {
 				return std::reverse_iterator<iterator_t>( first );
 			}
 
-			iterator_t end( ) const {
+			[[nodiscard]] iterator_t end( ) const {
 				return last;
 			}
 
-			std::reverse_iterator<iterator_t> rend( ) const {
+			[[nodiscard]] std::reverse_iterator<iterator_t> rend( ) const {
 				return std::reverse_iterator<iterator_t>( last );
 			}
 
-			size_t size( ) const noexcept {
+			[[nodiscard]] size_t size( ) const noexcept {
 				return first.size( );
 			}
 
-			bool empty( ) const noexcept {
+			[[nodiscard]] bool empty( ) const noexcept {
 				return first.empty( );
 			}
 		};
@@ -445,8 +445,8 @@ namespace daw {
 	}
 
 	template<typename Graph, typename Compare = daw::graph_alg_impl::NoSort>
-	auto make_reverse_topological_sorted_range( Graph &&g,
-	                                            Compare c = Compare{ } ) {
+	[[nodiscard]] auto
+	make_reverse_topological_sorted_range( Graph &&g, Compare c = Compare{ } ) {
 		static_assert( not std::is_rvalue_reference_v<Graph>,
 		               "Temporaries are not supported" );
 		auto frst = topological_sorted_iterator<Graph, Compare>(
@@ -456,27 +456,27 @@ namespace daw {
 			iterator_t first;
 			iterator_t last;
 
-			iterator_t rbegin( ) const {
+			[[nodiscard]] iterator_t rbegin( ) const {
 				return first;
 			}
 
-			std::reverse_iterator<iterator_t> begin( ) const {
+			[[nodiscard]] std::reverse_iterator<iterator_t> begin( ) const {
 				return std::reverse_iterator<iterator_t>( first );
 			}
 
-			iterator_t rend( ) const {
+			[[nodiscard]] iterator_t rend( ) const {
 				return last;
 			}
 
-			std::reverse_iterator<iterator_t> end( ) const {
+			[[nodiscard]] std::reverse_iterator<iterator_t> end( ) const {
 				return std::reverse_iterator<iterator_t>( last );
 			}
 
-			size_t size( ) const noexcept {
+			[[nodiscard]] size_t size( ) const noexcept {
 				return first.size( );
 			}
 
-			bool empty( ) const noexcept {
+			[[nodiscard]] bool empty( ) const noexcept {
 				return first.empty( );
 			}
 		};

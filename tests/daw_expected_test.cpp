@@ -119,7 +119,7 @@ void daw_expected_test_copy_002( ) {
 	daw::expecting( tmp.has_exception( ) );
 	daw::expecting( !tmp.empty( ) );
 
-	daw::expecting_exception( [&]( ) { tmp.get( ); } );
+	daw::expecting_exception( [&]( ) { (void)tmp.get( ); } );
 
 	auto tmp2 = daw::expected_t<std::string>( );
 	tmp2 = tmp;
@@ -127,13 +127,13 @@ void daw_expected_test_copy_002( ) {
 	daw::expecting( tmp.has_exception( ) == tmp2.has_exception( ) );
 	daw::expecting( tmp.empty( ) == tmp2.empty( ) );
 
-	daw::expecting_exception( [&]( ) { tmp2.get( ); } );
+	daw::expecting_exception( [&]( ) { (void)tmp2.get( ); } );
 
 	auto tmp3 = daw::expected_t<std::string>( tmp );
 	daw::expecting( tmp.has_value( ) == tmp3.has_value( ) );
 	daw::expecting( tmp.has_exception( ) == tmp3.has_exception( ) );
 	daw::expecting( tmp.empty( ) == tmp3.empty( ) );
-	daw::expecting_exception( [&]( ) { tmp3.get( ); } );
+	daw::expecting_exception( [&]( ) { (void)tmp3.get( ); } );
 }
 
 void daw_expected_test_move_assignment_001( ) {
@@ -173,14 +173,14 @@ void daw_expected_test_move_assignment_002( ) {
 	daw::expecting( !tmp.has_value( ) );
 	daw::expecting( tmp.has_exception( ) );
 	daw::expecting( !tmp.empty( ) );
-	daw::expecting_exception( [&]( ) { tmp.get( ); } );
+	daw::expecting_exception( [&]( ) { (void)tmp.get( ); } );
 
 	auto tmp2 = daw::expected_t<std::string>( );
 	tmp2 = std::move( tmp );
 	daw::expecting( !tmp2.has_value( ) );
 	daw::expecting( tmp2.has_exception( ) );
 	daw::expecting( !tmp2.empty( ) );
-	daw::expecting_exception( [&]( ) { tmp2.get( ); } );
+	daw::expecting_exception( [&]( ) { (void)tmp2.get( ); } );
 }
 
 void daw_expected_test_move_construction_002( ) {
@@ -191,13 +191,13 @@ void daw_expected_test_move_construction_002( ) {
 	daw::expecting( !tmp.has_value( ) );
 	daw::expecting( tmp.has_exception( ) );
 	daw::expecting( !tmp.empty( ) );
-	daw::expecting_exception( [&]( ) { tmp.get( ); } );
+	daw::expecting_exception( [&]( ) { (void)tmp.get( ); } );
 
 	auto tmp2 = daw::expected_t<std::string>( std::move( tmp ) );
 	daw::expecting( !tmp2.has_value( ) );
 	daw::expecting( tmp2.has_exception( ) );
 	daw::expecting( !tmp2.empty( ) );
-	daw::expecting_exception( [&]( ) { tmp2.get( ); } );
+	daw::expecting_exception( [&]( ) { (void)tmp2.get( ); } );
 }
 
 int main( ) {

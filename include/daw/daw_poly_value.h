@@ -60,7 +60,7 @@ namespace daw {
 		}
 
 		template<typename T, typename... Args>
-		poly_value( construct_emplace_t<T>, Args &&... args )
+		poly_value( construct_emplace_t<T>, Args &&...args )
 		  : m_ptr( std::make_unique<T>( std::forward<Args>( args )... ) )
 		  , m_copier( poly_value_impl::make_copier<BaseClass, T>( ) ) {}
 
@@ -173,7 +173,7 @@ namespace daw {
 
 	template<typename BaseClass, typename ChildClass = BaseClass,
 	         typename... Args>
-	poly_value<BaseClass> make_poly_value( Args &&... args ) {
+	poly_value<BaseClass> make_poly_value( Args &&...args ) {
 		return { construct_emplace<ChildClass>, std::forward<Args>( args )... };
 	}
 } // namespace daw

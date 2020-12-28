@@ -27,7 +27,8 @@
 #include <vector>
 
 #if not( defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or             \
-         defined( _CPPUNWIND ) ) or defined( DAW_NO_EXCEPTIONS )
+         defined( _CPPUNWIND ) ) or                                            \
+  defined( DAW_NO_EXCEPTIONS )
 #ifdef DAW_USE_EXCEPTIONS
 #undef DAW_USE_EXCEPTIONS
 #endif
@@ -144,9 +145,8 @@ namespace daw {
 	}
 
 	template<typename Test, typename... Args>
-	[[maybe_unused]] static auto bench_test( std::string const &title,
-	                                         Test &&test_callable,
-	                                         Args &&... args ) {
+	[[maybe_unused]] static auto
+	bench_test( std::string const &title, Test &&test_callable, Args &&...args ) {
 		auto const start = std::chrono::steady_clock::now( );
 		auto result = daw::expected_from_code( std::forward<Test>( test_callable ),
 		                                       std::forward<Args>( args )... );
@@ -160,7 +160,7 @@ namespace daw {
 	template<typename Test, typename... Args>
 	[[maybe_unused]] static auto
 	bench_test2( std::string const &title, Test &&test_callable,
-	             size_t item_count, Args &&... args ) {
+	             size_t item_count, Args &&...args ) {
 		auto const start = std::chrono::steady_clock::now( );
 		auto result = daw::expected_from_code( std::forward<Test>( test_callable ),
 		                                       std::forward<Args>( args )... );
@@ -193,7 +193,7 @@ namespace daw {
 	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
 	[[maybe_unused]] static auto bench_n_test( std::string const &title,
 	                                           Test &&test_callable,
-	                                           Args &&... args ) noexcept {
+	                                           Args &&...args ) noexcept {
 		static_assert( Runs > 0 );
 		using result_t = daw::remove_cvref_t<decltype( daw::expected_from_code(
 		  test_callable, std::forward<Args>( args )... ) )>;
@@ -289,7 +289,7 @@ namespace daw {
 	[[maybe_unused]] static std::array<double, Runs>
 	bench_n_test_mbs2( std::string const &title, size_t bytes,
 	                   Validator &&validator, Function &&func,
-	                   Args &&... args ) noexcept {
+	                   Args &&...args ) noexcept {
 		static_assert( Runs > 0 );
 		auto results = std::array<double, Runs>{ };
 
@@ -341,7 +341,7 @@ namespace daw {
 	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
 	[[maybe_unused]] static auto
 	bench_n_test_mbs( std::string const &title, size_t bytes,
-	                  Test &&test_callable, Args const &... args ) noexcept {
+	                  Test &&test_callable, Args const &...args ) noexcept {
 		static_assert( Runs > 0 );
 		using result_t = daw::remove_cvref_t<decltype(
 		  daw::expected_from_code( test_callable, args... ) )>;
@@ -440,7 +440,7 @@ namespace daw {
 	 */
 	template<size_t Runs, typename Function, typename... Args>
 	[[maybe_unused]] static std::vector<std::chrono::nanoseconds>
-	bench_n_test_json( Function &&func, Args &&... args ) noexcept {
+	bench_n_test_json( Function &&func, Args &&...args ) noexcept {
 		static_assert( Runs > 0 );
 		std::vector<std::chrono::nanoseconds> results( Runs );
 
@@ -494,7 +494,7 @@ namespace daw {
 	template<size_t Runs, typename Validator, typename Function, typename... Args>
 	[[maybe_unused]] static std::vector<std::chrono::nanoseconds>
 	bench_n_test_json_val( Validator &&validator, Function &&func,
-	                       Args &&... args ) noexcept {
+	                       Args &&...args ) noexcept {
 		static_assert( Runs > 0 );
 		std::vector<std::chrono::nanoseconds> results( Runs );
 

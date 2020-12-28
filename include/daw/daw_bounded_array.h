@@ -28,51 +28,51 @@ namespace daw {
 
 		value_type m_data[N];
 
-		constexpr reference front( ) noexcept {
+		[[nodiscard]] constexpr reference front( ) noexcept {
 			return m_data[0];
 		}
 
-		constexpr const_reference front( ) const noexcept {
+		[[nodiscard]] constexpr const_reference front( ) const noexcept {
 			return m_data[0];
 		}
 
-		constexpr reference back( ) noexcept {
+		[[nodiscard]] constexpr reference back( ) noexcept {
 			return m_data[N - 1];
 		}
 
-		constexpr const_reference back( ) const noexcept {
+		[[nodiscard]] constexpr const_reference back( ) const noexcept {
 			return m_data[N - 1];
 		}
 
-		constexpr pointer data( ) noexcept {
+		[[nodiscard]] constexpr pointer data( ) noexcept {
 			return m_data;
 		}
 
-		constexpr const_pointer data( ) const noexcept {
+		[[nodiscard]] constexpr const_pointer data( ) const noexcept {
 			return m_data;
 		}
 
-		constexpr iterator begin( ) noexcept {
+		[[nodiscard]] constexpr iterator begin( ) noexcept {
 			return m_data;
 		}
 
-		constexpr const_iterator begin( ) const noexcept {
+		[[nodiscard]] constexpr const_iterator begin( ) const noexcept {
 			return m_data;
 		}
 
-		constexpr const_iterator cbegin( ) const noexcept {
+		[[nodiscard]] constexpr const_iterator cbegin( ) const noexcept {
 			return m_data;
 		}
 
-		constexpr iterator end( ) noexcept {
+		[[nodiscard]] constexpr iterator end( ) noexcept {
 			return m_data + static_cast<intmax_t>( N );
 		}
 
-		constexpr const_iterator end( ) const noexcept {
+		[[nodiscard]] constexpr const_iterator end( ) const noexcept {
 			return m_data + static_cast<intmax_t>( N );
 		}
 
-		constexpr const_iterator cend( ) const noexcept {
+		[[nodiscard]] constexpr const_iterator cend( ) const noexcept {
 			return m_data + static_cast<intmax_t>( N );
 		}
 
@@ -80,19 +80,20 @@ namespace daw {
 			daw::algorithm::fill_n( m_data, N, value );
 		}
 
-		constexpr size_type size( ) const noexcept {
+		[[nodiscard]] constexpr size_type size( ) const noexcept {
 			return N;
 		}
 
-		constexpr bool empty( ) const noexcept {
+		[[nodiscard]] constexpr bool empty( ) const noexcept {
 			return N == 0;
 		}
 
-		constexpr reference operator[]( size_type pos ) noexcept {
+		[[nodiscard]] constexpr reference operator[]( size_type pos ) noexcept {
 			return m_data[pos];
 		}
 
-		constexpr const_reference operator[]( size_type pos ) const noexcept {
+		[[nodiscard]] constexpr const_reference
+		operator[]( size_type pos ) const noexcept {
 			return m_data[pos];
 		}
 	}; // array

@@ -442,7 +442,7 @@ namespace daw {
 
 		template<typename... Args, typename... Funcs>
 		constexpr void apply_at( std::tuple<Args...> const &tp, size_t index,
-		                         Funcs &&... funcs ) {
+		                         Funcs &&...funcs ) {
 			tuple_details::apply_at_impl(
 			  tp, index, daw::overload( std::forward<Funcs>( funcs )... ),
 			  std::index_sequence_for<Args...>{ } );
@@ -450,7 +450,7 @@ namespace daw {
 
 		template<typename... Args, typename... Funcs>
 		constexpr void apply_at( std::tuple<Args...> &tp, size_t index,
-		                         Funcs &&... funcs ) {
+		                         Funcs &&...funcs ) {
 			tuple_details::apply_at_impl(
 			  tp, index, daw::overload( std::forward<Funcs>( funcs )... ),
 			  std::index_sequence_for<Args...>{ } );
@@ -458,7 +458,7 @@ namespace daw {
 
 		template<typename... Args, typename... Funcs>
 		constexpr void apply_at( std::tuple<Args...> &&tp, size_t index,
-		                         Funcs &&... funcs ) {
+		                         Funcs &&...funcs ) {
 			tuple_details::apply_at_impl(
 			  daw::move( tp ), index,
 			  daw::overload( std::forward<Funcs>( funcs )... ) );

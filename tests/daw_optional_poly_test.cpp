@@ -63,7 +63,7 @@ void daw_optional_poly_test_03( ) {
 		// base_t &operator=( base_t && ) noexcept = default;
 		base_t( )
 		  : blah{ 123 } {}
-		virtual int get( ) const {
+		[[nodiscard]] virtual int get( ) const {
 			return blah;
 		}
 	};
@@ -74,7 +74,7 @@ void daw_optional_poly_test_03( ) {
 		  : blah2{ 321 } {}
 		explicit child_t( int x )
 		  : blah2{ x } {}
-		int get( ) const override {
+		[[nodiscard]] int get( ) const override {
 			return blah2;
 		}
 	};

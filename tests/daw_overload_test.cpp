@@ -21,7 +21,7 @@ void daw_overload_001( ) {
 		}
 	};
 	struct B {
-		auto operator( )( std::string ) const {
+		auto operator( )( std::string const & ) const {
 			std::cout << "B->std::string\n";
 			return 1;
 		}

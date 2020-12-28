@@ -31,31 +31,31 @@ namespace daw {
 		public:
 			Chunk( ) = default;
 
-			size_t size( ) const {
+			[[nodiscard]] size_t size( ) const {
 				return m_items.size( );
 			}
 
-			size_t &start( ) {
+			[[nodiscard]] size_t &start( ) {
 				return m_start;
 			}
 
-			size_t const &start( ) const {
+			[[nodiscard]] size_t const &start( ) const {
 				return m_start;
 			}
 
-			size_t end( ) const {
+			[[nodiscard]] size_t end( ) const {
 				return m_start + size( );
 			}
 
-			std::vector<T> &items( ) {
+			[[nodiscard]] std::vector<T> &items( ) {
 				return m_items;
 			}
 
-			std::vector<T> const &items( ) const {
+			[[nodiscard]] std::vector<T> const &items( ) const {
 				return m_items;
 			}
 
-			bool operator<( Chunk const &rhs ) {
+			[[nodiscard]] bool operator<( Chunk const &rhs ) {
 				return start( ) < rhs.start( );
 			}
 		}; // class Chunk
@@ -73,7 +73,7 @@ namespace daw {
 		values_type mutable m_items;
 		size_t m_size;
 
-		auto lfind( size_t pos ) {
+		[[nodiscard]] auto lfind( size_t pos ) {
 			if( pos >= size( ) ) {
 				return size( );
 			}
@@ -94,35 +94,35 @@ namespace daw {
 		}
 
 	public:
-		size_t size( ) const {
+		[[nodiscard]] size_t size( ) const {
 			return m_size;
 		}
 
-		reference operator[]( size_t pos ) {
+		[[nodiscard]] reference operator[]( size_t pos ) {
 			auto item = lfind( pos );
 		}
 
-		iterator begin( ) {
+		[[nodiscard]] iterator begin( ) {
 			return clumpy_sparsy_iterator<T>( this );
 		}
 
-		const_iterator begin( ) const {
+		[[nodiscard]] const_iterator begin( ) const {
 			return clumpy_sparsy_const_iterator<T>( this );
 		}
 
-		const_iterator cbegin( ) const {
+		[[nodiscard]] const_iterator cbegin( ) const {
 			return clumpy_sparsy_const_iterator<T>( this );
 		}
 
-		iterator end( ) {
+		[[nodiscard]] iterator end( ) {
 			return clumpy_sparsy_iterator<T>( this, size( ) );
 		}
 
-		const_iterator end( ) const {
+		[[nodiscard]] const_iterator end( ) const {
 			return clumpy_sparsy_const_iterator<T>( this, size( ) );
 		}
 
-		const_iterator cend( ) const {
+		[[nodiscard]] const_iterator cend( ) const {
 			return clumpy_sparsy_const_iterator<T>( this, size( ) );
 		}
 
@@ -152,7 +152,7 @@ namespace daw {
 		  , m_items( items ? items : nullptr ) {}
 
 	private:
-		auto as_tuple( ) {
+		[[nodiscard]] auto as_tuple( ) {
 			return std::tie( m_position, m_items );
 		}
 
@@ -170,11 +170,11 @@ namespace daw {
 			--m_position;
 		}
 
-		bool equal( clumpy_sparsy_iterator const &other ) {
+		[[nodiscard]] bool equal( clumpy_sparsy_iterator const &other ) {
 			return as_tuple( ) == other.as_tuple( );
 		}
 
-		decltype( auto ) dereference( ) const {
+		[[nodiscard]] decltype( auto ) dereference( ) const {
 			return ( *m_items )[m_position];
 		}
 
@@ -197,19 +197,19 @@ namespace daw {
 			}
 		}
 
-		reference operator*( ) {
+		[[nodiscard]] reference operator*( ) {
 			return dereference( );
 		}
 
-		pointer operator->( ) {
+		[[nodiscard]] pointer operator->( ) {
 			return &dereference( );
 		}
 
-		const_reference operator*( ) const {
+		[[nodiscard]] const_reference operator*( ) const {
 			return dereference( );
 		}
 
-		const_pointer operator->( ) const {
+		[[nodiscard]] const_pointer operator->( ) const {
 			return &dereference( );
 		}
 
@@ -257,11 +257,11 @@ namespace daw {
 			return result;
 		}
 
-		reference operator[]( size_type n ) noexcept {
+		[[nodiscard]] reference operator[]( size_type n ) noexcept {
 			return ( *m_items )[m_position + n];
 		}
 
-		const_reference operator[]( size_type n ) const noexcept {
+		[[nodiscard]] const_reference operator[]( size_type n ) const noexcept {
 			return ( *m_items )[m_position + n];
 		}
 

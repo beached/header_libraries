@@ -54,7 +54,7 @@ namespace daw {
 		    all_true_v<std::is_constructible_v<value_type, Args...>,
 		               !traits::is_first_type_v<value_ptr, std::decay_t<Args>...>>,
 		    std::nullptr_t> = nullptr>
-		explicit value_ptr( Args &&... args ) noexcept(
+		explicit value_ptr( Args &&...args ) noexcept(
 		  std::is_nothrow_constructible_v<value_type, Args...> )
 		  : enable_default_constructor<T>( traits_details::non_constructor{ } )
 		  , enable_copy_constructor<T>( traits_details::non_constructor{ } )
@@ -68,7 +68,7 @@ namespace daw {
 		    all_true_v<std::is_constructible_v<value_type, Args...>,
 		               !traits::is_first_type_v<value_ptr, std::decay_t<Args>...>>,
 		    std::nullptr_t> = nullptr>
-		static value_ptr emplace( Args &&... args ) noexcept(
+		static value_ptr emplace( Args &&...args ) noexcept(
 		  std::is_nothrow_constructible_v<value_type, Args...> ) {
 
 			auto result = value_ptr<value_type>( std::nullopt );
@@ -137,7 +137,7 @@ namespace daw {
 		template<typename... Args,
 		         std::enable_if_t<traits::is_callable_v<value_type, Args...>,
 		                          std::nullptr_t> = nullptr>
-		decltype( auto ) operator( )( Args &&... args ) noexcept(
+		decltype( auto ) operator( )( Args &&...args ) noexcept(
 		  noexcept( m_value->operator( )( std::forward<Args>( args )... ) ) ) {
 
 			return m_value->operator( )( std::forward<Args>( args )... );

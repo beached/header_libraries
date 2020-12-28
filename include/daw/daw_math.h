@@ -190,8 +190,9 @@ namespace daw {
 
 		template<typename T>
 		constexpr T pow( T base, size_t exponent ) noexcept {
-			return base == 0 ? 0
-			                 : exponent > 0 ? impl::pow_impl( base, exponent ) : 1;
+			return base == 0      ? 0
+			       : exponent > 0 ? impl::pow_impl( base, exponent )
+			                      : 1;
 		}
 
 		namespace impl {

@@ -61,7 +61,7 @@ namespace daw {
 		}
 
 		template<typename... Args>
-		void emplace( Args &&... args ) {
+		void emplace( Args &&...args ) {
 			m_value.reset( new value_type{ std::forward<Args>( args )... } );
 		}
 
@@ -168,7 +168,7 @@ namespace daw {
 	}
 
 	template<typename T, typename... Args>
-	auto make_optional_poly( Args &&... args ) {
+	auto make_optional_poly( Args &&...args ) {
 		optional_poly<T> result{ };
 		result.emplace( std::forward<Args>( args )... );
 		return result;

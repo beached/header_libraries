@@ -41,23 +41,23 @@ namespace daw {
 		  : m_size( sizeof( m_queue ) * 8 )
 		  , m_queue( daw::move( v ) ) {}
 
-		constexpr size_t size( ) const noexcept {
+		[[nodiscard]] constexpr size_t size( ) const noexcept {
 			return m_size;
 		}
 
-		constexpr bool can_pop( size_t const bits ) const noexcept {
+		[[nodiscard]] constexpr bool can_pop( size_t const bits ) const noexcept {
 			return m_size >= bits;
 		}
 
-		constexpr bool empty( ) const noexcept {
+		[[nodiscard]] constexpr bool empty( ) const noexcept {
 			return 0 == m_size;
 		}
 
-		constexpr size_t capacity( ) const noexcept {
+		[[nodiscard]] constexpr size_t capacity( ) const noexcept {
 			return sizeof( m_queue ) * 8;
 		}
 
-		constexpr bool full( ) const noexcept {
+		[[nodiscard]] constexpr bool full( ) const noexcept {
 			return size( ) == capacity( );
 		}
 
@@ -87,7 +87,7 @@ namespace daw {
 			m_size += bits;
 		}
 
-		value_type pop_front( size_t const bits ) noexcept {
+		[[nodiscard]] value_type pop_front( size_t const bits ) noexcept {
 			queue_type const mask = static_cast<queue_type>( ~( ( 2 << bits ) - 1 ) );
 			auto result = static_cast<value_type>(
 			  static_cast<value_type>( m_queue & mask ) >> ( capacity( ) - bits ) );
@@ -96,7 +96,7 @@ namespace daw {
 			return result;
 		}
 
-		value_type pop_back( size_t const bits ) {
+		[[nodiscard]] value_type pop_back( size_t const bits ) {
 			daw::exception::dbg_throw_on_false( m_size >= bits,
 			                                    "Not enough bits to pop request" );
 
@@ -118,7 +118,7 @@ namespace daw {
 			return result;
 		}
 
-		constexpr queue_type const &value( ) const noexcept {
+		[[nodiscard]] constexpr queue_type const &value( ) const noexcept {
 			return m_queue;
 		}
 	}; // basic_bit_queue
@@ -136,15 +136,15 @@ namespace daw {
 		constexpr explicit basic_nibble_queue( queue_type v ) noexcept
 		  : m_queue{ daw::move( v ) } {}
 
-		constexpr size_t capacity( ) const noexcept {
+		[[nodiscard]] constexpr size_t capacity( ) const noexcept {
 			return m_queue.capacity( ) / 4;
 		}
 
-		constexpr size_t size( ) const noexcept {
+		[[nodiscard]] constexpr size_t size( ) const noexcept {
 			return m_queue.size( ) / 4;
 		}
 
-		constexpr bool empty( ) const noexcept {
+		[[nodiscard]] constexpr bool empty( ) const noexcept {
 			return 0 == size( );
 		}
 
@@ -156,17 +156,17 @@ namespace daw {
 			m_queue.push_back( value, num_nibbles * 4 );
 		}
 
-		constexpr bool can_pop( size_t num_nibbles = sizeof( value_type ) *
-		                                             2 ) const noexcept {
+		[[nodiscard]] constexpr bool
+		can_pop( size_t num_nibbles = sizeof( value_type ) * 2 ) const noexcept {
 			return m_queue.can_pop( num_nibbles * 4 );
 		}
 
-		constexpr bool full( ) const noexcept {
+		[[nodiscard]] constexpr bool full( ) const noexcept {
 			return size( ) == capacity( );
 		}
 
-		value_type pop_front( size_t num_nibbles = sizeof( value_type ) *
-		                                           2 ) noexcept {
+		[[nodiscard]] value_type
+		pop_front( size_t num_nibbles = sizeof( value_type ) * 2 ) noexcept {
 			return m_queue.pop_front( num_nibbles * 4 );
 		}
 
@@ -178,7 +178,7 @@ namespace daw {
 			return m_queue.pop_all( );
 		}
 
-		constexpr queue_type const &value( ) const noexcept {
+		[[nodiscard]] constexpr queue_type const &value( ) const noexcept {
 			return m_queue.value( );
 		}
 	}; // basic_nibble_queue

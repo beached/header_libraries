@@ -22,21 +22,20 @@ namespace daw {
 		using const_reference = value_type const &;
 
 	private:
-		pointer m_pointer;
+		pointer m_pointer = nullptr;
 
 	public:
-		constexpr RandomIterator( ) noexcept
-		  : m_pointer{ nullptr } {} // TODO: Is this the correct behaviour
+		constexpr RandomIterator( ) noexcept = default;
 
-		constexpr RandomIterator( T *const ptr ) noexcept
+		constexpr RandomIterator( T *ptr ) noexcept
 		  : m_pointer{ ptr } {}
 
-		constexpr RandomIterator &operator=( T *const rhs ) noexcept {
+		constexpr RandomIterator &operator=( T *rhs ) noexcept {
 			m_pointer = rhs;
 			return *this;
 		}
 
-		constexpr pointer ptr( ) const noexcept {
+		[[nodiscard]] constexpr pointer ptr( ) const noexcept {
 			return m_pointer;
 		}
 
@@ -50,15 +49,15 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr reference operator*( ) {
+		[[nodiscard]] constexpr reference operator*( ) {
 			return *m_pointer;
 		}
 
-		constexpr const_reference operator*( ) const {
+		[[nodiscard]] constexpr const_reference operator*( ) const {
 			return *m_pointer;
 		}
 
-		constexpr pointer operator->( ) const noexcept {
+		[[nodiscard]] constexpr pointer operator->( ) const noexcept {
 			return m_pointer;
 		}
 
@@ -137,13 +136,13 @@ namespace daw {
 	}; // RandomIterator
 
 	template<typename T>
-	constexpr auto make_random_iterator( T *const ptr ) noexcept {
+	[[nodiscard]] constexpr auto make_random_iterator( T *const ptr ) noexcept {
 		return RandomIterator<T>{ ptr };
 	}
 
 	template<typename T>
-	constexpr auto make_const_random_iterator( T *const ptr ) noexcept {
+	[[nodiscard]] constexpr auto
+	make_const_random_iterator( T *const ptr ) noexcept {
 		return RandomIterator<T const>{ ptr };
 	}
-
 } // namespace daw

@@ -18,7 +18,7 @@ struct B : daw::virtual_base<B> {
 	}
 	~B( ) override;
 };
-B::~B( ) {}
+B::~B( ) = default;
 
 struct C : B {
 	C( ) = default;
@@ -27,7 +27,7 @@ struct C : B {
 	}
 	~C( ) override;
 };
-C::~C( ) {}
+C::~C( ) = default;
 
 int main( ) {
 	std::unique_ptr<B> b = std::unique_ptr<B>( new C( ) );

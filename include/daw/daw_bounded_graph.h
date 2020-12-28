@@ -392,7 +392,7 @@ namespace daw {
 		constexpr bounded_graph_t( ) noexcept = default;
 
 		template<typename... Args>
-		constexpr node_id_t add_node( Args &&... args ) {
+		constexpr node_id_t add_node( Args &&...args ) {
 			auto const id_value = cur_id++;
 			auto id = node_id_t( id_value );
 

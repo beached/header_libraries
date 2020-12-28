@@ -101,7 +101,7 @@ namespace daw {
 		template<typename... Args,
 		         std::enable_if_t<can_call_v<N, Invokable, TpArgs, Args...>,
 		                          std::nullptr_t> = nullptr>
-		constexpr decltype( auto ) operator( )( Args &&... args ) const
+		constexpr decltype( auto ) operator( )( Args &&...args ) const
 		  noexcept( is_nothrow_callable_v<N, Invokable, TpArgs, Args...> ) {
 			return std::apply(
 			  func,
@@ -115,7 +115,7 @@ namespace daw {
 		template<typename... Args,
 		         std::enable_if_t<can_call_v<N, Invokable, TpArgs, Args...>,
 		                          std::nullptr_t> = nullptr>
-		constexpr decltype( auto ) operator( )( Args &&... args ) noexcept(
+		constexpr decltype( auto ) operator( )( Args &&...args ) noexcept(
 		  is_nothrow_callable_v<N, Invokable, TpArgs, Args...> ) {
 			return std::apply(
 			  func,
@@ -128,7 +128,7 @@ namespace daw {
 	};
 
 	template<std::size_t N, typename Invokable, typename... Args>
-	constexpr auto bind_args_at( Invokable &&func, Args &&... args ) {
+	constexpr auto bind_args_at( Invokable &&func, Args &&...args ) {
 		return bind_args_at_fn<N, remove_cvref_t<Invokable>,
 		                       std::tuple<std::decay_t<Args>...>>{
 		  std::forward<Invokable>( func ),

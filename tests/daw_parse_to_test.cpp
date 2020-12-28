@@ -214,8 +214,8 @@ namespace {
 			  : value( v ) {}
 		};
 
-		constexpr ClassTest parse_to_value( daw::string_view str,
-		                                    daw::tag_t<ClassTest> ) {
+		[[nodiscard]] constexpr ClassTest parse_to_value( daw::string_view str,
+		                                                  daw::tag_t<ClassTest> ) {
 			return daw::construct_from<ClassTest, int>( str );
 		}
 

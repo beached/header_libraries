@@ -94,14 +94,14 @@ namespace daw {
 
 			template<typename... Args>
 			[[nodiscard, maybe_unused]] constexpr decltype( auto )
-			operator( )( Args &&... args ) noexcept( noexcept(
+			operator( )( Args &&...args ) noexcept( noexcept(
 			  not std::declval<Function>( )( std::declval<Args>( )... ) ) ) {
 				return not m_function( std::forward<Args>( args )... );
 			}
 
 			template<typename... Args>
 			[[nodiscard, maybe_unused]] constexpr decltype( auto )
-			operator( )( Args &&... args ) const noexcept( noexcept(
+			operator( )( Args &&...args ) const noexcept( noexcept(
 			  not std::declval<Function>( )( std::declval<Args>( )... ) ) ) {
 				return not m_function( std::forward<Args>( args )... );
 			}
@@ -220,7 +220,7 @@ namespace daw {
 	namespace cpp_17_details {
 		template<typename Base, typename T, typename Derived, typename... Args>
 		[[nodiscard, maybe_unused]] auto
-		INVOKE( T Base::*pmf, Derived &&ref, Args &&... args ) noexcept( noexcept(
+		INVOKE( T Base::*pmf, Derived &&ref, Args &&...args ) noexcept( noexcept(
 		  ( std::forward<Derived>( ref ).*pmf )( std::forward<Args>( args )... ) ) )
 		  -> std::enable_if_t<
 		    std::conjunction_v<std::is_function<T>,
@@ -233,7 +233,7 @@ namespace daw {
 
 		template<typename Base, typename T, typename RefWrap, typename... Args>
 		[[nodiscard, maybe_unused]] constexpr auto
-		INVOKE( T Base::*pmf, RefWrap &&ref, Args &&... args ) noexcept(
+		INVOKE( T Base::*pmf, RefWrap &&ref, Args &&...args ) noexcept(
 		  noexcept( ( ref.get( ).*pmf )( std::forward<Args>( args )... ) ) )
 		  -> std::enable_if_t<
 		    std::conjunction_v<std::is_function<T>,
@@ -245,7 +245,7 @@ namespace daw {
 
 		template<typename Base, typename T, typename Pointer, typename... Args>
 		[[nodiscard, maybe_unused]] constexpr auto
-		INVOKE( T Base::*pmf, Pointer &&ptr, Args &&... args ) noexcept(
+		INVOKE( T Base::*pmf, Pointer &&ptr, Args &&...args ) noexcept(
 		  noexcept( ( ( *std::forward<Pointer>( ptr ) ).*
 		              pmf )( std::forward<Args>( args )... ) ) )
 		  -> std::enable_if_t<
@@ -302,7 +302,7 @@ namespace daw {
 
 		template<typename F, typename... Args>
 		[[nodiscard, maybe_unused]] constexpr auto
-		INVOKE( F &&f, Args &&... args ) noexcept(
+		INVOKE( F &&f, Args &&...args ) noexcept(
 		  noexcept( std::forward<F>( f )( std::forward<Args>( args )... ) ) )
 		  -> std::enable_if_t<
 		    not std::is_member_pointer_v<std::decay_t<F>>,
@@ -317,7 +317,7 @@ namespace daw {
 	         daw::enable_when_t<std::conjunction_v<
 	           not_trait<is_reference_wrapper<Args>>...>> = nullptr>
 	[[nodiscard, maybe_unused]] constexpr decltype( auto )
-	invoke( F &&f, Args &&... args )
+	invoke( F &&f, Args &&...args )
 	  // exception specification for QoI
 	  noexcept( noexcept( cpp_17_details::INVOKE(
 	    std::forward<F>( f ), std::forward<Args>( args )... ) ) ) {
@@ -338,7 +338,7 @@ namespace daw {
 	}
 #else
 	template<typename F, typename... Args>
-	constexpr decltype( auto ) invoke( F &&f, Args &&... args ) noexcept(
+	constexpr decltype( auto ) invoke( F &&f, Args &&...args ) noexcept(
 	  noexcept( std::forward<F>( f )( std::forward<Args>( args )... ) ) ) {
 		return std::forward<F>( f )( std::forward<Args>( args )... );
 	}
@@ -692,12 +692,12 @@ namespace daw {
 
 	public:
 		template<typename F, typename... P>
-		constexpr bind_front( F &&func, P &&... params )
+		constexpr bind_front( F &&func, P &&...params )
 		  : m_func( std::forward<F>( func ) )
 		  , m_params( std::forward<P>( params )... ) {}
 
 		template<typename... Args>
-		constexpr decltype( auto ) operator( )( Args &&... args ) {
+		constexpr decltype( auto ) operator( )( Args &&...args ) {
 			static_assert( std::is_invocable_v<Function, Params..., Args...>,
 			               "Arguments are not valid for function" );
 			return std::apply(
@@ -706,7 +706,7 @@ namespace daw {
 		}
 
 		template<typename... Args>
-		constexpr decltype( auto ) operator( )( Args &&... args ) const {
+		constexpr decltype( auto ) operator( )( Args &&...args ) const {
 			static_assert( std::is_invocable_v<Function, Params..., Args...>,
 			               "Arguments are not valid for function" );
 			return std::apply(

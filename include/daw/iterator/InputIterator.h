@@ -90,7 +90,7 @@ namespace daw {
 			  } };
 			return &vtable;
 		}
-	} // namespace inpit_impl
+	} // namespace input_impl
 
 	template<typename T>
 	struct InputIterator {
@@ -105,12 +105,12 @@ namespace daw {
 
 		std::byte *m_iterator;
 		input_impl::vtable_t<value_type> const *m_vtable;
-		op_clone_t fn_op_clone( ) const noexcept {
+		[[nodiscard]] op_clone_t fn_op_clone( ) const noexcept {
 			return input_impl::get<input_impl::OpClone, value_type>( m_vtable );
 		}
 
 		template<typename Iterator>
-		static std::byte *create( Iterator const &it ) {
+		[[nodiscard]] static std::byte *create( Iterator const &it ) {
 			auto ptr = new Iterator( it );
 			return reinterpret_cast<std::byte *>( ptr );
 		}
@@ -132,11 +132,13 @@ namespace daw {
 		  , m_vtable( other.m_vtable ) {}
 
 		InputIterator &operator=( InputIterator const &rhs ) {
-			// copy first so that if it throws we are cool
-			auto tmp = rhs.fn_op_clone( )( rhs.m_iterator );
-			std::swap( m_iterator, tmp );
-			m_vtable = rhs.m_vtable;
-			input_impl::get<input_impl::OpDel, value_type>( m_vtable )( tmp );
+			if( this != &rhs ) {
+				// copy first so that if it throws we are cool
+				auto tmp = rhs.fn_op_clone( )( rhs.m_iterator );
+				std::swap( m_iterator, tmp );
+				m_vtable = rhs.m_vtable;
+				input_impl::get<input_impl::OpDel, value_type>( m_vtable )( tmp );
+			}
 			return *this;
 		}
 
@@ -156,10 +158,11 @@ namespace daw {
 			input_impl::get<input_impl::OpDel, value_type>( m_vtable )( m_iterator );
 		}
 
-		reference operator*( ) const {
+		[[nodiscard]] reference operator*( ) const {
 			return *operator->( );
 		}
-		pointer operator->( ) const {
+
+		[[nodiscard]] pointer operator->( ) const {
 			return reinterpret_cast<pointer>(
 			  input_impl::get<input_impl::OpArrow, value_type>( m_vtable )(
 			    m_iterator ) );
@@ -177,8 +180,8 @@ namespace daw {
 		}
 
 	private:
-		constexpr static bool same_op_cmp( InputIterator const &lhs,
-		                                   InputIterator const &rhs ) noexcept {
+		[[nodiscard]] constexpr static bool
+		same_op_cmp( InputIterator const &lhs, InputIterator const &rhs ) noexcept {
 			return lhs.m_vtable == rhs.m_vtable;
 		}
 
@@ -199,7 +202,7 @@ namespace daw {
 			  m_iterator, rhs.m_iterator );
 		}
 
-		bool
+		[[nodiscard]] bool
 		are_same_base_iterator_type( InputIterator const &other ) const noexcept {
 			return same_op_cmp( *this, other );
 		}
@@ -230,22 +233,22 @@ namespace daw {
 		  : first( f )
 		  , last( l ) {}
 
-		decltype( auto ) begin( ) {
+		[[nodiscard]] decltype( auto ) begin( ) {
 			return first;
 		}
-		decltype( auto ) begin( ) const {
+		[[nodiscard]] decltype( auto ) begin( ) const {
 			return first;
 		}
-		decltype( auto ) cbegin( ) const {
+		[[nodiscard]] decltype( auto ) cbegin( ) const {
 			return first;
 		}
-		decltype( auto ) end( ) {
+		[[nodiscard]] decltype( auto ) end( ) {
 			return last;
 		}
-		decltype( auto ) end( ) const {
+		[[nodiscard]] decltype( auto ) end( ) const {
 			return last;
 		}
-		decltype( auto ) cend( ) const {
+		[[nodiscard]] decltype( auto ) cend( ) const {
 			return last;
 		}
 	};

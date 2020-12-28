@@ -35,7 +35,7 @@ namespace daw {
 		constexpr uninitialized_storage( ) noexcept = default;
 
 		template<typename... Args>
-		void construct( Args &&... args ) noexcept(
+		void construct( Args &&...args ) noexcept(
 		  std::is_nothrow_constructible_v<T, Args...> ) {
 
 			if constexpr( std::is_aggregate_v<T> ) {

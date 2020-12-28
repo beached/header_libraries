@@ -92,7 +92,7 @@ namespace daw::exception {
 
 	template<typename ExceptionType = DefaultException, typename Arg,
 	         typename... Args>
-	[[noreturn]] void daw_throw( Arg &&arg, Args &&... args ) {
+	[[noreturn]] void daw_throw( Arg &&arg, Args &&...args ) {
 #if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
   defined( _CPPUNWIND )
 		throw ExceptionType( std::forward<Arg>( arg ),
@@ -104,7 +104,7 @@ namespace daw::exception {
 
 #ifndef NODEBUGTHROW
 	template<typename ExceptionType = DefaultException, typename... Args>
-	[[noreturn]] constexpr void debug_throw( Args &&... args ) {
+	[[noreturn]] constexpr void debug_throw( Args &&...args ) {
 		daw_throw<ExceptionType>( std::forward<Args>( args )... );
 	}
 #else
@@ -116,7 +116,7 @@ namespace daw::exception {
 	template<typename ExceptionType = NullPtrAccessException, typename ValueType,
 	         typename... Args>
 	constexpr void dbg_throw_on_null( ValueType const *const value,
-	                                  Args &&... args ) {
+	                                  Args &&...args ) {
 		if( nullptr == value ) {
 			debug_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
@@ -132,7 +132,7 @@ namespace daw::exception {
 	template<typename ExceptionType = NullPtrAccessException, typename ValueType,
 	         typename... Args>
 	constexpr ValueType *dbg_throw_on_null_or_return( ValueType *value,
-	                                                  Args &&... args ) {
+	                                                  Args &&...args ) {
 		if( nullptr == value ) {
 			debug_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
@@ -142,7 +142,7 @@ namespace daw::exception {
 	template<typename ExceptionType = NullPtrAccessException, typename ValueType,
 	         typename... Args>
 	constexpr ValueType *dbg_throw_on_null_or_return( ValueType *value,
-	                                                  Args &&... args ) {
+	                                                  Args &&...args ) {
 		return value;
 	}
 #endif
@@ -151,7 +151,7 @@ namespace daw::exception {
 	template<typename ExceptionType = AssertException, typename ValueType,
 	         typename... Args>
 	constexpr auto dbg_throw_on_false_or_return( ValueType &&value, bool test,
-	                                             Args &&... args ) {
+	                                             Args &&...args ) {
 		if( !static_cast<bool>( test ) ) {
 			debug_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
@@ -159,7 +159,7 @@ namespace daw::exception {
 	}
 
 	template<typename ExceptionType = AssertException, typename... Args>
-	constexpr bool dbg_throw_on_false_or_return( bool test, Args &&... args ) {
+	constexpr bool dbg_throw_on_false_or_return( bool test, Args &&...args ) {
 		if( !static_cast<bool>( test ) ) {
 			debug_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
@@ -172,7 +172,7 @@ namespace daw::exception {
 #ifndef NODEBUGTHROW
 	template<typename ExceptionType = AssertException, typename Bool,
 	         typename... Args>
-	constexpr void dbg_throw_on_false( Bool &&test, Args &&... args ) {
+	constexpr void dbg_throw_on_false( Bool &&test, Args &&...args ) {
 		if( !static_cast<bool>( std::forward<Bool>( test ) ) ) {
 			debug_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
@@ -180,7 +180,7 @@ namespace daw::exception {
 
 	template<typename ExceptionType = AssertException, typename Bool,
 	         typename... Args>
-	constexpr void DebugAssert( Bool &&test, Args &&... args ) {
+	constexpr void DebugAssert( Bool &&test, Args &&...args ) {
 		if( !static_cast<bool>( std::forward<Bool>( test ) ) ) {
 			debug_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
@@ -208,7 +208,7 @@ namespace daw::exception {
 	template<typename ExceptionType = AssertException, typename ValueType,
 	         typename... Args>
 	constexpr ValueType &dbg_throw_on_true_or_return( ValueType &value, bool test,
-	                                                  Args &&... args ) {
+	                                                  Args &&...args ) {
 		if( static_cast<bool>( test ) ) {
 			debug_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
@@ -218,7 +218,7 @@ namespace daw::exception {
 	template<typename ExceptionType = AssertException, typename Bool,
 	         typename... Args>
 	constexpr bool dbg_throw_on_true_or_return( const Bool &test,
-	                                            Args &&... args ) {
+	                                            Args &&...args ) {
 		if( static_cast<bool>( test ) ) {
 			debug_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
@@ -226,7 +226,7 @@ namespace daw::exception {
 	}
 
 	template<typename ExceptionType = AssertException, typename... Args>
-	constexpr void dbg_throw_on_true( bool test, Args &&... args ) {
+	constexpr void dbg_throw_on_true( bool test, Args &&...args ) {
 		if( static_cast<bool>( test ) ) {
 			debug_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
@@ -235,7 +235,7 @@ namespace daw::exception {
 	template<typename ExceptionType = NullPtrAccessException, typename ValueType,
 	         typename... Args>
 	constexpr void daw_throw_on_null( ValueType const *const value,
-	                                  Args &&... args ) {
+	                                  Args &&...args ) {
 		if( nullptr == value ) {
 			daw_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
@@ -243,7 +243,7 @@ namespace daw::exception {
 
 	template<typename ExceptionType = AssertException, typename ValueType,
 	         typename... Args>
-	constexpr void daw_throw_on_null( ValueType *value, Args &&... args ) {
+	constexpr void daw_throw_on_null( ValueType *value, Args &&...args ) {
 		if( nullptr == value ) {
 			daw_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
@@ -252,7 +252,7 @@ namespace daw::exception {
 	template<typename ExceptionType = AssertException, typename ValueType,
 	         typename... Args>
 	constexpr ValueType *daw_throw_on_null_or_return( ValueType *value,
-	                                                  Args &&... args ) {
+	                                                  Args &&...args ) {
 		if( nullptr == value ) {
 			daw_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
@@ -261,7 +261,7 @@ namespace daw::exception {
 
 	template<typename ExceptionType = AssertException, typename... Args,
 	         typename Bool>
-	constexpr bool daw_throw_on_false_or_return( Bool &&test, Args &&... args ) {
+	constexpr bool daw_throw_on_false_or_return( Bool &&test, Args &&...args ) {
 		if( !static_cast<bool>( test ) ) {
 			daw_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
@@ -271,7 +271,7 @@ namespace daw::exception {
 	struct Terminator {};
 
 	template<typename ExceptionType = Terminator, typename Bool, typename... Args>
-	constexpr void precondition_check( Bool &&condition, Args &&... args ) {
+	constexpr void precondition_check( Bool &&condition, Args &&...args ) {
 		if( !static_cast<bool>( condition ) ) {
 			if constexpr( std::is_same<Terminator, ExceptionType>::value ) {
 				std::abort( );
@@ -282,7 +282,7 @@ namespace daw::exception {
 	}
 
 	template<typename ExceptionType = Terminator, typename Bool, typename... Args>
-	constexpr void postcondition_check( Bool &&condition, Args &&... args ) {
+	constexpr void postcondition_check( Bool &&condition, Args &&...args ) {
 		if( !static_cast<bool>( condition ) ) {
 			if constexpr( std::is_same<Terminator, ExceptionType>::value ) {
 				std::abort( );
@@ -321,7 +321,7 @@ namespace daw::exception {
 	         typename... Args, typename Bool>
 	constexpr ValueType daw_throw_on_false_or_return( ValueType &&value,
 	                                                  Bool &&test,
-	                                                  Args &&... args ) {
+	                                                  Args &&...args ) {
 		if( !static_cast<bool>( std::forward<Bool>( test ) ) ) {
 			daw_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
@@ -330,7 +330,7 @@ namespace daw::exception {
 
 	template<typename ExceptionType = AssertException, typename Bool,
 	         typename... Args>
-	constexpr void daw_throw_on_false( Bool &&test, Args &&... args ) {
+	constexpr void daw_throw_on_false( Bool &&test, Args &&...args ) {
 		if( !static_cast<bool>( std::forward<Bool>( test ) ) ) {
 			daw_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
@@ -338,7 +338,7 @@ namespace daw::exception {
 
 	template<typename ExceptionType = AssertException, typename Bool,
 	         typename... Args>
-	constexpr void Assert( Bool const &test, Args &&... args ) {
+	constexpr void Assert( Bool const &test, Args &&...args ) {
 		if( !static_cast<bool>( test ) ) {
 			daw_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
@@ -386,7 +386,7 @@ namespace daw::exception {
 	         typename... Args, typename Bool>
 	constexpr ValueType daw_throw_on_true_or_return( ValueType &&value,
 	                                                 Bool &&test,
-	                                                 Args &&... args ) {
+	                                                 Args &&...args ) {
 		if( static_cast<bool>( test ) ) {
 			daw_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
@@ -397,7 +397,7 @@ namespace daw::exception {
 	         typename... Args, typename Bool>
 	constexpr ValueType &&daw_throw_on_true_or_return( ValueType &&value,
 	                                                   Bool &&test,
-	                                                   Args &&... args ) {
+	                                                   Args &&...args ) {
 		if( static_cast<bool>( test ) ) {
 			daw_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
@@ -407,7 +407,7 @@ namespace daw::exception {
 	template<typename ExceptionType = AssertException, typename ValueType,
 	         typename... Args>
 	constexpr ValueType daw_throw_on_true_or_return( ValueType &&value, bool test,
-	                                                 Args &&... args ) {
+	                                                 Args &&...args ) {
 		if( static_cast<bool>( test ) ) {
 			daw_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
@@ -416,7 +416,7 @@ namespace daw::exception {
 
 	template<typename ExceptionType = AssertException, typename Bool,
 	         typename... Args>
-	constexpr bool daw_throw_on_true_or_return( Bool &&test, Args &&... args ) {
+	constexpr bool daw_throw_on_true_or_return( Bool &&test, Args &&...args ) {
 		if( static_cast<bool>( std::forward<Bool>( test ) ) ) {
 			daw_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
@@ -434,7 +434,7 @@ namespace daw::exception {
 	  typename ExceptionType = AssertException, typename Bool, typename... Args,
 	  typename std::enable_if<( sizeof...( Args ) > 0 ), std::nullptr_t>::type =
 	    nullptr>
-	constexpr void daw_throw_on_true( Bool &&test, Args &&... args ) {
+	constexpr void daw_throw_on_true( Bool &&test, Args &&...args ) {
 		if( static_cast<bool>( std::forward<Bool>( test ) ) ) {
 			daw_throw<ExceptionType>( std::forward<Args>( args )... );
 		}
@@ -466,7 +466,7 @@ namespace daw::exception {
 	}
 
 	template<typename Function, typename... Args>
-	void no_exception( Function func, Args &&... args ) noexcept {
+	void no_exception( Function func, Args &&...args ) noexcept {
 #if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
   defined( _CPPUNWIND )
 		try {
@@ -481,7 +481,7 @@ namespace daw::exception {
 #if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
   defined( _CPPUNWIND )
 	template<typename Exception, typename... Args>
-	std::exception_ptr make_exception_ptr( Args &&... args ) noexcept {
+	std::exception_ptr make_exception_ptr( Args &&...args ) noexcept {
 		try {
 			throw Exception{ std::forward<Args>( args )... };
 		} catch( ... ) { return std::current_exception( ); }

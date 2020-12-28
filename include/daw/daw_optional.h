@@ -40,27 +40,28 @@ namespace daw {
 		constexpr optional( ) noexcept = default;
 		constexpr optional( std::nullopt_t ) noexcept {}
 
-		constexpr reference operator*( ) &noexcept {
+		[[nodiscard]] constexpr reference operator*( ) &noexcept {
 			return m_value.operator*( );
 		}
 
-		constexpr const_reference operator*( ) const &noexcept {
+		[[nodiscard]] constexpr const_reference operator*( ) const &noexcept {
 			return m_value.operator*( );
 		}
 
-		constexpr rvalue_reference operator*( ) &&noexcept {
+		[[nodiscard]] constexpr rvalue_reference operator*( ) &&noexcept {
 			return std::move( m_value ).operator*( );
 		}
 
-		constexpr const_rvalue_reference operator*( ) const &&noexcept {
+		[[nodiscard]] constexpr const_rvalue_reference
+		operator*( ) const &&noexcept {
 			return std::move( m_value ).operator*( );
 		}
 
-		constexpr pointer operator->( ) noexcept {
+		[[nodiscard]] constexpr pointer operator->( ) noexcept {
 			return &m_value.operator->( );
 		}
 
-		constexpr const_pointer operator->( ) const noexcept {
+		[[nodiscard]] constexpr const_pointer operator->( ) const noexcept {
 			return &m_value.operator->( );
 		}
 
@@ -75,34 +76,34 @@ namespace daw {
 		}
 
 		template<typename... Args>
-		reference emplace( Args &&... args ) {
+		reference emplace( Args &&...args ) {
 			return m_value.emplace( std::forward<Args>( args )... );
 		}
 
 		// cannot emplace to a reference
 		template<typename U, typename... Args>
-		reference emplace( std::initializer_list<U> ilist, Args &&... args ) {
+		reference emplace( std::initializer_list<U> ilist, Args &&...args ) {
 			return m_value.emplace( std::move( ilist ),
 			                        std::forward<Args>( args )... );
 		}
 
-		constexpr reference value( ) & {
+		[[nodiscard]] constexpr reference value( ) & {
 			return m_value.value( );
 		}
 
-		constexpr const_reference value( ) const & {
+		[[nodiscard]] constexpr const_reference value( ) const & {
 			return m_value.value( );
 		}
 
-		constexpr rvalue_reference value( ) && {
+		[[nodiscard]] constexpr rvalue_reference value( ) && {
 			return std::move( m_value ).value( );
 		}
 
-		constexpr const_rvalue_reference value( ) const && {
+		[[nodiscard]] constexpr const_rvalue_reference value( ) const && {
 			return std::move( m_value ).value( );
 		}
 
-		constexpr bool has_value( ) const noexcept {
+		[[nodiscard]] constexpr bool has_value( ) const noexcept {
 			return m_value.has_value( );
 		}
 
@@ -164,19 +165,19 @@ namespace daw {
 		constexpr optional( ) noexcept = default;
 		constexpr optional( std::nullopt_t ) noexcept {}
 
-		constexpr reference operator*( ) noexcept {
+		[[nodiscard]] constexpr reference operator*( ) noexcept {
 			return *m_value.operator*( );
 		}
 
-		constexpr const_reference operator*( ) const noexcept {
+		[[nodiscard]] constexpr const_reference operator*( ) const noexcept {
 			return *m_value.operator*( );
 		}
 
-		constexpr pointer operator->( ) noexcept {
+		[[nodiscard]] constexpr pointer operator->( ) noexcept {
 			return m_value.operator*( );
 		}
 
-		constexpr const_pointer operator->( ) const noexcept {
+		[[nodiscard]] constexpr const_pointer operator->( ) const noexcept {
 			return m_value.operator*( );
 		}
 
@@ -197,15 +198,15 @@ namespace daw {
 		template<typename U, typename... Args>
 		reference emplace( std::initializer_list<U>, Args &&... ) = delete;
 
-		constexpr reference value( ) {
+		[[nodiscard]] constexpr reference value( ) {
 			return *m_value.value( );
 		}
 
-		constexpr const_reference value( ) const {
+		[[nodiscard]] constexpr const_reference value( ) const {
 			return *m_value.value( );
 		}
 
-		constexpr bool has_value( ) const noexcept {
+		[[nodiscard]] constexpr bool has_value( ) const noexcept {
 			return m_value.has_value( );
 		}
 

@@ -69,7 +69,7 @@ namespace daw_hex_test_004 {
 		}
 		return true;
 	}
-	static_assert( to_hex_test_004( ), "" );
+	static_assert( to_hex_test_004( ) );
 } // namespace daw_hex_test_004
 
 void daw_hex_test_005( ) {
@@ -82,23 +82,22 @@ void daw_hex_test_005( ) {
 
 namespace daw_pack_index_of_001 {
 	static_assert(
-	  daw::pack_index_of_v<int, std::string, bool, float, int, long> == 3, "" );
+	  daw::pack_index_of_v<int, std::string, bool, float, int, long> == 3 );
 }
 
 namespace daw_pack_index_of_002 {
 	static_assert(
-	  daw::pack_index_of_v<double, std::string, bool, float, int, long> == 5,
-	  "" );
+	  daw::pack_index_of_v<double, std::string, bool, float, int, long> == 5 );
 }
 
 namespace daw_pack_index_of_003 {
 	static_assert(
-	  daw::pack_index_of_v<bool, std::string, bool, float, int, long> == 1, "" );
+	  daw::pack_index_of_v<bool, std::string, bool, float, int, long> == 1 );
 }
 
 /*
 constexpr bool daw_get_pack_value_001( ) {
-  constexpr auto const tst = dawdaw_get_pack_value( 2, "a", true, 4 );
+  constexpr auto const tst = daw_get_pack_value( 2, "a", true, 4 );
 
   static_assert( std::is_same_v<decltype( tst ), bool>, "Expected a bool" );
   return tst;
