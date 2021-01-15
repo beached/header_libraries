@@ -14,7 +14,8 @@
 int main( ) {
 	std::array<char, 4 * 2 * 2> buff;
 	auto chunk = daw::chunk_iterator<char *>( buff.data( ), 4 );
-	constexpr auto last = daw::chunk_iterator<char *>( );
+	auto const last =
+	  daw::chunk_iterator<char *>( buff.data( ) + buff.size( ), 4 );
 	char r = 0;
 	char g = 1;
 	char b = 2;
