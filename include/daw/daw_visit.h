@@ -37,6 +37,7 @@ namespace daw {
 		using namespace std;
 		if constexpr( get_nt_details::has_get_if_v<
 		                std::remove_reference_t<Variant>> ) {
+			DAW_ASSUME( Idx == var.index( ) );
 			auto *ptr = get_if<Idx>( &var );
 			DAW_ASSUME( ptr != nullptr );
 			if constexpr( std::is_rvalue_reference_v<Variant> ) {

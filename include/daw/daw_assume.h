@@ -8,15 +8,21 @@
 
 #pragma once
 
+#include <cassert>
+
+#ifndef NDEBUG
+#define DAW_ASSUME( ... ) assert( __VA_ARGS__ )
+#else
 #if defined( __GNUC__ ) or defined( __clang__ )
-#define DAW_ASSUME( expr )    \
-	while( !( expr ) ) {        \
+#define DAW_ASSUME( ... )    \
+	while( !( (__VA_ARGS__) ) ) {        \
 		__builtin_unreachable( ); \
 	}                           \
 	do {                        \
 	} while( false )
 #elif defined( _MSC_VER )
-#define DAW_ASSUME( expr ) __assume( !!(expr) )
+#define DAW_ASSUME( (__VA_ARGS__) ) __assume( !!((__VA_ARGS__)) )
 #else
-#define DAW_ASSUME( expr ) do { } while( false )
+#define DAW_ASSUME( (__VA_ARGS__) ) do { } while( false )
+#endif
 #endif

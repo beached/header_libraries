@@ -22,6 +22,7 @@
 #include <ciso646>
 #include <cmath>
 #include <cstddef>
+#include <cstdlib>
 #include <functional>
 #include <initializer_list>
 #include <limits>
@@ -1088,4 +1089,14 @@ namespace daw {
 
 	template<bool Bool_, typename If_, typename Then_>
 	using if_t = typename std::conditional<Bool_, If_, Then_>::type;
+
+	template<typename T, std::size_t Alignment = alignof( T )>
+	inline T * get_buffer( std::size_t count ) noexcept {
+		return reinterpret_cast<T *>( ::aligned_alloc( Alignment, sizeof(T)*count ) );
+	}
+
+	template<typename T>
+	inline void return_buffer( T * ptr ) noexcept {
+		::free( ptr );
+	}
 } // namespace daw
