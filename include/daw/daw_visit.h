@@ -26,10 +26,17 @@ namespace daw {
 			using namespace std;
 			template<typename T>
 			using get_if_test = decltype( get_if<0>( std::declval<T *>( ) ) );
+
+			template<typename T>
+			using index_test = decltype( std::declval<T>( ).index( ) );
 		} // namespace gi_test
 		template<typename T>
 		inline constexpr bool has_get_if_v =
 		  daw::is_detected_v<gi_test::get_if_test, T>;
+
+		template<typename T>
+		inline constexpr bool has_index_v =
+			daw::is_detected_v<gi_test::index_test, T>;
 	} // namespace get_nt_details
 
 	template<std::size_t Idx, typename Variant>
@@ -37,7 +44,9 @@ namespace daw {
 		using namespace std;
 		if constexpr( get_nt_details::has_get_if_v<
 		                std::remove_reference_t<Variant>> ) {
-			DAW_ASSUME( Idx == var.index( ) );
+			if constexpr( get_nt_details::has_index_v<Variant> ) {
+				DAW_ASSUME( Idx == var.index( ) );
+			}
 			auto *ptr = get_if<Idx>( &var );
 			DAW_ASSUME( ptr != nullptr );
 			if constexpr( std::is_rvalue_reference_v<Variant> ) {
