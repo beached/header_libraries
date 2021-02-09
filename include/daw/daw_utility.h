@@ -1091,12 +1091,19 @@ namespace daw {
 	using if_t = typename std::conditional<Bool_, If_, Then_>::type;
 
 	template<typename T, std::size_t Alignment = alignof( T )>
-	inline T * get_buffer( std::size_t count ) noexcept {
-		return reinterpret_cast<T *>( ::aligned_alloc( Alignment, sizeof(T)*count ) );
+	inline T *get_buffer( std::size_t count ) noexcept {
+		return reinterpret_cast<T *>(
+		  ::aligned_alloc( Alignment, sizeof( T ) * count ) );
 	}
 
 	template<typename T>
-	inline void return_buffer( T * ptr ) noexcept {
+	inline void return_buffer( T *ptr ) noexcept {
 		::free( ptr );
+	}
+
+	template<typename Container>
+	inline constexpr auto data_end( Container &&c )
+	  -> decltype( std::data( c ) + std::size( c ) ) {
+		return std::data( c ) + std::size( c );
 	}
 } // namespace daw
