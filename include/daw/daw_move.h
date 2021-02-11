@@ -24,4 +24,20 @@ namespace daw {
 		               "Value is already an rvalue" );
 		return static_cast<typename std::remove_reference<T>::type &&>( value );
 	}
+
+	template<class T>
+	inline constexpr T &&forward( std::remove_reference_t<T> &value ) {
+		return static_cast<T &&>( value );
+	}
+
+	template<class T>
+	inline constexpr T &&forward( std::remove_reference_t<T> &&value ) {
+		static_assert( not std::is_lvalue_reference_v<T>,
+		               "Cannot forward an rvalue as an lvalue" );
+		return static_cast<T &&>( value );
+	}
 } // namespace daw
+
+#ifndef FWD
+#define FWD( ... ) std::forward<decltype( __VA_ARGS__ )>( __VA_ARGS )
+#endif
