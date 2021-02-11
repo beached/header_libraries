@@ -15,7 +15,7 @@ namespace daw {
 	/// \param  value  A thing of arbitrary type.
 	/// \return The parameter cast to an rvalue-reference to allow moving it.
 	template<typename T>
-	[[nodiscard]] constexpr typename std::remove_reference<T>::type &&
+	[[nodiscard]] inline constexpr typename std::remove_reference<T>::type &&
 	move( T &&value ) noexcept {
 		static_assert(
 		  not std::is_const<typename std::remove_reference<T>::type>::value,
@@ -24,21 +24,9 @@ namespace daw {
 		               "Value is already an rvalue" );
 		return static_cast<typename std::remove_reference<T>::type &&>( value );
 	}
-
-	template<class T>
-	inline constexpr T &&forward( std::remove_reference_t<T> &value ) {
-		return static_cast<T &&>( value );
-	}
-
-	template<class T>
-	inline constexpr T &&forward( std::remove_reference_t<T> &&value ) {
-		static_assert( not std::is_lvalue_reference_v<T>,
-		               "Cannot forward an rvalue as an lvalue" );
-		return static_cast<T &&>( value );
-	}
 } // namespace daw
 
 #ifndef DAW_FWD
-#define DAW_FWD( ... ) std::forward<decltype( __VA_ARGS__ )>( __VA_ARGS )
+#define DAW_FWD( ... ) static_cast<decltype(__VA_ARGS__)&&>(__VA_ARGS__)
 #endif
 
