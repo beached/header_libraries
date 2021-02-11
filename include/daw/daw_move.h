@@ -38,7 +38,7 @@ namespace daw {
 	}
 } // namespace daw
 
-#ifndef FWD
-#define FWD( ... ) std::forward<decltype( __VA_ARGS__ )>( __VA_ARGS )
+#ifndef DAW_FWD
+#define DAW_FWD( ... ) std::forward<decltype( __VA_ARGS__ )>( __VA_ARGS )
 #endif
 
