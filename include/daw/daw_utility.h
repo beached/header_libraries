@@ -14,6 +14,7 @@
 
 #include "cpp_17.h"
 #include "daw_algorithm.h"
+#include "daw_contruct_a.h"
 #include "daw_exception.h"
 #include "daw_move.h"
 #include "daw_traits.h"
@@ -647,26 +648,7 @@ namespace daw {
 	template<typename... Args>
 	constexpr tag_t<Args...> tag = tag_t<Args...>{ };
 
-	template<typename T>
-	struct use_aggregate_construction {
-		using type = T;
-
-		use_aggregate_construction( ) = delete;
-	};
-
 	namespace utility_details {
-		template<typename T>
-		constexpr int should_use_aggregate_construction_test(
-		  use_aggregate_construction<T> const & ) noexcept;
-
-		template<typename T>
-		using should_use_aggregate_construction_detect =
-		  decltype( should_use_aggregate_construction_test( std::declval<T>( ) ) );
-
-		template<typename T>
-		constexpr bool should_use_aggregate_construction_v =
-		  daw::is_detected_v<should_use_aggregate_construction_detect, T>;
-
 		template<typename T, bool>
 		struct AllocDetail {};
 
@@ -679,50 +661,7 @@ namespace daw {
 		using AllocTest = typename T::allocator_type;
 	} // namespace utility_details
 
-	/// @brief Construct a value.  If normal ( ) construction does not work
-	///	try aggregate.
-	/// @tparam T type of value to construct
-	template<typename T>
-	struct construct_a_t {
-		template<typename... Args>
-		[[nodiscard]] inline constexpr auto operator( )( Args &&...args ) const
-		  noexcept( std::is_nothrow_constructible_v<T, Args...> )
-		    -> std::enable_if_t<std::is_constructible_v<T, Args...>, T> {
-			return T( std::forward<Args>( args )... );
-		}
-
-		template<typename... Args>
-		[[nodiscard]] inline constexpr auto operator( )( Args &&...args ) const
-		  noexcept( traits::is_nothrow_list_constructible_v<T, Args...> )
-		    -> std::enable_if_t<
-		      std::conjunction_v<
-		        traits::static_not<std::is_constructible<T, Args...>>,
-		        traits::is_list_constructible<T, Args...>>,
-		      T> {
-
-			return T{ std::forward<Args>( args )... };
-		}
-	};
-
-	template<typename T>
-	struct construct_a_t<daw::use_aggregate_construction<T>> {
-
-		template<typename... Args>
-		[[nodiscard]] inline constexpr auto operator( )( Args &&...args ) const
-		  noexcept( std::is_nothrow_constructible_v<T, Args...> ) -> T {
-
-			return T{ std::forward<Args>( args )... };
-		}
-	};
-
-	template<typename T>
-	inline constexpr construct_a_t<T> construct_a = construct_a_t<T>{ };
-
 	namespace utility_details {
-		template<typename T, typename... Args>
-		using can_construct_a_detect = decltype(
-		  std::declval<daw::construct_a_t<T>>( )( std::declval<Args>( )... ) );
-
 		template<typename... Args>
 		constexpr void is_tuple_test( std::tuple<Args...> const & ) noexcept;
 
@@ -732,10 +671,6 @@ namespace daw {
 		template<typename T>
 		constexpr bool is_tuple_v = daw::is_detected_v<is_tuple_detect, T>;
 	} // namespace utility_details
-
-	template<typename T, typename... Args>
-	inline constexpr bool can_construct_a_v =
-	  is_detected_v<utility_details::can_construct_a_detect, T, Args...>;
 
 	template<typename Destination, typename... Args>
 	[[nodiscard]] constexpr decltype( auto )
