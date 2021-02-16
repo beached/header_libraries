@@ -14,7 +14,7 @@
 
 #include "cpp_17.h"
 #include "daw_algorithm.h"
-#include "daw_contruct_a.h"
+#include "daw_construct_a.h"
 #include "daw_exception.h"
 #include "daw_move.h"
 #include "daw_traits.h"

@@ -30,7 +30,7 @@ int main( ) {
 	assert( buff.is_empty( ) );
 
 	for( std::size_t n = 0; n < buff.capacity( ); ++n ) {
-		buff.push_back( n*2 );
+		buff.push_back( n * 2 );
 	}
 
 	assert( buff.is_full( ) );

@@ -36,7 +36,7 @@ namespace daw {
 
 		template<typename T>
 		inline constexpr bool has_index_v =
-			daw::is_detected_v<gi_test::index_test, T>;
+		  daw::is_detected_v<gi_test::index_test, T>;
 	} // namespace get_nt_details
 
 	template<std::size_t Idx, typename Variant>
