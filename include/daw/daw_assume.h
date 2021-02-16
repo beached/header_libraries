@@ -14,15 +14,17 @@
 #define DAW_ASSUME( ... ) assert( __VA_ARGS__ )
 #else
 #if defined( __GNUC__ ) or defined( __clang__ )
-#define DAW_ASSUME( ... )    \
-	while( not( (__VA_ARGS__) ) ) {        \
-		__builtin_unreachable( ); \
-	}                           \
-	do {                        \
+#define DAW_ASSUME( ... )                                                      \
+	while( not( ( __VA_ARGS__ ) ) ) {                                            \
+		__builtin_unreachable( );                                                  \
+	}                                                                            \
+	do {                                                                         \
 	} while( false )
 #elif defined( _MSC_VER )
-#define DAW_ASSUME( ... ) __assume( !!((__VA_ARGS__)) )
+#define DAW_ASSUME( ... ) __assume( !!( ( __VA_ARGS__ ) ) )
 #else
-#define DAW_ASSUME( ... ) do { } while( false )
+#define DAW_ASSUME( ... )                                                      \
+	do {                                                                         \
+	} while( false )
 #endif
 #endif

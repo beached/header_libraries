@@ -139,16 +139,16 @@ namespace construct_a_deps {
 	    daw::use_aggregate_construction<std::vector<int>>>,
 	  "Type use_aggregate_construction should not be constructable" );
 
-	static_assert( not daw::utility_details::should_use_aggregate_construction_v<
+	static_assert( not daw::construct_details::should_use_aggregate_construction_v<
 	                 std::vector<int>>,
 	               "array should not be aggregate constructable" );
 
-	static_assert( not daw::utility_details::should_use_aggregate_construction_v<
+	static_assert( not daw::construct_details::should_use_aggregate_construction_v<
 	                 std::array<int, 2>>,
 	               "array should not be aggregate constructable" );
 
 	static_assert(
-	  daw::utility_details::should_use_aggregate_construction_v<
+	  daw::construct_details::should_use_aggregate_construction_v<
 	    daw::use_aggregate_construction<std::array<int, 2>>>,
 	  "aggregate_construction<array> should be aggregate constructable" );
 } // namespace construct_a_deps

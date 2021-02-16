@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "../daw_container_traits.h"
 #include "../daw_exception.h"
 #include "../daw_traits.h"
 
@@ -18,18 +19,16 @@
 namespace daw {
 	template<typename T>
 	struct indexed_iterator {
-		using difference_type = std::ptrdiff_t;
-		using size_type = size_t;
-
-		// don't want to depend on value_type being there
-		using value_type = std::remove_reference_t<decltype(
-		  std::declval<T>( )[std::declval<size_type>( )] )>;
-
-		using pointer = value_type *;
-		using const_pointer = std::remove_const_t<value_type> const *;
+		using container_type = T;
+		using value_type = typename container_traits<T>::value_type;
+		using reference = decltype( std::declval<T>( )[0U] );
+		using const_reference = typename container_traits<T>::const_reference;
+		using size_type = typename container_traits<T>::size_type;
+		using difference_type = typename container_traits<T>::difference_type;
+		using pointer = std::add_pointer_t<std::remove_reference_t<reference>>;
+		using const_pointer =
+		  std::add_pointer_t<std::remove_reference_t<const_reference>>;
 		using iterator_category = std::random_access_iterator_tag;
-		using reference = value_type &;
-		using const_reference = std::remove_const_t<value_type> const &;
 
 	private:
 		T *m_pointer;
