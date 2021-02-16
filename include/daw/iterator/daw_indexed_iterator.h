@@ -19,11 +19,10 @@
 namespace daw {
 	template<typename T>
 	struct indexed_iterator {
-		using container_type = typename container_traits<T>::container_type;
+		using container_type = T;
 		using value_type = typename container_traits<T>::value_type;
-		using reference = typename container_traits<T>::reference;
-		using const_reference =
-		typename container_traits<T>::const_reference;
+		using reference = decltype( std::declval<T>( )[0U] );
+		using const_reference = typename container_traits<T>::const_reference;
 		using size_type = typename container_traits<T>::size_type;
 		using difference_type =
 		typename container_traits<T>::difference_type;

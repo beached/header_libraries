@@ -31,9 +31,9 @@ namespace daw {
 		  typename container_traits<Container>::difference_type;
 		static constexpr std::size_t extent = container_traits<Container>::extent;
 
+		static_assert( std::is_nothrow_copy_assignable_v<value_type> );
 		static_assert( std::is_nothrow_move_assignable_v<value_type> );
 		static_assert( std::is_nothrow_move_constructible_v<value_type> );
-
 	private:
 		container_type m_queue{ };
 		size_t m_head = 0;
