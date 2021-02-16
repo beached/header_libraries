@@ -31,9 +31,7 @@ namespace daw {
 		  typename container_traits<Container>::difference_type;
 		static constexpr std::size_t extent = container_traits<Container>::extent;
 
-		static_assert( std::is_nothrow_copy_assignable_v<value_type> );
 		static_assert( std::is_nothrow_move_assignable_v<value_type> );
-		static_assert( std::is_nothrow_move_constructible_v<value_type> );
 	private:
 		container_type m_queue{ };
 		size_t m_head = 0;
@@ -108,16 +106,16 @@ namespace daw {
 		reference push_back( value_type const &value ) {
 			assert( not is_full( ) );
 			auto const idx = get_idx( m_tail );
-			++m_tail;
 			m_queue[idx] = value;
+			++m_tail;
 			return m_queue[idx];
 		}
 
 		reference push_back( value_type &&value ) {
 			assert( not is_full( ) );
 			auto const idx = get_idx( m_tail );
-			++m_tail;
 			m_queue[idx] = std::move( value );
+			++m_tail;
 			return m_queue[idx];
 		}
 
