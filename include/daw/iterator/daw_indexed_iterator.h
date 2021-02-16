@@ -8,9 +8,9 @@
 
 #pragma once
 
+#include "../daw_container_traits.h"
 #include "../daw_exception.h"
 #include "../daw_traits.h"
-#include "../daw_container_traits.h"
 
 #include <ciso646>
 #include <cstddef>
@@ -24,10 +24,10 @@ namespace daw {
 		using reference = decltype( std::declval<T>( )[0U] );
 		using const_reference = typename container_traits<T>::const_reference;
 		using size_type = typename container_traits<T>::size_type;
-		using difference_type =
-		typename container_traits<T>::difference_type;
-		using pointer = decltype( std::data( std::declval<T>( ) ) );
-		using const_pointer = decltype( std::data( std::declval<T const>( ) ) );
+		using difference_type = typename container_traits<T>::difference_type;
+		using pointer = std::add_pointer_t<std::remove_reference_t<reference>>;
+		using const_pointer =
+		  std::add_pointer_t<std::remove_reference_t<const_reference>>;
 		using iterator_category = std::random_access_iterator_tag;
 
 	private:

@@ -129,19 +129,19 @@ namespace daw {
 		}
 
 		inline constexpr const_iterator begin( ) const {
-			return std::begin( m_queue );
+			return const_iterator( this, 0 );
 		}
 
 		inline constexpr iterator begin( ) {
-			return std::begin( m_queue );
+			return iterator( this, 0 );
 		}
 
 		inline constexpr const_iterator end( ) const {
-			return std::end( m_queue );
+			return const_iterator( this, size( ) );
 		}
 
 		inline constexpr iterator end( ) {
-			return std::end( m_queue );
+			return iterator( this, size( ) );
 		}
 	};
 

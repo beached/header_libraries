@@ -12,7 +12,7 @@
 #include <cassert>
 
 int main( ) {
-	using rb_t = daw::ring_adaptor<int[64]>;
+	using rb_t = daw::ring_adaptor<int[10]>;
 	rb_t buff{ };
 
 	assert( buff.is_empty( ) );
@@ -34,4 +34,11 @@ int main( ) {
 	}
 
 	assert( buff.is_full( ) );
+
+
+	int sum = 0;
+	for( int i : buff ) {
+		sum += i;
+	}
+	assert( sum == 90 );
 }
