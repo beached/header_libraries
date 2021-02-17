@@ -17,3 +17,4 @@
 #else
 #define DAW_LIKELY( Bool ) !!( Bool )
 #define DAW_UNLIKELY( Bool ) !!( Bool )
+#endif
