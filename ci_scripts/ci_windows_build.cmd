@@ -15,7 +15,7 @@ ECHO "Setting VCVars"
 ECHO "##############################"
 ECHO "Running cmake"
 cmake -DCMAKE_BUILD_TYPE=Debug -GNinja -DCMAKE_CXX_COMPILER=cl.exe -DCMAKE_C_COMPILER=cl.exe -DDAW_ENABLE_TESTING=On ..
-..
+
 
 ECHO "##############################"
 ECHO "Building"
