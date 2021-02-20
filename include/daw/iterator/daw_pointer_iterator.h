@@ -31,22 +31,21 @@ namespace daw {
 		}
 
 		template<typename U,
-		         std::enable_if_t<(not std::is_const_v<U> and
-		                           std::is_same_v<std::remove_const_t<U>, T>),
+		         std::enable_if_t<(not std::is_const_v<U> and std::is_const_v<T>),
 		                          std::nullptr_t> = nullptr>
-		constexpr pointer_iterator( pointer_iterator<U> other )
-		  : pointer_iterator( other.m_ptr ) {}
+		constexpr pointer_iterator( pointer_iterator<U> const &other )
+		  : pointer_iterator( other.get( ) ) {}
 
 		template<typename U,
-		         std::enable_if_t<(not std::is_const_v<U> and
-		                           std::is_same_v<std::remove_const_t<U>, T>),
+		         std::enable_if_t<(not std::is_const_v<U> and std::is_const_v<T>),
 		                          std::nullptr_t> = nullptr>
-		constexpr pointer_iterator &operator=( pointer_iterator<U> rhs ) {
-			m_ptr = rhs.m_ptr;
+		constexpr pointer_iterator &operator=( pointer_iterator<U> const &rhs ) {
+			m_ptr = rhs.get( );
+			return *this;
 		}
 
-		constexpr operator pointer_iterator<value_type const>( ) const {
-			return {m_ptr};
+		constexpr operator pointer_iterator<std::add_const_t<value_type>>( ) const {
+			return { m_ptr };
 		}
 
 		constexpr pointer_iterator( std::nullptr_t ) = delete;
@@ -107,6 +106,16 @@ namespace daw {
 			return result;
 		}
 
+		constexpr pointer get( ) const {
+			return m_ptr;
+		}
+
+		template<typename U>
+		constexpr difference_type
+		operator-( pointer_iterator<U> const &rhs ) const {
+			return get( ) - rhs.get( );
+		}
+
 		friend constexpr bool operator==( pointer_iterator const &lhs,
 		                                  pointer_iterator const &rhs ) {
 			return lhs.m_ptr == rhs.ptr;
@@ -137,112 +146,4 @@ namespace daw {
 			return lhs.m_ptr >= rhs.m_ptr;
 		}
 	};
-
-	/*
-	template<typename T>
-	struct pointer_iterator<T const> {
-	  using value_type = T;
-	  using reference = T const &;
-	  using difference_type = std::ptrdiff_t;
-	  using pointer = T const *;
-	  using iterator_category = std::random_access_iterator_tag;
-
-	private:
-	  pointer m_ptr;
-
-	public:
-	  constexpr pointer_iterator( pointer ptr )
-	    : m_ptr( ptr ) {
-	    assert( ptr );
-	  }
-
-	  constexpr pointer_iterator( std::nullptr_t ) = delete;
-
-	  constexpr pointer operator->( ) const {
-	    return m_ptr;
-	  }
-
-	  constexpr reference operator*( ) const {
-	    return *m_ptr;
-	  }
-
-	  constexpr reference operator[]( difference_type idx ) const {
-	    return m_ptr[idx];
-	  }
-
-	  constexpr pointer_iterator &operator++( ) {
-	    ++m_ptr;
-	    return *this;
-	  }
-
-	  constexpr pointer_iterator &operator++( int ) {
-	    auto result = *this;
-	    ++m_ptr;
-	    return result;
-	  }
-
-	  constexpr pointer_iterator &operator--( ) {
-	    --m_ptr;
-	    return *this;
-	  }
-
-	  constexpr pointer_iterator &operator--( int ) {
-	    auto result = *this;
-	    --m_ptr;
-	    return result;
-	  }
-
-	  constexpr pointer_iterator &operator+=( difference_type d ) {
-	    m_ptr += d;
-	    return *this;
-	  }
-
-	  constexpr pointer_iterator &operator-=( difference_type d ) {
-	    m_ptr -= d;
-	    return *this;
-	  }
-
-	  constexpr pointer_iterator operator+( difference_type d ) const {
-	    auto result = *this;
-	    result += d;
-	    return result;
-	  }
-
-	  constexpr pointer_iterator operator-=( difference_type d ) const {
-	    auto result = *this;
-	    result -= d;
-	    return result;
-	  }
-
-	  friend constexpr bool operator==( pointer_iterator const &lhs,
-	                                    pointer_iterator const &rhs ) {
-	    return lhs.m_ptr == rhs.ptr;
-	  }
-
-	  friend constexpr bool operator!=( pointer_iterator const &lhs,
-	                                    pointer_iterator const &rhs ) {
-	    return lhs.m_ptr != rhs.m_ptr;
-	  }
-
-	  friend constexpr bool operator<( pointer_iterator const &lhs,
-	                                   pointer_iterator const &rhs ) {
-	    return lhs.m_ptr < rhs.m_ptr;
-	  }
-
-	  friend constexpr bool operator<=( pointer_iterator const &lhs,
-	                                    pointer_iterator const &rhs ) {
-	    return lhs.m_ptr <= rhs.m_ptr;
-	  }
-
-	  friend constexpr bool operator>( pointer_iterator const &lhs,
-	                                   pointer_iterator const &rhs ) {
-	    return lhs.m_ptr > rhs.m_ptr;
-	  }
-
-	  friend constexpr bool operator>=( pointer_iterator const &lhs,
-	                                    pointer_iterator const &rhs ) {
-	    return lhs.m_ptr >= rhs.m_ptr;
-	  }
-};
-*/
 } // namespace daw
