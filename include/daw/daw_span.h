@@ -163,7 +163,7 @@ namespace daw {
 			remove_suffix( 1 );
 		}
 
-		constexpr T pop_front( ) noexcept( std::is_nothrow_assignable_v<T> ) {
+		constexpr T pop_front( ) noexcept( std::is_nothrow_copy_constructible_v<T> ) {
 			auto result = front( );
 			remove_prefix( );
 			return result;
@@ -175,7 +175,7 @@ namespace daw {
 			return result;
 		}
 
-		constexpr T pop_back( ) noexcept( std::is_nothrow_assignable_v<T> ) {
+		constexpr T pop_back( ) noexcept( std::is_nothrow_copy_constructible_v<T> ) {
 			auto result = back( );
 			remove_suffix( );
 			return result;
@@ -187,7 +187,7 @@ namespace daw {
 			return result;
 		}
 
-		constexpr bool pop( T &value ) noexcept( std::is_nothrow_assignable_v<T> ) {
+		constexpr bool pop( T &value ) noexcept( std::is_nothrow_copy_assignable_v<T> ) {
 			if( empty( ) ) {
 				return false;
 			}
@@ -422,7 +422,7 @@ namespace daw {
 			remove_suffix( 1 );
 		}
 
-		constexpr T pop_front( ) noexcept( std::is_nothrow_assignable_v<T> ) {
+		constexpr T pop_front( ) noexcept( std::is_nothrow_copy_constructible_v<T> ) {
 			auto result = front( );
 			remove_prefix( );
 			return result;
@@ -434,7 +434,7 @@ namespace daw {
 			return result;
 		}
 
-		constexpr T pop_back( ) noexcept( std::is_nothrow_assignable_v<T> ) {
+		constexpr T pop_back( ) noexcept( std::is_nothrow_copy_constructible_v<T> ) {
 			auto result = back( );
 			remove_suffix( );
 			return result;
@@ -446,7 +446,7 @@ namespace daw {
 			return result;
 		}
 
-		constexpr bool pop( T &value ) noexcept( std::is_nothrow_assignable_v<T> ) {
+		constexpr bool pop( T &value ) noexcept( std::is_nothrow_copy_assignable_v<T> ) {
 			if( empty( ) ) {
 				return false;
 			}
