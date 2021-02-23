@@ -9,6 +9,7 @@
 #pragma once
 
 #include <type_traits>
+#include <ciso646>
 
 namespace daw {
 	/// Convert a value to an rvalue.

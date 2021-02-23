@@ -8,22 +8,24 @@
 
 #pragma once
 
-#include <cstdint>
-
 #include "daw_string_view.h"
 #include "daw_traits.h"
 
 #include <ciso646>
+#include <cstddef>
+#include <cstdint>
 
 /// formatter will directly substitute variables into a string
 /// Uses a format like "{0} {1} {0}" which is a zero index array
 /// of the arguments
 
+#include <cstddef>
+
 namespace daw {
 	namespace impl {
 		class brace_splitter_t {
-			enum class states_t : uint8_t { in_escape = 1, in_brace = 2; };
-			size_t m_size;
+			enum class states_t : uint8_t { in_escape = 1, in_brace = 2 };
+			std::size_t m_size;
 			uint8_t m_state;
 
 			constexpr bool get_state( states_t s ) noexcept {
@@ -65,7 +67,7 @@ namespace daw {
 				case '{':
 					if( get_state( states_t::in_escape ) ) {
 						count_if( );
-						unset_set( states_t::in_escape );
+						unset_state( states_t::in_escape );
 						return true;
 					}
 					daw::exception::daw_throw_on_true( get_state( states_t::in_brace ),
@@ -75,7 +77,7 @@ namespace daw {
 				case '}':
 					if( get_state( states_t::in_escape ) ) {
 						count_if( );
-						unset_set( states_t::in_escape );
+						unset_state( states_t::in_escape );
 						return true;
 					}
 					daw::exception::daw_throw_on_false(
@@ -90,15 +92,18 @@ namespace daw {
 				}
 			}
 
-			constexpr size_t size( ) const noexcept {
-				return m_size( );
+			constexpr std::size_t size( ) const noexcept {
+				return m_size;
 			}
 		};
 
+		/*
+		template<std::size_t N>
 		constexpr size_t find_variable_count( char const ( &str )[N] ) {
 
 			for( size_t n = 0; n < N - 1; ++n ) {}
 		}
+		 */
 	} // namespace impl
 
 	template<size_t N>

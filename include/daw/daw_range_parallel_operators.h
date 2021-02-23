@@ -58,9 +58,9 @@ namespace daw {
                                                                                \
 							template<                                                        \
 							  typename Container, typename... ClauseArgs,                    \
-							  typename std::enable_if_t<all_true_v<                          \
-							    !daw::range::is_range_reference_v<Container>,                \
-							    !daw::range::is_range_collection_v<Container>>> * = nullptr, \
+							  typename std::enable_if_t<not std::disjunction_v<              \
+							    daw::range::is_range_reference<Container>,                   \
+							    daw::range::is_range_collection<Container>>> * = nullptr,    \
 							  typename = void>                                               \
 							static auto                                                      \
 							  clause_name##_helper( Container const &container,              \
@@ -139,9 +139,9 @@ namespace daw {
 		}                                                                          \
 	}                                                                            \
 	template<typename Container, typename... Args,                               \
-	         typename std::enable_if_t<all_true_v<                               \
-	           !daw::range::is_range_reference_v<Container>,                     \
-	           !daw::range::is_range_collection_v<Container>>> * = nullptr,      \
+	         typename std::enable_if_t<not std::disjunction_v<                   \
+	           daw::range::is_range_reference<Container>,                        \
+	           daw::range::is_range_collection<Container>>> * = nullptr,         \
 	         typename = void>                                                    \
 	auto operator<<(                                                             \
 	  Container &&container,                                                     \

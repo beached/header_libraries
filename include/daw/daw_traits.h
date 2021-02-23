@@ -838,8 +838,8 @@ namespace daw::traits {
 
 	namespace traits_details {
 		template<typename T, typename... Args>
-		using is_list_constructible_test =
-		  decltype( T{ std::declval<Args>( )... } );
+		using is_list_constructible_test = decltype( T{
+		  std::declval<Args>( )... } );
 	}
 	template<typename T, typename... Args>
 	using is_list_constructible =

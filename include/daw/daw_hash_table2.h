@@ -59,7 +59,7 @@ namespace daw {
 	template<typename Value, size_t m_initial_size = 11,
 	         uint8_t resize_ratio = 80,
 	         typename ResizePolicy = resize_policies::golden_ratio>
-	struct hash_table {
+	struct hash_table2 {
 		static_assert( m_initial_size > 0,
 		               "Must supply a positive initial_size larger than 0" );
 		using value_type = daw::traits::root_type_t<Value>;
@@ -155,7 +155,7 @@ namespace daw {
 		}
 
 		void resize_tables( size_t new_size ) {
-			hash_table new_tbl{ new_size };
+			hash_table2 new_tbl{ new_size };
 			for( size_t n = 0; n < m_hashes.size( ); ++n ) {
 				if( m_hashes[n] >= impl::sentinals::sentinals_size ) {
 					new_tbl[m_hashes[n]] = daw::move( m_values[n] );
@@ -175,7 +175,7 @@ namespace daw {
 		}
 
 	public:
-		hash_table( )
+		hash_table2( )
 		  : m_hashes{ m_initial_size, impl::sentinals::empty }
 		  , m_values{ m_initial_size } {
 
@@ -183,7 +183,7 @@ namespace daw {
 			daw::exception::daw_throw_on_false( m_values.size( ) > 0 );
 		}
 
-		hash_table( size_t initial_size )
+		hash_table2( size_t initial_size )
 		  : m_hashes{ initial_size, impl::sentinals::empty }
 		  , m_values( initial_size ) {
 
@@ -191,7 +191,7 @@ namespace daw {
 			daw::exception::daw_throw_on_false( m_values.size( ) > 0 );
 		}
 
-		void swap( hash_table &rhs ) noexcept {
+		void swap( hash_table2 &rhs ) noexcept {
 			daw::cswap( m_hashes, rhs.m_hashes );
 			daw::cswap( m_values, rhs.m_values );
 		}

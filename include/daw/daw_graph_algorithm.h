@@ -228,8 +228,8 @@ namespace daw {
 	void topological_sorted_walk( daw::graph_t<T> const &graph, Function &&func,
 	                              Compare comp = Compare{ } ) {
 
-		using Node = std::remove_reference_t<decltype(
-		  graph.get_node( std::declval<daw::node_id_t>( ) ) )>;
+		using Node = std::remove_reference_t<decltype( graph.get_node(
+		  std::declval<daw::node_id_t>( ) ) )>;
 
 		static_assert( std::is_invocable_v<Function, Node> );
 
@@ -242,8 +242,8 @@ namespace daw {
 	void topological_sorted_walk( daw::graph_t<T> &graph, Function &&func,
 	                              Compare comp = Compare{ } ) {
 
-		using Node = std::remove_reference_t<decltype(
-		  graph.get_node( std::declval<daw::node_id_t>( ) ) )>;
+		using Node = std::remove_reference_t<decltype( graph.get_node(
+		  std::declval<daw::node_id_t>( ) ) )>;
 
 		static_assert( std::is_invocable_v<Function, Node> );
 
@@ -253,8 +253,9 @@ namespace daw {
 
 	template<typename Graph, typename Compare = daw::graph_alg_impl::NoSort>
 	class topological_sorted_iterator {
-		using Node = std::remove_reference_t<decltype(
-		  std::declval<Graph>( ).get_node( std::declval<daw::node_id_t>( ) ) )>;
+		using Node =
+		  std::remove_reference_t<decltype( std::declval<Graph>( ).get_node(
+		    std::declval<daw::node_id_t>( ) ) )>;
 
 		std::shared_ptr<std::vector<Node>> m_nodes;
 		using iterator_t = typename std::vector<Node>::iterator;
