@@ -19,11 +19,12 @@ namespace daw {
 		using value_type = Iterator1;
 		using difference_type = ptrdiff_t;
 		using iterator_category = std::forward_iterator_tag;
+		using reference = value_type &;
 
 		value_type current_value;
 
 		constexpr find_iterator( ) noexcept
-		  : current_value{ std::numeric_limits<T>::max( ) } {}
+		  : current_value{ std::numeric_limits<value_type>::max( ) } {}
 		constexpr find_iterator( value_type start_value ) noexcept
 		  : current_value{ start_value } {}
 		constexpr find_iterator( value_type start_value,

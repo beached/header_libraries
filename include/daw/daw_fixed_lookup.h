@@ -21,9 +21,13 @@
 
 namespace daw {
 	namespace impl {
-		namespace sentinals {
-			enum sentinals { empty = 0, removed, sentinals_size };
-		} // namespace sentinals
+		namespace fixed_lookup_sentinals {
+			enum fixed_lookup_sentinals : size_t {
+				empty = 0,
+				removed,
+				fixed_lookup_sentinals_size
+			};
+		} // namespace fixed_lookup_sentinals
 
 		template<size_t ValueSize>
 		struct largest_primes;
@@ -74,7 +78,9 @@ namespace daw {
 		constexpr hash_value_t size( ) const noexcept {
 			hash_value_t count = 0;
 			for( auto hash : m_hashes ) {
-				count += hash >= impl::sentinals::sentinals_size ? 1 : 0;
+				count +=
+				  hash >= impl::fixed_lookup_sentinals::fixed_lookup_sentinals_size ? 1
+				                                                                    : 0;
 			}
 			return count;
 		}
@@ -84,9 +90,11 @@ namespace daw {
 		static constexpr hash_value_t hash_fn( KeyType &&key ) noexcept {
 			auto const hash =
 			  daw::generic_hash<HashSize>( std::forward<KeyType>( key ) );
-			auto const divisor = std::numeric_limits<hash_value_t>::max( ) -
-			                     impl::sentinals::sentinals_size;
-			return ( hash % divisor ) + impl::sentinals::sentinals_size;
+			auto const divisor =
+			  std::numeric_limits<hash_value_t>::max( ) -
+			  impl::fixed_lookup_sentinals::fixed_lookup_sentinals_size;
+			return ( hash % divisor ) +
+			       impl::fixed_lookup_sentinals::fixed_lookup_sentinals_size;
 		}
 
 		constexpr hash_value_t scale_hash( hash_value_t const hash ) const {
@@ -115,14 +123,14 @@ namespace daw {
 			for( hash_value_t n = hash_pos; n != m_hashes.size( ); ++n ) {
 				if( hash == m_hashes[n] ) {
 					return lookup_result_t{ n, true };
-				} else if( impl::sentinals::empty == m_hashes[n] ) {
+				} else if( impl::fixed_lookup_sentinals::empty == m_hashes[n] ) {
 					return lookup_result_t{ n, false };
 				}
 			}
 			for( hash_value_t n = 0; n != hash_pos; ++n ) {
 				if( m_hashes[n] == hash ) {
 					return lookup_result_t{ n, true };
-				} else if( m_hashes[n] == impl::sentinals::empty ) {
+				} else if( m_hashes[n] == impl::fixed_lookup_sentinals::empty ) {
 					return lookup_result_t{ n, false };
 				}
 			}

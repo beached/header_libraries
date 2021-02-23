@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <ciso646>
+
 namespace daw {
 	/// Some types can come from a variety of type erase pointers.  This makes it
 	/// easier so that only the To type is validated at compile time
@@ -21,15 +23,15 @@ namespace daw {
 		template<typename To, typename From>
 		constexpr auto *operator( )( From *ptr ) const {
 			static_assert( only_check_to_type or
-			               ( std::is_same_v<From, AllowedFroms> or ... ) );
-			static_assert( std::is_same_v<To, AllowedFroms> or ... );
+			               ( std::is_same_v<From, AllowedTypes> or ... ) );
+			static_assert( ( std::is_same_v<To, AllowedTypes> or ... ) );
 			return reinterpret_cast<To *>( ptr );
 		}
 		template<typename To, typename From>
 		constexpr auto *operator( )( From &ptr ) const {
 			static_assert( only_check_to_type or
-			               ( std::is_same_v<From, AllowedFroms> or ... ) );
-			static_assert( std::is_same_v<To, AllowedFroms> or ... );
+			               ( std::is_same_v<From, AllowedTypes> or ... ) );
+			static_assert( ( std::is_same_v<To, AllowedTypes> or ... ) );
 			return reinterpret_cast<To &>( ptr );
 		}
 	};

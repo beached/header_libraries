@@ -28,7 +28,7 @@ namespace daw {
 	template<typename T>
 	struct graph_t;
 
-	class node_id_t {
+	class graph_node_id_t {
 		static inline constexpr size_t const NO_ID =
 		  std::numeric_limits<size_t>::max( );
 		size_t m_value = NO_ID;
@@ -42,8 +42,8 @@ namespace daw {
 		friend struct graph_t;
 
 	public:
-		constexpr node_id_t( ) noexcept = default;
-		explicit constexpr node_id_t( size_t id ) noexcept
+		constexpr graph_node_id_t( ) noexcept = default;
+		explicit constexpr graph_node_id_t( size_t id ) noexcept
 		  : m_value( id ) {}
 
 		constexpr explicit operator bool( ) const noexcept {
@@ -54,15 +54,15 @@ namespace daw {
 			return std::hash<size_t>{ }( m_value );
 		}
 
-		constexpr bool operator==( node_id_t rhs ) const noexcept {
+		constexpr bool operator==( graph_node_id_t rhs ) const noexcept {
 			return m_value == rhs.m_value;
 		}
 
-		constexpr bool operator!=( node_id_t rhs ) const noexcept {
+		constexpr bool operator!=( graph_node_id_t rhs ) const noexcept {
 			return m_value != rhs.m_value;
 		}
 
-		constexpr bool operator<( node_id_t rhs ) const noexcept {
+		constexpr bool operator<( graph_node_id_t rhs ) const noexcept {
 			return m_value < rhs.m_value;
 		}
 	};
@@ -70,8 +70,8 @@ namespace daw {
 
 namespace std {
 	template<>
-	struct hash<daw::node_id_t> {
-		size_t operator( )( daw::node_id_t id ) const noexcept {
+	struct hash<daw::graph_node_id_t> {
+		size_t operator( )( daw::graph_node_id_t id ) const noexcept {
 			return std::hash<size_t>{ }( id.hash( ) );
 		}
 	};
@@ -81,28 +81,29 @@ namespace daw {
 	namespace graph_impl {
 		template<typename T>
 		class node_impl_t {
-			node_id_t m_id;
+			graph_node_id_t m_id;
 			T m_value;
 
 		public:
 			using value_type = T;
 			using reference = value_type &;
 			using const_reference = value_type const &;
-			using edges_t = std::unordered_set<node_id_t>;
+			using edges_t = std::unordered_set<graph_node_id_t>;
+			using node_id_t = graph_node_id_t;
 
 		private:
 			edges_t m_incoming_edges{ };
 			edges_t m_outgoing_edges{ };
 
 		public:
-			constexpr node_impl_t( node_id_t id, T &&value ) noexcept
+			constexpr node_impl_t( graph_node_id_t id, T &&value ) noexcept
 			  : m_id( id )
 			  , m_value( daw::move( value ) ) {
 
 				daw::exception::dbg_precondition_check( id );
 			}
 
-			node_id_t id( ) const {
+			graph_node_id_t id( ) const {
 				return m_id;
 			}
 
@@ -165,7 +166,7 @@ namespace daw {
 	template<typename T>
 	class const_graph_node_t {
 		graph_t<T> const *m_graph = nullptr;
-		node_id_t m_node_id{ };
+		graph_node_id_t m_node_id{ };
 
 	public:
 		using value_type = T;
@@ -175,11 +176,12 @@ namespace daw {
 
 		constexpr const_graph_node_t( ) noexcept = default;
 
-		const_graph_node_t( graph_t<T> const *graph_ptr, node_id_t Id ) noexcept
+		const_graph_node_t( graph_t<T> const *graph_ptr,
+		                    graph_node_id_t Id ) noexcept
 		  : m_graph( graph_ptr )
 		  , m_node_id( Id ) {}
 
-		constexpr node_id_t id( ) const noexcept {
+		constexpr graph_node_id_t id( ) const noexcept {
 			return m_node_id;
 		}
 
@@ -197,19 +199,19 @@ namespace daw {
 
 		const_reference value( ) const {
 			daw::exception::dbg_precondition_check<invalid_node_exception>(
-			  m_graph != nullptr and m_node_id != node_id_t{ } );
+			  m_graph != nullptr and m_node_id != graph_node_id_t{ } );
 			return m_graph->get_raw_node( m_node_id ).value( );
 		}
 
 		edges_t const &incoming_edges( ) const {
 			daw::exception::dbg_precondition_check<invalid_node_exception>(
-			  m_graph != nullptr and m_node_id != node_id_t{ } );
+			  m_graph != nullptr and m_node_id != graph_node_id_t{ } );
 			return m_graph->get_raw_node( m_node_id ).incoming_edges( );
 		}
 
 		edges_t const &outgoing_edges( ) const {
 			daw::exception::dbg_precondition_check<invalid_node_exception>(
-			  m_graph != nullptr and m_node_id != node_id_t{ } );
+			  m_graph != nullptr and m_node_id != graph_node_id_t{ } );
 			return m_graph->get_raw_node( m_node_id ).outgoing_edges( );
 		}
 
@@ -244,7 +246,7 @@ namespace daw {
 	template<typename T>
 	class graph_node_t {
 		graph_t<T> *m_graph = nullptr;
-		node_id_t m_node_id{ };
+		graph_node_id_t m_node_id{ };
 
 	public:
 		using value_type = T;
@@ -254,11 +256,11 @@ namespace daw {
 
 		constexpr graph_node_t( ) noexcept = default;
 
-		graph_node_t( graph_t<T> *graph_ptr, node_id_t Id ) noexcept
+		graph_node_t( graph_t<T> *graph_ptr, graph_node_id_t Id ) noexcept
 		  : m_graph( graph_ptr )
 		  , m_node_id( Id ) {}
 
-		constexpr node_id_t id( ) const noexcept {
+		constexpr graph_node_id_t id( ) const noexcept {
 			return m_node_id;
 		}
 
@@ -276,37 +278,37 @@ namespace daw {
 
 		reference value( ) {
 			daw::exception::dbg_precondition_check<invalid_node_exception>(
-			  m_graph != nullptr and m_node_id != node_id_t{ } );
+			  m_graph != nullptr and m_node_id != graph_node_id_t{ } );
 			return m_graph->get_raw_node( m_node_id ).value( );
 		}
 
 		const_reference value( ) const {
 			daw::exception::dbg_precondition_check<invalid_node_exception>(
-			  m_graph != nullptr and m_node_id != node_id_t{ } );
+			  m_graph != nullptr and m_node_id != graph_node_id_t{ } );
 			return m_graph->get_raw_node( m_node_id ).value( );
 		}
 
 		edges_t &incoming_edges( ) {
 			daw::exception::dbg_precondition_check<invalid_node_exception>(
-			  m_graph != nullptr and m_node_id != node_id_t{ } );
+			  m_graph != nullptr and m_node_id != graph_node_id_t{ } );
 			return m_graph->get_raw_node( m_node_id ).incoming_edges( );
 		}
 
 		edges_t const &incoming_edges( ) const {
 			daw::exception::dbg_precondition_check<invalid_node_exception>(
-			  m_graph != nullptr and m_node_id != node_id_t{ } );
+			  m_graph != nullptr and m_node_id != graph_node_id_t{ } );
 			return m_graph->get_raw_node( m_node_id ).incoming_edges( );
 		}
 
 		edges_t &outgoing_edges( ) {
 			daw::exception::dbg_precondition_check<invalid_node_exception>(
-			  m_graph != nullptr and m_node_id != node_id_t{ } );
+			  m_graph != nullptr and m_node_id != graph_node_id_t{ } );
 			return m_graph->get_raw_node( m_node_id ).outgoing_edges( );
 		}
 
 		edges_t const &outgoing_edges( ) const {
 			daw::exception::dbg_precondition_check<invalid_node_exception>(
-			  m_graph != nullptr and m_node_id != node_id_t{ } );
+			  m_graph != nullptr and m_node_id != graph_node_id_t{ } );
 			return m_graph->get_raw_node( m_node_id ).outgoing_edges( );
 		}
 
@@ -357,23 +359,23 @@ namespace daw {
 		graph_t( ) noexcept = default;
 
 		template<typename... Args>
-		node_id_t add_node( Args &&...args ) {
+		graph_node_id_t add_node( Args &&...args ) {
 			auto const id = cur_id++;
 			m_nodes.emplace( std::make_pair(
 			  id, graph_impl::node_impl_t<T>(
-			        node_id_t{ id },
+			        graph_node_id_t{ id },
 			        daw::construct_a<T>( std::forward<Args>( args )... ) ) ) );
 
-			return node_id_t{ id };
+			return graph_node_id_t{ id };
 		}
 
-		bool has_node( node_id_t id ) const {
+		bool has_node( graph_node_id_t id ) const {
 			return m_nodes.count( id.value( ) ) > 0;
 		}
 
 		// Be very careful when storing as the node
 		// can be removed
-		raw_node_t &get_raw_node( node_id_t id ) {
+		raw_node_t &get_raw_node( graph_node_id_t id ) {
 			daw::exception::dbg_precondition_check( has_node( id ) );
 			auto pos = m_nodes.find( id.value( ) );
 			return pos->second;
@@ -381,18 +383,18 @@ namespace daw {
 
 		// Be very careful when storing as the node
 		// can be removed
-		raw_node_t const &get_raw_node( node_id_t id ) const {
+		raw_node_t const &get_raw_node( graph_node_id_t id ) const {
 			daw::exception::dbg_precondition_check( has_node( id ) );
 			auto pos = m_nodes.find( id.value( ) );
 			return pos->second;
 		}
 
-		const_node_t get_node( node_id_t id ) const {
+		const_node_t get_node( graph_node_id_t id ) const {
 			daw::exception::dbg_precondition_check( has_node( id ) );
 			return const_node_t( this, id );
 		}
 
-		node_t get_node( node_id_t id ) {
+		node_t get_node( graph_node_id_t id ) {
 			daw::exception::dbg_precondition_check( has_node( id ) );
 			return node_t( this, id );
 		}
@@ -405,7 +407,7 @@ namespace daw {
 			return size( ) == 0U;
 		}
 
-		void add_directed_edge( node_id_t from, node_id_t to ) {
+		void add_directed_edge( graph_node_id_t from, graph_node_id_t to ) {
 			daw::exception::dbg_precondition_check( has_node( from ) );
 			daw::exception::dbg_precondition_check( has_node( to ) );
 
@@ -416,7 +418,7 @@ namespace daw {
 			n_to.incoming_edges( ).insert( from );
 		}
 
-		void add_undirected_edge( node_id_t node0, node_id_t node1 ) {
+		void add_undirected_edge( graph_node_id_t node0, graph_node_id_t node1 ) {
 			daw::exception::dbg_precondition_check( has_node( node0 ) );
 			daw::exception::dbg_precondition_check( has_node( node1 ) );
 
@@ -429,7 +431,7 @@ namespace daw {
 			n_1.incoming_edges( ).insert( node0 );
 		}
 
-		void remove_node( node_id_t id ) {
+		void remove_node( graph_node_id_t id ) {
 			daw::exception::dbg_precondition_check( has_node( id ) );
 
 			auto &node = get_raw_node( id );
@@ -442,7 +444,7 @@ namespace daw {
 			m_nodes.erase( id.value( ) );
 		}
 
-		void remove_directed_edge( node_id_t from, node_id_t to ) {
+		void remove_directed_edge( graph_node_id_t from, graph_node_id_t to ) {
 			daw::exception::dbg_precondition_check( has_node( from ) );
 			daw::exception::dbg_precondition_check( has_node( to ) );
 
@@ -452,7 +454,7 @@ namespace daw {
 			to_node.incoming_edges( ).erase( from );
 		}
 
-		void remove_edges( node_id_t node0_id, node_id_t node1_id ) {
+		void remove_edges( graph_node_id_t node0_id, graph_node_id_t node1_id ) {
 			daw::exception::dbg_precondition_check( has_node( node0_id ) );
 			daw::exception::dbg_precondition_check( has_node( node1_id ) );
 
@@ -465,9 +467,9 @@ namespace daw {
 		}
 
 		template<typename Compare = std::equal_to<>>
-		std::vector<node_id_t> find_by_value( T const &value,
-		                                      Compare compare = Compare{ } ) const {
-			std::vector<node_id_t> result{ };
+		std::vector<graph_node_id_t>
+		find_by_value( T const &value, Compare compare = Compare{ } ) const {
+			std::vector<graph_node_id_t> result{ };
 			for( auto const &node : m_nodes ) {
 				if( daw::invoke( compare, node.second.value( ), value ) ) {
 					result.push_back( node.second.id( ) );
@@ -525,20 +527,20 @@ namespace daw {
 		}
 
 		template<typename Predicate>
-		std::vector<node_id_t> find( Predicate &&pred ) const {
-			std::vector<node_id_t> result{ };
+		std::vector<graph_node_id_t> find( Predicate &&pred ) const {
+			std::vector<graph_node_id_t> result{ };
 			visit( pred, [&result]( auto const &node ) {
 				result.push_back( node.id( ) );
 			} );
 			return result;
 		}
 
-		std::vector<node_id_t> find_roots( ) const {
+		std::vector<graph_node_id_t> find_roots( ) const {
 			return find(
 			  []( auto const &node ) { return node.incoming_edges( ).empty( ); } );
 		}
 
-		std::vector<node_id_t> find_leaves( ) const {
+		std::vector<graph_node_id_t> find_leaves( ) const {
 			return find(
 			  []( auto const &node ) { return node.outgoing_edges( ).empty( ); } );
 		}

@@ -37,12 +37,12 @@ namespace daw {
 
 	public:
 		constexpr explicit bit_iterator( Iterator it )
-		  : m_bit{ daw::move( it ) } {}
+		  : m_iterator{ daw::move( it ) } {}
 		constexpr explicit bit_iterator( Iterator it, size_t bit_pos )
-		  : m_bit{ daw::move( it ) }
-		  , m_pos{ daw::move( it_pos ) } {
+		  : m_iterator{ daw::move( it ) }
+		  , m_pos{ daw::move( bit_pos ) } {
 
-			daw::exception::daw_throw_if_false(
+			daw::exception::daw_throw_on_false(
 			  bit_pos >= sizeof( value_type ) * 8,
 			  "Cannot specify a bit position greater than the current value size in "
 			  "bits" );
