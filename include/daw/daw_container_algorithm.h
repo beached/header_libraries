@@ -178,10 +178,6 @@ namespace daw {
 		                                          std::end( container ), value ),
 		                             std::end( container ) ) ) ) {
 
-			static_assert( daw::is_detected_v<decltype( container.erase(
-			                 std::begin( container ), std::end( container ) ) )>,
-			               "Container must have erase method taking two iterators" );
-
 			return container.erase(
 			  std::remove( std::begin( container ), std::end( container ), value ),
 			  std::end( container ) );
