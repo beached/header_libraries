@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include <ciso646>
 #include <cstddef>
 #include <type_traits>
 
@@ -35,7 +34,7 @@ namespace daw {
 
 	template<bool... B>
 	using enable_when_t =
-	  typename enable_if_details::enable_if<( B and ... )>::type;
+	  typename enable_if_details::enable_if<( B && ... )>::type;
 
 	template<typename... Traits>
 	using enable_when_all_t = typename enable_if_details::enable_if<
