@@ -20,6 +20,14 @@ set( CMAKE_CXX_EXTENSIONS OFF)
 
 option( DAW_ENABLE_TESTING "Build unit tests" OFF )
 
+set(DAW_HEADERLIBRARIES_warning_guard SYSTEM)
+if (DAW_HEADERLIBRARIES_INCLUDE_WITHOUT_SYSTEM)
+    set(DAW_HEADERLIBRARIES_warning_guard "")
+endif ()
+if (DAW_ENABLE_TESTING)
+    set(DAW_HEADERLIBRARIES_warning_guard "")
+endif ()
+
 include( GNUInstallDirs)
 set( header_libraries_INSTALL_CMAKEDIR
 	"${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake"
@@ -31,13 +39,14 @@ set( PROJECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 add_library( ${PROJECT_NAME} INTERFACE ) 
 add_library( daw::${PROJECT_NAME} ALIAS ${PROJECT_NAME} )
 
+
 if( DAW_ENABLE_TESTING )
 	enable_testing( )
 	add_subdirectory( tests )
 endif( )	
 
 target_compile_features( ${PROJECT_NAME} INTERFACE cxx_std_17)
-target_include_directories( ${PROJECT_NAME}
+target_include_directories( ${PROJECT_NAME} ${DAW_HEADERLIBRARIES_warning_guard}
 	INTERFACE
 	"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
 	"$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
