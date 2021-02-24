@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <cisco646>
+
 #if defined( __GNUC__ ) or defined( __clang__ )
 #define DAW_UNREACHABLE( ) ( __builtin_unreachable( ) )
 #elif defined( _MSC_VER )
