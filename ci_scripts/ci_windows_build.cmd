@@ -14,9 +14,9 @@ ECHO "Setting VCVars"
 
 ECHO "##############################"
 ECHO "Running cmake"
-cmake -DCMAKE_BUILD_TYPE=Debug -GNinja -DCMAKE_CXX_COMPILER=cl.exe -DCMAKE_C_COMPILER=cl.exe -DDAW_ENABLE_TESTING=On ..
+"C:/PROGRAM FILES (X86)/MICROSOFT VISUAL STUDIO/2019/ENTERPRISE/COMMON7/IDE/COMMONEXTENSIONS/MICROSOFT/CMAKE/CMake/bin/cmake.exe" -DCMAKE_BUILD_TYPE=Debug -GNinja -DCMAKE_CXX_COMPILER=cl.exe -DCMAKE_C_COMPILER=cl.exe -DDAW_ENABLE_TESTING=On ..
 
 
 ECHO "##############################"
 ECHO "Building"
-cmake --build . --config Debug --target full -j 2 -- -k 1000
+"C:/PROGRAM FILES (X86)/MICROSOFT VISUAL STUDIO/2019/ENTERPRISE/COMMON7/IDE/COMMONEXTENSIONS/MICROSOFT/CMAKE/CMake/bin/cmake.exe" --build . --config Debug --target full -j 2 -- -k 1000
