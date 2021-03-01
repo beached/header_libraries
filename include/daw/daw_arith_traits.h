@@ -11,6 +11,8 @@
 
 #include <ciso646>
 #include <cstdint>
+#include <limits>
+#include <type_traits>
 
 #if defined( DAW_JSON_NO_INT128 )
 #if defined( DAW_HAS_INT128 )
