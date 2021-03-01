@@ -10,6 +10,7 @@
 #pragma once
 
 #include <ciso646>
+#include <cstdint>
 
 #if defined( DAW_JSON_NO_INT128 )
 #if defined( DAW_HAS_INT128 )
