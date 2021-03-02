@@ -1024,4 +1024,14 @@ namespace daw::traits {
 	  find_first_mismatched_class_template_parameter_v =
 	    find_first_mismatched_class_template_parameter<ClassA, ClassB,
 	                                                   StartIdx>::value;
+
+	template<typename, typename>
+	struct not_same : std::true_type { };
+
+	template<typename T>
+	struct not_same<T, T> : std::false_type { };
+
+	template<typename T, typename U>
+	inline constexpr bool not_same_v = not_same<T, U>::value;	
 } // namespace daw::traits
+
