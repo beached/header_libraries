@@ -1036,9 +1036,21 @@ namespace daw {
 		::free( ptr );
 	}
 
+	namespace utility_details {
+		template<typename T>
+		using has_data_end_test = decltype( std::declval<T>( ).data_end( ) );
+
+		template<typename T>
+		inline constexpr bool has_data_end_v =
+		  daw::is_detected_v<has_data_end_test, T>;
+	} // namespace utility_details
+
 	template<typename Container>
-	inline constexpr auto data_end( Container &&c )
-	  -> decltype( std::data( c ) + std::size( c ) ) {
-		return std::data( c ) + std::size( c );
+	inline constexpr decltype( auto ) data_end( Container &&c ) {
+		if constexpr( utility_details::has_data_end_v<Container> ) {
+			return c.data_end( );
+		} else {
+			return std::data( c ) + static_cast<std::ptrdiff_t>( std::size( c ) );
+		}
 	}
 } // namespace daw
