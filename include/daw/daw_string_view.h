@@ -338,6 +338,10 @@ namespace daw {
 			return m_first;
 		}
 
+		[[nodiscard]] constexpr const_pointer data_end( ) const {
+			return end( );
+		}
+
 		// Do not use, use either data( ) if you are sure it is zero terminated or
 		// copy to a string
 		[[nodiscard, deprecated]] constexpr const_pointer c_str( ) const {
