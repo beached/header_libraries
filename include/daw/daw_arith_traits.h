@@ -10,6 +10,7 @@
 #pragma once
 
 #include <ciso646>
+#include <climits>
 #include <cstdint>
 #include <limits>
 #include <type_traits>
