@@ -28,7 +28,7 @@ namespace daw {
 } // namespace daw
 
 #ifndef DAW_MOVE
-#define DAW_MOVE( ... ) static_cast<decltype( __VA_ARGS__ ) &&>( __VA_ARGS__ )
+#define DAW_MOVE( ... ) static_cast<typename std::remove_reference<decltype( __VA_ARGS__ )>::type &&>( __VA_ARGS__ )
 #endif
 
 #ifndef DAW_FWD
