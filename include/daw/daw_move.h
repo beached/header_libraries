@@ -27,6 +27,10 @@ namespace daw {
 	}
 } // namespace daw
 
+#ifndef DAW_MOVE
+#define DAW_MOVE( ... ) static_cast<decltype( __VA_ARGS__ ) &&>( __VA_ARGS__ )
+#endif
+
 #ifndef DAW_FWD
 #define DAW_FWD( ... ) static_cast<decltype( __VA_ARGS__ ) &&>( __VA_ARGS__ )
 #endif
