@@ -81,6 +81,13 @@ namespace daw {
 
 		using last_type = std::conditional_t<is_last_a_pointer_v<BoundsType>,
 		                                     const_pointer, size_type>;
+		static inline constexpr last_type default_last = [] {
+			if constexpr( is_last_a_pointer_v<BoundsType> ) {
+				return nullptr;
+			} else {
+				return 0;
+			}
+		}( );
 		using last_difference_type =
 		  std::conditional_t<is_last_a_pointer_v<BoundsType>, difference_type,
 		                     size_type>;
@@ -145,8 +152,8 @@ namespace daw {
 			}
 		}
 
-		const_pointer m_first;
-		last_type m_last;
+		const_pointer m_first = nullptr;
+		last_type m_last = default_last;
 
 		template<typename ForwardIterator>
 		static constexpr ForwardIterator find_not_of( ForwardIterator first,
@@ -171,9 +178,7 @@ namespace daw {
 		  std::numeric_limits<size_type>::max( );
 
 		// constructors
-		constexpr basic_string_view( ) noexcept
-		  : m_first( nullptr )
-		  , m_last( make_last<BoundsType>( nullptr, nullptr ) ) {}
+		constexpr basic_string_view( ) noexcept = default;
 
 		constexpr basic_string_view( std::nullptr_t ) noexcept
 		  : m_first( nullptr )
