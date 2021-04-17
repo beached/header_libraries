@@ -1026,12 +1026,25 @@ namespace daw::traits {
 	                                                   StartIdx>::value;
 
 	template<typename, typename>
-	struct not_same : std::true_type { };
+	struct not_same : std::true_type {};
 
 	template<typename T>
-	struct not_same<T, T> : std::false_type { };
+	struct not_same<T, T> : std::false_type {};
 
 	template<typename T, typename U>
-	inline constexpr bool not_same_v = not_same<T, U>::value;	
-} // namespace daw::traits
+	inline constexpr bool not_same_v = not_same<T, U>::value;
 
+	template<typename To, typename Source>
+	using copy_ref_t = std::conditional_t<
+	  std::is_lvalue_reference<Source>::value,
+	  std::add_lvalue_reference_t<std::remove_reference_t<To>>,
+	  std::conditional_t<std::is_rvalue_reference<Source>::value,
+	                     std::add_rvalue_reference_t<std::remove_reference_t<To>>,
+	                     std::remove_reference_t<To>>>;
+
+	template<typename To, typename Source>
+	using copy_const_t =
+	  std::conditional_t<std::is_const<std::remove_reference_t<Source>>::value,
+	                     copy_ref_t<std::remove_reference_t<To> const, To>,
+	                     copy_ref_t<daw::remove_cvref_t<To>, To>>;
+} // namespace daw::traits
