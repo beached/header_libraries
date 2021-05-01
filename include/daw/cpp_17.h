@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw_bit_cast.h"
 #include "daw_enable_if.h"
 #include "daw_move.h"
 
@@ -555,27 +556,10 @@ namespace daw {
 	}
 
 	template<typename To, typename From>
-	[[nodiscard, maybe_unused]] To
-	bit_cast( From &&from ) noexcept( std::is_nothrow_constructible_v<To> ) {
-
-		static_assert( std::is_trivially_copyable_v<remove_cvref_t<From>>,
-		               "From type must be trivially copiable" );
-		static_assert( std::is_trivially_copyable_v<remove_cvref_t<To>>,
-		               "To type must be trivially copiable" );
-		static_assert( sizeof( From ) == sizeof( To ),
-		               "Sizes of From and To types must be the same" );
-		static_assert( std::is_default_constructible_v<To>,
-		               "To type must be default constructible" );
-
-		auto result = std::aligned_storage_t<sizeof( To ), alignof( To )>{ };
-		return *static_cast<To *>( memcpy( &result, &from, sizeof( To ) ) );
-	}
-
-	template<typename To, typename From>
 	[[nodiscard, maybe_unused]] To bit_cast( From const *const from ) noexcept(
 	  std::is_nothrow_constructible_v<To> ) {
 
-		return bit_cast<To>( *from );
+		return DAW_BIT_CAST( To, *from );
 	}
 
 	template<typename T, typename Iterator, typename Function>
@@ -584,7 +568,7 @@ namespace daw {
 	  Function &&func ) noexcept( noexcept( func( std::declval<T>( ) ) ) ) {
 
 		while( first != last ) {
-			daw::invoke( func, bit_cast<T>( *first ) );
+			daw::invoke( func, DAW_BIT_CAST( T, *first ) );
 			++first;
 		}
 	}
@@ -603,7 +587,7 @@ namespace daw {
 
 		while( first != last ) {
 			*first_out =
-			  bit_cast<out_t>( daw::invoke( func, bit_cast<T>( *first ) ) );
+			  DAW_BIT_CAST( out_t, daw::invoke( func, DAW_BIT_CAST( T, *first ) ) );
 			++first;
 			++first_out;
 		}
@@ -618,7 +602,7 @@ namespace daw {
 		  typename std::iterator_traits<OutputIterator>::value_type, T>;
 
 		while( first != last ) {
-			*first_out = bit_cast<out_t>( *first );
+			*first_out = DAW_BIT_CAST( out_t, *first );
 			++first;
 			++first_out;
 		}
