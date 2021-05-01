@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw_assume.h"
 #include "daw_bit_cast.h"
 #include "daw_do_n.h"
 #include "daw_enable_if.h"
@@ -338,10 +339,10 @@ namespace daw::cxmath {
 		};
 
 #if defined( DAW_CX_BIT_CAST )
-		[[nodiscard]] constexpr float setxp( float x, int8_t exp ) {
+		[[nodiscard]] constexpr float setxp( float x, std::int8_t exp ) {
 			static_assert( sizeof( float ) == 4 );
 			auto i = DAW_BIT_CAST( std::uint32_t, x );
-			i &= ~0x7F80'0000;
+			i &= ~0x7F80'0000U;
 			i |= ( static_cast<std::uint32_t>( 127 + exp ) & 0xFFU ) << 23U;
 			return DAW_BIT_CAST( float, i );
 		}
@@ -502,6 +503,9 @@ namespace daw::cxmath {
 		if( DAW_UNLIKELY( x < 0.0f ) ) {
 			return std::numeric_limits<float>::quiet_NaN( );
 		}
+		if( x == 0.0f ) {
+			return 0.0f;
+		}
 		// TODO: use bit_cast to get std::uint32_t of float, extract exponent,
 		// set it to zero and bit_cast back to a float
 #if defined( DAW_CX_BIT_CAST )
@@ -516,7 +520,7 @@ namespace daw::cxmath {
 		auto const N = *exp;
 		auto const f = cxmath_impl::fexp3( x, 0, N );
 #endif
-
+		DAW_ASSUME( f != 0.0f );
 		auto const y0 = ( 0.41731f + ( 0.59016f * f ) );
 		auto const z = ( y0 + ( f / y0 ) );
 		auto const y2 = ( 0.25f * z ) + ( f / z );
