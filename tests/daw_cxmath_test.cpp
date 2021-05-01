@@ -122,11 +122,11 @@ int main( ) {
 	  },
 	  nums );
 	daw::bench_n_test<RUNCOUNT>(
-	  "daw::cxmath::intxp( flt, 0 )",
+	  "daw::cxmath::setxp( flt, 0 )",
 	  []( auto &&floats ) {
 		  float sum = 0.0f;
 		  for( auto num : floats ) {
-			  sum += daw::cxmath::fexp2( num, 0 );
+			  sum += daw::cxmath::setxp( num, 0 );
 		  }
 		  daw::do_not_optimize( sum );
 		  return sum;

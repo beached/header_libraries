@@ -11,6 +11,7 @@
 #include "daw_bit_cast.h"
 #include "daw_do_n.h"
 #include "daw_enable_if.h"
+#include "daw_likely.h"
 #include "impl/daw_math_impl.h"
 
 #include <array>
@@ -24,6 +25,16 @@ namespace daw::cxmath {
 	constexpr float fpow2( int32_t exp ) noexcept;
 
 	namespace cxmath_impl {
+#if defined( DAW_CX_BIT_CAST )
+		[[nodiscard]] constexpr int16_t intxp2( float f ) noexcept {
+			static_assert( sizeof( float ) == 4 );
+			auto const ieee754float = DAW_BIT_CAST( std::uint32_t, f );
+			constexpr std::uint32_t const mask_msb = 0x7FFF'FFFFU;
+			return static_cast<std::int16_t>( ( ieee754float & mask_msb ) >> 23U ) -
+			       127;
+		}
+#endif
+
 		template<typename Float>
 		inline constexpr auto sqrt2 = static_cast<Float>(
 		  1.4142135623730950488016887242096980785696718753769480L );
@@ -362,7 +373,16 @@ namespace daw::cxmath {
 	constexpr uintmax_t pow10_v = cxmath_impl::pow10_t<uintmax_t>::get( exp );
 
 	constexpr float fpow2( int32_t exp ) noexcept {
+#if defined( DAW_CX_BIT_CAST )
+		if( exp >= std::numeric_limits<float>::max_exponent ) {
+			return std::numeric_limits<float>::infinity( );
+		} else if( exp <= std::numeric_limits<float>::min_exponent ) {
+			return 0.0f;
+		}
+		return cxmath_impl::setxp( 2.0f, exp );
+#else
 		return cxmath_impl::pow2_t<double>::get<float>( exp );
+#endif
 	}
 
 	[[nodiscard]] constexpr double dpow2( int32_t exp ) noexcept {
@@ -381,7 +401,7 @@ namespace daw::cxmath {
 		return cxmath_impl::pow10_t<uintmax_t>::get( exp );
 	}
 
-	[[nodiscard]] constexpr float fexp2( float X,
+	[[nodiscard]] constexpr float setxp( float X,
 	                                     std::int16_t exponent ) noexcept {
 #if defined( DAW_CX_BIT_CAST )
 		static_assert( sizeof( float ) == 4 );
@@ -448,6 +468,7 @@ namespace daw::cxmath {
 	static_assert( *intxp( 10.0f ) == 3 );
 	static_assert( *intxp( 1024.0f ) == 10 );
 	static_assert( *intxp( 123.45f ) == 6 );
+
 	template<typename Integer,
 	         daw::enable_when_t<std::is_integral_v<Integer>> = nullptr>
 	[[nodiscard]] constexpr bool is_odd( Integer i ) noexcept {
@@ -462,30 +483,37 @@ namespace daw::cxmath {
 
 	template<typename Float,
 	         daw::enable_when_t<std::is_floating_point_v<Float>> = nullptr>
-	[[nodiscard]] constexpr Float abs( Float f ) noexcept {
-		if( f < 0.0f ) {
-			return -f;
+	[[nodiscard]] constexpr Float abs( Float number ) noexcept {
+#if defined( DAW_CX_BIT_CAST )
+		using arry_type = std::array<unsigned char, sizeof( Float )>;
+		auto parts = DAW_BIT_CAST( arry_type, number );
+		constexpr std::size_t idx = sizeof( Float ) - 1U;
+		parts[idx] = parts[idx] & static_cast<unsigned char>( 0x7FU );
+		return DAW_BIT_CAST( Float, parts );
+#else
+		if( number < (Float)0 ) {
+			return -number;
 		}
-		return f;
+		return number;
+#endif
 	}
 
 	[[nodiscard]] constexpr float sqrt( float const x ) noexcept {
-		if( x < 0.0f ) {
+		if( DAW_UNLIKELY( x < 0.0f ) ) {
 			return std::numeric_limits<float>::quiet_NaN( );
 		}
 		// TODO: use bit_cast to get std::uint32_t of float, extract exponent,
 		// set it to zero and bit_cast back to a float
+#if defined( DAW_CX_BIT_CAST )
+		auto const N = cxmath_impl::intxp2( x );
+		auto const f = cxmath_impl::setxp( x, 0 );
+#else
 		auto const exp = intxp( x );
-#if not defined( DAW_CX_BIT_CAST )
 		// Will always return a value with bitcast available
 		if( !exp ) {
 			return x;
 		}
-#endif
 		auto const N = *exp;
-#if defined( DAW_CX_BIT_CAST )
-		auto const f = cxmath_impl::setxp( x, 0 );
-#else
 		auto const f = cxmath_impl::fexp3( x, 0, N );
 #endif
 
