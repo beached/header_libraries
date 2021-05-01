@@ -111,18 +111,18 @@ int main( ) {
 	    std::numeric_limits<float>::max_exponent10 ) );
 
 	daw::bench_n_test<RUNCOUNT>(
-	  "daw::cxmath::fexp2( flt )",
+	  "daw::cxmath::intxp( flt )",
 	  []( auto &&floats ) {
 		  intmax_t sum = 0.0f;
 		  for( auto num : floats ) {
-			  sum += *daw::cxmath::fexp2( num );
+			  sum += *daw::cxmath::intxp( num );
 		  }
 		  daw::do_not_optimize( sum );
 		  return sum;
 	  },
 	  nums );
 	daw::bench_n_test<RUNCOUNT>(
-	  "daw::cxmath::fexp2( flt, 0 )",
+	  "daw::cxmath::intxp( flt, 0 )",
 	  []( auto &&floats ) {
 		  float sum = 0.0f;
 		  for( auto num : floats ) {

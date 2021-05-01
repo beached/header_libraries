@@ -80,6 +80,7 @@ set(TEST_SOURCES
 	daw_size_literals_test.cpp
 	daw_span_test.cpp
 	daw_stack_function_test.cpp
+	daw_string_concat_test.cpp
 	daw_string_split_range_test.cpp
 	daw_string_test.cpp
 	daw_string_view_test.cpp
