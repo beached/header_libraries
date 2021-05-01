@@ -392,7 +392,7 @@ namespace daw::cxmath {
 		return DAW_BIT_CAST( float,
 		                     ieee754float &( ( new_exp << 23 ) | remove_mask ) );
 #else
-		auto const exp_diff = exponent - *fexp2( X );
+		auto const exp_diff = exponent - *intxp( X );
 		if( exp_diff > 0 ) {
 			return fpow2( exp_diff ) * X;
 		}
