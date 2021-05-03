@@ -472,13 +472,13 @@ namespace daw::cxmath {
 
 	template<typename Integer,
 	         daw::enable_when_t<std::is_integral_v<Integer>> = nullptr>
-	[[nodiscard]] constexpr bool is_odd( Integer i ) noexcept {
+	[[nodiscard]] inline constexpr bool is_odd( Integer i ) noexcept {
 		return ( static_cast<std::uint32_t>( i ) & 1U ) == 1U;
 	}
 
 	template<typename Integer,
 	         daw::enable_when_t<std::is_integral_v<Integer>> = nullptr>
-	[[nodiscard]] constexpr bool is_even( Integer i ) noexcept {
+	[[nodiscard]] inline constexpr bool is_even( Integer i ) noexcept {
 		return ( static_cast<std::uint32_t>( i ) & 1U ) == 0U;
 	}
 
@@ -500,11 +500,11 @@ namespace daw::cxmath {
 	}
 
 	[[nodiscard]] constexpr float sqrt( float const x ) noexcept {
-		if( DAW_UNLIKELY( x < 0.0f ) ) {
+		if( DAW_UNLIKELY( x <= 0.0f ) ) {
+			if( x == 0.0f ) {
+				return 0.0f;
+			}
 			return std::numeric_limits<float>::quiet_NaN( );
-		}
-		if( x == 0.0f ) {
-			return 0.0f;
 		}
 		// TODO: use bit_cast to get std::uint32_t of float, extract exponent,
 		// set it to zero and bit_cast back to a float
@@ -520,7 +520,6 @@ namespace daw::cxmath {
 		auto const N = *exp;
 		auto const f = cxmath_impl::fexp3( x, 0, N );
 #endif
-		DAW_ASSUME( f != 0.0f );
 		auto const y0 = ( 0.41731f + ( 0.59016f * f ) );
 		auto const z = ( y0 + ( f / y0 ) );
 		auto const y2 = ( 0.25f * z ) + ( f / z );

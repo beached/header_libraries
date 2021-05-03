@@ -8,23 +8,14 @@
 
 #pragma once
 
+#include "daw_bit_cast.h"
+
 #include <array>
 #include <cstddef>
 #include <cstdio>
 #include <cstring>
 #include <functional>
 #include <utility>
-#if __has_include( <version> )
-#include <version>
-#endif
-
-#if __has_include( <bit> )  and defined(__cpp_lib_bit_cast)
-#include <bit>
-#define DAW_BITCAST std::bit_cast
-#else
-#include "cpp_17.h"
-#define DAW_BITCAST daw::bit_cast
-#endif
 
 namespace daw {
 	template<typename Result, typename... Args>
@@ -48,7 +39,7 @@ namespace daw {
 			using fn_t = std::remove_reference_t<Func>;
 			if constexpr( std::is_pointer_v<fn_t> ) {
 				return { data_t{ f }, []( data_t const &d, Args... args ) -> Result {
-					        return ( d.fp_storage )( std::move( args )... );
+					        return (d.fp_storage)( std::move( args )... );
 				        } };
 			} else if constexpr( std::is_empty_v<fn_t> and
 			                     std::is_default_constructible_v<fn_t> ) {
@@ -57,10 +48,10 @@ namespace daw {
 					         return fn_t{ }( std::move( args )... );
 				         } };
 			} else {
-				return { data_t{ DAW_BITCAST<ref_buffer_t>( std::addressof( f ) ) },
+				return { data_t{ DAW_BIT_CAST( ref_buffer_t, std::addressof( f ) ) },
 				         +[]( data_t const &d, Args... args ) -> Result {
-					         return ( *DAW_BITCAST<fn_t const *>( d.ref_storage ) )(
-					           std::move( args )... );
+					         return (*DAW_BIT_CAST(
+					           fn_t const *, d.ref_storage ))( std::move( args )... );
 				         } };
 			}
 		}
@@ -95,9 +86,9 @@ namespace daw {
 					        fn_t{ }( std::move( args )... );
 				        } };
 			} else {
-				return { data_t{ DAW_BITCAST<ref_buffer_t>( std::addressof( f ) ) },
+				return { data_t{ DAW_BIT_CAST( ref_buffer_t, std::addressof( f ) ) },
 				         +[]( data_t const &d, Args... args ) -> void {
-					         ( *DAW_BITCAST<fn_t const *>( d.ref_storage ) )(
+					         ( *DAW_BIT_CAST( fn_t const *, d.ref_storage ) )(
 					           std::move( args )... );
 				         } };
 			}
@@ -136,5 +127,3 @@ namespace daw {
 		}
 	};
 } // namespace daw
-
-#undef DAW_BIT_CAST
