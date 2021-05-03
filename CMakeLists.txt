@@ -6,7 +6,7 @@
 # Official repository: https://github.com/beached/header_libraries
 #
 
-cmake_minimum_required( VERSION 3.13 ) 
+cmake_minimum_required( VERSION 3.14 )
 
 project( "header_libraries"
 	VERSION "1.10.2" 
