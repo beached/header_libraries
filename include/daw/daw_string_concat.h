@@ -62,11 +62,11 @@ namespace daw::string_concat_impl {
 			}
 			++m_idx;
 			if( empty( ) ) {
-				m_first = std::string_view{ nullptr, 0 }.begin( );
+				m_first = nullptr;
 				return *this;
 			}
 			auto const &item = m_strings[m_idx];
-			m_first = item.begin( );
+			m_first = std::data( item );
 			return *this;
 		}
 
