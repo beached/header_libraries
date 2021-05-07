@@ -21,11 +21,15 @@ namespace daw::string_concat_impl {
 	struct string_join_iterator {
 		static_assert( StringCount > 0 );
 		using CharT = char;
+		using value_type = CharT;
+		using pointer = value_type const *;
+		using reference = value_type const &;
+		using difference_type = std::ptrdiff_t;
+		using iterator_category = std::random_access_iterator_tag;
 
 	private:
 		std::array<std::string_view, StringCount> m_strings{ };
-		typename std::string_view::iterator m_first =
-		  std::string_view{ nullptr, 0 }.begin( );
+		pointer m_first = nullptr;
 		std::size_t m_idx = StringCount;
 
 		constexpr bool empty( ) const noexcept {
@@ -33,12 +37,6 @@ namespace daw::string_concat_impl {
 		}
 
 	public:
-		using value_type = CharT;
-		using reference = value_type const &;
-		using pointer = value_type const *;
-		using difference_type = std::ptrdiff_t;
-		using iterator_category = std::random_access_iterator_tag;
-
 		constexpr string_join_iterator( ) = default;
 
 		template<typename... Strings,
@@ -46,7 +44,7 @@ namespace daw::string_concat_impl {
 		                          std::nullptr_t> = nullptr>
 		constexpr string_join_iterator( Strings const &...strings )
 		  : m_strings{ std::string_view( strings )... }
-		  , m_first{ m_strings[0].begin( ) }
+		  , m_first{ std::data( m_strings[0] ) }
 		  , m_idx{ 0 } {}
 
 		constexpr value_type operator*( ) const noexcept {
@@ -64,11 +62,11 @@ namespace daw::string_concat_impl {
 			}
 			++m_idx;
 			if( empty( ) ) {
-				m_first = std::string_view{ nullptr, 0 }.begin( );
+				m_first = nullptr;
 				return *this;
 			}
 			auto const &item = m_strings[m_idx];
-			m_first = item.begin( );
+			m_first = std::data( item );
 			return *this;
 		}
 
