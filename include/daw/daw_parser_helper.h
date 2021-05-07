@@ -24,25 +24,10 @@
 namespace daw::parser {
 	template<typename T, typename Iterator>
 	struct parser_result {
-		Iterator first;
-		Iterator last;
-		T result;
-
-		parser_result( ) = default;
-		parser_result( T value, Iterator f, Iterator l )
-		  : first{ daw::move( f ) }
-		  , last{ daw::move( l ) }
-		  , result{ daw::move( value ) } {}
-
-		~parser_result( );
-		parser_result( parser_result const & ) = default;
-		parser_result( parser_result && ) noexcept = default;
-		parser_result &operator=( parser_result const & ) = default;
-		parser_result &operator=( parser_result && ) noexcept = default;
+		T result{ };
+		Iterator first{ };
+		Iterator last{ };
 	}; // parser_result
-
-	template<typename T, typename Iterator>
-	parser_result<T, Iterator>::~parser_result( ) = default;
 
 	struct ParserException {};
 	struct ParserEmptyException : public ParserException {};
@@ -54,12 +39,6 @@ namespace daw::parser {
 		ForwardIterator first;
 		ForwardIterator last;
 		bool found;
-
-		constexpr find_result_t( ForwardIterator First, ForwardIterator Last,
-		                         bool Found ) noexcept
-		  : first{ First }
-		  , last{ Last }
-		  , found{ Found } {}
 
 		constexpr explicit operator bool( ) const noexcept {
 			return found;
@@ -170,7 +149,7 @@ namespace daw::parser {
 		// static_assert( traits::is_comparable_v<T, Arg>, "value is not
 		// comparable to tst" );
 		using val_t = typename daw::traits::max_sizeof<T, Arg>::type;
-		return ( static_cast<val_t>( value ) == static_cast<val_t>( tst ) );
+		return static_cast<val_t>( value ) == static_cast<val_t>( tst );
 	}
 
 	template<typename T, typename Arg, typename... Args>
@@ -246,45 +225,6 @@ namespace daw::parser {
 	[[nodiscard]] constexpr auto in( daw::string_view container ) noexcept {
 		return in_t{ daw::move( container ) };
 	}
-
-	/* old
-	template<typename T>
-	class in_t {
-	    std::vector<T> container;
-
-	  public:
-	    in_t( std::vector<T> values ) : container{daw::move( values )} {}
-
-	    template<typename U>
-	    bool operator( )( U const &value ) const {
-	        return value_in( value, container );
-	    }
-	}; // in_t
-
-	template<typename T>
-	auto in( std::vector<T> container ) {
-	    return in_t<T>{daw::move( container )};
-	}
-
-	template<typename T, size_t N>
-	auto in( T ( &container )[N] ) {
-	    using value_t = daw::traits::root_type_t<T>;
-	    std::vector<value_t> values;
-	    std::copy_n( std::begin( container ), N, std::back_inserter( values ) );
-
-	    return in_t<value_t>{daw::move( values )};
-	}
-
-	template<typename Container>
-	auto in( Container container ) {
-	    using value_t = daw::traits::root_type_t<decltype( container[0] )>;
-	    std::vector<value_t> values;
-	    std::copy( std::begin( container ), std::end( container ),
-	std::back_inserter( values ) );
-
-	    return in_t<value_t>{daw::move( values )};
-	}
-	*/
 
 	template<typename ForwardIterator, typename Container>
 	[[nodiscard]] constexpr find_result_t<ForwardIterator>
@@ -431,11 +371,7 @@ namespace daw::parser {
 	from_to_pred( ForwardIterator first, ForwardIterator last,
 	              IsFirstPredicate is_first, IsLastPredicate is_last,
 	              bool throw_if_end_reached = false ) {
-		/*
-		std::function<bool( daw::traits::root_type_t<decltype( *first )> )>
-		is_first, std::function<bool( daw::traits::root_type_t<decltype( *first )>
-		)> is_last,
-		*/
+
 		auto start = until( first, last, is_first );
 
 		daw::exception::precondition_check<ParserException>( start );
