@@ -1048,3 +1048,11 @@ namespace daw::traits {
 	                     copy_ref_t<std::remove_reference_t<To> const, To>,
 	                     copy_ref_t<daw::remove_cvref_t<To>, To>>;
 } // namespace daw::traits
+
+namespace daw {
+	template<std::size_t N>
+	using index_constant = std::integral_constant<std::size_t, N>;
+
+	template<std::size_t N>
+	inline constexpr index_constant<N> index_constant_v = index_constant<N>{ };
+} // namespace daw
