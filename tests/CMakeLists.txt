@@ -85,6 +85,7 @@ set(TEST_SOURCES
 	daw_string_test.cpp
 	daw_string_view_test.cpp
 	daw_traits_test.cpp
+	daw_tuple_test.cpp
 	daw_tuple_helper_test.cpp
 	daw_uint_buffer_test.cpp
 	daw_uninitialized_storage_test.cpp
