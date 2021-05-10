@@ -663,12 +663,12 @@ namespace daw::traits {
 	using nth_type = std::tuple_element_t<N, std::tuple<Args...>>;
 
 	namespace traits_details::pack_index_of {
-		template<typename A, typename B, typename... C>
+		template<int Index, typename A, typename B, typename... C>
 		[[maybe_unused]] constexpr int pack_index_of_calc( ) noexcept {
 			if constexpr( std::is_same_v<A, B> ) {
-				return 0;
+				return Index;
 			} else if constexpr( sizeof...( C ) > 0 ) {
-				return pack_index_of_calc<A, C...>( ) + 1;
+				return pack_index_of_calc<Index+1, A, C...>( );
 			} else {
 				return -1;
 			}
@@ -678,7 +678,7 @@ namespace daw::traits {
 	template<typename A, typename B, typename... C>
 	struct pack_index_of
 	  : std::integral_constant<
-	      int, traits_details::pack_index_of::pack_index_of_calc<A, B, C...>( )> {
+	      int, traits_details::pack_index_of::pack_index_of_calc<0, A, B, C...>( )> {
 	};
 
 	template<typename... Args>
