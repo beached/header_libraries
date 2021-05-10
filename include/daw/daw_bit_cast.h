@@ -43,7 +43,7 @@ namespace daw {
 #if defined( __cpp_lib_bit_cast )
 #define DAW_BIT_CAST( type, value ) std::bit_cast<type>( value )
 #define DAW_CX_BIT_CAST
-#elif defined( __has_builtin ) 
+#elif defined( __has_builtin )
 #if __has_builtin( __builtin_bit_cast )
 #define DAW_BIT_CAST( type, value ) __builtin_bit_cast( type, value )
 #define DAW_CX_BIT_CAST
@@ -52,7 +52,6 @@ namespace daw {
 #define DAW_CX_BIT_CAST
 #else
 #define DAW_BIT_CAST( type, value ) daw::bit_cast<type>( value )
-#endif
 #endif
 #elif defined( __clang__ ) and ( __clang_major__ >= 10 )
 #define DAW_BIT_CAST( type, value ) __builtin_bit_cast( type, value )
