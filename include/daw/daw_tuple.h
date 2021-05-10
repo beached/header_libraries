@@ -15,6 +15,12 @@
 #include <type_traits>
 #include <utility>
 
+#if defined( __GNUC__ )
+#define DAW_TUPLESPECIALCLASS class
+#else
+#define DAW_TUPLESPECIALCLASS struct
+#endif
+
 namespace daw::impl {
 	namespace {
 		template<typename T>
@@ -23,7 +29,7 @@ namespace daw::impl {
 		};
 
 		template<std::size_t, typename...>
-		class tuple_storage;
+		struct tuple_storage;
 
 		struct tuple_storage_empty {};
 
@@ -124,10 +130,10 @@ namespace daw {
 		using base_type::base_type;
 
 		template<typename T>
-		friend class ::std::tuple_size;
+		friend DAW_TUPLESPECIALCLASS ::std::tuple_size;
 
 		template<std::size_t I, class T>
-		friend class ::std::tuple_element;
+		friend DAW_TUPLESPECIALCLASS ::std::tuple_element;
 
 		template<typename Predicate, std::size_t... Is, typename... Us>
 		constexpr bool and_all( Predicate p, std::index_sequence<Is...>,
@@ -242,11 +248,11 @@ namespace daw {
 
 namespace std {
 	template<typename... Ts>
-	class tuple_size<::daw::tuple<Ts...>>
-	  : public daw::index_constant<::daw::tuple<Ts...>::tuple_size> {};
+	DAW_TUPLESPECIALCLASS tuple_size<::daw::tuple<Ts...>>
+	  : public daw::index_constant<::daw::tuple<Ts...>::tuple_size>{ };
 
 	template<std::size_t I, typename... Ts>
-	class tuple_element<I, ::daw::tuple<Ts...>> {
+	DAW_TUPLESPECIALCLASS tuple_element<I, ::daw::tuple<Ts...>> {
 	public:
 		using type = typename decltype( ::daw::tuple<Ts...>::get_type(
 		  daw::index_constant<I>{ } ) )::type;
@@ -292,3 +298,7 @@ namespace daw {
 		    std::tuple_size_v<std::remove_reference_t<tuple<Ts...>>>>{ } );
 	}
 } // namespace daw
+
+#ifdef DAW_TUPLESPECIALCLASS
+#undef DAW_TUPLESPECIALCLASS
+#endif
