@@ -17,6 +17,7 @@
 #endif
 #endif
 #include <cstring>
+#include <ciso646>
 #include <type_traits>
 
 namespace daw {
