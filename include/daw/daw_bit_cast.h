@@ -8,16 +8,15 @@
 
 #pragma once
 
-#if defined( __has_include )
 #if __has_include( <version> )
 #include <version>
 #endif
-#if __has_include( <bit> )
+#if defined( __cpp_lib_bit_cast ) and __has_include( <bit> )
 #include <bit>
 #endif
-#endif
-#include <cstring>
+
 #include <ciso646>
+#include <cstring>
 #include <type_traits>
 
 namespace daw {
