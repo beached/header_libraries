@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw_arith_traits.h"
 #include "daw_assume.h"
 #include "daw_bit_cast.h"
 #include "daw_do_n.h"
@@ -165,10 +166,10 @@ namespace daw::cxmath {
 			// Once c++20 use bit_cast
 			if( f == 0.0f ) {
 				return { 0, f }; // also matches -0.0f and gives wrong result
-			} else if( f > std::numeric_limits<float>::max( ) ) {
+			} else if( f > daw::numeric_limits<float>::max( ) ) {
 				// infinity
 				return { 0x7f80'0000, f };
-			} else if( f < -std::numeric_limits<float>::max( ) ) {
+			} else if( f < -daw::numeric_limits<float>::max( ) ) {
 				// negative infinity
 				return { 0xff800000, f };
 			} else if( f != f ) {
@@ -206,12 +207,12 @@ namespace daw::cxmath {
 			bool is_neg = exp < 0;
 			exp = is_neg ? -exp : exp;
 			auto const max_shft = daw::min(
-			  static_cast<size_t>( std::numeric_limits<Float>::max_exponent10 ),
+			  static_cast<size_t>( daw::numeric_limits<Float>::max_exponent10 ),
 			  ( sizeof( size_t ) * 8ULL ) );
 			Float result = 1.0;
 
 			while( static_cast<size_t>( exp ) >= max_shft ) {
-				result *= static_cast<Float>( std::numeric_limits<size_t>::max( ) );
+				result *= static_cast<Float>( daw::numeric_limits<size_t>::max( ) );
 				exp -= max_shft;
 			}
 			if( exp > 0 ) {
@@ -243,8 +244,8 @@ namespace daw::cxmath {
 			exp = is_neg ? -exp : exp;
 
 			auto const max_spow =
-			  daw::min( std::numeric_limits<Float>::max_exponent10,
-			            std::numeric_limits<size_t>::digits10 );
+			  daw::min( daw::numeric_limits<Float>::max_exponent10,
+			            daw::numeric_limits<size_t>::digits10 );
 			Float result = 1.0;
 
 			while( exp >= max_spow ) {
@@ -271,8 +272,8 @@ namespace daw::cxmath {
 
 		template<typename Float>
 		[[nodiscard]] constexpr auto calc_pow2s( ) noexcept {
-			intmax_t const min_e = std::numeric_limits<Float>::min_exponent10;
-			intmax_t const max_e = std::numeric_limits<Float>::max_exponent10;
+			intmax_t const min_e = daw::numeric_limits<Float>::min_exponent10;
+			intmax_t const max_e = daw::numeric_limits<Float>::max_exponent10;
 			std::array<Float, max_e - min_e> result{ };
 			intmax_t n = max_e - min_e;
 			while( n-- > 0 ) {
@@ -283,8 +284,8 @@ namespace daw::cxmath {
 
 		template<typename Float>
 		[[nodiscard]] constexpr auto calc_fpow10s( ) noexcept {
-			intmax_t const min_e = std::numeric_limits<Float>::min_exponent10;
-			intmax_t const max_e = std::numeric_limits<Float>::max_exponent10;
+			intmax_t const min_e = daw::numeric_limits<Float>::min_exponent10;
+			intmax_t const max_e = daw::numeric_limits<Float>::max_exponent10;
 			std::array<Float, max_e - min_e> result{ };
 			intmax_t n = max_e - min_e;
 			while( n-- > 0 ) {
@@ -295,8 +296,8 @@ namespace daw::cxmath {
 
 		template<typename Integer>
 		[[nodiscard]] constexpr auto calc_pow10s( ) noexcept {
-			std::array<Integer, std::numeric_limits<Integer>::digits10> result{ };
-			intmax_t n = std::numeric_limits<Integer>::digits10;
+			std::array<Integer, daw::numeric_limits<Integer>::digits10> result{ };
+			intmax_t n = daw::numeric_limits<Integer>::digits10;
 			while( n-- > 0 ) {
 				result[static_cast<size_t>( n )] = pow10_impl2<Integer>( n );
 			}
@@ -375,9 +376,9 @@ namespace daw::cxmath {
 
 	constexpr float fpow2( int32_t exp ) noexcept {
 #if defined( DAW_CX_BIT_CAST )
-		if( exp >= std::numeric_limits<float>::max_exponent ) {
-			return std::numeric_limits<float>::infinity( );
-		} else if( exp <= std::numeric_limits<float>::min_exponent ) {
+		if( exp >= daw::numeric_limits<float>::max_exponent ) {
+			return daw::numeric_limits<float>::infinity( );
+		} else if( exp <= daw::numeric_limits<float>::min_exponent ) {
 			return 0.0f;
 		}
 		return cxmath_impl::setxp( 2.0f, exp );
@@ -430,15 +431,14 @@ namespace daw::cxmath {
 		return static_cast<std::int16_t>( ( ieee754float & mask_msb ) >> 23U ) -
 		       127;
 #else
-		// Once c++20 use bit_cast
 		if( f == 0.0f ) {
 			return static_cast<std::int16_t>( 0 );
 		}
-		if( f > std::numeric_limits<float>::max( ) ) {
+		if( f > daw::numeric_limits<float>::max( ) ) {
 			// inf
 			return std::nullopt;
 		}
-		if( f < -std::numeric_limits<float>::max( ) ) {
+		if( f < -daw::numeric_limits<float>::max( ) ) {
 			// -inf
 			return std::nullopt;
 		}
@@ -504,7 +504,7 @@ namespace daw::cxmath {
 			if( x == 0.0f ) {
 				return 0.0f;
 			}
-			return std::numeric_limits<float>::quiet_NaN( );
+			return daw::numeric_limits<float>::quiet_NaN( );
 		}
 		// TODO: use bit_cast to get std::uint32_t of float, extract exponent,
 		// set it to zero and bit_cast back to a float
@@ -559,4 +559,101 @@ namespace daw::cxmath {
 	[[nodiscard]] constexpr bool signbit( Number n ) noexcept {
 		return false;
 	}
+
+	namespace cxmath_impl {
+		inline constexpr std::uint64_t get_significand_impl( std::uint64_t dint ) {
+			constexpr std::uint64_t mask = 0x000F'FFFF'FFFF'FFFFULL;
+			return dint & mask;
+		}
+	} // namespace cxmath_impl
+
+	inline constexpr std::uint64_t get_significand( double d ) {
+		auto const dint = DAW_BIT_CAST( std::uint64_t, d );
+		return cxmath_impl::get_significand_impl( dint );
+	}
+
+	namespace cxmath_impl {
+		inline constexpr std::uint64_t get_exponent_raw_impl( std::uint64_t dint ) {
+			// Mask off LSB 52 bits and right shift
+			// Remove IEEE754 Double bias of 1023
+			constexpr std::uint64_t mask = 0x7FF0'0000'0000'0000ULL;
+			return ( dint & mask ) >> 52U;
+		}
+	} // namespace cxmath_impl
+
+	inline constexpr std::uint64_t get_exponent_raw( double d ) {
+		auto const dint = DAW_BIT_CAST( std::uint64_t, d );
+		return cxmath_impl::get_exponent_raw_impl( dint );
+	}
+
+	inline constexpr std::int32_t get_exponent( double d ) {
+		return static_cast<std::int32_t>( get_exponent_raw( d ) - 1023U );
+	}
+
+	namespace cxmath_impl {
+		inline constexpr double adj_ulp_imp( std::uint64_t i, int adj ) {
+			if( adj < 0 ) {
+				i -= static_cast<std::uint64_t>( -adj );
+			} else {
+				i += static_cast<std::uint64_t>( adj );
+			}
+			return DAW_BIT_CAST( double, i );
+		}
+	} // namespace cxmath_impl
+
+	inline constexpr double adj_ulp( double d, int adj ) {
+		auto i = DAW_BIT_CAST( std::uint64_t, d );
+		return cxmath_impl::adj_ulp_imp( i, adj );
+	}
+
+	namespace cxmath_impl {
+		inline constexpr bool is_nan( std::uint64_t dint ) {
+			constexpr std::uint64_t mask = 0x7FF0'0000'0000'0000ULL;
+			bool const exp = ( dint & mask ) == mask;
+			return exp and ( get_significand_impl( dint ) != 0 );
+		}
+	} // namespace cxmath_impl
+
+	inline constexpr bool is_nan( double d ) {
+		auto i = DAW_BIT_CAST( std::uint64_t, d );
+		return cxmath_impl::is_nan( i );
+	}
+	static_assert( is_nan( daw::numeric_limits<double>::quiet_NaN( ) ) );
+	static_assert( is_nan( daw::numeric_limits<double>::signaling_NaN( ) ) );
+	static_assert( not is_nan( daw::numeric_limits<double>::infinity( ) ) );
+
+	namespace cxmath_impl {
+		inline constexpr bool is_inf( std::uint64_t dint ) {
+			constexpr std::uint64_t mask = 0x7FF0'0000'0000'0000ULL;
+			bool const exp = ( dint & mask ) == mask;
+			return exp and ( get_significand_impl( dint ) == 0 );
+		}
+	} // namespace cxmath_impl
+
+	inline constexpr bool is_inf( double d ) {
+		auto i = DAW_BIT_CAST( std::uint64_t, d );
+		return cxmath_impl::is_inf( i );
+	}
+	static_assert( not is_inf( daw::numeric_limits<double>::quiet_NaN( ) ) );
+	static_assert( not is_inf( daw::numeric_limits<double>::signaling_NaN( ) ) );
+	static_assert( is_inf( daw::numeric_limits<double>::infinity( ) ) );
+	static_assert( not is_inf( 5.5 ) );
+
+	namespace cxmath_impl {
+		inline constexpr bool is_finite( std::uint64_t dint ) {
+			constexpr std::uint64_t mask = 0x7FF0'0000'0000'0000ULL;
+			return ( dint & mask ) != mask;
+		}
+	} // namespace cxmath_impl
+
+	inline constexpr bool is_finite( double d ) {
+		auto i = DAW_BIT_CAST( std::uint64_t, d );
+		return cxmath_impl::is_finite( i );
+	}
+	static_assert( not is_finite( daw::numeric_limits<double>::quiet_NaN( ) ) );
+	static_assert(
+	  not is_finite( daw::numeric_limits<double>::signaling_NaN( ) ) );
+	static_assert( not is_finite( daw::numeric_limits<double>::infinity( ) ) );
+	static_assert( is_finite( 5.5 ) );
+
 } // namespace daw::cxmath
