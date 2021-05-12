@@ -587,7 +587,7 @@ namespace daw::cxmath {
 	}
 
 	inline constexpr std::int32_t get_exponent( double d ) {
-		return static_cast<std::int32_t>( get_exponent_raw( d ) - 1023U);
+		return static_cast<std::int32_t>( get_exponent_raw( d ) - 1023U );
 	}
 
 	namespace cxmath_impl {
@@ -609,7 +609,7 @@ namespace daw::cxmath {
 	namespace cxmath_impl {
 		inline constexpr bool is_nan( std::uint64_t dint ) {
 			constexpr std::uint64_t mask = 0x7FF0'0000'0000'0000ULL;
-			bool const exp = (dint & mask) == mask;
+			bool const exp = ( dint & mask ) == mask;
 			return exp and ( get_significand_impl( dint ) != 0 );
 		}
 	} // namespace cxmath_impl
@@ -621,4 +621,39 @@ namespace daw::cxmath {
 	static_assert( is_nan( daw::numeric_limits<double>::quiet_NaN( ) ) );
 	static_assert( is_nan( daw::numeric_limits<double>::signaling_NaN( ) ) );
 	static_assert( not is_nan( daw::numeric_limits<double>::infinity( ) ) );
+
+	namespace cxmath_impl {
+		inline constexpr bool is_inf( std::uint64_t dint ) {
+			constexpr std::uint64_t mask = 0x7FF0'0000'0000'0000ULL;
+			bool const exp = ( dint & mask ) == mask;
+			return exp and ( get_significand_impl( dint ) == 0 );
+		}
+	} // namespace cxmath_impl
+
+	inline constexpr bool is_inf( double d ) {
+		auto i = DAW_BIT_CAST( std::uint64_t, d );
+		return cxmath_impl::is_inf( i );
+	}
+	static_assert( not is_inf( daw::numeric_limits<double>::quiet_NaN( ) ) );
+	static_assert( not is_inf( daw::numeric_limits<double>::signaling_NaN( ) ) );
+	static_assert( is_inf( daw::numeric_limits<double>::infinity( ) ) );
+	static_assert( not is_inf( 5.5 ) );
+
+	namespace cxmath_impl {
+		inline constexpr bool is_finite( std::uint64_t dint ) {
+			constexpr std::uint64_t mask = 0x7FF0'0000'0000'0000ULL;
+			return ( dint & mask ) != mask;
+		}
+	} // namespace cxmath_impl
+
+	inline constexpr bool is_finite( double d ) {
+		auto i = DAW_BIT_CAST( std::uint64_t, d );
+		return cxmath_impl::is_finite( i );
+	}
+	static_assert( not is_finite( daw::numeric_limits<double>::quiet_NaN( ) ) );
+	static_assert(
+	  not is_finite( daw::numeric_limits<double>::signaling_NaN( ) ) );
+	static_assert( not is_finite( daw::numeric_limits<double>::infinity( ) ) );
+	static_assert( is_finite( 5.5 ) );
+
 } // namespace daw::cxmath
