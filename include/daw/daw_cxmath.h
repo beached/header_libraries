@@ -21,8 +21,144 @@
 #include <cstdint>
 #include <limits>
 #include <optional>
+#include <type_traits>
 
 namespace daw::cxmath {
+	namespace cxmath_impl {
+		template<typename T, typename U>
+		inline constexpr bool is_unsigned_of_size_v = std::is_integral_v<T> and
+		                                                std::is_unsigned_v<T> and
+		                                              sizeof( T ) == sizeof( U );
+		template<typename U64,
+		         std::enable_if_t<is_unsigned_of_size_v<U64, std::uint64_t>,
+		                          std::nullptr_t> = nullptr>
+		inline constexpr U64 get_significand_impl( U64 dint ) {
+			constexpr std::uint64_t mask = 0x000F'FFFF'FFFF'FFFFULL;
+			return dint & mask;
+		}
+
+		template<typename U64,
+		         std::enable_if_t<is_unsigned_of_size_v<U64, std::uint64_t>,
+		                          std::nullptr_t> = nullptr>
+		inline constexpr U64 get_raw_exponent_impl( U64 dint ) {
+			constexpr std::uint64_t mask = 0x7FF0'0000'0000'0000ULL;
+			return dint & mask;
+		}
+
+		template<typename U64,
+		         std::enable_if_t<is_unsigned_of_size_v<U64, std::uint64_t>,
+		                          std::nullptr_t> = nullptr>
+		inline constexpr U64 get_exponent_impl( U64 dint ) {
+			return get_raw_exponent_impl( dint ) >> 52U;
+		}
+
+		template<typename U32,
+		         std::enable_if_t<is_unsigned_of_size_v<U32, std::uint32_t>,
+		                          std::nullptr_t> = nullptr>
+		inline constexpr U32 get_significand_impl( U32 dint ) {
+			constexpr std::uint32_t mask = 0x007F'FFFF;
+			return dint & mask;
+		}
+		template<typename U32,
+		         std::enable_if_t<is_unsigned_of_size_v<U32, std::uint32_t>,
+		                          std::nullptr_t> = nullptr>
+		inline constexpr U32 get_raw_exponent_impl( U32 dint ) {
+			constexpr std::uint32_t mask = 0x7F80'0000ULL;
+			return dint & mask;
+		}
+
+		template<typename U32,
+		         std::enable_if_t<is_unsigned_of_size_v<U32, std::uint32_t>,
+		                          std::nullptr_t> = nullptr>
+		inline constexpr U32 get_exponent_impl( U32 dint ) {
+			return get_raw_exponent_impl( dint ) >> 23U;
+		}
+
+		template<typename U64,
+		         std::enable_if_t<is_unsigned_of_size_v<U64, std::uint64_t>,
+		                          std::nullptr_t> = nullptr>
+		inline constexpr bool is_nan( U64 dint ) {
+			constexpr std::uint64_t mask = 0x7FF0'0000'0000'0000ULL;
+			bool const exp = ( dint & mask ) == mask;
+			return exp and ( get_significand_impl( dint ) != 0 );
+		}
+
+		template<typename U32,
+		         std::enable_if_t<is_unsigned_of_size_v<U32, std::uint32_t>,
+		                          std::nullptr_t> = nullptr>
+		inline constexpr bool is_nan( U32 fint ) {
+			fint &= 0x7FFF'FFFF;
+			return fint > 0x7F80'0000;
+		}
+
+		template<typename U64,
+		         std::enable_if_t<is_unsigned_of_size_v<U64, std::uint64_t>,
+		                          std::nullptr_t> = nullptr>
+		inline constexpr bool is_zero( U64 dint ) {
+			return ( not is_nan( dint ) ) & ( get_significand_impl( dint ) == 0 );
+		}
+
+		template<typename U32,
+		         std::enable_if_t<is_unsigned_of_size_v<U32, std::uint32_t>,
+		                          std::nullptr_t> = nullptr>
+		inline constexpr bool is_zero( U32 fint ) {
+			fint &= 0x7FFF'FFFF;
+			return fint == 0;
+		}
+
+		template<typename U32,
+		         std::enable_if_t<is_unsigned_of_size_v<U32, std::uint32_t>,
+		                          std::nullptr_t> = nullptr>
+		inline constexpr bool is_infinity( U32 fint ) {
+			fint &= 0x7FFF'FFFF;
+			return fint == 0x7F80'0000;
+		}
+	} // namespace cxmath_impl
+	enum class fp_clases { normal, zero, subnormal, nan, infinity };
+	namespace cxmath_impl {
+		template<typename U32,
+		         std::enable_if_t<is_unsigned_of_size_v<U32, std::uint32_t>,
+		                          std::nullptr_t> = nullptr>
+		constexpr fp_clases fp_classify_impl( U32 fint ) {
+			fint &= 0x7FFF'FFFF;
+			if( fint == 0 ) {
+				return fp_clases::zero;
+			}
+			if( fint < 0x80'0000 ) {
+				return fp_clases::subnormal;
+			}
+			if( fint > 0x7F80'0000 ) {
+				return fp_clases::nan;
+			}
+			if( fint == 0x7F80'0000 ) {
+				return fp_clases::infinity;
+			}
+			return fp_clases::normal;
+		}
+	} // namespace cxmath_impl
+
+	inline constexpr fp_clases fp_classify( float f ) {
+		auto const fint = DAW_BIT_CAST( std::uint32_t, f );
+		return cxmath_impl::fp_classify_impl( fint );
+	}
+
+	inline constexpr bool is_nan( double d ) {
+		auto i = DAW_BIT_CAST( std::uint64_t, d );
+		return cxmath_impl::is_nan( i );
+	}
+
+	static_assert( is_nan( daw::numeric_limits<double>::quiet_NaN( ) ) );
+	static_assert( is_nan( daw::numeric_limits<double>::signaling_NaN( ) ) );
+	static_assert( not is_nan( daw::numeric_limits<double>::infinity( ) ) );
+
+	inline constexpr bool is_nan( float f ) {
+		auto i = DAW_BIT_CAST( std::uint32_t, f );
+		return cxmath_impl::is_nan( i );
+	}
+	static_assert( is_nan( daw::numeric_limits<float>::quiet_NaN( ) ) );
+	static_assert( is_nan( daw::numeric_limits<float>::signaling_NaN( ) ) );
+	static_assert( not is_nan( daw::numeric_limits<float>::infinity( ) ) );
+
 	[[nodiscard]] constexpr std::optional<std::int16_t> intxp( float f ) noexcept;
 	constexpr float fpow2( int32_t exp ) noexcept;
 
@@ -500,21 +636,26 @@ namespace daw::cxmath {
 	}
 
 	[[nodiscard]] constexpr float sqrt( float const x ) noexcept {
+#if defined( DAW_CX_BIT_CAST )
+		auto const xi = DAW_BIT_CAST( std::uint32_t, x );
+		if( cxmath_impl::is_nan( xi ) ) {
+			return std::numeric_limits<float>::quiet_NaN( );
+		}
+		if( cxmath_impl::is_zero( xi ) ) {
+			return 0.0f;
+		}
+		auto const N = cxmath_impl::intxp2( x );
+		auto const f = cxmath_impl::setxp( x, 0 );
+#else
 		if( DAW_UNLIKELY( x <= 0.0f ) ) {
 			if( x == 0.0f ) {
 				return 0.0f;
 			}
 			return daw::numeric_limits<float>::quiet_NaN( );
 		}
-		// TODO: use bit_cast to get std::uint32_t of float, extract exponent,
-		// set it to zero and bit_cast back to a float
-#if defined( DAW_CX_BIT_CAST )
-		auto const N = cxmath_impl::intxp2( x );
-		auto const f = cxmath_impl::setxp( x, 0 );
-#else
 		auto const exp = intxp( x );
 		// Will always return a value with bitcast available
-		if( !exp ) {
+		if( not exp ) {
 			return x;
 		}
 		auto const N = *exp;
@@ -533,8 +674,8 @@ namespace daw::cxmath {
 	}
 
 	template<typename Number, typename Number2,
-	         daw::enable_when_t<std::is_arithmetic_v<Number>,
-	                            std::is_arithmetic_v<Number2>> = nullptr>
+		daw::enable_when_t<std::is_arithmetic_v<Number>,
+			std::is_arithmetic_v<Number2>> = nullptr>
 	[[nodiscard]] constexpr Number copy_sign( Number x, Number2 s ) noexcept {
 		if( s < 0 ) {
 			if( x < 0 ) {
@@ -548,24 +689,35 @@ namespace daw::cxmath {
 		return x;
 	}
 
+	[[nodiscard]] inline constexpr float copy_sign( float number, float sign ) {
+		auto inumber = DAW_BIT_CAST( std::uint32_t, number );
+		auto const isign = DAW_BIT_CAST( std::uint32_t, sign );
+		inumber = ( inumber & 0x7FFF'FFFFULL ) | ( isign & 0x8000'0000ULL );
+		return DAW_BIT_CAST( float, inumber );
+	}
+
+#if defined( DAW_CX_BIT_CAST )
+	[[nodiscard]] inline constexpr double copy_sign( double number,
+	                                                 double sign ) {
+		auto inumber = DAW_BIT_CAST( std::uint64_t, number );
+		auto const isign = DAW_BIT_CAST( std::uint64_t, sign );
+		inumber = ( inumber & 0x7FFF'FFFF'FFFF'FFFFULL ) |
+		          ( isign & 0x8000'0000'0000'0000ULL );
+		return DAW_BIT_CAST( double, inumber );
+	}
+
 	template<typename Number,
 	         daw::enable_when_t<std::is_signed_v<Number>> = nullptr>
 	[[nodiscard]] constexpr bool signbit( Number n ) noexcept {
 		return n < 0;
 	}
+#endif
 
 	template<typename Number,
 	         daw::enable_when_t<!std::is_signed_v<Number>> = nullptr>
 	[[nodiscard]] constexpr bool signbit( Number n ) noexcept {
 		return false;
 	}
-
-	namespace cxmath_impl {
-		inline constexpr std::uint64_t get_significand_impl( std::uint64_t dint ) {
-			constexpr std::uint64_t mask = 0x000F'FFFF'FFFF'FFFFULL;
-			return dint & mask;
-		}
-	} // namespace cxmath_impl
 
 	inline constexpr std::uint64_t get_significand( double d ) {
 		auto const dint = DAW_BIT_CAST( std::uint64_t, d );
@@ -605,22 +757,6 @@ namespace daw::cxmath {
 		auto i = DAW_BIT_CAST( std::uint64_t, d );
 		return cxmath_impl::adj_ulp_imp( i, adj );
 	}
-
-	namespace cxmath_impl {
-		inline constexpr bool is_nan( std::uint64_t dint ) {
-			constexpr std::uint64_t mask = 0x7FF0'0000'0000'0000ULL;
-			bool const exp = ( dint & mask ) == mask;
-			return exp and ( get_significand_impl( dint ) != 0 );
-		}
-	} // namespace cxmath_impl
-
-	inline constexpr bool is_nan( double d ) {
-		auto i = DAW_BIT_CAST( std::uint64_t, d );
-		return cxmath_impl::is_nan( i );
-	}
-	static_assert( is_nan( daw::numeric_limits<double>::quiet_NaN( ) ) );
-	static_assert( is_nan( daw::numeric_limits<double>::signaling_NaN( ) ) );
-	static_assert( not is_nan( daw::numeric_limits<double>::infinity( ) ) );
 
 	namespace cxmath_impl {
 		inline constexpr bool is_inf( std::uint64_t dint ) {
