@@ -18,9 +18,17 @@
 #include <vector>
 
 template<typename Float>
-constexpr bool flt_eql_exact( Float lhs, Float rhs ) noexcept {
+constexpr bool flt_eql_exact( Float lhs, Float rhs ) {
+#if defined( DAW_CX_BIT_CAST )
+	using uint_t = daw::cxmath::cxmath_impl::unsigned_float_type_t<Float>;
+	if( DAW_BIT_CAST( uint_t, lhs ) == DAW_BIT_CAST( uint_t, rhs ) ) {
+		return true;
+	}
+	throw lhs;
+#else
 	// Gets rid of warnings for things we know
 	return !( lhs < rhs ) and !( rhs < lhs );
+#endif
 }
 
 static_assert( daw::cxmath::cxmath_impl::bits( 2.0f ).raw_value( ) ==
@@ -31,11 +39,12 @@ static_assert( daw::cxmath::cxmath_impl::bits( -1.99999988079071044921875f )
                  .raw_value( ) == 0xbfff'ffffU );
 static_assert( daw::cxmath::cxmath_impl::bits( 0.0f ).raw_value( ) ==
                0x0000'0000U );
+static_assert( flt_eql_exact( daw::cxmath::sqrt( 16.0f ), 4.0f ) );
 static_assert( flt_eql_exact( daw::cxmath::sqrt( 4.0f ), 2.0f ) );
-static_assert( flt_eql_exact( daw::cxmath::copy_sign( 2.0f, 1 ), 2.0f ) );
-static_assert( flt_eql_exact( daw::cxmath::copy_sign( 2.0f, -1 ), -2.0f ) );
-static_assert( flt_eql_exact( daw::cxmath::copy_sign( -2.0f, -1 ), -2.0f ) );
-static_assert( flt_eql_exact( daw::cxmath::copy_sign( -2.0f, 1 ), 2.0f ) );
+static_assert( flt_eql_exact( daw::cxmath::copy_sign( 2.0f, 1.0f ), 2.0f ) );
+static_assert( flt_eql_exact( daw::cxmath::copy_sign( 2.0f, -1.0f ), -2.0f ) );
+static_assert( flt_eql_exact( daw::cxmath::copy_sign( -2.0f, -1.0f ), -2.0f ) );
+static_assert( flt_eql_exact( daw::cxmath::copy_sign( -2.0f, 1.0f ), 2.0f ) );
 static_assert( flt_eql_exact( daw::cxmath::fpow2( -1 ), 0.5f ) );
 static_assert( flt_eql_exact( daw::cxmath::fpow2( -2 ), 0.25f ) );
 static_assert( flt_eql_exact( daw::cxmath::fpow2( 1 ), 2.0f ) );
