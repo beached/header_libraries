@@ -267,17 +267,6 @@ namespace daw::cxmath {
 			}
 			return fp_classes::normal;
 		}
-
-		// U32
-
-#if defined( DAW_CX_BIT_CAST )
-		[[nodiscard]] constexpr int16_t intxp2( float f ) noexcept {
-			auto const ieee754float = DAW_BIT_CAST( std::uint32_t, f );
-			constexpr std::uint32_t const mask_msb = 0x7FFF'FFFFU;
-			return static_cast<std::int16_t>( ( ieee754float & mask_msb ) >> 23U ) -
-			       127;
-		}
-#endif
 	} // namespace cxmath_impl
 
 	template<typename Float>
@@ -484,36 +473,42 @@ namespace daw::cxmath {
 	}
 #endif
 
-	[[nodiscard]] constexpr float pow( float b, int32_t exp ) noexcept {
-		auto result = 1.0f;
-		while( exp < 0 ) {
+	template<typename Number, std::enable_if_t<daw::is_arithmetic_v<Number>,
+	                                           std::nullptr_t> = nullptr>
+	[[nodiscard]] constexpr Number pow( Number b, int32_t exp ) noexcept {
+		auto result = Number{ 1 };
+		while( exp < Number{ 0 } ) {
 			result /= b;
 			exp++;
 		}
-		while( exp > 0 ) {
+		while( exp > Number{ 0 } ) {
 			result *= b;
 			exp--;
 		}
 		return result;
 	}
 
-	[[nodiscard]] constexpr std::optional<std::int16_t>
-	intxp( float f ) noexcept {
+	template<typename Real, std::enable_if_t<
+#ifdef DAW_CX_BIT_CAST
+	                          std::is_floating_point_v<Real>,
+#else
+	                          std::is_same_v<Real, float>,
+#endif
+	                          std::nullptr_t> = nullptr>
+	[[nodiscard]] constexpr std::optional<std::int32_t> intxp( Real f ) noexcept {
 #if defined( DAW_CX_BIT_CAST )
-		static_assert( sizeof( float ) == 4 );
-		auto const ieee754float = DAW_BIT_CAST( std::uint32_t, f );
-		constexpr std::uint32_t const mask_msb = 0x7FFF'FFFFU;
-		return static_cast<std::int16_t>( ( ieee754float & mask_msb ) >> 23U ) -
-		       127;
+		auto const uint =
+		  DAW_BIT_CAST( cxmath_impl::unsigned_float_type_t<Real>, f );
+		return cxmath_impl::get_exponent_impl<Real>( uint );
 #else
 		if( f == 0.0f ) {
-			return static_cast<std::int16_t>( 0 );
+			return static_cast<std::int32_t>( 0 );
 		}
-		if( f > daw::numeric_limits<float>::max( ) ) {
+		if( f > daw::numeric_limits<Real>::max( ) ) {
 			// inf
 			return std::nullopt;
 		}
-		if( f < -daw::numeric_limits<float>::max( ) ) {
+		if( f < -daw::numeric_limits<Real>::max( ) ) {
 			// -inf
 			return std::nullopt;
 		}
@@ -522,7 +517,7 @@ namespace daw::cxmath {
 			return std::nullopt;
 		}
 		int32_t exponent = 254;
-		float abs_f = f < 0 ? -f : f;
+		Real abs_f = f < 0 ? -f : f;
 
 		while( abs_f < 0x1p87f ) {
 			abs_f *= 0x1p41f;
@@ -534,9 +529,8 @@ namespace daw::cxmath {
 		exponent -= lz;
 
 		if( exponent >= 0 ) {
-			return static_cast<std::int16_t>( exponent - 127 );
+			return static_cast<std::int32_t>( exponent - 127 );
 		}
-		// return -127;
 		return std::nullopt;
 #endif
 	}
@@ -545,50 +539,54 @@ namespace daw::cxmath {
 	static_assert( *intxp( 1024.0f ) == 10 );
 	static_assert( *intxp( 123.45f ) == 6 );
 
-	constexpr float fpow2( std::int32_t exp ) noexcept {
-		using Real = float;
+	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
+	                                         std::nullptr_t> = nullptr>
+	constexpr Real pow2( std::int32_t exp ) noexcept {
 #if defined( DAW_CX_BIT_CAST )
 		if( exp >= daw::numeric_limits<Real>::max_exponent ) {
 			return daw::numeric_limits<Real>::infinity( );
 		} else if( exp <= daw::numeric_limits<Real>::min_exponent ) {
-			return 0.0;
+			return Real{ 0 };
 		}
-		auto result =
-		  cxmath_impl::set_exponent_impl<float>( daw::UInt32{ 0 }, exp );
+		auto result = cxmath_impl::set_exponent_impl<Real>(
+		  cxmath_impl::unsigned_float_type_t<Real>{ 0 }, exp );
 		return DAW_BIT_CAST( Real, result );
 #else
-		return cxmath_impl::pow2_t<double>::get<float>( exp );
+		return cxmath_impl::pow2_t<double>::get<Real>( exp );
 #endif
+	}
+
+	inline constexpr float fpow2( std::int32_t exp ) noexcept {
+		return pow2<float>( exp );
 	}
 	static_assert( fpow2( 1 ) == 2.0f );
 	static_assert( fpow2( 2 ) == 4.0f );
 
-	/*
-	[[nodiscard]] constexpr float setxp( float f, std::int32_t exp ) noexcept {
-	  auto i = DAW_BIT_CAST( std::uint32_t, f );
-	  i &= ~0x7F80'0000U;
-	  i |= ( static_cast<std::uint32_t>( 127 + exp ) & 0xFFU ) << 23U;
-	  return DAW_BIT_CAST( float, i );
-	}
-	*/
-	[[nodiscard]] constexpr float setxp( float X,
-	                                     std::int32_t exponent ) noexcept {
-		using Real = float;
+	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
+	                                         std::nullptr_t> = nullptr>
+	[[nodiscard]] constexpr Real set_exponent( Real r,
+	                                           std::int32_t exponent ) noexcept {
 		using UInt = cxmath_impl::unsigned_float_type_t<Real>;
 #if defined( DAW_CX_BIT_CAST )
-		auto const uint = DAW_BIT_CAST( UInt, X );
-		exponent += 127;
-		auto const new_exp = static_cast<UInt>( exponent );
-		constexpr UInt remove_mask = static_cast<UInt>( ~( 0xFFU << 23 ) );
-		return DAW_BIT_CAST( float, uint &( ( new_exp << 23 ) | remove_mask ) );
+		auto u = DAW_BIT_CAST( UInt, r );
+		UInt result = cxmath_impl::set_exponent_impl<Real>( u, exponent );
+		return DAW_BIT_CAST( Real, result );
 #else
-		auto const exp_diff = exponent - *intxp( X );
+		std::int32_t const exp_diff = exponent - *intxp( r );
 		if( exp_diff > 0 ) {
-			return fpow2( exp_diff ) * X;
+			return pow2<Real>( exp_diff ) * r;
 		}
-		return X / fpow2( -exp_diff );
+		return r / pow2<Real>( -exp_diff );
 #endif
 	}
+	static_assert( set_exponent( 2.0f, 1 ) == 2.0f );
+	static_assert( set_exponent( 2.0f, 2 ) == 4.0f );
+	static_assert( set_exponent( 2.0f, 4 ) == 16.0f );
+#if defined( DAW_CX_BIT_CAST )
+	static_assert( set_exponent( 2.0, 1 ) == 2.0 );
+	static_assert( set_exponent( 2.0, 2 ) == 4.0 );
+	static_assert( set_exponent( 2.0, 4 ) == 16.0 );
+#endif
 
 	namespace cxmath_impl {
 		class float_parts_t {
@@ -645,9 +643,9 @@ namespace daw::cxmath {
 				}
 				auto const e = exponent( );
 				if( e < 0 ) {
-					return result * setxp( 2.0f, -e );
+					return result * set_exponent( 2.0f, -e );
 				}
-				return result / setxp( 2.0f, -e );
+				return result / set_exponent( 2.0f, -e );
 			}
 
 			[[nodiscard]] constexpr bool is_pos_inf( ) const noexcept {
@@ -712,13 +710,15 @@ namespace daw::cxmath {
 #endif
 		}
 
-		[[nodiscard]] constexpr float fexp3( float f, std::int32_t exponent,
-		                                     std::int32_t old_exponent ) noexcept {
-			auto const exp_diff = exponent - old_exponent;
+		template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
+		                                         std::nullptr_t> = nullptr>
+		[[nodiscard]] constexpr Real fexp3( Real f, std::int32_t exponent,
+		                                    std::int32_t old_exponent ) noexcept {
+			std::int32_t const exp_diff = exponent - old_exponent;
 			if( exp_diff > 0 ) {
-				return setxp( 2.0f, exp_diff ) * f;
+				return set_exponent( Real{ 2.0 }, exp_diff ) * f;
 			}
-			return f / setxp( 2.0f, -exp_diff );
+			return f / set_exponent( Real{ 2.0 }, -exp_diff );
 		}
 	} // namespace cxmath_impl
 
@@ -774,19 +774,6 @@ namespace daw::cxmath {
 		return cxmath_impl::pow10_t<uintmax_t>::get( exp );
 	}
 
-#if defined( DAW_CX_BIT_CAST )
-	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
-	                                         std::nullptr_t> = nullptr>
-	[[nodiscard]] inline constexpr Real set_exponent( Real r, std::int32_t exp ) {
-		auto uint = DAW_BIT_CAST( cxmath_impl::unsigned_float_type_t<Real>, r );
-		auto result = cxmath_impl::set_exponent_impl<Real>( uint, exp );
-		return DAW_BIT_CAST( Real, result );
-	}
-	static_assert( set_exponent( 2.0f, 2 ) == 4.0f );
-	static_assert( set_exponent( 2.0f, 3 ) == 8.0f );
-	static_assert( set_exponent( 2.0f, 4 ) == 16.0f );
-#endif
-
 	template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
 	                                            std::nullptr_t> = nullptr>
 	[[nodiscard]] inline constexpr bool is_odd( Integer i ) noexcept {
@@ -816,31 +803,14 @@ namespace daw::cxmath {
 
 	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
 	                                         std::nullptr_t> = nullptr>
-	[[nodiscard]] constexpr float sqrt( Real r ) {
+	[[nodiscard]] constexpr Real sqrt_fast( Real r ) {
 #if defined( DAW_CX_BIT_CAST )
 		auto const xi = DAW_BIT_CAST( cxmath_impl::unsigned_float_type_t<Real>, r );
-		switch( cxmath_impl::fp_classify_impl( xi ) ) {
-		case fp_classes::zero:
-			return 0.0f;
-		case fp_classes::nan:
-			return std::numeric_limits<float>::quiet_NaN( );
-		case fp_classes::infinity:
-			return std::numeric_limits<float>::infinity( );
-		case fp_classes::subnormal:
-		case fp_classes::normal:
-			break;
-		}
 
 		std::int32_t const N = cxmath_impl::get_exponent_impl<Real>( xi );
 		Real const f =
 		  DAW_BIT_CAST( Real, cxmath_impl::set_exponent_impl<Real>( xi, 0 ) );
 #else
-		if( DAW_UNLIKELY( r <= 0.0 ) ) {
-			if( r == 0.0 ) {
-				return 0.0;
-			}
-			return daw::numeric_limits<float>::quiet_NaN( );
-		}
 		auto const exp = intxp( r );
 		if( not exp ) {
 			return r;
@@ -848,18 +818,48 @@ namespace daw::cxmath {
 		std::int32_t const N = *exp;
 		Real const f = cxmath_impl::fexp3( r, 0, N );
 #endif
-		Real const y0 = ( 0.41731 + ( 0.59016 * f ) );
+		Real const y0 = ( Real{ 0.41731 } + ( Real{ 0.59016 } * f ) );
 		Real const z = ( y0 + ( f / y0 ) );
-		Real const y2 = ( 0.25 * z ) + ( f / z );
-		Real y = 0.5 * ( y2 + ( f / y2 ) );
+		Real const y2 = ( Real{ 0.25 } * z ) + ( f / z );
+		Real y = Real{ 0.5 } * ( y2 + ( f / y2 ) );
 
 		if( is_odd( N ) ) {
 			y /= sqrt2<Real>;
-			return y * fpow2( ( N + 1 ) / 2 );
+			return y * pow2<Real>( ( N + 1 ) / 2 );
 		}
-		return y * fpow2( N / 2 );
+		return y * pow2<Real>( N / 2 );
 	}
+
+	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
+	                                         std::nullptr_t> = nullptr>
+	[[nodiscard]] constexpr Real sqrt( Real r ) {
+#if defined( DAW_CX_BIT_CAST )
+		auto const xi = DAW_BIT_CAST( cxmath_impl::unsigned_float_type_t<Real>, r );
+		switch( fp_classify( r ) ) {
+		case fp_classes::zero:
+			return Real{ 0 };
+		case fp_classes::nan:
+			return std::numeric_limits<Real>::quiet_NaN( );
+		case fp_classes::infinity:
+			return std::numeric_limits<Real>::infinity( );
+		case fp_classes::subnormal:
+		case fp_classes::normal:
+			break;
+		}
+		return sqrt_fast( r );
+#else
+		if( DAW_UNLIKELY( r <= Real{ 0 } ) ) {
+			if( r == Real{ 0 } ) {
+				return Real{ 0 };
+			}
+			return daw::numeric_limits<Real>::quiet_NaN( );
+		}
+		return sqrt_fast( r );
+#endif
+	}
+#if defined( DAW_CX_BIT_CAST )
 	static_assert( sqrt<double>( 16.0 ) == 4.0 );
+#endif
 
 	template<typename Number, typename Number2
 #if defined( DAW_CX_BIT_CAST )

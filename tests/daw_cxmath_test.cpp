@@ -133,11 +133,22 @@ int main( ) {
 	  },
 	  nums );
 	daw::bench_n_test<RUNCOUNT>(
-	  "daw::cxmath::setxp( flt, 0 )",
+	  "daw::cxmath::set_exponent( flt, 0 )",
 	  []( auto &&floats ) {
 		  float sum = 0.0f;
 		  for( auto num : floats ) {
-			  sum += daw::cxmath::setxp( num, 0 );
+			  sum += daw::cxmath::set_exponent( num, 0 );
+		  }
+		  daw::do_not_optimize( sum );
+		  return sum;
+	  },
+	  nums );
+	daw::bench_n_test<RUNCOUNT>(
+	  "daw::cxmath::sqrt_fast( flt )",
+	  []( auto &&floats ) {
+		  float sum = 0.0f;
+		  for( auto num : floats ) {
+			  sum += daw::cxmath::sqrt_fast( num );
 		  }
 		  daw::do_not_optimize( sum );
 		  return sum;
@@ -166,6 +177,17 @@ int main( ) {
 	  },
 	  nums );
 #if defined( DAW_CX_BIT_CAST )
+	daw::bench_n_test<RUNCOUNT>(
+	  "daw::cxmath::sqrt_fast( dbl )",
+	  []( auto &&dbls ) {
+		  double sum = 0.0;
+		  for( auto num : dbls ) {
+			  sum += daw::cxmath::sqrt_fast( num );
+		  }
+		  daw::do_not_optimize( sum );
+		  return sum;
+	  },
+	  dnums );
 	daw::bench_n_test<RUNCOUNT>(
 	  "daw::cxmath::sqrt( dbl )",
 	  []( auto &&dbls ) {
