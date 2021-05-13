@@ -474,18 +474,6 @@ namespace daw::cxmath {
 			}
 		};
 
-		[[nodiscard]] constexpr double ldexp( double d,
-		                                      std::int32_t exponent ) noexcept {
-
-			std::uint64_t dint = DAW_BIT_CAST( std::uint64_t, 2.0 );
-			exponent += 1023;
-			std::uint64_t new_exp = static_cast<std::uint32_t>( exponent );
-			constexpr std::uint64_t remove_mask = ~0x7FF0'0000'0000'0000ULL;
-			double result =
-			  DAW_BIT_CAST( double, ( dint & remove_mask ) | ( new_exp << 52U ) );
-			return d * result;
-		}
-
 #if defined( DAW_CX_BIT_CAST )
 		[[nodiscard]] constexpr float setxp( float x, std::int8_t exp ) {
 			static_assert( sizeof( float ) == 4 );
@@ -505,6 +493,17 @@ namespace daw::cxmath {
 			return X / fpow2( -exp_diff );
 		}
 	} // namespace cxmath_impl
+
+	[[nodiscard]] constexpr double ldexp( double d,
+	                                      std::int32_t exponent ) noexcept {
+		std::uint64_t dint = DAW_BIT_CAST( std::uint64_t, 2.0 );
+		exponent += 1023;
+		std::uint64_t new_exp = static_cast<std::uint32_t>( exponent );
+		constexpr std::uint64_t remove_mask = ~0x7FF0'0000'0000'0000ULL;
+		double result =
+		  DAW_BIT_CAST( double, ( dint & remove_mask ) | ( new_exp << 52U ) );
+		return d * result;
+	}
 
 	template<int32_t exp>
 	constexpr float fpow2_v = cxmath_impl::pow2_t<double>::get<float>( exp );
