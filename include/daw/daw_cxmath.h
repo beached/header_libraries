@@ -630,7 +630,11 @@ namespace daw::cxmath {
 	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
 	                                         std::nullptr_t> = nullptr>
 	[[nodiscard]] inline constexpr bool is_nan( Real r ) {
+#if defined (DAW_CX_BIT_CAST)
 		return fp_classify( r ) == fp_classes::nan;
+#else
+		return (r != r);
+#endif
 	}
 	static_assert( is_nan( daw::numeric_limits<double>::quiet_NaN( ) ) );
 	static_assert( is_nan( daw::numeric_limits<double>::signaling_NaN( ) ) );
