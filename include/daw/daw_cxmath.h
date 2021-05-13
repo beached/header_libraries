@@ -344,11 +344,31 @@ namespace daw::cxmath {
 		return result;
 	}
 
-	[[nodiscard]] constexpr float setxp( float f, std::int32_t exp ) {
-		auto i = DAW_BIT_CAST( std::uint32_t, f );
-		i &= ~0x7F80'0000U;
-		i |= ( static_cast<std::uint32_t>( 127 + exp ) & 0xFFU ) << 23U;
-		return DAW_BIT_CAST( float, i );
+	/*
+	[[nodiscard]] constexpr float setxp( float f, std::int32_t exp ) noexcept {
+	  auto i = DAW_BIT_CAST( std::uint32_t, f );
+	  i &= ~0x7F80'0000U;
+	  i |= ( static_cast<std::uint32_t>( 127 + exp ) & 0xFFU ) << 23U;
+	  return DAW_BIT_CAST( float, i );
+	}
+	*/
+	[[nodiscard]] constexpr float setxp( float X,
+	                                     std::int32_t exponent ) noexcept {
+		using Real = float;
+		using UInt = cxmath_impl::unsigned_float_type_t<Real>;
+#if defined( DAW_CX_BIT_CAST )
+		auto const uint = DAW_BIT_CAST( UInt, X );
+		exponent += 127;
+		auto const new_exp = static_cast<UInt>( exponent );
+		constexpr UInt remove_mask = static_cast<UInt>( ~( 0xFFU << 23 ) );
+		return DAW_BIT_CAST( float, uint &( ( new_exp << 23 ) | remove_mask ) );
+#else
+		auto const exp_diff = exponent - *intxp( X );
+		if( exp_diff > 0 ) {
+			return fpow2( exp_diff ) * X;
+		}
+		return X / fpow2( -exp_diff );
+#endif
 	}
 
 	namespace cxmath_impl {
@@ -630,10 +650,10 @@ namespace daw::cxmath {
 	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
 	                                         std::nullptr_t> = nullptr>
 	[[nodiscard]] inline constexpr bool is_nan( Real r ) {
-#if defined (DAW_CX_BIT_CAST)
+#if defined( DAW_CX_BIT_CAST )
 		return fp_classify( r ) == fp_classes::nan;
 #else
-		return (r != r);
+		return ( r != r );
 #endif
 	}
 	static_assert( is_nan( daw::numeric_limits<double>::quiet_NaN( ) ) );
@@ -703,25 +723,6 @@ namespace daw::cxmath {
 
 	[[nodiscard]] constexpr uintmax_t pow10( size_t exp ) noexcept {
 		return cxmath_impl::pow10_t<uintmax_t>::get( exp );
-	}
-
-	[[nodiscard]] constexpr float setxp( float X,
-	                                     std::int16_t exponent ) noexcept {
-#if defined( DAW_CX_BIT_CAST )
-		static_assert( sizeof( float ) == 4 );
-		auto const ieee754float = DAW_BIT_CAST( std::uint32_t, X );
-		exponent += 127;
-		auto const new_exp = static_cast<std::uint32_t>( exponent );
-		constexpr std::uint32_t remove_mask = ~( 0xFFU << 23 );
-		return DAW_BIT_CAST( float,
-		                     ieee754float &( ( new_exp << 23 ) | remove_mask ) );
-#else
-		auto const exp_diff = exponent - *intxp( X );
-		if( exp_diff > 0 ) {
-			return fpow2( exp_diff ) * X;
-		}
-		return X / fpow2( -exp_diff );
-#endif
 	}
 
 	[[nodiscard]] constexpr std::optional<std::int16_t>
