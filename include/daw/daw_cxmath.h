@@ -643,6 +643,7 @@ namespace daw::cxmath {
 	static_assert( is_nan( daw::numeric_limits<float>::signaling_NaN( ) ) );
 	static_assert( not is_nan( daw::numeric_limits<float>::infinity( ) ) );
 
+#if defined( DAW_CX_BIT_CAST )
 	[[nodiscard]] constexpr double ldexp( double d,
 	                                      std::int32_t exponent ) noexcept {
 		daw::UInt64 dint = DAW_BIT_CAST( daw::UInt64, 2.0 );
@@ -653,6 +654,7 @@ namespace daw::cxmath {
 		  DAW_BIT_CAST( double, ( dint & remove_mask ) | ( new_exp << 52U ) );
 		return d * result;
 	}
+#endif
 
 	template<int32_t exp>
 	constexpr float fpow2_v = cxmath_impl::pow2_t<double>::get<float>( exp );
