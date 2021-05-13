@@ -18,9 +18,17 @@
 #include <vector>
 
 template<typename Float>
-constexpr bool flt_eql_exact( Float lhs, Float rhs ) noexcept {
+constexpr bool flt_eql_exact( Float lhs, Float rhs ) {
+#if defined( DAW_CX_BIT_CAST )
+	using uint_t = daw::cxmath::cxmath_impl::unsigned_float_type_t<Float>;
+	if( DAW_BIT_CAST( uint_t, lhs ) == DAW_BIT_CAST( uint_t, rhs ) ) {
+		return true;
+	}
+	throw lhs;
+#else
 	// Gets rid of warnings for things we know
 	return !( lhs < rhs ) and !( rhs < lhs );
+#endif
 }
 
 static_assert( daw::cxmath::cxmath_impl::bits( 2.0f ).raw_value( ) ==
@@ -31,11 +39,12 @@ static_assert( daw::cxmath::cxmath_impl::bits( -1.99999988079071044921875f )
                  .raw_value( ) == 0xbfff'ffffU );
 static_assert( daw::cxmath::cxmath_impl::bits( 0.0f ).raw_value( ) ==
                0x0000'0000U );
+static_assert( flt_eql_exact( daw::cxmath::sqrt( 16.0f ), 4.0f ) );
 static_assert( flt_eql_exact( daw::cxmath::sqrt( 4.0f ), 2.0f ) );
-static_assert( flt_eql_exact( daw::cxmath::copy_sign( 2.0f, 1 ), 2.0f ) );
-static_assert( flt_eql_exact( daw::cxmath::copy_sign( 2.0f, -1 ), -2.0f ) );
-static_assert( flt_eql_exact( daw::cxmath::copy_sign( -2.0f, -1 ), -2.0f ) );
-static_assert( flt_eql_exact( daw::cxmath::copy_sign( -2.0f, 1 ), 2.0f ) );
+static_assert( flt_eql_exact( daw::cxmath::copy_sign( 2.0f, 1.0f ), 2.0f ) );
+static_assert( flt_eql_exact( daw::cxmath::copy_sign( 2.0f, -1.0f ), -2.0f ) );
+static_assert( flt_eql_exact( daw::cxmath::copy_sign( -2.0f, -1.0f ), -2.0f ) );
+static_assert( flt_eql_exact( daw::cxmath::copy_sign( -2.0f, 1.0f ), 2.0f ) );
 static_assert( flt_eql_exact( daw::cxmath::fpow2( -1 ), 0.5f ) );
 static_assert( flt_eql_exact( daw::cxmath::fpow2( -2 ), 0.25f ) );
 static_assert( flt_eql_exact( daw::cxmath::fpow2( 1 ), 2.0f ) );
@@ -79,6 +88,8 @@ int main( ) {
 
 	auto const nums =
 	  daw::make_random_data<int32_t, std::vector<float>>( 1'000, -1'000, 1'000 );
+	auto const dnums =
+	  daw::make_random_data<int32_t, std::vector<double>>( 1'000, -1'000, 1'000 );
 #if defined( DEBUG ) or not defined( NDEBUG )
 	constexpr size_t RUNCOUNT = 10'000;
 #else
@@ -122,11 +133,22 @@ int main( ) {
 	  },
 	  nums );
 	daw::bench_n_test<RUNCOUNT>(
-	  "daw::cxmath::setxp( flt, 0 )",
+	  "daw::cxmath::set_exponent( flt, 0 )",
 	  []( auto &&floats ) {
 		  float sum = 0.0f;
 		  for( auto num : floats ) {
-			  sum += daw::cxmath::setxp( num, 0 );
+			  sum += daw::cxmath::set_exponent( num, 0 );
+		  }
+		  daw::do_not_optimize( sum );
+		  return sum;
+	  },
+	  nums );
+	daw::bench_n_test<RUNCOUNT>(
+	  "daw::cxmath::sqrt_fast( flt )",
+	  []( auto &&floats ) {
+		  float sum = 0.0f;
+		  for( auto num : floats ) {
+			  sum += daw::cxmath::sqrt_fast( num );
 		  }
 		  daw::do_not_optimize( sum );
 		  return sum;
@@ -154,6 +176,40 @@ int main( ) {
 		  return sum;
 	  },
 	  nums );
-
+#if defined( DAW_CX_BIT_CAST )
+	daw::bench_n_test<RUNCOUNT>(
+	  "daw::cxmath::sqrt_fast( dbl )",
+	  []( auto &&dbls ) {
+		  double sum = 0.0;
+		  for( auto num : dbls ) {
+			  sum += daw::cxmath::sqrt_fast( num );
+		  }
+		  daw::do_not_optimize( sum );
+		  return sum;
+	  },
+	  dnums );
+	daw::bench_n_test<RUNCOUNT>(
+	  "daw::cxmath::sqrt( dbl )",
+	  []( auto &&dbls ) {
+		  double sum = 0.0;
+		  for( auto num : dbls ) {
+			  sum += daw::cxmath::sqrt( num );
+		  }
+		  daw::do_not_optimize( sum );
+		  return sum;
+	  },
+	  dnums );
+	daw::bench_n_test<RUNCOUNT>(
+	  "std::sqrt( dbl )",
+	  []( auto &&dbls ) {
+		  double sum = 0.0;
+		  for( auto num : dbls ) {
+			  sum += std::sqrt( num );
+		  }
+		  daw::do_not_optimize( sum );
+		  return sum;
+	  },
+	  dnums );
+#endif
 	return 0;
 }
