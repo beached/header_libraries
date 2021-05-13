@@ -165,7 +165,6 @@ namespace daw::cxmath {
 	namespace cxmath_impl {
 #if defined( DAW_CX_BIT_CAST )
 		[[nodiscard]] constexpr int16_t intxp2( float f ) noexcept {
-			static_assert( sizeof( float ) == 4 );
 			auto const ieee754float = DAW_BIT_CAST( std::uint32_t, f );
 			constexpr std::uint32_t const mask_msb = 0x7FFF'FFFFU;
 			return static_cast<std::int16_t>( ( ieee754float & mask_msb ) >> 23U ) -
@@ -475,6 +474,18 @@ namespace daw::cxmath {
 			}
 		};
 
+		[[nodiscard]] constexpr double ldexp( double d,
+		                                      std::int32_t exponent ) noexcept {
+
+			std::uint64_t dint = DAW_BIT_CAST( std::uint64_t, 2.0 );
+			exponent += 1023;
+			std::uint64_t new_exp = static_cast<std::uint32_t>( exponent );
+			constexpr std::uint64_t remove_mask = ~0x7FF0'0000'0000'0000ULL;
+			double result =
+			  DAW_BIT_CAST( double, ( dint & remove_mask ) | ( new_exp << 52U ) );
+			return d * result;
+		}
+
 #if defined( DAW_CX_BIT_CAST )
 		[[nodiscard]] constexpr float setxp( float x, std::int8_t exp ) {
 			static_assert( sizeof( float ) == 4 );
@@ -674,8 +685,8 @@ namespace daw::cxmath {
 	}
 
 	template<typename Number, typename Number2,
-		daw::enable_when_t<std::is_arithmetic_v<Number>,
-			std::is_arithmetic_v<Number2>> = nullptr>
+	         daw::enable_when_t<std::is_arithmetic_v<Number>,
+	                            std::is_arithmetic_v<Number2>> = nullptr>
 	[[nodiscard]] constexpr Number copy_sign( Number x, Number2 s ) noexcept {
 		if( s < 0 ) {
 			if( x < 0 ) {
