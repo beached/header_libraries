@@ -88,6 +88,8 @@ int main( ) {
 
 	auto const nums =
 	  daw::make_random_data<int32_t, std::vector<float>>( 1'000, -1'000, 1'000 );
+	auto const dnums =
+	  daw::make_random_data<int32_t, std::vector<double>>( 1'000, -1'000, 1'000 );
 #if defined( DEBUG ) or not defined( NDEBUG )
 	constexpr size_t RUNCOUNT = 10'000;
 #else
@@ -163,6 +165,29 @@ int main( ) {
 		  return sum;
 	  },
 	  nums );
-
+#if defined( DAW_CX_BIT_CAST )
+	daw::bench_n_test<RUNCOUNT>(
+	  "daw::cxmath::sqrt( dbl )",
+	  []( auto &&dbls ) {
+		  double sum = 0.0;
+		  for( auto num : dbls ) {
+			  sum += daw::cxmath::sqrt( num );
+		  }
+		  daw::do_not_optimize( sum );
+		  return sum;
+	  },
+	  dnums );
+	daw::bench_n_test<RUNCOUNT>(
+	  "std::sqrt( dbl )",
+	  []( auto &&dbls ) {
+		  double sum = 0.0;
+		  for( auto num : dbls ) {
+			  sum += std::sqrt( num );
+		  }
+		  daw::do_not_optimize( sum );
+		  return sum;
+	  },
+	  dnums );
+#endif
 	return 0;
 }
