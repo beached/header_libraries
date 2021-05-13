@@ -288,6 +288,159 @@ namespace daw::cxmath {
 	inline constexpr auto sqrt0_5 = static_cast<Float>(
 	  0.7071067811865475244008443621048490392848359376884740L );
 
+	namespace cxmath_impl {
+		template<typename Float>
+		[[nodiscard]] constexpr Float pow2_impl2( intmax_t exp ) noexcept {
+			bool is_neg = exp < 0;
+			exp = is_neg ? -exp : exp;
+			auto const max_shft = daw::min(
+			  static_cast<size_t>( daw::numeric_limits<Float>::max_exponent10 ),
+			  ( sizeof( size_t ) * 8ULL ) );
+			Float result = 1.0;
+
+			while( static_cast<size_t>( exp ) >= max_shft ) {
+				result *= static_cast<Float>( daw::numeric_limits<size_t>::max( ) );
+				exp -= max_shft;
+			}
+			if( exp > 0 ) {
+				result *= static_cast<Float>( 1ULL << static_cast<size_t>( exp ) );
+			}
+			if( is_neg && result != 0.0 ) {
+				result = static_cast<Float>( 1.0 ) / result;
+			}
+			return result;
+		}
+
+		[[nodiscard]] constexpr size_t pow10_impl( intmax_t exp ) noexcept {
+			// exp is < floor( log10( numeric_limits<size_t>::max( ) ) )
+			size_t result = 1ULL;
+			while( exp-- > 0 ) {
+				result *= 10ULL;
+			}
+			return result;
+		}
+
+		template<intmax_t exp>
+		[[nodiscard]] constexpr size_t pow10_impl( ) noexcept {
+			return pow10_impl( exp );
+		}
+
+		template<typename Float>
+		[[nodiscard]] constexpr Float fpow10_impl2( intmax_t exp ) noexcept {
+			bool is_neg = exp < 0;
+			exp = is_neg ? -exp : exp;
+
+			auto const max_spow =
+			  daw::min( daw::numeric_limits<Float>::max_exponent10,
+			            daw::numeric_limits<size_t>::digits10 );
+			Float result = 1.0;
+
+			while( exp >= max_spow ) {
+				result *= static_cast<Float>( pow10_impl<max_spow>( ) );
+				exp -= max_spow;
+			}
+			if( exp > 0 ) {
+				result *= static_cast<Float>( pow10_impl( exp ) );
+			}
+			if( is_neg && result != 0.0 ) {
+				result = static_cast<Float>( 1.0 ) / result;
+			}
+			return result;
+		}
+
+		template<typename Integer>
+		[[nodiscard]] constexpr Integer pow10_impl2( intmax_t exp ) noexcept {
+			Integer result = 1;
+			while( exp-- > 0 ) {
+				result *= 10;
+			}
+			return result;
+		}
+
+		template<typename Float>
+		[[nodiscard]] constexpr auto calc_pow2s( ) noexcept {
+			intmax_t const min_e = daw::numeric_limits<Float>::min_exponent10;
+			intmax_t const max_e = daw::numeric_limits<Float>::max_exponent10;
+			std::array<Float, max_e - min_e> result{ };
+			intmax_t n = max_e - min_e;
+			while( n-- > 0 ) {
+				result[static_cast<size_t>( n )] = pow2_impl2<Float>( n + min_e );
+			}
+			return result;
+		}
+
+		template<typename Float>
+		[[nodiscard]] constexpr auto calc_fpow10s( ) noexcept {
+			intmax_t const min_e = daw::numeric_limits<Float>::min_exponent10;
+			intmax_t const max_e = daw::numeric_limits<Float>::max_exponent10;
+			std::array<Float, max_e - min_e> result{ };
+			intmax_t n = max_e - min_e;
+			while( n-- > 0 ) {
+				result[static_cast<size_t>( n )] = fpow10_impl2<Float>( n + min_e );
+			}
+			return result;
+		}
+
+		template<typename Integer>
+		[[nodiscard]] constexpr auto calc_pow10s( ) noexcept {
+			std::array<Integer, daw::numeric_limits<Integer>::digits10> result{ };
+			intmax_t n = daw::numeric_limits<Integer>::digits10;
+			while( n-- > 0 ) {
+				result[static_cast<size_t>( n )] = pow10_impl2<Integer>( n );
+			}
+			return result;
+		}
+
+		template<typename Float>
+		class [[nodiscard]] pow2_t {
+			static constexpr std::array const m_tbl = calc_pow2s<Float>( );
+
+		public:
+			template<typename Result = Float>
+			[[nodiscard]] static constexpr Result get( intmax_t pos ) noexcept {
+				auto const zero = static_cast<intmax_t>( m_tbl.size( ) / 2ULL );
+				return static_cast<Result>( m_tbl[static_cast<size_t>( zero + pos )] );
+			}
+		};
+
+		template<typename Float>
+		class [[nodiscard]] fpow10_t {
+			static constexpr std::array const m_tbl = calc_fpow10s<Float>( );
+
+		public:
+			template<typename Result = Float>
+			[[nodiscard]] static constexpr Result get( intmax_t pos ) noexcept {
+				auto const zero = static_cast<intmax_t>( m_tbl.size( ) / 2ULL );
+				return static_cast<Result>( m_tbl[static_cast<size_t>( zero + pos )] );
+			}
+		};
+
+		template<typename Integer>
+		class [[nodiscard]] pow10_t {
+			static constexpr std::array const m_tbl = calc_pow10s<Integer>( );
+
+		public:
+			template<typename Result = Integer>
+			[[nodiscard]] static constexpr Result get( size_t pos ) noexcept {
+				return static_cast<Result>( m_tbl[pos] );
+			}
+		};
+	} // namespace cxmath_impl
+	template<int32_t exp>
+	constexpr float fpow2_v = cxmath_impl::pow2_t<double>::get<float>( exp );
+
+	template<int32_t exp>
+	constexpr double dpow2_v = cxmath_impl::pow2_t<double>::get( exp );
+
+	template<int32_t exp>
+	constexpr float fpow10_v = cxmath_impl::fpow10_t<double>::get<float>( exp );
+
+	template<int32_t exp>
+	constexpr double dpow10_v = cxmath_impl::fpow10_t<double>::get( exp );
+
+	template<size_t exp>
+	constexpr uintmax_t pow10_v = cxmath_impl::pow10_t<uintmax_t>::get( exp );
+
 #if defined( __has_builtin )
 #if __has_builtin( __builtin_clz )
 #define DAW_HAS_CLZ_BUILTIN
@@ -343,6 +496,72 @@ namespace daw::cxmath {
 		}
 		return result;
 	}
+
+	[[nodiscard]] constexpr std::optional<std::int16_t>
+	intxp( float f ) noexcept {
+#if defined( DAW_CX_BIT_CAST )
+		static_assert( sizeof( float ) == 4 );
+		auto const ieee754float = DAW_BIT_CAST( std::uint32_t, f );
+		constexpr std::uint32_t const mask_msb = 0x7FFF'FFFFU;
+		return static_cast<std::int16_t>( ( ieee754float & mask_msb ) >> 23U ) -
+		       127;
+#else
+		if( f == 0.0f ) {
+			return static_cast<std::int16_t>( 0 );
+		}
+		if( f > daw::numeric_limits<float>::max( ) ) {
+			// inf
+			return std::nullopt;
+		}
+		if( f < -daw::numeric_limits<float>::max( ) ) {
+			// -inf
+			return std::nullopt;
+		}
+		if( f != f ) {
+			// NaN
+			return std::nullopt;
+		}
+		int32_t exponent = 254;
+		float abs_f = f < 0 ? -f : f;
+
+		while( abs_f < 0x1p87f ) {
+			abs_f *= 0x1p41f;
+			exponent -= 41;
+		}
+
+		auto const a = static_cast<std::uint64_t>( abs_f * 0x1p-64f );
+		auto lz = static_cast<int32_t>( count_leading_zeroes( a ) );
+		exponent -= lz;
+
+		if( exponent >= 0 ) {
+			return static_cast<std::int16_t>( exponent - 127 );
+		}
+		// return -127;
+		return std::nullopt;
+#endif
+	}
+	static_assert( *intxp( 1.0f ) == 0 );
+	static_assert( *intxp( 10.0f ) == 3 );
+	static_assert( *intxp( 1024.0f ) == 10 );
+	static_assert( *intxp( 123.45f ) == 6 );
+
+	constexpr float fpow2( std::int32_t exp ) noexcept {
+		using Real = float;
+#if defined( DAW_CX_BIT_CAST )
+		if( exp >= daw::numeric_limits<Real>::max_exponent ) {
+			return daw::numeric_limits<Real>::infinity( );
+		} else if( exp <= daw::numeric_limits<Real>::min_exponent ) {
+			return 0.0;
+		}
+		auto result =
+		  cxmath_impl::set_exponent_impl<float>( daw::UInt32{ 0 }, exp );
+		return DAW_BIT_CAST( Real, result );
+#else
+		return cxmath_impl::pow2_t<double>::get<float>( exp );
+#endif
+	}
+	static_assert( fpow2( 1 ) == 2.0f );
+	static_assert( fpow2( 2 ) == 4.0f );
 
 	/*
 	[[nodiscard]] constexpr float setxp( float f, std::int32_t exp ) noexcept {
@@ -492,153 +711,16 @@ namespace daw::cxmath {
 			         f };
 #endif
 		}
-
-		template<typename Float>
-		[[nodiscard]] constexpr Float pow2_impl2( intmax_t exp ) noexcept {
-			bool is_neg = exp < 0;
-			exp = is_neg ? -exp : exp;
-			auto const max_shft = daw::min(
-			  static_cast<size_t>( daw::numeric_limits<Float>::max_exponent10 ),
-			  ( sizeof( size_t ) * 8ULL ) );
-			Float result = 1.0;
-
-			while( static_cast<size_t>( exp ) >= max_shft ) {
-				result *= static_cast<Float>( daw::numeric_limits<size_t>::max( ) );
-				exp -= max_shft;
-			}
-			if( exp > 0 ) {
-				result *= static_cast<Float>( 1ULL << static_cast<size_t>( exp ) );
-			}
-			if( is_neg && result != 0.0 ) {
-				result = static_cast<Float>( 1.0 ) / result;
-			}
-			return result;
-		}
-
-		[[nodiscard]] constexpr size_t pow10_impl( intmax_t exp ) noexcept {
-			// exp is < floor( log10( numeric_limits<size_t>::max( ) ) )
-			size_t result = 1ULL;
-			while( exp-- > 0 ) {
-				result *= 10ULL;
-			}
-			return result;
-		}
-
-		template<intmax_t exp>
-		[[nodiscard]] constexpr size_t pow10_impl( ) noexcept {
-			return pow10_impl( exp );
-		}
-
-		template<typename Float>
-		[[nodiscard]] constexpr Float fpow10_impl2( intmax_t exp ) noexcept {
-			bool is_neg = exp < 0;
-			exp = is_neg ? -exp : exp;
-
-			auto const max_spow =
-			  daw::min( daw::numeric_limits<Float>::max_exponent10,
-			            daw::numeric_limits<size_t>::digits10 );
-			Float result = 1.0;
-
-			while( exp >= max_spow ) {
-				result *= static_cast<Float>( pow10_impl<max_spow>( ) );
-				exp -= max_spow;
-			}
-			if( exp > 0 ) {
-				result *= static_cast<Float>( pow10_impl( exp ) );
-			}
-			if( is_neg && result != 0.0 ) {
-				result = static_cast<Float>( 1.0 ) / result;
-			}
-			return result;
-		}
-
-		template<typename Integer>
-		[[nodiscard]] constexpr Integer pow10_impl2( intmax_t exp ) noexcept {
-			Integer result = 1;
-			while( exp-- > 0 ) {
-				result *= 10;
-			}
-			return result;
-		}
-
-		template<typename Float>
-		[[nodiscard]] constexpr auto calc_pow2s( ) noexcept {
-			intmax_t const min_e = daw::numeric_limits<Float>::min_exponent10;
-			intmax_t const max_e = daw::numeric_limits<Float>::max_exponent10;
-			std::array<Float, max_e - min_e> result{ };
-			intmax_t n = max_e - min_e;
-			while( n-- > 0 ) {
-				result[static_cast<size_t>( n )] = pow2_impl2<Float>( n + min_e );
-			}
-			return result;
-		}
-
-		template<typename Float>
-		[[nodiscard]] constexpr auto calc_fpow10s( ) noexcept {
-			intmax_t const min_e = daw::numeric_limits<Float>::min_exponent10;
-			intmax_t const max_e = daw::numeric_limits<Float>::max_exponent10;
-			std::array<Float, max_e - min_e> result{ };
-			intmax_t n = max_e - min_e;
-			while( n-- > 0 ) {
-				result[static_cast<size_t>( n )] = fpow10_impl2<Float>( n + min_e );
-			}
-			return result;
-		}
-
-		template<typename Integer>
-		[[nodiscard]] constexpr auto calc_pow10s( ) noexcept {
-			std::array<Integer, daw::numeric_limits<Integer>::digits10> result{ };
-			intmax_t n = daw::numeric_limits<Integer>::digits10;
-			while( n-- > 0 ) {
-				result[static_cast<size_t>( n )] = pow10_impl2<Integer>( n );
-			}
-			return result;
-		}
-
-		template<typename Float>
-		class [[nodiscard]] pow2_t {
-			static constexpr std::array const m_tbl = calc_pow2s<Float>( );
-
-		public:
-			template<typename Result = Float>
-			[[nodiscard]] static constexpr Result get( intmax_t pos ) noexcept {
-				auto const zero = static_cast<intmax_t>( m_tbl.size( ) / 2ULL );
-				return static_cast<Result>( m_tbl[static_cast<size_t>( zero + pos )] );
-			}
-		};
-
-		template<typename Float>
-		class [[nodiscard]] fpow10_t {
-			static constexpr std::array const m_tbl = calc_fpow10s<Float>( );
-
-		public:
-			template<typename Result = Float>
-			[[nodiscard]] static constexpr Result get( intmax_t pos ) noexcept {
-				auto const zero = static_cast<intmax_t>( m_tbl.size( ) / 2ULL );
-				return static_cast<Result>( m_tbl[static_cast<size_t>( zero + pos )] );
-			}
-		};
-
-		template<typename Integer>
-		class [[nodiscard]] pow10_t {
-			static constexpr std::array const m_tbl = calc_pow10s<Integer>( );
-
-		public:
-			template<typename Result = Integer>
-			[[nodiscard]] static constexpr Result get( size_t pos ) noexcept {
-				return static_cast<Result>( m_tbl[pos] );
-			}
-		};
-
-		[[nodiscard]] constexpr float fexp3( float f, std::int32_t exponent,
-		                                     std::int32_t old_exponent ) noexcept {
-			auto const exp_diff = exponent - old_exponent;
-			if( exp_diff > 0 ) {
-				return setxp( 2.0f, exp_diff ) * f;
-			}
-			return f / setxp( 2.0f, -exp_diff );
-		}
 	} // namespace cxmath_impl
+
+	[[nodiscard]] constexpr float fexp3( float f, std::int32_t exponent,
+	                                     std::int32_t old_exponent ) noexcept {
+		auto const exp_diff = exponent - old_exponent;
+		if( exp_diff > 0 ) {
+			return setxp( 2.0f, exp_diff ) * f;
+		}
+		return f / setxp( 2.0f, -exp_diff );
+	}
 
 	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
 	                                         std::nullptr_t> = nullptr>
@@ -676,39 +758,6 @@ namespace daw::cxmath {
 	}
 #endif
 
-	template<int32_t exp>
-	constexpr float fpow2_v = cxmath_impl::pow2_t<double>::get<float>( exp );
-
-	template<int32_t exp>
-	constexpr double dpow2_v = cxmath_impl::pow2_t<double>::get( exp );
-
-	template<int32_t exp>
-	constexpr float fpow10_v = cxmath_impl::fpow10_t<double>::get<float>( exp );
-
-	template<int32_t exp>
-	constexpr double dpow10_v = cxmath_impl::fpow10_t<double>::get( exp );
-
-	template<size_t exp>
-	constexpr uintmax_t pow10_v = cxmath_impl::pow10_t<uintmax_t>::get( exp );
-
-	constexpr float fpow2( std::int32_t exp ) noexcept {
-		using Real = float;
-#if defined( DAW_CX_BIT_CAST )
-		if( exp >= daw::numeric_limits<Real>::max_exponent ) {
-			return daw::numeric_limits<Real>::infinity( );
-		} else if( exp <= daw::numeric_limits<Real>::min_exponent ) {
-			return 0.0;
-		}
-		auto result =
-		  cxmath_impl::set_exponent_impl<float>( daw::UInt32{ 0 }, exp );
-		return DAW_BIT_CAST( Real, result );
-#else
-		return cxmath_impl::pow2_t<double>::get<float>( exp );
-#endif
-	}
-	static_assert( fpow2( 1 ) == 2.0f );
-	static_assert( fpow2( 2 ) == 4.0f );
-
 	[[nodiscard]] constexpr double dpow2( int32_t exp ) noexcept {
 		return cxmath_impl::pow2_t<double>::get( exp );
 	}
@@ -724,54 +773,6 @@ namespace daw::cxmath {
 	[[nodiscard]] constexpr uintmax_t pow10( size_t exp ) noexcept {
 		return cxmath_impl::pow10_t<uintmax_t>::get( exp );
 	}
-
-	[[nodiscard]] constexpr std::optional<std::int16_t>
-	intxp( float f ) noexcept {
-#if defined( DAW_CX_BIT_CAST )
-		static_assert( sizeof( float ) == 4 );
-		auto const ieee754float = DAW_BIT_CAST( std::uint32_t, f );
-		constexpr std::uint32_t const mask_msb = 0x7FFF'FFFFU;
-		return static_cast<std::int16_t>( ( ieee754float & mask_msb ) >> 23U ) -
-		       127;
-#else
-		if( f == 0.0f ) {
-			return static_cast<std::int16_t>( 0 );
-		}
-		if( f > daw::numeric_limits<float>::max( ) ) {
-			// inf
-			return std::nullopt;
-		}
-		if( f < -daw::numeric_limits<float>::max( ) ) {
-			// -inf
-			return std::nullopt;
-		}
-		if( f != f ) {
-			// NaN
-			return std::nullopt;
-		}
-		int32_t exponent = 254;
-		float abs_f = f < 0 ? -f : f;
-
-		while( abs_f < 0x1p87f ) {
-			abs_f *= 0x1p41f;
-			exponent -= 41;
-		}
-
-		auto const a = static_cast<std::uint64_t>( abs_f * 0x1p-64f );
-		auto lz = static_cast<int32_t>( count_leading_zeroes( a ) );
-		exponent -= lz;
-
-		if( exponent >= 0 ) {
-			return static_cast<std::int16_t>( exponent - 127 );
-		}
-		// return -127;
-		return std::nullopt;
-#endif
-	}
-	static_assert( *intxp( 1.0f ) == 0 );
-	static_assert( *intxp( 10.0f ) == 3 );
-	static_assert( *intxp( 1024.0f ) == 10 );
-	static_assert( *intxp( 123.45f ) == 6 );
 
 	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
 	                                         std::nullptr_t> = nullptr>
