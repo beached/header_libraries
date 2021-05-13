@@ -83,7 +83,7 @@ bool daw_bit_queues_test_003( ) {
 	daw::basic_bit_queue<value_type, value_type> test1;
 	test1.push_back( 37, 4 );
 	daw::expecting( 5U, test1.value( ) );
-	test1.pop_back( 1 );
+	(void)test1.pop_back( 1 );
 	daw::expecting( 2U, test1.value( ) );
 	return true;
 }
