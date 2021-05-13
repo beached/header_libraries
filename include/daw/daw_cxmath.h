@@ -711,16 +711,16 @@ namespace daw::cxmath {
 			         f };
 #endif
 		}
-	} // namespace cxmath_impl
 
-	[[nodiscard]] constexpr float fexp3( float f, std::int32_t exponent,
-	                                     std::int32_t old_exponent ) noexcept {
-		auto const exp_diff = exponent - old_exponent;
-		if( exp_diff > 0 ) {
-			return setxp( 2.0f, exp_diff ) * f;
+		[[nodiscard]] constexpr float fexp3( float f, std::int32_t exponent,
+		                                     std::int32_t old_exponent ) noexcept {
+			auto const exp_diff = exponent - old_exponent;
+			if( exp_diff > 0 ) {
+				return setxp( 2.0f, exp_diff ) * f;
+			}
+			return f / setxp( 2.0f, -exp_diff );
 		}
-		return f / setxp( 2.0f, -exp_diff );
-	}
+	} // namespace cxmath_impl
 
 	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
 	                                         std::nullptr_t> = nullptr>
@@ -774,6 +774,7 @@ namespace daw::cxmath {
 		return cxmath_impl::pow10_t<uintmax_t>::get( exp );
 	}
 
+#if defined( DAW_CX_BIT_CAST )
 	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
 	                                         std::nullptr_t> = nullptr>
 	[[nodiscard]] inline constexpr Real set_exponent( Real r, std::int32_t exp ) {
@@ -784,6 +785,7 @@ namespace daw::cxmath {
 	static_assert( set_exponent( 2.0f, 2 ) == 4.0f );
 	static_assert( set_exponent( 2.0f, 3 ) == 8.0f );
 	static_assert( set_exponent( 2.0f, 4 ) == 16.0f );
+#endif
 
 	template<typename Integer,
 	         daw::enable_when_t<std::is_integral_v<Integer>> = nullptr>
@@ -805,7 +807,7 @@ namespace daw::cxmath {
 		  DAW_BIT_CAST( cxmath_impl::unsigned_float_type_t<Real>, number );
 		return DAW_BIT_CAST( Real, cxmath_impl::set_sign_impl<Real>( uint, 0UL ) );
 #else
-		if( number < (Float)0 ) {
+		if( number < (Real)0.0 ) {
 			return -number;
 		}
 		return number;
