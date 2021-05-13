@@ -804,11 +804,6 @@ namespace daw::cxmath {
 #endif
 	}
 
-	constexpr void check( float lhs, float rhs ) {
-		if( lhs != rhs )
-			throw lhs;
-	}
-
 	template<typename Real,
 	         daw::enable_when_t<std::is_floating_point_v<Real>> = nullptr>
 	[[nodiscard]] constexpr float sqrt( Real r ) {
@@ -856,11 +851,15 @@ namespace daw::cxmath {
 	}
 	static_assert( sqrt<double>( 16.0 ) == 4.0 );
 
-	template<typename Number, typename Number2,
+	template<typename Number, typename Number2
+#if defined( DAW_CX_BIT_CAST )
+	         ,
 	         std::enable_if_t<
 	           ( (daw::is_integral_v<Number> and daw::is_integral_v<Number2>) or
 	             not( std::is_floating_point_v<Number> and
-	                  std::is_floating_point_v<Number2> ) )> = nullptr>
+	                  std::is_floating_point_v<Number2> ) )> = nullptr
+#endif
+	         >
 	[[nodiscard]] constexpr Number copy_sign( Number x, Number2 s ) noexcept {
 		if( s < 0 ) {
 			if( x < 0 ) {
@@ -874,6 +873,7 @@ namespace daw::cxmath {
 		return x;
 	}
 
+#if defined( DAW_CX_BIT_CAST )
 	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
 	                                         std::nullptr_t> = nullptr>
 	[[nodiscard]] inline constexpr Real copy_sign( Real number, Real sign ) {
@@ -886,6 +886,7 @@ namespace daw::cxmath {
 		  cxmath_impl::set_sign_raw_impl<Real>( inumber, new_sign );
 		return DAW_BIT_CAST( Real, result );
 	}
+#endif
 
 	template<typename Number,
 	         daw::enable_when_t<std::is_signed_v<Number>> = nullptr>
@@ -899,6 +900,7 @@ namespace daw::cxmath {
 		return false;
 	}
 
+#if defined( DAW_CX_BIT_CAST )
 	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
 	                                         std::nullptr_t> = nullptr>
 	inline constexpr auto get_significand( Real r ) {
@@ -947,11 +949,16 @@ namespace daw::cxmath {
 		auto i = DAW_BIT_CAST( std::uint64_t, d );
 		return cxmath_impl::adj_ulp_imp( i, adj );
 	}
+#endif
 
 	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
 	                                         std::nullptr_t> = nullptr>
 	[[nodiscard]] inline constexpr bool is_inf( Real r ) {
+#if defined( DAW_CX_BIT_CAST )
 		return fp_classify( r ) == fp_classes::infinity;
+#else
+		return daw::numeric_limits<Real>::infinity( );
+#endif
 	}
 	static_assert( not is_inf( daw::numeric_limits<double>::quiet_NaN( ) ) );
 	static_assert( not is_inf( daw::numeric_limits<double>::signaling_NaN( ) ) );

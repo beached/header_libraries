@@ -47,13 +47,13 @@ namespace daw {
 #if __has_builtin( __builtin_bit_cast )
 #define DAW_BIT_CAST( type, value ) __builtin_bit_cast( type, value )
 #define DAW_CX_BIT_CAST
-#elif defined( __clang__ ) and ( __clang_major__ >= 10 )
+#elif defined( __clang__ ) and ( __clang_major__ >= 9 )
 #define DAW_BIT_CAST( type, value ) __builtin_bit_cast( type, value )
 #define DAW_CX_BIT_CAST
 #else
 #define DAW_BIT_CAST( type, value ) daw::bit_cast<type>( value )
 #endif
-#elif defined( __clang__ ) and ( __clang_major__ >= 10 )
+#elif defined( __clang__ ) and ( __clang_major__ >= 9 )
 #define DAW_BIT_CAST( type, value ) __builtin_bit_cast( type, value )
 #define DAW_CX_BIT_CAST
 #else
