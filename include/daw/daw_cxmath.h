@@ -787,35 +787,35 @@ namespace daw::cxmath {
 	static_assert( set_exponent( 2.0f, 4 ) == 16.0f );
 #endif
 
-	template<typename Integer,
-	         daw::enable_when_t<std::is_integral_v<Integer>> = nullptr>
+	template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
+	                                            std::nullptr_t> = nullptr>
 	[[nodiscard]] inline constexpr bool is_odd( Integer i ) noexcept {
 		return ( static_cast<std::uint32_t>( i ) & 1U ) == 1U;
 	}
 
-	template<typename Integer,
-	         daw::enable_when_t<std::is_integral_v<Integer>> = nullptr>
+	template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
+	                                            std::nullptr_t> = nullptr>
 	[[nodiscard]] inline constexpr bool is_even( Integer i ) noexcept {
 		return ( static_cast<std::uint32_t>( i ) & 1U ) == 0U;
 	}
 
-	template<typename Real,
-	         daw::enable_when_t<std::is_floating_point_v<Real>> = nullptr>
+	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
+	                                         std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr Real abs( Real number ) noexcept {
 #if defined( DAW_CX_BIT_CAST )
 		auto uint =
 		  DAW_BIT_CAST( cxmath_impl::unsigned_float_type_t<Real>, number );
 		return DAW_BIT_CAST( Real, cxmath_impl::set_sign_impl<Real>( uint, 0UL ) );
 #else
-		if( number < (Real)0.0 ) {
+		if( number < Real{ 0 } ) {
 			return -number;
 		}
 		return number;
 #endif
 	}
 
-	template<typename Real,
-	         daw::enable_when_t<std::is_floating_point_v<Real>> = nullptr>
+	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
+	                                         std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr float sqrt( Real r ) {
 #if defined( DAW_CX_BIT_CAST )
 		auto const xi = DAW_BIT_CAST( cxmath_impl::unsigned_float_type_t<Real>, r );
@@ -845,7 +845,7 @@ namespace daw::cxmath {
 		if( not exp ) {
 			return r;
 		}
-		Real const N = *exp;
+		std::int32_t const N = *exp;
 		Real const f = cxmath_impl::fexp3( r, 0, N );
 #endif
 		Real const y0 = ( 0.41731 + ( 0.59016 * f ) );
@@ -967,7 +967,7 @@ namespace daw::cxmath {
 #if defined( DAW_CX_BIT_CAST )
 		return fp_classify( r ) == fp_classes::infinity;
 #else
-		return daw::numeric_limits<Real>::infinity( );
+		return r == daw::numeric_limits<Real>::infinity( );
 #endif
 	}
 	static_assert( not is_inf( daw::numeric_limits<double>::quiet_NaN( ) ) );
@@ -982,6 +982,7 @@ namespace daw::cxmath {
 	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
 	                                         std::nullptr_t> = nullptr>
 	[[nodiscard]] inline constexpr bool is_finite( Real r ) {
+#if defined( DAW_CX_BIT_CAST )
 		switch( fp_classify( r ) ) {
 		case fp_classes::infinity:
 		case fp_classes::nan:
@@ -991,6 +992,9 @@ namespace daw::cxmath {
 		case fp_classes::normal:
 			return true;
 		}
+#else
+		return not is_nan( r ) and not is_inf( r );
+#endif
 	}
 	static_assert( not is_finite( daw::numeric_limits<double>::quiet_NaN( ) ) );
 	static_assert(
