@@ -757,7 +757,7 @@ namespace daw::cxmath {
 		}
 
 		auto const a = static_cast<std::uint64_t>( abs_f * 0x1p-64f );
-		auto lz = static_cast<int32_t>( cxmath_impl::count_leading_zeroes( a ) );
+		auto lz = static_cast<int32_t>( count_leading_zeroes( a ) );
 		exponent -= lz;
 
 		if( exponent >= 0 ) {
