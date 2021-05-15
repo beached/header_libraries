@@ -777,13 +777,15 @@ namespace daw::cxmath {
 	template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
 	                                            std::nullptr_t> = nullptr>
 	[[nodiscard]] inline constexpr bool is_odd( Integer i ) noexcept {
-		return ( static_cast<std::uint32_t>( i ) & 1U ) == 1U;
+		return ( std::make_unsigned_t<daw::remove_cvref_t<Integer>>( i ) & 1U ) ==
+		       1U;
 	}
 
 	template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
 	                                            std::nullptr_t> = nullptr>
 	[[nodiscard]] inline constexpr bool is_even( Integer i ) noexcept {
-		return ( static_cast<std::uint32_t>( i ) & 1U ) == 0U;
+		return ( std::make_unsigned_t<daw::remove_cvref_t<Integer>>( i ) & 1U ) ==
+		       1U;
 	}
 
 	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
@@ -801,10 +803,32 @@ namespace daw::cxmath {
 #endif
 	}
 
+#if defined( DAW_CX_BIT_CAST )
+	namespace cxmath_impl {
+
+		template<
+		  typename Real, typename UInt,
+		  std::enable_if_t<is_matching_v<Real, UInt>, std::nullptr_t> = nullptr>
+		constexpr Real adjust_exponent_impl( UInt u, std::int32_t exponent ) {
+			auto current_expoent = get_exponent_impl<Real>( u );
+			current_expoent += exponent;
+			return set_exponent_impl<Real>( u, current_expoent );
+		}
+	} // namespace cxmath_impl
+	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
+	                                         std::nullptr_t> = nullptr>
+	constexpr Real adjust_exponent( Real r, std::int32_t exponent ) {
+		auto result = DAW_BIT_CAST( cxmath_impl::unsigned_float_type_t<Real>, r );
+		return DAW_BIT_CAST( Real, result );
+	}
+#endif
+
 	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
 	                                         std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr Real sqrt_fast( Real r ) {
-#if defined( DAW_CX_BIT_CAST )
+		static_assert( not std::is_same_v<Real, long double>,
+		               "Long double not supported" );
+#if false and defined( DAW_CX_BIT_CAST )
 		auto const xi = DAW_BIT_CAST( cxmath_impl::unsigned_float_type_t<Real>, r );
 
 		std::int32_t const N = cxmath_impl::get_exponent_impl<Real>( xi );
@@ -818,11 +842,17 @@ namespace daw::cxmath {
 		std::int32_t const N = *exp;
 		Real const f = cxmath_impl::fexp3( r, 0, N );
 #endif
-		Real const y0 = ( Real{ 0.41731 } + ( Real{ 0.59016 } * f ) );
+		Real y0 = ( Real{ 0.41731 } + ( Real{ 0.59016 } * f ) );
+		// Round 1
+		y0 = Real{ 0.5 } * ( y0 + ( f / y0 ) );
+		if constexpr( not std::is_same_v<Real, float> ) {
+			y0 = Real{ 0.5 } * ( y0 + ( f / y0 ) );
+		}
+
+		// Final Round
 		Real const z = ( y0 + ( f / y0 ) );
 		Real const y2 = ( Real{ 0.25 } * z ) + ( f / z );
 		Real y = Real{ 0.5 } * ( y2 + ( f / y2 ) );
-
 		if( is_odd( N ) ) {
 			y /= sqrt2<Real>;
 			return y * pow2<Real>( ( N + 1 ) / 2 );

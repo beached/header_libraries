@@ -668,7 +668,7 @@ namespace daw::traits {
 			if constexpr( std::is_same_v<A, B> ) {
 				return Index;
 			} else if constexpr( sizeof...( C ) > 0 ) {
-				return pack_index_of_calc<Index+1, A, C...>( );
+				return pack_index_of_calc<Index + 1, A, C...>( );
 			} else {
 				return -1;
 			}
@@ -678,8 +678,8 @@ namespace daw::traits {
 	template<typename A, typename B, typename... C>
 	struct pack_index_of
 	  : std::integral_constant<
-	      int, traits_details::pack_index_of::pack_index_of_calc<0, A, B, C...>( )> {
-	};
+	      int,
+	      traits_details::pack_index_of::pack_index_of_calc<0, A, B, C...>( )> {};
 
 	template<typename... Args>
 	struct pack_list {
@@ -1047,6 +1047,7 @@ namespace daw::traits {
 	  std::conditional_t<std::is_const<std::remove_reference_t<Source>>::value,
 	                     copy_ref_t<std::remove_reference_t<To> const, To>,
 	                     copy_ref_t<daw::remove_cvref_t<To>, To>>;
+
 } // namespace daw::traits
 
 namespace daw {
@@ -1055,4 +1056,7 @@ namespace daw {
 
 	template<std::size_t N>
 	inline constexpr index_constant<N> index_constant_v = index_constant<N>{ };
+
+	template<std::size_t Index, typename... Cases>
+	using switch_t = std::tuple_element_t<Index, std::tuple<Cases...>>;
 } // namespace daw
