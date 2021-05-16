@@ -14,7 +14,8 @@
 #include <limits>
 
 namespace daw {
-	inline constexpr std::size_t DynamicExtent = std::numeric_limits<std::size_t>::max( );
+	inline constexpr std::size_t DynamicExtent =
+	  std::numeric_limits<std::size_t>::max( );
 
 	template<typename Container>
 	struct container_traits {
@@ -63,7 +64,7 @@ namespace daw {
 #include <version>
 #endif
 
-#if defined( __cpp_lib_span ) 
+#if defined( __cpp_lib_span )
 #include <span>
 
 namespace daw {
@@ -79,6 +80,6 @@ namespace daw {
 		static constexpr std::size_t extent = Extent;
 		static constexpr bool has_deep_copy = false;
 	};
-}
+} // namespace daw
 
 #endif

@@ -330,8 +330,8 @@ namespace daw {
 		// std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename... Args,
-		         typename result = decltype(
-		           std::declval<Function>( )( std::declval<Args>( )... ) )>
+		         typename result = decltype( std::declval<Function>( )(
+		           std::declval<Args>( )... ) )>
 		checked_expected_t( Function func, Args &&...args )
 		  : checked_expected_t{ checked_expected_t::from_code(
 		      func, std::forward<Args>( args )... ) } {}

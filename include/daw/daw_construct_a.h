@@ -80,8 +80,9 @@ namespace daw {
 		inline constexpr construct_a_t<T> construct_a = construct_a_t<T>{ };
 
 		template<typename T, typename... Args>
-		using can_construct_a_detect = decltype(
-		  std::declval<daw::construct_a_t<T>>( )( std::declval<Args>( )... ) );
+		using can_construct_a_detect =
+		  decltype( std::declval<daw::construct_a_t<T>>( )(
+		    std::declval<Args>( )... ) );
 	} // namespace construct_details
 
 	template<typename T, typename... Args>

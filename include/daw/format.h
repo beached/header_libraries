@@ -101,7 +101,7 @@ namespace daw {
 		template<std::size_t N>
 		constexpr size_t find_variable_count( char const ( &str )[N] ) {
 
-			for( size_t n = 0; n < N - 1; ++n ) {}
+		  for( size_t n = 0; n < N - 1; ++n ) {}
 		}
 		 */
 	} // namespace impl

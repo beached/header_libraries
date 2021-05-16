@@ -9,12 +9,12 @@
 #pragma once
 
 #if defined( __GNUC__ ) or defined( __clang__ )
-#define DAW_LIKELY( Bool ) ( __builtin_expect( !!( Bool ), 1 ) )
-#define DAW_UNLIKELY( Bool ) ( __builtin_expect( !!( Bool ), 0 ) )
+#define DAW_LIKELY( ... ) ( __builtin_expect( !!( __VA_ARGS__ ), 1 ) )
+#define DAW_UNLIKELY( ... ) ( __builtin_expect( !!( __VA_ARGS__ ), 0 ) )
 #elif defined( _MSC_VER )
-#define DAW_LIKELY( Bool ) !!( Bool )
-#define DAW_UNLIKELY( Bool ) !!( Bool )
+#define DAW_LIKELY( ... ) !!( __VA_ARGS__ )
+#define DAW_UNLIKELY( ... ) !!( __VA_ARGS__ )
 #else
-#define DAW_LIKELY( Bool ) !!( Bool )
-#define DAW_UNLIKELY( Bool ) !!( Bool )
+#define DAW_LIKELY( ... ) !!( __VA_ARGS__ )
+#define DAW_UNLIKELY( ... ) !!( __VA_ARGS__ )
 #endif

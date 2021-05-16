@@ -14,25 +14,23 @@
 #include <iostream>
 
 namespace daw {
-	std::ostream & operator<<( std::ostream & os, UInt8 rhs ) {
+	std::ostream &operator<<( std::ostream &os, UInt8 rhs ) {
 		os << static_cast<std::uint32_t>( rhs );
 		return os;
 	}
 
-	std::ostream & operator<<( std::ostream & os, UInt16 rhs ) {
-		os << static_cast<std::uint32_t>( rhs );
-		return os;
-	}
-	
-	std::ostream & operator<<( std::ostream & os, UInt32 rhs ) {
+	std::ostream &operator<<( std::ostream &os, UInt16 rhs ) {
 		os << static_cast<std::uint32_t>( rhs );
 		return os;
 	}
 
-	std::ostream & operator<<( std::ostream & os, UInt64 rhs ) {
+	std::ostream &operator<<( std::ostream &os, UInt32 rhs ) {
+		os << static_cast<std::uint32_t>( rhs );
+		return os;
+	}
+
+	std::ostream &operator<<( std::ostream &os, UInt64 rhs ) {
 		os << static_cast<std::uint64_t>( rhs );
 		return os;
 	}
-}
-
-
+} // namespace daw

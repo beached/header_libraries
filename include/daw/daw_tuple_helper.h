@@ -502,8 +502,9 @@ namespace daw {
 	}
 
 	template<typename Tuple>
-	inline constexpr size_t tuple_size_v = decltype(
-	  tuple::tuple_details::tuple_size_test( std::declval<Tuple>( ) ) )::value;
+	inline constexpr size_t tuple_size_v =
+	  decltype( tuple::tuple_details::tuple_size_test(
+	    std::declval<Tuple>( ) ) )::value;
 
 	template<typename Tuple>
 	inline constexpr bool is_empty_tuple_v = ( tuple_size_v<Tuple> == 0 );

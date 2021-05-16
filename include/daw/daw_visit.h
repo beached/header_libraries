@@ -10,6 +10,7 @@
 
 #include "cpp_17.h"
 #include "daw_assume.h"
+#include "daw_likely.h"
 #include "daw_traits.h"
 #include "daw_unreachable.h"
 
@@ -257,6 +258,36 @@ namespace daw {
 		    visitors )... )( get_nt<0>( std::forward<Variant>( var ) ) ) );
 
 		return daw::visit_details::visit_nt<0, result_t>(
+		  std::forward<Variant>( var ),
+		  daw::visit_details::overload( std::forward<Visitors>( visitors )... ) );
+	}
+
+	// Singe visitation visit.  
+	// The return type assumes that all the visitors have a result convertable
+	// to that of visitor( get_nt<0>( variant ) ) 's result
+	template<typename Variant, typename... Visitors>
+	[[nodiscard, maybe_unused]] constexpr decltype( auto )
+	visit( Variant &&var, Visitors &&...visitors ) {
+		using result_t =
+		  decltype( daw::visit_details::overload( std::forward<Visitors>(
+		    visitors )... )( get_nt<0>( std::forward<Variant>( var ) ) ) );
+
+		if( DAW_UNLIKELY( var.index( ) < 0 ) ) {
+			throw std::bad_variant_access{ };
+		}
+		return daw::visit_details::visit_nt<0, result_t>(
+		  std::forward<Variant>( var ),
+		  daw::visit_details::overload( std::forward<Visitors>( visitors )... ) );
+	}
+
+	// Singe visitation visit with user choosable result. 
+	template<typename Result, typename Variant, typename... Visitors>
+	[[nodiscard, maybe_unused]] constexpr Result
+	visit( Variant &&var, Visitors &&...visitors ) {
+		if( DAW_UNLIKELY( var.index( ) < 0 ) ) {
+			throw std::bad_variant_access{ };
+		}
+		return daw::visit_details::visit_nt<0, Result>(
 		  std::forward<Variant>( var ),
 		  daw::visit_details::overload( std::forward<Visitors>( visitors )... ) );
 	}

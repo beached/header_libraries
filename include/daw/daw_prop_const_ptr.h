@@ -47,7 +47,7 @@ namespace daw {
 		}
 
 		constexpr operator prop_const_ptr<value_type const>( ) const {
-			return {m_ptr};
+			return { m_ptr };
 		}
 
 		constexpr pointer operator->( ) {
@@ -127,8 +127,8 @@ namespace daw {
 		}
 
 		template<typename U>
-		constexpr difference_type operator-( prop_const_ptr<U> const & rhs ) const {
-			return get( ) - rhs.get( ); 
+		constexpr difference_type operator-( prop_const_ptr<U> const &rhs ) const {
+			return get( ) - rhs.get( );
 		}
 
 		friend constexpr bool operator==( prop_const_ptr const &lhs,
@@ -162,4 +162,3 @@ namespace daw {
 		}
 	};
 } // namespace daw
-
