@@ -101,27 +101,19 @@ inline constexpr Float pi =
 void sqrt_tests( ) {
 	std::cout << "Testing sqrt against std::sqrt\n";
 	std::cout << "*******************************\n";
+#if defined( DAW_CX_BIT_CAST )
 	std::cout << "double\n";
 	test_sqrt( std::numeric_limits<double>::max( ) );
 	test_sqrt( std::numeric_limits<double>::max( ) - 1.0f );
 	test_sqrt( std::numeric_limits<double>::max( ) + 1.0f );
 	test_sqrt( 0.0f + std::numeric_limits<double>::epsilon( ) );
-	std::cerr
-	  << std::setprecision( std::numeric_limits<double>::max_digits10 )
-	  << "pi -> sqrt( pi ) expecting: "
-	  << (double)1.7724538509055160272981674833411451827975494561223871282138077898529112845910321813749506567385446654162268236242825706662361528L
-	  << std::endl;
 	test_sqrt( pi<double> );
+#endif
 	std::cout << "float\n";
 	test_sqrt( std::numeric_limits<float>::max( ) );
 	test_sqrt( std::numeric_limits<float>::max( ) - 1.0f );
 	test_sqrt( std::numeric_limits<float>::max( ) + 1.0f );
 	test_sqrt( 0.0f + std::numeric_limits<float>::epsilon( ) );
-	std::cerr
-	  << std::setprecision( std::numeric_limits<float>::max_digits10 )
-	  << "pi -> sqrt( pi ) expecting: "
-	  << (float)1.7724538509055160272981674833411451827975494561223871282138077898529112845910321813749506567385446654162268236242825706662361528L
-	  << std::endl;
 	test_sqrt( pi<float> );
 	std::cout << "*******************************\n";
 }
