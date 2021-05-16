@@ -9,6 +9,7 @@
 #include "daw/daw_benchmark.h"
 #include "daw/daw_cxmath.h"
 #include "daw/daw_random.h"
+#include "daw/daw_uint_buffer_ios.h"
 
 #include <cmath>
 #include <cstddef>
@@ -17,17 +18,23 @@
 #include <limits>
 #include <vector>
 
-template<typename Float>
+template<bool ForceBitCast = false, typename Float>
 constexpr bool flt_eql_exact( Float lhs, Float rhs ) {
 #if defined( DAW_CX_BIT_CAST )
 	using uint_t = daw::cxmath::cxmath_impl::unsigned_float_type_t<Float>;
 	if( DAW_BIT_CAST( uint_t, lhs ) == DAW_BIT_CAST( uint_t, rhs ) ) {
 		return true;
 	}
+	// This ensures the arguments show up in compiler output
 	throw lhs;
 #else
-	// Gets rid of warnings for things we know
-	return !( lhs < rhs ) and !( rhs < lhs );
+	if constexpr( ForceBitCast ) {
+		using uint_t = daw::cxmath::cxmath_impl::unsigned_float_type_t<Float>;
+		return DAW_BIT_CAST( uint_t, lhs ) == DAW_BIT_CAST( uint_t, rhs );
+	} else {
+		// Gets rid of warnings for things we know
+		return !( lhs < rhs ) and !( rhs < lhs );
+	}
 #endif
 }
 
@@ -52,6 +59,65 @@ static_assert( flt_eql_exact( daw::cxmath::fpow2( 2 ), 4.0f ) );
 static_assert( flt_eql_exact( daw::cxmath::dpow2( 0 ), 1.0 ) );
 static_assert( daw::cxmath::pow10_v<5> == 100000 );
 
+template<typename Float>
+constexpr auto ulp_diff( Float lhs, Float rhs ) {
+	using UInt = daw::cxmath::cxmath_impl::unsigned_float_type_t<Float>;
+	UInt lhs_int = DAW_BIT_CAST( UInt, lhs );
+	UInt rhs_int = DAW_BIT_CAST( UInt, rhs );
+	if( lhs_int > rhs_int ) {
+		return lhs_int - rhs_int;
+	}
+	return rhs_int - lhs_int;
+}
+
+template<typename Float>
+auto compare_sqrt( Float f ) {
+	auto lib_sqrt = daw::cxmath::sqrt( f );
+	auto std_sqrt = std::sqrt( f );
+
+	return ulp_diff( lib_sqrt, std_sqrt );
+}
+
+template<typename Float>
+void test_sqrt( Float f ) {
+	using UInt = daw::cxmath::cxmath_impl::unsigned_float_type_t<Float>;
+	auto d0 = compare_sqrt( f );
+	if( d0 > 0 ) {
+		auto ssqrt = std::sqrt( f );
+		auto lsqrt = daw::cxmath::sqrt( f );
+		auto absdiff = std::abs( ssqrt - lsqrt );
+		std::cerr << std::setprecision( std::numeric_limits<Float>::max_digits10 )
+		          << "A ulp difference of " << d0 << " was found for the sqrt of ("
+		          << f << "); std::sqrt->" << ssqrt << "("
+		          << DAW_BIT_CAST( UInt, ssqrt ) << ")"
+		          << " << libsqrt->" << lsqrt << "(" << DAW_BIT_CAST( UInt, lsqrt )
+		          << ")\n";
+	}
+}
+template<typename Float>
+inline constexpr Float pi =
+  3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446;
+
+void sqrt_tests( ) {
+	std::cout << "Testing sqrt against std::sqrt\n";
+	std::cout << "*******************************\n";
+#if defined( DAW_CX_BIT_CAST )
+	std::cout << "double\n";
+	test_sqrt( std::numeric_limits<double>::max( ) );
+	test_sqrt( std::numeric_limits<double>::max( ) - 1.0f );
+	test_sqrt( std::numeric_limits<double>::max( ) + 1.0f );
+	test_sqrt( 0.0f + std::numeric_limits<double>::epsilon( ) );
+	test_sqrt( pi<double> );
+#endif
+	std::cout << "float\n";
+	test_sqrt( std::numeric_limits<float>::max( ) );
+	test_sqrt( std::numeric_limits<float>::max( ) - 1.0f );
+	test_sqrt( std::numeric_limits<float>::max( ) + 1.0f );
+	test_sqrt( 0.0f + std::numeric_limits<float>::epsilon( ) );
+	test_sqrt( pi<float> );
+	std::cout << "*******************************\n";
+}
+
 void out_sqrt( float f ) {
 	auto result = daw::cxmath::sqrt( f );
 	auto E = ( daw::cxmath::sqrt( f * f ) - f ) / f;
@@ -65,6 +131,7 @@ void out_sqrt( float f ) {
 }
 
 int main( ) {
+	sqrt_tests( );
 	std::cout << "pow10( -1 ) -> " << daw::cxmath::dpow10( -1 ) << '\n';
 	std::cout << "pow10( -2 ) -> " << daw::cxmath::dpow10( -2 ) << '\n';
 	std::cout << "pow10( -3 ) -> " << daw::cxmath::dpow10( -3 ) << '\n';

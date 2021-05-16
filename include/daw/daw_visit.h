@@ -131,8 +131,12 @@ namespace daw {
 					return std::forward<Visitor>( vis )(
 					  get_nt<7 + N>( std::forward<Variant>( var ) ) );
 				default:
-					return visit_nt<N + 8, R>( std::forward<Variant>( var ),
-					                           std::forward<Visitor>( vis ) );
+					if constexpr( VSz - N > 8 ) {
+						return visit_nt<N + 8, R>( std::forward<Variant>( var ),
+						                           std::forward<Visitor>( vis ) );
+					} else {
+						DAW_UNREACHABLE( );
+					}
 				}
 			} else if constexpr( VSz - N == 7 ) {
 				switch( get_index( var ) ) {
