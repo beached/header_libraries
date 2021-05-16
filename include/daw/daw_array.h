@@ -114,8 +114,8 @@ namespace daw {
 	template<typename T, std::size_t... Extents>
 	struct md_stdarray {
 		static_assert( sizeof...( Extents ) > 0 );
-		using type = std::remove_pointer_t<decltype(
-		  daw_array_impl::md_array_impl<T, Extents...>( ) )>;
+		using type = std::remove_pointer_t<
+		  decltype( daw_array_impl::md_array_impl<T, Extents...>( ) )>;
 	};
 
 	template<typename T, std::size_t... Extents>

@@ -1342,8 +1342,8 @@ namespace daw {
 
 	namespace detectors {
 		template<typename String>
-		using can_be_bounded_string =
-		  decltype( daw::bounded_string{ std::declval<String>( ) } );
+		using can_be_bounded_string = decltype( daw::bounded_string{
+		  std::declval<String>( ) } );
 	}
 
 	template<typename String>

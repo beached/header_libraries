@@ -53,8 +53,8 @@ namespace daw {
 		constexpr bool is_t_in_range_v = is_t_in_range<I, T>::value;
 
 		template<typename I, typename T, typename... Args>
-		using is_t_callable_test = decltype(
-		  sfinae_get<I::value>( std::declval<T>( ) )( std::declval<Args>( )... ) );
+		using is_t_callable_test = decltype( sfinae_get<I::value>(
+		  std::declval<T>( ) )( std::declval<Args>( )... ) );
 
 		template<size_t I, typename T, typename... Args>
 		constexpr bool is_t_callable_v =

@@ -23,9 +23,11 @@
 namespace daw {
 	namespace value_ptr_details {
 		template<typename T, typename U, typename Compare>
-		using is_comparable_detect = decltype(
-		  std::declval<Compare>( )( std::declval<T>( ), std::declval<U>( ) ) and
-		  std::declval<Compare>( )( std::declval<U>( ), std::declval<T>( ) ) );
+		using is_comparable_detect =
+		  decltype( std::declval<Compare>( )( std::declval<T>( ),
+		                                      std::declval<U>( ) ) and
+		            std::declval<Compare>( )( std::declval<U>( ),
+		                                      std::declval<T>( ) ) );
 
 		template<typename T, typename U, typename Compare>
 		inline constexpr bool is_comparable_v =

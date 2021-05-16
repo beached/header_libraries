@@ -305,7 +305,7 @@ namespace daw {
 					}
 					auto it = std::back_inserter( result );
 					for( auto const &token : m_tokens ) {
-						it = ( token )( it, std::forward<Args>( args )... );
+						it = (token)( it, std::forward<Args>( args )... );
 					}
 					return result;
 				}

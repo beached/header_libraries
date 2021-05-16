@@ -343,8 +343,8 @@ namespace daw {
 	bench_n_test_mbs( std::string const &title, size_t bytes,
 	                  Test &&test_callable, Args const &...args ) noexcept {
 		static_assert( Runs > 0 );
-		using result_t = daw::remove_cvref_t<decltype(
-		  daw::expected_from_code( test_callable, args... ) )>;
+		using result_t = daw::remove_cvref_t<decltype( daw::expected_from_code(
+		  test_callable, args... ) )>;
 
 		result_t result{ };
 

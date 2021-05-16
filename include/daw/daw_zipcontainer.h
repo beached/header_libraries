@@ -17,8 +17,8 @@ namespace daw {
 	struct zip_container {
 		using iterator =
 		  zip_iterator<decltype( std::declval<Containers...>( ).begin( ) )>;
-		using const_iterator = zip_iterator<decltype(
-		  std::declval<std::add_const_t<Containers>>( ).begin( ) )...>;
+		using const_iterator = zip_iterator<
+		  decltype( std::declval<std::add_const_t<Containers>>( ).begin( ) )...>;
 
 	private:
 		iterator m_begin;

@@ -40,8 +40,8 @@ namespace daw {
 			using const_reference = const reference;
 			using iterator = Iterator;
 			using const_iterator = const iterator;
-			using difference_type = typename std::iterator_traits<decltype(
-			  m_values.begin( ) )>::difference_type;
+			using difference_type = typename std::iterator_traits<
+			  decltype( m_values.begin( ) )>::difference_type;
 
 			ReferenceRange( ) = default;
 			ReferenceRange( ReferenceRange const & ) = default;

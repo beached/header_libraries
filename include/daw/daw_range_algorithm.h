@@ -190,9 +190,9 @@ namespace daw::algorithm {
 		                        decltype( *std::cbegin( container ) )>,
 		  "UnaryOperator is not callable with the values stored in Container" );
 
-		using result_t = std::vector<decltype(
-		  unary_operator( std::declval<typename std::iterator_traits<decltype(
-		                    std::cbegin( container ) )>::value_type>( ) ) )>;
+		using result_t = std::vector<decltype( unary_operator(
+		  std::declval<typename std::iterator_traits<decltype( std::cbegin(
+		    container ) )>::value_type>( ) ) )>;
 		result_t result;
 		std::transform( std::cbegin( container ), std::cend( container ),
 		                std::back_inserter( result ), unary_operator );
@@ -324,8 +324,8 @@ namespace daw::algorithm {
 
 	template<typename Container, typename UnaryPredicate>
 	auto where( Container &container, UnaryPredicate predicate ) {
-		using value_type = typename std::iterator_traits<decltype(
-		  std::begin( container ) )>::value_type;
+		using value_type = typename std::iterator_traits<decltype( std::begin(
+		  container ) )>::value_type;
 		std::vector<std::reference_wrapper<value_type>> result;
 		for( auto &v : container ) {
 			if( predicate( v ) ) {

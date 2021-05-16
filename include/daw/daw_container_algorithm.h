@@ -312,8 +312,8 @@ namespace daw {
 			  "UnaryOperator is not callable with the values stored in Container" );
 
 			static_assert(
-			  std::is_convertible_v<decltype(
-			                          unary_operator( *std::cbegin( container ) ) ),
+			  std::is_convertible_v<decltype( unary_operator(
+			                          *std::cbegin( container ) ) ),
 			                        decltype( *first_out )>,
 			  "Output of UnaryOperator cannot be assigned to *first_out" );
 
@@ -522,8 +522,9 @@ namespace daw {
 		  Function func ) noexcept( noexcept( func( *std::begin( container ),
 		                                            std::declval<size_t>( ) ) ) ) {
 
-			using value_t = std::decay_t<typename std::iterator_traits<decltype(
-			  std::begin( container ) )>::value_type>;
+			using value_t =
+			  std::decay_t<typename std::iterator_traits<decltype( std::begin(
+			    container ) )>::value_type>;
 			static_assert( traits::is_callable_v<Function, value_t, size_t>,
 			               "Supplied function does not satisfy requirements of "
 			               "taking arguments of type (value_t, size_t)" );
@@ -538,8 +539,9 @@ namespace daw {
 		constexpr void
 		for_each_with_pos( Container &container, Function func ) noexcept(
 		  noexcept( func( *std::begin( container ), std::declval<size_t>( ) ) ) ) {
-			using value_t = std::decay_t<typename std::iterator_traits<decltype(
-			  std::begin( container ) )>::value_type>;
+			using value_t =
+			  std::decay_t<typename std::iterator_traits<decltype( std::begin(
+			    container ) )>::value_type>;
 			static_assert( traits::is_callable_v<Function, value_t, size_t>,
 			               "Supplied function does not satisfy requirements of "
 			               "taking arguments of type (value_t, size_t)" );

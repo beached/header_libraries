@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include <type_traits>
 #include <ciso646>
+#include <type_traits>
 
 namespace daw {
 	/// Convert a value to an rvalue.
@@ -28,7 +28,10 @@ namespace daw {
 } // namespace daw
 
 #ifndef DAW_MOVE
-#define DAW_MOVE( ... ) static_cast<typename std::remove_reference<decltype( __VA_ARGS__ )>::type &&>( __VA_ARGS__ )
+#define DAW_MOVE( ... )                                                        \
+	static_cast<                                                                 \
+	  typename std::remove_reference<decltype( __VA_ARGS__ )>::type &&>(         \
+	  __VA_ARGS__ )
 #endif
 
 #ifndef DAW_FWD
