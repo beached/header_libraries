@@ -1065,4 +1065,7 @@ namespace daw {
 
 	template<typename...Ts>
 	inline constexpr template_params<Ts...> template_args = template_params<Ts...>{};
+
+	template<typename T>
+	inline constexpr template_params<T> template_arg = template_params<T>{};
 } // namespace daw
