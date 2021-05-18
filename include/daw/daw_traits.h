@@ -1060,9 +1060,15 @@ namespace daw {
 	template<std::size_t Index, typename... Cases>
 	using switch_t = std::tuple_element_t<Index, std::tuple<Cases...>>;
 
+	template<typename>
+	struct template_param {};	
+
 	template<typename...>
 	struct template_params {};	
 
 	template<typename...Ts>
 	inline constexpr template_params<Ts...> template_args = template_params<Ts...>{};
+
+	template<typename T>
+	inline constexpr template_param<T> template_arg = template_param<T>{};
 } // namespace daw
