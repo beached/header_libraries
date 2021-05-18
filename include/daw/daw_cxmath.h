@@ -566,8 +566,8 @@ namespace daw::cxmath {
 	                                         std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr Real set_exponent( Real r,
 	                                           std::int32_t exponent ) noexcept {
-		using UInt = cxmath_impl::unsigned_float_type_t<Real>;
 #if defined( DAW_CX_BIT_CAST )
+		using UInt = cxmath_impl::unsigned_float_type_t<Real>;
 		auto u = DAW_BIT_CAST( UInt, r );
 		UInt result = cxmath_impl::set_exponent_impl<Real>( u, exponent );
 		return DAW_BIT_CAST( Real, result );
@@ -864,7 +864,6 @@ namespace daw::cxmath {
 	                                         std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr Real sqrt( Real r ) {
 #if defined( DAW_CX_BIT_CAST )
-		auto const xi = DAW_BIT_CAST( cxmath_impl::unsigned_float_type_t<Real>, r );
 		switch( fp_classify( r ) ) {
 		case fp_classes::zero:
 			return Real{ 0 };
