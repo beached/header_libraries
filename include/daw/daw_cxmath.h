@@ -449,6 +449,28 @@ namespace daw::cxmath {
 		}
 		return 64;
 	}
+
+	[[nodiscard]] constexpr std::uint32_t
+	count_leading_zeroes( daw::UInt64 v ) noexcept {
+		auto high = static_cast<std::uint32_t>( v >> 32U );
+		if( high != 0 ) {
+			return static_cast<std::uint32_t>( __builtin_clz( high ) );
+		}
+		auto low = static_cast<std::uint32_t>( v );
+		if( low != 0 ) {
+			return 32U + static_cast<std::uint32_t>( __builtin_clz( low ) );
+		}
+		return 64;
+	}
+
+	[[nodiscard]] constexpr std::uint32_t
+	count_leading_zeroes( daw::UInt32 v ) noexcept {
+		if( v != 0U ) {
+			return static_cast<std::uint32_t>( __builtin_clz( static_cast<std::uint32_t>( v ) ) );
+		}
+		return 32U;
+	}
+
 #else
 	// Based on code from
 	// https://graphics.stanford.edu/~seander/bithacks.html
@@ -470,6 +492,16 @@ namespace daw::cxmath {
 
 		return 63U - static_cast<std::uint32_t>(
 		               bit_position[( v * 0x021'8a39'2cd3'd5dbf ) >> 58U] ); // [3]
+	}
+
+	[[nodiscard]] constexpr std::uint32_t
+	count_leading_zeroes( daw::UInt64 v ) noexcept {
+		return count_leading_zeros( static_cast<std::uint64_t>( v ) );
+	}
+
+	[[nodiscard]] constexpr std::uint32_t
+	count_leading_zeroes( daw::UInt32 v ) noexcept {
+		return count_leading_zeros( static_cast<std::uint64_t>( v ) << 32U );
 	}
 #endif
 

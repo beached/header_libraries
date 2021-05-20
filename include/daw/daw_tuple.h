@@ -22,7 +22,7 @@
 #endif
 
 namespace daw::impl {
-	namespace {
+	inline namespace {
 		template<typename T>
 		struct tuple_tag {
 			using type = T;
