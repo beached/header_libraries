@@ -66,16 +66,6 @@ namespace daw {
 		return std::forward<T>( t );
 	}
 
-	template<typename T0, typename T1>
-	constexpr auto min( T0 &&val1, T1 &&val2 ) noexcept
-	  -> std::common_type_t<T0, T1> {
-
-		if( std::less_equal<>{ }( val1, val2 ) ) {
-			return std::forward<T0>( val1 );
-		}
-		return std::forward<T1>( val2 );
-	}
-
 	template<typename T, typename Compare = std::less<>>
 	constexpr decltype( auto ) min_comp( T &&lhs, T &&rhs,
 	                                     Compare &&comp = Compare{ } ) {
@@ -94,17 +84,26 @@ namespace daw {
 		return std::forward<T>( rhs );
 	}
 
-	template<typename T, typename... Ts,
-	         std::enable_if_t<( sizeof...( Ts ) != 0 ), std::nullptr_t> = nullptr>
-	constexpr auto min( T &&val1, Ts &&...vs ) noexcept
-	  -> std::common_type_t<T, Ts...> {
+	template<typename T, typename... Ts>
+	constexpr auto min( T const &val1, Ts const &...vs ) noexcept {
 
-		auto &&tmp = min( std::forward<Ts>( vs )... );
+		if constexpr( sizeof...( Ts ) > 1 ) {
+			auto const tmp = min( vs... );
+			using result_t = std::common_type_t<T, decltype( tmp )>;
 
-		if( std::less_equal<>{ }( val1, tmp ) ) {
-			return std::forward<T>( val1 );
+			if( std::less_equal<>{ }( val1, tmp ) ) {
+				return static_cast<result_t>( val1 );
+			}
+			return static_cast<result_t>( tmp );
+		} else if constexpr( sizeof...( Ts ) == 1 ) {
+			using result_t = std::common_type_t<T, Ts...>;
+			std::common_type_t<Ts...> const rhs[1]{ vs... };
+			if( val1 < rhs[0] ) {
+				return static_cast<result_t>( val1 );
+			}
+			return static_cast<result_t>( rhs[0] );
+		} else {
+			return val1;
 		}
-		return std::forward<decltype( tmp )>( tmp );
 	}
-
 } // namespace daw
