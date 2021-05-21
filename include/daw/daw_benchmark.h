@@ -623,7 +623,3 @@ namespace daw {
 #endif
 	}
 } // namespace daw
-
-#ifdef DAW_USE_EXCEPTIONS
-#undef DAW_USE_EXCEPTIONS
-#endif
