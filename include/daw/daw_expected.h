@@ -9,6 +9,7 @@
 #pragma once
 
 #include "cpp_17.h"
+#include "daw_check_exceptions.h"
 #include "daw_exception.h"
 #include "daw_move.h"
 #include "daw_overload.h"
@@ -25,18 +26,6 @@
 #include <system_error>
 #include <utility>
 #include <variant>
-
-#if not( defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or             \
-         defined( _CPPUNWIND ) ) or                                            \
-  defined( DAW_NO_EXCEPTIONS )
-#ifdef DAW_USE_EXCEPTIONS
-#undef DAW_USE_EXCEPTIONS
-#endif
-#else
-#ifndef DAW_USE_EXCEPTIONS
-#define DAW_USE_EXCEPTIONS
-#endif
-#endif
 
 namespace daw::expected_details {
 	enum expected_value_types : bool { Empty, Void };

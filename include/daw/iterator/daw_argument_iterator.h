@@ -64,23 +64,23 @@ namespace daw {
 
 		constexpr arg_iterator_t operator+( difference_type n ) const noexcept {
 			auto result = arg_iterator_t( *this );
-			result.m_pos += n;
+			result.m_pos += static_cast<int>( n );
 			return result;
 		}
 
 		constexpr arg_iterator_t &operator+=( difference_type n ) noexcept {
-			m_pos += n;
+			m_pos += static_cast<int>( n );
 			return *this;
 		}
 
 		constexpr arg_iterator_t operator-( difference_type n ) const noexcept {
 			auto result = arg_iterator_t( *this );
-			result.m_pos -= n;
+			result.m_pos -= static_cast<int>( n );
 			return result;
 		}
 
 		constexpr arg_iterator_t &operator-=( difference_type n ) noexcept {
-			m_pos -= n;
+			m_pos -= static_cast<int>( n );
 			return *this;
 		}
 
@@ -123,14 +123,14 @@ namespace daw {
 			if( m_argv == rhs.m_argv ) {
 				return m_pos != rhs.m_pos;
 			}
-			return !( at_end( ) and rhs.at_end( ) );
+			return not( at_end( ) and rhs.at_end( ) );
 		}
 
 		constexpr bool operator<( arg_iterator_t const &rhs ) const noexcept {
 			if( m_argv == rhs.m_argv ) {
 				return m_argc < rhs.m_argc;
 			}
-			return !at_end( ) and rhs.at_end( );
+			return not at_end( ) and rhs.at_end( );
 		}
 
 		constexpr bool operator<=( arg_iterator_t const &rhs ) const noexcept {
