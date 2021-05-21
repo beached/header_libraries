@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "daw_check_exceptions.h"
+
 #include <algorithm>
 #include <ciso646>
 #include <exception>
@@ -15,9 +17,7 @@
 #include <type_traits>
 #include <utility>
 
-#if !defined( NODEBUGTHROW ) and                                               \
-  ( defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
-    defined( _CPPUNWIND ) )
+#if defined( DAW_USE_EXCEPTIONS ) or not defined( NODEBUGTHROW )
 
 #define MAY_THROW_EXCEPTIONS true
 #include <stdexcept>
