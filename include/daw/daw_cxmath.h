@@ -496,12 +496,12 @@ namespace daw::cxmath {
 
 	[[nodiscard]] constexpr std::uint32_t
 	count_leading_zeroes( daw::UInt64 v ) noexcept {
-		return count_leading_zeros( static_cast<std::uint64_t>( v ) );
+		return count_leading_zeroes( static_cast<std::uint64_t>( v ) );
 	}
 
 	[[nodiscard]] constexpr std::uint32_t
 	count_leading_zeroes( daw::UInt32 v ) noexcept {
-		return count_leading_zeros( static_cast<std::uint64_t>( v ) << 32U );
+		return count_leading_zeroes( static_cast<std::uint64_t>( v ) << 32U );
 	}
 #endif
 
