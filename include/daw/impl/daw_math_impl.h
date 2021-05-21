@@ -31,39 +31,26 @@ namespace daw {
 		return f;
 	}
 
-	template<typename T>
-	constexpr T max( T &&t ) noexcept {
-		return std::forward<T>( t );
-	}
+	template<typename T, typename... Ts>
+	constexpr auto max( T const &val1, Ts const &...vs ) noexcept {
+		if constexpr( sizeof...( Ts ) > 1 ) {
+			auto const tmp = max( vs... );
+			using result_t = std::common_type_t<T, decltype( tmp )>;
 
-	template<typename T0, typename T1>
-	constexpr auto max( T0 &&val1, T1 &&val2 ) noexcept
-	  -> std::common_type_t<T0, T1> {
-		if( val1 > val2 ) {
-			return std::forward<T0>( val1 );
-		}
-		return std::forward<T1>( val2 );
-	}
-
-	template<typename T0, typename T1, typename... Ts,
-	         std::enable_if_t<( sizeof...( Ts ) != 0 ), std::nullptr_t> = nullptr>
-	constexpr auto max( T0 &&val1, T1 &&val2, Ts &&...vs ) noexcept
-	  -> std::common_type_t<T0, T1, Ts...> {
-		auto tmp = max( std::forward<Ts>( vs )... );
-		if( val1 > val2 ) {
-			if( val1 > tmp ) {
-				return std::forward<T0>( val1 );
+			if( std::less<>{ }( tmp, val1 ) ) {
+				return static_cast<result_t>( val1 );
 			}
-			return tmp;
-		} else if( val2 > tmp ) {
-			return std::forward<T1>( val2 );
+			return static_cast<result_t>( tmp );
+		} else if constexpr( sizeof...( Ts ) == 1 ) {
+			using result_t = std::common_type_t<T, Ts...>;
+			std::common_type_t<Ts...> const rhs[1]{ vs... };
+			if( std::less<>{ }( rhs[0], val1 ) ) {
+				return static_cast<result_t>( val1 );
+			}
+			return static_cast<result_t>( rhs[0] );
+		} else {
+			return val1;
 		}
-		return tmp;
-	}
-
-	template<typename T>
-	constexpr decltype( auto ) min( T &&t ) noexcept {
-		return std::forward<T>( t );
 	}
 
 	template<typename T, typename Compare = std::less<>>
@@ -86,19 +73,18 @@ namespace daw {
 
 	template<typename T, typename... Ts>
 	constexpr auto min( T const &val1, Ts const &...vs ) noexcept {
-
 		if constexpr( sizeof...( Ts ) > 1 ) {
 			auto const tmp = min( vs... );
 			using result_t = std::common_type_t<T, decltype( tmp )>;
 
-			if( std::less_equal<>{ }( val1, tmp ) ) {
+			if( not std::less<>{ }( tmp, val1 ) ) {
 				return static_cast<result_t>( val1 );
 			}
 			return static_cast<result_t>( tmp );
 		} else if constexpr( sizeof...( Ts ) == 1 ) {
 			using result_t = std::common_type_t<T, Ts...>;
 			std::common_type_t<Ts...> const rhs[1]{ vs... };
-			if( val1 < rhs[0] ) {
+			if( not std::less<>{ }( rhs[0], val1 ) ) {
 				return static_cast<result_t>( val1 );
 			}
 			return static_cast<result_t>( rhs[0] );
