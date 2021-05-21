@@ -6,19 +6,19 @@
 # Official repository: https://github.com/beached/header_libraries
 #
 
-cmake_minimum_required( VERSION 3.14 )
+cmake_minimum_required(VERSION 3.14)
 
-project( "header_libraries"
-	VERSION "1.13.3" 
-	DESCRIPTION "Various headers"
-	HOMEPAGE_URL "https://github.com/beached/header_libraries"
-	LANGUAGES C CXX)
+project("header_libraries"
+        VERSION "1.13.4"
+        DESCRIPTION "Various headers"
+        HOMEPAGE_URL "https://github.com/beached/header_libraries"
+        LANGUAGES C CXX)
 
-set( CMAKE_CXX_STANDARD 17 CACHE STRING "The C++ standard whose features are requested.")
-set( CMAKE_CXX_STANDARD_REQUIRED ON)
-set( CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD 17 CACHE STRING "The C++ standard whose features are requested.")
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-option( DAW_ENABLE_TESTING "Build unit tests" OFF )
+option(DAW_ENABLE_TESTING "Build unit tests" OFF)
 
 set(DAW_HEADERLIBRARIES_warning_guard SYSTEM)
 if (DAW_HEADERLIBRARIES_INCLUDE_WITHOUT_SYSTEM)
@@ -28,57 +28,65 @@ if (DAW_ENABLE_TESTING)
     set(DAW_HEADERLIBRARIES_warning_guard "")
 endif ()
 
-include( GNUInstallDirs)
-set( header_libraries_INSTALL_CMAKEDIR
-	"${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake"
-	CACHE STRING
-	"The install directory to use for CMake package config files") 
+include(GNUInstallDirs)
+set(header_libraries_INSTALL_CMAKEDIR
+        "${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake"
+        CACHE STRING
+        "The install directory to use for CMake package config files")
 
-set( PROJECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
+set(PROJECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 
-add_library( ${PROJECT_NAME} INTERFACE ) 
-add_library( daw::${PROJECT_NAME} ALIAS ${PROJECT_NAME} )
+add_library(${PROJECT_NAME} INTERFACE)
+add_library(daw::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 
-if( DAW_ENABLE_TESTING )
-	enable_testing( )
-	add_subdirectory( tests )
-endif( )	
+if (DAW_ENABLE_TESTING)
+    enable_testing()
+    add_subdirectory(tests)
+endif ()
 
-target_compile_features( ${PROJECT_NAME} INTERFACE cxx_std_17)
-target_include_directories( ${PROJECT_NAME} ${DAW_HEADERLIBRARIES_warning_guard}
-	INTERFACE
-	"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-	"$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
+target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_17)
+target_include_directories(${PROJECT_NAME} ${DAW_HEADERLIBRARIES_warning_guard}
+        INTERFACE
+        "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+        "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
+        )
+
+install(TARGETS ${PROJECT_NAME}
+        EXPORT ${PROJECT_NAME}_Targets
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+include(CMakePackageConfigHelpers)
+
+configure_package_config_file(
+        "${PROJECT_SOURCE_DIR}/cmake/daw_${PROJECT_NAME}Config.cmake.in"
+        "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+        INSTALL_DESTINATION lib/cmake/daw_${PROJECT_NAME}
+        #	INSTALL_DESTINATION
+        #	${header_libraries_INSTALL_CMAKEDIR}
 )
 
-install( TARGETS ${PROJECT_NAME}
-	EXPORT ${PROJECT_NAME}_Targets
-	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+write_basic_package_version_file("${PROJECT_NAME}ConfigVersion.cmake"
+        VERSION ${PROJECT_VERSION}
+        COMPATIBILITY SameMajorVersion)
 
+install(EXPORT ${PROJECT_NAME}_Targets
+        FILE ${PROJECT_NAME}Targets.cmake
+        NAMESPACE daw::
+        DESTINATION lib/cmake/daw_${PROJECT_NAME}
+        #	${header_libraries_INSTALL_CMAKEDIR}
+)
 
-include( CMakePackageConfigHelpers)
+install(FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+        "${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+        DESTINATION lib/cmake/daw_${PROJECT_NAME}
+        #DESTINATION ${header_libraries_INSTALL_CMAKEDIR}$
+        )
 
-configure_package_config_file( 
-	"${PROJECT_SOURCE_DIR}/cmake/daw_${PROJECT_NAME}Config.cmake.in"
-	"${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-	INSTALL_DESTINATION
-	${header_libraries_INSTALL_CMAKEDIR} )
-
-write_basic_package_version_file( "${PROJECT_NAME}ConfigVersion.cmake"
-	VERSION ${PROJECT_VERSION}
-	COMPATIBILITY SameMajorVersion)
-
-install( EXPORT ${PROJECT_NAME}_Targets
-	FILE ${PROJECT_NAME}Targets.cmake
-	NAMESPACE daw::
-	DESTINATION ${header_libraries_INSTALL_CMAKEDIR})
-
-install( FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-	"${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-	DESTINATION ${header_libraries_INSTALL_CMAKEDIR}$ )
-
-install( DIRECTORY ${PROJECT_SOURCE_DIR}/include/daw DESTINATION include)
+install(
+        DIRECTORY ${PROJECT_SOURCE_DIR}/include/daw
+        DESTINATION include
+)
 			
