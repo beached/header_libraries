@@ -10,8 +10,8 @@
 
 #include <ciso646>
 
-#if not( defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or \
-         defined( _CPPUNWIND ) ) or                                \
+#if not( defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or             \
+         defined( _CPPUNWIND ) ) or                                            \
   defined( DAW_DONT_USE_EXCEPTIONS )
 #ifdef DAW_USE_EXCEPTIONS
 #undef DAW_USE_EXCEPTIONS
