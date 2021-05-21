@@ -86,7 +86,7 @@ namespace daw {
 
 			[[maybe_unused]] explicit constexpr not_fn_t( Function &&func ) noexcept(
 			  std::is_nothrow_move_constructible_v<Function> )
-			  : m_function{ daw::move( func ) } {}
+			  : m_function{ DAW_MOVE( func ) } {}
 
 			[[maybe_unused]] explicit constexpr not_fn_t(
 			  Function const
@@ -97,14 +97,14 @@ namespace daw {
 			[[nodiscard, maybe_unused]] constexpr decltype( auto )
 			operator( )( Args &&...args ) noexcept( noexcept(
 			  not std::declval<Function>( )( std::declval<Args>( )... ) ) ) {
-				return not m_function( std::forward<Args>( args )... );
+				return not m_function( DAW_FWD( args )... );
 			}
 
 			template<typename... Args>
 			[[nodiscard, maybe_unused]] constexpr decltype( auto )
 			operator( )( Args &&...args ) const noexcept( noexcept(
 			  not std::declval<Function>( )( std::declval<Args>( )... ) ) ) {
-				return not m_function( std::forward<Args>( args )... );
+				return not m_function( DAW_FWD( args )... );
 			}
 		};
 	} // namespace cpp_17_details
@@ -112,7 +112,7 @@ namespace daw {
 	template<typename Function>
 	[[nodiscard, maybe_unused]] constexpr auto not_fn( Function &&func ) {
 		using func_t = std::remove_cv_t<std::remove_reference_t<Function>>;
-		return cpp_17_details::not_fn_t<func_t>( std::forward<Function>( func ) );
+		return cpp_17_details::not_fn_t<func_t>( DAW_FWD( func ) );
 	}
 
 	template<typename Function>
@@ -221,56 +221,51 @@ namespace daw {
 	namespace cpp_17_details {
 		template<typename Base, typename T, typename Derived, typename... Args>
 		[[nodiscard, maybe_unused]] auto
-		INVOKE( T Base::*pmf, Derived &&ref, Args &&...args ) noexcept( noexcept(
-		  ( std::forward<Derived>( ref ).*pmf )( std::forward<Args>( args )... ) ) )
+		INVOKE( T Base::*pmf, Derived &&ref, Args &&...args ) noexcept(
+		  noexcept( ( DAW_FWD( ref ).*pmf )( DAW_FWD( args )... ) ) )
 		  -> std::enable_if_t<
 		    std::conjunction_v<std::is_function<T>,
 		                       std::is_base_of<Base, std::decay_t<Derived>>>,
-		    decltype( ( std::forward<Derived>( ref ).*
-		                pmf )( std::forward<Args>( args )... ) )> {
-			return ( std::forward<Derived>( ref ).*
-			         pmf )( std::forward<Args>( args )... );
+		    decltype( ( DAW_FWD( ref ).*pmf )( DAW_FWD( args )... ) )> {
+			return ( DAW_FWD( ref ).*pmf )( DAW_FWD( args )... );
 		}
 
 		template<typename Base, typename T, typename RefWrap, typename... Args>
 		[[nodiscard, maybe_unused]] constexpr auto
 		INVOKE( T Base::*pmf, RefWrap &&ref, Args &&...args ) noexcept(
-		  noexcept( ( ref.get( ).*pmf )( std::forward<Args>( args )... ) ) )
+		  noexcept( ( ref.get( ).*pmf )( DAW_FWD( args )... ) ) )
 		  -> std::enable_if_t<
 		    std::conjunction_v<std::is_function<T>,
 		                       is_reference_wrapper<std::decay_t<RefWrap>>>,
-		    decltype( ( ref.get( ).*pmf )( std::forward<Args>( args )... ) )> {
+		    decltype( ( ref.get( ).*pmf )( DAW_FWD( args )... ) )> {
 
-			return ( ref.get( ).*pmf )( std::forward<Args>( args )... );
+			return ( ref.get( ).*pmf )( DAW_FWD( args )... );
 		}
 
 		template<typename Base, typename T, typename Pointer, typename... Args>
 		[[nodiscard, maybe_unused]] constexpr auto
 		INVOKE( T Base::*pmf, Pointer &&ptr, Args &&...args ) noexcept(
-		  noexcept( ( ( *std::forward<Pointer>( ptr ) ).*
-		              pmf )( std::forward<Args>( args )... ) ) )
+		  noexcept( ( ( *DAW_FWD( ptr ) ).*pmf )( DAW_FWD( args )... ) ) )
 		  -> std::enable_if_t<
 		    std::conjunction_v<
 		      std::is_function<T>,
 		      not_trait<is_reference_wrapper<std::decay_t<Pointer>>>,
 		      not_trait<std::is_base_of<Base, std::decay_t<Pointer>>>>,
-		    decltype( ( ( *std::forward<Pointer>( ptr ) ).*
-		                pmf )( std::forward<Args>( args )... ) )> {
+		    decltype( ( ( *DAW_FWD( ptr ) ).*pmf )( DAW_FWD( args )... ) )> {
 
-			return ( ( *std::forward<Pointer>( ptr ) ).*
-			         pmf )( std::forward<Args>( args )... );
+			return ( ( *DAW_FWD( ptr ) ).*pmf )( DAW_FWD( args )... );
 		}
 
 		template<typename Base, typename T, typename Derived>
-		[[nodiscard, maybe_unused]] constexpr auto INVOKE(
-		  T Base::*pmd,
-		  Derived &&ref ) noexcept( noexcept( std::forward<Derived>( ref ).*pmd ) )
+		[[nodiscard, maybe_unused]] constexpr auto
+		INVOKE( T Base::*pmd,
+		        Derived &&ref ) noexcept( noexcept( DAW_FWD( ref ).*pmd ) )
 		  -> std::enable_if_t<
 		    std::conjunction_v<not_trait<std::is_function<T>>,
 		                       std::is_base_of<Base, std::decay_t<Derived>>>,
-		    decltype( std::forward<Derived>( ref ).*pmd )> {
+		    decltype( DAW_FWD( ref ).*pmd )> {
 
-			return std::forward<Derived>( ref ).*pmd;
+			return DAW_FWD( ref ).*pmd;
 		}
 
 		template<typename Base, typename T, typename RefWrap>
@@ -286,15 +281,15 @@ namespace daw {
 
 		template<typename Base, typename T, typename Pointer>
 		[[nodiscard, maybe_unused]] constexpr auto
-		INVOKE( T Base::*pmd, Pointer &&ptr ) noexcept(
-		  noexcept( ( *std::forward<Pointer>( ptr ) ).*pmd ) )
+		INVOKE( T Base::*pmd,
+		        Pointer &&ptr ) noexcept( noexcept( ( *DAW_FWD( ptr ) ).*pmd ) )
 		  -> std::enable_if_t<
 		    std::conjunction_v<
 		      not_trait<std::is_function<T>>,
 		      not_trait<is_reference_wrapper<std::decay_t<Pointer>>>,
 		      not_trait<std::is_base_of<Base, std::decay_t<Pointer>>>>,
-		    decltype( ( *std::forward<Pointer>( ptr ) ).*pmd )> {
-			return ( *std::forward<Pointer>( ptr ) ).*pmd;
+		    decltype( ( *DAW_FWD( ptr ) ).*pmd )> {
+			return ( *DAW_FWD( ptr ) ).*pmd;
 		}
 
 		template<typename T, typename... Args>
@@ -304,12 +299,11 @@ namespace daw {
 		template<typename F, typename... Args>
 		[[nodiscard, maybe_unused]] constexpr auto
 		INVOKE( F &&f, Args &&...args ) noexcept(
-		  noexcept( std::forward<F>( f )( std::forward<Args>( args )... ) ) )
-		  -> std::enable_if_t<
-		    not std::is_member_pointer_v<std::decay_t<F>>,
-		    decltype( std::forward<F>( f )( std::forward<Args>( args )... ) )> {
+		  noexcept( DAW_FWD( f )( DAW_FWD( args )... ) ) )
+		  -> std::enable_if_t<not std::is_member_pointer_v<std::decay_t<F>>,
+		                      decltype( DAW_FWD( f )( DAW_FWD( args )... ) )> {
 
-			return std::forward<F>( f )( std::forward<Args>( args )... );
+			return DAW_FWD( f )( DAW_FWD( args )... );
 		}
 	} // namespace cpp_17_details
 
@@ -320,36 +314,33 @@ namespace daw {
 	[[nodiscard, maybe_unused]] constexpr decltype( auto )
 	invoke( F &&f, Args &&...args )
 	  // exception specification for QoI
-	  noexcept( noexcept( cpp_17_details::INVOKE(
-	    std::forward<F>( f ), std::forward<Args>( args )... ) ) ) {
+	  noexcept( noexcept( cpp_17_details::INVOKE( DAW_FWD( f ),
+	                                              DAW_FWD( args )... ) ) ) {
 
-		return cpp_17_details::INVOKE( std::forward<F>( f ),
-		                               std::forward<Args>( args )... );
+		return cpp_17_details::INVOKE( DAW_FWD( f ), DAW_FWD( args )... );
 	}
 
 	template<typename F, typename... ArgTypes>
 	[[nodiscard, maybe_unused]] constexpr decltype( auto )
 	invoke( F &&f, std::reference_wrapper<ArgTypes>... args )
 	  // exception specification for QoI
-	  noexcept( noexcept( cpp_17_details::INVOKE(
-	    std::forward<F>( f ), std::forward<ArgTypes>( args )... ) ) ) {
+	  noexcept( noexcept( cpp_17_details::INVOKE( DAW_FWD( f ),
+	                                              DAW_FWD( args )... ) ) ) {
 
-		return cpp_17_details::INVOKE( std::forward<F>( f ),
-		                               std::forward<ArgTypes>( args )... );
+		return cpp_17_details::INVOKE( DAW_FWD( f ), DAW_FWD( args )... );
 	}
 #else
 	template<typename F, typename... Args>
 	constexpr decltype( auto ) invoke( F &&f, Args &&...args ) noexcept(
-	  noexcept( std::forward<F>( f )( std::forward<Args>( args )... ) ) ) {
-		return std::forward<F>( f )( std::forward<Args>( args )... );
+	  noexcept( DAW_FWD( f )( DAW_FWD( args )... ) ) ) {
+		return DAW_FWD( f )( DAW_FWD( args )... );
 	}
 #endif
 	namespace cpp_17_details {
 		template<typename F, typename Tuple, std::size_t... I>
 		[[nodiscard, maybe_unused]] constexpr decltype( auto )
 		apply_details( F &&f, Tuple &&t, std::index_sequence<I...> ) {
-			return daw::invoke( std::forward<F>( f ),
-			                    std::get<I>( std::forward<Tuple>( t ) )... );
+			return daw::invoke( DAW_FWD( f ), std::get<I>( DAW_FWD( t ) )... );
 		}
 
 		template<typename>
@@ -364,8 +355,7 @@ namespace daw {
 		template<typename F, typename Tuple, std::size_t... Is>
 		[[nodiscard]] inline constexpr decltype( auto )
 		apply_impl2( F &&f, Tuple &&t, std::index_sequence<Is...> ) {
-			return std::forward<F>( f )(
-			  std::get<Is>( std::forward<Tuple>( t ) )... );
+			return DAW_FWD( f )( std::get<Is>( DAW_FWD( t ) )... );
 		}
 	} // namespace cpp_17_details
 
@@ -377,20 +367,19 @@ namespace daw {
 		               "arguments must be a std::tuple" );
 		if constexpr( use_invoke ) {
 			if constexpr( std::tuple_size_v<Tuple> == 0 ) {
-				return daw::invoke( std::forward<F>( f ) );
+				return daw::invoke( DAW_FWD( f ) );
 			} else {
 				return cpp_17_details::apply_details(
-				  std::forward<F>( f ), std::forward<Tuple>( t ),
+				  DAW_FWD( f ), DAW_FWD( t ),
 				  std::make_index_sequence<std::tuple_size_v<std::decay_t<Tuple>>>{ } );
 			}
 		} else {
 			constexpr std::size_t tp_size = std::tuple_size_v<Tuple>;
 			if constexpr( tp_size == 0 ) {
-				return std::forward<F>( f )( );
+				return DAW_FWD( f )( );
 			} else {
 				return cpp_17_details::apply_impl2(
-				  std::forward<F>( f ), std::forward<Tuple>( t ),
-				  std::make_index_sequence<tp_size>{ } );
+				  DAW_FWD( f ), DAW_FWD( t ), std::make_index_sequence<tp_size>{ } );
 			}
 		}
 	}
@@ -537,7 +526,7 @@ namespace daw {
 
 		cpp_17_details::advance(
 		  it, n, typename std::iterator_traits<Iterator>::iterator_category{ } );
-		return daw::move( it );
+		return DAW_MOVE( it );
 	}
 
 	/// @brief Move iterator backward n steps, if n > 0, only defined for types
@@ -552,7 +541,7 @@ namespace daw {
 
 		cpp_17_details::advance(
 		  it, -n, typename std::iterator_traits<Iterator>::iterator_category{ } );
-		return daw::move( it );
+		return DAW_MOVE( it );
 	}
 
 	template<typename To, typename From>
@@ -666,7 +655,7 @@ namespace daw {
 	  -> std::enable_if_t<std::is_convertible_v<T, std::decay_t<T>>,
 	                      std::decay_t<T>> {
 
-		return std::forward<T>( v );
+		return DAW_FWD( v );
 	}
 
 	template<typename Function, typename... Params>
@@ -677,16 +666,16 @@ namespace daw {
 	public:
 		template<typename F, typename... P>
 		constexpr bind_front( F &&func, P &&...params )
-		  : m_func( std::forward<F>( func ) )
-		  , m_params( std::forward<P>( params )... ) {}
+		  : m_func( DAW_FWD( func ) )
+		  , m_params( DAW_FWD( params )... ) {}
 
 		template<typename... Args>
 		constexpr decltype( auto ) operator( )( Args &&...args ) {
 			static_assert( std::is_invocable_v<Function, Params..., Args...>,
 			               "Arguments are not valid for function" );
 			return std::apply(
-			  m_func, std::tuple_cat( m_params, std::forward_as_tuple(
-			                                      std::forward<Args>( args )... ) ) );
+			  m_func, std::tuple_cat( m_params,
+			                          std::forward_as_tuple( DAW_FWD( args )... ) ) );
 		}
 
 		template<typename... Args>
@@ -694,8 +683,8 @@ namespace daw {
 			static_assert( std::is_invocable_v<Function, Params..., Args...>,
 			               "Arguments are not valid for function" );
 			return std::apply(
-			  m_func, std::tuple_cat( m_params, std::forward_as_tuple(
-			                                      std::forward<Args>( args )... ) ) );
+			  m_func, std::tuple_cat( m_params,
+			                          std::forward_as_tuple( DAW_FWD( args )... ) ) );
 		}
 	};
 

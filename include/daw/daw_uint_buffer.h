@@ -1741,7 +1741,8 @@ namespace daw {
 	}
 
 	constexpr UInt64 operator-( UInt64 value ) {
-		return static_cast<UInt64>( -static_cast<std::uint64_t>( value ) );
+		return static_cast<UInt64>(
+		  static_cast<std::uint64_t>( -static_cast<std::int64_t>( value ) ) );
 	}
 
 	constexpr UInt64 &operator++( UInt64 &value ) {
@@ -2124,7 +2125,8 @@ namespace daw {
 	}
 
 	constexpr UInt32 operator-( UInt32 value ) {
-		return static_cast<UInt32>( -static_cast<std::uint32_t>( value ) );
+		return static_cast<UInt32>(
+		  static_cast<std::uint32_t>( -static_cast<std::int32_t>( value ) ) );
 	}
 
 	constexpr UInt32 &operator++( UInt32 &value ) {
@@ -2401,7 +2403,8 @@ namespace daw {
 	}
 
 	constexpr UInt16 operator-( UInt16 value ) {
-		return static_cast<UInt16>( -static_cast<std::uint32_t>( value ) );
+		return static_cast<UInt16>( static_cast<std::uint16_t>(
+		  static_cast<std::uint32_t>( -static_cast<std::int16_t>( value ) ) ) );
 	}
 
 	constexpr UInt16 &operator++( UInt16 &value ) {
@@ -2590,7 +2593,8 @@ namespace daw {
 	}
 
 	constexpr UInt8 operator-( UInt8 value ) {
-		return static_cast<UInt8>( -static_cast<std::uint32_t>( value ) );
+		return static_cast<UInt8>( static_cast<std::uint8_t>(
+		  static_cast<std::uint32_t>( -static_cast<std::int8_t>( value ) ) ) );
 	}
 
 	constexpr UInt8 &operator++( UInt8 &value ) {
