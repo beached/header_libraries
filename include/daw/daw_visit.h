@@ -247,11 +247,11 @@ namespace daw {
 			DAW_UNREACHABLE( );
 		}
 #if defined( DAW_USE_EXCEPTIONS )
-		[[noreturn, maybe_unused]] DAW_ATTRIB_NOINLINE void visit_error( ) {
+		[[noreturn, maybe_unused]] DAW_ATTRIB_NOINLINE inline void visit_error( ) {
 			throw std::bad_variant_access{ };
 		}
 #else
-		[[noreturn, maybe_unused]] DAW_ATTRIB_NOINLINE void visit_error( ) {
+		[[noreturn, maybe_unused]] DAW_ATTRIB_NOINLINE inline void visit_error( ) {
 			std::terminate( );
 		}
 #endif
