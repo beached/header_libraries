@@ -48,7 +48,7 @@ namespace daw {
 #define DAW_BIT_CAST( type, value ) __builtin_bit_cast( type, value )
 #define DAW_CX_BIT_CAST
 
-#eif defined( _MSC_VER ) and _MSC_VER >= 1926
+#elif defined( _MSC_VER ) and _MSC_VER >= 1926
 
 #define DAW_BIT_CAST( type, value ) __builtin_bit_cast( type, value )
 
