@@ -22,4 +22,10 @@
 
 #define DAW_IS_CONSTANT_EVALUATED( ) __builtin_is_constant_evaluated( )
 
+#elif defined( _MSC_VER ) and _MSC_VER >= 1925
+
+#define DAW_IS_CONSTANT_EVALUATED( ) __builtin_is_constant_evaluated( )
+
+#endif
+
 #endif
