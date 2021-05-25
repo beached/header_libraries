@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw_cpp_feature_check.h"
 #include "daw_exchange.h"
 #include "daw_move.h"
 #include "daw_swap.h"
@@ -17,14 +18,17 @@
 #include <exception>
 #include <utility>
 
-#if defined( __cpp_constexpr_dynamic_alloc ) and                               \
-  defined( __cpp_lib_is_constant_evaluated )
+#if defined( __cpp_constexpr_dynamic_alloc ) and defined( DAW_IS_CONSTANT_EVALUATED )
+
 #define CXDTOR constexpr
-#define CXEVAL std::is_constant_evaluated( )
+#define CXEVAL DAW_IS_CONSTANT_EVALUATED( )
 #define HAS_CXSTOR_AND_EVAL
+
 #else
+
 #define CXDTOR
 #define CXEVAL
+
 #endif
 
 namespace daw {
