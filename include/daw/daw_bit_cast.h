@@ -8,16 +8,15 @@
 
 #pragma once
 
-#if __has_include( <version> )
-#include <version>
-#endif
-#if defined( __cpp_lib_bit_cast ) and __has_include( <bit> )
-#include <bit>
-#endif
+#include "daw_cpp_feature_check.h"
 
 #include <ciso646>
 #include <cstring>
 #include <type_traits>
+
+#if defined( __cpp_lib_bit_cast ) and DAW_HAS_INCLUDE( <bit> )
+#include <bit>
+#endif
 
 namespace daw {
 	template<typename To, typename From>
@@ -41,21 +40,16 @@ namespace daw {
 } // namespace daw
 
 #if defined( __cpp_lib_bit_cast )
+
 #define DAW_BIT_CAST( type, value ) std::bit_cast<type>( value )
 #define DAW_CX_BIT_CAST
-#elif defined( __has_builtin )
-#if __has_builtin( __builtin_bit_cast )
+
+#elif DAW_HAS_BUILTIN( __builtin_bit_cast ) or (defined( __clang__ ) and (__clang_major__ >= 9))
 #define DAW_BIT_CAST( type, value ) __builtin_bit_cast( type, value )
 #define DAW_CX_BIT_CAST
-#elif defined( __clang__ ) and ( __clang_major__ >= 9 )
-#define DAW_BIT_CAST( type, value ) __builtin_bit_cast( type, value )
-#define DAW_CX_BIT_CAST
+
 #else
+
 #define DAW_BIT_CAST( type, value ) daw::bit_cast<type>( value )
-#endif
-#elif defined( __clang__ ) and ( __clang_major__ >= 9 )
-#define DAW_BIT_CAST( type, value ) __builtin_bit_cast( type, value )
-#define DAW_CX_BIT_CAST
-#else
-#define DAW_BIT_CAST( type, value ) daw::bit_cast<type>( value )
+
 #endif

@@ -10,6 +10,7 @@
 
 #include "daw_algorithm.h"
 #include "daw_exception.h"
+#include "daw_cpp_feature_check.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_generic_hash.h"
 #include "daw_math.h"
@@ -1093,7 +1094,7 @@ namespace daw {
 	basic_string_view( std::basic_string<CharT, Traits, Allocator> const &str )
 	  -> basic_string_view<CharT>;
 
-#if false && defined( __cpp_lib_string_view )
+#if false and defined( __cpp_lib_string_view )
 	template<typename CharT, typename Traits>
 	daw::basic_string_view( std::basic_string_view<CharT, Traits> sv )
 	  ->daw::basic_string_view<CharT>;
