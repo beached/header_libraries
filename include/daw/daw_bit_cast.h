@@ -44,7 +44,7 @@ namespace daw {
 #define DAW_BIT_CAST( To, ... ) std::bit_cast<To>( __VA_ARGS__ )
 #define DAW_CX_BIT_CAST
 
-#elif DAW_HAS_BUILTIN( __builtin_bit_cast ) or                                 \
+#elif not defined( _MSC_VER ) and DAW_HAS_BUILTIN( __builtin_bit_cast ) or     \
   ( defined( __clang__ ) and ( __clang_major__ >= 9 ) )
 
 #define DAW_BIT_CAST( To, ... ) __builtin_bit_cast( To, __VA_ARGS__ )
@@ -52,7 +52,7 @@ namespace daw {
 
 #elif defined( _MSC_VER ) and _MSC_VER >= 1926
 
-#define DAW_BIT_CAST( To, ... ) __builtin_bit_cast( To, __VA_ARGS__ )
+#define DAW_BIT_CAST( To, From ) __builtin_bit_cast( To, From )
 #define DAW_CX_BIT_CAST
 
 #else
