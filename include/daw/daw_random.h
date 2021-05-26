@@ -68,8 +68,10 @@ namespace daw {
 		static_assert( std::is_integral_v<IntType>,
 		               "IntType must be a valid integral type" );
 		daw::exception::daw_throw_on_false( a <= b, "a <= b must be true" );
+		using value_type = daw::remove_cvref_t<decltype( *first )> ;
+		static_assert( std::is_convertible_v<IntType, value_type> );
 		while( first != last ) {
-			*first++ = randint<IntType>( a, b );
+			*first++ = static_cast<value_type>( randint<IntType>( a, b ) );
 		}
 	}
 

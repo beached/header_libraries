@@ -96,7 +96,7 @@ void test_sqrt( Float f ) {
 }
 template<typename Float>
 inline constexpr Float pi =
-  3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446;
+  static_cast<Float>( 3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446 );
 
 void sqrt_tests( ) {
 	std::cout << "Testing sqrt against std::sqrt\n";
@@ -191,7 +191,7 @@ int main( ) {
 	daw::bench_n_test<RUNCOUNT>(
 	  "daw::cxmath::intxp( flt )",
 	  []( auto &&floats ) {
-		  intmax_t sum = 0.0f;
+		  intmax_t sum = 0;
 		  for( auto num : floats ) {
 			  sum += *daw::cxmath::intxp( num );
 		  }
