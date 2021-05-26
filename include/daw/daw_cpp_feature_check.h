@@ -16,12 +16,11 @@
 #include <version>
 #endif
 #else
-#define DAW_HAS_INCLUDE( ... ) (false)
+#define DAW_HAS_INCLUDE( ... ) ( false )
 #endif
 
 #if defined( __has_builtin )
-#define DAW_HAS_BUILTIN( ... ) (__has_builtin( __VA_ARGS__ ))
+#define DAW_HAS_BUILTIN( ... ) ( __has_builtin( __VA_ARGS__ ) )
 #else
-#define DAW_HAS_BUILTIN( ... ) (false)
+#define DAW_HAS_BUILTIN( ... ) ( false )
 #endif
-

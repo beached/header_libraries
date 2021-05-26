@@ -95,8 +95,9 @@ namespace daw {
 			  decltype( std::declval<bool &>( ) = std::declval<T>( ).empty( ) );
 
 			template<typename T>
-			using has_append_operator = decltype(
-			  std::declval<T &>( ) += std::declval<has_integer_subscript<T>>( ) );
+			using has_append_operator =
+			  decltype( std::declval<T &>( ) +=
+			            std::declval<has_integer_subscript<T>>( ) );
 
 			template<typename T>
 			using has_append =

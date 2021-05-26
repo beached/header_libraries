@@ -310,8 +310,8 @@ namespace daw::traits {
 	template<typename Sortable>
 	inline constexpr bool is_sortable_container_v =
 	  all_true_v<traits::is_container_like_v<Sortable>,
-	             is_random_access_iterator_v<decltype(
-	               std::begin( std::declval<Sortable>( ) ) )>>;
+	             is_random_access_iterator_v<decltype( std::begin(
+	               std::declval<Sortable>( ) ) )>>;
 
 	template<typename Sortable>
 	constexpr bool is_sortable_container_test( ) noexcept {

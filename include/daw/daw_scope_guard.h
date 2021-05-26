@@ -18,7 +18,8 @@
 #include <exception>
 #include <utility>
 
-#if defined( __cpp_constexpr_dynamic_alloc ) and defined( DAW_IS_CONSTANT_EVALUATED )
+#if defined( __cpp_constexpr_dynamic_alloc ) and                               \
+  defined( DAW_IS_CONSTANT_EVALUATED )
 
 #define CXDTOR constexpr
 #define CXEVAL DAW_IS_CONSTANT_EVALUATED( )

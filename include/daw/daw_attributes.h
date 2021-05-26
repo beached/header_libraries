@@ -19,7 +19,7 @@
 
 #else
 
-#define DAW_ATTRIB_FLATTEN 
+#define DAW_ATTRIB_FLATTEN
 #define DAW_ATTRIB_FLATINLINE
 
 #endif
@@ -33,17 +33,17 @@
 #if not defined( DAW_NO_FLATTEN )
 
 #define DAW_ATTRIB_FLATTEN
-#define DAW_ATTRIB_FLATINLINE 
+#define DAW_ATTRIB_FLATINLINE
 
 #else
 
-#define DAW_ATTRIB_FLATTEN 
+#define DAW_ATTRIB_FLATTEN
 #define DAW_ATTRIB_FLATINLINE
 
 #endif
 
 #define DAW_ATTRIB_HIDDEN
-#define DAW_ATTRIB_INLINE 
+#define DAW_ATTRIB_INLINE
 #define DAW_ATTRIB_NOINLINE __declspec( noinline )
 
 #else

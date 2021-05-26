@@ -9,8 +9,8 @@
 #pragma once
 
 #include "daw_algorithm.h"
-#include "daw_exception.h"
 #include "daw_cpp_feature_check.h"
+#include "daw_exception.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_generic_hash.h"
 #include "daw_math.h"

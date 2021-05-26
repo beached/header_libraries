@@ -413,4 +413,3 @@ namespace daw {
 		return expected_t<Result>( ptr );
 	}
 } // namespace daw
-

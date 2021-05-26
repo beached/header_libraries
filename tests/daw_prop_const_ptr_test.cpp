@@ -8,6 +8,4 @@
 
 #include <daw/daw_prop_const_ptr.h>
 
-int main( ) {
-	
-}
+int main( ) {}
