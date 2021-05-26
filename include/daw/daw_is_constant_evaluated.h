@@ -27,5 +27,3 @@
 #define DAW_IS_CONSTANT_EVALUATED( ) __builtin_is_constant_evaluated( )
 
 #endif
-
-#endif
