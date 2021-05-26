@@ -41,19 +41,21 @@ namespace daw {
 
 #if defined( __cpp_lib_bit_cast )
 
-#define DAW_BIT_CAST( type, value ) std::bit_cast<type>( value )
+#define DAW_BIT_CAST( type, ... ) std::bit_cast<type>( (__VA_ARGS__) )
 #define DAW_CX_BIT_CAST
 
 #elif DAW_HAS_BUILTIN( __builtin_bit_cast ) or (defined( __clang__ ) and (__clang_major__ >= 9))
-#define DAW_BIT_CAST( type, value ) __builtin_bit_cast( type, value )
+
+#define DAW_BIT_CAST( type, ... ) __builtin_bit_cast( type, (__VA_ARGS__) )
 #define DAW_CX_BIT_CAST
 
 #elif defined( _MSC_VER ) and _MSC_VER >= 1926
 
-#define DAW_BIT_CAST( type, value ) __builtin_bit_cast( type, value )
+#define DAW_BIT_CAST( type, ... ) __builtin_bit_cast( type, (__VA_ARGS__) )
+#define DAW_CX_BIT_CAST
 
 #else
 
-#define DAW_BIT_CAST( type, value ) daw::bit_cast<type>( value )
+#define DAW_BIT_CAST( type, ... ) daw::bit_cast<type>( (__VA_ARGS__) )
 
 #endif
