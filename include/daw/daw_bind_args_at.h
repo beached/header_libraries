@@ -117,6 +117,7 @@ namespace daw {
 		                          std::nullptr_t> = nullptr>
 		constexpr decltype( auto ) operator( )( Args &&...args ) noexcept(
 		  is_nothrow_callable_v<N, Invokable, TpArgs, Args...> ) {
+			static_assert( N <= sizeof...( Args ) );
 			return std::apply(
 			  func,
 			  std::tuple_cat( split_args<0, N>( std::forward_as_tuple(
