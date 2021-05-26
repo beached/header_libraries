@@ -466,7 +466,8 @@ namespace daw::cxmath {
 	[[nodiscard]] constexpr std::uint32_t
 	count_leading_zeroes( daw::UInt32 v ) noexcept {
 		if( v != 0U ) {
-			return static_cast<std::uint32_t>( __builtin_clz( static_cast<std::uint32_t>( v ) ) );
+			return static_cast<std::uint32_t>(
+			  __builtin_clz( static_cast<std::uint32_t>( v ) ) );
 		}
 		return 32U;
 	}

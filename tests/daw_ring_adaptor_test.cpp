@@ -35,7 +35,6 @@ int main( ) {
 
 	assert( buff.is_full( ) );
 
-
 	int sum = 0;
 	for( int i : buff ) {
 		sum += i;

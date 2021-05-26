@@ -25,14 +25,14 @@ namespace daw {
 
 		static_assert( std::is_trivially_copyable_v<
 		                 std::remove_cv_t<std::remove_reference_t<From>>>,
-		               "From type must be trivially copiable" );
+		               "From To must be trivially copiable" );
 		static_assert( std::is_trivially_copyable_v<
 		                 std::remove_cv_t<std::remove_reference_t<To>>>,
-		               "To type must be trivially copiable" );
+		               "To To must be trivially copiable" );
 		static_assert( sizeof( From ) == sizeof( To ),
-		               "Sizes of From and To types must be the same" );
+		               "Sizes of From and To Tos must be the same" );
 		static_assert( std::is_default_constructible_v<To>,
-		               "To type must be default constructible" );
+		               "To To must be default constructible" );
 
 		auto result = std::aligned_storage_t<sizeof( To ), alignof( To )>{ };
 		return *static_cast<To *>( std::memcpy( &result, &from, sizeof( To ) ) );
@@ -41,15 +41,29 @@ namespace daw {
 
 #if defined( __cpp_lib_bit_cast )
 
-#define DAW_BIT_CAST( type, value ) std::bit_cast<type>( value )
+#define DAW_BIT_CAST( To, ... ) std::bit_cast<To>( __VA_ARGS__ )
 #define DAW_CX_BIT_CAST
 
-#elif DAW_HAS_BUILTIN( __builtin_bit_cast ) or (defined( __clang__ ) and (__clang_major__ >= 9))
-#define DAW_BIT_CAST( type, value ) __builtin_bit_cast( type, value )
+#elif not defined( _MSC_VER ) and DAW_HAS_BUILTIN( __builtin_bit_cast ) or     \
+  ( defined( __clang__ ) and ( __clang_major__ >= 9 ) )
+
+#define DAW_BIT_CAST( To, ... ) __builtin_bit_cast( To, __VA_ARGS__ )
+#define DAW_CX_BIT_CAST
+
+#elif defined( _MSC_VER ) and _MSC_VER >= 1926
+namespace daw::bit_cast_impl {
+	template<typename To, typename From>
+	inline constexpr To ms_bit_cast( From &&f ) {
+		return __builtin_bit_cast( To, f );
+	}
+} // namespace daw::bit_cast_impl
+#define DAW_BIT_CAST( To, ... )                                                \
+	::daw::bit_cast_impl::ms_bit_cast<To>( __VA_ARGS__ )
+
 #define DAW_CX_BIT_CAST
 
 #else
 
-#define DAW_BIT_CAST( type, value ) daw::bit_cast<type>( value )
+#define DAW_BIT_CAST( To, ... ) daw::bit_cast<To>( __VA_ARGS__ )
 
 #endif

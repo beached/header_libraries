@@ -12,7 +12,6 @@ set(TEST_SOURCES
 	daw_algorithm_test.cpp
 	daw_array_test.cpp
 	daw_benchmark_test.cpp
-	daw_bind_args_at_test.cpp
 	daw_bit_queues_test.cpp
 	daw_bit_test.cpp
 	daw_bounded_array_test.cpp
@@ -117,6 +116,7 @@ set(NOT_MSVC_TEST_SOURCES
 
 #not included in CI as they are not ready
 set(DEV_TEST_SOURCES
+	daw_bind_args_at_test.cpp
 	daw_cstring_test.cpp
 	daw_hash_table2_test.cpp
 	daw_range_test.cpp

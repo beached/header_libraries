@@ -18,8 +18,8 @@
 #include <vector>
 
 static_assert( daw::traits::is_output_iterator_test<
-               daw::remove_cvref_t<decltype(
-                 daw::end_inserter( std::declval<std::vector<int> &>( ) ) )>,
+               daw::remove_cvref_t<decltype( daw::end_inserter(
+                 std::declval<std::vector<int> &>( ) ) )>,
                int>( ) );
 
 void vector_test_001( ) {
