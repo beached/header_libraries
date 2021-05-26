@@ -134,7 +134,7 @@ add_custom_target(full)
 
 add_library(daw_test INTERFACE)
 target_link_libraries(daw_test INTERFACE daw::header_libraries ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT})
-target_compile_options(daw_test INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/permissive- /std:c++17>)
+target_compile_options(daw_test INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/permissive->)
 
 set(all_tests ${TEST_SOURCES})
 

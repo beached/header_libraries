@@ -50,7 +50,7 @@ namespace daw {
 #define DAW_BIT_CAST( To, ... ) __builtin_bit_cast( To, __VA_ARGS__ )
 #define DAW_CX_BIT_CAST
 
-#elif  not defined( _MSC_VER ) and _MSC_VER >= 1926
+#elif defined( _MSC_VER ) and _MSC_VER >= 1926
 
 #define DAW_BIT_CAST( To, ... ) __builtin_bit_cast( To, __VA_ARGS__ )
 #define DAW_CX_BIT_CAST

@@ -8,7 +8,6 @@
 
 #include "daw/daw_algorithm.h"
 #include "daw/daw_benchmark.h"
-#include "daw/daw_do_n.h"
 
 #include <algorithm>
 #include <array>

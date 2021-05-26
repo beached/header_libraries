@@ -11,17 +11,17 @@
 #include <ciso646>
 
 #if defined( __has_include )
-#define DAW_HAS_INCLUDE( Include ) __has_include( Include )
-#if DAW_HAS_INCLUDE( <version> )
+#define DAW_HAS_INCLUDE( ... ) (__has_include( __VA_ARGS__ ))
+#if __has_include( <version> )
 #include <version>
 #endif
 #else
-#define DAW_HAS_INCLUDE( Include ) false
+#define DAW_HAS_INCLUDE( ... ) (false)
 #endif
 
 #if defined( __has_builtin )
-#define DAW_HAS_BUILTIN( Name ) __has_builtin( Name )
+#define DAW_HAS_BUILTIN( ... ) (__has_builtin( __VA_ARGS__ ))
 #else
-#define DAW_HAS_BUILTIN( Name ) false
+#define DAW_HAS_BUILTIN( ... ) (false)
 #endif
 
