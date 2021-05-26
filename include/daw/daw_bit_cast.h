@@ -51,8 +51,15 @@ namespace daw {
 #define DAW_CX_BIT_CAST
 
 #elif defined( _MSC_VER ) and _MSC_VER >= 1926
+namespace daw::bit_cast_impl {
+	template<typename To, typename From>
+	inline constexpr To ms_bit_cast( From &&f ) {
+		return __builtin_bit_cast( To, f );
+	}
+} // namespace daw::bit_cast_impl
+#define DAW_BIT_CAST( To, ... )                                                \
+	::daw::bit_cast_impl::ms_bit_cast<To>( __VA_ARGS__ )
 
-#define DAW_BIT_CAST( To, From ) __builtin_bit_cast( To, From )
 #define DAW_CX_BIT_CAST
 
 #else
