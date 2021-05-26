@@ -557,7 +557,7 @@ namespace daw {
 	  Function &&func ) noexcept( noexcept( func( std::declval<T>( ) ) ) ) {
 
 		while( first != last ) {
-			daw::invoke( func, DAW_BIT_CAST( (T), (*first) ) );
+			daw::invoke( func, DAW_BIT_CAST( T, *first ) );
 			++first;
 		}
 	}
@@ -576,7 +576,7 @@ namespace daw {
 
 		while( first != last ) {
 			*first_out =
-			  DAW_BIT_CAST( out_t, daw::invoke( func, DAW_BIT_CAST( (T), (*first) ) ) );
+			  DAW_BIT_CAST( out_t, daw::invoke( func, DAW_BIT_CAST( T, *first ) ) );
 			++first;
 			++first_out;
 		}
