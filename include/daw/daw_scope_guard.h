@@ -12,26 +12,17 @@
 #include "daw_exchange.h"
 #include "daw_is_constant_evaluated.h"
 #include "daw_move.h"
-#include "daw_swap.h"
-#include "daw_traits.h"
 
 #include <ciso646>
 #include <exception>
-#include <utility>
+#include <type_traits>
 
 #if defined( __cpp_constexpr_dynamic_alloc ) and                               \
   defined( DAW_IS_CONSTANT_EVALUATED )
-
-#define CXDTOR constexpr
-#define CXEVAL DAW_IS_CONSTANT_EVALUATED( )
-#define DAW_HASCXSTOR_AND_EVAL
+#define DAW_SG_CXDTOR constexpr
 #define DAW_HAS_CONSTEXPR_SCOPE_GUARD
-
 #else
-
-#define CXDTOR
-#define CXEVAL
-
+#define DAW_SG_CXDTOR
 #endif
 
 namespace daw {
@@ -46,20 +37,20 @@ namespace daw {
 		ScopeGuard &operator=( const ScopeGuard & ) = delete;
 
 		constexpr ScopeGuard( FunctionType f ) noexcept
-		  : m_function{ daw::move( f ) }
+		  : m_function{ DAW_MOVE( f ) }
 		  , m_is_active{ true } {}
 
 		constexpr ScopeGuard( ScopeGuard &&other ) noexcept
-		  : m_function{ daw::move( other.m_function ) }
+		  : m_function{ DAW_MOVE( other.m_function ) }
 		  , m_is_active{ daw::exchange( other.m_is_active, false ) } {}
 
 		constexpr ScopeGuard &operator=( ScopeGuard &&rhs ) noexcept {
-			m_function = daw::move( rhs.m_function );
+			m_function = DAW_MOVE( rhs.m_function );
 			m_is_active = daw::exchange( rhs.m_is_active, false );
 			return *this;
 		}
 
-		CXDTOR ~ScopeGuard( ) noexcept {
+		DAW_SG_CXDTOR ~ScopeGuard( ) noexcept {
 			if( m_is_active ) {
 				m_function( );
 			}
@@ -79,7 +70,7 @@ namespace daw {
 	template<typename FunctionType>
 	[[nodiscard]] constexpr ScopeGuard<FunctionType>
 	on_scope_exit( FunctionType f ) noexcept {
-		return ScopeGuard<FunctionType>( daw::move( f ) );
+		return ScopeGuard<FunctionType>( DAW_MOVE( f ) );
 	}
 
 	template<typename Handler>
@@ -89,22 +80,23 @@ namespace daw {
 	public:
 		constexpr on_exit_success( Handler &&h ) noexcept(
 		  std::is_nothrow_move_constructible_v<Handler> )
-		  : on_exit_handler( std::move( h ) ) {}
+		  : on_exit_handler( DAW_MOVE( h ) ) {}
 
 		constexpr on_exit_success( Handler const &h ) noexcept(
 		  std::is_nothrow_copy_constructible_v<Handler> )
 		  : on_exit_handler( h ) {}
 
-		CXDTOR ~on_exit_success( ) noexcept( noexcept( on_exit_handler( ) ) ) {
-#if defined( DAW_HASCXSTOR_AND_EVAL )
-			if( CXEVAL ) {
+		DAW_SG_CXDTOR ~on_exit_success( ) noexcept(
+		  noexcept( on_exit_handler( ) ) ) {
+#if defined( DAW_IS_CONSTANT_EVALUATED )
+			if( DAW_IS_CONSTANT_EVALUATED( ) ) {
 				on_exit_handler( );
 			} else {
 #endif
 				if( std::uncaught_exceptions( ) == 0 ) {
 					on_exit_handler( );
 				}
-#if defined( DAW_HASCXSTOR_AND_EVAL )
+#if defined( DAW_IS_CONSTANT_EVALUATED )
 			}
 #endif
 		}
@@ -114,7 +106,6 @@ namespace daw {
 	on_exit_success( Handler ) -> on_exit_success<Handler>;
 } // namespace daw
 
-#ifdef DAW_HASCXSTOR_AND_EVAL
-#undef DAW_HASCXSTOR_AND_EVAL
+#ifdef DAW_SG_CXDTOR
+#undef DAW_SG_CXDTOR
 #endif
-
