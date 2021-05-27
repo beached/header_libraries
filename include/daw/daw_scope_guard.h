@@ -10,6 +10,7 @@
 
 #include "daw_cpp_feature_check.h"
 #include "daw_exchange.h"
+#include "daw_is_constant_evaluated.h"
 #include "daw_move.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
@@ -23,7 +24,8 @@
 
 #define CXDTOR constexpr
 #define CXEVAL DAW_IS_CONSTANT_EVALUATED( )
-#define HAS_CXSTOR_AND_EVAL
+#define DAW_HASCXSTOR_AND_EVAL
+#define DAW_HAS_CONSTEXPR_SCOPE_GUARD
 
 #else
 
@@ -94,7 +96,7 @@ namespace daw {
 		  : on_exit_handler( h ) {}
 
 		CXDTOR ~on_exit_success( ) noexcept( noexcept( on_exit_handler( ) ) ) {
-#if defined( HAS_CXSTOR_AND_EVAL )
+#if defined( DAW_HASCXSTOR_AND_EVAL )
 			if( CXEVAL ) {
 				on_exit_handler( );
 			} else {
@@ -102,7 +104,7 @@ namespace daw {
 				if( std::uncaught_exceptions( ) == 0 ) {
 					on_exit_handler( );
 				}
-#if defined( HAS_CXSTOR_AND_EVAL )
+#if defined( DAW_HASCXSTOR_AND_EVAL )
 			}
 #endif
 		}
@@ -111,3 +113,8 @@ namespace daw {
 	template<typename Handler>
 	on_exit_success( Handler ) -> on_exit_success<Handler>;
 } // namespace daw
+
+#ifdef DAW_HASCXSTOR_AND_EVAL
+#undef DAW_HASCXSTOR_AND_EVAL
+#endif
+
