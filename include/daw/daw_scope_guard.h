@@ -20,6 +20,10 @@
 #if defined( __cpp_constexpr_dynamic_alloc ) and                               \
   defined( DAW_IS_CONSTANT_EVALUATED )
 #define DAW_SG_CXDTOR constexpr
+
+/***
+ * Scope guard will execute the handler in a constant expression
+ */
 #define DAW_HAS_CONSTEXPR_SCOPE_GUARD
 #else
 #define DAW_SG_CXDTOR
@@ -88,7 +92,7 @@ namespace daw {
 
 		DAW_SG_CXDTOR ~on_exit_success( ) noexcept(
 		  noexcept( on_exit_handler( ) ) ) {
-#if defined( DAW_IS_CONSTANT_EVALUATED )
+#if defined( DAW_HAS_CONSTEXPR_SCOPE_GUARD )
 			if( DAW_IS_CONSTANT_EVALUATED( ) ) {
 				on_exit_handler( );
 			} else {
@@ -96,7 +100,7 @@ namespace daw {
 				if( std::uncaught_exceptions( ) == 0 ) {
 					on_exit_handler( );
 				}
-#if defined( DAW_IS_CONSTANT_EVALUATED )
+#if defined( DAW_HAS_CONSTEXPR_SCOPE_GUARD )
 			}
 #endif
 		}
