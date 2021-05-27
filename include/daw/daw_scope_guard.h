@@ -10,6 +10,7 @@
 
 #include "daw_cpp_feature_check.h"
 #include "daw_exchange.h"
+#include "daw_is_constant_evaluated.h"
 #include "daw_move.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
