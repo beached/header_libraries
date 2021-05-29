@@ -851,7 +851,8 @@ namespace daw::cxmath {
 	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
 	                                         std::nullptr_t> = nullptr>
 	constexpr Real adjust_exponent( Real r, std::int32_t exponent ) {
-		auto result = DAW_BIT_CAST( cxmath_impl::unsigned_float_type_t<Real>, r );
+		auto result = cxmath_impl::adjust_exponent_impl(
+		  DAW_BIT_CAST( cxmath_impl::unsigned_float_type_t<Real>, r ), exponent );
 		return DAW_BIT_CAST( Real, result );
 	}
 #endif
@@ -968,7 +969,7 @@ namespace daw::cxmath {
 
 	template<typename Number,
 	         daw::enable_when_t<not std::is_signed_v<Number>> = nullptr>
-	[[nodiscard]] constexpr bool signbit( Number n ) noexcept {
+	[[nodiscard]] constexpr bool signbit( Number ) noexcept {
 		return false;
 	}
 
