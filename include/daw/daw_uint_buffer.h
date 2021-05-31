@@ -2548,7 +2548,7 @@ namespace daw {
 	}
 
 	constexpr UInt8 operator*( std::uint8_t lhs, UInt64 rhs ) noexcept {
-		lhs = static_cast<std::uint8_t>( lhs * static_cast<std::uint32_t>( rhs ));
+		lhs = static_cast<std::uint8_t>( lhs * static_cast<std::uint32_t>( rhs ) );
 		return static_cast<UInt8>( lhs );
 	}
 
@@ -2559,28 +2559,30 @@ namespace daw {
 	}
 
 	constexpr UInt8 &operator/=( UInt8 &lhs, std::uint64_t rhs ) noexcept {
-		lhs = static_cast<UInt8>( static_cast<std::uint32_t>( lhs ) / rhs );
+		lhs = static_cast<UInt8>( static_cast<std::uint64_t>( lhs ) / rhs );
 		return lhs;
 	}
 
 	constexpr std::uint8_t &operator/=( std::uint8_t &lhs, UInt64 rhs ) noexcept {
-		lhs /= static_cast<std::uint32_t>( rhs );
+		lhs = static_cast<std::uint8_t>( static_cast<std::uint64_t>( lhs ) /
+		                                 static_cast<std::uint64_t>( rhs ) );
 		return lhs;
 	}
 
 	constexpr UInt8 operator/( UInt8 lhs, UInt8 rhs ) noexcept {
-		lhs = static_cast<UInt8>( static_cast<std::uint32_t>( lhs ) /
+		lhs = static_cast<UInt8>( static_cast<std::uint64_t>( lhs ) /
 		                          static_cast<std::uint64_t>( rhs ) );
 		return lhs;
 	}
 
 	constexpr UInt8 operator/( UInt8 lhs, std::uint64_t rhs ) noexcept {
-		lhs = static_cast<UInt8>( static_cast<std::uint32_t>( lhs ) / rhs );
+		lhs = static_cast<UInt8>( static_cast<std::uint64_t>( lhs ) / rhs );
 		return lhs;
 	}
 
 	constexpr UInt8 operator/( std::uint8_t lhs, UInt64 rhs ) noexcept {
-		lhs = static_cast<std::uint8_t>( static_cast<std::uint32_t>( lhs ) / static_cast<std::uint32_t>( rhs ) );
+		lhs = static_cast<std::uint8_t>( static_cast<std::uint32_t>( lhs ) /
+		                                 static_cast<std::uint32_t>( rhs ) );
 		return static_cast<UInt8>( lhs );
 	}
 
