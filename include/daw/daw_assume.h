@@ -8,21 +8,31 @@
 
 #pragma once
 
+#include "daw_cpp_feature_check.h"
+
 #include <cassert>
 
 #ifndef NDEBUG
+
 #define DAW_ASSUME( ... ) assert( __VA_ARGS__ )
+
 #else
-#if defined( __GNUC__ ) or defined( __clang__ )
+
+#if DAW_HAS_BUILTIN( __builtin_unreachable )
+
 #define DAW_ASSUME( ... )                                                      \
 	while( not( ( __VA_ARGS__ ) ) ) {                                            \
 		__builtin_unreachable( );                                                  \
 	}                                                                            \
 	do {                                                                         \
 	} while( false )
+
 #elif defined( _MSC_VER )
+
 #define DAW_ASSUME( ... ) __assume( !!( ( __VA_ARGS__ ) ) )
+
 #else
+
 #define DAW_ASSUME( ... )                                                      \
 	do {                                                                         \
 	} while( false )
