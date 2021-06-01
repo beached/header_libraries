@@ -12,7 +12,7 @@
 
 #include <ciso646>
 
-#if DAW_HAS_BUILTIN( __builtin_unreachable( ) )
+#if DAW_HAS_BUILTIN( __builtin_unreachable )
 #define DAW_UNREACHABLE( ) __builtin_unreachable( )
 #elif defined( _MSC_VER )
 #define DAW_UNREACHABLE( ) __assume( false );
