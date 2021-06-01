@@ -24,3 +24,8 @@
 #else
 #define DAW_HAS_BUILTIN( ... ) ( false )
 #endif
+
+#define DAW_HAS_FEATURE(feature) ( feature > 0)
+
+#define DAW_HAS_FEATURE_VERSION(feature, version) (feature > version)
+
