@@ -9,6 +9,7 @@
 #pragma once
 
 #include "cpp_17.h"
+#include "daw_cpp_feature_check.h"
 #include "daw_enable_if.h"
 #include "impl/daw_traits_concepts.h"
 #include "impl/daw_traits_impl.h"
@@ -338,6 +339,10 @@ namespace daw::traits {
 	inline constexpr bool is_mixed_from_v =
 	  std::is_base_of_v<Base<Derived>, Derived>;
 
+#if DAW_HAS_BUILTIN( __type_pack_element )
+	template<std::size_t I, typename... Ts>
+	using nth_element = __type_pack_element<I, Ts...>;
+#else
 	namespace traits_details {
 		template<std::size_t I, typename T, typename... Ts>
 		struct nth_element_impl {
@@ -352,6 +357,7 @@ namespace daw::traits {
 
 	template<std::size_t I, typename... Ts>
 	using nth_element = typename traits_details::nth_element_impl<I, Ts...>::type;
+#endif
 
 	namespace traits_details {
 		template<typename T>
