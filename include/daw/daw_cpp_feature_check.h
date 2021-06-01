@@ -25,7 +25,8 @@
 #define DAW_HAS_BUILTIN( ... ) ( false )
 #endif
 
-#define DAW_HAS_FEATURE(feature) ( feature > 0)
+// Do not use when -Wundef is at play as -Werror will make it not build
+#define DAW_HAS_FEATURE( feature ) ( feature > 0 )
 
-#define DAW_HAS_FEATURE_VERSION(feature, version) (feature > version)
-
+// Do not use when -Wundef is at play as -Werror will make it not build
+#define DAW_HAS_FEATURE_VERSION( feature, version ) ( feature > version )

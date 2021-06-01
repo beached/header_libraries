@@ -430,13 +430,7 @@ namespace daw::cxmath {
 	template<size_t exp>
 	constexpr uintmax_t pow10_v = cxmath_impl::pow10_t<uintmax_t>::get( exp );
 
-#if defined( __has_builtin )
-#if __has_builtin( __builtin_clz )
-#define DAW_HAS_CLZ_BUILTIN
-#endif
-#endif
-
-#if defined( DAW_HAS_CLZ_BUILTIN )
+#if DAW_HAS_BUILTIN( __builtin_clz )
 	[[nodiscard]] constexpr std::uint32_t
 	count_leading_zeroes( std::uint64_t v ) noexcept {
 		auto high = static_cast<std::uint32_t>( v >> 32U );

@@ -8,10 +8,12 @@
 
 #pragma once
 
+#include "daw_cpp_feature_check.h"
+
 #include <ciso646>
 
-#if defined( __GNUC__ ) or defined( __clang__ )
-#define DAW_UNREACHABLE( ) ( __builtin_unreachable( ) )
+#if DAW_HAS_BUILTIN( __builtin_unreachable )
+#define DAW_UNREACHABLE( ) __builtin_unreachable( )
 #elif defined( _MSC_VER )
 #define DAW_UNREACHABLE( ) __assume( false );
 #else
