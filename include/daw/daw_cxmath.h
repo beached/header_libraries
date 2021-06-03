@@ -10,6 +10,7 @@
 
 #include "daw_arith_traits.h"
 #include "daw_assume.h"
+#include "daw_attributes.h"
 #include "daw_bit_cast.h"
 #include "daw_do_n.h"
 #include "daw_enable_if.h"
@@ -431,7 +432,29 @@ namespace daw::cxmath {
 	constexpr uintmax_t pow10_v = cxmath_impl::pow10_t<uintmax_t>::get( exp );
 
 #if DAW_HAS_BUILTIN( __builtin_clz )
-	[[nodiscard]] constexpr std::uint32_t
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr std::uint32_t
+	count_leading_zeroes( std::uint32_t v ) noexcept {
+		if( v != 0U ) {
+			return static_cast<std::uint32_t>( __builtin_clz( v ) );
+		}
+		return 32U;
+	}
+
+	[[nodiscard]] DAW_ATTRIB_FLATINLINE inline constexpr std::uint32_t
+	count_leading_zeroes( daw::UInt32 v ) noexcept {
+		return count_leading_zeroes( static_cast<std::uint32_t>( v ) );
+	}
+
+#if DAW_HAS_BUILTIN( __builtin_clzll )
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr std::uint64_t
+	count_leading_zeroes( std::uint64_t v ) noexcept {
+		if( v != 0U ) {
+			return static_cast<std::uint64_t>( __builtin_clzll( v ) );
+		}
+		return 64U;
+	}
+#else
+	[[nodiscard]] DAW_ATTRIB_INLINE inline constexpr std::uint32_t
 	count_leading_zeroes( std::uint64_t v ) noexcept {
 		auto high = static_cast<std::uint32_t>( v >> 32U );
 		if( high != 0 ) {
@@ -444,26 +467,11 @@ namespace daw::cxmath {
 		return 64;
 	}
 
-	[[nodiscard]] constexpr std::uint32_t
-	count_leading_zeroes( daw::UInt64 v ) noexcept {
-		auto high = static_cast<std::uint32_t>( v >> 32U );
-		if( high != 0 ) {
-			return static_cast<std::uint32_t>( __builtin_clz( high ) );
-		}
-		auto low = static_cast<std::uint32_t>( v );
-		if( low != 0 ) {
-			return 32U + static_cast<std::uint32_t>( __builtin_clz( low ) );
-		}
-		return 64;
-	}
+#endif
 
-	[[nodiscard]] constexpr std::uint32_t
-	count_leading_zeroes( daw::UInt32 v ) noexcept {
-		if( v != 0U ) {
-			return static_cast<std::uint32_t>(
-			  __builtin_clz( static_cast<std::uint32_t>( v ) ) );
-		}
-		return 32U;
+	[[nodiscard]] DAW_ATTRIB_FLATINLINE inline constexpr std::uint32_t
+	count_leading_zeroes( daw::UInt64 v ) noexcept {
+		return count_leading_zeroes( static_cast<std::uint64_t>( v ) );
 	}
 
 #else
