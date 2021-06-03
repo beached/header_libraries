@@ -496,9 +496,6 @@ namespace daw {
 		template<std::size_t Idx, typename... Ts>
 		using nth_type = typename decltype( nth_type_impl::find_leaf_type<Idx>(
 		  std::declval<nth_type_impl::nth_type_impl<Ts...>>( ) ) )::type;
-
-		template<std::size_t I, typename... Ts>
-		using nth_type = typename traits_details::nth_type_impl<I, Ts...>::type;
 #endif
 		template<std::size_t I, typename... Ts>
 		using nth_element = nth_type<I, Ts...>;
