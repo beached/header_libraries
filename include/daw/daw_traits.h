@@ -339,28 +339,6 @@ namespace daw::traits {
 	inline constexpr bool is_mixed_from_v =
 	  std::is_base_of_v<Base<Derived>, Derived>;
 
-#if DAW_HAS_BUILTIN( __type_pack_type )
-	template<std::size_t I, typename... Ts>
-	using nth_type = __type_pack_type<I, Ts...>;
-#else
-	namespace traits_details {
-		template<std::size_t I, typename T, typename... Ts>
-		struct nth_type_impl {
-			using type = typename nth_type_impl<I - 1, Ts...>::type;
-		};
-
-		template<typename T, typename... Ts>
-		struct nth_type_impl<0, T, Ts...> {
-			using type = T;
-		};
-	} // namespace traits_details
-
-	template<std::size_t I, typename... Ts>
-	using nth_type = typename traits_details::nth_type_impl<I, Ts...>::type;
-#endif
-	template<std::size_t I, typename... Ts>
-	using nth_element = nth_type<I, Ts...>;
-
 } // namespace daw::traits
 
 namespace daw {
@@ -384,11 +362,6 @@ namespace daw {
 
 	template<typename Pack>
 	inline constexpr std::size_t pack_size_v = pack_size<Pack>::value;
-
-	template<typename... Args>
-	struct pack_list {
-		static constexpr size_t const size = sizeof...( Args );
-	};
 } // namespace daw
 
 namespace daw::traits {
