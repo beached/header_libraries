@@ -339,25 +339,52 @@ namespace daw::traits {
 	inline constexpr bool is_mixed_from_v =
 	  std::is_base_of_v<Base<Derived>, Derived>;
 
-#if DAW_HAS_BUILTIN( __type_pack_element )
+#if DAW_HAS_BUILTIN( __type_pack_type )
 	template<std::size_t I, typename... Ts>
-	using nth_element = __type_pack_element<I, Ts...>;
+	using nth_type = __type_pack_type<I, Ts...>;
 #else
 	namespace traits_details {
 		template<std::size_t I, typename T, typename... Ts>
-		struct nth_element_impl {
-			using type = typename nth_element_impl<I - 1, Ts...>::type;
+		struct nth_type_impl {
+			using type = typename nth_type_impl<I - 1, Ts...>::type;
 		};
 
 		template<typename T, typename... Ts>
-		struct nth_element_impl<0, T, Ts...> {
+		struct nth_type_impl<0, T, Ts...> {
 			using type = T;
 		};
 	} // namespace traits_details
 
 	template<std::size_t I, typename... Ts>
-	using nth_element = typename traits_details::nth_element_impl<I, Ts...>::type;
+	using nth_type = typename traits_details::nth_type_impl<I, Ts...>::type;
 #endif
+	template<std::size_t I, typename... Ts>
+	using nth_element = nth_type<I, Ts...>;
+
+	template<std::size_t Idx, typename Pack>
+	struct pack_element;
+
+	template<std::size_t Idx, template<class...> class Pack, typename... Ts>
+	struct pack_element<Idx, Pack<Ts...>> {
+		using type = nth_type<Idx, Ts...>;
+	};
+
+	template<std::size_t Idx, typename Pack>
+	using pack_element_t = typename pack_element<Idx, Pack>::type;
+
+	template<typename>
+	struct pack_size;
+
+	template<template<class...> class Pack, typename... Ts>
+	struct pack_size<Pack<Ts...>>: std::integral_constant<std::size_t, sizeof...(Ts)> { }; 
+
+	template<typename Pack>
+	inline constexpr std::size_t pack_size_v = pack_size<Pack>::value;
+
+	template<typename... Args>
+	struct pack_list {
+		static constexpr size_t const size = sizeof...( Args );
+	};
 
 	namespace traits_details {
 		template<typename T>
@@ -665,9 +692,6 @@ namespace daw::traits {
 	template<typename... Args>
 	using last_type_t = typename decltype( ( identity<Args>{ }, ... ) )::type;
 
-	template<size_t N, typename... Args>
-	using nth_type = std::tuple_element_t<N, std::tuple<Args...>>;
-
 	namespace traits_details::pack_index_of {
 		template<int Index, typename A, typename B, typename... C>
 		[[maybe_unused]] constexpr int pack_index_of_calc( ) noexcept {
@@ -686,11 +710,6 @@ namespace daw::traits {
 	  : std::integral_constant<
 	      int,
 	      traits_details::pack_index_of::pack_index_of_calc<0, A, B, C...>( )> {};
-
-	template<typename... Args>
-	struct pack_list {
-		static constexpr size_t const size = sizeof...( Args );
-	};
 
 	template<typename T, typename... Args>
 	struct pack_list_front {
@@ -718,7 +737,7 @@ namespace daw::traits {
 	inline constexpr auto pack_index_of_v = pack_index_of<T, Pack...>::value;
 
 	template<typename T, typename... Pack>
-	inline constexpr bool pack_exits_v = pack_index_of_v<T, Pack...> >= 0;
+	inline constexpr bool pack_exists_v = pack_index_of_v<T, Pack...> >= 0;
 
 	template<template<typename...> typename Template, typename Type>
 	struct is_instance_of : std::false_type {};
@@ -751,7 +770,7 @@ namespace daw::traits {
 		template<size_t N>
 		struct argument {
 			static_assert( N < arity, "Attempt to access argument out of range." );
-			using type = typename std::tuple_element<N, std::tuple<Args...>>::type;
+			using type = nth_element<N, Args...>;
 		};
 
 		template<typename Func>
@@ -770,7 +789,7 @@ namespace daw::traits {
 		template<size_t N>
 		struct argument {
 			static_assert( N < arity, "Attempt to access argument out of range." );
-			using type = typename std::tuple_element<N, std::tuple<Args...>>::type;
+			using type = nth_element<N, Args...>;
 		};
 
 		template<typename Func>
@@ -885,7 +904,7 @@ namespace daw::traits {
 	namespace class_parts_details {
 		template<std::size_t Idx, typename T, typename Tp>
 		constexpr bool update_if_same( std::size_t &result, std::size_t NotFound ) {
-			if constexpr( std::is_same_v<T, std::tuple_element_t<Idx, Tp>> ) {
+			if constexpr( std::is_same_v<T, pack_element_t<Idx, Tp>> ) {
 				if( result == NotFound ) {
 					result = Idx;
 				}
@@ -896,7 +915,7 @@ namespace daw::traits {
 		template<std::size_t Idx, typename T, typename Tp>
 		constexpr bool update_if_different( std::size_t &result,
 		                                    std::size_t NotFound ) {
-			if constexpr( not std::is_same_v<T, std::tuple_element_t<Idx, Tp>> ) {
+			if constexpr( not std::is_same_v<T, pack_element_t<Idx, Tp>> ) {
 				if( result == NotFound ) {
 					result = Idx;
 				}
@@ -916,7 +935,7 @@ namespace daw::traits {
 		constexpr std::size_t find_template_parameter( std::size_t NotFound ) {
 			static_assert( StartIdx < sizeof...( Args ) );
 			std::size_t result = NotFound;
-			find_template_parameter<StartIdx, T, std::tuple<Args...>>(
+			find_template_parameter<StartIdx, T, pack_list<Args...>>(
 			  result, std::make_index_sequence<sizeof...( Args ) - StartIdx>{ },
 			  NotFound );
 			return result;
@@ -929,7 +948,7 @@ namespace daw::traits {
 		                                           std::size_t NotFound ) {
 			std::size_t result = NotFound;
 			(void)( update_if_different<
-			          StartIdx + Idx, std::tuple_element_t<StartIdx + Idx, Lhs>, Rhs>(
+			          StartIdx + Idx, pack_element_t<StartIdx + Idx, Lhs>, Rhs>(
 			          result, NotFound ) &&
 			        ... );
 			return result;
@@ -940,7 +959,7 @@ namespace daw::traits {
 			using TpL = typename Lhs::class_template_parameters;
 			using TpR = typename Rhs::class_template_parameters;
 			constexpr std::size_t Max =
-			  std::min( std::tuple_size_v<TpL>, std::tuple_size_v<TpL> );
+			  std::min( pack_size_v<TpL>, pack_size_v<TpL> );
 			return find_first_mismatch<StartIdx>(
 			  static_cast<TpL *>( nullptr ), static_cast<TpR *>( nullptr ),
 			  std::make_index_sequence<Max - StartIdx>{ }, Max );
@@ -969,8 +988,7 @@ namespace daw::traits {
 		static constexpr bool is_templated_class = true;
 
 		template<std::size_t Idx>
-		using nth_class_template_parameter =
-		  std::tuple_element_t<Idx, class_template_parameters>;
+		using nth_class_template_parameter = nth_element<Idx, Args...>;
 
 		template<typename T>
 		using has_class_template_parameter =
@@ -1064,7 +1082,7 @@ namespace daw {
 	inline constexpr index_constant<N> index_constant_v = index_constant<N>{ };
 
 	template<std::size_t Index, typename... Cases>
-	using switch_t = std::tuple_element_t<Index, std::tuple<Cases...>>;
+	using switch_t = traits::pack_element_t<Index, traits::pack_list<Cases...>>;
 
 	template<typename>
 	struct template_param {};
