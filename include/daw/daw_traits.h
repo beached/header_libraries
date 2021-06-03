@@ -361,12 +361,15 @@ namespace daw::traits {
 	template<std::size_t I, typename... Ts>
 	using nth_element = nth_type<I, Ts...>;
 
+} // namespace daw::traits
+
+namespace daw {
 	template<std::size_t Idx, typename Pack>
 	struct pack_element;
 
 	template<std::size_t Idx, template<class...> class Pack, typename... Ts>
 	struct pack_element<Idx, Pack<Ts...>> {
-		using type = nth_type<Idx, Ts...>;
+		using type = traits::nth_type<Idx, Ts...>;
 	};
 
 	template<std::size_t Idx, typename Pack>
@@ -376,7 +379,8 @@ namespace daw::traits {
 	struct pack_size;
 
 	template<template<class...> class Pack, typename... Ts>
-	struct pack_size<Pack<Ts...>>: std::integral_constant<std::size_t, sizeof...(Ts)> { }; 
+	struct pack_size<Pack<Ts...>>
+	  : std::integral_constant<std::size_t, sizeof...( Ts )> {};
 
 	template<typename Pack>
 	inline constexpr std::size_t pack_size_v = pack_size<Pack>::value;
@@ -385,7 +389,9 @@ namespace daw::traits {
 	struct pack_list {
 		static constexpr size_t const size = sizeof...( Args );
 	};
+} // namespace daw
 
+namespace daw::traits {
 	namespace traits_details {
 		template<typename T>
 		[[maybe_unused]] auto has_to_string( T const &, long ) -> std::false_type;
@@ -947,8 +953,8 @@ namespace daw::traits {
 		                                           std::index_sequence<Idx...>,
 		                                           std::size_t NotFound ) {
 			std::size_t result = NotFound;
-			(void)( update_if_different<
-			          StartIdx + Idx, pack_element_t<StartIdx + Idx, Lhs>, Rhs>(
+			(void)( update_if_different<StartIdx + Idx,
+			                            pack_element_t<StartIdx + Idx, Lhs>, Rhs>(
 			          result, NotFound ) &&
 			        ... );
 			return result;
@@ -1082,7 +1088,7 @@ namespace daw {
 	inline constexpr index_constant<N> index_constant_v = index_constant<N>{ };
 
 	template<std::size_t Index, typename... Cases>
-	using switch_t = traits::pack_element_t<Index, traits::pack_list<Cases...>>;
+	using switch_t = pack_element_t<Index, pack_list<Cases...>>;
 
 	template<typename>
 	struct template_param {};
