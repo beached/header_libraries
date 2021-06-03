@@ -462,6 +462,9 @@ namespace daw {
 		  std::forward<Function>( func ) );
 	}
 
+	template<typename... Args>
+	struct pack_list {};
+
 	namespace traits {
 #if DAW_HAS_BUILTIN( __type_pack_element )
 		template<std::size_t I, typename... Ts>
@@ -496,11 +499,6 @@ namespace daw {
 		template<std::size_t I, typename... Ts>
 		using nth_element = nth_type<I, Ts...>;
 	} // namespace traits
-
-	template<typename... Args>
-	struct pack_list {
-		static constexpr size_t const size = sizeof...( Args );
-	};
 
 	template<size_t N, typename... Args>
 	using type_n_t = traits::nth_element<N, Args...>;
