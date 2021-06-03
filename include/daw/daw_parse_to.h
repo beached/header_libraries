@@ -91,7 +91,7 @@ namespace daw {
 			                                      std::nullptr_t> = nullptr>
 			constexpr T parse_to_value( daw::string_view str, tag_t<T> ) {
 				daw::exception::precondition_check<empty_input_exception>(
-				  !str.empty( ) );
+				  not str.empty( ) );
 
 				return helpers::parse_unsigned_int<T>( str );
 			}

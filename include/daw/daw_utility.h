@@ -637,7 +637,7 @@ namespace daw {
 	      ( std::is_same_v<T, U> ? 0 : 1 + pack_index_of<T, Ts...>::value )> {};
 
 	template<size_t N, typename... Ts>
-	using pack_type_at = std::tuple_element_t<N, std::tuple<Ts...>>;
+	using pack_type_at = traits::nth_type<N, Ts...>;
 
 	template<typename T, typename... Ts>
 	constexpr size_t pack_index_of_v = pack_index_of<T, Ts...>::value;

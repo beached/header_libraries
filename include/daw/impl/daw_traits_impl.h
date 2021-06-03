@@ -11,6 +11,11 @@
 #include "../daw_move.h"
 
 #include <ciso646>
+#include <cstddef>
+#include <iterator>
+#include <string_view>
+#include <tuple>
+#include <type_traits>
 
 namespace daw {
 	namespace traits {
@@ -457,8 +462,37 @@ namespace daw {
 		  std::forward<Function>( func ) );
 	}
 
+	namespace traits {
+#if DAW_HAS_BUILTIN( __type_pack_element )
+		template<std::size_t I, typename... Ts>
+		using nth_type = __type_pack_element<I, Ts...>;
+#else
+		namespace traits_details {
+			template<std::size_t I, typename T, typename... Ts>
+			struct nth_type_impl {
+				using type = typename nth_type_impl<I - 1, Ts...>::type;
+			};
+
+			template<typename T, typename... Ts>
+			struct nth_type_impl<0, T, Ts...> {
+				using type = T;
+			};
+		} // namespace traits_details
+
+		template<std::size_t I, typename... Ts>
+		using nth_type = typename traits_details::nth_type_impl<I, Ts...>::type;
+#endif
+		template<std::size_t I, typename... Ts>
+		using nth_element = nth_type<I, Ts...>;
+	} // namespace traits
+
+	template<typename... Args>
+	struct pack_list {
+		static constexpr size_t const size = sizeof...( Args );
+	};
+
 	template<size_t N, typename... Args>
-	using type_n_t = std::tuple_element_t<N, std::tuple<Args...>>;
+	using type_n_t = traits::nth_element<N, Args...>;
 
 	template<bool Condition, typename IfTrue, typename IfFalse>
 	struct type_if_else {
@@ -478,7 +512,7 @@ namespace daw {
 
 	template<size_t N, typename... Args>
 	struct pack_type {
-		using type = std::decay_t<std::tuple_element_t<N, std::tuple<Args...>>>;
+		using type = std::decay_t<traits::nth_element<N, Args...>>;
 	};
 
 	template<size_t N, typename... Args>
