@@ -467,17 +467,28 @@ namespace daw {
 		template<std::size_t I, typename... Ts>
 		using nth_type = __type_pack_element<I, Ts...>;
 #else
-		namespace traits_details {
-			template<std::size_t I, typename T, typename... Ts>
-			struct nth_type_impl {
-				using type = typename nth_type_impl<I - 1, Ts...>::type;
-			};
+		namespace nth_type_impl {
+			template<std::size_t I, typename T>
+			struct nth_type_leaf {};
 
-			template<typename T, typename... Ts>
-			struct nth_type_impl<0, T, Ts...> {
-				using type = T;
-			};
-		} // namespace traits_details
+			template<typename TPack, typename IPack>
+			struct nth_type_base;
+
+			template<typename... Ts, std::size_t... Is>
+			struct nth_type_base<std::index_sequence<Is...>, pack_list<Ts...>>
+			  : nth_type_leaf<Is, Ts>... {};
+
+			template<typename... Ts>
+			using nth_type_impl =
+			  nth_type_base<std::index_sequence_for<Ts...>, pack_list<Ts...>>;
+
+			template<std::size_t I, typename T>
+			auto find_leaf_type( nth_type_leaf<I, T> const & ) -> identity<T>;
+		} // namespace nth_type_impl
+
+		template<std::size_t Idx, typename... Ts>
+		using nth_type = typename decltype( nth_type_impl::find_leaf_type<Idx>(
+		  std::declval<nth_type_impl::nth_type_impl<Ts...>>( ) ) )::type;
 
 		template<std::size_t I, typename... Ts>
 		using nth_type = typename traits_details::nth_type_impl<I, Ts...>::type;
