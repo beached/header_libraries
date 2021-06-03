@@ -462,34 +462,44 @@ namespace daw {
 		  std::forward<Function>( func ) );
 	}
 
+	template<typename... Args>
+	struct pack_list {};
+
 	namespace traits {
+		template<typename T>
+		struct identity {
+			using type = T;
+		};
 #if DAW_HAS_BUILTIN( __type_pack_element )
 		template<std::size_t I, typename... Ts>
 		using nth_type = __type_pack_element<I, Ts...>;
 #else
-		namespace traits_details {
-			template<std::size_t I, typename T, typename... Ts>
-			struct nth_type_impl {
-				using type = typename nth_type_impl<I - 1, Ts...>::type;
-			};
+		namespace nth_type_impl {
+			template<std::size_t I, typename T>
+			struct nth_type_leaf {};
 
-			template<typename T, typename... Ts>
-			struct nth_type_impl<0, T, Ts...> {
-				using type = T;
-			};
-		} // namespace traits_details
+			template<typename TPack, typename IPack>
+			struct nth_type_base;
 
-		template<std::size_t I, typename... Ts>
-		using nth_type = typename traits_details::nth_type_impl<I, Ts...>::type;
+			template<typename... Ts, std::size_t... Is>
+			struct nth_type_base<std::index_sequence<Is...>, pack_list<Ts...>>
+			  : nth_type_leaf<Is, Ts>... {};
+
+			template<typename... Ts>
+			using nth_type_impl =
+			  nth_type_base<std::index_sequence_for<Ts...>, pack_list<Ts...>>;
+
+			template<std::size_t I, typename T>
+			auto find_leaf_type( nth_type_leaf<I, T> const & ) -> identity<T>;
+		} // namespace nth_type_impl
+
+		template<std::size_t Idx, typename... Ts>
+		using nth_type = typename decltype( nth_type_impl::find_leaf_type<Idx>(
+		  std::declval<nth_type_impl::nth_type_impl<Ts...>>( ) ) )::type;
 #endif
 		template<std::size_t I, typename... Ts>
 		using nth_element = nth_type<I, Ts...>;
 	} // namespace traits
-
-	template<typename... Args>
-	struct pack_list {
-		static constexpr size_t const size = sizeof...( Args );
-	};
 
 	template<size_t N, typename... Args>
 	using type_n_t = traits::nth_element<N, Args...>;

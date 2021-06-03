@@ -663,11 +663,6 @@ namespace daw::traits {
 	template<typename T>
 	inline constexpr bool is_character_v = is_one_of_v<T, char, wchar_t>;
 
-	template<typename T>
-	struct identity {
-		using type = T;
-	};
-
 	template<typename... Args>
 	using last_type_t = typename decltype( ( identity<Args>{ }, ... ) )::type;
 
