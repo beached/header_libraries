@@ -30,6 +30,7 @@ set(TEST_SOURCES
 	daw_fnv1a_hash_test.cpp
 	daw_function_table_test.cpp
 	daw_function_test.cpp
+	daw_fwd_pack_apply_test.cpp
 	daw_generic_hash_test.cpp
 	daw_graph_algorithm_test.cpp
 	daw_graph_test.cpp
