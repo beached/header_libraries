@@ -118,7 +118,7 @@ namespace daw {
 		           std::nullptr_t> = nullptr>
 		[[nodiscard]] static variant_type variant_from_code( Function &&func,
 		                                                     Args &&...args ) {
-#ifdef DAW_USE_EXCEPTIONS
+#if defined( DAW_USE_EXCEPTIONS )
 			try {
 				return func( std::forward<Args>( args )... );
 			} catch( ... ) { return std::current_exception( ); }
@@ -165,7 +165,7 @@ namespace daw {
 		}
 
 		[[nodiscard]] std::exception_ptr get_exception_ptr( ) const noexcept {
-			return std::get<std::exception_ptr>( m_value );
+			return *std::get_if<std::exception_ptr>( &m_value );
 		}
 
 		[[nodiscard]] bool empty( ) const noexcept {
@@ -178,26 +178,26 @@ namespace daw {
 		}
 
 		void throw_if_exception( ) const {
-			if( !has_exception( ) ) {
+			if( not has_exception( ) ) {
 				return;
 			}
-			std::rethrow_exception( std::get<std::exception_ptr>( m_value ) );
+			std::rethrow_exception( *std::get_if<std::exception_ptr>( &m_value ) );
 		}
 
 		[[nodiscard]] reference get( ) {
 			if( empty( ) ) {
-				std::abort( );
+				std::terminate( );
 			}
 			throw_if_exception( );
-			return std::get<value_type>( m_value );
+			return *std::get_if<value_type>( &m_value );
 		}
 
 		[[nodiscard]] const_reference get( ) const {
 			if( empty( ) ) {
-				std::abort( );
+				std::terminate( );
 			}
 			throw_if_exception( );
-			return std::get<value_type>( m_value );
+			return *std::get_if<value_type>( &m_value );
 		}
 
 		[[nodiscard]] reference operator*( ) {
@@ -218,7 +218,7 @@ namespace daw {
 
 		[[nodiscard]] std::string get_exception_message( ) const noexcept {
 			auto result = std::string( );
-#ifdef DAW_USE_EXCEPTIONS
+#if defined( DAW_USE_EXCEPTIONS )
 			try {
 				throw_if_exception( );
 			} catch( std::system_error const &e ) {
@@ -295,7 +295,7 @@ namespace daw {
 		template<class Function, typename... Args>
 		[[nodiscard]] static variant_type
 		variant_from_code( Function &&func, Args &&...args ) noexcept {
-#ifdef DAW_USE_EXCEPTIONS
+#if defined( DAW_USE_EXCEPTIONS )
 			try {
 				(void)func( std::forward<Args>( args )... );
 				return expected_details::ExpectedTag<expected_details::Void>( );
@@ -342,7 +342,7 @@ namespace daw {
 		}
 
 		[[nodiscard]] std::exception_ptr get_exception_ptr( ) const noexcept {
-			return std::get<std::exception_ptr>( m_value );
+			return *std::get_if<std::exception_ptr>( &m_value );
 		}
 
 		[[nodiscard]] bool empty( ) const noexcept {
@@ -358,19 +358,19 @@ namespace daw {
 			if( not has_exception( ) ) {
 				return;
 			}
-			std::rethrow_exception( std::get<std::exception_ptr>( m_value ) );
+			std::rethrow_exception( *std::get_if<std::exception_ptr>( &m_value ) );
 		}
 
 		void get( ) const {
 			if( empty( ) ) {
-				std::abort( );
+				std::terminate( );
 			}
 			throw_if_exception( );
 		}
 
 		[[nodiscard]] std::string get_exception_message( ) const noexcept {
 			std::string result{ };
-#ifdef DAW_USE_EXCEPTIONS
+#if defined( DAW_USE_EXCEPTIONS )
 			try {
 				throw_if_exception( );
 			} catch( std::exception const &e ) { result = e.what( ); } catch( ... ) {
