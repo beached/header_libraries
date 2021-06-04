@@ -1070,4 +1070,11 @@ namespace daw {
 
 	template<typename T>
 	inline constexpr template_param<T> template_arg = template_param<T>{ };
+
+	template<typename... Ts>
+	struct expander {
+		constexpr expander( Ts const &... ) noexcept {}
+	};
+	template<typename... Ts>
+	expander( Ts... ) -> expander<Ts...>; // no warnings about intent to use CTAD
 } // namespace daw
