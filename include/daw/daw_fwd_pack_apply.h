@@ -19,47 +19,48 @@
 
 namespace daw {
 	namespace fwd_pack_impl {
-	template<std::size_t Idx, typename T>
-	struct pack_leaf {
-		std::remove_reference_t<T> *value;
+		template<std::size_t Idx, typename T>
+		struct pack_leaf {
+			std::remove_reference_t<T> *value;
+		};
+
+		template<typename Pack, typename IndexSeq>
+		struct fwd_pack_base;
+
+		template<typename Pack, std::size_t... Is>
+		struct fwd_pack_base<Pack, std::index_sequence<Is...>>
+		  : pack_leaf<Is, pack_element_t<Is, Pack>>... {};
+	} // namespace fwd_pack_impl
+
+	template<typename... Ts>
+	struct fwd_pack
+	  : fwd_pack_impl::fwd_pack_base<pack_list<Ts...>,
+	                                 std::index_sequence_for<Ts...>> {
+
+		using base_type =
+		  fwd_pack_impl::fwd_pack_base<pack_list<Ts...>,
+		                               std::index_sequence_for<Ts...>>;
+
+		DAW_ATTRIB_FLATINLINE inline constexpr fwd_pack( ) noexcept = default;
+
+		DAW_ATTRIB_FLATINLINE inline constexpr fwd_pack( Ts... args ) noexcept
+		  : base_type{ std::addressof( args )... } {}
+
+		template<std::size_t Idx>
+		DAW_ATTRIB_FLATINLINE inline constexpr decltype( auto ) get( ) {
+			static_assert( sizeof...( Ts ) > 0, "Error to call get on empty pack" );
+			using result_t = daw::traits::nth_type<Idx, Ts...>;
+			using leaf_t = fwd_pack_impl::pack_leaf<Idx, result_t>;
+			return static_cast<result_t>( *static_cast<leaf_t *>( this )->value );
+		}
 	};
-
-	template<typename Pack, typename IndexSeq>
-	struct fwd_pack_base;
-
-	template<typename Pack, std::size_t... Is>
-	struct fwd_pack_base<Pack, std::index_sequence<Is...>>
-		: pack_leaf<Is, pack_element_t<Is, Pack>>... {};
-} // namespace fwd_pack_impl
-
-template<typename... Ts>
-struct fwd_pack
-	: fwd_pack_impl::fwd_pack_base<pack_list<Ts...>,
-		std::index_sequence_for<Ts...>> {
-
-using base_type =
-fwd_pack_impl::fwd_pack_base<pack_list<Ts...>,
-std::index_sequence_for<Ts...>>;
-
-DAW_ATTRIB_FLATINLINE inline constexpr fwd_pack( ) noexcept = default;
-
-DAW_ATTRIB_FLATINLINE inline constexpr fwd_pack( Ts... args ) noexcept
-: base_type{ std::addressof( args )... } {}
-
-template<std::size_t Idx>
-constexpr decltype( auto ) get( ) {
-	static_assert( sizeof...( Ts ) > 0, "Error to call get on empty pack" );
-	using result_t = daw::traits::nth_type<Idx, Ts...>;
-	using leaf_t = fwd_pack_impl::pack_leaf<Idx, result_t>;
-	return static_cast<result_t>( *static_cast<leaf_t *>( this )->value );
-}
-};
 
 	template<typename... Ts>
 	fwd_pack( Ts &&... ) -> fwd_pack<Ts &&...>;
 
 	template<std::size_t Idx, typename... Ts>
-	constexpr decltype( auto ) get( fwd_pack<Ts...> &&p ) {
+	DAW_ATTRIB_FLATINLINE inline constexpr decltype( auto )
+	get( fwd_pack<Ts...> &&p ) {
 		return DAW_MOVE( p ).template get<Idx>( );
 	}
 
