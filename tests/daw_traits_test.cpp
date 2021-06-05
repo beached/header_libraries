@@ -827,5 +827,6 @@ static_assert(
 static_assert( daw::traits::pack_index_of_v<int, double, float, int> == 2 );
 
 int main( ) {
+	(void)daw::expander{ 1, 2, 3 }; 
 	daw_traits_enable_if_any( );
 }
