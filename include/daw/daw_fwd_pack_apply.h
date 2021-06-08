@@ -14,6 +14,7 @@
 #include "daw_unreachable.h"
 
 #include <cstddef>
+#include <memory>
 #include <type_traits>
 #include <utility>
 
@@ -44,7 +45,7 @@ namespace daw {
 		DAW_ATTRIB_FLATINLINE inline constexpr fwd_pack( ) noexcept = default;
 
 		DAW_ATTRIB_FLATINLINE inline constexpr fwd_pack( Ts... args ) noexcept
-		  : base_type{ std::addressof( args )... } {}
+		  : base_type{ {std::addressof( args )}... } {}
 
 		template<std::size_t Idx>
 		DAW_ATTRIB_FLATINLINE inline constexpr decltype( auto ) get( ) {
