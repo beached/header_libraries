@@ -35,6 +35,9 @@ namespace daw::filesystem {
 	enum class open_mode : bool { read, read_write };
 
 #if not defined( _MSC_VER )
+	/***
+	 * A RAII Memory Mapped File object
+	 */
 	template<typename T = char>
 	struct memory_mapped_file_t {
 		using value_type = T;
@@ -66,6 +69,10 @@ namespace daw::filesystem {
 	public:
 		constexpr explicit memory_mapped_file_t( ) noexcept = default;
 
+		/***
+		 * Open memory mapped file with file path supplied
+		 * Caller is responsible for ensuring that the StringView is zero terminated
+		 */
 		template<typename StringView,
 		         std::enable_if_t<daw::traits::is_string_view_like_v<StringView>,
 		                          std::nullptr_t> = nullptr>
@@ -76,12 +83,20 @@ namespace daw::filesystem {
 			            mode );
 		}
 
+		/***
+		 * Open memory mapped file with file path supplied
+		 * Caller is responsible for ensuring that the StringView is zero terminated
+		 */
 		explicit memory_mapped_file_t( char const *file,
 		                               open_mode mode = open_mode::read ) noexcept {
 
 			(void)open( std::string_view( file ), mode );
 		}
 
+		/***
+		 * Open memory mapped file with file path supplied
+		 * Caller is responsible for ensuring that the StringView is zero terminated
+		 */
 		[[nodiscard]] bool open( std::string_view file,
 		                         open_mode mode = open_mode::read ) noexcept {
 
@@ -210,6 +225,9 @@ namespace daw::filesystem {
 		}
 	} // namespace mapfile_impl
 
+	/***
+	 * A RAII Memory Mapped File object
+	 */
 	template<typename T = char>
 	struct memory_mapped_file_t {
 		using value_type = T;
@@ -239,12 +257,20 @@ namespace daw::filesystem {
 	public:
 		constexpr memory_mapped_file_t( ) noexcept = default;
 
+		/***
+		 * Open memory mapped file with file path supplied
+		 * Caller is responsible for ensuring that the StringView is zero terminated
+		 */
 		memory_mapped_file_t( std::string_view file,
 		                      open_mode mode = open_mode::read ) noexcept {
 
 			(void)open( file, mode );
 		}
 
+		/***
+		 * Open memory mapped file with file path supplied
+		 * Caller is responsible for ensuring that the StringView is zero terminated
+		 */
 		memory_mapped_file_t( std::wstring_view file,
 		                      open_mode mode = open_mode::read ) noexcept {
 
@@ -252,7 +278,8 @@ namespace daw::filesystem {
 		}
 
 		/***
-		 * file must be zero terminated
+		 * Open memory mapped file with file path supplied
+		 * Caller is responsible for ensuring that the StringView is zero terminated
 		 */
 		[[nodiscard]] bool open( std::string_view file,
 		                         open_mode mode = open_mode::read ) noexcept {
