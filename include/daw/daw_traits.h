@@ -1073,7 +1073,7 @@ namespace daw {
 
 	template<typename... Ts>
 	struct expander {
-		constexpr expander( Ts const &... ) noexcept {}
+		explicit constexpr expander( Ts const &... ) noexcept {}
 	};
 	template<typename... Ts>
 	expander( Ts... ) -> expander<Ts...>; // no warnings about intent to use CTAD

@@ -665,7 +665,7 @@ namespace daw {
 
 	public:
 		template<typename F, typename... P>
-		constexpr bind_front( F &&func, P &&...params )
+		explicit constexpr bind_front( F &&func, P &&...params )
 		  : m_func( DAW_FWD( func ) )
 		  , m_params( DAW_FWD( params )... ) {}
 

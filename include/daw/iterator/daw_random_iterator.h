@@ -27,7 +27,7 @@ namespace daw {
 	public:
 		constexpr RandomIterator( ) noexcept = default;
 
-		constexpr RandomIterator( T *ptr ) noexcept
+		explicit constexpr RandomIterator( T *ptr ) noexcept
 		  : m_pointer{ ptr } {}
 
 		constexpr RandomIterator &operator=( T *rhs ) noexcept {
