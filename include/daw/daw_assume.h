@@ -14,17 +14,17 @@
 
 #ifndef NDEBUG
 
-#define DAW_ASSUME( ... ) assert( __VA_ARGS__ )
+#define DAW_ASSUME( ... ) assert( (__VA_ARGS__) )
 
 #else
 
 #if DAW_HAS_BUILTIN( __builtin_unreachable )
 
 #define DAW_ASSUME( ... )                                                      \
-	while( not( ( __VA_ARGS__ ) ) ) {                                            \
-		__builtin_unreachable( );                                                  \
-	}                                                                            \
 	do {                                                                         \
+		while( not( ( __VA_ARGS__ ) ) ) {                                          \
+			__builtin_unreachable( );                                                \
+		}                                                                          \
 	} while( false )
 
 #elif defined( _MSC_VER )
