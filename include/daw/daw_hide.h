@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <ciso646>
+
 #if !defined( DAW_NO_FLATTEN ) and !defined( _MSC_VER )
 #define DAW_ATTRIBUTE_FLATTEN [[gnu::flatten, gnu::always_inline]]
 #define DAW_ATTRIBUTE_HIDDEN __attribute__( ( visibility( "hidden" ) ) )
