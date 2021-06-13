@@ -1053,4 +1053,5 @@ namespace daw {
 			return std::data( c ) + static_cast<std::ptrdiff_t>( std::size( c ) );
 		}
 	}
+	struct Empty {};
 } // namespace daw
