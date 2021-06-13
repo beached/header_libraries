@@ -110,6 +110,3 @@ namespace daw {
 	on_exit_success( Handler ) -> on_exit_success<Handler>;
 } // namespace daw
 
-#ifdef DAW_SG_CXDTOR
-#undef DAW_SG_CXDTOR
-#endif
