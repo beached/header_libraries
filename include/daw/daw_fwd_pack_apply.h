@@ -56,6 +56,11 @@ namespace daw {
 		}
 	};
 
+	template<>
+	struct fwd_pack<> {
+		DAW_ATTRIB_FLATINLINE inline constexpr fwd_pack( ) noexcept = default;
+	};
+
 	template<typename... Ts>
 	fwd_pack( Ts &&... ) -> fwd_pack<Ts &&...>;
 
