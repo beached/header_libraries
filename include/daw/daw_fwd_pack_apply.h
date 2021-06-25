@@ -56,6 +56,10 @@ namespace daw {
 		}
 	};
 
+	template<>
+	struct fwd_pack<> {
+	};
+
 	template<typename... Ts>
 	fwd_pack( Ts &&... ) -> fwd_pack<Ts &&...>;
 
