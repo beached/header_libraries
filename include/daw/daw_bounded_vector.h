@@ -36,7 +36,7 @@ namespace daw {
 		using pointer = value_type *;
 		using const_pointer = value_type const *;
 		using size_type = std::size_t;
-		using difference_type = intmax_t;
+		using difference_type = std::ptrdiff_t;
 
 	private:
 		std::size_t m_index = 0;
@@ -71,7 +71,7 @@ namespace daw {
 			return m_index - m_first;
 		}
 
-		[[nodiscard]] constexpr size_type capacity( ) const noexcept {
+		[[nodiscard]] static constexpr size_type capacity( ) noexcept {
 			return N;
 		}
 
@@ -342,5 +342,119 @@ namespace daw {
 				daw::cswap( operator[]( n ), rhs[n] );
 			}
 		}
+	};
+
+	template<typename T>
+	struct bounded_vector_t<T, 0> {
+		static_assert( std::is_default_constructible_v<T>,
+		               "T must be default constructible" );
+		static_assert( std::is_trivially_destructible_v<T>,
+		               "T must be trivially destructible" );
+		using value_type = T;
+		using reference = void;
+		using const_reference = void;
+		using iterator = void;
+		using const_iterator = T const *;
+		using reverse_iterator = std::reverse_iterator<T *>;
+		using const_reverse_iterator = std::reverse_iterator<T const *>;
+		using pointer = value_type *;
+		using const_pointer = value_type const *;
+		using size_type = std::size_t;
+		using difference_type = std::ptrdiff_t;
+
+		constexpr bounded_vector_t( ) noexcept = default;
+		constexpr bounded_vector_t( const_pointer, size_type ) noexcept {}
+
+		template<typename Iterator>
+		constexpr bounded_vector_t( Iterator, Iterator ) {
+			std::terminate( );
+		}
+
+		static constexpr bool empty( ) noexcept {
+			return true;
+		}
+
+		static constexpr bool full( ) noexcept {
+			return true;
+		}
+
+		static constexpr size_type size( ) noexcept {
+			return 0;
+		}
+
+		static constexpr size_type capacity( ) noexcept {
+			return 0;
+		}
+
+		static constexpr bool has_room( size_type count ) noexcept {
+			return false;
+		}
+
+		static constexpr size_type available( ) noexcept {
+			return 0;
+		}
+
+		static constexpr void clear( ) noexcept {}
+
+		static constexpr const_reference front( ) noexcept {
+			std::terminate( );
+		}
+
+		static constexpr const_reference back( ) noexcept {
+			std::terminate( );
+		}
+
+		constexpr const_reference operator[]( size_type ) noexcept {
+			std::terminate( );
+		}
+
+		static constexpr const_reference at( size_type pos ) {
+			std::terminate( );
+		}
+
+		static constexpr pointer data( ) noexcept {
+			return nullptr;
+		}
+
+		static constexpr const_iterator begin( ) noexcept {
+			return nullptr;
+		}
+
+		static constexpr const_iterator cbegin( ) noexcept {
+			return nullptr;
+		}
+
+		static constexpr const_reverse_iterator rbegin( ) noexcept {
+			return const_reverse_iterator( end( ) );
+		}
+
+		static constexpr const_reverse_iterator crbegin( ) noexcept {
+			return const_reverse_iterator( cend( ) );
+		}
+
+		static constexpr const_iterator end( ) noexcept {
+			return nullptr;
+		}
+
+		static constexpr const_iterator cend( ) noexcept {
+			return nullptr;
+		}
+
+		static constexpr const_reverse_iterator rend( ) noexcept {
+			return const_reverse_iterator( begin( ) );
+		}
+
+		static constexpr const_reverse_iterator crend( ) noexcept {
+			return const_reverse_iterator( cbegin( ) );
+		}
+
+		static constexpr void resize( size_type const count ) {
+			daw::exception::precondition_check<std::out_of_range>(
+			  count <= capacity( ), "Attempt to resize past capacity of fix_stack" );
+		}
+
+		static constexpr void zero( ) noexcept {}
+
+		static constexpr void swap( bounded_vector_t &rhs ) {}
 	};
 } // namespace daw
