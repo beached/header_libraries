@@ -508,4 +508,12 @@ namespace daw {
 
 	template<typename Tuple>
 	inline constexpr bool is_empty_tuple_v = ( tuple_size_v<Tuple> == 0 );
+
+	template<typename... Ts>
+	constexpr auto forward_nontemp_as_tuple( Ts &&...values ) {
+		using tuple_t =
+		  std::tuple<std::conditional_t<std::is_rvalue_reference_v<Ts>,
+		                                daw::remove_cvref_t<Ts>, Ts>...>;
+		return tuple_t{ DAW_FWD( values )... };
+	}
 } // namespace daw
