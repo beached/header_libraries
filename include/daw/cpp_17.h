@@ -691,3 +691,4 @@ namespace daw {
 	template<typename Function, typename... Params>
 	bind_front( Function, Params... ) -> bind_front<Function, Params...>;
 } // namespace daw
+
