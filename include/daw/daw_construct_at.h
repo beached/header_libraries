@@ -17,8 +17,8 @@
 namespace daw {
 #if not defined( __cpp_lib_constexpr_dynamic_alloc )
 
-	template<typename T, typename... Args>
-	inline T *construct_at( T *p, Args &&...args ) {
+	template<typename T, typename Storage, typename... Args>
+	inline T *construct_at( Storage *p, Args &&...args ) {
 		if constexpr( std::is_aggregate_v<T> ) {
 			return ::new(
 			  const_cast<void *>( static_cast<const volatile void *>( p ) ) )
@@ -29,12 +29,12 @@ namespace daw {
 			  T( std::forward<Args>( args )... );
 		}
 	}
-}
-#define DAW_CONSTRUCT_AT( ... ) ::daw::construct_at( __VA_ARGS__ )
-
 #else
 
-#define DAW_CONSTRUCT_AT( ... ) ::std::construct_at( __VA_ARGS__ )
-
+	template<typename T, typename Storage, typename... Args>
+	inline constexpr T *construct_at( Storage *p, Args &&...args ) {
+		return std::construct_at( reinterpret_cast<T*>( p ), DAW_FWD( args )... );
+	}
 #endif
+}
 
