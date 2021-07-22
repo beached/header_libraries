@@ -43,10 +43,9 @@ namespace daw::filesystem {
 		using value_type = T;
 		using reference = T &;
 		using const_reference =
-		  typename std::conditional<std::is_const<T>::value, T, T const>::type &;
+		  std::conditional_t<std::is_const_v<T>, T, T const> &;
 		using pointer = T *;
-		using const_pointer =
-		  typename std::conditional<std::is_const<T>::value, T, T const>::type *;
+		using const_pointer = std::conditional_t<std::is_const_v<T>, T, T const> *;
 		using size_type = size_t;
 
 	private:
