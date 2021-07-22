@@ -8,7 +8,7 @@
 
 cmake_minimum_required(VERSION 3.14)
 
-project("header-libraries"
+project("daw-header-libraries"
         VERSION "1.21.0"
         DESCRIPTION "Various headers"
         HOMEPAGE_URL "https://github.com/beached/header_libraries"
@@ -62,9 +62,9 @@ install(TARGETS ${PROJECT_NAME}
 include(CMakePackageConfigHelpers)
 
 configure_package_config_file(
-        "${PROJECT_SOURCE_DIR}/cmake/daw-${PROJECT_NAME}Config.cmake.in"
+        "${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake.in"
         "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-        INSTALL_DESTINATION lib/cmake/daw-${PROJECT_NAME}
+        INSTALL_DESTINATION lib/cmake/${PROJECT_NAME}
 )
 
 write_basic_package_version_file("${PROJECT_NAME}ConfigVersion.cmake"
@@ -74,12 +74,12 @@ write_basic_package_version_file("${PROJECT_NAME}ConfigVersion.cmake"
 install(EXPORT ${PROJECT_NAME}_Targets
         FILE ${PROJECT_NAME}Targets.cmake
         NAMESPACE daw::
-        DESTINATION lib/cmake/daw-${PROJECT_NAME}
+        DESTINATION lib/cmake/${PROJECT_NAME}
 )
 
 install(FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
         "${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-        DESTINATION lib/cmake/daw-${PROJECT_NAME}
+        DESTINATION lib/cmake/${PROJECT_NAME}
         )
 
 install(
