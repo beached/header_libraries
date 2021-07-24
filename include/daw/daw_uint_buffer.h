@@ -2263,10 +2263,6 @@ namespace daw {
 		return static_cast<UInt16>( static_cast<std::uint16_t>( lhs ) - rhs );
 	}
 
-	constexpr UInt16 operator-( UInt8 lhs, std::uint16_t rhs ) noexcept {
-		return static_cast<UInt16>( static_cast<std::uint16_t>( lhs ) - rhs );
-	}
-
 	constexpr UInt16 operator-( std::uint16_t lhs, UInt16 rhs ) noexcept {
 		return static_cast<UInt16>( static_cast<std::uint16_t>( lhs ) -
 		                            static_cast<std::uint16_t>( rhs ) );
