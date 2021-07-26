@@ -12,13 +12,15 @@
 
 #include <cassert>
 
-#ifndef NDEBUG
+#if not defined( NDEBUG )
 
-#define DAW_ASSUME( ... ) assert( (__VA_ARGS__) )
+#define DAW_ASSUME( ... ) assert( ( __VA_ARGS__ ) )
 
-#else
+#elif DAW_HAS_BUILTIN(__builtin_assume)
 
-#if DAW_HAS_BUILTIN( __builtin_unreachable )
+#define DAW_ASSUME( ... ) __builtin_assume( (__VA_ARGS__) )
+
+#elif DAW_HAS_BUILTIN(__builtin_unreachable)
 
 #define DAW_ASSUME( ... )                                                      \
 	do {                                                                         \
@@ -36,5 +38,4 @@
 #define DAW_ASSUME( ... )                                                      \
 	do {                                                                         \
 	} while( false )
-#endif
 #endif
