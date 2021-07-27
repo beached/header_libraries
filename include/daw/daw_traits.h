@@ -1078,3 +1078,7 @@ namespace daw {
 	template<typename... Ts>
 	expander( Ts... ) -> expander<Ts...>; // no warnings about intent to use CTAD
 } // namespace daw
+
+#define DAW_TYPEOF(...) daw::remove_cvref_t<decltype(__VA_ARGS__)>;
+
+
