@@ -269,4 +269,52 @@ namespace daw {
 	template<typename T>
 	inline constexpr bool is_arithmetic_v = is_arithmetic<T>::value;
 
+	template<typename T>
+	struct make_unsigned: std::make_unsigned<T> {};
+
+#if defined( DAW_HAS_INT128 )
+	template<>
+	struct make_unsigned<__uint128_t> {
+		using type = __uint128_t;
+	};
+
+	template<>
+	struct make_unsigned<__uint128_t const> {
+		using type = __uint128_t const;
+	};
+
+	template<>
+	struct make_unsigned<__uint128_t volatile> {
+		using type = __uint128_t volatile;
+	};
+
+	template<>
+	struct make_unsigned<__uint128_t const volatile> {
+		using type = __uint128_t const volatile;
+	};
+
+	template<>
+	struct make_unsigned<__int128_t> {
+		using type = __uint128_t;
+	};
+
+	template<>
+	struct make_unsigned<__int128_t const> {
+		using type = __uint128_t const;
+	};
+
+	template<>
+	struct make_unsigned<__int128_t volatile> {
+		using type = __uint128_t volatile;
+	};
+
+	template<>
+	struct make_unsigned<__int128_t const volatile> {
+		using type = __uint128_t const volatile;
+	};
+#endif
+
+	template<typename T>
+	using make_unsigned_t = typename make_unsigned<T>::type;	
 } // namespace daw
+

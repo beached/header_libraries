@@ -11,6 +11,7 @@ set(TEST_SOURCES
 	cpp_17_test.cpp 
 	daw_algorithm_test.cpp
 	daw_array_test.cpp
+	daw_arith_traits_test.cpp
 	daw_benchmark_test.cpp
 	daw_bit_queues_test.cpp
 	daw_bit_test.cpp
