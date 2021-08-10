@@ -1032,7 +1032,7 @@ namespace daw::cxmath {
 #if defined( DAW_CX_BIT_CAST )
 		return fp_classify( r ) == fp_classes::infinity;
 #else
-		return r == daw::numeric_limits<Real>::infinity( );
+		return (r == daw::numeric_limits<Real>::infinity( )) | (r == -daw::numeric_limits<Real>::infinity( ));
 #endif
 	}
 	static_assert( not is_inf( daw::numeric_limits<double>::quiet_NaN( ) ) );
