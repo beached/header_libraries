@@ -26,4 +26,8 @@
 
 #define DAW_IS_CONSTANT_EVALUATED( ) __builtin_is_constant_evaluated( )
 
+#elif defined( __GNUC__ ) and not defined( __clang__ ) and __GNUC__ >= 9 and __GNUC_MINOR__ >= 1
+
+#define DAW_IS_CONSTANT_EVALUATED( ) __builtin_is_constant_evaluated( )
+
 #endif
