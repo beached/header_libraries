@@ -12,12 +12,12 @@
 #undef max
 #endif // max
 
-#include "daw/cpp_17.h"
-#include "daw/daw_algorithm.h"
-#include "daw/daw_scope_guard.h"
-#include "daw/daw_traits.h"
-#include "daw/daw_utility.h"
-#include "daw/impl/daw_math_impl.h"
+#include "cpp_17.h"
+#include "daw_algorithm.h"
+#include "daw_scope_guard.h"
+#include "daw_traits.h"
+#include "daw_utility.h"
+#include "impl/daw_math_impl.h"
 
 #include <cassert>
 #include <cfenv>
@@ -287,4 +287,3 @@ namespace daw::math {
 #pragma clang diagnostic pop
 #endif
 } // namespace daw::math
-

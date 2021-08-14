@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "daw/cpp_17.h"
-#include "daw/daw_traits.h"
+#include "cpp_17.h"
+#include "daw_traits.h"
 
 #include <array>
 #include <ciso646>

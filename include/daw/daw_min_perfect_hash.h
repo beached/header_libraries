@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include "daw/daw_bounded_array.h"
-#include "daw/daw_bounded_vector.h"
-#include "daw/daw_fnv1a_hash.h"
 #include "daw_algorithm.h"
+#include "daw_bounded_array.h"
+#include "daw_bounded_vector.h"
+#include "daw_fnv1a_hash.h"
 #include "daw_sort_n.h"
 #include "daw_swap.h"
 
