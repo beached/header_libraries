@@ -9,7 +9,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 project("daw-header-libraries"
-        VERSION "1.23.1"
+        VERSION "1.23.3"
         DESCRIPTION "Various headers"
         HOMEPAGE_URL "https://github.com/beached/header_libraries"
         LANGUAGES C CXX)
@@ -20,12 +20,17 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 option(DAW_ENABLE_TESTING "Build unit tests" OFF)
 
-if ( MSVC AND ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang")
-	# clang-cl/cmake will use -imsvc for include paths when SYSTEM is set.  This breaks code with alternate tokens
-	set(DAW_HEADERLIBRARIES_warning_guard "" )
-else( )
-	set(DAW_HEADERLIBRARIES_warning_guard SYSTEM)
-endif( )
+if (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
+    if( MSVC )
+        # clang-cl/cmake will use -imsvc for include paths when SYSTEM is set.
+        # This breaks code with alternate tokens
+        set(DAW_HEADERLIBRARIES_warning_guard "")
+    else ()
+        set(DAW_HEADERLIBRARIES_warning_guard SYSTEM)
+    endif( )
+else ()
+    set(DAW_HEADERLIBRARIES_warning_guard SYSTEM)
+endif ()
 
 if (DAW_HEADERLIBRARIES_INCLUDE_WITHOUT_SYSTEM)
     set(DAW_HEADERLIBRARIES_warning_guard "")
@@ -81,7 +86,7 @@ install(EXPORT ${PROJECT_NAME}_Targets
         FILE ${PROJECT_NAME}Targets.cmake
         NAMESPACE daw::
         DESTINATION lib/cmake/${PROJECT_NAME}
-)
+        )
 
 install(FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
         "${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
