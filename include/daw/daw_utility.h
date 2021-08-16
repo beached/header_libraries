@@ -8,10 +8,6 @@
 
 #pragma once
 
-#ifdef max
-#undef max
-#endif // max
-
 #include "cpp_17.h"
 #include "daw_algorithm.h"
 #include "daw_construct_a.h"
@@ -442,9 +438,9 @@ namespace daw {
 		static_assert( std::is_integral_v<IntegerSource>,
 		               "Must supply an integral type" );
 		if( value >= 0 ) {
-			return value <= std::numeric_limits<IntegerDest>::max( );
+			return value <= (std::numeric_limits<IntegerDest>::max)( );
 		} else if( std::numeric_limits<IntegerDest>::is_signed ) {
-			return value >= std::numeric_limits<IntegerDest>::min( );
+			return value >= (std::numeric_limits<IntegerDest>::min)( );
 		} else {
 			return false;
 		}
@@ -931,7 +927,7 @@ namespace daw {
 				if constexpr( sizeof( T ) <= sizeof( Integer ) ) {
 					return value;
 				} else if( value <=
-				           static_cast<T>( std::numeric_limits<Integer>::max( ) ) ) {
+				           static_cast<T>( (std::numeric_limits<Integer>::max)( ) ) ) {
 					return static_cast<Integer>( value );
 				} else {
 					daw::exception::daw_throw<std::out_of_range>( "value" );
@@ -943,7 +939,7 @@ namespace daw {
 				daw::exception::daw_throw<std::out_of_range>( "value" );
 			} else {
 				if( value >= 0 and
-				    value <= static_cast<T>( std::numeric_limits<Integer>::max( ) ) ) {
+				    value <= static_cast<T>( (std::numeric_limits<Integer>::max)( ) ) ) {
 					return value;
 				}
 				daw::exception::daw_throw<std::out_of_range>( "value" );
@@ -953,7 +949,7 @@ namespace daw {
 				return static_cast<Integer>( value );
 			} else {
 				daw::exception::precondition_check<std::out_of_range>(
-				  value <= static_cast<T>( std::numeric_limits<Integer>::max( ) ),
+				  value <= static_cast<T>( (std::numeric_limits<Integer>::max)( ) ),
 				  "value" );
 
 				return static_cast<Integer>( value );
@@ -961,7 +957,7 @@ namespace daw {
 		} else if constexpr( sizeof( T ) <= sizeof( Integer ) ) {
 			return static_cast<Integer>( value );
 		} else {
-			if( value <= static_cast<T>( std::numeric_limits<Integer>::max( ) ) ) {
+			if( value <= static_cast<T>( (std::numeric_limits<Integer>::max)( ) ) ) {
 				return static_cast<Integer>( value );
 			}
 			daw::exception::daw_throw<std::out_of_range>( "value" );

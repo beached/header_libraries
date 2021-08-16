@@ -388,7 +388,7 @@ namespace daw {
 			static const auto s_hash = []( auto &&k ) {
 				size_t result =
 				  ( daw::fnv1a_hash( std::forward<KeyType>( k ) ) %
-				    ( std::numeric_limits<size_t>::max( ) -
+				    ( (std::numeric_limits<std::size_t>::max)( ) -
 				      impl::hash_table_item<value_type>::SentinalsSize ) ) +
 				  impl::hash_table_item<value_type>::SentinalsSize; // Guarantee we
 				                                                    // cannot be zero
@@ -510,7 +510,7 @@ namespace daw {
 
 	public:
 		static size_t max_size( ) {
-			return static_cast<size_t>( std::numeric_limits<ptrdiff_t>::max( ) - 1 );
+			return static_cast<size_t>( (std::numeric_limits<std::ptrdiff_t>::max)( ) - 1 );
 		}
 
 		template<typename Key>

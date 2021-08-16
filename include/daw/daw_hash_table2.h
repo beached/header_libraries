@@ -29,7 +29,7 @@ namespace daw {
 		struct s_hash_fn_t {
 			constexpr size_t operator( )( KeyType const &k ) noexcept {
 				size_t result =
-				  ( daw::fnv1a_hash( k ) % ( std::numeric_limits<size_t>::max( ) -
+				  ( daw::fnv1a_hash( k ) % ( (std::numeric_limits<std::size_t>::max)( ) -
 				                             impl::sentinals::sentinals_size ) ) +
 				  impl::sentinals::sentinals_size;
 				return result;
@@ -37,7 +37,7 @@ namespace daw {
 
 			constexpr size_t operator( )( KeyType const *k ) noexcept {
 				size_t result =
-				  ( daw::fnv1a_hash( k ) % ( std::numeric_limits<size_t>::max( ) -
+				  ( daw::fnv1a_hash( k ) % ( (std::numeric_limits<std::size_t>::max)( ) -
 				                             impl::sentinals::sentinals_size ) ) +
 				  impl::sentinals::sentinals_size;
 				return result;
@@ -71,7 +71,7 @@ namespace daw {
 		daw::heap_array<value_type> m_values;
 
 		static constexpr size_t max_size( ) noexcept {
-			return static_cast<size_t>( std::numeric_limits<ptrdiff_t>::max( ) - 1 );
+			return static_cast<size_t>( (std::numeric_limits<std::ptrdiff_t>::max)( ) - 1 );
 		}
 
 		template<typename KeyType>
@@ -113,7 +113,7 @@ namespace daw {
 			auto const s_hash = scale_hash( hash, m_hashes.size( ) );
 			result.position = s_hash;
 			size_t removed_found =
-			  std::numeric_limits<size_t>::max( ); // Need a check and this will be
+			  (std::numeric_limits<std::size_t>::max)( ); // Need a check and this will be
 			                                       // rare
 			for( ; result.position != m_hashes.size( ); ++result.position ) {
 				if( m_hashes[result.position] == hash ) {
@@ -144,7 +144,7 @@ namespace daw {
 					removed_found = result.position;
 				}
 			}
-			if( removed_found < std::numeric_limits<size_t>::max( ) ) {
+			if( removed_found < (std::numeric_limits<std::size_t>::max)( ) ) {
 				result.lookup_cost = m_hashes.size( );
 				result.position = removed_found;
 				return result;

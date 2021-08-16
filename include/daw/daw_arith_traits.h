@@ -77,7 +77,7 @@ namespace daw {
 		// static constexpr bool traps = true;
 		static constexpr bool tinyness_before = false;
 
-		static constexpr __int128 min( ) noexcept {
+		static constexpr __int128 (min)( ) noexcept {
 			return static_cast<__int128>(
 			  static_cast<__uint128_t>( 0x8000'0000'0000'0000ULL ) << 64U );
 		}
@@ -87,7 +87,7 @@ namespace daw {
 			  static_cast<__uint128_t>( 0x8000'0000'0000'0000ULL ) << 64U );
 		}
 
-		static constexpr __int128 max( ) noexcept {
+		static constexpr __int128 (max)( ) noexcept {
 			return static_cast<__int128>(
 			  ( static_cast<__uint128_t>( 0x7FFF'FFFF'FFFF'FFFFULL ) << 64U ) |
 			  ( static_cast<__uint128_t>( 0xFFFF'FFFF'FFFF'FFFFULL ) ) );
@@ -147,7 +147,7 @@ namespace daw {
 		// static constexpr bool traps = true;
 		static constexpr bool tinyness_before = false;
 
-		static constexpr __uint128_t min( ) noexcept {
+		static constexpr __uint128_t (min)( ) noexcept {
 			return 0;
 		}
 
@@ -155,7 +155,7 @@ namespace daw {
 			return 0;
 		}
 
-		static constexpr __uint128_t max( ) noexcept {
+		static constexpr __uint128_t (max)( ) noexcept {
 			return static_cast<__uint128_t>(
 			  ( static_cast<__uint128_t>( 0xFFFF'FFFF'FFFF'FFFFULL ) << 64U ) |
 			  ( static_cast<__uint128_t>( 0xFFFF'FFFF'FFFF'FFFFULL ) ) );

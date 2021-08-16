@@ -201,12 +201,12 @@ namespace daw {
 
 		constexpr span
 		subspan( size_type pos = 0,
-		         size_type count = std::numeric_limits<size_type>::max( ) ) const {
+		         size_type count = (std::numeric_limits<size_type>::max)( ) ) const {
 
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos < size( ), "Attempt to access span past end" );
 
-			count = daw::min( count, size( ) - pos );
+			count = (daw::min)( count, size( ) - pos );
 			return { data( ) + pos, count };
 		}
 	};
@@ -463,23 +463,23 @@ namespace daw {
 
 		constexpr span
 		subspan( size_type pos = 0,
-		         size_type count = std::numeric_limits<size_type>::max( ) ) {
+		         size_type count = (std::numeric_limits<size_type>::max)( ) ) {
 
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos < size( ), "Attempt to access span past end" );
 
-			count = daw::min( count, size( ) - pos );
+			count = (daw::min)( count, size( ) - pos );
 			return { data( ) + pos, count };
 		}
 
 		constexpr span
 		subspan( size_type pos = 0,
-		         size_type count = std::numeric_limits<size_type>::max( ) ) const {
+		         size_type count = (std::numeric_limits<size_type>::max)( ) ) const {
 
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos < size( ), "Attempt to access span past end" );
 
-			count = daw::min( count, size( ) - pos );
+			count = (daw::min)( count, size( ) - pos );
 			return { data( ) + pos, count };
 		}
 	};

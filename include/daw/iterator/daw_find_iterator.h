@@ -24,7 +24,7 @@ namespace daw {
 		value_type current_value;
 
 		constexpr find_iterator( ) noexcept
-		  : current_value{ std::numeric_limits<value_type>::max( ) } {}
+		  : current_value{ (std::numeric_limits<value_type>::max)( ) } {}
 		constexpr find_iterator( value_type start_value ) noexcept
 		  : current_value{ start_value } {}
 		constexpr find_iterator( value_type start_value,

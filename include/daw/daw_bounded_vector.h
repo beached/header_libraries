@@ -47,9 +47,9 @@ namespace daw {
 		constexpr bounded_vector_t( ) noexcept = default;
 
 		constexpr bounded_vector_t( const_pointer ptr, size_type count ) noexcept
-		  : m_index{ daw::min( count, N ) } {
+		  : m_index{ (daw::min)( count, N ) } {
 
-			daw::algorithm::copy_n( ptr, m_stack.begin( ), daw::min( count, N ) );
+			daw::algorithm::copy_n( ptr, m_stack.begin( ), (daw::min)( count, N ) );
 		}
 
 		template<typename Iterator>

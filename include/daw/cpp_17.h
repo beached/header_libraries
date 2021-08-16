@@ -395,7 +395,7 @@ namespace daw {
 #endif
 			template<typename T, typename U>
 			[[nodiscard, maybe_unused]] constexpr std::common_type_t<T, U>
-			min( T const &lhs, U const &rhs ) noexcept {
+			(min)( T const &lhs, U const &rhs ) noexcept {
 				if( lhs <= rhs ) {
 					return lhs;
 				}
