@@ -187,7 +187,7 @@ namespace daw {
 		                                       daw::tag_t<int> ) {
 
 			if( value < 0 ) {
-				if( value == (std::numeric_limits<Integer>::min)( ) ) {
+				if( value == ( std::numeric_limits<Integer>::min )( ) ) {
 					constexpr auto m = min_strings::get(
 					  CharT{ }, std::integral_constant<size_t, sizeof( Integer )>{ } );
 					return daw::algorithm::copy( m.begin( ), m.end( ), it );

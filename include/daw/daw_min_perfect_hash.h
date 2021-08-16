@@ -138,8 +138,9 @@ namespace daw {
 		using hash_result = daw::remove_cvref_t<std::invoke_result_t<Hasher, Key>>;
 		using salt_type = intmax_t;
 		static size_t constexpr m_data_size = mph_impl::next_pow2<N>( );
-		static_assert( m_data_size <= static_cast<size_t>(
-		                                (std::numeric_limits<salt_type>::max)( ) ) );
+		static_assert(
+		  m_data_size <=
+		  static_cast<size_t>( ( std::numeric_limits<salt_type>::max )( ) ) );
 
 		/***
 		 * Construct a perfect_hash_table from a range of pair like items that have

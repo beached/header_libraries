@@ -33,7 +33,7 @@ namespace daw {
 
 	class node_id_t {
 		static inline constexpr size_t const NO_ID =
-		  (std::numeric_limits<size_t>::max)( );
+		  ( std::numeric_limits<size_t>::max )( );
 
 		size_t m_value = NO_ID;
 

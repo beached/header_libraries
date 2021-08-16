@@ -189,7 +189,7 @@ namespace daw {
 
 		result_t result{ };
 
-		double base_time = (std::numeric_limits<double>::max)( );
+		double base_time = ( std::numeric_limits<double>::max )( );
 		{
 			for( size_t n = 0; n < 1000; ++n ) {
 				daw::do_not_optimize( args... );
@@ -210,7 +210,7 @@ namespace daw {
 				}
 			}
 		}
-		double min_time = (std::numeric_limits<double>::max)( );
+		double min_time = ( std::numeric_limits<double>::max )( );
 		double max_time = 0.0;
 
 		auto const total_start = std::chrono::steady_clock::now( );
@@ -282,7 +282,7 @@ namespace daw {
 		static_assert( Runs > 0 );
 		auto results = std::array<double, Runs>{ };
 
-		double base_time = (std::numeric_limits<double>::max)( );
+		double base_time = ( std::numeric_limits<double>::max )( );
 		{
 			for( size_t n = 0; n < 1000; ++n ) {
 				daw::do_not_optimize( args... );
@@ -337,7 +337,7 @@ namespace daw {
 
 		result_t result{ };
 
-		double base_time = (std::numeric_limits<double>::max)( );
+		double base_time = ( std::numeric_limits<double>::max )( );
 		{
 			for( size_t n = 0; n < 1000; ++n ) {
 				daw::do_not_optimize( args... );
@@ -358,7 +358,7 @@ namespace daw {
 				}
 			}
 		}
-		double min_time = (std::numeric_limits<double>::max)( );
+		double min_time = ( std::numeric_limits<double>::max )( );
 		double max_time = 0.0;
 
 		auto const total_start = std::chrono::steady_clock::now( );
@@ -434,7 +434,7 @@ namespace daw {
 		std::vector<std::chrono::nanoseconds> results( Runs );
 
 		auto base_time =
-		  std::chrono::nanoseconds( (std::numeric_limits<long long>::max)( ) );
+		  std::chrono::nanoseconds( ( std::numeric_limits<long long>::max )( ) );
 		{
 			for( size_t n = 0; n < 1000; ++n ) {
 				daw::do_not_optimize( args... );
@@ -488,7 +488,7 @@ namespace daw {
 		std::vector<std::chrono::nanoseconds> results( Runs );
 
 		auto base_time =
-		  std::chrono::nanoseconds( (std::numeric_limits<long long>::max)( ) );
+		  std::chrono::nanoseconds( ( std::numeric_limits<long long>::max )( ) );
 		{
 			for( size_t n = 0; n < 1000; ++n ) {
 				daw::do_not_optimize( args... );

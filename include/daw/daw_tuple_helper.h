@@ -373,15 +373,15 @@ namespace daw {
 		}
 
 		template<typename... Ts>
-		constexpr auto (min)( std::tuple<Ts...> const &a,
-		                    std::tuple<Ts...> const &b ) {
+		constexpr auto( min )( std::tuple<Ts...> const &a,
+		                       std::tuple<Ts...> const &b ) {
 			return operators::tuple_details::apply_tuple_tuple(
 			  a, b, daw::tuple::tuple_details::min_t::get( ) );
 		}
 
 		template<typename... Ts>
-		constexpr auto (max)( std::tuple<Ts...> const &a,
-		                    std::tuple<Ts...> const &b ) {
+		constexpr auto( max )( std::tuple<Ts...> const &a,
+		                       std::tuple<Ts...> const &b ) {
 			return operators::tuple_details::apply_tuple_tuple(
 			  a, b, daw::tuple::tuple_details::max_t::get( ) );
 		}

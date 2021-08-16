@@ -283,13 +283,13 @@ namespace daw::cxmath {
 		[[nodiscard]] constexpr Float pow2_impl2( intmax_t exp ) noexcept {
 			bool is_neg = exp < 0;
 			exp = is_neg ? -exp : exp;
-			auto const max_shft = (daw::min)(
+			auto const max_shft = ( daw::min )(
 			  static_cast<size_t>( daw::numeric_limits<Float>::max_exponent10 ),
 			  ( sizeof( size_t ) * 8ULL ) );
 			Float result = 1.0;
 
 			while( static_cast<size_t>( exp ) >= max_shft ) {
-				result *= static_cast<Float>( (daw::numeric_limits<size_t>::max)( ) );
+				result *= static_cast<Float>( ( daw::numeric_limits<size_t>::max )( ) );
 				exp -= max_shft;
 			}
 			if( exp > 0 ) {
@@ -321,8 +321,8 @@ namespace daw::cxmath {
 			exp = is_neg ? -exp : exp;
 
 			auto const max_spow =
-			  (daw::min)( daw::numeric_limits<Float>::max_exponent10,
-			            daw::numeric_limits<size_t>::digits10 );
+			  ( daw::min )( daw::numeric_limits<Float>::max_exponent10,
+			                daw::numeric_limits<size_t>::digits10 );
 			Float result = 1.0;
 
 			while( exp >= max_spow ) {
@@ -539,11 +539,11 @@ namespace daw::cxmath {
 		if( f == 0.0f ) {
 			return static_cast<std::int32_t>( 0 );
 		}
-		if( f > (daw::numeric_limits<Real>::max)( ) ) {
+		if( f > ( daw::numeric_limits<Real>::max )( ) ) {
 			// inf
 			return std::nullopt;
 		}
-		if( f < -(daw::numeric_limits<Real>::max)( ) ) {
+		if( f < -( daw::numeric_limits<Real>::max )( ) ) {
 			// -inf
 			return std::nullopt;
 		}
@@ -709,10 +709,10 @@ namespace daw::cxmath {
 			// Once c++20 use bit_cast
 			if( f == 0.0f ) {
 				return { 0, f }; // also matches -0.0f and gives wrong result
-			} else if( f > (daw::numeric_limits<float>::max)( ) ) {
+			} else if( f > ( daw::numeric_limits<float>::max )( ) ) {
 				// infinity
 				return { 0x7f80'0000, f };
-			} else if( f < -(daw::numeric_limits<float>::max)( ) ) {
+			} else if( f < -( daw::numeric_limits<float>::max )( ) ) {
 				// negative infinity
 				return { 0xff800000, f };
 			} else if( f != f ) {
@@ -1032,7 +1032,8 @@ namespace daw::cxmath {
 #if defined( DAW_CX_BIT_CAST )
 		return fp_classify( r ) == fp_classes::infinity;
 #else
-		return (r == daw::numeric_limits<Real>::infinity( )) | (r == -daw::numeric_limits<Real>::infinity( ));
+		return ( r == daw::numeric_limits<Real>::infinity( ) ) |
+		       ( r == -daw::numeric_limits<Real>::infinity( ) );
 #endif
 	}
 	static_assert( not is_inf( daw::numeric_limits<double>::quiet_NaN( ) ) );

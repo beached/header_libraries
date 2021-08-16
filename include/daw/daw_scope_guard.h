@@ -109,4 +109,3 @@ namespace daw {
 	template<typename Handler>
 	on_exit_success( Handler ) -> on_exit_success<Handler>;
 } // namespace daw
-

@@ -3050,7 +3050,7 @@ namespace std {
 		// static constexpr bool traps = true;
 		static constexpr bool tinyness_before = false;
 
-		static constexpr daw::UInt64 (min)( ) noexcept {
+		static constexpr daw::UInt64( min )( ) noexcept {
 			return daw::UInt64( );
 		}
 
@@ -3058,9 +3058,9 @@ namespace std {
 			return daw::UInt64( );
 		}
 
-		static constexpr daw::UInt64 (max)( ) noexcept {
+		static constexpr daw::UInt64( max )( ) noexcept {
 			return static_cast<daw::UInt64>(
-			  (std::numeric_limits<std::uint64_t>::max)( ) );
+			  ( std::numeric_limits<std::uint64_t>::max )( ) );
 		}
 
 		static constexpr daw::UInt64 epsilon( ) noexcept {
@@ -3117,7 +3117,7 @@ namespace std {
 		// static constexpr bool traps = true;
 		static constexpr bool tinyness_before = false;
 
-		static constexpr daw::UInt32 (min)( ) noexcept {
+		static constexpr daw::UInt32( min )( ) noexcept {
 			return daw::UInt32( );
 		}
 
@@ -3125,9 +3125,9 @@ namespace std {
 			return daw::UInt32( );
 		}
 
-		static constexpr daw::UInt32 (max)( ) noexcept {
+		static constexpr daw::UInt32( max )( ) noexcept {
 			return static_cast<daw::UInt32>(
-			  (std::numeric_limits<std::uint32_t>::max)( ) );
+			  ( std::numeric_limits<std::uint32_t>::max )( ) );
 		}
 
 		static constexpr daw::UInt32 epsilon( ) noexcept {
@@ -3184,7 +3184,7 @@ namespace std {
 		// static constexpr bool traps = true;
 		static constexpr bool tinyness_before = false;
 
-		static constexpr daw::UInt16 (min)( ) noexcept {
+		static constexpr daw::UInt16( min )( ) noexcept {
 			return daw::UInt16( );
 		}
 
@@ -3192,9 +3192,9 @@ namespace std {
 			return daw::UInt16( );
 		}
 
-		static constexpr daw::UInt16 (max)( ) noexcept {
+		static constexpr daw::UInt16( max )( ) noexcept {
 			return static_cast<daw::UInt16>(
-			  (std::numeric_limits<std::uint16_t>::max)( ) );
+			  ( std::numeric_limits<std::uint16_t>::max )( ) );
 		}
 
 		static constexpr daw::UInt16 epsilon( ) noexcept {
@@ -3251,7 +3251,7 @@ namespace std {
 		// static constexpr bool traps = true;
 		static constexpr bool tinyness_before = false;
 
-		static constexpr daw::UInt8 (min)( ) noexcept {
+		static constexpr daw::UInt8( min )( ) noexcept {
 			return daw::UInt8( );
 		}
 
@@ -3259,9 +3259,9 @@ namespace std {
 			return daw::UInt8( );
 		}
 
-		static constexpr daw::UInt8 (max)( ) noexcept {
+		static constexpr daw::UInt8( max )( ) noexcept {
 			return static_cast<daw::UInt8>(
-			  (std::numeric_limits<std::uint8_t>::max)( ) );
+			  ( std::numeric_limits<std::uint8_t>::max )( ) );
 		}
 
 		static constexpr daw::UInt8 epsilon( ) noexcept {
@@ -3297,19 +3297,19 @@ namespace daw {
 
 	constexpr UInt32 operator"" _u32( unsigned long long value ) {
 		assert( ( value <= static_cast<unsigned long long>(
-		                     (daw::numeric_limits<std::uint32_t>::max)( ) ) ) );
+		                     ( daw::numeric_limits<std::uint32_t>::max )( ) ) ) );
 		return static_cast<UInt32>( value );
 	}
 
 	constexpr UInt16 operator"" _u16( unsigned long long value ) {
 		assert( ( value < static_cast<unsigned long long>(
-		                    (std::numeric_limits<std::uint16_t>::max)( ) ) ) );
+		                    ( std::numeric_limits<std::uint16_t>::max )( ) ) ) );
 		return static_cast<UInt16>( value );
 	}
 
 	constexpr UInt8 operator"" _u8( unsigned long long value ) {
 		assert( ( value < static_cast<unsigned long long>(
-		                    (std::numeric_limits<std::uint8_t>::max)( ) ) ) );
+		                    ( std::numeric_limits<std::uint8_t>::max )( ) ) ) );
 		return static_cast<UInt8>( value );
 	}
 } // namespace daw

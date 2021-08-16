@@ -19,7 +19,7 @@
 
 namespace daw {
 	inline constexpr std::size_t DynamicExtent =
-	  (std::numeric_limits<std::size_t>::max)( );
+	  ( std::numeric_limits<std::size_t>::max )( );
 
 	template<typename Container>
 	struct container_traits {

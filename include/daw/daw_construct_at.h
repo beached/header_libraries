@@ -33,8 +33,7 @@ namespace daw {
 
 	template<typename T, typename Storage, typename... Args>
 	inline constexpr T *construct_at( Storage *p, Args &&...args ) {
-		return std::construct_at( reinterpret_cast<T*>( p ), DAW_FWD( args )... );
+		return std::construct_at( reinterpret_cast<T *>( p ), DAW_FWD( args )... );
 	}
 #endif
-}
-
+} // namespace daw

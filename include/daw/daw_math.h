@@ -138,7 +138,8 @@ namespace daw::math {
 	                          std::nullptr_t> = nullptr>
 	constexpr Result abs( SignedInteger v ) noexcept {
 		// This accounts for when negating the number is out of range
-		if( static_cast<intmax_t>( v ) == (std::numeric_limits<intmax_t>::min)( ) ) {
+		if( static_cast<intmax_t>( v ) ==
+		    ( std::numeric_limits<intmax_t>::min )( ) ) {
 			return pow2<Result>( bsizeof<intmax_t> - 1 );
 		}
 		if( v < 0 ) {
@@ -276,7 +277,8 @@ namespace daw::math {
 			return diff < ( epsilon * std::numeric_limits<T>::min_exponent );
 		}
 		// use relative error
-		return diff / (daw::min)( ( absA + absB ), (std::numeric_limits<T>::max)( ) ) <
+		return diff / ( daw::min )( ( absA + absB ),
+		                            ( std::numeric_limits<T>::max )( ) ) <
 		       epsilon;
 	}
 #ifdef __clang__
