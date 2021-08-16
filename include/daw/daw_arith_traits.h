@@ -316,5 +316,18 @@ namespace daw {
 
 	template<typename T>
 	using make_unsigned_t = typename make_unsigned<T>::type;	
+
+
+	template<typename T>
+	struct is_system_integral: std::is_integral<T> { };
+
+#if defined( DAW_HAS_INT128 )
+	template<>
+	struct is_system_integral<__uint128_t>: std::true_type {};
+	template<>
+	struct is_system_integral<__int128_t>: std::true_type {};
+#endif
+	template<typename T>
+	inline constexpr bool is_system_integral_v = is_system_integral<T>::value;
 } // namespace daw
 
