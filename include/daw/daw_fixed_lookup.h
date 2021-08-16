@@ -60,7 +60,7 @@ namespace daw {
 		using value_t = daw::traits::root_type_t<Value>;
 		using hash_value_t = typename daw::generic_hash_t<HashSize>::hash_value_t;
 		static_assert(
-		  N <= std::numeric_limits<hash_value_t>::max( ),
+		  N <= ( std::numeric_limits<hash_value_t>::max )( ),
 		  "Cannot allocate more values than can be addressed by hash value" );
 
 		using reference = value_t &;
@@ -91,7 +91,7 @@ namespace daw {
 			auto const hash =
 			  daw::generic_hash<HashSize>( std::forward<KeyType>( key ) );
 			auto const divisor =
-			  std::numeric_limits<hash_value_t>::max( ) -
+			  ( std::numeric_limits<hash_value_t>::max )( ) -
 			  impl::fixed_lookup_sentinals::fixed_lookup_sentinals_size;
 			return ( hash % divisor ) +
 			       impl::fixed_lookup_sentinals::fixed_lookup_sentinals_size;

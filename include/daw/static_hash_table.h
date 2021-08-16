@@ -50,14 +50,14 @@ namespace daw {
 		template<typename K>
 		[[nodiscard]] static constexpr size_t hash_fn( K const &key ) {
 			return ( daw::fnv1a_hash( key ) %
-			         ( std::numeric_limits<size_t>::max( ) -
+			         ( ( std::numeric_limits<std::size_t>::max )( ) -
 			           static_cast<size_t>( hash_sentinals::Size ) ) ) +
 			       static_cast<size_t>( hash_sentinals::Size );
 		}
 
 		[[nodiscard]] static constexpr size_t hash_fn( char const *const key ) {
 			return ( daw::fnv1a_hash( key ) %
-			         ( std::numeric_limits<size_t>::max( ) -
+			         ( ( std::numeric_limits<std::size_t>::max )( ) -
 			           static_cast<size_t>( hash_sentinals::Size ) ) ) +
 			       static_cast<size_t>( hash_sentinals::Size );
 		}

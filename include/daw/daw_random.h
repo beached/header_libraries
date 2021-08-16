@@ -39,8 +39,8 @@ namespace daw {
 
 	template<typename IntType>
 	inline IntType randint( ) {
-		return randint<IntType>( std::numeric_limits<IntType>::min( ),
-		                         std::numeric_limits<IntType>::max( ) );
+		return randint<IntType>( ( std::numeric_limits<IntType>::min )( ),
+		                         ( std::numeric_limits<IntType>::max )( ) );
 	}
 
 	inline void reseed( ) {
@@ -85,8 +85,8 @@ namespace daw {
 	template<typename IntType, typename Result = std::vector<IntType>>
 	inline Result
 	make_random_data( size_t count,
-	                  IntType a = std::numeric_limits<IntType>::min( ),
-	                  IntType b = std::numeric_limits<IntType>::max( ) ) {
+	                  IntType a = ( std::numeric_limits<IntType>::min )( ),
+	                  IntType b = ( std::numeric_limits<IntType>::max )( ) ) {
 
 		static_assert( std::is_integral_v<IntType>,
 		               "IntType must be a valid integral type" );

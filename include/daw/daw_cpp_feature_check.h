@@ -19,14 +19,15 @@
 #define DAW_HAS_INCLUDE( ... ) ( false )
 #endif
 
-#if defined(__has_builtin)
-#define DAW_HAS_BUILTIN( ... ) __has_builtin(__VA_ARGS__)
+#if defined( __has_builtin )
+#define DAW_HAS_BUILTIN( ... ) __has_builtin( __VA_ARGS__ )
 #else
 #define DAW_HAS_BUILTIN( ... ) ( false )
 #endif
 
 // Do not use when -Wundef is at play as -Werror will make it not build
-#define DAW_HAS_FEATURE( feature ) ( (feature) > 0 )
+#define DAW_HAS_FEATURE( feature ) ( ( feature ) > 0 )
 
 // Do not use when -Wundef is at play as -Werror will make it not build
-#define DAW_HAS_FEATURE_VERSION( feature, version ) ( (feature) > (version) )
+#define DAW_HAS_FEATURE_VERSION( feature, version )                            \
+	( ( feature ) > ( version ) )

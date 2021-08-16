@@ -58,7 +58,7 @@ namespace daw {
 
 	public:
 		static constexpr size_type const npos =
-		  std::numeric_limits<size_type>::max( );
+		  ( std::numeric_limits<size_type>::max )( );
 
 		// Constructors
 
@@ -74,7 +74,7 @@ namespace daw {
 		template<size_t N>
 		constexpr basic_bounded_string( basic_bounded_string<CharT, N> str,
 		                                size_type count )
-		  : m_data( str.data( ), daw::min( count, N ) ) {}
+		  : m_data( str.data( ), ( daw::min )( count, N ) ) {}
 
 #ifndef NOSTRING
 		template<typename Tr, typename Al>
@@ -340,7 +340,7 @@ namespace daw {
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos < size( ), "Attempt to access basic_bounded_string past end" );
 
-			size_type rlen = daw::min( count, size( ) - pos );
+			size_type rlen = ( daw::min )( count, size( ) - pos );
 			daw::algorithm::copy_n( m_data.data( ) + pos, dest, rlen );
 			return rlen;
 		}
@@ -351,7 +351,7 @@ namespace daw {
 			  pos < size( ), "Attempt to access basic_bounded_string past end" );
 
 			auto const rcount =
-			  static_cast<size_type>( daw::min( count, size( ) - pos ) );
+			  static_cast<size_type>( ( daw::min )( count, size( ) - pos ) );
 			return basic_bounded_string{ &m_data[pos], rcount };
 		}
 
@@ -376,7 +376,7 @@ namespace daw {
 			};
 
 			auto cmp = str_compare( lhs.data( ), rhs.data( ),
-			                        daw::min( lhs.size( ), rhs.size( ) ) );
+			                        ( daw::min )( lhs.size( ), rhs.size( ) ) );
 			if( cmp == 0 ) {
 				if( lhs.size( ) < rhs.size( ) ) {
 					return -1;
@@ -408,8 +408,8 @@ namespace daw {
 				return 0;
 			};
 
-			auto cmp =
-			  str_compare( lhs.data( ), rhs_ptr, daw::min( lhs.size( ), rhs_size ) );
+			auto cmp = str_compare( lhs.data( ), rhs_ptr,
+			                        ( daw::min )( lhs.size( ), rhs_size ) );
 			if( cmp == 0 ) {
 				if( lhs.size( ) < rhs_size ) {
 					return -1;

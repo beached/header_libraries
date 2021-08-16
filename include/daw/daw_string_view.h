@@ -176,7 +176,7 @@ namespace daw {
 
 	public:
 		static constexpr size_type const npos =
-		  std::numeric_limits<size_type>::max( );
+		  ( std::numeric_limits<size_type>::max )( );
 
 		// constructors
 		constexpr basic_string_view( ) noexcept = default;
@@ -200,7 +200,7 @@ namespace daw {
 		                             size_type count ) noexcept
 		  : m_first( sv.begin( ) )
 		  , m_last( make_last<BoundsType>( sv.begin( ),
-		                                   std::min( sv.size( ), count ) ) ) {}
+		                                   ( std::min )( sv.size( ), count ) ) ) {}
 
 		template<std::size_t N>
 		constexpr basic_string_view( CharT const ( &cstr )[N] ) noexcept
@@ -381,7 +381,7 @@ namespace daw {
 		}
 
 		constexpr void remove_prefix( size_type n ) {
-			dec_front<BoundsType>( std::min( n, size( ) ) );
+			dec_front<BoundsType>( ( std::min )( n, size( ) ) );
 		}
 
 		constexpr void remove_prefix( ) {
@@ -389,7 +389,7 @@ namespace daw {
 		}
 
 		constexpr void remove_suffix( size_type n ) {
-			dec_back<BoundsType>( std::min( n, size( ) ) );
+			dec_back<BoundsType>( ( std::min )( n, size( ) ) );
 		}
 
 		constexpr void remove_suffix( ) {
@@ -458,7 +458,7 @@ namespace daw {
 		/// @param count number of characters to remove and return
 		/// @return a substr of size count ending at end of string_view
 		[[nodiscard]] constexpr basic_string_view pop_back( std::size_t count ) {
-			count = std::min( count, size( ) );
+			count = ( std::min )( count, size( ) );
 			basic_string_view result = substr( size( ) - count, npos );
 			remove_suffix( count );
 			return result;
@@ -564,7 +564,7 @@ namespace daw {
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos <= size( ), "Attempt to access basic_string_view past end" );
 
-			size_type const rlen = std::min( count, size( ) - pos );
+			size_type const rlen = ( std::min )( count, size( ) - pos );
 			if( rlen > 0 ) {
 				auto const f =
 				  std::next( begin( ), static_cast<difference_type>( pos ) );
@@ -579,7 +579,7 @@ namespace daw {
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos <= size( ), "Attempt to access basic_string_view past end" );
 			auto const rcount =
-			  static_cast<size_type>( std::min( count, size( ) - pos ) );
+			  static_cast<size_type>( ( std::min )( count, size( ) - pos ) );
 			return { m_first + pos, m_first + pos + rcount };
 		}
 
@@ -605,7 +605,7 @@ namespace daw {
 			};
 
 			auto cmp = str_compare( lhs.data( ), rhs.data( ),
-			                        std::min( lhs.size( ), rhs.size( ) ) );
+			                        ( std::min )( lhs.size( ), rhs.size( ) ) );
 			if( cmp == 0 ) {
 				if( lhs.size( ) < rhs.size( ) ) {
 					return -1;
@@ -708,7 +708,7 @@ namespace daw {
 			if( size( ) < v.size( ) ) {
 				return npos;
 			}
-			pos = std::min( pos, size( ) - v.size( ) );
+			pos = ( std::min )( pos, size( ) - v.size( ) );
 			if( v.empty( ) ) {
 				return pos;
 			}
@@ -1562,7 +1562,7 @@ namespace daw {
 		std::vector<daw::basic_string_view<CharT, Bounds>> v{ };
 		auto last_pos = str.cbegin( );
 		while( !str.empty( ) ) {
-			auto sz = std::min( str.size( ), str.find_first_of_if( pred ) );
+			auto sz = ( std::min )( str.size( ), str.find_first_of_if( pred ) );
 			v.emplace_back( last_pos, sz );
 			if( sz == str.npos ) {
 				break;

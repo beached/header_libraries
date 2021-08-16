@@ -39,7 +39,7 @@ namespace daw {
 			using fn_t = std::remove_reference_t<Func>;
 			if constexpr( std::is_pointer_v<fn_t> ) {
 				return { data_t{ f }, []( data_t const &d, Args... args ) -> Result {
-					        return (d.fp_storage)( std::move( args )... );
+					        return ( d.fp_storage )( std::move( args )... );
 				        } };
 			} else if constexpr( std::is_empty_v<fn_t> and
 			                     std::is_default_constructible_v<fn_t> ) {
@@ -50,8 +50,8 @@ namespace daw {
 			} else {
 				return { data_t{ DAW_BIT_CAST( ref_buffer_t, std::addressof( f ) ) },
 				         +[]( data_t const &d, Args... args ) -> Result {
-					         return (*DAW_BIT_CAST(
-					           fn_t const *, d.ref_storage ))( std::move( args )... );
+					         return ( *DAW_BIT_CAST( fn_t const *, d.ref_storage ) )(
+					           std::move( args )... );
 				         } };
 			}
 		}

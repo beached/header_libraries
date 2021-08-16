@@ -96,8 +96,8 @@ namespace daw {
 					return;
 				}
 				dist = -dist;
-				it -= daw::min( static_cast<ptrdiff_t>( dist_to_first ),
-				                static_cast<ptrdiff_t>( dist ) );
+				it -= ( daw::min )( static_cast<ptrdiff_t>( dist_to_first ),
+				                    static_cast<ptrdiff_t>( dist ) );
 				return;
 			}
 			auto const dist_to_last = last - it;
@@ -105,8 +105,8 @@ namespace daw {
 				it = last;
 				return;
 			}
-			it += daw::min( static_cast<ptrdiff_t>( dist_to_last ),
-			                static_cast<ptrdiff_t>( dist ) );
+			it += ( daw::min )( static_cast<ptrdiff_t>( dist_to_last ),
+			                    static_cast<ptrdiff_t>( dist ) );
 		}
 	} // namespace algorithm_details
 

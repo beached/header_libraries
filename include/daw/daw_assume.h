@@ -16,11 +16,11 @@
 
 #define DAW_ASSUME( ... ) assert( ( __VA_ARGS__ ) )
 
-#elif DAW_HAS_BUILTIN(__builtin_assume)
+#elif DAW_HAS_BUILTIN( __builtin_assume )
 
-#define DAW_ASSUME( ... ) __builtin_assume( (__VA_ARGS__) )
+#define DAW_ASSUME( ... ) __builtin_assume( ( __VA_ARGS__ ) )
 
-#elif DAW_HAS_BUILTIN(__builtin_unreachable)
+#elif DAW_HAS_BUILTIN( __builtin_unreachable )
 
 #define DAW_ASSUME( ... )                                                      \
 	do {                                                                         \

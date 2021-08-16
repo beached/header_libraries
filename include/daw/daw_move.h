@@ -41,4 +41,3 @@ namespace daw {
 #ifndef DAW_FWD2
 #define DAW_FWD2( Type, Value ) static_cast<Type &&>( Value )
 #endif
-

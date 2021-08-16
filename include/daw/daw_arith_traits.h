@@ -77,7 +77,7 @@ namespace daw {
 		// static constexpr bool traps = true;
 		static constexpr bool tinyness_before = false;
 
-		static constexpr __int128 min( ) noexcept {
+		static constexpr __int128( min )( ) noexcept {
 			return static_cast<__int128>(
 			  static_cast<__uint128_t>( 0x8000'0000'0000'0000ULL ) << 64U );
 		}
@@ -87,7 +87,7 @@ namespace daw {
 			  static_cast<__uint128_t>( 0x8000'0000'0000'0000ULL ) << 64U );
 		}
 
-		static constexpr __int128 max( ) noexcept {
+		static constexpr __int128( max )( ) noexcept {
 			return static_cast<__int128>(
 			  ( static_cast<__uint128_t>( 0x7FFF'FFFF'FFFF'FFFFULL ) << 64U ) |
 			  ( static_cast<__uint128_t>( 0xFFFF'FFFF'FFFF'FFFFULL ) ) );
@@ -147,7 +147,7 @@ namespace daw {
 		// static constexpr bool traps = true;
 		static constexpr bool tinyness_before = false;
 
-		static constexpr __uint128_t min( ) noexcept {
+		static constexpr __uint128_t( min )( ) noexcept {
 			return 0;
 		}
 
@@ -155,7 +155,7 @@ namespace daw {
 			return 0;
 		}
 
-		static constexpr __uint128_t max( ) noexcept {
+		static constexpr __uint128_t( max )( ) noexcept {
 			return static_cast<__uint128_t>(
 			  ( static_cast<__uint128_t>( 0xFFFF'FFFF'FFFF'FFFFULL ) << 64U ) |
 			  ( static_cast<__uint128_t>( 0xFFFF'FFFF'FFFF'FFFFULL ) ) );
@@ -270,7 +270,7 @@ namespace daw {
 	inline constexpr bool is_arithmetic_v = is_arithmetic<T>::value;
 
 	template<typename T>
-	struct make_unsigned: std::make_unsigned<T> {};
+	struct make_unsigned : std::make_unsigned<T> {};
 
 #if defined( DAW_HAS_INT128 )
 	template<>
@@ -315,19 +315,17 @@ namespace daw {
 #endif
 
 	template<typename T>
-	using make_unsigned_t = typename make_unsigned<T>::type;	
-
+	using make_unsigned_t = typename make_unsigned<T>::type;
 
 	template<typename T>
-	struct is_system_integral: std::is_integral<T> { };
+	struct is_system_integral : std::is_integral<T> {};
 
 #if defined( DAW_HAS_INT128 )
 	template<>
-	struct is_system_integral<__uint128_t>: std::true_type {};
+	struct is_system_integral<__uint128_t> : std::true_type {};
 	template<>
-	struct is_system_integral<__int128_t>: std::true_type {};
+	struct is_system_integral<__int128_t> : std::true_type {};
 #endif
 	template<typename T>
 	inline constexpr bool is_system_integral_v = is_system_integral<T>::value;
 } // namespace daw
-

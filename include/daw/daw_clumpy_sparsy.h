@@ -140,7 +140,7 @@ namespace daw {
 		using const_reference = typename clumpy_sparsy<T>::const_reference;
 
 	private:
-		size_t m_position = std::numeric_limits<size_t>::max( );
+		size_t m_position = ( std::numeric_limits<size_t>::max )( );
 		clumpy_sparsy<T> *m_items = nullptr;
 
 	public:
@@ -148,7 +148,7 @@ namespace daw {
 
 		constexpr clumpy_sparsy_iterator( clumpy_sparsy<T> *items,
 		                                  size_t position = 0 ) noexcept
-		  : m_position( items ? position : std::numeric_limits<size_t>::max( ) )
+		  : m_position( items ? position : ( std::numeric_limits<size_t>::max )( ) )
 		  , m_items( items ? items : nullptr ) {}
 
 	private:

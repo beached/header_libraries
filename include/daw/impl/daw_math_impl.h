@@ -14,13 +14,6 @@
 #include <type_traits>
 #include <utility>
 
-#ifdef max
-#undef max
-#endif // max
-#ifdef min
-#undef min
-#endif // min
-
 namespace daw {
 	template<typename Float, std::enable_if_t<std::is_floating_point_v<Float>,
 	                                          std::nullptr_t> = nullptr>
@@ -32,9 +25,9 @@ namespace daw {
 	}
 
 	template<typename T, typename... Ts>
-	constexpr auto max( T const &val1, Ts const &...vs ) noexcept {
+	constexpr auto( max )( T const &val1, Ts const &...vs ) noexcept {
 		if constexpr( sizeof...( Ts ) > 1 ) {
-			auto const tmp = max( vs... );
+			auto const tmp = (max)( vs... );
 			using result_t = std::common_type_t<T, decltype( tmp )>;
 
 			if( std::less<>{ }( tmp, val1 ) ) {
@@ -72,9 +65,9 @@ namespace daw {
 	}
 
 	template<typename T, typename... Ts>
-	constexpr auto min( T const &val1, Ts const &...vs ) noexcept {
+	constexpr auto( min )( T const &val1, Ts const &...vs ) noexcept {
 		if constexpr( sizeof...( Ts ) > 1 ) {
-			auto const tmp = min( vs... );
+			auto const tmp = (min)( vs... );
 			using result_t = std::common_type_t<T, decltype( tmp )>;
 
 			if( not std::less<>{ }( tmp, val1 ) ) {

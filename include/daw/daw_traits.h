@@ -933,7 +933,7 @@ namespace daw::traits {
 			using TpL = typename Lhs::class_template_parameters;
 			using TpR = typename Rhs::class_template_parameters;
 			constexpr std::size_t Max =
-			  std::min( pack_size_v<TpL>, pack_size_v<TpL> );
+			  ( std::min )( pack_size_v<TpL>, pack_size_v<TpL> );
 			return find_first_mismatch<StartIdx>(
 			  static_cast<TpL *>( nullptr ), static_cast<TpR *>( nullptr ),
 			  std::make_index_sequence<Max - StartIdx>{ }, Max );
@@ -1079,6 +1079,4 @@ namespace daw {
 	expander( Ts... ) -> expander<Ts...>; // no warnings about intent to use CTAD
 } // namespace daw
 
-#define DAW_TYPEOF(...) daw::remove_cvref_t<decltype(__VA_ARGS__)>
-
-
+#define DAW_TYPEOF( ... ) daw::remove_cvref_t<decltype( __VA_ARGS__ )>

@@ -457,7 +457,7 @@ namespace daw {
 		constexpr void copy_n( Container const &source, size_t count,
 		                       OutputIterator destination ) {
 			auto src = std::cbegin( source );
-			count = daw::min( count, daw::size( source ) );
+			count = ( daw::min )( count, daw::size( source ) );
 			for( size_t n = 0; n < count; ++n ) {
 				*destination++ = *src++;
 			}
@@ -504,7 +504,7 @@ namespace daw {
 			  "information" );
 
 			auto src = std::cbegin( source );
-			count = daw::min( count, daw::size( source ) );
+			count = ( daw::min )( count, daw::size( source ) );
 			for( size_t n = 0; n < count; ++n ) {
 				if( pred( *src ) ) {
 					*destination++ = *src++;

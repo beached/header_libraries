@@ -394,8 +394,8 @@ namespace daw {
 #undef min
 #endif
 			template<typename T, typename U>
-			[[nodiscard, maybe_unused]] constexpr std::common_type_t<T, U>
-			min( T const &lhs, U const &rhs ) noexcept {
+			[[nodiscard, maybe_unused]] constexpr std::common_type_t<T, U>( min )(
+			  T const &lhs, U const &rhs ) noexcept {
 				if( lhs <= rhs ) {
 					return lhs;
 				}
@@ -691,4 +691,3 @@ namespace daw {
 	template<typename Function, typename... Params>
 	bind_front( Function, Params... ) -> bind_front<Function, Params...>;
 } // namespace daw
-
