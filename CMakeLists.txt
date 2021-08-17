@@ -9,7 +9,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 project("daw-header-libraries"
-        VERSION "1.25.0"
+        VERSION "1.25.1"
         DESCRIPTION "Various headers"
         HOMEPAGE_URL "https://github.com/beached/header_libraries"
         LANGUAGES C CXX)
@@ -24,6 +24,7 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
     if( MSVC )
         # clang-cl/cmake will use -imsvc for include paths when SYSTEM is set.
         # This breaks code with alternate tokens
+				# see https://bugs.llvm.org/show_bug.cgi?id=42427
         set(DAW_HEADERLIBRARIES_warning_guard "")
     else ()
         set(DAW_HEADERLIBRARIES_warning_guard SYSTEM)
