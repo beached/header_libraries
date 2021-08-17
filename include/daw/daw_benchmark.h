@@ -582,10 +582,12 @@ namespace daw {
 	template<typename Bool, typename String>
 	[[maybe_unused]] static constexpr void
 	expecting_message( Bool const &expected_result, String &&message ) {
-		if( not static_cast<bool>( expected_result ) ) {
+		do_not_optimize( expected_result );
+		if( not( expected_result ) ) {
 			std::cerr << message << '\n';
 			std::abort( );
 		}
+		(void)message;
 	}
 
 	namespace benchmark_impl {
