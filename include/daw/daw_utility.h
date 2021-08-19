@@ -1052,4 +1052,7 @@ namespace daw {
 		}
 	}
 	struct Empty {};
+
+  template<auto Value>
+  using constant = std::integral_constant<decltype(Value), Value>;	
 } // namespace daw
