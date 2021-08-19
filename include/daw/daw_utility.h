@@ -1054,5 +1054,5 @@ namespace daw {
 	struct Empty {};
 
   template<auto Value>
-  using constant = std::integral_constant<decltype(Value), Value>;	
+  using constant = std::integral_constant<remove_cvref_t<decltype(Value)>, Value>;	
 } // namespace daw
