@@ -16,6 +16,9 @@
 #define DAW_UNREACHABLE( ) __builtin_unreachable( )
 #elif defined( _MSC_VER )
 #define DAW_UNREACHABLE( ) __assume( false );
+#elif defined( __GNUC__ ) or defined( __clang__ )
+// All gcc/clang compilers supporting c++17 have __builtin_unreachable
+#define DAW_UNREACHABLE( ) __builtin_unreachable( )
 #else
 #include <exception>
 #define DAW_UNREACHABLE( ) std::terminate( )
