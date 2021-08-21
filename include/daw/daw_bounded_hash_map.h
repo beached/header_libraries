@@ -320,9 +320,9 @@ namespace daw {
 		std::array<bounded_hash_map_item_t<Key, Value>, N + 1> m_data{ };
 
 		static constexpr size_t scale_hash( size_t hash, size_t range_size ) {
-			size_t const prime_a = 18446744073709551557u;
-			size_t const prime_b = 18446744073709551533u;
-			return ( hash * prime_a + prime_b ) % range_size;
+			std::uint64_t const prime_a = 18446744073709551557ULL;
+			std::uint64_t const prime_b = 18446744073709551533ULL;
+			return static_cast<std::size_t>(( hash * prime_a + prime_b ) % range_size);
 		}
 
 		constexpr daw::optional<size_type> find_index( Key const &key ) const {
