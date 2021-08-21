@@ -442,9 +442,9 @@ namespace daw {
 			using std::cbegin;
 			using std::cend;
 			return daw::algorithm::accumulate(
-			  cbegin( m_data ), cend( m_data ), 0ULL, []( auto &&init, auto &&v ) {
+			  cbegin( m_data ), cend( m_data ), size_type{0}, []( auto &&init, auto &&v ) {
 				  if( v ) {
-					  return std::forward<decltype( init )>( init ) + 1ULL;
+					  return std::forward<decltype( init )>( init ) + size_type{1};
 				  }
 				  return std::forward<decltype( init )>( init );
 			  } );
