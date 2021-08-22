@@ -24,6 +24,7 @@ set(TEST_SOURCES
 	daw_container_algorithm_test.cpp
 	daw_copiable_unique_ptr_test.cpp
 	daw_cxmath_test.cpp
+	daw_cx_offset_of_test.cpp
 	daw_endian_test.cpp
 	daw_exception_test.cpp
 	daw_expected_test.cpp
