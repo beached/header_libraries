@@ -170,6 +170,10 @@ namespace daw::filesystem {
 			return m_size;
 		}
 
+		[[nodiscard]] constexpr bool empty( ) const noexcept {
+			return not(*this) or  m_size == 0;
+		}
+
 		constexpr explicit operator bool( ) const noexcept {
 			return m_file >= 0 and m_ptr != nullptr;
 		}
@@ -368,6 +372,10 @@ namespace daw::filesystem {
 
 		[[nodiscard]] constexpr size_type size( ) const noexcept {
 			return m_size;
+		}
+
+		[[nodiscard]] constexpr bool empty( ) const noexcept {
+			return not(*this) or  m_size == 0;
 		}
 
 		constexpr explicit operator bool( ) const noexcept {
