@@ -1071,6 +1071,13 @@ namespace daw {
 	template<typename T>
 	inline constexpr template_param<T> template_arg = template_param<T>{ };
 
+	template<auto... vals>
+	struct template_vals_t {};
+
+	template<auto... vals>
+	inline constexpr template_vals_t<vals...> template_vals =
+	  template_vals_t<vals...>{ };
+
 	template<typename... Ts>
 	struct expander {
 		explicit constexpr expander( Ts const &... ) noexcept {}
