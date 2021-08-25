@@ -738,7 +738,7 @@ namespace daw::cxmath {
 				lz = 8 - 1;
 			}
 
-			std::uint32_t significand = ( a << ( lz + 1 ) ) >> ( 64 - 23 ); // [3]
+			auto significand = static_cast<std::uint32_t>( ( a << ( lz + 1 ) ) >> ( 64 - 23 ) ); // [3]
 			return { ( static_cast<std::uint32_t>( sign ? 1U : 0U ) << 31U ) |
 			           ( static_cast<std::uint32_t>( exponent ) << 23U ) |
 			           significand,
