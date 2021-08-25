@@ -12,7 +12,8 @@ project("daw-header-libraries"
         VERSION "1.28.0"
         DESCRIPTION "Various headers"
         HOMEPAGE_URL "https://github.com/beached/header_libraries"
-        LANGUAGES C CXX)
+        LANGUAGES C CXX
+)
 
 set(CMAKE_CXX_STANDARD 17 CACHE STRING "The C++ standard whose features are requested.")
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -24,7 +25,7 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
     if( MSVC )
         # clang-cl/cmake will use -imsvc for include paths when SYSTEM is set.
         # This breaks code with alternate tokens
-				# see https://bugs.llvm.org/show_bug.cgi?id=42427
+                # see https://bugs.llvm.org/show_bug.cgi?id=42427
         set(DAW_HEADERLIBRARIES_warning_guard "")
     else ()
         set(DAW_HEADERLIBRARIES_warning_guard SYSTEM)
@@ -41,10 +42,12 @@ if (DAW_ENABLE_TESTING)
 endif ()
 
 include(GNUInstallDirs)
+
 set(header_libraries_INSTALL_CMAKEDIR
         "${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake"
         CACHE STRING
-        "The install directory to use for CMake package config files")
+        "The install directory to use for CMake package config files"
+)
 
 set(PROJECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 
@@ -63,13 +66,15 @@ target_include_directories(${PROJECT_NAME} ${DAW_HEADERLIBRARIES_warning_guard}
         INTERFACE
         "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
-        )
+)
 
 install(TARGETS ${PROJECT_NAME}
         EXPORT ${PROJECT_NAME}_Targets
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
 
 include(CMakePackageConfigHelpers)
 
@@ -81,21 +86,22 @@ configure_package_config_file(
 
 write_basic_package_version_file("${PROJECT_NAME}ConfigVersion.cmake"
         VERSION ${PROJECT_VERSION}
-        COMPATIBILITY SameMajorVersion)
+        COMPATIBILITY SameMajorVersion
+)
 
 install(EXPORT ${PROJECT_NAME}_Targets
         FILE ${PROJECT_NAME}Targets.cmake
         NAMESPACE daw::
         DESTINATION lib/cmake/${PROJECT_NAME}
-        )
+)
 
 install(FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
         "${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
         DESTINATION lib/cmake/${PROJECT_NAME}
-        )
+)
 
 install(
         DIRECTORY ${PROJECT_SOURCE_DIR}/include/daw
         DESTINATION include
 )
-			
+
