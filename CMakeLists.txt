@@ -46,7 +46,6 @@ if (NOT_SUBPROJECT)
         enable_testing()
         add_subdirectory(tests)
     endif ()
-endif( )
 
 target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_17)
 target_include_directories(${PROJECT_NAME} 
@@ -91,4 +90,6 @@ install(
     DIRECTORY ${PROJECT_SOURCE_DIR}/include/daw
     DESTINATION include
 )
+endif( )
+
 
