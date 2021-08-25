@@ -471,7 +471,8 @@ namespace daw::cxmath {
 
 	[[nodiscard]] DAW_ATTRIB_FLATINLINE inline constexpr std::uint32_t
 	count_leading_zeroes( daw::UInt64 v ) noexcept {
-		return count_leading_zeroes( static_cast<std::uint64_t>( v ) );
+		return static_cast<std::uint32_t>(
+		  count_leading_zeroes( static_cast<std::uint64_t>( v ) ) );
 	}
 
 #else
@@ -876,13 +877,14 @@ namespace daw::cxmath {
 			return r;
 		}
 		std::int32_t const N = *exp;
-		Real const f = cxmath_impl::fexp3( r, 0, N );
+		Real const f = static_cast<Real>( cxmath_impl::fexp3( r, 0, N ) );
 #endif
-		Real y0 = ( Real{ 0.41731 } + ( Real{ 0.59016 } * f ) );
+		Real y0 =
+		  ( static_cast<Real>( 0.41731 ) + ( static_cast<Real>( 0.59016 ) * f ) );
 		// Round 1
-		y0 = Real{ 0.5 } * ( y0 + ( f / y0 ) );
+		y0 = static_cast<Real>( 0.5 ) * ( y0 + ( f / y0 ) );
 		if constexpr( not std::is_same_v<Real, float> ) {
-			y0 = Real{ 0.5 } * ( y0 + ( f / y0 ) );
+			y0 = static_cast<Real>( 0.5 ) * ( y0 + ( f / y0 ) );
 		}
 
 		// Final Round

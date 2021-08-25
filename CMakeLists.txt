@@ -9,7 +9,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 project("daw-header-libraries"
-    VERSION "1.29.0"
+    VERSION "1.29.1"
     DESCRIPTION "Various headers"
     HOMEPAGE_URL "https://github.com/beached/header_libraries"
     LANGUAGES C CXX
@@ -35,10 +35,9 @@ add_library(${PROJECT_NAME} INTERFACE)
 add_library(daw::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 add_library(daw::header_libraries ALIAS ${PROJECT_NAME})
 
-
 if (DAW_ENABLE_TESTING)
-    enable_testing()
-    add_subdirectory(tests)
+		enable_testing()
+		add_subdirectory(tests)
 endif ()
 
 target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_17)
@@ -84,4 +83,5 @@ install(
     DIRECTORY ${PROJECT_SOURCE_DIR}/include/daw
     DESTINATION include
 )
+
 
