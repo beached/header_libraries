@@ -386,7 +386,7 @@ namespace daw {
 			return 0;
 		}
 
-		static constexpr bool has_room( size_type count ) noexcept {
+		static constexpr bool has_room( size_type /*count*/ ) noexcept {
 			return false;
 		}
 
@@ -408,7 +408,7 @@ namespace daw {
 			std::terminate( );
 		}
 
-		static constexpr const_reference at( size_type pos ) {
+		static constexpr const_reference at( size_type /*pos*/ ) {
 			std::terminate( );
 		}
 
@@ -455,6 +455,6 @@ namespace daw {
 
 		static constexpr void zero( ) noexcept {}
 
-		static constexpr void swap( bounded_vector_t &rhs ) {}
+		static constexpr void swap( bounded_vector_t &/*rhs*/ ) {}
 	};
 } // namespace daw
