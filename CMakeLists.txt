@@ -63,7 +63,6 @@ install(TARGETS ${PROJECT_NAME}
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
-if (NOT_SUBPROJECT)
 include(CMakePackageConfigHelpers)
 
 configure_package_config_file(
@@ -76,7 +75,6 @@ write_basic_package_version_file("${PROJECT_NAME}ConfigVersion.cmake"
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY SameMajorVersion
 )
-endif( )
 
 install(EXPORT ${PROJECT_NAME}_Targets
     FILE ${PROJECT_NAME}Targets.cmake
@@ -93,3 +91,4 @@ install(
     DIRECTORY ${PROJECT_SOURCE_DIR}/include/daw
     DESTINATION include
 )
+
