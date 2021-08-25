@@ -42,10 +42,11 @@ add_library(daw::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 add_library(daw::header_libraries ALIAS ${PROJECT_NAME})
 
 if (NOT_SUBPROJECT)
-if (DAW_ENABLE_TESTING)
-    enable_testing()
-    add_subdirectory(tests)
-endif ()
+    if (DAW_ENABLE_TESTING)
+        enable_testing()
+        add_subdirectory(tests)
+    endif ()
+endif( )
 
 target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_17)
 target_include_directories(${PROJECT_NAME} 
@@ -62,6 +63,7 @@ install(TARGETS ${PROJECT_NAME}
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
+if (NOT_SUBPROJECT)
 include(CMakePackageConfigHelpers)
 
 configure_package_config_file(
@@ -74,6 +76,7 @@ write_basic_package_version_file("${PROJECT_NAME}ConfigVersion.cmake"
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY SameMajorVersion
 )
+endif( )
 
 install(EXPORT ${PROJECT_NAME}_Targets
     FILE ${PROJECT_NAME}Targets.cmake
@@ -90,4 +93,3 @@ install(
     DIRECTORY ${PROJECT_SOURCE_DIR}/include/daw
     DESTINATION include
 )
-endif( )
