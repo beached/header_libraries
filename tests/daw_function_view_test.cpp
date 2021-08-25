@@ -32,7 +32,7 @@ int func2( daw::function_view<void( double, double )> f ) {
 }
 
 int test3( ) {
-	return func2( +[]( double a, double b ) { puts( "Hello\n" ); } );
+	return func2( +[]( double, double ) { puts( "Hello\n" ); } );
 }
 
 int main( ) {}
