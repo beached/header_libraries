@@ -276,9 +276,8 @@ namespace daw {
 	template<size_t Runs, char delem = '\n', typename Validator,
 	         typename Function, typename... Args>
 	[[maybe_unused]] static std::array<double, Runs>
-	bench_n_test_mbs2( std::string const &title, size_t bytes,
-	                   Validator &&validator, Function &&func,
-	                   Args &&...args ) noexcept {
+	bench_n_test_mbs2( std::string const &, size_t, Validator &&validator,
+	                   Function &&func, Args &&...args ) noexcept {
 		static_assert( Runs > 0 );
 		auto results = std::array<double, Runs>{ };
 

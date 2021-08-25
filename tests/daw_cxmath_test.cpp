@@ -86,6 +86,7 @@ void test_sqrt( Float f ) {
 		auto ssqrt = std::sqrt( f );
 		auto lsqrt = daw::cxmath::sqrt( f );
 		auto absdiff = std::abs( ssqrt - lsqrt );
+		(void)absdiff;
 		std::cerr << std::setprecision( std::numeric_limits<Float>::max_digits10 )
 		          << "A ulp difference of " << d0 << " was found for the sqrt of ("
 		          << f << "); std::sqrt->" << ssqrt << "("
@@ -95,8 +96,8 @@ void test_sqrt( Float f ) {
 	}
 }
 template<typename Float>
-inline constexpr Float pi =
-  3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446;
+inline constexpr Float pi = static_cast<Float>(
+  3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446 );
 
 void sqrt_tests( ) {
 	std::cout << "Testing sqrt against std::sqrt\n";
@@ -153,6 +154,9 @@ int main( ) {
 	out_sqrt( -std::numeric_limits<float>::infinity( ) );
 	out_sqrt( std::numeric_limits<float>::quiet_NaN( ) );
 
+	auto value = daw::UInt64{ 0x0FU };
+	auto ls = daw::cxmath::count_leading_zeroes( value );
+	(void)ls;
 	auto const nums =
 	  daw::make_random_data<int32_t, std::vector<float>>( 1'000, -1'000, 1'000 );
 	auto const dnums =
