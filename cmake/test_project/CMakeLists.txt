@@ -22,4 +22,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 find_package( daw-header-libraries REQUIRED )
 
 add_executable( test test.cpp )
-target_link_libraries( test daw::daw-header-libraries )
+target_compile_options( test INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/permissive->)
+target_link_libraries( test PRIVATE daw::daw-header-libraries )
+add_test( test_test test )

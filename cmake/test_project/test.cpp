@@ -8,11 +8,14 @@
 
 #include <daw/daw_string_view.h>
 
+#include <cstdio>
+
 int main( int argc, char ** argv ) {
 	auto sv = daw::string_view( argv[0] );
 	if( !sv.empty( ) ) {
-		return 0;
+		std::puts( "All good\n" );
+	} else {
+		std::puts( "Empty argc[0]\n" )
 	}
-	return 1;
 }
 
