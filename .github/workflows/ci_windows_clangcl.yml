@@ -15,6 +15,4 @@ jobs:
         run: .\ci_scripts\ci_windows_build_clangcl.cmd
       - name: Test
         run: .\ci_scripts\ci_windows_test.cmd
-      - name: InstallTest
-        run: .\ci_scripts\ci_windows_install_test_clangcl.cmd
 
