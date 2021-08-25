@@ -8,7 +8,7 @@
 
 cmake_minimum_required(VERSION 3.14)
 
-project("daw-header-libraries-install-test"
+project("install-test"
         VERSION "1.0.0"
         DESCRIPTION "Tests that find_package works"
         HOMEPAGE_URL "https://github.com/beached/header_libraries"
@@ -23,7 +23,7 @@ find_package( daw-header-libraries REQUIRED )
 
 enable_testing()
 
-add_executable( test test.cpp )
-target_compile_options( test INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/permissive->)
-target_link_libraries( test PRIVATE daw::daw-header-libraries )
-add_test( test_test test )
+add_executable( ${PROJECT_NAME} test.cpp )
+target_compile_options( ${PROJECT_NAME} INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/permissive->)
+target_link_libraries( ${PROJECT_NAME} PRIVATE daw::daw-header-libraries )
+add_test( ${PROJECT_NAME}_test ${PROJECT_NAME} )
