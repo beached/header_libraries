@@ -21,4 +21,5 @@ jobs:
       run: ./ci_scripts/ci_ubuntu_build.sh
     - name: Test
       run: ./ci_scripts/ci_ubuntu_test.sh
-      
+    - name: InstallTest
+      run: ./ci_scripts/ci_ubuntu_install_test.sh
