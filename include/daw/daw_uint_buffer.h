@@ -3010,7 +3010,7 @@ namespace daw {
 	}
 
 	constexpr UInt16 to_uint16_buffer( char const *ptr ) noexcept {
-		std::uint16_t result = 0;
+		std::uint32_t result = 0;
 		result |= static_cast<std::uint32_t>( static_cast<unsigned char>( ptr[1] ) )
 		          << 8U;
 		result |=
