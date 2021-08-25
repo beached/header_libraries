@@ -15,7 +15,7 @@ int main( int argc, char ** argv ) {
 	if( !sv.empty( ) ) {
 		std::puts( "All good\n" );
 	} else {
-		std::puts( "Empty argc[0]\n" )
+		std::puts( "Empty argc[0]\n" );
 	}
 }
 
