@@ -351,7 +351,7 @@ namespace daw {
 	}
 
 	template<typename T>
-	constexpr bool operator<=( std::nullopt_t, optional<T> const &opt ) noexcept {
+	constexpr bool operator<=( std::nullopt_t, optional<T> const &/*opt*/ ) noexcept {
 		return true;
 	}
 
@@ -361,12 +361,12 @@ namespace daw {
 	}
 
 	template<typename T>
-	constexpr bool operator>( std::nullopt_t, optional<T> const &opt ) noexcept {
+	constexpr bool operator>( std::nullopt_t, optional<T> const &/*opt*/ ) noexcept {
 		return false;
 	}
 
 	template<typename T>
-	constexpr bool operator>=( optional<T> const &opt, std::nullopt_t ) noexcept {
+	constexpr bool operator>=( optional<T> const &/*opt*/, std::nullopt_t ) noexcept {
 		return true;
 	}
 

@@ -279,6 +279,7 @@ namespace daw {
 			}
 		}
 
+		/*
 		template<typename K>
 		constexpr iterator lower_bound( K const &x ) {
 			return daw::algorithm::lower_bound(
@@ -294,6 +295,7 @@ namespace daw {
 				  return m_compare( lhs.first, rhs.first );
 			  } );
 		}
+		*/
 
 		template<typename P, daw::enable_when_t<
 		                       std::is_constructible_v<value_type, P &&>> = nullptr>
