@@ -8,6 +8,12 @@
 
 cmake_minimum_required(VERSION 3.14)
 
+if(NOT DEFINED PROJECT_NAME)
+  set(NOT_SUBPROJECT ON)
+else()
+  set(NOT_SUBPROJECT OFF)
+endif()
+
 project("daw-header-libraries"
     VERSION "1.29.0"
     DESCRIPTION "Various headers"
@@ -35,7 +41,7 @@ add_library(${PROJECT_NAME} INTERFACE)
 add_library(daw::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 add_library(daw::header_libraries ALIAS ${PROJECT_NAME})
 
-
+if (NOT_SUBPROJECT)
 if (DAW_ENABLE_TESTING)
     enable_testing()
     add_subdirectory(tests)
@@ -84,4 +90,4 @@ install(
     DIRECTORY ${PROJECT_SOURCE_DIR}/include/daw
     DESTINATION include
 )
-
+endif( )
