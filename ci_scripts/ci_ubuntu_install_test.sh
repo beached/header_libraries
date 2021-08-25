@@ -6,7 +6,7 @@ cd build
 
 echo "#################################"
 echo "Starting Install Tests"
-cmake --install .
+sudo cmake --install .
 cd ../cmake/test_project/
 mkdir build
 cd build
