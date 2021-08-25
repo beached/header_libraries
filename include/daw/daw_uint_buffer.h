@@ -1156,7 +1156,7 @@ namespace daw {
 
 	constexpr std::uint16_t operator<<( std::uint16_t b, UInt16 shift ) noexcept {
 
-		b <<= static_cast<std::uint32_t>( shift );
+		b = static_cast<std::uint16_t>( static_cast<std::uint32_t>( b ) << static_cast<std::uint32_t>( shift ) );
 		return b;
 	}
 
@@ -1175,7 +1175,7 @@ namespace daw {
 
 	constexpr std::uint16_t operator>>( std::uint16_t b, UInt16 shift ) noexcept {
 
-		b >>= static_cast<std::uint32_t>( shift );
+		b = static_cast<std::uint16_t>( static_cast<std::uint32_t>( b ) >> static_cast<std::uint32_t>( shift ) );
 		return b;
 	}
 
@@ -2174,13 +2174,13 @@ namespace daw {
 
 	constexpr std::uint16_t &operator+=( std::uint16_t &lhs,
 	                                     UInt16 rhs ) noexcept {
-		lhs += static_cast<std::uint32_t>( rhs );
+		lhs = static_cast<std::uint16_t>( static_cast<std::uint32_t>( lhs ) + static_cast<std::uint32_t>( rhs ) );
 		return lhs;
 	}
 
 	constexpr std::uint16_t &operator+=( std::uint16_t &lhs,
 	                                     UInt8 rhs ) noexcept {
-		lhs += static_cast<std::uint32_t>( rhs );
+		lhs = static_cast<std::uint16_t>( static_cast<std::uint32_t>( lhs ) + static_cast<std::uint32_t>( rhs ) );
 		return lhs;
 	}
 
@@ -2234,13 +2234,13 @@ namespace daw {
 
 	constexpr std::uint16_t &operator-=( std::uint16_t &lhs,
 	                                     UInt16 rhs ) noexcept {
-		lhs -= static_cast<std::uint16_t>( rhs );
+		lhs = static_cast<std::uint16_t>( static_cast<std::uint32_t>( lhs ) - static_cast<std::uint32_t>( rhs ) );
 		return lhs;
 	}
 
 	constexpr std::uint16_t &operator-=( std::uint16_t &lhs,
 	                                     UInt8 rhs ) noexcept {
-		lhs -= static_cast<std::uint16_t>( rhs );
+		lhs = static_cast<std::uint16_t>( static_cast<std::uint32_t>( lhs ) - static_cast<std::uint32_t>( rhs ) );
 		return lhs;
 	}
 
@@ -2292,13 +2292,13 @@ namespace daw {
 
 	constexpr std::uint16_t &operator*=( std::uint16_t &lhs,
 	                                     UInt16 rhs ) noexcept {
-		lhs *= static_cast<std::uint32_t>( rhs );
+		lhs = static_cast<std::uint16_t>( static_cast<std::uint32_t>( lhs ) * static_cast<std::uint32_t>( rhs ) );
 		return lhs;
 	}
 
 	constexpr std::uint16_t &operator*=( std::uint16_t &lhs,
 	                                     UInt8 rhs ) noexcept {
-		lhs *= static_cast<std::uint32_t>( rhs );
+		lhs = static_cast<std::uint16_t>( static_cast<std::uint32_t>( lhs ) * static_cast<std::uint32_t>( rhs ) );
 		return lhs;
 	}
 
@@ -2350,13 +2350,13 @@ namespace daw {
 
 	constexpr std::uint16_t &operator/=( std::uint16_t &lhs,
 	                                     UInt16 rhs ) noexcept {
-		lhs /= static_cast<std::uint32_t>( rhs );
+		lhs = static_cast<std::uint16_t>( static_cast<std::uint32_t>( lhs ) / static_cast<std::uint32_t>( rhs ) );
 		return lhs;
 	}
 
 	constexpr std::uint16_t &operator/=( std::uint16_t &lhs,
 	                                     UInt8 rhs ) noexcept {
-		lhs /= static_cast<std::uint16_t>( rhs );
+		lhs = static_cast<std::uint16_t>( static_cast<std::uint32_t>( lhs ) / static_cast<std::uint32_t>( rhs ) );
 		return lhs;
 	}
 
@@ -2381,12 +2381,12 @@ namespace daw {
 	}
 
 	constexpr UInt16 operator/( std::uint16_t lhs, UInt16 rhs ) noexcept {
-		lhs /= static_cast<std::uint16_t>( rhs );
+		lhs = static_cast<std::uint16_t>( static_cast<std::uint32_t>( lhs ) / static_cast<std::uint32_t>( rhs ) );
 		return static_cast<UInt16>( lhs );
 	}
 
 	constexpr UInt16 operator/( std::uint16_t lhs, UInt8 rhs ) noexcept {
-		lhs /= static_cast<std::uint16_t>( rhs );
+		lhs = static_cast<std::uint16_t>( static_cast<std::uint32_t>( lhs ) / static_cast<std::uint32_t>( rhs ) );
 		return static_cast<UInt16>( lhs );
 	}
 
@@ -2464,7 +2464,7 @@ namespace daw {
 	}
 
 	constexpr std::uint8_t &operator+=( std::uint8_t &lhs, UInt8 rhs ) noexcept {
-		lhs += static_cast<std::uint32_t>( rhs );
+		lhs = static_cast<std::uint8_t>( static_cast<std::uint32_t>( lhs ) + static_cast<std::uint32_t>( rhs ) );
 		return lhs;
 	}
 
@@ -2480,7 +2480,7 @@ namespace daw {
 	}
 
 	constexpr UInt8 operator+( std::uint8_t lhs, UInt8 rhs ) noexcept {
-		lhs += static_cast<std::uint32_t>( rhs );
+		lhs = static_cast<std::uint8_t>( static_cast<std::uint32_t>( lhs ) + static_cast<std::uint32_t>( rhs ) );
 		return static_cast<UInt8>( lhs );
 	}
 
@@ -2496,7 +2496,7 @@ namespace daw {
 	}
 
 	constexpr std::uint8_t &operator-=( std::uint8_t &lhs, UInt8 rhs ) noexcept {
-		lhs -= static_cast<std::uint32_t>( rhs );
+		lhs = static_cast<std::uint8_t>( static_cast<std::uint32_t>( lhs ) - static_cast<std::uint32_t>( rhs ) );
 		return lhs;
 	}
 
@@ -2512,7 +2512,7 @@ namespace daw {
 	}
 
 	constexpr UInt8 operator-( std::uint8_t lhs, UInt8 rhs ) noexcept {
-		lhs -= static_cast<std::uint32_t>( rhs );
+		lhs = static_cast<std::uint8_t>( static_cast<std::uint32_t>( lhs ) - static_cast<std::uint32_t>( rhs ) );
 		return static_cast<UInt8>( lhs );
 	}
 
@@ -2528,7 +2528,7 @@ namespace daw {
 	}
 
 	constexpr std::uint8_t &operator*=( std::uint8_t &lhs, UInt8 rhs ) noexcept {
-		lhs *= static_cast<std::uint32_t>( rhs );
+		lhs = static_cast<std::uint8_t>( static_cast<std::uint32_t>( lhs ) * static_cast<std::uint32_t>( rhs ) );
 		return lhs;
 	}
 
@@ -2665,7 +2665,7 @@ namespace daw {
 
 	constexpr std::uint8_t operator<<( std::uint8_t b, UInt8 shift ) noexcept {
 
-		b <<= static_cast<std::uint32_t>( shift );
+		b = static_cast<std::uint8_t>( static_cast<std::uint32_t>( b ) << static_cast<std::uint32_t>( shift ) );
 		return b;
 	}
 
@@ -2684,7 +2684,7 @@ namespace daw {
 
 	constexpr std::uint8_t operator>>( std::uint8_t b, UInt8 shift ) noexcept {
 
-		b >>= static_cast<std::uint32_t>( shift );
+		b = static_cast<std::uint8_t>( static_cast<std::uint32_t>( b ) >> static_cast<std::uint32_t>( shift ) );
 		return b;
 	}
 

@@ -665,7 +665,7 @@ namespace daw::cxmath {
 
 			[[nodiscard]] constexpr std::int16_t exponent( ) const noexcept {
 				std::int16_t const bias = 127;
-				return static_cast<std::int16_t>( raw_exponent( ) ) - bias;
+				return static_cast<std::int16_t>( static_cast<std::int16_t>( raw_exponent( ) ) - bias );
 			}
 
 			[[nodiscard]] constexpr std::uint32_t raw_significand( ) const noexcept {
