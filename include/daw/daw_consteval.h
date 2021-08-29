@@ -21,7 +21,7 @@ namespace daw {
 		return DAW_FWD2( T, v );
 	}
 } // namespace daw
-#define DAW_CONST_EVALUATE( ... ) const_evaluate( __VA_ARGS__ )
+#define DAW_CONST_EVALUATE( ... ) ::daw::const_evaluate( __VA_ARGS__ )
 #else
 #define DAW_CONSTEVAL constexpr
 #define DAW_CONST_EVALUATE( ... ) ( __VA_ARGS__ )
