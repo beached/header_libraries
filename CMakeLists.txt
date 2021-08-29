@@ -9,7 +9,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 project("daw-header-libraries"
-    VERSION "1.30.0"
+    VERSION "1.31.0"
     DESCRIPTION "Various headers"
     HOMEPAGE_URL "https://github.com/beached/header_libraries"
     LANGUAGES C CXX
