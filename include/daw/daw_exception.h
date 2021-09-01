@@ -98,6 +98,8 @@ namespace daw::exception {
 		throw ExceptionType( std::forward<Arg>( arg ),
 		                     std::forward<Args>( args )... );
 #else
+		(void)arg;
+		((void)args,...);
 		std::abort( );
 #endif
 	}
