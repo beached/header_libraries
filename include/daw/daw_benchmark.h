@@ -610,6 +610,7 @@ namespace daw {
 		try {
 #endif
 			(void)std::forward<Expression>( expression )( );
+			(void)pred;
 #ifdef DAW_USE_EXCEPTIONS
 		} catch( Exception const &ex ) {
 			if( std::forward<Predicate>( pred )( ex ) ) {
