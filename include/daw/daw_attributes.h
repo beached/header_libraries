@@ -43,7 +43,7 @@
 #endif
 
 #define DAW_ATTRIB_HIDDEN
-#define DAW_ATTRIB_INLINE
+#define DAW_ATTRIB_INLINE __forceinline
 #define DAW_ATTRIB_NOINLINE __declspec( noinline )
 
 #else
