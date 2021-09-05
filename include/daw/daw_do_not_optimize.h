@@ -38,6 +38,7 @@ namespace daw {
 	} // namespace do_not_optimize_details
 
 #pragma optimize( "", off )
+#pragma warning( disable: 4702 )
 	template<class T>
 	inline void do_not_optimize( T const &value ) {
 		do_not_optimize_details::UseCharPointer(
@@ -45,6 +46,7 @@ namespace daw {
 		_ReadWriteBarrier( );
 	}
 #pragma optimize( "", on )
+#pragma warning( default: 4702 )
 #endif
 
 	template<typename... Values, std::enable_if_t<( sizeof...( Values ) != 1 ),
