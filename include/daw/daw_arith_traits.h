@@ -328,4 +328,36 @@ namespace daw {
 #endif
 	template<typename T>
 	inline constexpr bool is_system_integral_v = is_system_integral<T>::value;
+
+	template<typename T, std::size_t BitSize>
+	using is_same_size = std::bool_constant<( ( sizeof( T ) * 8 ) == BitSize )>;
+
+	template<typename T, std::size_t BitSize>
+	inline constexpr bool is_same_size_v = is_same_size<T, BitSize>::value;
+
+	struct unsupported_int_size;
+
+	template<std::size_t BitSize>
+	using intN_t = std::conditional_t<
+	  is_same_size_v<char, BitSize>, char,
+	  std::conditional_t<
+	    is_same_size_v<short, BitSize>, short,
+	    std::conditional_t<
+	      is_same_size_v<int, BitSize>, int,
+	      std::conditional_t<
+	        is_same_size_v<long, BitSize>, long,
+	        std::conditional_t<is_same_size_v<long long, BitSize>, long long,
+	                           unsupported_int_size>>>>>;
+	template<std::size_t BitSize>
+	using uintN_t = std::conditional_t<
+	  is_same_size_v<char, BitSize>, unsigned char,
+	  std::conditional_t<
+	    is_same_size_v<short, BitSize>, unsigned short,
+	    std::conditional_t<
+	      is_same_size_v<int, BitSize>, unsigned int,
+	      std::conditional_t<
+	        is_same_size_v<long, BitSize>, unsigned long,
+	        std::conditional_t<is_same_size_v<unsigned long long, BitSize>,
+	                           long long, unsupported_int_size>>>>>;
+
 } // namespace daw

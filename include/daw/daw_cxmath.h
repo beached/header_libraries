@@ -12,8 +12,10 @@
 #include "daw_assume.h"
 #include "daw_attributes.h"
 #include "daw_bit_cast.h"
+#include "daw_cpp_feature_check.h"
 #include "daw_do_n.h"
 #include "daw_enable_if.h"
+#include "daw_is_constant_evaluated.h"
 #include "daw_likely.h"
 #include "daw_uint_buffer.h"
 #include "impl/daw_math_impl.h"
@@ -24,6 +26,13 @@
 #include <limits>
 #include <optional>
 #include <type_traits>
+
+#if defined( __cpp_lib_bitops )
+#if DAW_HAS_INCLUDE( <bit> )
+#include <bit>
+#define DAW_HAS_CPP_BITOPS
+#endif
+#endif
 
 namespace daw::cxmath {
 	enum class fp_classes { normal, zero, subnormal, nan, infinity };
@@ -449,7 +458,8 @@ namespace daw::cxmath {
 	[[nodiscard]] DAW_ATTRIB_INLINE constexpr std::uint64_t
 	count_leading_zeroes( std::uint64_t v ) noexcept {
 		if( v != 0U ) {
-			return static_cast<std::uint64_t>( __builtin_clzll( v ) );
+			return static_cast<std::uint64_t>(
+			  __builtin_clzll( static_cast<unsigned long long>( v ) ) );
 		}
 		return 64U;
 	}
@@ -506,6 +516,134 @@ namespace daw::cxmath {
 	[[nodiscard]] constexpr std::uint32_t
 	count_leading_zeroes( daw::UInt32 v ) noexcept {
 		return count_leading_zeroes( static_cast<std::uint64_t>( v ) << 32U );
+	}
+#endif
+
+	namespace cxmath_impl {
+		[[nodiscard]] DAW_ATTRIB_INLINE inline constexpr std::uint32_t
+		count_trailing_zeros_cx32( std::uint32_t v ) noexcept {
+			std::uint32_t c = 32U;
+			v &= static_cast<std::uint32_t>( -static_cast<std::int32_t>( v ) );
+			if( v ) {
+				c--;
+			}
+			if( v & 0x0000'FFFFU ) {
+				c -= 16;
+			}
+			if( v & 0x00FF'00FFU ) {
+				c -= 8;
+			}
+			if( v & 0x0F0F'0F0FU ) {
+				c -= 4;
+			}
+			if( v & 0x3333'3333U ) {
+				c -= 2;
+			}
+			if( v & 0x5555'5555U ) {
+				c -= 1;
+			}
+			return c;
+		}
+
+		[[nodiscard]] DAW_ATTRIB_INLINE inline constexpr std::uint32_t
+		count_trailing_zeros_cx64( std::uint64_t v ) noexcept {
+			if( ( v & 0xFFFF'FFFFU ) == 0 ) {
+				return 32 + count_trailing_zeros_cx32(
+				              static_cast<std::uint32_t>( v >> 32U ) );
+			}
+			return count_trailing_zeros_cx32( static_cast<std::uint32_t>( v ) );
+		}
+
+		template<typename T>
+		[[nodiscard]] DAW_ATTRIB_INLINE inline constexpr std::uint32_t
+		count_trailing_zeros_cx( T v ) noexcept {
+			static_assert( sizeof( T ) == 8 or sizeof( T ) == 4 );
+			if constexpr( sizeof( T ) == 8 ) {
+				return count_trailing_zeros_cx64( v );
+			} else {
+				return count_trailing_zeros_cx32( v );
+			}
+		}
+	} // namespace cxmath_impl
+
+#if defined( DAW_HAS_CPP_BITOPS )
+	[[nodiscard]] constexpr std::uint32_t
+	count_trailing_zeros( std::uint32_t v ) noexcept {
+		return std::countr_zero( v );
+	}
+	[[nodiscard]] constexpr std::uint64_t
+	count_trailing_zeros( std::uint64_t v ) noexcept {
+		return std::countr_zero( v );
+	}
+#elif DAW_HAS_BUILTIN( __builtin_ctz ) or defined( __GNUC__ ) or               \
+  defined( __bultin_ctz )
+
+	[[nodiscard]] constexpr std::uint32_t
+	count_trailing_zeros( std::uint32_t v ) noexcept {
+#if INT_MAX == 2147483647LL
+		return static_cast<std::uint32_t>(
+		  __builtin_ctz( static_cast<unsigned>( v ) ) );
+#elif LONG_MAX == 2147483647LL
+		return static_cast<std::uint32_t>(
+		  __builtin_ctzl( static_cast<unsigned long>( v ) ) );
+#elif LLONG_MAX == 2147483647LL
+		return static_cast<std::uint32_t>(
+		  __builtin_ctzl( static_cast<unsigned long long>( v ) ) );
+#else
+#error Unsupported int sizes
+#endif
+	}
+
+	[[nodiscard]] constexpr std::uint32_t
+	count_trailing_zeros( std::uint64_t v ) noexcept {
+#if INT_MAX == 9223372036854775807LL
+		return static_cast<std::uint32_t>(
+		  __builtin_ctz( static_cast<unsigned>( v ) ) );
+#elif LONG_MAX == 9223372036854775807LL
+		return static_cast<std::uint32_t>(
+		  __builtin_ctzl( static_cast<unsigned long>( v ) ) );
+#elif LLONG_MAX == 9223372036854775807LL
+		return static_cast<std::uint32_t>(
+		  __builtin_ctzl( static_cast<unsigned long long>( v ) ) );
+#else
+#error Unsupported int sizes
+#endif
+	}
+#elif defined( _MSC_VER ) and defined( _M_X64 ) and                            \
+  defined( DAW_IS_CONSTANT_EVALUATED )
+	[[nodiscard]] constexpr std::uint32_t
+	count_trailing_zeros( std::uint32_t v ) noexcept {
+#if defined( DAW_IS_CONSTANT_EVALUATED )
+		if( DAW_IS_CONSTANT_EVALUATED( ) ) {
+			return cxmath_impl::count_trailing_zeros_cx( v );
+		} else {
+			return static_cast<std::uint32_t>( _tzcnt_u32( n ) );
+		}
+#else
+		return cxmath_impl::count_trailing_zeros_cx( v );
+#endif
+	}
+
+	[[nodiscard]] constexpr std::uint64_t
+	count_trailing_zeros( std::uint64_t v ) noexcept {
+#if defined( DAW_IS_CONSTANT_EVALUATED )
+		if( DAW_IS_CONSTANT_EVALUATED( ) ) {
+			return cxmath_impl::count_trailing_zeros_cx( v );
+		} else {
+			return static_cast<std::uint32_t>( _tzcnt_u64( n ) );
+		}
+#else
+		return cxmath_impl::count_trailing_zeros_cx( v );
+#endif
+	}
+#else
+	[[nodiscard]] constexpr std::uint32_t
+	count_trailing_zeros( std::uint32_t v ) noexcept {
+		return cxmath_impl::count_trailing_zeros_cx( v );
+	}
+	[[nodiscard]] constexpr std::uint64_t
+	count_trailing_zeros( std::uint64_t v ) noexcept {
+		return cxmath_impl::count_trailing_zeros_cx( v );
 	}
 #endif
 
@@ -665,7 +803,8 @@ namespace daw::cxmath {
 
 			[[nodiscard]] constexpr std::int16_t exponent( ) const noexcept {
 				std::int16_t const bias = 127;
-				return static_cast<std::int16_t>( static_cast<std::int16_t>( raw_exponent( ) ) - bias );
+				return static_cast<std::int16_t>(
+				  static_cast<std::int16_t>( raw_exponent( ) ) - bias );
 			}
 
 			[[nodiscard]] constexpr std::uint32_t raw_significand( ) const noexcept {
@@ -738,7 +877,8 @@ namespace daw::cxmath {
 				lz = 8 - 1;
 			}
 
-			auto significand = static_cast<std::uint32_t>( ( a << ( lz + 1 ) ) >> ( 64 - 23 ) ); // [3]
+			auto significand =
+			  static_cast<std::uint32_t>( ( a << ( lz + 1 ) ) >> ( 64 - 23 ) ); // [3]
 			return { ( static_cast<std::uint32_t>( sign ? 1U : 0U ) << 31U ) |
 			           ( static_cast<std::uint32_t>( exponent ) << 23U ) |
 			           significand,
