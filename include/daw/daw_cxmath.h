@@ -617,7 +617,7 @@ namespace daw::cxmath {
 		if( DAW_IS_CONSTANT_EVALUATED( ) ) {
 			return cxmath_impl::count_trailing_zeros_cx( v );
 		} else {
-			return static_cast<std::uint32_t>( _tzcnt_u32( n ) );
+			return static_cast<std::uint32_t>( _tzcnt_u32( v ) );
 		}
 #else
 		return cxmath_impl::count_trailing_zeros_cx( v );
@@ -630,7 +630,7 @@ namespace daw::cxmath {
 		if( DAW_IS_CONSTANT_EVALUATED( ) ) {
 			return cxmath_impl::count_trailing_zeros_cx( v );
 		} else {
-			return static_cast<std::uint32_t>( _tzcnt_u64( n ) );
+			return static_cast<std::uint32_t>( _tzcnt_u64( v ) );
 		}
 #else
 		return cxmath_impl::count_trailing_zeros_cx( v );
