@@ -335,6 +335,7 @@ namespace daw {
 	template<typename T, std::size_t BitSize>
 	inline constexpr bool is_same_size_v = is_same_size<T, BitSize>::value;
 
+	template<std::size_t BitSize>
 	struct unsupported_int_size;
 
 	template<std::size_t BitSize>
@@ -347,7 +348,7 @@ namespace daw {
 	      std::conditional_t<
 	        is_same_size_v<long, BitSize>, long,
 	        std::conditional_t<is_same_size_v<long long, BitSize>, long long,
-	                           unsupported_int_size>>>>>;
+	                           unsupported_int_size<BitSize>>>>>>;
 	template<std::size_t BitSize>
 	using uintN_t = std::conditional_t<
 	  is_same_size_v<char, BitSize>, unsigned char,
@@ -358,6 +359,6 @@ namespace daw {
 	      std::conditional_t<
 	        is_same_size_v<long, BitSize>, unsigned long,
 	        std::conditional_t<is_same_size_v<unsigned long long, BitSize>,
-	                           long long, unsupported_int_size>>>>>;
+	                           long long, unsupported_int_size<BitSize>>>>>>;
 
 } // namespace daw
