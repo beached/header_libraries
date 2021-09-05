@@ -569,11 +569,11 @@ namespace daw::cxmath {
 #if defined( DAW_HAS_CPP_BITOPS )
 	[[nodiscard]] constexpr std::uint32_t
 	count_trailing_zeros( std::uint32_t v ) noexcept {
-		return std::countr_zero( v );
+		return static_cast<std::uint32_t>( std::countr_zero( v ) );
 	}
-	[[nodiscard]] constexpr std::uint64_t
+	[[nodiscard]] constexpr std::uint32_t
 	count_trailing_zeros( std::uint64_t v ) noexcept {
-		return std::countr_zero( v );
+		return static_cast<std::uint32_t>( std::countr_zero( v ) );
 	}
 #elif DAW_HAS_BUILTIN( __builtin_ctz ) or defined( __GNUC__ ) or               \
   defined( __bultin_ctz )
@@ -624,7 +624,7 @@ namespace daw::cxmath {
 #endif
 	}
 
-	[[nodiscard]] constexpr std::uint64_t
+	[[nodiscard]] constexpr std::uint32_t
 	count_trailing_zeros( std::uint64_t v ) noexcept {
 #if defined( DAW_IS_CONSTANT_EVALUATED )
 		if( DAW_IS_CONSTANT_EVALUATED( ) ) {
@@ -641,7 +641,7 @@ namespace daw::cxmath {
 	count_trailing_zeros( std::uint32_t v ) noexcept {
 		return cxmath_impl::count_trailing_zeros_cx( v );
 	}
-	[[nodiscard]] constexpr std::uint64_t
+	[[nodiscard]] constexpr std::uint32_t
 	count_trailing_zeros( std::uint64_t v ) noexcept {
 		return cxmath_impl::count_trailing_zeros_cx( v );
 	}
