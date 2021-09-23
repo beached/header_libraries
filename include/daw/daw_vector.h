@@ -80,6 +80,7 @@ struct MemoryAlloc {
 	static inline pointer reallocate( T *old_ptr, size_type new_size ) {
 		auto const max_sz = MALLOC_SIZE( old_ptr );
 		if( (new_size * 8U) <= max_sz ) {
+			std::cout << "Yay\n";
 			return old_ptr;
 		}
 		return reinterpret_cast<T *>( std::malloc( new_size * sizeof( T ) ) );
