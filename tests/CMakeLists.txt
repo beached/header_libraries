@@ -97,6 +97,7 @@ set(TEST_SOURCES
 	daw_validated_test.cpp
 	daw_value_ptr_test.cpp
 	daw_variant_cast_test.cpp
+	daw_vector_test.cpp
 	daw_view_test.cpp
 	daw_virtual_base_test.cpp
 	daw_visit_test.cpp
