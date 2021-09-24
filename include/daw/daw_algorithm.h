@@ -620,13 +620,14 @@ namespace daw::algorithm {
 		return prev;
 	}
 
-	template<typename ForwardIterator, typename UnaryPredicate>
-	constexpr ForwardIterator find_first_of( ForwardIterator first,
-	                                         ForwardIterator last,
-	                                         UnaryPredicate pred ) {
+	template<typename InputIterator, typename UnaryPredicate>
+	[[nodiscard]] constexpr InputIterator find_first_of( InputIterator first,
+	                                       InputIterator last,
+	                                       UnaryPredicate pred ) {
 
-		traits::is_forward_access_iterator_test<ForwardIterator>( );
-		traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
+		(void)traits::is_input_iterator_test<InputIterator>( );
+		(void)
+		  traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
 
 		while( first != last ) {
 			if( pred( *first ) ) {
@@ -635,6 +636,25 @@ namespace daw::algorithm {
 			++first;
 		}
 		return first;
+	}
+
+	template<typename InputIterator, typename ForwardIterator>
+	[[nodiscard]] constexpr InputIterator
+	find_first_of( InputIterator first, InputIterator last,
+	               ForwardIterator sfirst, ForwardIterator slast ) {
+
+		(void)traits::is_input_iterator_test<InputIterator>( );
+		(void)traits::is_forward_access_iterator_test<ForwardIterator>( );
+
+		while( first != last ) {
+			for( auto it = sfirst; it != slast; ++it ) {
+				if( *first == *it ) {
+					return first;
+				}
+			}
+			++first;
+		}
+		return last;
 	}
 
 	template<typename Iterator, typename UnaryPredicate>

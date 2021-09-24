@@ -97,7 +97,6 @@ set(TEST_SOURCES
 	daw_validated_test.cpp
 	daw_value_ptr_test.cpp
 	daw_variant_cast_test.cpp
-	daw_vector_test.cpp
 	daw_view_test.cpp
 	daw_virtual_base_test.cpp
 	daw_visit_test.cpp
@@ -129,6 +128,7 @@ set(DEV_TEST_SOURCES
 	daw_range_algorithm_test.cpp
 	daw_range_collection_test.cpp
 	daw_sort_n_test.cpp
+	daw_vector_test.cpp
 )
 
 find_package(Threads REQUIRED)
