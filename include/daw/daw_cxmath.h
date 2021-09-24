@@ -425,6 +425,7 @@ namespace daw::cxmath {
 			}
 		};
 	} // namespace cxmath_impl
+
 	template<int32_t exp>
 	constexpr float fpow2_v = cxmath_impl::pow2_t<double>::get<float>( exp );
 
@@ -440,31 +441,57 @@ namespace daw::cxmath {
 	template<size_t exp>
 	constexpr uintmax_t pow10_v = cxmath_impl::pow10_t<uintmax_t>::get( exp );
 
-#if DAW_HAS_BUILTIN( __builtin_clz )
-	[[nodiscard]] DAW_ATTRIB_INLINE constexpr std::uint32_t
-	count_leading_zeroes( std::uint32_t v ) noexcept {
-		if( v != 0U ) {
-			return static_cast<std::uint32_t>( __builtin_clz( v ) );
+	// Adapted from Hackers delight 11-3.  Do a binary decomposition of n
+	template<typename Arithmetic, typename Unsigned>
+	constexpr Arithmetic pow_n( Arithmetic x, Unsigned n ) {
+		static_assert( daw::is_arithmetic_v<Arithmetic> );
+		static_assert( daw::is_unsigned_v<Unsigned> );
+		auto result = Arithmetic{ 1 };
+		auto p = x;
+		while( true ) {
+			if( n & 1 ) {
+				result = p * result;
+			}
+			n >>= 1;
+			if( n == 0 ) {
+				return result;
+			}
+			p *= p;
 		}
-		return 32U;
 	}
 
-	[[nodiscard]] DAW_ATTRIB_FLATINLINE inline constexpr std::uint32_t
+#if DAW_HAS_BUILTIN( __builtin_clz )
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr unsigned
+	count_leading_zeroes( unsigned v ) noexcept {
+		if( v != 0U ) {
+			return static_cast<unsigned>( __builtin_clz( v ) );
+		}
+		return static_cast<unsigned>( sizeof( unsigned ) * 8U );
+	}
+
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr unsigned
+	count_leading_zeroes( unsigned long v ) noexcept {
+		if( v != 0U ) {
+			return static_cast<unsigned>( __builtin_clzl( v ) );
+		}
+		return static_cast<unsigned>( sizeof( unsigned long ) * 8U );
+	}
+
+	[[nodiscard]] DAW_ATTRIB_FLATINLINE inline constexpr unsigned
 	count_leading_zeroes( daw::UInt32 v ) noexcept {
 		return count_leading_zeroes( static_cast<std::uint32_t>( v ) );
 	}
 
 #if DAW_HAS_BUILTIN( __builtin_clzll )
-	[[nodiscard]] DAW_ATTRIB_INLINE constexpr std::uint64_t
-	count_leading_zeroes( std::uint64_t v ) noexcept {
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr unsigned
+	count_leading_zeroes( unsigned long long v ) noexcept {
 		if( v != 0U ) {
-			return static_cast<std::uint64_t>(
-			  __builtin_clzll( static_cast<unsigned long long>( v ) ) );
+			return static_cast<unsigned>( __builtin_clzll( v ) );
 		}
-		return 64U;
+		return static_cast<unsigned>( sizeof( unsigned long long ) * 8U );
 	}
 #else
-	[[nodiscard]] DAW_ATTRIB_INLINE inline constexpr std::uint32_t
+	[[nodiscard]] DAW_ATTRIB_INLINE inline constexpr unsigned
 	count_leading_zeroes( std::uint64_t v ) noexcept {
 		auto high = static_cast<std::uint32_t>( v >> 32U );
 		if( high != 0 ) {
@@ -474,15 +501,14 @@ namespace daw::cxmath {
 		if( low != 0 ) {
 			return 32U + static_cast<std::uint32_t>( __builtin_clz( low ) );
 		}
-		return 64;
+		return 64U;
 	}
 
 #endif
 
-	[[nodiscard]] DAW_ATTRIB_FLATINLINE inline constexpr std::uint32_t
+	[[nodiscard]] DAW_ATTRIB_FLATINLINE inline constexpr unsigned
 	count_leading_zeroes( daw::UInt64 v ) noexcept {
-		return static_cast<std::uint32_t>(
-		  count_leading_zeroes( static_cast<std::uint64_t>( v ) ) );
+		return count_leading_zeroes( static_cast<std::uint64_t>( v ) );
 	}
 
 #else
@@ -1210,4 +1236,17 @@ namespace daw::cxmath {
 	static_assert( not is_finite( daw::numeric_limits<double>::infinity( ) ) );
 	static_assert( is_finite( 5.5 ) );
 
+	template<typename Unsigned>
+	Unsigned round_pow2( Unsigned v ) {
+		if( v == Unsigned{ 0 } ) {
+			return 0;
+		}
+		std::uint32_t lz = daw::cxmath::count_leading_zeroes( v );
+		Unsigned const msb = ( ( sizeof( Unsigned ) * 8U - Unsigned{ 1 } ) - lz );
+		Unsigned res = Unsigned{ 1 } << msb;
+		if( res < v ) {
+			res <<= 1U;
+		}
+		return res;
+	};
 } // namespace daw::cxmath
