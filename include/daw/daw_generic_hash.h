@@ -22,6 +22,12 @@
 #include <utility>
 
 namespace daw {
+#if defined( DAW_GENERIC_HASH_TYPE )
+	using genhash_uint_t = DAW_GENERIC_HASH_TYPE;
+#else
+	using genhash_uint_t = size_t;
+#endif
+
 	template<size_t HashBytes>
 	struct generic_hash_t;
 
@@ -190,13 +196,13 @@ namespace daw {
 		}
 	};
 
-	template<size_t HashBytes = sizeof( size_t ), typename T,
+	template<size_t HashBytes = sizeof( genhash_uint_t ), typename T,
 	         std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
 	constexpr auto generic_hash( T const value ) noexcept {
 		return generic_hash_t<HashBytes>{ }( value );
 	}
 
-	template<size_t HashBytes = sizeof( size_t ), typename Iterator,
+	template<size_t HashBytes = sizeof( genhash_uint_t ), typename Iterator,
 	         typename IteratorL>
 	constexpr auto generic_hash( Iterator first, IteratorL const last ) noexcept {
 		using hash_t = generic_hash_t<HashBytes>;
@@ -208,7 +214,7 @@ namespace daw {
 		return hash;
 	}
 
-	template<size_t HashBytes = sizeof( size_t ), typename Iterator>
+	template<size_t HashBytes = sizeof( genhash_uint_t ), typename Iterator>
 	constexpr auto generic_hash( Iterator first, size_t const len ) noexcept {
 		using hash_t = generic_hash_t<HashBytes>;
 		auto hash = hash_t::hash_init;
@@ -220,14 +226,14 @@ namespace daw {
 	}
 
 #ifndef NOSTRING
-	template<size_t HashBytes = sizeof( size_t ), typename CharT, typename Traits,
+	template<size_t HashBytes = sizeof( genhash_uint_t ), typename CharT, typename Traits,
 	         typename Allocator>
 	auto generic_hash(
 	  std::basic_string<CharT, Traits, Allocator> const &str ) noexcept {
 		return generic_hash<HashBytes>( str.data( ), str.size( ) );
 	}
 
-	template<size_t HashBytes = sizeof( size_t ), typename CharT, typename Traits,
+	template<size_t HashBytes = sizeof( genhash_uint_t ), typename CharT, typename Traits,
 	         typename Allocator>
 	auto
 	generic_hash( std::basic_string<CharT, Traits, Allocator> &&str ) noexcept {
@@ -235,7 +241,7 @@ namespace daw {
 		return generic_hash<HashBytes>( tmp.data( ), tmp.size( ) );
 	}
 #endif
-	template<size_t HashBytes = sizeof( size_t ), size_t N>
+	template<size_t HashBytes = sizeof( genhash_uint_t ), size_t N>
 	constexpr auto generic_hash( char const ( &ptr )[N] ) noexcept {
 		return generic_hash<HashBytes>( ptr, N );
 	}
