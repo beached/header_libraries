@@ -57,7 +57,7 @@ int main( ) {
 	std::cout << "b size:" << b.size( ) << '\n';
 	std::cout << "b cap:" << b.capacity( ) << '\n';
 	for( int n = 0; n < 4096; ++n ) {
-		b.insert( b.end( ), {1,2,3,4,5} );
+		b.insert( b.data( ) + ( b.size( ) / 2 ), { 1, 2, 3, 4, 5 } );
 		std::cout << "b size:" << b.size( ) << '\n';
 		std::cout << "b cap:" << b.capacity( ) << '\n';
 	}

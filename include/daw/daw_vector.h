@@ -113,7 +113,7 @@ public:
 };
 
 template<typename T>
-struct MemoryAlloc {
+struct MallocAlloc {
 	using value_type = T;
 	using pointer = T *;
 	using size_type = std::size_t;
@@ -129,7 +129,7 @@ private:
 	}
 
 public:
-	constexpr MemoryAlloc( ) = default;
+	constexpr MallocAlloc( ) = default;
 
 	[[nodiscard]] static inline pointer allocate( size_type count ) {
 		return allocate_raw( sizeof( T ) * count );
@@ -144,15 +144,15 @@ public:
 	}
 	// Attempt to reallocate if it can be done within the current block
 	// The ptr returned should
-	[[nodiscard]] static inline pointer reallocate( T *, size_type new_size ) {
-		/*
+	[[nodiscard]] static inline pointer reallocate( T *old_ptr,
+	                                                size_type new_size ) {
 		auto const max_sz = alloc_size( old_ptr );
 		if( new_size < ( max_sz / sizeof( T ) ) ) {
-		  pointer new_ptr =
-		    reinterpret_cast<pointer>( realloc( old_ptr, sizeof( T ) * new_size ) );
-		  assert( new_ptr == old_ptr );
-		  return new_ptr;
-		}*/
+			pointer new_ptr =
+			  reinterpret_cast<pointer>( realloc( old_ptr, sizeof( T ) * new_size ) );
+			assert( new_ptr == old_ptr );
+			return new_ptr;
+		}
 		return allocate_raw( sizeof( T ) * new_size );
 	}
 
@@ -200,7 +200,7 @@ struct sized_for_overwrite_t {};
 inline constexpr sized_for_overwrite_t sized_for_overwrite =
   sized_for_overwrite_t{ };
 
-template<typename T, typename Alloc = MMapAlloc<T>>
+template<typename T, typename Alloc = MallocAlloc<T>>
 struct Vector : Alloc {
 	using value_type = T;
 	using allocator_type = Alloc;
@@ -260,22 +260,33 @@ private:
 	}
 
 	static constexpr void overlapped_relocate( pointer source,
+	                                           size_type where_idx,
 	                                           size_type range_size,
 	                                           size_type insert_size ) {
-		if( range_size == 0 or insert_size == 0 ) {
+		assert( where_idx <= range_size );
+		if( insert_size == 0 ) {
 			return;
 		}
-		pointer source_pos = source + range_size - 1;
-		pointer destination_pos = source_pos + range_size + insert_size - 1;
-		while( source_pos >= source ) {
+		size_type const reloc_size = range_size - insert_size;
+		auto dfirst =
+		  static_cast<difference_type>( ( range_size + insert_size ) - 1U );
+#if not defined( NDEBUG )
+		auto dlast =
+		  static_cast<difference_type>( ( range_size + insert_size ) - reloc_size );
+#endif
+		auto sfirst = static_cast<difference_type>( range_size - 1U );
+		auto slast = static_cast<difference_type>( range_size - reloc_size );
+
+		while( sfirst >= slast ) {
 			if constexpr( std::is_nothrow_move_constructible_v<value_type> ) {
-				construct_at( destination_pos, DAW_MOVE( *source_pos ) );
+				construct_at( source + dfirst, DAW_MOVE( source[sfirst] ) );
 			} else {
-				construct_at( destination_pos, *source_pos );
+				construct_at( source + dfirst, source[sfirst] );
 			}
-			--destination_pos;
-			--source_pos;
+			--dfirst;
+			--sfirst;
 		}
+		assert( dfirst < dlast );
 	}
 
 	constexpr void resize_impl( size_type sz ) noexcept {
@@ -523,18 +534,8 @@ public:
 	}
 
 	constexpr iterator insert( const_iterator where, const_reference value ) {
-		// no exception guarantee
-		auto const idx = static_cast<size_type>( where - data( ) );
-		if( m_size >= capacity( ) ) {
-			resize_impl( calc_size( m_size + 1 ) );
-		}
-		pointer end_ptr = data( ) + size( );
-		pointer where_ptr = data( ) + idx;
-		while( end_ptr > where_ptr ) {
-			construct_at( end_ptr, DAW_MOVE( *( end_ptr - 1 ) ) );
-			--end_ptr;
-		}
-		return { construct_at( where_ptr, value ) };
+		auto const *first = &value;
+		return insert( where, first, first + 1 );
 	}
 
 	template<typename IteratorF, typename IteratorL,
@@ -544,6 +545,7 @@ public:
 	constexpr iterator insert( const_iterator where, IteratorF first,
 	                           IteratorL last ) {
 		auto idx = static_cast<size_type>( where - data( ) );
+
 		while( first != last ) {
 			insert( data( )[idx], *first );
 			++idx;
@@ -557,22 +559,25 @@ public:
 	                          std::nullptr_t> = nullptr>
 	constexpr iterator insert( const_iterator where, IteratorF first,
 	                           IteratorL last ) {
+		size_type const old_size = size( );
 		size_type const where_idx = static_cast<size_type>( where - data( ) );
 		size_type const insert_size = static_cast<size_type>( last - first );
-		auto const needed_size = insert_size + size( ) + sizeof( T );
+		auto const needed_size = insert_size + old_size;
 
 		if( capacity( ) <= needed_size ) {
 			resize_impl( needed_size );
+		} else {
+			m_size += needed_size;
+		}
+		if( where_idx < old_size ) {
+			overlapped_relocate( data( ), where_idx, old_size, insert_size );
 		}
 		pointer pos = data( ) + static_cast<difference_type>( where_idx );
-		overlapped_relocate( pos, m_size - where_idx, insert_size );
-
 		while( first != last ) {
 			*pos = *first;
 			++pos;
 			++first;
 		}
-		m_size += needed_size;
 		return data( ) + where_idx;
 	}
 
