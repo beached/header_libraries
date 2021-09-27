@@ -18,6 +18,8 @@
 #include <cstdlib>
 #include <iterator>
 #include <memory>
+#include <sys/mman.h>
+#include <sys/types.h>
 #include <type_traits>
 
 #if defined( _WIN32 ) or defined( _WIN64 )
@@ -62,6 +64,55 @@ struct has_reallocate<T, std::void_t<typename T::has_realloc>>
   : std::true_type {};
 
 template<typename T>
+struct MMapAlloc {
+	using value_type = T;
+	using pointer = T *;
+	using size_type = std::size_t;
+	using has_realloc = void;
+
+private:
+	[[nodiscard]] static inline pointer allocate_raw( size_type count ) {
+		T *result =
+		  reinterpret_cast<T *>( ::mmap( nullptr, count, PROT_READ | PROT_WRITE,
+		                                 MAP_ANONYMOUS | MAP_PRIVATE, -1, 0 ) );
+		if( not result ) {
+			throw std::bad_alloc( );
+		}
+		return result;
+	}
+
+public:
+	constexpr MMapAlloc( ) = default;
+
+	[[nodiscard]] static inline pointer allocate( size_type count ) {
+		return allocate_raw( sizeof( T ) * count );
+	}
+
+	[[nodiscard]] static inline size_type alloc_size( T * ) {
+		return 0U;
+	}
+	// Attempt to reallocate if it can be done within the current block
+	// The ptr returned should
+	[[nodiscard]] static inline pointer reallocate( T *old_ptr,
+	                                                size_type new_size ) {
+		T *new_ptr = reinterpret_cast<T *>(
+		  ::mmap( old_ptr, new_size * sizeof( T ), PROT_READ | PROT_WRITE,
+		          MAP_FIXED | MAP_ANONYMOUS | MAP_PRIVATE, -1, 0 ) );
+		if( new_ptr == old_ptr ) {
+			return new_ptr;
+		}
+		if( not new_ptr ) {
+			return allocate_raw( new_size * sizeof( T ) );
+		}
+		throw std::bad_alloc( );
+	}
+
+	static inline void deallocate( T *ptr, size_type sz ) {
+		::munmap( ptr, sz );
+	}
+};
+
+template<typename T>
 struct MemoryAlloc {
 	using value_type = T;
 	using pointer = T *;
@@ -93,8 +144,7 @@ public:
 	}
 	// Attempt to reallocate if it can be done within the current block
 	// The ptr returned should
-	[[nodiscard]] static inline pointer reallocate( T *old_ptr,
-	                                                size_type new_size ) {
+	[[nodiscard]] static inline pointer reallocate( T *, size_type new_size ) {
 		/*
 		auto const max_sz = alloc_size( old_ptr );
 		if( new_size < ( max_sz / sizeof( T ) ) ) {
@@ -133,10 +183,9 @@ constexpr OutputIterator copy_n( Iterator first, std::size_t sz,
 }
 
 template<typename Allocator>
-struct AllocDeleter : private Allocator {
-	std::size_t alloc_size;
-
+struct AllocDeleter : Allocator {
 	using pointer = typename std::allocator_traits<Allocator>::pointer;
+	std::size_t alloc_size;
 
 	explicit constexpr AllocDeleter( std::size_t sz, Allocator a = Allocator{ } )
 	  : Allocator{ a }
@@ -151,8 +200,8 @@ struct sized_for_overwrite_t {};
 inline constexpr sized_for_overwrite_t sized_for_overwrite =
   sized_for_overwrite_t{ };
 
-template<typename T, typename Alloc = MemoryAlloc<T>>
-struct Vector : private Alloc {
+template<typename T, typename Alloc = MMapAlloc<T>>
+struct Vector : Alloc {
 	using value_type = T;
 	using allocator_type = Alloc;
 	using pointer = T *;
@@ -244,7 +293,7 @@ private:
 				}
 			}
 		} else {
-			if( sz > capacity( ) ) {
+			if( sz >= capacity( ) ) {
 				pointer const new_ptr = [&] {
 					if constexpr( has_reallocate<allocator_type>::value ) {
 						return this->reallocate( old_ptr, sz );
@@ -510,18 +559,13 @@ public:
 	                           IteratorL last ) {
 		size_type const where_idx = static_cast<size_type>( where - data( ) );
 		size_type const insert_size = static_cast<size_type>( last - first );
-		auto const needed_size = insert_size + size( );
-		if( needed_size > capacity( ) ) {
+		auto const needed_size = insert_size + size( ) + sizeof( T );
+
+		if( capacity( ) <= needed_size ) {
 			resize_impl( needed_size );
 		}
 		pointer pos = data( ) + static_cast<difference_type>( where_idx );
-		if( m_size == 44 ) {
-			auto c = capacity( );
-			(void)c;
-			overlapped_relocate( pos, m_size - where_idx, insert_size );
-		} else {
-			overlapped_relocate( pos, m_size - where_idx, insert_size );
-		}
+		overlapped_relocate( pos, m_size - where_idx, insert_size );
 
 		while( first != last ) {
 			*pos = *first;
