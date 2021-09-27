@@ -179,7 +179,7 @@ constexpr OutputIterator move_n( Iterator first, std::size_t sz,
 template<typename Iterator, typename OutputIterator>
 constexpr OutputIterator copy_n( Iterator first, std::size_t sz,
                                  OutputIterator out_it ) noexcept {
-	return std::uninitialized_copy_n( first, sz, out_it ).second;
+	return std::uninitialized_copy_n( first, sz, out_it );
 }
 
 template<typename Allocator>
