@@ -264,8 +264,9 @@ namespace daw {
 	private:
 		using uptr_del = AllocDeleter<allocator_type>;
 		using uptr_t = std::unique_ptr<value_type[], uptr_del>;
-		uptr_t m_data = uptr_t{ };
-		size_type m_size = 0;
+		pointer m_first = nullptr;
+		pointer m_size = nullptr;
+		pointer m_capacity = nullptr;
 
 		uptr_t make_copy( Vector const &other ) {
 			auto result =
@@ -275,10 +276,9 @@ namespace daw {
 		}
 
 		explicit constexpr Vector( sized_for_overwrite_t, size_type sz )
-		  : allocator_type( )
-		  , m_data( this->allocate( vector_details::round_to_page_size( sz ) ),
-		            uptr_del{ vector_details::round_to_page_size( sz ) } )
-		  , m_size( sz ) {}
+		  : m_first( this->allocate( vector_details::round_to_page_size( sz ) ) )
+		  , m_size( m_first + sz )
+		  , m_capacity( m_first + vector_details::round_to_page_size( sz ) ) {}
 
 		constexpr size_type calc_new_size( size_type sz ) noexcept {
 			if constexpr( has_reallocate<allocator_type>::value ) {
@@ -339,16 +339,16 @@ namespace daw {
 
 		constexpr void resize_impl( size_type sz ) noexcept {
 			pointer const old_ptr = data( );
-			if( sz <= m_size ) {
+			if( sz <= size( ) ) {
 				if constexpr( std::is_trivially_destructible_v<value_type> ) {
-					m_size = sz;
+					m_size = m_first + static_cast<difference_type>( sz );
 					return;
 				} else {
-					if( m_size == 0 ) {
+					if( empty( ) ) {
 						return;
 					}
 					while( m_size-- > sz ) {
-						std::destroy_at( old_ptr + m_size );
+						std::destroy_at( m_size );
 					}
 				}
 			} else {
@@ -363,11 +363,12 @@ namespace daw {
 						}
 					}( );
 					if( new_ptr != old_ptr ) {
-						relocate( old_ptr, m_size, new_ptr );
+						relocate( old_ptr, size( ), new_ptr );
 						clear( );
-						m_data.reset( new_ptr );
+						this->deallocate( m_first, capacity( ) );
+						m_first = new_ptr;
 					}
-					m_data.get_deleter( ).set_capacity( new_size );
+					m_capacity = m_first + new_size;
 				}
 			}
 		}
@@ -383,37 +384,46 @@ namespace daw {
 
 		constexpr Vector( Vector &&other ) noexcept
 		  : allocator_type( other )
-		  , m_data( std::exchange( other.m_data, nullptr ) )
-		  , m_size( std::exchange( other.m_size, 0 ) ) {}
+		  , m_first( std::exchange( other.m_first, nullptr ) )
+		  , m_size( std::exchange( other.m_size, nullptr ) )
+		  , m_capacity( std::exchange( other.m_capacity, nullptr ) ) {}
 
 		constexpr Vector &operator=( Vector &&rhs ) noexcept {
 			if( this != &rhs ) {
 				clear( );
-				m_data = std::exchange( rhs.m_data, nullptr );
-				m_size = std::exchange( rhs.m_size, 0 );
+				allocator_type::operator=( DAW_MOVE( rhs ) );
+				m_first = std::exchange( rhs.m_first, nullptr );
+				m_size = std::exchange( rhs.m_size, nullptr );
+				m_capacity = std::exchange( rhs.m_capacity, nullptr );
 			}
 			return *this;
 		}
 
 		constexpr void clear( ) {
-			resize( 0 );
+			while( m_size != m_first ) {
+				std::destroy_at( --m_size );
+			}
 		}
 
 		DAW_CPP20CXDTOR ~Vector( ) {
 			clear( );
+			this->deallocate( m_first, capacity( ) );
 		}
 
 		constexpr Vector( Vector const &other )
 		  : allocator_type( other )
-		  , m_data( make_copy( other ) )
-		  , m_size( other.m_size ) {}
+		  , m_first( make_copy( other ).release( ) )
+		  , m_size( m_first + static_cast<difference_type>( other.size( ) ) )
+		  , m_capacity( m_first +
+		                static_cast<difference_type>( other.capacity( ) ) ) {}
 
 		constexpr Vector &operator=( Vector const &rhs ) {
 			if( this != &rhs ) {
 				clear( );
-				m_data = make_copy( rhs );
 				allocator_type::operator=( rhs );
-				m_size = rhs.m_size;
+				m_first = make_copy( rhs ).release( );
+				m_size = m_first + static_cast<difference_type>( rhs.size( ) );
+				m_capacity = m_first + static_cast<difference_type>( rhs.capacity( ) );
 			}
 			return *this;
 		}
@@ -422,24 +432,24 @@ namespace daw {
 		explicit constexpr Vector( sized_for_overwrite_t, size_type sz,
 		                           Operation op )
 		  : Vector( sized_for_overwrite, sz ) {
-			m_size = op( m_data.get( ), m_size );
-			assert( m_size <= sz );
+			m_size = m_first + static_cast<difference_type>( op( m_first, size( ) ) );
+			assert( size( ) <= sz );
 		}
 
 		template<size_type N>
 		explicit constexpr Vector( value_type const ( &ary )[N] )
 		  : Vector( sized_for_overwrite, N ) {
 
-			pointer const p = copy_n( ary, N, m_data.get( ) );
-			m_size = static_cast<size_type>( p - m_data.get( ) );
+			pointer const p = copy_n( ary, N, m_first );
+			m_size = p;
 		}
 
 		template<size_type N>
 		explicit constexpr Vector( value_type( &&ary )[N] )
 		  : Vector( sized_for_overwrite, N ) {
 
-			pointer const p = move_n( ary, N, m_data.get( ) );
-			m_size = static_cast<size_type>( p - m_data.get( ) );
+			pointer const p = move_n( ary, N, m_first );
+			m_size = p;
 		}
 
 		template<typename IteratorF, typename IteratorL,
@@ -450,8 +460,8 @@ namespace daw {
 		  : Vector( sized_for_overwrite, static_cast<size_type>( last - first ) ) {
 
 			pointer const p =
-			  copy_n( first, static_cast<size_type>( last - first ), m_data.get( ) );
-			m_size = static_cast<size_type>( p - m_data.get( ) );
+			  copy_n( first, static_cast<size_type>( last - first ), m_first );
+			m_size = p;
 		}
 
 		template<
@@ -470,31 +480,31 @@ namespace daw {
 		template<typename Operation>
 		constexpr void resize_for_overwrite( size_type sz, Operation op ) noexcept {
 			resize_impl( sz );
-			m_size = op( data( ), size( ) );
+			m_size = m_first + static_cast<difference_type>( op( data( ), size( ) ) );
 		}
 
 		[[nodiscard]] constexpr reference back( ) {
-			return *( data( ) + m_size - 1 );
+			return m_size[-1];
 		}
 
 		[[nodiscard]] constexpr const_reference back( ) const {
-			return *( data( ) + m_size - 1 );
+			return m_size[-1];
 		}
 
 		[[nodiscard]] constexpr reference front( ) {
-			return *data( );
+			return *m_first;
 		}
 
 		[[nodiscard]] constexpr const_reference front( ) const {
-			return *data( );
+			return *m_first;
 		}
 
 		constexpr void pop_back( ) {
 			if( not std::is_trivially_destructible_v<value_type> ) {
-				pointer ptr = std::addressof( back( ) );
-				std::destroy_at( ptr );
+				std::destroy_at( --m_size );
+			} else {
+				--m_size;
 			}
-			--m_size;
 		}
 
 		constexpr void resize( size_type sz ) noexcept {
@@ -524,15 +534,15 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr pointer data( ) {
-			return m_data.get( );
+			return m_first;
 		}
 
 		[[nodiscard]] constexpr const_pointer data( ) const {
-			return m_data.get( );
+			return m_first;
 		}
 
 		[[nodiscard]] constexpr size_type size( ) const {
-			return m_size;
+			return static_cast<size_type>( m_size - m_first );
 		}
 
 		[[nodiscard]] static size_type max_size( ) {
@@ -541,11 +551,11 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr bool empty( ) const {
-			return size( ) == 0;
+			return m_size == m_first;
 		}
 
 		[[nodiscard]] constexpr size_type capacity( ) const {
-			return m_data.get_deleter( ).get_capacity( );
+			return static_cast<size_type>( m_capacity - m_first );
 		}
 
 		constexpr void reserve( size_type n ) {
@@ -554,58 +564,57 @@ namespace daw {
 			}
 		}
 		constexpr reference push_back( const_reference v ) {
-			if( m_size >= capacity( ) ) {
-				resize_impl( m_size + 1 );
+			if( m_size >= m_capacity ) {
+				resize_impl( size( ) + 1 );
 			}
-			return *construct_at( m_data.get( ) + ( m_size++ ), v );
+			return *construct_at( m_size++, v );
 		}
 
 		constexpr reference push_back( rvalue_reference v ) {
-			if( m_size >= capacity( ) ) {
-				resize_impl( m_size + 1 );
+			if( m_size >= m_capacity ) {
+				resize_impl( size( ) + 1 );
 			}
-			return *construct_at( m_data.get( ) + ( m_size++ ), DAW_MOVE( v ) );
+			return *construct_at( m_size++, DAW_MOVE( v ) );
 		}
 
 		template<typename... Args>
 		constexpr reference emplace_back( Args &&...args ) {
-			if( m_size >= capacity( ) ) {
+			if( m_size >= m_capacity ) {
 				resize_impl( m_size + 1 );
 			}
-			return *construct_at( m_data.get( ) + ( +m_size++ ),
-			                      DAW_FWD2( Args, args )... );
+			return *construct_at( m_size++, DAW_FWD2( Args, args )... );
 		}
 
 		[[nodiscard]] iterator begin( ) {
-			return iterator{ data( ) };
+			return iterator{ m_first };
 		}
 
 		[[nodiscard]] const_iterator begin( ) const {
-			return const_iterator{ data( ) };
+			return const_iterator{ m_first };
 		}
 
 		[[nodiscard]] const_iterator cbegin( ) const {
-			return const_iterator{ data( ) };
+			return const_iterator{ m_first };
 		}
 
 		[[nodiscard]] iterator end( ) {
-			return iterator{ data( ) + size( ) };
+			return iterator{ m_size };
 		}
 
 		[[nodiscard]] const_iterator end( ) const {
-			return const_iterator{ data( ) + size( ) };
+			return const_iterator{ m_size };
 		}
 
 		[[nodiscard]] const_iterator cend( ) const {
-			return const_iterator{ data( ) + size( ) };
+			return const_iterator{ m_size };
 		}
 
 		[[nodiscard]] constexpr const_reference operator[]( size_type idx ) const {
-			return data( )[idx];
+			return m_first[idx];
 		}
 
 		[[nodiscard]] constexpr reference operator[]( size_type idx ) {
-			return data( )[idx];
+			return m_first[idx];
 		}
 
 		constexpr iterator insert( const_iterator where, const_reference value ) {
@@ -644,16 +653,16 @@ namespace daw {
 				resize_impl( needed_size );
 			}
 			if( where_idx < old_size ) {
-				overlapped_relocate( data( ), where_idx, old_size, insert_size );
+				overlapped_relocate( m_first, where_idx, old_size, insert_size );
 			}
-			pointer pos = data( ) + static_cast<difference_type>( where_idx );
+			pointer pos = m_first + static_cast<difference_type>( where_idx );
 			while( first != last ) {
 				*pos = *first;
 				++pos;
 				++first;
 			}
-			m_size = needed_size;
-			return data( ) + where_idx;
+			m_size = m_first + needed_size;
+			return m_first + where_idx;
 		}
 
 		template<typename U, std::size_t N>
@@ -666,7 +675,7 @@ namespace daw {
 			if( size( ) != rhs.size( ) ) {
 				return false;
 			}
-			return std::equal( cbegin( ), cend( ), rhs.cbegin( ) );
+			return std::equal( m_first, m_size, rhs.m_first );
 		}
 
 		template<typename Alloc2>
@@ -674,7 +683,8 @@ namespace daw {
 			if( size( ) == rhs.size( ) ) {
 				return false;
 			}
-			return std::equal( cbegin( ), cend( ), rhs.cbegin( ),
+
+			return std::equal( m_first, m_size, rhs.m_first,
 			                   std::not_equal_to<value_type>{ } );
 		}
 	};
