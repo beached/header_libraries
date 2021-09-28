@@ -387,7 +387,8 @@ namespace daw {
 		constexpr Vector( IteratorF first, IteratorL last )
 		  : Vector( sized_for_overwrite, static_cast<size_type>( last - first ) ) {
 
-			pointer const p = copy_n( first, last - first, m_data.get( ) );
+			pointer const p =
+			  copy_n( first, static_cast<size_type>( last - first ), m_data.get( ) );
 			m_size = static_cast<size_type>( p - m_data.get( ) );
 		}
 
