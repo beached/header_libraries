@@ -347,8 +347,8 @@ namespace daw {
 					if( empty( ) ) {
 						return;
 					}
-					while( m_size-- > sz ) {
-						std::destroy_at( m_size );
+					while( m_size > ( m_first + static_cast<difference_type>( sz ) ) ) {
+						std::destroy_at( --m_size );
 					}
 				}
 			} else {
