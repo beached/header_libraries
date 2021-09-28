@@ -79,10 +79,11 @@ namespace daw {
 				}
 				return static_cast<std::size_t>( res );
 			}( );
-			auto result = static_cast<std::size_t>(
-			  std::round(
-			    static_cast<double>( sz ) / static_cast<double>( page_size ) + 0.5 ) *
-			  page_size );
+			auto result =
+			  static_cast<std::size_t>( std::round(
+			    static_cast<double>( sz ) / static_cast<double>( page_size ) +
+			    0.5 ) ) *
+			  page_size;
 			return result;
 		}
 	} // namespace vector_details
@@ -385,7 +386,7 @@ namespace daw {
 		  , m_data( std::exchange( other.m_data, nullptr ) )
 		  , m_size( std::exchange( other.m_size, 0 ) ) {}
 
-		constexpr Vector &operator=( Vector && rhs ) noexcept {
+		constexpr Vector &operator=( Vector &&rhs ) noexcept {
 			if( this != &rhs ) {
 				clear( );
 				m_data = std::exchange( rhs.m_data, nullptr );
