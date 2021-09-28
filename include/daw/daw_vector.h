@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw_cxmath.h"
+#include "daw_likely.h"
 #include "daw_move.h"
 
 #include <algorithm>
@@ -71,15 +72,18 @@ namespace daw {
 
 	namespace vector_details {
 		std::size_t round_to_page_size( std::size_t sz ) {
-			static double const page_size = [] {
+			static std::size_t const page_size = [] {
 				int res = ::getpagesize( );
 				if( res <= 0 ) {
 					res = 4096U;
 				}
-				return static_cast<double>( res );
+				return static_cast<std::size_t>( res );
 			}( );
-			return static_cast<std::size_t>(
-			  ( static_cast<double>( sz ) / page_size + 0.5 ) * page_size );
+			auto result = static_cast<std::size_t>(
+			  std::round(
+			    static_cast<double>( sz ) / static_cast<double>( page_size ) + 0.5 ) *
+			  page_size );
+			return result;
 		}
 	} // namespace vector_details
 
@@ -92,11 +96,10 @@ namespace daw {
 
 	private:
 		[[nodiscard]] static inline pointer allocate_raw( size_type count ) {
-			count = vector_details::round_to_page_size( count );
 			T *result =
 			  reinterpret_cast<T *>( ::mmap( nullptr, count, PROT_READ | PROT_WRITE,
 			                                 MAP_ANONYMOUS | MAP_PRIVATE, -1, 0 ) );
-			if( not result ) {
+			if( DAW_UNLIKELY( not result ) ) {
 				throw std::bad_alloc( );
 			}
 			return result;
@@ -226,8 +229,10 @@ namespace daw {
 	struct AllocDeleter : Allocator {
 		using pointer = typename std::allocator_traits<Allocator>::pointer;
 
-		std::size_t alloc_size;
+	private:
+		std::size_t alloc_size = 0;
 
+	public:
 		constexpr AllocDeleter( ) = default;
 
 		constexpr AllocDeleter( std::size_t sz, Allocator a = Allocator{ } )
@@ -237,6 +242,14 @@ namespace daw {
 		template<typename T>
 		constexpr void operator( )( T *p ) const {
 			this->deallocate( p, alloc_size );
+		}
+
+		constexpr void set_capacity( std::size_t new_cap ) {
+			alloc_size = new_cap;
+		}
+
+		constexpr std::size_t get_capacity( ) const {
+			return alloc_size;
 		}
 	};
 
@@ -272,17 +285,21 @@ namespace daw {
 		}
 
 		explicit constexpr Vector( sized_for_overwrite_t, size_type sz )
-		  : m_data( this->allocate( sz ), uptr_del{ sz } )
+		  : allocator_type( )
+		  , m_data( this->allocate( vector_details::round_to_page_size( sz ) ),
+		            uptr_del{ vector_details::round_to_page_size( sz ) } )
 		  , m_size( sz ) {}
 
-		constexpr size_type calc_size( size_type sz ) noexcept {
+		constexpr size_type calc_new_size( size_type sz ) noexcept {
 			if constexpr( has_reallocate<allocator_type>::value ) {
 				auto const avail = allocator_type::alloc_size( data( ) );
 				if( sz <= avail ) {
 					return avail;
 				}
 			}
-			return daw::cxmath::round_up_pow2( std::max( sz, capacity( ) * 2U ) );
+			auto result =
+			  vector_details::round_to_page_size( std::max( sz, capacity( ) * 2U ) );
+			return result;
 		}
 
 		static constexpr void relocate( pointer source, size_type sz,
@@ -345,8 +362,9 @@ namespace daw {
 					}
 				}
 			} else {
-				if( sz >= capacity( ) ) {
-					size_type new_size = calc_size( sz );
+				auto const old_cap = capacity( );
+				if( sz >= old_cap ) {
+					size_type new_size = calc_new_size( sz );
 					pointer const new_ptr = [&] {
 						if constexpr( has_reallocate<allocator_type>::value ) {
 							return this->reallocate( old_ptr, size( ), new_size );
@@ -359,7 +377,7 @@ namespace daw {
 						clear( );
 						m_data.reset( new_ptr );
 					}
-					m_data.get_deleter( ).alloc_size = new_size;
+					m_data.get_deleter( ).set_capacity( new_size );
 				}
 			}
 		}
@@ -385,7 +403,8 @@ namespace daw {
 		}
 
 		constexpr Vector( Vector const &other )
-		  : m_data( make_copy( other ) )
+		  : allocator_type( other )
+		  , m_data( make_copy( other ) )
 		  , m_size( other.m_size ) {}
 
 		constexpr Vector &operator=( Vector const &rhs ) {
@@ -439,7 +458,8 @@ namespace daw {
 		  std::enable_if_t<( not has_op_minus<IteratorF, IteratorL>::value and
 		                     is_iterator<IteratorF>::value ),
 		                   std::nullptr_t> = nullptr>
-		constexpr Vector( IteratorF first, IteratorL last ) {
+		constexpr Vector( IteratorF first, IteratorL last )
+		  : allocator_type( ) {
 			while( first != last ) {
 				push_back( *first );
 				++first;
@@ -524,10 +544,7 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr size_type capacity( ) const {
-			if( m_data ) {
-				return m_data.get_deleter( ).alloc_size;
-			}
-			return 0;
+			return m_data.get_deleter( ).get_capacity( );
 		}
 
 		constexpr void reserve( size_type n ) {
