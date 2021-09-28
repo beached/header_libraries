@@ -18,6 +18,7 @@
 #include <cstdlib>
 #include <iterator>
 #include <memory>
+#include <numeric>
 #include <sys/mman.h>
 #include <sys/types.h>
 #include <type_traits>
@@ -188,8 +189,7 @@ namespace daw {
 		using pointer = typename std::allocator_traits<Allocator>::pointer;
 		std::size_t alloc_size;
 
-		constexpr AllocDeleter( std::size_t sz,
-		                                 Allocator a = Allocator{ } )
+		constexpr AllocDeleter( std::size_t sz, Allocator a = Allocator{ } )
 		  : Allocator{ a }
 		  , alloc_size( sz ) {}
 
@@ -203,23 +203,23 @@ namespace daw {
 	  sized_for_overwrite_t{ };
 
 	template<typename T, typename Alloc = MMapAlloc<T>>
-	struct Vector : Alloc {
+	struct Vector : private Alloc {
 		using value_type = T;
 		using allocator_type = Alloc;
-		using pointer = T *;
-		using const_pointer = T const *;
-		using reference = T &;
-		using const_reference = T const &;
-		using rvalue_reference = T &&;
-		using iterator = T *;
-		using const_iterator = T const *;
+		using pointer = value_type *;
+		using const_pointer = value_type const *;
+		using reference = value_type &;
+		using const_reference = value_type const &;
+		using rvalue_reference = value_type &&;
+		using iterator = value_type *;
+		using const_iterator = value_type const *;
 		using size_type = std::size_t;
 		using difference_type = std::ptrdiff_t;
 
 	private:
 		using uptr_del = AllocDeleter<allocator_type>;
 		using uptr_t = std::unique_ptr<value_type[], uptr_del>;
-		uptr_t m_data = nullptr;
+		uptr_t m_data = uptr_t{ };
 		size_type m_size = 0;
 
 		uptr_t make_copy( Vector const &other ) {
@@ -323,7 +323,12 @@ namespace daw {
 		}
 
 	public:
-		constexpr Vector( allocator_type const &alloc = allocator_type{ } )
+		/// @brief Construct an empty Vector
+		/// @post empty( ) == true
+		constexpr Vector( ) = default;
+		/// @brief Construct an empty Vector with a specific instance of allocator
+		/// @post empty( ) == true
+		constexpr Vector( allocator_type const &alloc )
 		  : allocator_type{ alloc } {}
 
 		constexpr Vector( Vector && ) noexcept = default;
@@ -339,7 +344,9 @@ namespace daw {
 
 		constexpr Vector &operator=( Vector const &rhs ) {
 			if( this != &rhs ) {
+				resize( 0 );
 				m_data.reset( make_copy( rhs ) );
+				allocator_type::operator=( rhs );
 				m_size = rhs.m_size;
 			}
 			return *this;
@@ -458,6 +465,11 @@ namespace daw {
 
 		[[nodiscard]] constexpr size_type size( ) const {
 			return m_size;
+		}
+
+		[[nodiscard]] static size_type max_size( ) {
+			return static_cast<size_type>(
+			  std::numeric_limits<difference_type>::max( ) );
 		}
 
 		[[nodiscard]] constexpr bool empty( ) const {
@@ -583,6 +595,23 @@ namespace daw {
 		template<typename U, std::size_t N>
 		iterator insert( const_iterator where, U const ( &values )[N] ) {
 			return insert( where, values, values + N );
+		}
+
+		template<typename Alloc2>
+		bool operator==( Vector<value_type, Alloc2> const &rhs ) const noexcept {
+			if( size( ) != rhs.size( ) ) {
+				return false;
+			}
+			return std::equal( cbegin( ), cend( ), rhs.cbegin( ) );
+		}
+
+		template<typename Alloc2>
+		bool operator!=( Vector<value_type, Alloc2> const &rhs ) const noexcept {
+			if( size( ) == rhs.size( ) ) {
+				return false;
+			}
+			return std::equal( cbegin( ), cend( ), rhs.cbegin( ),
+			                   std::not_equal_to<value_type>{ } );
 		}
 	};
 
