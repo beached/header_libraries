@@ -240,7 +240,7 @@ namespace daw {
 					return avail;
 				}
 			}
-			return daw::cxmath::round_pow2( std::max( sz, capacity( ) * 2U ) );
+			return daw::cxmath::round_up_pow2( std::max( sz, capacity( ) * 2U ) );
 		}
 
 		static constexpr void relocate( pointer source, size_type sz,
@@ -304,11 +304,12 @@ namespace daw {
 				}
 			} else {
 				if( sz >= capacity( ) ) {
+					size_type new_size = daw::cxmath::round_up_pow2( sz );
 					pointer const new_ptr = [&] {
 						if constexpr( has_reallocate<allocator_type>::value ) {
-							return this->reallocate( old_ptr, sz );
+							return this->reallocate( old_ptr, new_size );
 						} else {
-							return this->allocate( sz );
+							return this->allocate( new_size );
 						}
 					}( );
 					if( new_ptr != old_ptr ) {
@@ -316,9 +317,8 @@ namespace daw {
 						resize( 0 );
 						m_data.reset( new_ptr );
 					}
-					m_data.get_deleter( ).alloc_size = sz;
+					m_data.get_deleter( ).alloc_size = new_size;
 				}
-				m_size = sz;
 			}
 		}
 
@@ -577,8 +577,6 @@ namespace daw {
 
 			if( capacity( ) <= needed_size ) {
 				resize_impl( needed_size );
-			} else {
-				m_size += needed_size;
 			}
 			if( where_idx < old_size ) {
 				overlapped_relocate( data( ), where_idx, old_size, insert_size );
@@ -589,6 +587,7 @@ namespace daw {
 				++pos;
 				++first;
 			}
+			m_size = needed_size;
 			return data( ) + where_idx;
 		}
 
