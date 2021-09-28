@@ -65,4 +65,7 @@ int main( ) {
 		std::cout << "b size:" << b.size( ) << '\n';
 		std::cout << "b cap:" << b.capacity( ) << '\n';
 	}
+
+	auto v = daw::Vector<int>();
+
 }

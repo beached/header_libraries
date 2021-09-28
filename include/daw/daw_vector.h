@@ -187,13 +187,17 @@ namespace daw {
 	template<typename Allocator>
 	struct AllocDeleter : Allocator {
 		using pointer = typename std::allocator_traits<Allocator>::pointer;
+
 		std::size_t alloc_size;
+
+		constexpr AllocDeleter( ) = default;
 
 		constexpr AllocDeleter( std::size_t sz, Allocator a = Allocator{ } )
 		  : Allocator{ a }
 		  , alloc_size( sz ) {}
 
-		constexpr void operator( )( pointer p ) const {
+		template<typename T>
+		constexpr void operator( )( T *p ) const {
 			this->deallocate( p, alloc_size );
 		}
 	};
