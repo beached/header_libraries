@@ -11,29 +11,32 @@
 #include <cstddef>
 #include <iostream>
 
-auto a = Vector( { 1, 2, 3 } );
+namespace daw {
+	auto a = Vector( { 1, 2, 3 } );
 
-Vector<int> foo( std::size_t n ) {
-	auto v = Vector<int>( sized_for_overwrite, std::max( std::size_t{ 128 }, n ),
-	                      [maxsz = n]( int *p, std::size_t ) {
-		                      for( std::size_t m = 0; m < maxsz; ++m ) {
-			                      p[m] = static_cast<int>( m );
-		                      }
-		                      return maxsz;
-	                      } );
-	return v;
-}
+	Vector<int> foo( std::size_t n ) {
+		auto v =
+		  Vector<int>( sized_for_overwrite, std::max( std::size_t{ 128 }, n ),
+		               [maxsz = n]( int *p, std::size_t ) {
+			               for( std::size_t m = 0; m < maxsz; ++m ) {
+				               p[m] = static_cast<int>( m );
+			               }
+			               return maxsz;
+		               } );
+		return v;
+	}
+} // namespace daw
 
 int main( ) {
-	for( int v : a ) {
+	for( int v : daw::a ) {
 		std::cout << v << '\n';
 	}
-	for( int v : foo( 4 ) ) {
+	for( int v : daw::foo( 4 ) ) {
 		std::cout << v << '\n';
 	}
 
 	std::cout << "\nb\n";
-	auto b = foo( 6 );
+	auto b = daw::foo( 6 );
 	std::cout << "b cap:" << b.capacity( ) << '\n';
 	for( int v : b ) {
 		std::cout << v << '\n';
