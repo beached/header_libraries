@@ -349,7 +349,7 @@ namespace daw {
 		constexpr Vector &operator=( Vector const &rhs ) {
 			if( this != &rhs ) {
 				resize( 0 );
-				m_data.reset( make_copy( rhs ) );
+				m_data = make_copy( rhs );
 				allocator_type::operator=( rhs );
 				m_size = rhs.m_size;
 			}

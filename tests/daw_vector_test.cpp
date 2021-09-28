@@ -66,6 +66,10 @@ int main( ) {
 		std::cout << "b cap:" << b.capacity( ) << '\n';
 	}
 
-	auto v = daw::Vector<int>();
-
+	auto v0 = daw::Vector<int>();
+	auto v1 = daw::Vector<int>();
+	v0 = v1;
+	v1 = DAW_MOVE( v0 );
+	(void)v0;
+	(void)v1;
 }
