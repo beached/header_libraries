@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <cassert>
 #include <ciso646>
+#include <cmath>
 #include <cstddef>
 #include <cstdlib>
 #include <iterator>
@@ -22,6 +23,9 @@
 #include <sys/mman.h>
 #include <sys/types.h>
 #include <type_traits>
+#if __has_include( <unistd.h> )
+#include <unistd.h>
+#endif
 
 #if defined( _WIN32 ) or defined( _WIN64 )
 #include <malloc.h>
@@ -65,6 +69,20 @@ namespace daw {
 	struct has_reallocate<T, std::void_t<typename T::has_realloc>>
 	  : std::true_type {};
 
+	namespace vector_details {
+		std::size_t round_to_page_size( std::size_t sz ) {
+			static double const page_size = [] {
+				int res = ::getpagesize( );
+				if( res <= 0 ) {
+					res = 4096U;
+				}
+				return static_cast<double>( res );
+			}( );
+			return static_cast<std::size_t>(
+			  ( static_cast<double>( sz ) / page_size + 0.5 ) * page_size );
+		}
+	} // namespace vector_details
+
 	template<typename T>
 	struct MMapAlloc {
 		using value_type = T;
@@ -74,6 +92,7 @@ namespace daw {
 
 	private:
 		[[nodiscard]] static inline pointer allocate_raw( size_type count ) {
+			count = vector_details::round_to_page_size( count );
 			T *result =
 			  reinterpret_cast<T *>( ::mmap( nullptr, count, PROT_READ | PROT_WRITE,
 			                                 MAP_ANONYMOUS | MAP_PRIVATE, -1, 0 ) );
@@ -87,7 +106,8 @@ namespace daw {
 		constexpr MMapAlloc( ) = default;
 
 		[[nodiscard]] static inline pointer allocate( size_type count ) {
-			return allocate_raw( sizeof( T ) * count );
+			return allocate_raw(
+			  vector_details::round_to_page_size( sizeof( T ) * count ) );
 		}
 
 		[[nodiscard]] static inline size_type alloc_size( T * ) {
@@ -95,25 +115,40 @@ namespace daw {
 		}
 		// Attempt to reallocate if it can be done within the current block
 		// The ptr returned should
-		[[nodiscard]] static inline pointer reallocate( T *old_ptr,
-		                                                size_type new_size ) {
-			if( not old_ptr ) {
-				return allocate_raw( new_size * sizeof( T ) );
+		[[nodiscard]] static inline pointer
+		reallocate( T *old_ptr, size_type old_size, size_type new_size ) {
+			old_size = vector_details::round_to_page_size( old_size * sizeof( T ) );
+			new_size = vector_details::round_to_page_size( new_size * sizeof( T ) );
+			if( old_ptr == nullptr ) {
+				return allocate_raw( new_size );
 			}
+#if defined( MREMAP_FIXED )
 			T *new_ptr = reinterpret_cast<T *>(
-			  ::mmap( old_ptr, new_size * sizeof( T ), PROT_READ | PROT_WRITE,
+			  ::mremap( old_ptr, old_size, new_size, MREMAP_FIXED ) );
+			if( new_ptr == nullptr ) {
+				throw std::bad_alloc( );
+			}
+			return new_ptr;
+#else
+			T *tmp = allocate_raw( old_size );
+			if( tmp == nullptr ) {
+				throw std::bad_alloc( );
+			}
+			(void)memcpy( tmp, old_ptr, old_size );
+			T *new_ptr = reinterpret_cast<T *>(
+			  ::mmap( old_ptr, new_size, PROT_READ | PROT_WRITE,
 			          MAP_FIXED | MAP_ANONYMOUS | MAP_PRIVATE, -1, 0 ) );
-			if( new_ptr == old_ptr ) {
-				return new_ptr;
+			if( new_ptr != old_ptr ) {
+				throw std::bad_alloc( );
 			}
-			if( not new_ptr ) {
-				return allocate_raw( new_size * sizeof( T ) );
-			}
-			throw std::bad_alloc( );
+			(void)memcpy( new_ptr, tmp, old_size );
+			deallocate( tmp, old_size );
+			return new_ptr;
+#endif
 		}
 
 		static inline void deallocate( T *ptr, size_type sz ) {
-			::munmap( ptr, sz );
+			::munmap( ptr, vector_details::round_to_page_size( sz ) );
 		}
 	};
 
@@ -149,8 +184,8 @@ namespace daw {
 		}
 		// Attempt to reallocate if it can be done within the current block
 		// The ptr returned should
-		[[nodiscard]] static inline pointer reallocate( T *old_ptr,
-		                                                size_type new_size ) {
+		[[nodiscard]] static inline pointer
+		reallocate( T *old_ptr, size_type /*old_size*/, size_type new_size ) {
 			auto const max_sz = alloc_size( old_ptr );
 			if( new_size < ( max_sz / sizeof( T ) ) ) {
 				pointer new_ptr = reinterpret_cast<pointer>(
@@ -311,17 +346,17 @@ namespace daw {
 				}
 			} else {
 				if( sz >= capacity( ) ) {
-					size_type new_size = daw::cxmath::round_up_pow2( sz );
+					size_type new_size = calc_size( sz );
 					pointer const new_ptr = [&] {
 						if constexpr( has_reallocate<allocator_type>::value ) {
-							return this->reallocate( old_ptr, new_size );
+							return this->reallocate( old_ptr, size( ), new_size );
 						} else {
 							return this->allocate( new_size );
 						}
 					}( );
 					if( new_ptr != old_ptr ) {
 						relocate( old_ptr, m_size, new_ptr );
-						resize( 0 );
+						clear( );
 						m_data.reset( new_ptr );
 					}
 					m_data.get_deleter( ).alloc_size = new_size;
@@ -341,8 +376,12 @@ namespace daw {
 		constexpr Vector( Vector && ) noexcept = default;
 		constexpr Vector &operator=( Vector && ) noexcept = default;
 
-		DAW_CPP20CXDTOR ~Vector( ) {
+		constexpr void clear( ) {
 			resize( 0 );
+		}
+
+		DAW_CPP20CXDTOR ~Vector( ) {
+			clear( );
 		}
 
 		constexpr Vector( Vector const &other )
@@ -351,7 +390,7 @@ namespace daw {
 
 		constexpr Vector &operator=( Vector const &rhs ) {
 			if( this != &rhs ) {
-				resize( 0 );
+				clear( );
 				m_data = make_copy( rhs );
 				allocator_type::operator=( rhs );
 				m_size = rhs.m_size;
@@ -498,14 +537,14 @@ namespace daw {
 		}
 		constexpr reference push_back( const_reference v ) {
 			if( m_size >= capacity( ) ) {
-				resize_impl( calc_size( m_size + 1 ) );
+				resize_impl( m_size + 1 );
 			}
 			return *construct_at( m_data.get( ) + ( m_size++ ), v );
 		}
 
 		constexpr reference push_back( rvalue_reference v ) {
 			if( m_size >= capacity( ) ) {
-				resize_impl( calc_size( m_size + 1 ) );
+				resize_impl( m_size + 1 );
 			}
 			return *construct_at( m_data.get( ) + ( m_size++ ), DAW_MOVE( v ) );
 		}
@@ -513,7 +552,7 @@ namespace daw {
 		template<typename... Args>
 		constexpr reference emplace_back( Args &&...args ) {
 			if( m_size >= capacity( ) ) {
-				resize_impl( calc_size( m_size + 1 ) );
+				resize_impl( m_size + 1 );
 			}
 			return *construct_at( m_data.get( ) + ( +m_size++ ),
 			                      DAW_FWD2( Args, args )... );

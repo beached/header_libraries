@@ -65,9 +65,21 @@ int main( ) {
 		std::cout << "b size:" << b.size( ) << '\n';
 		std::cout << "b cap:" << b.capacity( ) << '\n';
 	}
-
-	auto v0 = daw::Vector<int>();
-	auto v1 = daw::Vector<int>();
+	b.clear( );
+	for( int n = 0; n < 300; ++n ) {
+		std::cout << "b size:" << b.size( ) << '\n';
+		std::cout << "b cap:" << b.capacity( ) << '\n';
+		b.push_back( n );
+		std::cout << "value: " << b.back( ) << '\n';
+	}
+	std::cout << "contents\n";
+	std::cout << "b size:" << b.size( ) << '\n';
+	std::cout << "b cap:" << b.capacity( ) << '\n';
+	for( auto v : b ) {
+		std::cout << v << '\n';
+	}
+	auto v0 = daw::Vector<int>( );
+	auto v1 = daw::Vector<int>( );
 	v0 = v1;
 	v1 = DAW_MOVE( v0 );
 	(void)v0;
