@@ -97,6 +97,9 @@ namespace daw {
 		// The ptr returned should
 		[[nodiscard]] static inline pointer reallocate( T *old_ptr,
 		                                                size_type new_size ) {
+			if( not old_ptr ) {
+				return allocate_raw( new_size * sizeof( T ) );
+			}
 			T *new_ptr = reinterpret_cast<T *>(
 			  ::mmap( old_ptr, new_size * sizeof( T ), PROT_READ | PROT_WRITE,
 			          MAP_FIXED | MAP_ANONYMOUS | MAP_PRIVATE, -1, 0 ) );
@@ -294,7 +297,7 @@ namespace daw {
 
 		constexpr void resize_impl( size_type sz ) noexcept {
 			pointer const old_ptr = data( );
-			if( sz < m_size ) {
+			if( sz <= m_size ) {
 				if constexpr( std::is_trivially_destructible_v<value_type> ) {
 					m_size = sz;
 					return;
