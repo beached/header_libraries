@@ -120,12 +120,12 @@ namespace daw {
 		// The ptr returned should
 		[[nodiscard]] static inline pointer
 		reallocate( T *old_ptr, size_type old_size, size_type new_size ) {
-			old_size = vector_details::round_to_page_size( old_size * sizeof( T ) );
 			new_size = vector_details::round_to_page_size( new_size * sizeof( T ) );
+#if defined( MREMAP_FIXED )
+			old_size = vector_details::round_to_page_size( old_size * sizeof( T ) );
 			if( old_ptr == nullptr ) {
 				return allocate_raw( new_size );
 			}
-#if defined( MREMAP_FIXED )
 			T *new_ptr = reinterpret_cast<T *>(
 			  ::mremap( old_ptr, old_size, new_size, MREMAP_FIXED ) );
 			if( new_ptr == nullptr ) {
@@ -133,20 +133,9 @@ namespace daw {
 			}
 			return new_ptr;
 #else
-			T *tmp = allocate_raw( old_size );
-			if( tmp == nullptr ) {
-				throw std::bad_alloc( );
-			}
-			(void)memcpy( tmp, old_ptr, old_size );
-			T *new_ptr = reinterpret_cast<T *>(
-			  ::mmap( old_ptr, new_size, PROT_READ | PROT_WRITE,
-			          MAP_FIXED | MAP_ANONYMOUS | MAP_PRIVATE, -1, 0 ) );
-			if( new_ptr != old_ptr ) {
-				throw std::bad_alloc( );
-			}
-			(void)memcpy( new_ptr, tmp, old_size );
-			deallocate( tmp, old_size );
-			return new_ptr;
+			(void)old_ptr;
+			(void)old_size;
+			return allocate_raw( new_size );
 #endif
 		}
 
