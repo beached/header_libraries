@@ -383,7 +383,7 @@ namespace daw {
 		  : allocator_type{ alloc } {}
 
 		constexpr Vector( Vector &&other ) noexcept
-		  : allocator_type( other )
+		  : allocator_type( DAW_MOVE( other ) )
 		  , m_first( std::exchange( other.m_first, nullptr ) )
 		  , m_size( std::exchange( other.m_size, nullptr ) )
 		  , m_capacity( std::exchange( other.m_capacity, nullptr ) ) {}
@@ -472,7 +472,7 @@ namespace daw {
 		                     is_iterator<IteratorF>::value ),
 		                   std::nullptr_t> = nullptr>
 		constexpr Vector( IteratorF first, IteratorL last )
-		  : allocator_type( ) {
+		  : Vector( ) {
 			while( first != last ) {
 				push_back( *first );
 				++first;
