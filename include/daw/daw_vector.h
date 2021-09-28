@@ -407,7 +407,9 @@ namespace daw {
 
 		DAW_CPP20CXDTOR ~Vector( ) {
 			clear( );
-			this->deallocate( m_first, capacity( ) );
+			if( m_first ) {
+				this->deallocate( m_first, capacity( ) );
+			}
 		}
 
 		constexpr Vector( Vector const &other )
