@@ -188,7 +188,7 @@ namespace daw {
 		using pointer = typename std::allocator_traits<Allocator>::pointer;
 		std::size_t alloc_size;
 
-		explicit constexpr AllocDeleter( std::size_t sz,
+		constexpr AllocDeleter( std::size_t sz,
 		                                 Allocator a = Allocator{ } )
 		  : Allocator{ a }
 		  , alloc_size( sz ) {}
@@ -323,7 +323,7 @@ namespace daw {
 		}
 
 	public:
-		explicit constexpr Vector( allocator_type const &alloc = allocator_type{ } )
+		constexpr Vector( allocator_type const &alloc = allocator_type{ } )
 		  : allocator_type{ alloc } {}
 
 		constexpr Vector( Vector && ) noexcept = default;
