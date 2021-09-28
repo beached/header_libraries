@@ -380,8 +380,19 @@ namespace daw {
 		constexpr Vector( allocator_type const &alloc )
 		  : allocator_type{ alloc } {}
 
-		constexpr Vector( Vector && ) noexcept = default;
-		constexpr Vector &operator=( Vector && ) noexcept = default;
+		constexpr Vector( Vector &&other ) noexcept
+		  : allocator_type( other )
+		  , m_data( std::exchange( other.m_data, nullptr ) )
+		  , m_size( std::exchange( other.m_size, 0 ) ) {}
+
+		constexpr Vector &operator=( Vector && rhs ) noexcept {
+			if( this != &rhs ) {
+				clear( );
+				m_data = std::exchange( rhs.m_data, nullptr );
+				m_size = std::exchange( rhs.m_size, 0 );
+			}
+			return *this;
+		}
 
 		constexpr void clear( ) {
 			resize( 0 );
