@@ -31,6 +31,7 @@ int main( ) {
 	for( int v : daw::a ) {
 		std::cout << v << '\n';
 	}
+	auto a2 = daw::a;
 	for( int v : daw::foo( 4 ) ) {
 		std::cout << v << '\n';
 	}

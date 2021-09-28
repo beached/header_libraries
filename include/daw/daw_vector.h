@@ -223,8 +223,8 @@ namespace daw {
 		size_type m_size = 0;
 
 		uptr_t make_copy( Vector const &other ) {
-			auto result = uptr_t( this->allocate( other.m_capacity ),
-			                      uptr_del{ other.m_capacity } );
+			auto result =
+			  uptr_t( this->allocate( other.size( ) ), uptr_del{ other.size( ) } );
 			copy_n( other.data( ), other.size( ), result.get( ) );
 			return result;
 		}
@@ -245,16 +245,13 @@ namespace daw {
 
 		static constexpr void relocate( pointer source, size_type sz,
 		                                pointer destination ) {
-			/*
 			if constexpr( std::is_trivially_copyable_v<value_type> ) {
-		#if DAW_HAS_BUILTIN( __builtin_memcpy )
-			    (void)__builtin_memcpy( destination, source, sz * sizeof( T ) );
-		#else
-			    (void)std::memcpy( destination, source, sz * sizeof( T ) );
-		#endif
-
-			  } else*/
-			if constexpr( std::is_nothrow_move_constructible_v<T> ) {
+#if DAW_HAS_BUILTIN( __builtin_memcpy )
+				(void)__builtin_memcpy( destination, source, sz * sizeof( T ) );
+#else
+				(void)std::memcpy( destination, source, sz * sizeof( T ) );
+#endif
+			} else if constexpr( std::is_nothrow_move_constructible_v<T> ) {
 				(void)move_n( source, sz, destination );
 			} else {
 				(void)copy_n( source, sz, destination );
@@ -326,7 +323,6 @@ namespace daw {
 		}
 
 	public:
-		explicit constexpr Vector( ) = default;
 		explicit constexpr Vector( allocator_type const &alloc = allocator_type{ } )
 		  : allocator_type{ alloc } {}
 
@@ -337,19 +333,17 @@ namespace daw {
 			resize( 0 );
 		}
 
-		/*
 		constexpr Vector( Vector const &other )
 		  : m_data( make_copy( other ) )
 		  , m_size( other.m_size ) {}
 
 		constexpr Vector &operator=( Vector const &rhs ) {
-		  if( this != &rhs ) {
-		    m_data.reset( make_copy( rhs ) );
-		    m_size = rhs.m_size;
-		  }
-		  return *this;
+			if( this != &rhs ) {
+				m_data.reset( make_copy( rhs ) );
+				m_size = rhs.m_size;
+			}
+			return *this;
 		}
-		*/
 
 		template<typename Operation>
 		explicit constexpr Vector( sized_for_overwrite_t, size_type sz,
