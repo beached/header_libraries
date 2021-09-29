@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw_algorithm.h"
 #include "daw_cxmath.h"
 #include "daw_likely.h"
 #include "daw_move.h"
