@@ -6,7 +6,8 @@
 // Official repository: https://github.com/beached/
 //
 
-#include "daw/daw_vector.h"
+#include <daw/daw_utility.h>
+#include <daw/daw_vector.h>
 
 #include <cstddef>
 #include <iostream>
@@ -84,4 +85,10 @@ int main( ) {
 	v1 = DAW_MOVE( v0 );
 	(void)v0;
 	(void)v1;
+
+	int const t[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+	auto v2 = daw::Vector<int>( t, daw::data_end( t ) );
+	assert( std::equal( std::data( t ), daw::data_end( t ), std::data( v2 ),
+	                    daw::data_end( v2 ) ) );
+	std::cout << "v2 size: " << v2.size( ) << '\n';
 }

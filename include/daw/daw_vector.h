@@ -277,7 +277,7 @@ namespace daw {
 
 		explicit constexpr Vector( sized_for_overwrite_t, size_type sz )
 		  : m_first( this->allocate( vector_details::round_to_page_size( sz ) ) )
-		  , m_size( m_first + sz )
+		  , m_size( m_first + static_cast<difference_type>( sz ) )
 		  , m_capacity( m_first + vector_details::round_to_page_size( sz ) ) {}
 
 		constexpr size_type calc_new_size( size_type sz ) noexcept {
@@ -363,10 +363,12 @@ namespace daw {
 						}
 					}( );
 					if( new_ptr != old_ptr ) {
-						relocate( old_ptr, size( ), new_ptr );
+						auto const old_sz = size( );
+						relocate( old_ptr, old_sz, new_ptr );
 						clear( );
 						this->deallocate( m_first, capacity( ) );
 						m_first = new_ptr;
+						m_size = m_first + static_cast<difference_type>( old_sz );
 					}
 					m_capacity = m_first + new_size;
 				}
@@ -397,6 +399,16 @@ namespace daw {
 				m_capacity = std::exchange( rhs.m_capacity, nullptr );
 			}
 			return *this;
+		}
+
+		template<typename Iterator, std::enable_if_t<is_iterator<Iterator>::value,
+		                                             std::nullptr_t> = nullptr>
+		explicit constexpr Vector( Iterator p, size_type sz )
+		  : m_first( this->allocate( vector_details::round_to_page_size( sz ) ) )
+		  , m_capacity( m_first + static_cast<difference_type>(
+		                            vector_details::round_to_page_size( sz ) ) ) {
+
+			m_size = daw::algorithm::copy_n( p, m_first, sz ).output;
 		}
 
 		constexpr void clear( ) {
@@ -433,18 +445,18 @@ namespace daw {
 		template<typename Operation>
 		explicit constexpr Vector( sized_for_overwrite_t, size_type sz,
 		                           Operation op )
-		  : Vector( sized_for_overwrite, sz ) {
+		  : m_first( this->allocate( vector_details::round_to_page_size( sz ) ) )
+		  , m_size( m_first + static_cast<difference_type>( sz ) )
+		  , m_capacity( m_first + static_cast<difference_type>(
+		                            vector_details::round_to_page_size( sz ) ) ) {
+
 			m_size = m_first + static_cast<difference_type>( op( m_first, size( ) ) );
 			assert( size( ) <= sz );
 		}
 
 		template<size_type N>
 		explicit constexpr Vector( value_type const ( &ary )[N] )
-		  : Vector( sized_for_overwrite, N ) {
-
-			pointer const p = copy_n( ary, N, m_first );
-			m_size = p;
-		}
+		  : Vector( ary, N ) {}
 
 		template<size_type N>
 		explicit constexpr Vector( value_type( &&ary )[N] )
@@ -459,12 +471,7 @@ namespace daw {
 		                            is_iterator<IteratorF>::value ),
 		                          std::nullptr_t> = nullptr>
 		constexpr Vector( IteratorF first, IteratorL last )
-		  : Vector( sized_for_overwrite, static_cast<size_type>( last - first ) ) {
-
-			pointer const p =
-			  copy_n( first, static_cast<size_type>( last - first ), m_first );
-			m_size = p;
-		}
+		  : Vector( first, static_cast<size_type>( last - first ) ) {}
 
 		template<
 		  typename IteratorF, typename IteratorL,
