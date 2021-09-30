@@ -155,6 +155,7 @@ namespace daw {
 
 	private:
 		[[nodiscard]] static inline pointer allocate_raw( size_type count ) {
+			count = vector_details::round_to_page_size( count );
 			auto result = reinterpret_cast<T *>( std::malloc( count ) );
 			if( not result ) {
 				throw std::bad_alloc( );
@@ -248,7 +249,7 @@ namespace daw {
 	inline constexpr sized_for_overwrite_t sized_for_overwrite =
 	  sized_for_overwrite_t{ };
 
-	template<typename T, typename Alloc = MMapAlloc<T>>
+	template<typename T, typename Alloc = MallocAlloc<T>>
 	struct Vector : private Alloc {
 		using value_type = T;
 		using allocator_type = Alloc;
