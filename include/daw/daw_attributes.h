@@ -12,6 +12,7 @@
 
 #if defined( __GNUC__ ) or defined( __clang__ )
 
+
 #if not defined( DAW_NO_FLATTEN )
 
 #define DAW_ATTRIB_FLATTEN [[gnu::flatten]]
@@ -24,7 +25,14 @@
 
 #endif
 
-#define DAW_ATTRIB_HIDDEN __attribute__( ( visibility( "hidden" ) ) )
+#ifndef DAW_FORCE_ALL_HIDDEN
+#define DAW_ATTRIB_PUBLIC __attribute__ ((visibility ("default")))
+#else
+#define DAW_ATTRIB_PUBLIC __attribute__ ((visibility ("hidden")))
+#endif
+
+#define DAW_ATTRIB_HIDDEN __attribute__ ((visibility ("hidden")))
+
 #define DAW_ATTRIB_INLINE [[gnu::always_inline]]
 #define DAW_ATTRIB_NOINLINE [[gnu::noinline]]
 
@@ -42,7 +50,13 @@
 
 #endif
 
+#ifndef DAW_FORCE_ALL_HIDDEN
+#define DAW_ATTRIB_PUBLIC __declspec(dllexport)
+#else
+#define DAW_ATTRIB_PUBLIC 
+#endif
 #define DAW_ATTRIB_HIDDEN
+
 #define DAW_ATTRIB_INLINE __forceinline
 #define DAW_ATTRIB_NOINLINE __declspec( noinline )
 
@@ -51,6 +65,7 @@
 #define DAW_ATTRIB_FLATTEN
 #define DAW_ATTRIB_FLATINLINE
 #define DAW_ATTRIB_HIDDEN
+#define DAW_ATTRIB_PUBLIC
 #define DAW_ATTRIB_INLINE
 #define DAW_ATTRIB_NOINLINE
 

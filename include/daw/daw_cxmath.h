@@ -1237,7 +1237,7 @@ namespace daw::cxmath {
 	static_assert( is_finite( 5.5 ) );
 
 	template<typename Unsigned>
-	Unsigned round_pow2( Unsigned v ) {
+	Unsigned round_up_pow2( Unsigned v ) {
 		if( v == Unsigned{ 0 } ) {
 			return 0;
 		}
@@ -1248,5 +1248,5 @@ namespace daw::cxmath {
 			res <<= 1U;
 		}
 		return res;
-	};
+	}
 } // namespace daw::cxmath
