@@ -1248,5 +1248,5 @@ namespace daw::cxmath {
 			res <<= 1U;
 		}
 		return res;
-	};
+	}
 } // namespace daw::cxmath
