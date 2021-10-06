@@ -3291,23 +3291,23 @@ namespace std {
 } // namespace std
 
 namespace daw {
-	constexpr UInt64 operator"" _u64( unsigned long long value ) {
+	constexpr UInt64 operator""_u64( unsigned long long value ) {
 		return static_cast<UInt64>( value );
 	}
 
-	constexpr UInt32 operator"" _u32( unsigned long long value ) {
+	constexpr UInt32 operator""_u32( unsigned long long value ) {
 		assert( ( value <= static_cast<unsigned long long>(
 		                     ( daw::numeric_limits<std::uint32_t>::max )( ) ) ) );
 		return static_cast<UInt32>( value );
 	}
 
-	constexpr UInt16 operator"" _u16( unsigned long long value ) {
+	constexpr UInt16 operator""_u16( unsigned long long value ) {
 		assert( ( value < static_cast<unsigned long long>(
 		                    ( std::numeric_limits<std::uint16_t>::max )( ) ) ) );
 		return static_cast<UInt16>( value );
 	}
 
-	constexpr UInt8 operator"" _u8( unsigned long long value ) {
+	constexpr UInt8 operator""_u8( unsigned long long value ) {
 		assert( ( value < static_cast<unsigned long long>(
 		                    ( std::numeric_limits<std::uint8_t>::max )( ) ) ) );
 		return static_cast<UInt8>( value );

@@ -1623,22 +1623,22 @@ namespace daw {
 
 	namespace string_view_literals {
 		[[nodiscard]] constexpr string_view
-		operator"" _sv( char const *str, std::size_t len ) noexcept {
+		operator""_sv( char const *str, std::size_t len ) noexcept {
 			return daw::string_view{ str, len };
 		}
 
 		[[nodiscard]] constexpr u16string_view
-		operator"" _sv( char16_t const *str, std::size_t len ) noexcept {
+		operator""_sv( char16_t const *str, std::size_t len ) noexcept {
 			return daw::u16string_view{ str, len };
 		}
 
 		[[nodiscard]] constexpr u32string_view
-		operator"" _sv( char32_t const *str, std::size_t len ) noexcept {
+		operator""_sv( char32_t const *str, std::size_t len ) noexcept {
 			return daw::u32string_view{ str, len };
 		}
 
 		[[nodiscard]] constexpr wstring_view
-		operator"" _sv( wchar_t const *str, std::size_t len ) noexcept {
+		operator""_sv( wchar_t const *str, std::size_t len ) noexcept {
 			return daw::wstring_view{ str, len };
 		}
 	} // namespace string_view_literals
