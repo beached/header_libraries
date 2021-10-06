@@ -221,7 +221,7 @@ namespace daw {
 	}
 
 	namespace literals {
-		constexpr size_t operator"" _N( unsigned long long val ) noexcept {
+		constexpr size_t operator""_N( unsigned long long val ) noexcept {
 			return daw::natural_t<unsigned long long>{ val };
 		}
 	} // namespace literals
