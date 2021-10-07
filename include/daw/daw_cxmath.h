@@ -493,6 +493,9 @@ namespace daw::cxmath {
 #else
 	[[nodiscard]] DAW_ATTRIB_INLINE inline constexpr unsigned
 	count_leading_zeroes( std::uint64_t v ) noexcept {
+		if( v == 0 ) {
+			return 64U;
+		}
 		auto high = static_cast<std::uint32_t>( v >> 32U );
 		if( high != 0 ) {
 			return static_cast<std::uint32_t>( __builtin_clz( high ) );
@@ -516,6 +519,9 @@ namespace daw::cxmath {
 	// https://graphics.stanford.edu/~seander/bithacks.html
 	[[nodiscard]] constexpr std::uint32_t
 	count_leading_zeroes( std::uint64_t v ) noexcept {
+		if( v == 0 ) {
+			return 64U;
+		}
 		char const bit_position[64] = {
 		  0,  1,  2,  7,  3,  13, 8,  19, 4,  25, 14, 28, 9,  34, 20, 40,
 		  5,  17, 26, 38, 15, 46, 29, 48, 10, 31, 35, 54, 21, 50, 41, 57,
@@ -548,6 +554,9 @@ namespace daw::cxmath {
 	namespace cxmath_impl {
 		[[nodiscard]] DAW_ATTRIB_INLINE inline constexpr std::uint32_t
 		count_trailing_zeros_cx32( std::uint32_t v ) noexcept {
+			if( v == 0 ) {
+				return 32U;
+			}
 			std::uint32_t c = 32U;
 			v &= static_cast<std::uint32_t>( -static_cast<std::int32_t>( v ) );
 			if( v ) {
@@ -573,6 +582,9 @@ namespace daw::cxmath {
 
 		[[nodiscard]] DAW_ATTRIB_INLINE inline constexpr std::uint32_t
 		count_trailing_zeros_cx64( std::uint64_t v ) noexcept {
+			if( v == 0 ) {
+				return 64U;
+			}
 			if( ( v & 0xFFFF'FFFFU ) == 0 ) {
 				return 32 + count_trailing_zeros_cx32(
 				              static_cast<std::uint32_t>( v >> 32U ) );
@@ -606,6 +618,9 @@ namespace daw::cxmath {
 
 	[[nodiscard]] constexpr std::uint32_t
 	count_trailing_zeros( std::uint32_t v ) noexcept {
+		if( v == 0 ) {
+			return 32U;
+		}
 #if INT_MAX == 2147483647LL
 		return static_cast<std::uint32_t>(
 		  __builtin_ctz( static_cast<unsigned>( v ) ) );
@@ -622,6 +637,9 @@ namespace daw::cxmath {
 
 	[[nodiscard]] constexpr std::uint32_t
 	count_trailing_zeros( std::uint64_t v ) noexcept {
+		if( v == 0 ) {
+			return 64U;
+		}
 #if INT_MAX == 9223372036854775807LL
 		return static_cast<std::uint32_t>(
 		  __builtin_ctz( static_cast<unsigned>( v ) ) );
