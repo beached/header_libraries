@@ -552,7 +552,7 @@ namespace daw::cxmath {
 #endif
 
 	namespace cxmath_impl {
-		[[nodiscard]] DAW_ATTRIB_INLINE inline constexpr std::uint32_t
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr std::uint32_t
 		count_trailing_zeros_cx32( std::uint32_t v ) noexcept {
 			if( v == 0 ) {
 				return 32U;
@@ -580,7 +580,7 @@ namespace daw::cxmath {
 			return c;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE inline constexpr std::uint32_t
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr std::uint32_t
 		count_trailing_zeros_cx64( std::uint64_t v ) noexcept {
 			if( v == 0 ) {
 				return 64U;
@@ -593,7 +593,7 @@ namespace daw::cxmath {
 		}
 
 		template<typename T>
-		[[nodiscard]] DAW_ATTRIB_INLINE inline constexpr std::uint32_t
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr std::uint32_t
 		count_trailing_zeros_cx( T v ) noexcept {
 			static_assert( sizeof( T ) == 8 or sizeof( T ) == 4 );
 			if constexpr( sizeof( T ) == 8 ) {

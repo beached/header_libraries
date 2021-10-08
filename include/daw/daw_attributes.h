@@ -33,7 +33,7 @@
 
 #define DAW_ATTRIB_HIDDEN __attribute__ ((visibility ("hidden")))
 
-#define DAW_ATTRIB_INLINE [[gnu::always_inline]]
+#define DAW_ATTRIB_INLINE [[gnu::always_inline]] inline
 #define DAW_ATTRIB_NOINLINE [[gnu::noinline]]
 
 #elif defined( _MSC_VER )
