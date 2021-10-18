@@ -26,7 +26,7 @@ namespace daw::enable_if_details {
 
 namespace daw {
 	template<bool, typename T = std::nullptr_t>
-	struct enable_if;
+	struct enable_if {};
 
 	template<typename T>
 	struct enable_if<true, T> {
