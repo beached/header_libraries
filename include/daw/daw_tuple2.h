@@ -141,8 +141,10 @@ namespace daw {
 		using tuple2_impl::tuple2_base<std::index_sequence_for<Ts...>,
 		                               Ts...>::element_type;
 
+		using size_constant = std::integral_constant<std::size_t, sizeof...( Ts )>;
+
 		static constexpr std::size_t size( ) noexcept {
-			return sizeof...( Ts );
+			return size_constant::value;
 		}
 	};
 
@@ -180,12 +182,10 @@ namespace daw {
 	struct tuple2_size;
 
 	template<typename... Ts>
-	struct tuple2_size<tuple2<Ts...>>
-	  : std::integral_constant<std::size_t, sizeof...( Ts )> {};
+	struct tuple2_size<tuple2<Ts...>> : tuple2<Ts...>::size_constant {};
 
 	template<typename T>
-	inline static constexpr std::size_t tuple2_size_v =
-	  tuple2_size<daw::remove_cvref_t<T>>::value;
+	inline static constexpr std::size_t tuple2_size_v = tuple2_size<T>::value;
 
 	template<typename... Ts>
 	constexpr tuple2<Ts...> forward_as_tuple2( Ts &&...args ) {
@@ -226,16 +226,24 @@ namespace daw {
 		}
 	} // namespace tuple2_impl
 
-	template<typename... Tps>
-	constexpr auto tuple2_cat( Tps &&...tps ) {
-		if constexpr( sizeof...( Tps ) == 0 ) {
-			return tuple2<>{ };
-		} else {
-			return tuple2_impl::tuple2_cat_impl(
-			  tuple2_impl::cartesian_product<
-			    std::index_sequence<tuple2_size_v<daw::remove_cvref_t<Tps>>...>>{ },
-			  forward_as_tuple2( DAW_FWD2( Tps, tps )... ) );
-		}
+	constexpr tuple2<> tuple2_cat( ) {
+		return tuple2<>{ };
+	}
+
+	template<typename Tuple>
+	constexpr tuple2<> tuple2_cat( Tuple &&tp ) {
+		return {tp};
+	}
+
+	template<typename T0, typename T1, typename... Tps>
+	constexpr auto tuple2_cat( T0 &&t0, T1 &&t1, Tps &&...tps ) {
+		return tuple2_impl::tuple2_cat_impl(
+		  tuple2_impl::cartesian_product<
+		    std::index_sequence<tuple2_size_v<daw::remove_cvref_t<T0>>,
+		                        tuple2_size_v<daw::remove_cvref_t<T1>>,
+		                        tuple2_size_v<daw::remove_cvref_t<Tps>>...>>{ },
+		  forward_as_tuple2( DAW_FWD2( T0, t0 ), DAW_FWD2( T1, t1 ),
+		                     DAW_FWD2( Tps, tps )... ) );
 	}
 
 	namespace tuple2_impl {

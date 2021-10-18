@@ -27,36 +27,40 @@ namespace daw::enable_if_details {
 #if defined( __cpp_concepts )
 #if __cpp_concepts >= 201907L
 namespace daw {
+	template<bool B, typename T = std::nullptr_t>
+	requires( B )
+	struct enable_if {
+		using type = T;
+	};
+
+	template<bool B, typename T = std::nullptr_t>
+	using enable_f_t = typename enable_if<B, T>::type;
+
 	template<bool... B>
-	requires( ( B and ... ) ) using enable_when_t = std::nullptr_t;
+	using enable_when_t = typename enable_if<(B and ...)>::type;
 
 	template<typename... Traits>
-	requires(
-	  enable_if_details::conjunction<Traits...>::value ) using enable_when_all_t =
-	  std::nullptr_t;
-
-	template<bool B, typename T>
-	requires( B ) using enable_if_t = T;
+	using enable_when_all_t = typename enable_if<enable_if_details::conjunction<Traits...>::value>::type;
 } // namespace daw
 #endif
 #else
-namespace daw::enable_if_details {
-	template<bool>
-	struct enable_if {};
-
-	template<>
-	struct enable_if<true> {
-		using type = std::nullptr_t;
-	};
-} // namespace daw::enable_if_details
-
 namespace daw {
+	template<bool, typename T = std::nullptr_t>
+	struct enable_if;
+
+	template<typename T>
+	struct enable_if<true, T> {
+		using type = T;
+	};
+
+	template<bool B, typename T = std::nullptr_t>
+	using enable_if_t = typename enable_if<B, T>::type;
+
 	template<bool... B>
-	using enable_when_t =
-	  typename enable_if_details::enable_if<( B && ... )>::type;
+	using enable_when_t = enable_if_t<( B && ... )>;
 
 	template<typename... Traits>
-	using enable_when_all_t = typename enable_if_details::enable_if<
-	  enable_if_details::conjunction<Traits...>::value>::type;
+	using enable_when_all_t = enable_if_t<
+	  enable_if_details::conjunction<Traits...>::value>;
 } // namespace daw
 #endif
