@@ -24,26 +24,6 @@ namespace daw::enable_if_details {
 	  : std::conditional<bool( B1::value ), conjunction<Bn...>, B1>::type {};
 } // namespace daw::enable_if_details
 
-#if defined( __cpp_concepts )
-#if __cpp_concepts >= 201907L
-namespace daw {
-	template<bool B, typename T = std::nullptr_t>
-	requires( B )
-	struct enable_if {
-		using type = T;
-	};
-
-	template<bool B, typename T = std::nullptr_t>
-	using enable_if_t = typename enable_if<B, T>::type;
-
-	template<bool... B>
-	using enable_when_t = typename enable_if<(B and ...)>::type;
-
-	template<typename... Traits>
-	using enable_when_all_t = typename enable_if<enable_if_details::conjunction<Traits...>::value>::type;
-} // namespace daw
-#endif
-#else
 namespace daw {
 	template<bool, typename T = std::nullptr_t>
 	struct enable_if;
@@ -63,4 +43,3 @@ namespace daw {
 	using enable_when_all_t = enable_if_t<
 	  enable_if_details::conjunction<Traits...>::value>;
 } // namespace daw
-#endif
