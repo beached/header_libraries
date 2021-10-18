@@ -342,7 +342,7 @@ namespace daw {
 		}
 
 		template<typename Rhs>
-		constexpr bool operator==( Rhs const &rhs ) noexcept {
+		constexpr bool operator==( Rhs const &rhs ) const noexcept {
 			static_assert( is_bounded_graph_node_v<Rhs>,
 			               "Can only do comparison with another graph node proxy" );
 			return m_node_id == rhs.id( ) or
@@ -350,7 +350,7 @@ namespace daw {
 		}
 
 		template<typename Rhs>
-		constexpr bool operator!=( Rhs const &rhs ) noexcept {
+		constexpr bool operator!=( Rhs const &rhs ) const noexcept {
 			static_assert( is_bounded_graph_node_v<Rhs>,
 			               "Can only do comparison with another graph node proxy" );
 			return m_node_id != rhs.id( ) or
@@ -358,7 +358,7 @@ namespace daw {
 		}
 
 		template<typename Rhs>
-		constexpr bool operator<( Rhs const &rhs ) noexcept {
+		constexpr bool operator<( Rhs const &rhs ) const noexcept {
 			static_assert( is_bounded_graph_node_v<Rhs>,
 			               "Can only do comparison with another graph node proxy" );
 			daw::exception::dbg_precondition_check(
