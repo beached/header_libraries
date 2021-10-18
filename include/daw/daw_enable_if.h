@@ -34,7 +34,7 @@ namespace daw {
 	};
 
 	template<bool B, typename T = std::nullptr_t>
-	using enable_f_t = typename enable_if<B, T>::type;
+	using enable_if_t = typename enable_if<B, T>::type;
 
 	template<bool... B>
 	using enable_when_t = typename enable_if<(B and ...)>::type;
