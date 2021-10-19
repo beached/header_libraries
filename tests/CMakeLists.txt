@@ -101,7 +101,7 @@ set(TEST_SOURCES
         daw_view_test.cpp
         daw_virtual_base_test.cpp
         daw_visit_test.cpp
-        not_null_test.cpp
+				#not_null_test.cpp
         sbo_test.cpp
         static_hash_table_test.cpp
         )
