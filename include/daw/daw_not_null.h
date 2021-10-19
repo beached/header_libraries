@@ -34,19 +34,22 @@ namespace daw {
 		}
 
 		DAW_ATTRIB_INLINE constexpr reference operator*( ) const noexcept {
-			DAW_ASSUME( m_ptr != nullm_ptr );
+			DAW_ASSUME( m_ptr != nullptr );
 			return *m_ptr;
 		}
 
 		DAW_ATTRIB_INLINE constexpr pointer operator->( ) const noexcept {
+			DAW_ASSUME( m_ptr != nullptr );
 			return m_ptr;
 		}
 
 		DAW_ATTRIB_INLINE constexpr pointer get( ) const noexcept {
+			DAW_ASSUME( m_ptr != nullptr );
 			return m_ptr;
 		}
 
 		DAW_ATTRIB_INLINE constexpr operator pointer( ) const noexcept {
+			DAW_ASSUME( m_ptr != nullptr );
 			return m_ptr;
 		}
 	};
