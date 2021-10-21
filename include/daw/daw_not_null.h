@@ -45,7 +45,7 @@ namespace daw {
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference
-		operator*( ) const noexcept const {
+		operator*( ) const noexcept {
 			DAW_ASSUME( m_ptr != nullptr );
 			return *m_ptr;
 		}
@@ -99,27 +99,27 @@ namespace daw {
 		}
 
 		DAW_ATTRIB_INLINE constexpr not_null &
-		operator+=( std::ptrdiff_t n ) noexcept {
+		operator+=( difference_type n ) noexcept {
 			DAW_ASSUME( m_ptr != nullptr );
 			m_ptr += n;
 			return *this;
 		}
 
 		DAW_ATTRIB_INLINE constexpr not_null &
-		operator-=( std::ptrdiff_t n ) noexcept {
+		operator-=( difference_type n ) noexcept {
 			DAW_ASSUME( m_ptr != nullptr );
 			m_ptr -= n;
 			return *this;
 		}
 
 		DAW_ATTRIB_INLINE constexpr reference
-		operator[]( std::ptrdiff_t idx ) const noexcept {
+		operator[]( size_type idx ) const noexcept {
 			DAW_ASSUME( m_ptr != nullptr );
 			return m_ptr[idx];
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr std::ptrdiff_t
-		operator-( not_null const &rhs ) const noexcept {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr difference_type
+		operator-( not_null const &rhs ) noexcept {
 			DAW_ASSUME( m_ptr != nullptr );
 			return m_ptr -= rhs.m_ptr;
 		}
