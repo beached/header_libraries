@@ -8,10 +8,18 @@
 
 #pragma once
 
-/// Explicitly do a non-short circuiting logical and with bitwise and
-#define DAW_NSC_AND( Lhs, Rhs )                                                \
-	static_cast<bool>( static_cast<bool>( Lhs ) & static_cast<bool>( Rhs ) )
+#include "daw_attributes.h"
 
-/// Explicitly do a non-short circuiting logical or with bitwise or
-#define DAW_NSC_OR( Lhs, Rhs )                                                 \
-	static_cast<bool>( static_cast<bool>( Lhs ) | static_cast<bool>( Rhs ) )
+namespace daw {
+	/// Explicitly do a non-short circuiting logical and with bitwise and
+	template<typename... Bools>
+	DAW_ATTRIB_INLINE constexpr bool nsc_and( bool lhs, Bools... rhs ) noexcept {
+		return ( static_cast<bool>( rhs ) & ... & lhs );
+	}
+
+	/// Explicitly do a non-short circuiting logical or with bitwise or
+	template<typename... Bools>
+	DAW_ATTRIB_INLINE constexpr bool nsc_or( bool lhs, Bools... rhs ) noexcept {
+		return ( static_cast<bool>( rhs ) | ... | lhs );
+	}
+} // namespace daw

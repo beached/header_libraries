@@ -61,6 +61,7 @@ set(TEST_SOURCES
         daw_prop_const_ptr_test.cpp
         daw_iterator_zipiter_test.cpp
         daw_keep_n_test.cpp
+				daw_logic_test.cpp
         daw_math_test.cpp
         daw_memory_mapped_file_test.cpp
         daw_metro_hash_test.cpp
