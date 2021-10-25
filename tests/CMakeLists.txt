@@ -18,6 +18,7 @@ set(TEST_SOURCES
         daw_bounded_array_test.cpp
         daw_bounded_string_test.cpp
         daw_bounded_vector_test.cpp
+				daw_can_constant_evaluate_test.cpp
         daw_carray_test.cpp
         daw_checked_expected_test.cpp
         daw_clumpy_sparsy_test.cpp

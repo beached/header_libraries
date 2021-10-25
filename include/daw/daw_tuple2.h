@@ -140,7 +140,6 @@ namespace daw {
 		using tuple2_impl::tuple2_base<std::index_sequence_for<Ts...>, Ts...>::get;
 		using tuple2_impl::tuple2_base<std::index_sequence_for<Ts...>,
 		                               Ts...>::element_type;
-
 		using size_constant = std::integral_constant<std::size_t, sizeof...( Ts )>;
 
 		static constexpr std::size_t size( ) noexcept {
@@ -153,6 +152,15 @@ namespace daw {
 
 	template<typename... Ts>
 	tuple2( Ts... ) -> tuple2<Ts...>;
+
+	template<typename>
+	struct is_tuple2 : std::false_type {};
+
+	template<typename... Ts>
+	struct is_tuple2<tuple2<Ts...>> : std::true_type {};
+
+	template<typename T>
+	inline constexpr bool is_tuple2_v = is_tuple2<T>::value;
 
 	template<std::size_t Idx, typename... Ts>
 	constexpr decltype( auto ) get( tuple2<Ts...> const &tp ) {
@@ -174,9 +182,17 @@ namespace daw {
 		return DAW_MOVE( tp ).template get<Idx>( );
 	}
 
+	template<std::size_t, typename>
+	struct tuple2_element;
+
+	template<std::size_t Idx, typename... Ts>
+	struct tuple2_element<Idx, tuple2<Ts...>> {
+		using type = typename daw::remove_cvref_t<
+		  decltype( tuple2<Ts...>::template element_type<Idx>( ) )>::type;
+	};
+
 	template<std::size_t Idx, typename Tuple>
-	using tuple2_element_t = typename daw::remove_cvref_t<
-	  decltype( Tuple::template element_type<Idx>( ) )>::type;
+	using tuple2_element_t = typename tuple2_element<Idx, Tuple>::type;
 
 	template<typename T>
 	struct tuple2_size;
@@ -232,7 +248,7 @@ namespace daw {
 
 	template<typename Tuple>
 	constexpr tuple2<> tuple2_cat( Tuple &&tp ) {
-		return {tp};
+		return { tp };
 	}
 
 	template<typename T0, typename T1, typename... Tps>
