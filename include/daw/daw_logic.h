@@ -12,14 +12,14 @@
 
 namespace daw {
 	/// Explicitly do a non-short circuiting logical and with bitwise and
-	template<typename... Bools>
-	DAW_ATTRIB_INLINE constexpr bool nsc_and( bool lhs, Bools... rhs ) noexcept {
-		return ( static_cast<bool>( rhs ) & ... & lhs );
+	template<typename Bool, typename... Bools>
+	DAW_ATTRIB_INLINE constexpr bool nsc_and( Bool lhs, Bools... rhs ) noexcept {
+		return ( static_cast<bool>( rhs ) & ... & static_cast<bool>(lhs) );
 	}
 
 	/// Explicitly do a non-short circuiting logical or with bitwise or
-	template<typename... Bools>
-	DAW_ATTRIB_INLINE constexpr bool nsc_or( bool lhs, Bools... rhs ) noexcept {
-		return ( static_cast<bool>( rhs ) | ... | lhs );
+	template<typename Bool, typename... Bools>
+	DAW_ATTRIB_INLINE constexpr bool nsc_or( Bool lhs, Bools... rhs ) noexcept {
+		return ( static_cast<bool>( rhs ) | ... | static_cast<bool>(lhs) );
 	}
 } // namespace daw
