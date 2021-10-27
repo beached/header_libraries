@@ -19,4 +19,4 @@ ECHO "Running cmake"
 
 ECHO "##############################"
 ECHO "Building"
-"C:/PROGRAM FILES (X86)/MICROSOFT VISUAL STUDIO/2019/ENTERPRISE/COMMON7/IDE/COMMONEXTENSIONS/MICROSOFT/CMAKE/CMake/bin/cmake.exe" --build . --config Debug --target full -j 2 -- -k 1000
+"C:/PROGRAM FILES (X86)/MICROSOFT VISUAL STUDIO/2019/ENTERPRISE/COMMON7/IDE/COMMONEXTENSIONS/MICROSOFT/CMAKE/CMake/bin/cmake.exe" --build . --config Debug --target daw-header-libraries_full -j 2 -- -k 1000

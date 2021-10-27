@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw_cpp_feature_check.h"
+#include "daw_traits.h"
 
 #include <type_traits>
 
@@ -38,6 +39,9 @@ namespace daw {
 
 		template<DAW_CXEVAL_FTYPE F>
 		constexpr auto can_cxeval( ) {
+			static_assert(
+			  std::is_invocable_v<std::remove_reference_t<decltype( F )>>,
+			  "Test function must be invocable without arguments" );
 			return cxeval_test<F>( always_t<true>{ } );
 		}
 	} // namespace can_cxeval_impl
