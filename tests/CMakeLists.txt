@@ -137,7 +137,7 @@ set(DEV_TEST_SOURCES
 find_package(Threads REQUIRED)
 
 #Allows building all in some IDE's
-add_custom_target(full)
+add_custom_target(${PROJECT_NAME}_full)
 
 add_library(daw_test INTERFACE)
 target_link_libraries(daw_test INTERFACE daw::header_libraries ${COMPILER_SPECIFIC_LIBS} ${CMAKE_THREAD_LIBS_INIT})
@@ -154,7 +154,7 @@ foreach (CUR_TEST IN LISTS all_tests)
     add_executable("${CUR_TEST_NAME}" "${CUR_TEST}")
     target_link_libraries(${CUR_TEST_NAME} PRIVATE daw_test)
     add_test(${CUR_TEST_NAME}_test ${CUR_TEST_NAME})
-    add_dependencies(full ${CUR_TEST_NAME})
+    add_dependencies(${PROJECT_NAME}_full ${CUR_TEST_NAME})
 endforeach ()
 
 option(DAW_ENABLE_DEV_TESTING "Build unit tests still in development" OFF)
@@ -163,6 +163,6 @@ if (DAW_ENABLE_DEV_TESTING)
         string(REPLACE ".cpp" "" CUR_TEST_NAME ${CUR_TEST})
         add_executable(${CUR_TEST_NAME} ${CUR_TEST})
         target_link_libraries(${CUR_TEST_NAME} PRIVATE daw_test)
-        add_dependencies(full ${CUR_TEST_NAME})
+        add_dependencies(${PROJECT_NAME}_full ${CUR_TEST_NAME})
     endforeach ()
 endif ()
