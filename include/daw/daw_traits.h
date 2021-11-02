@@ -1084,6 +1084,15 @@ namespace daw {
 	};
 	template<typename... Ts>
 	expander( Ts... ) -> expander<Ts...>; // no warnings about intent to use CTAD
+
+	template<template<typename...> typename Primary, typename T>
+	constexpr bool is_specialization_of_v = false;
+	template<template<typename...> typename Primary, typename... Args>
+	constexpr bool is_specialization_of_v<Primary, Primary<Args...>> = true;
+
+	template<template<typename...> typename Primary, typename T>
+	using is_specialization_of =
+	  std::bool_constant<is_specialization_of_v<Primary, T>>;
 } // namespace daw
 
 #define DAW_TYPEOF( ... ) daw::remove_cvref_t<decltype( __VA_ARGS__ )>

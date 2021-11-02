@@ -2357,4 +2357,17 @@ static_assert(
 		}
 		return last;
 	}
+
+	/// When a predicate is satisfied, call onEach with the read value.
+	template<typename Iterator, typename Predicate, typename OnEach>
+	static void
+	for_each_if( Iterator first, Iterator last, Predicate pred, OnEach onEach ) {
+		while( first != last ) {
+			if( pred( *first ) ) {
+				onEach( *first );
+			}
+			++first;
+		}
+	}
 } // namespace daw::algorithm
+
