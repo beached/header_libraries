@@ -72,7 +72,7 @@ namespace daw {
 	  : std::true_type {};
 
 	namespace vector_details {
-		std::size_t round_to_page_size( std::size_t sz ) {
+		inline std::size_t round_to_page_size( std::size_t sz ) {
 			static std::size_t const page_size = [] {
 				int res = ::getpagesize( );
 				if( res <= 0 ) {
