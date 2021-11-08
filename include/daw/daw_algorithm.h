@@ -19,6 +19,7 @@
 #include "impl/daw_math_impl.h"
 
 #include <algorithm>
+#include <array>
 #include <ciso646>
 #include <cstddef>
 #include <functional>
@@ -622,8 +623,8 @@ namespace daw::algorithm {
 
 	template<typename InputIterator, typename UnaryPredicate>
 	[[nodiscard]] constexpr InputIterator find_first_of( InputIterator first,
-	                                       InputIterator last,
-	                                       UnaryPredicate pred ) {
+	                                                     InputIterator last,
+	                                                     UnaryPredicate pred ) {
 
 		(void)traits::is_input_iterator_test<InputIterator>( );
 		(void)
@@ -2360,8 +2361,8 @@ static_assert(
 
 	/// When a predicate is satisfied, call onEach with the read value.
 	template<typename Iterator, typename Predicate, typename OnEach>
-	static void
-	for_each_if( Iterator first, Iterator last, Predicate pred, OnEach onEach ) {
+	static void for_each_if( Iterator first, Iterator last, Predicate pred,
+	                         OnEach onEach ) {
 		while( first != last ) {
 			if( pred( *first ) ) {
 				onEach( *first );
@@ -2369,5 +2370,26 @@ static_assert(
 			++first;
 		}
 	}
-} // namespace daw::algorithm
 
+	template<typename Iterator, std::size_t N>
+	struct find_some_result {
+		Iterator position;
+		std::array<bool, N> results;
+	};
+
+	template<typename IteratorF, typename IteratorL, typename... Predicates>
+	find_some_result<IteratorF, sizeof...( Predicates )> constexpr find_some(
+	  IteratorF first, IteratorL last, Predicates &&...preds ) {
+		using result_t = std::array<bool, sizeof...( Predicates )>;
+		result_t results{ };
+		while( first != last ) {
+			results = result_t{ preds( *first )... };
+			if( ::daw::algorithm::contains( std::begin( results ),
+			                                std::end( results ), true ) ) {
+				break;
+			}
+			++first;
+		}
+		return { first, results };
+	}
+} // namespace daw::algorithm
