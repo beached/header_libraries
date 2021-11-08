@@ -829,6 +829,28 @@ constexpr bool adjacent_find_test( ) {
 }
 static_assert( adjacent_find_test( ) );
 
+constexpr bool find_some_test( ) {
+	std::array ary = { 1, 2, 4, 8, 16, 15, 14, 13, 12, 11, 10, 9, 7, 6, 5, 3 };
+	auto is_even = []( int i ) -> bool { return i % 2 == 0; };
+	auto is_div3 = []( int i ) { return i % 3 == 0; };
+	auto result =
+	  daw::algorithm::find_some( ary.begin( ), ary.end( ), is_even, is_div3 );
+	if( result.position != std::next( ary.begin( ), 1 ) ) {
+		return false;
+	}
+	static_assert(
+	  std::tuple_size_v<daw::remove_cvref_t<decltype( result.results )>> == 2 );
+
+	if( not result.results[0] ) {
+		return false;
+	}
+	if( result.results[1] ) {
+		return false;
+	}
+	return true;
+}
+static_assert( find_some_test( ) );
+
 int main( ) {
 	daw_extract_to_001( );
 }
