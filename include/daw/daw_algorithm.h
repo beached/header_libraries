@@ -2361,7 +2361,7 @@ static_assert(
 
 	/// When a predicate is satisfied, call onEach with the read value.
 	template<typename Iterator, typename Predicate, typename OnEach>
-	static void for_each_if( Iterator first, Iterator last, Predicate pred,
+	constexpr void for_each_if( Iterator first, Iterator last, Predicate pred,
 	                         OnEach onEach ) {
 		while( first != last ) {
 			if( pred( *first ) ) {
@@ -2378,7 +2378,7 @@ static_assert(
 	};
 
 	template<typename IteratorF, typename IteratorL, typename... Predicates>
-	find_some_result<IteratorF, sizeof...( Predicates )> constexpr find_some(
+	constexpr find_some_result<IteratorF, sizeof...( Predicates )> find_some(
 	  IteratorF first, IteratorL last, Predicates &&...preds ) {
 		using result_t = std::array<bool, sizeof...( Predicates )>;
 		result_t results{ };

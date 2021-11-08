@@ -8,6 +8,8 @@
 
 #include <daw/daw_can_constant_evaluate.h>
 
+#include <string>
+
 struct NotCXExpr {
 	void operator( )( ) const { };
 };
@@ -20,5 +22,40 @@ struct CXExpr {
 inline static constexpr auto CXExpr_v = CXExpr{ };
 
 static_assert( daw::can_constant_evaluate_v<CXExpr_v> );
+
+static_assert(
+  not daw::can_potentially_constant_construct_v<std::string, std::string> );
+
+struct CXAggEmpty {};
+static_assert( daw::can_potentially_constant_construct_v<CXAggEmpty> );
+struct CXAggInt {
+	int a;
+};
+static_assert( daw::can_potentially_constant_construct_v<CXAggInt, int> );
+
+static_assert( daw::can_potentially_constant_construct_v<int, int> );
+
+class Foo {
+public:
+	Foo( int ) {}
+};
+static_assert( not daw::can_potentially_constant_construct_v<Foo, int> );
+class CFoo {
+public:
+	constexpr CFoo( int ) {}
+};
+static_assert( daw::can_potentially_constant_construct_v<CFoo, int> );
+
+class Bar {
+public:
+	Bar( Foo ) {}
+};
+static_assert( not daw::can_potentially_constant_construct_v<Bar, Foo> );
+
+class CBar {
+public:
+	CBar( CFoo ) {}
+};
+static_assert( not daw::can_potentially_constant_construct_v<CBar, CFoo> );
 
 int main( ) {}

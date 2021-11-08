@@ -44,6 +44,25 @@ namespace daw {
 			  "Test function must be invocable without arguments" );
 			return cxeval_test<F>( always_t<true>{ } );
 		}
+
+		template<typename T, typename... Args>
+		struct construct {
+			constexpr T operator( )( ) const {
+				if constexpr( std::is_aggregate_v<T> ) {
+					return T{ Args{ }... };
+				} else {
+					return T( Args{ }... );
+				}
+			}
+		};
+		template<typename T, typename... Args>
+		inline constexpr auto construct_v = construct<T, Args...>{ };
+
+		template<typename T, typename... Args>
+		struct can_potentially_constant_construct_impl {
+			using type =
+			  daw::remove_cvref_t<decltype( can_cxeval<construct_v<T, Args...>>( ) )>;
+		};
 	} // namespace can_cxeval_impl
 
 	template<DAW_CXEVAL_FTYPE F>
@@ -53,6 +72,24 @@ namespace daw {
 	template<DAW_CXEVAL_FTYPE F>
 	inline constexpr bool can_constant_evaluate_v =
 	  can_constant_evaluate<F>::value;
+
+	/***
+	 * Checks if T is constexpr constructible from Args.
+	 * @pre Args must all be default constructible, if not false is returned
+	 */
+	template<typename T, typename... Args>
+	using can_potentially_constant_construct = typename std::conditional_t<
+	  ( std::is_default_constructible_v<Args> and ... ),
+	  can_cxeval_impl::can_potentially_constant_construct_impl<T, Args...>,
+	  daw::traits::identity<std::false_type>>::type;
+
+	/***
+	 * Checks if T is constexpr constructible from Args.
+	 * @pre Args must all be default constructible, if not false is returned
+	 */
+	template<typename T, typename... Args>
+	inline constexpr bool can_potentially_constant_construct_v =
+	  can_potentially_constant_construct<T, Args...>::value;
 } // namespace daw
 
 #undef DAW_CXEVAL_FTYPE
