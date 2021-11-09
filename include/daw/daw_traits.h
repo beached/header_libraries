@@ -1086,9 +1086,10 @@ namespace daw {
 	expander( Ts... ) -> expander<Ts...>; // no warnings about intent to use CTAD
 
 	template<template<typename...> typename Primary, typename T>
-	constexpr bool is_specialization_of_v = false;
+	inline constexpr bool is_specialization_of_v = false;
+
 	template<template<typename...> typename Primary, typename... Args>
-	constexpr bool is_specialization_of_v<Primary, Primary<Args...>> = true;
+	inline constexpr bool is_specialization_of_v<Primary, Primary<Args...>> = true;
 
 	template<template<typename...> typename Primary, typename T>
 	using is_specialization_of =
