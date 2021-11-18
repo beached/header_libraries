@@ -491,7 +491,7 @@ namespace daw {
 		template<typename Operation>
 		constexpr void resize_for_overwrite( size_type sz, Operation op ) noexcept {
 			resize_impl( sz );
-			m_size = m_first + static_cast<difference_type>( op( data( ), size( ) ) );
+			m_size = m_first + static_cast<difference_type>( op( data( ), sz ) );
 		}
 
 		[[nodiscard]] constexpr reference back( ) {
