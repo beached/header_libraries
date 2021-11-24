@@ -20,10 +20,11 @@
 namespace daw {
 	template<typename CharT>
 	class string_split_iterator {
-		static constexpr size_t const npos = daw::basic_string_view<CharT>::npos;
+		static constexpr size_t const npos =
+		  daw::sv1::basic_string_view<CharT>::npos;
 
-		daw::basic_string_view<CharT> m_str{ };
-		daw::basic_string_view<CharT> m_delemiter{ };
+		daw::sv1::basic_string_view<CharT> m_str{ };
+		daw::sv1::basic_string_view<CharT> m_delemiter{ };
 		size_t m_pos = npos;
 
 		constexpr size_t find_next( ) const noexcept {
@@ -44,16 +45,16 @@ namespace daw {
 
 	public:
 		using iterator_category = std::forward_iterator_tag;
-		using value_type = daw::basic_string_view<CharT>;
-		using reference = daw::basic_string_view<CharT>;
-		using pointer = daw::basic_string_view<CharT>;
+		using value_type = daw::sv1::basic_string_view<CharT>;
+		using reference = daw::sv1::basic_string_view<CharT>;
+		using pointer = daw::sv1::basic_string_view<CharT>;
 		using difference_type = ptrdiff_t;
 
 		constexpr string_split_iterator( ) noexcept = default;
 
 		constexpr string_split_iterator(
-		  daw::basic_string_view<CharT> str,
-		  daw::basic_string_view<CharT> delemiter ) noexcept
+		  daw::sv1::basic_string_view<CharT> str,
+		  daw::sv1::basic_string_view<CharT> delemiter ) noexcept
 		  : m_str( str )
 		  , m_delemiter( delemiter )
 		  , m_pos( 0 ) {}
@@ -69,13 +70,13 @@ namespace daw {
 			return tmp;
 		}
 
-		constexpr daw::basic_string_view<CharT> operator*( ) const noexcept {
+		constexpr daw::sv1::basic_string_view<CharT> operator*( ) const noexcept {
 			auto result{ m_str };
 			result.remove_prefix( m_pos );
 			return result.substr( 0, find_next( ) - m_pos );
 		}
 
-		constexpr daw::basic_string_view<CharT> operator->( ) const noexcept {
+		constexpr daw::sv1::basic_string_view<CharT> operator->( ) const noexcept {
 			auto result{ m_str };
 			result.remove_prefix( m_pos );
 			return result.substr( 0, find_next( ) - m_pos );
@@ -91,8 +92,8 @@ namespace daw {
 	};
 
 	template<typename CharT>
-	string_split_iterator( daw::basic_string_view<CharT>,
-	                       daw::basic_string_view<CharT> )
+	string_split_iterator( daw::sv1::basic_string_view<CharT>,
+	                       daw::sv1::basic_string_view<CharT> )
 	  -> string_split_iterator<CharT>;
 
 	template<typename CharT>
@@ -120,8 +121,8 @@ namespace daw {
 		constexpr string_split_range( ) noexcept = default;
 
 		constexpr string_split_range(
-		  daw::basic_string_view<CharT> str,
-		  daw::basic_string_view<CharT> delemiter ) noexcept
+		  daw::sv1::basic_string_view<CharT> str,
+		  daw::sv1::basic_string_view<CharT> delemiter ) noexcept
 		  : m_first( str, delemiter ) {}
 
 		constexpr iterator begin( ) const {
@@ -142,14 +143,14 @@ namespace daw {
 	};
 
 	template<typename CharT>
-	string_split_range( daw::basic_string_view<CharT>,
-	                    daw::basic_string_view<CharT> )
+	string_split_range( daw::sv1::basic_string_view<CharT>,
+	                    daw::sv1::basic_string_view<CharT> )
 	  -> string_split_range<CharT>;
 
 	template<typename CharT>
 	string_split_range<CharT>
 	split_string( std::basic_string<CharT> const &str,
-	              daw::basic_string_view<CharT> delemiter ) noexcept {
+	              daw::sv1::basic_string_view<CharT> delemiter ) noexcept {
 
 		return { { str.data( ), str.size( ) }, delemiter };
 	}
@@ -165,27 +166,38 @@ namespace daw {
 
 	template<typename CharT>
 	constexpr string_split_range<CharT>
-	split_string( daw::basic_string_view<CharT> str,
-	              daw::basic_string_view<CharT> delemiter ) noexcept {
+	split_string( daw::sv1::basic_string_view<CharT> str,
+	              daw::sv1::basic_string_view<CharT> delemiter ) noexcept {
 
 		return { str, delemiter };
 	}
 
 	template<typename CharT, typename Bounds, std::ptrdiff_t Ex, size_t N>
 	constexpr string_split_range<CharT>
-	split_string( daw::basic_string_view<CharT, Bounds, Ex> str,
+	split_string( daw::sv1::basic_string_view<CharT, Bounds, Ex> str,
 	              CharT const ( &delemiter )[N] ) noexcept {
 
-		return { str, daw::basic_string_view<CharT, Bounds, N - 1>( delemiter ) };
+		return { str,
+		         daw::sv1::basic_string_view<CharT, Bounds, N - 1>( delemiter ) };
 	}
 
-	template<typename CharT, typename Bounds = default_string_view_bounds_type,
+	template<typename CharT, daw::sv2::string_view_bounds_type Bounds,
+	         std::ptrdiff_t Ex, size_t N>
+	constexpr string_split_range<CharT>
+	split_string( daw::sv2::basic_string_view<CharT, Bounds> str,
+	              CharT const ( &delemiter )[N] ) noexcept {
+
+		return { str, daw::sv2::basic_string_view<CharT, Bounds>( delemiter ) };
+	}
+
+	template<typename CharT,
+	         typename Bounds = daw::sv1::default_string_view_bounds_type,
 	         size_t N, size_t M>
 	constexpr string_split_range<CharT>
 	split_string( CharT const ( &str )[N],
 	              CharT const ( &delemiter )[M] ) noexcept {
 
-		return { daw::basic_string_view<CharT, Bounds, N - 1>( str ),
-		         daw::basic_string_view<CharT, Bounds, M - 1>( delemiter ) };
+		return { daw::sv1::basic_string_view<CharT, Bounds, N - 1>( str ),
+		         daw::sv1::basic_string_view<CharT, Bounds, M - 1>( delemiter ) };
 	}
 } // namespace daw

@@ -41,11 +41,11 @@ namespace {
 	}
 
 	constexpr bool parse_to_002( ) {
-		daw::string_view const str = R"(0,"hello there",2,3)";
+		daw::sv1::string_view const str = R"(0,"hello there",2,3)";
 		auto const vals =
-		  daw::parser::parse_to<int, daw::string_view, int, int>( str, "," );
+		  daw::parser::parse_to<int, daw::sv1::string_view, int, int>( str, "," );
 		daw::expecting( std::get<0>( vals ), 0 );
-		daw::expecting( std::get<daw::string_view>( vals ), "hello there" );
+		daw::expecting( std::get<daw::sv1::string_view>( vals ), "hello there" );
 		daw::expecting( std::get<2>( vals ), 2 );
 		daw::expecting( std::get<3>( vals ), 3 );
 		return true;
@@ -136,7 +136,7 @@ namespace {
 
 	struct invalid_e_colour_exception {};
 
-	constexpr e_colours parse_to_value( daw::string_view str,
+	constexpr e_colours parse_to_value( daw::sv1::string_view str,
 	                                    daw::tag_t<e_colours> ) {
 		daw::exception::daw_throw_on_true(
 		  str.empty( ), "Attempt to parse an e_colour from an empty string_view" );
@@ -214,7 +214,7 @@ namespace {
 			  : value( v ) {}
 		};
 
-		[[nodiscard]] constexpr ClassTest parse_to_value( daw::string_view str,
+		[[nodiscard]] constexpr ClassTest parse_to_value( daw::sv1::string_view str,
 		                                                  daw::tag_t<ClassTest> ) {
 			return daw::construct_from<ClassTest, int>( str );
 		}

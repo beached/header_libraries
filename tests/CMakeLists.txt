@@ -87,7 +87,8 @@ set(TEST_SOURCES
         daw_string_concat_test.cpp
         daw_string_split_range_test.cpp
         daw_string_test.cpp
-        daw_string_view_test.cpp
+        daw_string_view1_test.cpp
+        daw_string_view2_test.cpp
         daw_traits_test.cpp
         daw_tuple_test.cpp
         daw_tuple2_test.cpp

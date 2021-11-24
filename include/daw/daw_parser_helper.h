@@ -68,7 +68,8 @@ namespace daw::parser {
 		}
 
 		[[nodiscard]] daw::string_view to_string_view( ) const {
-			return daw::make_string_view_it( first, last );
+			return daw::string_view( first,
+			                         static_cast<std::size_t>( last - first ) );
 		}
 
 		[[nodiscard]] constexpr ForwardIterator begin( ) noexcept {
