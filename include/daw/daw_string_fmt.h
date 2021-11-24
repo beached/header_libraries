@@ -110,14 +110,14 @@ namespace daw {
 					result.reserve( m_format_str.size( ) +
 					                ( sizeof...( args ) * 4 ) ); // WAG for size
 					daw::string_view sv{ m_format_str };
-					result += sv.pop_front( "{" );
+					result += sv.pop_front_until( '{' );
 					while( !sv.empty( ) ) {
-						auto const idx_str = sv.pop_front( "}" );
+						auto const idx_str = sv.pop_front_until( '}' );
 						auto const idx =
 						  daw::parser::parse_unsigned_int<uint8_t>( idx_str );
 						result +=
 						  string_fmt_details::get_arg( idx, std::forward<Args>( args )... );
-						result += sv.pop_front( "{" ).to_string( );
+						result += sv.pop_front_until( '{' ).to_string( );
 					}
 					return result;
 				}
@@ -271,7 +271,7 @@ namespace daw {
 							msg.remove_prefix( );
 							assert( !msg.empty( ) );
 							auto const digit =
-							  daw::parser::parse_unsigned_int<size_t>( msg.pop_front( "}" ) );
+							  daw::parser::parse_unsigned_int<size_t>( msg.pop_front_until( '}' ) );
 							result.emplace_back(
 							  string_fmt_details::parse_token<CharT>( digit ) );
 							continue;
