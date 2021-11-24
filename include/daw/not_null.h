@@ -31,7 +31,7 @@ namespace daw {
 	// - allow implicit conversion to U*
 	//
 	template<class T>
-	class [[deprecated("use daw::not_null from daw_not_null.h")]] not_null {
+	class [[deprecated( "use daw::not_null from daw_not_null.h" )]] not_null {
 		T m_ptr;
 
 	public:

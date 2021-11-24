@@ -105,16 +105,17 @@ namespace daw {
 			struct unquoted_string {};
 			struct unquoted_string_view {};
 
-			constexpr daw::sv1::string_view parse_to_value( daw::sv1::string_view str,
-			                                           tag_t<unquoted_string_view> ) {
+			constexpr daw::sv1::string_view
+			parse_to_value( daw::sv1::string_view str, tag_t<unquoted_string_view> ) {
 				daw::exception::precondition_check<empty_input_exception>(
 				  !str.empty( ) );
 
 				return str;
 			}
 
-			constexpr daw::sv1::string_view parse_to_value( daw::sv1::string_view str,
-			                                           tag_t<daw::sv1::string_view> ) {
+			constexpr daw::sv1::string_view
+			parse_to_value( daw::sv1::string_view str,
+			                tag_t<daw::sv1::string_view> ) {
 				daw::exception::precondition_check<empty_input_exception>(
 				  !str.empty( ) );
 
@@ -210,7 +211,8 @@ namespace daw {
 				if( pos < str.size( ) ) {
 					return result_t{ pos, pos + m_delemiter.size( ) };
 				}
-				return result_t{ daw::sv1::string_view::npos, daw::sv1::string_view::npos };
+				return result_t{ daw::sv1::string_view::npos,
+				                 daw::sv1::string_view::npos };
 			}
 		};
 
@@ -233,7 +235,8 @@ namespace daw {
 					++n;
 				}
 				if( n == sz ) {
-					return result_t{ daw::sv1::string_view::npos, daw::sv1::string_view::npos };
+					return result_t{ daw::sv1::string_view::npos,
+					                 daw::sv1::string_view::npos };
 				}
 				if( !skip_multiple ) {
 					return result_t{ n, n + 1 };
@@ -283,9 +286,10 @@ namespace daw {
 		/// @param str String containing encoded values
 		/// @param splitter Function to split string into arguments
 		/// @return A tuple of values of the types specified in Args
-		template<typename... Args, typename Splitter,
-		         std::enable_if_t<traits::is_callable_v<Splitter, daw::sv1::string_view>,
-		                          std::nullptr_t> = nullptr>
+		template<
+		  typename... Args, typename Splitter,
+		  std::enable_if_t<traits::is_callable_v<Splitter, daw::sv1::string_view>,
+		                   std::nullptr_t> = nullptr>
 		constexpr decltype( auto ) parse_to( daw::sv1::string_view str,
 		                                     Splitter &&splitter ) {
 
@@ -324,9 +328,10 @@ namespace daw {
 	/// @param str String containing encoded values
 	/// @param splitter split what string arguments on
 	/// @return A constructed Destination
-	template<typename Destination, typename... ExpectedArgs, typename Splitter,
-	         std::enable_if_t<traits::is_callable_v<Splitter, daw::sv1::string_view>,
-	                          std::nullptr_t> = nullptr>
+	template<
+	  typename Destination, typename... ExpectedArgs, typename Splitter,
+	  std::enable_if_t<traits::is_callable_v<Splitter, daw::sv1::string_view>,
+	                   std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) construct_from( daw::sv1::string_view str,
 	                                           Splitter &&splitter ) {
 
@@ -382,9 +387,10 @@ namespace daw {
 	/// @param str String containing encoded values
 	/// @param splitter Function to split string into arguments
 	/// @return The result of callable
-	template<typename Callable, typename Splitter,
-	         std::enable_if_t<traits::is_callable_v<Splitter, daw::sv1::string_view>,
-	                          std::nullptr_t> = nullptr>
+	template<
+	  typename Callable, typename Splitter,
+	  std::enable_if_t<traits::is_callable_v<Splitter, daw::sv1::string_view>,
+	                   std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) apply_string2( Callable &&callable,
 	                                          daw::sv1::string_view str,
 	                                          Splitter &&splitter ) {
@@ -422,9 +428,10 @@ namespace daw {
 	/// @param str String data with string encoded arguments
 	/// @param splitter Function to split string into arguments
 	/// @return result of callable
-	template<typename... Args, typename Callable, typename Splitter,
-	         std::enable_if_t<traits::is_callable_v<Splitter, daw::sv1::string_view>,
-	                          std::nullptr_t> = nullptr>
+	template<
+	  typename... Args, typename Callable, typename Splitter,
+	  std::enable_if_t<traits::is_callable_v<Splitter, daw::sv1::string_view>,
+	                   std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) apply_string( Callable &&callable,
 	                                         daw::sv1::string_view str,
 	                                         Splitter &&splitter ) {
@@ -492,10 +499,11 @@ namespace daw {
 	/// @param stream text stream to extract values from
 	/// @param splitter Function to split string into arguments
 	/// @return A tuple of values of the types specified in Args
-	template<typename... Args, typename Stream, typename Splitter,
-	         std::enable_if_t<(!is_detected_v<detectors::has_str, Stream> &&
-	                           traits::is_callable_v<Splitter, daw::sv1::string_view>),
-	                          std::nullptr_t> = nullptr>
+	template<
+	  typename... Args, typename Stream, typename Splitter,
+	  std::enable_if_t<(!is_detected_v<detectors::has_str, Stream> &&
+	                    traits::is_callable_v<Splitter, daw::sv1::string_view>),
+	                   std::nullptr_t> = nullptr>
 	decltype( auto ) values_from_stream( Stream &&stream, Splitter &&splitter ) {
 
 		auto const str =
@@ -513,10 +521,11 @@ namespace daw {
 	/// @param s text stream to extract values from
 	/// @param splitter Function to split string into arguments
 	/// @return A tuple of values of the types specified in Args
-	template<typename... Args, typename Stream, typename Splitter,
-	         std::enable_if_t<(is_detected_v<detectors::has_str, Stream> &&
-	                           traits::is_callable_v<Splitter, daw::sv1::string_view>),
-	                          std::nullptr_t> = nullptr>
+	template<
+	  typename... Args, typename Stream, typename Splitter,
+	  std::enable_if_t<(is_detected_v<detectors::has_str, Stream> &&
+	                    traits::is_callable_v<Splitter, daw::sv1::string_view>),
+	                   std::nullptr_t> = nullptr>
 	decltype( auto ) values_from_stream( Stream &&s, Splitter &&splitter ) {
 
 		return parser::parse_to<Args...>( daw::sv1::string_view( s.str( ) ),

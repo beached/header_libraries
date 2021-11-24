@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "daw_string_view_version.h"
 #include "daw_string_view1_fwd.h"
 #include "daw_string_view2_fwd.h"
-
+#include "daw_string_view_version.h"

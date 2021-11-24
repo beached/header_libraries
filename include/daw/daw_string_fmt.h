@@ -270,8 +270,8 @@ namespace daw {
 							}
 							msg.remove_prefix( );
 							assert( !msg.empty( ) );
-							auto const digit =
-							  daw::parser::parse_unsigned_int<size_t>( msg.pop_front_until( '}' ) );
+							auto const digit = daw::parser::parse_unsigned_int<size_t>(
+							  msg.pop_front_until( '}' ) );
 							result.emplace_back(
 							  string_fmt_details::parse_token<CharT>( digit ) );
 							continue;

@@ -1089,7 +1089,8 @@ namespace daw {
 	inline constexpr bool is_specialization_of_v = false;
 
 	template<template<typename...> typename Primary, typename... Args>
-	inline constexpr bool is_specialization_of_v<Primary, Primary<Args...>> = true;
+	inline constexpr bool is_specialization_of_v<Primary, Primary<Args...>> =
+	  true;
 
 	template<template<typename...> typename Primary, typename T>
 	using is_specialization_of =

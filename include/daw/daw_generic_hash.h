@@ -226,15 +226,15 @@ namespace daw {
 	}
 
 #ifndef NOSTRING
-	template<size_t HashBytes = sizeof( genhash_uint_t ), typename CharT, typename Traits,
-	         typename Allocator>
+	template<size_t HashBytes = sizeof( genhash_uint_t ), typename CharT,
+	         typename Traits, typename Allocator>
 	auto generic_hash(
 	  std::basic_string<CharT, Traits, Allocator> const &str ) noexcept {
 		return generic_hash<HashBytes>( str.data( ), str.size( ) );
 	}
 
-	template<size_t HashBytes = sizeof( genhash_uint_t ), typename CharT, typename Traits,
-	         typename Allocator>
+	template<size_t HashBytes = sizeof( genhash_uint_t ), typename CharT,
+	         typename Traits, typename Allocator>
 	auto
 	generic_hash( std::basic_string<CharT, Traits, Allocator> &&str ) noexcept {
 		auto tmp = daw::move( str );

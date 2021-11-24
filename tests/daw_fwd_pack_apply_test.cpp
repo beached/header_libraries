@@ -14,8 +14,6 @@ struct Add {
 	}
 };
 
-static_assert( daw::apply( Add{}, daw::fwd_pack{ 1, 2 } ) == 3 );
+static_assert( daw::apply( Add{ }, daw::fwd_pack{ 1, 2 } ) == 3 );
 
-
-int main( ) { }
-
+int main( ) {}

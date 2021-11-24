@@ -16,5 +16,4 @@ struct A {
 
 static_assert( daw::offset_of( &A::c ) == 1 );
 
-int main( ) {
-}
+int main( ) {}

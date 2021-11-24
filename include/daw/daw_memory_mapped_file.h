@@ -171,7 +171,7 @@ namespace daw::filesystem {
 		}
 
 		[[nodiscard]] constexpr bool empty( ) const noexcept {
-			return not(*this) or  m_size == 0;
+			return not( *this ) or m_size == 0;
 		}
 
 		constexpr explicit operator bool( ) const noexcept {
@@ -375,7 +375,7 @@ namespace daw::filesystem {
 		}
 
 		[[nodiscard]] constexpr bool empty( ) const noexcept {
-			return not(*this) or  m_size == 0;
+			return not( *this ) or m_size == 0;
 		}
 
 		constexpr explicit operator bool( ) const noexcept {

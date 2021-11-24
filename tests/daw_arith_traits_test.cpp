@@ -8,5 +8,4 @@
 
 #include <daw/daw_arith_traits.h>
 
-
-int main( ) { }
+int main( ) {}
