@@ -87,8 +87,8 @@ void daw_parser_helper002( ) {
 	auto const sws =
 	  daw::parser::skip_ws( std::data( test_str ), daw::data_end( test_str ) )
 	    .to_string( );
-	std::cout << "With leading ws '" << test_str.to_string( ) << "', without '"
-	          << sws << "'\n";
+	std::cout << "With leading ws '" << static_cast<std::string>( test_str )
+	          << "', without '" << sws << "'\n";
 }
 
 int main( ) {

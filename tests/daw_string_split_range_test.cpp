@@ -18,8 +18,8 @@
 #include <vector>
 
 constexpr bool splt_test_000( ) {
-	daw::string_view const str = "This is a test of the split";
-	std::array<daw::string_view, 7> const expected_tst = {
+	daw::sv1::string_view const str = "This is a test of the split";
+	std::array<daw::sv1::string_view, 7> const expected_tst = {
 	  "This", "is", "a", "test", "of", "the", "split" };
 
 	auto rng = daw::split_string( str, " " );

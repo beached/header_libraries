@@ -80,8 +80,19 @@ namespace daw {
 		}
 
 		template<typename CharT, typename BoundsType, ptrdiff_t Extent>
+		[[nodiscard]] constexpr fnv1a_uint_t
+		operator( )( daw::sv1::basic_string_view<CharT, BoundsType, Extent> sv )
+		  const noexcept {
+			auto hash = impl::fnv_offset( );
+			for( char c : sv ) {
+				hash = append_hash( hash, c );
+			}
+			return hash;
+		}
+
+		template<typename CharT, daw::sv2::string_view_bounds_type BoundsType>
 		[[nodiscard]] constexpr fnv1a_uint_t operator( )(
-		  daw::basic_string_view<CharT, BoundsType, Extent> sv ) const noexcept {
+		  daw::sv2::basic_string_view<CharT, BoundsType> sv ) const noexcept {
 			auto hash = impl::fnv_offset( );
 			for( char c : sv ) {
 				hash = append_hash( hash, c );
