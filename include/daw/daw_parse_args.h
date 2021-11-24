@@ -44,7 +44,7 @@ namespace daw {
 			if( args.size( ) >= 2 and ( ( args[0] == '-' ) & ( args[1] == '-' ) ) ) {
 				// We are a named argument, starting with '--'
 				args.remove_prefix( 2 );
-				name = args.pop_front( parse_arg_details::is_eq );
+				name = args.pop_front_until( parse_arg_details::is_eq );
 				if( args.empty( ) ) {
 					return;
 				}

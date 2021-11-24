@@ -455,6 +455,6 @@ namespace daw {
 
 		static constexpr void zero( ) noexcept {}
 
-		static constexpr void swap( bounded_vector_t &/*rhs*/ ) {}
+		static constexpr void swap( bounded_vector_t & /*rhs*/ ) {}
 	};
 } // namespace daw

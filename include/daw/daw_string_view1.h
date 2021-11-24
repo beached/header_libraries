@@ -266,10 +266,10 @@ namespace daw {
 			//
 			// END OF constructors
 		public:
-			template<
-			  typename Bounds, ptrdiff_t Ex,
-			  std::enable_if_t<( Ex == daw::sv1::dynamic_string_size and Ex != Extent ),
-			                   std::nullptr_t> = nullptr>
+			template<typename Bounds, ptrdiff_t Ex,
+			         std::enable_if_t<( Ex == daw::sv1::dynamic_string_size and
+			                            Ex != Extent ),
+			                          std::nullptr_t> = nullptr>
 			constexpr operator basic_string_view<CharT, Bounds, Ex>( ) noexcept {
 				return { m_first, m_last };
 			}

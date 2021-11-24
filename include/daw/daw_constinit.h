@@ -10,11 +10,9 @@
 
 #include "daw_cpp_feature_check.h"
 
-#if defined( __cpp_constinit ) 
-	#define DAW_CONSTINIT constinit
-	#define DAW_HAS_CONSTINIT
+#if defined( __cpp_constinit )
+#define DAW_CONSTINIT constinit
+#define DAW_HAS_CONSTINIT
 #else
-	#define DAW_CONSTINIT 
+#define DAW_CONSTINIT
 #endif
-
-

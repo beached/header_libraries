@@ -322,7 +322,8 @@ namespace daw {
 		static constexpr size_t scale_hash( size_t hash, size_t range_size ) {
 			std::uint64_t const prime_a = 18446744073709551557ULL;
 			std::uint64_t const prime_b = 18446744073709551533ULL;
-			return static_cast<std::size_t>(( hash * prime_a + prime_b ) % range_size);
+			return static_cast<std::size_t>( ( hash * prime_a + prime_b ) %
+			                                 range_size );
 		}
 
 		constexpr daw::optional<size_type> find_index( Key const &key ) const {
@@ -442,9 +443,10 @@ namespace daw {
 			using std::cbegin;
 			using std::cend;
 			return daw::algorithm::accumulate(
-			  cbegin( m_data ), cend( m_data ), size_type{0}, []( auto &&init, auto &&v ) {
+			  cbegin( m_data ), cend( m_data ), size_type{ 0 },
+			  []( auto &&init, auto &&v ) {
 				  if( v ) {
-					  return std::forward<decltype( init )>( init ) + size_type{1};
+					  return std::forward<decltype( init )>( init ) + size_type{ 1 };
 				  }
 				  return std::forward<decltype( init )>( init );
 			  } );

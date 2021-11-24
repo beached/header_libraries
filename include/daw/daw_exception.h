@@ -99,7 +99,7 @@ namespace daw::exception {
 		                     std::forward<Args>( args )... );
 #else
 		(void)arg;
-		((void)args,...);
+		( (void)args, ... );
 		std::abort( );
 #endif
 	}

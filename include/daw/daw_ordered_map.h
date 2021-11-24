@@ -282,18 +282,18 @@ namespace daw {
 		/*
 		template<typename K>
 		constexpr iterator lower_bound( K const &x ) {
-			return daw::algorithm::lower_bound(
-			  begin( ), end( ), [&]( auto const &lhs, auto const &rhs ) {
-				  return m_compare( lhs.first, rhs.first );
-			  } );
+		  return daw::algorithm::lower_bound(
+		    begin( ), end( ), [&]( auto const &lhs, auto const &rhs ) {
+		      return m_compare( lhs.first, rhs.first );
+		    } );
 		}
 
 		template<typename K>
 		constexpr const_iterator lower_bound( K const &x ) const {
-			return daw::algorithm::lower_bound(
-			  begin( ), end( ), [&]( auto const &lhs, auto const &rhs ) {
-				  return m_compare( lhs.first, rhs.first );
-			  } );
+		  return daw::algorithm::lower_bound(
+		    begin( ), end( ), [&]( auto const &lhs, auto const &rhs ) {
+		      return m_compare( lhs.first, rhs.first );
+		    } );
 		}
 		*/
 

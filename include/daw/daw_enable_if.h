@@ -40,6 +40,6 @@ namespace daw {
 	using enable_when_t = enable_if_t<( B && ... )>;
 
 	template<typename... Traits>
-	using enable_when_all_t = enable_if_t<
-	  enable_if_details::conjunction<Traits...>::value>;
+	using enable_when_all_t =
+	  enable_if_t<enable_if_details::conjunction<Traits...>::value>;
 } // namespace daw
