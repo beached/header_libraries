@@ -1489,7 +1489,8 @@ int main( )
   try
 #endif
 {
-	static_assert( std::is_convertible_v<char const(&)[5], daw::sv2::string_view> );
+	static_assert(
+	  std::is_convertible_v<char const( & )[4], daw::sv2::string_view> );
 	auto a = daw::sv2::string_view( "Hello" );
 	daw::sv2::string_view b;
 	b = "Hello";
