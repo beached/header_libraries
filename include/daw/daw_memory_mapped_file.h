@@ -284,6 +284,26 @@ namespace daw::filesystem {
 		 * Open memory mapped file with file path supplied
 		 * Caller is responsible for ensuring that the StringView is zero terminated
 		 */
+		template<typename StringView,
+		         std::enable_if_t<daw::traits::is_string_view_like_v<StringView>,
+		                          std::nullptr_t> = nullptr>
+		explicit memory_mapped_file_t( StringView file,
+		                               open_mode mode = open_mode::read ) noexcept {
+
+			if constexpr( std::is_same_v<char, daw::remove_cvref_t<
+			                                     decltype( *std::data( file ) )>> ) {
+				(void)open( std::string_view( std::data( file ), std::size( file ) ),
+				            mode );
+			} else {
+				(void)open( std::wstring_view( std::data( file ), std::size( file ) ),
+				            mode );
+			}
+		}
+
+		/***
+		 * Open memory mapped file with file path supplied
+		 * Caller is responsible for ensuring that the StringView is zero terminated
+		 */
 		[[nodiscard]] bool open( std::string_view file,
 		                         open_mode mode = open_mode::read ) noexcept {
 
