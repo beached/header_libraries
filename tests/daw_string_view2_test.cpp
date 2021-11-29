@@ -1489,6 +1489,10 @@ int main( )
   try
 #endif
 {
+	static_assert( std::is_convertible_v<char const(&)[5], daw::sv2::string_view> );
+	auto a = daw::sv2::string_view( "Hello" );
+	daw::sv2::string_view b;
+	b = "Hello";
 	daw_expecting( daw::ensure_same_at_ct( ), true );
 	daw::daw_string_view_constexpr_001( );
 	daw::daw_string_view_find_last_of_001( );
