@@ -397,7 +397,7 @@ namespace daw {
 		template<typename K>
 		constexpr mapped_type &operator[]( K &&key ) {
 			static_assert( std::is_convertible_v<std::remove_reference_t<K>, Key>,
-			               "Incompatable key passed" );
+			               "Incompatible key passed" );
 			decltype( auto ) item = m_data[*find_index( key )];
 			if( !item ) {
 				item.has_value = true;
