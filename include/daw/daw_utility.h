@@ -293,14 +293,16 @@ namespace daw {
 
 	[[nodiscard]] constexpr char AsciiUpper( char chr ) noexcept {
 		if( 'a' <= chr and chr <= 'z' ) {
-			return chr & ~static_cast<char>( 32 );
+			return static_cast<char>(
+			  static_cast<unsigned>( static_cast<unsigned char>( chr ) ) & ~32U );
 		}
 		return chr;
 	}
 
 	[[nodiscard]] constexpr char AsciiLower( char chr ) noexcept {
 		if( 'A' <= chr and chr <= 'Z' ) {
-			return chr | static_cast<char>( 32 );
+			return static_cast<char>(
+			  static_cast<unsigned>( static_cast<unsigned char>( chr ) ) | 32U );
 		}
 		return chr;
 	}
