@@ -1489,15 +1489,31 @@ namespace daw {
 		(void)bar;
 	}
 
+	void implicitly_ctor_test( daw::sv2::string_view ) {}
+
+	void daw_construct_from_string_002( ) {
+		std::string foo = "Hello World";
+		implicitly_ctor_test( foo );
+	}
+
 	void daw_construct_from_string_view_001( ) {
 		std::string_view foo = "Hello World";
 		auto bar = daw::sv2::string_view( foo );
 		(void)bar;
 	}
 
+	void daw_construct_from_string_view_002( ) {
+		std::string_view foo = "Hello World";
+		implicitly_ctor_test( foo );
+	}
+
 	void daw_construct_from_string_literal_001( ) {
 		auto bar = daw::sv2::string_view( "Hello World" );
 		(void)bar;
+	}
+
+	void daw_construct_from_string_literal_002( ) {
+		implicitly_ctor_test( "Hello World" );
 	}
 
 	void daw_convert_to_std_string( ) {
@@ -1639,8 +1655,11 @@ int main( )
 	daw::daw_trim_suffix_test_001( );
 	daw::daw_trim_suffix_test_002( );
 	daw::daw_construct_from_string_001( );
+	daw::daw_construct_from_string_002( );
 	daw::daw_construct_from_string_view_001( );
+	daw::daw_construct_from_string_view_002( );
 	daw::daw_construct_from_string_literal_001( );
+	daw::daw_construct_from_string_literal_002( );
 	daw::daw_convert_to_std_string( );
 	daw::daw_convert_to_std_string_view( );
 }
