@@ -1482,6 +1482,35 @@ namespace daw {
 		sv.trim_suffix( );
 		daw_expecting( sv, "" );
 	}
+
+	void daw_construct_from_string_001( ) {
+		std::string foo = "Hello World";
+		auto bar = daw::sv2::string_view( foo );
+		(void)bar;
+	}
+
+	void daw_construct_from_string_view_001( ) {
+		std::string_view foo = "Hello World";
+		auto bar = daw::sv2::string_view( foo );
+		(void)bar;
+	}
+
+	void daw_construct_from_string_literal_001( ) {
+		auto bar = daw::sv2::string_view( "Hello World" );
+		(void)bar;
+	}
+
+	void daw_convert_to_std_string( ) {
+		daw::sv2::string_view sv = "Hello World";
+		auto str = static_cast<std::string>( sv );
+		(void)str;
+	}
+
+	void daw_convert_to_std_string_view( ) {
+		daw::sv2::string_view sv = "Hello World";
+		auto stdsv = static_cast<std::string_view>( sv );
+		(void)stdsv;
+	}
 } // namespace daw
 
 int main( )
@@ -1598,7 +1627,6 @@ int main( )
 	daw::daw_find_test_001( );
 	daw::daw_find_test_002( );
 	daw::daw_find_test_003( );
-	//#if not defined( _MSC_VER ) or defined( __clang__ )
 	daw::daw_test_any_char_001( );
 	daw::daw_remove_prefix_num_test_001( );
 	daw::daw_remove_prefix_num_test_002( );
@@ -1610,7 +1638,11 @@ int main( )
 	daw::daw_trim_prefix_test_002( );
 	daw::daw_trim_suffix_test_001( );
 	daw::daw_trim_suffix_test_002( );
-	//#endif
+	daw::daw_construct_from_string_001( );
+	daw::daw_construct_from_string_view_001( );
+	daw::daw_construct_from_string_literal_001( );
+	daw::daw_convert_to_std_string( );
+	daw::daw_convert_to_std_string_view( );
 }
 #if defined( DAW_USE_EXCEPTIONS )
 catch( std::exception const &ex ) {
