@@ -88,6 +88,14 @@ namespace daw {
 			return result;
 		}
 
+		constexpr Iterator raw_begin( ) const {
+			return m_first;
+		}
+
+		constexpr IteratorLast raw_end( ) const {
+			return m_last;
+		}
+
 		friend constexpr bool operator==( find_iterator const &lhs,
 		                                  find_iterator const &rhs ) noexcept {
 			return lhs.m_first == rhs.m_first;
