@@ -299,8 +299,9 @@ namespace daw::algorithm {
 		return last;
 	}
 
-	template<typename InputIterator, typename UnaryPredicate>
-	constexpr InputIterator find_if( InputIterator first, InputIterator last,
+	template<typename InputIterator, typename InputIteratorLast,
+	         typename UnaryPredicate>
+	constexpr InputIterator find_if( InputIterator first, InputIteratorLast last,
 	                                 UnaryPredicate &&unary_predicate ) {
 		traits::is_input_iterator_test<InputIterator>( );
 		traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
@@ -313,6 +314,7 @@ namespace daw::algorithm {
 		}
 		return last;
 	}
+
 	template<typename InputIterator, typename UnaryPredicate>
 	constexpr InputIterator find_if_not( InputIterator first, InputIterator last,
 	                                     UnaryPredicate &&unary_predicate ) {
@@ -2391,5 +2393,26 @@ static_assert(
 			++first;
 		}
 		return { first, results };
+	}
+
+	template<typename Iterator>
+	struct find_one_of_result {
+		Iterator position;
+		std::size_t index;
+	};
+
+	template<typename Iterator, typename IteratorLast, typename... Predicates>
+	find_one_of_result<Iterator> find_one_of( Iterator first, IteratorLast last,
+	                                          Predicates... preds ) {
+		while( first != last ) {
+			std::size_t idx = -1;
+			auto &&elem = *first;
+			bool found = ( ( ++idx, preds( elem ) ) or ... );
+			if( found ) {
+				return { first, idx };
+			}
+			++first;
+		}
+		return { first, -std::size_t{ 1 } };
 	}
 } // namespace daw::algorithm

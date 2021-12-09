@@ -47,6 +47,7 @@ set(TEST_SOURCES
         daw_iterator_circular_iterator_test.cpp
         daw_iterator_counting_iterators_test.cpp
         daw_iterator_end_inserter_test.cpp
+				daw_iterator_find_iterator_test.cpp
         daw_iterator_indexed_iterator_test.cpp
         daw_iterator_inserter_test.cpp
         daw_iterator_integer_iterator_test.cpp
