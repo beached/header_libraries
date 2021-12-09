@@ -8,59 +8,102 @@
 
 #pragma once
 
+#include "../daw_algorithm.h"
+#include "../daw_traits.h"
+#include "impl/daw_find_iterator_impl.h"
+
 #include <ciso646>
 #include <iterator>
 #include <limits>
 
 namespace daw {
+	template<typename Iterator, typename IteratorLast, typename Filter>
+	struct find_iterator
+	  : private find_iterator_impl::FilterProxy<Filter, std::is_class_v<Filter>> {
 
-	template<typename Iterator1, typename Iterator2>
-	struct find_iterator {
-		using value_type = Iterator1;
-		using difference_type = ptrdiff_t;
-		using iterator_category = std::forward_iterator_tag;
-		using reference = value_type &;
+		using iterator = Iterator;
+		using value_type = typename std::iterator_traits<Iterator>::value_type;
+		using difference_type =
+		  typename std::iterator_traits<Iterator>::difference_type;
+		using iterator_category = typename daw::remove_cvref_t<
+		  decltype( find_iterator_impl::test_iterator_category(
+		    std::declval<Iterator>( ) ) )>::type;
+		using reference = typename std::iterator_traits<Iterator>::reference;
+		using pointer = typename std::iterator_traits<Iterator>::pointer;
 
-		value_type current_value;
+	private:
+		Iterator m_first = Iterator{ };
+		IteratorLast m_last = IteratorLast{ };
 
-		constexpr find_iterator( ) noexcept
-		  : current_value{ ( std::numeric_limits<value_type>::max )( ) } {}
-		constexpr find_iterator( value_type start_value ) noexcept
-		  : current_value{ start_value } {}
-		constexpr find_iterator( value_type start_value,
-		                         value_type last_value ) noexcept
-		  : current_value{ start_value } {}
-		~find_iterator( ) noexcept = default;
+	public:
+		constexpr find_iterator( Iterator first, Filter filt )
+		  : find_iterator_impl::FilterProxy<Filter, std::is_class_v<Filter>>( filt )
+		  , m_first( first ) {
 
-		constexpr find_iterator( find_iterator const & ) noexcept = default;
-		constexpr find_iterator &
-		operator=( find_iterator const & ) noexcept = default;
-		constexpr find_iterator( find_iterator && ) noexcept = default;
-		constexpr find_iterator &operator=( find_iterator && ) noexcept = default;
-
-		constexpr reference operator*( ) const noexcept {
-			return current_value;
+			operator++( );
 		}
 
-		constexpr find_iterator &operator++( ) noexcept {
-			++current_value;
+		constexpr find_iterator( Iterator first, IteratorLast last, Filter filt )
+		  : find_iterator_impl::FilterProxy<Filter, std::is_class_v<Filter>>( filt )
+		  , m_first( first )
+		  , m_last( last ) {
+
+			operator++( );
+		}
+
+		constexpr auto operator*( ) const {
+			return *m_first;
+		}
+
+		constexpr auto operator*( ) {
+			return *m_first;
+		}
+
+		constexpr auto operator->( ) const {
+			return std::addressof( *m_first );
+		}
+
+		constexpr auto operator->( ) {
+			return std::addressof( *m_first );
+		}
+
+		constexpr find_iterator &operator++( ) & {
+			m_first = daw::algorithm::find_if( m_first, m_last, this->filter( ) );
 			return *this;
 		}
 
-		constexpr find_iterator operator++( int ) const noexcept {
-			find_iterator tmp{ *this };
-			++current_value;
-			return tmp;
+		constexpr find_iterator operator++( int ) & {
+			auto result = *this;
+			operator++( );
+			return result;
+		}
+
+		constexpr find_iterator begin( ) const {
+			return *this;
+		}
+
+		constexpr find_iterator end( ) const {
+			auto result = *this;
+			result.m_first = m_last;
+			return result;
 		}
 
 		friend constexpr bool operator==( find_iterator const &lhs,
 		                                  find_iterator const &rhs ) noexcept {
-			return lhs.current_value == rhs.current_value;
+			return lhs.m_first == rhs.m_first;
 		}
 
 		friend constexpr bool operator!=( find_iterator const &lhs,
 		                                  find_iterator const &rhs ) noexcept {
-			return lhs.current_value != rhs.current_value;
+			return lhs.m_first != rhs.m_first;
 		}
 	};
+
+	template<typename Iterator, typename Filter>
+	find_iterator( Iterator, Filter )
+	  -> find_iterator<Iterator, Iterator, Filter>;
+
+	template<typename Iterator, typename IteratorLast, typename Filter>
+	find_iterator( Iterator, IteratorLast, Filter )
+	  -> find_iterator<Iterator, IteratorLast, Filter>;
 } // namespace daw

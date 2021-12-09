@@ -46,7 +46,8 @@
 /// @param Range contiguous range
 /// @param CharT character type of range elements
 #define DAW_REQ_CONTIG_CHAR_RANGE( Range, CharT )                              \
-	std::enable_if_t<sv2_details::is_string_view_like<Range, CharT>::value,      \
+	std::enable_if_t<(sv2_details::is_string_view_like<Range, CharT>::value and  \
+	                  not std::is_convertible_v<Range, char const *>),           \
 	                 std::nullptr_t> = nullptr
 
 /// @brief Require a character pointer
