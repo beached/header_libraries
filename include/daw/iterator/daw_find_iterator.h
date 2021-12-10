@@ -38,10 +38,10 @@ namespace daw {
 
 	public:
 		constexpr find_iterator( Iterator first, Filter filt )
-		  : find_iterator_impl::FilterProxy<Filter, std::is_class_v<Filter>>( filt )
+		  : find_iterator_impl::FilterProxy<Filter, std::is_class_v<Filter>>{ filt }
 		  , m_first( first ) {
 
-			operator++( );
+			m_first = daw::algorithm::find_if( m_first, m_last, this->filter( ) );
 		}
 
 		constexpr find_iterator( Iterator first, IteratorLast last, Filter filt )
@@ -49,7 +49,7 @@ namespace daw {
 		  , m_first( first )
 		  , m_last( last ) {
 
-			operator++( );
+			m_first = daw::algorithm::find_if( m_first, m_last, this->filter( ) );
 		}
 
 		constexpr auto operator*( ) const {
@@ -69,7 +69,7 @@ namespace daw {
 		}
 
 		constexpr find_iterator &operator++( ) & {
-			m_first = daw::algorithm::find_if( m_first, m_last, this->filter( ) );
+			m_first = daw::algorithm::find_if( std::next( m_first ), m_last, this->filter( ) );
 			return *this;
 		}
 
