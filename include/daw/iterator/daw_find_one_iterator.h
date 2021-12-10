@@ -45,7 +45,8 @@ namespace daw {
 		  typename std::iterator_traits<Iterator>::difference_type;
 		using iterator_category = typename daw::remove_cvref_t<
 		  decltype( find_iterator_impl::test_iterator_category(
-		    std::declval<Iterator>( ) ) )>::type;
+		    std::declval<typename std::iterator_traits<
+		      Iterator>::iterator_category>( ) ) )>::type;
 		using reference =
 		  find_one_element<typename std::iterator_traits<Iterator>::reference>;
 		using pointer = find_one_element<reference>;
