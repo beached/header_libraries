@@ -21,7 +21,7 @@
 namespace daw {
 	template<typename T>
 	struct find_one_element {
-		T position;
+		T value;
 		std::size_t index;
 
 		find_one_element *operator->( ) const && {
@@ -47,8 +47,7 @@ namespace daw {
 		  decltype( find_iterator_impl::test_iterator_category(
 		    std::declval<typename std::iterator_traits<
 		      Iterator>::iterator_category>( ) ) )>::type;
-		using reference =
-		  find_one_element<typename std::iterator_traits<Iterator>::reference>;
+		using reference = value_type;
 		using pointer = find_one_element<reference>;
 
 	private:
@@ -57,25 +56,19 @@ namespace daw {
 		std::size_t m_last_index = -std::size_t{ 1 };
 
 	public:
-		constexpr find_one_iterator( Iterator first, Filters... filts )
-		  : find_iterator_impl::FilterProxy<Filters, std::is_class_v<Filters>>(
-		      DAW_MOVE( filts ) )...
-		  , m_first( first ) {
-
-			(void)operator++( );
-		}
-
 		constexpr find_one_iterator( Iterator first, IteratorLast last,
 		                             Filters... filts )
 		  : find_iterator_impl::FilterProxy<Filters, std::is_class_v<Filters>>(
 		      filts )...
 		  , m_first( first )
 		  , m_last( last ) {
-
-			(void)operator++( );
+			auto tmp = daw::algorithm::find_one_of(
+			  m_first, m_last,
+			  find_iterator_impl::FilterProxy<
+			    Filters, std::is_class_v<Filters>>::filter( )... );
 		}
 
-		constexpr reference operator*( ) {
+		constexpr value_type operator*( ) {
 			return { *m_first, m_last_index };
 		}
 
@@ -85,7 +78,7 @@ namespace daw {
 
 		constexpr find_one_iterator &operator++( ) & {
 			auto tmp = daw::algorithm::find_one_of(
-			  m_first, m_last,
+			  std::next( m_first ), m_last,
 			  find_iterator_impl::FilterProxy<
 			    Filters, std::is_class_v<Filters>>::filter( )... );
 			m_first = tmp.position;
@@ -127,10 +120,6 @@ namespace daw {
 			return lhs.m_first != rhs.m_first;
 		}
 	};
-
-	template<typename Iterator, typename Filter>
-	find_one_iterator( Iterator, Filter )
-	  -> find_one_iterator<Iterator, Iterator, Filter>;
 
 	template<typename Iterator, typename IteratorLast, typename Filter>
 	find_one_iterator( Iterator, IteratorLast, Filter )
