@@ -2405,7 +2405,7 @@ static_assert(
 	find_one_of_result<Iterator> find_one_of( Iterator first, IteratorLast last,
 	                                          Predicates... preds ) {
 		while( first != last ) {
-			std::size_t idx = -1;
+			std::size_t idx = -std::size_t{1};
 			auto &&elem = *first;
 			bool found = ( ( ++idx, preds( elem ) ) or ... );
 			if( found ) {
