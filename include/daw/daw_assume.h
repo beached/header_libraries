@@ -12,7 +12,7 @@
 
 #include <cassert>
 
-#if not defined( NDEBUG )
+#if not defined( DEBUG )
 
 #define DAW_ASSUME( ... ) assert( ( __VA_ARGS__ ) )
 
@@ -35,7 +35,7 @@
 
 #else
 
-#define DAW_ASSUME( ... )                                                      \
-	do {                                                                         \
-	} while( false )
+#include <exception>
+#define DAW_ASSUME( ... ) std::terminate( )
+
 #endif
