@@ -12,6 +12,7 @@
 
 #include <ciso646>
 
+#if not defined( DEBUG )
 #if DAW_HAS_BUILTIN( __builtin_unreachable )
 #define DAW_UNREACHABLE( ) __builtin_unreachable( )
 #elif defined( _MSC_VER )
@@ -19,6 +20,10 @@
 #elif defined( __GNUC__ ) or defined( __clang__ )
 // All gcc/clang compilers supporting c++17 have __builtin_unreachable
 #define DAW_UNREACHABLE( ) __builtin_unreachable( )
+#else
+#include <exception>
+#define DAW_UNREACHABLE( ) std::terminate( )
+#endif
 #else
 #include <exception>
 #define DAW_UNREACHABLE( ) std::terminate( )
