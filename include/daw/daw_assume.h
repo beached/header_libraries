@@ -16,11 +16,7 @@
 
 #define DAW_ASSUME( ... ) assert( ( __VA_ARGS__ ) )
 
-#elif DAW_HAS_BUILTIN( __builtin_assume )
-
-#define DAW_ASSUME( ... ) __builtin_assume( ( __VA_ARGS__ ) )
-
-#elif DAW_HAS_BUILTIN( __builtin_unreachable )
+#elif DAW_HAS_BUILTIN( __builtin_unreachable ) or (defined( __GNUC__ ) and not defined( __ICC )) or defined( __clang__ )
 
 #define DAW_ASSUME( ... )                                                      \
 	do {                                                                         \
@@ -29,8 +25,7 @@
 		}                                                                          \
 	} while( false )
 
-#elif defined( _MSC_VER )
-
+#elif defined( _MSC_VER ) or defined( __ICC )
 #define DAW_ASSUME( ... ) __assume( !!( ( __VA_ARGS__ ) ) )
 
 #else
