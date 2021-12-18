@@ -12,7 +12,7 @@
 
 #include <cassert>
 
-#if not defined( DEBUG )
+#if defined( DEBUG )
 
 #define DAW_ASSUME( ... ) assert( ( __VA_ARGS__ ) )
 
@@ -24,7 +24,7 @@
 
 #define DAW_ASSUME( ... )                                                      \
 	do {                                                                         \
-		while( not( ( __VA_ARGS__ ) ) ) {                                          \
+		if( not( ( __VA_ARGS__ ) ) ) {                                             \
 			__builtin_unreachable( );                                                \
 		}                                                                          \
 	} while( false )
@@ -36,6 +36,11 @@
 #else
 
 #include <exception>
-#define DAW_ASSUME( ... ) std::terminate( )
+#define DAW_ASSUME( ... )                                                      \
+	do {                                                                         \
+		if( not( ( __VA_ARGS__ ) ) ) {                                             \
+			std::terminate( );                                                       \
+		}                                                                          \
+	} while( false )
 
 #endif
