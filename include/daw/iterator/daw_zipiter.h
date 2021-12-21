@@ -27,7 +27,7 @@ namespace daw {
 			if constexpr( std::is_pointer_v<daw::remove_cvref_t<Iterator>> ) {
 				return iterator;
 			} else {
-				return iterator->operator->( );
+				return iterator.operator->( );
 			}
 		}
 	} // namespace zipiter_details
