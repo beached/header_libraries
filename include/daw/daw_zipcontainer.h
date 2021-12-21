@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw_move.h"
 #include "iterator/daw_zipiter.h"
 
 #include <ciso646>
@@ -15,47 +16,50 @@
 namespace daw {
 	template<typename... Containers>
 	struct zip_container {
-		using iterator =
-		  zip_iterator<decltype( std::declval<Containers...>( ).begin( ) )>;
-		using const_iterator = zip_iterator<
-		  decltype( std::declval<std::add_const_t<Containers>>( ).begin( ) )...>;
+		using iterator = daw::remove_cvref_t<decltype( zip_iterator(
+		  std::begin( std::declval<Containers &>( ) )... ) )>;
+		using const_iterator = daw::remove_cvref_t<decltype( zip_iterator(
+		  std::begin( std::declval<Containers const &>( ) )... ) )>;
 
 	private:
 		iterator m_begin;
 		iterator m_end;
 
 	public:
-		zip_container( Containers... containers )
-		  : m_begin( make_zipiter( std::begin( containers )... ) )
-		  , m_end( make_zipiter( std::end( containers )... ) ) {}
+		constexpr zip_container( Containers... containers )
+		  : m_begin( std::begin( containers )... )
+		  , m_end( std::end( containers )... ) {}
 
-		iterator begin( ) {
+		constexpr iterator begin( ) {
 			return m_begin;
 		}
 
-		const_iterator begin( ) const {
+		constexpr const_iterator begin( ) const {
 			return m_begin;
 		}
 
-		const_iterator cbegin( ) const {
+		constexpr const_iterator cbegin( ) const {
 			return m_begin;
 		}
 
-		iterator end( ) {
+		constexpr iterator end( ) {
 			return m_end;
 		}
 
-		const_iterator end( ) const {
+		constexpr const_iterator end( ) const {
 			return m_end;
 		}
 
-		const_iterator cend( ) const {
+		constexpr const_iterator cend( ) const {
 			return m_end;
 		}
 	}; // struct zip_container
 
 	template<typename... Containers>
-	zip_container<Containers...> make_zipcontainer( Containers... args ) {
-		return zip_container<Containers...>( args... );
+	zip_container( Containers &&... ) -> zip_container<Containers...>;
+
+	template<typename... Containers>
+	zip_container<Containers...> make_zipcontainer( Containers &&...args ) {
+		return zip_container<Containers...>( DAW_FWD2( Containers, args )... );
 	}
 } // namespace daw

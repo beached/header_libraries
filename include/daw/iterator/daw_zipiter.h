@@ -11,18 +11,41 @@
 #include "../cpp_17.h"
 #include "../daw_algorithm.h"
 #include "../daw_move.h"
+#include "../daw_traits.h"
 #include "../daw_tuple_helper.h"
 #include "../daw_utility.h"
 
 #include <ciso646>
+#include <cstddef>
 #include <tuple>
+#include <type_traits>
 
 namespace daw {
+	namespace zipiter_details {
+		template<typename Iterator>
+		constexpr decltype( auto ) get_pointer( Iterator &&iterator ) {
+			if constexpr( std::is_pointer_v<daw::remove_cvref_t<Iterator>> ) {
+				return iterator;
+			} else {
+				return iterator.operator->( );
+			}
+		}
+	} // namespace zipiter_details
 	template<typename... Iterators>
 	struct zip_iterator {
 		static_assert( sizeof...( Iterators ) > 0,
 		               "Empty zip iterator is unsupported" );
 		using types_t = std::tuple<Iterators...>;
+		using value_type = types_t;
+		using reference = std::tuple<decltype( *std::declval<Iterators &>( ) )...>;
+		using const_reference =
+		  std::tuple<decltype( *std::declval<Iterators const &>( ) )...>;
+		using pointer = std::tuple<decltype( zipiter_details::get_pointer(
+		  std::declval<Iterators &>( ) ) )...>;
+		using const_pointer = std::tuple<decltype( zipiter_details::get_pointer(
+		  std::declval<Iterators const &>( ) ) )...>;
+		using difference_type = std::ptrdiff_t;
+		using iterator_category = std::input_iterator_tag;
 
 	private:
 		types_t m_values;
@@ -62,16 +85,8 @@ namespace daw {
 		}
 
 	public:
-		template<
-		  typename... Its,
-		  std::enable_if_t<
-		    daw::all_true_v<
-		      ( sizeof...( Its ) > 0 ),
-		      !std::is_same_v<zip_iterator, daw::remove_cvref_t<
-		                                      daw::traits::first_type<Its...>>>>,
-		    std::nullptr_t> = nullptr>
-		constexpr zip_iterator( Its &&...its )
-		  : m_values( std::forward<Its>( its )... ) {}
+		constexpr zip_iterator( Iterators const &...its )
+		  : m_values( DAW_MOVE( its )... ) {}
 
 		constexpr types_t &as_tuple( ) noexcept {
 			return m_values;
@@ -118,47 +133,51 @@ namespace daw {
 		}
 
 		constexpr static size_t size( ) noexcept {
-			return daw::tuple_size_v<Iterators...>;
+			return sizeof...( Iterators );
 		}
 
 	private:
 		template<size_t... Is>
-		constexpr auto get_items( std::index_sequence<Is...> ) noexcept {
-			return std::forward_as_tuple( *std::get<Is>( m_values )... );
+		constexpr reference get_items( std::index_sequence<Is...> ) noexcept {
+			return { *std::get<Is>( m_values )... };
 		}
 
 		template<size_t... Is>
-		constexpr auto get_items( std::index_sequence<Is...> ) const noexcept {
-			return std::forward_as_tuple( *std::get<Is>( m_values )... );
+		constexpr const_reference
+		get_items( std::index_sequence<Is...> ) const noexcept {
+			return { *std::get<Is>( m_values )... };
 		}
 
 	public:
-		constexpr decltype( auto ) operator*( ) noexcept {
+		constexpr reference operator*( ) noexcept {
 			return get_items(
 			  std::make_index_sequence<daw::tuple_size_v<types_t>>( ) );
 		}
 
-		constexpr decltype( auto ) operator*( ) const noexcept {
+		constexpr const_reference operator*( ) const noexcept {
 			return get_items(
 			  std::make_index_sequence<daw::tuple_size_v<types_t>>( ) );
+		}
+
+		constexpr pointer operator->( ) noexcept {
+			return { operator*( ) };
+		}
+
+		constexpr const_pointer operator->( ) const noexcept {
+			return { operator*( ) };
+		}
+
+		constexpr bool operator==( zip_iterator const &rhs ) const noexcept {
+			return m_values == rhs.m_values;
+		}
+
+		constexpr bool operator!=( zip_iterator const &rhs ) const noexcept {
+			return m_values != rhs.m_values;
 		}
 	}; // struct zip_iterator
 
 	template<typename... Iterators>
-	zip_iterator( Iterators &&... )
-	  -> zip_iterator<std::remove_reference_t<Iterators>...>;
-
-	template<typename... T>
-	constexpr bool operator==( zip_iterator<T...> const &lhs,
-	                           zip_iterator<T...> const &rhs ) noexcept {
-		return lhs.as_tuple( ) == rhs.as_tuple( );
-	}
-
-	template<typename... T>
-	constexpr bool operator!=( zip_iterator<T...> const &lhs,
-	                           zip_iterator<T...> const &rhs ) {
-		return lhs.as_tuple( ) != rhs.as_tuple( );
-	}
+	zip_iterator( Iterators... ) -> zip_iterator<Iterators...>;
 
 	template<size_t N, typename... T>
 	constexpr decltype( auto ) get( zip_iterator<T...> &zi ) noexcept {

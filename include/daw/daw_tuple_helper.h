@@ -18,7 +18,7 @@
 #include <ciso646>
 #include <cstddef>
 #include <functional>
-#include <iosfwd>
+#include <iostream>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -364,8 +364,8 @@ namespace daw {
 		} // namespace operators
 
 		template<typename... Ts>
-		constexpr std::ostream &operator<<( std::ostream &os,
-		                                    std::tuple<Ts...> const &t ) {
+		inline std::ostream &operator<<( std::ostream &os,
+		                                 std::tuple<Ts...> const &t ) {
 			os << "{";
 			for_each( t, tuple_details::print_t{ os } );
 			os << " }";
