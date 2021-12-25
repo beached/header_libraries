@@ -88,8 +88,9 @@ void daw_tuple_helpers_001( ) {
 void runtime_get_test_001( ) {
 	constexpr auto tp = std::make_tuple( "hello", 3ULL, 3.545, true );
 	auto i = 0ULL;
-	daw::tuple::apply_at( tp, 1,
-	                      [&i]( unsigned long long value ) { i = value; } );
+	daw::tuple::apply_at( tp, 1, [&i]( unsigned long long value ) {
+		i = static_cast<unsigned long long>( value );
+	} );
 	daw::expecting( 3ULL, i );
 }
 
