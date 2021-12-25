@@ -10,8 +10,19 @@
 
 #include "daw_move.h"
 
+#include <ciso646>
+
+#if not defined( _MSC_VER ) or defined( __clang__ )
+// WORKAROUND: MSVC cannot see argsLIFT inside noexcept( exprn )
 #define DAW_LIFT( ... )                                                        \
 	[]( auto &&...argsLIFT ) noexcept( noexcept( __VA_ARGS__( DAW_FWD(           \
 	  argsLIFT )... ) ) ) -> decltype( __VA_ARGS__( DAW_FWD( argsLIFT )... ) ) { \
 		return __VA_ARGS__( DAW_FWD( argsLIFT )... );                              \
 	}
+#else
+#define DAW_LIFT( ... )                                                        \
+	[]( auto &&...argsLIFT ) -> decltype( __VA_ARGS__(                           \
+	                           DAW_FWD( argsLIFT )... ) ) {                      \
+		return __VA_ARGS__( DAW_FWD( argsLIFT )... );                              \
+	}
+#endif
