@@ -37,7 +37,7 @@ namespace daw {
 		reffp_t call_ptr;
 
 		template<typename Func>
-		constexpr function_view_table_storage make( Func &&f ) {
+		static constexpr function_view_table_storage make( Func &&f ) {
 			using fn_t = std::remove_reference_t<Func>;
 			if constexpr( std::is_pointer_v<fn_t> ) {
 				return { data_t{ f }, []( data_t const &d, Args... args ) -> Result {
@@ -76,7 +76,7 @@ namespace daw {
 		reffp_t call_ptr;
 
 		template<typename Func>
-		constexpr function_view_table_storage make( Func &&f ) {
+		static constexpr function_view_table_storage make( Func &&f ) {
 			using fn_t = std::remove_reference_t<Func>;
 			if constexpr( std::is_pointer_v<fn_t> ) {
 				return { data_t{ f }, []( data_t const &d, Args... args ) -> void {
