@@ -11,6 +11,7 @@
 #include "daw/daw_range_algorithm.h"
 
 #include <algorithm>
+#include <cassert>
 #include <cstdint>
 #include <iterator>
 #include <numeric>
@@ -77,6 +78,18 @@ namespace daw {
 		daw::algorithm::max_element(
 		  v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
 	}
+
+	void daw_range_contains_001( ) {
+		auto v = std::vector{1,2,3,4,5};
+		auto p = daw::algorithm::contains( v, 4 );
+		assert( p != std::end( v ) );
+	}
+
+	void daw_range_find_if_001( ) {
+		auto v = std::vector{1,2,3,4,5};
+		auto p = daw::algorithm::find_if( v, []( int i ) { return i % 2 == 0; } );
+		assert( p != std::next( std::begin( v ), 1 ) );
+	}
 } // namespace daw
 
 int main( ) {
@@ -86,4 +99,6 @@ int main( ) {
 	daw::daw_range_algorithm_test_sort( );
 	daw::daw_range_algorithm_test_stable_sort( );
 	daw::daw_range_algorithm_test_max_element( );
+	daw::daw_range_contains_001( );
+	daw::daw_range_find_if_001( );
 }
