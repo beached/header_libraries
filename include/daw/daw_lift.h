@@ -11,8 +11,7 @@
 #include "daw_move.h"
 
 #define DAW_LIFT( ... )                                                        \
-	[]( auto &&...args ) noexcept( noexcept( __VA_ARGS__( DAW_FWD(               \
-	  args )... ) ) ) -> decltype( __VA_ARGS__( DAW_FWD( args )... ) ) {         \
-		return __VA_ARGS__( DAW_FWD( args )... );                                  \
+	[]( auto &&...argsLIFT ) noexcept( noexcept( __VA_ARGS__( DAW_FWD(           \
+	  argsLIFT )... ) ) ) -> decltype( __VA_ARGS__( DAW_FWD( argsLIFT )... ) ) { \
+		return __VA_ARGS__( DAW_FWD( argsLIFT )... );                              \
 	}
-
