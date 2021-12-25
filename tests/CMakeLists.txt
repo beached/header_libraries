@@ -78,7 +78,6 @@ set(TEST_SOURCES
         daw_poly_var_test.cpp
         daw_poly_vector_test.cpp
         daw_random_test.cpp
-				daw_range_algorithm_test.cpp
         daw_read_file_test.cpp
         daw_read_only_test.cpp
         daw_safe_string_test.cpp
@@ -130,6 +129,7 @@ set(DEV_TEST_SOURCES
         daw_bind_args_at_test.cpp
         daw_cstring_test.cpp
         daw_hash_table2_test.cpp
+				daw_range_algorithm_test.cpp
         daw_range_test.cpp
         daw_min_perfect_hash_test.cpp
         daw_stack_quick_sort_test.cpp

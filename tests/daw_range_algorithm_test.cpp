@@ -81,8 +81,7 @@ namespace daw {
 
 	void daw_range_contains_001( ) {
 		auto v = std::vector{1,2,3,4,5};
-		auto p = daw::algorithm::contains( v, 4 );
-		assert( p != std::end( v ) );
+		assert( daw::algorithm::contains( v, 4 ) );
 	}
 
 	void daw_range_find_if_001( ) {
