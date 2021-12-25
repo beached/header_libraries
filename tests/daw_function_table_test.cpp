@@ -9,7 +9,7 @@
 #include "daw/daw_function_table.h"
 
 #include <cstdint>
-#include <cstdio>
+#include <iostream>
 #include <type_traits>
 
 using parser_func_t = std::add_pointer_t<uintmax_t( uintmax_t, char const * )>;
