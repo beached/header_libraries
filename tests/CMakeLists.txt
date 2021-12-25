@@ -63,6 +63,7 @@ set(TEST_SOURCES
         daw_iterator_zipiter_test.cpp
         daw_keep_n_test.cpp
 				daw_logic_test.cpp
+				daw_lift_test.cpp
         daw_math_test.cpp
         daw_memory_mapped_file_test.cpp
         daw_metro_hash_test.cpp
@@ -128,10 +129,10 @@ set(DEV_TEST_SOURCES
         daw_bind_args_at_test.cpp
         daw_cstring_test.cpp
         daw_hash_table2_test.cpp
+				daw_range_algorithm_test.cpp
         daw_range_test.cpp
         daw_min_perfect_hash_test.cpp
         daw_stack_quick_sort_test.cpp
-        daw_range_algorithm_test.cpp
         daw_range_collection_test.cpp
         daw_sort_n_test.cpp
         daw_vector_test.cpp
