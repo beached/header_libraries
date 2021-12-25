@@ -10,6 +10,8 @@
 
 #include "daw_bit_cast.h"
 
+#include <daw/daw_move.h>
+
 #include <array>
 #include <cstddef>
 #include <cstdio>
@@ -27,7 +29,7 @@ namespace daw {
 			fp_t fp_storage;
 
 			explicit constexpr data_t( ref_buffer_t &&r )
-			  : ref_storage( std::move( r ) ) {}
+			  : ref_storage( DAW_MOVE( r ) ) {}
 			explicit constexpr data_t( fp_t f )
 			  : fp_storage( f ) {}
 		} data;
@@ -35,23 +37,23 @@ namespace daw {
 		reffp_t call_ptr;
 
 		template<typename Func>
-		static constexpr function_view_table_storage make( Func &&f ) {
+		constexpr function_view_table_storage make( Func &&f ) {
 			using fn_t = std::remove_reference_t<Func>;
 			if constexpr( std::is_pointer_v<fn_t> ) {
 				return { data_t{ f }, []( data_t const &d, Args... args ) -> Result {
-					        return ( d.fp_storage )( std::move( args )... );
+					        return ( d.fp_storage )( DAW_MOVE( args )... );
 				        } };
 			} else if constexpr( std::is_empty_v<fn_t> and
 			                     std::is_default_constructible_v<fn_t> ) {
 				return { data_t{ nullptr },
 				         []( data_t const &, Args... args ) -> Result {
-					         return fn_t{ }( std::move( args )... );
+					         return fn_t{ }( DAW_MOVE( args )... );
 				         } };
 			} else {
 				return { data_t{ DAW_BIT_CAST( ref_buffer_t, std::addressof( f ) ) },
 				         +[]( data_t const &d, Args... args ) -> Result {
 					         return ( *DAW_BIT_CAST( fn_t const *, d.ref_storage ) )(
-					           std::move( args )... );
+					           DAW_MOVE( args )... );
 				         } };
 			}
 		}
@@ -66,7 +68,7 @@ namespace daw {
 			fp_t fp_storage;
 
 			explicit constexpr data_t( ref_buffer_t &&r )
-			  : ref_storage( std::move( r ) ) {}
+			  : ref_storage( DAW_MOVE( r ) ) {}
 			explicit constexpr data_t( fp_t f )
 			  : fp_storage( f ) {}
 		} data;
@@ -74,22 +76,22 @@ namespace daw {
 		reffp_t call_ptr;
 
 		template<typename Func>
-		static constexpr function_view_table_storage make( Func &&f ) {
+		constexpr function_view_table_storage make( Func &&f ) {
 			using fn_t = std::remove_reference_t<Func>;
 			if constexpr( std::is_pointer_v<fn_t> ) {
 				return { data_t{ f }, []( data_t const &d, Args... args ) -> void {
-					        ( d.fp_storage )( std::move( args )... );
+					        ( d.fp_storage )( DAW_MOVE( args )... );
 				        } };
 			} else if constexpr( std::is_empty_v<fn_t> and
 			                     std::is_default_constructible_v<fn_t> ) {
 				return { data_t{ nullptr }, []( data_t const &, Args... args ) -> void {
-					        fn_t{ }( std::move( args )... );
+					        fn_t{ }( DAW_MOVE( args )... );
 				        } };
 			} else {
 				return { data_t{ DAW_BIT_CAST( ref_buffer_t, std::addressof( f ) ) },
 				         +[]( data_t const &d, Args... args ) -> void {
 					         ( *DAW_BIT_CAST( fn_t const *, d.ref_storage ) )(
-					           std::move( args )... );
+					           DAW_MOVE( args )... );
 				         } };
 			}
 		}
@@ -109,7 +111,7 @@ namespace daw {
 
 		constexpr Result operator( )( Args... args ) const {
 			return function_view_table.call_ptr( function_view_table.data,
-			                                     std::move( args )... );
+			                                     DAW_MOVE( args )... );
 		}
 	};
 	template<typename... Args>
@@ -119,11 +121,11 @@ namespace daw {
 		template<typename Func>
 		constexpr function_view( Func &&f )
 		  : function_view_table( function_view_table_storage<void, Args...>::make(
-		      std::forward<Func>( f ) ) ) {}
+		      DAW_FWD2( Func, f ) ) ) {}
 
 		constexpr void operator( )( Args... args ) const {
 			function_view_table.call_ptr( function_view_table.data,
-			                              std::move( args )... );
+			                              DAW_MOVE( args )... );
 		}
 	};
 } // namespace daw
