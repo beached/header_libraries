@@ -122,8 +122,7 @@ namespace daw::algorithm {
 
 		static_assert(
 		  traits::is_unary_predicate_v<UnaryPredicate,
-		                               decltype( *std::begin( container ) ),
-		                               decltype( *std::end( container ) )>,
+		                               decltype( *std::begin( container ) )>,
 		  "Compare does not satisfy the Unary Predicate concept.  See "
 		  "http://en.cppreference.com/w/cpp/concept/Predicate for more "
 		  "information" );
