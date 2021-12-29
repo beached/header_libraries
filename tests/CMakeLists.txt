@@ -51,6 +51,7 @@ set(TEST_SOURCES
         daw_iterator_indexed_iterator_test.cpp
         daw_iterator_inserter_test.cpp
         daw_iterator_integer_iterator_test.cpp
+				daw_iterator_iota_iterator_test.cpp
         daw_iterator_output_stream_iterator_test.cpp
         daw_iterator_random_iterator_test.cpp
         daw_iterator_repeat_n_char_iterator_test.cpp
