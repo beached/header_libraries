@@ -10,6 +10,7 @@
 
 #include "daw_assume.h"
 #include "daw_attributes.h"
+#include "daw_likely.h"
 
 #include <ciso646>
 #include <cstddef>
@@ -37,7 +38,7 @@ namespace daw {
 	public:
 		DAW_ATTRIB_INLINE constexpr not_null( pointer ptr ) noexcept
 		  : m_ptr( ptr ) {
-			if( not ptr ) {
+			if( DAW_UNLIKELY( not ptr ) ) {
 				std::terminate( );
 			}
 		}
