@@ -78,18 +78,21 @@ namespace daw {
 		not_null( std::nullptr_t ) = delete;
 		not_null &operator=( std::nullptr_t ) = delete;
 
+		/// @pre (std::intptr_t)get( ) != std::numeric_limits<std::intptr_t>::max( )
 		DAW_ATTRIB_INLINE constexpr not_null &operator++( ) noexcept {
 			DAW_ASSUME( m_ptr != nullptr );
 			++m_ptr;
 			return *this;
 		}
 
+		/// @pre (std::intptr_t)get( ) - 1 > 0
 		DAW_ATTRIB_INLINE constexpr not_null &operator--( ) noexcept {
 			DAW_ASSUME( m_ptr != nullptr );
 			--m_ptr;
 			return *this;
 		}
 
+		/// @pre (std::intptr_t)get( ) != std::numeric_limits<std::intptr_t>::max( )
 		DAW_ATTRIB_INLINE constexpr not_null operator++( int ) noexcept {
 			DAW_ASSUME( m_ptr != nullptr );
 			auto result = *this;
@@ -97,6 +100,7 @@ namespace daw {
 			return result;
 		}
 
+		/// @pre (std::intptr_t)get( ) - 1 > 0
 		DAW_ATTRIB_INLINE constexpr not_null operator--( int ) noexcept {
 			DAW_ASSUME( m_ptr != nullptr );
 			auto result = *this;
@@ -104,6 +108,8 @@ namespace daw {
 			return result;
 		}
 
+		/// @pre (std::intptr_t)get( ) < std::numeric_limits<std::intptr_t>::max( )
+		/// - n
 		DAW_ATTRIB_INLINE constexpr not_null &
 		operator+=( difference_type n ) noexcept {
 			DAW_ASSUME( m_ptr != nullptr );
@@ -111,6 +117,7 @@ namespace daw {
 			return *this;
 		}
 
+		/// @pre (std::intptr_t)get( ) - n > 0
 		DAW_ATTRIB_INLINE constexpr not_null &
 		operator-=( difference_type n ) noexcept {
 			DAW_ASSUME( m_ptr != nullptr );
@@ -118,6 +125,7 @@ namespace daw {
 			return *this;
 		}
 
+		/// @pre not_null referes to a valid range of objects
 		DAW_ATTRIB_INLINE constexpr reference
 		operator[]( size_type idx ) const noexcept {
 			DAW_ASSUME( m_ptr != nullptr );
@@ -133,6 +141,8 @@ namespace daw {
 			return m_ptr - rhs.m_ptr;
 		}
 
+		/// @pre (std::intptr_t)lhs.get( ) <
+		/// std::numeric_limits<std::intptr_t>::max( ) - n
 		template<typename NotNull,
 		         std::enable_if_t<std::is_same_v<NotNull, not_null>,
 		                          std::nullptr_t> = nullptr>
@@ -143,6 +153,8 @@ namespace daw {
 			return lhs;
 		}
 
+		/// @pre (std::intptr_t)lhs.get( ) + n <=
+		/// std::numeric_limits<std::intptr_t>::max( )
 		template<typename NotNull,
 		         std::enable_if_t<std::is_same_v<NotNull, not_null>,
 		                          std::nullptr_t> = nullptr>
@@ -153,6 +165,8 @@ namespace daw {
 			return lhs;
 		}
 
+		/// @pre (std::intptr_t)lhs.get( ) + n <=
+		/// std::numeric_limits<std::intptr_t>::max( )
 		template<typename NotNull,
 		         std::enable_if_t<std::is_same_v<NotNull, not_null>,
 		                          std::nullptr_t> = nullptr>
