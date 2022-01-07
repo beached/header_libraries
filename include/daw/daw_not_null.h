@@ -43,7 +43,9 @@ namespace daw {
 		}
 
 		DAW_ATTRIB_INLINE constexpr not_null( never_null_t, pointer ptr ) noexcept
-		  : m_ptr( ptr ) {}
+		  : m_ptr( ptr ) {
+			DAW_ASSUME( m_ptr != nullptr );
+		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer get( ) const noexcept {
 			DAW_ASSUME( m_ptr != nullptr );
