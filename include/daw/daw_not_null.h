@@ -19,6 +19,9 @@
 #include <type_traits>
 
 namespace daw {
+	struct never_null_t {};
+	inline constexpr never_null_t never_null = never_null_t{ };
+
 	template<class Pointer>
 	struct not_null {
 		using pointer = Pointer;
@@ -38,6 +41,9 @@ namespace daw {
 				std::terminate( );
 			}
 		}
+
+		DAW_ATTRIB_INLINE constexpr not_null( never_null_t, pointer ptr ) noexcept
+		  : m_ptr( ptr ) {}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer get( ) const noexcept {
 			DAW_ASSUME( m_ptr != nullptr );
