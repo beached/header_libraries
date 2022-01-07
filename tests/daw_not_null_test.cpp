@@ -10,14 +10,39 @@
 #include "daw/daw_exception.h"
 #include "daw/daw_not_null.h"
 
+#include <cassert>
 #include <memory>
 
 void daw_not_null_test_001( ) {
 	auto tst = std::make_unique<int>( 5 );
-	daw::not_null<int *> t = tst.get( );
-	std::unique_ptr<int> tst2;
+	daw::not_null<int *> t = tst.release( );
+	auto tst2 = std::unique_ptr<int>( t );
+}
+
+void daw_not_null_test_002( ) {
+	auto tst = std::unique_ptr<int[]>( new int[5]{ } );
+	daw::not_null<int *> first = tst.get( );
+	daw::not_null<int *> last = tst.get( ) + 5;
+	assert( ( last - first ) == 5 );
+}
+
+void daw_not_null_test_003( ) {
+	auto tst = std::unique_ptr<int[]>( new int[5]{ } );
+	daw::not_null<int *> first = tst.get( );
+	int *last = tst.get( ) + 5;
+	assert( ( last - first ) == 5 );
+}
+
+void daw_not_null_test_004( ) {
+	auto tst = std::unique_ptr<int[]>( new int[5]{ } );
+	int *first = tst.get( );
+	daw::not_null<int *> last = tst.get( ) + 5;
+	assert( ( last - first ) == 5 );
 }
 
 int main( ) {
 	daw_not_null_test_001( );
+	daw_not_null_test_002( );
+	daw_not_null_test_003( );
+	daw_not_null_test_004( );
 }

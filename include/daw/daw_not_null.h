@@ -10,7 +10,6 @@
 
 #include "daw_assume.h"
 #include "daw_attributes.h"
-#include "daw_likely.h"
 
 #include <ciso646>
 #include <cstddef>
@@ -38,7 +37,7 @@ namespace daw {
 	public:
 		DAW_ATTRIB_INLINE constexpr not_null( pointer ptr ) noexcept
 		  : m_ptr( ptr ) {
-			if( DAW_UNLIKELY( not ptr ) ) {
+			if( not ptr ) {
 				std::terminate( );
 			}
 		}
@@ -125,44 +124,52 @@ namespace daw {
 			return m_ptr[idx];
 		}
 
+		template<typename NotNull,
+		         std::enable_if_t<std::is_same_v<NotNull, not_null>,
+		                          std::nullptr_t> = nullptr>
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr difference_type
-		operator-( not_null const &rhs ) noexcept {
+		operator-( NotNull const &rhs ) const noexcept {
 			DAW_ASSUME( m_ptr != nullptr );
-			return m_ptr -= rhs.m_ptr;
+			return m_ptr - rhs.m_ptr;
+		}
+
+		template<typename NotNull,
+		         std::enable_if_t<std::is_same_v<NotNull, not_null>,
+		                          std::nullptr_t> = nullptr>
+		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr not_null<Pointer>
+		operator-( NotNull lhs, std::ptrdiff_t n ) noexcept {
+			DAW_ASSUME( lhs.m_ptr != nullptr );
+			lhs -= n;
+			return lhs;
+		}
+
+		template<typename NotNull,
+		         std::enable_if_t<std::is_same_v<NotNull, not_null>,
+		                          std::nullptr_t> = nullptr>
+		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr not_null<Pointer>
+		operator+( NotNull lhs, std::ptrdiff_t n ) noexcept {
+			DAW_ASSUME( lhs.m_ptr != nullptr );
+			lhs += n;
+			return lhs;
+		}
+
+		template<typename NotNull,
+		         std::enable_if_t<std::is_same_v<NotNull, not_null>,
+		                          std::nullptr_t> = nullptr>
+		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr not_null<Pointer>
+		operator+( std::ptrdiff_t n, NotNull rhs ) noexcept {
+			DAW_ASSUME( rhs.m_ptr != nullptr );
+			rhs += n;
+			return rhs;
 		}
 	};
-
-	template<typename Pointer>
-	[[nodiscard]] DAW_ATTRIB_INLINE constexpr not_null<Pointer>
-	operator-( not_null<Pointer> lhs, std::ptrdiff_t n ) noexcept {
-		DAW_ASSUME( lhs.m_ptr != nullptr );
-		lhs -= n;
-		return lhs;
-	}
-
-	template<typename Pointer>
-	[[nodiscard]] DAW_ATTRIB_INLINE constexpr not_null<Pointer>
-	operator+( not_null<Pointer> lhs, std::ptrdiff_t n ) noexcept {
-		DAW_ASSUME( lhs.m_ptr != nullptr );
-		lhs += n;
-		return lhs;
-	}
-
-	template<typename Pointer>
-	[[nodiscard]] DAW_ATTRIB_INLINE constexpr not_null<Pointer>
-	operator+( std::ptrdiff_t n, not_null<Pointer> rhs ) noexcept {
-		DAW_ASSUME( rhs.m_ptr != nullptr );
-		rhs += n;
-		return rhs;
-	}
 } // namespace daw
 
-namespace std {
-	template<typename Pointer>
-	struct hash<daw::not_null<Pointer>> {
-		[[nodiscard]] std::size_t
-		operator( )( daw::not_null<Pointer> value ) const {
-			return hash<decltype( std::declval<Pointer>( ) )>{ }( value.get( ) );
-		}
-	};
-} // namespace std
+template<typename Pointer>
+struct std::hash<daw::not_null<Pointer>> {
+	[[nodiscard]] auto operator( )( daw::not_null<Pointer> value ) const
+	  -> decltype(
+	    std::hash<decltype( std::declval<Pointer>( ) )>{ }( value.get( ) ) ) {
+		return std::hash<decltype( std::declval<Pointer>( ) )>{ }( value.get( ) );
+	}
+};
