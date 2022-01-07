@@ -112,26 +112,32 @@ namespace daw {
 
 		/// @pre (std::intptr_t)get( ) < std::numeric_limits<std::intptr_t>::max( )
 		/// - n
-		DAW_ATTRIB_INLINE constexpr not_null &
-		operator+=( difference_type n ) noexcept {
+		/// @pre not_null refers to a valid range of objects
+		template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
+		                                            std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE constexpr not_null &operator+=( Integer n ) noexcept {
 			DAW_ASSUME( m_ptr != nullptr );
-			m_ptr += n;
+			m_ptr += static_cast<difference_type>( n );
 			return *this;
 		}
 
 		/// @pre (std::intptr_t)get( ) - n > 0
-		DAW_ATTRIB_INLINE constexpr not_null &
-		operator-=( difference_type n ) noexcept {
+		/// @pre not_null refers to a valid range of objects
+		template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
+		                                            std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE constexpr not_null &operator-=( Integer n ) noexcept {
 			DAW_ASSUME( m_ptr != nullptr );
-			m_ptr -= n;
+			m_ptr -= static_cast<difference_type>( n );
 			return *this;
 		}
 
-		/// @pre not_null referes to a valid range of objects
+		/// @pre not_null refers to a valid range of objects
+		template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
+		                                            std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE constexpr reference
-		operator[]( size_type idx ) const noexcept {
+		operator[]( Integer idx ) const noexcept {
 			DAW_ASSUME( m_ptr != nullptr );
-			return m_ptr[idx];
+			return *( m_ptr + static_cast<difference_type>( idx ) );
 		}
 
 		template<typename NotNull,
