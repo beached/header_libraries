@@ -7,11 +7,11 @@
 //
 
 #include "daw/daw_benchmark.h"
-#include "daw/daw_exception.h"
 #include "daw/daw_not_null.h"
 
 #include <cassert>
 #include <memory>
+#include <optional>
 
 void daw_not_null_test_001( ) {
 	auto tst = std::make_unique<int>( 5 );

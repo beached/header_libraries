@@ -25,10 +25,10 @@ namespace daw {
 	template<class Pointer>
 	struct not_null {
 		using pointer = Pointer;
-		using reference = typename std::iterator_traits<pointer>::reference;
+		using value_type = std::remove_pointer_t<Pointer>;
+		using reference = value_type &;
 		using difference_type = std::ptrdiff_t;
 		using size_type = std::size_t;
-		using value_type = typename std::iterator_traits<pointer>::value_type;
 		using iterator_category = std::random_access_iterator_tag;
 
 	private:
