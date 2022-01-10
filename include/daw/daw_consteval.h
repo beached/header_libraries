@@ -11,8 +11,13 @@
 #include "daw_cpp_feature_check.h"
 
 #if defined( __cpp_consteval )
-#define DAW_CONSTEVAL consteval
+#if __cpp_consteval >= 201811L
 #define DAW_HAS_CONSTEVAL
+#endif
+#endif
+
+#if defined( DAW_HAS_CONSTEVAL )
+#define DAW_CONSTEVAL consteval
 #include "daw_move.h"
 namespace daw {
 	// Force evaluation of v at compile time
