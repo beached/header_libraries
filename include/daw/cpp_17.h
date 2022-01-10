@@ -155,31 +155,6 @@ namespace daw {
 	inline constexpr bool is_detected_v = requires {
 		typename Op<Args...>;
 	};
-
-
-	namespace detected_impl {
-		template<typename Default, bool, template<class...> class, typename...>
-		struct detected_or_delay_t {
-			using type = Default;
-		};
-		template<typename Default, template<class...> class Test,
-		         typename... TestArgs>
-		struct detected_or_delay_t<Default, true, Test, TestArgs...> {
-			using type = Test<TestArgs...>;
-		};
-	} // namespace detected_impl
-
-	template<typename Default, template<class...> class Test,
-	         typename... TestArgs>
-	using detected_or = detected_impl::detected_or_delay_t < Default,
-	      requires {
-		typename Test<TestArgs...>;
-	}
-	, Test, TestArgs... > ;
-
-	template<typename Default, template<class...> class Test,
-	         typename... TestArgs>
-	using detected_or_t = typename detected_or<Default, Test, TestArgs...>::type;
 #endif
 	namespace cpp_17_details {
 		template<class Default, class AlwaysVoid, template<class...> class Op,
@@ -205,15 +180,14 @@ namespace daw {
 	  typename cpp_17_details::detector<nonesuch, void, Op, Args...>::type;
 
 #ifndef DAW_HAS_CONCEPTS
+	template<template<class...> class Op, class... Args>
+	inline constexpr bool is_detected_v = is_detected<Op, Args...>::value;
+#endif
 	template<class Default, template<class...> class Op, class... Args>
 	using detected_or = cpp_17_details::detector<Default, void, Op, Args...>;
 
-	template<template<class...> class Op, class... Args>
-	inline constexpr bool is_detected_v = is_detected<Op, Args...>::value;
-
 	template<class Default, template<class...> class Op, class... Args>
 	using detected_or_t = typename detected_or<Default, Op, Args...>::type;
-#endif
 
 	template<class Expected, template<class...> class Op, class... Args>
 	using is_detected_exact = std::is_same<Expected, detected_t<Op, Args...>>;
