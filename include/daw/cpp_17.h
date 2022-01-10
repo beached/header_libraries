@@ -156,25 +156,30 @@ namespace daw {
 		typename Op<Args...>;
 	};
 
+
 	namespace detected_impl {
-		template<template<class...> class Test, typename... TestArgs>
+		template<typename Default, bool, template<class...> class, typename...>
 		struct detected_or_delay_t {
+			using type = Default;
+		};
+		template<typename Default, template<class...> class Test,
+		         typename... TestArgs>
+		struct detected_or_delay_t<Default, true, Test, TestArgs...> {
 			using type = Test<TestArgs...>;
 		};
 	} // namespace detected_impl
 
 	template<typename Default, template<class...> class Test,
 	         typename... TestArgs>
-	using detected_or = std::conditional_t < requires {
-		typename detected_impl::detected_or_delay_t<Test, TestArgs...>::type;
+	using detected_or = detected_impl::detected_or_delay_t < Default,
+	      requires {
+		typename Test<TestArgs...>;
 	}
-	, detected_impl::detected_or_delay_t<Test, TestArgs...>,
-	  traits::identity < Default >>
-	  ;
+	, Test, TestArgs... > ;
 
 	template<typename Default, template<class...> class Test,
 	         typename... TestArgs>
-	using detected_or_t = typename detect_or<Default, Test, TestArgs...>::type;
+	using detected_or_t = typename detected_or<Default, Test, TestArgs...>::type;
 #endif
 	namespace cpp_17_details {
 		template<class Default, class AlwaysVoid, template<class...> class Op,
