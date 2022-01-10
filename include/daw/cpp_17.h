@@ -144,7 +144,18 @@ namespace daw {
 		nonesuch( nonesuch const & ) = delete;
 		void operator=( nonesuch const & ) = delete;
 	};
+#if defined( __cpp_concepts )
+#if __cpp_concepts >= 201907L
+#define DAW_HAS_CONCEPTS
+#endif
+#endif
 
+#ifdef DAW_HAS_CONCEPTS
+	template<template<class...> class Op, class... Args>
+	inline constexpr bool is_detected_v = requires {
+		typename Op<Args...>;
+	};
+#endif
 	namespace cpp_17_details {
 		template<class Default, class AlwaysVoid, template<class...> class Op,
 		         class... Args>
@@ -171,8 +182,10 @@ namespace daw {
 	template<class Default, template<class...> class Op, class... Args>
 	using detected_or = cpp_17_details::detector<Default, void, Op, Args...>;
 
+#ifndef DAW_HAS_CONCEPTS
 	template<template<class...> class Op, class... Args>
 	inline constexpr bool is_detected_v = is_detected<Op, Args...>::value;
+#endif
 
 	template<class Default, template<class...> class Op, class... Args>
 	using detected_or_t = typename detected_or<Default, Op, Args...>::type;
@@ -698,3 +711,6 @@ namespace daw {
 	template<typename Function, typename... Params>
 	bind_front( Function, Params... ) -> bind_front<Function, Params...>;
 } // namespace daw
+#ifdef DAW_HAS_CONCEPTS
+#undef DAW_HAS_CONCEPTS
+#endif
