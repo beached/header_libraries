@@ -166,9 +166,9 @@ namespace daw {
 	template<typename Default, template<class...> class Test,
 	         typename... TestArgs>
 	using detected_or = std::conditional_t < requires {
-		typename detected_impl::detect_or_delay_t<Test, TestArgs...>::type;
+		typename detected_impl::detected_or_delay_t<Test, TestArgs...>::type;
 	}
-	, detected_impl::detect_or_delay_t<Test, TestArgs...>,
+	, detected_impl::detected_or_delay_t<Test, TestArgs...>,
 	  traits::identity < Default >>
 	  ;
 
