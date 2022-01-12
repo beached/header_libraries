@@ -25,8 +25,8 @@ namespace daw {
 		return static_cast<T&&>( v );
 	}
 } // namespace daw
-#define DAW_CONST_EVALUATE( ... ) ::daw::as_constant( __VA_ARGS__ )
-#define DAW_AS_CONSTANT( ... ) ::daw::as_constant( __VA_ARGS__ )
+#define DAW_CONST_EVALUATE( ... ) ::daw::const_evaluate( __VA_ARGS__ )
+#define DAW_AS_CONSTANT( ... ) ::daw::const_evaluate( __VA_ARGS__ )
 #else
 #define DAW_CONSTEVAL constexpr
 // Cannot do, fallback to expression
