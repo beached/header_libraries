@@ -21,13 +21,15 @@
 namespace daw {
 	// Force evaluation of v at compile time
 	template<typename T>
-	consteval T const_evaluate( T &&v ) {
-		return v;
+	consteval auto const_evaluate( T &&v ) {
+		return static_cast<T&&>( v );
 	}
 } // namespace daw
-#define DAW_CONST_EVALUATE( ... ) ::daw::const_evaluate( __VA_ARGS__ )
+#define DAW_CONST_EVALUATE( ... ) ::daw::as_constant( __VA_ARGS__ )
+#define DAW_AS_CONSTANT( ... ) ::daw::as_constant( __VA_ARGS__ )
 #else
 #define DAW_CONSTEVAL constexpr
-// Does not guarantee evaluation, but should ensure it is checked for being a constant expression
-#define DAW_CONST_EVALUATE( ... ) [&]( ) constexpr { return __VA_ARGS__; }( )
+// Cannot do, fallback to expression
+#define DAW_CONST_EVALUATE( ... ) (__VA_ARGS__)
+#define DAW_AS_CONSTANT( ... ) (__VA_ARGS__)
 #endif
