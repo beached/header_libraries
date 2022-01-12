@@ -18,16 +18,16 @@
 
 #if defined( DAW_HAS_CONSTEVAL )
 #define DAW_CONSTEVAL consteval
-#include "daw_move.h"
 namespace daw {
 	// Force evaluation of v at compile time
 	template<typename T>
 	consteval T const_evaluate( T &&v ) {
-		return DAW_FWD2( T, v );
+		return v;
 	}
 } // namespace daw
 #define DAW_CONST_EVALUATE( ... ) ::daw::const_evaluate( __VA_ARGS__ )
 #else
 #define DAW_CONSTEVAL constexpr
-#define DAW_CONST_EVALUATE( ... ) ( __VA_ARGS__ )
+// Does not guarantee evaluation, but should ensure it is checked for being a constant expression
+#define DAW_CONST_EVALUATE( ... ) [&]( ) constexpr { return __VA_ARGS__; }( )
 #endif
