@@ -21,7 +21,7 @@
 namespace daw {
 	// Force evaluation of v at compile time
 	template<typename T>
-	consteval auto as_constant( T &&v ) {
+	consteval auto const_evaluate( T &&v ) {
 		return static_cast<T&&>( v );
 	}
 } // namespace daw
