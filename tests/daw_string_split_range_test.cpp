@@ -8,6 +8,7 @@
 
 #include "daw/daw_benchmark.h"
 #include "daw/daw_string_split_range.h"
+#include "daw/daw_string_view1.h"
 
 #include <algorithm>
 #include <array>
