@@ -11,6 +11,7 @@
 #include "daw_string_view2_fwd.h"
 
 #include "daw_algorithm.h"
+#include "daw_consteval.h"
 #include "daw_cpp_feature_check.h"
 #include "daw_exception.h"
 #include "daw_fnv1a_hash.h"
@@ -21,7 +22,6 @@
 #include "daw_string_view_version.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
-#include "impl/daw_string_impl.h"
 #include "iterator/daw_back_inserter.h"
 #include "iterator/daw_iterator.h"
 
@@ -100,6 +100,140 @@ namespace daw {
 		  none_of{ };
 
 		namespace sv2_details {
+			template<typename InputIt, typename ForwardIt, typename BinaryPredicate>
+			[[nodiscard]] constexpr InputIt
+			find_first_of( InputIt first, InputIt last, ForwardIt s_first,
+			               ForwardIt s_last, BinaryPredicate p ) {
+				static_assert(
+				  traits::is_binary_predicate_v<
+				    BinaryPredicate,
+				    typename std::iterator_traits<InputIt>::value_type>,
+				  "BinaryPredicate p does not fullfill the requires of a binary "
+				  "predicate concept.  See "
+				  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate" );
+				for( ; first != last; ++first ) {
+					for( ForwardIt it = s_first; it != s_last; ++it ) {
+						if( p( *first, *it ) ) {
+							return first;
+						}
+					}
+				}
+				return last;
+			}
+
+			template<typename InputIt, typename UnaryPredicate>
+			[[nodiscard]] constexpr InputIt
+			find_first_of_if( InputIt first, InputIt last, UnaryPredicate p ) {
+				static_assert(
+				  traits::is_unary_predicate_v<
+				    UnaryPredicate, typename std::iterator_traits<InputIt>::value_type>,
+				  "UnaryPredicate p does not fullfill the requires of a unary "
+				  "predicate "
+				  "concept.  See "
+				  "http://en.cppreference.com/w/cpp/concept/Predicate" );
+				for( ; first != last; ++first ) {
+					if( p( *first ) ) {
+						return first;
+					}
+				}
+				return last;
+			}
+
+			template<typename InputIt, typename UnaryPredicate>
+			[[nodiscard]] constexpr InputIt
+			find_first_not_of_if( InputIt first, InputIt last, UnaryPredicate p ) {
+				static_assert(
+				  traits::is_unary_predicate_v<
+				    UnaryPredicate, typename std::iterator_traits<InputIt>::value_type>,
+				  "UnaryPredicate p does not fullfill the requires of a unary "
+				  "predicate "
+				  "concept.  See "
+				  "http://en.cppreference.com/w/cpp/concept/Predicate" );
+				for( ; first != last; ++first ) {
+					if( !p( *first ) ) {
+						return first;
+					}
+				}
+				return last;
+			}
+
+			template<typename InputIt, typename ForwardIt, typename BinaryPredicate>
+			[[nodiscard]] constexpr InputIt
+			find_first_not_of( InputIt first, InputIt last, ForwardIt s_first,
+			                   ForwardIt s_last, BinaryPredicate p ) {
+				static_assert(
+				  traits::is_binary_predicate_v<
+				    BinaryPredicate,
+				    typename std::iterator_traits<InputIt>::value_type>,
+				  "BinaryPredicate p does not fullfill the requires of a binary "
+				  "predicate concept.  See "
+				  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate" );
+				bool found = false;
+				for( ; first != last; ++first ) {
+					found = false;
+					for( ForwardIt it = s_first; it != s_last; ++it ) {
+						if( p( *first, *it ) ) {
+							found = true;
+							break;
+						}
+					}
+					if( !found ) {
+						return first;
+					}
+				}
+				return last;
+			}
+
+			template<typename CharT>
+			[[nodiscard]] constexpr int
+			compare( CharT const *l_ptr, CharT const *r_ptr, std::size_t sz ) {
+				auto const last = l_ptr + static_cast<std::ptrdiff_t>( sz );
+				while( l_ptr != last ) {
+					auto const diff = *l_ptr - *r_ptr;
+					if( diff < 0 ) {
+						return -1;
+					}
+					if( diff > 0 ) {
+						return 1;
+					}
+					++l_ptr;
+					++r_ptr;
+				}
+				return 0;
+			}
+
+			template<typename SizeT, typename CharT>
+			[[nodiscard]] constexpr SizeT strlen( CharT const *const str ) noexcept {
+				if( str == nullptr ) {
+					return 0;
+				}
+				auto pos = str;
+				while( *( pos ) != 0 ) {
+					++pos;
+				}
+				return static_cast<SizeT>( pos - str );
+			}
+
+			template<class ForwardIt1, class ForwardIt2>
+			[[nodiscard]] constexpr ForwardIt1
+			search( ForwardIt1 first, ForwardIt1 last, ForwardIt2 s_first,
+			        ForwardIt2 s_last ) {
+				for( ;; ++first ) {
+					ForwardIt1 it = first;
+					for( ForwardIt2 s_it = s_first;; ++it, ++s_it ) {
+						if( s_it == s_last ) {
+							return first;
+						}
+						if( it == last ) {
+							return last;
+						}
+						if( not( *it == *s_it ) ) {
+							break;
+						}
+					}
+				}
+			}
+
 			template<typename T>
 			constexpr std::size_t find_predicate_result_size( T const & ) {
 				return 1;
@@ -284,7 +418,7 @@ namespace daw {
 			constexpr basic_string_view( CharPtr s ) noexcept
 			  : m_first( s )
 			  , m_last(
-			      make_last<BoundsType>( s, details::strlen<size_type>( s ) ) ) {}
+			      make_last<BoundsType>( s, sv2_details::strlen<size_type>( s ) ) ) {}
 
 			/// @brief Converting substr constructor from any string_view with
 			/// matching CharT types.
@@ -333,7 +467,8 @@ namespace daw {
 			/// @post data( ) == std::data( string_literal )
 			/// @post size( ) == std::size( string_literal ) - 1
 			template<std::size_t N>
-			constexpr basic_string_view( CharT const ( &string_literal )[N] ) noexcept
+			DAW_CONSTEVAL
+			basic_string_view( CharT const ( &string_literal )[N] ) noexcept
 			  : m_first( string_literal )
 			  , m_last( make_last<BoundsType>( string_literal, N - 1 ) ) {}
 
@@ -1018,7 +1153,7 @@ namespace daw {
 					return pos;
 				}
 				auto result =
-				  details::search( begin( ) + pos, end( ), v.begin( ), v.end( ) );
+				  sv2_details::search( begin( ) + pos, end( ), v.begin( ), v.end( ) );
 				if( end( ) == result ) {
 					return npos;
 				}
@@ -1068,7 +1203,7 @@ namespace daw {
 				const_iterator cur =
 				  std::next( begin( ), static_cast<difference_type>( pos ) );
 				while( true ) {
-					if( details::compare( cur, v.begin( ), v.size( ) ) == 0 ) {
+					if( sv2_details::compare( cur, v.begin( ), v.size( ) ) == 0 ) {
 						return static_cast<size_type>( cur - begin( ) );
 					}
 					if( cur == begin( ) ) {
@@ -1119,8 +1254,8 @@ namespace daw {
 				if( pos >= size( ) or v.empty( ) ) {
 					return npos;
 				}
-				auto const iter = details::find_first_of( begin( ) + pos, end( ),
-				                                          v.begin( ), v.end( ), bp_eq );
+				auto const iter = sv2_details::find_first_of(
+				  begin( ) + pos, end( ), v.begin( ), v.end( ), bp_eq );
 
 				if( end( ) == iter ) {
 					return npos;
@@ -1155,7 +1290,7 @@ namespace daw {
 					return npos;
 				}
 				auto const iter =
-				  details::search( begin( ) + pos, end( ), v.begin( ), v.end( ) );
+				  sv2_details::search( begin( ) + pos, end( ), v.begin( ), v.end( ) );
 				if( cend( ) == iter ) {
 					return npos;
 				}
@@ -1221,7 +1356,7 @@ namespace daw {
 					return npos;
 				}
 				auto const iter =
-				  details::find_first_of_if( cbegin( ) + pos, cend( ), pred );
+				  sv2_details::find_first_of_if( cbegin( ) + pos, cend( ), pred );
 				if( cend( ) == iter ) {
 					return npos;
 				}
@@ -1246,7 +1381,7 @@ namespace daw {
 					return npos;
 				}
 				auto const iter =
-				  details::find_first_not_of_if( begin( ) + pos, end( ), pred );
+				  sv2_details::find_first_not_of_if( begin( ) + pos, end( ), pred );
 				if( end( ) == iter ) {
 					return npos;
 				}
@@ -1383,7 +1518,7 @@ namespace daw {
 				}
 
 				auto haystack = substr( pos );
-				const_iterator iter = details::find_first_not_of(
+				const_iterator iter = sv2_details::find_first_not_of(
 				  haystack.begin( ), haystack.end( ), v.begin( ),
 				  std::next( v.begin( ), static_cast<ptrdiff_t>( v.size( ) ) ), bp_eq );
 				if( end( ) == iter ) {
@@ -1781,6 +1916,32 @@ namespace daw {
 			}
 		} // namespace string_view_literals
 
+		namespace sv2_details {
+			template<typename OStream, typename CharT,
+			         daw::string_view_bounds_type Bounds,
+			         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,
+			                          std::nullptr_t> = nullptr>
+			void sv_insert_aligned( OStream &os,
+			                        daw::sv2::basic_string_view<CharT, Bounds> str ) {
+				auto const size = str.size( );
+				auto const alignment_size =
+				  static_cast<std::size_t>( os.width( ) ) - size;
+				bool const align_left =
+				  ( os.flags( ) & OStream::adjustfield ) == OStream::left;
+				if( not align_left ) {
+					sv_insert_fill_chars( os, alignment_size );
+					if( os.good( ) ) {
+						os.write( str.data( ), static_cast<intmax_t>( size ) );
+					}
+				} else {
+					os.write( str.data( ), static_cast<intmax_t>( size ) );
+					if( os.good( ) ) {
+						sv_insert_fill_chars( os, alignment_size );
+					}
+				}
+			}
+		} // namespace sv2_details
+
 		template<typename CharT, string_view_bounds_type Bounds, typename OStream,
 		         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,
 		                          std::nullptr_t> = nullptr>
@@ -1791,7 +1952,7 @@ namespace daw {
 				if( w <= size ) {
 					os.write( v.data( ), static_cast<intmax_t>( size ) );
 				} else {
-					daw::details::sv_insert_aligned( os, v );
+					daw::sv2_details::sv_insert_aligned( os, v );
 				}
 				os.width( 0 );
 			}

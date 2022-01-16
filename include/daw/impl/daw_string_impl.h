@@ -226,30 +226,6 @@ namespace daw {
 			}
 		}
 
-		template<typename OStream, typename CharT,
-		         daw::string_view_bounds_type Bounds,
-		         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,
-		                          std::nullptr_t> = nullptr>
-		void sv_insert_aligned( OStream &os,
-		                        daw::sv2::basic_string_view<CharT, Bounds> str ) {
-			auto const size = str.size( );
-			auto const alignment_size =
-			  static_cast<std::size_t>( os.width( ) ) - size;
-			bool const align_left =
-			  ( os.flags( ) & OStream::adjustfield ) == OStream::left;
-			if( !align_left ) {
-				sv_insert_fill_chars( os, alignment_size );
-				if( os.good( ) ) {
-					os.write( str.data( ), static_cast<intmax_t>( size ) );
-				}
-			} else {
-				os.write( str.data( ), static_cast<intmax_t>( size ) );
-				if( os.good( ) ) {
-					sv_insert_fill_chars( os, alignment_size );
-				}
-			}
-		}
-
 		template<typename CharT, size_t Capacity, typename OStream,
 		         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,
 		                          std::nullptr_t> = nullptr>

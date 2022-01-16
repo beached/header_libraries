@@ -10,6 +10,7 @@
 
 #include "cpp_17.h"
 #include "daw_algorithm.h"
+#include "daw_move.h"
 #include "daw_optional.h"
 #include "daw_traits.h"
 
@@ -28,8 +29,8 @@ namespace daw {
 
 		template<typename K, typename V>
 		constexpr key_value_t( K &&k, V &&v )
-		  : key( std::forward<K>( k ) )
-		  , value( std::forward<V>( v ) ) {}
+		  : key( DAW_FWD2( K, k ) )
+		  , value( DAW_FWD2( V, v ) ) {}
 	};
 
 	template<typename Key, typename Value>
@@ -40,7 +41,7 @@ namespace daw {
 		constexpr bounded_hash_map_item_t( ) = default;
 
 		constexpr bounded_hash_map_item_t( key_value_t<Key, Value> &&Kv )
-		  : kv( std::move( Kv ) )
+		  : kv( DAW_MOVE( Kv ) )
 		  , has_value( true ) {}
 
 		constexpr bounded_hash_map_item_t( key_value_t<Key, Value> const &Kv )
@@ -49,7 +50,7 @@ namespace daw {
 
 		template<typename K, typename V>
 		constexpr bounded_hash_map_item_t( K &&k, V &&v )
-		  : kv( std::forward<K>( k ), std::forward<V>( v ) )
+		  : kv( DAW_FWD2( K, k ), DAW_FWD2( V, v ) )
 		  , has_value( true ) {}
 
 		explicit constexpr operator bool( ) const {
@@ -57,9 +58,7 @@ namespace daw {
 		}
 	};
 	template<typename Key, typename Value>
-	bounded_hash_map_item_t( Key &&key, Value &&value )
-	  -> bounded_hash_map_item_t<daw::remove_cvref_t<Key>,
-	                             daw::remove_cvref_t<Value>>;
+	bounded_hash_map_item_t( Key, Value ) -> bounded_hash_map_item_t<Key, Value>;
 
 	template<typename Key, typename Value>
 	struct bounded_hash_map_iterator;
@@ -346,7 +345,7 @@ namespace daw {
 		constexpr void insert( value_type &&item ) {
 			auto const index = find_index( item.key );
 			m_data[*index] =
-			  daw::bounded_hash_map_item_t<Key, Value>( std::move( item ) );
+			  daw::bounded_hash_map_item_t<Key, Value>( DAW_MOVE( item ) );
 		}
 
 	public:
@@ -376,8 +375,8 @@ namespace daw {
 		           std::nullptr_t> = nullptr>
 		constexpr void insert( K &&key, V &&value ) {
 			auto const index = find_index( key );
-			m_data[*index] = bounded_hash_map_item_t( std::forward<K>( key ),
-			                                          std::forward<V>( value ) );
+			m_data[*index] =
+			  bounded_hash_map_item_t( DAW_FWD2( K, key ), DAW_FWD2( V, value ) );
 		}
 
 		constexpr void insert( std::pair<Key const, Value> const &item ) {
@@ -400,7 +399,7 @@ namespace daw {
 			decltype( auto ) item = m_data[*find_index( key )];
 			if( !item ) {
 				item.has_value = true;
-				item.kv.key = std::forward<K>( key );
+				item.kv.key = DAW_FWD2( K, key );
 				item.kv.value = Value{ };
 			}
 			return item.kv.value;
@@ -445,9 +444,9 @@ namespace daw {
 			  cbegin( m_data ), cend( m_data ), size_type{ 0 },
 			  []( auto &&init, auto &&v ) {
 				  if( v ) {
-					  return std::forward<decltype( init )>( init ) + size_type{ 1 };
+					  return DAW_FWD( init ) + size_type{ 1 };
 				  }
-				  return std::forward<decltype( init )>( init );
+				  return DAW_FWD( init );
 			  } );
 		}
 
@@ -524,6 +523,10 @@ namespace daw {
 			}
 		}
 	};
+	template<typename Key, typename Value, typename Hash = std::hash<Key>,
+	         size_t N>
+	bounded_hash_map( std::pair<Key, Value> const ( &items )[N] )
+	  -> bounded_hash_map<Key, Value, N, Hash>;
 
 	template<typename Key, typename Value, typename Hash = std::hash<Key>,
 	         size_t N>
