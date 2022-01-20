@@ -25,6 +25,7 @@
 #include "iterator/daw_back_inserter.h"
 #include "iterator/daw_iterator.h"
 
+#include <array>
 #include <ciso646>
 #include <cstddef>
 #include <cstdint>
@@ -150,7 +151,7 @@ namespace daw {
 				  "concept.  See "
 				  "http://en.cppreference.com/w/cpp/concept/Predicate" );
 				for( ; first != last; ++first ) {
-					if( !p( *first ) ) {
+					if( not p( *first ) ) {
 						return first;
 					}
 				}
@@ -177,7 +178,7 @@ namespace daw {
 							break;
 						}
 					}
-					if( !found ) {
+					if( not found ) {
 						return first;
 					}
 				}
@@ -1917,6 +1918,29 @@ namespace daw {
 		} // namespace string_view_literals
 
 		namespace sv2_details {
+			template<typename OStream,
+			         std::enable_if_t<daw::traits::is_ostream_like_lite_v<OStream>,
+			                          std::nullptr_t> = nullptr>
+			inline void sv_insert_fill_chars( OStream &os, std::size_t n ) {
+				using CharT = typename OStream::char_type;
+				static_assert(
+				  traits::traits_details::ostream_detectors::has_write_member_v<OStream,
+				                                                                CharT>,
+				  "OStream Must has write member" );
+
+				std::array<CharT, 8> fill_chars = { 0 };
+				fill_chars.fill( os.fill( ) );
+
+				for( ; n >= fill_chars.size( ) and os.good( );
+				     n -= fill_chars.size( ) ) {
+					os.write( fill_chars.data( ),
+					          static_cast<intmax_t>( fill_chars.size( ) ) );
+				}
+				if( n > 0 and os.good( ) ) {
+					os.write( fill_chars.data( ), static_cast<intmax_t>( n ) );
+				}
+			}
+
 			template<typename OStream, typename CharT,
 			         daw::string_view_bounds_type Bounds,
 			         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,
