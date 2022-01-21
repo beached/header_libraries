@@ -12,10 +12,17 @@
 #include <cctype>
 #include <cstdio>
 #include <cstdlib>
+#include <cstddef>
+#include <cstring>
+#include <exception>
 #include <iostream>
+#include <map>
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <string_view>
+#include <type_traits>
+#include <utility>
 
 #if defined( DAW_USE_EXCEPTIONS )
 #define daw_expecting( Lhs, Rhs )                                              \

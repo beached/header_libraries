@@ -14,6 +14,7 @@
 
 #include <algorithm>
 #include <ciso646>
+#include <deque>
 #include <iterator>
 #include <type_traits>
 #include <unordered_map>
