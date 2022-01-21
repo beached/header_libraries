@@ -301,18 +301,6 @@ namespace daw {
 } // namespace daw
 
 namespace daw::traits {
-	namespace traits_details {
-		template<typename T>
-		[[maybe_unused]] auto has_to_string( T const &, long ) -> std::false_type;
-
-		template<typename T>
-		[[maybe_unused]] auto has_to_string( T const &lhs, int )
-		  -> std::is_convertible<decltype( lhs.to_string( ) ), std::string>;
-	} // namespace traits_details
-
-	template<typename T>
-	inline constexpr bool has_to_string_v =
-	  decltype( traits_details::has_to_string( std::declval<T>( ), 1 ) )::value;
 
 	namespace traits_details {
 		namespace operators {
@@ -412,6 +400,16 @@ namespace daw::traits {
 	template<typename String>
 	inline constexpr bool is_not_array_array_v =
 	  not daw::is_detected_v<detectors::is_array_array, String>;
+
+	namespace traits_details {
+		template<typename T>
+		using has_to_string_test =
+		  decltype( std::string( std::declval<T>( ).to_string( ) ) );
+	} // namespace traits_details
+
+	template<typename T>
+	inline constexpr bool has_to_string_v =
+	  is_detected_v<traits_details::has_to_string_test, T>;
 
 	template<typename String>
 	inline constexpr bool is_string_view_like_v =
