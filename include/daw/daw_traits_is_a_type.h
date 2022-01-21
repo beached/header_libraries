@@ -20,7 +20,7 @@
 namespace daw::traits {
 #define GENERATE_IS_STD_CONTAINER1( ContainerName )                            \
 	template<typename T>                                                         \
-	constexpr bool is_##ContainerName##_v =                                      \
+	inline constexpr bool is_##ContainerName##_v =                               \
 	  std::is_same_v<T, std::ContainerName<typename T::value_type>>;             \
 	template<typename T>                                                         \
 	using is_##ContainerName = std::bool_constant<is_##ContainerName##_v<T>>
@@ -35,7 +35,7 @@ namespace daw::traits {
 
 #define GENERATE_IS_STD_CONTAINER2( ContainerName )                            \
 	template<typename T>                                                         \
-	constexpr bool is_##ContainerName##_v = std::is_same_v<                      \
+	inline constexpr bool is_##ContainerName##_v = std::is_same_v<                      \
 	  T, std::ContainerName<typename T::key_type, typename T::mapped_type>>;     \
 	template<typename T>                                                         \
 	using is_##ContainerName = std::bool_constant<is_##ContainerName##_v<T>>
