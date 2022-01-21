@@ -17,17 +17,10 @@
 #include <ciso646>
 #include <cstddef>
 #include <cstdint>
-#include <deque>
-#include <iterator>
-#include <list>
-#include <map>
-#include <set>
+
 #include <tuple>
 #include <type_traits>
-#include <unordered_map>
-#include <unordered_set>
 #include <utility>
-#include <vector>
 
 namespace daw::traits {
 	template<typename T, typename... Ts>
@@ -261,70 +254,13 @@ namespace daw::traits {
 	template<typename T>
 	inline constexpr bool static_not_v = static_not<T>::value;
 
-#define GENERATE_IS_STD_CONTAINER1( ContainerName )                            \
-	template<typename T>                                                         \
-	constexpr bool is_##ContainerName##_v =                                      \
-	  std::is_same_v<T, std::ContainerName<typename T::value_type>>;             \
-	template<typename T>                                                         \
-	using is_##ContainerName = std::bool_constant<is_##ContainerName##_v<T>>
-
-	GENERATE_IS_STD_CONTAINER1( vector );
-	GENERATE_IS_STD_CONTAINER1( list );
-	GENERATE_IS_STD_CONTAINER1( set );
-	GENERATE_IS_STD_CONTAINER1( unordered_set );
-	GENERATE_IS_STD_CONTAINER1( deque );
-
-#undef GENERATE_IS_STD_CONTAINER1
-
-#define GENERATE_IS_STD_CONTAINER2( ContainerName )                            \
-	template<typename T>                                                         \
-	constexpr bool is_##ContainerName##_v = std::is_same_v<                      \
-	  T, std::ContainerName<typename T::key_type, typename T::mapped_type>>;     \
-	template<typename T>                                                         \
-	using is_##ContainerName = std::bool_constant<is_##ContainerName##_v<T>>
-
-	GENERATE_IS_STD_CONTAINER2( map );
-	GENERATE_IS_STD_CONTAINER2( unordered_map );
-
-#undef GENERATE_IS_STD_CONTAINER2
-
 	template<typename T>
-	using is_single_item_container =
-	  std::disjunction<is_vector<T>, is_list<T>, is_set<T>, is_deque<T>,
-	                   is_unordered_set<T>>;
-
-	template<typename T>
-	inline constexpr bool is_single_item_container_v =
-	  is_single_item_container<T>::value;
-
-	template<typename T>
-	using is_container =
-	  std::disjunction<is_vector<T>, is_list<T>, is_set<T>, is_deque<T>,
-	                   is_unordered_set<T>, is_map<T>, is_unordered_map<T>>;
-
-	template<typename T>
-	inline constexpr bool is_container_v = is_container<T>::value;
-
-	template<typename T>
-	using is_map_type = std::disjunction<is_map<T>, is_unordered_map<T>>;
-
-	template<typename T>
-	inline constexpr bool is_map_type_v = is_map_type<T>::value;
-
-	template<typename T>
-	using is_numeric =
+	using is_numeric [[deprecated( "use std::is_arithmetic" )]] =
 	  std::disjunction<std::is_floating_point<T>, std::is_integral<T>>;
 
 	template<typename T>
-	inline constexpr bool is_numeric_v = is_numeric<T>::value;
-
-	template<typename T>
-	using is_container_or_array =
-	  std::disjunction<is_container<T>, std::is_array<T>>;
-
-	template<typename T>
-	inline constexpr bool is_container_or_array_v =
-	  is_container_or_array<T>::value;
+	inline constexpr bool is_numeric_v
+	  [[deprecated( "use std::is_arithmetic_v" )]] = is_numeric<T>::value;
 
 	namespace traits_details::detectors {
 		template<typename OutStream, typename T>
