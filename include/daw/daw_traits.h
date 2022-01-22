@@ -223,27 +223,11 @@ namespace daw::traits {
 	  is_detected_v<traits_details::detectors::has_substr_member, T>;
 
 	template<typename T>
-	inline constexpr bool is_string_v =
-	  all_true_v<std::is_convertible_v<T, std::string> or
-	             std::is_convertible_v<T, std::wstring>>;
-
-	template<typename T>
-	inline constexpr bool isnt_string_v = not is_string_v<T>;
-
-	template<typename T>
-	inline constexpr bool is_container_not_string_v =
-	  all_true_v<isnt_string_v<T>, is_container_like_v<T>>;
-
-	template<typename T>
 	inline constexpr bool is_map_like_v =
 	  all_true_v<is_container_like_v<T>, has_mapped_type_member_v<T>>;
 
 	template<typename T>
 	inline constexpr bool isnt_map_like_v = not is_map_like_v<T>;
-
-	template<typename T>
-	inline constexpr bool is_vector_like_not_string_v =
-	  all_true_v<is_container_not_string_v<T>, isnt_map_like_v<T>>;
 
 	template<typename T>
 	using static_not = std::bool_constant<not T::value>;

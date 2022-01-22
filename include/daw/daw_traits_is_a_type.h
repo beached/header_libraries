@@ -8,11 +8,14 @@
 
 #pragma once
 
+#include "daw_traits.h"
+
 #include <deque>
 #include <iterator>
 #include <list>
 #include <map>
 #include <set>
+#include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
@@ -35,7 +38,7 @@ namespace daw::traits {
 
 #define GENERATE_IS_STD_CONTAINER2( ContainerName )                            \
 	template<typename T>                                                         \
-	inline constexpr bool is_##ContainerName##_v = std::is_same_v<                      \
+	inline constexpr bool is_##ContainerName##_v = std::is_same_v<               \
 	  T, std::ContainerName<typename T::key_type, typename T::mapped_type>>;     \
 	template<typename T>                                                         \
 	using is_##ContainerName = std::bool_constant<is_##ContainerName##_v<T>>
@@ -75,4 +78,21 @@ namespace daw::traits {
 	template<typename T>
 	inline constexpr bool is_container_or_array_v =
 	  is_container_or_array<T>::value;
+
+	template<typename T>
+	inline constexpr bool is_string_v =
+	  all_true_v<std::is_convertible_v<T, std::string> or
+	             std::is_convertible_v<T, std::wstring>>;
+
+	template<typename T>
+	inline constexpr bool isnt_string_v = not is_string_v<T>;
+
+	template<typename T>
+	inline constexpr bool is_container_not_string_v =
+	  all_true_v<isnt_string_v<T>, is_container_like_v<T>>;
+
+	template<typename T>
+	inline constexpr bool is_vector_like_not_string_v =
+	  all_true_v<is_container_not_string_v<T>, isnt_map_like_v<T>>;
+
 } // namespace daw::traits
