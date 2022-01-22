@@ -7,17 +7,15 @@
 //
 
 #include "daw/daw_algorithm.h"
+#include "daw/daw_algorithm_cx.h"
 #include "daw/daw_benchmark.h"
 
 #include <algorithm>
 #include <array>
 #include <cstddef>
-#include <ctime>
 #include <functional>
-#include <iostream>
 #include <iterator>
 #include <unordered_map>
-#include <vector>
 
 constexpr bool daw_safe_advance_test_001( ) {
 	std::array<int, 11> a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
