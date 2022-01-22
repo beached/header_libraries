@@ -144,7 +144,13 @@ namespace daw {
 		nonesuch( nonesuch const & ) = delete;
 		void operator=( nonesuch const & ) = delete;
 	};
-#if defined( __cpp_concepts )
+#if defined( _MSC_VER )
+#if _MSC_VER < 1930 and not defined( DAW_NO_CONCEPTS )
+#define DAW_NO_CONCEPTS
+#endif
+#endif
+
+#if defined( __cpp_concepts ) and not defined( DAW_NO_CONCEPTS )
 #if __cpp_concepts >= 201907L
 #define DAW_HAS_CONCEPTS
 #endif
