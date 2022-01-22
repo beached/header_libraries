@@ -13,7 +13,6 @@
 #include "daw_enable_if.h"
 #include "daw_exception.h"
 #include "daw_move.h"
-#include "daw_swap.h"
 #include "daw_traits.h"
 #include "daw_view.h"
 #include "impl/daw_math_impl.h"
@@ -330,29 +329,6 @@ namespace daw::algorithm {
 		return last;
 	}
 
-	template<typename ForwardIterator, typename UnaryPredicate>
-	constexpr ForwardIterator partition( ForwardIterator first,
-	                                     ForwardIterator last,
-	                                     UnaryPredicate &&unary_predicate ) {
-		// Precondition checks
-		traits::is_forward_access_iterator_test<ForwardIterator>( );
-		traits::is_input_iterator_test<ForwardIterator>( );
-		traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
-
-		first = find_if_not( first, last, unary_predicate );
-		if( first == last ) {
-			return first;
-		}
-
-		for( auto it = std::next( first ); it != last; ++it ) {
-			if( unary_predicate( *it ) ) {
-				daw::iter_swap( it, first );
-				++first;
-			}
-		}
-		return first;
-	}
-
 	template<typename ForwardIterator, typename Value,
 	         typename Predicate = std::less<>>
 	constexpr ForwardIterator
@@ -507,54 +483,6 @@ namespace daw::algorithm {
 	template<typename ValueType, typename... Values>
 	constexpr bool are_equal( ValueType v1, ValueType v2, Values... others ) {
 		return are_equal( v1, v2 ) and are_equal( others... );
-	}
-
-	/// @brief Performs a left rotation on a range of elements.
-	/// @tparam ForwardIterator type of Iterator for items in range
-	/// @tparam LastType type that is equal to ForwardIterator when end of range
-	/// reached
-	/// @param first first item in range
-	/// @param middle middle of range, first item in new range
-	/// @param last last item in range
-	template<typename ForwardIterator, typename LastType>
-	constexpr void rotate(
-	  ForwardIterator first, ForwardIterator middle,
-	  LastType last ) noexcept( noexcept( daw::cswap( *first, *middle ) ) ) {
-
-		traits::is_forward_access_iterator_test<ForwardIterator>( );
-		traits::is_inout_iterator_test<ForwardIterator>( );
-
-		ForwardIterator tmp = middle;
-		while( first != tmp ) {
-			daw::cswap( *first, *tmp );
-			++first;
-			++tmp;
-			if( tmp == last ) {
-				tmp = middle;
-			} else if( first == middle ) {
-				middle = tmp;
-			}
-		}
-	}
-
-	template<typename ForwardIterator>
-	constexpr std::pair<ForwardIterator, ForwardIterator>
-	slide( ForwardIterator first, ForwardIterator last, ForwardIterator target ) {
-
-		traits::is_forward_access_iterator_test<ForwardIterator>( );
-		traits::is_input_iterator_test<ForwardIterator>( );
-
-		if( target < first ) {
-			return std::make_pair( target,
-			                       daw::algorithm::rotate( target, first, last ) );
-		}
-
-		if( last < target ) {
-			return std::make_pair( daw::algorithm::rotate( first, last, target ),
-			                       target );
-		}
-
-		return std::make_pair( first, last );
 	}
 
 	template<typename ForwardIterator, typename Predicate>
@@ -1521,35 +1449,6 @@ namespace daw::algorithm {
 		return first;
 	}
 
-	template<typename RandomIterator, typename Compare = std::less<>>
-	constexpr void nth_element(
-	  RandomIterator first, RandomIterator nth, RandomIterator const last,
-	  Compare comp = Compare{ } ) noexcept( noexcept( comp( *first, *nth ) )
-	                                          &&noexcept( daw::cswap( *first,
-	                                                                  *nth ) ) ) {
-
-		traits::is_random_access_iterator_test<RandomIterator>( );
-		traits::is_inout_iterator_test<RandomIterator>( );
-
-		traits::is_compare_test<Compare, decltype( *first ), decltype( *nth )>( );
-
-		if( not( first != last ) ) {
-			return;
-		}
-		while( first != nth ) {
-			auto min_idx = first;
-			auto j = daw::next( first );
-			while( j != last ) {
-				if( daw::invoke( comp, *j, *min_idx ) ) {
-					min_idx = j;
-					daw::cswap( *first, *min_idx );
-				}
-				++j;
-			}
-			++first;
-		}
-	}
-
 	/// @brief Examines the range [first, last) and finds the largest range
 	/// beginning at first in which the elements are sorted in ascending order.
 	/// @tparam ForwardIterator Iterator type used to hold range
@@ -2149,18 +2048,6 @@ static_assert(
 		return first_out;
 	}
 
-	namespace algorithm_details {
-		template<intmax_t Pos0, intmax_t Pos1, typename Iterator,
-		         typename Compare = std::less<>>
-		constexpr void swap_if( Iterator first,
-		                        Compare comp = Compare{ } ) noexcept {
-			auto const f = std::next( first, Pos0 );
-			auto const l = std::next( first, Pos1 );
-			if( not comp( *f, *l ) ) {
-				daw::iter_swap( f, l );
-			}
-		}
-	} // namespace algorithm_details
 
 	template<typename From, typename To, typename Query>
 	constexpr void extract_to( From &from, To &to, Query &&q ) {
@@ -2405,7 +2292,7 @@ static_assert(
 	find_one_of_result<Iterator> find_one_of( Iterator first, IteratorLast last,
 	                                          Predicates... preds ) {
 		while( first != last ) {
-			std::size_t idx = -std::size_t{1};
+			std::size_t idx = -std::size_t{ 1 };
 			auto &&elem = *first;
 			bool found = ( ( ++idx, preds( elem ) ) or ... );
 			if( found ) {

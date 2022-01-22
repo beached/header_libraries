@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw_algorithm.h"
+#include "daw_algorithm_cx.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
 #include "iterator/daw_random_iterator.h"
@@ -20,6 +21,18 @@
 #include <iterator>
 
 namespace daw {
+	namespace algorithm_details {
+		template<intmax_t Pos0, intmax_t Pos1, typename Iterator,
+		         typename Compare = std::less<>>
+		constexpr void swap_if( Iterator first,
+		                        Compare comp = Compare{ } ) noexcept {
+			auto const f = std::next( first, Pos0 );
+			auto const l = std::next( first, Pos1 );
+			if( not comp( *f, *l ) ) {
+				daw::iter_swap( f, l );
+			}
+		}
+	} // namespace algorithm_details
 	namespace sort_n_details {
 		// Sorting networks are from http://pages.ripco.net/~jgamble/nw.html
 
