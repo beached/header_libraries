@@ -10,7 +10,13 @@
 
 #include "daw_cpp_feature_check.h"
 
-#if defined( __cpp_consteval )
+#if defined( _MSC_VER )
+#if _MSC_VER < 1930 and not defined( DAW_NO_CONSTEVAL )
+#define DAW_NO_CONSTEVAL
+#endif
+#endif
+
+#if defined( __cpp_consteval ) and not defined( DAW_NO_CONSTEVAL )
 #if __cpp_consteval >= 201811L
 #define DAW_HAS_CONSTEVAL
 #endif
@@ -22,7 +28,7 @@ namespace daw {
 	// Force evaluation of v at compile time
 	template<typename T>
 	consteval auto const_evaluate( T &&v ) {
-		return static_cast<T&&>( v );
+		return static_cast<T &&>( v );
 	}
 } // namespace daw
 #define DAW_CONST_EVALUATE( ... ) ::daw::const_evaluate( __VA_ARGS__ )
@@ -30,6 +36,6 @@ namespace daw {
 #else
 #define DAW_CONSTEVAL constexpr
 // Cannot do, fallback to expression
-#define DAW_CONST_EVALUATE( ... ) (__VA_ARGS__)
-#define DAW_AS_CONSTANT( ... ) (__VA_ARGS__)
+#define DAW_CONST_EVALUATE( ... ) ( __VA_ARGS__ )
+#define DAW_AS_CONSTANT( ... ) ( __VA_ARGS__ )
 #endif
