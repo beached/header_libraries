@@ -24,15 +24,14 @@
 #include <functional>
 #include <iterator>
 #include <optional>
-#include <stdexcept>
 #include <type_traits>
 #include <utility>
 #include <vector>
 
 namespace daw {
 	template<typename Map, typename Key>
-	constexpr decltype( auto ) try_get( Map &container, Key &&k ) {
-		auto pos = container.find( std::forward<Key>( k ) );
+	constexpr auto try_get( Map &container, Key &&k ) {
+		auto pos = container.find( DAW_FWD2( Key, k ) );
 		using result_t = daw::remove_cvref_t<decltype( *pos )>;
 		if( pos == std::end( container ) ) {
 			return std::optional<result_t>{ };
@@ -41,8 +40,8 @@ namespace daw {
 	}
 
 	template<typename Map, typename Key>
-	constexpr decltype( auto ) try_get( Map const &container, Key &&k ) {
-		auto pos = container.find( std::forward<Key>( k ) );
+	constexpr auto try_get( Map const &container, Key &&k ) {
+		auto pos = container.find( DAW_FWD2( Key, k ) );
 		using result_t = daw::remove_cvref_t<decltype( *pos )>;
 		if( pos == std::end( container ) ) {
 			return std::optional<result_t>{ };
@@ -394,20 +393,6 @@ namespace daw::algorithm {
 		return container.crend( );
 	}
 
-	template<typename Value>
-	[[deprecated( "use vector::data( ) member" )]] inline Value const *
-	to_array( std::vector<Value> const &values ) {
-
-		return values.data( );
-	}
-
-	template<typename Value>
-	[[deprecated( "use vector::data( ) member" )]] inline Value *
-	to_array( std::vector<Value> &values ) {
-
-		return values.data( );
-	}
-
 	template<typename Ptr>
 	[[deprecated]] constexpr bool is_null_ptr( Ptr const *const ptr ) noexcept {
 		return nullptr == ptr;
@@ -495,7 +480,7 @@ namespace daw::algorithm {
 
 		auto start =
 		  std::stable_partition( first, target, [&predicate]( auto &&...args ) {
-			  return not predicate( std::forward<decltype( args )>( args )... );
+			  return not predicate( DAW_FWD( args )... );
 		  } );
 
 		auto finish = std::stable_partition( target, last, predicate );
@@ -506,9 +491,9 @@ namespace daw::algorithm {
 	template<typename T>
 	constexpr T clamp( T &&value, T &&max_value ) noexcept {
 		if( value > max_value ) {
-			return std::forward<T>( max_value );
+			return DAW_FWD2( T, max_value );
 		}
-		return std::forward<T>( value );
+		return DAW_FWD2( T, value );
 	}
 
 	template<size_t N>
@@ -517,11 +502,11 @@ namespace daw::algorithm {
 		static constexpr void run( std::size_t i, Tuple &&tp, Func &&func ) {
 			constexpr size_t const I = ( N - 1 );
 			if( i == I ) {
-				daw::invoke( std::forward<Func>( func ),
-				             std::get<I>( std::forward<Tuple>( tp ) ) );
+				daw::invoke( DAW_FWD2( Func, func ),
+				             std::get<I>( DAW_FWD2( Tuple, tp ) ) );
 			} else {
-				tuple_functor<I>::run( i, std::forward<Tuple>( tp ),
-				                       std::forward<Func>( func ) );
+				tuple_functor<I>::run( i, DAW_FWD2( Tuple, tp ),
+				                       DAW_FWD2( Func, func ) );
 			}
 		}
 	}; // namespace algorithm
@@ -613,7 +598,7 @@ namespace daw::algorithm {
 
 		for( auto it = first; it != last; ++it ) {
 			if( value == *it ) {
-				result.push_back( daw::move( temp ) );
+				result.push_back( DAW_MOVE( temp ) );
 				temp.clear( );
 			} else {
 				temp.push_back( *it );
@@ -633,8 +618,8 @@ namespace daw::algorithm {
 
 		traits::is_unary_predicate_test<UnaryPredicate, Value>( );
 
-		return daw::invoke( std::forward<UnaryPredicate>( func ),
-		                    std::forward<Value>( value ) );
+		return daw::invoke( DAW_FWD2( UnaryPredicate, func ),
+		                    DAW_FWD2( Value, value ) );
 	}
 
 	/// @brief Returns true if any function returns true for the value
@@ -648,9 +633,9 @@ namespace daw::algorithm {
 
 		traits::is_unary_predicate_test<UnaryPredicate, Value>( );
 
-		return daw::invoke( std::forward<UnaryPredicate>( func ), value ) or
-		       satisfies_one( std::forward<Value>( value ),
-		                      std::forward<UnaryPredicates>( funcs )... );
+		return daw::invoke( DAW_FWD2( UnaryPredicate, func ), value ) or
+		       satisfies_one( DAW_FWD2( Value, value ),
+		                      DAW_FWD2( UnaryPredicates, funcs )... );
 	}
 
 	/// @brief Returns true if any function returns true for any value in range
@@ -695,8 +680,8 @@ namespace daw::algorithm {
 
 		traits::is_unary_predicate_test<UnaryPredicate, Value>( );
 
-		return daw::invoke( std::forward<UnaryPredicate>( func ),
-		                    std::forward<Value>( value ) );
+		return daw::invoke( DAW_FWD2( UnaryPredicate, func ),
+		                    DAW_FWD2( Value, value ) );
 	}
 
 	/// @brief Returns true if all function(s) returns true for the value
@@ -710,11 +695,9 @@ namespace daw::algorithm {
 
 		traits::is_unary_predicate_test<UnaryPredicate, Value>( );
 
-		auto const result =
-		  daw::invoke( std::forward<UnaryPredicate>( func ), value );
-		return result and
-		       satisfies_all( std::forward<Value>( value ),
-		                      std::forward<UnaryPredicates>( funcs )... );
+		auto const result = daw::invoke( DAW_FWD2( UnaryPredicate, func ), value );
+		return result and satisfies_all( DAW_FWD2( Value, value ),
+		                                 DAW_FWD2( UnaryPredicates, funcs )... );
 	}
 
 	/// @brief Returns true if all function(s) returns true for all values in
@@ -757,15 +740,15 @@ namespace daw::algorithm {
 		public:
 			template<typename L, typename U>
 			constexpr in_range( L &&lower, U &&upper )
-			  : m_lower( std::forward<L>( lower ) )
-			  , m_upper( std::forward<U>( upper ) ) {
+			  : m_lower( DAW_FWD2( L, lower ) )
+			  , m_upper( DAW_FWD2( U, upper ) ) {
 
 				daw::exception::precondition_check<std::out_of_range>( lower <= upper );
 			}
 
 			template<typename T>
 			constexpr bool operator( )( T &&value ) const {
-				return m_lower <= value and std::forward<T>( value ) <= m_upper;
+				return m_lower <= value and DAW_FWD2( T, value ) <= m_upper;
 			}
 		}; // in_range
 
@@ -777,11 +760,11 @@ namespace daw::algorithm {
 			template<typename V,
 			         daw::enable_when_t<std::is_convertible_v<V, Value>> = nullptr>
 			constexpr equal_to( V &&value )
-			  : m_value( std::forward<V>( value ) ) {}
+			  : m_value( DAW_FWD2( V, value ) ) {}
 
 			template<typename T>
 			constexpr bool operator( )( T &&value ) const {
-				return std::forward<T>( value ) == m_value;
+				return DAW_FWD2( T, value ) == m_value;
 			}
 		}; // equal_to
 
@@ -793,11 +776,11 @@ namespace daw::algorithm {
 			template<typename V,
 			         daw::enable_when_t<std::is_convertible_v<V, Value>> = nullptr>
 			constexpr less_than( V &&value )
-			  : m_value( std::forward<V>( value ) ) {}
+			  : m_value( DAW_FWD2( V, value ) ) {}
 
 			template<typename T>
 			constexpr bool operator( )( T &&value ) const {
-				return std::forward<T>( value ) < m_value;
+				return DAW_FWD2( T, value ) < m_value;
 			}
 		}; // less_than
 
@@ -809,11 +792,11 @@ namespace daw::algorithm {
 			template<typename V,
 			         daw::enable_when_t<std::is_convertible_v<V, Value>> = nullptr>
 			constexpr greater_than( V &&value )
-			  : m_value( std::forward<V>( value ) ) {}
+			  : m_value( DAW_FWD2( V, value ) ) {}
 
 			template<typename T>
 			constexpr bool operator( )( T &&value ) const {
-				return std::forward<T>( value ) > m_value;
+				return DAW_FWD2( T, value ) > m_value;
 			}
 		}; // greater_than
 
@@ -825,11 +808,11 @@ namespace daw::algorithm {
 			template<typename V,
 			         daw::enable_when_t<std::is_convertible_v<V, Value>> = nullptr>
 			constexpr greater_than_or_equal_to( V &&value )
-			  : m_value( std::forward<V>( value ) ) {}
+			  : m_value( DAW_FWD2( V, value ) ) {}
 
 			template<typename T>
 			constexpr bool operator( )( T &&value ) const {
-				return std::forward<T>( value ) >= m_value;
+				return DAW_FWD2( T, value ) >= m_value;
 			}
 		}; // greater_than_or_equal_to
 
@@ -841,11 +824,11 @@ namespace daw::algorithm {
 			template<typename V,
 			         daw::enable_when_t<std::is_convertible_v<V, Value>> = nullptr>
 			constexpr less_than_or_equal_to( V &&value )
-			  : m_value( std::forward<V>( value ) ) {}
+			  : m_value( DAW_FWD2( V, value ) ) {}
 
 			template<typename T>
 			constexpr bool operator( )( T &&value ) const {
-				return std::forward<T>( value ) <= m_value;
+				return DAW_FWD2( T, value ) <= m_value;
 			}
 		}; // less_than_or_equal_to
 	}    // namespace algorithm_details
@@ -859,7 +842,7 @@ namespace daw::algorithm {
 	template<typename Lower, typename Upper>
 	constexpr auto in_range( Lower &&lower, Upper &&upper ) {
 		return algorithm_details::in_range<Lower, Upper>(
-		  std::forward<Lower>( lower ), std::forward<Upper>( upper ) );
+		  DAW_FWD2( Lower, lower ), DAW_FWD2( Upper, upper ) );
 	}
 
 	/// @brief Returns a callable that returns true if value passed is equal to
@@ -869,7 +852,7 @@ namespace daw::algorithm {
 	/// constructed with
 	template<typename Value>
 	constexpr auto equal_to( Value &&value ) {
-		return algorithm_details::equal_to<Value>( std::forward<Value>( value ) );
+		return algorithm_details::equal_to<Value>( DAW_FWD2( Value, value ) );
 	}
 
 	/// @brief Returns a callable that returns true if value passed is greater
@@ -879,8 +862,7 @@ namespace daw::algorithm {
 	/// constructed with
 	template<typename Value>
 	constexpr auto greater_than( Value &&value ) {
-		return algorithm_details::greater_than<Value>(
-		  std::forward<Value>( value ) );
+		return algorithm_details::greater_than<Value>( DAW_FWD2( Value, value ) );
 	}
 
 	/// @brief Returns a callable that returns true if value passed is greater
@@ -891,7 +873,7 @@ namespace daw::algorithm {
 	template<typename Value>
 	constexpr auto greater_than_or_equal_to( Value &&value ) {
 		return algorithm_details::greater_than_or_equal_to<Value>(
-		  std::forward<Value>( value ) );
+		  DAW_FWD2( Value, value ) );
 	}
 
 	/// @brief Returns a callable that returns true if value passed is less than
@@ -901,7 +883,7 @@ namespace daw::algorithm {
 	/// constructed with
 	template<typename Value>
 	constexpr auto less_than( Value &&value ) {
-		return algorithm_details::less_than<Value>( std::forward<Value>( value ) );
+		return algorithm_details::less_than<Value>( DAW_FWD2( Value, value ) );
 	}
 
 	/// @brief Returns a callable that returns true if value passed is less than
@@ -912,7 +894,7 @@ namespace daw::algorithm {
 	template<typename Value>
 	constexpr auto less_than_or_equal_to( Value &&value ) {
 		return algorithm_details::less_than_or_equal_to<Value>(
-		  std::forward<Value>( value ) );
+		  DAW_FWD2( Value, value ) );
 	}
 
 	/// @brief Returns true if the first range [first1, last1) is
@@ -1260,14 +1242,14 @@ namespace daw::algorithm {
 	constexpr OutputIterator
 	move( InputIterator first, LastType const last,
 	      OutputIterator
-	        first_out ) noexcept( noexcept( *first_out = daw::move( *first ) ) ) {
+	        first_out ) noexcept( noexcept( *first_out = DAW_MOVE( *first ) ) ) {
 
 		traits::is_input_iterator_test<InputIterator>( );
 		traits::is_output_iterator_test<OutputIterator,
-		                                decltype( daw::move( *first ) )>( );
+		                                decltype( DAW_MOVE( *first ) )>( );
 
 		while( first != last ) {
-			*first_out = daw::move( *first );
+			*first_out = DAW_MOVE( *first );
 			++first;
 			++first_out;
 		}
@@ -1285,14 +1267,14 @@ namespace daw::algorithm {
 	template<typename InputIterator, typename OutputIterator>
 	constexpr auto move_n(
 	  InputIterator first, OutputIterator first_out,
-	  size_t count ) noexcept( noexcept( *first_out = daw::move( *first ) ) ) {
+	  size_t count ) noexcept( noexcept( *first_out = DAW_MOVE( *first ) ) ) {
 
 		traits::is_input_iterator_test<InputIterator>( );
 		traits::is_output_iterator_test<OutputIterator,
-		                                decltype( daw::move( *first ) )>( );
+		                                decltype( DAW_MOVE( *first ) )>( );
 
 		while( count-- > 0 ) {
-			*first_out = daw::move( *first );
+			*first_out = DAW_MOVE( *first );
 			++first;
 			++first_out;
 		}
@@ -1605,7 +1587,7 @@ namespace daw::algorithm {
 			init = daw::invoke( binary_op, init, *first );
 			++first;
 		}
-		return daw::move( init );
+		return DAW_MOVE( init );
 	}
 
 	template<typename InputIterator1, typename InputIterator1Last,
@@ -1698,9 +1680,9 @@ namespace daw::algorithm {
 	constexpr T accumulate( InputIterator first, InputIterator last,
 	                        T init ) noexcept {
 		for( ; first != last; ++first ) {
-			init = daw::move( init ) + *first;
+			init = DAW_MOVE( init ) + *first;
 		}
-		return daw::move( init );
+		return DAW_MOVE( init );
 	}
 
 	/***
@@ -1723,7 +1705,7 @@ namespace daw::algorithm {
 	constexpr T accumulate(
 	  InputIterator first, LastType last, T init,
 	  BinaryOperation binary_op =
-	    BinaryOperation{ } ) noexcept( noexcept( binary_op( daw::move( init ),
+	    BinaryOperation{ } ) noexcept( noexcept( binary_op( DAW_MOVE( init ),
 	                                                        *first ) ) ) {
 
 		/*
@@ -1735,10 +1717,10 @@ static_assert(
 	*/
 
 		while( first != last ) {
-			init = daw::invoke( binary_op, daw::move( init ), *first );
+			init = daw::invoke( binary_op, DAW_MOVE( init ), *first );
 			++first;
 		}
-		return daw::move( init );
+		return DAW_MOVE( init );
 	}
 
 	template<class ForwardIterator, typename Compare = std::less<>>
@@ -1775,9 +1757,9 @@ static_assert(
 		               "Compare concept. "
 		               "http://en.cppreference.com/w/cpp/concept/Compare" );
 		if( daw::invoke( comp, b, a ) ) {
-			return std::pair<T, T>{ daw::move( b ), daw::move( a ) };
+			return std::pair<T, T>{ DAW_MOVE( b ), DAW_MOVE( a ) };
 		}
-		return std::pair<T, T>{ daw::move( a ), daw::move( b ) };
+		return std::pair<T, T>{ DAW_MOVE( a ), DAW_MOVE( b ) };
 	}
 
 	template<typename ForwardIterator, typename LastType,
@@ -1890,7 +1872,7 @@ static_assert(
 		if( first != last ) {
 			for( ForwardIterator i = first; ++i != last; ) {
 				if( not( *i == value ) ) {
-					*first++ = daw::move( *i );
+					*first++ = DAW_MOVE( *i );
 				}
 			}
 		}
@@ -1906,7 +1888,7 @@ static_assert(
 		if( first != last ) {
 			for( ForwardIterator i = first; ++i != last; ) {
 				if( not daw::invoke( pred, *i ) ) {
-					*first++ = daw::move( *i );
+					*first++ = DAW_MOVE( *i );
 				}
 			}
 		}
@@ -1922,7 +1904,7 @@ static_assert(
 			for( ForwardIterator i = first; ++i != last; ) {
 				if( not daw::invoke( pred, *i ) ) {
 					(void)daw::invoke( func, *i );
-					*first++ = daw::move( *i );
+					*first++ = DAW_MOVE( *i );
 				}
 			}
 		}
@@ -1968,7 +1950,7 @@ static_assert(
 	transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2,
 	                OutputIt first_out, Func func ) {
 
-		return cartesian_product_map( daw::move( func ), first1, last1, first_out,
+		return cartesian_product_map( DAW_MOVE( func ), first1, last1, first_out,
 		                              first2 );
 	}
 
@@ -1978,7 +1960,7 @@ static_assert(
 	transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2,
 	                InputIt3 first3, OutputIt first_out, Func func ) {
 
-		return cartesian_product_map( daw::move( func ), first1, last1, first_out,
+		return cartesian_product_map( DAW_MOVE( func ), first1, last1, first_out,
 		                              first2, first3 );
 	}
 
@@ -1989,7 +1971,7 @@ static_assert(
 	                InputIt3 first3, InputIt4 first4, OutputIt first_out,
 	                Func func ) {
 
-		return cartesian_product_map( daw::move( func ), first1, last1, first_out,
+		return cartesian_product_map( DAW_MOVE( func ), first1, last1, first_out,
 		                              first2, first3, first4 );
 	}
 
@@ -2001,7 +1983,7 @@ static_assert(
 	                InputIt3 first3, InputIt4 first4, InputIt4 first5,
 	                OutputIt first_out, Func func ) {
 
-		return cartesian_product_map( daw::move( func ), first1, last1, first_out,
+		return cartesian_product_map( DAW_MOVE( func ), first1, last1, first_out,
 		                              first2, first3, first4, first5 );
 	}
 
@@ -2039,7 +2021,7 @@ static_assert(
 		++first_out;
 		++first;
 		while( first != last ) {
-			sum = daw::invoke( op, daw::move( sum ), *first );
+			sum = daw::invoke( op, DAW_MOVE( sum ), *first );
 			++first;
 
 			*first_out = sum;
@@ -2048,11 +2030,10 @@ static_assert(
 		return first_out;
 	}
 
-
 	template<typename From, typename To, typename Query>
 	constexpr void extract_to( From &from, To &to, Query &&q ) {
 		while( auto &&item = from.extract( q ) ) {
-			to.insert( std::move( item ) );
+			to.insert( DAW_MOVE( item ) );
 		}
 	}
 
@@ -2082,18 +2063,18 @@ static_assert(
 
 	template<class InputIt, class UnaryPredicate>
 	constexpr bool all_of( InputIt first, InputIt last, UnaryPredicate &&p ) {
-		return daw::algorithm::find_if_not(
-		         first, last, std::forward<UnaryPredicate>( p ) ) == last;
+		return daw::algorithm::find_if_not( first, last,
+		                                    DAW_FWD2( UnaryPredicate, p ) ) == last;
 	}
 
 	template<class InputIt, class UnaryPredicate>
 	constexpr bool any_of( InputIt first, InputIt last, UnaryPredicate &&p ) {
 		return daw::algorithm::find_if( first, last,
-		                                std::forward<UnaryPredicate>( p ) ) != last;
+		                                DAW_FWD2( UnaryPredicate, p ) ) != last;
 	}
 	template<class InputIt, class UnaryPredicate>
 	constexpr bool none_of( InputIt first, InputIt last, UnaryPredicate &&p ) {
-		return find_if( first, last, std::forward<UnaryPredicate>( p ) ) == last;
+		return find_if( first, last, DAW_FWD2( UnaryPredicate, p ) ) == last;
 	}
 
 	template<size_t MinSize = 1, typename BidirectionalIterator>
@@ -2142,9 +2123,8 @@ static_assert(
 	constexpr std::optional<size_t> find_index( Iterator first, Iterator last,
 	                                            T const &value ) {
 
-		return find_index_if( first, last, [&]( auto &&v ) {
-			return std::forward<decltype( v )>( v ) == value;
-		} );
+		return find_index_if( first, last,
+		                      [&]( auto &&v ) { return DAW_FWD( v ) == value; } );
 	}
 
 	template<typename RandomIterator, typename Compare = std::less<>>
