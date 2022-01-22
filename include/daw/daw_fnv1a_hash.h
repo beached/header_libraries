@@ -8,16 +8,12 @@
 
 #pragma once
 
-#include "daw_string_view_fwd.h"
 #include "daw_traits.h"
 
 #include <ciso646>
 #include <cstddef>
 #include <cstdint>
 #include <iterator>
-#ifndef NOSTRING
-#include <string>
-#endif
 #include <type_traits>
 
 namespace daw::impl {
@@ -79,23 +75,17 @@ namespace daw {
 			return hash;
 		}
 
-		template<typename CharT, typename BoundsType, ptrdiff_t Extent>
+		template<typename StringViewLike,
+		         std::enable_if_t<traits::is_string_view_like_v<StringViewLike>,
+		                          std::nullptr_t> = nullptr>
 		[[nodiscard]] constexpr fnv1a_uint_t
-		operator( )( daw::sv1::basic_string_view<CharT, BoundsType, Extent> sv )
-		  const noexcept {
+		operator( )( StringViewLike &&sv ) const noexcept {
+			auto const *first = std::data( sv );
+			auto const *const last =
+			  std::data( sv ) + static_cast<std::ptrdiff_t>( std::size( sv ) );
 			auto hash = impl::fnv_offset( );
-			for( char c : sv ) {
-				hash = append_hash( hash, c );
-			}
-			return hash;
-		}
-
-		template<typename CharT, daw::sv2::string_view_bounds_type BoundsType>
-		[[nodiscard]] constexpr fnv1a_uint_t operator( )(
-		  daw::sv2::basic_string_view<CharT, BoundsType> sv ) const noexcept {
-			auto hash = impl::fnv_offset( );
-			for( char c : sv ) {
-				hash = append_hash( hash, c );
+			while( first != last ) {
+				hash = append_hash( hash, *first );
 			}
 			return hash;
 		}
@@ -140,9 +130,9 @@ namespace daw {
 		}
 	};
 
-	template<typename T,
-	         std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
-	[[nodiscard]] constexpr fnv1a_uint_t fnv1a_hash( T const value ) noexcept {
+	template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
+	                                            std::nullptr_t> = nullptr>
+	[[nodiscard]] constexpr fnv1a_uint_t fnv1a_hash( Integer value ) noexcept {
 		return fnv1a_hash_t{ }( value );
 	}
 
@@ -167,19 +157,13 @@ namespace daw {
 		return hash;
 	}
 
-#ifndef NOSTRING
-	template<typename CharT, typename Traits, typename Allocator>
-	[[nodiscard]] fnv1a_uint_t
-	fnv1a_hash( std::basic_string<CharT, Traits, Allocator> const &str ) {
-		return fnv1a_hash( str.data( ), str.size( ) );
+	template<typename StringViewLike,
+	         std::enable_if_t<traits::is_string_view_like_v<StringViewLike>,
+	                          std::nullptr_t> = nullptr>
+	[[nodiscard]] fnv1a_uint_t fnv1a_hash( StringViewLike &&sv ) {
+		return fnv1a_hash( std::data( sv ), std::size( sv ) );
 	}
 
-	template<typename CharT, typename Traits, typename Allocator>
-	[[nodiscard]] fnv1a_uint_t
-	fnv1a_hash( std::basic_string<CharT, Traits, Allocator> &&str ) {
-		return fnv1a_hash( str.data( ), str.size( ) );
-	}
-#endif
 	template<fnv1a_uint_t N>
 	[[nodiscard]] constexpr fnv1a_uint_t
 	fnv1a_hash( char const ( &ptr )[N] ) noexcept {

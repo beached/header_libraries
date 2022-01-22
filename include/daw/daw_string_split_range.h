@@ -11,6 +11,7 @@
 #include "daw_algorithm.h"
 #include "daw_move.h"
 #include "daw_string_view.h"
+#include "daw_string_view1.h"
 #include "daw_traits.h"
 #include "iterator/daw_reverse_iterator.h"
 
