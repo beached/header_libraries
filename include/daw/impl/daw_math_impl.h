@@ -8,13 +8,21 @@
 
 #pragma once
 
+#include "../daw_move.h"
+
 #include <ciso646>
 #include <cstddef>
-#include <functional>
 #include <type_traits>
-#include <utility>
 
 namespace daw {
+	namespace math_impl {
+		struct less {
+			template<typename T, typename U>
+			constexpr auto operator( )( T &&lhs, U &&rhs ) const {
+				return lhs < rhs;
+			}
+		};
+	} // namespace math_impl
 	template<typename Float, std::enable_if_t<std::is_floating_point_v<Float>,
 	                                          std::nullptr_t> = nullptr>
 	constexpr Float float_abs( Float f ) {
@@ -30,14 +38,14 @@ namespace daw {
 			auto const tmp = (max)( vs... );
 			using result_t = std::common_type_t<T, decltype( tmp )>;
 
-			if( std::less<>{ }( tmp, val1 ) ) {
+			if( math_impl::less{ }( tmp, val1 ) ) {
 				return static_cast<result_t>( val1 );
 			}
 			return static_cast<result_t>( tmp );
 		} else if constexpr( sizeof...( Ts ) == 1 ) {
 			using result_t = std::common_type_t<T, Ts...>;
 			std::common_type_t<Ts...> const rhs[1]{ vs... };
-			if( std::less<>{ }( rhs[0], val1 ) ) {
+			if( math_impl::less{ }( rhs[0], val1 ) ) {
 				return static_cast<result_t>( val1 );
 			}
 			return static_cast<result_t>( rhs[0] );
@@ -46,22 +54,22 @@ namespace daw {
 		}
 	}
 
-	template<typename T, typename Compare = std::less<>>
+	template<typename T, typename Compare = math_impl::less>
 	constexpr decltype( auto ) min_comp( T &&lhs, T &&rhs,
 	                                     Compare &&comp = Compare{ } ) {
 		if( comp( lhs, rhs ) ) {
-			return std::forward<T>( lhs );
+			return DAW_FWD2( T, lhs );
 		}
-		return std::forward<T>( rhs );
+		return DAW_FWD2( T, rhs );
 	}
 
-	template<typename T, typename Compare = std::less<>>
+	template<typename T, typename Compare = math_impl::less>
 	constexpr decltype( auto ) max_comp( T &&lhs, T &&rhs,
 	                                     Compare &&comp = Compare{ } ) {
 		if( comp( rhs, lhs ) ) {
-			return std::forward<T>( lhs );
+			return DAW_FWD2( T, lhs );
 		}
-		return std::forward<T>( rhs );
+		return DAW_FWD2( T, rhs );
 	}
 
 	template<typename T, typename... Ts>
@@ -70,14 +78,14 @@ namespace daw {
 			auto const tmp = (min)( vs... );
 			using result_t = std::common_type_t<T, decltype( tmp )>;
 
-			if( not std::less<>{ }( tmp, val1 ) ) {
+			if( not math_impl::less{ }( tmp, val1 ) ) {
 				return static_cast<result_t>( val1 );
 			}
 			return static_cast<result_t>( tmp );
 		} else if constexpr( sizeof...( Ts ) == 1 ) {
 			using result_t = std::common_type_t<T, Ts...>;
 			std::common_type_t<Ts...> const rhs[1]{ vs... };
-			if( not std::less<>{ }( rhs[0], val1 ) ) {
+			if( not math_impl::less{ }( rhs[0], val1 ) ) {
 				return static_cast<result_t>( val1 );
 			}
 			return static_cast<result_t>( rhs[0] );
