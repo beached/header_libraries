@@ -223,27 +223,11 @@ namespace daw::traits {
 	  is_detected_v<traits_details::detectors::has_substr_member, T>;
 
 	template<typename T>
-	inline constexpr bool is_string_v =
-	  all_true_v<std::is_convertible_v<T, std::string> or
-	             std::is_convertible_v<T, std::wstring>>;
-
-	template<typename T>
-	inline constexpr bool isnt_string_v = not is_string_v<T>;
-
-	template<typename T>
-	inline constexpr bool is_container_not_string_v =
-	  all_true_v<isnt_string_v<T>, is_container_like_v<T>>;
-
-	template<typename T>
 	inline constexpr bool is_map_like_v =
 	  all_true_v<is_container_like_v<T>, has_mapped_type_member_v<T>>;
 
 	template<typename T>
 	inline constexpr bool isnt_map_like_v = not is_map_like_v<T>;
-
-	template<typename T>
-	inline constexpr bool is_vector_like_not_string_v =
-	  all_true_v<is_container_not_string_v<T>, isnt_map_like_v<T>>;
 
 	template<typename T>
 	using static_not = std::bool_constant<not T::value>;
@@ -400,16 +384,6 @@ namespace daw::traits {
 	template<typename String>
 	inline constexpr bool is_not_array_array_v =
 	  not daw::is_detected_v<detectors::is_array_array, String>;
-
-	namespace traits_details {
-		template<typename T>
-		using has_to_string_test =
-		  decltype( std::string( std::declval<T>( ).to_string( ) ) );
-	} // namespace traits_details
-
-	template<typename T>
-	inline constexpr bool has_to_string_v =
-	  is_detected_v<traits_details::has_to_string_test, T>;
 
 	template<typename String>
 	inline constexpr bool is_string_view_like_v =
@@ -866,8 +840,9 @@ namespace daw::traits {
 		constexpr std::size_t find_first_mismatch( Lhs *, Rhs * ) {
 			using TpL = typename Lhs::class_template_parameters;
 			using TpR = typename Rhs::class_template_parameters;
-			constexpr std::size_t Max =
-			  ( std::min )( pack_size_v<TpL>, pack_size_v<TpL> );
+			constexpr std::size_t Max = []( auto const &l, auto const &r ) {
+				return r < l ? r : l;
+			}( pack_size_v<TpL>, pack_size_v<TpL> );
 			return find_first_mismatch<StartIdx>(
 			  static_cast<TpL *>( nullptr ), static_cast<TpR *>( nullptr ),
 			  std::make_index_sequence<Max - StartIdx>{ }, Max );
