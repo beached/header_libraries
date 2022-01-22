@@ -866,8 +866,9 @@ namespace daw::traits {
 		constexpr std::size_t find_first_mismatch( Lhs *, Rhs * ) {
 			using TpL = typename Lhs::class_template_parameters;
 			using TpR = typename Rhs::class_template_parameters;
-			constexpr std::size_t Max =
-			  ( std::min )( pack_size_v<TpL>, pack_size_v<TpL> );
+			constexpr std::size_t Max = []( auto const &l, auto const &r ) {
+				return r < l ? r : l;
+			}( pack_size_v<TpL>, pack_size_v<TpL> );
 			return find_first_mismatch<StartIdx>(
 			  static_cast<TpL *>( nullptr ), static_cast<TpR *>( nullptr ),
 			  std::make_index_sequence<Max - StartIdx>{ }, Max );

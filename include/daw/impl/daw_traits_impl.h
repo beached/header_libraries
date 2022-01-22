@@ -13,9 +13,8 @@
 #include <ciso646>
 #include <cstddef>
 #include <iterator>
-#include <string_view>
-#include <tuple>
 #include <type_traits>
+#include <utility>
 
 namespace daw {
 	namespace traits {
@@ -403,7 +402,7 @@ namespace daw {
 
 			explicit constexpr void_function( Function &&func ) noexcept(
 			  std::is_nothrow_move_constructible_v<Function> )
-			  : function( daw::move( func ) ) {}
+			  : function( DAW_MOVE( func ) ) {}
 
 			explicit constexpr operator bool( ) noexcept(
 			  noexcept( static_cast<bool>( std::declval<Function>( ) ) ) ) {
@@ -417,7 +416,7 @@ namespace daw {
 			constexpr void operator( )( Args &&...args ) noexcept(
 			  traits::is_nothrow_callable_v<Function, Args...> ) {
 
-				function( std::forward<Args>( args )... );
+				function( DAW_FWD2( Args, args )... );
 			}
 		};
 
@@ -434,7 +433,7 @@ namespace daw {
 
 			explicit constexpr void_function( Function &&func ) noexcept(
 			  std::is_nothrow_move_constructible_v<Function> )
-			  : function( daw::move( func ) ) {}
+			  : function( DAW_MOVE( func ) ) {}
 
 			explicit constexpr operator bool( ) noexcept(
 			  noexcept( static_cast<bool>( std::declval<Function>( ) ) ) ) {
@@ -447,19 +446,19 @@ namespace daw {
 			                          std::nullptr_t> = nullptr>
 			constexpr void operator( )( Args &&...args ) noexcept(
 			  traits::is_nothrow_callable_v<Function, Args...> ) {
-				function( std::forward<Args>( args )... );
+				function( DAW_FWD2( Args, args )... );
 			}
 		};
 
 	} // namespace traits_details
 
 	template<typename Function>
-	[[nodiscard]] constexpr auto make_void_function( Function &&func ) noexcept(
-	  noexcept( traits_details::void_function<Function>(
-	    std::forward<Function>( func ) ) ) ) {
+	[[nodiscard]] constexpr auto
+	make_void_function( Function &&func ) noexcept( noexcept(
+	  traits_details::void_function<Function>( DAW_FWD2( Function, func ) ) ) ) {
 
 		return traits_details::void_function<Function>(
-		  std::forward<Function>( func ) );
+		  DAW_FWD2( Function, func ) );
 	}
 
 	template<typename... Args>
