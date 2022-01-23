@@ -85,18 +85,18 @@ namespace daw {
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////
 		checked_expected_t( value_type value ) noexcept
-		  : m_value{ daw::move( value ) }
+		  : m_value{ DAW_MOVE( value ) }
 		  , m_exception{ } {}
 
 		checked_expected_t &operator=( value_type value ) noexcept {
-			m_value = daw::move( value );
+			m_value = DAW_MOVE( value );
 			m_exception = nullptr;
 			return *this;
 		}
 
 		checked_expected_t( std::exception_ptr ptr )
 		  : m_value{ }
-		  , m_exception{ daw::move( ptr ) } {
+		  , m_exception{ DAW_MOVE( ptr ) } {
 
 			impl::is_expected_exception<ExpectedExceptions...>( m_exception );
 		}
@@ -133,7 +133,7 @@ namespace daw {
 		static checked_expected_t from_code( Function func, Args &&...args ) {
 			try {
 				auto tmp = func( std::forward<Args>( args )... );
-				return checked_expected_t{ daw::move( tmp ) };
+				return checked_expected_t{ DAW_MOVE( tmp ) };
 			} catch( ... ) { return checked_expected_t{ exception_tag{} }; }
 		}
 
@@ -398,7 +398,7 @@ namespace daw {
 
 	public:
 		constexpr checked_function_t( Function f )
-		  : func{ daw::move( f ) } {}
+		  : func{ DAW_MOVE( f ) } {}
 
 		template<typename... Args>
 		constexpr decltype( auto ) operator( )( Args &&...args ) const {

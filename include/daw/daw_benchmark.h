@@ -36,7 +36,7 @@ namespace daw {
 	[[maybe_unused]] static inline double benchmark( F &&func ) {
 		static_assert( std::is_invocable_v<F>, "func must accept no arguments" );
 		auto start = std::chrono::steady_clock::now( );
-		(void)std::forward<F>( func )( );
+		(void)DAW_FWD2( F, func )( );
 		auto finish = std::chrono::steady_clock::now( );
 		benchmark_impl::second_duration duration = finish - start;
 		return duration.count( );
@@ -119,7 +119,7 @@ namespace daw {
 	show_benchmark( size_t data_size_bytes, std::string const &title, Func &&func,
 	                size_t data_prec = 1, size_t time_prec = 0,
 	                size_t item_count = 1 ) {
-		double const t = benchmark( std::forward<Func>( func ) );
+		double const t = benchmark( DAW_FWD2( Func, func ) );
 		double const t_per_item = t / static_cast<double>( item_count );
 		std::cout << title << ": took " << utility::format_seconds( t, time_prec )
 		          << ' ';
@@ -137,8 +137,8 @@ namespace daw {
 	[[maybe_unused]] static auto
 	bench_test( std::string const &title, Test &&test_callable, Args &&...args ) {
 		auto const start = std::chrono::steady_clock::now( );
-		auto result = daw::expected_from_code( std::forward<Test>( test_callable ),
-		                                       std::forward<Args>( args )... );
+		auto result = daw::expected_from_code( DAW_FWD2( Test, test_callable ),
+		                                       DAW_FWD2( Args, args )... );
 		auto const finish = std::chrono::steady_clock::now( );
 		benchmark_impl::second_duration const duration = finish - start;
 		std::cout << title << " took "
@@ -151,8 +151,8 @@ namespace daw {
 	bench_test2( std::string const &title, Test &&test_callable,
 	             size_t item_count, Args &&...args ) {
 		auto const start = std::chrono::steady_clock::now( );
-		auto result = daw::expected_from_code( std::forward<Test>( test_callable ),
-		                                       std::forward<Args>( args )... );
+		auto result = daw::expected_from_code( DAW_FWD2( Test, test_callable ),
+		                                       DAW_FWD2( Args, args )... );
 		auto const finish = std::chrono::steady_clock::now( );
 		benchmark_impl::second_duration const duration = finish - start;
 		std::cout << title << " took "
@@ -185,7 +185,7 @@ namespace daw {
 	                                           Args &&...args ) noexcept {
 		static_assert( Runs > 0 );
 		using result_t = daw::remove_cvref_t<decltype( daw::expected_from_code(
-		  test_callable, std::forward<Args>( args )... ) )>;
+		  test_callable, DAW_FWD2( Args, args )... ) )>;
 
 		result_t result{ };
 
@@ -219,7 +219,7 @@ namespace daw {
 			auto const start = std::chrono::steady_clock::now( );
 
 			result =
-			  daw::expected_from_code( std::forward<Test>( test_callable ), args... );
+			  daw::expected_from_code( DAW_FWD2( Test, test_callable ), args... );
 
 			auto const finish = std::chrono::steady_clock::now( );
 			daw::do_not_optimize( result );
@@ -609,11 +609,11 @@ namespace daw {
 #ifdef DAW_USE_EXCEPTIONS
 		try {
 #endif
-			(void)std::forward<Expression>( expression )( );
+			(void)DAW_FWD2( Expression, expression )( );
 			(void)pred;
 #ifdef DAW_USE_EXCEPTIONS
 		} catch( Exception const &ex ) {
-			if( std::forward<Predicate>( pred )( ex ) ) {
+			if( DAW_FWD2( Predicate, pred )( ex ) ) {
 				return;
 			}
 			std::cerr << "Failed predicate\n";

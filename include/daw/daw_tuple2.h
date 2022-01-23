@@ -8,14 +8,15 @@
 
 #pragma once
 
+#include "cpp_17.h"
+#include "daw_move.h"
+#include "daw_utility.h"
+
 #include <array>
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>
 #include <utility>
-
-#include "cpp_17.h"
-#include "daw_utility.h"
 
 namespace daw {
 	namespace tuple2_impl {

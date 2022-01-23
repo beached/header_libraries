@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw_move.h"
 #include "daw_traits.h"
 
 #include <ciso646>
@@ -66,7 +67,7 @@ namespace daw {
 		}
 
 		value_type rref( ) noexcept {
-			return value_type( std::move( *ptr( ) ) );
+			return value_type( DAW_MOVE( *ptr( ) ) );
 		}
 
 		reference operator*( ) noexcept {

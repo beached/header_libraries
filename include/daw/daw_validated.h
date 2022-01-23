@@ -73,7 +73,7 @@ namespace daw {
 		}
 
 		constexpr validated &operator=( value_t &&rhs ) {
-			m_value = validate( daw::move( rhs ) );
+			m_value = validate( DAW_MOVE( rhs ) );
 			return *this;
 		}
 
@@ -82,7 +82,7 @@ namespace daw {
 		}
 
 		constexpr value_t get( ) &&noexcept {
-			return daw::move( m_value );
+			return DAW_MOVE( m_value );
 		}
 
 		constexpr operator const_reference( ) const noexcept {

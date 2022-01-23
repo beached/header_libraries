@@ -235,7 +235,7 @@ namespace daw {
 		static_assert( std::is_invocable_v<Function, Node> );
 
 		graph_alg_impl::topological_sorted_walk<Node, T>(
-		  graph, std::forward<Function>( func ), daw::move( comp ) );
+		  graph, std::forward<Function>( func ), DAW_MOVE( comp ) );
 	}
 
 	template<typename T, typename Function,
@@ -249,7 +249,7 @@ namespace daw {
 		static_assert( std::is_invocable_v<Function, Node> );
 
 		graph_alg_impl::topological_sorted_walk<Node, T>(
-		  graph, std::forward<Function>( func ), daw::move( comp ) );
+		  graph, std::forward<Function>( func ), DAW_MOVE( comp ) );
 	}
 
 	template<typename Graph, typename Compare = daw::graph_alg_impl::NoSort>
@@ -286,13 +286,13 @@ namespace daw {
 		topological_sorted_iterator( daw::remove_cvref_t<Graph> const &graph,
 		                             Compare comp = Compare{ } )
 		  : m_nodes( std::make_shared<std::vector<Node>>(
-		      get_nodes( graph, std::move( comp ) ) ) )
+		      get_nodes( graph, DAW_MOVE( comp ) ) ) )
 		  , m_iterator( m_nodes->begin( ) ) {}
 
 		topological_sorted_iterator( daw::remove_cvref_t<Graph> &graph,
 		                             Compare comp = Compare{ } )
 		  : m_nodes( std::make_shared<std::vector<Node>>(
-		      get_nodes( graph, std::move( comp ) ) ) )
+		      get_nodes( graph, DAW_MOVE( comp ) ) ) )
 		  , m_iterator( m_nodes->begin( ) ) {}
 
 		[[nodiscard]] topological_sorted_iterator end( ) {
@@ -443,7 +443,7 @@ namespace daw {
 			}
 		};
 		auto l = frst.end( );
-		return result_t{ std::move( frst ), std::move( l ) };
+		return result_t{ DAW_MOVE( frst ), DAW_MOVE( l ) };
 	}
 
 	template<typename Graph, typename Compare = daw::graph_alg_impl::NoSort>
@@ -483,7 +483,7 @@ namespace daw {
 			}
 		};
 		auto l = frst.end( );
-		return result_t{ std::move( frst ), std::move( l ) };
+		return result_t{ DAW_MOVE( frst ), DAW_MOVE( l ) };
 	}
 
 	template<typename T, typename Func,

@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "../../daw_move.h"
+
 namespace daw::find_iterator_impl {
 	constexpr daw::traits::identity<std::forward_iterator_tag>
 	test_iterator_category( std::forward_iterator_tag const & ) {
@@ -21,7 +23,8 @@ namespace daw::find_iterator_impl {
 
 	template<typename Filter, bool>
 	struct FilterProxy : protected Filter {
-		constexpr FilterProxy( Filter filt ): Filter{ filt } {}
+		constexpr FilterProxy( Filter filt )
+		  : Filter{ filt } {}
 
 	protected:
 		constexpr Filter const &filter( ) const {

@@ -448,7 +448,7 @@ namespace daw {
 			[[nodiscard]] constexpr basic_string_view
 			pop_front( UnaryPredicate pred ) {
 
-				auto pos = find_first_of_if( daw::move( pred ) );
+				auto pos = find_first_of_if( DAW_MOVE( pred ) );
 				auto result = pop_front( pos );
 				remove_prefix( find_predicate_result_size( pred ) );
 				return result;
@@ -502,7 +502,7 @@ namespace daw {
 			[[nodiscard]] constexpr basic_string_view
 			pop_back( UnaryPredicate pred ) {
 
-				auto pos = find_last_of_if( daw::move( pred ) );
+				auto pos = find_last_of_if( DAW_MOVE( pred ) );
 				if( pos == npos ) {
 					auto result = *this;
 					remove_prefix( npos );
@@ -1528,7 +1528,7 @@ namespace daw {
 
 			public:
 				sv_arry_t( std::vector<daw::sv1::basic_string_view<CharT, Bounds>> v )
-				  : data( daw::move( v ) ) {}
+				  : data( DAW_MOVE( v ) ) {}
 
 				decltype( auto ) operator[]( std::size_t p ) const {
 					return data[p];
@@ -1602,7 +1602,7 @@ namespace daw {
 				last_pos = str.cbegin( );
 			}
 			v.shrink_to_fit( );
-			return sv_arry_t( daw::move( v ) );
+			return sv_arry_t( DAW_MOVE( v ) );
 		}
 
 		template<typename CharT, typename Bounds, ptrdiff_t Ex>

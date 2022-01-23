@@ -132,7 +132,7 @@ namespace daw {
 						std::tuple<Args...> param = std::make_tuple(                       \
 						  std::forward<Args...>( clause_name##_args )... );                \
 						return daw::range::parallel::operators::details::clause_name##_t<  \
-						  Args...>( daw::move( param ) );                                  \
+						  Args...>( DAW_MOVE( param ) );                                  \
 					}                                                                    \
 				}                                                                      \
 			}                                                                        \

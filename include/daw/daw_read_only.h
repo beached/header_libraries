@@ -31,7 +31,7 @@ namespace daw {
 
 		constexpr read_only( rvalue_reference value ) noexcept(
 		  std::is_nothrow_move_constructible_v<T> )
-		  : m_value( daw::move( value ) ) {}
+		  : m_value( DAW_MOVE( value ) ) {}
 
 		constexpr read_only( const_reference value ) noexcept(
 		  std::is_nothrow_copy_constructible_v<T> )
@@ -57,7 +57,7 @@ namespace daw {
 		}
 
 		constexpr value_type move_out( ) noexcept {
-			return daw::move( m_value );
+			return DAW_MOVE( m_value );
 		}
 	}; // read_only
 } // namespace daw

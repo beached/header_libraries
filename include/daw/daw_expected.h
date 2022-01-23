@@ -20,11 +20,10 @@
 #include <ciso646>
 #include <cstddef>
 #include <exception>
-#include <optional>
 #include <stdexcept>
 #include <string>
 #include <system_error>
-#include <utility>
+#include <type_traits>
 #include <variant>
 
 namespace daw::expected_details {
@@ -76,13 +75,13 @@ namespace daw {
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////
 		explicit expected_t( value_type &&value )
-		  : m_value( daw::move( value ) ) {}
+		  : m_value( DAW_MOVE( value ) ) {}
 
 		explicit expected_t( value_type const &value )
 		  : m_value( value ) {}
 
 		expected_t &operator=( value_type &&value ) {
-			m_value = daw::move( value );
+			m_value = DAW_MOVE( value );
 			return *this;
 		}
 
@@ -105,8 +104,7 @@ namespace daw {
 
 		template<typename ExceptionType>
 		expected_t( exception_tag, ExceptionType &&ex ) noexcept
-		  : m_value(
-		      std::make_exception_ptr( std::forward<ExceptionType>( ex ) ) ) {}
+		  : m_value( std::make_exception_ptr( DAW_FWD2( ExceptionType, ex ) ) ) {}
 
 		explicit expected_t( exception_tag ) noexcept
 		  : m_value( std::current_exception( ) ) {}
@@ -120,10 +118,10 @@ namespace daw {
 		                                                     Args &&...args ) {
 #if defined( DAW_USE_EXCEPTIONS )
 			try {
-				return func( std::forward<Args>( args )... );
+				return func( DAW_FWD2( Args, args )... );
 			} catch( ... ) { return std::current_exception( ); }
 #else
-			return func( std::forward<Args>( args )... );
+			return func( DAW_FWD2( Args, args )... );
 #endif
 		}
 
@@ -133,8 +131,8 @@ namespace daw {
 		           traits::is_callable_convertible_v<value_type, Function, Args...>,
 		           std::nullptr_t> = nullptr>
 		explicit expected_t( Function &&func, Args &&...args )
-		  : m_value( variant_from_code( std::forward<Function>( func ),
-		                                std::forward<Args>( args )... ) ) {}
+		  : m_value( variant_from_code( DAW_FWD2( Function, func ),
+		                                DAW_FWD2( Args, args )... ) ) {}
 
 		template<class Function, typename... Args,
 		         std::enable_if_t<
@@ -143,8 +141,8 @@ namespace daw {
 		[[nodiscard]] static expected_t from_code( Function &&func,
 		                                           Args &&...args ) {
 			auto result = expected_t( );
-			result.m_value = variant_from_code( std::forward<Function>( func ),
-			                                    std::forward<Args>( args )... );
+			result.m_value = variant_from_code( DAW_FWD2( Function, func ),
+			                                    DAW_FWD2( Args, args )... );
 			return result;
 		}
 
@@ -285,8 +283,7 @@ namespace daw {
 
 		template<typename ExceptionType>
 		expected_t( exception_tag, ExceptionType &&ex ) noexcept
-		  : m_value(
-		      std::make_exception_ptr( std::forward<ExceptionType>( ex ) ) ) {}
+		  : m_value( std::make_exception_ptr( DAW_FWD2( ExceptionType, ex ) ) ) {}
 
 		explicit expected_t( exception_tag ) noexcept
 		  : m_value( std::current_exception( ) ) {}
@@ -297,11 +294,11 @@ namespace daw {
 		variant_from_code( Function &&func, Args &&...args ) noexcept {
 #if defined( DAW_USE_EXCEPTIONS )
 			try {
-				(void)func( std::forward<Args>( args )... );
+				(void)func( DAW_FWD2( Args, args )... );
 				return expected_details::ExpectedTag<expected_details::Void>( );
 			} catch( ... ) { return std::current_exception( ); }
 #else
-			(void)func( std::forward<Args>( args )... );
+			(void)func( DAW_FWD2( Args, args )... );
 			return expected_details::ExpectedTag<expected_details::Void>( );
 #endif
 		}
@@ -311,8 +308,8 @@ namespace daw {
 		         std::enable_if_t<std::is_invocable_v<Function, Args...>,
 		                          std::nullptr_t> = nullptr>
 		explicit expected_t( Function &&func, Args &&...args ) noexcept
-		  : m_value( variant_from_code( std::forward<Function>( func ),
-		                                std::forward<Args>( args )... ) ) {}
+		  : m_value( variant_from_code( DAW_FWD2( Function, func ),
+		                                DAW_FWD2( Args, args )... ) ) {}
 
 		template<class Function, typename... Args,
 		         std::enable_if_t<std::is_invocable_v<Function, Args...>,
@@ -320,8 +317,8 @@ namespace daw {
 		[[nodiscard]] static expected_t from_code( Function &&func,
 		                                           Args &&...args ) noexcept {
 			auto result = expected_t( );
-			result.m_value = variant_from_code( std::forward<Function>( func ),
-			                                    std::forward<Args>( args )... );
+			result.m_value = variant_from_code( DAW_FWD2( Function, func ),
+			                                    DAW_FWD2( Args, args )... );
 			return result;
 		}
 
@@ -388,18 +385,17 @@ namespace daw {
 		  "Must be able to convert result of func to expected result type" );
 
 		auto result = expected_t<Result>( );
-		result.from_code( std::forward<Function>( func ),
-		                  std::forward<Args>( args )... );
+		result.from_code( DAW_FWD2( Function, func ), DAW_FWD2( Args, args )... );
 		return result;
 	}
 
 	template<typename Function, typename... Args>
 	[[nodiscard]] auto expected_from_code( Function &&func, Args &&...args ) {
 		using result_t =
-		  std::decay_t<decltype( func( std::forward<Args>( args )... ) )>;
+		  std::decay_t<decltype( func( DAW_FWD2( Args, args )... ) )>;
 
-		return expected_t<result_t>::from_code( std::forward<Function>( func ),
-		                                        std::forward<Args>( args )... );
+		return expected_t<result_t>::from_code( DAW_FWD2( Function, func ),
+		                                        DAW_FWD2( Args, args )... );
 	}
 
 	template<typename Result>

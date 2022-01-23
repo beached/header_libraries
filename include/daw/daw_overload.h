@@ -9,6 +9,7 @@
 #pragma once
 
 #include "cpp_17.h"
+#include "daw_move.h"
 #include "daw_traits.h"
 
 #include <ciso646>
@@ -30,7 +31,7 @@ namespace daw {
 			         std::enable_if_t<std::is_invocable_v<decltype( fp ), Args...>,
 			                          std::nullptr_t> = nullptr>
 			inline constexpr ReturnType operator( )( Args &&...args ) const {
-				return fp( std::forward<Args>( args )... );
+				return fp( DAW_FWD2( Args, args )... );
 			}
 		};
 
@@ -42,7 +43,7 @@ namespace daw {
 			         std::enable_if_t<std::is_invocable_v<decltype( fp ), Args...>,
 			                          std::nullptr_t> = nullptr>
 			inline constexpr ReturnType operator( )( Args &&...args ) const {
-				return fp( std::forward<Args>( args )... );
+				return fp( DAW_FWD2( Args, args )... );
 			}
 		};
 
@@ -63,8 +64,8 @@ namespace daw {
 			         std::enable_if_t<std::is_invocable_v<decltype( fp ), Args...>,
 			                          std::nullptr_t> = nullptr>
 			inline constexpr ReturnType operator( )( Args &&...args ) const
-			  noexcept( noexcept( fp( std::forward<Args>( args )... ) ) ) {
-				return fp( std::forward<Args>( args )... );
+			  noexcept( noexcept( fp( DAW_FWD2( Args, args )... ) ) ) {
+				return fp( DAW_FWD2( Args, args )... );
 			}
 		};
 

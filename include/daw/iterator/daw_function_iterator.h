@@ -33,7 +33,7 @@ namespace daw {
 
 	public:
 		constexpr function_iterator( Function function )
-		  : m_function( daw::move( function ) ) {}
+		  : m_function( DAW_MOVE( function ) ) {}
 
 		template<typename T,
 		         std::enable_if_t<

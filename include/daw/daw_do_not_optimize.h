@@ -8,10 +8,11 @@
 
 #pragma once
 
+#include "daw_move.h"
+
 #include <ciso646>
 #include <cstddef>
 #include <type_traits>
-#include <utility>
 
 #if defined( _MSC_VER ) and not defined( __clang__ )
 #include <intrin.h>
@@ -53,7 +54,7 @@ namespace daw {
 	                                              std::nullptr_t> = nullptr>
 	void do_not_optimize( Values &&...values ) {
 		if constexpr( sizeof...( Values ) > 0 ) {
-			(void)( ( do_not_optimize( std::forward<Values>( values ) ), 1 ) | ... );
+			(void)( ( do_not_optimize( DAW_FWD2( Values, values ) ), 1 ) | ... );
 		}
 	}
 } // namespace daw

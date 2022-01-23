@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw_algorithm.h"
+#include "daw_move.h"
 
 #include <ciso646>
 #include <functional>
@@ -349,7 +350,7 @@ namespace daw {
 				std::abort( );
 			}
 			if( !m_data[*index].has_value ) {
-				m_data[*index].key = std::move( key );
+				m_data[*index].key = DAW_MOVE( key );
 				m_data[*index].has_value = true;
 			}
 			return { m_data.data( ), m_data.data( ) + m_data.size( ),

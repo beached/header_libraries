@@ -11,6 +11,7 @@
 #include "cpp_17.h"
 #include "daw_cpp_feature_check.h"
 #include "daw_enable_if.h"
+#include "daw_move.h"
 #include "impl/daw_traits_concepts.h"
 #include "impl/daw_traits_impl.h"
 
@@ -105,20 +106,19 @@ namespace daw::traits {
 	/// Summary:	Integral constant with result of and'ing all bool's supplied
 	///
 	template<bool... Bools>
-	using bool_and = std::integral_constant<bool, ( Bools and ... )>;
+	inline constexpr bool bool_and_v = ( Bools and ... );
 
 	template<bool... Bools>
-	inline constexpr bool bool_and_v = bool_and<Bools...>::value;
+	using bool_and = std::bool_constant<bool_and_v<Bools...>>;
 
 	//////////////////////////////////////////////////////////////////////////
 	/// Summary:	Integral constant with result of or'ing all bool's supplied
 	///
 	template<bool... Bools>
-	using bool_or = std::integral_constant<bool, ( Bools or ... )>;
+	inline constexpr bool bool_or_v = ( Bools or ... );
 
 	template<bool... Bools>
-	inline constexpr bool bool_or_v = bool_or<Bools...>::value;
-
+	using bool_or = std::bool_constant<bool_or_v<Bools...>>;
 	//////////////////////////////////////////////////////////////////////////
 	/// Summary:	Similar to enable_if but enabled when any of the
 	///				parameters is true
@@ -179,30 +179,31 @@ namespace daw::traits {
 		using type_sink_t = typename type_sink<T>::type;
 	} // namespace traits_details
 
-// Build a check for the precence of a member
+// Build a check for the presence of a member
 // Can be used like METHOD_CHECKER_ANY( has_begin_method, begin, ( ) ) and the
 // check will look for begin( ) If you want to check args you could do the
 // following METHOD_CHECKER_ANY( has_index_operation, operator[], (
 // std::declval<size_t>( ) ) )
 #define METHOD_CHECKER_ANY( name, fn )                                         \
-	namespace traits_details {                                                   \
+	namespace traits_details_##name {                                            \
 		template<typename T, typename... Args>                                     \
 		using name =                                                               \
 		  decltype( std::declval<T>( ).fn( std::declval<Args>( )... ) );           \
 	}                                                                            \
 	template<typename T, typename... Args>                                       \
-	constexpr bool name##_v =                                                    \
-	  is_detected_v<traits_details::name, T, Args...> // END METHOD_CHECKER_ANY
+	constexpr bool name##_v = is_detected_v<traits_details_##name::name, T,      \
+	                                        Args...> // END METHOD_CHECKER_ANY
 
 	// decltype( std::declval<typename T::MemberName>( ) );
 #define HAS_STATIC_TYPE_MEMBER( MemberName )                                   \
-	namespace traits_details::detectors {                                        \
+	namespace traits_details::detectors_##MemberName {                           \
 		template<typename T>                                                       \
 		using MemberName##_member = typename T::MemberName;                        \
 	}                                                                            \
 	template<typename T>                                                         \
 	constexpr bool has_##MemberName##_member_v =                                 \
-	  is_detected_v<traits_details::detectors::MemberName##_member, T>
+	  is_detected_v<traits_details::detectors_##MemberName::MemberName##_member, \
+	                T>
 
 	HAS_STATIC_TYPE_MEMBER( type );
 	HAS_STATIC_TYPE_MEMBER( value_type );
@@ -636,7 +637,7 @@ namespace daw::traits {
 		F fp;
 
 		constexpr R operator( )( Args... args ) const noexcept( IsNoExcept ) {
-			return fp( std::forward<Args>( args )... );
+			return fp( DAW_FWD2( Args, args )... );
 		}
 	};
 
@@ -658,7 +659,7 @@ namespace daw::traits {
 		template<typename Func>
 		static constexpr lifted_t<Func, is_noexcept, R, Args...>
 		lift( Func &&f ) noexcept {
-			return { std::forward<Func>( f ) };
+			return { DAW_FWD2( Func, f ) };
 		}
 	};
 
@@ -677,7 +678,7 @@ namespace daw::traits {
 		template<typename Func>
 		static constexpr lifted_t<Func, is_noexcept, R, Args...>
 		lift( Func &&f ) noexcept {
-			return { std::forward<Func>( f ) };
+			return { DAW_FWD2( Func, f ) };
 		}
 	};
 
@@ -707,9 +708,9 @@ namespace daw::traits {
 			using func_t = func_traits<F>;
 			static_assert( func_t::arity == 1,
 			               "Only single argument overloads are supported" );
-			return func_t::lift( std::forward<F>( f ) );
+			return func_t::lift( DAW_FWD2( F, f ) );
 		} else {
-			return std::forward<F>( f );
+			return DAW_FWD2( F, f );
 		}
 	}
 

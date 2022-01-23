@@ -114,7 +114,7 @@ namespace daw {
 		constexpr union_pair_t( Type0 &&ptr ) noexcept
 		  : type( data_types::type_nothing ) {
 
-			store_type0( daw::move( ptr ) );
+			store_type0( DAW_MOVE( ptr ) );
 		}
 
 		constexpr union_pair_t( Type0 const &ptr )
@@ -129,7 +129,7 @@ namespace daw {
 		}
 
 		constexpr union_pair_t &operator=( Type0 &&val ) noexcept {
-			store_type0( daw::move( val ) );
+			store_type0( DAW_MOVE( val ) );
 			return *this;
 		}
 
@@ -139,14 +139,14 @@ namespace daw {
 		}
 
 		constexpr union_pair_t &operator=( Type1 &&val ) noexcept {
-			store_type1( daw::move( val ) );
+			store_type1( DAW_MOVE( val ) );
 			return *this;
 		}
 
 		constexpr union_pair_t( Type1 &&ptr ) noexcept
 		  : type( data_types::type_nothing ) {
 
-			store_type1( daw::move( ptr ) );
+			store_type1( DAW_MOVE( ptr ) );
 		}
 
 		constexpr union_pair_t( Type1 const &ptr )
@@ -176,10 +176,10 @@ namespace daw {
 
 			switch( other.type ) {
 			case data_types::type_0:
-				store_type0( daw::move( *other.get_type0_ptr( ) ) );
+				store_type0( DAW_MOVE( *other.get_type0_ptr( ) ) );
 				break;
 			case data_types::type_1:
-				store_type1( daw::move( *other.get_type1_ptr( ) ) );
+				store_type1( DAW_MOVE( *other.get_type1_ptr( ) ) );
 				break;
 			case data_types::type_nothing:
 				nothing = nullptr;
@@ -208,10 +208,10 @@ namespace daw {
 			if( this != &rhs ) {
 				switch( rhs.type ) {
 				case data_types::type_0:
-					store_type0( daw::move( *rhs.get_type0_ptr( ) ) );
+					store_type0( DAW_MOVE( *rhs.get_type0_ptr( ) ) );
 					break;
 				case data_types::type_1:
-					store_type1( daw::move( *rhs.get_type1_ptr( ) ) );
+					store_type1( DAW_MOVE( *rhs.get_type1_ptr( ) ) );
 					break;
 				case data_types::type_nothing:
 					clear( );

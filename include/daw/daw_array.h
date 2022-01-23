@@ -9,6 +9,7 @@
 #pragma once
 
 #include "cpp_17.h"
+#include "daw_move.h"
 
 #include <array>
 #include <ciso646>
@@ -83,13 +84,13 @@ namespace daw {
 		template<typename T, size_t N, size_t... Is>
 		constexpr auto make_array_impl( T const( &&arry )[N],
 		                                std::index_sequence<Is...> ) {
-			return std::array<T, N>{ std::move( arry[Is] )... };
+			return std::array<T, N>{ DAW_MOVE( arry[Is] )... };
 		}
 	} // namespace make_array_impl
 
 	template<typename T, size_t N>
 	constexpr auto make_array( T const( &&arry )[N] ) {
-		return make_array_impl::make_array_impl( std::move( arry ),
+		return make_array_impl::make_array_impl( DAW_MOVE( arry ),
 		                                         std::make_index_sequence<N>{ } );
 	}
 

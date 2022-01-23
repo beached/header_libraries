@@ -10,13 +10,11 @@
 
 #include "daw_move.h"
 
-#include <utility>
-
 namespace daw {
 	template<typename T, typename U = T>
-	constexpr T exchange( T &obj, U &&new_value ) noexcept {
-		T old_value = daw::move( obj );
-		obj = std::forward<U>( new_value );
+	inline constexpr T exchange( T &obj, U &&new_value ) {
+		T old_value = DAW_MOVE( obj );
+		obj = DAW_FWD2( U, new_value );
 		return old_value;
 	}
 } // namespace daw
