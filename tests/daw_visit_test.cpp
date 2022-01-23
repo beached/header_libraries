@@ -6,11 +6,11 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include <optional>
-#include <variant>
-
 #include "daw/daw_benchmark.h"
 #include "daw/daw_visit.h"
+
+#include <optional>
+#include <variant>
 
 constexpr bool visit_nt_001( ) {
 	std::variant<int, double> a = 5.5;

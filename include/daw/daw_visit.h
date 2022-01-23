@@ -13,17 +13,20 @@
 #include "daw_attributes.h"
 #include "daw_check_exceptions.h"
 #include "daw_likely.h"
+#include "daw_move.h"
 #include "daw_traits.h"
 #include "daw_unreachable.h"
 
 #include <ciso646>
-#include <cstdlib>
-#include <functional>
+#include <cstddef>
+#include <exception>
 #include <type_traits>
 #include <utility>
 #include <variant>
 
 namespace daw {
+	struct bad_variant_access : std::exception {};
+
 	namespace get_nt_details {
 		namespace gi_test {
 			using namespace std;
@@ -50,12 +53,12 @@ namespace daw {
 			auto *ptr = get_if<Idx>( &var );
 			DAW_ASSUME( ptr != nullptr );
 			if constexpr( std::is_rvalue_reference_v<Variant> ) {
-				return std::move( *ptr );
+				return DAW_MOVE( *ptr );
 			} else {
 				return *ptr;
 			}
 		} else {
-			return get<Idx>( std::forward<Variant>( var ) );
+			return get<Idx>( DAW_FWD2( Variant, var ) );
 		}
 	}
 	namespace visit_details {
@@ -88,16 +91,15 @@ namespace daw {
 		[[nodiscard, maybe_unused]] constexpr decltype( auto )
 		overload( F &&f, Fs &&...fs ) noexcept {
 			if constexpr( sizeof...( Fs ) > 0 ) {
-				return overload_t{
-				  daw::traits::lift_func( std::forward<F>( f ) ),
-				  daw::traits::lift_func( std::forward<Fs>( fs ) )... };
+				return overload_t{ daw::traits::lift_func( DAW_FWD2( F, f ) ),
+				                   daw::traits::lift_func( DAW_FWD2( Fs, fs ) )... };
 			} else {
 				if constexpr( std::is_function_v<daw::remove_cvref_t<F>> ) {
 					static_assert(
 					  daw::traits::func_traits<F>::arity == 1,
 					  "Function pointers only valid for functions with 1 argument" );
 				}
-				return daw::traits::lift_func( std::forward<F>( f ) );
+				return daw::traits::lift_func( DAW_FWD2( F, f ) );
 			}
 		}
 
@@ -107,33 +109,33 @@ namespace daw {
 			if constexpr( VSz - N >= 8 ) {
 				switch( get_index( var ) ) {
 				case 0 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<0 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<0 + N>( DAW_FWD2( Variant, var ) ) );
 				case 1 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<1 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<1 + N>( DAW_FWD2( Variant, var ) ) );
 				case 2 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<2 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<2 + N>( DAW_FWD2( Variant, var ) ) );
 				case 3 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<3 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<3 + N>( DAW_FWD2( Variant, var ) ) );
 				case 4 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<4 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<4 + N>( DAW_FWD2( Variant, var ) ) );
 				case 5 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<5 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<5 + N>( DAW_FWD2( Variant, var ) ) );
 				case 6 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<6 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<6 + N>( DAW_FWD2( Variant, var ) ) );
 				case 7 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<7 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<7 + N>( DAW_FWD2( Variant, var ) ) );
 				default:
 					if constexpr( VSz - N > 8 ) {
-						return visit_nt<N + 8, R>( std::forward<Variant>( var ),
-						                           std::forward<Visitor>( vis ) );
+						return visit_nt<N + 8, R>( DAW_FWD2( Variant, var ),
+						                           DAW_FWD2( Visitor, vis ) );
 					} else {
 						DAW_UNREACHABLE( );
 					}
@@ -141,111 +143,111 @@ namespace daw {
 			} else if constexpr( VSz - N == 7 ) {
 				switch( get_index( var ) ) {
 				case 0 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<0 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<0 + N>( DAW_FWD2( Variant, var ) ) );
 				case 1 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<1 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<1 + N>( DAW_FWD2( Variant, var ) ) );
 				case 2 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<2 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<2 + N>( DAW_FWD2( Variant, var ) ) );
 				case 3 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<3 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<3 + N>( DAW_FWD2( Variant, var ) ) );
 				case 4 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<4 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<4 + N>( DAW_FWD2( Variant, var ) ) );
 				case 5 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<5 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<5 + N>( DAW_FWD2( Variant, var ) ) );
 				case 6 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<6 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<6 + N>( DAW_FWD2( Variant, var ) ) );
 				}
 			} else if constexpr( VSz - N == 6 ) {
 				switch( get_index( var ) ) {
 				case 0 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<0 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<0 + N>( DAW_FWD2( Variant, var ) ) );
 				case 1 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<1 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<1 + N>( DAW_FWD2( Variant, var ) ) );
 				case 2 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<2 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<2 + N>( DAW_FWD2( Variant, var ) ) );
 				case 3 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<3 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<3 + N>( DAW_FWD2( Variant, var ) ) );
 				case 4 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<4 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<4 + N>( DAW_FWD2( Variant, var ) ) );
 				case 5 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<5 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<5 + N>( DAW_FWD2( Variant, var ) ) );
 				}
 			} else if constexpr( VSz - N == 5 ) {
 				switch( get_index( var ) ) {
 				case 0 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<0 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<0 + N>( DAW_FWD2( Variant, var ) ) );
 				case 1 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<1 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<1 + N>( DAW_FWD2( Variant, var ) ) );
 				case 2 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<2 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<2 + N>( DAW_FWD2( Variant, var ) ) );
 				case 3 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<3 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<3 + N>( DAW_FWD2( Variant, var ) ) );
 				case 4 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<4 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<4 + N>( DAW_FWD2( Variant, var ) ) );
 				}
 			} else if constexpr( VSz - N == 4 ) {
 				switch( get_index( var ) ) {
 				case 0 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<0 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<0 + N>( DAW_FWD2( Variant, var ) ) );
 				case 1 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<1 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<1 + N>( DAW_FWD2( Variant, var ) ) );
 				case 2 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<2 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<2 + N>( DAW_FWD2( Variant, var ) ) );
 				case 3 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<3 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<3 + N>( DAW_FWD2( Variant, var ) ) );
 				}
 			} else if constexpr( VSz - N == 3 ) {
 				switch( get_index( var ) ) {
 				case 0 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<0 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<0 + N>( DAW_FWD2( Variant, var ) ) );
 				case 1 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<1 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<1 + N>( DAW_FWD2( Variant, var ) ) );
 				case 2 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<2 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<2 + N>( DAW_FWD2( Variant, var ) ) );
 				}
 			} else if constexpr( VSz - N == 2 ) {
 				switch( get_index( var ) ) {
 				case 0 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<0 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<0 + N>( DAW_FWD2( Variant, var ) ) );
 				case 1 + N:
-					return std::forward<Visitor>( vis )(
-					  get_nt<1 + N>( std::forward<Variant>( var ) ) );
+					return DAW_FWD2( Visitor,
+					                 vis )( get_nt<1 + N>( DAW_FWD2( Variant, var ) ) );
 				}
 			} else {
-				return std::forward<Visitor>( vis )(
-				  get_nt<0 + N>( std::forward<Variant>( var ) ) );
+				return DAW_FWD2( Visitor,
+				                 vis )( get_nt<0 + N>( DAW_FWD2( Variant, var ) ) );
 			}
 			DAW_UNREACHABLE( );
 		}
 #if defined( DAW_USE_EXCEPTIONS )
 		[[noreturn, maybe_unused]] DAW_ATTRIB_NOINLINE inline void visit_error( ) {
-			throw std::bad_variant_access{ };
+			throw daw::bad_variant_access{ };
 		}
 #else
 		[[noreturn, maybe_unused]] DAW_ATTRIB_NOINLINE inline void visit_error( ) {
@@ -261,13 +263,12 @@ namespace daw {
 	template<typename Variant, typename... Visitors>
 	[[nodiscard, maybe_unused]] constexpr decltype( auto )
 	visit_nt( Variant &&var, Visitors &&...visitors ) {
-		using result_t =
-		  decltype( daw::visit_details::overload( std::forward<Visitors>(
-		    visitors )... )( get_nt<0>( std::forward<Variant>( var ) ) ) );
+		using result_t = decltype( daw::visit_details::overload( DAW_FWD2(
+		  Visitors, visitors )... )( get_nt<0>( DAW_FWD2( Variant, var ) ) ) );
 
 		return daw::visit_details::visit_nt<0, result_t>(
-		  std::forward<Variant>( var ),
-		  daw::visit_details::overload( std::forward<Visitors>( visitors )... ) );
+		  DAW_FWD2( Variant, var ),
+		  daw::visit_details::overload( DAW_FWD2( Visitors, visitors )... ) );
 	}
 
 	// Singe visitation visit.
@@ -276,16 +277,15 @@ namespace daw {
 	template<typename Variant, typename... Visitors>
 	[[nodiscard, maybe_unused]] constexpr decltype( auto )
 	visit( Variant &&var, Visitors &&...visitors ) {
-		using result_t =
-		  decltype( daw::visit_details::overload( std::forward<Visitors>(
-		    visitors )... )( get_nt<0>( std::forward<Variant>( var ) ) ) );
+		using result_t = decltype( daw::visit_details::overload( DAW_FWD2(
+		  Visitors, visitors )... )( get_nt<0>( DAW_FWD2( Variant, var ) ) ) );
 
 		if( DAW_UNLIKELY( var.index( ) < 0 ) ) {
 			visit_details::visit_error( );
 		}
 		return daw::visit_details::visit_nt<0, result_t>(
-		  std::forward<Variant>( var ),
-		  daw::visit_details::overload( std::forward<Visitors>( visitors )... ) );
+		  DAW_FWD2( Variant, var ),
+		  daw::visit_details::overload( DAW_FWD2( Visitors, visitors )... ) );
 	}
 
 	// Singe visitation visit with user choosable result.
@@ -297,8 +297,8 @@ namespace daw {
 			visit_details::visit_error( );
 		}
 		return daw::visit_details::visit_nt<0, Result>(
-		  std::forward<Variant>( var ),
-		  daw::visit_details::overload( std::forward<Visitors>( visitors )... ) );
+		  DAW_FWD2( Variant, var ),
+		  daw::visit_details::overload( DAW_FWD2( Visitors, visitors )... ) );
 	}
 
 	// Singe visitation visit with user choosable result.  Expects that variant is
@@ -307,8 +307,8 @@ namespace daw {
 	[[nodiscard, maybe_unused]] constexpr Result
 	visit_nt( Variant &&var, Visitors &&...visitors ) {
 		return daw::visit_details::visit_nt<0, Result>(
-		  std::forward<Variant>( var ),
-		  daw::visit_details::overload( std::forward<Visitors>( visitors )... ) );
+		  DAW_FWD2( Variant, var ),
+		  daw::visit_details::overload( DAW_FWD2( Visitors, visitors )... ) );
 	}
 
 	template<typename Value, typename... Visitors>
