@@ -51,7 +51,7 @@ namespace daw::string {
 		std::vector<string_details::string_t> unknowns_to_string( Arg arg ) {
 			std::vector<string_details::string_t> result;
 			if constexpr( std::is_same_v<Arg, std::string> ) {
-				result.emplace_back( std::move( arg ) );
+				result.emplace_back( DAW_MOVE( arg ) );
 			} else if constexpr( std::is_pointer_v<Arg> ) {
 				result.emplace_back( arg );
 			} else {
@@ -68,7 +68,7 @@ namespace daw::string {
 			result.reserve( sizeof...( args ) + 1 );
 			using std::to_string;
 			if constexpr( std::is_same_v<Arg, std::string> ) {
-				result.emplace_back( std::move( arg ) );
+				result.emplace_back( DAW_MOVE( arg ) );
 			} else if constexpr( std::is_pointer_v<Arg> ) {
 				result.emplace_back( arg );
 			} else {
@@ -430,7 +430,7 @@ namespace daw::string {
 			BasicString( BasicString && ) noexcept = default;
 
 			BasicString( value_type other )
-			  : m_string{ daw::move( other ) } {}
+			  : m_string{ DAW_MOVE( other ) } {}
 
 			~BasicString( ) = default;
 
@@ -439,7 +439,7 @@ namespace daw::string {
 			BasicString &operator=( BasicString && ) noexcept = default;
 
 			BasicString &operator=( value_type rhs ) {
-				m_string = daw::move( rhs );
+				m_string = DAW_MOVE( rhs );
 				return *this;
 			}
 

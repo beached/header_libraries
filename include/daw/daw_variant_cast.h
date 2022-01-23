@@ -71,7 +71,7 @@ namespace daw {
 	constexpr T variant_cast( std::variant<Args...> &&var ) {
 		static_assert( daw::traits::can_convert_from_v<T, Args...>,
 		               "T must be a convertible from type inside of variant" );
-		return daw::visit_nt( daw::move( var ), impl::variant_visitor_t<T>{ } );
+		return daw::visit_nt( DAW_MOVE( var ), impl::variant_visitor_t<T>{ } );
 	}
 
 	template<typename T, typename... Args>
@@ -81,6 +81,6 @@ namespace daw {
 
 	template<typename T, typename... Args>
 	constexpr bool can_extract( std::variant<Args...> &&var ) noexcept {
-		return daw::visit_nt( std::move( var ), impl::can_variant_visitor_t<T>{ } );
+		return daw::visit_nt( DAW_MOVE( var ), impl::can_variant_visitor_t<T>{ } );
 	}
 } // namespace daw

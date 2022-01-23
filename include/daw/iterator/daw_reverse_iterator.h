@@ -32,7 +32,7 @@ namespace daw {
 		constexpr reverse_iterator( ) = default;
 
 		explicit constexpr reverse_iterator( Iterator it )
-		  : m_base( daw::move( it ) ) {}
+		  : m_base( DAW_MOVE( it ) ) {}
 
 		template<typename U>
 		constexpr reverse_iterator( reverse_iterator<U> const &other )
@@ -183,6 +183,6 @@ namespace daw {
 
 	template<typename Iterator>
 	constexpr reverse_iterator<Iterator> make_reverse_iterator( Iterator i ) {
-		return reverse_iterator<Iterator>{ daw::move( i ) };
+		return reverse_iterator<Iterator>{ DAW_MOVE( i ) };
 	}
 } // namespace daw

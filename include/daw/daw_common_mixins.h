@@ -60,7 +60,7 @@ namespace daw::mixins {
 		}
 
 		iterator insert( iterator where, value_type item ) {
-			return derived( ).container( ).insert( where, daw::move( item ) );
+			return derived( ).container( ).insert( where, DAW_MOVE( item ) );
 		}
 
 		template<typename... Args>
@@ -85,7 +85,7 @@ namespace daw::mixins {
 
 	public:
 		void push_back( typename base_t::value_type &&value ) {
-			this->insert( this->end( ), daw::move( value ) );
+			this->insert( this->end( ), DAW_MOVE( value ) );
 		}
 
 		void push_back( typename base_t::const_reference value ) {

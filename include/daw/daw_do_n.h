@@ -10,6 +10,7 @@
 
 #include "cpp_17.h"
 #include "daw_attributes.h"
+#include "daw_move.h"
 
 namespace daw::algorithm {
 	namespace do_n_details DAW_ATTRIB_HIDDEN {
@@ -36,9 +37,9 @@ namespace daw::algorithm {
 	template<std::size_t count, typename Function, typename... Args>
 	DAW_ATTRIB_FLATTEN static inline constexpr void do_n( Function &&func,
 	                                                      Args &&...args ) {
-		do_n_details::do_n( std::forward<Function>( func ),
+		do_n_details::do_n( DAW_FWD2( Function, func ),
 		                    std::make_integer_sequence<std::size_t, count>{ },
-		                    std::forward<Args>( args )... );
+		                    DAW_FWD2( Args, args )... );
 	}
 
 	template<typename Function, typename... Args>
@@ -66,7 +67,7 @@ namespace daw::algorithm {
 	do_n_arg( Function &&func ) noexcept(
 	  std::is_nothrow_invocable_v<Function, std::size_t> ) {
 		static_assert( by_n > 0 );
-		do_n_details::do_n_arg<by_n>( std::forward<Function>( func ),
+		do_n_details::do_n_arg<by_n>( DAW_FWD2( Function, func ),
 		                              std::make_index_sequence<count / by_n>{ } );
 	}
 } // namespace daw::algorithm

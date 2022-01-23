@@ -24,12 +24,10 @@
 #include <initializer_list>
 #include <limits>
 #include <memory>
-#include <optional>
 #include <string>
 #include <string_view>
 #include <tuple>
 #include <type_traits>
-#include <utility>
 #include <vector>
 
 template<typename... Ts>
@@ -96,7 +94,7 @@ namespace daw {
 		public:
 			inline constexpr EqualToImpl( T value ) noexcept(
 			  std::is_nothrow_copy_constructible_v<T> )
-			  : m_value( daw::move( value ) ) {}
+			  : m_value( DAW_MOVE( value ) ) {}
 
 			[[nodiscard]] inline constexpr bool
 			operator( )( T const &value ) noexcept {
@@ -106,7 +104,7 @@ namespace daw {
 	}    // namespace utility_details
 	template<typename T>
 	inline constexpr utility_details::EqualToImpl<T> equal_to( T value ) {
-		return utility_details::EqualToImpl<T>( daw::move( value ) );
+		return utility_details::EqualToImpl<T>( DAW_MOVE( value ) );
 	}
 
 	template<typename T>
@@ -134,11 +132,11 @@ namespace daw {
 		public:
 			inline constexpr NotImpl( Function func ) noexcept(
 			  std::is_nothrow_move_constructible_v<Function> )
-			  : m_function( std::move( func ) ) {}
+			  : m_function( DAW_MOVE( func ) ) {}
 
 			template<typename... Args>
 			[[nodiscard]] inline constexpr bool operator( )( Args &&...args ) {
-				return !m_function( std::forward<Args>( args )... );
+				return !m_function( DAW_FWD2( Args, args )... );
 			}
 		}; // class NotImpl
 	}    // namespace utility_details
@@ -199,7 +197,7 @@ namespace daw {
 	template<typename ReturnType, typename... Args, class T>
 	[[nodiscard]] auto make_function( T &&t ) -> std::function<
 	  decltype( ReturnType( t( std::declval<Args>( )... ) ) )( Args... )> {
-		return { std::forward<T>( t ) };
+		return { DAW_FWD2( T, t ) };
 	}
 
 	// handles explicit overloads
@@ -222,7 +220,7 @@ namespace daw {
 	[[nodiscard]] auto make_root_function( T &&t )
 	  -> std::function<decltype( daw::traits::root_type_t<ReturnType>(
 	    t( std::declval<daw::traits::root_type_t<Args>>( )... ) ) )( Args... )> {
-		return { std::forward<T>( t ) };
+		return { DAW_FWD2( T, t ) };
 	}
 
 	// handles explicit overloads
@@ -255,25 +253,20 @@ namespace daw {
 		return value;
 	}
 
-	template<typename T>
-	[[nodiscard]] std::vector<T> copy_vector( std::vector<T> const &container,
-	                                          size_t num_items ) {
+	template<template<class, class> class Vector, typename T, typename A>
+	[[nodiscard]] constexpr Vector<T, A>
+	copy_vector( Vector<T, A> const &container, std::size_t num_items ) {
 		daw::exception::daw_throw_on_false(
 		  num_items <= container.size( ),
 		  "Cannot copy more items than are in container" );
-		std::vector<T> result;
-		result.reserve( num_items );
-
-		std::copy(
-		  std::begin( container ),
-		  std::next( std::begin( container ), static_cast<intmax_t>( num_items ) ),
-		  std::back_inserter( result ) );
-
-		return result;
+		return Vector<T, A>(
+		  container.begin( ),
+		  std::next( container.begin( ),
+		             static_cast<std::ptrdiff_t>( num_items ) ) );
 	}
 
-	[[nodiscard]] constexpr bool is_space( char chr ) noexcept {
-		return 32 == chr;
+	[[nodiscard]] inline constexpr bool is_space( char chr ) noexcept {
+		return ' ' == chr;
 	}
 
 	template<typename Iterator1, typename Iterator2, typename Pred>
@@ -285,8 +278,7 @@ namespace daw {
 	}
 
 	template<typename T, typename Pred>
-	[[nodiscard]] decltype( auto ) find_all_where( T const &values,
-	                                               Pred predicate ) {
+	[[nodiscard]] auto find_all_where( T const &values, Pred predicate ) {
 		return find_all_where( std::cbegin( values ), std::cend( values ),
 		                       predicate );
 	}
@@ -301,8 +293,8 @@ namespace daw {
 
 	[[nodiscard]] constexpr char AsciiLower( char chr ) noexcept {
 		if( 'A' <= chr and chr <= 'Z' ) {
-			return static_cast<char>(
-			  static_cast<unsigned>( static_cast<unsigned char>( chr ) ) | 32U );
+			return static_cast<char>( static_cast<unsigned char>(
+			  static_cast<unsigned>( static_cast<unsigned char>( chr ) ) | 32U ) );
 		}
 		return chr;
 	}
@@ -313,7 +305,7 @@ namespace daw {
 		daw::algorithm::map(
 		  str.cbegin( ), str.cend( ), str.begin( ),
 		  []( CharType c ) noexcept { return AsciiUpper( c ); } );
-		return daw::move( str );
+		return DAW_MOVE( str );
 	}
 
 	template<typename CharType, typename Traits, typename Allocator>
@@ -322,26 +314,8 @@ namespace daw {
 		daw::algorithm::map(
 		  str.cbegin( ), str.cend( ), str.begin( ),
 		  []( CharType c ) noexcept { return AsciiLower( c ); } );
-		return daw::move( str );
+		return DAW_MOVE( str );
 	}
-
-	/*
-	template<typename Iterator>
-	[[nodiscard]] constexpr bool equal_nc( Iterator first, Iterator last,
-	                         daw::string_view upper_value ) noexcept {
-	  if( static_cast<size_t>( std::distance( first, last ) ) !=
-	      upper_value.size( ) ) {
-	    return false;
-	  }
-	  for( auto c : upper_value ) {
-	    if( c != daw::AsciiUpper( *first ) ) {
-	      return false;
-	    }
-	    ++first;
-	  }
-	  return true;
-	}
-	*/
 
 	namespace utility_details {
 		template<typename T>
@@ -378,15 +352,14 @@ namespace daw {
 
 	template<typename Arg, typename... Args>
 	[[nodiscard]] auto make_initializer_list( Arg &&arg, Args &&...args ) {
-		return std::initializer_list<Arg>{ std::forward<Arg>( arg ),
-		                                   std::forward<Args>( args )... };
+		return std::initializer_list<Arg>{ DAW_FWD2( Arg, arg ),
+		                                   DAW_FWD2( Args, args )... };
 	}
 
 	template<typename Container, typename... Args>
 	[[nodiscard]] decltype( auto ) append( Container &container,
 	                                       Args &&...args ) {
-		return container.insert( container.end( ),
-		                         { std::forward<Args>( args )... } );
+		return container.insert( container.end( ), { DAW_FWD2( Args, args )... } );
 	}
 
 	template<typename Container, typename Item>
@@ -468,7 +441,7 @@ namespace daw {
 	                                    Iterator2 const last_in,
 	                                    OutputIterator first_out ) {
 		while( first_in != last_in ) {
-			*first_out++ = daw::move( *first_in++ );
+			*first_out++ = DAW_MOVE( *first_in++ );
 		}
 		return first_out;
 	}
@@ -673,9 +646,9 @@ namespace daw {
 	template<typename Destination, typename... Args>
 	[[nodiscard]] constexpr decltype( auto )
 	construct_from( std::tuple<Args...> &&args ) noexcept(
-	  noexcept( daw::apply( construct_a<Destination>, daw::move( args ) ) ) ) {
+	  noexcept( daw::apply( construct_a<Destination>, DAW_MOVE( args ) ) ) ) {
 
-		return daw::apply( construct_a<Destination>, daw::move( args ) );
+		return daw::apply( construct_a<Destination>, DAW_MOVE( args ) );
 	}
 
 	template<typename Destination, typename... Args>
@@ -798,8 +771,8 @@ namespace daw {
 	in_range( Value &&value, LowerBound &&lower,
 	          UpperBound &&upper ) noexcept( noexcept( lower <= value &&
 	                                                   value < upper ) ) {
-		return std::forward<LowerBound>( lower ) <= value &&
-		       value < std::forward<UpperBound>( upper );
+		return DAW_FWD2( LowerBound, lower ) <= value &&
+		       value < DAW_FWD2( UpperBound, upper );
 	}
 
 	template<typename T>
@@ -812,14 +785,14 @@ namespace daw {
 		explicit constexpr mutable_capture( T &value )
 		  : m_value( value ) {}
 		explicit constexpr mutable_capture( T &&value )
-		  : m_value( daw::move( value ) ) {}
+		  : m_value( DAW_MOVE( value ) ) {}
 
 		constexpr operator T &( ) const &noexcept {
 			return m_value;
 		}
 
 		constexpr operator T( ) const &&noexcept {
-			return daw::move( m_value );
+			return DAW_MOVE( m_value );
 		}
 
 		[[nodiscard]] constexpr T &operator*( ) const &noexcept {
@@ -827,7 +800,7 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr T operator*( ) const &&noexcept {
-			return daw::move( m_value );
+			return DAW_MOVE( m_value );
 		}
 
 		[[nodiscard]] constexpr T *operator->( ) const noexcept {
@@ -880,7 +853,7 @@ namespace daw {
 	  -> daw::utility_details::value_is_utility_details<
 	    std::remove_reference_t<decltype( value )>> {
 
-		return { std::forward<T>( value ) };
+		return { DAW_FWD2( T, value ) };
 	}
 
 	namespace utility_details {
@@ -972,9 +945,9 @@ namespace daw {
 	[[nodiscard]] constexpr decltype( auto ) pack_get( Arg &&arg,
 	                                                   Args &&...args ) noexcept {
 		if constexpr( pos == N ) {
-			return std::forward<Arg>( arg );
+			return DAW_FWD2( Arg, arg );
 		} else {
-			return pack_get<N, pos + 1>( std::forward<Args>( args )... );
+			return pack_get<N, pos + 1>( DAW_FWD2( Args, args )... );
 		}
 	}
 
@@ -989,23 +962,23 @@ namespace daw {
 		                                              Args &&...args )
 		  -> std::enable_if_t<( pos < sizeof...( Args ) )> {
 			if( N == pos ) {
-				if constexpr( std::is_invocable_v<Function, decltype( pack_get<pos>(
-				                                              std::forward<Args>(
-				                                                args )... ) )> ) {
-					(void)std::forward<Function>( func )(
-					  pack_get<pos>( std::forward<Args>( args )... ) );
+				if constexpr( std::is_invocable_v<Function,
+				                                  decltype( pack_get<pos>(
+				                                    DAW_FWD2( Args, args )... ) )> ) {
+					(void)DAW_FWD2( Function,
+					                func )( pack_get<pos>( DAW_FWD2( Args, args )... ) );
 				}
 			} else {
-				utility_details<pos + 1>( N, std::forward<Function>( func ),
-				                          std::forward<Args>( args )... );
+				utility_details<pos + 1>( N, DAW_FWD2( Function, func ),
+				                          DAW_FWD2( Args, args )... );
 			}
 		}
 	} // namespace utility_details
 
 	template<typename Function, typename... Args>
 	constexpr void pack_apply( size_t N, Function &&func, Args &&...args ) {
-		utility_details::utility_details<0>( N, std::forward<Function>( func ),
-		                                     std::forward<Args>( args )... );
+		utility_details::utility_details<0>( N, DAW_FWD2( Function, func ),
+		                                     DAW_FWD2( Args, args )... );
 	}
 
 	template<typename T, bool AllowDownSignCast = false, typename U>
@@ -1019,7 +992,7 @@ namespace daw {
 			  sizeof( T ) >= sizeof( U ),
 			  "Cannot downcast, use static_cast if this is intentional" );
 		}
-		return static_cast<T>( std::forward<U>( v ) );
+		return static_cast<T>( DAW_FWD2( U, v ) );
 	}
 
 	template<bool Bool_, typename If_, typename Then_>

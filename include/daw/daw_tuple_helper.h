@@ -116,7 +116,7 @@ namespace daw {
 				constexpr print_t( std::ostream &os, char separator = ',' )
 				  : m_os{ os }
 				  , m_is_first{ true }
-				  , m_separator{ daw::move( separator ) } {}
+				  , m_separator{ DAW_MOVE( separator ) } {}
 
 				void reset( ) {
 					m_is_first = true;
@@ -458,7 +458,7 @@ namespace daw {
 		constexpr void apply_at( std::tuple<Args...> &&tp, size_t index,
 		                         Funcs &&...funcs ) {
 			tuple_details::apply_at_impl(
-			  daw::move( tp ), index, daw::overload( DAW_FWD2( Funcs, funcs )... ) );
+			  DAW_MOVE( tp ), index, daw::overload( DAW_FWD2( Funcs, funcs )... ) );
 		}
 
 		namespace tuple_details {

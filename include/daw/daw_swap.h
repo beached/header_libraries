@@ -36,24 +36,24 @@ namespace daw {
 	template<typename T, typename U>
 	constexpr void cswap( std::pair<T, U> &lhs, std::pair<T, U> &rhs ) noexcept(
 	  std::is_nothrow_move_assignable_v<std::pair<T, U>> ) {
-		auto tmp = daw::move( lhs );
-		lhs = daw::exchange( rhs, daw::move( tmp ) );
+		auto tmp = DAW_MOVE( lhs );
+		lhs = daw::exchange( rhs, DAW_MOVE( tmp ) );
 	}
 
 	template<typename... Args>
 	constexpr void
 	cswap( std::tuple<Args...> &lhs, std::tuple<Args...> &rhs ) noexcept(
 	  std::is_nothrow_move_assignable_v<std::tuple<Args...>> ) {
-		auto tmp = daw::move( lhs );
-		lhs = daw::exchange( rhs, daw::move( tmp ) );
+		auto tmp = DAW_MOVE( lhs );
+		lhs = daw::exchange( rhs, DAW_MOVE( tmp ) );
 	}
 
 	template<typename... Args>
 	constexpr void
 	cswap( std::variant<Args...> &lhs, std::variant<Args...> &rhs ) noexcept(
 	  std::is_nothrow_move_assignable_v<std::variant<Args...>> ) {
-		auto tmp = daw::move( lhs );
-		lhs = daw::exchange( rhs, daw::move( tmp ) );
+		auto tmp = DAW_MOVE( lhs );
+		lhs = daw::exchange( rhs, DAW_MOVE( tmp ) );
 	}
 
 	template<typename... Args>
@@ -63,15 +63,15 @@ namespace daw {
 	         &rhs ) noexcept( std::
 	                            is_nothrow_move_assignable_v<
 	                              std::basic_string_view<Args...>> ) {
-		auto tmp = daw::move( lhs );
-		lhs = daw::exchange( rhs, daw::move( tmp ) );
+		auto tmp = DAW_MOVE( lhs );
+		lhs = daw::exchange( rhs, DAW_MOVE( tmp ) );
 	}
 
 	template<typename T>
 	constexpr void cswap( std::optional<T> &lhs, std::optional<T> &rhs ) noexcept(
 	  std::is_nothrow_move_assignable_v<std::optional<T>> ) {
-		auto tmp = daw::move( lhs );
-		lhs = daw::exchange( rhs, daw::move( tmp ) );
+		auto tmp = DAW_MOVE( lhs );
+		lhs = daw::exchange( rhs, DAW_MOVE( tmp ) );
 	}
 
 	template<typename T>
@@ -84,8 +84,8 @@ namespace daw {
 			auto tmp = lhs;
 			lhs = daw::exchange( rhs, tmp );
 		} else if constexpr( std::is_scalar_v<std::remove_reference_t<T>> ) {
-			auto tmp = daw::move( lhs );
-			lhs = daw::exchange( daw::move( rhs ), daw::move( tmp ) );
+			auto tmp = DAW_MOVE( lhs );
+			lhs = daw::exchange( DAW_MOVE( rhs ), DAW_MOVE( tmp ) );
 		} else if constexpr( swap_details::has_member_swap_v<
 		                       std::remove_reference_t<T>> ) {
 			lhs.swap( rhs );
@@ -100,9 +100,9 @@ namespace daw {
 	iter_swap( ForwardIterator1 lhs, ForwardIterator2 rhs ) noexcept(
 	  std::conjunction_v<std::is_nothrow_move_assignable<decltype( *lhs )>,
 	                     std::is_nothrow_move_assignable<decltype( *rhs )>> ) {
-		auto tmp = std::move( *lhs );
-		*lhs = std::move( *rhs );
-		*rhs = std::move( tmp );
+		auto tmp = DAW_MOVE( *lhs );
+		*lhs = DAW_MOVE( *rhs );
+		*rhs = DAW_MOVE( tmp );
 	}
 
 	template<typename ForwardIterator1, typename ForwardIterator2>

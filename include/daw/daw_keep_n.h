@@ -30,7 +30,7 @@ namespace daw {
 			  : func( f ) {}
 			constexpr keep_n_pred( Function &&f ) noexcept(
 			  std::is_nothrow_move_constructible_v<Function> )
-			  : func( daw::move( f ) ) {}
+			  : func( DAW_MOVE( f ) ) {}
 
 			template<typename... Args>
 			constexpr decltype( auto ) operator( )( Args &&...args ) {
@@ -84,7 +84,7 @@ namespace daw {
 			for( size_t n = 0; n < MaxItems; ++n ) {
 				if( m_pred( v, m_values[n] ) ) {
 					for( size_t m = ( MaxItems - 1U ); m > n; --m ) {
-						m_values[m] = daw::move( m_values[m - 1] );
+						m_values[m] = DAW_MOVE( m_values[m - 1] );
 					}
 					m_values[n] = v;
 					break;
@@ -96,9 +96,9 @@ namespace daw {
 			for( size_t n = 0; n < MaxItems; ++n ) {
 				if( m_pred( v, m_values[n] ) ) {
 					for( size_t m = MaxItems - 1; m > n; --m ) {
-						m_values[m] = daw::move( m_values[m - 1] );
+						m_values[m] = DAW_MOVE( m_values[m - 1] );
 					}
-					m_values[n] = daw::move( v );
+					m_values[n] = DAW_MOVE( v );
 					break;
 				}
 			}

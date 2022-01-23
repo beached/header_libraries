@@ -159,7 +159,7 @@ namespace daw {
 			hash_table2 new_tbl{ new_size };
 			for( size_t n = 0; n < m_hashes.size( ); ++n ) {
 				if( m_hashes[n] >= impl::sentinals::sentinals_size ) {
-					new_tbl[m_hashes[n]] = daw::move( m_values[n] );
+					new_tbl[m_hashes[n]] = DAW_MOVE( m_values[n] );
 				}
 			}
 			daw::cswap( *this, new_tbl );

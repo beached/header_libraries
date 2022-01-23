@@ -47,8 +47,8 @@ namespace daw {
 		                          bool CheckDecrement = true,
 		                          bool CheckDereference = true )
 		  : current{ it_first }
-		  , first{ daw::move( it_first ) }
-		  , last{ daw::move( it_last ) }
+		  , first{ DAW_MOVE( it_first ) }
+		  , last{ DAW_MOVE( it_last ) }
 		  , flags{ get_flag_value( CheckIncrement, CheckDecrement,
 		                           CheckDereference ) } {}
 

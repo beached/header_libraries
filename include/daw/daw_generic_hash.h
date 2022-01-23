@@ -237,7 +237,7 @@ namespace daw {
 	         typename Traits, typename Allocator>
 	auto
 	generic_hash( std::basic_string<CharT, Traits, Allocator> &&str ) noexcept {
-		auto tmp = daw::move( str );
+		auto tmp = DAW_MOVE( str );
 		return generic_hash<HashBytes>( tmp.data( ), tmp.size( ) );
 	}
 #endif

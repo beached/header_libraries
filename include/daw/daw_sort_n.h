@@ -10,6 +10,7 @@
 
 #include "daw_algorithm.h"
 #include "daw_algorithm_cx.h"
+#include "daw_move.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
 #include "iterator/daw_random_iterator.h"
@@ -511,14 +512,14 @@ namespace daw {
 			uint_fast8_t count = 0;
 			for( auto i = std::next( j ); i != last; ++i ) {
 				if( comp( *i, *j ) ) {
-					auto t = daw::move( *i );
+					auto t = DAW_MOVE( *i );
 					auto k = j;
 					j = i;
 					do {
-						*j = daw::move( *k );
+						*j = DAW_MOVE( *k );
 						j = k;
 					} while( j != first and comp( t, *--k ) );
-					*j = daw::move( t );
+					*j = DAW_MOVE( t );
 					if( ++count == limit ) {
 						return std::next( i ) == last;
 					}
@@ -538,14 +539,14 @@ namespace daw {
 			daw::sort_3( first, comp );
 			for( auto i = std::next( j ); i != last; ++i ) {
 				if( comp( *i, *j ) ) {
-					auto t = daw::move( *i );
+					auto t = DAW_MOVE( *i );
 					auto k = j;
 					j = i;
 					do {
-						*j = daw::move( *k );
+						*j = DAW_MOVE( *k );
 						j = k;
 					} while( j != first and comp( t, *--k ) );
-					*j = daw::move( t );
+					*j = DAW_MOVE( t );
 				}
 				j = i;
 			}
