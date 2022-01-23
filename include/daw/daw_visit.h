@@ -22,6 +22,7 @@
 #include <exception>
 #include <type_traits>
 #include <utility>
+#include <variant>
 
 namespace daw {
 	struct bad_variant_access : std::exception {};
