@@ -1679,9 +1679,10 @@ namespace daw {
 				}
 				auto lhs = begin( );
 				while( not s.empty( ) ) {
-					if( *lhs++ != s.front( ) ) {
+					if( *lhs != s.front( ) ) {
 						return false;
 					}
+					++lhs;
 					s.remove_prefix( );
 				}
 				return true;
@@ -1706,9 +1707,10 @@ namespace daw {
 				}
 				auto lhs = rbegin( );
 				while( not s.empty( ) ) {
-					if( *lhs++ != s.back( ) ) {
+					if( *lhs != s.back( ) ) {
 						return false;
 					}
+					++lhs;
 					s.remove_suffix( );
 				}
 				return true;

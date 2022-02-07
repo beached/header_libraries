@@ -558,7 +558,7 @@ namespace daw {
 	void tc010accessor( ) {
 #if defined( DAW_USE_EXCEPTIONS )
 		constexpr char const str[] = "Hello World";
-		daw::sv2::string_view view = str;
+		daw::sv2::string_view view = +str;
 
 		puts( "Returns reference to entry at position" );
 		{ daw_expecting( &view.at( 0 ), str ); }

@@ -226,7 +226,8 @@ namespace daw {
 					}
 					cur_val *= 2ULL;
 				}
-				m_data[cur_idx++] = tmp;
+				m_data[cur_idx] = tmp;
+				++cur_idx;
 			}
 		}
 

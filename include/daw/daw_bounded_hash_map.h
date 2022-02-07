@@ -10,6 +10,7 @@
 
 #include "cpp_17.h"
 #include "daw_algorithm.h"
+#include "daw_consteval.h"
 #include "daw_move.h"
 #include "daw_optional.h"
 #include "daw_traits.h"
@@ -97,7 +98,7 @@ namespace daw {
 
 		constexpr const_bounded_hash_map_iterator &operator++( ) {
 			++m_position;
-			while( !m_position->has_value and m_position < m_last ) {
+			while( not m_position->has_value and m_position < m_last ) {
 				++m_position;
 			}
 			return *this;
@@ -111,7 +112,7 @@ namespace daw {
 
 		constexpr const_bounded_hash_map_iterator &operator--( ) {
 			--m_position;
-			while( !m_position->has_value and m_position > m_first ) {
+			while( not m_position->has_value and m_position > m_first ) {
 				--m_position;
 			}
 			return *this;
@@ -301,6 +302,7 @@ namespace daw {
 	         typename Hash = std::hash<Key>,
 	         typename KeyEqual = std::equal_to<Key>>
 	struct bounded_hash_map {
+		static_assert( not std::is_const_v<Key> );
 		using key_type = Key;
 		using mapped_type = Value;
 		using size_type = size_t;
@@ -316,7 +318,7 @@ namespace daw {
 		using const_iterator = const_bounded_hash_map_iterator<Key, Value>;
 
 	private:
-		std::array<bounded_hash_map_item_t<Key, Value>, N + 1> m_data{ };
+		bounded_hash_map_item_t<Key, Value> m_data[N + 1]{ };
 
 		static constexpr size_t scale_hash( size_t hash, size_t range_size ) {
 			std::uint64_t const prime_a = 18446744073709551557ULL;
@@ -330,12 +332,12 @@ namespace daw {
 			size_type const scaled_hash = scale_hash( hash, capacity( ) );
 
 			for( size_type n = scaled_hash; n < capacity( ); ++n ) {
-				if( !m_data[n] or key_equal{ }( m_data[n].kv.key, key ) ) {
+				if( not m_data[n] or key_equal{ }( m_data[n].kv.key, key ) ) {
 					return n;
 				}
 			}
 			for( size_type n = 0; n < scaled_hash; ++n ) {
-				if( !m_data[n] or key_equal{ }( m_data[n].kv.key, key ) ) {
+				if( not m_data[n] or key_equal{ }( m_data[n].kv.key, key ) ) {
 					return n;
 				}
 			}
@@ -352,7 +354,7 @@ namespace daw {
 		constexpr bounded_hash_map( ) = default;
 
 		template<size_type ItemCount>
-		constexpr bounded_hash_map(
+		DAW_CONSTEVAL bounded_hash_map(
 		  std::pair<Key, Value> const ( &init_values )[ItemCount] ) {
 
 			static_assert( ItemCount <= N );
@@ -361,10 +363,13 @@ namespace daw {
 			}
 		}
 
-		template<typename Iterator>
+		template<typename Iterator,
+		         std::enable_if_t<daw::traits::is_iterator_v<Iterator>,
+		                          std::nullptr_t> = nullptr>
 		constexpr bounded_hash_map( Iterator first, Iterator last ) {
-			for( ; first != last; ++first ) {
+			while( first != last ) {
 				insert( *first );
+				++first;
 			}
 		}
 
@@ -396,8 +401,8 @@ namespace daw {
 		template<typename K>
 		constexpr mapped_type &operator[]( K &&key ) {
 			static_assert( std::is_convertible_v<K, Key>, "Incompatible key passed" );
-			decltype( auto ) item = m_data[*find_index( key )];
-			if( !item ) {
+			auto &item = m_data[*find_index( key )];
+			if( not item ) {
 				item.has_value = true;
 				item.kv.key = DAW_FWD2( K, key );
 				item.kv.value = Value{ };
@@ -406,8 +411,8 @@ namespace daw {
 		}
 
 		constexpr mapped_type const &operator[]( Key const &key ) const {
-			decltype( auto ) item = m_data[*find_index( key )];
-			if( !item ) {
+			auto const &item = m_data[*find_index( key )];
+			if( not item ) {
 				std::abort( );
 			}
 			return item.kv.value;
@@ -416,11 +421,11 @@ namespace daw {
 		constexpr daw::optional<mapped_type const &>
 		try_get( Key const &key ) const {
 			auto idx = find_index( key );
-			if( !idx ) {
+			if( not idx ) {
 				return { };
 			}
-			decltype( auto ) item = m_data[*idx];
-			if( !item ) {
+			auto const &item = m_data[*idx];
+			if( not item ) {
 				return { };
 			}
 			return item.kv.value;
@@ -459,61 +464,63 @@ namespace daw {
 		}
 
 		constexpr iterator begin( ) {
-			auto it = m_data.data( );
-			auto last = m_data.data( ) + capacity( );
-			while( it != last and !it->has_value ) {
+			auto it = std::data( m_data );
+			auto last = std::data( m_data ) + capacity( );
+			while( it != last and not it->has_value ) {
 				++it;
 			}
-			return { m_data.data( ), last, it };
+			return { std::data( m_data ), last, it };
 		}
 
 		constexpr const_iterator begin( ) const {
-			auto it = m_data.data( );
-			auto last = m_data.data( ) + capacity( );
-			while( it != last and !it->has_value ) {
+			auto it = std::data( m_data );
+			auto last = std::data( m_data ) + capacity( );
+			while( it != last and not it->has_value ) {
 				++it;
 			}
-			return { m_data.data( ), last, it };
+			return { std::data( m_data ), last, it };
 		}
 
 		constexpr const_iterator cbegin( ) const {
-			auto it = m_data.data( );
-			auto last = m_data.data( ) + capacity( );
-			while( it != last and !it->has_value ) {
+			auto it = std::data( m_data );
+			auto last = std::data( m_data ) + capacity( );
+			while( it != last and not it->has_value ) {
 				++it;
 			}
-			return { m_data.data( ), last, it };
+			return { std::data( m_data ), last, it };
 		}
 
 		constexpr iterator end( ) {
-			return { m_data.data( ), m_data.data( ) + capacity( ),
-			         m_data.data( ) + capacity( ) };
+			return { std::data( m_data ), std::data( m_data ) + capacity( ),
+			         std::data( m_data ) + capacity( ) };
 		}
 
 		constexpr const_iterator end( ) const {
-			return { m_data.data( ), m_data.data( ) + capacity( ),
-			         m_data.data( ) + capacity( ) };
+			return { std::data( m_data ), std::data( m_data ) + capacity( ),
+			         std::data( m_data ) + capacity( ) };
 		}
 
 		constexpr const_iterator cend( ) const {
-			return { m_data.data( ), m_data.data( ) + capacity( ),
-			         m_data.data( ) + capacity( ) };
+			return { std::data( m_data ), std::data( m_data ) + capacity( ),
+			         std::data( m_data ) + capacity( ) };
 		}
 
 		constexpr iterator find( Key const &key ) {
 			auto idx = find_index( key );
-			if( !idx ) {
+			if( not idx ) {
 				return end( );
 			}
-			return { m_data.data( ), m_data.data( ) + capacity( ), &m_data[*idx] };
+			return { std::data( m_data ), std::data( m_data ) + capacity( ),
+			         m_data + *idx };
 		}
 
 		constexpr const_iterator find( Key const &key ) const {
 			auto idx = find_index( key );
-			if( !idx ) {
+			if( not idx ) {
 				return end( );
 			}
-			return { m_data.data( ), m_data.data( ) + capacity( ), &m_data[*idx] };
+			return { std::data( m_data ), std::data( m_data ) + capacity( ),
+			         m_data + *idx };
 		}
 
 		constexpr void erase( Key const &key ) {
@@ -525,12 +532,12 @@ namespace daw {
 	};
 	template<typename Key, typename Value, typename Hash = std::hash<Key>,
 	         size_t N>
-	bounded_hash_map( std::pair<Key, Value> const ( &items )[N] )
+	bounded_hash_map( std::pair<Key, Value> const( &&items )[N] )
 	  -> bounded_hash_map<Key, Value, N, Hash>;
 
 	template<typename Key, typename Value, typename Hash = std::hash<Key>,
 	         size_t N>
-	constexpr auto
+	DAW_CONSTEVAL auto
 	make_bounded_hash_map( std::pair<Key, Value> const ( &items )[N] ) {
 		return bounded_hash_map<Key, Value, N, Hash>( items );
 	}

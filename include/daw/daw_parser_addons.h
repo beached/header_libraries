@@ -96,7 +96,8 @@ namespace daw::parser {
 			if( ( found = is_a( *it, quote_char ) ) and !is_escape( *last_it ) ) {
 				break;
 			}
-			last_it = it++;
+			last_it = it;
+			++it;
 		}
 		daw::exception::precondition_check<ParserException>( found );
 

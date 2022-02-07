@@ -108,7 +108,8 @@ namespace daw {
 				daw::exception::dbg_throw_on_true<std::out_of_range>(
 				  m_first == m_last, "Attempt to iterate past last item" );
 
-				m_left_overs.push_back( *m_first++ );
+				m_left_overs.push_back( *m_first );
+				++m_first;
 			}
 			result |= m_left_overs.pop_back( num_bits );
 			return result;

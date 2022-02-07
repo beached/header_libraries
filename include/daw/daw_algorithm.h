@@ -1838,7 +1838,9 @@ static_assert(
 				++first1;
 			} else {
 				if( not daw::invoke( comp, *first2, *first1 ) ) {
-					*d_first++ = *first1++;
+					*d_first = *first1;
+					++d_first;
+					++first1;
 				}
 				++first2;
 			}
@@ -1872,7 +1874,8 @@ static_assert(
 		if( first != last ) {
 			for( ForwardIterator i = first; ++i != last; ) {
 				if( not( *i == value ) ) {
-					*first++ = DAW_MOVE( *i );
+					*first = DAW_MOVE( *i );
+					++first;
 				}
 			}
 		}
@@ -1888,7 +1891,8 @@ static_assert(
 		if( first != last ) {
 			for( ForwardIterator i = first; ++i != last; ) {
 				if( not daw::invoke( pred, *i ) ) {
-					*first++ = DAW_MOVE( *i );
+					*first = DAW_MOVE( *i );
+					++first;
 				}
 			}
 		}
@@ -1904,7 +1908,8 @@ static_assert(
 			for( ForwardIterator i = first; ++i != last; ) {
 				if( not daw::invoke( pred, *i ) ) {
 					(void)daw::invoke( func, *i );
-					*first++ = DAW_MOVE( *i );
+					*first = DAW_MOVE( *i );
+					++first;
 				}
 			}
 		}
@@ -2054,7 +2059,8 @@ static_assert(
 				// Iterator is invalidated inside extract_to,
 				// incrementing here ensures that we do not have an
 				// iterator to the current item
-				extract_to( from, to, it++ );
+				extract_to( from, to, it );
+				++it;
 			} else {
 				++it;
 			}

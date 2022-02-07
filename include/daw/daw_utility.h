@@ -431,7 +431,9 @@ namespace daw {
 	                                    Iterator2 const last_in,
 	                                    OutputIterator first_out ) {
 		while( first_in != last_in ) {
-			*first_out++ = *first_in++;
+			*first_out = *first_in;
+			++first_out;
+			++first_in;
 		}
 		return first_out;
 	}
@@ -441,7 +443,9 @@ namespace daw {
 	                                    Iterator2 const last_in,
 	                                    OutputIterator first_out ) {
 		while( first_in != last_in ) {
-			*first_out++ = DAW_MOVE( *first_in++ );
+			*first_out = DAW_MOVE( *first_in );
+			++first_out;
+			++first_in;
 		}
 		return first_out;
 	}
@@ -468,8 +472,10 @@ namespace daw {
 	[[nodiscard]] constexpr OutputIterator hex( char c,
 	                                            OutputIterator it_out ) noexcept {
 		uint8_t n = static_cast<uint8_t>( c );
-		*it_out++ = utility_details::get_nibble( n >> 4 );
-		*it_out++ = utility_details::get_nibble( n & 0x0F );
+		*it_out = utility_details::get_nibble( n >> 4 );
+		++it_out;
+		*it_out = utility_details::get_nibble( n & 0x0F );
+		++it_out;
 		return it_out;
 	}
 
@@ -477,8 +483,10 @@ namespace daw {
 	[[nodiscard]] constexpr OutputIterator
 	hex_lc( char c, OutputIterator it_out ) noexcept {
 		uint8_t n = static_cast<uint8_t>( c );
-		*it_out++ = utility_details::get_lc_nibble( n >> 4 );
-		*it_out++ = utility_details::get_lc_nibble( n & 0x0F );
+		*it_out = utility_details::get_lc_nibble( n >> 4 );
+		++it_out;
+		*it_out = utility_details::get_lc_nibble( n & 0x0F );
+		++it_out;
 		return it_out;
 	}
 
@@ -499,7 +507,9 @@ namespace daw {
 	                                  OutputIterator it_out ) noexcept {
 		auto chr_ptr = reinterpret_cast<char const *>( &val );
 		for( size_t n = 0; n < sizeof( T ); ++n ) {
-			it_out = hex( *chr_ptr++, it_out );
+			it_out = hex( *chr_ptr, it_out );
+			++it_out;
+			++chr_ptr;
 		}
 		return it_out;
 	}
@@ -701,7 +711,8 @@ namespace daw {
 	[[nodiscard]] constexpr uint16_t value_from_chars(
 	  unsigned char const *ptr,
 	  std::integral_constant<size_t, sizeof( uint16_t )> ) noexcept {
-		auto result = static_cast<uint16_t>( ( *ptr++ ) << 8U );
+		auto result = static_cast<uint16_t>( ( *ptr ) << 8U );
+		++ptr;
 		result |= *ptr;
 		return result;
 	}
@@ -710,9 +721,12 @@ namespace daw {
 	[[nodiscard]] constexpr uint32_t value_from_chars(
 	  unsigned char const *ptr,
 	  std::integral_constant<size_t, sizeof( uint32_t )> ) noexcept {
-		uint32_t result = static_cast<uint32_t>( ( *ptr++ ) << 24U );
-		result |= static_cast<uint32_t>( ( *ptr++ ) << 16U );
-		result |= static_cast<uint32_t>( ( *ptr++ ) << 8U );
+		uint32_t result = static_cast<uint32_t>( ( *ptr ) << 24U );
+		++ptr;
+		result |= static_cast<uint32_t>( ( *ptr ) << 16U );
+		++ptr;
+		result |= static_cast<uint32_t>( ( *ptr ) << 8U );
+		++ptr;
 		result |= static_cast<uint32_t>( *ptr );
 		return result;
 	}
@@ -721,15 +735,22 @@ namespace daw {
 	[[nodiscard]] constexpr uint64_t value_from_chars(
 	  unsigned char const *ptr,
 	  std::integral_constant<size_t, sizeof( uint64_t )> ) noexcept {
-		auto result =
-		  static_cast<uint64_t>( static_cast<uint64_t>( *ptr++ ) << 56U );
-		result |= static_cast<uint64_t>( static_cast<uint64_t>( *ptr++ ) << 48U );
-		result |= static_cast<uint64_t>( static_cast<uint64_t>( *ptr++ ) << 40U );
-		result |= static_cast<uint64_t>( static_cast<uint64_t>( *ptr++ ) << 32U );
-		result |= static_cast<uint64_t>( static_cast<uint64_t>( *ptr++ ) << 24U );
-		result |= static_cast<uint64_t>( static_cast<uint64_t>( *ptr++ ) << 16U );
-		result |= static_cast<uint64_t>( static_cast<uint64_t>( *ptr++ ) << 8U );
+		auto result = static_cast<uint64_t>( static_cast<uint64_t>( *ptr ) << 56U );
+		++ptr;
+		result |= static_cast<uint64_t>( static_cast<uint64_t>( *ptr ) << 48U );
+		++ptr;
+		result |= static_cast<uint64_t>( static_cast<uint64_t>( *ptr ) << 40U );
+		++ptr;
+		result |= static_cast<uint64_t>( static_cast<uint64_t>( *ptr ) << 32U );
+		++ptr;
+		result |= static_cast<uint64_t>( static_cast<uint64_t>( *ptr ) << 24U );
+		++ptr;
+		result |= static_cast<uint64_t>( static_cast<uint64_t>( *ptr ) << 16U );
+		++ptr;
+		result |= static_cast<uint64_t>( static_cast<uint64_t>( *ptr ) << 8U );
+		++ptr;
 		result |= static_cast<uint64_t>( *ptr );
+		++ptr;
 		return result;
 	}
 
