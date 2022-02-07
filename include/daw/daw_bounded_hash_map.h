@@ -537,7 +537,7 @@ namespace daw {
 
 	template<typename Key, typename Value, typename Hash = std::hash<Key>,
 	         size_t N>
-	constexpr auto
+	DAW_CONSTEVAL auto
 	make_bounded_hash_map( std::pair<Key, Value> const ( &items )[N] ) {
 		return bounded_hash_map<Key, Value, N, Hash>( items );
 	}
