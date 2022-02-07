@@ -302,6 +302,7 @@ namespace daw {
 	         typename Hash = std::hash<Key>,
 	         typename KeyEqual = std::equal_to<Key>>
 	struct bounded_hash_map {
+		static_assert( not std::is_const_v<Key> );
 		using key_type = Key;
 		using mapped_type = Value;
 		using size_type = size_t;
@@ -354,7 +355,7 @@ namespace daw {
 
 		template<size_type ItemCount>
 		DAW_CONSTEVAL bounded_hash_map(
-		  std::pair<Key, Value> const( &&init_values )[ItemCount] ) {
+		  std::pair<Key, Value> const ( &init_values )[ItemCount] ) {
 
 			static_assert( ItemCount <= N );
 			for( auto const &kv : init_values ) {
@@ -362,10 +363,13 @@ namespace daw {
 			}
 		}
 
-		template<typename Iterator>
+		template<typename Iterator,
+		         std::enable_if_t<daw::traits::is_iterator_v<Iterator>,
+		                          std::nullptr_t> = nullptr>
 		constexpr bounded_hash_map( Iterator first, Iterator last ) {
-			for( ; first != last; ++first ) {
+			while( first != last ) {
 				insert( *first );
+				++first;
 			}
 		}
 
