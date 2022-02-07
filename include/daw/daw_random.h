@@ -69,7 +69,8 @@ namespace daw {
 		               "IntType must be a valid integral type" );
 		daw::exception::daw_throw_on_false( a <= b, "a <= b must be true" );
 		while( first != last ) {
-			*first++ = randint<IntType>( a, b );
+			*first = randint<IntType>( a, b );
+			++first;
 		}
 	}
 
@@ -106,8 +107,8 @@ namespace daw {
 			// Use djb2 to hash the string to generate seed
 			size_t result = seed == 0 ? 5381U : seed;
 			while( first and *first != 0 ) {
-				result =
-				  ( ( result << 5U ) + result ) + static_cast<size_t>( *first++ );
+				result = ( ( result << 5U ) + result ) + static_cast<size_t>( *first );
+				++first;
 			}
 			return result;
 		}

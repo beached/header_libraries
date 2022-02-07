@@ -192,7 +192,8 @@ namespace daw {
 					  CharT{ }, std::integral_constant<size_t, sizeof( Integer )>{ } );
 					return daw::algorithm::copy( m.begin( ), m.end( ), it );
 				}
-				*it++ = static_cast<CharT>( '-' );
+				*it = static_cast<CharT>( '-' );
+				++it;
 				value = -value;
 			}
 			for( auto p10 = pow10<Integer>( whole_log10<uint16_t>( value ) );
@@ -204,7 +205,8 @@ namespace daw {
 				  tmp >= 0 && tmp < 10,
 				  "There should only ever be a single digit positive number" );
 
-				*it++ = Traits::get_char_digit( tmp );
+				*it = Traits::get_char_digit( tmp );
+				++it;
 
 				value -= tmp * p10;
 			}

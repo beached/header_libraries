@@ -21,7 +21,7 @@ constexpr bool daw_safe_advance_test_001( ) {
 	std::array<int, 11> a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto it = ::std::begin( a );
 	daw::safe_advance( a, it, 5 );
-	bool const ans = ( it != ::std::begin( a ) );
+	bool const ans = it != ::std::begin( a );
 	daw::expecting( ans );
 	auto it2 = ::std::next( ::std::begin( a ), 5 );
 	bool const ans2 = it == it2;

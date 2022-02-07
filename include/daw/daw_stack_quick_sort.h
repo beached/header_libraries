@@ -21,7 +21,8 @@ namespace daw {
 
 			template<typename... Args>
 			constexpr void push_back( Args &&...args ) {
-				values[idx++] = T{ std::forward<Args>( args )... };
+				values[idx] = T{ std::forward<Args>( args )... };
+				++idx;
 			}
 
 			constexpr T &back( ) {

@@ -57,7 +57,8 @@ namespace daw::algorithm {
 	  std::is_nothrow_invocable_v<Function, std::size_t> ) {
 		std::size_t n = 0;
 		while( n < count ) {
-			func( n++ );
+			func( n );
+			++n;
 		}
 	}
 

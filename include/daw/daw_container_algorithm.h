@@ -447,7 +447,9 @@ namespace daw {
 			auto const last = std::cend( source );
 
 			while( src != last ) {
-				*destination++ = *src++;
+				*destination = *src;
+				++destination;
+				++src;
 			}
 		}
 
@@ -459,7 +461,9 @@ namespace daw {
 			auto src = std::cbegin( source );
 			count = ( daw::min )( count, daw::size( source ) );
 			for( size_t n = 0; n < count; ++n ) {
-				*destination++ = *src++;
+				*destination = *src;
+				++destination;
+				++src;
 			}
 		}
 
@@ -507,7 +511,9 @@ namespace daw {
 			count = ( daw::min )( count, daw::size( source ) );
 			for( size_t n = 0; n < count; ++n ) {
 				if( pred( *src ) ) {
-					*destination++ = *src++;
+					*destination = *src;
+					++destination;
+					++src;
 				}
 			}
 		}
@@ -531,7 +537,8 @@ namespace daw {
 
 			auto it = daw::begin_at( container, first_inclusive );
 			for( size_t row = first_inclusive; row < last_exclusive; ++row ) {
-				func( *it++, row );
+				func( *it, row );
+				++it;
 			}
 		}
 

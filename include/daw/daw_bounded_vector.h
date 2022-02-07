@@ -199,14 +199,16 @@ namespace daw {
 			if( can_move_front( 1 ) ) {
 				do_move_to_front( );
 			}
-			m_stack[m_index++] = value;
+			m_stack[m_index] = value;
+			++m_index;
 		}
 
 		constexpr void push_back( value_type &&value ) noexcept {
 			if( can_move_front( 1 ) ) {
 				do_move_to_front( );
 			}
-			m_stack[m_index++] = DAW_MOVE( value );
+			m_stack[m_index] = DAW_MOVE( value );
+			++m_index;
 		}
 
 		/**
@@ -227,7 +229,8 @@ namespace daw {
 			auto const start = m_index;
 			m_index += sz;
 			for( std::size_t n = start; n < m_index; ++n ) {
-				m_stack[n] = *ptr++;
+				m_stack[n] = *ptr;
+				++ptr;
 			}
 		}
 
@@ -246,7 +249,8 @@ namespace daw {
 			auto const start = m_index;
 			m_index += sz;
 			for( std::size_t n = start; n < m_index; ++n ) {
-				m_stack[n] = static_cast<value_type>( *ptr++ );
+				m_stack[n] = static_cast<value_type>( *ptr );
+				++ptr;
 			}
 		}
 
@@ -255,8 +259,9 @@ namespace daw {
 			if( can_move_front( sizeof...( Args ) ) ) {
 				do_move_to_front( );
 			}
-			m_stack[m_index++] =
+			m_stack[m_index] =
 			  daw::construct_a<value_type>( std::forward<Args>( args )... );
+			++m_index;
 		}
 
 		[[nodiscard]] constexpr value_type pop_back( ) noexcept {

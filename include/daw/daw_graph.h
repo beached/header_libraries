@@ -358,7 +358,8 @@ namespace daw {
 
 		template<typename... Args>
 		node_id_t add_node( Args &&...args ) {
-			auto const id = cur_id++;
+			auto const id = cur_id;
+			++cur_id;
 			m_nodes.emplace( std::make_pair(
 			  id, graph_impl::node_impl_t<T>(
 			        node_id_t{ id },

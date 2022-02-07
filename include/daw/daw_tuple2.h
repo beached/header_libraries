@@ -36,7 +36,8 @@ namespace daw {
 				std::size_t idx = 0;
 				for( std::size_t n = 0; n < sizeof...( Sizes ); ++n ) {
 					for( std::size_t m = 0; m < orig[n]; ++m ) {
-						result[idx++] = encode_location( n, m );
+						result[idx] = encode_location( n, m );
+						++idx;
 					}
 				}
 				return result;

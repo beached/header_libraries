@@ -393,7 +393,8 @@ namespace daw {
 
 		template<typename... Args>
 		constexpr node_id_t add_node( Args &&...args ) {
-			auto const id_value = cur_id++;
+			auto const id_value = cur_id;
+			++cur_id;
 			auto id = node_id_t( id_value );
 
 			m_nodes.insert(

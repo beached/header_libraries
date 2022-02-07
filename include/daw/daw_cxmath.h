@@ -697,11 +697,11 @@ namespace daw::cxmath {
 		auto result = Number{ 1 };
 		while( exp < Number{ 0 } ) {
 			result /= b;
-			exp++;
+			++exp;
 		}
 		while( exp > Number{ 0 } ) {
 			result *= b;
-			exp--;
+			--exp;
 		}
 		return result;
 	}

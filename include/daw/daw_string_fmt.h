@@ -125,8 +125,7 @@ namespace daw {
 
 			template<typename... Args>
 			std::string fmt( std::string format_str, Args &&...args ) {
-				return fmt_t{ DAW_MOVE( format_str ) }(
-				  std::forward<Args>( args )... );
+				return fmt_t{ DAW_MOVE( format_str ) }( std::forward<Args>( args )... );
 			}
 		} // namespace v1
 		namespace v2 {
@@ -169,7 +168,8 @@ namespace daw {
 							  return daw::algorithm::copy( sv.begin( ), sv.end( ), out );
 						  },
 						  [&]( CharT c ) {
-							  *out++ = c;
+							  *out = c;
+							  ++out;
 							  return out;
 						  },
 						  [&]( size_t pos ) {
