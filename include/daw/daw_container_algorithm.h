@@ -95,7 +95,7 @@ namespace daw {
 		  impl::is_nothrow_sortable<Sortable, Compare>( ) ) {
 			using std::begin;
 			using std::end;
-			using value_type = remove_cvref_t<decltype( *begin( container ) )>;
+			using value_type = DAW_TYPEOF( *begin( container ) );
 
 			static_assert( traits::is_sortable_container_v<Sortable>, "" );
 			static_assert(
@@ -123,7 +123,7 @@ namespace daw {
 
 			using std::begin;
 			using std::end;
-			using value_type = remove_cvref_t<decltype( *begin( container ) )>;
+			using value_type = DAW_TYPEOF( *begin( container ) );
 
 			static_assert(
 			  traits::is_binary_predicate_v<Compare, value_type, value_type>, "" );
@@ -377,7 +377,7 @@ namespace daw {
 		                               std::end( container ), compare ) ) ) {
 			using std::begin;
 			using std::end;
-			using value_type = remove_cvref_t<decltype( *begin( container ) )>;
+			using value_type = DAW_TYPEOF( *begin( container ) );
 
 			static_assert(
 			  traits::is_binary_predicate_v<Compare, value_type, value_type>, "" );
@@ -397,7 +397,7 @@ namespace daw {
 
 			using std::begin;
 			using std::end;
-			using value_type = remove_cvref_t<decltype( *begin( container ) )>;
+			using value_type = DAW_TYPEOF( *begin( container ) );
 
 			static_assert(
 			  traits::is_binary_predicate_v<Compare, value_type, value_type>, "" );

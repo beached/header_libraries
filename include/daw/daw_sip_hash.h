@@ -16,6 +16,7 @@
 
 #include "daw_endian.h"
 #include "daw_span.h"
+#include "daw_traits.h"
 
 #include <ciso646>
 #include <cstddef>
@@ -71,7 +72,7 @@ namespace daw {
 		constexpr void set_pt( Left &pt, Right const &m ) noexcept {
 			static_assert( sizeof( pt[0] ) == 1U );
 			static_assert( sizeof( m[0] ) == 1U );
-			using T = daw::remove_cvref_t<decltype( pt[0] )>;
+			using T = DAW_TYPEOF( pt[0] );
 			pt[0] = static_cast<T>( m[0] );
 			pt[1] = static_cast<T>( m[1] );
 			pt[2] = static_cast<T>( m[2] );

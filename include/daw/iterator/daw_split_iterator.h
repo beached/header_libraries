@@ -557,8 +557,7 @@ namespace daw {
 
 	namespace impl {
 		template<typename String>
-		using string_char_t =
-		  daw::remove_cvref_t<decltype( *std::cbegin( std::declval<String>( ) ) )>;
+		using string_char_t = DAW_TYPEOF( *std::cbegin( std::declval<String>( ) ) );
 
 		template<typename Splitter, typename String>
 		constexpr bool is_splitter_v =
@@ -568,7 +567,7 @@ namespace daw {
 	template<typename String, typename Splitter,
 	         daw::required<impl::is_splitter_v<Splitter, String>> = nullptr>
 	constexpr auto make_split_it( String &sv, Splitter &&splitter ) noexcept {
-		using IterT = daw::remove_cvref_t<decltype( std::begin( sv ) )>;
+		using IterT = DAW_TYPEOF( std::begin( sv ) );
 		auto result = split_it<IterT, Splitter>{
 		  std::begin( sv ), std::end( sv ), std::forward<Splitter>( splitter ) };
 		return result;
@@ -579,7 +578,7 @@ namespace daw {
 	make_split_it( std::basic_string<CharT, Traits, Allocator> &str,
 	               CharT divider ) noexcept {
 		using SpltT = char_splitter_t<CharT>;
-		using iterator = daw::remove_cvref_t<decltype( str.begin( ) )>;
+		using iterator = DAW_TYPEOF( str.begin( ) );
 
 		return split_it<iterator, SpltT>( str.begin( ), str.end( ),
 		                                  SpltT{ divider } );

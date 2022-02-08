@@ -10,6 +10,7 @@
 
 #include "cpp_17.h"
 #include "daw_move.h"
+#include "daw_traits.h"
 #include "daw_utility.h"
 
 #include <array>
@@ -189,8 +190,8 @@ namespace daw {
 
 	template<std::size_t Idx, typename... Ts>
 	struct tuple2_element<Idx, tuple2<Ts...>> {
-		using type = typename daw::remove_cvref_t<
-		  decltype( tuple2<Ts...>::template element_type<Idx>( ) )>::type;
+		using type =
+		  typename DAW_TYPEOF( tuple2<Ts...>::template element_type<Idx>( ) )::type;
 	};
 
 	template<std::size_t Idx, typename Tuple>

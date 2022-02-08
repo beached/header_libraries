@@ -184,8 +184,8 @@ namespace daw {
 	                                           Test &&test_callable,
 	                                           Args &&...args ) noexcept {
 		static_assert( Runs > 0 );
-		using result_t = daw::remove_cvref_t<decltype( daw::expected_from_code(
-		  test_callable, DAW_FWD2( Args, args )... ) )>;
+		using result_t = DAW_TYPEOF(
+		  daw::expected_from_code( test_callable, DAW_FWD2( Args, args )... ) );
 
 		result_t result{ };
 
@@ -306,7 +306,7 @@ namespace daw {
 		benchmark_impl::second_duration valid_time = std::chrono::seconds( 0 );
 		for( size_t n = 0; n < Runs; ++n ) {
 			auto const start = std::chrono::steady_clock::now( );
-			using result_t = daw::remove_cvref_t<decltype( func( args... ) )>;
+			using result_t = DAW_TYPEOF( func( args... ) );
 			result_t result;
 			result = *daw::expected_from_code( func, args... );
 			auto const finish = std::chrono::steady_clock::now( );
@@ -331,8 +331,8 @@ namespace daw {
 	bench_n_test_mbs( std::string const &title, size_t bytes,
 	                  Test &&test_callable, Args const &...args ) noexcept {
 		static_assert( Runs > 0 );
-		using result_t = daw::remove_cvref_t<decltype( daw::expected_from_code(
-		  test_callable, args... ) )>;
+		using result_t =
+		  DAW_TYPEOF( daw::expected_from_code( test_callable, args... ) );
 
 		result_t result{ };
 
@@ -454,7 +454,7 @@ namespace daw {
 				}
 			}
 		}
-		// using result_t = daw::remove_cvref_t<decltype( func( args... ) )>;
+		// using result_t = DAW_TYPEOF( func( args... ) );
 
 		for( size_t n = 0; n < Runs; ++n ) {
 			auto const start = std::chrono::steady_clock::now( );
@@ -508,7 +508,7 @@ namespace daw {
 				}
 			}
 		}
-		using result_t = daw::remove_cvref_t<decltype( func( args... ) )>;
+		using result_t = DAW_TYPEOF( func( args... ) );
 
 		for( size_t n = 0; n < Runs; ++n ) {
 			auto const start = std::chrono::steady_clock::now( );

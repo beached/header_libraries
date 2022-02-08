@@ -60,8 +60,7 @@ namespace daw {
 
 		template<typename T, typename... Args>
 		struct can_potentially_constant_construct_impl {
-			using type =
-			  daw::remove_cvref_t<decltype( can_cxeval<construct_v<T, Args...>>( ) )>;
+			using type = DAW_TYPEOF( can_cxeval<construct_v<T, Args...>>( ) );
 		};
 	} // namespace can_cxeval_impl
 

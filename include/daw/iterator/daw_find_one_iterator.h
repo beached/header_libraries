@@ -43,10 +43,10 @@ namespace daw {
 		  find_one_element<typename std::iterator_traits<Iterator>::value_type>;
 		using difference_type =
 		  typename std::iterator_traits<Iterator>::difference_type;
-		using iterator_category = typename daw::remove_cvref_t<
-		  decltype( find_iterator_impl::test_iterator_category(
+		using iterator_category =
+		  typename DAW_TYPEOF( find_iterator_impl::test_iterator_category(
 		    std::declval<typename std::iterator_traits<
-		      Iterator>::iterator_category>( ) ) )>::type;
+		      Iterator>::iterator_category>( ) ) )::type;
 		using reference = value_type;
 		using pointer = find_one_element<reference>;
 

@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw_move.h"
+#include "daw_traits.h"
 #include "iterator/daw_zipiter.h"
 
 #include <ciso646>
@@ -16,10 +17,10 @@
 namespace daw {
 	template<typename... Containers>
 	struct zip_container {
-		using iterator = daw::remove_cvref_t<decltype( zip_iterator(
-		  std::begin( std::declval<Containers &>( ) )... ) )>;
-		using const_iterator = daw::remove_cvref_t<decltype( zip_iterator(
-		  std::begin( std::declval<Containers const &>( ) )... ) )>;
+		using iterator = DAW_TYPEOF(
+		  zip_iterator( std::begin( std::declval<Containers &>( ) )... ) );
+		using const_iterator = DAW_TYPEOF(
+		  zip_iterator( std::begin( std::declval<Containers const &>( ) )... ) );
 
 	private:
 		iterator m_begin;
