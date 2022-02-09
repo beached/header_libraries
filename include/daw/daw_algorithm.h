@@ -1563,8 +1563,10 @@ namespace daw::algorithm {
 		return first_out;
 	}
 
-	template<typename T, typename RandomIterator, typename RandomIteratorLast,
-	         typename BinaryOperation>
+	struct deduce_result;
+
+	template<typename Result = deduce_result, typename T, typename RandomIterator,
+	         typename RandomIteratorLast, typename BinaryOperation>
 	constexpr T reduce(
 	  RandomIterator first, RandomIteratorLast last, T init,
 	  BinaryOperation
@@ -1583,8 +1585,10 @@ namespace daw::algorithm {
 		  "referenced by RandomIterator. "
 		  "e.g. *first = binary_op( *first, *(first + 1) ) must be valid." );
 
-		using result_t = typename std::iterator_traits<RandomIterator>::value_type;
-		auto result = result_t{ init };
+		using result_t = std::conditional_t<
+		  std::is_same_v<Result, deduce_result>,
+		  typename std::iterator_traits<RandomIterator>::value_type, Result>;
+		auto result = result_t{ DAW_MOVE( init ) };
 		while( first != last ) {
 			result = daw::invoke( binary_op, DAW_MOVE( result ), *first );
 			++first;
@@ -1592,9 +1596,9 @@ namespace daw::algorithm {
 		return result;
 	}
 
-	template<typename InputIterator1, typename InputIterator1Last,
-	         typename InputIterator2, typename T, typename ReduceFunction,
-	         typename MapFunction>
+	template<typename Result = deduce_result, typename InputIterator1,
+	         typename InputIterator1Last, typename InputIterator2, typename T,
+	         typename ReduceFunction, typename MapFunction>
 	constexpr T map_reduce(
 	  InputIterator1 first1, InputIterator1Last last1, InputIterator2 first2,
 	  T init, ReduceFunction reduce_func,
@@ -1627,7 +1631,9 @@ namespace daw::algorithm {
 		  "e.g reduce_func( init, "
 		  "map_func( *first1, *first2 ) ) must be valid" );
 
-		using result_t = typename std::iterator_traits<InputIterator1>::value_type;
+		using result_t = std::conditional_t<
+		  std::is_same_v<Result, deduce_result>,
+		  typename std::iterator_traits<InputIterator1>::value_type, Result>;
 		auto result = result_t{ DAW_MOVE( init ) };
 		while( first1 != last1 ) {
 			result = daw::invoke( reduce_func, DAW_MOVE( result ),
@@ -1680,11 +1686,13 @@ namespace daw::algorithm {
 		}
 	}
 
-	template<typename InputIterator, typename T>
+	template<typename Result = deduce_result, typename InputIterator, typename T>
 	constexpr auto accumulate( InputIterator first, InputIterator last,
 	                           T init ) noexcept {
-		using result_t = typename std::iterator_traits<InputIterator>::value_type;
-		auto result = result_t{ init };
+		using result_t = std::conditional_t<
+		  std::is_same_v<Result, deduce_result>,
+		  typename std::iterator_traits<InputIterator>::value_type, Result>;
+		auto result = result_t{ DAW_MOVE( init ) };
 		for( ; first != last; ++first ) {
 			result = DAW_MOVE( result ) + *first;
 		}
@@ -1704,10 +1712,11 @@ namespace daw::algorithm {
 	 * @param binary_op operation to run
 	 * @return sum of values
 	 */
-	template<typename InputIterator, typename LastType, typename T,
-	         typename BinaryOperation = std::plus<>,
-	         daw::enable_when_t<
-	           not daw::traits::is_container_like_v<InputIterator>> = nullptr>
+	template<
+	  typename Result = deduce_result, typename InputIterator, typename LastType,
+	  typename T, typename BinaryOperation = std::plus<>,
+	  daw::enable_when_t<not daw::traits::is_container_like_v<InputIterator>> =
+	    nullptr>
 	constexpr auto accumulate(
 	  InputIterator first, LastType last, T init,
 	  BinaryOperation binary_op =
@@ -1721,8 +1730,10 @@ static_assert(
 	"of the Iterator concept "
 	"http://en.cppreference.com/w/cpp/concept/Iterator" );
 	*/
-		using result_t = typename std::iterator_traits<InputIterator>::value_type;
-		auto result = result_t{ init };
+		using result_t = std::conditional_t<
+		  std::is_same_v<Result, deduce_result>,
+		  typename std::iterator_traits<InputIterator>::value_type, Result>;
+		auto result = result_t{ DAW_MOVE( init ) };
 
 		while( first != last ) {
 			result = daw::invoke( binary_op, DAW_MOVE( result ), *first );
