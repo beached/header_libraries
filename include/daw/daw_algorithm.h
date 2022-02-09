@@ -1583,11 +1583,13 @@ namespace daw::algorithm {
 		  "referenced by RandomIterator. "
 		  "e.g. *first = binary_op( *first, *(first + 1) ) must be valid." );
 
+		using result_t = typename std::iterator_traits<RandomIterator>::value_type;
+		auto result = result_t{ init };
 		while( first != last ) {
-			init = daw::invoke( binary_op, init, *first );
+			result = daw::invoke( binary_op, DAW_MOVE( result ), *first );
 			++first;
 		}
-		return DAW_MOVE( init );
+		return result;
 	}
 
 	template<typename InputIterator1, typename InputIterator1Last,
@@ -1625,13 +1627,15 @@ namespace daw::algorithm {
 		  "e.g reduce_func( init, "
 		  "map_func( *first1, *first2 ) ) must be valid" );
 
+		using result_t = typename std::iterator_traits<InputIterator1>::value_type;
+		auto result = result_t{ DAW_MOVE( init ) };
 		while( first1 != last1 ) {
-			init = daw::invoke( reduce_func, init,
-			                    daw::invoke( map_func, *first1, *first2 ) );
+			result = daw::invoke( reduce_func, DAW_MOVE( result ),
+			                      daw::invoke( map_func, *first1, *first2 ) );
 			++first1;
 			++first2;
 		}
-		return init;
+		return result;
 	}
 
 	template<typename ForwardIterator1, typename ForwardIterator2,
@@ -1677,12 +1681,14 @@ namespace daw::algorithm {
 	}
 
 	template<typename InputIterator, typename T>
-	constexpr T accumulate( InputIterator first, InputIterator last,
-	                        T init ) noexcept {
+	constexpr auto accumulate( InputIterator first, InputIterator last,
+	                           T init ) noexcept {
+		using result_t = typename std::iterator_traits<InputIterator>::value_type;
+		auto result = result_t{ init };
 		for( ; first != last; ++first ) {
-			init = DAW_MOVE( init ) + *first;
+			result = DAW_MOVE( result ) + *first;
 		}
-		return DAW_MOVE( init );
+		return result;
 	}
 
 	/***
@@ -1702,7 +1708,7 @@ namespace daw::algorithm {
 	         typename BinaryOperation = std::plus<>,
 	         daw::enable_when_t<
 	           not daw::traits::is_container_like_v<InputIterator>> = nullptr>
-	constexpr T accumulate(
+	constexpr auto accumulate(
 	  InputIterator first, LastType last, T init,
 	  BinaryOperation binary_op =
 	    BinaryOperation{ } ) noexcept( noexcept( binary_op( DAW_MOVE( init ),
@@ -1715,12 +1721,14 @@ static_assert(
 	"of the Iterator concept "
 	"http://en.cppreference.com/w/cpp/concept/Iterator" );
 	*/
+		using result_t = typename std::iterator_traits<InputIterator>::value_type;
+		auto result = result_t{ init };
 
 		while( first != last ) {
-			init = daw::invoke( binary_op, DAW_MOVE( init ), *first );
+			result = daw::invoke( binary_op, DAW_MOVE( result ), *first );
 			++first;
 		}
-		return DAW_MOVE( init );
+		return result;
 	}
 
 	template<class ForwardIterator, typename Compare = std::less<>>
