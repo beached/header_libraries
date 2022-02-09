@@ -398,13 +398,21 @@ namespace daw {
 			return false;
 		}
 
-		template<typename K>
-		constexpr mapped_type &operator[]( K &&key ) {
-			static_assert( std::is_convertible_v<K, Key>, "Incompatible key passed" );
+		constexpr mapped_type &operator[]( Key const &key ) {
 			auto &item = m_data[*find_index( key )];
 			if( not item ) {
 				item.has_value = true;
-				item.kv.key = DAW_FWD2( K, key );
+				item.kv.key = key;
+				item.kv.value = Value{ };
+			}
+			return item.kv.value;
+		}
+
+		constexpr mapped_type &operator[]( Key &&key ) {
+			auto &item = m_data[*find_index( key )];
+			if( not item ) {
+				item.has_value = true;
+				item.kv.key = DAW_MOVE( key );
 				item.kv.value = Value{ };
 			}
 			return item.kv.value;
