@@ -32,7 +32,7 @@ namespace daw {
 	template<typename Map, typename Key>
 	constexpr auto try_get( Map &container, Key &&k ) {
 		auto pos = container.find( DAW_FWD2( Key, k ) );
-		using result_t = daw::remove_cvref_t<decltype( *pos )>;
+		using result_t = DAW_TYPEOF( *pos );
 		if( pos == std::end( container ) ) {
 			return std::optional<result_t>{ };
 		}
@@ -42,7 +42,7 @@ namespace daw {
 	template<typename Map, typename Key>
 	constexpr auto try_get( Map const &container, Key &&k ) {
 		auto pos = container.find( DAW_FWD2( Key, k ) );
-		using result_t = daw::remove_cvref_t<decltype( *pos )>;
+		using result_t = DAW_TYPEOF( *pos );
 		if( pos == std::end( container ) ) {
 			return std::optional<result_t>{ };
 		}

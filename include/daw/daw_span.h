@@ -10,6 +10,7 @@
 
 #include "daw_exception.h"
 #include "daw_math.h"
+#include "daw_traits.h"
 
 #include <ciso646>
 #include <cstddef>
@@ -513,6 +514,6 @@ namespace daw {
 	  decltype( *std::data( std::declval<Container>( ) ) )>>;
 
 	template<typename Container>
-	span( Container const & ) -> span<daw::remove_cvref_t<
-	  decltype( *std::data( std::declval<Container>( ) ) )> const>;
+	span( Container const & )
+	  -> span<DAW_TYPEOF( *std::data( std::declval<Container>( ) ) ) const>;
 } // namespace daw

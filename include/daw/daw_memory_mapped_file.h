@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "daw_string_view.h"
 #include "daw_traits.h"
 
 #include <ciso646>
@@ -290,8 +289,7 @@ namespace daw::filesystem {
 		explicit memory_mapped_file_t( StringView file,
 		                               open_mode mode = open_mode::read ) noexcept {
 
-			if constexpr( std::is_same_v<char, daw::remove_cvref_t<
-			                                     decltype( *std::data( file ) )>> ) {
+			if constexpr( std::is_same_v<char, DAW_TYPEOF( *std::data( file ) )> ) {
 				(void)open( std::string_view( std::data( file ), std::size( file ) ),
 				            mode );
 			} else {

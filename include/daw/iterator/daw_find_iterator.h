@@ -25,10 +25,10 @@ namespace daw {
 		using value_type = typename std::iterator_traits<Iterator>::value_type;
 		using difference_type =
 		  typename std::iterator_traits<Iterator>::difference_type;
-		using iterator_category = typename daw::remove_cvref_t<
-		  decltype( find_iterator_impl::test_iterator_category(
+		using iterator_category =
+		  typename DAW_TYPEOF( find_iterator_impl::test_iterator_category(
 		    std::declval<typename std::iterator_traits<
-		      Iterator>::iterator_category>( ) ) )>::type;
+		      Iterator>::iterator_category>( ) ) )::type;
 		using reference = typename std::iterator_traits<Iterator>::reference;
 		using pointer = typename std::iterator_traits<Iterator>::pointer;
 
@@ -69,7 +69,8 @@ namespace daw {
 		}
 
 		constexpr find_iterator &operator++( ) & {
-			m_first = daw::algorithm::find_if( std::next( m_first ), m_last, this->filter( ) );
+			m_first = daw::algorithm::find_if( std::next( m_first ), m_last,
+			                                   this->filter( ) );
 			return *this;
 		}
 
