@@ -1881,13 +1881,21 @@ namespace daw {
 		}; // basic_string_view
 
 		// CTAD
+		template<typename StringView, typename CharT = std::decay_t<DAW_TYPEOF(
+		                                std::data( std::declval<StringView>( ) ) )>>
+		basic_string_view( StringView ) -> basic_string_view<CharT>;
+
 		template<typename CharT>
-		basic_string_view( CharT const *s, std::size_t count )
+		basic_string_view( CharT const *, std::size_t count )
+		  -> basic_string_view<CharT>;
+
+		template<typename CharT>
+		basic_string_view( CharT const *, CharT const * )
 		  -> basic_string_view<CharT>;
 
 		template<typename CharT, std::size_t N>
 		basic_string_view( CharT const ( &/*string_literal*/ )[N] )
-		  -> basic_string_view<CharT, default_string_view_bounds_type>;
+		  -> basic_string_view<CharT>;
 		//
 		//
 		namespace string_view_literals {
