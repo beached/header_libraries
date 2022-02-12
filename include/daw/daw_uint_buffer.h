@@ -2994,7 +2994,9 @@ namespace daw {
 		}
 	}( );
 
-	constexpr UInt64 to_uint64_buffer( char const *ptr ) noexcept {
+	template<typename CharT,
+	         std::enable_if_t<( sizeof( CharT ) == 1 ), std::nullptr_t> = nullptr>
+	constexpr UInt64 to_uint64_buffer( CharT const *ptr ) noexcept {
 		std::uint64_t result = 0;
 		result |= static_cast<std::uint64_t>( static_cast<unsigned char>( ptr[7] ) )
 		          << 56U;
@@ -3015,7 +3017,9 @@ namespace daw {
 		return static_cast<UInt64>( result );
 	}
 
-	constexpr UInt32 to_uint32_buffer( char const *ptr ) noexcept {
+	template<typename CharT,
+	         std::enable_if_t<( sizeof( CharT ) == 1 ), std::nullptr_t> = nullptr>
+	constexpr UInt32 to_uint32_buffer( CharT const *ptr ) noexcept {
 		std::uint32_t result = 0;
 		result |= static_cast<std::uint32_t>( static_cast<unsigned char>( ptr[3] ) )
 		          << 24U;
@@ -3028,7 +3032,9 @@ namespace daw {
 		return static_cast<UInt32>( result );
 	}
 
-	constexpr UInt16 to_uint16_buffer( char const *ptr ) noexcept {
+	template<typename CharT,
+	         std::enable_if_t<( sizeof( CharT ) == 1 ), std::nullptr_t> = nullptr>
+	constexpr UInt16 to_uint16_buffer( CharT const *ptr ) noexcept {
 		std::uint32_t result = 0;
 		result |= static_cast<std::uint32_t>( static_cast<unsigned char>( ptr[1] ) )
 		          << 8U;
