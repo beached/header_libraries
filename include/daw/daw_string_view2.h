@@ -54,7 +54,8 @@
 /// @brief Require a character pointer
 /// @param Pointer a const_pointer
 #define DAW_REQ_CHAR_PTR( Pointer )                                            \
-	std::enable_if_t<sv2_details::is_char_pointer_v<Pointer, const_pointer>,     \
+	std::enable_if_t<sv2_details::is_char_pointer_v<                             \
+	                   std::remove_reference_t<Pointer>, const_pointer>,         \
 	                 std::nullptr_t> = nullptr
 
 /// @brief Require Type be constructable from a CharT const * and a size_type
@@ -1884,6 +1885,9 @@ namespace daw {
 		template<typename StringView, typename CharT = std::decay_t<DAW_TYPEOF(
 		                                std::data( std::declval<StringView>( ) ) )>>
 		basic_string_view( StringView ) -> basic_string_view<CharT>;
+
+		template<typename CharT>
+		basic_string_view( CharT const * ) -> basic_string_view<CharT>;
 
 		template<typename CharT>
 		basic_string_view( CharT const *, std::size_t count )

@@ -10,9 +10,9 @@
 #include <daw/daw_utility.h>
 
 #include <cctype>
+#include <cstddef>
 #include <cstdio>
 #include <cstdlib>
-#include <cstddef>
 #include <cstring>
 #include <exception>
 #include <iostream>
@@ -1534,6 +1534,20 @@ namespace daw {
 		auto stdsv = static_cast<std::string_view>( sv );
 		(void)stdsv;
 	}
+
+	void daw_from_charptr( ) {
+		char const *ptr = "Hello";
+		auto sv = daw::basic_string_view( ptr );
+		(void)sv;
+	}
+
+#if defined( __cpp_char8_t )
+	void daw_from_char8ptr( ) {
+		char8_t const *ptr = u8"Hello";
+		auto sv = daw::basic_string_view( ptr );
+		(void)sv;
+	}
+#endif
 } // namespace daw
 
 int main( )
@@ -1669,6 +1683,10 @@ int main( )
 	daw::daw_construct_from_string_literal_002( );
 	daw::daw_convert_to_std_string( );
 	daw::daw_convert_to_std_string_view( );
+	daw::daw_from_charptr( );
+#if defined( __cpp_char8_t )
+	daw::daw_from_char8ptr( );
+#endif
 }
 #if defined( DAW_USE_EXCEPTIONS )
 catch( std::exception const &ex ) {
