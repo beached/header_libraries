@@ -185,6 +185,47 @@ namespace daw {
 			return rhs;
 		}
 	};
+	template<typename Lhs, typename Rhs>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+	operator==( daw::not_null<Lhs *> const &lhs,
+	            daw::not_null<Rhs *> const &rhs ) noexcept {
+		return std::equal_to<>{ }( lhs.get( ), rhs.get( ) );
+	}
+
+	template<typename Lhs, typename Rhs>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+	operator!=( daw::not_null<Lhs *> const &lhs,
+	            daw::not_null<Rhs *> const &rhs ) noexcept {
+		return std::not_equal_to<>{ }( lhs.get( ), rhs.get( ) );
+	}
+
+	template<typename Lhs, typename Rhs>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+	operator<( daw::not_null<Lhs *> const &lhs,
+	           daw::not_null<Rhs *> const &rhs ) noexcept {
+		return std::less<>{ }( lhs.get( ), rhs.get( ) );
+	}
+
+	template<typename Lhs, typename Rhs>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+	operator<=( daw::not_null<Lhs *> const &lhs,
+	            daw::not_null<Rhs *> const &rhs ) noexcept {
+		return std::less_equal<>{ }( lhs.get( ), rhs.get( ) );
+	}
+
+	template<typename Lhs, typename Rhs>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+	operator>( daw::not_null<Lhs *> const &lhs,
+	           daw::not_null<Rhs *> const &rhs ) noexcept {
+		return std::greater<>{ }( lhs.get( ), rhs.get( ) );
+	}
+
+	template<typename Lhs, typename Rhs>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+	operator>=( daw::not_null<Lhs *> const &lhs,
+	            daw::not_null<Rhs *> const &rhs ) noexcept {
+		return std::greater_equal<>{ }( lhs.get( ), rhs.get( ) );
+	}
 
 	template<typename Pointer>
 	not_null( Pointer ) -> not_null<Pointer>;
