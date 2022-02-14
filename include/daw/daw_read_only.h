@@ -8,55 +8,59 @@
 
 #pragma once
 
-#include "cpp_17.h"
 #include "daw_move.h"
+
+#include <memory>
+#include <type_traits>
 
 namespace daw {
 	template<typename T>
 	struct read_only {
 		static_assert( not std::is_reference_v<T>,
 		               "Reference types are not supported" );
+		static_assert( not std::is_const_v<T>, "Const types are not supported" );
 		using value_type = T;
-		using reference = value_type &;
-		using const_reference = value_type const &;
-		using rvalue_reference = value_type &&;
-		using const_pointer = value_type const *;
 
 	private:
 		value_type m_value;
 
 	public:
-		constexpr read_only( ) noexcept( std::is_nothrow_constructible_v<T> )
-		  : m_value( ) {}
+		explicit read_only( ) = default;
+		read_only( read_only const & ) noexcept(
+		  std::is_nothrow_copy_constructible_v<T> ) = default;
+		read_only( read_only && ) noexcept(
+		  std::is_nothrow_move_constructible_v<T> ) = default;
+		read_only &operator=( read_only const & ) noexcept(
+		  std::is_nothrow_copy_constructible_v<T> ) = default;
+		read_only &operator=( read_only && ) noexcept(
+		  std::is_nothrow_move_constructible_v<T> ) = default;
+		~read_only( ) = default;
 
-		constexpr read_only( rvalue_reference value ) noexcept(
+		explicit constexpr read_only( T const &value ) noexcept(
+		  std::is_nothrow_copy_constructible_v<T> )
+		  : m_value( value ) {}
+		explicit constexpr read_only( T &&value ) noexcept(
 		  std::is_nothrow_move_constructible_v<T> )
 		  : m_value( DAW_MOVE( value ) ) {}
 
-		constexpr read_only( const_reference value ) noexcept(
-		  std::is_nothrow_copy_constructible_v<T> )
-		  : m_value( value ) {}
-
-		read_only &operator=( const_reference ) = delete;
-		read_only &operator=( rvalue_reference ) = delete;
-
-		constexpr operator const_reference( ) const noexcept {
+		[[nodiscard]] constexpr operator value_type const &( ) const noexcept {
 			return m_value;
 		}
 
-		constexpr const_reference get( ) const noexcept {
+		[[nodiscard]] constexpr value_type const &get( ) const noexcept {
 			return m_value;
 		}
 
-		constexpr reference read_write( ) noexcept {
+		[[nodiscard]] constexpr value_type &read_write( ) noexcept {
 			return m_value;
 		}
 
-		constexpr const_pointer operator->( ) const noexcept {
-			return &m_value;
+		constexpr value_type const *operator->( ) const noexcept {
+			return std::addressof( m_value );
 		}
 
-		constexpr value_type move_out( ) noexcept {
+		[[nodiscard]] constexpr value_type
+		move_out( ) noexcept( std::is_nothrow_move_constructible_v<T> ) {
 			return DAW_MOVE( m_value );
 		}
 	}; // read_only

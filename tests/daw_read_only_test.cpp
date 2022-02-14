@@ -39,22 +39,22 @@ namespace test_02 {
 		daw::read_only<int> b{ 1 };
 		daw::read_only<int> c{ 2 };
 		daw::read_only<int> d{ 1 };
-		daw::read_only<int> e = 5;
+		auto e = daw::read_only<int>( 5 );
 		::Unused( e );
 
 		daw::read_only<A> x{ };
 		x->c( );
 
 		// a & b
-		daw::expecting( !( a == b ) );
-		daw::expecting( !( b == a ) );
+		daw::expecting( not( a == b ) );
+		daw::expecting( not( b == a ) );
 		daw::expecting( a != b );
 		daw::expecting( b != a );
 		daw::expecting( a < b );
-		daw::expecting( !( b < a ) );
+		daw::expecting( not( b < a ) );
 		daw::expecting( a <= b );
-		daw::expecting( !( b <= a ) );
-		daw::expecting( !( a >= b ) );
+		daw::expecting( not( b <= a ) );
+		daw::expecting( not( a >= b ) );
 		daw::expecting( b >= a );
 		daw::expecting( b == d );
 		daw::expecting( b != c );
