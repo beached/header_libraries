@@ -232,6 +232,12 @@ namespace daw {
 
 	template<typename Pointer>
 	not_null( never_null_t, Pointer ) -> not_null<Pointer>;
+
+	template<typename Pointer>
+	not_null( not_null<Pointer> ) -> not_null<Pointer>;
+
+	template<typename Pointer>
+	not_null( never_null_t, not_null<Pointer> ) -> not_null<Pointer>;
 } // namespace daw
 
 template<typename Pointer>

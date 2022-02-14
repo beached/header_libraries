@@ -40,9 +40,18 @@ void daw_not_null_test_004( ) {
 	assert( ( last - first ) == 5 );
 }
 
+void daw_not_null_test_005( ) {
+	auto tst = std::make_unique<int>( 5 );
+	daw::not_null<int *> t = tst.get( );
+	auto u = daw::not_null( daw::never_null, t );
+	static_assert( std::is_same_v<DAW_TYPEOF( u )::pointer, int *> );
+	(void)u;
+}
+
 int main( ) {
 	daw_not_null_test_001( );
 	daw_not_null_test_002( );
 	daw_not_null_test_003( );
 	daw_not_null_test_004( );
+	daw_not_null_test_005( );
 }
