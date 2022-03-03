@@ -2055,8 +2055,9 @@ namespace daw {
 				remove_prefix( last_pos );
 			}
 
-			constexpr void trim_prefix( ) noexcept {
+			constexpr basic_string_view & trim_prefix( ) noexcept {
 				remove_prefix_while( is_space{ } );
+				return *this;
 			}
 
 			constexpr basic_string_view trim_prefix_copy( ) const noexcept {
@@ -2071,8 +2072,9 @@ namespace daw {
 				resize( pos + 1U );
 			}
 
-			constexpr void trim_suffix( ) noexcept {
+			constexpr basic_string_view & trim_suffix( ) noexcept {
 				remove_suffix_while( is_space{ } );
+				return *this;
 			}
 
 			constexpr basic_string_view trim_suffix_copy( ) const noexcept {
@@ -2081,9 +2083,9 @@ namespace daw {
 				return result;
 			}
 
-			constexpr void trim( ) noexcept {
-				trim_prefix( is_space{ } );
-				trim_suffix( is_space{ } );
+			constexpr basic_string_view & trim( ) noexcept {
+				(void)trim_prefix( is_space{ } );
+				return trim_suffix( is_space{ } );
 			}
 
 			constexpr basic_string_view trim_copy( ) const noexcept {
