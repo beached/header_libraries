@@ -489,3 +489,12 @@ namespace daw::exception {
 	}
 #endif
 } // namespace daw::exception
+
+#if defined( NDEBUG )
+#define DAW_DBG_PRECONDITION_CHECK( ... )                                      \
+	do {                                                                         \
+	} while( false )
+#else
+#define DAW_DBG_PRECONDITION_CHECK( Except, ... )                              \
+	daw::exception::precondition_check<Except>( __VA_ARGS__ )
+#endif

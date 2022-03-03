@@ -395,14 +395,18 @@ namespace daw {
 			/// @brief Construct an empty string_view
 			/// @post data( ) == nullptr
 			/// @post size( ) == 0
-			constexpr basic_string_view( std::nullptr_t ) noexcept
+			DAW_CONSTEVAL basic_string_view( std::nullptr_t ) noexcept
 			  : m_first( nullptr )
 			  , m_last( make_last<BoundsType>( nullptr, nullptr ) ) {}
 
 			/// @brief Prevents nullptr literals and a size_type to construct a
 			/// string_view
-			constexpr basic_string_view( std::nullptr_t,
-			                             size_type n ) noexcept = delete;
+			DAW_CONSTEVAL basic_string_view( std::nullptr_t, size_type n )
+			  : m_first( nullptr )
+			  , m_last( make_last<BoundsType>( nullptr, nullptr ) ) {
+				daw::exception::precondition_check(
+				  n == 0, "nullptr can only form an empty range" );
+			}
 
 			/// @brief Construct a string_view
 			/// @param s Pointer to start of character range
@@ -1292,8 +1296,7 @@ namespace daw {
 			/// @pre size( ) >= new_size
 			/// @post size( ) == new_size
 			constexpr void resize( size_type new_size ) {
-				daw::exception::precondition_check<std::out_of_range>( new_size <=
-				                                                       size( ) );
+				DAW_DBG_PRECONDITION_CHECK( std::out_of_range, new_size <= size( ) );
 				m_last = make_last<BoundsType>(
 				  m_first,
 				  std::next( m_first, static_cast<difference_type>( new_size ) ) );
@@ -1307,8 +1310,9 @@ namespace daw {
 			/// @return number of characters copied
 			constexpr size_type copy( pointer dest, size_type count,
 			                          size_type pos ) const {
-				daw::exception::precondition_check<std::out_of_range>(
-				  pos <= size( ), "Attempt to access basic_string_view past end" );
+				DAW_DBG_PRECONDITION_CHECK(
+				  std::out_of_range, pos <= size( ),
+				  "Attempt to access basic_string_view past end" );
 
 				size_type const rlen = ( std::min )( count, size( ) - pos );
 				if( rlen > 0 ) {
@@ -1332,8 +1336,10 @@ namespace daw {
 			/// @returns a new basic_string_view of the sub-range
 			[[nodiscard]] constexpr basic_string_view
 			substr( size_type pos, size_type count ) const {
-				daw::exception::precondition_check<std::out_of_range>(
-				  pos <= size( ), "Attempt to access basic_string_view past end" );
+
+				DAW_DBG_PRECONDITION_CHECK(
+				  std::out_of_range, pos <= size( ),
+				  "Attempt to access basic_string_view past end" );
 				auto const rcount =
 				  static_cast<size_type>( ( std::min )( count, size( ) - pos ) );
 				return { m_first + pos, m_first + pos + rcount };
