@@ -823,7 +823,9 @@ namespace daw {
 					remove_prefix( npos );
 					return result;
 				}
-				return substr( pos + where.size( ) );
+				auto result = substr( pos + where.size( ) );
+				remove_suffix( size( ) - pos );
+				return result;
 			}
 
 			/// @brief searches for last where, returns substring between
@@ -838,7 +840,9 @@ namespace daw {
 					remove_prefix( npos );
 					return result;
 				}
-				return substr( pos + where.size( ) );
+				auto result = substr( pos + where.size( ) );
+				remove_suffix( ( size( ) - pos ) - 1 );
+				return result;
 			}
 
 			/// @brief searches for last where, returns substring between
@@ -900,6 +904,29 @@ namespace daw {
 				remove_suffix( size( ) - pos );
 				return result;
 			}
+			/// @brief searches for last position UnaryPredicate would be
+			/// true, returns substring between pred and end, then pops off
+			/// the substring and the pred specified string
+			/// @tparam UnaryPredicate a unary predicate type that accepts a
+			/// char and indicates with true when to stop
+			/// @param pred predicate to determine where to split
+			/// @return substring from last position marked by predicate to
+			/// end
+			template<typename UnaryPredicate,
+			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
+			[[nodiscard]] constexpr basic_string_view
+			pop_back_until( UnaryPredicate pred, nodiscard_t ) {
+
+				auto pos = find_last_of_if( DAW_MOVE( pred ) );
+				if( pos == npos ) {
+					auto result = *this;
+					remove_prefix( npos );
+					return result;
+				}
+				auto result = substr( pos );
+				remove_suffix( size( ) - pos );
+				return result;
+			}
 
 			/// @brief searches for where, returns substring between front and
 			/// where, then pops off the substring and the where string. Do
@@ -917,6 +944,98 @@ namespace daw {
 				return result;
 			}
 
+			/// @brief Increment data( ) until the substring where is found and return
+			/// a new string_view that would be formed formed from the previous and
+			/// current data( ) pointer values. Does nothing if where is not found
+			/// @param where substring to search for
+			/// @return If where is found, a new string_view from the old data( )
+			/// position up to the position of the leading character in where.  If
+			/// where is not found, a copy of the string_view is made
+			[[nodiscard]] constexpr basic_string_view
+			try_pop_front_until( basic_string_view where, nodiscard_t ) {
+				auto pos = find( where );
+				if( pos == npos ) {
+					return basic_string_view<CharT, BoundsType>( );
+				}
+				auto result = pop_front( pos );
+				return result;
+			}
+
+			/// @brief Searches for where, returns substring between front and
+			/// where, then pops off the substring.  Does nothing if where is not
+			/// found
+			/// @param where string to split on and remove from front
+			/// @return substring from beginning to where string
+			[[nodiscard]] constexpr basic_string_view
+			try_pop_front_until( CharT where, nodiscard_t ) {
+				auto pos = find( where );
+				if( pos == npos ) {
+					return basic_string_view<CharT, BoundsType>( );
+				}
+				auto result = pop_front( pos );
+				return result;
+			}
+
+			/// @brief Searches for where, returns substring between front and
+			/// where, then pops off the substring and the where char. Does nothing if
+			/// where is not found
+			/// @param where string to split on and remove from front
+			/// @return substring from beginning to where string
+			[[nodiscard]] constexpr basic_string_view
+			try_pop_front_until( CharT where ) {
+				auto pos = find( where );
+				if( pos == npos ) {
+					return basic_string_view<CharT, BoundsType>( );
+				}
+				auto result = pop_front( pos );
+				remove_prefix( );
+				return result;
+			}
+
+			/// @brief Increment data until the predicate is true or the string_view
+			/// is empty.  Return a new string_view formed from the range of the
+			/// previous value of data( ) and the position where predicate was true.
+			/// Does nothing if predicate is not found
+			/// @tparam UnaryPredicate A predicate taking a single CharT as parameter
+			/// @param pred A predicate that returns true at the end of the newly
+			/// created range.
+			/// @return substring from beginning to position marked by
+			/// predicate
+			/// @post data( ) is set to position where the predicate was true, or one
+			/// past the end of the range
+			template<typename UnaryPredicate,
+			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
+			[[nodiscard]] constexpr basic_string_view
+			try_pop_front_until( UnaryPredicate pred, nodiscard_t ) {
+
+				auto pos = find_first_of_if( DAW_MOVE( pred ) );
+				if( pos == npos ) {
+					return basic_string_view<CharT, BoundsType>( );
+				}
+				return pop_front( pos );
+			}
+
+			/// @brief Increment data until the predicate is true or the string_view
+			/// is empty.  Return a new string_view formed from the range of the
+			/// previous value of data( ) and the position where predicate was true.
+			/// Does nothing if predicate is not found
+			/// @tparam UnaryPredicate A predicate taking a single CharT as parameter
+			/// @param pred A predicate that returns true at the end of the newly
+			/// created range.
+			/// @return substring from beginning to position marked by
+			/// predicate
+			/// @post data( ) is set to one past position where the predicate was
+			/// true, or one past the end of the range
+			template<typename UnaryPredicate,
+			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
+			[[nodiscard]] constexpr basic_string_view
+			try_pop_front_until( UnaryPredicate pred ) {
+				auto result = try_pop_front_until( pred, nodiscard );
+				remove_prefix( sv2_details::find_predicate_result_size( pred ) );
+				return result;
+			}
+
+			//////////////////////////////////
 			/// @brief searches for last where, returns substring between
 			/// where and end, then pops off the substring and the where
 			/// string.  If where is not found, nothing is done
@@ -930,6 +1049,99 @@ namespace daw {
 				}
 				auto result = substr( pos + where.size( ) );
 				remove_suffix( size( ) - pos );
+				return result;
+			}
+
+			/// @brief searches for last where, returns substring between
+			/// where and end, then pops off the substring. Does nothing if where is
+			/// not found
+			/// @param where string to split on and remove from back
+			/// @return substring from end of where string to end of string
+			[[nodiscard]] constexpr basic_string_view
+			try_pop_back_until( basic_string_view where, nodiscard_t ) {
+				auto pos = rfind( where );
+				if( pos == npos ) {
+					return basic_string_view<CharT, BoundsType>( );
+				}
+				auto result = substr( pos + where.size( ) );
+				remove_suffix( size( ) - pos );
+				return result;
+			}
+
+			/// @brief searches for last where, returns substring between
+			/// where and end, then pops off the substring. Does nothing if where is
+			/// not found
+			/// @param where string to split on and remove from back
+			/// @return substring from end of where string to end of string
+			[[nodiscard]] constexpr basic_string_view
+			try_pop_back_until( CharT where, nodiscard_t ) {
+				auto pos = rfind( where );
+				if( pos == npos ) {
+					return basic_string_view<CharT, BoundsType>( );
+				}
+				auto result = substr( pos );
+				remove_suffix( ( size( ) - pos ) - 1 );
+				return result;
+			}
+
+			/// @brief searches for the last where, returns substring between
+			/// where and end, then pops off the substring and the where
+			/// string. Does nothing if where is not found
+			/// @param where CharT to split string on and remove from back
+			/// @return substring from end of where string to end of string
+			[[nodiscard]] constexpr basic_string_view
+			try_pop_back_until( CharT where ) {
+				auto pos = rfind( where );
+				if( pos == npos ) {
+					return basic_string_view<CharT, BoundsType>( );
+				}
+				auto result = substr( pos );
+				remove_suffix( size( ) - pos );
+				return result;
+			}
+
+			/// @brief searches for last position UnaryPredicate would be
+			/// true, returns substring between pred and end, then pops off
+			/// the substring and the pred specified string. Does nothing if predicate
+			/// is not found
+			/// @tparam UnaryPredicate a unary predicate type that accepts a
+			/// char and indicates with true when to stop
+			/// @param pred predicate to determine where to split
+			/// @return substring from last position marked by predicate to
+			/// end
+			template<typename UnaryPredicate,
+			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
+			[[nodiscard]] constexpr basic_string_view
+			try_pop_back_until( UnaryPredicate pred ) {
+
+				auto pos = find_last_of_if( DAW_MOVE( pred ) );
+				if( pos == npos ) {
+					return basic_string_view<CharT, BoundsType>( );
+				}
+				auto result = substr( pos );
+				remove_suffix( size( ) - pos );
+				return result;
+			}
+
+			/// @brief searches for last position UnaryPredicate would be
+			/// true, returns substring between pred and end, then pops off
+			/// the substring. Does nothing if predicate is not found
+			/// @tparam UnaryPredicate a unary predicate type that accepts a
+			/// char and indicates with true when to stop
+			/// @param pred predicate to determine where to split
+			/// @return substring from last position marked by predicate to
+			/// end
+			template<typename UnaryPredicate,
+			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
+			[[nodiscard]] constexpr basic_string_view
+			try_pop_back_until( UnaryPredicate pred, nodiscard_t ) {
+
+				auto pos = find_last_of_if( DAW_MOVE( pred ) );
+				if( pos == npos ) {
+					return basic_string_view<CharT, BoundsType>( );
+				}
+				auto result = substr( pos );
+				remove_suffix( ( size( ) - pos - 1 ) );
 				return result;
 			}
 
