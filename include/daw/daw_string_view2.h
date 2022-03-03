@@ -73,7 +73,10 @@ namespace daw {
 		/// @brief Tag type for specifying that the searched for term/item is not
 		/// to be removed from string_view
 		struct nodiscard_t {};
-		inline constexpr nodiscard_t nodiscard = nodiscard_t{ };
+		inline constexpr auto nodiscard = nodiscard_t{ };
+
+		struct dont_clip_to_bounds_t {};
+		inline constexpr auto dont_clip_to_bounds = dont_clip_to_bounds_t{ };
 
 		/// @brief A predicate type used in the find based routine to return true
 		/// when the element is one of the specified characters
@@ -437,6 +440,21 @@ namespace daw {
 			                                   ( std::min )( sv.size( ), count ) ) ) {
 			}
 
+			/// @brief Converting substr constructor from any string_view with
+			/// matching CharT types. Does not clip count to sv's bounds
+			/// @param sv Other string_view
+			/// @param count Maximum number of characters to use in range
+			/// formed by sv
+			/// @pre count <= sv.size( )
+			/// @post data( ) == sv.data( )
+			/// @post size( ) == min( count, sv.size( ) )
+			template<string_view_bounds_type B>
+			constexpr basic_string_view( basic_string_view<CharT, B> sv,
+			                             size_type count,
+			                             dont_clip_to_bounds_t ) noexcept
+			  : m_first( sv.data( ) )
+			  , m_last( make_last<BoundsType>( sv.data( ), count ) ) {}
+
 			/// @brief Construct a string_view from a type that forms a
 			/// contiguous range of characters
 			/// @param sv A valid contiguous character range
@@ -461,6 +479,21 @@ namespace daw {
 			  : m_first( std::data( sv ) )
 			  , m_last( make_last<BoundsType>(
 			      m_first, ( std::min )( std::size( sv ), count ) ) ) {}
+
+			/// @brief Construct a string_view from a type that forms a
+			/// contiguous range of characters. Does not clip count to sv's bounds
+			/// @param sv Other string_view
+			/// @param count Maximum number of characters to use in range
+			/// formed by sv
+			/// @pre count <= sv.size( )
+			/// @post data( ) == sv.data( )
+			/// @post size( ) == min( count, sv.size( ) )
+			template<typename StringView,
+			         DAW_REQ_CONTIG_CHAR_RANGE( StringView, CharT )>
+			constexpr basic_string_view( StringView &&sv, size_type count,
+			                             dont_clip_to_bounds_t ) noexcept
+			  : m_first( std::data( sv ) )
+			  , m_last( make_last<BoundsType>( m_first, count ) ) {}
 
 			/// @brief Construct a string_view from a character array. Assumes
 			/// a string literal like array with last element having a value
@@ -663,16 +696,27 @@ namespace daw {
 
 			/// @brief Increment the data( ) pointer by n. If string_view is
 			/// empty, it does nothing.
-			/// @pre data( ) != nullptr
 			constexpr void remove_prefix( size_type n ) {
 				dec_front<BoundsType>( ( std::min )( n, size( ) ) );
 			}
 
+			/// @brief Increment the data( ) pointer by n. If string_view is
+			/// empty, it does nothing.
+			/// @pre n <= size( )
+			constexpr void remove_prefix( size_type n, dont_clip_to_bounds_t ) {
+				dec_front<BoundsType>( n );
+			}
+
 			/// @brief Increment the data( ) pointer by 1. If string_view is
 			/// empty, it does nothing.
-			/// @pre data( ) != nullptr
 			constexpr void remove_prefix( ) {
 				dec_front<BoundsType>( ( std::min )( size_type{ 1U }, size( ) ) );
+			}
+
+			/// @brief Increment the data( ) pointer by 1.
+			/// @pre size( ) >= 1
+			constexpr void remove_prefix( dont_clip_to_bounds_t ) {
+				dec_front<BoundsType>( size_type{ 1U } );
 			}
 
 			/// @brief Decrement the size( ) by n. If string_view is empty, it
@@ -681,9 +725,21 @@ namespace daw {
 				dec_back<BoundsType>( ( std::min )( n, size( ) ) );
 			}
 
+			/// @brief Decrement the size( ) by n.
+			/// @pre n <= size( )
+			constexpr void remove_suffix( size_type n, dont_clip_to_bounds_t ) {
+				dec_back<BoundsType>( n );
+			}
+
 			/// @brief Decrement the size( ) by 1 if size( ) > 0
 			constexpr void remove_suffix( ) {
 				dec_back<BoundsType>( ( std::min )( size_type{ 1U }, size( ) ) );
+			}
+
+			/// @brief Decrement the size( ) by 1
+			/// @pre not empty( )
+			constexpr void remove_suffix( dont_clip_to_bounds_t ) {
+				dec_back<BoundsType>( size_type{ 1U } );
 			}
 
 			/// @brief Increment the data( ) pointer by 1.
@@ -806,6 +862,18 @@ namespace daw {
 			/// @return a substr of size count ending at end of string_view
 			[[nodiscard]] constexpr basic_string_view pop_back( size_type count ) {
 				count = ( std::min )( count, size( ) );
+				basic_string_view result = substr( size( ) - count, npos );
+				remove_suffix( count );
+				return result;
+			}
+
+			/// @brief create a substr of the last count characters and remove
+			/// them from end
+			/// @param count number of characters to remove and return
+			/// @pre count <= size( )
+			/// @return a substr of size count ending at end of string_view
+			[[nodiscard]] constexpr basic_string_view
+			pop_back( size_type count, dont_clip_to_bounds_t ) {
 				basic_string_view result = substr( size( ) - count, npos );
 				remove_suffix( count );
 				return result;
@@ -1231,6 +1299,12 @@ namespace daw {
 				  std::next( m_first, static_cast<difference_type>( new_size ) ) );
 			}
 
+			/// @brief Copy the character range [data( ) + pos, data( ) + pos + count)
+			/// @param dest pointer to buffer
+			/// @param count maximum number of elements to copy
+			/// @param pos starting position
+			/// @pre pos <= size( )
+			/// @return number of characters copied
 			constexpr size_type copy( pointer dest, size_type count,
 			                          size_type pos ) const {
 				daw::exception::precondition_check<std::out_of_range>(
@@ -1250,6 +1324,12 @@ namespace daw {
 				return copy( dest, count, 0 );
 			}
 
+			/// @brief Create a new sub-range basic_string_view [data( ) + pos, data(
+			/// ) + min( size( ), pos + count) )
+			/// @param pos Starting position
+			/// @param count Maximum number of characters to copy
+			/// @pre pos <= size( )
+			/// @returns a new basic_string_view of the sub-range
 			[[nodiscard]] constexpr basic_string_view
 			substr( size_type pos, size_type count ) const {
 				daw::exception::precondition_check<std::out_of_range>(
@@ -1403,6 +1483,10 @@ namespace daw {
 				return find( basic_string_view<CharT, BoundsType>( s ), 0 );
 			}
 
+			/// @brief Reverse find substring v in [data( ) + pos, data( ) + size( ) )
+			/// @param v substring to search for
+			/// @param pos starting position
+			/// @returns starting position of substring or npos if not found
 			template<string_view_bounds_type Bounds>
 			[[nodiscard]] constexpr size_type
 			rfind( basic_string_view<CharT, Bounds> v, size_type pos ) const {
@@ -1427,33 +1511,63 @@ namespace daw {
 				}
 			}
 
+			/// @brief Find the position of the last substring equal to [s, s + count)
+			/// in [data( ) + pos, data( ) + size( ) )
+			/// @param s start of substring to search for
+			/// @param pos starting position
+			/// @param count size of substring
+			/// @returns starting position of substring or npos if not found
 			[[nodiscard]] constexpr size_type rfind( const_pointer s, size_type pos,
 			                                         size_type count ) const {
 				return rfind( basic_string_view<CharT, BoundsType>( s, count ), pos );
 			}
 
+			/// @brief Find the position of the last substring in [data( ), data( ) +
+			/// size( ) )
+			/// @param v substring to search for
+			/// @returns starting position of substring or npos if not found
 			template<string_view_bounds_type Bounds>
 			[[nodiscard]] constexpr size_type
 			rfind( basic_string_view<CharT, Bounds> v ) const {
 				return rfind( v, npos );
 			}
 
+			/// @brief find the last position of character in [data( ) + pos, data( )
+			/// + size( ))
+			/// @param c Character to search for
+			/// @param pos starting position
+			/// @returns position of found character or npos
 			[[nodiscard]] constexpr size_type rfind( CharT c, size_type pos ) const {
 				return rfind(
 				  basic_string_view<CharT, BoundsType>( std::addressof( c ), 1 ), pos );
 			}
 
+			/// @brief find the last position of character in [data( ), data( ) +
+			/// size( ))
+			/// @param c Character to search for
+			/// @returns position of found character or npos
 			[[nodiscard]] constexpr size_type rfind( CharT c ) const {
 				return rfind(
 				  basic_string_view<CharT, BoundsType>( std::addressof( c ), 1 ),
 				  npos );
 			}
 
+			/// @brief find the last position of character in [data( ) + pos, data( )
+			/// + size( ))
+			/// @param s substring to search for
+			/// @param pos starting position
+			/// @pre s is zero terminated
+			/// @returns position of found character or npos
 			[[nodiscard]] constexpr size_type rfind( const_pointer s,
 			                                         size_type pos ) const {
 				return rfind( basic_string_view<CharT, BoundsType>( s ), pos );
 			}
 
+			/// @brief find the last position of character in [data( ), data( ) +
+			/// size( ))
+			/// @param s substring to search for
+			/// @pre s is zero terminated
+			/// @returns position of found character or npos
 			[[nodiscard]] constexpr size_type rfind( const_pointer s ) const {
 				return rfind( basic_string_view<CharT, BoundsType>( s ), npos );
 			}
@@ -2055,7 +2169,7 @@ namespace daw {
 				remove_prefix( last_pos );
 			}
 
-			constexpr basic_string_view & trim_prefix( ) noexcept {
+			constexpr basic_string_view &trim_prefix( ) noexcept {
 				remove_prefix_while( is_space{ } );
 				return *this;
 			}
@@ -2072,7 +2186,7 @@ namespace daw {
 				resize( pos + 1U );
 			}
 
-			constexpr basic_string_view & trim_suffix( ) noexcept {
+			constexpr basic_string_view &trim_suffix( ) noexcept {
 				remove_suffix_while( is_space{ } );
 				return *this;
 			}
@@ -2083,7 +2197,7 @@ namespace daw {
 				return result;
 			}
 
-			constexpr basic_string_view & trim( ) noexcept {
+			constexpr basic_string_view &trim( ) noexcept {
 				(void)trim_prefix( );
 				return trim_suffix( );
 			}
