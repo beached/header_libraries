@@ -726,7 +726,6 @@ namespace daw {
 		puts( "Returns number of characters copied" );
 		{
 			char result[11];
-
 			daw_expecting( view.copy( result, 20 ), 11 );
 		}
 #endif
