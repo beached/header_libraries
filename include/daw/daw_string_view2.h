@@ -2084,8 +2084,8 @@ namespace daw {
 			}
 
 			constexpr basic_string_view & trim( ) noexcept {
-				(void)trim_prefix( is_space{ } );
-				return trim_suffix( is_space{ } );
+				(void)trim_prefix( );
+				return trim_suffix( );
 			}
 
 			constexpr basic_string_view trim_copy( ) const noexcept {

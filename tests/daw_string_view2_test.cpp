@@ -1548,6 +1548,19 @@ namespace daw {
 		(void)sv;
 	}
 #endif
+
+	void daw_trim( ) {
+		daw::sv2::string_view sv = " Hello ";
+		(void)sv.trim( );
+		daw_expecting( sv, "Hello" );
+	}	
+
+	void daw_trim_copy( ) {
+		daw::sv2::string_view sv = " Hello ";
+		auto sv2 = sv.trim_copy( );
+		daw_expecting( sv != sv2, true );
+		daw_expecting( sv2, "Hello" );
+	}
 } // namespace daw
 
 int main( )
@@ -1687,6 +1700,8 @@ int main( )
 #if defined( __cpp_char8_t )
 	daw::daw_from_char8ptr( );
 #endif
+	daw::daw_trim( );
+	daw::daw_trim_copy( );
 }
 #if defined( DAW_USE_EXCEPTIONS )
 catch( std::exception const &ex ) {
