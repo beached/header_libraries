@@ -19,7 +19,7 @@ jobs:
       - name: Build 🏗️ doxygen site
         run: doxygen
       - name: Deploy 🚀 GitHub Pages Site
-        uses: JamesIves/github-pages-deploy-action@4.1.7
+        uses: JamesIves/github-pages-deploy-action@4.2.5
         with:
           branch: gh-pages
           folder: ${{ env.DOXYGEN_OUTPUT_DIRECTORY }}/html
