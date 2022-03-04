@@ -67,7 +67,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
@@ -83,21 +82,10 @@ $(function() {
 </div>
 <p><a href="daw__int__to__iterator_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1impl_1_1char__traits.html">daw::impl::char_traits&lt; typename &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1impl_1_1char__traits_3_01char_01_4.html">daw::impl::char_traits&lt; char &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1impl_1_1char__traits_3_01wchar__t_01_4.html">daw::impl::char_traits&lt; wchar_t &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
 <tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacedaw_1_1impl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1impl.html">daw::impl</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacedaw_1_1int__string__sizes"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1int__string__sizes.html">daw::int_string_sizes</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -137,21 +125,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ab1ed74f9bc12f2557c7f1bb2c88a2e9c"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
 <tr class="memitem:ab1ed74f9bc12f2557c7f1bb2c88a2e9c"><td class="memTemplItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1int__string__sizes.html#ab1ed74f9bc12f2557c7f1bb2c88a2e9c">daw::int_string_sizes::get&lt; 8 &gt;</a> () noexcept</td></tr>
 <tr class="separator:ab1ed74f9bc12f2557c7f1bb2c88a2e9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbbb20cfd414130f11a4a158eeb947ed"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Result  = daw::remove_cvref_t&lt;T&gt;&gt; </td></tr>
-<tr class="memitem:abbbb20cfd414130f11a4a158eeb947ed"><td class="memTemplItemLeft" align="right" valign="top">constexpr Result&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1impl.html#abbbb20cfd414130f11a4a158eeb947ed">daw::impl::num_digits</a> (T value) noexcept</td></tr>
-<tr class="separator:abbbb20cfd414130f11a4a158eeb947ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28da8ecc41c4cdd5dd7569dad354ace4"><td class="memTemplParams" colspan="2">template&lt;typename Result , typename Integer , std::enable_if_t&lt; std::is_integral_v&lt; Result &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
-<tr class="memitem:a28da8ecc41c4cdd5dd7569dad354ace4"><td class="memTemplItemLeft" align="right" valign="top">constexpr Result&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1impl.html#a28da8ecc41c4cdd5dd7569dad354ace4">daw::impl::pow10</a> (Integer n) noexcept</td></tr>
-<tr class="separator:a28da8ecc41c4cdd5dd7569dad354ace4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a432fc99582a788952d9c58cd9edf0f6a"><td class="memTemplParams" colspan="2">template&lt;typename CharT , typename OutputIterator , typename Integer , typename Traits  = daw::impl::char_traits&lt;CharT&gt;, std::enable_if_t&lt; daw::all_true_v&lt; not std::is_integral_v&lt; daw::remove_cvref_t&lt; Integer &gt;&gt;, not std::is_same_v&lt; bool, daw::remove_cvref_t&lt; Integer &gt;&gt;, not std::is_floating_point_v&lt; daw::remove_cvref_t&lt; Integer &gt;&gt;, not daw::traits::is_character_v&lt; Integer &gt;&gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
-<tr class="memitem:a432fc99582a788952d9c58cd9edf0f6a"><td class="memTemplItemLeft" align="right" valign="top">constexpr OutputIterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1impl.html#a432fc99582a788952d9c58cd9edf0f6a">daw::impl::to_os_string</a> (OutputIterator it, Integer value, <a class="el" href="structdaw_1_1tag__t.html">daw::tag_t</a>&lt; int &gt;)</td></tr>
-<tr class="separator:a432fc99582a788952d9c58cd9edf0f6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d7bb775c6769550965bc85289e2d835"><td class="memTemplParams" colspan="2">template&lt;typename CharT , typename OutputIterator , typename Integer , typename Traits  = daw::impl::char_traits&lt;CharT&gt;, std::enable_if_t&lt; can_to_os_string_int_v&lt; daw::remove_cvref_t&lt; Integer &gt;&gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a8d7bb775c6769550965bc85289e2d835"><td class="memTemplItemLeft" align="right" valign="top">constexpr OutputIterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a8d7bb775c6769550965bc85289e2d835">daw::to_os_string_int</a> (OutputIterator it, Integer value)</td></tr>
 <tr class="separator:a8d7bb775c6769550965bc85289e2d835"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f631576015ed4be04aa74491ebde5f9"><td class="memTemplParams" colspan="2">template&lt;typename Result , typename Number , std::enable_if_t&lt; std::is_arithmetic_v&lt; Number &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
-<tr class="memitem:a6f631576015ed4be04aa74491ebde5f9"><td class="memTemplItemLeft" align="right" valign="top">constexpr uint16_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1impl.html#a6f631576015ed4be04aa74491ebde5f9">daw::impl::whole_log10</a> (Number positive_value) noexcept</td></tr>
-<tr class="separator:a6f631576015ed4be04aa74491ebde5f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>

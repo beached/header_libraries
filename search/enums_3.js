@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['keep_5fn_5forder_3992',['keep_n_order',['../namespacedaw.html#a2f9e661c7de06c8dc819cb4c73d4ff04',1,'daw']]]
+  ['keep_5fn_5forder_3892',['keep_n_order',['../namespacedaw.html#a2f9e661c7de06c8dc819cb4c73d4ff04',1,'daw']]]
 ];

@@ -104,7 +104,7 @@ $(function() {
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="namespacedaw_1_1sv2.html#aa920a6f0aaad67c79fdcd6eb1001a8bcaccac8a66d468e2522611be86933cc0d9">pointer</a> m_first = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    std::size_t m_idx = StringCount;</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    constexpr <span class="keywordtype">bool</span> <a class="code" href="namespacedaw_1_1impl_1_1fixed__lookup__sentinals.html#a30549b806228921263c6b5db7e96fecba777952b504f6e827ebb7011cb785a07f">empty</a>( ) const noexcept {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    constexpr <span class="keywordtype">bool</span> empty( ) const noexcept {</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;      <span class="keywordflow">return</span> m_idx &gt;= StringCount;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    }</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
@@ -133,7 +133,7 @@ $(function() {
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      }</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      ++m_idx;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      <span class="keywordflow">if</span>( <a class="code" href="namespacedaw_1_1impl_1_1fixed__lookup__sentinals.html#a30549b806228921263c6b5db7e96fecba777952b504f6e827ebb7011cb785a07f">empty</a>( ) ) {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      <span class="keywordflow">if</span>( empty( ) ) {</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        m_first = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      }</div>
@@ -194,7 +194,7 @@ $(function() {
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    constexpr difference_type</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <a class="code" href="namespacedaw_1_1tuple_1_1operators.html#a8c8cddbea082e118e061689865215a96">operator-</a>( string_join_iterator <span class="keyword">const</span> &amp;rhs )<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;      <span class="keywordflow">if</span>( not <a class="code" href="namespacedaw_1_1impl_1_1fixed__lookup__sentinals.html#a30549b806228921263c6b5db7e96fecba777952b504f6e827ebb7011cb785a07f">empty</a>( ) ) {</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;      <span class="keywordflow">if</span>( not empty( ) ) {</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        std::terminate( );</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;      }</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;      std::size_t result = 0;</div>
@@ -249,7 +249,6 @@ $(function() {
 <div class="ttc" id="anamespacedaw_html_a399976e3238ac3730c4a27375d78c12b"><div class="ttname"><a href="namespacedaw.html#a399976e3238ac3730c4a27375d78c12b">daw::operator==</a></div><div class="ttdeci">constexpr bool operator==(array&lt; T, N &gt; const &amp;lhs, array&lt; U, N &gt; const &amp;rhs)</div><div class="ttdef"><b>Definition:</b> <a href="daw__bounded__array_8h_source.html#l00102">daw_bounded_array.h:102</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1sv1_html_a380ca8b89e732b79d66a20b8dfb4725c"><div class="ttname"><a href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a></div><div class="ttdeci">basic_string_view&lt; char &gt; string_view</div><div class="ttdef"><b>Definition:</b> <a href="daw__string__view1__fwd_8h_source.html#l00049">daw_string_view1_fwd.h:49</a></div></div>
 <div class="ttc" id="anamespacedaw_html_aa050a8c7726207787a6eaa418cee37d9"><div class="ttname"><a href="namespacedaw.html#aa050a8c7726207787a6eaa418cee37d9">daw::operator++</a></div><div class="ttdeci">constexpr UInt64 &amp; operator++(UInt64 &amp;value)</div><div class="ttdef"><b>Definition:</b> <a href="daw__uint__buffer_8h_source.html#l01750">daw_uint_buffer.h:1750</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1impl_1_1fixed__lookup__sentinals_html_a30549b806228921263c6b5db7e96fecba777952b504f6e827ebb7011cb785a07f"><div class="ttname"><a href="namespacedaw_1_1impl_1_1fixed__lookup__sentinals.html#a30549b806228921263c6b5db7e96fecba777952b504f6e827ebb7011cb785a07f">daw::impl::fixed_lookup_sentinals::empty</a></div><div class="ttdeci">@ empty</div><div class="ttdef"><b>Definition:</b> <a href="daw__fixed__lookup_8h_source.html#l00026">daw_fixed_lookup.h:26</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['read_4014',['read',['../namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447aecae13117d6f0584c25a9da6c8f8415e',1,'daw::filesystem']]],
-  ['read_5fwrite_4015',['read_write',['../namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447a06ad287ea83b37a6f9db3d8d10d72c8f',1,'daw::filesystem']]],
-  ['removed_4016',['removed',['../namespacedaw_1_1impl_1_1fixed__lookup__sentinals.html#a30549b806228921263c6b5db7e96fecbaac7a74c696dfbfa302fe96eafde36dd5',1,'daw::impl::fixed_lookup_sentinals::removed()'],['../namespacedaw_1_1impl_1_1sentinals.html#a491929324255b0787bc3a1e629105fa7a43f568cb4f5020da4e2e8b0b50cab13d',1,'daw::impl::sentinals::removed()']]]
+  ['size_3914',['Size',['../structdaw_1_1static__hash__t.html#a5ff9cc0a10146ca6e474596bfcaf9810a6f6cb72d544962fa333e2e34ce64f719',1,'daw::static_hash_t::Size()'],['../namespacedaw_1_1sv2.html#aa920a6f0aaad67c79fdcd6eb1001a8bcaf7bd60b75b29d79b660a2859395c1a24',1,'daw::sv2::size()']]],
+  ['subnormal_3915',['subnormal',['../namespacedaw_1_1cxmath.html#a1fbf2614ecb56c28c2e46b2b682dd778af5422c28dac1073b8f08f058d0a5405e',1,'daw::cxmath']]]
 ];

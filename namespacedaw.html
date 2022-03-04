@@ -91,8 +91,6 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacedaw_1_1filesystem"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1filesystem.html">filesystem</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacedaw_1_1impl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1impl.html">impl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacedaw_1_1int__string__sizes"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1int__string__sizes.html">int_string_sizes</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacedaw_1_1literals"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1literals.html">literals</a></td></tr>
@@ -714,7 +712,7 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a4c0b4b0d59bf37a8a4b054b5ac4c1243"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a4c0b4b0d59bf37a8a4b054b5ac4c1243"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a4c0b4b0d59bf37a8a4b054b5ac4c1243">fn_t</a> = std::add_pointer_t&lt; T &gt;</td></tr>
 <tr class="separator:a4c0b4b0d59bf37a8a4b054b5ac4c1243"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aadc4eb8c588b87dacc2326bc2fff4fa5"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aadc4eb8c588b87dacc2326bc2fff4fa5">fnv1a_uint_t</a> = std::conditional_t&lt; <a class="el" href="namespacedaw_1_1impl.html#a0f4c2d64e648c7f6d7bb06237c351e2a">impl::is_64bit_v</a>, std::uint64_t, std::uint32_t &gt;</td></tr>
+<tr class="memitem:aadc4eb8c588b87dacc2326bc2fff4fa5"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aadc4eb8c588b87dacc2326bc2fff4fa5">fnv1a_uint_t</a> = std::conditional_t&lt; impl::is_64bit_v, std::uint64_t, std::uint32_t &gt;</td></tr>
 <tr class="separator:aadc4eb8c588b87dacc2326bc2fff4fa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70539c2d8bdfff828cba8e093e39c5f8"><td class="memTemplParams" colspan="2">template&lt;typename ResultType , typename... ArgTypes&gt; </td></tr>
 <tr class="memitem:a70539c2d8bdfff828cba8e093e39c5f8"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a70539c2d8bdfff828cba8e093e39c5f8">function_pointer_t</a> = typename utility_details::make_function_pointer_impl&lt; ResultType, ArgTypes... &gt;::type</td></tr>
@@ -4425,7 +4423,7 @@ template&lt;typename T &gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacedaw.html#aadc4eb8c588b87dacc2326bc2fff4fa5">daw::fnv1a_uint_t</a> = typedef std::conditional_t&lt;<a class="el" href="namespacedaw_1_1impl.html#a0f4c2d64e648c7f6d7bb06237c351e2a">impl::is_64bit_v</a>, std::uint64_t, std::uint32_t&gt;</td>
+          <td class="memname">using <a class="el" href="namespacedaw.html#aadc4eb8c588b87dacc2326bc2fff4fa5">daw::fnv1a_uint_t</a> = typedef std::conditional_t&lt;impl::is_64bit_v, std::uint64_t, std::uint32_t&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">

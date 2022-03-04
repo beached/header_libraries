@@ -69,7 +69,6 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">daw_circular_iterator.h File Reference</div>  </div>
@@ -92,20 +91,9 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
 <tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacedaw_1_1impl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1impl.html">daw::impl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a953fba92fb38bd9c936130f830e43bbb"><td class="memTemplParams" colspan="2">template&lt;typename C &gt; </td></tr>
-<tr class="memitem:a953fba92fb38bd9c936130f830e43bbb"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1impl.html#a953fba92fb38bd9c936130f830e43bbb">daw::impl::has_size_member</a> = decltype(std::declval&lt; C &gt;().size())</td></tr>
-<tr class="separator:a953fba92fb38bd9c936130f830e43bbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a80f3ae83a71c3ac230031d3e78de5f07"><td class="memTemplParams" colspan="2">template&lt;typename Container , std::enable_if_t&lt; is_detected_v&lt; has_size_member, Container &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
-<tr class="memitem:a80f3ae83a71c3ac230031d3e78de5f07"><td class="memTemplItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1impl.html#a80f3ae83a71c3ac230031d3e78de5f07">daw::impl::container_size</a> (Container &amp;c)</td></tr>
-<tr class="separator:a80f3ae83a71c3ac230031d3e78de5f07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6eba35a16698f2cc8c5737067456a58d"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
 <tr class="memitem:a6eba35a16698f2cc8c5737067456a58d"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a6eba35a16698f2cc8c5737067456a58d">daw::make_circular_iterator</a> (Container &amp;container) noexcept</td></tr>
 <tr class="separator:a6eba35a16698f2cc8c5737067456a58d"><td class="memSeparator" colspan="2">&#160;</td></tr>
