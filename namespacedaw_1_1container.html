@@ -67,18 +67,12 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">daw::container Namespace Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacedaw_1_1container_1_1impl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1container_1_1impl.html">impl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ad1f55d69829a5c6a201249909b7360a6"><td class="memTemplParams" colspan="2">template&lt;typename Container , typename T , std::enable_if_t&lt; daw::traits::is_container_like_v&lt; Container &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
@@ -157,10 +151,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a22caa1dbecc0110664510a65dd964d3c"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1container.html#a22caa1dbecc0110664510a65dd964d3c">partition</a> (Container &amp;container, UnaryPredicate pred) noexcept(noexcept(std::partition(std::begin(container), std::end(container), pred)))</td></tr>
 <tr class="separator:a22caa1dbecc0110664510a65dd964d3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8d13602468b6d9ae9039176ac711f7a"><td class="memTemplParams" colspan="2">template&lt;typename Sortable &gt; </td></tr>
-<tr class="memitem:ae8d13602468b6d9ae9039176ac711f7a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1container.html#ae8d13602468b6d9ae9039176ac711f7a">sort</a> (Sortable &amp;container) noexcept(<a class="el" href="namespacedaw_1_1container_1_1impl.html#a177cfa052831bea42f610249180eaa37">impl::is_nothrow_sortable</a>&lt; Sortable &gt;())</td></tr>
+<tr class="memitem:ae8d13602468b6d9ae9039176ac711f7a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1container.html#ae8d13602468b6d9ae9039176ac711f7a">sort</a> (Sortable &amp;container) noexcept(impl::is_nothrow_sortable&lt; Sortable &gt;())</td></tr>
 <tr class="separator:ae8d13602468b6d9ae9039176ac711f7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7a2ef47098deeb7a42c8eca8115ae17"><td class="memTemplParams" colspan="2">template&lt;typename Sortable , typename Compare &gt; </td></tr>
-<tr class="memitem:ae7a2ef47098deeb7a42c8eca8115ae17"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1container.html#ae7a2ef47098deeb7a42c8eca8115ae17">sort</a> (Sortable &amp;container, Compare &amp;&amp;compare) noexcept(<a class="el" href="namespacedaw_1_1container_1_1impl.html#a177cfa052831bea42f610249180eaa37">impl::is_nothrow_sortable</a>&lt; Sortable, Compare &gt;())</td></tr>
+<tr class="memitem:ae7a2ef47098deeb7a42c8eca8115ae17"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1container.html#ae7a2ef47098deeb7a42c8eca8115ae17">sort</a> (Sortable &amp;container, Compare &amp;&amp;compare) noexcept(impl::is_nothrow_sortable&lt; Sortable, Compare &gt;())</td></tr>
 <tr class="separator:ae7a2ef47098deeb7a42c8eca8115ae17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9598c73143a9c208278250d2d6f08480"><td class="memTemplParams" colspan="2">template&lt;typename Container , typename UnaryPredicate , std::enable_if_t&lt; daw::traits::is_container_like_v&lt; Container &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a9598c73143a9c208278250d2d6f08480"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1container.html#a9598c73143a9c208278250d2d6f08480">stable_partition</a> (Container &amp;container, UnaryPredicate pred) noexcept(noexcept(std::stable_partition(std::begin(container), std::end(container), pred)))</td></tr>

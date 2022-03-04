@@ -68,7 +68,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">daw_container_algorithm.h File Reference</div>  </div>
@@ -93,16 +92,6 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacedaw_1_1container"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1container.html">daw::container</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacedaw_1_1container_1_1impl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1container_1_1impl.html">daw::container::impl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacedaw_1_1container_1_1impl_1_1adl__test"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1container_1_1impl_1_1adl__test.html">daw::container::impl::adl_test</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:af72a7246d2f5a2ffdb14e70323d834b0"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
-<tr class="memitem:af72a7246d2f5a2ffdb14e70323d834b0"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1container_1_1impl.html#af72a7246d2f5a2ffdb14e70323d834b0">daw::container::impl::has_size_method</a> = decltype(std::declval&lt; Container &gt;().size())</td></tr>
-<tr class="separator:af72a7246d2f5a2ffdb14e70323d834b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -112,12 +101,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a31f5d7ec6f040e314bc7aa0eee6303f8"><td class="memTemplParams" colspan="2">template&lt;typename Container , typename T , typename BinaryOperation , std::enable_if_t&lt; daw::traits::is_container_like_v&lt; Container &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a31f5d7ec6f040e314bc7aa0eee6303f8"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1container.html#a31f5d7ec6f040e314bc7aa0eee6303f8">daw::container::accumulate</a> (Container const &amp;container, T &amp;&amp;init, BinaryOperation oper) noexcept(noexcept(std::accumulate(std::cbegin(container), std::cend(container), std::forward&lt; T &gt;(init), oper)))</td></tr>
 <tr class="separator:a31f5d7ec6f040e314bc7aa0eee6303f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad50349f1f6b085ef2fe4c6f1a02479d2"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
-<tr class="memitem:ad50349f1f6b085ef2fe4c6f1a02479d2"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1container_1_1impl.html#ad50349f1f6b085ef2fe4c6f1a02479d2">daw::container::impl::adl_begin</a> (Container &amp;&amp;c) noexcept(is_nothrow_begin&lt; Container &gt;())</td></tr>
-<tr class="separator:ad50349f1f6b085ef2fe4c6f1a02479d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a391957a1ab54ae890e360628862cf68f"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
-<tr class="memitem:a391957a1ab54ae890e360628862cf68f"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1container_1_1impl.html#a391957a1ab54ae890e360628862cf68f">daw::container::impl::adl_end</a> (Container &amp;&amp;c) noexcept(is_nothrow_end&lt; Container &gt;())</td></tr>
-<tr class="separator:a391957a1ab54ae890e360628862cf68f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18646b9f0190a6fafe3cc2620bfe4ad4"><td class="memTemplParams" colspan="2">template&lt;typename Source , typename Destination &gt; </td></tr>
 <tr class="memitem:a18646b9f0190a6fafe3cc2620bfe4ad4"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1container.html#a18646b9f0190a6fafe3cc2620bfe4ad4">daw::container::append</a> (Source const &amp;source, Destination &amp;destination)</td></tr>
 <tr class="memdesc:a18646b9f0190a6fafe3cc2620bfe4ad4"><td class="mdescLeft">&#160;</td><td class="mdescRight">insert the contents of one container into another  <a href="namespacedaw_1_1container.html#a18646b9f0190a6fafe3cc2620bfe4ad4">More...</a><br /></td></tr>
@@ -172,18 +155,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a859780fc9390b4a66cf90e5b71e2661d"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1container.html#a859780fc9390b4a66cf90e5b71e2661d">daw::container::for_each_with_pos</a> (Container &amp;container, size_t const first_inclusive, size_t last_exclusive, Function func) noexcept(noexcept(func(*std::begin(container), std::declval&lt; size_t &gt;())))</td></tr>
 <tr class="memdesc:a859780fc9390b4a66cf90e5b71e2661d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Summary: Run func( container, position ) on each element in interval [first_inclusive, last_exclusive)  <a href="namespacedaw_1_1container.html#a859780fc9390b4a66cf90e5b71e2661d">More...</a><br /></td></tr>
 <tr class="separator:a859780fc9390b4a66cf90e5b71e2661d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3519c81e76a06630dd56c8d1ee555fc1"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
-<tr class="memitem:a3519c81e76a06630dd56c8d1ee555fc1"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1container_1_1impl.html#a3519c81e76a06630dd56c8d1ee555fc1">daw::container::impl::is_nothrow_begin</a> () noexcept</td></tr>
-<tr class="separator:a3519c81e76a06630dd56c8d1ee555fc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48452866924835f1508c02dedc323844"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
-<tr class="memitem:a48452866924835f1508c02dedc323844"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1container_1_1impl.html#a48452866924835f1508c02dedc323844">daw::container::impl::is_nothrow_end</a> () noexcept</td></tr>
-<tr class="separator:a48452866924835f1508c02dedc323844"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a177cfa052831bea42f610249180eaa37"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
-<tr class="memitem:a177cfa052831bea42f610249180eaa37"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1container_1_1impl.html#a177cfa052831bea42f610249180eaa37">daw::container::impl::is_nothrow_sortable</a> () noexcept</td></tr>
-<tr class="separator:a177cfa052831bea42f610249180eaa37"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a887224c621810764d615fff35ce01cf1"><td class="memTemplParams" colspan="2">template&lt;typename Container , typename Predicate &gt; </td></tr>
-<tr class="memitem:a887224c621810764d615fff35ce01cf1"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1container_1_1impl.html#a887224c621810764d615fff35ce01cf1">daw::container::impl::is_nothrow_sortable</a> () noexcept</td></tr>
-<tr class="separator:a887224c621810764d615fff35ce01cf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34dc3f6f3ed31b3bfce534b0fd46e48e"><td class="memTemplParams" colspan="2">template&lt;typename Container , typename UnaryOperator , std::enable_if_t&lt; daw::traits::is_container_like_v&lt; Container &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a34dc3f6f3ed31b3bfce534b0fd46e48e"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1container.html#a34dc3f6f3ed31b3bfce534b0fd46e48e">daw::container::max_element</a> (Container &amp;container) noexcept(noexcept(daw::algorithm::max_element(std::cbegin(container), std::cend(container))))</td></tr>
 <tr class="separator:a34dc3f6f3ed31b3bfce534b0fd46e48e"><td class="memSeparator" colspan="2">&#160;</td></tr>
