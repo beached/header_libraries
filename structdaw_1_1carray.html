@@ -97,7 +97,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afbffac0316ba5caa3cbf703c2e2dc037"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1carray.html#afbffac0316ba5caa3cbf703c2e2dc037">carray</a> () noexcept</td></tr>
 <tr class="separator:afbffac0316ba5caa3cbf703c2e2dc037"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf8c098391433eb370900eb6a157d46e"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
-<tr class="memitem:adf8c098391433eb370900eb6a157d46e"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1carray.html#adf8c098391433eb370900eb6a157d46e">carray</a> (Args &amp;&amp;...args) noexcept(noexcept(<a class="el" href="namespacedaw_1_1details.html#a18bda1e96feca91c95c8f177ffb45e99">details::assign_to</a>(std::declval&lt; <a class="el" href="structdaw_1_1carray.html">carray</a> &gt;().ptr(), std::declval&lt; Args &amp;&amp; &gt;()...)))</td></tr>
+<tr class="memitem:adf8c098391433eb370900eb6a157d46e"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1carray.html#adf8c098391433eb370900eb6a157d46e">carray</a> (Args &amp;&amp;...args) noexcept(noexcept(details::assign_to(std::declval&lt; <a class="el" href="structdaw_1_1carray.html">carray</a> &gt;().ptr(), std::declval&lt; Args &amp;&amp; &gt;()...)))</td></tr>
 <tr class="separator:adf8c098391433eb370900eb6a157d46e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9929e12bf70886753416d584d895c3c"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1carray.html#aa9929e12bf70886753416d584d895c3c">carray</a> (<a class="el" href="structdaw_1_1carray.html">carray</a> &amp;&amp;) noexcept(noexcept(T(std::declval&lt; T &amp;&amp; &gt;())))=default</td></tr>
 <tr class="separator:aa9929e12bf70886753416d584d895c3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -164,7 +164,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab85e1df498e88e6ad4984ef163a9068b"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1carray.html#a067514a00168836051fcd4ff64f63879">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1carray.html#ab85e1df498e88e6ad4984ef163a9068b">size</a> () const noexcept</td></tr>
 <tr class="separator:ab85e1df498e88e6ad4984ef163a9068b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Typedef Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;typename T, size_t N&gt;<br />
+struct daw::carray&lt; T, N &gt;</h3>
+
+
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00039">39</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="ad5cc5effb0ecb3aab0401390b9c78e4c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad5cc5effb0ecb3aab0401390b9c78e4c">&#9670;&nbsp;</a></span>const_pointer</h2>
 
@@ -178,6 +184,8 @@ template&lt;typename T , size_t N&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00044">44</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
 
 </div>
 </div>
@@ -195,6 +203,8 @@ template&lt;typename T , size_t N&gt; </div>
       </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00042">42</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
+
 </div>
 </div>
 <a id="a633461252981032956512dd38429001f"></a>
@@ -210,6 +220,8 @@ template&lt;typename T , size_t N&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00043">43</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
 
 </div>
 </div>
@@ -227,6 +239,8 @@ template&lt;typename T , size_t N&gt; </div>
       </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00041">41</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
+
 </div>
 </div>
 <a id="a067514a00168836051fcd4ff64f63879"></a>
@@ -243,6 +257,8 @@ template&lt;typename T , size_t N&gt; </div>
       </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00045">45</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
+
 </div>
 </div>
 <a id="a47b6ffec30b01592578dd087e9e8c906"></a>
@@ -258,6 +274,8 @@ template&lt;typename T , size_t N&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00040">40</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
 
 </div>
 </div>
@@ -287,6 +305,8 @@ template&lt;typename T , size_t N&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00065">65</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
+
 </div>
 </div>
 <a id="ae12222ce5e690097a41d904d68535ba3"></a>
@@ -314,6 +334,8 @@ template&lt;typename T , size_t N&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00068">68</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
 
 </div>
 </div>
@@ -344,6 +366,8 @@ template&lt;typename... Args&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00081">81</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
 
 </div>
 </div>
@@ -399,6 +423,8 @@ template&lt;typename T , size_t N&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00090">90</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
 
 </div>
 </div>
@@ -457,6 +483,8 @@ template&lt;typename T , size_t N&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00116">116</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
+
 </div>
 </div>
 <a id="ae76fa3baecbe0a51b3607857880d8e9e"></a>
@@ -485,6 +513,8 @@ template&lt;typename T , size_t N&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00122">122</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
+
 </div>
 </div>
 <a id="adaf9590ece3320f7713d8b57fedb46ae"></a>
@@ -511,6 +541,8 @@ template&lt;typename T , size_t N&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00197">197</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
 
 </div>
 </div>
@@ -539,6 +571,8 @@ template&lt;typename T , size_t N&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00192">192</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
+
 </div>
 </div>
 <a id="a520d9f31b5f35fd9f10dc81dc05d170b"></a>
@@ -565,6 +599,8 @@ template&lt;typename T , size_t N&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00132">132</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
 
 </div>
 </div>
@@ -593,6 +629,8 @@ template&lt;typename T , size_t N&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00128">128</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
+
 </div>
 </div>
 <a id="a2275a7557edfc9de67f18f62a8538742"></a>
@@ -619,6 +657,8 @@ template&lt;typename T , size_t N&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00136">136</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
 
 </div>
 </div>
@@ -647,6 +687,8 @@ template&lt;typename T , size_t N&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00148">148</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
+
 </div>
 </div>
 <a id="a25c38689b635e42a81ec309502ca5bcd"></a>
@@ -673,6 +715,8 @@ template&lt;typename T , size_t N&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00162">162</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
 
 </div>
 </div>
@@ -701,6 +745,8 @@ template&lt;typename T , size_t N&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00177">177</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
+
 </div>
 </div>
 <a id="a2af5c4e93dc5cb1a87fe344b1a65f7bd"></a>
@@ -727,6 +773,8 @@ template&lt;typename T , size_t N&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00202">202</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
 
 </div>
 </div>
@@ -755,6 +803,8 @@ template&lt;typename T , size_t N&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00214">214</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
+
 </div>
 </div>
 <a id="ac7f78b765c5697b142613995b3eb5555"></a>
@@ -782,6 +832,8 @@ template&lt;typename T , size_t N&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00144">144</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
+
 </div>
 </div>
 <a id="a2cc1636111f9c5a75363812546de9bd5"></a>
@@ -808,6 +860,8 @@ template&lt;typename T , size_t N&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00140">140</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
 
 </div>
 </div>
@@ -837,6 +891,8 @@ template&lt;typename T , size_t N&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00218">218</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
+
 </div>
 </div>
 <a id="a877ab6573d43ce19fac04c4d1b6d3548"></a>
@@ -863,6 +919,8 @@ template&lt;typename T , size_t N&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00187">187</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
 
 </div>
 </div>
@@ -891,6 +949,8 @@ template&lt;typename T , size_t N&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00182">182</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
+
 </div>
 </div>
 <a id="a2b250eea84d5a8b3cd30d608c6b9503c"></a>
@@ -917,6 +977,8 @@ template&lt;typename T , size_t N&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00210">210</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
 
 </div>
 </div>
@@ -974,6 +1036,8 @@ template&lt;typename T , size_t N&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00095">95</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
+
 </div>
 </div>
 <a id="ac3e663fb368a95b1712001bd101a4b53"></a>
@@ -1001,6 +1065,8 @@ template&lt;typename T , size_t N&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00074">74</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
 
 </div>
 </div>
@@ -1030,6 +1096,8 @@ template&lt;typename T , size_t N&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00112">112</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
+
 </div>
 </div>
 <a id="a4d31e9d402578a92af52ac13af7893eb"></a>
@@ -1058,6 +1126,8 @@ template&lt;typename T , size_t N&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00107">107</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
+
 </div>
 </div>
 <a id="a64047a75bc88dc8f4875ac14f0066d73"></a>
@@ -1084,6 +1154,8 @@ template&lt;typename T , size_t N&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00157">157</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
 
 </div>
 </div>
@@ -1112,6 +1184,8 @@ template&lt;typename T , size_t N&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00152">152</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
+
 </div>
 </div>
 <a id="a2aa5640e45af1251e86ff1519077dc3a"></a>
@@ -1138,6 +1212,8 @@ template&lt;typename T , size_t N&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00172">172</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
 
 </div>
 </div>
@@ -1166,6 +1242,8 @@ template&lt;typename T , size_t N&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00167">167</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
+
 </div>
 </div>
 <a id="ab85e1df498e88e6ad4984ef163a9068b"></a>
@@ -1192,6 +1270,8 @@ template&lt;typename T , size_t N&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__carray_8h_source.html#l00206">206</a> of file <a class="el" href="daw__carray_8h_source.html">daw_carray.h</a>.</p>
 
 </div>
 </div>

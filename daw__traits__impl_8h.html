@@ -91,12 +91,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1nothing.html">daw::nothing</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1traits_1_1nth__type__impl_1_1nth__type__base.html">daw::traits::nth_type_impl::nth_type_base&lt; TPack, IPack &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1traits_1_1nth__type__impl_1_1nth__type__base_3_01std_1_1index__sequence_3_01_is_8_82269727cfa78cee7d614a67e0b621713.html">daw::traits::nth_type_impl::nth_type_base&lt; std::index_sequence&lt; Is... &gt;, pack_list&lt; Ts... &gt; &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1traits_1_1nth__type__impl_1_1nth__type__leaf.html">daw::traits::nth_type_impl::nth_type_leaf&lt; I, T &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pack__list.html">daw::pack_list&lt; Args &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pack__type.html">daw::pack_type&lt; N, Args &gt;</a></td></tr>
@@ -116,8 +110,6 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw_1_1traits_1_1detectors"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits_1_1detectors.html">daw::traits::detectors</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacedaw_1_1traits_1_1detectors_1_1details"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits_1_1detectors_1_1details.html">daw::traits::detectors::details</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacedaw_1_1traits_1_1nth__type__impl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits_1_1nth__type__impl.html">daw::traits::nth_type_impl</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
@@ -248,9 +240,6 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a4297cd9a0efe95fa43825051eb1d3584"><td class="memTemplParams" colspan="2">template&lt;std::size_t Idx, typename... Ts&gt; </td></tr>
 <tr class="memitem:a4297cd9a0efe95fa43825051eb1d3584"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a4297cd9a0efe95fa43825051eb1d3584">daw::traits::nth_type</a> = typename decltype(nth_type_impl::find_leaf_type&lt; Idx &gt;(std::declval&lt; nth_type_impl::nth_type_impl&lt; Ts... &gt; &gt;()))::type</td></tr>
 <tr class="separator:a4297cd9a0efe95fa43825051eb1d3584"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bd0dcfeb037eb65c485ab973ec44ca8"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
-<tr class="memitem:a9bd0dcfeb037eb65c485ab973ec44ca8"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits_1_1nth__type__impl.html#a9bd0dcfeb037eb65c485ab973ec44ca8">daw::traits::nth_type_impl::nth_type_impl</a> = nth_type_base&lt; std::index_sequence_for&lt; Ts... &gt;, pack_list&lt; Ts... &gt; &gt;</td></tr>
-<tr class="separator:a9bd0dcfeb037eb65c485ab973ec44ca8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5f8956ae0d208516c1367c906bc5a19"><td class="memTemplParams" colspan="2">template&lt;size_t N, typename... Args&gt; </td></tr>
 <tr class="memitem:ac5f8956ae0d208516c1367c906bc5a19"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ac5f8956ae0d208516c1367c906bc5a19">daw::pack_type_t</a> = typename pack_type&lt; N, Args... &gt;::type</td></tr>
 <tr class="separator:ac5f8956ae0d208516c1367c906bc5a19"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -275,9 +264,6 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a554b68089c968ce4f538ebe581eef9f1"><td class="memTemplParams" colspan="2">template&lt;std::size_t I, typename T &gt; </td></tr>
-<tr class="memitem:a554b68089c968ce4f538ebe581eef9f1"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits_1_1nth__type__impl.html#a554b68089c968ce4f538ebe581eef9f1">daw::traits::nth_type_impl::find_leaf_type</a> (nth_type_leaf&lt; I, T &gt; const &amp;) -&gt; identity&lt; T &gt;</td></tr>
-<tr class="separator:a554b68089c968ce4f538ebe581eef9f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ca392af620af7aef3b14a8e3c37e12d"><td class="memTemplParams" colspan="2">template&lt;typename Function &gt; </td></tr>
 <tr class="memitem:a3ca392af620af7aef3b14a8e3c37e12d"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3ca392af620af7aef3b14a8e3c37e12d">daw::make_void_function</a> (Function &amp;&amp;func) noexcept(noexcept(traits_details::void_function&lt; Function &gt;(<a class="el" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>(Function, func))))</td></tr>
 <tr class="separator:a3ca392af620af7aef3b14a8e3c37e12d"><td class="memSeparator" colspan="2">&#160;</td></tr>

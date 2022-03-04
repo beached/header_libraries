@@ -100,8 +100,8 @@ $(function() {
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw.html">daw</a> {</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="namespacedaw_1_1benchmark__impl.html">   31</a></span>&#160;  <span class="keyword">namespace </span>benchmark_impl {</div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="namespacedaw_1_1benchmark__impl.html#aeebbdeca43131c95d0fabccb74339992">   32</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="namespacedaw_1_1benchmark__impl.html#aeebbdeca43131c95d0fabccb74339992">second_duration</a> = std::chrono::duration&lt;double&gt;;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keyword">namespace </span>benchmark_impl {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">using</span> second_duration = std::chrono::duration&lt;double&gt;;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  } <span class="comment">// namespace benchmark_impl</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> F&gt;</div>
@@ -110,7 +110,7 @@ $(function() {
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">auto</span> start = std::chrono::steady_clock::now( );</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    (void)<a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( F, func )( );</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">auto</span> finish = std::chrono::steady_clock::now( );</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="namespacedaw_1_1benchmark__impl.html#aeebbdeca43131c95d0fabccb74339992">benchmark_impl::second_duration</a> duration = finish - start;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    benchmark_impl::second_duration duration = finish - start;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordflow">return</span> duration.count( );</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  }</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
@@ -602,16 +602,16 @@ $(function() {
 <div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;  namespace benchmark_impl {</div>
 <div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;    template&lt;typename T&gt;</div>
 <div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;    using detect_streamable =</div>
-<div class="line"><a name="l00533"></a><span class="lineno"><a class="line" href="namespacedaw_1_1benchmark__impl.html#a8e1c4c0345ad1b082d2752f357ee1ca6">  533</a></span>&#160;      decltype( std::declval&lt;std::ios &amp;&gt;( ) &lt;&lt; std::declval&lt;T const &amp;&gt;( ) );</div>
+<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;      decltype( std::declval&lt;std::ios &amp;&gt;( ) &lt;&lt; std::declval&lt;T const &amp;&gt;( ) );</div>
 <div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160; </div>
 <div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;    template&lt;typename T&gt;</div>
-<div class="line"><a name="l00536"></a><span class="lineno"><a class="line" href="namespacedaw_1_1benchmark__impl.html#a5507e7f5db4836d12fca8682dfd3a983">  536</a></span>&#160;    using is_streamable = daw::is_detected&lt;detect_streamable, T&gt;;</div>
+<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;    using is_streamable = daw::is_detected&lt;detect_streamable, T&gt;;</div>
 <div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160; </div>
 <div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;    template&lt;</div>
 <div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;      typename T, typename U,</div>
 <div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;      std::enable_if_t&lt;std::conjunction_v&lt;is_streamable&lt;T&gt;, is_streamable&lt;U&gt;&gt;,</div>
 <div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;                       std::nullptr_t&gt; = nullptr&gt;</div>
-<div class="line"><a name="l00542"></a><span class="lineno"><a class="line" href="namespacedaw_1_1benchmark__impl.html#aa9895eaab6d86fbdfb2566af8f71e98e">  542</a></span>&#160;    [[maybe_unused]] void output_expected_error( T &amp;&amp;expected_result,</div>
+<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;    [[maybe_unused]] void output_expected_error( T &amp;&amp;expected_result,</div>
 <div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;                                                 U &amp;&amp;result ) {</div>
 <div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;      std::cerr &lt;&lt; &quot;Invalid result. Expecting &#39;<span class="stringliteral">&quot; &lt;&lt; expected_result</span></div>
 <div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;<span class="stringliteral">                &lt;&lt; &quot;</span><span class="stringliteral">&#39; but got &#39;</span><span class="stringliteral">&quot; &lt;&lt; result &lt;&lt; &quot;</span><span class="stringliteral">&#39;\n&quot;;</span></div>
@@ -621,7 +621,7 @@ $(function() {
 <div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;<span class="stringliteral">             std::enable_if_t&lt;std::conjunction_v&lt;not_trait&lt;is_streamable&lt;T&gt;&gt;,</span></div>
 <div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;<span class="stringliteral">                                                 not_trait&lt;is_streamable&lt;U&gt;&gt;&gt;,</span></div>
 <div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;<span class="stringliteral">                              std::nullptr_t&gt; = nullptr&gt;</span></div>
-<div class="line"><a name="l00552"></a><span class="lineno"><a class="line" href="namespacedaw_1_1benchmark__impl.html#adf147ecfcb6fa80faac89ddd9d682a12">  552</a></span>&#160;<span class="stringliteral">    [[maybe_unused]] constexpr void output_expected_error( T &amp;&amp;, U &amp;&amp; ) {</span></div>
+<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;<span class="stringliteral">    [[maybe_unused]] constexpr void output_expected_error( T &amp;&amp;, U &amp;&amp; ) {</span></div>
 <div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;<span class="stringliteral">      std::cerr &lt;&lt; &quot;Invalid or unexpected result\n&quot;;</span></div>
 <div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;<span class="stringliteral">    }</span></div>
 <div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;<span class="stringliteral">  } // namespace benchmark_impl</span></div>
@@ -662,10 +662,10 @@ $(function() {
 <div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;<span class="stringliteral">  }</span></div>
 <div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;<span class="stringliteral"></span> </div>
 <div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;<span class="stringliteral">  namespace benchmark_impl {</span></div>
-<div class="line"><a name="l00593"></a><span class="lineno"><a class="line" href="structdaw_1_1benchmark__impl_1_1always__true.html">  593</a></span>&#160;<span class="stringliteral">    struct always_true {</span></div>
+<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;<span class="stringliteral">    struct always_true {</span></div>
 <div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;<span class="stringliteral">      template&lt;typename... Args&gt;</span></div>
 <div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;<span class="stringliteral">      [[nodiscard, maybe_unused]] constexpr bool</span></div>
-<div class="line"><a name="l00596"></a><span class="lineno"><a class="line" href="structdaw_1_1benchmark__impl_1_1always__true.html#a44dc4421c13bbdb2ad1f8bf4c99ed1b5">  596</a></span>&#160;<span class="stringliteral">      operator( )( Args &amp;&amp;... ) noexcept {</span></div>
+<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;<span class="stringliteral">      operator( )( Args &amp;&amp;... ) noexcept {</span></div>
 <div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;<span class="stringliteral">        return true;</span></div>
 <div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;<span class="stringliteral">      }</span></div>
 <div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;<span class="stringliteral">    };</span></div>
@@ -700,16 +700,15 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="adaw__traits_8h_html"><div class="ttname"><a href="daw__traits_8h.html">daw_traits.h</a></div></div>
 <div class="ttc" id="adaw__move_8h_html"><div class="ttname"><a href="daw__move_8h.html">daw_move.h</a></div></div>
-<div class="ttc" id="anamespacedaw_html_abb9b840092ac13f40d80ad40c11fe06f"><div class="ttname"><a href="namespacedaw.html#abb9b840092ac13f40d80ad40c11fe06f">daw::benchmark</a></div><div class="ttdeci">static double benchmark(F &amp;&amp;func)</div><div class="ttdef"><b>Definition:</b> daw_benchmark.h:36</div></div>
+<div class="ttc" id="anamespacedaw_html_abb9b840092ac13f40d80ad40c11fe06f"><div class="ttname"><a href="namespacedaw.html#abb9b840092ac13f40d80ad40c11fe06f">daw::benchmark</a></div><div class="ttdeci">static double benchmark(F &amp;&amp;func)</div><div class="ttdef"><b>Definition:</b> <a href="daw__benchmark_8h_source.html#l00036">daw_benchmark.h:36</a></div></div>
 <div class="ttc" id="adaw__check__exceptions_8h_html"><div class="ttname"><a href="daw__check__exceptions_8h.html">daw_check_exceptions.h</a></div></div>
 <div class="ttc" id="acpp__17_8h_html"><div class="ttname"><a href="cpp__17_8h.html">cpp_17.h</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1sv2_html_a111099f8d1a5ab353748ec111aef90bf"><div class="ttname"><a href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">daw::sv2::nodiscard</a></div><div class="ttdeci">constexpr auto nodiscard</div><div class="ttdef"><b>Definition:</b> daw_string_view2.h:76</div></div>
-<div class="ttc" id="anamespacedaw_1_1benchmark__impl_html_aeebbdeca43131c95d0fabccb74339992"><div class="ttname"><a href="namespacedaw_1_1benchmark__impl.html#aeebbdeca43131c95d0fabccb74339992">daw::benchmark_impl::second_duration</a></div><div class="ttdeci">std::chrono::duration&lt; double &gt; second_duration</div><div class="ttdef"><b>Definition:</b> daw_benchmark.h:32</div></div>
+<div class="ttc" id="anamespacedaw_1_1sv2_html_a111099f8d1a5ab353748ec111aef90bf"><div class="ttname"><a href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">daw::sv2::nodiscard</a></div><div class="ttdeci">constexpr auto nodiscard</div><div class="ttdef"><b>Definition:</b> <a href="daw__string__view2_8h_source.html#l00076">daw_string_view2.h:76</a></div></div>
 <div class="ttc" id="adaw__string__view_8h_html"><div class="ttname"><a href="daw__string__view_8h.html">daw_string_view.h</a></div></div>
-<div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> cpp_17.h:23</div></div>
-<div class="ttc" id="adaw__move_8h_html_a92169421367fae95c111acee1e0ebe60"><div class="ttname"><a href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a></div><div class="ttdeci">#define DAW_FWD2(Type, Value)</div><div class="ttdef"><b>Definition:</b> daw_move.h:42</div></div>
+<div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00023">cpp_17.h:23</a></div></div>
+<div class="ttc" id="adaw__move_8h_html_a92169421367fae95c111acee1e0ebe60"><div class="ttname"><a href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a></div><div class="ttdeci">#define DAW_FWD2(Type, Value)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00042">daw_move.h:42</a></div></div>
 <div class="ttc" id="adaw__expected_8h_html"><div class="ttname"><a href="daw__expected_8h.html">daw_expected.h</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1utility_html_a28d8df9f118aee7bfe220dfe77d028af"><div class="ttname"><a href="namespacedaw_1_1utility.html#a28d8df9f118aee7bfe220dfe77d028af">daw::utility::format_seconds</a></div><div class="ttdeci">std::string format_seconds(T t, size_t prec=0)</div><div class="ttdef"><b>Definition:</b> daw_benchmark.h:48</div></div>
+<div class="ttc" id="anamespacedaw_1_1utility_html_a28d8df9f118aee7bfe220dfe77d028af"><div class="ttname"><a href="namespacedaw_1_1utility.html#a28d8df9f118aee7bfe220dfe77d028af">daw::utility::format_seconds</a></div><div class="ttdeci">std::string format_seconds(T t, size_t prec=0)</div><div class="ttdef"><b>Definition:</b> <a href="daw__benchmark_8h_source.html#l00048">daw_benchmark.h:48</a></div></div>
 <div class="ttc" id="adaw__do__not__optimize_8h_html"><div class="ttname"><a href="daw__do__not__optimize_8h.html">daw_do_not_optimize.h</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

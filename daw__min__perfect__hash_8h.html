@@ -69,7 +69,6 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">daw_min_perfect_hash.h File Reference</div>  </div>
@@ -95,40 +94,18 @@ $(function() {
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1perfect__hash__table.html">daw::perfect_hash_table&lt; N, Key, Value, Hasher, KeyEqual &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1mph__impl_1_1static__bitset.html">daw::mph_impl::static_bitset&lt; Bits &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
 <tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacedaw_1_1mph__impl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1mph__impl.html">daw::mph_impl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:ac74aaf756cad16ce6f500b3f8dcdadfd"><td class="memTemplParams" colspan="2">template&lt;size_t Bits&gt; </td></tr>
-<tr class="memitem:ac74aaf756cad16ce6f500b3f8dcdadfd"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1mph__impl.html#ac74aaf756cad16ce6f500b3f8dcdadfd">daw::mph_impl::opt_type_t</a> = std::remove_reference_t&lt; decltype(determine_opt_sz&lt; Bits &gt;())&gt;</td></tr>
-<tr class="separator:ac74aaf756cad16ce6f500b3f8dcdadfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a791850683c209509f41097ba4ffed4e9"><td class="memTemplParams" colspan="2">template&lt;size_t Bits&gt; </td></tr>
-<tr class="memitem:a791850683c209509f41097ba4ffed4e9"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1mph__impl.html#a791850683c209509f41097ba4ffed4e9">daw::mph_impl::determine_opt_sz</a> ()</td></tr>
-<tr class="separator:a791850683c209509f41097ba4ffed4e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8afb51bc8369783d54cfff6f1ddeedb5"><td class="memTemplParams" colspan="2">template&lt;size_t N&gt; </td></tr>
-<tr class="memitem:a8afb51bc8369783d54cfff6f1ddeedb5"><td class="memTemplItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1mph__impl.html#a8afb51bc8369783d54cfff6f1ddeedb5">daw::mph_impl::get_bucket_count</a> ()</td></tr>
-<tr class="separator:a8afb51bc8369783d54cfff6f1ddeedb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5ca479e9a313a50c783b5cd65defb02"><td class="memTemplParams" colspan="2">template&lt;typename hash_result &gt; </td></tr>
-<tr class="memitem:ad5ca479e9a313a50c783b5cd65defb02"><td class="memTemplItemLeft" align="right" valign="top">static constexpr hash_result&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1mph__impl.html#ad5ca479e9a313a50c783b5cd65defb02">daw::mph_impl::hash_combine</a> (hash_result seed, hash_result hash) noexcept</td></tr>
-<tr class="separator:ad5ca479e9a313a50c783b5cd65defb02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5cffa1418f8212dbfad3c6cc47202c9"><td class="memTemplParams" colspan="2">template&lt;typename Hasher , typename Key , typename Value , size_t N&gt; </td></tr>
 <tr class="memitem:af5cffa1418f8212dbfad3c6cc47202c9"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af5cffa1418f8212dbfad3c6cc47202c9">daw::make_perfect_hash_table</a> (std::pair&lt; Key, Value &gt; const (&amp;data)[N])</td></tr>
 <tr class="separator:af5cffa1418f8212dbfad3c6cc47202c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a529c50b66cd4d50e11ef44c7ee54311b"><td class="memTemplParams" colspan="2">template&lt;size_t N&gt; </td></tr>
-<tr class="memitem:a529c50b66cd4d50e11ef44c7ee54311b"><td class="memTemplItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1mph__impl.html#a529c50b66cd4d50e11ef44c7ee54311b">daw::mph_impl::next_pow2</a> ()</td></tr>
-<tr class="separator:a529c50b66cd4d50e11ef44c7ee54311b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

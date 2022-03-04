@@ -67,9 +67,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">daw_benchmark.h File Reference</div>  </div>
@@ -95,31 +93,13 @@ $(function() {
 </div>
 <p><a href="daw__benchmark_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1benchmark__impl_1_1always__true.html">daw::benchmark_impl::always_true</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
 <tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacedaw_1_1benchmark__impl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1benchmark__impl.html">daw::benchmark_impl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacedaw_1_1utility"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1utility.html">daw::utility</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a8e1c4c0345ad1b082d2752f357ee1ca6"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a8e1c4c0345ad1b082d2752f357ee1ca6"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1benchmark__impl.html#a8e1c4c0345ad1b082d2752f357ee1ca6">daw::benchmark_impl::detect_streamable</a> = decltype(std::declval&lt; std::ios &amp; &gt;()&lt;&lt; std::declval&lt; T const &amp; &gt;())</td></tr>
-<tr class="separator:a8e1c4c0345ad1b082d2752f357ee1ca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5507e7f5db4836d12fca8682dfd3a983"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a5507e7f5db4836d12fca8682dfd3a983"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1benchmark__impl.html#a5507e7f5db4836d12fca8682dfd3a983">daw::benchmark_impl::is_streamable</a> = <a class="el" href="namespacedaw.html#afcbbb48fdb90999e41a0fc31a9b11bb0">daw::is_detected</a>&lt; detect_streamable, T &gt;</td></tr>
-<tr class="separator:a5507e7f5db4836d12fca8682dfd3a983"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeebbdeca43131c95d0fabccb74339992"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1benchmark__impl.html#aeebbdeca43131c95d0fabccb74339992">daw::benchmark_impl::second_duration</a> = std::chrono::duration&lt; double &gt;</td></tr>
-<tr class="separator:aeebbdeca43131c95d0fabccb74339992"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -162,12 +142,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a28d8df9f118aee7bfe220dfe77d028af"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a28d8df9f118aee7bfe220dfe77d028af"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1utility.html#a28d8df9f118aee7bfe220dfe77d028af">daw::utility::format_seconds</a> (T t, size_t prec=0)</td></tr>
 <tr class="separator:a28d8df9f118aee7bfe220dfe77d028af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf147ecfcb6fa80faac89ddd9d682a12"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U , std::enable_if_t&lt; std::conjunction_v&lt; not_trait&lt; is_streamable&lt; T &gt;&gt;, not_trait&lt; is_streamable&lt; U &gt;&gt;&gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
-<tr class="memitem:adf147ecfcb6fa80faac89ddd9d682a12"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1benchmark__impl.html#adf147ecfcb6fa80faac89ddd9d682a12">daw::benchmark_impl::output_expected_error</a> (T &amp;&amp;, U &amp;&amp;)</td></tr>
-<tr class="separator:adf147ecfcb6fa80faac89ddd9d682a12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9895eaab6d86fbdfb2566af8f71e98e"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U , std::enable_if_t&lt; std::conjunction_v&lt; is_streamable&lt; T &gt;, is_streamable&lt; U &gt;&gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
-<tr class="memitem:aa9895eaab6d86fbdfb2566af8f71e98e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1benchmark__impl.html#aa9895eaab6d86fbdfb2566af8f71e98e">daw::benchmark_impl::output_expected_error</a> (T &amp;&amp;expected_result, U &amp;&amp;result)</td></tr>
-<tr class="separator:aa9895eaab6d86fbdfb2566af8f71e98e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9609dca8712940be2abfd414ad587a91"><td class="memTemplParams" colspan="2">template&lt;typename Func &gt; </td></tr>
 <tr class="memitem:a9609dca8712940be2abfd414ad587a91"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a9609dca8712940be2abfd414ad587a91">daw::show_benchmark</a> (size_t data_size_bytes, std::string const &amp;title, Func &amp;&amp;func, size_t data_prec=1, size_t time_prec=0, size_t item_count=1)</td></tr>
 <tr class="separator:a9609dca8712940be2abfd414ad587a91"><td class="memSeparator" colspan="2">&#160;</td></tr>

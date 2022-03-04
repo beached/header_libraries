@@ -6,9 +6,9 @@ var indexSectionsWithContent =
   3: "cdfins",
   4: "abcdefghiklmnopqrstuvwz~",
   5: "abcdefhiklmnoprstuv",
-  6: "abcdefghiklmnoprstuvw",
+  6: "abcdefghiklmnprstuvw",
   7: "efhkosu",
-  8: "abdefilnoprsz",
+  8: "abdefilnprsz",
   9: ":bcgotv",
   10: "cdghm"
 };

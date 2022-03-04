@@ -69,7 +69,6 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
@@ -94,12 +93,6 @@ $(function() {
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1static__bitset_1_1const__reference.html">daw::static_bitset&lt; BitWidth &gt;::const_reference</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1bitset__impl_1_1fmt__binary__t.html">daw::bitset_impl::fmt_binary_t</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1bitset__impl_1_1fmt__decimal__t.html">daw::bitset_impl::fmt_decimal_t</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1bitset__impl_1_1fmt__hex__t.html">daw::bitset_impl::fmt_hex_t</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1static__bitset_1_1reference.html">daw::static_bitset&lt; BitWidth &gt;::reference</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1static__bitset.html">daw::static_bitset&lt; BitWidth &gt;</a></td></tr>
@@ -114,38 +107,12 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
 <tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacedaw_1_1bitset__impl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1bitset__impl.html">daw::bitset_impl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:ad038ee96a88ce3f00d1290d6feaf4ed2"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ad038ee96a88ce3f00d1290d6feaf4ed2"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1bitset__impl.html#ad038ee96a88ce3f00d1290d6feaf4ed2">daw::bitset_impl::half_max_t</a> = std::conditional_t&lt; sizeof(T)==8, uint32_t, std::conditional_t&lt; sizeof(T)==4, uint16_t, std::conditional_t&lt; sizeof(T)==2, uint8_t, void &gt; &gt;&gt;</td></tr>
-<tr class="separator:ad038ee96a88ce3f00d1290d6feaf4ed2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a93f108dff6d2a9d09a347d9ba31024ee"><td class="memTemplParams" colspan="2">template&lt;size_t BitWidth, typename value_t &gt; </td></tr>
-<tr class="memitem:a93f108dff6d2a9d09a347d9ba31024ee"><td class="memTemplItemLeft" align="right" valign="top">constexpr value_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1bitset__impl.html#a93f108dff6d2a9d09a347d9ba31024ee">daw::bitset_impl::get_diff_mask</a> () noexcept</td></tr>
-<tr class="separator:a93f108dff6d2a9d09a347d9ba31024ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0292015980e4aa91d8468fc0b7c864ab"><td class="memTemplParams" colspan="2">template&lt;size_t BitWidth, typename value_t &gt; </td></tr>
-<tr class="memitem:a0292015980e4aa91d8468fc0b7c864ab"><td class="memTemplItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1bitset__impl.html#a0292015980e4aa91d8468fc0b7c864ab">daw::bitset_impl::get_elements_needed</a> () noexcept</td></tr>
-<tr class="separator:a0292015980e4aa91d8468fc0b7c864ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af45bdcb10fa75f14feb1f15d7357a540"><td class="memItemLeft" align="right" valign="top">constexpr char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1bitset__impl.html#af45bdcb10fa75f14feb1f15d7357a540">daw::bitset_impl::get_high_nibble</a> (uint8_t value) noexcept</td></tr>
-<tr class="separator:af45bdcb10fa75f14feb1f15d7357a540"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b1787a5f826947f5a677a58ec2a5176"><td class="memItemLeft" align="right" valign="top">constexpr char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1bitset__impl.html#a2b1787a5f826947f5a677a58ec2a5176">daw::bitset_impl::get_low_nibble</a> (uint8_t value) noexcept</td></tr>
-<tr class="separator:a2b1787a5f826947f5a677a58ec2a5176"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75e5af6dfcae695471b50c86d594c3b0"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1bitset__impl.html#a75e5af6dfcae695471b50c86d594c3b0">daw::bitset_impl::high_part</a> (uintmax_t value) noexcept</td></tr>
-<tr class="separator:a75e5af6dfcae695471b50c86d594c3b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad498bbe40e9797d6a2e399252538f6c8"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1bitset__impl.html#ad498bbe40e9797d6a2e399252538f6c8">daw::bitset_impl::low_part</a> (uintmax_t value) noexcept</td></tr>
-<tr class="separator:ad498bbe40e9797d6a2e399252538f6c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34e2840fc8431c5f87f6d7dcd380685d"><td class="memItemLeft" align="right" valign="top">constexpr char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1bitset__impl.html#a34e2840fc8431c5f87f6d7dcd380685d">daw::bitset_impl::nibble_to_ascii</a> (uint8_t value) noexcept</td></tr>
-<tr class="separator:a34e2840fc8431c5f87f6d7dcd380685d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5eb36557f826a02aca75c5587d36386"><td class="memTemplParams" colspan="2">template&lt;size_t BitWidth&gt; </td></tr>
 <tr class="memitem:ac5eb36557f826a02aca75c5587d36386"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ac5eb36557f826a02aca75c5587d36386">daw::operator&lt;&lt;</a> (std::ostream &amp;os, static_bitset&lt; BitWidth &gt; const &amp;bs)</td></tr>
 <tr class="separator:ac5eb36557f826a02aca75c5587d36386"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62f645270aa5b7fb844e7039c2d1fcc3"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1bitset__impl.html#a62f645270aa5b7fb844e7039c2d1fcc3">daw::bitset_impl::overflow</a> (uintmax_t &amp;carry) noexcept</td></tr>
-<tr class="separator:a62f645270aa5b7fb844e7039c2d1fcc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb88197de3dca54f1f004aeb73c65f9e"><td class="memTemplParams" colspan="2">template&lt;size_t BitWidth&gt; </td></tr>
 <tr class="memitem:aeb88197de3dca54f1f004aeb73c65f9e"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aeb88197de3dca54f1f004aeb73c65f9e">daw::to_string</a> (static_bitset&lt; BitWidth &gt; const &amp;bs)</td></tr>
 <tr class="separator:aeb88197de3dca54f1f004aeb73c65f9e"><td class="memSeparator" colspan="2">&#160;</td></tr>

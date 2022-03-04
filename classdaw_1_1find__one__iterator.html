@@ -81,11 +81,8 @@ $(function() {
 Inheritance diagram for daw::find_one_iterator&lt; Iterator, IteratorLast, Filters &gt;:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="classdaw_1_1find__one__iterator.png" usemap="#daw::find_5Fone_5Fiterator_3C_20Iterator_2C_20IteratorLast_2C_20Filters_20_3E_map" alt=""/>
-  <map id="daw::find_5Fone_5Fiterator_3C_20Iterator_2C_20IteratorLast_2C_20Filters_20_3E_map" name="daw::find_5Fone_5Fiterator_3C_20Iterator_2C_20IteratorLast_2C_20Filters_20_3E_map">
-<area href="structdaw_1_1find__iterator__impl_1_1_filter_proxy.html" alt="daw::find_iterator_impl::FilterProxy&lt; Filters, std::is_class_v&lt; Filters &gt; &gt;" shape="rect" coords="0,0,414,24"/>
-  </map>
-</div></div>
+  <img src="classdaw_1_1find__one__iterator.png" alt=""/>
+ </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -93,7 +90,7 @@ Public Types</h2></td></tr>
 <tr class="separator:a612d202fb471af3e0a1c65c5518e5e4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6631f37ffb3dc597ee371f2a97636bd"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1find__one__iterator.html#ad6631f37ffb3dc597ee371f2a97636bd">iterator</a> = Iterator</td></tr>
 <tr class="separator:ad6631f37ffb3dc597ee371f2a97636bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad99cfc6522d359986ecb1e2ba618d9b4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1find__one__iterator.html#ad99cfc6522d359986ecb1e2ba618d9b4">iterator_category</a> = typename <a class="el" href="daw__traits_8h.html#acddf9b5f979a91ce8deb198be4008f94">DAW_TYPEOF</a>(<a class="el" href="namespacedaw_1_1find__iterator__impl.html#a6605a63838945a5019cac48d6852c6e4">find_iterator_impl::test_iterator_category</a>(std::declval&lt; typename std::iterator_traits&lt; Iterator &gt;::<a class="el" href="classdaw_1_1find__one__iterator.html#ad99cfc6522d359986ecb1e2ba618d9b4">iterator_category</a> &gt;()))::type</td></tr>
+<tr class="memitem:ad99cfc6522d359986ecb1e2ba618d9b4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1find__one__iterator.html#ad99cfc6522d359986ecb1e2ba618d9b4">iterator_category</a> = typename <a class="el" href="daw__traits_8h.html#acddf9b5f979a91ce8deb198be4008f94">DAW_TYPEOF</a>(find_iterator_impl::test_iterator_category(std::declval&lt; typename std::iterator_traits&lt; Iterator &gt;::<a class="el" href="classdaw_1_1find__one__iterator.html#ad99cfc6522d359986ecb1e2ba618d9b4">iterator_category</a> &gt;()))::type</td></tr>
 <tr class="separator:ad99cfc6522d359986ecb1e2ba618d9b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a004bd628b6100bf123acd9443306fe31"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1find__one__iterator.html#a004bd628b6100bf123acd9443306fe31">pointer</a> = <a class="el" href="structdaw_1_1find__one__element.html">find_one_element</a>&lt; <a class="el" href="classdaw_1_1find__one__iterator.html#a7322747128b7ab74635dac8a96115190">reference</a> &gt;</td></tr>
 <tr class="separator:a004bd628b6100bf123acd9443306fe31"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -130,7 +127,13 @@ Friends</h2></td></tr>
 <tr class="memitem:aca18977b0a0d3e27cff78a9586031bcf"><td class="memItemLeft" align="right" valign="top">constexpr friend bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1find__one__iterator.html#aca18977b0a0d3e27cff78a9586031bcf">operator==</a> (<a class="el" href="classdaw_1_1find__one__iterator.html">find_one_iterator</a> const &amp;lhs, <a class="el" href="classdaw_1_1find__one__iterator.html">find_one_iterator</a> const &amp;rhs) noexcept</td></tr>
 <tr class="separator:aca18977b0a0d3e27cff78a9586031bcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Typedef Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;typename Iterator, typename IteratorLast, typename... Filters&gt;<br />
+class daw::find_one_iterator&lt; Iterator, IteratorLast, Filters &gt;</h3>
+
+
+<p class="definition">Definition at line <a class="el" href="daw__find__one__iterator_8h_source.html#l00037">37</a> of file <a class="el" href="daw__find__one__iterator_8h_source.html">daw_find_one_iterator.h</a>.</p>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a612d202fb471af3e0a1c65c5518e5e4a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a612d202fb471af3e0a1c65c5518e5e4a">&#9670;&nbsp;</a></span>difference_type</h2>
 
@@ -144,6 +147,8 @@ template&lt;typename Iterator , typename IteratorLast , typename... Filters&gt; 
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__find__one__iterator_8h_source.html#l00045">45</a> of file <a class="el" href="daw__find__one__iterator_8h_source.html">daw_find_one_iterator.h</a>.</p>
 
 </div>
 </div>
@@ -161,6 +166,8 @@ template&lt;typename Iterator , typename IteratorLast , typename... Filters&gt; 
       </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__find__one__iterator_8h_source.html#l00041">41</a> of file <a class="el" href="daw__find__one__iterator_8h_source.html">daw_find_one_iterator.h</a>.</p>
+
 </div>
 </div>
 <a id="ad99cfc6522d359986ecb1e2ba618d9b4"></a>
@@ -172,10 +179,12 @@ template&lt;typename Iterator , typename IteratorLast , typename... Filters&gt; 
 template&lt;typename Iterator , typename IteratorLast , typename... Filters&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classdaw_1_1find__one__iterator.html">daw::find_one_iterator</a>&lt; Iterator, IteratorLast, Filters &gt;::<a class="el" href="classdaw_1_1find__one__iterator.html#ad99cfc6522d359986ecb1e2ba618d9b4">iterator_category</a> =  typename <a class="el" href="daw__traits_8h.html#acddf9b5f979a91ce8deb198be4008f94">DAW_TYPEOF</a>( <a class="el" href="namespacedaw_1_1find__iterator__impl.html#a6605a63838945a5019cac48d6852c6e4">find_iterator_impl::test_iterator_category</a>( std::declval&lt;typename std::iterator_traits&lt; Iterator&gt;::<a class="el" href="classdaw_1_1find__one__iterator.html#ad99cfc6522d359986ecb1e2ba618d9b4">iterator_category</a>&gt;( ) ) )::type</td>
+          <td class="memname">using <a class="el" href="classdaw_1_1find__one__iterator.html">daw::find_one_iterator</a>&lt; Iterator, IteratorLast, Filters &gt;::<a class="el" href="classdaw_1_1find__one__iterator.html#ad99cfc6522d359986ecb1e2ba618d9b4">iterator_category</a> =  typename <a class="el" href="daw__traits_8h.html#acddf9b5f979a91ce8deb198be4008f94">DAW_TYPEOF</a>( find_iterator_impl::test_iterator_category( std::declval&lt;typename std::iterator_traits&lt; Iterator&gt;::<a class="el" href="classdaw_1_1find__one__iterator.html#ad99cfc6522d359986ecb1e2ba618d9b4">iterator_category</a>&gt;( ) ) )::type</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__find__one__iterator_8h_source.html#l00049">49</a> of file <a class="el" href="daw__find__one__iterator_8h_source.html">daw_find_one_iterator.h</a>.</p>
 
 </div>
 </div>
@@ -193,6 +202,8 @@ template&lt;typename Iterator , typename IteratorLast , typename... Filters&gt; 
       </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__find__one__iterator_8h_source.html#l00051">51</a> of file <a class="el" href="daw__find__one__iterator_8h_source.html">daw_find_one_iterator.h</a>.</p>
+
 </div>
 </div>
 <a id="a7322747128b7ab74635dac8a96115190"></a>
@@ -209,6 +220,8 @@ template&lt;typename Iterator , typename IteratorLast , typename... Filters&gt; 
       </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__find__one__iterator_8h_source.html#l00050">50</a> of file <a class="el" href="daw__find__one__iterator_8h_source.html">daw_find_one_iterator.h</a>.</p>
+
 </div>
 </div>
 <a id="aaa7f659dfb4e7b1c459c68c547ecfaaa"></a>
@@ -224,6 +237,8 @@ template&lt;typename Iterator , typename IteratorLast , typename... Filters&gt; 
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__find__one__iterator_8h_source.html#l00043">43</a> of file <a class="el" href="daw__find__one__iterator_8h_source.html">daw_find_one_iterator.h</a>.</p>
 
 </div>
 </div>
@@ -270,6 +285,8 @@ template&lt;typename Iterator , typename IteratorLast , typename... Filters&gt; 
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__find__one__iterator_8h_source.html#l00059">59</a> of file <a class="el" href="daw__find__one__iterator_8h_source.html">daw_find_one_iterator.h</a>.</p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -298,6 +315,8 @@ template&lt;typename Iterator , typename IteratorLast , typename... Filters&gt; 
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__find__one__iterator_8h_source.html#l00095">95</a> of file <a class="el" href="daw__find__one__iterator_8h_source.html">daw_find_one_iterator.h</a>.</p>
+
 </div>
 </div>
 <a id="a7cf375641ee19a3be751edcdead557fa"></a>
@@ -324,6 +343,8 @@ template&lt;typename Iterator , typename IteratorLast , typename... Filters&gt; 
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__find__one__iterator_8h_source.html#l00099">99</a> of file <a class="el" href="daw__find__one__iterator_8h_source.html">daw_find_one_iterator.h</a>.</p>
 
 </div>
 </div>
@@ -352,6 +373,8 @@ template&lt;typename Iterator , typename IteratorLast , typename... Filters&gt; 
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__find__one__iterator_8h_source.html#l00071">71</a> of file <a class="el" href="daw__find__one__iterator_8h_source.html">daw_find_one_iterator.h</a>.</p>
+
 </div>
 </div>
 <a id="a7641b09d54627040f963917d3094991d"></a>
@@ -378,6 +401,8 @@ template&lt;typename Iterator , typename IteratorLast , typename... Filters&gt; 
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__find__one__iterator_8h_source.html#l00079">79</a> of file <a class="el" href="daw__find__one__iterator_8h_source.html">daw_find_one_iterator.h</a>.</p>
 
 </div>
 </div>
@@ -407,6 +432,8 @@ template&lt;typename Iterator , typename IteratorLast , typename... Filters&gt; 
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__find__one__iterator_8h_source.html#l00089">89</a> of file <a class="el" href="daw__find__one__iterator_8h_source.html">daw_find_one_iterator.h</a>.</p>
+
 </div>
 </div>
 <a id="a9ee930d1b7901fe68b82c4b633084236"></a>
@@ -433,6 +460,8 @@ template&lt;typename Iterator , typename IteratorLast , typename... Filters&gt; 
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__find__one__iterator_8h_source.html#l00075">75</a> of file <a class="el" href="daw__find__one__iterator_8h_source.html">daw_find_one_iterator.h</a>.</p>
 
 </div>
 </div>
@@ -461,6 +490,8 @@ template&lt;typename Iterator , typename IteratorLast , typename... Filters&gt; 
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__find__one__iterator_8h_source.html#l00105">105</a> of file <a class="el" href="daw__find__one__iterator_8h_source.html">daw_find_one_iterator.h</a>.</p>
+
 </div>
 </div>
 <a id="a8c0a5a554fb7e05fa37b3781306b0414"></a>
@@ -487,6 +518,8 @@ template&lt;typename Iterator , typename IteratorLast , typename... Filters&gt; 
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__find__one__iterator_8h_source.html#l00109">109</a> of file <a class="el" href="daw__find__one__iterator_8h_source.html">daw_find_one_iterator.h</a>.</p>
 
 </div>
 </div>
@@ -527,6 +560,8 @@ template&lt;typename Iterator , typename IteratorLast , typename... Filters&gt; 
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="daw__find__one__iterator_8h_source.html#l00118">118</a> of file <a class="el" href="daw__find__one__iterator_8h_source.html">daw_find_one_iterator.h</a>.</p>
+
 </div>
 </div>
 <a id="aca18977b0a0d3e27cff78a9586031bcf"></a>
@@ -564,6 +599,8 @@ template&lt;typename Iterator , typename IteratorLast , typename... Filters&gt; 
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__find__one__iterator_8h_source.html#l00113">113</a> of file <a class="el" href="daw__find__one__iterator_8h_source.html">daw_find_one_iterator.h</a>.</p>
 
 </div>
 </div>

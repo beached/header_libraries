@@ -95,33 +95,33 @@ $(function() {
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;cstdint&gt;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw.html">daw</a> {</div>
-<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="namespacedaw_1_1sip__impl.html">   26</a></span>&#160;  <span class="keyword">namespace </span>sip_impl {</div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="namespacedaw_1_1sip__impl.html#a3110bd6359cbbfffef145a5de3041b64">   27</a></span>&#160;    constexpr uint64_t <a class="code" href="namespacedaw_1_1sip__impl.html#a3110bd6359cbbfffef145a5de3041b64">rotate</a>( uint64_t value, <span class="keywordtype">size_t</span> <a class="code" href="namespacedaw_1_1cxmath_1_1cxmath__impl.html#a1bc599da885ad74b931ca02410ca9f0c">bits</a> ) noexcept {</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  <span class="keyword">namespace </span>sip_impl {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    constexpr uint64_t <a class="code" href="namespacedaw_1_1algorithm.html#a7119401f9b35b8d8c333df7bac1eb76c">rotate</a>( uint64_t value, <span class="keywordtype">size_t</span> bits ) noexcept {</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>( value &lt;&lt; <a class="code" href="namespacedaw_1_1cxmath_1_1cxmath__impl.html#a1bc599da885ad74b931ca02410ca9f0c">bits</a> ) |</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>( value &gt;&gt; ( 64ULL - <a class="code" href="namespacedaw_1_1cxmath_1_1cxmath__impl.html#a1bc599da885ad74b931ca02410ca9f0c">bits</a> ) ) );</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>( value &lt;&lt; bits ) |</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>( value &gt;&gt; ( 64ULL - bits ) ) );</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    }</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> A, <span class="keyword">typename</span> B, <span class="keyword">typename</span> C, <span class="keyword">typename</span> D&gt;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="namespacedaw_1_1sip__impl.html#a4325be02fa0fb45383c206c9fe29a086">   34</a></span>&#160;    constexpr <span class="keywordtype">void</span> <a class="code" href="namespacedaw_1_1sip__impl.html#a4325be02fa0fb45383c206c9fe29a086">half_round</a>( A &amp;a, B &amp;b, C &amp;c, D &amp;d, <span class="keywordtype">size_t</span> s,</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    constexpr <span class="keywordtype">void</span> half_round( A &amp;a, B &amp;b, C &amp;c, D &amp;d, <span class="keywordtype">size_t</span> s,</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                               <span class="keywordtype">size_t</span> t ) noexcept {</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;      a += b;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;      c += d;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;      b = <a class="code" href="namespacedaw_1_1sip__impl.html#a3110bd6359cbbfffef145a5de3041b64">rotate</a>( b, s ) ^ a;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      d = <a class="code" href="namespacedaw_1_1sip__impl.html#a3110bd6359cbbfffef145a5de3041b64">rotate</a>( d, t ) ^ c;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      a = <a class="code" href="namespacedaw_1_1sip__impl.html#a3110bd6359cbbfffef145a5de3041b64">rotate</a>( a, 32 );</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;      b = <a class="code" href="namespacedaw_1_1algorithm.html#a7119401f9b35b8d8c333df7bac1eb76c">rotate</a>( b, s ) ^ a;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      d = <a class="code" href="namespacedaw_1_1algorithm.html#a7119401f9b35b8d8c333df7bac1eb76c">rotate</a>( d, t ) ^ c;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      a = <a class="code" href="namespacedaw_1_1algorithm.html#a7119401f9b35b8d8c333df7bac1eb76c">rotate</a>( a, 32 );</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    }</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> V0, <span class="keyword">typename</span> V1, <span class="keyword">typename</span> V2, <span class="keyword">typename</span> V3&gt;</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="namespacedaw_1_1sip__impl.html#a279ebafc35c43ef1a776e6036d8f3760">   44</a></span>&#160;    constexpr <span class="keywordtype">void</span> <a class="code" href="namespacedaw_1_1sip__impl.html#a279ebafc35c43ef1a776e6036d8f3760">double_round</a>( V0 &amp;v0, V1 &amp;v1, V2 &amp;v2, V3 &amp;v3 ) noexcept {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      <a class="code" href="namespacedaw_1_1sip__impl.html#a4325be02fa0fb45383c206c9fe29a086">half_round</a>( v0, v1, v2, v3, 13, 16 );</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      <a class="code" href="namespacedaw_1_1sip__impl.html#a4325be02fa0fb45383c206c9fe29a086">half_round</a>( v2, v1, v0, v3, 17, 21 );</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      <a class="code" href="namespacedaw_1_1sip__impl.html#a4325be02fa0fb45383c206c9fe29a086">half_round</a>( v0, v1, v2, v3, 13, 16 );</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      <a class="code" href="namespacedaw_1_1sip__impl.html#a4325be02fa0fb45383c206c9fe29a086">half_round</a>( v2, v1, v0, v3, 17, 21 );</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    constexpr <span class="keywordtype">void</span> double_round( V0 &amp;v0, V1 &amp;v1, V2 &amp;v2, V3 &amp;v3 ) noexcept {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      half_round( v0, v1, v2, v3, 13, 16 );</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      half_round( v2, v1, v0, v3, 17, 21 );</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      half_round( v0, v1, v2, v3, 13, 16 );</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      half_round( v2, v1, v0, v3, 17, 21 );</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    }</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Byte&gt;</div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="namespacedaw_1_1sip__impl.html#a81403799548be018f79ee081a69fcdfe">   52</a></span>&#160;    constexpr uint64_t <a class="code" href="namespacedaw_1_1sip__impl.html#a81403799548be018f79ee081a69fcdfe">to_u64</a>( Byte <span class="keyword">const</span> *<span class="keyword">const</span> ptr ) noexcept {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    constexpr uint64_t to_u64( Byte <span class="keyword">const</span> *<span class="keyword">const</span> ptr ) noexcept {</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      static_assert( <span class="keyword">sizeof</span>( Byte ) == 1U );</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>( ptr[0] ) |</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;             <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>( ptr[1] ) &lt;&lt; 8U |</div>
@@ -135,13 +135,13 @@ $(function() {
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Byte&gt;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    constexpr std::array&lt;uint64_t, 2&gt;</div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="namespacedaw_1_1sip__impl.html#a470bb5564f3d5bafe16d2bf226dcd455">   66</a></span>&#160;    <a class="code" href="namespacedaw_1_1sip__impl.html#a470bb5564f3d5bafe16d2bf226dcd455">key_to_u64</a>( Byte <span class="keyword">const</span> *<span class="keyword">const</span> key ) noexcept {</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      <span class="keywordflow">return</span> { <a class="code" href="namespacedaw.html#ab552e32c2d0e33df0451a5d2c8f6fecd">to_little_endian</a>( <a class="code" href="namespacedaw_1_1sip__impl.html#a81403799548be018f79ee081a69fcdfe">to_u64</a>( &amp;key[0] ) ),</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;               <a class="code" href="namespacedaw.html#ab552e32c2d0e33df0451a5d2c8f6fecd">to_little_endian</a>( <a class="code" href="namespacedaw_1_1sip__impl.html#a81403799548be018f79ee081a69fcdfe">to_u64</a>( &amp;key[8] ) ) };</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    key_to_u64( Byte <span class="keyword">const</span> *<span class="keyword">const</span> key ) noexcept {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      <span class="keywordflow">return</span> { <a class="code" href="namespacedaw.html#ab552e32c2d0e33df0451a5d2c8f6fecd">to_little_endian</a>( to_u64( &amp;key[0] ) ),</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;               <a class="code" href="namespacedaw.html#ab552e32c2d0e33df0451a5d2c8f6fecd">to_little_endian</a>( to_u64( &amp;key[8] ) ) };</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Left, <span class="keyword">typename</span> Right&gt;</div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="namespacedaw_1_1sip__impl.html#a694f5f271b37c683e4db712406894261">   72</a></span>&#160;    constexpr <span class="keywordtype">void</span> <a class="code" href="namespacedaw_1_1sip__impl.html#a694f5f271b37c683e4db712406894261">set_pt</a>( Left &amp;pt, Right <span class="keyword">const</span> &amp;m ) noexcept {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    constexpr <span class="keywordtype">void</span> set_pt( Left &amp;pt, Right <span class="keyword">const</span> &amp;m ) noexcept {</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      static_assert( <span class="keyword">sizeof</span>( pt[0] ) == 1U );</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;      static_assert( <span class="keyword">sizeof</span>( m[0] ) == 1U );</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      <span class="keyword">using</span> T = <a class="code" href="daw__traits_8h.html#acddf9b5f979a91ce8deb198be4008f94">DAW_TYPEOF</a>( pt[0] );</div>
@@ -156,7 +156,7 @@ $(function() {
 <div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="namespacedaw.html#a70ee91bc610f248e8f419bbd7af8cc44">   84</a></span>&#160;  constexpr uint64_t <a class="code" href="namespacedaw.html#a70ee91bc610f248e8f419bbd7af8cc44">siphash24</a>( Byte <span class="keyword">const</span> *first, <span class="keywordtype">size_t</span> sz,</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                                Byte <span class="keyword">const</span> *<span class="keyword">const</span> key ) {</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    static_assert( <span class="keyword">sizeof</span>( Byte ) == 1U );</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">auto</span> <span class="keyword">const</span> k = <a class="code" href="namespacedaw_1_1sip__impl.html#a470bb5564f3d5bafe16d2bf226dcd455">sip_impl::key_to_u64</a>( key );</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">auto</span> <span class="keyword">const</span> k = sip_impl::key_to_u64( key );</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    uint64_t v0 = k[0] ^ 0x736f6d6570736575ULL;</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    uint64_t v1 = k[1] ^ 0x646f72616e646f6dULL;</div>
@@ -165,10 +165,10 @@ $(function() {
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <a class="code" href="structdaw_1_1span.html">daw::span&lt;char const&gt;</a> data_in( first, sz );</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordflow">while</span>( data_in.size( ) &gt;= 8 ) {</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      <span class="keyword">auto</span> mi = <a class="code" href="namespacedaw_1_1sip__impl.html#a81403799548be018f79ee081a69fcdfe">sip_impl::to_u64</a>( data_in.data( ) );</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      <span class="keyword">auto</span> mi = sip_impl::to_u64( data_in.data( ) );</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;      data_in.remove_prefix( 8 );</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      v3 ^= mi;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      <a class="code" href="namespacedaw_1_1sip__impl.html#a279ebafc35c43ef1a776e6036d8f3760">sip_impl::double_round</a>( v0, v1, v2, v3 );</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      sip_impl::double_round( v0, v1, v2, v3 );</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      v0 ^= mi;</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    }</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
@@ -184,7 +184,7 @@ $(function() {
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;      pt[4] = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>( data_in[4] );</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;      [[fallthrough]];</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keywordflow">case</span> 4:</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      <a class="code" href="namespacedaw_1_1sip__impl.html#a694f5f271b37c683e4db712406894261">sip_impl::set_pt</a>( pt, data_in );</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      sip_impl::set_pt( pt, data_in );</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;      <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keywordflow">case</span> 3:</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;      pt[2] = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>( data_in[2] );</div>
@@ -196,10 +196,10 @@ $(function() {
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;      pt[0] = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>( data_in[0] );</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    }</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    uint64_t b = <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>( sz ) &lt;&lt; 56ULL;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    b |= <a class="code" href="namespacedaw.html#ab552e32c2d0e33df0451a5d2c8f6fecd">to_little_endian</a>( <a class="code" href="namespacedaw_1_1sip__impl.html#a81403799548be018f79ee081a69fcdfe">sip_impl::to_u64</a>( pt.data( ) ) );</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    b |= <a class="code" href="namespacedaw.html#ab552e32c2d0e33df0451a5d2c8f6fecd">to_little_endian</a>( sip_impl::to_u64( pt.data( ) ) );</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    v3 ^= b;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <a class="code" href="namespacedaw_1_1sip__impl.html#a279ebafc35c43ef1a776e6036d8f3760">sip_impl::double_round</a>( v0, v1, v2, v3 );</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    sip_impl::double_round( v0, v1, v2, v3 );</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    v0 ^= b;</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    v2 ^= 0x0000<span class="stringliteral">&#39;0000&#39;</span>0000<span class="stringliteral">&#39;00FF;</span></div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="stringliteral">    sip_impl::double_round( v0, v1, v2, v3 );</span></div>
@@ -208,21 +208,15 @@ $(function() {
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="stringliteral">  }</span></div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="stringliteral">} // namespace daw</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="anamespacedaw_1_1cxmath_1_1cxmath__impl_html_a1bc599da885ad74b931ca02410ca9f0c"><div class="ttname"><a href="namespacedaw_1_1cxmath_1_1cxmath__impl.html#a1bc599da885ad74b931ca02410ca9f0c">daw::cxmath::cxmath_impl::bits</a></div><div class="ttdeci">constexpr float_parts_t bits(float const f) noexcept</div><div class="ttdef"><b>Definition:</b> daw_cxmath.h:888</div></div>
 <div class="ttc" id="adaw__traits_8h_html"><div class="ttname"><a href="daw__traits_8h.html">daw_traits.h</a></div></div>
-<div class="ttc" id="anamespacedaw_html_ab552e32c2d0e33df0451a5d2c8f6fecd"><div class="ttname"><a href="namespacedaw.html#ab552e32c2d0e33df0451a5d2c8f6fecd">daw::to_little_endian</a></div><div class="ttdeci">constexpr T to_little_endian(T value) noexcept</div><div class="ttdef"><b>Definition:</b> daw_endian.h:106</div></div>
-<div class="ttc" id="anamespacedaw_1_1sip__impl_html_a3110bd6359cbbfffef145a5de3041b64"><div class="ttname"><a href="namespacedaw_1_1sip__impl.html#a3110bd6359cbbfffef145a5de3041b64">daw::sip_impl::rotate</a></div><div class="ttdeci">constexpr uint64_t rotate(uint64_t value, size_t bits) noexcept</div><div class="ttdef"><b>Definition:</b> daw_sip_hash.h:27</div></div>
+<div class="ttc" id="anamespacedaw_html_ab552e32c2d0e33df0451a5d2c8f6fecd"><div class="ttname"><a href="namespacedaw.html#ab552e32c2d0e33df0451a5d2c8f6fecd">daw::to_little_endian</a></div><div class="ttdeci">constexpr T to_little_endian(T value) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__endian_8h_source.html#l00106">daw_endian.h:106</a></div></div>
 <div class="ttc" id="adaw__span_8h_html"><div class="ttname"><a href="daw__span_8h.html">daw_span.h</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1sip__impl_html_a694f5f271b37c683e4db712406894261"><div class="ttname"><a href="namespacedaw_1_1sip__impl.html#a694f5f271b37c683e4db712406894261">daw::sip_impl::set_pt</a></div><div class="ttdeci">constexpr void set_pt(Left &amp;pt, Right const &amp;m) noexcept</div><div class="ttdef"><b>Definition:</b> daw_sip_hash.h:72</div></div>
-<div class="ttc" id="anamespacedaw_1_1sip__impl_html_a81403799548be018f79ee081a69fcdfe"><div class="ttname"><a href="namespacedaw_1_1sip__impl.html#a81403799548be018f79ee081a69fcdfe">daw::sip_impl::to_u64</a></div><div class="ttdeci">constexpr uint64_t to_u64(Byte const *const ptr) noexcept</div><div class="ttdef"><b>Definition:</b> daw_sip_hash.h:52</div></div>
-<div class="ttc" id="anamespacedaw_1_1sip__impl_html_a4325be02fa0fb45383c206c9fe29a086"><div class="ttname"><a href="namespacedaw_1_1sip__impl.html#a4325be02fa0fb45383c206c9fe29a086">daw::sip_impl::half_round</a></div><div class="ttdeci">constexpr void half_round(A &amp;a, B &amp;b, C &amp;c, D &amp;d, size_t s, size_t t) noexcept</div><div class="ttdef"><b>Definition:</b> daw_sip_hash.h:34</div></div>
 <div class="ttc" id="adaw__endian_8h_html"><div class="ttname"><a href="daw__endian_8h.html">daw_endian.h</a></div></div>
-<div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> cpp_17.h:23</div></div>
-<div class="ttc" id="anamespacedaw_1_1sip__impl_html_a470bb5564f3d5bafe16d2bf226dcd455"><div class="ttname"><a href="namespacedaw_1_1sip__impl.html#a470bb5564f3d5bafe16d2bf226dcd455">daw::sip_impl::key_to_u64</a></div><div class="ttdeci">constexpr std::array&lt; uint64_t, 2 &gt; key_to_u64(Byte const *const key) noexcept</div><div class="ttdef"><b>Definition:</b> daw_sip_hash.h:66</div></div>
-<div class="ttc" id="anamespacedaw_html_a70ee91bc610f248e8f419bbd7af8cc44"><div class="ttname"><a href="namespacedaw.html#a70ee91bc610f248e8f419bbd7af8cc44">daw::siphash24</a></div><div class="ttdeci">constexpr uint64_t siphash24(Byte const *first, size_t sz, Byte const *const key)</div><div class="ttdef"><b>Definition:</b> daw_sip_hash.h:84</div></div>
-<div class="ttc" id="anamespacedaw_1_1sip__impl_html_a279ebafc35c43ef1a776e6036d8f3760"><div class="ttname"><a href="namespacedaw_1_1sip__impl.html#a279ebafc35c43ef1a776e6036d8f3760">daw::sip_impl::double_round</a></div><div class="ttdeci">constexpr void double_round(V0 &amp;v0, V1 &amp;v1, V2 &amp;v2, V3 &amp;v3) noexcept</div><div class="ttdef"><b>Definition:</b> daw_sip_hash.h:44</div></div>
-<div class="ttc" id="adaw__traits_8h_html_acddf9b5f979a91ce8deb198be4008f94"><div class="ttname"><a href="daw__traits_8h.html#acddf9b5f979a91ce8deb198be4008f94">DAW_TYPEOF</a></div><div class="ttdeci">#define DAW_TYPEOF(...)</div><div class="ttdef"><b>Definition:</b> daw_traits.h:1010</div></div>
-<div class="ttc" id="astructdaw_1_1span_html"><div class="ttname"><a href="structdaw_1_1span.html">daw::span</a></div><div class="ttdef"><b>Definition:</b> daw_span.h:24</div></div>
+<div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00023">cpp_17.h:23</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a70ee91bc610f248e8f419bbd7af8cc44"><div class="ttname"><a href="namespacedaw.html#a70ee91bc610f248e8f419bbd7af8cc44">daw::siphash24</a></div><div class="ttdeci">constexpr uint64_t siphash24(Byte const *first, size_t sz, Byte const *const key)</div><div class="ttdef"><b>Definition:</b> <a href="daw__sip__hash_8h_source.html#l00084">daw_sip_hash.h:84</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1algorithm_html_a7119401f9b35b8d8c333df7bac1eb76c"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a7119401f9b35b8d8c333df7bac1eb76c">daw::algorithm::rotate</a></div><div class="ttdeci">constexpr void rotate(ForwardIterator first, ForwardIterator middle, LastType last) noexcept(noexcept(daw::cswap(*first, *middle)))</div><div class="ttdoc">Performs a left rotation on a range of elements.</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm__cx_8h_source.html#l00027">daw_algorithm_cx.h:27</a></div></div>
+<div class="ttc" id="adaw__traits_8h_html_acddf9b5f979a91ce8deb198be4008f94"><div class="ttname"><a href="daw__traits_8h.html#acddf9b5f979a91ce8deb198be4008f94">DAW_TYPEOF</a></div><div class="ttdeci">#define DAW_TYPEOF(...)</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits_8h_source.html#l01010">daw_traits.h:1010</a></div></div>
+<div class="ttc" id="astructdaw_1_1span_html"><div class="ttname"><a href="structdaw_1_1span.html">daw::span</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__span_8h_source.html#l00024">daw_span.h:24</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

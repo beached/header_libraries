@@ -90,8 +90,6 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1graph__alg__impl_1_1_no_sort.html">daw::graph_alg_impl::NoSort</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1topological__sorted__iterator.html">daw::topological_sorted_iterator&lt; Graph, Compare &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1_unordered_walk.html">daw::UnorderedWalk</a></td></tr>
@@ -102,8 +100,6 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
 <tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacedaw_1_1graph__alg__impl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1graph__alg__impl.html">daw::graph_alg_impl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -113,21 +109,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a09a93302cfd60b3aea211f681a9a377a"><td class="memTemplParams" colspan="2">template&lt;typename ChildOrder  = UnorderedWalk, typename T , typename Function &gt; </td></tr>
 <tr class="memitem:a09a93302cfd60b3aea211f681a9a377a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a09a93302cfd60b3aea211f681a9a377a">daw::bfs_walk</a> (<a class="el" href="structdaw_1_1graph__t.html">daw::graph_t</a>&lt; T &gt; const &amp;graph, <a class="el" href="classdaw_1_1node__id__t.html">daw::node_id_t</a> start_node_id, Function &amp;&amp;func, ChildOrder ord=ChildOrder{ })</td></tr>
 <tr class="separator:a09a93302cfd60b3aea211f681a9a377a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a598b665a89289523aae85c2a05a44255"><td class="memTemplParams" colspan="2">template&lt;typename T , typename ChildOrder , typename Graph , typename Function &gt; </td></tr>
-<tr class="memitem:a598b665a89289523aae85c2a05a44255"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1graph__alg__impl.html#a598b665a89289523aae85c2a05a44255">daw::graph_alg_impl::bfs_walk</a> (Graph &amp;&amp;graph, <a class="el" href="classdaw_1_1node__id__t.html">daw::node_id_t</a> start_node_id, Function &amp;&amp;func, ChildOrder ord)</td></tr>
-<tr class="separator:a598b665a89289523aae85c2a05a44255"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf8e75bba10b4009fc6c62c3e247efd6"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Function , typename ChildOrder  = UnorderedWalk&gt; </td></tr>
 <tr class="memitem:aaf8e75bba10b4009fc6c62c3e247efd6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aaf8e75bba10b4009fc6c62c3e247efd6">daw::dfs_walk</a> (<a class="el" href="structdaw_1_1graph__t.html">daw::graph_t</a>&lt; T &gt; &amp;graph, <a class="el" href="classdaw_1_1node__id__t.html">daw::node_id_t</a> start_node_id, Function &amp;&amp;func, ChildOrder ord=ChildOrder{ })</td></tr>
 <tr class="separator:aaf8e75bba10b4009fc6c62c3e247efd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c251899db16236d24341dc806cd3dc1"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Function , typename ChildOrder  = UnorderedWalk&gt; </td></tr>
 <tr class="memitem:a6c251899db16236d24341dc806cd3dc1"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a6c251899db16236d24341dc806cd3dc1">daw::dfs_walk</a> (<a class="el" href="structdaw_1_1graph__t.html">daw::graph_t</a>&lt; T &gt; const &amp;graph, <a class="el" href="classdaw_1_1node__id__t.html">daw::node_id_t</a> start_node_id, Function &amp;&amp;func, ChildOrder ord=ChildOrder{ })</td></tr>
 <tr class="separator:a6c251899db16236d24341dc806cd3dc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f9317d75bcedcc4a3bd1114ddda4c75"><td class="memTemplParams" colspan="2">template&lt;typename T , typename ChildOrder , typename Graph , typename Function &gt; </td></tr>
-<tr class="memitem:a5f9317d75bcedcc4a3bd1114ddda4c75"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1graph__alg__impl.html#a5f9317d75bcedcc4a3bd1114ddda4c75">daw::graph_alg_impl::dfs_walk</a> (Graph &amp;&amp;graph, <a class="el" href="classdaw_1_1node__id__t.html">daw::node_id_t</a> start_node_id, Function &amp;&amp;func, ChildOrder ord)</td></tr>
-<tr class="separator:a5f9317d75bcedcc4a3bd1114ddda4c75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fc98f29e4d070480b8faceaf02ecbb4"><td class="memTemplParams" colspan="2">template&lt;typename Graph , typename Node &gt; </td></tr>
-<tr class="memitem:a3fc98f29e4d070480b8faceaf02ecbb4"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1graph__alg__impl.html#a3fc98f29e4d070480b8faceaf02ecbb4">daw::graph_alg_impl::get_child_nodes</a> (Graph &amp;&amp;graph, Node &amp;&amp;node)</td></tr>
-<tr class="separator:a3fc98f29e4d070480b8faceaf02ecbb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adab204ed56044564cd51a58ad99bd2ef"><td class="memTemplParams" colspan="2">template&lt;typename Graph , typename Compare  = daw::graph_alg_impl::NoSort&gt; </td></tr>
 <tr class="memitem:adab204ed56044564cd51a58ad99bd2ef"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#adab204ed56044564cd51a58ad99bd2ef">daw::make_reverse_topological_sorted_range</a> (Graph &amp;&amp;g, Compare c=Compare{ })</td></tr>
 <tr class="separator:adab204ed56044564cd51a58ad99bd2ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -149,9 +136,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a48fe521041d315c3e13df9a77265eda1"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Function , typename Compare  = daw::graph_alg_impl::NoSort&gt; </td></tr>
 <tr class="memitem:a48fe521041d315c3e13df9a77265eda1"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a48fe521041d315c3e13df9a77265eda1">daw::topological_sorted_walk</a> (<a class="el" href="structdaw_1_1graph__t.html">daw::graph_t</a>&lt; T &gt; const &amp;graph, Function &amp;&amp;func, Compare comp=Compare{ })</td></tr>
 <tr class="separator:a48fe521041d315c3e13df9a77265eda1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21b75de888200bf0eb75c64270aaa20c"><td class="memTemplParams" colspan="2">template&lt;typename Node , typename T , typename Graph , typename Function , typename Compare &gt; </td></tr>
-<tr class="memitem:a21b75de888200bf0eb75c64270aaa20c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1graph__alg__impl.html#a21b75de888200bf0eb75c64270aaa20c">daw::graph_alg_impl::topological_sorted_walk</a> (Graph &amp;&amp;graph, Function &amp;&amp;func, Compare comp=Compare{ })</td></tr>
-<tr class="separator:a21b75de888200bf0eb75c64270aaa20c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
