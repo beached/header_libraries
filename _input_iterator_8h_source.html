@@ -13,6 +13,7 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -23,7 +24,6 @@
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">DAW Header Libraries
    </div>
-   <div id="projectbrief">Variousheaderonlylibrariesandexperiments</div>
   </td>
  </tr>
  </tbody>
@@ -124,7 +124,7 @@ $(function() {
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                                op_arrow_t&lt;Value&gt;, op_clone_t&gt;;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">template</span>&lt;fn_ary_item Idx, <span class="keyword">typename</span> Value&gt;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#a69f693bab3e49fb947253a57c6ed65f1">get</a>( vtable_t&lt;Value&gt; <span class="keyword">const</span> *tbl ) {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#aec26be2bcbe261d3cea14098d110f63b">get</a>( vtable_t&lt;Value&gt; <span class="keyword">const</span> *tbl ) {</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      <span class="keywordflow">return</span> std::get&lt;Idx&gt;( *tbl );</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    }</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
@@ -338,6 +338,7 @@ $(function() {
 <div class="ttc" id="astructdaw_1_1_input_range_html_a66289b45a1d7dd5fae2f87e07a4d1d71"><div class="ttname"><a href="structdaw_1_1_input_range.html#a66289b45a1d7dd5fae2f87e07a4d1d71">daw::InputRange::InputRange</a></div><div class="ttdeci">InputRange(Iterator f, Iterator l)</div><div class="ttdef"><b>Definition:</b> <a href="_input_iterator_8h_source.html#l00232">InputIterator.h:232</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a67dfeecc0aded7ae0eec103bcba71f50"><div class="ttname"><a href="namespacedaw.html#a67dfeecc0aded7ae0eec103bcba71f50">daw::swap</a></div><div class="ttdeci">constexpr void swap(basic_bounded_string&lt; CharT, N &gt; &amp;lhs, basic_bounded_string&lt; CharT, N &gt; &amp;rhs) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__bounded__string_8h_source.html#l00746">daw_bounded_string.h:746</a></div></div>
 <div class="ttc" id="astructdaw_1_1_input_iterator_html_a54863ce93d5edf43eee877cb84162a2c"><div class="ttname"><a href="structdaw_1_1_input_iterator.html#a54863ce93d5edf43eee877cb84162a2c">daw::InputIterator&lt; value_type &gt;::iterator_category</a></div><div class="ttdeci">std::input_iterator_tag iterator_category</div><div class="ttdef"><b>Definition:</b> <a href="_input_iterator_8h_source.html#l00101">InputIterator.h:101</a></div></div>
+<div class="ttc" id="anamespacedaw_html_aec26be2bcbe261d3cea14098d110f63b"><div class="ttname"><a href="namespacedaw.html#aec26be2bcbe261d3cea14098d110f63b">daw::get</a></div><div class="ttdeci">constexpr decltype(auto) get(fwd_pack&lt; Ts... &gt; &amp;&amp;p)</div><div class="ttdef"><b>Definition:</b> <a href="daw__fwd__pack__apply_8h_source.html#l00093">daw_fwd_pack_apply.h:93</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a63d1de3cee69d3da1eeaae396fe4b8f9"><div class="ttname"><a href="namespacedaw.html#a63d1de3cee69d3da1eeaae396fe4b8f9">daw::enable_if_t</a></div><div class="ttdeci">typename enable_if&lt; B, T &gt;::type enable_if_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__enable__if_8h_source.html#l00037">daw_enable_if.h:37</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1sv2_html_a111099f8d1a5ab353748ec111aef90bf"><div class="ttname"><a href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">daw::sv2::nodiscard</a></div><div class="ttdeci">constexpr auto nodiscard</div><div class="ttdef"><b>Definition:</b> <a href="daw__string__view2_8h_source.html#l00076">daw_string_view2.h:76</a></div></div>
 <div class="ttc" id="astructdaw_1_1_input_iterator_html_a7599ad57038c36a1887aeaf4308c1a65"><div class="ttname"><a href="structdaw_1_1_input_iterator.html#a7599ad57038c36a1887aeaf4308c1a65">daw::InputIterator::operator=</a></div><div class="ttdeci">InputIterator &amp; operator=(InputIterator const &amp;rhs)</div><div class="ttdef"><b>Definition:</b> <a href="_input_iterator_8h_source.html#l00134">InputIterator.h:134</a></div></div>
@@ -345,7 +346,6 @@ $(function() {
 <div class="ttc" id="astructdaw_1_1_input_iterator_html_adc94561b324cdb6092b3f62dc9af90f2"><div class="ttname"><a href="structdaw_1_1_input_iterator.html#adc94561b324cdb6092b3f62dc9af90f2">daw::InputIterator&lt; value_type &gt;::reference</a></div><div class="ttdeci">value_type const &amp; reference</div><div class="ttdef"><b>Definition:</b> <a href="_input_iterator_8h_source.html#l00098">InputIterator.h:98</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a54804cf04d9ca94837eed849f0096e82"><div class="ttname"><a href="namespacedaw.html#a54804cf04d9ca94837eed849f0096e82">daw::tuple</a></div><div class="ttdeci">tuple(Ts...) -&gt; tuple&lt; Ts... &gt;</div></div>
 <div class="ttc" id="anamespacedaw_html_a8912510ee5e6a62645c85402c1a81a0f"><div class="ttname"><a href="namespacedaw.html#a8912510ee5e6a62645c85402c1a81a0f">daw::InputRange</a></div><div class="ttdeci">InputRange(Iterator, Iterator) -&gt; InputRange&lt; typename std::iterator_traits&lt; Iterator &gt;::value_type &gt;</div></div>
-<div class="ttc" id="anamespacedaw_html_a69f693bab3e49fb947253a57c6ed65f1"><div class="ttname"><a href="namespacedaw.html#a69f693bab3e49fb947253a57c6ed65f1">daw::get</a></div><div class="ttdeci">constexpr decltype(auto) DAW_ATTRIB_FLATINLINE get(fwd_pack&lt; Ts... &gt; &amp;&amp;p)</div><div class="ttdef"><b>Definition:</b> <a href="daw__fwd__pack__apply_8h_source.html#l00093">daw_fwd_pack_apply.h:93</a></div></div>
 <div class="ttc" id="astructdaw_1_1_input_iterator_html_a42f184add4e1697b4104994e514bea07"><div class="ttname"><a href="structdaw_1_1_input_iterator.html#a42f184add4e1697b4104994e514bea07">daw::InputIterator::InputIterator</a></div><div class="ttdeci">InputIterator(InputIterator const &amp;other)</div><div class="ttdef"><b>Definition:</b> <a href="_input_iterator_8h_source.html#l00130">InputIterator.h:130</a></div></div>
 <div class="ttc" id="astructdaw_1_1_input_range_html"><div class="ttname"><a href="structdaw_1_1_input_range.html">daw::InputRange</a></div><div class="ttdef"><b>Definition:</b> <a href="_input_iterator_8h_source.html#l00217">InputIterator.h:217</a></div></div>
 <div class="ttc" id="astructdaw_1_1_input_range_html_a9061ebdeb32496ffde641629d9f44a26"><div class="ttname"><a href="structdaw_1_1_input_range.html#a9061ebdeb32496ffde641629d9f44a26">daw::InputRange::value_type</a></div><div class="ttdeci">T value_type</div><div class="ttdef"><b>Definition:</b> <a href="_input_iterator_8h_source.html#l00218">InputIterator.h:218</a></div></div>

@@ -13,6 +13,7 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -23,7 +24,6 @@
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">DAW Header Libraries
    </div>
-   <div id="projectbrief">Variousheaderonlylibrariesandexperiments</div>
   </td>
  </tr>
  </tbody>
@@ -86,29 +86,21 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacedaw_1_1algorithm"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html">daw::algorithm</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacedaw_1_1algorithm_1_1_d_a_w___a_t_t_r_i_b___h_i_d_d_e_n"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm_1_1_d_a_w___a_t_t_r_i_b___h_i_d_d_e_n.html">daw::algorithm::DAW_ATTRIB_HIDDEN</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:af5c15180b57ad903b36d281236206748"><td class="memTemplParams" colspan="2">template&lt;std::size_t count, typename Function , typename... Args&gt; </td></tr>
-<tr class="memitem:af5c15180b57ad903b36d281236206748"><td class="memTemplItemLeft" align="right" valign="top">static constexpr <a class="el" href="daw__attributes_8h.html#a09f8b09ddbbef2a5ae207ef8fa21c808">DAW_ATTRIB_FLATTEN</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#af5c15180b57ad903b36d281236206748">daw::algorithm::do_n</a> (Function &amp;&amp;func, Args &amp;&amp;...args)</td></tr>
-<tr class="separator:af5c15180b57ad903b36d281236206748"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9e530ee0a9c8cfc70ac9da7996ed0ca"><td class="memTemplParams" colspan="2">template&lt;typename Function , typename... Args, std::size_t... Is&gt; </td></tr>
-<tr class="memitem:af9e530ee0a9c8cfc70ac9da7996ed0ca"><td class="memTemplItemLeft" align="right" valign="top">static constexpr <a class="el" href="daw__attributes_8h.html#a09f8b09ddbbef2a5ae207ef8fa21c808">DAW_ATTRIB_FLATTEN</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm_1_1_d_a_w___a_t_t_r_i_b___h_i_d_d_e_n.html#af9e530ee0a9c8cfc70ac9da7996ed0ca">daw::algorithm::DAW_ATTRIB_HIDDEN::do_n</a> (Function &amp;&amp;func, std::integer_sequence&lt; std::size_t, Is... &gt;, Args &amp;&amp;...args) noexcept(noexcept(func(args...)))</td></tr>
-<tr class="separator:af9e530ee0a9c8cfc70ac9da7996ed0ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4eda9aec542d56ebfd1f6fc8c8665127"><td class="memTemplParams" colspan="2">template&lt;typename Function , typename... Args&gt; </td></tr>
-<tr class="memitem:a4eda9aec542d56ebfd1f6fc8c8665127"><td class="memTemplItemLeft" align="right" valign="top">static constexpr <a class="el" href="daw__attributes_8h.html#a09f8b09ddbbef2a5ae207ef8fa21c808">DAW_ATTRIB_FLATTEN</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a4eda9aec542d56ebfd1f6fc8c8665127">daw::algorithm::do_n</a> (std::size_t count, Function &amp;&amp;func, Args &amp;&amp;...args) noexcept(std::is_nothrow_invocable_v&lt; Function, Args... &gt;)</td></tr>
-<tr class="separator:a4eda9aec542d56ebfd1f6fc8c8665127"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7df9a03459b14049d93749d6ece05e80"><td class="memTemplParams" colspan="2">template&lt;std::size_t count, std::size_t by_n = 1, typename Function , typename... Args&gt; </td></tr>
-<tr class="memitem:a7df9a03459b14049d93749d6ece05e80"><td class="memTemplItemLeft" align="right" valign="top">static constexpr <a class="el" href="daw__attributes_8h.html#a09f8b09ddbbef2a5ae207ef8fa21c808">DAW_ATTRIB_FLATTEN</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a7df9a03459b14049d93749d6ece05e80">daw::algorithm::do_n_arg</a> (Function &amp;&amp;func) noexcept(std::is_nothrow_invocable_v&lt; Function, std::size_t &gt;)</td></tr>
-<tr class="separator:a7df9a03459b14049d93749d6ece05e80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79c442a4454aab79c0705ea6daf08ecd"><td class="memTemplParams" colspan="2">template&lt;std::size_t by_n, typename Function , std::size_t... Is&gt; </td></tr>
-<tr class="memitem:a79c442a4454aab79c0705ea6daf08ecd"><td class="memTemplItemLeft" align="right" valign="top">static constexpr <a class="el" href="daw__attributes_8h.html#a09f8b09ddbbef2a5ae207ef8fa21c808">DAW_ATTRIB_FLATTEN</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm_1_1_d_a_w___a_t_t_r_i_b___h_i_d_d_e_n.html#a79c442a4454aab79c0705ea6daf08ecd">daw::algorithm::DAW_ATTRIB_HIDDEN::do_n_arg</a> (Function &amp;&amp;func, std::integer_sequence&lt; std::size_t, Is... &gt;) noexcept(noexcept(func(0ULL)))</td></tr>
-<tr class="separator:a79c442a4454aab79c0705ea6daf08ecd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a857528be3a4c30f2acb3e49fafad3a1c"><td class="memTemplParams" colspan="2">template&lt;typename Function , typename... Args&gt; </td></tr>
-<tr class="memitem:a857528be3a4c30f2acb3e49fafad3a1c"><td class="memTemplItemLeft" align="right" valign="top">static constexpr <a class="el" href="daw__attributes_8h.html#a09f8b09ddbbef2a5ae207ef8fa21c808">DAW_ATTRIB_FLATTEN</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a857528be3a4c30f2acb3e49fafad3a1c">daw::algorithm::do_n_arg</a> (std::size_t count, Function &amp;&amp;func) noexcept(std::is_nothrow_invocable_v&lt; Function, std::size_t &gt;)</td></tr>
-<tr class="separator:a857528be3a4c30f2acb3e49fafad3a1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0912b120652b7e22679ef2c5d93eef30"><td class="memTemplParams" colspan="2">template&lt;std::size_t count, typename Function , typename... Args&gt; </td></tr>
+<tr class="memitem:a0912b120652b7e22679ef2c5d93eef30"><td class="memTemplItemLeft" align="right" valign="top">static constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a0912b120652b7e22679ef2c5d93eef30">daw::algorithm::do_n</a> (Function &amp;&amp;func, Args &amp;&amp;...args)</td></tr>
+<tr class="separator:a0912b120652b7e22679ef2c5d93eef30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6cff24f362801bec56c6adf1729b293"><td class="memTemplParams" colspan="2">template&lt;typename Function , typename... Args&gt; </td></tr>
+<tr class="memitem:ab6cff24f362801bec56c6adf1729b293"><td class="memTemplItemLeft" align="right" valign="top">static constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#ab6cff24f362801bec56c6adf1729b293">daw::algorithm::do_n</a> (std::size_t count, Function &amp;&amp;func, Args &amp;&amp;...args) noexcept(std::is_nothrow_invocable_v&lt; Function, Args... &gt;)</td></tr>
+<tr class="separator:ab6cff24f362801bec56c6adf1729b293"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac41690bda2a773708e8a3872582ecdaf"><td class="memTemplParams" colspan="2">template&lt;std::size_t count, std::size_t by_n = 1, typename Function , typename... Args&gt; </td></tr>
+<tr class="memitem:ac41690bda2a773708e8a3872582ecdaf"><td class="memTemplItemLeft" align="right" valign="top">static constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#ac41690bda2a773708e8a3872582ecdaf">daw::algorithm::do_n_arg</a> (Function &amp;&amp;func) noexcept(std::is_nothrow_invocable_v&lt; Function, std::size_t &gt;)</td></tr>
+<tr class="separator:ac41690bda2a773708e8a3872582ecdaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50d4888d808712591c900359e241ce3d"><td class="memTemplParams" colspan="2">template&lt;typename Function , typename... Args&gt; </td></tr>
+<tr class="memitem:a50d4888d808712591c900359e241ce3d"><td class="memTemplItemLeft" align="right" valign="top">static constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a50d4888d808712591c900359e241ce3d">daw::algorithm::do_n_arg</a> (std::size_t count, Function &amp;&amp;func) noexcept(std::is_nothrow_invocable_v&lt; Function, std::size_t &gt;)</td></tr>
+<tr class="separator:a50d4888d808712591c900359e241ce3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -13,6 +13,7 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -23,7 +24,6 @@
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">DAW Header Libraries
    </div>
-   <div id="projectbrief">Variousheaderonlylibrariesandexperiments</div>
   </td>
  </tr>
  </tbody>
@@ -85,10 +85,10 @@ $(function() {
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__move_8h.html">daw_move.h</a>&quot;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw_1_1algorithm.html">daw::algorithm</a> {</div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="namespacedaw_1_1algorithm_1_1_d_a_w___a_t_t_r_i_b___h_i_d_d_e_n.html">   16</a></span>&#160;  <span class="keyword">namespace </span>do_n_details <a class="code" href="daw__attributes_8h.html#ac5bd4376f8af539711f14123ff5e473d">DAW_ATTRIB_HIDDEN</a> {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  <span class="keyword">namespace </span>do_n_details <a class="code" href="daw__attributes_8h.html#ac5bd4376f8af539711f14123ff5e473d">DAW_ATTRIB_HIDDEN</a> {</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Function, <span class="keyword">typename</span>... Args, std::size_t... Is&gt;</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <a class="code" href="daw__attributes_8h.html#a09f8b09ddbbef2a5ae207ef8fa21c808">DAW_ATTRIB_FLATTEN</a> <span class="keyword">static</span> <span class="keyword">inline</span> constexpr <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="namespacedaw_1_1algorithm_1_1_d_a_w___a_t_t_r_i_b___h_i_d_d_e_n.html#af9e530ee0a9c8cfc70ac9da7996ed0ca">   19</a></span>&#160;    <a class="code" href="namespacedaw_1_1algorithm.html#af5c15180b57ad903b36d281236206748">do_n</a>( Function &amp;&amp;func, std::integer_sequence&lt;std::size_t, Is...&gt;,</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <a class="code" href="namespacedaw_1_1algorithm.html#a0912b120652b7e22679ef2c5d93eef30">do_n</a>( Function &amp;&amp;func, std::integer_sequence&lt;std::size_t, Is...&gt;,</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;          Args &amp;&amp;...args ) noexcept( noexcept( func( args... ) ) ) {</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;      <span class="keywordflow">if</span> constexpr( <span class="keyword">sizeof</span>...( Is ) &gt; 0 ) {</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        (void)( ( func( args... ), Is ) + ... );</div>
@@ -96,7 +96,7 @@ $(function() {
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    }</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keyword">template</span>&lt;std::size_t by_n, <span class="keyword">typename</span> Function, std::size_t... Is&gt;</div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="namespacedaw_1_1algorithm_1_1_d_a_w___a_t_t_r_i_b___h_i_d_d_e_n.html#a79c442a4454aab79c0705ea6daf08ecd">   27</a></span>&#160;    <a class="code" href="daw__attributes_8h.html#a09f8b09ddbbef2a5ae207ef8fa21c808">DAW_ATTRIB_FLATTEN</a> <span class="keyword">static</span> <span class="keyword">inline</span> constexpr <span class="keywordtype">void</span> <a class="code" href="namespacedaw_1_1algorithm.html#a857528be3a4c30f2acb3e49fafad3a1c">do_n_arg</a>(</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="code" href="daw__attributes_8h.html#a09f8b09ddbbef2a5ae207ef8fa21c808">DAW_ATTRIB_FLATTEN</a> <span class="keyword">static</span> <span class="keyword">inline</span> constexpr <span class="keywordtype">void</span> <a class="code" href="namespacedaw_1_1algorithm.html#a50d4888d808712591c900359e241ce3d">do_n_arg</a>(</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;      Function &amp;&amp;func,</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;      std::integer_sequence&lt;std::size_t,</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                            Is...&gt; ) noexcept( noexcept( func( 0ULL ) ) ) {</div>
@@ -107,16 +107,16 @@ $(function() {
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  } <span class="comment">// namespace DAW_ATTRIB_HIDDEN</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keyword">template</span>&lt;std::size_t count, <span class="keyword">typename</span> Function, <span class="keyword">typename</span>... Args&gt;</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="namespacedaw_1_1algorithm.html#af5c15180b57ad903b36d281236206748">   38</a></span>&#160;  <a class="code" href="daw__attributes_8h.html#a09f8b09ddbbef2a5ae207ef8fa21c808">DAW_ATTRIB_FLATTEN</a> <span class="keyword">static</span> <span class="keyword">inline</span> constexpr <span class="keywordtype">void</span> <a class="code" href="namespacedaw_1_1algorithm.html#af5c15180b57ad903b36d281236206748">do_n</a>( Function &amp;&amp;func,</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="namespacedaw_1_1algorithm.html#a0912b120652b7e22679ef2c5d93eef30">   38</a></span>&#160;  <a class="code" href="daw__attributes_8h.html#a09f8b09ddbbef2a5ae207ef8fa21c808">DAW_ATTRIB_FLATTEN</a> <span class="keyword">static</span> <span class="keyword">inline</span> constexpr <span class="keywordtype">void</span> <a class="code" href="namespacedaw_1_1algorithm.html#a0912b120652b7e22679ef2c5d93eef30">do_n</a>( Function &amp;&amp;func,</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                                                        Args &amp;&amp;...args ) {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <a class="code" href="namespacedaw_1_1algorithm.html#a4eda9aec542d56ebfd1f6fc8c8665127">do_n_details::do_n</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Function, func ),</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <a class="code" href="namespacedaw_1_1algorithm.html#ab6cff24f362801bec56c6adf1729b293">do_n_details::do_n</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Function, func ),</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                        std::make_integer_sequence&lt;std::size_t, count&gt;{ },</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                        <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Args, args )... );</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  }</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Function, <span class="keyword">typename</span>... Args&gt;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <a class="code" href="daw__attributes_8h.html#a09f8b09ddbbef2a5ae207ef8fa21c808">DAW_ATTRIB_FLATTEN</a> <span class="keyword">static</span> <span class="keyword">inline</span> constexpr <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="namespacedaw_1_1algorithm.html#a4eda9aec542d56ebfd1f6fc8c8665127">   47</a></span>&#160;  <a class="code" href="namespacedaw_1_1algorithm.html#af5c15180b57ad903b36d281236206748">do_n</a>( std::size_t count, Function &amp;&amp;func, Args &amp;&amp;...args ) noexcept(</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="namespacedaw_1_1algorithm.html#ab6cff24f362801bec56c6adf1729b293">   47</a></span>&#160;  <a class="code" href="namespacedaw_1_1algorithm.html#a0912b120652b7e22679ef2c5d93eef30">do_n</a>( std::size_t count, Function &amp;&amp;func, Args &amp;&amp;...args ) noexcept(</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    std::is_nothrow_invocable_v&lt;Function, Args...&gt; ) {</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordflow">while</span>( count-- &gt; 0 ) {</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      func( args... );</div>
@@ -125,7 +125,7 @@ $(function() {
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Function, <span class="keyword">typename</span>... Args&gt;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <a class="code" href="daw__attributes_8h.html#a09f8b09ddbbef2a5ae207ef8fa21c808">DAW_ATTRIB_FLATTEN</a> <span class="keyword">static</span> <span class="keyword">inline</span> constexpr <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="namespacedaw_1_1algorithm.html#a857528be3a4c30f2acb3e49fafad3a1c">   56</a></span>&#160;  <a class="code" href="namespacedaw_1_1algorithm.html#a857528be3a4c30f2acb3e49fafad3a1c">do_n_arg</a>( std::size_t count, Function &amp;&amp;func ) noexcept(</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="namespacedaw_1_1algorithm.html#a50d4888d808712591c900359e241ce3d">   56</a></span>&#160;  <a class="code" href="namespacedaw_1_1algorithm.html#a50d4888d808712591c900359e241ce3d">do_n_arg</a>( std::size_t count, Function &amp;&amp;func ) noexcept(</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    std::is_nothrow_invocable_v&lt;Function, std::size_t&gt; ) {</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    std::size_t n = 0;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordflow">while</span>( n &lt; count ) {</div>
@@ -137,7 +137,7 @@ $(function() {
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keyword">template</span>&lt;std::size_t count, std::size_t by_n = 1, <span class="keyword">typename</span> Function,</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;           <span class="keyword">typename</span>... Args&gt;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <a class="code" href="daw__attributes_8h.html#a09f8b09ddbbef2a5ae207ef8fa21c808">DAW_ATTRIB_FLATTEN</a> <span class="keyword">static</span> <span class="keyword">inline</span> constexpr <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="namespacedaw_1_1algorithm.html#a7df9a03459b14049d93749d6ece05e80">   68</a></span>&#160;  <a class="code" href="namespacedaw_1_1algorithm.html#a857528be3a4c30f2acb3e49fafad3a1c">do_n_arg</a>( Function &amp;&amp;func ) noexcept(</div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="namespacedaw_1_1algorithm.html#ac41690bda2a773708e8a3872582ecdaf">   68</a></span>&#160;  <a class="code" href="namespacedaw_1_1algorithm.html#a50d4888d808712591c900359e241ce3d">do_n_arg</a>( Function &amp;&amp;func ) noexcept(</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    std::is_nothrow_invocable_v&lt;Function, std::size_t&gt; ) {</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    static_assert( by_n &gt; 0 );</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    do_n_details::do_n_arg&lt;by_n&gt;( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Function, func ),</div>
@@ -148,12 +148,12 @@ $(function() {
 <div class="ttc" id="adaw__attributes_8h_html_ac5bd4376f8af539711f14123ff5e473d"><div class="ttname"><a href="daw__attributes_8h.html#ac5bd4376f8af539711f14123ff5e473d">DAW_ATTRIB_HIDDEN</a></div><div class="ttdeci">#define DAW_ATTRIB_HIDDEN</div><div class="ttdef"><b>Definition:</b> <a href="daw__attributes_8h_source.html#l00066">daw_attributes.h:66</a></div></div>
 <div class="ttc" id="adaw__move_8h_html"><div class="ttname"><a href="daw__move_8h.html">daw_move.h</a></div></div>
 <div class="ttc" id="acpp__17_8h_html"><div class="ttname"><a href="cpp__17_8h.html">cpp_17.h</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1algorithm_html_a4eda9aec542d56ebfd1f6fc8c8665127"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a4eda9aec542d56ebfd1f6fc8c8665127">daw::algorithm::do_n</a></div><div class="ttdeci">static constexpr DAW_ATTRIB_FLATTEN void do_n(std::size_t count, Function &amp;&amp;func, Args &amp;&amp;...args) noexcept(std::is_nothrow_invocable_v&lt; Function, Args... &gt;)</div><div class="ttdef"><b>Definition:</b> <a href="daw__do__n_8h_source.html#l00047">daw_do_n.h:47</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1algorithm_html_a0912b120652b7e22679ef2c5d93eef30"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a0912b120652b7e22679ef2c5d93eef30">daw::algorithm::do_n</a></div><div class="ttdeci">static constexpr void do_n(Function &amp;&amp;func, Args &amp;&amp;...args)</div><div class="ttdef"><b>Definition:</b> <a href="daw__do__n_8h_source.html#l00038">daw_do_n.h:38</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1algorithm_html_ab6cff24f362801bec56c6adf1729b293"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#ab6cff24f362801bec56c6adf1729b293">daw::algorithm::do_n</a></div><div class="ttdeci">static constexpr void do_n(std::size_t count, Function &amp;&amp;func, Args &amp;&amp;...args) noexcept(std::is_nothrow_invocable_v&lt; Function, Args... &gt;)</div><div class="ttdef"><b>Definition:</b> <a href="daw__do__n_8h_source.html#l00047">daw_do_n.h:47</a></div></div>
 <div class="ttc" id="adaw__move_8h_html_a92169421367fae95c111acee1e0ebe60"><div class="ttname"><a href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a></div><div class="ttdeci">#define DAW_FWD2(Type, Value)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00042">daw_move.h:42</a></div></div>
 <div class="ttc" id="adaw__attributes_8h_html"><div class="ttname"><a href="daw__attributes_8h.html">daw_attributes.h</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html"><div class="ttname"><a href="namespacedaw_1_1algorithm.html">daw::algorithm</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l00228">daw_algorithm.h:228</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1algorithm_html_af5c15180b57ad903b36d281236206748"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#af5c15180b57ad903b36d281236206748">daw::algorithm::do_n</a></div><div class="ttdeci">static constexpr DAW_ATTRIB_FLATTEN void do_n(Function &amp;&amp;func, Args &amp;&amp;...args)</div><div class="ttdef"><b>Definition:</b> <a href="daw__do__n_8h_source.html#l00038">daw_do_n.h:38</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1algorithm_html_a857528be3a4c30f2acb3e49fafad3a1c"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a857528be3a4c30f2acb3e49fafad3a1c">daw::algorithm::do_n_arg</a></div><div class="ttdeci">static constexpr DAW_ATTRIB_FLATTEN void do_n_arg(std::size_t count, Function &amp;&amp;func) noexcept(std::is_nothrow_invocable_v&lt; Function, std::size_t &gt;)</div><div class="ttdef"><b>Definition:</b> <a href="daw__do__n_8h_source.html#l00056">daw_do_n.h:56</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1algorithm_html_a50d4888d808712591c900359e241ce3d"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a50d4888d808712591c900359e241ce3d">daw::algorithm::do_n_arg</a></div><div class="ttdeci">static constexpr void do_n_arg(std::size_t count, Function &amp;&amp;func) noexcept(std::is_nothrow_invocable_v&lt; Function, std::size_t &gt;)</div><div class="ttdef"><b>Definition:</b> <a href="daw__do__n_8h_source.html#l00056">daw_do_n.h:56</a></div></div>
 <div class="ttc" id="adaw__attributes_8h_html_a09f8b09ddbbef2a5ae207ef8fa21c808"><div class="ttname"><a href="daw__attributes_8h.html#a09f8b09ddbbef2a5ae207ef8fa21c808">DAW_ATTRIB_FLATTEN</a></div><div class="ttdeci">#define DAW_ATTRIB_FLATTEN</div><div class="ttdef"><b>Definition:</b> <a href="daw__attributes_8h_source.html#l00064">daw_attributes.h:64</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

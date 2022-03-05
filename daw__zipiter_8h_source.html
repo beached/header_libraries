@@ -13,6 +13,7 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -23,7 +24,6 @@
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">DAW Header Libraries
    </div>
-   <div id="projectbrief">Variousheaderonlylibrariesandexperiments</div>
   </td>
  </tr>
  </tbody>
@@ -195,12 +195,12 @@ $(function() {
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    }</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keyword">template</span>&lt;<span class="keywordtype">size_t</span> pos&gt;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#a69f693bab3e49fb947253a57c6ed65f1">get</a>( ) noexcept {</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#aec26be2bcbe261d3cea14098d110f63b">get</a>( ) noexcept {</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;      <span class="keywordflow">return</span> std::get&lt;pos&gt;( m_values );</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    }</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="keyword">template</span>&lt;<span class="keywordtype">size_t</span> pos&gt;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#a69f693bab3e49fb947253a57c6ed65f1">get</a>( ) const noexcept {</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#aec26be2bcbe261d3cea14098d110f63b">get</a>( ) const noexcept {</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;      <span class="keywordflow">return</span> std::get&lt;pos&gt;( m_values );</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    }</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
@@ -252,12 +252,12 @@ $(function() {
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  <a class="code" href="namespacedaw.html#adb5408df02124d5229a2babb24860de7">zip_iterator</a>( Iterators... ) -&gt; <a class="code" href="namespacedaw.html#adb5408df02124d5229a2babb24860de7">zip_iterator</a>&lt;Iterators...&gt;;</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;  <span class="keyword">template</span>&lt;<span class="keywordtype">size_t</span> N, <span class="keyword">typename</span>... T&gt;</div>
-<div class="line"><a name="l00183"></a><span class="lineno"><a class="line" href="namespacedaw.html#a6fd3bfceec8ea7bb886265802440f0fa">  183</a></span>&#160;  constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#a69f693bab3e49fb947253a57c6ed65f1">get</a>( <a class="code" href="structdaw_1_1zip__iterator.html">zip_iterator</a>&lt;T...&gt; &amp;zi ) noexcept {</div>
+<div class="line"><a name="l00183"></a><span class="lineno"><a class="line" href="namespacedaw.html#a6fd3bfceec8ea7bb886265802440f0fa">  183</a></span>&#160;  constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#aec26be2bcbe261d3cea14098d110f63b">get</a>( <a class="code" href="structdaw_1_1zip__iterator.html">zip_iterator</a>&lt;T...&gt; &amp;zi ) noexcept {</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="keywordflow">return</span> zi.template get&lt;N&gt;( );</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  }</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  <span class="keyword">template</span>&lt;<span class="keywordtype">size_t</span> N, <span class="keyword">typename</span>... T&gt;</div>
-<div class="line"><a name="l00188"></a><span class="lineno"><a class="line" href="namespacedaw.html#a070810b5eb2ba2d89b79baf87481f1c9">  188</a></span>&#160;  constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#a69f693bab3e49fb947253a57c6ed65f1">get</a>( <a class="code" href="structdaw_1_1zip__iterator.html">zip_iterator</a>&lt;T...&gt; const &amp;zi ) noexcept {</div>
+<div class="line"><a name="l00188"></a><span class="lineno"><a class="line" href="namespacedaw.html#a070810b5eb2ba2d89b79baf87481f1c9">  188</a></span>&#160;  constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#aec26be2bcbe261d3cea14098d110f63b">get</a>( <a class="code" href="structdaw_1_1zip__iterator.html">zip_iterator</a>&lt;T...&gt; const &amp;zi ) noexcept {</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="keywordflow">return</span> zi.template get&lt;N&gt;( );</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  }</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;} <span class="comment">// namespace daw</span></div>
@@ -271,12 +271,12 @@ $(function() {
 <div class="ttc" id="astructdaw_1_1zip__iterator_html_a6c1fe4bd9daac981a81030a41b7127f7"><div class="ttname"><a href="structdaw_1_1zip__iterator.html#a6c1fe4bd9daac981a81030a41b7127f7">daw::zip_iterator::const_reference</a></div><div class="ttdeci">std::tuple&lt; decltype(*std::declval&lt; Iterators const &amp; &gt;())... &gt; const_reference</div><div class="ttdef"><b>Definition:</b> <a href="daw__zipiter_8h_source.html#l00042">daw_zipiter.h:42</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a557cf75d8b8e24da975f31aa7a3dad69"><div class="ttname"><a href="namespacedaw.html#a557cf75d8b8e24da975f31aa7a3dad69">daw::advance</a></div><div class="ttdeci">constexpr void advance(Iterator &amp;it, Distance n)</div><div class="ttdoc">Advance iterator n steps.</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00536">cpp_17.h:536</a></div></div>
 <div class="ttc" id="astructdaw_1_1zip__iterator_html_a837c6795026b2ca133e39c01c5410902"><div class="ttname"><a href="structdaw_1_1zip__iterator.html#a837c6795026b2ca133e39c01c5410902">daw::zip_iterator::operator!=</a></div><div class="ttdeci">constexpr bool operator!=(zip_iterator const &amp;rhs) const noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__zipiter_8h_source.html#l00174">daw_zipiter.h:174</a></div></div>
+<div class="ttc" id="anamespacedaw_html_aec26be2bcbe261d3cea14098d110f63b"><div class="ttname"><a href="namespacedaw.html#aec26be2bcbe261d3cea14098d110f63b">daw::get</a></div><div class="ttdeci">constexpr decltype(auto) get(fwd_pack&lt; Ts... &gt; &amp;&amp;p)</div><div class="ttdef"><b>Definition:</b> <a href="daw__fwd__pack__apply_8h_source.html#l00093">daw_fwd_pack_apply.h:93</a></div></div>
 <div class="ttc" id="astructdaw_1_1zip__iterator_html_ac8b2037ee1345423e2f201851aae4f32"><div class="ttname"><a href="structdaw_1_1zip__iterator.html#ac8b2037ee1345423e2f201851aae4f32">daw::zip_iterator::operator*</a></div><div class="ttdeci">constexpr const_reference operator*() const noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__zipiter_8h_source.html#l00157">daw_zipiter.h:157</a></div></div>
 <div class="ttc" id="adaw__move_8h_html_a5707fa464976f991a156ac6a583a135c"><div class="ttname"><a href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a></div><div class="ttdeci">#define DAW_MOVE(...)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00031">daw_move.h:31</a></div></div>
 <div class="ttc" id="astructdaw_1_1zip__iterator_html_a3b0a74c94b4d15f2d8ce80b5cf1d0e5a"><div class="ttname"><a href="structdaw_1_1zip__iterator.html#a3b0a74c94b4d15f2d8ce80b5cf1d0e5a">daw::zip_iterator::iterator_category</a></div><div class="ttdeci">std::input_iterator_tag iterator_category</div><div class="ttdef"><b>Definition:</b> <a href="daw__zipiter_8h_source.html#l00048">daw_zipiter.h:48</a></div></div>
 <div class="ttc" id="astructdaw_1_1zip__iterator_html_a1e631d0cf6513405452501346150548c"><div class="ttname"><a href="structdaw_1_1zip__iterator.html#a1e631d0cf6513405452501346150548c">daw::zip_iterator::operator++</a></div><div class="ttdeci">constexpr zip_iterator &amp; operator++()</div><div class="ttdef"><b>Definition:</b> <a href="daw__zipiter_8h_source.html#l00099">daw_zipiter.h:99</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a54804cf04d9ca94837eed849f0096e82"><div class="ttname"><a href="namespacedaw.html#a54804cf04d9ca94837eed849f0096e82">daw::tuple</a></div><div class="ttdeci">tuple(Ts...) -&gt; tuple&lt; Ts... &gt;</div></div>
-<div class="ttc" id="anamespacedaw_html_a69f693bab3e49fb947253a57c6ed65f1"><div class="ttname"><a href="namespacedaw.html#a69f693bab3e49fb947253a57c6ed65f1">daw::get</a></div><div class="ttdeci">constexpr decltype(auto) DAW_ATTRIB_FLATINLINE get(fwd_pack&lt; Ts... &gt; &amp;&amp;p)</div><div class="ttdef"><b>Definition:</b> <a href="daw__fwd__pack__apply_8h_source.html#l00093">daw_fwd_pack_apply.h:93</a></div></div>
 <div class="ttc" id="astructdaw_1_1zip__iterator_html_a8507d7d1968079357f3596ac38e09cda"><div class="ttname"><a href="structdaw_1_1zip__iterator.html#a8507d7d1968079357f3596ac38e09cda">daw::zip_iterator::reference</a></div><div class="ttdeci">std::tuple&lt; decltype(*std::declval&lt; Iterators &amp; &gt;())... &gt; reference</div><div class="ttdef"><b>Definition:</b> <a href="daw__zipiter_8h_source.html#l00040">daw_zipiter.h:40</a></div></div>
 <div class="ttc" id="adaw__utility_8h_html_ab9c8600f283844a3b632c4beb7a6a954"><div class="ttname"><a href="daw__utility_8h.html#ab9c8600f283844a3b632c4beb7a6a954">Unused</a></div><div class="ttdeci">constexpr void Unused(Ts &amp;&amp;...) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__utility_8h_source.html#l00034">daw_utility.h:34</a></div></div>
 <div class="ttc" id="astructdaw_1_1zip__iterator_html_adca2b033d86c70ae54ae11b5e1dbd502"><div class="ttname"><a href="structdaw_1_1zip__iterator.html#adca2b033d86c70ae54ae11b5e1dbd502">daw::zip_iterator::operator-&gt;</a></div><div class="ttdeci">constexpr pointer operator-&gt;() noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__zipiter_8h_source.html#l00162">daw_zipiter.h:162</a></div></div>
