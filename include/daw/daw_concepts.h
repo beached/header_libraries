@@ -1,0 +1,269 @@
+// Copyright (c) Darrell Wright
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+// Official repository: https://github.com/beached/header_libraries
+//
+
+#pragma once
+
+#include <daw/daw_arith_traits.h>
+#include <daw/daw_cpp_feature_check.h>
+#include <daw/daw_move.h>
+
+#include <ciso646>
+#include <concepts>
+#include <functional>
+#include <iterator>
+#include <type_traits>
+#include <utility>
+
+namespace daw {
+	/***
+	 * @brief Given types From and To and an expression E whose type and value
+	 * category are the same as those of std::declval<From>(),
+	 * convertible_to<From, To> requires E to be both implicitly and explicitly
+	 * convertible to type To. The implicit and explicit conversions are required
+	 * to produce equal results.
+	 */
+	template<typename From, typename To>
+	concept convertible_to = std::is_convertible_v<From, To> and requires {
+		static_cast<To>( std::declval<From>( ) );
+	};
+
+	/***
+	 * @brief Satisfied when Lhs and Rhs name the same type (taking into account
+	 * const/volatile qualifications)
+	 */
+	template<typename Lhs, typename Rhs>
+	concept same_as = std::is_same_v<Lhs, Rhs>;
+
+	template<typename T>
+	using root_type_t = std::remove_cv_t<std::remove_pointer_t<std::decay_t<T>>>;
+
+	/***
+	 * @brief The constructible_from concept constrains the initialization of a
+	 * variable of a given type with a particular set of argument types.
+	 */
+	template<typename T, typename... Args>
+	concept constructible_from = std::is_constructible_v<T, Args...>;
+
+	template<typename T>
+	concept Containers = requires( T container ) {
+		typename std::remove_cvref_t<T>::value_type;
+		container.begin( );
+		container.end( );
+	};
+
+	template<typename T>
+	concept StringLike = Containers<std::remove_cvref_t<T>> and
+	                     same_as < typename std::remove_cvref_t<T>::value_type,
+	char > ;
+
+	template<typename T>
+	concept EnumType =
+	  std::is_enum_v<std::remove_cvref_t<std::remove_cvref_t<T>>>;
+
+	template<typename T>
+	concept UnsignedStd = std::is_unsigned_v<std::remove_cvref_t<T>>;
+
+	template<typename T>
+	concept SignedStd = std::is_signed_v<std::remove_cvref_t<T>>;
+
+	template<typename T>
+	concept IntegralStd = std::is_integral_v<std::remove_cvref_t<T>>;
+
+	template<typename T>
+	concept IntegralDaw = daw::is_integral_v<std::remove_cvref_t<T>>;
+
+	template<typename T>
+	concept FloatingPointStd = std::is_floating_point_v<std::remove_cvref_t<T>>;
+
+	template<typename T>
+	concept FloatingPointDaw = daw::is_floating_point_v<std::remove_cvref_t<T>>;
+
+	/// @brief Specifies that Container has type alias members key_type and
+	/// mapped_type
+	template<typename Container>
+	inline constexpr bool has_kv_mapping_v = requires {
+		typename std::remove_cvref_t<Container>::key_type;
+		typename std::remove_cvref_t<Container>::mapped_type;
+	};
+
+	template<typename T>
+	concept AssociativeContainers = Containers<std::remove_cvref_t<T>> and
+	  has_kv_mapping_v<std::remove_cvref_t<T>>;
+
+	/***
+	 * Specifies that a callable type F can be called with a set of argument
+	 * Args... using the function template std::invoke.
+	 * @tparam Func Callable to test
+	 * @tparam Args Arguments to call callable with
+	 */
+	template<typename Func, typename... Args>
+	concept invocable = requires( Func &&f, Args &&...args ) {
+		std::invoke( DAW_FWD2( Func, f ), DAW_FWD2( Args, args )... );
+	};
+
+	/// @brief Specifies that an expression of the type and value category
+	/// specified by RHS can be assigned to an lvalue expression whose type is
+	/// specified by LHS.
+	template<typename LHS, typename RHS>
+	concept assignable_from =
+#if defined( __cpp_lib_concepts )
+	  std::assignable_from<LHS, RHS>;
+#else
+	  std::is_lvalue_reference_v<LHS> and requires( LHS lhs, RHS &&rhs ) {
+		{ lhs = DAW_FWD2( RHS, rhs ) } -> std::same_as<LHS>;
+	};
+#endif
+
+	/// @brief Satisfied if T is a reference type, or if it is an object type
+	/// where an object of that type can be constructed from an rvalue of that
+	/// type in both direct- and copy-initialization contexts, with the usual
+	/// semantics
+	template<typename T>
+	concept move_constructible =
+#if defined( __cpp_lib_concepts )
+	  std::move_constructible<T>;
+#else
+	  constructible_from<T, T> and convertible_to<T, T>;
+#endif
+
+#if not defined( __cpp_lib_concepts )
+	namespace swappable_test {
+		using namespace std;
+		template<typename T>
+		inline constexpr bool swappable_test = requires( T & a, T & b ) {
+			swap( a, b );
+		};
+	} // namespace swappable_test
+#endif
+
+	/// @brief Specifies that expressions of the type and value category encoded
+	/// by T and U are swappable with each other.
+	template<typename T>
+	concept swappable =
+#if defined( __cpp_lib_concepts )
+	  std::swappable<T>;
+#else
+	  swappable_test::swappable_test<T>;
+#endif
+
+	/// @brief Specifies that T is an object type that can be moved (that is, it
+	/// can be move constructed, move assigned, and lvalues of type T can be
+	/// swapped).
+	template<typename T>
+	concept movable =
+#if defined( __cpp_lib_concepts )
+	  std::movable<T>;
+#else
+	  std::is_object_v<T> and move_constructible<T> and
+	  assignable_from<T &, T> and swappable<T>;
+#endif
+
+	template<typename T>
+	using iter_difference_t =
+#if defined( __cpp_lib_concepts )
+	  std::iter_difference_t<T>;
+#else
+	  typename std::iterator_traits<T>::difference_type;
+#endif
+
+	template<typename T>
+	using iter_reference_t =
+#if defined( __cpp_lib_concepts )
+	  std::iter_reference_t<T>;
+#else
+	  typename std::iterator_traits<T>::reference_type;
+#endif
+
+	template<typename I>
+	concept weakly_incrementable =
+#if defined( __cpp_lib_concepts )
+	  std::weakly_incrementable<I>;
+#else
+	  movable<I> and requires( I i ) {
+		typename iter_difference_t<I>;
+		requires SignedStd<iter_difference_t<I>>;
+		{ ++i } -> same_as<I &>;
+		i++;
+	};
+#endif
+
+	/***
+	 * Specifies that a callable type F can be called with a set of argument
+	 * Args... using the function template std::invoke. The Result of the
+	 * invocation must be convertible to Result
+	 * @tparam Result Excepted result type
+	 * @tparam Func Callable to test
+	 * @tparam Args Arguments to call callable with
+	 */
+	template<typename Result, typename Func, typename... Args>
+	concept invocable_result = requires( Func &&f, Args &&...args ) {
+		{
+			std::invoke( DAW_FWD2( Func, f ), DAW_FWD2( Args, args )... )
+			} -> convertible_to<Result>;
+	};
+
+	template<typename I>
+	concept input_or_output_iterator =
+#if defined( __cpp_lib_concepts )
+	  std::input_or_output_iterator<I>;
+#else
+	  requires( I i ) {
+		{ *i };
+	}
+	and weakly_incrementable<I>;
+#endif
+
+	template<typename Out, typename T>
+	concept indirectly_writable =
+#if defined( __cpp_lib_concepts )
+	  std::indirectly_writable<Out, T>;
+#else
+	  requires( Out &&o, T &&t ) {
+		*o = std::forward<T>( t );
+		*std::forward<Out>( o ) = std::forward<T>( t );
+		const_cast<const iter_reference_t<Out> &&>( *o ) = std::forward<T>( t );
+		const_cast<const iter_reference_t<Out> &&>( *std::forward<Out>( o ) ) =
+		  std::forward<T>( t );
+	};
+#endif
+
+	template<typename Derived, typename Base>
+	concept derived_from = std::is_base_of_v<Base, Derived> and
+	  std::is_convertible_v<const volatile Derived *, const volatile Base *>;
+
+	template<typename I, typename T>
+	concept output_iterator =
+#if defined( __cpp_lib_concepts )
+	  std::output_iterator<I, T>;
+#else
+	  input_or_output_iterator<I> and indirectly_writable<I, T> and
+	  requires( I i, T &&t ) {
+		*i++ = DAW_FWD2( T, t ); // not required to be equality-preserving
+	};
+#endif
+
+	template<typename T>
+	using iterator_category_t =
+	  typename std::iterator_traits<T>::iterator_category;
+
+	template<typename I>
+	concept input_iterator =
+#if defined( __cpp_lib_concepts )
+	  std::input_iterator<I>;
+#else
+	  input_or_output_iterator<I> and
+	  not same_as<iterator_category_t<I>, void> and
+	  derived_from<iterator_category_t<I>, std::input_iterator_tag>;
+#endif
+
+	template<typename Container>
+	concept BackInsertableContainer = Containers<Container> and
+	  requires( Container c, typename Container::value_type const &v ) {
+		c.push_back( v );
+	};
+} // namespace daw
