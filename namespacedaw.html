@@ -749,6 +749,15 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a02643d84e87ea1d5787f6047380d2f28"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename... &gt; typename Primary, typename T &gt; </td></tr>
 <tr class="memitem:a02643d84e87ea1d5787f6047380d2f28"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a02643d84e87ea1d5787f6047380d2f28">is_specialization_of</a> = std::bool_constant&lt; <a class="el" href="namespacedaw.html#a628a5e747e73c4a762806f010c3ad2e3">is_specialization_of_v</a>&lt; Primary, T &gt; &gt;</td></tr>
 <tr class="separator:a02643d84e87ea1d5787f6047380d2f28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abddf63e22b9f359929f097d2f08ffa18"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:abddf63e22b9f359929f097d2f08ffa18"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#abddf63e22b9f359929f097d2f08ffa18">iter_difference_t</a> = typename std::iterator_traits&lt; T &gt;::difference_type</td></tr>
+<tr class="separator:abddf63e22b9f359929f097d2f08ffa18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c7a2b548f0fc456138f702dcdc60e31"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a1c7a2b548f0fc456138f702dcdc60e31"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a1c7a2b548f0fc456138f702dcdc60e31">iter_reference_t</a> = typename std::iterator_traits&lt; T &gt;::reference_type</td></tr>
+<tr class="separator:a1c7a2b548f0fc456138f702dcdc60e31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c056ca3597b76acfacb29e2eaf83cdf"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a3c056ca3597b76acfacb29e2eaf83cdf"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3c056ca3597b76acfacb29e2eaf83cdf">iterator_category_t</a> = typename std::iterator_traits&lt; T &gt;::iterator_category</td></tr>
+<tr class="separator:a3c056ca3597b76acfacb29e2eaf83cdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa88d1d77939be042bb671074e68331cd"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aa88d1d77939be042bb671074e68331cd"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa88d1d77939be042bb671074e68331cd">make_unsigned_t</a> = typename <a class="el" href="structdaw_1_1make__unsigned.html">make_unsigned</a>&lt; T &gt;::type</td></tr>
 <tr class="separator:aa88d1d77939be042bb671074e68331cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -790,6 +799,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ae3634022613638acc8836d05d8667a37"><td class="memTemplParams" colspan="2">template&lt;bool B, typename T  = std::nullptr_t&gt; </td></tr>
 <tr class="memitem:ae3634022613638acc8836d05d8667a37"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ae3634022613638acc8836d05d8667a37">required</a> = std::enable_if_t&lt; B, T &gt;</td></tr>
 <tr class="separator:ae3634022613638acc8836d05d8667a37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f627b88a2dca804240fc74ea29eec17"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a0f627b88a2dca804240fc74ea29eec17"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0f627b88a2dca804240fc74ea29eec17">root_type_t</a> = std::remove_cv_t&lt; std::remove_pointer_t&lt; std::decay_t&lt; T &gt; &gt;&gt;</td></tr>
+<tr class="separator:a0f627b88a2dca804240fc74ea29eec17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebc2629a27a6c457021e6e066eaa191b"><td class="memTemplParams" colspan="2">template&lt;typename SanitizeFunction &gt; </td></tr>
 <tr class="memitem:aebc2629a27a6c457021e6e066eaa191b"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aebc2629a27a6c457021e6e066eaa191b">safe_string</a> = <a class="el" href="structdaw_1_1basic__safe__string.html">basic_safe_string</a>&lt; SanitizeFunction, char &gt;</td></tr>
 <tr class="separator:aebc2629a27a6c457021e6e066eaa191b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1623,7 +1635,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a3ca392af620af7aef3b14a8e3c37e12d"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3ca392af620af7aef3b14a8e3c37e12d">make_void_function</a> (Function &amp;&amp;func) noexcept(noexcept(traits_details::void_function&lt; Function &gt;(<a class="el" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>(Function, func))))</td></tr>
 <tr class="separator:a3ca392af620af7aef3b14a8e3c37e12d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4862da287db62b5280054b47c86f23a"><td class="memTemplParams" colspan="2">template&lt;typename... Containers&gt; </td></tr>
-<tr class="memitem:ab4862da287db62b5280054b47c86f23a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1zip__container.html">zip_container</a>&lt; Containers... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ab4862da287db62b5280054b47c86f23a">make_zipcontainer</a> (Containers &amp;&amp;...args)</td></tr>
+<tr class="memitem:ab4862da287db62b5280054b47c86f23a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1zip__container.html">zip_container</a>&lt; Containers... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ab4862da287db62b5280054b47c86f23a">make_zipcontainer</a> (<a class="el" href="namespacedaw.html#a587c9d345850db928fd3b0684d50987f">Containers</a> &amp;&amp;...args)</td></tr>
 <tr class="separator:ab4862da287db62b5280054b47c86f23a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25dac7943ebc9dc607a3a8eae33dc129"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a25dac7943ebc9dc607a3a8eae33dc129"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a25dac7943ebc9dc607a3a8eae33dc129">mask_lsb</a> (size_t bit_count) noexcept</td></tr>
@@ -3760,7 +3772,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a1f959629373094d1612a3bf6687e2fd3"><td class="memTemplItemLeft" align="right" valign="top">constexpr Result&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a1f959629373094d1612a3bf6687e2fd3">visit_nt</a> (Variant &amp;&amp;var, Visitors &amp;&amp;...visitors)</td></tr>
 <tr class="separator:a1f959629373094d1612a3bf6687e2fd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6881be6d4e4ea0ed8a717bb2049469ce"><td class="memTemplParams" colspan="2">template&lt;typename... Containers&gt; </td></tr>
-<tr class="memitem:a6881be6d4e4ea0ed8a717bb2049469ce"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a6881be6d4e4ea0ed8a717bb2049469ce">zip_container</a> (Containers &amp;&amp;...) -&gt; <a class="el" href="structdaw_1_1zip__container.html">zip_container</a>&lt; Containers... &gt;</td></tr>
+<tr class="memitem:a6881be6d4e4ea0ed8a717bb2049469ce"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a6881be6d4e4ea0ed8a717bb2049469ce">zip_container</a> (<a class="el" href="namespacedaw.html#a587c9d345850db928fd3b0684d50987f">Containers</a> &amp;&amp;...) -&gt; <a class="el" href="structdaw_1_1zip__container.html">zip_container</a>&lt; Containers... &gt;</td></tr>
 <tr class="separator:a6881be6d4e4ea0ed8a717bb2049469ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb5408df02124d5229a2babb24860de7"><td class="memTemplParams" colspan="2">template&lt;typename... Iterators&gt; </td></tr>
 <tr class="memitem:adb5408df02124d5229a2babb24860de7"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#adb5408df02124d5229a2babb24860de7">zip_iterator</a> (Iterators...) -&gt; <a class="el" href="structdaw_1_1zip__iterator.html">zip_iterator</a>&lt; Iterators... &gt;</td></tr>
@@ -3777,6 +3789,16 @@ Variables</h2></td></tr>
 <tr class="memitem:a3d67c7a3c43a79be49e881c277c904cb"><td class="memTemplParams" colspan="2">template&lt;bool... values&gt; </td></tr>
 <tr class="memitem:a3d67c7a3c43a79be49e881c277c904cb"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3d67c7a3c43a79be49e881c277c904cb">any_true_v</a> = cpp_17_details::any_true&lt;values...&gt;( )</td></tr>
 <tr class="separator:a3d67c7a3c43a79be49e881c277c904cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a090264ce22c33859cc01f6e592565db4"><td class="memTemplParams" colspan="2">template&lt;typename LHS , typename RHS &gt; </td></tr>
+<tr class="memitem:a090264ce22c33859cc01f6e592565db4"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a090264ce22c33859cc01f6e592565db4">assignable_from</a></td></tr>
+<tr class="memdesc:a090264ce22c33859cc01f6e592565db4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies that an expression of the type and value category specified by RHS can be assigned to an lvalue expression whose type is specified by LHS.  <a href="namespacedaw.html#a090264ce22c33859cc01f6e592565db4">More...</a><br /></td></tr>
+<tr class="separator:a090264ce22c33859cc01f6e592565db4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbe5dbfd9e24f0bf86fa7f7c0b76c32a"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:adbe5dbfd9e24f0bf86fa7f7c0b76c32a"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#adbe5dbfd9e24f0bf86fa7f7c0b76c32a">AssociativeContainers</a></td></tr>
+<tr class="separator:adbe5dbfd9e24f0bf86fa7f7c0b76c32a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb6a1ec2119e5bac7816e4e9b98e785c"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
+<tr class="memitem:acb6a1ec2119e5bac7816e4e9b98e785c"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#acb6a1ec2119e5bac7816e4e9b98e785c">BackInsertableContainer</a></td></tr>
+<tr class="separator:acb6a1ec2119e5bac7816e4e9b98e785c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e3704e0eabc7df2d9a961693f12cc59"><td class="memTemplParams" colspan="2">template&lt;bool B&gt; </td></tr>
 <tr class="memitem:a3e3704e0eabc7df2d9a961693f12cc59"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3e3704e0eabc7df2d9a961693f12cc59">bool_consant_v</a> = <a class="el" href="namespacedaw.html#ac82f9a9d85bdc38da4b125eea9aa39af">bool_constant</a>&lt;B&gt;::value</td></tr>
 <tr class="separator:a3e3704e0eabc7df2d9a961693f12cc59"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3812,8 +3834,20 @@ Variables</h2></td></tr>
 <tr class="separator:a8f094515b5322d8621e01661a64ba831"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a1f33c75eccb6bd683af47475591ab5"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1construct__for__overwrite__t.html">construct_for_overwrite_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5a1f33c75eccb6bd683af47475591ab5">construct_for_overwrite</a> { }</td></tr>
 <tr class="separator:a5a1f33c75eccb6bd683af47475591ab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9577b715f4a82a474f9deef4919997b8"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Args&gt; </td></tr>
+<tr class="memitem:a9577b715f4a82a474f9deef4919997b8"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a9577b715f4a82a474f9deef4919997b8">constructible_from</a> = std::is_constructible_v&lt;T, Args...&gt;</td></tr>
+<tr class="separator:a9577b715f4a82a474f9deef4919997b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a587c9d345850db928fd3b0684d50987f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a587c9d345850db928fd3b0684d50987f"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a587c9d345850db928fd3b0684d50987f">Containers</a></td></tr>
+<tr class="separator:a587c9d345850db928fd3b0684d50987f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e88ca91fef1ffe7e71248484ed6626e"><td class="memTemplParams" colspan="2">template&lt;typename From , typename To &gt; </td></tr>
+<tr class="memitem:a6e88ca91fef1ffe7e71248484ed6626e"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a6e88ca91fef1ffe7e71248484ed6626e">convertible_to</a></td></tr>
+<tr class="separator:a6e88ca91fef1ffe7e71248484ed6626e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabfaf73c130349a5d0fbb8d1effe86dd"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacedaw_1_1sv2.html#aa920a6f0aaad67c79fdcd6eb1001a8bc">string_view_bounds_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#aabfaf73c130349a5d0fbb8d1effe86dd">default_string_view_bounds_type</a></td></tr>
 <tr class="separator:aabfaf73c130349a5d0fbb8d1effe86dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a689141645b54f1a8151d8e325db56795"><td class="memTemplParams" colspan="2">template&lt;typename Derived , typename Base &gt; </td></tr>
+<tr class="memitem:a689141645b54f1a8151d8e325db56795"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a689141645b54f1a8151d8e325db56795">derived_from</a></td></tr>
+<tr class="separator:a689141645b54f1a8151d8e325db56795"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a601a752b7a1a60c5b438e2534c50734c"><td class="memTemplParams" colspan="2">template&lt;typename... B&gt; </td></tr>
 <tr class="memitem:a601a752b7a1a60c5b438e2534c50734c"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a601a752b7a1a60c5b438e2534c50734c">disjunction_v</a> = <a class="el" href="structdaw_1_1disjunction.html">disjunction</a>&lt;B...&gt;::value</td></tr>
 <tr class="separator:a601a752b7a1a60c5b438e2534c50734c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3821,15 +3855,49 @@ Variables</h2></td></tr>
 <tr class="separator:a676414cb342f428be2a54d5ce237e064"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94588b6668349acf95e266a3279e6b6b"><td class="memItemLeft" align="right" valign="top">constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a94588b6668349acf95e266a3279e6b6b">DynamicExtent</a></td></tr>
 <tr class="separator:a94588b6668349acf95e266a3279e6b6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11420c31bb05fb56a038c39a5e45a9da"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a11420c31bb05fb56a038c39a5e45a9da"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a11420c31bb05fb56a038c39a5e45a9da">EnumType</a></td></tr>
+<tr class="separator:a11420c31bb05fb56a038c39a5e45a9da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91d4e704a4aa3ca66bcc81ac17cb630d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a91d4e704a4aa3ca66bcc81ac17cb630d"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a91d4e704a4aa3ca66bcc81ac17cb630d">FloatingPointDaw</a> = <a class="el" href="namespacedaw.html#a13079bfba0cfaaf579de00c945c7425a">daw::is_floating_point_v</a>&lt;std::remove_cvref_t&lt;T&gt;&gt;</td></tr>
+<tr class="separator:a91d4e704a4aa3ca66bcc81ac17cb630d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa38b40b153efda13174c17b8ecd85d69"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aa38b40b153efda13174c17b8ecd85d69"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa38b40b153efda13174c17b8ecd85d69">FloatingPointStd</a> = std::is_floating_point_v&lt;std::remove_cvref_t&lt;T&gt;&gt;</td></tr>
+<tr class="separator:aa38b40b153efda13174c17b8ecd85d69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6bdbb03706480a655516124fef0f93a"><td class="memItemLeft" align="right" valign="top">constexpr const bitset_impl::fmt_binary_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa6bdbb03706480a655516124fef0f93a">fmt_binary</a> { }</td></tr>
 <tr class="separator:aa6bdbb03706480a655516124fef0f93a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f9b0c96c8dd114d036fb38f428517cc"><td class="memItemLeft" align="right" valign="top">constexpr const bitset_impl::fmt_decimal_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0f9b0c96c8dd114d036fb38f428517cc">fmt_decimal</a> { }</td></tr>
 <tr class="separator:a0f9b0c96c8dd114d036fb38f428517cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afdf985b69c298c2a156a4cee66a16b9c"><td class="memItemLeft" align="right" valign="top">constexpr const bitset_impl::fmt_hex_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#afdf985b69c298c2a156a4cee66a16b9c">fmt_hex</a> { }</td></tr>
 <tr class="separator:afdf985b69c298c2a156a4cee66a16b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac503321e2f5615fdd22918eacfc3b26b"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
+<tr class="memitem:ac503321e2f5615fdd22918eacfc3b26b"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ac503321e2f5615fdd22918eacfc3b26b">has_kv_mapping_v</a></td></tr>
+<tr class="memdesc:ac503321e2f5615fdd22918eacfc3b26b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies that Container has type alias members key_type and mapped_type.  <a href="namespacedaw.html#ac503321e2f5615fdd22918eacfc3b26b">More...</a><br /></td></tr>
+<tr class="separator:ac503321e2f5615fdd22918eacfc3b26b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e7e9716057b643c2f27802125228272"><td class="memTemplParams" colspan="2">template&lt;std::size_t N&gt; </td></tr>
 <tr class="memitem:a8e7e9716057b643c2f27802125228272"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacedaw.html#a154129ce0132a086d84a3207b31a925f">index_constant</a>&lt; N &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a8e7e9716057b643c2f27802125228272">index_constant_v</a> = <a class="el" href="namespacedaw.html#a154129ce0132a086d84a3207b31a925f">index_constant</a>&lt;N&gt;{ }</td></tr>
 <tr class="separator:a8e7e9716057b643c2f27802125228272"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5538b83afa4827720bc91d599e3d11c0"><td class="memTemplParams" colspan="2">template&lt;typename Out , typename T &gt; </td></tr>
+<tr class="memitem:a5538b83afa4827720bc91d599e3d11c0"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5538b83afa4827720bc91d599e3d11c0">indirectly_writable</a></td></tr>
+<tr class="separator:a5538b83afa4827720bc91d599e3d11c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9397d32b8f5dfcbcd866c8442a9ccb8"><td class="memTemplParams" colspan="2">template&lt;typename I &gt; </td></tr>
+<tr class="memitem:ab9397d32b8f5dfcbcd866c8442a9ccb8"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ab9397d32b8f5dfcbcd866c8442a9ccb8">input_iterator</a></td></tr>
+<tr class="separator:ab9397d32b8f5dfcbcd866c8442a9ccb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d705508cbbb938bba2d2f7d542be2ac"><td class="memTemplParams" colspan="2">template&lt;typename I &gt; </td></tr>
+<tr class="memitem:a7d705508cbbb938bba2d2f7d542be2ac"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a7d705508cbbb938bba2d2f7d542be2ac">input_or_output_iterator</a></td></tr>
+<tr class="separator:a7d705508cbbb938bba2d2f7d542be2ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af68db29d7bee783fae42ffe70c1c082b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:af68db29d7bee783fae42ffe70c1c082b"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af68db29d7bee783fae42ffe70c1c082b">IntegralDaw</a> = <a class="el" href="namespacedaw.html#a6817d377e10f6ce514c49e8abd957bc5">daw::is_integral_v</a>&lt;std::remove_cvref_t&lt;T&gt;&gt;</td></tr>
+<tr class="separator:af68db29d7bee783fae42ffe70c1c082b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5857b58fc3f233cc19a979591a9c9db"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ae5857b58fc3f233cc19a979591a9c9db"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ae5857b58fc3f233cc19a979591a9c9db">IntegralStd</a> = std::is_integral_v&lt;std::remove_cvref_t&lt;T&gt;&gt;</td></tr>
+<tr class="separator:ae5857b58fc3f233cc19a979591a9c9db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3a3105e1f6021e0248135b178282fb0"><td class="memTemplParams" colspan="2">template&lt;typename Func , typename... Args&gt; </td></tr>
+<tr class="memitem:aa3a3105e1f6021e0248135b178282fb0"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa3a3105e1f6021e0248135b178282fb0">invocable</a></td></tr>
+<tr class="separator:aa3a3105e1f6021e0248135b178282fb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23e2797225a23f0c51be0766a7a156fa"><td class="memTemplParams" colspan="2">template&lt;typename Result , typename Func , typename... Args&gt; </td></tr>
+<tr class="memitem:a23e2797225a23f0c51be0766a7a156fa"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a23e2797225a23f0c51be0766a7a156fa">invocable_result</a></td></tr>
+<tr class="separator:a23e2797225a23f0c51be0766a7a156fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ebe50422eeaa960cf1e0558c25275a6"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a9ebe50422eeaa960cf1e0558c25275a6"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a9ebe50422eeaa960cf1e0558c25275a6">is_arithmetic_v</a> = <a class="el" href="structdaw_1_1is__arithmetic.html">is_arithmetic</a>&lt;T&gt;::value</td></tr>
 <tr class="separator:a9ebe50422eeaa960cf1e0558c25275a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3914,6 +3982,14 @@ Variables</h2></td></tr>
 <tr class="memitem:ae399a9e523c0344e6b36a71e33edd4ae"><td class="memTemplParams" colspan="2">template&lt;unsigned N&gt; </td></tr>
 <tr class="memitem:ae399a9e523c0344e6b36a71e33edd4ae"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacedaw.html#a3a56e39437a0db585579565481e1885b">UInt8</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ae399a9e523c0344e6b36a71e33edd4ae">mask_from_lsb8</a></td></tr>
 <tr class="separator:ae399a9e523c0344e6b36a71e33edd4ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ea724b7c125a95cd0e4179d126c6322"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a6ea724b7c125a95cd0e4179d126c6322"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a6ea724b7c125a95cd0e4179d126c6322">movable</a></td></tr>
+<tr class="memdesc:a6ea724b7c125a95cd0e4179d126c6322"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies that T is an object type that can be moved (that is, it can be move constructed, move assigned, and lvalues of type T can be swapped).  <a href="namespacedaw.html#a6ea724b7c125a95cd0e4179d126c6322">More...</a><br /></td></tr>
+<tr class="separator:a6ea724b7c125a95cd0e4179d126c6322"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18cd253229be11b300f3ff6085efe5d6"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a18cd253229be11b300f3ff6085efe5d6"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a18cd253229be11b300f3ff6085efe5d6">move_constructible</a></td></tr>
+<tr class="memdesc:a18cd253229be11b300f3ff6085efe5d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Satisfied if T is a reference type, or if it is an object type where an object of that type can be constructed from an rvalue of that type in both direct- and copy-initialization contexts, with the usual semantics.  <a href="namespacedaw.html#a18cd253229be11b300f3ff6085efe5d6">More...</a><br /></td></tr>
+<tr class="separator:a18cd253229be11b300f3ff6085efe5d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af106e26c76f4b73d93216e5daac5fb92"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1never__null__t.html">never_null_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af106e26c76f4b73d93216e5daac5fb92">never_null</a> = <a class="el" href="structdaw_1_1never__null__t.html">never_null_t</a>{ }</td></tr>
 <tr class="separator:af106e26c76f4b73d93216e5daac5fb92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a111099f8d1a5ab353748ec111aef90bf"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a> = <a class="el" href="structdaw_1_1sv2_1_1nodiscard__t.html">nodiscard_t</a>{ }</td></tr>
@@ -3923,14 +3999,30 @@ Variables</h2></td></tr>
 <tr class="separator:a0407e01d709d047a59a750572016d104"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adaccd8328f7cfe41b44eaa0e767e9f88"><td class="memItemLeft" align="right" valign="top">constexpr std::nullopt_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#adaccd8328f7cfe41b44eaa0e767e9f88">nullopt</a> = std::nullopt</td></tr>
 <tr class="separator:adaccd8328f7cfe41b44eaa0e767e9f88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ef42595d6bd7942785e5bf7627999d5"><td class="memTemplParams" colspan="2">template&lt;typename I , typename T &gt; </td></tr>
+<tr class="memitem:a1ef42595d6bd7942785e5bf7627999d5"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a1ef42595d6bd7942785e5bf7627999d5">output_iterator</a></td></tr>
+<tr class="separator:a1ef42595d6bd7942785e5bf7627999d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ac193c7d1b66327e2e5ce343cb30820"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Ts&gt; </td></tr>
 <tr class="memitem:a1ac193c7d1b66327e2e5ce343cb30820"><td class="memTemplItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a1ac193c7d1b66327e2e5ce343cb30820">pack_index_of_v</a> = <a class="el" href="structdaw_1_1pack__index__of.html">pack_index_of</a>&lt;T, Ts...&gt;::value</td></tr>
 <tr class="separator:a1ac193c7d1b66327e2e5ce343cb30820"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61c2b283fe058b06515ac846b11f9a48"><td class="memTemplParams" colspan="2">template&lt;typename Pack &gt; </td></tr>
 <tr class="memitem:a61c2b283fe058b06515ac846b11f9a48"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a61c2b283fe058b06515ac846b11f9a48">pack_size_v</a> = <a class="el" href="structdaw_1_1pack__size.html">pack_size</a>&lt;Pack&gt;::value</td></tr>
 <tr class="separator:a61c2b283fe058b06515ac846b11f9a48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa204958271f536b788a1b0c233df6d5e"><td class="memTemplParams" colspan="2">template&lt;typename Lhs , typename Rhs &gt; </td></tr>
+<tr class="memitem:aa204958271f536b788a1b0c233df6d5e"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa204958271f536b788a1b0c233df6d5e">same_as</a> = std::is_same_v&lt;Lhs, Rhs&gt;</td></tr>
+<tr class="separator:aa204958271f536b788a1b0c233df6d5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81bd40f25bd6d73698785063968b5f7f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a81bd40f25bd6d73698785063968b5f7f"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a81bd40f25bd6d73698785063968b5f7f">SignedStd</a> = std::is_signed_v&lt;std::remove_cvref_t&lt;T&gt;&gt;</td></tr>
+<tr class="separator:a81bd40f25bd6d73698785063968b5f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2497791d9d0312f29dc017caa102a44b"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1sized__for__overwrite__t.html">sized_for_overwrite_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a2497791d9d0312f29dc017caa102a44b">sized_for_overwrite</a></td></tr>
 <tr class="separator:a2497791d9d0312f29dc017caa102a44b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a211faf4c653d88b733f3e4608dbb580d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a211faf4c653d88b733f3e4608dbb580d"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a211faf4c653d88b733f3e4608dbb580d">StringLike</a></td></tr>
+<tr class="separator:a211faf4c653d88b733f3e4608dbb580d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d882d749fe84661d2bb44e48605fdd8"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a2d882d749fe84661d2bb44e48605fdd8"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a2d882d749fe84661d2bb44e48605fdd8">swappable</a></td></tr>
+<tr class="memdesc:a2d882d749fe84661d2bb44e48605fdd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies that expressions of the type and value category encoded by T and U are swappable with each other.  <a href="namespacedaw.html#a2d882d749fe84661d2bb44e48605fdd8">More...</a><br /></td></tr>
+<tr class="separator:a2d882d749fe84661d2bb44e48605fdd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af01a60f846d9856c98617f4872cd8fa6"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
 <tr class="memitem:af01a60f846d9856c98617f4872cd8fa6"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1tag__t.html">tag_t</a>&lt; Args... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af01a60f846d9856c98617f4872cd8fa6">tag</a> = <a class="el" href="structdaw_1_1tag__t.html">tag_t</a>&lt;Args...&gt;{ }</td></tr>
 <tr class="separator:af01a60f846d9856c98617f4872cd8fa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3951,6 +4043,12 @@ Variables</h2></td></tr>
 <tr class="memitem:a00ea6294fc0d1208169fdd524268e7eb"><td class="memTemplParams" colspan="2">template&lt;typename Tuple &gt; </td></tr>
 <tr class="memitem:a00ea6294fc0d1208169fdd524268e7eb"><td class="memTemplItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a00ea6294fc0d1208169fdd524268e7eb">tuple_size_v</a></td></tr>
 <tr class="separator:a00ea6294fc0d1208169fdd524268e7eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58de011f10a4dc5aa64d2d2c3b055b5d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a58de011f10a4dc5aa64d2d2c3b055b5d"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a58de011f10a4dc5aa64d2d2c3b055b5d">UnsignedStd</a> = std::is_unsigned_v&lt;std::remove_cvref_t&lt;T&gt;&gt;</td></tr>
+<tr class="separator:a58de011f10a4dc5aa64d2d2c3b055b5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa584f6b8e872e6278153d0d3ebc1b6b1"><td class="memTemplParams" colspan="2">template&lt;typename I &gt; </td></tr>
+<tr class="memitem:aa584f6b8e872e6278153d0d3ebc1b6b1"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa584f6b8e872e6278153d0d3ebc1b6b1">weakly_incrementable</a></td></tr>
+<tr class="separator:aa584f6b8e872e6278153d0d3ebc1b6b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. </p>
@@ -4646,6 +4744,60 @@ template&lt;template&lt; typename... &gt; typename Primary, typename T &gt; </di
 
 </div>
 </div>
+<a id="abddf63e22b9f359929f097d2f08ffa18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abddf63e22b9f359929f097d2f08ffa18">&#9670;&nbsp;</a></span>iter_difference_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacedaw.html#abddf63e22b9f359929f097d2f08ffa18">daw::iter_difference_t</a> = typedef typename std::iterator_traits&lt;T&gt;::difference_type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00171">171</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="a1c7a2b548f0fc456138f702dcdc60e31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c7a2b548f0fc456138f702dcdc60e31">&#9670;&nbsp;</a></span>iter_reference_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacedaw.html#a1c7a2b548f0fc456138f702dcdc60e31">daw::iter_reference_t</a> = typedef typename std::iterator_traits&lt;T&gt;::reference_type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00179">179</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="a3c056ca3597b76acfacb29e2eaf83cdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c056ca3597b76acfacb29e2eaf83cdf">&#9670;&nbsp;</a></span>iterator_category_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacedaw.html#a3c056ca3597b76acfacb29e2eaf83cdf">daw::iterator_category_t</a> = typedef typename std::iterator_traits&lt;T&gt;::iterator_category</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00252">252</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
 <a id="aa88d1d77939be042bb671074e68331cd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa88d1d77939be042bb671074e68331cd">&#9670;&nbsp;</a></span>make_unsigned_t</h2>
 
@@ -4893,6 +5045,24 @@ template&lt;bool B, typename T  = std::nullptr_t&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__traits__impl_8h_source.html#l00520">520</a> of file <a class="el" href="daw__traits__impl_8h_source.html">daw_traits_impl.h</a>.</p>
+
+</div>
+</div>
+<a id="a0f627b88a2dca804240fc74ea29eec17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f627b88a2dca804240fc74ea29eec17">&#9670;&nbsp;</a></span>root_type_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacedaw.html#a0f627b88a2dca804240fc74ea29eec17">daw::root_type_t</a> = typedef std::remove_cv_t&lt;std::remove_pointer_t&lt;std::decay_t&lt;T&gt; &gt;&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00043">43</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -13657,7 +13827,7 @@ template&lt;typename... Containers&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structdaw_1_1zip__container.html">zip_container</a>&lt;Containers...&gt; daw::make_zipcontainer </td>
           <td>(</td>
-          <td class="paramtype">Containers &amp;&amp;...&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw.html#a587c9d345850db928fd3b0684d50987f">Containers</a> &amp;&amp;...&#160;</td>
           <td class="paramname"><em>args</em></td><td>)</td>
           <td></td>
         </tr>
@@ -46238,7 +46408,7 @@ template&lt;typename... Containers&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structdaw_1_1zip__container.html">daw::zip_container</a> </td>
           <td>(</td>
-          <td class="paramtype">Containers &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw.html#a587c9d345850db928fd3b0684d50987f">Containers</a> &amp;&amp;&#160;</td>
           <td class="paramname"><em>...</em></td><td>)</td>
           <td> -&gt;  <a class="el" href="structdaw_1_1zip__container.html">zip_container</a>&lt; Containers... &gt;</td>
         </tr>
@@ -46317,6 +46487,75 @@ template&lt;bool... values&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00076">76</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+
+</div>
+</div>
+<a id="a090264ce22c33859cc01f6e592565db4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a090264ce22c33859cc01f6e592565db4">&#9670;&nbsp;</a></span>assignable_from</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename LHS , typename RHS &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::assignable_from</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line">    std::is_lvalue_reference_v&lt;LHS&gt; and requires( LHS lhs, RHS &amp;&amp;rhs ) {</div>
+<div class="line">    { lhs = <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( RHS, rhs ) } -&gt; std::same_as&lt;LHS&gt;;</div>
+<div class="line">  }</div>
+</div><!-- fragment -->
+<p>Specifies that an expression of the type and value category specified by RHS can be assigned to an lvalue expression whose type is specified by LHS. </p>
+
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00113">113</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="adbe5dbfd9e24f0bf86fa7f7c0b76c32a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbe5dbfd9e24f0bf86fa7f7c0b76c32a">&#9670;&nbsp;</a></span>AssociativeContainers</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::AssociativeContainers</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= Containers&lt;std::remove_cvref_t&lt;T&gt;&gt; and</div>
+<div class="line">    has_kv_mapping_v&lt;std::remove_cvref_t&lt;T&gt;&gt;</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00095">95</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="acb6a1ec2119e5bac7816e4e9b98e785c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb6a1ec2119e5bac7816e4e9b98e785c">&#9670;&nbsp;</a></span>BackInsertableContainer</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Container &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::BackInsertableContainer</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= Containers&lt;Container&gt; and</div>
+<div class="line">    requires( Container c, <span class="keyword">typename</span> Container::value_type <span class="keyword">const</span> &amp;v ) {</div>
+<div class="line">    c.push_back( v );</div>
+<div class="line">  }</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00265">265</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -46646,6 +46885,88 @@ template&lt;typename T  = void&gt; </div>
 
 </div>
 </div>
+<a id="a9577b715f4a82a474f9deef4919997b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9577b715f4a82a474f9deef4919997b8">&#9670;&nbsp;</a></span>constructible_from</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename... Args&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::constructible_from = std::is_constructible_v&lt;T, Args...&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00050">50</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="a587c9d345850db928fd3b0684d50987f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a587c9d345850db928fd3b0684d50987f">&#9670;&nbsp;</a></span>Containers</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::Containers</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= requires( T container ) {</div>
+<div class="line">    <span class="keyword">typename</span> std::remove_cvref_t&lt;T&gt;::value_type;</div>
+<div class="line">    container.begin( );</div>
+<div class="line">    container.end( );</div>
+<div class="line">  }</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00053">53</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="a6e88ca91fef1ffe7e71248484ed6626e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e88ca91fef1ffe7e71248484ed6626e">&#9670;&nbsp;</a></span>convertible_to</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename From , typename To &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::convertible_to</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= std::is_convertible_v&lt;From, To&gt; and requires {</div>
+<div class="line">    <span class="keyword">static_cast&lt;</span>To<span class="keyword">&gt;</span>( std::declval&lt;From&gt;( ) );</div>
+<div class="line">  }</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00031">31</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="a689141645b54f1a8151d8e325db56795"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a689141645b54f1a8151d8e325db56795">&#9670;&nbsp;</a></span>derived_from</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Derived , typename Base &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::derived_from</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= std::is_base_of_v&lt;Base, Derived&gt; and</div>
+<div class="line">    std::is_convertible_v&lt;const volatile Derived *, const volatile Base *&gt;</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00236">236</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
 <a id="a601a752b7a1a60c5b438e2534c50734c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a601a752b7a1a60c5b438e2534c50734c">&#9670;&nbsp;</a></span>disjunction_v</h2>
 
@@ -46695,6 +47016,62 @@ template&lt;typename... B&gt; </div>
 <div class="line">    ( <a class="code" href="namespacedaw_1_1tuple.html#a543ce1a1cb4ea6b89b50c454a74631bd">std::numeric_limits&lt;std::size_t&gt;::max</a> )( )</div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="daw__container__traits_8h_source.html#l00021">21</a> of file <a class="el" href="daw__container__traits_8h_source.html">daw_container_traits.h</a>.</p>
+
+</div>
+</div>
+<a id="a11420c31bb05fb56a038c39a5e45a9da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11420c31bb05fb56a038c39a5e45a9da">&#9670;&nbsp;</a></span>EnumType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::EnumType</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">    std::is_enum_v&lt;std::remove_cvref_t&lt;std::remove_cvref_t&lt;T&gt;&gt;&gt;</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00065">65</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="a91d4e704a4aa3ca66bcc81ac17cb630d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91d4e704a4aa3ca66bcc81ac17cb630d">&#9670;&nbsp;</a></span>FloatingPointDaw</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::FloatingPointDaw = <a class="el" href="namespacedaw.html#a13079bfba0cfaaf579de00c945c7425a">daw::is_floating_point_v</a>&lt;std::remove_cvref_t&lt;T&gt;&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00084">84</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="aa38b40b153efda13174c17b8ecd85d69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa38b40b153efda13174c17b8ecd85d69">&#9670;&nbsp;</a></span>FloatingPointStd</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::FloatingPointStd = std::is_floating_point_v&lt;std::remove_cvref_t&lt;T&gt;&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00081">81</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -46770,6 +47147,38 @@ template&lt;typename... B&gt; </div>
 
 </div>
 </div>
+<a id="ac503321e2f5615fdd22918eacfc3b26b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac503321e2f5615fdd22918eacfc3b26b">&#9670;&nbsp;</a></span>has_kv_mapping_v</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Container &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool daw::has_kv_mapping_v</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= requires {</div>
+<div class="line">    <span class="keyword">typename</span> std::remove_cvref_t&lt;Container&gt;::key_type;</div>
+<div class="line">    <span class="keyword">typename</span> std::remove_cvref_t&lt;Container&gt;::mapped_type;</div>
+<div class="line">  }</div>
+</div><!-- fragment -->
+<p>Specifies that Container has type alias members key_type and mapped_type. </p>
+
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00089">89</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
 <a id="a8e7e9716057b643c2f27802125228272"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8e7e9716057b643c2f27802125228272">&#9670;&nbsp;</a></span>index_constant_v</h2>
 
@@ -46793,6 +47202,166 @@ template&lt;std::size_t N&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00966">966</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+
+</div>
+</div>
+<a id="a5538b83afa4827720bc91d599e3d11c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5538b83afa4827720bc91d599e3d11c0">&#9670;&nbsp;</a></span>indirectly_writable</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Out , typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::indirectly_writable</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line">    requires( Out &amp;&amp;o, T &amp;&amp;t ) {</div>
+<div class="line">    *o = std::forward&lt;T&gt;( t );</div>
+<div class="line">    *std::forward&lt;Out&gt;( o ) = std::forward&lt;T&gt;( t );</div>
+<div class="line">    <span class="keyword">const_cast&lt;</span><span class="keyword">const </span>iter_reference_t&lt;Out&gt; &amp;&amp;<span class="keyword">&gt;</span>( *o ) = std::forward&lt;T&gt;( t );</div>
+<div class="line">    <span class="keyword">const_cast&lt;</span><span class="keyword">const </span>iter_reference_t&lt;Out&gt; &amp;&amp;<span class="keyword">&gt;</span>( *std::forward&lt;Out&gt;( o ) ) =</div>
+<div class="line">      std::forward&lt;T&gt;( t );</div>
+<div class="line">  }</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00222">222</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="ab9397d32b8f5dfcbcd866c8442a9ccb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9397d32b8f5dfcbcd866c8442a9ccb8">&#9670;&nbsp;</a></span>input_iterator</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename I &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::input_iterator</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line">    input_or_output_iterator&lt;I&gt; and</div>
+<div class="line">    not same_as&lt;iterator_category_t&lt;I&gt;, <span class="keywordtype">void</span>&gt; and</div>
+<div class="line">    derived_from&lt;iterator_category_t&lt;I&gt;, std::input_iterator_tag&gt;</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00255">255</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="a7d705508cbbb938bba2d2f7d542be2ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d705508cbbb938bba2d2f7d542be2ac">&#9670;&nbsp;</a></span>input_or_output_iterator</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename I &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::input_or_output_iterator</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line">    requires( I i ) {</div>
+<div class="line">    { *i };</div>
+<div class="line">  }</div>
+<div class="line">  and weakly_incrementable&lt;I&gt;</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00211">211</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="af68db29d7bee783fae42ffe70c1c082b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af68db29d7bee783fae42ffe70c1c082b">&#9670;&nbsp;</a></span>IntegralDaw</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::IntegralDaw = <a class="el" href="namespacedaw.html#a6817d377e10f6ce514c49e8abd957bc5">daw::is_integral_v</a>&lt;std::remove_cvref_t&lt;T&gt;&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00078">78</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="ae5857b58fc3f233cc19a979591a9c9db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5857b58fc3f233cc19a979591a9c9db">&#9670;&nbsp;</a></span>IntegralStd</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::IntegralStd = std::is_integral_v&lt;std::remove_cvref_t&lt;T&gt;&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00075">75</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="aa3a3105e1f6021e0248135b178282fb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3a3105e1f6021e0248135b178282fb0">&#9670;&nbsp;</a></span>invocable</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Func , typename... Args&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::invocable</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= requires( Func &amp;&amp;f, Args &amp;&amp;...args ) {</div>
+<div class="line">    <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">std::invoke</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Func, f ), <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Args, args )... );</div>
+<div class="line">  }</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00105">105</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="a23e2797225a23f0c51be0766a7a156fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23e2797225a23f0c51be0766a7a156fa">&#9670;&nbsp;</a></span>invocable_result</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Result , typename Func , typename... Args&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::invocable_result</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= requires( Func &amp;&amp;f, Args &amp;&amp;...args ) {</div>
+<div class="line">    {</div>
+<div class="line">      <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">std::invoke</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Func, f ), <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Args, args )... )</div>
+<div class="line">      } -&gt; convertible_to&lt;Result&gt;;</div>
+<div class="line">  }</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00204">204</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -47582,6 +48151,57 @@ template&lt;unsigned N&gt; </div>
 
 </div>
 </div>
+<a id="a6ea724b7c125a95cd0e4179d126c6322"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ea724b7c125a95cd0e4179d126c6322">&#9670;&nbsp;</a></span>movable</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::movable</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line">    std::is_object_v&lt;T&gt; and move_constructible&lt;T&gt; and</div>
+<div class="line">    assignable_from&lt;T &amp;, T&gt; and swappable&lt;T&gt;</div>
+</div><!-- fragment -->
+<p>Specifies that T is an object type that can be moved (that is, it can be move constructed, move assigned, and lvalues of type T can be swapped). </p>
+
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00158">158</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="a18cd253229be11b300f3ff6085efe5d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18cd253229be11b300f3ff6085efe5d6">&#9670;&nbsp;</a></span>move_constructible</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::move_constructible</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line">    constructible_from&lt;T, T&gt; and convertible_to&lt;T, T&gt;</div>
+</div><!-- fragment -->
+<p>Satisfied if T is a reference type, or if it is an object type where an object of that type can be constructed from an rvalue of that type in both direct- and copy-initialization contexts, with the usual semantics. </p>
+
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00127">127</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
 <a id="af106e26c76f4b73d93216e5daac5fb92"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af106e26c76f4b73d93216e5daac5fb92">&#9670;&nbsp;</a></span>never_null</h2>
 
@@ -47627,6 +48247,32 @@ template&lt;unsigned N&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__optional_8h_source.html#l00020">20</a> of file <a class="el" href="daw__optional_8h_source.html">daw_optional.h</a>.</p>
+
+</div>
+</div>
+<a id="a1ef42595d6bd7942785e5bf7627999d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ef42595d6bd7942785e5bf7627999d5">&#9670;&nbsp;</a></span>output_iterator</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename I , typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::output_iterator</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line">    input_or_output_iterator&lt;I&gt; and indirectly_writable&lt;I, T&gt; and</div>
+<div class="line">    requires( I i, T &amp;&amp;t ) {</div>
+<div class="line">    *i++ = <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( T, t ); </div>
+<div class="line">  }</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00240">240</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -47682,6 +48328,42 @@ template&lt;typename Pack &gt; </div>
 
 </div>
 </div>
+<a id="aa204958271f536b788a1b0c233df6d5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa204958271f536b788a1b0c233df6d5e">&#9670;&nbsp;</a></span>same_as</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Lhs , typename Rhs &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::same_as = std::is_same_v&lt;Lhs, Rhs&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00040">40</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="a81bd40f25bd6d73698785063968b5f7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81bd40f25bd6d73698785063968b5f7f">&#9670;&nbsp;</a></span>SignedStd</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::SignedStd = std::is_signed_v&lt;std::remove_cvref_t&lt;T&gt;&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00072">72</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
 <a id="a2497791d9d0312f29dc017caa102a44b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2497791d9d0312f29dc017caa102a44b">&#9670;&nbsp;</a></span>sized_for_overwrite</h2>
 
@@ -47705,6 +48387,52 @@ template&lt;typename Pack &gt; </div>
 <div class="line">    sized_for_overwrite_t{ }</div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="daw__vector_8h_source.html#l00249">249</a> of file <a class="el" href="daw__vector_8h_source.html">daw_vector.h</a>.</p>
+
+</div>
+</div>
+<a id="a211faf4c653d88b733f3e4608dbb580d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a211faf4c653d88b733f3e4608dbb580d">&#9670;&nbsp;</a></span>StringLike</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::StringLike</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= Containers&lt;std::remove_cvref_t&lt;T&gt;&gt; and</div>
+<div class="line">                       same_as &lt; typename std::remove_cvref_t&lt;T&gt;::value_type,</div>
+<div class="line">  <span class="keywordtype">char</span> &gt;</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00060">60</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="a2d882d749fe84661d2bb44e48605fdd8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d882d749fe84661d2bb44e48605fdd8">&#9670;&nbsp;</a></span>swappable</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::swappable</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line">    swappable_test::swappable_test&lt;T&gt;</div>
+</div><!-- fragment -->
+<p>Specifies that expressions of the type and value category encoded by T and U are swappable with each other. </p>
+
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00147">147</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -47895,6 +48623,52 @@ template&lt;typename Tuple &gt; </div>
 
 </div>
 </div>
+<a id="a58de011f10a4dc5aa64d2d2c3b055b5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58de011f10a4dc5aa64d2d2c3b055b5d">&#9670;&nbsp;</a></span>UnsignedStd</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::UnsignedStd = std::is_unsigned_v&lt;std::remove_cvref_t&lt;T&gt;&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00069">69</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="aa584f6b8e872e6278153d0d3ebc1b6b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa584f6b8e872e6278153d0d3ebc1b6b1">&#9670;&nbsp;</a></span>weakly_incrementable</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename I &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::weakly_incrementable</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line">    movable&lt;I&gt; and requires( I i ) {</div>
+<div class="line">    <span class="keyword">typename</span> iter_difference_t&lt;I&gt;;</div>
+<div class="line">    requires SignedStd&lt;iter_difference_t&lt;I&gt;&gt;;</div>
+<div class="line">    { ++i } -&gt; same_as&lt;I &amp;&gt;;</div>
+<div class="line">    i++;</div>
+<div class="line">  }</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00183">183</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 <div class="ttc" id="anamespacedaw_html_a9c777f76740a1ff56e7be2a5a80d6790"><div class="ttname"><a href="namespacedaw.html#a9c777f76740a1ff56e7be2a5a80d6790">daw::UInt16</a></div><div class="ttdeci">UInt16</div><div class="ttdef"><b>Definition:</b> <a href="daw__uint__buffer_8h_source.html#l00025">daw_uint_buffer.h:25</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ab6fc64a62e7b74189f2d3dbee80b0a75"><div class="ttname"><a href="namespacedaw.html#ab6fc64a62e7b74189f2d3dbee80b0a75">daw::UInt32</a></div><div class="ttdeci">UInt32</div><div class="ttdef"><b>Definition:</b> <a href="daw__uint__buffer_8h_source.html#l00024">daw_uint_buffer.h:24</a></div></div>
@@ -47905,7 +48679,9 @@ template&lt;typename Tuple &gt; </div>
 <div class="ttc" id="anamespacedaw_html_a4586b741ca66c893b39ecc7fb6066556"><div class="ttname"><a href="namespacedaw.html#a4586b741ca66c893b39ecc7fb6066556">daw::to_uint8</a></div><div class="ttdeci">constexpr UInt8 to_uint8(Number num)</div><div class="ttdef"><b>Definition:</b> <a href="daw__uint__buffer_8h_source.html#l00047">daw_uint_buffer.h:47</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1tuple_html_a543ce1a1cb4ea6b89b50c454a74631bd"><div class="ttname"><a href="namespacedaw_1_1tuple.html#a543ce1a1cb4ea6b89b50c454a74631bd">daw::tuple::max</a></div><div class="ttdeci">constexpr auto() max(std::tuple&lt; Ts... &gt; const &amp;a, std::tuple&lt; Ts... &gt; const &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple__helper_8h_source.html#l00382">daw_tuple_helper.h:382</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a6df1567073d79619c8174c1b7fb2b752"><div class="ttname"><a href="namespacedaw.html#a6df1567073d79619c8174c1b7fb2b752">daw::UInt64</a></div><div class="ttdeci">UInt64</div><div class="ttdef"><b>Definition:</b> <a href="daw__uint__buffer_8h_source.html#l00023">daw_uint_buffer.h:23</a></div></div>
+<div class="ttc" id="adaw__move_8h_html_a92169421367fae95c111acee1e0ebe60"><div class="ttname"><a href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a></div><div class="ttdeci">#define DAW_FWD2(Type, Value)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00042">daw_move.h:42</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ae2ead15b03708772ff9b8c201e1dc335"><div class="ttname"><a href="namespacedaw.html#ae2ead15b03708772ff9b8c201e1dc335">daw::is_detected_exact</a></div><div class="ttdeci">std::is_same&lt; Expected, detected_t&lt; Op, Args... &gt; &gt; is_detected_exact</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00199">cpp_17.h:199</a></div></div>
+<div class="ttc" id="anamespacedaw_html_ab5eec8bf38fc54bec8b954609a724d8a"><div class="ttname"><a href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a></div><div class="ttdeci">constexpr auto invoke(F &amp;&amp;f, Args &amp;&amp;...args) noexcept(noexcept(DAW_FWD2(F, f)(DAW_FWD2(Args, args)...))) -&gt; decltype(DAW_FWD2(F, f)(DAW_FWD2(Args, args)...))</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00357">cpp_17.h:357</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ad677e69cc557fad47cf23d9ba4396f8a"><div class="ttname"><a href="namespacedaw.html#ad677e69cc557fad47cf23d9ba4396f8a">daw::to_uint32</a></div><div class="ttdeci">constexpr UInt32 to_uint32(Number num)</div><div class="ttdef"><b>Definition:</b> <a href="daw__uint__buffer_8h_source.html#l00035">daw_uint_buffer.h:35</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a05cb5775a1268bd66ef632bcfd4e4bd7"><div class="ttname"><a href="namespacedaw.html#a05cb5775a1268bd66ef632bcfd4e4bd7">daw::is_detected_v</a></div><div class="ttdeci">constexpr bool is_detected_v</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00190">cpp_17.h:190</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a3a56e39437a0db585579565481e1885b"><div class="ttname"><a href="namespacedaw.html#a3a56e39437a0db585579565481e1885b">daw::UInt8</a></div><div class="ttdeci">UInt8</div><div class="ttdef"><b>Definition:</b> <a href="daw__uint__buffer_8h_source.html#l00026">daw_uint_buffer.h:26</a></div></div>

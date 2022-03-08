@@ -1,11 +1,11 @@
 var searchData=
 [
-  ['randomiterator_2198',['RandomIterator',['../structdaw_1_1_random_iterator.html',1,'daw']]],
-  ['range_2199',['Range',['../structdaw_1_1range_1_1_range.html',1,'daw::range']]],
-  ['read_5fonly_2200',['read_only',['../structdaw_1_1read__only.html',1,'daw']]],
-  ['reference_2201',['Reference',['../structdaw_1_1_reference.html',1,'daw::Reference&lt; T &gt;'],['../structdaw_1_1static__bitset_1_1reference.html',1,'daw::static_bitset&lt; BitWidth &gt;::reference']]],
-  ['referencerange_2202',['ReferenceRange',['../classdaw_1_1range_1_1_reference_range.html',1,'daw::range']]],
-  ['repeat_5fn_5fchar_5fiterator_2203',['repeat_n_char_iterator',['../structdaw_1_1repeat__n__char__iterator.html',1,'daw']]],
-  ['reverse_5fiterator_2204',['reverse_iterator',['../structdaw_1_1reverse__iterator.html',1,'daw']]],
-  ['ring_5fadaptor_2205',['ring_adaptor',['../structdaw_1_1ring__adaptor.html',1,'daw']]]
+  ['randomiterator_2228',['RandomIterator',['../structdaw_1_1_random_iterator.html',1,'daw']]],
+  ['range_2229',['Range',['../structdaw_1_1range_1_1_range.html',1,'daw::range']]],
+  ['read_5fonly_2230',['read_only',['../structdaw_1_1read__only.html',1,'daw']]],
+  ['reference_2231',['Reference',['../structdaw_1_1_reference.html',1,'daw::Reference&lt; T &gt;'],['../structdaw_1_1static__bitset_1_1reference.html',1,'daw::static_bitset&lt; BitWidth &gt;::reference']]],
+  ['referencerange_2232',['ReferenceRange',['../classdaw_1_1range_1_1_reference_range.html',1,'daw::range']]],
+  ['repeat_5fn_5fchar_5fiterator_2233',['repeat_n_char_iterator',['../structdaw_1_1repeat__n__char__iterator.html',1,'daw']]],
+  ['reverse_5fiterator_2234',['reverse_iterator',['../structdaw_1_1reverse__iterator.html',1,'daw']]],
+  ['ring_5fadaptor_2235',['ring_adaptor',['../structdaw_1_1ring__adaptor.html',1,'daw']]]
 ];
