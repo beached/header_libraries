@@ -18,7 +18,7 @@ set(TEST_SOURCES
         daw_bounded_array_test.cpp
         daw_bounded_string_test.cpp
         daw_bounded_vector_test.cpp
-				daw_can_constant_evaluate_test.cpp
+        daw_can_constant_evaluate_test.cpp
         daw_carray_test.cpp
         daw_checked_expected_test.cpp
         daw_clumpy_sparsy_test.cpp
@@ -47,11 +47,11 @@ set(TEST_SOURCES
         daw_iterator_circular_iterator_test.cpp
         daw_iterator_counting_iterators_test.cpp
         daw_iterator_end_inserter_test.cpp
-				daw_iterator_find_iterator_test.cpp
+        daw_iterator_find_iterator_test.cpp
         daw_iterator_indexed_iterator_test.cpp
         daw_iterator_inserter_test.cpp
         daw_iterator_integer_iterator_test.cpp
-				daw_iterator_iota_iterator_test.cpp
+        daw_iterator_iota_iterator_test.cpp
         daw_iterator_output_stream_iterator_test.cpp
         daw_iterator_random_iterator_test.cpp
         daw_iterator_repeat_n_char_iterator_test.cpp
@@ -63,8 +63,8 @@ set(TEST_SOURCES
         daw_prop_const_ptr_test.cpp
         daw_iterator_zipiter_test.cpp
         daw_keep_n_test.cpp
-				daw_logic_test.cpp
-				daw_lift_test.cpp
+        daw_logic_test.cpp
+        daw_lift_test.cpp
         daw_math_test.cpp
         daw_memory_mapped_file_test.cpp
         daw_metro_hash_test.cpp
@@ -107,12 +107,15 @@ set(TEST_SOURCES
         daw_view_test.cpp
         daw_virtual_base_test.cpp
         daw_visit_test.cpp
-				daw_zipcontainer_test.cpp
-				daw_not_null_test.cpp
+        daw_zipcontainer_test.cpp
+        daw_not_null_test.cpp
         sbo_test.cpp
         static_hash_table_test.cpp
         )
 
+set(CPP20_TEST_SOURCES
+        daw_concepts_test.cpp
+        )
 #NOT COMPLETED daw_iterator_split_iterator_test.cpp
 #NOT COMPLETED daw_static_bitset_test.cpp
 #NOT COMPLETED daw_string_fmt_test.cpp
@@ -130,7 +133,7 @@ set(DEV_TEST_SOURCES
         daw_bind_args_at_test.cpp
         daw_cstring_test.cpp
         daw_hash_table2_test.cpp
-				daw_range_algorithm_test.cpp
+        daw_range_algorithm_test.cpp
         daw_range_test.cpp
         daw_min_perfect_hash_test.cpp
         daw_stack_quick_sort_test.cpp
@@ -161,6 +164,19 @@ foreach (CUR_TEST IN LISTS all_tests)
     add_test(${CUR_TEST_NAME}_test ${CUR_TEST_NAME})
     add_dependencies(${PROJECT_NAME}_full ${CUR_TEST_NAME})
 endforeach ()
+
+if (CMAKE_CXX_STANDARD STRGREATER_EQUAL "20")
+    foreach (CUR_TEST IN LISTS CPP20_TEST_SOURCES)
+        string(REPLACE ".cpp" "" CUR_TEST_NAME ${CUR_TEST})
+        add_executable("${CUR_TEST_NAME}" "${CUR_TEST}")
+        target_link_libraries(${CUR_TEST_NAME} PRIVATE daw_test)
+        target_compile_features(${CUR_TEST_NAME} PUBLIC cxx_std_20)
+        add_test(${CUR_TEST_NAME}_test ${CUR_TEST_NAME})
+        add_dependencies(${PROJECT_NAME}_full ${CUR_TEST_NAME})
+    endforeach ()
+else ()
+    message(STATUS "Disabling C++20 tests")
+endif ()
 
 option(DAW_ENABLE_DEV_TESTING "Build unit tests still in development" OFF)
 if (DAW_ENABLE_DEV_TESTING)
