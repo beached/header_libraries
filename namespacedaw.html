@@ -3858,6 +3858,14 @@ Variables</h2></td></tr>
 <tr class="memitem:a11420c31bb05fb56a038c39a5e45a9da"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a11420c31bb05fb56a038c39a5e45a9da"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a11420c31bb05fb56a038c39a5e45a9da">EnumType</a></td></tr>
 <tr class="separator:a11420c31bb05fb56a038c39a5e45a9da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ccd6067c5e6d24d7218bf5dba6fcb7a"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a2ccd6067c5e6d24d7218bf5dba6fcb7a"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a2ccd6067c5e6d24d7218bf5dba6fcb7a">equality_comparable</a></td></tr>
+<tr class="memdesc:a2ccd6067c5e6d24d7218bf5dba6fcb7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies that the comparison operators == and != on T reflects equality: == yields true if and only if the operands are equal.  <a href="namespacedaw.html#a2ccd6067c5e6d24d7218bf5dba6fcb7a">More...</a><br /></td></tr>
+<tr class="separator:a2ccd6067c5e6d24d7218bf5dba6fcb7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9b8978711f81cd4bd807aa1e989e02e"><td class="memTemplParams" colspan="2">template&lt;class T , class U &gt; </td></tr>
+<tr class="memitem:af9b8978711f81cd4bd807aa1e989e02e"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af9b8978711f81cd4bd807aa1e989e02e">equality_comparable_with</a></td></tr>
+<tr class="memdesc:af9b8978711f81cd4bd807aa1e989e02e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies that the comparison operators == and != on (possibly mixed) T and U operands yield results consistent with equality. Comparing mixed operands yields results equivalent to comparing the operands converted to their common type.  <a href="namespacedaw.html#af9b8978711f81cd4bd807aa1e989e02e">More...</a><br /></td></tr>
+<tr class="separator:af9b8978711f81cd4bd807aa1e989e02e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91d4e704a4aa3ca66bcc81ac17cb630d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a91d4e704a4aa3ca66bcc81ac17cb630d"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a91d4e704a4aa3ca66bcc81ac17cb630d">FloatingPointDaw</a> = <a class="el" href="namespacedaw.html#a13079bfba0cfaaf579de00c945c7425a">daw::is_floating_point_v</a>&lt;std::remove_cvref_t&lt;T&gt;&gt;</td></tr>
 <tr class="separator:a91d4e704a4aa3ca66bcc81ac17cb630d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -47036,6 +47044,56 @@ template&lt;typename T &gt; </div>
 <div class="line">    std::is_enum_v&lt;std::remove_cvref_t&lt;std::remove_cvref_t&lt;T&gt;&gt;&gt;</div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00065">65</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="a2ccd6067c5e6d24d7218bf5dba6fcb7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ccd6067c5e6d24d7218bf5dba6fcb7a">&#9670;&nbsp;</a></span>equality_comparable</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::equality_comparable</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line">    concept_details::weakly_equality_comparable_with&lt;T, T&gt;</div>
+</div><!-- fragment -->
+<p>Specifies that the comparison operators == and != on T reflects equality: == yields true if and only if the operands are equal. </p>
+
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00302">302</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="af9b8978711f81cd4bd807aa1e989e02e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9b8978711f81cd4bd807aa1e989e02e">&#9670;&nbsp;</a></span>equality_comparable_with</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class U &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::equality_comparable_with</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line">    concept_details::weakly_equality_comparable_with&lt;T, U&gt;</div>
+</div><!-- fragment -->
+<p>Specifies that the comparison operators == and != on (possibly mixed) T and U operands yield results consistent with equality. Comparing mixed operands yields results equivalent to comparing the operands converted to their common type. </p>
+
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00314">314</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
