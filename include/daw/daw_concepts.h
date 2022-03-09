@@ -266,4 +266,55 @@ namespace daw {
 	  requires( Container c, typename Container::value_type const &v ) {
 		c.push_back( v );
 	};
+
+#if not defined( __cpp_lib_concepts )
+	namespace concept_details {
+		template<typename B>
+		concept boolean_testable_impl = convertible_to<B, bool>;
+	}
+
+	/// @brief Specifies the requirements for expressions that are convertible to
+	/// bool and for which the logical operators have the usual behavior
+	/// (including short-circuiting), even for two different boolean-testable
+	/// types
+	template<typename B>
+	concept boolean_testable = concept_details::boolean_testable_impl<B> and
+	  requires( B &&b ) {
+		{ not std::forward<B>( b ) } -> concept_details::boolean_testable_impl;
+	};
+
+	namespace concept_details {
+		template<typename T, typename U>
+		concept weakly_equality_comparable_with =
+		  requires( std::remove_reference_t<T> const &t,
+		            std::remove_reference_t<U> const &u ) {
+			{ t == u } -> boolean_testable;
+			{ t != u } -> boolean_testable;
+			{ u == t } -> boolean_testable;
+			{ u != t } -> boolean_testable;
+		};
+	} // namespace concept_details
+#endif
+
+	/// @brief Specifies that the comparison operators == and != on T reflects
+	/// equality: == yields true if and only if the operands are equal
+	template<typename T>
+	concept equality_comparable =
+#if defined( __cpp_lib_concepts )
+	  std::equality_comparable<T>;
+#else
+	  concept_details::weakly_equality_comparable_with<T, T>;
+#endif
+
+	/// @brief Specifies that the comparison operators == and != on (possibly
+	/// mixed) T and U operands yield results consistent with equality. Comparing
+	/// mixed operands yields results equivalent to comparing the operands
+	/// converted to their common type.
+	template<class T, class U>
+	concept equality_comparable_with =
+#if defined( __cpp_lib_concepts )
+	  std::equality_comparable_with<T, U>;
+#else
+	  concept_details::weakly_equality_comparable_with<T, U>;
+#endif
 } // namespace daw
