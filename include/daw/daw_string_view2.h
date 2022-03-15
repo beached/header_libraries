@@ -2218,7 +2218,7 @@ namespace daw {
 		// CTAD
 		template<typename StringView, typename CharT = std::decay_t<DAW_TYPEOF(
 		                                std::data( std::declval<StringView>( ) ) )>>
-		basic_string_view( StringView ) -> basic_string_view<CharT>;
+		basic_string_view( StringView && ) -> basic_string_view<CharT>;
 
 		template<typename CharT>
 		basic_string_view( CharT const * ) -> basic_string_view<CharT>;
@@ -2231,11 +2231,6 @@ namespace daw {
 		basic_string_view( CharT const *, CharT const * )
 		  -> basic_string_view<CharT>;
 
-		template<typename CharT, std::size_t N>
-		basic_string_view( CharT const ( &/*string_literal*/ )[N] )
-		  -> basic_string_view<CharT>;
-		//
-		//
 		namespace string_view_literals {
 			[[nodiscard]] constexpr string_view
 			operator""_sv( char const *str, std::size_t len ) noexcept {

@@ -1560,6 +1560,18 @@ namespace daw {
 		daw_expecting( sv != sv2, true );
 		daw_expecting( sv2, "Hello" );
 	}
+
+	namespace daw_array_ctad_impl {
+		template<typename S>
+		constexpr auto foo( S && s ) {
+			return daw::sv2::basic_string_view( s );
+		}
+	}
+
+	void daw_array_ctad( ) {
+		auto f = daw_array_ctad_impl::foo( "Test" );
+		daw_expecting( f, "Test" );
+	}
 } // namespace daw
 
 int main( )
@@ -1701,6 +1713,7 @@ int main( )
 #endif
 	daw::daw_trim( );
 	daw::daw_trim_copy( );
+	daw::daw_array_ctad( );
 }
 #if defined( DAW_USE_EXCEPTIONS )
 catch( std::exception const &ex ) {
