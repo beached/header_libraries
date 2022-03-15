@@ -121,9 +121,6 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ad5e666c9d2e262ed131a1d9c5838d89f"><td class="memTemplParams" colspan="2">template&lt;typename CharT , std::size_t N&gt; </td></tr>
-<tr class="memitem:ad5e666c9d2e262ed131a1d9c5838d89f"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#ad5e666c9d2e262ed131a1d9c5838d89f">basic_string_view</a> (CharT const (&amp;)[N]) -&gt; <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">basic_string_view</a>&lt; CharT &gt;</td></tr>
-<tr class="separator:ad5e666c9d2e262ed131a1d9c5838d89f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98dc16bd167f0024e7b44dffa07faafa"><td class="memTemplParams" colspan="2">template&lt;typename CharT &gt; </td></tr>
 <tr class="memitem:a98dc16bd167f0024e7b44dffa07faafa"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#a98dc16bd167f0024e7b44dffa07faafa">basic_string_view</a> (CharT const *) -&gt; <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">basic_string_view</a>&lt; CharT &gt;</td></tr>
 <tr class="separator:a98dc16bd167f0024e7b44dffa07faafa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -133,9 +130,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a934bc4e64eed73a765eaa56538d3761a"><td class="memTemplParams" colspan="2">template&lt;typename CharT &gt; </td></tr>
 <tr class="memitem:a934bc4e64eed73a765eaa56538d3761a"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#a934bc4e64eed73a765eaa56538d3761a">basic_string_view</a> (CharT const *, std::size_t count) -&gt; <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">basic_string_view</a>&lt; CharT &gt;</td></tr>
 <tr class="separator:a934bc4e64eed73a765eaa56538d3761a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c24ccb97e6b90714dfe9fdb96345081"><td class="memTemplParams" colspan="2">template&lt;typename StringView , typename CharT  = std::decay_t&lt;DAW_TYPEOF(		                                std::data( std::declval&lt;StringView&gt;( ) ) )&gt;&gt; </td></tr>
-<tr class="memitem:a2c24ccb97e6b90714dfe9fdb96345081"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#a2c24ccb97e6b90714dfe9fdb96345081">basic_string_view</a> (StringView) -&gt; <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">basic_string_view</a>&lt; CharT &gt;</td></tr>
-<tr class="separator:a2c24ccb97e6b90714dfe9fdb96345081"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb6b9e7ee896cb9c20f95d7d0da067af"><td class="memTemplParams" colspan="2">template&lt;typename StringView , typename CharT  = std::decay_t&lt;DAW_TYPEOF(		                                std::data( std::declval&lt;StringView&gt;( ) ) )&gt;&gt; </td></tr>
+<tr class="memitem:aeb6b9e7ee896cb9c20f95d7d0da067af"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#aeb6b9e7ee896cb9c20f95d7d0da067af">basic_string_view</a> (StringView &amp;&amp;) -&gt; <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">basic_string_view</a>&lt; CharT &gt;</td></tr>
+<tr class="separator:aeb6b9e7ee896cb9c20f95d7d0da067af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa88541d11dcb90d941c674f03c5f0433"><td class="memTemplParams" colspan="2">template&lt;typename CharT , string_view_bounds_type Bounds, typename OStream , std::enable_if_t&lt; daw::traits::is_ostream_like_v&lt; OStream, CharT &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:aa88541d11dcb90d941c674f03c5f0433"><td class="memTemplItemLeft" align="right" valign="top">OStream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#aa88541d11dcb90d941c674f03c5f0433">operator&lt;&lt;</a> (OStream &amp;os, <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">basic_string_view</a>&lt; CharT, Bounds &gt; v)</td></tr>
 <tr class="separator:aa88541d11dcb90d941c674f03c5f0433"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -254,28 +251,8 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ad5e666c9d2e262ed131a1d9c5838d89f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad5e666c9d2e262ed131a1d9c5838d89f">&#9670;&nbsp;</a></span>basic_string_view() <span class="overload">[1/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename CharT , std::size_t N&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">daw::sv2::basic_string_view</a> </td>
-          <td>(</td>
-          <td class="paramtype">CharT &#160;</td>
-          <td class="paramname"><em>const</em>(&amp;)[N]</td><td>)</td>
-          <td> -&gt;  <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">basic_string_view</a>&lt; CharT &gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a98dc16bd167f0024e7b44dffa07faafa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98dc16bd167f0024e7b44dffa07faafa">&#9670;&nbsp;</a></span>basic_string_view() <span class="overload">[2/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a98dc16bd167f0024e7b44dffa07faafa">&#9670;&nbsp;</a></span>basic_string_view() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -295,7 +272,7 @@ template&lt;typename CharT &gt; </div>
 </div>
 </div>
 <a id="abf69d50ccfff1f61ca7ac15a89abebf2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf69d50ccfff1f61ca7ac15a89abebf2">&#9670;&nbsp;</a></span>basic_string_view() <span class="overload">[3/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abf69d50ccfff1f61ca7ac15a89abebf2">&#9670;&nbsp;</a></span>basic_string_view() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -325,7 +302,7 @@ template&lt;typename CharT &gt; </div>
 </div>
 </div>
 <a id="a934bc4e64eed73a765eaa56538d3761a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a934bc4e64eed73a765eaa56538d3761a">&#9670;&nbsp;</a></span>basic_string_view() <span class="overload">[4/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a934bc4e64eed73a765eaa56538d3761a">&#9670;&nbsp;</a></span>basic_string_view() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -354,8 +331,8 @@ template&lt;typename CharT &gt; </div>
 
 </div>
 </div>
-<a id="a2c24ccb97e6b90714dfe9fdb96345081"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c24ccb97e6b90714dfe9fdb96345081">&#9670;&nbsp;</a></span>basic_string_view() <span class="overload">[5/5]</span></h2>
+<a id="aeb6b9e7ee896cb9c20f95d7d0da067af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb6b9e7ee896cb9c20f95d7d0da067af">&#9670;&nbsp;</a></span>basic_string_view() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -365,7 +342,7 @@ template&lt;typename StringView , typename CharT  = std::decay_t&lt;DAW_TYPEOF(	
         <tr>
           <td class="memname"><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">daw::sv2::basic_string_view</a> </td>
           <td>(</td>
-          <td class="paramtype">StringView&#160;</td>
+          <td class="paramtype">StringView &amp;&amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td> -&gt;  <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">basic_string_view</a>&lt; CharT &gt;</td>
         </tr>
@@ -402,7 +379,7 @@ template&lt;typename CharT , string_view_bounds_type Bounds, typename OStream , 
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l02320">2320</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l02315">2315</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
 
 </div>
 </div>
