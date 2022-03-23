@@ -111,6 +111,7 @@ set(TEST_SOURCES
         daw_not_null_test.cpp
         sbo_test.cpp
         static_hash_table_test.cpp
+				vector_test.cpp
         )
 
 set(CPP20_TEST_SOURCES

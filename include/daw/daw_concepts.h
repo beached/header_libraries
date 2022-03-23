@@ -251,6 +251,12 @@ namespace daw {
 	using iterator_category_t =
 	  typename std::iterator_traits<T>::iterator_category;
 
+	template<typename T>
+	using iter_reference_type = typename std::iterator_traits<T>::reference;
+
+	template<typename T>
+	using iter_value_type = typename std::iterator_traits<T>::value;
+
 	template<typename I>
 	concept input_iterator =
 #if defined( __cpp_lib_concepts )
@@ -259,6 +265,15 @@ namespace daw {
 	  input_or_output_iterator<I> and
 	  not same_as<iterator_category_t<I>, void> and
 	  derived_from<iterator_category_t<I>, std::input_iterator_tag>;
+#endif
+
+	template<typename I>
+	concept forward_iterator =
+#if defined( __cpp_lib_concepts )
+	  std::forward_iterator<I>;
+#else
+	  iterator<I> and
+	  derived_from<iterator_category_t<I>, std::forward_iterator_tag>;
 #endif
 
 	template<typename Container>
@@ -317,4 +332,11 @@ namespace daw {
 #else
 	  concept_details::weakly_equality_comparable_with<T, U>;
 #endif
+
+	template<typename T>
+	concept Allocators = true;
+
+	template<typename Alloc, typename = void>
+	inline constexpr bool is_move_insertable_v =
+	  std::is_move_constructible_v<typename Alloc::value_type>;
 } // namespace daw
