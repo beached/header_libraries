@@ -428,7 +428,7 @@ namespace daw {
 
 		constexpr void destruct_at_begin( pointer new_begin ) {
 			destruct_at_begin( new_begin,
-			                   std::is_trivially_destructible<value_type>( ) );
+			                   std::is_trivially_destructible<value_type>{ } );
 		}
 
 		constexpr void destruct_at_begin( pointer new_begin, std::false_type ) {
