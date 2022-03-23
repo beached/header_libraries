@@ -785,7 +785,7 @@ namespace daw {
 		constexpr void construct_at_end( size_type n ) {
 			ConstructTransaction tx( *this, n );
 			const_pointer const new_end = tx.new_m_end;
-			for( pointer pos = tx.pos_; pos != new_end; tx.pos_ = ++pos ) {
+			for( pointer pos = tx.pos; pos != new_end; tx.pos = ++pos ) {
 				alloc_traits::construct( alloc( ), std::to_address( pos ) );
 			}
 		}
@@ -799,7 +799,7 @@ namespace daw {
 		constexpr void construct_at_end( size_type n, const_reference x ) {
 			ConstructTransaction tx( *this, n );
 			const_pointer new_end = tx.new_m_end;
-			for( pointer pos = tx.pos_; pos != new_end; tx.pos_ = ++pos ) {
+			for( pointer pos = tx.pos; pos != new_end; tx.pos = ++pos ) {
 				alloc_traits::construct( alloc( ), std::to_address( pos ), x );
 			}
 		}
@@ -883,8 +883,8 @@ namespace daw {
 			{
 				pointer i = from_s + n;
 				ConstructTransaction tx( *this, from_e - i );
-				for( pointer pos = tx.pos_; i < from_e;
-				     ++i, (void)++pos, tx.pos_ = pos ) {
+				for( pointer pos = tx.pos; i < from_e;
+				     ++i, (void)++pos, tx.pos = pos ) {
 					alloc_traits::construct( alloc( ), std::to_address( pos ),
 					                         DAW_MOVE( *i ) );
 				}
@@ -969,7 +969,7 @@ namespace daw {
 			ConstructTransaction tx( *this, 1 );
 			alloc_traits::construct( alloc( ), std::to_address( tx.pos ),
 			                         DAW_FWD2( Args, args )... );
-			++tx.pos_;
+			++tx.pos;
 		}
 
 		[[nodiscard]] constexpr allocator_type &alloc( ) noexcept {
