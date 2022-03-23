@@ -111,11 +111,11 @@ set(TEST_SOURCES
         daw_not_null_test.cpp
         sbo_test.cpp
         static_hash_table_test.cpp
-				vector_test.cpp
         )
 
 set(CPP20_TEST_SOURCES
         daw_concepts_test.cpp
+				vector_test.cpp
         )
 #NOT COMPLETED daw_iterator_split_iterator_test.cpp
 #NOT COMPLETED daw_static_bitset_test.cpp
