@@ -200,7 +200,7 @@ namespace daw {
 	 * @tparam Func Callable to test
 	 * @tparam Args Arguments to call callable with
 	 */
-	template<typename Result, typename Func, typename... Args>
+	template<typename Result, typename... Args, typename Func>
 	concept invocable_result = requires( Func &&f, Args &&...args ) {
 		{
 			std::invoke( DAW_FWD2( Func, f ), DAW_FWD2( Args, args )... )
