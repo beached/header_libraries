@@ -921,7 +921,7 @@ namespace daw {
 		}
 
 		template<typename U>
-		constexpr inline void push_back_slow_path( U &x ) {
+		constexpr inline void push_back_slow_path( U &&x ) {
 			allocator_type &a = alloc( );
 			auto v = split_buffer<value_type, allocator_type &>(
 			  recommend( size( ) + 1 ), size( ), a );
