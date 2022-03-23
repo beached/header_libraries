@@ -79,6 +79,15 @@ namespace daw {
 	struct do_resize_and_overwrite_t {};
 	inline constexpr auto do_resize_and_overwrite = do_resize_and_overwrite_t{ };
 
+	template<typename T, typename size_type, typename pointer, typename alloc>
+	concept ResizeAndOverwriteOperationAlloc =
+	  invocable_result<T, size_type, pointer, size_type, alloc>;
+
+	template<typename T, typename size_type, typename pointer, typename alloc>
+	concept ResizeAndOverwriteOperation =
+	  invocable_result<T, size_type, pointer, size_type> and
+	  not ResizeAndOverwriteOperationAlloc<T, size_type, pointer, alloc>;
+
 	template<typename T, typename Allocator = std::allocator<T>>
 	struct vector {
 		using value_type = T;
@@ -736,9 +745,9 @@ namespace daw {
 			}
 		}
 
-		constexpr void resize_and_overwrite(
-		  size_type n,
-		  invocable_result<size_type, pointer, size_type> auto operation ) {
+		template<
+		  ResizeAndOverwriteOperation<size_type, pointer, allocator_type> Operation>
+		constexpr void resize_and_overwrite( size_type n, Operation operation ) {
 			if( static_cast<size_type>( endcap( ) - m_begin ) >= n ) {
 				pointer p = m_begin;
 				auto const new_size = operation( p, n );
@@ -753,9 +762,28 @@ namespace daw {
 			swap_out_circular_buffer( v );
 		}
 
-		constexpr void append_and_overwrite(
-		  size_type n,
-		  invocable_result<size_type, pointer, size_type> auto operation ) {
+		template<
+		  ResizeAndOverwriteOperationAlloc<size_type, pointer, allocator_type>
+		    Operation>
+		constexpr void resize_and_overwrite( size_type n, Operation operation ) {
+			if( static_cast<size_type>( endcap( ) - m_begin ) >= n ) {
+				pointer p = m_begin;
+				auto const new_size = operation( p, n, alloc( ) );
+				m_end = m_begin + static_cast<difference_type>( new_size );
+			}
+			allocator_type &a = alloc( );
+			auto v =
+			  split_buffer<value_type, allocator_type &>( recommend( n ), 0, a );
+			pointer p = v.begin_;
+			auto const new_size =
+			  static_cast<size_type>( operation( p, n, alloc( ) ) );
+			v.end_ = v.begin_ + static_cast<difference_type>( new_size );
+			swap_out_circular_buffer( v );
+		}
+
+		template<
+		  ResizeAndOverwriteOperation<size_type, pointer, allocator_type> Operation>
+		constexpr void append_and_overwrite( size_type n, Operation operation ) {
 			if( static_cast<size_type>( endcap( ) - m_end ) >= n ) {
 				pointer p = m_end;
 				auto const new_size = operation( p, n );
@@ -766,6 +794,25 @@ namespace daw {
 			  recommend( size( ) + n ), size( ), a );
 			pointer p = v.end_;
 			auto const append_count = static_cast<size_type>( operation( p, n ) );
+			v.end_ += static_cast<difference_type>( append_count );
+			swap_out_circular_buffer( v );
+		}
+
+		template<
+		  ResizeAndOverwriteOperationAlloc<size_type, pointer, allocator_type>
+		    Operation>
+		constexpr void append_and_overwrite( size_type n, Operation operation ) {
+			if( static_cast<size_type>( endcap( ) - m_end ) >= n ) {
+				pointer p = m_end;
+				auto const new_size = operation( p, n, alloc( ) );
+				m_end += static_cast<difference_type>( new_size );
+			}
+			allocator_type &a = alloc( );
+			auto v = split_buffer<value_type, allocator_type &>(
+			  recommend( size( ) + n ), size( ), a );
+			pointer p = v.end_;
+			auto const append_count =
+			  static_cast<size_type>( operation( p, n, alloc( ) ) );
 			v.end_ += static_cast<difference_type>( append_count );
 			swap_out_circular_buffer( v );
 		}
