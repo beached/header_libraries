@@ -865,15 +865,15 @@ namespace daw {
 		[[nodiscard]] constexpr pointer
 		swap_out_circular_buffer( split_buffer<value_type, allocator_type &> &v,
 		                          pointer p ) {
-			pointer r = v.m_begin;
+			pointer r = v.begin_;
 			impl::construct_backward_with_exception_guarantees( alloc( ), m_begin, p,
-			                                                    v.m_begin );
+			                                                    v.begin_ );
 			impl::construct_forward_with_exception_guarantees( alloc( ), p, m_end,
-			                                                   v.m_end );
-			std::swap( m_begin, v.m_begin );
-			std::swap( m_end, v.m_end );
-			std::swap( endcap( ), v.m_endcap( ) );
-			v.first_ = v.m_begin;
+			                                                   v.end_ );
+			std::swap( m_begin, v.begin_ );
+			std::swap( m_end, v.end_ );
+			std::swap( endcap( ), v.endcap( ) );
+			v.first_ = v.begin_;
 			return r;
 		}
 
@@ -926,9 +926,8 @@ namespace daw {
 			auto v = split_buffer<value_type, allocator_type &>(
 			  recommend( size( ) + 1 ), size( ), a );
 			// v.push_back(std::forward<_Up>(x));
-			alloc_traits::construct( a, std::to_address( v.m_end ),
-			                         DAW_FWD2( U, x ) );
-			++v.m_end;
+			alloc_traits::construct( a, std::to_address( v.end_ ), DAW_FWD2( U, x ) );
+			++v.end_;
 			swap_out_circular_buffer( v );
 		}
 
@@ -938,9 +937,9 @@ namespace daw {
 			auto v = split_buffer<value_type, allocator_type &>(
 			  recommend( size( ) + 1 ), size( ), a );
 			//    v.emplace_back(std::forward<Args>(args)...);
-			alloc_traits::construct( a, std::to_address( v.m_end ),
+			alloc_traits::construct( a, std::to_address( v.end_ ),
 			                         DAW_FWD2( Args, args )... );
-			++v.m_end;
+			++v.end_;
 			swap_out_circular_buffer( v );
 		}
 
