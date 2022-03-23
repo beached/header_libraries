@@ -1001,7 +1001,7 @@ namespace daw {
 		constexpr void copy_assign_alloc( vector const &c ) {
 			copy_assign_alloc(
 			  c, std::bool_constant<
-			       alloc_traits::propagate_on_container_copy_assignment::value>{ } )
+			       alloc_traits::propagate_on_container_copy_assignment::value>{ } );
 		}
 
 		constexpr void move_assign_alloc( vector &c ) noexcept(
