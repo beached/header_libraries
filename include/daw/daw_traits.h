@@ -1005,6 +1005,9 @@ namespace daw {
 	template<template<typename...> typename Primary, typename T>
 	using is_specialization_of =
 	  std::bool_constant<is_specialization_of_v<Primary, T>>;
+
+	template<typename T, bool>
+	struct dependent_type : T {};
 } // namespace daw
 
 #define DAW_TYPEOF( ... ) daw::remove_cvref_t<decltype( __VA_ARGS__ )>

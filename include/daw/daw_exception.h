@@ -488,6 +488,16 @@ namespace daw::exception {
 		} catch( ... ) { return std::current_exception( ); }
 	}
 #endif
+
+	template<typename... Args>
+	[[noreturn]] void throw_length_error( Args &&...args ) {
+		daw_throw<std::length_error>( DAW_FWD2( Args, args )... );
+	}
+
+	template<typename... Args>
+	[[noreturn]] void throw_out_of_range( Args &&...args ) {
+		daw_throw<std::out_of_range>( DAW_FWD2( Args, args )... );
+	}
 } // namespace daw::exception
 
 #if defined( NDEBUG )

@@ -115,6 +115,7 @@ set(TEST_SOURCES
 
 set(CPP20_TEST_SOURCES
         daw_concepts_test.cpp
+				vector_test.cpp
         )
 #NOT COMPLETED daw_iterator_split_iterator_test.cpp
 #NOT COMPLETED daw_static_bitset_test.cpp
