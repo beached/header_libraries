@@ -69,7 +69,8 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">vector.h File Reference</div>  </div>
 </div><!--header-->
@@ -97,6 +98,8 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1do__resize__and__overwrite__t.html">daw::do_resize_and_overwrite_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1vector.html">daw::vector&lt; T, Allocator &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -108,6 +111,12 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a5bbe8c47cdaf0b35fc95fc585f314ac9"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Allocator  = std::allocator&lt;T&gt;, input_iterator InputIterator&gt; </td></tr>
+<tr class="memitem:a5bbe8c47cdaf0b35fc95fc585f314ac9"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5bbe8c47cdaf0b35fc95fc585f314ac9">daw::block_append_from</a> (vector&lt; T, Allocator &gt; &amp;v, InputIterator first, InputIterator last, std::size_t block_size=512)</td></tr>
+<tr class="separator:a5bbe8c47cdaf0b35fc95fc585f314ac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a631ad5b1f34538ed88a3914e8e1455e8"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Allocator  = std::allocator&lt;T&gt;, input_iterator InputIterator&gt; </td></tr>
+<tr class="memitem:a631ad5b1f34538ed88a3914e8e1455e8"><td class="memTemplItemLeft" align="right" valign="top">constexpr vector&lt; T, Allocator &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a631ad5b1f34538ed88a3914e8e1455e8">daw::block_create_from</a> (InputIterator first, InputIterator last, std::size_t block_size=512)</td></tr>
+<tr class="separator:a631ad5b1f34538ed88a3914e8e1455e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53f916576cdbadd667c9990e9fcd2739"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Allocator &gt; </td></tr>
 <tr class="memitem:a53f916576cdbadd667c9990e9fcd2739"><td class="memTemplItemLeft" align="right" valign="top">constexpr vector&lt; T, Allocator &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a53f916576cdbadd667c9990e9fcd2739">daw::erase</a> (vector&lt; T, Allocator &gt; &amp;c, auto const &amp;v)</td></tr>
 <tr class="separator:a53f916576cdbadd667c9990e9fcd2739"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,6 +132,11 @@ Functions</h2></td></tr>
 <tr class="memitem:a85247da5a0a2265543a8d4516b2e8d45"><td class="memTemplParams" colspan="2">template&lt;input_iterator InputIterator, Allocators Alloc&gt; </td></tr>
 <tr class="memitem:a85247da5a0a2265543a8d4516b2e8d45"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a85247da5a0a2265543a8d4516b2e8d45">daw::vector</a> (InputIterator, InputIterator, Alloc) -&gt; vector&lt; iter_value_type&lt; InputIterator &gt;, Alloc &gt;</td></tr>
 <tr class="separator:a85247da5a0a2265543a8d4516b2e8d45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a542565e0e4c562c45e79c873c7467e4e"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a542565e0e4c562c45e79c873c7467e4e">daw::do_resize_and_overwrite</a> = do_resize_and_overwrite_t{ }</td></tr>
+<tr class="separator:a542565e0e4c562c45e79c873c7467e4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

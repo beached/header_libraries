@@ -280,6 +280,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1disjunction_3_01_b1_00_01_bn_8_8_8_01_4.html">disjunction&lt; B1, Bn... &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1do__resize__and__overwrite__t.html">do_resize_and_overwrite_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1sv2_1_1dont__clip__to__bounds__t.html">dont_clip_to_bounds_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1_empty.html">Empty</a></td></tr>
@@ -1070,6 +1072,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a65f96a04b871909ebed5db6315378457"><td class="memTemplParams" colspan="2">template&lt;typename Value , typename... T&gt; </td></tr>
 <tr class="memitem:a65f96a04b871909ebed5db6315378457"><td class="memTemplItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a65f96a04b871909ebed5db6315378457">bitcount</a> (Value value, T... values) noexcept</td></tr>
 <tr class="separator:a65f96a04b871909ebed5db6315378457"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bbe8c47cdaf0b35fc95fc585f314ac9"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Allocator  = std::allocator&lt;T&gt;, input_iterator InputIterator&gt; </td></tr>
+<tr class="memitem:a5bbe8c47cdaf0b35fc95fc585f314ac9"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5bbe8c47cdaf0b35fc95fc585f314ac9">block_append_from</a> (<a class="el" href="structdaw_1_1vector.html">vector</a>&lt; T, Allocator &gt; &amp;v, <a class="el" href="structdaw_1_1_input_iterator.html">InputIterator</a> first, <a class="el" href="structdaw_1_1_input_iterator.html">InputIterator</a> last, std::size_t block_size=512)</td></tr>
+<tr class="separator:a5bbe8c47cdaf0b35fc95fc585f314ac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a631ad5b1f34538ed88a3914e8e1455e8"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Allocator  = std::allocator&lt;T&gt;, input_iterator InputIterator&gt; </td></tr>
+<tr class="memitem:a631ad5b1f34538ed88a3914e8e1455e8"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1vector.html">vector</a>&lt; T, Allocator &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a631ad5b1f34538ed88a3914e8e1455e8">block_create_from</a> (<a class="el" href="structdaw_1_1_input_iterator.html">InputIterator</a> first, <a class="el" href="structdaw_1_1_input_iterator.html">InputIterator</a> last, std::size_t block_size=512)</td></tr>
+<tr class="separator:a631ad5b1f34538ed88a3914e8e1455e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3ce28014e3675391c71a4af2bb31ef6"><td class="memTemplParams" colspan="2">template&lt;typename Key , typename Value , typename Hash  = std::hash&lt;Key&gt;, size_t N&gt; </td></tr>
 <tr class="memitem:ad3ce28014e3675391c71a4af2bb31ef6"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad3ce28014e3675391c71a4af2bb31ef6">bounded_hash_map</a> (std::pair&lt; Key, Value &gt; const(&amp;&amp;items)[N]) -&gt; <a class="el" href="structdaw_1_1bounded__hash__map.html">bounded_hash_map</a>&lt; Key, Value, N, Hash &gt;</td></tr>
 <tr class="separator:ad3ce28014e3675391c71a4af2bb31ef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3908,6 +3916,8 @@ Variables</h2></td></tr>
 <tr class="memitem:a601a752b7a1a60c5b438e2534c50734c"><td class="memTemplParams" colspan="2">template&lt;typename... B&gt; </td></tr>
 <tr class="memitem:a601a752b7a1a60c5b438e2534c50734c"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a601a752b7a1a60c5b438e2534c50734c">disjunction_v</a> = <a class="el" href="structdaw_1_1disjunction.html">disjunction</a>&lt;B...&gt;::value</td></tr>
 <tr class="separator:a601a752b7a1a60c5b438e2534c50734c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a542565e0e4c562c45e79c873c7467e4e"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a542565e0e4c562c45e79c873c7467e4e">do_resize_and_overwrite</a> = <a class="el" href="structdaw_1_1do__resize__and__overwrite__t.html">do_resize_and_overwrite_t</a>{ }</td></tr>
+<tr class="separator:a542565e0e4c562c45e79c873c7467e4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a676414cb342f428be2a54d5ce237e064"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#a676414cb342f428be2a54d5ce237e064">dont_clip_to_bounds</a> = <a class="el" href="structdaw_1_1sv2_1_1dont__clip__to__bounds__t.html">dont_clip_to_bounds_t</a>{ }</td></tr>
 <tr class="separator:a676414cb342f428be2a54d5ce237e064"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94588b6668349acf95e266a3279e6b6b"><td class="memItemLeft" align="right" valign="top">constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a94588b6668349acf95e266a3279e6b6b">DynamicExtent</a></td></tr>
@@ -7663,6 +7673,104 @@ template&lt;typename Value , typename... T&gt; </div>
 
 </div>
 </div>
+<a id="a5bbe8c47cdaf0b35fc95fc585f314ac9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bbe8c47cdaf0b35fc95fc585f314ac9">&#9670;&nbsp;</a></span>block_append_from()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Allocator  = std::allocator&lt;T&gt;, input_iterator InputIterator&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr void daw::block_append_from </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1vector.html">vector</a>&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1_input_iterator.html">InputIterator</a>&#160;</td>
+          <td class="paramname"><em>first</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1_input_iterator.html">InputIterator</a>&#160;</td>
+          <td class="paramname"><em>last</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>block_size</em> = <code>512</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l01123">1123</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+
+</div>
+</div>
+<a id="a631ad5b1f34538ed88a3914e8e1455e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a631ad5b1f34538ed88a3914e8e1455e8">&#9670;&nbsp;</a></span>block_create_from()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Allocator  = std::allocator&lt;T&gt;, input_iterator InputIterator&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1vector.html">vector</a>&lt;T, Allocator&gt; daw::block_create_from </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1_input_iterator.html">InputIterator</a>&#160;</td>
+          <td class="paramname"><em>first</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1_input_iterator.html">InputIterator</a>&#160;</td>
+          <td class="paramname"><em>last</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>block_size</em> = <code>512</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l01145">1145</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+
+</div>
+</div>
 <a id="ad3ce28014e3675391c71a4af2bb31ef6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad3ce28014e3675391c71a4af2bb31ef6">&#9670;&nbsp;</a></span>bounded_hash_map()</h2>
 
@@ -9348,7 +9456,7 @@ template&lt;typename T , typename Allocator &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l01086">1086</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l01107">1107</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 
 </div>
 </div>
@@ -9388,7 +9496,7 @@ template&lt;typename T , typename Allocator &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l01094">1094</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l01115">1115</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 
 </div>
 </div>
@@ -45347,7 +45455,7 @@ template&lt;typename T , typename Allocator &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l01079">1079</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l01100">1100</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 
 </div>
 </div>
@@ -47541,6 +47649,30 @@ template&lt;typename... B&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00639">639</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+
+</div>
+</div>
+<a id="a542565e0e4c562c45e79c873c7467e4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a542565e0e4c562c45e79c873c7467e4e">&#9670;&nbsp;</a></span>do_resize_and_overwrite</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto daw::do_resize_and_overwrite = <a class="el" href="structdaw_1_1do__resize__and__overwrite__t.html">do_resize_and_overwrite_t</a>{ }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00080">80</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 
 </div>
 </div>
