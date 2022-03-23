@@ -29,7 +29,7 @@ namespace daw {
 	 */
 	template<typename From, typename To>
 	concept convertible_to = std::is_convertible_v<From, To> and requires {
-		static_cast<To>( std::declval<From>( ) );
+		{ static_cast<To>( std::declval<From>( ) ) };
 	};
 
 	/***
