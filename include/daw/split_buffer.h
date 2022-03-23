@@ -381,7 +381,7 @@ namespace daw {
 		constexpr void construct_at_end( size_type n ) {
 			ConstructTransaction tx( &end_, n );
 			while( tx.pos != tx.end ) {
-				alloc_traits::construct( alloc( ), std::to_address( tx.pos_ ) );
+				alloc_traits::construct( alloc( ), std::to_address( tx.pos ) );
 				++tx.pos;
 			}
 		}
@@ -394,8 +394,8 @@ namespace daw {
 		/// @post [i] == x for all i in [size() - n, n)
 		constexpr void construct_at_end( size_type n, const_reference x ) {
 			ConstructTransaction tx( &end_, n );
-			while( tx.pos_ != tx.end_ ) {
-				alloc_traits::construct( alloc( ), std::to_address( tx.pos_ ), x );
+			while( tx.pos != tx.end ) {
+				alloc_traits::construct( alloc( ), std::to_address( tx.pos ), x );
 				++tx.pos;
 			}
 		}
@@ -421,10 +421,9 @@ namespace daw {
 
 		template<forward_iterator ForwardIter>
 		constexpr void construct_at_end( ForwardIter first, ForwardIter last ) {
-			ConstructTransaction tx( &this->end_, std::distance( first, last ) );
-			for( ; tx.pos_ != tx.end_; ++tx.pos_, ++first ) {
-				alloc_traits::construct( this->alloc( ), std::to_address( tx.pos_ ),
-				                         *first );
+			ConstructTransaction tx( &end_, std::distance( first, last ) );
+			for( ; tx.pos != tx.end; ++tx.pos, ++first ) {
+				alloc_traits::construct( alloc( ), std::to_address( tx.pos ), *first );
 			}
 		}
 
