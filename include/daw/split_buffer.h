@@ -148,9 +148,8 @@ namespace daw {
 			end_ = c.end_;
 			end_cap( ) = c.end_cap( );
 			move_assign_alloc(
-			  c, integral_constant<
-			       bool,
-			       alloc_traits::propagate_on_container_move_assignment::value>( ) );
+			  c, bool_constant<
+			       alloc_traits::propagate_on_container_move_assignment::value>{ } );
 			c.first_ = nullptr;
 			c.begin_ = nullptr;
 			c.end_ = nullptr;
@@ -428,7 +427,8 @@ namespace daw {
 		}
 
 		constexpr void destruct_at_begin( pointer new_begin ) {
-			destruct_at_begin( new_begin, is_trivially_destructible<value_type>( ) );
+			destruct_at_begin( new_begin,
+			                   std::is_trivially_destructible<value_type>( ) );
 		}
 
 		constexpr void destruct_at_begin( pointer new_begin, std::false_type ) {

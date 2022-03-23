@@ -270,7 +270,7 @@ namespace daw {
 		    impl::noexcept_move_assign_container_v<Allocator, alloc_traits> ) {
 
 			move_assign(
-			  x, bool_constant<
+			  x, std::bool_constant<
 			       alloc_traits::propagate_on_container_move_assignment::value>{ } );
 
 			return *this;
@@ -736,9 +736,9 @@ namespace daw {
 			std::swap( m_begin, other.m_begin );
 			std::swap( m_end, other.m_end );
 			std::swap( endcap( ), other.endcap( ) );
-			swap_allocator(
-			  alloc( ), other.alloc( ),
-			  bool_constant<alloc_traits::propagate_on_container_swap::value>{ } );
+			swap_allocator( alloc( ), other.alloc( ),
+			                std::bool_constant<
+			                  alloc_traits::propagate_on_container_swap::value>{ } );
 		}
 
 	private:
@@ -1000,18 +1000,16 @@ namespace daw {
 
 		constexpr void copy_assign_alloc( vector const &c ) {
 			copy_assign_alloc(
-			  c, integral_constant<
-			       bool,
-			       alloc_traits::propagate_on_container_copy_assignment::value>( ) );
+			  c, std::bool_constant<
+			       alloc_traits::propagate_on_container_copy_assignment::value>{ } )
 		}
 
 		constexpr void move_assign_alloc( vector &c ) noexcept(
 		  not alloc_traits::propagate_on_container_move_assignment::value or
 		  std::is_nothrow_move_assignable_v<allocator_type> ) {
 			move_assign_alloc(
-			  c, integral_constant<
-			       bool,
-			       alloc_traits::propagate_on_container_move_assignment::value>( ) );
+			  c, std::bool_constant<
+			       alloc_traits::propagate_on_container_move_assignment::value>{ } );
 		}
 
 		[[noreturn]] void throw_length_error( ) const {
