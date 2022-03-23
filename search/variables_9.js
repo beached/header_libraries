@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['last_3606',['last',['../structdaw_1_1parser_1_1parser__result.html#af9010d9d6ddae68b3f7c6c74efec9e3f',1,'daw::parser::parser_result::last()'],['../structdaw_1_1parser_1_1find__result__t.html#ab3050f385fa2ff88f14eafd8371fbc18',1,'daw::parser::find_result_t::last()'],['../structdaw_1_1integer__range.html#a10dd2b5364052835daf0af32e23f5713',1,'daw::integer_range::last()'],['../structdaw_1_1_input_range.html#a80c817ffec029ef6dc05054d0cbf486a',1,'daw::InputRange::last()']]],
-  ['lift_3607',['lift',['../namespacedaw.html#a2eb139c7c4b81dd7ea9376bd1e345fb9',1,'daw']]]
+  ['last_3724',['last',['../structdaw_1_1parser_1_1parser__result.html#af9010d9d6ddae68b3f7c6c74efec9e3f',1,'daw::parser::parser_result::last()'],['../structdaw_1_1parser_1_1find__result__t.html#ab3050f385fa2ff88f14eafd8371fbc18',1,'daw::parser::find_result_t::last()'],['../structdaw_1_1integer__range.html#a10dd2b5364052835daf0af32e23f5713',1,'daw::integer_range::last()'],['../structdaw_1_1_input_range.html#a80c817ffec029ef6dc05054d0cbf486a',1,'daw::InputRange::last()'],['../structdaw_1_1vector.html#aa2aa94c90e4ed87d31e1e8c13f546529',1,'daw::vector::last()'],['../structdaw_1_1vector.html#aa2aa94c90e4ed87d31e1e8c13f546529',1,'daw::vector::last()'],['../structdaw_1_1vector.html#ac63c46891390d01a0bb03dfd11bc0f2e',1,'daw::vector::last()'],['../structdaw_1_1vector.html#a75593979e42ca0c85c647494c3862838',1,'daw::vector::last()']]],
+  ['lift_3725',['lift',['../namespacedaw.html#a2eb139c7c4b81dd7ea9376bd1e345fb9',1,'daw']]]
 ];

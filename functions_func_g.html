@@ -70,13 +70,15 @@ $(function() {
 , <a class="el" href="classdaw_1_1_c_file.html#aa46d6d84d24b9f4518218ddff7705a77">daw::CFile</a>
 , <a class="el" href="structdaw_1_1checked__expected__t.html#a8c22e338a583cbe286a2471940cad791">daw::checked_expected_t&lt; T, ExpectedExceptions &gt;</a>
 , <a class="el" href="structdaw_1_1checked__expected__t_3_01void_00_01_expected_exceptions_8_8_8_01_4.html#ab267dc9c0ceca56549fb5d6bb2268b2d">daw::checked_expected_t&lt; void, ExpectedExceptions... &gt;</a>
+, <a class="el" href="structdaw_1_1compressed__pair__elem.html#abb4dd8b6a008339d0e81966a8eb9eeb1">daw::compressed_pair_elem&lt; Tp, Idx, bool &gt;</a>
+, <a class="el" href="structdaw_1_1compressed__pair__elem_3_01_tp_00_01_idx_00_01true_01_4.html#a4b2cdd6263ce79fa6245235ddd496f5f">daw::compressed_pair_elem&lt; Tp, Idx, true &gt;</a>
 , <a class="el" href="structdaw_1_1copiable__unique__ptr.html#ab76147a86e6c7e2cede0c29d1acffe5b">daw::copiable_unique_ptr&lt; T, Deleter &gt;</a>
 , <a class="el" href="classdaw_1_1_c_string.html#ae51c4a97df683bec477e0db42e928172">daw::CString&lt; CharT &gt;</a>
 , <a class="el" href="structdaw_1_1expected__t.html#ab9eb57ec937bdef7e2590cede7b0f4fa">daw::expected_t&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1expected__t_3_01void_01_4.html#a4499d77863eaea0ad28a19e3d8115f22">daw::expected_t&lt; void &gt;</a>
-, <a class="el" href="structdaw_1_1heap__value.html#ab708f9581733e11feda42ecfa0ff4fee">daw::heap_value&lt; T &gt;</a>
-, <a class="el" href="structdaw_1_1not__null.html#a19452d8806843c886ae3b1e2b9695813">daw::not_null&lt; Pointer &gt;</a>
-, <a class="el" href="structdaw_1_1optional__poly.html#ae0ade768ecb735271721223e5b44517a">daw::optional_poly&lt; ValueType &gt;</a>
+, <a class="el" href="structdaw_1_1heap__value.html#a46abb1ec23aa9e6b666a71543ff6e4c2">daw::heap_value&lt; T &gt;</a>
+, <a class="el" href="structdaw_1_1not__null.html#aa6a43147ade04499aa83507f1205a31e">daw::not_null&lt; Pointer &gt;</a>
+, <a class="el" href="structdaw_1_1optional__poly.html#ac499fbdd72e8eb58abca8c56192cd8a5">daw::optional_poly&lt; ValueType &gt;</a>
 , <a class="el" href="structdaw_1_1pointer__iterator.html#af026e9734e0911dcd90d0595febe59c2">daw::pointer_iterator&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1prop__const__ptr.html#acddf87942475c7c466fed89c91f49df6">daw::prop_const_ptr&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1read__only.html#a0993507462ec01d3294e3b9db4817a47">daw::read_only&lt; T &gt;</a>
@@ -85,6 +87,9 @@ $(function() {
 , <a class="el" href="structdaw_1_1validated.html#a514006da22d22991746b144fa44df4c0">daw::validated&lt; T, Validator &gt;</a>
 , <a class="el" href="structdaw_1_1value__ptr.html#a39f16aa1057e05c70a2215a2752d7e95">daw::value_ptr&lt; T, Compare &gt;</a>
 , <a class="el" href="structstd_1_1hash_3_01daw_1_1not__null_3_01_pointer_01_4_01_4.html#a7d7f37c985b855ed7b0dd4090af4c332">std::hash&lt; daw::not_null&lt; Pointer &gt; &gt;</a>
+</li>
+<li>get_allocator()
+: <a class="el" href="structdaw_1_1vector.html#a9db8a395d7b86952e86eda3e25b2c44e">daw::vector&lt; T, Allocator &gt;</a>
 </li>
 <li>get_bit()
 : <a class="el" href="classdaw_1_1static__bitset.html#a8f14d2718a0665b981c476874f9f15b3">daw::static_bitset&lt; BitWidth &gt;</a>
@@ -105,7 +110,10 @@ $(function() {
 , <a class="el" href="structdaw_1_1expected__t_3_01void_01_4.html#a7188e39ccf875d00adef10395e7d2e68">daw::expected_t&lt; void &gt;</a>
 </li>
 <li>get_existing()
-: <a class="el" href="structdaw_1_1fixed__lookup.html#aa465b40fd8ce58ae4037b290d98a3433">daw::fixed_lookup&lt; Value, N, HashSize &gt;</a>
+: <a class="el" href="structdaw_1_1fixed__lookup.html#acf853a6299babb23d558744cdd68ce4b">daw::fixed_lookup&lt; Value, N, HashSize &gt;</a>
+</li>
+<li>get_first_base()
+: <a class="el" href="structdaw_1_1compressed__pair.html#ad975351728cb179cbf09f3490849a3a7">daw::compressed_pair&lt; _T1, _T2 &gt;</a>
 </li>
 <li>get_node()
 : <a class="el" href="structdaw_1_1bounded__graph__t.html#a91d00da5832c5de9e82d3ce9a00ca7f3">daw::bounded_graph_t&lt; T, MaxVerticesPerNode, Hash &gt;</a>
@@ -115,9 +123,12 @@ $(function() {
 : <a class="el" href="structdaw_1_1bounded__graph__t.html#aac67f039bbb1e8485702b90dd391d744">daw::bounded_graph_t&lt; T, MaxVerticesPerNode, Hash &gt;</a>
 , <a class="el" href="structdaw_1_1graph__t.html#a493991cb3ef206b2357f96b7871213d6">daw::graph_t&lt; T &gt;</a>
 </li>
+<li>get_second_base()
+: <a class="el" href="structdaw_1_1compressed__pair.html#a94234170dee9aabad61ea4666e3130c3">daw::compressed_pair&lt; _T1, _T2 &gt;</a>
+</li>
 <li>graph()
 : <a class="el" href="classdaw_1_1bounded__graph__node__t.html#a8053ddc35ec11eb411b758d595350ef3">daw::bounded_graph_node_t&lt; T, MaxVerticesPerNode, Hash &gt;</a>
-, <a class="el" href="classdaw_1_1const__graph__node__t.html#a5046ddadd6c5cf28d9f8dd0bf8fc45c7">daw::const_graph_node_t&lt; T, MaxVerticesPerNode, Hash &gt;</a>
+, <a class="el" href="classdaw_1_1const__graph__node__t.html#a59fc5f7b9584bf9e33a37eb6b258465e">daw::const_graph_node_t&lt; T, MaxVerticesPerNode, Hash &gt;</a>
 , <a class="el" href="classdaw_1_1graph__node__t.html#a1f22fc3edaadd810ae654cda3d00f350">daw::graph_node_t&lt; T &gt;</a>
 </li>
 <li>graph_node_t()

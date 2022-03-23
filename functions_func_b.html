@@ -79,17 +79,23 @@ $(function() {
 , <a class="el" href="classdaw_1_1range_1_1_reference_range.html#a67e0f16c0ec36b58f52a2b2445626d2f">daw::range::ReferenceRange&lt; Iterator &gt;</a>
 , <a class="el" href="structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01not_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#a94191bc8b58b2f0665f787f3debfc306">daw::span&lt; T, std::enable_if_t&lt; not std::is_const_v&lt; T &gt; &gt; &gt;</a>
 , <a class="el" href="structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#ad419a54aba4eaf8293ba0f0e7e8ab89a">daw::span&lt; T, std::enable_if_t&lt; std::is_const_v&lt; T &gt; &gt; &gt;</a>
+, <a class="el" href="structdaw_1_1split__buffer.html#ac9cd7b377edff37fdaf393e93513e2ba">daw::split_buffer&lt; Tp, Allocator &gt;</a>
 , <a class="el" href="structdaw_1_1sv1_1_1basic__string__view.html#a86eaabe6bf657226c4052b2c7f0ee682">daw::sv1::basic_string_view&lt; CharT, BoundsType, Extent &gt;</a>
 , <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#ac9e36f074e8734b5ba244d952d505314">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
 , <a class="el" href="structdaw_1_1unique__array__t.html#a851876e9bf6d3b4641d0bb02ab40ff17">daw::unique_array_t&lt; T &gt;</a>
+, <a class="el" href="structdaw_1_1vector.html#acf754cecff5f5e29be3aa3970fbea748">daw::vector&lt; T, Allocator &gt;</a>
 , <a class="el" href="structdaw_1_1_vector.html#aa2a5ed8d1e0139b54ecd2454ca113cfe">daw::Vector&lt; T, Alloc &gt;</a>
 , <a class="el" href="structdaw_1_1view.html#aed9b4402241abdf666513ac36d8b275a">daw::view&lt; BidirectionalIterator &gt;</a>
 </li>
 <li>back_inserter()
 : <a class="el" href="structdaw_1_1back__inserter.html#a51378c9df653af48097f140a5178adbb">daw::back_inserter&lt; Container &gt;</a>
 </li>
+<li>back_spare()
+: <a class="el" href="structdaw_1_1split__buffer.html#a7524630d13aa146495524d2cdd67b39d">daw::split_buffer&lt; Tp, Allocator &gt;</a>
+</li>
 <li>base()
 : <a class="el" href="structdaw_1_1reverse__iterator.html#aed12fc363be4512c3090f8fa6b0fe33a">daw::reverse_iterator&lt; Iterator &gt;</a>
+, <a class="el" href="classdaw_1_1wrap__iter.html#ac7fbafaf92f7b25683e54731284b3a23">daw::wrap_iter&lt; Iterator &gt;</a>
 </li>
 <li>basic_bit_queue()
 : <a class="el" href="classdaw_1_1basic__bit__queue.html#a1f4f9e6f79675e7e93239d1439ba17f4">daw::basic_bit_queue&lt; queue_type, value_type, BitQueueLSB &gt;</a>
@@ -107,8 +113,8 @@ $(function() {
 : <a class="el" href="structdaw_1_1basic__safe__string.html#a220a643039cc11db052fdf1812c48cdf">daw::basic_safe_string&lt; SanitizeFunction, charT, traits, Alloc &gt;</a>
 </li>
 <li>basic_string_view()
-: <a class="el" href="structdaw_1_1sv1_1_1basic__string__view.html#a2b899d9ce4a1b0994638dbe254477a9e">daw::sv1::basic_string_view&lt; CharT, BoundsType, Extent &gt;</a>
-, <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#aceaeea3aae1c5ac7011bce83539062a9">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
+: <a class="el" href="structdaw_1_1sv1_1_1basic__string__view.html#a551fa65afdb421a22cd7e99c0138cffd">daw::sv1::basic_string_view&lt; CharT, BoundsType, Extent &gt;</a>
+, <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#af2c8a22af2bbde1dca00fd5b1bed6366">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
 </li>
 <li>begin()
 : <a class="el" href="classdaw_1_1arg__iterator__t.html#a6437c0e5a3219ca1b8697d0a7c8f2986">daw::arg_iterator_t</a>
@@ -119,7 +125,7 @@ $(function() {
 , <a class="el" href="structdaw_1_1bounded__hash__set__t.html#ad941d22d73ef785c0914f7a07b9337ce">daw::bounded_hash_set_t&lt; Key, Capacity, Hash, KeyEqual &gt;</a>
 , <a class="el" href="structdaw_1_1bounded__vector__t.html#a63a0957ff901741582f243db1d1f690e">daw::bounded_vector_t&lt; T, N &gt;</a>
 , <a class="el" href="structdaw_1_1bounded__vector__t_3_01_t_00_010_01_4.html#a4fc2423b24b2fba5d7f5a95f0930e932">daw::bounded_vector_t&lt; T, 0 &gt;</a>
-, <a class="el" href="structdaw_1_1carray.html#a8c3a5124e59c6902d6330e60413b11dd">daw::carray&lt; T, N &gt;</a>
+, <a class="el" href="structdaw_1_1carray.html#a520d9f31b5f35fd9f10dc81dc05d170b">daw::carray&lt; T, N &gt;</a>
 , <a class="el" href="classdaw_1_1clumpy__sparsy.html#a129c5fece6fa9ef6de2eb921b9e92153">daw::clumpy_sparsy&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1find__iterator.html#af006772cd04d04335c7b836d58aab8c4">daw::find_iterator&lt; Iterator, IteratorLast, Filter &gt;</a>
 , <a class="el" href="classdaw_1_1find__one__iterator.html#a2e536e53bcc1dca3b9d3ec46c2fdc644">daw::find_one_iterator&lt; Iterator, IteratorLast, Filters &gt;</a>
@@ -130,22 +136,26 @@ $(function() {
 , <a class="el" href="structdaw_1_1iota__range.html#ae0aa0e9b05cf5335ed97470b82c5f942">daw::iota_range&lt; T &gt;</a>
 , <a class="el" href="classdaw_1_1keep__n.html#a7b93745e0ef82502066b4b6169aceefe">daw::keep_n&lt; T, MaxItems, Order, Predicate &gt;</a>
 , <a class="el" href="structdaw_1_1mixins_1_1_container_proxy.html#a21431f345c849e1c98e9f09a2e40e77e">daw::mixins::ContainerProxy&lt; Derived, ContainerType &gt;</a>
-, <a class="el" href="structdaw_1_1ordered__map.html#a45cb8725291c323965385282197fdafa">daw::ordered_map&lt; Key, Value, Compare, Allocator, Container &gt;</a>
+, <a class="el" href="structdaw_1_1ordered__map.html#a87552974f526ee7c1f8f8dd20161e19e">daw::ordered_map&lt; Key, Value, Compare, Allocator, Container &gt;</a>
 , <a class="el" href="structdaw_1_1parser_1_1find__result__t.html#af22bd992015e8ae2a1c36adc6722ee58">daw::parser::find_result_t&lt; ForwardIterator &gt;</a>
-, <a class="el" href="structdaw_1_1range_1_1_collection_range.html#a7efdc3cc8f5663ab0eb8477aa4fdc0df">daw::range::CollectionRange&lt; T &gt;</a>
+, <a class="el" href="structdaw_1_1range_1_1_collection_range.html#ad5d03040774483e4a36e7326a77c5e9f">daw::range::CollectionRange&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1range_1_1_range.html#a4c740fa07cdfcdf43b7714bd29548e69">daw::range::Range&lt; Iterator &gt;</a>
 , <a class="el" href="classdaw_1_1range_1_1_reference_range.html#aeb939f61f42e55089ca1ae5ccc452bfe">daw::range::ReferenceRange&lt; Iterator &gt;</a>
-, <a class="el" href="structdaw_1_1ring__adaptor.html#aaa028255ef8a1a85d54d41916c8585aa">daw::ring_adaptor&lt; Container &gt;</a>
+, <a class="el" href="structdaw_1_1ring__adaptor.html#aace39b417941a1c62a09499dbc32a6d9">daw::ring_adaptor&lt; Container &gt;</a>
 , <a class="el" href="structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01not_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#a143a80ce7b99c220946a034823f94c97">daw::span&lt; T, std::enable_if_t&lt; not std::is_const_v&lt; T &gt; &gt; &gt;</a>
 , <a class="el" href="structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#aa74e75092712a3fdcd66455aa38b24ef">daw::span&lt; T, std::enable_if_t&lt; std::is_const_v&lt; T &gt; &gt; &gt;</a>
+, <a class="el" href="structdaw_1_1split__buffer.html#a4a2cc23740501c6b8551dcde2c9b1308">daw::split_buffer&lt; Tp, Allocator &gt;</a>
 , <a class="el" href="structdaw_1_1splitter__range__t.html#afead798f7eaebc3ab8db75a87d41a212">daw::splitter_range_t&lt; Iterator &gt;</a>
 , <a class="el" href="classdaw_1_1static__bitset.html#a6608dff3936b712e698ecd475ec0ac21">daw::static_bitset&lt; BitWidth &gt;</a>
 , <a class="el" href="structdaw_1_1string__split__range.html#aabf8b839b68bc94819229806eb5d14d8">daw::string_split_range&lt; CharT &gt;</a>
 , <a class="el" href="structdaw_1_1sv1_1_1basic__string__view.html#ab7a99ffb7713356fa4599e4f024eccb7">daw::sv1::basic_string_view&lt; CharT, BoundsType, Extent &gt;</a>
 , <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a3ec72ab2ea857fade4199a0cce7d45e8">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
 , <a class="el" href="structdaw_1_1unique__array__t.html#a7c5fb3851f16caaa9248b4958b2d9083">daw::unique_array_t&lt; T &gt;</a>
+, <a class="el" href="structdaw_1_1_vector.html#af6f7c2e3b181521b7ec342fc6b153fa3">daw::Vector&lt; T, Alloc &gt;</a>
+, <a class="el" href="structdaw_1_1vector.html#afe7ecfc5daf6005ac06345c823945e33">daw::vector&lt; T, Allocator &gt;</a>
 , <a class="el" href="structdaw_1_1_vector.html#aa386c2ee626bcc1a508b7102aed868b9">daw::Vector&lt; T, Alloc &gt;</a>
-, <a class="el" href="structdaw_1_1view.html#a00d40985de5d036a9b3a1bbc133d5ffc">daw::view&lt; BidirectionalIterator &gt;</a>
+, <a class="el" href="structdaw_1_1vector.html#ae6a023f41596d6c0c4e1222d52ae2ceb">daw::vector&lt; T, Allocator &gt;</a>
+, <a class="el" href="structdaw_1_1view.html#a862289a1f7c3927496d914ff0b14d596">daw::view&lt; BidirectionalIterator &gt;</a>
 , <a class="el" href="structdaw_1_1zip__container.html#a44eb7491456766b93f73ff6229b8f16b">daw::zip_container&lt; Containers &gt;</a>
 </li>
 <li>bidirectional_counting_iterator()
@@ -155,13 +165,13 @@ $(function() {
 : <a class="el" href="classdaw_1_1bind__front.html#a0c2b685c1cac3c4f06b85f972d3b4169">daw::bind_front&lt; Function, Params &gt;</a>
 </li>
 <li>bit_iterator()
-: <a class="el" href="structdaw_1_1bit__iterator.html#a96ff45a2583df6154c4f96fa51e399fe">daw::bit_iterator&lt; Iterator &gt;</a>
+: <a class="el" href="structdaw_1_1bit__iterator.html#a98eecc4b0bb72a0d5501f77266fcb910">daw::bit_iterator&lt; Iterator &gt;</a>
 </li>
 <li>bit_stream()
 : <a class="el" href="structdaw_1_1bit__stream.html#a3700a7cfbd3a71b6adc5789cd8774b45">daw::bit_stream&lt; InputIteratorF, InputIteratorL, BitQueueLSB &gt;</a>
 </li>
 <li>bounded_graph_node_t()
-: <a class="el" href="classdaw_1_1bounded__graph__node__t.html#a848e183bd5b2009eee2144625c8d165a">daw::bounded_graph_node_t&lt; T, MaxVerticesPerNode, Hash &gt;</a>
+: <a class="el" href="classdaw_1_1bounded__graph__node__t.html#a60115e98792c44e629fc3263e6b28376">daw::bounded_graph_node_t&lt; T, MaxVerticesPerNode, Hash &gt;</a>
 </li>
 <li>bounded_graph_t()
 : <a class="el" href="structdaw_1_1bounded__graph__t.html#a0e9b281aabcfefad8e9b4e4703dac621">daw::bounded_graph_t&lt; T, MaxVerticesPerNode, Hash &gt;</a>
@@ -170,7 +180,7 @@ $(function() {
 : <a class="el" href="structdaw_1_1bounded__hash__map.html#a4c03b52b001f897b6a39632a3d5437b8">daw::bounded_hash_map&lt; Key, Value, N, Hash, KeyEqual &gt;</a>
 </li>
 <li>bounded_hash_map_item_t()
-: <a class="el" href="structdaw_1_1bounded__hash__map__item__t.html#ac87b1848098bc5b3a78b9e382b1f4ff6">daw::bounded_hash_map_item_t&lt; Key, Value &gt;</a>
+: <a class="el" href="structdaw_1_1bounded__hash__map__item__t.html#ae6f55bd978ce3543e83297b240036247">daw::bounded_hash_map_item_t&lt; Key, Value &gt;</a>
 </li>
 <li>bounded_hash_map_iterator()
 : <a class="el" href="structdaw_1_1bounded__hash__map__iterator.html#a154be02f64103bdb7e21c269e4daf6d4">daw::bounded_hash_map_iterator&lt; Key, Value &gt;</a>
@@ -183,7 +193,7 @@ $(function() {
 </li>
 <li>bounded_vector_t()
 : <a class="el" href="structdaw_1_1bounded__vector__t.html#ab928d1951abb4bd44bf06dd6cf14519e">daw::bounded_vector_t&lt; T, N &gt;</a>
-, <a class="el" href="structdaw_1_1bounded__vector__t_3_01_t_00_010_01_4.html#ab9a81e5048e9e8102f4ddcae35bfa5f5">daw::bounded_vector_t&lt; T, 0 &gt;</a>
+, <a class="el" href="structdaw_1_1bounded__vector__t_3_01_t_00_010_01_4.html#a9b6a9dd1b79c66155c890de2aa9f909e">daw::bounded_vector_t&lt; T, 0 &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->

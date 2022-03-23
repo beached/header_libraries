@@ -82,6 +82,7 @@ $(function() {
 , <a class="el" href="structdaw_1_1sv1_1_1basic__string__view.html#a7fcafcf30b528f10d18c32456734ce87">daw::sv1::basic_string_view&lt; CharT, BoundsType, Extent &gt;</a>
 , <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
 , <a class="el" href="structdaw_1_1_vector.html#a1519ae5c51694e11dae75187df30a98f">daw::Vector&lt; T, Alloc &gt;</a>
+, <a class="el" href="structdaw_1_1vector.html#a75aa4473a059642472ca4dc0c02c1a66">daw::vector&lt; T, Allocator &gt;</a>
 , <a class="el" href="structdaw_1_1view.html#acfd57bc87cddb30519940a902739d900">daw::view&lt; BidirectionalIterator &gt;</a>
 </li>
 <li>data_end()
@@ -89,8 +90,8 @@ $(function() {
 , <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#ab7d62d6cf02119fde0bb01c141347c53">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
 </li>
 <li>data_t()
-: <a class="el" href="uniondaw_1_1function__view__table__storage_1_1data__t.html#a08a383c415b6914554c93f8c5d7ca37e">daw::function_view_table_storage&lt; Result, Args &gt;::data_t</a>
-, <a class="el" href="uniondaw_1_1function__view__table__storage_3_01void_00_01_args_8_8_8_01_4_1_1data__t.html#a9d4152c54a8722d454ac55ed166ce5f4">daw::function_view_table_storage&lt; void, Args... &gt;::data_t</a>
+: <a class="el" href="uniondaw_1_1function__view__table__storage_1_1data__t.html#a8d8f5900c982743c0d4ff6386e549edb">daw::function_view_table_storage&lt; Result, Args &gt;::data_t</a>
+, <a class="el" href="uniondaw_1_1function__view__table__storage_3_01void_00_01_args_8_8_8_01_4_1_1data__t.html#a958f7a6f64cfeb9cfcc3e5ab1e3c6bf5">daw::function_view_table_storage&lt; void, Args... &gt;::data_t</a>
 </li>
 <li>deallocate()
 : <a class="el" href="structdaw_1_1_malloc_alloc.html#ad64f1c026ec09aa106426d035447a311">daw::MallocAlloc&lt; T &gt;</a>
@@ -111,6 +112,12 @@ $(function() {
 </li>
 <li>destruct()
 : <a class="el" href="structdaw_1_1uninitialized__storage.html#a97a0a53898ddcfdeff92bfd37b31d7cb">daw::uninitialized_storage&lt; T &gt;</a>
+</li>
+<li>destruct_at_begin()
+: <a class="el" href="structdaw_1_1split__buffer.html#ad28b0e330d0c7cee149c045192584e99">daw::split_buffer&lt; Tp, Allocator &gt;</a>
+</li>
+<li>destruct_at_end()
+: <a class="el" href="structdaw_1_1split__buffer.html#a9cc33f38ce8f145f3884ad7e5e0ae7b8">daw::split_buffer&lt; Tp, Allocator &gt;</a>
 </li>
 <li>difference_type
 : <a class="el" href="classdaw_1_1arg__iterator__t.html#a7b700ec004def8e8f9c31cc1ebe71452">daw::arg_iterator_t</a>
@@ -159,6 +166,7 @@ $(function() {
 , <a class="el" href="structdaw_1_1ring__adaptor.html#a521de9115ebaecceecccd461827e4959">daw::ring_adaptor&lt; Container &gt;</a>
 , <a class="el" href="structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01not_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#a59f702221206ee3c89fd767ced197cd1">daw::span&lt; T, std::enable_if_t&lt; not std::is_const_v&lt; T &gt; &gt; &gt;</a>
 , <a class="el" href="structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#a507e0d925d2dd656341d89bffb415253">daw::span&lt; T, std::enable_if_t&lt; std::is_const_v&lt; T &gt; &gt; &gt;</a>
+, <a class="el" href="structdaw_1_1split__buffer.html#a13aa180dafa0d94d46d127be402fbd32">daw::split_buffer&lt; Tp, Allocator &gt;</a>
 , <a class="el" href="structdaw_1_1split__it_3_01_iterator_00_01_splitter_00_01std_1_1enable__if__t_3_01not_01std_1_1i83ef1c274e841821b76a21b35cadacb3.html#a53ce4ce80451dd6b2cd08982e61bf6e3">daw::split_it&lt; Iterator, Splitter, std::enable_if_t&lt; not std::is_same_v&lt; char, typename std::iterator_traits&lt; Iterator &gt;::value_type &gt; &gt; &gt;</a>
 , <a class="el" href="structdaw_1_1split__it_3_01_iterator_00_01_splitter_00_01std_1_1enable__if__t_3_01std_1_1is__sam4dd9370386b1046dd9dd5722f16dbe95.html#a0ec2bae9486571c6f15a8ae9f1c250c9">daw::split_it&lt; Iterator, Splitter, std::enable_if_t&lt; std::is_same_v&lt; char, typename std::iterator_traits&lt; Iterator &gt;::value_type &gt; &gt; &gt;</a>
 , <a class="el" href="classdaw_1_1static__bitset.html#a5d7797efcf3351dd583e34c4fffdcad1">daw::static_bitset&lt; BitWidth &gt;</a>
@@ -167,7 +175,9 @@ $(function() {
 , <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a1a41fca412a9156ae0f086dc30a696a1">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
 , <a class="el" href="classdaw_1_1topological__sorted__iterator.html#a64607f7e3a26e46170ca64212d334542">daw::topological_sorted_iterator&lt; Graph, Compare &gt;</a>
 , <a class="el" href="structdaw_1_1_vector.html#a25e6c36c892e44dfee5a86d8e5f2c138">daw::Vector&lt; T, Alloc &gt;</a>
+, <a class="el" href="structdaw_1_1vector.html#a0c892a9b200eae8df469f7546f5f9335">daw::vector&lt; T, Allocator &gt;</a>
 , <a class="el" href="structdaw_1_1view.html#a7bd83208549202b3b4826316ce525ed5">daw::view&lt; BidirectionalIterator &gt;</a>
+, <a class="el" href="classdaw_1_1wrap__iter.html#a5dae6de1e32f31d775d0c674260f0b56">daw::wrap_iter&lt; Iterator &gt;</a>
 , <a class="el" href="structdaw_1_1zip__iterator.html#af54d0e24e6134794133aee4e53d7a7cb">daw::zip_iterator&lt; Iterators &gt;</a>
 </li>
 <li>differnce_type

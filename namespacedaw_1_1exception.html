@@ -227,6 +227,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a817573d26d89fb8db0809fca348b656f"><td class="memTemplParams" colspan="2">template&lt;typename ExceptionType  = Terminator, typename Bool , typename... Args&gt; </td></tr>
 <tr class="memitem:a817573d26d89fb8db0809fca348b656f"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1exception.html#a817573d26d89fb8db0809fca348b656f">precondition_check</a> (Bool &amp;&amp;condition, Args &amp;&amp;...args)</td></tr>
 <tr class="separator:a817573d26d89fb8db0809fca348b656f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7d45c100a8ba3c5eed55dd874103057"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
+<tr class="memitem:ad7d45c100a8ba3c5eed55dd874103057"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1exception.html#ad7d45c100a8ba3c5eed55dd874103057">throw_length_error</a> (Args &amp;&amp;...args)</td></tr>
+<tr class="separator:ad7d45c100a8ba3c5eed55dd874103057"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dbd10abed66ce1df19411ae50e49a16"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
+<tr class="memitem:a4dbd10abed66ce1df19411ae50e49a16"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1exception.html#a4dbd10abed66ce1df19411ae50e49a16">throw_out_of_range</a> (Args &amp;&amp;...args)</td></tr>
+<tr class="separator:a4dbd10abed66ce1df19411ae50e49a16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -1849,6 +1855,50 @@ template&lt;typename ExceptionType  = Terminator, typename Bool , typename... Ar
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__exception_8h_source.html#l00274">274</a> of file <a class="el" href="daw__exception_8h_source.html">daw_exception.h</a>.</p>
+
+</div>
+</div>
+<a id="ad7d45c100a8ba3c5eed55dd874103057"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7d45c100a8ba3c5eed55dd874103057">&#9670;&nbsp;</a></span>throw_length_error()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... Args&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void daw::exception::throw_length_error </td>
+          <td>(</td>
+          <td class="paramtype">Args &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__exception_8h_source.html#l00493">493</a> of file <a class="el" href="daw__exception_8h_source.html">daw_exception.h</a>.</p>
+
+</div>
+</div>
+<a id="a4dbd10abed66ce1df19411ae50e49a16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4dbd10abed66ce1df19411ae50e49a16">&#9670;&nbsp;</a></span>throw_out_of_range()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... Args&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void daw::exception::throw_out_of_range </td>
+          <td>(</td>
+          <td class="paramtype">Args &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__exception_8h_source.html#l00498">498</a> of file <a class="el" href="daw__exception_8h_source.html">daw_exception.h</a>.</p>
 
 </div>
 </div>
