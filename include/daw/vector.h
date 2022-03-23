@@ -736,9 +736,26 @@ namespace daw {
 			}
 		}
 
-		constexpr void
-		resize_and_overwrite( size_type n,
-		                      invocable<pointer, size_type> auto operation ) {
+		constexpr void resize_and_overwrite(
+		  size_type n,
+		  invocable_result<size_type, pointer, size_type> auto operation ) {
+			if( static_cast<size_type>( endcap( ) - m_begin ) >= n ) {
+				pointer p = m_begin;
+				auto const new_size = operation( p, n );
+				m_end = m_begin + static_cast<difference_type>( new_size );
+			}
+			allocator_type &a = alloc( );
+			auto v =
+			  split_buffer<value_type, allocator_type &>( recommend( n ), 0, a );
+			pointer p = v.begin_;
+			auto const new_size = static_cast<size_type>( operation( p, n ) );
+			v.end_ = v.begin_ + static_cast<difference_type>( new_size );
+			swap_out_circular_buffer( v );
+		}
+
+		constexpr void append_and_overwrite(
+		  size_type n,
+		  invocable_result<size_type, pointer, size_type> auto operation ) {
 			if( static_cast<size_type>( endcap( ) - m_end ) >= n ) {
 				pointer p = m_end;
 				auto const new_size = operation( p, n );
@@ -748,8 +765,8 @@ namespace daw {
 			auto v = split_buffer<value_type, allocator_type &>(
 			  recommend( size( ) + n ), size( ), a );
 			pointer p = v.end_;
-			auto const new_size = operation( p, n );
-			v.end_ += static_cast<difference_type>( new_size );
+			auto const append_count = static_cast<size_type>( operation( p, n ) );
+			v.end_ += static_cast<difference_type>( append_count );
 			swap_out_circular_buffer( v );
 		}
 
