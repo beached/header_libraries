@@ -76,6 +76,9 @@ namespace daw::impl {
 } // namespace daw::impl
 
 namespace daw {
+	struct do_resize_and_overwrite_t {};
+	inline constexpr auto do_resize_and_overwrite = do_resize_and_overwrite_t{ };
+
 	template<typename T, typename Allocator = std::allocator<T>>
 	struct vector {
 		using value_type = T;
@@ -110,10 +113,11 @@ namespace daw {
 		  : m_endcap_( nullptr, a ) {}
 
 		explicit constexpr vector( size_type n ) {
-			if( n > 0 ) {
-				vallocate( n );
-				construct_at_end( n );
+			if( n == 0 ) {
+				return;
 			}
+			vallocate( n );
+			construct_at_end( n );
 		}
 
 		explicit constexpr vector( size_type n, allocator_type const &a )
@@ -140,6 +144,23 @@ namespace daw {
 				vallocate( n );
 				construct_at_end( n, x );
 			}
+		}
+
+		explicit constexpr vector( do_resize_and_overwrite_t, size_type n,
+		                           auto operation ) {
+			if( n == 0 ) {
+				return;
+			}
+			resize_and_overwrite( n, DAW_MOVE( operation ) );
+		}
+
+		explicit constexpr vector( do_resize_and_overwrite_t, size_type n,
+		                           auto operation, allocator_type const &a )
+		  : m_endcap_( nullptr, a ) {
+			if( n == 0 ) {
+				return;
+			}
+			resize_and_overwrite( n, DAW_MOVE( operation ) );
 		}
 
 		template<input_iterator InputIterator>
@@ -394,7 +415,7 @@ namespace daw {
 			return m_begin == m_end;
 		}
 
-		[[nodiscard]] size_type max_size( ) const noexcept {
+		[[nodiscard]] constexpr size_type max_size( ) const noexcept {
 			return std::min<size_type>(
 			  alloc_traits::max_size( alloc( ) ),
 			  std::numeric_limits<difference_type>::max( ) );
@@ -1096,4 +1117,36 @@ namespace daw {
 		c.erase( std::remove_if( c.begin( ), c.end( ), pred ), c.end( ) );
 		return old_size - c.size( );
 	}
+
+	template<typename T, typename Allocator = std::allocator<T>,
+	         input_iterator InputIterator>
+	constexpr void block_append_from( vector<T, Allocator> &v,
+	                                  InputIterator first, InputIterator last,
+	                                  std::size_t block_size = 512 ) {
+		auto cur_size = v.size( );
+		while( first != last ) {
+			v.resize_and_overwrite( cur_size + block_size,
+			                        [&]( T *ptr, std::size_t sz ) {
+				                        ptr += cur_size;
+				                        cur_size += block_size;
+				                        while( cur_size < sz and first != last ) {
+					                        *ptr = *first;
+					                        ++ptr;
+					                        ++first;
+				                        }
+				                        return cur_size;
+			                        } );
+		}
+	}
+
+	template<typename T, typename Allocator = std::allocator<T>,
+	         input_iterator InputIterator>
+	[[nodiscard]] constexpr vector<T, Allocator>
+	block_create_from( InputIterator first, InputIterator last,
+	                   std::size_t block_size = 512 ) {
+		auto v = vector<T, Allocator>{ };
+		block_append_from( v, first, last, block_size );
+		return v;
+	}
+
 } // namespace daw
