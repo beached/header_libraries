@@ -62,14 +62,15 @@ namespace daw {
 		}
 	}
 
-	template<typename IntType, typename ForwardIterator>
+	template<typename IntType, typename ItValueType = IntType,
+	         typename ForwardIterator>
 	inline void random_fill( ForwardIterator first, ForwardIterator const last,
 	                         IntType a, IntType b ) {
 		static_assert( std::is_integral_v<IntType>,
 		               "IntType must be a valid integral type" );
 		daw::exception::daw_throw_on_false( a <= b, "a <= b must be true" );
 		while( first != last ) {
-			*first = randint<IntType>( a, b );
+			*first = static_cast<ItValueType>( randint<IntType>( a, b ) );
 			++first;
 		}
 	}
@@ -96,7 +97,8 @@ namespace daw {
 
 		Result result{ };
 		result.resize( count );
-		random_fill( result.begin( ), result.end( ), a, b );
+		random_fill<IntType, typename Result::value_type>( result.begin( ),
+		                                                   result.end( ), a, b );
 		return result;
 	}
 

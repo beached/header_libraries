@@ -34,9 +34,12 @@ namespace daw {
 
 		constexpr auto get_flag_value( bool CheckIncrement, bool CheckDecrement,
 		                               bool CheckDereference ) const noexcept {
-			uint8_t result = CheckIncrement ? check_increment : 0;
-			result |= CheckDecrement ? check_decrement : 0;
-			result |= CheckDereference ? check_dereference : 0;
+			auto result =
+			  static_cast<std::uint8_t>( CheckIncrement ? check_increment : 0 );
+			result =
+			  static_cast<uint8_t>( result | CheckDecrement ? check_decrement : 0 );
+			result = static_cast<uint8_t>(
+			  result | CheckDereference ? check_dereference : 0 );
 
 			return result;
 		}

@@ -19,9 +19,12 @@
 #include <stdexcept>
 
 namespace daw {
+	template<typename, bool ExplicitConv = false>
+	struct contiguous_view;
 
-	template<typename T, bool ExplicitConv = false>
-	struct contiguous_view {
+	template<typename T, bool ExplicitConv>
+	requires( not std::is_const_v<T> ) //
+	  struct contiguous_view<T, ExplicitConv> {
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
@@ -398,7 +401,7 @@ namespace daw {
 
 	template<ContiguousContainer Container>
 	contiguous_view( Container &&c )
-	  -> contiguous_view<DAW_TYPEOF( *std::data( c ) )>;
+	  -> contiguous_view<std::remove_reference_t<decltype( *std::data( c ) )>>;
 
 	template<typename T, std::size_t N>
 	contiguous_view( T ( & )[N] ) -> contiguous_view<T>;

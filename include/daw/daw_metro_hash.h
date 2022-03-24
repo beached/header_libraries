@@ -24,7 +24,8 @@ namespace daw::metro::metro_impl {
 		daw::algorithm::do_n_arg<sizeof( Unsigned )>( [&]( size_t n ) {
 			// This is needed, the compiler must have it's unsigned char
 			auto const tmp = static_cast<unsigned char>( ptr[n] );
-			result |= static_cast<Unsigned>( tmp ) << ( n * 8U );
+			result = static_cast<Unsigned>( result | static_cast<Unsigned>( tmp )
+			                                           << ( n * 8U ) );
 		} );
 		return result;
 	}

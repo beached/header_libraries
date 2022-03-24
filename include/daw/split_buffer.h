@@ -419,7 +419,8 @@ namespace daw {
 
 		template<forward_iterator ForwardIter>
 		constexpr void construct_at_end( ForwardIter first, ForwardIter last ) {
-			ConstructTransaction tx( &end_, std::distance( first, last ) );
+			ConstructTransaction tx(
+			  &end_, static_cast<size_type>( std::distance( first, last ) ) );
 			for( ; tx.pos != tx.end; ++tx.pos, ++first ) {
 				alloc_traits::construct( alloc( ), std::to_address( tx.pos ), *first );
 			}

@@ -157,10 +157,10 @@ int main( ) {
 	auto value = daw::UInt64{ 0x0FU };
 	auto ls = daw::cxmath::count_leading_zeroes( value );
 	(void)ls;
-	auto const nums =
-	  daw::make_random_data<int32_t, std::vector<float>>( 1'000, -1'000, 1'000 );
-	auto const dnums =
-	  daw::make_random_data<int32_t, std::vector<double>>( 1'000, -1'000, 1'000 );
+	auto const nums = daw::make_random_data<int32_t, std::vector<float>>(
+	  1'000, -1'000.0f, 1'000.0f );
+	auto const dnums = daw::make_random_data<int32_t, std::vector<double>>(
+	  1'000, -1'000.0, 1'000.0 );
 #if defined( DEBUG ) or not defined( NDEBUG )
 	constexpr size_t RUNCOUNT = 10'000;
 #else
@@ -171,7 +171,8 @@ int main( ) {
 	  []( auto &&floats ) {
 		  float sum = 0.0f;
 		  for( auto num : floats ) {
-			  sum += daw::cxmath::cxmath_impl::bits( num ).raw_value( );
+			  sum += static_cast<float>(
+			    daw::cxmath::cxmath_impl::bits( num ).raw_value( ) );
 		  }
 		  daw::do_not_optimize( sum );
 		  return sum;

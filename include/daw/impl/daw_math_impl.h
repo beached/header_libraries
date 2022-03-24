@@ -18,7 +18,7 @@ namespace daw {
 	namespace math_impl {
 		struct less {
 			template<typename T, typename U>
-			constexpr auto operator( )( T &&lhs, U &&rhs ) const {
+			constexpr auto operator( )( T const &lhs, U const &rhs ) const {
 				return lhs < rhs;
 			}
 		};
