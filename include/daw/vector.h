@@ -716,8 +716,8 @@ namespace daw {
 				} else {
 					allocator_type &a = alloc( );
 					auto v = split_buffer<value_type, allocator_type &>(
-					  recommend( static_cast<size_type>( ssize( ) + n ) ), p - m_begin,
-					  a );
+					  recommend( static_cast<size_type>( ssize( ) + n ) ),
+					  static_cast<size_type>( p - m_begin ), a );
 					v.construct_at_end( first, last );
 					p = swap_out_circular_buffer( v, p );
 				}
