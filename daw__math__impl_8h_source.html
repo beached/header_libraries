@@ -90,7 +90,7 @@ $(function() {
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  <span class="keyword">namespace </span>math_impl {</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">struct </span>less {</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;      <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U&gt;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;      constexpr <span class="keyword">auto</span> operator( )( T &amp;&amp;lhs, U &amp;&amp;rhs ) <span class="keyword">const</span> {</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;      constexpr <span class="keyword">auto</span> operator( )( T <span class="keyword">const</span> &amp;lhs, U <span class="keyword">const</span> &amp;rhs ) <span class="keyword">const</span> {</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keywordflow">return</span> lhs &lt; rhs;</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;      }</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    };</div>

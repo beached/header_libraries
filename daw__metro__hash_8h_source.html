@@ -96,111 +96,112 @@ $(function() {
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    daw::algorithm::do_n_arg&lt;sizeof( Unsigned )&gt;( [&amp;]( <span class="keywordtype">size_t</span> n ) {</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;      <span class="comment">// This is needed, the compiler must have it&#39;s unsigned char</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;      <span class="keyword">auto</span> <span class="keyword">const</span> tmp = <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span><span class="keyword">&gt;</span>( ptr[n] );</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;      result |= <span class="keyword">static_cast&lt;</span>Unsigned<span class="keyword">&gt;</span>( tmp ) &lt;&lt; ( n * 8U );</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    } );</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  }</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">template</span>&lt;<span class="keywordtype">size_t</span> BitCount, <span class="keyword">typename</span> Un<span class="keywordtype">signed</span>&gt;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  constexpr Unsigned rotr( Unsigned value ) noexcept {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    static_assert( std::is_integral_v&lt;Unsigned&gt; );</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    static_assert( std::is_unsigned_v&lt;Unsigned&gt; );</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    static_assert( BitCount &lt; <span class="keyword">sizeof</span>( Unsigned ) * 8U );</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    static_assert( BitCount &gt; 0 );</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    constexpr <span class="keywordtype">size_t</span> size_bits = <span class="keyword">sizeof</span>( Unsigned ) * 8U;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Unsigned<span class="keyword">&gt;</span>(</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      <span class="keyword">static_cast&lt;</span>Unsigned<span class="keyword">&gt;</span>( value &gt;&gt; BitCount ) |</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      <span class="keyword">static_cast&lt;</span>Unsigned<span class="keyword">&gt;</span>( value &lt;&lt; ( size_bits - BitCount ) ) );</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  }</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;} <span class="comment">// namespace daw::metro::metro_impl</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw_1_1metro.html">daw::metro</a> {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="comment">// An implementation of MetroHash64</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="comment">// https://github.com/jandrewrogers/MetroHash</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="namespacedaw_1_1metro.html#ae3d1fc3c7915b87db302156e3e3a143e">   49</a></span>&#160;  constexpr uint64_t <a class="code" href="namespacedaw_1_1metro.html#ae3d1fc3c7915b87db302156e3e3a143e">hash64</a>( <a class="code" href="structdaw_1_1view.html">daw::view&lt;char const *&gt;</a> buff, uint64_t seed ) {</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    constexpr uint64_t k0 = 0xd6d0<span class="stringliteral">&#39;18f5;</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="stringliteral">    constexpr uint64_t k1 = 0xa2aa&#39;</span>033b;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    constexpr uint64_t k2 = 0x6299<span class="stringliteral">&#39;2fc1;</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="stringliteral">    constexpr uint64_t k3 = 0x30bc&#39;</span>5b29;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    uint64_t hash = ( seed + k2 ) * k0;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordflow">if</span>( buff.<a class="code" href="structdaw_1_1view.html#a41e2e54c3a00777e7b78c19b3e6baf0d">size</a>( ) &gt;= 32U ) {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      uint64_t v[4]{ hash, hash, hash, hash };</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="keywordflow">do</span> {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        v[0] += metro_impl::as_le_uint&lt;uint64_t&gt;( buff.<a class="code" href="structdaw_1_1view.html#acfd57bc87cddb30519940a902739d900">data</a>( ) ) * k0;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        v[0] = metro_impl::rotr&lt;29U&gt;( v[0] ) + v[2];</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        v[1] += metro_impl::as_le_uint&lt;uint64_t&gt;( buff.<a class="code" href="structdaw_1_1view.html#acfd57bc87cddb30519940a902739d900">data</a>( ) + 8 ) * k1;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        v[1] = metro_impl::rotr&lt;29U&gt;( v[1] ) + v[3];</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        v[2] += metro_impl::as_le_uint&lt;uint64_t&gt;( buff.<a class="code" href="structdaw_1_1view.html#acfd57bc87cddb30519940a902739d900">data</a>( ) + 16 ) * k2;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        v[2] = metro_impl::rotr&lt;29U&gt;( v[2] ) + v[0];</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        v[3] += metro_impl::as_le_uint&lt;uint64_t&gt;( buff.<a class="code" href="structdaw_1_1view.html#acfd57bc87cddb30519940a902739d900">data</a>( ) + 24 ) * k3;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        v[3] = metro_impl::rotr&lt;29U&gt;( v[3] ) + v[1];</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        buff.<a class="code" href="structdaw_1_1view.html#a5deb35f20a901f4c0fb961989f44eddc">remove_prefix</a>( 32U );</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      } <span class="keywordflow">while</span>( buff.<a class="code" href="structdaw_1_1view.html#a41e2e54c3a00777e7b78c19b3e6baf0d">size</a>( ) &gt;= 32 );</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      v[2] ^= metro_impl::rotr&lt;37U&gt;( ( ( v[0] + v[3] ) * k0 ) + v[1] ) * k1;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      v[3] ^= metro_impl::rotr&lt;37U&gt;( ( ( v[1] + v[2] ) * k1 ) + v[0] ) * k0;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      v[0] ^= metro_impl::rotr&lt;37U&gt;( ( ( v[0] + v[2] ) * k0 ) + v[3] ) * k1;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;      v[1] ^= metro_impl::rotr&lt;37U&gt;( ( ( v[1] + v[3] ) * k1 ) + v[2] ) * k0;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      hash += v[0] ^ v[1];</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    }</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordflow">if</span>( buff.<a class="code" href="structdaw_1_1view.html#a41e2e54c3a00777e7b78c19b3e6baf0d">size</a>( ) &gt;= 16 ) {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      uint64_t v0 =</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        hash + ( metro_impl::as_le_uint&lt;uint64_t&gt;( buff.<a class="code" href="structdaw_1_1view.html#acfd57bc87cddb30519940a902739d900">data</a>( ) ) * k2 );</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      v0 = metro_impl::rotr&lt;29U&gt;( v0 ) * k3;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      uint64_t v1 =</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        hash + ( metro_impl::as_le_uint&lt;uint64_t&gt;( buff.<a class="code" href="structdaw_1_1view.html#acfd57bc87cddb30519940a902739d900">data</a>( ) + 8 ) * k2 );</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;      v1 = metro_impl::rotr&lt;29U&gt;( v1 ) * k3;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      v0 ^= metro_impl::rotr&lt;21U&gt;( v0 * k0 ) + v1;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      v1 ^= metro_impl::rotr&lt;21U&gt;( v1 * k3 ) + v0;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      hash += v1;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      buff.<a class="code" href="structdaw_1_1view.html#a5deb35f20a901f4c0fb961989f44eddc">remove_prefix</a>( 16U );</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    }</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordflow">if</span>( buff.<a class="code" href="structdaw_1_1view.html#a41e2e54c3a00777e7b78c19b3e6baf0d">size</a>( ) &gt;= 8 ) {</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;      hash += metro_impl::as_le_uint&lt;uint64_t&gt;( buff.<a class="code" href="structdaw_1_1view.html#acfd57bc87cddb30519940a902739d900">data</a>( ) ) * k3;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      hash ^= metro_impl::rotr&lt;55U&gt;( hash ) * k1;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;      buff.<a class="code" href="structdaw_1_1view.html#a5deb35f20a901f4c0fb961989f44eddc">remove_prefix</a>( 8U );</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordflow">if</span>( buff.<a class="code" href="structdaw_1_1view.html#a41e2e54c3a00777e7b78c19b3e6baf0d">size</a>( ) &gt;= 4 ) {</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      hash += <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>( <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                metro_impl::as_le_uint&lt;uint32_t&gt;( buff.<a class="code" href="structdaw_1_1view.html#acfd57bc87cddb30519940a902739d900">data</a>( ) ) ) ) *</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;              k3;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      hash ^= metro_impl::rotr&lt;26U&gt;( hash ) * k1;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      buff.<a class="code" href="structdaw_1_1view.html#a5deb35f20a901f4c0fb961989f44eddc">remove_prefix</a>( 4U );</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    }</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordflow">if</span>( buff.<a class="code" href="structdaw_1_1view.html#a41e2e54c3a00777e7b78c19b3e6baf0d">size</a>( ) &gt;= 2 ) {</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      hash += <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                metro_impl::as_le_uint&lt;uint16_t&gt;( buff.<a class="code" href="structdaw_1_1view.html#acfd57bc87cddb30519940a902739d900">data</a>( ) ) ) *</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;              k3;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;      hash ^= metro_impl::rotr&lt;48U&gt;( hash ) * k1;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;      buff.<a class="code" href="structdaw_1_1view.html#a5deb35f20a901f4c0fb961989f44eddc">remove_prefix</a>( 2U );</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    }</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordflow">if</span>( buff.<a class="code" href="structdaw_1_1view.html#a41e2e54c3a00777e7b78c19b3e6baf0d">size</a>( ) &gt;= 1 ) {</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;      hash += <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>( buff.<a class="code" href="structdaw_1_1view.html#a488769ebe31af72b29d49ce8e5ff2e9d">front</a>( ) ) * k3;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      hash ^= metro_impl::rotr&lt;37U&gt;( hash ) * k1;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;      buff.<a class="code" href="structdaw_1_1view.html#a5deb35f20a901f4c0fb961989f44eddc">remove_prefix</a>( );</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    }</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    hash ^= metro_impl::rotr&lt;28U&gt;( hash );</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    hash *= k0;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    hash ^= metro_impl::rotr&lt;29U&gt;( hash );</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keywordflow">return</span> hash;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  }</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;} <span class="comment">// namespace daw::metro</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;      result = <span class="keyword">static_cast&lt;</span>Unsigned<span class="keyword">&gt;</span>( result | <span class="keyword">static_cast&lt;</span>Unsigned<span class="keyword">&gt;</span>( tmp )</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;                                                 &lt;&lt; ( n * 8U ) );</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    } );</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  }</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">template</span>&lt;<span class="keywordtype">size_t</span> BitCount, <span class="keyword">typename</span> Un<span class="keywordtype">signed</span>&gt;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  constexpr Unsigned rotr( Unsigned value ) noexcept {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    static_assert( std::is_integral_v&lt;Unsigned&gt; );</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    static_assert( std::is_unsigned_v&lt;Unsigned&gt; );</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    static_assert( BitCount &lt; <span class="keyword">sizeof</span>( Unsigned ) * 8U );</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    static_assert( BitCount &gt; 0 );</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    constexpr <span class="keywordtype">size_t</span> size_bits = <span class="keyword">sizeof</span>( Unsigned ) * 8U;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Unsigned<span class="keyword">&gt;</span>(</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      <span class="keyword">static_cast&lt;</span>Unsigned<span class="keyword">&gt;</span>( value &gt;&gt; BitCount ) |</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      <span class="keyword">static_cast&lt;</span>Unsigned<span class="keyword">&gt;</span>( value &lt;&lt; ( size_bits - BitCount ) ) );</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  }</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;} <span class="comment">// namespace daw::metro::metro_impl</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw_1_1metro.html">daw::metro</a> {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="comment">// An implementation of MetroHash64</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="comment">// https://github.com/jandrewrogers/MetroHash</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="namespacedaw_1_1metro.html#ae3d1fc3c7915b87db302156e3e3a143e">   50</a></span>&#160;  constexpr uint64_t <a class="code" href="namespacedaw_1_1metro.html#ae3d1fc3c7915b87db302156e3e3a143e">hash64</a>( <a class="code" href="structdaw_1_1view.html">daw::view&lt;char const *&gt;</a> buff, uint64_t seed ) {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    constexpr uint64_t k0 = 0xd6d0<span class="stringliteral">&#39;18f5;</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="stringliteral">    constexpr uint64_t k1 = 0xa2aa&#39;</span>033b;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    constexpr uint64_t k2 = 0x6299<span class="stringliteral">&#39;2fc1;</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="stringliteral">    constexpr uint64_t k3 = 0x30bc&#39;</span>5b29;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    uint64_t hash = ( seed + k2 ) * k0;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">if</span>( buff.<a class="code" href="structdaw_1_1view.html#a41e2e54c3a00777e7b78c19b3e6baf0d">size</a>( ) &gt;= 32U ) {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      uint64_t v[4]{ hash, hash, hash, hash };</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      <span class="keywordflow">do</span> {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        v[0] += metro_impl::as_le_uint&lt;uint64_t&gt;( buff.<a class="code" href="structdaw_1_1view.html#acfd57bc87cddb30519940a902739d900">data</a>( ) ) * k0;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        v[0] = metro_impl::rotr&lt;29U&gt;( v[0] ) + v[2];</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        v[1] += metro_impl::as_le_uint&lt;uint64_t&gt;( buff.<a class="code" href="structdaw_1_1view.html#acfd57bc87cddb30519940a902739d900">data</a>( ) + 8 ) * k1;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        v[1] = metro_impl::rotr&lt;29U&gt;( v[1] ) + v[3];</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        v[2] += metro_impl::as_le_uint&lt;uint64_t&gt;( buff.<a class="code" href="structdaw_1_1view.html#acfd57bc87cddb30519940a902739d900">data</a>( ) + 16 ) * k2;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        v[2] = metro_impl::rotr&lt;29U&gt;( v[2] ) + v[0];</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        v[3] += metro_impl::as_le_uint&lt;uint64_t&gt;( buff.<a class="code" href="structdaw_1_1view.html#acfd57bc87cddb30519940a902739d900">data</a>( ) + 24 ) * k3;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        v[3] = metro_impl::rotr&lt;29U&gt;( v[3] ) + v[1];</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        buff.<a class="code" href="structdaw_1_1view.html#a5deb35f20a901f4c0fb961989f44eddc">remove_prefix</a>( 32U );</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      } <span class="keywordflow">while</span>( buff.<a class="code" href="structdaw_1_1view.html#a41e2e54c3a00777e7b78c19b3e6baf0d">size</a>( ) &gt;= 32 );</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      v[2] ^= metro_impl::rotr&lt;37U&gt;( ( ( v[0] + v[3] ) * k0 ) + v[1] ) * k1;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      v[3] ^= metro_impl::rotr&lt;37U&gt;( ( ( v[1] + v[2] ) * k1 ) + v[0] ) * k0;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;      v[0] ^= metro_impl::rotr&lt;37U&gt;( ( ( v[0] + v[2] ) * k0 ) + v[3] ) * k1;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      v[1] ^= metro_impl::rotr&lt;37U&gt;( ( ( v[1] + v[3] ) * k1 ) + v[2] ) * k0;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;      hash += v[0] ^ v[1];</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    }</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordflow">if</span>( buff.<a class="code" href="structdaw_1_1view.html#a41e2e54c3a00777e7b78c19b3e6baf0d">size</a>( ) &gt;= 16 ) {</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      uint64_t v0 =</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        hash + ( metro_impl::as_le_uint&lt;uint64_t&gt;( buff.<a class="code" href="structdaw_1_1view.html#acfd57bc87cddb30519940a902739d900">data</a>( ) ) * k2 );</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      v0 = metro_impl::rotr&lt;29U&gt;( v0 ) * k3;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      uint64_t v1 =</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        hash + ( metro_impl::as_le_uint&lt;uint64_t&gt;( buff.<a class="code" href="structdaw_1_1view.html#acfd57bc87cddb30519940a902739d900">data</a>( ) + 8 ) * k2 );</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      v1 = metro_impl::rotr&lt;29U&gt;( v1 ) * k3;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      v0 ^= metro_impl::rotr&lt;21U&gt;( v0 * k0 ) + v1;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      v1 ^= metro_impl::rotr&lt;21U&gt;( v1 * k3 ) + v0;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      hash += v1;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      buff.<a class="code" href="structdaw_1_1view.html#a5deb35f20a901f4c0fb961989f44eddc">remove_prefix</a>( 16U );</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    }</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordflow">if</span>( buff.<a class="code" href="structdaw_1_1view.html#a41e2e54c3a00777e7b78c19b3e6baf0d">size</a>( ) &gt;= 8 ) {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      hash += metro_impl::as_le_uint&lt;uint64_t&gt;( buff.<a class="code" href="structdaw_1_1view.html#acfd57bc87cddb30519940a902739d900">data</a>( ) ) * k3;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;      hash ^= metro_impl::rotr&lt;55U&gt;( hash ) * k1;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;      buff.<a class="code" href="structdaw_1_1view.html#a5deb35f20a901f4c0fb961989f44eddc">remove_prefix</a>( 8U );</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    }</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordflow">if</span>( buff.<a class="code" href="structdaw_1_1view.html#a41e2e54c3a00777e7b78c19b3e6baf0d">size</a>( ) &gt;= 4 ) {</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      hash += <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>( <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                metro_impl::as_le_uint&lt;uint32_t&gt;( buff.<a class="code" href="structdaw_1_1view.html#acfd57bc87cddb30519940a902739d900">data</a>( ) ) ) ) *</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;              k3;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      hash ^= metro_impl::rotr&lt;26U&gt;( hash ) * k1;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;      buff.<a class="code" href="structdaw_1_1view.html#a5deb35f20a901f4c0fb961989f44eddc">remove_prefix</a>( 4U );</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    }</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keywordflow">if</span>( buff.<a class="code" href="structdaw_1_1view.html#a41e2e54c3a00777e7b78c19b3e6baf0d">size</a>( ) &gt;= 2 ) {</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      hash += <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                metro_impl::as_le_uint&lt;uint16_t&gt;( buff.<a class="code" href="structdaw_1_1view.html#acfd57bc87cddb30519940a902739d900">data</a>( ) ) ) *</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;              k3;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;      hash ^= metro_impl::rotr&lt;48U&gt;( hash ) * k1;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;      buff.<a class="code" href="structdaw_1_1view.html#a5deb35f20a901f4c0fb961989f44eddc">remove_prefix</a>( 2U );</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    }</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keywordflow">if</span>( buff.<a class="code" href="structdaw_1_1view.html#a41e2e54c3a00777e7b78c19b3e6baf0d">size</a>( ) &gt;= 1 ) {</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      hash += <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>( buff.<a class="code" href="structdaw_1_1view.html#a488769ebe31af72b29d49ce8e5ff2e9d">front</a>( ) ) * k3;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;      hash ^= metro_impl::rotr&lt;37U&gt;( hash ) * k1;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;      buff.<a class="code" href="structdaw_1_1view.html#a5deb35f20a901f4c0fb961989f44eddc">remove_prefix</a>( );</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    }</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    hash ^= metro_impl::rotr&lt;28U&gt;( hash );</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    hash *= k0;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    hash ^= metro_impl::rotr&lt;29U&gt;( hash );</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordflow">return</span> hash;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  }</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;} <span class="comment">// namespace daw::metro</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="astructdaw_1_1view_html_acfd57bc87cddb30519940a902739d900"><div class="ttname"><a href="structdaw_1_1view.html#acfd57bc87cddb30519940a902739d900">daw::view::data</a></div><div class="ttdeci">constexpr iterator data()</div><div class="ttdef"><b>Definition:</b> <a href="daw__view_8h_source.html#l00084">daw_view.h:84</a></div></div>
 <div class="ttc" id="astructdaw_1_1view_html_a488769ebe31af72b29d49ce8e5ff2e9d"><div class="ttname"><a href="structdaw_1_1view.html#a488769ebe31af72b29d49ce8e5ff2e9d">daw::view::front</a></div><div class="ttdeci">constexpr reference front()</div><div class="ttdef"><b>Definition:</b> <a href="daw__view_8h_source.html#l00142">daw_view.h:142</a></div></div>
 <div class="ttc" id="astructdaw_1_1view_html_a5deb35f20a901f4c0fb961989f44eddc"><div class="ttname"><a href="structdaw_1_1view.html#a5deb35f20a901f4c0fb961989f44eddc">daw::view::remove_prefix</a></div><div class="ttdeci">constexpr void remove_prefix(size_type n)</div><div class="ttdef"><b>Definition:</b> <a href="daw__view_8h_source.html#l00177">daw_view.h:177</a></div></div>
 <div class="ttc" id="adaw__do__n_8h_html"><div class="ttname"><a href="daw__do__n_8h.html">daw_do_n.h</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1metro_html_ae3d1fc3c7915b87db302156e3e3a143e"><div class="ttname"><a href="namespacedaw_1_1metro.html#ae3d1fc3c7915b87db302156e3e3a143e">daw::metro::hash64</a></div><div class="ttdeci">constexpr uint64_t hash64(daw::view&lt; char const * &gt; buff, uint64_t seed)</div><div class="ttdef"><b>Definition:</b> <a href="daw__metro__hash_8h_source.html#l00049">daw_metro_hash.h:49</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1metro_html_ae3d1fc3c7915b87db302156e3e3a143e"><div class="ttname"><a href="namespacedaw_1_1metro.html#ae3d1fc3c7915b87db302156e3e3a143e">daw::metro::hash64</a></div><div class="ttdeci">constexpr uint64_t hash64(daw::view&lt; char const * &gt; buff, uint64_t seed)</div><div class="ttdef"><b>Definition:</b> <a href="daw__metro__hash_8h_source.html#l00050">daw_metro_hash.h:50</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1metro_html"><div class="ttname"><a href="namespacedaw_1_1metro.html">daw::metro</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__metro__hash_8h_source.html#l00018">daw_metro_hash.h:18</a></div></div>
 <div class="ttc" id="astructdaw_1_1view_html_a41e2e54c3a00777e7b78c19b3e6baf0d"><div class="ttname"><a href="structdaw_1_1view.html#a41e2e54c3a00777e7b78c19b3e6baf0d">daw::view::size</a></div><div class="ttdeci">constexpr size_type size() const</div><div class="ttdef"><b>Definition:</b> <a href="daw__view_8h_source.html#l00073">daw_view.h:73</a></div></div>
 <div class="ttc" id="astructdaw_1_1view_html"><div class="ttname"><a href="structdaw_1_1view.html">daw::view</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__view_8h_source.html#l00041">daw_view.h:41</a></div></div>
