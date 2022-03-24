@@ -50,10 +50,25 @@ namespace daw {
 	concept constructible_from = std::is_constructible_v<T, Args...>;
 
 	template<typename T>
+	concept Pointers = std::is_pointer_v<T>;
+
+	template<typename T>
 	concept Containers = requires( T container ) {
 		typename std::remove_cvref_t<T>::value_type;
 		container.begin( );
 		container.end( );
+	};
+
+	template<typename T>
+	concept ContiguousContainer = requires( T && container ) {
+		{ std::data( container ) } -> Pointers;
+		{ std::size( container ) } -> convertible_to<std::size_t>;
+	};
+
+	template<typename T, typename U>
+	concept ContiguousContainerOf = ContiguousContainer<T> and
+	  requires( T container ) {
+		{ *std::data( container ) } -> convertible_to<U>;
 	};
 
 	template<typename T>

@@ -104,8 +104,8 @@ namespace daw {
 		using difference_type = typename alloc_traits::difference_type;
 		using pointer = typename alloc_traits::pointer;
 		using const_pointer = typename alloc_traits::const_pointer;
-		using iterator = wrap_iter<pointer>;
-		using const_iterator = wrap_iter<const_pointer>;
+		using iterator = wrap_iter<pointer, vector>;
+		using const_iterator = wrap_iter<const_pointer, vector>;
 		using reverse_iterator = std::reverse_iterator<iterator>;
 		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 		using supports_slow_distance = void;
@@ -506,12 +506,20 @@ namespace daw {
 			return *( m_end - 1 );
 		}
 
-		[[nodiscard]] constexpr value_type *data( ) noexcept {
-			return std::to_address( m_begin );
+		[[nodiscard]] constexpr pointer data( ) noexcept {
+			return m_begin;
 		}
 
-		[[nodiscard]] constexpr value_type const *data( ) const noexcept {
-			return std::to_address( m_begin );
+		[[nodiscard]] constexpr const_pointer data( ) const noexcept {
+			return m_begin;
+		}
+
+		[[nodiscard]] constexpr pointer data_end( ) noexcept {
+			return m_end;
+		}
+
+		[[nodiscard]] constexpr const_pointer data_end( ) const noexcept {
+			return m_end;
 		}
 
 		constexpr void push_back( const_reference x ) {
@@ -1046,8 +1054,8 @@ namespace daw {
 			pointer pos;
 			const_pointer const new_m_end;
 
-			explicit constexpr ConstructTransaction( vector &v, size_type n )
-			  : v( v )
+			explicit constexpr ConstructTransaction( vector &ve, size_type n )
+			  : v( ve )
 			  , pos( v.m_end )
 			  , new_m_end( v.m_end + n ) {}
 
@@ -1136,29 +1144,36 @@ namespace daw {
 
 		constexpr void move_assign_alloc( vector &, std::false_type ) noexcept {}
 
-		friend constexpr bool operator==( vector const &x, vector const &y ) {
-			const typename vector<T, Allocator>::size_type sz = x.size( );
-			return sz == y.size( ) and std::equal( x.begin( ), x.end( ), y.begin( ) );
+		[[nodiscard]] friend constexpr bool operator==( vector const &x,
+		                                                vector const &y ) {
+			size_type const sz = x.size( );
+			return sz == y.size( ) and
+			       std::equal( x.data( ), x.data_end( ), y.data( ) );
 		}
 
-		friend constexpr bool operator!=( vector const &x, vector const &y ) {
+		[[nodiscard]] friend constexpr bool operator!=( vector const &x,
+		                                                vector const &y ) {
 			return not( x == y );
 		}
 
-		friend constexpr bool operator<( vector const &x, vector const &y ) {
-			return std::lexicographical_compare( x.begin( ), x.end( ), y.begin( ),
-			                                     y.end( ) );
+		[[nodiscard]] friend constexpr bool operator<( vector const &x,
+		                                               vector const &y ) {
+			return std::lexicographical_compare( x.data( ), x.data_end( ), y.data( ),
+			                                     y.data_end( ) );
 		}
 
-		friend constexpr bool operator>( vector const &x, vector const &y ) {
+		[[nodiscard]] friend constexpr bool operator>( vector const &x,
+		                                               vector const &y ) {
 			return y < x;
 		}
 
-		friend constexpr bool operator>=( vector const &x, vector const &y ) {
+		[[nodiscard]] friend constexpr bool operator>=( vector const &x,
+		                                                vector const &y ) {
 			return not( x < y );
 		}
 
-		friend constexpr bool operator<=( vector const &x, vector const &y ) {
+		[[nodiscard]] friend constexpr bool operator<=( vector const &x,
+		                                                vector const &y ) {
 			return not( y < x );
 		}
 	};
