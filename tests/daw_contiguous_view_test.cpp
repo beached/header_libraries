@@ -15,6 +15,6 @@ int foo( daw::contiguous_view<int> vals ) {
 }
 
 int main( ) {
-	int vals[] = {1,2,3};
+	int vals[] = { 1, 2, 3 };
 	return foo( vals );
 }
