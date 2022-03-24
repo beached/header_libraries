@@ -102,32 +102,28 @@ namespace daw {
 			return i;
 		}
 
-		template<typename Iterator1, typename Iterator2>
-		friend constexpr auto
-		operator<=>( wrap_iter<Iterator1> const &lhs,
-		             wrap_iter<Iterator2> const &rhs ) noexcept {
-			return lhs.base( ) <=> rhs.base( );
+		template<typename Iterator2>
+		constexpr auto operator<=>( wrap_iter<Iterator2> const &rhs ) noexcept {
+			return base( ) <=> rhs.base( );
 		}
 
-		template<typename Iterator1, typename Iterator2>
-		friend constexpr bool
-		operator==( wrap_iter<Iterator1> const &lhs,
-		            wrap_iter<Iterator2> const &rhs ) noexcept {
-			return lhs.base( ) == rhs.base( );
-		}
-
-		template<typename Iterator1, class Iterator2>
-		friend constexpr bool operator-( wrap_iter<Iterator1> const &x,
-		                                 wrap_iter<Iterator2> const &y ) noexcept {
-			return x.base( ) - y.base( );
-		}
-
-		template<typename Iterator1>
-		friend constexpr wrap_iter<Iterator1>
-		operator+( typename wrap_iter<Iterator1>::difference_type n,
-		           wrap_iter<Iterator1> x ) noexcept {
-			x += n;
-			return x;
+		template<typename Iterator2>
+		constexpr bool operator==( wrap_iter<Iterator2> const &rhs ) noexcept {
+			return base( ) == rhs.base( );
 		}
 	};
+
+	template<typename Iterator1, class Iterator2>
+	constexpr bool operator-( wrap_iter<Iterator1> const &x,
+	                          wrap_iter<Iterator2> const &y ) noexcept {
+		return x.base( ) - y.base( );
+	}
+
+	template<typename Iterator1>
+	constexpr wrap_iter<Iterator1>
+	operator+( typename wrap_iter<Iterator1>::difference_type n,
+	           wrap_iter<Iterator1> x ) noexcept {
+		x += n;
+		return x;
+	}
 } // namespace daw
