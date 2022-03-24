@@ -39,7 +39,13 @@ DAW_CONSTEVAL bool test( ) {
 		                           }
 		                           return sz;
 	                           } );
-	return y.size( ) == 100;
+	y.resize_and_overwrite( 50, []( int *ptr, std::size_t sz ) {
+		for( std::size_t n = 0; n < sz; ++n ) {
+			std::construct_at( &ptr[n], n );
+		}
+		return sz;
+	} );
+	return y.size( ) == 50;
 }
 
 int main( ) {
