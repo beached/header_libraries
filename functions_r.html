@@ -97,6 +97,7 @@ $(function() {
 , <a class="el" href="structdaw_1_1bounded__vector__t.html#a99fd68574d2a4db3ec36ad3ded552d3d">daw::bounded_vector_t&lt; T, N &gt;</a>
 , <a class="el" href="structdaw_1_1bounded__vector__t_3_01_t_00_010_01_4.html#ac2025f5bc4dee4c260719a72cfb9a92e">daw::bounded_vector_t&lt; T, 0 &gt;</a>
 , <a class="el" href="structdaw_1_1carray.html#a536faa789f95bd8a15ce88a5095c8afe">daw::carray&lt; T, N &gt;</a>
+, <a class="el" href="structdaw_1_1contiguous__view.html#a4095b7f2e60de5b98f80fdd0864cd6a3">daw::contiguous_view&lt; T, ExplicitConv &gt;</a>
 , <a class="el" href="structdaw_1_1ordered__map.html#a5dd6a4791ccad3569a7cbb0d03169fc7">daw::ordered_map&lt; Key, Value, Compare, Allocator, Container &gt;</a>
 , <a class="el" href="structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01not_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#acd4aeedb1fe5bd09acc836401846ff16">daw::span&lt; T, std::enable_if_t&lt; not std::is_const_v&lt; T &gt; &gt; &gt;</a>
 , <a class="el" href="structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#a1679446bbad5508c5c6e9bf19bc13d64">daw::span&lt; T, std::enable_if_t&lt; std::is_const_v&lt; T &gt; &gt; &gt;</a>
@@ -155,6 +156,7 @@ $(function() {
 , <a class="el" href="structdaw_1_1container__traits.html#a705d3a1ff4b8b50bab2a1ae3e49632f5">daw::container_traits&lt; Container &gt;</a>
 , <a class="el" href="structdaw_1_1container__traits_3_01std_1_1array_3_01_t_00_01_n_01_4_01_4.html#a24eea9203b4abd75a7aafb312d2533b8">daw::container_traits&lt; std::array&lt; T, N &gt; &gt;</a>
 , <a class="el" href="structdaw_1_1container__traits_3_01_t_0f_n_0e_4.html#a7140fdd384d78594ec4756e705c83658">daw::container_traits&lt; T[N]&gt;</a>
+, <a class="el" href="structdaw_1_1contiguous__view.html#a84305c7c972c19f30ab4f962842eb53b">daw::contiguous_view&lt; T, ExplicitConv &gt;</a>
 , <a class="el" href="structdaw_1_1copiable__unique__ptr.html#a336e64d17e8d456d23330c4e1b29a1de">daw::copiable_unique_ptr&lt; T, Deleter &gt;</a>
 , <a class="el" href="structdaw_1_1end__inserter__iterator.html#a9a3b6aab9deaea533d190569e22e9dec">daw::end_inserter_iterator&lt; Container &gt;</a>
 , <a class="el" href="structdaw_1_1expected__t.html#add0032b84ecd0ac2b401bc21933d0eb0">daw::expected_t&lt; T &gt;</a>
@@ -213,7 +215,7 @@ $(function() {
 , <a class="el" href="structdaw_1_1vector.html#a4236664ca2ba1e4d95a9ff2148402815">daw::vector&lt; T, Allocator &gt;</a>
 , <a class="el" href="structdaw_1_1_vector.html#a6e2f0ab709e069ce9d72f530ab251841">daw::Vector&lt; T, Alloc &gt;</a>
 , <a class="el" href="structdaw_1_1view.html#a3016a4e05fb7f318411d38e81d88cfbc">daw::view&lt; BidirectionalIterator &gt;</a>
-, <a class="el" href="classdaw_1_1wrap__iter.html#aef75fa1e8e9545df88060cd2f8473957">daw::wrap_iter&lt; Iterator &gt;</a>
+, <a class="el" href="classdaw_1_1wrap__iter.html#ae17ef1f97a9bf923b042083fc2e21c20">daw::wrap_iter&lt; Iterator, Tag &gt;</a>
 , <a class="el" href="structdaw_1_1zip__iterator.html#a8507d7d1968079357f3596ac38e09cda">daw::zip_iterator&lt; Iterators &gt;</a>
 </li>
 <li>ReferenceRange()
@@ -245,8 +247,8 @@ $(function() {
 : <a class="el" href="structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01not_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#ae23482a5f5322fc78066cb0aad1588ca">daw::span&lt; T, std::enable_if_t&lt; not std::is_const_v&lt; T &gt; &gt; &gt;</a>
 , <a class="el" href="structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#ad608fefce312f42d122f60ef7a212f25">daw::span&lt; T, std::enable_if_t&lt; std::is_const_v&lt; T &gt; &gt; &gt;</a>
 , <a class="el" href="structdaw_1_1sv1_1_1basic__string__view.html#afe87c0847fb7532d9ee0afc0ca9a7c74">daw::sv1::basic_string_view&lt; CharT, BoundsType, Extent &gt;</a>
-, <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#ae3077a97d0d692e0518e9c377d9f3110">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
-, <a class="el" href="structdaw_1_1view.html#a5deb35f20a901f4c0fb961989f44eddc">daw::view&lt; BidirectionalIterator &gt;</a>
+, <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a267dac1bed0300d7175979373106bba7">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
+, <a class="el" href="structdaw_1_1view.html#afbae16815b249866761b02248101d99e">daw::view&lt; BidirectionalIterator &gt;</a>
 </li>
 <li>remove_prefix_until()
 : <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#aa2588afb0a086b8ad79b674452123ca4">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
@@ -259,21 +261,22 @@ $(function() {
 , <a class="el" href="structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01not_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#a9edbf425d325c7b6828a3b89e6dae70e">daw::span&lt; T, std::enable_if_t&lt; not std::is_const_v&lt; T &gt; &gt; &gt;</a>
 , <a class="el" href="structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#a7d49f92602b9e413b51bba1806c0feaf">daw::span&lt; T, std::enable_if_t&lt; std::is_const_v&lt; T &gt; &gt; &gt;</a>
 , <a class="el" href="structdaw_1_1sv1_1_1basic__string__view.html#adc7304337f076f6c69a1dd4a70c4a021">daw::sv1::basic_string_view&lt; CharT, BoundsType, Extent &gt;</a>
-, <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a02a002ad08220c51b725503e9d88c3eb">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
-, <a class="el" href="structdaw_1_1view.html#ac08a8f59620db74e6c1a3b754df2a521">daw::view&lt; BidirectionalIterator &gt;</a>
+, <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a3dc129c2db1368008be7babb0b18e8f0">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
+, <a class="el" href="structdaw_1_1view.html#ae757f73298331d7f62e74e974de3e995">daw::view&lt; BidirectionalIterator &gt;</a>
 </li>
 <li>remove_suffix_while()
 : <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#ae2435585163bf074ff96d805f944c44c">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
 </li>
 <li>rend()
-: <a class="el" href="structdaw_1_1basic__bounded__string.html#a1e36eb30aca8488df5463c34d5e966d5">daw::basic_bounded_string&lt; CharT, Capacity &gt;</a>
-, <a class="el" href="structdaw_1_1bounded__vector__t.html#a4d6b4a0f66769a837910025be6c30cf2">daw::bounded_vector_t&lt; T, N &gt;</a>
+: <a class="el" href="structdaw_1_1basic__bounded__string.html#a8d44903e51189d5be97293510033ad59">daw::basic_bounded_string&lt; CharT, Capacity &gt;</a>
+, <a class="el" href="structdaw_1_1bounded__vector__t.html#ae4f0c76c9ab4ddc2c43283ffa967e746">daw::bounded_vector_t&lt; T, N &gt;</a>
 , <a class="el" href="structdaw_1_1bounded__vector__t_3_01_t_00_010_01_4.html#a8ad05930ff2a9bf521418706a872cbb5">daw::bounded_vector_t&lt; T, 0 &gt;</a>
-, <a class="el" href="structdaw_1_1carray.html#a64225404ed0caacb4f229f2739038854">daw::carray&lt; T, N &gt;</a>
+, <a class="el" href="structdaw_1_1carray.html#a2aa5640e45af1251e86ff1519077dc3a">daw::carray&lt; T, N &gt;</a>
+, <a class="el" href="structdaw_1_1contiguous__view.html#afa210d7b26d4ca7101202c5397c74cda">daw::contiguous_view&lt; T, ExplicitConv &gt;</a>
 , <a class="el" href="structdaw_1_1ordered__map.html#a69810fb7a2efed21c318c70dba838d7f">daw::ordered_map&lt; Key, Value, Compare, Allocator, Container &gt;</a>
 , <a class="el" href="structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01not_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#ac7b2255b0773c722fd0f657a93a22f97">daw::span&lt; T, std::enable_if_t&lt; not std::is_const_v&lt; T &gt; &gt; &gt;</a>
 , <a class="el" href="structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#ae4af8a8b5c95a376df94cfa8a3b40b0c">daw::span&lt; T, std::enable_if_t&lt; std::is_const_v&lt; T &gt; &gt; &gt;</a>
-, <a class="el" href="classdaw_1_1static__bitset.html#a802f70ac2ee05849634a0a9f4a7e7a14">daw::static_bitset&lt; BitWidth &gt;</a>
+, <a class="el" href="classdaw_1_1static__bitset.html#ac1293dd020cabfa798a9a7599c844102">daw::static_bitset&lt; BitWidth &gt;</a>
 , <a class="el" href="structdaw_1_1sv1_1_1basic__string__view.html#a3e1798e70c705f4ce00641f53860f903">daw::sv1::basic_string_view&lt; CharT, BoundsType, Extent &gt;</a>
 , <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a700d17f1b239bb1fbc9b541eee158951">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
 , <a class="el" href="structdaw_1_1view.html#ae36194719d66d53f97b4aa78553db726">daw::view&lt; BidirectionalIterator &gt;</a>
@@ -285,8 +288,9 @@ $(function() {
 : <a class="el" href="structdaw_1_1compressed__pair.html#a26e9f1d9e14be78cdd66a813b671b197">daw::compressed_pair&lt; _T1, _T2 &gt;</a>
 , <a class="el" href="structdaw_1_1compressed__pair__elem.html#a5c4f931f3bcbbeb5644a6913b335456b">daw::compressed_pair_elem&lt; Tp, Idx, bool &gt;</a>
 , <a class="el" href="structdaw_1_1compressed__pair__elem_3_01_tp_00_01_idx_00_01true_01_4.html#a3c6cbc296ba246bb43d0aa459f3a6a02">daw::compressed_pair_elem&lt; Tp, Idx, true &gt;</a>
+, <a class="el" href="structdaw_1_1contiguous__view.html#ac98cf0918ae39998956e8c79ad11c684">daw::contiguous_view&lt; T, ExplicitConv &gt;</a>
 , <a class="el" href="structdaw_1_1vector.html#ae18b02a9a3c795605d5cf03f1f7a50f2">daw::vector&lt; T, Allocator &gt;</a>
-, <a class="el" href="classdaw_1_1wrap__iter.html#a4256d89bc0c40857cf381615ba905ac4">daw::wrap_iter&lt; Iterator &gt;</a>
+, <a class="el" href="classdaw_1_1wrap__iter.html#a4f690293700b24f39c5d65692e847ed0">daw::wrap_iter&lt; Iterator, Tag &gt;</a>
 </li>
 <li>reserve()
 : <a class="el" href="structdaw_1_1split__buffer.html#a5c2a88b14bcc0128c924a0c65f273c6e">daw::split_buffer&lt; Tp, Allocator &gt;</a>
@@ -333,6 +337,7 @@ $(function() {
 : <a class="el" href="structdaw_1_1basic__bounded__string.html#aade4beaa1b45502ca8916cbb50a10a7d">daw::basic_bounded_string&lt; CharT, Capacity &gt;</a>
 , <a class="el" href="structdaw_1_1bounded__vector__t.html#a28d96f349e62fb628f4897d7acc52073">daw::bounded_vector_t&lt; T, N &gt;</a>
 , <a class="el" href="structdaw_1_1bounded__vector__t_3_01_t_00_010_01_4.html#a75e13d6258d0aa364b1ca63468c76376">daw::bounded_vector_t&lt; T, 0 &gt;</a>
+, <a class="el" href="structdaw_1_1contiguous__view.html#ac75265729562efbc305e732ce82e4774">daw::contiguous_view&lt; T, ExplicitConv &gt;</a>
 , <a class="el" href="structdaw_1_1ordered__map.html#a76c96be355f4ca8321d7b3a88cf662c0">daw::ordered_map&lt; Key, Value, Compare, Allocator, Container &gt;</a>
 , <a class="el" href="structdaw_1_1reverse__iterator.html#a70e78a5cbf860cf351d6d64e201594d9">daw::reverse_iterator&lt; Iterator &gt;</a>
 , <a class="el" href="structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01not_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#a20c4084766afc80c602629de02cf6e8c">daw::span&lt; T, std::enable_if_t&lt; not std::is_const_v&lt; T &gt; &gt; &gt;</a>
@@ -344,8 +349,8 @@ $(function() {
 </li>
 <li>rfind()
 : <a class="el" href="structdaw_1_1basic__bounded__string.html#aaece256eda72dcf0ad81ee548eb9077a">daw::basic_bounded_string&lt; CharT, Capacity &gt;</a>
-, <a class="el" href="structdaw_1_1sv1_1_1basic__string__view.html#a7aed2d96be3962c0ed6214042cc53508">daw::sv1::basic_string_view&lt; CharT, BoundsType, Extent &gt;</a>
-, <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a4aadc5084ec8ba154a864e7dead683da">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
+, <a class="el" href="structdaw_1_1sv1_1_1basic__string__view.html#af3366dcb9e7bc850c466b63982bc7853">daw::sv1::basic_string_view&lt; CharT, BoundsType, Extent &gt;</a>
+, <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#ace0acc996084f673c637713b430e2250">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
 </li>
 <li>ring_adaptor()
 : <a class="el" href="structdaw_1_1ring__adaptor.html#aa10cd6ddd317fe75895745f0844e3aa3">daw::ring_adaptor&lt; Container &gt;</a>
