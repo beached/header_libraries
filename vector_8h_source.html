@@ -788,8 +788,8 @@ $(function() {
 <div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;        } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;          <a class="code" href="structdaw_1_1vector.html#ae9aa81fcb045d060b3a6c3fb693f4d21">allocator_type</a> &amp;a = <a class="code" href="structdaw_1_1vector.html#a1b86104c4d23b5c74dfbf4a85183af2b">alloc</a>( );</div>
 <div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;          <span class="keyword">auto</span> v = split_buffer&lt;value_type, allocator_type &amp;&gt;(</div>
-<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;            recommend( <span class="keyword">static_cast&lt;</span><a class="code" href="structdaw_1_1vector.html#a70f6d102d5a0aa54cbdf4c0430e89540">size_type</a><span class="keyword">&gt;</span>( ssize( ) + n ) ), p - m_begin,</div>
-<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;            a );</div>
+<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;            recommend( <span class="keyword">static_cast&lt;</span><a class="code" href="structdaw_1_1vector.html#a70f6d102d5a0aa54cbdf4c0430e89540">size_type</a><span class="keyword">&gt;</span>( ssize( ) + n ) ),</div>
+<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;            <span class="keyword">static_cast&lt;</span><a class="code" href="structdaw_1_1vector.html#a70f6d102d5a0aa54cbdf4c0430e89540">size_type</a><span class="keyword">&gt;</span>( p - m_begin ), a );</div>
 <div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;          v.construct_at_end( first, <a class="code" href="structdaw_1_1vector.html#a633c8910bb4c03cb77c1c69c3980f5fc">last</a> );</div>
 <div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;          p = swap_out_circular_buffer( v, p );</div>
 <div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;        }</div>
