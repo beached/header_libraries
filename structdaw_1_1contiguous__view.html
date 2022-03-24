@@ -107,6 +107,8 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac2e1c937a39fdfb8619b1fb2a54b73e6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1contiguous__view.html#ac2e1c937a39fdfb8619b1fb2a54b73e6">contiguous_view</a> ()=default</td></tr>
 <tr class="separator:ac2e1c937a39fdfb8619b1fb2a54b73e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4490341834bc8cc2cd8d427fc880ea3"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1contiguous__view.html#ac4490341834bc8cc2cd8d427fc880ea3">contiguous_view</a> (<a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a> &amp;other) noexcept</td></tr>
+<tr class="separator:ac4490341834bc8cc2cd8d427fc880ea3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a175574418929d9b1dd78def0049c627b"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1contiguous__view.html#a175574418929d9b1dd78def0049c627b">contiguous_view</a> (<a class="el" href="structdaw_1_1contiguous__view.html#a5e3b223b09573a8e9ef609d78a99f2e2">pointer</a> first, <a class="el" href="structdaw_1_1contiguous__view.html#a5e3b223b09573a8e9ef609d78a99f2e2">pointer</a> last) noexcept</td></tr>
 <tr class="separator:a175574418929d9b1dd78def0049c627b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf6f1e614cd41ecdae1e773f0393a869"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1contiguous__view.html#aaf6f1e614cd41ecdae1e773f0393a869">contiguous_view</a> (<a class="el" href="structdaw_1_1contiguous__view.html#a5e3b223b09573a8e9ef609d78a99f2e2">pointer</a> first, <a class="el" href="structdaw_1_1contiguous__view.html#a060cbb2048736b5771e5cc2fb4ade822">size_type</a> sz) noexcept</td></tr>
@@ -144,6 +146,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8bc724015eff800ad69b3eb096c3630d"><td class="memTemplParams" colspan="2">template&lt;constructible_from&lt; pointer, size_type &gt; Container&gt; </td></tr>
 <tr class="memitem:a8bc724015eff800ad69b3eb096c3630d"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1contiguous__view.html#a8bc724015eff800ad69b3eb096c3630d">operator Container</a> () const noexcept</td></tr>
 <tr class="separator:a8bc724015eff800ad69b3eb096c3630d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94bd9db68f29fc22e5bf25acfbc96689"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1contiguous__view.html#a94bd9db68f29fc22e5bf25acfbc96689">operator=</a> (<a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a> &amp;rhs) noexcept</td></tr>
+<tr class="separator:a94bd9db68f29fc22e5bf25acfbc96689"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf0457310c896589399b32b15129d1f8"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#ae61fdcb397b5b48fde1909e507b83249">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1contiguous__view.html#abf0457310c896589399b32b15129d1f8">operator[]</a> (<a class="el" href="structdaw_1_1contiguous__view.html#a060cbb2048736b5771e5cc2fb4ade822">size_type</a> index) const noexcept</td></tr>
 <tr class="separator:abf0457310c896589399b32b15129d1f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaab0b13f2a64afdad1b3648c9fb9d28e"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a84305c7c972c19f30ab4f962842eb53b">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1contiguous__view.html#aaab0b13f2a64afdad1b3648c9fb9d28e">operator[]</a> (<a class="el" href="structdaw_1_1contiguous__view.html#a060cbb2048736b5771e5cc2fb4ade822">size_type</a> index) noexcept</td></tr>
@@ -157,7 +161,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afa210d7b26d4ca7101202c5397c74cda"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#ac75265729562efbc305e732ce82e4774">reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1contiguous__view.html#afa210d7b26d4ca7101202c5397c74cda">rend</a> () noexcept</td></tr>
 <tr class="separator:afa210d7b26d4ca7101202c5397c74cda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac98cf0918ae39998956e8c79ad11c684"><td class="memTemplParams" colspan="2">template&lt;ContiguousContainerOf&lt; value_type &gt; Container&gt; </td></tr>
-<tr class="memitem:ac98cf0918ae39998956e8c79ad11c684"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1contiguous__view.html#ac98cf0918ae39998956e8c79ad11c684">requires</a> (not <a class="el" href="namespacedaw.html#aa204958271f536b788a1b0c233df6d5e">same_as</a>&lt; <a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>, std::remove_cvref_t&lt; Container &gt;&gt;) explicit(ExplicitConv) const expr <a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>(Container &amp;&amp;c) noexcept</td></tr>
+<tr class="memitem:ac98cf0918ae39998956e8c79ad11c684"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1contiguous__view.html#ac98cf0918ae39998956e8c79ad11c684">requires</a> (not <a class="el" href="namespacedaw.html#aa204958271f536b788a1b0c233df6d5e">same_as</a>&lt; <a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>, std::remove_cvref_t&lt; Container &gt;&gt;) explicit(<a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a>) const expr <a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>(Container &amp;&amp;c) noexcept</td></tr>
 <tr class="separator:ac98cf0918ae39998956e8c79ad11c684"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78353455dc0e7c695bd6e45558757d3d"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a060cbb2048736b5771e5cc2fb4ade822">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1contiguous__view.html#a78353455dc0e7c695bd6e45558757d3d">size</a> () const noexcept</td></tr>
 <tr class="separator:a78353455dc0e7c695bd6e45558757d3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -193,7 +197,7 @@ struct daw::contiguous_view&lt; T, ExplicitConv &gt;</h3>
 template&lt;typename T , bool ExplicitConv = false&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::<a class="el" href="structdaw_1_1contiguous__view.html#a77fb96d83a12fa5eded050303a0655ef">const_iterator</a> =  <a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a>&lt;<a class="el" href="structdaw_1_1contiguous__view.html#a9281c9726badd391ee61a172ac6420fd">const_pointer</a>, <a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&gt;</td>
+          <td class="memname">using <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::<a class="el" href="structdaw_1_1contiguous__view.html#a77fb96d83a12fa5eded050303a0655ef">const_iterator</a> =  <a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a>&lt;<a class="el" href="structdaw_1_1contiguous__view.html#a9281c9726badd391ee61a172ac6420fd">const_pointer</a>, <a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -211,7 +215,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 template&lt;typename T , bool ExplicitConv = false&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::<a class="el" href="structdaw_1_1contiguous__view.html#a9281c9726badd391ee61a172ac6420fd">const_pointer</a> =  <a class="el" href="structdaw_1_1contiguous__view.html#aba124948b240963b06b1d6c2ac3db231">value_type</a> const *</td>
+          <td class="memname">using <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::<a class="el" href="structdaw_1_1contiguous__view.html#a9281c9726badd391ee61a172ac6420fd">const_pointer</a> =  <a class="el" href="structdaw_1_1contiguous__view.html#aba124948b240963b06b1d6c2ac3db231">value_type</a> const *</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -229,7 +233,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 template&lt;typename T , bool ExplicitConv = false&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::<a class="el" href="structdaw_1_1contiguous__view.html#ae61fdcb397b5b48fde1909e507b83249">const_reference</a> =  <a class="el" href="structdaw_1_1contiguous__view.html#aba124948b240963b06b1d6c2ac3db231">value_type</a> const &amp;</td>
+          <td class="memname">using <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::<a class="el" href="structdaw_1_1contiguous__view.html#ae61fdcb397b5b48fde1909e507b83249">const_reference</a> =  <a class="el" href="structdaw_1_1contiguous__view.html#aba124948b240963b06b1d6c2ac3db231">value_type</a> const &amp;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -247,7 +251,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 template&lt;typename T , bool ExplicitConv = false&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::<a class="el" href="structdaw_1_1contiguous__view.html#a22908430a3f34b4828fe41c70a288ce8">const_reverse_iterator</a> =  std::reverse_iterator&lt;<a class="el" href="structdaw_1_1contiguous__view.html#a77fb96d83a12fa5eded050303a0655ef">const_iterator</a>&gt;</td>
+          <td class="memname">using <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::<a class="el" href="structdaw_1_1contiguous__view.html#a22908430a3f34b4828fe41c70a288ce8">const_reverse_iterator</a> =  std::reverse_iterator&lt;<a class="el" href="structdaw_1_1contiguous__view.html#a77fb96d83a12fa5eded050303a0655ef">const_iterator</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -265,7 +269,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 template&lt;typename T , bool ExplicitConv = false&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::<a class="el" href="structdaw_1_1contiguous__view.html#a910cd7d5de3eaa3a319b20a3b080c4a2">difference_type</a> =  std::ptrdiff_t</td>
+          <td class="memname">using <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::<a class="el" href="structdaw_1_1contiguous__view.html#a910cd7d5de3eaa3a319b20a3b080c4a2">difference_type</a> =  std::ptrdiff_t</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -283,7 +287,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 template&lt;typename T , bool ExplicitConv = false&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::<a class="el" href="structdaw_1_1contiguous__view.html#a369e29e7d378723ee5afc82f3c9d0102">iterator</a> =  <a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a>&lt;<a class="el" href="structdaw_1_1contiguous__view.html#a5e3b223b09573a8e9ef609d78a99f2e2">pointer</a>, <a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&gt;</td>
+          <td class="memname">using <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::<a class="el" href="structdaw_1_1contiguous__view.html#a369e29e7d378723ee5afc82f3c9d0102">iterator</a> =  <a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a>&lt;<a class="el" href="structdaw_1_1contiguous__view.html#a5e3b223b09573a8e9ef609d78a99f2e2">pointer</a>, <a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -301,7 +305,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 template&lt;typename T , bool ExplicitConv = false&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::<a class="el" href="structdaw_1_1contiguous__view.html#a5e3b223b09573a8e9ef609d78a99f2e2">pointer</a> =  <a class="el" href="structdaw_1_1contiguous__view.html#aba124948b240963b06b1d6c2ac3db231">value_type</a> *</td>
+          <td class="memname">using <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::<a class="el" href="structdaw_1_1contiguous__view.html#a5e3b223b09573a8e9ef609d78a99f2e2">pointer</a> =  <a class="el" href="structdaw_1_1contiguous__view.html#aba124948b240963b06b1d6c2ac3db231">value_type</a> *</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -319,7 +323,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 template&lt;typename T , bool ExplicitConv = false&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::<a class="el" href="structdaw_1_1contiguous__view.html#a84305c7c972c19f30ab4f962842eb53b">reference</a> =  <a class="el" href="structdaw_1_1contiguous__view.html#aba124948b240963b06b1d6c2ac3db231">value_type</a> &amp;</td>
+          <td class="memname">using <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::<a class="el" href="structdaw_1_1contiguous__view.html#a84305c7c972c19f30ab4f962842eb53b">reference</a> =  <a class="el" href="structdaw_1_1contiguous__view.html#aba124948b240963b06b1d6c2ac3db231">value_type</a> &amp;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -337,7 +341,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 template&lt;typename T , bool ExplicitConv = false&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::<a class="el" href="structdaw_1_1contiguous__view.html#ac75265729562efbc305e732ce82e4774">reverse_iterator</a> =  std::reverse_iterator&lt;<a class="el" href="structdaw_1_1contiguous__view.html#a369e29e7d378723ee5afc82f3c9d0102">iterator</a>&gt;</td>
+          <td class="memname">using <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::<a class="el" href="structdaw_1_1contiguous__view.html#ac75265729562efbc305e732ce82e4774">reverse_iterator</a> =  std::reverse_iterator&lt;<a class="el" href="structdaw_1_1contiguous__view.html#a369e29e7d378723ee5afc82f3c9d0102">iterator</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -355,7 +359,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 template&lt;typename T , bool ExplicitConv = false&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::<a class="el" href="structdaw_1_1contiguous__view.html#a060cbb2048736b5771e5cc2fb4ade822">size_type</a> =  std::size_t</td>
+          <td class="memname">using <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::<a class="el" href="structdaw_1_1contiguous__view.html#a060cbb2048736b5771e5cc2fb4ade822">size_type</a> =  std::size_t</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -373,7 +377,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 template&lt;typename T , bool ExplicitConv = false&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::<a class="el" href="structdaw_1_1contiguous__view.html#aba124948b240963b06b1d6c2ac3db231">value_type</a> =  T</td>
+          <td class="memname">using <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::<a class="el" href="structdaw_1_1contiguous__view.html#aba124948b240963b06b1d6c2ac3db231">value_type</a> =  T</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -384,7 +388,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac2e1c937a39fdfb8619b1fb2a54b73e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2e1c937a39fdfb8619b1fb2a54b73e6">&#9670;&nbsp;</a></span>contiguous_view() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2e1c937a39fdfb8619b1fb2a54b73e6">&#9670;&nbsp;</a></span>contiguous_view() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -395,7 +399,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::<a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a> </td>
+          <td class="memname"><a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::<a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -410,8 +414,8 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 
 </div>
 </div>
-<a id="a175574418929d9b1dd78def0049c627b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a175574418929d9b1dd78def0049c627b">&#9670;&nbsp;</a></span>contiguous_view() <span class="overload">[2/3]</span></h2>
+<a id="ac4490341834bc8cc2cd8d427fc880ea3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4490341834bc8cc2cd8d427fc880ea3">&#9670;&nbsp;</a></span>contiguous_view() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -422,7 +426,37 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::<a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a> </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::<a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00043">43</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+
+</div>
+</div>
+<a id="a175574418929d9b1dd78def0049c627b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a175574418929d9b1dd78def0049c627b">&#9670;&nbsp;</a></span>contiguous_view() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , bool ExplicitConv = false&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::<a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a> </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html#a5e3b223b09573a8e9ef609d78a99f2e2">pointer</a>&#160;</td>
           <td class="paramname"><em>first</em>, </td>
@@ -446,12 +480,12 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00044">44</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00053">53</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
 <a id="aaf6f1e614cd41ecdae1e773f0393a869"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaf6f1e614cd41ecdae1e773f0393a869">&#9670;&nbsp;</a></span>contiguous_view() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf6f1e614cd41ecdae1e773f0393a869">&#9670;&nbsp;</a></span>contiguous_view() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -462,7 +496,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::<a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a> </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::<a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a> </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html#a5e3b223b09573a8e9ef609d78a99f2e2">pointer</a>&#160;</td>
           <td class="paramname"><em>first</em>, </td>
@@ -486,7 +520,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00048">48</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00057">57</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -503,7 +537,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a84305c7c972c19f30ab4f962842eb53b">reference</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::at </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a84305c7c972c19f30ab4f962842eb53b">reference</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::at </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html#a060cbb2048736b5771e5cc2fb4ade822">size_type</a>&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
@@ -517,7 +551,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00152">152</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00161">161</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -533,7 +567,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#ae61fdcb397b5b48fde1909e507b83249">const_reference</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::at </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#ae61fdcb397b5b48fde1909e507b83249">const_reference</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::at </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html#a060cbb2048736b5771e5cc2fb4ade822">size_type</a>&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
@@ -547,7 +581,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00159">159</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00168">168</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -563,7 +597,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a77fb96d83a12fa5eded050303a0655ef">const_iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::begin </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a77fb96d83a12fa5eded050303a0655ef">const_iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::begin </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -576,7 +610,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00085">85</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00094">94</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -592,7 +626,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a369e29e7d378723ee5afc82f3c9d0102">iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::begin </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a369e29e7d378723ee5afc82f3c9d0102">iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::begin </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -605,7 +639,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00081">81</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00090">90</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -621,7 +655,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a77fb96d83a12fa5eded050303a0655ef">const_iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::cbegin </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a77fb96d83a12fa5eded050303a0655ef">const_iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::cbegin </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -634,7 +668,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00089">89</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00098">98</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -650,7 +684,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a77fb96d83a12fa5eded050303a0655ef">const_iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::cend </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a77fb96d83a12fa5eded050303a0655ef">const_iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::cend </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -663,7 +697,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00113">113</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00122">122</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -679,7 +713,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a22908430a3f34b4828fe41c70a288ce8">const_reverse_iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::crbegin </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a22908430a3f34b4828fe41c70a288ce8">const_reverse_iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::crbegin </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -692,7 +726,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00101">101</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00110">110</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -708,7 +742,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a22908430a3f34b4828fe41c70a288ce8">const_reverse_iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::crend </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a22908430a3f34b4828fe41c70a288ce8">const_reverse_iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::crend </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -721,7 +755,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00125">125</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00134">134</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -737,7 +771,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a9281c9726badd391ee61a172ac6420fd">const_pointer</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::data </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a9281c9726badd391ee61a172ac6420fd">const_pointer</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::data </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -750,7 +784,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00069">69</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00078">78</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -766,7 +800,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a5e3b223b09573a8e9ef609d78a99f2e2">pointer</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::data </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a5e3b223b09573a8e9ef609d78a99f2e2">pointer</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::data </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -779,7 +813,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00065">65</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00074">74</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -795,7 +829,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a9281c9726badd391ee61a172ac6420fd">const_pointer</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::data_end </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a9281c9726badd391ee61a172ac6420fd">const_pointer</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::data_end </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -808,7 +842,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00077">77</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00086">86</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -824,7 +858,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a5e3b223b09573a8e9ef609d78a99f2e2">pointer</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::data_end </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a5e3b223b09573a8e9ef609d78a99f2e2">pointer</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::data_end </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -837,7 +871,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00073">73</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00082">82</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -853,7 +887,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::empty </td>
+          <td class="memname">constexpr bool <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::empty </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -866,7 +900,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00133">133</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00142">142</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -882,7 +916,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a77fb96d83a12fa5eded050303a0655ef">const_iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::end </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a77fb96d83a12fa5eded050303a0655ef">const_iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::end </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -895,7 +929,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00109">109</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00118">118</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -911,7 +945,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a369e29e7d378723ee5afc82f3c9d0102">iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::end </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a369e29e7d378723ee5afc82f3c9d0102">iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::end </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -924,7 +958,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00105">105</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00114">114</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -942,7 +976,7 @@ template&lt;constructible_from&lt; pointer, size_type &gt; Container&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::operator Container </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::operator Container </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -955,7 +989,37 @@ template&lt;constructible_from&lt; pointer, size_type &gt; Container&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00061">61</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00070">70</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+
+</div>
+</div>
+<a id="a94bd9db68f29fc22e5bf25acfbc96689"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94bd9db68f29fc22e5bf25acfbc96689">&#9670;&nbsp;</a></span>operator=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , bool ExplicitConv = false&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&amp; <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00047">47</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -971,7 +1035,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#ae61fdcb397b5b48fde1909e507b83249">const_reference</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::operator[] </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#ae61fdcb397b5b48fde1909e507b83249">const_reference</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::operator[] </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html#a060cbb2048736b5771e5cc2fb4ade822">size_type</a>&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
@@ -985,7 +1049,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00142">142</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00151">151</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -1001,7 +1065,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a84305c7c972c19f30ab4f962842eb53b">reference</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::operator[] </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a84305c7c972c19f30ab4f962842eb53b">reference</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::operator[] </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html#a060cbb2048736b5771e5cc2fb4ade822">size_type</a>&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
@@ -1015,7 +1079,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00137">137</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00146">146</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -1031,7 +1095,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a22908430a3f34b4828fe41c70a288ce8">const_reverse_iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::rbegin </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a22908430a3f34b4828fe41c70a288ce8">const_reverse_iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::rbegin </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1044,7 +1108,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00097">97</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00106">106</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -1060,7 +1124,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#ac75265729562efbc305e732ce82e4774">reverse_iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::rbegin </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#ac75265729562efbc305e732ce82e4774">reverse_iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::rbegin </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1073,7 +1137,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00093">93</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00102">102</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -1089,7 +1153,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a22908430a3f34b4828fe41c70a288ce8">const_reverse_iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::rend </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a22908430a3f34b4828fe41c70a288ce8">const_reverse_iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::rend </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1102,7 +1166,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00121">121</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00130">130</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -1118,7 +1182,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#ac75265729562efbc305e732ce82e4774">reverse_iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::rend </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#ac75265729562efbc305e732ce82e4774">reverse_iterator</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::rend </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1131,7 +1195,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00117">117</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00126">126</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -1149,9 +1213,9 @@ template&lt;ContiguousContainerOf&lt; value_type &gt; Container&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::requires </td>
+          <td class="memname"><a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::requires </td>
           <td>(</td>
-          <td class="paramtype">not <a class="el" href="namespacedaw.html#aa204958271f536b788a1b0c233df6d5e">same_as</a>&lt; <a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, ExplicitConv &gt;, std::remove_cvref_t&lt; Container &gt;&gt;&#160;</td>
+          <td class="paramtype">not <a class="el" href="namespacedaw.html#aa204958271f536b788a1b0c233df6d5e">same_as</a>&lt; <a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;, std::remove_cvref_t&lt; Container &gt;&gt;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td> const &amp;&amp;</td>
         </tr>
@@ -1163,7 +1227,7 @@ template&lt;ContiguousContainerOf&lt; value_type &gt; Container&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00053">53</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00062">62</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -1179,7 +1243,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a060cbb2048736b5771e5cc2fb4ade822">size_type</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, ExplicitConv &gt;::size </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1contiguous__view.html#a060cbb2048736b5771e5cc2fb4ade822">size_type</a> <a class="el" href="structdaw_1_1contiguous__view.html">daw::contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::size </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1192,7 +1256,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00129">129</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00138">138</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -1211,13 +1275,13 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
         <tr>
           <td class="memname">constexpr friend bool <a class="el" href="namespacedaw.html#a4b5346b91ffce4d929d08bf93694afec">operator!</a>= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, ExplicitConv &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt; const &amp;&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, ExplicitConv &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt; const &amp;&#160;</td>
           <td class="paramname"><em>y</em>&#160;</td>
         </tr>
         <tr>
@@ -1233,7 +1297,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00173">173</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00182">182</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -1251,13 +1315,13 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
         <tr>
           <td class="memname">constexpr friend bool operator&lt; </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, ExplicitConv &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt; const &amp;&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, ExplicitConv &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt; const &amp;&#160;</td>
           <td class="paramname"><em>y</em>&#160;</td>
         </tr>
         <tr>
@@ -1273,7 +1337,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00178">178</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00187">187</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -1291,13 +1355,13 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
         <tr>
           <td class="memname">constexpr friend bool operator&lt;= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, ExplicitConv &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt; const &amp;&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, ExplicitConv &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt; const &amp;&#160;</td>
           <td class="paramname"><em>y</em>&#160;</td>
         </tr>
         <tr>
@@ -1313,7 +1377,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00194">194</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00203">203</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -1331,13 +1395,13 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
         <tr>
           <td class="memname">constexpr friend bool operator== </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, ExplicitConv &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt; const &amp;&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, ExplicitConv &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt; const &amp;&#160;</td>
           <td class="paramname"><em>y</em>&#160;</td>
         </tr>
         <tr>
@@ -1353,7 +1417,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00166">166</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00175">175</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -1371,13 +1435,13 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
         <tr>
           <td class="memname">constexpr friend bool operator&gt; </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, ExplicitConv &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt; const &amp;&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, ExplicitConv &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt; const &amp;&#160;</td>
           <td class="paramname"><em>y</em>&#160;</td>
         </tr>
         <tr>
@@ -1393,7 +1457,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00184">184</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00193">193</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>
@@ -1411,13 +1475,13 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
         <tr>
           <td class="memname">constexpr friend bool operator&gt;= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, ExplicitConv &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt; const &amp;&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, ExplicitConv &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1contiguous__view.html">contiguous_view</a>&lt; T, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt; const &amp;&#160;</td>
           <td class="paramname"><em>y</em>&#160;</td>
         </tr>
         <tr>
@@ -1433,7 +1497,7 @@ template&lt;typename T , bool ExplicitConv = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00189">189</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00198">198</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
 
 </div>
 </div>

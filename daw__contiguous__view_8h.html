@@ -69,7 +69,9 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">daw_contiguous_view.h File Reference</div>  </div>
 </div><!--header-->
@@ -96,11 +98,50 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a9e52e047d20a099bcc28f4972090af31"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a9e52e047d20a099bcc28f4972090af31">daw::const_iterator</a> = wrap_iter&lt; const_pointer, contiguous_view &gt;</td></tr>
+<tr class="separator:a9e52e047d20a099bcc28f4972090af31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a56197f86eee05ea61a21ee811c9a2f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a9a56197f86eee05ea61a21ee811c9a2f">daw::const_pointer</a> = value_type const *</td></tr>
+<tr class="separator:a9a56197f86eee05ea61a21ee811c9a2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfa89441513335aad3e60f2448cbe4a2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#adfa89441513335aad3e60f2448cbe4a2">daw::const_reference</a> = value_type const &amp;</td></tr>
+<tr class="separator:adfa89441513335aad3e60f2448cbe4a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a197d9bc069bee29b6226a0d814c9af37"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a197d9bc069bee29b6226a0d814c9af37">daw::const_reverse_iterator</a> = std::reverse_iterator&lt; const_iterator &gt;</td></tr>
+<tr class="separator:a197d9bc069bee29b6226a0d814c9af37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdbb948aa034bc58d5e5755160858229"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#acdbb948aa034bc58d5e5755160858229">daw::difference_type</a> = std::ptrdiff_t</td></tr>
+<tr class="separator:acdbb948aa034bc58d5e5755160858229"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61ec35cf730cfbefc2e63ab78da3c0dc"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a61ec35cf730cfbefc2e63ab78da3c0dc">daw::iterator</a> = wrap_iter&lt; pointer, contiguous_view &gt;</td></tr>
+<tr class="separator:a61ec35cf730cfbefc2e63ab78da3c0dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46f680d61771755fb89576ca9ed030cd"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a46f680d61771755fb89576ca9ed030cd">daw::pointer</a> = value_type *</td></tr>
+<tr class="separator:a46f680d61771755fb89576ca9ed030cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1e7a60a3822c804abf3188dac848160"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad1e7a60a3822c804abf3188dac848160">daw::reference</a> = value_type &amp;</td></tr>
+<tr class="separator:ad1e7a60a3822c804abf3188dac848160"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a620bfb5b09582d8fab0664610c36a765"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a620bfb5b09582d8fab0664610c36a765">daw::reverse_iterator</a> = std::reverse_iterator&lt; iterator &gt;</td></tr>
+<tr class="separator:a620bfb5b09582d8fab0664610c36a765"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a6f85a50c2db1dd5647ef3822f6fe0a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a8a6f85a50c2db1dd5647ef3822f6fe0a">daw::size_type</a> = std::size_t</td></tr>
+<tr class="separator:a8a6f85a50c2db1dd5647ef3822f6fe0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a0495648e67b8a7dc039e5228e2c62192"><td class="memItemLeft" align="right" valign="top">constexpr reference&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0495648e67b8a7dc039e5228e2c62192">daw::at</a> (size_type index)</td></tr>
+<tr class="separator:a0495648e67b8a7dc039e5228e2c62192"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a2a676c7369a07610f519c33b3d1a18"><td class="memItemLeft" align="right" valign="top">constexpr iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5a2a676c7369a07610f519c33b3d1a18">daw::begin</a> () noexcept</td></tr>
+<tr class="separator:a5a2a676c7369a07610f519c33b3d1a18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1edb3eac3ab330128319c905a57939e"><td class="memItemLeft" align="right" valign="top">constexpr const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa1edb3eac3ab330128319c905a57939e">daw::cbegin</a> () const noexcept</td></tr>
+<tr class="separator:aa1edb3eac3ab330128319c905a57939e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6cbe451c7c883c295ff8a51f454b968"><td class="memItemLeft" align="right" valign="top">constexpr const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af6cbe451c7c883c295ff8a51f454b968">daw::cend</a> () const noexcept</td></tr>
+<tr class="separator:af6cbe451c7c883c295ff8a51f454b968"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb138110bd33f04e1cecf3225f053d62"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aeb138110bd33f04e1cecf3225f053d62">daw::contiguous_view</a> ()=default</td></tr>
+<tr class="separator:aeb138110bd33f04e1cecf3225f053d62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4ba3f1ef6ccb1acf1af11673b747a30"><td class="memTemplParams" colspan="2">template&lt;ContiguousContainer Container&gt; </td></tr>
 <tr class="memitem:ab4ba3f1ef6ccb1acf1af11673b747a30"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ab4ba3f1ef6ccb1acf1af11673b747a30">daw::contiguous_view</a> (Container &amp;&amp;c) -&gt; contiguous_view&lt; <a class="el" href="daw__traits_8h.html#acddf9b5f979a91ce8deb198be4008f94">DAW_TYPEOF</a>(*std::data(c))&gt;</td></tr>
 <tr class="separator:ab4ba3f1ef6ccb1acf1af11673b747a30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99b7cf4b937fb4b553c4285e84b8b47e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a99b7cf4b937fb4b553c4285e84b8b47e">daw::contiguous_view</a> (contiguous_view&lt; std::remove_const_t&lt; T &gt;&gt; const &amp;other) noexcept</td></tr>
+<tr class="separator:a99b7cf4b937fb4b553c4285e84b8b47e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acafb4e7916212bfb73d98f98f31739e7"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#acafb4e7916212bfb73d98f98f31739e7">daw::contiguous_view</a> (pointer first, pointer last) noexcept</td></tr>
+<tr class="separator:acafb4e7916212bfb73d98f98f31739e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7d4a929088aedae12e2a1c9a6095a25"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa7d4a929088aedae12e2a1c9a6095a25">daw::contiguous_view</a> (pointer first, size_type sz) noexcept</td></tr>
+<tr class="separator:aa7d4a929088aedae12e2a1c9a6095a25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8f497eebb907b077f3425e265bcffcf"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ab8f497eebb907b077f3425e265bcffcf"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ab8f497eebb907b077f3425e265bcffcf">daw::contiguous_view</a> (T *, std::size_t) -&gt; contiguous_view&lt; T &gt;</td></tr>
 <tr class="separator:ab8f497eebb907b077f3425e265bcffcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -110,6 +151,52 @@ Functions</h2></td></tr>
 <tr class="memitem:a54cd99b237f610fc7a08eccdb3a158d1"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t N&gt; </td></tr>
 <tr class="memitem:a54cd99b237f610fc7a08eccdb3a158d1"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a54cd99b237f610fc7a08eccdb3a158d1">daw::contiguous_view</a> (T(&amp;)[N]) -&gt; contiguous_view&lt; T &gt;</td></tr>
 <tr class="separator:a54cd99b237f610fc7a08eccdb3a158d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1df8adb317eb0fdb966b6e13d9da21cf"><td class="memItemLeft" align="right" valign="top">constexpr const_reverse_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a1df8adb317eb0fdb966b6e13d9da21cf">daw::crbegin</a> () const noexcept</td></tr>
+<tr class="separator:a1df8adb317eb0fdb966b6e13d9da21cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a148fd055f68bd06026c056579a1d63bf"><td class="memItemLeft" align="right" valign="top">constexpr const_reverse_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a148fd055f68bd06026c056579a1d63bf">daw::crend</a> () const noexcept</td></tr>
+<tr class="separator:a148fd055f68bd06026c056579a1d63bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f03e31066b6770a284ab03028031f79"><td class="memItemLeft" align="right" valign="top">constexpr pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0f03e31066b6770a284ab03028031f79">daw::data</a> () noexcept</td></tr>
+<tr class="separator:a0f03e31066b6770a284ab03028031f79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3e2fae5811140f8078b28e78a788507"><td class="memItemLeft" align="right" valign="top">constexpr pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad3e2fae5811140f8078b28e78a788507">daw::data_end</a> () noexcept</td></tr>
+<tr class="separator:ad3e2fae5811140f8078b28e78a788507"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24bbfb3c6debd133e51134e57c4f3ef0"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a24bbfb3c6debd133e51134e57c4f3ef0">daw::empty</a> () const noexcept</td></tr>
+<tr class="separator:a24bbfb3c6debd133e51134e57c4f3ef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0131aaa8982f261f0c4b7eda113cd1ba"><td class="memItemLeft" align="right" valign="top">constexpr iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0131aaa8982f261f0c4b7eda113cd1ba">daw::end</a> () noexcept</td></tr>
+<tr class="separator:a0131aaa8982f261f0c4b7eda113cd1ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3496b0def447a60419b9bfb7b940c47"><td class="memTemplParams" colspan="2">template&lt;constructible_from&lt; pointer, size_type &gt; Container&gt; </td></tr>
+<tr class="memitem:af3496b0def447a60419b9bfb7b940c47"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af3496b0def447a60419b9bfb7b940c47">daw::operator Container</a> () const noexcept</td></tr>
+<tr class="separator:af3496b0def447a60419b9bfb7b940c47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8f069e90e11b18aa4f29c73fa8f1f69"><td class="memItemLeft" align="right" valign="top">constexpr friend bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ac8f069e90e11b18aa4f29c73fa8f1f69">daw::operator!=</a> (contiguous_view const &amp;x, contiguous_view const &amp;y)</td></tr>
+<tr class="separator:ac8f069e90e11b18aa4f29c73fa8f1f69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bac10f17177a0f655c3f26d1a7b9b64"><td class="memItemLeft" align="right" valign="top">constexpr friend bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5bac10f17177a0f655c3f26d1a7b9b64">daw::operator&lt;</a> (contiguous_view const &amp;x, contiguous_view const &amp;y)</td></tr>
+<tr class="separator:a5bac10f17177a0f655c3f26d1a7b9b64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bc5f0bfb34c7a5ed6fa080d278716bd"><td class="memItemLeft" align="right" valign="top">constexpr friend bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a6bc5f0bfb34c7a5ed6fa080d278716bd">daw::operator&lt;=</a> (contiguous_view const &amp;x, contiguous_view const &amp;y)</td></tr>
+<tr class="separator:a6bc5f0bfb34c7a5ed6fa080d278716bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a6beb0d0855b1700e4c9f3e1ad95a95"><td class="memItemLeft" align="right" valign="top">constexpr friend bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a7a6beb0d0855b1700e4c9f3e1ad95a95">daw::operator==</a> (contiguous_view const &amp;x, contiguous_view const &amp;y)</td></tr>
+<tr class="separator:a7a6beb0d0855b1700e4c9f3e1ad95a95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35207f0b6129f446942830035f014170"><td class="memItemLeft" align="right" valign="top">constexpr friend bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a35207f0b6129f446942830035f014170">daw::operator&gt;</a> (contiguous_view const &amp;x, contiguous_view const &amp;y)</td></tr>
+<tr class="separator:a35207f0b6129f446942830035f014170"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb9b77f887789aa8aeab06bf01d22591"><td class="memItemLeft" align="right" valign="top">constexpr friend bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#afb9b77f887789aa8aeab06bf01d22591">daw::operator&gt;=</a> (contiguous_view const &amp;x, contiguous_view const &amp;y)</td></tr>
+<tr class="separator:afb9b77f887789aa8aeab06bf01d22591"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a391d548a491661081b8988117efe27dd"><td class="memItemLeft" align="right" valign="top">constexpr reference&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a391d548a491661081b8988117efe27dd">daw::operator[]</a> (size_type index) noexcept</td></tr>
+<tr class="separator:a391d548a491661081b8988117efe27dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82daacb90f394bcef7b324482214e9af"><td class="memItemLeft" align="right" valign="top">constexpr reverse_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a82daacb90f394bcef7b324482214e9af">daw::rbegin</a> () noexcept</td></tr>
+<tr class="separator:a82daacb90f394bcef7b324482214e9af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a126e7436ae8576374232dfa018f9d63a"><td class="memItemLeft" align="right" valign="top">constexpr reverse_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a126e7436ae8576374232dfa018f9d63a">daw::rend</a> () noexcept</td></tr>
+<tr class="separator:a126e7436ae8576374232dfa018f9d63a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada983d551e7cef41702df6a3d2657a26"><td class="memTemplParams" colspan="2">template&lt;ContiguousContainerOf&lt; value_type &gt; Container&gt; </td></tr>
+<tr class="memitem:ada983d551e7cef41702df6a3d2657a26"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ada983d551e7cef41702df6a3d2657a26">daw::requires</a> (not same_as&lt; contiguous_view, std::remove_cvref_t&lt; Container &gt;&gt;) explicit(ExplicitConv) const expr contiguous_view(Container &amp;&amp;c) noexcept</td></tr>
+<tr class="separator:ada983d551e7cef41702df6a3d2657a26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4dca794c11b853449ccbcaa0cc4f5ce"><td class="memTemplParams" colspan="2">template&lt;typename T , bool ExplicitConv&gt; </td></tr>
+<tr class="memitem:ad4dca794c11b853449ccbcaa0cc4f5ce"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad4dca794c11b853449ccbcaa0cc4f5ce">daw::requires</a> (std::is_const_v&lt; T &gt;) struct contiguous_view&lt; T</td></tr>
+<tr class="separator:ad4dca794c11b853449ccbcaa0cc4f5ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16adf6a742c93c9433819fc602dfbd40"><td class="memItemLeft" align="right" valign="top">constexpr size_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a16adf6a742c93c9433819fc602dfbd40">daw::size</a> () const noexcept</td></tr>
+<tr class="separator:a16adf6a742c93c9433819fc602dfbd40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a7c0fa17217d1428ed40258e1a6e05b50"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">daw::ExplicitConv</a></td></tr>
+<tr class="separator:a7c0fa17217d1428ed40258e1a6e05b50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

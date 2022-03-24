@@ -400,7 +400,7 @@ Functions</h2></td></tr>
 <tr class="memitem:adea63be89b34ecad9efac4efd09c514e"><td class="memTemplItemLeft" align="right" valign="top">constexpr OutputIterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#adea63be89b34ecad9efac4efd09c514e">partial_sum</a> (<a class="el" href="structdaw_1_1_input_iterator.html">InputIterator</a> first, <a class="el" href="structdaw_1_1_input_iterator.html">InputIterator</a> last, OutputIterator first_out, BinaryOperator op=BinaryOperator{ })</td></tr>
 <tr class="separator:adea63be89b34ecad9efac4efd09c514e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a566ba24803fb7b10013ddbb6cc1016e7"><td class="memTemplParams" colspan="2">template&lt;typename Container , typename UnaryPredicate &gt; </td></tr>
-<tr class="memitem:a566ba24803fb7b10013ddbb6cc1016e7"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a566ba24803fb7b10013ddbb6cc1016e7">partition</a> (Container &amp;container, UnaryPredicate pred) -&gt; decltype(begin(container))</td></tr>
+<tr class="memitem:a566ba24803fb7b10013ddbb6cc1016e7"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a566ba24803fb7b10013ddbb6cc1016e7">partition</a> (Container &amp;container, UnaryPredicate pred) -&gt; decltype(<a class="el" href="namespacedaw.html#a5a2a676c7369a07610f519c33b3d1a18">begin</a>(container))</td></tr>
 <tr class="separator:a566ba24803fb7b10013ddbb6cc1016e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa876ba54601c4e30a2037a845c776d11"><td class="memTemplParams" colspan="2">template&lt;typename ForwardIterator , typename UnaryPredicate &gt; </td></tr>
 <tr class="memitem:aa876ba54601c4e30a2037a845c776d11"><td class="memTemplItemLeft" align="right" valign="top">constexpr ForwardIterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#aa876ba54601c4e30a2037a845c776d11">partition</a> (ForwardIterator first, ForwardIterator last, UnaryPredicate &amp;&amp;unary_predicate)</td></tr>
@@ -476,7 +476,7 @@ Functions</h2></td></tr>
 <tr class="memitem:aaf409c6068ef2dc471f46becfec26232"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#aaf409c6068ef2dc471f46becfec26232">split</a> (Iterator first, Iterator last, Value const &amp;value)</td></tr>
 <tr class="separator:aaf409c6068ef2dc471f46becfec26232"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60d3df4c9be5533e07818f559125981f"><td class="memTemplParams" colspan="2">template&lt;typename Container , typename UnaryPredicate &gt; </td></tr>
-<tr class="memitem:a60d3df4c9be5533e07818f559125981f"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a60d3df4c9be5533e07818f559125981f">stable_partition</a> (Container &amp;container, UnaryPredicate pred) -&gt; decltype(begin(container))</td></tr>
+<tr class="memitem:a60d3df4c9be5533e07818f559125981f"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a60d3df4c9be5533e07818f559125981f">stable_partition</a> (Container &amp;container, UnaryPredicate pred) -&gt; decltype(<a class="el" href="namespacedaw.html#a5a2a676c7369a07610f519c33b3d1a18">begin</a>(container))</td></tr>
 <tr class="separator:a60d3df4c9be5533e07818f559125981f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a404824b87e278b18d53e232ddfc67892"><td class="memTemplParams" colspan="2">template&lt;typename Container , std::enable_if_t&lt; traits::is_container_like_v&lt; Container &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a404824b87e278b18d53e232ddfc67892"><td class="memTemplItemLeft" align="right" valign="top">Container &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a404824b87e278b18d53e232ddfc67892">stable_sort</a> (Container &amp;container) noexcept(noexcept(std::stable_sort(std::begin(container), std::end(container))))</td></tr>
@@ -5076,7 +5076,7 @@ template&lt;typename Container , typename UnaryPredicate &gt; </div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; decltype( begin( container ) ) </td>
+          <td></td><td> -&gt; decltype( <a class="el" href="namespacedaw.html#a5a2a676c7369a07610f519c33b3d1a18">begin</a>( container ) ) </td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -6131,7 +6131,7 @@ template&lt;typename Container , typename UnaryPredicate &gt; </div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; decltype( begin( container ) ) </td>
+          <td></td><td> -&gt; decltype( <a class="el" href="namespacedaw.html#a5a2a676c7369a07610f519c33b3d1a18">begin</a>( container ) ) </td>
         </tr>
       </table>
 </div><div class="memdoc">

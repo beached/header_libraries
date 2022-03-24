@@ -76,10 +76,10 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:aa5e4eae4faee569f4b644618f04aba23"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aa5e4eae4faee569f4b644618f04aba23"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits_1_1detectors.html#aa5e4eae4faee569f4b644618f04aba23">adl_begin_detector</a> = decltype(begin(std::declval&lt; T &gt;()))</td></tr>
+<tr class="memitem:aa5e4eae4faee569f4b644618f04aba23"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits_1_1detectors.html#aa5e4eae4faee569f4b644618f04aba23">adl_begin_detector</a> = decltype(<a class="el" href="namespacedaw.html#a5a2a676c7369a07610f519c33b3d1a18">begin</a>(std::declval&lt; T &gt;()))</td></tr>
 <tr class="separator:aa5e4eae4faee569f4b644618f04aba23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85fbc4f13f994458ab30a6d72801b089"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a85fbc4f13f994458ab30a6d72801b089"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits_1_1detectors.html#a85fbc4f13f994458ab30a6d72801b089">adl_end_detector</a> = decltype(end(std::declval&lt; T &gt;()))</td></tr>
+<tr class="memitem:a85fbc4f13f994458ab30a6d72801b089"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits_1_1detectors.html#a85fbc4f13f994458ab30a6d72801b089">adl_end_detector</a> = decltype(<a class="el" href="namespacedaw.html#a0131aaa8982f261f0c4b7eda113cd1ba">end</a>(std::declval&lt; T &gt;()))</td></tr>
 <tr class="separator:a85fbc4f13f994458ab30a6d72801b089"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2ffccbceda8e956fd3e83257b7b746f"><td class="memTemplParams" colspan="2">template&lt;typename Iterator , typename T &gt; </td></tr>
 <tr class="memitem:aa2ffccbceda8e956fd3e83257b7b746f"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits_1_1detectors.html#aa2ffccbceda8e956fd3e83257b7b746f">assignable</a> = decltype(*std::declval&lt; Iterator &gt;()=std::declval&lt; T &gt;())</td></tr>
@@ -133,7 +133,7 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a13dbdc993c64ee01c72bb1891c95ccec"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits_1_1detectors.html#a13dbdc993c64ee01c72bb1891c95ccec">has_division_operator</a> = decltype(std::declval&lt; T &gt;()/std::declval&lt; U &gt;())</td></tr>
 <tr class="separator:a13dbdc993c64ee01c72bb1891c95ccec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cb857f7e1af7e3e664113fd2e977342"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a2cb857f7e1af7e3e664113fd2e977342"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits_1_1detectors.html#a2cb857f7e1af7e3e664113fd2e977342">has_empty</a> = decltype(std::declval&lt; bool &amp; &gt;()=std::declval&lt; T &gt;().empty())</td></tr>
+<tr class="memitem:a2cb857f7e1af7e3e664113fd2e977342"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits_1_1detectors.html#a2cb857f7e1af7e3e664113fd2e977342">has_empty</a> = decltype(std::declval&lt; bool &amp; &gt;()=std::declval&lt; T &gt;().<a class="el" href="namespacedaw.html#a24bbfb3c6debd133e51134e57c4f3ef0">empty</a>())</td></tr>
 <tr class="separator:a2cb857f7e1af7e3e664113fd2e977342"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abcbc130b67e9d07bc89bc6abb93bb46c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:abcbc130b67e9d07bc89bc6abb93bb46c"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits_1_1detectors.html#abcbc130b67e9d07bc89bc6abb93bb46c">has_increment_operator</a> = decltype(++std::declval&lt; T &amp; &gt;())</td></tr>
@@ -185,7 +185,7 @@ Typedefs</h2></td></tr>
 template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacedaw_1_1traits_1_1detectors.html#aa5e4eae4faee569f4b644618f04aba23">daw::traits::detectors::adl_begin_detector</a> = typedef decltype( begin( std::declval&lt;T&gt;( ) ) )</td>
+          <td class="memname">using <a class="el" href="namespacedaw_1_1traits_1_1detectors.html#aa5e4eae4faee569f4b644618f04aba23">daw::traits::detectors::adl_begin_detector</a> = typedef decltype( <a class="el" href="namespacedaw.html#a5a2a676c7369a07610f519c33b3d1a18">begin</a>( std::declval&lt;T&gt;( ) ) )</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -203,7 +203,7 @@ template&lt;typename T &gt; </div>
 template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacedaw_1_1traits_1_1detectors.html#a85fbc4f13f994458ab30a6d72801b089">daw::traits::detectors::adl_end_detector</a> = typedef decltype( end( std::declval&lt;T&gt;( ) ) )</td>
+          <td class="memname">using <a class="el" href="namespacedaw_1_1traits_1_1detectors.html#a85fbc4f13f994458ab30a6d72801b089">daw::traits::detectors::adl_end_detector</a> = typedef decltype( <a class="el" href="namespacedaw.html#a0131aaa8982f261f0c4b7eda113cd1ba">end</a>( std::declval&lt;T&gt;( ) ) )</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -527,7 +527,7 @@ template&lt;typename T , typename U &gt; </div>
 template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacedaw_1_1traits_1_1detectors.html#a2cb857f7e1af7e3e664113fd2e977342">daw::traits::detectors::has_empty</a> = typedef decltype( std::declval&lt;bool &amp;&gt;( ) = std::declval&lt;T&gt;( ).empty( ) )</td>
+          <td class="memname">using <a class="el" href="namespacedaw_1_1traits_1_1detectors.html#a2cb857f7e1af7e3e664113fd2e977342">daw::traits::detectors::has_empty</a> = typedef decltype( std::declval&lt;bool &amp;&gt;( ) = std::declval&lt;T&gt;( ).<a class="el" href="namespacedaw.html#a24bbfb3c6debd133e51134e57c4f3ef0">empty</a>( ) )</td>
         </tr>
       </table>
 </div><div class="memdoc">
