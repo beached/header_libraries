@@ -79,6 +79,20 @@ namespace daw {
 	struct do_resize_and_overwrite_t {};
 	inline constexpr auto do_resize_and_overwrite = do_resize_and_overwrite_t{ };
 
+	template<typename T, typename size_type, typename pointer, typename alloc>
+	concept ResizeAndOverwriteOperationAlloc =
+	  invocable_result<T, size_type, pointer, size_type, alloc>;
+
+	template<typename T, typename size_type, typename pointer, typename alloc>
+	concept ResizeAndOverwriteOperation =
+	  invocable_result<T, size_type, pointer, size_type> and
+	  not ResizeAndOverwriteOperationAlloc<T, size_type, pointer, alloc>;
+
+	template<typename T>
+	inline constexpr bool has_slow_distance_v = requires {
+		typename T::slow_distance;
+	};
+
 	template<typename T, typename Allocator = std::allocator<T>>
 	struct vector {
 		using value_type = T;
@@ -94,6 +108,7 @@ namespace daw {
 		using const_iterator = wrap_iter<const_pointer>;
 		using reverse_iterator = std::reverse_iterator<iterator>;
 		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
+		using supports_slow_distance = void;
 
 		static_assert(
 		  std::is_same_v<typename allocator_type::value_type, value_type>,
@@ -168,8 +183,9 @@ namespace daw {
 		                             iter_reference_type<InputIterator>> ) //
 		  explicit constexpr vector( InputIterator first, InputIterator last ) {
 
-			for( ; first != last; ++first )
+			for( ; first != last; ++first ) {
 				emplace_back( *first );
+			}
 		}
 
 		template<input_iterator InputIterator>
@@ -179,12 +195,14 @@ namespace daw {
 		                             allocator_type const &a )
 		  : m_endcap_( nullptr, a ) {
 
-			for( ; first != last; ++first )
+			for( ; first != last; ++first ) {
 				emplace_back( *first );
+			}
 		}
 
 		template<forward_iterator ForwardIterator>
-		requires( constructible_from<value_type,
+		requires( not has_slow_distance_v<ForwardIterator> and
+		          constructible_from<value_type,
 		                             iter_reference_type<ForwardIterator>> ) //
 		  explicit constexpr vector( ForwardIterator first, ForwardIterator last ) {
 
@@ -196,11 +214,12 @@ namespace daw {
 		}
 
 		template<forward_iterator ForwardIterator>
-		requires( constructible_from<value_type,
+		requires( not has_slow_distance_v<ForwardIterator> and
+		          constructible_from<value_type,
 		                             iter_reference_type<ForwardIterator>> ) //
 		  explicit constexpr vector( ForwardIterator first, ForwardIterator last,
-		                             allocator_type const &a ) {
-
+		                             allocator_type const &a )
+		  : m_endcap_( nullptr, a ) {
 			auto const n = static_cast<size_type>( std::distance( first, last ) );
 			if( n > 0 ) {
 				vallocate( n );
@@ -307,7 +326,8 @@ namespace daw {
 		}
 
 		template<forward_iterator ForwardIterator>
-		requires( constructible_from<value_type,
+		requires( not has_slow_distance_v<ForwardIterator> and
+		          constructible_from<value_type,
 		                             iter_reference_type<ForwardIterator>> ) //
 		  constexpr void assign( ForwardIterator first, ForwardIterator last ) {
 			auto const new_size =
@@ -656,7 +676,8 @@ namespace daw {
 		}
 
 		template<forward_iterator ForwardIterator>
-		requires( constructible_from<value_type,
+		requires( not has_slow_distance_v<ForwardIterator> and
+		          constructible_from<value_type,
 		                             iter_reference_type<ForwardIterator>> ) //
 		  constexpr iterator insert( const_iterator position, ForwardIterator first,
 		                             ForwardIterator last ) {
@@ -736,9 +757,9 @@ namespace daw {
 			}
 		}
 
-		constexpr void resize_and_overwrite(
-		  size_type n,
-		  invocable_result<size_type, pointer, size_type> auto operation ) {
+		template<
+		  ResizeAndOverwriteOperation<size_type, pointer, allocator_type> Operation>
+		constexpr void resize_and_overwrite( size_type n, Operation operation ) {
 			if( static_cast<size_type>( endcap( ) - m_begin ) >= n ) {
 				pointer p = m_begin;
 				auto const new_size = operation( p, n );
@@ -753,9 +774,28 @@ namespace daw {
 			swap_out_circular_buffer( v );
 		}
 
-		constexpr void append_and_overwrite(
-		  size_type n,
-		  invocable_result<size_type, pointer, size_type> auto operation ) {
+		template<
+		  ResizeAndOverwriteOperationAlloc<size_type, pointer, allocator_type>
+		    Operation>
+		constexpr void resize_and_overwrite( size_type n, Operation operation ) {
+			if( static_cast<size_type>( endcap( ) - m_begin ) >= n ) {
+				pointer p = m_begin;
+				auto const new_size = operation( p, n, alloc( ) );
+				m_end = m_begin + static_cast<difference_type>( new_size );
+			}
+			allocator_type &a = alloc( );
+			auto v =
+			  split_buffer<value_type, allocator_type &>( recommend( n ), 0, a );
+			pointer p = v.begin_;
+			auto const new_size =
+			  static_cast<size_type>( operation( p, n, alloc( ) ) );
+			v.end_ = v.begin_ + static_cast<difference_type>( new_size );
+			swap_out_circular_buffer( v );
+		}
+
+		template<
+		  ResizeAndOverwriteOperation<size_type, pointer, allocator_type> Operation>
+		constexpr void append_and_overwrite( size_type n, Operation operation ) {
 			if( static_cast<size_type>( endcap( ) - m_end ) >= n ) {
 				pointer p = m_end;
 				auto const new_size = operation( p, n );
@@ -766,6 +806,25 @@ namespace daw {
 			  recommend( size( ) + n ), size( ), a );
 			pointer p = v.end_;
 			auto const append_count = static_cast<size_type>( operation( p, n ) );
+			v.end_ += static_cast<difference_type>( append_count );
+			swap_out_circular_buffer( v );
+		}
+
+		template<
+		  ResizeAndOverwriteOperationAlloc<size_type, pointer, allocator_type>
+		    Operation>
+		constexpr void append_and_overwrite( size_type n, Operation operation ) {
+			if( static_cast<size_type>( endcap( ) - m_end ) >= n ) {
+				pointer p = m_end;
+				auto const new_size = operation( p, n, alloc( ) );
+				m_end += static_cast<difference_type>( new_size );
+			}
+			allocator_type &a = alloc( );
+			auto v = split_buffer<value_type, allocator_type &>(
+			  recommend( size( ) + n ), size( ), a );
+			pointer p = v.end_;
+			auto const append_count =
+			  static_cast<size_type>( operation( p, n, alloc( ) ) );
 			v.end_ += static_cast<difference_type>( append_count );
 			swap_out_circular_buffer( v );
 		}
@@ -843,8 +902,9 @@ namespace daw {
 		}
 
 		template<forward_iterator ForwardIterator>
-		constexpr void construct_at_end( ForwardIterator first,
-		                                 ForwardIterator last, size_type n ) {
+		requires( not has_slow_distance_v<ForwardIterator> ) //
+		  constexpr void construct_at_end( ForwardIterator first,
+		                                   ForwardIterator last, size_type n ) {
 			ConstructTransaction tx( *this, n );
 			impl::construct_range_forward( alloc( ), first, last, tx.pos );
 		}
@@ -1165,5 +1225,4 @@ namespace daw {
 		block_append_from( v, first, last, block_size );
 		return v;
 	}
-
 } // namespace daw

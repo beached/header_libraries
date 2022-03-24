@@ -30,7 +30,7 @@ int main( ) {
 	x = { 1, 2, 3 };
 	x[0] = 2;
 	std::cout << "cap: " << x.capacity( ) << '\n';
-	x.resize_and_overwrite( x.capacity( ) * 2, []( int *p, std::size_t sz ) {
+	x.resize_and_overwrite( x.capacity( ) * 2, []( int *p, std::size_t sz, auto&&... ) {
 		for( std::size_t n = 0; n < sz; ++n ) {
 			std::construct_at( &p[n], n );
 		}
