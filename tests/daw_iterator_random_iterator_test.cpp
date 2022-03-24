@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <iostream>
+#include <vector>
 
 #include "daw/daw_benchmark.h"
 #include "daw/iterator/daw_random_iterator.h"

@@ -81,8 +81,8 @@ static_assert( daw::max( 5, 3, 100, 3, 4, 0xFFFF, -100 ) == 0xFFFF );
 
 constexpr bool daw_max_inf_test( ) {
 	daw::expecting( daw::math::nearly_equal(
-	  daw::max( 5, 3, std::numeric_limits<float>::infinity( ), 100, 3, 4, 0xFFFF,
-	            -100 ),
+	  daw::max( 5.0f, 3.0f, std::numeric_limits<float>::infinity( ), 100.0f, 3.0f,
+	            4.0f, -100.0f ),
 	  std::numeric_limits<float>::infinity( ) ) );
 	return true;
 }
@@ -92,8 +92,8 @@ constexpr bool daw_max_inf_test( ) {
 static_assert( daw::min( 5, 3, 100, 3, 4, -100, 0xFFFF ) == -100 );
 
 static_assert( daw::math::nearly_equal(
-  daw::min( 5, 3, 100, std::numeric_limits<float>::infinity( ), 3, 4, -100,
-            0xFFFF ),
+  daw::min( 5.0f, 3.0f, 100.0f, std::numeric_limits<float>::infinity( ), 3.0f,
+            4.0f, -100.0f ),
   -100.0f ) );
 int main( ) {
 	daw_math_factorial( );

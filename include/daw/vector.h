@@ -9,6 +9,7 @@
 #include "wrap_iter.h"
 
 #include <algorithm>
+#include <cassert>
 #include <climits>
 #include <compare>
 #include <cstdlib>
@@ -427,6 +428,10 @@ namespace daw {
 			return static_cast<size_type>( m_end - m_begin );
 		}
 
+		[[nodiscard]] constexpr difference_type ssize( ) const noexcept {
+			return m_end - m_begin;
+		}
+
 		[[nodiscard]] constexpr size_type capacity( ) const noexcept {
 			return static_cast<size_type>( endcap( ) - m_begin );
 		}
@@ -507,19 +512,19 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr pointer data( ) noexcept {
-			return m_begin;
+			return std::to_address( m_begin );
 		}
 
 		[[nodiscard]] constexpr const_pointer data( ) const noexcept {
-			return m_begin;
+			return std::to_address( m_begin );
 		}
 
 		[[nodiscard]] constexpr pointer data_end( ) noexcept {
-			return m_end;
+			return std::to_address( m_end );
 		}
 
 		[[nodiscard]] constexpr const_pointer data_end( ) const noexcept {
-			return m_end;
+			return std::to_address( m_end );
 		}
 
 		constexpr void push_back( const_reference x ) {
@@ -693,7 +698,7 @@ namespace daw {
 			difference_type n = std::distance( first, last );
 			if( n > 0 ) {
 				if( n <= endcap( ) - m_end ) {
-					size_type old_n = n;
+					auto const old_n = static_cast<size_type>( n );
 					pointer old_last = m_end;
 					ForwardIterator m = last;
 					difference_type dx = m_end - p;
@@ -701,7 +706,7 @@ namespace daw {
 						m = first;
 						difference_type diff = m_end - p;
 						std::advance( m, diff );
-						construct_at_end( m, last, n - diff );
+						construct_at_end( m, last, static_cast<size_type>( n - diff ) );
 						n = dx;
 					}
 					if( n > 0 ) {
@@ -711,7 +716,8 @@ namespace daw {
 				} else {
 					allocator_type &a = alloc( );
 					auto v = split_buffer<value_type, allocator_type &>(
-					  recommend( size( ) + n ), p - m_begin, a );
+					  recommend( static_cast<size_type>( ssize( ) + n ) ), p - m_begin,
+					  a );
 					v.construct_at_end( first, last );
 					p = swap_out_circular_buffer( v, p );
 				}
@@ -741,12 +747,6 @@ namespace daw {
 			return r;
 		}
 
-		/*
-		constexpr void clear( ) noexcept {
-		  auto old_size = size( );
-		  clear( );
-		}*/
-
 		constexpr void resize( size_type sz ) {
 			size_type const cs = size( );
 			if( cs < sz ) {
@@ -768,73 +768,64 @@ namespace daw {
 		template<
 		  ResizeAndOverwriteOperation<size_type, pointer, allocator_type> Operation>
 		constexpr void resize_and_overwrite( size_type n, Operation operation ) {
-			if( static_cast<size_type>( endcap( ) - m_begin ) >= n ) {
-				pointer p = m_begin;
-				auto const new_size = operation( p, n );
-				m_end = m_begin + static_cast<difference_type>( new_size );
+			if( capacity( ) < n ) {
+				reserve( n );
 			}
-			allocator_type &a = alloc( );
-			auto v =
-			  split_buffer<value_type, allocator_type &>( recommend( n ), 0, a );
-			pointer p = v.begin_;
+			pointer p = m_begin;
 			auto const new_size = static_cast<size_type>( operation( p, n ) );
-			v.end_ = v.begin_ + static_cast<difference_type>( new_size );
-			swap_out_circular_buffer( v );
+			assert( new_size <= n );
+			auto new_end = m_begin + static_cast<difference_type>( new_size );
+			if( new_size < n ) {
+				destruct_at_end( new_end );
+			}
+			m_end = new_end;
 		}
 
 		template<
 		  ResizeAndOverwriteOperationAlloc<size_type, pointer, allocator_type>
 		    Operation>
 		constexpr void resize_and_overwrite( size_type n, Operation operation ) {
-			if( static_cast<size_type>( endcap( ) - m_begin ) >= n ) {
-				pointer p = m_begin;
-				auto const new_size = operation( p, n, alloc( ) );
-				m_end = m_begin + static_cast<difference_type>( new_size );
+			if( capacity( ) < n ) {
+				reserve( n );
 			}
+			pointer p = m_begin;
 			allocator_type &a = alloc( );
-			auto v =
-			  split_buffer<value_type, allocator_type &>( recommend( n ), 0, a );
-			pointer p = v.begin_;
-			auto const new_size =
-			  static_cast<size_type>( operation( p, n, alloc( ) ) );
-			v.end_ = v.begin_ + static_cast<difference_type>( new_size );
-			swap_out_circular_buffer( v );
+			auto const new_size = static_cast<size_type>( operation( p, n, a ) );
+			assert( new_size <= n );
+			auto new_end = m_begin + static_cast<difference_type>( new_size );
+			if( new_size < n ) {
+				destruct_at_end( new_end );
+			}
+			m_end = new_end;
 		}
 
 		template<
 		  ResizeAndOverwriteOperation<size_type, pointer, allocator_type> Operation>
 		constexpr void append_and_overwrite( size_type n, Operation operation ) {
-			if( static_cast<size_type>( endcap( ) - m_end ) >= n ) {
-				pointer p = m_end;
-				auto const new_size = operation( p, n );
-				m_end += static_cast<difference_type>( new_size );
+			if( capacity( ) < size( ) + n ) {
+				reserve( size( ) + n );
 			}
-			allocator_type &a = alloc( );
-			auto v = split_buffer<value_type, allocator_type &>(
-			  recommend( size( ) + n ), size( ), a );
-			pointer p = v.end_;
+			pointer p = m_end;
 			auto const append_count = static_cast<size_type>( operation( p, n ) );
-			v.end_ += static_cast<difference_type>( append_count );
-			swap_out_circular_buffer( v );
+			assert( append_count <= n );
+			auto new_end = m_end + static_cast<difference_type>( append_count );
+			m_end = new_end;
 		}
 
 		template<
 		  ResizeAndOverwriteOperationAlloc<size_type, pointer, allocator_type>
 		    Operation>
 		constexpr void append_and_overwrite( size_type n, Operation operation ) {
-			if( static_cast<size_type>( endcap( ) - m_end ) >= n ) {
-				pointer p = m_end;
-				auto const new_size = operation( p, n, alloc( ) );
-				m_end += static_cast<difference_type>( new_size );
+
+			if( capacity( ) < size( ) + n ) {
+				reserve( size( ) + n );
 			}
+			pointer p = m_end;
 			allocator_type &a = alloc( );
-			auto v = split_buffer<value_type, allocator_type &>(
-			  recommend( size( ) + n ), size( ), a );
-			pointer p = v.end_;
-			auto const append_count =
-			  static_cast<size_type>( operation( p, n, alloc( ) ) );
-			v.end_ += static_cast<difference_type>( append_count );
-			swap_out_circular_buffer( v );
+			auto const append_count = static_cast<size_type>( operation( p, n, a ) );
+			assert( append_count <= n );
+			auto new_end = m_end + static_cast<difference_type>( append_count );
+			m_end = new_end;
 		}
 
 		constexpr void swap( vector &other ) noexcept {

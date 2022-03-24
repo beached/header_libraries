@@ -122,14 +122,14 @@ namespace daw {
 		  : Base1( DAW_FWD2( U1, t1 ) )
 		  , Base2( DAW_FWD2( U2, t2 ) ) {}
 
-		template<class... _Args1, class... _Args2>
+		template<class... Args1, class... Args2>
 		explicit constexpr compressed_pair( std::piecewise_construct_t pc,
-		                                    std::tuple<_Args1...> first_args,
-		                                    std::tuple<_Args2...> second_args )
+		                                    std::tuple<Args1...> first_args,
+		                                    std::tuple<Args2...> second_args )
 		  : Base1( pc, DAW_MOVE( first_args ),
-		           std::make_index_sequence<sizeof...( _Args1 )>{ } )
+		           std::make_index_sequence<sizeof...( Args1 )>{ } )
 		  , Base2( pc, DAW_MOVE( second_args ),
-		           std::make_index_sequence<sizeof...( _Args2 )>{ } ) {}
+		           std::make_index_sequence<sizeof...( Args2 )>{ } ) {}
 
 		[[nodiscard]] constexpr typename Base1::reference first( ) noexcept {
 			return static_cast<Base1 &>( *this ).get( );

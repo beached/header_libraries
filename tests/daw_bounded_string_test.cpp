@@ -53,7 +53,7 @@ namespace daw {
 
 	daw::bounded_string do_something( daw::bounded_string str, tmp_e &result ) {
 		str = str.substr( 0, str.find_first_of( ' ' ) );
-		result = tmp_e_from_str( str );
+		result = tmp_e_from_str( static_cast<daw::string_view>( str ) );
 		return str;
 	}
 

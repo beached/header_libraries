@@ -10,11 +10,11 @@
 
 #include <numeric>
 
-int foo( daw::contiguous_view<int> vals ) {
+DAW_CONSTEVAL int foo( daw::contiguous_view<int const> vals ) {
 	return std::accumulate( vals.begin( ), vals.end( ), 0 );
 }
 
 int main( ) {
-	int vals[] = { 1, 2, 3 };
-	return foo( vals );
+	constexpr int vals[] = { 1, 2, 3 };
+	return foo( vals ) == 6 ? 0 : foo( vals );
 }
