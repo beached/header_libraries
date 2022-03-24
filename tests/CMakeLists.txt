@@ -5,6 +5,15 @@
 #
 #Official repository : https: // github.com/beached/header_libraries
 #
+cmake_policy(SET CMP0065 NEW)
+
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+if (CMAKE_BUILD_TYPE EQUAL "Debug")
+    add_compile_definitions(DEBUG=1)
+endif ()
+
 
 set(TEST_SOURCES
         InputIterator_test.cpp
@@ -143,6 +152,8 @@ set(DEV_TEST_SOURCES
         daw_sort_n_test.cpp
         daw_vector_test.cpp
         )
+
+include(cmake/test_compiler_options.cmake)
 
 find_package(Threads REQUIRED)
 

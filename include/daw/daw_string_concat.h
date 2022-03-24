@@ -129,7 +129,7 @@ namespace daw::string_concat_impl {
 			for( auto const sv : rhs.m_strings ) {
 				result += sv.size( );
 			}
-			return result;
+			return static_cast<difference_type>( result );
 		}
 
 		constexpr bool operator==( string_join_iterator const &rhs ) noexcept {
