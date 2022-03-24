@@ -25,10 +25,8 @@ void daw_random_01( ) {
 
 void daw_random_02( ) {
 	for( auto n = 0; n < 100000; ++n ) {
-		auto v1 = daw::randint<int64_t>( std::numeric_limits<int64_t>::min( ),
-		                                 std::numeric_limits<int64_t>::max( ) );
-		daw::expecting( std::numeric_limits<int64_t>::min( ) <= v1 and
-		                v1 <= std::numeric_limits<int64_t>::max( ) );
+		auto v1 = daw::randint<int64_t>( -12345, 12345 );
+		daw::expecting( -12345 <= v1 and v1 <= 12345 );
 	}
 }
 

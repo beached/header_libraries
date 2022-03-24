@@ -11,13 +11,13 @@
 #include <string>
 
 struct NotCXExpr {
-	void operator( )( ) const { };
+	void operator( )( ) const {}
 };
 inline static constexpr auto NotCXExpr_v = NotCXExpr{ };
 static_assert( not daw::can_constant_evaluate_v<NotCXExpr_v> );
 
 struct CXExpr {
-	constexpr void operator( )( ) const { };
+	constexpr void operator( )( ) const {}
 };
 inline static constexpr auto CXExpr_v = CXExpr{ };
 

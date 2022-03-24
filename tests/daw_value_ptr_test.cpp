@@ -75,7 +75,7 @@ void daw_value_ptr_test_01( ) {
 	daw::expecting( test_16 );
 
 	struct A {
-		constexpr A( ) noexcept = default;
+		A( ) = default;
 		A( A const & ) = delete;
 		A &operator=( A const & ) = delete;
 	};

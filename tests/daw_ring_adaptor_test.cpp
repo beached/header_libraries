@@ -18,7 +18,7 @@ int main( ) {
 	assert( buff.is_empty( ) );
 
 	for( std::size_t n = 0; n < buff.capacity( ); ++n ) {
-		buff.push_back( n );
+		buff.push_back( static_cast<int>( n ) );
 	}
 
 	assert( buff.is_full( ) );
@@ -30,7 +30,7 @@ int main( ) {
 	assert( buff.is_empty( ) );
 
 	for( std::size_t n = 0; n < buff.capacity( ); ++n ) {
-		buff.push_back( n * 2 );
+		buff.push_back( static_cast<int>( n ) * 2 );
 	}
 
 	assert( buff.is_full( ) );

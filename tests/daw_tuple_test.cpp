@@ -47,6 +47,7 @@ int main( ) {
 	int x = 6;
 	auto t = make_tuple( x );
 	auto val = daw::get<0>( t );
+	(void)val;
 	assert( x == 5 );
 
 	auto const add = []( int a, int b ) { return a + b; };

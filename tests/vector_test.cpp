@@ -15,11 +15,11 @@
 
 DAW_CONSTEVAL int sum( std::size_t n ) {
 	auto v = daw::vector<int>(
-	  daw::do_resize_and_overwrite, n, []( int *ptr, std::size_t n ) {
-		  for( std::size_t idx = 0; idx < n; ++idx ) {
+	  daw::do_resize_and_overwrite, n, []( int *ptr, std::size_t m ) {
+		  for( std::size_t idx = 0; idx < m; ++idx ) {
 			  std::construct_at( &ptr[idx], static_cast<int>( idx ) );
 		  }
-		  return n;
+		  return m;
 	  } );
 	return daw::algorithm::accumulate( v.begin( ), v.end( ), 0 );
 }

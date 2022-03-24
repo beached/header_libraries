@@ -1582,6 +1582,7 @@ int main( )
 	static_assert(
 	  std::is_convertible_v<char const( & )[4], daw::sv2::string_view> );
 	auto a = daw::sv2::string_view( "Hello" );
+	(void)a;
 	daw::sv2::string_view b;
 	b = "Hello";
 	daw_expecting( daw::ensure_same_at_ct( ), true );

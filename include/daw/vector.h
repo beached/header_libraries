@@ -1022,7 +1022,6 @@ namespace daw {
 		}
 
 		constexpr void destruct_at_end( pointer new_last ) noexcept {
-			size_type old_size = size( );
 			base_destruct_at_end( new_last );
 		}
 
@@ -1099,8 +1098,9 @@ namespace daw {
 
 		constexpr void base_destruct_at_end( pointer new_last ) noexcept {
 			pointer soon_to_be_end = m_end;
-			while( new_last != soon_to_be_end )
+			while( new_last != soon_to_be_end ) {
 				alloc_traits::destroy( alloc( ), std::to_address( --soon_to_be_end ) );
+			}
 			m_end = new_last;
 		}
 

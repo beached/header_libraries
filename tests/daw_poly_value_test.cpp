@@ -44,7 +44,7 @@ struct Child2 : Base {
 	Child2( Child2 && ) = default;
 	Child2 &operator=( Child2 const & ) = default;
 	Child2 &operator=( Child2 && ) = default;
-	~Child2( );
+	~Child2( ) override;
 };
 Child2::~Child2( ) {
 	*ptr = true;

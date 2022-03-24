@@ -105,9 +105,9 @@ void sqrt_tests( ) {
 #if defined( DAW_CX_BIT_CAST )
 	std::cout << "double\n";
 	test_sqrt( std::numeric_limits<double>::max( ) );
-	test_sqrt( std::numeric_limits<double>::max( ) - 1.0f );
-	test_sqrt( std::numeric_limits<double>::max( ) + 1.0f );
-	test_sqrt( 0.0f + std::numeric_limits<double>::epsilon( ) );
+	test_sqrt( std::numeric_limits<double>::max( ) - 1.0 );
+	test_sqrt( std::numeric_limits<double>::max( ) + 1.0 );
+	test_sqrt( 0.0 + std::numeric_limits<double>::epsilon( ) );
 	test_sqrt( pi<double> );
 #endif
 	std::cout << "float\n";
