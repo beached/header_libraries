@@ -93,26 +93,26 @@ namespace daw {
 		}
 	};
 
-	template<typename _T1, typename _T2>
-	struct compressed_pair : private compressed_pair_elem<_T1, 0>,
-	                         private compressed_pair_elem<_T2, 1> {
+	template<typename T1, typename T2>
+	struct compressed_pair : private compressed_pair_elem<T1, 0>,
+	                         private compressed_pair_elem<T2, 1> {
 		// NOTE: This static assert should never fire because compressed_pair
 		// is *almost never* used in a scenario where it's possible for T1 == T2.
 		// (The exception is std::function where it is possible that the function
 		//  object and the allocator have the same type).
 		static_assert(
-		  not same_as<_T1, _T2>,
+		  not same_as<T1, T2>,
 		  "compressed_pair cannot be instantiated when T1 and T2 are the same "
 		  "type; "
 		  "The current implementation is NOT ABI-compatible with the previous "
 		  "implementation for this configuration" );
 
-		using Base1 = compressed_pair_elem<_T1, 0>;
-		using Base2 = compressed_pair_elem<_T2, 1>;
+		using Base1 = compressed_pair_elem<T1, 0>;
+		using Base2 = compressed_pair_elem<T2, 1>;
 
 		template<bool D = true>
-		requires( std::is_default_constructible_v<_T1>
-		            and std::is_default_constructible_v<_T2> ) //
+		requires( std::is_default_constructible_v<T1>
+		            and std::is_default_constructible_v<T2> ) //
 		  explicit constexpr compressed_pair( )
 		  : Base1( value_init_tag( ) )
 		  , Base2( value_init_tag( ) ) {}
@@ -160,7 +160,7 @@ namespace daw {
 		}
 
 		constexpr void swap( compressed_pair &x ) noexcept(
-		  std::is_nothrow_swappable_v<_T1> and std::is_nothrow_swappable_v<_T2> ) {
+		  std::is_nothrow_swappable_v<T1> and std::is_nothrow_swappable_v<T2> ) {
 			using std::swap;
 			swap( first( ), x.first( ) );
 			swap( second( ), x.second( ) );

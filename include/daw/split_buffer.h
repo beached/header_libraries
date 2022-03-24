@@ -17,8 +17,7 @@ namespace daw::si_impl {
 		swap( a1, a2 );
 	}
 
-	constexpr void swap_allocator( auto &a1, auto &a2,
-	                               std::false_type ) noexcept {}
+	constexpr void swap_allocator( auto &, auto &, std::false_type ) noexcept {}
 
 	template<typename Alloc>
 	constexpr void swap_allocator( Alloc &a1, Alloc &a2 ) noexcept {
