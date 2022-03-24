@@ -970,7 +970,7 @@ namespace daw {
 			                                                   v.end_ );
 			std::swap( m_begin, v.begin_ );
 			std::swap( m_end, v.end_ );
-			std::swap( endcap( ), v.endcap( ) );
+			std::swap( endcap( ), v.end_cap( ) );
 			v.first_ = v.begin_;
 			return r;
 		}
