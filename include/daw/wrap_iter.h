@@ -17,7 +17,7 @@
 #include <type_traits>
 
 namespace daw {
-	template<typename Iterator>
+	template<typename Iterator, typename Tag = Iterator>
 	class wrap_iter {
 	public:
 		using iterator_type = Iterator;
@@ -41,7 +41,7 @@ namespace daw {
 		template<typename U>
 		requires( std::is_convertible_v<U, iterator_type> and
 		          not std::is_same_v<Iterator, U> ) //
-		  constexpr wrap_iter( wrap_iter<U> const &u ) noexcept
+		  constexpr wrap_iter( wrap_iter<U, Tag> const &u ) noexcept
 		  : i( u.base( ) ) {}
 
 		constexpr reference operator*( ) const noexcept {
@@ -102,27 +102,28 @@ namespace daw {
 			return i;
 		}
 
-		template<typename Iterator2>
-		constexpr auto operator<=>( wrap_iter<Iterator2> const &rhs ) noexcept {
+		constexpr auto operator<=>( wrap_iter const &rhs ) const noexcept {
 			return base( ) <=> rhs.base( );
 		}
 
-		template<typename Iterator2>
-		constexpr bool operator==( wrap_iter<Iterator2> const &rhs ) noexcept {
+		constexpr bool operator==( wrap_iter const &rhs ) const noexcept {
 			return base( ) == rhs.base( );
+		}
+
+		constexpr bool operator!=( wrap_iter const &rhs ) const noexcept {
+			return base( ) != rhs.base( );
 		}
 	};
 
-	template<typename Iterator1, class Iterator2>
-	constexpr bool operator-( wrap_iter<Iterator1> const &x,
-	                          wrap_iter<Iterator2> const &y ) noexcept {
+	template<typename Iterator1, class Iterator2, typename Tag>
+	constexpr bool operator-( wrap_iter<Iterator1, Tag> const &x,
+	                          wrap_iter<Iterator2, Tag> const &y ) noexcept {
 		return x.base( ) - y.base( );
 	}
 
-	template<typename Iterator1>
-	constexpr wrap_iter<Iterator1>
-	operator+( typename wrap_iter<Iterator1>::difference_type n,
-	           wrap_iter<Iterator1> x ) noexcept {
+	template<typename Iterator1, typename Tag>
+	constexpr wrap_iter<Iterator1, Tag>
+	operator+( std::ptrdiff_t n, wrap_iter<Iterator1, Tag> x ) noexcept {
 		x += n;
 		return x;
 	}
