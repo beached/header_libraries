@@ -16,6 +16,7 @@
 #include "daw_traits.h"
 #include "daw_view.h"
 #include "impl/daw_math_impl.h"
+#include "vector.h"
 
 #include <algorithm>
 #include <array>
@@ -26,7 +27,6 @@
 #include <optional>
 #include <type_traits>
 #include <utility>
-#include <vector>
 
 namespace daw {
 	template<typename Map, typename Key>
@@ -593,8 +593,8 @@ namespace daw::algorithm {
 		traits::is_iterator_test<Iterator>( );
 		using value_type = daw::traits::root_type_t<decltype( *first )>;
 
-		auto result = std::vector<std::vector<value_type>>( );
-		auto temp = std::vector<value_type>( );
+		auto result = daw::vector<daw::vector<value_type>>( );
+		auto temp = daw::vector<value_type>( );
 
 		for( auto it = first; it != last; ++it ) {
 			if( value == *it ) {
@@ -1563,8 +1563,8 @@ namespace daw::algorithm {
 		return first_out;
 	}
 
-	template<typename T, typename RandomIterator,
-	         typename RandomIteratorLast, typename BinaryOperation>
+	template<typename T, typename RandomIterator, typename RandomIteratorLast,
+	         typename BinaryOperation>
 	constexpr T reduce(
 	  RandomIterator first, RandomIteratorLast last, T init,
 	  BinaryOperation
@@ -1587,12 +1587,12 @@ namespace daw::algorithm {
 			init = daw::invoke( binary_op, DAW_MOVE( init ), *first );
 			++first;
 		}
-		return init; 
+		return init;
 	}
 
-	template<typename InputIterator1,
-	         typename InputIterator1Last, typename InputIterator2, typename T,
-	         typename ReduceFunction, typename MapFunction>
+	template<typename InputIterator1, typename InputIterator1Last,
+	         typename InputIterator2, typename T, typename ReduceFunction,
+	         typename MapFunction>
 	constexpr T map_reduce(
 	  InputIterator1 first1, InputIterator1Last last1, InputIterator2 first2,
 	  T init, ReduceFunction reduce_func,
@@ -1627,7 +1627,7 @@ namespace daw::algorithm {
 
 		while( first1 != last1 ) {
 			init = daw::invoke( reduce_func, DAW_MOVE( init ),
-			                      daw::invoke( map_func, *first1, *first2 ) );
+			                    daw::invoke( map_func, *first1, *first2 ) );
 			++first1;
 			++first2;
 		}
@@ -1698,11 +1698,10 @@ namespace daw::algorithm {
 	 * @param binary_op operation to run
 	 * @return sum of values
 	 */
-	template<
-	  typename InputIterator, typename LastType,
-	  typename T, typename BinaryOperation = std::plus<>,
-	  daw::enable_when_t<not daw::traits::is_container_like_v<InputIterator>> =
-	    nullptr>
+	template<typename InputIterator, typename LastType, typename T,
+	         typename BinaryOperation = std::plus<>,
+	         daw::enable_when_t<
+	           not daw::traits::is_container_like_v<InputIterator>> = nullptr>
 	constexpr auto accumulate(
 	  InputIterator first, LastType last, T init,
 	  BinaryOperation binary_op =
@@ -2077,12 +2076,12 @@ namespace daw::algorithm {
 	}
 
 	template<size_t MinSize = 1, typename BidirectionalIterator>
-	std::vector<daw::view<BidirectionalIterator>>
+	daw::vector<daw::view<BidirectionalIterator>>
 	partition_range( BidirectionalIterator first, BidirectionalIterator last,
 	                 size_t count ) {
 		static_assert( MinSize > 0 );
 		auto v = daw::view( first, last );
-		auto result = std::vector<daw::view<BidirectionalIterator>>( );
+		auto result = daw::vector<daw::view<BidirectionalIterator>>( );
 		result.reserve( count );
 		auto sz = v.size( ) / count;
 		if( sz < MinSize ) {
@@ -2096,7 +2095,7 @@ namespace daw::algorithm {
 	}
 
 	template<size_t MinSize = 1, typename BidirectionalIterator>
-	std::vector<daw::view<BidirectionalIterator>>
+	daw::vector<daw::view<BidirectionalIterator>>
 	partition_range( daw::view<BidirectionalIterator> rng, size_t count ) {
 		return partition_range<MinSize>( rng.begin( ), rng.end( ), count );
 	}

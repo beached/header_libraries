@@ -754,38 +754,32 @@ namespace daw {
 	using u32bounded_string = basic_bounded_string<char32_t, 100>;
 
 	template<size_t Capacity = 100, typename CharT>
-	constexpr auto make_bounded_string_it( CharT const *first,
-	                                       CharT const *last ) noexcept {
+	[[nodiscard]] constexpr auto
+	make_bounded_string_it( CharT const *first, CharT const *last ) noexcept {
 		return basic_bounded_string<CharT, Capacity>{
 		  first, static_cast<size_t>( last - first ) };
 	}
 
-	template<
-	  size_t Capacity = 100, typename Iterator,
-	  typename CharT = std::decay_t<decltype( *std::declval<Iterator>( ) )>>
-	constexpr auto make_bounded_string_it( Iterator first,
-	                                       Iterator last ) noexcept {
+	template<size_t Capacity = 100, typename Iterator,
+	         typename CharT = DAW_TYPEOF( *std::declval<Iterator>( ) )>
+	[[nodiscard]] constexpr auto
+	make_bounded_string_it( Iterator first, Iterator last ) noexcept {
 		using sv_t = basic_bounded_string<CharT, Capacity>;
 		using size_type = typename sv_t::size_type;
 		return sv_t{ &( *first ),
 		             static_cast<size_type>( daw::distance( first, last ) ) };
 	}
 
-	template<size_t Capacity = 100, typename CharT>
-	auto make_bounded_string( std::vector<CharT> const &v ) noexcept {
-		return basic_bounded_string<CharT, Capacity>{ v.data( ), v.size( ) };
+	template<size_t Capacity = 100, typename Container>
+	[[nodiscard]] constexpr auto
+	make_bounded_string( Container const &v ) noexcept
+	  -> basic_bounded_string<typename Container::value_type, Capacity> {
+		return basic_bounded_string<typename Container::value_type, Capacity>{
+		  v.data( ), v.size( ) };
 	}
-
-#ifndef NOSTRING
-	template<size_t Capacity = 100, typename CharT>
-	daw::basic_bounded_string<CharT, Capacity>
-	make_bounded_string( std::basic_string<CharT> const &str ) {
-		return daw::basic_bounded_string<CharT, Capacity>{ str };
-	}
-#endif
 
 	template<size_t Capacity = 100, typename CharT, size_t N>
-	daw::basic_bounded_string<CharT, Capacity>
+	[[nodiscard]] constexpr daw::basic_bounded_string<CharT, Capacity>
 	make_bounded_string( CharT const ( &str )[N] ) {
 		return daw::basic_bounded_string<CharT, Capacity>{ str, N };
 	}

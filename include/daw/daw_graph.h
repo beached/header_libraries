@@ -42,7 +42,7 @@ namespace daw {
 		friend struct graph_t;
 
 	public:
-		constexpr node_id_t( ) noexcept = default;
+		node_id_t( ) noexcept = default;
 		explicit constexpr node_id_t( size_t id ) noexcept
 		  : m_value( id ) {}
 
