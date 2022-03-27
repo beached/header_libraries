@@ -108,10 +108,10 @@ $(function() {
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                                   <span class="keywordtype">bool</span> CheckDereference ) <span class="keyword">const</span> noexcept {</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;      <span class="keyword">auto</span> result =</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keyword">static_cast&lt;</span>std::uint8_t<span class="keyword">&gt;</span>( CheckIncrement ? check_increment : 0 );</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      result =</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>( result | CheckDecrement ? check_decrement : 0 );</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      result = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        ( result | CheckDecrement ) ? check_decrement : 0 );</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      result = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        result | CheckDereference ? check_dereference : 0 );</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        ( result | CheckDereference ) ? check_dereference : 0 );</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    }</div>
