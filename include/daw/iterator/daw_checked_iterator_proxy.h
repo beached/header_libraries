@@ -36,10 +36,10 @@ namespace daw {
 		                               bool CheckDereference ) const noexcept {
 			auto result =
 			  static_cast<std::uint8_t>( CheckIncrement ? check_increment : 0 );
-			result =
-			  static_cast<uint8_t>( result | CheckDecrement ? check_decrement : 0 );
 			result = static_cast<uint8_t>(
-			  result | CheckDereference ? check_dereference : 0 );
+			  ( result | CheckDecrement ) ? check_decrement : 0 );
+			result = static_cast<uint8_t>(
+			  ( result | CheckDereference ) ? check_dereference : 0 );
 
 			return result;
 		}

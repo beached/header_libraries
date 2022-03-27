@@ -4,7 +4,6 @@
 #include "daw_concepts.h"
 #include "daw_likely.h"
 #include "daw_move.h"
-#include "daw_utility.h"
 #include "split_buffer.h"
 #include "wrap_iter.h"
 
@@ -86,11 +85,13 @@ namespace daw {
 
 	template<typename T, typename size_type, typename pointer, typename alloc>
 	concept ResizeAndOverwriteOperation =
-	  invocable_result<T, size_type, pointer, size_type> and
-	  not ResizeAndOverwriteOperationAlloc<T, size_type, pointer, alloc>;
+	  invocable_result<T, size_type, pointer, size_type> and not
+	ResizeAndOverwriteOperationAlloc<T, size_type, pointer, alloc>;
 
 	template<typename T>
-	inline constexpr bool has_slow_distance_v = requires {
+	inline constexpr bool has_slow_distance_v =
+	  requires
+	{
 		typename T::slow_distance;
 	};
 
@@ -180,9 +181,9 @@ namespace daw {
 		}
 
 		template<input_iterator InputIterator>
-		requires( constructible_from<value_type,
-		                             iter_reference_type<InputIterator>> ) //
-		  explicit constexpr vector( InputIterator first, InputIterator last ) {
+		  requires( constructible_from<value_type,
+		                               iter_reference_type<InputIterator>> ) //
+		explicit constexpr vector( InputIterator first, InputIterator last ) {
 
 			for( ; first != last; ++first ) {
 				emplace_back( *first );
@@ -190,10 +191,10 @@ namespace daw {
 		}
 
 		template<input_iterator InputIterator>
-		requires( constructible_from<value_type,
-		                             iter_reference_type<InputIterator>> ) //
-		  explicit constexpr vector( InputIterator first, InputIterator last,
-		                             allocator_type const &a )
+		  requires( constructible_from<value_type,
+		                               iter_reference_type<InputIterator>> ) //
+		explicit constexpr vector( InputIterator first, InputIterator last,
+		                           allocator_type const &a )
 		  : m_endcap_( nullptr, a ) {
 
 			for( ; first != last; ++first ) {
@@ -202,10 +203,10 @@ namespace daw {
 		}
 
 		template<forward_iterator ForwardIterator>
-		requires( not has_slow_distance_v<ForwardIterator> and
-		          constructible_from<value_type,
-		                             iter_reference_type<ForwardIterator>> ) //
-		  explicit constexpr vector( ForwardIterator first, ForwardIterator last ) {
+		  requires( not has_slow_distance_v<ForwardIterator> and
+		            constructible_from<value_type,
+		                               iter_reference_type<ForwardIterator>> ) //
+		explicit constexpr vector( ForwardIterator first, ForwardIterator last ) {
 
 			auto const n = static_cast<size_type>( std::distance( first, last ) );
 			if( n > 0 ) {
@@ -215,11 +216,11 @@ namespace daw {
 		}
 
 		template<forward_iterator ForwardIterator>
-		requires( not has_slow_distance_v<ForwardIterator> and
-		          constructible_from<value_type,
-		                             iter_reference_type<ForwardIterator>> ) //
-		  explicit constexpr vector( ForwardIterator first, ForwardIterator last,
-		                             allocator_type const &a )
+		  requires( not has_slow_distance_v<ForwardIterator> and
+		            constructible_from<value_type,
+		                               iter_reference_type<ForwardIterator>> ) //
+		explicit constexpr vector( ForwardIterator first, ForwardIterator last,
+		                           allocator_type const &a )
 		  : m_endcap_( nullptr, a ) {
 			auto const n = static_cast<size_type>( std::distance( first, last ) );
 			if( n > 0 ) {
@@ -318,19 +319,19 @@ namespace daw {
 		}
 
 		template<input_iterator InputIterator>
-		requires( constructible_from<value_type,
-		                             iter_reference_type<InputIterator>> ) //
-		  void assign( InputIterator first, InputIterator last ) {
+		  requires( constructible_from<value_type,
+		                               iter_reference_type<InputIterator>> ) //
+		void assign( InputIterator first, InputIterator last ) {
 			clear( );
 			for( ; first != last; ++first )
 				emplace_back( *first );
 		}
 
 		template<forward_iterator ForwardIterator>
-		requires( not has_slow_distance_v<ForwardIterator> and
-		          constructible_from<value_type,
-		                             iter_reference_type<ForwardIterator>> ) //
-		  constexpr void assign( ForwardIterator first, ForwardIterator last ) {
+		  requires( not has_slow_distance_v<ForwardIterator> and
+		            constructible_from<value_type,
+		                               iter_reference_type<ForwardIterator>> ) //
+		constexpr void assign( ForwardIterator first, ForwardIterator last ) {
 			auto const new_size =
 			  static_cast<size_type>( std::distance( first, last ) );
 			if( new_size <= capacity( ) ) {
@@ -653,10 +654,10 @@ namespace daw {
 		}
 
 		template<input_iterator InputIterator>
-		requires(
-		  constructible_from<value_type, iter_reference_type<InputIterator>> ) //
-		  constexpr iterator insert( const_iterator position, InputIterator first,
-		                             InputIterator last ) {
+		  requires(
+		    constructible_from<value_type, iter_reference_type<InputIterator>> ) //
+		constexpr iterator insert( const_iterator position, InputIterator first,
+		                           InputIterator last ) {
 			difference_type off = position - begin( );
 			pointer p = m_begin + off;
 			allocator_type &a = alloc( );
@@ -689,11 +690,11 @@ namespace daw {
 		}
 
 		template<forward_iterator ForwardIterator>
-		requires( not has_slow_distance_v<ForwardIterator> and
-		          constructible_from<value_type,
-		                             iter_reference_type<ForwardIterator>> ) //
-		  constexpr iterator insert( const_iterator position, ForwardIterator first,
-		                             ForwardIterator last ) {
+		  requires( not has_slow_distance_v<ForwardIterator> and
+		            constructible_from<value_type,
+		                               iter_reference_type<ForwardIterator>> ) //
+		constexpr iterator insert( const_iterator position, ForwardIterator first,
+		                           ForwardIterator last ) {
 			pointer p = m_begin + ( position - begin( ) );
 			difference_type n = std::distance( first, last );
 			if( n > 0 ) {
@@ -901,9 +902,9 @@ namespace daw {
 		}
 
 		template<forward_iterator ForwardIterator>
-		requires( not has_slow_distance_v<ForwardIterator> ) //
-		  constexpr void construct_at_end( ForwardIterator first,
-		                                   ForwardIterator last, size_type n ) {
+		  requires( not has_slow_distance_v<ForwardIterator> ) //
+		constexpr void construct_at_end( ForwardIterator first,
+		                                 ForwardIterator last, size_type n ) {
 			ConstructTransaction tx( *this, n );
 			impl::construct_range_forward( alloc( ), first, last, tx.pos );
 		}
@@ -979,7 +980,7 @@ namespace daw {
 			difference_type n = old_last - to;
 			{
 				pointer i = from_s + n;
-				ConstructTransaction tx( *this, from_e - i );
+				ConstructTransaction tx( *this, static_cast<size_type>( from_e - i ) );
 				for( pointer pos = tx.pos; i < from_e;
 				     ++i, (void)++pos, tx.pos = pos ) {
 					alloc_traits::construct( alloc( ), std::to_address( pos ),

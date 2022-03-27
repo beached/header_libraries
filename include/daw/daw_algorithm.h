@@ -1563,8 +1563,8 @@ namespace daw::algorithm {
 		return first_out;
 	}
 
-	template<typename T, typename RandomIterator,
-	         typename RandomIteratorLast, typename BinaryOperation>
+	template<typename T, typename RandomIterator, typename RandomIteratorLast,
+	         typename BinaryOperation>
 	constexpr T reduce(
 	  RandomIterator first, RandomIteratorLast last, T init,
 	  BinaryOperation
@@ -1587,12 +1587,12 @@ namespace daw::algorithm {
 			init = daw::invoke( binary_op, DAW_MOVE( init ), *first );
 			++first;
 		}
-		return init; 
+		return init;
 	}
 
-	template<typename InputIterator1,
-	         typename InputIterator1Last, typename InputIterator2, typename T,
-	         typename ReduceFunction, typename MapFunction>
+	template<typename InputIterator1, typename InputIterator1Last,
+	         typename InputIterator2, typename T, typename ReduceFunction,
+	         typename MapFunction>
 	constexpr T map_reduce(
 	  InputIterator1 first1, InputIterator1Last last1, InputIterator2 first2,
 	  T init, ReduceFunction reduce_func,
@@ -1627,7 +1627,7 @@ namespace daw::algorithm {
 
 		while( first1 != last1 ) {
 			init = daw::invoke( reduce_func, DAW_MOVE( init ),
-			                      daw::invoke( map_func, *first1, *first2 ) );
+			                    daw::invoke( map_func, *first1, *first2 ) );
 			++first1;
 			++first2;
 		}
@@ -1698,11 +1698,10 @@ namespace daw::algorithm {
 	 * @param binary_op operation to run
 	 * @return sum of values
 	 */
-	template<
-	  typename InputIterator, typename LastType,
-	  typename T, typename BinaryOperation = std::plus<>,
-	  daw::enable_when_t<not daw::traits::is_container_like_v<InputIterator>> =
-	    nullptr>
+	template<typename InputIterator, typename LastType, typename T,
+	         typename BinaryOperation = std::plus<>,
+	         daw::enable_when_t<
+	           not daw::traits::is_container_like_v<InputIterator>> = nullptr>
 	constexpr auto accumulate(
 	  InputIterator first, LastType last, T init,
 	  BinaryOperation binary_op =

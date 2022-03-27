@@ -87,8 +87,7 @@ namespace daw {
 
 	void daw_bounded_string_make_bounded_string_vector( ) {
 		std::string a = "This is a test";
-		std::vector<char> b;
-		std::copy( a.begin( ), a.end( ), std::back_inserter( b ) );
+		auto b = std::vector<char>( a.begin( ), a.end( ) );
 
 		auto c = daw::make_bounded_string( b );
 
