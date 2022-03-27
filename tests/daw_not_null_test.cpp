@@ -23,6 +23,8 @@ void daw_not_null_test_002( ) {
 	auto tst = std::unique_ptr<int[]>( new int[5]{ } );
 	daw::not_null<int *> first = tst.get( );
 	daw::not_null<int *> last = tst.get( ) + 5;
+	(void)first;
+	(void)last;
 	assert( ( last - first ) == 5 );
 }
 
@@ -30,6 +32,8 @@ void daw_not_null_test_003( ) {
 	auto tst = std::unique_ptr<int[]>( new int[5]{ } );
 	daw::not_null<int *> first = tst.get( );
 	int *last = tst.get( ) + 5;
+	(void)first;
+	(void)last;
 	assert( ( last - first ) == 5 );
 }
 
@@ -37,6 +41,8 @@ void daw_not_null_test_004( ) {
 	auto tst = std::unique_ptr<int[]>( new int[5]{ } );
 	int *first = tst.get( );
 	daw::not_null<int *> last = tst.get( ) + 5;
+	(void)first;
+	(void)last;
 	assert( ( last - first ) == 5 );
 }
 

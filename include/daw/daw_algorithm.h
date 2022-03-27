@@ -16,7 +16,6 @@
 #include "daw_traits.h"
 #include "daw_view.h"
 #include "impl/daw_math_impl.h"
-#include "vector.h"
 
 #include <algorithm>
 #include <array>
@@ -27,6 +26,7 @@
 #include <optional>
 #include <type_traits>
 #include <utility>
+#include <vector>
 
 namespace daw {
 	template<typename Map, typename Key>
@@ -593,8 +593,8 @@ namespace daw::algorithm {
 		traits::is_iterator_test<Iterator>( );
 		using value_type = daw::traits::root_type_t<decltype( *first )>;
 
-		auto result = daw::vector<daw::vector<value_type>>( );
-		auto temp = daw::vector<value_type>( );
+		auto result = std::vector<std::vector<value_type>>( );
+		auto temp = std::vector<value_type>( );
 
 		for( auto it = first; it != last; ++it ) {
 			if( value == *it ) {
@@ -2076,12 +2076,12 @@ namespace daw::algorithm {
 	}
 
 	template<size_t MinSize = 1, typename BidirectionalIterator>
-	daw::vector<daw::view<BidirectionalIterator>>
+	std::vector<daw::view<BidirectionalIterator>>
 	partition_range( BidirectionalIterator first, BidirectionalIterator last,
 	                 size_t count ) {
 		static_assert( MinSize > 0 );
 		auto v = daw::view( first, last );
-		auto result = daw::vector<daw::view<BidirectionalIterator>>( );
+		auto result = std::vector<daw::view<BidirectionalIterator>>( );
 		result.reserve( count );
 		auto sz = v.size( ) / count;
 		if( sz < MinSize ) {
@@ -2095,7 +2095,7 @@ namespace daw::algorithm {
 	}
 
 	template<size_t MinSize = 1, typename BidirectionalIterator>
-	daw::vector<daw::view<BidirectionalIterator>>
+	std::vector<daw::view<BidirectionalIterator>>
 	partition_range( daw::view<BidirectionalIterator> rng, size_t count ) {
 		return partition_range<MinSize>( rng.begin( ), rng.end( ), count );
 	}
