@@ -81,7 +81,7 @@ namespace daw {
 
 	template<typename T, typename size_type, typename pointer, typename alloc>
 	concept ResizeAndOverwriteOperationAlloc =
-	  invocable_result<T, size_type, pointer, size_type, alloc>;
+	  invocable_result<T, size_type, pointer, size_type, alloc &>;
 
 	template<typename T, typename size_type, typename pointer, typename alloc>
 	concept ResizeAndOverwriteOperation =
