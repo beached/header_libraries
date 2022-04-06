@@ -100,6 +100,10 @@ namespace daw {
 			return value;
 		}
 
+		constexpr void reset( ) noexcept( noexcept( take( value ) ) ) {
+			(void)take( value );
+		}
+
 		constexpr auto operator<=>( take_t const & ) const = default;
 		constexpr bool operator==( take_t const & ) const = default;
 	};
