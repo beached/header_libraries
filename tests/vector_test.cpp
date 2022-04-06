@@ -54,7 +54,7 @@ int main( ) {
 	x = { 1, 2, 3 };
 	x[0] = 2;
 	std::cout << "cap: " << x.capacity( ) << '\n';
-	x.append_and_overwrite( x.capacity( ) * 2, []<typename Alloc>( int *p, std::size_t sz, Alloc & alloc ) {
+	x.append_and_overwrite( x.capacity( ) * 2, []<typename Alloc>( int *p, std::size_t sz, Alloc &  ) {
 		for( std::size_t n = 0; n < sz; ++n ) {
 			std::construct_at( &p[n], n );
 		}
