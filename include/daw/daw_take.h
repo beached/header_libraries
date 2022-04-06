@@ -28,14 +28,6 @@ namespace daw {
 
 	template<typename T>
 	struct take_t {
-		constexpr T operator( )( T &value ) const
-		  noexcept( noexcept( take( value ) ) ) {
-			return take( value );
-		}
-	};
-
-	template<typename T, typename OnMove = take_t<T>>
-	struct move_to_t {
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
@@ -46,26 +38,25 @@ namespace daw {
 		T value;
 
 	public:
-		move_to_t( ) = default;
-		~move_to_t( ) = default;
-		move_to_t( move_to_t const & ) = default;
-		move_to_t &operator=( move_to_t const & ) = default;
+		take_t( ) = default;
+		~take_t( ) = default;
+		take_t( take_t const & ) = default;
+		take_t &operator=( take_t const & ) = default;
 
-		move_to_t( move_to_t &&other ) noexcept(
-		  std::is_nothrow_invocable_v<OnMove, T &> )
-		  : value( OnMove{ }( other.value ) ) {}
+		take_t( take_t &&other ) noexcept( noexcept( take( other.value ) ) )
+		  : value( take( other.value ) ) {}
 
-		move_to_t &operator=( move_to_t &&rhs ) noexcept(
-		  std::is_nothrow_invocable_v<OnMove, T &> ) {
+		take_t &
+		operator=( take_t &&rhs ) noexcept( noexcept( take( rhs.value ) ) ) {
 			if( this != &rhs ) {
-				value = OnMove{ }( rhs.value );
+				value = take( rhs.value );
 			}
 			return *this;
 		}
 
 		template<typename Arg, typename... Args>
-		  requires( not same_as<std::remove_cvref_t<Arg>, move_to_t> )
-		constexpr move_to_t( Arg &&arg, Args &&...args ) noexcept(
+		  requires( not same_as<std::remove_cvref_t<Arg>, take_t> )
+		constexpr take_t( Arg &&arg, Args &&...args ) noexcept(
 		  std::is_nothrow_constructible_v<T, Arg, Args...> )
 		  : value{ DAW_FWD( arg ), DAW_FWD( args )... } {}
 
@@ -78,7 +69,7 @@ namespace daw {
 		}
 
 		constexpr value_type operator*( ) &&noexcept {
-			return OnMove( value );
+			return take( value );
 		}
 
 		constexpr const_reference operator*( ) const &&noexcept {
@@ -102,15 +93,15 @@ namespace daw {
 		}
 
 		constexpr value_type get( ) &&noexcept {
-			return OnMove( value );
+			return take( value );
 		}
 
 		constexpr const_reference get( ) const &&noexcept {
 			return value;
 		}
 
-		constexpr auto operator<=>( move_to_t const & ) const = default;
-		constexpr bool operator==( move_to_t const & ) const = default;
+		constexpr auto operator<=>( take_t const & ) const = default;
+		constexpr bool operator==( take_t const & ) const = default;
 	};
 
 } // namespace daw

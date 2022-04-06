@@ -15,7 +15,7 @@ int main( ) {
 	int b = daw::take( a );
 	assert( a == 0 and b == 5 );
 
-	auto x = daw::move_to_t<int>( 5 );
+	auto x = daw::take_t<int>( 5 );
 	auto y = x;
 	assert( *x == 5 );
 	auto z = DAW_MOVE( y );
