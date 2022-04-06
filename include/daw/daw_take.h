@@ -105,7 +105,6 @@ namespace daw {
 		}
 
 		constexpr auto operator<=>( take_t const & ) const = default;
-		constexpr bool operator==( take_t const & ) const = default;
 	};
 
 } // namespace daw
