@@ -94,44 +94,41 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab59a8a7e1633e48633e11f6b5732cbeb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#ab59a8a7e1633e48633e11f6b5732cbeb">take_t</a> ()=default</td></tr>
 <tr class="separator:ab59a8a7e1633e48633e11f6b5732cbeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e576f986200ae2397283eb426fccab2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a0e576f986200ae2397283eb426fccab2">take_t</a> (<a class="el" href="structdaw_1_1take__t.html">take_t</a> &amp;&amp;other) <a class="el" href="structdaw_1_1take__t.html#af38678c161421370583c866f5963d7e6">noexcept</a>(<a class="el" href="structdaw_1_1take__t.html#af38678c161421370583c866f5963d7e6">noexcept</a>(<a class="el" href="namespacedaw.html#a5c6e8e9c37960b6823de01d7cd2125b8">take</a>(other.value)))</td></tr>
+<tr class="memitem:a2cb6351af8d662b28138959b7c2cccfa"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a2cb6351af8d662b28138959b7c2cccfa">take_t</a> (<a class="el" href="namespacedaw.html#abef802ed6bd3568b607c6c3f6b056d2e">not_me</a>&lt; <a class="el" href="structdaw_1_1take__t.html">take_t</a> &gt; auto &amp;&amp;arg, auto &amp;&amp;...args) noexcept(std::is_nothrow_constructible_v&lt; T, decltype(arg), decltype(args)... &gt;)</td></tr>
+<tr class="separator:a2cb6351af8d662b28138959b7c2cccfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e576f986200ae2397283eb426fccab2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a0e576f986200ae2397283eb426fccab2">take_t</a> (<a class="el" href="structdaw_1_1take__t.html">take_t</a> &amp;&amp;other) noexcept(noexcept(<a class="el" href="namespacedaw.html#a5c6e8e9c37960b6823de01d7cd2125b8">take</a>(other.value)))</td></tr>
 <tr class="separator:a0e576f986200ae2397283eb426fccab2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad87a3b4f5dd5f309d3c8540fc1e4db11"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#ad87a3b4f5dd5f309d3c8540fc1e4db11">take_t</a> (<a class="el" href="structdaw_1_1take__t.html">take_t</a> const &amp;)=default</td></tr>
 <tr class="separator:ad87a3b4f5dd5f309d3c8540fc1e4db11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a989164df810ae8dc9737aca9909bc62e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a989164df810ae8dc9737aca9909bc62e">~take_t</a> ()=default</td></tr>
 <tr class="separator:a989164df810ae8dc9737aca9909bc62e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81c43fff93702c9e751a3fce9f1c8f8a"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#a33ab2f2add45d1ed61673ee316721512">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a81c43fff93702c9e751a3fce9f1c8f8a">get</a> () &amp;&amp;<a class="el" href="structdaw_1_1take__t.html#af38678c161421370583c866f5963d7e6">noexcept</a></td></tr>
+<tr class="memitem:a81c43fff93702c9e751a3fce9f1c8f8a"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#a33ab2f2add45d1ed61673ee316721512">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a81c43fff93702c9e751a3fce9f1c8f8a">get</a> () &amp;&amp;noexcept</td></tr>
 <tr class="separator:a81c43fff93702c9e751a3fce9f1c8f8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1261222f077bf2df22eb8ad9af04db8"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#acd46afa7c0d0a0cec9904d46e5886d90">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#aa1261222f077bf2df22eb8ad9af04db8">get</a> () &amp;<a class="el" href="structdaw_1_1take__t.html#af38678c161421370583c866f5963d7e6">noexcept</a></td></tr>
+<tr class="memitem:aa1261222f077bf2df22eb8ad9af04db8"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#acd46afa7c0d0a0cec9904d46e5886d90">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#aa1261222f077bf2df22eb8ad9af04db8">get</a> () &amp;noexcept</td></tr>
 <tr class="separator:aa1261222f077bf2df22eb8ad9af04db8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88e72f6993d7c15fb83852990767dce3"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#ae2e82e99f3fd0db433fd0a7161d0be74">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a88e72f6993d7c15fb83852990767dce3">get</a> () const &amp;&amp;<a class="el" href="structdaw_1_1take__t.html#af38678c161421370583c866f5963d7e6">noexcept</a></td></tr>
+<tr class="memitem:a88e72f6993d7c15fb83852990767dce3"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#ae2e82e99f3fd0db433fd0a7161d0be74">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a88e72f6993d7c15fb83852990767dce3">get</a> () const &amp;&amp;noexcept</td></tr>
 <tr class="separator:a88e72f6993d7c15fb83852990767dce3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a301f0784fdd238d79bed9b9df50236f8"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#ae2e82e99f3fd0db433fd0a7161d0be74">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a301f0784fdd238d79bed9b9df50236f8">get</a> () const &amp;<a class="el" href="structdaw_1_1take__t.html#af38678c161421370583c866f5963d7e6">noexcept</a></td></tr>
+<tr class="memitem:a301f0784fdd238d79bed9b9df50236f8"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#ae2e82e99f3fd0db433fd0a7161d0be74">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a301f0784fdd238d79bed9b9df50236f8">get</a> () const &amp;noexcept</td></tr>
 <tr class="separator:a301f0784fdd238d79bed9b9df50236f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af38678c161421370583c866f5963d7e6"><td class="memItemLeft" align="right" valign="top">Args &amp;&amp;args&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#af38678c161421370583c866f5963d7e6">noexcept</a> (std::is_nothrow_constructible_v&lt; T, Arg, Args... &gt;)</td></tr>
-<tr class="separator:af38678c161421370583c866f5963d7e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace7da843e26e2125a20390f58028a47b"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#ace7da843e26e2125a20390f58028a47b">operator</a> (<a class="el" href="structdaw_1_1take__t.html">take_t</a> const &amp;) const =default</td></tr>
 <tr class="separator:ace7da843e26e2125a20390f58028a47b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac254838670774000748faab90dfc1012"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#a33ab2f2add45d1ed61673ee316721512">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#ac254838670774000748faab90dfc1012">operator*</a> () &amp;&amp;<a class="el" href="structdaw_1_1take__t.html#af38678c161421370583c866f5963d7e6">noexcept</a></td></tr>
+<tr class="memitem:ac254838670774000748faab90dfc1012"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#a33ab2f2add45d1ed61673ee316721512">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#ac254838670774000748faab90dfc1012">operator*</a> () &amp;&amp;noexcept</td></tr>
 <tr class="separator:ac254838670774000748faab90dfc1012"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b72a314ba7752adef2dff8378789acb"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#acd46afa7c0d0a0cec9904d46e5886d90">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a4b72a314ba7752adef2dff8378789acb">operator*</a> () &amp;<a class="el" href="structdaw_1_1take__t.html#af38678c161421370583c866f5963d7e6">noexcept</a></td></tr>
+<tr class="memitem:a4b72a314ba7752adef2dff8378789acb"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#acd46afa7c0d0a0cec9904d46e5886d90">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a4b72a314ba7752adef2dff8378789acb">operator*</a> () &amp;noexcept</td></tr>
 <tr class="separator:a4b72a314ba7752adef2dff8378789acb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a043e85affda9845e94b2e9c8ffeb44f1"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#ae2e82e99f3fd0db433fd0a7161d0be74">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a043e85affda9845e94b2e9c8ffeb44f1">operator*</a> () const &amp;&amp;<a class="el" href="structdaw_1_1take__t.html#af38678c161421370583c866f5963d7e6">noexcept</a></td></tr>
+<tr class="memitem:a043e85affda9845e94b2e9c8ffeb44f1"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#ae2e82e99f3fd0db433fd0a7161d0be74">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a043e85affda9845e94b2e9c8ffeb44f1">operator*</a> () const &amp;&amp;noexcept</td></tr>
 <tr class="separator:a043e85affda9845e94b2e9c8ffeb44f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b725569db06749deed112bdddf0acd8"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#ae2e82e99f3fd0db433fd0a7161d0be74">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a7b725569db06749deed112bdddf0acd8">operator*</a> () const &amp;<a class="el" href="structdaw_1_1take__t.html#af38678c161421370583c866f5963d7e6">noexcept</a></td></tr>
+<tr class="memitem:a7b725569db06749deed112bdddf0acd8"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#ae2e82e99f3fd0db433fd0a7161d0be74">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a7b725569db06749deed112bdddf0acd8">operator*</a> () const &amp;noexcept</td></tr>
 <tr class="separator:a7b725569db06749deed112bdddf0acd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7dba9b40d9631340a810b86bab3f61f3"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#a5d124b632a91fce183e2de97b7b924e0">const_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a7dba9b40d9631340a810b86bab3f61f3">operator-&gt;</a> () const <a class="el" href="structdaw_1_1take__t.html#af38678c161421370583c866f5963d7e6">noexcept</a></td></tr>
+<tr class="memitem:a7dba9b40d9631340a810b86bab3f61f3"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#a5d124b632a91fce183e2de97b7b924e0">const_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a7dba9b40d9631340a810b86bab3f61f3">operator-&gt;</a> () const noexcept</td></tr>
 <tr class="separator:a7dba9b40d9631340a810b86bab3f61f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a6e9ec3cb155d0a67def53d14ca9cb5"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#ab0f0e955aaffe60bab92e8abc9998f7c">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a0a6e9ec3cb155d0a67def53d14ca9cb5">operator-&gt;</a> () <a class="el" href="structdaw_1_1take__t.html#af38678c161421370583c866f5963d7e6">noexcept</a></td></tr>
+<tr class="memitem:a0a6e9ec3cb155d0a67def53d14ca9cb5"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#ab0f0e955aaffe60bab92e8abc9998f7c">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a0a6e9ec3cb155d0a67def53d14ca9cb5">operator-&gt;</a> () noexcept</td></tr>
 <tr class="separator:a0a6e9ec3cb155d0a67def53d14ca9cb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afff208786e90e98a866a74bee9a6b1b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1take__t.html">take_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#afff208786e90e98a866a74bee9a6b1b9">operator=</a> (<a class="el" href="structdaw_1_1take__t.html">take_t</a> &amp;&amp;rhs) <a class="el" href="structdaw_1_1take__t.html#af38678c161421370583c866f5963d7e6">noexcept</a>(<a class="el" href="structdaw_1_1take__t.html#af38678c161421370583c866f5963d7e6">noexcept</a>(<a class="el" href="namespacedaw.html#a5c6e8e9c37960b6823de01d7cd2125b8">take</a>(rhs.value)))</td></tr>
+<tr class="memitem:afff208786e90e98a866a74bee9a6b1b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1take__t.html">take_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#afff208786e90e98a866a74bee9a6b1b9">operator=</a> (<a class="el" href="structdaw_1_1take__t.html">take_t</a> &amp;&amp;rhs) noexcept(noexcept(<a class="el" href="namespacedaw.html#a5c6e8e9c37960b6823de01d7cd2125b8">take</a>(rhs.value)))</td></tr>
 <tr class="separator:afff208786e90e98a866a74bee9a6b1b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb8d8864a29a89c448b392f27f34bd1f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1take__t.html">take_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#abb8d8864a29a89c448b392f27f34bd1f">operator=</a> (<a class="el" href="structdaw_1_1take__t.html">take_t</a> const &amp;)=default</td></tr>
 <tr class="separator:abb8d8864a29a89c448b392f27f34bd1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d73a6735efdda4d18dd9fe70feec6ea"><td class="memTemplParams" colspan="2">template&lt;typename Arg , typename... Args&gt; </td></tr>
-<tr class="memitem:a0d73a6735efdda4d18dd9fe70feec6ea"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a0d73a6735efdda4d18dd9fe70feec6ea">requires</a> (not <a class="el" href="namespacedaw.html#aa204958271f536b788a1b0c233df6d5e">same_as</a>&lt; std::remove_cvref_t&lt; Arg &gt;, <a class="el" href="structdaw_1_1take__t.html">take_t</a> &gt;) const expr <a class="el" href="structdaw_1_1take__t.html">take_t</a>(Arg &amp;&amp;arg</td></tr>
-<tr class="separator:a0d73a6735efdda4d18dd9fe70feec6ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a959a12dd7422105e359b72b3d74f0f39"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a959a12dd7422105e359b72b3d74f0f39">reset</a> () <a class="el" href="structdaw_1_1take__t.html#af38678c161421370583c866f5963d7e6">noexcept</a>(<a class="el" href="structdaw_1_1take__t.html#af38678c161421370583c866f5963d7e6">noexcept</a>(<a class="el" href="namespacedaw.html#a5c6e8e9c37960b6823de01d7cd2125b8">take</a>(value)))</td></tr>
+<tr class="memitem:a959a12dd7422105e359b72b3d74f0f39"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a959a12dd7422105e359b72b3d74f0f39">reset</a> () noexcept(noexcept(<a class="el" href="namespacedaw.html#a5c6e8e9c37960b6823de01d7cd2125b8">take</a>(value)))</td></tr>
 <tr class="separator:a959a12dd7422105e359b72b3d74f0f39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -233,7 +230,7 @@ template&lt;typename T &gt; </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab59a8a7e1633e48633e11f6b5732cbeb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab59a8a7e1633e48633e11f6b5732cbeb">&#9670;&nbsp;</a></span>take_t() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab59a8a7e1633e48633e11f6b5732cbeb">&#9670;&nbsp;</a></span>take_t() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -287,7 +284,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="ad87a3b4f5dd5f309d3c8540fc1e4db11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad87a3b4f5dd5f309d3c8540fc1e4db11">&#9670;&nbsp;</a></span>take_t() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad87a3b4f5dd5f309d3c8540fc1e4db11">&#9670;&nbsp;</a></span>take_t() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -315,7 +312,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a0e576f986200ae2397283eb426fccab2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0e576f986200ae2397283eb426fccab2">&#9670;&nbsp;</a></span>take_t() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e576f986200ae2397283eb426fccab2">&#9670;&nbsp;</a></span>take_t() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -341,6 +338,46 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00046">46</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+
+</div>
+</div>
+<a id="a2cb6351af8d662b28138959b7c2cccfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cb6351af8d662b28138959b7c2cccfa">&#9670;&nbsp;</a></span>take_t() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1take__t.html">daw::take_t</a>&lt; T &gt;::<a class="el" href="structdaw_1_1take__t.html">take_t</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacedaw.html#abef802ed6bd3568b607c6c3f6b056d2e">not_me</a>&lt; <a class="el" href="structdaw_1_1take__t.html">take_t</a>&lt; T &gt; &gt; auto &amp;&amp;&#160;</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">auto &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00057">57</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -370,7 +407,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00095">95</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00093">93</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -399,7 +436,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00087">87</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00085">85</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -428,7 +465,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00099">99</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00097">97</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -457,37 +494,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00091">91</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
-
-</div>
-</div>
-<a id="af38678c161421370583c866f5963d7e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af38678c161421370583c866f5963d7e6">&#9670;&nbsp;</a></span>noexcept()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Args&amp;&amp; args <a class="el" href="structdaw_1_1take__t.html">daw::take_t</a>&lt; T &gt;::noexcept </td>
-          <td>(</td>
-          <td class="paramtype">std::is_nothrow_constructible_v&lt; T, Arg, Args... &gt;&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00059">59</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00089">89</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -544,7 +551,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00071">71</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00069">69</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -573,7 +580,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00063">63</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00061">61</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -602,7 +609,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00075">75</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00073">73</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -631,7 +638,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00067">67</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00065">65</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -660,7 +667,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00083">83</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00081">81</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -689,7 +696,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00079">79</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00077">77</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -751,28 +758,6 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a0d73a6735efdda4d18dd9fe70feec6ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d73a6735efdda4d18dd9fe70feec6ea">&#9670;&nbsp;</a></span>requires()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<div class="memtemplate">
-template&lt;typename Arg , typename... Args&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1take__t.html">daw::take_t</a>&lt; T &gt;::requires </td>
-          <td>(</td>
-          <td class="paramtype">not <a class="el" href="namespacedaw.html#aa204958271f536b788a1b0c233df6d5e">same_as</a>&lt; std::remove_cvref_t&lt; Arg &gt;, <a class="el" href="structdaw_1_1take__t.html">take_t</a>&lt; T &gt; &gt;&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const &amp;&amp;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a959a12dd7422105e359b72b3d74f0f39"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a959a12dd7422105e359b72b3d74f0f39">&#9670;&nbsp;</a></span>reset()</h2>
 
@@ -798,7 +783,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00103">103</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00101">101</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>

@@ -420,8 +420,8 @@ $(function() {
 <div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    }</div>
 <div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160; </div>
 <div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Integer&gt;</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>]] constexpr Integer pow10_impl2( intmax_t exp ) noexcept {</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;      Integer result = 1;</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>]] constexpr <a class="code" href="namespacedaw.html#aa15143615eafa17e2f67743ec70cfca3">Integer</a> pow10_impl2( intmax_t exp ) noexcept {</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;      <a class="code" href="namespacedaw.html#aa15143615eafa17e2f67743ec70cfca3">Integer</a> result = 1;</div>
 <div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;      <span class="keywordflow">while</span>( exp-- &gt; 0 ) {</div>
 <div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;        result *= 10;</div>
 <div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;      }</div>
@@ -515,10 +515,10 @@ $(function() {
 <div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160; </div>
 <div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;  <span class="comment">// Adapted from Hackers delight 11-3.  Do a binary decomposition of n</span></div>
 <div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Arithmetic, <span class="keyword">typename</span> Un<span class="keywordtype">signed</span>&gt;</div>
-<div class="line"><a name="l00446"></a><span class="lineno"><a class="line" href="namespacedaw_1_1cxmath.html#a097b6ddfc229d8b5c3190e9d555ecc2a">  446</a></span>&#160;  constexpr Arithmetic <a class="code" href="namespacedaw_1_1cxmath.html#a097b6ddfc229d8b5c3190e9d555ecc2a">pow_n</a>( Arithmetic x, Unsigned n ) {</div>
+<div class="line"><a name="l00446"></a><span class="lineno"><a class="line" href="namespacedaw_1_1cxmath.html#a097b6ddfc229d8b5c3190e9d555ecc2a">  446</a></span>&#160;  constexpr <a class="code" href="namespacedaw.html#a6cd4fc03433764a5145f425cd56eb278">Arithmetic</a> <a class="code" href="namespacedaw_1_1cxmath.html#a097b6ddfc229d8b5c3190e9d555ecc2a">pow_n</a>( <a class="code" href="namespacedaw.html#a6cd4fc03433764a5145f425cd56eb278">Arithmetic</a> x, Unsigned n ) {</div>
 <div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;    static_assert( daw::is_arithmetic_v&lt;Arithmetic&gt; );</div>
 <div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;    static_assert( daw::is_unsigned_v&lt;Unsigned&gt; );</div>
-<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;    <span class="keyword">auto</span> result = Arithmetic{ 1 };</div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;    <span class="keyword">auto</span> result = <a class="code" href="namespacedaw.html#a6cd4fc03433764a5145f425cd56eb278">Arithmetic</a>{ 1 };</div>
 <div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;    <span class="keyword">auto</span> p = x;</div>
 <div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;    <span class="keywordflow">while</span>( <span class="keyword">true</span> ) {</div>
 <div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;      <span class="keywordflow">if</span>( n &amp; 1 ) {</div>
@@ -1344,6 +1344,7 @@ $(function() {
 <div class="ttc" id="anamespacedaw_html_abb3b5cf7b763ba3b534a11d3ed32d76a"><div class="ttname"><a href="namespacedaw.html#abb3b5cf7b763ba3b534a11d3ed32d76a">daw::min</a></div><div class="ttdeci">constexpr auto() min(T const &amp;val1, Ts const &amp;...vs) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math__impl_8h_source.html#l00076">daw_math_impl.h:76</a></div></div>
 <div class="ttc" id="adaw__assume_8h_html"><div class="ttname"><a href="daw__assume_8h.html">daw_assume.h</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1cxmath_html_a69da9cccfe3ea839527a7c34b80a9ae3"><div class="ttname"><a href="namespacedaw_1_1cxmath.html#a69da9cccfe3ea839527a7c34b80a9ae3">daw::cxmath::dpow10_v</a></div><div class="ttdeci">constexpr double dpow10_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__cxmath_8h_source.html#l00439">daw_cxmath.h:439</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a6cd4fc03433764a5145f425cd56eb278"><div class="ttname"><a href="namespacedaw.html#a6cd4fc03433764a5145f425cd56eb278">daw::Arithmetic</a></div><div class="ttdeci">concept Arithmetic</div><div class="ttdef"><b>Definition:</b> <a href="daw__concepts_8h_source.html#l00403">daw_concepts.h:403</a></div></div>
 <div class="ttc" id="adaw__uint__buffer_8h_html"><div class="ttname"><a href="daw__uint__buffer_8h.html">daw_uint_buffer.h</a></div></div>
 <div class="ttc" id="adaw__likely_8h_html"><div class="ttname"><a href="daw__likely_8h.html">daw_likely.h</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1cxmath_html_a7e0b8ff4e02a9474063f21cc2980a8fa"><div class="ttname"><a href="namespacedaw_1_1cxmath.html#a7e0b8ff4e02a9474063f21cc2980a8fa">daw::cxmath::fp_classify</a></div><div class="ttdeci">constexpr fp_classes fp_classify(Real r)</div><div class="ttdef"><b>Definition:</b> <a href="daw__cxmath_8h_source.html#l00947">daw_cxmath.h:947</a></div></div>
@@ -1373,6 +1374,7 @@ $(function() {
 <div class="ttc" id="adaw__arith__traits_8h_html"><div class="ttname"><a href="daw__arith__traits_8h.html">daw_arith_traits.h</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a6df1567073d79619c8174c1b7fb2b752"><div class="ttname"><a href="namespacedaw.html#a6df1567073d79619c8174c1b7fb2b752">daw::UInt64</a></div><div class="ttdeci">UInt64</div><div class="ttdef"><b>Definition:</b> <a href="daw__uint__buffer_8h_source.html#l00023">daw_uint_buffer.h:23</a></div></div>
 <div class="ttc" id="adaw__is__constant__evaluated_8h_html"><div class="ttname"><a href="daw__is__constant__evaluated_8h.html">daw_is_constant_evaluated.h</a></div></div>
+<div class="ttc" id="anamespacedaw_html_aa15143615eafa17e2f67743ec70cfca3"><div class="ttname"><a href="namespacedaw.html#aa15143615eafa17e2f67743ec70cfca3">daw::Integer</a></div><div class="ttdeci">concept Integer</div><div class="ttdef"><b>Definition:</b> <a href="daw__concepts_8h_source.html#l00394">daw_concepts.h:394</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1cxmath_html_a1fbf2614ecb56c28c2e46b2b682dd778"><div class="ttname"><a href="namespacedaw_1_1cxmath.html#a1fbf2614ecb56c28c2e46b2b682dd778">daw::cxmath::fp_classes</a></div><div class="ttdeci">fp_classes</div><div class="ttdef"><b>Definition:</b> <a href="daw__cxmath_8h_source.html#l00038">daw_cxmath.h:38</a></div></div>
 <div class="ttc" id="adaw__attributes_8h_html_ad428cd4a346617e3cd9a9f23240c92b3"><div class="ttname"><a href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a></div><div class="ttdeci">#define DAW_ATTRIB_INLINE</div><div class="ttdef"><b>Definition:</b> <a href="daw__attributes_8h_source.html#l00068">daw_attributes.h:68</a></div></div>
 <div class="ttc" id="adaw__attributes_8h_html"><div class="ttname"><a href="daw__attributes_8h.html">daw_attributes.h</a></div></div>
