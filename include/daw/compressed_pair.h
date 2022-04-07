@@ -39,11 +39,9 @@ namespace daw {
 		explicit constexpr compressed_pair_elem( value_init_tag )
 		  : m_value( ) {}
 
-		template<typename U>
-		requires( not same_as<compressed_pair_elem,
-		                      std::decay_t<U>> ) //
-		  explicit constexpr compressed_pair_elem( U &&u )
-		  : m_value( DAW_FWD2( U, u ) ) {}
+		explicit constexpr compressed_pair_elem(
+		  not_me_d<compressed_pair_elem> auto &&u )
+		  : m_value( DAW_FWD( u ) ) {}
 
 		template<class... Args, size_t... Indexes>
 		explicit constexpr compressed_pair_elem( std::piecewise_construct_t,
@@ -73,10 +71,9 @@ namespace daw {
 		explicit constexpr compressed_pair_elem( value_init_tag )
 		  : value_type( ) {}
 
-		template<class U>
-		requires( not same_as<compressed_pair_elem, std::decay_t<U>> ) //
-		  explicit constexpr compressed_pair_elem( U &&u )
-		  : value_type( DAW_FWD2( U, u ) ) {}
+		explicit constexpr compressed_pair_elem(
+		  not_me_d<compressed_pair_elem> auto &&u )
+		  : value_type( DAW_FWD( u ) ) {}
 
 		template<class... Args, size_t... Indexes>
 		explicit constexpr compressed_pair_elem( std::piecewise_construct_t,
@@ -111,9 +108,9 @@ namespace daw {
 		using Base2 = compressed_pair_elem<T2, 1>;
 
 		template<bool D = true>
-		requires( std::is_default_constructible_v<T1>
-		            and std::is_default_constructible_v<T2> ) //
-		  explicit constexpr compressed_pair( )
+		  requires( std::is_default_constructible_v<T1> and
+		            std::is_default_constructible_v<T2> ) //
+		explicit constexpr compressed_pair( )
 		  : Base1( value_init_tag( ) )
 		  , Base2( value_init_tag( ) ) {}
 

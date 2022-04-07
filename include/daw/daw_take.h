@@ -54,10 +54,8 @@ namespace daw {
 			return *this;
 		}
 
-		template<typename Arg, typename... Args>
-		  requires( not same_as<std::remove_cvref_t<Arg>, take_t> )
-		constexpr take_t( Arg &&arg, Args &&...args ) noexcept(
-		  std::is_nothrow_constructible_v<T, Arg, Args...> )
+		constexpr take_t( not_me<take_t> auto &&arg, auto &&...args ) noexcept(
+		  std::is_nothrow_constructible_v<T, decltype( arg ), decltype( args )...> )
 		  : value{ DAW_FWD( arg ), DAW_FWD( args )... } {}
 
 		constexpr reference operator*( ) &noexcept {
