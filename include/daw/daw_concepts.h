@@ -40,6 +40,18 @@ namespace daw {
 	template<typename Lhs, typename Rhs>
 	concept same_as = std::is_same_v<Lhs, Rhs>;
 
+	template<typename Lhs, typename Rhs>
+	concept same_as_rrcv = same_as < std::remove_cvref_t<Lhs>,
+	std::remove_cvref_t < Rhs >> ;
+
+	template<typename Arg, typename Class>
+	concept not_me = not
+	same_as<Class, std::remove_cvref_t<Arg>>;
+
+	template<typename Arg, typename Class>
+	concept not_me_d = not
+	same_as<Class, std::decay_t<Arg>>;
+
 	template<typename T>
 	using root_type_t = std::remove_cv_t<std::remove_pointer_t<std::decay_t<T>>>;
 
@@ -47,8 +59,12 @@ namespace daw {
 	 * @brief The constructible_from concept constrains the initialization of a
 	 * variable of a given type with a particular set of argument types.
 	 */
-	template<typename T, typename... Args>
-	concept constructible_from = std::is_constructible_v<T, Args...>;
+	template<typename To, typename... Args>
+	concept constructible_from =
+	  std::destructible<To> and requires( Args &&...args ) {
+		                            To{ DAW_FWD( args )... };
+	                            }; // use std::is_constructible_v<T, Args...>;
+	                               // once clang supports it for aggregates
 
 	template<typename T>
 	concept Pointers = std::is_pointer_v<T>;
@@ -168,8 +184,8 @@ namespace daw {
 	} // namespace swappable_test
 #endif
 
-	/// @brief Specifies that expressions of the type and value category encoded
-	/// by T and U are swappable with each other.
+	/// @brief Specifies that expressions of the type and value category
+	/// encoded by T and U are swappable with each other.
 	template<typename T>
 	concept swappable =
 #if defined( __cpp_lib_concepts )
@@ -178,9 +194,9 @@ namespace daw {
 	  swappable_test::swappable_test<T>;
 #endif
 
-	/// @brief Specifies that T is an object type that can be moved (that is, it
-	/// can be move constructed, move assigned, and lvalues of type T can be
-	/// swapped).
+	/// @brief Specifies that T is an object type that can be moved (that is,
+	/// it can be move constructed, move assigned, and lvalues of type T can
+	/// be swapped).
 	template<typename T>
 	concept movable =
 #if defined( __cpp_lib_concepts )
@@ -317,8 +333,8 @@ namespace daw {
 		concept boolean_testable_impl = convertible_to<B, bool>;
 	}
 
-	/// @brief Specifies the requirements for expressions that are convertible to
-	/// bool and for which the logical operators have the usual behavior
+	/// @brief Specifies the requirements for expressions that are convertible
+	/// to bool and for which the logical operators have the usual behavior
 	/// (including short-circuiting), even for two different boolean-testable
 	/// types
 	template<typename B>
@@ -353,9 +369,9 @@ namespace daw {
 #endif
 
 	/// @brief Specifies that the comparison operators == and != on (possibly
-	/// mixed) T and U operands yield results consistent with equality. Comparing
-	/// mixed operands yields results equivalent to comparing the operands
-	/// converted to their common type.
+	/// mixed) T and U operands yield results consistent with equality.
+	/// Comparing mixed operands yields results equivalent to comparing the
+	/// operands converted to their common type.
 	template<class T, class U>
 	concept equality_comparable_with =
 #if defined( __cpp_lib_concepts )
@@ -374,4 +390,20 @@ namespace daw {
 	template<typename T>
 	concept default_constructible = requires { T{ }; };
 
+	template<typename T, typename SpecificInt = void>
+	concept Integer = (same_as<SpecificInt, void> and std::is_integral_v<T>) or
+	                  same_as<T, SpecificInt>;
+
+	template<typename T, typename SpecificInt = void>
+	concept FloatingPoint = (same_as<SpecificInt, void> and
+	                         std::is_floating_point_v<T>) or
+	                        same_as<T, SpecificInt>;
+
+	template<typename T, typename SpecificInt = void>
+	concept Arithmetic = (same_as<SpecificInt, void> and
+	                      std::is_arithmetic_v<T>) or
+	                     same_as<T, SpecificInt>;
+
+	template<typename From, typename To>
+	concept constructible_to = constructible_from<To, From>;
 } // namespace daw
