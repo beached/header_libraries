@@ -753,6 +753,14 @@ namespace daw {
 				return result;
 			}
 
+			/// @brief Increment the data( ) pointer by 1. Does not check bounds
+			/// @return front( ) prior to increment
+			[[nodiscard]] constexpr CharT pop_front( dont_clip_to_bounds_t ) {
+				auto result = front( );
+				remove_prefix( 1U, dont_clip_to_bounds );
+				return result;
+			}
+
 			/// @brief Increment data( ) by count elements and return a new
 			/// string_view that would be formed formed from the previous and
 			/// current data( ) pointer values.
@@ -761,6 +769,18 @@ namespace daw {
 			[[nodiscard]] constexpr basic_string_view pop_front( size_type count ) {
 				basic_string_view result = substr( 0, count );
 				remove_prefix( count );
+				return result;
+			}
+
+			/// @brief Increment data( ) by count elements and return a new
+			/// string_view that would be formed formed from the previous and
+			/// current data( ) pointer values.
+			/// @param count number of characters to increment data( ) by
+			/// @return a new string_view of size count.
+			[[nodiscard]] constexpr basic_string_view
+			pop_front( size_type count, dont_clip_to_bounds_t ) {
+				basic_string_view result = substr( 0, count, dont_clip_to_bounds );
+				remove_prefix( count, dont_clip_to_bounds );
 				return result;
 			}
 
@@ -853,9 +873,19 @@ namespace daw {
 			//*****************************************************************************
 			//*****************************************************************************
 
+			/// @brief Return the last character and decrement the size by 1 unless
+			/// empty
 			[[nodiscard]] constexpr CharT pop_back( ) {
 				auto result = back( );
 				remove_suffix( );
+				return result;
+			}
+
+			/// @brief Return the last character and decrement the size by 1
+			/// @pre not empty( )
+			[[nodiscard]] constexpr CharT pop_back( dont_clip_to_bounds_t ) {
+				auto result = back( );
+				remove_suffix( dont_clip_to_bounds );
 				return result;
 			}
 
@@ -1344,12 +1374,45 @@ namespace daw {
 				return { m_first + pos, m_first + pos + rcount };
 			}
 
-			[[nodiscard]] constexpr basic_string_view substr( ) const {
-				return substr( 0, npos );
+			/// @brief Create a new sub-range basic_string_view [data( ) + pos, data(
+			/// ) + min( size( ), pos + count) )
+			/// @param pos Starting position
+			/// @param count Maximum number of characters to copy
+			/// @returns a new basic_string_view of the sub-range
+			/// @pre pos + count <= size( )
+			[[nodiscard]] constexpr basic_string_view
+			substr( size_type pos, size_type count, dont_clip_to_bounds_t ) const {
+				DAW_DBG_PRECONDITION_CHECK(
+				  std::out_of_range, pos + count <= size( ),
+				  "Attempt to access basic_string_view past end" );
+				return { m_first + pos, m_first + pos + count };
 			}
 
+			/// @brief Return a copy of the string_view
+			[[nodiscard]] constexpr basic_string_view substr( ) const {
+				return substr( 0, size( ), dont_clip_to_bounds );
+			}
+
+			/// @brief Create a new sub-range basic_string_view [data( ) + pos, data()
+			/// + (size( ) - pos)
+			/// @param pos Starting position
+			/// @returns a new basic_string_view of the sub-range
+			/// @pre pos <= size( )
 			[[nodiscard]] constexpr basic_string_view substr( size_type pos ) const {
 				return substr( pos, npos );
+			}
+
+			/// @brief Create a new sub-range basic_string_view [data( ) + pos, data()
+			/// + (size( ) - pos). Does not check bounds
+			/// @param pos Starting position
+			/// @returns a new basic_string_view of the sub-range
+			/// @pre pos <= size( )
+			[[nodiscard]] constexpr basic_string_view
+			substr( size_type pos, dont_clip_to_bounds_t ) const {
+				DAW_DBG_PRECONDITION_CHECK(
+				  std::out_of_range, pos <= size( ),
+				  "Attempt to access basic_string_view past end" );
+				return substr( pos, size( ) - pos, dont_clip_to_bounds );
 			}
 
 		public:
@@ -1894,7 +1957,7 @@ namespace daw {
 
 			template<size_type N>
 			[[nodiscard]] constexpr size_type
-			find_first_not_of( CharT const( &&s )[N], size_type pos ) const {
+			find_first_not_of( CharT const ( &&s )[N], size_type pos ) const {
 				return find_first_not_of(
 				  basic_string_view<CharT, BoundsType>( s, N - 1 ), pos );
 			}
@@ -1907,7 +1970,7 @@ namespace daw {
 
 			template<size_type N>
 			[[nodiscard]] constexpr size_type
-			find_first_not_of( CharT const( &&s )[N] ) const {
+			find_first_not_of( CharT const ( &&s )[N] ) const {
 				return find_first_not_of(
 				  basic_string_view<CharT, BoundsType>( s, N - 1 ), 0 );
 			}
@@ -2100,7 +2163,7 @@ namespace daw {
 			template<typename StringView,
 			         DAW_REQ_CONTIG_CHAR_RANGE( StringView, CharT )>
 			[[nodiscard]] friend constexpr bool
-			operator<( StringView &&lhs, basic_string_view rhs ) noexcept {
+			operator<( StringView && lhs, basic_string_view rhs ) noexcept {
 				return basic_string_view( std::data( lhs ), std::size( lhs ) )
 				         .compare( rhs ) < 0;
 			}
