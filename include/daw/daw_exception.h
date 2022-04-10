@@ -500,7 +500,7 @@ namespace daw::exception {
 	}
 } // namespace daw::exception
 
-#if defined( NDEBUG )
+#if defined( NDEBUG ) and not defined( DEBUG )
 #define DAW_DBG_PRECONDITION_CHECK( ... )                                      \
 	do {                                                                         \
 	} while( false )

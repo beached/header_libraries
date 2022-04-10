@@ -76,7 +76,7 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
             endif ()
         endif ()
         set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -ggdb -DDEBUG")
-        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG")
+        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -g -DDEBUG")
 
         if (DAW_HEADERLIBS_USE_SANITIZERS)
             message(STATUS "Using sanitizers")
@@ -124,7 +124,7 @@ elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
         endif ()
     endif ()
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -DDEBUG")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -g -DDEBUG")
 
     if (DAW_HEADERLIBS_USE_SANITIZERS)
         message(STATUS "Using sanitizers")
