@@ -8,6 +8,6 @@ var searchData=
   ['graph_5fnode_5fproxies_2188',['graph_node_proxies',['../structdaw_1_1graph__node__proxies.html',1,'daw']]],
   ['graph_5fnode_5fproxies_3c_20const_5fgraph_5fnode_5ft_3c_20t_20_3e_20_3e_2189',['graph_node_proxies&lt; const_graph_node_t&lt; T &gt; &gt;',['../structdaw_1_1graph__node__proxies_3_01const__graph__node__t_3_01_t_01_4_01_4.html',1,'daw']]],
   ['graph_5fnode_5fproxies_3c_20graph_5fnode_5ft_3c_20t_20_3e_20_3e_2190',['graph_node_proxies&lt; graph_node_t&lt; T &gt; &gt;',['../structdaw_1_1graph__node__proxies_3_01graph__node__t_3_01_t_01_4_01_4.html',1,'daw']]],
-  ['graph_5fnode_5ft_2191',['graph_node_t',['../classdaw_1_1graph__node__t.html',1,'daw']]],
+  ['graph_5fnode_5ft_2191',['graph_node_t',['../structdaw_1_1graph__node__t.html',1,'daw']]],
   ['graph_5ft_2192',['graph_t',['../structdaw_1_1graph__t.html',1,'daw']]]
 ];

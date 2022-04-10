@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['edges_5ft_3914',['edges_t',['../classdaw_1_1const__graph__node__t.html#a5d46b69cc410649f82e6049a14b2a3a2',1,'daw::const_graph_node_t::edges_t()'],['../classdaw_1_1bounded__graph__node__t.html#a82fbc8b473863a3e2b8278229e6b493a',1,'daw::bounded_graph_node_t::edges_t()'],['../classdaw_1_1const__graph__node__t.html#a071c99dfeabf5385e2d74463840698e7',1,'daw::const_graph_node_t::edges_t()'],['../classdaw_1_1graph__node__t.html#af1598f11a48ce60066959d81e193290e',1,'daw::graph_node_t::edges_t()']]],
+  ['edges_5ft_3914',['edges_t',['../classdaw_1_1const__graph__node__t.html#a5d46b69cc410649f82e6049a14b2a3a2',1,'daw::const_graph_node_t::edges_t()'],['../classdaw_1_1bounded__graph__node__t.html#a82fbc8b473863a3e2b8278229e6b493a',1,'daw::bounded_graph_node_t::edges_t()'],['../classdaw_1_1const__graph__node__t.html#a071c99dfeabf5385e2d74463840698e7',1,'daw::const_graph_node_t::edges_t()'],['../structdaw_1_1graph__node__t.html#af1598f11a48ce60066959d81e193290e',1,'daw::graph_node_t::edges_t()']]],
   ['enable_5fcopy_5fassignment_3915',['enable_copy_assignment',['../namespacedaw.html#a5112992f222a66d2d37f7dc33576e913',1,'daw']]],
   ['enable_5fcopy_5fconstructor_3916',['enable_copy_constructor',['../namespacedaw.html#a706583b230f3048e069247e646285179',1,'daw']]],
   ['enable_5fdefault_5fconstructor_3917',['enable_default_constructor',['../namespacedaw.html#a98f5d559ba48d4cd43975557e374749a',1,'daw']]],
