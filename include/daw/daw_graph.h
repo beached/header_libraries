@@ -42,7 +42,7 @@ namespace daw {
 		friend struct graph_t;
 
 	public:
-		node_id_t( ) noexcept = default;
+		node_id_t( ) = default;
 		explicit constexpr node_id_t( size_t id ) noexcept
 		  : m_value( id ) {}
 
@@ -80,17 +80,15 @@ namespace std {
 namespace daw {
 	namespace graph_impl {
 		template<typename T>
-		class node_impl_t {
-			node_id_t m_id;
-			T m_value;
-
-		public:
+		struct node_impl_t {
 			using value_type = T;
 			using reference = value_type &;
 			using const_reference = value_type const &;
 			using edges_t = std::unordered_set<node_id_t>;
 
 		private:
+			node_id_t m_id;
+			T m_value;
 			edges_t m_incoming_edges{ };
 			edges_t m_outgoing_edges{ };
 
@@ -144,7 +142,7 @@ namespace daw {
 		std::optional<size_t> m_id = { };
 
 	public:
-		constexpr invalid_node_exception( ) noexcept = default;
+		invalid_node_exception( ) = default;
 		explicit constexpr invalid_node_exception( size_t Id ) noexcept
 		  : m_id( Id ) {}
 
@@ -163,17 +161,18 @@ namespace daw {
 	inline constexpr bool is_graph_node_v = graph_node_proxies<T>::value;
 
 	template<typename T>
-	class const_graph_node_t {
-		graph_t<T> const *m_graph = nullptr;
-		node_id_t m_node_id{ };
-
-	public:
+	struct const_graph_node_t {
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
 		using edges_t = typename graph_impl::node_impl_t<T>::edges_t;
 
-		constexpr const_graph_node_t( ) noexcept = default;
+	private:
+		graph_t<T> const *m_graph = nullptr;
+		node_id_t m_node_id{ };
+
+	public:
+		const_graph_node_t( ) = default;
 
 		const_graph_node_t( graph_t<T> const *graph_ptr, node_id_t Id ) noexcept
 		  : m_graph( graph_ptr )
@@ -242,17 +241,18 @@ namespace daw {
 	template<typename T>
 	struct graph_node_proxies<const_graph_node_t<T>> : std::true_type {};
 	template<typename T>
-	class graph_node_t {
-		graph_t<T> *m_graph = nullptr;
-		node_id_t m_node_id{ };
-
-	public:
+	struct graph_node_t {
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
 		using edges_t = typename graph_impl::node_impl_t<T>::edges_t;
 
-		constexpr graph_node_t( ) noexcept = default;
+	private:
+		graph_t<T> *m_graph = nullptr;
+		node_id_t m_node_id{ };
+	public:
+
+		graph_node_t( ) = default;
 
 		graph_node_t( graph_t<T> *graph_ptr, node_id_t Id ) noexcept
 		  : m_graph( graph_ptr )
@@ -354,7 +354,7 @@ namespace daw {
 		std::unordered_map<size_t, raw_node_t> m_nodes{ };
 
 	public:
-		graph_t( ) noexcept = default;
+		graph_t( ) = default;
 
 		template<typename... Args>
 		node_id_t add_node( Args &&...args ) {
