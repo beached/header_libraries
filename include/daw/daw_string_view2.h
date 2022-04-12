@@ -53,9 +53,9 @@
 
 /// @brief Require a character pointer
 /// @param Pointer a const_pointer
-#define DAW_REQ_CHAR_PTR( Pointer )                                            \
-	std::enable_if_t<sv2_details::is_char_pointer_v<                             \
-	                   std::remove_reference_t<Pointer>, const_pointer>,         \
+#define DAW_REQ_CHAR_PTR( Pointer, CharT )                                     \
+	std::enable_if_t<(std::is_same_v<CharT *, Pointer> or                        \
+	                  std::is_same_v<CharT const *, Pointer>),                   \
 	                 std::nullptr_t> = nullptr
 
 /// @brief Require Type be constructable from a CharT const * and a size_type
@@ -423,7 +423,7 @@ namespace daw {
 			/// has a CharT{} terminated sentinel
 			/// @post data( ) == s
 			/// @post size( ) == strlen( s ) or CharT{} if s == nullptr
-			template<typename CharPtr, DAW_REQ_CHAR_PTR( CharPtr )>
+			template<typename CharPtr, DAW_REQ_CHAR_PTR( CharPtr, CharT )>
 			constexpr basic_string_view( CharPtr s ) noexcept
 			  : m_first( s )
 			  , m_last(
@@ -506,9 +506,14 @@ namespace daw {
 			/// @post data( ) == std::data( string_literal )
 			/// @post size( ) == std::size( string_literal ) - 1
 			template<std::size_t N>
-			constexpr basic_string_view( CharT const ( &string_literal )[N] ) noexcept
+			DAW_CONSTEVAL basic_string_view( CharT const ( &string_literal )[N] ) noexcept
 			  : m_first( string_literal )
-			  , m_last( make_last<BoundsType>( string_literal, N - 1 ) ) {}
+			  , m_last( make_last<BoundsType>( string_literal, N - 1 ) ) {
+				static_assert( N > 0 );
+				if( string_literal[N-1] != '\0' ) {
+					m_last = make_last<BoundsType>( string_literal, N );
+				}
+			}
 
 			/// @brief Construct a string_view from a range formed by two
 			/// character pointers
