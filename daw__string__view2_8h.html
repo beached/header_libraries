@@ -136,9 +136,9 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ab36657bdcff49b4e1990d6b139da51a9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__string__view2_8h.html#ab36657bdcff49b4e1990d6b139da51a9">DAW_REQ_CHAR_PTR</a>(Pointer)</td></tr>
-<tr class="memdesc:ab36657bdcff49b4e1990d6b139da51a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Require a character pointer.  <a href="daw__string__view2_8h.html#ab36657bdcff49b4e1990d6b139da51a9">More...</a><br /></td></tr>
-<tr class="separator:ab36657bdcff49b4e1990d6b139da51a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75d7ddf716370861bb98bd1b2a545265"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__string__view2_8h.html#a75d7ddf716370861bb98bd1b2a545265">DAW_REQ_CHAR_PTR</a>(Pointer,  CharT)</td></tr>
+<tr class="memdesc:a75d7ddf716370861bb98bd1b2a545265"><td class="mdescLeft">&#160;</td><td class="mdescRight">Require a character pointer.  <a href="daw__string__view2_8h.html#a75d7ddf716370861bb98bd1b2a545265">More...</a><br /></td></tr>
+<tr class="separator:a75d7ddf716370861bb98bd1b2a545265"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7d645e61b81d2528c3988d0feb128ea"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__string__view2_8h.html#ac7d645e61b81d2528c3988d0feb128ea">DAW_REQ_CONTIG_CHAR_RANGE</a>(Range,  CharT)</td></tr>
 <tr class="memdesc:ac7d645e61b81d2528c3988d0feb128ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Require a contiguous character range.  <a href="daw__string__view2_8h.html#ac7d645e61b81d2528c3988d0feb128ea">More...</a><br /></td></tr>
 <tr class="separator:ac7d645e61b81d2528c3988d0feb128ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -189,8 +189,8 @@ Variables</h2></td></tr>
 <tr class="separator:a0407e01d709d047a59a750572016d104"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ab36657bdcff49b4e1990d6b139da51a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab36657bdcff49b4e1990d6b139da51a9">&#9670;&nbsp;</a></span>DAW_REQ_CHAR_PTR</h2>
+<a id="a75d7ddf716370861bb98bd1b2a545265"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75d7ddf716370861bb98bd1b2a545265">&#9670;&nbsp;</a></span>DAW_REQ_CHAR_PTR</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -199,14 +199,24 @@ Variables</h2></td></tr>
           <td class="memname">#define DAW_REQ_CHAR_PTR</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">Pointer</td><td>)</td>
+          <td class="paramname">Pointer, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">CharT&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  <a class="code" href="namespacedaw.html#a63d1de3cee69d3da1eeaae396fe4b8f9">std::enable_if_t</a>&lt;sv2_details::is_char_pointer_v&lt;                             \</div>
-<div class="line">                     std::remove_reference_t&lt;Pointer&gt;, <a class="code" href="namespacedaw.html#affde946d2adc3d80db99c1d9741cc16e">const_pointer</a>&gt;,         \</div>
-<div class="line">                   std::nullptr_t&gt; = <span class="keyword">nullptr</span></div>
+<b>Value:</b><div class="fragment"><div class="line">  <a class="code" href="namespacedaw.html#a63d1de3cee69d3da1eeaae396fe4b8f9">std::enable_if_t</a>&lt;(std::is_same_v&lt;CharT *, Pointer&gt; or                        \</div>
+<div class="line">                    std::is_same_v&lt;CharT const *, Pointer&gt;),                   \</div>
+<div class="line">                   std::nullptr_t&gt; = nullptr</div>
 </div><!-- fragment -->
 <p>Require a character pointer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -335,7 +345,6 @@ Variables</h2></td></tr>
 </div>
 </div>
 </div><!-- contents -->
-<div class="ttc" id="anamespacedaw_html_affde946d2adc3d80db99c1d9741cc16e"><div class="ttname"><a href="namespacedaw.html#affde946d2adc3d80db99c1d9741cc16e">daw::const_pointer</a></div><div class="ttdeci">value_type const * const_pointer</div><div class="ttdef"><b>Definition:</b> <a href="daw__contiguous__view_8h_source.html#l00032">daw_contiguous_view.h:32</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a63d1de3cee69d3da1eeaae396fe4b8f9"><div class="ttname"><a href="namespacedaw.html#a63d1de3cee69d3da1eeaae396fe4b8f9">daw::enable_if_t</a></div><div class="ttdeci">typename enable_if&lt; B, T &gt;::type enable_if_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__enable__if_8h_source.html#l00037">daw_enable_if.h:37</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

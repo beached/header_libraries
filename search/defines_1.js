@@ -27,7 +27,7 @@ var searchData=
   ['daw_5fmake_5fnamed_5foption_4170',['DAW_MAKE_NAMED_OPTION',['../daw__named__params_8h.html#ab0b2678dc1f1ea1abcce63ad4c4276b6',1,'daw_named_params.h']]],
   ['daw_5fmake_5fnamed_5funique_5foption_4171',['DAW_MAKE_NAMED_UNIQUE_OPTION',['../daw__named__params_8h.html#a913cdc2d9883c42d432c2d107f3ef793',1,'daw_named_params.h']]],
   ['daw_5fmove_4172',['DAW_MOVE',['../daw__move_8h.html#a5707fa464976f991a156ac6a583a135c',1,'daw_move.h']]],
-  ['daw_5freq_5fchar_5fptr_4173',['DAW_REQ_CHAR_PTR',['../daw__string__view2_8h.html#ab36657bdcff49b4e1990d6b139da51a9',1,'daw_string_view2.h']]],
+  ['daw_5freq_5fchar_5fptr_4173',['DAW_REQ_CHAR_PTR',['../daw__string__view2_8h.html#a75d7ddf716370861bb98bd1b2a545265',1,'daw_string_view2.h']]],
   ['daw_5freq_5fcontig_5fchar_5frange_4174',['DAW_REQ_CONTIG_CHAR_RANGE',['../daw__string__view2_8h.html#ac7d645e61b81d2528c3988d0feb128ea',1,'daw_string_view2.h']]],
   ['daw_5freq_5fcontig_5fchar_5frange_5fctor_4175',['DAW_REQ_CONTIG_CHAR_RANGE_CTOR',['../daw__string__view2_8h.html#a32752d7143d4d3a6a8fd6bf4427e64f3',1,'daw_string_view2.h']]],
   ['daw_5freq_5funary_5fpred_4176',['DAW_REQ_UNARY_PRED',['../daw__string__view2_8h.html#a346e45313282713a9f93b4a27f3e93b8',1,'daw_string_view2.h']]],
