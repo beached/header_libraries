@@ -11,7 +11,7 @@
 #include "daw_bounded_array.h"
 #include "daw_function.h"
 #include "daw_parser_helper.h"
-#include "daw_string_view1.h"
+#include "daw_string_view.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
 
@@ -30,7 +30,7 @@ namespace daw {
 		struct numeric_overflow_exception : invalid_input_exception {};
 
 		namespace converters {
-			constexpr char parse_to_value( daw::sv1::string_view str, tag_t<char> ) {
+			constexpr char parse_to_value( daw::string_view str, tag_t<char> ) {
 				daw::exception::precondition_check<empty_input_exception>(
 				  !str.empty( ) );
 				return str.front( );
@@ -38,7 +38,7 @@ namespace daw {
 
 			namespace helpers {
 				template<typename Result>
-				constexpr Result parse_int( daw::sv1::string_view &str ) {
+				constexpr Result parse_int( daw::string_view &str ) {
 					intmax_t count = std::numeric_limits<Result>::digits;
 					Result result = 0;
 					bool is_neg = false;
@@ -66,7 +66,7 @@ namespace daw {
 				}
 
 				template<typename Result>
-				constexpr Result parse_unsigned_int( daw::sv1::string_view &str ) {
+				constexpr Result parse_unsigned_int( daw::string_view &str ) {
 					daw::exception::precondition_check<invalid_input_exception>(
 					  '-' != str.front( ) );
 
@@ -80,7 +80,7 @@ namespace daw {
 			           all_true_v<not std::is_same_v<T, char>, std::is_integral_v<T>,
 			                      std::is_signed_v<T>, not std::is_enum_v<T>>,
 			           std::nullptr_t> = nullptr>
-			constexpr T parse_to_value( daw::sv1::string_view str, tag_t<T> ) {
+			constexpr T parse_to_value( daw::string_view str, tag_t<T> ) {
 				daw::exception::precondition_check<empty_input_exception>(
 				  !str.empty( ) );
 				return helpers::parse_int<T>( str );
@@ -89,7 +89,7 @@ namespace daw {
 			template<typename T, std::enable_if_t<all_true_v<std::is_integral_v<T>,
 			                                                 std::is_unsigned_v<T>>,
 			                                      std::nullptr_t> = nullptr>
-			constexpr T parse_to_value( daw::sv1::string_view str, tag_t<T> ) {
+			constexpr T parse_to_value( daw::string_view str, tag_t<T> ) {
 				daw::exception::precondition_check<empty_input_exception>(
 				  not str.empty( ) );
 
@@ -105,19 +105,18 @@ namespace daw {
 			struct unquoted_string {};
 			struct unquoted_string_view {};
 
-			constexpr daw::sv1::string_view
-			parse_to_value( daw::sv1::string_view str, tag_t<unquoted_string_view> ) {
+			constexpr daw::string_view parse_to_value( daw::string_view str,
+			                                           tag_t<unquoted_string_view> ) {
 				daw::exception::precondition_check<empty_input_exception>(
 				  !str.empty( ) );
 
 				return str;
 			}
 
-			constexpr daw::sv1::string_view
-			parse_to_value( daw::sv1::string_view str,
-			                tag_t<daw::sv1::string_view> ) {
+			constexpr daw::string_view parse_to_value( daw::string_view str,
+			                                           tag_t<daw::string_view> ) {
 				daw::exception::precondition_check<empty_input_exception>(
-				  !str.empty( ) );
+				  not str.empty( ) );
 
 				struct input_too_small_exception {};
 				struct missing_expected_quotes_exception {};
@@ -128,42 +127,45 @@ namespace daw {
 				  str.front( ) == '"' );
 
 				str.remove_prefix( );
-				auto const first = str.cbegin( );
+				auto const first = str.data( );
 				char last_char = str.pop_front( );
-				while( !str.empty( ) and !impl::is_quote( last_char, str.front( ) ) ) {
+				while( not str.empty( ) and
+				       not impl::is_quote( last_char, str.front( ) ) ) {
 					last_char = str.pop_front( );
 				}
 				daw::exception::precondition_check<missing_expected_quotes_exception>(
 				  str.data( ) != nullptr and str.front( ) == '"' );
 
-				return daw::sv1::make_string_view_it( first, str.cbegin( ) );
+				return daw::string_view( first, str.data( ) );
 			}
 
-			inline std::string parse_to_value( daw::sv1::string_view str,
+			inline std::string parse_to_value( daw::string_view str,
 			                                   tag_t<std::string> ) {
-				return parse_to_value( str, tag<daw::sv1::string_view> ).to_string( );
+				return static_cast<std::string>(
+				  parse_to_value( str, tag<daw::string_view> ) );
 			}
 
-			inline std::string parse_to_value( daw::sv1::string_view str,
+			inline std::string parse_to_value( daw::string_view str,
 			                                   tag_t<unquoted_string> ) {
-				return parse_to_value( str, tag<unquoted_string_view> ).to_string( );
+				return static_cast<std::string>(
+				  parse_to_value( str, tag<unquoted_string_view> ) );
 			}
 
-			inline float parse_to_value( daw::sv1::string_view str, tag_t<float> ) {
-				auto const s = str.to_string( );
+			inline float parse_to_value( daw::string_view str, tag_t<float> ) {
+				auto const s = static_cast<std::string>( str );
 				char **end = nullptr;
 				return strtof( s.c_str( ), end );
 			}
 
-			inline double parse_to_value( daw::sv1::string_view str, tag_t<double> ) {
-				auto const s = str.to_string( );
+			inline double parse_to_value( daw::string_view str, tag_t<double> ) {
+				auto const s = static_cast<std::string>( str );
 				char **end = nullptr;
 				return strtod( s.c_str( ), end );
 			}
 
-			inline long double parse_to_value( daw::sv1::string_view str,
+			inline long double parse_to_value( daw::string_view str,
 			                                   tag_t<long double> ) {
-				auto const s = str.to_string( );
+				auto const s = static_cast<std::string>( str );
 				char **end = nullptr;
 				return strtold( s.c_str( ), end );
 			}
@@ -172,7 +174,7 @@ namespace daw {
 		namespace impl {
 			template<size_t N, typename... Args>
 			constexpr decltype( auto ) set_value_from_string_view_item(
-			  daw::bounded_array_t<daw::sv1::string_view, sizeof...( Args )> const
+			  daw::bounded_array_t<daw::string_view, sizeof...( Args )> const
 			    &positions ) {
 				using daw::parser::converters::parse_to_value;
 				using result_t = daw::pack_type_t<N, Args...>;
@@ -181,7 +183,7 @@ namespace daw {
 
 			template<typename... Args, size_t... Is>
 			constexpr decltype( auto ) set_value_from_string_view(
-			  daw::bounded_array_t<daw::sv1::string_view, sizeof...( Args )> const
+			  daw::bounded_array_t<daw::string_view, sizeof...( Args )> const
 			    &positions,
 			  std::index_sequence<Is...> ) {
 				return std::make_tuple(
@@ -190,7 +192,7 @@ namespace daw {
 
 			template<typename... Args>
 			constexpr decltype( auto ) set_value_from_string_view(
-			  daw::bounded_array_t<daw::sv1::string_view, sizeof...( Args )> const
+			  daw::bounded_array_t<daw::string_view, sizeof...( Args )> const
 			    &positions ) {
 				return set_value_from_string_view<Args...>(
 				  positions, std::index_sequence_for<Args...>{ } );
@@ -199,10 +201,10 @@ namespace daw {
 
 		/// @brief Split on supplied delemiter string.
 		struct default_splitter {
-			daw::sv1::string_view m_delemiter;
+			daw::string_view m_delemiter;
 
-			constexpr auto operator( )( daw::sv1::string_view str ) const noexcept {
-				using sv_size_t = typename daw::sv1::string_view::size_type;
+			constexpr auto operator( )( daw::string_view str ) const noexcept {
+				using sv_size_t = typename daw::string_view::size_type;
 				struct result_t {
 					sv_size_t first;
 					sv_size_t last;
@@ -211,8 +213,7 @@ namespace daw {
 				if( pos < str.size( ) ) {
 					return result_t{ pos, pos + m_delemiter.size( ) };
 				}
-				return result_t{ daw::sv1::string_view::npos,
-				                 daw::sv1::string_view::npos };
+				return result_t{ daw::string_view::npos, daw::string_view::npos };
 			}
 		};
 
@@ -221,13 +222,13 @@ namespace daw {
 		/// row, skip them all
 		template<bool skip_multiple>
 		struct basic_whitespace_splitter {
-			constexpr auto operator( )( daw::sv1::string_view str ) const {
+			constexpr auto operator( )( daw::string_view str ) const {
 				struct result_t {
-					typename daw::sv1::string_view::size_type first;
-					typename daw::sv1::string_view::size_type last;
+					typename daw::string_view::size_type first;
+					typename daw::string_view::size_type last;
 				};
 
-				using sv_size_t = typename daw::sv1::string_view::size_type;
+				using sv_size_t = typename daw::string_view::size_type;
 				sv_size_t n = 0;
 				size_t const sz = str.size( );
 
@@ -235,8 +236,7 @@ namespace daw {
 					++n;
 				}
 				if( n == sz ) {
-					return result_t{ daw::sv1::string_view::npos,
-					                 daw::sv1::string_view::npos };
+					return result_t{ daw::string_view::npos, daw::string_view::npos };
 				}
 				if( !skip_multiple ) {
 					return result_t{ n, n + 1 };
@@ -259,7 +259,7 @@ namespace daw {
 			template<typename T>
 			constexpr decltype( auto ) parse_result_of_test( ) noexcept {
 				using namespace daw::parser::converters;
-				return parse_to_value( daw::sv1::string_view( ), tag<T> );
+				return parse_to_value( daw::string_view( ), tag<T> );
 			}
 
 			template<typename T>
@@ -267,9 +267,9 @@ namespace daw {
 			  std::decay_t<decltype( parse_result_of_test<T>( ) )>;
 
 			template<size_t N, typename Splitter>
-			constexpr auto get_positions( daw::sv1::string_view str,
+			constexpr auto get_positions( daw::string_view str,
 			                              Splitter &&splitter ) {
-				daw::bounded_array_t<daw::sv1::string_view, N> result{ };
+				daw::bounded_array_t<daw::string_view, N> result{ };
 				for( auto &item : result ) {
 					auto const pos = splitter( str );
 					item = str.substr( 0, pos.first );
@@ -286,11 +286,10 @@ namespace daw {
 		/// @param str String containing encoded values
 		/// @param splitter Function to split string into arguments
 		/// @return A tuple of values of the types specified in Args
-		template<
-		  typename... Args, typename Splitter,
-		  std::enable_if_t<traits::is_callable_v<Splitter, daw::sv1::string_view>,
-		                   std::nullptr_t> = nullptr>
-		constexpr decltype( auto ) parse_to( daw::sv1::string_view str,
+		template<typename... Args, typename Splitter,
+		         std::enable_if_t<traits::is_callable_v<Splitter, daw::string_view>,
+		                          std::nullptr_t> = nullptr>
+		constexpr decltype( auto ) parse_to( daw::string_view str,
 		                                     Splitter &&splitter ) {
 
 			return impl::set_value_from_string_view<Args...>(
@@ -304,8 +303,8 @@ namespace daw {
 		/// @param delemiter split what string arguments on
 		/// @return A tuple of values of the types specified in Args
 		template<typename... Args>
-		constexpr decltype( auto ) parse_to( daw::sv1::string_view str,
-		                                     daw::sv1::string_view delemiter ) {
+		constexpr decltype( auto ) parse_to( daw::string_view str,
+		                                     daw::string_view delemiter ) {
 			return parse_to<Args...>( str, default_splitter{ delemiter } );
 		}
 
@@ -315,8 +314,8 @@ namespace daw {
 		/// @param str String containing encoded values
 		/// @return A tuple of values of the types specified in Args
 		template<typename... Args>
-		constexpr decltype( auto ) parse_to( daw::sv1::string_view str ) {
-			return parse_to<Args...>( str, daw::sv1::string_view( " " ) );
+		constexpr decltype( auto ) parse_to( daw::string_view str ) {
+			return parse_to<Args...>( str, daw::string_view( " " ) );
 		}
 	} // namespace parser
 
@@ -328,11 +327,10 @@ namespace daw {
 	/// @param str String containing encoded values
 	/// @param splitter split what string arguments on
 	/// @return A constructed Destination
-	template<
-	  typename Destination, typename... ExpectedArgs, typename Splitter,
-	  std::enable_if_t<traits::is_callable_v<Splitter, daw::sv1::string_view>,
-	                   std::nullptr_t> = nullptr>
-	constexpr decltype( auto ) construct_from( daw::sv1::string_view str,
+	template<typename Destination, typename... ExpectedArgs, typename Splitter,
+	         std::enable_if_t<traits::is_callable_v<Splitter, daw::string_view>,
+	                          std::nullptr_t> = nullptr>
+	constexpr decltype( auto ) construct_from( daw::string_view str,
 	                                           Splitter &&splitter ) {
 
 		return daw::apply( daw::construct_a<Destination>,
@@ -347,8 +345,8 @@ namespace daw {
 	/// @param delemiter that str is split on
 	/// @return A constructed Destination
 	template<typename Destination, typename... ExpectedArgs>
-	constexpr decltype( auto ) construct_from( daw::sv1::string_view str,
-	                                           daw::sv1::string_view delemiter ) {
+	constexpr decltype( auto ) construct_from( daw::string_view str,
+	                                           daw::string_view delemiter ) {
 
 		return construct_from<Destination, ExpectedArgs...>(
 		  str, parser::default_splitter{ delemiter } );
@@ -361,7 +359,7 @@ namespace daw {
 	/// @param str String containing encoded values
 	/// @return A constructed Destination
 	template<typename Destination, typename ExpectedArg>
-	constexpr decltype( auto ) construct_from( daw::sv1::string_view str ) {
+	constexpr decltype( auto ) construct_from( daw::string_view str ) {
 		return construct_from<Destination, ExpectedArg>(
 		  str, parser::default_splitter{ " " } );
 	}
@@ -370,7 +368,7 @@ namespace daw {
 		template<typename... Args, typename Callable, typename Splitter>
 		constexpr decltype( auto )
 		apply_string_impl( std::tuple<Args...>, Callable &&callable,
-		                   daw::sv1::string_view str, Splitter &&splitter ) {
+		                   daw::string_view str, Splitter &&splitter ) {
 			return daw::apply(
 			  std::forward<Callable>( callable ),
 			  parser::parse_to<Args...>( str, std::forward<Splitter>( splitter ) ) );
@@ -387,12 +385,11 @@ namespace daw {
 	/// @param str String containing encoded values
 	/// @param splitter Function to split string into arguments
 	/// @return The result of callable
-	template<
-	  typename Callable, typename Splitter,
-	  std::enable_if_t<traits::is_callable_v<Splitter, daw::sv1::string_view>,
-	                   std::nullptr_t> = nullptr>
+	template<typename Callable, typename Splitter,
+	         std::enable_if_t<traits::is_callable_v<Splitter, daw::string_view>,
+	                          std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) apply_string2( Callable &&callable,
-	                                          daw::sv1::string_view str,
+	                                          daw::string_view str,
 	                                          Splitter &&splitter ) {
 		using ftraits =
 		  typename daw::function_info<std::decay_t<Callable>>::decayed_args_tuple;
@@ -411,8 +408,8 @@ namespace daw {
 	/// @return The result of callable
 	template<typename Callable>
 	constexpr decltype( auto ) apply_string2( Callable &&callable,
-	                                          daw::sv1::string_view str,
-	                                          daw::sv1::string_view delemiter ) {
+	                                          daw::string_view str,
+	                                          daw::string_view delemiter ) {
 		return apply_string2<Callable>( std::forward<Callable>( callable ), str,
 		                                parser::default_splitter{ delemiter } );
 	}
@@ -428,12 +425,11 @@ namespace daw {
 	/// @param str String data with string encoded arguments
 	/// @param splitter Function to split string into arguments
 	/// @return result of callable
-	template<
-	  typename... Args, typename Callable, typename Splitter,
-	  std::enable_if_t<traits::is_callable_v<Splitter, daw::sv1::string_view>,
-	                   std::nullptr_t> = nullptr>
+	template<typename... Args, typename Callable, typename Splitter,
+	         std::enable_if_t<traits::is_callable_v<Splitter, daw::string_view>,
+	                          std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) apply_string( Callable &&callable,
-	                                         daw::sv1::string_view str,
+	                                         daw::string_view str,
 	                                         Splitter &&splitter ) {
 		//		static_assert( traits::is_callable_v<Callable, Args...>,
 		//		               "Callable must accept Args..." );
@@ -457,8 +453,8 @@ namespace daw {
 	             */
 	template<typename... Args, typename Callable>
 	constexpr decltype( auto ) apply_string( Callable &&callable,
-	                                         daw::sv1::string_view str,
-	                                         daw::sv1::string_view delemiter ) {
+	                                         daw::string_view str,
+	                                         daw::string_view delemiter ) {
 
 		return apply_string<Args...>( std::forward<Callable>( callable ), str,
 		                              parser::default_splitter{ delemiter } );
@@ -480,7 +476,7 @@ namespace daw {
 	  */
 	template<typename Arg, typename Callable>
 	constexpr decltype( auto ) apply_string( Callable &&callable,
-	                                         daw::sv1::string_view str ) {
+	                                         daw::string_view str ) {
 
 		return apply_string<Arg>( std::forward<Callable>( callable ), str,
 		                          parser::default_splitter{ " " } );
@@ -499,16 +495,15 @@ namespace daw {
 	/// @param stream text stream to extract values from
 	/// @param splitter Function to split string into arguments
 	/// @return A tuple of values of the types specified in Args
-	template<
-	  typename... Args, typename Stream, typename Splitter,
-	  std::enable_if_t<(!is_detected_v<detectors::has_str, Stream> &&
-	                    traits::is_callable_v<Splitter, daw::sv1::string_view>),
-	                   std::nullptr_t> = nullptr>
+	template<typename... Args, typename Stream, typename Splitter,
+	         std::enable_if_t<(!is_detected_v<detectors::has_str, Stream> &&
+	                           traits::is_callable_v<Splitter, daw::string_view>),
+	                          std::nullptr_t> = nullptr>
 	decltype( auto ) values_from_stream( Stream &&stream, Splitter &&splitter ) {
 
 		auto const str =
 		  std::string( std::istreambuf_iterator<char>{ stream }, { } );
-		return parser::parse_to<Args...>( daw::sv1::string_view( str ),
+		return parser::parse_to<Args...>( daw::string_view( str ),
 		                                  std::forward<Splitter>( splitter ) );
 	}
 
@@ -521,14 +516,13 @@ namespace daw {
 	/// @param s text stream to extract values from
 	/// @param splitter Function to split string into arguments
 	/// @return A tuple of values of the types specified in Args
-	template<
-	  typename... Args, typename Stream, typename Splitter,
-	  std::enable_if_t<(is_detected_v<detectors::has_str, Stream> &&
-	                    traits::is_callable_v<Splitter, daw::sv1::string_view>),
-	                   std::nullptr_t> = nullptr>
+	template<typename... Args, typename Stream, typename Splitter,
+	         std::enable_if_t<(is_detected_v<detectors::has_str, Stream> &&
+	                           traits::is_callable_v<Splitter, daw::string_view>),
+	                          std::nullptr_t> = nullptr>
 	decltype( auto ) values_from_stream( Stream &&s, Splitter &&splitter ) {
 
-		return parser::parse_to<Args...>( daw::sv1::string_view( s.str( ) ),
+		return parser::parse_to<Args...>( daw::string_view( s.str( ) ),
 		                                  std::forward<Splitter>( splitter ) );
 	}
 
@@ -540,7 +534,7 @@ namespace daw {
 	/// @return A tuple of values of the types specified in Args
 	template<typename... Args, typename Stream>
 	decltype( auto ) values_from_stream( Stream &&s,
-	                                     daw::sv1::string_view delemiter ) {
+	                                     daw::string_view delemiter ) {
 		return values_from_stream<Args...>( std::forward<Stream>( s ),
 		                                    parser::default_splitter{ delemiter } );
 	}
