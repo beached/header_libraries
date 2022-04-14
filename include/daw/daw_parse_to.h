@@ -10,6 +10,7 @@
 
 #include "daw_bounded_array.h"
 #include "daw_function.h"
+#include "daw_move.h"
 #include "daw_parser_helper.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
@@ -293,8 +294,7 @@ namespace daw {
 		                                     Splitter &&splitter ) {
 
 			return impl::set_value_from_string_view<Args...>(
-			  impl::get_positions<sizeof...( Args )>(
-			    str, std::forward<Splitter>( splitter ) ) );
+			  impl::get_positions<sizeof...( Args )>( str, DAW_FWD( splitter ) ) );
 		}
 
 		/// @brief Attempts to parse a string to the values types specified
@@ -333,9 +333,9 @@ namespace daw {
 	constexpr decltype( auto ) construct_from( daw::string_view str,
 	                                           Splitter &&splitter ) {
 
-		return daw::apply( daw::construct_a<Destination>,
-		                   parser::parse_to<ExpectedArgs...>(
-		                     str, std::forward<Splitter>( splitter ) ) );
+		return std::apply(
+		  daw::construct_a<Destination>,
+		  parser::parse_to<ExpectedArgs...>( str, DAW_FWD( splitter ) ) );
 	}
 
 	/// @brief Contructs an object from the arguments specified in the string.
@@ -369,9 +369,8 @@ namespace daw {
 		constexpr decltype( auto )
 		apply_string_impl( std::tuple<Args...>, Callable &&callable,
 		                   daw::string_view str, Splitter &&splitter ) {
-			return daw::apply(
-			  std::forward<Callable>( callable ),
-			  parser::parse_to<Args...>( str, std::forward<Splitter>( splitter ) ) );
+			return std::apply( DAW_FWD( callable ), parser::parse_to<Args...>(
+			                                          str, DAW_FWD( splitter ) ) );
 		}
 	} // namespace impl
 
@@ -393,9 +392,8 @@ namespace daw {
 	                                          Splitter &&splitter ) {
 		using ftraits =
 		  typename daw::function_info<std::decay_t<Callable>>::decayed_args_tuple;
-		return impl::apply_string_impl( ftraits{ },
-		                                std::forward<Callable>( callable ), str,
-		                                std::forward<Splitter>( splitter ) );
+		return impl::apply_string_impl( ftraits{ }, DAW_FWD( callable ), str,
+		                                DAW_FWD( splitter ) );
 	}
 
 	/// @brief Apply the reified string as the types deducted from the Callable
@@ -410,7 +408,7 @@ namespace daw {
 	constexpr decltype( auto ) apply_string2( Callable &&callable,
 	                                          daw::string_view str,
 	                                          daw::string_view delemiter ) {
-		return apply_string2<Callable>( std::forward<Callable>( callable ), str,
+		return apply_string2<Callable>( DAW_FWD( callable ), str,
 		                                parser::default_splitter{ delemiter } );
 	}
 
@@ -433,9 +431,8 @@ namespace daw {
 	                                         Splitter &&splitter ) {
 		//		static_assert( traits::is_callable_v<Callable, Args...>,
 		//		               "Callable must accept Args..." );
-		return daw::apply(
-		  std::forward<Callable>( callable ),
-		  parser::parse_to<Args...>( str, std::forward<Splitter>( splitter ) ) );
+		return std::apply( DAW_FWD( callable ),
+		                   parser::parse_to<Args...>( str, DAW_FWD( splitter ) ) );
 	}
 
 	/// @brief Apply the reified string as the types specified as Args... to the
@@ -456,7 +453,7 @@ namespace daw {
 	                                         daw::string_view str,
 	                                         daw::string_view delemiter ) {
 
-		return apply_string<Args...>( std::forward<Callable>( callable ), str,
+		return apply_string<Args...>( DAW_FWD( callable ), str,
 		                              parser::default_splitter{ delemiter } );
 	}
 
@@ -478,7 +475,7 @@ namespace daw {
 	constexpr decltype( auto ) apply_string( Callable &&callable,
 	                                         daw::string_view str ) {
 
-		return apply_string<Arg>( std::forward<Callable>( callable ), str,
+		return apply_string<Arg>( DAW_FWD( callable ), str,
 		                          parser::default_splitter{ " " } );
 	}
 
@@ -504,7 +501,7 @@ namespace daw {
 		auto const str =
 		  std::string( std::istreambuf_iterator<char>{ stream }, { } );
 		return parser::parse_to<Args...>( daw::string_view( str ),
-		                                  std::forward<Splitter>( splitter ) );
+		                                  DAW_FWD( splitter ) );
 	}
 
 	/// @brief Extract specified argument types from a stream of character data
@@ -523,7 +520,7 @@ namespace daw {
 	decltype( auto ) values_from_stream( Stream &&s, Splitter &&splitter ) {
 
 		return parser::parse_to<Args...>( daw::string_view( s.str( ) ),
-		                                  std::forward<Splitter>( splitter ) );
+		                                  DAW_FWD( splitter ) );
 	}
 
 	/// @brief Extract specified argument types from a stream of character data
@@ -535,7 +532,7 @@ namespace daw {
 	template<typename... Args, typename Stream>
 	decltype( auto ) values_from_stream( Stream &&s,
 	                                     daw::string_view delemiter ) {
-		return values_from_stream<Args...>( std::forward<Stream>( s ),
+		return values_from_stream<Args...>( DAW_FWD( s ),
 		                                    parser::default_splitter{ delemiter } );
 	}
 } // namespace daw
