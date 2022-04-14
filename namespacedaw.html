@@ -970,26 +970,26 @@ Functions</h2></td></tr>
 <tr class="memitem:a78742adf3d51f7dfbaeaf8391ff520f3"><td class="memTemplParams" colspan="2">template&lt;typename Func , typename... Ts&gt; </td></tr>
 <tr class="memitem:a78742adf3d51f7dfbaeaf8391ff520f3"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a78742adf3d51f7dfbaeaf8391ff520f3">apply</a> (<a class="el" href="structdaw_1_1tuple2.html">tuple2</a>&lt; Ts... &gt; const &amp;tp, Func &amp;&amp;fn)</td></tr>
 <tr class="separator:a78742adf3d51f7dfbaeaf8391ff520f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72ebf33103bbd10d0ac4be670d85aab4"><td class="memTemplParams" colspan="2">template&lt;typename Arg , typename Callable &gt; </td></tr>
-<tr class="memitem:a72ebf33103bbd10d0ac4be670d85aab4"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a72ebf33103bbd10d0ac4be670d85aab4">apply_string</a> (Callable &amp;&amp;callable, <a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a> str)</td></tr>
-<tr class="memdesc:a72ebf33103bbd10d0ac4be670d85aab4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply the reified string as the types specified as Arg to the Callable.  <a href="namespacedaw.html#a72ebf33103bbd10d0ac4be670d85aab4">More...</a><br /></td></tr>
-<tr class="separator:a72ebf33103bbd10d0ac4be670d85aab4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af15c638eb6875e4024dbc7d0d7475b15"><td class="memTemplParams" colspan="2">template&lt;typename... Args, typename Callable &gt; </td></tr>
-<tr class="memitem:af15c638eb6875e4024dbc7d0d7475b15"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af15c638eb6875e4024dbc7d0d7475b15">apply_string</a> (Callable &amp;&amp;callable, <a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a> str, <a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a> delemiter)</td></tr>
-<tr class="memdesc:af15c638eb6875e4024dbc7d0d7475b15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply the reified string as the types specified as Args... to the Callable.  <a href="namespacedaw.html#af15c638eb6875e4024dbc7d0d7475b15">More...</a><br /></td></tr>
-<tr class="separator:af15c638eb6875e4024dbc7d0d7475b15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5af25f9187b3e7f1cde54c3ef21452fb"><td class="memTemplParams" colspan="2">template&lt;typename... Args, typename Callable , typename Splitter , std::enable_if_t&lt; traits::is_callable_v&lt; Splitter, daw::sv1::string_view &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
-<tr class="memitem:a5af25f9187b3e7f1cde54c3ef21452fb"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5af25f9187b3e7f1cde54c3ef21452fb">apply_string</a> (Callable &amp;&amp;callable, <a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a> str, Splitter &amp;&amp;splitter)</td></tr>
-<tr class="memdesc:a5af25f9187b3e7f1cde54c3ef21452fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply the reified string as the types specified as Args... to the Callable.  <a href="namespacedaw.html#a5af25f9187b3e7f1cde54c3ef21452fb">More...</a><br /></td></tr>
-<tr class="separator:a5af25f9187b3e7f1cde54c3ef21452fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80e8938d7780971352f40478c3df13e9"><td class="memTemplParams" colspan="2">template&lt;typename Callable &gt; </td></tr>
-<tr class="memitem:a80e8938d7780971352f40478c3df13e9"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a80e8938d7780971352f40478c3df13e9">apply_string2</a> (Callable &amp;&amp;callable, <a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a> str, <a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a> delemiter)</td></tr>
-<tr class="memdesc:a80e8938d7780971352f40478c3df13e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply the reified string as the types deducted from the Callable to the Callable. This may have unexpected results if strings are ot controlled.  <a href="namespacedaw.html#a80e8938d7780971352f40478c3df13e9">More...</a><br /></td></tr>
-<tr class="separator:a80e8938d7780971352f40478c3df13e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48452f369a321d608160852c8c1e8f1c"><td class="memTemplParams" colspan="2">template&lt;typename Callable , typename Splitter , std::enable_if_t&lt; traits::is_callable_v&lt; Splitter, daw::sv1::string_view &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
-<tr class="memitem:a48452f369a321d608160852c8c1e8f1c"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a48452f369a321d608160852c8c1e8f1c">apply_string2</a> (Callable &amp;&amp;callable, <a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a> str, Splitter &amp;&amp;splitter)</td></tr>
-<tr class="memdesc:a48452f369a321d608160852c8c1e8f1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply the reified string as the types deducted from the Callable to the Callable. This may have unexpected results if strings are ot controlled.  <a href="namespacedaw.html#a48452f369a321d608160852c8c1e8f1c">More...</a><br /></td></tr>
-<tr class="separator:a48452f369a321d608160852c8c1e8f1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada28065f21d2d1f762f0b133c9cc4fc5"><td class="memTemplParams" colspan="2">template&lt;typename Arg , typename Callable &gt; </td></tr>
+<tr class="memitem:ada28065f21d2d1f762f0b133c9cc4fc5"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ada28065f21d2d1f762f0b133c9cc4fc5">apply_string</a> (Callable &amp;&amp;callable, <a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a> str)</td></tr>
+<tr class="memdesc:ada28065f21d2d1f762f0b133c9cc4fc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply the reified string as the types specified as Arg to the Callable.  <a href="namespacedaw.html#ada28065f21d2d1f762f0b133c9cc4fc5">More...</a><br /></td></tr>
+<tr class="separator:ada28065f21d2d1f762f0b133c9cc4fc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cbb0361f564b09e28431c2135ba87b9"><td class="memTemplParams" colspan="2">template&lt;typename... Args, typename Callable &gt; </td></tr>
+<tr class="memitem:a5cbb0361f564b09e28431c2135ba87b9"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5cbb0361f564b09e28431c2135ba87b9">apply_string</a> (Callable &amp;&amp;callable, <a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a> str, <a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a> delemiter)</td></tr>
+<tr class="memdesc:a5cbb0361f564b09e28431c2135ba87b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply the reified string as the types specified as Args... to the Callable.  <a href="namespacedaw.html#a5cbb0361f564b09e28431c2135ba87b9">More...</a><br /></td></tr>
+<tr class="separator:a5cbb0361f564b09e28431c2135ba87b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b8e1c0bdcffd90aee8e91ea5f634610"><td class="memTemplParams" colspan="2">template&lt;typename... Args, typename Callable , typename Splitter , std::enable_if_t&lt; traits::is_callable_v&lt; Splitter, daw::string_view &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a7b8e1c0bdcffd90aee8e91ea5f634610"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a7b8e1c0bdcffd90aee8e91ea5f634610">apply_string</a> (Callable &amp;&amp;callable, <a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a> str, Splitter &amp;&amp;splitter)</td></tr>
+<tr class="memdesc:a7b8e1c0bdcffd90aee8e91ea5f634610"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply the reified string as the types specified as Args... to the Callable.  <a href="namespacedaw.html#a7b8e1c0bdcffd90aee8e91ea5f634610">More...</a><br /></td></tr>
+<tr class="separator:a7b8e1c0bdcffd90aee8e91ea5f634610"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedf7212b09236e834900874dd86e7de0"><td class="memTemplParams" colspan="2">template&lt;typename Callable &gt; </td></tr>
+<tr class="memitem:aedf7212b09236e834900874dd86e7de0"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aedf7212b09236e834900874dd86e7de0">apply_string2</a> (Callable &amp;&amp;callable, <a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a> str, <a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a> delemiter)</td></tr>
+<tr class="memdesc:aedf7212b09236e834900874dd86e7de0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply the reified string as the types deducted from the Callable to the Callable. This may have unexpected results if strings are ot controlled.  <a href="namespacedaw.html#aedf7212b09236e834900874dd86e7de0">More...</a><br /></td></tr>
+<tr class="separator:aedf7212b09236e834900874dd86e7de0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58fdee5d277bb210c57cdb3e9fb34805"><td class="memTemplParams" colspan="2">template&lt;typename Callable , typename Splitter , std::enable_if_t&lt; traits::is_callable_v&lt; Splitter, daw::string_view &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a58fdee5d277bb210c57cdb3e9fb34805"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a58fdee5d277bb210c57cdb3e9fb34805">apply_string2</a> (Callable &amp;&amp;callable, <a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a> str, Splitter &amp;&amp;splitter)</td></tr>
+<tr class="memdesc:a58fdee5d277bb210c57cdb3e9fb34805"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply the reified string as the types deducted from the Callable to the Callable. This may have unexpected results if strings are ot controlled.  <a href="namespacedaw.html#a58fdee5d277bb210c57cdb3e9fb34805">More...</a><br /></td></tr>
+<tr class="separator:a58fdee5d277bb210c57cdb3e9fb34805"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ad84c136aa9bb0413c88d34b3b9b48f"><td class="memTemplParams" colspan="2">template&lt;typename Integer , typename MaskBit , typename... MaskBits&gt; </td></tr>
 <tr class="memitem:a4ad84c136aa9bb0413c88d34b3b9b48f"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a4ad84c136aa9bb0413c88d34b3b9b48f">are_set</a> (<a class="el" href="namespacedaw.html#aa15143615eafa17e2f67743ec70cfca3">Integer</a> value, MaskBit mask_bit, MaskBits... mask_bits) noexcept</td></tr>
 <tr class="separator:a4ad84c136aa9bb0413c88d34b3b9b48f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1162,18 +1162,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a99f3cbbca7b72b351298dee3c25c160b"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Args&gt; </td></tr>
 <tr class="memitem:a99f3cbbca7b72b351298dee3c25c160b"><td class="memTemplItemLeft" align="right" valign="top">constexpr T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a99f3cbbca7b72b351298dee3c25c160b">construct_at</a> (T *p, Args &amp;&amp;...args)</td></tr>
 <tr class="separator:a99f3cbbca7b72b351298dee3c25c160b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fedb1cfd11ea7b17ecfb15fa2472d05"><td class="memTemplParams" colspan="2">template&lt;typename Destination , typename ExpectedArg &gt; </td></tr>
-<tr class="memitem:a7fedb1cfd11ea7b17ecfb15fa2472d05"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a7fedb1cfd11ea7b17ecfb15fa2472d05">construct_from</a> (<a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a> str)</td></tr>
-<tr class="memdesc:a7fedb1cfd11ea7b17ecfb15fa2472d05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contructs an object from the arguments specified in the string using a default delemiter of " ".  <a href="namespacedaw.html#a7fedb1cfd11ea7b17ecfb15fa2472d05">More...</a><br /></td></tr>
-<tr class="separator:a7fedb1cfd11ea7b17ecfb15fa2472d05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a107c56c40a8276cb0cd58eead429c864"><td class="memTemplParams" colspan="2">template&lt;typename Destination , typename... ExpectedArgs&gt; </td></tr>
-<tr class="memitem:a107c56c40a8276cb0cd58eead429c864"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a107c56c40a8276cb0cd58eead429c864">construct_from</a> (<a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a> str, <a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a> delemiter)</td></tr>
-<tr class="memdesc:a107c56c40a8276cb0cd58eead429c864"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contructs an object from the arguments specified in the string.  <a href="namespacedaw.html#a107c56c40a8276cb0cd58eead429c864">More...</a><br /></td></tr>
-<tr class="separator:a107c56c40a8276cb0cd58eead429c864"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a192dcd2c22626d62713a678eade7ab62"><td class="memTemplParams" colspan="2">template&lt;typename Destination , typename... ExpectedArgs, typename Splitter , std::enable_if_t&lt; traits::is_callable_v&lt; Splitter, daw::sv1::string_view &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
-<tr class="memitem:a192dcd2c22626d62713a678eade7ab62"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a192dcd2c22626d62713a678eade7ab62">construct_from</a> (<a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a> str, Splitter &amp;&amp;splitter)</td></tr>
-<tr class="memdesc:a192dcd2c22626d62713a678eade7ab62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contructs an object from the arguments specified in the string.  <a href="namespacedaw.html#a192dcd2c22626d62713a678eade7ab62">More...</a><br /></td></tr>
-<tr class="separator:a192dcd2c22626d62713a678eade7ab62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65c138d2c518989a6c48e94f4c3c62d3"><td class="memTemplParams" colspan="2">template&lt;typename Destination , typename ExpectedArg &gt; </td></tr>
+<tr class="memitem:a65c138d2c518989a6c48e94f4c3c62d3"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a65c138d2c518989a6c48e94f4c3c62d3">construct_from</a> (<a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a> str)</td></tr>
+<tr class="memdesc:a65c138d2c518989a6c48e94f4c3c62d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contructs an object from the arguments specified in the string using a default delemiter of " ".  <a href="namespacedaw.html#a65c138d2c518989a6c48e94f4c3c62d3">More...</a><br /></td></tr>
+<tr class="separator:a65c138d2c518989a6c48e94f4c3c62d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3520a9438da7e3bdaf2d4c6c88fd1500"><td class="memTemplParams" colspan="2">template&lt;typename Destination , typename... ExpectedArgs&gt; </td></tr>
+<tr class="memitem:a3520a9438da7e3bdaf2d4c6c88fd1500"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3520a9438da7e3bdaf2d4c6c88fd1500">construct_from</a> (<a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a> str, <a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a> delemiter)</td></tr>
+<tr class="memdesc:a3520a9438da7e3bdaf2d4c6c88fd1500"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contructs an object from the arguments specified in the string.  <a href="namespacedaw.html#a3520a9438da7e3bdaf2d4c6c88fd1500">More...</a><br /></td></tr>
+<tr class="separator:a3520a9438da7e3bdaf2d4c6c88fd1500"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52d571ebc730e32d237db422230f0a7c"><td class="memTemplParams" colspan="2">template&lt;typename Destination , typename... ExpectedArgs, typename Splitter , std::enable_if_t&lt; traits::is_callable_v&lt; Splitter, daw::string_view &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a52d571ebc730e32d237db422230f0a7c"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a52d571ebc730e32d237db422230f0a7c">construct_from</a> (<a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a> str, Splitter &amp;&amp;splitter)</td></tr>
+<tr class="memdesc:a52d571ebc730e32d237db422230f0a7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contructs an object from the arguments specified in the string.  <a href="namespacedaw.html#a52d571ebc730e32d237db422230f0a7c">More...</a><br /></td></tr>
+<tr class="separator:a52d571ebc730e32d237db422230f0a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2741b4669261f65f90e6d37e3da70f5e"><td class="memTemplParams" colspan="2">template&lt;typename Destination , typename... Args&gt; </td></tr>
 <tr class="memitem:a2741b4669261f65f90e6d37e3da70f5e"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a2741b4669261f65f90e6d37e3da70f5e">construct_from</a> (std::tuple&lt; Args... &gt; &amp;&amp;args) noexcept(noexcept(<a class="el" href="namespacedaw.html#aa262c9df4a2234d2089c59a4e13dbfe6">daw::apply</a>(<a class="el" href="namespacedaw.html#aae391ec69a42980312d38b02b1221bd3">construct_a</a>&lt; Destination &gt;, <a class="el" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>(args))))</td></tr>
 <tr class="separator:a2741b4669261f65f90e6d37e3da70f5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3888,11 +3888,11 @@ Functions</h2></td></tr>
 <tr class="memitem:a626727b94a5c1d24bfa4e92e9c17e3c1"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a626727b94a5c1d24bfa4e92e9c17e3c1"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a626727b94a5c1d24bfa4e92e9c17e3c1">value_is</a> (T &amp;&amp;value) -&gt; daw::utility_details::value_is_utility_details&lt; std::remove_reference_t&lt; decltype(value)&gt;&gt;</td></tr>
 <tr class="separator:a626727b94a5c1d24bfa4e92e9c17e3c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec9799d1b0b4dd5522ecfd752a050760"><td class="memTemplParams" colspan="2">template&lt;typename... Args, typename Stream &gt; </td></tr>
-<tr class="memitem:aec9799d1b0b4dd5522ecfd752a050760"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aec9799d1b0b4dd5522ecfd752a050760">values_from_stream</a> (Stream &amp;&amp;s, <a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a> delemiter)</td></tr>
-<tr class="memdesc:aec9799d1b0b4dd5522ecfd752a050760"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract specified argument types from a stream of character data.  <a href="namespacedaw.html#aec9799d1b0b4dd5522ecfd752a050760">More...</a><br /></td></tr>
-<tr class="separator:aec9799d1b0b4dd5522ecfd752a050760"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5ebb8c67546cd1d9d48e049599c0cd9"><td class="memTemplParams" colspan="2">template&lt;typename... Args, typename Stream , typename Splitter , std::enable_if_t&lt;(!is_detected_v&lt; detectors::has_str, Stream &gt; &amp;&amp;traits::is_callable_v&lt; Splitter, daw::sv1::string_view &gt;), std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a95b25383295df689333aa3ac2eb5e207"><td class="memTemplParams" colspan="2">template&lt;typename... Args, typename Stream &gt; </td></tr>
+<tr class="memitem:a95b25383295df689333aa3ac2eb5e207"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a95b25383295df689333aa3ac2eb5e207">values_from_stream</a> (Stream &amp;&amp;s, <a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a> delemiter)</td></tr>
+<tr class="memdesc:a95b25383295df689333aa3ac2eb5e207"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract specified argument types from a stream of character data.  <a href="namespacedaw.html#a95b25383295df689333aa3ac2eb5e207">More...</a><br /></td></tr>
+<tr class="separator:a95b25383295df689333aa3ac2eb5e207"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5ebb8c67546cd1d9d48e049599c0cd9"><td class="memTemplParams" colspan="2">template&lt;typename... Args, typename Stream , typename Splitter , std::enable_if_t&lt;(!is_detected_v&lt; detectors::has_str, Stream &gt; &amp;&amp;traits::is_callable_v&lt; Splitter, daw::string_view &gt;), std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:ac5ebb8c67546cd1d9d48e049599c0cd9"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ac5ebb8c67546cd1d9d48e049599c0cd9">values_from_stream</a> (Stream &amp;&amp;stream, Splitter &amp;&amp;splitter)</td></tr>
 <tr class="memdesc:ac5ebb8c67546cd1d9d48e049599c0cd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract specified argument types from a stream of character data.  <a href="namespacedaw.html#ac5ebb8c67546cd1d9d48e049599c0cd9">More...</a><br /></td></tr>
 <tr class="separator:ac5ebb8c67546cd1d9d48e049599c0cd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -6463,8 +6463,8 @@ template&lt;typename Func , typename... Ts&gt; </div>
 
 </div>
 </div>
-<a id="a72ebf33103bbd10d0ac4be670d85aab4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a72ebf33103bbd10d0ac4be670d85aab4">&#9670;&nbsp;</a></span>apply_string() <span class="overload">[1/3]</span></h2>
+<a id="ada28065f21d2d1f762f0b133c9cc4fc5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada28065f21d2d1f762f0b133c9cc4fc5">&#9670;&nbsp;</a></span>apply_string() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6483,7 +6483,7 @@ template&lt;typename Arg , typename Callable &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a>&#160;</td>
           <td class="paramname"><em>str</em>&#160;</td>
         </tr>
         <tr>
@@ -6516,12 +6516,12 @@ template&lt;typename Arg , typename Callable &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>result of callable </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__parse__to_8h_source.html#l00482">482</a> of file <a class="el" href="daw__parse__to_8h_source.html">daw_parse_to.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__parse__to_8h_source.html#l00478">478</a> of file <a class="el" href="daw__parse__to_8h_source.html">daw_parse_to.h</a>.</p>
 
 </div>
 </div>
-<a id="af15c638eb6875e4024dbc7d0d7475b15"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af15c638eb6875e4024dbc7d0d7475b15">&#9670;&nbsp;</a></span>apply_string() <span class="overload">[2/3]</span></h2>
+<a id="a5cbb0361f564b09e28431c2135ba87b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cbb0361f564b09e28431c2135ba87b9">&#9670;&nbsp;</a></span>apply_string() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6540,13 +6540,13 @@ template&lt;typename... Args, typename Callable &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a>&#160;</td>
           <td class="paramname"><em>str</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a>&#160;</td>
           <td class="paramname"><em>delemiter</em>&#160;</td>
         </tr>
         <tr>
@@ -6580,17 +6580,17 @@ template&lt;typename... Args, typename Callable &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>result of callable </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__parse__to_8h_source.html#l00459">459</a> of file <a class="el" href="daw__parse__to_8h_source.html">daw_parse_to.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__parse__to_8h_source.html#l00455">455</a> of file <a class="el" href="daw__parse__to_8h_source.html">daw_parse_to.h</a>.</p>
 
 </div>
 </div>
-<a id="a5af25f9187b3e7f1cde54c3ef21452fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5af25f9187b3e7f1cde54c3ef21452fb">&#9670;&nbsp;</a></span>apply_string() <span class="overload">[3/3]</span></h2>
+<a id="a7b8e1c0bdcffd90aee8e91ea5f634610"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b8e1c0bdcffd90aee8e91ea5f634610">&#9670;&nbsp;</a></span>apply_string() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename... Args, typename Callable , typename Splitter , std::enable_if_t&lt; traits::is_callable_v&lt; Splitter, daw::sv1::string_view &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+template&lt;typename... Args, typename Callable , typename Splitter , std::enable_if_t&lt; traits::is_callable_v&lt; Splitter, daw::string_view &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -6604,7 +6604,7 @@ template&lt;typename... Args, typename Callable , typename Splitter , std::enabl
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a>&#160;</td>
           <td class="paramname"><em>str</em>, </td>
         </tr>
         <tr>
@@ -6645,12 +6645,12 @@ template&lt;typename... Args, typename Callable , typename Splitter , std::enabl
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>result of callable </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__parse__to_8h_source.html#l00435">435</a> of file <a class="el" href="daw__parse__to_8h_source.html">daw_parse_to.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__parse__to_8h_source.html#l00431">431</a> of file <a class="el" href="daw__parse__to_8h_source.html">daw_parse_to.h</a>.</p>
 
 </div>
 </div>
-<a id="a80e8938d7780971352f40478c3df13e9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a80e8938d7780971352f40478c3df13e9">&#9670;&nbsp;</a></span>apply_string2() <span class="overload">[1/2]</span></h2>
+<a id="aedf7212b09236e834900874dd86e7de0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aedf7212b09236e834900874dd86e7de0">&#9670;&nbsp;</a></span>apply_string2() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6669,13 +6669,13 @@ template&lt;typename Callable &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a>&#160;</td>
           <td class="paramname"><em>str</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a>&#160;</td>
           <td class="paramname"><em>delemiter</em>&#160;</td>
         </tr>
         <tr>
@@ -6708,17 +6708,17 @@ template&lt;typename Callable &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result of callable </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__parse__to_8h_source.html#l00413">413</a> of file <a class="el" href="daw__parse__to_8h_source.html">daw_parse_to.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__parse__to_8h_source.html#l00410">410</a> of file <a class="el" href="daw__parse__to_8h_source.html">daw_parse_to.h</a>.</p>
 
 </div>
 </div>
-<a id="a48452f369a321d608160852c8c1e8f1c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48452f369a321d608160852c8c1e8f1c">&#9670;&nbsp;</a></span>apply_string2() <span class="overload">[2/2]</span></h2>
+<a id="a58fdee5d277bb210c57cdb3e9fb34805"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58fdee5d277bb210c57cdb3e9fb34805">&#9670;&nbsp;</a></span>apply_string2() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Callable , typename Splitter , std::enable_if_t&lt; traits::is_callable_v&lt; Splitter, daw::sv1::string_view &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+template&lt;typename Callable , typename Splitter , std::enable_if_t&lt; traits::is_callable_v&lt; Splitter, daw::string_view &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -6732,7 +6732,7 @@ template&lt;typename Callable , typename Splitter , std::enable_if_t&lt; traits:
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a>&#160;</td>
           <td class="paramname"><em>str</em>, </td>
         </tr>
         <tr>
@@ -6772,7 +6772,7 @@ template&lt;typename Callable , typename Splitter , std::enable_if_t&lt; traits:
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result of callable </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__parse__to_8h_source.html#l00394">394</a> of file <a class="el" href="daw__parse__to_8h_source.html">daw_parse_to.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__parse__to_8h_source.html#l00391">391</a> of file <a class="el" href="daw__parse__to_8h_source.html">daw_parse_to.h</a>.</p>
 
 </div>
 </div>
@@ -8702,8 +8702,8 @@ template&lt;typename T , typename... Args&gt; </div>
 
 </div>
 </div>
-<a id="a7fedb1cfd11ea7b17ecfb15fa2472d05"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7fedb1cfd11ea7b17ecfb15fa2472d05">&#9670;&nbsp;</a></span>construct_from() <span class="overload">[1/5]</span></h2>
+<a id="a65c138d2c518989a6c48e94f4c3c62d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65c138d2c518989a6c48e94f4c3c62d3">&#9670;&nbsp;</a></span>construct_from() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8716,7 +8716,7 @@ template&lt;typename Destination , typename ExpectedArg &gt; </div>
         <tr>
           <td class="memname">constexpr decltype( auto ) daw::construct_from </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a>&#160;</td>
           <td class="paramname"><em>str</em></td><td>)</td>
           <td></td>
         </tr>
@@ -8744,12 +8744,12 @@ template&lt;typename Destination , typename ExpectedArg &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A constructed Destination </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__parse__to_8h_source.html#l00364">364</a> of file <a class="el" href="daw__parse__to_8h_source.html">daw_parse_to.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__parse__to_8h_source.html#l00362">362</a> of file <a class="el" href="daw__parse__to_8h_source.html">daw_parse_to.h</a>.</p>
 
 </div>
 </div>
-<a id="a107c56c40a8276cb0cd58eead429c864"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a107c56c40a8276cb0cd58eead429c864">&#9670;&nbsp;</a></span>construct_from() <span class="overload">[2/5]</span></h2>
+<a id="a3520a9438da7e3bdaf2d4c6c88fd1500"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3520a9438da7e3bdaf2d4c6c88fd1500">&#9670;&nbsp;</a></span>construct_from() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8762,13 +8762,13 @@ template&lt;typename Destination , typename... ExpectedArgs&gt; </div>
         <tr>
           <td class="memname">constexpr decltype( auto ) daw::construct_from </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a>&#160;</td>
           <td class="paramname"><em>str</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a>&#160;</td>
           <td class="paramname"><em>delemiter</em>&#160;</td>
         </tr>
         <tr>
@@ -8801,17 +8801,17 @@ template&lt;typename Destination , typename... ExpectedArgs&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A constructed Destination </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__parse__to_8h_source.html#l00350">350</a> of file <a class="el" href="daw__parse__to_8h_source.html">daw_parse_to.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__parse__to_8h_source.html#l00348">348</a> of file <a class="el" href="daw__parse__to_8h_source.html">daw_parse_to.h</a>.</p>
 
 </div>
 </div>
-<a id="a192dcd2c22626d62713a678eade7ab62"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a192dcd2c22626d62713a678eade7ab62">&#9670;&nbsp;</a></span>construct_from() <span class="overload">[3/5]</span></h2>
+<a id="a52d571ebc730e32d237db422230f0a7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52d571ebc730e32d237db422230f0a7c">&#9670;&nbsp;</a></span>construct_from() <span class="overload">[3/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Destination , typename... ExpectedArgs, typename Splitter , std::enable_if_t&lt; traits::is_callable_v&lt; Splitter, daw::sv1::string_view &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+template&lt;typename Destination , typename... ExpectedArgs, typename Splitter , std::enable_if_t&lt; traits::is_callable_v&lt; Splitter, daw::string_view &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -8819,7 +8819,7 @@ template&lt;typename Destination , typename... ExpectedArgs, typename Splitter ,
         <tr>
           <td class="memname">constexpr decltype( auto ) daw::construct_from </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a>&#160;</td>
           <td class="paramname"><em>str</em>, </td>
         </tr>
         <tr>
@@ -8859,7 +8859,7 @@ template&lt;typename Destination , typename... ExpectedArgs, typename Splitter ,
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A constructed Destination </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__parse__to_8h_source.html#l00335">335</a> of file <a class="el" href="daw__parse__to_8h_source.html">daw_parse_to.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__parse__to_8h_source.html#l00333">333</a> of file <a class="el" href="daw__parse__to_8h_source.html">daw_parse_to.h</a>.</p>
 
 </div>
 </div>
@@ -47788,8 +47788,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="aec9799d1b0b4dd5522ecfd752a050760"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec9799d1b0b4dd5522ecfd752a050760">&#9670;&nbsp;</a></span>values_from_stream() <span class="overload">[1/2]</span></h2>
+<a id="a95b25383295df689333aa3ac2eb5e207"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95b25383295df689333aa3ac2eb5e207">&#9670;&nbsp;</a></span>values_from_stream() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -47805,7 +47805,7 @@ template&lt;typename... Args, typename Stream &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv1.html#a380ca8b89e732b79d66a20b8dfb4725c">daw::sv1::string_view</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a>&#160;</td>
           <td class="paramname"><em>delemiter</em>&#160;</td>
         </tr>
         <tr>
@@ -47833,7 +47833,7 @@ template&lt;typename... Args, typename Stream &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A tuple of values of the types specified in Args </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__parse__to_8h_source.html#l00542">542</a> of file <a class="el" href="daw__parse__to_8h_source.html">daw_parse_to.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__parse__to_8h_source.html#l00536">536</a> of file <a class="el" href="daw__parse__to_8h_source.html">daw_parse_to.h</a>.</p>
 
 </div>
 </div>
@@ -47843,7 +47843,7 @@ template&lt;typename... Args, typename Stream &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename... Args, typename Stream , typename Splitter , std::enable_if_t&lt;(!is_detected_v&lt; detectors::has_str, Stream &gt; &amp;&amp;traits::is_callable_v&lt; Splitter, daw::sv1::string_view &gt;), std::nullptr_t &gt;  = nullptr&gt; </div>
+template&lt;typename... Args, typename Stream , typename Splitter , std::enable_if_t&lt;(!is_detected_v&lt; detectors::has_str, Stream &gt; &amp;&amp;traits::is_callable_v&lt; Splitter, daw::string_view &gt;), std::nullptr_t &gt;  = nullptr&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">decltype( auto ) daw::values_from_stream </td>
@@ -47899,7 +47899,7 @@ template&lt;typename... Args, typename Stream , typename Splitter , std::enable_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A tuple of values of the types specified in Args </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__parse__to_8h_source.html#l00507">507</a> of file <a class="el" href="daw__parse__to_8h_source.html">daw_parse_to.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__parse__to_8h_source.html#l00502">502</a> of file <a class="el" href="daw__parse__to_8h_source.html">daw_parse_to.h</a>.</p>
 
 </div>
 </div>
