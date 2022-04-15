@@ -16,8 +16,7 @@ project("daw-header-libraries"
         )
 
 set(CMAKE_CXX_STANDARD 17 CACHE STRING "The C++ standard whose features are requested.")
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+set(DAW_TARGET_HEADER_LIBRARIES ON CACHE STRING "Flag to indicate that library is included" )
 
 option(DAW_ENABLE_TESTING "Build unit tests" OFF)
 
