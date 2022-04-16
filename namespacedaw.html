@@ -1598,7 +1598,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a219017c4d42d6a3393956e4be1cf0f86"><td class="memTemplParams" colspan="2">template&lt;size_t Capacity = 100, typename Iterator , typename CharT  = DAW_TYPEOF( *std::declval&lt;Iterator&gt;( ) )&gt; </td></tr>
 <tr class="memitem:a219017c4d42d6a3393956e4be1cf0f86"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a219017c4d42d6a3393956e4be1cf0f86">make_bounded_string_it</a> (Iterator first, Iterator last) noexcept</td></tr>
 <tr class="separator:a219017c4d42d6a3393956e4be1cf0f86"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c947dd2022d530b74511d9f301bbb5c"><td class="memTemplParams" colspan="2">template&lt;typename Function , std::enable_if_t&lt;!std::is_function_v&lt; std::remove_reference_t&lt; Function &gt;&gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a4c947dd2022d530b74511d9f301bbb5c"><td class="memTemplParams" colspan="2">template&lt;typename Function , std::enable_if_t&lt; not std::is_function_v&lt; std::remove_reference_t&lt; Function &gt;&gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a4c947dd2022d530b74511d9f301bbb5c"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a4c947dd2022d530b74511d9f301bbb5c">make_callable</a> (Function &amp;&amp;func) noexcept</td></tr>
 <tr class="separator:a4c947dd2022d530b74511d9f301bbb5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59b2f3f96677bd2ae9f489ea54c5ef36"><td class="memTemplParams" colspan="2">template&lt;typename Function , std::enable_if_t&lt; std::is_function_v&lt; Function &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
@@ -13548,7 +13548,7 @@ template&lt;size_t Capacity = 100, typename Iterator , typename CharT  = DAW_TYP
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Function , std::enable_if_t&lt;!std::is_function_v&lt; std::remove_reference_t&lt; Function &gt;&gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+template&lt;typename Function , std::enable_if_t&lt; not std::is_function_v&lt; std::remove_reference_t&lt; Function &gt;&gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -13568,7 +13568,7 @@ template&lt;typename Function , std::enable_if_t&lt;!std::is_function_v&lt; std:
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__function_8h_source.html#l00159">159</a> of file <a class="el" href="daw__function_8h_source.html">daw_function.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__function_8h_source.html#l00160">160</a> of file <a class="el" href="daw__function_8h_source.html">daw_function.h</a>.</p>
 
 </div>
 </div>
@@ -13598,7 +13598,7 @@ template&lt;typename Function , std::enable_if_t&lt; std::is_function_v&lt; Func
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__function_8h_source.html#l00197">197</a> of file <a class="el" href="daw__function_8h_source.html">daw_function.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__function_8h_source.html#l00198">198</a> of file <a class="el" href="daw__function_8h_source.html">daw_function.h</a>.</p>
 
 </div>
 </div>

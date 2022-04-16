@@ -74,7 +74,8 @@ $(function() {
 <div class="title">daw_function.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>&quot;</code><br />
 <code>#include &lt;ciso646&gt;</code><br />
 <code>#include &lt;tuple&gt;</code><br />
 </div>
@@ -109,7 +110,7 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a4c947dd2022d530b74511d9f301bbb5c"><td class="memTemplParams" colspan="2">template&lt;typename Function , std::enable_if_t&lt;!std::is_function_v&lt; std::remove_reference_t&lt; Function &gt;&gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a4c947dd2022d530b74511d9f301bbb5c"><td class="memTemplParams" colspan="2">template&lt;typename Function , std::enable_if_t&lt; not std::is_function_v&lt; std::remove_reference_t&lt; Function &gt;&gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a4c947dd2022d530b74511d9f301bbb5c"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a4c947dd2022d530b74511d9f301bbb5c">daw::make_callable</a> (Function &amp;&amp;func) noexcept</td></tr>
 <tr class="separator:a4c947dd2022d530b74511d9f301bbb5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59b2f3f96677bd2ae9f489ea54c5ef36"><td class="memTemplParams" colspan="2">template&lt;typename Function , std::enable_if_t&lt; std::is_function_v&lt; Function &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
