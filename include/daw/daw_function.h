@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw_move.h"
 #include "daw_traits.h"
 
 #include <ciso646>
@@ -154,10 +155,10 @@ namespace daw {
 
 	template<
 	  typename Function,
-	  std::enable_if_t<!std::is_function_v<std::remove_reference_t<Function>>,
+	  std::enable_if_t<not std::is_function_v<std::remove_reference_t<Function>>,
 	                   std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) make_callable( Function &&func ) noexcept {
-		return std::forward<Function>( func );
+		return DAW_FWD( func );
 	}
 
 	namespace function_impl {
@@ -168,14 +169,14 @@ namespace daw {
 
 			template<
 			  typename... Args,
-			  std::enable_if_t<!std::is_same_v<void, daw::traits::invoke_result_t<
+			  std::enable_if_t<not std::is_same_v<void, daw::traits::invoke_result_t<
 			                                           Function, Args...>>,
 			                   std::nullptr_t> = nullptr>
 			constexpr decltype( auto ) operator( )( Args &&...args ) const
 			  noexcept( daw::traits::is_nothrow_callable_v<
 			            std::add_pointer_t<Function>, Args...> ) {
 
-				return fp( std::forward<Args>( args )... );
+				return fp( DAW_FWD( args )... );
 			}
 
 			template<
@@ -187,7 +188,7 @@ namespace daw {
 			  noexcept( daw::traits::is_nothrow_callable_v<
 			            std::add_pointer_t<Function>, Args...> ) {
 
-				fp( std::forward<Args>( args )... );
+				fp( DAW_FWD( args )... );
 			}
 		};
 	} // namespace function_impl
