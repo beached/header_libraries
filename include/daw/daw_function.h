@@ -9,10 +9,11 @@
 #pragma once
 
 #include "daw_move.h"
-#include "daw_traits.h"
 
 #include <ciso646>
+#include <memory>
 #include <tuple>
+#include <type_traits>
 
 namespace daw {
 	template<typename T>
@@ -169,24 +170,21 @@ namespace daw {
 
 			template<
 			  typename... Args,
-			  std::enable_if_t<not std::is_same_v<void, daw::traits::invoke_result_t<
-			                                           Function, Args...>>,
-			                   std::nullptr_t> = nullptr>
-			constexpr decltype( auto ) operator( )( Args &&...args ) const
-			  noexcept( daw::traits::is_nothrow_callable_v<
-			            std::add_pointer_t<Function>, Args...> ) {
+			  std::enable_if_t<
+			    not std::is_same_v<void, std::invoke_result_t<Function, Args...>>,
+			    std::nullptr_t> = nullptr>
+			constexpr decltype( auto ) operator( )( Args &&...args ) const noexcept(
+			  std::is_nothrow_invocable_v<std::add_pointer_t<Function>, Args...> ) {
 
 				return fp( DAW_FWD( args )... );
 			}
 
-			template<
-			  typename... Args,
-			  std::enable_if_t<
-			    std::is_same_v<void, daw::traits::invoke_result_t<Function, Args...>>,
-			    std::nullptr_t> = nullptr>
-			constexpr void operator( )( Args &&...args ) const
-			  noexcept( daw::traits::is_nothrow_callable_v<
-			            std::add_pointer_t<Function>, Args...> ) {
+			template<typename... Args,
+			         std::enable_if_t<
+			           std::is_same_v<void, std::invoke_result_t<Function, Args...>>,
+			           std::nullptr_t> = nullptr>
+			constexpr void operator( )( Args &&...args ) const noexcept(
+			  std::is_nothrow_invocable_v<std::add_pointer_t<Function>, Args...> ) {
 
 				fp( DAW_FWD( args )... );
 			}
