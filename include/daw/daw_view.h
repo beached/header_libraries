@@ -156,12 +156,12 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr reference operator[]( size_type index ) {
-			return *std::next( m_first, index );
+			return *std::next( m_first, static_cast<std::ptrdiff_t>( index ) );
 		}
 
 		[[nodiscard]] constexpr const_reference
 		operator[]( size_type index ) const {
-			return *std::next( m_first, index );
+			return *std::next( m_first, static_cast<std::ptrdiff_t>( index ) );
 		}
 
 		[[nodiscard]] constexpr reference at( size_type index ) {
@@ -196,7 +196,8 @@ namespace daw {
 			if( n > size( ) ) {
 				n = size( );
 			}
-			auto result = view( m_first, std::next( m_first, n ) );
+			auto result =
+			  view( m_first, std::next( m_first, static_cast<std::ptrdiff_t>( n ) ) );
 			remove_prefix( n );
 			return result;
 		}
