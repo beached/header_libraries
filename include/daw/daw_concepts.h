@@ -299,7 +299,7 @@ namespace daw {
 	using iter_reference_type = typename std::iterator_traits<T>::reference;
 
 	template<typename T>
-	using iter_value_type = typename std::iterator_traits<T>::value;
+	using iter_value_type = typename std::iterator_traits<T>::value_type;
 
 	template<typename I>
 	concept input_iterator =
