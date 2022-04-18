@@ -75,11 +75,73 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
+<tr class="memitem:a78543b6237bd71544f883b5c75a391d0"><td class="memTemplParams" colspan="2">template&lt;typename Arg , typename Class &gt; </td></tr>
+<tr class="memitem:a78543b6237bd71544f883b5c75a391d0"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1deprecated.html#a78543b6237bd71544f883b5c75a391d0">not_me_d_v</a></td></tr>
+<tr class="separator:a78543b6237bd71544f883b5c75a391d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64057532f55a54ae757ce6a201c52cf1"><td class="memTemplParams" colspan="2">template&lt;typename Arg , typename Class &gt; </td></tr>
+<tr class="memitem:a64057532f55a54ae757ce6a201c52cf1"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1deprecated.html#a64057532f55a54ae757ce6a201c52cf1">not_me_v</a></td></tr>
+<tr class="separator:a64057532f55a54ae757ce6a201c52cf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d2cd784f19c465ea8997bd2cca61684"><td class="memTemplParams" colspan="2">template&lt;typename Lhs , typename Rhs &gt; </td></tr>
 <tr class="memitem:a1d2cd784f19c465ea8997bd2cca61684"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1deprecated.html#a1d2cd784f19c465ea8997bd2cca61684">same_as_rrcv_v</a></td></tr>
 <tr class="separator:a1d2cd784f19c465ea8997bd2cca61684"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a78543b6237bd71544f883b5c75a391d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78543b6237bd71544f883b5c75a391d0">&#9670;&nbsp;</a></span>not_me_d_v</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Arg , typename Class &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool daw::deprecated::not_me_d_v</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">      same_as&lt;Class, std::decay_t&lt;Arg&gt;&gt;</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00070">70</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="a64057532f55a54ae757ce6a201c52cf1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64057532f55a54ae757ce6a201c52cf1">&#9670;&nbsp;</a></span>not_me_v</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Arg , typename Class &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool daw::deprecated::not_me_v</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">      not same_as&lt;Class, std::remove_cvref_t&lt;Arg&gt;&gt;</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00058">58</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
 <a id="a1d2cd784f19c465ea8997bd2cca61684"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1d2cd784f19c465ea8997bd2cca61684">&#9670;&nbsp;</a></span>same_as_rrcv_v</h2>
 
