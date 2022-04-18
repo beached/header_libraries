@@ -49,16 +49,32 @@ namespace daw {
 	template<typename Lhs, typename Rhs>
 	concept same_as_rrcv = deprecated::same_as_rrcv_v<Lhs, Rhs>;
 
-	template<typename Lhs, typename Rhs>
-	concept cvref_of = same_as < std::remove_cvref_t<Lhs>,
-	std::remove_cvref_t < Rhs >> ;
+	template<typename Arg, typename Class>
+	concept cvref_of = same_as < std::remove_cvref_t<Arg>,
+	std::remove_cvref_t < Class >> ;
+
+	namespace deprecated {
+		template<typename Arg, typename Class>
+		[[deprecated( "Use not_cvref_of" )]] inline constexpr bool not_me_v =
+		  not same_as<Class, std::remove_cvref_t<Arg>>;
+	}
+	template<typename Arg, typename Class>
+	concept not_me = deprecated::not_me_v<Arg, Class>;
 
 	template<typename Arg, typename Class>
-	concept not_me = not
-	same_as<Class, std::remove_cvref_t<Arg>>;
+	concept not_cvref_of = not
+	cvref_of<Arg, Class>;
+
+	namespace deprecated {
+		template<typename Arg, typename Class>
+		[[deprecated( "Use not_decay_of" )]] inline constexpr bool not_me_d_v =
+		  same_as<Class, std::decay_t<Arg>>;
+	}
+	template<typename Arg, typename Class>
+	concept not_me_d = deprecated::not_me_d_v<Arg, Class>;
 
 	template<typename Arg, typename Class>
-	concept not_me_d = not
+	concept not_decay_of = not
 	same_as<Class, std::decay_t<Arg>>;
 
 	template<typename T>
