@@ -40,8 +40,17 @@ namespace daw {
 	template<typename Lhs, typename Rhs>
 	concept same_as = std::is_same_v<Lhs, Rhs>;
 
+	namespace deprecated {
+		template<typename Lhs, typename Rhs>
+		[[deprecated( "use cvref_of" )]] inline constexpr bool same_as_rrcv_v =
+		  same_as<std::remove_cvref_t<Lhs>, std::remove_cvref_t<Rhs>>;
+	}
+
 	template<typename Lhs, typename Rhs>
-	concept same_as_rrcv = same_as < std::remove_cvref_t<Lhs>,
+	concept same_as_rrcv = deprecated::same_as_rrcv_v<Lhs, Rhs>;
+
+	template<typename Lhs, typename Rhs>
+	concept cvref_of = same_as < std::remove_cvref_t<Lhs>,
 	std::remove_cvref_t < Rhs >> ;
 
 	template<typename Arg, typename Class>
