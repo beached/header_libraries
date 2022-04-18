@@ -336,13 +336,24 @@ namespace daw {
 	  and derived_from<iterator_category_t<I>, std::input_iterator_tag>;
 #endif
 
+#if defined( __cpp_lib_concepts )
+	template<typename I>
+	concept forward_iterator = std::forward_iterator<I>;
+#else
 	template<typename I>
 	concept forward_iterator =
-#if defined( __cpp_lib_concepts )
-	  std::forward_iterator<I>;
-#else
 	  iterator<I> and derived_from < iterator_category_t<I>,
 	std::forward_iterator_tag > ;
+#endif
+
+#if defined( __cpp_lib_concepts )
+	template<typename I>
+	concept random_access_iterator = std::random_access_iterator<I>;
+#else
+	template<typename I>
+	concept random_access_iterator =
+	  forward_iterator<I> and derived_from < iterator_category_t<I>,
+	std::random_access_iterator_tag > ;
 #endif
 
 	template<typename Container>
