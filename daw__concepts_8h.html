@@ -91,6 +91,8 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
 <tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacedaw_1_1deprecated"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1deprecated.html">daw::deprecated</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -149,6 +151,9 @@ Variables</h2></td></tr>
 <tr class="memitem:a6e88ca91fef1ffe7e71248484ed6626e"><td class="memTemplParams" colspan="2">template&lt;typename From , typename To &gt; </td></tr>
 <tr class="memitem:a6e88ca91fef1ffe7e71248484ed6626e"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a6e88ca91fef1ffe7e71248484ed6626e">daw::convertible_to</a></td></tr>
 <tr class="separator:a6e88ca91fef1ffe7e71248484ed6626e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8d48cd2d4cd35c863ca51c3972488a1"><td class="memTemplParams" colspan="2">template&lt;typename Lhs , typename Rhs &gt; </td></tr>
+<tr class="memitem:ac8d48cd2d4cd35c863ca51c3972488a1"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ac8d48cd2d4cd35c863ca51c3972488a1">daw::cvref_of</a></td></tr>
+<tr class="separator:ac8d48cd2d4cd35c863ca51c3972488a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7fffe2a2e6d236f638535ebc6ce148c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:af7fffe2a2e6d236f638535ebc6ce148c"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af7fffe2a2e6d236f638535ebc6ce148c">daw::default_constructible</a> = requires { T{ }; }</td></tr>
 <tr class="separator:af7fffe2a2e6d236f638535ebc6ce148c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -233,8 +238,11 @@ Variables</h2></td></tr>
 <tr class="memitem:aa204958271f536b788a1b0c233df6d5e"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa204958271f536b788a1b0c233df6d5e">daw::same_as</a> = std::is_same_v&lt;Lhs, Rhs&gt;</td></tr>
 <tr class="separator:aa204958271f536b788a1b0c233df6d5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24228cc2011898842f35aa9463f7216f"><td class="memTemplParams" colspan="2">template&lt;typename Lhs , typename Rhs &gt; </td></tr>
-<tr class="memitem:a24228cc2011898842f35aa9463f7216f"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a24228cc2011898842f35aa9463f7216f">daw::same_as_rrcv</a></td></tr>
+<tr class="memitem:a24228cc2011898842f35aa9463f7216f"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a24228cc2011898842f35aa9463f7216f">daw::same_as_rrcv</a> = deprecated::same_as_rrcv_v&lt;Lhs, Rhs&gt;</td></tr>
 <tr class="separator:a24228cc2011898842f35aa9463f7216f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d2cd784f19c465ea8997bd2cca61684"><td class="memTemplParams" colspan="2">template&lt;typename Lhs , typename Rhs &gt; </td></tr>
+<tr class="memitem:a1d2cd784f19c465ea8997bd2cca61684"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1deprecated.html#a1d2cd784f19c465ea8997bd2cca61684">daw::deprecated::same_as_rrcv_v</a></td></tr>
+<tr class="separator:a1d2cd784f19c465ea8997bd2cca61684"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81bd40f25bd6d73698785063968b5f7f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a81bd40f25bd6d73698785063968b5f7f"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a81bd40f25bd6d73698785063968b5f7f">daw::SignedStd</a> = std::is_signed_v&lt;std::remove_cvref_t&lt;T&gt;&gt;</td></tr>
 <tr class="separator:a81bd40f25bd6d73698785063968b5f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>

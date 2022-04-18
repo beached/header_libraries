@@ -1,14 +1,14 @@
 var searchData=
 [
-  ['name_3798',['name',['../structdaw_1_1_argument.html#a7d5eaaff6d261d58b84390f3c4816cbf',1,'daw::Argument']]],
-  ['never_5fnull_3799',['never_null',['../namespacedaw.html#af106e26c76f4b73d93216e5daac5fb92',1,'daw']]],
-  ['nodiscard_3800',['nodiscard',['../namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf',1,'daw::nodiscard()'],['../namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf',1,'daw::sv2::nodiscard()']]],
-  ['noexcept_3801',['noexcept',['../classdaw_1_1wrap__iter.html#a9b89f8445e732e17a821d051a15e1c5e',1,'daw::wrap_iter']]],
-  ['none_5fof_3802',['none_of',['../namespacedaw_1_1sv2.html#a0407e01d709d047a59a750572016d104',1,'daw::sv2::none_of()'],['../namespacedaw_1_1sv2.html#a0407e01d709d047a59a750572016d104',1,'daw::none_of()']]],
-  ['not_5fme_3803',['not_me',['../namespacedaw.html#abef802ed6bd3568b607c6c3f6b056d2e',1,'daw']]],
-  ['not_5fme_5fd_3804',['not_me_d',['../namespacedaw.html#a8c88cce18493ea4ea90d2201152badce',1,'daw']]],
-  ['not_5fsame_5fv_3805',['not_same_v',['../namespacedaw_1_1traits.html#a89beb89a752ebe425aff3b640d63e469',1,'daw::traits']]],
-  ['nothing_3806',['nothing',['../classdaw_1_1union__pair__t.html#afe0a55503942a3c686d9d17af60ceee1',1,'daw::union_pair_t']]],
-  ['npos_3807',['npos',['../structdaw_1_1basic__bounded__string.html#afde8711eca8f822359d42601736fd2c4',1,'daw::basic_bounded_string::npos()'],['../structdaw_1_1sv1_1_1basic__string__view.html#a3a439635dfd18c84df21f64452d317ea',1,'daw::sv1::basic_string_view::npos()'],['../structdaw_1_1sv2_1_1basic__string__view.html#a2b605fa8f0d4c88a0c04ddcfa775f1e8',1,'daw::sv2::basic_string_view::npos()']]],
-  ['nullopt_3808',['nullopt',['../namespacedaw.html#adaccd8328f7cfe41b44eaa0e767e9f88',1,'daw']]]
+  ['name_3803',['name',['../structdaw_1_1_argument.html#a7d5eaaff6d261d58b84390f3c4816cbf',1,'daw::Argument']]],
+  ['never_5fnull_3804',['never_null',['../namespacedaw.html#af106e26c76f4b73d93216e5daac5fb92',1,'daw']]],
+  ['nodiscard_3805',['nodiscard',['../namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf',1,'daw::nodiscard()'],['../namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf',1,'daw::sv2::nodiscard()']]],
+  ['noexcept_3806',['noexcept',['../classdaw_1_1wrap__iter.html#a9b89f8445e732e17a821d051a15e1c5e',1,'daw::wrap_iter']]],
+  ['none_5fof_3807',['none_of',['../namespacedaw_1_1sv2.html#a0407e01d709d047a59a750572016d104',1,'daw::sv2::none_of()'],['../namespacedaw_1_1sv2.html#a0407e01d709d047a59a750572016d104',1,'daw::none_of()']]],
+  ['not_5fme_3808',['not_me',['../namespacedaw.html#abef802ed6bd3568b607c6c3f6b056d2e',1,'daw']]],
+  ['not_5fme_5fd_3809',['not_me_d',['../namespacedaw.html#a8c88cce18493ea4ea90d2201152badce',1,'daw']]],
+  ['not_5fsame_5fv_3810',['not_same_v',['../namespacedaw_1_1traits.html#a89beb89a752ebe425aff3b640d63e469',1,'daw::traits']]],
+  ['nothing_3811',['nothing',['../classdaw_1_1union__pair__t.html#afe0a55503942a3c686d9d17af60ceee1',1,'daw::union_pair_t']]],
+  ['npos_3812',['npos',['../structdaw_1_1basic__bounded__string.html#afde8711eca8f822359d42601736fd2c4',1,'daw::basic_bounded_string::npos()'],['../structdaw_1_1sv1_1_1basic__string__view.html#a3a439635dfd18c84df21f64452d317ea',1,'daw::sv1::basic_string_view::npos()'],['../structdaw_1_1sv2_1_1basic__string__view.html#a2b605fa8f0d4c88a0c04ddcfa775f1e8',1,'daw::sv2::basic_string_view::npos()']]],
+  ['nullopt_3813',['nullopt',['../namespacedaw.html#adaccd8328f7cfe41b44eaa0e767e9f88',1,'daw']]]
 ];

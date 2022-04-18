@@ -85,6 +85,8 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacedaw_1_1cxmath"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1cxmath.html">cxmath</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacedaw_1_1deprecated"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1deprecated.html">deprecated</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacedaw_1_1detectors"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1detectors.html">detectors</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacedaw_1_1exception"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1exception.html">exception</a></td></tr>
@@ -4016,6 +4018,9 @@ Variables</h2></td></tr>
 <tr class="memitem:a6e88ca91fef1ffe7e71248484ed6626e"><td class="memTemplParams" colspan="2">template&lt;typename From , typename To &gt; </td></tr>
 <tr class="memitem:a6e88ca91fef1ffe7e71248484ed6626e"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a6e88ca91fef1ffe7e71248484ed6626e">convertible_to</a></td></tr>
 <tr class="separator:a6e88ca91fef1ffe7e71248484ed6626e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8d48cd2d4cd35c863ca51c3972488a1"><td class="memTemplParams" colspan="2">template&lt;typename Lhs , typename Rhs &gt; </td></tr>
+<tr class="memitem:ac8d48cd2d4cd35c863ca51c3972488a1"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ac8d48cd2d4cd35c863ca51c3972488a1">cvref_of</a></td></tr>
+<tr class="separator:ac8d48cd2d4cd35c863ca51c3972488a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7fffe2a2e6d236f638535ebc6ce148c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:af7fffe2a2e6d236f638535ebc6ce148c"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af7fffe2a2e6d236f638535ebc6ce148c">default_constructible</a> = <a class="el" href="namespacedaw.html#afd84e1e250c4b3e259bd9ec200007f81">requires</a> { T{ }; }</td></tr>
 <tr class="separator:af7fffe2a2e6d236f638535ebc6ce148c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4233,7 +4238,7 @@ Variables</h2></td></tr>
 <tr class="memitem:aa204958271f536b788a1b0c233df6d5e"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa204958271f536b788a1b0c233df6d5e">same_as</a> = std::is_same_v&lt;Lhs, Rhs&gt;</td></tr>
 <tr class="separator:aa204958271f536b788a1b0c233df6d5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24228cc2011898842f35aa9463f7216f"><td class="memTemplParams" colspan="2">template&lt;typename Lhs , typename Rhs &gt; </td></tr>
-<tr class="memitem:a24228cc2011898842f35aa9463f7216f"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a24228cc2011898842f35aa9463f7216f">same_as_rrcv</a></td></tr>
+<tr class="memitem:a24228cc2011898842f35aa9463f7216f"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a24228cc2011898842f35aa9463f7216f">same_as_rrcv</a> = <a class="el" href="namespacedaw_1_1deprecated.html#a1d2cd784f19c465ea8997bd2cca61684">deprecated::same_as_rrcv_v</a>&lt;Lhs, Rhs&gt;</td></tr>
 <tr class="separator:a24228cc2011898842f35aa9463f7216f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81bd40f25bd6d73698785063968b5f7f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a81bd40f25bd6d73698785063968b5f7f"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a81bd40f25bd6d73698785063968b5f7f">SignedStd</a> = std::is_signed_v&lt;std::remove_cvref_t&lt;T&gt;&gt;</td></tr>
@@ -5062,7 +5067,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00214">214</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00223">223</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -5080,7 +5085,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00222">222</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00231">231</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -5098,7 +5103,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00299">299</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00308">308</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -5116,7 +5121,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00302">302</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00311">311</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -5150,7 +5155,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00296">296</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00305">305</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -5466,7 +5471,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00056">56</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00065">65</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -48350,7 +48355,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00384">384</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00393">393</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -48397,7 +48402,7 @@ template&lt;typename T , typename SpecificInt  = void&gt; </div>
 <div class="line">                        std::is_arithmetic_v&lt;T&gt;) or</div>
 <div class="line">                       same_as&lt;T, SpecificInt&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00403">403</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00412">412</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -48426,7 +48431,7 @@ template&lt;typename LHS , typename RHS &gt; </div>
 </div><!-- fragment -->
 <p>Specifies that an expression of the type and value category specified by RHS can be assigned to an lvalue expression whose type is specified by LHS. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00152">152</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00161">161</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -48446,7 +48451,7 @@ template&lt;typename T &gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">= Containers&lt;std::remove_cvref_t&lt;T&gt;&gt; and</div>
 <div class="line">                                  has_kv_mapping_v&lt;std::remove_cvref_t&lt;T&gt;&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00133">133</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00142">142</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -48469,7 +48474,7 @@ template&lt;typename Container &gt; </div>
 <div class="line">      c.push_back( v );</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00324">324</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00333">333</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -48817,7 +48822,7 @@ template&lt;typename To , typename... Args&gt; </div>
 <div class="line">                                To{ <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( args )... };</div>
 <div class="line">                              }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00063">63</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00072">72</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -48835,7 +48840,7 @@ template&lt;typename From , typename To &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00408">408</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00417">417</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -48858,7 +48863,7 @@ template&lt;typename T &gt; </div>
 <div class="line">                         container.end( );</div>
 <div class="line">                       }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00073">73</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00082">82</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -48882,7 +48887,7 @@ template&lt;typename T &gt; </div>
 <div class="line">                                    } -&gt; convertible_to&lt;std::size_t&gt;;</div>
 <div class="line">                                }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00080">80</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00089">89</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -48906,7 +48911,7 @@ template&lt;typename T , typename U &gt; </div>
 <div class="line">                                   } -&gt; convertible_to&lt;U&gt;;</div>
 <div class="line">                               }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00088">88</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00097">97</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -48932,6 +48937,26 @@ template&lt;typename From , typename To &gt; </div>
 
 </div>
 </div>
+<a id="ac8d48cd2d4cd35c863ca51c3972488a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8d48cd2d4cd35c863ca51c3972488a1">&#9670;&nbsp;</a></span>cvref_of</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Lhs , typename Rhs &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::cvref_of</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= same_as &lt; std::remove_cvref_t&lt;Lhs&gt;,</div>
+<div class="line">  std::remove_cvref_t &lt; Rhs &gt;&gt;</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00053">53</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
 <a id="af7fffe2a2e6d236f638535ebc6ce148c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af7fffe2a2e6d236f638535ebc6ce148c">&#9670;&nbsp;</a></span>default_constructible</h2>
 
@@ -48946,7 +48971,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00391">391</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00400">400</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -48967,7 +48992,7 @@ template&lt;typename Derived , typename Base &gt; </div>
 <div class="line">    std::is_base_of_v&lt;Base, Derived&gt; and</div>
 <div class="line">    std::is_convertible_v&lt;const volatile Derived *, const volatile Base *&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00279">279</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00288">288</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -49063,7 +49088,7 @@ template&lt;typename T &gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    std::is_enum_v&lt;std::remove_cvref_t&lt;std::remove_cvref_t&lt;T&gt;&gt;&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00101">101</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00110">110</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -49088,7 +49113,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p>Specifies that the comparison operators == and != on T reflects equality: == yields true if and only if the operands are equal. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00364">364</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00373">373</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -49113,7 +49138,7 @@ template&lt;class T , class U &gt; </div>
 </div><!-- fragment -->
 <p>Specifies that the comparison operators == and != on (possibly mixed) T and U operands yield results consistent with equality. Comparing mixed operands yields results equivalent to comparing the operands converted to their common type. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00376">376</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00385">385</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -49152,7 +49177,7 @@ template&lt;typename T , typename SpecificInt  = void&gt; </div>
 <div class="line">                           std::is_floating_point_v&lt;T&gt;) or</div>
 <div class="line">                          same_as&lt;T, SpecificInt&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00398">398</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00407">407</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -49170,7 +49195,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00120">120</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00129">129</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -49188,7 +49213,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00117">117</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00126">126</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -49284,7 +49309,7 @@ template&lt;typename I &gt; </div>
 <div class="line">    iterator&lt;I&gt; and derived_from &lt; iterator_category_t&lt;I&gt;,</div>
 <div class="line">  std::forward_iterator_tag &gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00315">315</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00324">324</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -49318,7 +49343,7 @@ template&lt;typename Container &gt; </div>
 </div><!-- fragment -->
 <p>Specifies that Container has type alias members key_type and mapped_type. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00125">125</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00134">134</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -49404,7 +49429,7 @@ template&lt;typename Out , typename T &gt; </div>
 <div class="line">        std::forward&lt;T&gt;( t );</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00265">265</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00274">274</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -49429,7 +49454,7 @@ template&lt;typename I &gt; </div>
 <div class="line">  same_as&lt;iterator_category_t&lt;I&gt;, <span class="keywordtype">void</span>&gt;</div>
 <div class="line">    and derived_from&lt;iterator_category_t&lt;I&gt;, std::input_iterator_tag&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00305">305</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00314">314</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -49454,7 +49479,7 @@ template&lt;typename I &gt; </div>
 <div class="line">      { *i };</div>
 <div class="line">    } and weakly_incrementable&lt;I&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00255">255</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00264">264</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -49474,7 +49499,7 @@ template&lt;typename T , typename SpecificInt  = void&gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">= (same_as&lt;SpecificInt, void&gt; and std::is_integral_v&lt;T&gt;) or</div>
 <div class="line">                    same_as&lt;T, SpecificInt&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00394">394</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00403">403</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -49492,7 +49517,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00114">114</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00123">123</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -49510,7 +49535,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00111">111</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00120">120</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -49532,7 +49557,7 @@ template&lt;typename Func , typename... Args&gt; </div>
 <div class="line">      <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">std::invoke</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Func, f ), <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Args, args )... );</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00143">143</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00152">152</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -49556,7 +49581,7 @@ template&lt;typename Func , typename Result , typename... Args&gt; </div>
 <div class="line">        } -&gt; convertible_to&lt;Result&gt;;</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00247">247</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00256">256</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -49850,7 +49875,7 @@ template&lt;typename Alloc , typename  = void&gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    std::is_move_constructible_v&lt;typename Alloc::value_type&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00387">387</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00396">396</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -50396,7 +50421,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p>Specifies that T is an object type that can be moved (that is, it can be move constructed, move assigned, and lvalues of type T can be swapped). </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00201">201</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00210">210</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -50421,7 +50446,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p>Satisfied if T is a reference type, or if it is an object type where an object of that type can be constructed from an rvalue of that type in both direct- and copy-initialization contexts, with the usual semantics. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00168">168</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00177">177</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -50465,7 +50490,7 @@ template&lt;typename Arg , typename Class &gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">= not</div>
 <div class="line">  same_as&lt;Class, std::remove_cvref_t&lt;Arg&gt;&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00048">48</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00057">57</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -50485,7 +50510,7 @@ template&lt;typename Arg , typename Class &gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">= not</div>
 <div class="line">  same_as&lt;Class, std::decay_t&lt;Arg&gt;&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00052">52</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00061">61</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -50535,7 +50560,7 @@ template&lt;typename I , typename T &gt; </div>
 <div class="line">      *i++ = <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( T, t ); </div>
 <div class="line">    }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00284">284</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00293">293</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -50605,7 +50630,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00070">70</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00079">79</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -50703,14 +50728,12 @@ template&lt;typename Lhs , typename Rhs &gt; </div>
 template&lt;typename Lhs , typename Rhs &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">concept daw::same_as_rrcv</td>
+          <td class="memname">concept daw::same_as_rrcv = <a class="el" href="namespacedaw_1_1deprecated.html#a1d2cd784f19c465ea8997bd2cca61684">deprecated::same_as_rrcv_v</a>&lt;Lhs, Rhs&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= same_as &lt; std::remove_cvref_t&lt;Lhs&gt;,</div>
-<div class="line">  std::remove_cvref_t &lt; Rhs &gt;&gt;</div>
-</div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00044">44</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00050">50</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -50728,7 +50751,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00108">108</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00117">117</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -50775,7 +50798,7 @@ template&lt;typename T &gt; </div>
 <div class="line">                       same_as &lt; typename std::remove_cvref_t&lt;T&gt;::value_type,</div>
 <div class="line">  <span class="keywordtype">char</span> &gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00096">96</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00105">105</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -50800,7 +50823,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p>Specifies that expressions of the type and value category encoded by T and U are swappable with each other. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00190">190</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00199">199</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -51005,7 +51028,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00105">105</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00114">114</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -51033,7 +51056,7 @@ template&lt;typename I &gt; </div>
 <div class="line">                     i++;</div>
 <div class="line">                   }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00226">226</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00235">235</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>
@@ -51052,7 +51075,7 @@ template&lt;typename I &gt; </div>
 <div class="ttc" id="anamespacedaw_html_a6df1567073d79619c8174c1b7fb2b752"><div class="ttname"><a href="namespacedaw.html#a6df1567073d79619c8174c1b7fb2b752">daw::UInt64</a></div><div class="ttdeci">UInt64</div><div class="ttdef"><b>Definition:</b> <a href="daw__uint__buffer_8h_source.html#l00023">daw_uint_buffer.h:23</a></div></div>
 <div class="ttc" id="adaw__move_8h_html_a92169421367fae95c111acee1e0ebe60"><div class="ttname"><a href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a></div><div class="ttdeci">#define DAW_FWD2(Type, Value)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00042">daw_move.h:42</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ae2ead15b03708772ff9b8c201e1dc335"><div class="ttname"><a href="namespacedaw.html#ae2ead15b03708772ff9b8c201e1dc335">daw::is_detected_exact</a></div><div class="ttdeci">std::is_same&lt; Expected, detected_t&lt; Op, Args... &gt; &gt; is_detected_exact</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00199">cpp_17.h:199</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a89a21d24a040b20c83ed271337e1c09b"><div class="ttname"><a href="namespacedaw.html#a89a21d24a040b20c83ed271337e1c09b">daw::Pointers</a></div><div class="ttdeci">concept Pointers</div><div class="ttdef"><b>Definition:</b> <a href="daw__concepts_8h_source.html#l00070">daw_concepts.h:70</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a89a21d24a040b20c83ed271337e1c09b"><div class="ttname"><a href="namespacedaw.html#a89a21d24a040b20c83ed271337e1c09b">daw::Pointers</a></div><div class="ttdeci">concept Pointers</div><div class="ttdef"><b>Definition:</b> <a href="daw__concepts_8h_source.html#l00079">daw_concepts.h:79</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ab5eec8bf38fc54bec8b954609a724d8a"><div class="ttname"><a href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a></div><div class="ttdeci">constexpr auto invoke(F &amp;&amp;f, Args &amp;&amp;...args) noexcept(noexcept(DAW_FWD2(F, f)(DAW_FWD2(Args, args)...))) -&gt; decltype(DAW_FWD2(F, f)(DAW_FWD2(Args, args)...))</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00357">cpp_17.h:357</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ad677e69cc557fad47cf23d9ba4396f8a"><div class="ttname"><a href="namespacedaw.html#ad677e69cc557fad47cf23d9ba4396f8a">daw::to_uint32</a></div><div class="ttdeci">constexpr UInt32 to_uint32(Number num)</div><div class="ttdef"><b>Definition:</b> <a href="daw__uint__buffer_8h_source.html#l00035">daw_uint_buffer.h:35</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a05cb5775a1268bd66ef632bcfd4e4bd7"><div class="ttname"><a href="namespacedaw.html#a05cb5775a1268bd66ef632bcfd4e4bd7">daw::is_detected_v</a></div><div class="ttdeci">constexpr bool is_detected_v</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00190">cpp_17.h:190</a></div></div>
