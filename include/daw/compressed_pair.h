@@ -17,6 +17,7 @@
 #include <tuple>
 #include <type_traits>
 #include <utility>
+#include <vector>
 
 namespace daw {
 	struct default_init_tag {};
@@ -40,7 +41,7 @@ namespace daw {
 		  : m_value( ) {}
 
 		explicit constexpr compressed_pair_elem(
-		  not_me_d<compressed_pair_elem> auto &&u )
+		  not_decay_of<compressed_pair_elem> auto &&u )
 		  : m_value( DAW_FWD( u ) ) {}
 
 		template<class... Args, size_t... Indexes>
@@ -72,7 +73,7 @@ namespace daw {
 		  : value_type( ) {}
 
 		explicit constexpr compressed_pair_elem(
-		  not_me_d<compressed_pair_elem> auto &&u )
+		  not_decay_of<compressed_pair_elem> auto &&u )
 		  : value_type( DAW_FWD( u ) ) {}
 
 		template<class... Args, size_t... Indexes>
