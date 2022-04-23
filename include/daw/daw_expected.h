@@ -182,7 +182,7 @@ namespace daw {
 			std::rethrow_exception( *std::get_if<std::exception_ptr>( &m_value ) );
 		}
 
-		[[nodiscard]] reference get( ) {
+		[[nodiscard]] reference get( ) & {
 			if( empty( ) ) {
 				std::terminate( );
 			}
@@ -190,7 +190,23 @@ namespace daw {
 			return *std::get_if<value_type>( &m_value );
 		}
 
-		[[nodiscard]] const_reference get( ) const {
+		[[nodiscard]] const_reference get( ) const & {
+			if( empty( ) ) {
+				std::terminate( );
+			}
+			throw_if_exception( );
+			return *std::get_if<value_type>( &m_value );
+		}
+
+		[[nodiscard]] value_type get( ) && {
+			if( empty( ) ) {
+				std::terminate( );
+			}
+			throw_if_exception( );
+			return DAW_MOVE( *std::get_if<value_type>( &m_value ) );
+		}
+
+		[[nodiscard]] const_reference get( ) const && {
 			if( empty( ) ) {
 				std::terminate( );
 			}
