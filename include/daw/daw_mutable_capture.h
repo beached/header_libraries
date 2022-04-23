@@ -10,6 +10,9 @@
 
 #include <daw/daw_move.h>
 
+#include <memory>
+#include <type_traits>
+
 namespace daw {
 	template<typename T>
 	class mutable_capture {
@@ -26,6 +29,14 @@ namespace daw {
 		[[nodiscard]] constexpr T move_out( ) const
 		  noexcept( std::is_nothrow_move_constructible_v<T> ) {
 			return DAW_MOVE( m_value );
+		}
+
+		[[nodiscard]] constexpr T &get( ) const noexcept {
+			return m_value;
+		}
+
+		[[nodiscard]] constexpr T *ptr( ) const noexcept {
+			return std::addressof( m_value );
 		}
 
 		[[nodiscard]] constexpr operator T &( ) const &noexcept {
