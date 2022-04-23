@@ -797,46 +797,6 @@ namespace daw {
 	}
 
 	template<typename T>
-	class mutable_capture {
-		mutable T m_value;
-
-	public:
-		explicit constexpr mutable_capture( T const &value )
-		  : m_value( value ) {}
-		explicit constexpr mutable_capture( T &value )
-		  : m_value( value ) {}
-		explicit constexpr mutable_capture( T &&value )
-		  : m_value( DAW_MOVE( value ) ) {}
-
-		constexpr operator T &( ) const &noexcept {
-			return m_value;
-		}
-
-		constexpr operator T( ) const &&noexcept {
-			return DAW_MOVE( m_value );
-		}
-
-		[[nodiscard]] constexpr T &operator*( ) const &noexcept {
-			return m_value;
-		}
-
-		[[nodiscard]] constexpr T operator*( ) const &&noexcept {
-			return DAW_MOVE( m_value );
-		}
-
-		[[nodiscard]] constexpr T *operator->( ) const noexcept {
-			return &m_value;
-		}
-	};
-
-	template<typename T>
-	mutable_capture( T const & ) -> mutable_capture<T>;
-	template<typename T>
-	mutable_capture( T & ) -> mutable_capture<T>;
-	template<typename T>
-	mutable_capture( T && ) -> mutable_capture<T>;
-
-	template<typename T>
 	class countable_resource_t {
 		static std::atomic<T> m_resource_count;
 
