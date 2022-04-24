@@ -925,6 +925,7 @@ namespace daw {
 			}
 		}
 
+	public:
 		/// @brief Default constructs n objects starting at m_end
 		/// Exception safety: strong.
 		/// @throws if construction throws
@@ -941,6 +942,11 @@ namespace daw {
 			}
 		}
 
+		constexpr void clear( ) noexcept {
+			base_destruct_at_end( m_begin );
+		}
+
+	private:
 		[[nodiscard]] constexpr iterator make_iter( pointer p ) noexcept {
 			return iterator( p );
 		}
@@ -1084,10 +1090,6 @@ namespace daw {
 			return m_endcap_.first( );
 		}
 
-		constexpr void clear( ) noexcept {
-			base_destruct_at_end( m_begin );
-		}
-
 		constexpr void base_destruct_at_end( pointer new_last ) noexcept {
 			pointer soon_to_be_end = m_end;
 			while( new_last != soon_to_be_end ) {
@@ -1136,6 +1138,7 @@ namespace daw {
 
 		constexpr void move_assign_alloc( vector &, std::false_type ) noexcept {}
 
+	public:
 		[[nodiscard]] friend constexpr bool operator==( vector const &x,
 		                                                vector const &y ) {
 			size_type const sz = x.size( );
