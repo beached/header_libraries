@@ -11,6 +11,7 @@
 #include "daw_string_view2_fwd.h"
 
 #include "daw_algorithm.h"
+#include "daw_assume.h"
 #include "daw_consteval.h"
 #include "daw_cpp_feature_check.h"
 #include "daw_exception.h"
@@ -35,6 +36,18 @@
 #include <stdexcept>
 
 #include <vector>
+
+#if defined( DAW_NO_STRING_VIEW_DBG_CHECK )
+#define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... )                             \
+	do {                                                                         \
+	} while( false )
+#elif not defined( NDEBUG )
+#define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... )                             \
+	daw::exception::dbg_precondition_check<std::out_of_range>( ( Bool ),         \
+	                                                           __VA_ARGS__ )
+#else
+#define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... ) DAW_ASSUME( Bool )
+#endif
 
 /// @brief Require Pred to be a Unary Predicate
 /// @param Pred Unary predicate
@@ -359,10 +372,8 @@ namespace daw {
 
 			template<string_view_bounds_type Bounds>
 			DAW_ATTRIB_INLINE constexpr void dec_front( size_type n ) {
-				if constexpr( is_last_a_pointer_v<Bounds> ) {
-					m_first += static_cast<difference_type>( n );
-				} else {
-					m_first += static_cast<difference_type>( n );
+				m_first += static_cast<difference_type>( n );
+				if constexpr( not is_last_a_pointer_v<Bounds> ) {
 					m_last -= n;
 				}
 			}
@@ -373,6 +384,23 @@ namespace daw {
 					m_last -= static_cast<difference_type>( n );
 				} else {
 					m_last -= n;
+				}
+			}
+
+			template<string_view_bounds_type Bounds>
+			DAW_ATTRIB_INLINE constexpr void inc_front( size_type n ) {
+				m_first -= static_cast<difference_type>( n );
+				if constexpr( not is_last_a_pointer_v<Bounds> ) {
+					m_last += n;
+				}
+			}
+
+			template<string_view_bounds_type Bounds>
+			DAW_ATTRIB_INLINE constexpr void inc_back( size_type n ) {
+				if constexpr( is_last_a_pointer_v<Bounds> ) {
+					m_last += static_cast<difference_type>( n );
+				} else {
+					m_last += n;
 				}
 			}
 
@@ -457,7 +485,11 @@ namespace daw {
 			                             size_type count,
 			                             dont_clip_to_bounds_t ) noexcept
 			  : m_first( sv.data( ) )
-			  , m_last( make_last<BoundsType>( sv.data( ), count ) ) {}
+			  , m_last( make_last<BoundsType>( sv.data( ), count ) ) {
+				DAW_STRING_VIEW_DBG_RNG_CHECK(
+				  sv.size( ) >= count,
+				  "Attempt to access more elements that are available" );
+			}
 
 			/// @brief Construct a string_view from a type that forms a
 			/// contiguous range of characters
@@ -497,7 +529,11 @@ namespace daw {
 			constexpr basic_string_view( StringView &&sv, size_type count,
 			                             dont_clip_to_bounds_t ) noexcept
 			  : m_first( std::data( sv ) )
-			  , m_last( make_last<BoundsType>( m_first, count ) ) {}
+			  , m_last( make_last<BoundsType>( m_first, count ) ) {
+				DAW_STRING_VIEW_DBG_RNG_CHECK(
+				  std::size( sv ) >= count,
+				  "Attempt to pop back more elements that are available" );
+			}
 
 			/// @brief Construct a string_view from a character array. Assumes
 			/// a string literal like array with last element having a value
@@ -506,11 +542,12 @@ namespace daw {
 			/// @post data( ) == std::data( string_literal )
 			/// @post size( ) == std::size( string_literal ) - 1
 			template<std::size_t N>
-			DAW_CONSTEVAL basic_string_view( CharT const ( &string_literal )[N] ) noexcept
+			DAW_CONSTEVAL
+			basic_string_view( CharT const ( &string_literal )[N] ) noexcept
 			  : m_first( string_literal )
 			  , m_last( make_last<BoundsType>( string_literal, N - 1 ) ) {
 				static_assert( N > 0 );
-				if( string_literal[N-1] != '\0' ) {
+				if( string_literal[N - 1] != '\0' ) {
 					m_last = make_last<BoundsType>( string_literal, N );
 				}
 			}
@@ -658,6 +695,8 @@ namespace daw {
 			/// @return data( )[pos]
 			[[nodiscard]] constexpr const_reference
 			operator[]( size_type pos ) const {
+				DAW_STRING_VIEW_DBG_RNG_CHECK(
+				  pos < size( ), "Attempt to access basic_string_view past end" );
 				return m_first[pos];
 			}
 
@@ -675,6 +714,9 @@ namespace daw {
 			/// @pre data( ) != nullptr
 			/// @pre size( ) > 0
 			[[nodiscard]] constexpr const_reference front( ) const {
+				DAW_STRING_VIEW_DBG_RNG_CHECK(
+				  not empty( ),
+				  "Attempt to reference an element of an empty basic_string_view" );
 				return *m_first;
 			}
 
@@ -682,6 +724,9 @@ namespace daw {
 			/// @pre data( ) != nullptr
 			/// @pre size( ) > 0
 			[[nodiscard]] constexpr const_reference back( ) const {
+				DAW_STRING_VIEW_DBG_RNG_CHECK(
+				  not empty( ),
+				  "Attempt to reference an element of an empty basic_string_view" );
 				return *std::prev( end( ) );
 			}
 			//******************************
@@ -712,6 +757,9 @@ namespace daw {
 			/// empty, it does nothing.
 			/// @pre n <= size( )
 			constexpr void remove_prefix( size_type n, dont_clip_to_bounds_t ) {
+				DAW_STRING_VIEW_DBG_RNG_CHECK(
+				  size( ) >= n,
+				  "Attempt to remove prefix too many elements in a basic_string_view" );
 				dec_front<BoundsType>( n );
 			}
 
@@ -724,6 +772,9 @@ namespace daw {
 			/// @brief Increment the data( ) pointer by 1.
 			/// @pre size( ) >= 1
 			constexpr void remove_prefix( dont_clip_to_bounds_t ) {
+				DAW_STRING_VIEW_DBG_RNG_CHECK(
+				  size( ) >= 1,
+				  "Attempt to remove prefix too many elements in a basic_string_view" );
 				dec_front<BoundsType>( size_type{ 1U } );
 			}
 
@@ -736,6 +787,9 @@ namespace daw {
 			/// @brief Decrement the size( ) by n.
 			/// @pre n <= size( )
 			constexpr void remove_suffix( size_type n, dont_clip_to_bounds_t ) {
+				DAW_STRING_VIEW_DBG_RNG_CHECK(
+				  size( ) >= n,
+				  "Attempt to remove suffix too many elements in a basic_string_view" );
 				dec_back<BoundsType>( n );
 			}
 
@@ -747,6 +801,8 @@ namespace daw {
 			/// @brief Decrement the size( ) by 1
 			/// @pre not empty( )
 			constexpr void remove_suffix( dont_clip_to_bounds_t ) {
+				DAW_STRING_VIEW_DBG_RNG_CHECK(
+				  size( ) >= 1, "Attempt to remove suffix an empty basic_string_view" );
 				dec_back<BoundsType>( size_type{ 1U } );
 			}
 
@@ -761,6 +817,8 @@ namespace daw {
 			/// @brief Increment the data( ) pointer by 1. Does not check bounds
 			/// @return front( ) prior to increment
 			[[nodiscard]] constexpr CharT pop_front( dont_clip_to_bounds_t ) {
+				DAW_STRING_VIEW_DBG_RNG_CHECK(
+				  size( ) >= 1, "Attempt to pop front an empty basic_string_view" );
 				auto result = front( );
 				remove_prefix( 1U, dont_clip_to_bounds );
 				return result;
@@ -784,6 +842,9 @@ namespace daw {
 			/// @return a new string_view of size count.
 			[[nodiscard]] constexpr basic_string_view
 			pop_front( size_type count, dont_clip_to_bounds_t ) {
+				DAW_STRING_VIEW_DBG_RNG_CHECK(
+				  size( ) >= count,
+				  "Attempt to pop front too many elements basic_string_view" );
 				basic_string_view result = substr( 0, count, dont_clip_to_bounds );
 				remove_prefix( count, dont_clip_to_bounds );
 				return result;
@@ -889,6 +950,9 @@ namespace daw {
 			/// @brief Return the last character and decrement the size by 1
 			/// @pre not empty( )
 			[[nodiscard]] constexpr CharT pop_back( dont_clip_to_bounds_t ) {
+				DAW_STRING_VIEW_DBG_RNG_CHECK(
+				  size( ) >= 1,
+				  "Attempt to pop back more elements that are available" );
 				auto result = back( );
 				remove_suffix( dont_clip_to_bounds );
 				return result;
@@ -912,6 +976,9 @@ namespace daw {
 			/// @return a substr of size count ending at end of string_view
 			[[nodiscard]] constexpr basic_string_view
 			pop_back( size_type count, dont_clip_to_bounds_t ) {
+				DAW_STRING_VIEW_DBG_RNG_CHECK(
+				  size( ) >= count,
+				  "Attempt to pop back more elements that are available" );
 				basic_string_view result = substr( size( ) - count, npos );
 				remove_suffix( count );
 				return result;
@@ -1387,8 +1454,8 @@ namespace daw {
 			/// @pre pos + count <= size( )
 			[[nodiscard]] constexpr basic_string_view
 			substr( size_type pos, size_type count, dont_clip_to_bounds_t ) const {
-				DAW_DBG_PRECONDITION_CHECK(
-				  std::out_of_range, pos + count <= size( ),
+				DAW_STRING_VIEW_DBG_RNG_CHECK(
+				  pos + count <= size( ),
 				  "Attempt to access basic_string_view past end" );
 				return { m_first + pos, m_first + pos + count };
 			}
@@ -1414,9 +1481,8 @@ namespace daw {
 			/// @pre pos <= size( )
 			[[nodiscard]] constexpr basic_string_view
 			substr( size_type pos, dont_clip_to_bounds_t ) const {
-				DAW_DBG_PRECONDITION_CHECK(
-				  std::out_of_range, pos <= size( ),
-				  "Attempt to access basic_string_view past end" );
+				DAW_STRING_VIEW_DBG_RNG_CHECK(
+				  pos <= size( ), "Attempt to access basic_string_view past end" );
 				return substr( pos, size( ) - pos, dont_clip_to_bounds );
 			}
 
@@ -2280,6 +2346,38 @@ namespace daw {
 				result.trim_suffix( );
 				return result;
 			}
+
+			/// @brief Decrement the data( ) pointer by 1.
+			/// @pre data( ) != null and data( ) - 1 is a valid object
+			constexpr void expand_prefix( ) noexcept {
+				DAW_STRING_VIEW_DBG_RNG_CHECK(
+				  data( ), "Attempt to expand a null basic_string_view" );
+				inc_front<BoundsType>( 1 );
+			}
+
+			/// @brief Decrement the data( ) pointer by n.
+			/// @pre data( ) != null and data( ) - n is a valid object
+			constexpr void expand_prefix( size_type n ) {
+				DAW_STRING_VIEW_DBG_RNG_CHECK(
+				  data( ), "Attempt to expand a null basic_string_view" );
+				inc_front<BoundsType>( n );
+			}
+
+			/// @brief Increment the size( ) by 1
+			/// @pre data( ) != null and data( ) + size( ) + 1 is a valid object
+			constexpr void expand_suffix( ) noexcept {
+				DAW_STRING_VIEW_DBG_RNG_CHECK(
+				  data( ), "Attempt to expand a null basic_string_view" );
+				inc_back<BoundsType>( 1 );
+			}
+
+			/// @brief Increment the size( ) by n
+			/// @pre data( ) != null and data( ) + size( ) + n is a valid object
+			constexpr void expand_suffix( size_type n ) {
+				DAW_STRING_VIEW_DBG_RNG_CHECK(
+				  data( ), "Attempt to expand a null basic_string_view" );
+				inc_back<BoundsType>( n );
+			}
 		}; // basic_string_view
 
 		// CTAD
@@ -2405,6 +2503,7 @@ namespace std {
 	};
 } // namespace std
 
+#undef DAW_STRING_VIEW_DBG_RNG_CHECK
 #undef DAW_REQ_UNARY_PRED
 #undef DAW_REQ_CONTIG_CHAR_RANGE
 #undef DAW_REQ_CONTIG_CHAR_RANGE
