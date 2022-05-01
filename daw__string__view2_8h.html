@@ -78,11 +78,12 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="daw__string__view2__fwd_8h_source.html">daw_string_view2_fwd.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__assume_8h_source.html">daw_assume.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__consteval_8h_source.html">daw_consteval.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="daw__exception_8h_source.html">daw_exception.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__fnv1a__hash_8h_source.html">daw_fnv1a_hash.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__generic__hash_8h_source.html">daw_generic_hash.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__likely_8h_source.html">daw_likely.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__logic_8h_source.html">daw_logic.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__math_8h_source.html">daw_math.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
@@ -148,6 +149,12 @@ Macros</h2></td></tr>
 <tr class="memitem:a346e45313282713a9f93b4a27f3e93b8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__string__view2_8h.html#a346e45313282713a9f93b4a27f3e93b8">DAW_REQ_UNARY_PRED</a>(Pred,  Type)</td></tr>
 <tr class="memdesc:a346e45313282713a9f93b4a27f3e93b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Require Pred to be a Unary Predicate.  <a href="daw__string__view2_8h.html#a346e45313282713a9f93b4a27f3e93b8">More...</a><br /></td></tr>
 <tr class="separator:a346e45313282713a9f93b4a27f3e93b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c80b2fcee6529c6ae9f46d65ab7d843"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__string__view2_8h.html#a3c80b2fcee6529c6ae9f46d65ab7d843">DAW_STRING_VIEW_DBG_RNG_CHECK</a>(Bool, ...)&#160;&#160;&#160;<a class="el" href="daw__assume_8h.html#af826633a286b2074a6fc3485dac504da">DAW_ASSUME</a>( Bool )</td></tr>
+<tr class="separator:a3c80b2fcee6529c6ae9f46d65ab7d843"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac929a634b2237194c681494185937fc6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__string__view2_8h.html#ac929a634b2237194c681494185937fc6">DAW_STRING_VIEW_PRECOND_CHECK</a>(Bool, ...)</td></tr>
+<tr class="separator:ac929a634b2237194c681494185937fc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a308e74079ad5ae9525359005663f45ff"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__string__view2_8h.html#a308e74079ad5ae9525359005663f45ff">DAW_STRING_VIEW_RNG_CHECK</a>(Bool, ...)</td></tr>
+<tr class="separator:a308e74079ad5ae9525359005663f45ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -226,7 +233,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00056">56</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00096">96</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
 
 </div>
 </div>
@@ -268,7 +275,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00049">49</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00089">89</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
 
 </div>
 </div>
@@ -299,7 +306,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00063">63</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00103">103</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
 
 </div>
 </div>
@@ -340,7 +347,101 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00042">42</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00082">82</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
+
+</div>
+</div>
+<a id="a3c80b2fcee6529c6ae9f46d65ab7d843"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c80b2fcee6529c6ae9f46d65ab7d843">&#9670;&nbsp;</a></span>DAW_STRING_VIEW_DBG_RNG_CHECK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_STRING_VIEW_DBG_RNG_CHECK</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">Bool, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;<a class="el" href="daw__assume_8h.html#af826633a286b2074a6fc3485dac504da">DAW_ASSUME</a>( Bool )</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00052">52</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
+
+</div>
+</div>
+<a id="ac929a634b2237194c681494185937fc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac929a634b2237194c681494185937fc6">&#9670;&nbsp;</a></span>DAW_STRING_VIEW_PRECOND_CHECK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_STRING_VIEW_PRECOND_CHECK</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">Bool, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">do</span> {                                                                         \</div>
+<div class="line">  } <span class="keywordflow">while</span>( <span class="keyword">false</span> )</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00070">70</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
+
+</div>
+</div>
+<a id="a308e74079ad5ae9525359005663f45ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a308e74079ad5ae9525359005663f45ff">&#9670;&nbsp;</a></span>DAW_STRING_VIEW_RNG_CHECK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_STRING_VIEW_RNG_CHECK</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">Bool, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">do</span> {                                                                         \</div>
+<div class="line">  } <span class="keywordflow">while</span>( <span class="keyword">false</span> )</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00074">74</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
 
 </div>
 </div>
