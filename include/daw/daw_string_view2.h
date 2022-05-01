@@ -732,8 +732,10 @@ namespace daw {
 			/// @throws std::out_of_range when pos >= size( )
 			/// @return data( )[pos]
 			[[nodiscard]] constexpr const_reference at( size_type pos ) const {
-				DAW_STRING_VIEW_RNG_CHECK(
-				  pos < size( ), "Attempt to access basic_string_view past end" );
+				if( DAW_UNLIKELY( not( pos < size( ) ) ) ) {
+					throw std::out_of_range(
+					  "Attempt to access basic_string_view past end" );
+				}
 				return operator[]( pos );
 			}
 
