@@ -14,9 +14,9 @@
 #include "daw_assume.h"
 #include "daw_consteval.h"
 #include "daw_cpp_feature_check.h"
-#include "daw_exception.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_generic_hash.h"
+#include "daw_likely.h"
 #include "daw_logic.h"
 #include "daw_math.h"
 #include "daw_move.h"
@@ -41,12 +41,39 @@
 #define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... )                             \
 	do {                                                                         \
 	} while( false )
-#elif not defined( NDEBUG )
+#elif not defined( NDEBUG ) or defined( DEBUG )
 #define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... )                             \
-	daw::exception::dbg_precondition_check<std::out_of_range>( ( Bool ),         \
-	                                                           __VA_ARGS__ )
+	if( DAW_UNLIKELY( not( Bool ) ) ) {                                          \
+		throw std::out_of_range( __VA_ARGS__ );                                    \
+	}                                                                            \
+	do {                                                                         \
+	} while( false )
 #else
 #define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... ) DAW_ASSUME( Bool )
+#endif
+
+#if not defined( DAW_NO_STRING_VIEW_PRECOND_CHECKS )
+#define DAW_STRING_VIEW_PRECOND_CHECK( Bool, ... )                             \
+	if( DAW_UNLIKELY( not( Bool ) ) ) {                                          \
+		std::terminate( );                                                         \
+	}                                                                            \
+	do {                                                                         \
+	} while( false )
+
+#define DAW_STRING_VIEW_RNG_CHECK( Bool, ... )                                 \
+	if( DAW_UNLIKELY( not( Bool ) ) ) {                                          \
+		throw std::out_of_range( __VA_ARGS__ );                                    \
+	}                                                                            \
+	do {                                                                         \
+	} while( false )
+#else
+#define DAW_STRING_VIEW_PRECOND_CHECK( Bool, ... )                             \
+	do {                                                                         \
+	} while( false )
+
+#define DAW_STRING_VIEW_RNG_CHECK( Bool, ... )                                 \
+	do {                                                                         \
+	} while( false )
 #endif
 
 /// @brief Require Pred to be a Unary Predicate
@@ -432,8 +459,8 @@ namespace daw {
 			DAW_CONSTEVAL basic_string_view( std::nullptr_t, size_type n )
 			  : m_first( nullptr )
 			  , m_last( make_last<BoundsType>( nullptr, nullptr ) ) {
-				daw::exception::precondition_check(
-				  n == 0, "nullptr can only form an empty range" );
+				DAW_STRING_VIEW_PRECOND_CHECK( n == 0,
+				                               "nullptr can only form an empty range" );
 			}
 
 			/// @brief Construct a string_view
@@ -705,7 +732,7 @@ namespace daw {
 			/// @throws std::out_of_range when pos >= size( )
 			/// @return data( )[pos]
 			[[nodiscard]] constexpr const_reference at( size_type pos ) const {
-				daw::exception::precondition_check<std::out_of_range>(
+				DAW_STRING_VIEW_RNG_CHECK(
 				  pos < size( ), "Attempt to access basic_string_view past end" );
 				return operator[]( pos );
 			}
@@ -1397,7 +1424,8 @@ namespace daw {
 			/// @pre size( ) >= new_size
 			/// @post size( ) == new_size
 			constexpr void resize( size_type new_size ) {
-				DAW_DBG_PRECONDITION_CHECK( std::out_of_range, new_size <= size( ) );
+				DAW_STRING_VIEW_DBG_RNG_CHECK( new_size <= size( ),
+				                               "newsize is larger than size( )" );
 				m_last = make_last<BoundsType>(
 				  m_first,
 				  std::next( m_first, static_cast<difference_type>( new_size ) ) );
@@ -1411,9 +1439,8 @@ namespace daw {
 			/// @return number of characters copied
 			constexpr size_type copy( pointer dest, size_type count,
 			                          size_type pos ) const {
-				DAW_DBG_PRECONDITION_CHECK(
-				  std::out_of_range, pos <= size( ),
-				  "Attempt to access basic_string_view past end" );
+				DAW_STRING_VIEW_DBG_RNG_CHECK(
+				  pos <= size( ), "Attempt to access basic_string_view past end" );
 
 				size_type const rlen = ( std::min )( count, size( ) - pos );
 				if( rlen > 0 ) {
@@ -1437,10 +1464,8 @@ namespace daw {
 			/// @returns a new basic_string_view of the sub-range
 			[[nodiscard]] constexpr basic_string_view
 			substr( size_type pos, size_type count ) const {
-
-				DAW_DBG_PRECONDITION_CHECK(
-				  std::out_of_range, pos <= size( ),
-				  "Attempt to access basic_string_view past end" );
+				DAW_STRING_VIEW_DBG_RNG_CHECK(
+				  pos <= size( ), "Attempt to access basic_string_view past end" );
 				auto const rcount =
 				  static_cast<size_type>( ( std::min )( count, size( ) - pos ) );
 				return { m_first + pos, m_first + pos + rcount };
@@ -2504,6 +2529,8 @@ namespace std {
 } // namespace std
 
 #undef DAW_STRING_VIEW_DBG_RNG_CHECK
+#undef DAW_STRING_VIEW_RNG_CHECK
+#undef DAW_STRING_VIEW_PRECOND_CHECK
 #undef DAW_REQ_UNARY_PRED
 #undef DAW_REQ_CONTIG_CHAR_RANGE
 #undef DAW_REQ_CONTIG_CHAR_RANGE
