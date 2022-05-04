@@ -956,6 +956,16 @@ namespace daw::traits {
 	                     copy_ref_t<std::remove_reference_t<To> const, To>,
 	                     copy_ref_t<daw::remove_cvref_t<To>, To>>;
 
+	template<typename T>
+	struct member_type_of;
+
+	template<typename T, typename M>
+	struct member_type_of<M T::*> {
+		using type = M;
+	};
+
+	template<typename T>
+	using member_type_of_t = typename member_type_of<T>::type;
 } // namespace daw::traits
 
 namespace daw {
