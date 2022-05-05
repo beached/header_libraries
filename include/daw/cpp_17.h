@@ -138,6 +138,7 @@ namespace daw {
 		return t;
 	}
 
+	template<template<class...> class, class...>
 	struct nonesuch {
 		~nonesuch( ) = delete;
 		nonesuch( nonesuch const & ) = delete;
@@ -146,8 +147,12 @@ namespace daw {
 		nonesuch &operator=( nonesuch && ) = delete;
 	};
 
-	template<template<class...> class, class...>
-	using nonesuch_t = nonesuch;
+	template<typename>
+	inline constexpr bool is_nonesuch_v = false;
+
+	template<template<class...> class Op, class... Args>
+	inline constexpr bool is_nonesuch_v<nonesuch<Op, Args...>> = true;
+
 #if defined( _MSC_VER )
 #if _MSC_VER < 1930 and not defined( DAW_NO_CONCEPTS )
 #define DAW_NO_CONCEPTS
@@ -185,11 +190,11 @@ namespace daw {
 
 	template<template<class...> class Op, class... Args>
 	using is_detected =
-	  typename cpp_17_details::detector<nonesuch_t<Op, Args...>, void, Op,
+	  typename cpp_17_details::detector<nonesuch<Op, Args...>, void, Op,
 	                                    Args...>::value_t;
 
 	template<template<class...> class Op, class... Args>
-	using detected_t = typename cpp_17_details::detector<nonesuch_t<Op, Args...>,
+	using detected_t = typename cpp_17_details::detector<nonesuch<Op, Args...>,
 	                                                     void, Op, Args...>::type;
 
 #ifndef DAW_HAS_CONCEPTS
