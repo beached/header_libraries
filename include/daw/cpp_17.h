@@ -140,6 +140,7 @@ namespace daw {
 
 	template<template<class...> class, class...>
 	struct nonesuch {
+		nonesuch( ) = delete; // prevent pre C++20 aggregate construction
 		~nonesuch( ) = delete;
 		nonesuch( nonesuch const & ) = delete;
 		nonesuch operator=( nonesuch const & ) = delete;
