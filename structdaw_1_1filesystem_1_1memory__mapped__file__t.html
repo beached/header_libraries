@@ -79,10 +79,10 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:af594c90b25cf4b5fcf3a6ffec954cce2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#af594c90b25cf4b5fcf3a6ffec954cce2">const_pointer</a> = typename std::conditional&lt; std::is_const&lt; T &gt;::value, T, T const  &gt;::type *</td></tr>
-<tr class="separator:af594c90b25cf4b5fcf3a6ffec954cce2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42e6ba0b18d7f899ebb3d8f60e3a1dbe"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a42e6ba0b18d7f899ebb3d8f60e3a1dbe">const_reference</a> = typename std::conditional&lt; std::is_const&lt; T &gt;::value, T, T const  &gt;::type &amp;</td></tr>
-<tr class="separator:a42e6ba0b18d7f899ebb3d8f60e3a1dbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a310bafe1186e99c31af22a171c87c5e5"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a310bafe1186e99c31af22a171c87c5e5">const_pointer</a> = typename std::conditional&lt; std::is_const_v&lt; T &gt;, T, T const  &gt;::type *</td></tr>
+<tr class="separator:a310bafe1186e99c31af22a171c87c5e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a734b05659702ad08c45454a9267f9413"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a734b05659702ad08c45454a9267f9413">const_reference</a> = typename std::conditional&lt; std::is_const_v&lt; T &gt;, T, T const  &gt;::type &amp;</td></tr>
+<tr class="separator:a734b05659702ad08c45454a9267f9413"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbc53036421c5ed5d3dcdc782bf7f45e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#abbc53036421c5ed5d3dcdc782bf7f45e">pointer</a> = T *</td></tr>
 <tr class="separator:abbc53036421c5ed5d3dcdc782bf7f45e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5d390d10a0c16da90931007added96c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#ab5d390d10a0c16da90931007added96c">reference</a> = T &amp;</td></tr>
@@ -109,7 +109,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a81cab89f9da6f4c2b5cb87be22a61f2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05bf52c033195e84e55ba617c5e065fd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a05bf52c033195e84e55ba617c5e065fd">~memory_mapped_file_t</a> () noexcept</td></tr>
 <tr class="separator:a05bf52c033195e84e55ba617c5e065fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2dd487c502bf126b16d25f450a8f0770"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#af594c90b25cf4b5fcf3a6ffec954cce2">const_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a2dd487c502bf126b16d25f450a8f0770">data</a> () const noexcept</td></tr>
+<tr class="memitem:a2dd487c502bf126b16d25f450a8f0770"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a310bafe1186e99c31af22a171c87c5e5">const_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a2dd487c502bf126b16d25f450a8f0770">data</a> () const noexcept</td></tr>
 <tr class="separator:a2dd487c502bf126b16d25f450a8f0770"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93db8fa19536508778e315d447ddb617"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#abbc53036421c5ed5d3dcdc782bf7f45e">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a93db8fa19536508778e315d447ddb617">data</a> () noexcept</td></tr>
 <tr class="separator:a93db8fa19536508778e315d447ddb617"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -129,7 +129,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4d898a0dcfc61f12a2d398dbcdffe599"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafc42e175d4312ba63907e2497d1346c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">memory_mapped_file_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#aafc42e175d4312ba63907e2497d1346c">operator=</a> (<a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">memory_mapped_file_t</a> const &amp;)=delete</td></tr>
 <tr class="separator:aafc42e175d4312ba63907e2497d1346c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa04414a5271dbde3e98551aedf63d09b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a42e6ba0b18d7f899ebb3d8f60e3a1dbe">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#aa04414a5271dbde3e98551aedf63d09b">operator[]</a> (size_t pos) const noexcept</td></tr>
+<tr class="memitem:aa04414a5271dbde3e98551aedf63d09b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a734b05659702ad08c45454a9267f9413">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#aa04414a5271dbde3e98551aedf63d09b">operator[]</a> (size_t pos) const noexcept</td></tr>
 <tr class="separator:aa04414a5271dbde3e98551aedf63d09b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acedb8559da9be38567f12dcda60cb6f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#ab5d390d10a0c16da90931007added96c">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#acedb8559da9be38567f12dcda60cb6f9">operator[]</a> (<a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#aa32ab61e69446d83781d1f105bb91730">size_type</a> pos) noexcept</td></tr>
 <tr class="separator:acedb8559da9be38567f12dcda60cb6f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -143,8 +143,8 @@ struct daw::filesystem::memory_mapped_file_t&lt; T &gt;</h3>
 
 <p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00234">234</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="af594c90b25cf4b5fcf3a6ffec954cce2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af594c90b25cf4b5fcf3a6ffec954cce2">&#9670;&nbsp;</a></span>const_pointer</h2>
+<a id="a310bafe1186e99c31af22a171c87c5e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a310bafe1186e99c31af22a171c87c5e5">&#9670;&nbsp;</a></span>const_pointer</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -152,7 +152,7 @@ struct daw::filesystem::memory_mapped_file_t&lt; T &gt;</h3>
 template&lt;typename T  = char&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">daw::filesystem::memory_mapped_file_t</a>&lt; T &gt;::<a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#af594c90b25cf4b5fcf3a6ffec954cce2">const_pointer</a> =  typename std::conditional&lt;std::is_const&lt;T&gt;::value, T, T const&gt;::type *</td>
+          <td class="memname">using <a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">daw::filesystem::memory_mapped_file_t</a>&lt; T &gt;::<a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a310bafe1186e99c31af22a171c87c5e5">const_pointer</a> =  typename std::conditional&lt;std::is_const_v&lt;T&gt;, T, T const&gt;::type *</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -161,8 +161,8 @@ template&lt;typename T  = char&gt; </div>
 
 </div>
 </div>
-<a id="a42e6ba0b18d7f899ebb3d8f60e3a1dbe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a42e6ba0b18d7f899ebb3d8f60e3a1dbe">&#9670;&nbsp;</a></span>const_reference</h2>
+<a id="a734b05659702ad08c45454a9267f9413"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a734b05659702ad08c45454a9267f9413">&#9670;&nbsp;</a></span>const_reference</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -170,7 +170,7 @@ template&lt;typename T  = char&gt; </div>
 template&lt;typename T  = char&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">daw::filesystem::memory_mapped_file_t</a>&lt; T &gt;::<a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a42e6ba0b18d7f899ebb3d8f60e3a1dbe">const_reference</a> =  typename std::conditional&lt;std::is_const&lt;T&gt;::value, T, T const&gt;::type &amp;</td>
+          <td class="memname">using <a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">daw::filesystem::memory_mapped_file_t</a>&lt; T &gt;::<a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a734b05659702ad08c45454a9267f9413">const_reference</a> =  typename std::conditional&lt;std::is_const_v&lt;T&gt;, T, T const&gt;::type &amp;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -501,7 +501,7 @@ template&lt;typename T  = char&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#af594c90b25cf4b5fcf3a6ffec954cce2">const_pointer</a> <a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">daw::filesystem::memory_mapped_file_t</a>&lt; T &gt;::data </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a310bafe1186e99c31af22a171c87c5e5">const_pointer</a> <a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">daw::filesystem::memory_mapped_file_t</a>&lt; T &gt;::data </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -813,7 +813,7 @@ template&lt;typename T  = char&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a42e6ba0b18d7f899ebb3d8f60e3a1dbe">const_reference</a> <a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">daw::filesystem::memory_mapped_file_t</a>&lt; T &gt;::operator[] </td>
+          <td class="memname"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a734b05659702ad08c45454a9267f9413">const_reference</a> <a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">daw::filesystem::memory_mapped_file_t</a>&lt; T &gt;::operator[] </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>pos</em></td><td>)</td>

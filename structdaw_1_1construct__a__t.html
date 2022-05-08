@@ -85,7 +85,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac8bfc7364a0c77e75b9f9eb7b5a08ac7"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1construct__a__t.html#ac8bfc7364a0c77e75b9f9eb7b5a08ac7">operator()</a> (Args &amp;&amp;...args) const noexcept(std::is_nothrow_constructible_v&lt; T, Args... &gt;) -&gt; std::enable_if_t&lt; std::is_constructible_v&lt; T, Args... &gt;, T &gt;</td></tr>
 <tr class="separator:ac8bfc7364a0c77e75b9f9eb7b5a08ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b2ee2b54ed868215f7d80cc95e21e06"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
-<tr class="memitem:a1b2ee2b54ed868215f7d80cc95e21e06"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1construct__a__t.html#a1b2ee2b54ed868215f7d80cc95e21e06">operator()</a> (Args &amp;&amp;...args) const noexcept(<a class="el" href="namespacedaw_1_1traits.html#af3bb521531e9c94ba15b60da8e1da7c1">traits::is_nothrow_list_constructible_v</a>&lt; T, Args... &gt;) -&gt; std::enable_if_t&lt; std::conjunction_v&lt; <a class="el" href="namespacedaw_1_1traits.html#a987ef2b3090b503f3959d9b9ad59f2f3">traits::static_not</a>&lt; std::is_constructible&lt; T, Args... &gt;&gt;, <a class="el" href="namespacedaw_1_1traits.html#ae06f28787c11f4986091d836b8f8399f">traits::is_list_constructible</a>&lt; T, Args... &gt;&gt;, T &gt;</td></tr>
+<tr class="memitem:a1b2ee2b54ed868215f7d80cc95e21e06"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1construct__a__t.html#a1b2ee2b54ed868215f7d80cc95e21e06">operator()</a> (Args &amp;&amp;...args) const noexcept(<a class="el" href="namespacedaw_1_1traits.html#af3bb521531e9c94ba15b60da8e1da7c1">traits::is_nothrow_list_constructible_v</a>&lt; T, Args... &gt;) -&gt; std::enable_if_t&lt; std::conjunction_v&lt; <a class="el" href="namespacedaw_1_1traits.html#a987ef2b3090b503f3959d9b9ad59f2f3">traits::static_not</a>&lt; std::is_constructible&lt; T, Args... &gt;&gt;, <a class="el" href="namespacedaw_1_1traits.html#a13f55020573268fae18e42a436c10d24">traits::is_list_constructible</a>&lt; T, Args... &gt;&gt;, T &gt;</td></tr>
 <tr class="separator:a1b2ee2b54ed868215f7d80cc95e21e06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -155,7 +155,7 @@ template&lt;typename... Args&gt; </div>
           <td> const -&gt; std::enable_if_t&lt;
 		      std::conjunction_v&lt;
 		        <a class="el" href="namespacedaw_1_1traits.html#a987ef2b3090b503f3959d9b9ad59f2f3">traits::static_not</a>&lt;std::is_constructible&lt;T, Args...&gt;&gt;,
-		        <a class="el" href="namespacedaw_1_1traits.html#ae06f28787c11f4986091d836b8f8399f">traits::is_list_constructible</a>&lt;T, Args...&gt;&gt;,
+		        <a class="el" href="namespacedaw_1_1traits.html#a13f55020573268fae18e42a436c10d24">traits::is_list_constructible</a>&lt;T, Args...&gt;&gt;,
 		      T&gt; </td>
         </tr>
       </table>
