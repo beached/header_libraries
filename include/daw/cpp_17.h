@@ -225,7 +225,7 @@ namespace daw {
 
 	template<class Expected, template<class...> class Op, class... Args>
 	using is_detected_exact =
-	  std::bool_constant<is_detected_exact_v<Op, Args...>>;
+	  std::bool_constant<is_detected_exact_v<Expected, Op, Args...>>;
 
 	template<class To, template<class...> class Op, class... Args>
 	using is_detected_convertible =
