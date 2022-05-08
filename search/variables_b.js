@@ -2,7 +2,7 @@ var searchData=
 [
   ['name_3826',['name',['../structdaw_1_1_argument.html#a7d5eaaff6d261d58b84390f3c4816cbf',1,'daw::Argument']]],
   ['never_5fnull_3827',['never_null',['../namespacedaw.html#af106e26c76f4b73d93216e5daac5fb92',1,'daw']]],
-  ['nodiscard_3828',['nodiscard',['../namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf',1,'daw::nodiscard()'],['../namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf',1,'daw::sv2::nodiscard()']]],
+  ['nodiscard_3828',['nodiscard',['../namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf',1,'daw::sv2::nodiscard()'],['../namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf',1,'daw::nodiscard()']]],
   ['noexcept_3829',['noexcept',['../classdaw_1_1wrap__iter.html#a9b89f8445e732e17a821d051a15e1c5e',1,'daw::wrap_iter']]],
   ['none_5fof_3830',['none_of',['../namespacedaw_1_1sv2.html#a0407e01d709d047a59a750572016d104',1,'daw::none_of()'],['../namespacedaw_1_1sv2.html#a0407e01d709d047a59a750572016d104',1,'daw::sv2::none_of()']]],
   ['not_5fcvref_5fof_3831',['not_cvref_of',['../namespacedaw.html#abc9f379e2f879f87dadfe681f567e81e',1,'daw']]],

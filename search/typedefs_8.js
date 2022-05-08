@@ -16,7 +16,7 @@ var searchData=
   ['is_5fdereferenceable_5ft_4013',['is_dereferenceable_t',['../namespacedaw_1_1traits.html#a871b51f27a3e5ef3c6ea50bfbe872861',1,'daw::traits']]],
   ['is_5fdetected_4014',['is_detected',['../namespacedaw.html#ae47217c63f7e9f3074e341beb925384f',1,'daw']]],
   ['is_5fdetected_5fconvertible_4015',['is_detected_convertible',['../namespacedaw.html#a34ddbdd4d019cf55aa2ff68e0178709f',1,'daw']]],
-  ['is_5fdetected_5fexact_4016',['is_detected_exact',['../namespacedaw.html#ae2ead15b03708772ff9b8c201e1dc335',1,'daw']]],
+  ['is_5fdetected_5fexact_4016',['is_detected_exact',['../namespacedaw.html#aa7b45b2d2224d7ec3e0eb2bd522ab8be',1,'daw']]],
   ['is_5fequality_5fcomparable_4017',['is_equality_comparable',['../namespacedaw_1_1traits.html#aa453a5f9d80431a8b3dc4b5adf651f52',1,'daw::traits']]],
   ['is_5flist_5fconstructible_4018',['is_list_constructible',['../namespacedaw_1_1traits.html#ae06f28787c11f4986091d836b8f8399f',1,'daw::traits']]],
   ['is_5fmap_5ftype_4019',['is_map_type',['../namespacedaw_1_1traits.html#aaf3e3c733d60d8fc1484ddcdd3d25d3e',1,'daw::traits']]],

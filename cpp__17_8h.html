@@ -164,9 +164,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a34ddbdd4d019cf55aa2ff68e0178709f"><td class="memTemplParams" colspan="2">template&lt;class To , template&lt; class... &gt; class Op, class... Args&gt; </td></tr>
 <tr class="memitem:a34ddbdd4d019cf55aa2ff68e0178709f"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a34ddbdd4d019cf55aa2ff68e0178709f">daw::is_detected_convertible</a> = std::is_convertible&lt; detected_t&lt; Op, Args... &gt;, To &gt;</td></tr>
 <tr class="separator:a34ddbdd4d019cf55aa2ff68e0178709f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2ead15b03708772ff9b8c201e1dc335"><td class="memTemplParams" colspan="2">template&lt;class Expected , template&lt; class... &gt; class Op, class... Args&gt; </td></tr>
-<tr class="memitem:ae2ead15b03708772ff9b8c201e1dc335"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ae2ead15b03708772ff9b8c201e1dc335">daw::is_detected_exact</a> = std::is_same&lt; Expected, detected_t&lt; Op, Args... &gt; &gt;</td></tr>
-<tr class="separator:ae2ead15b03708772ff9b8c201e1dc335"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7b45b2d2224d7ec3e0eb2bd522ab8be"><td class="memTemplParams" colspan="2">template&lt;class Expected , template&lt; class... &gt; class Op, class... Args&gt; </td></tr>
+<tr class="memitem:aa7b45b2d2224d7ec3e0eb2bd522ab8be"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa7b45b2d2224d7ec3e0eb2bd522ab8be">daw::is_detected_exact</a> = std::bool_constant&lt; is_detected_exact_v&lt; Expected, Op, Args... &gt; &gt;</td></tr>
+<tr class="separator:aa7b45b2d2224d7ec3e0eb2bd522ab8be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa25ae0868ddfa68556dd5c862393a31b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aa25ae0868ddfa68556dd5c862393a31b"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa25ae0868ddfa68556dd5c862393a31b">daw::not_trait</a> = std::integral_constant&lt; bool, not T::value &gt;</td></tr>
 <tr class="separator:aa25ae0868ddfa68556dd5c862393a31b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -253,7 +253,7 @@ Variables</h2></td></tr>
 <tr class="memitem:aae83300977e536ffa843ef68b2cd4c80"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aae83300977e536ffa843ef68b2cd4c80">daw::is_detected_exact_v</a></td></tr>
 <tr class="separator:aae83300977e536ffa843ef68b2cd4c80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05cb5775a1268bd66ef632bcfd4e4bd7"><td class="memTemplParams" colspan="2">template&lt;template&lt; class... &gt; class Op, class... Args&gt; </td></tr>
-<tr class="memitem:a05cb5775a1268bd66ef632bcfd4e4bd7"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a05cb5775a1268bd66ef632bcfd4e4bd7">daw::is_detected_v</a> = is_detected&lt;Op, Args...&gt;::value</td></tr>
+<tr class="memitem:a05cb5775a1268bd66ef632bcfd4e4bd7"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a05cb5775a1268bd66ef632bcfd4e4bd7">daw::is_detected_v</a></td></tr>
 <tr class="separator:a05cb5775a1268bd66ef632bcfd4e4bd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7f1ece4943991d28fdaac997dace871"><td class="memTemplParams" colspan="2">template&lt;typename &gt; </td></tr>
 <tr class="memitem:aa7f1ece4943991d28fdaac997dace871"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa7f1ece4943991d28fdaac997dace871">daw::is_nonesuch_v</a> = false</td></tr>

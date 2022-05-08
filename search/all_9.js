@@ -93,7 +93,7 @@ var searchData=
   ['is_5fdetected_1084',['is_detected',['../namespacedaw.html#ae47217c63f7e9f3074e341beb925384f',1,'daw']]],
   ['is_5fdetected_5fconvertible_1085',['is_detected_convertible',['../namespacedaw.html#a34ddbdd4d019cf55aa2ff68e0178709f',1,'daw']]],
   ['is_5fdetected_5fconvertible_5fv_1086',['is_detected_convertible_v',['../namespacedaw.html#aca15c2fd76569c6b23122c8304641c49',1,'daw']]],
-  ['is_5fdetected_5fexact_1087',['is_detected_exact',['../namespacedaw.html#ae2ead15b03708772ff9b8c201e1dc335',1,'daw']]],
+  ['is_5fdetected_5fexact_1087',['is_detected_exact',['../namespacedaw.html#aa7b45b2d2224d7ec3e0eb2bd522ab8be',1,'daw']]],
   ['is_5fdetected_5fexact_5fv_1088',['is_detected_exact_v',['../namespacedaw.html#aae83300977e536ffa843ef68b2cd4c80',1,'daw']]],
   ['is_5fdetected_5fv_1089',['is_detected_v',['../namespacedaw.html#a05cb5775a1268bd66ef632bcfd4e4bd7',1,'daw']]],
   ['is_5fempty_1090',['is_empty',['../structdaw_1_1ring__adaptor.html#aab8501a98a7740ad90a3989c1186027c',1,'daw::ring_adaptor']]],
