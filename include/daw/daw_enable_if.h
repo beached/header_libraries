@@ -8,38 +8,22 @@
 
 #pragma once
 
+#include "cpp_17.h"
 #include "daw_cpp_feature_check.h"
+
 #include <cstddef>
 #include <type_traits>
 
-namespace daw::enable_if_details {
-	template<class...>
-	struct conjunction : std::true_type {};
-
-	template<class B1>
-	struct conjunction<B1> : B1 {};
-
-	template<class B1, class... Bn>
-	struct conjunction<B1, Bn...>
-	  : std::conditional<bool( B1::value ), conjunction<Bn...>, B1>::type {};
-} // namespace daw::enable_if_details
-
 namespace daw {
-	template<bool, typename T = std::nullptr_t>
-	struct enable_if {};
-
-	template<typename T>
-	struct enable_if<true, T> {
-		using type = T;
-	};
+	template<bool B, typename T = std::nullptr_t>
+	using enable_if = std::enable_if<B, T>;
 
 	template<bool B, typename T = std::nullptr_t>
-	using enable_if_t = typename enable_if<B, T>::type;
+	using enable_if_t = std::enable_if_t<B, T>;
 
 	template<bool... B>
 	using enable_when_t = enable_if_t<( B && ... )>;
 
 	template<typename... Traits>
-	using enable_when_all_t =
-	  enable_if_t<enable_if_details::conjunction<Traits...>::value>;
+	using enable_when_all_t = enable_if_t<std::conjunction_v<Traits...>>;
 } // namespace daw
