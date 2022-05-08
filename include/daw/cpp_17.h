@@ -182,11 +182,19 @@ namespace daw {
 			using type = Default;
 		};
 
+		template<class Default, class AlwaysVoid, template<class...> class Op,
+		         class... Args>
+		inline constexpr bool detector_v = false;
+
 		template<class Default, template<class...> class Op, class... Args>
 		struct detector<Default, std::void_t<Op<Args...>>, Op, Args...> {
 			using value_t = std::true_type;
 			using type = Op<Args...>;
 		};
+
+		template<class Default, template<class...> class Op, class... Args>
+		inline constexpr bool
+		  detector_v<Default, std::void_t<Op<Args...>>, Op, Args...> = true;
 	} // namespace cpp_17_details
 
 	template<template<class...> class Op, class... Args>
@@ -200,7 +208,10 @@ namespace daw {
 
 #ifndef DAW_HAS_CONCEPTS
 	template<template<class...> class Op, class... Args>
-	inline constexpr bool is_detected_v = is_detected<Op, Args...>::value;
+	// inline constexpr bool is_detected_v = is_detected<Op, Args...>::value;
+	inline constexpr bool is_detected_v =
+	  cpp_17_details::detector_v<nonesuch<Op, Args...>, void, Op, Args...>;
+
 #endif
 	template<class Default, template<class...> class Op, class... Args>
 	using detected_or = cpp_17_details::detector<Default, void, Op, Args...>;
@@ -209,11 +220,12 @@ namespace daw {
 	using detected_or_t = typename detected_or<Default, Op, Args...>::type;
 
 	template<class Expected, template<class...> class Op, class... Args>
-	using is_detected_exact = std::is_same<Expected, detected_t<Op, Args...>>;
+	inline constexpr bool is_detected_exact_v =
+	  std::is_same_v<Expected, detected_t<Op, Args...>>;
 
 	template<class Expected, template<class...> class Op, class... Args>
-	inline constexpr bool is_detected_exact_v =
-	  is_detected_exact<Expected, Op, Args...>::value;
+	using is_detected_exact =
+	  std::bool_constant<is_detected_exact_v<Expected, Op, Args...>>;
 
 	template<class To, template<class...> class Op, class... Args>
 	using is_detected_convertible =
