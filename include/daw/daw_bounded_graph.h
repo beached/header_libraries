@@ -176,12 +176,8 @@ namespace daw {
 		}
 	};
 
-	template<typename>
-	struct bounded_graph_node_proxies : std::false_type {};
-
 	template<typename T>
-	inline constexpr bool is_bounded_graph_node_v =
-	  bounded_graph_node_proxies<T>::value;
+	inline constexpr bool is_bounded_graph_node_v = false;
 
 	template<typename T, size_t MaxVerticesPerNode, typename Hash>
 	class const_graph_node_t {
@@ -265,8 +261,9 @@ namespace daw {
 	};
 
 	template<typename T, size_t MaxVerticesPerNode, typename Hash>
-	struct bounded_graph_node_proxies<
-	  const_graph_node_t<T, MaxVerticesPerNode, Hash>> : std::true_type {};
+	inline constexpr bool
+	  is_bounded_graph_node_v<const_graph_node_t<T, MaxVerticesPerNode, Hash>> =
+	    true;
 
 	template<typename T, size_t MaxVerticesPerNode, typename Hash = std::hash<T>>
 	class bounded_graph_node_t {
@@ -374,8 +371,9 @@ namespace daw {
 	};
 
 	template<typename T, size_t MaxVerticesPerNode, typename Hash>
-	struct bounded_graph_node_proxies<
-	  bounded_graph_node_t<T, MaxVerticesPerNode, Hash>> : std::true_type {};
+	inline constexpr bool
+	  is_bounded_graph_node_v<bounded_graph_node_t<T, MaxVerticesPerNode, Hash>> =
+	    true;
 
 	template<typename T, size_t MaxVerticesPerNode, typename Hash>
 	struct bounded_graph_t {

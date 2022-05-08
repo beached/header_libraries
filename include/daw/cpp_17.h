@@ -25,10 +25,7 @@ namespace daw {
 	using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 
 	template<bool B>
-	using bool_constant = std::integral_constant<bool, B>;
-
-	template<bool B>
-	inline constexpr bool bool_consant_v = bool_constant<B>::value;
+	using bool_constant = std::bool_constant<B>;
 
 	template<typename B>
 	struct negation : bool_constant<not bool( B::value )> {};
@@ -50,30 +47,17 @@ namespace daw {
 	template<typename... T>
 	inline constexpr bool const conjunction_v = conjunction<T...>::value;
 
-	// base case; actually only used for empty pack
 	template<bool... values>
-	struct all_true : std::true_type {};
-
-	// if first is true, check the rest
-	template<bool... values>
-	struct all_true<true, values...> : all_true<values...> {};
-
-	// if first is false, the whole thing is false
-	template<bool... values>
-	struct all_true<false, values...> : std::false_type {};
+	inline constexpr bool all_true_v = ( values and ... );
 
 	template<bool... values>
-	inline constexpr bool all_true_v = all_true<values...>::value;
-
-	namespace cpp_17_details {
-		template<bool... values>
-		[[nodiscard, maybe_unused]] constexpr bool any_true( ) noexcept {
-			return ( static_cast<bool>( values ) or ... );
-		}
-	} // namespace cpp_17_details
+	using all_true = std::bool_constant<( values and ... )>;
 
 	template<bool... values>
-	inline constexpr bool any_true_v = cpp_17_details::any_true<values...>( );
+	inline constexpr bool any_true_v = ( values or ... );
+
+	template<bool... values>
+	using any_true = std::bool_constant<( values or ... )>;
 
 	namespace cpp_17_details {
 		template<typename Function>
@@ -81,8 +65,7 @@ namespace daw {
 			Function m_function;
 
 		public:
-			[[maybe_unused]] constexpr not_fn_t( ) noexcept(
-			  std::is_nothrow_constructible_v<Function> ) = default;
+			not_fn_t( ) = default;
 
 			[[maybe_unused]] explicit constexpr not_fn_t( Function &&func ) noexcept(
 			  std::is_nothrow_move_constructible_v<Function> )
@@ -95,15 +78,15 @@ namespace daw {
 
 			template<typename... Args>
 			[[nodiscard, maybe_unused]] constexpr decltype( auto )
-			operator( )( Args &&...args ) noexcept( noexcept(
-			  not std::declval<Function>( )( std::declval<Args>( )... ) ) ) {
+			operator( )( Args &&...args ) noexcept(
+			  std::is_nothrow_invocable_v<Function, Args...> ) {
 				return not m_function( DAW_FWD( args )... );
 			}
 
 			template<typename... Args>
 			[[nodiscard, maybe_unused]] constexpr decltype( auto )
-			operator( )( Args &&...args ) const noexcept( noexcept(
-			  not std::declval<Function>( )( std::declval<Args>( )... ) ) ) {
+			operator( )( Args &&...args ) const
+			  noexcept( std::is_nothrow_invocable_v<Function, Args...> ) {
 				return not m_function( DAW_FWD( args )... );
 			}
 		};
@@ -111,7 +94,7 @@ namespace daw {
 
 	template<typename Function>
 	[[nodiscard, maybe_unused]] constexpr auto not_fn( Function &&func ) {
-		using func_t = std::remove_cv_t<std::remove_reference_t<Function>>;
+		using func_t = remove_cvref_t<Function>;
 		return cpp_17_details::not_fn_t<func_t>( DAW_FWD( func ) );
 	}
 
@@ -120,17 +103,18 @@ namespace daw {
 		return cpp_17_details::not_fn_t<Function>( );
 	}
 
-	template<typename T>
-	struct is_reference_wrapper : std::false_type {};
+	template<typename>
+	inline constexpr bool is_reference_wrapper_v = false;
 
-	template<typename U>
-	struct is_reference_wrapper<std::reference_wrapper<U>> : std::true_type {};
+	template<typename T>
+	inline constexpr bool is_reference_wrapper_v<std::reference_wrapper<T>> =
+	  true;
+
+	template<typename T>
+	using is_reference_wrapper = std::bool_constant<is_reference_wrapper_v<T>>;
 
 	template<typename T>
 	using not_trait = std::integral_constant<bool, not T::value>;
-
-	template<typename T>
-	inline constexpr bool is_reference_wrapper_v = is_reference_wrapper<T>::value;
 
 	template<typename T>
 	[[nodiscard, maybe_unused]] constexpr std::add_const_t<T> &
@@ -208,7 +192,6 @@ namespace daw {
 
 #ifndef DAW_HAS_CONCEPTS
 	template<template<class...> class Op, class... Args>
-	// inline constexpr bool is_detected_v = is_detected<Op, Args...>::value;
 	inline constexpr bool is_detected_v =
 	  cpp_17_details::detector_v<nonesuch<Op, Args...>, void, Op, Args...>;
 
@@ -386,6 +369,7 @@ namespace daw {
 		return DAW_FWD2( F, f )( DAW_FWD2( Args, args )... );
 	}
 #endif
+
 	namespace cpp_17_details {
 		template<typename F, typename Tuple, std::size_t... I>
 		[[nodiscard, maybe_unused]] constexpr decltype( auto )
@@ -394,13 +378,13 @@ namespace daw {
 		}
 
 		template<typename>
-		struct is_tuple : std::false_type {};
+		inline constexpr bool is_tuple_v = false;
 
 		template<typename... Args>
-		struct is_tuple<std::tuple<Args...>> : std::true_type {};
+		inline constexpr bool is_tuple_v<std::tuple<Args...>> = true;
 
 		template<typename T>
-		inline constexpr bool is_tuple_v = is_tuple<T>::value;
+		using is_tuple = std::bool_constant<is_tuple_v<T>>;
 
 		template<typename F, typename Tuple, std::size_t... Is>
 		[[nodiscard]] inline constexpr decltype( auto )
@@ -665,8 +649,8 @@ namespace daw {
 
 	namespace cpp_17_details {
 		template<typename From, typename To,
-		         bool = disjunction<std::is_void<From>, std::is_function<To>,
-		                            std::is_array<To>>::value>
+		         bool = disjunction_v<std::is_void<From>, std::is_function<To>,
+		                              std::is_array<To>>>
 		struct do_is_nothrow_convertible {
 			using type = std::is_void<To>;
 		};

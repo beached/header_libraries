@@ -18,19 +18,17 @@ namespace daw {
 	template<typename T>
 	[[nodiscard]] inline constexpr typename std::remove_reference<T>::type &&
 	move( T &&value ) noexcept {
-		static_assert(
-		  not std::is_const<typename std::remove_reference<T>::type>::value,
-		  "Attempt to move const value" );
-		static_assert( not std::is_rvalue_reference<decltype( value )>::value,
+		static_assert( not std::is_const_v<typename std::remove_reference_t<T>>,
+		               "Attempt to move const value" );
+		static_assert( not std::is_rvalue_reference_v<decltype( value )>,
 		               "Value is already an rvalue" );
-		return static_cast<typename std::remove_reference<T>::type &&>( value );
+		return static_cast<typename std::remove_reference_t<T> &&>( value );
 	}
 } // namespace daw
 
 #ifndef DAW_MOVE
 #define DAW_MOVE( ... )                                                        \
-	static_cast<                                                                 \
-	  typename std::remove_reference<decltype( __VA_ARGS__ )>::type &&>(         \
+	static_cast<typename std::remove_reference_t<decltype( __VA_ARGS__ )> &&>(   \
 	  __VA_ARGS__ )
 #endif
 

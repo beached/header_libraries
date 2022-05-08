@@ -155,10 +155,7 @@ namespace daw {
 	};
 
 	template<typename>
-	struct graph_node_proxies : std::false_type {};
-
-	template<typename T>
-	inline constexpr bool is_graph_node_v = graph_node_proxies<T>::value;
+	inline constexpr bool is_graph_node_v = false;
 
 	template<typename T>
 	struct const_graph_node_t {
@@ -239,7 +236,8 @@ namespace daw {
 	};
 
 	template<typename T>
-	struct graph_node_proxies<const_graph_node_t<T>> : std::true_type {};
+	inline constexpr bool is_graph_node_v<const_graph_node_t<T>> = true;
+
 	template<typename T>
 	struct graph_node_t {
 		using value_type = T;
@@ -250,8 +248,8 @@ namespace daw {
 	private:
 		graph_t<T> *m_graph = nullptr;
 		node_id_t m_node_id{ };
-	public:
 
+	public:
 		graph_node_t( ) = default;
 
 		graph_node_t( graph_t<T> *graph_ptr, node_id_t Id ) noexcept
@@ -341,7 +339,7 @@ namespace daw {
 	};
 
 	template<typename T>
-	struct graph_node_proxies<graph_node_t<T>> : std::true_type {};
+	inline constexpr bool is_graph_node_v<graph_node_t<T>> = true;
 
 	template<typename T>
 	struct graph_t {

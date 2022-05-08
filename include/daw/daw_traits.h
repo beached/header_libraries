@@ -402,21 +402,21 @@ namespace daw::traits {
 	  sizeof( *std::cbegin( std::declval<Container>( ) ) ) == ExpectedSize;
 
 	namespace traits_details {
-		template<typename... Ts>
+		template<typename...>
 		struct are_unique;
 
 		template<typename T1>
 		struct are_unique<T1> : std::true_type {};
 
 		template<typename T1, typename T2>
-		struct are_unique<T1, T2>
-		  : std::integral_constant<bool, not std::is_same_v<T1, T2>> {};
+		struct are_unique<T1, T2> : std::bool_constant<not std::is_same_v<T1, T2>> {
+		};
 
 		template<typename T1, typename T2, typename... Ts>
 		struct are_unique<T1, T2, Ts...>
-		  : std::integral_constant<bool, are_unique<T1, T2>::value and
-		                                   are_unique<T1, Ts...>::value and
-		                                   are_unique<T2, Ts...>::value> {};
+		  : std::bool_constant<are_unique<T1, T2>::value and
+		                       are_unique<T1, Ts...>::value and
+		                       are_unique<T2, Ts...>::value> {};
 	} // namespace traits_details
 
 	template<typename... Ts>
@@ -433,11 +433,11 @@ namespace daw::traits {
 
 		template<typename T, typename... Ts>
 		struct isnt_cv_ref<T, Ts...>
-		  : std::integral_constant<
-		      bool, ( not std::disjunction_v<std::is_const<T>, std::is_reference<T>,
-		                                     std::is_volatile<T>> and
-		              std::is_same_v<std::true_type,
-		                             typename isnt_cv_ref<Ts...>::type> )> {};
+		  : std::bool_constant<(
+		      not std::disjunction_v<std::is_const<T>, std::is_reference<T>,
+		                             std::is_volatile<T>> and
+		      std::is_same_v<std::true_type, typename isnt_cv_ref<Ts...>::type> )> {
+		};
 	} // namespace traits_details
 
 	template<typename... Ts>
@@ -622,15 +622,14 @@ namespace daw::traits {
 	template<typename T, typename... Pack>
 	inline constexpr bool pack_exists_v = pack_index_of_v<T, Pack...> >= 0;
 
-	template<template<typename...> typename Template, typename Type>
-	struct is_instance_of : std::false_type {};
+	template<template<typename...> typename, typename>
+	inline constexpr bool is_instance_of_v = false;
 
 	template<template<typename...> typename Template, typename... Args>
-	struct is_instance_of<Template, Template<Args...>> : std::true_type {};
+	inline constexpr bool is_instance_of_v<Template, Template<Args...>> = true;
 
 	template<template<typename...> typename Template, typename Type>
-	inline constexpr bool is_instance_of_v =
-	  is_instance_of<Template, Type>::value;
+	using is_instance_of = std::bool_constant<is_instance_of_v<Template, Type>>;
 
 	template<typename F, bool IsNoExcept, typename R, typename... Args>
 	struct lifted_t {
@@ -749,13 +748,14 @@ namespace daw::traits {
 		using is_list_constructible_test = decltype( T{
 		  std::declval<Args>( )... } );
 	}
-	template<typename T, typename... Args>
-	using is_list_constructible =
-	  daw::is_detected<traits_details::is_list_constructible_test, T, Args...>;
 
 	template<typename T, typename... Args>
 	inline constexpr bool is_list_constructible_v =
-	  is_list_constructible<T, Args...>::value;
+	  daw::is_detected_v<traits_details::is_list_constructible_test, T, Args...>;
+
+	template<typename T, typename... Args>
+	using is_list_constructible =
+	  std::bool_constant<is_list_constructible_v<T, Args...>>;
 
 	namespace traits_details {
 		template<bool IsListConstructible, typename T, typename... Args>
