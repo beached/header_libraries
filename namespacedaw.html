@@ -1537,9 +1537,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ade1700db6e392b1370cbf615403026d0"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
 <tr class="memitem:ade1700db6e392b1370cbf615403026d0"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ade1700db6e392b1370cbf615403026d0">inserter</a> (Container &amp;c)</td></tr>
 <tr class="separator:ade1700db6e392b1370cbf615403026d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5eec8bf38fc54bec8b954609a724d8a"><td class="memTemplParams" colspan="2">template&lt;typename F , typename... Args&gt; </td></tr>
-<tr class="memitem:ab5eec8bf38fc54bec8b954609a724d8a"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">invoke</a> (F &amp;&amp;f, Args &amp;&amp;...args) noexcept(noexcept(<a class="el" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>(F, f)(<a class="el" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>(Args, args)...))) -&gt; decltype(<a class="el" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>(F, f)(<a class="el" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>(Args, args)...))</td></tr>
-<tr class="separator:ab5eec8bf38fc54bec8b954609a724d8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf04bbb17a0eb3df0e77509eadfffb09"><td class="memTemplParams" colspan="2">template&lt;typename F , typename... Args&gt; </td></tr>
+<tr class="memitem:aaf04bbb17a0eb3df0e77509eadfffb09"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">invoke</a> (F &amp;&amp;f, Args &amp;&amp;...args) noexcept(std::is_nothrow_invocable_v&lt; F, Args... &gt;)</td></tr>
+<tr class="separator:aaf04bbb17a0eb3df0e77509eadfffb09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16b77686c01018902fbc5c1999d82b32"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a16b77686c01018902fbc5c1999d82b32">iota_iterator</a> () -&gt; <a class="el" href="structdaw_1_1iota__iterator.html">iota_iterator</a>&lt; int &gt;</td></tr>
 <tr class="separator:a16b77686c01018902fbc5c1999d82b32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4f10faad4198b6c0d8e7d4e191ad516"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Step&gt; </td></tr>
@@ -1801,9 +1801,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ad480f4c480cb3deb5ea5aedb6d8c9344"><td class="memTemplParams" colspan="2">template&lt;typename Handler &gt; </td></tr>
 <tr class="memitem:ad480f4c480cb3deb5ea5aedb6d8c9344"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad480f4c480cb3deb5ea5aedb6d8c9344">on_exit_success</a> (Handler) -&gt; <a class="el" href="classdaw_1_1on__exit__success.html">on_exit_success</a>&lt; Handler &gt;</td></tr>
 <tr class="separator:ad480f4c480cb3deb5ea5aedb6d8c9344"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58270e997582a90bc1e7cee5927d7f09"><td class="memTemplParams" colspan="2">template&lt;typename FunctionType &gt; </td></tr>
-<tr class="memitem:a58270e997582a90bc1e7cee5927d7f09"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classdaw_1_1_scope_guard.html">ScopeGuard</a>&lt; FunctionType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a58270e997582a90bc1e7cee5927d7f09">on_scope_exit</a> (FunctionType f) noexcept</td></tr>
-<tr class="separator:a58270e997582a90bc1e7cee5927d7f09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af55b47d400641074981717a97786203f"><td class="memTemplParams" colspan="2">template&lt;typename FunctionType &gt; </td></tr>
+<tr class="memitem:af55b47d400641074981717a97786203f"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classdaw_1_1_scope_guard.html">ScopeGuard</a>&lt; FunctionType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af55b47d400641074981717a97786203f">on_scope_exit</a> (FunctionType f) noexcept(std::is_nothrow_move_constructible_v&lt; FunctionType &gt;)</td></tr>
+<tr class="separator:af55b47d400641074981717a97786203f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3496b0def447a60419b9bfb7b940c47"><td class="memTemplParams" colspan="2">template&lt;constructible_from&lt; pointer, size_type &gt; Container&gt; </td></tr>
 <tr class="memitem:af3496b0def447a60419b9bfb7b940c47"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af3496b0def447a60419b9bfb7b940c47">operator Container</a> () const noexcept</td></tr>
 <tr class="separator:af3496b0def447a60419b9bfb7b940c47"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4679,7 +4679,7 @@ template&lt;typename... B&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00645">645</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00636">636</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -6016,7 +6016,7 @@ template&lt;typename Iterator , typename Distance &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00545">545</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00536">536</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -6180,7 +6180,7 @@ template&lt;bool use_invoke = true, typename F , typename Tuple &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00398">398</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00389">389</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -7910,7 +7910,7 @@ template&lt;typename To , typename From &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00582">582</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00573">573</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -7948,7 +7948,7 @@ template&lt;typename T  = deduced_type, typename Iterator , typename OutputItera
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00621">621</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00612">612</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -7994,7 +7994,7 @@ template&lt;typename T , typename Iterator , typename Function &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00589">589</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00580">580</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -8038,7 +8038,7 @@ template&lt;typename T , typename U  = deduced_type, typename Iterator , typenam
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00603">603</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00594">594</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -9998,7 +9998,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00688">688</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00679">679</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -10142,7 +10142,7 @@ template&lt;typename Iterator &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a ptrdiff_t of how many steps apart iterators are. If Iterators are RandomAccess it may be &lt;0, otherwise always greater </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00530">530</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00521">521</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -13097,8 +13097,8 @@ template&lt;typename Container &gt; </div>
 
 </div>
 </div>
-<a id="ab5eec8bf38fc54bec8b954609a724d8a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5eec8bf38fc54bec8b954609a724d8a">&#9670;&nbsp;</a></span>invoke()</h2>
+<a id="aaf04bbb17a0eb3df0e77509eadfffb09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf04bbb17a0eb3df0e77509eadfffb09">&#9670;&nbsp;</a></span>invoke()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -13109,7 +13109,7 @@ template&lt;typename F , typename... Args&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto daw::invoke </td>
+          <td class="memname">constexpr decltype( auto ) daw::invoke </td>
           <td>(</td>
           <td class="paramtype">F &amp;&amp;&#160;</td>
           <td class="paramname"><em>f</em>, </td>
@@ -13123,7 +13123,7 @@ template&lt;typename F , typename... Args&gt; </div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; decltype( <a class="el" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( F, f )( <a class="el" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Args, args )... ) ) </td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -13133,7 +13133,7 @@ template&lt;typename F , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00365">365</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00357">357</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -15512,7 +15512,7 @@ template&lt;typename Iterator &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The resulting iterator of advancing it n steps </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00559">559</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00550">550</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -15839,8 +15839,8 @@ template&lt;typename Handler &gt; </div>
 
 </div>
 </div>
-<a id="a58270e997582a90bc1e7cee5927d7f09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a58270e997582a90bc1e7cee5927d7f09">&#9670;&nbsp;</a></span>on_scope_exit()</h2>
+<a id="af55b47d400641074981717a97786203f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af55b47d400641074981717a97786203f">&#9670;&nbsp;</a></span>on_scope_exit()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -42797,7 +42797,7 @@ template&lt;typename Iterator &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The resulting iterator of advancing it n steps </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00574">574</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00565">565</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -49028,7 +49028,7 @@ template&lt;typename... B&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00648">648</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00639">639</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -49561,7 +49561,7 @@ template&lt;typename Func , typename... Args&gt; </div>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    <a class="code" href="namespacedaw.html#afd84e1e250c4b3e259bd9ec200007f81">requires</a>( Func &amp;&amp;f, Args &amp;&amp;...args ) {</div>
-<div class="line">      <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">std::invoke</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Func, f ), <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Args, args )... );</div>
+<div class="line">      <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">std::invoke</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Func, f ), <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Args, args )... );</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00168">168</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
@@ -49584,7 +49584,7 @@ template&lt;typename Func , typename Result , typename... Args&gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    <a class="code" href="namespacedaw.html#afd84e1e250c4b3e259bd9ec200007f81">requires</a>( Func &amp;&amp;f, Args &amp;&amp;...args ) {</div>
 <div class="line">      {</div>
-<div class="line">        <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">std::invoke</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Func, f ), <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Args, args )... )</div>
+<div class="line">        <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">std::invoke</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Func, f ), <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Args, args )... )</div>
 <div class="line">        } -&gt; convertible_to&lt;Result&gt;;</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
@@ -50103,7 +50103,7 @@ template&lt;typename From , typename To &gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    is_nothrow_convertible&lt;From, To&gt;::value</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00683">683</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00674">674</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -51297,14 +51297,14 @@ template&lt;typename I &gt; </div>
 <div class="ttc" id="anamespacedaw_html_aeb3fc04fa5e3b0ac090e467f20a6b580"><div class="ttname"><a href="namespacedaw.html#aeb3fc04fa5e3b0ac090e467f20a6b580">daw::split_args</a></div><div class="ttdeci">constexpr auto split_args(std::tuple&lt; Args... &gt; args)</div><div class="ttdef"><b>Definition:</b> <a href="daw__bind__args__at_8h_source.html#l00039">daw_bind_args_at.h:39</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a4586b741ca66c893b39ecc7fb6066556"><div class="ttname"><a href="namespacedaw.html#a4586b741ca66c893b39ecc7fb6066556">daw::to_uint8</a></div><div class="ttdeci">constexpr UInt8 to_uint8(Number num)</div><div class="ttdef"><b>Definition:</b> <a href="daw__uint__buffer_8h_source.html#l00047">daw_uint_buffer.h:47</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1tuple_html_a543ce1a1cb4ea6b89b50c454a74631bd"><div class="ttname"><a href="namespacedaw_1_1tuple.html#a543ce1a1cb4ea6b89b50c454a74631bd">daw::tuple::max</a></div><div class="ttdeci">constexpr auto() max(std::tuple&lt; Ts... &gt; const &amp;a, std::tuple&lt; Ts... &gt; const &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple__helper_8h_source.html#l00382">daw_tuple_helper.h:382</a></div></div>
+<div class="ttc" id="anamespacedaw_html_aaf04bbb17a0eb3df0e77509eadfffb09"><div class="ttname"><a href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a></div><div class="ttdeci">constexpr decltype(auto) invoke(F &amp;&amp;f, Args &amp;&amp;...args) noexcept(std::is_nothrow_invocable_v&lt; F, Args... &gt;)</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00357">cpp_17.h:357</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a6df1567073d79619c8174c1b7fb2b752"><div class="ttname"><a href="namespacedaw.html#a6df1567073d79619c8174c1b7fb2b752">daw::UInt64</a></div><div class="ttdeci">UInt64</div><div class="ttdef"><b>Definition:</b> <a href="daw__uint__buffer_8h_source.html#l00023">daw_uint_buffer.h:23</a></div></div>
 <div class="ttc" id="adaw__move_8h_html_a92169421367fae95c111acee1e0ebe60"><div class="ttname"><a href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a></div><div class="ttdeci">#define DAW_FWD2(Type, Value)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00040">daw_move.h:40</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a89a21d24a040b20c83ed271337e1c09b"><div class="ttname"><a href="namespacedaw.html#a89a21d24a040b20c83ed271337e1c09b">daw::Pointers</a></div><div class="ttdeci">concept Pointers</div><div class="ttdef"><b>Definition:</b> <a href="daw__concepts_8h_source.html#l00095">daw_concepts.h:95</a></div></div>
-<div class="ttc" id="anamespacedaw_html_ab5eec8bf38fc54bec8b954609a724d8a"><div class="ttname"><a href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a></div><div class="ttdeci">constexpr auto invoke(F &amp;&amp;f, Args &amp;&amp;...args) noexcept(noexcept(DAW_FWD2(F, f)(DAW_FWD2(Args, args)...))) -&gt; decltype(DAW_FWD2(F, f)(DAW_FWD2(Args, args)...))</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00365">cpp_17.h:365</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ad677e69cc557fad47cf23d9ba4396f8a"><div class="ttname"><a href="namespacedaw.html#ad677e69cc557fad47cf23d9ba4396f8a">daw::to_uint32</a></div><div class="ttdeci">constexpr UInt32 to_uint32(Number num)</div><div class="ttdef"><b>Definition:</b> <a href="daw__uint__buffer_8h_source.html#l00035">daw_uint_buffer.h:35</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a05cb5775a1268bd66ef632bcfd4e4bd7"><div class="ttname"><a href="namespacedaw.html#a05cb5775a1268bd66ef632bcfd4e4bd7">daw::is_detected_v</a></div><div class="ttdeci">constexpr bool is_detected_v</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00195">cpp_17.h:195</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a3a56e39437a0db585579565481e1885b"><div class="ttname"><a href="namespacedaw.html#a3a56e39437a0db585579565481e1885b">daw::UInt8</a></div><div class="ttdeci">UInt8</div><div class="ttdef"><b>Definition:</b> <a href="daw__uint__buffer_8h_source.html#l00026">daw_uint_buffer.h:26</a></div></div>
-<div class="ttc" id="anamespacedaw_html_aa262c9df4a2234d2089c59a4e13dbfe6"><div class="ttname"><a href="namespacedaw.html#aa262c9df4a2234d2089c59a4e13dbfe6">daw::apply</a></div><div class="ttdeci">constexpr decltype(auto) apply(F &amp;&amp;f, Tuple &amp;&amp;t)</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00398">cpp_17.h:398</a></div></div>
+<div class="ttc" id="anamespacedaw_html_aa262c9df4a2234d2089c59a4e13dbfe6"><div class="ttname"><a href="namespacedaw.html#aa262c9df4a2234d2089c59a4e13dbfe6">daw::apply</a></div><div class="ttdeci">constexpr decltype(auto) apply(F &amp;&amp;f, Tuple &amp;&amp;t)</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00389">cpp_17.h:389</a></div></div>
 <div class="ttc" id="anamespacedaw_html_adabfdf18ebb9d50aa61f61d9e999c946"><div class="ttname"><a href="namespacedaw.html#adabfdf18ebb9d50aa61f61d9e999c946">daw::to_uint64</a></div><div class="ttdeci">constexpr UInt64 to_uint64(Number num)</div><div class="ttdef"><b>Definition:</b> <a href="daw__uint__buffer_8h_source.html#l00029">daw_uint_buffer.h:29</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a94f9b8727d7fac14b2248dfaf671ecb8"><div class="ttname"><a href="namespacedaw.html#a94f9b8727d7fac14b2248dfaf671ecb8">daw::forward_as_tuple</a></div><div class="ttdeci">constexpr tuple&lt; Ts &amp;&amp;... &gt; forward_as_tuple(Ts &amp;&amp;...ts) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple_8h_source.html#l00217">daw_tuple.h:217</a></div></div>
 <!-- start footer part -->

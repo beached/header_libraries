@@ -533,7 +533,7 @@ $(function() {
 <div class="line"><a name="l00502"></a><span class="lineno"><a class="line" href="structdaw_1_1algorithm_1_1tuple__functor.html#a83eb93e02eaf9b098da40d79a3ac3b34">  502</a></span>&#160;    <span class="keyword">static</span> constexpr <span class="keywordtype">void</span> <a class="code" href="structdaw_1_1algorithm_1_1tuple__functor.html#a83eb93e02eaf9b098da40d79a3ac3b34">run</a>( std::size_t i, Tuple &amp;&amp;tp, Func &amp;&amp;func ) {</div>
 <div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;      constexpr <span class="keywordtype">size_t</span> <span class="keyword">const</span> I = ( N - 1 );</div>
 <div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;      <span class="keywordflow">if</span>( i == I ) {</div>
-<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;        <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Func, func ),</div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;        <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Func, func ),</div>
 <div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;                     std::get&lt;I&gt;( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Tuple, tp ) ) );</div>
 <div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;      } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;        <a class="code" href="structdaw_1_1algorithm_1_1tuple__functor.html#a83eb93e02eaf9b098da40d79a3ac3b34">tuple_functor&lt;I&gt;::run</a>( i, <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Tuple, tp ),</div>
@@ -645,7 +645,7 @@ $(function() {
 <div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160; </div>
 <div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;    traits::is_unary_predicate_test&lt;UnaryPredicate, Value&gt;( );</div>
 <div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160; </div>
-<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( UnaryPredicate, func ),</div>
+<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( UnaryPredicate, func ),</div>
 <div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;                        <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Value, value ) );</div>
 <div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;  }</div>
 <div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160; </div>
@@ -655,7 +655,7 @@ $(function() {
 <div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160; </div>
 <div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;    traits::is_unary_predicate_test&lt;UnaryPredicate, Value&gt;( );</div>
 <div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160; </div>
-<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( UnaryPredicate, func ), value ) or</div>
+<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( UnaryPredicate, func ), value ) or</div>
 <div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;           <a class="code" href="namespacedaw_1_1algorithm.html#a6fbb987aa9c647ee766c92a89dfa58a4">satisfies_one</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Value, value ),</div>
 <div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;                          <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( UnaryPredicates, funcs )... );</div>
 <div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;  }</div>
@@ -691,7 +691,7 @@ $(function() {
 <div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160; </div>
 <div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;    traits::is_unary_predicate_test&lt;UnaryPredicate, Value&gt;( );</div>
 <div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160; </div>
-<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( UnaryPredicate, func ),</div>
+<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( UnaryPredicate, func ),</div>
 <div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;                        <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Value, value ) );</div>
 <div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;  }</div>
 <div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160; </div>
@@ -701,7 +701,7 @@ $(function() {
 <div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160; </div>
 <div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;    traits::is_unary_predicate_test&lt;UnaryPredicate, Value&gt;( );</div>
 <div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160; </div>
-<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;    <span class="keyword">auto</span> <span class="keyword">const</span> result = <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( UnaryPredicate, func ), value );</div>
+<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;    <span class="keyword">auto</span> <span class="keyword">const</span> result = <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( UnaryPredicate, func ), value );</div>
 <div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;    <span class="keywordflow">return</span> result and <a class="code" href="namespacedaw_1_1algorithm.html#aaadb413768e40a33315892b555d789e0">satisfies_all</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Value, value ),</div>
 <div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;                                     <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( UnaryPredicates, funcs )... );</div>
 <div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;  }</div>
@@ -881,10 +881,10 @@ $(function() {
 <div class="line"><a name="l00928"></a><span class="lineno">  928</span>&#160;                            decltype( *first1 )&gt;( );</div>
 <div class="line"><a name="l00929"></a><span class="lineno">  929</span>&#160; </div>
 <div class="line"><a name="l00930"></a><span class="lineno">  930</span>&#160;    <span class="keywordflow">while</span>( ( first1 != last1 ) and ( first2 != last2 ) ) {</div>
-<div class="line"><a name="l00931"></a><span class="lineno">  931</span>&#160;      <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( comp, *first1, *first2 ) ) {</div>
+<div class="line"><a name="l00931"></a><span class="lineno">  931</span>&#160;      <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( comp, *first1, *first2 ) ) {</div>
 <div class="line"><a name="l00932"></a><span class="lineno">  932</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00933"></a><span class="lineno">  933</span>&#160;      }</div>
-<div class="line"><a name="l00934"></a><span class="lineno">  934</span>&#160;      <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( comp, *first2, *first1 ) ) {</div>
+<div class="line"><a name="l00934"></a><span class="lineno">  934</span>&#160;      <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( comp, *first2, *first1 ) ) {</div>
 <div class="line"><a name="l00935"></a><span class="lineno">  935</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00936"></a><span class="lineno">  936</span>&#160;      }</div>
 <div class="line"><a name="l00937"></a><span class="lineno">  937</span>&#160;      ++first1;</div>
@@ -909,8 +909,8 @@ $(function() {
 <div class="line"><a name="l00956"></a><span class="lineno">  956</span>&#160;      std::is_invocable_v&lt;Equality, decltype( *first1 ), decltype( *first2 )&gt; );</div>
 <div class="line"><a name="l00957"></a><span class="lineno">  957</span>&#160; </div>
 <div class="line"><a name="l00958"></a><span class="lineno">  958</span>&#160;    <span class="keywordflow">while</span>( first1 != last1 and first2 != last2 ) {</div>
-<div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160;      <span class="keywordflow">if</span>( not <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( eq, *first1, *first2 ) ) {</div>
-<div class="line"><a name="l00960"></a><span class="lineno">  960</span>&#160;        <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( less_comp, *first1, *first2 ) ) {</div>
+<div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160;      <span class="keywordflow">if</span>( not <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( eq, *first1, *first2 ) ) {</div>
+<div class="line"><a name="l00960"></a><span class="lineno">  960</span>&#160;        <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( less_comp, *first1, *first2 ) ) {</div>
 <div class="line"><a name="l00961"></a><span class="lineno">  961</span>&#160;          <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a name="l00962"></a><span class="lineno">  962</span>&#160;        }</div>
 <div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160;        <span class="keywordflow">return</span> 1;</div>
@@ -945,8 +945,8 @@ $(function() {
 <div class="line"><a name="l01009"></a><span class="lineno"> 1009</span>&#160;                   <span class="stringliteral">&quot;the dereferenced type of first&quot;</span> );</div>
 <div class="line"><a name="l01010"></a><span class="lineno"> 1010</span>&#160; </div>
 <div class="line"><a name="l01011"></a><span class="lineno"> 1011</span>&#160;    <span class="keywordflow">while</span>( first != last ) {</div>
-<div class="line"><a name="l01012"></a><span class="lineno"> 1012</span>&#160;      <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( pred, *first ) ) {</div>
-<div class="line"><a name="l01013"></a><span class="lineno"> 1013</span>&#160;        *first_out = <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( trans, *first );</div>
+<div class="line"><a name="l01012"></a><span class="lineno"> 1012</span>&#160;      <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( pred, *first ) ) {</div>
+<div class="line"><a name="l01013"></a><span class="lineno"> 1013</span>&#160;        *first_out = <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( trans, *first );</div>
 <div class="line"><a name="l01014"></a><span class="lineno"> 1014</span>&#160;        ++first_out;</div>
 <div class="line"><a name="l01015"></a><span class="lineno"> 1015</span>&#160;      }</div>
 <div class="line"><a name="l01016"></a><span class="lineno"> 1016</span>&#160;      ++first;</div>
@@ -1013,7 +1013,7 @@ $(function() {
 <div class="line"><a name="l01104"></a><span class="lineno"> 1104</span>&#160;                                    decltype( unary_op( *first ) )&gt;( );</div>
 <div class="line"><a name="l01105"></a><span class="lineno"> 1105</span>&#160; </div>
 <div class="line"><a name="l01106"></a><span class="lineno"> 1106</span>&#160;    <span class="keywordflow">while</span>( first != last ) {</div>
-<div class="line"><a name="l01107"></a><span class="lineno"> 1107</span>&#160;      *first_out = <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( unary_op, *first );</div>
+<div class="line"><a name="l01107"></a><span class="lineno"> 1107</span>&#160;      *first_out = <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( unary_op, *first );</div>
 <div class="line"><a name="l01108"></a><span class="lineno"> 1108</span>&#160;      ++first;</div>
 <div class="line"><a name="l01109"></a><span class="lineno"> 1109</span>&#160;      ++first_out;</div>
 <div class="line"><a name="l01110"></a><span class="lineno"> 1110</span>&#160;    }</div>
@@ -1033,7 +1033,7 @@ $(function() {
 <div class="line"><a name="l01137"></a><span class="lineno"> 1137</span>&#160;    <span class="comment">// output iterator</span></div>
 <div class="line"><a name="l01138"></a><span class="lineno"> 1138</span>&#160; </div>
 <div class="line"><a name="l01139"></a><span class="lineno"> 1139</span>&#160;    <span class="keywordflow">while</span>( first != last ) {</div>
-<div class="line"><a name="l01140"></a><span class="lineno"> 1140</span>&#160;      first_out = <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( binary_op, *first, first_out );</div>
+<div class="line"><a name="l01140"></a><span class="lineno"> 1140</span>&#160;      first_out = <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( binary_op, *first, first_out );</div>
 <div class="line"><a name="l01141"></a><span class="lineno"> 1141</span>&#160;      ++first;</div>
 <div class="line"><a name="l01142"></a><span class="lineno"> 1142</span>&#160;    }</div>
 <div class="line"><a name="l01143"></a><span class="lineno"> 1143</span>&#160;    <span class="keywordflow">return</span> first_out;</div>
@@ -1067,7 +1067,7 @@ $(function() {
 <div class="line"><a name="l01191"></a><span class="lineno"> 1191</span>&#160;      <span class="stringliteral">&quot;information&quot;</span> );</div>
 <div class="line"><a name="l01192"></a><span class="lineno"> 1192</span>&#160; </div>
 <div class="line"><a name="l01193"></a><span class="lineno"> 1193</span>&#160;    <span class="keywordflow">while</span>( first != last ) {</div>
-<div class="line"><a name="l01194"></a><span class="lineno"> 1194</span>&#160;      <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( pred, *first ) ) {</div>
+<div class="line"><a name="l01194"></a><span class="lineno"> 1194</span>&#160;      <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( pred, *first ) ) {</div>
 <div class="line"><a name="l01195"></a><span class="lineno"> 1195</span>&#160;        *destination = *first;</div>
 <div class="line"><a name="l01196"></a><span class="lineno"> 1196</span>&#160;        ++destination;</div>
 <div class="line"><a name="l01197"></a><span class="lineno"> 1197</span>&#160;      }</div>
@@ -1147,7 +1147,7 @@ $(function() {
 <div class="line"><a name="l01310"></a><span class="lineno"> 1310</span>&#160;                            decltype( *first2 )&gt;( );</div>
 <div class="line"><a name="l01311"></a><span class="lineno"> 1311</span>&#160; </div>
 <div class="line"><a name="l01312"></a><span class="lineno"> 1312</span>&#160;    <span class="keywordflow">while</span>( ( first1 != last1 ) and ( first2 != last2 ) and</div>
-<div class="line"><a name="l01313"></a><span class="lineno"> 1313</span>&#160;           <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( comp, *first1, *first2 ) ) {</div>
+<div class="line"><a name="l01313"></a><span class="lineno"> 1313</span>&#160;           <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( comp, *first1, *first2 ) ) {</div>
 <div class="line"><a name="l01314"></a><span class="lineno"> 1314</span>&#160;      ++first1;</div>
 <div class="line"><a name="l01315"></a><span class="lineno"> 1315</span>&#160;      ++first2;</div>
 <div class="line"><a name="l01316"></a><span class="lineno"> 1316</span>&#160;    }</div>
@@ -1217,7 +1217,7 @@ $(function() {
 <div class="line"><a name="l01420"></a><span class="lineno"> 1420</span>&#160;      <span class="keyword">auto</span> it = first;</div>
 <div class="line"><a name="l01421"></a><span class="lineno"> 1421</span>&#160;      <span class="keyword">auto</span> step = count / 2;</div>
 <div class="line"><a name="l01422"></a><span class="lineno"> 1422</span>&#160;      <a class="code" href="namespacedaw.html#a557cf75d8b8e24da975f31aa7a3dad69">daw::advance</a>( it, step );</div>
-<div class="line"><a name="l01423"></a><span class="lineno"> 1423</span>&#160;      <span class="keywordflow">if</span>( not <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( comp, value, *it ) ) {</div>
+<div class="line"><a name="l01423"></a><span class="lineno"> 1423</span>&#160;      <span class="keywordflow">if</span>( not <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( comp, value, *it ) ) {</div>
 <div class="line"><a name="l01424"></a><span class="lineno"> 1424</span>&#160;        ++it;</div>
 <div class="line"><a name="l01425"></a><span class="lineno"> 1425</span>&#160;        first = it;</div>
 <div class="line"><a name="l01426"></a><span class="lineno"> 1426</span>&#160;        count -= step + 1;</div>
@@ -1242,7 +1242,7 @@ $(function() {
 <div class="line"><a name="l01454"></a><span class="lineno"> 1454</span>&#160;    }</div>
 <div class="line"><a name="l01455"></a><span class="lineno"> 1455</span>&#160;    <span class="keyword">auto</span> next_it = <a class="code" href="namespacedaw.html#a55399937a2ff351c8338d513521b00e1">daw::next</a>( first );</div>
 <div class="line"><a name="l01456"></a><span class="lineno"> 1456</span>&#160;    <span class="keywordflow">while</span>( next_it != last ) {</div>
-<div class="line"><a name="l01457"></a><span class="lineno"> 1457</span>&#160;      <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( comp, *next_it, *first ) ) {</div>
+<div class="line"><a name="l01457"></a><span class="lineno"> 1457</span>&#160;      <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( comp, *next_it, *first ) ) {</div>
 <div class="line"><a name="l01458"></a><span class="lineno"> 1458</span>&#160;        <span class="keywordflow">return</span> next_it;</div>
 <div class="line"><a name="l01459"></a><span class="lineno"> 1459</span>&#160;      }</div>
 <div class="line"><a name="l01460"></a><span class="lineno"> 1460</span>&#160;      first = next_it;</div>
@@ -1264,7 +1264,7 @@ $(function() {
 <div class="line"><a name="l01476"></a><span class="lineno"> 1476</span>&#160;    <span class="keywordflow">if</span>( first != last ) {</div>
 <div class="line"><a name="l01477"></a><span class="lineno"> 1477</span>&#160;      <span class="keyword">auto</span> i = first;</div>
 <div class="line"><a name="l01478"></a><span class="lineno"> 1478</span>&#160;      <span class="keywordflow">while</span>( ++i != last ) {</div>
-<div class="line"><a name="l01479"></a><span class="lineno"> 1479</span>&#160;        <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( comp, *i, *first ) ) {</div>
+<div class="line"><a name="l01479"></a><span class="lineno"> 1479</span>&#160;        <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( comp, *i, *first ) ) {</div>
 <div class="line"><a name="l01480"></a><span class="lineno"> 1480</span>&#160;          <span class="keywordflow">return</span> i;</div>
 <div class="line"><a name="l01481"></a><span class="lineno"> 1481</span>&#160;        }</div>
 <div class="line"><a name="l01482"></a><span class="lineno"> 1482</span>&#160;        first = i;</div>
@@ -1319,7 +1319,7 @@ $(function() {
 <div class="line"><a name="l01531"></a><span class="lineno"> 1531</span>&#160;    traits::is_unary_predicate_test&lt;UnaryOperation, decltype( *first )&gt;( );</div>
 <div class="line"><a name="l01532"></a><span class="lineno"> 1532</span>&#160; </div>
 <div class="line"><a name="l01533"></a><span class="lineno"> 1533</span>&#160;    <span class="keywordflow">while</span>( first != last ) {</div>
-<div class="line"><a name="l01534"></a><span class="lineno"> 1534</span>&#160;      *first_out = <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( unary_op, *first );</div>
+<div class="line"><a name="l01534"></a><span class="lineno"> 1534</span>&#160;      *first_out = <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( unary_op, *first );</div>
 <div class="line"><a name="l01535"></a><span class="lineno"> 1535</span>&#160;      ++first;</div>
 <div class="line"><a name="l01536"></a><span class="lineno"> 1536</span>&#160;      ++first_out;</div>
 <div class="line"><a name="l01537"></a><span class="lineno"> 1537</span>&#160;    }</div>
@@ -1343,7 +1343,7 @@ $(function() {
 <div class="line"><a name="l01555"></a><span class="lineno"> 1555</span>&#160;                                     decltype( *first2 )&gt;( );</div>
 <div class="line"><a name="l01556"></a><span class="lineno"> 1556</span>&#160; </div>
 <div class="line"><a name="l01557"></a><span class="lineno"> 1557</span>&#160;    <span class="keywordflow">while</span>( first1 != last1 ) {</div>
-<div class="line"><a name="l01558"></a><span class="lineno"> 1558</span>&#160;      *first_out = <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( binary_op, *first1, *first2 );</div>
+<div class="line"><a name="l01558"></a><span class="lineno"> 1558</span>&#160;      *first_out = <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( binary_op, *first1, *first2 );</div>
 <div class="line"><a name="l01559"></a><span class="lineno"> 1559</span>&#160;      ++first1;</div>
 <div class="line"><a name="l01560"></a><span class="lineno"> 1560</span>&#160;      ++first2;</div>
 <div class="line"><a name="l01561"></a><span class="lineno"> 1561</span>&#160;      ++first_out;</div>
@@ -1372,7 +1372,7 @@ $(function() {
 <div class="line"><a name="l01584"></a><span class="lineno"> 1584</span>&#160;      <span class="stringliteral">&quot;e.g. *first = binary_op( *first, *(first + 1) ) must be valid.&quot;</span> );</div>
 <div class="line"><a name="l01585"></a><span class="lineno"> 1585</span>&#160; </div>
 <div class="line"><a name="l01586"></a><span class="lineno"> 1586</span>&#160;    <span class="keywordflow">while</span>( first != last ) {</div>
-<div class="line"><a name="l01587"></a><span class="lineno"> 1587</span>&#160;      init = <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( binary_op, <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( init ), *first );</div>
+<div class="line"><a name="l01587"></a><span class="lineno"> 1587</span>&#160;      init = <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( binary_op, <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( init ), *first );</div>
 <div class="line"><a name="l01588"></a><span class="lineno"> 1588</span>&#160;      ++first;</div>
 <div class="line"><a name="l01589"></a><span class="lineno"> 1589</span>&#160;    }</div>
 <div class="line"><a name="l01590"></a><span class="lineno"> 1590</span>&#160;    <span class="keywordflow">return</span> init;</div>
@@ -1414,8 +1414,8 @@ $(function() {
 <div class="line"><a name="l01626"></a><span class="lineno"> 1626</span>&#160;      <span class="stringliteral">&quot;map_func( *first1, *first2 ) ) must be valid&quot;</span> );</div>
 <div class="line"><a name="l01627"></a><span class="lineno"> 1627</span>&#160; </div>
 <div class="line"><a name="l01628"></a><span class="lineno"> 1628</span>&#160;    <span class="keywordflow">while</span>( first1 != last1 ) {</div>
-<div class="line"><a name="l01629"></a><span class="lineno"> 1629</span>&#160;      init = <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( reduce_func, <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( init ),</div>
-<div class="line"><a name="l01630"></a><span class="lineno"> 1630</span>&#160;                          <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( map_func, *first1, *first2 ) );</div>
+<div class="line"><a name="l01629"></a><span class="lineno"> 1629</span>&#160;      init = <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( reduce_func, <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( init ),</div>
+<div class="line"><a name="l01630"></a><span class="lineno"> 1630</span>&#160;                          <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( map_func, *first1, *first2 ) );</div>
 <div class="line"><a name="l01631"></a><span class="lineno"> 1631</span>&#160;      ++first1;</div>
 <div class="line"><a name="l01632"></a><span class="lineno"> 1632</span>&#160;      ++first2;</div>
 <div class="line"><a name="l01633"></a><span class="lineno"> 1633</span>&#160;    }</div>
@@ -1457,7 +1457,7 @@ $(function() {
 <div class="line"><a name="l01669"></a><span class="lineno"> 1669</span>&#160;        <span class="keywordflow">if</span>( it == last ) {</div>
 <div class="line"><a name="l01670"></a><span class="lineno"> 1670</span>&#160;          <span class="keywordflow">return</span> last;</div>
 <div class="line"><a name="l01671"></a><span class="lineno"> 1671</span>&#160;        }</div>
-<div class="line"><a name="l01672"></a><span class="lineno"> 1672</span>&#160;        <span class="keywordflow">if</span>( not <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( comp, *it, *s_it ) ) {</div>
+<div class="line"><a name="l01672"></a><span class="lineno"> 1672</span>&#160;        <span class="keywordflow">if</span>( not <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( comp, *it, *s_it ) ) {</div>
 <div class="line"><a name="l01673"></a><span class="lineno"> 1673</span>&#160;          <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l01674"></a><span class="lineno"> 1674</span>&#160;        }</div>
 <div class="line"><a name="l01675"></a><span class="lineno"> 1675</span>&#160;      }</div>
@@ -1497,7 +1497,7 @@ $(function() {
 <div class="line"><a name="l01709"></a><span class="lineno"> 1709</span>&#160;                                                          *first ) ) ) {</div>
 <div class="line"><a name="l01710"></a><span class="lineno"> 1710</span>&#160; </div>
 <div class="line"><a name="l01711"></a><span class="lineno"> 1711</span>&#160;    <span class="keywordflow">while</span>( first != last ) {</div>
-<div class="line"><a name="l01712"></a><span class="lineno"> 1712</span>&#160;      init = <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( binary_op, <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( init ), *first );</div>
+<div class="line"><a name="l01712"></a><span class="lineno"> 1712</span>&#160;      init = <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( binary_op, <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( init ), *first );</div>
 <div class="line"><a name="l01713"></a><span class="lineno"> 1713</span>&#160;      ++first;</div>
 <div class="line"><a name="l01714"></a><span class="lineno"> 1714</span>&#160;    }</div>
 <div class="line"><a name="l01715"></a><span class="lineno"> 1715</span>&#160;    <span class="keywordflow">return</span> init;</div>
@@ -1513,7 +1513,7 @@ $(function() {
 <div class="line"><a name="l01725"></a><span class="lineno"> 1725</span>&#160;    <span class="keyword">auto</span> largest = first;</div>
 <div class="line"><a name="l01726"></a><span class="lineno"> 1726</span>&#160;    ++first;</div>
 <div class="line"><a name="l01727"></a><span class="lineno"> 1727</span>&#160;    <span class="keywordflow">while</span>( first != last ) {</div>
-<div class="line"><a name="l01728"></a><span class="lineno"> 1728</span>&#160;      <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( comp, *largest, *first ) ) {</div>
+<div class="line"><a name="l01728"></a><span class="lineno"> 1728</span>&#160;      <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( comp, *largest, *first ) ) {</div>
 <div class="line"><a name="l01729"></a><span class="lineno"> 1729</span>&#160;        largest = first;</div>
 <div class="line"><a name="l01730"></a><span class="lineno"> 1730</span>&#160;      }</div>
 <div class="line"><a name="l01731"></a><span class="lineno"> 1731</span>&#160;      ++first;</div>
@@ -1528,7 +1528,7 @@ $(function() {
 <div class="line"><a name="l01748"></a><span class="lineno"> 1748</span>&#160;                   <span class="stringliteral">&quot;Compare function does not meet the requirements of the &quot;</span></div>
 <div class="line"><a name="l01749"></a><span class="lineno"> 1749</span>&#160;                   <span class="stringliteral">&quot;Compare concept. &quot;</span></div>
 <div class="line"><a name="l01750"></a><span class="lineno"> 1750</span>&#160;                   <span class="stringliteral">&quot;http://en.cppreference.com/w/cpp/concept/Compare&quot;</span> );</div>
-<div class="line"><a name="l01751"></a><span class="lineno"> 1751</span>&#160;    <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( comp, b, a ) ) {</div>
+<div class="line"><a name="l01751"></a><span class="lineno"> 1751</span>&#160;    <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( comp, b, a ) ) {</div>
 <div class="line"><a name="l01752"></a><span class="lineno"> 1752</span>&#160;      <span class="keywordflow">return</span> std::pair&lt;T, T&gt;{ <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( b ), <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( a ) };</div>
 <div class="line"><a name="l01753"></a><span class="lineno"> 1753</span>&#160;    }</div>
 <div class="line"><a name="l01754"></a><span class="lineno"> 1754</span>&#160;    <span class="keywordflow">return</span> std::pair&lt;T, T&gt;{ <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( a ), <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( b ) };</div>
@@ -1556,7 +1556,7 @@ $(function() {
 <div class="line"><a name="l01776"></a><span class="lineno"> 1776</span>&#160;    <span class="keywordflow">if</span>( not( first != last ) ) {</div>
 <div class="line"><a name="l01777"></a><span class="lineno"> 1777</span>&#160;      <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l01778"></a><span class="lineno"> 1778</span>&#160;    }</div>
-<div class="line"><a name="l01779"></a><span class="lineno"> 1779</span>&#160;    <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( comp, *first, *result.min_element ) ) {</div>
+<div class="line"><a name="l01779"></a><span class="lineno"> 1779</span>&#160;    <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( comp, *first, *result.min_element ) ) {</div>
 <div class="line"><a name="l01780"></a><span class="lineno"> 1780</span>&#160;      result.min_element = first;</div>
 <div class="line"><a name="l01781"></a><span class="lineno"> 1781</span>&#160;    } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l01782"></a><span class="lineno"> 1782</span>&#160;      result.max_element = first;</div>
@@ -1567,25 +1567,25 @@ $(function() {
 <div class="line"><a name="l01787"></a><span class="lineno"> 1787</span>&#160;      <span class="keyword">auto</span> i = first;</div>
 <div class="line"><a name="l01788"></a><span class="lineno"> 1788</span>&#160;      first = <a class="code" href="namespacedaw.html#a55399937a2ff351c8338d513521b00e1">daw::next</a>( first );</div>
 <div class="line"><a name="l01789"></a><span class="lineno"> 1789</span>&#160;      <span class="keywordflow">if</span>( not( first != last ) ) {</div>
-<div class="line"><a name="l01790"></a><span class="lineno"> 1790</span>&#160;        <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( comp, *i, *result.min_element ) ) {</div>
+<div class="line"><a name="l01790"></a><span class="lineno"> 1790</span>&#160;        <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( comp, *i, *result.min_element ) ) {</div>
 <div class="line"><a name="l01791"></a><span class="lineno"> 1791</span>&#160;          result.min_element = i;</div>
-<div class="line"><a name="l01792"></a><span class="lineno"> 1792</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span>( not <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( comp, *i, *result.max_element ) ) {</div>
+<div class="line"><a name="l01792"></a><span class="lineno"> 1792</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span>( not <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( comp, *i, *result.max_element ) ) {</div>
 <div class="line"><a name="l01793"></a><span class="lineno"> 1793</span>&#160;          result.max_element = i;</div>
 <div class="line"><a name="l01794"></a><span class="lineno"> 1794</span>&#160;        }</div>
 <div class="line"><a name="l01795"></a><span class="lineno"> 1795</span>&#160;        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l01796"></a><span class="lineno"> 1796</span>&#160;      } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l01797"></a><span class="lineno"> 1797</span>&#160;        <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( comp, *first, *i ) ) {</div>
-<div class="line"><a name="l01798"></a><span class="lineno"> 1798</span>&#160;          <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( comp, *first, *result.min_element ) ) {</div>
+<div class="line"><a name="l01797"></a><span class="lineno"> 1797</span>&#160;        <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( comp, *first, *i ) ) {</div>
+<div class="line"><a name="l01798"></a><span class="lineno"> 1798</span>&#160;          <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( comp, *first, *result.min_element ) ) {</div>
 <div class="line"><a name="l01799"></a><span class="lineno"> 1799</span>&#160;            result.min_element = first;</div>
 <div class="line"><a name="l01800"></a><span class="lineno"> 1800</span>&#160;          }</div>
-<div class="line"><a name="l01801"></a><span class="lineno"> 1801</span>&#160;          <span class="keywordflow">if</span>( not( <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( comp, *i, *result.max_element ) ) ) {</div>
+<div class="line"><a name="l01801"></a><span class="lineno"> 1801</span>&#160;          <span class="keywordflow">if</span>( not( <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( comp, *i, *result.max_element ) ) ) {</div>
 <div class="line"><a name="l01802"></a><span class="lineno"> 1802</span>&#160;            result.max_element = i;</div>
 <div class="line"><a name="l01803"></a><span class="lineno"> 1803</span>&#160;          }</div>
 <div class="line"><a name="l01804"></a><span class="lineno"> 1804</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l01805"></a><span class="lineno"> 1805</span>&#160;          <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( comp, *i, *result.min_element ) ) {</div>
+<div class="line"><a name="l01805"></a><span class="lineno"> 1805</span>&#160;          <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( comp, *i, *result.min_element ) ) {</div>
 <div class="line"><a name="l01806"></a><span class="lineno"> 1806</span>&#160;            result.min_element = i;</div>
 <div class="line"><a name="l01807"></a><span class="lineno"> 1807</span>&#160;          }</div>
-<div class="line"><a name="l01808"></a><span class="lineno"> 1808</span>&#160;          <span class="keywordflow">if</span>( not( <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( comp, *first, *result.max_element ) ) ) {</div>
+<div class="line"><a name="l01808"></a><span class="lineno"> 1808</span>&#160;          <span class="keywordflow">if</span>( not( <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( comp, *first, *result.max_element ) ) ) {</div>
 <div class="line"><a name="l01809"></a><span class="lineno"> 1809</span>&#160;            result.max_element = first;</div>
 <div class="line"><a name="l01810"></a><span class="lineno"> 1810</span>&#160;          }</div>
 <div class="line"><a name="l01811"></a><span class="lineno"> 1811</span>&#160;        }</div>
@@ -1606,10 +1606,10 @@ $(function() {
 <div class="line"><a name="l01826"></a><span class="lineno"> 1826</span>&#160;                               and noexcept( comp( *first1, *first2 ) ) ) {</div>
 <div class="line"><a name="l01827"></a><span class="lineno"> 1827</span>&#160; </div>
 <div class="line"><a name="l01828"></a><span class="lineno"> 1828</span>&#160;    <span class="keywordflow">while</span>( first1 != last1 and first2 != last2 ) {</div>
-<div class="line"><a name="l01829"></a><span class="lineno"> 1829</span>&#160;      <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( comp, *first1, *first2 ) ) {</div>
+<div class="line"><a name="l01829"></a><span class="lineno"> 1829</span>&#160;      <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( comp, *first1, *first2 ) ) {</div>
 <div class="line"><a name="l01830"></a><span class="lineno"> 1830</span>&#160;        ++first1;</div>
 <div class="line"><a name="l01831"></a><span class="lineno"> 1831</span>&#160;      } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l01832"></a><span class="lineno"> 1832</span>&#160;        <span class="keywordflow">if</span>( not <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( comp, *first2, *first1 ) ) {</div>
+<div class="line"><a name="l01832"></a><span class="lineno"> 1832</span>&#160;        <span class="keywordflow">if</span>( not <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( comp, *first2, *first1 ) ) {</div>
 <div class="line"><a name="l01833"></a><span class="lineno"> 1833</span>&#160;          *d_first = *first1;</div>
 <div class="line"><a name="l01834"></a><span class="lineno"> 1834</span>&#160;          ++d_first;</div>
 <div class="line"><a name="l01835"></a><span class="lineno"> 1835</span>&#160;          ++first1;</div>
@@ -1657,12 +1657,12 @@ $(function() {
 <div class="line"><a name="l01877"></a><span class="lineno"> 1877</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">class</span> ForwardIterator, <span class="keyword">class</span> UnaryPredicate&gt;</div>
 <div class="line"><a name="l01878"></a><span class="lineno"><a class="line" href="namespacedaw_1_1algorithm.html#a641675b8cc5170dc309d7174bba53695"> 1878</a></span>&#160;  constexpr ForwardIterator <a class="code" href="namespacedaw_1_1algorithm.html#a641675b8cc5170dc309d7174bba53695">remove_if</a>(</div>
 <div class="line"><a name="l01879"></a><span class="lineno"> 1879</span>&#160;    ForwardIterator first, ForwardIterator last,</div>
-<div class="line"><a name="l01880"></a><span class="lineno"> 1880</span>&#160;    UnaryPredicate &amp;&amp;pred ) noexcept( noexcept( <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( pred,</div>
+<div class="line"><a name="l01880"></a><span class="lineno"> 1880</span>&#160;    UnaryPredicate &amp;&amp;pred ) noexcept( noexcept( <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( pred,</div>
 <div class="line"><a name="l01881"></a><span class="lineno"> 1881</span>&#160;                                                             *first ) ) ) {</div>
 <div class="line"><a name="l01882"></a><span class="lineno"> 1882</span>&#160;    first = <a class="code" href="namespacedaw_1_1algorithm.html#a107922750a7d50071fff62745825ba6d">daw::algorithm::find_if</a>( first, last, pred );</div>
 <div class="line"><a name="l01883"></a><span class="lineno"> 1883</span>&#160;    <span class="keywordflow">if</span>( first != last ) {</div>
 <div class="line"><a name="l01884"></a><span class="lineno"> 1884</span>&#160;      <span class="keywordflow">for</span>( ForwardIterator i = first; ++i != last; ) {</div>
-<div class="line"><a name="l01885"></a><span class="lineno"> 1885</span>&#160;        <span class="keywordflow">if</span>( not <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( pred, *i ) ) {</div>
+<div class="line"><a name="l01885"></a><span class="lineno"> 1885</span>&#160;        <span class="keywordflow">if</span>( not <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( pred, *i ) ) {</div>
 <div class="line"><a name="l01886"></a><span class="lineno"> 1886</span>&#160;          *first = <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( *i );</div>
 <div class="line"><a name="l01887"></a><span class="lineno"> 1887</span>&#160;          ++first;</div>
 <div class="line"><a name="l01888"></a><span class="lineno"> 1888</span>&#160;        }</div>
@@ -1674,12 +1674,12 @@ $(function() {
 <div class="line"><a name="l01894"></a><span class="lineno"> 1894</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">class</span> ForwardIterator, <span class="keyword">class</span> UnaryPredicate, <span class="keyword">typename</span> Function&gt;</div>
 <div class="line"><a name="l01895"></a><span class="lineno"><a class="line" href="namespacedaw_1_1algorithm.html#a2f192b6ccebd06eef1a7338e08b7c666"> 1895</a></span>&#160;  constexpr ForwardIterator <a class="code" href="namespacedaw_1_1algorithm.html#a2f192b6ccebd06eef1a7338e08b7c666">consume_if</a>(</div>
 <div class="line"><a name="l01896"></a><span class="lineno"> 1896</span>&#160;    ForwardIterator first, ForwardIterator last, UnaryPredicate &amp;&amp;pred,</div>
-<div class="line"><a name="l01897"></a><span class="lineno"> 1897</span>&#160;    Function &amp;&amp;func ) noexcept( noexcept( <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( pred, *first ) ) ) {</div>
+<div class="line"><a name="l01897"></a><span class="lineno"> 1897</span>&#160;    Function &amp;&amp;func ) noexcept( noexcept( <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( pred, *first ) ) ) {</div>
 <div class="line"><a name="l01898"></a><span class="lineno"> 1898</span>&#160;    first = <a class="code" href="namespacedaw_1_1algorithm.html#a107922750a7d50071fff62745825ba6d">daw::algorithm::find_if</a>( first, last, pred );</div>
 <div class="line"><a name="l01899"></a><span class="lineno"> 1899</span>&#160;    <span class="keywordflow">if</span>( first != last ) {</div>
 <div class="line"><a name="l01900"></a><span class="lineno"> 1900</span>&#160;      <span class="keywordflow">for</span>( ForwardIterator i = first; ++i != last; ) {</div>
-<div class="line"><a name="l01901"></a><span class="lineno"> 1901</span>&#160;        <span class="keywordflow">if</span>( not <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( pred, *i ) ) {</div>
-<div class="line"><a name="l01902"></a><span class="lineno"> 1902</span>&#160;          (void)<a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( func, *i );</div>
+<div class="line"><a name="l01901"></a><span class="lineno"> 1901</span>&#160;        <span class="keywordflow">if</span>( not <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( pred, *i ) ) {</div>
+<div class="line"><a name="l01902"></a><span class="lineno"> 1902</span>&#160;          (void)<a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( func, *i );</div>
 <div class="line"><a name="l01903"></a><span class="lineno"> 1903</span>&#160;          *first = <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( *i );</div>
 <div class="line"><a name="l01904"></a><span class="lineno"> 1904</span>&#160;          ++first;</div>
 <div class="line"><a name="l01905"></a><span class="lineno"> 1905</span>&#160;        }</div>
@@ -1716,7 +1716,7 @@ $(function() {
 <div class="line"><a name="l01936"></a><span class="lineno"> 1936</span>&#160;      <span class="stringliteral">&quot;Function must be invokable with dereferenced iterators&quot;</span> );</div>
 <div class="line"><a name="l01937"></a><span class="lineno"> 1937</span>&#160;    <span class="keywordflow">while</span>( first1 != last1 ) {</div>
 <div class="line"><a name="l01938"></a><span class="lineno"> 1938</span>&#160;      <span class="comment">// std invoke isn&#39;t constexpr</span></div>
-<div class="line"><a name="l01939"></a><span class="lineno"> 1939</span>&#160;      *out_it = <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( func, *first1, *its... );</div>
+<div class="line"><a name="l01939"></a><span class="lineno"> 1939</span>&#160;      *out_it = <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( func, *first1, *its... );</div>
 <div class="line"><a name="l01940"></a><span class="lineno"> 1940</span>&#160;      <a class="code" href="namespacedaw.html#ae19885f1427079df07f015229b7b3313">daw::advance_many</a>( 1, first1, out_it, its... );</div>
 <div class="line"><a name="l01941"></a><span class="lineno"> 1941</span>&#160;    }</div>
 <div class="line"><a name="l01942"></a><span class="lineno"> 1942</span>&#160;    <span class="keywordflow">return</span> out_it;</div>
@@ -1775,7 +1775,7 @@ $(function() {
 <div class="line"><a name="l01995"></a><span class="lineno"> 1995</span>&#160; </div>
 <div class="line"><a name="l01996"></a><span class="lineno"> 1996</span>&#160;    <span class="keywordflow">while</span>( first1 != last1 ) {</div>
 <div class="line"><a name="l01997"></a><span class="lineno"> 1997</span>&#160;      <span class="comment">// std invoke isn&#39;t constexpr</span></div>
-<div class="line"><a name="l01998"></a><span class="lineno"> 1998</span>&#160;      <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( func, *first1, *its... );</div>
+<div class="line"><a name="l01998"></a><span class="lineno"> 1998</span>&#160;      <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( func, *first1, *its... );</div>
 <div class="line"><a name="l01999"></a><span class="lineno"> 1999</span>&#160;      <a class="code" href="namespacedaw.html#ae19885f1427079df07f015229b7b3313">daw::advance_many</a>( 1, first1, its... );</div>
 <div class="line"><a name="l02000"></a><span class="lineno"> 2000</span>&#160;    }</div>
 <div class="line"><a name="l02001"></a><span class="lineno"> 2001</span>&#160;  }</div>
@@ -1798,7 +1798,7 @@ $(function() {
 <div class="line"><a name="l02018"></a><span class="lineno"> 2018</span>&#160;    ++first_out;</div>
 <div class="line"><a name="l02019"></a><span class="lineno"> 2019</span>&#160;    ++first;</div>
 <div class="line"><a name="l02020"></a><span class="lineno"> 2020</span>&#160;    <span class="keywordflow">while</span>( first != last ) {</div>
-<div class="line"><a name="l02021"></a><span class="lineno"> 2021</span>&#160;      sum = <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( op, <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( sum ), *first );</div>
+<div class="line"><a name="l02021"></a><span class="lineno"> 2021</span>&#160;      sum = <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( op, <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( sum ), *first );</div>
 <div class="line"><a name="l02022"></a><span class="lineno"> 2022</span>&#160;      ++first;</div>
 <div class="line"><a name="l02023"></a><span class="lineno"> 2023</span>&#160; </div>
 <div class="line"><a name="l02024"></a><span class="lineno"> 2024</span>&#160;      *first_out = sum;</div>
@@ -1827,7 +1827,7 @@ $(function() {
 <div class="line"><a name="l02047"></a><span class="lineno"> 2047</span>&#160;      std::is_invocable_v&lt;Predicate, decltype( *<a class="code" href="namespacedaw.html#a5a2a676c7369a07610f519c33b3d1a18">std::begin</a>( from ) )&gt; );</div>
 <div class="line"><a name="l02048"></a><span class="lineno"> 2048</span>&#160;    <span class="keyword">auto</span> it = <a class="code" href="namespacedaw.html#a5a2a676c7369a07610f519c33b3d1a18">std::begin</a>( from );</div>
 <div class="line"><a name="l02049"></a><span class="lineno"> 2049</span>&#160;    <span class="keywordflow">while</span>( it != <a class="code" href="namespacedaw.html#a0131aaa8982f261f0c4b7eda113cd1ba">std::end</a>( from ) ) {</div>
-<div class="line"><a name="l02050"></a><span class="lineno"> 2050</span>&#160;      <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a>( pred, *it ) ) {</div>
+<div class="line"><a name="l02050"></a><span class="lineno"> 2050</span>&#160;      <span class="keywordflow">if</span>( <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( pred, *it ) ) {</div>
 <div class="line"><a name="l02051"></a><span class="lineno"> 2051</span>&#160;        <span class="comment">// Iterator is invalidated inside extract_to,</span></div>
 <div class="line"><a name="l02052"></a><span class="lineno"> 2052</span>&#160;        <span class="comment">// incrementing here ensures that we do not have an</span></div>
 <div class="line"><a name="l02053"></a><span class="lineno"> 2053</span>&#160;        <span class="comment">// iterator to the current item</span></div>
@@ -2084,7 +2084,7 @@ $(function() {
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_ab49df3aa19b5d30ce7f018213549367c"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#ab49df3aa19b5d30ce7f018213549367c">daw::algorithm::find_index_if</a></div><div class="ttdeci">constexpr std::optional&lt; size_t &gt; find_index_if(Iterator first, Iterator last, Predicate &amp;&amp;pred)</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l02104">daw_algorithm.h:2104</a></div></div>
 <div class="ttc" id="anamespacedaw_html_aa1edb3eac3ab330128319c905a57939e"><div class="ttname"><a href="namespacedaw.html#aa1edb3eac3ab330128319c905a57939e">daw::cbegin</a></div><div class="ttdeci">constexpr const_iterator cbegin() const noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__contiguous__view_8h_source.html#l00099">daw_contiguous_view.h:99</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a925f5d2227d8c9e154951a177ae86cb8"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a925f5d2227d8c9e154951a177ae86cb8">daw::algorithm::gather</a></div><div class="ttdeci">std::pair&lt; ForwardIterator, ForwardIterator &gt; gather(ForwardIterator first, ForwardIterator last, ForwardIterator target, Predicate predicate)</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l00475">daw_algorithm.h:475</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a55399937a2ff351c8338d513521b00e1"><div class="ttname"><a href="namespacedaw.html#a55399937a2ff351c8338d513521b00e1">daw::next</a></div><div class="ttdeci">constexpr Iterator next(Iterator it, ptrdiff_t n=1) noexcept</div><div class="ttdoc">Move iterator forward n steps, if n &lt; 0 it is only defined for types that are Bidirectional.</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00559">cpp_17.h:559</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a55399937a2ff351c8338d513521b00e1"><div class="ttname"><a href="namespacedaw.html#a55399937a2ff351c8338d513521b00e1">daw::next</a></div><div class="ttdeci">constexpr Iterator next(Iterator it, ptrdiff_t n=1) noexcept</div><div class="ttdoc">Move iterator forward n steps, if n &lt; 0 it is only defined for types that are Bidirectional.</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00550">cpp_17.h:550</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a83a912de415d15db927d02ceaa983dd9"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a83a912de415d15db927d02ceaa983dd9">daw::algorithm::cartesian_product_map</a></div><div class="ttdeci">constexpr OutputIterator cartesian_product_map(Function func, Iterator1 first1, LastType last1, OutputIterator out_it, Iterators... its)</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l01931">daw_algorithm.h:1931</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a5e5bdd633d26ab5d52424e7b7cdbe056"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a5e5bdd633d26ab5d52424e7b7cdbe056">daw::algorithm::upper_bound</a></div><div class="ttdeci">constexpr ForwardIterator upper_bound(ForwardIterator first, ForwardIterator last, T const &amp;value, Compare comp=Compare{ }) noexcept(noexcept(daw::advance(first, 1)) and noexcept(++first) and noexcept(daw::distance(first, last)))</div><div class="ttdoc">Returns an iterator pointing to the first element in the range [first, last) that is greater than val...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l01409">daw_algorithm.h:1409</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a3507b19c52691aee70a61f643650c963"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a3507b19c52691aee70a61f643650c963">daw::algorithm::copy</a></div><div class="ttdeci">constexpr OutputIterator copy(InputIterator first, LastType last, OutputIterator first_out) noexcept(noexcept(*first_out= *first))</div><div class="ttdoc">Copy input range [first, last) to output range [first_out, first_out + std::distance( first,...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l01157">daw_algorithm.h:1157</a></div></div>
@@ -2096,10 +2096,10 @@ $(function() {
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a32f1366a0264fb7e78a69fd808323884"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a32f1366a0264fb7e78a69fd808323884">daw::algorithm::count_if</a></div><div class="ttdeci">constexpr ResultType count_if(Iterator first, Last last, Predicate pred)</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l02154">daw_algorithm.h:2154</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a8e61beb897641a94d20400972aa17243"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a8e61beb897641a94d20400972aa17243">daw::algorithm::find_some</a></div><div class="ttdeci">constexpr find_some_result&lt; IteratorF, sizeof...(Predicates)&gt; find_some(IteratorF first, IteratorL last, Predicates &amp;&amp;...preds)</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l02249">daw_algorithm.h:2249</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a641675b8cc5170dc309d7174bba53695"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a641675b8cc5170dc309d7174bba53695">daw::algorithm::remove_if</a></div><div class="ttdeci">constexpr ForwardIterator remove_if(ForwardIterator first, ForwardIterator last, UnaryPredicate &amp;&amp;pred) noexcept(noexcept(daw::invoke(pred, *first)))</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l01878">daw_algorithm.h:1878</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a557cf75d8b8e24da975f31aa7a3dad69"><div class="ttname"><a href="namespacedaw.html#a557cf75d8b8e24da975f31aa7a3dad69">daw::advance</a></div><div class="ttdeci">constexpr void advance(Iterator &amp;it, Distance n)</div><div class="ttdoc">Advance iterator n steps.</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00545">cpp_17.h:545</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a557cf75d8b8e24da975f31aa7a3dad69"><div class="ttname"><a href="namespacedaw.html#a557cf75d8b8e24da975f31aa7a3dad69">daw::advance</a></div><div class="ttdeci">constexpr void advance(Iterator &amp;it, Distance n)</div><div class="ttdoc">Advance iterator n steps.</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00536">cpp_17.h:536</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a18e700e320d0a724be3dee6bb0578418"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a18e700e320d0a724be3dee6bb0578418">daw::algorithm::is_sorted</a></div><div class="ttdeci">constexpr bool is_sorted(ForwardIterator first, LastType last, Compare comp=Compare{ }) noexcept(noexcept(comp(*first, *first)))</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l01490">daw_algorithm.h:1490</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a07b614738de5163d3705ff9fdc0e0d4f"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a07b614738de5163d3705ff9fdc0e0d4f">daw::algorithm::map_reduce</a></div><div class="ttdeci">constexpr T map_reduce(InputIterator1 first1, InputIterator1Last last1, InputIterator2 first2, T init, ReduceFunction reduce_func, MapFunction map_func) noexcept(noexcept(reduce_func(init, map_func(*first1, *first2))))</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l01596">daw_algorithm.h:1596</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a6e8d238a833c171fca8ca8edba7b3c3f"><div class="ttname"><a href="namespacedaw.html#a6e8d238a833c171fca8ca8edba7b3c3f">daw::prev</a></div><div class="ttdeci">constexpr Iterator prev(Iterator it, ptrdiff_t n=1) noexcept</div><div class="ttdoc">Move iterator backward n steps, if n &gt; 0, only defined for types that are Bidirectional.</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00574">cpp_17.h:574</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a6e8d238a833c171fca8ca8edba7b3c3f"><div class="ttname"><a href="namespacedaw.html#a6e8d238a833c171fca8ca8edba7b3c3f">daw::prev</a></div><div class="ttdeci">constexpr Iterator prev(Iterator it, ptrdiff_t n=1) noexcept</div><div class="ttdoc">Move iterator backward n steps, if n &gt; 0, only defined for types that are Bidirectional.</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00565">cpp_17.h:565</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a3ad054e7ae76c97db42dcf1df8324300"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a3ad054e7ae76c97db42dcf1df8324300">daw::algorithm::transform</a></div><div class="ttdeci">constexpr OutputIterator transform(InputIterator first, LastType last, OutputIterator first_out, UnaryOperation unary_op) noexcept(std::is_nothrow_constructible_v&lt; decltype(*first_out), decltype(unary_op(*first))&gt;)</div><div class="ttdoc">Transform range [first, last) and output to range [first_out, first_out + std::distance( first,...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l01086">daw_algorithm.h:1086</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a21745db3448f2a269c864edf85bd62b3"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a21745db3448f2a269c864edf85bd62b3">daw::algorithm::clamp</a></div><div class="ttdeci">constexpr T clamp(T &amp;&amp;value, T &amp;&amp;max_value) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l00492">daw_algorithm.h:492</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_af352d0f3c7349e76832859c5990225fa"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#af352d0f3c7349e76832859c5990225fa">daw::algorithm::is_sorted_until</a></div><div class="ttdeci">constexpr ForwardIterator is_sorted_until(ForwardIterator first, ForwardIterator last, Compare comp=Compare{ }) noexcept(noexcept(comp(*first, *first)))</div><div class="ttdoc">Examines the range [first, last) and finds the largest range beginning at first in which the elements...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l01444">daw_algorithm.h:1444</a></div></div>
@@ -2148,6 +2148,7 @@ $(function() {
 <div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="compressed__pair_8h_source.html#l00022">compressed_pair.h:22</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a8d098bbb4a1afa6660dbf3153330b15a"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a8d098bbb4a1afa6660dbf3153330b15a">daw::algorithm::equal</a></div><div class="ttdeci">constexpr bool equal(InputIterator1 first1, LastType1 last1, InputIterator2 first2, LastType2 last2, Compare comp=Compare{ })</div><div class="ttdoc">Determine if two ranges [first1, last1) and [first2, last2) using pred.</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l01303">daw_algorithm.h:1303</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a3b606fb08f1bc0ccd92715572f58f281"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a3b606fb08f1bc0ccd92715572f58f281">daw::algorithm::contains_if</a></div><div class="ttdeci">constexpr bool contains_if(Iterator first, Last last, Predicate pred)</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l02200">daw_algorithm.h:2200</a></div></div>
+<div class="ttc" id="anamespacedaw_html_aaf04bbb17a0eb3df0e77509eadfffb09"><div class="ttname"><a href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a></div><div class="ttdeci">constexpr decltype(auto) invoke(F &amp;&amp;f, Args &amp;&amp;...args) noexcept(std::is_nothrow_invocable_v&lt; F, Args... &gt;)</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00357">cpp_17.h:357</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a0a64c490e32e63c61f3f9a36ef6337f4"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a0a64c490e32e63c61f3f9a36ef6337f4">daw::algorithm::binary_search</a></div><div class="ttdeci">constexpr ForwardIterator binary_search(ForwardIterator first, ForwardIterator const last, Value &amp;&amp;value, Predicate less_than=Predicate{ })</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l00334">daw_algorithm.h:334</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a3048b1af33a628f53d0215c2d9c13350"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a3048b1af33a628f53d0215c2d9c13350">daw::algorithm::none_of</a></div><div class="ttdeci">constexpr bool none_of(InputIt first, InputIt last, UnaryPredicate &amp;&amp;p)</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l02074">daw_algorithm.h:2074</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a19d032668855cbd0593ca1393fb4b101"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a19d032668855cbd0593ca1393fb4b101">daw::algorithm::extract_to</a></div><div class="ttdeci">constexpr void extract_to(From &amp;from, To &amp;to, Query &amp;&amp;q)</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l02031">daw_algorithm.h:2031</a></div></div>
@@ -2158,7 +2159,6 @@ $(function() {
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a98b66509bae10796c6b1d708e6d164f8"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a98b66509bae10796c6b1d708e6d164f8">daw::algorithm::copy_if</a></div><div class="ttdeci">constexpr OutputIterator copy_if(InputIterator first, LastType last, OutputIterator destination, UnaryPredicate pred)</div><div class="ttdoc">Copy input range [first, last) to output range [first_out, first_out + std::distance( first,...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l01184">daw_algorithm.h:1184</a></div></div>
 <div class="ttc" id="astructdaw_1_1algorithm_1_1tuple__functor_html_a83eb93e02eaf9b098da40d79a3ac3b34"><div class="ttname"><a href="structdaw_1_1algorithm_1_1tuple__functor.html#a83eb93e02eaf9b098da40d79a3ac3b34">daw::algorithm::tuple_functor::run</a></div><div class="ttdeci">static constexpr void run(std::size_t i, Tuple &amp;&amp;tp, Func &amp;&amp;func)</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l00502">daw_algorithm.h:502</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a14820bbe71e6c36f83a44266f1351fea"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a14820bbe71e6c36f83a44266f1351fea">daw::algorithm::find_first_of</a></div><div class="ttdeci">constexpr InputIterator find_first_of(InputIterator first, InputIterator last, UnaryPredicate pred)</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l00540">daw_algorithm.h:540</a></div></div>
-<div class="ttc" id="anamespacedaw_html_ab5eec8bf38fc54bec8b954609a724d8a"><div class="ttname"><a href="namespacedaw.html#ab5eec8bf38fc54bec8b954609a724d8a">daw::invoke</a></div><div class="ttdeci">constexpr auto invoke(F &amp;&amp;f, Args &amp;&amp;...args) noexcept(noexcept(DAW_FWD2(F, f)(DAW_FWD2(Args, args)...))) -&gt; decltype(DAW_FWD2(F, f)(DAW_FWD2(Args, args)...))</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00365">cpp_17.h:365</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1traits_html_a386142dfdfa27d61a21a70905d1848ea"><div class="ttname"><a href="namespacedaw_1_1traits.html#a386142dfdfa27d61a21a70905d1848ea">daw::traits::is_output_iterator_test</a></div><div class="ttdeci">constexpr bool is_output_iterator_test() noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits__concepts_8h_source.html#l00128">daw_traits_concepts.h:128</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_aff9421dd35db72d4a8d1ccc2f5a576c1"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#aff9421dd35db72d4a8d1ccc2f5a576c1">daw::algorithm::find_first_range_of</a></div><div class="ttdeci">constexpr auto find_first_range_of(Iterator first, Iterator const last, UnaryPredicate pred)</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l00577">daw_algorithm.h:577</a></div></div>
 <div class="ttc" id="astructdaw_1_1algorithm_1_1find__one__of__result_html"><div class="ttname"><a href="structdaw_1_1algorithm_1_1find__one__of__result.html">daw::algorithm::find_one_of_result</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l02264">daw_algorithm.h:2264</a></div></div>
@@ -2184,7 +2184,7 @@ $(function() {
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a17895ecdb30772d8471144e47350d3e0"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a17895ecdb30772d8471144e47350d3e0">daw::algorithm::rend2</a></div><div class="ttdeci">constexpr auto rend2(Container &amp;container) noexcept(noexcept(container.rend())) -&gt; decltype(container.rend())</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l00380">daw_algorithm.h:380</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html"><div class="ttname"><a href="namespacedaw_1_1algorithm.html">daw::algorithm</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l00228">daw_algorithm.h:228</a></div></div>
 <div class="ttc" id="adaw__math__impl_8h_html"><div class="ttname"><a href="daw__math__impl_8h.html">daw_math_impl.h</a></div></div>
-<div class="ttc" id="anamespacedaw_html_af12f9c7fb9774c53848cf8e9f721c828"><div class="ttname"><a href="namespacedaw.html#af12f9c7fb9774c53848cf8e9f721c828">daw::distance</a></div><div class="ttdeci">constexpr ptrdiff_t distance(Iterator first, Iterator second) noexcept(noexcept(cpp_17_details::distance_impl(first, second, typename std::iterator_traits&lt; Iterator &gt;::iterator_category{ })))</div><div class="ttdoc">Calculate distance between iterators.</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00530">cpp_17.h:530</a></div></div>
+<div class="ttc" id="anamespacedaw_html_af12f9c7fb9774c53848cf8e9f721c828"><div class="ttname"><a href="namespacedaw.html#af12f9c7fb9774c53848cf8e9f721c828">daw::distance</a></div><div class="ttdeci">constexpr ptrdiff_t distance(Iterator first, Iterator second) noexcept(noexcept(cpp_17_details::distance_impl(first, second, typename std::iterator_traits&lt; Iterator &gt;::iterator_category{ })))</div><div class="ttdoc">Calculate distance between iterators.</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00521">cpp_17.h:521</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_aa8e353a0bcfae6ff014273ee36625c5c"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#aa8e353a0bcfae6ff014273ee36625c5c">daw::algorithm::map</a></div><div class="ttdeci">constexpr OutputIterator map(InputIterator first, InputIterator const last, OutputIterator first_out, UnaryOperation unary_op) noexcept(noexcept(*daw::next(first_out)=unary_op(*daw::next(first))))</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l01524">daw_algorithm.h:1524</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a96bf17243f1114998ba23aac7f5bdcec"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a96bf17243f1114998ba23aac7f5bdcec">daw::algorithm::minmax_element</a></div><div class="ttdeci">constexpr auto minmax_element(ForwardIterator first, LastType last, Compare comp=Compare{ }) noexcept(noexcept(comp(*first, *first)))</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l01759">daw_algorithm.h:1759</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_af36c227a8190a418258d5b491f551a72"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#af36c227a8190a418258d5b491f551a72">daw::algorithm::reverse</a></div><div class="ttdeci">auto reverse(Fwd &amp;&amp;fwd) -&gt; decltype(algorithm_details::reverse_impl(fwd, int(0)))</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l00451">daw_algorithm.h:451</a></div></div>

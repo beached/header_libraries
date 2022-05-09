@@ -81,6 +81,7 @@ $(function() {
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
 <code>#include &lt;ciso646&gt;</code><br />
 <code>#include &lt;exception&gt;</code><br />
+<code>#include &lt;optional&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
 </div>
 <p><a href="daw__scope__guard_8h_source.html">Go to the source code of this file.</a></p>
@@ -108,9 +109,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ad480f4c480cb3deb5ea5aedb6d8c9344"><td class="memTemplParams" colspan="2">template&lt;typename Handler &gt; </td></tr>
 <tr class="memitem:ad480f4c480cb3deb5ea5aedb6d8c9344"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad480f4c480cb3deb5ea5aedb6d8c9344">daw::on_exit_success</a> (Handler) -&gt; on_exit_success&lt; Handler &gt;</td></tr>
 <tr class="separator:ad480f4c480cb3deb5ea5aedb6d8c9344"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58270e997582a90bc1e7cee5927d7f09"><td class="memTemplParams" colspan="2">template&lt;typename FunctionType &gt; </td></tr>
-<tr class="memitem:a58270e997582a90bc1e7cee5927d7f09"><td class="memTemplItemLeft" align="right" valign="top">constexpr ScopeGuard&lt; FunctionType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a58270e997582a90bc1e7cee5927d7f09">daw::on_scope_exit</a> (FunctionType f) noexcept</td></tr>
-<tr class="separator:a58270e997582a90bc1e7cee5927d7f09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af55b47d400641074981717a97786203f"><td class="memTemplParams" colspan="2">template&lt;typename FunctionType &gt; </td></tr>
+<tr class="memitem:af55b47d400641074981717a97786203f"><td class="memTemplItemLeft" align="right" valign="top">constexpr ScopeGuard&lt; FunctionType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af55b47d400641074981717a97786203f">daw::on_scope_exit</a> (FunctionType f) noexcept(std::is_nothrow_move_constructible_v&lt; FunctionType &gt;)</td></tr>
+<tr class="separator:af55b47d400641074981717a97786203f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a397d0d28c64210678fb9e994b54e57f5"></a>
@@ -125,7 +126,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__scope__guard_8h_source.html#l00029">29</a> of file <a class="el" href="daw__scope__guard_8h_source.html">daw_scope_guard.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__scope__guard_8h_source.html#l00030">30</a> of file <a class="el" href="daw__scope__guard_8h_source.html">daw_scope_guard.h</a>.</p>
 
 </div>
 </div>
