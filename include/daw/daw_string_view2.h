@@ -58,6 +58,8 @@
 	do {                                                                         \
 	} while( false )
 #endif
+#else
+#define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... ) DAW_ASSUME( Bool )
 #endif
 
 #if not defined( DAW_NO_STRING_VIEW_PRECOND_CHECKS )
