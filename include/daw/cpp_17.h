@@ -323,11 +323,9 @@ namespace daw {
 		  decltype( std::declval<T>( ).operator( )( std::declval<Args>( )... ) );
 
 		template<typename F, typename... Args>
-		[[nodiscard, maybe_unused]] constexpr auto
-		INVOKE( F &&f, Args &&...args ) noexcept(
-		  noexcept( DAW_FWD( f )( DAW_FWD( args )... ) ) )
-		  -> std::enable_if_t<not std::is_member_pointer_v<std::decay_t<F>>,
-		                      decltype( DAW_FWD( f )( DAW_FWD( args )... ) )> {
+		[[nodiscard, maybe_unused]] constexpr decltype( auto ) INVOKE(
+		  F &&f,
+		  Args &&...args ) noexcept( std::is_nothrow_invocable_v<F, Args...> ) {
 
 			return DAW_FWD( f )( DAW_FWD( args )... );
 		}
@@ -337,34 +335,27 @@ namespace daw {
 	template<typename F, typename... Args,
 	         daw::enable_when_t<std::conjunction_v<
 	           not_trait<is_reference_wrapper<Args>>...>> = nullptr>
-	[[nodiscard]] constexpr auto invoke( F &&f, Args &&...args )
-	  // exception specification for QoI
-	  noexcept( noexcept( cpp_17_details::INVOKE( DAW_FWD2( F, f ),
-	                                              DAW_FWD2( Args, args )... ) ) )
-	    -> decltype( cpp_17_details::INVOKE( DAW_FWD2( F, f ),
-	                                         DAW_FWD2( Args, args )... ) ) {
+	[[nodiscard]] constexpr decltype( auto )
+	invoke( F &&f,
+	        Args &&...args ) noexcept( std::is_nothrow_invocable_v<F, Args...> ) {
 
 		return cpp_17_details::INVOKE( DAW_FWD2( F, f ),
 		                               DAW_FWD2( Args, args )... );
 	}
 
 	template<typename F, typename... Args>
-	[[nodiscard]] constexpr auto invoke( F &&f,
-	                                     std::reference_wrapper<Args>... args )
-	  // exception specification for QoI
-	  noexcept( noexcept( cpp_17_details::INVOKE( DAW_FWD2( F, f ),
-	                                              DAW_FWD2( Args, args )... ) ) )
-	    -> decltype( cpp_17_details::INVOKE( DAW_FWD2( F, f ),
-	                                         DAW_FWD2( Args, args )... ) ) {
+	[[nodiscard]] constexpr decltype( auto )
+	invoke( F &&f, std::reference_wrapper<Args>... args ) noexcept(
+	  std::is_nothrow_invocable_v<F, Args...> ) {
 
 		return cpp_17_details::INVOKE( DAW_FWD2( F, f ),
 		                               DAW_FWD2( Args, args )... );
 	}
 #else
 	template<typename F, typename... Args>
-	constexpr auto invoke( F &&f, Args &&...args ) noexcept(
-	  noexcept( DAW_FWD2( F, f )( DAW_FWD2( Args, args )... ) ) )
-	  -> decltype( DAW_FWD2( F, f )( DAW_FWD2( Args, args )... ) ) {
+	constexpr decltype( auto )
+	invoke( F &&f,
+	        Args &&...args ) noexcept( std::is_nothrow_invocable_v<F, Args...> ) {
 
 		return DAW_FWD2( F, f )( DAW_FWD2( Args, args )... );
 	}
