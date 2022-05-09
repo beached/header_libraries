@@ -13,11 +13,19 @@
 #if not( defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or             \
          defined( _CPPUNWIND ) ) or                                            \
   defined( DAW_DONT_USE_EXCEPTIONS )
-#ifdef DAW_USE_EXCEPTIONS
-#undef DAW_USE_EXCEPTIONS
+
+#if not defined( DAW_DONT_USE_EXCEPTIONS )
+#define DAW_DONT_USE_EXCEPTIONS
 #endif
+
+#if defined( DAW_USE_EXCEPTIONS )
+#error Mismatch in parameters. Cannot have both states exceptions and no exceptions be true.  undefine DAW_USE_EXCEPTIONS, or enabled exceptions
+#endif
+
 #else
+
 #ifndef DAW_USE_EXCEPTIONS
 #define DAW_USE_EXCEPTIONS
 #endif
+
 #endif

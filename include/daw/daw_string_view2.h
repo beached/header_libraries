@@ -12,6 +12,7 @@
 
 #include "daw_algorithm.h"
 #include "daw_assume.h"
+#include "daw_check_exceptions.h"
 #include "daw_consteval.h"
 #include "daw_cpp_feature_check.h"
 #include "daw_fnv1a_hash.h"
@@ -42,14 +43,21 @@
 	do {                                                                         \
 	} while( false )
 #elif not defined( NDEBUG ) or defined( DEBUG )
+#if defined( DAW_DONT_USE_EXCEPTIONS )
+#define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... )                             \
+	if( DAW_UNLIKELY( not( Bool ) ) ) {                                          \
+		std::terminate( );                                                         \
+	}                                                                            \
+	do {                                                                         \
+	} while( false )
+#else
 #define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... )                             \
 	if( DAW_UNLIKELY( not( Bool ) ) ) {                                          \
 		throw std::out_of_range( __VA_ARGS__ );                                    \
 	}                                                                            \
 	do {                                                                         \
 	} while( false )
-#else
-#define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... ) DAW_ASSUME( Bool )
+#endif
 #endif
 
 #if not defined( DAW_NO_STRING_VIEW_PRECOND_CHECKS )
@@ -60,12 +68,21 @@
 	do {                                                                         \
 	} while( false )
 
+#if defined( DAW_DONT_USE_EXCEPTIONS )
+#define DAW_STRING_VIEW_RNG_CHECK( Bool, ... )                                 \
+	if( DAW_UNLIKELY( not( Bool ) ) ) {                                          \
+		std::terminate( );                                                         \
+	}                                                                            \
+	do {                                                                         \
+	} while( false )
+#else
 #define DAW_STRING_VIEW_RNG_CHECK( Bool, ... )                                 \
 	if( DAW_UNLIKELY( not( Bool ) ) ) {                                          \
 		throw std::out_of_range( __VA_ARGS__ );                                    \
 	}                                                                            \
 	do {                                                                         \
 	} while( false )
+#endif
 #else
 #define DAW_STRING_VIEW_PRECOND_CHECK( Bool, ... )                             \
 	do {                                                                         \
@@ -733,8 +750,12 @@ namespace daw {
 			/// @return data( )[pos]
 			[[nodiscard]] constexpr const_reference at( size_type pos ) const {
 				if( DAW_UNLIKELY( not( pos < size( ) ) ) ) {
+#if defined( DAW_DONT_USE_EXCEPTIONS )
+					std::terminate( );
+#else
 					throw std::out_of_range(
 					  "Attempt to access basic_string_view past end" );
+#endif
 				}
 				return operator[]( pos );
 			}

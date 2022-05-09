@@ -8,9 +8,10 @@
 
 #pragma once
 
-#include <daw/daw_arith_traits.h>
-#include <daw/daw_cpp_feature_check.h>
-#include <daw/daw_move.h>
+#include "cpp_17.h"
+#include "daw_arith_traits.h"
+#include "daw_cpp_feature_check.h"
+#include "daw_move.h"
 
 #include <ciso646>
 #include <concepts>
