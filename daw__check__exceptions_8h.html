@@ -67,21 +67,85 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#namespaces">Namespaces</a> &#124;
 <a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
 <div class="title">daw_check_exceptions.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;ciso646&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="daw__attributes_8h_source.html">daw_attributes.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
+<code>#include &lt;ciso646&gt;</code><br />
+<code>#include &lt;exception&gt;</code><br />
 </div>
 <p><a href="daw__check__exceptions_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
+<tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:af0c7686075a71056ade5d447114b59f0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__check__exceptions_8h.html#af0c7686075a71056ade5d447114b59f0">DAW_THROW_OR_TERMINATE</a>(ExceptionType, ...)&#160;&#160;&#160;::daw::check_except_detail::throw_error( ExceptionType{ __VA_ARGS__ } )</td></tr>
+<tr class="separator:af0c7686075a71056ade5d447114b59f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c9ead66a5da03a1753a5d378b00f206"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__check__exceptions_8h.html#a5c9ead66a5da03a1753a5d378b00f206">DAW_THROW_OR_TERMINATE_NA</a>(ExceptionType)&#160;&#160;&#160;::daw::check_except_detail::throw_error( ExceptionType{ } )</td></tr>
+<tr class="separator:a5c9ead66a5da03a1753a5d378b00f206"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb091b6e137c30bab837f6ce01482b68"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__check__exceptions_8h.html#acb091b6e137c30bab837f6ce01482b68">DAW_USE_EXCEPTIONS</a></td></tr>
 <tr class="separator:acb091b6e137c30bab837f6ce01482b68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="af0c7686075a71056ade5d447114b59f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0c7686075a71056ade5d447114b59f0">&#9670;&nbsp;</a></span>DAW_THROW_OR_TERMINATE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_THROW_OR_TERMINATE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">ExceptionType, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;::daw::check_except_detail::throw_error( ExceptionType{ __VA_ARGS__ } )</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__check__exceptions_8h_source.html#l00053">53</a> of file <a class="el" href="daw__check__exceptions_8h_source.html">daw_check_exceptions.h</a>.</p>
+
+</div>
+</div>
+<a id="a5c9ead66a5da03a1753a5d378b00f206"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c9ead66a5da03a1753a5d378b00f206">&#9670;&nbsp;</a></span>DAW_THROW_OR_TERMINATE_NA</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_THROW_OR_TERMINATE_NA</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">ExceptionType</td><td>)</td>
+          <td>&#160;&#160;&#160;::daw::check_except_detail::throw_error( ExceptionType{ } )</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__check__exceptions_8h_source.html#l00055">55</a> of file <a class="el" href="daw__check__exceptions_8h_source.html">daw_check_exceptions.h</a>.</p>
+
+</div>
+</div>
 <a id="acb091b6e137c30bab837f6ce01482b68"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acb091b6e137c30bab837f6ce01482b68">&#9670;&nbsp;</a></span>DAW_USE_EXCEPTIONS</h2>
 
@@ -94,7 +158,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__check__exceptions_8h_source.html#l00028">28</a> of file <a class="el" href="daw__check__exceptions_8h_source.html">daw_check_exceptions.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__check__exceptions_8h_source.html#l00032">32</a> of file <a class="el" href="daw__check__exceptions_8h_source.html">daw_check_exceptions.h</a>.</p>
 
 </div>
 </div>
