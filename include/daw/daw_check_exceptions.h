@@ -37,13 +37,13 @@
 namespace daw::check_except_detail {
 	namespace {
 		template<typename Exception>
-		DAW_ATTRIB_NOINLINE [[noreturn, maybe_unused]] void
+		[[noreturn, maybe_unused]] DAW_ATTRIB_NOINLINE void
 		throw_error( Exception &&except ) {
 			throw DAW_FWD( except );
 		}
 
 		template<typename>
-		DAW_ATTRIB_NOINLINE [[noreturn, maybe_unused]] void terminate_error( ) {
+		[[noreturn, maybe_unused]] DAW_ATTRIB_NOINLINE void terminate_error( ) {
 			std::terminate( );
 		}
 	} // namespace
