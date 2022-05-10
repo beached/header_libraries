@@ -8,7 +8,11 @@
 
 #pragma once
 
+#include "daw_attributes.h"
+#include "daw_move.h"
+
 #include <ciso646>
+#include <exception>
 
 #if not( defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or             \
          defined( _CPPUNWIND ) ) or                                            \
@@ -28,4 +32,31 @@
 #define DAW_USE_EXCEPTIONS
 #endif
 
+#endif
+
+namespace daw::check_except_detail {
+	namespace {
+		template<typename Exception>
+		[[noreturn, maybe_unused]] DAW_ATTRIB_NOINLINE void
+		throw_error( Exception &&except ) {
+			throw DAW_FWD( except );
+		}
+
+		template<typename>
+		[[noreturn, maybe_unused]] DAW_ATTRIB_NOINLINE void terminate_error( ) {
+			std::terminate( );
+		}
+	} // namespace
+} // namespace daw::check_except_detail
+
+#if defined( DAW_USE_EXCEPTIONS )
+#define DAW_THROW_OR_TERMINATE( ExceptionType, ... )                           \
+	::daw::check_except_detail::throw_error( ExceptionType{ __VA_ARGS__ } )
+#define DAW_THROW_OR_TERMINATE_NA( ExceptionType )                             \
+	::daw::check_except_detail::throw_error( ExceptionType{ } )
+#else
+#define DAW_THROW_OR_TERMINATE( ExceptionType, ... )                           \
+	::daw::check_except_detail::terminate_error<ExceptionType>( )
+#define DAW_THROW_OR_TERMINATE_NA( ExceptionType )                             \
+	::daw::check_except_detail::terminate_error<ExceptionType>( )
 #endif

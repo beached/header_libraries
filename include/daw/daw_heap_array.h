@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw_check_exceptions.h"
 #include "daw_exception.h"
 #include "daw_exchange.h"
 #include "daw_swap.h"
@@ -32,11 +33,15 @@ namespace daw {
 		size_t m_size = 0;
 
 		static value_type *create_value( size_t n ) {
+#if defined( DAW_USE_EXCEPTIONS )
 			try {
+#endif
 				return new value_type[n];
+#if defined( DAW_USE_EXCEPTIONS )
 			} catch( std::bad_alloc const & ) { std::abort( ); } catch( ... ) {
 				return nullptr;
 			}
+#endif
 		}
 
 	public:

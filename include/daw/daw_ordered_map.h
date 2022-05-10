@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw_algorithm.h"
+#include "daw_check_exceptions.h"
 #include "daw_enable_if.h"
 #include "daw_utility.h"
 
@@ -331,7 +332,7 @@ namespace daw {
 		constexpr reference at( K const &key ) {
 			auto pos = find( key );
 			if( pos == end( ) ) {
-				throw std::out_of_range( "key" );
+				DAW_THROW_OR_TERMINATE( std::out_of_range, "key" );
 			}
 			return pos->second;
 		}
@@ -340,7 +341,7 @@ namespace daw {
 		constexpr const_reference at( K const &key ) const {
 			auto pos = find( key );
 			if( pos == end( ) ) {
-				throw std::out_of_range( "key" );
+				DAW_THROW_OR_TERMINATE( std::out_of_range, "key" );
 			}
 			return pos->second;
 		}

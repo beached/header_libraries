@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "../daw_check_exceptions.h"
 #include "../daw_exception.h"
 #include "../daw_move.h"
 
@@ -81,7 +82,8 @@ namespace daw {
 
 		checked_iterator_proxy_t &operator--( ) {
 			if( is_flag_set( check_decrement ) and current == first ) {
-				throw std::out_of_range(
+				DAW_THROW_OR_TERMINATE(
+				  std::out_of_range,
 				  "Attempt to decrement iterator past beginning of range" );
 			}
 			--current;
@@ -96,7 +98,8 @@ namespace daw {
 
 		auto &operator*( ) {
 			if( is_flag_set( check_dereference ) and current == last ) {
-				throw std::out_of_range(
+				DAW_THROW_OR_TERMINATE(
+				  std::out_of_range,
 				  "Attempt to dereference an iterator at end of range" );
 			}
 			return *current;
@@ -104,7 +107,8 @@ namespace daw {
 
 		auto const &operator*( ) const {
 			if( is_flag_set( check_dereference ) and current == last ) {
-				throw std::out_of_range(
+				DAW_THROW_OR_TERMINATE(
+				  std::out_of_range,
 				  "Attempt to dereference an iterator at end of range" );
 			}
 			return *current;
@@ -112,7 +116,8 @@ namespace daw {
 
 		auto &operator->( ) {
 			if( is_flag_set( check_dereference ) and current == last ) {
-				throw std::out_of_range(
+				DAW_THROW_OR_TERMINATE(
+				  std::out_of_range,
 				  "Attempt to access members an iterator at end of range" );
 			}
 			return current.operator->( );
@@ -120,7 +125,8 @@ namespace daw {
 
 		auto const &operator->( ) const {
 			if( is_flag_set( check_dereference ) and current == last ) {
-				throw std::out_of_range(
+				DAW_THROW_OR_TERMINATE(
+				  std::out_of_range,
 				  "Attempt to access members an iterator at end of range" );
 			}
 			return current.operator->( );

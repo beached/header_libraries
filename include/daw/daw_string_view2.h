@@ -43,21 +43,12 @@
 	do {                                                                         \
 	} while( false )
 #elif not defined( NDEBUG ) or defined( DEBUG )
-#if defined( DAW_DONT_USE_EXCEPTIONS )
 #define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... )                             \
 	if( DAW_UNLIKELY( not( Bool ) ) ) {                                          \
-		std::terminate( );                                                         \
+		DAW_THROW_OR_TERMINATE( std::out_of_range, __VA_ARGS__ );                  \
 	}                                                                            \
 	do {                                                                         \
 	} while( false )
-#else
-#define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... )                             \
-	if( DAW_UNLIKELY( not( Bool ) ) ) {                                          \
-		throw std::out_of_range( __VA_ARGS__ );                                    \
-	}                                                                            \
-	do {                                                                         \
-	} while( false )
-#endif
 #else
 #define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... ) DAW_ASSUME( Bool )
 #endif
@@ -70,21 +61,12 @@
 	do {                                                                         \
 	} while( false )
 
-#if defined( DAW_DONT_USE_EXCEPTIONS )
 #define DAW_STRING_VIEW_RNG_CHECK( Bool, ... )                                 \
 	if( DAW_UNLIKELY( not( Bool ) ) ) {                                          \
-		std::terminate( );                                                         \
+		DAW_THROW_OR_TERMINATE( std::out_of_range, __VA_ARGS__ );                  \
 	}                                                                            \
 	do {                                                                         \
 	} while( false )
-#else
-#define DAW_STRING_VIEW_RNG_CHECK( Bool, ... )                                 \
-	if( DAW_UNLIKELY( not( Bool ) ) ) {                                          \
-		throw std::out_of_range( __VA_ARGS__ );                                    \
-	}                                                                            \
-	do {                                                                         \
-	} while( false )
-#endif
 #else
 #define DAW_STRING_VIEW_PRECOND_CHECK( Bool, ... )                             \
 	do {                                                                         \
@@ -752,12 +734,8 @@ namespace daw {
 			/// @return data( )[pos]
 			[[nodiscard]] constexpr const_reference at( size_type pos ) const {
 				if( DAW_UNLIKELY( not( pos < size( ) ) ) ) {
-#if defined( DAW_DONT_USE_EXCEPTIONS )
-					std::terminate( );
-#else
-					throw std::out_of_range(
-					  "Attempt to access basic_string_view past end" );
-#endif
+					DAW_THROW_OR_TERMINATE(
+					  std::out_of_range, "Attempt to access basic_string_view past end" );
 				}
 				return operator[]( pos );
 			}
