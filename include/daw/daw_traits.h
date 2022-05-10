@@ -966,6 +966,9 @@ namespace daw::traits {
 
 	template<typename T>
 	using member_type_of_t = typename member_type_of<T>::type;
+
+	template<auto Value, auto... Values>
+	inline constexpr bool equal_to_any_of_v = ( ( Value == Values ) or ... );
 } // namespace daw::traits
 
 namespace daw {
