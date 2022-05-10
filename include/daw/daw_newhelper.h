@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw_check_exceptions.h"
 #include "daw_exception.h"
 #include "daw_string.h"
 
@@ -28,9 +29,13 @@ template<typename T, typename... Args>
 template<typename T>
 [[nodiscard]] T *new_array_throw( const size_t size ) {
 	T *result = nullptr;
+#if defined( DAW_USE_EXCEPTIONS )
 	try {
+#endif
 		result = new T[size];
+#if defined( DAW_USE_EXCEPTIONS )
 	} catch( ... ) { std::rethrow_exception( std::current_exception( ) ); }
+#endif
 	daw::exception::daw_throw_on_null(
 	  result, daw::string::string_join( "Error allocating ", size, " items" ) );
 	return result;

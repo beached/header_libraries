@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw_algorithm.h"
+#include "daw_check_exceptions.h"
 
 #include <ciso646>
 #include <functional>
@@ -57,8 +58,8 @@ namespace daw {
 		size_t insert( Key const &key ) {
 			auto const hash = Hash{ }( key );
 			auto const index = find_index( hash, key );
-			if( !index ) {
-				throw std::out_of_range( "Hash table is full" );
+			if( not index ) {
+				DAW_THROW_OR_TERMINATE( std::out_of_range, "Hash table is full" );
 			}
 			m_indices[*index] = key;
 			return *index;
@@ -67,7 +68,7 @@ namespace daw {
 		std::optional<size_t> erase( Key const &key ) {
 			auto const hash = Hash{ }( key );
 			auto const index = find_index( hash, key );
-			if( !index ) {
+			if( not index ) {
 				return { };
 			}
 			m_indices[index] = std::nullopt;

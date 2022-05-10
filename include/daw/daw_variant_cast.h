@@ -9,6 +9,7 @@
 #pragma once
 
 #include "cpp_17.h"
+#include "daw_check_exceptions.h"
 #include "daw_move.h"
 #include "daw_traits.h"
 #include "daw_visit.h"
@@ -34,7 +35,7 @@ namespace daw {
 			         std::enable_if_t<not std::is_convertible_v<remove_cvref_t<U>, T>,
 			                          std::nullptr_t> = nullptr>
 			T operator( )( U && ) const {
-				throw std::bad_variant_access( );
+				DAW_THROW_OR_TERMINATE_NA( std::bad_variant_access );
 			}
 		};
 

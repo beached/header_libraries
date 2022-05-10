@@ -10,6 +10,7 @@
 
 #include "daw_bit.h"
 #include "daw_bounded_array.h"
+#include "daw_check_exceptions.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
@@ -222,7 +223,7 @@ namespace daw {
 					case '0':
 						break;
 					default:
-						throw std::invalid_argument( "binary_sv" );
+						DAW_THROW_OR_TERMINATE( std::invalid_argument, "binary_sv" );
 					}
 					cur_val *= 2ULL;
 				}

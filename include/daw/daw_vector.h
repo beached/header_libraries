@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw_algorithm.h"
+#include "daw_check_exceptions.h"
 #include "daw_cxmath.h"
 #include "daw_likely.h"
 #include "daw_move.h"
@@ -102,7 +103,7 @@ namespace daw {
 			  reinterpret_cast<T *>( ::mmap( nullptr, count, PROT_READ | PROT_WRITE,
 			                                 MAP_ANONYMOUS | MAP_PRIVATE, -1, 0 ) );
 			if( DAW_UNLIKELY( not result ) ) {
-				throw std::bad_alloc( );
+				DAW_THROW_OR_TERMINATE_NA( std::bad_alloc );
 			}
 			return result;
 		}
@@ -131,7 +132,7 @@ namespace daw {
 			T *new_ptr = reinterpret_cast<T *>(
 			  ::mremap( old_ptr, old_size, new_size, MREMAP_FIXED ) );
 			if( new_ptr == nullptr ) {
-				throw std::bad_alloc( );
+				DAW_THROW_OR_TERMINATE( std::bad_alloc );
 			}
 			return new_ptr;
 #else
@@ -158,7 +159,7 @@ namespace daw {
 			count = vector_details::round_to_page_size( count );
 			auto result = reinterpret_cast<T *>( std::malloc( count ) );
 			if( not result ) {
-				throw std::bad_alloc( );
+				DAW_THROW_OR_TERMINATE( std::bad_alloc );
 			}
 			return result;
 		}
@@ -461,7 +462,7 @@ namespace daw {
 		  : Vector( ary, N ) {}
 
 		template<size_type N>
-		explicit constexpr Vector( value_type( &&ary )[N] )
+		explicit constexpr Vector( value_type ( &&ary )[N] )
 		  : Vector( sized_for_overwrite, N ) {
 
 			pointer const p = move_n( ary, N, m_first );

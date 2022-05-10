@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw_check_exceptions.h"
 #include "daw_move.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
@@ -37,7 +38,8 @@ namespace daw {
 		template<typename U>
 		constexpr decltype( auto ) validate( U &&value ) {
 			if( not Validator{ }( value ) ) {
-				throw std::out_of_range( "Argument did not pass validation" );
+				DAW_THROW_OR_TERMINATE( std::out_of_range,
+				                        "Argument did not pass validation" );
 			}
 			return std::forward<U>( value );
 		}

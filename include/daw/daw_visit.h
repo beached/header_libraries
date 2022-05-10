@@ -245,15 +245,9 @@ namespace daw {
 			}
 			DAW_UNREACHABLE( );
 		}
-#if defined( DAW_USE_EXCEPTIONS )
 		[[noreturn, maybe_unused]] DAW_ATTRIB_NOINLINE inline void visit_error( ) {
-			throw daw::bad_variant_access{ };
+			DAW_THROW_OR_TERMINATE_NA( daw::bad_variant_access );
 		}
-#else
-		[[noreturn, maybe_unused]] DAW_ATTRIB_NOINLINE inline void visit_error( ) {
-			std::terminate( );
-		}
-#endif
 	} // namespace visit_details
 	//**********************************************
 
