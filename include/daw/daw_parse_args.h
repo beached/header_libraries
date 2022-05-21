@@ -41,7 +41,7 @@ namespace daw {
 		friend class ::daw::Arguments;
 
 		constexpr Argument( daw::string_view args ) {
-			if( args.size( ) >= 2 and ( ( args[0] == '-' ) & ( args[1] == '-' ) ) ) {
+			if( args.size( ) >= 2 and nsc_and( args[0] == '-', args[1] == '-' ) ) {
 				// We are a named argument, starting with '--'
 				args.remove_prefix( 2 );
 				name = args.pop_front_until( parse_arg_details::is_eq );
