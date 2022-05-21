@@ -18,7 +18,8 @@
 #include <optional>
 #include <type_traits>
 
-#if defined( __cpp_constexpr_dynamic_alloc ) and                               \
+#if not defined( DAW_NO_CONSTEXPR_SCOPE_GUARD ) and                            \
+  defined( __cpp_constexpr_dynamic_alloc ) and                                 \
   defined( DAW_IS_CONSTANT_EVALUATED )
 #define DAW_SG_CXDTOR constexpr
 
@@ -39,25 +40,21 @@ namespace daw {
 		ScopeGuard( ) = delete;
 		ScopeGuard( const ScopeGuard & ) = delete;
 		ScopeGuard &operator=( const ScopeGuard & ) = delete;
+		ScopeGuard( ScopeGuard && ) = default;
+		ScopeGuard &operator=( ScopeGuard && ) = default;
 
-		constexpr ScopeGuard( FunctionType f ) noexcept(
+		explicit constexpr ScopeGuard( FunctionType &&f ) noexcept(
 		  std::is_nothrow_move_constructible_v<FunctionType> )
 		  : m_function{ DAW_MOVE( f ) } {}
 
-		constexpr ScopeGuard( ScopeGuard &&other ) noexcept(
-		  std::is_nothrow_move_constructible_v<FunctionType> )
-		  : m_function{ std::exchange( other.m_function, std::nullopt ) } {}
-
-		constexpr ScopeGuard &operator=( ScopeGuard &&rhs ) noexcept(
-		  std::is_nothrow_move_constructible_v<FunctionType> ) {
-			m_function = std::exchange( rhs.m_function, std::nullopt );
-			return *this;
-		}
+		explicit constexpr ScopeGuard( FunctionType const &f ) noexcept(
+		  std::is_nothrow_copy_constructible_v<FunctionType> )
+		  : m_function{ f } {}
 
 		DAW_SG_CXDTOR ~ScopeGuard( ) noexcept(
 		  std::is_nothrow_invocable_v<FunctionType> ) {
 			if( m_function ) {
-				(*m_function)( );
+				( *m_function )( );
 			}
 		}
 
