@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw_attributes.h"
 #include "daw_cpp_feature_check.h"
 #include "daw_exchange.h"
 #include "daw_is_constant_evaluated.h"
@@ -43,22 +44,24 @@ namespace daw {
 		ScopeGuard( ScopeGuard && ) = default;
 		ScopeGuard &operator=( ScopeGuard && ) = default;
 
-		explicit constexpr ScopeGuard( FunctionType &&f ) noexcept(
-		  std::is_nothrow_move_constructible_v<FunctionType> )
+		DAW_ATTRIB_INLINE explicit constexpr ScopeGuard(
+		  FunctionType
+		    &&f ) noexcept( std::is_nothrow_move_constructible_v<FunctionType> )
 		  : m_function{ DAW_MOVE( f ) } {}
 
-		explicit constexpr ScopeGuard( FunctionType const &f ) noexcept(
-		  std::is_nothrow_copy_constructible_v<FunctionType> )
+		DAW_ATTRIB_INLINE explicit constexpr ScopeGuard(
+		  FunctionType const
+		    &f ) noexcept( std::is_nothrow_copy_constructible_v<FunctionType> )
 		  : m_function{ f } {}
 
-		DAW_SG_CXDTOR ~ScopeGuard( ) noexcept(
+		DAW_ATTRIB_INLINE DAW_SG_CXDTOR ~ScopeGuard( ) noexcept(
 		  std::is_nothrow_invocable_v<FunctionType> ) {
 			if( m_function ) {
 				( *m_function )( );
 			}
 		}
 
-		constexpr void dismiss( ) const noexcept {
+		DAW_ATTRIB_INLINE constexpr void dismiss( ) const noexcept {
 			m_function = std::optional<FunctionType>( );
 		}
 
@@ -69,7 +72,7 @@ namespace daw {
 	}; // class ScopeGuard
 
 	template<typename FunctionType>
-	[[nodiscard]] constexpr ScopeGuard<FunctionType>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr ScopeGuard<FunctionType>
 	on_scope_exit( FunctionType f ) noexcept(
 	  std::is_nothrow_move_constructible_v<FunctionType> ) {
 		return ScopeGuard<FunctionType>( DAW_MOVE( f ) );
@@ -80,15 +83,15 @@ namespace daw {
 		Handler on_exit_handler;
 
 	public:
-		constexpr on_exit_success( Handler &&h ) noexcept(
+		DAW_ATTRIB_INLINE constexpr on_exit_success( Handler &&h ) noexcept(
 		  std::is_nothrow_move_constructible_v<Handler> )
 		  : on_exit_handler( DAW_MOVE( h ) ) {}
 
-		constexpr on_exit_success( Handler const &h ) noexcept(
+		DAW_ATTRIB_INLINE constexpr on_exit_success( Handler const &h ) noexcept(
 		  std::is_nothrow_copy_constructible_v<Handler> )
 		  : on_exit_handler( h ) {}
 
-		DAW_SG_CXDTOR ~on_exit_success( ) noexcept(
+		DAW_ATTRIB_INLINE DAW_SG_CXDTOR ~on_exit_success( ) noexcept(
 		  std::is_nothrow_invocable_v<Handler> ) {
 #if defined( DAW_HAS_CONSTEXPR_SCOPE_GUARD )
 			if( DAW_IS_CONSTANT_EVALUATED( ) ) {
