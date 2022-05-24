@@ -38,7 +38,6 @@ namespace daw {
 		std::optional<FunctionType> m_function;
 
 	public:
-		ScopeGuard( ) = delete;
 		ScopeGuard( const ScopeGuard & ) = delete;
 		ScopeGuard &operator=( const ScopeGuard & ) = delete;
 		ScopeGuard( ScopeGuard && ) = default;
@@ -54,10 +53,23 @@ namespace daw {
 		    &f ) noexcept( std::is_nothrow_copy_constructible_v<FunctionType> )
 		  : m_function{ f } {}
 
+		DAW_ATTRIB_INLINE constexpr void
+		cancel( ) noexcept( std::is_nothrow_destructible_v<FunctionType> ) {
+			m_function = std::nullopt;
+		}
+
+		DAW_ATTRIB_INLINE constexpr void
+		run_now( ) noexcept( std::is_nothrow_invocable_v<FunctionType> ) {
+			assert( m_function );
+			(void)( *m_function )( );
+			cancel( );
+		}
+
 		DAW_ATTRIB_INLINE DAW_SG_CXDTOR ~ScopeGuard( ) noexcept(
-		  std::is_nothrow_invocable_v<FunctionType> ) {
+		  std::is_nothrow_invocable_v<FunctionType>
+		    and std::is_nothrow_destructible_v<FunctionType> ) {
 			if( m_function ) {
-				( *m_function )( );
+				(void)( *m_function )( );
 			}
 		}
 
