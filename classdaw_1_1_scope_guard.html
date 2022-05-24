@@ -78,8 +78,6 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a42755892752a3575b63dca76ad659cf0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1_scope_guard.html#a42755892752a3575b63dca76ad659cf0">ScopeGuard</a> ()=delete</td></tr>
-<tr class="separator:a42755892752a3575b63dca76ad659cf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01e96a177cf92c253b99a475d74cd442"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1_scope_guard.html#a01e96a177cf92c253b99a475d74cd442">ScopeGuard</a> (const <a class="el" href="classdaw_1_1_scope_guard.html">ScopeGuard</a> &amp;)=delete</td></tr>
 <tr class="separator:a01e96a177cf92c253b99a475d74cd442"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaacdbea970f26c53dcb3d7d8c1befbef"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1_scope_guard.html#aaacdbea970f26c53dcb3d7d8c1befbef">ScopeGuard</a> (FunctionType &amp;&amp;f) noexcept(std::is_nothrow_move_constructible_v&lt; FunctionType &gt;)</td></tr>
@@ -88,8 +86,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a58c98d0693eb866831b70b12f2e09439"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afcfdde2048a47c604acc38888a4e7bfa"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1_scope_guard.html#afcfdde2048a47c604acc38888a4e7bfa">ScopeGuard</a> (<a class="el" href="classdaw_1_1_scope_guard.html">ScopeGuard</a> &amp;&amp;)=default</td></tr>
 <tr class="separator:afcfdde2048a47c604acc38888a4e7bfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7978258fbad16962a06ace61d37d62a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="daw__scope__guard_8h.html#a397d0d28c64210678fb9e994b54e57f5">DAW_SG_CXDTOR</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1_scope_guard.html#a7978258fbad16962a06ace61d37d62a7">~ScopeGuard</a> () noexcept(std::is_nothrow_invocable_v&lt; FunctionType &gt;)</td></tr>
-<tr class="separator:a7978258fbad16962a06ace61d37d62a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d545a483f67cc443714b708ac1289f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="daw__scope__guard_8h.html#a397d0d28c64210678fb9e994b54e57f5">DAW_SG_CXDTOR</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1_scope_guard.html#a6d545a483f67cc443714b708ac1289f3">~ScopeGuard</a> () noexcept(std::is_nothrow_invocable_v&lt; FunctionType &gt; and std::is_nothrow_destructible_v&lt; FunctionType &gt;)</td></tr>
+<tr class="separator:a6d545a483f67cc443714b708ac1289f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4645bdcfc78bd43873d6373c778eafa"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1_scope_guard.html#af4645bdcfc78bd43873d6373c778eafa">cancel</a> () noexcept(std::is_nothrow_destructible_v&lt; FunctionType &gt;)</td></tr>
+<tr class="separator:af4645bdcfc78bd43873d6373c778eafa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1368702161cef5978ee061ce1049ee9"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1_scope_guard.html#ac1368702161cef5978ee061ce1049ee9">dismiss</a> () const noexcept</td></tr>
 <tr class="separator:ac1368702161cef5978ee061ce1049ee9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47483fdd69f453ae31fe98d1e016f11a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdaw_1_1_scope_guard.html">ScopeGuard</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1_scope_guard.html#a47483fdd69f453ae31fe98d1e016f11a">operator=</a> (const <a class="el" href="classdaw_1_1_scope_guard.html">ScopeGuard</a> &amp;)=delete</td></tr>
@@ -98,6 +98,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2d35e3da0f4b0fad8917d533938647fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a3cd576aab6a14eecfa63986e4f7a6c"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1_scope_guard.html#a1a3cd576aab6a14eecfa63986e4f7a6c">operator==</a> (const <a class="el" href="classdaw_1_1_scope_guard.html">ScopeGuard</a> &amp;rhs) const noexcept</td></tr>
 <tr class="separator:a1a3cd576aab6a14eecfa63986e4f7a6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03370b45d3636c7b8b916513c8d42c1c"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1_scope_guard.html#a03370b45d3636c7b8b916513c8d42c1c">run_now</a> () noexcept(std::is_nothrow_invocable_v&lt; FunctionType &gt;)</td></tr>
+<tr class="separator:a03370b45d3636c7b8b916513c8d42c1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename FunctionType&gt;<br />
@@ -106,35 +108,8 @@ class daw::ScopeGuard&lt; FunctionType &gt;</h3>
 
 <p class="definition">Definition at line <a class="el" href="daw__scope__guard_8h_source.html#l00037">37</a> of file <a class="el" href="daw__scope__guard_8h_source.html">daw_scope_guard.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a42755892752a3575b63dca76ad659cf0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a42755892752a3575b63dca76ad659cf0">&#9670;&nbsp;</a></span>ScopeGuard() <span class="overload">[1/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename FunctionType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classdaw_1_1_scope_guard.html">daw::ScopeGuard</a>&lt; FunctionType &gt;::<a class="el" href="classdaw_1_1_scope_guard.html">ScopeGuard</a> </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a01e96a177cf92c253b99a475d74cd442"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a01e96a177cf92c253b99a475d74cd442">&#9670;&nbsp;</a></span>ScopeGuard() <span class="overload">[2/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a01e96a177cf92c253b99a475d74cd442">&#9670;&nbsp;</a></span>ScopeGuard() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -162,7 +137,7 @@ template&lt;typename FunctionType &gt; </div>
 </div>
 </div>
 <a id="afcfdde2048a47c604acc38888a4e7bfa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afcfdde2048a47c604acc38888a4e7bfa">&#9670;&nbsp;</a></span>ScopeGuard() <span class="overload">[3/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afcfdde2048a47c604acc38888a4e7bfa">&#9670;&nbsp;</a></span>ScopeGuard() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -190,7 +165,7 @@ template&lt;typename FunctionType &gt; </div>
 </div>
 </div>
 <a id="aaacdbea970f26c53dcb3d7d8c1befbef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaacdbea970f26c53dcb3d7d8c1befbef">&#9670;&nbsp;</a></span>ScopeGuard() <span class="overload">[4/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aaacdbea970f26c53dcb3d7d8c1befbef">&#9670;&nbsp;</a></span>ScopeGuard() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -215,12 +190,12 @@ template&lt;typename FunctionType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__scope__guard_8h_source.html#l00047">47</a> of file <a class="el" href="daw__scope__guard_8h_source.html">daw_scope_guard.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__scope__guard_8h_source.html#l00046">46</a> of file <a class="el" href="daw__scope__guard_8h_source.html">daw_scope_guard.h</a>.</p>
 
 </div>
 </div>
 <a id="a58c98d0693eb866831b70b12f2e09439"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a58c98d0693eb866831b70b12f2e09439">&#9670;&nbsp;</a></span>ScopeGuard() <span class="overload">[5/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a58c98d0693eb866831b70b12f2e09439">&#9670;&nbsp;</a></span>ScopeGuard() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -245,12 +220,12 @@ template&lt;typename FunctionType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__scope__guard_8h_source.html#l00052">52</a> of file <a class="el" href="daw__scope__guard_8h_source.html">daw_scope_guard.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__scope__guard_8h_source.html#l00051">51</a> of file <a class="el" href="daw__scope__guard_8h_source.html">daw_scope_guard.h</a>.</p>
 
 </div>
 </div>
-<a id="a7978258fbad16962a06ace61d37d62a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7978258fbad16962a06ace61d37d62a7">&#9670;&nbsp;</a></span>~ScopeGuard()</h2>
+<a id="a6d545a483f67cc443714b708ac1289f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d545a483f67cc443714b708ac1289f3">&#9670;&nbsp;</a></span>~ScopeGuard()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -274,11 +249,40 @@ template&lt;typename FunctionType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__scope__guard_8h_source.html#l00057">57</a> of file <a class="el" href="daw__scope__guard_8h_source.html">daw_scope_guard.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__scope__guard_8h_source.html#l00068">68</a> of file <a class="el" href="daw__scope__guard_8h_source.html">daw_scope_guard.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="af4645bdcfc78bd43873d6373c778eafa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4645bdcfc78bd43873d6373c778eafa">&#9670;&nbsp;</a></span>cancel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename FunctionType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> void <a class="el" href="classdaw_1_1_scope_guard.html">daw::ScopeGuard</a>&lt; FunctionType &gt;::cancel </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__scope__guard_8h_source.html#l00057">57</a> of file <a class="el" href="daw__scope__guard_8h_source.html">daw_scope_guard.h</a>.</p>
+
+</div>
+</div>
 <a id="ac1368702161cef5978ee061ce1049ee9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac1368702161cef5978ee061ce1049ee9">&#9670;&nbsp;</a></span>dismiss()</h2>
 
@@ -304,7 +308,7 @@ template&lt;typename FunctionType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__scope__guard_8h_source.html#l00064">64</a> of file <a class="el" href="daw__scope__guard_8h_source.html">daw_scope_guard.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__scope__guard_8h_source.html#l00076">76</a> of file <a class="el" href="daw__scope__guard_8h_source.html">daw_scope_guard.h</a>.</p>
 
 </div>
 </div>
@@ -390,7 +394,36 @@ template&lt;typename FunctionType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__scope__guard_8h_source.html#l00069">69</a> of file <a class="el" href="daw__scope__guard_8h_source.html">daw_scope_guard.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__scope__guard_8h_source.html#l00081">81</a> of file <a class="el" href="daw__scope__guard_8h_source.html">daw_scope_guard.h</a>.</p>
+
+</div>
+</div>
+<a id="a03370b45d3636c7b8b916513c8d42c1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03370b45d3636c7b8b916513c8d42c1c">&#9670;&nbsp;</a></span>run_now()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename FunctionType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> void <a class="el" href="classdaw_1_1_scope_guard.html">daw::ScopeGuard</a>&lt; FunctionType &gt;::run_now </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__scope__guard_8h_source.html#l00062">62</a> of file <a class="el" href="daw__scope__guard_8h_source.html">daw_scope_guard.h</a>.</p>
 
 </div>
 </div>
