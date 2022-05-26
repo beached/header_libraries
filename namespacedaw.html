@@ -1464,9 +1464,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a8b7876bacd20d2a29c8b03e6364f14c8"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacedaw.html#aa15143615eafa17e2f67743ec70cfca3">Integer</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a8b7876bacd20d2a29c8b03e6364f14c8">get_bits</a> (<a class="el" href="namespacedaw.html#aa15143615eafa17e2f67743ec70cfca3">Integer</a> i, Bit b, Bits... bs) noexcept</td></tr>
 <tr class="memdesc:a8b7876bacd20d2a29c8b03e6364f14c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">get value with all bits but those specified masked out  <a href="namespacedaw.html#a8b7876bacd20d2a29c8b03e6364f14c8">More...</a><br /></td></tr>
 <tr class="separator:a8b7876bacd20d2a29c8b03e6364f14c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8579155b2da44e50328beb3d220c5b1a"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t Alignment = alignof( T )&gt; </td></tr>
-<tr class="memitem:a8579155b2da44e50328beb3d220c5b1a"><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a8579155b2da44e50328beb3d220c5b1a">get_buffer</a> (std::size_t count) noexcept</td></tr>
-<tr class="separator:a8579155b2da44e50328beb3d220c5b1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a829978795ec50328510250e2c7be1e91"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a829978795ec50328510250e2c7be1e91"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a829978795ec50328510250e2c7be1e91">get_left_mask</a> (size_t left_zero_bits) noexcept</td></tr>
 <tr class="separator:a829978795ec50328510250e2c7be1e91"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3504,6 +3501,7 @@ Functions</h2></td></tr>
 <tr class="separator:a1e5b47c9b584593f96c35f1907a2d259"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aacfb2f8e9836904c38fee02ace8b56cb"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aacfb2f8e9836904c38fee02ace8b56cb"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aacfb2f8e9836904c38fee02ace8b56cb">return_buffer</a> (T *ptr) noexcept</td></tr>
+<tr class="memdesc:aacfb2f8e9836904c38fee02ace8b56cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">aligned_alloc is not in clang-cl 13 with vs2022  <a href="namespacedaw.html#aacfb2f8e9836904c38fee02ace8b56cb">More...</a><br /></td></tr>
 <tr class="separator:aacfb2f8e9836904c38fee02ace8b56cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52ad3efa9186cf41784787fd44c0f0f2"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Func , typename Compare  = daw::graph_alg_impl::NoSort&gt; </td></tr>
 <tr class="memitem:a52ad3efa9186cf41784787fd44c0f0f2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a52ad3efa9186cf41784787fd44c0f0f2">reverse_topological_sorted_walk</a> (<a class="el" href="structdaw_1_1graph__t.html">daw::graph_t</a>&lt; T &gt; &amp;known_deps, Func visitor, Compare &amp;&amp;comp=Compare{ })</td></tr>
@@ -4575,7 +4573,7 @@ template&lt;auto Value&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l01013">1013</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l01016">1016</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -9967,7 +9965,7 @@ template&lt;typename Container &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l01003">1003</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l01006">1006</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -12268,36 +12266,6 @@ template&lt;typename Integer , typename Bit , typename... Bits&gt; </div>
 <p>get value with all bits but those specified masked out </p>
 
 <p class="definition">Definition at line <a class="el" href="daw__bit_8h_source.html#l00094">94</a> of file <a class="el" href="daw__bit_8h_source.html">daw_bit.h</a>.</p>
-
-</div>
-</div>
-<a id="a8579155b2da44e50328beb3d220c5b1a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8579155b2da44e50328beb3d220c5b1a">&#9670;&nbsp;</a></span>get_buffer()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T , std::size_t Alignment = alignof( T )&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">T* daw::get_buffer </td>
-          <td>(</td>
-          <td class="paramtype">std::size_t&#160;</td>
-          <td class="paramname"><em>count</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00983">983</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -43364,7 +43332,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00989">989</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p>aligned_alloc is not in clang-cl 13 with vs2022 </p>
+
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00992">992</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
