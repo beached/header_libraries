@@ -979,11 +979,14 @@ namespace daw {
 	template<bool Bool_, typename If_, typename Then_>
 	using if_t = typename std::conditional<Bool_, If_, Then_>::type;
 
+	/// aligned_alloc is not in clang-cl 13 with vs2022
+#if not( defined( _MSC_VER ) and defined( __clang__ ) )
 	template<typename T, std::size_t Alignment = alignof( T )>
 	inline T *get_buffer( std::size_t count ) noexcept {
 		return reinterpret_cast<T *>(
 		  ::aligned_alloc( Alignment, sizeof( T ) * count ) );
 	}
+#endif
 
 	template<typename T>
 	inline void return_buffer( T *ptr ) noexcept {
