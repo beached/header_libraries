@@ -591,15 +591,15 @@ namespace daw {
 			}
 
 			constexpr void remove_prefix( ) {
-				++m_first;
-			}
-
-			constexpr void remove_suffix( ) {
-				--m_last;
+				remove_prefix( 1 );
 			}
 
 			constexpr void remove_suffix( size_t count ) {
-				std::advance( m_first, -static_cast<difference_type>( count ) );
+				std::advance( m_last, -static_cast<difference_type>( count ) );
+			}
+
+			constexpr void remove_suffix( ) {
+				remove_suffix( 1 );
 			}
 		};
 		return range_t{ first, last };
