@@ -587,7 +587,7 @@ namespace daw {
 			}
 
 			constexpr void remove_prefix( size_t count ) {
-				m_first += static_cast<difference_type>( count );
+				std::advance( m_first, static_cast<difference_type>( count ) );
 			}
 
 			constexpr void remove_prefix( ) {
@@ -599,7 +599,7 @@ namespace daw {
 			}
 
 			constexpr void remove_suffix( size_t count ) {
-				m_last -= static_cast<difference_type>( count );
+				std::advance( m_first, -static_cast<difference_type>( count ) );
 			}
 		};
 		return range_t{ first, last };
