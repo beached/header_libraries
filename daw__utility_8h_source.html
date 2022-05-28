@@ -659,7 +659,7 @@ $(function() {
 <div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;      }</div>
 <div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160; </div>
 <div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;      constexpr <span class="keywordtype">void</span> remove_prefix( <span class="keywordtype">size_t</span> count ) {</div>
-<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;        m_first += <span class="keyword">static_cast&lt;</span><a class="code" href="namespacedaw.html#ad01ae0baa6e156214d7d0ea0225a9d9f">difference_type</a><span class="keyword">&gt;</span>( count );</div>
+<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;        std::advance( m_first, <span class="keyword">static_cast&lt;</span><a class="code" href="namespacedaw.html#ad01ae0baa6e156214d7d0ea0225a9d9f">difference_type</a><span class="keyword">&gt;</span>( count ) );</div>
 <div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;      }</div>
 <div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160; </div>
 <div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;      constexpr <span class="keywordtype">void</span> remove_prefix( ) {</div>
@@ -671,7 +671,7 @@ $(function() {
 <div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;      }</div>
 <div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160; </div>
 <div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;      constexpr <span class="keywordtype">void</span> remove_suffix( <span class="keywordtype">size_t</span> count ) {</div>
-<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;        m_last -= <span class="keyword">static_cast&lt;</span><a class="code" href="namespacedaw.html#ad01ae0baa6e156214d7d0ea0225a9d9f">difference_type</a><span class="keyword">&gt;</span>( count );</div>
+<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;        std::advance( m_first, -<span class="keyword">static_cast&lt;</span><a class="code" href="namespacedaw.html#ad01ae0baa6e156214d7d0ea0225a9d9f">difference_type</a><span class="keyword">&gt;</span>( count ) );</div>
 <div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;      }</div>
 <div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;    };</div>
 <div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;    <span class="keywordflow">return</span> range_t{ first, last };</div>
