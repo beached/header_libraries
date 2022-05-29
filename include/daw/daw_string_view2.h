@@ -134,14 +134,15 @@ namespace daw {
 		inline static constexpr any_of_t<decltype( needle ), needle, needles...>
 		  any_of{ };
 
-
-		/// @brief Predicate type that stores the previous element and if it was an '\'
-		/// escape character, it will return false, otherwise returns true if the
-		/// current character matches one of the needles.  Because this is a
+		/// @brief Predicate type that stores the previous element and if it was an
+		/// '\' escape character, it will return false, otherwise returns true if
+		/// the current character matches one of the needles.  Because this is a
 		/// stateful predicate, it cannot be reused
-		template<typename CharT, CharT... needles>
-		struct escaped_any_of_t {
-			static_assert( not( ( needles == CharT( '\\' ) ) or ... ),
+		template<auto needle, auto... needles>
+		struct escaped_any_of {
+			using CharT = decltype( needle );
+			static_assert( not( needle == CharT{ '\\' } or
+			                    ( ( needles == CharT{ '\\' } ) or ... ) ),
 			               "Escape characters cannot be searched for" );
 			mutable CharT last_char = 0;
 			inline constexpr bool operator( )( CharT c ) const {
@@ -150,16 +151,9 @@ namespace daw {
 					return false;
 				}
 				last_char = c;
-				return ( ( c == needles ) or ... );
+				return needle == c or ( ( c == needles ) or ... );
 			}
 		};
-
-		/// @brief Predicate type that stores the previous element and if it was an '\'
-		/// escape character, it will return false, otherwise returns true if the
-		/// current character matches one of the needles.  Because this is a
-		/// stateful predicate, it cannot be reused
-		template<auto needle, auto...needles>
-		using escaped_any_of = escaped_any_of_t<decltype(needle), needle, needles...>;	
 
 		/// @brief A predicate type used in the find based routine to return true
 		/// when the element is none of the specified characters
