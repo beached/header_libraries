@@ -128,6 +128,25 @@ namespace daw {
 			}
 		};
 
+		/// @brief Predicate that stores the previous element and if it was an '\'
+		/// escape character, it will return false, otherwise returns true if the
+		/// current character matches one of the needles.  Because this is a
+		/// stateful predicate, it cannot be reused
+		template<typename CharT, CharT... needles>
+		struct escaped_any_of_t {
+			static_assert( not( ( needles == CharT( '\\' ) ) or ... ),
+			               "Escape characters cannot be searched for" );
+			mutable CharT last_char = 0;
+			inline constexpr bool operator( )( CharT c ) const {
+				if( last_char == CharT( '\\' ) ) {
+					last_char = 0;
+					return false;
+				}
+				last_char = c;
+				return ( ( c == needles ) or ... );
+			}
+		};
+
 		template<auto needle, auto... needles>
 		inline static constexpr any_of_t<decltype( needle ), needle, needles...>
 		  any_of{ };
