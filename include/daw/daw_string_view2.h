@@ -128,7 +128,14 @@ namespace daw {
 			}
 		};
 
-		/// @brief Predicate that stores the previous element and if it was an '\'
+		/// @brief A predicate value used in the find based routine to return true
+		/// when the element is one of the specified characters
+		template<auto needle, auto... needles>
+		inline static constexpr any_of_t<decltype( needle ), needle, needles...>
+		  any_of{ };
+
+
+		/// @brief Predicate type that stores the previous element and if it was an '\'
 		/// escape character, it will return false, otherwise returns true if the
 		/// current character matches one of the needles.  Because this is a
 		/// stateful predicate, it cannot be reused
@@ -147,9 +154,12 @@ namespace daw {
 			}
 		};
 
-		template<auto needle, auto... needles>
-		inline static constexpr any_of_t<decltype( needle ), needle, needles...>
-		  any_of{ };
+		/// @brief Predicate type that stores the previous element and if it was an '\'
+		/// escape character, it will return false, otherwise returns true if the
+		/// current character matches one of the needles.  Because this is a
+		/// stateful predicate, it cannot be reused
+		template<auto needle, auto...needles>
+		using escaped_any_of = escaped_any_of_t<decltype(needle), needle, needles...>;	
 
 		/// @brief A predicate type used in the find based routine to return true
 		/// when the element is none of the specified characters
