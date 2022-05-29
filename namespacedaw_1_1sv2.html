@@ -94,7 +94,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1sv2_1_1dont__clip__to__bounds__t.html">dont_clip_to_bounds_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1sv2_1_1escaped__any__of__t.html">escaped_any_of_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Predicate that stores the previous element and if it was an '\' escape character, it will return false, otherwise returns true if the current character matches one of the needles. Because this is a stateful predicate, it cannot be reused.  <a href="structdaw_1_1sv2_1_1escaped__any__of__t.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Predicate type that stores the previous element and if it was an '\' escape character, it will return false, otherwise returns true if the current character matches one of the needles. Because this is a stateful predicate, it cannot be reused.  <a href="structdaw_1_1sv2_1_1escaped__any__of__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1sv2_1_1nodiscard__t.html">nodiscard_t</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tag type for specifying that the searched for term/item is not to be removed from string_view.  <a href="structdaw_1_1sv2_1_1nodiscard__t.html#details">More...</a><br /></td></tr>
@@ -105,6 +105,10 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:aa3ba15ab6abd57ac8b628d0a64650b59"><td class="memTemplParams" colspan="2">template&lt;auto needle, auto... needles&gt; </td></tr>
+<tr class="memitem:aa3ba15ab6abd57ac8b628d0a64650b59"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#aa3ba15ab6abd57ac8b628d0a64650b59">escaped_any_of</a> = <a class="el" href="structdaw_1_1sv2_1_1escaped__any__of__t.html">escaped_any_of_t</a>&lt; decltype(needle), needle, needles... &gt;</td></tr>
+<tr class="memdesc:aa3ba15ab6abd57ac8b628d0a64650b59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Predicate type that stores the previous element and if it was an '\' escape character, it will return false, otherwise returns true if the current character matches one of the needles. Because this is a stateful predicate, it cannot be reused.  <a href="namespacedaw_1_1sv2.html#aa3ba15ab6abd57ac8b628d0a64650b59">More...</a><br /></td></tr>
+<tr class="separator:aa3ba15ab6abd57ac8b628d0a64650b59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5d6b0c106ba0bd7fbb58af637dee22a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">string_view</a> = <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">basic_string_view</a>&lt; char &gt;</td></tr>
 <tr class="separator:aa5d6b0c106ba0bd7fbb58af637dee22a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63bbb118b2672b60a030774f261e2eda"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#a63bbb118b2672b60a030774f261e2eda">u16string_view</a> = <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">basic_string_view</a>&lt; char16_t &gt;</td></tr>
@@ -144,6 +148,7 @@ Functions</h2></td></tr>
 Variables</h2></td></tr>
 <tr class="memitem:a13c3f8a63573774dce7b2e3e336842c3"><td class="memTemplParams" colspan="2">template&lt;auto needle, auto... needles&gt; </td></tr>
 <tr class="memitem:a13c3f8a63573774dce7b2e3e336842c3"><td class="memTemplItemLeft" align="right" valign="top">static constexpr <a class="el" href="structdaw_1_1sv2_1_1any__of__t.html">any_of_t</a>&lt; decltype(needle), needle, needles... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#a13c3f8a63573774dce7b2e3e336842c3">any_of</a> { }</td></tr>
+<tr class="memdesc:a13c3f8a63573774dce7b2e3e336842c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">A predicate value used in the find based routine to return true when the element is one of the specified characters.  <a href="namespacedaw_1_1sv2.html#a13c3f8a63573774dce7b2e3e336842c3">More...</a><br /></td></tr>
 <tr class="separator:a13c3f8a63573774dce7b2e3e336842c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabfaf73c130349a5d0fbb8d1effe86dd"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacedaw_1_1sv2.html#aa920a6f0aaad67c79fdcd6eb1001a8bc">string_view_bounds_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#aabfaf73c130349a5d0fbb8d1effe86dd">default_string_view_bounds_type</a></td></tr>
 <tr class="separator:aabfaf73c130349a5d0fbb8d1effe86dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,6 +161,26 @@ Variables</h2></td></tr>
 <tr class="separator:a0407e01d709d047a59a750572016d104"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
+<a id="aa3ba15ab6abd57ac8b628d0a64650b59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3ba15ab6abd57ac8b628d0a64650b59">&#9670;&nbsp;</a></span>escaped_any_of</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;auto needle, auto... needles&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacedaw_1_1sv2.html#aa3ba15ab6abd57ac8b628d0a64650b59">daw::sv2::escaped_any_of</a> = typedef <a class="el" href="structdaw_1_1sv2_1_1escaped__any__of__t.html">escaped_any_of_t</a>&lt;decltype(needle), needle, needles...&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Predicate type that stores the previous element and if it was an '\' escape character, it will return false, otherwise returns true if the current character matches one of the needles. Because this is a stateful predicate, it cannot be reused. </p>
+
+<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00162">162</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
+
+</div>
+</div>
 <a id="aa5d6b0c106ba0bd7fbb58af637dee22a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa5d6b0c106ba0bd7fbb58af637dee22a">&#9670;&nbsp;</a></span>string_view</h2>
 
@@ -382,7 +407,7 @@ template&lt;typename CharT , string_view_bounds_type Bounds, typename OStream , 
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l02527">2527</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l02537">2537</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
 
 </div>
 </div>
@@ -409,7 +434,9 @@ template&lt;auto needle, auto... needles&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00152">152</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
+<p>A predicate value used in the find based routine to return true when the element is one of the specified characters. </p>
+
+<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00135">135</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
 
 </div>
 </div>
@@ -509,7 +536,7 @@ template&lt;auto needle, auto... needles&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00165">165</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00175">175</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
 
 </div>
 </div>
