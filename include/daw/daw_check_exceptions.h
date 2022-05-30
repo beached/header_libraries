@@ -39,7 +39,9 @@ namespace daw::check_except_detail {
 		template<typename Exception>
 		[[noreturn, maybe_unused]] DAW_ATTRIB_NOINLINE void
 		throw_error( Exception &&except ) {
+#if defined( DAW_USE_EXCEPTIONS )
 			throw DAW_FWD( except );
+#endif
 		}
 
 		template<typename>
