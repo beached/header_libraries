@@ -629,7 +629,7 @@ namespace daw::cxmath {
 		  __builtin_ctzl( static_cast<unsigned long>( v ) ) );
 #elif LLONG_MAX == 2147483647LL
 		return static_cast<std::uint32_t>(
-		  __builtin_ctzl( static_cast<unsigned long long>( v ) ) );
+		  __builtin_ctzll( static_cast<unsigned long long>( v ) ) );
 #else
 #error Unsupported int sizes
 #endif
@@ -648,7 +648,7 @@ namespace daw::cxmath {
 		  __builtin_ctzl( static_cast<unsigned long>( v ) ) );
 #elif LLONG_MAX == 9223372036854775807LL
 		return static_cast<std::uint32_t>(
-		  __builtin_ctzl( static_cast<unsigned long long>( v ) ) );
+		  __builtin_ctzll( static_cast<unsigned long long>( v ) ) );
 #else
 #error Unsupported int sizes
 #endif
