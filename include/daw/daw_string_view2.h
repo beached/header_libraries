@@ -32,11 +32,11 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
+#include <functional>
 #include <iterator>
 #include <limits>
 #include <stdexcept>
-
-#include <vector>
+#include <type_traits>
 
 #if defined( DAW_NO_STRING_VIEW_DBG_CHECK )
 #define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... )                             \
@@ -2493,10 +2493,12 @@ namespace daw {
 				for( ; n >= fill_chars.size( ) and os.good( );
 				     n -= fill_chars.size( ) ) {
 					os.write( fill_chars.data( ),
-					          static_cast<intmax_t>( fill_chars.size( ) ) );
+					          static_cast<std::make_signed_t<std::size_t>>(
+					            fill_chars.size( ) ) );
 				}
 				if( n > 0 and os.good( ) ) {
-					os.write( fill_chars.data( ), static_cast<intmax_t>( n ) );
+					os.write( fill_chars.data( ),
+					          static_cast<std::make_signed_t<std::size_t>>( n ) );
 				}
 			}
 
@@ -2514,10 +2516,12 @@ namespace daw {
 				if( not align_left ) {
 					sv_insert_fill_chars( os, alignment_size );
 					if( os.good( ) ) {
-						os.write( str.data( ), static_cast<intmax_t>( size ) );
+						os.write( str.data( ),
+						          static_cast<std::make_signed_t<std::size_t>>( size ) );
 					}
 				} else {
-					os.write( str.data( ), static_cast<intmax_t>( size ) );
+					os.write( str.data( ),
+					          static_cast<std::make_signed_t<std::size_t>>( size ) );
 					if( os.good( ) ) {
 						sv_insert_fill_chars( os, alignment_size );
 					}
@@ -2533,7 +2537,8 @@ namespace daw {
 				auto const size = v.size( );
 				auto const w = static_cast<std::size_t>( os.width( ) );
 				if( w <= size ) {
-					os.write( v.data( ), static_cast<intmax_t>( size ) );
+					os.write( v.data( ),
+					          static_cast<std::make_signed_t<std::size_t>>( size ) );
 				} else {
 					daw::sv2_details::sv_insert_aligned( os, v );
 				}
