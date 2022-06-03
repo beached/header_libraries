@@ -930,9 +930,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a7fd798599dd45a407e433693c249541f"><td class="memTemplParams" colspan="2">template&lt;typename Distance , typename Iterator , typename Iterator2 , typename... Iterators&gt; </td></tr>
 <tr class="memitem:a7fd798599dd45a407e433693c249541f"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a7fd798599dd45a407e433693c249541f">advance_many</a> (Distance d, Iterator &amp;it, Iterator2 &amp;it2, Iterators &amp;...its)</td></tr>
 <tr class="separator:a7fd798599dd45a407e433693c249541f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e591c0acffefbef2fad46fb2a04a9a3"><td class="memTemplParams" colspan="2">template&lt;typename Container , typename... Args&gt; </td></tr>
-<tr class="memitem:a9e591c0acffefbef2fad46fb2a04a9a3"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a9e591c0acffefbef2fad46fb2a04a9a3">append</a> (Container &amp;container, Args &amp;&amp;...args)</td></tr>
-<tr class="separator:a9e591c0acffefbef2fad46fb2a04a9a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ba7ca8d2087488c8d774f02e82f1e05"><td class="memTemplParams" colspan="2">template&lt;typename Container , typename... Args&gt; </td></tr>
+<tr class="memitem:a0ba7ca8d2087488c8d774f02e82f1e05"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0ba7ca8d2087488c8d774f02e82f1e05">append</a> (Container &amp;container, Args &amp;&amp;...args)</td></tr>
+<tr class="separator:a0ba7ca8d2087488c8d774f02e82f1e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa262c9df4a2234d2089c59a4e13dbfe6"><td class="memTemplParams" colspan="2">template&lt;bool use_invoke = true, typename F , typename Tuple &gt; </td></tr>
 <tr class="memitem:aa262c9df4a2234d2089c59a4e13dbfe6"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa262c9df4a2234d2089c59a4e13dbfe6">apply</a> (F &amp;&amp;f, Tuple &amp;&amp;t)</td></tr>
 <tr class="separator:aa262c9df4a2234d2089c59a4e13dbfe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1089,12 +1089,12 @@ Functions</h2></td></tr>
 <tr class="memitem:abc7e22c3b2b944f38df42cb533f25e1e"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U  = deduced_type, typename Iterator , typename OutputIterator , typename Function &gt; </td></tr>
 <tr class="memitem:abc7e22c3b2b944f38df42cb533f25e1e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#abc7e22c3b2b944f38df42cb533f25e1e">bit_cast_transform</a> (Iterator first, Iterator last, OutputIterator first_out, Function &amp;&amp;func)</td></tr>
 <tr class="separator:abc7e22c3b2b944f38df42cb533f25e1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad79779f5309f88e0d2f1b77850b7b761"><td class="memTemplParams" colspan="2">template&lt;typename Value &gt; </td></tr>
-<tr class="memitem:ad79779f5309f88e0d2f1b77850b7b761"><td class="memTemplItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad79779f5309f88e0d2f1b77850b7b761">bitcount</a> (Value value) noexcept</td></tr>
-<tr class="separator:ad79779f5309f88e0d2f1b77850b7b761"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65f96a04b871909ebed5db6315378457"><td class="memTemplParams" colspan="2">template&lt;typename Value , typename... T&gt; </td></tr>
-<tr class="memitem:a65f96a04b871909ebed5db6315378457"><td class="memTemplItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a65f96a04b871909ebed5db6315378457">bitcount</a> (Value value, T... values) noexcept</td></tr>
-<tr class="separator:a65f96a04b871909ebed5db6315378457"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52ae8dd0216df66fdbecc5a9ebc8986e"><td class="memTemplParams" colspan="2">template&lt;typename Value &gt; </td></tr>
+<tr class="memitem:a52ae8dd0216df66fdbecc5a9ebc8986e"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a52ae8dd0216df66fdbecc5a9ebc8986e">bitcount</a> (Value value) noexcept</td></tr>
+<tr class="separator:a52ae8dd0216df66fdbecc5a9ebc8986e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa650f48aa86c5b24491c042f218f2c92"><td class="memTemplParams" colspan="2">template&lt;typename Value , typename... T&gt; </td></tr>
+<tr class="memitem:aa650f48aa86c5b24491c042f218f2c92"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa650f48aa86c5b24491c042f218f2c92">bitcount</a> (Value value, T... values) noexcept</td></tr>
+<tr class="separator:aa650f48aa86c5b24491c042f218f2c92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5bbe8c47cdaf0b35fc95fc585f314ac9"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Allocator  = std::allocator&lt;T&gt;, input_iterator InputIterator&gt; </td></tr>
 <tr class="memitem:a5bbe8c47cdaf0b35fc95fc585f314ac9"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5bbe8c47cdaf0b35fc95fc585f314ac9">block_append_from</a> (<a class="el" href="structdaw_1_1vector.html">vector</a>&lt; T, Allocator &gt; &amp;v, <a class="el" href="structdaw_1_1_input_iterator.html">InputIterator</a> first, <a class="el" href="structdaw_1_1_input_iterator.html">InputIterator</a> last, std::size_t block_size=512)</td></tr>
 <tr class="separator:a5bbe8c47cdaf0b35fc95fc585f314ac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1484,9 +1484,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a7779137a1a49147486844cc588def6c2"><td class="memTemplParams" colspan="2">template&lt;size_t N, typename OutputIterator &gt; </td></tr>
 <tr class="memitem:a7779137a1a49147486844cc588def6c2"><td class="memTemplItemLeft" align="right" valign="top">constexpr OutputIterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a7779137a1a49147486844cc588def6c2">hex</a> (char const (&amp;str)[N], OutputIterator first_out) noexcept</td></tr>
 <tr class="separator:a7779137a1a49147486844cc588def6c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6990a7b44f5d3c1abb5b59433cf8532b"><td class="memTemplParams" colspan="2">template&lt;typename OutputIterator &gt; </td></tr>
-<tr class="memitem:a6990a7b44f5d3c1abb5b59433cf8532b"><td class="memTemplItemLeft" align="right" valign="top">constexpr OutputIterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a6990a7b44f5d3c1abb5b59433cf8532b">hex</a> (char const *str, size_t len, OutputIterator first_out) noexcept</td></tr>
-<tr class="separator:a6990a7b44f5d3c1abb5b59433cf8532b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9d65745c60dae07b39f4d6071c2baf8"><td class="memTemplParams" colspan="2">template&lt;typename OutputIterator &gt; </td></tr>
+<tr class="memitem:af9d65745c60dae07b39f4d6071c2baf8"><td class="memTemplItemLeft" align="right" valign="top">constexpr OutputIterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af9d65745c60dae07b39f4d6071c2baf8">hex</a> (char const *str, std::size_t len, OutputIterator first_out) noexcept</td></tr>
+<tr class="separator:af9d65745c60dae07b39f4d6071c2baf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5840ad80803f11ec86008cd1d4a18920"><td class="memTemplParams" colspan="2">template&lt;typename ForwardIterator1 , typename ForwardIterator2 , typename OutputIterator , std::enable_if_t&lt; std::is_integral_v&lt; typename std::iterator_traits&lt; ForwardIterator1 &gt;::value_type &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a5840ad80803f11ec86008cd1d4a18920"><td class="memTemplItemLeft" align="right" valign="top">constexpr OutputIterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5840ad80803f11ec86008cd1d4a18920">hex</a> (ForwardIterator1 first_in, ForwardIterator2 const last_in, OutputIterator first_out) noexcept</td></tr>
 <tr class="separator:a5840ad80803f11ec86008cd1d4a18920"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1524,9 +1524,9 @@ Functions</h2></td></tr>
 <tr class="memitem:aa8ae1672ac42a3cd749f0aaf043cd17c"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa8ae1672ac42a3cd749f0aaf043cd17c">in_range</a> (Value &amp;&amp;value, LowerBound &amp;&amp;lower, UpperBound &amp;&amp;upper) noexcept(noexcept(lower&lt;=value &amp;&amp;value&lt; upper))</td></tr>
 <tr class="memdesc:aa8ae1672ac42a3cd749f0aaf043cd17c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if value is in the range [lower, upper)  <a href="namespacedaw.html#aa8ae1672ac42a3cd749f0aaf043cd17c">More...</a><br /></td></tr>
 <tr class="separator:aa8ae1672ac42a3cd749f0aaf043cd17c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7be9d33ff3d6742360056b65c9f31933"><td class="memTemplParams" colspan="2">template&lt;typename Container , typename Item &gt; </td></tr>
-<tr class="memitem:a7be9d33ff3d6742360056b65c9f31933"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a7be9d33ff3d6742360056b65c9f31933">index_of</a> (Container const &amp;container, Item const &amp;item) noexcept</td></tr>
-<tr class="separator:a7be9d33ff3d6742360056b65c9f31933"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a076fdc0c301d8f47a915f80e276b1621"><td class="memTemplParams" colspan="2">template&lt;typename Container , typename Item &gt; </td></tr>
+<tr class="memitem:a076fdc0c301d8f47a915f80e276b1621"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a076fdc0c301d8f47a915f80e276b1621">index_of</a> (Container const &amp;container, Item const &amp;item) noexcept</td></tr>
+<tr class="separator:a076fdc0c301d8f47a915f80e276b1621"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac16ba4f5d3748863b31ca4004d10c226"><td class="memTemplParams" colspan="2">template&lt;typename Iterator &gt; </td></tr>
 <tr class="memitem:ac16ba4f5d3748863b31ca4004d10c226"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ac16ba4f5d3748863b31ca4004d10c226">InputIterator</a> (Iterator) -&gt; <a class="el" href="structdaw_1_1_input_iterator.html">InputIterator</a>&lt; typename std::iterator_traits&lt; Iterator &gt;::value_type &gt;</td></tr>
 <tr class="separator:ac16ba4f5d3748863b31ca4004d10c226"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3429,16 +3429,16 @@ Functions</h2></td></tr>
 <tr class="memitem:a1a222bab99071ee241b054a40e4bc42e"><td class="memTemplParams" colspan="2">template&lt;typename Value &gt; </td></tr>
 <tr class="memitem:a1a222bab99071ee241b054a40e4bc42e"><td class="memTemplItemLeft" align="right" valign="top">constexpr Value&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a1a222bab99071ee241b054a40e4bc42e">or_all</a> (Value value) noexcept</td></tr>
 <tr class="separator:a1a222bab99071ee241b054a40e4bc42e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ed25338a37a7dc6b75bd5bc7245cb0a"><td class="memTemplParams" colspan="2">template&lt;typename Value , typename... T&gt; </td></tr>
-<tr class="memitem:a2ed25338a37a7dc6b75bd5bc7245cb0a"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a2ed25338a37a7dc6b75bd5bc7245cb0a">or_all</a> (Value value, T... values) noexcept</td></tr>
-<tr class="separator:a2ed25338a37a7dc6b75bd5bc7245cb0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae70d0393af4a924cfaf9ae62297f506e"><td class="memTemplParams" colspan="2">template&lt;typename Value , typename... T&gt; </td></tr>
+<tr class="memitem:ae70d0393af4a924cfaf9ae62297f506e"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ae70d0393af4a924cfaf9ae62297f506e">or_all</a> (Value value, T... values) noexcept</td></tr>
+<tr class="separator:ae70d0393af4a924cfaf9ae62297f506e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bddce4ef6d7e6db547202f8d102f8a4"><td class="memTemplParams" colspan="2">template&lt;typename... Funcs&gt; </td></tr>
 <tr class="memitem:a6bddce4ef6d7e6db547202f8d102f8a4"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a6bddce4ef6d7e6db547202f8d102f8a4">overload</a> (Funcs &amp;&amp;...) -&gt; <a class="el" href="structdaw_1_1overload.html">overload</a>&lt; std::conditional_t&lt; std::is_class_v&lt; <a class="el" href="namespacedaw.html#ac1fed2bfc329128fd5d8b3b9bb677928">remove_cvref_t</a>&lt; Funcs &gt;&gt;, <a class="el" href="namespacedaw.html#ac1fed2bfc329128fd5d8b3b9bb677928">remove_cvref_t</a>&lt; Funcs &gt;, Funcs &gt;... &gt;</td></tr>
 <tr class="separator:a6bddce4ef6d7e6db547202f8d102f8a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a526f6f19d842a10cb48052024e513f8c"><td class="memTemplParams" colspan="2">template&lt;typename Function , typename... Args&gt; </td></tr>
-<tr class="memitem:a526f6f19d842a10cb48052024e513f8c"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a526f6f19d842a10cb48052024e513f8c">pack_apply</a> (size_t N, Function &amp;&amp;func, Args &amp;&amp;...args)</td></tr>
-<tr class="separator:a526f6f19d842a10cb48052024e513f8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefbb4c3e71021006cbd8a67c3eb5c073"><td class="memTemplParams" colspan="2">template&lt;size_t N, size_t pos = 0, typename Arg , typename... Args&gt; </td></tr>
+<tr class="memitem:af64a3bbd09da57152eebfa3e666b8897"><td class="memTemplParams" colspan="2">template&lt;typename Function , typename... Args&gt; </td></tr>
+<tr class="memitem:af64a3bbd09da57152eebfa3e666b8897"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af64a3bbd09da57152eebfa3e666b8897">pack_apply</a> (std::size_t N, Function &amp;&amp;func, Args &amp;&amp;...args)</td></tr>
+<tr class="separator:af64a3bbd09da57152eebfa3e666b8897"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefbb4c3e71021006cbd8a67c3eb5c073"><td class="memTemplParams" colspan="2">template&lt;size_t N, std::size_t pos = 0, typename Arg , typename... Args&gt; </td></tr>
 <tr class="memitem:aefbb4c3e71021006cbd8a67c3eb5c073"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aefbb4c3e71021006cbd8a67c3eb5c073">pack_get</a> (Arg &amp;&amp;arg, Args &amp;&amp;...args) noexcept</td></tr>
 <tr class="separator:aefbb4c3e71021006cbd8a67c3eb5c073"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95c929fa80c7204e89448cc444f3e32c"><td class="memTemplParams" colspan="2">template&lt;typename T , typename BitStream &gt; </td></tr>
@@ -3949,9 +3949,9 @@ Variables</h2></td></tr>
 <tr class="memitem:acb6a1ec2119e5bac7816e4e9b98e785c"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
 <tr class="memitem:acb6a1ec2119e5bac7816e4e9b98e785c"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#acb6a1ec2119e5bac7816e4e9b98e785c">BackInsertableContainer</a></td></tr>
 <tr class="separator:acb6a1ec2119e5bac7816e4e9b98e785c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13d49f51a7f3487618f5b2c2b92941c9"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a13d49f51a7f3487618f5b2c2b92941c9"><td class="memTemplItemLeft" align="right" valign="top">constexpr const size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a13d49f51a7f3487618f5b2c2b92941c9">bsizeof</a> = static_cast&lt;size_t&gt;( sizeof( <a class="el" href="namespacedaw.html#ac1fed2bfc329128fd5d8b3b9bb677928">remove_cvref_t</a>&lt;T&gt; ) * 8U )</td></tr>
-<tr class="separator:a13d49f51a7f3487618f5b2c2b92941c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f7e8f66c6f9abe105505f6c0243c5de"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a3f7e8f66c6f9abe105505f6c0243c5de"><td class="memTemplItemLeft" align="right" valign="top">constexpr const std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3f7e8f66c6f9abe105505f6c0243c5de">bsizeof</a> = static_cast&lt;size_t&gt;( sizeof( <a class="el" href="namespacedaw.html#ac1fed2bfc329128fd5d8b3b9bb677928">remove_cvref_t</a>&lt;T&gt; ) * 8U )</td></tr>
+<tr class="separator:a3f7e8f66c6f9abe105505f6c0243c5de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c687b45f367a493f19b02eded7b596a"><td class="memTemplParams" colspan="2">template&lt;typename String &gt; </td></tr>
 <tr class="memitem:a5c687b45f367a493f19b02eded7b596a"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5c687b45f367a493f19b02eded7b596a">can_be_bounded_string</a></td></tr>
 <tr class="separator:a5c687b45f367a493f19b02eded7b596a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4221,9 +4221,9 @@ Variables</h2></td></tr>
 <tr class="memitem:a1ef42595d6bd7942785e5bf7627999d5"><td class="memTemplParams" colspan="2">template&lt;typename I , typename T &gt; </td></tr>
 <tr class="memitem:a1ef42595d6bd7942785e5bf7627999d5"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a1ef42595d6bd7942785e5bf7627999d5">output_iterator</a></td></tr>
 <tr class="separator:a1ef42595d6bd7942785e5bf7627999d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ac193c7d1b66327e2e5ce343cb30820"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Ts&gt; </td></tr>
-<tr class="memitem:a1ac193c7d1b66327e2e5ce343cb30820"><td class="memTemplItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a1ac193c7d1b66327e2e5ce343cb30820">pack_index_of_v</a> = <a class="el" href="structdaw_1_1pack__index__of.html">pack_index_of</a>&lt;T, Ts...&gt;::value</td></tr>
-<tr class="separator:a1ac193c7d1b66327e2e5ce343cb30820"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9fd932b728a8731e8d326912e387a42"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Ts&gt; </td></tr>
+<tr class="memitem:af9fd932b728a8731e8d326912e387a42"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af9fd932b728a8731e8d326912e387a42">pack_index_of_v</a> = <a class="el" href="structdaw_1_1pack__index__of.html">pack_index_of</a>&lt;T, Ts...&gt;::value</td></tr>
+<tr class="separator:af9fd932b728a8731e8d326912e387a42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61c2b283fe058b06515ac846b11f9a48"><td class="memTemplParams" colspan="2">template&lt;typename Pack &gt; </td></tr>
 <tr class="memitem:a61c2b283fe058b06515ac846b11f9a48"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a61c2b283fe058b06515ac846b11f9a48">pack_size_v</a> = <a class="el" href="structdaw_1_1pack__size.html">pack_size</a>&lt;Pack&gt;::value</td></tr>
 <tr class="separator:a61c2b283fe058b06515ac846b11f9a48"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4581,7 +4581,7 @@ template&lt;auto Value&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00987">987</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00989">989</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -4987,7 +4987,7 @@ template&lt;bool Bool_, typename If_ , typename Then_ &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00951">951</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00953">953</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -5361,7 +5361,7 @@ template&lt;size_t N, typename... Ts&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00620">620</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00622">622</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -6118,16 +6118,19 @@ template&lt;typename Distance , typename Iterator , typename Iterator2 , typenam
 
 </div>
 </div>
-<a id="a9e591c0acffefbef2fad46fb2a04a9a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e591c0acffefbef2fad46fb2a04a9a3">&#9670;&nbsp;</a></span>append()</h2>
+<a id="a0ba7ca8d2087488c8d774f02e82f1e05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ba7ca8d2087488c8d774f02e82f1e05">&#9670;&nbsp;</a></span>append()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename Container , typename... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">decltype( auto ) daw::append </td>
+          <td class="memname">constexpr auto daw::append </td>
           <td>(</td>
           <td class="paramtype">Container &amp;&#160;</td>
           <td class="paramname"><em>container</em>, </td>
@@ -6144,6 +6147,11 @@ template&lt;typename Container , typename... Args&gt; </div>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00359">359</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
@@ -6935,7 +6943,7 @@ template&lt;typename From &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00757">757</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00759">759</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -8048,8 +8056,8 @@ template&lt;typename T , typename U  = deduced_type, typename Iterator , typenam
 
 </div>
 </div>
-<a id="ad79779f5309f88e0d2f1b77850b7b761"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad79779f5309f88e0d2f1b77850b7b761">&#9670;&nbsp;</a></span>bitcount() <span class="overload">[1/2]</span></h2>
+<a id="a52ae8dd0216df66fdbecc5a9ebc8986e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52ae8dd0216df66fdbecc5a9ebc8986e">&#9670;&nbsp;</a></span>bitcount() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8060,7 +8068,7 @@ template&lt;typename Value &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr size_t daw::bitcount </td>
+          <td class="memname">constexpr std::size_t daw::bitcount </td>
           <td>(</td>
           <td class="paramtype">Value&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -8074,12 +8082,12 @@ template&lt;typename Value &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00394">394</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00395">395</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
-<a id="a65f96a04b871909ebed5db6315378457"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a65f96a04b871909ebed5db6315378457">&#9670;&nbsp;</a></span>bitcount() <span class="overload">[2/2]</span></h2>
+<a id="aa650f48aa86c5b24491c042f218f2c92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa650f48aa86c5b24491c042f218f2c92">&#9670;&nbsp;</a></span>bitcount() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8090,7 +8098,7 @@ template&lt;typename Value , typename... T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr size_t daw::bitcount </td>
+          <td class="memname">constexpr std::size_t daw::bitcount </td>
           <td>(</td>
           <td class="paramtype">Value&#160;</td>
           <td class="paramname"><em>value</em>, </td>
@@ -8114,7 +8122,7 @@ template&lt;typename Value , typename... T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00404">404</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00405">405</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -8289,7 +8297,7 @@ template&lt;typename Key , typename Value &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00423">423</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00425">425</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -8379,7 +8387,7 @@ template&lt;typename IntegerDest , typename IntegerSource &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00409">409</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00411">411</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -8409,7 +8417,7 @@ template&lt;typename T , bool AllowDownSignCast = false, typename U &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00937">937</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00939">939</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -8976,7 +8984,7 @@ template&lt;typename Destination , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00657">657</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00659">659</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -9006,7 +9014,7 @@ template&lt;typename Destination , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00665">665</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00667">667</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -9046,7 +9054,7 @@ template&lt;typename Container , typename Item &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00365">365</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00364">364</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -9843,7 +9851,7 @@ template&lt;typename Iterator1 , typename Iterator2 , typename OutputIterator &g
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00429">429</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00431">431</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -9889,7 +9897,7 @@ template&lt;typename Iterator1 , typename Iterator2 , typename OutputIterator &g
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00441">441</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00443">443</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -9973,7 +9981,7 @@ template&lt;typename Container &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00977">977</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00979">979</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -11255,7 +11263,7 @@ template&lt;class T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00696">696</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00698">698</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -12403,7 +12411,7 @@ template&lt;typename OutputIterator &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00471">471</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00473">473</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -12443,12 +12451,12 @@ template&lt;size_t N, typename OutputIterator &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00542">542</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00544">544</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
-<a id="a6990a7b44f5d3c1abb5b59433cf8532b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6990a7b44f5d3c1abb5b59433cf8532b">&#9670;&nbsp;</a></span>hex() <span class="overload">[3/7]</span></h2>
+<a id="af9d65745c60dae07b39f4d6071c2baf8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9d65745c60dae07b39f4d6071c2baf8">&#9670;&nbsp;</a></span>hex() <span class="overload">[3/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -12467,7 +12475,7 @@ template&lt;typename OutputIterator &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
+          <td class="paramtype">std::size_t&#160;</td>
           <td class="paramname"><em>len</em>, </td>
         </tr>
         <tr>
@@ -12489,7 +12497,7 @@ template&lt;typename OutputIterator &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00533">533</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00535">535</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -12535,7 +12543,7 @@ template&lt;typename ForwardIterator1 , typename ForwardIterator2 , typename Out
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00522">522</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00524">524</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -12581,7 +12589,7 @@ template&lt;typename ForwardIterator1 , typename ForwardIterator2 , typename Out
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00552">552</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00554">554</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -12621,7 +12629,7 @@ template&lt;typename T , typename OutputIterator , std::enable_if_t&lt; std::is_
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00494">494</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00496">496</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -12661,7 +12669,7 @@ template&lt;typename T , typename OutputIterator , std::enable_if_t&lt; not std:
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00505">505</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00507">507</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -12701,7 +12709,7 @@ template&lt;typename OutputIterator &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00483">483</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00485">485</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -12929,12 +12937,12 @@ template&lt;typename Value , typename LowerBound , typename UpperBound &gt; </di
 
 <p>Checks if value is in the range [lower, upper) </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00791">791</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00793">793</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
-<a id="a7be9d33ff3d6742360056b65c9f31933"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7be9d33ff3d6742360056b65c9f31933">&#9670;&nbsp;</a></span>index_of()</h2>
+<a id="a076fdc0c301d8f47a915f80e276b1621"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a076fdc0c301d8f47a915f80e276b1621">&#9670;&nbsp;</a></span>index_of()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -12945,7 +12953,7 @@ template&lt;typename Container , typename Item &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr decltype( auto ) daw::index_of </td>
+          <td class="memname">constexpr auto daw::index_of </td>
           <td>(</td>
           <td class="paramtype">Container const &amp;&#160;</td>
           <td class="paramname"><em>container</em>, </td>
@@ -12969,7 +12977,7 @@ template&lt;typename Container , typename Item &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00373">373</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00372">372</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -14490,7 +14498,7 @@ template&lt;typename Iterator &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00562">562</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00564">564</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -15402,7 +15410,7 @@ template&lt;typename Integer , typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00851">851</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00853">853</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -16740,7 +16748,7 @@ template&lt;typename Lhs , typename Rhs &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__not__null_8h_source.html#l00197">197</a> of file <a class="el" href="daw__not__null_8h_source.html">daw_not_null.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__not__null_8h_source.html#l00202">202</a> of file <a class="el" href="daw__not__null_8h_source.html">daw_not_null.h</a>.</p>
 
 </div>
 </div>
@@ -28660,7 +28668,7 @@ template&lt;typename Lhs , typename Rhs &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__not__null_8h_source.html#l00204">204</a> of file <a class="el" href="daw__not__null_8h_source.html">daw_not_null.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__not__null_8h_source.html#l00209">209</a> of file <a class="el" href="daw__not__null_8h_source.html">daw_not_null.h</a>.</p>
 
 </div>
 </div>
@@ -31716,7 +31724,7 @@ template&lt;typename Lhs , typename Rhs &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__not__null_8h_source.html#l00211">211</a> of file <a class="el" href="daw__not__null_8h_source.html">daw_not_null.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__not__null_8h_source.html#l00216">216</a> of file <a class="el" href="daw__not__null_8h_source.html">daw_not_null.h</a>.</p>
 
 </div>
 </div>
@@ -33682,7 +33690,7 @@ template&lt;typename Lhs , typename Rhs &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__not__null_8h_source.html#l00190">190</a> of file <a class="el" href="daw__not__null_8h_source.html">daw_not_null.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__not__null_8h_source.html#l00195">195</a> of file <a class="el" href="daw__not__null_8h_source.html">daw_not_null.h</a>.</p>
 
 </div>
 </div>
@@ -35458,7 +35466,7 @@ template&lt;typename Lhs , typename Rhs &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__not__null_8h_source.html#l00218">218</a> of file <a class="el" href="daw__not__null_8h_source.html">daw_not_null.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__not__null_8h_source.html#l00223">223</a> of file <a class="el" href="daw__not__null_8h_source.html">daw_not_null.h</a>.</p>
 
 </div>
 </div>
@@ -37000,7 +37008,7 @@ template&lt;typename Lhs , typename Rhs &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__not__null_8h_source.html#l00225">225</a> of file <a class="el" href="daw__not__null_8h_source.html">daw_not_null.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__not__null_8h_source.html#l00230">230</a> of file <a class="el" href="daw__not__null_8h_source.html">daw_not_null.h</a>.</p>
 
 </div>
 </div>
@@ -42521,8 +42529,8 @@ template&lt;typename Value &gt; </div>
 
 </div>
 </div>
-<a id="a2ed25338a37a7dc6b75bd5bc7245cb0a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2ed25338a37a7dc6b75bd5bc7245cb0a">&#9670;&nbsp;</a></span>or_all() <span class="overload">[3/3]</span></h2>
+<a id="ae70d0393af4a924cfaf9ae62297f506e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae70d0393af4a924cfaf9ae62297f506e">&#9670;&nbsp;</a></span>or_all() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -42533,7 +42541,7 @@ template&lt;typename Value , typename... T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto daw::or_all </td>
+          <td class="memname">constexpr decltype( auto ) daw::or_all </td>
           <td>(</td>
           <td class="paramtype">Value&#160;</td>
           <td class="paramname"><em>value</em>, </td>
@@ -42581,8 +42589,8 @@ template&lt;typename... Funcs&gt; </div>
 
 </div>
 </div>
-<a id="a526f6f19d842a10cb48052024e513f8c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a526f6f19d842a10cb48052024e513f8c">&#9670;&nbsp;</a></span>pack_apply()</h2>
+<a id="af64a3bbd09da57152eebfa3e666b8897"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af64a3bbd09da57152eebfa3e666b8897">&#9670;&nbsp;</a></span>pack_apply()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -42595,7 +42603,7 @@ template&lt;typename Function , typename... Args&gt; </div>
         <tr>
           <td class="memname">constexpr void daw::pack_apply </td>
           <td>(</td>
-          <td class="paramtype">size_t&#160;</td>
+          <td class="paramtype">std::size_t&#160;</td>
           <td class="paramname"><em>N</em>, </td>
         </tr>
         <tr>
@@ -42623,7 +42631,7 @@ template&lt;typename Function , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00931">931</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00933">933</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -42633,7 +42641,7 @@ template&lt;typename Function , typename... Args&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;size_t N, size_t pos = 0, typename Arg , typename... Args&gt; </div>
+template&lt;size_t N, std::size_t pos = 0, typename Arg , typename... Args&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -42663,7 +42671,7 @@ template&lt;size_t N, size_t pos = 0, typename Arg , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00897">897</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00899">899</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -43362,7 +43370,7 @@ template&lt;typename T &gt; </div>
 
 <p>aligned_alloc is not in clang-cl 13 with vs2022 </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00963">963</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00965">965</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -46861,7 +46869,7 @@ template&lt;typename To , typename From &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00766">766</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00768">768</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -47672,7 +47680,7 @@ template&lt;typename To &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00710">710</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00712">712</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -47712,7 +47720,7 @@ template&lt;typename To &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00720">720</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00722">722</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -47752,7 +47760,7 @@ template&lt;typename To &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00734">734</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00736">736</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -47792,7 +47800,7 @@ template&lt;typename To &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00703">703</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00705">705</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -47823,7 +47831,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00804">804</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00806">806</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -48512,8 +48520,8 @@ template&lt;typename Container &gt; </div>
 
 </div>
 </div>
-<a id="a13d49f51a7f3487618f5b2c2b92941c9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13d49f51a7f3487618f5b2c2b92941c9">&#9670;&nbsp;</a></span>bsizeof</h2>
+<a id="a3f7e8f66c6f9abe105505f6c0243c5de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f7e8f66c6f9abe105505f6c0243c5de">&#9670;&nbsp;</a></span>bsizeof</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -48524,7 +48532,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr const size_t daw::bsizeof = static_cast&lt;size_t&gt;( sizeof( <a class="el" href="namespacedaw.html#ac1fed2bfc329128fd5d8b3b9bb677928">remove_cvref_t</a>&lt;T&gt; ) * 8U )</td>
+          <td class="memname">constexpr const std::size_t daw::bsizeof = static_cast&lt;size_t&gt;( sizeof( <a class="el" href="namespacedaw.html#ac1fed2bfc329128fd5d8b3b9bb677928">remove_cvref_t</a>&lt;T&gt; ) * 8U )</td>
         </tr>
       </table>
   </td>
@@ -48534,7 +48542,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00786">786</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00788">788</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -50765,8 +50773,8 @@ template&lt;typename I , typename T &gt; </div>
 
 </div>
 </div>
-<a id="a1ac193c7d1b66327e2e5ce343cb30820"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ac193c7d1b66327e2e5ce343cb30820">&#9670;&nbsp;</a></span>pack_index_of_v</h2>
+<a id="af9fd932b728a8731e8d326912e387a42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9fd932b728a8731e8d326912e387a42">&#9670;&nbsp;</a></span>pack_index_of_v</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -50777,7 +50785,7 @@ template&lt;typename T , typename... Ts&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr size_t daw::pack_index_of_v = <a class="el" href="structdaw_1_1pack__index__of.html">pack_index_of</a>&lt;T, Ts...&gt;::value</td>
+          <td class="memname">constexpr std::size_t daw::pack_index_of_v = <a class="el" href="structdaw_1_1pack__index__of.html">pack_index_of</a>&lt;T, Ts...&gt;::value</td>
         </tr>
       </table>
   </td>
@@ -50787,7 +50795,7 @@ template&lt;typename T , typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00623">623</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00625">625</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>
@@ -51071,7 +51079,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00629">629</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00631">631</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
 
 </div>
 </div>

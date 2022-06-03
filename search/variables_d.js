@@ -1,7 +1,7 @@
 var searchData=
 [
   ['pack_5fexists_5fv_3840',['pack_exists_v',['../namespacedaw_1_1traits.html#a2e7077f15d8a67a8ca4dd04d1ab5cb4e',1,'daw::traits']]],
-  ['pack_5findex_5fof_5fv_3841',['pack_index_of_v',['../namespacedaw_1_1traits.html#a33b9cf946a3cbf73b795ddfece7cb486',1,'daw::traits::pack_index_of_v()'],['../namespacedaw.html#a1ac193c7d1b66327e2e5ce343cb30820',1,'daw::pack_index_of_v()']]],
+  ['pack_5findex_5fof_5fv_3841',['pack_index_of_v',['../namespacedaw_1_1traits.html#a33b9cf946a3cbf73b795ddfece7cb486',1,'daw::traits::pack_index_of_v()'],['../namespacedaw.html#af9fd932b728a8731e8d326912e387a42',1,'daw::pack_index_of_v()']]],
   ['pack_5fsize_5fv_3842',['pack_size_v',['../namespacedaw.html#a61c2b283fe058b06515ac846b11f9a48',1,'daw']]],
   ['pi_3843',['PI',['../namespacedaw_1_1math.html#a462222fcea6452bc55797827a7c2793a',1,'daw::math']]],
   ['pointers_3844',['Pointers',['../namespacedaw.html#a89a21d24a040b20c83ed271337e1c09b',1,'daw']]],

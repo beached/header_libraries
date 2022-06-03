@@ -50,7 +50,7 @@ var searchData=
   ['bit_5fqueue_5fsource_5flittle_5fendian_140',['bit_queue_source_little_endian',['../structdaw_1_1bit__queue__source__little__endian.html',1,'daw']]],
   ['bit_5fqueue_5fsource_5fnative_5fendian_141',['bit_queue_source_native_endian',['../namespacedaw.html#a9ff6a97c69158954055b4a577fbaf70b',1,'daw']]],
   ['bit_5fstream_142',['bit_stream',['../structdaw_1_1bit__stream.html',1,'daw::bit_stream&lt; InputIteratorF, InputIteratorL, BitQueueLSB &gt;'],['../structdaw_1_1bit__stream.html#a3700a7cfbd3a71b6adc5789cd8774b45',1,'daw::bit_stream::bit_stream()']]],
-  ['bitcount_143',['bitcount',['../namespacedaw.html#ad79779f5309f88e0d2f1b77850b7b761',1,'daw::bitcount(Value value) noexcept'],['../namespacedaw.html#a65f96a04b871909ebed5db6315378457',1,'daw::bitcount(Value value, T... values) noexcept']]],
+  ['bitcount_143',['bitcount',['../namespacedaw.html#a52ae8dd0216df66fdbecc5a9ebc8986e',1,'daw::bitcount(Value value) noexcept'],['../namespacedaw.html#aa650f48aa86c5b24491c042f218f2c92',1,'daw::bitcount(Value value, T... values) noexcept']]],
   ['block_5fappend_5ffrom_144',['block_append_from',['../namespacedaw.html#a5bbe8c47cdaf0b35fc95fc585f314ac9',1,'daw']]],
   ['block_5fcreate_5ffrom_145',['block_create_from',['../namespacedaw.html#a631ad5b1f34538ed88a3914e8e1455e8',1,'daw']]],
   ['bool_5fand_146',['bool_and',['../namespacedaw_1_1traits.html#ad8549cb942bc7f409ef6a4a001f44376',1,'daw::traits']]],
@@ -80,5 +80,5 @@ var searchData=
   ['bounded_5fvector_5ft_3c_20string_5ffmt_5fdetails_3a_3aparse_5ftoken_3c_20chart_20_3e_2c_20n_2f2_20_3e_170',['bounded_vector_t&lt; string_fmt_details::parse_token&lt; CharT &gt;, N/2 &gt;',['../structdaw_1_1bounded__vector__t.html',1,'daw']]],
   ['bounded_5fvector_5ft_3c_20t_2c_200_20_3e_171',['bounded_vector_t&lt; T, 0 &gt;',['../structdaw_1_1bounded__vector__t_3_01_t_00_010_01_4.html',1,'daw']]],
   ['breakpoint_172',['breakpoint',['../namespacedaw.html#a175416a61f12f702c229bb244d5432ba',1,'daw']]],
-  ['bsizeof_173',['bsizeof',['../namespacedaw.html#a13d49f51a7f3487618f5b2c2b92941c9',1,'daw']]]
+  ['bsizeof_173',['bsizeof',['../namespacedaw.html#a3f7e8f66c6f9abe105505f6c0243c5de',1,'daw']]]
 ];

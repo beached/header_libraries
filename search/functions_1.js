@@ -32,7 +32,7 @@ var searchData=
   ['bit_5fcast_5ftransform_2710',['bit_cast_transform',['../namespacedaw.html#abc7e22c3b2b944f38df42cb533f25e1e',1,'daw']]],
   ['bit_5fiterator_2711',['bit_iterator',['../structdaw_1_1bit__iterator.html#a96ff45a2583df6154c4f96fa51e399fe',1,'daw::bit_iterator::bit_iterator(Iterator it)'],['../structdaw_1_1bit__iterator.html#a98eecc4b0bb72a0d5501f77266fcb910',1,'daw::bit_iterator::bit_iterator(Iterator it, size_t bit_pos)']]],
   ['bit_5fstream_2712',['bit_stream',['../structdaw_1_1bit__stream.html#a3700a7cfbd3a71b6adc5789cd8774b45',1,'daw::bit_stream']]],
-  ['bitcount_2713',['bitcount',['../namespacedaw.html#ad79779f5309f88e0d2f1b77850b7b761',1,'daw::bitcount(Value value) noexcept'],['../namespacedaw.html#a65f96a04b871909ebed5db6315378457',1,'daw::bitcount(Value value, T... values) noexcept']]],
+  ['bitcount_2713',['bitcount',['../namespacedaw.html#a52ae8dd0216df66fdbecc5a9ebc8986e',1,'daw::bitcount(Value value) noexcept'],['../namespacedaw.html#aa650f48aa86c5b24491c042f218f2c92',1,'daw::bitcount(Value value, T... values) noexcept']]],
   ['block_5fappend_5ffrom_2714',['block_append_from',['../namespacedaw.html#a5bbe8c47cdaf0b35fc95fc585f314ac9',1,'daw']]],
   ['block_5fcreate_5ffrom_2715',['block_create_from',['../namespacedaw.html#a631ad5b1f34538ed88a3914e8e1455e8',1,'daw']]],
   ['bounded_5fgraph_5fnode_5ft_2716',['bounded_graph_node_t',['../classdaw_1_1bounded__graph__node__t.html#a848e183bd5b2009eee2144625c8d165a',1,'daw::bounded_graph_node_t::bounded_graph_node_t() noexcept=default'],['../classdaw_1_1bounded__graph__node__t.html#a60115e98792c44e629fc3263e6b28376',1,'daw::bounded_graph_node_t::bounded_graph_node_t(bounded_graph_t&lt; T, MaxVerticesPerNode, Hash &gt; *graph_ptr, node_id_t Id) noexcept']]],
