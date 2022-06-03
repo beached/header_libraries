@@ -13,6 +13,7 @@
 
 #include <ciso646>
 #include <fstream>
+#include <iostream>
 #include <iterator>
 #include <optional>
 #include <string>
