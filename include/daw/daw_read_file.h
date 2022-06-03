@@ -8,43 +8,65 @@
 
 #pragma once
 
+#include "daw_move.h"
+#include "daw_traits.h"
+
 #include <ciso646>
 #include <fstream>
 #include <optional>
 #include <string>
 
 namespace daw {
-	template<typename CharT>
-	std::optional<std::basic_string<char>> read_file( CharT const *str ) {
-		auto in_file = std::basic_ifstream<char>( str );
+	template<typename String>
+	std::optional<std::string> read_file( String &&path ) {
+		using CharT = char;
+		using result_t = std::optional<std::string>;
+		auto in_file = std::basic_ifstream<CharT>( std::data( path ) );
 		if( not in_file ) {
-			return { };
+			return result_t{ };
 		}
-
-		return std::basic_string<char>( std::istreambuf_iterator<char>( in_file ),
-		                                { } );
+		auto first = std::istreambuf_iterator<CharT>( in_file );
+		auto last = std::istreambuf_iterator<CharT>( );
+		return result_t( std::in_place, first, last );
 	}
 
-	template<typename CharT>
-	std::optional<std::basic_string<char>>
-	read_file( std::basic_string<CharT> str ) {
-		return read_file( str.c_str( ) );
+	struct terminate_on_read_file_error_t {};
+	inline constexpr auto terminate_on_read_file_error =
+	  terminate_on_read_file_error_t{ };
+
+	template<typename String>
+	std::optional<std::string> read_file( String &&path,
+	                                      terminate_on_read_file_error_t ) {
+		auto result = read_file( DAW_FWD( path ) );
+		if( not result ) {
+			std::cerr << "Error: could not open file '" << path << "'\n";
+			std::terminate( );
+		}
+		return *result;
 	}
 
-	template<typename CharT>
-	std::optional<std::basic_string<wchar_t>> read_wfile( CharT const *str ) {
-		auto in_file = std::basic_ifstream<wchar_t>( str );
+	template<typename String>
+	std::optional<std::wstring> read_wfile( String &&path ) {
+		using CharT = wchar_t;
+		using result_t = std::optional<std::wstring>;
+		auto in_file = std::basic_ifstream<CharT>( std::data( path ) );
 		if( not in_file ) {
-			return { };
+			return result_t{ };
 		}
-
-		return std::basic_string<wchar_t>(
-		  std::istreambuf_iterator<wchar_t>( in_file ), { } );
+		auto first = std::istreambuf_iterator<CharT>( in_file );
+		auto last = std::istreambuf_iterator<CharT>( );
+		return result_t( std::in_place, first, last );
 	}
 
-	template<typename CharT>
-	std::optional<std::basic_string<wchar_t>>
-	read_wfile( std::basic_string<CharT> str ) {
-		return read_wfile( str.c_str( ) );
+	template<typename String>
+	std::optional<std::wstring> read_wfile( String &&path,
+	                                        terminate_on_read_file_error_t ) {
+		auto result = read_wfile( DAW_FWD( path ) );
+		if( not result ) {
+			std::cerr << "Error: could not open file '" << path << "'\n";
+			std::terminate( );
+		}
+		return *result;
 	}
+
 } // namespace daw
