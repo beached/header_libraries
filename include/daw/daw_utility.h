@@ -15,7 +15,6 @@
 #include "daw_move.h"
 #include "daw_traits.h"
 
-#include <atomic>
 #include <ciso646>
 #include <cmath>
 #include <cstddef>
@@ -795,34 +794,6 @@ namespace daw {
 		return DAW_FWD2( LowerBound, lower ) <= value &&
 		       value < DAW_FWD2( UpperBound, upper );
 	}
-
-	template<typename T>
-	class countable_resource_t {
-		static std::atomic<T> m_resource_count;
-
-	public:
-		countable_resource_t( ) noexcept {
-			++m_resource_count;
-		}
-
-		countable_resource_t( countable_resource_t const & ) noexcept {
-			++m_resource_count;
-		}
-
-		countable_resource_t &operator=( countable_resource_t const & ) noexcept {
-			++m_resource_count;
-		}
-
-		~countable_resource_t( ) {
-			--m_resource_count;
-		}
-
-		[[nodiscard]] static T value( ) noexcept {
-			return m_resource_count.load( );
-		}
-	};
-	template<typename T>
-	std::atomic<T> countable_resource_t<T>::m_resource_count = { };
 
 	namespace utility_details {
 		template<typename T>
