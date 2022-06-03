@@ -67,19 +67,28 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">daw_read_file.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;ciso646&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>&quot;</code><br />
+<code>#include &lt;ciso646&gt;</code><br />
 <code>#include &lt;fstream&gt;</code><br />
 <code>#include &lt;optional&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 </div>
 <p><a href="daw__read__file_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1terminate__on__read__file__error__t.html">daw::terminate_on_read_file_error_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
@@ -88,18 +97,23 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ad2eddad50f74c931c523edd6c34fe002"><td class="memTemplParams" colspan="2">template&lt;typename CharT &gt; </td></tr>
-<tr class="memitem:ad2eddad50f74c931c523edd6c34fe002"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::basic_string&lt; char &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad2eddad50f74c931c523edd6c34fe002">daw::read_file</a> (CharT const *str)</td></tr>
-<tr class="separator:ad2eddad50f74c931c523edd6c34fe002"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e7fe5ebe581b400cdcee69974516332"><td class="memTemplParams" colspan="2">template&lt;typename CharT &gt; </td></tr>
-<tr class="memitem:a7e7fe5ebe581b400cdcee69974516332"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::basic_string&lt; char &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a7e7fe5ebe581b400cdcee69974516332">daw::read_file</a> (std::basic_string&lt; CharT &gt; str)</td></tr>
-<tr class="separator:a7e7fe5ebe581b400cdcee69974516332"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae26670437a9e03edd921f1e2b015e26c"><td class="memTemplParams" colspan="2">template&lt;typename CharT &gt; </td></tr>
-<tr class="memitem:ae26670437a9e03edd921f1e2b015e26c"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::basic_string&lt; wchar_t &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ae26670437a9e03edd921f1e2b015e26c">daw::read_wfile</a> (CharT const *str)</td></tr>
-<tr class="separator:ae26670437a9e03edd921f1e2b015e26c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4a4686e220a59f125027f30349bd09a"><td class="memTemplParams" colspan="2">template&lt;typename CharT &gt; </td></tr>
-<tr class="memitem:aa4a4686e220a59f125027f30349bd09a"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::basic_string&lt; wchar_t &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa4a4686e220a59f125027f30349bd09a">daw::read_wfile</a> (std::basic_string&lt; CharT &gt; str)</td></tr>
-<tr class="separator:aa4a4686e220a59f125027f30349bd09a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07e376e725c2f74dd89e0a4611d3ee09"><td class="memTemplParams" colspan="2">template&lt;typename String &gt; </td></tr>
+<tr class="memitem:a07e376e725c2f74dd89e0a4611d3ee09"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::string &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a07e376e725c2f74dd89e0a4611d3ee09">daw::read_file</a> (String &amp;&amp;path)</td></tr>
+<tr class="separator:a07e376e725c2f74dd89e0a4611d3ee09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dd2d465c68771d32bf3f1e10e224aa9"><td class="memTemplParams" colspan="2">template&lt;typename String &gt; </td></tr>
+<tr class="memitem:a4dd2d465c68771d32bf3f1e10e224aa9"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::string &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a4dd2d465c68771d32bf3f1e10e224aa9">daw::read_file</a> (String &amp;&amp;path, terminate_on_read_file_error_t)</td></tr>
+<tr class="separator:a4dd2d465c68771d32bf3f1e10e224aa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc6afaf8042405e0ac27a1cc912b3bb3"><td class="memTemplParams" colspan="2">template&lt;typename String &gt; </td></tr>
+<tr class="memitem:adc6afaf8042405e0ac27a1cc912b3bb3"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::wstring &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#adc6afaf8042405e0ac27a1cc912b3bb3">daw::read_wfile</a> (String &amp;&amp;path)</td></tr>
+<tr class="separator:adc6afaf8042405e0ac27a1cc912b3bb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadd88ccf0c88fe2eed8608e94a6cea7a"><td class="memTemplParams" colspan="2">template&lt;typename String &gt; </td></tr>
+<tr class="memitem:aadd88ccf0c88fe2eed8608e94a6cea7a"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::wstring &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aadd88ccf0c88fe2eed8608e94a6cea7a">daw::read_wfile</a> (String &amp;&amp;path, terminate_on_read_file_error_t)</td></tr>
+<tr class="separator:aadd88ccf0c88fe2eed8608e94a6cea7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a690a50aa898449fc4bcc0ca34cc9a0f0"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a690a50aa898449fc4bcc0ca34cc9a0f0">daw::terminate_on_read_file_error</a></td></tr>
+<tr class="separator:a690a50aa898449fc4bcc0ca34cc9a0f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

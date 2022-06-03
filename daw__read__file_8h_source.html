@@ -80,50 +80,79 @@ $(function() {
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;ciso646&gt;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;fstream&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;optional&gt;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw.html">daw</a> {</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> CharT&gt;</div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="namespacedaw.html#ad2eddad50f74c931c523edd6c34fe002">   18</a></span>&#160;  std::optional&lt;std::basic_string&lt;char&gt;&gt; <a class="code" href="namespacedaw.html#ad2eddad50f74c931c523edd6c34fe002">read_file</a>( CharT <span class="keyword">const</span> *str ) {</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">auto</span> in_file = std::basic_ifstream&lt;char&gt;( str );</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordflow">if</span>( not in_file ) {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;      <span class="keywordflow">return</span> { };</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    }</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordflow">return</span> std::basic_string&lt;char&gt;( std::istreambuf_iterator&lt;char&gt;( in_file ),</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;                                    { } );</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  }</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> CharT&gt;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  std::optional&lt;std::basic_string&lt;char&gt;&gt;</div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="namespacedaw.html#a7e7fe5ebe581b400cdcee69974516332">   30</a></span>&#160;  <a class="code" href="namespacedaw.html#ad2eddad50f74c931c523edd6c34fe002">read_file</a>( std::basic_string&lt;CharT&gt; str ) {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#ad2eddad50f74c931c523edd6c34fe002">read_file</a>( str.c_str( ) );</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  }</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> CharT&gt;</div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="namespacedaw.html#ae26670437a9e03edd921f1e2b015e26c">   35</a></span>&#160;  std::optional&lt;std::basic_string&lt;wchar_t&gt;&gt; <a class="code" href="namespacedaw.html#ae26670437a9e03edd921f1e2b015e26c">read_wfile</a>( CharT <span class="keyword">const</span> *str ) {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">auto</span> in_file = std::basic_ifstream&lt;wchar_t&gt;( str );</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordflow">if</span>( not in_file ) {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;      <span class="keywordflow">return</span> { };</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    }</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordflow">return</span> std::basic_string&lt;wchar_t&gt;(</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      std::istreambuf_iterator&lt;wchar_t&gt;( in_file ), { } );</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  }</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> CharT&gt;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  std::optional&lt;std::basic_string&lt;wchar_t&gt;&gt;</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="namespacedaw.html#aa4a4686e220a59f125027f30349bd09a">   47</a></span>&#160;  <a class="code" href="namespacedaw.html#ae26670437a9e03edd921f1e2b015e26c">read_wfile</a>( std::basic_string&lt;CharT&gt; str ) {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#ae26670437a9e03edd921f1e2b015e26c">read_wfile</a>( str.c_str( ) );</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  }</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;} <span class="comment">// namespace daw</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__move_8h.html">daw_move.h</a>&quot;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__traits_8h.html">daw_traits.h</a>&quot;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;ciso646&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;fstream&gt;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;optional&gt;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw.html">daw</a> {</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> String&gt;</div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="namespacedaw.html#a07e376e725c2f74dd89e0a4611d3ee09">   21</a></span>&#160;  std::optional&lt;std::string&gt; <a class="code" href="namespacedaw.html#a07e376e725c2f74dd89e0a4611d3ee09">read_file</a>( <a class="code" href="namespacedaw.html#a8cf6cf09ea1d790653ac648d7ae5470f">String</a> &amp;&amp;path ) {</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">using</span> CharT = char;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">using</span> result_t = std::optional&lt;std::string&gt;;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">auto</span> in_file = std::basic_ifstream&lt;CharT&gt;( <a class="code" href="namespacedaw.html#a0f03e31066b6770a284ab03028031f79">std::data</a>( path ) );</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordflow">if</span>( not in_file ) {</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;      <span class="keywordflow">return</span> result_t{ };</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    }</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">auto</span> first = std::istreambuf_iterator&lt;CharT&gt;( in_file );</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">auto</span> last = std::istreambuf_iterator&lt;CharT&gt;( );</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordflow">return</span> result_t( std::in_place, first, last );</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  }</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="structdaw_1_1terminate__on__read__file__error__t.html">   33</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structdaw_1_1terminate__on__read__file__error__t.html">terminate_on_read_file_error_t</a> {};</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="namespacedaw.html#a690a50aa898449fc4bcc0ca34cc9a0f0">   34</a></span>&#160;  <span class="keyword">inline</span> constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#a690a50aa898449fc4bcc0ca34cc9a0f0">terminate_on_read_file_error</a> =</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="structdaw_1_1terminate__on__read__file__error__t.html">terminate_on_read_file_error_t</a>{ };</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> String&gt;</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="namespacedaw.html#a4dd2d465c68771d32bf3f1e10e224aa9">   38</a></span>&#160;  std::optional&lt;std::string&gt; <a class="code" href="namespacedaw.html#a07e376e725c2f74dd89e0a4611d3ee09">read_file</a>( <a class="code" href="namespacedaw.html#a8cf6cf09ea1d790653ac648d7ae5470f">String</a> &amp;&amp;path,</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                                        <a class="code" href="structdaw_1_1terminate__on__read__file__error__t.html">terminate_on_read_file_error_t</a> ) {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">auto</span> result = <a class="code" href="namespacedaw.html#a07e376e725c2f74dd89e0a4611d3ee09">read_file</a>( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( path ) );</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordflow">if</span>( not result ) {</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      std::cerr &lt;&lt; <span class="stringliteral">&quot;Error: could not open file &#39;&quot;</span> &lt;&lt; path &lt;&lt; <span class="stringliteral">&quot;&#39;\n&quot;</span>;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;      std::terminate( );</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    }</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">return</span> *result;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> String&gt;</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="namespacedaw.html#adc6afaf8042405e0ac27a1cc912b3bb3">   49</a></span>&#160;  std::optional&lt;std::wstring&gt; <a class="code" href="namespacedaw.html#adc6afaf8042405e0ac27a1cc912b3bb3">read_wfile</a>( <a class="code" href="namespacedaw.html#a8cf6cf09ea1d790653ac648d7ae5470f">String</a> &amp;&amp;path ) {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">using</span> CharT = wchar_t;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">using</span> result_t = std::optional&lt;std::wstring&gt;;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">auto</span> in_file = std::basic_ifstream&lt;CharT&gt;( <a class="code" href="namespacedaw.html#a0f03e31066b6770a284ab03028031f79">std::data</a>( path ) );</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">if</span>( not in_file ) {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      <span class="keywordflow">return</span> result_t{ };</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">auto</span> first = std::istreambuf_iterator&lt;CharT&gt;( in_file );</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">auto</span> last = std::istreambuf_iterator&lt;CharT&gt;( );</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordflow">return</span> result_t( std::in_place, first, last );</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> String&gt;</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="namespacedaw.html#aadd88ccf0c88fe2eed8608e94a6cea7a">   62</a></span>&#160;  std::optional&lt;std::wstring&gt; <a class="code" href="namespacedaw.html#adc6afaf8042405e0ac27a1cc912b3bb3">read_wfile</a>( <a class="code" href="namespacedaw.html#a8cf6cf09ea1d790653ac648d7ae5470f">String</a> &amp;&amp;path,</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                                          <a class="code" href="structdaw_1_1terminate__on__read__file__error__t.html">terminate_on_read_file_error_t</a> ) {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">auto</span> result = <a class="code" href="namespacedaw.html#adc6afaf8042405e0ac27a1cc912b3bb3">read_wfile</a>( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( path ) );</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordflow">if</span>( not result ) {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      std::cerr &lt;&lt; <span class="stringliteral">&quot;Error: could not open file &#39;&quot;</span> &lt;&lt; path &lt;&lt; <span class="stringliteral">&quot;&#39;\n&quot;</span>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      std::terminate( );</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">return</span> *result;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  }</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;} <span class="comment">// namespace daw</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="anamespacedaw_html_ad2eddad50f74c931c523edd6c34fe002"><div class="ttname"><a href="namespacedaw.html#ad2eddad50f74c931c523edd6c34fe002">daw::read_file</a></div><div class="ttdeci">std::optional&lt; std::basic_string&lt; char &gt; &gt; read_file(CharT const *str)</div><div class="ttdef"><b>Definition:</b> <a href="daw__read__file_8h_source.html#l00018">daw_read_file.h:18</a></div></div>
-<div class="ttc" id="anamespacedaw_html_ae26670437a9e03edd921f1e2b015e26c"><div class="ttname"><a href="namespacedaw.html#ae26670437a9e03edd921f1e2b015e26c">daw::read_wfile</a></div><div class="ttdeci">std::optional&lt; std::basic_string&lt; wchar_t &gt; &gt; read_wfile(CharT const *str)</div><div class="ttdef"><b>Definition:</b> <a href="daw__read__file_8h_source.html#l00035">daw_read_file.h:35</a></div></div>
+<div class="ttc" id="adaw__traits_8h_html"><div class="ttname"><a href="daw__traits_8h.html">daw_traits.h</a></div></div>
+<div class="ttc" id="adaw__move_8h_html"><div class="ttname"><a href="daw__move_8h.html">daw_move.h</a></div></div>
+<div class="ttc" id="astructdaw_1_1terminate__on__read__file__error__t_html"><div class="ttname"><a href="structdaw_1_1terminate__on__read__file__error__t.html">daw::terminate_on_read_file_error_t</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__read__file_8h_source.html#l00033">daw_read_file.h:33</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a0f03e31066b6770a284ab03028031f79"><div class="ttname"><a href="namespacedaw.html#a0f03e31066b6770a284ab03028031f79">daw::data</a></div><div class="ttdeci">constexpr pointer data() noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__contiguous__view_8h_source.html#l00075">daw_contiguous_view.h:75</a></div></div>
+<div class="ttc" id="adaw__move_8h_html_a46327bbb47123f9650c3b0e0ce807ec9"><div class="ttname"><a href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a></div><div class="ttdeci">#define DAW_FWD(...)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00036">daw_move.h:36</a></div></div>
+<div class="ttc" id="anamespacedaw_html_adc6afaf8042405e0ac27a1cc912b3bb3"><div class="ttname"><a href="namespacedaw.html#adc6afaf8042405e0ac27a1cc912b3bb3">daw::read_wfile</a></div><div class="ttdeci">std::optional&lt; std::wstring &gt; read_wfile(String &amp;&amp;path)</div><div class="ttdef"><b>Definition:</b> <a href="daw__read__file_8h_source.html#l00049">daw_read_file.h:49</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a8cf6cf09ea1d790653ac648d7ae5470f"><div class="ttname"><a href="namespacedaw.html#a8cf6cf09ea1d790653ac648d7ae5470f">daw::String</a></div><div class="ttdeci">daw::string::string_details::BasicString&lt; char &gt; String</div><div class="ttdef"><b>Definition:</b> <a href="daw__string_8h_source.html#l00504">daw_string.h:504</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a690a50aa898449fc4bcc0ca34cc9a0f0"><div class="ttname"><a href="namespacedaw.html#a690a50aa898449fc4bcc0ca34cc9a0f0">daw::terminate_on_read_file_error</a></div><div class="ttdeci">constexpr auto terminate_on_read_file_error</div><div class="ttdef"><b>Definition:</b> <a href="daw__read__file_8h_source.html#l00034">daw_read_file.h:34</a></div></div>
 <div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="compressed__pair_8h_source.html#l00022">compressed_pair.h:22</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a07e376e725c2f74dd89e0a4611d3ee09"><div class="ttname"><a href="namespacedaw.html#a07e376e725c2f74dd89e0a4611d3ee09">daw::read_file</a></div><div class="ttdeci">std::optional&lt; std::string &gt; read_file(String &amp;&amp;path)</div><div class="ttdef"><b>Definition:</b> <a href="daw__read__file_8h_source.html#l00021">daw_read_file.h:21</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
