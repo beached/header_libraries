@@ -28,7 +28,7 @@ namespace daw {
 			} else {
 				return std::data( path );
 			}
-		};
+		}( );
 		auto in_file = std::basic_ifstream<CharT>( ptr );
 		if( not in_file ) {
 			return result_t{ };
@@ -63,7 +63,7 @@ namespace daw {
 			} else {
 				return std::data( path );
 			}
-		};
+		}( );
 		auto in_file = std::basic_ifstream<CharT>( ptr );
 		if( not in_file ) {
 			return result_t{ };
