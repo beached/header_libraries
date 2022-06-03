@@ -53,6 +53,7 @@ namespace daw {
 		return *result;
 	}
 
+#if defined( _MSC_VER )
 	template<typename String>
 	std::optional<std::wstring> read_wfile( String &&path ) {
 		using CharT = wchar_t;
@@ -82,4 +83,5 @@ namespace daw {
 		}
 		return *result;
 	}
+#endif
 } // namespace daw
