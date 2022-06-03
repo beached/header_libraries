@@ -44,8 +44,7 @@ namespace daw {
 	  terminate_on_read_file_error_t{ };
 
 	template<typename String>
-	std::optional<std::string> read_file( String &&path,
-	                                      terminate_on_read_file_error_t ) {
+	std::string read_file( String &&path, terminate_on_read_file_error_t ) {
 		auto result = read_file( DAW_FWD( path ) );
 		if( not result ) {
 			std::cerr << "Error: could not open file '" << path << "'\n";
@@ -75,8 +74,7 @@ namespace daw {
 	}
 
 	template<typename String>
-	std::optional<std::wstring> read_wfile( String &&path,
-	                                        terminate_on_read_file_error_t ) {
+	std::wstring read_wfile( String &&path, terminate_on_read_file_error_t ) {
 		auto result = read_wfile( DAW_FWD( path ) );
 		if( not result ) {
 			std::cerr << "Error: could not open file '" << path << "'\n";
@@ -84,5 +82,4 @@ namespace daw {
 		}
 		return *result;
 	}
-
 } // namespace daw
