@@ -13,6 +13,7 @@
 
 #include <ciso646>
 #include <fstream>
+#include <iterator>
 #include <optional>
 #include <string>
 
@@ -21,7 +22,14 @@ namespace daw {
 	std::optional<std::string> read_file( String &&path ) {
 		using CharT = char;
 		using result_t = std::optional<std::string>;
-		auto in_file = std::basic_ifstream<CharT>( std::data( path ) );
+		CharT const *ptr = [&] {
+			if constexpr( std::is_pointer_v<DAW_TYPEOF( path )> ) {
+				return path;
+			} else {
+				return std::data( path );
+			}
+		};
+		auto in_file = std::basic_ifstream<CharT>( ptr );
 		if( not in_file ) {
 			return result_t{ };
 		}
@@ -49,7 +57,14 @@ namespace daw {
 	std::optional<std::wstring> read_wfile( String &&path ) {
 		using CharT = wchar_t;
 		using result_t = std::optional<std::wstring>;
-		auto in_file = std::basic_ifstream<CharT>( std::data( path ) );
+		CharT const *ptr = [&] {
+			if constexpr( std::is_pointer_v<DAW_TYPEOF( path )> ) {
+				return path;
+			} else {
+				return std::data( path );
+			}
+		};
+		auto in_file = std::basic_ifstream<CharT>( ptr );
 		if( not in_file ) {
 			return result_t{ };
 		}
