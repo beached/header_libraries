@@ -22,8 +22,6 @@ set(TEST_SOURCES
         daw_arith_traits_test.cpp
         daw_array_test.cpp
         daw_benchmark_test.cpp
-        daw_bit_queues_test.cpp
-        daw_bit_test.cpp
         daw_bounded_array_test.cpp
         daw_bounded_string_test.cpp
         daw_bounded_vector_test.cpp
@@ -125,7 +123,7 @@ set(TEST_SOURCES
 set(CPP20_TEST_SOURCES
         daw_concepts_test.cpp
         daw_contiguous_view_test.cpp
-				daw_named_params_test.cpp
+        daw_named_params_test.cpp
         daw_take_test.cpp
         vector_test.cpp
         )
@@ -144,6 +142,8 @@ set(NOT_MSVC_TEST_SOURCES
 #not included in CI as they are not ready
 set(DEV_TEST_SOURCES
         daw_bind_args_at_test.cpp
+        daw_bit_queues_test.cpp
+        daw_bit_test.cpp
         daw_cstring_test.cpp
         daw_hash_table2_test.cpp
         daw_min_perfect_hash_test.cpp
@@ -194,11 +194,13 @@ else ()
 endif ()
 
 option(DAW_ENABLE_DEV_TESTING "Build unit tests still in development" OFF)
-if (DAW_ENABLE_DEV_TESTING)
-    foreach (CUR_TEST IN LISTS DEV_TEST_SOURCES)
-        string(REPLACE ".cpp" "" CUR_TEST_NAME ${CUR_TEST})
+foreach (CUR_TEST IN LISTS DEV_TEST_SOURCES)
+    string(REPLACE ".cpp" "" CUR_TEST_NAME ${CUR_TEST})
+    if (DAW_ENABLE_DEV_TESTING)
         add_executable(${CUR_TEST_NAME} ${CUR_TEST})
-        target_link_libraries(${CUR_TEST_NAME} PRIVATE daw_test)
         add_dependencies(${PROJECT_NAME}_full ${CUR_TEST_NAME})
-    endforeach ()
-endif ()
+    else ()
+        add_executable(${CUR_TEST_NAME} EXCLUDE_FROM_ALL ${CUR_TEST})
+    endif ()
+    target_link_libraries(${CUR_TEST_NAME} PRIVATE daw_test)
+endforeach ()

@@ -141,10 +141,12 @@ namespace daw {
 		}
 
 		template<typename NotNull,
-		         std::enable_if_t<std::is_same_v<NotNull, not_null>,
-		                          std::nullptr_t> = nullptr>
+		         std::enable_if_t<
+		           // prevent implicit conversions
+		           std::is_same_v<NotNull, not_null>, std::nullptr_t> = nullptr>
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr difference_type
 		operator-( NotNull const &rhs ) const noexcept {
+			assert( this != &rhs );
 			DAW_ASSUME( m_ptr != nullptr );
 			return m_ptr - rhs.m_ptr;
 		}
@@ -152,8 +154,9 @@ namespace daw {
 		/// @pre (std::intptr_t)lhs.get( ) <
 		/// std::numeric_limits<std::intptr_t>::max( ) - n
 		template<typename NotNull,
-		         std::enable_if_t<std::is_same_v<NotNull, not_null>,
-		                          std::nullptr_t> = nullptr>
+		         std::enable_if_t<
+		           // prevent implicit conversions
+		           std::is_same_v<NotNull, not_null>, std::nullptr_t> = nullptr>
 		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr not_null<Pointer>
 		operator-( NotNull lhs, std::ptrdiff_t n ) noexcept {
 			DAW_ASSUME( lhs.m_ptr != nullptr );
@@ -164,8 +167,9 @@ namespace daw {
 		/// @pre (std::intptr_t)lhs.get( ) + n <=
 		/// std::numeric_limits<std::intptr_t>::max( )
 		template<typename NotNull,
-		         std::enable_if_t<std::is_same_v<NotNull, not_null>,
-		                          std::nullptr_t> = nullptr>
+		         std::enable_if_t<
+		           // prevent implicit conversions
+		           std::is_same_v<NotNull, not_null>, std::nullptr_t> = nullptr>
 		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr not_null<Pointer>
 		operator+( NotNull lhs, std::ptrdiff_t n ) noexcept {
 			DAW_ASSUME( lhs.m_ptr != nullptr );
@@ -176,8 +180,9 @@ namespace daw {
 		/// @pre (std::intptr_t)lhs.get( ) + n <=
 		/// std::numeric_limits<std::intptr_t>::max( )
 		template<typename NotNull,
-		         std::enable_if_t<std::is_same_v<NotNull, not_null>,
-		                          std::nullptr_t> = nullptr>
+		         std::enable_if_t<
+		           // prevent implicit conversions
+		           std::is_same_v<NotNull, not_null>, std::nullptr_t> = nullptr>
 		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr not_null<Pointer>
 		operator+( std::ptrdiff_t n, NotNull rhs ) noexcept {
 			DAW_ASSUME( rhs.m_ptr != nullptr );

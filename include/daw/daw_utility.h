@@ -154,7 +154,7 @@ namespace daw {
 	// for pointers to member function(const version)
 	template<typename ClassType, typename ReturnType, typename... Args>
 	struct function_traits<ReturnType ( ClassType::* )( Args... ) const> {
-		static constexpr size_t arity = sizeof...( Args );
+		static constexpr std::size_t arity = sizeof...( Args );
 		using type = std::function<ReturnType( Args... )>;
 		using arg_types = std::tuple<Args...>;
 		using result_type = ReturnType;
@@ -163,7 +163,7 @@ namespace daw {
 	// for pointers to member function
 	template<typename ClassType, typename ReturnType, typename... Args>
 	struct function_traits<ReturnType ( ClassType::* )( Args... )> {
-		static constexpr size_t arity = sizeof...( Args );
+		static constexpr std::size_t arity = sizeof...( Args );
 		using type = std::function<ReturnType( Args... )>;
 		using arg_types = std::tuple<Args...>;
 		using result_type = ReturnType;
@@ -172,7 +172,7 @@ namespace daw {
 	// for function pointers
 	template<typename ReturnType, typename... Args>
 	struct function_traits<ReturnType ( * )( Args... )> {
-		static constexpr size_t arity = sizeof...( Args );
+		static constexpr std::size_t arity = sizeof...( Args );
 		using type = std::function<ReturnType( Args... )>;
 		using root_type = std::function<daw::traits::root_type_t<ReturnType>(
 		  daw::traits::root_type_t<Args>... )>;
@@ -356,23 +356,23 @@ namespace daw {
 	}
 
 	template<typename Container, typename... Args>
-	[[nodiscard]] decltype( auto ) append( Container &container,
-	                                       Args &&...args ) {
-		return container.insert( container.end( ), { DAW_FWD2( Args, args )... } );
+	[[nodiscard]] constexpr auto append( Container &container, Args &&...args ) {
+		return container.insert( container.end( ), { DAW_FWD( args )... } );
 	}
 
 	template<typename Container, typename Item>
 	[[nodiscard]] constexpr bool contains( Container const &container,
 	                                       Item const &item ) noexcept {
-		return std::find( std::cbegin( container ), std::cend( container ),
-		                  item ) != std::cend( container );
+		return daw::algorithm::find( std::cbegin( container ),
+		                             std::cend( container ),
+		                             item ) != std::cend( container );
 	}
 
 	template<typename Container, typename Item>
-	[[nodiscard]] constexpr decltype( auto )
-	index_of( Container const &container, Item const &item ) noexcept {
-		auto const pos =
-		  std::find( std::begin( container ), std::end( container ), item );
+	[[nodiscard]] constexpr auto index_of( Container const &container,
+	                                       Item const &item ) noexcept {
+		auto const pos = daw::algorithm::find( std::begin( container ),
+		                                       std::end( container ), item );
 		return std::distance( std::begin( container ), pos );
 	}
 
@@ -386,12 +386,13 @@ namespace daw {
 	}
 
 	template<typename Value, typename... T>
-	[[nodiscard]] constexpr auto or_all( Value value, T... values ) noexcept {
-		return value | or_all( values... );
+	[[nodiscard]] constexpr decltype( auto ) or_all( Value value,
+	                                                 T... values ) noexcept {
+		return value | ( values | ... );
 	}
 
 	template<typename Value>
-	[[nodiscard]] constexpr size_t bitcount( Value value ) noexcept {
+	[[nodiscard]] constexpr std::size_t bitcount( Value value ) noexcept {
 		size_t result = 0;
 		while( value ) {
 			result += static_cast<size_t>( value & ~static_cast<Value>( 0b1 ) );
@@ -401,7 +402,8 @@ namespace daw {
 	}
 
 	template<typename Value, typename... T>
-	[[nodiscard]] constexpr size_t bitcount( Value value, T... values ) noexcept {
+	[[nodiscard]] constexpr std::size_t bitcount( Value value,
+	                                              T... values ) noexcept {
 		return bitcount( value ) + bitcount( values... );
 	}
 
@@ -481,7 +483,7 @@ namespace daw {
 	template<typename OutputIterator>
 	[[nodiscard]] constexpr OutputIterator
 	hex_lc( char c, OutputIterator it_out ) noexcept {
-		uint8_t n = static_cast<uint8_t>( c );
+		auto n = static_cast<std::uint8_t>( c );
 		*it_out = utility_details::get_lc_nibble( n >> 4 );
 		++it_out;
 		*it_out = utility_details::get_lc_nibble( n & 0x0F );
@@ -493,7 +495,7 @@ namespace daw {
 	         std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr OutputIterator hex( T const &val,
 	                                            OutputIterator it_out ) noexcept {
-		for( size_t n = sizeof( T ); n > 0; --n ) {
+		for( std::size_t n = sizeof( T ); n > 0; --n ) {
 			it_out = hex( static_cast<char>( val >> ( 8 * ( n - 1 ) ) ), it_out );
 		}
 		return it_out;
@@ -505,7 +507,7 @@ namespace daw {
 	[[nodiscard]] OutputIterator hex( T const &val,
 	                                  OutputIterator it_out ) noexcept {
 		auto chr_ptr = reinterpret_cast<char const *>( &val );
-		for( size_t n = 0; n < sizeof( T ); ++n ) {
+		for( std::size_t n = 0; n < sizeof( T ); ++n ) {
 			it_out = hex( *chr_ptr, it_out );
 			++it_out;
 			++chr_ptr;
@@ -530,8 +532,8 @@ namespace daw {
 
 	template<typename OutputIterator>
 	[[nodiscard]] constexpr OutputIterator
-	hex( char const *str, size_t len, OutputIterator first_out ) noexcept {
-		for( size_t n = 0; n < len; ++n ) {
+	hex( char const *str, std::size_t len, OutputIterator first_out ) noexcept {
+		for( std::size_t n = 0; n < len; ++n ) {
 			first_out = hex( str[n], first_out );
 		}
 		return first_out;
@@ -585,7 +587,7 @@ namespace daw {
 				return m_last;
 			}
 
-			constexpr void remove_prefix( size_t count ) {
+			constexpr void remove_prefix( std::size_t count ) {
 				std::advance( m_first, static_cast<difference_type>( count ) );
 			}
 
@@ -593,7 +595,7 @@ namespace daw {
 				remove_prefix( 1 );
 			}
 
-			constexpr void remove_suffix( size_t count ) {
+			constexpr void remove_suffix( std::size_t count ) {
 				std::advance( m_last, -static_cast<difference_type>( count ) );
 			}
 
@@ -613,14 +615,14 @@ namespace daw {
 	template<typename T, typename U, typename... Ts>
 	struct pack_index_of<T, U, Ts...>
 	  : std::integral_constant<
-	      size_t,
+	      std::size_t,
 	      ( std::is_same_v<T, U> ? 0 : 1 + pack_index_of<T, Ts...>::value )> {};
 
 	template<size_t N, typename... Ts>
 	using pack_type_at = traits::nth_type<N, Ts...>;
 
 	template<typename T, typename... Ts>
-	constexpr size_t pack_index_of_v = pack_index_of<T, Ts...>::value;
+	constexpr std::size_t pack_index_of_v = pack_index_of<T, Ts...>::value;
 
 	template<typename... Args>
 	struct tag_t {};
@@ -764,7 +766,7 @@ namespace daw {
 
 	template<typename To, typename From>
 	[[nodiscard]] auto to_array_of( From &&from ) noexcept {
-		constexpr size_t const num_values = sizeof( From ) / sizeof( To );
+		constexpr std::size_t const num_values = sizeof( From ) / sizeof( To );
 		static_assert( std::is_integral_v<std::decay<To>>,
 		               "To must be an integer like type" );
 		static_assert( sizeof( From ) == num_values * sizeof( To ),
@@ -773,7 +775,7 @@ namespace daw {
 		auto const as_chars = as_char_array( from );
 		auto result = std::array<To, num_values>{ 0 };
 
-		for( size_t entry = 0; entry < num_values; ++entry ) {
+		for( std::size_t entry = 0; entry < num_values; ++entry ) {
 			result[entry] =
 			  value_from_chars( std::next( as_chars.data( ), entry * sizeof( To ) ),
 			                    std::integral_constant<size_t, sizeof( To )>{ } );
@@ -782,7 +784,7 @@ namespace daw {
 	}
 
 	template<typename T>
-	constexpr size_t const
+	constexpr std::size_t const
 	  bsizeof = static_cast<size_t>( sizeof( remove_cvref_t<T> ) * 8U );
 
 	/// Checks if value is in the range [lower, upper)
@@ -893,7 +895,7 @@ namespace daw {
 		}
 	}
 
-	template<size_t N, size_t pos = 0, typename Arg, typename... Args>
+	template<size_t N, std::size_t pos = 0, typename Arg, typename... Args>
 	[[nodiscard]] constexpr decltype( auto ) pack_get( Arg &&arg,
 	                                                   Args &&...args ) noexcept {
 		if constexpr( pos == N ) {
@@ -905,13 +907,13 @@ namespace daw {
 
 	namespace utility_details {
 		template<size_t pos, typename Function, typename... Args>
-		[[nodiscard]] constexpr auto utility_details( size_t, Function &&,
+		[[nodiscard]] constexpr auto utility_details( std::size_t, Function &&,
 		                                              Args &&... )
 		  -> std::enable_if_t<( pos >= sizeof...( Args ) )> {}
 
 		template<size_t pos, typename Function, typename... Args>
-		[[nodiscard]] constexpr auto utility_details( size_t N, Function &&func,
-		                                              Args &&...args )
+		[[nodiscard]] constexpr auto
+		utility_details( std::size_t N, Function &&func, Args &&...args )
 		  -> std::enable_if_t<( pos < sizeof...( Args ) )> {
 			if( N == pos ) {
 				if constexpr( std::is_invocable_v<Function,
@@ -928,7 +930,7 @@ namespace daw {
 	} // namespace utility_details
 
 	template<typename Function, typename... Args>
-	constexpr void pack_apply( size_t N, Function &&func, Args &&...args ) {
+	constexpr void pack_apply( std::size_t N, Function &&func, Args &&...args ) {
 		utility_details::utility_details<0>( N, DAW_FWD2( Function, func ),
 		                                     DAW_FWD2( Args, args )... );
 	}
