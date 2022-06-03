@@ -701,7 +701,7 @@ $(function() {
 <div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;<span class="stringliteral">      __builtin_ctzl( static_cast&lt;unsigned long&gt;( v ) ) );</span></div>
 <div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;<span class="stringliteral">#elif LLONG_MAX == 2147483647LL</span></div>
 <div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;<span class="stringliteral">    return static_cast&lt;std::uint32_t&gt;(</span></div>
-<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;<span class="stringliteral">      __builtin_ctzl( static_cast&lt;unsigned long long&gt;( v ) ) );</span></div>
+<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;<span class="stringliteral">      __builtin_ctzll( static_cast&lt;unsigned long long&gt;( v ) ) );</span></div>
 <div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;<span class="stringliteral">#else</span></div>
 <div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;<span class="stringliteral">#error Unsupported int sizes</span></div>
 <div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;<span class="stringliteral">#endif</span></div>
@@ -720,7 +720,7 @@ $(function() {
 <div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;<span class="stringliteral">      __builtin_ctzl( static_cast&lt;unsigned long&gt;( v ) ) );</span></div>
 <div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;<span class="stringliteral">#elif LLONG_MAX == 9223372036854775807LL</span></div>
 <div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;<span class="stringliteral">    return static_cast&lt;std::uint32_t&gt;(</span></div>
-<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;<span class="stringliteral">      __builtin_ctzl( static_cast&lt;unsigned long long&gt;( v ) ) );</span></div>
+<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;<span class="stringliteral">      __builtin_ctzll( static_cast&lt;unsigned long long&gt;( v ) ) );</span></div>
 <div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;<span class="stringliteral">#else</span></div>
 <div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;<span class="stringliteral">#error Unsupported int sizes</span></div>
 <div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;<span class="stringliteral">#endif</span></div>
