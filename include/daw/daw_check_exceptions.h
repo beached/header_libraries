@@ -41,6 +41,8 @@ namespace daw::check_except_detail {
 		throw_error( Exception &&except ) {
 #if defined( DAW_USE_EXCEPTIONS )
 			throw DAW_FWD( except );
+#else
+			(void)except;
 #endif
 		}
 
