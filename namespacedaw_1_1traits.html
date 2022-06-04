@@ -226,6 +226,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ae60942d9e99d9c68fc31abcafbe6fab9"><td class="memTemplParams" colspan="2">template&lt;typename Function , typename... Args&gt; </td></tr>
 <tr class="memitem:ae60942d9e99d9c68fc31abcafbe6fab9"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#ae60942d9e99d9c68fc31abcafbe6fab9">is_callable_t</a> = typename <a class="el" href="namespacedaw.html#ae47217c63f7e9f3074e341beb925384f">is_detected</a>&lt; <a class="el" href="namespacedaw_1_1traits_1_1detectors.html#ad5f9d15fa87a81a5a057caa5c1aee35d">traits::detectors::callable_with</a>, Function, Args... &gt;::type</td></tr>
 <tr class="separator:ae60942d9e99d9c68fc31abcafbe6fab9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0374ef2243a91ac6a74aa55d10ac927"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ab0374ef2243a91ac6a74aa55d10ac927"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#ab0374ef2243a91ac6a74aa55d10ac927">is_character_type_t</a> = std::bool_constant&lt; <a class="el" href="namespacedaw_1_1traits.html#a67d7ba32c86341d3a68f2dc421518cb7">is_character_type_v</a>&lt; T &gt; &gt;</td></tr>
+<tr class="separator:ab0374ef2243a91ac6a74aa55d10ac927"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08f50e3ae0a0f210564f1214191498ff"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a08f50e3ae0a0f210564f1214191498ff"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a08f50e3ae0a0f210564f1214191498ff">is_container</a> = std::disjunction&lt; is_vector&lt; T &gt;, is_list&lt; T &gt;, is_set&lt; T &gt;, is_deque&lt; T &gt;, is_unordered_set&lt; T &gt;, is_map&lt; T &gt;, is_unordered_map&lt; T &gt; &gt;</td></tr>
 <tr class="separator:a08f50e3ae0a0f210564f1214191498ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -513,6 +516,21 @@ Variables</h2></td></tr>
 <tr class="memitem:aecdc47d64cabf7349af1ee8409b8730b"><td class="memTemplParams" colspan="2">template&lt;typename Function , typename... Args&gt; </td></tr>
 <tr class="memitem:aecdc47d64cabf7349af1ee8409b8730b"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#aecdc47d64cabf7349af1ee8409b8730b">is_callable_v</a></td></tr>
 <tr class="separator:aecdc47d64cabf7349af1ee8409b8730b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67d7ba32c86341d3a68f2dc421518cb7"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a67d7ba32c86341d3a68f2dc421518cb7"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a67d7ba32c86341d3a68f2dc421518cb7">is_character_type_v</a> = false</td></tr>
+<tr class="separator:a67d7ba32c86341d3a68f2dc421518cb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae737005ec1c59f9ce0d47aeebee3f52"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:aae737005ec1c59f9ce0d47aeebee3f52"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#aae737005ec1c59f9ce0d47aeebee3f52">is_character_type_v&lt; char &gt;</a> = true</td></tr>
+<tr class="separator:aae737005ec1c59f9ce0d47aeebee3f52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92992a298ca5dd1f8de01bcc06ec5232"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a92992a298ca5dd1f8de01bcc06ec5232"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a92992a298ca5dd1f8de01bcc06ec5232">is_character_type_v&lt; char16_t &gt;</a> = true</td></tr>
+<tr class="separator:a92992a298ca5dd1f8de01bcc06ec5232"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b94ba86b691d45a5a0d729f8d1980be"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a2b94ba86b691d45a5a0d729f8d1980be"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a2b94ba86b691d45a5a0d729f8d1980be">is_character_type_v&lt; char32_t &gt;</a> = true</td></tr>
+<tr class="separator:a2b94ba86b691d45a5a0d729f8d1980be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c95bc0bfad933093683ed9fd1f8414b"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a8c95bc0bfad933093683ed9fd1f8414b"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a8c95bc0bfad933093683ed9fd1f8414b">is_character_type_v&lt; wchar_t &gt;</a> = true</td></tr>
+<tr class="separator:a8c95bc0bfad933093683ed9fd1f8414b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af70ca4598d123064edb527e1c62db70f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:af70ca4598d123064edb527e1c62db70f"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#af70ca4598d123064edb527e1c62db70f">is_character_v</a> = <a class="el" href="namespacedaw_1_1traits.html#a3e147426b76dd482c4d1ca65346ff30f">is_one_of_v</a>&lt;T, char, wchar_t&gt;</td></tr>
 <tr class="separator:af70ca4598d123064edb527e1c62db70f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1057,6 +1075,24 @@ template&lt;typename Function , typename... Args&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__traits__impl_8h_source.html#l00199">199</a> of file <a class="el" href="daw__traits__impl_8h_source.html">daw_traits_impl.h</a>.</p>
+
+</div>
+</div>
+<a id="ab0374ef2243a91ac6a74aa55d10ac927"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0374ef2243a91ac6a74aa55d10ac927">&#9670;&nbsp;</a></span>is_character_type_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacedaw_1_1traits.html#ab0374ef2243a91ac6a74aa55d10ac927">daw::traits::is_character_type_t</a> = typedef std::bool_constant&lt;<a class="el" href="namespacedaw_1_1traits.html#a67d7ba32c86341d3a68f2dc421518cb7">is_character_type_v</a>&lt;T&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__character__traits_8h_source.html#l00037">37</a> of file <a class="el" href="daw__character__traits_8h_source.html">daw_character_traits.h</a>.</p>
 
 </div>
 </div>
@@ -3465,6 +3501,136 @@ template&lt;typename Function , typename... Args&gt; </div>
 <div class="line">        is_detected_v&lt;traits::detectors::callable_with, Function&gt; )</div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="daw__traits__impl_8h_source.html#l00166">166</a> of file <a class="el" href="daw__traits__impl_8h_source.html">daw_traits_impl.h</a>.</p>
+
+</div>
+</div>
+<a id="a67d7ba32c86341d3a68f2dc421518cb7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67d7ba32c86341d3a68f2dc421518cb7">&#9670;&nbsp;</a></span>is_character_type_v</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool daw::traits::is_character_type_v = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__character__traits_8h_source.html#l00017">17</a> of file <a class="el" href="daw__character__traits_8h_source.html">daw_character_traits.h</a>.</p>
+
+</div>
+</div>
+<a id="aae737005ec1c59f9ce0d47aeebee3f52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae737005ec1c59f9ce0d47aeebee3f52">&#9670;&nbsp;</a></span>is_character_type_v&lt; char &gt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool <a class="el" href="namespacedaw_1_1traits.html#a67d7ba32c86341d3a68f2dc421518cb7">daw::traits::is_character_type_v</a>&lt; char &gt; = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__character__traits_8h_source.html#l00020">20</a> of file <a class="el" href="daw__character__traits_8h_source.html">daw_character_traits.h</a>.</p>
+
+</div>
+</div>
+<a id="a92992a298ca5dd1f8de01bcc06ec5232"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92992a298ca5dd1f8de01bcc06ec5232">&#9670;&nbsp;</a></span>is_character_type_v&lt; char16_t &gt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool <a class="el" href="namespacedaw_1_1traits.html#a67d7ba32c86341d3a68f2dc421518cb7">daw::traits::is_character_type_v</a>&lt; char16_t &gt; = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__character__traits_8h_source.html#l00031">31</a> of file <a class="el" href="daw__character__traits_8h_source.html">daw_character_traits.h</a>.</p>
+
+</div>
+</div>
+<a id="a2b94ba86b691d45a5a0d729f8d1980be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b94ba86b691d45a5a0d729f8d1980be">&#9670;&nbsp;</a></span>is_character_type_v&lt; char32_t &gt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool <a class="el" href="namespacedaw_1_1traits.html#a67d7ba32c86341d3a68f2dc421518cb7">daw::traits::is_character_type_v</a>&lt; char32_t &gt; = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__character__traits_8h_source.html#l00034">34</a> of file <a class="el" href="daw__character__traits_8h_source.html">daw_character_traits.h</a>.</p>
+
+</div>
+</div>
+<a id="a8c95bc0bfad933093683ed9fd1f8414b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c95bc0bfad933093683ed9fd1f8414b">&#9670;&nbsp;</a></span>is_character_type_v&lt; wchar_t &gt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool <a class="el" href="namespacedaw_1_1traits.html#a67d7ba32c86341d3a68f2dc421518cb7">daw::traits::is_character_type_v</a>&lt; wchar_t &gt; = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__character__traits_8h_source.html#l00023">23</a> of file <a class="el" href="daw__character__traits_8h_source.html">daw_character_traits.h</a>.</p>
 
 </div>
 </div>
