@@ -1021,6 +1021,21 @@ namespace daw {
 
 	template<typename T, bool>
 	struct dependent_type : T {};
+
+	namespace is_complete_details {
+		template<typename T>
+		auto is_complete_test( T * )
+		  -> decltype( (void)sizeof( T ), std::true_type{ } );
+		auto is_complete_test( ... ) -> std::false_type;
+	} // namespace is_complete_details
+
+	template<typename T>
+	inline constexpr bool is_complete_type_v =
+	  decltype( is_complete_details::is_complete_test(
+	    std::declval<T *>( ) ) ){ };
+
+	template<typename T>
+	using is_complete_type = std::bool_constant<is_complete_type_v<T>>;
 } // namespace daw
 
 #define DAW_TYPEOF( ... ) daw::remove_cvref_t<decltype( __VA_ARGS__ )>
