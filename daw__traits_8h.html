@@ -273,6 +273,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a68f692eebcaaf2c1b6dcecf3624bd938"><td class="memTemplParams" colspan="2">template&lt;typename Function , typename... Args&gt; </td></tr>
 <tr class="memitem:a68f692eebcaaf2c1b6dcecf3624bd938"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a68f692eebcaaf2c1b6dcecf3624bd938">daw::traits::invoke_result_t</a> = decltype(std::declval&lt; Function &gt;()(std::declval&lt; Args &gt;()...))</td></tr>
 <tr class="separator:a68f692eebcaaf2c1b6dcecf3624bd938"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23cbbbaff48be1d7e0989352292b49ef"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a23cbbbaff48be1d7e0989352292b49ef"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a23cbbbaff48be1d7e0989352292b49ef">daw::is_complete_type</a> = std::bool_constant&lt; is_complete_type_v&lt; T &gt; &gt;</td></tr>
+<tr class="separator:a23cbbbaff48be1d7e0989352292b49ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf9680521ca44d4451d65cc7f2d37b99"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename... &gt; typename Template, typename Type &gt; </td></tr>
 <tr class="memitem:abf9680521ca44d4451d65cc7f2d37b99"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#abf9680521ca44d4451d65cc7f2d37b99">daw::traits::is_instance_of</a> = std::bool_constant&lt; is_instance_of_v&lt; Template, Type &gt; &gt;</td></tr>
 <tr class="separator:abf9680521ca44d4451d65cc7f2d37b99"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -432,6 +435,9 @@ Variables</h2></td></tr>
 <tr class="memitem:af70ca4598d123064edb527e1c62db70f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:af70ca4598d123064edb527e1c62db70f"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#af70ca4598d123064edb527e1c62db70f">daw::traits::is_character_v</a> = is_one_of_v&lt;T, char, wchar_t&gt;</td></tr>
 <tr class="separator:af70ca4598d123064edb527e1c62db70f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4274a233e8e7af9e7217b9cbcbd45b4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ad4274a233e8e7af9e7217b9cbcbd45b4"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad4274a233e8e7af9e7217b9cbcbd45b4">daw::is_complete_type_v</a></td></tr>
+<tr class="separator:ad4274a233e8e7af9e7217b9cbcbd45b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27f96d4511224f5613f839e060d837b6"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Args&gt; </td></tr>
 <tr class="memitem:a27f96d4511224f5613f839e060d837b6"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a27f96d4511224f5613f839e060d837b6">daw::traits::is_first_type_v</a> = is_first_type&lt;T, Args...&gt;::value</td></tr>
 <tr class="separator:a27f96d4511224f5613f839e060d837b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -546,7 +552,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l01026">1026</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l01041">1041</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>

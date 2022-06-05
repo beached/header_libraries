@@ -760,6 +760,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:aad66c1b9ff65bfa49ebe177d2ac10192"><td class="memTemplParams" colspan="2">template&lt;std::size_t BitSize&gt; </td></tr>
 <tr class="memitem:aad66c1b9ff65bfa49ebe177d2ac10192"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aad66c1b9ff65bfa49ebe177d2ac10192">intN_t</a> = std::conditional_t&lt; <a class="el" href="namespacedaw.html#a8163e87ed99593ab4f8b6a171515df95">is_same_size_v</a>&lt; char, BitSize &gt;, char, std::conditional_t&lt; <a class="el" href="namespacedaw.html#a8163e87ed99593ab4f8b6a171515df95">is_same_size_v</a>&lt; short, BitSize &gt;, short, std::conditional_t&lt; <a class="el" href="namespacedaw.html#a8163e87ed99593ab4f8b6a171515df95">is_same_size_v</a>&lt; int, BitSize &gt;, int, std::conditional_t&lt; <a class="el" href="namespacedaw.html#a8163e87ed99593ab4f8b6a171515df95">is_same_size_v</a>&lt; long, BitSize &gt;, long, std::conditional_t&lt; <a class="el" href="namespacedaw.html#a8163e87ed99593ab4f8b6a171515df95">is_same_size_v</a>&lt; long long, BitSize &gt;, long long, <a class="el" href="structdaw_1_1unsupported__int__size.html">unsupported_int_size</a>&lt; BitSize &gt; &gt;&gt; &gt;&gt; &gt;</td></tr>
 <tr class="separator:aad66c1b9ff65bfa49ebe177d2ac10192"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23cbbbaff48be1d7e0989352292b49ef"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a23cbbbaff48be1d7e0989352292b49ef"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a23cbbbaff48be1d7e0989352292b49ef">is_complete_type</a> = std::bool_constant&lt; <a class="el" href="namespacedaw.html#ad4274a233e8e7af9e7217b9cbcbd45b4">is_complete_type_v</a>&lt; T &gt; &gt;</td></tr>
+<tr class="separator:a23cbbbaff48be1d7e0989352292b49ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae47217c63f7e9f3074e341beb925384f"><td class="memTemplParams" colspan="2">template&lt;template&lt; class... &gt; class Op, class... Args&gt; </td></tr>
 <tr class="memitem:ae47217c63f7e9f3074e341beb925384f"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ae47217c63f7e9f3074e341beb925384f">is_detected</a> = typename cpp_17_details::detector&lt; <a class="el" href="structdaw_1_1nonesuch.html">nonesuch</a>&lt; Op, Args... &gt;, void, Op, Args... &gt;::value_t</td></tr>
 <tr class="separator:ae47217c63f7e9f3074e341beb925384f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4090,6 +4093,9 @@ Variables</h2></td></tr>
 <tr class="memitem:a584ac71e8d6d8171893c51b0873925b9"><td class="memTemplParams" colspan="2">template&lt;typename T , size_t MaxVerticesPerNode, typename Hash &gt; </td></tr>
 <tr class="memitem:a584ac71e8d6d8171893c51b0873925b9"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a584ac71e8d6d8171893c51b0873925b9">is_bounded_graph_node_v&lt; const_graph_node_t&lt; T, MaxVerticesPerNode, Hash &gt; &gt;</a></td></tr>
 <tr class="separator:a584ac71e8d6d8171893c51b0873925b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4274a233e8e7af9e7217b9cbcbd45b4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ad4274a233e8e7af9e7217b9cbcbd45b4"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad4274a233e8e7af9e7217b9cbcbd45b4">is_complete_type_v</a></td></tr>
+<tr class="separator:ad4274a233e8e7af9e7217b9cbcbd45b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62eb36b70f0b48869393909024542b5c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a62eb36b70f0b48869393909024542b5c"><td class="memTemplItemLeft" align="right" valign="top">constexpr const bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a62eb36b70f0b48869393909024542b5c">is_daw_span_v</a> = <a class="el" href="structdaw_1_1is__daw__span__t.html">is_daw_span_t</a>&lt;T&gt;::value</td></tr>
 <tr class="separator:a62eb36b70f0b48869393909024542b5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5018,6 +5024,24 @@ template&lt;std::size_t BitSize&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00351">351</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+
+</div>
+</div>
+<a id="a23cbbbaff48be1d7e0989352292b49ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23cbbbaff48be1d7e0989352292b49ef">&#9670;&nbsp;</a></span>is_complete_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacedaw.html#a23cbbbaff48be1d7e0989352292b49ef">daw::is_complete_type</a> = typedef std::bool_constant&lt;<a class="el" href="namespacedaw.html#ad4274a233e8e7af9e7217b9cbcbd45b4">is_complete_type_v</a>&lt;T&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l01038">1038</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -49643,6 +49667,35 @@ template&lt;typename T , size_t MaxVerticesPerNode, typename Hash &gt; </div>
 <div class="line">      <span class="keyword">true</span></div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="daw__bounded__graph_8h_source.html#l00265">265</a> of file <a class="el" href="daw__bounded__graph_8h_source.html">daw_bounded_graph.h</a>.</p>
+
+</div>
+</div>
+<a id="ad4274a233e8e7af9e7217b9cbcbd45b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4274a233e8e7af9e7217b9cbcbd45b4">&#9670;&nbsp;</a></span>is_complete_type_v</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool daw::is_complete_type_v</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">    decltype( is_complete_details::is_complete_test(</div>
+<div class="line">      std::declval&lt;T *&gt;( ) ) ){ }</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l01033">1033</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
