@@ -13,6 +13,7 @@
 #include "daw_enable_if.h"
 #include "daw_exception.h"
 #include "daw_move.h"
+#include "daw_swap.h"
 #include "daw_traits.h"
 #include "daw_view.h"
 #include "impl/daw_math_impl.h"
@@ -453,6 +454,20 @@ namespace daw::algorithm {
 		static_assert( not std::is_rvalue_reference_v<Fwd &&>,
 		               "Cannot pass rvalue_reference to reverse()" );
 		return algorithm_details::reverse_impl( fwd, int( 0 ) );
+	}
+
+	template<typename BidirectionalIterator>
+	constexpr void reverse( BidirectionalIterator first,
+	                        BidirectionalIterator last ) {
+		last = --last;
+		while( first != last ) {
+			daw::iter_swap( first, last );
+			++first;
+			if( first == last ) {
+				break;
+			}
+			--last;
+		}
 	}
 
 	template<typename ValueType>
