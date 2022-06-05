@@ -827,6 +827,11 @@ static_assert(
 
 static_assert( daw::traits::pack_index_of_v<int, double, float, int> == 2 );
 
+struct incomplete;
+
+static_assert( not daw::is_complete_type_v<incomplete> );
+static_assert( daw::is_complete_type_v<int> );
+
 int main( ) {
 	(void)daw::expander{ 1, 2, 3 };
 	daw_traits_enable_if_any( );
