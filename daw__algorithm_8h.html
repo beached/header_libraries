@@ -79,6 +79,7 @@ $(function() {
 <code>#include &quot;<a class="el" href="daw__enable__if_8h_source.html">daw_enable_if.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__exception_8h_source.html">daw_exception.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__swap_8h_source.html">daw_swap.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__view_8h_source.html">daw_view.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__math__impl_8h_source.html">impl/daw_math_impl.h</a>&quot;</code><br />
@@ -397,6 +398,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a17895ecdb30772d8471144e47350d3e0"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
 <tr class="memitem:a17895ecdb30772d8471144e47350d3e0"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a17895ecdb30772d8471144e47350d3e0">daw::algorithm::rend2</a> (Container &amp;container) noexcept(noexcept(container.rend())) -&gt; decltype(container.rend())</td></tr>
 <tr class="separator:a17895ecdb30772d8471144e47350d3e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2a0d6d0676b624ca3cd8690216021a4"><td class="memTemplParams" colspan="2">template&lt;typename BidirectionalIterator &gt; </td></tr>
+<tr class="memitem:af2a0d6d0676b624ca3cd8690216021a4"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#af2a0d6d0676b624ca3cd8690216021a4">daw::algorithm::reverse</a> (BidirectionalIterator first, BidirectionalIterator last)</td></tr>
+<tr class="separator:af2a0d6d0676b624ca3cd8690216021a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af36c227a8190a418258d5b491f551a72"><td class="memTemplParams" colspan="2">template&lt;typename Fwd &gt; </td></tr>
 <tr class="memitem:af36c227a8190a418258d5b491f551a72"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#af36c227a8190a418258d5b491f551a72">daw::algorithm::reverse</a> (Fwd &amp;&amp;fwd) -&gt; decltype(algorithm_details::reverse_impl(fwd, int(0)))</td></tr>
 <tr class="separator:af36c227a8190a418258d5b491f551a72"><td class="memSeparator" colspan="2">&#160;</td></tr>
