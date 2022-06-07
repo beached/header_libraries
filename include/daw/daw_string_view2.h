@@ -593,8 +593,7 @@ namespace daw {
 			/// @post data( ) == std::data( string_literal )
 			/// @post size( ) == std::size( string_literal ) - 1
 			template<std::size_t N>
-			DAW_CONSTEVAL
-			basic_string_view( CharT const ( &string_literal )[N] ) noexcept
+			constexpr basic_string_view( CharT const ( &string_literal )[N] ) noexcept
 			  : m_first( string_literal )
 			  , m_last( make_last<BoundsType>( string_literal, N - 1 ) ) {
 				static_assert( N > 0 );
