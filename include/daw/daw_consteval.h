@@ -17,7 +17,13 @@
 #endif
 
 #if defined( __cpp_consteval ) and not defined( DAW_NO_CONSTEVAL )
-#if __cpp_consteval >= 201811L
+#if __cpp_consteval >= 201811L and not defined( DAW_HAS_CONSTEVAL )
+#define DAW_HAS_CONSTEVAL
+#endif
+#endif
+
+#if defined( __clang_major__ ) and not defined( DAW_NO_CONSTEVAL )
+#if __clang_major__ >= 14 and not defined( DAW_HAS_CONSTEVAL )
 #define DAW_HAS_CONSTEVAL
 #endif
 #endif
