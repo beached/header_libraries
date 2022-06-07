@@ -532,6 +532,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1ring__adaptor.html">ring_adaptor</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1rvalue__to__value.html">rvalue_to_value</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1rvalue__to__value_3_01_t_01_6_01_4.html">rvalue_to_value&lt; T &amp; &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1rvalue__to__value_3_01_t_01_6_6_01_4.html">rvalue_to_value&lt; T &amp;&amp; &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1sbo__storage.html">sbo_storage</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1_scope_guard.html">ScopeGuard</a></td></tr>
@@ -848,6 +854,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a0f627b88a2dca804240fc74ea29eec17"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a0f627b88a2dca804240fc74ea29eec17"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0f627b88a2dca804240fc74ea29eec17">root_type_t</a> = std::remove_cv_t&lt; std::remove_pointer_t&lt; std::decay_t&lt; T &gt; &gt;&gt;</td></tr>
 <tr class="separator:a0f627b88a2dca804240fc74ea29eec17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3010dd6546917973e0fae718be54a250"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a3010dd6546917973e0fae718be54a250"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3010dd6546917973e0fae718be54a250">rvalue_to_value_t</a> = typename <a class="el" href="structdaw_1_1rvalue__to__value.html">rvalue_to_value</a>&lt; T &gt;::type</td></tr>
+<tr class="separator:a3010dd6546917973e0fae718be54a250"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebc2629a27a6c457021e6e066eaa191b"><td class="memTemplParams" colspan="2">template&lt;typename SanitizeFunction &gt; </td></tr>
 <tr class="memitem:aebc2629a27a6c457021e6e066eaa191b"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aebc2629a27a6c457021e6e066eaa191b">safe_string</a> = <a class="el" href="structdaw_1_1basic__safe__string.html">basic_safe_string</a>&lt; SanitizeFunction, char &gt;</td></tr>
 <tr class="separator:aebc2629a27a6c457021e6e066eaa191b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5572,6 +5581,24 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00082">82</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="a3010dd6546917973e0fae718be54a250"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3010dd6546917973e0fae718be54a250">&#9670;&nbsp;</a></span>rvalue_to_value_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacedaw.html#a3010dd6546917973e0fae718be54a250">daw::rvalue_to_value_t</a> = typedef typename <a class="el" href="structdaw_1_1rvalue__to__value.html">rvalue_to_value</a>&lt;T&gt;::type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l01056">1056</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>

@@ -186,6 +186,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pack__size_3_01_pack_3_01_ts_8_8_8_01_4_01_4.html">daw::pack_size&lt; Pack&lt; Ts... &gt; &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1rvalue__to__value.html">daw::rvalue_to_value&lt; T &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1rvalue__to__value_3_01_t_01_6_01_4.html">daw::rvalue_to_value&lt; T &amp; &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1rvalue__to__value_3_01_t_01_6_6_01_4.html">daw::rvalue_to_value&lt; T &amp;&amp; &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1template__param.html">daw::template_param&lt; typename &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1template__params.html">daw::template_params&lt;... &gt;</a></td></tr>
@@ -321,6 +327,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:aff068fe2a944289e8c0b8deccfbe5e3f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aff068fe2a944289e8c0b8deccfbe5e3f"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#aff068fe2a944289e8c0b8deccfbe5e3f">daw::traits::root_type_t</a> = std::decay_t&lt; std::remove_reference_t&lt; T &gt; &gt;</td></tr>
 <tr class="separator:aff068fe2a944289e8c0b8deccfbe5e3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3010dd6546917973e0fae718be54a250"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a3010dd6546917973e0fae718be54a250"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3010dd6546917973e0fae718be54a250">daw::rvalue_to_value_t</a> = typename rvalue_to_value&lt; T &gt;::type</td></tr>
+<tr class="separator:a3010dd6546917973e0fae718be54a250"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51cf78bd059eb5b75b4cb11abfadc4ac"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Ts&gt; </td></tr>
 <tr class="memitem:a51cf78bd059eb5b75b4cb11abfadc4ac"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a51cf78bd059eb5b75b4cb11abfadc4ac">daw::traits::something_t</a> = typename traits_details::make_something&lt; T, Ts... &gt;::type</td></tr>
 <tr class="separator:a51cf78bd059eb5b75b4cb11abfadc4ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -552,7 +561,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l01041">1041</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l01059">1059</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
