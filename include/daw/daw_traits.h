@@ -1053,7 +1053,7 @@ namespace daw {
 	};
 
 	template<typename T>
-	using rvalue_to_value_t = typename remove_rvalue_ref<T>::type;
+	using rvalue_to_value_t = typename rvalue_to_value<T>::type;
 } // namespace daw
 
 #define DAW_TYPEOF( ... ) daw::remove_cvref_t<decltype( __VA_ARGS__ )>
