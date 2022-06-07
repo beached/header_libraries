@@ -1036,6 +1036,24 @@ namespace daw {
 
 	template<typename T>
 	using is_complete_type = std::bool_constant<is_complete_type_v<T>>;
+
+	template<typename T>
+	struct rvalue_to_value {
+		using type = T;
+	};
+
+	template<typename T>
+	struct rvalue_to_value<T &> {
+		using type = T &;
+	};
+
+	template<typename T>
+	struct rvalue_to_value<T &&> {
+		using type = std::remove_cv_t<T>;
+	};
+
+	template<typename T>
+	using rvalue_to_value_t = typename rvalue_to_value<T>::type;
 } // namespace daw
 
 #define DAW_TYPEOF( ... ) daw::remove_cvref_t<decltype( __VA_ARGS__ )>
