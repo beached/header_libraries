@@ -94,29 +94,30 @@ $(function() {
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#if defined( __clang_major__ ) and not defined( DAW_NO_CONSTEVAL )</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#if __clang_major__ &gt;= 14 and not defined( DAW_HAS_CONSTEVAL )</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#define DAW_HAS_CONSTEVAL</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#if __cplusplus &gt;= 202002 and defined( __clang_major__ ) and                   \</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">  not defined( DAW_NO_CONSTEVAL )</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#if __clang_major__ &gt;= 14 and not defined( DAW_HAS_CONSTEVAL )</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define DAW_HAS_CONSTEVAL</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#if defined( DAW_HAS_CONSTEVAL )</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#define DAW_CONSTEVAL consteval</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw.html">daw</a> {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="comment">// Force evaluation of v at compile time</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  consteval <span class="keyword">auto</span> const_evaluate( T &amp;&amp;v ) {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>T &amp;&amp;<span class="keyword">&gt;</span>( v );</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  }</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;} <span class="comment">// namespace daw</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#define DAW_CONST_EVALUATE( ... ) ::daw::const_evaluate( __VA_ARGS__ )</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#define DAW_AS_CONSTANT( ... ) ::daw::const_evaluate( __VA_ARGS__ )</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="daw__consteval_8h.html#ab9e8028f305516c43a6b23d820386407">   43</a></span>&#160;<span class="preprocessor">#define DAW_CONSTEVAL constexpr</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">// Cannot do, fallback to expression</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="daw__consteval_8h.html#a6fa98342180a37e328d0ec1f4b1d459d">   45</a></span>&#160;<span class="preprocessor">#define DAW_CONST_EVALUATE( ... ) ( __VA_ARGS__ )</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="daw__consteval_8h.html#a37f6999411a9fb67609e124db502214e">   46</a></span>&#160;<span class="preprocessor">#define DAW_AS_CONSTANT( ... ) ( __VA_ARGS__ )</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#if defined( DAW_HAS_CONSTEVAL )</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#define DAW_CONSTEVAL consteval</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw.html">daw</a> {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="comment">// Force evaluation of v at compile time</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  consteval <span class="keyword">auto</span> const_evaluate( T &amp;&amp;v ) {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>T &amp;&amp;<span class="keyword">&gt;</span>( v );</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  }</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;} <span class="comment">// namespace daw</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#define DAW_CONST_EVALUATE( ... ) ::daw::const_evaluate( __VA_ARGS__ )</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#define DAW_AS_CONSTANT( ... ) ::daw::const_evaluate( __VA_ARGS__ )</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="daw__consteval_8h.html#ab9e8028f305516c43a6b23d820386407">   44</a></span>&#160;<span class="preprocessor">#define DAW_CONSTEVAL constexpr</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">// Cannot do, fallback to expression</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="daw__consteval_8h.html#a6fa98342180a37e328d0ec1f4b1d459d">   46</a></span>&#160;<span class="preprocessor">#define DAW_CONST_EVALUATE( ... ) ( __VA_ARGS__ )</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="daw__consteval_8h.html#a37f6999411a9fb67609e124db502214e">   47</a></span>&#160;<span class="preprocessor">#define DAW_AS_CONSTANT( ... ) ( __VA_ARGS__ )</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="compressed__pair_8h_source.html#l00022">compressed_pair.h:22</a></div></div>
 <div class="ttc" id="adaw__cpp__feature__check_8h_html"><div class="ttname"><a href="daw__cpp__feature__check_8h.html">daw_cpp_feature_check.h</a></div></div>
