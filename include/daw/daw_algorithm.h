@@ -459,7 +459,10 @@ namespace daw::algorithm {
 	template<typename BidirectionalIterator>
 	constexpr void reverse( BidirectionalIterator first,
 	                        BidirectionalIterator last ) {
-		last = --last;
+		if( first == last ) {
+			return;
+		}
+		--last;
 		while( first != last ) {
 			daw::iter_swap( first, last );
 			++first;
