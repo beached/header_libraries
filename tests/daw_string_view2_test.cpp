@@ -1552,7 +1552,7 @@ namespace daw {
 		daw::sv2::string_view sv = " Hello ";
 		(void)sv.trim( );
 		daw_expecting( sv, "Hello" );
-	}	
+	}
 
 	void daw_trim_copy( ) {
 		daw::sv2::string_view sv = " Hello ";
@@ -1563,14 +1563,22 @@ namespace daw {
 
 	namespace daw_array_ctad_impl {
 		template<typename S>
-		constexpr auto foo( S && s ) {
+		constexpr auto foo( S &&s ) {
 			return daw::sv2::basic_string_view( s );
 		}
-	}
+	} // namespace daw_array_ctad_impl
 
 	void daw_array_ctad( ) {
 		auto f = daw_array_ctad_impl::foo( "Test" );
 		daw_expecting( f, "Test" );
+	}
+
+	void daw_find_first_match( ) {
+		daw::string_view sv = R"(Hello 😍 World)";
+		auto pos = sv.find_first_match( { "😍", "Wor" } );
+		daw_expecting( pos, 6 );
+		pos = sv.find_first_match( { "Wor" } );
+		daw_expecting( pos, 11 );
 	}
 } // namespace daw
 
@@ -1715,6 +1723,7 @@ int main( )
 	daw::daw_trim( );
 	daw::daw_trim_copy( );
 	daw::daw_array_ctad( );
+	daw::daw_find_first_match( );
 }
 #if defined( DAW_USE_EXCEPTIONS )
 catch( std::exception const &ex ) {

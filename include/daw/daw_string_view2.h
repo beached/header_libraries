@@ -303,6 +303,34 @@ namespace daw {
 				}
 			}
 
+			template<typename CharT, string_view_bounds_type Bounds,
+			         string_view_bounds_type Bounds2>
+			[[nodiscard]] constexpr CharT const *search(
+			  basic_string_view<CharT, Bounds> haystack,
+			  std::initializer_list<basic_string_view<CharT, Bounds2>> needles ) {
+				auto const last = daw::data_end( haystack );
+				for( ; not haystack.empty( ); haystack.remove_prefix( ) ) {
+					auto it = haystack.data( );
+					for( auto needle : needles ) {
+						if( needle.size( ) > haystack.size( ) ) {}
+						auto s_first = std::data( needle );
+						auto const s_last = daw::data_end( needle );
+						for( auto s_it = s_first;; ++it, ++s_it ) {
+							if( s_it == s_last ) {
+								return haystack.data( );
+							}
+							if( it == last ) {
+								return last;
+							}
+							if( not( *it == *s_it ) ) {
+								break;
+							}
+						}
+					}
+				}
+				return data_end( haystack );
+			}
+
 			template<typename T>
 			constexpr std::size_t find_predicate_result_size( T const & ) {
 				return 1;
@@ -1643,6 +1671,26 @@ namespace daw {
 				return static_cast<size_type>( result - begin( ) );
 			}
 
+			[[nodiscard]] constexpr size_type
+			find_first_match( std::initializer_list<basic_string_view> needles,
+			                  size_type pos ) const {
+				for( auto needle : needles ) {
+					if( needle.empty( ) ) {
+						return pos;
+					}
+				}
+				auto result = sv2_details::search( substr( pos ), needles );
+				if( data_end( ) == result ) {
+					return npos;
+				}
+				return static_cast<size_type>( result - data( ) );
+			}
+
+			[[nodiscard]] constexpr size_type find_first_match(
+			  std::initializer_list<basic_string_view> needles ) const {
+				return find_first_match( needles, 0 );
+			}
+
 			template<string_view_bounds_type Bounds>
 			[[nodiscard]] constexpr size_type
 			find( basic_string_view<CharT, Bounds> v ) const {
@@ -1670,6 +1718,25 @@ namespace daw {
 
 			[[nodiscard]] constexpr size_type find( const_pointer s ) const {
 				return find( basic_string_view<CharT, BoundsType>( s ), 0 );
+			}
+
+			template<string_view_bounds_type Bounds>
+			[[nodiscard]] constexpr size_type
+			find_first_match( basic_string_view<CharT, Bounds> v,
+			                  size_type pos ) const {
+
+				if( size( ) < v.size( ) ) {
+					return npos;
+				}
+				if( v.empty( ) ) {
+					return pos;
+				}
+				auto result =
+				  sv2_details::search( begin( ) + pos, end( ), v.begin( ), v.end( ) );
+				if( end( ) == result ) {
+					return npos;
+				}
+				return static_cast<size_type>( result - begin( ) );
 			}
 
 			/// @brief Reverse find substring v in [data( ) + pos, data( ) + size( ) )
