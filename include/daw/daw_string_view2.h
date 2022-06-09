@@ -144,8 +144,8 @@ namespace daw {
 			static_assert( not( needle == CharT{ '\\' } or
 			                    ( ( needles == CharT{ '\\' } ) or ... ) ),
 			               "Escape characters cannot be searched for" );
-			mutable CharT last_char = 0;
-			inline constexpr bool operator( )( CharT c ) const {
+			CharT last_char = 0;
+			inline constexpr bool operator( )( CharT c ) {
 				if( last_char == CharT( '\\' ) ) {
 					last_char = 0;
 					return false;
