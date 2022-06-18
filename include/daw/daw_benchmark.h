@@ -139,7 +139,9 @@ namespace daw {
 		               "Unable to call Test with provided Args" );
 		using result_t = std::invoke_result_t<Test, Args...>;
 		auto result = daw::expected_t<result_t>{ };
+#if defined( DAW_USE_EXCEPTIONS )
 		try {
+#endif
 			auto const start = std::chrono::steady_clock::now( );
 			if constexpr( std::is_same_v<result_t, void> ) {
 				DAW_FWD( test_callable )( DAW_FWD( args )... );
@@ -151,7 +153,9 @@ namespace daw {
 			benchmark_impl::second_duration const duration = finish - start;
 			std::cout << title << " took "
 			          << utility::format_seconds( duration.count( ), 2 ) << '\n';
+#if defined( DAW_USE_EXCEPTIONS )
 		} catch( ... ) { result.set_exception( ); }
+#endif
 		return result;
 	}
 
@@ -163,7 +167,9 @@ namespace daw {
 		               "Unable to call Test with provided Args" );
 		using result_t = std::invoke_result_t<Test, Args...>;
 		auto result = daw::expected_t<result_t>{ };
+#if defined( DAW_USE_EXCEPTIONS )
 		try {
+#endif
 			auto const start = std::chrono::steady_clock::now( );
 			if constexpr( std::is_same_v<result_t, void> ) {
 				DAW_FWD( test_callable )( DAW_FWD( args )... );
@@ -198,7 +204,7 @@ namespace daw {
 	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
 	DAW_ATTRIB_NOINLINE auto bench_n_test( std::string const &title,
 	                                       Test &&test_callable,
-	                                       Args &&...args ) noexcept {
+	                                       Args const &...args ) noexcept {
 		static_assert( Runs > 0 );
 		static_assert( std::is_invocable_v<Test, Args...>,
 		               "Unable to call Test with provided Args" );
@@ -226,23 +232,19 @@ namespace daw {
 		}
 		double min_time = ( std::numeric_limits<double>::max )( );
 		double max_time = 0.0;
-		using result_t = std::invoke_result_t<Test, Args...>;
-		auto result = daw::expected_t<result_t>{ };
 
 		auto const total_start = std::chrono::steady_clock::now( );
 		for( size_t n = 0; n < Runs; ++n ) {
 			daw::do_not_optimize( args... );
 			auto const start = std::chrono::steady_clock::now( );
+#if defined( DAW_USE_EXCEPTIONS )
 			try {
-				if constexpr( std::is_same_v<result_t, void> ) {
-					test_callable( args... );
-					result.set_value( );
-				} else {
-					result.set_value( test_callable( args... ) );
-				}
-			} catch( ... ) { result.set_exception( ); }
+#endif
+				(void)test_callable( args... );
+#if defined( DAW_USE_EXCEPTIONS )
+			} catch( ... ) {}
+#endif
 			auto const finish = std::chrono::steady_clock::now( );
-			daw::do_not_optimize( result );
 			auto const duration =
 			  benchmark_impl::second_duration( finish - start ).count( );
 			if( duration < min_time ) {
@@ -253,6 +255,22 @@ namespace daw {
 			}
 		}
 		auto const total_finish = std::chrono::steady_clock::now( );
+
+		using result_t = std::invoke_result_t<Test, Args...>;
+		auto result = daw::expected_t<result_t>{ };
+#if defined( DAW_USE_EXCEPTIONS )
+		try {
+#endif
+			if constexpr( std::is_same_v<result_t, void> ) {
+				test_callable( args... );
+				result.set_value( );
+			} else {
+				result.set_value( test_callable( args... ) );
+			}
+#if defined( DAW_USE_EXCEPTIONS )
+		} catch( ... ) { result.set_exception( ); }
+#endif
+
 		min_time -= base_time;
 		max_time -= base_time;
 		auto total_time =
@@ -294,7 +312,7 @@ namespace daw {
 	         typename Function, typename... Args>
 	[[nodiscard]] DAW_ATTRIB_NOINLINE std::array<double, Runs>
 	bench_n_test_mbs2( std::string const &, size_t, Validator &&validator,
-	                   Function &&func, Args &&...args ) noexcept {
+	                   Function &&func, Args const &...args ) noexcept {
 		static_assert( Runs > 0 );
 		static_assert( std::is_invocable_v<Function, Args...>,
 		               "Unable to call Function with provided Args" );
@@ -306,8 +324,6 @@ namespace daw {
 		double base_time = ( std::numeric_limits<double>::max )( );
 		{
 			for( size_t n = 0; n < 1000; ++n ) {
-				daw::do_not_optimize( args... );
-
 				int a = 0;
 				daw::do_not_optimize( a );
 				auto const start = std::chrono::steady_clock::now( );
@@ -327,6 +343,7 @@ namespace daw {
 		// auto const total_start = std::chrono::steady_clock::now( );
 		benchmark_impl::second_duration valid_time = std::chrono::seconds( 0 );
 		for( size_t n = 0; n < Runs; ++n ) {
+			daw::do_not_optimize( args... );
 			auto const start = std::chrono::steady_clock::now( );
 			using result_t = std::invoke_result_t<Function, Args...>;
 			result_t result = func( args... );
@@ -350,16 +367,13 @@ namespace daw {
 	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
 	[[nodiscard]] DAW_ATTRIB_NOINLINE auto
 	bench_n_test_mbs( std::string const &title, size_t bytes,
-	                  Test &&test_callable, Args &&...args ) noexcept {
+	                  Test &&test_callable, Args const &...args ) noexcept {
 		static_assert( Runs > 0 );
 		static_assert( std::is_invocable_v<Test, Args...>,
 		               "Unable to call Test with provided Args" );
-
 		double base_time = ( std::numeric_limits<double>::max )( );
 		{
 			for( size_t n = 0; n < 1000; ++n ) {
-				daw::do_not_optimize( args... );
-
 				intmax_t a = 0;
 				daw::do_not_optimize( a );
 				auto const start = std::chrono::steady_clock::now( );
@@ -379,36 +393,47 @@ namespace daw {
 		double min_time = ( std::numeric_limits<double>::max )( );
 		double max_time = 0.0;
 
-		using result_t = std::invoke_result_t<Test, Args...>;
-		auto result = daw::expected_t<result_t>{ };
-
 		auto const total_start = std::chrono::steady_clock::now( );
 		for( size_t n = 0; n < Runs; ++n ) {
-			result.clear( );
+			daw::do_not_optimize( args... );
+			auto const start = std::chrono::steady_clock::now( );
+#if defined( DAW_USE_EXCEPTIONS )
 			try {
-				auto const start = std::chrono::steady_clock::now( );
-				if constexpr( std::is_same_v<result_t, void> ) {
-					test_callable( args... );
-					result.set_value( );
-				} else {
-					result.set_value( test_callable( args... ) );
-				}
-				auto const finish = std::chrono::steady_clock::now( );
-				daw::do_not_optimize( result );
-				auto const duration =
-				  benchmark_impl::second_duration( finish - start ).count( );
-				if( duration < min_time ) {
-					min_time = duration;
-				}
-				if( duration > max_time ) {
-					max_time = duration;
-				}
-				if( not result.has_value( ) ) {
-					break;
-				}
-			} catch( ... ) { result.set_exception( ); }
+#endif
+				(void)test_callable( args... );
+#if defined( DAW_USE_EXCEPTIONS )
+			} catch( ... ) {}
+#endif
+			auto const finish = std::chrono::steady_clock::now( );
+
+			auto const duration =
+			  benchmark_impl::second_duration( finish - start ).count( );
+			if( duration < min_time ) {
+				min_time = duration;
+			}
+			if( duration > max_time ) {
+				max_time = duration;
+			}
 		}
 		auto const total_finish = std::chrono::steady_clock::now( );
+
+		using result_t = std::invoke_result_t<Test, Args...>;
+		auto result = daw::expected_t<result_t>{ };
+#if defined( DAW_USE_EXCEPTIONS )
+		try {
+#endif
+			if constexpr( std::is_same_v<result_t, void> ) {
+				test_callable( args... );
+				result.set_value( );
+			} else {
+				result.set_value( test_callable( args... ) );
+			}
+#if defined( DAW_USE_EXCEPTIONS )
+		} catch( ... ) {
+			result.set_exception( );
+			return result;
+		}
+#endif
 		min_time -= base_time;
 		max_time -= base_time;
 		auto total_time =
@@ -426,9 +451,7 @@ namespace daw {
 		}( );
 		avg_time -= base_time;
 		std::cout << title << delem;
-		if( not result.has_value( ) ) {
-			return result;
-		}
+
 		std::cout << "	runs:        " << Runs << delem
 		          << "	total:       " << utility::format_seconds( total_time, 2 )
 		          << delem
@@ -635,12 +658,12 @@ namespace daw {
 	DAW_ATTRIB_NOINLINE void
 	expecting_exception( Expression &&expression,
 	                     Predicate &&pred = Predicate{ } ) {
-#ifdef DAW_USE_EXCEPTIONS
+#if defined( DAW_USE_EXCEPTIONS )
 		try {
 #endif
 			(void)DAW_FWD2( Expression, expression )( );
 			(void)pred;
-#ifdef DAW_USE_EXCEPTIONS
+#if defined( DAW_USE_EXCEPTIONS )
 		} catch( Exception const &ex ) {
 			if( DAW_FWD2( Predicate, pred )( ex ) ) {
 				return;
