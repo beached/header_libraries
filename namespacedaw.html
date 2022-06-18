@@ -1276,12 +1276,12 @@ Functions</h2></td></tr>
 <tr class="memitem:af12f9c7fb9774c53848cf8e9f721c828"><td class="memTemplItemLeft" align="right" valign="top">constexpr ptrdiff_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af12f9c7fb9774c53848cf8e9f721c828">distance</a> (Iterator first, Iterator second) noexcept(noexcept(cpp_17_details::distance_impl(first, second, typename std::iterator_traits&lt; Iterator &gt;::iterator_category{ })))</td></tr>
 <tr class="memdesc:af12f9c7fb9774c53848cf8e9f721c828"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate distance between iterators.  <a href="namespacedaw.html#af12f9c7fb9774c53848cf8e9f721c828">More...</a><br /></td></tr>
 <tr class="separator:af12f9c7fb9774c53848cf8e9f721c828"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05c69fbe80b357e26642ca72d17a365f"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a05c69fbe80b357e26642ca72d17a365f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a05c69fbe80b357e26642ca72d17a365f">do_not_optimize</a> (T const &amp;value)</td></tr>
-<tr class="separator:a05c69fbe80b357e26642ca72d17a365f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad03458314c1a6437d1393b8657e49f07"><td class="memTemplParams" colspan="2">template&lt;typename... Values, std::enable_if_t&lt;(sizeof...(Values) !=1), std::nullptr_t &gt;  = nullptr&gt; </td></tr>
-<tr class="memitem:ad03458314c1a6437d1393b8657e49f07"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad03458314c1a6437d1393b8657e49f07">do_not_optimize</a> (Values &amp;&amp;...values)</td></tr>
-<tr class="separator:ad03458314c1a6437d1393b8657e49f07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a684bf694fcc660d457cff5d81a7b1e7c"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a684bf694fcc660d457cff5d81a7b1e7c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a684bf694fcc660d457cff5d81a7b1e7c">do_not_optimize</a> (T const &amp;value)</td></tr>
+<tr class="separator:a684bf694fcc660d457cff5d81a7b1e7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0947a1e7aa3c9aec58e067fed98ccd4b"><td class="memTemplParams" colspan="2">template&lt;typename... Values, std::enable_if_t&lt;(sizeof...(Values) !=1), std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a0947a1e7aa3c9aec58e067fed98ccd4b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0947a1e7aa3c9aec58e067fed98ccd4b">do_not_optimize</a> (Values &amp;&amp;...values)</td></tr>
+<tr class="separator:a0947a1e7aa3c9aec58e067fed98ccd4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24bbfb3c6debd133e51134e57c4f3ef0"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a24bbfb3c6debd133e51134e57c4f3ef0">empty</a> () const noexcept</td></tr>
 <tr class="separator:a24bbfb3c6debd133e51134e57c4f3ef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0131aaa8982f261f0c4b7eda113cd1ba"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacedaw.html#ae68d4eb2e78395dc382b72e84a3e55a8">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0131aaa8982f261f0c4b7eda113cd1ba">end</a> () noexcept</td></tr>
@@ -7548,7 +7548,7 @@ template&lt;size_t Runs, typename Validator , typename Function , typename... Ar
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>last result timing counts of runs </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00508">508</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00509">509</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
 
 </div>
 </div>
@@ -10257,38 +10257,30 @@ template&lt;typename Iterator &gt; </div>
 
 </div>
 </div>
-<a id="a05c69fbe80b357e26642ca72d17a365f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05c69fbe80b357e26642ca72d17a365f">&#9670;&nbsp;</a></span>do_not_optimize() <span class="overload">[1/2]</span></h2>
+<a id="a684bf694fcc660d457cff5d81a7b1e7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a684bf694fcc660d457cff5d81a7b1e7c">&#9670;&nbsp;</a></span>do_not_optimize() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void daw::do_not_optimize </td>
+          <td class="memname"><a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> void daw::do_not_optimize </td>
           <td>(</td>
           <td class="paramtype">T const &amp;&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__do__not__optimize_8h_source.html#l00044">44</a> of file <a class="el" href="daw__do__not__optimize_8h_source.html">daw_do_not_optimize.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__do__not__optimize_8h_source.html#l00045">45</a> of file <a class="el" href="daw__do__not__optimize_8h_source.html">daw_do_not_optimize.h</a>.</p>
 
 </div>
 </div>
-<a id="ad03458314c1a6437d1393b8657e49f07"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad03458314c1a6437d1393b8657e49f07">&#9670;&nbsp;</a></span>do_not_optimize() <span class="overload">[2/2]</span></h2>
+<a id="a0947a1e7aa3c9aec58e067fed98ccd4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0947a1e7aa3c9aec58e067fed98ccd4b">&#9670;&nbsp;</a></span>do_not_optimize() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10296,7 +10288,7 @@ template&lt;class T &gt; </div>
 template&lt;typename... Values, std::enable_if_t&lt;(sizeof...(Values) !=1), std::nullptr_t &gt;  = nullptr&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void daw::do_not_optimize </td>
+          <td class="memname"><a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> void daw::do_not_optimize </td>
           <td>(</td>
           <td class="paramtype">Values &amp;&amp;...&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
@@ -10305,7 +10297,7 @@ template&lt;typename... Values, std::enable_if_t&lt;(sizeof...(Values) !=1), std
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__do__not__optimize_8h_source.html#l00055">55</a> of file <a class="el" href="daw__do__not__optimize_8h_source.html">daw_do_not_optimize.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__do__not__optimize_8h_source.html#l00056">56</a> of file <a class="el" href="daw__do__not__optimize_8h_source.html">daw_do_not_optimize.h</a>.</p>
 
 </div>
 </div>
@@ -10716,7 +10708,7 @@ template&lt;typename Bool &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00602">602</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00603">603</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
 
 </div>
 </div>
@@ -10756,7 +10748,7 @@ template&lt;typename T , typename U &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00587">587</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00588">588</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
 
 </div>
 </div>
@@ -10788,7 +10780,7 @@ template&lt;typename Exception  = std::exception, typename Expression , typename
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00635">635</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00636">636</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
 
 </div>
 </div>
@@ -10828,7 +10820,7 @@ template&lt;typename Bool , typename String &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00610">610</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00611">611</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
 
 </div>
 </div>
