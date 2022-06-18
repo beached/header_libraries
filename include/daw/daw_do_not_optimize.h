@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw_attributes.h"
 #include "daw_move.h"
 
 #include <ciso646>
@@ -21,12 +22,12 @@
 namespace daw {
 #if not defined( _MSC_VER ) or defined( __clang__ )
 	template<typename Tp>
-	inline void do_not_optimize( Tp const &value ) {
+	DAW_ATTRIB_INLINE void do_not_optimize( Tp const &value ) {
 		asm volatile( "" : : "r,m"( value ) : "memory" );
 	}
 
 	template<typename Tp>
-	inline void do_not_optimize( Tp &value ) {
+	DAW_ATTRIB_INLINE void do_not_optimize( Tp &value ) {
 #if defined( __clang__ )
 		asm volatile( "" : "+r,m"( value ) : : "memory" );
 #else
@@ -41,7 +42,7 @@ namespace daw {
 #pragma optimize( "", off )
 #pragma warning( disable : 4702 )
 	template<class T>
-	inline void do_not_optimize( T const &value ) {
+	DAW_ATTRIB_INLINE void do_not_optimize( T const &value ) {
 		do_not_optimize_details::UseCharPointer(
 		  &reinterpret_cast<char const volatile &>( value ) );
 		_ReadWriteBarrier( );
@@ -52,7 +53,7 @@ namespace daw {
 
 	template<typename... Values, std::enable_if_t<( sizeof...( Values ) != 1 ),
 	                                              std::nullptr_t> = nullptr>
-	void do_not_optimize( Values &&...values ) {
+	DAW_ATTRIB_INLINE void do_not_optimize( Values &&...values ) {
 		if constexpr( sizeof...( Values ) > 0 ) {
 			(void)( ( do_not_optimize( DAW_FWD2( Values, values ) ), 1 ) | ... );
 		}
