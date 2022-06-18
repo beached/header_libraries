@@ -119,7 +119,7 @@ namespace daw {
 		  typename Function, typename... Args,
 		  std::enable_if_t<std::is_invocable_r_v<value_type, Function, Args...>,
 		                   std::nullptr_t> = nullptr>
-		[[nodiscard]] DAW_ATTRIB_INLINE static variant_type
+		[[nodiscard]] inline static variant_type
 		variant_from_code( Function &&func, Args &&...args ) {
 #if defined( DAW_USE_EXCEPTIONS )
 			try {
