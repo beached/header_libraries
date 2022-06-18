@@ -106,7 +106,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a50cbcb5522066b4ecab19199e9e5afb7"><td class="memTemplParams" colspan="2">template&lt;typename ExceptionType &gt; </td></tr>
 <tr class="memitem:a50cbcb5522066b4ecab19199e9e5afb7"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1expected__t.html#a50cbcb5522066b4ecab19199e9e5afb7">expected_t</a> (<a class="el" href="structdaw_1_1expected__t_1_1exception__tag.html">exception_tag</a>, ExceptionType &amp;&amp;ex) noexcept</td></tr>
 <tr class="separator:a50cbcb5522066b4ecab19199e9e5afb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9857aebbfb7c9d7f6c0d90059650e8e"><td class="memTemplParams" colspan="2">template&lt;class Function , typename... Args, std::enable_if_t&lt; traits::is_callable_convertible_v&lt; value_type, Function, Args... &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:ac9857aebbfb7c9d7f6c0d90059650e8e"><td class="memTemplParams" colspan="2">template&lt;class Function , typename... Args, std::enable_if_t&lt; std::is_invocable_r_v&lt; value_type, Function, Args... &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:ac9857aebbfb7c9d7f6c0d90059650e8e"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1expected__t.html#ac9857aebbfb7c9d7f6c0d90059650e8e">expected_t</a> (Function &amp;&amp;func, Args &amp;&amp;...args)</td></tr>
 <tr class="separator:ac9857aebbfb7c9d7f6c0d90059650e8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e629b48f976953be45458c67a00d903"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1expected__t.html#a0e629b48f976953be45458c67a00d903">expected_t</a> (std::exception_ptr ptr) noexcept</td></tr>
@@ -132,10 +132,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0663c3190848ab41a05d97adb435a83d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad64f1ccdba8cf74c053da2b4f409badd"><td class="memItemLeft" align="right" valign="top">std::exception_ptr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1expected__t.html#ad64f1ccdba8cf74c053da2b4f409badd">get_exception_ptr</a> () const noexcept</td></tr>
 <tr class="separator:ad64f1ccdba8cf74c053da2b4f409badd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f1a3d8852b80843b832265f1e5917c0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1expected__t.html#a7f1a3d8852b80843b832265f1e5917c0">has_exception</a> () const</td></tr>
-<tr class="separator:a7f1a3d8852b80843b832265f1e5917c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8f1e8e866f0c4229132656daf46c01c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1expected__t.html#ac8f1e8e866f0c4229132656daf46c01c">has_value</a> () const</td></tr>
-<tr class="separator:ac8f1e8e866f0c4229132656daf46c01c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a7ffbeed106ac782e5770db6d7973ab"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1expected__t.html#a8a7ffbeed106ac782e5770db6d7973ab">has_exception</a> () const noexcept</td></tr>
+<tr class="separator:a8a7ffbeed106ac782e5770db6d7973ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99568f94f03543ab187fc143e1d13d72"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1expected__t.html#a99568f94f03543ab187fc143e1d13d72">has_value</a> () const noexcept</td></tr>
+<tr class="separator:a99568f94f03543ab187fc143e1d13d72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52d3f5cbccc503f321a60c227f2c2bee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1expected__t.html#a52d3f5cbccc503f321a60c227f2c2bee">operator bool</a> () const noexcept</td></tr>
 <tr class="separator:a52d3f5cbccc503f321a60c227f2c2bee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8264f93a2fd86775d0097bf885bb13a3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1expected__t.html#a8264f93a2fd86775d0097bf885bb13a3">operator!=</a> (<a class="el" href="structdaw_1_1expected__t.html">expected_t</a> const &amp;rhs) const noexcept</td></tr>
@@ -161,12 +161,16 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a28e87095b59b2af1b869351fe1628d18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa81951e91a7f051c31ef049c61f3b12d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1expected__t.html#aa81951e91a7f051c31ef049c61f3b12d">set_exception</a> (std::exception_ptr ptr) noexcept</td></tr>
 <tr class="separator:aa81951e91a7f051c31ef049c61f3b12d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a891d57a56fabbc75eb8267e3dfd8d130"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1expected__t.html#a891d57a56fabbc75eb8267e3dfd8d130">set_value</a> (<a class="el" href="structdaw_1_1expected__t.html#ad4feab9f8b499c4e155cda98b43720a3">value_type</a> &amp;&amp;value) noexcept(std::is_nothrow_move_assignable_v&lt; <a class="el" href="structdaw_1_1expected__t.html#ad4feab9f8b499c4e155cda98b43720a3">value_type</a> &gt;)</td></tr>
+<tr class="separator:a891d57a56fabbc75eb8267e3dfd8d130"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2b676f7b4e8caceedc257fc3473b47c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1expected__t.html#af2b676f7b4e8caceedc257fc3473b47c">set_value</a> (<a class="el" href="structdaw_1_1expected__t.html#ad4feab9f8b499c4e155cda98b43720a3">value_type</a> const &amp;value)</td></tr>
+<tr class="separator:af2b676f7b4e8caceedc257fc3473b47c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a040d3b74e0578e2348ec421cd88c2306"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1expected__t.html#a040d3b74e0578e2348ec421cd88c2306">throw_if_exception</a> () const</td></tr>
 <tr class="separator:a040d3b74e0578e2348ec421cd88c2306"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aaea5bf4b166a156cc170ecf8cd9c71c9"><td class="memTemplParams" colspan="2">template&lt;class Function , typename... Args, std::enable_if_t&lt; traits::is_callable_convertible_v&lt; value_type, Function, Args... &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:aaea5bf4b166a156cc170ecf8cd9c71c9"><td class="memTemplParams" colspan="2">template&lt;class Function , typename... Args, std::enable_if_t&lt; std::is_invocable_r_v&lt; value_type, Function, Args... &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:aaea5bf4b166a156cc170ecf8cd9c71c9"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="structdaw_1_1expected__t.html">expected_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1expected__t.html#aaea5bf4b166a156cc170ecf8cd9c71c9">from_code</a> (Function &amp;&amp;func, Args &amp;&amp;...args)</td></tr>
 <tr class="separator:aaea5bf4b166a156cc170ecf8cd9c71c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -323,7 +327,7 @@ template&lt;class T &gt; </div>
 
 <p>Summary: With value. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00077">77</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00074">74</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -353,7 +357,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00080">80</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00077">77</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -383,7 +387,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00093">93</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00098">98</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -425,7 +429,7 @@ template&lt;typename ExceptionType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00106">106</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00111">111</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -455,7 +459,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00109">109</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00114">114</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -467,7 +471,7 @@ template&lt;class T &gt; </div>
 <div class="memtemplate">
 template&lt;class T &gt; </div>
 <div class="memtemplate">
-template&lt;class Function , typename... Args, std::enable_if_t&lt; traits::is_callable_convertible_v&lt; value_type, Function, Args... &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+template&lt;class Function , typename... Args, std::enable_if_t&lt; std::is_invocable_r_v&lt; value_type, Function, Args... &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -497,7 +501,7 @@ template&lt;class Function , typename... Args, std::enable_if_t&lt; traits::is_c
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00133">133</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00138">138</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -527,7 +531,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00101">101</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00106">106</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -556,7 +560,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00169">169</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00172">172</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -568,7 +572,7 @@ template&lt;class T &gt; </div>
 <div class="memtemplate">
 template&lt;class T &gt; </div>
 <div class="memtemplate">
-template&lt;class Function , typename... Args, std::enable_if_t&lt; traits::is_callable_convertible_v&lt; value_type, Function, Args... &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+template&lt;class Function , typename... Args, std::enable_if_t&lt; std::is_invocable_r_v&lt; value_type, Function, Args... &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -598,7 +602,7 @@ template&lt;class Function , typename... Args, std::enable_if_t&lt; traits::is_c
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00141">141</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00145">145</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -627,7 +631,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00185">185</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00188">188</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -656,7 +660,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00201">201</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00204">204</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -685,7 +689,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00193">193</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00196">196</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -714,7 +718,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00209">209</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00212">212</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -743,7 +747,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00233">233</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00236">236</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -772,12 +776,12 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00165">165</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00168">168</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
-<a id="a7f1a3d8852b80843b832265f1e5917c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f1a3d8852b80843b832265f1e5917c0">&#9670;&nbsp;</a></span>has_exception()</h2>
+<a id="a8a7ffbeed106ac782e5770db6d7973ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a7ffbeed106ac782e5770db6d7973ab">&#9670;&nbsp;</a></span>has_exception()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -796,17 +800,17 @@ template&lt;class T &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00161">161</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00164">164</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
-<a id="ac8f1e8e866f0c4229132656daf46c01c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac8f1e8e866f0c4229132656daf46c01c">&#9670;&nbsp;</a></span>has_value()</h2>
+<a id="a99568f94f03543ab187fc143e1d13d72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99568f94f03543ab187fc143e1d13d72">&#9670;&nbsp;</a></span>has_value()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -825,12 +829,12 @@ template&lt;class T &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00157">157</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00160">160</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -859,7 +863,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00174">174</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00177">177</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -889,7 +893,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00070">70</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00069">69</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -918,7 +922,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00217">217</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00220">220</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -947,7 +951,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00221">221</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00224">224</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -976,7 +980,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00225">225</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00228">228</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -1005,7 +1009,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00229">229</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00232">232</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -1035,7 +1039,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00096">96</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00101">101</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -1065,7 +1069,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00083">83</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00088">88</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -1095,7 +1099,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00088">88</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00093">93</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -1127,7 +1131,7 @@ template&lt;class T &gt; </div>
 
 <p>Summary: No value, aka null. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00066">66</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00065">65</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -1156,7 +1160,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00153">153</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00156">156</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -1186,7 +1190,67 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00149">149</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00152">152</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+
+</div>
+</div>
+<a id="a891d57a56fabbc75eb8267e3dfd8d130"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a891d57a56fabbc75eb8267e3dfd8d130">&#9670;&nbsp;</a></span>set_value() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="structdaw_1_1expected__t.html">daw::expected_t</a>&lt; T &gt;::set_value </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1expected__t.html#ad4feab9f8b499c4e155cda98b43720a3">value_type</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00083">83</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+
+</div>
+</div>
+<a id="af2b676f7b4e8caceedc257fc3473b47c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2b676f7b4e8caceedc257fc3473b47c">&#9670;&nbsp;</a></span>set_value() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="structdaw_1_1expected__t.html">daw::expected_t</a>&lt; T &gt;::set_value </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1expected__t.html#ad4feab9f8b499c4e155cda98b43720a3">value_type</a> const &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00080">80</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -1215,7 +1279,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00178">178</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00181">181</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>

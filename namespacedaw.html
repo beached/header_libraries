@@ -1047,30 +1047,30 @@ Functions</h2></td></tr>
 <tr class="memitem:a379ef1361fbe8d2401f1628536637e9a"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a379ef1361fbe8d2401f1628536637e9a">begin_at</a> (Container const &amp;container, size_t n) noexcept(noexcept(std::cbegin(container))) -&gt; decltype(std::cbegin(container))</td></tr>
 <tr class="memdesc:a379ef1361fbe8d2401f1628536637e9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Take iterator return from begin of a container and return the result of running next with n steps.  <a href="namespacedaw.html#a379ef1361fbe8d2401f1628536637e9a">More...</a><br /></td></tr>
 <tr class="separator:a379ef1361fbe8d2401f1628536637e9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c5ba0ab1ba19c8a9d35082d2ce7abea"><td class="memTemplParams" colspan="2">template&lt;size_t Runs, char delem = '\n', typename Test , typename... Args&gt; </td></tr>
-<tr class="memitem:a5c5ba0ab1ba19c8a9d35082d2ce7abea"><td class="memTemplItemLeft" align="right" valign="top">static auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5c5ba0ab1ba19c8a9d35082d2ce7abea">bench_n_test</a> (std::string const &amp;title, Test &amp;&amp;test_callable, Args &amp;&amp;...args) noexcept</td></tr>
-<tr class="separator:a5c5ba0ab1ba19c8a9d35082d2ce7abea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5aac20bdbb059064f4d3e13a0654c8a8"><td class="memTemplParams" colspan="2">template&lt;size_t Runs, typename Function , typename... Args&gt; </td></tr>
-<tr class="memitem:a5aac20bdbb059064f4d3e13a0654c8a8"><td class="memTemplItemLeft" align="right" valign="top">static std::vector&lt; std::chrono::nanoseconds &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5aac20bdbb059064f4d3e13a0654c8a8">bench_n_test_json</a> (Function &amp;&amp;func, Args &amp;&amp;...args) noexcept</td></tr>
-<tr class="separator:a5aac20bdbb059064f4d3e13a0654c8a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa56d8f559e3feb671bc509c6de0a7db"><td class="memTemplParams" colspan="2">template&lt;size_t Runs, typename Validator , typename Function , typename... Args&gt; </td></tr>
-<tr class="memitem:aaa56d8f559e3feb671bc509c6de0a7db"><td class="memTemplItemLeft" align="right" valign="top">static std::vector&lt; std::chrono::nanoseconds &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aaa56d8f559e3feb671bc509c6de0a7db">bench_n_test_json_val</a> (Validator &amp;&amp;validator, Function &amp;&amp;func, Args &amp;&amp;...args) noexcept</td></tr>
-<tr class="separator:aaa56d8f559e3feb671bc509c6de0a7db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8d3a2857df35215e5f9d852b6c13958"><td class="memTemplParams" colspan="2">template&lt;size_t Runs, char delem = '\n', typename Test , typename... Args&gt; </td></tr>
-<tr class="memitem:ae8d3a2857df35215e5f9d852b6c13958"><td class="memTemplItemLeft" align="right" valign="top">static auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ae8d3a2857df35215e5f9d852b6c13958">bench_n_test_mbs</a> (std::string const &amp;title, size_t bytes, Test &amp;&amp;test_callable, Args const &amp;...args) noexcept</td></tr>
-<tr class="separator:ae8d3a2857df35215e5f9d852b6c13958"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27943bb38cb132d08dd200f2599b447a"><td class="memTemplParams" colspan="2">template&lt;size_t Runs, char delem = '\n', typename Validator , typename Function , typename... Args&gt; </td></tr>
-<tr class="memitem:a27943bb38cb132d08dd200f2599b447a"><td class="memTemplItemLeft" align="right" valign="top">static std::array&lt; double, Runs &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a27943bb38cb132d08dd200f2599b447a">bench_n_test_mbs2</a> (std::string const &amp;, size_t, Validator &amp;&amp;validator, Function &amp;&amp;func, Args &amp;&amp;...args) noexcept</td></tr>
-<tr class="separator:a27943bb38cb132d08dd200f2599b447a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca28ab6a2db0ef72068bb9be514d91d6"><td class="memTemplParams" colspan="2">template&lt;typename Test , typename... Args&gt; </td></tr>
-<tr class="memitem:aca28ab6a2db0ef72068bb9be514d91d6"><td class="memTemplItemLeft" align="right" valign="top">static auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aca28ab6a2db0ef72068bb9be514d91d6">bench_test</a> (std::string const &amp;title, Test &amp;&amp;test_callable, Args &amp;&amp;...args)</td></tr>
-<tr class="separator:aca28ab6a2db0ef72068bb9be514d91d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8396935429fb9b61a04b270fa560d9a4"><td class="memTemplParams" colspan="2">template&lt;typename Test , typename... Args&gt; </td></tr>
-<tr class="memitem:a8396935429fb9b61a04b270fa560d9a4"><td class="memTemplItemLeft" align="right" valign="top">static auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a8396935429fb9b61a04b270fa560d9a4">bench_test2</a> (std::string const &amp;title, Test &amp;&amp;test_callable, size_t item_count, Args &amp;&amp;...args)</td></tr>
-<tr class="separator:a8396935429fb9b61a04b270fa560d9a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb9b840092ac13f40d80ad40c11fe06f"><td class="memTemplParams" colspan="2">template&lt;typename F &gt; </td></tr>
-<tr class="memitem:abb9b840092ac13f40d80ad40c11fe06f"><td class="memTemplItemLeft" align="right" valign="top">static double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#abb9b840092ac13f40d80ad40c11fe06f">benchmark</a> (F &amp;&amp;func)</td></tr>
-<tr class="separator:abb9b840092ac13f40d80ad40c11fe06f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7853f21e23dd720959725b205ac01c60"><td class="memTemplParams" colspan="2">template&lt;size_t Runs, char delem = '\n', typename Test , typename... Args&gt; </td></tr>
+<tr class="memitem:a7853f21e23dd720959725b205ac01c60"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a7853f21e23dd720959725b205ac01c60">bench_n_test</a> (std::string const &amp;title, Test &amp;&amp;test_callable, Args &amp;&amp;...args) noexcept</td></tr>
+<tr class="separator:a7853f21e23dd720959725b205ac01c60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45db6379dbd2ff42a478c7ec88ef8f18"><td class="memTemplParams" colspan="2">template&lt;size_t Runs, typename Function , typename... Args&gt; </td></tr>
+<tr class="memitem:a45db6379dbd2ff42a478c7ec88ef8f18"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> std::vector&lt; std::chrono::nanoseconds &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a45db6379dbd2ff42a478c7ec88ef8f18">bench_n_test_json</a> (Function &amp;&amp;func, Args &amp;&amp;...args) noexcept</td></tr>
+<tr class="separator:a45db6379dbd2ff42a478c7ec88ef8f18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95e24320da37ba5f66dcaf2b0e84fd32"><td class="memTemplParams" colspan="2">template&lt;size_t Runs, typename Validator , typename Function , typename... Args&gt; </td></tr>
+<tr class="memitem:a95e24320da37ba5f66dcaf2b0e84fd32"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> std::vector&lt; std::chrono::nanoseconds &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a95e24320da37ba5f66dcaf2b0e84fd32">bench_n_test_json_val</a> (Validator &amp;&amp;validator, Function &amp;&amp;func, Args &amp;&amp;...args) noexcept</td></tr>
+<tr class="separator:a95e24320da37ba5f66dcaf2b0e84fd32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58a023e77d444ef42239df4a6ee38483"><td class="memTemplParams" colspan="2">template&lt;size_t Runs, char delem = '\n', typename Test , typename... Args&gt; </td></tr>
+<tr class="memitem:a58a023e77d444ef42239df4a6ee38483"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a58a023e77d444ef42239df4a6ee38483">bench_n_test_mbs</a> (std::string const &amp;title, size_t bytes, Test &amp;&amp;test_callable, Args &amp;&amp;...args) noexcept</td></tr>
+<tr class="separator:a58a023e77d444ef42239df4a6ee38483"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a077e401d8ed6a160eba46e544b46a14e"><td class="memTemplParams" colspan="2">template&lt;size_t Runs, char delem = '\n', typename Validator , typename Function , typename... Args&gt; </td></tr>
+<tr class="memitem:a077e401d8ed6a160eba46e544b46a14e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> std::array&lt; double, Runs &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a077e401d8ed6a160eba46e544b46a14e">bench_n_test_mbs2</a> (std::string const &amp;, size_t, Validator &amp;&amp;validator, Function &amp;&amp;func, Args &amp;&amp;...args) noexcept</td></tr>
+<tr class="separator:a077e401d8ed6a160eba46e544b46a14e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a054b35331e94761f9579e2d1a5928675"><td class="memTemplParams" colspan="2">template&lt;typename Test , typename... Args&gt; </td></tr>
+<tr class="memitem:a054b35331e94761f9579e2d1a5928675"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a054b35331e94761f9579e2d1a5928675">bench_test</a> (std::string const &amp;title, Test &amp;&amp;test_callable, Args &amp;&amp;...args)</td></tr>
+<tr class="separator:a054b35331e94761f9579e2d1a5928675"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5094b58cb0ea811c9ebe893aacb0475d"><td class="memTemplParams" colspan="2">template&lt;typename Test , typename... Args&gt; </td></tr>
+<tr class="memitem:a5094b58cb0ea811c9ebe893aacb0475d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5094b58cb0ea811c9ebe893aacb0475d">bench_test2</a> (std::string const &amp;title, Test &amp;&amp;test_callable, size_t item_count, Args &amp;&amp;...args)</td></tr>
+<tr class="separator:a5094b58cb0ea811c9ebe893aacb0475d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86ebd4fe28135338705c246f578360fd"><td class="memTemplParams" colspan="2">template&lt;typename F &gt; </td></tr>
+<tr class="memitem:a86ebd4fe28135338705c246f578360fd"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a86ebd4fe28135338705c246f578360fd">benchmark</a> (F &amp;&amp;func)</td></tr>
+<tr class="separator:a86ebd4fe28135338705c246f578360fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a695ab0dfdc42feb15abfe8624057b078"><td class="memTemplParams" colspan="2">template&lt;typename ChildOrder  = UnorderedWalk, typename T , typename Function &gt; </td></tr>
 <tr class="memitem:a695ab0dfdc42feb15abfe8624057b078"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a695ab0dfdc42feb15abfe8624057b078">bfs_walk</a> (<a class="el" href="structdaw_1_1graph__t.html">daw::graph_t</a>&lt; T &gt; &amp;graph, <a class="el" href="classdaw_1_1node__id__t.html">daw::node_id_t</a> start_node_id, Function &amp;&amp;func, ChildOrder ord=ChildOrder{ })</td></tr>
 <tr class="separator:a695ab0dfdc42feb15abfe8624057b078"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1319,18 +1319,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a566139e322866bf682720a79da2bb8b4"><td class="memTemplParams" colspan="2">template&lt;typename Result &gt; </td></tr>
 <tr class="memitem:a566139e322866bf682720a79da2bb8b4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1expected__t.html">expected_t</a>&lt; Result &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a566139e322866bf682720a79da2bb8b4">expected_from_exception</a> (std::exception_ptr ptr)</td></tr>
 <tr class="separator:a566139e322866bf682720a79da2bb8b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf604c8bc29ceb3a56777c9af3a16777"><td class="memTemplParams" colspan="2">template&lt;typename Bool &gt; </td></tr>
-<tr class="memitem:abf604c8bc29ceb3a56777c9af3a16777"><td class="memTemplItemLeft" align="right" valign="top">static constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#abf604c8bc29ceb3a56777c9af3a16777">expecting</a> (Bool const &amp;expected_result)</td></tr>
-<tr class="separator:abf604c8bc29ceb3a56777c9af3a16777"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02530c7bceaa37756eb5109633ae92c8"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U &gt; </td></tr>
-<tr class="memitem:a02530c7bceaa37756eb5109633ae92c8"><td class="memTemplItemLeft" align="right" valign="top">static constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a02530c7bceaa37756eb5109633ae92c8">expecting</a> (T &amp;&amp;expected_result, U &amp;&amp;result)</td></tr>
-<tr class="separator:a02530c7bceaa37756eb5109633ae92c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15326c0dca044c226fd70b7ca6da2026"><td class="memTemplParams" colspan="2">template&lt;typename Exception  = std::exception, typename Expression , typename Predicate  = benchmark_impl::always_true, std::enable_if_t&lt; std::is_invocable_v&lt; Predicate, Exception &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
-<tr class="memitem:a15326c0dca044c226fd70b7ca6da2026"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a15326c0dca044c226fd70b7ca6da2026">expecting_exception</a> (Expression &amp;&amp;expression, Predicate &amp;&amp;pred=Predicate{ })</td></tr>
-<tr class="separator:a15326c0dca044c226fd70b7ca6da2026"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc6000a80da31d513bd600232547f214"><td class="memTemplParams" colspan="2">template&lt;typename Bool , typename String &gt; </td></tr>
-<tr class="memitem:abc6000a80da31d513bd600232547f214"><td class="memTemplItemLeft" align="right" valign="top">static constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#abc6000a80da31d513bd600232547f214">expecting_message</a> (Bool const &amp;expected_result, <a class="el" href="namespacedaw.html#a8cf6cf09ea1d790653ac648d7ae5470f">String</a> &amp;&amp;message)</td></tr>
-<tr class="separator:abc6000a80da31d513bd600232547f214"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4403ac9dba2caba431236c579b3b8f70"><td class="memTemplParams" colspan="2">template&lt;typename Bool &gt; </td></tr>
+<tr class="memitem:a4403ac9dba2caba431236c579b3b8f70"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a4403ac9dba2caba431236c579b3b8f70">expecting</a> (Bool const &amp;expected_result)</td></tr>
+<tr class="separator:a4403ac9dba2caba431236c579b3b8f70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fe12d5132194e0639e1a033ef411be6"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U &gt; </td></tr>
+<tr class="memitem:a9fe12d5132194e0639e1a033ef411be6"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a9fe12d5132194e0639e1a033ef411be6">expecting</a> (T &amp;&amp;expected_result, U &amp;&amp;result)</td></tr>
+<tr class="separator:a9fe12d5132194e0639e1a033ef411be6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace0768b9b59c3d603ca7d1b774e37f23"><td class="memTemplParams" colspan="2">template&lt;typename Exception  = std::exception, typename Expression , typename Predicate  = benchmark_impl::always_true, std::enable_if_t&lt; std::is_invocable_v&lt; Predicate, Exception &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:ace0768b9b59c3d603ca7d1b774e37f23"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ace0768b9b59c3d603ca7d1b774e37f23">expecting_exception</a> (Expression &amp;&amp;expression, Predicate &amp;&amp;pred=Predicate{ })</td></tr>
+<tr class="separator:ace0768b9b59c3d603ca7d1b774e37f23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0efbb3413cf9f6dbb6b5113ff0ae7f1a"><td class="memTemplParams" colspan="2">template&lt;typename Bool , typename String &gt; </td></tr>
+<tr class="memitem:a0efbb3413cf9f6dbb6b5113ff0ae7f1a"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0efbb3413cf9f6dbb6b5113ff0ae7f1a">expecting_message</a> (Bool &amp;&amp;expected_result, <a class="el" href="namespacedaw.html#a8cf6cf09ea1d790653ac648d7ae5470f">String</a> &amp;&amp;message)</td></tr>
+<tr class="separator:a0efbb3413cf9f6dbb6b5113ff0ae7f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5fa81cb43642031d2351585938aa8ad3"><td class="memTemplParams" colspan="2">template&lt;typename Iterator1 , typename Iterator2 , typename Pred &gt; </td></tr>
 <tr class="memitem:a5fa81cb43642031d2351585938aa8ad3"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; Iterator1 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5fa81cb43642031d2351585938aa8ad3">find_all_where</a> (Iterator1 first, Iterator2 const last, Pred predicate)</td></tr>
 <tr class="separator:a5fa81cb43642031d2351585938aa8ad3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3598,9 +3598,9 @@ Functions</h2></td></tr>
 <tr class="memitem:afceea63ec8cae06c61f50c8b90db4169"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacedaw.html#aa15143615eafa17e2f67743ec70cfca3">Integer</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#afceea63ec8cae06c61f50c8b90db4169">set_bits</a> (<a class="el" href="namespacedaw.html#aa15143615eafa17e2f67743ec70cfca3">Integer</a> i, Bit b, Bits... bs) noexcept</td></tr>
 <tr class="memdesc:afceea63ec8cae06c61f50c8b90db4169"><td class="mdescLeft">&#160;</td><td class="mdescRight">set bits at positions specified by b,bs...  <a href="namespacedaw.html#afceea63ec8cae06c61f50c8b90db4169">More...</a><br /></td></tr>
 <tr class="separator:afceea63ec8cae06c61f50c8b90db4169"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9609dca8712940be2abfd414ad587a91"><td class="memTemplParams" colspan="2">template&lt;typename Func &gt; </td></tr>
-<tr class="memitem:a9609dca8712940be2abfd414ad587a91"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a9609dca8712940be2abfd414ad587a91">show_benchmark</a> (size_t data_size_bytes, std::string const &amp;title, Func &amp;&amp;func, size_t data_prec=1, size_t time_prec=0, size_t item_count=1)</td></tr>
-<tr class="separator:a9609dca8712940be2abfd414ad587a91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e69ac131525cc6277f29239b2e0ab95"><td class="memTemplParams" colspan="2">template&lt;typename Func &gt; </td></tr>
+<tr class="memitem:a3e69ac131525cc6277f29239b2e0ab95"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3e69ac131525cc6277f29239b2e0ab95">show_benchmark</a> (size_t data_size_bytes, std::string const &amp;title, Func &amp;&amp;func, size_t data_prec=1, size_t time_prec=0, size_t item_count=1)</td></tr>
+<tr class="separator:a3e69ac131525cc6277f29239b2e0ab95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7341ff50ee7640dee12530a966e3c78"><td class="memTemplParams" colspan="2">template&lt;typename RandomIterator &gt; </td></tr>
 <tr class="memitem:ad7341ff50ee7640dee12530a966e3c78"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad7341ff50ee7640dee12530a966e3c78">shuffle</a> (<a class="el" href="structdaw_1_1_random_iterator.html">RandomIterator</a> first, <a class="el" href="structdaw_1_1_random_iterator.html">RandomIterator</a> last)</td></tr>
 <tr class="separator:ad7341ff50ee7640dee12530a966e3c78"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -7368,8 +7368,8 @@ template&lt;typename Container &gt; </div>
 
 </div>
 </div>
-<a id="a5c5ba0ab1ba19c8a9d35082d2ce7abea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c5ba0ab1ba19c8a9d35082d2ce7abea">&#9670;&nbsp;</a></span>bench_n_test()</h2>
+<a id="a7853f21e23dd720959725b205ac01c60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7853f21e23dd720959725b205ac01c60">&#9670;&nbsp;</a></span>bench_n_test()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7380,7 +7380,7 @@ template&lt;size_t Runs, char delem = '\n', typename Test , typename... Args&gt;
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static auto daw::bench_n_test </td>
+          <td class="memname"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> auto daw::bench_n_test </td>
           <td>(</td>
           <td class="paramtype">std::string const &amp;&#160;</td>
           <td class="paramname"><em>title</em>, </td>
@@ -7405,17 +7405,35 @@ template&lt;size_t Runs, char delem = '\n', typename Test , typename... Args&gt;
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Runs</td><td>Number of runs to do </td></tr>
+    <tr><td class="paramname">delem</td><td>delemiter in output </td></tr>
+    <tr><td class="paramname">Test</td><td>Callable type to benchmark </td></tr>
+    <tr><td class="paramname">Args</td><td>types passed to callable </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">title</td><td>Title of benchmark </td></tr>
+    <tr><td class="paramname">test_callable</td><td>callable to benchmark </td></tr>
+    <tr><td class="paramname">args</td><td>arg values to pass to callable </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>last value from callable </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00183">183</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00199">199</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
 
 </div>
 </div>
-<a id="a5aac20bdbb059064f4d3e13a0654c8a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5aac20bdbb059064f4d3e13a0654c8a8">&#9670;&nbsp;</a></span>bench_n_test_json()</h2>
+<a id="a45db6379dbd2ff42a478c7ec88ef8f18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45db6379dbd2ff42a478c7ec88ef8f18">&#9670;&nbsp;</a></span>bench_n_test_json()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7426,7 +7444,7 @@ template&lt;size_t Runs, typename Function , typename... Args&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static std::vector&lt;std::chrono::nanoseconds&gt; daw::bench_n_test_json </td>
+          <td class="memname"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> std::vector&lt;std::chrono::nanoseconds&gt; daw::bench_n_test_json </td>
           <td>(</td>
           <td class="paramtype">Function &amp;&amp;&#160;</td>
           <td class="paramname"><em>func</em>, </td>
@@ -7445,17 +7463,33 @@ template&lt;size_t Runs, typename Function , typename... Args&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Runs</td><td>Number of runs </td></tr>
+    <tr><td class="paramname">Function</td><td>Callable type to be timed </td></tr>
+    <tr><td class="paramname">Args</td><td>types to pass to callable </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">func</td><td>Callable value to bench </td></tr>
+    <tr><td class="paramname">args</td><td>args values to pass to func </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>last result timing counts of runs </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00431">431</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00456">456</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
 
 </div>
 </div>
-<a id="aaa56d8f559e3feb671bc509c6de0a7db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa56d8f559e3feb671bc509c6de0a7db">&#9670;&nbsp;</a></span>bench_n_test_json_val()</h2>
+<a id="a95e24320da37ba5f66dcaf2b0e84fd32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95e24320da37ba5f66dcaf2b0e84fd32">&#9670;&nbsp;</a></span>bench_n_test_json_val()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7466,7 +7500,7 @@ template&lt;size_t Runs, typename Validator , typename Function , typename... Ar
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static std::vector&lt;std::chrono::nanoseconds&gt; daw::bench_n_test_json_val </td>
+          <td class="memname"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> std::vector&lt;std::chrono::nanoseconds&gt; daw::bench_n_test_json_val </td>
           <td>(</td>
           <td class="paramtype">Validator &amp;&amp;&#160;</td>
           <td class="paramname"><em>validator</em>, </td>
@@ -7491,17 +7525,35 @@ template&lt;size_t Runs, typename Validator , typename Function , typename... Ar
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Runs</td><td>Number of runs </td></tr>
+    <tr><td class="paramname">Validator</td><td>Callable to validate results </td></tr>
+    <tr><td class="paramname">Function</td><td>Callable type to be timed </td></tr>
+    <tr><td class="paramname">Args</td><td>types to pass to callable </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">validator</td><td>validatio object that takes func's result as arg </td></tr>
+    <tr><td class="paramname">func</td><td>Callable value to bench </td></tr>
+    <tr><td class="paramname">args</td><td>args values to pass to func </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>last result timing counts of runs </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00484">484</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00508">508</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
 
 </div>
 </div>
-<a id="ae8d3a2857df35215e5f9d852b6c13958"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8d3a2857df35215e5f9d852b6c13958">&#9670;&nbsp;</a></span>bench_n_test_mbs()</h2>
+<a id="a58a023e77d444ef42239df4a6ee38483"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58a023e77d444ef42239df4a6ee38483">&#9670;&nbsp;</a></span>bench_n_test_mbs()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7512,7 +7564,7 @@ template&lt;size_t Runs, char delem = '\n', typename Test , typename... Args&gt;
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static auto daw::bench_n_test_mbs </td>
+          <td class="memname"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> auto daw::bench_n_test_mbs </td>
           <td>(</td>
           <td class="paramtype">std::string const &amp;&#160;</td>
           <td class="paramname"><em>title</em>, </td>
@@ -7532,7 +7584,7 @@ template&lt;size_t Runs, char delem = '\n', typename Test , typename... Args&gt;
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Args const &amp;...&#160;</td>
+          <td class="paramtype">Args &amp;&amp;...&#160;</td>
           <td class="paramname"><em>args</em>&#160;</td>
         </tr>
         <tr>
@@ -7543,17 +7595,17 @@ template&lt;size_t Runs, char delem = '\n', typename Test , typename... Args&gt;
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00331">331</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00352">352</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
 
 </div>
 </div>
-<a id="a27943bb38cb132d08dd200f2599b447a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a27943bb38cb132d08dd200f2599b447a">&#9670;&nbsp;</a></span>bench_n_test_mbs2()</h2>
+<a id="a077e401d8ed6a160eba46e544b46a14e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a077e401d8ed6a160eba46e544b46a14e">&#9670;&nbsp;</a></span>bench_n_test_mbs2()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7564,7 +7616,7 @@ template&lt;size_t Runs, char delem = '\n', typename Validator , typename Functi
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static std::array&lt;double, Runs&gt; daw::bench_n_test_mbs2 </td>
+          <td class="memname"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> std::array&lt;double, Runs&gt; daw::bench_n_test_mbs2 </td>
           <td>(</td>
           <td class="paramtype">std::string const &amp;&#160;</td>
           <td class="paramname">, </td>
@@ -7601,28 +7653,46 @@ template&lt;size_t Runs, char delem = '\n', typename Validator , typename Functi
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Runs</td><td>Number of runs </td></tr>
+    <tr><td class="paramname">delem</td><td>Delemiter in output </td></tr>
+    <tr><td class="paramname">Validator</td><td>Callable to validate results </td></tr>
+    <tr><td class="paramname">Function</td><td>Callable type to be timed </td></tr>
+    <tr><td class="paramname">Args</td><td>types to pass to callable </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">title</td><td>Title for output </td></tr>
+    <tr><td class="paramname">bytes</td><td>Size of data in bytes </td></tr>
+    <tr><td class="paramname">validator</td><td>validatio object that takes func's result as arg </td></tr>
+    <tr><td class="paramname">func</td><td>Callable value to bench </td></tr>
+    <tr><td class="paramname">args</td><td>args values to pass to func </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>last result timing counts of runs </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00279">279</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00296">296</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
 
 </div>
 </div>
-<a id="aca28ab6a2db0ef72068bb9be514d91d6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca28ab6a2db0ef72068bb9be514d91d6">&#9670;&nbsp;</a></span>bench_test()</h2>
+<a id="a054b35331e94761f9579e2d1a5928675"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a054b35331e94761f9579e2d1a5928675">&#9670;&nbsp;</a></span>bench_test()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename Test , typename... Args&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static auto daw::bench_test </td>
+          <td class="memname"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> auto daw::bench_test </td>
           <td>(</td>
           <td class="paramtype">std::string const &amp;&#160;</td>
           <td class="paramname"><em>title</em>, </td>
@@ -7645,30 +7715,22 @@ template&lt;typename Test , typename... Args&gt; </div>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00138">138</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00136">136</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
 
 </div>
 </div>
-<a id="a8396935429fb9b61a04b270fa560d9a4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8396935429fb9b61a04b270fa560d9a4">&#9670;&nbsp;</a></span>bench_test2()</h2>
+<a id="a5094b58cb0ea811c9ebe893aacb0475d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5094b58cb0ea811c9ebe893aacb0475d">&#9670;&nbsp;</a></span>bench_test2()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename Test , typename... Args&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static auto daw::bench_test2 </td>
+          <td class="memname"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> auto daw::bench_test2 </td>
           <td>(</td>
           <td class="paramtype">std::string const &amp;&#160;</td>
           <td class="paramname"><em>title</em>, </td>
@@ -7697,41 +7759,28 @@ template&lt;typename Test , typename... Args&gt; </div>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00151">151</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00159">159</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
 
 </div>
 </div>
-<a id="abb9b840092ac13f40d80ad40c11fe06f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abb9b840092ac13f40d80ad40c11fe06f">&#9670;&nbsp;</a></span>benchmark()</h2>
+<a id="a86ebd4fe28135338705c246f578360fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86ebd4fe28135338705c246f578360fd">&#9670;&nbsp;</a></span>benchmark()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename F &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static double daw::benchmark </td>
+          <td class="memname"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> double daw::benchmark </td>
           <td>(</td>
           <td class="paramtype">F &amp;&amp;&#160;</td>
           <td class="paramname"><em>func</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00036">36</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
@@ -10562,7 +10611,7 @@ template&lt;typename Result , typename Function , typename... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00397">397</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00403">403</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -10594,7 +10643,7 @@ template&lt;typename Function , typename... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00409">409</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00415">415</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -10615,7 +10664,7 @@ template&lt;typename Result &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00418">418</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00423">423</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -10637,12 +10686,12 @@ template&lt;typename Result &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00424">424</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00429">429</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
-<a id="abf604c8bc29ceb3a56777c9af3a16777"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf604c8bc29ceb3a56777c9af3a16777">&#9670;&nbsp;</a></span>expecting() <span class="overload">[1/2]</span></h2>
+<a id="a4403ac9dba2caba431236c579b3b8f70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4403ac9dba2caba431236c579b3b8f70">&#9670;&nbsp;</a></span>expecting() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10653,7 +10702,7 @@ template&lt;typename Bool &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static constexpr void daw::expecting </td>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> void daw::expecting </td>
           <td>(</td>
           <td class="paramtype">Bool const &amp;&#160;</td>
           <td class="paramname"><em>expected_result</em></td><td>)</td>
@@ -10662,17 +10711,17 @@ template&lt;typename Bool &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00574">574</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00602">602</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
 
 </div>
 </div>
-<a id="a02530c7bceaa37756eb5109633ae92c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a02530c7bceaa37756eb5109633ae92c8">&#9670;&nbsp;</a></span>expecting() <span class="overload">[2/2]</span></h2>
+<a id="a9fe12d5132194e0639e1a033ef411be6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fe12d5132194e0639e1a033ef411be6">&#9670;&nbsp;</a></span>expecting() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10683,7 +10732,7 @@ template&lt;typename T , typename U &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static constexpr void daw::expecting </td>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> void daw::expecting </td>
           <td>(</td>
           <td class="paramtype">T &amp;&amp;&#160;</td>
           <td class="paramname"><em>expected_result</em>, </td>
@@ -10702,28 +10751,25 @@ template&lt;typename T , typename U &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00558">558</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00587">587</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
 
 </div>
 </div>
-<a id="a15326c0dca044c226fd70b7ca6da2026"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15326c0dca044c226fd70b7ca6da2026">&#9670;&nbsp;</a></span>expecting_exception()</h2>
+<a id="ace0768b9b59c3d603ca7d1b774e37f23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace0768b9b59c3d603ca7d1b774e37f23">&#9670;&nbsp;</a></span>expecting_exception()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename Exception  = std::exception, typename Expression , typename Predicate  = benchmark_impl::always_true, std::enable_if_t&lt; std::is_invocable_v&lt; Predicate, Exception &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void daw::expecting_exception </td>
+          <td class="memname"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> void daw::expecting_exception </td>
           <td>(</td>
           <td class="paramtype">Expression &amp;&amp;&#160;</td>
           <td class="paramname"><em>expression</em>, </td>
@@ -10740,19 +10786,14 @@ template&lt;typename Exception  = std::exception, typename Expression , typename
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00607">607</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00635">635</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
 
 </div>
 </div>
-<a id="abc6000a80da31d513bd600232547f214"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc6000a80da31d513bd600232547f214">&#9670;&nbsp;</a></span>expecting_message()</h2>
+<a id="a0efbb3413cf9f6dbb6b5113ff0ae7f1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0efbb3413cf9f6dbb6b5113ff0ae7f1a">&#9670;&nbsp;</a></span>expecting_message()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10763,9 +10804,9 @@ template&lt;typename Bool , typename String &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static constexpr void daw::expecting_message </td>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> void daw::expecting_message </td>
           <td>(</td>
-          <td class="paramtype">Bool const &amp;&#160;</td>
+          <td class="paramtype">Bool &amp;&amp;&#160;</td>
           <td class="paramname"><em>expected_result</em>, </td>
         </tr>
         <tr>
@@ -10782,12 +10823,12 @@ template&lt;typename Bool , typename String &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00583">583</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00610">610</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
 
 </div>
 </div>
@@ -44490,19 +44531,16 @@ template&lt;typename Integer , typename Bit , typename... Bits&gt; </div>
 
 </div>
 </div>
-<a id="a9609dca8712940be2abfd414ad587a91"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9609dca8712940be2abfd414ad587a91">&#9670;&nbsp;</a></span>show_benchmark()</h2>
+<a id="a3e69ac131525cc6277f29239b2e0ab95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e69ac131525cc6277f29239b2e0ab95">&#9670;&nbsp;</a></span>show_benchmark()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename Func &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void daw::show_benchmark </td>
+          <td class="memname"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> void daw::show_benchmark </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>data_size_bytes</em>, </td>
@@ -44543,14 +44581,9 @@ template&lt;typename Func &gt; </div>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00119">119</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__benchmark_8h_source.html#l00118">118</a> of file <a class="el" href="daw__benchmark_8h_source.html">daw_benchmark.h</a>.</p>
 
 </div>
 </div>
