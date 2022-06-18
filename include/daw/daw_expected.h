@@ -282,6 +282,11 @@ namespace daw {
 			m_value = value_type( );
 		}
 
+		template<typename T>
+		void set_value( T && ) noexcept {
+			m_value = value_type( );
+		}
+
 		/// Summary: With value
 		expected_t &operator=( bool ) noexcept {
 			set_value( );

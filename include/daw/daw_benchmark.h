@@ -136,13 +136,23 @@ namespace daw {
 	template<typename Test, typename... Args>
 	[[maybe_unused]] static auto
 	bench_test( std::string const &title, Test &&test_callable, Args &&...args ) {
-		auto const start = std::chrono::steady_clock::now( );
-		auto result = daw::expected_from_code( DAW_FWD2( Test, test_callable ),
-		                                       DAW_FWD2( Args, args )... );
-		auto const finish = std::chrono::steady_clock::now( );
-		benchmark_impl::second_duration const duration = finish - start;
-		std::cout << title << " took "
-		          << utility::format_seconds( duration.count( ), 2 ) << '\n';
+		static_assert( std::is_invocable_v<Test, Args...>,
+		               "Unable to call Test with provided Args" );
+		using result_t = std::invoke_result_t<Test, Args...>;
+		auto result = daw::expected_t<result_t>{ };
+		try {
+			auto const start = std::chrono::steady_clock::now( );
+			if constexpr( std::is_same_v<result_t, void> ) {
+				DAW_FWD( test_callable )( DAW_FWD( args )... );
+				result.set_value( );
+			} else {
+				result.set_value( DAW_FWD( test_callable )( DAW_FWD( args )... ) );
+			}
+			auto const finish = std::chrono::steady_clock::now( );
+			benchmark_impl::second_duration const duration = finish - start;
+			std::cout << title << " took "
+			          << utility::format_seconds( duration.count( ), 2 ) << '\n';
+		} catch( ... ) { result.set_exception( ); }
 		return result;
 	}
 
@@ -150,44 +160,49 @@ namespace daw {
 	[[maybe_unused]] static auto
 	bench_test2( std::string const &title, Test &&test_callable,
 	             size_t item_count, Args &&...args ) {
-		auto const start = std::chrono::steady_clock::now( );
-		auto result = daw::expected_from_code( DAW_FWD2( Test, test_callable ),
-		                                       DAW_FWD2( Args, args )... );
-		auto const finish = std::chrono::steady_clock::now( );
-		benchmark_impl::second_duration const duration = finish - start;
-		std::cout << title << " took "
-		          << utility::format_seconds( duration.count( ), 2 );
-		if( item_count > 1 ) {
-			std::cout << " to process " << item_count << " items at "
-			          << utility::format_seconds( ( duration / item_count ).count( ),
-			                                      2 )
-			          << " per item\n";
-		} else {
-			std::cout << '\n';
-		}
+		static_assert( std::is_invocable_v<Test, Args...>,
+		               "Unable to call Test with provided Args" );
+		using result_t = std::invoke_result_t<Test, Args...>;
+		auto result = daw::expected_t<result_t>{ };
+		try {
+			auto const start = std::chrono::steady_clock::now( );
+			if constexpr( std::is_same_v<result_t, void> ) {
+				DAW_FWD( test_callable )( DAW_FWD( args )... );
+				result.set_value( );
+			} else {
+				result.set_value( DAW_FWD( test_callable )( DAW_FWD( args )... ) );
+			}
+			auto const finish = std::chrono::steady_clock::now( );
+			benchmark_impl::second_duration const duration = finish - start;
+			std::cout << title << " took "
+			          << utility::format_seconds( duration.count( ), 2 );
+			if( item_count > 1 ) {
+				std::cout << " to process " << item_count << " items at "
+				          << utility::format_seconds(
+				               ( duration / item_count ).count( ), 2 )
+				          << " per item\n";
+			} else {
+				std::cout << '\n';
+			}
+		} catch( ... ) { result.set_exception( ); }
 		return result;
 	}
 
-	/***
-	 *
-	 * @tparam Runs Number of runs to do
-	 * @tparam delem delemiter in output
-	 * @tparam Test Callable type to benchmark
-	 * @tparam Args types passed to callable
-	 * @param title Title of benchmark
-	 * @param test_callable callable to benchmark
-	 * @param args arg values to pass to callable
-	 * @return last value from callable
-	 */
+	/// @tparam Runs Number of runs to do
+	/// @tparam delem delemiter in output
+	/// @tparam Test Callable type to benchmark
+	/// @tparam Args types passed to callable
+	/// @param title Title of benchmark
+	/// @param test_callable callable to benchmark
+	/// @param args arg values to pass to callable
+	/// @return last value from callable
 	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
 	[[maybe_unused]] static auto bench_n_test( std::string const &title,
 	                                           Test &&test_callable,
 	                                           Args &&...args ) noexcept {
 		static_assert( Runs > 0 );
-		using result_t = DAW_TYPEOF(
-		  daw::expected_from_code( test_callable, DAW_FWD2( Args, args )... ) );
-
-		result_t result{ };
+		static_assert( std::is_invocable_v<Test, Args...>,
+		               "Unable to call Test with provided Args" );
 
 		double base_time = ( std::numeric_limits<double>::max )( );
 		{
@@ -212,15 +227,21 @@ namespace daw {
 		}
 		double min_time = ( std::numeric_limits<double>::max )( );
 		double max_time = 0.0;
+		using result_t = std::invoke_result_t<Test, Args...>;
+		auto result = daw::expected_t<result_t>{ };
 
 		auto const total_start = std::chrono::steady_clock::now( );
 		for( size_t n = 0; n < Runs; ++n ) {
 			daw::do_not_optimize( args... );
 			auto const start = std::chrono::steady_clock::now( );
-
-			result =
-			  daw::expected_from_code( DAW_FWD2( Test, test_callable ), args... );
-
+			try {
+				if constexpr( std::is_same_v<result_t, void> ) {
+					test_callable( args... );
+					result.set_value( );
+				} else {
+					result.set_value( test_callable( args... ) );
+				}
+			} catch( ... ) { result.set_exception( ); }
 			auto const finish = std::chrono::steady_clock::now( );
 			daw::do_not_optimize( result );
 			auto const duration =
@@ -259,28 +280,30 @@ namespace daw {
 		return result;
 	}
 
-	/***
-	 *
-	 * @tparam Runs Number of runs
-	 * @tparam delem Delemiter in output
-	 * @tparam Validator Callable to validate results
-	 * @tparam Function Callable type to be timed
-	 * @tparam Args types to pass to callable
-	 * @param title Title for output
-	 * @param bytes Size of data in bytes
-	 * @param validator validatio object that takes func's result as arg
-	 * @param func Callable value to bench
-	 * @param args args values to pass to func
-	 * @return last result timing counts of runs
-	 */
+	/// @tparam Runs Number of runs
+	/// @tparam delem Delemiter in output
+	/// @tparam Validator Callable to validate results
+	/// @tparam Function Callable type to be timed
+	/// @tparam Args types to pass to callable
+	/// @param title Title for output
+	/// @param bytes Size of data in bytes
+	/// @param validator validatio object that takes func's result as arg
+	/// @param func Callable value to bench
+	/// @param args args values to pass to func
+	/// @return last result timing counts of runs
 	template<size_t Runs, char delem = '\n', typename Validator,
 	         typename Function, typename... Args>
 	[[maybe_unused]] static std::array<double, Runs>
 	bench_n_test_mbs2( std::string const &, size_t, Validator &&validator,
 	                   Function &&func, Args &&...args ) noexcept {
 		static_assert( Runs > 0 );
-		auto results = std::array<double, Runs>{ };
+		static_assert( std::is_invocable_v<Function, Args...>,
+		               "Unable to call Function with provided Args" );
+		static_assert(
+		  std::is_invocable_v<Validator, std::invoke_result_t<Function, Args...>>,
+		  "Validator must be callable with the results of Function" );
 
+		auto results = std::array<double, Runs>{ };
 		double base_time = ( std::numeric_limits<double>::max )( );
 		{
 			for( size_t n = 0; n < 1000; ++n ) {
@@ -306,9 +329,8 @@ namespace daw {
 		benchmark_impl::second_duration valid_time = std::chrono::seconds( 0 );
 		for( size_t n = 0; n < Runs; ++n ) {
 			auto const start = std::chrono::steady_clock::now( );
-			using result_t = DAW_TYPEOF( func( args... ) );
-			result_t result;
-			result = *daw::expected_from_code( func, args... );
+			using result_t = std::invoke_result_t<Function, Args...>;
+			result_t result = func( args... );
 			auto const finish = std::chrono::steady_clock::now( );
 			daw::do_not_optimize( result );
 			auto const valid_start = std::chrono::steady_clock::now( );
@@ -329,12 +351,10 @@ namespace daw {
 	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
 	[[maybe_unused]] static auto
 	bench_n_test_mbs( std::string const &title, size_t bytes,
-	                  Test &&test_callable, Args const &...args ) noexcept {
+	                  Test &&test_callable, Args &&...args ) noexcept {
 		static_assert( Runs > 0 );
-		using result_t =
-		  DAW_TYPEOF( daw::expected_from_code( test_callable, args... ) );
-
-		result_t result{ };
+		static_assert( std::is_invocable_v<Test, Args...>,
+		               "Unable to call Test with provided Args" );
 
 		double base_time = ( std::numeric_limits<double>::max )( );
 		{
@@ -360,25 +380,34 @@ namespace daw {
 		double min_time = ( std::numeric_limits<double>::max )( );
 		double max_time = 0.0;
 
+		using result_t = std::invoke_result_t<Test, Args...>;
+		auto result = daw::expected_t<result_t>{ };
+
 		auto const total_start = std::chrono::steady_clock::now( );
 		for( size_t n = 0; n < Runs; ++n ) {
-			std::chrono::time_point<std::chrono::steady_clock,
-			                        std::chrono::nanoseconds>
-			  start = std::chrono::steady_clock::now( );
-			result = daw::expected_from_code( test_callable, args... );
-			auto const finish = std::chrono::steady_clock::now( );
-			daw::do_not_optimize( result );
-			auto const duration =
-			  benchmark_impl::second_duration( finish - start ).count( );
-			if( duration < min_time ) {
-				min_time = duration;
-			}
-			if( duration > max_time ) {
-				max_time = duration;
-			}
-			if( not result.has_value( ) ) {
-				break;
-			}
+			result.clear( );
+			try {
+				auto const start = std::chrono::steady_clock::now( );
+				if constexpr( std::is_same_v<result_t, void> ) {
+					test_callable( args... );
+					result.set_value( );
+				} else {
+					result.set_value( test_callable( args... ) );
+				}
+				auto const finish = std::chrono::steady_clock::now( );
+				daw::do_not_optimize( result );
+				auto const duration =
+				  benchmark_impl::second_duration( finish - start ).count( );
+				if( duration < min_time ) {
+					min_time = duration;
+				}
+				if( duration > max_time ) {
+					max_time = duration;
+				}
+				if( not result.has_value( ) ) {
+					break;
+				}
+			} catch( ... ) { result.set_exception( ); }
 		}
 		auto const total_finish = std::chrono::steady_clock::now( );
 		min_time -= base_time;
@@ -417,20 +446,18 @@ namespace daw {
 		return result;
 	} // namespace daw
 
-	/***
-	 *
-	 * @tparam Runs Number of runs
-	 * @tparam Function Callable type to be timed
-	 * @tparam Args types to pass to callable
-	 * @param func Callable value to bench
-	 * @param args args values to pass to func
-	 * @return last result timing counts of runs
-	 */
+	/// @tparam Runs Number of runs
+	/// @tparam Function Callable type to be timed
+	/// @tparam Args types to pass to callable
+	/// @param func Callable value to bench
+	/// @param args args values to pass to func
+	/// @return last result timing counts of runs
 	template<size_t Runs, typename Function, typename... Args>
 	[[maybe_unused]] static std::vector<std::chrono::nanoseconds>
 	bench_n_test_json( Function &&func, Args &&...args ) noexcept {
 		static_assert( Runs > 0 );
-		std::vector<std::chrono::nanoseconds> results( Runs );
+		static_assert( std::is_invocable_v<Function, Args...>,
+		               "Unable to call Test with provided Args" );
 
 		auto base_time =
 		  std::chrono::nanoseconds( ( std::numeric_limits<long long>::max )( ) );
@@ -454,12 +481,13 @@ namespace daw {
 				}
 			}
 		}
-		// using result_t = DAW_TYPEOF( func( args... ) );
+		auto results = std::vector<std::chrono::nanoseconds>( Runs );
 
 		for( size_t n = 0; n < Runs; ++n ) {
 			auto const start = std::chrono::steady_clock::now( );
-			func( args... );
+			auto r = func( args... );
 			auto const finish = std::chrono::steady_clock::now( );
+			daw::do_not_optimize( r );
 
 			auto const duration =
 			  std::chrono::nanoseconds( finish - start ) - base_time;
@@ -468,23 +496,24 @@ namespace daw {
 		return results;
 	}
 
-	/***
-	 *
-	 * @tparam Runs Number of runs
-	 * @tparam Validator Callable to validate results
-	 * @tparam Function Callable type to be timed
-	 * @tparam Args types to pass to callable
-	 * @param validator validatio object that takes func's result as arg
-	 * @param func Callable value to bench
-	 * @param args args values to pass to func
-	 * @return last result timing counts of runs
-	 */
+	/// @tparam Runs Number of runs
+	/// @tparam Validator Callable to validate results
+	/// @tparam Function Callable type to be timed
+	/// @tparam Args types to pass to callable
+	/// @param validator validatio object that takes func's result as arg
+	/// @param func Callable value to bench
+	/// @param args args values to pass to func
+	/// @return last result timing counts of runs
 	template<size_t Runs, typename Validator, typename Function, typename... Args>
 	[[maybe_unused]] static std::vector<std::chrono::nanoseconds>
 	bench_n_test_json_val( Validator &&validator, Function &&func,
 	                       Args &&...args ) noexcept {
 		static_assert( Runs > 0 );
-		std::vector<std::chrono::nanoseconds> results( Runs );
+		static_assert( std::is_invocable_v<Function, Args...>,
+		               "Unable to call Test with provided Args" );
+		static_assert(
+		  std::is_invocable_v<Validator, std::invoke_result_t<Function, Args...>>,
+		  "Validator must be callable with the results of Function" );
 
 		auto base_time =
 		  std::chrono::nanoseconds( ( std::numeric_limits<long long>::max )( ) );
@@ -508,14 +537,15 @@ namespace daw {
 				}
 			}
 		}
-		using result_t = DAW_TYPEOF( func( args... ) );
+
+		auto results = std::vector<std::chrono::nanoseconds>( Runs );
 
 		for( size_t n = 0; n < Runs; ++n ) {
 			auto const start = std::chrono::steady_clock::now( );
-			result_t result = *daw::expected_from_code( func, args... );
+			auto result = func( args... );
 			auto const finish = std::chrono::steady_clock::now( );
 			daw::do_not_optimize( result );
-			if( not validator( result ) ) {
+			if( not validator( DAW_MOVE( result ) ) ) {
 				std::cerr << "Error validating result\n";
 				std::abort( );
 			}
