@@ -33,7 +33,7 @@ namespace daw {
 	} // namespace benchmark_impl
 
 	template<typename F>
-	[[maybe_unused]] static inline double benchmark( F &&func ) {
+	DAW_ATTRIB_NOINLINE double benchmark( F &&func ) {
 		static_assert( std::is_invocable_v<F>, "func must accept no arguments" );
 		auto start = std::chrono::steady_clock::now( );
 		(void)DAW_FWD2( F, func )( );
@@ -44,8 +44,7 @@ namespace daw {
 
 	namespace utility {
 		template<typename T>
-		[[maybe_unused, nodiscard]] inline std::string
-		format_seconds( T t, size_t prec = 0 ) {
+		[[nodiscard]] std::string format_seconds( T t, size_t prec = 0 ) {
 			std::stringstream ss;
 			ss << std::setprecision( static_cast<int>( prec ) ) << std::fixed;
 			auto val = static_cast<double>( t ) * 1'000'000'000'000'000.0;
@@ -79,8 +78,8 @@ namespace daw {
 		}
 
 		template<typename Bytes, typename Time = double>
-		[[maybe_unused]] inline std::string
-		to_bytes_per_second( Bytes bytes, Time t = 1.0, size_t prec = 1 ) {
+		[[nodiscard]] std::string to_bytes_per_second( Bytes bytes, Time t = 1.0,
+		                                               size_t prec = 1 ) {
 			std::stringstream ss;
 			ss << std::setprecision( static_cast<int>( prec ) ) << std::fixed;
 			auto val = static_cast<double>( bytes ) / static_cast<double>( t );
@@ -115,7 +114,7 @@ namespace daw {
 	} // namespace utility
 
 	template<typename Func>
-	[[maybe_unused]] static void
+	DAW_ATTRIB_NOINLINE void
 	show_benchmark( size_t data_size_bytes, std::string const &title, Func &&func,
 	                size_t data_prec = 1, size_t time_prec = 0,
 	                size_t item_count = 1 ) {
@@ -134,8 +133,8 @@ namespace daw {
 	}
 
 	template<typename Test, typename... Args>
-	[[maybe_unused]] static auto
-	bench_test( std::string const &title, Test &&test_callable, Args &&...args ) {
+	DAW_ATTRIB_NOINLINE auto bench_test( std::string const &title,
+	                                     Test &&test_callable, Args &&...args ) {
 		static_assert( std::is_invocable_v<Test, Args...>,
 		               "Unable to call Test with provided Args" );
 		using result_t = std::invoke_result_t<Test, Args...>;
@@ -157,9 +156,9 @@ namespace daw {
 	}
 
 	template<typename Test, typename... Args>
-	[[maybe_unused]] static auto
-	bench_test2( std::string const &title, Test &&test_callable,
-	             size_t item_count, Args &&...args ) {
+	DAW_ATTRIB_NOINLINE auto bench_test2( std::string const &title,
+	                                      Test &&test_callable, size_t item_count,
+	                                      Args &&...args ) {
 		static_assert( std::is_invocable_v<Test, Args...>,
 		               "Unable to call Test with provided Args" );
 		using result_t = std::invoke_result_t<Test, Args...>;
@@ -197,9 +196,9 @@ namespace daw {
 	/// @param args arg values to pass to callable
 	/// @return last value from callable
 	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
-	[[maybe_unused]] static auto bench_n_test( std::string const &title,
-	                                           Test &&test_callable,
-	                                           Args &&...args ) noexcept {
+	DAW_ATTRIB_NOINLINE auto bench_n_test( std::string const &title,
+	                                       Test &&test_callable,
+	                                       Args &&...args ) noexcept {
 		static_assert( Runs > 0 );
 		static_assert( std::is_invocable_v<Test, Args...>,
 		               "Unable to call Test with provided Args" );
@@ -293,7 +292,7 @@ namespace daw {
 	/// @return last result timing counts of runs
 	template<size_t Runs, char delem = '\n', typename Validator,
 	         typename Function, typename... Args>
-	[[maybe_unused]] static std::array<double, Runs>
+	[[nodiscard]] DAW_ATTRIB_NOINLINE std::array<double, Runs>
 	bench_n_test_mbs2( std::string const &, size_t, Validator &&validator,
 	                   Function &&func, Args &&...args ) noexcept {
 		static_assert( Runs > 0 );
@@ -334,9 +333,9 @@ namespace daw {
 			auto const finish = std::chrono::steady_clock::now( );
 			daw::do_not_optimize( result );
 			auto const valid_start = std::chrono::steady_clock::now( );
-			if( not validator( result ) ) {
+			if( DAW_UNLIKELY( not validator( result ) ) ) {
 				std::cerr << "Error validating result\n";
-				std::abort( );
+				std::terminate( );
 			}
 			valid_time += benchmark_impl::second_duration(
 			  std::chrono::steady_clock::now( ) - valid_start );
@@ -349,7 +348,7 @@ namespace daw {
 	}
 
 	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
-	[[maybe_unused]] static auto
+	[[nodiscard]] DAW_ATTRIB_NOINLINE auto
 	bench_n_test_mbs( std::string const &title, size_t bytes,
 	                  Test &&test_callable, Args &&...args ) noexcept {
 		static_assert( Runs > 0 );
@@ -453,7 +452,7 @@ namespace daw {
 	/// @param args args values to pass to func
 	/// @return last result timing counts of runs
 	template<size_t Runs, typename Function, typename... Args>
-	[[maybe_unused]] static std::vector<std::chrono::nanoseconds>
+	[[nodiscard]] DAW_ATTRIB_NOINLINE std::vector<std::chrono::nanoseconds>
 	bench_n_test_json( Function &&func, Args &&...args ) noexcept {
 		static_assert( Runs > 0 );
 		static_assert( std::is_invocable_v<Function, Args...>,
@@ -505,7 +504,7 @@ namespace daw {
 	/// @param args args values to pass to func
 	/// @return last result timing counts of runs
 	template<size_t Runs, typename Validator, typename Function, typename... Args>
-	[[maybe_unused]] static std::vector<std::chrono::nanoseconds>
+	DAW_ATTRIB_NOINLINE std::vector<std::chrono::nanoseconds>
 	bench_n_test_json_val( Validator &&validator, Function &&func,
 	                       Args &&...args ) noexcept {
 		static_assert( Runs > 0 );
@@ -545,9 +544,9 @@ namespace daw {
 			auto result = func( args... );
 			auto const finish = std::chrono::steady_clock::now( );
 			daw::do_not_optimize( result );
-			if( not validator( DAW_MOVE( result ) ) ) {
+			if( DAW_UNLIKELY( not validator( DAW_MOVE( result ) ) ) ) {
 				std::cerr << "Error validating result\n";
-				std::abort( );
+				std::terminate( );
 			}
 
 			auto const duration =
@@ -569,8 +568,8 @@ namespace daw {
 		  typename T, typename U,
 		  std::enable_if_t<std::conjunction_v<is_streamable<T>, is_streamable<U>>,
 		                   std::nullptr_t> = nullptr>
-		[[maybe_unused]] void output_expected_error( T &&expected_result,
-		                                             U &&result ) {
+		DAW_ATTRIB_NOINLINE void output_expected_error( T &&expected_result,
+		                                                U &&result ) {
 			std::cerr << "Invalid result. Expecting '" << expected_result
 			          << "' but got '" << result << "'\n";
 		}
@@ -579,14 +578,14 @@ namespace daw {
 		         std::enable_if_t<std::conjunction_v<not_trait<is_streamable<T>>,
 		                                             not_trait<is_streamable<U>>>,
 		                          std::nullptr_t> = nullptr>
-		[[maybe_unused]] constexpr void output_expected_error( T &&, U && ) {
+		DAW_ATTRIB_NOINLINE constexpr void output_expected_error( T &&, U && ) {
 			std::cerr << "Invalid or unexpected result\n";
 		}
 	} // namespace benchmark_impl
 
 	template<typename T, typename U>
-	[[maybe_unused]] static constexpr void expecting( T &&expected_result,
-	                                                  U &&result ) {
+	DAW_ATTRIB_NOINLINE constexpr void expecting( T &&expected_result,
+	                                              U &&result ) {
 		if( not( expected_result == result ) ) {
 #ifdef __VERSION__
 			if constexpr( not daw::string_view( __VERSION__ )
@@ -595,26 +594,25 @@ namespace daw {
 				benchmark_impl::output_expected_error( expected_result, result );
 			}
 #endif
-			std::abort( );
+			std::terminate( );
 		}
 	}
 
 	template<typename Bool>
-	[[maybe_unused]] static constexpr void
-	expecting( Bool const &expected_result ) {
+	DAW_ATTRIB_NOINLINE constexpr void expecting( Bool const &expected_result ) {
 		if( not static_cast<bool>( expected_result ) ) {
 			std::cerr << "Invalid result. Expecting true\n";
-			std::abort( );
+			std::terminate( );
 		}
 	}
 
 	template<typename Bool, typename String>
-	[[maybe_unused]] static constexpr void
-	expecting_message( Bool const &expected_result, String &&message ) {
+	DAW_ATTRIB_NOINLINE constexpr void expecting_message( Bool &&expected_result,
+	                                                      String &&message ) {
 		do_not_optimize( expected_result );
-		if( not( expected_result ) ) {
+		if( DAW_UNLIKELY( not( expected_result ) ) ) {
 			std::cerr << message << '\n';
-			std::abort( );
+			std::terminate( );
 		}
 		(void)message;
 	}
@@ -622,7 +620,7 @@ namespace daw {
 	namespace benchmark_impl {
 		struct always_true {
 			template<typename... Args>
-			[[nodiscard, maybe_unused]] constexpr bool
+			[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
 			operator( )( Args &&... ) noexcept {
 				return true;
 			}
@@ -633,7 +631,7 @@ namespace daw {
 	         typename Predicate = benchmark_impl::always_true,
 	         std::enable_if_t<std::is_invocable_v<Predicate, Exception>,
 	                          std::nullptr_t> = nullptr>
-	[[maybe_unused]] static void
+	DAW_ATTRIB_NOINLINE void
 	expecting_exception( Expression &&expression,
 	                     Predicate &&pred = Predicate{ } ) {
 #ifdef DAW_USE_EXCEPTIONS
@@ -651,7 +649,7 @@ namespace daw {
 			std::cerr << "Unexpected exception\n";
 			throw;
 		}
-		std::abort( );
+		std::terminate( );
 #endif
 	}
 } // namespace daw
