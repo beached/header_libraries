@@ -483,10 +483,11 @@ namespace daw {
 		auto results = std::vector<std::chrono::nanoseconds>( Runs );
 
 		for( size_t n = 0; n < Runs; ++n ) {
+			daw::do_not_optimize( func );
+			daw::do_not_optimize( args... );
 			auto const start = std::chrono::steady_clock::now( );
-			auto r = func( args... );
+			(void)func( args... );
 			auto const finish = std::chrono::steady_clock::now( );
-			daw::do_not_optimize( r );
 
 			auto const duration =
 			  std::chrono::nanoseconds( finish - start ) - base_time;
