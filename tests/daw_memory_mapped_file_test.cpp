@@ -6,7 +6,8 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include "daw/daw_memory_mapped_file.h"
+#include <daw/daw_memory_mapped_file.h>
+#include <daw/daw_move.h>
 
 #include <cstdint>
 #include <fstream>
@@ -16,8 +17,8 @@
 
 template<typename String>
 void create_file( String &&str ) {
-	std::ofstream fs{ std::forward<String>( str ) };
-	if( !fs ) {
+	auto fs = std::ofstream( std::forward<String>( str ) );
+	if( not fs ) {
 		return;
 	}
 	fs << "This is a test\n";
@@ -25,8 +26,11 @@ void create_file( String &&str ) {
 
 void daw_memory_mapped_file_001( std::string const &file_name ) {
 	create_file( file_name );
-	daw::filesystem::memory_mapped_file_t<std::uint8_t> test(
+	auto test = daw::filesystem::memory_mapped_file_t<std::uint8_t>(
 	  static_cast<std::string_view>( file_name ) );
+	auto test2 = DAW_MOVE( test );
+	test2 = DAW_MOVE( test2 );
+	test = DAW_MOVE( test2 );
 }
 
 int main( ) {

@@ -19,7 +19,10 @@ namespace daw {
 		FILE *ptr = nullptr;
 
 	public:
-		constexpr CFile( ) noexcept = default;
+		CFile( ) noexcept = default;
+		CFile( CFile const & ) = delete;
+		CFile &operator=( CFile const & ) = delete;
+
 		explicit constexpr CFile( FILE *f ) noexcept
 		  : ptr( f ) {}
 
@@ -27,24 +30,35 @@ namespace daw {
 		  : ptr( exchange( other.ptr, nullptr ) ) {}
 
 		constexpr CFile &operator=( CFile &&rhs ) noexcept {
-			if( this != &rhs ) {
-				ptr = exchange( rhs.ptr, nullptr );
-			}
+			reset( release( ) );
 			return *this;
 		}
 
 		constexpr FILE *get( ) const noexcept {
 			return ptr;
 		}
+
 		constexpr FILE *release( ) noexcept {
 			return exchange( ptr, nullptr );
 		}
 
-		constexpr void close( ) {
+		constexpr void reset( FILE *f ) noexcept {
+			if( ptr ) {
+				close( );
+			}
+			ptr = f;
+		}
+
+		constexpr void close( ) noexcept {
 			if( auto tmp = exchange( ptr, nullptr ); tmp ) {
 				fclose( tmp );
 			}
 		}
+
+		constexpr void reset( ) noexcept {
+			close( );
+		}
+
 		~CFile( ) {
 			close( );
 		}

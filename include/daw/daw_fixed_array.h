@@ -44,7 +44,7 @@ namespace daw {
 		value_type *m_data = nullptr;
 
 	public:
-		explicit constexpr fixed_array( ) noexcept = default;
+		fixed_array( ) = default;
 
 		explicit fixed_array( size_type Size )
 		  : m_size( Size )
@@ -91,32 +91,28 @@ namespace daw {
 		  , m_data( daw::exchange( other.m_data, nullptr ) ) {}
 
 		constexpr fixed_array &operator=( fixed_array &&rhs ) noexcept {
-			if( this != &rhs ) {
-				clear( );
-				m_size = daw::exchange( rhs.m_size, 0ULL );
-				m_data = daw::exchange( rhs.m_data, nullptr );
-			}
+			auto tmp_size = std::exchange( rhs.m_size, 0 );
+			auto tmp = std::exchange( rhs.m_data, nullptr );
+			clear( );
+			m_size = tmp_size;
+			m_data = tmp;
 			return *this;
 		}
 
 		fixed_array( fixed_array const &other )
-		  : m_data( other.m_size == 0 ? nullptr : new value_type[other.m_size] )
+		  : m_data( new value_type[other.m_size] )
 		  , m_size( other.m_size ) {
 
 			std::copy_n( other.m_data, m_size, m_data );
 		}
 
 		fixed_array &operator=( fixed_array const &rhs ) {
-			if( this != &rhs ) {
-				value_type *tmp = new value_type[m_size];
-				std::copy_n( rhs.m_data, rhs.m_size, tmp );
-				clear( );
-				if( rhs.m_data == nullptr ) {
-					return *this;
-				}
-				m_size = rhs.m_size;
-				m_data = tmp;
-			}
+			size_type tmp_size = rhs.m_size;
+			value_type *tmp = new value_type[tmp_size];
+			std::copy_n( rhs.m_data, tmp_size, tmp );
+			clear( );
+			m_data = tmp;
+			m_size = tmp_size;
 			return *this;
 		}
 
@@ -140,7 +136,7 @@ namespace daw {
 			std::copy_n( first, m_size, m_data );
 		}
 
-		constexpr void clear( ) {
+		void clear( ) {
 			delete[] m_data;
 			m_size = 0;
 		}

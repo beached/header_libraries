@@ -32,20 +32,20 @@ namespace daw {
 		value_type *m_end = nullptr;
 		size_t m_size = 0;
 
-		static value_type *create_value( size_t n ) {
+		static value_type *create_value( size_t n ) noexcept {
 #if defined( DAW_USE_EXCEPTIONS )
 			try {
 #endif
 				return new value_type[n];
 #if defined( DAW_USE_EXCEPTIONS )
-			} catch( std::bad_alloc const & ) { std::abort( ); } catch( ... ) {
+			} catch( std::bad_alloc const & ) { std::terminate( ); } catch( ... ) {
 				return nullptr;
 			}
 #endif
 		}
 
 	public:
-		constexpr heap_array( ) noexcept = default;
+		heap_array( ) = default;
 
 		heap_array( size_t Size )
 		  : m_begin( create_value( Size + 1 ) )
@@ -71,24 +71,21 @@ namespace daw {
 		}
 
 		heap_array( heap_array const &other )
-		  : m_begin( other.m_size == 0 ? nullptr : create_value( other.m_size ) )
-		  , m_end( other.m_size == 0 ? nullptr : m_begin + other.m_size )
+		  : m_begin( create_value( other.m_size ) )
+		  , m_end( m_begin + other.m_size )
 		  , m_size( other.m_size ) {
 
 			std::copy_n( other.m_begin, m_size, m_begin );
 		}
 
 		heap_array &operator=( heap_array const &rhs ) {
-			if( this != &rhs ) {
-				clear( );
-				if( rhs.m_begin == nullptr ) {
-					return *this;
-				}
-				m_size = rhs.m_size;
-				m_begin = create_value( m_size );
-				m_end = m_begin + m_size;
-				std::copy_n( rhs.m_begin, m_size, m_begin );
-			}
+			T *tmp = create_value( rhs.m_size );
+			T *tmp_end = std::copy_n( rhs.m_begin, rhs.m_size, tmp );
+			std::size_t tmp_sz = rhs.m_size;
+			clear( );
+			m_begin = tmp;
+			m_end = tmp_end;
+			m_size = tmp_sz;
 			return *this;
 		}
 
@@ -99,7 +96,7 @@ namespace daw {
 			return *this;
 		}
 
-		heap_array( iterator arry, size_t Size )
+		heap_array( T *arry, size_t Size )
 		  : m_begin( create_value( Size ) )
 		  , m_end( m_begin + Size )
 		  , m_size( Size ) {

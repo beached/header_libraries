@@ -48,9 +48,7 @@ namespace daw {
 
 		take_t &
 		operator=( take_t &&rhs ) noexcept( noexcept( take( rhs.value ) ) ) {
-			if( this != &rhs ) {
-				value = take( rhs.value );
-			}
+			value = take( rhs.value );
 			return *this;
 		}
 

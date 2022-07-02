@@ -8,7 +8,9 @@
 
 #pragma once
 
+#include "daw_string_view.h"
 #include "daw_traits.h"
+#include "daw_unique_resource.h"
 
 #include <ciso646>
 #include <cstddef>
@@ -25,7 +27,6 @@
 #else
 #include <algorithm>
 #include <cstdio>
-#include <string>
 #include <tchar.h>
 #include <windows.h>
 #endif
@@ -34,9 +35,7 @@ namespace daw::filesystem {
 	enum class open_mode : bool { read, read_write };
 
 #if not defined( _MSC_VER )
-	/***
-	 * A RAII Memory Mapped File object
-	 */
+	/// @brief A RAII Memory Mapped File object
 	template<typename T = char>
 	struct memory_mapped_file_t {
 		using value_type = T;
@@ -48,154 +47,118 @@ namespace daw::filesystem {
 		using size_type = size_t;
 
 	private:
-		int m_file = -1;
-		pointer m_ptr = nullptr;
-		size_type m_size = 0;
+		struct fdata_t {
+			int file = -1;
+			pointer ptr = nullptr;
+			size_type size = 0;
+		};
 
-		void cleanup( ) noexcept {
-			if( m_ptr != nullptr ) {
-				munmap( m_ptr, m_size );
-				m_ptr = nullptr;
+		struct cleanup_t {
+			constexpr void operator( )( fdata_t &d ) noexcept {
+				if( auto *p = std::exchange( d.ptr, nullptr ); p ) {
+					munmap( p, d.size );
+				}
+				d.size = 0;
+				if( auto fid = std::exchange( d.file, -1 ); fid >= 0 ) {
+					close( fid );
+				}
 			}
-			m_size = 0;
-			if( m_file >= 0 ) {
-				close( m_file );
-				m_file = -1;
-			}
-		}
+		};
+		daw::unique_resource<fdata_t, cleanup_t> m_fdata;
 
 	public:
-		constexpr explicit memory_mapped_file_t( ) noexcept = default;
+		memory_mapped_file_t( ) = default;
 
-		/***
-		 * Open memory mapped file with file path supplied
-		 * Caller is responsible for ensuring that the StringView is zero terminated
-		 */
-		template<typename StringView,
-		         std::enable_if_t<daw::traits::is_string_view_like_v<StringView>,
-		                          std::nullptr_t> = nullptr>
-		explicit memory_mapped_file_t( StringView file,
+		/// @brief Open memory mapped file with file path supplied
+		/// @pre *file_path.end( ) == '\0'
+		explicit memory_mapped_file_t( daw::string_view file_path,
 		                               open_mode mode = open_mode::read ) noexcept {
 
-			(void)open( std::string_view( std::data( file ), std::size( file ) ),
-			            mode );
+			(void)open( file_path, mode );
 		}
 
-		/***
-		 * Open memory mapped file with file path supplied
-		 * Caller is responsible for ensuring that the StringView is zero terminated
-		 */
-		explicit memory_mapped_file_t( char const *file,
-		                               open_mode mode = open_mode::read ) noexcept {
-
-			(void)open( std::string_view( file ), mode );
-		}
-
-		/***
-		 * Open memory mapped file with file path supplied
-		 * Caller is responsible for ensuring that the StringView is zero terminated
-		 */
-		[[nodiscard]] bool open( std::string_view file,
+		/// @brief Open memory mapped file with file path supplied
+		/// @pre *file.end( ) == '\0'
+		[[nodiscard]] bool open( daw::string_view file,
 		                         open_mode mode = open_mode::read ) noexcept {
 
-			m_file =
+			m_fdata.emplace( );
+			m_fdata->file =
 			  ::open( file.data( ), mode == open_mode::read ? O_RDONLY : O_RDWR );
-			if( m_file < 0 ) {
+			if( m_fdata->file < 0 ) {
 				return false;
 			}
 			{
-				auto const fsz = lseek( m_file, 0, SEEK_END );
-				lseek( m_file, 0, SEEK_SET );
+				auto const fsz = lseek( m_fdata->file, 0, SEEK_END );
+				lseek( m_fdata->file, 0, SEEK_SET );
 				if( fsz <= 0 ) {
-					cleanup( );
+					m_fdata.reset( );
 					return false;
 				}
-				m_size = static_cast<size_type>( fsz );
+				m_fdata->size = static_cast<size_type>( fsz );
 			}
-			m_ptr = static_cast<pointer>(
-			  mmap( nullptr, m_size,
+			m_fdata->ptr = static_cast<pointer>(
+			  mmap( nullptr, m_fdata->size,
 			        mode == open_mode::read ? PROT_READ : PROT_READ | PROT_WRITE,
-			        MAP_SHARED, m_file, 0 ) );
+			        MAP_SHARED, m_fdata->file, 0 ) );
 
-			if( m_ptr == MAP_FAILED ) {
-				m_ptr = nullptr;
-				cleanup( );
+			if( m_fdata->ptr == MAP_FAILED ) {
+				m_fdata.reset( );
 				return false;
 			}
 			return true;
 		}
 
 		[[nodiscard]] reference operator[]( size_type pos ) noexcept {
-			return m_ptr[pos];
+			return m_fdata->ptr[pos];
 		}
 
 		[[nodiscard]] const_reference operator[]( size_t pos ) const noexcept {
-			return m_ptr[pos];
+			return m_fdata->ptr[pos];
 		}
 
 		[[nodiscard]] constexpr pointer data( ) noexcept {
-			return m_ptr;
+			return m_fdata->ptr;
 		}
 
 		[[nodiscard]] constexpr const_pointer data( ) const noexcept {
-			return m_ptr;
+			return m_fdata->ptr;
 		}
 
 		[[nodiscard]] constexpr pointer begin( ) noexcept {
-			return m_ptr;
+			return m_fdata->ptr;
 		}
 
 		[[nodiscard]] constexpr const_pointer begin( ) const noexcept {
-			return m_ptr;
+			return m_fdata->ptr;
 		}
 
 		[[nodiscard]] constexpr const_pointer cbegin( ) const noexcept {
-			return m_ptr;
+			return m_fdata->ptr;
 		}
 
 		[[nodiscard]] constexpr pointer end( ) noexcept {
-			return m_ptr + static_cast<ptrdiff_t>( m_size );
+			return m_fdata->ptr + static_cast<ptrdiff_t>( m_fdata->size );
 		}
 
 		[[nodiscard]] constexpr const_pointer end( ) const noexcept {
-			return m_ptr + static_cast<ptrdiff_t>( m_size );
+			return m_fdata->ptr + static_cast<ptrdiff_t>( m_fdata->size );
 		}
 
 		[[nodiscard]] constexpr const_pointer cend( ) const noexcept {
-			return m_ptr + static_cast<ptrdiff_t>( m_size );
+			return m_fdata->ptr + static_cast<ptrdiff_t>( m_fdata->size );
 		}
 
 		[[nodiscard]] constexpr size_type size( ) const noexcept {
-			return m_size;
+			return m_fdata->size;
 		}
 
 		[[nodiscard]] constexpr bool empty( ) const noexcept {
-			return not( *this ) or m_size == 0;
+			return not( *this ) or m_fdata->size == 0;
 		}
 
 		constexpr explicit operator bool( ) const noexcept {
-			return m_file >= 0 and m_ptr != nullptr;
-		}
-
-		memory_mapped_file_t( memory_mapped_file_t const & ) = delete;
-		memory_mapped_file_t &operator=( memory_mapped_file_t const & ) = delete;
-
-		memory_mapped_file_t( memory_mapped_file_t &&other ) noexcept
-		  : m_file( std::exchange( other.m_file, -1 ) )
-		  , m_ptr( std::exchange( other.m_ptr, nullptr ) )
-		  , m_size( std::exchange( other.m_size, 0 ) ) {}
-
-		memory_mapped_file_t &operator=( memory_mapped_file_t &&rhs ) noexcept {
-			if( this != &rhs ) {
-				m_file = std::exchange( rhs.m_file, -1 );
-				m_ptr = std::exchange( rhs.m_ptr, nullptr );
-				m_size = std::exchange( rhs.m_size, 0 );
-			}
-			return *this;
-		}
-
-		~memory_mapped_file_t( ) noexcept {
-			cleanup( );
+			return m_fdata->file >= 0 and m_fdata->ptr != nullptr;
 		}
 
 		template<typename Traits>
@@ -227,9 +190,7 @@ namespace daw::filesystem {
 		}
 	} // namespace mapfile_impl
 
-	/***
-	 * A RAII Memory Mapped File object
-	 */
+	/// @brief A RAII Memory Mapped File object
 	template<typename T = char>
 	struct memory_mapped_file_t {
 		using value_type = T;
@@ -242,69 +203,51 @@ namespace daw::filesystem {
 		using size_type = size_t;
 
 	private:
-		HANDLE m_handle = nullptr;
-		size_t m_size = 0;
-		pointer m_ptr = nullptr;
+		struct fdata_t {
+			HANDLE handle = nullptr;
+			size_t size = 0;
+			pointer ptr = nullptr;
+		};
 
-		void cleanup( ) noexcept {
-			m_size = 0;
-			if( auto tmp = std::exchange( m_ptr, nullptr ); tmp ) {
-				::UnmapViewOfFile( static_cast<LPVOID>( tmp ) );
+		struct cleanup_t {
+			constexpr void operator( )( fdata_t &d ) noexcept {
+				d.size = 0;
+				if( auto tmp = std::exchange( d.ptr, nullptr ); tmp ) {
+					::UnmapViewOfFile( static_cast<LPVOID>( tmp ) );
+				}
+				if( auto tmp = std::exchange( d.handle, nullptr ); tmp ) {
+					::CloseHandle( d.handle );
+				}
 			}
-			if( auto tmp = std::exchange( m_handle, nullptr ); tmp ) {
-				::CloseHandle( m_handle );
-			}
-		}
+		};
+
+		daw::unique_resource<fdata_t, cleanup_t> m_fdata;
 
 	public:
-		constexpr memory_mapped_file_t( ) noexcept = default;
+		explicit memory_mapped_file_t( ) = default;
 
-		/***
-		 * Open memory mapped file with file path supplied
-		 * Caller is responsible for ensuring that the StringView is zero terminated
-		 */
-		memory_mapped_file_t( std::string_view file,
+		/// @brief Open memory mapped file with file path supplied
+		/// @pre *file_path.end( ) == '\0'
+		memory_mapped_file_t( daw::string_view file_path,
 		                      open_mode mode = open_mode::read ) noexcept {
 
-			(void)open( file, mode );
+			(void)open( file_path, mode );
 		}
 
-		/***
-		 * Open memory mapped file with file path supplied
-		 * Caller is responsible for ensuring that the StringView is zero terminated
-		 */
-		memory_mapped_file_t( std::wstring_view file,
+		/// @brief Open memory mapped file with file path supplied
+		/// @pre *file_path.end( ) == '\0'
+		memory_mapped_file_t( daw::wstring_view file_path,
 		                      open_mode mode = open_mode::read ) noexcept {
 
-			(void)open( file, mode );
+			(void)open( file_path, mode );
 		}
 
-		/***
-		 * Open memory mapped file with file path supplied
-		 * Caller is responsible for ensuring that the StringView is zero terminated
-		 */
-		template<typename StringView,
-		         std::enable_if_t<daw::traits::is_string_view_like_v<StringView>,
-		                          std::nullptr_t> = nullptr>
-		explicit memory_mapped_file_t( StringView file,
-		                               open_mode mode = open_mode::read ) noexcept {
-
-			if constexpr( std::is_same_v<char, DAW_TYPEOF( *std::data( file ) )> ) {
-				(void)open( std::string_view( std::data( file ), std::size( file ) ),
-				            mode );
-			} else {
-				(void)open( std::wstring_view( std::data( file ), std::size( file ) ),
-				            mode );
-			}
-		}
-
-		/***
-		 * Open memory mapped file with file path supplied
-		 * Caller is responsible for ensuring that the StringView is zero terminated
-		 */
-		[[nodiscard]] bool open( std::string_view file,
+		/// @brief Open memory mapped file with file path supplied
+		/// @pre *file.end( ) == '\0'
+		[[nodiscard]] bool open( daw::string_view file,
 		                         open_mode mode = open_mode::read ) noexcept {
 
+			m_fdata.emplace( );
 			{
 				HANDLE file_handle = ::CreateFileA(
 				  file.data( ), mapfile_impl::CreateFileMode( mode ), 0, nullptr,
@@ -314,30 +257,32 @@ namespace daw::filesystem {
 				}
 				LARGE_INTEGER fsz;
 				if( not ::GetFileSizeEx( file_handle, &fsz ) or fsz.QuadPart <= 0 ) {
-					cleanup( );
+					m_fdata.reset( );
 					return false;
 				}
-				m_size = static_cast<size_t>( fsz.QuadPart );
-				m_handle = ::CreateFileMapping(
+				m_fdata->size = static_cast<size_t>( fsz.QuadPart );
+				m_fdata->handle = ::CreateFileMapping(
 				  file_handle, nullptr, mapfile_impl::PageMode( mode ), fsz.u.HighPart,
 				  fsz.u.LowPart, nullptr );
-				if( m_handle == nullptr ) {
-					cleanup( );
+				if( m_fdata->handle == nullptr ) {
+					m_fdata.reset( );
 					return false;
 				}
 				CloseHandle( file_handle );
 			}
-			auto ptr =
-			  MapViewOfFile( m_handle, mapfile_impl::MapMode( mode ), 0, 0, 0 );
+			auto ptr = MapViewOfFile( m_fdata->handle, mapfile_impl::MapMode( mode ),
+			                          0, 0, 0 );
 			if( ptr == nullptr ) {
-				cleanup( );
+				m_fdata.reset( );
 				return false;
 			}
-			m_ptr = static_cast<pointer>( ptr );
+			m_fdata->ptr = static_cast<pointer>( ptr );
 			return true;
 		}
 
-		[[nodiscard]] bool open( std::wstring_view file,
+		/// @brief Open memory mapped file with file path supplied
+		/// @pre *file.end( ) == '\0'
+		[[nodiscard]] bool open( daw::wstring_view file,
 		                         open_mode mode = open_mode::read ) noexcept {
 
 			{
@@ -349,77 +294,56 @@ namespace daw::filesystem {
 				}
 				LARGE_INTEGER fsz;
 				if( not ::GetFileSizeEx( file_handle, &fsz ) or fsz.QuadPart <= 0 ) {
-					cleanup( );
+					m_fdata.reset( );
 					return false;
 				}
-				m_size = static_cast<size_t>( fsz.QuadPart );
-				m_handle = ::CreateFileMapping(
+				m_fdata->size = static_cast<size_t>( fsz.QuadPart );
+				m_fdata->handle = ::CreateFileMapping(
 				  file_handle, nullptr, mapfile_impl::PageMode( mode ), fsz.u.HighPart,
 				  fsz.u.LowPart, nullptr );
-				if( m_handle == nullptr ) {
-					cleanup( );
+				if( m_fdata->handle == nullptr ) {
+					m_fdata.reset( );
 					return false;
 				}
 				CloseHandle( file_handle );
 			}
-			auto ptr =
-			  MapViewOfFile( m_handle, mapfile_impl::MapMode( mode ), 0, 0, 0 );
+			auto ptr = MapViewOfFile( m_fdata->handle, mapfile_impl::MapMode( mode ),
+			                          0, 0, 0 );
 			if( ptr == nullptr ) {
-				cleanup( );
+				m_fdata.reset( );
 				return false;
 			}
-			m_ptr = static_cast<pointer>( ptr );
+			m_fdata->ptr = static_cast<pointer>( ptr );
 			return true;
 		}
 
 		[[nodiscard]] reference operator[]( size_type pos ) noexcept {
-			return m_ptr[pos];
+			return m_fdata->ptr[pos];
 		}
 
 		[[nodiscard]] const_reference operator[]( size_t pos ) const noexcept {
-			return m_ptr[pos];
+			return m_fdata->ptr[pos];
 		}
 
 		[[nodiscard]] constexpr pointer data( ) noexcept {
-			return m_ptr;
+			return m_fdata->ptr;
 		}
 
 		[[nodiscard]] constexpr const_pointer data( ) const noexcept {
-			return m_ptr;
+			return m_fdata->ptr;
 		}
 
 		[[nodiscard]] constexpr size_type size( ) const noexcept {
-			return m_size;
+			return m_fdata->size;
 		}
 
 		[[nodiscard]] constexpr bool empty( ) const noexcept {
-			return not( *this ) or m_size == 0;
+			return not( *this ) or m_fdata->size == 0;
 		}
 
 		constexpr explicit operator bool( ) const noexcept {
-			return m_size == 0 or m_ptr == nullptr or m_handle == nullptr;
-		}
-
-		memory_mapped_file_t( memory_mapped_file_t const & ) = delete;
-
-		memory_mapped_file_t &operator=( memory_mapped_file_t const & ) = delete;
-
-		memory_mapped_file_t( memory_mapped_file_t &&other ) noexcept
-		  : m_handle( std::exchange( other.m_handle, nullptr ) )
-		  , m_size( std::exchange( other.m_size, 0 ) )
-		  , m_ptr( std::exchange( other.m_ptr, nullptr ) ) {}
-
-		memory_mapped_file_t &operator=( memory_mapped_file_t &&rhs ) noexcept {
-			if( this != &rhs ) {
-				m_handle = std::exchange( rhs.m_handle, nullptr );
-				m_size = std::exchange( rhs.m_size, 0 );
-				m_ptr = std::exchange( rhs.m_ptr, nullptr );
-			}
-			return *this;
-		}
-
-		~memory_mapped_file_t( ) noexcept {
-			cleanup( );
+			return m_fdata->size == 0 or m_fdata->ptr == nullptr or
+			       m_fdata->handle == nullptr;
 		}
 
 		operator std::basic_string_view<T>( ) const {
