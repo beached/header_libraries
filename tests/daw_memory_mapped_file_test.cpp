@@ -24,9 +24,9 @@ void create_file( String &&str ) {
 	fs << "This is a test\n";
 }
 
-void daw_memory_mapped_file_001( std::string const &file_name ) {
+void daw_memory_mapped_file_001( std::string file_name ) {
 	create_file( file_name );
-	auto test = daw::filesystem::memory_mapped_file_t<std::uint8_t>( file_name );
+	auto test = daw::filesystem::memory_mapped_file_t<std::uint8_t>{ file_name };
 	auto test2 = DAW_MOVE( test );
 	test2 = DAW_MOVE( test2 );
 	test = DAW_MOVE( test2 );
