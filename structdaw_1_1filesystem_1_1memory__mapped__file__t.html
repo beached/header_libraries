@@ -67,6 +67,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="structdaw_1_1filesystem_1_1memory__mapped__file__t-members.html">List of all members</a>  </div>
@@ -74,6 +75,9 @@ $(function() {
 <div class="title">daw::filesystem::memory_mapped_file_t&lt; T &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A RAII Memory Mapped File object.  
+ <a href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>&gt;</code></p>
 <table class="memberdecls">
@@ -94,41 +98,32 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a44ad379ab605b1c07b77a804445e3796"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a44ad379ab605b1c07b77a804445e3796">memory_mapped_file_t</a> () noexcept=default</td></tr>
-<tr class="separator:a44ad379ab605b1c07b77a804445e3796"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa1292dd21e4c746744355a54b8e1289"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#aaa1292dd21e4c746744355a54b8e1289">memory_mapped_file_t</a> (<a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">memory_mapped_file_t</a> &amp;&amp;other) noexcept</td></tr>
-<tr class="separator:aaa1292dd21e4c746744355a54b8e1289"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62abd83fefcb79c0770ea884d791576e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a62abd83fefcb79c0770ea884d791576e">memory_mapped_file_t</a> (<a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">memory_mapped_file_t</a> const &amp;)=delete</td></tr>
-<tr class="separator:a62abd83fefcb79c0770ea884d791576e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2dae37ccc831408977e07fd177da71a3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a2dae37ccc831408977e07fd177da71a3">memory_mapped_file_t</a> (std::string_view file, <a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447">open_mode</a> mode=<a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447aecae13117d6f0584c25a9da6c8f8415e">open_mode::read</a>) noexcept</td></tr>
-<tr class="separator:a2dae37ccc831408977e07fd177da71a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2f7191d319e008091ca8d13a1154966"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#ac2f7191d319e008091ca8d13a1154966">memory_mapped_file_t</a> (std::wstring_view file, <a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447">open_mode</a> mode=<a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447aecae13117d6f0584c25a9da6c8f8415e">open_mode::read</a>) noexcept</td></tr>
-<tr class="separator:ac2f7191d319e008091ca8d13a1154966"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81cab89f9da6f4c2b5cb87be22a61f2f"><td class="memTemplParams" colspan="2">template&lt;typename StringView , std::enable_if_t&lt; daw::traits::is_string_view_like_v&lt; StringView &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
-<tr class="memitem:a81cab89f9da6f4c2b5cb87be22a61f2f"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a81cab89f9da6f4c2b5cb87be22a61f2f">memory_mapped_file_t</a> (StringView file, <a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447">open_mode</a> mode=<a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447aecae13117d6f0584c25a9da6c8f8415e">open_mode::read</a>) noexcept</td></tr>
-<tr class="separator:a81cab89f9da6f4c2b5cb87be22a61f2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05bf52c033195e84e55ba617c5e065fd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a05bf52c033195e84e55ba617c5e065fd">~memory_mapped_file_t</a> () noexcept</td></tr>
-<tr class="separator:a05bf52c033195e84e55ba617c5e065fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af13d81d0b72ba9fbd6041e7ba819559d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#af13d81d0b72ba9fbd6041e7ba819559d">memory_mapped_file_t</a> ()=default</td></tr>
+<tr class="separator:af13d81d0b72ba9fbd6041e7ba819559d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac929a97d37a3b81e5c9b26de75a204b6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#ac929a97d37a3b81e5c9b26de75a204b6">memory_mapped_file_t</a> (<a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a> file_path, <a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447">open_mode</a> mode=<a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447aecae13117d6f0584c25a9da6c8f8415e">open_mode::read</a>) noexcept</td></tr>
+<tr class="memdesc:ac929a97d37a3b81e5c9b26de75a204b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open memory mapped file with file path supplied.  <a href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#ac929a97d37a3b81e5c9b26de75a204b6">More...</a><br /></td></tr>
+<tr class="separator:ac929a97d37a3b81e5c9b26de75a204b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3522ed89a8bab48aca3fa38290d42bd1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a3522ed89a8bab48aca3fa38290d42bd1">memory_mapped_file_t</a> (<a class="el" href="namespacedaw_1_1sv2.html#a372019503f34877e46b1f657af689eab">daw::wstring_view</a> file_path, <a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447">open_mode</a> mode=<a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447aecae13117d6f0584c25a9da6c8f8415e">open_mode::read</a>) noexcept</td></tr>
+<tr class="memdesc:a3522ed89a8bab48aca3fa38290d42bd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open memory mapped file with file path supplied.  <a href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a3522ed89a8bab48aca3fa38290d42bd1">More...</a><br /></td></tr>
+<tr class="separator:a3522ed89a8bab48aca3fa38290d42bd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dd487c502bf126b16d25f450a8f0770"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a310bafe1186e99c31af22a171c87c5e5">const_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a2dd487c502bf126b16d25f450a8f0770">data</a> () const noexcept</td></tr>
 <tr class="separator:a2dd487c502bf126b16d25f450a8f0770"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93db8fa19536508778e315d447ddb617"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#abbc53036421c5ed5d3dcdc782bf7f45e">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a93db8fa19536508778e315d447ddb617">data</a> () noexcept</td></tr>
 <tr class="separator:a93db8fa19536508778e315d447ddb617"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb3d7cdee29dc1373bf3acf3f30274a2"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#acb3d7cdee29dc1373bf3acf3f30274a2">empty</a> () const noexcept</td></tr>
 <tr class="separator:acb3d7cdee29dc1373bf3acf3f30274a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a372a5ac441c19020d77f4de80b9d9ab8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a372a5ac441c19020d77f4de80b9d9ab8">open</a> (std::string_view file, <a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447">open_mode</a> mode=<a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447aecae13117d6f0584c25a9da6c8f8415e">open_mode::read</a>) noexcept</td></tr>
-<tr class="separator:a372a5ac441c19020d77f4de80b9d9ab8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c6dc74076f5e139805291f0088922c7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a3c6dc74076f5e139805291f0088922c7">open</a> (std::wstring_view file, <a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447">open_mode</a> mode=<a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447aecae13117d6f0584c25a9da6c8f8415e">open_mode::read</a>) noexcept</td></tr>
-<tr class="separator:a3c6dc74076f5e139805291f0088922c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7263806a02f3b13a6713bdd63a82bf07"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a7263806a02f3b13a6713bdd63a82bf07">open</a> (<a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a> file, <a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447">open_mode</a> mode=<a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447aecae13117d6f0584c25a9da6c8f8415e">open_mode::read</a>) noexcept</td></tr>
+<tr class="memdesc:a7263806a02f3b13a6713bdd63a82bf07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open memory mapped file with file path supplied.  <a href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a7263806a02f3b13a6713bdd63a82bf07">More...</a><br /></td></tr>
+<tr class="separator:a7263806a02f3b13a6713bdd63a82bf07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6627bca649a177c7288a16dd357200ba"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a6627bca649a177c7288a16dd357200ba">open</a> (<a class="el" href="namespacedaw_1_1sv2.html#a372019503f34877e46b1f657af689eab">daw::wstring_view</a> file, <a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447">open_mode</a> mode=<a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447aecae13117d6f0584c25a9da6c8f8415e">open_mode::read</a>) noexcept</td></tr>
+<tr class="memdesc:a6627bca649a177c7288a16dd357200ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open memory mapped file with file path supplied.  <a href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a6627bca649a177c7288a16dd357200ba">More...</a><br /></td></tr>
+<tr class="separator:a6627bca649a177c7288a16dd357200ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc7bc3d785a88b8b149d0edae0b9947d"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#abc7bc3d785a88b8b149d0edae0b9947d">operator bool</a> () const noexcept</td></tr>
 <tr class="separator:abc7bc3d785a88b8b149d0edae0b9947d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdc7d3e8815c4fe7c46bd606c734366e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#acdc7d3e8815c4fe7c46bd606c734366e">operator std::basic_string_view&lt; T &gt;</a> ()</td></tr>
 <tr class="separator:acdc7d3e8815c4fe7c46bd606c734366e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac524118a6d9c55b823637805fb728607"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#ac524118a6d9c55b823637805fb728607">operator std::basic_string_view&lt; T &gt;</a> () const</td></tr>
 <tr class="separator:ac524118a6d9c55b823637805fb728607"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d898a0dcfc61f12a2d398dbcdffe599"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">memory_mapped_file_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a4d898a0dcfc61f12a2d398dbcdffe599">operator=</a> (<a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">memory_mapped_file_t</a> &amp;&amp;rhs) noexcept</td></tr>
-<tr class="separator:a4d898a0dcfc61f12a2d398dbcdffe599"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aafc42e175d4312ba63907e2497d1346c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">memory_mapped_file_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#aafc42e175d4312ba63907e2497d1346c">operator=</a> (<a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">memory_mapped_file_t</a> const &amp;)=delete</td></tr>
-<tr class="separator:aafc42e175d4312ba63907e2497d1346c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa04414a5271dbde3e98551aedf63d09b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a734b05659702ad08c45454a9267f9413">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#aa04414a5271dbde3e98551aedf63d09b">operator[]</a> (size_t pos) const noexcept</td></tr>
 <tr class="separator:aa04414a5271dbde3e98551aedf63d09b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acedb8559da9be38567f12dcda60cb6f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#ab5d390d10a0c16da90931007added96c">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#acedb8559da9be38567f12dcda60cb6f9">operator[]</a> (<a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#aa32ab61e69446d83781d1f105bb91730">size_type</a> pos) noexcept</td></tr>
@@ -140,8 +135,9 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><h3>template&lt;typename T = char&gt;<br />
 struct daw::filesystem::memory_mapped_file_t&lt; T &gt;</h3>
 
+<p>A RAII Memory Mapped File object. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00234">234</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00195">195</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a310bafe1186e99c31af22a171c87c5e5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a310bafe1186e99c31af22a171c87c5e5">&#9670;&nbsp;</a></span>const_pointer</h2>
@@ -157,7 +153,7 @@ template&lt;typename T  = char&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00243">243</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00202">202</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
 
 </div>
 </div>
@@ -175,7 +171,7 @@ template&lt;typename T  = char&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00240">240</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00199">199</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
 
 </div>
 </div>
@@ -193,7 +189,7 @@ template&lt;typename T  = char&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00241">241</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00200">200</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
 
 </div>
 </div>
@@ -211,7 +207,7 @@ template&lt;typename T  = char&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00238">238</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00197">197</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
 
 </div>
 </div>
@@ -229,7 +225,7 @@ template&lt;typename T  = char&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00244">244</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00203">203</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
 
 </div>
 </div>
@@ -247,13 +243,13 @@ template&lt;typename T  = char&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00237">237</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00196">196</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a44ad379ab605b1c07b77a804445e3796"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a44ad379ab605b1c07b77a804445e3796">&#9670;&nbsp;</a></span>memory_mapped_file_t() <span class="overload">[1/6]</span></h2>
+<a id="af13d81d0b72ba9fbd6041e7ba819559d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af13d81d0b72ba9fbd6041e7ba819559d">&#9670;&nbsp;</a></span>memory_mapped_file_t() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -264,7 +260,7 @@ template&lt;typename T  = char&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">daw::filesystem::memory_mapped_file_t</a>&lt; T &gt;::<a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">memory_mapped_file_t</a> </td>
+          <td class="memname"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">daw::filesystem::memory_mapped_file_t</a>&lt; T &gt;::<a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">memory_mapped_file_t</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -272,15 +268,15 @@ template&lt;typename T  = char&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">explicit</span><span class="mlabel">default</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a2dae37ccc831408977e07fd177da71a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2dae37ccc831408977e07fd177da71a3">&#9670;&nbsp;</a></span>memory_mapped_file_t() <span class="overload">[2/6]</span></h2>
+<a id="ac929a97d37a3b81e5c9b26de75a204b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac929a97d37a3b81e5c9b26de75a204b6">&#9670;&nbsp;</a></span>memory_mapped_file_t() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -293,90 +289,8 @@ template&lt;typename T  = char&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">daw::filesystem::memory_mapped_file_t</a>&lt; T &gt;::<a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">memory_mapped_file_t</a> </td>
           <td>(</td>
-          <td class="paramtype">std::string_view&#160;</td>
-          <td class="paramname"><em>file</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447">open_mode</a>&#160;</td>
-          <td class="paramname"><em>mode</em> = <code><a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447aecae13117d6f0584c25a9da6c8f8415e">open_mode::read</a></code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00268">268</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
-
-</div>
-</div>
-<a id="ac2f7191d319e008091ca8d13a1154966"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2f7191d319e008091ca8d13a1154966">&#9670;&nbsp;</a></span>memory_mapped_file_t() <span class="overload">[3/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T  = char&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">daw::filesystem::memory_mapped_file_t</a>&lt; T &gt;::<a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">memory_mapped_file_t</a> </td>
-          <td>(</td>
-          <td class="paramtype">std::wstring_view&#160;</td>
-          <td class="paramname"><em>file</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447">open_mode</a>&#160;</td>
-          <td class="paramname"><em>mode</em> = <code><a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447aecae13117d6f0584c25a9da6c8f8415e">open_mode::read</a></code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00278">278</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
-
-</div>
-</div>
-<a id="a81cab89f9da6f4c2b5cb87be22a61f2f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81cab89f9da6f4c2b5cb87be22a61f2f">&#9670;&nbsp;</a></span>memory_mapped_file_t() <span class="overload">[4/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T  = char&gt; </div>
-<div class="memtemplate">
-template&lt;typename StringView , std::enable_if_t&lt; daw::traits::is_string_view_like_v&lt; StringView &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">daw::filesystem::memory_mapped_file_t</a>&lt; T &gt;::<a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">memory_mapped_file_t</a> </td>
-          <td>(</td>
-          <td class="paramtype">StringView&#160;</td>
-          <td class="paramname"><em>file</em>, </td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a>&#160;</td>
+          <td class="paramname"><em>file_path</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -397,12 +311,15 @@ template&lt;typename StringView , std::enable_if_t&lt; daw::traits::is_string_vi
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00291">291</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
+<p>Open memory mapped file with file path supplied. </p>
+<dl class="section pre"><dt>Precondition</dt><dd>*file_path.<a class="el" href="namespacedaw.html#a0131aaa8982f261f0c4b7eda113cd1ba">end( )</a> == '\0' </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00231">231</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
 
 </div>
 </div>
-<a id="a62abd83fefcb79c0770ea884d791576e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a62abd83fefcb79c0770ea884d791576e">&#9670;&nbsp;</a></span>memory_mapped_file_t() <span class="overload">[5/6]</span></h2>
+<a id="a3522ed89a8bab48aca3fa38290d42bd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3522ed89a8bab48aca3fa38290d42bd1">&#9670;&nbsp;</a></span>memory_mapped_file_t() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -415,76 +332,32 @@ template&lt;typename T  = char&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">daw::filesystem::memory_mapped_file_t</a>&lt; T &gt;::<a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">memory_mapped_file_t</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">memory_mapped_file_t</a>&lt; T &gt; const &amp;&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv2.html#a372019503f34877e46b1f657af689eab">daw::wstring_view</a>&#160;</td>
+          <td class="paramname"><em>file_path</em>, </td>
         </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aaa1292dd21e4c746744355a54b8e1289"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa1292dd21e4c746744355a54b8e1289">&#9670;&nbsp;</a></span>memory_mapped_file_t() <span class="overload">[6/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T  = char&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">daw::filesystem::memory_mapped_file_t</a>&lt; T &gt;::<a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">memory_mapped_file_t</a> </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">memory_mapped_file_t</a>&lt; T &gt; &amp;&amp;&#160;</td>
-          <td class="paramname"><em>other</em></td><td>)</td>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447">open_mode</a>&#160;</td>
+          <td class="paramname"><em>mode</em> = <code><a class="el" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447aecae13117d6f0584c25a9da6c8f8415e">open_mode::read</a></code>&#160;</td>
         </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00409">409</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
-
-</div>
-</div>
-<a id="a05bf52c033195e84e55ba617c5e065fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05bf52c033195e84e55ba617c5e065fd">&#9670;&nbsp;</a></span>~memory_mapped_file_t()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T  = char&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">daw::filesystem::memory_mapped_file_t</a>&lt; T &gt;::~<a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">memory_mapped_file_t</a> </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
           <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00423">423</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
+<p>Open memory mapped file with file path supplied. </p>
+<dl class="section pre"><dt>Precondition</dt><dd>*file_path.<a class="el" href="namespacedaw.html#a0131aaa8982f261f0c4b7eda113cd1ba">end( )</a> == '\0' </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00239">239</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
 
 </div>
 </div>
@@ -514,7 +387,7 @@ template&lt;typename T  = char&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00389">389</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00332">332</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
 
 </div>
 </div>
@@ -543,7 +416,7 @@ template&lt;typename T  = char&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00385">385</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00328">328</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
 
 </div>
 </div>
@@ -572,12 +445,12 @@ template&lt;typename T  = char&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00397">397</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00340">340</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
 
 </div>
 </div>
-<a id="a372a5ac441c19020d77f4de80b9d9ab8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a372a5ac441c19020d77f4de80b9d9ab8">&#9670;&nbsp;</a></span>open() <span class="overload">[1/2]</span></h2>
+<a id="a7263806a02f3b13a6713bdd63a82bf07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7263806a02f3b13a6713bdd63a82bf07">&#9670;&nbsp;</a></span>open() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -590,7 +463,7 @@ template&lt;typename T  = char&gt; </div>
         <tr>
           <td class="memname">bool <a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">daw::filesystem::memory_mapped_file_t</a>&lt; T &gt;::open </td>
           <td>(</td>
-          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv2.html#aa5d6b0c106ba0bd7fbb58af637dee22a">daw::string_view</a>&#160;</td>
           <td class="paramname"><em>file</em>, </td>
         </tr>
         <tr>
@@ -612,12 +485,15 @@ template&lt;typename T  = char&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00307">307</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
+<p>Open memory mapped file with file path supplied. </p>
+<dl class="section pre"><dt>Precondition</dt><dd>*file.<a class="el" href="namespacedaw.html#a0131aaa8982f261f0c4b7eda113cd1ba">end( )</a> == '\0' </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00247">247</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
 
 </div>
 </div>
-<a id="a3c6dc74076f5e139805291f0088922c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3c6dc74076f5e139805291f0088922c7">&#9670;&nbsp;</a></span>open() <span class="overload">[2/2]</span></h2>
+<a id="a6627bca649a177c7288a16dd357200ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6627bca649a177c7288a16dd357200ba">&#9670;&nbsp;</a></span>open() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -630,7 +506,7 @@ template&lt;typename T  = char&gt; </div>
         <tr>
           <td class="memname">bool <a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">daw::filesystem::memory_mapped_file_t</a>&lt; T &gt;::open </td>
           <td>(</td>
-          <td class="paramtype">std::wstring_view&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1sv2.html#a372019503f34877e46b1f657af689eab">daw::wstring_view</a>&#160;</td>
           <td class="paramname"><em>file</em>, </td>
         </tr>
         <tr>
@@ -652,7 +528,10 @@ template&lt;typename T  = char&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00342">342</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
+<p>Open memory mapped file with file path supplied. </p>
+<dl class="section pre"><dt>Precondition</dt><dd>*file.<a class="el" href="namespacedaw.html#a0131aaa8982f261f0c4b7eda113cd1ba">end( )</a> == '\0' </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00285">285</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
 
 </div>
 </div>
@@ -681,7 +560,7 @@ template&lt;typename T  = char&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00401">401</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00344">344</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
 
 </div>
 </div>
@@ -710,7 +589,7 @@ template&lt;typename T  = char&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00431">431</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00353">353</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
 
 </div>
 </div>
@@ -739,65 +618,7 @@ template&lt;typename T  = char&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00427">427</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
-
-</div>
-</div>
-<a id="a4d898a0dcfc61f12a2d398dbcdffe599"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d898a0dcfc61f12a2d398dbcdffe599">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T  = char&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">memory_mapped_file_t</a>&amp; <a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">daw::filesystem::memory_mapped_file_t</a>&lt; T &gt;::operator= </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">memory_mapped_file_t</a>&lt; T &gt; &amp;&amp;&#160;</td>
-          <td class="paramname"><em>rhs</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00414">414</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
-
-</div>
-</div>
-<a id="aafc42e175d4312ba63907e2497d1346c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aafc42e175d4312ba63907e2497d1346c">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T  = char&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">memory_mapped_file_t</a>&amp; <a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">daw::filesystem::memory_mapped_file_t</a>&lt; T &gt;::operator= </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html">memory_mapped_file_t</a>&lt; T &gt; const &amp;&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
+<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00349">349</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
 
 </div>
 </div>
@@ -827,7 +648,7 @@ template&lt;typename T  = char&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00381">381</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00324">324</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
 
 </div>
 </div>
@@ -857,7 +678,7 @@ template&lt;typename T  = char&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00377">377</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00320">320</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
 
 </div>
 </div>
@@ -886,7 +707,7 @@ template&lt;typename T  = char&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00393">393</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__memory__mapped__file_8h_source.html#l00336">336</a> of file <a class="el" href="daw__memory__mapped__file_8h_source.html">daw_memory_mapped_file.h</a>.</p>
 
 </div>
 </div>
