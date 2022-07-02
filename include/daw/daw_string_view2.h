@@ -88,7 +88,7 @@
 /// @param Range contiguous range
 /// @param CharT character type of range elements
 #define DAW_REQ_CONTIG_CHAR_RANGE( Range, CharT )                              \
-	std::enable_if_t<(sv2_details::is_string_view_like<Range, CharT>::value and  \
+	std::enable_if_t<(sv2_details::is_string_view_like_v<Range, CharT> and       \
 	                  not std::is_convertible_v<Range, char const *>),           \
 	                 std::nullptr_t> = nullptr
 
@@ -337,24 +337,22 @@ namespace daw {
 			}
 
 			template<typename T>
-			using has_datasize_test = typename std::remove_reference<
-			  decltype( std::data( std::declval<T const &>( ) ) +
-			            std::size( std::declval<T const &>( ) ) )>::type;
-
-			template<typename T>
 			using is_sv2_test = typename T::i_am_a_daw_string_view2;
 
 			template<typename T>
 			using is_sv2_t = daw::is_detected<is_sv2_test, T>;
 
 			template<typename T, typename CharT>
-			struct is_string_view_like
-			  : std::conjunction<daw::is_detected<has_datasize_test, T>,
-			                     daw::not_trait<is_sv2_t<T>>> {};
+			using is_string_view_like_test =
+			  decltype( (void)( std::declval<std::size_t &>( ) =
+			                      std::size( std::declval<T>( ) ) ),
+			            (void)( std::declval<CharT const *&>( ) =
+			                      std::data( std::declval<T>( ) ) ) );
 
-			static_assert( daw::is_detected_v<has_datasize_test, std::string> );
-			static_assert( daw::not_trait<is_sv2_t<std::string>>::value );
-			static_assert( is_string_view_like<std::string, char>::value );
+			template<typename T, typename CharT>
+			inline constexpr bool is_string_view_like_v =
+			  daw::is_detected_v<is_string_view_like_test, T, CharT>
+			    and daw::not_trait<is_sv2_t<T>>::value;
 
 			template<typename T, typename CharT>
 			struct is_contigious_range_constructible
@@ -497,7 +495,7 @@ namespace daw {
 			/// @brief Construct an empty string_view
 			/// @post data( ) == nullptr
 			/// @post size( ) == 0
-			constexpr basic_string_view( ) noexcept = default;
+			basic_string_view( ) = default;
 
 			/// @brief Construct an empty string_view
 			/// @post data( ) == nullptr

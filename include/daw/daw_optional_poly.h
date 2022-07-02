@@ -54,9 +54,7 @@ namespace daw {
 		  : m_value{ make_copy( other.m_value.get( ) ) } {}
 
 		optional_poly &operator=( optional_poly const &rhs ) {
-			if( this != &rhs ) {
-				m_value.reset( make_copy( rhs.m_value.get( ) ) );
-			}
+			m_value.reset( make_copy( rhs.m_value.get( ) ) );
 			return *this;
 		}
 

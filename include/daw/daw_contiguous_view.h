@@ -72,6 +72,12 @@ namespace daw {
 			return Container{ data( ), size( ) };
 		}
 
+		constexpr contiguous_view subspan( std::size_t offset,
+		                                   std::size_t count = -1 ) const {
+			auto sz = std::min( count, size( ) - std::min( size( ), offset ) );
+			return contiguous_view( data( ) + offset, data( ) + sz );
+		}
+
 		[[nodiscard]] constexpr pointer data( ) noexcept {
 			return m_first;
 		}
