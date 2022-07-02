@@ -67,7 +67,7 @@ namespace daw::filesystem {
 		daw::unique_resource<fdata_t, cleanup_t> m_fdata;
 
 	public:
-		memory_mapped_file_t( ) = default;
+		explicit memory_mapped_file_t( ) = default;
 
 		/// @brief Open memory mapped file with file path supplied
 		/// @pre *file_path.end( ) == '\0'
@@ -228,16 +228,16 @@ namespace daw::filesystem {
 
 		/// @brief Open memory mapped file with file path supplied
 		/// @pre *file_path.end( ) == '\0'
-		memory_mapped_file_t( daw::string_view file_path,
-		                      open_mode mode = open_mode::read ) noexcept {
+		explicit memory_mapped_file_t( daw::string_view file_path,
+		                               open_mode mode = open_mode::read ) noexcept {
 
 			(void)open( file_path, mode );
 		}
 
 		/// @brief Open memory mapped file with file path supplied
 		/// @pre *file_path.end( ) == '\0'
-		memory_mapped_file_t( daw::wstring_view file_path,
-		                      open_mode mode = open_mode::read ) noexcept {
+		explicit memory_mapped_file_t( daw::wstring_view file_path,
+		                               open_mode mode = open_mode::read ) noexcept {
 
 			(void)open( file_path, mode );
 		}
