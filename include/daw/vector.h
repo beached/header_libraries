@@ -168,7 +168,7 @@ namespace daw {
 			if( n == 0 ) {
 				return;
 			}
-			resize_and_overwrite( n, DAW_MOVE( operation ) );
+			(void)resize_and_overwrite( n, DAW_MOVE( operation ) );
 		}
 
 		explicit constexpr vector( do_resize_and_overwrite_t, size_type n,
@@ -177,7 +177,7 @@ namespace daw {
 			if( n == 0 ) {
 				return;
 			}
-			resize_and_overwrite( n, DAW_MOVE( operation ) );
+			(void)resize_and_overwrite( n, DAW_MOVE( operation ) );
 		}
 
 		template<input_iterator InputIterator>
@@ -768,7 +768,8 @@ namespace daw {
 
 		template<
 		  ResizeAndOverwriteOperation<size_type, pointer, allocator_type> Operation>
-		constexpr void resize_and_overwrite( size_type n, Operation operation ) {
+		constexpr std::size_t resize_and_overwrite( size_type n,
+		                                            Operation operation ) {
 			if( capacity( ) < n ) {
 				reserve( n );
 			}
@@ -780,12 +781,14 @@ namespace daw {
 				destruct_at_end( new_end );
 			}
 			m_end = new_end;
+			return new_size;
 		}
 
 		template<
 		  ResizeAndOverwriteOperationAlloc<size_type, pointer, allocator_type>
 		    Operation>
-		constexpr void resize_and_overwrite( size_type n, Operation operation ) {
+		constexpr std::size_t resize_and_overwrite( size_type n,
+		                                            Operation operation ) {
 			if( capacity( ) < n ) {
 				reserve( n );
 			}
@@ -798,11 +801,13 @@ namespace daw {
 				destruct_at_end( new_end );
 			}
 			m_end = new_end;
+			return new_size;
 		}
 
 		template<
 		  ResizeAndOverwriteOperation<size_type, pointer, allocator_type> Operation>
-		constexpr void append_and_overwrite( size_type n, Operation operation ) {
+		constexpr std::size_t append_and_overwrite( size_type n,
+		                                            Operation operation ) {
 			if( capacity( ) < size( ) + n ) {
 				reserve( size( ) + n );
 			}
@@ -811,12 +816,14 @@ namespace daw {
 			assert( append_count <= n );
 			auto new_end = m_end + static_cast<difference_type>( append_count );
 			m_end = new_end;
+			return append_count;
 		}
 
 		template<
 		  ResizeAndOverwriteOperationAlloc<size_type, pointer, allocator_type>
 		    Operation>
-		constexpr void append_and_overwrite( size_type n, Operation operation ) {
+		constexpr std::size_t append_and_overwrite( size_type n,
+		                                            Operation operation ) {
 
 			if( capacity( ) < size( ) + n ) {
 				reserve( size( ) + n );
@@ -827,6 +834,7 @@ namespace daw {
 			assert( append_count <= n );
 			auto new_end = m_end + static_cast<difference_type>( append_count );
 			m_end = new_end;
+			return append_count;
 		}
 
 		constexpr void swap( vector &other ) noexcept {
