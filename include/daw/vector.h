@@ -774,7 +774,8 @@ namespace daw {
 				reserve( n );
 			}
 			pointer p = m_begin;
-			auto const new_size = static_cast<size_type>( operation( p, n ) );
+			auto const new_size =
+			  static_cast<size_type>( DAW_MOVE( operation( p, n ) ) );
 			assert( new_size <= n );
 			auto new_end = m_begin + static_cast<difference_type>( new_size );
 			if( new_size < n ) {
@@ -794,7 +795,8 @@ namespace daw {
 			}
 			pointer p = m_begin;
 			allocator_type &a = alloc( );
-			auto const new_size = static_cast<size_type>( operation( p, n, a ) );
+			auto const new_size =
+			  static_cast<size_type>( DAW_MOVE( operation( p, n, a ) ) );
 			assert( new_size <= n );
 			auto new_end = m_begin + static_cast<difference_type>( new_size );
 			if( new_size < n ) {
@@ -812,7 +814,8 @@ namespace daw {
 				reserve( size( ) + n );
 			}
 			pointer p = m_end;
-			auto const append_count = static_cast<size_type>( operation( p, n ) );
+			auto const append_count =
+			  static_cast<size_type>( DAW_MOVE( operation( p, n ) ) );
 			assert( append_count <= n );
 			auto new_end = m_end + static_cast<difference_type>( append_count );
 			m_end = new_end;
@@ -830,7 +833,8 @@ namespace daw {
 			}
 			pointer p = m_end;
 			allocator_type &a = alloc( );
-			auto const append_count = static_cast<size_type>( operation( p, n, a ) );
+			auto const append_count =
+			  static_cast<size_type>( DAW_MOVE( operation( p, n, a ) ) );
 			assert( append_count <= n );
 			auto new_end = m_end + static_cast<difference_type>( append_count );
 			m_end = new_end;
