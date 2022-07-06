@@ -168,7 +168,7 @@ namespace daw {
 			if( n == 0 ) {
 				return;
 			}
-			resize_and_overwrite( n, DAW_MOVE( operation ) );
+			(void)resize_and_overwrite( n, DAW_MOVE( operation ) );
 		}
 
 		explicit constexpr vector( do_resize_and_overwrite_t, size_type n,
@@ -177,7 +177,7 @@ namespace daw {
 			if( n == 0 ) {
 				return;
 			}
-			resize_and_overwrite( n, DAW_MOVE( operation ) );
+			(void)resize_and_overwrite( n, DAW_MOVE( operation ) );
 		}
 
 		template<input_iterator InputIterator>
@@ -768,65 +768,77 @@ namespace daw {
 
 		template<
 		  ResizeAndOverwriteOperation<size_type, pointer, allocator_type> Operation>
-		constexpr void resize_and_overwrite( size_type n, Operation operation ) {
+		constexpr std::size_t resize_and_overwrite( size_type n,
+		                                            Operation operation ) {
 			if( capacity( ) < n ) {
 				reserve( n );
 			}
 			pointer p = m_begin;
-			auto const new_size = static_cast<size_type>( operation( p, n ) );
+			auto const new_size =
+			  static_cast<size_type>( DAW_MOVE( operation( p, n ) ) );
 			assert( new_size <= n );
 			auto new_end = m_begin + static_cast<difference_type>( new_size );
 			if( new_size < n ) {
 				destruct_at_end( new_end );
 			}
 			m_end = new_end;
+			return new_size;
 		}
 
 		template<
 		  ResizeAndOverwriteOperationAlloc<size_type, pointer, allocator_type>
 		    Operation>
-		constexpr void resize_and_overwrite( size_type n, Operation operation ) {
+		constexpr std::size_t resize_and_overwrite( size_type n,
+		                                            Operation operation ) {
 			if( capacity( ) < n ) {
 				reserve( n );
 			}
 			pointer p = m_begin;
 			allocator_type &a = alloc( );
-			auto const new_size = static_cast<size_type>( operation( p, n, a ) );
+			auto const new_size =
+			  static_cast<size_type>( DAW_MOVE( operation( p, n, a ) ) );
 			assert( new_size <= n );
 			auto new_end = m_begin + static_cast<difference_type>( new_size );
 			if( new_size < n ) {
 				destruct_at_end( new_end );
 			}
 			m_end = new_end;
+			return new_size;
 		}
 
 		template<
 		  ResizeAndOverwriteOperation<size_type, pointer, allocator_type> Operation>
-		constexpr void append_and_overwrite( size_type n, Operation operation ) {
+		constexpr std::size_t append_and_overwrite( size_type n,
+		                                            Operation operation ) {
 			if( capacity( ) < size( ) + n ) {
 				reserve( size( ) + n );
 			}
 			pointer p = m_end;
-			auto const append_count = static_cast<size_type>( operation( p, n ) );
+			auto const append_count =
+			  static_cast<size_type>( DAW_MOVE( operation( p, n ) ) );
 			assert( append_count <= n );
 			auto new_end = m_end + static_cast<difference_type>( append_count );
 			m_end = new_end;
+			return append_count;
 		}
 
 		template<
 		  ResizeAndOverwriteOperationAlloc<size_type, pointer, allocator_type>
 		    Operation>
-		constexpr void append_and_overwrite( size_type n, Operation operation ) {
+		constexpr std::size_t append_and_overwrite( size_type n,
+		                                            Operation operation ) {
 
 			if( capacity( ) < size( ) + n ) {
 				reserve( size( ) + n );
 			}
 			pointer p = m_end;
 			allocator_type &a = alloc( );
-			auto const append_count = static_cast<size_type>( operation( p, n, a ) );
+			auto const append_count =
+			  static_cast<size_type>( DAW_MOVE( operation( p, n, a ) ) );
 			assert( append_count <= n );
 			auto new_end = m_end + static_cast<difference_type>( append_count );
 			m_end = new_end;
+			return append_count;
 		}
 
 		constexpr void swap( vector &other ) noexcept {
