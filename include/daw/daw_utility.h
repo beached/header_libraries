@@ -21,6 +21,7 @@
 #include <cstdlib>
 #include <functional>
 #include <initializer_list>
+#include <iterator>
 #include <limits>
 #include <memory>
 #include <string>
@@ -976,11 +977,13 @@ namespace daw {
 	} // namespace utility_details
 
 	template<typename Container>
-	inline constexpr decltype( auto ) data_end( Container &&c ) {
+	inline constexpr auto *data_end( Container &&c ) {
 		if constexpr( utility_details::has_data_end_v<Container> ) {
 			return c.data_end( );
 		} else {
-			return std::data( c ) + static_cast<std::ptrdiff_t>( std::size( c ) );
+			using std::data;
+			using std::size;
+			return data( c ) + static_cast<std::ptrdiff_t>( size( c ) );
 		}
 	}
 	struct Empty {};
