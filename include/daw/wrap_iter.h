@@ -1,8 +1,6 @@
-// Copyright (c) Darrell Wright
-//
-// Distributed under the Boost Software License, Version 1.0. (See accompanying
-// file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
-//
+// Originally from the LLVM Project, under the Apache v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// Since modified by Darrell Wright
 // Official repository: https://github.com/beached/
 //
 
