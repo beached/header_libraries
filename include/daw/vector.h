@@ -1,3 +1,9 @@
+// Originally from the LLVM Project, under the Apache v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// Since modified by Darrell Wright
+// Official repository: https://github.com/beached/
+//
+
 #pragma once
 
 #include "compressed_pair.h"
@@ -18,6 +24,7 @@
 #include <memory>
 #include <stdexcept>
 #include <type_traits>
+#include <vector>
 #include <version>
 
 namespace daw::impl {
@@ -768,77 +775,101 @@ namespace daw {
 
 		template<
 		  ResizeAndOverwriteOperation<size_type, pointer, allocator_type> Operation>
-		constexpr std::size_t resize_and_overwrite( size_type n,
-		                                            Operation operation ) {
+		constexpr auto resize_and_overwrite( size_type n, Operation operation ) {
 			if( capacity( ) < n ) {
 				reserve( n );
 			}
 			pointer p = m_begin;
-			auto const new_size =
-			  static_cast<size_type>( DAW_MOVE( operation( p, n ) ) );
+			auto const result = DAW_MOVE( operation )( p, n );
+			auto const new_size = [&] {
+				if constexpr( std::is_signed_v<decltype( result )> ) {
+					if( result < 0 ) {
+						return size_type{ 0 };
+					}
+				}
+				return static_cast<size_type>( result );
+			}( );
 			assert( new_size <= n );
 			auto new_end = m_begin + static_cast<difference_type>( new_size );
 			if( new_size < n ) {
 				destruct_at_end( new_end );
 			}
 			m_end = new_end;
-			return new_size;
+			return result;
 		}
 
 		template<
 		  ResizeAndOverwriteOperationAlloc<size_type, pointer, allocator_type>
 		    Operation>
-		constexpr std::size_t resize_and_overwrite( size_type n,
-		                                            Operation operation ) {
+		constexpr auto resize_and_overwrite( size_type n, Operation operation ) {
 			if( capacity( ) < n ) {
 				reserve( n );
 			}
 			pointer p = m_begin;
 			allocator_type &a = alloc( );
-			auto const new_size =
-			  static_cast<size_type>( DAW_MOVE( operation( p, n, a ) ) );
+			auto const result = DAW_MOVE( operation )( p, n, a );
+			auto const new_size = [&] {
+				if constexpr( std::is_signed_v<decltype( result )> ) {
+					if( result < 0 ) {
+						return size_type{ 0 };
+					}
+				}
+				return static_cast<size_type>( result );
+			}( );
 			assert( new_size <= n );
 			auto new_end = m_begin + static_cast<difference_type>( new_size );
 			if( new_size < n ) {
 				destruct_at_end( new_end );
 			}
 			m_end = new_end;
-			return new_size;
+			return result;
 		}
 
 		template<
 		  ResizeAndOverwriteOperation<size_type, pointer, allocator_type> Operation>
-		constexpr std::size_t append_and_overwrite( size_type n,
-		                                            Operation operation ) {
+		constexpr auto append_and_overwrite( size_type n, Operation operation ) {
 			if( capacity( ) < size( ) + n ) {
 				reserve( size( ) + n );
 			}
 			pointer p = m_end;
-			auto const append_count =
-			  static_cast<size_type>( DAW_MOVE( operation( p, n ) ) );
+			auto result = DAW_MOVE( operation )( p, n );
+			auto const append_count = [&] {
+				if constexpr( std::is_signed_v<decltype( result )> ) {
+					if( result < 0 ) {
+						return size_type{ 0 };
+					}
+				}
+				return static_cast<size_type>( result );
+			}( );
 			assert( append_count <= n );
 			auto new_end = m_end + static_cast<difference_type>( append_count );
 			m_end = new_end;
-			return append_count;
+			return result;
 		}
 
 		template<
 		  ResizeAndOverwriteOperationAlloc<size_type, pointer, allocator_type>
 		    Operation>
-		constexpr std::size_t append_and_overwrite( size_type n,
-		                                            Operation operation ) {
+		constexpr auto append_and_overwrite( size_type n, Operation operation ) {
 
 			if( capacity( ) < size( ) + n ) {
 				reserve( size( ) + n );
 			}
 			pointer p = m_end;
 			allocator_type &a = alloc( );
-			auto const append_count =
-			  static_cast<size_type>( DAW_MOVE( operation( p, n, a ) ) );
+			auto result = DAW_MOVE( operation )( p, n, a );
+			auto const append_count = [&] {
+				if constexpr( std::is_signed_v<decltype( result )> ) {
+					if( result < 0 ) {
+						return size_type{ 0 };
+					}
+				}
+				return static_cast<size_type>( result );
+			}( );
 			assert( append_count <= n );
 			auto new_end = m_end + static_cast<difference_type>( append_count );
 			m_end = new_end;
-			return append_count;
+			return result;
 		}
 
 		constexpr void swap( vector &other ) noexcept {

@@ -1,3 +1,8 @@
+// Originally from the LLVM Project, under the Apache v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// Since modified by Darrell Wright
+// Official repository: https://github.com/beached/
+//
 
 #pragma once
 
