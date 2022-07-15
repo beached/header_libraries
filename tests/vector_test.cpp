@@ -9,7 +9,9 @@
 #include <daw/daw_algorithm.h>
 #include <daw/daw_consteval.h>
 #include <daw/vector.h>
+#include <daw/vector_algorithm.h>
 
+#include <cassert>
 #include <cstddef>
 #include <iostream>
 
@@ -54,16 +56,23 @@ int main( ) {
 	x = { 1, 2, 3 };
 	x[0] = 2;
 	std::cout << "cap: " << x.capacity( ) << '\n';
-	x.append_and_overwrite( x.capacity( ) * 2, []<typename Alloc>( int *p, std::size_t sz, Alloc &  ) {
-		for( std::size_t n = 0; n < sz; ++n ) {
-			std::construct_at( &p[n], n );
-		}
-		return sz;
-	} );
+	x.append_and_overwrite(
+	  x.capacity( ) * 2, []<typename Alloc>( int *p, std::size_t sz, Alloc & ) {
+		  for( std::size_t n = 0; n < sz; ++n ) {
+			  std::construct_at( &p[n], n );
+		  }
+		  return sz;
+	  } );
 	for( auto const &i : x ) {
 		std::cout << i << '\n';
 	}
 
 	static_assert( sum( 10 ) == 45 );
 	static_assert( test( ) );
+
+	auto v = daw::vector<int>( daw::do_resize_and_overwrite, 100,
+	                           daw::algorithm::iota_op<int>( ) );
+	assert( v.size( ) == 100 );
+	assert( v.back( ) == 99 );
+	assert( v.front( ) == 0 );
 }
