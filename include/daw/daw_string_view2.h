@@ -1718,6 +1718,40 @@ namespace daw {
 				return find( basic_string_view<CharT, BoundsType>( s ), 0 );
 			}
 
+			/// @brief Test if the string_view contains the supplied pattern
+			template<string_view_bounds_type Bounds>
+			[[nodiscard]] constexpr bool
+			contains( basic_string_view<CharT, Bounds> v ) const {
+				return find( v ) != npos;
+			}
+
+			/// @brief Test if the string_view contains the supplied pattern
+			[[nodiscard]] constexpr bool contains( CharT c, size_type pos ) const {
+				return find( c, pos ) != npos;
+			}
+
+			/// @brief Test if the string_view contains the supplied pattern
+			[[nodiscard]] constexpr bool contains( CharT c ) const {
+				return find( c, 0 );
+			}
+
+			/// @brief Test if the string_view contains the supplied pattern
+			[[nodiscard]] constexpr bool contains( const_pointer s, size_type pos,
+			                                       size_type count ) const {
+				return find( basic_string_view<CharT, BoundsType>( s, count ), pos );
+			}
+
+			/// @brief Test if the string_view contains the supplied pattern
+			[[nodiscard]] constexpr bool contains( const_pointer s,
+			                                       size_type pos ) const {
+				return find( s, pos ) != npos;
+			}
+
+			/// @brief Test if the string_view contains the supplied pattern
+			[[nodiscard]] constexpr bool contains( const_pointer s ) const {
+				return find( s ) != npos;
+			}
+
 			template<string_view_bounds_type Bounds>
 			[[nodiscard]] constexpr size_type
 			find_first_match( basic_string_view<CharT, Bounds> v,
