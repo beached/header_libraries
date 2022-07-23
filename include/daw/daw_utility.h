@@ -981,9 +981,7 @@ namespace daw {
 		if constexpr( utility_details::has_data_end_v<Container> ) {
 			return c.data_end( );
 		} else {
-			using std::data;
-			using std::size;
-			return data( c ) + static_cast<std::ptrdiff_t>( size( c ) );
+			return std::data( c ) + static_cast<std::ptrdiff_t>( std::size( c ) );
 		}
 	}
 	struct Empty {};
