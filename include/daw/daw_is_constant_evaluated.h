@@ -31,4 +31,8 @@
 
 #define DAW_IS_CONSTANT_EVALUATED( ) __builtin_is_constant_evaluated( )
 
+#elif defined( __clang_major__ ) and __clang_major__ >= 9
+
+#define DAW_IS_CONSTANT_EVALUATED( ) __builtin_is_constant_evaluated( )
+
 #endif
