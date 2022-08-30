@@ -144,7 +144,9 @@ namespace daw {
 #endif
 #endif
 
-#if defined( __cpp_concepts ) and not defined( DAW_NO_CONCEPTS )
+#if defined( __cpp_concepts ) and not defined( DAW_NO_CONCEPTS ) and           \
+  not defined( _MSC_VER )
+	// Testing first for MSVC error so that is_detected does not use requires
 #if __cpp_concepts >= 201907L
 #define DAW_HAS_CONCEPTS
 #endif
@@ -152,11 +154,7 @@ namespace daw {
 
 #ifdef DAW_HAS_CONCEPTS
 	template<template<class...> class Op, class... Args>
-	inline constexpr bool is_detected_v =
-	  requires
-	{
-		typename Op<Args...>;
-	};
+	inline constexpr bool is_detected_v = requires { typename Op<Args...>; };
 #endif
 	namespace cpp_17_details {
 		template<class Default, class AlwaysVoid, template<class...> class Op,
