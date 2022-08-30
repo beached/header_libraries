@@ -144,9 +144,7 @@ namespace daw {
 #endif
 #endif
 
-#if defined( __cpp_concepts ) and not defined( DAW_NO_CONCEPTS ) and           \
-  not defined( _MSC_VER )
-	// Testing first for MSVC error so that is_detected does not use requires
+#if defined( __cpp_concepts ) and not defined( DAW_NO_CONCEPTS ) 
 #if __cpp_concepts >= 201907L
 #define DAW_HAS_CONCEPTS
 #endif
