@@ -227,9 +227,10 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  <a class="code" href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">std::enable_if_t</a>&lt;(std::is_same_v&lt;CharT *, Pointer&gt; or                        \</div>
-<div class="line">                    std::is_same_v&lt;CharT const *, Pointer&gt;),                   \</div>
-<div class="line">                   std::nullptr_t&gt; = nullptr</div>
+<b>Value:</b><div class="fragment"><div class="line">  <a class="code" href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">std::enable_if_t</a>&lt;                                                            \</div>
+<div class="line">    (std::is_same_v&lt;CharT *, daw::remove_cvref_t&lt;Pointer&gt;&gt; or                  \</div>
+<div class="line">     std::is_same_v&lt;CharT const *, daw::remove_cvref_t&lt;Pointer&gt;&gt;),             \</div>
+<div class="line">    std::nullptr_t&gt; = nullptr</div>
 </div><!-- fragment -->
 <p>Require a character pointer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -312,7 +313,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00104">104</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00105">105</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
 
 </div>
 </div>
