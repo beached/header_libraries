@@ -771,7 +771,7 @@ namespace daw {
 			/// @pre size( ) > pos
 			/// @pre data( ) != nullptr
 			/// @return data( )[pos]
-			[[nodiscard]] constexpr const_reference
+			[[nodiscard]] DAW_ATTRIB_INLINE constexpr const_reference
 			operator[]( size_type pos ) const {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  pos < size( ), "Attempt to access basic_string_view past end" );
