@@ -432,8 +432,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1is__tuple2.html">is_tuple2</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1is__tuple2_3_01tuple2_3_01_ts_8_8_8_01_4_01_4.html">is_tuple2&lt; tuple2&lt; Ts... &gt; &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1is__unsigned.html">is_unsigned</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1keep__n.html">keep_n</a></td></tr>
@@ -1440,18 +1438,30 @@ Functions</h2></td></tr>
 <tr class="memitem:a6fae6eafdfa264f3fbac8b320443d594"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
 <tr class="memitem:a6fae6eafdfa264f3fbac8b320443d594"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a6fae6eafdfa264f3fbac8b320443d594">get</a> (std::tuple&lt; Args... &gt; const &amp;tp, size_t index) noexcept</td></tr>
 <tr class="separator:a6fae6eafdfa264f3fbac8b320443d594"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9a55c7a5073b74f1b94f0565488d87d"><td class="memTemplParams" colspan="2">template&lt;std::size_t Idx, typename... Ts&gt; </td></tr>
-<tr class="memitem:ae9a55c7a5073b74f1b94f0565488d87d"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ae9a55c7a5073b74f1b94f0565488d87d">get</a> (<a class="el" href="structdaw_1_1tuple2.html">tuple2</a>&lt; Ts... &gt; &amp;&amp;tp)</td></tr>
-<tr class="separator:ae9a55c7a5073b74f1b94f0565488d87d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b7578e331f2117ddf126d6d51b84cde"><td class="memTemplParams" colspan="2">template&lt;std::size_t Idx, typename... Ts&gt; </td></tr>
-<tr class="memitem:a0b7578e331f2117ddf126d6d51b84cde"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0b7578e331f2117ddf126d6d51b84cde">get</a> (<a class="el" href="structdaw_1_1tuple2.html">tuple2</a>&lt; Ts... &gt; &amp;tp)</td></tr>
-<tr class="separator:a0b7578e331f2117ddf126d6d51b84cde"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1fd44a40a4a216da95438d99c65d9b3c"><td class="memTemplParams" colspan="2">template&lt;std::size_t Idx, typename... Ts&gt; </td></tr>
-<tr class="memitem:a1fd44a40a4a216da95438d99c65d9b3c"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a1fd44a40a4a216da95438d99c65d9b3c">get</a> (<a class="el" href="structdaw_1_1tuple2.html">tuple2</a>&lt; Ts... &gt; const &amp;&amp;tp)</td></tr>
-<tr class="separator:a1fd44a40a4a216da95438d99c65d9b3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25f289f3b30afa8e47910b78451437fd"><td class="memTemplParams" colspan="2">template&lt;std::size_t Idx, typename... Ts&gt; </td></tr>
-<tr class="memitem:a25f289f3b30afa8e47910b78451437fd"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a25f289f3b30afa8e47910b78451437fd">get</a> (<a class="el" href="structdaw_1_1tuple2.html">tuple2</a>&lt; Ts... &gt; const &amp;tp)</td></tr>
-<tr class="separator:a25f289f3b30afa8e47910b78451437fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74711b5332d12654d4e52ef239845b4d"><td class="memTemplParams" colspan="2">template&lt;std::size_t Index, typename Ts &gt; </td></tr>
+<tr class="memitem:a74711b5332d12654d4e52ef239845b4d"><td class="memTemplItemLeft" align="right" valign="top">constexpr Ts &amp;&amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a74711b5332d12654d4e52ef239845b4d">get</a> (tuple2_impl::leaf&lt; Index, Ts, false &gt; &amp;&amp;tp)</td></tr>
+<tr class="separator:a74711b5332d12654d4e52ef239845b4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c674872b28a88d21de1ca07b32ca773"><td class="memTemplParams" colspan="2">template&lt;std::size_t Index, typename Ts &gt; </td></tr>
+<tr class="memitem:a2c674872b28a88d21de1ca07b32ca773"><td class="memTemplItemLeft" align="right" valign="top">constexpr Ts &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a2c674872b28a88d21de1ca07b32ca773">get</a> (tuple2_impl::leaf&lt; Index, Ts, false &gt; &amp;tp)</td></tr>
+<tr class="separator:a2c674872b28a88d21de1ca07b32ca773"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a070a8502aa505c065d93d21cbd7a5f91"><td class="memTemplParams" colspan="2">template&lt;std::size_t Index, typename Ts &gt; </td></tr>
+<tr class="memitem:a070a8502aa505c065d93d21cbd7a5f91"><td class="memTemplItemLeft" align="right" valign="top">constexpr const Ts &amp;&amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a070a8502aa505c065d93d21cbd7a5f91">get</a> (tuple2_impl::leaf&lt; Index, Ts, false &gt; const &amp;&amp;tp)</td></tr>
+<tr class="separator:a070a8502aa505c065d93d21cbd7a5f91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a245deb41781b3627da909bee27d18fa7"><td class="memTemplParams" colspan="2">template&lt;std::size_t Index, typename Ts &gt; </td></tr>
+<tr class="memitem:a245deb41781b3627da909bee27d18fa7"><td class="memTemplItemLeft" align="right" valign="top">constexpr const Ts &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a245deb41781b3627da909bee27d18fa7">get</a> (tuple2_impl::leaf&lt; Index, Ts, false &gt; const &amp;tp)</td></tr>
+<tr class="separator:a245deb41781b3627da909bee27d18fa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7459b635d5a3c54b74e5e306ff5d18a"><td class="memTemplParams" colspan="2">template&lt;std::size_t Index, typename Ts &gt; </td></tr>
+<tr class="memitem:aa7459b635d5a3c54b74e5e306ff5d18a"><td class="memTemplItemLeft" align="right" valign="top">constexpr Ts &amp;&amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa7459b635d5a3c54b74e5e306ff5d18a">get</a> (tuple2_impl::leaf&lt; Index, Ts, true &gt; &amp;&amp;tp)</td></tr>
+<tr class="separator:aa7459b635d5a3c54b74e5e306ff5d18a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade3172fb5456fb126e7af0ddfcbce6a9"><td class="memTemplParams" colspan="2">template&lt;std::size_t Index, typename Ts &gt; </td></tr>
+<tr class="memitem:ade3172fb5456fb126e7af0ddfcbce6a9"><td class="memTemplItemLeft" align="right" valign="top">constexpr Ts &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ade3172fb5456fb126e7af0ddfcbce6a9">get</a> (tuple2_impl::leaf&lt; Index, Ts, true &gt; &amp;tp)</td></tr>
+<tr class="separator:ade3172fb5456fb126e7af0ddfcbce6a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a632c82865af550c397179c4eb0e1bda4"><td class="memTemplParams" colspan="2">template&lt;std::size_t Index, typename Ts &gt; </td></tr>
+<tr class="memitem:a632c82865af550c397179c4eb0e1bda4"><td class="memTemplItemLeft" align="right" valign="top">constexpr const Ts &amp;&amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a632c82865af550c397179c4eb0e1bda4">get</a> (tuple2_impl::leaf&lt; Index, Ts, true &gt; const &amp;&amp;tp)</td></tr>
+<tr class="separator:a632c82865af550c397179c4eb0e1bda4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdbc38195f0bef447a9f6e96ece07eed"><td class="memTemplParams" colspan="2">template&lt;std::size_t Index, typename Ts &gt; </td></tr>
+<tr class="memitem:abdbc38195f0bef447a9f6e96ece07eed"><td class="memTemplItemLeft" align="right" valign="top">constexpr const Ts &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#abdbc38195f0bef447a9f6e96ece07eed">get</a> (tuple2_impl::leaf&lt; Index, Ts, true &gt; const &amp;tp)</td></tr>
+<tr class="separator:abdbc38195f0bef447a9f6e96ece07eed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15f1aae31630816649289e15b156a096"><td class="memTemplParams" colspan="2">template&lt;std::size_t N, typename... Ts&gt; </td></tr>
 <tr class="memitem:a15f1aae31630816649289e15b156a096"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a15f1aae31630816649289e15b156a096">get</a> (<a class="el" href="classdaw_1_1tuple.html">tuple</a>&lt; Ts... &gt; &amp;&amp;tp)</td></tr>
 <tr class="separator:a15f1aae31630816649289e15b156a096"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4184,9 +4194,12 @@ Variables</h2></td></tr>
 <tr class="memitem:a6f35f8bb5e2947bfc6285b2525b6b7fd"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a6f35f8bb5e2947bfc6285b2525b6b7fd"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a6f35f8bb5e2947bfc6285b2525b6b7fd">is_system_integral_v</a> = <a class="el" href="structdaw_1_1is__system__integral.html">is_system_integral</a>&lt;T&gt;::value</td></tr>
 <tr class="separator:a6f35f8bb5e2947bfc6285b2525b6b7fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1a1ecd1da1224da4e77855c969e746d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ad1a1ecd1da1224da4e77855c969e746d"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad1a1ecd1da1224da4e77855c969e746d">is_tuple2_v</a> = <a class="el" href="structdaw_1_1is__tuple2.html">is_tuple2</a>&lt;T&gt;::value</td></tr>
+<tr class="memitem:ad1a1ecd1da1224da4e77855c969e746d"><td class="memTemplParams" colspan="2">template&lt;typename &gt; </td></tr>
+<tr class="memitem:ad1a1ecd1da1224da4e77855c969e746d"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad1a1ecd1da1224da4e77855c969e746d">is_tuple2_v</a> = false</td></tr>
 <tr class="separator:ad1a1ecd1da1224da4e77855c969e746d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c408c20541758834b1bfac8d1881fb4"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
+<tr class="memitem:a4c408c20541758834b1bfac8d1881fb4"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a4c408c20541758834b1bfac8d1881fb4">is_tuple2_v&lt; tuple2&lt; Ts... &gt; &gt;</a> = true</td></tr>
+<tr class="separator:a4c408c20541758834b1bfac8d1881fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bf218c78227ebd73155aeb469aa0812"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a8bf218c78227ebd73155aeb469aa0812"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a8bf218c78227ebd73155aeb469aa0812">is_unsigned_v</a> = <a class="el" href="structdaw_1_1is__unsigned.html">is_unsigned</a>&lt;T&gt;::value</td></tr>
 <tr class="separator:a8bf218c78227ebd73155aeb469aa0812"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5748,7 +5761,7 @@ template&lt;std::size_t Idx, typename Tuple &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00198">198</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00156">156</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
 
 </div>
 </div>
@@ -6489,7 +6502,7 @@ template&lt;typename Func , typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00300">300</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00258">258</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
 
 </div>
 </div>
@@ -6529,7 +6542,7 @@ template&lt;typename Func , typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00285">285</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00243">243</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
 
 </div>
 </div>
@@ -6569,7 +6582,7 @@ template&lt;typename Func , typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00292">292</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00250">250</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
 
 </div>
 </div>
@@ -6609,7 +6622,7 @@ template&lt;typename Func , typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00277">277</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00235">235</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
 
 </div>
 </div>
@@ -11411,7 +11424,7 @@ template&lt;typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00210">210</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00169">169</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
 
 </div>
 </div>
@@ -11766,7 +11779,7 @@ template&lt;size_t HashBytes = sizeof( genhash_uint_t ), typename T , std::enabl
 </div>
 </div>
 <a id="aec26be2bcbe261d3cea14098d110f63b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec26be2bcbe261d3cea14098d110f63b">&#9670;&nbsp;</a></span>get() <span class="overload">[1/14]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aec26be2bcbe261d3cea14098d110f63b">&#9670;&nbsp;</a></span>get() <span class="overload">[1/18]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -11796,7 +11809,7 @@ template&lt;std::size_t Idx, typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a0088157ee29c1a61b17daa401b85fb2f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0088157ee29c1a61b17daa401b85fb2f">&#9670;&nbsp;</a></span>get() <span class="overload">[2/14]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0088157ee29c1a61b17daa401b85fb2f">&#9670;&nbsp;</a></span>get() <span class="overload">[2/18]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -11826,7 +11839,7 @@ template&lt;std::size_t Idx, typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a27a7fe7ddb119eafce8cb348151e6ba3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a27a7fe7ddb119eafce8cb348151e6ba3">&#9670;&nbsp;</a></span>get() <span class="overload">[3/14]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a27a7fe7ddb119eafce8cb348151e6ba3">&#9670;&nbsp;</a></span>get() <span class="overload">[3/18]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -11856,7 +11869,7 @@ template&lt;std::size_t Idx, typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a0c46410473f7077095d2c8c5f1d70a33"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c46410473f7077095d2c8c5f1d70a33">&#9670;&nbsp;</a></span>get() <span class="overload">[4/14]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c46410473f7077095d2c8c5f1d70a33">&#9670;&nbsp;</a></span>get() <span class="overload">[4/18]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -11896,7 +11909,7 @@ template&lt;typename... Args&gt; </div>
 </div>
 </div>
 <a id="a6fae6eafdfa264f3fbac8b320443d594"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6fae6eafdfa264f3fbac8b320443d594">&#9670;&nbsp;</a></span>get() <span class="overload">[5/14]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fae6eafdfa264f3fbac8b320443d594">&#9670;&nbsp;</a></span>get() <span class="overload">[5/18]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -11935,21 +11948,21 @@ template&lt;typename... Args&gt; </div>
 
 </div>
 </div>
-<a id="ae9a55c7a5073b74f1b94f0565488d87d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9a55c7a5073b74f1b94f0565488d87d">&#9670;&nbsp;</a></span>get() <span class="overload">[6/14]</span></h2>
+<a id="a74711b5332d12654d4e52ef239845b4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74711b5332d12654d4e52ef239845b4d">&#9670;&nbsp;</a></span>get() <span class="overload">[6/18]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;std::size_t Idx, typename... Ts&gt; </div>
+template&lt;std::size_t Index, typename Ts &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr decltype( auto ) daw::get </td>
+          <td class="memname">constexpr Ts&amp;&amp; daw::get </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1tuple2.html">tuple2</a>&lt; Ts... &gt; &amp;&amp;&#160;</td>
+          <td class="paramtype">tuple2_impl::leaf&lt; Index, Ts, false &gt; &amp;&amp;&#160;</td>
           <td class="paramname"><em>tp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -11961,25 +11974,25 @@ template&lt;std::size_t Idx, typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00184">184</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00142">142</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
 
 </div>
 </div>
-<a id="a0b7578e331f2117ddf126d6d51b84cde"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b7578e331f2117ddf126d6d51b84cde">&#9670;&nbsp;</a></span>get() <span class="overload">[7/14]</span></h2>
+<a id="a2c674872b28a88d21de1ca07b32ca773"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c674872b28a88d21de1ca07b32ca773">&#9670;&nbsp;</a></span>get() <span class="overload">[7/18]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;std::size_t Idx, typename... Ts&gt; </div>
+template&lt;std::size_t Index, typename Ts &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr decltype( auto ) daw::get </td>
+          <td class="memname">constexpr Ts&amp; daw::get </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1tuple2.html">tuple2</a>&lt; Ts... &gt; &amp;&#160;</td>
+          <td class="paramtype">tuple2_impl::leaf&lt; Index, Ts, false &gt; &amp;&#160;</td>
           <td class="paramname"><em>tp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -11991,25 +12004,25 @@ template&lt;std::size_t Idx, typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00174">174</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00122">122</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
 
 </div>
 </div>
-<a id="a1fd44a40a4a216da95438d99c65d9b3c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1fd44a40a4a216da95438d99c65d9b3c">&#9670;&nbsp;</a></span>get() <span class="overload">[8/14]</span></h2>
+<a id="a070a8502aa505c065d93d21cbd7a5f91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a070a8502aa505c065d93d21cbd7a5f91">&#9670;&nbsp;</a></span>get() <span class="overload">[8/18]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;std::size_t Idx, typename... Ts&gt; </div>
+template&lt;std::size_t Index, typename Ts &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr decltype( auto ) daw::get </td>
+          <td class="memname">constexpr const Ts&amp;&amp; daw::get </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1tuple2.html">tuple2</a>&lt; Ts... &gt; const &amp;&amp;&#160;</td>
+          <td class="paramtype">tuple2_impl::leaf&lt; Index, Ts, false &gt; const &amp;&amp;&#160;</td>
           <td class="paramname"><em>tp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -12021,25 +12034,25 @@ template&lt;std::size_t Idx, typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00179">179</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00132">132</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
 
 </div>
 </div>
-<a id="a25f289f3b30afa8e47910b78451437fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a25f289f3b30afa8e47910b78451437fd">&#9670;&nbsp;</a></span>get() <span class="overload">[9/14]</span></h2>
+<a id="a245deb41781b3627da909bee27d18fa7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a245deb41781b3627da909bee27d18fa7">&#9670;&nbsp;</a></span>get() <span class="overload">[9/18]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;std::size_t Idx, typename... Ts&gt; </div>
+template&lt;std::size_t Index, typename Ts &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr decltype( auto ) daw::get </td>
+          <td class="memname">constexpr const Ts&amp; daw::get </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1tuple2.html">tuple2</a>&lt; Ts... &gt; const &amp;&#160;</td>
+          <td class="paramtype">tuple2_impl::leaf&lt; Index, Ts, false &gt; const &amp;&#160;</td>
           <td class="paramname"><em>tp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -12051,12 +12064,132 @@ template&lt;std::size_t Idx, typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00169">169</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00112">112</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
+
+</div>
+</div>
+<a id="aa7459b635d5a3c54b74e5e306ff5d18a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7459b635d5a3c54b74e5e306ff5d18a">&#9670;&nbsp;</a></span>get() <span class="overload">[10/18]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::size_t Index, typename Ts &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr Ts&amp;&amp; daw::get </td>
+          <td>(</td>
+          <td class="paramtype">tuple2_impl::leaf&lt; Index, Ts, true &gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>tp</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00137">137</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
+
+</div>
+</div>
+<a id="ade3172fb5456fb126e7af0ddfcbce6a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade3172fb5456fb126e7af0ddfcbce6a9">&#9670;&nbsp;</a></span>get() <span class="overload">[11/18]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::size_t Index, typename Ts &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr Ts&amp; daw::get </td>
+          <td>(</td>
+          <td class="paramtype">tuple2_impl::leaf&lt; Index, Ts, true &gt; &amp;&#160;</td>
+          <td class="paramname"><em>tp</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00117">117</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
+
+</div>
+</div>
+<a id="a632c82865af550c397179c4eb0e1bda4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a632c82865af550c397179c4eb0e1bda4">&#9670;&nbsp;</a></span>get() <span class="overload">[12/18]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::size_t Index, typename Ts &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const Ts&amp;&amp; daw::get </td>
+          <td>(</td>
+          <td class="paramtype">tuple2_impl::leaf&lt; Index, Ts, true &gt; const &amp;&amp;&#160;</td>
+          <td class="paramname"><em>tp</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00127">127</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
+
+</div>
+</div>
+<a id="abdbc38195f0bef447a9f6e96ece07eed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdbc38195f0bef447a9f6e96ece07eed">&#9670;&nbsp;</a></span>get() <span class="overload">[13/18]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::size_t Index, typename Ts &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const Ts&amp; daw::get </td>
+          <td>(</td>
+          <td class="paramtype">tuple2_impl::leaf&lt; Index, Ts, true &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>tp</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00107">107</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
 
 </div>
 </div>
 <a id="a15f1aae31630816649289e15b156a096"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15f1aae31630816649289e15b156a096">&#9670;&nbsp;</a></span>get() <span class="overload">[10/14]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a15f1aae31630816649289e15b156a096">&#9670;&nbsp;</a></span>get() <span class="overload">[14/18]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -12086,7 +12219,7 @@ template&lt;std::size_t N, typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a5ca57e68d9635fe230fe49c4fefdcc11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ca57e68d9635fe230fe49c4fefdcc11">&#9670;&nbsp;</a></span>get() <span class="overload">[11/14]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ca57e68d9635fe230fe49c4fefdcc11">&#9670;&nbsp;</a></span>get() <span class="overload">[15/18]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -12116,7 +12249,7 @@ template&lt;std::size_t N, typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a3f6c4e49c3feef611ad2daaa08b45a1c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3f6c4e49c3feef611ad2daaa08b45a1c">&#9670;&nbsp;</a></span>get() <span class="overload">[12/14]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f6c4e49c3feef611ad2daaa08b45a1c">&#9670;&nbsp;</a></span>get() <span class="overload">[16/18]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -12146,7 +12279,7 @@ template&lt;std::size_t N, typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a6fd3bfceec8ea7bb886265802440f0fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6fd3bfceec8ea7bb886265802440f0fa">&#9670;&nbsp;</a></span>get() <span class="overload">[13/14]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fd3bfceec8ea7bb886265802440f0fa">&#9670;&nbsp;</a></span>get() <span class="overload">[17/18]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -12176,7 +12309,7 @@ template&lt;size_t N, typename... T&gt; </div>
 </div>
 </div>
 <a id="a070810b5eb2ba2d89b79baf87481f1c9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a070810b5eb2ba2d89b79baf87481f1c9">&#9670;&nbsp;</a></span>get() <span class="overload">[14/14]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a070810b5eb2ba2d89b79baf87481f1c9">&#9670;&nbsp;</a></span>get() <span class="overload">[18/18]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -47580,7 +47713,7 @@ template&lt;typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00248">248</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00207">207</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
 
 </div>
 </div>
@@ -47626,7 +47759,7 @@ template&lt;typename T0 , typename T1 , typename... Tps&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00258">258</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00217">217</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
 
 </div>
 </div>
@@ -47656,7 +47789,7 @@ template&lt;typename Tuple &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00253">253</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00212">212</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
 
 </div>
 </div>
@@ -50477,13 +50610,13 @@ template&lt;typename T &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;typename &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool daw::is_tuple2_v = <a class="el" href="structdaw_1_1is__tuple2.html">is_tuple2</a>&lt;T&gt;::value</td>
+          <td class="memname">constexpr bool daw::is_tuple2_v = false</td>
         </tr>
       </table>
   </td>
@@ -50493,7 +50626,33 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00166">166</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00098">98</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
+
+</div>
+</div>
+<a id="a4c408c20541758834b1bfac8d1881fb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c408c20541758834b1bfac8d1881fb4">&#9670;&nbsp;</a></span>is_tuple2_v&lt; tuple2&lt; Ts... &gt; &gt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... Ts&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool <a class="el" href="namespacedaw.html#ad1a1ecd1da1224da4e77855c969e746d">daw::is_tuple2_v</a>&lt; <a class="el" href="structdaw_1_1tuple2.html">tuple2</a>&lt; Ts... &gt; &gt; = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00101">101</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
 
 </div>
 </div>
@@ -51382,7 +51541,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00207">207</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00166">166</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
 
 </div>
 </div>
