@@ -23,9 +23,9 @@ namespace daw {
 			constexpr auto name_size =
 			  daw::string_view( __PRETTY_FUNCTION__ ).size( );
 			constexpr auto name = []<std::size_t... Is>( ) {
-				constexpr auto tmp = daw::string_view( __PRETTY_FUNCTION__ )
-				                       .remove_prefix( prefix )
-				                       .remove_suffix( suffix );
+				auto tmp = daw::string_view( __PRETTY_FUNCTION__ );
+				tmp.remove_prefix( prefix );
+				tmp.remove_suffix( suffix );
 				return std::array<char const, name_size - ( suffix + prefix ) + 1>{
 				  tmp[Is]... };
 			}

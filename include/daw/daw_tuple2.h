@@ -9,6 +9,7 @@
 #pragma once
 
 #include "cpp_17.h"
+#include "daw_consteval.h"
 #include "daw_move.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
@@ -21,15 +22,16 @@
 
 namespace daw {
 	namespace tuple2_impl {
-		constexpr std::size_t encode_location( std::size_t outter,
-		                                       std::size_t inner ) {
+		DAW_ATTRIB_INLINE DAW_CONSTEVAL std::size_t
+		encode_location( std::size_t outter, std::size_t inner ) {
 			constexpr std::size_t half_sz = ( sizeof( std::size_t ) * 8U ) / 2U;
 			return ( outter << half_sz ) | inner;
 		}
 
 		template<std::size_t... Sizes, std::size_t... Is>
-		constexpr auto cartesian_product_impl2( std::index_sequence<Sizes...>,
-		                                        std::index_sequence<Is...> ) {
+		DAW_ATTRIB_INLINE DAW_CONSTEVAL auto
+		cartesian_product_impl2( std::index_sequence<Sizes...>,
+		                         std::index_sequence<Is...> ) {
 			static_assert( sizeof...( Sizes ) != 0 );
 			constexpr std::array x = [] {
 				constexpr std::size_t orig[]{ Sizes... };
@@ -47,7 +49,7 @@ namespace daw {
 		}
 
 		template<std::size_t... Sizes>
-		constexpr auto
+		DAW_ATTRIB_INLINE DAW_CONSTEVAL auto
 		cartesian_product_impl( std::index_sequence<Sizes...> sizes ) {
 			return cartesian_product_impl2(
 			  sizes, std::make_index_sequence<( Sizes + ... )>{ } );
@@ -60,129 +62,85 @@ namespace daw {
 		template<std::size_t Index, typename T, bool /*is_class*/>
 		struct leaf {
 			T value;
-
-			template<std::size_t Idx,
-			         std::enable_if_t<Idx == Index, std::nullptr_t> = nullptr>
-			static inline constexpr daw::traits::identity<T> element_type( ) {
-				return { };
-			}
-
-			template<std::size_t Idx,
-			         std::enable_if_t<Idx == Index, std::nullptr_t> = nullptr>
-			constexpr decltype( auto ) get( ) const &noexcept {
-				return value;
-			}
-
-			template<std::size_t Idx,
-			         std::enable_if_t<Idx == Index, std::nullptr_t> = nullptr>
-			constexpr decltype( auto ) get( ) &noexcept {
-				return value;
-			}
-
-			template<std::size_t Idx,
-			         std::enable_if_t<Idx == Index, std::nullptr_t> = nullptr>
-			constexpr decltype( auto ) get( ) const &&noexcept {
-				return DAW_MOVE( value );
-			}
-
-			template<std::size_t Idx,
-			         std::enable_if_t<Idx == Index, std::nullptr_t> = nullptr>
-			constexpr decltype( auto ) get( ) &&noexcept {
-				return DAW_MOVE( value );
-			}
 		};
 
 		template<std::size_t Index, typename T>
-		struct leaf<Index, T, /*is_class*/ true> : T {
-			template<std::size_t Idx,
-			         std::enable_if_t<Idx == Index, std::nullptr_t> = nullptr>
-			static inline constexpr daw::traits::identity<T> element_type( ) {
-				return { };
-			}
-
-			template<std::size_t Idx,
-			         std::enable_if_t<Idx == Index, std::nullptr_t> = nullptr>
-			constexpr decltype( auto ) get( ) const &noexcept {
-				return *this;
-			}
-
-			template<std::size_t Idx,
-			         std::enable_if_t<Idx == Index, std::nullptr_t> = nullptr>
-			constexpr decltype( auto ) get( ) &noexcept {
-				return *this;
-			}
-
-			template<std::size_t Idx,
-			         std::enable_if_t<Idx == Index, std::nullptr_t> = nullptr>
-			constexpr decltype( auto ) get( ) const &&noexcept {
-				return DAW_MOVE( *this );
-			}
-
-			template<std::size_t Idx,
-			         std::enable_if_t<Idx == Index, std::nullptr_t> = nullptr>
-			constexpr decltype( auto ) get( ) &&noexcept {
-				return DAW_MOVE( *this );
-			}
-		};
+		struct leaf<Index, T, /*is_class*/ true> : T {};
 
 		template<typename T, typename...>
 		struct tuple2_base;
 
 		template<std::size_t... Index, typename... Ts>
 		struct tuple2_base<std::index_sequence<Index...>, Ts...>
-		  : leaf<Index, Ts, std::is_class_v<Ts>>... {
-		protected:
-			using leaf<Index, Ts, std::is_class_v<Ts>>::get...;
-			using leaf<Index, Ts, std::is_class_v<Ts>>::element_type...;
-		};
+		  : leaf<Index, Ts,
+		         ( std::is_class_v<Ts> and not std::is_final_v<Ts> )>... {};
 	} // namespace tuple2_impl
 
 	template<typename... Ts>
 	struct tuple2
 	  : tuple2_impl::tuple2_base<std::index_sequence_for<Ts...>, Ts...> {
-		using tuple2_impl::tuple2_base<std::index_sequence_for<Ts...>, Ts...>::get;
-		using tuple2_impl::tuple2_base<std::index_sequence_for<Ts...>,
-		                               Ts...>::element_type;
-		using size_constant = std::integral_constant<std::size_t, sizeof...( Ts )>;
-
 		static constexpr std::size_t size( ) noexcept {
-			return size_constant::value;
+			return sizeof...( Ts );
 		}
 	};
 
 	template<>
-	struct tuple2<> {};
+	struct tuple2<> {
+		DAW_ATTRIB_INLINE static DAW_CONSTEVAL std::size_t size( ) noexcept {
+			return 0;
+		}
+	};
 
 	template<typename... Ts>
 	tuple2( Ts... ) -> tuple2<Ts...>;
 
 	template<typename>
-	struct is_tuple2 : std::false_type {};
+	inline constexpr bool is_tuple2_v = false;
 
 	template<typename... Ts>
-	struct is_tuple2<tuple2<Ts...>> : std::true_type {};
+	inline constexpr bool is_tuple2_v<tuple2<Ts...>> = true;
 
-	template<typename T>
-	inline constexpr bool is_tuple2_v = is_tuple2<T>::value;
+	template<typename Tp>
+	struct is_tuple2 : std::bool_constant<is_tuple2_v<Tp>> {};
 
-	template<std::size_t Idx, typename... Ts>
-	constexpr decltype( auto ) get( tuple2<Ts...> const &tp ) {
-		return tp.template get<Idx>( );
+	template<std::size_t Index, typename Ts>
+	constexpr Ts const &get( tuple2_impl::leaf<Index, Ts, true> const &tp ) {
+		return static_cast<Ts const &>( tp );
 	}
 
-	template<std::size_t Idx, typename... Ts>
-	constexpr decltype( auto ) get( tuple2<Ts...> &tp ) {
-		return tp.template get<Idx>( );
+	template<std::size_t Index, typename Ts>
+	constexpr Ts const &get( tuple2_impl::leaf<Index, Ts, false> const &tp ) {
+		return tp.value;
 	}
 
-	template<std::size_t Idx, typename... Ts>
-	constexpr decltype( auto ) get( tuple2<Ts...> const &&tp ) {
-		return DAW_MOVE( tp ).template get<Idx>( );
+	template<std::size_t Index, typename Ts>
+	constexpr Ts &get( tuple2_impl::leaf<Index, Ts, true> &tp ) {
+		return static_cast<Ts const &>( tp );
 	}
 
-	template<std::size_t Idx, typename... Ts>
-	constexpr decltype( auto ) get( tuple2<Ts...> &&tp ) {
-		return DAW_MOVE( tp ).template get<Idx>( );
+	template<std::size_t Index, typename Ts>
+	constexpr Ts &get( tuple2_impl::leaf<Index, Ts, false> &tp ) {
+		return tp.value;
+	}
+
+	template<std::size_t Index, typename Ts>
+	constexpr Ts const &&get( tuple2_impl::leaf<Index, Ts, true> const &&tp ) {
+		return static_cast<Ts const &>( tp );
+	}
+
+	template<std::size_t Index, typename Ts>
+	constexpr Ts const &&get( tuple2_impl::leaf<Index, Ts, false> const &&tp ) {
+		return tp.value;
+	}
+
+	template<std::size_t Index, typename Ts>
+	constexpr Ts &&get( tuple2_impl::leaf<Index, Ts, true> &&tp ) {
+		return static_cast<Ts const &>( tp );
+	}
+
+	template<std::size_t Index, typename Ts>
+	constexpr Ts &&get( tuple2_impl::leaf<Index, Ts, false> &&tp ) {
+		return tp.value;
 	}
 
 	template<std::size_t, typename>
@@ -190,8 +148,8 @@ namespace daw {
 
 	template<std::size_t Idx, typename... Ts>
 	struct tuple2_element<Idx, tuple2<Ts...>> {
-		using type =
-		  typename DAW_TYPEOF( tuple2<Ts...>::template element_type<Idx>( ) )::type;
+	public:
+		using type = pack_element_t<Idx, daw::pack_list<Ts...>>;
 	};
 
 	template<std::size_t Idx, typename Tuple>
@@ -201,14 +159,15 @@ namespace daw {
 	struct tuple2_size;
 
 	template<typename... Ts>
-	struct tuple2_size<tuple2<Ts...>> : tuple2<Ts...>::size_constant {};
+	struct tuple2_size<tuple2<Ts...>>
+	  : std::integral_constant<std::size_t, sizeof...( Ts )> {};
 
 	template<typename T>
 	inline static constexpr std::size_t tuple2_size_v = tuple2_size<T>::value;
 
 	template<typename... Ts>
 	constexpr tuple2<Ts...> forward_as_tuple2( Ts &&...args ) {
-		return tuple2<Ts...>{ DAW_FWD2( Ts, args )... };
+		return tuple2<Ts...>{ DAW_FWD( args )... };
 	}
 
 	// ******************************************
@@ -220,11 +179,11 @@ namespace daw {
 			constexpr std::size_t half_sz = ( sizeof( std::size_t ) * 8U ) / 2U;
 			constexpr std::size_t outter = location >> half_sz;
 			constexpr std::size_t inner = ( location << half_sz ) >> half_sz;
-			return get<inner>( get<outter>( DAW_FWD2( TupleTuple, tp ) ) );
+			return get<inner>( get<outter>( DAW_FWD( tp ) ) );
 		}
 
 		template<std::size_t location, typename TupleTuple>
-		constexpr auto decode_get_type_impl( ) {
+		DAW_ATTRIB_INLINE DAW_CONSTEVAL auto decode_get_type_impl( ) {
 			constexpr std::size_t half_sz = ( sizeof( std::size_t ) * 8U ) / 2U;
 			constexpr std::size_t outter = location >> half_sz;
 			constexpr std::size_t inner = ( location << half_sz ) >> half_sz;
@@ -241,7 +200,7 @@ namespace daw {
 			using tp_t =
 			  tuple2<decode_get_type<Locations, daw::remove_cvref_t<TupleTuple>>...>;
 
-			return tp_t{ decode_get<Locations>( DAW_FWD2( TupleTuple, tps ) )... };
+			return tp_t{ decode_get<Locations>( DAW_FWD( tps ) )... };
 		}
 	} // namespace tuple2_impl
 
@@ -261,15 +220,14 @@ namespace daw {
 		    std::index_sequence<tuple2_size_v<daw::remove_cvref_t<T0>>,
 		                        tuple2_size_v<daw::remove_cvref_t<T1>>,
 		                        tuple2_size_v<daw::remove_cvref_t<Tps>>...>>{ },
-		  forward_as_tuple2( DAW_FWD2( T0, t0 ), DAW_FWD2( T1, t1 ),
-		                     DAW_FWD2( Tps, tps )... ) );
+		  forward_as_tuple2( DAW_FWD( t0 ), DAW_FWD( t1 ), DAW_FWD( tps )... ) );
 	}
 
 	namespace tuple2_impl {
 		template<typename Tuple, typename Func, std::size_t... Is>
 		inline constexpr decltype( auto ) apply_impl( Tuple &&tp, Func &&fn,
 		                                              std::index_sequence<Is...> ) {
-			return DAW_FWD2( Func, fn )( get<Is>( DAW_FWD2( Tuple, tp ) )... );
+			return DAW_FWD( fn )( get<Is>( DAW_FWD( tp ) )... );
 		}
 	} // namespace tuple2_impl
 
@@ -277,14 +235,14 @@ namespace daw {
 	inline constexpr decltype( auto ) apply( tuple2<Ts...> const &tp,
 	                                         Func &&fn ) {
 		return tuple2_impl::apply_impl(
-		  tp, DAW_FWD2( Func, fn ),
+		  tp, DAW_FWD( fn ),
 		  std::make_index_sequence<tuple2_size_v<tuple2<Ts...>>>{ } );
 	}
 
 	template<typename Func, typename... Ts>
 	inline constexpr decltype( auto ) apply( tuple2<Ts...> &tp, Func &&fn ) {
 		return tuple2_impl::apply_impl(
-		  tp, DAW_FWD2( Func, fn ),
+		  tp, DAW_FWD( fn ),
 		  std::make_index_sequence<tuple2_size_v<tuple2<Ts...>>>{ } );
 	}
 
@@ -292,7 +250,7 @@ namespace daw {
 	inline constexpr decltype( auto ) apply( tuple2<Ts...> const &&tp,
 	                                         Func &&fn ) {
 		return tuple2_impl::apply_impl(
-		  DAW_MOVE( tp ), DAW_FWD2( Func, fn ),
+		  DAW_MOVE( tp ), DAW_FWD( fn ),
 		  std::make_index_sequence<tuple2_size_v<tuple2<Ts...>>>{ } );
 	}
 
