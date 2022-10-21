@@ -189,7 +189,9 @@ namespace daw {
 			} else {
 				std::cout << '\n';
 			}
+#if defined( DAW_USE_EXCEPTIONS )
 		} catch( ... ) { result.set_exception( ); }
+#endif
 		return result;
 	}
 
