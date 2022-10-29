@@ -785,8 +785,8 @@ namespace daw {
 	}
 
 	template<typename T>
-	constexpr std::size_t const
-	  bsizeof = static_cast<size_t>( sizeof( remove_cvref_t<T> ) * 8U );
+	constexpr std::size_t const bsizeof =
+	  static_cast<size_t>( sizeof( remove_cvref_t<T> ) * 8U );
 
 	/// Checks if value is in the range [lower, upper)
 	template<typename Value, typename LowerBound, typename UpperBound>
@@ -954,13 +954,17 @@ namespace daw {
 	using if_t = typename std::conditional<Bool_, If_, Then_>::type;
 
 	/// aligned_alloc is not in clang-cl 13 with vs2022
-#if not( defined( _MSC_VER ) and defined( __clang__ ) )
 	template<typename T, std::size_t Alignment = alignof( T )>
 	inline T *get_buffer( std::size_t count ) noexcept {
 		return reinterpret_cast<T *>(
-		  ::aligned_alloc( Alignment, sizeof( T ) * count ) );
-	}
+#if( defined( __MINGW32__ ) or defined( _MSC_VER_ ) ) and                      \
+  not defined( __clang__ )
+		  _aligned_malloc( sizeof( T ) * count, Alignment )
+#else
+		  ::aligned_alloc( Alignment, sizeof( T ) * count )
 #endif
+		);
+	}
 
 	template<typename T>
 	inline void return_buffer( T *ptr ) noexcept {
