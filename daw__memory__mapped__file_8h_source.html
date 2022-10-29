@@ -90,7 +90,7 @@ $(function() {
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;string_view&gt;</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;utility&gt;</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#if not defined( _MSC_VER )</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#if not defined( _MSC_VER ) and not defined( __MINGW32__ )</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;fcntl.h&gt;</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;sys/mman.h&gt;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;sys/types.h&gt;</span></div>
@@ -106,7 +106,7 @@ $(function() {
 <div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="namespacedaw_1_1filesystem.html">   34</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw_1_1filesystem.html">daw::filesystem</a> {</div>
 <div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447">   35</a></span>&#160;  <span class="keyword">enum class</span> <a class="code" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447">open_mode</a> : bool { <a class="code" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447aecae13117d6f0584c25a9da6c8f8415e">read</a>, <a class="code" href="namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447a06ad287ea83b37a6f9db3d8d10d72c8f">read_write</a> };</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#if not defined( _MSC_VER )</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#if not defined( _MSC_VER ) and not defined( __MINGW32__ )</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T = <span class="keywordtype">char</span>&gt;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="keyword">struct </span>memory_mapped_file_t {</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">using</span> <a class="code" href="structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a11d1ef7523030277175772bab23bc962">value_type</a> = T;</div>
