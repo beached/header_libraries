@@ -34,6 +34,7 @@ template<typename... Ts>
 inline constexpr void Unused( Ts &&... ) noexcept {}
 
 namespace daw {
+
 	namespace utility_details {
 		template<typename ResultType, typename... ArgTypes>
 		struct make_function_pointer_impl {
@@ -607,23 +608,31 @@ namespace daw {
 		return range_t{ first, last };
 	}
 
-	template<typename... Ts>
-	struct pack_index_of;
-
-	template<typename T, typename... Ts>
-	struct pack_index_of<T, Ts...> : std::integral_constant<size_t, 0> {};
-
-	template<typename T, typename U, typename... Ts>
-	struct pack_index_of<T, U, Ts...>
-	  : std::integral_constant<
-	      std::size_t,
-	      ( std::is_same_v<T, U> ? 0 : 1 + pack_index_of<T, Ts...>::value )> {};
-
 	template<size_t N, typename... Ts>
 	using pack_type_at = traits::nth_type<N, Ts...>;
 
 	template<typename T, typename... Ts>
-	constexpr std::size_t pack_index_of_v = pack_index_of<T, Ts...>::value;
+	inline constexpr auto pack_index_of_v = [] {
+		auto result = sizeof...( Ts );
+		auto pos = std::size_t( -1 );
+		( ( ++pos, std::is_same_v<Ts, T> ? ( result = pos ) : pos ), ... );
+		return result;
+	}( );
+
+	template<typename T, typename... Ts>
+	using pack_index_of =
+	  std::integral_constant<std::size_t, pack_index_of_v<T, Ts...>>;
+
+	template<typename T, typename>
+	inline constexpr auto param_pack_index_of_v = undefined_v<T>;
+
+	template<template<typename...> typename Pack, typename... Ts, typename T>
+	inline constexpr std::size_t param_pack_index_of_v<Pack<Ts...>, T> =
+	  pack_index_of_v<T, Ts...>;
+
+	template<typename Pack, typename T>
+	using param_pack_index_of =
+	  std::integral_constant<std::size_t, param_pack_index_of_v<Pack, T>>;
 
 	template<typename... Args>
 	struct tag_t {};

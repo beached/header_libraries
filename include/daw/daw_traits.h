@@ -23,6 +23,11 @@
 #include <type_traits>
 #include <utility>
 
+namespace daw {
+	template<typename>
+	inline constexpr auto undefined_v = [] { std::abort( ); }( );
+}
+
 namespace daw::traits {
 	template<typename T, typename... Ts>
 	inline constexpr bool all_same_v = ( std::is_same_v<T, Ts> and ... );
@@ -274,15 +279,14 @@ namespace daw {
 	template<std::size_t Idx, typename Pack>
 	using pack_element_t = typename pack_element<Idx, Pack>::type;
 
-	template<typename>
-	struct pack_size;
+	template<typename Pack>
+	inline constexpr auto pack_size_v = undefined_v<Pack>;
 
-	template<template<class...> class Pack, typename... Ts>
-	struct pack_size<Pack<Ts...>>
-	  : std::integral_constant<std::size_t, sizeof...( Ts )> {};
+	template<template<typename...> typename Pack, typename... Ts>
+	inline constexpr std::size_t pack_size_v<Pack<Ts...>> = sizeof...( Ts );
 
 	template<typename Pack>
-	inline constexpr std::size_t pack_size_v = pack_size<Pack>::value;
+	using pack_size = std::integral_constant<std::size_t, pack_size_v<Pack>>;
 } // namespace daw
 
 namespace daw::traits {
@@ -388,14 +392,16 @@ namespace daw::traits {
 
 	template<typename String>
 	inline constexpr bool is_string_view_like_v =
-	  is_container_like_v<String const> and has_integer_subscript_v<String const>
-	    and has_size_memberfn_v<String const>
-	      and has_empty_memberfn_v<String const> and is_not_array_array_v<String>;
+	  is_container_like_v<String const> and
+	  has_integer_subscript_v<String const> and
+	  has_size_memberfn_v<String const> and has_empty_memberfn_v<String const> and
+	  is_not_array_array_v<String>;
 
 	template<typename String>
-	inline constexpr bool is_string_like_v = is_string_view_like_v<String>
-	  and has_append_operator_v<String> and has_append_memberfn_v<String>
-	    and is_container_like_v<String> and has_integer_subscript_v<String>;
+	inline constexpr bool is_string_like_v =
+	  is_string_view_like_v<String> and has_append_operator_v<String> and
+	  has_append_memberfn_v<String> and is_container_like_v<String> and
+	  has_integer_subscript_v<String>;
 
 	template<typename Container, size_t ExpectedSize>
 	inline constexpr bool is_value_size_equal_v =
@@ -745,8 +751,8 @@ namespace daw::traits {
 
 	namespace traits_details {
 		template<typename T, typename... Args>
-		using is_list_constructible_test = decltype( T{
-		  std::declval<Args>( )... } );
+		using is_list_constructible_test =
+		  decltype( T{ std::declval<Args>( )... } );
 	}
 
 	template<typename T, typename... Args>
@@ -1060,4 +1066,3 @@ namespace daw {
 } // namespace daw
 
 #define DAW_TYPEOF( ... ) daw::remove_cvref_t<decltype( __VA_ARGS__ )>
-

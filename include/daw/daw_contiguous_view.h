@@ -73,7 +73,7 @@ namespace daw {
 		}
 
 		constexpr contiguous_view subspan( std::size_t offset,
-		                                   std::size_t count = -1 ) const {
+		                                   std::size_t count = std::size_t(-1) ) const {
 			auto sz = std::min( count, size( ) - std::min( size( ), offset ) );
 			return contiguous_view( data( ) + offset, data( ) + sz );
 		}
