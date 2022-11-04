@@ -976,7 +976,11 @@ namespace daw {
 
 	template<typename T>
 	inline void return_buffer( T *ptr ) noexcept {
+#if defined( __MINGW32__ ) or defined( _MSC_VER )
+		_aligned_free( ptr );
+#else
 		::free( ptr );
+#endif
 	}
 
 	namespace utility_details {
