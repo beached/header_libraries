@@ -24,9 +24,18 @@
 #include <utility>
 
 namespace daw {
-	template<typename>
-	inline constexpr auto undefined_v = [] { std::abort( ); }( );
-}
+	template<typename T>
+	struct undefined_t;
+
+	template<typename T>
+	inline constexpr auto undefined_v = [] {
+		if constexpr( not std::is_same_v<T, undefined_t<T>> ) {
+			std::abort( );
+		} else {
+			return static_cast<T *>( nullptr );
+		}
+	}( );
+} // namespace daw
 
 namespace daw::traits {
 	template<typename T, typename... Ts>
