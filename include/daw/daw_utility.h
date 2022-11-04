@@ -966,9 +966,8 @@ namespace daw {
 	template<typename T, std::size_t Alignment = alignof( T )>
 	inline T *get_buffer( std::size_t count ) noexcept {
 		return reinterpret_cast<T *>(
-#if( defined( __MINGW32__ ) or defined( _MSC_VER_ ) ) and                      \
-  not defined( __clang__ )
-		  _aligned_malloc( sizeof( T ) * count, Alignment )
+#if defined( __MINGW32__ ) or defined( _MSC_VER_ ) 
+			_aligned_malloc( sizeof( T ) * count, Alignment )
 #else
 		  ::aligned_alloc( Alignment, sizeof( T ) * count )
 #endif
