@@ -95,9 +95,10 @@
 /// @brief Require a character pointer
 /// @param Pointer a const_pointer
 #define DAW_REQ_CHAR_PTR( Pointer, CharT )                                     \
-	std::enable_if_t<(std::is_same_v<CharT *, Pointer> or                        \
-	                  std::is_same_v<CharT const *, Pointer>),                   \
-	                 std::nullptr_t> = nullptr
+	std::enable_if_t<                                                            \
+	  (std::is_same_v<CharT *, daw::remove_cvref_t<Pointer>> or                  \
+	   std::is_same_v<CharT const *, daw::remove_cvref_t<Pointer>>),             \
+	  std::nullptr_t> = nullptr
 
 /// @brief Require Type be constructable from a CharT const * and a size_type
 /// @param Type A type to construct from a pointer/size_type pair
@@ -351,8 +352,8 @@ namespace daw {
 
 			template<typename T, typename CharT>
 			inline constexpr bool is_string_view_like_v =
-			  daw::is_detected_v<is_string_view_like_test, T, CharT>
-			    and daw::not_trait<is_sv2_t<T>>::value;
+			  daw::is_detected_v<is_string_view_like_test, T, CharT> and
+			  daw::not_trait<is_sv2_t<T>>::value;
 
 			template<typename T, typename CharT>
 			struct is_contigious_range_constructible
@@ -635,9 +636,10 @@ namespace daw {
 			/// @pre [first, last) form a valid character range
 			/// @post data( ) == first
 			/// @post size( ) == last - first
-			constexpr basic_string_view(
-			  basic_string_view::const_pointer first,
-			  basic_string_view::const_pointer last ) noexcept
+			template<typename CharPtr1, typename CharPtr2,
+			         DAW_REQ_CHAR_PTR( CharPtr1, CharT ),
+			         DAW_REQ_CHAR_PTR( CharPtr2, CharT )>
+			constexpr basic_string_view( CharPtr1 &&first, CharPtr2 &&last ) noexcept
 			  : m_first( first )
 			  , m_last( make_last<BoundsType>( first, last ) ) {}
 
@@ -769,7 +771,7 @@ namespace daw {
 			/// @pre size( ) > pos
 			/// @pre data( ) != nullptr
 			/// @return data( )[pos]
-			[[nodiscard]] constexpr const_reference
+			[[nodiscard]] DAW_ATTRIB_INLINE constexpr const_reference
 			operator[]( size_type pos ) const {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  pos < size( ), "Attempt to access basic_string_view past end" );
@@ -2383,7 +2385,7 @@ namespace daw {
 			template<typename StringView,
 			         DAW_REQ_CONTIG_CHAR_RANGE( StringView, CharT )>
 			[[nodiscard]] friend constexpr bool
-			operator<( StringView && lhs, basic_string_view rhs ) noexcept {
+			operator<( StringView &&lhs, basic_string_view rhs ) noexcept {
 				return basic_string_view( std::data( lhs ), std::size( lhs ) )
 				         .compare( rhs ) < 0;
 			}

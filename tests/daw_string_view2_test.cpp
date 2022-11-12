@@ -1587,6 +1587,14 @@ int main( )
   try
 #endif
 {
+	/*
+	 * Ensure that daw::string_view s = { "a", "b" }; doesn't work
+	 */
+	static_assert(
+	  not std::is_constructible_v<daw::string_view, char const( & )[4],
+	                              char const( & )[4]> );
+	static_assert(
+	  std::is_constructible_v<daw::string_view, char const *, char const *> );
 	static_assert(
 	  std::is_convertible_v<char const( & )[4], daw::sv2::string_view> );
 	auto a = daw::sv2::string_view( "Hello" );

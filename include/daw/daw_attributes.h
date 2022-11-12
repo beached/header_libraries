@@ -43,8 +43,13 @@
 
 #if not defined( DAW_NO_FLATTEN )
 
+#ifdef DAW_ATTRIB_USE_NEW_MSVC
+#define DAW_ATTRIB_FLATTEN [[msvc::flatten]]
+#define DAW_ATTRIB_FLATINLINE [[msvc::flatten, msvc::inline]]
+#else
 #define DAW_ATTRIB_FLATTEN
 #define DAW_ATTRIB_FLATINLINE
+#endif
 
 #else
 
@@ -61,7 +66,11 @@
 #define DAW_ATTRIB_HIDDEN
 
 #if not defined( DAW_NO_FORCED_INLINE )
+#ifdef DAW_ATTRIB_USE_NEW_MSVC
+#define DAW_ATTRIB_INLINE [[msvc::forceinline]] inline
+#else
 #define DAW_ATTRIB_INLINE __forceinline
+#endif
 #else
 #define DAW_ATTRIB_INLINE inline
 #endif

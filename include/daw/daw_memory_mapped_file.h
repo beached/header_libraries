@@ -18,7 +18,7 @@
 #include <string_view>
 #include <utility>
 
-#if not defined( _MSC_VER )
+#if not defined( _MSC_VER ) and not defined( __MINGW32__ )
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <sys/types.h>
@@ -34,7 +34,7 @@
 namespace daw::filesystem {
 	enum class open_mode : bool { read, read_write };
 
-#if not defined( _MSC_VER )
+#if not defined( _MSC_VER ) and not defined( __MINGW32__ )
 	/// @brief A RAII Memory Mapped File object
 	template<typename T = char>
 	struct memory_mapped_file_t {

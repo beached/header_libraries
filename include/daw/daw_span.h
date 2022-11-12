@@ -205,7 +205,7 @@ namespace daw {
 		  size_type count = ( std::numeric_limits<size_type>::max )( ) ) const {
 
 			daw::exception::precondition_check<std::out_of_range>(
-			  pos < size( ), "Attempt to access span past end" );
+			  pos <= size( ), "Attempt to access span past end" );
 
 			count = ( daw::min )( count, size( ) - pos );
 			return { data( ) + pos, count };
@@ -467,7 +467,7 @@ namespace daw {
 		         size_type count = ( std::numeric_limits<size_type>::max )( ) ) {
 
 			daw::exception::precondition_check<std::out_of_range>(
-			  pos < size( ), "Attempt to access span past end" );
+			  pos <= size( ), "Attempt to access span past end" );
 
 			count = ( daw::min )( count, size( ) - pos );
 			return { data( ) + pos, count };

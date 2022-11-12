@@ -34,6 +34,7 @@ template<typename... Ts>
 inline constexpr void Unused( Ts &&... ) noexcept {}
 
 namespace daw {
+
 	namespace utility_details {
 		template<typename ResultType, typename... ArgTypes>
 		struct make_function_pointer_impl {
@@ -607,23 +608,31 @@ namespace daw {
 		return range_t{ first, last };
 	}
 
-	template<typename... Ts>
-	struct pack_index_of;
-
-	template<typename T, typename... Ts>
-	struct pack_index_of<T, Ts...> : std::integral_constant<size_t, 0> {};
-
-	template<typename T, typename U, typename... Ts>
-	struct pack_index_of<T, U, Ts...>
-	  : std::integral_constant<
-	      std::size_t,
-	      ( std::is_same_v<T, U> ? 0 : 1 + pack_index_of<T, Ts...>::value )> {};
-
 	template<size_t N, typename... Ts>
 	using pack_type_at = traits::nth_type<N, Ts...>;
 
 	template<typename T, typename... Ts>
-	constexpr std::size_t pack_index_of_v = pack_index_of<T, Ts...>::value;
+	inline constexpr auto pack_index_of_v = [] {
+		auto result = sizeof...( Ts );
+		auto pos = std::size_t( -1 );
+		( ( ++pos, std::is_same_v<Ts, T> ? ( result = pos ) : pos ), ... );
+		return result;
+	}( );
+
+	template<typename T, typename... Ts>
+	using pack_index_of =
+	  std::integral_constant<std::size_t, pack_index_of_v<T, Ts...>>;
+
+	template<typename T, typename>
+	inline constexpr auto param_pack_index_of_v = undefined_v<T>;
+
+	template<template<typename...> typename Pack, typename... Ts, typename T>
+	inline constexpr std::size_t param_pack_index_of_v<Pack<Ts...>, T> =
+	  pack_index_of_v<T, Ts...>;
+
+	template<typename Pack, typename T>
+	using param_pack_index_of =
+	  std::integral_constant<std::size_t, param_pack_index_of_v<Pack, T>>;
 
 	template<typename... Args>
 	struct tag_t {};
@@ -785,8 +794,8 @@ namespace daw {
 	}
 
 	template<typename T>
-	constexpr std::size_t const
-	  bsizeof = static_cast<size_t>( sizeof( remove_cvref_t<T> ) * 8U );
+	constexpr std::size_t const bsizeof =
+	  static_cast<size_t>( sizeof( remove_cvref_t<T> ) * 8U );
 
 	/// Checks if value is in the range [lower, upper)
 	template<typename Value, typename LowerBound, typename UpperBound>
@@ -954,17 +963,24 @@ namespace daw {
 	using if_t = typename std::conditional<Bool_, If_, Then_>::type;
 
 	/// aligned_alloc is not in clang-cl 13 with vs2022
-#if not( defined( _MSC_VER ) and defined( __clang__ ) )
 	template<typename T, std::size_t Alignment = alignof( T )>
 	inline T *get_buffer( std::size_t count ) noexcept {
 		return reinterpret_cast<T *>(
-		  ::aligned_alloc( Alignment, sizeof( T ) * count ) );
-	}
+#if defined( __MINGW32__ ) or defined( _MSC_VER )
+			_aligned_malloc( sizeof( T ) * count, Alignment )
+#else
+		  ::aligned_alloc( Alignment, sizeof( T ) * count )
 #endif
+		);
+	}
 
 	template<typename T>
 	inline void return_buffer( T *ptr ) noexcept {
+#if defined( __MINGW32__ ) or defined( _MSC_VER )
+		_aligned_free( ptr );
+#else
 		::free( ptr );
+#endif
 	}
 
 	namespace utility_details {
