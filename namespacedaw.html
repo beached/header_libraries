@@ -1713,6 +1713,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a056c097a2fd8531a3c4a3e6c141bb657"><td class="memTemplParams" colspan="2">template&lt;typename Iterator &gt; </td></tr>
 <tr class="memitem:a056c097a2fd8531a3c4a3e6c141bb657"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a056c097a2fd8531a3c4a3e6c141bb657">make_range</a> (Iterator first, Iterator last) noexcept</td></tr>
 <tr class="separator:a056c097a2fd8531a3c4a3e6c141bb657"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fb92d086f116b33615a82b8d0db00d0"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Args&gt; </td></tr>
+<tr class="memitem:a1fb92d086f116b33615a82b8d0db00d0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__ref__counted__pointer_8h.html#a1042f6139959443811e5f0bb23e16197">DAW_CPP20_CONSTEXPR</a> rc_ptr_impl::make_rc_ptr_single&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a1fb92d086f116b33615a82b8d0db00d0">make_rc_ptr</a> (Args &amp;&amp;...args)</td></tr>
+<tr class="separator:a1fb92d086f116b33615a82b8d0db00d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a219a231cb75cf24aa447f7dc5facf1b4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a219a231cb75cf24aa447f7dc5facf1b4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__ref__counted__pointer_8h.html#a1042f6139959443811e5f0bb23e16197">DAW_CPP20_CONSTEXPR</a> rc_ptr_impl::make_rc_ptr_array&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a219a231cb75cf24aa447f7dc5facf1b4">make_rc_ptr</a> (std::size_t <a class="el" href="namespacedaw.html#a7e1138972fcb57605f1f020d89d95213">size</a>)</td></tr>
+<tr class="separator:a219a231cb75cf24aa447f7dc5facf1b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31c0ecba28960a4f93056b924d8f33a1"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Args&gt; </td></tr>
+<tr class="memitem:a31c0ecba28960a4f93056b924d8f33a1"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__ref__counted__pointer_8h.html#a1042f6139959443811e5f0bb23e16197">DAW_CPP20_CONSTEXPR</a> rc_ptr_impl::make_rc_ptr_single&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a31c0ecba28960a4f93056b924d8f33a1">make_rc_ptr_for_overwrite</a> (Args &amp;&amp;...)=delete</td></tr>
+<tr class="separator:a31c0ecba28960a4f93056b924d8f33a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a321badc7620e0cbc70accec5712c97b8"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a321badc7620e0cbc70accec5712c97b8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__ref__counted__pointer_8h.html#a1042f6139959443811e5f0bb23e16197">DAW_CPP20_CONSTEXPR</a> rc_ptr_impl::make_rc_ptr_array&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a321badc7620e0cbc70accec5712c97b8">make_rc_ptr_for_overwrite</a> (std::size_t <a class="el" href="namespacedaw.html#a7e1138972fcb57605f1f020d89d95213">size</a>)</td></tr>
+<tr class="separator:a321badc7620e0cbc70accec5712c97b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e67b53c9ac6cc40abe3a897e776e8e3"><td class="memTemplParams" colspan="2">template&lt;typename Iterator &gt; </td></tr>
 <tr class="memitem:a2e67b53c9ac6cc40abe3a897e776e8e3"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1reverse__iterator.html">reverse_iterator</a>&lt; Iterator &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a2e67b53c9ac6cc40abe3a897e776e8e3">make_reverse_iterator</a> (Iterator i)</td></tr>
 <tr class="separator:a2e67b53c9ac6cc40abe3a897e776e8e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -14830,6 +14842,100 @@ template&lt;typename Iterator &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00566">566</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
+
+</div>
+</div>
+<a id="a1fb92d086f116b33615a82b8d0db00d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fb92d086f116b33615a82b8d0db00d0">&#9670;&nbsp;</a></span>make_rc_ptr() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename... Args&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="daw__ref__counted__pointer_8h.html#a1042f6139959443811e5f0bb23e16197">DAW_CPP20_CONSTEXPR</a> rc_ptr_impl::make_rc_ptr_single&lt;T&gt; daw::make_rc_ptr </td>
+          <td>(</td>
+          <td class="paramtype">Args &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00404">404</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+
+</div>
+</div>
+<a id="a219a231cb75cf24aa447f7dc5facf1b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a219a231cb75cf24aa447f7dc5facf1b4">&#9670;&nbsp;</a></span>make_rc_ptr() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="daw__ref__counted__pointer_8h.html#a1042f6139959443811e5f0bb23e16197">DAW_CPP20_CONSTEXPR</a> rc_ptr_impl::make_rc_ptr_array&lt;T&gt; daw::make_rc_ptr </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>size</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00415">415</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+
+</div>
+</div>
+<a id="a31c0ecba28960a4f93056b924d8f33a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31c0ecba28960a4f93056b924d8f33a1">&#9670;&nbsp;</a></span>make_rc_ptr_for_overwrite() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="daw__ref__counted__pointer_8h.html#a1042f6139959443811e5f0bb23e16197">DAW_CPP20_CONSTEXPR</a> rc_ptr_impl::make_rc_ptr_single&lt;T&gt; daw::make_rc_ptr_for_overwrite </td>
+          <td>(</td>
+          <td class="paramtype">Args &amp;&amp;&#160;</td>
+          <td class="paramname"><em>...</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a321badc7620e0cbc70accec5712c97b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a321badc7620e0cbc70accec5712c97b8">&#9670;&nbsp;</a></span>make_rc_ptr_for_overwrite() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="daw__ref__counted__pointer_8h.html#a1042f6139959443811e5f0bb23e16197">DAW_CPP20_CONSTEXPR</a> rc_ptr_impl::make_rc_ptr_array&lt;T&gt; daw::make_rc_ptr_for_overwrite </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>size</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00426">426</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>

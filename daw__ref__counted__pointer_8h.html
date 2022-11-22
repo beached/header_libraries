@@ -68,13 +68,16 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">daw_ref_counted_pointer.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="cpp__20_8h_source.html">cpp_20.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__consteval_8h_source.html">daw_consteval.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
 <code>#include &lt;cassert&gt;</code><br />
 <code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
@@ -98,7 +101,44 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
 <tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a1042f6139959443811e5f0bb23e16197"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__ref__counted__pointer_8h.html#a1042f6139959443811e5f0bb23e16197">DAW_CPP20_CONSTEXPR</a></td></tr>
+<tr class="separator:a1042f6139959443811e5f0bb23e16197"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a1fb92d086f116b33615a82b8d0db00d0"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Args&gt; </td></tr>
+<tr class="memitem:a1fb92d086f116b33615a82b8d0db00d0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__ref__counted__pointer_8h.html#a1042f6139959443811e5f0bb23e16197">DAW_CPP20_CONSTEXPR</a> rc_ptr_impl::make_rc_ptr_single&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a1fb92d086f116b33615a82b8d0db00d0">daw::make_rc_ptr</a> (Args &amp;&amp;...args)</td></tr>
+<tr class="separator:a1fb92d086f116b33615a82b8d0db00d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a219a231cb75cf24aa447f7dc5facf1b4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a219a231cb75cf24aa447f7dc5facf1b4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__ref__counted__pointer_8h.html#a1042f6139959443811e5f0bb23e16197">DAW_CPP20_CONSTEXPR</a> rc_ptr_impl::make_rc_ptr_array&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a219a231cb75cf24aa447f7dc5facf1b4">daw::make_rc_ptr</a> (std::size_t size)</td></tr>
+<tr class="separator:a219a231cb75cf24aa447f7dc5facf1b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31c0ecba28960a4f93056b924d8f33a1"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Args&gt; </td></tr>
+<tr class="memitem:a31c0ecba28960a4f93056b924d8f33a1"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__ref__counted__pointer_8h.html#a1042f6139959443811e5f0bb23e16197">DAW_CPP20_CONSTEXPR</a> rc_ptr_impl::make_rc_ptr_single&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a31c0ecba28960a4f93056b924d8f33a1">daw::make_rc_ptr_for_overwrite</a> (Args &amp;&amp;...)=delete</td></tr>
+<tr class="separator:a31c0ecba28960a4f93056b924d8f33a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a321badc7620e0cbc70accec5712c97b8"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a321badc7620e0cbc70accec5712c97b8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__ref__counted__pointer_8h.html#a1042f6139959443811e5f0bb23e16197">DAW_CPP20_CONSTEXPR</a> rc_ptr_impl::make_rc_ptr_array&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a321badc7620e0cbc70accec5712c97b8">daw::make_rc_ptr_for_overwrite</a> (std::size_t size)</td></tr>
+<tr class="separator:a321badc7620e0cbc70accec5712c97b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a1042f6139959443811e5f0bb23e16197"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1042f6139959443811e5f0bb23e16197">&#9670;&nbsp;</a></span>DAW_CPP20_CONSTEXPR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_CPP20_CONSTEXPR</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00382">382</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
