@@ -70,6 +70,10 @@ $(function() {
 , <a class="el" href="classdaw_1_1const__graph__node__t.html#a5d46b69cc410649f82e6049a14b2a3a2">daw::const_graph_node_t&lt; T, MaxVerticesPerNode, Hash &gt;</a>
 , <a class="el" href="structdaw_1_1graph__node__t.html#af1598f11a48ce60066959d81e193290e">daw::graph_node_t&lt; T &gt;</a>
 </li>
+<li>element_type
+: <a class="el" href="structdaw_1_1rc__ptr.html#a79586c95db76090fc54e1033c420b469">daw::rc_ptr&lt; T, Deleter &gt;</a>
+, <a class="el" href="structdaw_1_1rc__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a101e2fc234196b623b7fb4f9dd2c5443">daw::rc_ptr&lt; T[], Deleter &gt;</a>
+</li>
 <li>emplace()
 : <a class="el" href="structdaw_1_1mixins_1_1_container_proxy.html#a2ea5f1924e4af9ef6e07427c5e753527">daw::mixins::ContainerProxy&lt; Derived, ContainerType &gt;</a>
 , <a class="el" href="structdaw_1_1optional_3_01_t_00_01std_1_1enable__if__t_3_01not_01std_1_1is__reference__v_3_01_t_01_4_01_4_01_4.html#a93cd15fb4c9c197735d1d3373220aafb">daw::optional&lt; T, std::enable_if_t&lt; not std::is_reference_v&lt; T &gt; &gt; &gt;</a>
@@ -156,7 +160,7 @@ $(function() {
 , <a class="el" href="structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#a6fbb7486a7c6c79afa49c0f6d724943e">daw::span&lt; T, std::enable_if_t&lt; std::is_const_v&lt; T &gt; &gt; &gt;</a>
 , <a class="el" href="structdaw_1_1split__buffer.html#ac2e7c6fb817fa6c1d2c77b21804b5d93">daw::split_buffer&lt; Tp, Allocator &gt;</a>
 , <a class="el" href="structdaw_1_1splitter__range__t.html#a2b3dafa4b9217f6a7356d89f24117bc7">daw::splitter_range_t&lt; Iterator &gt;</a>
-, <a class="el" href="classdaw_1_1static__bitset.html#a36cd344075d8c1d79a0c0368ec318e18">daw::static_bitset&lt; BitWidth &gt;</a>
+, <a class="el" href="classdaw_1_1static__bitset.html#a0b78d149aa052e39d45f2fe8f03466ee">daw::static_bitset&lt; BitWidth &gt;</a>
 , <a class="el" href="structdaw_1_1string__split__range.html#a4b36c9ed23381365bb0bc682cbc579e3">daw::string_split_range&lt; CharT &gt;</a>
 , <a class="el" href="structdaw_1_1sv1_1_1basic__string__view.html#ae448959f7cebb75a93df878750fd12db">daw::sv1::basic_string_view&lt; CharT, BoundsType, Extent &gt;</a>
 , <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#ab4e5584bc04b1145e339e6ca88495f81">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
@@ -170,7 +174,7 @@ $(function() {
 : <a class="el" href="structdaw_1_1split__buffer.html#a731401ac90a196f496d2781566577f10">daw::split_buffer&lt; Tp, Allocator &gt;</a>
 </li>
 <li>end_cap()
-: <a class="el" href="structdaw_1_1split__buffer.html#a5b94f84e62878f38725de60523fc8835">daw::split_buffer&lt; Tp, Allocator &gt;</a>
+: <a class="el" href="structdaw_1_1split__buffer.html#acd254f7398dc55253a7d53bb8e58ee4b">daw::split_buffer&lt; Tp, Allocator &gt;</a>
 </li>
 <li>end_cap_
 : <a class="el" href="structdaw_1_1split__buffer.html#ade2dd01b2e9acf05b0829e05f3e5fb64">daw::split_buffer&lt; Tp, Allocator &gt;</a>
@@ -183,8 +187,8 @@ $(function() {
 </li>
 <li>ends_with()
 : <a class="el" href="structdaw_1_1basic__bounded__string.html#a755cb4ae43029a7e661d1374325e2dd3">daw::basic_bounded_string&lt; CharT, Capacity &gt;</a>
-, <a class="el" href="structdaw_1_1sv1_1_1basic__string__view.html#a2db15f4874798f121b3a183dfa975d92">daw::sv1::basic_string_view&lt; CharT, BoundsType, Extent &gt;</a>
-, <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a144b9a209fbd05184d753e35a05500df">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
+, <a class="el" href="structdaw_1_1sv1_1_1basic__string__view.html#a52f433c2ec6253bf4464b864e5a086af">daw::sv1::basic_string_view&lt; CharT, BoundsType, Extent &gt;</a>
+, <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#aa3e4813ea923d31d8a31823a72f9d42a">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
 </li>
 <li>ends_with_t()
 : <a class="el" href="structdaw_1_1string_1_1ends__with__t.html#a3d4dadc704a4cea0faa28db2975cafe4">daw::string::ends_with_t&lt; StringType &gt;</a>
@@ -211,19 +215,19 @@ $(function() {
 : <a class="el" href="classdaw_1_1equal__to__last.html#aaabb63a10b1ee23fb24e3b517d3dfa91">daw::equal_to_last&lt; T &gt;</a>
 </li>
 <li>erase()
-: <a class="el" href="structdaw_1_1basic__bounded__string.html#a74034f9fa1a0e7931626fd8bbdbdf528">daw::basic_bounded_string&lt; CharT, Capacity &gt;</a>
+: <a class="el" href="structdaw_1_1basic__bounded__string.html#a9ec5d6383f467573d98a49eb09b94bc1">daw::basic_bounded_string&lt; CharT, Capacity &gt;</a>
 , <a class="el" href="structdaw_1_1bounded__hash__map.html#a59704c1ed3101d4787ff45c39da78547">daw::bounded_hash_map&lt; Key, Value, N, Hash, KeyEqual &gt;</a>
 , <a class="el" href="structdaw_1_1bounded__hash__set__t.html#aaab645181cb4a33b62df1eed9763aaa6">daw::bounded_hash_set_t&lt; Key, Capacity, Hash, KeyEqual &gt;</a>
-, <a class="el" href="structdaw_1_1bounded__vector__t.html#a4d7ffe8aa4dfa00f20e9db54111c6811">daw::bounded_vector_t&lt; T, N &gt;</a>
+, <a class="el" href="structdaw_1_1bounded__vector__t.html#a2b688ebe016fbff8de1da5c9c54b9929">daw::bounded_vector_t&lt; T, N &gt;</a>
 , <a class="el" href="classdaw_1_1hash__set__t.html#a665275a99d468b944890cc2e8437a4e7">daw::hash_set_t&lt; Key, Hash &gt;</a>
-, <a class="el" href="structdaw_1_1hash__table.html#ad93f47667870361380956d5bf3a9c424">daw::hash_table&lt; Value &gt;</a>
+, <a class="el" href="structdaw_1_1hash__table.html#aa4b75d78309236adabbea2e25666bd1f">daw::hash_table&lt; Value &gt;</a>
 , <a class="el" href="structdaw_1_1range_1_1_collection_range.html#a07dcc350db08bb9ce85d74748135e626">daw::range::CollectionRange&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1range_1_1_range.html#a8468f4e1a87ef82342982e1c504c443b">daw::range::Range&lt; Iterator &gt;</a>
 , <a class="el" href="classdaw_1_1range_1_1_reference_range.html#a50c2a344f23c07d9570722065568bd2f">daw::range::ReferenceRange&lt; Iterator &gt;</a>
 </li>
 <li>erase_where_equal_to()
 : <a class="el" href="structdaw_1_1range_1_1_range.html#a54ac42ff50d2aee4746e845c7773ef8b">daw::range::Range&lt; Iterator &gt;</a>
-, <a class="el" href="classdaw_1_1range_1_1_reference_range.html#aba7e4da4be273dcae4401ba281923f19">daw::range::ReferenceRange&lt; Iterator &gt;</a>
+, <a class="el" href="classdaw_1_1range_1_1_reference_range.html#a9fe5282926f36e109fd0fd67c42eac9b">daw::range::ReferenceRange&lt; Iterator &gt;</a>
 </li>
 <li>exists()
 : <a class="el" href="structdaw_1_1bounded__hash__map.html#a447f607d886f444fe851e348d9772a4a">daw::bounded_hash_map&lt; Key, Value, N, Hash, KeyEqual &gt;</a>
@@ -232,17 +236,17 @@ $(function() {
 , <a class="el" href="classdaw_1_1hash__set__t.html#aacfce4687c922de113043c1fd96a7079">daw::hash_set_t&lt; Key, Hash &gt;</a>
 </li>
 <li>expand_prefix()
-: <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a42f2944d941e08db816308c8e403ad0a">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
+: <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#aa793c5d954276cae8e5838bce8f5d6e0">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
 </li>
 <li>expand_suffix()
-: <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a1e5f763907b7b601879d33d014f7970c">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
+: <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a3e25e7bd03b3cd7e590391c124ddcbb4">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
 </li>
 <li>expander()
 : <a class="el" href="structdaw_1_1expander.html#ad8cf3e4ab5694dba876a07d835d0532a">daw::expander&lt; Ts &gt;</a>
 </li>
 <li>expected_t()
-: <a class="el" href="structdaw_1_1expected__t.html#a68561eebeb067272ec70132693e86723">daw::expected_t&lt; T &gt;</a>
-, <a class="el" href="structdaw_1_1expected__t_3_01void_01_4.html#a41b6ab0efacb4fb5dd5f126bd0b6888f">daw::expected_t&lt; void &gt;</a>
+: <a class="el" href="structdaw_1_1expected__t.html#a20a48d9343090d61a9915a8dcf456783">daw::expected_t&lt; T &gt;</a>
+, <a class="el" href="structdaw_1_1expected__t_3_01void_01_4.html#a5ee6bd3656c83ee6bfa70878b31ea23a">daw::expected_t&lt; void &gt;</a>
 </li>
 <li>extent
 : <a class="el" href="structdaw_1_1basic__bounded__string.html#aef61c95878a4fee2f556182694fa4641">daw::basic_bounded_string&lt; CharT, Capacity &gt;</a>
