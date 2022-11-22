@@ -10,6 +10,7 @@
 
 #include "cpp_20.h"
 #include "daw_consteval.h"
+#include "daw_move.h"
 
 #include <cassert>
 #include <functional>
@@ -375,4 +376,57 @@ namespace daw {
 			return not std::less{ }( m_pointer, nullptr );
 		}
 	};
+#if defined( DAW_CPP20_CONSTEXPR_DYNAMIC_ALLOC )
+#define DAW_CPP20_CONSTEXPR constexpr
+#else
+#define DAW_CPP20_CONSTEXPR
+#endif
+
+	namespace rc_ptr_impl {
+		template<typename T>
+		struct make_rc_ptr_type_impl {
+			using single_object = rc_ptr<T>;
+		};
+
+		template<typename T>
+		struct make_rc_ptr_type_impl<T[]> {
+			using array_object = rc_ptr<T[]>;
+		};
+
+		template<typename T>
+		using make_rc_ptr_single = typename make_rc_ptr_type_impl<T>::single_object;
+		template<typename T>
+		using make_rc_ptr_array = typename make_rc_ptr_type_impl<T>::array_object;
+	} // namespace rc_ptr_impl
+
+	template<typename T, typename... Args>
+	DAW_CPP20_CONSTEXPR rc_ptr_impl::make_rc_ptr_single<T>
+	make_rc_ptr( Args &&...args ) {
+		static_assert( not std::is_array_v<T>, "Unexpected array type" );
+		if constexpr( std::is_aggregate_v<T> ) {
+			return rc_ptr<T>( new T{ DAW_FWD( args )... } );
+		} else {
+			return rc_ptr<T>( new T( DAW_FWD( args )... ) );
+		}
+	}
+
+	template<typename T>
+	DAW_CPP20_CONSTEXPR rc_ptr_impl::make_rc_ptr_array<T>
+	make_rc_ptr( std::size_t size ) {
+		static_assert( std::is_array_v<T>, "Expected and array type" );
+		return rc_ptr<T>( new std::remove_extent_t<T>[size] {} );
+	}
+
+	template<typename T, typename... Args>
+	DAW_CPP20_CONSTEXPR rc_ptr_impl::make_rc_ptr_single<T>
+	make_rc_ptr_for_overwrite( Args &&... ) = delete;
+
+	template<typename T>
+	DAW_CPP20_CONSTEXPR rc_ptr_impl::make_rc_ptr_array<T>
+	make_rc_ptr_for_overwrite( std::size_t size ) {
+		static_assert( std::is_array_v<T>, "Expected and array type" );
+		return rc_ptr<T>( new std::remove_extent_t<T>[size] );
+	}
+#undef DAW_CPP20_CONSTEXPR
 } // namespace daw
+
