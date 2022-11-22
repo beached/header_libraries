@@ -429,6 +429,4 @@ namespace daw {
 	}
 #undef DAW_CPP20_CONSTEXPR
 } // namespace daw
-#include <memory>
 
-auto a = std::make_unique<int[]>( 5 );
