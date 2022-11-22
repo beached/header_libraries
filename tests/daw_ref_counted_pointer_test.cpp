@@ -15,6 +15,15 @@ int main( ) {
 	(void)p0;
 	assert( *p0 == 5 );
 	auto p1 = daw::rc_ptr<int[]>( new int[5]{ 1, 2, 3, 4, 5 } );
+	auto p1b = p1;
+	auto p1c = std::move( p1 );
 	(void)p1;
 	assert( p1[4] == 5 );
+	auto p2b = p1;
+	(void)p2b;
+	assert( p2b[3] == 4 );
+	auto p2c = std::move( p1 );
+	assert( p2c != p1 );
+	assert( p2c == p2b );
+	(void)p2c;
 }

@@ -9,8 +9,10 @@
 #pragma once
 
 #include "cpp_20.h"
+#include "daw_consteval.h"
 
 #include <cassert>
+#include <functional>
 #include <type_traits>
 #include <utility>
 
@@ -82,7 +84,7 @@ namespace daw {
 
 		constexpr rc_ptr &
 		operator=( rc_ptr const &rhs ) noexcept( is_t_nothrow_destructible ) {
-			if( *this != rhs ) {
+			if( this != &rhs ) {
 				reset( );
 				m_pointer = rhs.m_pointer;
 				m_ref_count = rhs.m_ref_count;
@@ -97,7 +99,7 @@ namespace daw {
 
 		constexpr rc_ptr &
 		operator=( rc_ptr &&rhs ) noexcept( is_t_nothrow_destructible ) {
-			if( *this != rhs ) {
+			if( this != &rhs ) {
 				reset( );
 				m_pointer = std::exchange( rhs.m_pointer, nullptr );
 				m_ref_count = std::exchange( rhs.m_ref_count, nullptr );
@@ -109,13 +111,15 @@ namespace daw {
 			reset( );
 		}
 
-		constexpr rc_ptr( pointer ptr ) noexcept
+		explicit constexpr rc_ptr( pointer ptr ) noexcept
 		  : m_pointer( ptr ) {
 			if( not ptr ) {
 				return;
 			}
 			m_ref_count = new std::size_t{ 1 };
 		}
+
+		explicit DAW_CONSTEVAL rc_ptr( std::nullptr_t ) noexcept {}
 
 		constexpr void reset( ) noexcept( is_t_nothrow_destructible ) {
 			if( not m_pointer ) {
@@ -154,6 +158,54 @@ namespace daw {
 
 		constexpr explicit operator bool( ) const noexcept {
 			return static_cast<bool>( m_pointer );
+		}
+
+		constexpr bool operator==( rc_ptr const &rhs ) const noexcept {
+			return m_pointer == rhs.m_pointer;
+		}
+
+		constexpr bool operator!=( rc_ptr const &rhs ) const noexcept {
+			return m_pointer != rhs.m_pointer;
+		}
+
+		constexpr bool operator<( rc_ptr const &rhs ) const noexcept {
+			return std::less{ }( m_pointer, rhs.m_pointer );
+		}
+
+		constexpr bool operator<=( rc_ptr const &rhs ) const noexcept {
+			return not( rhs < *this );
+		}
+
+		constexpr bool operator>( rc_ptr const &rhs ) const noexcept {
+			return rhs < *this;
+		}
+
+		constexpr bool operator>=( rc_ptr const &rhs ) const noexcept {
+			return not( *this < rhs );
+		}
+
+		constexpr bool operator==( std::nullptr_t ) const noexcept {
+			return not m_pointer;
+		}
+
+		constexpr bool operator!=( std::nullptr_t ) const noexcept {
+			return m_pointer;
+		}
+
+		constexpr bool operator<( std::nullptr_t ) const noexcept {
+			return std::less{ }( m_pointer, nullptr );
+		}
+
+		constexpr bool operator<=( std::nullptr_t ) const noexcept {
+			return not std::less{ }( nullptr, m_pointer );
+		}
+
+		constexpr bool operator>( std::nullptr_t ) const noexcept {
+			return std::less{ }( nullptr, m_pointer );
+		}
+
+		constexpr bool operator>=( std::nullptr_t ) const noexcept {
+			return not std::less{ }( m_pointer, nullptr );
 		}
 	};
 
@@ -194,7 +246,7 @@ namespace daw {
 
 		constexpr rc_ptr &
 		operator=( rc_ptr const &rhs ) noexcept( is_t_nothrow_destructible ) {
-			if( *this != rhs ) {
+			if( this != &rhs ) {
 				reset( );
 				m_pointer = rhs.m_pointer;
 				m_ref_count = rhs.m_ref_count;
@@ -209,7 +261,7 @@ namespace daw {
 
 		constexpr rc_ptr &
 		operator=( rc_ptr &&rhs ) noexcept( is_t_nothrow_destructible ) {
-			if( *this != rhs ) {
+			if( this != &rhs ) {
 				reset( );
 				m_pointer = std::exchange( rhs.m_pointer, nullptr );
 				m_ref_count = std::exchange( rhs.m_ref_count, nullptr );
@@ -221,13 +273,15 @@ namespace daw {
 			reset( );
 		}
 
-		constexpr rc_ptr( pointer ptr ) noexcept
+		explicit constexpr rc_ptr( pointer ptr ) noexcept
 		  : m_pointer( ptr ) {
 			if( not ptr ) {
 				return;
 			}
 			m_ref_count = new std::size_t{ 1 };
 		}
+
+		explicit DAW_CONSTEVAL rc_ptr( std::nullptr_t ) noexcept {}
 
 		constexpr void reset( ) noexcept( is_t_nothrow_destructible ) {
 			if( not m_pointer ) {
@@ -271,6 +325,54 @@ namespace daw {
 		constexpr reference operator[]( std::size_t index ) const noexcept {
 			assert( m_pointer );
 			return m_pointer[index];
+		}
+
+		constexpr bool operator==( rc_ptr const &rhs ) const noexcept {
+			return m_pointer == rhs.m_pointer;
+		}
+
+		constexpr bool operator!=( rc_ptr const &rhs ) const noexcept {
+			return m_pointer != rhs.m_pointer;
+		}
+
+		constexpr bool operator<( rc_ptr const &rhs ) const noexcept {
+			return std::less{ }( m_pointer, rhs.m_pointer );
+		}
+
+		constexpr bool operator<=( rc_ptr const &rhs ) const noexcept {
+			return not( rhs < *this );
+		}
+
+		constexpr bool operator>( rc_ptr const &rhs ) const noexcept {
+			return rhs < *this;
+		}
+
+		constexpr bool operator>=( rc_ptr const &rhs ) const noexcept {
+			return not( *this < rhs );
+		}
+
+		constexpr bool operator==( std::nullptr_t ) const noexcept {
+			return not m_pointer;
+		}
+
+		constexpr bool operator!=( std::nullptr_t ) const noexcept {
+			return m_pointer;
+		}
+
+		constexpr bool operator<( std::nullptr_t ) const noexcept {
+			return std::less{ }( m_pointer, nullptr );
+		}
+
+		constexpr bool operator<=( std::nullptr_t ) const noexcept {
+			return not std::less{ }( nullptr, m_pointer );
+		}
+
+		constexpr bool operator>( std::nullptr_t ) const noexcept {
+			return std::less{ }( nullptr, m_pointer );
+		}
+
+		constexpr bool operator>=( std::nullptr_t ) const noexcept {
+			return not std::less{ }( m_pointer, nullptr );
 		}
 	};
 } // namespace daw
