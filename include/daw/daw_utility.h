@@ -615,7 +615,7 @@ namespace daw {
 	inline constexpr auto pack_index_of_v = [] {
 		auto result = sizeof...( Ts );
 		auto pos = std::size_t( -1 );
-		( ( ++pos, std::is_same_v<Ts, T> ? ( result = pos ) : pos ), ... );
+		(void)( ( (void)++pos, std::is_same_v<Ts, T> ? ( result = pos ) : pos ), ... );
 		return result;
 	}( );
 
