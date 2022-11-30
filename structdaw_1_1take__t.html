@@ -94,9 +94,10 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab59a8a7e1633e48633e11f6b5732cbeb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#ab59a8a7e1633e48633e11f6b5732cbeb">take_t</a> ()=default</td></tr>
 <tr class="separator:ab59a8a7e1633e48633e11f6b5732cbeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2cb6351af8d662b28138959b7c2cccfa"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a2cb6351af8d662b28138959b7c2cccfa">take_t</a> (<a class="el" href="namespacedaw.html#abef802ed6bd3568b607c6c3f6b056d2e">not_me</a>&lt; <a class="el" href="structdaw_1_1take__t.html">take_t</a> &gt; auto &amp;&amp;arg, auto &amp;&amp;...args) noexcept(std::is_nothrow_constructible_v&lt; T, decltype(arg), decltype(args)... &gt;)</td></tr>
-<tr class="separator:a2cb6351af8d662b28138959b7c2cccfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e576f986200ae2397283eb426fccab2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a0e576f986200ae2397283eb426fccab2">take_t</a> (<a class="el" href="structdaw_1_1take__t.html">take_t</a> &amp;&amp;other) noexcept(noexcept(<a class="el" href="namespacedaw.html#a5c6e8e9c37960b6823de01d7cd2125b8">take</a>(other.value)))</td></tr>
+<tr class="memitem:a1cb1183415af12f3568ebf0e9623eb07"><td class="memTemplParams" colspan="2">template&lt;typename Arg , typename... Args, std::enable_if_t&lt; not std::is_same_v&lt; take_t, daw::remove_cvref_t&lt; Arg &gt;&gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a1cb1183415af12f3568ebf0e9623eb07"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a1cb1183415af12f3568ebf0e9623eb07">take_t</a> (Arg &amp;&amp;arg, Args &amp;&amp;...args) noexcept(std::is_nothrow_constructible_v&lt; T, Arg, Args... &gt;)</td></tr>
+<tr class="separator:a1cb1183415af12f3568ebf0e9623eb07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e576f986200ae2397283eb426fccab2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a0e576f986200ae2397283eb426fccab2">take_t</a> (<a class="el" href="structdaw_1_1take__t.html">take_t</a> &amp;&amp;other) noexcept(noexcept(<a class="el" href="namespacedaw.html#a3a892ca26df750c71b3c04c96e694209">take</a>(other.value)))</td></tr>
 <tr class="separator:a0e576f986200ae2397283eb426fccab2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad87a3b4f5dd5f309d3c8540fc1e4db11"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#ad87a3b4f5dd5f309d3c8540fc1e4db11">take_t</a> (<a class="el" href="structdaw_1_1take__t.html">take_t</a> const &amp;)=default</td></tr>
 <tr class="separator:ad87a3b4f5dd5f309d3c8540fc1e4db11"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -110,8 +111,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a88e72f6993d7c15fb83852990767dce3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a301f0784fdd238d79bed9b9df50236f8"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#ae2e82e99f3fd0db433fd0a7161d0be74">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a301f0784fdd238d79bed9b9df50236f8">get</a> () const &amp;noexcept</td></tr>
 <tr class="separator:a301f0784fdd238d79bed9b9df50236f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace7da843e26e2125a20390f58028a47b"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#ace7da843e26e2125a20390f58028a47b">operator</a> (<a class="el" href="structdaw_1_1take__t.html">take_t</a> const &amp;) const =default</td></tr>
-<tr class="separator:ace7da843e26e2125a20390f58028a47b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac254838670774000748faab90dfc1012"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#a33ab2f2add45d1ed61673ee316721512">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#ac254838670774000748faab90dfc1012">operator*</a> () &amp;&amp;noexcept</td></tr>
 <tr class="separator:ac254838670774000748faab90dfc1012"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b72a314ba7752adef2dff8378789acb"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#acd46afa7c0d0a0cec9904d46e5886d90">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a4b72a314ba7752adef2dff8378789acb">operator*</a> () &amp;noexcept</td></tr>
@@ -124,11 +123,11 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7dba9b40d9631340a810b86bab3f61f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a6e9ec3cb155d0a67def53d14ca9cb5"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1take__t.html#ab0f0e955aaffe60bab92e8abc9998f7c">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a0a6e9ec3cb155d0a67def53d14ca9cb5">operator-&gt;</a> () noexcept</td></tr>
 <tr class="separator:a0a6e9ec3cb155d0a67def53d14ca9cb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afff208786e90e98a866a74bee9a6b1b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1take__t.html">take_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#afff208786e90e98a866a74bee9a6b1b9">operator=</a> (<a class="el" href="structdaw_1_1take__t.html">take_t</a> &amp;&amp;rhs) noexcept(noexcept(<a class="el" href="namespacedaw.html#a5c6e8e9c37960b6823de01d7cd2125b8">take</a>(rhs.value)))</td></tr>
+<tr class="memitem:afff208786e90e98a866a74bee9a6b1b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1take__t.html">take_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#afff208786e90e98a866a74bee9a6b1b9">operator=</a> (<a class="el" href="structdaw_1_1take__t.html">take_t</a> &amp;&amp;rhs) noexcept(noexcept(<a class="el" href="namespacedaw.html#a3a892ca26df750c71b3c04c96e694209">take</a>(rhs.value)))</td></tr>
 <tr class="separator:afff208786e90e98a866a74bee9a6b1b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb8d8864a29a89c448b392f27f34bd1f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1take__t.html">take_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#abb8d8864a29a89c448b392f27f34bd1f">operator=</a> (<a class="el" href="structdaw_1_1take__t.html">take_t</a> const &amp;)=default</td></tr>
 <tr class="separator:abb8d8864a29a89c448b392f27f34bd1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a959a12dd7422105e359b72b3d74f0f39"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a959a12dd7422105e359b72b3d74f0f39">reset</a> () noexcept(noexcept(<a class="el" href="namespacedaw.html#a5c6e8e9c37960b6823de01d7cd2125b8">take</a>(value)))</td></tr>
+<tr class="memitem:a959a12dd7422105e359b72b3d74f0f39"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1take__t.html#a959a12dd7422105e359b72b3d74f0f39">reset</a> () noexcept(noexcept(<a class="el" href="namespacedaw.html#a3a892ca26df750c71b3c04c96e694209">take</a>(value)))</td></tr>
 <tr class="separator:a959a12dd7422105e359b72b3d74f0f39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -136,7 +135,7 @@ Public Member Functions</h2></td></tr>
 struct daw::take_t&lt; T &gt;</h3>
 
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00030">30</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00041">41</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a5d124b632a91fce183e2de97b7b924e0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5d124b632a91fce183e2de97b7b924e0">&#9670;&nbsp;</a></span>const_pointer</h2>
@@ -152,7 +151,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00035">35</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00046">46</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -170,7 +169,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00033">33</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00044">44</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -188,7 +187,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00034">34</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00045">45</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -206,7 +205,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00032">32</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00043">43</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -224,7 +223,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00031">31</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00042">42</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -337,17 +336,19 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00046">46</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00057">57</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
-<a id="a2cb6351af8d662b28138959b7c2cccfa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2cb6351af8d662b28138959b7c2cccfa">&#9670;&nbsp;</a></span>take_t() <span class="overload">[4/4]</span></h2>
+<a id="a1cb1183415af12f3568ebf0e9623eb07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cb1183415af12f3568ebf0e9623eb07">&#9670;&nbsp;</a></span>take_t() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T &gt; </div>
+<div class="memtemplate">
+template&lt;typename Arg , typename... Args, std::enable_if_t&lt; not std::is_same_v&lt; take_t, daw::remove_cvref_t&lt; Arg &gt;&gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -355,13 +356,13 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">constexpr <a class="el" href="structdaw_1_1take__t.html">daw::take_t</a>&lt; T &gt;::<a class="el" href="structdaw_1_1take__t.html">take_t</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacedaw.html#abef802ed6bd3568b607c6c3f6b056d2e">not_me</a>&lt; <a class="el" href="structdaw_1_1take__t.html">take_t</a>&lt; T &gt; &gt; auto &amp;&amp;&#160;</td>
+          <td class="paramtype">Arg &amp;&amp;&#160;</td>
           <td class="paramname"><em>arg</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">auto &amp;&amp;...&#160;</td>
+          <td class="paramtype">Args &amp;&amp;...&#160;</td>
           <td class="paramname"><em>args</em>&#160;</td>
         </tr>
         <tr>
@@ -377,7 +378,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00055">55</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00070">70</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -407,7 +408,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00091">91</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00106">106</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -436,7 +437,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00083">83</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00098">98</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -465,7 +466,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00095">95</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00110">110</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -494,35 +495,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00087">87</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
-
-</div>
-</div>
-<a id="ace7da843e26e2125a20390f58028a47b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace7da843e26e2125a20390f58028a47b">&#9670;&nbsp;</a></span>operator()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr auto <a class="el" href="structdaw_1_1take__t.html">daw::take_t</a>&lt; T &gt;::operator </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1take__t.html">take_t</a>&lt; T &gt; const &amp;&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00102">102</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -538,7 +511,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1take__t.html#a33ab2f2add45d1ed61673ee316721512">value_type</a> <a class="el" href="structdaw_1_1take__t.html">daw::take_t</a>&lt; T &gt;::<a class="el" href="structdaw_1_1take__t.html#ace7da843e26e2125a20390f58028a47b">operator</a>* </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1take__t.html#a33ab2f2add45d1ed61673ee316721512">value_type</a> <a class="el" href="structdaw_1_1take__t.html">daw::take_t</a>&lt; T &gt;::operator* </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> &amp;&amp;</td>
@@ -551,7 +524,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00067">67</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00082">82</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -567,7 +540,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1take__t.html#acd46afa7c0d0a0cec9904d46e5886d90">reference</a> <a class="el" href="structdaw_1_1take__t.html">daw::take_t</a>&lt; T &gt;::<a class="el" href="structdaw_1_1take__t.html#ace7da843e26e2125a20390f58028a47b">operator</a>* </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1take__t.html#acd46afa7c0d0a0cec9904d46e5886d90">reference</a> <a class="el" href="structdaw_1_1take__t.html">daw::take_t</a>&lt; T &gt;::operator* </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> &amp;</td>
@@ -580,7 +553,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00059">59</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00074">74</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -596,7 +569,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1take__t.html#ae2e82e99f3fd0db433fd0a7161d0be74">const_reference</a> <a class="el" href="structdaw_1_1take__t.html">daw::take_t</a>&lt; T &gt;::<a class="el" href="structdaw_1_1take__t.html#ace7da843e26e2125a20390f58028a47b">operator</a>* </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1take__t.html#ae2e82e99f3fd0db433fd0a7161d0be74">const_reference</a> <a class="el" href="structdaw_1_1take__t.html">daw::take_t</a>&lt; T &gt;::operator* </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const &amp;&amp;</td>
@@ -609,7 +582,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00071">71</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00086">86</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -625,7 +598,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1take__t.html#ae2e82e99f3fd0db433fd0a7161d0be74">const_reference</a> <a class="el" href="structdaw_1_1take__t.html">daw::take_t</a>&lt; T &gt;::<a class="el" href="structdaw_1_1take__t.html#ace7da843e26e2125a20390f58028a47b">operator</a>* </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1take__t.html#ae2e82e99f3fd0db433fd0a7161d0be74">const_reference</a> <a class="el" href="structdaw_1_1take__t.html">daw::take_t</a>&lt; T &gt;::operator* </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const &amp;</td>
@@ -638,7 +611,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00063">63</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00078">78</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -654,7 +627,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1take__t.html#a5d124b632a91fce183e2de97b7b924e0">const_pointer</a> <a class="el" href="structdaw_1_1take__t.html">daw::take_t</a>&lt; T &gt;::<a class="el" href="structdaw_1_1take__t.html#ace7da843e26e2125a20390f58028a47b">operator</a>-&gt; </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1take__t.html#a5d124b632a91fce183e2de97b7b924e0">const_pointer</a> <a class="el" href="structdaw_1_1take__t.html">daw::take_t</a>&lt; T &gt;::operator-&gt; </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -667,7 +640,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00079">79</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00094">94</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -683,7 +656,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1take__t.html#ab0f0e955aaffe60bab92e8abc9998f7c">pointer</a> <a class="el" href="structdaw_1_1take__t.html">daw::take_t</a>&lt; T &gt;::<a class="el" href="structdaw_1_1take__t.html#ace7da843e26e2125a20390f58028a47b">operator</a>-&gt; </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1take__t.html#ab0f0e955aaffe60bab92e8abc9998f7c">pointer</a> <a class="el" href="structdaw_1_1take__t.html">daw::take_t</a>&lt; T &gt;::operator-&gt; </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -696,7 +669,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00075">75</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00090">90</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -712,7 +685,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1take__t.html">take_t</a>&amp; <a class="el" href="structdaw_1_1take__t.html">daw::take_t</a>&lt; T &gt;::<a class="el" href="structdaw_1_1take__t.html#ace7da843e26e2125a20390f58028a47b">operator</a>= </td>
+          <td class="memname"><a class="el" href="structdaw_1_1take__t.html">take_t</a>&amp; <a class="el" href="structdaw_1_1take__t.html">daw::take_t</a>&lt; T &gt;::operator= </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structdaw_1_1take__t.html">take_t</a>&lt; T &gt; &amp;&amp;&#160;</td>
           <td class="paramname"><em>rhs</em></td><td>)</td>
@@ -726,7 +699,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00050">50</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00061">61</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>
@@ -742,7 +715,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1take__t.html">take_t</a>&amp; <a class="el" href="structdaw_1_1take__t.html">daw::take_t</a>&lt; T &gt;::<a class="el" href="structdaw_1_1take__t.html#ace7da843e26e2125a20390f58028a47b">operator</a>= </td>
+          <td class="memname"><a class="el" href="structdaw_1_1take__t.html">take_t</a>&amp; <a class="el" href="structdaw_1_1take__t.html">daw::take_t</a>&lt; T &gt;::operator= </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structdaw_1_1take__t.html">take_t</a>&lt; T &gt; const &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -783,7 +756,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00099">99</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__take_8h_source.html#l00114">114</a> of file <a class="el" href="daw__take_8h_source.html">daw_take.h</a>.</p>
 
 </div>
 </div>

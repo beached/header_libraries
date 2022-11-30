@@ -13,7 +13,7 @@ var searchData=
   ['one_5fof_3239',['one_of',['../namespacedaw_1_1parser.html#ad8f6f39572eee07c834329439ab7682c',1,'daw::parser']]],
   ['one_5fof_5ft_3240',['one_of_t',['../classdaw_1_1parser_1_1one__of__t.html#af4083422d63f8f1001f8e7fdad431c92',1,'daw::parser::one_of_t']]],
   ['open_3241',['open',['../structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a7263806a02f3b13a6713bdd63a82bf07',1,'daw::filesystem::memory_mapped_file_t::open(daw::string_view file, open_mode mode=open_mode::read) noexcept'],['../structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a6627bca649a177c7288a16dd357200ba',1,'daw::filesystem::memory_mapped_file_t::open(daw::wstring_view file, open_mode mode=open_mode::read) noexcept']]],
-  ['operator_3242',['operator',['../structdaw_1_1take__t.html#ace7da843e26e2125a20390f58028a47b',1,'daw::take_t::operator()'],['../classdaw_1_1wrap__iter.html#a2efb774d7dc1cc987781adf724508ca2',1,'daw::wrap_iter::operator()']]],
+  ['operator_3242',['operator',['../classdaw_1_1wrap__iter.html#a2efb774d7dc1cc987781adf724508ca2',1,'daw::wrap_iter']]],
   ['operator_20baseclass_20_26_3243',['operator BaseClass &amp;',['../classdaw_1_1poly__value.html#a860b9d403ef0743e2100e49eba3c5ab8',1,'daw::poly_value']]],
   ['operator_20baseclass_20_26_26_3244',['operator BaseClass &amp;&amp;',['../classdaw_1_1poly__value.html#abaca12ba5cf9938873521e21738dc4d5',1,'daw::poly_value']]],
   ['operator_20baseclass_20_2a_3245',['operator BaseClass *',['../classdaw_1_1poly__value.html#a40d6662e3e253d2b0514d25506bb3ab2',1,'daw::poly_value']]],

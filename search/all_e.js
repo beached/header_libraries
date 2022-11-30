@@ -15,7 +15,7 @@ var searchData=
   ['only_5fcheck_5fto_5ftype_1493',['only_check_to_type',['../structdaw_1_1fixed__cast.html#a2a3bb8bcdbbc32e24395938be00497fe',1,'daw::fixed_cast']]],
   ['open_1494',['open',['../structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a7263806a02f3b13a6713bdd63a82bf07',1,'daw::filesystem::memory_mapped_file_t::open(daw::string_view file, open_mode mode=open_mode::read) noexcept'],['../structdaw_1_1filesystem_1_1memory__mapped__file__t.html#a6627bca649a177c7288a16dd357200ba',1,'daw::filesystem::memory_mapped_file_t::open(daw::wstring_view file, open_mode mode=open_mode::read) noexcept']]],
   ['open_5fmode_1495',['open_mode',['../namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447',1,'daw::filesystem']]],
-  ['operator_1496',['operator',['../structdaw_1_1take__t.html#ace7da843e26e2125a20390f58028a47b',1,'daw::take_t::operator()'],['../classdaw_1_1wrap__iter.html#a2efb774d7dc1cc987781adf724508ca2',1,'daw::wrap_iter::operator()']]],
+  ['operator_1496',['operator',['../classdaw_1_1wrap__iter.html#a2efb774d7dc1cc987781adf724508ca2',1,'daw::wrap_iter']]],
   ['operator_20baseclass_20_26_1497',['operator BaseClass &amp;',['../classdaw_1_1poly__value.html#a860b9d403ef0743e2100e49eba3c5ab8',1,'daw::poly_value']]],
   ['operator_20baseclass_20_26_26_1498',['operator BaseClass &amp;&amp;',['../classdaw_1_1poly__value.html#abaca12ba5cf9938873521e21738dc4d5',1,'daw::poly_value']]],
   ['operator_20baseclass_20_2a_1499',['operator BaseClass *',['../classdaw_1_1poly__value.html#a40d6662e3e253d2b0514d25506bb3ab2',1,'daw::poly_value']]],

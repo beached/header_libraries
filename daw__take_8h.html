@@ -75,8 +75,10 @@ $(function() {
 <div class="title">daw_take.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>&quot;</code><br />
+<code>#include &lt;memory&gt;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
 </div>
 <p><a href="daw__take_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -93,9 +95,9 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a5c6e8e9c37960b6823de01d7cd2125b8"><td class="memTemplParams" colspan="2">template&lt;default_constructible T&gt; </td></tr>
-<tr class="memitem:a5c6e8e9c37960b6823de01d7cd2125b8"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5c6e8e9c37960b6823de01d7cd2125b8">daw::take</a> (T &amp;value) noexcept(std::is_nothrow_move_constructible_v&lt; T &gt; and std::is_nothrow_default_constructible_v&lt; T &gt;)</td></tr>
-<tr class="separator:a5c6e8e9c37960b6823de01d7cd2125b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a892ca26df750c71b3c04c96e694209"><td class="memTemplParams" colspan="2">template&lt;typename T , std::enable_if_t&lt; std::is_default_constructible_v&lt; T &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a3a892ca26df750c71b3c04c96e694209"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3a892ca26df750c71b3c04c96e694209">daw::take</a> (T &amp;value) noexcept(std::is_nothrow_move_constructible_v&lt; T &gt; and std::is_nothrow_default_constructible_v&lt; T &gt;)</td></tr>
+<tr class="separator:a3a892ca26df750c71b3c04c96e694209"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>

@@ -2,11 +2,11 @@ var searchData=
 [
   ['tag_1865',['tag',['../namespacedaw.html#af01a60f846d9856c98617f4872cd8fa6',1,'daw']]],
   ['tag_5ft_1866',['tag_t',['../structdaw_1_1tag__t.html',1,'daw']]],
-  ['take_1867',['take',['../namespacedaw.html#a5c6e8e9c37960b6823de01d7cd2125b8',1,'daw']]],
+  ['take_1867',['take',['../namespacedaw.html#a3a892ca26df750c71b3c04c96e694209',1,'daw']]],
   ['take_5fownership_1868',['take_ownership',['../namespacedaw.html#aa19b4953ecb10e84f836dada9b18b449',1,'daw']]],
   ['take_5fownership_5fof_5fdata_1869',['take_ownership_of_data',['../classdaw_1_1_c_string.html#ae542603322bc2bfa8e211ddc498d28d7',1,'daw::CString']]],
   ['take_5fownership_5ft_1870',['take_ownership_t',['../structdaw_1_1take__ownership__t.html',1,'daw']]],
-  ['take_5ft_1871',['take_t',['../structdaw_1_1take__t.html',1,'daw::take_t&lt; T &gt;'],['../structdaw_1_1take__t.html#ab59a8a7e1633e48633e11f6b5732cbeb',1,'daw::take_t::take_t()=default'],['../structdaw_1_1take__t.html#ad87a3b4f5dd5f309d3c8540fc1e4db11',1,'daw::take_t::take_t(take_t const &amp;)=default'],['../structdaw_1_1take__t.html#a0e576f986200ae2397283eb426fccab2',1,'daw::take_t::take_t(take_t &amp;&amp;other) noexcept(noexcept(take(other.value)))'],['../structdaw_1_1take__t.html#a2cb6351af8d662b28138959b7c2cccfa',1,'daw::take_t::take_t(not_me&lt; take_t &gt; auto &amp;&amp;arg, auto &amp;&amp;...args) noexcept(std::is_nothrow_constructible_v&lt; T, decltype(arg), decltype(args)... &gt;)']]],
+  ['take_5ft_1871',['take_t',['../structdaw_1_1take__t.html',1,'daw::take_t&lt; T &gt;'],['../structdaw_1_1take__t.html#ab59a8a7e1633e48633e11f6b5732cbeb',1,'daw::take_t::take_t()=default'],['../structdaw_1_1take__t.html#ad87a3b4f5dd5f309d3c8540fc1e4db11',1,'daw::take_t::take_t(take_t const &amp;)=default'],['../structdaw_1_1take__t.html#a0e576f986200ae2397283eb426fccab2',1,'daw::take_t::take_t(take_t &amp;&amp;other) noexcept(noexcept(take(other.value)))'],['../structdaw_1_1take__t.html#a1cb1183415af12f3568ebf0e9623eb07',1,'daw::take_t::take_t(Arg &amp;&amp;arg, Args &amp;&amp;...args) noexcept(std::is_nothrow_constructible_v&lt; T, Arg, Args... &gt;)']]],
   ['template_5farg_1872',['template_arg',['../namespacedaw.html#a038b5bcb15c3fa29500e3bcf03f87699',1,'daw']]],
   ['template_5fargs_1873',['template_args',['../namespacedaw.html#a9f8be930de6f4390405b031792e7033a',1,'daw']]],
   ['template_5fparam_1874',['template_param',['../structdaw_1_1template__param.html',1,'daw']]],
