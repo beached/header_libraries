@@ -99,6 +99,7 @@ set( TEST_SOURCES
      daw_string_test.cpp
      daw_string_view1_test.cpp
      daw_string_view2_test.cpp
+     daw_take_test.cpp
      daw_traits_test.cpp
      daw_tuple2_test.cpp
      daw_tuple_helper_test.cpp
@@ -123,7 +124,6 @@ set( CPP20_TEST_SOURCES
      daw_concepts_test.cpp
      daw_contiguous_view_test.cpp
      daw_named_params_test.cpp
-     daw_take_test.cpp
      vector_test.cpp
      )
 #NOT COMPLETED daw_iterator_split_iterator_test.cpp
