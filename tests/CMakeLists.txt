@@ -87,6 +87,7 @@ set( TEST_SOURCES
      daw_random_test.cpp
      daw_read_file_test.cpp
      daw_read_only_test.cpp
+     daw_ref_counted_pointer_test.cpp
      daw_ring_adaptor_test.cpp
      daw_safe_string_test.cpp
      daw_scope_guard_test.cpp
