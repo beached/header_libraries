@@ -303,18 +303,20 @@ namespace daw {
 	template<typename CharType, typename Traits, typename Allocator>
 	[[nodiscard]] constexpr auto
 	AsciiUpper( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
-		daw::algorithm::map(
-		  str.cbegin( ), str.cend( ), str.begin( ),
-		  []( CharType c ) noexcept { return AsciiUpper( c ); } );
+		daw::algorithm::map( str.cbegin( ), str.cend( ), str.begin( ),
+		                     []( CharType c ) noexcept {
+			                     return AsciiUpper( c );
+		                     } );
 		return DAW_MOVE( str );
 	}
 
 	template<typename CharType, typename Traits, typename Allocator>
 	[[nodiscard]] constexpr auto
 	AsciiLower( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
-		daw::algorithm::map(
-		  str.cbegin( ), str.cend( ), str.begin( ),
-		  []( CharType c ) noexcept { return AsciiLower( c ); } );
+		daw::algorithm::map( str.cbegin( ), str.cend( ), str.begin( ),
+		                     []( CharType c ) noexcept {
+			                     return AsciiLower( c );
+		                     } );
 		return DAW_MOVE( str );
 	}
 
@@ -615,7 +617,10 @@ namespace daw {
 	inline constexpr auto pack_index_of_v = [] {
 		auto result = sizeof...( Ts );
 		auto pos = std::size_t( -1 );
-		( ( ++pos, std::is_same_v<Ts, T> ? ( result = pos ) : pos ), ... );
+		// Using expander here, folding over op, fails on some compilers(clang-12)
+		std::size_t expander[]{
+		  ( (void)++pos, std::is_same_v<Ts, T> ? ( result = pos ) : pos )... };
+		(void)expander;
 		return result;
 	}( );
 
@@ -967,7 +972,7 @@ namespace daw {
 	inline T *get_buffer( std::size_t count ) noexcept {
 		return reinterpret_cast<T *>(
 #if defined( __MINGW32__ ) or defined( _MSC_VER )
-			_aligned_malloc( sizeof( T ) * count, Alignment )
+		  _aligned_malloc( sizeof( T ) * count, Alignment )
 #else
 		  ::aligned_alloc( Alignment, sizeof( T ) * count )
 #endif
