@@ -26,6 +26,5 @@ int main( ) {
 	assert( p2c != p1c );
 	assert( p2c == p2b );
 	(void)p2c;
-
 	auto a1 = daw::make_rc_ptr<int[]>( 5 );
 }
