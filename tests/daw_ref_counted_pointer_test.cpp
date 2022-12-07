@@ -18,12 +18,12 @@ int main( ) {
 	auto p1b = p1;
 	auto p1c = std::move( p1 );
 	(void)p1;
-	assert( p1[4] == 5 );
-	auto p2b = p1;
+	assert( p1c[4] == 5 );
+	auto p2b = p1c;
 	(void)p2b;
 	assert( p2b[3] == 4 );
-	auto p2c = std::move( p1 );
-	assert( p2c != p1 );
+	auto p2c = std::move( p1c );
+	assert( p2c != p1c );
 	assert( p2c == p2b );
 	(void)p2c;
 
