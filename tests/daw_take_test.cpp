@@ -13,6 +13,8 @@
 int main( ) {
 	int a = 5;
 	int b = daw::take( a );
+	(void)a;
+	(void)b;
 	assert( a == 0 and b == 5 );
 
 	auto x = daw::take_t<int>( 5 );

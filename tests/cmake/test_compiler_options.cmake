@@ -24,7 +24,6 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
                 -Weverything
                 -ftemplate-backtrace-limit=0
                 -Wno-c++98-compat
-                -Wno-c++20-compat
                 -Wno-covered-switch-default
                 -Wno-padded
                 -Wno-exit-time-destructors
@@ -51,7 +50,7 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
             add_compile_options(-Wno-return-std-move-in-c++11)
         endif ()
         if (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" AND CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 14.0.0)
-            add_compile_options(-Wno-bitwise-instead-of-logical)
+            add_compile_options(-Wno-bitwise-instead-of-logical -Wno-c++20-compat)
         endif ()
         if (${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang" OR CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 10.0.0)
             add_compile_options(-Wno-poison-system-directories)

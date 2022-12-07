@@ -2139,8 +2139,9 @@ namespace daw::algorithm {
 	constexpr std::optional<size_t> find_index( Iterator first, Iterator last,
 	                                            T const &value ) {
 
-		return find_index_if( first, last,
-		                      [&]( auto &&v ) { return DAW_FWD( v ) == value; } );
+		return find_index_if( first, last, [&]( auto &&v ) {
+			return DAW_FWD( v ) == value;
+		} );
 	}
 
 	template<typename RandomIterator, typename Compare = std::less<>>
