@@ -54,20 +54,17 @@ namespace daw {
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference
 		operator*( ) const noexcept {
-			DAW_ASSUME( m_ptr != nullptr );
-			return *m_ptr;
+			return *get( );
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr
 		operator pointer( ) const noexcept {
-			DAW_ASSUME( m_ptr != nullptr );
-			return m_ptr;
+			return get( );
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer
 		operator->( ) const noexcept {
-			DAW_ASSUME( m_ptr != nullptr );
-			return m_ptr;
+			return get( );
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE explicit constexpr
@@ -91,6 +88,7 @@ namespace daw {
 		DAW_ATTRIB_INLINE constexpr not_null &operator--( ) noexcept {
 			DAW_ASSUME( m_ptr != nullptr );
 			--m_ptr;
+			assert( m_ptr != nullptr );
 			return *this;
 		}
 
@@ -107,6 +105,7 @@ namespace daw {
 			DAW_ASSUME( m_ptr != nullptr );
 			auto result = *this;
 			--m_ptr;
+			assert( m_ptr != nullptr );
 			return result;
 		}
 
@@ -118,6 +117,7 @@ namespace daw {
 		DAW_ATTRIB_INLINE constexpr not_null &operator+=( Integer n ) noexcept {
 			DAW_ASSUME( m_ptr != nullptr );
 			m_ptr += static_cast<difference_type>( n );
+			assert( m_ptr != nullptr );
 			return *this;
 		}
 
@@ -128,6 +128,7 @@ namespace daw {
 		DAW_ATTRIB_INLINE constexpr not_null &operator-=( Integer n ) noexcept {
 			DAW_ASSUME( m_ptr != nullptr );
 			m_ptr -= static_cast<difference_type>( n );
+			assert( m_ptr != nullptr );
 			return *this;
 		}
 
@@ -136,8 +137,7 @@ namespace daw {
 		                                            std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE constexpr reference
 		operator[]( Integer idx ) const noexcept {
-			DAW_ASSUME( m_ptr != nullptr );
-			return *( m_ptr + static_cast<difference_type>( idx ) );
+			return *( get( ) + static_cast<difference_type>( idx ) );
 		}
 
 		template<typename NotNull,
@@ -146,9 +146,7 @@ namespace daw {
 		           std::is_same_v<NotNull, not_null>, std::nullptr_t> = nullptr>
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr difference_type
 		operator-( NotNull const &rhs ) const noexcept {
-			assert( this != &rhs );
-			DAW_ASSUME( m_ptr != nullptr );
-			return m_ptr - rhs.m_ptr;
+			return get( ) - rhs.get( );
 		}
 
 		/// @pre (std::intptr_t)lhs.get( ) <
@@ -190,6 +188,7 @@ namespace daw {
 			return rhs;
 		}
 	};
+
 	template<typename Lhs, typename Rhs>
 	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
 	operator==( daw::not_null<Lhs *> const &lhs,
@@ -248,8 +247,8 @@ namespace daw {
 template<typename Pointer>
 struct std::hash<daw::not_null<Pointer>> {
 	[[nodiscard]] auto operator( )( daw::not_null<Pointer> value ) const
-	  -> decltype(
-	    std::hash<decltype( std::declval<Pointer>( ) )>{ }( value.get( ) ) ) {
+	  -> decltype( std::hash<decltype( std::declval<Pointer>( ) )>{ }(
+	    value.get( ) ) ) {
 		return std::hash<decltype( std::declval<Pointer>( ) )>{ }( value.get( ) );
 	}
 };

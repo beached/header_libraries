@@ -23,8 +23,8 @@ int main( ) {
 	(void)p2b;
 	assert( p2b[3] == 4 );
 	auto p2c = std::move( p1c );
+	assert( p2c != p1c );
 	assert( p2c == p2b );
 	(void)p2c;
-
 	auto a1 = daw::make_rc_ptr<int[]>( 5 );
 }
