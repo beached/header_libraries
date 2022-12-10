@@ -170,7 +170,7 @@ namespace daw {
 		}
 
 		constexpr bool operator<( rc_ptr const &rhs ) const noexcept {
-			return std::less{ }( m_pointer, rhs.m_pointer );
+			return std::less<>{ }( m_pointer, rhs.m_pointer );
 		}
 
 		constexpr bool operator<=( rc_ptr const &rhs ) const noexcept {
@@ -194,19 +194,19 @@ namespace daw {
 		}
 
 		constexpr bool operator<( std::nullptr_t ) const noexcept {
-			return std::less{ }( m_pointer, nullptr );
+			return std::less<>{ }( m_pointer, nullptr );
 		}
 
 		constexpr bool operator<=( std::nullptr_t ) const noexcept {
-			return not std::less{ }( nullptr, m_pointer );
+			return not std::less<>{ }( nullptr, m_pointer );
 		}
 
 		constexpr bool operator>( std::nullptr_t ) const noexcept {
-			return std::less{ }( nullptr, m_pointer );
+			return std::less<>{ }( nullptr, m_pointer );
 		}
 
 		constexpr bool operator>=( std::nullptr_t ) const noexcept {
-			return not std::less{ }( m_pointer, nullptr );
+			return not std::less<>{ }( m_pointer, nullptr );
 		}
 	};
 
@@ -337,7 +337,7 @@ namespace daw {
 		}
 
 		constexpr bool operator<( rc_ptr const &rhs ) const noexcept {
-			return std::less{ }( m_pointer, rhs.m_pointer );
+			return std::less<>{ }( m_pointer, rhs.m_pointer );
 		}
 
 		constexpr bool operator<=( rc_ptr const &rhs ) const noexcept {
@@ -361,19 +361,19 @@ namespace daw {
 		}
 
 		constexpr bool operator<( std::nullptr_t ) const noexcept {
-			return std::less{ }( m_pointer, nullptr );
+			return std::less<>{ }( m_pointer, nullptr );
 		}
 
 		constexpr bool operator<=( std::nullptr_t ) const noexcept {
-			return not std::less{ }( nullptr, m_pointer );
+			return not std::less<>{ }( nullptr, m_pointer );
 		}
 
 		constexpr bool operator>( std::nullptr_t ) const noexcept {
-			return std::less{ }( nullptr, m_pointer );
+			return std::less<>{ }( nullptr, m_pointer );
 		}
 
 		constexpr bool operator>=( std::nullptr_t ) const noexcept {
-			return not std::less{ }( m_pointer, nullptr );
+			return not std::less<>{ }( m_pointer, nullptr );
 		}
 	};
 #if defined( DAW_CPP20_CONSTEXPR_DYNAMIC_ALLOC )

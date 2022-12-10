@@ -161,8 +161,8 @@ namespace daw {
 	/// @return The resulting iterator advanced n steps
 	template<typename Iterator, typename Distance = size_t>
 	constexpr Iterator
-	safe_next( Iterator it, Iterator const last,
-	           Distance n = 1U ) noexcept( noexcept( daw::next( it, n ) ) ) {
+	safe_next( Iterator it, Iterator const last, Distance n = 1U ) noexcept(
+	  noexcept( daw::next( it, static_cast<std::ptrdiff_t>( n ) ) ) ) {
 
 		traits::is_iterator_test<Iterator>( );
 		auto const d = static_cast<ptrdiff_t>( n );
@@ -179,8 +179,8 @@ namespace daw {
 	/// @return The resulting iterator advanced n steps
 	template<typename Iterator, typename Distance>
 	constexpr Iterator
-	safe_prev( Iterator it, Iterator first,
-	           Distance n = 1 ) noexcept( noexcept( daw::prev( it, n ) ) ) {
+	safe_prev( Iterator it, Iterator first, Distance n = 1 ) noexcept(
+	  noexcept( daw::prev( it, static_cast<std::ptrdiff_t>( n ) ) ) ) {
 
 		traits::is_iterator_test<Iterator>( );
 		auto const d = static_cast<ptrdiff_t>( n );
