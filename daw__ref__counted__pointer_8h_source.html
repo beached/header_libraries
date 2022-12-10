@@ -242,7 +242,7 @@ $(function() {
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    }</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
 <div class="line"><a name="l00172"></a><span class="lineno"><a class="line" href="structdaw_1_1rc__ptr.html#a35c96ab78284b594189bf7a96053effb">  172</a></span>&#160;    constexpr <span class="keywordtype">bool</span> <a class="code" href="structdaw_1_1rc__ptr.html#a35c96ab78284b594189bf7a96053effb">operator&lt;</a>( <a class="code" href="structdaw_1_1rc__ptr.html">rc_ptr</a> <span class="keyword">const</span> &amp;rhs ) <span class="keyword">const</span> noexcept {</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;      <span class="keywordflow">return</span> std::less{ }( m_pointer, rhs.m_pointer );</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;      <span class="keywordflow">return</span> std::less&lt;&gt;{ }( m_pointer, rhs.m_pointer );</div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    }</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
 <div class="line"><a name="l00176"></a><span class="lineno"><a class="line" href="structdaw_1_1rc__ptr.html#a5e6487ff4b84ffbc319a62978974d39c">  176</a></span>&#160;    constexpr <span class="keywordtype">bool</span> <a class="code" href="structdaw_1_1rc__ptr.html#a5e6487ff4b84ffbc319a62978974d39c">operator&lt;=</a>( <a class="code" href="structdaw_1_1rc__ptr.html">rc_ptr</a> <span class="keyword">const</span> &amp;rhs ) <span class="keyword">const</span> noexcept {</div>
@@ -266,19 +266,19 @@ $(function() {
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    }</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
 <div class="line"><a name="l00196"></a><span class="lineno"><a class="line" href="structdaw_1_1rc__ptr.html#a28dee5e69d8254e3bed8c77e459574ea">  196</a></span>&#160;    constexpr <span class="keywordtype">bool</span> <a class="code" href="structdaw_1_1rc__ptr.html#a28dee5e69d8254e3bed8c77e459574ea">operator&lt;</a>( std::nullptr_t ) <span class="keyword">const</span> noexcept {</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;      <span class="keywordflow">return</span> std::less{ }( m_pointer, nullptr );</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;      <span class="keywordflow">return</span> std::less&lt;&gt;{ }( m_pointer, nullptr );</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    }</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; </div>
 <div class="line"><a name="l00200"></a><span class="lineno"><a class="line" href="structdaw_1_1rc__ptr.html#aba9667f9c76b8e4813c79f5749d5fd06">  200</a></span>&#160;    constexpr <span class="keywordtype">bool</span> <a class="code" href="structdaw_1_1rc__ptr.html#aba9667f9c76b8e4813c79f5749d5fd06">operator&lt;=</a>( std::nullptr_t ) <span class="keyword">const</span> noexcept {</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;      <span class="keywordflow">return</span> not std::less{ }( <span class="keyword">nullptr</span>, m_pointer );</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;      <span class="keywordflow">return</span> not std::less&lt;&gt;{ }( <span class="keyword">nullptr</span>, m_pointer );</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    }</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; </div>
 <div class="line"><a name="l00204"></a><span class="lineno"><a class="line" href="structdaw_1_1rc__ptr.html#a774233c2821f73b5ad170fdf56df61cf">  204</a></span>&#160;    constexpr <span class="keywordtype">bool</span> <a class="code" href="structdaw_1_1rc__ptr.html#a774233c2821f73b5ad170fdf56df61cf">operator&gt;</a>( std::nullptr_t ) <span class="keyword">const</span> noexcept {</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;      <span class="keywordflow">return</span> std::less{ }( <span class="keyword">nullptr</span>, m_pointer );</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;      <span class="keywordflow">return</span> std::less&lt;&gt;{ }( <span class="keyword">nullptr</span>, m_pointer );</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    }</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; </div>
 <div class="line"><a name="l00208"></a><span class="lineno"><a class="line" href="structdaw_1_1rc__ptr.html#a68f37e58d3ea2ff59df1ad1525ba2f8d">  208</a></span>&#160;    constexpr <span class="keywordtype">bool</span> <a class="code" href="structdaw_1_1rc__ptr.html#a68f37e58d3ea2ff59df1ad1525ba2f8d">operator&gt;=</a>( std::nullptr_t ) <span class="keyword">const</span> noexcept {</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;      <span class="keywordflow">return</span> not std::less{ }( m_pointer, nullptr );</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;      <span class="keywordflow">return</span> not std::less&lt;&gt;{ }( m_pointer, nullptr );</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    }</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;  };</div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; </div>
@@ -409,7 +409,7 @@ $(function() {
 <div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    }</div>
 <div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160; </div>
 <div class="line"><a name="l00339"></a><span class="lineno"><a class="line" href="structdaw_1_1rc__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a11ae7755a4ee635be4f3ad86bc0d137e">  339</a></span>&#160;    constexpr <span class="keywordtype">bool</span> <a class="code" href="structdaw_1_1rc__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a11ae7755a4ee635be4f3ad86bc0d137e">operator&lt;</a>( <a class="code" href="structdaw_1_1rc__ptr.html">rc_ptr</a> <span class="keyword">const</span> &amp;rhs ) <span class="keyword">const</span> noexcept {</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;      <span class="keywordflow">return</span> std::less{ }( m_pointer, rhs.m_pointer );</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;      <span class="keywordflow">return</span> std::less&lt;&gt;{ }( m_pointer, rhs.m_pointer );</div>
 <div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    }</div>
 <div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160; </div>
 <div class="line"><a name="l00343"></a><span class="lineno"><a class="line" href="structdaw_1_1rc__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a24185ea156a51591592446af6aa3456c">  343</a></span>&#160;    constexpr <span class="keywordtype">bool</span> <a class="code" href="structdaw_1_1rc__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a24185ea156a51591592446af6aa3456c">operator&lt;=</a>( <a class="code" href="structdaw_1_1rc__ptr.html">rc_ptr</a> <span class="keyword">const</span> &amp;rhs ) <span class="keyword">const</span> noexcept {</div>
@@ -433,19 +433,19 @@ $(function() {
 <div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    }</div>
 <div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160; </div>
 <div class="line"><a name="l00363"></a><span class="lineno"><a class="line" href="structdaw_1_1rc__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a2b833f95a70cdc436feaa0e795aa665f">  363</a></span>&#160;    constexpr <span class="keywordtype">bool</span> <a class="code" href="structdaw_1_1rc__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a2b833f95a70cdc436feaa0e795aa665f">operator&lt;</a>( std::nullptr_t ) <span class="keyword">const</span> noexcept {</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;      <span class="keywordflow">return</span> std::less{ }( m_pointer, nullptr );</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;      <span class="keywordflow">return</span> std::less&lt;&gt;{ }( m_pointer, nullptr );</div>
 <div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    }</div>
 <div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160; </div>
 <div class="line"><a name="l00367"></a><span class="lineno"><a class="line" href="structdaw_1_1rc__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a71712d7fe6b16099082b20b194df6de8">  367</a></span>&#160;    constexpr <span class="keywordtype">bool</span> <a class="code" href="structdaw_1_1rc__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a71712d7fe6b16099082b20b194df6de8">operator&lt;=</a>( std::nullptr_t ) <span class="keyword">const</span> noexcept {</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;      <span class="keywordflow">return</span> not std::less{ }( <span class="keyword">nullptr</span>, m_pointer );</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;      <span class="keywordflow">return</span> not std::less&lt;&gt;{ }( <span class="keyword">nullptr</span>, m_pointer );</div>
 <div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    }</div>
 <div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160; </div>
 <div class="line"><a name="l00371"></a><span class="lineno"><a class="line" href="structdaw_1_1rc__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a873c9940de222b0f08bed7bafb74f0b7">  371</a></span>&#160;    constexpr <span class="keywordtype">bool</span> <a class="code" href="structdaw_1_1rc__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a873c9940de222b0f08bed7bafb74f0b7">operator&gt;</a>( std::nullptr_t ) <span class="keyword">const</span> noexcept {</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;      <span class="keywordflow">return</span> std::less{ }( <span class="keyword">nullptr</span>, m_pointer );</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;      <span class="keywordflow">return</span> std::less&lt;&gt;{ }( <span class="keyword">nullptr</span>, m_pointer );</div>
 <div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    }</div>
 <div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160; </div>
 <div class="line"><a name="l00375"></a><span class="lineno"><a class="line" href="structdaw_1_1rc__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a7c02a5243b2f95fbddf0b10b9da1554d">  375</a></span>&#160;    constexpr <span class="keywordtype">bool</span> <a class="code" href="structdaw_1_1rc__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a7c02a5243b2f95fbddf0b10b9da1554d">operator&gt;=</a>( std::nullptr_t ) <span class="keyword">const</span> noexcept {</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;      <span class="keywordflow">return</span> not std::less{ }( m_pointer, nullptr );</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;      <span class="keywordflow">return</span> not std::less&lt;&gt;{ }( m_pointer, nullptr );</div>
 <div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;    }</div>
 <div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;  };</div>
 <div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;<span class="preprocessor">#if defined( DAW_CPP20_CONSTEXPR_DYNAMIC_ALLOC )</span></div>

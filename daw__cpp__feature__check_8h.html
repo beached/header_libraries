@@ -78,18 +78,24 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a9aac3e9070c66a85a35b8e4bd1d57196"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__cpp__feature__check_8h.html#a9aac3e9070c66a85a35b8e4bd1d57196">DAW_HAS_BUILTIN</a>(...)&#160;&#160;&#160;( false )</td></tr>
-<tr class="separator:a9aac3e9070c66a85a35b8e4bd1d57196"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b6d94120feea1e6e9a89c6321419e35"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__cpp__feature__check_8h.html#a7b6d94120feea1e6e9a89c6321419e35">DAW_HAS_BUILTIN</a>(name)&#160;&#160;&#160;( false )</td></tr>
+<tr class="separator:a7b6d94120feea1e6e9a89c6321419e35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50047fbd654423dc3723baa2c8a34961"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__cpp__feature__check_8h.html#a50047fbd654423dc3723baa2c8a34961">DAW_HAS_CLANG_VER</a>(ver_maj,  ver_min)&#160;&#160;&#160;( false )</td></tr>
+<tr class="separator:a50047fbd654423dc3723baa2c8a34961"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a250c93f98740b8f7ac451074190d5e7d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__cpp__feature__check_8h.html#a250c93f98740b8f7ac451074190d5e7d">DAW_HAS_FEATURE</a>(feature)&#160;&#160;&#160;( ( feature ) &gt; 0 )</td></tr>
 <tr class="separator:a250c93f98740b8f7ac451074190d5e7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5844a71de87f1b7bd5614017ac6b4cd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__cpp__feature__check_8h.html#af5844a71de87f1b7bd5614017ac6b4cd">DAW_HAS_FEATURE_VERSION</a>(feature,  version)&#160;&#160;&#160;	( ( feature ) &gt; ( version ) )</td></tr>
 <tr class="separator:af5844a71de87f1b7bd5614017ac6b4cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8eb12626dc22e4364ee84f49c23971a3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__cpp__feature__check_8h.html#a8eb12626dc22e4364ee84f49c23971a3">DAW_HAS_GCC_VER</a>(ver_maj,  ver_min)&#160;&#160;&#160;( false )</td></tr>
+<tr class="separator:a8eb12626dc22e4364ee84f49c23971a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0964e2cd4287c607855a951c21e09f52"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__cpp__feature__check_8h.html#a0964e2cd4287c607855a951c21e09f52">DAW_HAS_INCLUDE</a>(...)&#160;&#160;&#160;( false )</td></tr>
 <tr class="separator:a0964e2cd4287c607855a951c21e09f52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefe4d301438c10acdd36a76827b34383"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__cpp__feature__check_8h.html#aefe4d301438c10acdd36a76827b34383">DAW_HAS_MSVC_VER</a>(ver)&#160;&#160;&#160;( false )</td></tr>
+<tr class="separator:aefe4d301438c10acdd36a76827b34383"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a9aac3e9070c66a85a35b8e4bd1d57196"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9aac3e9070c66a85a35b8e4bd1d57196">&#9670;&nbsp;</a></span>DAW_HAS_BUILTIN</h2>
+<a id="a7b6d94120feea1e6e9a89c6321419e35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b6d94120feea1e6e9a89c6321419e35">&#9670;&nbsp;</a></span>DAW_HAS_BUILTIN</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -98,13 +104,43 @@ Macros</h2></td></tr>
           <td class="memname">#define DAW_HAS_BUILTIN</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em></td><td>)</td>
+          <td class="paramname">name</td><td>)</td>
           <td>&#160;&#160;&#160;( false )</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__cpp__feature__check_8h_source.html#l00025">25</a> of file <a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__cpp__feature__check_8h_source.html#l00051">51</a> of file <a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>.</p>
+
+</div>
+</div>
+<a id="a50047fbd654423dc3723baa2c8a34961"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50047fbd654423dc3723baa2c8a34961">&#9670;&nbsp;</a></span>DAW_HAS_CLANG_VER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_HAS_CLANG_VER</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">ver_maj, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">ver_min&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;( false )</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__cpp__feature__check_8h_source.html#l00029">29</a> of file <a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>.</p>
 
 </div>
 </div>
@@ -124,7 +160,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__cpp__feature__check_8h_source.html#l00029">29</a> of file <a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__cpp__feature__check_8h_source.html#l00055">55</a> of file <a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>.</p>
 
 </div>
 </div>
@@ -154,7 +190,37 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__cpp__feature__check_8h_source.html#l00032">32</a> of file <a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__cpp__feature__check_8h_source.html#l00058">58</a> of file <a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>.</p>
+
+</div>
+</div>
+<a id="a8eb12626dc22e4364ee84f49c23971a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8eb12626dc22e4364ee84f49c23971a3">&#9670;&nbsp;</a></span>DAW_HAS_GCC_VER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_HAS_GCC_VER</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">ver_maj, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">ver_min&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;( false )</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__cpp__feature__check_8h_source.html#l00038">38</a> of file <a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>.</p>
 
 </div>
 </div>
@@ -175,6 +241,26 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__cpp__feature__check_8h_source.html#l00019">19</a> of file <a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>.</p>
+
+</div>
+</div>
+<a id="aefe4d301438c10acdd36a76827b34383"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefe4d301438c10acdd36a76827b34383">&#9670;&nbsp;</a></span>DAW_HAS_MSVC_VER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_HAS_MSVC_VER</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">ver</td><td>)</td>
+          <td>&#160;&#160;&#160;( false )</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__cpp__feature__check_8h_source.html#l00045">45</a> of file <a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>.</p>
 
 </div>
 </div>

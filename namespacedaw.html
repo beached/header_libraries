@@ -3610,14 +3610,14 @@ Functions</h2></td></tr>
 <tr class="memitem:a9d7f2f9e5660f46243f2efe724a2a4cc"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a9d7f2f9e5660f46243f2efe724a2a4cc">safe_advance</a> (Container const &amp;container, Iterator &amp;it, Distance <a class="el" href="namespacedaw.html#af12f9c7fb9774c53848cf8e9f721c828">distance</a>) noexcept</td></tr>
 <tr class="memdesc:a9d7f2f9e5660f46243f2efe724a2a4cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Advance Iterator within the bounds of container.  <a href="namespacedaw.html#a9d7f2f9e5660f46243f2efe724a2a4cc">More...</a><br /></td></tr>
 <tr class="separator:a9d7f2f9e5660f46243f2efe724a2a4cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf29064df57d7d3820df8afd5e214eb5"><td class="memTemplParams" colspan="2">template&lt;typename Iterator , typename Distance  = size_t&gt; </td></tr>
-<tr class="memitem:abf29064df57d7d3820df8afd5e214eb5"><td class="memTemplItemLeft" align="right" valign="top">constexpr Iterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#abf29064df57d7d3820df8afd5e214eb5">safe_next</a> (Iterator it, Iterator const last, Distance n=1U) noexcept(noexcept(<a class="el" href="namespacedaw.html#a55399937a2ff351c8338d513521b00e1">daw::next</a>(it, n)))</td></tr>
-<tr class="memdesc:abf29064df57d7d3820df8afd5e214eb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Advance iterator n steps forward but do not go past last. Undefined if it &gt; last.  <a href="namespacedaw.html#abf29064df57d7d3820df8afd5e214eb5">More...</a><br /></td></tr>
-<tr class="separator:abf29064df57d7d3820df8afd5e214eb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af25e41c81a8c5e48e3b127dd38ceed89"><td class="memTemplParams" colspan="2">template&lt;typename Iterator , typename Distance &gt; </td></tr>
-<tr class="memitem:af25e41c81a8c5e48e3b127dd38ceed89"><td class="memTemplItemLeft" align="right" valign="top">constexpr Iterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af25e41c81a8c5e48e3b127dd38ceed89">safe_prev</a> (Iterator it, Iterator first, Distance n=1) noexcept(noexcept(<a class="el" href="namespacedaw.html#a6e8d238a833c171fca8ca8edba7b3c3f">daw::prev</a>(it, n)))</td></tr>
-<tr class="memdesc:af25e41c81a8c5e48e3b127dd38ceed89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Advance iterator n steps backward but do not go past first. Undefined if it &lt; first.  <a href="namespacedaw.html#af25e41c81a8c5e48e3b127dd38ceed89">More...</a><br /></td></tr>
-<tr class="separator:af25e41c81a8c5e48e3b127dd38ceed89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a162c26f1473a434b0d1a514ec38af070"><td class="memTemplParams" colspan="2">template&lt;typename Iterator , typename Distance  = size_t&gt; </td></tr>
+<tr class="memitem:a162c26f1473a434b0d1a514ec38af070"><td class="memTemplItemLeft" align="right" valign="top">constexpr Iterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a162c26f1473a434b0d1a514ec38af070">safe_next</a> (Iterator it, Iterator const last, Distance n=1U) noexcept(noexcept(<a class="el" href="namespacedaw.html#a55399937a2ff351c8338d513521b00e1">daw::next</a>(it, static_cast&lt; std::ptrdiff_t &gt;(n))))</td></tr>
+<tr class="memdesc:a162c26f1473a434b0d1a514ec38af070"><td class="mdescLeft">&#160;</td><td class="mdescRight">Advance iterator n steps forward but do not go past last. Undefined if it &gt; last.  <a href="namespacedaw.html#a162c26f1473a434b0d1a514ec38af070">More...</a><br /></td></tr>
+<tr class="separator:a162c26f1473a434b0d1a514ec38af070"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a847ce71f0bf8ea0c1f96e2f2faca34d0"><td class="memTemplParams" colspan="2">template&lt;typename Iterator , typename Distance &gt; </td></tr>
+<tr class="memitem:a847ce71f0bf8ea0c1f96e2f2faca34d0"><td class="memTemplItemLeft" align="right" valign="top">constexpr Iterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a847ce71f0bf8ea0c1f96e2f2faca34d0">safe_prev</a> (Iterator it, Iterator first, Distance n=1) noexcept(noexcept(<a class="el" href="namespacedaw.html#a6e8d238a833c171fca8ca8edba7b3c3f">daw::prev</a>(it, static_cast&lt; std::ptrdiff_t &gt;(n))))</td></tr>
+<tr class="memdesc:a847ce71f0bf8ea0c1f96e2f2faca34d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Advance iterator n steps backward but do not go past first. Undefined if it &lt; first.  <a href="namespacedaw.html#a847ce71f0bf8ea0c1f96e2f2faca34d0">More...</a><br /></td></tr>
+<tr class="separator:a847ce71f0bf8ea0c1f96e2f2faca34d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa897039e0c48bf8ab01c85301413187e"><td class="memTemplParams" colspan="2">template&lt;unsigned N&gt; </td></tr>
 <tr class="memitem:aa897039e0c48bf8ab01c85301413187e"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa897039e0c48bf8ab01c85301413187e">set_bit</a> (<a class="el" href="namespacedaw.html#a9c777f76740a1ff56e7be2a5a80d6790">UInt16</a> &amp;value, bool state)</td></tr>
 <tr class="separator:aa897039e0c48bf8ab01c85301413187e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -44543,8 +44543,8 @@ template&lt;typename Container , typename Iterator , typename Distance &gt; </di
 
 </div>
 </div>
-<a id="abf29064df57d7d3820df8afd5e214eb5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf29064df57d7d3820df8afd5e214eb5">&#9670;&nbsp;</a></span>safe_next()</h2>
+<a id="a162c26f1473a434b0d1a514ec38af070"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a162c26f1473a434b0d1a514ec38af070">&#9670;&nbsp;</a></span>safe_next()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -44606,8 +44606,8 @@ template&lt;typename Iterator , typename Distance  = size_t&gt; </div>
 
 </div>
 </div>
-<a id="af25e41c81a8c5e48e3b127dd38ceed89"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af25e41c81a8c5e48e3b127dd38ceed89">&#9670;&nbsp;</a></span>safe_prev()</h2>
+<a id="a847ce71f0bf8ea0c1f96e2f2faca34d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a847ce71f0bf8ea0c1f96e2f2faca34d0">&#9670;&nbsp;</a></span>safe_prev()</h2>
 
 <div class="memitem">
 <div class="memproto">

@@ -685,7 +685,7 @@ $(function() {
 <div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;  <a class="code" href="namespacedaw_1_1cxmath.html#af35909bf9c9ceea94c4fa69091082043">count_trailing_zeros</a>( std::uint64_t v ) noexcept {</div>
 <div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>std::uint32_t<span class="keyword">&gt;</span>( std::countr_zero( v ) );</div>
 <div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;  }</div>
-<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;<span class="preprocessor">#elif DAW_HAS_BUILTIN( __builtin_ctz ) or defined( __GNUC__ ) or               \</span></div>
+<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;<span class="preprocessor">#elif DAW_HAS_BUILTIN( __builtin_ctz ) or defined( __GNUC__ ) or \</span></div>
 <div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;<span class="preprocessor">  defined( __bultin_ctz )</span></div>
 <div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160; </div>
 <div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;  [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>]] constexpr std::uint32_t</div>
@@ -725,7 +725,7 @@ $(function() {
 <div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;<span class="preprocessor">#error Unsupported int sizes</span></div>
 <div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;  }</div>
-<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;<span class="preprocessor">#elif defined( _MSC_VER ) and defined( _M_X64 ) and                            \</span></div>
+<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;<span class="preprocessor">#elif defined( _MSC_VER ) and defined( _M_X64 ) and \</span></div>
 <div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;<span class="preprocessor">  defined( DAW_IS_CONSTANT_EVALUATED )</span></div>
 <div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;  [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>]] constexpr std::uint32_t</div>
 <div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;  <a class="code" href="namespacedaw_1_1cxmath.html#af35909bf9c9ceea94c4fa69091082043">count_trailing_zeros</a>( std::uint32_t v ) noexcept {</div>
