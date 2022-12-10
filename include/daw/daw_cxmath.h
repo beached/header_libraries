@@ -28,9 +28,9 @@
 #include <type_traits>
 
 #if defined( __cpp_lib_bitops )
-#if DAW_HAS_INCLUDE( <bit> )
+#if __cpp_lib_bitops >= 201907L and DAW_HAS_INCLUDE( <bit> )
 #include <bit>
-#define DAW_HAS_CPP_BITOPS
+#define DAW_HAS_CPP20_BITOPS
 #endif
 #endif
 
@@ -604,7 +604,7 @@ namespace daw::cxmath {
 		}
 	} // namespace cxmath_impl
 
-#if defined( DAW_HAS_CPP_BITOPS )
+#if defined( DAW_HAS_CPP20_BITOPS )
 	[[nodiscard]] constexpr std::uint32_t
 	count_trailing_zeros( std::uint32_t v ) noexcept {
 		return static_cast<std::uint32_t>( std::countr_zero( v ) );
@@ -1267,4 +1267,61 @@ namespace daw::cxmath {
 		}
 		return res;
 	}
+
+#if false and defined( DAW_HAS_CPP20_BITOPS )
+	template<typename Integer>
+	DAW_ATTRIB_INLINE auto constexpr popcount( Integer i ) {
+		return std::popcount( i );
+	}
+#elif DAW_HAS_BUILTIN( __builtin_popcount ) and \
+  DAW_HAS_BUILTIN( __builtin_popcountl ) and    \
+  DAW_HAS_BUILTIN( __builtin_popcountll )
+	template<typename Integer>
+	DAW_ATTRIB_INLINE auto constexpr popcount( Integer i ) {
+		static_assert( std::is_integral_v<Integer>,
+		               "Only integer types are allowed" );
+		if constexpr( sizeof( Integer ) <= sizeof( int ) ) {
+			return __builtin_popcount( static_cast<unsigned>( i ) );
+		} else if constexpr( sizeof( Integer ) == sizeof( long ) ) {
+			return __builtin_popcountl( static_cast<unsigned long>( i ) );
+#if defined( DAW_HAS_INT128 )
+		} else if constexpr( sizeof( Integer ) == sizeof( daw::int128_t ) ) {
+			auto const lo =
+			  static_cast<std::uint64_t>( static_cast<daw::uint128_t>( i ) );
+			auto const hi =
+			  static_cast<std::uint64_t>( static_cast<daw::uint128_t>( i ) >> 64 );
+			return __builtin_popcountll( lo ) + __builtin_popcountll( hi );
+#endif
+		} else {
+			static_assert( sizeof( Integer ) == sizeof( long long ),
+			               "Unexpected integer size" );
+			return __builtin_popcountll( static_cast<unsigned long long>( i ) );
+		}
+	}
+#else
+	template<typename Integer>
+	DAW_ATTRIB_INLINE int constexpr popcount( Integer i ) {
+		auto ui = [i] {
+			if constexpr( sizeof( Integer ) <= sizeof( int ) ) {
+				return static_cast<unsigned>( i );
+			} else if constexpr( sizeof( Integer ) == sizeof( long ) ) {
+				return static_cast<unsigned long>( i );
+#if defined( DAW_HAS_INT128 )
+			} else if constexpr( sizeof( Integer ) == sizeof( daw::int128_t ) ) {
+				return static_cast<daw::uint128_t>( i );
+#endif
+			} else {
+				static_assert( sizeof( Integer ) == sizeof( long long ),
+				               "Unexpected integer size" );
+				return static_cast<unsigned long long>( i );
+			}
+		}( );
+		int count = 0;
+		while( ui != 0 ) {
+			count += ui & 1;
+			ui >>= 1;
+		}
+		return count;
+	}
+#endif
 } // namespace daw::cxmath

@@ -21,9 +21,9 @@
 #endif
 #elif defined( DAW_HAS_INT128 )
 #elif defined( __SIZEOF_INT128__ )
-#if( defined( __clang__ ) and not defined( _WIN32 ) ) or                       \
-  ( defined( __CUDACC__ ) and __CUDACC_VER_MAJOR__ >= 9 ) or                   \
-  ( defined( __GNUC__ ) and not defined( __clang__ ) and                       \
+#if( defined( __clang__ ) and not defined( _WIN32 ) ) or     \
+  ( defined( __CUDACC__ ) and __CUDACC_VER_MAJOR__ >= 9 ) or \
+  ( defined( __GNUC__ ) and not defined( __clang__ ) and     \
     !defined( __CUDACC__ ) )
 #define DAW_HAS_INT128
 #elif defined( __CUDACC__ )
@@ -46,6 +46,8 @@ namespace daw {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpedantic"
 #endif
+	using int128_t = __int128;
+	using uint128_t = __uint128_t;
 	// numeric_limits cannot be relied on here.
 	template<>
 	struct numeric_limits<__int128> {
