@@ -613,7 +613,7 @@ namespace daw::cxmath {
 	count_trailing_zeros( std::uint64_t v ) noexcept {
 		return static_cast<std::uint32_t>( std::countr_zero( v ) );
 	}
-#elif DAW_HAS_BUILTIN( __builtin_ctz ) or defined( __GNUC__ ) or               \
+#elif DAW_HAS_BUILTIN( __builtin_ctz ) or defined( __GNUC__ ) or \
   defined( __bultin_ctz )
 
 	[[nodiscard]] constexpr std::uint32_t
@@ -653,7 +653,7 @@ namespace daw::cxmath {
 #error Unsupported int sizes
 #endif
 	}
-#elif defined( _MSC_VER ) and defined( _M_X64 ) and                            \
+#elif defined( _MSC_VER ) and defined( _M_X64 ) and \
   defined( DAW_IS_CONSTANT_EVALUATED )
 	[[nodiscard]] constexpr std::uint32_t
 	count_trailing_zeros( std::uint32_t v ) noexcept {
