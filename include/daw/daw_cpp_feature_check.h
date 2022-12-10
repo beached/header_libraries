@@ -25,6 +25,7 @@
 	  ( ( __clang_major__ == ( ver_maj ) ) and  \
 	    ( __clang_minor__ >= ( ver_min ) ) ) )
 #define DAW_HAS_CLANG
+#define DAW_HAS_GCC_LIKE
 #else
 #define DAW_HAS_CLANG_VER( ver_maj, ver_min ) ( false )
 #endif
@@ -34,15 +35,29 @@
 	( ( ( __GNUC__ > ( ver_maj ) ) ) or       \
 	  ( ( __GNUC__ == ( ver_maj ) ) and ( __GNUC_MINOR__ >= ( ver_min ) ) ) )
 #define DAW_HAS_GCC
+#define DAW_HAS_GCC_LIKE
 #else
 #define DAW_HAS_GCC_VER( ver_maj, ver_min ) ( false )
 #endif
 
-#if defined( __MSC_VER ) and not defined( __clang__ )
+#if defined( _MSC_VER ) and not defined( __clang__ )
 #define DAW_HAS_MSVC_VER( ver ) ( __MSC_VER >= ( ver ) )
 #define DAW_HAS_MSVC
+#define DAW_HAS_MSVC_LIKE
 #else
 #define DAW_HAS_MSVC_VER( ver ) ( false )
+#endif
+
+#if defined( _MSC_VER ) and defined( __clang__ )
+#define DAW_HAS_CLANGCL_VER( ver_maj, ver_min  ) \
+	( ( __clang_major__ > ( ver_maj ) ) or      \
+	  ( ( __clang_major__ == ( ver_maj ) ) and  \
+	    ( __clang_minor__ >= ( ver_min ) ) ) )
+#define DAW_HAS_CLANGCL
+#define DAW_HAS_CLANG
+#define DAW_HAS_MSVC_LIKE
+#else
+#define DAW_HAS_CLANGCL_VER( ver_maj, ver_min  ) (false)
 #endif
 
 #if defined( __has_builtin )
