@@ -274,8 +274,6 @@ namespace daw::exception {
 	constexpr void precondition_check( Bool &&condition, Args &&...args ) {
 		if( not static_cast<bool>( condition ) ) {
 			if constexpr( std::is_same_v<Terminator, ExceptionType> ) {
-				// For W4 in MSVC
-				(void)( ( (void)( args ) ), ..., 0 );
 				std::abort( );
 			} else {
 				daw_throw<ExceptionType>( DAW_FWD2( Args, args )... );
