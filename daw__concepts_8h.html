@@ -74,11 +74,11 @@ $(function() {
 <div class="title">daw_concepts.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="ciso646_8h_source.html">ciso646.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
-<code>#include &lt;ciso646&gt;</code><br />
 <code>#include &lt;concepts&gt;</code><br />
 <code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;iterator&gt;</code><br />
@@ -156,7 +156,7 @@ Variables</h2></td></tr>
 <tr class="memitem:ac8d48cd2d4cd35c863ca51c3972488a1"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ac8d48cd2d4cd35c863ca51c3972488a1">daw::cvref_of</a></td></tr>
 <tr class="separator:ac8d48cd2d4cd35c863ca51c3972488a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7fffe2a2e6d236f638535ebc6ce148c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:af7fffe2a2e6d236f638535ebc6ce148c"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af7fffe2a2e6d236f638535ebc6ce148c">daw::default_constructible</a> = requires { T{ }; }</td></tr>
+<tr class="memitem:af7fffe2a2e6d236f638535ebc6ce148c"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af7fffe2a2e6d236f638535ebc6ce148c">daw::default_constructible</a></td></tr>
 <tr class="separator:af7fffe2a2e6d236f638535ebc6ce148c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a689141645b54f1a8151d8e325db56795"><td class="memTemplParams" colspan="2">template&lt;typename Derived , typename Base &gt; </td></tr>
 <tr class="memitem:a689141645b54f1a8151d8e325db56795"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a689141645b54f1a8151d8e325db56795">daw::derived_from</a></td></tr>
@@ -224,10 +224,10 @@ Variables</h2></td></tr>
 <tr class="memdesc:a18cd253229be11b300f3ff6085efe5d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Satisfied if T is a reference type, or if it is an object type where an object of that type can be constructed from an rvalue of that type in both direct- and copy-initialization contexts, with the usual semantics.  <a href="namespacedaw.html#a18cd253229be11b300f3ff6085efe5d6">More...</a><br /></td></tr>
 <tr class="separator:a18cd253229be11b300f3ff6085efe5d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc9f379e2f879f87dadfe681f567e81e"><td class="memTemplParams" colspan="2">template&lt;typename Arg , typename Class &gt; </td></tr>
-<tr class="memitem:abc9f379e2f879f87dadfe681f567e81e"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#abc9f379e2f879f87dadfe681f567e81e">daw::not_cvref_of</a></td></tr>
+<tr class="memitem:abc9f379e2f879f87dadfe681f567e81e"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#abc9f379e2f879f87dadfe681f567e81e">daw::not_cvref_of</a> = not cvref_of&lt;Arg, Class&gt;</td></tr>
 <tr class="separator:abc9f379e2f879f87dadfe681f567e81e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94ff61b865382e9f2ff0f7bb42157ed1"><td class="memTemplParams" colspan="2">template&lt;typename Arg , typename Class &gt; </td></tr>
-<tr class="memitem:a94ff61b865382e9f2ff0f7bb42157ed1"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a94ff61b865382e9f2ff0f7bb42157ed1">daw::not_decay_of</a></td></tr>
+<tr class="memitem:a94ff61b865382e9f2ff0f7bb42157ed1"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a94ff61b865382e9f2ff0f7bb42157ed1">daw::not_decay_of</a> = not same_as&lt;Class, std::decay_t&lt;Arg&gt;&gt;</td></tr>
 <tr class="separator:a94ff61b865382e9f2ff0f7bb42157ed1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abef802ed6bd3568b607c6c3f6b056d2e"><td class="memTemplParams" colspan="2">template&lt;typename Arg , typename Class &gt; </td></tr>
 <tr class="memitem:abef802ed6bd3568b607c6c3f6b056d2e"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#abef802ed6bd3568b607c6c3f6b056d2e">daw::not_me</a> = deprecated::not_me_v&lt;Arg, Class&gt;</td></tr>

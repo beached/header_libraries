@@ -76,13 +76,14 @@ $(function() {
 <div class="title">daw_utility.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="ciso646_8h_source.html">ciso646.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__construct__a_8h_source.html">daw_construct_a.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__exception_8h_source.html">daw_exception.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>&quot;</code><br />
-<code>#include &lt;ciso646&gt;</code><br />
+<code>#include &quot;<a class="el" href="daw__unused_8h_source.html">daw_unused.h</a>&quot;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;cstdlib&gt;</code><br />
@@ -331,9 +332,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a185431aa1031d821c40cd1dd50ea5f0d"><td class="memTemplParams" colspan="2">template&lt;typename To , typename From &gt; </td></tr>
 <tr class="memitem:a185431aa1031d821c40cd1dd50ea5f0d"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a185431aa1031d821c40cd1dd50ea5f0d">daw::to_array_of</a> (From &amp;&amp;from) noexcept</td></tr>
 <tr class="separator:a185431aa1031d821c40cd1dd50ea5f0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9c8600f283844a3b632c4beb7a6a954"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
-<tr class="memitem:ab9c8600f283844a3b632c4beb7a6a954"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="daw__utility_8h.html#ab9c8600f283844a3b632c4beb7a6a954">Unused</a> (Ts &amp;&amp;...) noexcept</td></tr>
-<tr class="separator:ab9c8600f283844a3b632c4beb7a6a954"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a8e47eb4f652f9db3a1932b26b6324a"><td class="memTemplParams" colspan="2">template&lt;typename To &gt; </td></tr>
 <tr class="memitem:a2a8e47eb4f652f9db3a1932b26b6324a"><td class="memTemplItemLeft" align="right" valign="top">constexpr uint16_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a2a8e47eb4f652f9db3a1932b26b6324a">daw::value_from_chars</a> (unsigned char const *ptr, std::integral_constant&lt; size_t, sizeof(uint16_t)&gt;) noexcept</td></tr>
 <tr class="separator:a2a8e47eb4f652f9db3a1932b26b6324a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -368,37 +366,6 @@ Variables</h2></td></tr>
 <tr class="memitem:af01a60f846d9856c98617f4872cd8fa6"><td class="memTemplItemLeft" align="right" valign="top">constexpr tag_t&lt; Args... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af01a60f846d9856c98617f4872cd8fa6">daw::tag</a> = tag_t&lt;Args...&gt;{ }</td></tr>
 <tr class="separator:af01a60f846d9856c98617f4872cd8fa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="ab9c8600f283844a3b632c4beb7a6a954"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab9c8600f283844a3b632c4beb7a6a954">&#9670;&nbsp;</a></span>Unused()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Ts&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr void Unused </td>
-          <td>(</td>
-          <td class="paramtype">Ts &amp;&amp;&#160;</td>
-          <td class="paramname"><em>...</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="daw__utility_8h_source.html#l00034">34</a> of file <a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

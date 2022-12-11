@@ -74,9 +74,9 @@ $(function() {
 <div class="title">daw_traits_concepts.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="cpp__17_8h_source.html">../cpp_17.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="ciso646_8h_source.html">../ciso646.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="cpp__17_8h_source.html">../cpp_17.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__traits__impl_8h_source.html">daw_traits_impl.h</a>&quot;</code><br />
-<code>#include &lt;ciso646&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
 </div>
 <p><a href="daw__traits__concepts_8h_source.html">Go to the source code of this file.</a></p>
@@ -143,7 +143,7 @@ Variables</h2></td></tr>
 <tr class="memitem:a61c2e6a28eeab2dab205c8615924f4bf"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a61c2e6a28eeab2dab205c8615924f4bf">daw::traits::is_bidirectional_access_iterator_v</a></td></tr>
 <tr class="separator:a61c2e6a28eeab2dab205c8615924f4bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac070b1a80f32a2a78ecb570d02292c86"><td class="memTemplParams" colspan="2">template&lt;typename BinaryPredicate , typename T , typename U  = T&gt; </td></tr>
-<tr class="memitem:ac070b1a80f32a2a78ecb570d02292c86"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#ac070b1a80f32a2a78ecb570d02292c86">daw::traits::is_binary_predicate</a> = is_binary_predicate_test&lt;BinaryPredicate, T, U&gt;( )</td></tr>
+<tr class="memitem:ac070b1a80f32a2a78ecb570d02292c86"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#ac070b1a80f32a2a78ecb570d02292c86">daw::traits::is_binary_predicate</a></td></tr>
 <tr class="separator:ac070b1a80f32a2a78ecb570d02292c86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa18bea250a671324f34e429f13763bdc"><td class="memTemplParams" colspan="2">template&lt;typename BinaryPredicate , typename T , typename U  = T&gt; </td></tr>
 <tr class="memitem:aa18bea250a671324f34e429f13763bdc"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#aa18bea250a671324f34e429f13763bdc">daw::traits::is_binary_predicate_v</a></td></tr>
@@ -157,14 +157,14 @@ Variables</h2></td></tr>
 <tr class="memitem:a3f5f1fa66033eeb12124a1826e055ff9"><td class="memTemplParams" colspan="2">template&lt;typename ForwardIterator &gt; </td></tr>
 <tr class="memitem:a3f5f1fa66033eeb12124a1826e055ff9"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a3f5f1fa66033eeb12124a1826e055ff9">daw::traits::is_forward_access_iterator_v</a></td></tr>
 <tr class="separator:a3f5f1fa66033eeb12124a1826e055ff9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e114e763be8f8261a27adf6b4496120"><td class="memTemplParams" colspan="2">template&lt;typename InOutIterator , typename T  = typename std::iterator_traits&lt;	                                   InOutIterator&gt;::value_type&gt; </td></tr>
-<tr class="memitem:a9e114e763be8f8261a27adf6b4496120"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a9e114e763be8f8261a27adf6b4496120">daw::traits::is_inout_iterator</a> = is_input_iterator_test&lt;InOutIterator, T&gt;( )</td></tr>
+<tr class="memitem:a9e114e763be8f8261a27adf6b4496120"><td class="memTemplParams" colspan="2">template&lt;typename InOutIterator , typename T  = typename std::iterator_traits&lt;InOutIterator&gt;::value_type&gt; </td></tr>
+<tr class="memitem:a9e114e763be8f8261a27adf6b4496120"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a9e114e763be8f8261a27adf6b4496120">daw::traits::is_inout_iterator</a></td></tr>
 <tr class="separator:a9e114e763be8f8261a27adf6b4496120"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac87f60f86dfa725c16405b75fbc273d0"><td class="memTemplParams" colspan="2">template&lt;typename InOutIterator , typename T  = typename std::iterator_traits&lt;InOutIterator&gt;::value_type&gt; </td></tr>
 <tr class="memitem:ac87f60f86dfa725c16405b75fbc273d0"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#ac87f60f86dfa725c16405b75fbc273d0">daw::traits::is_inout_iterator_v</a></td></tr>
 <tr class="separator:ac87f60f86dfa725c16405b75fbc273d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fbf32bad4addd94e4ac749f25bcb652"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator &gt; </td></tr>
-<tr class="memitem:a1fbf32bad4addd94e4ac749f25bcb652"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a1fbf32bad4addd94e4ac749f25bcb652">daw::traits::is_input_iterator</a> = is_input_iterator_test&lt;InputIterator&gt;( )</td></tr>
+<tr class="memitem:a1fbf32bad4addd94e4ac749f25bcb652"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a1fbf32bad4addd94e4ac749f25bcb652">daw::traits::is_input_iterator</a></td></tr>
 <tr class="separator:a1fbf32bad4addd94e4ac749f25bcb652"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26272156bb48f8fd8aebb766fe33e490"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator , typename T  = std::decay_t&lt;decltype( *std::declval&lt;InputIterator&gt;( ) )&gt;&gt; </td></tr>
 <tr class="memitem:a26272156bb48f8fd8aebb766fe33e490"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a26272156bb48f8fd8aebb766fe33e490">daw::traits::is_input_iterator_v</a></td></tr>
@@ -175,8 +175,8 @@ Variables</h2></td></tr>
 <tr class="memitem:a822b1fc732d1546f1e4f96d691ba7dd2"><td class="memTemplParams" colspan="2">template&lt;typename Iterator &gt; </td></tr>
 <tr class="memitem:a822b1fc732d1546f1e4f96d691ba7dd2"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a822b1fc732d1546f1e4f96d691ba7dd2">daw::traits::is_iterator_v</a></td></tr>
 <tr class="separator:a822b1fc732d1546f1e4f96d691ba7dd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabe98ac757c7683294054aec0b72eb93"><td class="memTemplParams" colspan="2">template&lt;typename OutputIterator , typename T  = typename std::iterator_traits&lt;	                                    OutputIterator&gt;::value_type&gt; </td></tr>
-<tr class="memitem:aabe98ac757c7683294054aec0b72eb93"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#aabe98ac757c7683294054aec0b72eb93">daw::traits::is_output_iterator</a> = is_output_iterator_test&lt;OutputIterator, T&gt;( )</td></tr>
+<tr class="memitem:aabe98ac757c7683294054aec0b72eb93"><td class="memTemplParams" colspan="2">template&lt;typename OutputIterator , typename T  = typename std::iterator_traits&lt;OutputIterator&gt;::value_type&gt; </td></tr>
+<tr class="memitem:aabe98ac757c7683294054aec0b72eb93"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#aabe98ac757c7683294054aec0b72eb93">daw::traits::is_output_iterator</a></td></tr>
 <tr class="separator:aabe98ac757c7683294054aec0b72eb93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a205430b65eedf90e1ae7f325c2c92299"><td class="memTemplParams" colspan="2">template&lt;typename OutputIterator , typename T  = typename std::iterator_traits&lt;OutputIterator&gt;::value_type&gt; </td></tr>
 <tr class="memitem:a205430b65eedf90e1ae7f325c2c92299"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a205430b65eedf90e1ae7f325c2c92299">daw::traits::is_output_iterator_v</a></td></tr>
@@ -204,7 +204,7 @@ Variables</h2></td></tr>
 <tr class="memitem:ab5e186f42b50b8a8042bb4efe0f85883"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#ab5e186f42b50b8a8042bb4efe0f85883">daw::traits::is_sortable_container_v</a></td></tr>
 <tr class="separator:ab5e186f42b50b8a8042bb4efe0f85883"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f251a786ec2a8090c3f0bce45695534"><td class="memTemplParams" colspan="2">template&lt;typename UnaryPredicate , typename T &gt; </td></tr>
-<tr class="memitem:a5f251a786ec2a8090c3f0bce45695534"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a5f251a786ec2a8090c3f0bce45695534">daw::traits::is_unary_predicate</a> = is_unary_predicate_test&lt;UnaryPredicate, T&gt;( )</td></tr>
+<tr class="memitem:a5f251a786ec2a8090c3f0bce45695534"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a5f251a786ec2a8090c3f0bce45695534">daw::traits::is_unary_predicate</a></td></tr>
 <tr class="separator:a5f251a786ec2a8090c3f0bce45695534"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3a71fcc84c5f925101d32d767ea097a"><td class="memTemplParams" colspan="2">template&lt;typename UnaryPredicate , typename T &gt; </td></tr>
 <tr class="memitem:ac3a71fcc84c5f925101d32d767ea097a"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#ac3a71fcc84c5f925101d32d767ea097a">daw::traits::is_unary_predicate_v</a></td></tr>

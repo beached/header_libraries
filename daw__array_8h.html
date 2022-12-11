@@ -75,10 +75,10 @@ $(function() {
 <div class="title">daw_array.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="ciso646_8h_source.html">ciso646.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
 <code>#include &lt;array&gt;</code><br />
-<code>#include &lt;ciso646&gt;</code><br />
 <code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
@@ -108,9 +108,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a9202871f88e6869f2cd12ca61c89274a"><td class="memTemplParams" colspan="2">template&lt;typename T  = make_array_impl::unspecified_type, typename... Args, std::enable_if_t&lt; not std::is_same_v&lt; T, void &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a9202871f88e6869f2cd12ca61c89274a"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a9202871f88e6869f2cd12ca61c89274a">daw::make_array</a> (Args &amp;&amp;...args)</td></tr>
 <tr class="separator:a9202871f88e6869f2cd12ca61c89274a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a445abef6aa0f3f193d21b0c192b97adb"><td class="memTemplParams" colspan="2">template&lt;typename T , size_t N&gt; </td></tr>
-<tr class="memitem:a445abef6aa0f3f193d21b0c192b97adb"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a445abef6aa0f3f193d21b0c192b97adb">daw::make_array</a> (T const(&amp;&amp;arry)[N])</td></tr>
-<tr class="separator:a445abef6aa0f3f193d21b0c192b97adb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4131558d7191d4b5f8673c15b4f1c61"><td class="memTemplParams" colspan="2">template&lt;typename T , size_t N&gt; </td></tr>
+<tr class="memitem:ab4131558d7191d4b5f8673c15b4f1c61"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ab4131558d7191d4b5f8673c15b4f1c61">daw::make_array</a> (T const (&amp;&amp;arry)[N])</td></tr>
+<tr class="separator:ab4131558d7191d4b5f8673c15b4f1c61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a229244e3ab3452101d82ed06f3c35e65"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
 <tr class="memitem:a229244e3ab3452101d82ed06f3c35e65"><td class="memTemplItemLeft" align="right" valign="top">std::array&lt; std::string, sizeof...(Ts)&gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a229244e3ab3452101d82ed06f3c35e65">daw::make_string_array</a> (Ts &amp;&amp;...t)</td></tr>
 <tr class="separator:a229244e3ab3452101d82ed06f3c35e65"><td class="memSeparator" colspan="2">&#160;</td></tr>

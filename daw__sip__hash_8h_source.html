@@ -86,11 +86,11 @@ $(function() {
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__endian_8h.html">daw_endian.h</a>&quot;</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__span_8h.html">daw_span.h</a>&quot;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__traits_8h.html">daw_traits.h</a>&quot;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;ciso646&gt;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="ciso646_8h.html">ciso646.h</a>&quot;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__endian_8h.html">daw_endian.h</a>&quot;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__span_8h.html">daw_span.h</a>&quot;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__traits_8h.html">daw_traits.h</a>&quot;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;cstddef&gt;</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;cstdint&gt;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
@@ -207,14 +207,15 @@ $(function() {
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keywordflow">return</span> ( v0 ^ v1 ) ^ ( v2 ^ v3 );</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  }</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;} <span class="comment">// namespace daw</span></div>
+<div class="ttc" id="aciso646_8h_html"><div class="ttname"><a href="ciso646_8h.html">ciso646.h</a></div></div>
 <div class="ttc" id="adaw__endian_8h_html"><div class="ttname"><a href="daw__endian_8h.html">daw_endian.h</a></div></div>
 <div class="ttc" id="adaw__span_8h_html"><div class="ttname"><a href="daw__span_8h.html">daw_span.h</a></div></div>
 <div class="ttc" id="adaw__traits_8h_html"><div class="ttname"><a href="daw__traits_8h.html">daw_traits.h</a></div></div>
 <div class="ttc" id="adaw__traits_8h_html_acddf9b5f979a91ce8deb198be4008f94"><div class="ttname"><a href="daw__traits_8h.html#acddf9b5f979a91ce8deb198be4008f94">DAW_TYPEOF</a></div><div class="ttdeci">#define DAW_TYPEOF(...)</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits_8h_source.html#l01077">daw_traits.h:1077</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1algorithm_html_a7119401f9b35b8d8c333df7bac1eb76c"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a7119401f9b35b8d8c333df7bac1eb76c">daw::algorithm::rotate</a></div><div class="ttdeci">constexpr void rotate(ForwardIterator first, ForwardIterator middle, LastType last) noexcept(noexcept(daw::cswap(*first, *middle)))</div><div class="ttdoc">Performs a left rotation on a range of elements.</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm__cx_8h_source.html#l00027">daw_algorithm_cx.h:27</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1algorithm_html_a7119401f9b35b8d8c333df7bac1eb76c"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a7119401f9b35b8d8c333df7bac1eb76c">daw::algorithm::rotate</a></div><div class="ttdeci">constexpr void rotate(ForwardIterator first, ForwardIterator middle, LastType last) noexcept(noexcept(daw::cswap(*first, *middle)))</div><div class="ttdoc">Performs a left rotation on a range of elements.</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm__cx_8h_source.html#l00026">daw_algorithm_cx.h:26</a></div></div>
 <div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="compressed__pair_8h_source.html#l00018">compressed_pair.h:18</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a70ee91bc610f248e8f419bbd7af8cc44"><div class="ttname"><a href="namespacedaw.html#a70ee91bc610f248e8f419bbd7af8cc44">daw::siphash24</a></div><div class="ttdeci">constexpr uint64_t siphash24(Byte const *first, size_t sz, Byte const *const key)</div><div class="ttdef"><b>Definition:</b> <a href="daw__sip__hash_8h_source.html#l00084">daw_sip_hash.h:84</a></div></div>
-<div class="ttc" id="anamespacedaw_html_ab552e32c2d0e33df0451a5d2c8f6fecd"><div class="ttname"><a href="namespacedaw.html#ab552e32c2d0e33df0451a5d2c8f6fecd">daw::to_little_endian</a></div><div class="ttdeci">constexpr T to_little_endian(T value) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__endian_8h_source.html#l00106">daw_endian.h:106</a></div></div>
+<div class="ttc" id="anamespacedaw_html_ab552e32c2d0e33df0451a5d2c8f6fecd"><div class="ttname"><a href="namespacedaw.html#ab552e32c2d0e33df0451a5d2c8f6fecd">daw::to_little_endian</a></div><div class="ttdeci">constexpr T to_little_endian(T value) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__endian_8h_source.html#l00107">daw_endian.h:107</a></div></div>
 <div class="ttc" id="astructdaw_1_1span_html"><div class="ttname"><a href="structdaw_1_1span.html">daw::span</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__span_8h_source.html#l00024">daw_span.h:24</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

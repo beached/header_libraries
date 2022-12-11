@@ -72,8 +72,9 @@ $(function() {
 <div class="title">daw_lift.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
-<code>#include &lt;ciso646&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="ciso646_8h_source.html">ciso646.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
 </div>
 <p><a href="daw__lift_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -98,11 +99,11 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  []( <span class="keyword">auto</span> &amp;&amp;...argsLIFT ) -&gt; decltype( __VA_ARGS__(                           \</div>
-<div class="line">                             <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( argsLIFT )... ) ) {                      \</div>
-<div class="line">    return __VA_ARGS__( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( argsLIFT )... );                              \</div>
+<b>Value:</b><div class="fragment"><div class="line">  []( <span class="keyword">auto</span> &amp;&amp;...argsLIFT ) -&gt; decltype( __VA_ARGS__(      \</div>
+<div class="line">                             <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( argsLIFT )... ) ) { \</div>
+<div class="line">    return (__VA_ARGS__)( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( argsLIFT )... );       \</div>
 <div class="line">  }</div>
-<div class="ttc" id="adaw__move_8h_html_a46327bbb47123f9650c3b0e0ce807ec9"><div class="ttname"><a href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a></div><div class="ttdeci">#define DAW_FWD(...)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00036">daw_move.h:36</a></div></div>
+<div class="ttc" id="adaw__move_8h_html_a46327bbb47123f9650c3b0e0ce807ec9"><div class="ttname"><a href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a></div><div class="ttdeci">#define DAW_FWD(...)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00037">daw_move.h:37</a></div></div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="daw__lift_8h_source.html#l00023">23</a> of file <a class="el" href="daw__lift_8h_source.html">daw_lift.h</a>.</p>
 

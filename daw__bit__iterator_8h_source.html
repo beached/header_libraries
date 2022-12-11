@@ -80,10 +80,10 @@ $(function() {
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;../daw_exception.h&quot;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;../daw_move.h&quot;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;ciso646&gt;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;../ciso646.h&quot;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;../daw_exception.h&quot;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;../daw_move.h&quot;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;iterator&gt;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw.html">daw</a> {</div>
@@ -136,8 +136,8 @@ $(function() {
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structdaw_1_1bit__iterator.html">bit_iterator&lt;Iterator&gt;</a>( std::forward&lt;Iterator&gt;( it ) );</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  }</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;} <span class="comment">// namespace daw</span></div>
-<div class="ttc" id="adaw__move_8h_html_a5707fa464976f991a156ac6a583a135c"><div class="ttname"><a href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a></div><div class="ttdeci">#define DAW_MOVE(...)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00030">daw_move.h:30</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1exception_html_aa355a9cabf79793a9f5481d2fd56f381"><div class="ttname"><a href="namespacedaw_1_1exception.html#aa355a9cabf79793a9f5481d2fd56f381">daw::exception::daw_throw_on_false</a></div><div class="ttdeci">constexpr void daw_throw_on_false(Bool &amp;&amp;test, Args &amp;&amp;...args)</div><div class="ttdef"><b>Definition:</b> <a href="daw__exception_8h_source.html#l00333">daw_exception.h:333</a></div></div>
+<div class="ttc" id="adaw__move_8h_html_a5707fa464976f991a156ac6a583a135c"><div class="ttname"><a href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a></div><div class="ttdeci">#define DAW_MOVE(...)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00031">daw_move.h:31</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1exception_html_aa355a9cabf79793a9f5481d2fd56f381"><div class="ttname"><a href="namespacedaw_1_1exception.html#aa355a9cabf79793a9f5481d2fd56f381">daw::exception::daw_throw_on_false</a></div><div class="ttdeci">constexpr void daw_throw_on_false(Bool &amp;&amp;test, Args &amp;&amp;...args)</div><div class="ttdef"><b>Definition:</b> <a href="daw__exception_8h_source.html#l00335">daw_exception.h:335</a></div></div>
 <div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="compressed__pair_8h_source.html#l00018">compressed_pair.h:18</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a97d77e9ca54c5e61eee857500c358d4b"><div class="ttname"><a href="namespacedaw.html#a97d77e9ca54c5e61eee857500c358d4b">daw::make_bit_iterator</a></div><div class="ttdeci">constexpr auto make_bit_iterator(Iterator &amp;&amp;it)</div><div class="ttdoc">Create a bit_iterator with supplied bit.</div><div class="ttdef"><b>Definition:</b> <a href="daw__bit__iterator_8h_source.html#l00074">daw_bit_iterator.h:74</a></div></div>
 <div class="ttc" id="astructdaw_1_1bit__iterator_html"><div class="ttname"><a href="structdaw_1_1bit__iterator.html">daw::bit_iterator</a></div><div class="ttdoc">An output iterator that calls supplied bit when operator= is called This is like std::back_intsert_it...</div><div class="ttdef"><b>Definition:</b> <a href="daw__bit__iterator_8h_source.html#l00023">daw_bit_iterator.h:23</a></div></div>

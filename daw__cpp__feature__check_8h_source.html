@@ -80,7 +80,7 @@ $(function() {
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;ciso646&gt;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="ciso646_8h.html">ciso646.h</a>&quot;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#if defined( __has_include )</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#define DAW_HAS_INCLUDE( ... ) (__has_include( __VA_ARGS__ ))</span></div>
@@ -92,58 +92,96 @@ $(function() {
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#if defined( __clang__ )</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#define DAW_HAS_CLANG_VER( ver_maj, ver_min ) \</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">  ( ( __clang_major__ &gt; ( ver_maj ) ) or      \</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">    ( ( __clang_major__ == ( ver_maj ) ) and  \</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">      ( __clang_minor__ &gt;= ( ver_min ) ) ) )</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#define DAW_HAS_CLANG</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define DAW_HAS_GCC_LIKE</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#a50047fbd654423dc3723baa2c8a34961">   30</a></span>&#160;<span class="preprocessor">#define DAW_HAS_CLANG_VER( ver_maj, ver_min ) ( false )</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#if defined( __GNUC__ ) and not defined( __clang__ )</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#define DAW_HAS_GCC_VER( ver_maj, ver_min ) \</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">  ( ( ( __GNUC__ &gt; ( ver_maj ) ) ) or       \</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">    ( ( __GNUC__ == ( ver_maj ) ) and ( __GNUC_MINOR__ &gt;= ( ver_min ) ) ) )</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#define DAW_HAS_GCC</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#define DAW_HAS_GCC_LIKE</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#a8eb12626dc22e4364ee84f49c23971a3">   40</a></span>&#160;<span class="preprocessor">#define DAW_HAS_GCC_VER( ver_maj, ver_min ) ( false )</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#if defined( _MSC_VER ) and not defined( __clang__ )</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#define DAW_HAS_MSVC_VER( ver ) ( __MSC_VER &gt;= ( ver ) )</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#define DAW_HAS_MSVC</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#define DAW_HAS_MSVC_LIKE</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#aefe4d301438c10acdd36a76827b34383">   48</a></span>&#160;<span class="preprocessor">#define DAW_HAS_MSVC_VER( ver ) ( false )</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#if defined( _MSC_VER ) and defined( __clang__ )</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#define DAW_HAS_CLANGCL_VER( ver_maj, ver_min  ) \</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">  ( ( __clang_major__ &gt; ( ver_maj ) ) or      \</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">    ( ( __clang_major__ == ( ver_maj ) ) and  \</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">      ( __clang_minor__ &gt;= ( ver_min ) ) ) )</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#define DAW_HAS_CLANGCL</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#define DAW_HAS_CLANG</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#define DAW_HAS_MSVC_LIKE</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#aeb1991fd2414384c59fe0417174b4425">   60</a></span>&#160;<span class="preprocessor">#define DAW_HAS_CLANGCL_VER( ver_maj, ver_min  ) (false)</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#if defined( __has_builtin )</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#define DAW_HAS_BUILTIN( name ) __has_builtin( name )</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#a7b6d94120feea1e6e9a89c6321419e35">   66</a></span>&#160;<span class="preprocessor">#define DAW_HAS_BUILTIN( name ) ( false )</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">// Do not use when -Wundef is at play as -Werror will make it not build</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#a250c93f98740b8f7ac451074190d5e7d">   70</a></span>&#160;<span class="preprocessor">#define DAW_HAS_FEATURE( feature ) ( ( feature ) &gt; 0 )</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">// Do not use when -Wundef is at play as -Werror will make it not build</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#af5844a71de87f1b7bd5614017ac6b4cd">   73</a></span>&#160;<span class="preprocessor">#define DAW_HAS_FEATURE_VERSION( feature, version ) \</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">  ( ( feature ) &gt; ( version ) )</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">// Check if clang has a version &gt;= to that specified</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#define DAW_HAS_CLANG_VER_GTE( ver_maj, ver_min ) \</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">  ( ( __clang_major__ &gt; ( ver_maj ) ) or          \</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">    ( ( __clang_major__ == ( ver_maj ) ) and      \</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">      ( __clang_minor__ &gt;= ( ver_min ) ) ) )</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// Check if clang has a version &lt; to that specified</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#define DAW_HAS_CLANG_VER_LT( ver_maj, ver_min ) \</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">  ( ( __clang_major__ &lt; ( ver_maj ) ) or         \</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">    ( ( __clang_major__ == ( ver_maj ) ) and     \</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">      ( __clang_minor__ &lt; ( ver_min ) ) ) )</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#define DAW_HAS_CLANG</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#define DAW_HAS_GCC_LIKE</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#a7a6bf09c53af1b59603c20e4b55d84cd">   38</a></span>&#160;<span class="preprocessor">#define DAW_HAS_CLANG_VER_GTE( ver_maj, ver_min ) ( false )</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#a75d07db0752194f9a02684d45ba8ed14">   39</a></span>&#160;<span class="preprocessor">#define DAW_HAS_CLANG_VER_LT( ver_maj, ver_min ) ( false )</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#if defined( __GNUC__ ) and not defined( __clang__ )</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">// Check if gcc has a version &gt;= to that specified</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#define DAW_HAS_GCC_VER_GTE( ver_maj, ver_min ) \</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">  ( ( ( __GNUC__ &gt; ( ver_maj ) ) ) or           \</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">    ( ( __GNUC__ == ( ver_maj ) ) and ( __GNUC_MINOR__ &gt;= ( ver_min ) ) ) )</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">// Check if gcc has a version &lt; to that specified</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#define DAW_HAS_GCC_VER_LT( ver_maj, ver_min ) \</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">  ( ( __GNUC__ &lt; ( ver_maj ) ) or              \</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">    ( ( __GNUC__ == ( ver_maj ) ) and ( __GNUC_MINOR__ &lt; ( ver_min ) ) ) )</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">#define DAW_HAS_GCC</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#define DAW_HAS_GCC_LIKE</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#ac7d42b1c0ed8b99c57a760477e204666">   56</a></span>&#160;<span class="preprocessor">#define DAW_HAS_GCC_VER_GTE( ver_maj, ver_min ) ( false )</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#a2d430653347d620838996a06c56a68d2">   57</a></span>&#160;<span class="preprocessor">#define DAW_HAS_GCC_VER_LT( ver_maj, ver_min ) ( false )</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#if defined( _MSC_VER ) and not defined( __clang__ )</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">// Check if MSVC has a version &gt;= to that specified</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#define DAW_HAS_MSVC_VER_GTE( ver ) ( _MSC_VER &gt;= ( ver ) )</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">// Check if MSVC has a version &lt; to that specified</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#define DAW_HAS_MSVC_VER_LT( ver ) ( _MSC_VER &lt; ( ver ) )</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#define DAW_HAS_MSVC</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#define DAW_HAS_MSVC_LIKE</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#adc49ce80e2c3f2c0aebb1f624984c337">   69</a></span>&#160;<span class="preprocessor">#define DAW_HAS_MSVC_VER_GTE( ver ) ( false )</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#ac7e01f0a22d4bb9dd039240565ef1771">   70</a></span>&#160;<span class="preprocessor">#define DAW_HAS_MSVC_VER_LT( ver ) ( false )</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#if defined( _MSC_VER ) and defined( __clang__ )</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">// Check if clangcl has a version &gt;= to that specified</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#define DAW_HAS_CLANGCL_VER_GTE( ver_maj, ver_min ) \</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">  ( ( __clang_major__ &gt; ( ver_maj ) ) or            \</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">    ( ( __clang_major__ == ( ver_maj ) ) and        \</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">      ( __clang_minor__ &gt;= ( ver_min ) ) ) )</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">// Check if clangcl has a version &lt; to that specified</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#define DAW_HAS_CLANGCL_VER_LT( ver_maj, ver_min ) \</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">  ( ( __clang_major__ &lt; ( ver_maj ) ) or           \</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">    ( ( __clang_major__ == ( ver_maj ) ) and       \</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">      ( __clang_minor__ &lt; ( ver_min ) ) ) )</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#define DAW_HAS_CLANGCL</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#define DAW_HAS_CLANG</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#define DAW_HAS_MSVC_LIKE</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#ae7811d72c81d20980ed2789d927e510d">   90</a></span>&#160;<span class="preprocessor">#define DAW_HAS_CLANGCL_VER_GTE( ver_maj, ver_min ) ( false )</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#abf7ea43147cf714dd46d18533f569ace">   91</a></span>&#160;<span class="preprocessor">#define DAW_HAS_CLANGCL_VER_LT( ver_maj, ver_min ) ( false )</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor">#if defined( __has_builtin )</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor">#define DAW_HAS_BUILTIN( name ) __has_builtin( name )</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#a7b6d94120feea1e6e9a89c6321419e35">   97</a></span>&#160;<span class="preprocessor">#define DAW_HAS_BUILTIN( name ) ( false )</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="comment">// Do not use when -Wundef is at play as -Werror will make it not build</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#a250c93f98740b8f7ac451074190d5e7d">  101</a></span>&#160;<span class="preprocessor">#define DAW_HAS_FEATURE( feature ) ( ( feature ) &gt; 0 )</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">// Do not use when -Wundef is at play as -Werror will make it not build</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#af5844a71de87f1b7bd5614017ac6b4cd">  104</a></span>&#160;<span class="preprocessor">#define DAW_HAS_FEATURE_VERSION( feature, version ) \</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">  ( ( feature ) &gt; ( version ) )</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#if defined( DAW_HAS_MSVC )</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor">#define DAW_CPP_VERSION _MSVC_LANG</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#a9eda83ecc72d0633f0309a5784b5c8fa">  110</a></span>&#160;<span class="preprocessor">#define DAW_CPP_VERSION __cplusplus</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aciso646_8h_html"><div class="ttname"><a href="ciso646_8h.html">ciso646.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
