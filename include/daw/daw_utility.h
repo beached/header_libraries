@@ -15,6 +15,7 @@
 #include "daw_exception.h"
 #include "daw_move.h"
 #include "daw_traits.h"
+#include "daw_unused.h"
 
 #include <cmath>
 #include <cstddef>
@@ -29,9 +30,6 @@
 #include <tuple>
 #include <type_traits>
 #include <vector>
-
-template<typename... Ts>
-inline constexpr void Unused( Ts &&... ) noexcept {}
 
 namespace daw {
 
