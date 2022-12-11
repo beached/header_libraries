@@ -8,9 +8,10 @@
 
 #pragma once
 
-#include <ciso646>
+#include "ciso646.h"
+#include "daw_cpp_feature_check.h"
 
-#if defined( __GNUC__ ) or defined( __clang__ )
+#if defined( DAW_HAS_GCC_LIKE )
 
 #if not defined( DAW_NO_FLATTEN )
 
@@ -39,7 +40,7 @@
 #endif
 #define DAW_ATTRIB_NOINLINE [[gnu::noinline]]
 
-#elif defined( _MSC_VER )
+#elif defined( DAW_HAS_MSVC )
 
 #if not defined( DAW_NO_FLATTEN )
 

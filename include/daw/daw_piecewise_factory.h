@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_exception.h"
 #include "daw_move.h"
@@ -16,7 +17,6 @@
 #include "daw_utility.h"
 #include "daw_visit.h"
 
-#include <ciso646>
 #include <functional>
 #include <optional>
 #include <tuple>
@@ -115,8 +115,12 @@ namespace daw {
 			  decltype( remove_layer_func( std::declval<tp_val_t>( ) ) );
 
 			auto const setter = daw::overload(
-			  [&]( value_t const &v ) { std::get<N>( tp ) = value_t{ v }; },
-			  [&]( value_t &&v ) { std::get<N>( tp ) = value_t{ DAW_MOVE( v ) }; },
+			  [&]( value_t const &v ) {
+				  std::get<N>( tp ) = value_t{ v };
+			  },
+			  [&]( value_t &&v ) {
+				  std::get<N>( tp ) = value_t{ DAW_MOVE( v ) };
+			  },
 			  [&]( std::function<value_t( )> const &f ) {
 				  std::get<N>( tp ) = value_t{ f( ) };
 			  },

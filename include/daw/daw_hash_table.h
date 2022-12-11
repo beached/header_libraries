@@ -7,6 +7,7 @@
 //
 #pragma once
 
+#include "ciso646.h"
 #include "daw_exception.h"
 #include "daw_exchange.h"
 #include "daw_fnv1a_hash.h"
@@ -17,7 +18,6 @@
 #include "daw_utility.h"
 
 #include <algorithm>
-#include <ciso646>
 #include <functional>
 #include <iterator>
 #include <list>
@@ -184,8 +184,9 @@ namespace daw {
 
 		hash_table_item_iterator &operator++( ) {
 			++m_position;
-			m_position = std::find_if(
-			  m_position, m_end, []( auto const &val ) { return val.good( ); } );
+			m_position = std::find_if( m_position, m_end, []( auto const &val ) {
+				return val.good( );
+			} );
 			return *this;
 		}
 

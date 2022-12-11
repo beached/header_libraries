@@ -8,10 +8,11 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_check_exceptions.h"
 #include "daw_move.h"
+#include "daw_unused.h"
 
-#include <ciso646>
 #include <cstdlib>
 #include <exception>
 #include <iterator>
@@ -69,7 +70,7 @@ namespace daw::exception {
 	         std::enable_if_t<std::is_default_constructible_v<ExceptionType>,
 	                          std::nullptr_t> = nullptr>
 	[[noreturn]] void daw_throw( ) {
-#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
+#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or \
   defined( _CPPUNWIND )
 		throw ExceptionType{ };
 #else
@@ -81,7 +82,7 @@ namespace daw::exception {
 	         std::enable_if_t<not std::is_default_constructible_v<ExceptionType>,
 	                          std::nullptr_t> = nullptr>
 	[[noreturn]] void daw_throw( ) {
-#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
+#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or \
   defined( _CPPUNWIND )
 		throw ExceptionType( "" );
 #else
@@ -92,7 +93,7 @@ namespace daw::exception {
 	template<typename ExceptionType = DefaultException, typename Arg,
 	         typename... Args>
 	[[noreturn]] void daw_throw( Arg &&arg, Args &&...args ) {
-#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
+#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or \
   defined( _CPPUNWIND )
 		throw ExceptionType( DAW_FWD2( Arg, arg ), DAW_FWD2( Args, args )... );
 #else
@@ -189,7 +190,7 @@ namespace daw::exception {
 	template<typename ExceptionType = AssertException>
 	constexpr void dbg_throw_on_false( bool test ) {
 		if( not static_cast<bool>( test ) ) {
-#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
+#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or \
   defined( _CPPUNWIND )
 			throw ExceptionType{ };
 #else
@@ -274,6 +275,7 @@ namespace daw::exception {
 	constexpr void precondition_check( Bool &&condition, Args &&...args ) {
 		if( not static_cast<bool>( condition ) ) {
 			if constexpr( std::is_same_v<Terminator, ExceptionType> ) {
+				Unused( args... );
 				std::abort( );
 			} else {
 				daw_throw<ExceptionType>( DAW_FWD2( Args, args )... );
@@ -468,18 +470,18 @@ namespace daw::exception {
 
 	template<typename Function, typename... Args>
 	void no_exception( Function func, Args &&...args ) noexcept {
-#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
+#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or \
   defined( _CPPUNWIND )
 		try {
 #endif
 			func( DAW_FWD2( Args, args )... );
-#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
+#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or \
   defined( _CPPUNWIND )
 		} catch( ... ) {}
 #endif
 	}
 
-#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or                  \
+#if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or \
   defined( _CPPUNWIND )
 	template<typename Exception, typename... Args>
 	std::exception_ptr make_exception_ptr( Args &&...args ) noexcept {
@@ -501,10 +503,10 @@ namespace daw::exception {
 } // namespace daw::exception
 
 #if defined( NDEBUG ) and not defined( DEBUG )
-#define DAW_DBG_PRECONDITION_CHECK( ... )                                      \
-	do {                                                                         \
+#define DAW_DBG_PRECONDITION_CHECK( ... ) \
+	do {                                    \
 	} while( false )
 #else
-#define DAW_DBG_PRECONDITION_CHECK( Except, ... )                              \
+#define DAW_DBG_PRECONDITION_CHECK( Except, ... ) \
 	daw::exception::precondition_check<Except>( __VA_ARGS__ )
 #endif

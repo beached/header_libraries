@@ -8,8 +8,9 @@
 
 #pragma once
 
+#include "ciso646.h"
+
 #include <algorithm>
-#include <ciso646>
 #include <utility>
 
 namespace daw {
@@ -73,12 +74,15 @@ namespace daw {
 			auto const pivot =
 			  quick_sort_impl::median( *first, *mid, *std::prev( last ), cmp );
 
-			auto const less_pivot = std::partition(
-			  first, last, [=]( auto const &v ) { return cmp( v, pivot ); } );
+			auto const less_pivot =
+			  std::partition( first, last, [=]( auto const &v ) {
+				  return cmp( v, pivot );
+			  } );
 
 			auto const split2 =
-			  std::partition( less_pivot, last,
-			                  [=]( auto const &v ) { return not cmp( pivot, v ); } );
+			  std::partition( less_pivot, last, [=]( auto const &v ) {
+				  return not cmp( pivot, v );
+			  } );
 
 			sort_stack.push_back( split2, last );
 			sort_stack.push_back( first, less_pivot );

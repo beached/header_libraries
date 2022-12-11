@@ -8,10 +8,10 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_algorithm.h"
 #include "daw_move.h"
 
-#include <ciso646>
 #include <functional>
 #include <optional>
 #include <vector>
@@ -384,8 +384,9 @@ namespace daw {
 
 		[[nodiscard]] constexpr size_type size( ) const noexcept {
 			return daw::algorithm::accumulate(
-			  std::begin( m_data ), std::end( m_data ), 0ULL,
-			  []( auto const &opt ) { return opt.has_value ? 1ULL : 0ULL; } );
+			  std::begin( m_data ), std::end( m_data ), 0ULL, []( auto const &opt ) {
+				  return opt.has_value ? 1ULL : 0ULL;
+			  } );
 		}
 
 		[[nodiscard]] constexpr size_type empty( ) const noexcept {

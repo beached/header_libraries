@@ -8,11 +8,11 @@
 
 #pragma once
 
+#include "../ciso646.h"
 #include "../daw_check_exceptions.h"
 #include "../daw_exception.h"
 #include "../daw_move.h"
 
-#include <ciso646>
 #include <stdexcept>
 #include <type_traits>
 
@@ -38,9 +38,9 @@ namespace daw {
 			auto result =
 			  static_cast<std::uint8_t>( CheckIncrement ? check_increment : 0 );
 			result = static_cast<uint8_t>(
-			  ( result | CheckDecrement ) ? check_decrement : 0 );
+			  daw::nsc_or( result, CheckDecrement ) ? check_decrement : 0 );
 			result = static_cast<uint8_t>(
-			  ( result | CheckDereference ) ? check_dereference : 0 );
+			  daw::nsc_or( result, CheckDereference ) ? check_dereference : 0 );
 
 			return result;
 		}

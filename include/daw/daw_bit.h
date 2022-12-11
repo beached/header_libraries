@@ -8,10 +8,10 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
 
-#include <ciso646>
 #include <limits>
 
 namespace daw {

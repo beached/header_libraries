@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_algorithm.h"
 #include "daw_consteval.h"
@@ -15,7 +16,6 @@
 #include "daw_optional.h"
 #include "daw_traits.h"
 
-#include <ciso646>
 #include <memory>
 #include <numeric>
 #include <utility>
@@ -540,7 +540,7 @@ namespace daw {
 	};
 	template<typename Key, typename Value, typename Hash = std::hash<Key>,
 	         size_t N>
-	bounded_hash_map( std::pair<Key, Value> const( &&items )[N] )
+	bounded_hash_map( std::pair<Key, Value> const ( &&items )[N] )
 	  -> bounded_hash_map<Key, Value, N, Hash>;
 
 	template<typename Key, typename Value, typename Hash = std::hash<Key>,

@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_algorithm.h"
 #include "daw_algorithm_cx.h"
 #include "daw_move.h"
@@ -17,7 +18,6 @@
 #include "iterator/daw_reverse_iterator.h"
 
 #include <algorithm>
-#include <ciso646>
 #include <functional>
 #include <iterator>
 
@@ -432,9 +432,10 @@ namespace daw {
 	}
 	namespace sort_n_details {
 		template<typename ForwardIterator, typename Compare>
-		inline constexpr bool is_nothrow_sortable_v = std::is_nothrow_swappable_v<
-		  typename std::iterator_traits<ForwardIterator>::value_type>
-		  and std::is_nothrow_invocable_v<
+		inline constexpr bool is_nothrow_sortable_v =
+		  std::is_nothrow_swappable_v<
+		    typename std::iterator_traits<ForwardIterator>::value_type> and
+		  std::is_nothrow_invocable_v<
 		    Compare, typename std::iterator_traits<ForwardIterator>::value_type,
 		    typename std::iterator_traits<ForwardIterator>::value_type>;
 

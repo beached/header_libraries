@@ -8,10 +8,10 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_algorithm.h"
 #include "daw_check_exceptions.h"
 
-#include <ciso646>
 #include <functional>
 #include <optional>
 #include <vector>

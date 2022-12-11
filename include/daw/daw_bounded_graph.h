@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_algorithm.h"
 #include "daw_bounded_hash_map.h"
 #include "daw_bounded_hash_set.h"
@@ -18,7 +19,6 @@
 #include "daw_utility.h"
 #include "iterator/daw_back_inserter.h"
 
-#include <ciso646>
 #include <cstddef>
 #include <functional>
 #include <iterator>
@@ -549,14 +549,16 @@ namespace daw {
 
 		constexpr daw::bounded_vector_t<node_id_t, MaxVerticesPerNode>
 		find_roots( ) const {
-			return find(
-			  []( auto const &node ) { return node.incoming_edges( ).empty( ); } );
+			return find( []( auto const &node ) {
+				return node.incoming_edges( ).empty( );
+			} );
 		}
 
 		constexpr daw::bounded_vector_t<node_id_t, MaxVerticesPerNode>
 		find_leaves( ) const {
-			return find(
-			  []( auto const &node ) { return node.outgoing_edges( ).empty( ); } );
+			return find( []( auto const &node ) {
+				return node.outgoing_edges( ).empty( );
+			} );
 		}
 	};
 

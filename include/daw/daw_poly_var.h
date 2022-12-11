@@ -8,10 +8,10 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_enable_if.h"
 #include "daw_visit.h"
 
-#include <ciso646>
 #include <type_traits>
 #include <variant>
 
@@ -43,8 +43,9 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr Base &operator*( ) {
-			return daw::visit_nt(
-			  m_value, []( auto &value ) { return *static_cast<Base *>( &value ); } );
+			return daw::visit_nt( m_value, []( auto &value ) {
+				return *static_cast<Base *>( &value );
+			} );
 		}
 
 		[[nodiscard]] constexpr Base const *operator->( ) const {
@@ -54,8 +55,9 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr Base *operator->( ) {
-			return daw::visit_nt(
-			  m_value, []( auto &value ) { return static_cast<Base *>( &value ); } );
+			return daw::visit_nt( m_value, []( auto &value ) {
+				return static_cast<Base *>( &value );
+			} );
 		}
 	};
 } // namespace daw

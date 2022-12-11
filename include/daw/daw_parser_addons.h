@@ -8,10 +8,9 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_exception.h"
 #include "daw_parser_helper.h"
-
-#include <ciso646>
 
 namespace daw::parser {
 	template<typename ForwardIterator>

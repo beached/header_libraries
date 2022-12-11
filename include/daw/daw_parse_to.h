@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_bounded_array.h"
 #include "daw_function.h"
 #include "daw_move.h"
@@ -16,7 +17,6 @@
 #include "daw_traits.h"
 #include "daw_utility.h"
 
-#include <ciso646>
 #include <cstddef>
 #include <iterator>
 #include <string>

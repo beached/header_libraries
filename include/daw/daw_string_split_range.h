@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_algorithm.h"
 #include "daw_move.h"
 #include "daw_string_view.h"
@@ -15,7 +16,6 @@
 #include "daw_traits.h"
 #include "iterator/daw_reverse_iterator.h"
 
-#include <ciso646>
 #include <string>
 
 namespace daw {

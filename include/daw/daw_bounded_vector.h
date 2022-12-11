@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_algorithm.h"
 #include "daw_bounded_array.h"
@@ -16,7 +17,6 @@
 #include "daw_swap.h"
 
 #include <array>
-#include <ciso646>
 #include <iterator>
 
 namespace daw {

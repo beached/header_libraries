@@ -125,7 +125,9 @@ constexpr bool array_good_001( ) {
 	daw::expecting( tmp2[4], 4 );
 	return true;
 }
+#if DAW_HAS_MSVC_VER_LT( 1930 )
 static_assert( array_good_001( ) );
+#endif
 
 void array_bad_001( ) {
 	using value_t = daw::validated<std::array<int, 5>, no_repeat_container>;

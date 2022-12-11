@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_do_n.h"
 #include "daw_enable_if.h"
@@ -20,7 +21,6 @@
 
 #include <algorithm>
 #include <array>
-#include <ciso646>
 #include <cstddef>
 #include <functional>
 #include <iterator>

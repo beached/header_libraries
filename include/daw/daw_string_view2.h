@@ -10,6 +10,7 @@
 
 #include "daw_string_view2_fwd.h"
 
+#include "ciso646.h"
 #include "daw_algorithm.h"
 #include "daw_assume.h"
 #include "daw_check_exceptions.h"
@@ -28,7 +29,6 @@
 #include "iterator/daw_iterator.h"
 
 #include <array>
-#include <ciso646>
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
@@ -39,41 +39,41 @@
 #include <type_traits>
 
 #if defined( DAW_NO_STRING_VIEW_DBG_CHECK )
-#define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... )                             \
-	do {                                                                         \
+#define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... ) \
+	do {                                             \
 	} while( false )
 #elif not defined( NDEBUG ) or defined( DEBUG )
-#define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... )                             \
-	if( DAW_UNLIKELY( not( Bool ) ) ) {                                          \
-		DAW_THROW_OR_TERMINATE( std::out_of_range, __VA_ARGS__ );                  \
-	}                                                                            \
-	do {                                                                         \
+#define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... )            \
+	if( DAW_UNLIKELY( not( Bool ) ) ) {                         \
+		DAW_THROW_OR_TERMINATE( std::out_of_range, __VA_ARGS__ ); \
+	}                                                           \
+	do {                                                        \
 	} while( false )
 #else
 #define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... ) DAW_ASSUME( Bool )
 #endif
 
 #if not defined( DAW_NO_STRING_VIEW_PRECOND_CHECKS )
-#define DAW_STRING_VIEW_PRECOND_CHECK( Bool, ... )                             \
-	if( DAW_UNLIKELY( not( Bool ) ) ) {                                          \
-		std::terminate( );                                                         \
-	}                                                                            \
-	do {                                                                         \
+#define DAW_STRING_VIEW_PRECOND_CHECK( Bool, ... ) \
+	if( DAW_UNLIKELY( not( Bool ) ) ) {              \
+		std::terminate( );                             \
+	}                                                \
+	do {                                             \
 	} while( false )
 
-#define DAW_STRING_VIEW_RNG_CHECK( Bool, ... )                                 \
-	if( DAW_UNLIKELY( not( Bool ) ) ) {                                          \
-		DAW_THROW_OR_TERMINATE( std::out_of_range, __VA_ARGS__ );                  \
-	}                                                                            \
-	do {                                                                         \
+#define DAW_STRING_VIEW_RNG_CHECK( Bool, ... )                \
+	if( DAW_UNLIKELY( not( Bool ) ) ) {                         \
+		DAW_THROW_OR_TERMINATE( std::out_of_range, __VA_ARGS__ ); \
+	}                                                           \
+	do {                                                        \
 	} while( false )
 #else
-#define DAW_STRING_VIEW_PRECOND_CHECK( Bool, ... )                             \
-	do {                                                                         \
+#define DAW_STRING_VIEW_PRECOND_CHECK( Bool, ... ) \
+	do {                                             \
 	} while( false )
 
-#define DAW_STRING_VIEW_RNG_CHECK( Bool, ... )                                 \
-	do {                                                                         \
+#define DAW_STRING_VIEW_RNG_CHECK( Bool, ... ) \
+	do {                                         \
 	} while( false )
 #endif
 
@@ -87,24 +87,24 @@
 /// @brief Require a contiguous character range
 /// @param Range contiguous range
 /// @param CharT character type of range elements
-#define DAW_REQ_CONTIG_CHAR_RANGE( Range, CharT )                              \
-	std::enable_if_t<(sv2_details::is_string_view_like_v<Range, CharT> and       \
-	                  not std::is_convertible_v<Range, char const *>),           \
+#define DAW_REQ_CONTIG_CHAR_RANGE( Range, CharT )                        \
+	std::enable_if_t<(sv2_details::is_string_view_like_v<Range, CharT> and \
+	                  not std::is_convertible_v<Range, char const *>),     \
 	                 std::nullptr_t> = nullptr
 
 /// @brief Require a character pointer
 /// @param Pointer a const_pointer
-#define DAW_REQ_CHAR_PTR( Pointer, CharT )                                     \
-	std::enable_if_t<                                                            \
-	  (std::is_same_v<CharT *, daw::remove_cvref_t<Pointer>> or                  \
-	   std::is_same_v<CharT const *, daw::remove_cvref_t<Pointer>>),             \
+#define DAW_REQ_CHAR_PTR( Pointer, CharT )                         \
+	std::enable_if_t<                                                \
+	  (std::is_same_v<CharT *, daw::remove_cvref_t<Pointer>> or      \
+	   std::is_same_v<CharT const *, daw::remove_cvref_t<Pointer>>), \
 	  std::nullptr_t> = nullptr
 
 /// @brief Require Type be constructable from a CharT const * and a size_type
 /// @param Type A type to construct from a pointer/size_type pair
-#define DAW_REQ_CONTIG_CHAR_RANGE_CTOR( Type )                                 \
-	std::enable_if_t<                                                            \
-	  sv2_details::is_contigious_range_constructible<Type, CharT>::value,        \
+#define DAW_REQ_CONTIG_CHAR_RANGE_CTOR( Type )                          \
+	std::enable_if_t<                                                     \
+	  sv2_details::is_contigious_range_constructible<Type, CharT>::value, \
 	  std::nullptr_t> = nullptr
 
 namespace daw {

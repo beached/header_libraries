@@ -131,8 +131,11 @@ namespace construct_a_deps {
 	static_assert( std::is_constructible_v<std::vector<int>, size_t, int>,
 	               "Vector should be normal constructable" );
 
+#if DAW_CPP_VERSION < 202000L
+	// In C++20, ( ) can do aggregate init
 	static_assert( not std::is_constructible_v<std::array<int, 2>, int, int>,
 	               "Array should not be normal constructable" );
+#endif
 
 	static_assert(
 	  not std::is_constructible_v<

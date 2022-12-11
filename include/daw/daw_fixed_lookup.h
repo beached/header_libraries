@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_bounded_array.h"
 #include "daw_exception.h"
 #include "daw_generic_hash.h"
@@ -15,7 +16,6 @@
 #include "daw_traits.h"
 #include "daw_utility.h"
 
-#include <ciso646>
 #include <stdexcept>
 #include <type_traits>
 

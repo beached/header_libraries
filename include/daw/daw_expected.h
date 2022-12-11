@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_check_exceptions.h"
 #include "daw_exception.h"
@@ -17,7 +18,6 @@
 #include "daw_utility.h"
 
 #include <cassert>
-#include <ciso646>
 #include <cstddef>
 #include <exception>
 #include <stdexcept>

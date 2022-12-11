@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_arith_traits.h"
 #include "daw_assume.h"
 #include "daw_attributes.h"
@@ -21,7 +22,6 @@
 #include "impl/daw_math_impl.h"
 
 #include <array>
-#include <ciso646>
 #include <cstdint>
 #include <limits>
 #include <optional>

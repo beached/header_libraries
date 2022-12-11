@@ -8,12 +8,20 @@
 
 #pragma once
 
+#include "ciso646.h"
+#include "daw_cpp_feature_check.h"
+
 #include <array>
-#include <ciso646>
 #include <cstddef>
 #include <limits>
 
-#if defined( __cpp_lib_span )
+#if defined( __cpp_lib_span ) and not defined( DAW_HAS_CPP20_SPAN )
+#if __cpp_lib_span >= 202002L and DAW_HAS_INCLUDE( <span> )
+#define DAW_HAS_CPP20_SPAN
+#endif
+#endif
+
+#if defined( DAW_HAS_CPP20_SPAN )
 #include <span>
 #endif
 
@@ -63,7 +71,7 @@ namespace daw {
 		static constexpr bool has_deep_copy = true;
 	};
 
-#if defined( __cpp_lib_span )
+#if defined( DAW_HAS_CPP20_SPAN )
 
 	template<typename T, std::size_t Extent>
 	struct container_traits<std::span<T, Extent>> {

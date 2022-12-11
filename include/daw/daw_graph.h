@@ -8,11 +8,11 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_exception.h"
 #include "daw_move.h"
 #include "daw_utility.h"
 
-#include <ciso646>
 #include <cstddef>
 #include <functional>
 #include <iterator>
@@ -533,13 +533,15 @@ namespace daw {
 		}
 
 		std::vector<node_id_t> find_roots( ) const {
-			return find(
-			  []( auto const &node ) { return node.incoming_edges( ).empty( ); } );
+			return find( []( auto const &node ) {
+				return node.incoming_edges( ).empty( );
+			} );
 		}
 
 		std::vector<node_id_t> find_leaves( ) const {
-			return find(
-			  []( auto const &node ) { return node.outgoing_edges( ).empty( ); } );
+			return find( []( auto const &node ) {
+				return node.outgoing_edges( ).empty( );
+			} );
 		}
 	};
 

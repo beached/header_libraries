@@ -8,13 +8,13 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_exception.h"
 #include "daw_move.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
 #include "daw_virtual_base.h"
 
-#include <ciso646>
 #include <cstddef>
 #include <functional>
 #include <memory>
@@ -185,7 +185,7 @@ namespace daw {
 				if constexpr( func_impl::has_empty_member_v<Func> ) {
 					return m_func.empty( );
 				} else if constexpr( func_impl::is_boolable_v<Func> ) {
-					return !static_cast<bool>( m_func );
+					return  not static_cast<bool>( m_func );
 				}
 				return false;
 			}

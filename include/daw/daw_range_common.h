@@ -8,9 +8,8 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_traits.h"
-
-#include <ciso646>
 
 namespace daw {
 	namespace range {

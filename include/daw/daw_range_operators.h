@@ -8,23 +8,24 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_algorithm.h"
+#include "daw_cpp_feature_check.h"
 #include "daw_move.h"
 #include "daw_range_collection.h"
 #include "daw_range_reference.h"
 #include "daw_traits.h"
 
 #include <algorithm>
-#include <ciso646>
 #include <iterator>
 #include <numeric>
 #include <typeinfo>
 #include <utility>
 #include <vector>
 
-#if not defined( _MSC_VER ) or                                                 \
-  defined( __clang__ ) // internal compiler error on at least <= MSVC 2015.3
-
+// internal compiler error on at least <= MSVC 2015.3
+// Able to test on 2019/2022
+#if not defined( DAW_HAS_MSVC ) or DAW_HAS_MSVC_VER_GTE( 1920 )
 namespace daw {
 	namespace range {
 		namespace operators {
@@ -125,7 +126,7 @@ namespace daw {
 					std::tuple<Args...> param =                                          \
 					  std::make_tuple( std::forward<Args...>( clause_name##_args )... ); \
 					return daw::range::operators::details::clause_name##_t<Args...>(     \
-					  DAW_MOVE( param ) );                                              \
+					  DAW_MOVE( param ) );                                               \
 				}                                                                      \
 			}                                                                        \
 		}                                                                          \
@@ -177,4 +178,4 @@ DAW_RANGE_GENERATE_VCLAUSE( where )
 DAW_RANGE_GENERATE_VCLAUSE( for_each )
 
 #undef DAW_RANGE_GENERATE_VCLAUSE
-#endif //	_MSC_VER
+#endif

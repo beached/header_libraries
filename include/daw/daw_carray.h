@@ -8,12 +8,12 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_algorithm.h"
 #include "daw_exception.h"
 #include "daw_swap.h"
 
 #include <array>
-#include <ciso646>
 #include <cstdint>
 #include <cstdlib>
 #include <iterator>

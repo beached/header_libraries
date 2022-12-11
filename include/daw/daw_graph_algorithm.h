@@ -8,12 +8,12 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_graph.h"
 #include "daw_move.h"
 
 #include <algorithm>
-#include <ciso646>
 #include <deque>
 #include <iterator>
 #include <type_traits>
@@ -51,8 +51,9 @@ namespace daw {
 				auto result = std::vector<Node>( );
 				result.reserve( root_node_ids.size( ) );
 				std::transform( std::begin( root_node_ids ), std::end( root_node_ids ),
-				                std::back_inserter( result ),
-				                [&]( node_id_t id ) { return graph.get_node( id ); } );
+				                std::back_inserter( result ), [&]( node_id_t id ) {
+					                return graph.get_node( id );
+				                } );
 				return result;
 			}( );
 
@@ -135,11 +136,12 @@ namespace daw {
 				} else {
 					auto children = std::vector<daw::node_id_t>( );
 
-					std::copy_if(
-					  std::begin( current_node.outgoing_edges( ) ),
-					  std::end( current_node.outgoing_edges( ) ),
-					  std::back_inserter( children ),
-					  [&]( auto const &n_id ) { return visited.count( n_id ) == 0; } );
+					std::copy_if( std::begin( current_node.outgoing_edges( ) ),
+					              std::end( current_node.outgoing_edges( ) ),
+					              std::back_inserter( children ),
+					              [&]( auto const &n_id ) {
+						              return visited.count( n_id ) == 0;
+					              } );
 
 					std::sort( children.begin( ), children.end( ),
 					           [&]( daw::node_id_t left_id, daw::node_id_t right_id ) {
@@ -172,11 +174,12 @@ namespace daw {
 					              } );
 				} else {
 					auto children = std::vector<daw::node_id_t>( );
-					std::copy_if(
-					  std::begin( current_node.outgoing_edges( ) ),
-					  std::end( current_node.outgoing_edges( ) ),
-					  std::back_inserter( children ),
-					  [&]( auto const &n_id ) { return visited.count( n_id ) == 0; } );
+					std::copy_if( std::begin( current_node.outgoing_edges( ) ),
+					              std::end( current_node.outgoing_edges( ) ),
+					              std::back_inserter( children ),
+					              [&]( auto const &n_id ) {
+						              return visited.count( n_id ) == 0;
+					              } );
 
 					std::sort( children.begin( ), children.end( ),
 					           [&]( daw::node_id_t left_id, daw::node_id_t right_id ) {
@@ -493,7 +496,10 @@ namespace daw {
 	                                      Compare &&comp = Compare{ } ) {
 		auto nodes = std::vector<daw::node_id_t>( );
 		topological_sorted_walk(
-		  known_deps, [&]( auto const &n ) { nodes.push_back( n.id( ) ); },
+		  known_deps,
+		  [&]( auto const &n ) {
+			  nodes.push_back( n.id( ) );
+		  },
 		  std::forward<Compare>( comp ) );
 
 		std::reverse( nodes.begin( ), nodes.end( ) );
@@ -510,7 +516,10 @@ namespace daw {
 	                                      Compare &&comp = Compare{ } ) {
 		auto nodes = std::vector<daw::node_id_t>( );
 		topological_sorted_walk(
-		  known_deps, [&]( auto const &n ) { nodes.push_back( n.id( ) ); },
+		  known_deps,
+		  [&]( auto const &n ) {
+			  nodes.push_back( n.id( ) );
+		  },
 		  std::forward<Compare>( comp ) );
 
 		std::reverse( nodes.begin( ), nodes.end( ) );

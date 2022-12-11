@@ -8,13 +8,20 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_cpp_feature_check.h"
 
-#include <ciso646>
 #include <cstring>
 #include <type_traits>
 
-#if defined( __cpp_lib_bit_cast ) and DAW_HAS_INCLUDE( <bit> )
+#if not defined( DAW_HAS_CPP20_BIT_CAST ) and \
+  defined( __cpp_lib_bit_cast ) and DAW_HAS_INCLUDE( <bit> )
+#if __cpp_lib_bit_cast >= 201806L
+#define DAW_HAS_CPP20_BIT_CAST
+#endif
+#endif
+
+#if defined( DAW_HAS_CPP20_BIT_CAST )
 #include <bit>
 #endif
 
@@ -39,25 +46,25 @@ namespace daw {
 	}
 } // namespace daw
 
-#if defined( __cpp_lib_bit_cast )
+#if defined( DAW_HAS_CPP20_BIT_CAST )
 
 #define DAW_BIT_CAST( To, ... ) std::bit_cast<To>( __VA_ARGS__ )
 #define DAW_CX_BIT_CAST
 
-#elif not defined( _MSC_VER ) and DAW_HAS_BUILTIN( __builtin_bit_cast ) or     \
-  ( defined( __clang__ ) and ( __clang_major__ >= 9 ) )
+#elif not defined( DAW_HAS_MSVC ) and \
+  ( DAW_HAS_BUILTIN( __builtin_bit_cast ) or DAW_HAS_CLANG_VER_GTE( 9, 0 ) )
 
 #define DAW_BIT_CAST( To, ... ) __builtin_bit_cast( To, __VA_ARGS__ )
 #define DAW_CX_BIT_CAST
 
-#elif defined( _MSC_VER ) and _MSC_VER >= 1926
+#elif DAW_HAS_MSVC_VER_GTE( 1926 )
 namespace daw::bit_cast_impl {
 	template<typename To, typename From>
 	inline constexpr To ms_bit_cast( From &&f ) {
 		return __builtin_bit_cast( To, f );
 	}
 } // namespace daw::bit_cast_impl
-#define DAW_BIT_CAST( To, ... )                                                \
+#define DAW_BIT_CAST( To, ... ) \
 	::daw::bit_cast_impl::ms_bit_cast<To>( __VA_ARGS__ )
 
 #define DAW_CX_BIT_CAST

@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_algorithm.h"
 #include "daw_cpp_feature_check.h"
 #include "daw_exception.h"
@@ -23,7 +24,6 @@
 #include "iterator/daw_back_inserter.h"
 #include "iterator/daw_iterator.h"
 
-#include <ciso646>
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
@@ -79,7 +79,9 @@ namespace daw {
 			  is_string_view_bounds_type_v<BoundsType>,
 			  "Invalid BoundType.  Often this is caused by using char_triats" );
 
-			static constexpr auto bp_eq = []( CharT l, CharT r ) { return l == r; };
+			static constexpr auto bp_eq = []( CharT l, CharT r ) {
+				return l == r;
+			};
 
 			template<typename B>
 			static constexpr bool is_last_a_pointer_v =
@@ -1611,7 +1613,9 @@ namespace daw {
 		[[nodiscard]] auto
 		split( daw::sv1::basic_string_view<CharT, Bounds, Ex> str,
 		       CharT const delemiter ) {
-			return split( str, [delemiter]( CharT c ) { return c == delemiter; } );
+			return split( str, [delemiter]( CharT c ) {
+				return c == delemiter;
+			} );
 		}
 
 		template<typename CharT, typename Bounds, std::ptrdiff_t Ex, std::size_t N>
@@ -1621,7 +1625,9 @@ namespace daw {
 			static_assert( N == 2,
 			               "string literal used as delemiter.  One 1 value is "
 			               "supported (e.g. \",\" )" );
-			return split( str, [delemiter]( CharT c ) { return c == delemiter[0]; } );
+			return split( str, [delemiter]( CharT c ) {
+				return c == delemiter[0];
+			} );
 		}
 
 #ifndef NOSTRING

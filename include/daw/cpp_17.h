@@ -8,11 +8,12 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_bit_cast.h"
+#include "daw_cpp_feature_check.h"
 #include "daw_enable_if.h"
 #include "daw_move.h"
 
-#include <ciso646>
 #include <cstddef>
 #include <cstring>
 #include <iterator>
@@ -144,7 +145,7 @@ namespace daw {
 #endif
 #endif
 
-#if defined( __cpp_concepts ) and not defined( DAW_NO_CONCEPTS ) 
+#if defined( __cpp_concepts ) and not defined( DAW_NO_CONCEPTS )
 #if __cpp_concepts >= 201907L
 #define DAW_HAS_CONCEPTS
 #endif
@@ -152,7 +153,9 @@ namespace daw {
 
 #ifdef DAW_HAS_CONCEPTS
 	template<template<class...> class Op, class... Args>
-	inline constexpr bool is_detected_v = requires { typename Op<Args...>; };
+	inline constexpr bool is_detected_v = requires {
+		typename Op<Args...>;
+	};
 #endif
 	namespace cpp_17_details {
 		template<class Default, class AlwaysVoid, template<class...> class Op,

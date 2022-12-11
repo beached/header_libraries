@@ -45,7 +45,11 @@ namespace daw {
 		[[nodiscard]] inline constexpr auto operator( )( Args &&...args ) const
 		  noexcept( std::is_nothrow_constructible_v<T, Args...> )
 		    -> std::enable_if_t<std::is_constructible_v<T, Args...>, T> {
-			return T( DAW_FWD( args )... );
+			if constexpr( std::is_aggregate_v<T> ) {
+				return T{ DAW_FWD( args )... };
+			} else {
+				return T( DAW_FWD( args )... );
+			}
 		}
 
 		template<typename... Args>

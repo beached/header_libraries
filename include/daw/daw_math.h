@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_algorithm.h"
 #include "daw_scope_guard.h"
@@ -17,7 +18,6 @@
 
 #include <cassert>
 #include <cfenv>
-#include <ciso646>
 #include <cmath>
 #include <cstddef>
 #include <limits>

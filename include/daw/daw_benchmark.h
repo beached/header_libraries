@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_check_exceptions.h"
 #include "daw_do_not_optimize.h"
@@ -18,7 +19,6 @@
 
 #include <algorithm>
 #include <chrono>
-#include <ciso646>
 #include <cstdint>
 #include <functional>
 #include <iomanip>
