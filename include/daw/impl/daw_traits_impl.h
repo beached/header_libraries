@@ -8,9 +8,9 @@
 
 #pragma once
 
+#include "../ciso646.h"
 #include "../daw_move.h"
 
-#include <ciso646>
 #include <cstddef>
 #include <iterator>
 #include <type_traits>
@@ -367,8 +367,8 @@ namespace daw {
 
 			template<typename T>
 			inline constexpr bool has_iterator_trait_types_v =
-			  has_value_type_v<T> and has_difference_type_v<T> and has_reference_v<T>
-			    and has_pointer_v<T> and has_iterator_category_v<T>;
+			  has_value_type_v<T> and has_difference_type_v<T> and
+			  has_reference_v<T> and has_pointer_v<T> and has_iterator_category_v<T>;
 		} // namespace traits_details
 		template<typename T>
 		using is_dereferenceable_t =

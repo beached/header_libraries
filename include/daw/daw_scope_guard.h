@@ -8,19 +8,19 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_attributes.h"
 #include "daw_cpp_feature_check.h"
 #include "daw_exchange.h"
 #include "daw_is_constant_evaluated.h"
 #include "daw_move.h"
 
-#include <ciso646>
 #include <exception>
 #include <optional>
 #include <type_traits>
 
-#if not defined( DAW_NO_CONSTEXPR_SCOPE_GUARD ) and                            \
-  defined( __cpp_constexpr_dynamic_alloc ) and                                 \
+#if not defined( DAW_NO_CONSTEXPR_SCOPE_GUARD ) and \
+  defined( __cpp_constexpr_dynamic_alloc ) and      \
   defined( DAW_IS_CONSTANT_EVALUATED )
 #define DAW_SG_CXDTOR constexpr
 

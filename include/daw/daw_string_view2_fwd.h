@@ -8,9 +8,8 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_string_view_version.h"
-
-#include <ciso646>
 
 namespace daw {
 #if DAW_STRINGVIEW_VERSION == 2

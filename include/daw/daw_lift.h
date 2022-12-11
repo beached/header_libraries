@@ -8,21 +8,21 @@
 
 #pragma once
 
+#include "ciso646.h"
+#include "daw_cpp_feature_check.h"
 #include "daw_move.h"
 
-#include <ciso646>
-
-#if not defined( _MSC_VER ) or defined( __clang__ )
-// WORKAROUND: MSVC cannot see argsLIFT inside noexcept( exprn )
+// WORKAROUND: Older MSVC cannot see argsLIFT inside noexcept( exprn )
+#if not defined( DAW_HAS_MSVC )
 #define DAW_LIFT( ... )                                                        \
 	[]( auto &&...argsLIFT ) noexcept( noexcept( __VA_ARGS__( DAW_FWD(           \
 	  argsLIFT )... ) ) ) -> decltype( __VA_ARGS__( DAW_FWD( argsLIFT )... ) ) { \
-		return __VA_ARGS__( DAW_FWD( argsLIFT )... );                              \
+		return (__VA_ARGS__)( DAW_FWD( argsLIFT )... );                            \
 	}
 #else
-#define DAW_LIFT( ... )                                                        \
-	[]( auto &&...argsLIFT ) -> decltype( __VA_ARGS__(                           \
-	                           DAW_FWD( argsLIFT )... ) ) {                      \
-		return __VA_ARGS__( DAW_FWD( argsLIFT )... );                              \
+#define DAW_LIFT( ... )                                   \
+	[]( auto &&...argsLIFT ) -> decltype( __VA_ARGS__(      \
+	                           DAW_FWD( argsLIFT )... ) ) { \
+		return (__VA_ARGS__)( DAW_FWD( argsLIFT )... );       \
 	}
 #endif

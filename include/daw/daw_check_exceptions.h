@@ -8,14 +8,15 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_attributes.h"
+#include "daw_cpp_feature_check.h"
 #include "daw_move.h"
 
-#include <ciso646>
 #include <exception>
 
-#if not( defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or             \
-         defined( _CPPUNWIND ) ) or                                            \
+#if not( defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or \
+         defined( _CPPUNWIND ) ) or                                \
   defined( DAW_DONT_USE_EXCEPTIONS )
 
 #if not defined( DAW_DONT_USE_EXCEPTIONS )
@@ -54,13 +55,13 @@ namespace daw::check_except_detail {
 } // namespace daw::check_except_detail
 
 #if defined( DAW_USE_EXCEPTIONS )
-#define DAW_THROW_OR_TERMINATE( ExceptionType, ... )                           \
+#define DAW_THROW_OR_TERMINATE( ExceptionType, ... ) \
 	::daw::check_except_detail::throw_error( ExceptionType{ __VA_ARGS__ } )
-#define DAW_THROW_OR_TERMINATE_NA( ExceptionType )                             \
+#define DAW_THROW_OR_TERMINATE_NA( ExceptionType ) \
 	::daw::check_except_detail::throw_error( ExceptionType{ } )
 #else
-#define DAW_THROW_OR_TERMINATE( ExceptionType, ... )                           \
+#define DAW_THROW_OR_TERMINATE( ExceptionType, ... ) \
 	::daw::check_except_detail::terminate_error<ExceptionType>( )
-#define DAW_THROW_OR_TERMINATE_NA( ExceptionType )                             \
+#define DAW_THROW_OR_TERMINATE_NA( ExceptionType ) \
 	::daw::check_except_detail::terminate_error<ExceptionType>( )
 #endif

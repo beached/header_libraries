@@ -8,10 +8,10 @@
 
 #pragma once
 
+#include "../ciso646.h"
 #include "../cpp_17.h"
 #include "daw_traits_impl.h"
 
-#include <ciso646>
 #include <type_traits>
 
 namespace daw::traits {
@@ -136,10 +136,11 @@ namespace daw::traits {
 		return true;
 	}
 
-	template<typename OutputIterator, typename T = typename std::iterator_traits<
-	                                    OutputIterator>::value_type>
-	inline constexpr bool
-	  is_output_iterator = is_output_iterator_test<OutputIterator, T>( );
+	template<typename OutputIterator,
+	         typename T =
+	           typename std::iterator_traits<OutputIterator>::value_type>
+	inline constexpr bool is_output_iterator =
+	  is_output_iterator_test<OutputIterator, T>( );
 
 	// is_input_iterator
 	template<typename InputIterator,
@@ -171,8 +172,8 @@ namespace daw::traits {
 	}
 
 	template<typename InputIterator>
-	inline constexpr bool
-	  is_input_iterator = is_input_iterator_test<InputIterator>( );
+	inline constexpr bool is_input_iterator =
+	  is_input_iterator_test<InputIterator>( );
 
 	template<typename InOutIterator,
 	         typename T =
@@ -193,10 +194,11 @@ namespace daw::traits {
 		return true;
 	}
 
-	template<typename InOutIterator, typename T = typename std::iterator_traits<
-	                                   InOutIterator>::value_type>
-	inline constexpr bool
-	  is_inout_iterator = is_input_iterator_test<InOutIterator, T>( );
+	template<typename InOutIterator,
+	         typename T =
+	           typename std::iterator_traits<InOutIterator>::value_type>
+	inline constexpr bool is_inout_iterator =
+	  is_input_iterator_test<InOutIterator, T>( );
 
 	// is_forward_iterator
 	template<typename ForwardIterator>
@@ -361,8 +363,8 @@ namespace daw::traits {
 	}
 
 	template<typename BinaryPredicate, typename T, typename U = T>
-	inline constexpr bool
-	  is_binary_predicate = is_binary_predicate_test<BinaryPredicate, T, U>( );
+	inline constexpr bool is_binary_predicate =
+	  is_binary_predicate_test<BinaryPredicate, T, U>( );
 
 	template<typename Compare, typename T, typename U = T>
 	inline constexpr bool is_compare_v = is_binary_predicate_v<Compare, T, U>;
@@ -393,6 +395,6 @@ namespace daw::traits {
 	}
 
 	template<typename UnaryPredicate, typename T>
-	inline constexpr bool
-	  is_unary_predicate = is_unary_predicate_test<UnaryPredicate, T>( );
+	inline constexpr bool is_unary_predicate =
+	  is_unary_predicate_test<UnaryPredicate, T>( );
 } // namespace daw::traits

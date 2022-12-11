@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_algorithm.h"
 #include "daw_check_exceptions.h"
 #include "daw_cxmath.h"
@@ -16,14 +17,15 @@
 
 #include <algorithm>
 #include <cassert>
-#include <ciso646>
 #include <cmath>
 #include <cstddef>
 #include <cstdlib>
 #include <iterator>
 #include <memory>
 #include <numeric>
+#if not( defined( _WIN32 ) or defined( _WIN64 ) )
 #include <sys/mman.h>
+#endif
 #include <sys/types.h>
 #include <type_traits>
 #if __has_include( <unistd.h> )
@@ -61,9 +63,8 @@ namespace daw {
 
 	template<typename T>
 	struct is_iterator<
-	  T, std::void_t<decltype(
-	       std::add_pointer_t<typename std::iterator_traits<T>::value_type>{ } )>>
-	  : std::true_type {};
+	  T, std::void_t<decltype( std::add_pointer_t<typename std::iterator_traits<
+	                             T>::value_type>{ } )>> : std::true_type {};
 
 	template<typename T, typename = void>
 	struct has_reallocate : std::false_type {};

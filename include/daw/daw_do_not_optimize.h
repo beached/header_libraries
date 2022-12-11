@@ -8,19 +8,20 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_attributes.h"
+#include "daw_cpp_feature_check.h"
 #include "daw_move.h"
 
-#include <ciso646>
 #include <cstddef>
 #include <type_traits>
 
-#if defined( _MSC_VER ) and not defined( __clang__ )
+#if defined( DAW_HAS_MSVC )
 #include <intrin.h>
 #endif
 
 namespace daw {
-#if not defined( _MSC_VER ) or defined( __clang__ )
+#if defined( DAW_HAS_GCC_LIKE )
 	template<typename Tp>
 	DAW_ATTRIB_INLINE void do_not_optimize( Tp const &value ) {
 		asm volatile( "" : : "r,m"( value ) : "memory" );

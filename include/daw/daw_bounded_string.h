@@ -10,6 +10,7 @@
 
 #include "impl/daw_string_impl.h"
 
+#include "ciso646.h"
 #include "daw_algorithm.h"
 #include "daw_bounded_vector.h"
 #include "daw_container_algorithm.h"
@@ -23,7 +24,6 @@
 #include "iterator/daw_iterator.h"
 
 #include <algorithm>
-#include <ciso646>
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
@@ -1308,8 +1308,9 @@ namespace daw {
 	template<typename CharT, size_t Capacity>
 	auto split( daw::basic_bounded_string<CharT, Capacity> const &str,
 	            CharT const delemiter ) {
-		return split( str,
-		              [delemiter]( CharT c ) noexcept { return c == delemiter; } );
+		return split( str, [delemiter]( CharT c ) noexcept {
+			return c == delemiter;
+		} );
 	}
 
 	template<typename CharT, size_t Capacity>
@@ -1322,8 +1323,9 @@ namespace daw {
 		static_assert( N == 2,
 		               "string literal used as delemiter.  One 1 value is "
 		               "supported (e.g. \",\" )" );
-		return split(
-		  str, [delemiter]( CharT c ) noexcept { return c == delemiter[0]; } );
+		return split( str, [delemiter]( CharT c ) noexcept {
+			return c == delemiter[0];
+		} );
 	}
 
 	template<typename CharT, size_t Capacity, size_t N>
@@ -1344,8 +1346,8 @@ namespace daw {
 
 	namespace detectors {
 		template<typename String>
-		using can_be_bounded_string = decltype( daw::bounded_string{
-		  std::declval<String>( ) } );
+		using can_be_bounded_string =
+		  decltype( daw::bounded_string{ std::declval<String>( ) } );
 	}
 
 	template<typename String>

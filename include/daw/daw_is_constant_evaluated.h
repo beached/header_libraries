@@ -8,9 +8,8 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_cpp_feature_check.h"
-
-#include <ciso646>
 
 #if defined( __cpp_lib_is_constant_evaluated )
 
@@ -22,16 +21,15 @@
 
 #define DAW_IS_CONSTANT_EVALUATED( ) __builtin_is_constant_evaluated( )
 
-#elif defined( _MSC_VER ) and _MSC_VER >= 1925
+#elif DAW_HAS_MSVC_VER_GTE( 1925 )
 
 #define DAW_IS_CONSTANT_EVALUATED( ) __builtin_is_constant_evaluated( )
 
-#elif defined( __GNUC__ ) and not defined( __clang__ ) and __GNUC__ >= 9 and   \
-  __GNUC_MINOR__ >= 1
+#elif DAW_HAS_GCC_VER_GTE( 9, 1 )
 
 #define DAW_IS_CONSTANT_EVALUATED( ) __builtin_is_constant_evaluated( )
 
-#elif defined( __clang_major__ ) and __clang_major__ >= 9
+#elif DAW_HAS_CLANGCL_VER_GTE( 9, 0 )
 
 #define DAW_IS_CONSTANT_EVALUATED( ) __builtin_is_constant_evaluated( )
 

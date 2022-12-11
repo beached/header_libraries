@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_algorithm.h"
 #include "daw_range_collection.h"
 #include "daw_range_common.h"
@@ -15,7 +16,6 @@
 #include "daw_traits.h"
 
 #include <algorithm>
-#include <ciso646>
 #include <cstddef>
 #include <iterator>
 #include <numeric>
@@ -229,9 +229,10 @@ namespace daw {
 
 			template<typename UnaryPredicate>
 			ReferenceRange &stable_partition( UnaryPredicate predicate ) {
-				std::stable_partition(
-				  m_values.begin( ), m_values.end( ),
-				  [&predicate]( auto const &v ) { return predicate( v.get( ) ); } );
+				std::stable_partition( m_values.begin( ), m_values.end( ),
+				                       [&predicate]( auto const &v ) {
+					                       return predicate( v.get( ) );
+				                       } );
 				return *this;
 			}
 
@@ -242,9 +243,10 @@ namespace daw {
 
 			template<typename UnaryPredicate>
 			auto stable_partition_it( UnaryPredicate predicate ) {
-				auto mid = std::stable_partition(
-				  begin( ), end( ),
-				  [&predicate]( auto const &v ) { return predicate( v.get( ) ); } );
+				auto mid = std::stable_partition( begin( ), end( ),
+				                                  [&predicate]( auto const &v ) {
+					                                  return predicate( v.get( ) );
+				                                  } );
 				return std::make_pair( mid, *this );
 			}
 
@@ -271,7 +273,9 @@ namespace daw {
 				using v_t = decltype( oper( *begin( ) ) );
 				auto result = daw::range::make_range_collection<v_t>( );
 				std::transform( begin( ), end( ), std::back_inserter( result ),
-				                [&oper]( auto const &v ) { return oper( v.get( ) ); } );
+				                [&oper]( auto const &v ) {
+					                return oper( v.get( ) );
+				                } );
 				return result;
 			}
 
@@ -319,14 +323,16 @@ namespace daw {
 
 			template<typename UnaryPredicate>
 			ReferenceRange where( UnaryPredicate predicate ) const {
-				return erase(
-				  [predicate]( auto const &v ) { return !predicate( v ); } );
+				return erase( [predicate]( auto const &v ) {
+					return !predicate( v );
+				} );
 			}
 
 			template<typename UnaryPredicate>
 			ReferenceRange &where( UnaryPredicate predicate ) {
-				return erase(
-				  [predicate]( auto const &v ) { return !predicate( v ); } );
+				return erase( [predicate]( auto const &v ) {
+					return !predicate( v );
+				} );
 			}
 
 			template<typename Value>

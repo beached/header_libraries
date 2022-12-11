@@ -8,7 +8,8 @@
 
 #pragma once
 
-#include <ciso646>
+#include "ciso646.h"
+
 #include <type_traits>
 
 namespace daw {
@@ -27,8 +28,8 @@ namespace daw {
 } // namespace daw
 
 #ifndef DAW_MOVE
-#define DAW_MOVE( ... )                                                        \
-	static_cast<typename std::remove_reference_t<decltype( __VA_ARGS__ )> &&>(   \
+#define DAW_MOVE( ... )                                                      \
+	static_cast<typename std::remove_reference_t<decltype( __VA_ARGS__ )> &&>( \
 	  __VA_ARGS__ )
 #endif
 

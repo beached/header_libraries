@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_algorithm.h"
 #include "daw_bounded_array.h"
 #include "daw_bounded_vector.h"
@@ -15,7 +16,6 @@
 #include "daw_sort_n.h"
 #include "daw_swap.h"
 
-#include <ciso646>
 #include <cstddef>
 #include <functional>
 #include <limits>
@@ -158,9 +158,11 @@ namespace daw {
 
 			static_assert( std::is_default_constructible_v<ForwardIterator> );
 
-			daw::algorithm::iota(
-			  buckets.begin( ), buckets.end( ), static_cast<size_type>( 0 ),
-			  []( auto &i, size_type num ) { i.bucket_index = num; } );
+			daw::algorithm::iota( buckets.begin( ), buckets.end( ),
+			                      static_cast<size_type>( 0 ),
+			                      []( auto &i, size_type num ) {
+				                      i.bucket_index = num;
+			                      } );
 
 			for( auto it = first; it != last; ++it ) {
 				auto const bucket = scale_hash<m_num_buckets>( call_hash( it->first ) );

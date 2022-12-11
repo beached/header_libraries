@@ -8,13 +8,13 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_exception.h"
 #include "daw_move.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
 
 #include <algorithm>
-#include <ciso646>
 #include <exception>
 #include <iterator>
 #include <list>
@@ -199,8 +199,9 @@ namespace daw::parser {
 	  -> decltype( std::begin( container ) == std::end( container ) ) {
 
 		return std::find_if( std::begin( container ), std::end( container ),
-		                     [&]( auto const &v ) { return is_a( value, v ); } ) ==
-		       std::end( container );
+		                     [&]( auto const &v ) {
+			                     return is_a( value, v );
+		                     } ) == std::end( container );
 	}
 
 	template<typename T, typename U, size_t N>
@@ -615,9 +616,11 @@ namespace daw::parser {
 		operator( )( ForwardIterator first, ForwardIterator last ) const {
 			auto result = make_find_result( first, last );
 
-			auto pos = std::search(
-			  result.first, result.last, m_to_match.begin( ), m_to_match.end( ),
-			  []( auto const &lhs, auto const &rhs ) { return is_a( lhs, rhs ); } );
+			auto pos =
+			  std::search( result.first, result.last, m_to_match.begin( ),
+			               m_to_match.end( ), []( auto const &lhs, auto const &rhs ) {
+				               return is_a( lhs, rhs );
+			               } );
 
 			if( pos != result.last ) {
 				result.last = pos;

@@ -8,12 +8,12 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_arith_traits.h"
 #include "daw_cpp_feature_check.h"
 #include "daw_move.h"
 
-#include <ciso646>
 #include <concepts>
 #include <functional>
 #include <iterator>
@@ -29,10 +29,9 @@ namespace daw {
 	 * to produce equal results.
 	 */
 	template<typename From, typename To>
-	concept convertible_to = std::is_convertible_v<From, To> and
-	                         requires {
-		                         { static_cast<To>( std::declval<From>( ) ) };
-	                         };
+	concept convertible_to = std::is_convertible_v<From, To> and requires {
+		{ static_cast<To>( std::declval<From>( ) ) };
+	};
 
 	/***
 	 * @brief Satisfied when Lhs and Rhs name the same type (taking into account
@@ -51,8 +50,8 @@ namespace daw {
 	concept same_as_rrcv = deprecated::same_as_rrcv_v<Lhs, Rhs>;
 
 	template<typename Arg, typename Class>
-	concept cvref_of = same_as < std::remove_cvref_t<Arg>,
-	std::remove_cvref_t < Class >> ;
+	concept cvref_of =
+	  same_as<std::remove_cvref_t<Arg>, std::remove_cvref_t<Class>>;
 
 	namespace deprecated {
 		template<typename Arg, typename Class>
@@ -63,8 +62,7 @@ namespace daw {
 	concept not_me = deprecated::not_me_v<Arg, Class>;
 
 	template<typename Arg, typename Class>
-	concept not_cvref_of = not
-	cvref_of<Arg, Class>;
+	concept not_cvref_of = not cvref_of<Arg, Class>;
 
 	namespace deprecated {
 		template<typename Arg, typename Class>
@@ -75,8 +73,7 @@ namespace daw {
 	concept not_me_d = deprecated::not_me_d_v<Arg, Class>;
 
 	template<typename Arg, typename Class>
-	concept not_decay_of = not
-	same_as<Class, std::decay_t<Arg>>;
+	concept not_decay_of = not same_as<Class, std::decay_t<Arg>>;
 
 	template<typename T>
 	using root_type_t = std::remove_cv_t<std::remove_pointer_t<std::decay_t<T>>>;
@@ -87,41 +84,37 @@ namespace daw {
 	 */
 	template<typename To, typename... Args>
 	concept constructible_from =
-	  std::destructible<To> and requires( Args &&...args ) {
-		                            To{ DAW_FWD( args )... };
-	                            }; // use std::is_constructible_v<T, Args...>;
-	                               // once clang supports it for aggregates
+	  std::destructible<To> and requires( Args && ...args ) {
+		To{ DAW_FWD( args )... };
+	}; // use std::is_constructible_v<T, Args...>;
+	   // once clang supports it for aggregates
 
 	template<typename T>
 	concept Pointers = std::is_pointer_v<T>;
 
 	template<typename T>
 	concept Containers = requires( T container ) {
-		                     typename std::remove_cvref_t<T>::value_type;
-		                     container.begin( );
-		                     container.end( );
-	                     };
+		typename std::remove_cvref_t<T>::value_type;
+		container.begin( );
+		container.end( );
+	};
 
 	template<typename T>
-	concept ContiguousContainer = requires( T &&container ) {
-		                              { std::data( container ) } -> Pointers;
-		                              {
-			                              std::size( container )
-			                              } -> convertible_to<std::size_t>;
-	                              };
+	concept ContiguousContainer = requires( T && container ) {
+		{ std::data( container ) } -> Pointers;
+		{ std::size( container ) } -> convertible_to<std::size_t>;
+	};
 
 	template<typename T, typename U>
 	concept ContiguousContainerOf =
 	  ContiguousContainer<T> and requires( T container ) {
-		                             {
-			                             *std::data( container )
-			                             } -> convertible_to<U>;
-	                             };
+		{ *std::data( container ) } -> convertible_to<U>;
+	};
 
 	template<typename T>
-	concept StringLike = Containers<std::remove_cvref_t<T>> and
-	                     same_as < typename std::remove_cvref_t<T>::value_type,
-	char > ;
+	concept StringLike =
+	  Containers<std::remove_cvref_t<T>> and
+	  same_as<typename std::remove_cvref_t<T>::value_type, char>;
 
 	template<typename T>
 	concept EnumType =
@@ -148,9 +141,7 @@ namespace daw {
 	/// @brief Specifies that Container has type alias members key_type and
 	/// mapped_type
 	template<typename Container>
-	inline constexpr bool has_kv_mapping_v =
-	  requires
-	{
+	inline constexpr bool has_kv_mapping_v = requires {
 		typename std::remove_cvref_t<Container>::key_type;
 		typename std::remove_cvref_t<Container>::mapped_type;
 	};
@@ -166,10 +157,9 @@ namespace daw {
 	 * @tparam Args Arguments to call callable with
 	 */
 	template<typename Func, typename... Args>
-	concept invocable =
-	  requires( Func &&f, Args &&...args ) {
-		  std::invoke( DAW_FWD2( Func, f ), DAW_FWD2( Args, args )... );
-	  };
+	concept invocable = requires( Func && f, Args &&...args ) {
+		std::invoke( DAW_FWD2( Func, f ), DAW_FWD2( Args, args )... );
+	};
 
 	/// @brief Specifies that an expression of the type and value category
 	/// specified by RHS can be assigned to an lvalue expression whose type is
@@ -180,10 +170,8 @@ namespace daw {
 	  std::assignable_from<LHS, RHS>;
 #else
 	  std::is_lvalue_reference_v<LHS> and requires( LHS lhs, RHS &&rhs ) {
-		                                      {
-			                                      lhs = DAW_FWD2( RHS, rhs )
-			                                      } -> std::same_as<LHS>;
-	                                      };
+		{ lhs = DAW_FWD2( RHS, rhs ) } -> std::same_as<LHS>;
+	};
 #endif
 
 	/// @brief Satisfied if T is a reference type, or if it is an object type
@@ -202,9 +190,7 @@ namespace daw {
 	namespace swappable_test {
 		using namespace std;
 		template<typename T>
-		inline constexpr bool swappable_test =
-		  requires( T &a, T &b )
-		{
+		inline constexpr bool swappable_test = requires( T & a, T &b ) {
 			swap( a, b );
 		};
 	} // namespace swappable_test
@@ -254,11 +240,11 @@ namespace daw {
 	  std::weakly_incrementable<I>;
 #else
 	  movable<I> and requires( I i ) {
-		                 typename iter_difference_t<I>;
-		                 requires SignedStd<iter_difference_t<I>>;
-		                 { ++i } -> same_as<I &>;
-		                 i++;
-	                 };
+		typename iter_difference_t<I>;
+		requires SignedStd<iter_difference_t<I>>;
+		{ ++i } -> same_as<I &>;
+		i++;
+	};
 #endif
 
 	/***
@@ -270,12 +256,11 @@ namespace daw {
 	 * @tparam Args Arguments to call callable with
 	 */
 	template<typename Func, typename Result, typename... Args>
-	concept invocable_result =
-	  requires( Func &&f, Args &&...args ) {
-		  {
-			  std::invoke( DAW_FWD2( Func, f ), DAW_FWD2( Args, args )... )
-			  } -> convertible_to<Result>;
-	  };
+	concept invocable_result = requires( Func && f, Args &&...args ) {
+		{
+			std::invoke( DAW_FWD2( Func, f ), DAW_FWD2( Args, args )... )
+		} -> convertible_to<Result>;
+	};
 
 	template<typename I>
 	concept input_or_output_iterator =
@@ -283,8 +268,9 @@ namespace daw {
 	  std::input_or_output_iterator<I>;
 #else
 	  requires( I i ) {
-		  { *i };
-	  } and weakly_incrementable<I>;
+		{ *i };
+	}
+	and weakly_incrementable<I>;
 #endif
 
 	template<typename Out, typename T>
@@ -292,13 +278,13 @@ namespace daw {
 #if defined( __cpp_lib_concepts )
 	  std::indirectly_writable<Out, T>;
 #else
-	  requires( Out &&o, T &&t ) {
-		  *o = std::forward<T>( t );
-		  *std::forward<Out>( o ) = std::forward<T>( t );
-		  const_cast<const iter_reference_t<Out> &&>( *o ) = std::forward<T>( t );
-		  const_cast<const iter_reference_t<Out> &&>( *std::forward<Out>( o ) ) =
-		    std::forward<T>( t );
-	  };
+	  requires( Out && o, T &&t ) {
+		*o = std::forward<T>( t );
+		*std::forward<Out>( o ) = std::forward<T>( t );
+		const_cast<const iter_reference_t<Out> &&>( *o ) = std::forward<T>( t );
+		const_cast<const iter_reference_t<Out> &&>( *std::forward<Out>( o ) ) =
+		  std::forward<T>( t );
+	};
 #endif
 
 	template<typename Derived, typename Base>
@@ -313,8 +299,8 @@ namespace daw {
 #else
 	  input_or_output_iterator<I> and indirectly_writable<I, T> and
 	  requires( I i, T &&t ) {
-		  *i++ = DAW_FWD2( T, t ); // not required to be equality-preserving
-	  };
+		*i++ = DAW_FWD2( T, t ); // not required to be equality-preserving
+	};
 #endif
 
 	template<typename T>
@@ -332,9 +318,9 @@ namespace daw {
 #if defined( __cpp_lib_concepts )
 	  std::input_iterator<I>;
 #else
-	  input_or_output_iterator<I> and not
-	same_as<iterator_category_t<I>, void>
-	  and derived_from<iterator_category_t<I>, std::input_iterator_tag>;
+	  input_or_output_iterator<I> and
+	  not same_as<iterator_category_t<I>, void> and
+	  derived_from<iterator_category_t<I>, std::input_iterator_tag>;
 #endif
 
 #if defined( __cpp_lib_concepts )
@@ -343,8 +329,8 @@ namespace daw {
 #else
 	template<typename I>
 	concept forward_iterator =
-	  iterator<I> and derived_from < iterator_category_t<I>,
-	std::forward_iterator_tag > ;
+	  iterator<I> and
+	  derived_from<iterator_category_t<I>, std::forward_iterator_tag>;
 #endif
 
 #if defined( __cpp_lib_concepts )
@@ -353,16 +339,16 @@ namespace daw {
 #else
 	template<typename I>
 	concept random_access_iterator =
-	  forward_iterator<I> and derived_from < iterator_category_t<I>,
-	std::random_access_iterator_tag > ;
+	  forward_iterator<I> and
+	  derived_from<iterator_category_t<I>, std::random_access_iterator_tag>;
 #endif
 
 	template<typename Container>
 	concept BackInsertableContainer =
 	  Containers<Container> and
 	  requires( Container c, typename Container::value_type const &v ) {
-		  c.push_back( v );
-	  };
+		c.push_back( v );
+	};
 
 #if not defined( __cpp_lib_concepts )
 	namespace concept_details {
@@ -375,23 +361,21 @@ namespace daw {
 	/// (including short-circuiting), even for two different boolean-testable
 	/// types
 	template<typename B>
-	concept boolean_testable = concept_details::boolean_testable_impl<B> and
-	                           requires( B &&b ) {
-		                           {
-			                           not std::forward<B>( b )
-			                           } -> concept_details::boolean_testable_impl;
-	                           };
+	concept boolean_testable =
+	  concept_details::boolean_testable_impl<B> and requires( B && b ) {
+		{ not std::forward<B>( b ) } -> concept_details::boolean_testable_impl;
+	};
 
 	namespace concept_details {
 		template<typename T, typename U>
 		concept weakly_equality_comparable_with =
 		  requires( std::remove_reference_t<T> const &t,
 		            std::remove_reference_t<U> const &u ) {
-			  { t == u } -> boolean_testable;
-			  { t != u } -> boolean_testable;
-			  { u == t } -> boolean_testable;
-			  { u != t } -> boolean_testable;
-		  };
+			{ t == u } -> boolean_testable;
+			{ t != u } -> boolean_testable;
+			{ u == t } -> boolean_testable;
+			{ u != t } -> boolean_testable;
+		};
 	} // namespace concept_details
 #endif
 
@@ -425,21 +409,23 @@ namespace daw {
 	  std::is_move_constructible_v<typename Alloc::value_type>;
 
 	template<typename T>
-	concept default_constructible = requires { T{ }; };
+	concept default_constructible = requires {
+		T{ };
+	};
 
 	template<typename T, typename SpecificInt = void>
 	concept Integer = (same_as<SpecificInt, void> and std::is_integral_v<T>) or
 	                  same_as<T, SpecificInt>;
 
 	template<typename T, typename SpecificInt = void>
-	concept FloatingPoint = (same_as<SpecificInt, void> and
-	                         std::is_floating_point_v<T>) or
-	                        same_as<T, SpecificInt>;
+	concept FloatingPoint =
+	  (same_as<SpecificInt, void> and std::is_floating_point_v<T>) or
+	  same_as<T, SpecificInt>;
 
 	template<typename T, typename SpecificInt = void>
-	concept Arithmetic = (same_as<SpecificInt, void> and
-	                      std::is_arithmetic_v<T>) or
-	                     same_as<T, SpecificInt>;
+	concept Arithmetic =
+	  (same_as<SpecificInt, void> and std::is_arithmetic_v<T>) or
+	  same_as<T, SpecificInt>;
 
 	template<typename From, typename To>
 	concept constructible_to = constructible_from<To, From>;

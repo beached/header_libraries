@@ -9,7 +9,9 @@
 
 #pragma once
 
-#include <ciso646>
+#include "ciso646.h"
+#include "daw_cpp_feature_check.h"
+
 #include <climits>
 #include <cstdint>
 #include <limits>
@@ -42,10 +44,11 @@ namespace daw {
 	struct numeric_limits : std::numeric_limits<T> {};
 
 #if defined( DAW_HAS_INT128 )
-#ifdef __GNUC__
+#if defined( DAW_HAS_GCC_LIKE )
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpedantic"
 #endif
+
 	using int128_t = __int128;
 	using uint128_t = __uint128_t;
 	// numeric_limits cannot be relied on here.
@@ -187,7 +190,7 @@ namespace daw {
 			return 0;
 		}
 	};
-#ifdef __GNUC__
+#if defined( DAW_HAS_GCC_LIKE )
 #pragma GCC diagnostic pop
 #endif
 #endif

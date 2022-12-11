@@ -158,9 +158,9 @@ int main( ) {
 	auto ls = daw::cxmath::count_leading_zeroes( value );
 	(void)ls;
 	auto const nums = daw::make_random_data<int32_t, std::vector<float>>(
-	  1'000, -1'000.0f, 1'000.0f );
+	  1'000, -1'000, 1'000 );
 	auto const dnums = daw::make_random_data<int32_t, std::vector<double>>(
-	  1'000, -1'000.0, 1'000.0 );
+	  1'000, -1'000, 1'000 );
 #if defined( DEBUG ) or not defined( NDEBUG )
 	constexpr size_t RUNCOUNT = 10'000;
 #else
@@ -196,7 +196,7 @@ int main( ) {
 	daw::bench_n_test<RUNCOUNT>(
 	  "daw::cxmath::intxp( flt )",
 	  []( auto &&floats ) {
-		  intmax_t sum = 0.0f;
+		  intmax_t sum = 0;
 		  for( auto num : floats ) {
 			  sum += *daw::cxmath::intxp( num );
 		  }

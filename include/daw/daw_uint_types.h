@@ -8,10 +8,10 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_arith_traits.h"
 
 #include <cassert>
-#include <ciso646>
 #include <climits>
 #include <cstdint>
 #include <limits>

@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_algorithm.h"
 #include "daw_range_common.h"
 #include "daw_range_reference.h"
@@ -15,7 +16,6 @@
 #include "daw_traits.h"
 
 #include <algorithm>
-#include <ciso646>
 #include <cstddef>
 #include <iterator>
 #include <numeric>
@@ -289,8 +289,9 @@ namespace daw {
 
 			template<typename UnaryPredicate>
 			decltype( auto ) where( UnaryPredicate predicate ) {
-				return erase(
-				  [predicate]( auto const &v ) { return !predicate( v ); } );
+				return erase( [predicate]( auto const &v ) {
+					return !predicate( v );
+				} );
 			}
 
 			template<typename UnaryPredicate>
@@ -314,7 +315,9 @@ namespace daw {
 			decltype( auto ) as( ) const {
 				Container result;
 				std::transform( begin( ), end( ), std::back_inserter( result ),
-				                []( auto const &rv ) { return rv.get( ); } );
+				                []( auto const &rv ) {
+					                return rv.get( );
+				                } );
 				return result;
 			}
 
@@ -389,8 +392,9 @@ namespace daw {
 				  impl::cleanup_t<typename std::iterator_traits<Iterator>::value_type>;
 				CollectionRange<ValueType> result{ };
 				std::transform( std::begin( collection ), std::end( collection ),
-				                std::back_inserter( result ),
-				                []( auto const &rv ) { return rv.get( ); } );
+				                std::back_inserter( result ), []( auto const &rv ) {
+					                return rv.get( );
+				                } );
 				return result;
 			}
 		} // namespace impl

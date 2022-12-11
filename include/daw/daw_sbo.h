@@ -7,8 +7,9 @@
 //
 #pragma once
 
+#include "ciso646.h"
+
 #include <cassert>
-#include <ciso646>
 #include <cstddef>
 #include <cstdio>
 #include <memory>

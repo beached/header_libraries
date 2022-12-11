@@ -8,11 +8,11 @@
 
 #pragma once
 
+#include "../ciso646.h"
 #include "../daw_bounded_string.h"
 #include "../daw_exception.h"
 #include "../daw_traits.h"
 
-#include <ciso646>
 #include <limits>
 
 namespace daw {

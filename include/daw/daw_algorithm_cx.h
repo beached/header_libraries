@@ -8,10 +8,9 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
-
-#include <ciso646>
 
 // These algorithms require cswap
 namespace daw::algorithm {

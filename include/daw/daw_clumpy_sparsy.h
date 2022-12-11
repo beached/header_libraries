@@ -8,9 +8,9 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_algorithm.h"
 
-#include <ciso646>
 #include <cstdint>
 #include <vector>
 
@@ -78,8 +78,9 @@ namespace daw {
 				return size( );
 			}
 			auto item_pos = daw::algorithm::find_last_of(
-			  m_items.begin( ), m_items.end( ),
-			  [pos]( auto const &item ) { return pos >= item.start( ); } );
+			  m_items.begin( ), m_items.end( ), [pos]( auto const &item ) {
+				  return pos >= item.start( );
+			  } );
 			if( item_pos < size( ) ) {
 				// We are within the max size of the container.  Feel free to add it
 				auto offset = pos - item_pos->start( );

@@ -8,11 +8,11 @@
 
 #pragma once
 
+#include "../ciso646.h"
 #include "../daw_algorithm.h"
 #include "../daw_traits.h"
 #include "impl/daw_find_iterator_impl.h"
 
-#include <ciso646>
 #include <iterator>
 #include <limits>
 

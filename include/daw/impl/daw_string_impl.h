@@ -8,11 +8,11 @@
 
 #pragma once
 
+#include "../ciso646.h"
 #include "../daw_string_view1_fwd.h"
 #include "../daw_traits.h"
 
 #include <array>
-#include <ciso646>
 #include <cstddef>
 #include <type_traits>
 

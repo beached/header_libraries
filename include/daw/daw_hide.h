@@ -8,9 +8,10 @@
 
 #pragma once
 
-#include <ciso646>
+#include "ciso646.h"
+#include "daw_cpp_feature_check.h"
 
-#if !defined( DAW_NO_FLATTEN ) and !defined( _MSC_VER )
+#if not defined( DAW_NO_FLATTEN ) and not defined( DAW_HAS_MSVC_LIKE )
 #define DAW_ATTRIBUTE_FLATTEN [[gnu::flatten, gnu::always_inline]]
 #define DAW_ATTRIBUTE_HIDDEN __attribute__( ( visibility( "hidden" ) ) )
 #else

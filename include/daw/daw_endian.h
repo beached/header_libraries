@@ -8,9 +8,10 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "cpp_17.h"
+#include "daw_cpp_feature_check.h"
 
-#include <ciso646>
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>
@@ -18,7 +19,7 @@
 
 namespace daw {
 	enum class endian {
-#if defined( _MSC_VER ) and not defined( __clang__ )
+#if defined( DAW_HAS_MSVC )
 		little = 1234,
 		big = 4321,
 		native = little

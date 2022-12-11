@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_algorithm.h"
 #include "daw_exchange.h"
 #include "daw_newhelper.h"
@@ -16,7 +17,6 @@
 #include "daw_swap.h"
 #include "daw_traits.h"
 
-#include <ciso646>
 #include <cstdint>
 #include <string>
 

@@ -102,7 +102,6 @@ set( TEST_SOURCES
      daw_string_view2_test.cpp
      daw_take_test.cpp
      daw_traits_test.cpp
-     daw_tuple2_test.cpp
      daw_tuple_helper_test.cpp
      daw_tuple_test.cpp
      daw_uint_buffer_test.cpp
@@ -138,6 +137,7 @@ set( NOT_MSVC_TEST_SOURCES
      daw_bounded_hash_set_test.cpp
      daw_parser_helper_test.cpp
      daw_piecewise_factory_test.cpp
+     daw_tuple2_test.cpp
      )
 
 #not included in CI as they are not ready

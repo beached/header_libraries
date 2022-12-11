@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_bounded_array.h"
 #include "daw_math.h"
@@ -15,7 +16,6 @@
 #include "daw_overload.h"
 #include "daw_utility.h"
 
-#include <ciso646>
 #include <cstddef>
 #include <functional>
 #include <iostream>

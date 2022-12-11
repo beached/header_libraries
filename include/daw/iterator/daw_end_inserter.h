@@ -8,11 +8,11 @@
 
 #pragma once
 
+#include "../ciso646.h"
 #include "../cpp_17.h"
 #include "../daw_enable_if.h"
 #include "daw_function_iterator.h"
 
-#include <ciso646>
 #include <type_traits>
 #include <utility>
 

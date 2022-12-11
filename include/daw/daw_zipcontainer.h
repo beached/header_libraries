@@ -8,11 +8,10 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_move.h"
 #include "daw_traits.h"
 #include "iterator/daw_zipiter.h"
-
-#include <ciso646>
 
 namespace daw {
 	template<typename... Containers>

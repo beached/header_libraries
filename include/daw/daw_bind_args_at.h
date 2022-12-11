@@ -8,10 +8,10 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_move.h"
 
-#include <ciso646>
 #include <cstddef>
 #include <iostream>
 #include <tuple>
@@ -28,8 +28,9 @@ namespace daw {
 		if constexpr( sizeof...( Args ) == 0 ) {
 			return std::tuple<>{ };
 		} else {
-			return std::tuple<std::decay_t<decltype( std::get<StartN + Is>( DAW_MOVE(
-			  args ) ) )>...>( std::get<StartN + Is>( DAW_MOVE( args ) )... );
+			return std::tuple<
+			  std::decay_t<decltype( std::get<StartN + Is>( DAW_MOVE( args ) ) )>...>(
+			  std::get<StartN + Is>( DAW_MOVE( args ) )... );
 		}
 	}
 

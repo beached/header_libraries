@@ -8,9 +8,8 @@
 
 #pragma once
 
+#include "../ciso646.h"
 #include "../impl/daw_traits_concepts.h"
-
-#include <ciso646>
 
 namespace daw {
 	template<typename Iterator>

@@ -8,11 +8,11 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "daw_algorithm.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_move.h"
 
-#include <ciso646>
 #include <limits>
 
 namespace daw {

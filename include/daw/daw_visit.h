@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_assume.h"
 #include "daw_attributes.h"
@@ -17,7 +18,6 @@
 #include "daw_traits.h"
 #include "daw_unreachable.h"
 
-#include <ciso646>
 #include <cstddef>
 #include <exception>
 #include <type_traits>
@@ -306,6 +306,6 @@ namespace daw {
 	}
 
 	template<typename Value, typename... Visitors>
-	inline constexpr bool
-	  is_visitable_v = ( std::is_invocable_v<Visitors, Value> or ... );
+	inline constexpr bool is_visitable_v =
+	  ( std::is_invocable_v<Visitors, Value> or ... );
 } // namespace daw

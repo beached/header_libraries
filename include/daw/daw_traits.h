@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_cpp_feature_check.h"
 #include "daw_enable_if.h"
@@ -15,7 +16,6 @@
 #include "impl/daw_traits_concepts.h"
 #include "impl/daw_traits_impl.h"
 
-#include <ciso646>
 #include <cstddef>
 #include <cstdint>
 
@@ -198,14 +198,14 @@ namespace daw::traits {
 // check will look for begin( ) If you want to check args you could do the
 // following METHOD_CHECKER_ANY( has_index_operation, operator[], (
 // std::declval<size_t>( ) ) )
-#define METHOD_CHECKER_ANY( name, fn )                                         \
-	namespace traits_details_##name {                                            \
-		template<typename T, typename... Args>                                     \
-		using name =                                                               \
-		  decltype( std::declval<T>( ).fn( std::declval<Args>( )... ) );           \
-	}                                                                            \
-	template<typename T, typename... Args>                                       \
-	constexpr bool name##_v = is_detected_v<traits_details_##name::name, T,      \
+#define METHOD_CHECKER_ANY( name, fn )                                    \
+	namespace traits_details_##name {                                       \
+		template<typename T, typename... Args>                                \
+		using name =                                                          \
+		  decltype( std::declval<T>( ).fn( std::declval<Args>( )... ) );      \
+	}                                                                       \
+	template<typename T, typename... Args>                                  \
+	constexpr bool name##_v = is_detected_v<traits_details_##name::name, T, \
 	                                        Args...> // END METHOD_CHECKER_ANY
 
 	// decltype( std::declval<typename T::MemberName>( ) );

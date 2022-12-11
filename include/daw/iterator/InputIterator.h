@@ -8,13 +8,13 @@
 
 #pragma once
 
+#include "../ciso646.h"
 #include "../cpp_17.h"
 #include "../daw_exchange.h"
 #include "../daw_traits.h"
 
 #include <array>
 #include <cassert>
-#include <ciso646>
 #include <cstddef>
 #include <iterator>
 #include <memory>
