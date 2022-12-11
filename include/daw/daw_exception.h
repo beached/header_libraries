@@ -11,6 +11,7 @@
 #include "ciso646.h"
 #include "daw_check_exceptions.h"
 #include "daw_move.h"
+#include "daw_utility.h"
 
 #include <cstdlib>
 #include <exception>
@@ -274,6 +275,7 @@ namespace daw::exception {
 	constexpr void precondition_check( Bool &&condition, Args &&...args ) {
 		if( not static_cast<bool>( condition ) ) {
 			if constexpr( std::is_same_v<Terminator, ExceptionType> ) {
+				Unused( args... );
 				std::abort( );
 			} else {
 				daw_throw<ExceptionType>( DAW_FWD2( Args, args )... );
