@@ -18,6 +18,10 @@
 
 #if defined( DAW_CPP20_CONSTEXPR_DYNAMIC_ALLOC )
 #define DAW_CX_DTOR constexpr
+#define DAW_CPP20_CX_DTOR constexpr
+#define DAW_CPP20_CX_ALLOC constexpr
 #else
 #define DAW_CX_DTOR
+#define DAW_CPP20_CX_DTOR
+#define DAW_CPP20_CX_ALLOC
 #endif
