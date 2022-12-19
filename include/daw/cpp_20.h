@@ -10,6 +10,8 @@
 
 #include "daw_cpp_feature_check.h"
 
+#include <type_traits>
+
 #if defined( __cpp_constexpr_dynamic_alloc )
 #if __cpp_constexpr_dynamic_alloc >= 201907L
 #define DAW_CPP20_CONSTEXPR_DYNAMIC_ALLOC
@@ -18,6 +20,21 @@
 
 #if defined( DAW_CPP20_CONSTEXPR_DYNAMIC_ALLOC )
 #define DAW_CX_DTOR constexpr
+#define DAW_CPP20_CX_DTOR constexpr
+#define DAW_CPP20_CX_ALLOC constexpr
 #else
 #define DAW_CX_DTOR
+#define DAW_CPP20_CX_DTOR
+#define DAW_CPP20_CX_ALLOC
 #endif
+
+namespace daw {
+	template<typename T>
+	inline constexpr bool is_unbounded_array_v = false;
+
+	template<typename T>
+	inline constexpr bool is_unbounded_array_v<T[]> = true;
+
+	template<typename T>
+	struct is_unbounded_array : std::bool_constant<is_unbounded_array_v<T>> {};
+} // namespace daw

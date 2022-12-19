@@ -108,6 +108,7 @@ set( TEST_SOURCES
      daw_uninitialized_storage_test.cpp
      daw_union_pair_test.cpp
      daw_unique_array_test.cpp
+		 daw_unique_ptr_test.cpp
      daw_utility_test.cpp
      daw_validated_test.cpp
      daw_value_ptr_test.cpp
