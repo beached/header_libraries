@@ -254,7 +254,7 @@ namespace daw {
 	DAW_CPP20_CX_ALLOC auto make_unique( std::size_t count )
 	  -> std::enable_if_t<std::is_array_v<T>, unique_ptr<T>> {
 		using value_type = std::remove_extent_t<T>;
-		static_assert( std::is_unbounded_array_v<T>,
+		static_assert( daw::is_unbounded_array_v<T>,
 		               "It is an error to specify a bound on the array type. e.g "
 		               "T[3], use T[] instead" );
 		return unique_ptr<T>( new value_type[count]{ } );
@@ -263,7 +263,7 @@ namespace daw {
 	template<typename T, typename... Elements>
 	DAW_CPP20_CX_ALLOC auto make_unique_array( Elements &&...elements )
 	  -> std::enable_if_t<std::is_array_v<T>, unique_ptr<T>> {
-		static_assert( std::is_unbounded_array_v<T>,
+		static_assert( daw::is_unbounded_array_v<T>,
 		               "It is an error to specify a bound on the array type. e.g "
 		               "T[3], use T[] instead" );
 		using value_type = std::remove_extent_t<T>;
