@@ -23,11 +23,7 @@ namespace daw {
 		struct default_deleter {
 			using pointer = T *;
 			explicit default_deleter( ) = default;
-#if defined( DAW_CPP20_CONSTEXPR_DYNAMIC_ALLOC )
-			constexpr
-#endif
-			  void
-			  operator( )( pointer p ) const
+			DAW_CPP20_CX_ALLOC void operator( )( pointer p ) const
 			  noexcept( std::is_nothrow_destructible_v<T> ) {
 				delete p;
 			}
@@ -38,11 +34,7 @@ namespace daw {
 			using pointer = T *;
 			explicit default_deleter( ) = default;
 
-#if defined( DAW_CPP20_CONSTEXPR_DYNAMIC_ALLOC )
-			constexpr
-#endif
-			  void
-			  operator( )( pointer p ) const
+			DAW_CPP20_CX_ALLOC void operator( )( pointer p ) const
 			  noexcept( std::is_nothrow_destructible_v<T> ) {
 				delete[] p;
 			}
@@ -103,7 +95,7 @@ namespace daw {
 		constexpr unique_ptr( unique_ptr const & ) = delete;
 		constexpr unique_ptr &operator=( unique_ptr const & ) = delete;
 
-		DAW_CPP20_CX_DTOR ~unique_ptr( ) noexcept( is_nothrow_resetable_v ) {
+		DAW_CPP20_CX_ALLOC ~unique_ptr( ) noexcept( is_nothrow_resetable_v ) {
 			reset( );
 		}
 
@@ -185,7 +177,7 @@ namespace daw {
 		constexpr unique_ptr( unique_ptr const & ) = delete;
 		constexpr unique_ptr &operator=( unique_ptr const & ) = delete;
 
-		DAW_CPP20_CX_DTOR ~unique_ptr( ) noexcept( is_nothrow_resetable_v ) {
+		DAW_CPP20_CX_ALLOC ~unique_ptr( ) noexcept( is_nothrow_resetable_v ) {
 			reset( );
 		}
 
