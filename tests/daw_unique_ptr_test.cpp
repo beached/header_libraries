@@ -9,8 +9,8 @@
 #undef NDEBUG
 #endif
 
-#include <daw/daw_unique_ptr.h>
 #include <cassert>
+#include <daw/daw_unique_ptr.h>
 
 int main( ) {
 	auto a1 = daw::make_unique<int>( 5 );
@@ -28,7 +28,19 @@ int main( ) {
 	b[3] = 3;
 	b[4] = 4;
 	assert( b[1] == 1 );
-
+	auto c = daw::make_unique_array<int[]>( 1, 2, 3, 4, 5 );
+	assert( c );
+	assert( c[1] == 2 );
+	c.reset( );
+	assert( not c );
+	c = std::move( b );
+	assert( c );
+	assert( not b );
+	assert( c[1] == 1 );
+	auto d = std::move( a1 );
+	assert( d );
+	assert( not a1 );
+	assert( *d == 5 );
+	a2.reset( );
+	assert( not a2 );
 }
-
-
